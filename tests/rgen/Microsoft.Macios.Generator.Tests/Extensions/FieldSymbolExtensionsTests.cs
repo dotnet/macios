@@ -35,13 +35,13 @@ public enum MyEnum {
 
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputString);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<BaseTypeDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		var enumValue = symbol.GetMembers ().FirstOrDefault () as IFieldSymbol;
 		Assert.NotNull (enumValue);
@@ -65,13 +65,13 @@ public enum MyEnum {
 ";
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputString);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<BaseTypeDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		var enumValue = symbol.GetMembers ().FirstOrDefault () as IFieldSymbol;
 		Assert.NotNull (enumValue);
@@ -97,13 +97,13 @@ public enum MyEnum {
 ";
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputString);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<BaseTypeDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		var enumValue = symbol.GetMembers ().FirstOrDefault () as IFieldSymbol;
 		Assert.NotNull (enumValue);
@@ -182,13 +182,13 @@ public enum MyEnum {
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputString);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<BaseTypeDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		var enumValue = symbol.GetMembers ().FirstOrDefault () as IFieldSymbol;
 		Assert.NotNull (enumValue);

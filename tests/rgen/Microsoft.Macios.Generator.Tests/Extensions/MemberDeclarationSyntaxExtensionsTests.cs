@@ -61,7 +61,7 @@ public interface IInterface {
 			CreateCompilation (platform, sources: [attrsText, inputText]);
 		Assert.Equal (2, sourceTrees.Length);
 		// get the declarations we want to work with and the semantic model
-		var nodes = sourceTrees [1].GetRoot ().DescendantNodes ().ToArray ();
+		var nodes = sourceTrees [1].GetRoot (TestContext.Current.CancellationToken).DescendantNodes ().ToArray ();
 		var classDeclaration = nodes
 			.OfType<ClassDeclarationSyntax> ()
 			.FirstOrDefault ();
@@ -127,7 +127,7 @@ public class TestClass {
 			CreateCompilation (platform, sources: inputText);
 		Assert.Single (sourceTrees);
 		// get the declarations we want to work with and the semantic model
-		var declarations = sourceTrees [0].GetRoot ()
+		var declarations = sourceTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<MethodDeclarationSyntax> ()
 			.ToArray ();
@@ -178,7 +178,7 @@ public class TestClass {
 			CreateCompilation (platform, sources: [attrsText, inputText]);
 		Assert.Equal (2, sourceTrees.Length);
 		// get the declarations we want to work with and the semantic model
-		var nodes = sourceTrees [1].GetRoot ().DescendantNodes ().ToArray ();
+		var nodes = sourceTrees [1].GetRoot (TestContext.Current.CancellationToken).DescendantNodes ().ToArray ();
 		var methodDeclarationSyntax = nodes
 			.OfType<MethodDeclarationSyntax> ()
 			.FirstOrDefault ();
@@ -240,7 +240,7 @@ public class TestClass {
 	{
 		var (compilation, sourceTrees) = CreateCompilation (platform, sources: [input]);
 		Assert.Single (sourceTrees);
-		var classDeclaration = sourceTrees [0].GetRoot ()
+		var classDeclaration = sourceTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<ClassDeclarationSyntax> ()
 			.FirstOrDefault ();

@@ -125,10 +125,10 @@ interface UIFeedbackGenerator : UIInteraction {
 	void TryCreateTests (ApplePlatform platform, (string Source, string Path) source, SymbolAvailability expectedData)
 	{
 		var compilation = CreateCompilation (platform, sources: source);
-		var x = compilation.GetDiagnostics ();
+		var x = compilation.GetDiagnostics (TestContext.Current.CancellationToken);
 		var syntaxTree = compilation.SyntaxTrees.FirstOrDefault (t => t.FilePath == source.Path);
 		Assert.NotNull (syntaxTree);
-		var declaration = syntaxTree.GetRoot ()
+		var declaration = syntaxTree.GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ().OfType<BaseTypeDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
@@ -136,7 +136,7 @@ interface UIFeedbackGenerator : UIInteraction {
 		var semanticModel = compilation.GetSemanticModel (syntaxTree);
 		Assert.NotNull (semanticModel);
 
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 
 		// the transformation does not care about the parents, we want the exact same as was added by 

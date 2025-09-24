@@ -240,11 +240,11 @@ public class TestClass {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ().OfType<PropertyDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 
 		var expectedResult = Stret.IsBuiltInType (type, out var expectedTypeSize);
@@ -431,11 +431,11 @@ public struct AVSampleCursorChunkInfo {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ().OfType<StructDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		var x = symbol.GetValueTypeSize (new ());
 		Assert.Equal (expectedSize, symbol.GetValueTypeSize (new ()));

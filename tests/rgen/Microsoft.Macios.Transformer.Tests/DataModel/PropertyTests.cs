@@ -309,7 +309,7 @@ interface AVPlayer {
 		var semanticModel = compilation.GetSemanticModel (syntaxTree);
 		Assert.NotNull (semanticModel);
 
-		var declaration = syntaxTree.GetRoot ()
+		var declaration = syntaxTree.GetRoot (TestContext.Current.CancellationToken)
 				.DescendantNodes ().OfType<PropertyDeclarationSyntax> ()
 				.LastOrDefault ();
 		Assert.NotNull (declaration);

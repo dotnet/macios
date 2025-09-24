@@ -24,13 +24,13 @@ public class NotEnum {
 ";
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputString);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<BaseTypeDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		Assert.False (symbol.TryGetEnumFields (out var fields, out var diagnostics));
 		Assert.Null (fields);
@@ -70,13 +70,13 @@ public enum MyEnum {
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputString);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<BaseTypeDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		Assert.True (symbol.TryGetEnumFields (out var fields, out var diagnostics));
 		Assert.NotNull (fields);
@@ -154,13 +154,13 @@ public enum MyEnum {
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputString);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<BaseTypeDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		Assert.True (symbol.TryGetEnumFields (out var fields, out var diagnostics));
 		Assert.NotNull (fields);
@@ -187,13 +187,13 @@ public enum MyEnum {
 ";
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputString);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<BaseTypeDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		Assert.True (symbol.TryGetEnumFields (out var fields, out var diagnostics));
 		// we should get no fields because there are no attributes

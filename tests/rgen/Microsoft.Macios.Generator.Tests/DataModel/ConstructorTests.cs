@@ -553,7 +553,7 @@ namespace NS {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ().OfType<ConstructorDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);

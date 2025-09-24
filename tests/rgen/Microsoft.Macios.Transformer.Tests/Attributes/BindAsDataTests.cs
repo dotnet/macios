@@ -117,13 +117,13 @@ interface UIFeedbackGenerator {
 		var semanticModel = compilation.GetSemanticModel (syntaxTree);
 		Assert.NotNull (semanticModel);
 
-		var declaration = syntaxTree.GetRoot ()
+		var declaration = syntaxTree.GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ().OfType<T> ()
 			.LastOrDefault ();
 
 		Assert.NotNull (declaration);
 
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		var attribute = symbol.GetAttribute<BindAsData> (AttributesNames.BindAsAttribute, BindAsData.TryParse);
 		Assert.NotNull (attribute);

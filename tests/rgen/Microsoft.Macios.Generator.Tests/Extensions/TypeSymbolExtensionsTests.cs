@@ -86,12 +86,12 @@ public enum TestEnum {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: [inputText, attributesText]);
 		Assert.Equal (2, syntaxTrees.Length);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<BaseTypeDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		var attrs = symbol.GetAttributeData ();
 		Assert.Equal (expectedAttributes.Count, attrs.Keys.Count);
@@ -202,9 +202,9 @@ public class ParentClass {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = getNode (syntaxTrees [0].GetRoot ());
+		var declaration = getNode (syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken));
 		Assert.NotNull (declaration);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		var parents = symbol.GetParents ().Select (p => p.Name).ToArray ();
 		Assert.Equal (expectedParents, parents);
@@ -332,9 +332,9 @@ public class ParentClass{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = getNode (syntaxTrees [0].GetRoot ());
+		var declaration = getNode (syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken));
 		Assert.NotNull (declaration);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		var availability = symbol.GetSupportedPlatforms ();
 		Assert.Equal (availability, expectedAvailability);
@@ -367,12 +367,12 @@ public class ParentClass{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<BaseTypeDeclarationSyntax> ()
 			.LastOrDefault ();
 		Assert.NotNull (declaration);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		Assert.Equal (expected, symbol.HasAttribute (attrName));
 	}
@@ -429,12 +429,12 @@ public enum MyEnum {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<BaseTypeDeclarationSyntax> ()
 			.LastOrDefault ();
 		Assert.NotNull (declaration);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		Assert.Equal (expected, symbol.IsSmartEnum ());
 	}
@@ -496,14 +496,14 @@ public partial class MyClass {
 		Assert.NotNull (@enum);
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<PropertyDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
 		Assert.NotNull (semanticModel);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		var exportData = symbol.GetExportData<T> (new (semanticModel));
 		Assert.Equal (expectedData, exportData);
@@ -537,14 +537,14 @@ public partial class MyClass {
 		Assert.NotNull (@enum);
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<PropertyDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
 		Assert.NotNull (semanticModel);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		var fieldData = symbol.GetFieldData<T> ();
 		Assert.Equal (expectedData, fieldData);
@@ -1691,14 +1691,14 @@ public partial class MyClass {
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<PropertyDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
 		Assert.NotNull (semanticModel);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		Assert.Equal (expectedResult, symbol.Type.IsBlittable ());
 	}
@@ -1848,14 +1848,14 @@ public partial class MyClass {
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<PropertyDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
 		Assert.NotNull (semanticModel);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		Assert.Equal (expectedResult, symbol.Type.IsWrapped ());
 	}
@@ -2005,14 +2005,14 @@ public partial class MyClass {
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<PropertyDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
 		Assert.NotNull (semanticModel);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		Assert.Equal (expectedResult, symbol.Type.IsINativeObject ());
 	}

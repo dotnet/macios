@@ -302,14 +302,14 @@ public partial class SKCloudServiceSetupOptions : DictionaryContainer { }
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<BaseTypeDeclarationSyntax> ()
 			.LastOrDefault (); // always grab the last one, you might get into failures if you are not careful with this
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
 		Assert.NotNull (semanticModel);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		symbol.GetInheritance (
 			isNSObject: out var isNsObject,
@@ -369,14 +369,14 @@ public partial class MyClass {
 	{
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<PropertyDeclarationSyntax> ()
 			.LastOrDefault (); // always grab the last one, you might get into failures if you are not careful with this
 		Assert.NotNull (declaration);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
 		Assert.NotNull (semanticModel);
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		Assert.True (Property.TryCreate (declaration, semanticModel, out var propertyData));
 		Assert.NotNull (propertyData);

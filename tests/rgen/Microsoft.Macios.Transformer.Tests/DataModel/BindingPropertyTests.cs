@@ -324,12 +324,12 @@ interface MyNSArray : NSSecureCoding, NSMutableCopying, INSFastEnumeration, CKRe
 		var semanticModel = compilation.GetSemanticModel (syntaxTree);
 		Assert.NotNull (semanticModel);
 
-		var declaration = syntaxTree.GetRoot ()
+		var declaration = syntaxTree.GetRoot (TestContext.Current.CancellationToken)
 				.DescendantNodes ().OfType<InterfaceDeclarationSyntax> ()
 				.LastOrDefault ();
 		Assert.NotNull (declaration);
 
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 
 		var binding = new Binding (declaration, symbol, new (semanticModel));

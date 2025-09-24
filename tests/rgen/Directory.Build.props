@@ -1,0 +1,21 @@
+<Project>
+
+  <!-- Common package versions -->
+  <PropertyGroup>
+    <Version_Microsoft_NET_Test_Sdk>17.13.0</Version_Microsoft_NET_Test_Sdk>
+    <Version_xunit_runner_visualstudio>3.1.1</Version_xunit_runner_visualstudio>
+    <Version_xunit_analyzers>1.23.0-pre.3</Version_xunit_analyzers>
+    <Version_xunit_v3>3.0.0-pre.25</Version_xunit_v3>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <LangVersion>13.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

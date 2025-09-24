@@ -7,12 +7,12 @@ using System.Linq;
 namespace Microsoft.Macios.Generator;
 
 public class DictionaryComparer<TKey, TValue> (IEqualityComparer<TValue>? valueComparer = null)
-	: EqualityComparer<IDictionary<TKey, TValue>>
+	: EqualityComparer<IReadOnlyDictionary<TKey, TValue>>
 	where TKey : notnull {
 	readonly IEqualityComparer<TValue> valueComparer = valueComparer ?? EqualityComparer<TValue>.Default;
 
 	/// <inheritdoc/>
-	public override bool Equals (IDictionary<TKey, TValue>? x, IDictionary<TKey, TValue>? y)
+	public override bool Equals (IReadOnlyDictionary<TKey, TValue>? x, IReadOnlyDictionary<TKey, TValue>? y)
 	{
 		if (x is null && y is null)
 			return true;
@@ -28,7 +28,7 @@ public class DictionaryComparer<TKey, TValue> (IEqualityComparer<TValue>? valueC
 	}
 
 	/// <inheritdoc/>
-	public override int GetHashCode (IDictionary<TKey, TValue> obj)
+	public override int GetHashCode (IReadOnlyDictionary<TKey, TValue> obj)
 	{
 		var hash = new HashCode ();
 		foreach (var (key, value) in obj) {

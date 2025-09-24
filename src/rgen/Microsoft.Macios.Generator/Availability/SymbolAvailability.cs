@@ -12,7 +12,7 @@ namespace Microsoft.Macios.Generator.Availability;
 /// Readonly structure that describes the availability of a symbol in the supported platforms of the SDK.
 /// </summary>
 readonly partial struct SymbolAvailability : IEquatable<SymbolAvailability> {
-	static readonly HashSet<ApplePlatform> supportedPlatforms =
+	public static readonly HashSet<ApplePlatform> SupportedPlatforms =
 		[ApplePlatform.iOS, ApplePlatform.TVOS, ApplePlatform.MacOSX, ApplePlatform.MacCatalyst];
 
 	readonly SortedDictionary<ApplePlatform, PlatformAvailability?> availabilities = new ();
@@ -122,7 +122,7 @@ readonly partial struct SymbolAvailability : IEquatable<SymbolAvailability> {
 
 		// create the key value pairs for the supported platforms
 		var merged = new List<KeyValuePair<ApplePlatform, PlatformAvailability?>> ();
-		foreach (var platform in supportedPlatforms) {
+		foreach (var platform in SupportedPlatforms) {
 			merged.Add (new (platform, Merge (this [platform], parent.Value [platform])));
 		}
 
@@ -134,7 +134,7 @@ readonly partial struct SymbolAvailability : IEquatable<SymbolAvailability> {
 	{
 		// loop over the supported platforms and ensure that the availabilities are the
 		// same 
-		foreach (var platform in supportedPlatforms) {
+		foreach (var platform in SupportedPlatforms) {
 			if (this [platform] != other [platform]) {
 				return false;
 			}
@@ -153,7 +153,7 @@ readonly partial struct SymbolAvailability : IEquatable<SymbolAvailability> {
 	public override int GetHashCode ()
 	{
 		var hashCode = new HashCode ();
-		foreach (var platform in supportedPlatforms) {
+		foreach (var platform in SupportedPlatforms) {
 			hashCode.Add (this [platform]);
 		}
 

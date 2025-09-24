@@ -59,7 +59,7 @@ readonly partial struct SymbolAvailability {
 		/// <param name="url">Optional documentation url.</param>
 		internal void AddObsoletedVersion (ApplePlatform platform, Version version, string? message, string? url)
 		{
-			if (!supportedPlatforms.Contains (platform))
+			if (!SupportedPlatforms.Contains (platform))
 				return;
 
 			var builder = GetBuilder (platform);
@@ -72,7 +72,7 @@ readonly partial struct SymbolAvailability {
 		/// <param name="obsoletedOsPlatform">The data of a ObsoleteOSPlatformAttribute.</param>
 		public void Add (ObsoletedOSPlatformData obsoletedOsPlatform)
 		{
-			if (!supportedPlatforms.Contains (obsoletedOsPlatform.Platform))
+			if (!SupportedPlatforms.Contains (obsoletedOsPlatform.Platform))
 				return;
 
 			var builder = GetBuilder (obsoletedOsPlatform.Platform);
@@ -87,7 +87,7 @@ readonly partial struct SymbolAvailability {
 		/// <param name="version">The supported versions to add.</param>
 		internal void AddSupportedVersion (ApplePlatform platform, Version version)
 		{
-			if (!supportedPlatforms.Contains (platform))
+			if (!SupportedPlatforms.Contains (platform))
 				return;
 			var builder = GetBuilder (platform);
 			builder.AddSupportedVersion (new (version, SupportKind.Explicit));
@@ -99,7 +99,7 @@ readonly partial struct SymbolAvailability {
 		/// <param name="supportedPlatform">The data of a SupportedOSPlatformAttribute.</param>
 		public void Add (SupportedOSPlatformData supportedPlatform)
 		{
-			if (!supportedPlatforms.Contains (supportedPlatform.Platform))
+			if (!SupportedPlatforms.Contains (supportedPlatform.Platform))
 				return;
 
 			var builder = GetBuilder (supportedPlatform.Platform);
@@ -114,7 +114,7 @@ readonly partial struct SymbolAvailability {
 		/// <param name="message">The optional message of the unsupported version.</param>
 		internal void AddUnsupportedVersion (ApplePlatform platform, Version version, string? message)
 		{
-			if (!supportedPlatforms.Contains (platform))
+			if (!SupportedPlatforms.Contains (platform))
 				return;
 
 			var builder = GetBuilder (platform);
@@ -127,7 +127,7 @@ readonly partial struct SymbolAvailability {
 		/// <param name="unsupportedPlatform">The data of a UnsupportedOSPlatformAttribute.</param>
 		public void Add (UnsupportedOSPlatformData unsupportedPlatform)
 		{
-			if (!supportedPlatforms.Contains (unsupportedPlatform.Platform))
+			if (!SupportedPlatforms.Contains (unsupportedPlatform.Platform))
 				return;
 
 			var builder = GetBuilder (unsupportedPlatform.Platform);
@@ -146,7 +146,7 @@ readonly partial struct SymbolAvailability {
 		public SymbolAvailability ToImmutable ()
 		{
 			var dict = new Dictionary<ApplePlatform, PlatformAvailability?> ();
-			foreach (var platform in supportedPlatforms) {
+			foreach (var platform in SupportedPlatforms) {
 				dict [platform] = platforms.ContainsKey (platform)
 					? platforms [platform].ToImmutable ()
 					: null;

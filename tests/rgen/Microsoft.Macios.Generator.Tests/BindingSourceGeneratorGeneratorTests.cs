@@ -128,12 +128,12 @@ public partial class AVAudioPcmBuffer
 
 		// Run generators and retrieve all results.
 		var driver = CSharpGeneratorDriver.Create (new BindingSourceGeneratorGenerator ());
-		var runResult = driver.RunGenerators (compilation).GetRunResult ();
+		var runResult = driver.RunGenerators (compilation, TestContext.Current.CancellationToken).GetRunResult ();
 		Assert.Empty (runResult.Diagnostics);
 
 		// ensure that we do have all the needed attributes present
 		var generatedFile = runResult.GeneratedTrees.SingleOrDefault (t => t.FilePath.EndsWith ("AVAudioPcmBuffer.g.cs"));
 		Assert.NotNull (generatedFile);
-		Assert.Equal (expectedOutput, generatedFile.GetText ().ToString ());
+		Assert.Equal (expectedOutput, generatedFile.GetText (TestContext.Current.CancellationToken).ToString ());
 	}
 }

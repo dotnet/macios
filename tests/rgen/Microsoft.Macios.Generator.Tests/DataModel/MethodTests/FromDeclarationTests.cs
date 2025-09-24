@@ -870,7 +870,7 @@ namespace NS {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
@@ -944,7 +944,7 @@ namespace NS {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
@@ -1009,7 +1009,7 @@ namespace NS {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
@@ -1065,7 +1065,7 @@ namespace NS {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
@@ -1102,7 +1102,7 @@ interface IAVAudioMixing {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
@@ -1142,7 +1142,7 @@ interface IAVAudioMixing {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
@@ -1182,7 +1182,7 @@ interface IAVAudioMixing {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);
@@ -1289,7 +1289,7 @@ namespace NS {
 		var (compilation, syntaxTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (syntaxTrees);
 		var semanticModel = compilation.GetSemanticModel (syntaxTrees [0]);
-		var declaration = syntaxTrees [0].GetRoot ()
+		var declaration = syntaxTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ().OfType<MethodDeclarationSyntax> ()
 			.FirstOrDefault ();
 		Assert.NotNull (declaration);

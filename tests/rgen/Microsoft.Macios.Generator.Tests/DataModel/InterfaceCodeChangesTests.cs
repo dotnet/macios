@@ -1248,7 +1248,7 @@ public partial interface IBaz : IBar {
 			CreateCompilation (platform, sources: inputText);
 		Assert.Single (sourceTrees);
 		// get the declarations we want to work with and the semantic model
-		var node = sourceTrees [0].GetRoot ()
+		var node = sourceTrees [0].GetRoot (TestContext.Current.CancellationToken)
 			.DescendantNodes ()
 			.OfType<InterfaceDeclarationSyntax> ()
 			.LastOrDefault (); // always get the last one so that inherirance tests are correct

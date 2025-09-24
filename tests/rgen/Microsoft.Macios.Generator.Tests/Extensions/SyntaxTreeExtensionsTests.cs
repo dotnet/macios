@@ -57,7 +57,7 @@ namespace NS {
 	{
 		var (_, sourceTrees) = CreateCompilation (platform, sources: inputText);
 		Assert.Single (sourceTrees);
-		var tree = sourceTrees [0].GetRoot ().SyntaxTree;
+		var tree = sourceTrees [0].GetRoot (TestContext.Current.CancellationToken).SyntaxTree;
 		Assert.NotNull (tree);
 		Assert.Equal (expectedUsingStatements, tree.CollectUsingStatements (), comparer);
 	}

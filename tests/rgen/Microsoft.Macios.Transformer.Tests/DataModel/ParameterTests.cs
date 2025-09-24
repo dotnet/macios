@@ -325,13 +325,13 @@ public class MyClass () {
 		var semanticModel = compilation.GetSemanticModel (syntaxTree);
 		Assert.NotNull (semanticModel);
 
-		var declaration = syntaxTree.GetRoot ()
+		var declaration = syntaxTree.GetRoot (TestContext.Current.CancellationToken)
 				.DescendantNodes ().OfType<ParameterSyntax> ()
 				.LastOrDefault ();
 
 		Assert.NotNull (declaration);
 
-		var symbol = semanticModel.GetDeclaredSymbol (declaration);
+		var symbol = semanticModel.GetDeclaredSymbol (declaration, TestContext.Current.CancellationToken);
 		Assert.NotNull (symbol);
 		Assert.True (Parameter.TryCreate (symbol, declaration, semanticModel, out var parameter));
 		Assert.Equal (expectedData, parameter);

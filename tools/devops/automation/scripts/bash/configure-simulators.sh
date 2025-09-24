@@ -46,7 +46,7 @@ function createDevice ()
 	local DEVICE_UDID
 
 	# condition here really is just a failsafe, we're not trying 10 times
-	while [[ $ATTEMPTS < 10 ]] ; do
+	while [[ $ATTEMPTS -lt 10 ]] ; do
 		echo "Trying to create an $PLATFORM device..."
 		DEVICE_UDID=$(xcrun simctl create "$NAME" "$DEVICE_TYPE" "$RUNTIME")
 		echo "Created $PLATFORM device with UDID=$DEVICE_UDID"
@@ -61,8 +61,8 @@ function createDevice ()
 		fi
 
 		# ok, looks like the device won't exist, so trying again
-		let ATTEMPTS++ || true
-		if [[ $ATTEMPTS > 5 ]]; then
+		(( ATTEMPTS++ ))
+		if [[ $ATTEMPTS -gt 5 ]]; then
 			echo "Unable to create $PLATFORM simulator device"
 			exit 1
 		fi

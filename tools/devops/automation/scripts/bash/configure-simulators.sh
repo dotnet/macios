@@ -35,7 +35,44 @@ TVOS_SIMRUNTIME_VERSION=${TVOS_OS_VERSION/./-}
 
 rm -f "$FILE"
 
-xcrun simctl create "Apple TV (tvOS $TVOS_OS_VERSION) - created by CI" "$TVOS_SIMULATOR_DEVICE_TYPE" "com.apple.CoreSimulator.SimRuntime.tvOS-$TVOS_SIMRUNTIME_VERSION"
-xcrun simctl create "iPhone 14 (iOS $IOS_OS_VERSION) - created by CI"  "$IOS_SIMULATOR_DEVICE_TYPE"  "com.apple.CoreSimulator.SimRuntime.iOS-$IOS_SIMRUNTIME_VERSION"
+function createDevice ()
+{
+	local PLATFORM=$1
+	local NAME=$2
+	local DEVICE_TYPE=$3
+	local RUNTIME=$4
+
+	local ATTEMPTS=0
+	local DEVICE_UDID
+
+	# condition here really is just a failsafe, we're not trying 10 times
+	while [[ $ATTEMPTS < 10 ]] ; do
+		echo "Trying to create an $PLATFORM device..."
+		DEVICE_UDID=$(xcrun simctl create "$NAME" "$DEVICE_TYPE" "$RUNTIME")
+		echo "Created $PLATFORM device with UDID=$DEVICE_UDID"
+		if xcrun simctl list | grep "$DEVICE_UDID" >/dev/null 2>&1; then
+			return
+		fi
+
+		# device doesn't exists (yet?), wait a bit and check again
+		sleep "$(( ATTEMPTS * 10 ))"
+		if xcrun simctl list | grep "$DEVICE_UDID" >/dev/null 2>&1; then
+			return
+		fi
+
+		# ok, looks like the device won't exist, so trying again
+		let ATTEMPTS++ || true
+		if [[ $ATTEMPTS > 5 ]]; then
+			echo "Unable to create $PLATFORM simulator device"
+			exit 1
+		fi
+	done
+}
+
+createDevice tvOS "Apple TV (tvOS $TVOS_OS_VERSION) - created by CI" "$TVOS_SIMULATOR_DEVICE_TYPE" "com.apple.CoreSimulator.SimRuntime.tvOS-$TVOS_SIMRUNTIME_VERSION"
+
+sleep 3 # the eternal 🤞 solution
+
+createDevice iOS "iPhone 14 (iOS $IOS_OS_VERSION) - created by CI"  "$IOS_SIMULATOR_DEVICE_TYPE"  "com.apple.CoreSimulator.SimRuntime.iOS-$IOS_SIMRUNTIME_VERSION"
 
 xcrun simctl list --json

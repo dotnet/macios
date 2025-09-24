@@ -247,15 +247,6 @@ steps:
   env:
     XCODE_CHANNEL: ${{ parameters.XcodeChannel }}
 
-# clean sims incase we were left in a strange state
-- bash: |
-    xcrun simctl shutdown all
-    xcrun simctl erase all
-    xcrun simctl create "Apple TV (tvOS 26.0) - created by CI" com.apple.CoreSimulator.SimDeviceType.Apple-TV-1080p com.apple.CoreSimulator.SimRuntime.tvOS-26-0
-    xcrun simctl create "iPhone 14 (iOS 26.0) - created by CI" com.apple.CoreSimulator.SimDeviceType.iPhone-14 com.apple.CoreSimulator.SimRuntime.iOS-26-0
-  displayName: 'Clean simulators'
-  timeoutInMinutes: 20
-
 - bash: '$SYSTEM_DEFAULTWORKINGDIRECTORY/$BUILD_REPOSITORY_TITLE/tools/devops/automation/scripts/bash/configure-simulators.sh'
   displayName: 'Configure simulators'
   timeoutInMinutes: 20

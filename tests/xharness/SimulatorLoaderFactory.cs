@@ -18,7 +18,7 @@ namespace Xharness {
 		public SimulatorLoaderFactory (IMlaunchProcessManager processManager, IHarness harness)
 		{
 			this.processManager = processManager ?? throw new ArgumentNullException (nameof (processManager));
-			this.harness = harness ?? throw new ArgumentNullException (nameof (processManager));
+			this.harness = harness ?? throw new ArgumentNullException (nameof (harness));
 		}
 
 		public ISimulatorLoader CreateLoader () => new SimulatorLoader (processManager, new SimulatorSelector (harness));
@@ -29,7 +29,7 @@ namespace Xharness {
 
 		public SimulatorSelector (IHarness harness)
 		{
-			this.harness = harness ?? throw new ArgumentNullException (nameof (processManager));
+			this.harness = harness ?? throw new ArgumentNullException (nameof (harness));
 		}
 
 		public override string GetDeviceType (TestTargetOs target, bool minVersion)

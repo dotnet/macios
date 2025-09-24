@@ -726,7 +726,7 @@ namespace Xharness {
 		{
 			var rv = new AppRunner (processManager,
 				new AppBundleInformationParser (processManager, AppBundleLocator),
-				new SimulatorLoaderFactory (processManager),
+				new SimulatorLoaderFactory (processManager, this),
 				new SimpleListenerFactory (UseTcpTunnel ? TunnelBore : null),
 				new DeviceLoaderFactory (processManager),
 				new CrashSnapshotReporterFactory (processManager),

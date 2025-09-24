@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.DotNet.XHarness.Common.Execution;
-using Microsoft.DotNet.XHarness.Common.Logging;
 using Microsoft.DotNet.XHarness.iOS.Shared;
 using Microsoft.DotNet.XHarness.iOS.Shared.Hardware;
 using Microsoft.DotNet.XHarness.iOS.Shared.Utilities;
@@ -125,7 +123,7 @@ namespace Xharness.Jenkins {
 						yield return new TestData {
 							Variation = $"Debug ({test.Platform.GetSimulatorMinVersion ()})",
 							Debug = true,
-							Candidates = new IDeviceEnumerator (jenkins, target.GetTargetOs (true), jenkins.SimulatorLoadLog, true),
+							Candidates = jenkins.Simulators.SelectDevices (target.GetTargetOs (true), jenkins.SimulatorLoadLog, true),
 							Ignored = ignore ?? !jenkins.TestSelection.IsEnabled (PlatformLabel.OldiOSSimulator) || !jenkins.TestSelection.IsEnabled (TestLabel.Introspection),
 						};
 					break;
@@ -250,63 +248,5 @@ namespace Xharness.Jenkins {
 			return rv;
 		}
 
-	}
-
-	class IDeviceEnumerator : IEnumerable<ISimulatorDevice> {
-		readonly Jenkins jenkins;
-		readonly TestTargetOs os;
-		readonly ILog log;
-		readonly bool min;
-
-		public IDeviceEnumerator (Jenkins jenkins, TestTargetOs os, ILog log, bool min)
-		{
-			this.jenkins = jenkins;
-			this.os = os;
-			this.log = log;
-			this.min = min;
-		}
-
-		public IEnumerator<ISimulatorDevice> GetEnumerator ()
-		{
-			var maxAttempts = 3;
-			for (var i = 0; i < maxAttempts; i++) {
-				try {
-					log.WriteLine ($"Looking for simulators for {os} (min: {min}) (attempt {i + 1} of {maxAttempts})...");
-					var rv = jenkins.Simulators.SelectDevices (os, log, min);
-					log.WriteLine ($"Looking for simulators for {os} (min: {min}) (attempt {i + 1} of {maxAttempts})... SUCCESS!");
-					rv = rv.ToArray ();
-					log.WriteLine ($"Found {rv.Count ()} simulators for {os} (min: {min}): {string.Join (", ", rv.Select (d => d.UDID))}");
-					return rv.GetEnumerator ();
-				} catch (Exception e) {
-					log.WriteLine ($"Failed to get simulators (attempt {i + 1} of {maxAttempts}): {e}");
-
-					var tmpfile = System.IO.Path.GetTempFileName ();
-					var callback = new Action<string> ((line) => {
-						lock (log) {
-							log.WriteLine (line);
-						}
-					});
-					Xamarin.Utils.Execution.RunWithCallbacksAsync ("xcrun", new string [] { "simctl", "list", "--json", "--json-output", tmpfile }, standardOutput: callback, standardError: callback).Wait ();
-					var contents = System.IO.File.ReadAllText (tmpfile);
-					log.WriteLine ($"Contents of 'xcrun simctl list --json':\n{contents}");
-					System.IO.File.Delete (tmpfile);
-
-					if (i >= maxAttempts - 1)
-						break;
-
-					log.WriteLine ("Reloading simulators...");
-					jenkins.Simulators.LoadDevices (log, false, false).Wait ();
-					log.WriteLine ("Reloaded simulators!");
-				}
-			}
-
-			log.WriteLine ("Reached max number of attempts to load simulators");
-			return Enumerable.Empty<ISimulatorDevice> ().GetEnumerator ();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator ()
-		{
-			return GetEnumerator ();
-		}
 	}
 }

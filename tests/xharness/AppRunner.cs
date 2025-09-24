@@ -122,18 +122,8 @@ namespace Xharness {
 				return true;
 
 			var sims = simulatorsLoaderFactory.CreateLoader ();
-			var simlog = Logs.Create ($"simulator-list-{Harness.Helpers.Timestamp}.log", "Simulator list");
-			await sims.LoadDevices (simlog, false, false);
-			try {
-				(simulator, _) = await sims.FindSimulators (target.GetTargetOs (false), MainLog);
-			} catch (Exception e) {
-				simlog.WriteLine ($"Failed to find simulators: {e}");
-				var devices = sims.AvailableDevices.ToList ();
-				simlog.WriteLine ($"{devices.Count} available devices:");
-				foreach (var d in devices)
-					simlog.WriteLine ($"  {d.Name}: {d.UDID} ({d.SimDeviceType} - {d.SimRuntime})");
-				return false;
-			}
+			await sims.LoadDevices (Logs.Create ($"simulator-list-{Harness.Helpers.Timestamp}.log", "Simulator list"), false, false);
+			(simulator, _) = await sims.FindSimulators (target.GetTargetOs (false), MainLog);
 
 			return simulator is not null;
 		}

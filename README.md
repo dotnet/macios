@@ -62,5 +62,3 @@ However, we provide links to older Xamarin.iOS and Mac packages for macOS downgr
 
 Copyright (c) .NET Foundation Contributors. All rights reserved.
 Licensed under the [MIT](https://github.com/dotnet/macios/blob/main/LICENSE) License.
-
-Seriously, now you're green?

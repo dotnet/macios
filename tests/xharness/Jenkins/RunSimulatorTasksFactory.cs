@@ -121,7 +121,7 @@ namespace Xharness.Jenkins {
 			}
 
 			for (int i = 0; i < targets.Length; i++) {
-				var sims = new IDeviceEnumerator (jenkins, targets [i].GetTargetOs (false), jenkins.SimulatorLoadLog, false);
+				var sims = jenkins.Simulators.SelectDevices (targets [i].GetTargetOs (false), jenkins.SimulatorLoadLog, false);
 				runtasks.Add (new RunSimulatorTask (
 					jenkins: jenkins,
 					simulators: jenkins.Simulators,

@@ -30,8 +30,6 @@ namespace Xharness {
 		string JENKINS_RESULTS_DIRECTORY { get; }
 		string DOTNET_DIR { get; set; }
 		string DOTNET_TFM { get; }
-		string IOS_SIMULATOR_DEVICE_TYPE { get; set; }
-		string TVOS_SIMULATOR_DEVICE_TYPE { get; set; }
 		Version DotNetVersion { get; }
 		string XcodeRoot { get; }
 		string LogDirectory { get; }

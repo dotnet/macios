@@ -87,9 +87,9 @@
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="9.0.0-beta.25473.2">
+    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="9.0.0-beta.25475.3">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>41e5a0dc1e0007e784118c07b26700220cdc0e63</Sha>
+      <Sha>6404baed798af89accd98219614e6c90c153cd8c</Sha>
     </Dependency>
     <Dependency Name="Microsoft.TemplateEngine.Tasks" Version="7.0.100-alpha.1.21601.1">
       <Uri>https://github.com/dotnet/templating</Uri>
@@ -99,9 +99,9 @@
       <Uri>https://github.com/dotnet/xharness</Uri>
       <Sha>cbaa911ef1bce4cf92a7e4f7ffa5171eddd1a8fd</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.25473.2">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="9.0.0-beta.25475.3">
       <Uri>https://github.com/dotnet/arcade</Uri>
-      <Sha>41e5a0dc1e0007e784118c07b26700220cdc0e63</Sha>
+      <Sha>6404baed798af89accd98219614e6c90c153cd8c</Sha>
       <SourceBuild RepoName="arcade" ManagedOnly="true" />
     </Dependency>
   </ToolsetDependencies>

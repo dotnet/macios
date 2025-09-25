@@ -17208,6 +17208,7 @@ M:UIKit.UILargeContentViewerInteractionDelegate_Extensions.GetItem(UIKit.IUILarg
 M:UIKit.UILargeContentViewerInteractionDelegate_Extensions.GetViewController(UIKit.IUILargeContentViewerInteractionDelegate,UIKit.UILargeContentViewerInteraction)
 M:UIKit.UILayoutGuide.Dispose(System.Boolean)
 M:UIKit.UIListContentView.UIListContentViewAppearance.#ctor(System.IntPtr)
+M:UIKit.UIMenu.Create(System.String,UIKit.UIImage,UIKit.UIMenuIdentifier,UIKit.UIMenuOptions,UIKit.UIMenuElement[])
 M:UIKit.UIMenuLeaf_Extensions.GetSelectedImage(UIKit.IUIMenuLeaf)
 M:UIKit.UIMenuLeaf_Extensions.SetSelectedImage(UIKit.IUIMenuLeaf,UIKit.UIImage)
 M:UIKit.UINavigationBar.Dispose(System.Boolean)
@@ -24124,6 +24125,7 @@ P:UIKit.UILargeContentViewerInteraction.Delegate
 P:UIKit.UILargeContentViewerInteraction.Enabled
 P:UIKit.UIListContentView.ListContentConfiguration
 P:UIKit.UIListSeparatorConfiguration.AutomaticInsets
+P:UIKit.UIMenu.Identifier
 P:UIKit.UIMenu.SelectedElements
 P:UIKit.UIMenuController.MenuVisible
 P:UIKit.UINavigationBar.UINavigationBarAppearance.CompactAppearance

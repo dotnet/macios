@@ -12,9 +12,9 @@ done
 
 # delete all simulators not used in the last 90 days
 echo "Checking if there are any old runtimes to delete:"
-xcrun simctl runtime delete --notUsedSinceDays 90 --dry-run | sed 's/^/    /'
+xcrun simctl runtime delete --notUsedSinceDays 90 --dry-run | sed 's/^/    /' || true
 echo "Deleting..."
-xcrun simctl runtime delete --notUsedSinceDays 90| sed 's/^/    /'
+xcrun simctl runtime delete --notUsedSinceDays 90 | sed 's/^/    /' || true
 echo "Delete completed."
 
 xcrun simctl runtime list -j > simruntime.json

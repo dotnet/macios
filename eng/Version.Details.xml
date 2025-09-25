@@ -12,6 +12,10 @@
       <Uri>https://github.com/dotnet/dotnet</Uri>
       <Sha>dcfd7e5d2118697d89716c1d5c2127da44e7fe3b</Sha>
     </Dependency>
+    <Dependency Name="Microsoft.NET.Runtime.MonoTargets.Sdk" Version="10.0.0-rc.2.25475.108">
+      <Uri>https://github.com/dotnet/dotnet</Uri>
+      <Sha>dcfd7e5d2118697d89716c1d5c2127da44e7fe3b</Sha>
+    </Dependency>
     <!-- Set TRACKING_DOTNET_RUNTIME_SEPARATELY to something in Make.config if changing the version outside of dependency flow -->
     <Dependency Name="Microsoft.NETCore.App.Ref" Version="10.0.0-rc.2.25475.108">
       <Uri>https://github.com/dotnet/dotnet</Uri>

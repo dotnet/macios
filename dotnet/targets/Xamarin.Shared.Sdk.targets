@@ -928,7 +928,17 @@
 			<_DirectoriesToPublish Include="@(_DirectoriesToPublishWithStampHash)">
 				<StampLocation>$(DeviceSpecificIntermediateOutputPath)copieddirectories\%(_DirectoriesToPublishWithStampHash.StampHash)</StampLocation>
 			</_DirectoriesToPublish>
+
+			<_StampFilesToDelete Include="@(_DirectoriesToPublish -> '%(StampLocation)')" Condition="!Exists('%(_DirectoriesToPublish.TargetDirectory)')">
+				<SourceDirectory>%(_DirectoriesToPublish.SourceDirectory)</SourceDirectory>
+				<TargetDirectory>%(_DirectoriesToPublish.TargetDirectory)</TargetDirectory>
+			</_StampFilesToDelete>
 		</ItemGroup>
+
+		<Delete
+			SessionId="$(BuildSessionId)"
+			Files="@(_StampFilesToDelete)"
+		/>
 	</Target>
 
 	<Target Name="_CopyDirectoriesToBundle"

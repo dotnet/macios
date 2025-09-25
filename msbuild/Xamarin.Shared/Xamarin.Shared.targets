@@ -2600,6 +2600,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			DisallowResourcesSubdirectoryInAppBundle="$(CodesignDisallowResourcesSubdirectoryInAppBundle)"
 			MaxDegreeOfParallelism="$(CodesignMaxDegreeOfParallelism)"
 			Resources="@(_ComputedCodesignItems)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			ToolExe="$(CodesignExe)"
 			ToolPath="$(CodesignPath)"
 			>

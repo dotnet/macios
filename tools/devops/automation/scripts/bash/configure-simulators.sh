@@ -9,6 +9,9 @@
 
 set -o pipefail
 
+env -0 | sort -z | tr '\0' '\n'
+xcode-select -p
+
 if test -z "$BUILD_SOURCESDIRECTORY"; then
 	pushd .
 	cd "$(dirname "${BASH_SOURCE[0]}")/../../../../../.."
@@ -67,7 +70,7 @@ function createDevice ()
 		DEVICE_UDID=$(xcrun simctl create "$NAME" "$DEVICE_TYPE" "$RUNTIME")
 		echo "Created $PLATFORM device with UDID=$DEVICE_UDID"
 
-		xcrun simctl list devices > "$FILE" 2>&1
+		xcrun simctl list devices -v > "$FILE" 2>&1
 		xcrun simctl list devices --json > "$JSON" 2>&1
 		cat "$FILE"
 		cat "$JSON"
@@ -79,7 +82,7 @@ function createDevice ()
 		killCoreSimulator
 		sleep "$(( ATTEMPTS * 10 ))"
 
-		xcrun simctl list devices > "$FILE" 2>&1
+		xcrun simctl list devices -v > "$FILE" 2>&1
 		xcrun simctl list devices --json > "$JSON" 2>&1
 		cat "$FILE"
 		cat "$JSON"
@@ -96,10 +99,11 @@ function createDevice ()
 	done
 }
 
-createDevice tvOS "Apple TV (tvOS $TVOS_OS_VERSION) - created by CI" "$TVOS_SIMULATOR_DEVICE_TYPE" "com.apple.CoreSimulator.SimRuntime.tvOS-$TVOS_SIMRUNTIME_VERSION"
+createDevice iOS "iPhone 14 (iOS $IOS_OS_VERSION) - created by CI"  "$IOS_SIMULATOR_DEVICE_TYPE"  "com.apple.CoreSimulator.SimRuntime.iOS-$IOS_SIMRUNTIME_VERSION"
 
 sleep 3 # the eternal 🤞 solution
 
-createDevice iOS "iPhone 14 (iOS $IOS_OS_VERSION) - created by CI"  "$IOS_SIMULATOR_DEVICE_TYPE"  "com.apple.CoreSimulator.SimRuntime.iOS-$IOS_SIMRUNTIME_VERSION"
+createDevice tvOS "Apple TV (tvOS $TVOS_OS_VERSION) - created by CI" "$TVOS_SIMULATOR_DEVICE_TYPE" "com.apple.CoreSimulator.SimRuntime.tvOS-$TVOS_SIMRUNTIME_VERSION"
 
+xcrun simctl list -v
 xcrun simctl list --json

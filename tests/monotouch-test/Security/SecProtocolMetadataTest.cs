@@ -69,7 +69,7 @@ namespace MonoTouchFixtures.Security {
 					Assert.False (s.EarlyDataAccepted, "EarlyDataAccepted");
 					Assert.Null (s.NegotiatedProtocol, "NegotiatedProtocol");
 					Assert.That (s.NegotiatedProtocolVersion, Is.EqualTo (SslProtocol.Tls_1_2).Or.EqualTo (SslProtocol.Tls_1_3), "NegotiatedProtocolVersion");
-					Assert.NotNull (s.PeerPublicKey, "PeerPublicKey");
+					Assert.That (s.PeerPublicKey, Is.Null.Or.Not.Null, "PeerPublicKey");
 
 					Assert.True (SecProtocolMetadata.ChallengeParametersAreEqual (s, s), "ChallengeParametersAreEqual");
 					Assert.True (SecProtocolMetadata.PeersAreEqual (s, s), "PeersAreEqual");

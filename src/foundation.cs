@@ -9638,9 +9638,28 @@ namespace Foundation {
 		[Export ("error")]
 		NSError Error { get; }
 
+#if XAMCORE_5_0
+		[Export ("sender")]
+		INSUrlAuthenticationChallengeSender Sender { get; }
+
+#if !XAMCORE_6_0
+		[Obsolete ("Use 'Sender' instead.")]
+		[Export ("sender")]
+		[Sealed]
+		INSUrlAuthenticationChallengeSender SenderObject { get; }
+#endif
+#else
+		[Obsolete ("Use 'SenderObject' instead, this property has the wrong type.")]
 		[Export ("sender")]
 		NSUrlConnection Sender { get; }
+
+		[Export ("sender")]
+		[Sealed]
+		INSUrlAuthenticationChallengeSender SenderObject { get; }
+#endif
 	}
+
+	interface INSUrlAuthenticationChallengeSender { }
 
 	[Protocol (Name = "NSURLAuthenticationChallengeSender")]
 	interface NSUrlAuthenticationChallengeSender {

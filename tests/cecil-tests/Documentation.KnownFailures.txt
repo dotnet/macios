@@ -21050,6 +21050,7 @@ P:Foundation.NSUbiquitousKeyValueStore.Item(System.String)
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangedKeys
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangeReason
 P:Foundation.NSUndoManagerCloseUndoGroupEventArgs.Discardable
+P:Foundation.NSUrlAuthenticationChallenge.SenderObject
 P:Foundation.NSUrlSessionConfiguration.ProxyConfigurations
 P:Foundation.NSUrlSessionConfiguration.SessionType
 P:Foundation.NSUrlSessionConfiguration.StrongConnectionProxyDictionary

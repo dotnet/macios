@@ -348,8 +348,10 @@ namespace Xamarin.MacDev {
 			foreach (var resource in resourcePaths) {
 				log.LogMessage (MessageImportance.Low, $"Processing {resource}");
 				if (Directory.Exists (resource)) {
-					var resourceZipName = resource.Substring (rootDirLength);
-					archive.CreateEntry (CanonicalizeZipEntryPath (resourceZipName) + zipDirectorySeparator);
+					if (rootDirLength < resource.Length) {
+						var resourceZipName = resource.Substring (rootDirLength);
+						archive.CreateEntry (CanonicalizeZipEntryPath (resourceZipName) + zipDirectorySeparator);
+					}
 					var entries = Directory.GetFileSystemEntries (resource, "*", SearchOption.AllDirectories);
 					var entriesWithZipName = entries.Select (v => new { Path = v, ZipName = v.Substring (rootDirLength) });
 					foreach (var entry in entriesWithZipName) {

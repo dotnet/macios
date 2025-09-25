@@ -50,6 +50,22 @@ do
   done
 done < simruntime-duplicated-runtimes.txt || true
 
+# delete unusable runtimes
+for runtime in $(xcrun simctl runtime list | grep Unusable | sed -e 's/Unusable.*//' -e 's/^.*\([A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]-[A-Z0-9]*-[A-Z0-9]*-[A-Z0-9]*-[A-Z0-9]*\).*$/\1/'); do
+  echo "Deleting the runtime $runtime, it's unusable"
+  xcrun simctl runtime delete "$runtime"
+done
+# wait for them to actually be deleted
+C=0
+while xcrun simctl runtime list | grep Deleting; do
+  sleep 1
+  # stop looping after 60 seconds
+  (( C++ ))
+  if [[ $C -gt 60 ]]; then
+    break
+  fi
+done
+
 xcrun simctl runtime list -v || true
 xcrun simctl runtime match list -v || true
 

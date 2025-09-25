@@ -9,4 +9,6 @@ global using CoreFoundation;
 global using Foundation;
 global using ObjCRuntime;
 
+#if !EXCLUDE_NUNITLITE_REFERENCE
 global using NUnit.Framework;
+#endif

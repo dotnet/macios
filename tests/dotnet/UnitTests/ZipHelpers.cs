@@ -7,13 +7,11 @@ using System.IO.Compression;
 
 namespace Xamarin.Tests {
 	public static class ZipHelpers {
-		public static List<string> List (string file, char? pathSeparator = null)
+		public static List<string> List (string file)
 		{
 			using var zip = ZipFile.OpenRead (file);
 			DumpZipFile (zip, file);
-			if (pathSeparator is null)
-				pathSeparator = Path.DirectorySeparatorChar;
-			return zip.Entries.Select (entry => entry.FullName.TrimEnd ('/').Replace ('/', pathSeparator.Value)).ToList ();
+			return zip.Entries.Select (entry => entry.FullName.TrimEnd ('/').Replace ('/', Path.DirectorySeparatorChar)).ToList ();
 		}
 
 		public static List<string> ListInnerZip (string file, string innerZipFileName)

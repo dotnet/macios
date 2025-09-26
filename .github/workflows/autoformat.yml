@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: 'Install .NET'
+      uses: actions/setup-dotnet@v5
+      with:
+        global-json-file: ./global.json
     - name: 'Autoformat'
       uses: rolfbjarne/autoformat@v0.5
       with:

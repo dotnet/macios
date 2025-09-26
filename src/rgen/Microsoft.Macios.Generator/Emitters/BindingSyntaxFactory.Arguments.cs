@@ -12,7 +12,6 @@ using static Microsoft.Macios.Generator.Nomenclator;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
-
 static partial class BindingSyntaxFactory {
 
 	/// <summary>

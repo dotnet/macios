@@ -271,6 +271,28 @@ namespace CoreGraphics {
 		public static int ShieldingWindowLevel {
 			get { return CGShieldingWindowLevel (); }
 		}
+
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		extern static IntPtr CGDisplayCopyDisplayMode (uint display);
+
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		extern static void CGDisplayModeRelease (IntPtr mode);
+
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		extern static double CGDisplayModeGetRefreshRate (IntPtr mode);
+
+		/// <summary>Get the refresh rate for the specified display.</summary>
+		/// <param name="display">The identifier for the display.</param>
+		/// <returns>The display rate, in hertz, of the specified display, or <see langword="null" /> in case of failure.</returns>
+		public static double? GetRefreshRate (int display)
+		{
+			var mode = CGDisplayCopyDisplayMode ((uint) display);
+			if (mode == IntPtr.Zero)
+				return null;
+			var refreshRate = CGDisplayModeGetRefreshRate (mode);
+			CGDisplayModeRelease (mode);
+			return refreshRate;
+		}
 #endif
 	}
 }

@@ -1741,13 +1741,6 @@ namespace Xamarin.Tests {
 				var missing = mustHaveContents.ToHashSet ().Except (zipContents);
 				var extra = zipContents.Except (mustHaveContents).Except (mayHaveContents);
 
-				Console.WriteLine ($"Missing {missing.Count ()} files:");
-				foreach (var m in missing)
-					Console.WriteLine ($"    {m}");
-				Console.WriteLine ($"{extra.Count ()} extra files:");
-				foreach (var m in extra)
-					Console.WriteLine ($"    {m}");
-
 				Assert.That (missing, Is.Empty, "No missing files");
 				Assert.That (extra, Is.Empty, "No extra files");
 			}

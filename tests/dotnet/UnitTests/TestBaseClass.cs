@@ -628,7 +628,8 @@ namespace Xamarin.Tests {
 			} else if (string.Equals (mode, "false", StringComparison.OrdinalIgnoreCase)) {
 				return false;
 			} else if (string.Equals (mode, "auto", StringComparison.OrdinalIgnoreCase)) {
-				// return platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
+				// we used to compress only if there were symlinks (would happen on macOS and Mac Catalyst),
+				// but now we always compress to avoid MAX_PATH issues with iOS on Windows.
 				return true;
 			} else {
 				throw new ArgumentOutOfRangeException (nameof (mode), "Must be 'true', 'false' or 'auto'");

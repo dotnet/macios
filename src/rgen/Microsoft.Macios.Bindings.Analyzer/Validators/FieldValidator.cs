@@ -9,6 +9,7 @@ using static Microsoft.Macios.Generator.RgenDiagnostics;
 using static Microsoft.Macios.Bindings.Analyzer.Validators.PropertyStrategies;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Validators;
+
 using PropertyFlag = ObjCBindings.Property;
 
 /// <summary>

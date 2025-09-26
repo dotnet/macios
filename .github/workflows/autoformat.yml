@@ -22,8 +22,9 @@ jobs:
       with:
         global-json-file: ./global.json
     - name: 'Autoformat'
-      uses: rolfbjarne/autoformat@v0.5
+      uses: rolfbjarne/autoformat@v0.6
       with:
         script: ./tools/autoformat.sh
         git_user_email: 'github-actions-autoformatter@xamarin.com'
         git_user_name: 'GitHub Actions Autoformatter'
+        checkoutSource: false

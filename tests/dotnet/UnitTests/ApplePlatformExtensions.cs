@@ -72,8 +72,8 @@ namespace Xamarin.Utils {
 		{
 			var vLibrary = Version.Parse (platform.GetDefaultTargetPlatformVersionLibrary ());
 			var vExecutable = Version.Parse (platform.GetDefaultTargetPlatformVersionExecutable ());
-			// We might have to change the assert if we release support for a new major OS version within a .NET releases (this happened for .NET 8)
-			Assert.AreEqual (vExecutable.Major, vLibrary.Major, "The major version must be the same between the default TPV for library and executable projects.");
+			Assert.That (vLibrary.Major, Is.EqualTo (26), "vLibrary");
+			Assert.That (vExecutable.Major, Is.EqualTo (26), "vExecutable");
 		}
 	}
 }

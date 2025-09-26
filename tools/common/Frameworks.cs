@@ -454,7 +454,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "DataDetection", "DataDetection", 15, 0 },
 				{ "Phase", "PHASE", new Version (15,0), NotAvailableInSimulator /* no headers in beta 2 */ },
 				{ "OSLog", "OSLog", 15,0 },
-				{ "ShazamKit", "ShazamKit", new Version (15,0), NotAvailableInSimulator},
+				{ "ShazamKit", "ShazamKit", new Version (15,0), new Version (16, 0)},
 				{ "ThreadNetwork", "ThreadNetwork", new Version (15,0), NotAvailableInSimulator},
 
 
@@ -581,7 +581,7 @@ public class Frameworks : Dictionary<string, Framework> {
 					{ "DeviceDiscoveryUI", "DeviceDiscoveryUI", 16,0 },
 					{ "OSLog", "OSLog", 15,0 },
 					{ "CoreMidi", "CoreMIDI", 15,0 },
-					{ "ShazamKit", "ShazamKit", new Version (15, 0), NotAvailableInSimulator},
+					{ "ShazamKit", "ShazamKit", new Version (15, 0), new Version (16, 0) },
 					{ "SharedWithYou", "SharedWithYou", 16,0 },
 					{ "SharedWithYouCore", "SharedWithYouCore", 16,0 },
 

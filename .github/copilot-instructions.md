@@ -274,6 +274,7 @@ void DoSomething (Action<bool, NSError> completion);
 
 - `main` - .NET 9 development
 - `net10.0` - .NET 10 development  
+- `net11.0` - .NET 11 development
 - `release/` branches for specific releases
 - Platform-specific branches for Xcode updates
 

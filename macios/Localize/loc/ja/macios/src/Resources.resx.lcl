@@ -924,10 +924,13 @@
       </Item>
       <Item ItemId=";BI1088" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint".]]></Val>
+          <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", and blittable value types.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[バッキング フィールドの型 '{0}' が無効です。有効なバッキング フィールドの型は、"NSString"、"NSNumber"、"nint"、"nuint" です。]]></Val>
+            <Val><![CDATA[バッキング フィールドの型 '{0}' が無効です。有効なバッキング フィールドの型は、"NSString"、"NSNumber"、blittable 値の型です。]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint".]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -1098,6 +1101,24 @@
           <Val><![CDATA[The type '{0}' is trying to inline the methods binding the selector '{1}' from the protocols '{2}' and '{3}', using methods with different signatures ('{4}' vs '{5}'). These methods will be ignored.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[型 '{0}' で、セレクター '{1}' をバインドしているメソッドをプロトコル '{2}' および '{3}' からインライン展開しようとしていますが、シグネチャの異なるメソッドが使用されています ('{4}' と '{5}')。これらのメソッドは無視されます。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1121" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The strong enum '{0}' is not a valid strong dictionary field for the property '{1}.{2}', because its backing type is '{3}'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[厳密な列挙型 '{0}' は、プロパティ '{1}.{2}' の有効で強力な辞書フィールドではありません。そのバッキング型が '{3}' であるからです。強力な辞書でサポートされているのは、バッキング型が 'NSString'、'NSNumber'、または 'System.Int32' の列挙型のみです。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1122" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to find the corresponding NSNumber property for the type {0} in {1}.{2}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{1}.{2} の型 {0} に対応する NSNumber プロパティが見つかりません]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

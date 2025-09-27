@@ -25,6 +25,8 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public ITaskItem [] Assemblies { get; set; } = Array.Empty<ITaskItem> ();
 
+		public ITaskItem [] AotEnvironment { get; set; } = Array.Empty<ITaskItem> ();
+
 		[Required]
 		public string InputDirectory { get; set; } = string.Empty;
 
@@ -334,8 +336,12 @@ namespace Xamarin.MacDev.Tasks {
 				listOfArguments.Add (new (arguments, input));
 			}
 
+			var environment = new Dictionary<string, string?> ();
+			foreach (var item in AotEnvironment)
+				environment [item.ItemSpec] = item.GetMetadata ("Value");
+
 			ForEach (listOfArguments, (arg) => {
-				ExecuteAsync (AOTCompilerPath, arg.Arguments, sdkDevPath: SdkDevPath, showErrorIfFailure: false /* we show our own error below */)
+				ExecuteAsync (AOTCompilerPath, arg.Arguments, environment: environment, sdkDevPath: SdkDevPath, showErrorIfFailure: false /* we show our own error below */)
 					.ContinueWith ((v) => {
 						if (v.Result.ExitCode != 0)
 							Log.LogError (MSBStrings.E7118 /* Failed to AOT compile {0}, the AOT compiler exited with code {1} */, Path.GetFileName (arg.Input), v.Result.ExitCode);

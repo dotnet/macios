@@ -388,7 +388,7 @@ namespace Cecil.Tests {
 			return key;
 		}
 
-		static string GetMemberLookupKeyInternal (IMemberDefinition member)
+		public static string GetMemberLookupKeyInternal (IMemberDefinition member)
 		{
 			if (member is FieldDefinition fd)
 				return $"{GetMemberLookupKeyInternal (fd.DeclaringType)}.{fd.Name}";

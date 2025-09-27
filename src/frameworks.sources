@@ -1972,6 +1972,7 @@ COMMON_FRAMEWORKS =         \
 	DeviceCheck             \
 	Foundation              \
 	GameKit                 \
+	MetalFX                 \
 	NaturalLanguage         \
 	Network                 \
 	OSLog                   \
@@ -2049,7 +2050,6 @@ MACOS_FRAMEWORKS =          \
 	MediaPlayer             \
 	MediaToolbox            \
 	Metal                   \
-	MetalFX                 \
 	MetalKit                \
 	MetalPerformanceShaders \
 	MetalPerformanceShadersGraph \
@@ -2171,7 +2171,6 @@ IOS_FRAMEWORKS =         \
 	Messages \
 	MessageUI \
 	Metal \
-	MetalFX \
 	MetalKit \
 	MetalPerformanceShaders \
 	MetalPerformanceShadersGraph \

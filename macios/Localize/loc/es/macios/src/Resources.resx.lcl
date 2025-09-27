@@ -924,10 +924,13 @@
       </Item>
       <Item ItemId=";BI1088" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint".]]></Val>
+          <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", and blittable value types.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[El tipo de campo de respaldo "{0}" no es válido. Los tipos de campo de respaldo válidos son: "NSString", "NSNumber", "nint" y "nuint".]]></Val>
+            <Val><![CDATA[El tipo de campo de respaldo "{0}" no es válido. Los tipos de campo de respaldo válidos son: "NSString", "NSNumber" y tipos de valor blittable.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint".]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -1098,6 +1101,24 @@
           <Val><![CDATA[The type '{0}' is trying to inline the methods binding the selector '{1}' from the protocols '{2}' and '{3}', using methods with different signatures ('{4}' vs '{5}'). These methods will be ignored.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[El tipo "{0}" intenta insertar los métodos que enlazan el selector "{1}" desde los protocolos "{2}" y "{3}", mediante métodos con distintas firmas ("{4}" frente a "{5}"). Estos métodos se omitirán.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1121" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The strong enum '{0}' is not a valid strong dictionary field for the property '{1}.{2}', because its backing type is '{3}'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[La enumeración fuerte "{0}" no es un campo válido para el diccionario fuerte de la propiedad "{1}.{2}", porque su tipo subyacente es "{3}". Solo se admiten enumeradores con tipo subyacente "NSString", "NSNumber" o "System.Int32" en diccionarios fuertes.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1122" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to find the corresponding NSNumber property for the type {0} in {1}.{2}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se puede encontrar la propiedad NSNumber correspondiente para el tipo {0} en {1}.{2}]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

@@ -924,10 +924,13 @@
       </Item>
       <Item ItemId=";BI1088" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint".]]></Val>
+          <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", and blittable value types.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Typ pomocného pole {0} je neplatný. Platné typy pomocných polí jsou: NSString, NSNumber, nint a nuint.]]></Val>
+            <Val><![CDATA[Typ pomocného pole {0} je neplatný. Platné typy záložních polí jsou: NSString, NSNumber a přenositelné typy hodnot.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint".]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -1098,6 +1101,24 @@
           <Val><![CDATA[The type '{0}' is trying to inline the methods binding the selector '{1}' from the protocols '{2}' and '{3}', using methods with different signatures ('{4}' vs '{5}'). These methods will be ignored.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Typ {0} se pokouší vložit metody pro vazbu selektoru {1} z protokolů {2} a {3}, ale používá metody s různými signaturami ({4} a {5}). Tyto metody budou ignorovány.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1121" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The strong enum '{0}' is not a valid strong dictionary field for the property '{1}.{2}', because its backing type is '{3}'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Silný výčet {0} není platným polem silného slovníku pro vlastnost {1}.{2}, protože jeho pomocný typ je {3}. V silných slovnících jsou podporovány pouze výčty s pomocným typem NSString, NSNumber nebo System.Int32.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1122" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to find the corresponding NSNumber property for the type {0} in {1}.{2}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nelze najít odpovídající vlastnost NSNumber pro typ {0} v: {1}.{2}]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

@@ -924,10 +924,13 @@
       </Item>
       <Item ItemId=";BI1088" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint".]]></Val>
+          <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", and blittable value types.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Typ pola zapasowego „{0}” jest nieprawidłowy. Prawidłowe typy pól zapasowych to: „NSString”, „NSNumber”, „nint” i „nuint”.]]></Val>
+            <Val><![CDATA[Typ pola zapasowego „{0}” jest nieprawidłowy. Prawidłowe typy pól zapasowych to: „NSString”, „NSNumber” i blittable.]]></Val>
           </Tgt>
+          <Prev Cat="Text">
+            <Val><![CDATA[The backing field type '{0}' is invalid. Valid backing field types are: "NSString", "NSNumber", "nint" and "nuint".]]></Val>
+          </Prev>
         </Str>
         <Disp Icon="Str" />
       </Item>
@@ -1098,6 +1101,24 @@
           <Val><![CDATA[The type '{0}' is trying to inline the methods binding the selector '{1}' from the protocols '{2}' and '{3}', using methods with different signatures ('{4}' vs '{5}'). These methods will be ignored.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Typ „{0}” próbuje wbudować metody wiążące selektor „{1}” z protokołów „{2}” i „{3}” przy użyciu metod o różnych sygnaturach („{4}” i „{5}”). Te metody zostaną zignorowane.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1121" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The strong enum '{0}' is not a valid strong dictionary field for the property '{1}.{2}', because its backing type is '{3}'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Silne wyliczenie „{0}” nie jest prawidłowym polem silnego słownika dla właściwości „{1}.{2}”, ponieważ jego typ zapasowy to „{3}”. W silnych słownikach obsługiwane są tylko wyliczenia z typem zapasowym „NSString”, „NSNumber” lub „System.Int32”.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";BI1122" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to find the corresponding NSNumber property for the type {0} in {1}.{2}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nie można znaleźć odpowiadającej właściwości NSNumber dla typu {0} w {1}.{2}]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

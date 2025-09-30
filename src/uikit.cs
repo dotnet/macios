@@ -34424,10 +34424,28 @@ namespace UIKit {
 		[Export ("tintedGlassButtonConfiguration")]
 		UIButtonConfiguration TintedGlassButtonConfiguration { get; }
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'UISymbolContentTransition' instead.")]
+#endif
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Export ("symbolContentTransition", ArgumentSemantic.Strong)]
 		[NullAllowed]
+#if XAMCORE_5_0
+		UISymbolContentTransition SymbolContentTransition { get; set; }
+#else
 		NSSymbolContentTransition SymbolContentTransition { get; set; }
+#endif
+
+#if !XAMCORE_6_0
+		[Sealed]
+#if XAMCORE_5_0
+		[Obsolete ("Use 'SymbolContentTransition' instead.")]
+#endif
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("symbolContentTransition", ArgumentSemantic.Strong)]
+		[NullAllowed]
+		UISymbolContentTransition UISymbolContentTransition { get; set; }
+#endif
 
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Static]

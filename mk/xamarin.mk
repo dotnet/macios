@@ -1,7 +1,7 @@
 ifdef ENABLE_XAMARIN
 ifdef ENABLE_ADR
-NEEDED_ADR_VERSION := 4eaa26dc8a9df5638ed133529224dd697a2f7755
-NEEDED_ADR_BRANCH := xcode26
+NEEDED_ADR_VERSION := 4fb3e4b66cbda0977519a87695994b09fb12a133
+NEEDED_ADR_BRANCH := main
 
 ADR_DIRECTORY := macios-adr
 ADR_MODULE    := https://devdiv@dev.azure.com/devdiv/DevDiv/_git/macios-adr

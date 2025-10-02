@@ -1021,7 +1021,7 @@ This property is a read-only property (setting it will have no effect) that
 specifies whether we're building for a simulator or not.
 
 It is only set after [imports and
-properties](https://learn.microsoft.com/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
+properties](/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
 have been evaluated. This means the property is not set while evaluating the
 properties in the project file, so this will _not_ work:
 

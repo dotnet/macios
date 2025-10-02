@@ -13,8 +13,10 @@ namespace Xamarin.Tests {
 			var rv = new List<object []> ();
 			foreach (var platform in platforms) {
 				foreach (var xcode in xcodes) {
-					if (xcode.Version == Configuration.XcodeVersion)
-						continue; // don't care about current Xcode version, that's tested everywhere else.
+					var a = xcode.Version;
+					var b = Configuration.XcodeVersion;
+					if (a.Major == b.Major && a.Minor == b.Minor)
+						continue; // don't care about current Xcode version (compared using Major.Minor only), that's tested everywhere else.
 					rv.Add (new object [] { platform, xcode.Path, xcode.Version });
 				}
 			}

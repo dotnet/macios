@@ -5174,9 +5174,14 @@ namespace WebKit {
 			""")]
 		void DeleteCookie (NSHttpCookie cookie, [NullAllowed] Action completionHandler);
 
+		/// <summary>Add an observer to the cookie store.</summary>
+		/// <param name="observer">The observer to add.</param>
+		/// <remarks>The cookie store only keeps a weak reference to the <paramref name="observer" />, a separate (strong) reference must be kept for the observer to not be collected by the garbage collector. Call <see cref="RemoveObserver" /> to remove the observer to stop observing.</remarks>
 		[Export ("addObserver:")]
 		void AddObserver (IWKHttpCookieStoreObserver observer);
 
+		/// <summary>Remove an observer to the cookie store.</summary>
+		/// <param name="observer">The observer to remove.</param>
 		[Export ("removeObserver:")]
 		void RemoveObserver (IWKHttpCookieStoreObserver observer);
 

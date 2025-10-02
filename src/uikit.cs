@@ -11364,9 +11364,11 @@ namespace UIKit {
 	[DisableDefaultCtor]
 	interface UIMenu {
 
-		[BindAs (typeof (UIMenuIdentifier))]
+		[Wrap ("UIMenuIdentifierExtensions.GetValue (WeakIdentifier)", IsVirtual = true)]
+		UIMenuIdentifier Identifier { get; }
+
 		[Export ("identifier")]
-		NSString Identifier { get; }
+		NSString WeakIdentifier { get; }
 
 		[Export ("options")]
 		UIMenuOptions Options { get; }
@@ -11399,8 +11401,12 @@ namespace UIKit {
 		UIMenu Create (string title, UIMenuElement [] children);
 
 		[Static]
+		[Wrap ("Create (title, image, identifier.GetConstant (), options, children)")]
+		UIMenu Create (string title, [NullAllowed] UIImage image, UIMenuIdentifier identifier, UIMenuOptions options, UIMenuElement [] children);
+
+		[Static]
 		[Export ("menuWithTitle:image:identifier:options:children:")]
-		UIMenu Create (string title, [NullAllowed] UIImage image, [NullAllowed][BindAs (typeof (UIMenuIdentifier))] NSString identifier, UIMenuOptions options, UIMenuElement [] children);
+		UIMenu Create (string title, [NullAllowed] UIImage image, [NullAllowed] NSString identifier, UIMenuOptions options, UIMenuElement [] children);
 
 		[Export ("menuByReplacingChildren:")]
 		UIMenu GetMenuByReplacingChildren (UIMenuElement [] newChildren);

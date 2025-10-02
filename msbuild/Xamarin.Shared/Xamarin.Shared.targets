@@ -429,6 +429,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<CollectBundleResourcesDependsOn Condition="'$(IsBindingProject)' != 'true'">
 			$(CollectBundleResourcesDependsOn);
 			_UnpackLibraryResources;
+			_LoadUnpackedPartialAppManifests;
 			_CompileImageAssets;
 			_CompileInterfaceDefinitions;
 			_CompileSceneKitAssets;
@@ -1274,6 +1275,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 			<!-- Collada output caches -->
 			<_ColladaCache>$(DeviceSpecificIntermediateOutputPath)collada\_BundleResourceWithLogicalName.items</_ColladaCache>
+
+			<!-- Partial app manifest output cache -->
+			<_UnpackedPartialAppManifestCache>$(DeviceSpecificIntermediateOutputPath)partialappmanifest\_PartialAppManifests.items</_UnpackedPartialAppManifestCache>
 
 			<!-- processed items -->
 			<_ProcessedBundleResourcesPath Condition="'$(_ProcessedBundleResourcesPath)' == ''">$(DeviceSpecificIntermediateOutputPath)\_ProcessedBundleResourcesPath.items</_ProcessedBundleResourcesPath>
@@ -2176,7 +2180,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="InterfaceDefinitions" ItemName="InterfaceDefinition" />
 			<Output TaskParameter="ColladaAssets" ItemName="Collada" />
 			<Output TaskParameter="CoreMLModels" ItemName="CoreMLModel" />
-			<Output TaskParameter="PartialAppManifests" ItemName="PartialAppManifest" />
+			<Output TaskParameter="PartialAppManifests" ItemName="_UnpackedPartialAppManifest" />
 			<Output TaskParameter="SceneKitAssets" ItemName="SceneKitAsset" />
 		</UnpackLibraryResources>
 
@@ -2188,9 +2192,23 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="TouchedFiles" ItemName="FileWrites" />
 		</Touch>
 
+		<!-- Cached the partial app manifests items for incremental build support -->
+		<WriteItemsToFile Items="@(_UnpackedPartialAppManifest)" ItemName="_UnpackedPartialAppManifest" File="$(_UnpackedPartialAppManifestCache)" Overwrite="true" IncludeMetadata="true" />
+
 		<ItemGroup>
+			<FileWrites Include="$(_UnpackedPartialAppManifestCache)" />
 			<FileWrites Include="@(_UnpackedBundleResourceWithLogicalName)" />
 		</ItemGroup>
+	</Target>
+
+	<!-- Load the unpacked partial app manifests - this will run even if '_UnpackLibraryResources' didn't (due to incremental builds),
+	     because we need to always add the partial app manifests to the PartialAppManifest item group, even in incremental builds -->
+	<Target Name="_LoadUnpackedPartialAppManifests"
+		DependsOnTargets="_UnpackLibraryResources"
+		Condition="Exists('$(_UnpackedPartialAppManifestCache)')">
+		<ReadItemsFromFile File="$(_UnpackedPartialAppManifestCache)">
+			<Output TaskParameter="Items" ItemName="PartialAppManifest" />
+		</ReadItemsFromFile>
 	</Target>
 
 	<Target Name="_ParseBundlerArguments">

@@ -1,4 +1,4 @@
-#define TRACE
+// #define TRACE_ZIP
 
 using System.IO;
 using System.IO.Compression;
@@ -58,7 +58,7 @@ namespace Xamarin.Tests {
 
 		public static void DumpZipFile (ZipArchive zip, string path)
 		{
-#if TRACE
+#if TRACE_ZIP
 			var entries = zip.Entries;
 			Console.WriteLine ($"Viewing zip archive {path} with {entries.Count} entries:");
 			foreach (var entry in entries) {

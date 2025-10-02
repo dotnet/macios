@@ -2104,6 +2104,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet8_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
+			var tfm = "net8.0";
 			var project = "Net8_0SimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -2112,18 +2113,13 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
-			var result = DotNet.AssertBuild (project_path, properties);
-			AssertThatLinkerExecuted (result);
-			var infoPlistPath = GetInfoPListPath (platform, appPath);
-			Assert.That (infoPlistPath, Does.Exist, "Info.plist");
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
-			Assert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
-			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
-			Assert.AreEqual ("8.0", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
-			Assert.AreEqual ("8.0", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
-
-			var appExecutable = GetNativeExecutable (platform, appPath);
-			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
+			var result = DotNet.AssertBuildFailure (project_path, properties);
+			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToList ();
+			// Due to an implementation detail in .NET, the same error message is shown twice.
+			var targetFramework = $"{tfm}-{platform.AsString ().ToLowerInvariant ()}";
+			AssertErrorMessages (errors,
+				$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.",
+				$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.");
 		}
 
 		[Test]
@@ -3168,6 +3164,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/MediaPlayer.framework/MediaPlayer",
 			"/System/Library/Frameworks/MediaToolbox.framework/MediaToolbox",
 			"/System/Library/Frameworks/Metal.framework/Metal",
+			"/System/Library/Frameworks/MetalFX.framework/MetalFX",
 			"/System/Library/Frameworks/MetalKit.framework/MetalKit",
 			"/System/Library/Frameworks/MetalPerformanceShaders.framework/MetalPerformanceShaders",
 			"/System/Library/Frameworks/MetalPerformanceShadersGraph.framework/MetalPerformanceShadersGraph",
@@ -3549,6 +3546,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/MediaAccessibility.framework/Versions/A/MediaAccessibility",
 			"/System/Library/Frameworks/MediaToolbox.framework/Versions/A/MediaToolbox",
 			"/System/Library/Frameworks/Metal.framework/Versions/A/Metal",
+			"/System/Library/Frameworks/MetalFX.framework/Versions/A/MetalFX",
 			"/System/Library/Frameworks/MetalPerformanceShaders.framework/Versions/A/MetalPerformanceShaders",
 			"/System/Library/Frameworks/MetalPerformanceShadersGraph.framework/Versions/A/MetalPerformanceShadersGraph",
 			"/System/Library/Frameworks/MetricKit.framework/Versions/A/MetricKit",

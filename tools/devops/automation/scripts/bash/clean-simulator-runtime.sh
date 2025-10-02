@@ -12,9 +12,9 @@ done
 
 # delete all simulators not used in the last 90 days
 echo "Checking if there are any old runtimes to delete:"
-xcrun simctl runtime delete --notUsedSinceDays 90 --dry-run | sed 's/^/    /'
+xcrun simctl runtime delete --notUsedSinceDays 90 --dry-run | sed 's/^/    /' || true
 echo "Deleting..."
-xcrun simctl runtime delete --notUsedSinceDays 90| sed 's/^/    /'
+xcrun simctl runtime delete --notUsedSinceDays 90 | sed 's/^/    /' || true
 echo "Delete completed."
 
 xcrun simctl runtime list -j > simruntime.json
@@ -49,6 +49,22 @@ do
     fi
   done
 done < simruntime-duplicated-runtimes.txt || true
+
+# delete unusable runtimes
+for runtime in $(xcrun simctl runtime list | grep Unusable | sed -e 's/Unusable.*//' -e 's/^.*\([A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]-[A-Z0-9]*-[A-Z0-9]*-[A-Z0-9]*-[A-Z0-9]*\).*$/\1/'); do
+  echo "Deleting the runtime $runtime, it's unusable"
+  xcrun simctl runtime delete "$runtime"
+done
+# wait for them to actually be deleted
+C=0
+while xcrun simctl runtime list | grep Deleting; do
+  sleep 1
+  # stop looping after 60 seconds
+  (( C++ ))
+  if [[ $C -gt 60 ]]; then
+    break
+  fi
+done
 
 xcrun simctl runtime list -v || true
 xcrun simctl runtime match list -v || true

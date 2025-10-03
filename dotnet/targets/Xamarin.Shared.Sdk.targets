@@ -582,7 +582,7 @@
 				DeploymentTarget=$(_MinimumOSVersion)
 				@(_CustomLinkFlags -> 'CustomLinkFlags=%(Identity)')
 				EnableSGenConc=$(EnableSGenConc)
-				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=%(Identity)=%(Value)')
+				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=Overwrite=%(Overwrite)|%(Identity)=%(Value)')
 				@(_XamarinFrameworkAssemblies -> 'FrameworkAssembly=%(Filename)')
 				Interpreter=$(MtouchInterpreter)
 				IntermediateLinkDir=$(IntermediateLinkDir)

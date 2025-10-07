@@ -15070,8 +15070,6 @@ namespace AppKit {
 		NSProgress ObservedProgress { get; set; }
 	}
 
-	// Technically on NSResponder but responder subclasses can implement any that make sense
-	// So bound for user classes but not added to NSResponder binding
 	[NoMacCatalyst]
 	[Protocol]
 	interface NSStandardKeyBindingResponding {
@@ -15653,7 +15651,7 @@ namespace AppKit {
 	[NoMacCatalyst]
 	[DesignatedDefaultCtor]
 	[BaseType (typeof (NSObject))]
-	partial interface NSResponder : NSCoding, NSTouchBarProvider, NSUserActivityRestoring {
+	partial interface NSResponder : NSCoding, NSTouchBarProvider, NSUserActivityRestoring, NSStandardKeyBindingResponding {
 		[Export ("tryToPerform:with:")]
 		bool TryToPerformwith (Selector anAction, [NullAllowed] NSObject anObject);
 
@@ -22925,6 +22923,7 @@ namespace AppKit {
 	[BaseType (typeof (NSText), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NSTextViewDelegate) })]
 	partial interface NSTextView : NSTextInputClient, NSTextLayoutOrientationProvider, NSDraggingSource, NSAccessibilityNavigableStaticText, NSCandidateListTouchBarItemDelegate, NSTouchBarDelegate, NSMenuItemValidation, NSUserInterfaceValidations, NSTextInput, NSTextContent
 		, NSColorChanging // ChangeColor has the wrong param type
+		, NSStandardKeyBindingResponding
 	{
 		[DesignatedInitializer]
 		[Export ("initWithFrame:textContainer:")]

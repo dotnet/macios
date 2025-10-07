@@ -4,7 +4,7 @@ namespace iosbinding {
 
 	[BaseType (typeof (NSObject))]
 	interface SomeType {
-		[Export("method")]
+		[Export ("method")]
 		[Internal]
 		[Protected]
 		void Method ();

@@ -124,7 +124,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override sealed bool Execute ()
 		{
 			if (this.ShouldExecuteRemotely (SessionId))
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 			return ExecuteLocally ();
 		}
 

@@ -1629,4 +1629,8 @@
             {1}: the name of the property that is empty (SourceFiles, Items, FrameworkToPublish, etc.).
         </comment>
     </data>
+
+    <data name="E7160" xml:space="preserve">
+        <value>Unable to execute this task remotely for unknown reasons. The build log may have more information.</value>
+    </data>
 </root>

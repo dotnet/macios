@@ -1620,5 +1620,15 @@ namespace GeneratorTests {
 					Assert.True (passesOwnsEqualsTrue (method), method.Name);
 			});
 		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		public void BothProtectedAndInternal (Profile profile)
+		{
+			// https://github.com/dotnet/macios/issues/6889
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "tests/both-protected-and-internal.cs");
+			bgen.AssertNoWarnings ();
+		}
 	}
 }

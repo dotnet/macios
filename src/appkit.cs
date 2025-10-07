@@ -23094,9 +23094,6 @@ namespace AppKit {
 		//
 		// Completion support
 		//
-		[Export ("complete:")]
-		void Complete ([NullAllowed] NSObject sender);
-
 		[Export ("rangeForUserCompletion")]
 		NSRange RangeForUserCompletion ();
 

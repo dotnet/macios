@@ -1584,6 +1584,16 @@ namespace GeneratorTests {
 		}
 
 		[Test]
+		[TestCase (Profile.MacCatalyst)]
+		public void ProtocolWithBaseTypeButNoModel (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, false, "tests/protocol-and-basetype-no-model.cs");
+			bgen.AssertExecute ("build");
+			bgen.AssertWarning (1123, "The type Protocols.ProtocolWithBaseTypeButNoModel has a [Protocol] and a [BaseType] attribute, but no [Model] attribute. This is likely incorrect; either remove the [BaseType] attribute, or add a [Model] attribute.");
+		}
+
+		[Test]
 		[TestCase (Profile.iOS)]
 		public void ReleaseAttribute (Profile profile)
 		{

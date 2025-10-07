@@ -2,34 +2,19 @@
 
 ## Test permissions
 
-There are a number of tests that acccess the file system and the bluetooh. For these tests to correctly execute you have to ensure that
+There are a number of tests that acccess the file system and the bluetooth. For these tests to correctly execute you have to ensure that
 the terminal application that you are using to execute the tests has access to the full filesystem and the bluetooth. If you do not do this
 step the macOS tests will crash.
-
-## Test solutions
-
-Many of the test solutions and test projects are generated, and will
-only be available after running `make` once.
-
-* tests.sln: This is the base test solution for Xamarin.iOS, which targets iOS using the Unified API. _Not_ generated.
-* tests-tvos.sln: All the TVOS test projects. Generated.
-* tests-mac.sln: This is the base test solution for Xamarin.Mac. _Not_ generated.
-
-### Test solution/project generation
-
-The tool that generates the test solutions / projects is called xharness,
-and lives in the xharness subdirectory.
 
 ## Types of Tests
 
 ### Unit Tests
 
 Most of the projects are using NUnit[Lite] and looks like unit tests.
-They are meant to be executed on the target: simulator, devices, OSX.
+They are meant to be executed on the target: simulator, devices, macOS.
 
 In reality most of them are regression tests - but that does not change
 the need to execute and continually expand them to cover new code.
-
 
 ### Introspection Tests
 
@@ -56,7 +41,6 @@ Cons
 
 * Incomplete - Not everything is encoded in the metadata / executable;
 * Too complete - Not every truth is good to be known (or published)
-
 
 ### Extrospection Tests ###
 
@@ -87,19 +71,19 @@ Use the project defaults for linking, i.e.
 
 * "Link SDK assemblies only" for devices
 
-## dontlink
+## linker/dontlink
 
 * regression testing without using the linker
 
 * both simulator and devices are set to "Don't link"
 
-## linkall
+## linker/linkall
 
 * regression testing using the linker on the all assemblies
 
 * "Link all assemblies" for both simulator/devices
 
-## linksdk
+## linker/linksdk
 
 * regression testing using the linker on the SDK assemblies
 
@@ -107,65 +91,24 @@ Use the project defaults for linking, i.e.
 
 # Common make targets
 
-Run every test in both the simulator and on device, using both the compat and the new profile (for the simulator both in 32 and 64bit mode).
+Each test project has a `dotnet` directory, with a subdirectory for each platform we support.
 
-    $ make run
+Use the makefile in each of those subdirectories to run the corresponding test suite.
 
-Run every test in the simulator, using both the compat and the new profile (both 32 and 64bit simulators).
+To build the test in question:
 
-	$ make run-all-sim
+    $ make build
 
-Run every test on device, using both the compat and the new profile
+To run the test in question:
 
-	$ make run-all-dev
+	$ make run
 
-# Detailed make targets
+Some tests have a list of variations that can be build and run, to get a list of all the variations:
 
-* Main target
+    $ make list-variations
 
-    * run-*what*-*where*-*project*: Builds, installs (if applicable) and runs the specified test project on the specified platform. This is the most common target to use.
-    * build-*what*-*where*-*project*: Will build the specified test project for the specified platform and target.
-    * install-*what*-*where*-*project*: Will install the specified test project on a connected device. There's currently no way to select the device, so ensure you've only one connected (if many devices are connected, it's random which will used).
-    * exec-*what*-*where*-*project*: Will run the specified test project in the simulator or on a device.
+And then (note that VARIATION has to be set for both 'make build' and 'make run'):
 
-* What
-
-    * -ios-: iOS.
-    * -tvos-: TVOS.
-
-    If "What" is skipped, all variations are executed sequentially.
-
-* Where
-
-    * -simclassic-: Simulator using the Classic API. Only applicable when platform is iOS.
-    * -simunified-: Simulator using Unified API. The build will contain both an i386 and an x86_64 binary. Only applicable to the build-* target, while the -sim32- and -sim64- are only applicable to the exec-* targets. Only applicable when the platform is iOS.
-    * -sim32-: 32bits iOS simulator using the Unified API. Not applicable to other platforms.
-    * -sim64-: 64bits iOS simulator using the Unified API. Not applicable to other platforms.
-    * -sim-:
-        * iOS: Both the -simclassic- and -simunified- versions.
-        * TVOS: The TVOS simulator.
-    * -devclassic-: Device using the Classic API. Only applicable when the platform is iOS.
-    * -devunified-: Device using the Unified API. The build will contain both an armv7 and an arm64 binary. It's not possible to select a 32/64bit version, you'll run what your device supports. Only applicable when the platform is iOS.
-    * -dev-:
-        * iOS: Both the -devclassic- and -devunified- versions.
-        * TVOS: A TV device.
-
-* Examples
-
-    $ make run-ios-sim32-monotouchtest: This will run `monotouch-test` using the Unified API in a 32-bit simulator.
-    $ make run-tvos-dev-dont\ link: This will run `dont link` on an Apple TV device.
-
-# Utility run-* targets
-
-These targets will build, install (if applicable) and run the specified project(s).
-
-* Simulator
-    * run-sim-*project*: Builds and runs the specified test project in the simulator in compat, 32 and 64bit mode.
-    * run-sim: Builds and runs all the test projects in the simulator in compat, 32 and 64bit mode.
-
-* Device
-    * run-dev-*project*: Builds and runs the specified test project on a device in compat and native mode (if it's 32 and 64bit depends on the device; 64bit devices will run in 64bit mode and the same for 32bit devices).
-    * run-devcompat: Run all the test projects on device, in compat mode.
-    * run-devdual: Run all the test projects on device, in native mode (if it's 32 and 64bit depends on the device; 64bit devices will run in 64bit mode and the same for 32bit devices).
-    * run-dev: Run all the test projects on device, in both compat and native mode.
+    $ make build VARIATION=variation
+    $ make run VARIATION=variation
 

@@ -21,8 +21,7 @@ namespace Microsoft.Build.Tasks {
 			if (!this.ShouldExecuteRemotely (SessionId))
 				return base.Execute ();
 
-			return XamarinTask.ExecuteRemotely (this, out var _, (taskRunner) =>
-			{
+			return XamarinTask.ExecuteRemotely (this, out var _, (taskRunner) => {
 				if (SourceFiles?.Any () == true) {
 					taskRunner.FixReferencedItems (this, SourceFiles);
 				}

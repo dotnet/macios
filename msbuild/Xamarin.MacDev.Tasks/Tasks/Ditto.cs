@@ -50,8 +50,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				return ExecuteRemotely (out var _, (taskRunner) =>
-				{
+				return ExecuteRemotely (out var _, (taskRunner) => {
 					taskRunner.FixReferencedItems (this, new ITaskItem [] { Source! });
 				});
 			}

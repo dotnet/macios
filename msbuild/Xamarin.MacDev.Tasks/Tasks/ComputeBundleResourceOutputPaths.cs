@@ -35,7 +35,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				var result = ExecuteRemotely ();;
+				var result = ExecuteRemotely (); ;
 
 				RemoveDuplicates ();
 

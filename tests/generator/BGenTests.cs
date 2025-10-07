@@ -1585,6 +1585,15 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		public void DesignatedInitializer (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "tests/designated-initializer-issue-10106.cs");
+			bgen.AssertNoWarnings ();
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void ReleaseAttribute (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());

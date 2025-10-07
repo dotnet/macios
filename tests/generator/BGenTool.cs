@@ -219,7 +219,7 @@ namespace Xamarin.Tests {
 			var rv = Execute ();
 			if (rv == 0)
 				return;
-			
+
 			Assert.Fail ($"BGen failed with exit code {rv}: {message}\n{Output}");
 		}
 

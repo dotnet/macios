@@ -83,7 +83,7 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 	foreach (var entry in platforms) {
 		var platform = entry.Item1;
 		var version = entry.Item2;
-		writer.WriteLine ($"    <WorkloadPackages Include=\"$(NuGetPackagePath)\\Microsoft.NET.Sdk.{platform}.Manifest*.nupkg\" Version=\"{version}\" SupportsMachineArch=\"true\" />");
+		writer.WriteLine ($"    <WorkloadPackages Include=\"$(NuGetPackagePath)\\Microsoft.NET.Sdk.{platform}.Manifest*.nupkg\" Version=\"{version}.0\" MsiVersion=\"{version}\" SupportsMachineArch=\"true\" />");
 	}
 	writer.WriteLine ("  </ItemGroup>");
 	writer.WriteLine ("</Project>");

@@ -425,7 +425,10 @@ namespace GeneratorTests {
 		[Test]
 		public void StackOverflow20696157 ()
 		{
-			BuildFile (Profile.iOS, "sof20696157.cs");
+			BuildFile (Profile.iOS, (bgen) =>
+			{
+				bgen.NoWarn = "1123";
+			}, "sof20696157.cs");
 		}
 
 		[Test]
@@ -790,7 +793,12 @@ namespace GeneratorTests {
 		public void GHIssue9065_Sealed () => BuildFile (Profile.iOS, nowarnings: true, "ghissue9065.cs");
 
 		[Test]
-		public void GHIssue18645_DuplicatedFiled () => BuildFile (Profile.iOS, nowarnings: true, "ghissue18645.cs");
+		public void GHIssue18645_DuplicatedFiled ()
+		{
+			BuildFile (Profile.iOS, (bgen) => {
+				bgen.NoWarn = "1123";
+			}, "ghissue18645.cs");
+		}
 
 		// looking for [BindingImpl (BindingImplOptions.Optimizable)]
 		bool IsOptimizable (MethodDefinition method)
@@ -1488,6 +1496,7 @@ namespace GeneratorTests {
 			bgen.Profile = profile;
 			bgen.CompiledApiDefinitionAssembly = tmpassembly;
 			bgen.Defines = BGenTool.GetDefaultDefines (bgen.Profile);
+			bgen.NoWarn = "1123";
 			bgen.CreateTemporaryBinding (filename);
 			bgen.AssertExecute ("build");
 			bgen.AssertNoWarnings ();

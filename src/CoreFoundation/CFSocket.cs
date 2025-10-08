@@ -699,7 +699,7 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		public class CFSocketDataEventArgs : EventArgs {
-			byte[]? data;
+			byte []? data;
 			CFData? cfdata;
 
 			/// <summary>The remote end points that connected</summary>

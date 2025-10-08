@@ -19392,6 +19392,13 @@ P:CoreData.NSPersistentStoreRemoteChangeEventArgs.Uuid
 P:CoreData.NSStagedMigrationManager.Container
 P:CoreData.NSStagedMigrationManager.Stages
 P:CoreFoundation.CFArray.Count
+P:CoreFoundation.CFProxy.AutoConfigurationHttpResponse
+P:CoreFoundation.CFProxySettings.HTTPEnable
+P:CoreFoundation.CFProxySettings.HTTPPort
+P:CoreFoundation.CFProxySettings.HTTPProxy
+P:CoreFoundation.CFProxySettings.ProxyAutoConfigEnable
+P:CoreFoundation.CFProxySettings.ProxyAutoConfigJavaScript
+P:CoreFoundation.CFProxySettings.ProxyAutoConfigURLString
 P:CoreFoundation.CFRunLoop.AllModes
 P:CoreFoundation.CFRunLoop.CurrentMode
 P:CoreFoundation.CFSocket.Address
@@ -25861,6 +25868,7 @@ T:CarPlay.CPTextButtonStyle
 T:CarPlay.CPTimeRemainingColor
 T:CarPlay.CPTrafficSide
 T:CarPlay.CPTripEstimateStyle
+T:CFNetwork.CFNetworkProxies
 T:Cinematic.CNAssetSpatialAudioInfoCheckIfContainsSpatialAudioCallback
 T:Cinematic.CNAssetSpatialAudioInfoLoadCallback
 T:Cinematic.CNCinematicErrorCode

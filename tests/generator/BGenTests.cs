@@ -425,8 +425,7 @@ namespace GeneratorTests {
 		[Test]
 		public void StackOverflow20696157 ()
 		{
-			BuildFile (Profile.iOS, (bgen) =>
-			{
+			BuildFile (Profile.iOS, (bgen) => {
 				bgen.NoWarn = "1123";
 			}, "sof20696157.cs");
 		}

@@ -26,8 +26,7 @@ namespace GeneratorTests {
 
 		internal BGenTool BuildFile (Profile profile, bool nowarnings, bool processEnums, IEnumerable<string> references, params string [] filenames)
 		{
-			return BuildFile (profile, nowarnings, (bgen) =>
-			{
+			return BuildFile (profile, nowarnings, (bgen) => {
 				bgen.ProcessEnums = processEnums;
 				bgen.References = references.ToList ();
 			}, filenames);

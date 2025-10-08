@@ -10,6 +10,7 @@ using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 using static Microsoft.Macios.Generator.RgenDiagnostics;
 
 namespace Microsoft.Macios.Bindings.Analyzer.Validators;
+
 using ExportMethod = ExportData<Method>;
 
 /// <summary>

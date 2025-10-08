@@ -279,8 +279,8 @@ The `CompressBindingResourcePackage` property specifies whether to create a zip 
 
 The possible values are:
 
-* `auto`: create a zip file if a native reference contains symlinks (which is typical on macOS and Mac Catalyst, but rare on iOS and tvOS).
-* `true`: create a zipe file
+* `auto`: automatically decide the best option (currently a zip file is always created, but once Visual Studio supports long paths on Windows, this may change to only zip binding resource packages with symlinks).
+* `true`: create a zip file
 * `false`: create a directory
 
 The default is `auto`.

@@ -221,11 +221,15 @@ public class MemberInformation {
 		if (is_interface_impl || is_extension_method)
 			return "public";
 
-		var mod = is_protected ? "protected" : null;
-		mod += is_internal ? "internal" : null;
-		if (string.IsNullOrEmpty (mod))
-			mod = "public";
-		return mod;
+		if (is_protected && is_internal) {
+			return "protected internal";
+		} else if (is_protected) {
+			return "protected";
+		} else if (is_internal) {
+			return "internal";
+		} else {
+			return "public";
+		}
 	}
 
 	public string GetModifiers ()

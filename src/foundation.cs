@@ -89,6 +89,7 @@ using UIEdgeInsets = Foundation.NSObject;
 using UIOffset = Foundation.NSObject;
 using UIPreferredPresentationStyle = Foundation.NSObject;
 #else
+using NSBindingOptions = Foundation.NSObject;
 using NSPasteboard = Foundation.NSObject;
 using NSWorkspaceAuthorization = Foundation.NSObject;
 
@@ -12788,6 +12789,12 @@ namespace Foundation {
 		[NoTV]
 		[Export ("bind:toObject:withKeyPath:options:")]
 		void Bind (NSString binding, NSObject observable, string keyPath, [NullAllowed] NSDictionary options);
+
+		[NoiOS]
+		[NoMacCatalyst]
+		[NoTV]
+		[Wrap ("Bind (binding, observable, keyPath, options.GetDictionary ())")]
+		void Bind (NSString binding, NSObject observable, string keyPath, [NullAllowed] NSBindingOptions options);
 
 		[NoiOS]
 		[NoMacCatalyst]

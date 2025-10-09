@@ -65,22 +65,18 @@ namespace AudioToolbox {
 	/// <summary>This enum specifies properties for <see cref="AudioUnitSubType.AUAudioMix" /> audio units.</summary>
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
 	public enum AUAudioMixProperty {
-		/// <summary>Remix the data from the file asset.</summary>
-		/// <remarks>This is a read-write <see cref="NSData" /> property.</remarks>
+		/// <summary>Remix the data from the file asset, using an <see cref="NSData" />.</summary>
 		SpatialAudioMixMetadata = 5000,
-		/// <summary>If spatialization is enabled or not.</summary>
-		/// <remarks>This is a read-write <see langword="uint" /> property, with two possible values: 0 or 1.</remarks>
+		/// <summary>If spatialization is enabled or not. Specified with a <see langword="uint" />, which is either 0 (false) or 1 (true).</summary>
 		EnableSpatialization = 5001,
 	}
 
 	/// <summary>This enum specifies parameters for <see cref="AudioUnitSubType.AUAudioMix" /> audio units.</summary>
 	public enum AUAudioMixParameter {
-		/// <summary>Get or set the style of the audio mixing.</summary>
-		/// <remarks>This property is an enum of type <see cref="AUAudioMixRenderingStyle" />.</remarks>
+		/// <summary>Get or set the style of the audio mixing, using a value of the <see cref="AUAudioMixRenderingStyle" /> enum.</summary>
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
 		Style = 0,
-		/// <summary>The remix amount.</summary>
-		/// <remarks>This property is a <see langword="float" />, with valid values ranging from 0.0f to 1.0f. The default value is 0.5f.</remarks>
+		/// <summary>The remix amount, which is a <see langword="float" />, with valid values ranging from 0.0f to 1.0f. The default value is 0.5f.</summary>
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
 		RemixAmount = 1,
 	}

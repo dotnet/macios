@@ -524,10 +524,8 @@ namespace CoreGraphics {
 		}
 
 #if !COREBUILD
-		/// <summary>Gets the y-coordinate of the top edge of this <see cref="CoreGraphics.CGRect" /> structure.</summary>
-		///         <returns />
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Converts this instance to a human readable string.</summary>
+		/// <returns>A string that represents this instance.</returns>
 		public override string? ToString ()
 		{
 			return CFString.FromHandle (NSStringFromCGRect (this));

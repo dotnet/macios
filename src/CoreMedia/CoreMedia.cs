@@ -259,30 +259,27 @@ namespace CoreMedia {
 
 	// CMVideoDimensions => int32_t width + int32_t height
 	/// <summary>Struct that contains the width and height of video media.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	public struct CMVideoDimensions {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The width of the video media.</summary>
 		public int Width;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The height of the video media.</summary>
 		public int Height;
 
-		/// <param name="width">To be added.</param>
-		///         <param name="height">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Create a new <see cref="CMVideoDimensions" /> instance with the specified width and height.</summary>
+		/// <param name="width">The width of the video media.</param>
+		/// <param name="height">The height of the video media.</param>
 		public CMVideoDimensions (int width, int height)
 		{
 			Width = width;
 			Height = height;
 		}
 
-		/// <inheritdoc />
+		/// <summary>Converts this instance to a human readable string.</summary>
+		/// <returns>A string that represents this instance.</returns>
 		public override string ToString ()
 		{
 			return $"[{Width}, {Height}]";

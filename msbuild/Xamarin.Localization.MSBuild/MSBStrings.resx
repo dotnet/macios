@@ -1633,4 +1633,8 @@
     <data name="E7160" xml:space="preserve">
         <value>Unable to execute this task remotely for unknown reasons. The build log may have more information.</value>
     </data>
+
+    <data name="E7161" xml:space="preserve">
+        <value>Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information.</value>
+    </data>
 </root>

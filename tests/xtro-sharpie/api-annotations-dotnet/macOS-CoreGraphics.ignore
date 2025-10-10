@@ -35,7 +35,6 @@
 !missing-pinvoke! CGDirectDisplayCopyCurrentMetalDevice is not bound
 !missing-pinvoke! CGDisplayCopyAllDisplayModes is not bound
 !missing-pinvoke! CGDisplayCopyColorSpace is not bound
-!missing-pinvoke! CGDisplayCopyDisplayMode is not bound
 !missing-pinvoke! CGDisplayFade is not bound
 !missing-pinvoke! CGDisplayGetDrawingContext is not bound
 !missing-pinvoke! CGDisplayIsActive is not bound
@@ -53,11 +52,9 @@
 !missing-pinvoke! CGDisplayModeGetIOFlags is not bound
 !missing-pinvoke! CGDisplayModeGetPixelHeight is not bound
 !missing-pinvoke! CGDisplayModeGetPixelWidth is not bound
-!missing-pinvoke! CGDisplayModeGetRefreshRate is not bound
 !missing-pinvoke! CGDisplayModeGetWidth is not bound
 !missing-pinvoke! CGDisplayModeIsUsableForDesktopGUI is not bound
 !missing-pinvoke! CGDisplayModelNumber is not bound
-!missing-pinvoke! CGDisplayModeRelease is not bound
 !missing-pinvoke! CGDisplayModeRetain is not bound
 !missing-pinvoke! CGDisplayPrimaryDisplay is not bound
 !missing-pinvoke! CGDisplayRegisterReconfigurationCallback is not bound

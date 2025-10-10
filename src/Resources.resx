@@ -633,4 +633,8 @@
 		<value>Unable to find the corresponding NSNumber property for the type {0} in {1}.{2}</value>
 	</data>
 
+	<data name="BI1123" xml:space="preserve">
+		<value>The type {0} has a [Protocol] and a [BaseType] attribute, but no [Model] attribute. This is likely incorrect; either remove the [BaseType] attribute, or add a [Model] attribute.</value>
+	</data>
+
 </root>

@@ -11364,9 +11364,11 @@ namespace UIKit {
 	[DisableDefaultCtor]
 	interface UIMenu {
 
-		[BindAs (typeof (UIMenuIdentifier))]
+		[Wrap ("UIMenuIdentifierExtensions.GetValue (WeakIdentifier)", IsVirtual = true)]
+		UIMenuIdentifier Identifier { get; }
+
 		[Export ("identifier")]
-		NSString Identifier { get; }
+		NSString WeakIdentifier { get; }
 
 		[Export ("options")]
 		UIMenuOptions Options { get; }
@@ -11399,8 +11401,12 @@ namespace UIKit {
 		UIMenu Create (string title, UIMenuElement [] children);
 
 		[Static]
+		[Wrap ("Create (title, image, identifier.GetConstant (), options, children)")]
+		UIMenu Create (string title, [NullAllowed] UIImage image, UIMenuIdentifier identifier, UIMenuOptions options, UIMenuElement [] children);
+
+		[Static]
 		[Export ("menuWithTitle:image:identifier:options:children:")]
-		UIMenu Create (string title, [NullAllowed] UIImage image, [NullAllowed][BindAs (typeof (UIMenuIdentifier))] NSString identifier, UIMenuOptions options, UIMenuElement [] children);
+		UIMenu Create (string title, [NullAllowed] UIImage image, [NullAllowed] NSString identifier, UIMenuOptions options, UIMenuElement [] children);
 
 		[Export ("menuByReplacingChildren:")]
 		UIMenu GetMenuByReplacingChildren (UIMenuElement [] newChildren);
@@ -34418,10 +34424,28 @@ namespace UIKit {
 		[Export ("tintedGlassButtonConfiguration")]
 		UIButtonConfiguration TintedGlassButtonConfiguration { get; }
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'UISymbolContentTransition' instead.")]
+#endif
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Export ("symbolContentTransition", ArgumentSemantic.Strong)]
 		[NullAllowed]
+#if XAMCORE_5_0
+		UISymbolContentTransition SymbolContentTransition { get; set; }
+#else
 		NSSymbolContentTransition SymbolContentTransition { get; set; }
+#endif
+
+#if !XAMCORE_6_0
+		[Sealed]
+#if XAMCORE_5_0
+		[Obsolete ("Use 'SymbolContentTransition' instead.")]
+#endif
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("symbolContentTransition", ArgumentSemantic.Strong)]
+		[NullAllowed]
+		UISymbolContentTransition UISymbolContentTransition { get; set; }
+#endif
 
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Static]

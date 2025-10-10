@@ -1123,6 +1123,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";BI1123" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The type {0} has a [Protocol]5D; and a [BaseType]5D; attribute, but no [Model]5D; attribute. This is likely incorrect; either remove the [BaseType]5D; attribute, or add a [Model]5D; attribute.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[O tipo {0} tem os atributos [Protocol]5D; e [BaseType]5D;, mas nenhum atributo [Model]5D;. Isso provavelmente está incorreto; remova o atributo [BaseType]5D; ou adicione um atributo [Model]5D;.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";default" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/dotnet/macios/issues/new]]></Val>

@@ -8,6 +8,9 @@
  * EnsureEventAndDelegateAreNotMismatched should be marked as public, not internal
  *
  */
+using System;
+using Foundation;
+using ObjCRuntime;
 
 namespace Test {
 	[BaseType (typeof (NSObject), Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (SharedDelegate) })]

@@ -1,6 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Let's hope that by .NET 11 we've ironed out all the bugs in the API.
+// This can of course be adjusted as needed (until we've released as stable).
+#if NET11_0_OR_GREATER
+#define STABLE_FSKIT
+#endif
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -9,12 +15,6 @@ using CoreFoundation;
 using Darwin;
 using Foundation;
 using ObjCRuntime;
-
-// Let's hope that by .NET 11 we've ironed out all the bugs in the API.
-// This can of course be adjusted as needed (until we've released as stable).
-#if NET11_0_OR_GREATER
-#define STABLE_FSKIT
-#endif
 
 using FSDirectoryCookie = System.UInt64;
 using FSDirectoryVerifier = System.UInt64;

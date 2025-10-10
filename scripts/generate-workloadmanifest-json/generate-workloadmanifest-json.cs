@@ -76,12 +76,18 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 	writer.WriteLine ($"			\"extends\": [");
 	if (platform == "macOS") {
 		writer.WriteLine ($"				\"microsoft-net-runtime-mono-tooling\",");
-		for (var i = earliestDotNetVersion; i < latestDotNetVersion; i++)
+		for (var i = earliestDotNetVersion; i < latestDotNetVersion; i++) {
+			if (i == 10)
+				continue; // temporary? there doesn't seem to be a microsoft-net-runtime-mono-tooling-net10 yet, so this will likely have to be removed once it's created
 			writer.WriteLine ($"				\"microsoft-net-runtime-mono-tooling-net{i}\",");
+		}
 	} else {
 		writer.WriteLine ($"				\"microsoft-net-runtime-{platformLowerCase}\",");
-		for (var i = earliestDotNetVersion; i < latestDotNetVersion; i++)
+		for (var i = earliestDotNetVersion; i < latestDotNetVersion; i++) {
+			if (i == 10)
+				continue; // temporary? there doesn't seem to be a microsoft-net-runtime-mono-tooling-net10 yet, so this will likely have to be removed once it's created
 			writer.WriteLine ($"				\"microsoft-net-runtime-{platformLowerCase}-net{i}\",");
+		}
 	}
 	writer.WriteLine ($"			]");
 	writer.WriteLine ($"		}},");

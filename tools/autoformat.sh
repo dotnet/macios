@@ -41,6 +41,9 @@ if test -z "${DOTNET:-}"; then
 	DOTNET=dotnet
 fi
 
+which $DOTNET
+$DOTNET --info
+
 function af_whitespace ()
 {
 	echo "Processing $1..."

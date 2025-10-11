@@ -2097,6 +2097,10 @@ namespace NetworkExtension {
 		NEProxySettings ProxySettings { get; set; }
 	}
 
+#if XAMCORE_5_0
+	delegate void NETunnelProviderHandleAppMessageCallback ([NullAllowed] NSData data);
+#endif
+
 	/// <summary>Base class for extensions that implement client-side ends of a network tunnel.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NETunnelProviderClassRef/index.html">Apple documentation for <c>NETunnelProvider</c></related>
@@ -2120,7 +2124,11 @@ namespace NetworkExtension {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
+#if XAMCORE_5_0
+		void HandleAppMessage (NSData messageData, [NullAllowed] NETunnelProviderHandleAppMessageCallback completionHandler);
+#else
 		void HandleAppMessage (NSData messageData, [NullAllowed] Action<NSData> completionHandler);
+#endif
 
 		/// <param name="tunnelNetworkSettings">
 		///           <para>To be added.</para>

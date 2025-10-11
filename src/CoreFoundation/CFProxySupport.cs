@@ -39,35 +39,12 @@ using Foundation;
 using CFNetwork;
 
 namespace CoreFoundation {
-	// Utility enum for string constants in ObjC
-	/// <summary>An enum of <see cref="CoreFoundation.CFProxy" /> proxy types.</summary>
-	///     <remarks>
-	///     </remarks>
-	public enum CFProxyType {
-		/// <summary>No proxy should be used.</summary>
-		None,
-		/// <summary>An autoconfiguration url.</summary>
-		AutoConfigurationUrl,
-		/// <summary>Proxy types available from the system.</summary>
-		AutoConfigurationJavaScript,
-		/// <summary>An FTP proxy.</summary>
-		FTP,
-		/// <summary>An HTTP proxy.</summary>
-		HTTP,
-		/// <summary>An HTTPS proxy.</summary>
-		HTTPS,
-		/// <summary>A SOCKS proxy.</summary>
-		SOCKS,
-	}
-
 	/// <summary>Provides information about a proxy.</summary>
-	///     <remarks>
-	///     </remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
-	public class CFProxy {
+	public partial class CFProxy {
 		NSDictionary settings;
 
 		internal CFProxy (NSDictionary settings)
@@ -75,314 +52,128 @@ namespace CoreFoundation {
 			this.settings = settings;
 		}
 
-		#region Property Keys
-
-#if !MONOMAC
-		static NSString? kCFProxyAutoConfigurationHTTPResponseKey;
-		static NSString? AutoConfigurationHTTPResponseKey {
+		public CFHTTPMessage? AutoConfigurationHttpResponse {
 			get {
-				if (kCFProxyAutoConfigurationHTTPResponseKey is null)
-					kCFProxyAutoConfigurationHTTPResponseKey = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyAutoConfigurationHTTPResponseKey");
+				var key = AutoConfigurationHttpResponseKey;
+				if (key is null)
+					return null;
 
-				return kCFProxyAutoConfigurationHTTPResponseKey;
+				var rv = settings.LowlevelObjectForKey (key.GetHandle ());
+				GC.KeepAlive (key);
+				return Runtime.GetINativeObject<CFHTTPMessage> (rv, false);
 			}
 		}
-#endif
-
-		static NSString? kCFProxyAutoConfigurationJavaScriptKey;
-		static NSString? AutoConfigurationJavaScriptKey {
-			get {
-				if (kCFProxyAutoConfigurationJavaScriptKey is null)
-					kCFProxyAutoConfigurationJavaScriptKey = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyAutoConfigurationJavaScriptKey");
-
-				return kCFProxyAutoConfigurationJavaScriptKey;
-			}
-		}
-
-		static NSString? kCFProxyAutoConfigurationURLKey;
-		static NSString? AutoConfigurationURLKey {
-			get {
-				if (kCFProxyAutoConfigurationURLKey is null)
-					kCFProxyAutoConfigurationURLKey = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyAutoConfigurationURLKey");
-
-				return kCFProxyAutoConfigurationURLKey;
-			}
-		}
-
-		static NSString? kCFProxyHostNameKey;
-		static NSString? HostNameKey {
-			get {
-				if (kCFProxyHostNameKey is null)
-					kCFProxyHostNameKey = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyHostNameKey");
-
-				return kCFProxyHostNameKey;
-			}
-		}
-
-		static NSString? kCFProxyPasswordKey;
-		static NSString? PasswordKey {
-			get {
-				if (kCFProxyPasswordKey is null)
-					kCFProxyPasswordKey = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyPasswordKey");
-
-				return kCFProxyPasswordKey;
-			}
-		}
-
-		static NSString? kCFProxyPortNumberKey;
-		static NSString? PortNumberKey {
-			get {
-				if (kCFProxyPortNumberKey is null)
-					kCFProxyPortNumberKey = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyPortNumberKey");
-
-				return kCFProxyPortNumberKey;
-			}
-		}
-
-		static NSString? kCFProxyTypeKey;
-		static NSString? ProxyTypeKey {
-			get {
-				if (kCFProxyTypeKey is null)
-					kCFProxyTypeKey = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyTypeKey");
-
-				return kCFProxyTypeKey;
-			}
-		}
-
-		static NSString? kCFProxyUsernameKey;
-		static NSString? UsernameKey {
-			get {
-				if (kCFProxyUsernameKey is null)
-					kCFProxyUsernameKey = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyUsernameKey");
-
-				return kCFProxyUsernameKey;
-			}
-		}
-		#endregion Property Keys
-
-		#region Proxy Types
-		static NSString? kCFProxyTypeNone;
-		static NSString? CFProxyTypeNone {
-			get {
-				if (kCFProxyTypeNone is null)
-					kCFProxyTypeNone = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyTypeNone");
-
-				return kCFProxyTypeNone;
-			}
-		}
-
-		static NSString? kCFProxyTypeAutoConfigurationURL;
-		static NSString? CFProxyTypeAutoConfigurationURL {
-			get {
-				if (kCFProxyTypeAutoConfigurationURL is null)
-					kCFProxyTypeAutoConfigurationURL = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyTypeAutoConfigurationURL");
-
-				return kCFProxyTypeAutoConfigurationURL;
-			}
-		}
-
-		static NSString? kCFProxyTypeAutoConfigurationJavaScript;
-		static NSString? CFProxyTypeAutoConfigurationJavaScript {
-			get {
-				if (kCFProxyTypeAutoConfigurationJavaScript is null)
-					kCFProxyTypeAutoConfigurationJavaScript = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyTypeAutoConfigurationJavaScript");
-
-				return kCFProxyTypeAutoConfigurationJavaScript;
-			}
-		}
-
-		static NSString? kCFProxyTypeFTP;
-		static NSString? CFProxyTypeFTP {
-			get {
-				if (kCFProxyTypeFTP is null)
-					kCFProxyTypeFTP = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyTypeFTP");
-
-				return kCFProxyTypeFTP;
-			}
-		}
-
-		static NSString? kCFProxyTypeHTTP;
-		static NSString? CFProxyTypeHTTP {
-			get {
-				if (kCFProxyTypeHTTP is null)
-					kCFProxyTypeHTTP = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyTypeHTTP");
-
-				return kCFProxyTypeHTTP;
-			}
-		}
-
-		static NSString? kCFProxyTypeHTTPS;
-		static NSString? CFProxyTypeHTTPS {
-			get {
-				if (kCFProxyTypeHTTPS is null)
-					kCFProxyTypeHTTPS = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyTypeHTTPS");
-
-				return kCFProxyTypeHTTPS;
-			}
-		}
-
-		static NSString? kCFProxyTypeSOCKS;
-		static NSString? CFProxyTypeSOCKS {
-			get {
-				if (kCFProxyTypeSOCKS is null)
-					kCFProxyTypeSOCKS = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFProxyTypeSOCKS");
-
-				return kCFProxyTypeSOCKS;
-			}
-		}
-		#endregion Proxy Types
-
-		static CFProxyType CFProxyTypeToEnum (NSString type)
-		{
-			var typeHandle = type.Handle;
-
-			if (CFProxyTypeAutoConfigurationJavaScript is not null) {
-				if (typeHandle == CFProxyTypeAutoConfigurationJavaScript.Handle)
-					return CFProxyType.AutoConfigurationJavaScript;
-			}
-
-			if (CFProxyTypeAutoConfigurationURL is not null) {
-				if (typeHandle == CFProxyTypeAutoConfigurationURL.Handle)
-					return CFProxyType.AutoConfigurationUrl;
-			}
-
-			if (CFProxyTypeFTP is not null) {
-				if (typeHandle == CFProxyTypeFTP.Handle)
-					return CFProxyType.FTP;
-			}
-
-			if (CFProxyTypeHTTP is not null) {
-				if (typeHandle == CFProxyTypeHTTP.Handle)
-					return CFProxyType.HTTP;
-			}
-
-			if (CFProxyTypeHTTPS is not null) {
-				if (typeHandle == CFProxyTypeHTTPS.Handle)
-					return CFProxyType.HTTPS;
-			}
-
-			if (CFProxyTypeSOCKS is not null) {
-				if (typeHandle == CFProxyTypeSOCKS.Handle)
-					return CFProxyType.SOCKS;
-			}
-
-			GC.KeepAlive (type);
-
-			return CFProxyType.None;
-		}
-
-#if false
-		// AFAICT these get used with CFNetworkExecuteProxyAutoConfiguration*()
-		
-		// TODO: bind CFHTTPMessage so we can return the proper type here.
-		public NSObject AutoConfigurationHTTPResponse {
-			get { return settings[AutoConfigurationHTTPResponseKey]; }
-		}
-#endif
 
 		/// <summary>JavaScript source code for auto-configuring the proxy.</summary>
-		///         <value>A string containing the JavaScript source code.</value>
-		///         <remarks>This value is meant to be used with 
+		/// <value>A string containing the JavaScript source code.</value>
+		/// <remarks>
+		///     This value is meant to be used with
 		/// 	<see cref="CoreFoundation.CFNetwork.GetProxiesForAutoConfigurationScript(Foundation.NSString,System.Uri)" />
 		/// 	and will only be set if <see cref="CoreFoundation.CFProxy.ProxyType" /> is set to
-		/// 	AutoConfigurationJavaScript.</remarks>
+		/// 	AutoConfigurationJavaScript.
+		/// </remarks>
 		public NSString? AutoConfigurationJavaScript {
 			get {
 				if (AutoConfigurationJavaScriptKey is null)
 					return null;
 
-				return (NSString) settings [AutoConfigurationJavaScriptKey];
+				return (NSString?) settings [AutoConfigurationJavaScriptKey];
 			}
 		}
 
 		/// <summary>URL location of a proxy auto-configuration script.</summary>
-		///         <value>A URL containing the location of the proxy auto-configuration script file.</value>
-		///         <remarks>This property will only set when <see cref="CoreFoundation.CFProxy.ProxyType" />
-		/// 	is set to AutoConfigurationUrl.</remarks>
+		/// <value>A URL containing the location of the proxy auto-configuration script file.</value>
+		/// <remarks>This property will only set when <see cref="CoreFoundation.CFProxy.ProxyType" /> is set to AutoConfigurationUrl.</remarks>
 		public NSUrl? AutoConfigurationUrl {
 			get {
-				if (AutoConfigurationURLKey is null)
+				var key = AutoConfigurationUrlKey;
+				if (key is null)
 					return null;
 
-				return (NSUrl) settings [AutoConfigurationURLKey];
+				return (NSUrl?) settings [key];
 			}
 		}
 
 		/// <summary>The hostname of the proxy server.</summary>
-		///         <value>A string containing the hostname of the proxy server.</value>
-		///         <remarks>This property will be null if the <see cref="CoreFoundation.CFProxy.ProxyType" /> is set to
-		/// 	AutoConfigurationJavaScript or AutoConfigurationUrl.</remarks>
+		/// <value>A string containing the hostname of the proxy server.</value>
+		/// <remarks>This property will be null if the <see cref="CoreFoundation.CFProxy.ProxyType" /> is set to AutoConfigurationJavaScript or AutoConfigurationUrl.</remarks>
 		public string? HostName {
 			get {
-				if (HostNameKey is null)
+				var key = HostNameKey;
+				if (key is null)
 					return null;
 
-				NSString v = (NSString) settings [HostNameKey];
-
-				return v?.ToString ();
+				return settings [key]?.ToString ();
 			}
 		}
 
 		/// <summary>The password needed to authenticate with the proxy server.</summary>
-		///         <value>A string containing the password or null if not needed.</value>
-		///         <remarks>
-		///         </remarks>
+		/// <value>A string containing the password or null if not needed.</value>
 		public string? Password {
 			get {
-				if (PasswordKey is null)
+				var key = PasswordKey;
+				if (key is null)
 					return null;
 
-				NSString v = (NSString) settings [PasswordKey];
-
-				return v?.ToString ();
+				return settings [key]?.ToString ();
 			}
 		}
 
 		/// <summary>The port to connect to on the proxy server.</summary>
-		///         <value>The numeric port to connect to.</value>
-		///         <remarks>This property is not useful if the <see cref="CoreFoundation.CFProxy.ProxyType" /> is javascript or a url.</remarks>
+		/// <value>The numeric port to connect to.</value>
+		/// <remarks>This property is not useful if the <see cref="CoreFoundation.CFProxy.ProxyType" /> is javascript or a url.</remarks>
 		public int Port {
 			get {
-				if (PortNumberKey is null)
+				var key = PortNumberKey;
+				if (key is null)
 					return 0;
 
-				NSNumber v = (NSNumber) settings [PortNumberKey];
+				var v = (NSNumber?) settings [key];
 
 				return v?.Int32Value ?? 0;
 			}
 		}
 
 		/// <summary>The type of the proxy.</summary>
-		///         <value>Any of the <see cref="CoreFoundation.CFProxyType" /> enum values.</value>
-		///         <remarks>
-		///         </remarks>
+		/// <value>Any of the <see cref="CoreFoundation.CFProxyType" /> enum values.</value>
+		/// <remarks>See <see cref="WeakProxyType" /> for a weakly typed version of this property.</remarks>
 		public CFProxyType ProxyType {
 			get {
-				if (ProxyTypeKey is null)
-					return CFProxyType.None;
+				var key = WeakProxyType;
+				var rv = CFProxyTypeExtensions.GetNullableValue (key.GetHandle ()) ?? CFProxyType.None;
+				GC.KeepAlive (key);
+				return rv;
+			}
+		}
 
-				return CFProxyTypeToEnum ((NSString) settings [ProxyTypeKey]);
+		/// <summary>The type of the proxy as an <see cref="NSString" />.</summary>
+		/// <value>The type of the proxy as an <see cref="NSString" />.</value>
+		/// <remarks>See <see cref="ProxyType" /> for a strongly typed version of this property.</remarks>
+		public NSString? WeakProxyType {
+			get {
+				var key = TypeKey;
+				if (key is null)
+					return null;
+
+				return (NSString?) settings [key];
 			}
 		}
 
 		/// <summary>The user name needed for authentication with the proxy server.</summary>
-		///         <value>A string containing the user name or null if not needed.</value>
-		///         <remarks>
-		///         </remarks>
+		/// <value>A string containing the user name or null if not needed.</value>
 		public string? Username {
 			get {
-				if (UsernameKey is null)
+				var key = UsernameKey;
+				if (key is null)
 					return null;
 
-				NSString v = (NSString) settings [UsernameKey];
-
-				return v?.ToString ();
+				return settings [key]?.ToString ();
 			}
 		}
 	}
 
 	/// <summary>Configuration settings used by <see cref="CoreFoundation.CFNetwork.GetProxiesForURL(Foundation.NSUrl,CoreFoundation.CFProxySettings)" />.</summary>
-	///     <remarks>Returned by <see cref="CoreFoundation.CFNetwork.GetSystemProxySettings" />.</remarks>
+	/// <remarks>Returned by <see cref="CoreFoundation.CFNetwork.GetSystemProxySettings" />.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -396,161 +187,73 @@ namespace CoreFoundation {
 		}
 
 		/// <summary>The dictionary holding the settings.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
 		public NSDictionary Dictionary {
 			get { return settings; }
 		}
 
-		#region Global Proxy Setting Constants
-		static NSString? kCFNetworkProxiesHTTPEnable;
-		static NSString? CFNetworkProxiesHTTPEnable {
-			get {
-				if (kCFNetworkProxiesHTTPEnable is null)
-					kCFNetworkProxiesHTTPEnable = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFNetworkProxiesHTTPEnable");
-
-				return kCFNetworkProxiesHTTPEnable;
-			}
-		}
-
-		static NSString? kCFNetworkProxiesHTTPPort;
-		static NSString? CFNetworkProxiesHTTPPort {
-			get {
-				if (kCFNetworkProxiesHTTPPort is null)
-					kCFNetworkProxiesHTTPPort = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFNetworkProxiesHTTPPort");
-
-				return kCFNetworkProxiesHTTPPort;
-			}
-		}
-
-		static NSString? kCFNetworkProxiesHTTPProxy;
-		static NSString? CFNetworkProxiesHTTPProxy {
-			get {
-				if (kCFNetworkProxiesHTTPProxy is null)
-					kCFNetworkProxiesHTTPProxy = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFNetworkProxiesHTTPProxy");
-
-				return kCFNetworkProxiesHTTPProxy;
-			}
-		}
-
-		static NSString? kCFNetworkProxiesProxyAutoConfigEnable;
-		static NSString? CFNetworkProxiesProxyAutoConfigEnable {
-			get {
-				if (kCFNetworkProxiesProxyAutoConfigEnable is null)
-					kCFNetworkProxiesProxyAutoConfigEnable = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFNetworkProxiesProxyAutoConfigEnable");
-
-				return kCFNetworkProxiesProxyAutoConfigEnable;
-			}
-		}
-
-#if !MONOMAC
-		static NSString? kCFNetworkProxiesProxyAutoConfigJavaScript;
-		static NSString? CFNetworkProxiesProxyAutoConfigJavaScript {
-			get {
-				if (kCFNetworkProxiesProxyAutoConfigJavaScript is null)
-					kCFNetworkProxiesProxyAutoConfigJavaScript = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFNetworkProxiesProxyAutoConfigJavaScript");
-
-				return kCFNetworkProxiesProxyAutoConfigJavaScript;
-			}
-		}
-#endif
-
-		static NSString? kCFNetworkProxiesProxyAutoConfigURLString;
-		static NSString? CFNetworkProxiesProxyAutoConfigURLString {
-			get {
-				if (kCFNetworkProxiesProxyAutoConfigURLString is null)
-					kCFNetworkProxiesProxyAutoConfigURLString = Dlfcn.GetStringConstant (Libraries.CFNetwork.Handle, "kCFNetworkProxiesProxyAutoConfigURLString");
-
-				return kCFNetworkProxiesProxyAutoConfigURLString;
-			}
-		}
-		#endregion Global Proxy Setting Constants
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public bool HTTPEnable {
 			get {
-				if (CFNetworkProxiesHTTPEnable is null)
+				var key = CFNetworkProxies.HttpEnable;
+				if (key is null)
 					return false;
 
-				NSNumber v = (NSNumber) settings [CFNetworkProxiesHTTPEnable];
+				var v = (NSNumber?) settings [key];
 
 				return v?.BoolValue ?? false;
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public int HTTPPort {
 			get {
-				if (CFNetworkProxiesHTTPPort is null)
+				var key = CFNetworkProxies.HttpPort;
+				if (key is null)
 					return 0;
 
-				NSNumber v = (NSNumber) settings [CFNetworkProxiesHTTPPort];
+				var v = (NSNumber?) settings [key];
 
 				return v?.Int32Value ?? 0;
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public string? HTTPProxy {
 			get {
-				if (CFNetworkProxiesHTTPProxy is null)
+				var key = CFNetworkProxies.HttpProxy;
+				if (key is null)
 					return null;
 
-				NSString v = (NSString) settings [CFNetworkProxiesHTTPProxy];
-
-				return v?.ToString ();
+				return settings [key]?.ToString ();
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public bool ProxyAutoConfigEnable {
 			get {
-				if (CFNetworkProxiesProxyAutoConfigEnable is null)
+				var key = CFNetworkProxies.ProxyAutoConfigEnable;
+				if (key is null)
 					return false;
 
-				NSNumber v = (NSNumber) settings [CFNetworkProxiesProxyAutoConfigEnable];
+				var v = (NSNumber?) settings [key];
 
 				return v?.BoolValue ?? false;
 			}
 		}
 
-#if !MONOMAC
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public string? ProxyAutoConfigJavaScript {
 			get {
-				if (CFNetworkProxiesProxyAutoConfigJavaScript is null)
+				var key = CFNetworkProxies.ProxyAutoConfigJavaScript;
+				if (key is null)
 					return null;
 
-				NSString v = (NSString) settings [CFNetworkProxiesProxyAutoConfigJavaScript];
-
-				return v?.ToString ();
+				return settings [key]?.ToString ();
 			}
 		}
-#endif
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public string? ProxyAutoConfigURLString {
 			get {
-				if (CFNetworkProxiesProxyAutoConfigURLString is null)
+				var key = CFNetworkProxies.ProxyAutoConfigUrlString;
+				if (key is null)
 					return null;
 
-				NSString v = (NSString) settings [CFNetworkProxiesProxyAutoConfigURLString];
-
-				return v?.ToString ();
+				return settings [key]?.ToString ();
 			}
 		}
 	}

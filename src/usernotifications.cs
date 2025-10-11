@@ -616,9 +616,8 @@ namespace UserNotifications {
 		[Export ("threadIdentifier")]
 		string ThreadIdentifier { get; }
 
-		/// <summary>Gets the notification descritpion.</summary>
-		///         <value>The notification descritpion.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the notification description.</summary>
+		/// <value>The notification description.</value>
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("title")]
 		string Title { get; }
@@ -744,9 +743,8 @@ namespace UserNotifications {
 		[Export ("threadIdentifier")]
 		string ThreadIdentifier { get; set; }
 
-		/// <summary>Gets or sets the notification descritpion.</summary>
-		///         <value>The notification descritpion.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the notification description.</summary>
+		/// <value>The notification description.</value>
 		[Unavailable (PlatformName.TvOS)]
 		[Export ("title")]
 		string Title { get; set; }

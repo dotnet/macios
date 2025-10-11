@@ -216,7 +216,11 @@ namespace Xamarin.Tests {
 
 		public void AssertExecute (string message)
 		{
-			Assert.AreEqual (0, Execute (), message);
+			var rv = Execute ();
+			if (rv == 0)
+				return;
+
+			Assert.Fail ($"BGen failed with exit code {rv}: {message}\n{Output}");
 		}
 
 		public void AssertExecuteError (string message)

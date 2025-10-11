@@ -35211,4 +35211,117 @@ namespace AppKit {
 		[Field ("NSAccessibilitySearchResultLoaderKey")]
 		NSString ResultLoader { get; }
 	}
+
+	[NoMacCatalyst]
+	[Static]
+	interface NSBindingOption {
+		[Field ("NSAllowsEditingMultipleValuesSelectionBindingOption")]
+		NSString AllowsEditingMultipleValuesSelection { get; }
+
+		[Field ("NSAllowsNullArgumentBindingOption")]
+		NSString AllowsNullArgument { get; }
+
+		[Field ("NSAlwaysPresentsApplicationModalAlertsBindingOption")]
+		NSString AlwaysPresentsApplicationModalAlerts { get; }
+
+		[Field ("NSConditionallySetsEditableBindingOption")]
+		NSString ConditionallySetsEditable { get; }
+
+		[Field ("NSConditionallySetsEnabledBindingOption")]
+		NSString ConditionallySetsEnabled { get; }
+
+		[Field ("NSConditionallySetsHiddenBindingOption")]
+		NSString ConditionallySetsHidden { get; }
+
+		[Field ("NSContinuouslyUpdatesValueBindingOption")]
+		NSString ContinuouslyUpdatesValue { get; }
+
+		[Field ("NSCreatesSortDescriptorBindingOption")]
+		NSString CreatesSortDescriptor { get; }
+
+		[Field ("NSDeletesObjectsOnRemoveBindingsOption")]
+		NSString DeletesObjectsOnRemoveBindingsOption { get; }
+
+		[Field ("NSDisplayNameBindingOption")]
+		NSString DisplayName { get; }
+
+		[Field ("NSDisplayPatternBindingOption")]
+		NSString DisplayPattern { get; }
+
+		[Field ("NSContentPlacementTagBindingOption")]
+		NSString ContentPlacementTag { get; }
+
+		[Field ("NSHandlesContentAsCompoundValueBindingOption")]
+		NSString HandlesContentAsCompoundValue { get; }
+
+		[Field ("NSInsertsNullPlaceholderBindingOption")]
+		NSString InsertsNullPlaceholder { get; }
+
+		[Field ("NSInvokesSeparatelyWithArrayObjectsBindingOption")]
+		NSString InvokesSeparatelyWithArrayObjects { get; }
+
+		[Field ("NSMultipleValuesPlaceholderBindingOption")]
+		NSString MultipleValuesPlaceholder { get; }
+
+		[Field ("NSNoSelectionPlaceholderBindingOption")]
+		NSString NoSelectionPlaceholder { get; }
+
+		[Field ("NSNotApplicablePlaceholderBindingOption")]
+		NSString NotApplicablePlaceholder { get; }
+
+		[Field ("NSNullPlaceholderBindingOption")]
+		NSString NullPlaceholder { get; }
+
+		[Field ("NSRaisesForNotApplicableKeysBindingOption")]
+		NSString RaisesForNotApplicableKeys { get; }
+
+		[Field ("NSPredicateFormatBindingOption")]
+		NSString PredicateFormat { get; }
+
+		[Field ("NSSelectorNameBindingOption")]
+		NSString SelectorName { get; }
+
+		[Field ("NSSelectsAllWhenSettingContentBindingOption")]
+		NSString SelectsAllWhenSettingContent { get; }
+
+		[Field ("NSValidatesImmediatelyBindingOption")]
+		NSString ValidatesImmediately { get; }
+
+		[Field ("NSValueTransformerNameBindingOption")]
+		NSString ValueTransformerName { get; }
+
+		[Field ("NSValueTransformerBindingOption")]
+		NSString ValueTransformer { get; }
+	}
+
+	[NoMacCatalyst]
+	[StrongDictionary ("NSBindingOption", Suffix = "")]
+	interface NSBindingOptions {
+		bool AllowsEditingMultipleValuesSelection { get; set; }
+		bool AllowsNullArgument { get; set; }
+		bool AlwaysPresentsApplicationModalAlerts { get; set; }
+		bool ConditionallySetsEditable { get; set; }
+		bool ConditionallySetsEnabled { get; set; }
+		bool ConditionallySetsHidden { get; set; }
+		bool ContinuouslyUpdatesValue { get; set; }
+		bool CreatesSortDescriptor { get; set; }
+		bool DeletesObjectsOnRemoveBindingsOption { get; set; }
+		string DisplayName { get; set; }
+		string DisplayPattern { get; set; }
+		nint ContentPlacementTag { get; set; }
+		bool HandlesContentAsCompoundValue { get; set; }
+		bool InsertsNullPlaceholder { get; set; }
+		bool InvokesSeparatelyWithArrayObjects { get; set; }
+		NSObject MultipleValuesPlaceholder { get; set; }
+		NSObject NoSelectionPlaceholder { get; set; }
+		NSObject NotApplicablePlaceholder { get; set; }
+		NSObject NullPlaceholder { get; set; }
+		bool RaisesForNotApplicableKeys { get; set; }
+		string PredicateFormat { get; set; }
+		string SelectorName { get; set; }
+		bool SelectsAllWhenSettingContent { get; set; }
+		bool ValidatesImmediately { get; set; }
+		string ValueTransformerName { get; set; }
+		NSValueTransformer ValueTransformer { get; set; }
+	}
 }

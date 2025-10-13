@@ -340,48 +340,7 @@ namespace Introspection {
 					break;
 				}
 				break;
-#if __TVOS__ || __MACCATALYST__
-			// broken with Xcode 12 beta 1
-			case "CKDiscoveredUserInfo":
-				switch (name) {
-				case "copyWithZone:":
-				case "encodeWithCoder:":
-					if (TestRuntime.CheckXcodeVersion (12, 0))
-						return true;
-					break;
-				}
-				break;
-			case "CKSubscription":
-				switch (name) {
-				case "setZoneID:":
-					if (TestRuntime.CheckXcodeVersion (12, 0))
-						return true;
-					break;
-				}
-				break;
-#endif
 #if __IOS__
-			// broken with Xcode 12 beta 1
-			case "ARBodyTrackingConfiguration":
-			case "ARImageTrackingConfiguration":
-			case "ARObjectScanningConfiguration":
-			case "ARWorldTrackingConfiguration":
-				switch (name) {
-				case "isAutoFocusEnabled":
-				case "setAutoFocusEnabled:":
-					if (TestRuntime.IsSimulatorOrDesktop && TestRuntime.CheckXcodeVersion (12, 0))
-						return true;
-					break;
-				}
-				break;
-			case "ARReferenceImage":
-				switch (name) {
-				case "copyWithZone:":
-					if (TestRuntime.IsSimulatorOrDesktop && TestRuntime.CheckXcodeVersion (12, 0))
-						return true;
-					break;
-				}
-				break;
 			// ARImageAnchor was added in iOS 11.3 but the conformance to ARTrackable, where `isTracked` comes from, started with iOS 12.0
 			case "ARImageAnchor":
 				switch (name) {

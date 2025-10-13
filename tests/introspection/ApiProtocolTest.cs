@@ -1003,28 +1003,13 @@ namespace Introspection {
 				if (result) {
 					// check that +supportsSecureCoding returns YES
 					if (!supports) {
-#if __IOS__
+#if __IOS__ && !__MACCATALYST__
 						// broken in xcode 12 beta 1 simulator (only)
-						if (TestRuntime.IsSimulatorOrDesktop && TestRuntime.CheckXcodeVersion (12, 0)) {
+						if (TestRuntime.IsSimulator) {
 							switch (type.Name) {
 							case "ARFaceGeometry":
-							case "ARPlaneGeometry":
 							case "ARPointCloud":
-							case "ARAnchor":
-							case "ARBodyAnchor":
-							case "AREnvironmentProbeAnchor":
-							case "ARFaceAnchor":
-							case "ARGeoAnchor":
-							case "ARGeometryElement":
-							case "ARGeometrySource":
-							case "ARImageAnchor":
-							case "ARMeshAnchor":
-							case "ARMeshGeometry":
-							case "ARObjectAnchor":
-							case "ARParticipantAnchor":
-							case "ARPlaneAnchor":
 							case "ARReferenceObject":
-							case "ARSkeletonDefinition": // iOS15 / device only
 							case "ARWorldMap":
 								return;
 							}

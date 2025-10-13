@@ -397,7 +397,7 @@ namespace AudioToolbox {
 
 				unsafe {
 					fixed (AudioStreamPacketDescription* aspd = value)
-						NativeMemory.Copy ((void *) aspd, (void *) IntPtrPacketDescriptions, (nuint) (sizeof (AudioStreamPacketDescription) * value.Length));
+						NativeMemory.Copy ((void*) aspd, (void*) IntPtrPacketDescriptions, (nuint) (sizeof (AudioStreamPacketDescription) * value.Length));
 					PacketDescriptionCount = value.Length;
 				}
 			}
@@ -408,7 +408,7 @@ namespace AudioToolbox {
 		/// <param name="size">Number of bytes to copy.</param>
 		public unsafe void CopyToAudioData (IntPtr source, int size)
 		{
-			CopyToAudioData (new ReadOnlySpan<byte> ((void *) source, size));
+			CopyToAudioData (new ReadOnlySpan<byte> ((void*) source, size));
 		}
 
 		/// <summary>Copies the specified buffer's <see cref="AudioData" /> buffer.</summary>
@@ -422,13 +422,13 @@ namespace AudioToolbox {
 		/// <summary>Creates a new span over the valid audio data for this buffer (<see cref="AudioData" />, <see cref="AudioDataByteSize" />).</summary>
 		public unsafe Span<byte> AsSpanOfValidData ()
 		{
-			return new Span<byte> ((void *) AudioData, (int) AudioDataByteSize);
+			return new Span<byte> ((void*) AudioData, (int) AudioDataByteSize);
 		}
 
 		/// <summary>Creates a new span over the entire audio data buffer (<see cref="AudioData" />, <see cref="AudioDataBytesCapacity" />).</summary>
 		public unsafe Span<byte> AsSpan ()
 		{
-			return new Span<byte> ((void *) AudioData, (int) AudioDataBytesCapacity);
+			return new Span<byte> ((void*) AudioData, (int) AudioDataBytesCapacity);
 		}
 	}
 
@@ -841,7 +841,7 @@ namespace AudioToolbox {
 		public unsafe AudioQueueStatus AllocateBuffer (int bufferSize, int numberOfPacketDescriptions, out AudioQueueBuffer* audioQueueBuffer)
 		{
 			fixed (AudioQueueBuffer** audioQueueBufferPtr = &audioQueueBuffer)
-				return AudioQueueAllocateBufferWithPacketDescriptions (GetCheckedHandle (), bufferSize, numberOfPacketDescriptions, (IntPtr *) audioQueueBufferPtr);
+				return AudioQueueAllocateBufferWithPacketDescriptions (GetCheckedHandle (), bufferSize, numberOfPacketDescriptions, (IntPtr*) audioQueueBufferPtr);
 		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
@@ -851,14 +851,14 @@ namespace AudioToolbox {
 		/// <param name="audioQueueBuffer">AudioQueue buffer previously allocated with AllocateBuffer.</param>
 		public unsafe void FreeBuffer (IntPtr audioQueueBuffer)
 		{
-			FreeBuffer ((AudioQueueBuffer *) audioQueueBuffer);
+			FreeBuffer ((AudioQueueBuffer*) audioQueueBuffer);
 		}
 
 		/// <summary>Releases an AudioQueue buffer.</summary>
 		/// <param name="audioQueueBuffer">AudioQueue buffer previously allocated with AllocateBuffer.</param>
 		public unsafe AudioQueueStatus FreeBuffer (AudioQueueBuffer* audioQueueBuffer)
 		{
-			if (audioQueueBuffer == null)
+			if (audioQueueBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioQueueBuffer));
 			return AudioQueueFreeBuffer (GetCheckedHandle (), (IntPtr) audioQueueBuffer);
 		}

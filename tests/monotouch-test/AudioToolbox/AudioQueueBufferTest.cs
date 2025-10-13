@@ -17,18 +17,17 @@ namespace MonoTouchFixtures.AudioToolbox {
 		[Test]
 		public unsafe void Properties ()
 		{
-			var asbd = new AudioStreamBasicDescription ()
-            {
-                Format = AudioFormatType.MPEG4AAC_HE,
-                BytesPerPacket = 0,
-                BitsPerChannel = 0,
-                Reserved = 0,
-                FormatFlags = 0,
-                BytesPerFrame = 0,
-                SampleRate = 16000,
-                ChannelsPerFrame = 1,
-                FramesPerPacket = 1024,
-            };
+			var asbd = new AudioStreamBasicDescription () {
+				Format = AudioFormatType.MPEG4AAC_HE,
+				BytesPerPacket = 0,
+				BitsPerChannel = 0,
+				Reserved = 0,
+				FormatFlags = 0,
+				BytesPerFrame = 0,
+				SampleRate = 16000,
+				ChannelsPerFrame = 1,
+				FramesPerPacket = 1024,
+			};
 			using var aq = new OutputAudioQueue (asbd);
 			AudioQueueBuffer* buffer = null;
 			Assert.AreEqual (AudioQueueStatus.Ok, aq.AllocateBuffer (5000, 1, out buffer), "AllocateBuffer");

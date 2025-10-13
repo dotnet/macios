@@ -6878,6 +6878,10 @@ namespace AVFoundation {
 		[Static, Export ("assetWriterWithURL:fileType:error:")]
 		AVAssetWriter FromUrl (NSUrl outputUrl, string outputFileType, out NSError error);
 
+		[return: NullAllowed]
+		[Wrap ("FromUrl (outputUrl, outputFileType.GetConstant ()!, out error)")]
+		AVAssetWriter FromUrl (NSUrl outputUrl, AVFileTypes outputFileType, out NSError error);
+
 		[DesignatedInitializer]
 		[Export ("initWithURL:fileType:error:")]
 		NativeHandle Constructor (NSUrl outputUrl, string outputFileType, out NSError error);

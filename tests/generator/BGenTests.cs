@@ -425,7 +425,9 @@ namespace GeneratorTests {
 		[Test]
 		public void StackOverflow20696157 ()
 		{
-			BuildFile (Profile.iOS, "sof20696157.cs");
+			BuildFile (Profile.iOS, (bgen) => {
+				bgen.NoWarn = "1123";
+			}, "sof20696157.cs");
 		}
 
 		[Test]
@@ -790,7 +792,12 @@ namespace GeneratorTests {
 		public void GHIssue9065_Sealed () => BuildFile (Profile.iOS, nowarnings: true, "ghissue9065.cs");
 
 		[Test]
-		public void GHIssue18645_DuplicatedFiled () => BuildFile (Profile.iOS, nowarnings: true, "ghissue18645.cs");
+		public void GHIssue18645_DuplicatedFiled ()
+		{
+			BuildFile (Profile.iOS, (bgen) => {
+				bgen.NoWarn = "1123";
+			}, "ghissue18645.cs");
+		}
 
 		// looking for [BindingImpl (BindingImplOptions.Optimizable)]
 		bool IsOptimizable (MethodDefinition method)
@@ -1488,6 +1495,7 @@ namespace GeneratorTests {
 			bgen.Profile = profile;
 			bgen.CompiledApiDefinitionAssembly = tmpassembly;
 			bgen.Defines = BGenTool.GetDefaultDefines (bgen.Profile);
+			bgen.NoWarn = "1123";
 			bgen.CreateTemporaryBinding (filename);
 			bgen.AssertExecute ("build");
 			bgen.AssertNoWarnings ();
@@ -1581,6 +1589,16 @@ namespace GeneratorTests {
 			foreach (var p in delegateCallback.Parameters.Where (v => v.Name != "result")) {
 				Assert.IsTrue (p.ParameterType.IsPointer, $"Pointer parameter type: {p.Name}");
 			}
+		}
+
+		[Test]
+		[TestCase (Profile.MacCatalyst)]
+		public void ProtocolWithBaseTypeButNoModel (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, false, "tests/protocol-and-basetype-no-model.cs");
+			bgen.AssertExecute ("build");
+			bgen.AssertWarning (1123, "The type Protocols.ProtocolWithBaseTypeButNoModel has a [Protocol] and a [BaseType] attribute, but no [Model] attribute. This is likely incorrect; either remove the [BaseType] attribute, or add a [Model] attribute.");
 		}
 
 		[Test]

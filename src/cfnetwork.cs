@@ -114,4 +114,25 @@ namespace CFNetwork {
 		[Field ("kCFHTTPAuthenticationAccountDomain", "CFNetwork")]
 		NSString _AuthenticationAccountDomain { get; }
 	}
+
+	[Static]
+	interface CFNetworkProxies {
+		[Field ("kCFNetworkProxiesHTTPEnable")]
+		NSString HttpEnable { get; }
+
+		[Field ("kCFNetworkProxiesHTTPPort")]
+		NSString HttpPort { get; }
+
+		[Field ("kCFNetworkProxiesHTTPProxy")]
+		NSString HttpProxy { get; }
+
+		[Field ("kCFNetworkProxiesProxyAutoConfigEnable")]
+		NSString ProxyAutoConfigEnable { get; }
+
+		[Field ("kCFNetworkProxiesProxyAutoConfigJavaScript")]
+		NSString ProxyAutoConfigJavaScript { get; }
+
+		[Field ("kCFNetworkProxiesProxyAutoConfigURLString")]
+		NSString ProxyAutoConfigUrlString { get; }
+	}
 }

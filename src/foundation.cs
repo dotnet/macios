@@ -2177,16 +2177,23 @@ namespace Foundation {
 		void Encode ([NullAllowed] NSObject obj);
 
 		[Export ("encodeRootObject:")]
-		void EncodeRoot ([NullAllowed] NSObject obj);
+		void EncodeRoot (NSObject obj);
 
+		[return: NullAllowed]
 		[Export ("decodeObject")]
 		NSObject DecodeObject ();
+
+		[Export ("decodeValueOfObjCType:at:size:")]
+		void DecodeValue (IntPtr objCTypeCode, IntPtr data, nuint size);
 
 		//
 		// Encoding and decoding with keys
 		// 
 		[Export ("encodeConditionalObject:forKey:")]
 		void EncodeConditionalObject ([NullAllowed] NSObject val, string key);
+
+		[Export ("encodeConditionalObject:")]
+		void EncodeConditionalObject ([NullAllowed] NSObject value);
 
 		[Export ("encodeObject:forKey:")]
 		void Encode ([NullAllowed] NSObject val, string key);
@@ -2217,6 +2224,9 @@ namespace Foundation {
 		[Export ("encodeBytes:length:forKey:")]
 		void EncodeBlock (IntPtr bytes, nint length, string key);
 
+		[Export ("encodeBytes:length:")]
+		void Encode (IntPtr bytes, nint length);
+
 		[Export ("containsValueForKey:")]
 		bool ContainsKey (string key);
 
@@ -2238,6 +2248,7 @@ namespace Foundation {
 		[Export ("decodeIntegerForKey:")]
 		nint DecodeNInt (string key);
 
+		[return: NullAllowed]
 		[Export ("decodeObjectForKey:")]
 		NSObject DecodeObject (string key);
 
@@ -2262,27 +2273,32 @@ namespace Foundation {
 		[Export ("decodeBytesWithReturnedLength:")]
 		IntPtr DecodeBytes (out nuint length);
 
+		[NullAllowed]
 		[Export ("allowedClasses")]
 		NSSet AllowedClasses { get; }
 
 		[Export ("requiresSecureCoding")]
 		bool RequiresSecureCoding ();
 
+		[return: NullAllowed]
 		[MacCatalyst (13, 1)]
 		[Export ("decodeTopLevelObjectAndReturnError:")]
-		NSObject DecodeTopLevelObject (out NSError error);
+		NSObject DecodeTopLevelObject ([NullAllowed] out NSError error);
 
+		[return: NullAllowed]
 		[MacCatalyst (13, 1)]
 		[Export ("decodeTopLevelObjectForKey:error:")]
-		NSObject DecodeTopLevelObject (string key, out NSError error);
+		NSObject DecodeTopLevelObject (string key, [NullAllowed] out NSError error);
 
+		[return: NullAllowed]
 		[MacCatalyst (13, 1)]
 		[Export ("decodeTopLevelObjectOfClass:forKey:error:")]
-		NSObject DecodeTopLevelObject (Class klass, string key, out NSError error);
+		NSObject DecodeTopLevelObject (Class klass, string key, [NullAllowed] out NSError error);
 
+		[return: NullAllowed]
 		[MacCatalyst (13, 1)]
 		[Export ("decodeTopLevelObjectOfClasses:forKey:error:")]
-		NSObject DecodeTopLevelObject ([NullAllowed] NSSet<Class> setOfClasses, string key, out NSError error);
+		NSObject DecodeTopLevelObject ([NullAllowed] NSSet<Class> setOfClasses, string key, [NullAllowed] out NSError error);
 
 		[MacCatalyst (13, 1)]
 		[Export ("failWithError:")]
@@ -2330,6 +2346,111 @@ namespace Foundation {
 		[TV (18, 4), iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
 		[Export ("decodeBytesForKey:minimumLength:")]
 		IntPtr DecodeBytes (string key, nuint minimumLength);
+
+		[Export ("allowsKeyedCoding")]
+		bool AllowsKeyedCoding { get; }
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Export ("encodePropertyList:")]
+		void EncodePropertyList (NSObject aPropertyList);
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[return: NullAllowed]
+		[Export ("decodePropertyList")]
+		NSObject DecodePropertyList ();
+
+		[Export ("decodePropertyListForKey:")]
+		[return: NullAllowed]
+		NSObject DecodePropertyList (string key);
+
+		[Export ("decodeObjectOfClass:forKey:")]
+		[return: NullAllowed]
+		NSObject DecodeObject (Class @class, string key);
+
+		[Wrap ("DecodeObject (new Class (type), key)")]
+		[return: NullAllowed]
+		NSObject DecodeObject (Type type, string key);
+
+		[Export ("decodeObjectOfClasses:forKey:")]
+		[return: NullAllowed]
+		NSObject DecodeObject ([NullAllowed] NSSet<Class> classes, string key);
+
+		[Wrap ("DecodeObject (new NSSet<Class> (Array.ConvertAll (types, t => new Class (t))), key)")]
+		[return: NullAllowed]
+		NSObject DecodeObject (Type [] types, string key);
+
+		[Export ("encodeBycopyObject:")]
+		void EncodeBycopyObject ([NullAllowed] NSObject anObject);
+
+		[Export ("encodeByrefObject:")]
+		void EncodeByrefObject ([NullAllowed] NSObject anObject);
+
+		[Export ("encodeDataObject:")]
+		void Encode (NSData data);
+
+		[return: NullAllowed]
+		[Export ("decodeDataObject")]
+		NSData DecodeDataObject ();
+
+		// from the NSGeometryCoding (NSCoder) category
+		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[Export ("encodePoint:")]
+		void Encode (CGPoint point);
+
+		// from the NSGeometryCoding (NSCoder) category
+		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[Export ("decodePoint")]
+		CGPoint DecodePoint ();
+
+		// from the NSGeometryCoding (NSCoder) category
+		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[Export ("encodeSize:")]
+		void Encode (CGSize size);
+
+		// from the NSGeometryCoding (NSCoder) category
+		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[Export ("decodeSize")]
+		CGSize DecodeSize ();
+
+		// from the NSGeometryCoding (NSCoder) category
+		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[Export ("encodeRect:")]
+		void Encode (CGRect rect);
+
+		// from the NSGeometryCoding (NSCoder) category
+		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[Export ("decodeRect")]
+		CGRect DecodeRect ();
+
+		// from the NSGeometryKeyedCoding (NSCoder) category
+		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[Export ("encodePoint:forKey:")]
+		void Encode (CGPoint point, string key);
+
+		// from the NSGeometryKeyedCoding (NSCoder) category
+		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[Export ("encodeSize:forKey:")]
+		void Encode (CGSize size, string key);
+
+		// from the NSGeometryKeyedCoding (NSCoder) category
+		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[Export ("encodeRect:forKey:")]
+		void Encode (CGRect rect, string key);
+
+		// from the NSGeometryKeyedCoding (NSCoder) category
+		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[Export ("decodePointForKey:")]
+		CGPoint DecodePoint (string key);
+
+		// from the NSGeometryKeyedCoding (NSCoder) category
+		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[Export ("decodeSizeForKey:")]
+		CGSize DecodeSize (string key);
+
+		// from the NSGeometryKeyedCoding (NSCoder) category
+		[NoiOS, NoTV, MacCatalyst (13, 1)]
+		[Export ("decodeRectForKey:")]
+		CGRect DecodeRect (string key);
 	}
 
 	[BaseType (typeof (NSPredicate))]

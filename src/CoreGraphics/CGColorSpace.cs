@@ -660,7 +660,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		static extern byte CGColorSpaceSupportsOutput (/* CGColorSpaceRef */ IntPtr space);
+		static extern byte CGColorSpaceSupportsOutput (/* CGColorSpaceRef cg_nullable */ IntPtr space);
 
 		/// <summary>Gets a Boolean value that tells whether the color space supports output.</summary>
 		///         <value>To be added.</value>
@@ -732,7 +732,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		static extern byte CGColorSpaceUsesExtendedRange (/* CGColorSpaceRef */ IntPtr space);
+		static extern byte CGColorSpaceUsesExtendedRange (/* CGColorSpaceRef gc_nullable */ IntPtr space);
 
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("tvos14.0")]
@@ -762,7 +762,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		static extern IntPtr CGColorSpaceCreateLinearized (/* CGColorSpaceRef */ IntPtr space);
+		static extern IntPtr CGColorSpaceCreateLinearized (/* CGColorSpaceRef gc_nullable */ IntPtr space);
 
 		[SupportedOSPlatform ("ios14.1")]
 		[SupportedOSPlatform ("tvos14.2")]
@@ -775,7 +775,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		static extern IntPtr CGColorSpaceCreateExtended (/* CGColorSpaceRef */ IntPtr space);
+		static extern IntPtr CGColorSpaceCreateExtended (/* CGColorSpaceRef gc_nullable */ IntPtr space);
 
 		[SupportedOSPlatform ("ios14.1")]
 		[SupportedOSPlatform ("tvos14.2")]
@@ -788,7 +788,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		static extern IntPtr CGColorSpaceCreateExtendedLinearized (/* CGColorSpaceRef */ IntPtr space);
+		static extern IntPtr CGColorSpaceCreateExtendedLinearized (/* CGColorSpaceRef gc_nullable */ IntPtr space);
 
 		[SupportedOSPlatform ("ios14.1")]
 		[SupportedOSPlatform ("tvos14.2")]
@@ -801,7 +801,7 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos13.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
-		static extern IntPtr CGColorSpaceCreateCopyWithStandardRange (/* CGColorSpaceRef */ IntPtr s);
+		static extern IntPtr CGColorSpaceCreateCopyWithStandardRange (/* CGColorSpaceRef cg_nullable */ IntPtr s);
 
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("tvos16.0")]

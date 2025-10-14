@@ -206,6 +206,19 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
+		internal static bool CopyInputsToRemoteServerAsync<T> (T task) where T : Task, IHasSessionId
+		{
+			try {
+				var rv = new TaskRunner (task.SessionId, task.BuildEngine4).CopyInputsAsync2 (task).Result;
+				if (!rv)
+					task.Log.LogError (MSBStrings.E7161 /* Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information. */);
+				return rv;
+			} catch (Exception ex) {
+				task.Log.LogErrorFromException (ex);
+				return false;
+			}
+		}
+
 		internal protected static ReportErrorCallback GetFileCopierReportErrorCallback (TaskLoggingHelper log)
 		{
 			return new ReportErrorCallback ((int code, string format, object? [] arguments) => {

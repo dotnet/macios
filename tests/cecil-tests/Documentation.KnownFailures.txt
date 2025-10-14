@@ -17055,6 +17055,7 @@ M:UIKit.UICollisionBehavior.remove_BeganContact(System.EventHandler{UIKit.UIColl
 M:UIKit.UICollisionBehavior.remove_EndedBoundaryContact(System.EventHandler{UIKit.UICollisionEndedBoundaryContactEventArgs})
 M:UIKit.UICollisionBehavior.remove_EndedContact(System.EventHandler{UIKit.UICollisionEndedContactEventArgs})
 M:UIKit.UIColor.LoadDataAsync(System.String,Foundation.NSProgress@)
+M:UIKit.UIColorEffect.Create(UIKit.UIColor)
 M:UIKit.UIColorPickerViewController.Dispose(System.Boolean)
 M:UIKit.UIColorPickerViewControllerDelegate_Extensions.DidFinish(UIKit.IUIColorPickerViewControllerDelegate,UIKit.UIColorPickerViewController)
 M:UIKit.UIColorPickerViewControllerDelegate_Extensions.DidSelectColor(UIKit.IUIColorPickerViewControllerDelegate,UIKit.UIColorPickerViewController,UIKit.UIColor,System.Boolean)
@@ -24252,6 +24253,7 @@ P:UIKit.UITabBarSelectionEventArgs.ViewController
 P:UIKit.UITabBarTabSelectionEventArgs.PreviousTab
 P:UIKit.UITabBarTabSelectionEventArgs.Tab
 P:UIKit.UITabBarTabVisibilityChangeEventArgs.Tabs
+P:UIKit.UITabGroup.IsSidebarDestination
 P:UIKit.UITableView.PrefetchingEnabled
 P:UIKit.UITableViewCell.UITableViewCellAppearance.FocusStyle
 P:UIKit.UITableViewCell.UITableViewCellAppearance.SeparatorInset
@@ -28506,6 +28508,7 @@ T:UIKit.UICollectionViewDiffableDataSourceSupplementaryViewProvider
 T:UIKit.UICollectionViewFlowLayoutSectionInsetReference
 T:UIKit.UICollectionViewSelfSizingInvalidation
 T:UIKit.UICollectionViewSupplementaryRegistrationConfigurationHandler
+T:UIKit.UIColorEffect
 T:UIKit.UIColorProminence
 T:UIKit.UIConfigurationColorTransformer
 T:UIKit.UIConfigurationColorTransformerHandler

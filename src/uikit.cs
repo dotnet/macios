@@ -30482,10 +30482,14 @@ namespace UIKit {
 		[Export ("supportsMultipleItems")]
 		bool SupportsMultipleItems { get; set; }
 
+#if !XAMCORE_5_0
 		[NullAllowed]
 		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Obsoleted (PlatformName.iOS, 26, 1, "This API has been removed.")]
+		[Obsoleted (PlatformName.MacCatalyst, 26, 1, "This API has been removed.")]
 		[Export ("imageOnlyForContextMenu", ArgumentSemantic.Strong)]
 		UIImage ImageOnlyForContextMenu { get; set; }
+#endif
 	}
 
 	interface IUIFocusItemContainer { }
@@ -37319,6 +37323,11 @@ namespace UIKit {
 
 		[Export ("initWithTitle:image:identifier:children:viewControllerProvider:")]
 		NativeHandle Constructor (string title, [NullAllowed] UIImage image, string identifier, UITab [] children, [NullAllowed] Func<UITab, UIViewController> viewControllerProvider);
+
+		// Header says available in iOS 26.0+, but let's use the actual version when it was released instead.
+		[NoTV, iOS (26, 1), MacCatalyst (26, 1)]
+		[Export ("isSidebarDestination")]
+		bool IsSidebarDestination { get; set; }
 	}
 
 	[NoTV, iOS (18, 0), MacCatalyst (18, 0)]
@@ -38400,5 +38409,16 @@ namespace UIKit {
 		[Static]
 		[Export ("containerConcentricRadiusWithMinimum:")]
 		UICornerRadius CreateContainerConcentric (nfloat minimum);
+	}
+
+	// Header says available in iOS 11+, but I don't believe that
+	[iOS (26, 1), TV (26, 1), MacCatalyst (26, 1)]
+	[BaseType (typeof(UIVisualEffect))]
+	[DisableDefaultCtor]
+	interface UIColorEffect
+	{
+		[Static]
+		[Export ("effectWithColor:")]
+		UIColorEffect Create ([NullAllowed] UIColor color);
 	}
 }

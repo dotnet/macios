@@ -1,4 +1,0 @@
-!missing-selector! +UIColorEffect::effectWithColor: not bound
-!missing-selector! UITabGroup::isSidebarDestination not bound
-!missing-selector! UITabGroup::setIsSidebarDestination: not bound
-!missing-type! UIColorEffect not bound

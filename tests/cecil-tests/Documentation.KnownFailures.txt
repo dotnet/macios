@@ -3319,6 +3319,7 @@ F:Foundation.NSUrlBookmarkResolutionOptions.WithoutImplicitStartAccessing
 F:Foundation.NSUrlErrorNetworkUnavailableReason.Cellular
 F:Foundation.NSUrlErrorNetworkUnavailableReason.Constrained
 F:Foundation.NSUrlErrorNetworkUnavailableReason.Expensive
+F:Foundation.NSUrlErrorNetworkUnavailableReason.UltraConstrained
 F:Foundation.NSURLRequestAttribution.Developer
 F:Foundation.NSURLRequestAttribution.User
 F:Foundation.NSUrlRequestNetworkServiceType.AVStreaming
@@ -21052,6 +21053,7 @@ P:Foundation.NSObjectEventArgs.Obj
 P:Foundation.NSOrderedSet.Item(System.IntPtr)
 P:Foundation.NSOrderedSet`1.Item(System.IntPtr)
 P:Foundation.NSProcessInfo.IsiOSApplicationOnMac
+P:Foundation.NSProcessInfo.IsiOSAppOnVision
 P:Foundation.NSProcessInfo.IsMacCatalystApplication
 P:Foundation.NSStreamEventArgs.StreamEvent
 P:Foundation.NSString.Item(System.IntPtr)
@@ -21060,6 +21062,7 @@ P:Foundation.NSUbiquitousKeyValueStore.Item(System.String)
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangedKeys
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangeReason
 P:Foundation.NSUndoManagerCloseUndoGroupEventArgs.Discardable
+P:Foundation.NSUrlSessionConfiguration.AllowsUltraConstrainedNetworkAccess
 P:Foundation.NSUrlSessionConfiguration.ProxyConfigurations
 P:Foundation.NSUrlSessionConfiguration.SessionType
 P:Foundation.NSUrlSessionConfiguration.StrongConnectionProxyDictionary

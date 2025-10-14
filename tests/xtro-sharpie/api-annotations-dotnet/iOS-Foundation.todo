@@ -1,7 +1,0 @@
-!missing-enum-value! NSUrlErrorNetworkUnavailableReason native value NSURLErrorNetworkUnavailableReasonUltraConstrained = 3 not bound
-!missing-selector! NSMutableURLRequest::allowsUltraConstrainedNetworkAccess not bound
-!missing-selector! NSMutableURLRequest::setAllowsUltraConstrainedNetworkAccess: not bound
-!missing-selector! NSProcessInfo::isiOSAppOnVision not bound
-!missing-selector! NSURLRequest::allowsUltraConstrainedNetworkAccess not bound
-!missing-selector! NSURLSessionConfiguration::allowsUltraConstrainedNetworkAccess not bound
-!missing-selector! NSURLSessionConfiguration::setAllowsUltraConstrainedNetworkAccess: not bound

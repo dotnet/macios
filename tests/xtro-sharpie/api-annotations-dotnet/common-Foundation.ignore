@@ -179,6 +179,11 @@
 # same as NSDictionary::objectForKey according to docs
 !missing-selector! NSDictionary::objectForKeyedSubscript: not bound
 
+# these selectors are in the headers, but introspection says they're not there, and an Xcode test confirms they're not available
+!missing-selector! NSURLRequest::allowsUltraConstrainedNetworkAccess not bound
+!missing-selector! NSMutableURLRequest::allowsUltraConstrainedNetworkAccess not bound
+!missing-selector! NSMutableURLRequest::setAllowsUltraConstrainedNetworkAccess: not bound
+
 ## unsorted
 
 !extra-designated-initializer! NSSortDescriptor::initWithCoder: is incorrectly decorated with an [DesignatedInitializer] attribute

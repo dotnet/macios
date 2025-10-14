@@ -34,6 +34,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -776,6 +777,7 @@ namespace AudioToolbox {
 		///   <para>Use <see cref="FreeBuffer(System.IntPtr)" /> to dispose the buffer.</para>
 		/// </remarks>
 		[Obsolete ("Call 'AllocateBuffer(int, out AudioQueueBuffer*)' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public AudioQueueStatus AllocateBuffer (int bufferSize, out IntPtr audioQueueBuffer)
 		{
 			audioQueueBuffer = default (IntPtr);
@@ -818,6 +820,7 @@ namespace AudioToolbox {
 		///   <para>Use <see cref="FreeBuffer(System.IntPtr)" /> to free the buffer (if not it will be freed when this audio queue is disposed).</para>
 		/// </remarks>
 		[Obsolete ("Call 'AllocateBuffer(int, int, out AudioQueueBuffer*)' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public AudioQueueStatus AllocateBufferWithPacketDescriptors (int bufferSize, int nPackets, out IntPtr audioQueueBuffer)
 		{
 			audioQueueBuffer = default (IntPtr);

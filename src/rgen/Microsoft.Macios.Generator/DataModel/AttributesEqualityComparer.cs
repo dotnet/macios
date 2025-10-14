@@ -32,28 +32,14 @@ class AttributeComparer : IComparer<AttributeCodeChange> {
 		return 0;
 	}
 }
-class AttributesEqualityComparer : EqualityComparer<ImmutableArray<AttributeCodeChange>> {
 
-	public override bool Equals (ImmutableArray<AttributeCodeChange> x, ImmutableArray<AttributeCodeChange> y)
-	{
-		if (x.Length != y.Length)
-			return false;
-		var comparer = new AttributeComparer ();
-		var xOrdered = x.Sort (comparer).ToArray ();
-		var yOrdered = y.Sort (comparer).ToArray ();
-		for (var i = 0; i < x.Length; i++) {
-			if (xOrdered [i] != yOrdered [i])
-				return false;
-		}
-		return true;
-	}
+/// <summary>
+/// Compares two `ImmutableArray&lt;AttributeCodeChange&gt;` instances.
+/// </summary>
+class AttributesEqualityComparer : ImmutableArrayEqualityComparer<AttributeCodeChange, AttributeCodeChange> {
+	readonly AttributeComparer comparer = new ();
 
-	public override int GetHashCode (ImmutableArray<AttributeCodeChange> obj)
-	{
-		var hash = new HashCode ();
-		foreach (var change in obj) {
-			hash.Add (change.GetHashCode ());
-		}
-		return hash.ToHashCode ();
-	}
+	/// <inheritdoc/>
+	protected override AttributeCodeChange [] Sort (ImmutableArray<AttributeCodeChange> array)
+		=> array.Sort (comparer).ToArray ();
 }

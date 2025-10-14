@@ -43,12 +43,19 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 	<!-- Sometimes we've used different variable names for the same thing for Xamarin.iOS and Xamarin.Mac projects. Here we try to unify those variables -->
 	<PropertyGroup>
 		<!-- ResourcePrefix -->
+		<!-- First set platform-specific properties if not already set (for backwards compatibility) -->
 		<MonoMacResourcePrefix Condition="'$(_PlatformName)' == 'macOS' And '$(MonoMacResourcePrefix)' == ''">Resources</MonoMacResourcePrefix>
 		<XamMacResourcePrefix Condition="'$(_PlatformName)' == 'macOS' And '$(XamMacResourcePrefix)' == ''">$(MonoMacResourcePrefix)</XamMacResourcePrefix>
 		<XamMacResourcePrefix Condition="'$(_PlatformName)' == 'macOS' And '$(XamMacResourcePrefix)' == ''">Resources</XamMacResourcePrefix>
 		<IPhoneResourcePrefix Condition="'$(_PlatformName)' != 'macOS' And '$(IPhoneResourcePrefix)' == ''">Resources</IPhoneResourcePrefix>
-		<_ResourcePrefix Condition="'$(_PlatformName)' == 'macOS'">$(XamMacResourcePrefix)</_ResourcePrefix>
-		<_ResourcePrefix Condition="'$(_PlatformName)' != 'macOS'">$(IPhoneResourcePrefix)</_ResourcePrefix>
+		
+		<!-- Set AppBundleResourcePrefix from platform-specific properties if not already set -->
+		<AppBundleResourcePrefix Condition="'$(AppBundleResourcePrefix)' == '' And '$(_PlatformName)' == 'macOS'">$(XamMacResourcePrefix)</AppBundleResourcePrefix>
+		<AppBundleResourcePrefix Condition="'$(AppBundleResourcePrefix)' == '' And '$(_PlatformName)' != 'macOS'">$(IPhoneResourcePrefix)</AppBundleResourcePrefix>
+		<AppBundleResourcePrefix Condition="'$(AppBundleResourcePrefix)' == ''">Resources</AppBundleResourcePrefix>
+		
+		<!-- Set _ResourcePrefix from AppBundleResourcePrefix -->
+		<_ResourcePrefix>$(AppBundleResourcePrefix)</_ResourcePrefix>
 
 		<!-- SdkVersion -->
 		<_SdkVersion Condition="'$(_PlatformName)' == 'macOS'">$(MacOSXSdkVersion)</_SdkVersion>
@@ -213,11 +220,24 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- that also encapsulates whether we're a library or not (this makes conditions simpler) -->
 		<_BundleOriginalResources Condition="'$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(BundleOriginalResources)' == 'true'">true</_BundleOriginalResources>
 
-		<EnableDiagnostics Condition="'$(EnableDiagnostics)' == '' And '$(_BundlerDebug)' == 'true'">true</EnableDiagnostics>
+		<EnableDiagnostics Condition="'$(EnableDiagnostics)' == '' And ('$(DiagnosticConfiguration)' != '' Or '$(DiagnosticAddress)' != '' Or '$(DiagnosticPort)' != '' Or '$(DiagnosticSuspend)' != '' Or '$(DiagnosticListenMode)' != '')">true</EnableDiagnostics>
 
 		<!-- Set the name of the native executable -->
 		<_NativeExecutableName Condition="'$(_NativeExecutableName)' == ''">$(AssemblyName)</_NativeExecutableName>
 	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(EnableDiagnostics)' == 'true' And '$(DiagnosticConfiguration)' == ''">
+		<DiagnosticAddress Condition="'$(DiagnosticAddress)' == ''">127.0.0.1</DiagnosticAddress>
+		<DiagnosticPort Condition="'$(DiagnosticPort)' == ''">9000</DiagnosticPort>
+		<DiagnosticSuspend Condition="'$(DiagnosticSuspend)' == ''">false</DiagnosticSuspend>
+		<DiagnosticListenMode Condition="'$(DiagnosticListenMode)' == ''">listen</DiagnosticListenMode>
+		<DiagnosticConfiguration>$(DiagnosticAddress):$(DiagnosticPort),$(DiagnosticListenMode)</DiagnosticConfiguration>
+		<DiagnosticConfiguration Condition="'$(DiagnosticSuspend)' == 'true'">$(DiagnosticConfiguration),suspend</DiagnosticConfiguration>
+		<DiagnosticConfiguration Condition="'$(DiagnosticSuspend)' != 'true'">$(DiagnosticConfiguration),nosuspend</DiagnosticConfiguration>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(EnableDiagnostics)' == 'true' And '$(DiagnosticConfiguration)' != '' And '$(DiagnosticConfiguration)' != 'disable'">
+		<_BundlerEnvironmentVariables Include="DOTNET_DiagnosticPorts" Value="$(DiagnosticConfiguration)" Overwrite="false" />
+	</ItemGroup>
 
 	<PropertyGroup Condition="'$(IsBindingProject)' == 'true'">
 		<GeneratedSourcesDir Condition="'$(GeneratedSourcesDir)' == ''">$(IntermediateOutputPath)$(_PlatformName)</GeneratedSourcesDir>

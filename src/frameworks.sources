@@ -263,7 +263,6 @@ AVFOUNDATION_SOURCES = \
 	AVFoundation/AVDepthData.cs \
 	AVFoundation/AVLayerVideoGravity.cs \
 	AVFoundation/AVMetadataMachineReadableCodeObject.cs \
-	AVFoundation/AVMetadataObject.cs \
 	AVFoundation/AVOutputSettingsAssistant.cs \
 	AVFoundation/AVPlayerItem.cs \
 	AVFoundation/AVPlayerItemVideoOutput.cs \
@@ -287,6 +286,7 @@ AVKIT_API_SOURCES = \
 	AVKit/Enums.cs \
 
 AVKIT_SOURCES = \
+	AVKit/AVCaptureEventSound.cs \
 	AVKit/AVPlayerViewController.cs \
 
 # AVRouting
@@ -302,6 +302,7 @@ BACKGROUNDTASKS_API_SOURCES = \
 # BackgroundAssets
 
 BACKGROUNDASSETS_SOURCES = \
+	BackgroundAssets/BAAssetPackManifest.cs \
 	BackgroundAssets/BACompat.cs \
 
 # BrowserEngineKit
@@ -494,16 +495,23 @@ COREGRAPHICS_CORE_SOURCES = \
 	CoreGraphics/CGLayer.cs \
 	CoreGraphics/CGPath.cs \
 	CoreGraphics/CGPoint.cs \
+	CoreGraphics/CGPointDictionary.cs \
 	CoreGraphics/CGRect.cs \
+	CoreGraphics/CGRectDictionary.cs \
 	CoreGraphics/CGSize.cs \
+	CoreGraphics/CGSizeDictionary.cs \
 	CoreGraphics/CGVector.cs \
 	CoreGraphics/CGPDFDocument.cs \
 	CoreGraphics/CGPDFPage-2.cs \
 
 COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGBitmapContext.cs \
+	CoreGraphics/CGBitmapInfo.cs \
+	CoreGraphics/CGBitmapParameters.cs \
 	CoreGraphics/CGContextPDF.cs \
 	CoreGraphics/CGColorConversionInfo.cs \
+	CoreGraphics/CGContentInfo.cs \
+	CoreGraphics/CGContentToneMappingInfo.cs \
 	CoreGraphics/CGDataConsumer.cs \
 	CoreGraphics/CGDataProvider.cs \
 	CoreGraphics/CGEventSource.cs \
@@ -521,8 +529,10 @@ COREGRAPHICS_SOURCES = \
 	CoreGraphics/CGPDFStream.cs \
 	CoreGraphics/CGPDFString.cs \
 	CoreGraphics/CGPdfTagType.cs \
+	CoreGraphics/CGRenderingBufferProvider.cs \
 	CoreGraphics/CGSession.cs \
 	CoreGraphics/CGShading.cs \
+	CoreGraphics/CGToneMappingOptions.cs \
 	CoreGraphics/NativeDrawingMethods.cs \
 	CoreGraphics/NSValue.cs \
 
@@ -547,7 +557,9 @@ COREIMAGE_SOURCES = \
 	CoreImage/CIFilter.cs \
 	CoreImage/CIImage.cs \
 	CoreImage/CISampler.cs \
+	CoreImage/CISystemToneMap.cs \
 	CoreImage/CIVector.cs \
+	CoreImage/ICISystemToneMapProtocol.cs \
 
 # CoreLocation
 
@@ -694,6 +706,8 @@ COREVIDEO_SOURCES = \
 	CoreVideo/CVMetalTextureAttributes.cs \
 	CoreVideo/CVMetalTextureCache.cs \
 	CoreVideo/CVPixelBufferIOSurface.cs \
+	CoreVideo/CVOpenGLESTexture.cs \
+	CoreVideo/CVOpenGLESTextureCache.cs \
 	CoreVideo/CVPixelBufferPoolSettings.cs \
 	CoreVideo/CVPixelFormatDescription.cs \
 	CoreVideo/CVTime.cs \
@@ -813,7 +827,6 @@ FOUNDATION_SOURCES = \
 	Foundation/NSAttributedString.mac.cs \
 	Foundation/NSBundle.cs \
 	Foundation/NSBundleResourceRequest.cs \
-	Foundation/NSCalendar.cs \
 	Foundation/NSCoder.cs \
 	Foundation/NSOrderedCollectionChange.cs \
 	Foundation/NSOrderedCollectionChange_1.cs \
@@ -1007,6 +1020,7 @@ IMAGEIO_CORE_SOURCES = \
 	ImageIO/CGImageSource.cs \
 
 IMAGEIO_SOURCES = \
+	ImageIO/CGCopyImageSourceOptions.cs \
 	ImageIO/CGImageAnimation.cs \
 	ImageIO/CGImageDestination.cs \
 	ImageIO/CGImageMetadata.cs \
@@ -1154,6 +1168,14 @@ METAL_CORE_SOURCES = \
 	Metal/Defs.cs \
 
 METAL_SOURCES = \
+	Metal/MTL4CommandBuffer.cs \
+	Metal/MTL4CommandQueue.cs \
+	Metal/MTL4CopySparseBufferMappingOperation.cs \
+	Metal/MTL4CopySparseTextureMappingOperation.cs \
+	Metal/MTL4RenderCommandEncoder.cs \
+	Metal/MTL4RenderPassDescriptor.cs \
+	Metal/MTL4UpdateSparseBufferMappingOperation.cs \
+	Metal/MTL4UpdateSparseTextureMappingOperation.cs \
 	Metal/MTLArgumentEncoder.cs \
 	Metal/MTLBlitPassSampleBufferAttachmentDescriptorArray.cs \
 	Metal/MTLCommandBuffer.cs \
@@ -1171,6 +1193,7 @@ METAL_SOURCES = \
 	Metal/MTLResidencySet.cs \
 	Metal/MTLResourceStateCommandEncoder.cs \
 	Metal/MTLResourceStatePassSampleBufferAttachmentDescriptorArray.cs \
+	Metal/MTLTensorExtents.cs \
 	Metal/MTLVertexDescriptor.cs \
 
 # MetalFX
@@ -1194,6 +1217,7 @@ METALPERFORMANCESHADERS_CORE_SOURCES = \
 
 METALPERFORMANCESHADERS_SOURCES = \
 	MetalPerformanceShaders/MPSImageBatch.cs \
+	MetalPerformanceShaders/MPSImageCanny.cs \
 	MetalPerformanceShaders/MPSImageScale.cs \
 	MetalPerformanceShaders/MPSCnnConvolutionDescriptor.cs \
 	MetalPerformanceShaders/MPSCnnNeuron.cs \
@@ -1202,6 +1226,7 @@ METALPERFORMANCESHADERS_SOURCES = \
 	MetalPerformanceShaders/MPSNDArrayDescriptor.cs \
 	MetalPerformanceShaders/MPSNDArrayIdentity.cs \
 	MetalPerformanceShaders/MPSNNGraph.cs \
+	MetalPerformanceShaders/MPSNNOptimizerStochasticGradientDescent.cs \
 	MetalPerformanceShaders/MPSStateBatch.cs \
 	MetalPerformanceShaders/MPSStateResourceList.cs \
 
@@ -1403,10 +1428,6 @@ PASSKIT_SOURCES = \
 	PassKit/PKPaymentRequest.cs	\
 	PassKit/PKShareablePassMetadata.cs \
 
-# PencilKit
-PENCILKIT_API_SOURCEs = \
-	PencilKit/Indexers.cs
-
 # PdfKit
 
 PDFKIT_API_SOURCES = \
@@ -1415,6 +1436,11 @@ PDFKIT_API_SOURCES = \
 PDFKIT_SOURCES = \
 	PdfKit/PdfAnnotation.cs \
 	PdfKit/PdfKit.cs \
+
+# Phase
+
+PHASE_SOURCES = \
+	Phase/PhaseConeDirectivityModelParameters.cs \
 
 # Photos
 
@@ -1557,6 +1583,11 @@ SECURITY_SOURCES = \
 	Security/SecTrust.cs \
 	Security/SslConnection.cs \
 	Security/SslContext.cs \
+
+# SensitiveContentAnalysis
+
+SENSITIVECONTENTANALYSIS_SOURCES = \
+	SensitiveContentAnalysis/SCVideoStreamAnalyzer.cs \
 
 # SensorKit
 
@@ -1752,6 +1783,7 @@ VIDEOTOOLBOX_SOURCES = \
 	VideoToolbox/VTDecompressionSession.cs \
 	VideoToolbox/VTFrameSilo.cs \
 	VideoToolbox/VTHdrPerFrameMetadataGenerationSession.cs \
+	VideoToolbox/VTLowLatencyFrameInterpolationConfiguration.cs \
 	VideoToolbox/VTMultiPassStorage.cs \
 	VideoToolbox/VTPixelRotationProperties.cs \
 	VideoToolbox/VTPixelRotationSession.cs \
@@ -1764,6 +1796,7 @@ VIDEOTOOLBOX_SOURCES = \
 	VideoToolbox/VTVideoEncoder.cs \
 	VideoToolbox/VTUtilities.cs \
 	VideoToolbox/VTPixelTransferProperties.cs \
+	VideoToolbox/VTMotionEstimationSession.cs \
 
 # Vision
 
@@ -1799,6 +1832,9 @@ WEBKIT_SOURCES = \
 	WebKit/WebNavigationPolicyEventArgs.cs \
 	WebKit/WebPolicyDelegate.cs \
 	WebKit/WebView.cs \
+	WebKit/WKContentRuleList.cs \
+	WebKit/WKContentRuleListStore.cs \
+	WebKit/WKNavigationResponse.cs \
 	WebKit/WKPreferences.cs \
 	WebKit/WKWebExtensionMatchPattern.cs \
 	WebKit/WKWindowFeatures.cs \
@@ -1845,8 +1881,6 @@ SHARED_CORE_SOURCES = \
 	ObjCRuntime/TransientString.cs \
 	ObjCRuntime/NFloat.cs \
 	ObjCRuntime/ObsoleteConstants.cs \
-	ObjCRuntime/PlatformAvailability.cs \
-	ObjCRuntime/PlatformAvailability2.cs \
 	ObjCRuntime/Protocol.cs \
 	ObjCRuntime/Registrar.core.cs \
 	ObjCRuntime/RequiresSuperAttribute.cs \
@@ -1860,6 +1894,7 @@ SHARED_CORE_SOURCES = \
 	Simd/MatrixFloat3x3RM.cs \
 	Simd/MatrixFloat4x3.cs \
 	Simd/MatrixFloat4x4.cs \
+	Simd/VectorByte16.cs \
 	Simd/VectorDouble2.cs \
 	Simd/VectorDouble3.cs \
 	Simd/VectorDouble4.cs \
@@ -1871,6 +1906,7 @@ SHARED_CORE_SOURCES = \
 
 SHARED_SOURCES = \
 	../runtime/Delegates.generated.cs \
+	Foundation/NSUrlSessionHandler.cs \
 	MonoNativeFunctionWrapperAttribute.cs \
 	NativeTypes/NMath.cs \
 	ObjCRuntime/AdoptsAttribute.cs \
@@ -1906,7 +1942,9 @@ SHARED_SOURCES = \
 	ObjCRuntime/TrampolineBlockBase.cs \
 	ObjCRuntime/TransientAttribute.cs \
 	ObjCRuntime/TypeConverter.cs \
-	ObjCRuntime/UserDelegateTypeAttribute.cs
+	ObjCRuntime/UserDelegateTypeAttribute.cs \
+	System.Net.Http/CFContentStream.cs \
+	System.Net.Http/CFNetworkHandler.cs \
 
 #
 # Here we list the frameworks each platform contains.
@@ -1920,6 +1958,7 @@ COMMON_FRAMEWORKS =         \
 	Accelerate              \
 	AuthenticationServices	\
 	AVFoundation            \
+	Cinematic               \
 	CoreBluetooth           \
 	CoreData                \
 	CoreFoundation          \
@@ -1933,6 +1972,7 @@ COMMON_FRAMEWORKS =         \
 	DeviceCheck             \
 	Foundation              \
 	GameKit                 \
+	MetalFX                 \
 	NaturalLanguage         \
 	Network                 \
 	OSLog                   \
@@ -1961,7 +2001,6 @@ MACOS_FRAMEWORKS =          \
 	BrowserEngineKit        \
 	CallKit \
 	CFNetwork               \
-	Cinematic              \
 	ClassKit                \
 	CloudKit                \
 	Contacts                \
@@ -1989,6 +2028,7 @@ MACOS_FRAMEWORKS =          \
 	FSKit                   \
 	GameController          \
 	GameplayKit             \
+	GameSave                \
 	GLKit                   \
 	HealthKit               \
 	ImageIO                 \
@@ -2010,7 +2050,6 @@ MACOS_FRAMEWORKS =          \
 	MediaPlayer             \
 	MediaToolbox            \
 	Metal                   \
-	MetalFX                 \
 	MetalKit                \
 	MetalPerformanceShaders \
 	MetalPerformanceShadersGraph \
@@ -2078,12 +2117,12 @@ IOS_FRAMEWORKS =         \
 	AutomaticAssessmentConfiguration \
 	BackgroundAssets \
 	BackgroundTasks \
+	BrowserEngineCore \
 	BrowserEngineKit \
 	BusinessChat \
 	CallKit \
 	CarPlay \
 	CFNetwork \
-	Cinematic \
 	ClassKit \
 	CloudKit \
 	Contacts \
@@ -2101,14 +2140,17 @@ IOS_FRAMEWORKS =         \
 	CoreTelephony \
 	CoreText \
 	DeviceDiscoveryExtension \
+	DeviceDiscoveryUI \
 	EventKit \
 	EventKitUI \
+	ExtensionKit \
 	ExternalAccessory \
 	FileProvider \
 	FileProviderUI \
 	GLKit \
 	GameController \
 	GameplayKit \
+	GameSave \
 	HealthKit \
 	HealthKitUI \
 	HomeKit \
@@ -2129,7 +2171,6 @@ IOS_FRAMEWORKS =         \
 	Messages \
 	MessageUI \
 	Metal \
-	MetalFX \
 	MetalKit \
 	MetalPerformanceShaders \
 	MetalPerformanceShadersGraph \
@@ -2167,6 +2208,7 @@ IOS_FRAMEWORKS =         \
 	Speech \
 	SystemConfiguration \
 	ThreadNetwork \
+	TouchController \
 	Twitter \
 	UIKit XKit \
 	UserNotifications \
@@ -2185,11 +2227,11 @@ TVOS_FRAMEWORKS =           \
 	AppTrackingTransparency \
 	AudioToolbox            \
 	AudioUnit               \
+	AVRouting               \
 	BackgroundAssets        \
 	BackgroundTasks         \
 	BrowserEngineKit        \
 	CFNetwork               \
-	Cinematic              \
 	CloudKit                \
 	CoreAnimation           \
 	CoreGraphics            \
@@ -2282,10 +2324,12 @@ MACCATALYST_FRAMEWORKS = \
 	EventKit \
 	EventKitUI \
 	ExecutionPolicy \
+	ExtensionKit \
 	ExternalAccessory \
 	FileProvider \
 	GameController \
 	GameplayKit \
+	GameSave \
 	HealthKit \
 	HealthKitUI \
 	HomeKit \

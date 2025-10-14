@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.DataModel;
+using Microsoft.Macios.Generator.Tests.Extensions;
 using Xamarin.Tests;
 using Xamarin.Utils;
 using Xunit;
@@ -190,7 +191,7 @@ public class TestClass {
 			.FirstOrDefault ();
 		Assert.NotNull (node);
 		var semanticModel = compilation.GetSemanticModel (sourceTrees [0]);
-		Assert.Equal (expected, Binding.Skip (node, semanticModel));
+		Assert.Equal (expected, Binding.PropertySkip (node, semanticModel));
 	}
 
 	class TestDataSkipMethodDeclaration : IEnumerable<object []> {
@@ -275,6 +276,7 @@ public class TestClass {
 			EnumMembers = [
 				new (
 					name: "BuiltInMicrophone",
+					index: 0,
 					libraryName: "AVCaptureDeviceTypeBuiltInMicrophone",
 					libraryPath: null,
 					fieldData: new (presentSelector),
@@ -318,14 +320,14 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -404,14 +406,14 @@ public class TestClass {
 						new (
 							accessorKind: AccessorKind.Add,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
 						new (
 							accessorKind: AccessorKind.Remove,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						)

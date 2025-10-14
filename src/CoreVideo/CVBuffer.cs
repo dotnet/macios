@@ -116,7 +116,8 @@ namespace CoreVideo {
 		unsafe static /* CFTypeRef */ IntPtr CVBufferGetAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key, out CVAttachmentMode attachmentMode)
 		{
 			attachmentMode = default;
-			return CVBufferGetAttachment (buffer, key, (CVAttachmentMode*) Unsafe.AsPointer<CVAttachmentMode> (ref attachmentMode));
+			fixed (CVAttachmentMode* attachmentModePtr = &attachmentMode)
+				return CVBufferGetAttachment (buffer, key, attachmentModePtr);
 		}
 
 		// The new method is the same as the old one but changing the ownership from Get to Copy, so we will use the new version if possible since the
@@ -135,7 +136,8 @@ namespace CoreVideo {
 		unsafe static IntPtr CVBufferCopyAttachment (IntPtr buffer, IntPtr key, out CVAttachmentMode attachmentMode)
 		{
 			attachmentMode = default;
-			return CVBufferCopyAttachment (buffer, key, (CVAttachmentMode*) Unsafe.AsPointer<CVAttachmentMode> (ref attachmentMode));
+			fixed (CVAttachmentMode* attachmentModePtr = &attachmentMode)
+				return CVBufferCopyAttachment (buffer, key, attachmentModePtr);
 		}
 
 		// any CF object can be attached

@@ -12,6 +12,7 @@ using static Microsoft.Macios.Generator.Nomenclator;
 using TypeInfo = Microsoft.Macios.Generator.DataModel.TypeInfo;
 
 namespace Microsoft.Macios.Generator.Emitters;
+
 static partial class BindingSyntaxFactory {
 
 	/// <summary>
@@ -53,6 +54,17 @@ static partial class BindingSyntaxFactory {
 			_ => []
 		};
 #pragma warning restore format
+	}
+
+	internal static ImmutableArray<SyntaxNode> GetNativeInvokeArgumentValidations (in ArgumentInfo argumentInfo)
+	{
+		// if the parameter does not allow the object to be null and it is a reference type, we need to add the null check
+		// otherwise ignore it. We do not want this check for INativeObjects (includes NSObject) because the GetNonNullableHandle
+		// will throw an exception if the object is null.
+		if (argumentInfo.Type is { IsReferenceType: true, IsINativeObject: false, IsNullable: false } && !argumentInfo.IsByRef) {
+			return [ThrowIfNull (argumentInfo.Name)];
+		}
+		return ImmutableArray<SyntaxNode>.Empty;
 	}
 
 	/// <summary>
@@ -258,14 +270,6 @@ static partial class BindingSyntaxFactory {
 	/// <returns>An immutable array of <see cref="SyntaxNode"/> representing the conversion statements.</returns>
 	internal static ImmutableArray<SyntaxNode> GetPreNativeInvokeArgumentConversions (in ArgumentInfo argumentInfo)
 	{
-		var builder = ImmutableArray.CreateBuilder<SyntaxNode> ();
-		// if the parameter does not allow the object to be null and it is a reference type, we need to add the null check
-		// otherwise ignore it. We do not want this check for INativeObjects (includes NSObject) because the GetNonNullableHandle
-		// will throw an exception if the object is null.
-		if (argumentInfo.Type is { IsReferenceType: true, IsINativeObject: false, IsNullable: false } && !argumentInfo.IsByRef) {
-			builder.Add (ThrowIfNull (argumentInfo.Name));
-		}
-
 		// based on the trampoline name and the parameter we will lower the parameter to the expected type for the invoker
 		// which is the lower type of the parameter
 #pragma warning disable format
@@ -435,8 +439,7 @@ static partial class BindingSyntaxFactory {
 #pragma warning restore format
 		}
 		// should contain any null check and the required conversions to the native type
-		builder.AddRange (conversions);
-		return builder.ToImmutable ();
+		return conversions;
 	}
 
 	/// <summary>

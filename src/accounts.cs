@@ -118,7 +118,6 @@ namespace Accounts {
 			""")]
 		void RequestAccess (ACAccountType accountType, ACRequestCompletionHandler completionHandler);
 
-		/// <include file="../docs/api/Accounts/ACAccountStore.xml" path="/Documentation/Docs[@DocId='P:Accounts.ACAccountStore.ChangeNotification']/*" />
 		[Deprecated (PlatformName.iOS, 14, 0)]
 		[Deprecated (PlatformName.MacOSX, 11, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0)]

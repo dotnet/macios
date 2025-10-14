@@ -16,7 +16,7 @@ using UIKit;
 #endif
 
 namespace ExtensionKit {
-	[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+	[Mac (13, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
 	[BaseType (typeof (UIViewController))]
 	interface EXAppExtensionBrowserViewController {
 		[DesignatedInitializer]
@@ -26,7 +26,7 @@ namespace ExtensionKit {
 
 	interface IEXHostViewControllerDelegate { }
 
-	[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+	[Mac (13, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface EXHostViewControllerDelegate {
@@ -37,6 +37,7 @@ namespace ExtensionKit {
 		void WillDeactivate (EXHostViewController viewController, [NullAllowed] NSError error);
 
 #if !XAMCORE_5_0
+		[NoiOS, NoMacCatalyst, NoTV]
 		[Obsoleted (PlatformName.MacOSX, 14, 0, message: "No longer required.")]
 		[Export ("shouldAcceptXPCConnection:")]
 		bool ShouldAcceptXpcConnection (NSXpcConnection connection);
@@ -44,7 +45,7 @@ namespace ExtensionKit {
 	}
 
 	// @interface EXHostViewController : NSViewController
-	[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+	[Mac (13, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
 	[BaseType (typeof (UIViewController))]
 	interface EXHostViewController {
 		[DesignatedInitializer]

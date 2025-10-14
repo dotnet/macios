@@ -8,7 +8,7 @@
       <para>A common transform is to locate the origin in the lower left-hand corner, with X and Y increasing to the right and upward, as shown with the green rays in the following image (note that, for visibility, the rays are set to originate at (5,5) rather than (0,0)). This is done with <c>ScaleCTM(1,-1)</c> and  <c>TranslateCTM(0, -Bounds.Height)</c> (see example below).</para>
       <para>More complex transforms are, possible, as illustrated by the blue rays, which illustrate a transform that is both translated and rotated. Note that manipulation of the CTM is stateful and order-dependent: the final transform is translated and rotated relative to the CTM used to the draw the 2nd-to-last green rays.</para>
       <para>
-        <img href="~/CoreGraphics/_images/CGContext.CTM.png" alt="Graphic illustrating the transforms created by the following code." />
+        <img href="~/xml/CoreGraphics/_images/CGContext.CTM.png" alt="Graphic illustrating the transforms created by the following code." />
       </para>
       <para>The following example shows the manipulation of the CTM to create the example image.</para>
       <example>
@@ -69,7 +69,7 @@ using (var ctxt = UIGraphics.GetCurrentContext ()) {
               ]]></code>
       </example>
       <para>
-        <img href="~/CoreGraphics/_images/CGContext.AddLines.png" alt="Graphic illustrating the curve created by calling this method" />
+        <img href="~/xml/CoreGraphics/_images/CGContext.AddLines.png" alt="Graphic illustrating the curve created by calling this method" />
       </para>
     </remarks>
   </Docs>

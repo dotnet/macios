@@ -55,6 +55,8 @@ test.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Version.De
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_VERSION_NO_METADATA=$($(platform)_NUGET_VERSION_NO_METADATA)\\n)" | sed 's/^ //' >> $@
 	@echo "SYSTEM_MONO=$(SYSTEM_MONO)" >> $@
 	@echo "DOTNET_DIR=$(DOTNET_DIR)" >> $@
+	@echo "INCLUDE_IOS=$(INCLUDE_IOS)" >> $@
+	@echo "INCLUDE_TVOS=$(INCLUDE_TVOS)" >> $@
 	@echo "INCLUDE_MAC=$(INCLUDE_MAC)" >> $@
 	@echo "INCLUDE_MACCATALYST=$(INCLUDE_MACCATALYST)" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_SDK_NAME=$($(platform)_NUGET_SDK_NAME)\\n)" | sed 's/^ //' >> $@
@@ -62,6 +64,7 @@ test.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Version.De
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(rid)_NUGET_RUNTIME_NAME=$($(rid)_NUGET_RUNTIME_NAME)\\n))" | sed 's/^ //' >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),SUPPORTED_API_VERSIONS_$(platform)='$(SUPPORTED_API_VERSIONS_$(platform))'\\n)" | sed 's/^ //' >> $@
 	@printf "ENABLE_XAMARIN=$(ENABLE_XAMARIN)\n" >> $@
+	@printf "ENABLE_ADR=$(ENABLE_ADR)\n" >> $@
 	@printf "XCODE_IS_STABLE=$(XCODE_IS_STABLE)\n" >> $@
 	@printf "XCODE_VERSION=$(XCODE_VERSION)\n" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),DOTNET_MIN_$(platform)_SDK_VERSION=$(DOTNET_MIN_$(platform)_SDK_VERSION)\\n)" | sed 's/^ //' >> $@
@@ -81,6 +84,8 @@ test-system.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Ver
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_VERSION_NO_METADATA=$($(platform)_NUGET_VERSION_NO_METADATA)\\n)" | sed 's/^ //' >> $@
 	@echo "SYSTEM_MONO=$(SYSTEM_MONO)" >> $@
 	@echo "DOTNET_DIR=$(DOTNET_DIR)" >> $@
+	@echo "INCLUDE_IOS=$(INCLUDE_IOS)" >> $@
+	@echo "INCLUDE_TVOS=$(INCLUDE_TVOS)" >> $@
 	@echo "INCLUDE_MAC=$(INCLUDE_MAC)" >> $@
 	@echo "INCLUDE_MACCATALYST=$(INCLUDE_MACCATALYST)" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_SDK_NAME=$($(platform)_NUGET_SDK_NAME)\\n)" | sed 's/^ //' >> $@
@@ -88,6 +93,7 @@ test-system.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Ver
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(rid)_NUGET_RUNTIME_NAME=$($(rid)_NUGET_RUNTIME_NAME)\\n))" | sed 's/^ //' >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),SUPPORTED_API_VERSIONS_$(platform)='$(SUPPORTED_API_VERSIONS_$(platform))'\\n)" | sed 's/^ //' >> $@
 	@printf "ENABLE_XAMARIN=$(ENABLE_XAMARIN)\n" >> $@
+	@printf "ENABLE_ADR=$(ENABLE_ADR)\n" >> $@
 	@printf "XCODE_IS_STABLE=$(XCODE_IS_STABLE)\n" >> $@
 	@printf "XCODE_VERSION=$(XCODE_VERSION)\n" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),DOTNET_MIN_$(platform)_SDK_VERSION=$(DOTNET_MIN_$(platform)_SDK_VERSION)\\n)" | sed 's/^ //' >> $@
@@ -144,14 +150,14 @@ test-msbuild run-tests-msbuild:
 	$(MAKE) test-macdev-tests test-macdev-tasks
 
 # Example TEST_FILTER:
-#    TEST_FILTER="--filter FullyQualifiedName~BuildMyCocoaApp"
+#    TEST_FILTER="--filter:FullyQualifiedName~BuildMyCocoaApp"
 # Docs: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test#filter-option-details
 test-macdev-tests: export MSBUILD_EXE_PATH=
 test-macdev-tests: verify-system-vsmac-xcode-match
 	$(Q) $(DOTNET) test $(TOP)/tests/msbuild/Xamarin.MacDev.Tests/Xamarin.MacDev.Tests.csproj $(TEST_FILTER)
 
 # Example TEST_FILTER:
-#    TEST_FILTER="--filter FullyQualifiedName~BuildMyCocoaApp"
+#    TEST_FILTER="--filter:FullyQualifiedName~BuildMyCocoaApp"
 # Docs: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test#filter-option-details
 test-macdev-tasks: export MSBUILD_EXE_PATH=
 test-macdev-tasks: verify-system-vsmac-xcode-match

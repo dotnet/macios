@@ -8,6 +8,9 @@ using ObjCRuntime;
 
 #if MONOMAC
 using AppKit;
+using XView = AppKit.NSView;
+#else
+using XView = UIKit.UIView;
 #endif
 
 namespace MetalKit {
@@ -35,15 +38,11 @@ namespace MetalKit {
 		NSString ErrorKey { get; }
 	}
 
-	/// <summary>A <see cref="UIKit.UIView" /> that is Metal-aware.</summary>
+	/// <summary>A <see cref="XView" /> that is Metal-aware.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalKit/Reference/MTKView_ClassReference/index.html">Apple documentation for <c>MTKView</c></related>
 	[MacCatalyst (13, 1)]
-#if MONOMAC
-	[BaseType (typeof (AppKit.NSView))]
-#else
-	[BaseType (typeof (UIKit.UIView))]
-#endif
+	[BaseType (typeof (XView))]
 	interface MTKView : NSCoding, CALayerDelegate {
 		[Export ("initWithFrame:device:")]
 		[DesignatedInitializer]
@@ -159,14 +158,13 @@ namespace MetalKit {
 		[Mac (13, 0), iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 		[Export ("depthStencilStorageMode", ArgumentSemantic.Assign)]
 		MTLStorageMode DepthStencilStorageMode { get; set; }
+
+		// Header says this property is not available in the simulator.
+		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("currentMTL4RenderPassDescriptor"), NullAllowed]
+		MTL4RenderPassDescriptor CurrentMtl4RenderPassDescriptor { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="MetalKit.MTKViewDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="MetalKit.MTKViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="MetalKit.MTKViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="MetalKit.MTKViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IMTKViewDelegate { }
 
 	/// <summary>Delegate object for <see cref="MetalKit.MTKView" /> objects. Provides methods called when the view is drawn and laid out.</summary>

@@ -62,7 +62,10 @@ public class AttributeManager {
 			return typeof (DelegateApiNameAttribute);
 		case "DelegateNameAttribute":
 			return typeof (DelegateNameAttribute);
+		case "ObjCRuntime.DesignatedInitializerAttribute":
+#if !XAMCORE_5_0
 		case "DesignatedInitializerAttribute":
+#endif
 			return typeof (DesignatedInitializerAttribute);
 		case "DisableDefaultCtorAttribute":
 			return typeof (DisableDefaultCtorAttribute);

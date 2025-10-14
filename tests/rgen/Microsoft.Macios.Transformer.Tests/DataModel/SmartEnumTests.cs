@@ -61,18 +61,21 @@ public enum AVCaptureDeviceType {
 					EnumMembers = [
 						new EnumMember (
 							name: "BuiltInMicrophone",
+							index: 0,
 							libraryName: "AVFoundation",
 							libraryPath: null,
 							fieldData: new ("AVCaptureDeviceTypeBuiltInMicrophone"),
 							symbolAvailability: availabilityBuilder.ToImmutable ()),
 						new EnumMember (
 							name: "BuiltInWideAngleCamera",
+							index: 1,
 							libraryName: "AVFoundation",
 							libraryPath: null,
 							fieldData: new ("AVCaptureDeviceTypeBuiltInWideAngleCamera"),
 							symbolAvailability: availabilityBuilder.ToImmutable ()),
 						new EnumMember (
 							name: "BuiltInTelephotoCamera",
+							index: 2,
 							libraryName: "AVFoundation",
 							libraryPath: null,
 							fieldData: new ("AVCaptureDeviceTypeBuiltInTelephotoCamera"),
@@ -97,7 +100,6 @@ public enum AVCaptureDeviceType {
 	[Field (""AVCaptureDeviceTypeBuiltInWideAngleCamera"")]
 	BuiltInWideAngleCamera,
 
-	// missing attr, this should be ignored
 	BuiltInTelephotoCamera,
 }
 ";
@@ -117,12 +119,14 @@ public enum AVCaptureDeviceType {
 					EnumMembers = [
 						new EnumMember (
 							name: "BuiltInMicrophone",
+							index: 0,
 							libraryName: "AVFoundation",
 							libraryPath: null,
 							fieldData: new ("AVCaptureDeviceTypeBuiltInMicrophone"),
 							symbolAvailability: availabilityBuilder.ToImmutable ()),
 						new EnumMember (
 							name: "BuiltInWideAngleCamera",
+							index: 1,
 							libraryName: "AVFoundation",
 							libraryPath: null,
 							fieldData: new ("AVCaptureDeviceTypeBuiltInWideAngleCamera"),

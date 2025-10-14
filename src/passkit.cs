@@ -137,7 +137,7 @@ namespace PassKit {
 		NSSet<PKSecureElementPass> GetPasses (string readerIdentifier);
 
 		/// <param name="passType">To be added.</param>
-		///         <summary>The passes in the user's pass library whose <see cref="PassKit.PKPassType.PassType" /> matches <paramref name="passType" />.</summary>
+		///         <summary>The passes in the user's pass library whose <see cref="PassKit.PKPass.PassType" /> matches <paramref name="passType" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -176,12 +176,10 @@ namespace PassKit {
 			""")]
 		void AddPasses (PKPass [] passes, [NullAllowed] Action<PKPassLibraryAddPassesStatus> completion);
 
-		/// <include file="../docs/api/PassKit/PKPassLibrary.xml" path="/Documentation/Docs[@DocId='P:PassKit.PKPassLibrary.DidChangeNotification']/*" />
 		[Field ("PKPassLibraryDidChangeNotification")]
 		[Notification]
 		NSString DidChangeNotification { get; }
 
-		/// <include file="../docs/api/PassKit/PKPassLibrary.xml" path="/Documentation/Docs[@DocId='P:PassKit.PKPassLibrary.RemotePaymentPassesDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("PKPassLibraryRemotePaymentPassesDidChangeNotification")]
 		[Notification]
@@ -368,6 +366,15 @@ namespace PassKit {
 		[iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0), NoTV]
 		[Export ("encryptedServiceProviderDataForSecureElementPass:completion:")]
 		void GetEncryptedServiceProviderData (PKSecureElementPass secureElementPass, Action<NSDictionary, NSError> completion);
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0), NoTV]
+		[Export ("authorizationStatusForCapability:")]
+		PKPassLibraryAuthorizationStatus GetAuthorizationStatus (PKPassLibraryCapability capability);
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0), NoTV]
+		[Export ("requestAuthorizationForCapability:completion:")]
+		[Async]
+		void RequestAuthorization (PKPassLibraryCapability capability, Action<PKPassLibraryAuthorizationStatus> completion);
 	}
 
 	/// <summary>A class whose static members represent keys to be used with the <see cref="PassKit.PKPass.GetLocalizedValue(Foundation.NSString)" /> method.</summary>
@@ -479,12 +486,6 @@ namespace PassKit {
 	/// <summary>Delegate called when the user has selected a shipping method.</summary>
 	delegate void PKPaymentShippingMethodSelected (PKPaymentAuthorizationStatus status, PKPaymentSummaryItem [] summaryItems);
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PassKit.PKPaymentAuthorizationViewControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PassKit.PKPaymentAuthorizationViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PassKit.PKPaymentAuthorizationViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="PassKit.PKPaymentAuthorizationViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IPKPaymentAuthorizationViewControllerDelegate { }
 
 	/// <summary>Delegate object providing events relating to a payment authorization request made with a <see cref="PassKit.PKPaymentAuthorizationViewController" />.</summary>
@@ -1149,6 +1150,11 @@ namespace PassKit {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("merchantCategoryCode", ArgumentSemantic.Assign)]
 		PKMerchantCategoryCode MerchantCategoryCode { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0), NoTV]
+		[NullAllowed]
+		[Export ("attributionIdentifier")]
+		string AttributionIdentifier { get; set; }
 	}
 
 	/// <summary>Enumerates fields for a contact.</summary>
@@ -1297,12 +1303,6 @@ namespace PassKit {
 		IPKAddPassesViewControllerDelegate Delegate { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PassKit.PKAddPassesViewControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PassKit.PKAddPassesViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PassKit.PKAddPassesViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="PassKit.PKAddPassesViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IPKAddPassesViewControllerDelegate { }
 
 	/// <summary>A delegate object that gives the application developer fine-grained control over life-cycle events of a <see cref="PassKit.PKAddPassesViewController" /> object.</summary>
@@ -1516,12 +1516,6 @@ namespace PassKit {
 		NSObject WeakDelegate { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PassKit.PKAddPaymentPassViewControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PassKit.PKAddPaymentPassViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PassKit.PKAddPaymentPassViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="PassKit.PKAddPaymentPassViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IPKAddPaymentPassViewControllerDelegate { }
 
 	/// <summary>Delegate object for <see cref="PassKit.PKAddPaymentPassViewController" /> whose members are called when prompting for an add payment request and when an <see cref="PassKit.PKAddPaymentPassRequest" /> has failed.</summary>
@@ -1606,7 +1600,7 @@ namespace PassKit {
 		[Export ("organizationName", ArgumentSemantic.Copy)]
 		string OrganizationName { get; }
 
-		/// <summary>Identifies the <see cref="PassKit.PKPass.PKPassType" />.</summary>
+		/// <summary>Identifies the <see cref="PassKit.PKPassType" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("passTypeIdentifier", ArgumentSemantic.Copy)]
@@ -1996,6 +1990,10 @@ namespace PassKit {
 		[Mac (15, 4), iOS (18, 4), NoTV, MacCatalyst (18, 4)]
 		[Field ("PKPaymentNetworkJaywan")]
 		NSString Jaywan { get; }
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
+		[Field ("PKPaymentNetworkMyDebit")]
+		NSString MyDebit { get; }
 	}
 
 	/// <summary>A button used to activate an Apple Pay payment. Available styles and types are defined by <see cref="PassKit.PKPaymentButtonStyle" /> and <see cref="PassKit.PKPaymentButtonType" />.</summary>
@@ -2031,6 +2029,15 @@ namespace PassKit {
 		[MacCatalyst (13, 1)]
 		[Export ("cornerRadius")]
 		nfloat CornerRadius { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("buttonWithType:style:disableCardArt:")]
+		PKPaymentButton FromType (PKPaymentButtonType buttonType, PKPaymentButtonStyle buttonStyle, bool disableCardArt);
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Export ("initWithPaymentButtonType:paymentButtonStyle:disableCardArt:")]
+		NativeHandle Constructor (PKPaymentButtonType type, PKPaymentButtonStyle style, bool disableCardArt);
 	}
 
 	/// <summary>A button that adds passes to a Wallet.</summary>
@@ -2194,12 +2201,6 @@ namespace PassKit {
 		NativeHandle Constructor (PKDisbursementRequest request);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="PassKit.PKPaymentAuthorizationControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="PassKit.PKPaymentAuthorizationControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="PassKit.PKPaymentAuthorizationControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="PassKit.PKPaymentAuthorizationControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IPKPaymentAuthorizationControllerDelegate { }
 
 	/// <summary>Delegate object that responds to user interactions on behalf of a <see cref="PassKit.PKPaymentAuthorizationController" />.</summary>
@@ -3554,6 +3555,36 @@ namespace PassKit {
 		[Static]
 		[Export ("ageThresholdElementWithAge:")]
 		PKIdentityElement AgeThresholdElementWithAge (nint age);
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("heightElement")]
+		PKIdentityElement HeightElement { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("weightElement")]
+		PKIdentityElement WeightElement { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("eyeColorElement")]
+		PKIdentityElement EyeColorElement { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("hairColorElement")]
+		PKIdentityElement HairColorElement { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("organDonorStatusElement")]
+		PKIdentityElement OrganDonorStatusElement { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Static]
+		[Export ("veteranStatusElement")]
+		PKIdentityElement VeteranStatusElement { get; }
 	}
 
 	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
@@ -3849,6 +3880,14 @@ namespace PassKit {
 
 		[Export ("serverEnvironmentIdentifier", ArgumentSemantic.Strong)]
 		string ServerEnvironmentIdentifier { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0), NoTV]
+		[Export ("issuingCountryCode", ArgumentSemantic.Strong)]
+		string IssuingCountryCode { get; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0), NoTV]
+		[Export ("documentType")]
+		PKAddIdentityDocumentType DocumentType { get; }
 	}
 
 	[NoTV, iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
@@ -3904,6 +3943,36 @@ namespace PassKit {
 
 		[Export ("localizedDescription", ArgumentSemantic.Strong), NullAllowed]
 		string LocalizedDescription { get; }
+	}
+
+	[iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0), NoTV]
+	[BaseType (typeof (PKIdentityDocumentMetadata))]
+	[DisableDefaultCtor]
+	interface PKAddIdentityDocumentMetadata {
+		[Export ("initWithProvisioningCredentialIdentifier:sharingInstanceIdentifier:cardTemplateIdentifier:issuingCountryCode:documentType:preview:")]
+		NativeHandle Constructor (string credentialIdentifier, string sharingInstanceIdentifier, string templateIdentifier, string issuingCountryCode, PKAddIdentityDocumentType documentType, PKAddPassMetadataPreview preview);
+
+		[Export ("preview", ArgumentSemantic.Strong)]
+		PKAddPassMetadataPreview Preview { get; }
+	}
+
+	[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface PKIdentityAnyOfDescriptor : PKIdentityDocumentDescriptor {
+		[Export ("descriptors", ArgumentSemantic.Copy)]
+		IPKIdentityDocumentDescriptor [] Descriptors { get; }
+
+		[Export ("initWithDescriptors:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (IPKIdentityDocumentDescriptor [] descriptors);
+	}
+
+	[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+	[BaseType (typeof (NSObject), Name = "PKIdentityPhotoIDDescriptor")]
+	[DisableDefaultCtor]
+	interface PKIdentityPhotoIdDescriptor : PKIdentityDocumentDescriptor {
+
 	}
 
 	[NoTV, iOS (18, 0), MacCatalyst (18, 0), NoMac]

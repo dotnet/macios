@@ -19,6 +19,13 @@ using UIKit;
 #endif
 
 namespace VideoSubscriberAccount {
+	[TV (26, 0), NoMacCatalyst, Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum VSAutoSignInAuthorization : long {
+		NotDetermined = 0,
+		Granted,
+		Denied,
+	}
 
 	/// <summary>Encapsulates errors that may occur during attempts to verify credentials.</summary>
 	[Native]
@@ -132,12 +139,6 @@ namespace VideoSubscriberAccount {
 		string AccountProviderResponse { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="VideoSubscriberAccount.VSAccountManagerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="VideoSubscriberAccount.VSAccountManagerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="VideoSubscriberAccount.VSAccountManagerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="VideoSubscriberAccount.VSAccountManagerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IVSAccountManagerDelegate { }
 
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/VideoSubscriberAccount/VSAccountManagerDelegate">Apple documentation for <c>VSAccountManagerDelegate</c></related>
@@ -148,7 +149,7 @@ namespace VideoSubscriberAccount {
 
 		/// <param name="accountManager">To be added.</param>
 		///         <param name="viewController">To be added.</param>
-		///         <summary>Developers override this to specify the <see cref="UIKit.UIViewController" /> to be shown when the <see cref="VideoSubscriberAccounts.VSAccountManager" /> requires user interaction.</summary>
+		///         <summary>Developers override this to specify the <see cref="UIKit.UIViewController" /> to be shown when the <see cref="VSAccountManager" /> requires user interaction.</summary>
 		///         <remarks>To be added.</remarks>
 		[Abstract]
 		[NoMac]
@@ -190,18 +191,16 @@ namespace VideoSubscriberAccount {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		IVSAccountManagerDelegate Delegate { get; set; }
 
+		/// <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
 		/// <param name="options">If not empty, may contain the key <see cref="VideoSubscriberAccount.VSCheckAccessOptionKeys" />.</param>
-		///         <param name="completionHandler">Called by the system with the results of the permission check.</param>
-		///         <summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <param name="completionHandler">Called by the system with the results of the permission check.</param>
 		[NoMac]
 		[Async (XmlDocs = """
-			<param name="options">If not empty, may contain the key .</param>
 			<summary>Checks whether the user has provided permission for the app to access their subscription information.</summary>
+			<param name="options">If not empty, may contain the key <see cref="VideoSubscriberAccount.VSCheckAccessOptionKeys" />.</param>
 			<returns>
-			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous CheckAccessStatus operation.  The value of the TResult parameter is of type System.Action&lt;VideoSubscriberAccount.VSAccountAccessStatus,Foundation.NSError&gt;.</para>
-			        </returns>
-			<remarks>To be added.</remarks>
+			  <para class="improve-task-t-return-type-description">A task that represents the asynchronous CheckAccessStatus operation.  The value of the TResult parameter is of type System.Action&lt;VideoSubscriberAccount.VSAccountAccessStatus,Foundation.NSError&gt;.</para>
+			</returns>
 			""")]
 		[Export ("checkAccessStatusWithOptions:completionHandler:")]
 		void CheckAccessStatus (NSDictionary options, Action<VSAccountAccessStatus, NSError> completionHandler);
@@ -241,7 +240,6 @@ namespace VideoSubscriberAccount {
 	}
 
 	[Static]
-	[Internal]
 	[NoMacCatalyst]
 	interface VSCheckAccessOptionKeys {
 
@@ -249,14 +247,17 @@ namespace VideoSubscriberAccount {
 		NSString CheckAccessOptionPrompt { get; }
 	}
 
-	/// <summary>A <see cref="Foundation.DictionaryContainer" /> holding keys appropriate to <see cref="VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" /> and <see cref="VideoSubscriberAccount.VSAccountManager.CheckAccessStatusAsync(VideoSubscriberAccount.VSAccountManagerAccessOptions)" />.</summary>
+#if !__MACOS__
+	/// <summary>
+	///    A <see cref="Foundation.DictionaryContainer" /> holding keys appropriate to <see cref="VSAccountManager.CheckAccessStatus(VSAccountManagerAccessOptions,Action{VSAccountAccessStatus,NSError})" />
+	///    and <see cref="VSAccountManager.CheckAccessStatusAsync(VSAccountManagerAccessOptions)" />.
+	/// </summary>
+#endif
 	[NoMacCatalyst]
 	[StrongDictionary ("VSCheckAccessOptionKeys")]
 	interface VSAccountManagerAccessOptions {
 
 		/// <summary>If not <see langword="null" />, specifies whether the user should be asked for access permission.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("CheckAccessOptionPrompt")]
 		bool CheckAccessOptionPrompt { get; set; }
 	}
@@ -469,9 +470,9 @@ namespace VideoSubscriberAccount {
 		Api,
 	}
 
-	[Deprecated (PlatformName.iOS, 18, 0, message: "Use the 'VSUserAccountType' enum instead.")]
-	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use the 'VSUserAccountType' enum instead.")]
-	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use the 'VSUserAccount' type instead.")]
+	[Deprecated (PlatformName.iOS, 18, 0, message: "Use the 'VSUserAccount' and 'VSUserAccountType' types instead.")]
+	[Deprecated (PlatformName.TvOS, 18, 0, message: "Use the 'VSUserAccount' and 'VSUserAccountType' types instead.")]
+	[Deprecated (PlatformName.MacOSX, 15, 0, message: "Use the 'VSUserAccount' and 'VSUserAccountType' types instead.")]
 	[NoMacCatalyst]
 	[Native]
 	public enum VSSubscriptionAccessLevel : long {
@@ -571,7 +572,31 @@ namespace VideoSubscriberAccount {
 		[Async]
 		[Export ("queryUserAccountsWithOptions:completion:")]
 		void QueryUserAccounts (VSUserAccountQueryOptions options, Action<NSArray<VSUserAccount>, NSError> completion);
+
+		[Async]
+		[TV (26, 0), NoMacCatalyst, Mac (26, 0), iOS (26, 0)]
+		[Export ("queryAutoSignInTokenWithCompletionHandler:")]
+		void QueryAutoSignInToken (VSUserAccountManagerQueryAutoSignInTokenCallback completion);
+
+		[Async]
+		[TV (26, 0), NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Export ("requestAutoSignInAuthorizationWithCompletionHandler:")]
+		void RequestAutoSignInAuthorization (VSUserAccountManagerRequestAutoSignInAuthorizationCallback completion);
+
+		[Async]
+		[TV (26, 0), NoMacCatalyst, NoMac, iOS (26, 0)]
+		[Export ("updateAutoSignInToken:updateContext:completionHandler:")]
+		void UpdateAutoSignInToken (string autoSignInToken, VSAutoSignInTokenUpdateContext context, VSUserAccountManagerCallback completion);
+
+		[Async]
+		[TV (26, 0), NoMacCatalyst, Mac (26, 0), iOS (26, 0)]
+		[Export ("deleteAutoSignInTokenWithCompletionHandler:")]
+		void DeleteAutoSignInToken (VSUserAccountManagerCallback completion);
 	}
+
+	delegate void VSUserAccountManagerQueryAutoSignInTokenCallback ([NullAllowed] VSAutoSignInToken token, [NullAllowed] NSError error);
+	delegate void VSUserAccountManagerRequestAutoSignInAuthorizationCallback ([NullAllowed] VSAutoSignInTokenUpdateContext updateContext, [NullAllowed] NSError error);
+	delegate void VSUserAccountManagerCallback ([NullAllowed] NSError error);
 
 	[TV (16, 0), NoMacCatalyst, iOS (16, 0), Mac (13, 0)]
 	[BaseType (typeof (NSObject))]
@@ -643,4 +668,22 @@ namespace VideoSubscriberAccount {
 		NativeHandle Constructor (string customerId, string [] productCodes);
 	}
 
+	[TV (26, 0), NoMacCatalyst, Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VSAutoSignInToken : NSSecureCoding {
+		[Export ("authorization")]
+		VSAutoSignInAuthorization Authorization { get; }
+
+		[NullAllowed, Export ("value")]
+		string Value { get; }
+	}
+
+	[TV (26, 0), NoMacCatalyst, NoMac, iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface VSAutoSignInTokenUpdateContext {
+		[Export ("authorization")]
+		VSAutoSignInAuthorization Authorization { get; }
+	}
 }

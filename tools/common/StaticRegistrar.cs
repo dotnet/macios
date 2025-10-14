@@ -1599,141 +1599,6 @@ namespace Registrar {
 			}
 		}
 
-#if !NET || LEGACY_TOOLS
-		PlatformName AsPlatformName (ApplePlatform platform)
-		{
-			switch (platform) {
-			case ApplePlatform.iOS:
-				return global::ObjCRuntime.PlatformName.iOS;
-			case ApplePlatform.TVOS:
-				return global::ObjCRuntime.PlatformName.TvOS;
-			case ApplePlatform.MacOSX:
-				return global::ObjCRuntime.PlatformName.MacOSX;
-			case ApplePlatform.MacCatalyst:
-				return global::ObjCRuntime.PlatformName.MacCatalyst;
-			default:
-				throw ErrorHelper.CreateError (99, Errors.MX0099, $"unknown platform: {platform}");
-			}
-		}
-
-		bool GetLegacyAvailabilityAttribute (ICustomAttribute ca, ApplePlatform platform, out Version sdkVersion, out string message)
-		{
-			var caType = ca.AttributeType;
-			var currentPlatform = AsPlatformName (platform);
-			AvailabilityKind kind;
-			PlatformName platformName = global::ObjCRuntime.PlatformName.None;
-			PlatformArchitecture architecture = PlatformArchitecture.All;
-			int majorVersion = 0, minorVersion = 0, subminorVersion = 0;
-			bool shorthand = false;
-
-			sdkVersion = null;
-			message = null;
-
-			switch (caType.Name) {
-			case "MacAttribute":
-				shorthand = true;
-				platformName = global::ObjCRuntime.PlatformName.MacOSX;
-				goto case "IntroducedAttribute";
-			case "iOSAttribute":
-				shorthand = true;
-				platformName = global::ObjCRuntime.PlatformName.iOS;
-				goto case "IntroducedAttribute";
-			case "IntroducedAttribute":
-				kind = AvailabilityKind.Introduced;
-				break;
-			default:
-				return false;
-			}
-
-			switch (ca.ConstructorArguments.Count) {
-			case 2:
-				if (!shorthand)
-					throw ErrorHelper.CreateError (4163, Errors.MT4163, caType.Name, ca.ConstructorArguments.Count);
-				majorVersion = (byte) ca.ConstructorArguments [0].Value;
-				minorVersion = (byte) ca.ConstructorArguments [1].Value;
-				break;
-			case 3:
-				if (!shorthand) {
-					platformName = (PlatformName) ca.ConstructorArguments [0].Value;
-					architecture = (PlatformArchitecture) ca.ConstructorArguments [1].Value;
-					message = (string) ca.ConstructorArguments [2].Value;
-				} else {
-					majorVersion = (byte) ca.ConstructorArguments [0].Value;
-					minorVersion = (byte) ca.ConstructorArguments [1].Value;
-					if (ca.ConstructorArguments [2].Type.Name == "Boolean") {
-						var onlyOn64 = (bool) ca.ConstructorArguments [2].Value;
-						architecture = onlyOn64 ? PlatformArchitecture.Arch64 : PlatformArchitecture.All;
-					} else if (ca.ConstructorArguments [2].Type.Name == "Byte") {
-						minorVersion = (byte) ca.ConstructorArguments [2].Value;
-					} else {
-						throw ErrorHelper.CreateError (4163, Errors.MT4163, caType.Name, ca.ConstructorArguments.Count);
-					}
-				}
-				break;
-			case 4:
-				if (!shorthand)
-					throw ErrorHelper.CreateError (4163, Errors.MT4163, caType.Name, ca.ConstructorArguments.Count);
-
-				majorVersion = (byte) ca.ConstructorArguments [0].Value;
-				minorVersion = (byte) ca.ConstructorArguments [1].Value;
-				minorVersion = (byte) ca.ConstructorArguments [2].Value;
-				if (ca.ConstructorArguments [3].Type.Name == "Boolean") {
-					var onlyOn64 = (bool) ca.ConstructorArguments [3].Value;
-					architecture = onlyOn64 ? PlatformArchitecture.Arch64 : PlatformArchitecture.All;
-				} else if (ca.ConstructorArguments [3].Type.Name == "PlatformArchitecture") {
-					architecture = (PlatformArchitecture) (byte) ca.ConstructorArguments [3].Value;
-				} else {
-					throw ErrorHelper.CreateError (4163, Errors.MT4163, caType.Name, ca.ConstructorArguments.Count);
-				}
-				break;
-			case 5:
-				platformName = (PlatformName) ca.ConstructorArguments [0].Value;
-				majorVersion = (int) ca.ConstructorArguments [1].Value;
-				minorVersion = (int) ca.ConstructorArguments [2].Value;
-				architecture = (PlatformArchitecture) ca.ConstructorArguments [3].Value;
-				message = (string) ca.ConstructorArguments [4].Value;
-				break;
-			case 6:
-				platformName = (PlatformName) ca.ConstructorArguments [0].Value;
-				majorVersion = (int) ca.ConstructorArguments [1].Value;
-				minorVersion = (int) ca.ConstructorArguments [2].Value;
-				subminorVersion = (int) ca.ConstructorArguments [3].Value;
-				architecture = (PlatformArchitecture) ca.ConstructorArguments [4].Value;
-				message = (string) ca.ConstructorArguments [5].Value;
-				break;
-			default:
-				throw ErrorHelper.CreateError (4163, Errors.MT4163, caType.Name, ca.ConstructorArguments.Count);
-			}
-
-			if (platformName != currentPlatform)
-				return false;
-
-			sdkVersion = new Version (majorVersion, minorVersion, subminorVersion);
-			switch (kind) {
-			case AvailabilityKind.Introduced:
-				if (shorthand) {
-					sdkVersion = new Version (majorVersion, minorVersion, subminorVersion);
-				} else {
-					switch (ca.ConstructorArguments.Count) {
-					case 5:
-						sdkVersion = new Version (majorVersion, minorVersion);
-						break;
-					case 6:
-						sdkVersion = new Version (majorVersion, minorVersion, subminorVersion);
-						break;
-					default:
-						throw ErrorHelper.CreateError (4163, Errors.MT4163, caType.Name, ca.ConstructorArguments.Count);
-					}
-				}
-				break;
-			default:
-				throw ErrorHelper.CreateError (4163, Errors.MT4163_A, kind);
-			}
-
-			return true;
-		}
-#endif // !NET
-
 #if NET && !LEGACY_TOOLS
 		bool GetDotNetAvailabilityAttribute (ICustomAttribute ca, ApplePlatform currentPlatform, out Version sdkVersion, out string message)
 		{
@@ -1816,8 +1681,6 @@ namespace Registrar {
 #else
 					if (caType.Namespace != ObjCRuntime && !string.IsNullOrEmpty (caType.Namespace))
 						continue;
-					if (GetLegacyAvailabilityAttribute (ca, platform, out sdkVersion, out message))
-						return true;
 #endif
 				}
 			}
@@ -2653,16 +2516,18 @@ namespace Registrar {
 				return "-(void) release";
 			else if (method.CurrentTrampoline == Trampoline.GetGCHandle)
 				return "-(GCHandle) xamarinGetGCHandle";
-			else if (method.CurrentTrampoline == Trampoline.GetFlags)
-				return "-(enum XamarinGCHandleFlags) xamarinGetFlags";
-			else if (method.CurrentTrampoline == Trampoline.SetFlags)
-				return "-(void) xamarinSetFlags: (enum XamarinGCHandleFlags) flags";
+			else if (method.CurrentTrampoline == Trampoline.GetGCHandleFlags)
+				return "-(enum XamarinGCHandleFlags) xamarinGetGCHandleFlags";
+			else if (method.CurrentTrampoline == Trampoline.SetGCHandleFlags)
+				return "-(void) xamarinSetGCHandleFlags: (enum XamarinGCHandleFlags) gchandle_flags";
 			else if (method.CurrentTrampoline == Trampoline.SetGCHandle)
-				return "-(bool) xamarinSetGCHandle: (GCHandle) gchandle flags: (enum XamarinGCHandleFlags) flags";
+				return "-(bool) xamarinSetGCHandle: (GCHandle) gchandle flags: (enum XamarinGCHandleFlags) gchandle_flags data: (NSObjectData *) data";
 			else if (method.CurrentTrampoline == Trampoline.CopyWithZone1 || method.CurrentTrampoline == Trampoline.CopyWithZone2)
 				return "-(id) copyWithZone: (NSZone *)zone";
 			else if (method.CurrentTrampoline == Trampoline.RetainWeakReference)
 				return "-(BOOL) retainWeakReference";
+			else if (method.CurrentTrampoline == Trampoline.GetNSObjectData)
+				return "-(struct NSObjectData *) xamarinGetNSObjectData";
 
 			var sb = new StringBuilder ();
 			var isCtor = method.CurrentTrampoline == Trampoline.Constructor;
@@ -3309,6 +3174,11 @@ namespace Registrar {
 					if (App.Platform != ApplePlatform.MacOSX) {
 						switch (p.Protocol.ProtocolName) {
 						case "CAMetalDrawable": // The header isn't available for the simulator.
+						case "MTLResourceViewPool":
+						case "MTLTensor":
+						case "MTLTensorBinding":
+						case "MTLTextureViewPool":
+						case var protocolName when protocolName.StartsWith ("MTL4", StringComparison.Ordinal): // Metal 4 isn't available in the simulator
 							use_dynamic = IsSimulator;
 							break;
 						}
@@ -3411,30 +3281,32 @@ namespace Registrar {
 				sb.WriteLine ();
 				return true;
 			case Trampoline.SetGCHandle:
-				sb.WriteLine ("-(bool) xamarinSetGCHandle: (GCHandle) gc_handle flags: (enum XamarinGCHandleFlags) flags");
+				sb.WriteLine ("-(bool) xamarinSetGCHandle: (GCHandle) gc_handle flags: (enum XamarinGCHandleFlags) gchandle_flags data: (NSObjectData *) data");
 				sb.WriteLine ("{");
-				sb.WriteLine ("if (((flags & XamarinGCHandleFlags_InitialSet) == XamarinGCHandleFlags_InitialSet) && __monoObjectGCHandle.gc_handle != INVALID_GCHANDLE) {");
+				sb.WriteLine ("if (((gchandle_flags & XamarinGCHandleFlags_InitialSet) == XamarinGCHandleFlags_InitialSet) && __monoObjectGCHandle.gc_handle != INVALID_GCHANDLE) {");
 				sb.WriteLine ("return false;");
 				sb.WriteLine ("}");
-				sb.WriteLine ("flags = (enum XamarinGCHandleFlags) (flags & ~XamarinGCHandleFlags_InitialSet);"); // Remove the InitialSet flag, we don't want to store it.
+				sb.WriteLine ("gchandle_flags = (enum XamarinGCHandleFlags) (gchandle_flags & ~XamarinGCHandleFlags_InitialSet);"); // Remove the InitialSet flag, we don't want to store it.
 				sb.WriteLine ("__monoObjectGCHandle.gc_handle = gc_handle;");
-				sb.WriteLine ("__monoObjectGCHandle.flags = flags;");
+				sb.WriteLine ("if (data != NULL)");
+				sb.WriteLine ("\t__monoObjectGCHandle.data = data;");
+				sb.WriteLine ("__monoObjectGCHandle.gchandle_flags = gchandle_flags;");
 				sb.WriteLine ("__monoObjectGCHandle.native_object = self;");
 				sb.WriteLine ("return true;");
 				sb.WriteLine ("}");
 				sb.WriteLine ();
 				return true;
-			case Trampoline.GetFlags:
-				sb.WriteLine ("-(enum XamarinGCHandleFlags) xamarinGetFlags");
+			case Trampoline.GetGCHandleFlags:
+				sb.WriteLine ("-(enum XamarinGCHandleFlags) xamarinGetGCHandleFlags");
 				sb.WriteLine ("{");
-				sb.WriteLine ("return __monoObjectGCHandle.flags;");
+				sb.WriteLine ("return __monoObjectGCHandle.gchandle_flags;");
 				sb.WriteLine ("}");
 				sb.WriteLine ();
 				return true;
-			case Trampoline.SetFlags:
-				sb.WriteLine ("-(void) xamarinSetFlags: (enum XamarinGCHandleFlags) flags");
+			case Trampoline.SetGCHandleFlags:
+				sb.WriteLine ("-(void) xamarinSetGCHandleFlags: (enum XamarinGCHandleFlags) gchandle_flags");
 				sb.WriteLine ("{");
-				sb.WriteLine ("__monoObjectGCHandle.flags = flags;");
+				sb.WriteLine ("__monoObjectGCHandle.gchandle_flags = gchandle_flags;");
 				sb.WriteLine ("}");
 				sb.WriteLine ();
 				return true;
@@ -3453,16 +3325,16 @@ namespace Registrar {
 				sb.AppendLine ("{");
 				sb.AppendLine ("id rv;");
 				sb.AppendLine ("GCHandle gchandle;");
-				sb.AppendLine ("enum XamarinGCHandleFlags flags = XamarinGCHandleFlags_None;");
+				sb.AppendLine ("enum XamarinGCHandleFlags gchandle_flags = XamarinGCHandleFlags_None;");
 				sb.AppendLine ();
-				sb.AppendLine ("gchandle = xamarin_get_gchandle_with_flags (self, &flags);");
+				sb.AppendLine ("gchandle = xamarin_get_gchandle_with_flags (self, &gchandle_flags);");
 				sb.AppendLine ("if (gchandle != INVALID_GCHANDLE)");
 				sb.Indent ().AppendLine ("xamarin_set_gchandle_with_flags (self, INVALID_GCHANDLE, XamarinGCHandleFlags_None);").Unindent ();
 				// Call the base class implementation
 				sb.AppendLine ("rv = [super copyWithZone: zone];");
 				sb.AppendLine ();
 				sb.AppendLine ("if (gchandle != INVALID_GCHANDLE)");
-				sb.Indent ().AppendLine ("xamarin_set_gchandle_with_flags (self, gchandle, flags);").Unindent ();
+				sb.Indent ().AppendLine ("xamarin_set_gchandle_with_flags (self, gchandle, gchandle_flags);").Unindent ();
 				sb.AppendLine ();
 				sb.AppendLine ("return rv;");
 				sb.AppendLine ("}");
@@ -3483,6 +3355,13 @@ namespace Registrar {
 				sb.WriteLine ("-(BOOL) retainWeakReference");
 				sb.WriteLine ("{");
 				sb.WriteLine ("\treturn xamarin_retainWeakReference_trampoline (self, _cmd);");
+				sb.WriteLine ("}");
+				sb.WriteLine ();
+				return true;
+			case Trampoline.GetNSObjectData:
+				sb.WriteLine ("-(struct NSObjectData *) xamarinGetNSObjectData");
+				sb.WriteLine ("{");
+				sb.WriteLine ("\treturn __monoObjectGCHandle.data;");
 				sb.WriteLine ("}");
 				sb.WriteLine ();
 				return true;
@@ -3548,6 +3427,10 @@ namespace Registrar {
 				}
 			case Trampoline.RetainWeakReference:
 				rettype = "BOOL";
+				isCtor = false;
+				return true;
+			case Trampoline.GetNSObjectData:
+				rettype = "struct NSObjectData *";
 				isCtor = false;
 				return true;
 			case Trampoline.Constructor:

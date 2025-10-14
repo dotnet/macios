@@ -123,6 +123,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<IsHotRestartBuild Condition="'$(IsHotRestartBuild)' == 'True' And '$(_PlatformName)' != 'iOS'">False</IsHotRestartBuild>
 			<IsRemoteBuild Condition="'$(IsHotRestartBuild)' == 'True'">False</IsRemoteBuild>
 			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(OutputType)' != 'Exe' And '$(BuildBindingProjectLocally)' != 'false'">False</IsRemoteBuild>
+			<_IsNonMacOSBuildForNonRemotablePlatform Condition="'$(_IsNonMacOSBuildForNonRemotablePlatform)' == '' And !$([System.OperatingSystem]::IsMacOS()) And '$(_PlatformName)' != 'iOS'">true</_IsNonMacOSBuildForNonRemotablePlatform>
 		</PropertyGroup>
 	</Target>
 
@@ -144,7 +145,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		@(NativeReference) are not safe to use as an Input to a task, as frameworks are a directory and will appears unbuilt every time.
 		So we split it into two camps as a prebuild step
 	-->
-	<Target Name="_ExpandNativeReferences" Condition="'$(_DisableBindingProjectBuild)' != 'true'" DependsOnTargets="_DetectSdkLocations;_ComputeTargetArchitectures;_GenerateBundleName;_SanitizeNativeReferences">
+	<Target
+		Name="_ExpandNativeReferences"
+		Condition="'$(_DisableBindingProjectBuild)' != 'true' And '$(_IsNonMacOSBuildForNonRemotablePlatform)' != 'true'"
+		DependsOnTargets="_DetectSdkLocations;_ComputeTargetArchitectures;_GenerateBundleName;_SanitizeNativeReferences"
+		>
 		<ItemGroup>
 			<_XCFrameworkNativeReference Include="@(NativeReference -> '%(Identity)/.')" Condition="'%(Extension)' == '.xcframework' Or $([MSBuild]::ValueOrDefault('%(FileName)%(Extension)', '').EndsWith('.xcframework.zip'))" />
 			<_FrameworkNativeReference Include="@(NativeReference -> '%(Identity)/%(Filename)')" Condition="'%(Extension)' == '.framework'" />
@@ -424,6 +429,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<CollectBundleResourcesDependsOn Condition="'$(IsBindingProject)' != 'true'">
 			$(CollectBundleResourcesDependsOn);
 			_UnpackLibraryResources;
+			_LoadUnpackedPartialAppManifests;
 			_CompileImageAssets;
 			_CompileInterfaceDefinitions;
 			_CompileSceneKitAssets;
@@ -1270,6 +1276,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<!-- Collada output caches -->
 			<_ColladaCache>$(DeviceSpecificIntermediateOutputPath)collada\_BundleResourceWithLogicalName.items</_ColladaCache>
 
+			<!-- Partial app manifest output cache -->
+			<_UnpackedPartialAppManifestCache>$(DeviceSpecificIntermediateOutputPath)partialappmanifest\_PartialAppManifests.items</_UnpackedPartialAppManifestCache>
+
 			<!-- processed items -->
 			<_ProcessedBundleResourcesPath Condition="'$(_ProcessedBundleResourcesPath)' == ''">$(DeviceSpecificIntermediateOutputPath)\_ProcessedBundleResourcesPath.items</_ProcessedBundleResourcesPath>
 			<_ProcessedContentPath Condition="'$(_ProcessedContentPath)' == ''">$(DeviceSpecificIntermediateOutputPath)\_ProcessedContentPath.items</_ProcessedContentPath>
@@ -1334,7 +1343,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</PropertyGroup>
 	</Target>
 
-	<Target Name="_CreatePkgInfo" Condition="'$(IsAppExtension)' == 'false'" DependsOnTargets="_ComputePkgInfoPath" Outputs="$(_PkgInfoPath)">
+	<Target Name="_CreatePkgInfo" Condition="'$(IsAppExtension)' == 'false'" DependsOnTargets="_ComputePkgInfoPath" Inputs="$(_PkgInfoPath)" Outputs="$(_PkgInfoPath)">
 		<CreatePkgInfo SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" OutputPath="$(_PkgInfoPath)" />
 	</Target>
 
@@ -2070,6 +2079,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_PackLibraryResources" Condition="'$(_CanOutputAppBundle)' == 'false'" DependsOnTargets="$(_PackLibraryResourcesDependsOn)">
 		<PackLibraryResources
+			SessionId="$(BuildSessionId)"
 			Prefix="$(_EmbeddedResourcePrefix)"
 			BundleResourcesWithLogicalNames="@(_BundleResourceWithLogicalName)"
 			BundleOriginalResourcesWithLogicalNames="@(_BundleOriginalResourceWithLogicalName)"
@@ -2113,10 +2123,15 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 
 		<!-- If any assemblies is newer than the stamp file, we delete the stamp file and items so that _UnpackLibraryResources runs again -->
+		<ItemGroup>
+			<_UnpackLibraryResourceToDelete Include="@(_UnpackLibraryResourceItems->'%(StampFile)')" />
+			<_UnpackLibraryResourceToDelete Include="@(_UnpackLibraryResourceItems->'%(ItemsFile)')" />
+		</ItemGroup>
+
 		<Delete
 			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
 			SessionId="$(BuildSessionId)"
-			Files="%(_UnpackLibraryResourceItems.StampFile);%(_UnpackLibraryResourceItems.ItemsFile)"
+			Files="@(_UnpackLibraryResourceToDelete)"
 			/>
 	</Target>
 
@@ -2166,7 +2181,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="InterfaceDefinitions" ItemName="InterfaceDefinition" />
 			<Output TaskParameter="ColladaAssets" ItemName="Collada" />
 			<Output TaskParameter="CoreMLModels" ItemName="CoreMLModel" />
-			<Output TaskParameter="PartialAppManifests" ItemName="PartialAppManifest" />
+			<Output TaskParameter="PartialAppManifests" ItemName="_UnpackedPartialAppManifest" />
 			<Output TaskParameter="SceneKitAssets" ItemName="SceneKitAsset" />
 		</UnpackLibraryResources>
 
@@ -2178,9 +2193,23 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="TouchedFiles" ItemName="FileWrites" />
 		</Touch>
 
+		<!-- Cached the partial app manifests items for incremental build support -->
+		<WriteItemsToFile Items="@(_UnpackedPartialAppManifest)" ItemName="_UnpackedPartialAppManifest" File="$(_UnpackedPartialAppManifestCache)" Overwrite="true" IncludeMetadata="true" />
+
 		<ItemGroup>
+			<FileWrites Include="$(_UnpackedPartialAppManifestCache)" />
 			<FileWrites Include="@(_UnpackedBundleResourceWithLogicalName)" />
 		</ItemGroup>
+	</Target>
+
+	<!-- Load the unpacked partial app manifests - this will run even if '_UnpackLibraryResources' didn't (due to incremental builds),
+	     because we need to always add the partial app manifests to the PartialAppManifest item group, even in incremental builds -->
+	<Target Name="_LoadUnpackedPartialAppManifests"
+		DependsOnTargets="_UnpackLibraryResources"
+		Condition="Exists('$(_UnpackedPartialAppManifestCache)')">
+		<ReadItemsFromFile File="$(_UnpackedPartialAppManifestCache)">
+			<Output TaskParameter="Items" ItemName="PartialAppManifest" />
+		</ReadItemsFromFile>
 	</Target>
 
 	<Target Name="_ParseBundlerArguments">
@@ -2189,6 +2218,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<MarshalManagedExceptionMode Condition="'$(MarshalManagedExceptionMode)' == ''">$(_MarshalManagedExceptionMode)</MarshalManagedExceptionMode>
 			<MarshalObjectiveCExceptionMode Condition="'$(MarshalObjectiveCExceptionMode)' == ''">$(_MarshalObjectiveCExceptionMode)</MarshalObjectiveCExceptionMode>
 		</PropertyGroup>
+
+		<ItemGroup>
+			<_BundlerEnvironmentVariables Condition="'$(MonoUseCompressedInterfaceBitmap)' == 'true'" Include="MONO_COMPRESSED_INTERFACE_BITMAP" Value="1" />
+		</ItemGroup>
 
 		<ParseBundlerArguments
 			Aot="@(_AotArguments)"

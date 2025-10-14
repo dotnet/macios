@@ -123,6 +123,7 @@
 		<UseSizeOptimizedLinq Condition="'$(UseSizeOptimizedLinq)' == ''">true</UseSizeOptimizedLinq>
 		<UseSystemResourceKeys Condition="'$(UseSystemResourceKeys)' == '' And '$(_BundlerDebug)' != 'true'">true</UseSystemResourceKeys>
 		<UseSystemResourceKeys Condition="'$(UseSystemResourceKeys)' == '' And '$(_BundlerDebug)' == 'true'">false</UseSystemResourceKeys>
+		<UseNativeHttpHandler Condition="'$(UseNativeHttpHandler)' == '' And '$(MtouchHttpClientHandler)' == 'HttpClientHandler'">false</UseNativeHttpHandler>
 		<UseNativeHttpHandler Condition="'$(_PlatformName)' != 'macOS' And '$(UseNativeHttpHandler)' == ''">true</UseNativeHttpHandler>
 		<!-- AutoreleasePoolSupport needs to be set earlier, so that illink doesn't override it - https://github.com/dotnet/runtime/pull/86753 - so it's set in Xamarin.Shared.Sdk.props -->
 		<EnableCppCLIHostActivation Condition="'$(EnableCppCLIHostActivation)' == ''">false</EnableCppCLIHostActivation>
@@ -589,7 +590,7 @@
 				DeploymentTarget=$(_MinimumOSVersion)
 				@(_CustomLinkFlags -> 'CustomLinkFlags=%(Identity)')
 				EnableSGenConc=$(EnableSGenConc)
-				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=%(Identity)=%(Value)')
+				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=Overwrite=%(Overwrite)|%(Identity)=%(Value)')
 				@(_XamarinFrameworkAssemblies -> 'FrameworkAssembly=%(Filename)')
 				Interpreter=$(MtouchInterpreter)
 				IntermediateLinkDir=$(IntermediateLinkDir)
@@ -645,6 +646,17 @@
 				this yet (ref: https://github.com/dotnet/sdk/pull/12144).
 			-->
 			<_ExtraTrimmerArgs>$(_ExtraTrimmerArgs) -b</_ExtraTrimmerArgs>
+
+			<!--
+				Always preserve symbol paths, which will preserve the original path to the pdb in the trimmed assembly.
+				This ensures that building for different architectures don't end up with different trimmed assemblies
+				only because the path to the pdb in the trimmed assembly is different between those builds.
+				References:
+				* https://github.com/dotnet/runtime/pull/103295
+				* https://github.com/jbevain/cecil/pull/554
+				* https://github.com/rolfbjarne/macios/commit/53874c863996656eaba43a5582731b93eb6f53b7
+			-->
+			<_ExtraTrimmerArgs>$(_ExtraTrimmerArgs) --preserve-symbol-paths</_ExtraTrimmerArgs>
 
 			<!--
 
@@ -997,58 +1009,45 @@
 
 
 	<Target Name="_LoadLinkerOutput" DependsOnTargets="ComputeFilesToPublish" Condition="'$(IsMacEnabled)' == 'true'">
-		<!-- Load _MainFile -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_MainFile.items" Condition="Exists('$(_LinkerItemsDirectory)/_MainFile.items')">
-			<Output TaskParameter="Items" ItemName="_MainFile" />
+		<ItemGroup>
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainFile.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainLinkWith.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_LinkerFrameworks.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_BindingLibraryLinkWith.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_AssemblyLinkerFlags.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainLinkerFlags.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_BindingLibraryFrameworks.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_RegistrarFile.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_ReferencesFile.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/ReferenceNativeSymbol.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_AssembliesToAOT.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_FrameworkToPublish.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_DynamicLibraryToPublish.items" />
+		</ItemGroup>
+
+		<ItemGroup>
+			<_ExistingLinkerItemFiles Include="@(_LinkerItemFiles)" Condition="Exists('%(Identity)')" />
+		</ItemGroup>
+
+		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="@(_ExistingLinkerItemFiles)" Condition="'@(_ExistingLinkerItemFiles)' != ''">
+			<Output TaskParameter="Items" ItemName="_AllLinkerItems" />
 		</ReadItemsFromFile>
-		<!-- Load _MainLinkWith -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_MainLinkWith.items" Condition="Exists('$(_LinkerItemsDirectory)/_MainLinkWith.items')">
-			<Output TaskParameter="Items" ItemName="_MainLinkWith" />
-		</ReadItemsFromFile>
-		<!-- Load _LinkerFrameworks -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_LinkerFrameworks.items" Condition="Exists('$(_LinkerItemsDirectory)/_LinkerFrameworks.items')">
-			<Output TaskParameter="Items" ItemName="_LinkerFrameworks" />
-		</ReadItemsFromFile>
-		<!-- Load _BindingLibraryLinkWith -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_BindingLibraryLinkWith.items" Condition="Exists('$(_LinkerItemsDirectory)/_BindingLibraryLinkWith.items')">
-			<Output TaskParameter="Items" ItemName="_BindingLibraryLinkWith" />
-		</ReadItemsFromFile>
-		<!-- Load _AssemblyLinkerFlags -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_AssemblyLinkerFlags.items" Condition="Exists('$(_LinkerItemsDirectory)/_AssemblyLinkerFlags.items')">
-			<Output TaskParameter="Items" ItemName="_AssemblyLinkerFlags" />
-		</ReadItemsFromFile>
-		<!-- Load _MainLinkerFlags -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_MainLinkerFlags.items" Condition="Exists('$(_LinkerItemsDirectory)/_MainLinkerFlags.items')">
-			<Output TaskParameter="Items" ItemName="_MainLinkerFlags" />
-		</ReadItemsFromFile>
-		<!-- Load _BindingLibraryFrameworks -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_BindingLibraryFrameworks.items" Condition="Exists('$(_LinkerItemsDirectory)/_BindingLibraryFrameworks.items')">
-			<Output TaskParameter="Items" ItemName="_BindingLibraryFrameworks" />
-		</ReadItemsFromFile>
-		<!-- Load _RegistrarFile -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_RegistrarFile.items" Condition="Exists('$(_LinkerItemsDirectory)/_RegistrarFile.items')">
-			<Output TaskParameter="Items" ItemName="_RegistrarFile" />
-		</ReadItemsFromFile>
-		<!-- Load _ReferencesFile -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_ReferencesFile.items" Condition="Exists('$(_LinkerItemsDirectory)/_ReferencesFile.items')">
-			<Output TaskParameter="Items" ItemName="_ReferencesFile" />
-		</ReadItemsFromFile>
-		<!-- Load ReferenceNativeSymbol -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/ReferenceNativeSymbol.items" Condition="Exists('$(_LinkerItemsDirectory)/ReferenceNativeSymbol.items')">
-			<Output TaskParameter="Items" ItemName="_ProcessedReferenceNativeSymbol" />
-		</ReadItemsFromFile>
-		<!-- Load _AssembliesToAOT -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_AssembliesToAOT.items" Condition="Exists('$(_LinkerItemsDirectory)/_AssembliesToAOT.items')">
-			<Output TaskParameter="Items" ItemName="_AssembliesToAOT" />
-		</ReadItemsFromFile>
-		<!-- Load _FrameworkToPublish -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_FrameworkToPublish.items" Condition="Exists('$(_LinkerItemsDirectory)/_FrameworkToPublish.items')">
-			<Output TaskParameter="Items" ItemName="_FrameworkToPublish" />
-		</ReadItemsFromFile>
-		<!-- Load _DynamicLibraryToPublish -->
-		<ReadItemsFromFile SessionId="$(BuildSessionId)" File="$(_LinkerItemsDirectory)/_DynamicLibraryToPublish.items" Condition="Exists('$(_LinkerItemsDirectory)/_DynamicLibraryToPublish.items')">
-			<Output TaskParameter="Items" ItemName="_DynamicLibraryToPublish" />
-		</ReadItemsFromFile>
+
+		<ItemGroup>
+			<_MainFile Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_MainFile.items'" />
+			<_MainLinkWith Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_MainLinkWith.items'" />
+			<_LinkerFrameworks Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_LinkerFrameworks.items'" />
+			<_BindingLibraryLinkWith Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_BindingLibraryLinkWith.items'" />
+			<_AssemblyLinkerFlags Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_AssemblyLinkerFlags.items'" />
+			<_MainLinkerFlags Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_MainLinkerFlags.items'" />
+			<_BindingLibraryFrameworks Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_BindingLibraryFrameworks.items'" />
+			<_RegistrarFile Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_RegistrarFile.items'" />
+			<_ReferencesFile Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_ReferencesFile.items'" />
+			<_ProcessedReferenceNativeSymbol Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == 'ReferenceNativeSymbol.items'" />
+			<_AssembliesToAOT Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_AssembliesToAOT.items'" />
+			<_FrameworkToPublish Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_FrameworkToPublish.items'" />
+			<_DynamicLibraryToPublish Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_DynamicLibraryToPublish.items'" />
+		</ItemGroup>
 	</Target>
 
 	<!-- Native code -->
@@ -1392,10 +1391,15 @@
 			DependsOnTargets="$(_AOTCompileDependsOn)"
 		>
 
+		<ItemGroup>
+			<_AotEnvironment Condition="'$(MonoUseCompressedInterfaceBitmap)' == 'true'" Include="MONO_COMPRESSED_INTERFACE_BITMAP" Value="1" />
+		</ItemGroup>
+
 		<AOTCompile
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			Assemblies="@(_AssembliesToAOT)"
+			AotEnvironment="@(_AotEnvironment)"
 			AOTCompilerPath="$(_XamarinAOTCompiler)"
 			InputDirectory="$(_AOTInputDirectory)"
 			MaxDegreeOfParallelism="$(AotCompileMaxDegreeOfParallelism)"
@@ -1670,6 +1674,8 @@
 			     However, we'll automatically detect that we need to link with BrowserEngineKit if an app isn't trimmed, so let's just remove BrowserEngineKit
 			     here, with an escape hatch if an app really needs it (which would be rather rare). Ref: https://github.com/dotnet/macios/issues/21324 -->
 			<_NativeExecutableFrameworks Remove="BrowserEngineKit" Condition="'$(LinkWithBrowserEngineKit)' != 'true'" />
+			<!-- Treat BrowserEngineCore like BrowserEngineKit -->
+			<_NativeExecutableFrameworks Remove="BrowserEngineCore" Condition="'$(LinkWithBrowserEngineCore)' != 'true'" />
 
 			<!-- Mono requires zlib, iconv, icucore, and the "Compression framework" -->
 			<_MainLinkerFlags Include="-lz" />
@@ -1698,7 +1704,7 @@
 			<_NativeReferences Include="@(_FileNativeReference)" Condition="'%(_FileNativeReference.LinkToExecutable)' != 'false'" />
 		</ItemGroup>
 
-		<WriteLinesToFile SessionId="$(BuildSessionId)" File="$(_MtouchSymbolsList)" Lines="@(_ProcessedReferenceNativeSymbol)" Overwrite="true" />
+		<WriteLinesToFile File="$(_MtouchSymbolsList)" Lines="@(_ProcessedReferenceNativeSymbol)" Overwrite="true" />
 
 		<PropertyGroup>
 			<!-- There are known bugs in the classic linker with Xcode 15, so keep use the classic linker in that case -->
@@ -1713,6 +1719,8 @@
 
 			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-Xlinker" />
 			<_AllLinkerFlags Condition="'$(_UseClassicLinker)' == 'true'" Include="-ld_classic" />
+
+			<_AllLinkerFlags Include="@(LinkerArgument)" />
 		</ItemGroup>
 
 		<!-- write a hash of all the relevant input so that we can force a re-link if necessary -->
@@ -1869,7 +1877,6 @@
 			<Output TaskParameter="Lines" ItemName="_AllExecutableSymbols" />
 		</ReadLinesFromFile>
 		<WriteLinesToFile
-			SessionId="$(BuildSessionId)"
 			File="$(_MtouchSymbolsList)"
 			Lines="@(_AllExecutableSymbols->DistinctWithCase())"
 			Overwrite="true" />
@@ -2172,9 +2179,10 @@
 
 		<!-- This task is executed on Windows as well, for hotrestart builds -->
 		<!-- resolve any .xcframeworks and binding resource packages -->
+		<!-- Skip doing this when not building on macOS if we're not a remoteable platform (i.e. iOS), because we want such builds to succeed (even if they produce non-working output), and ResolveNativeReferences will fail if running into symlinks (which happens for macOS and Mac Catalyst builds) -->
 		<ResolveNativeReferences
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+			Condition="('$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true') And '$(_IsNonMacOSBuildForNonRemotablePlatform)' != 'true'"
 			Architectures="$(TargetArchitectures)"
 			FrameworksDirectory="$(_AppFrameworksRelativePath)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"

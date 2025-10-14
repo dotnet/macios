@@ -16,6 +16,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <!-- RBI0000 -->
+  <data name="RBI0000Description" xml:space="preserve">
+        <value>An unexpected error happened while generating the code. No code will be added to the compilation.</value>
+        <comment>An optional longer localizable description of the diagnostic.</comment>
+    </data>
+  <data name="RBI0000MessageFormat" xml:space="preserve">
+        <value>An unexpected error ocurred while processing '{0}'. Please fill a bug report at https://github.com/dotnet/macios/issues/new.</value>
+        <comment>The format-able message the diagnostic displays.</comment>
+    </data>
+  <data name="RBI0000Title" xml:space="preserve">
+        <value>Unexpected error</value>
+        <comment>The title of the diagnostic.</comment>
+    </data>
   <!-- RBI0001 -->
   <data name="RBI0001Description" xml:space="preserve">
         <value>In order for the code to be generated all binding types have to be declared as partial classes.</value>
@@ -98,11 +111,11 @@
         <value>In order for the code to be generated a smart enum value has to have a backing field.</value>
     </data>
   <data name="RBI0008MessageFormat" xml:space="preserve">
-        <value>The enum value '{0}' must be tagged with a Field&lt;EnumValue&gt; attribute</value>
-        <comment>'{0}' is the name of the enumerator value.</comment>
+        <value>The enum '{0}' must have at least one member tagged with a Field&lt;EnumValue&gt; attribute</value>
+        <comment>'{0}' is the name of the enumerator.</comment>
     </data>
   <data name="RBI0008Title" xml:space="preserve">
-        <value>Smart enum values must be tagged with an Field&lt;EnumValue&gt; attribute</value>
+        <value>Smart enum values must have a value tagged with an Field&lt;EnumValue&gt; attribute</value>
     </data>
   <!-- RBI0009 -->
   <data name="RBI0009Description" xml:space="preserve">
@@ -169,5 +182,295 @@
     </data>
   <data name="RBI0014Title" xml:space="preserve">
         <value>INativeObject not kept alive after Handle access</value>
+    </data>
+  <!-- RBI0015 -->
+  <data name="RBI0015Description" xml:space="preserve">
+        <value>With the provided binding flags in the export methods, the mentioned field cannot be null.</value>
+    </data>
+  <data name="RBI0015MessageFormat" xml:space="preserve">
+        <value>Field '{0}' is required when one of the following flags is set: '{1}'</value>
+        <comment>'{0}' is the name of the field and '{1}' is a comma separated list of flags</comment>
+    </data>
+  <data name="RBI0015Title" xml:space="preserve">
+        <value>Field value cannot be null</value>
+    </data>
+  <!-- RBI0016 -->
+  <data name="RBI0016Description" xml:space="preserve">
+        <value>The fields are mutually exclusive which means that at most one of them can be set.</value>
+    </data>
+  <data name="RBI0016MessageFormat" xml:space="preserve">
+        <value>Fields '{0}' must be mutually exclusive, at most one field can be set</value>
+        <comment>'{0}' is the name of the fields.</comment>
+    </data>
+  <data name="RBI0016Title" xml:space="preserve">
+        <value>Fields are mutually exclusive</value>
+    </data>
+  <!-- RBI0017 -->
+  <data name="RBI0017Description" xml:space="preserve">
+        <value>The field is only allowed when a specific flag is used.</value>
+    </data>
+  <data name="RBI0017MessageFormat" xml:space="preserve">
+        <value>Fields '{0}' was set with flag {1} when is only allowed with flag {2}</value>
+        <comment>'{0}' is the name of the field, {1} is the flag type found and {2} is the flag we should have</comment>
+    </data>
+  <data name="RBI0017Title" xml:space="preserve">
+        <value>Field used with the wrong flag</value>
+    </data>
+  <!-- RBI0018 -->
+  <data name="RBI0018Description" xml:space="preserve">
+        <value>The export attribute must have a nonnull selector.</value>
+    </data>
+  <data name="RBI0018MessageFormat" xml:space="preserve">
+        <value>An export property selector must not contain any whitespace</value>
+    </data>
+  <data name="RBI0018Title" xml:space="preserve">
+        <value>Null selector</value>
+    </data>
+  <!-- RBI0019 -->
+  <data name="RBI0019Description" xml:space="preserve">
+        <value>The selector string cannot contain any whitespace characters.</value>
+    </data>
+  <data name="RBI0019MessageFormat" xml:space="preserve">
+        <value>An export property selector must not contain any whitespace</value>
+    </data>
+  <data name="RBI0019Title" xml:space="preserve">
+        <value>Bad selector format</value>
+    </data>
+  <!-- RBI0020 -->
+  <data name="RBI0020Description" xml:space="preserve">
+        <value>The named parameter is only allowed with a specific flag.</value>
+    </data>
+  <data name="RBI0020MessageFormat" xml:space="preserve">
+        <value>The '{0}' named parameter can only be used when '{1}' has been set</value>
+        <comment>'{0}' is the name of the field and {1} is the name of the flag.</comment>
+    </data>
+  <data name="RBI0020Title" xml:space="preserve">
+        <value>Invalid named parameter</value>
+    </data>
+  <!-- RBI0021 -->
+  <data name="RBI0021Description" xml:space="preserve">
+        <value>The flag combination is not allowed.</value>
+    </data>
+  <data name="RBI0021MessageFormat" xml:space="preserve">
+        <value>The combination of flags {0} is not allowed</value>
+        <comment>'{0}' is the list of flags that cannot be combined.</comment>
+    </data>
+  <data name="RBI0021Title" xml:space="preserve">
+        <value>Invalid flag</value>
+    </data>
+  <!-- RBI0022 -->
+  <data name="RBI0022Description" xml:space="preserve">
+        <value>The export attribute must have a nonnull selector.</value>
+    </data>
+  <data name="RBI0022MessageFormat" xml:space="preserve">
+        <value>An export method selector must not contain any whitespace</value>
+    </data>
+  <data name="RBI0022Title" xml:space="preserve">
+        <value>Null selector</value>
+    </data>
+  <!-- RBI0023 -->
+  <data name="RBI0023Description" xml:space="preserve">
+        <value>The selector string cannot contain any whitespace characters.</value>
+    </data>
+  <data name="RBI0023MessageFormat" xml:space="preserve">
+        <value>An export method selector must not contain any whitespace</value>
+    </data>
+  <data name="RBI0023Title" xml:space="preserve">
+        <value>Bad selector format</value>
+    </data>
+  <!-- RBI0024 -->
+  <data name="RBI0024Description" xml:space="preserve">
+        <value>The native prefix/suffix cannot have white spaces.</value>
+    </data>
+  <data name="RBI0024MessageFormat" xml:space="preserve">
+        <value>The {0} string must not contain any whitespace</value>
+        <comment>The {0} is the name of the field.</comment>
+    </data>
+  <data name="RBI0024Title" xml:space="preserve">
+        <value>Bad native prefix/suffix</value>
+    </data>
+  <!-- RBI0025 -->
+  <data name="RBI0025Description" xml:space="preserve">
+        <value>Names of types to be generated cannot have white spaces.</value>
+    </data>
+  <data name="RBI0025MessageFormat" xml:space="preserve">
+        <value>The {0} type name must not contain any whitespace</value>
+        <comment>The {0} is the name of the field.</comment>
+    </data>
+  <data name="RBI0025Title" xml:space="preserve">
+        <value>Bad type name</value>
+    </data>
+  <!-- RBI0026 -->
+  <data name="RBI0026Description" xml:space="preserve">
+        <value>The async method name cannot have white spaces.</value>
+    </data>
+  <data name="RBI0026MessageFormat" xml:space="preserve">
+        <value>The async method name must not contain any whitespace</value>
+    </data>
+  <data name="RBI0026Title" xml:space="preserve">
+        <value>Bad method name</value>
+    </data>
+  <!-- RBI0027 -->
+  <data name="RBI0027Description" xml:space="preserve">
+        <value>The symbol is accessible in a platform where it is not supported..</value>
+    </data>
+  <data name="RBI0027MessageFormat" xml:space="preserve">
+        <value>The symbol '{0}' is accessible on platform '{1}' when it was marked otherwise</value>
+        <comment>The {0} is the name of the enum, property or method, {1} is the name of the platform.</comment>
+    </data>
+  <data name="RBI0027Title" xml:space="preserve">
+        <value>Bad method name</value>
+    </data>
+  <!-- RBI0028 -->
+  <data name="RBI0028Description" xml:space="preserve">
+        <value>A flag value was used on an attribute that does not support it and will be ignored.</value>
+    </data>
+  <data name="RBI0028MessageFormat" xml:space="preserve">
+        <value>The flag '{0}' is not supported on '{1}' and will be ignored</value>
+        <comment>The {0} is the name of the flag, {1} is the name of the attribute.</comment>
+    </data>
+  <data name="RBI0028Title" xml:space="preserve">
+        <value>Ignored flag</value>
+    </data>
+  <!-- RBI0029 -->
+  <data name="RBI0029Description" xml:space="preserve">
+        <value>There is a mismatch between the arguments of a method/property and the number of ':' in a selector.</value>
+    </data>
+  <data name="RBI0029MessageFormat" xml:space="preserve">
+        <value>There is a mismatch between the arguments of '{0}' (found {1}) and the selector '{2}' (found {3})</value>
+        <comment>The {0} is the name of the method or property, {1} is the argument count. {2} is the selector and {3} is its argument count</comment>
+    </data>
+  <data name="RBI0029Title" xml:space="preserve">
+        <value>Selector argument mismatch</value>
+    </data>
+  <!-- RBI0030 -->
+  <data name="RBI0030Description" xml:space="preserve">
+        <value>Field properties must be declared static.</value>
+    </data>
+  <data name="RBI0030MessageFormat" xml:space="preserve">
+        <value>Field properties must be declared static</value>
+    </data>
+  <data name="RBI0030Title" xml:space="preserve">
+        <value>Wrong field declaration</value>
+    </data>
+  <!-- RBI0031 -->
+  <data name="RBI0031Description" xml:space="preserve">
+        <value>Exported properties must be declared partial.</value>
+    </data>
+  <data name="RBI0031MessageFormat" xml:space="preserve">
+        <value>Exported properties must be declared partial</value>
+    </data>
+  <data name="RBI0031Title" xml:space="preserve">
+        <value>Wrong property declaration</value>
+    </data>
+  <!-- RBI0032 -->
+  <data name="RBI0032Description" xml:space="preserve">
+        <value>A weak delegate has to have a strong delegate name if it does not start with 'Weak'.</value>
+    </data>
+  <data name="RBI0032MessageFormat" xml:space="preserve">
+        <value>The weak delegate '{0}' is missing a strong delegate name, provide one or use the 'Weak' prefix</value>
+        <comment>{0} is the name of the property that does not start with 'Weak'.</comment>
+    </data>
+  <data name="RBI0032Title" xml:space="preserve">
+        <value>Wrong weak delegate</value>
+    </data>
+  <!-- RBI0033 -->
+  <data name="RBI0033Description" xml:space="preserve">
+        <value>A weak delegate has a duplicate strong delegate name.</value>
+    </data>
+  <data name="RBI0033MessageFormat" xml:space="preserve">
+        <value>The weak delegate '{0}' strong delegate '{1}' is already used by '{2}'</value>
+        <comment>{0} is the name of the property {1} is the name of the strong delegate and {2} is the name of the other property.</comment>
+    </data>
+  <data name="RBI0033Title" xml:space="preserve">
+        <value>Wrong strong delegate name</value>
+    </data>
+  <!-- RBI0034 -->
+  <data name="RBI0034Description" xml:space="preserve">
+        <value>A selector is used in more than one symbol.</value>
+    </data>
+  <data name="RBI0034MessageFormat" xml:space="preserve">
+        <value>The selector '{0}' used by '{1}' is already used by '{2}'</value>
+        <comment>{0} is the selector {1} is the name of the duplicate symbol and {2} is the name of the first user of the selector.</comment>
+    </data>
+  <data name="RBI0034Title" xml:space="preserve">
+        <value>Duplicate selector</value>
+    </data>
+  <!-- RBI0035 -->
+  <data name="RBI0035Description" xml:space="preserve">
+        <value>A method marked as an async method should have void as its return type.</value>
+    </data>
+  <data name="RBI0035MessageFormat" xml:space="preserve">
+        <value>The method '{0}' was marked as async but its return type is not void</value>
+        <comment>{0} is the name of the method.</comment>
+    </data>
+  <data name="RBI0035Title" xml:space="preserve">
+        <value>Async method not returning void</value>
+    </data>
+  <!-- RBI0036 -->
+  <data name="RBI0036Description" xml:space="preserve">
+        <value>A method marked as an async method should have at least one parameter that is a delegate.</value>
+    </data>
+  <data name="RBI0036MessageFormat" xml:space="preserve">
+        <value>The method '{0}' was marked as async but has 0 parameters when at least a single delegate parameter is required</value>
+        <comment>{0} is the name of the method.</comment>
+    </data>
+  <data name="RBI0036Title" xml:space="preserve">
+        <value>No parameters in async method</value>
+    </data>
+  <!-- RBI0037 -->
+  <data name="RBI0037Description" xml:space="preserve">
+        <value>A method marked as an async method should have its last parameter be a delegate.</value>
+    </data>
+  <data name="RBI0037MessageFormat" xml:space="preserve">
+        <value>The method '{0}' was marked as async but its last parameter is not a delegate</value>
+        <comment>{0} is the name of the method.</comment>
+    </data>
+  <data name="RBI0037Title" xml:space="preserve">
+        <value>Last parameter is not a delegate</value>
+    </data>
+  <!-- RBI0038 -->
+  <data name="RBI0038Description" xml:space="preserve">
+        <value>A method that could be async was not marked as async.</value>
+    </data>
+  <data name="RBI0038MessageFormat" xml:space="preserve">
+        <value>The method '{0}' was not marked as async but it can be</value>
+        <comment>{0} is the name of the method.</comment>
+    </data>
+  <data name="RBI0038Title" xml:space="preserve">
+        <value>Possible async method missing async flag</value>
+    </data>
+  <!-- RBI0039 -->
+  <data name="RBI0039Description" xml:space="preserve">
+        <value>Two methods marked as async will result in the same async name.</value>
+    </data>
+  <data name="RBI0039MessageFormat" xml:space="preserve">
+        <value>The async name '{0}' used by '{1}' is already used by '{2}'</value>
+        <comment>{0} is the name of the async method, {1} is the name of the sync method and {2} is the name of the first ocurrance.</comment>
+    </data>
+  <data name="RBI0039Title" xml:space="preserve">
+        <value>Duplicated async name</value>
+    </data>
+  <!-- RBI0040 -->
+  <data name="RBI0040Description" xml:space="preserve">
+        <value>No result type or result type name was provided for an async method.</value>
+    </data>
+  <data name="RBI0040MessageFormat" xml:space="preserve">
+        <value>The method '{0}' was marked as async and has multiple parameters but does not provide a return type name, a nameless tuple will be generated for the async method</value>
+        <comment>{0} is the name of the async method.</comment>
+    </data>
+  <data name="RBI0040Title" xml:space="preserve">
+        <value>Not specified return type</value>
+    </data>
+  <!-- RBI0040 -->
+  <data name="RBI0041Description" xml:space="preserve">
+        <value>Protocol inline constructor is hidden.</value>
+    </data>
+  <data name="RBI0041MessageFormat" xml:space="preserve">
+        <value>The class '{0}' contains a constructor with the selector '{1}' that hides a inline constructor from protocol '{2}'</value>
+        <comment>{0} is the name of the class, {1} is the selector, {2} is the name of the protocol</comment>
+    </data>
+  <data name="RBI0041Title" xml:space="preserve">
+        <value>Protocol constructor overlap:</value>
     </data>
 </root>

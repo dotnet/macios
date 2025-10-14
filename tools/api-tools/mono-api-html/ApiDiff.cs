@@ -49,19 +49,10 @@ namespace Mono.ApiTools {
 		public string Type { get; set; }
 		public string BaseType { get; set; }
 		public string Parent { get; set; }
-		public List<Regex> IgnoreAdded { get; } = new List<Regex> ();
-		public List<Regex> IgnoreNew { get; } = new List<Regex> ();
-		public List<Regex> IgnoreRemoved { get; } = new List<Regex> ();
-		public bool IgnoreParameterNameChanges { get; set; }
-		public bool IgnoreVirtualChanges { get; set; }
-		public bool IgnoreAddedPropertySetters { get; set; }
-		public bool IgnoreNonbreaking { get; set; }
-		public bool Lax { get; set; }
 		public bool Colorize { get; set; } = true;
 		public int Verbosity { get; set; }
 		public string SourceFile;
 		public string TargetFile;
-		public Dictionary<string, string> TargetClassHierarchyMap;
 
 		public void LogDebugMessage (string value)
 		{
@@ -84,39 +75,12 @@ namespace Mono.ApiTools {
 
 			var options = new Mono.Options.OptionSet {
 				{ "h|help", "Show this help", v => showHelp = true },
-				{ "i|ignore=", "Ignore new, added, and removed members whose description matches a given C# regular expression (see below).",
-					v => {
-						var r = new Regex (v);
-						config.IgnoreAdded.Add (r);
-						config.IgnoreRemoved.Add (r);
-						config.IgnoreNew.Add (r);
-					}
-				},
-				{ "a|ignore-added=", "Ignore added members whose description matches a given C# regular expression (see below).",
-					v => config.IgnoreAdded.Add (new Regex (v))
-				},
-				{ "r|ignore-removed=", "Ignore removed members whose description matches a given C# regular expression (see below).",
-					v => config.IgnoreRemoved.Add (new Regex (v))
-				},
-				{ "n|ignore-new=", "Ignore new namespaces and types whose description matches a given C# regular expression (see below).",
-					v => config.IgnoreNew.Add (new Regex (v))
-				},
-				{ "ignore-changes-parameter-names", "Ignore changes to parameter names for identically prototyped methods.",
-					v => config.IgnoreParameterNameChanges   = v is not null
-				},
-				{ "ignore-changes-property-setters", "Ignore adding setters to properties.",
-					v => config.IgnoreAddedPropertySetters = v is not null
-				},
-				{ "ignore-changes-virtual", "Ignore changing non-`virtual` to `virtual` or adding `override`.",
-					v => config.IgnoreVirtualChanges = v is not null
-				},
 				{ "c|colorize:", "Colorize HTML output", v => config.Colorize = string.IsNullOrEmpty (v) ? true : bool.Parse (v) },
-				{ "x|lax", "Ignore duplicate XML entries", v => config.IgnoreDuplicateXml = true },
-				{ "ignore-nonbreaking", "Ignore all nonbreaking changes", v => config.IgnoreNonbreaking = true },
 				{ "v|verbose:", "Verbosity level; when set, will print debug messages",
 				  (int? v) => config.Verbosity = v ?? (config.Verbosity + 1)},
 				{ "md|markdown=", "Output markdown to the specified file", v => config.MarkdownOutput = v },
 				{ "html=", "Output html to the specified file", v => config.HtmlOutput = v },
+				{ "html-header=", "HTML header to include in the output", v => config.HtmlHeader = v },
 				new Mono.Options.ResponseFileSource (),
 			};
 
@@ -167,15 +131,9 @@ namespace Mono.ApiTools {
 
 	public class ApiDiffFormattedConfig {
 		public string HtmlOutput { get; set; }
+		public string HtmlHeader { get; set; }
 		public string MarkdownOutput { get; set; }
-		public List<Regex> IgnoreAdded { get; set; } = new List<Regex> ();
-		public List<Regex> IgnoreNew { get; set; } = new List<Regex> ();
-		public List<Regex> IgnoreRemoved { get; set; } = new List<Regex> ();
-		public bool IgnoreParameterNameChanges { get; set; }
-		public bool IgnoreVirtualChanges { get; set; }
-		public bool IgnoreAddedPropertySetters { get; set; }
-		public bool IgnoreNonbreaking { get; set; }
-		public bool IgnoreDuplicateXml { get; set; }
+		// public bool IgnoreDuplicateXml { get; set; }
 		public bool Colorize { get; set; } = true;
 
 		internal int Verbosity { get; set; }
@@ -221,24 +179,15 @@ namespace Mono.ApiTools {
 			var state = new State {
 				Colorize = config.Colorize,
 				Formatter = null,
-				IgnoreAddedPropertySetters = config.IgnoreAddedPropertySetters,
-				IgnoreVirtualChanges = config.IgnoreVirtualChanges,
-				IgnoreNonbreaking = config.IgnoreNonbreaking,
-				IgnoreParameterNameChanges = config.IgnoreParameterNameChanges,
-				Lax = config.IgnoreDuplicateXml,
 				SourceFile = firstInfo,
 				TargetFile = secondInfo,
 
 				Verbosity = config.Verbosity
 			};
 
-			state.IgnoreAdded.AddRange (config.IgnoreAdded);
-			state.IgnoreNew.AddRange (config.IgnoreNew);
-			state.IgnoreRemoved.AddRange (config.IgnoreRemoved);
-
 			var formatters = new List<Formatter> ();
 			if (!string.IsNullOrWhiteSpace (config.HtmlOutput))
-				formatters.Add (new HtmlFormatter (state) { OutputPath = config.HtmlOutput });
+				formatters.Add (new HtmlFormatter (state) { OutputPath = config.HtmlOutput, Header = config.HtmlHeader });
 			if (!string.IsNullOrWhiteSpace (config.MarkdownOutput))
 				formatters.Add (new MarkdownFormatter (state) { OutputPath = config.MarkdownOutput });
 			if (formatters.Count > 1) {
@@ -249,13 +198,6 @@ namespace Mono.ApiTools {
 				state.Formatter = formatters [0];
 			}
 			state.Formatters = formatters.ToArray ();
-
-			if (state.IgnoreNonbreaking) {
-				state.IgnoreAddedPropertySetters = true;
-				state.IgnoreVirtualChanges = true;
-				state.IgnoreNew.Add (new Regex (".*"));
-				state.IgnoreAdded.Add (new Regex (".*"));
-			}
 
 			return state;
 		}

@@ -287,7 +287,9 @@ namespace AudioUnit {
 		{
 			averageCPULoad = default;
 			unsafe {
-				return AUGraphGetCPULoad (Handle, (float*) Unsafe.AsPointer<float> (ref averageCPULoad));
+				fixed (float* averageCPULoadPtr = &averageCPULoad) {
+					return AUGraphGetCPULoad (Handle, averageCPULoadPtr);
+				}
 			}
 		}
 
@@ -299,7 +301,9 @@ namespace AudioUnit {
 		{
 			maxCPULoad = default;
 			unsafe {
-				return AUGraphGetMaxCPULoad (Handle, (float*) Unsafe.AsPointer<float> (ref maxCPULoad));
+				fixed (float* maxCPULoadPtr = &maxCPULoad) {
+					return AUGraphGetMaxCPULoad (Handle, maxCPULoadPtr);
+				}
 			}
 		}
 
@@ -312,7 +316,9 @@ namespace AudioUnit {
 		{
 			node = default;
 			unsafe {
-				return AUGraphGetIndNode (Handle, index, (int*) Unsafe.AsPointer<int> (ref node));
+				fixed (int* nodePtr = &node) {
+					return AUGraphGetIndNode (Handle, index, nodePtr);
+				}
 			}
 		}
 
@@ -324,7 +330,9 @@ namespace AudioUnit {
 		{
 			count = default;
 			unsafe {
-				return AUGraphGetNodeCount (Handle, (int*) Unsafe.AsPointer<int> (ref count));
+				fixed (int* countPtr = &count) {
+					return AUGraphGetNodeCount (Handle, countPtr);
+				}
 			}
 		}
 
@@ -377,7 +385,9 @@ namespace AudioUnit {
 			IntPtr ptr;
 			cd = default;
 			unsafe {
-				error = AUGraphNodeInfo (GetCheckedHandle (), node, (AudioComponentDescription*) Unsafe.AsPointer<AudioComponentDescription> (ref cd), &ptr);
+				fixed (AudioComponentDescription* cdPtr = &cd) {
+					error = AUGraphNodeInfo (GetCheckedHandle (), node, cdPtr, &ptr);
+				}
 			}
 
 			if (error != AUGraphError.OK || ptr == IntPtr.Zero)
@@ -394,7 +404,9 @@ namespace AudioUnit {
 		{
 			interactionsCount = default;
 			unsafe {
-				return AUGraphGetNumberOfInteractions (Handle, (uint*) Unsafe.AsPointer<uint> (ref interactionsCount));
+				fixed (uint* interactionsCountPtr = &interactionsCount) {
+					return AUGraphGetNumberOfInteractions (Handle, interactionsCountPtr);
+				}
 			}
 		}
 
@@ -407,7 +419,9 @@ namespace AudioUnit {
 		{
 			interactionsCount = default;
 			unsafe {
-				return AUGraphCountNodeInteractions (Handle, node, (uint*) Unsafe.AsPointer<uint> (ref interactionsCount));
+				fixed (uint* interactionsCountPtr = &interactionsCount) {
+					return AUGraphCountNodeInteractions (Handle, node, interactionsCountPtr);
+				}
 			}
 		}
 

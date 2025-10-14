@@ -953,5 +953,39 @@ namespace BI1066Errors
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1087, "Missing value for the 'LibraryName' property for the '[ErrorDomain]' attribute for ErrorDomainNS.EWithDomain (e.g. '[ErrorDomain (\"MyDomain\", LibraryName = \"__Internal\")]')");
 		}
+
+		[Test]
+		[TestCase (Profile.MacCatalyst)]
+		public void StrongDictionaryErrors (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+
+			var bgen = new BGenTool ();
+			bgen.Profile = profile;
+			bgen.ProcessEnums = true;
+			bgen.Defines = BGenTool.GetDefaultDefines (profile);
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "tests", "strongdictionary-errors.cs")));
+			bgen.AssertExecuteError ("build");
+
+			var errorMessages = new string []
+			{
+				"The strong enum 'NSIntegerFieldType' is not a valid strong dictionary field for the property 'BackingField.StrongDictionary.NSIntegerValue', because its backing type is 'System.IntPtr'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.",
+				"The strong enum 'NSUIntegerFieldType' is not a valid strong dictionary field for the property 'BackingField.StrongDictionary.NSUIntegerValue', because its backing type is 'System.UIntPtr'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.",
+				"The strong enum 'Int64FieldType' is not a valid strong dictionary field for the property 'BackingField.StrongDictionary.Int64Value', because its backing type is 'System.Int64'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.",
+				"The strong enum 'UInt32FieldType' is not a valid strong dictionary field for the property 'BackingField.StrongDictionary.UInt32Value', because its backing type is 'System.UInt32'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.",
+				"The strong enum 'UInt64FieldType' is not a valid strong dictionary field for the property 'BackingField.StrongDictionary.UInt64Value', because its backing type is 'System.UInt64'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.",
+
+				"The strong enum 'NSIntegerFieldType[]' is not a valid strong dictionary field for the property 'BackingField.StrongDictionary.ArrayOfNSIntegerValue', because its backing type is 'System.IntPtr'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.",
+				"The strong enum 'NSUIntegerFieldType[]' is not a valid strong dictionary field for the property 'BackingField.StrongDictionary.ArrayOfNSUIntegerValue', because its backing type is 'System.UIntPtr'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.",
+				"The strong enum 'Int64FieldType[]' is not a valid strong dictionary field for the property 'BackingField.StrongDictionary.ArrayOfInt64Value', because its backing type is 'System.Int64'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.",
+				"The strong enum 'UInt32FieldType[]' is not a valid strong dictionary field for the property 'BackingField.StrongDictionary.ArrayOfUInt32Value', because its backing type is 'System.UInt32'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.",
+				"The strong enum 'UInt64FieldType[]' is not a valid strong dictionary field for the property 'BackingField.StrongDictionary.ArrayOfUInt64Value', because its backing type is 'System.UInt64'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries.",
+			};
+
+			foreach (var msg in errorMessages)
+				bgen.AssertError (1121, msg);
+
+			bgen.AssertErrorCount (errorMessages.Length);
+		}
 	}
 }

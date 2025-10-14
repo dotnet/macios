@@ -20,10 +20,57 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public ITaskItem []? FrameworkToPublish { get; set; }
 
+		static string GetFrameworkInfoPlistPath (string frameworkPath, ApplePlatform platform)
+		{
+			switch (platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+				return Path.Combine (frameworkPath, "Info.plist");
+			case ApplePlatform.MacOSX:
+			case ApplePlatform.MacCatalyst:
+				return Path.Combine (frameworkPath, "Resources", "Info.plist");
+			default:
+				throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, platform));
+			}
+		}
+
+		static string GetFrameworkExecutablePath (string frameworkPath, ApplePlatform platform, TaskLoggingHelper? log = null)
+		{
+			if (!(frameworkPath.EndsWith (".framework", StringComparison.OrdinalIgnoreCase) && Directory.Exists (frameworkPath)))
+				return frameworkPath;
+
+			// Try to read the CFBundleExecutable from Info.plist
+			// Use platform-specific Info.plist locations for frameworks
+			var infoPlistPath = GetFrameworkInfoPlistPath (frameworkPath, platform);
+
+			if (File.Exists (infoPlistPath)) {
+				try {
+					var plist = PDictionary.FromFile (infoPlistPath);
+					if (plist is not null) {
+						var bundleExecutable = plist.GetCFBundleExecutable ();
+						if (!string.IsNullOrEmpty (bundleExecutable)) {
+							return Path.Combine (frameworkPath, bundleExecutable);
+						}
+					}
+				} catch (Exception ex) {
+					// Log exceptions from malformed plist files and fall back to default behavior
+					log?.LogMessage (MessageImportance.Low, $"Failed to parse Info.plist for framework '{frameworkPath}': {ex.Message}");
+				}
+			}
+
+			// Fall back to the default assumption: framework name without extension
+			return Path.Combine (frameworkPath, Path.GetFileNameWithoutExtension (frameworkPath));
+		}
+
 		public override bool Execute ()
 		{
+			if (FrameworkToPublish?.Any () != true) {
+				Log.LogMessage (MessageImportance.Low, MSBStrings.M7159 /* Skipping {0} - {1} is empty. */, nameof (FilterStaticFrameworks), nameof (FrameworkToPublish));
+				return true;
+			}
+
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			if (FrameworkToPublish is not null && FrameworkToPublish.Length > 0) {
 				var list = FrameworkToPublish.ToList ();
@@ -32,7 +79,7 @@ namespace Xamarin.MacDev.Tasks {
 					var frameworkExecutablePath = PathUtils.ConvertToMacPath (item.ItemSpec);
 					try {
 						if (frameworkExecutablePath.EndsWith (".framework", StringComparison.OrdinalIgnoreCase) && Directory.Exists (frameworkExecutablePath)) {
-							frameworkExecutablePath = Path.Combine (frameworkExecutablePath, Path.GetFileNameWithoutExtension (frameworkExecutablePath));
+							frameworkExecutablePath = GetFrameworkExecutablePath (frameworkExecutablePath, Platform, Log);
 						}
 
 						if (OnlyFilterFrameworks && !Path.GetDirectoryName (frameworkExecutablePath).EndsWith (".framework", StringComparison.OrdinalIgnoreCase)) {

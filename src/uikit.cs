@@ -120,208 +120,63 @@ namespace UIKit {
 	[Native]
 	public enum UIApplicationShortcutIconType : long {
 		/// <summary>Icon for a "Compose" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Compose.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Compose,
 		/// <summary>Icon for a "Play" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Play.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Play,
 		/// <summary>Icon for a "Pause" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Pause.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Pause,
 		/// <summary>Icon for a "Add" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Add.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Add,
 		/// <summary>Icon for a "Location" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Location.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Location,
 		/// <summary>Icon for a "Search" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Search.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Search,
 		/// <summary>Icon for a "Share" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Share.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Share,
 		// iOS 9.1 
 		/// <summary>Icon for a "Prohibit" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Prohibit.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Prohibit,
 		/// <summary>Icon for a "Contact" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Contact.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Contact,
 		/// <summary>Icon for a "Home" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Home.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Home,
 		/// <summary>Icon for a "MarkLocation" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.MarkLocation.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		MarkLocation,
 		/// <summary>Icon for a "Favorite" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Favorite.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Favorite,
 		/// <summary>Icon for a "Love" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Love.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Love,
 		/// <summary>Icon for a "Cloud" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Cloud.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Cloud,
 		/// <summary>Icon for a "Invitation" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Invitation.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Invitation,
 		/// <summary>Icon for a "Confirmation" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Confirmation.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Confirmation,
 		/// <summary>Icon for a "Mail" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Mail.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Mail,
 		/// <summary>Icon for a "Message" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Message.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Message,
 		/// <summary>Icon for a "Date" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Date.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Date,
 		/// <summary>Icon for a "Time" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Time.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Time,
 		/// <summary>Icon for a "CapturePhoto" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.CapturePhoto.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		CapturePhoto,
 		/// <summary>Icon for a "CaptureVideo" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.CaptureVideo.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		CaptureVideo,
 		/// <summary>Icon for a "Task" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Task.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Task,
 		/// <summary>Icon for a "TaskCompleted" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.TaskCompleted.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		TaskCompleted,
 		/// <summary>Icon for a "Alarm" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Alarm.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Alarm,
 		/// <summary>Icon for a "Bookmark" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Bookmark.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Bookmark,
 		/// <summary>Icon for a "Shuffle" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Shuffle.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Shuffle,
 		/// <summary>Icon for a "Audio" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Audio.png" alt="Application shortcut icon." />
-		///           </para>
-		///         </remarks>
 		Audio,
 		/// <summary>Icon for a "Update" Quick Action</summary>
-		///         <remarks>
-		///           <para>
-		///             <img href="~/UIKit/_images/UIKit.UIApplicationShortcutIconType.Update.png" alt="Shortcut icon for update" />
-		///           </para>
-		///         </remarks>
 		Update,
 	}
 
@@ -628,12 +483,6 @@ namespace UIKit {
 		bool PrefersPageSizing { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UICloudSharingControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UICloudSharingControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UICloudSharingControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UICloudSharingControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUICloudSharingControllerDelegate { }
 
 	/// <summary>Delegate object for the CloudKit sharing controller.</summary>
@@ -760,7 +609,7 @@ namespace UIKit {
 		void FixAttributesInRange (NSRange range);
 	}
 
-	/// <summary>Defined the <see cref="UIKit.NSIdentifier.Identifier(UIKit.NSLayoutConstraint)" /> extension property on <see cref="UIKit.NSLayoutConstraint" /> objects.</summary>
+	/// <summary>A category that adds identifier support for <see cref="NSLayoutConstraint" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Category, BaseType (typeof (NSLayoutConstraint))]
@@ -950,12 +799,6 @@ namespace UIKit {
 		NSObject WeakDelegate { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIAccelerometerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIAccelerometerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIAccelerometerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIAccelerometerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIAccelerometerDelegate { }
 
 	/// <summary>A class used to receive notifications from the <see cref="UIKit.UIAccelerometer" />.</summary>
@@ -1185,7 +1028,6 @@ namespace UIKit {
 		long TraitTabBar { get; }
 #endif // !XAMCORE_5_0
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.AnnouncementDidFinishNotification']/*" />
 		[Field ("UIAccessibilityAnnouncementDidFinishNotification")]
 		[Notification (typeof (UIAccessibilityAnnouncementFinishedEventArgs))]
 		NSString AnnouncementDidFinishNotification { get; }
@@ -1200,28 +1042,23 @@ namespace UIKit {
 		[Field ("UIAccessibilityVoiceOverStatusChanged")]
 		NSString VoiceOverStatusChanged { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.VoiceOverStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("UIAccessibilityVoiceOverStatusDidChangeNotification")]
 		[Notification]
 		NSString VoiceOverStatusDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.MonoAudioStatusDidChangeNotification']/*" />
 		[Field ("UIAccessibilityMonoAudioStatusDidChangeNotification")]
 		[Notification]
 		NSString MonoAudioStatusDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.ClosedCaptioningStatusDidChangeNotification']/*" />
 		[Field ("UIAccessibilityClosedCaptioningStatusDidChangeNotification")]
 		[Notification]
 		NSString ClosedCaptioningStatusDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.InvertColorsStatusDidChangeNotification']/*" />
 		[Field ("UIAccessibilityInvertColorsStatusDidChangeNotification")]
 		[Notification]
 		NSString InvertColorsStatusDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.GuidedAccessStatusDidChangeNotification']/*" />
 		[Field ("UIAccessibilityGuidedAccessStatusDidChangeNotification")]
 		[Notification]
 		NSString GuidedAccessStatusDidChangeNotification { get; }
@@ -1279,7 +1116,6 @@ namespace UIKit {
 		[Field ("UIAccessibilitySpeechAttributeAnnouncementPriority")]
 		NSString SpeechAttributeAnnouncementPriority { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.BoldTextStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityBoldTextStatusDidChangeNotification")]
@@ -1291,19 +1127,16 @@ namespace UIKit {
 		[Field ("UIAccessibilityButtonShapesEnabledStatusDidChangeNotification")]
 		NSString ButtonShapesEnabledStatusDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.DarkerSystemColorsStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityDarkerSystemColorsStatusDidChangeNotification")]
 		NSString DarkerSystemColorsStatusDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.GrayscaleStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityGrayscaleStatusDidChangeNotification")]
 		NSString GrayscaleStatusDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.ReduceMotionStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityReduceMotionStatusDidChangeNotification")]
@@ -1321,13 +1154,11 @@ namespace UIKit {
 		[Field ("UIAccessibilityVideoAutoplayStatusDidChangeNotification")]
 		NSString VideoAutoplayStatusDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.ReduceTransparencyStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityReduceTransparencyStatusDidChangeNotification")]
 		NSString ReduceTransparencyStatusDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.SwitchControlStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilitySwitchControlStatusDidChangeNotification")]
@@ -1359,19 +1190,16 @@ namespace UIKit {
 		[Field ("UIAccessibilityResumeAssistiveTechnologyNotification")]
 		int ResumeAssistiveTechnologyNotification { get; } // UIAccessibilityNotifications => uint32_t
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.SpeakScreenStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilitySpeakScreenStatusDidChangeNotification")]
 		NSString SpeakScreenStatusDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.SpeakSelectionStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilitySpeakSelectionStatusDidChangeNotification")]
 		NSString SpeakSelectionStatusDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.ShakeToUndoDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityShakeToUndoDidChangeNotification")]
@@ -1384,31 +1212,21 @@ namespace UIKit {
 		[NullAllowed, Export ("accessibilityHeaderElements", ArgumentSemantic.Copy)]
 		NSObject [] AccessibilityHeaderElements { get; set; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.ElementFocusedNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityElementFocusedNotification")]
 		NSString ElementFocusedNotification { get; }
 
-		/// <summary>A string constant used by accessibility APIs (see <see cref="UIKit.UIAccessibility.FocusedElement(System.String)" />) to identify the focused element.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityFocusedElementKey")]
 		NSString FocusedElementKey { get; }
 
-		/// <summary>A string constant used by accessibility APIs (see <see cref="UIKit.UIAccessibility.FocusedElement(System.String)" />) to identify the previously focused element.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityUnfocusedElementKey")]
 		NSString UnfocusedElementKey { get; }
 
-		/// <summary>The string "UIAccessibilityAssistiveTechnologyKey" which can be used to distinguish accessibility notifications.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityAssistiveTechnologyKey")]
@@ -1419,14 +1237,12 @@ namespace UIKit {
 		[Field ("UIAccessibilityNotificationVoiceOverIdentifier")]
 		NSString NotificationVoiceOverIdentifier { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.HearingDevicePairedEarDidChangeNotification']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityHearingDevicePairedEarDidChangeNotification")]
 		NSString HearingDevicePairedEarDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIBarItem.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIBarItem.AssistiveTouchStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIAccessibilityAssistiveTouchStatusDidChangeNotification")]
@@ -1572,19 +1388,13 @@ namespace UIKit {
 		NSRange GetAccessibilityColumnRange ();
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIAccessibilityContainerDataTable" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIAccessibilityContainerDataTable" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIAccessibilityContainerDataTable" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIAccessibilityContainerDataTable_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface UIAccessibilityContainerDataTable {
 		/// <param name="row">The row that contains the desired element.</param>
 		/// <param name="column">The column that contains the desired element.</param>
-		/// <summary>Returns a description of the row span and column span for the cell that is located at the specified <parmref name="row" /> and <paramref name="column" />.</summary>
+		/// <summary>Returns a description of the row span and column span for the cell that is located at the specified <paramref name="row" /> and <paramref name="column" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
@@ -2056,12 +1866,6 @@ namespace UIKit {
 
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIActionSheetDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIActionSheetDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIActionSheetDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIActionSheetDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIActionSheetDelegate { }
 
 	/// <summary>A class used to receive notifications from a <see cref="UIKit.UIActionSheet" />.</summary>
@@ -2273,13 +2077,12 @@ namespace UIKit {
 		NSString PostToTencentWeibo { get; }
 
 		/// <summary>Makes the provided object available over AirDrop.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		/// 	  The object must hold an individual <see cref="AssetsLibrary.ALAsset" />, <see cref="Foundation.NSAttributedString" />, <see cref="Foundation.NSString" />, <see cref="Foundation.NSUrl" />, <see cref="UIKit.UIImage" />.  Or you can provide a
-		/// 	  collection of those objects by passing an NSDictionary or an
-		/// 	  NSArray with those objects.
-		/// 	</remarks>
+		/// <remarks>
+		///   The object must hold an individual <see cref="Foundation.NSAttributedString" />, <see cref="Foundation.NSString" />,
+		///   <see cref="Foundation.NSUrl" />, or <see cref="UIKit.UIImage" />.
+		///   Or you can provide a collection of those objects by passing an <see cref="NSDictionary" /> or an <see cref="NSArray" />
+		///   with those objects.
+		/// </remarks>
 		[Field ("UIActivityTypeAirDrop")]
 		NSString AirDrop { get; }
 
@@ -2318,8 +2121,6 @@ namespace UIKit {
 	// You're supposed to implement this protocol in your UIView subclasses, not provide
 	// a implementation for only this protocol, which is why there is no model to subclass.
 	//
-	/// <summary>Interface that, together with the <see cref="UIKit.UIInputViewAudioFeedback_Extensions" /> class, comprise the UIInputViewAudioFeedback protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIInputViewAudioFeedback {
@@ -2355,12 +2156,6 @@ namespace UIKit {
 
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIActivityItemSource" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIActivityItemSource" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIActivityItemSource" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIActivityItemSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIActivityItemSource { }
 
 	/// <summary>Abstract class that, when implemented, provides data for use by a <see cref="UIKit.UIActivityViewController" /></summary>
@@ -2546,12 +2341,6 @@ namespace UIKit {
 		UIAlertControllerSeverity Severity { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIAlertViewDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIAlertViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIAlertViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIAlertViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIAlertViewDelegate { }
 
 	/// <include file="../docs/api/UIKit/UIAlertView.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIAlertView']/*" />
@@ -2740,12 +2529,6 @@ namespace UIKit {
 	// When a new class adopts UIAppearance, merely list it as one of the
 	// base interfaces, this will generate the stubs for it.
 	//
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIAppearance" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIAppearance" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIAppearance" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIAppearance_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2785,7 +2568,7 @@ namespace UIKit {
 		[Export ("baselineRelativeArrangement")]
 		bool BaselineRelativeArrangement { [Bind ("isBaselineRelativeArrangement")] get; set; }
 
-		/// <summary>Whether subviews are arranged relative to this <see cref="UIKit.UIStackView" />'s <see cref="UIKit.UIView.LayoutMargin" />.</summary>
+		/// <summary>Whether subviews are arranged relative to this <see cref="UIKit.UIStackView" />'s <see cref="UIKit.UIView.LayoutMargins" />.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("layoutMarginsRelativeArrangement")]
@@ -2828,12 +2611,6 @@ namespace UIKit {
 
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIStateRestoring" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIStateRestoring" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIStateRestoring" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIStateRestoring_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2868,12 +2645,6 @@ namespace UIKit {
 
 	interface IUIStateRestoring { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIObjectRestoration" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIObjectRestoration" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIObjectRestoration" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIObjectRestoration_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -3023,6 +2794,10 @@ namespace UIKit {
 		[Export ("pausesOnCompletion")]
 		bool PausesOnCompletion { get; set; }
 
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("flushUpdates")]
+		bool FlushUpdates { get; set; }
+
 		[Export ("initWithDuration:timingParameters:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (double duration, IUITimingCurveProvider parameters);
@@ -3051,7 +2826,6 @@ namespace UIKit {
 
 	interface IUIViewControllerPreviewing { }
 
-	/// <include file="../docs/api/UIKit/IUIViewControllerPreviewing.xml" path="/Documentation/Docs[@DocId='T:UIKit.IUIViewControllerPreviewing']/*" />
 	[Protocol]
 	[MacCatalyst (13, 1)]
 	interface UIViewControllerPreviewing {
@@ -3136,8 +2910,6 @@ namespace UIKit {
 		void CommitViewController (IUIViewControllerPreviewing previewingContext, UIViewController viewControllerToCommit);
 	}
 
-	/// <summary>Interface that, together with the <see cref="UIKit.UIViewControllerRestoration_Extensions" /> class, comprise the UIViewControllerRestoration protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIViewControllerRestoration {
@@ -3210,8 +2982,7 @@ namespace UIKit {
 		bool LocationLaunch { get; }
 	}
 
-	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that holds options for use with calls to <see cref="UIApplication.OpenURL" />.</summary>
-	/// <remarks>To be added.</remarks>
+	/// <summary>A <see cref="Foundation.DictionaryContainer" /> that holds options for use with calls to <see cref="UIApplication.OpenUrl(NSUrl)" /> or <see cref="UIApplication.OpenUrl(NSUrl,NSDictionary,Action{bool})" />.</summary>
 	[MacCatalyst (13, 1)]
 	[StrongDictionary ("UIApplicationOpenUrlOptionKeys")]
 	interface UIApplicationOpenUrlOptions {
@@ -3481,37 +3252,30 @@ namespace UIKit {
 		[Export ("enabledRemoteNotificationTypes")]
 		UIRemoteNotificationType EnabledRemoteNotificationTypes { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.DidFinishLaunchingNotification']/*" />
 		[Field ("UIApplicationDidFinishLaunchingNotification")]
 		[Notification (typeof (UIApplicationLaunchEventArgs))]
 		NSString DidFinishLaunchingNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.DidBecomeActiveNotification']/*" />
 		[Field ("UIApplicationDidBecomeActiveNotification")]
 		[Notification]
 		NSString DidBecomeActiveNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.WillResignActiveNotification']/*" />
 		[Field ("UIApplicationWillResignActiveNotification")]
 		[Notification]
 		NSString WillResignActiveNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.DidReceiveMemoryWarningNotification']/*" />
 		[Field ("UIApplicationDidReceiveMemoryWarningNotification")]
 		[Notification]
 		NSString DidReceiveMemoryWarningNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.WillTerminateNotification']/*" />
 		[Field ("UIApplicationWillTerminateNotification")]
 		[Notification]
 		NSString WillTerminateNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.SignificantTimeChangeNotification']/*" />
 		[Field ("UIApplicationSignificantTimeChangeNotification")]
 		[Notification]
 		NSString SignificantTimeChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.WillChangeStatusBarOrientationNotification']/*" />
 		[NoTV]
 		[Field ("UIApplicationWillChangeStatusBarOrientationNotification")]
 		[Notification (typeof (UIStatusBarOrientationChangeEventArgs))]
@@ -3520,7 +3284,6 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ViewWillTransitionToSize' instead.")]
 		NSString WillChangeStatusBarOrientationNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.DidChangeStatusBarOrientationNotification']/*" />
 		[NoTV]
 		[Field ("UIApplicationDidChangeStatusBarOrientationNotification")]
 		[Notification (typeof (UIStatusBarOrientationChangeEventArgs))]
@@ -3540,7 +3303,6 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'ViewWillTransitionToSize' instead.")]
 		NSString StatusBarOrientationUserInfoKey { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.WillChangeStatusBarFrameNotification']/*" />
 		[NoTV]
 		[Field ("UIApplicationWillChangeStatusBarFrameNotification")]
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'ViewWillTransitionToSize' instead.")]
@@ -3549,7 +3311,6 @@ namespace UIKit {
 		[Notification (typeof (UIStatusBarFrameChangeEventArgs))]
 		NSString WillChangeStatusBarFrameNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.DidChangeStatusBarFrameNotification']/*" />
 		[NoTV]
 		[Field ("UIApplicationDidChangeStatusBarFrameNotification")]
 		[Notification (typeof (UIStatusBarFrameChangeEventArgs))]
@@ -3720,12 +3481,10 @@ namespace UIKit {
 		[Field ("UIMinimumKeepAliveTimeout")]
 		double /* NSTimeInternal */ MinimumKeepAliveTimeout { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.ProtectedDataWillBecomeUnavailable']/*" />
 		[Field ("UIApplicationProtectedDataWillBecomeUnavailable")]
 		[Notification]
 		NSString ProtectedDataWillBecomeUnavailable { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.ProtectedDataDidBecomeAvailable']/*" />
 		[Field ("UIApplicationProtectedDataDidBecomeAvailable")]
 		[Notification]
 		NSString ProtectedDataDidBecomeAvailable { get; }
@@ -3739,12 +3498,10 @@ namespace UIKit {
 		[Field ("UIApplicationLaunchOptionsLocationKey")]
 		NSString LaunchOptionsLocationKey { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.DidEnterBackgroundNotification']/*" />
 		[Field ("UIApplicationDidEnterBackgroundNotification")]
 		[Notification]
 		NSString DidEnterBackgroundNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.WillEnterForegroundNotification']/*" />
 		[Field ("UIApplicationWillEnterForegroundNotification")]
 		[Notification]
 		NSString WillEnterForegroundNotification { get; }
@@ -3778,7 +3535,9 @@ namespace UIKit {
 		[Export ("setNewsstandIconImage:")]
 		void SetNewsstandIconImage ([NullAllowed] UIImage image);
 
+#if !__MACCATALYST__
 		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.LaunchOptionsNewsstandDownloadsKey']/*" />
+#endif
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIApplicationLaunchOptionsNewsstandDownloadsKey")]
@@ -3858,7 +3617,6 @@ namespace UIKit {
 		//
 		// 7.0
 		//
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.ContentSizeCategoryChangedNotification']/*" />
 		[Field ("UIContentSizeCategoryDidChangeNotification")]
 		[Notification (typeof (UIContentSizeCategoryChangedEventArgs))]
 		NSString ContentSizeCategoryChangedNotification { get; }
@@ -3958,13 +3716,11 @@ namespace UIKit {
 		[Export ("backgroundRefreshStatus")]
 		UIBackgroundRefreshStatus BackgroundRefreshStatus { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.BackgroundRefreshStatusDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIApplicationBackgroundRefreshStatusDidChangeNotification")]
 		NSString BackgroundRefreshStatusDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIApplication.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIApplication.UserDidTakeScreenshotNotification']/*" />
 		[Notification]
 		[Field ("UIApplicationUserDidTakeScreenshotNotification")]
 		NSString UserDidTakeScreenshotNotification { get; }
@@ -4418,6 +4174,12 @@ namespace UIKit {
 		Automatic,
 		Inline,
 		Stacked,
+		[iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
+		IntegratedCentered = 3,
+		[iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
+		IntegratedButton = 4,
+		[iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
+		Integrated = Inline,
 	}
 
 	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
@@ -4680,12 +4442,6 @@ namespace UIKit {
 
 	interface IUIApplicationDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIApplicationDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIApplicationDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIApplicationDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIApplicationDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[NoMac]
@@ -4710,12 +4466,18 @@ namespace UIKit {
 		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
 		/// <summary>The app has moved from the inactive to actie state.</summary>
 		/// <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use UIScene lifecycle, 'DidBecomeActive' from 'UISceneDelegate' or the 'UIApplication.DidBecomeActiveNotification' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use UIScene lifecycle, 'DidBecomeActive' from 'UISceneDelegate' or the 'UIApplication.DidBecomeActiveNotification' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use UIScene lifecycle, 'DidBecomeActive' from 'UISceneDelegate' or the 'UIApplication.DidBecomeActiveNotification' instead.")]
 		[Export ("applicationDidBecomeActive:")]
 		void OnActivated (UIApplication application);
 
 		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
 		/// <summary>The app is about to move from the active state to the inactive state.</summary>
 		/// <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use UIScene lifecycle, 'WillResignActive' from 'UISceneDelegate' or the 'UIApplication.WillResignActiveNotification' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use UIScene lifecycle, 'WillResignActive' from 'UISceneDelegate' or the 'UIApplication.WillResignActiveNotification' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use UIScene lifecycle, 'WillResignActive' from 'UISceneDelegate' or the 'UIApplication.WillResignActiveNotification' instead.")]
 		[Export ("applicationWillResignActive:")]
 		void OnResignActivation (UIApplication application);
 
@@ -4838,12 +4600,18 @@ namespace UIKit {
 		/// <remarks>
 		///           <para>Apps should complete processing this method in approximately 5 seconds. If more time is necessary, applications can call <see cref="UIKit.UIApplication.BeginBackgroundTask(System.String,System.Action)" />.</para>
 		///         </remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'UIScene' lifecycle, 'DidEnterBackground' from 'UISceneDelegate' or the 'UIApplication.DidEnterBackgroundNotification' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'UIScene' lifecycle, 'DidEnterBackground' from 'UISceneDelegate' or the 'UIApplication.DidEnterBackgroundNotification' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'UIScene' lifecycle, 'DidEnterBackground' from 'UISceneDelegate' or the 'UIApplication.DidEnterBackgroundNotification' instead.")]
 		[Export ("applicationDidEnterBackground:")]
 		void DidEnterBackground (UIApplication application);
 
 		/// <param name="application">Reference to the UIApplication that invoked this delegate method.</param>
 		/// <summary>Indicates that the application is about to enter the foreground.</summary>
 		/// <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use UIScene lifecycle, 'WillEnterForeground' from 'UISceneDelegate' or the 'UIApplication.WillEnterForegroundNotification' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use UIScene lifecycle, 'WillEnterForeground' from 'UISceneDelegate' or the 'UIApplication.WillEnterForegroundNotification' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use UIScene lifecycle, 'WillEnterForeground' from 'UISceneDelegate' or the 'UIApplication.WillEnterForegroundNotification' instead.")]
 		[Export ("applicationWillEnterForeground:")]
 		void WillEnterForeground (UIApplication application);
 
@@ -4881,6 +4649,9 @@ namespace UIKit {
 		/// <summary>Indicates that the application should open the specified <paramref name="url" /> with context from <paramref name="options" />.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'UIScene' lifecycle, 'OpenUrlContexts' from 'UISceneDelegate'.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'UIScene' lifecycle, 'OpenUrlContexts' from 'UISceneDelegate'.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'UIScene' lifecycle, 'OpenUrlContexts' from 'UISceneDelegate'.")]
 		[MacCatalyst (13, 1)]
 		[Export ("application:openURL:options:")]
 		bool OpenUrl (UIApplication app, NSUrl url, NSDictionary options);
@@ -5005,7 +4776,7 @@ namespace UIKit {
 		/// <param name="application">To be added.</param>
 		/// <param name="sessionIdentifier">To be added.</param>
 		/// <param name="completionHandler">To be added.</param>
-		/// <summary>Raised when events relating to a background <see cref="UIKit.NSUrlSession" /> are waiting to be processed.</summary>
+		/// <summary>Raised when events relating to a background <see cref="NSUrlSession" /> are waiting to be processed.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("application:handleEventsForBackgroundURLSession:completionHandler:")]
 		void HandleEventsForBackgroundUrl (UIApplication application, string sessionIdentifier, Action completionHandler);
@@ -5030,6 +4801,9 @@ namespace UIKit {
 		/// <summary>Informs the app that there is data associated with continuing a task specified as a <see cref="Foundation.NSUserActivity" /> object, and then returns whether the app continued the activity.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'UIScene' lifecycle, 'ContinueUserActivity' from 'UISceneDelegate'.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'UIScene' lifecycle, 'ContinueUserActivity' from 'UISceneDelegate'.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'UIScene' lifecycle, 'ContinueUserActivity' from 'UISceneDelegate'.")]
 		[MacCatalyst (13, 1)]
 		[Export ("application:continueUserActivity:restorationHandler:")]
 		bool ContinueUserActivity (UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler);
@@ -5039,6 +4813,9 @@ namespace UIKit {
 		/// <param name="error">To be added.</param>
 		/// <summary>Informs the app that the activity of the <paramref name="userActivityType" /> type could not be continued, and specifies a <paramref name="error" /> as the reason for the failure.</summary>
 		/// <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'UIScene' lifecycle, 'DidFailToContinueUserActivity' from 'UISceneDelegate'.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'UIScene' lifecycle, 'DidFailToContinueUserActivity' from 'UISceneDelegate'.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'UIScene' lifecycle, 'DidFailToContinueUserActivity' from 'UISceneDelegate'.")]
 		[MacCatalyst (13, 1)]
 		[Export ("application:didFailToContinueUserActivityWithType:error:")]
 		void DidFailToContinueUserActivity (UIApplication application, string userActivityType, NSError error);
@@ -5111,8 +4888,14 @@ namespace UIKit {
 		/// <param name="application">To be added.</param>
 		/// <param name="shortcutItem">To be added.</param>
 		/// <param name="completionHandler">To be added.</param>
-		/// <summary>Called by the system when the user initiates a Home screen quick action, unless the interaction was handled in <see cref="UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" /> or <see cref="UIKit.UIApplicationDelegate.DidFinishLaunching" />.</summary>
+		/// <summary>
+		///   Called by the system when the user initiates a Home screen quick action, unless the interaction was handled
+		///   in <see cref="UIKit.UIApplicationDelegate.WillFinishLaunching(UIKit.UIApplication,Foundation.NSDictionary)" />
+		///   or <see cref="UIKit.UIApplicationDelegate.FinishedLaunching" />.
+		/// </summary>
 		/// <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'UIScene' lifecycle, 'PerformAction' from 'UIWindowSceneDelegate'.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'UIScene' lifecycle, 'PerformAction' from 'UIWindowSceneDelegate'.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("application:performActionForShortcutItem:completionHandler:")]
@@ -5123,6 +4906,9 @@ namespace UIKit {
 		/// <summary>Informs the app that the user is attempting to continue a <paramref name="userActivityType" /> action for which data might not be available, and returns to notify the user that the app will continue the activity.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'UIScene' lifecycle, 'WillContinueUserActivity' from 'UISceneDelegate'.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'UIScene' lifecycle, 'WillContinueUserActivity' from 'UISceneDelegate'.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'UIScene' lifecycle, 'WillContinueUserActivity' from 'UISceneDelegate'.")]
 		[MacCatalyst (13, 1)]
 		[Export ("application:willContinueUserActivityWithType:")]
 		bool WillContinueUserActivity (UIApplication application, string userActivityType);
@@ -5131,6 +4917,9 @@ namespace UIKit {
 		/// <param name="userActivity">To be added.</param>
 		/// <summary>Informs the app that the <see cref="Foundation.NSUserActivity" /> object in <paramref name="userActivity" /> has been updated.</summary>
 		/// <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'UIScene' lifecycle, 'DidUpdateUserActivity' from 'UISceneDelegate'.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'UIScene' lifecycle, 'DidUpdateUserActivity' from 'UISceneDelegate'.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'UIScene' lifecycle, 'DidUpdateUserActivity' from 'UISceneDelegate'.")]
 		[MacCatalyst (13, 1)]
 		[Export ("application:didUpdateUserActivity:")]
 		void UserActivityUpdated (UIApplication application, NSUserActivity userActivity);
@@ -5164,6 +4953,9 @@ namespace UIKit {
 		/// <param name="cloudKitShareMetadata">To be added.</param>
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'UIScene' lifecycle, 'UserDidAcceptCloudKitShare' from 'UIWindowSceneDelegate'.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'UIScene' lifecycle, 'UserDidAcceptCloudKitShare' from 'UIWindowSceneDelegate'.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'UIScene' lifecycle, 'UserDidAcceptCloudKitShare' from 'UIWindowSceneDelegate'.")]
 		[MacCatalyst (13, 1)]
 		[Export ("application:userDidAcceptCloudKitShareWithMetadata:")]
 		void UserDidAcceptCloudKitShare (UIApplication application, CKShareMetadata cloudKitShareMetadata);
@@ -5271,6 +5063,40 @@ namespace UIKit {
 		[MacCatalyst (13, 1)]
 		[Export ("largeContentSizeImageInsets", ArgumentSemantic.Assign)]
 		UIEdgeInsets LargeContentSizeImageInsets { get; set; }
+	}
+
+	[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UIBarButtonItemBadge : NSCopying, NSSecureCoding {
+
+		[DesignatedInitializer]
+		[Export ("init")]
+		NativeHandle Constructor ();
+
+		[Static]
+		[Export ("badgeWithCount:")]
+		UIBarButtonItemBadge Create (nuint count);
+
+		[Static]
+		[Export ("badgeWithString:")]
+		UIBarButtonItemBadge Create (string stringValue);
+
+		[Static]
+		[Export ("indicatorBadge")]
+		UIBarButtonItemBadge CreateIndicatorBadge ();
+
+		[NullAllowed, Export ("stringValue")]
+		string StringValue { get; }
+
+		[NullAllowed, Export ("backgroundColor", ArgumentSemantic.Strong)]
+		UIColor BackgroundColor { get; set; }
+
+		[NullAllowed, Export ("foregroundColor", ArgumentSemantic.Strong)]
+		UIColor ForegroundColor { get; set; }
+
+		[NullAllowed, Export ("font", ArgumentSemantic.Strong)]
+		UIFont Font { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -5639,6 +5465,29 @@ namespace UIKit {
 		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("removeSymbolEffectOfType:")]
 		void RemoveSymbolEffect (NSSymbolEffect symbolEffect);
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("badge", ArgumentSemantic.Copy)]
+		[NullAllowed]
+		UIBarButtonItemBadge Badge { get; set; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("fixedSpaceItem")]
+		UIBarButtonItem CreateFixedSpaceItem ();
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("identifier")]
+		[NullAllowed]
+		string Identifier { get; set; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("hidesSharedBackground")]
+		bool HidesSharedBackground { get; set; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("sharesBackground")]
+		bool SharesBackground { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -5687,6 +5536,11 @@ namespace UIKit {
 		[Static]
 		[Export ("fixedGroupWithRepresentativeItem:items:")]
 		UIBarButtonItemGroup GetFixedGroup ([NullAllowed] UIBarButtonItem representativeItem, UIBarButtonItem [] items);
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("groupWithFixedSpace")]
+		UIBarButtonItemGroup GetGroupWithFixedSpace ();
 	}
 
 	[MacCatalyst (13, 1)]
@@ -6089,12 +5943,6 @@ namespace UIKit {
 	//
 	// Combined version of UICollectionViewDataSource, UICollectionViewDelegate
 	//
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UICollectionViewSource" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UICollectionViewSource" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UICollectionViewSource" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UICollectionViewSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -6186,12 +6034,6 @@ namespace UIKit {
 
 	interface IUICollectionViewDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UICollectionViewDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UICollectionViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UICollectionViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UICollectionViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[Protocol]
@@ -6382,7 +6224,7 @@ namespace UIKit {
 
 		/// <param name="collectionView">The collection view that originated the request.</param>
 		/// <param name="context">Metadata for the focus change.</param>
-		/// <param name="coordinator">The <see cref="UIKit.UIFocusAnimationController" /> coordinating the focus-change animations.</param>
+		/// <param name="coordinator">The <see cref="UIFocusAnimationCoordinator" /> coordinating the focus-change animations.</param>
 		/// <summary>Indicates that the focus changed as detailed in the <paramref name="context" />.</summary>
 		/// <remarks>
 		///           <para>The values of <see cref="UIKit.UICollectionViewFocusUpdateContext.PreviouslyFocusedIndexPath" /> and <see cref="UIKit.UICollectionViewFocusUpdateContext.NextFocusedIndexPath" /> may be <see langword="null" /> if focus was previously not within, or just departed, the <paramref name="collectionView" />.</para>
@@ -6617,12 +6459,6 @@ namespace UIKit {
 		bool InstallsStandardGestureForInteractiveMovement { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UICollectionViewDelegateFlowLayout" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UICollectionViewDelegateFlowLayout" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UICollectionViewDelegateFlowLayout" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UICollectionViewDelegateFlowLayout_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UICollectionViewDelegate))]
 	[Model]
@@ -7665,6 +7501,40 @@ namespace UIKit {
 		[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("prominence")]
 		UIColorProminence Prominence { get; }
+
+		// HDR-related methods
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("colorWithRed:green:blue:alpha:exposure:")]
+		UIColor FromRgbaExposure (nfloat red, nfloat green, nfloat blue, nfloat alpha, nfloat exposure);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("colorWithRed:green:blue:alpha:linearExposure:")]
+		UIColor FromRgbaLinearExposure (nfloat red, nfloat green, nfloat blue, nfloat alpha, nfloat linearExposure);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("colorByApplyingContentHeadroom:")]
+		UIColor FromContentHeadroom (nfloat contentHeadroom);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("linearExposure")]
+		nfloat LinearExposure { get; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("standardDynamicRangeColor")]
+		UIColor StandardDynamicRangeColor { get; }
+
+		[Internal]
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("initWithRed:green:blue:alpha:linearExposure:")]
+		NativeHandle _InitWithRedGreenBlueAlphaLinearExposure (nfloat red, nfloat green, nfloat blue, nfloat alpha, nfloat linearExposure);
+
+		[Internal]
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("initWithRed:green:blue:alpha:exposure:")]
+		NativeHandle _InitWithRedGreenBlueAlphaExposure (nfloat red, nfloat green, nfloat blue, nfloat alpha, nfloat exposure);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -7730,12 +7600,6 @@ namespace UIKit {
 
 	interface IUICollisionBehaviorDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UICollisionBehaviorDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UICollisionBehaviorDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UICollisionBehaviorDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UICollisionBehaviorDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Protocol]
@@ -7965,10 +7829,14 @@ namespace UIKit {
 			""")]
 		void RevertToContentsOfUrl (NSUrl url, [NullAllowed] UIOperationHandler completionHandler);
 
-		/// <include file="../docs/api/UIKit/UIDocument.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIDocument.StateChangedNotification']/*" />
 		[Field ("UIDocumentStateChangedNotification")]
 		[Notification]
 		NSString StateChangedNotification { get; }
+
+		[MacCatalyst (26, 0), NoTV, iOS (26, 0)]
+		[Notification]
+		[Field ("UIDocumentDidMoveToWritableLocationNotification")]
+		NSString DidMoveToWritableLocationNotification { get; }
 
 		// ActivityContinuation Category
 		[MacCatalyst (13, 1)]
@@ -7989,11 +7857,13 @@ namespace UIKit {
 		[Field ("NSUserActivityDocumentURLKey")]
 		NSString UserActivityDocumentUrlKey { get; }
 
+		[MacCatalyst (26, 0), NoTV, iOS (26, 0)]
+		[Field ("UIDocumentDidMoveToWritableLocationOldURLKey")]
+		NSString DidMoveToWritableLocationOldUrlKey { get; }
 	}
 
 	interface IUIDynamicAnimatorDelegate { }
 
-	/// <include file="../docs/api/UIKit/IUIDynamicAnimatorDelegate.xml" path="/Documentation/Docs[@DocId='T:UIKit.IUIDynamicAnimatorDelegate']/*" />
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Protocol]
@@ -8146,12 +8016,6 @@ namespace UIKit {
 		bool Anchored { [Bind ("isAnchored")] get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIDynamicItem" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIDynamicItem" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIDynamicItem" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIDynamicItem_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Protocol]
@@ -8291,7 +8155,7 @@ namespace UIKit {
 		/// <remarks>
 		///           <para>The field vectors of a noise field are dynamic. The following is a snapshot:</para>
 		///           <para>
-		///             <img href="~/UIKit/_images/UIFieldBehavior.CreateNoiseField.png" alt="Image showing the specified field." />
+		///             <img href="~/xml/UIKit/_images/UIFieldBehavior.CreateNoiseField.png" alt="Image showing the specified field." />
 		///           </para>
 		///         </remarks>
 		[Static]
@@ -8971,12 +8835,6 @@ namespace UIKit {
 
 	interface IUIGestureRecognizerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIGestureRecognizerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIGestureRecognizerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIGestureRecognizerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIGestureRecognizerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -9425,6 +9283,10 @@ namespace UIKit {
 		[NoTV, NoMacCatalyst, iOS (18, 4)]
 		[Export ("conversationContext", ArgumentSemantic.Strong)]
 		UIConversationContext ConversationContext { get; set; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("allowsNumberPadPopover")]
+		bool AllowsNumberPadPopover { get; set; }
 	}
 
 	/// <summary>Provides data for the  event.</summary>
@@ -9474,42 +9336,36 @@ namespace UIKit {
 	[MacCatalyst (13, 1)]
 	[Static]
 	interface UIKeyboard {
-		/// <include file="../docs/api/UIKit/UIKeyboard.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIKeyboard.WillShowNotification']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIKeyboardWillShowNotification")]
 		[Notification (typeof (UIKeyboardEventArgs))]
 		NSString WillShowNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIKeyboard.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIKeyboard.DidShowNotification']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIKeyboardDidShowNotification")]
 		[Notification (typeof (UIKeyboardEventArgs))]
 		NSString DidShowNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIKeyboard.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIKeyboard.WillHideNotification']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIKeyboardWillHideNotification")]
 		[Notification (typeof (UIKeyboardEventArgs))]
 		NSString WillHideNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIKeyboard.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIKeyboard.DidHideNotification']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIKeyboardDidHideNotification")]
 		[Notification (typeof (UIKeyboardEventArgs))]
 		NSString DidHideNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIKeyboard.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIKeyboard.WillChangeFrameNotification']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIKeyboardWillChangeFrameNotification")]
 		[Notification (typeof (UIKeyboardEventArgs))]
 		NSString WillChangeFrameNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIKeyboard.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIKeyboard.DidChangeFrameNotification']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIKeyboardDidChangeFrameNotification")]
@@ -9771,8 +9627,6 @@ namespace UIKit {
 
 	interface IUIKeyInput { }
 
-	/// <summary>Interface that, together with the <see cref="UIKit.UIKeyInput_Extensions" /> class, comprise the UIKeyInput protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIKeyInput : UITextInputTraits {
@@ -10113,7 +9967,6 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'NSAttributedString.FontAttributeName'.")]
 		NSString TextFontKey { get; }
 
-		/// <include file="../docs/api/UIKit/UITextField.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextField.CurrentInputModeDidChangeNotification']/*" />
 		[Field ("UITextInputCurrentInputModeDidChangeNotification")]
 		[Notification]
 		NSString CurrentInputModeDidChangeNotification { get; }
@@ -10284,12 +10137,6 @@ namespace UIKit {
 
 	interface IUITextInputTokenizer { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UITextInputTokenizer" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UITextInputTokenizer" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UITextInputTokenizer" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UITextInputTokenizer_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -10723,6 +10570,39 @@ namespace UIKit {
 
 		[Export ("velocity")]
 		nfloat Velocity { get; }
+	}
+
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UIViewLayoutRegion {
+
+		[Static]
+		[Export ("safeAreaLayoutRegionWithCornerAdaptation:")]
+		UIViewLayoutRegion CreateSafeAreaLayoutRegion (UIViewLayoutRegionAdaptivityAxis cornerAdaptivityAxis);
+
+		[Static]
+		[Export ("marginsLayoutRegionWithCornerAdaptation:")]
+		UIViewLayoutRegion CreateMarginsLayoutRegion (UIViewLayoutRegionAdaptivityAxis cornerAdaptivityAxis);
+
+		[Static]
+		[Export ("readableContentLayoutRegionWithCornerAdaptation:")]
+		UIViewLayoutRegion CreateReadableContentLayoutRegion (UIViewLayoutRegionAdaptivityAxis cornerAdaptivityAxis);
+	}
+
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (UIView))]
+	[DisableDefaultCtor]
+	interface UIBackgroundExtensionView {
+
+		[Export ("initWithFrame:")]
+		NativeHandle Constructor (CGRect frame);
+
+		[NullAllowed, Export ("contentView", ArgumentSemantic.Strong)]
+		UIView ContentView { get; set; }
+
+		[Export ("automaticallyPlacesContentView")]
+		bool AutomaticallyPlacesContentView { get; set; }
 	}
 
 	/// <summary>Gesture recognizer for pinches.</summary>
@@ -11466,6 +11346,16 @@ namespace UIKit {
 		[Static]
 		[Export ("configurationPreferringMonochrome")]
 		UIImageSymbolConfiguration GetConfigurationPreferringMonochrome ();
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("configurationWithColorRenderingMode:")]
+		UIImageSymbolConfiguration Create (UIImageSymbolColorRenderingMode colorRenderingMode);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("configurationWithVariableValueMode:")]
+		UIImageSymbolConfiguration Create (UIImageSymbolVariableValueMode variableValueMode);
 	}
 
 	[iOS (13, 0), TV (13, 0)]
@@ -11474,9 +11364,11 @@ namespace UIKit {
 	[DisableDefaultCtor]
 	interface UIMenu {
 
-		[BindAs (typeof (UIMenuIdentifier))]
+		[Wrap ("UIMenuIdentifierExtensions.GetValue (WeakIdentifier)", IsVirtual = true)]
+		UIMenuIdentifier Identifier { get; }
+
 		[Export ("identifier")]
-		NSString Identifier { get; }
+		NSString WeakIdentifier { get; }
 
 		[Export ("options")]
 		UIMenuOptions Options { get; }
@@ -11509,8 +11401,12 @@ namespace UIKit {
 		UIMenu Create (string title, UIMenuElement [] children);
 
 		[Static]
+		[Wrap ("Create (title, image, identifier.GetConstant (), options, children)")]
+		UIMenu Create (string title, [NullAllowed] UIImage image, UIMenuIdentifier identifier, UIMenuOptions options, UIMenuElement [] children);
+
+		[Static]
 		[Export ("menuWithTitle:image:identifier:options:children:")]
-		UIMenu Create (string title, [NullAllowed] UIImage image, [NullAllowed][BindAs (typeof (UIMenuIdentifier))] NSString identifier, UIMenuOptions options, UIMenuElement [] children);
+		UIMenu Create (string title, [NullAllowed] UIImage image, [NullAllowed] NSString identifier, UIMenuOptions options, UIMenuElement [] children);
 
 		[Export ("menuByReplacingChildren:")]
 		UIMenu GetMenuByReplacingChildren (UIMenuElement [] newChildren);
@@ -11725,8 +11621,16 @@ namespace UIKit {
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIView))]
+	[DisableDefaultCtor]
 	interface UIWindow {
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use the 'UIWindowScene' overload instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use the 'UIWindowScene' overload instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use the 'UIWindowScene' overload instead.")]
+		[Export ("init")]
+		NativeHandle Constructor ();
+
+		[DesignatedInitializer]
 		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("initWithWindowScene:")]
@@ -11742,6 +11646,10 @@ namespace UIKit {
 		[NullAllowed, Export ("canResizeToFitContent")]
 		bool CanResizeToFitContent { get; [Bind ("setCanResizeToFitContent:")] set; }
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use the 'UIWindowScene' overload instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use the 'UIWindowScene' overload instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use the 'UIWindowScene' overload instead.")]
+		[DesignatedInitializer]
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);
 
@@ -11800,22 +11708,18 @@ namespace UIKit {
 			set;
 		}
 
-		/// <include file="../docs/api/UIKit/UIWindow.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIWindow.DidBecomeVisibleNotification']/*" />
 		[Field ("UIWindowDidBecomeVisibleNotification")]
 		[Notification]
 		NSString DidBecomeVisibleNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIWindow.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIWindow.DidBecomeHiddenNotification']/*" />
 		[Field ("UIWindowDidBecomeHiddenNotification")]
 		[Notification]
 		NSString DidBecomeHiddenNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIWindow.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIWindow.DidBecomeKeyNotification']/*" />
 		[Field ("UIWindowDidBecomeKeyNotification")]
 		[Notification]
 		NSString DidBecomeKeyNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIWindow.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIWindow.DidResignKeyNotification']/*" />
 		[Field ("UIWindowDidResignKeyNotification")]
 		[Notification]
 		NSString DidResignKeyNotification { get; }
@@ -11988,12 +11892,6 @@ namespace UIKit {
 		bool SymbolAnimationEnabled { [Bind ("isSymbolAnimationEnabled")] get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIBarPositioning" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIBarPositioning" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIBarPositioning" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIBarPositioning_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -12009,12 +11907,6 @@ namespace UIKit {
 
 	interface IUIBarPositioning { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIBarPositioningDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIBarPositioningDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIBarPositioningDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIBarPositioningDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -12975,28 +12867,24 @@ namespace UIKit {
 		[Export ("userInterfaceIdiom")]
 		UIUserInterfaceIdiom UserInterfaceIdiom { get; }
 
-		/// <include file="../docs/api/UIKit/UIDevice.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIDevice.OrientationDidChangeNotification']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIDeviceOrientationDidChangeNotification")]
 		[Notification]
 		NSString OrientationDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIDevice.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIDevice.BatteryStateDidChangeNotification']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIDeviceBatteryStateDidChangeNotification")]
 		[Notification]
 		NSString BatteryStateDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIDevice.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIDevice.BatteryLevelDidChangeNotification']/*" />
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Field ("UIDeviceBatteryLevelDidChangeNotification")]
 		[Notification]
 		NSString BatteryLevelDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIDevice.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIDevice.ProximityStateDidChangeNotification']/*" />
 		[Field ("UIDeviceProximityStateDidChangeNotification")]
 		[Notification]
 		NSString ProximityStateDidChangeNotification { get; }
@@ -13098,12 +12986,6 @@ namespace UIKit {
 		UIGestureRecognizer [] GestureRecognizers { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIDocumentInteractionControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIDocumentInteractionControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIDocumentInteractionControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIDocumentInteractionControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIDocumentInteractionControllerDelegate { }
 
 	/// <summary>A class used to receive notifications from the <see cref="UIKit.UIDocumentInteractionController" /> class.</summary>
@@ -13575,27 +13457,22 @@ namespace UIKit {
 		[Export ("menuItems", ArgumentSemantic.Copy)]
 		UIMenuItem [] MenuItems { get; set; }
 
-		/// <include file="../docs/api/UIKit/UIMenuController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIMenuController.WillShowMenuNotification']/*" />
 		[Field ("UIMenuControllerWillShowMenuNotification")]
 		[Notification]
 		NSString WillShowMenuNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIMenuController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIMenuController.DidShowMenuNotification']/*" />
 		[Field ("UIMenuControllerDidShowMenuNotification")]
 		[Notification]
 		NSString DidShowMenuNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIMenuController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIMenuController.WillHideMenuNotification']/*" />
 		[Field ("UIMenuControllerWillHideMenuNotification")]
 		[Notification]
 		NSString WillHideMenuNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIMenuController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIMenuController.DidHideMenuNotification']/*" />
 		[Field ("UIMenuControllerDidHideMenuNotification")]
 		[Notification]
 		NSString DidHideMenuNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIMenuController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIMenuController.MenuFrameDidChangeNotification']/*" />
 		[Field ("UIMenuControllerMenuFrameDidChangeNotification")]
 		[Notification]
 		NSString MenuFrameDidChangeNotification { get; }
@@ -13854,12 +13731,6 @@ namespace UIKit {
 
 	interface IUINavigationBarDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UINavigationBarDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UINavigationBarDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UINavigationBarDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UINavigationBarDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIBarPositioningDelegate))]
 	[Model]
@@ -14094,6 +13965,51 @@ namespace UIKit {
 		[Export ("searchBarPlacement", ArgumentSemantic.Assign)]
 		UINavigationItemSearchBarPlacement SearchBarPlacement { get; }
 
+		[iOS (26, 0), NoTV, MacCatalyst (26, 0)]
+		[NullAllowed]
+		[Export ("subtitle", ArgumentSemantic.Copy)]
+		string Subtitle { get; set; }
+
+		[iOS (26, 0), NoTV, MacCatalyst (26, 0)]
+		[NullAllowed, Export ("attributedSubtitle", ArgumentSemantic.Copy)]
+		NSAttributedString AttributedSubtitle { get; set; }
+
+		[iOS (26, 0), NoTV, MacCatalyst (26, 0)]
+		[NullAllowed, Export ("largeSubtitle", ArgumentSemantic.Copy)]
+		string LargeSubtitle { get; set; }
+
+		[iOS (26, 0), NoTV, MacCatalyst (26, 0)]
+		[NullAllowed, Export ("largeAttributedSubtitle", ArgumentSemantic.Copy)]
+		NSAttributedString LargeAttributedSubtitle { get; set; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed, Export ("attributedTitle", ArgumentSemantic.Copy)]
+		NSAttributedString AttributedTitle { get; set; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed, Export ("largeSubtitleView", ArgumentSemantic.Strong)]
+		UIView LargeSubtitleView { get; set; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed, Export ("largeTitle", ArgumentSemantic.Copy)]
+		string LargeTitle { get; set; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("searchBarPlacementAllowsExternalIntegration")]
+		bool SearchBarPlacementAllowsExternalIntegration { get; set; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("searchBarPlacementAllowsToolbarIntegration")]
+		bool SearchBarPlacementAllowsToolbarIntegration { get; set; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("searchBarPlacementBarButtonItem", ArgumentSemantic.Strong)]
+		UIBarButtonItem SearchBarPlacementBarButtonItem { get; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed, Export ("subtitleView", ArgumentSemantic.Copy)]
+		UIView SubtitleView { get; set; }
+
 	}
 
 	[MacCatalyst (13, 1)]
@@ -14238,16 +14154,15 @@ namespace UIKit {
 		[MacCatalyst (13, 1)]
 		[Export ("barHideOnTapGestureRecognizer", ArgumentSemantic.UnsafeUnretained)]
 		UITapGestureRecognizer BarHideOnTapGestureRecognizer { get; }
+
+		[NullAllowed]
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("interactiveContentPopGestureRecognizer")]
+		UIGestureRecognizer InteractiveContentPopGestureRecognizer { get; }
 	}
 
 	interface IUINavigationControllerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UINavigationControllerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UINavigationControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UINavigationControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UINavigationControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -14533,12 +14448,6 @@ namespace UIKit {
 
 	interface IUIPageViewControllerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIPageViewControllerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIPageViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIPageViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIPageViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -14617,12 +14526,6 @@ namespace UIKit {
 
 	interface IUIPageViewControllerDataSource { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIPageViewControllerDataSource" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIPageViewControllerDataSource" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIPageViewControllerDataSource" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIPageViewControllerDataSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -14784,7 +14687,6 @@ namespace UIKit {
 		[Export ("addItems:")]
 		void AddItems (NSDictionary [] items);
 
-		/// <include file="../docs/api/UIKit/UIPasteboard.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIPasteboard.ChangedNotification']/*" />
 		[Field ("UIPasteboardChangedNotification")]
 		[Notification (typeof (UIPasteboardChangeEventArgs))]
 		NSString ChangedNotification { get; }
@@ -14803,7 +14705,6 @@ namespace UIKit {
 		[Field ("UIPasteboardChangedTypesRemovedKey")]
 		NSString ChangedTypesRemovedKey { get; }
 
-		/// <include file="../docs/api/UIKit/UIPasteboard.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIPasteboard.RemovedNotification']/*" />
 		[Field ("UIPasteboardRemovedNotification")]
 		[Notification (typeof (UIPasteboardChangeEventArgs))]
 		NSString RemovedNotification { get; }
@@ -15116,12 +15017,6 @@ namespace UIKit {
 		UITableViewCell GetCell (UITableView tableView, NSIndexPath indexPath);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIPickerViewDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIPickerViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIPickerViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIPickerViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIPickerViewDelegate { }
 
 	/// <summary>Class that receives event notifications from the UIPickerView.</summary>
@@ -15271,7 +15166,6 @@ namespace UIKit {
 		nint GetRowsInComponent (UIPickerView pickerView, nint component);
 	}
 
-	/// <include file="../docs/api/UIKit/IUIPickerViewDataSource.xml" path="/Documentation/Docs[@DocId='T:UIKit.IUIPickerViewDataSource']/*" />
 	interface IUIPickerViewDataSource { }
 
 	/// <summary>The model for the UIPickerView.</summary>
@@ -15285,12 +15179,6 @@ namespace UIKit {
 	interface UIPickerViewModel : UIPickerViewDataSource, UIPickerViewDelegate {
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIContentContainer" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIContentContainer" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIContentContainer" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIContentContainer_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -15343,12 +15231,6 @@ namespace UIKit {
 		void WillTransitionToTraitCollection (UITraitCollection traitCollection, [NullAllowed] IUIViewControllerTransitionCoordinator coordinator);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIAppearanceContainer" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIAppearanceContainer" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIAppearanceContainer" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIAppearanceContainer_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[Protocol, Model]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -15466,12 +15348,6 @@ namespace UIKit {
 
 	interface IUIPreviewActionItem { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.IUIPreviewActionItem" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.IUIPreviewActionItem" />.</para>
-	///       <para>If you create objects that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.IUIPreviewActionItem" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIPreviewActionItem_Extensions" /> class as extension methods to the interface, allowing you to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIPreviewActionItem {
@@ -15805,6 +15681,11 @@ namespace UIKit {
 		[NullAllowed]
 		NSTouchBar TouchBar { get; set; }
 #pragma warning restore
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("providerForDeferredMenuElement:")]
+		[return: NullAllowed]
+		UIDeferredMenuElementProvider GetProvider (UIDeferredMenuElement deferredMenuElement);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -15909,6 +15790,38 @@ namespace UIKit {
 		[NoTV, iOS (18, 2), MacCatalyst (18, 2)]
 		[Export ("showWritingTools:")]
 		void ShowWritingTools ([NullAllowed] NSObject sender);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("alignLeft:")]
+		void AlignLeft ([NullAllowed] NSObject sender);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("alignRight:")]
+		void AlignRight ([NullAllowed] NSObject sender);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("alignCenter:")]
+		void AlignCenter ([NullAllowed] NSObject sender);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("alignJustified:")]
+		void AlignJustified ([NullAllowed] NSObject sender);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("newFromPasteboard:")]
+		void NewFromPasteboard ([NullAllowed] NSObject sender);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("performClose:")]
+		void PerformClose ([NullAllowed] NSObject sender);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("toggleInspector:")]
+		void ToggleInspector ([NullAllowed] NSObject sender);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("toggleSidebar:")]
+		void ToggleSidebar ([NullAllowed] NSObject sender);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -15983,22 +15896,18 @@ namespace UIKit {
 		[Export ("overscanCompensation")]
 		UIScreenOverscanCompensation OverscanCompensation { get; set; }
 
-		/// <include file="../docs/api/UIKit/UIScreen.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIScreen.BrightnessDidChangeNotification']/*" />
 		[Field ("UIScreenBrightnessDidChangeNotification")]
 		[Notification]
 		NSString BrightnessDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIScreen.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIScreen.ModeDidChangeNotification']/*" />
 		[Field ("UIScreenModeDidChangeNotification")]
 		[Notification]
 		NSString ModeDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIScreen.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIScreen.DidDisconnectNotification']/*" />
 		[Field ("UIScreenDidDisconnectNotification")]
 		[Notification]
 		NSString DidDisconnectNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIScreen.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIScreen.DidConnectNotification']/*" />
 		[Field ("UIScreenDidConnectNotification")]
 		[Notification]
 		NSString DidConnectNotification { get; }
@@ -16008,7 +15917,6 @@ namespace UIKit {
 		[Field ("UIScreenReferenceDisplayModeStatusDidChangeNotification")]
 		NSString ReferenceDisplayModeStatusDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIScreen.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIScreen.CapturedDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("UIScreenCapturedDidChangeNotification")]
 		[Notification]
@@ -16080,6 +15988,36 @@ namespace UIKit {
 		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("potentialEDRHeadroom")]
 		nfloat PotentialEdrHeadroom { get; }
+	}
+
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UIScrollEdgeEffect {
+
+		[Export ("style", ArgumentSemantic.Strong)]
+		UIScrollEdgeEffectStyle Style { get; set; }
+
+		[Export ("hidden")]
+		bool Hidden { [Bind ("isHidden")] get; set; }
+	}
+
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UIScrollEdgeEffectStyle {
+
+		[Static]
+		[Export ("automaticStyle")]
+		UIScrollEdgeEffectStyle AutomaticStyle { get; }
+
+		[Static]
+		[Export ("softStyle")]
+		UIScrollEdgeEffectStyle SoftStyle { get; }
+
+		[Static]
+		[Export ("hardStyle")]
+		UIScrollEdgeEffectStyle HardStyle { get; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -16305,11 +16243,7 @@ namespace UIKit {
 		[Export ("zooming")]
 		bool Zooming { [Bind ("isZooming")] get; }
 
-		/// <summary>Returns <see langword="true" /> if the scroll view is bouncing back to the zoom scaling limits specified by<see cref="UIKit.UIScrollView.MinimumScrollView" /> and <see cref="UIKit.UIScrollView.MaximumScrollView" />. Read-only.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Returns <see langword="true" /> if the scroll view is bouncing back to the zoom scaling limits specified by<see cref="UIScrollView.MinimumZoomScale" /> and <see cref="UIScrollView.MaximumZoomScale" />. Read-only.</summary>
 		[Export ("zoomBouncing")]
 		bool ZoomBouncing { [Bind ("isZoomBouncing")] get; }
 
@@ -16367,16 +16301,26 @@ namespace UIKit {
 		[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("allowsKeyboardScrolling")]
 		bool AllowsKeyboardScrolling { get; set; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("topEdgeEffect", ArgumentSemantic.Strong)]
+		UIScrollEdgeEffect TopEdgeEffect { get; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("bottomEdgeEffect", ArgumentSemantic.Strong)]
+		UIScrollEdgeEffect BottomEdgeEffect { get; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("leftEdgeEffect", ArgumentSemantic.Strong)]
+		UIScrollEdgeEffect LeftEdgeEffect { get; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("rightEdgeEffect", ArgumentSemantic.Strong)]
+		UIScrollEdgeEffect RightEdgeEffect { get; }
 	}
 
 	interface IUIScrollViewDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIScrollViewDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIScrollViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIScrollViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIScrollViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -16577,12 +16521,6 @@ namespace UIKit {
 		void DidChangeAdjustedContentInset (UIScrollView scrollView);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIScrollViewAccessibilityDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIScrollViewAccessibilityDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIScrollViewAccessibilityDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIScrollViewAccessibilityDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (UIScrollViewDelegate))]
@@ -16615,6 +16553,11 @@ namespace UIKit {
 		, NSCoding
 #endif
 	{
+#if TVOS
+		[TV (26, 0)]
+		[Export ("init")]
+		NativeHandle Constructor ();
+#endif
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[DesignatedInitializer]
@@ -16869,12 +16812,6 @@ namespace UIKit {
 
 	interface IUISearchBarDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UISearchBarDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UISearchBarDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UISearchBarDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UISearchBarDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIBarPositioningDelegate))]
 	[Model]
@@ -16998,6 +16935,10 @@ namespace UIKit {
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 			""")]
 		void ListButtonClicked (UISearchBar searchBar);
+
+		[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0)]
+		[Export ("searchBar:shouldChangeTextInRanges:replacementText:"), IgnoredInDelegate]
+		bool ShouldChangeText (UISearchBar searchBar, NSValue [] ranges, string replacementText);
 	}
 
 	[MacCatalyst (13, 1)]
@@ -17135,12 +17076,6 @@ namespace UIKit {
 
 	interface IUISearchControllerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UISearchControllerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UISearchControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UISearchControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UISearchControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -17261,12 +17196,6 @@ namespace UIKit {
 		UINavigationItem NavigationItem { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UISearchDisplayDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UISearchDisplayDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UISearchDisplayDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UISearchDisplayDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUISearchDisplayDelegate { }
 
 	/// <summary>A class used to receive notifications from the UISearchDisplayController.</summary>
@@ -17663,6 +17592,54 @@ namespace UIKit {
 		UIOffset ContentPositionAdjustment (UISegmentedControlSegment leftCenterRightOrAlone, UIBarMetrics barMetrics);
 	}
 
+	[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UISliderTick : NSCopying, NSCoding {
+
+		[Export ("position")]
+		float Position { get; }
+
+		[NullAllowed, Export ("title")]
+		string Title { get; set; }
+
+		[NullAllowed, Export ("image", ArgumentSemantic.Copy)]
+		UIImage Image { get; set; }
+
+		[Static]
+		[Export ("tickWithPosition:title:image:")]
+		UISliderTick Create (float position, [NullAllowed] string title, [NullAllowed] UIImage image);
+	}
+
+	[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UISliderTrackConfiguration : NSCopying, NSCoding {
+
+		[Export ("allowsTickValuesOnly")]
+		bool AllowsTickValuesOnly { get; set; }
+
+		[Export ("neutralValue")]
+		float NeutralValue { get; set; }
+
+		[Export ("minimumEnabledValue")]
+		float MinimumEnabledValue { get; set; }
+
+		[Export ("maximumEnabledValue")]
+		float MaximumEnabledValue { get; set; }
+
+		[Export ("ticks", ArgumentSemantic.Copy)]
+		UISliderTick [] Ticks { get; }
+
+		[Static]
+		[Export ("configurationWithTicks:")]
+		UISliderTrackConfiguration Create (UISliderTick [] ticks);
+
+		[Static]
+		[Export ("configurationWithNumberOfTicks:")]
+		UISliderTrackConfiguration Create (nint ticks);
+	}
+
 	/// <summary>A <see cref="UIKit.UIControl" /> that displays a slider.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UISlider_Class/index.html">Apple documentation for <c>UISlider</c></related>
@@ -17814,6 +17791,15 @@ namespace UIKit {
 		[NoTV, MacCatalyst (15, 0), iOS (15, 0)]
 		[Export ("preferredBehavioralStyle", ArgumentSemantic.Assign)]
 		UIBehavioralStyle PreferredBehavioralStyle { get; set; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[NullAllowed]
+		[Export ("trackConfiguration", ArgumentSemantic.Copy)]
+		UISliderTrackConfiguration TrackConfiguration { get; set; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("sliderStyle", ArgumentSemantic.Assign)]
+		UISliderStyle SliderStyle { get; set; }
 	}
 
 	/// <summary>Represents the key to be used in the <see cref="Foundation.NSMutableDictionary" /> that define the attributes of a <see cref="Foundation.NSAttributedString" />.</summary>
@@ -18297,6 +18283,15 @@ namespace UIKit {
 		[Export ("sidebar", ArgumentSemantic.Strong)]
 		UITabBarControllerSidebar Sidebar { get; }
 
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("bottomAccessory", ArgumentSemantic.Strong)]
+		[NullAllowed]
+		UITabAccessory BottomAccessory { get; set; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("setBottomAccessory:animated:")]
+		void SetBottomAccessory ([NullAllowed] UITabAccessory bottomAccessory, bool animated);
+
 		[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("customizationIdentifier", ArgumentSemantic.Copy), NullAllowed]
 		string CustomizationIdentifier { get; set; }
@@ -18333,16 +18328,18 @@ namespace UIKit {
 		[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("setTabBarHidden:animated:")]
 		void SetTabBarHidden (bool hidden, bool animated);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("contentLayoutGuide")]
+		UILayoutGuide ContentLayoutGuide { get; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("tabBarMinimizeBehavior", ArgumentSemantic.Assign)]
+		UITabBarMinimizeBehavior TabBarMinimizeBehavior { get; set; }
 	}
 
 	interface IUITabBarDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UITabBarDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UITabBarDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UITabBarDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UITabBarDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -18411,12 +18408,6 @@ namespace UIKit {
 
 	interface IUITabBarControllerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UITabBarControllerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UITabBarControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UITabBarControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UITabBarControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -18990,7 +18981,6 @@ namespace UIKit {
 		[Export ("registerNib:forCellReuseIdentifier:")]
 		void RegisterNibForCellReuse ([NullAllowed] UINib nib, NSString reuseIdentifier);
 
-		/// <include file="../docs/api/UIKit/UITableView.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITableView.SelectionDidChangeNotification']/*" />
 		[Field ("UITableViewSelectionDidChangeNotification")]
 		[Notification]
 		NSString SelectionDidChangeNotification { get; }
@@ -19784,12 +19774,6 @@ namespace UIKit {
 
 	interface IUITableViewDataSource { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UITableViewDataSource" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UITableViewDataSource" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UITableViewDataSource" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UITableViewDataSource_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Protocol, Model]
@@ -20048,8 +20032,8 @@ namespace UIKit {
 		/// <returns>
 		///         </returns>
 		/// <remarks>
-		///           <para>Note that custom UITableViewCell's do not respect IndentationLevel automatically. Application developers must override <see cref="UIKit.UITableViewController.LayoutSubviews" />.</para>
-		///         </remarks>
+		///   <para>Note that custom <see cref="UITableViewCell" />'s do not respect IndentationLevel automatically. Application developers must override <see cref="UIView.LayoutSubviews" />.</para>
+		/// </remarks>
 		[Export ("tableView:indentationLevelForRowAtIndexPath:")]
 		nint IndentationLevel (UITableView tableView, NSIndexPath indexPath);
 
@@ -20571,17 +20555,14 @@ namespace UIKit {
 		[NullAllowed]
 		UIView InputView { get; set; }
 
-		/// <include file="../docs/api/UIKit/UITextField.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextField.TextDidBeginEditingNotification']/*" />
 		[Field ("UITextFieldTextDidBeginEditingNotification")]
 		[Notification]
 		NSString TextDidBeginEditingNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UITextField.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextField.TextDidEndEditingNotification']/*" />
 		[Field ("UITextFieldTextDidEndEditingNotification")]
 		[Notification]
 		NSString TextDidEndEditingNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UITextField.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextField.TextFieldTextDidChangeNotification']/*" />
 		[Field ("UITextFieldTextDidChangeNotification")]
 		[Notification]
 		NSString TextFieldTextDidChangeNotification { get; }
@@ -20627,12 +20608,6 @@ namespace UIKit {
 
 	interface IUITextFieldDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UITextFieldDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UITextFieldDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UITextFieldDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UITextFieldDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -20719,6 +20694,16 @@ namespace UIKit {
 		[Export ("textField:insertInputSuggestion:"), EventArgs ("UITextFieldInsertInputSuggestion")]
 		void InsertInputSuggestion (UITextField textField, UIInputSuggestion inputSuggestion);
 
+		[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0)]
+		[Export ("textField:shouldChangeCharactersInRanges:replacementString:")]
+		bool ShouldChangeCharacters (UITextField textField, NSValue [] ranges, string replacementString);
+
+		[IgnoredInDelegate]
+		[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0)]
+		[Export ("textField:editMenuForCharactersInRanges:suggestedActions:")]
+		[return: NullAllowed]
+		UIMenu GetEditMenu (UITextField textField, NSValue [] ranges, UIMenuElement [] suggestedActions);
+
 		// Any new APIs here must be manually implemented as events in UITextField.cs
 	}
 
@@ -20745,19 +20730,14 @@ namespace UIKit {
 		UIColor TextColor { get; set; }
 
 		/// <summary>This property determines if the text view is editable or not.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		///         <altmember cref="UIKit.UITextView.AllowsEditingTextAttributes" />
-		///         <altmember cref="UIKit.UITextView.AttributedText" />
-		///         <altmember cref="UIKit.UITextView.DataDetectorTypes" />
-		///         <altmember cref="UIKit.UITextView.Font" />
-		///         <altmember cref="UIKit.UITextView.Text" />
-		///         <altmember cref="UIKit.UITextView.TextAlignment" />
-		///         <altmember cref="UIKit.UITextView.TextContainerInsert" />
-		///         <altmember cref="UIKit.UITextView.TextColor" />
-		///         <altmember cref="UIKit.UITextView.TypingAttributes" />
+		/// <altmember cref="UIKit.UITextView.AllowsEditingTextAttributes" />
+		/// <altmember cref="UIKit.UITextView.AttributedText" />
+		/// <altmember cref="UIKit.UITextView.DataDetectorTypes" />
+		/// <altmember cref="UIKit.UITextView.Font" />
+		/// <altmember cref="UIKit.UITextView.Text" />
+		/// <altmember cref="UIKit.UITextView.TextAlignment" />
+		/// <altmember cref="UIKit.UITextView.TextColor" />
+		/// <altmember cref="UIKit.UITextView.TypingAttributes" />
 		[Export ("editable")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -20768,6 +20748,11 @@ namespace UIKit {
 
 		[Export ("selectedRange")]
 		NSRange SelectedRange { get; set; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[BindAs (typeof (NSRange []))]
+		[Export ("selectedRanges", ArgumentSemantic.Copy)]
+		NSValue [] SelectedRanges { get; set; }
 
 		[Export ("scrollRangeToVisible:")]
 		void ScrollRangeToVisible (NSRange range);
@@ -20804,17 +20789,14 @@ namespace UIKit {
 		[NullAllowed]
 		UIView InputView { get; set; }
 
-		/// <include file="../docs/api/UIKit/UITextView.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextView.TextDidBeginEditingNotification']/*" />
 		[Field ("UITextViewTextDidBeginEditingNotification")]
 		[Notification]
 		NSString TextDidBeginEditingNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UITextView.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextView.TextDidChangeNotification']/*" />
 		[Field ("UITextViewTextDidChangeNotification")]
 		[Notification]
 		NSString TextDidChangeNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UITextView.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextView.TextDidEndEditingNotification']/*" />
 		[Field ("UITextViewTextDidEndEditingNotification")]
 		[Notification]
 		NSString TextDidEndEditingNotification { get; }
@@ -21194,6 +21176,17 @@ namespace UIKit {
 		[NoTV, NoMacCatalyst, iOS (18, 4)]
 		[Export ("textView:insertInputSuggestion:")]
 		void InsertInputSuggestion (UITextView textView, UIInputSuggestion inputSuggestion);
+
+		[IgnoredInDelegate]
+		[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0)]
+		[Export ("textView:shouldChangeTextInRanges:replacementText:")]
+		bool ShouldChangeText (UITextView textView, NSValue [] ranges, string replacementText);
+
+		[IgnoredInDelegate]
+		[MacCatalyst (26, 0), TV (26, 0), iOS (26, 0)]
+		[Export ("textView:editMenuForTextInRanges:suggestedActions:")]
+		[return: NullAllowed]
+		UIMenu GetEditMenuForText (UITextView textView, NSValue [] ranges, UIMenuElement [] suggestedActions);
 	}
 
 	/// <include file="../docs/api/UIKit/UIToolbar.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIToolbar']/*" />
@@ -21304,7 +21297,6 @@ namespace UIKit {
 
 	interface IUITimingCurveProvider { }
 
-	/// <summary>Interface defining the required methods for the <see cref="UIKit.IUITimingCurveProvider" /> protocol.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -21331,12 +21323,6 @@ namespace UIKit {
 		UISpringTimingParameters SpringTimingParameters { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIToolbarDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIToolbarDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIToolbarDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIToolbarDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIToolbarDelegate { }
 
 	/// <summary>A delegate object for <see cref="UIKit.UIToolbar" />s that exposes an event relating to bar position.</summary>
@@ -21482,12 +21468,6 @@ namespace UIKit {
 		UIImagePickerControllerQualityType VideoQuality { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIVideoEditorControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIVideoEditorControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIVideoEditorControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIVideoEditorControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIVideoEditorControllerDelegate { }
 
 	// id<UINavigationControllerDelegate, UIVideoEditorControllerDelegate>
@@ -22499,6 +22479,39 @@ namespace UIKit {
 		[Static]
 		[Export ("animateWithSpringDuration:bounce:initialSpringVelocity:delay:options:animations:completion:")]
 		void Animate (double duration, nfloat bounce, nfloat velocity, double delay, UIViewAnimationOptions options, Action animations, [NullAllowed] Action<bool> completion);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("setNeedsUpdateProperties")]
+		void SetNeedsUpdateProperties ();
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[RequiresSuper]
+		[Export ("updateProperties")]
+		void UpdateProperties ();
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("updatePropertiesIfNeeded")]
+		void UpdatePropertiesIfNeeded ();
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("directionalEdgeInsetsForLayoutRegion:")]
+		NSDirectionalEdgeInsets GetDirectionalEdgeInsets (UIViewLayoutRegion layoutRegion);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("edgeInsetsForLayoutRegion:")]
+		UIEdgeInsets GetEdgeInsets (UIViewLayoutRegion layoutRegion);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("layoutGuideForLayoutRegion:")]
+		UILayoutGuide GetLayoutGuide (UIViewLayoutRegion layoutRegion);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("cornerConfiguration", ArgumentSemantic.Copy)]
+		UICornerConfiguration CornerConfiguration { get; set; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("effectiveRadiusForCorner:")]
+		nfloat SetEffectiveRadius (UIRectCorner corner);
 	}
 
 	/// <summary>Class that implements a text field in a view.</summary>
@@ -23187,7 +23200,6 @@ namespace UIKit {
 		[NullAllowed, Export ("sheetPresentationController")]
 		UISheetPresentationController SheetPresentationController { get; }
 
-		/// <include file="../docs/api/UIKit/UIViewController.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIViewController.ShowDetailTargetDidChangeNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Field ("UIViewControllerShowDetailTargetDidChangeNotification")]
 		[Notification]
@@ -23427,18 +23439,34 @@ namespace UIKit {
 		[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("preferredTransition", ArgumentSemantic.Strong), NullAllowed]
 		UIViewControllerTransition PreferredTransition { get; set; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("setNeedsUpdateProperties")]
+		void SetNeedsUpdateProperties ();
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[RequiresSuper]
+		[Export ("updateProperties")]
+		void UpdateProperties ();
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("updatePropertiesIfNeeded")]
+		void UpdatePropertiesIfNeeded ();
+
+		[iOS (26, 0), NoTV, MacCatalyst (26, 0)]
+		[Export ("childViewControllerForInterfaceOrientationLock")]
+		[return: NullAllowed]
+		UIViewController GetChildViewControllerForInterfaceOrientationLock ();
+
+		[iOS (26, 0), NoTV, MacCatalyst (26, 0)]
+		[Export ("prefersInterfaceOrientationLocked")]
+		bool PrefersInterfaceOrientationLocked ();
+
+		[iOS (26, 0), NoTV, MacCatalyst (26, 0)]
+		[Export ("setNeedsUpdateOfPrefersInterfaceOrientationLocked")]
+		void SetNeedsUpdateOfPrefersInterfaceOrientationLocked ();
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIViewControllerContextTransitioning" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIViewControllerContextTransitioning" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIViewControllerContextTransitioning" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIViewControllerContextTransitioning_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="UIKit.IUIViewControllerContextTransitioning" /> interface to support all the methods from the <see cref="UIKit.UIViewControllerContextTransitioning" /> protocol.</summary>
-	/// <remarks>
-	///       <para>The extension methods for <see cref="UIKit.IUIViewControllerContextTransitioning" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="UIKit.UIViewControllerContextTransitioning" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model, BaseType (typeof (NSObject))]
 	partial interface UIViewControllerContextTransitioning {
@@ -23554,12 +23582,6 @@ namespace UIKit {
 	}
 
 	interface IUITraitEnvironment { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UITraitEnvironment" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UITraitEnvironment" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UITraitEnvironment" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UITraitEnvironment_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -23906,6 +23928,37 @@ namespace UIKit {
 		[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("listEnvironment")]
 		UIListEnvironment ListEnvironment { get; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("traitCollectionWithHDRHeadroomUsageLimit:")]
+		UITraitCollection GetTraitCollection (UIHdrHeadroomUsageLimit hdrHeadroomUsageLimit);
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("traitCollectionWithTabAccessoryEnvironment:")]
+		UITraitCollection GetTraitCollection (UITabAccessoryEnvironment tabAccessoryEnvironment);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("traitCollectionWithResolvesNaturalAlignmentWithBaseWritingDirection:")]
+		UITraitCollection GetTraitCollection (bool resolvesNaturalAlignmentWithBaseWritingDirection);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("hdrHeadroomUsageLimit")]
+		UIHdrHeadroomUsageLimit HdrHeadroomUsageLimit { get; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("splitViewControllerLayoutEnvironment")]
+		UISplitViewControllerLayoutEnvironment SplitViewControllerLayoutEnvironment { get; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("tabAccessoryEnvironment")]
+		UITabAccessoryEnvironment TabAccessoryEnvironment { get; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("resolvesNaturalAlignmentWithBaseWritingDirection")]
+		bool ResolvesNaturalAlignmentWithBaseWritingDirection { get; }
 	}
 
 	/// <summary>Provides the constants for <see cref="UIKit.UIViewControllerContextTransitioning.GetViewControllerForKey(Foundation.NSString)" />.</summary>
@@ -23944,12 +23997,6 @@ namespace UIKit {
 		NSString ToViewKey { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIViewControllerAnimatedTransitioning" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIViewControllerAnimatedTransitioning" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIViewControllerAnimatedTransitioning" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIViewControllerAnimatedTransitioning_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
@@ -23985,12 +24032,6 @@ namespace UIKit {
 	}
 	interface IUIViewControllerAnimatedTransitioning { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIViewControllerInteractiveTransitioning" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIViewControllerInteractiveTransitioning" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIViewControllerInteractiveTransitioning" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIViewControllerInteractiveTransitioning_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
@@ -24020,12 +24061,6 @@ namespace UIKit {
 
 	interface IUIViewControllerTransitioningDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIViewControllerTransitioningDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIViewControllerTransitioningDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIViewControllerTransitioningDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIViewControllerTransitioningDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, BaseType (typeof (NSObject))]
 	[Protocol]
@@ -24236,10 +24271,6 @@ namespace UIKit {
 	// This protocol is only for consumption (there is no API to set a transition coordinator,
 	// only get an existing one), so we do not provide a model to subclass.
 	//
-	/// <summary>Interface that, together with the <see cref="UIKit.UIViewControllerTransitionCoordinator_Extensions" /> class, comprise the UIViewControllerTransitionCoordinator protocol.</summary>
-	/// <remarks>To be added.</remarks>
-	/// <summary>Extension class that, together with the <see cref="UIKit.IUIViewControllerTransitionCoordinator" /> interface, comprise the UIViewControllerTransitionCoordinator protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	partial interface UIViewControllerTransitionCoordinator : UIViewControllerTransitionCoordinatorContext {
@@ -24405,12 +24436,6 @@ namespace UIKit {
 		bool AllowsLinkPreview { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIWebViewDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIWebViewDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIWebViewDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIWebViewDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIWebViewDelegate { }
 
 	/// <summary>A class used to receive notifications from a UIWebView class.</summary>
@@ -24827,6 +24852,10 @@ namespace UIKit {
 		[Export ("showColumn:")]
 		void ShowColumn (UISplitViewControllerColumn column);
 
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("isShowingColumn:")]
+		bool IsShowingColumn (UISplitViewControllerColumn column);
+
 		[Export ("viewControllers", ArgumentSemantic.Copy)]
 		[PostGet ("ChildViewControllers")]
 		UIViewController [] ViewControllers { get; set; }
@@ -24945,16 +24974,38 @@ namespace UIKit {
 		[MacCatalyst (13, 1)]
 		[Export ("primaryBackgroundStyle", ArgumentSemantic.Assign)]
 		UISplitViewControllerBackgroundStyle PrimaryBackgroundStyle { get; set; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("maximumInspectorColumnWidth")]
+		nfloat MaximumInspectorColumnWidth { get; set; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("minimumInspectorColumnWidth")]
+		nfloat MinimumInspectorColumnWidth { get; set; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("minimumSecondaryColumnWidth")]
+		nfloat MinimumSecondaryColumnWidth { get; set; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("preferredInspectorColumnWidth")]
+		nfloat PreferredInspectorColumnWidth { get; set; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("preferredInspectorColumnWidthFraction")]
+		nfloat PreferredInspectorColumnWidthFraction { get; set; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("preferredSecondaryColumnWidth")]
+		nfloat PreferredSecondaryColumnWidth { get; set; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("preferredSecondaryColumnWidthFraction")]
+		nfloat PreferredSecondaryColumnWidthFraction { get; set; }
 	}
 
 	interface IUISplitViewControllerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UISplitViewControllerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UISplitViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UISplitViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UISplitViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -25200,6 +25251,14 @@ namespace UIKit {
 		[MacCatalyst (14, 0)]
 		[Export ("splitViewControllerInteractivePresentationGestureDidEnd:")]
 		void InteractivePresentationGestureDidEnd (UISplitViewController svc);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), EventArgs ("UISplitViewControllerDidShowColumn")]
+		[Export ("splitViewController:didShowColumn:")]
+		void DidShowColumn (UISplitViewController svc, UISplitViewControllerColumn column);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("splitViewController:didHideColumn:"), EventArgs ("UISplitViewControllerDidHideColumn")]
+		void DidHideColumn (UISplitViewController svc, UISplitViewControllerColumn column);
 	}
 
 	/// <summary>Defines extension methods on <see cref="UIKit.UIViewController" /> relating to collapsing/expanding secondary view controllers.</summary>
@@ -25423,8 +25482,6 @@ namespace UIKit {
 		NSObject Sender { get; }
 	}
 
-	/// <summary>Interface that, together with the <see cref="UIKit.UIPopoverBackgroundViewMethods_Extensions" /> class, comprise the UIPopoverBackgroundViewMethods protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIPopoverBackgroundViewMethods {
@@ -25542,12 +25599,6 @@ namespace UIKit {
 
 	interface IUIPopoverControllerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIPopoverControllerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIPopoverControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIPopoverControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIPopoverControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -25664,12 +25715,6 @@ namespace UIKit {
 
 	interface IUIAdaptivePresentationControllerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIAdaptivePresentationControllerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIAdaptivePresentationControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIAdaptivePresentationControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIAdaptivePresentationControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -25741,12 +25786,6 @@ namespace UIKit {
 		void DidAttemptToDismiss (UIPresentationController presentationController);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIPopoverPresentationControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIPopoverPresentationControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIPopoverPresentationControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIPopoverPresentationControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIPopoverPresentationControllerDelegate { }
 
 	/// <summary>Delegate object for <see cref="UIKit.UIPopoverPresentationController" /> objects. Provides methods relating to presentation and dismissal events and allows fine-grained control for adaptive presentations.</summary>
@@ -25831,7 +25870,6 @@ namespace UIKit {
 		[NullAllowed]
 		string PrimaryLanguage { get; }
 
-		/// <include file="../docs/api/UIKit/UITextInputMode.xml" path="/Documentation/Docs[@DocId='P:UIKit.UITextInputMode.CurrentInputModeDidChangeNotification']/*" />
 		[Field ("UITextInputCurrentInputModeDidChangeNotification")]
 		[Notification]
 		NSString CurrentInputModeDidChangeNotification { get; }
@@ -25983,12 +26021,6 @@ namespace UIKit {
 		void Dismiss (bool animated);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIPrinterPickerControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIPrinterPickerControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIPrinterPickerControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIPrinterPickerControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIPrinterPickerControllerDelegate { }
 
 	/// <summary>Delegate object for a <see cref="UIKit.UIPrinterPickerController" />. Defines events relating to the presentation and dismissal of the controller, and a method for when a printer has been selected.</summary>
@@ -26148,12 +26180,6 @@ namespace UIKit {
 		UIPrintFormatter [] PrintFormattersForPage (nint index);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIPrintInteractionControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIPrintInteractionControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIPrintInteractionControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIPrintInteractionControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIPrintInteractionControllerDelegate { }
 
 	/// <summary>The delegate for the <see cref="UIKit.UIPrintInteractionController" />.</summary>
@@ -26535,6 +26561,29 @@ namespace UIKit {
 		UIVibrancyEffect FromBlurEffect (UIBlurEffect blurEffect, UIVibrancyEffectStyle style);
 	}
 
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (UIVisualEffect))]
+	interface UIGlassEffect {
+
+		[Export ("interactive")]
+		bool Interactive { [Bind ("isInteractive")] get; set; }
+
+		[NullAllowed, Export ("tintColor", ArgumentSemantic.Copy)]
+		UIColor TintColor { get; set; }
+
+		[Static]
+		[Export ("effectWithStyle:")]
+		UIGlassEffect Create (UIGlassEffectStyle style);
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (UIVisualEffect))]
+	interface UIGlassContainerEffect {
+
+		[Export ("spacing")]
+		nfloat Spacing { get; set; }
+	}
+
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIView))]
 	partial interface UIVisualEffectView : NSSecureCoding {
@@ -26766,7 +26815,7 @@ namespace UIKit {
 		/// <param name="width">To be added.</param>
 		/// <param name="font">To be added.</param>
 		/// <param name="breakMode">To be added.</param>
-		/// <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method..</summary>
+		/// <summary>Developers should use <see cref="NSStringDrawing.DrawString(NSString,CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method..</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -26797,7 +26846,7 @@ namespace UIKit {
 		// note: duplicate from maccore's foundation.cs where it's binded on NSString2 (for Classic)
 		/// <param name="rect">To be added.</param>
 		/// <param name="font">To be added.</param>
-		/// <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="NSStringDrawing.DrawString(NSString,CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -26813,7 +26862,7 @@ namespace UIKit {
 		/// <param name="rect">To be added.</param>
 		/// <param name="font">To be added.</param>
 		/// <param name="mode">To be added.</param>
-		/// <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="NSStringDrawing.DrawString(NSString,CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -26830,7 +26879,7 @@ namespace UIKit {
 		/// <param name="font">To be added.</param>
 		/// <param name="mode">To be added.</param>
 		/// <param name="alignment">To be added.</param>
-		/// <summary>Developers should use <see cref="Foundation.NSString.DrawString(CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="NSStringDrawing.DrawString(NSString,CoreGraphics.CGRect, UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -26844,7 +26893,7 @@ namespace UIKit {
 
 		// note: duplicate from maccore's foundation.cs where it's binded on NSString2 (for Classic)
 		/// <param name="font">To be added.</param>
-		/// <summary>Developers should use <see cref="UIKit.NSStringDrawing.GetSizeUsingAttributes(Foundation.NSString,UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
+		/// <summary>Developers should use <see cref="NSStringDrawing.GetSizeUsingAttributes(Foundation.NSString,UIKit.UIStringAttributes)" /> rather than this deprecated method.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>
 		///           <para>(More documentation for this node is coming)</para>
@@ -27075,16 +27124,6 @@ namespace UIKit {
 		void DidMoveToView ([NullAllowed] UIView view);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UITextDocumentProxy" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UITextDocumentProxy" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UITextDocumentProxy" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UITextDocumentProxy_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
-	/// <summary>Extension methods to the <see cref="UIKit.IUITextDocumentProxy" /> interface to support all the methods from the <see cref="UIKit.UITextDocumentProxy" /> protocol.</summary>
-	/// <remarks>
-	///       <para>The extension methods for <see cref="UIKit.IUITextDocumentProxy" /> allow developers to treat instances of the interface as having all the optional methods of the original <see cref="UIKit.UITextDocumentProxy" /> protocol.   Since the interface only contains the required members, these extension methods allow developers to call the optional members of the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -27459,7 +27498,6 @@ namespace UIKit {
 		void AddOption (string title, [NullAllowed] UIImage image, UIDocumentMenuOrder order, Action completionHandler);
 	}
 
-	/// <include file="../docs/api/UIKit/IUIDocumentMenuDelegate.xml" path="/Documentation/Docs[@DocId='T:UIKit.IUIDocumentMenuDelegate']/*" />
 	interface IUIDocumentMenuDelegate { }
 
 	/// <summary>Delegate object for <see cref="UIKit.UIDocumentMenuViewController" /> objects. Provides methods called when a document is picked or when the picking has been cancelled.</summary>
@@ -27579,12 +27617,6 @@ namespace UIKit {
 		NSUrl DirectoryUrl { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIDocumentPickerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIDocumentPickerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIDocumentPickerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIDocumentPickerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIDocumentPickerDelegate { }
 
 	/// <summary>Delegate object for <see cref="UIKit.UIDocumentPickerViewController" /> object. Defines methods called when the user picks a document or cancels.</summary>
@@ -27666,8 +27698,6 @@ namespace UIKit {
 
 	// note: used (internally, not exposed) by UITableView and UICollectionView for state restoration
 	// user objects must adopt the protocol
-	/// <summary>Interface that, together with the <see cref="UIKit.UIDataSourceModelAssociation_Extensions" /> class, comprise the UIDataSourceModelAssociation protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIDataSourceModelAssociation {
@@ -27691,8 +27721,6 @@ namespace UIKit {
 		NSIndexPath GetIndexPath (string identifier, UIView view);
 	}
 
-	/// <summary>Interface that, together with the <see cref="UIKit.UIAccessibilityReadingContent_Extensions" /> class, comprise the UIAccessibilityReadingContent protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIAccessibilityReadingContent {
@@ -27746,8 +27774,6 @@ namespace UIKit {
 		NSAttributedString GetAccessibilityAttributedPageContent ();
 	}
 
-	/// <summary>Interface that, together with the <see cref="UIKit.UIGuidedAccessRestrictionDelegate_Extensions" /> class, comprise the UIGuidedAccessRestrictionDelegate protocol.</summary>
-	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface UIGuidedAccessRestrictionDelegate {
@@ -27981,13 +28007,11 @@ namespace UIKit {
 		[NullAllowed, Export ("nextFocusedItem", ArgumentSemantic.Weak)]
 		IUIFocusItem NextFocusedItem { get; }
 
-		/// <include file="../docs/api/UIKit/UIFocusUpdateContext.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIFocusUpdateContext.DidUpdateNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIFocusDidUpdateNotification")]
 		NSString DidUpdateNotification { get; }
 
-		/// <include file="../docs/api/UIKit/UIFocusUpdateContext.xml" path="/Documentation/Docs[@DocId='P:UIKit.UIFocusUpdateContext.MovementDidFailNotification']/*" />
 		[MacCatalyst (13, 1)]
 		[Notification]
 		[Field ("UIFocusMovementDidFailNotification")]
@@ -28157,12 +28181,6 @@ namespace UIKit {
 		void CancelInteraction ();
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIPreviewInteractionDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIPreviewInteractionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIPreviewInteractionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIPreviewInteractionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIPreviewInteractionDelegate { }
 
 	/// <summary>Delegate object for <see cref="UIKit.UIPreviewInteraction" /> objects, providing methods that are called during a 3D touch interaction.</summary>
@@ -28287,7 +28305,7 @@ namespace UIKit {
 		bool ShouldUpdateFocus (UIFocusUpdateContext context);
 
 		/// <param name="context">Metadata for the focus change.</param>
-		/// <param name="coordinator">The <see cref="UIKit.UIFocusAnimationController" /> coordinating the focus-change animations.</param>
+		/// <param name="coordinator">The <see cref="UIFocusAnimationCoordinator" /> coordinating the focus-change animations.</param>
 		/// <summary>Delegate method called shortly after focus has changed to a new <see cref="UIKit.UIView" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
@@ -28366,70 +28384,22 @@ namespace UIKit {
 	interface IUIDragDropSession { }
 	interface IUIDragAnimating { }
 	interface IUIDragSession { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIDragInteractionDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIDragInteractionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIDragInteractionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIDragInteractionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIDragInteractionDelegate { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIDropInteractionDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIDropInteractionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIDropInteractionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIDropInteractionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIDropInteractionDelegate { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UICollectionViewDragDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UICollectionViewDragDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UICollectionViewDragDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UICollectionViewDragDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUICollectionViewDragDelegate { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UICollectionViewDropDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UICollectionViewDropDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UICollectionViewDropDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UICollectionViewDropDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUICollectionViewDropDelegate { }
 	interface IUICollectionViewDropCoordinator { }
 	interface IUICollectionViewDropItem { }
 	interface IUICollectionViewDropPlaceholderContext { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UITableViewDragDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UITableViewDragDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UITableViewDragDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UITableViewDragDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUITableViewDragDelegate { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UITableViewDropDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UITableViewDropDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UITableViewDropDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UITableViewDropDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUITableViewDropDelegate { }
 	interface IUITableViewDropCoordinator { }
 	interface IUITableViewDropItem { }
 	interface IUITableViewDropPlaceholderContext { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UITextDragDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UITextDragDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UITextDragDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UITextDragDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUITextDragDelegate { }
 	interface IUITextDraggable { }
 	interface IUITextDragRequest { }
 	interface IUITextDroppable { }
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UITextDropDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UITextDropDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UITextDropDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UITextDropDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUITextDropDelegate { }
 	interface IUITextDropRequest { }
 
@@ -30119,12 +30089,6 @@ namespace UIKit {
 		IUITextPasteDelegate PasteDelegate { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UITextPasteDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UITextPasteDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UITextPasteDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UITextPasteDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUITextPasteDelegate { }
 
 	/// <summary>Interface for pasting and dropping text via item providers.</summary>
@@ -30410,12 +30374,6 @@ namespace UIKit {
 		UIDocumentCreationIntent ActiveDocumentCreationIntent { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="UIKit.UIDocumentBrowserViewControllerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="UIKit.UIDocumentBrowserViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="UIKit.UIDocumentBrowserViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="UIKit.UIDocumentBrowserViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IUIDocumentBrowserViewControllerDelegate { }
 
 	/// <summary>Handles user interactions with a document browser.</summary>
@@ -30523,6 +30481,11 @@ namespace UIKit {
 
 		[Export ("supportsMultipleItems")]
 		bool SupportsMultipleItems { get; set; }
+
+		[NullAllowed]
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("imageOnlyForContextMenu", ArgumentSemantic.Strong)]
+		UIImage ImageOnlyForContextMenu { get; set; }
 	}
 
 	interface IUIFocusItemContainer { }
@@ -30850,6 +30813,10 @@ namespace UIKit {
 
 		[Export ("activationConditions", ArgumentSemantic.Strong)]
 		UISceneActivationConditions ActivationConditions { get; set; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("destructionConditions", ArgumentSemantic.Copy)]
+		NSSet<UISceneDestructionCondition> DestructionConditions { get; set; }
 
 		[Field ("UISceneWillConnectNotification")]
 		[Notification]
@@ -31560,9 +31527,34 @@ namespace UIKit {
 		[Export ("replaceChildrenOfMenuForIdentifier:fromChildrenBlock:")]
 		void ReplaceChildrenOfMenu (string parentIdentifier, Func<UIMenuElement [], UIMenuElement []> childrenBlock);
 
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("replaceActionForIdentifier:withElements:")]
+		void ReplaceAction (string replacedIdentifier, UIMenuElement [] replacementElements);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("replaceCommandForAction:propertyList:withElements:")]
+		void ReplaceCommand (Selector replacedAction, [NullAllowed] NSObject replacedPropertyList, UIMenuElement [] replacementElements);
+
 		[Abstract]
 		[Export ("insertSiblingMenu:beforeMenuForIdentifier:")]
 		void InsertSiblingMenuBefore (UIMenu siblingMenu, string siblingIdentifier);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("replaceMenuForIdentifier:withElements:")]
+		void ReplaceMenu (string replacedIdentifier, UIMenuElement [] replacementElements);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("insertElements:beforeMenuForIdentifier:")]
+		void InsertElementsBeforeMenu (UIMenuElement [] insertedElements, string siblingIdentifier);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("insertElements:afterMenuForIdentifier:")]
+		void InsertElementsAfterMenu (UIMenuElement [] insertedElements, string siblingIdentifier);
 
 		[Abstract]
 		[Export ("insertSiblingMenu:afterMenuForIdentifier:")]
@@ -31572,13 +31564,53 @@ namespace UIKit {
 		[Export ("insertChildMenu:atStartOfMenuForIdentifier:")]
 		void InsertChildMenuAtStart (UIMenu childMenu, string parentIdentifier);
 
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("insertElements:beforeActionForIdentifier:")]
+		void InsertElementsBeforeAction (UIMenuElement [] insertedElements, string siblingIdentifier);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("insertElements:afterActionForIdentifier:")]
+		void InsertElementsAfterAction (UIMenuElement [] insertedElements, string siblingIdentifier);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("insertElements:beforeCommandForAction:propertyList:")]
+		void InsertElementsBeforeCommand (UIMenuElement [] insertedElements, Selector siblingAction, [NullAllowed] NSObject siblingPropertyList);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("insertElements:afterCommandForAction:propertyList:")]
+		void InsertElementsAfterCommand (UIMenuElement [] insertedElements, Selector siblingAction, [NullAllowed] NSObject siblingPropertyList);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("insertElements:atStartOfMenuForIdentifier:")]
+		void InsertElementsAtStartOfMenu (UIMenuElement [] childElements, string parentIdentifier);
+
 		[Abstract]
 		[Export ("insertChildMenu:atEndOfMenuForIdentifier:")]
 		void InsertChildMenuAtEnd (UIMenu childMenu, string parentIdentifier);
 
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("insertElements:atEndOfMenuForIdentifier:")]
+		void InsertElementsAtEndOfMenu (UIMenuElement [] childElements, string parentIdentifier);
+
 		[Abstract]
 		[Export ("removeMenuForIdentifier:")]
 		void RemoveMenu (string removedIdentifier);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("removeActionForIdentifier:")]
+		void RemoveAction (string removedIdentifier);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("removeCommandForAction:propertyList:")]
+		void RemoveCommand (Selector removedAction, [NullAllowed] NSObject removedPropertyList);
 	}
 
 	[iOS (13, 0), TV (13, 0)]
@@ -31600,6 +31632,73 @@ namespace UIKit {
 
 		[Export ("setNeedsRevalidate")]
 		void SetNeedsRevalidate ();
+	}
+
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UIMenuSystemFindElementGroupConfiguration {
+
+		[Export ("style", ArgumentSemantic.Assign)]
+		UIMenuSystemFindElementGroupConfigurationStyle Style { get; set; }
+	}
+
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (UIMenuSystem))]
+	[DisableDefaultCtor]
+	interface UIContextMenuSystem {
+
+		[Static]
+		[Export ("sharedSystem")]
+		UIContextMenuSystem SharedSystem { get; }
+	}
+
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	delegate void UIMainMenuSystemBuildHandler (IUIMenuBuilder builder);
+
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (UIMenuSystem))]
+	[DisableDefaultCtor]
+	interface UIMainMenuSystem {
+
+		[Static]
+		[Export ("sharedSystem")]
+		UIMainMenuSystem SharedSystem { get; }
+
+		[Export ("setBuildConfiguration:buildHandler:")]
+		void SetBuildConfiguration (UIMainMenuSystemConfiguration configuration, [NullAllowed] UIMainMenuSystemBuildHandler buildHandler);
+	}
+
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	interface UIMainMenuSystemConfiguration : NSCopying {
+
+		[Export ("newScenePreference", ArgumentSemantic.Assign)]
+		UIMenuSystemElementGroupPreference NewScenePreference { get; set; }
+
+		[Export ("documentPreference", ArgumentSemantic.Assign)]
+		UIMenuSystemElementGroupPreference DocumentPreference { get; set; }
+
+		[Export ("printingPreference", ArgumentSemantic.Assign)]
+		UIMenuSystemElementGroupPreference PrintingPreference { get; set; }
+
+		[Export ("findingPreference", ArgumentSemantic.Assign)]
+		UIMenuSystemElementGroupPreference FindingPreference { get; set; }
+
+		[Export ("findingConfiguration", ArgumentSemantic.Strong)]
+		UIMenuSystemFindElementGroupConfiguration FindingConfiguration { get; }
+
+		[Export ("toolbarPreference", ArgumentSemantic.Assign)]
+		UIMenuSystemElementGroupPreference ToolbarPreference { get; set; }
+
+		[Export ("sidebarPreference", ArgumentSemantic.Assign)]
+		UIMenuSystemElementGroupPreference SidebarPreference { get; set; }
+
+		[Export ("inspectorPreference", ArgumentSemantic.Assign)]
+		UIMenuSystemElementGroupPreference InspectorPreference { get; set; }
+
+		[Export ("textFormattingPreference", ArgumentSemantic.Assign)]
+		UIMenuSystemElementGroupPreference TextFormattingPreference { get; set; }
 	}
 
 	[TV (13, 0), iOS (13, 0)]
@@ -31633,6 +31732,9 @@ namespace UIKit {
 		[Export ("buttonAppearance", ArgumentSemantic.Copy)]
 		UIBarButtonItemAppearance ButtonAppearance { get; set; }
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'ProminentButtonAppearance' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'ProminentButtonAppearance' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'ProminentButtonAppearance' instead.")]
 		[Export ("doneButtonAppearance", ArgumentSemantic.Copy)]
 		UIBarButtonItemAppearance DoneButtonAppearance { get; set; }
 
@@ -31647,6 +31749,30 @@ namespace UIKit {
 
 		[Export ("setBackIndicatorImage:transitionMaskImage:")]
 		void SetBackIndicatorImage ([NullAllowed] UIImage backIndicatorImage, [NullAllowed] UIImage backIndicatorTransitionMaskImage);
+
+		[iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
+		[Export ("prominentButtonAppearance", ArgumentSemantic.Copy)]
+		UIBarButtonItemAppearance ProminentButtonAppearance { get; set; }
+
+		[Appearance]
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("largeSubtitleTextAttributes", ArgumentSemantic.Copy)]
+		NSDictionary WeakLargeSubtitleTextAttributes { get; set; }
+
+		[Appearance]
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Wrap ("WeakLargeSubtitleTextAttributes")]
+		UIStringAttributes LargeSubtitleTextAttributes { get; set; }
+
+		[Appearance]
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("subtitleTextAttributes", ArgumentSemantic.Copy)]
+		NSDictionary WeakSubtitleTextAttributes { get; set; }
+
+		[Appearance]
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Wrap ("WeakSubtitleTextAttributes")]
+		UIStringAttributes SubtitleTextAttributes { get; set; }
 	}
 
 	[iOS (13, 0), TV (13, 0)]
@@ -31979,8 +32105,15 @@ namespace UIKit {
 		[Export ("buttonAppearance", ArgumentSemantic.Copy)]
 		UIBarButtonItemAppearance ButtonAppearance { get; set; }
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'ProminentButtonAppearance' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'ProminentButtonAppearance' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'ProminentButtonAppearance' instead.")]
 		[Export ("doneButtonAppearance", ArgumentSemantic.Copy)]
 		UIBarButtonItemAppearance DoneButtonAppearance { get; set; }
+
+		[iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
+		[Export ("prominentButtonAppearance", ArgumentSemantic.Copy)]
+		UIBarButtonItemAppearance ProminentButtonAppearance { get; set; }
 	}
 
 	[iOS (13, 0), TV (13, 0)]
@@ -31997,11 +32130,16 @@ namespace UIKit {
 		[Export ("screen")]
 		UIScreen Screen { get; }
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'EffectiveGeometry.InterfaceOrientation' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'EffectiveGeometry.InterfaceOrientation' instead.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("interfaceOrientation")]
 		UIInterfaceOrientation InterfaceOrientation { get; }
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'EffectiveGeometry.CoordinateSpace' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Use 'EffectiveGeometry.CoordinateSpace' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'EffectiveGeometry.CoordinateSpace' instead.")]
 		[Export ("coordinateSpace")]
 		IUICoordinateSpace CoordinateSpace { get; }
 
@@ -32076,10 +32214,16 @@ namespace UIKit {
 		[NullAllowed, Export ("window", ArgumentSemantic.Strong)]
 		UIWindow Window { get; set; }
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'DidUpdateEffectiveGeometry' to be notified of the scene's geometry changes, or use traits whose values are inherited from the scene via the TraitCollection of views and view controllers instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'DidUpdateEffectiveGeometry' to be notified of the scene's geometry changes, or use traits whose values are inherited from the scene via the TraitCollection of views and view controllers instead.")]
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("windowScene:didUpdateCoordinateSpace:interfaceOrientation:traitCollection:")]
 		void DidUpdateCoordinateSpace (UIWindowScene windowScene, IUICoordinateSpace previousCoordinateSpace, UIInterfaceOrientation previousInterfaceOrientation, UITraitCollection previousTraitCollection);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("windowScene:didUpdateEffectiveGeometry:")]
+		void DidUpdateEffectiveGeometry (UIWindowScene windowScene, UIWindowSceneGeometry previousEffectiveGeometry);
 
 		[NoTV]
 		[MacCatalyst (13, 1)]
@@ -32088,6 +32232,10 @@ namespace UIKit {
 
 		[Export ("windowScene:userDidAcceptCloudKitShareWithMetadata:")]
 		void UserDidAcceptCloudKitShare (UIWindowScene windowScene, CKShareMetadata cloudKitShareMetadata);
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("preferredWindowingControlStyleForScene:")]
+		UISceneWindowingControlStyle GetPreferredWindowingControlStyle (UIWindowScene windowScene);
 	}
 
 	[iOS (13, 0), TV (13, 0)]
@@ -33207,6 +33355,14 @@ namespace UIKit {
 
 		[Export ("supportsAlpha")]
 		bool SupportsAlpha { get; set; }
+
+		[iOS (26, 0), NoTV, MacCatalyst (26, 0)]
+		[Export ("supportsEyedropper")]
+		bool SupportsEyedropper { get; set; }
+
+		[iOS (26, 0), NoTV, MacCatalyst (26, 0)]
+		[Export ("maximumLinearExposure")]
+		nfloat MaximumLinearExposure { get; set; }
 	}
 
 	[NoTV, iOS (14, 0)]
@@ -33225,6 +33381,14 @@ namespace UIKit {
 
 		[NullAllowed, Export ("selectedColor", ArgumentSemantic.Strong)]
 		UIColor SelectedColor { get; set; }
+
+		[iOS (26, 0), NoTV, MacCatalyst (26, 0)]
+		[Export ("supportsEyedropper")]
+		bool SupportsEyedropper { get; set; }
+
+		[iOS (26, 0), NoTV, MacCatalyst (26, 0)]
+		[Export ("maximumLinearExposure")]
+		nfloat MaximumLinearExposure { get; set; }
 	}
 
 	interface IUIConfigurationState { }
@@ -33318,6 +33482,15 @@ namespace UIKit {
 		[Static]
 		[Export ("elementWithUncachedProvider:")]
 		UIDeferredMenuElement CreateUncached (UIDeferredMenuElementProviderHandler elementProvider);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("elementUsingFocusWithIdentifier:shouldCacheItems:")]
+		UIDeferredMenuElement CreateUsingFocus (string identifier, bool shouldCacheItems);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("identifier")]
+		string Identifier { get; }
 	}
 
 	[TV (14, 0), iOS (14, 0)]
@@ -34240,6 +34413,54 @@ namespace UIKit {
 		[Export ("indicatorColorTransformer", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		UIConfigurationColorTransformerHandler IndicatorColorTransformer { get; set; }
+
+		[Static]
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("glassButtonConfiguration")]
+		UIButtonConfiguration GlassButtonConfiguration { get; }
+
+		[Static]
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("tintedGlassButtonConfiguration")]
+		UIButtonConfiguration TintedGlassButtonConfiguration { get; }
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'UISymbolContentTransition' instead.")]
+#endif
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("symbolContentTransition", ArgumentSemantic.Strong)]
+		[NullAllowed]
+#if XAMCORE_5_0
+		UISymbolContentTransition SymbolContentTransition { get; set; }
+#else
+		NSSymbolContentTransition SymbolContentTransition { get; set; }
+#endif
+
+#if !XAMCORE_6_0
+		[Sealed]
+#if XAMCORE_5_0
+		[Obsolete ("Use 'SymbolContentTransition' instead.")]
+#endif
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("symbolContentTransition", ArgumentSemantic.Strong)]
+		[NullAllowed]
+		UISymbolContentTransition UISymbolContentTransition { get; set; }
+#endif
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("clearGlassButtonConfiguration")]
+		UIButtonConfiguration ClearGlassButtonConfiguration { get; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("prominentClearGlassButtonConfiguration")]
+		UIButtonConfiguration ProminentClearGlassButtonConfiguration { get; }
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("prominentGlassButtonConfiguration")]
+		UIButtonConfiguration ProminentGlassButtonConfiguration { get; }
 	}
 
 	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
@@ -34798,6 +35019,11 @@ namespace UIKit {
 		[Export ("presentationSourceItem")]
 		IUIPopoverPresentationControllerSourceItem PresentationSourceItem { get; }
 
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("repeatBehavior", ArgumentSemantic.Assign)]
+		UIMenuElementRepeatBehavior RepeatBehavior { get; set; }
+
 		[Abstract]
 		[Export ("performWithSender:target:")]
 		void Target ([NullAllowed] NSObject sender, [NullAllowed] NSObject target);
@@ -35171,6 +35397,42 @@ namespace UIKit {
 		bool Miniaturizable { [Bind ("isMiniaturizable")] get; set; }
 	}
 
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UISceneDestructionCondition : NSCopying {
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("userInitiatedDismissal")]
+		UISceneDestructionCondition UserInitiatedDismissal { get; }
+
+		[NoiOS, NoTV, NoMacCatalyst]
+		[Static]
+		[Export ("systemDisconnection")]
+		UISceneDestructionCondition SystemDisconnection { get; }
+	}
+
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UISceneWindowingControlStyle {
+
+		[Static]
+		[Export ("automaticStyle")]
+		UISceneWindowingControlStyle AutomaticStyle { get; }
+
+		[NoTV]
+		[Static]
+		[Export ("unifiedStyle")]
+		UISceneWindowingControlStyle UnifiedStyle { get; }
+
+		[NoTV]
+		[Static]
+		[Export ("minimalStyle")]
+		UISceneWindowingControlStyle MinimalStyle { get; }
+	}
+
 	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (UIFindSession))]
 	[DisableDefaultCtor]
@@ -35194,6 +35456,18 @@ namespace UIKit {
 		[MacCatalyst (13, 1)]
 		[Export ("interfaceOrientation")]
 		UIInterfaceOrientation InterfaceOrientation { get; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("coordinateSpace")]
+		IUICoordinateSpace CoordinateSpace { get; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("interfaceOrientationLocked")]
+		bool InterfaceOrientationLocked { [Bind ("isInterfaceOrientationLocked")] get; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("interactivelyResizing")]
+		bool InteractivelyResizing { [Bind ("isInteractivelyResizing")] get; }
 	}
 
 	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
@@ -35926,6 +36200,26 @@ namespace UIKit {
 		NSSymbolContentTransition ContentTransition { get; }
 	}
 
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UISymbolContentTransition : NSCopying, NSSecureCoding {
+
+		[Export ("contentTransition", ArgumentSemantic.Strong)]
+		NSSymbolContentTransition ContentTransition { get; }
+
+		[Export ("options", ArgumentSemantic.Strong)]
+		NSSymbolEffectOptions Options { get; }
+
+		[Static]
+		[Export ("transitionWithContentTransition:")]
+		UISymbolContentTransition Create (NSSymbolContentTransition contentTransition);
+
+		[Static]
+		[Export ("transitionWithContentTransition:options:")]
+		UISymbolContentTransition Create (NSSymbolContentTransition contentTransition, NSSymbolEffectOptions options);
+	}
+
 	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -36261,6 +36555,21 @@ namespace UIKit {
 		[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("listEnvironment")]
 		UIListEnvironment ListEnvironment { get; set; }
+
+		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("tabAccessoryEnvironment", ArgumentSemantic.Assign)]
+		UITabAccessoryEnvironment TabAccessoryEnvironment { get; set; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("splitViewControllerLayoutEnvironment", ArgumentSemantic.Assign)]
+		UISplitViewControllerLayoutEnvironment SplitViewControllerLayoutEnvironment { get; set; }
+
+		[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Abstract]
+		[Export ("resolvesNaturalAlignmentWithBaseWritingDirection")]
+		bool ResolvesNaturalAlignmentWithBaseWritingDirection { get; set; }
 	}
 
 
@@ -36680,6 +36989,8 @@ namespace UIKit {
 		RichText = 1 << 1,
 		List = 1 << 2,
 		Table = 1 << 3,
+		[iOS (26, 0), MacCatalyst (26, 0)]
+		PresentationIntent = 1 << 4,
 	}
 
 	[Native]
@@ -36800,6 +37111,19 @@ namespace UIKit {
 		UIAction CreateDocumentAction (UIDocumentCreationIntent indent);
 	}
 
+	[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UITabAccessory {
+
+		[Export ("contentView", ArgumentSemantic.Strong)]
+		UIView ContentView { get; }
+
+		[Export ("initWithContentView:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (UIView contentView);
+	}
+
 	[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (UITab))]
 	[DisableDefaultCtor]
@@ -36807,6 +37131,10 @@ namespace UIKit {
 		[DesignatedInitializer]
 		[Export ("initWithViewControllerProvider:")]
 		NativeHandle Constructor ([NullAllowed] Func<UITab, UIViewController> viewControllerProvider);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("automaticallyActivatesSearch")]
+		bool AutomaticallyActivatesSearch { get; set; }
 	}
 
 	[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -37219,6 +37547,10 @@ namespace UIKit {
 		void UpdateLink (UIView windowScene, NSObject target, Selector selector);
 	}
 
+	[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+	[return: NullAllowed]
+	delegate UIBarButtonItem UIViewControllerTransitionZoomBarButtonHandler (UIZoomTransitionSourceViewProviderContext context);
+
 	[TV (18, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -37226,6 +37558,11 @@ namespace UIKit {
 		[Static]
 		[Export ("zoomWithOptions:sourceViewProvider:")]
 		UIViewControllerTransition Zoom ([NullAllowed] UIZoomTransitionOptions options, Func<UIZoomTransitionSourceViewProviderContext, UIView> sourceViewProvider);
+
+		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Static]
+		[Export ("zoomWithOptions:sourceBarButtonItemProvider:")]
+		UIViewControllerTransition Zoom ([NullAllowed] UIZoomTransitionOptions options, UIViewControllerTransitionZoomBarButtonHandler sourceBarButtonItemProvider);
 
 		[Static]
 		[Export ("coverVerticalTransition")]
@@ -37966,5 +38303,125 @@ namespace UIKit {
 	interface UISmartReplySuggestion {
 		[Export ("smartReply")]
 		string SmartReply { get; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	interface UITraitResolvesNaturalAlignmentWithBaseWritingDirection : UIObjectTraitDefinition {
+
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	delegate void UIMenuElementProviderCreateHandler ([BlockCallback] UIMenuElementProviderCompletion handler);
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	delegate void UIMenuElementProviderCompletion (UIMenuElement [] element);
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UIDeferredMenuElementProvider {
+
+		[Static]
+		[Export ("providerWithElementProvider:")]
+		UIDeferredMenuElementProvider Create (UIMenuElementProviderCreateHandler elementProvider);
+	}
+
+	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[BaseType (typeof (NSObject))]
+	interface UIScrollEdgeElementContainerInteraction : UIInteraction {
+
+		[NullAllowed, Export ("scrollView", ArgumentSemantic.Weak)]
+		UIScrollView ScrollView { get; set; }
+
+		[Export ("edge", ArgumentSemantic.Assign)]
+		UIRectEdge Edge { get; set; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject), Name = "UITraitHDRHeadroomUsageLimit")]
+	interface UITraitHdrHeadroomUsageLimit : UINSIntegerTraitDefinition {
+
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	interface UITraitSplitViewControllerLayoutEnvironment : UINSIntegerTraitDefinition {
+
+	}
+
+	[NoTV, MacCatalyst (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	interface UITraitTabAccessoryEnvironment : UINSIntegerTraitDefinition {
+
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UICornerConfiguration : NSCopying {
+		// Following Swift naming suggestions in all of these methods below.
+
+		[Static]
+		[Export ("configurationWithRadius:")]
+		UICornerConfiguration CreateCorners (UICornerRadius radius);
+
+		[Static]
+		[Export ("configurationWithTopLeftRadius:topRightRadius:bottomLeftRadius:bottomRightRadius:")]
+		UICornerConfiguration CreateCorners ([NullAllowed] UICornerRadius topLeftRadius, [NullAllowed] UICornerRadius topRightRadius, [NullAllowed] UICornerRadius bottomLeftRadius, [NullAllowed] UICornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("capsuleConfiguration")]
+		UICornerConfiguration CreateCapsule ();
+
+		[Static]
+		[Export ("capsuleConfigurationWithMaximumRadius:")]
+		UICornerConfiguration CreateCapsule (nfloat maximumRadius);
+
+		[Static]
+		[Export ("configurationWithUniformRadius:")]
+		UICornerConfiguration CreateUniformCorners (UICornerRadius radius);
+
+		[Static]
+		[Export ("configurationWithUniformTopRadius:uniformBottomRadius:")]
+		UICornerConfiguration CreateUniformEdgesTopBottom (UICornerRadius topRadius, UICornerRadius bottomRadius);
+
+		[Static]
+		[Export ("configurationWithUniformLeftRadius:uniformRightRadius:")]
+		UICornerConfiguration CreateUniformEdgesLeftRight (UICornerRadius leftRadius, UICornerRadius rightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformTopRadius:bottomLeftRadius:bottomRightRadius:")]
+		UICornerConfiguration CreateUniformTopRadius (UICornerRadius topRadius, [NullAllowed] UICornerRadius bottomLeftRadius, [NullAllowed] UICornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformBottomRadius:topLeftRadius:topRightRadius:")]
+		UICornerConfiguration CreateUniformBottomRadius (UICornerRadius bottomRadius, [NullAllowed] UICornerRadius topLeftRadius, [NullAllowed] UICornerRadius topRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformLeftRadius:topRightRadius:bottomRightRadius:")]
+		UICornerConfiguration CreateUniformLeftRadius (UICornerRadius leftRadius, [NullAllowed] UICornerRadius topRightRadius, [NullAllowed] UICornerRadius bottomRightRadius);
+
+		[Static]
+		[Export ("configurationWithUniformRightRadius:topLeftRadius:bottomLeftRadius:")]
+		UICornerConfiguration CreateUniformRightRadius (UICornerRadius rightRadius, [NullAllowed] UICornerRadius topLeftRadius, [NullAllowed] UICornerRadius bottomLeftRadius);
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface UICornerRadius : NSCopying {
+
+		[Static]
+		[Export ("fixedRadius:")]
+		UICornerRadius CreateFixed (nfloat radius);
+
+		[Static]
+		[Export ("containerConcentricRadius")]
+		UICornerRadius CreateContainerConcentric ();
+
+		[Static]
+		[Export ("containerConcentricRadiusWithMinimum:")]
+		UICornerRadius CreateContainerConcentric (nfloat minimum);
 	}
 }

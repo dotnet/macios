@@ -125,19 +125,13 @@ namespace CoreAnimation {
 		string FillMode { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreAnimation.CAMediaTiming" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreAnimation.CAMediaTiming" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreAnimation.CAMediaTiming" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="CoreAnimation.CAMediaTiming_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ICAMediaTiming { }
 
 	[NoiOS]
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
-	interface CAConstraintLayoutManager : NSCoding {
+	interface CAConstraintLayoutManager : NSCoding, CALayoutManager {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -174,6 +168,9 @@ namespace CoreAnimation {
 		///         <remarks>To be added.</remarks>
 		[Export ("scale")]
 		nfloat Scale { get; }
+
+		[Export ("offset")]
+		nfloat Offset { get; }
 
 		/// <param name="attribute">To be added.</param>
 		/// <param name="relativeToSource">To be added.</param>
@@ -368,10 +365,16 @@ namespace CoreAnimation {
 		/// <summary>To be added.</summary>
 		[Field ("kCAContentsFormatRGBA16Float")]
 		Rgba16Float,
+		[Field ("kCAContentsFormatAutomatic")]
+		Automatic,
 	}
 
 
-	/// <include file="../docs/api/CoreAnimation/CALayer.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CALayer']/*" />
+#if __MACOS__
+	/// <include file="../docs/api/CoreAnimation/CALayer.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CALayer' and contains(@Platforms,'macOS')]/*" />
+#else
+	/// <include file="../docs/api/CoreAnimation/CALayer.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CALayer' and not(@Platforms)]/*" />
+#endif
 	[BaseType (typeof (NSObject))]
 	[Dispose ("OnDispose ();", Optimizable = true)]
 	interface CALayer : CAMediaTiming, NSSecureCoding {
@@ -652,10 +655,7 @@ namespace CoreAnimation {
 		bool Contains (CGPoint p);
 
 		/// <summary>The contents of this layer, as a <see cref="CoreGraphics.CGImage" />.</summary>
-		///         <value>
-		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <remarks>To get or set this property using a different type, call <see cref="GetContentsAs{T}()" /> or <see cref="SetContents(NSObject)" />.</remarks>
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		[Export ("contents", ArgumentSemantic.Strong), NullAllowed]
 		CGImage Contents { get; set; }
@@ -1275,6 +1275,9 @@ namespace CoreAnimation {
 		[Export ("cornerCurveExpansionFactor:")]
 		nfloat GetCornerCurveExpansionFactor ([BindAs (typeof (CACornerCurve))] NSString curve);
 
+		[Obsoleted (PlatformName.iOS, 26, 0, "Use 'PreferredDynamicRange' instead.")]
+		[Obsoleted (PlatformName.MacCatalyst, 26, 0, "Use 'PreferredDynamicRange' instead.")]
+		[Obsoleted (PlatformName.MacOSX, 26, 0, "Use 'PreferredDynamicRange' instead.")]
 		[NoTV]
 		[iOS (17, 0)]
 		[MacCatalyst (17, 0)]
@@ -1286,6 +1289,28 @@ namespace CoreAnimation {
 		[Export ("toneMapMode")]
 		[BindAs (typeof (CAToneMapMode))]
 		NSString ToneMapMode { get; set; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("preferredDynamicRange", ArgumentSemantic.Copy)]
+		NSString WeakPreferredDynamicRange { get; set; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		CADynamicRange PreferredDynamicRange {
+			[Wrap ("CADynamicRangeExtensions.GetValue (WeakPreferredDynamicRange)")]
+			get;
+			[Wrap ("WeakPreferredDynamicRange = value.GetConstant ()!")]
+			set;
+		}
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("contentsHeadroom")]
+		nfloat ContentsHeadroom { get; set; }
+
+		// From the CARemoteLayerServer (CALayer) category
+		[MacCatalyst (13, 1)]
+		[Static]
+		[Export ("layerWithRemoteClientId:")]
+		CALayer GetLayerWithRemoteClientId (uint client_id);
 	}
 
 	[TV (13, 0)]
@@ -1433,6 +1458,10 @@ namespace CoreAnimation {
 		[NullAllowed]
 		// There's no documentation about which values are valid in this dictionary, so we can't create any strong bindings for it.
 		NSDictionary DeveloperHudProperties { get; set; }
+
+		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("residencySet")]
+		IMTLResidencySet ResidencySet { get; }
 	}
 
 	/// <summary>Layer whose content can be provided asynchronously, and with multiple levels of detail.</summary>
@@ -1998,12 +2027,6 @@ namespace CoreAnimation {
 		bool AllowsFontSubpixelQuantization { get; set; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="CoreAnimation.CALayerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="CoreAnimation.CALayerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="CoreAnimation.CALayerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="CoreAnimation.CALayerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface ICALayerDelegate { }
 
 	/// <summary>Delegate class for the CALayer.</summary>
@@ -2120,7 +2143,11 @@ namespace CoreAnimation {
 		void RunAction (string eventKey, NSObject obj, [NullAllowed] NSDictionary arguments);
 	}
 
-	/// <include file="../docs/api/CoreAnimation/CAAnimation.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CAAnimation']/*" />
+#if __MACOS__
+	/// <include file="../docs/api/CoreAnimation/CAAnimation.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CAAnimation' and contains(@Platforms,'macOS')]/*" />
+#else
+	/// <include file="../docs/api/CoreAnimation/CAAnimation.xml" path="/Documentation/Docs[@DocId='T:CoreAnimation.CAAnimation' and not(@Platforms)]/*" />
+#endif
 	[BaseType (typeof (NSObject)
 		, Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (CAAnimationDelegate) }
 	)]
@@ -3204,6 +3231,7 @@ namespace CoreAnimation {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("copyCGLPixelFormatForDisplayMask:")]
+		[return: Release]
 		CGLPixelFormat CopyCGLPixelFormatForDisplayMask (UInt32 mask);
 
 		/// <param name="pixelFormat">To be added.</param>
@@ -3217,6 +3245,7 @@ namespace CoreAnimation {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("copyCGLContextForPixelFormat:")]
+		[return: Release]
 		CGLContext CopyContext (CGLPixelFormat pixelFormat);
 
 		/// <param name="glContext">To be added.</param>
@@ -3912,5 +3941,63 @@ namespace CoreAnimation {
 
 		[Export ("paused")]
 		bool Paused { [Bind ("isPaused")] get; set; }
+	}
+
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	enum CADynamicRange {
+		[Field ("CADynamicRangeAutomatic")]
+		Automatic,
+
+		[Field ("CADynamicRangeStandard")]
+		Standard,
+
+		[Field ("CADynamicRangeConstrainedHigh")]
+		ConstrainedHigh,
+
+		[Field ("CADynamicRangeHigh")]
+		High,
+	}
+
+	[NoiOS, NoTV]
+	[MacCatalyst (13, 1)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface CALayoutManager {
+		[Export ("preferredSizeOfLayer:")]
+		CGSize GetPreferredSize (CALayer layer);
+
+		[Export ("invalidateLayoutOfLayer:")]
+		void InvalidateLayout (CALayer layer);
+
+		[Export ("layoutSublayersOfLayer:")]
+		void LayoutSublayers (CALayer layer);
+	}
+
+	[NoTV, NoiOS, MacCatalyst (13, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CARemoteLayerClient {
+		[Export ("initWithServerPort:")]
+		NativeHandle Constructor (uint port);
+
+		[Export ("invalidate")]
+		void Invalidate ();
+
+		[Export ("clientId")]
+		uint ClientId { get; }
+
+		[NullAllowed, Export ("layer", ArgumentSemantic.Strong)]
+		CALayer Layer { get; set; }
+	}
+
+	[NoTV, NoiOS, MacCatalyst (13, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface CARemoteLayerServer {
+		[Static]
+		[Export ("sharedServer")]
+		CARemoteLayerServer SharedServer { get; }
+
+		[Export ("serverPort")]
+		uint ServerPort { get; }
 	}
 }

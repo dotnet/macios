@@ -151,7 +151,9 @@ namespace CoreGraphics {
 		{
 			value = default;
 			unsafe {
-				return CGPDFScannerPopInteger (Handle, (nint*) Unsafe.AsPointer<nint> (ref value)) != 0;
+				fixed (nint* valuePtr = &value) {
+					return CGPDFScannerPopInteger (Handle, valuePtr) != 0;
+				}
 			}
 		}
 
@@ -162,7 +164,9 @@ namespace CoreGraphics {
 		{
 			value = default;
 			unsafe {
-				return CGPDFScannerPopNumber (Handle, (nfloat*) Unsafe.AsPointer<nfloat> (ref value)) != 0;
+				fixed (nfloat* valuePtr = &value) {
+					return CGPDFScannerPopNumber (Handle, valuePtr) != 0;
+				}
 			}
 		}
 

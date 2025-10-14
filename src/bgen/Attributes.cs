@@ -661,6 +661,7 @@ public class CategoryAttribute : Attribute {
 	public CategoryAttribute () { }
 }
 
+#if !XAMCORE_5_0 // we already have this attribute in the platform assembly, no need for it here too
 //
 // Apply this attribute when an `init*` selector is decorated with NS_DESIGNATED_INITIALIZER
 //
@@ -670,6 +671,7 @@ public class DesignatedInitializerAttribute : Attribute {
 	{
 	}
 }
+#endif // !XAMCORE_5_0
 
 //
 // Apple this attribute to ObjC types where the default `init` selector 
@@ -1213,6 +1215,32 @@ public sealed class MacCatalystAttribute : IntroducedAttribute {
 
 	public MacCatalystAttribute (byte major, byte minor, byte subminor)
 		: base (PlatformName.MacCatalyst, (int) major, (int) minor, subminor)
+	{
+	}
+}
+
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
+public sealed class MacAttribute : IntroducedAttribute {
+	public MacAttribute (byte major, byte minor)
+		: base (PlatformName.MacOSX, (int) major, (int) minor)
+	{
+	}
+
+	public MacAttribute (byte major, byte minor, byte subminor)
+		: base (PlatformName.MacOSX, (int) major, (int) minor, subminor)
+	{
+	}
+}
+
+[AttributeUsage (AttributeTargets.All, AllowMultiple = false)]
+public sealed class iOSAttribute : IntroducedAttribute {
+	public iOSAttribute (byte major, byte minor)
+		: base (PlatformName.iOS, (int) major, (int) minor)
+	{
+	}
+
+	public iOSAttribute (byte major, byte minor, byte subminor)
+		: base (PlatformName.iOS, (int) major, (int) minor, subminor)
 	{
 	}
 }

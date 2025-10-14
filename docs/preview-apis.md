@@ -65,7 +65,7 @@ References:
 * https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.experimentalattribute?view=net-8.0
 * https://learn.microsoft.com/en-us/dotnet/fundamentals/apicompat/preview-apis#experimentalattribute
 
-## Previws of new API bindings (XCODE_x_y_PREVIEW)
+## Previews of new API bindings (XCODE_x_y_PREVIEW)
 
 We sometimes release previews of new API bindings, and until these are deemed
 stable (by both Apple and us), we mark all our API bindings as preview of the
@@ -100,7 +100,9 @@ The diagnostic id for FSKit is APL0002.
 
 The
 [AppStore.RequestReview](https://developer.apple.com/documentation/storekit/appstore/3954432-requestreview/)
-method is Swift API we've bound manually, and as such it's marked as experimental until .NET 10.
+method is Swift API we've bound manually, and as such it was marked as experimental for the first .NET 9 releases.
+
+It's no longer marked as experimental.
 
 [1]: https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.codeanalysis.experimentalattribute?view=net-8.0
 

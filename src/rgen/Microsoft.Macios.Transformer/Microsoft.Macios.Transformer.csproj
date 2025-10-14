@@ -44,11 +44,17 @@
         <Compile Include="../Microsoft.Macios.Generator/CollectionComparer.cs">
             <Link>CollectionComparer.cs</Link>
         </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/StructState.cs" >
+            <Link>Generator/StructState.cs</Link>
+        </Compile>
         <Compile Include="../Microsoft.Macios.Generator/IO/TabbedWriter.cs">
             <Link>IO/TabbedWriter.cs</Link>
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/IO/TabbedStringBuilder.cs">
             <Link>IO/TabbedStringBuilder.cs</Link>
+        </Compile>
+        <Compile Include="../Microsoft.Macios.Generator/IO/TabbedStringBuilderAvailability.cs">
+            <Link>IO/TabbedStringBuilderAvailability.cs</Link>
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Attributes/ObsoletedOSPlatformData.cs">
             <Link>Attributes/ObsoletedOSPlatformData.cs</Link>
@@ -106,9 +112,6 @@
         </Compile>
         <Compile Include="../Microsoft.Macios.Generator/Formatters/TypeInfoFormatter.cs" >
             <Link>Formatters/TypeInfoFormatter.cs</Link>
-        </Compile>
-        <Compile Include="..\..\bgen\Extensions\PlatformNameExtensions.cs" >
-            <Link>external\PlatformNameExtensions.cs</Link>
         </Compile>
     </ItemGroup>
 

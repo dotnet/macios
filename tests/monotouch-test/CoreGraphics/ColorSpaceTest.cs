@@ -219,6 +219,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 				using (var cs = CGColorSpace.CreateIccData (icc)) {
 					TestICC (cs);
 				}
+#if __TVOS__
+				if (TestRuntime.CheckXcodeVersion (26, 0))
+					Assert.Ignore ("Creating a color space from a CGDataProvider crashes: https://github.com/rolfbjarne/apple-feedback/tree/main/FB18396591");
+#endif
 				using (var provider = new CGDataProvider (icc)) {
 					using (var cs = CGColorSpace.CreateIccData (provider)) {
 						// broke? with Xcode 13 beta 1 (iOS, tvOS)
@@ -229,11 +233,19 @@ namespace MonoTouchFixtures.CoreGraphics {
 					}
 				}
 			}
+		}
 
+		[Test]
+		public void CreateIccData_Null_NSData ()
+		{
 			using (var space = CGColorSpace.CreateIccData ((NSData) null)) {
 				Assert.IsNull (space, "null data");
 			}
+		}
 
+		[Test]
+		public void CreateIccData_Null_CGDataProvider ()
+		{
 			using (var space = CGColorSpace.CreateIccData ((CGDataProvider) null)) {
 				Assert.IsNull (space, "null data provider");
 			}

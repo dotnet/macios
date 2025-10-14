@@ -86,18 +86,22 @@ namespace MonoTouchFixtures.Foundation {
 
 			foreach (var t in Enum.GetValues<NSCalendarType> ()) {
 				switch (t) {
-				case NSCalendarType.IslamicTabular:
-				case NSCalendarType.IslamicUmmAlQura:
-#if __MACOS__
-					if (!TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 10))
+				case NSCalendarType.Bangla:
+				case NSCalendarType.Gujarati:
+				case NSCalendarType.Kannada:
+				case NSCalendarType.Malayalam:
+				case NSCalendarType.Marathi:
+				case NSCalendarType.Odia:
+				case NSCalendarType.Tamil:
+				case NSCalendarType.Telugu:
+				case NSCalendarType.Vikram:
+				case NSCalendarType.Dangi:
+				case NSCalendarType.Vietnamese:
+					if (!TestRuntime.CheckXcodeVersion (26, 0))
 						continue;
-#else
-					if (!TestRuntime.CheckXcodeVersion (6, 0))
-						continue;
-#endif
 					break;
 				}
-				NSCalendar c = new NSCalendar (t);
+				using var c = new NSCalendar (t);
 				Assert.IsNotNull (c.Identifier, "Can't find identifier: " + t.ToString ());
 			}
 		}

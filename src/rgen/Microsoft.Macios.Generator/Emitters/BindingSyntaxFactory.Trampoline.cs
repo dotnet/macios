@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -679,20 +680,22 @@ static partial class BindingSyntaxFactory {
 	/// <param name="trampolineName">The trampoline whose parameters we are generating.</param>
 	/// <param name="delegateInfo">The delegate info of the trampoline we are generating.</param>
 	/// <returns>An immutable array with the argument expressions needed to invoke the trampoline delegate.</returns>
-	internal static ImmutableArray<TrampolineArgumentSyntax> GetTrampolineInvokeArguments (string trampolineName,
+	internal static (ImmutableArray<ArgumentSyntax> ArgumentSyntaxes, ImmutableArray<ArgumentConversions> Conversions) GetTrampolineInvokeArguments (string trampolineName,
 		in DelegateInfo delegateInfo)
 	{
 		// create the builder for the arguments, we already know the size of the array
-		var bucket = ImmutableArray.CreateBuilder<TrampolineArgumentSyntax> (delegateInfo.Parameters.Length);
+		var syntaxBucket = ImmutableArray.CreateBuilder<ArgumentSyntax> (delegateInfo.Parameters.Length);
+		var conversions = new PriorityQueue<ArgumentConversions, ArgumentInfo> (new ArgumentInfoConversionComparer ());
 		foreach (var parameter in delegateInfo.Parameters) {
-			var argument = new TrampolineArgumentSyntax (GetTrampolineInvokeArgument (trampolineName, parameter)) {
+			syntaxBucket.Add (GetTrampolineInvokeArgument (trampolineName, parameter));
+			var argument = new ArgumentConversions {
 				Initializers = GetTrampolineInvokeArgumentInitializations (parameter),
 				PreCallConversion = GetTrampolinePreInvokeArgumentConversions (parameter),
 				PostCallConversion = GetTrampolinePostInvokeArgumentConversions (trampolineName, parameter),
 			};
-			bucket.Add (argument);
+			conversions.Enqueue (argument, parameter);
 		}
-		return bucket.ToImmutable ();
+		return (syntaxBucket.ToImmutable (), conversions.ToImmutable ());
 	}
 
 	/// <summary>
@@ -702,16 +705,13 @@ static partial class BindingSyntaxFactory {
 	/// <param name="argumentSyntax">The argument syntax for the parameters of the delegate.</param>
 	/// <returns>The needed statement to call the delegate with the parameters of the trampoline.</returns>
 	internal static StatementSyntax CallTrampolineDelegate (in DelegateInfo delegateInfo,
-		in ImmutableArray<TrampolineArgumentSyntax> argumentSyntax)
+		in ImmutableArray<ArgumentSyntax> argumentSyntax)
 	{
 		// we always need to create a block that performs the call to the trampoline variable with the argument syntax
 		// these arguments already have all the needed conversions
-		var args = argumentSyntax
-			.Select (x => x.ArgumentSyntax)
-			.ToImmutableArray ();
 		var invocation = InvocationExpression (
 				IdentifierName (GetTrampolineDelegateVariableName ()).WithTrailingTrivia (Space))
-			.WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ())));
+			.WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (argumentSyntax.ToSyntaxNodeOrTokenArray ())));
 
 		// return the invocation expression if the delegate return type is a void type
 		if (delegateInfo.ReturnType.IsVoid)
@@ -885,31 +885,34 @@ static partial class BindingSyntaxFactory {
 	}
 
 	/// <summary>
-	/// Generates a list of <see cref="TrampolineArgumentSyntax"/> objects for invoking a native delegate (block) from a trampoline.
-	/// Each <see cref="TrampolineArgumentSyntax"/> encapsulates the argument itself, along with any necessary
+	/// Generates a list of <see cref="ArgumentConversions"/> objects for invoking a native delegate (block) from a trampoline.
+	/// Each <see cref="ArgumentConversions"/> encapsulates the argument itself, along with any necessary
 	/// pre-invocation initializations, pre-invocation conversions (managed to native), and post-invocation
 	/// conversions or cleanup actions (e.g., GC.KeepAlive).
 	/// </summary>
 	/// <param name="delegateInfo">The <see cref="DelegateInfo"/> describing the delegate whose arguments are being generated.</param>
-	/// <returns>An immutable array of <see cref="TrampolineArgumentSyntax"/> for the native delegate invocation.</returns>
-	internal static ImmutableArray<TrampolineArgumentSyntax> GetTrampolineNativeInvokeArguments (in DelegateInfo delegateInfo)
+	/// <returns>An immutable array of <see cref="ArgumentConversions"/> for the native delegate invocation.</returns>
+	internal static (ImmutableArray<ArgumentSyntax> ArgumentSyntaxes, ImmutableArray<ArgumentConversions> Conversions) GetTrampolineNativeInvokeArguments (in DelegateInfo delegateInfo)
 	{
 		// create the builder for the arguments, we already know the size of the array
-		var bucket = ImmutableArray.CreateBuilder<TrampolineArgumentSyntax> (delegateInfo.Parameters.Length);
+		var syntaxBucket = ImmutableArray.CreateBuilder<ArgumentSyntax> (delegateInfo.Parameters.Length);
+		var conversionsBucket = ImmutableArray.CreateBuilder<ArgumentConversions> (delegateInfo.Parameters.Length);
 
 		// add the first parameter to be the BlockPointer of the class.
-		bucket.Add (new TrampolineArgumentSyntax (Argument (IdentifierName (GetBlockLiteralName ()))));
+		syntaxBucket.Add (Argument (IdentifierName (GetBlockLiteralName ())));
 
 		// add all the mising parameters to the bucket.
 		foreach (var parameter in delegateInfo.Parameters) {
-			var argument = new TrampolineArgumentSyntax (GetNativeInvokeArgument (parameter)) {
+			syntaxBucket.Add (GetNativeInvokeArgument (parameter));
+			var conversion = new ArgumentConversions {
 				Initializers = GetNativeInvokeArgumentInitializations (parameter),
+				Validations = GetNativeInvokeArgumentValidations (parameter),
 				PreCallConversion = GetPreNativeInvokeArgumentConversions (parameter),
 				PostCallConversion = GetPostNativeInvokeArgumentConversions (parameter),
 			};
-			bucket.Add (argument);
+			conversionsBucket.Add (conversion);
 		}
-		return bucket.ToImmutable ();
+		return (syntaxBucket.ToImmutable (), conversionsBucket.ToImmutable ());
 	}
 
 	/// <summary>
@@ -921,16 +924,13 @@ static partial class BindingSyntaxFactory {
 	/// <param name="argumentSyntax">The immutable array of argument syntax for the delegate call.</param>
 	/// <returns>A <see cref="StatementSyntax"/> representing the call to the native invoker delegate.</returns>
 	internal static StatementSyntax CallNativeInvokerDelegate (in DelegateInfo delegateInfo,
-		in ImmutableArray<TrampolineArgumentSyntax> argumentSyntax)
+		in ImmutableArray<ArgumentSyntax> argumentSyntax)
 	{
 		// we always need to create a block that performs the call to the trampoline variable with the argument syntax
 		// these arguments already have all the needed conversions
-		var args = argumentSyntax
-			.Select (x => x.ArgumentSyntax)
-			.ToImmutableArray ();
 		var invocation = InvocationExpression (
 				IdentifierName (GetNativeInvokerVariableName ()).WithTrailingTrivia (Space))
-			.WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (args.ToSyntaxNodeOrTokenArray ())));
+			.WithArgumentList (ArgumentList (SeparatedList<ArgumentSyntax> (argumentSyntax.ToSyntaxNodeOrTokenArray ())));
 
 		// return the invocation expression if the delegate return type is a void type
 		if (delegateInfo.ReturnType.IsVoid)

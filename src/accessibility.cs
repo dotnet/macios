@@ -636,4 +636,76 @@ namespace Accessibility {
 		[NullAllowed, Export ("accessibilityMathExpression")]
 		AXMathExpression AccessibilityMathExpression { get; }
 	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AXBrailleTable : NSCopying, NSCoding {
+		[Export ("identifier")]
+		string Identifier { get; }
+
+		[Export ("localizedName")]
+		string LocalizedName { get; }
+
+		[Export ("providerIdentifier")]
+		string ProviderIdentifier { get; }
+
+		[Export ("localizedProviderName")]
+		string LocalizedProviderName { get; }
+
+		[Export ("language")]
+		string Language { get; }
+
+		[Export ("locales")]
+		NSSet<NSLocale> Locales { get; }
+
+		[Export ("isEightDot")]
+		bool IsEightDot { get; }
+
+		[Static]
+		[Export ("supportedLocales")]
+		NSSet<NSLocale> SupportedLocales { get; }
+
+		[Static]
+		[Export ("defaultTableForLocale:")]
+		[return: NullAllowed]
+		AXBrailleTable GetDefaultTable (NSLocale locale);
+
+		[Static]
+		[Export ("tablesForLocale:")]
+		NSSet<AXBrailleTable> GetTables (NSLocale locale);
+
+		[Static]
+		[Export ("languageAgnosticTables")]
+		NSSet<AXBrailleTable> LanguageAgnosticTables { get; }
+
+		[Export ("initWithIdentifier:")]
+		NativeHandle Constructor (string identifier);
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AXBrailleTranslationResult : NSCopying, NSCoding {
+		[Export ("resultString")]
+		string ResultString { get; }
+
+		[Export ("locationMap")]
+		[BindAs (typeof (nint []))]
+		NSNumber [] LocationMap { get; }
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AXBrailleTranslator {
+		[Export ("initWithBrailleTable:")]
+		NativeHandle Constructor (AXBrailleTable brailleTable);
+
+		[Export ("translatePrintText:")]
+		AXBrailleTranslationResult Translate (string printText);
+
+		[Export ("backTranslateBraille:")]
+		AXBrailleTranslationResult BackTranslate (string braille);
+	}
 }

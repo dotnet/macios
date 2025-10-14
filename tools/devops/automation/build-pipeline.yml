@@ -72,13 +72,14 @@ trigger:
     include:
       - '*'
     exclude:
-      - refs/heads/locfiles/*
       - refs/heads/dev/*
       - refs/heads/darc-*
       - refs/heads/backport-pr-*
       - refs/heads/lego/*
       - refs/heads/locfiles/*
       - refs/heads/copilot/*
+      - refs/heads/dependabot/*
+
   paths:
     exclude:
       - .github
@@ -127,7 +128,7 @@ extends:
     stages:
       - template: templates/main-stage.yml
         parameters:
-          xcodeChannel: Stable
+          xcodeChannel: $(xcodeChannel)
           macOSName: ${{ parameters.macOSName }}
           isPR: false
           provisionatorChannel: ${{ parameters.provisionatorChannel }}

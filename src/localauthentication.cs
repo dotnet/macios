@@ -50,7 +50,7 @@ namespace LocalAuthentication {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("canEvaluatePolicy:error:")]
-		bool CanEvaluatePolicy (LAPolicy policy, out NSError error);
+		bool CanEvaluatePolicy (LAPolicy policy, [NullAllowed] out NSError error);
 
 		/// <param name="policy">To be added.</param>
 		///         <param name="localizedReason">To be added.</param>
@@ -373,6 +373,8 @@ namespace LocalAuthentication {
 		Watch = 1 << 0,
 		[NoMac, NoTV]
 		Mac = 1 << 1,
+		[NoMac, NoTV]
+		Vision = 1 << 2,
 	}
 
 	[Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]

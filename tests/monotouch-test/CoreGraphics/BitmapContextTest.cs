@@ -8,6 +8,8 @@
 //
 
 using System;
+using System.Runtime.InteropServices;
+
 using Foundation;
 using CoreGraphics;
 using NUnit.Framework;
@@ -108,6 +110,167 @@ namespace MonoTouchFixtures.CoreGraphics {
 					Assert.NotNull (img, "ToImage");
 				c.Dispose (); // Handle is now 0x0
 				Assert.Null (c.ToImage (), "ToImage/Disposed");
+			}
+		}
+
+		[Test]
+		public void CreateAdaptive ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
+			nuint width = 256;
+			nuint height = 256;
+
+			{
+				using var context = CGBitmapContext.Create (width, height, (NSDictionary?) null, null, null, null, null);
+				Assert.NotNull (context, "Context#1");
+			}
+
+			{
+				var calledOnResolve = false;
+				var calledOnAllocate = false;
+				var calledOnFree = false;
+				var calledOnError = false;
+				using var context = CGBitmapContext.Create (width, height, (CGAdaptiveOptions?) null,
+					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
+						Console.WriteLine ($"CreateAdaptive () OnResolve#2 info={info} parameters={parameters}");
+						calledOnResolve = true;
+						return true;
+					},
+					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
+						Console.WriteLine ($"CreateAdaptive () OnAllocate#2 info={info} parameters={parameters}");
+						calledOnAllocate = true;
+						return null;
+					},
+					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+						Console.WriteLine ($"CreateAdaptive () OnFree#2 renderingBufferProvider={renderingBufferProvider} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
+						calledOnFree = true;
+					},
+					(NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+						Console.WriteLine ($"CreateAdaptive () OnError#2 error={error} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
+						calledOnError = true;
+					});
+
+				Assert.NotNull (context, "Context#2");
+
+				// This fails because onAllocate returns null
+				using var img = context.ToImage ();
+				Assert.Null (img, "ToImage");
+
+				Assert.That (calledOnResolve, Is.True, "calledOnResolve#2");
+				Assert.That (calledOnAllocate, Is.True, "calledOnAllocate#2");
+				Assert.That (calledOnFree, Is.False, "calledOnFree#2");
+				Assert.That (calledOnError, Is.True, "calledOnError#2");
+			}
+
+			{
+				var calledOnResolve = false;
+				var calledOnAllocate = false;
+				var calledOnFree = false;
+				var calledOnError = false;
+				var options = new CGAdaptiveOptions () {
+					MaximumBitDepth = CGComponent.Float16Bit,
+				};
+				using var context = CGBitmapContext.Create (width, height, options,
+					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
+						Console.WriteLine ($"CreateAdaptive () OnResolve#3 info={info} parameters={parameters}");
+						calledOnResolve = true;
+						return true;
+					},
+					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
+						Console.WriteLine ($"CreateAdaptive () OnAllocate#3 info={info} parameters={parameters}");
+						calledOnAllocate = true;
+						return null;
+					},
+					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+						Console.WriteLine ($"CreateAdaptive () OnFree#3 renderingBufferProvider={renderingBufferProvider} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
+						calledOnFree = true;
+					},
+					(NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+						Console.WriteLine ($"CreateAdaptive () OnError#3 error={error} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
+						calledOnError = true;
+					});
+
+				Assert.NotNull (context, "Context#3");
+
+				// This fails because onAllocate returns null
+				using var img = context.ToImage ();
+				Assert.Null (img, "ToImage");
+
+				Assert.That (calledOnResolve, Is.True, "calledOnResolve#3");
+				Assert.That (calledOnAllocate, Is.True, "calledOnAllocate#3");
+				Assert.That (calledOnFree, Is.False, "calledOnFree#3");
+				Assert.That (calledOnError, Is.True, "calledOnError#3");
+			}
+
+
+			{
+				var calledOnLockPointer = false;
+				var calledOnUnlockPointer = false;
+				var calledOnReleaseInfo = false;
+				const int renderingBufferProviderSize = 512;
+				using (var renderingBufferProvider = CGRenderingBufferProvider.Create (IntPtr.Zero, renderingBufferProviderSize,
+					lockPointer: (info) => {
+						calledOnLockPointer = true;
+						var rv = Marshal.AllocHGlobal (renderingBufferProviderSize);
+						// Console.WriteLine ($"CreateAdaptive () OnLockPointer#4 ({info}) => {rv}");
+						return rv;
+					},
+					unlockPointer: (info, pointer) => {
+						// Console.WriteLine ($"CreateAdaptive () OnUnlockPointer#4 ({info}, {pointer})");
+						calledOnUnlockPointer = true;
+						Marshal.FreeHGlobal (pointer);
+					},
+					releaseInfo: (info) => {
+						// Console.WriteLine ($"CreateAdaptive () OnReleaseInfo#4 ({info})");
+						calledOnReleaseInfo = true;
+					}
+				)) {
+					Assert.That (renderingBufferProvider, Is.Not.Null, "RenderingBufferProvider");
+
+					var calledOnResolve = false;
+					var calledOnAllocate = false;
+					var calledOnFree = false;
+					var calledOnError = false;
+					var options = new CGAdaptiveOptions () {
+						MaximumBitDepth = CGComponent.Float16Bit,
+					};
+
+					using (var context = CGBitmapContext.Create (width, height, options,
+						(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
+							// Console.WriteLine ($"CreateAdaptive () OnResolve#4 info={info} parameters={parameters}");
+							calledOnResolve = true;
+							return true;
+						},
+						(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
+							// Console.WriteLine ($"CreateAdaptive () OnAllocate#4 info={info} parameters={parameters}");
+							calledOnAllocate = true;
+							return renderingBufferProvider;
+						},
+						(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+							// Console.WriteLine ($"CreateAdaptive () OnFree#4 renderingBufferProvider={renderingBufferProvider} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
+							calledOnFree = true;
+						},
+						(NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+							// Console.WriteLine ($"CreateAdaptive () OnError#4 error={error} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
+							calledOnError = true;
+						})) {
+
+						Assert.NotNull (context, "Context#4");
+
+						using var img = context.ToImage ();
+						Assert.NotNull (img, "ToImage");
+					}
+
+					Assert.That (calledOnResolve, Is.True, "calledOnResolve#4");
+					Assert.That (calledOnAllocate, Is.True, "calledOnAllocate#4");
+					Assert.That (calledOnFree, Is.True, "calledOnFree#4");
+					Assert.That (calledOnError, Is.False, "calledOnError#4");
+				}
+
+				Assert.That (calledOnLockPointer, Is.True, "calledOnLockPointer#4");
+				Assert.That (calledOnUnlockPointer, Is.True, "calledOnUnlockPointer#4");
+				Assert.That (calledOnReleaseInfo, Is.False, "calledOnReleaseInfo#4");
 			}
 		}
 	}

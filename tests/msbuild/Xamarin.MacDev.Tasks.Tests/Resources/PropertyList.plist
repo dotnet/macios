@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>KeyNumberInt</key>
+	<integer>1013</integer>
+	<key>KeyNumberDouble</key>
+	<string>10.13</string>
+	<key>KeyString</key>
+	<string>MarLoe</string>
+	<key>KeyBooleanTrue</key>
+	<true/>
+	<key>KeyBooleanFalse</key>
+	<false/>
+	<key>KeyDate</key>
+	<date>1974-11-19T10:20:30Z</date>
+	<key>KeyData</key>
+	<data>AQID</data>
+	<key>KeyArray</key>
+	<array>
+		<string>Array Item 0</string>
+		<string>Array Item 1</string>
+		<string>Array Item 2</string>
+		<array>
+			<string>Array Array Item 3.0</string>
+			<string>Array Array Item 3.1</string>
+			<string>Array Array Item 3.2</string>
+		</array>
+		<dict>
+			<key>Item0</key>
+			<string>Array Dictionary Item 4.0</string>
+			<key>Item1</key>
+			<string>Array Dictionary Item 4.1</string>
+			<key>Item2</key>
+			<string>Array Dictionary Item 4.2</string>
+		</dict>
+	</array>
+	<key>KeyDictionary</key>
+	<dict>
+		<key>Item0</key>
+		<string>Dictionary Item 0</string>
+		<key>Item1</key>
+		<string>Dictionary Item 1</string>
+		<key>Item2</key>
+		<string>Dictionary Item 2</string>
+		<key>Item3</key>
+		<dict>
+			<key>Item0</key>
+			<string>Dictionary Dictionary Item 3.0</string>
+			<key>Item1</key>
+			<string>Dictionary Dictionary Item 3.1</string>
+			<key>Item2</key>
+			<string>Dictionary Dictionary Item 3.2</string>
+		</dict>
+		<key>Item4</key>
+		<array>
+			<string>Dictionary Array Item 4.0</string>
+			<string>Dictionary Array Item 4.1</string>
+			<string>Dictionary Array Item 4.2</string>
+		</array>
+	</dict>
+</dict>
+</plist>

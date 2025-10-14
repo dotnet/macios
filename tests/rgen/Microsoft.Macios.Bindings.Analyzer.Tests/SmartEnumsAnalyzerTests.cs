@@ -1,5 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -10,46 +12,6 @@ using Xunit;
 namespace Microsoft.Macios.Bindings.Analyzer.Tests;
 
 public class SmartEnumsAnalyzerTests : BaseGeneratorWithAnalyzerTestClass {
-	[Theory]
-	[AllSupportedPlatforms]
-	public async Task SmartEnumMustHaveFieldAttribute (ApplePlatform platform)
-	{
-		const string inputText = @"
-using Foundation;
-using ObjCRuntime;
-using ObjCBindings;
-
-namespace AVFoundation;
-
-[BindingType<SmartEnum>]
-public enum AVCaptureSystemPressureExampleLevel {
-	[Field<EnumValue> (""AVCaptureSystemPressureLevelNominal"")]
-	Nominal,
-
-	[Field<EnumValue> (""AVCaptureSystemPressureLevelFair"")]
-	Fair,
-
-	[Field<EnumValue> (""AVCaptureSystemPressureLevelSerious"")]
-	Serious,
-
-	[Field<EnumValue> (""AVCaptureSystemPressureLevelCritical"")]
-	Critical,
-
-	// missing field attribute, should be an error
-	Shutdown,
-}
-";
-
-		var (compilation, _) = CreateCompilation (platform, sources: inputText);
-		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
-		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0008.Id).ToArray ();
-		Assert.Single (analyzerDiagnotics);
-		// verify the diagnostic message
-		VerifyDiagnosticMessage (analyzerDiagnotics [0], SmartEnumsAnalyzer.RBI0008.Id,
-			DiagnosticSeverity.Error,
-			"The enum value 'AVFoundation.AVCaptureSystemPressureExampleLevel.Shutdown' must be tagged with a Field<EnumValue> attribute");
-	}
 
 	const string emptyIdentifier = @"
 using Foundation;
@@ -129,11 +91,11 @@ public enum AVCaptureSystemPressureExampleLevel {
 	public async Task SmartEnumSymbolMustBeValidIdentifier (ApplePlatform platform, string inputText, string fieldValue)
 	{
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
-		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
+		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
 		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0010.Id).ToArray ();
+			.Where (d => d.Id == "RBI0010").ToArray ();
 		Assert.Single (analyzerDiagnotics);
-		VerifyDiagnosticMessage (analyzerDiagnotics [0], SmartEnumsAnalyzer.RBI0010.Id,
+		VerifyDiagnosticMessage (analyzerDiagnotics [0], "RBI0010",
 			DiagnosticSeverity.Error,
 			$"The enum value 'AVFoundation.AVCaptureSystemPressureExampleLevel.Shutdown' backing field '{fieldValue}' is not a valid identifier");
 	}
@@ -186,7 +148,7 @@ public enum AVCaptureSystemPressureExampleLevel {
 	Critical,
 
 	// do not do this with apple frameworks
-	[Field<EnumValue> (""AVCaptureSystemPressureLevelShutdown"", LibraryName = ""/path/to/not/needed/lib"")]
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelShutdown"", LibraryPath= ""/path/to/not/needed/lib"")]
 	Shutdown,
 }";
 
@@ -196,12 +158,12 @@ public enum AVCaptureSystemPressureExampleLevel {
 	public async Task SmartEnumAppleFrameworkNotLibrary (ApplePlatform platform, string inputText)
 	{
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
-		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
+		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
 
 		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0012.Id).ToArray ();
+			.Where (d => d.Id == "RBI0012").ToArray ();
 		Assert.Single (analyzerDiagnotics);
-		VerifyDiagnosticMessage (analyzerDiagnotics [0], SmartEnumsAnalyzer.RBI0012.Id,
+		VerifyDiagnosticMessage (analyzerDiagnotics [0], "RBI0012",
 			DiagnosticSeverity.Warning,
 			"The Field attribute for the enum value 'AVFoundation.AVCaptureSystemPressureExampleLevel.Shutdown' must not provide a value for 'LibraryName'");
 	}
@@ -264,7 +226,7 @@ public enum CustomLibraryEnum {
 	[Field<EnumValue> (""Medium"", ""/path/to/customlibrary.framework"")]
 	Medium,
 	// empty lib, this is an error
-	[Field<EnumValue> (""High"", LibraryName = ""   "")]
+	[Field<EnumValue> (""High"", LibraryPath = ""   "")]
 	High,
 }
 ";
@@ -276,11 +238,11 @@ public enum CustomLibraryEnum {
 	public async Task SmartEnumThirdPartyLibrary (ApplePlatform platform, string inputText)
 	{
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
-		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
+		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
 		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0011.Id).ToArray ();
+			.Where (d => d.Id == "RBI0011").ToArray ();
 		Assert.Single (analyzerDiagnotics);
-		VerifyDiagnosticMessage (analyzerDiagnotics [0], SmartEnumsAnalyzer.RBI0011.Id,
+		VerifyDiagnosticMessage (analyzerDiagnotics [0], "RBI0011",
 			DiagnosticSeverity.Error,
 			"The field attribute for the enum value 'CustomLibrary.CustomLibraryEnum.High' must set the property 'LibraryName'");
 	}
@@ -306,11 +268,14 @@ public enum CustomLibraryEnum {
 }
 ";
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
-		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
+		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
 		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0008.Id).ToArray ();
+			.Where (d => d.Id == "RBI0008").ToArray ();
 		// we should have a diagnostic for each enum value
-		Assert.Equal (3, analyzerDiagnotics.Length);
+		Assert.Single (analyzerDiagnotics);
+		VerifyDiagnosticMessage (analyzerDiagnotics [0], "RBI0008",
+			DiagnosticSeverity.Error,
+			"The enum 'CustomLibrary.CustomLibraryEnum' must have at least one member tagged with a Field<EnumValue> attribute");
 	}
 
 	[Theory]
@@ -344,41 +309,150 @@ public enum AVCaptureSystemPressureExampleLevel {
 }";
 
 		var (compilation, _) = CreateCompilation (platform, sources: inputText);
-		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
+		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
 		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0009.Id).ToArray ();
+			.Where (d => d.Id == "RBI0009").ToArray ();
 		Assert.Single (analyzerDiagnotics);
-		VerifyDiagnosticMessage (analyzerDiagnotics [0], SmartEnumsAnalyzer.RBI0009.Id,
+		VerifyDiagnosticMessage (analyzerDiagnotics [0], "RBI0009",
 			DiagnosticSeverity.Error,
-			"The backing field 'AVFoundation.AVCaptureSystemPressureExampleLevel.Fair' for the enum value 'AVCaptureSystemPressureLevelNominal' is already in use for the enum value 'AVFoundation.AVCaptureSystemPressureExampleLevel.Fair'");
+			"The backing field 'AVFoundation.AVCaptureSystemPressureLevelNominal' for the enum value 'AVCaptureSystemPressureExampleLevel.Fair' is already in use for the enum value 'AVCaptureSystemPressureExampleLevel.Nominal'");
 	}
 
 	[Theory]
 	[AllSupportedPlatforms]
-	public async Task SmartEnumWrongFieldAttributesFlag (ApplePlatform platform)
+	public async Task UnsupportedPlatformSmartEnum (ApplePlatform platform)
 	{
-		const string inputText = @"
+		string inputText = $@"
 using Foundation;
 using ObjCRuntime;
 using ObjCBindings;
+using System.Runtime.Versioning;
 
 namespace AVFoundation;
 
 [BindingType<SmartEnum>]
-public enum AVCaptureSystemPressureExampleLevel {
-	// we are using the wrong enum value here, this should be an error
-	[Field<StringComparison> (""TheField"")]
-	Shutdown,
-}";
-		var (compilation, _) = CreateCompilation (platform, sources: inputText);
-		var diagnostics = await RunAnalyzer (new SmartEnumsAnalyzer (), compilation);
-		var analyzerDiagnotics = diagnostics
-			.Where (d => d.Id == SmartEnumsAnalyzer.RBI0013.Id).ToArray ();
-		// we should have a diagnostic for each enum value
-		Assert.Single (analyzerDiagnotics);
+[UnsupportedOSPlatform (""{platform.AsString ().ToLower ()}"")]
+public enum AVCaptureSystemPressureExampleLevel {{
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelNominal"")]
+	Nominal,
 
-		VerifyDiagnosticMessage (analyzerDiagnotics [0], SmartEnumsAnalyzer.RBI0013.Id,
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelFair"")]
+	Fair,
+
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelSerious"")]
+	Serious,
+
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelCritical"")]
+	Critical,
+
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelShutdown"")]
+	Shutdown,
+}}";
+
+		var (compilation, _) = CreateCompilation (platform, sources: inputText);
+		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
+		var analyzerDiagnotics = diagnostics
+			.Where (d => d.Id == "RBI0027").ToArray ();
+		Assert.Single (analyzerDiagnotics);
+		var str = analyzerDiagnotics [0].GetMessage ();
+		VerifyDiagnosticMessage (analyzerDiagnotics [0], "RBI0027",
 			DiagnosticSeverity.Error,
-			"Used attribute 'ObjCBindings.FieldAttribute<StringComparison>' on enum value 'AVFoundation.AVCaptureSystemPressureExampleLevel.Shutdown' when 'ObjCBindings.FieldAttribute<ObjCBindings.EnumValue>' was expected");
+			$"The symbol 'AVFoundation.AVCaptureSystemPressureExampleLevel' is accessible on platform '{platform}' when it was marked otherwise");
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	public async Task UnsupportedPlatformSmartEnumValue (ApplePlatform platform)
+	{
+		string inputText = $@"
+using Foundation;
+using ObjCRuntime;
+using ObjCBindings;
+using System.Runtime.Versioning;
+
+namespace AVFoundation;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<SmartEnum>]
+public enum AVCaptureSystemPressureExampleLevel {{
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelNominal"")]
+	Nominal,
+
+	[UnsupportedOSPlatform (""{platform.AsString ().ToLower ()}"")]
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelFair"")]
+	Fair,
+
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelSerious"")]
+	Serious,
+
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelCritical"")]
+	Critical,
+
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelShutdown"")]
+	Shutdown,
+}}";
+
+		var (compilation, _) = CreateCompilation (platform, sources: inputText);
+		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
+		var analyzerDiagnotics = diagnostics
+			.Where (d => d.Id == "RBI0027").ToArray ();
+		Assert.Single (analyzerDiagnotics);
+		var str = analyzerDiagnotics [0].GetMessage ();
+		VerifyDiagnosticMessage (analyzerDiagnotics [0], "RBI0027",
+			DiagnosticSeverity.Error,
+			$"The symbol 'AVFoundation.AVCaptureSystemPressureExampleLevel.Fair' is accessible on platform '{platform}' when it was marked otherwise");
+	}
+
+	[Theory]
+	[AllSupportedPlatforms]
+	public async Task UnsupportedPlatformSmartEnumValueIgnored (ApplePlatform platform)
+	{
+		Dictionary<ApplePlatform, string> platformDefines = new () {
+			{ ApplePlatform.iOS , "__IOS__" },
+			{ ApplePlatform.TVOS, "__TVOS__" },
+			{ ApplePlatform.MacOSX, "__MACOS__" },
+			{ ApplePlatform.MacCatalyst, "__MACCATALYST__" },
+		};
+		string inputText = $@"
+using Foundation;
+using ObjCRuntime;
+using ObjCBindings;
+using System.Runtime.Versioning;
+
+namespace AVFoundation;
+
+[SupportedOSPlatform (""macos"")]
+[SupportedOSPlatform (""ios"")]
+[SupportedOSPlatform (""tvos"")]
+[SupportedOSPlatform (""maccatalyst13.1"")]
+[BindingType<SmartEnum>]
+public enum AVCaptureSystemPressureExampleLevel {{
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelNominal"")]
+	Nominal,
+
+#if !{platformDefines [platform]}
+	[UnsupportedOSPlatform (""{platform.AsString ().ToLower ()}"")]
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelFair"")]
+	Fair,
+#endif
+
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelSerious"")]
+	Serious,
+
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelCritical"")]
+	Critical,
+
+	[Field<EnumValue> (""AVCaptureSystemPressureLevelShutdown"")]
+	Shutdown,
+}}";
+
+		var (compilation, _) = CreateCompilation (platform, sources: inputText);
+		var diagnostics = await RunAnalyzer (new BindingTypeSemanticAnalyzer (), compilation);
+		var analyzerDiagnotics = diagnostics
+			.Where (d => d.Id == "RBI0027").ToArray ();
+		Assert.Empty (analyzerDiagnotics);
 	}
 }

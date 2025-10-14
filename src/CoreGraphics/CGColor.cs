@@ -412,6 +412,48 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("maccatalyst")]
 		public string? AXName => CFString.FromHandle (AXNameFromColor (Handle));
 
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern IntPtr /* CGColorRef gc_nullable */ CGColorCreateWithContentHeadroom (float headroom, IntPtr /* CGColorSpaceRef gc_nullable */ space, nfloat red, nfloat green, nfloat blue, nfloat alpha);
+
+		/// <summary>Create a <see cref="CGColor" /> with the specified content headroom, colorspace and color and alpha values.</summary>
+		/// <param name="headroom">The content headroom for the new <see cref="CGColor" />.</param>
+		/// <param name="colorSpace">The colorspace for the new <see cref="CGColor" />.</param>
+		/// <param name="red">The red color value for the new <see cref="CGColor" />.</param>
+		/// <param name="green">The green color value for the new <see cref="CGColor" />.</param>
+		/// <param name="blue">The blue color value for the new <see cref="CGColor" />.</param>
+		/// <param name="alpha">The alpha value for the new <see cref="CGColor" />.</param>
+		/// <returns>A new <see cref="CGColor" /> instance if successful, <see langword="null" /> otherwise.</returns>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public static CGColor? CreateWithContentHeadroom (float headroom, CGColorSpace? colorSpace, nfloat red, nfloat green, nfloat blue, nfloat alpha)
+		{
+			var h = CGColorCreateWithContentHeadroom (headroom, colorSpace.GetHandle (), red, green, blue, alpha);
+			GC.KeepAlive (colorSpace);
+			return h == IntPtr.Zero ? null : new CGColor (h, owns: true);
+		}
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern float CGColorGetContentHeadroom (IntPtr /* CGColorRef cg_nullable */ color);
+
+		/// <summary>Get the content headroom for the color.</summary>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public float ContentHeadroom {
+			get => CGColorGetContentHeadroom (GetCheckedHandle ());
+		}
+
 
 #endif // !COREBUILD
 	}

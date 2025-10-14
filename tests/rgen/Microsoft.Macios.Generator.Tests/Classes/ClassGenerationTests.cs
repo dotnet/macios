@@ -71,12 +71,74 @@ public class ClassGenerationTests : BaseGeneratorTestClass {
 					{"NSLoadFromHtmlResult.g.cs", "ExpectedNSLoadFromHtmlResult.cs"},
 				}
 			},
+			new (ApplePlatform.iOS, "ConstructorTests", "ConstructorTests.cs", "ExpectedConstructorTests.cs"),
+			new (ApplePlatform.TVOS, "ConstructorTests", "ConstructorTests.cs", "ExpectedConstructorTests.cs"),
+			new (ApplePlatform.MacCatalyst, "ConstructorTests", "ConstructorTests.cs", "ExpectedConstructorTests.cs"),
+			new (ApplePlatform.MacOSX, "ConstructorTests", "ConstructorTests.cs", "ExpectedConstructorTests.cs"),
+			
+			// nested classes
+			new (ApplePlatform.iOS, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			new (ApplePlatform.TVOS, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			new (ApplePlatform.MacCatalyst, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
+			new (ApplePlatform.MacOSX, "NestedClasses", "NestedClasses.cs", "ExpectedNestedClasses.cs"),
 			
 			// trampoline tests
 			new (ApplePlatform.iOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
 			new (ApplePlatform.TVOS, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
 			new (ApplePlatform.MacCatalyst, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
 			new (ApplePlatform.MacOSX, "TrampolinePropertyTests", "TrampolinePropertyTests.cs", "ExpectedTrampolinePropertyTests.cs"){ TrampolinesFile = "ExpectedTrampolinePropertyTestsTrampolines.cs"},
+			
+			// event tests
+			new (ApplePlatform.iOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplaceEventArgs.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
+				}
+			},
+			new (ApplePlatform.TVOS, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplaceEventArgs.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
+				}
+			},
+			new (ApplePlatform.MacCatalyst, "EventTests", "EventTests.cs", "ExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplaceEventArgs.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
+				}
+			},
+			new (ApplePlatform.MacOSX, "EventTests", "EventTests.cs", "macOSExpectedEventTests.cs")
+			{
+				ExtraFiles = new () {
+					{"NSArchiveReplaceEventArgs.g.cs", "ExpectedNSArchiveReplace.cs"},
+					{"EventTests_RgenNSKeyedArchiverDelegate.g.cs", "ExpectedEventTests_RgenNSKeyedArchiverDelegate.cs"}
+				}
+			},
+			
+			// test inline constructors from protocols
+			
+			new (ApplePlatform.iOS, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
+			new (ApplePlatform.TVOS, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
+			new (ApplePlatform.MacCatalyst, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
+			new (ApplePlatform.MacOSX, "InlineProtocolConstructors", "InlineProtocolConstructors.cs", "ExpectedInlineProtocolConstructors.cs"),
+
+			new (ApplePlatform.iOS, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
+			new (ApplePlatform.TVOS, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
+			new (ApplePlatform.MacCatalyst, "UIKitInlineProtocolConstructors", "UIKitInlineProtocolConstructors.cs", "ExpectedUIKitInlineProtocolConstructors.cs"),
+			new (ApplePlatform.MacOSX, "AppKitInlineProtocolConstructors", "AppKitInlineProtocolConstructors.cs", "ExpectedAppKitInlineProtocolConstructors.cs"),
+
+			new (ApplePlatform.iOS, "InlineProtocolDuplicatedConstructors", "InlineProtocolDuplicatedConstructors.cs", "ExpectedInlineProtocolDuplicatedConstructors.cs"),
+			new (ApplePlatform.TVOS, "InlineProtocolDuplicatedConstructors", "InlineProtocolDuplicatedConstructors.cs", "ExpectedInlineProtocolDuplicatedConstructors.cs"),
+			new (ApplePlatform.MacCatalyst, "InlineProtocolDuplicatedConstructors", "InlineProtocolDuplicatedConstructors.cs", "ExpectedInlineProtocolDuplicatedConstructors.cs"),
+			new (ApplePlatform.MacOSX, "InlineProtocolDuplicatedConstructors", "InlineProtocolDuplicatedConstructors.cs", "ExpectedInlineProtocolDuplicatedConstructors.cs"),
+
+			new (ApplePlatform.iOS, "InlineProtocolOverloadConstructors", "InlineProtocolOverloadConstructors.cs", "ExpectedInlineProtocolOverloadConstructors.cs"),
+			new (ApplePlatform.TVOS, "InlineProtocolOverloadConstructors", "InlineProtocolOverloadConstructors.cs", "ExpectedInlineProtocolOverloadConstructors.cs"),
+			new (ApplePlatform.MacCatalyst, "InlineProtocolOverloadConstructors", "InlineProtocolOverloadConstructors.cs", "ExpectedInlineProtocolOverloadConstructors.cs"),
+			new (ApplePlatform.MacOSX, "InlineProtocolOverloadConstructors", "InlineProtocolOverloadConstructors.cs", "ExpectedInlineProtocolOverloadConstructors.cs"),
 		};
 
 		public IEnumerator<object []> GetEnumerator ()

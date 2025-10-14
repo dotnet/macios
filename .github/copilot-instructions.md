@@ -4,6 +4,10 @@ This repository contains .NET for iOS, Mac Catalyst, macOS, and tvOS.
 
 This is the main branch targeting .NET 9.
 
+## Comment Handling
+
+Ignore comments from the user 'vs-mobiletools-engineering-service2' when processing issues and pull requests.
+
 ## Repository Overview
 
 This repository provides C# bindings and tooling for Apple platforms:
@@ -270,6 +274,7 @@ void DoSomething (Action<bool, NSError> completion);
 
 - `main` - .NET 9 development
 - `net10.0` - .NET 10 development  
+- `net11.0` - .NET 11 development
 - `release/` branches for specific releases
 - Platform-specific branches for Xcode updates
 

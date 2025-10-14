@@ -6,6 +6,7 @@
     <AssemblyOriginatorKeyFile>..\..\..\..\product.snk</AssemblyOriginatorKeyFile>
     <IsBindingProject>true</IsBindingProject>
     <NoBindingEmbedding>true</NoBindingEmbedding>
+    <ProcessEnums>true</ProcessEnums>
 
     <RootTestsDirectory>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)\..\..'))</RootTestsDirectory>
     <BindingsTestDirectory>$(RootTestsDirectory)\bindings-test</BindingsTestDirectory>

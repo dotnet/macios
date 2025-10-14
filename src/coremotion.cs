@@ -1214,10 +1214,7 @@ namespace CoreMotion {
 	public enum CMAttitudeReferenceFrame : ulong {
 		/// <summary>Z axis is vertical; X axis is in any direction. </summary>
 		XArbitraryZVertical = 1 << 0,
-		/// <summary>Z axis is vertical; X axis is in any direction. Magnetometer is used to correct long-term yaw.</summary>
-		///         <remarks>
-		///           <para>A reference frame in which the magnetometer (if available) is used to improve the long-term yaw.</para>
-		///         </remarks>
+		/// <summary>Z axis is vertical; X axis is in any direction. Magnetometer is used to correct long-term yaw. A reference frame in which the magnetometer (if available) is used to improve the long-term yaw.</summary>
 		XArbitraryCorrectedZVertical = 1 << 1,
 		/// <summary>Z axis is vertical; X axis is magnetic north. Magnetometer is used to correct long-term yaw.</summary>
 		XMagneticNorthZVertical = 1 << 2,

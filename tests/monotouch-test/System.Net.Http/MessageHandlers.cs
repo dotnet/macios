@@ -900,5 +900,59 @@ namespace MonoTests.System.Net.Http {
 				Assert.IsNull (ex, "Exception");
 			}
 		}
+
+		// https://github.com/dotnet/macios/issues/23764
+		[TestCase ("https://sha256.badssl.com/")]
+		public void SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler_AllowByDefault (string url)
+		{
+			SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler (url, null, SslPolicyErrors.None);
+		}
+
+		// https://github.com/dotnet/macios/issues/23764
+		[TestCase ("https://sha256.badssl.com/")]
+		public void SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler_Disallow (string url)
+		{
+			SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler (url, (X509VerificationFlags) 0, SslPolicyErrors.RemoteCertificateChainErrors);
+		}
+
+		void SslCertificatesWithoutOCSPEndPointsNSUrlSessionHandler (string url, X509VerificationFlags? verificationFlags, SslPolicyErrors expectedError)
+		{
+			bool callbackWasExecuted = false;
+			HttpResponseMessage result = null;
+			X509Certificate2 serverCertificate = null;
+			SslPolicyErrors sslPolicyErrors = SslPolicyErrors.None;
+
+			var handler = new NSUrlSessionHandler {
+				ServerCertificateCustomValidationCallback = (request, certificate, chain, errors) => {
+					callbackWasExecuted = true;
+					serverCertificate = certificate;
+					sslPolicyErrors = errors;
+					return true;
+				},
+			};
+			if (verificationFlags.HasValue)
+				handler.CertificateChainPolicy.VerificationFlags = verificationFlags.Value;
+
+			Assert.IsTrue (handler.CheckCertificateRevocationList, "CheckCertificateRevocationList");
+
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				var client = new HttpClient (handler);
+				// Disable keep-alive and cache to force reconnection for each request
+				client.DefaultRequestHeaders.ConnectionClose = true;
+				client.DefaultRequestHeaders.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
+				result = await client.GetAsync (url);
+			}, out var ex);
+
+			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc., we do not want to fail
+				Assert.Inconclusive ("Request timedout.");
+			} else {
+				Assert.True (callbackWasExecuted, "Validation Callback called");
+				Assert.AreEqual (expectedError, sslPolicyErrors, "Callback was called with unexpected SslPolicyErrors");
+				Assert.IsNotNull (serverCertificate, "Server certificate is null");
+				Assert.IsNull (ex, "Exception wasn't expected.");
+				Assert.IsNotNull (result, "Result was null");
+				Assert.IsTrue (result.IsSuccessStatusCode, $"Status code was not success: {result.StatusCode}");
+			}
+		}
 	}
 }

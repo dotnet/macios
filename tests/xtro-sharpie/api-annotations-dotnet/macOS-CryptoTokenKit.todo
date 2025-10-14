@@ -1,0 +1,2 @@
+!deprecated-attribute-missing! TKSmartCardTokenSession::smartCard missing a [Deprecated] attribute
+!missing-selector! TKSmartCardTokenSession::getSmartCardWithError: not bound

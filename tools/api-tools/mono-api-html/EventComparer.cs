@@ -59,7 +59,7 @@ namespace Mono.ApiTools {
 			var tgtEventType = target.GetTypeName ("eventtype", State);
 
 			if (srcEventType != tgtEventType) {
-				change.AppendModified (srcEventType, tgtEventType, true);
+				change.AppendModified (srcEventType, tgtEventType);
 			} else {
 				change.Append (srcEventType);
 			}
@@ -70,7 +70,7 @@ namespace Mono.ApiTools {
 
 		public override string GetDescription (XElement e)
 		{
-			StringBuilder sb = new StringBuilder ();
+			var sb = new StringBuilder ();
 			// TODO: attribs
 			sb.Append ("public event ");
 			sb.Append (e.GetTypeName ("eventtype", State)).Append (' ');

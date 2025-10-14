@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+#pragma warning disable APL0003
+
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.Macios.Generator.Attributes;
 using Microsoft.Macios.Generator.DataModel;
 using Xunit;
 using static Microsoft.Macios.Generator.Tests.TestDataFactory;
@@ -112,6 +115,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 			EnumMembers = [
 				new EnumMember (
 					name: "name",
+					index: 0,
 					libraryName: "Test",
 					libraryPath: "/path/to/library",
 					fieldData: new (),
@@ -134,6 +138,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 			EnumMembers = [
 				new EnumMember (
 					name: "name",
+					index: 0,
 					libraryName: "Test",
 					libraryPath: "/path/to/library",
 					fieldData: new (),
@@ -150,6 +155,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 			EnumMembers = [
 				new EnumMember (
 					name: "name2",
+					index: 0,
 					libraryName: "Test",
 					libraryPath: "/path/to/library",
 					fieldData: new (),
@@ -194,7 +200,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -203,7 +209,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -241,7 +247,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -250,7 +256,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -269,7 +275,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -278,7 +284,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -309,7 +315,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -318,7 +324,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -339,7 +345,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -348,7 +354,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -383,7 +389,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -392,7 +398,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -411,7 +417,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -420,7 +426,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -451,7 +457,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -460,7 +466,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -481,7 +487,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -490,7 +496,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -525,7 +531,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -534,7 +540,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -553,7 +559,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -562,7 +568,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -594,7 +600,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -603,7 +609,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -624,7 +630,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -633,7 +639,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -671,7 +677,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -680,7 +686,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -699,7 +705,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -708,7 +714,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -742,7 +748,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -751,7 +757,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -772,7 +778,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -781,7 +787,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -825,7 +831,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -834,7 +840,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -853,7 +859,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -862,7 +868,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -903,7 +909,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -912,7 +918,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -933,7 +939,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -942,7 +948,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -987,7 +993,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -996,7 +1002,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -1015,7 +1021,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -1024,7 +1030,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -1065,7 +1071,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -1074,7 +1080,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -1094,7 +1100,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -1103,7 +1109,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -1152,7 +1158,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -1161,7 +1167,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),
@@ -1180,7 +1186,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -1189,7 +1195,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -1235,7 +1241,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -1244,7 +1250,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios18.0"]),
 							],
@@ -1265,7 +1271,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Getter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [
 								new ("System.Runtime.Versioning.SupportedOSPlatformAttribute", ["ios17.0"]),
 							],
@@ -1274,7 +1280,7 @@ public class BindingEqualityComparerTests : BaseGeneratorTestClass {
 						new (
 							accessorKind: AccessorKind.Setter,
 							symbolAvailability: new (),
-							exportPropertyData: null,
+							exportPropertyData: ExportData<ObjCBindings.Property>.Default,
 							attributes: [],
 							modifiers: []
 						),

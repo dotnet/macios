@@ -11,9 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.event.pull_request.head.sha }}
+    - name: 'Install .NET'
+      uses: actions/setup-dotnet@v5
+      with:
+        global-json-file: ./global.json
     - name: 'Autoformat'
-      uses: rolfbjarne/autoformat@v0.5
+      uses: rolfbjarne/autoformat@v0.6
       with:
         script: ./tools/autoformat.sh
         git_user_email: 'github-actions-autoformatter@xamarin.com'
         git_user_name: 'GitHub Actions Autoformatter'
+        checkoutSource: false

@@ -1621,4 +1621,20 @@
             {2} and {3}: the different LogicalName metadata
         </comment>
     </data>
+
+    <data name="M7159" xml:space="preserve">
+        <value>Skipping {0} - {1} is empty.</value>
+        <comment>
+            {0}: the name of the MSBuild task that's being skipped (Copy, GetFullPaths, FilterStaticFrameworks, etc.).
+            {1}: the name of the property that is empty (SourceFiles, Items, FrameworkToPublish, etc.).
+        </comment>
+    </data>
+
+    <data name="E7160" xml:space="preserve">
+        <value>Unable to execute this task remotely for unknown reasons. The build log may have more information.</value>
+    </data>
+
+    <data name="E7161" xml:space="preserve">
+        <value>Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information.</value>
+    </data>
 </root>

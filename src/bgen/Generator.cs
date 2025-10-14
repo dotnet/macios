@@ -803,7 +803,7 @@ public partial class Generator : IMemberGatherer {
 	// Returns the actual way in which the type t must be marshalled
 	// for example "UIView foo" is generated as  "foo.Handle"
 	//
-	public string MarshalParameter (MethodInfo mi, ParameterInfo pi, bool null_allowed_override, PropertyInfo propInfo = null, bool castEnum = true, StringBuilder convs = null)
+	public string MarshalParameter (MethodInfo mi, ParameterInfo pi, bool null_allowed_override, PropertyInfo propInfo, bool castEnum, StringBuilder convs, StringBuilder by_ref_init, StringBuilder post_return)
 	{
 		if (pi.ParameterType.IsByRef && pi.ParameterType.GetElementType ().IsValueType == false)
 			return "&" + pi.Name + "Value";
@@ -882,15 +882,16 @@ public partial class Generator : IMemberGatherer {
 			if (nullable is not null) {
 				return $"converted_{safe_name}";
 			} else if (et.IsValueType) {
-				if (et == TypeCache.System_Boolean) {
-					if (pi.IsOut)
-						convs!.Append ($"{safe_name} = false;");
-					return $"(byte*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<bool> (ref {safe_name})";
-				}
-				var blittableType = TypeManager.FormatType (mi.DeclaringType, et);
 				if (pi.IsOut)
-					convs!.Append ($"{safe_name} = default ({blittableType});");
-				return $"({blittableType}*) global::System.Runtime.CompilerServices.Unsafe.AsPointer<{blittableType}> (ref {safe_name})";
+					convs.AppendLine ($"{safe_name} = default;");
+
+				var blittableType = TypeManager.FormatType (mi.DeclaringType, et);
+				by_ref_init.AppendLine ($"fixed ({blittableType}* {safe_name}__pointer = &{safe_name}) {{");
+				post_return.AppendLine ("}");
+
+				if (et == TypeCache.System_Boolean)
+					return "(byte*) " + safe_name + "__pointer";
+				return safe_name + "__pointer";
 			}
 			return (pi.IsOut ? "out " : "ref ") + safe_name;
 		}
@@ -1001,7 +1002,7 @@ public partial class Generator : IMemberGatherer {
 		try {
 			sb.Append (ParameterGetMarshalType (new MarshalInfo (this, mi) { IsAligned = aligned }));
 		} catch (BindingException ex) {
-			throw new BindingException (1078, ex.Error, ex, ex.Message, mi.Name);
+			throw new BindingException (1078, ex.Error, ex, ex.Message, $"{mi.DeclaringType}.{mi.Name}");
 		}
 
 		sb.Append ("_");
@@ -1700,6 +1701,7 @@ public partial class Generator : IMemberGatherer {
 						  args: out args,
 						  convs: out convs,
 						  disposes: out disposes,
+						  post_return: out var post_return,
 						  by_ref_processing: out by_ref_processing,
 						  by_ref_init: out by_ref_init);
 
@@ -1730,6 +1732,8 @@ public partial class Generator : IMemberGatherer {
 					print ("return ret!;");
 				}
 			}
+			if (post_return?.Length > 0)
+				print (sw, post_return.ToString ());
 			indent--; print ("}");
 			indent--;
 			print ("}} /* class {0} */", ti.NativeInvokerName);
@@ -1782,6 +1786,93 @@ public partial class Generator : IMemberGatherer {
 		indent--; print ("}");
 		indent--; print ("}");
 		sw.Close ();
+	}
+
+	bool TryGetNSNumberStrongDictionaryMethods (Type type, [NotNullWhen (true)] out string? getter, [NotNullWhen (true)] out string? setter)
+	{
+		setter = "SetNumberValue";
+		getter = null;
+
+		if (type == TypeCache.System_SByte ||
+				type == TypeCache.System_Byte ||
+				type == TypeCache.System_Int16 ||
+				type == TypeCache.System_UInt16 ||
+				type == TypeCache.System_Int32 ||
+				type == TypeCache.System_UInt32 ||
+				type == TypeCache.System_Double
+				) {
+			getter = "Get" + type.Name + "Value";
+		} else if (type == TypeCache.System_nint) {
+			getter = "GetNIntValue";
+		} else if (type == TypeCache.System_nuint) {
+			getter = "GetNUIntValue";
+		} else if (type == TypeCache.System_Int64) {
+			getter = "GetLongValue";
+		} else if (type == TypeCache.System_UInt64) {
+			getter = "GetULongValue";
+		} else if (type == TypeCache.System_Float) {
+			getter = "GetFloatValue";
+		} else if (type == TypeCache.System_nfloat) {
+			getter = "GetNFloatValue";
+		} else if (type == TypeCache.System_Boolean) {
+			getter = "GetBoolValue";
+			setter = "SetBooleanValue";
+		} else {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool TryGetNSNumberField (Type wrappedNumberType, [NotNullWhen (true)] out string? fieldName)
+	{
+		fieldName = null;
+
+		if (wrappedNumberType == TypeCache.System_Float) {
+			fieldName = "FloatValue";
+		} else if (wrappedNumberType == TypeCache.System_Double) {
+			fieldName = "DoubleValue";
+		} else if (wrappedNumberType == TypeCache.System_nfloat) {
+			fieldName = "NFloatValue";
+		} else if (wrappedNumberType == TypeCache.System_Int32) {
+			fieldName = "Int32Value";
+		} else if (wrappedNumberType == TypeCache.System_UInt32) {
+			fieldName = "UInt32Value";
+		} else if (wrappedNumberType == TypeCache.System_Int64) {
+			fieldName = "Int64Value";
+		} else if (wrappedNumberType == TypeCache.System_UInt64) {
+			fieldName = "UInt64Value";
+		} else if (wrappedNumberType == TypeCache.System_Int16) {
+			fieldName = "Int16Value";
+		} else if (wrappedNumberType == TypeCache.System_UInt16) {
+			fieldName = "UInt16Value";
+		} else if (wrappedNumberType == TypeCache.System_SByte) {
+			fieldName = "SByteValue";
+		} else if (wrappedNumberType == TypeCache.System_Byte) {
+			fieldName = "ByteValue";
+		} else if (wrappedNumberType == TypeCache.System_Boolean) {
+			fieldName = "BoolValue";
+		} else if (wrappedNumberType == TypeCache.System_nint) {
+			fieldName = "NIntValue";
+		} else if (wrappedNumberType == TypeCache.System_nuint) {
+			fieldName = "NUIntValue";
+		} else {
+			return false;
+		}
+
+		return true;
+	}
+
+	void ValidateStrongEnumBackingTypeInStrongDictionaryType (PropertyInfo property, Type enumBackingType)
+	{
+		if (enumBackingType == TypeCache.NSString)
+			return;
+		if (enumBackingType == TypeCache.NSNumber)
+			return;
+		if (enumBackingType == TypeCache.System_Int32)
+			return;
+
+		exceptions.Add (ErrorHelper.CreateError (1121 /* The strong enum '{0}' is not a valid strong dictionary field for the property '{1}.{2}', because its backing type is '{3}'. Only enums with backing type 'NSString', 'NSNumber' or 'System.Int32' are supported in strong dictionaries. */, property.PropertyType.Name, property.DeclaringType.FullName, property.Name, enumBackingType.FullName));
 	}
 
 	//
@@ -1849,41 +1940,42 @@ public partial class Generator : IMemberGatherer {
 					string castToUnderlying = "";
 					string castToEnum = "";
 					bool isNativeEnum = false;
+					Type? enumBackingType = null;
 
 					if (pi.PropertyType.IsEnum) {
-						fetchType = pi.PropertyType.GetEnumUnderlyingType ();
-						castToUnderlying = "(" + fetchType + "?)";
-						castToEnum = "(" + TypeManager.FormatType (dictType, pi.PropertyType) + "?)";
-						isNativeEnum = IsNativeEnum (pi.PropertyType);
+						if (IsEnumBackedByNativeType (pi.PropertyType, out enumBackingType)) {
+							ValidateStrongEnumBackingTypeInStrongDictionaryType (pi, enumBackingType);
+							fetchType = enumBackingType;
+						} else {
+							fetchType = pi.PropertyType.GetEnumUnderlyingType ();
+							castToUnderlying = "(" + fetchType + "?)";
+							castToEnum = "(" + TypeManager.FormatType (dictType, pi.PropertyType) + "?)";
+							isNativeEnum = IsNativeEnum (pi.PropertyType);
+						}
 					}
 					if (pi.PropertyType.IsValueType) {
-						if (pi.PropertyType == TypeCache.System_Boolean) {
-							getter = "{1} GetBoolValue ({0})";
-							setter = "SetBooleanValue ({0}, {1}value)";
-						} else if (fetchType == TypeCache.System_Int32) {
-							getter = "{1} GetInt32Value ({0})";
+						if (enumBackingType is not null) {
+							if (TryGetNSNumberStrongDictionaryMethods (enumBackingType, out var getNSNumber, out var setNSNumber)) {
+								getter = "(" + TypeManager.FormatType (null, pi.PropertyType) + "?) " + getNSNumber + " ({0})";
+								setter = setNSNumber + " ({0}, (" + TypeManager.FormatType (null, enumBackingType) + "?) value)";
+							} else if (enumBackingType == TypeCache.NSString || enumBackingType == TypeCache.NSNumber) {
+								getter = "TryGetNativeValue ({0}, out var handle) ? " + TypeManager.FormatType (null, pi.PropertyType) + "Extensions.GetNullableValue (handle) : null";
+								setter = "SetNativeValue ({0}, value.HasValue ? value.Value.GetConstant () : null)";
+							} else {
+								exceptions.Add (ErrorHelper.CreateError (99, $"Unexpected enum backing type: {enumBackingType}"));
+							}
+						} else if (isNativeEnum && fetchType == TypeCache.System_Int64) {
+							getter = "{1} (long?) GetNIntValue ({0})";
 							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (fetchType == TypeCache.System_nint) {
-							getter = "{1} GetNIntValue ({0})";
+						} else if (isNativeEnum && fetchType == TypeCache.System_UInt64) {
+							getter = "{1} (ulong?) GetNUIntValue ({0})";
 							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (fetchType == TypeCache.System_Int64) {
-							getter = "{1} GetLongValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (fetchType == TypeCache.System_UInt64) {
-							getter = "{1} GetULongValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (pi.PropertyType == TypeCache.System_Float) {
-							getter = "{1} GetFloatValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (pi.PropertyType == TypeCache.System_Double) {
-							getter = "{1} GetDoubleValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (fetchType == TypeCache.System_UInt32) {
-							getter = "{1} GetUInt32Value ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (fetchType == TypeCache.System_nuint) {
-							getter = "{1} GetNUIntValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
+						} else if (TryGetNSNumberStrongDictionaryMethods (fetchType, out var getNSNumber, out var setNSNumber)) {
+							getter = "{1} " + getNSNumber + " ({0})";
+							setter = setNSNumber + " ({0}, {1}value)";
+						} else if (fetchType == TypeCache.System_DateTime) {
+							getter = "GetDateTimeValue ({0})";
+							setter = "SetNativeValue ({0}, (NSDate?) value)";
 						} else if (fetchType == TypeCache.CoreGraphics_CGRect) {
 							getter = "{1} GetCGRectValue ({0})";
 							setter = "SetCGRectValue ({0}, {1}value)";
@@ -1896,39 +1988,62 @@ public partial class Generator : IMemberGatherer {
 						} else if (Frameworks.HaveCoreMedia && fetchType == TypeCache.CMTime) {
 							getter = "{1} GetCMTimeValue ({0})";
 							setter = "SetCMTimeValue ({0}, {1}value)";
-						} else if (isNativeEnum && fetchType == TypeCache.System_Int64) {
-							getter = "{1} (long?) GetNIntValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
-						} else if (isNativeEnum && fetchType == TypeCache.System_UInt64) {
-							getter = "{1} (ulong?) GetNUIntValue ({0})";
-							setter = "SetNumberValue ({0}, {1}value)";
 						} else if (fetchType == TypeCache.UIEdgeInsets) {
 							getter = "{1} GetUIEdgeInsets ({0})";
 							setter = "SetUIEdgeInsets ({0}, {1}value)";
+						} else if (pi.PropertyType.Name == "NMatrix3") {
+							getter = "{1} GetNSDataAsValueType<" + TypeManager.FormatType (null, pi.PropertyType) + "> ({0})";
+							setter = "SetValueTypeAsNSData ({0}, {1}value)";
 						} else {
-							throw new BindingException (1033, true, pi.PropertyType, dictType, pi.Name);
+							exceptions.Add (new BindingException (1033, true, pi.PropertyType, dictType, pi.Name));
+							continue;
 						}
 					} else {
 						if (pi.PropertyType.IsArray) {
 							var elementType = pi.PropertyType.GetElementType ();
-							if (TypeManager.IsWrappedType (elementType)) {
+							if (TypeManager.IsDictionaryContainerType (elementType)) {
+								var dictElementType = TypeManager.FormatType (dictType, elementType);
+								getter = $"GetArrayOfDictionariesValue<{dictElementType}> ({{0}})";
+								setter = "SetArrayOfDictionariesValue ({0}, value)";
+							} else if (TypeCache.INativeObject.IsAssignableFrom (elementType)) {
+								var dictElementType = TypeManager.FormatType (dictType, elementType);
+								getter = "GetArray<" + dictElementType + "> ({0}, (ptr) => Runtime.GetINativeObject<" + dictElementType + "> (ptr, false)!)";
+								setter = "SetArrayValue ({0}, value)";
+							} else if (TypeManager.IsWrappedType (elementType)) {
 								getter = "GetArray<" + TypeManager.FormatType (dictType, elementType) + "> ({0})";
 								setter = "SetArrayValue ({0}, value)";
-							} else if (elementType.IsEnum) {
-								// Handle arrays of enums as arrays of NSNumbers, casted to the enum
+							} else if (IsEnumBackedByNativeType (elementType, out enumBackingType)) {
+								ValidateStrongEnumBackingTypeInStrongDictionaryType (pi, enumBackingType);
+
 								var enumTypeStr = TypeManager.FormatType (null, elementType);
-								getter = "GetArray<" + enumTypeStr +
-									"> ({0}, (ptr)=> {{\n\tusing (var num = Runtime.GetNSObject<NSNumber> (ptr)!){{\n\t\treturn (" +
-									enumTypeStr + ") num.Int32Value;\n\t}}\n}})";
-								setter = "SetArrayValue<" + enumTypeStr + "> ({0}, value)";
+								if (TryGetNSNumberField (enumBackingType, out var fieldName)) {
+									getter = "{1} GetArray<" + enumTypeStr + "> ({0}, (ptr) => (" + enumTypeStr + "?) Runtime.GetNSObjectChecked<NSNumber> (ptr)?." + fieldName + " ?? default (" + enumTypeStr + "))";
+									setter = "SetArrayValue<" + enumTypeStr + "> ({0}, value, (element) => Runtime.RetainAndAutoreleaseNSObject (new NSNumber ((" + TypeManager.FormatType (null, enumBackingType) + ") element)))";
+								} else if (enumBackingType == TypeCache.NSString || enumBackingType == TypeCache.NSNumber) {
+									getter = "{1} GetArray<" + enumTypeStr + "> ({0}, (ptr) => ptr == NativeHandle.Zero ? default (" + enumTypeStr + ") : " + enumTypeStr + "Extensions.GetValue (ptr))";
+									setter = "SetArrayValue<" + enumTypeStr + "> ({0}, value, (element) => Runtime.RetainAndAutoreleaseNSObject (element.GetConstant ()))";
+								} else {
+									exceptions.Add (ErrorHelper.CreateError (99, $"Unexpected enum backing type: {enumBackingType}"));
+								}
+							} else if (elementType.IsEnum) {
+								var underlyingEnumType = elementType.GetEnumUnderlyingType ();
+								if (!TryGetNSNumberField (underlyingEnumType, out var fieldName))
+									exceptions.Add (ErrorHelper.CreateError (1122 /* Unable to find the corresponding NSNumber property for the type {0} in {1}.{2} */, underlyingEnumType.FullName, pi.DeclaringType.FullName, pi.Name));
+
+								// Handle arrays of enums as arrays of NSNumbers
+								var enumTypeStr = TypeManager.FormatType (null, elementType);
+								getter = "GetArray<" + enumTypeStr + "> ({0}, (ptr) => (" + enumTypeStr + "?) Runtime.GetNSObjectChecked<NSNumber> (ptr)?." + fieldName + " ?? default (" + enumTypeStr + "))";
+								setter = "SetArrayValue<" + enumTypeStr + "> ({0}, value, (element) => Runtime.RetainAndAutoreleaseNSObject (new NSNumber ((" + TypeManager.FormatType (null, underlyingEnumType) + ") element)))";
 							} else if (elementType == TypeCache.System_String) {
 								getter = "GetArray<string> ({0}, (ptr) => CFString.FromHandle (ptr)!)";
 								setter = "SetArrayValue ({0}, value)";
-							} else if (elementType.Name == "CTFontDescriptor") {
-								getter = "GetArray<CTFontDescriptor> ({0}, (ptr) => new CTFontDescriptor (ptr, false))";
-								setter = "SetArrayValue ({0}, value)";
+							} else if (TryGetNSNumberField (elementType, out var fieldName)) {
+								var renderedElementType = TypeManager.RenderType (elementType);
+								getter = "GetArray<" + renderedElementType + "> ({0}, (ptr) => (" + renderedElementType + "?) Runtime.GetNSObjectChecked<NSNumber> (ptr)?." + fieldName + " ?? default (" + renderedElementType + "))";
+								setter = "SetArrayValue<" + renderedElementType + "> ({0}, value)";
 							} else {
-								throw new BindingException (1033, true, pi.PropertyType, dictType, pi.Name);
+								exceptions.Add (new BindingException (1033, true, pi.PropertyType, dictType, pi.Name));
+								continue;
 							}
 						} else if (pi.PropertyType == TypeCache.NSString) {
 							getter = "GetNSStringValue ({0})";
@@ -1948,21 +2063,16 @@ public partial class Generator : IMemberGatherer {
 						} else if (TypeManager.IsDictionaryContainerType (pi.PropertyType) || AttributeManager.HasAttribute<StrongDictionaryAttribute> (pi)) {
 							var strType = pi.PropertyType.Name;
 							getter = $"GetStrongDictionary<{strType}>({{0}}, (dict) => new {strType} (dict))";
-							setter = "SetNativeValue ({0}, value.GetDictionary ())";
+							setter = "SetNativeValue ({0}, value?.Dictionary)";
+						} else if (TypeCache.INativeObject.IsAssignableFrom (pi.PropertyType)) {
+							getter = $"GetNativeValue<{pi.PropertyType}> ({{0}})";
+							setter = "SetNativeValue ({0}, value)";
 						} else if (TypeManager.IsWrappedType (pi.PropertyType)) {
 							getter = "Dictionary [{0}] as " + pi.PropertyType;
 							setter = "SetNativeValue ({0}, value)";
-						} else if (pi.PropertyType.Name == "CGColorSpace") {
-							getter = "GetNativeValue<" + pi.PropertyType + "> ({0})";
-							setter = "SetNativeValue ({0}, value)";
-						} else if (pi.PropertyType.Name == "CGImageSource") {
-							getter = "GetNativeValue<" + pi.PropertyType + "> ({0})";
-							setter = "SetNativeValue ({0}, value)";
-						} else if (pi.PropertyType.Name == "CTFontDescriptor") {
-							getter = "GetNativeValue<" + pi.PropertyType + "> ({0})";
-							setter = "SetNativeValue ({0}, value)";
 						} else {
-							throw new BindingException (1033, true, pi.PropertyType, dictType, pi.Name);
+							exceptions.Add (new BindingException (1033, true, pi.PropertyType, dictType, pi.Name));
+							continue;
 						}
 					}
 
@@ -3175,13 +3285,14 @@ public partial class Generator : IMemberGatherer {
 	// @convs: conversions to perform before the invocation
 	// @disposes: dispose operations to perform after the invocation
 	// @by_ref_processing
-	void GenerateTypeLowering (MethodInfo mi, bool null_allowed_override, out StringBuilder args, out StringBuilder convs, out StringBuilder disposes, out StringBuilder by_ref_processing, out StringBuilder by_ref_init, PropertyInfo propInfo = null, bool castEnum = true)
+	void GenerateTypeLowering (MethodInfo mi, bool null_allowed_override, out StringBuilder args, out StringBuilder convs, out StringBuilder disposes, out StringBuilder by_ref_processing, out StringBuilder by_ref_init, out StringBuilder post_return, PropertyInfo propInfo = null, bool castEnum = true)
 	{
 		args = new StringBuilder ();
 		convs = new StringBuilder ();
 		disposes = new StringBuilder ();
 		by_ref_processing = new StringBuilder ();
 		by_ref_init = new StringBuilder ();
+		post_return = new StringBuilder ();
 
 		foreach (var pi in mi.GetParameters ()) {
 			var safe_name = pi.Name.GetSafeParamName ();
@@ -3190,7 +3301,7 @@ public partial class Generator : IMemberGatherer {
 			if (!IsTarget (pi)) {
 				// Construct invocation
 				args.Append (", ");
-				args.Append (MarshalParameter (mi, pi, null_allowed_override, propInfo, castEnum, convs));
+				args.Append (MarshalParameter (mi, pi, null_allowed_override, propInfo, castEnum, convs, by_ref_init, post_return));
 
 				if (pi.ParameterType.IsByRef) {
 					var et = pi.ParameterType.GetElementType ();
@@ -3462,7 +3573,7 @@ public partial class Generator : IMemberGatherer {
 		// Collect all strings that can be fast-marshalled
 		List<string> stringParameters = CollectFastStringMarshalParameters (mi);
 
-		GenerateTypeLowering (mi, null_allowed_override, out var args, out var convs, out var disposes, out var by_ref_processing, out var by_ref_init, propInfo);
+		GenerateTypeLowering (mi, null_allowed_override, out var args, out var convs, out var disposes, out var by_ref_processing, out var by_ref_init, out var post_return, propInfo);
 
 		if (minfo.is_protocol_member && minfo.is_static) {
 			print ("var class_ptr = Class.GetHandle (typeof (T));");
@@ -3676,6 +3787,8 @@ public partial class Generator : IMemberGatherer {
 		}
 		if (minfo.is_ctor)
 			WriteMarkDirtyIfDerived (sw, mi.DeclaringType);
+		if (post_return?.Length > 0)
+			print (post_return.ToString ());
 		if (stringParameters is not null) {
 			indent--;
 			print ("}");
@@ -4648,7 +4761,9 @@ public partial class Generator : IMemberGatherer {
 				if (shortName.StartsWith ("Func<", StringComparison.Ordinal))
 					continue;
 
-				WriteDocumentation (mi.DeclaringType);
+				// we might get "delegates" from DelegateName attributes, and in that case the declaring type doesn't have xml docs for the delegate (the declaring type is the container type for the member with the DelegateName attribute, and its documentation has nothing to do with the delegate type)
+				if (mi.DeclaringType.IsSubclassOf (TypeCache.System_Delegate))
+					WriteDocumentation (mi.DeclaringType);
 
 				var del = mi.DeclaringType;
 
@@ -4795,6 +4910,9 @@ public partial class Generator : IMemberGatherer {
 		var allProtocolConstructors = new List<MethodInfo> ();
 		var ifaces = (IEnumerable<Type>) type.GetInterfaces ().Concat (new Type [] { ReflectionExtensions.GetBaseType (type, this) }).OrderBy (v => v.FullName, StringComparer.Ordinal);
 
+		if (AttributeManager.HasAttribute<BaseTypeAttribute> (type) && !AttributeManager.HasAttribute<ModelAttribute> (type))
+			exceptions.Add (ErrorHelper.CreateWarning (1123 /* "The type {0} has a [Protocol] and a [BaseType] attribute, but no [Model] attribute. This is likely incorrect; either remove the [BaseType] attribute, or add a [Model] attribute." */, type.FullName));
+
 		if (type.Namespace is not null) {
 			print ("namespace {0} {{", type.Namespace);
 			indent++;
@@ -4823,7 +4941,13 @@ public partial class Generator : IMemberGatherer {
 		// disable CS1573, which can happen when the original member in the api definition has xml comments and we copy that xml comment into the generated interface - because we may add parameters to method signatures, and the new parameters won't have an xml comment.
 		print ("#pragma warning disable CS1573"); // Parameter 'This' has no matching param tag in the XML comment for '...' (but other parameters do)
 
-		WriteDocumentation (type);
+		if (!WriteDocumentation (type)) {
+			print ($"/// <summary>This interface represents the Objective-C protocol <c>{protocol_name}</c>.</summary>");
+			print ($"/// <remarks>");
+			print ($"///   <para>A class that implements this interface (and subclasses <see cref=\"NSObject\" />) will be exported to Objective-C as implementing the Objective-C protocol this interface represents.</para>");
+			print ($"///   <para>A class may also implement members from this interface to implement members from the protocol.</para>");
+			print ($"/// </remarks>");
+		}
 
 		PrintAttributes (type, platform: true, preserve: true, advice: true);
 		print ("[Protocol (Name = \"{1}\", WrapperType = typeof ({0}Wrapper){2}{3}{4})]",
@@ -5589,7 +5713,15 @@ public partial class Generator : IMemberGatherer {
 				indent++;
 			}
 
-			WriteDocumentation (type);
+			if (!WriteDocumentation (type)) {
+				if (is_model && !AttributeManager.HasAttribute<SyntheticAttribute> (type)) {
+					print ($"/// <summary>");
+					print ($"///   <para>This is a class that implements the interface <see cref=\"I{TypeName}\" /> (for the protocol <c>{(protocol?.Name ?? objc_type_name)}</c>).</para>");
+					print ($"///   <para>Subclass this class to easily create a type that implements the protocol.</para>");
+					print ($"///   <para>An alternative is to create a subclass of <see cref=\"NSObject\" /> and then implemented the interface <see cref=\"I{TypeName}\" />.</para>");
+					print ($"/// </summary>");
+				}
+			}
 
 			bool core_image_filter = false;
 			string class_mod = null;
@@ -6135,8 +6267,10 @@ public partial class Generator : IMemberGatherer {
 			if (field_exports.Count != 0) {
 				foreach (var field_pi in field_exports.OrderBy (f => f.Name, StringComparer.Ordinal)) {
 					var fieldAttr = AttributeManager.GetCustomAttribute<FieldAttribute> (field_pi);
-					if (!TryComputeLibraryName (fieldAttr?.LibraryName, type, out string library_name, out string library_path))
-						throw ErrorHelper.CreateError (1042, /* Missing '[Field (LibraryName=value)]' for {0} (e.g."__Internal") */ type.FullName + "." + field_pi.Name);
+					if (!TryComputeLibraryName (fieldAttr?.LibraryName, type, out string library_name, out string library_path)) {
+						exceptions.Add (ErrorHelper.CreateError (1042, /* Missing '[Field (LibraryName=value)]' for {0} (e.g."__Internal") */ type.FullName + "." + field_pi.Name));
+						continue;
+					}
 
 					string fieldTypeName;
 					string smartEnumTypeName = null;
@@ -6154,8 +6288,96 @@ public partial class Generator : IMemberGatherer {
 						print ("static {0}? _{1};", fieldTypeName, field_pi.Name);
 					}
 
-					if (!WriteDocumentation (field_pi) && BindingTouch.SupportsXmlDocumentation) {
-						print ($"/// <summary>Represents the value associated with the constant '{fieldAttr.SymbolName}'.</summary>");
+					if (BindingTouch.SupportsXmlDocumentation) {
+						if (!WriteDocumentation (field_pi)) {
+							var anyNotifications = AttributeManager.GetCustomAttributes<NotificationAttribute> (field_pi);
+							if (anyNotifications.Any ()) {
+								var notification = anyNotifications.First ();
+								var eventArgsTypeName = notification.Type?.Name ?? "NSNotificationEventArgs";
+								var notificationName = GetNotificationName (field_pi);
+								print (
+		$$"""
+		/// <summary>Notification constant for {{notificationName}}</summary>
+		/// <value><see cref="NSString" /> constant, should be used as a token to <see cref="NSNotificationCenter" />.</value>
+		/// <remarks>
+		///   <para>
+		///     This constant can be used with <see cref="NSNotificationCenter" /> to register a listener for this notification.
+		///     This is an <see cref="NSString" /> instead of a string, because these values can be used as tokens in some native
+		///     libraries instead of being used purely for their actual string content. The 'notification' parameter to the callback
+		///     contains extra information that is specific to the notification type.
+		///   </para>
+		///   <para>
+		///     To subscribe to this notification, developers can use the convenience <see cref="Notifications.Observe{{notificationName}}(NSObject,EventHandler{{"{" + eventArgsTypeName + "}"}})" />
+		///     or <see cref="Notifications.Observe{{notificationName}}(EventHandler{{"{" + eventArgsTypeName + "}"}})" /> methods,
+		///     which offers strongly typed access to the parameters of the notification.
+		///   </para>
+		///   <para>
+		///     The following example shows how to use the strongly typed <see cref="Notifications" /> class, to take the guesswork
+		///     out of the available properties in the notification:
+		///   </para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
+		/// //
+		/// // Lambda style
+		/// //
+		///
+		/// // listening
+		/// notification = {{TypeName}}.Notifications.Observe{{notificationName}} ((sender, args) => {
+		/// /* Access strongly typed args */
+		/// Console.WriteLine ("Notification: {0}", args.Notification);
+		/// });
+		///
+		/// // To stop listening:
+		/// notification.Dispose ();
+		///
+		/// //
+		/// // Method style
+		/// //
+		/// NSObject notification;
+		/// void Callback (object sender, {{TypeName}}.{{eventArgsTypeName}} args)
+		/// {
+		///     // Access strongly typed args
+		///     Console.WriteLine ("Notification: {0}", args.Notification);
+		/// }
+		///
+		/// void Setup ()
+		/// {
+		///     notification = {{TypeName}}.Notifications.Observe{{notificationName}} (Callback);
+		/// }
+		///
+		/// void Teardown ()
+		/// {
+		///     notification.Dispose ();
+		/// }]]></code>
+		///   </example>
+		///   <para>
+		///     The following example shows how to use the notification with the DefaultCenter API:
+		///   </para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
+		/// // Lambda style
+		/// NSNotificationCenter.DefaultCenter.AddObserver (
+		///     {{TypeName}}.{{notificationName}}Notification, (notification) => { Console.WriteLine ("Received the notification {{notificationName}}", notification); }
+		/// );
+		///
+		/// // Method style
+		/// void Callback (NSNotification notification)
+		/// {
+		///     Console.WriteLine ("Received the notification {{notificationName}}", notification);
+		/// }
+		///
+		/// void Setup ()
+		/// {
+		///     NSNotificationCenter.DefaultCenter.AddObserver ({{TypeName}}.{{notificationName}}Notification, Callback);
+		/// }
+		/// ]]></code>
+		///   </example>
+		/// </remarks>
+		""");
+							} else {
+								print ($"/// <summary>Represents the value associated with the constant '{fieldAttr.SymbolName}'.</summary>");
+							}
+						}
 					}
 					PrintAttributes (field_pi, preserve: true, advice: true);
 					PrintObsoleteAttributes (field_pi);
@@ -6244,6 +6466,8 @@ public partial class Generator : IMemberGatherer {
 						print ("return Dlfcn.GetCGSize (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType == TypeCache.CMTag) {
 						print ("return Dlfcn.GetStruct<CoreMedia.CMTag> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+					} else if (field_pi.PropertyType.Namespace == "Foundation" && field_pi.PropertyType.Name == "NSOperatingSystemVersion") {
+						print ("return Dlfcn.GetStruct<Foundation.NSOperatingSystemVersion> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
 					} else if (field_pi.PropertyType.IsEnum) {
 						var btype = field_pi.PropertyType.GetEnumUnderlyingType ();
 						if (smartEnumTypeName is not null) {
@@ -6991,11 +7215,19 @@ public partial class Generator : IMemberGatherer {
 						if (event_args_type is not null)
 							notification_event_arg_types [event_args_type] = event_args_type;
 
-						print ($"\t/// <summary>Strongly typed notification for the <see cref=\"global::{type.FullName}.{property.Name}\" /> constant.</summary>");
+						string constantReference;
+						if (property.IsInternal (this)) {
+							var fieldAttr = AttributeManager.GetCustomAttribute<FieldAttribute> (property);
+							constantReference = $"\"{fieldAttr.SymbolName}\"";
+						} else {
+							constantReference = $"<see cref=\"global::{type.FullName}.{property.Name}\" />";
+						}
+
+						print ($"\t/// <summary>Strongly typed notification for the {constantReference} constant.</summary>");
 						print ($"\t/// <param name=\"handler\">The handler that responds to the notification when it occurs.</param>");
 						print ($"\t/// <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref=\"Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{{Foundation.NSObject}})\" />.</returns>");
 						print ($"\t/// <remarks>");
-						print ($"\t///   <para>This method can be used to subscribe to <see cref=\"global::{type.FullName}.{property.Name}\" /> notifications.</para>");
+						print ($"\t///   <para>This method can be used to subscribe to {constantReference} notifications.</para>");
 						print ($"\t///   <example>");
 						print ($"\t///   <code lang=\"csharp lang-csharp\"><![CDATA[");
 						print ($"\t/// // Listen to all notifications posted for any object");
@@ -7013,12 +7245,12 @@ public partial class Generator : IMemberGatherer {
 						print ("\t\treturn {0}.AddObserver ({1}, notification => handler (null, new {2} (notification)));", notification_center, property.Name, event_name);
 						print ("\t}");
 
-						print ($"\t/// <summary>Strongly typed notification for the <see cref=\"global::{type.FullName}.{property.Name}\" /> constant.</summary>");
+						print ($"\t/// <summary>Strongly typed notification for the {constantReference} constant.</summary>");
 						print ($"\t/// <param name=\"objectToObserve\">The specific object to observe.</param>");
 						print ($"\t/// <param name=\"handler\">The handler that responds to the notification when it occurs.</param>");
 						print ($"\t/// <returns>Token object that can be used to stop receiving notifications by either disposing it or passing it to <see cref=\"Foundation.NSNotificationCenter.RemoveObservers(System.Collections.Generic.IEnumerable{{Foundation.NSObject}})\" />.</returns>");
 						print ($"\t/// <remarks>");
-						print ($"\t///   <para>This method can be used to subscribe to <see cref=\"global::{type.FullName}.{property.Name}\" /> notifications.</para>");
+						print ($"\t///   <para>This method can be used to subscribe to {constantReference} notifications.</para>");
 						print ($"\t///   <example>");
 						print ($"\t///     <code lang=\"csharp lang-csharp\"><![CDATA[");
 						print ($"\t/// // Listen to all notifications posted for a single object");

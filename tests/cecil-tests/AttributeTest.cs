@@ -328,6 +328,14 @@ namespace Cecil.Tests {
 					"PdfKit.PdfView.ShouldReceiveTouch (XKit.XGestureRecognizer, XKit.XTouch)",
 					"PdfKit.PdfView.ShouldRecognizeSimultaneously (XKit.XGestureRecognizer, XKit.XGestureRecognizer)",
 					"PdfKit.PdfView.ShouldRequireFailureOf (XKit.XGestureRecognizer, XKit.XGestureRecognizer)",
+
+#if !XAMCORE_5_0
+					// The ARQuickLookPreviewItem type is in the QuickLook framework for Mac Catalyst, and ARKit for all other platforms.
+					"QuickLook.ARQuickLookPreviewItem.get_PreviewItemTitle ()",
+					"QuickLook.ARQuickLookPreviewItem.get_PreviewItemUrl ()",
+					"QuickLook.ARQuickLookPreviewItem.PreviewItemTitle",
+					"QuickLook.ARQuickLookPreviewItem.PreviewItemUrl",
+#endif
 				};
 			}
 		}
@@ -380,7 +388,7 @@ namespace Cecil.Tests {
 			return key;
 		}
 
-		static string GetMemberLookupKeyInternal (IMemberDefinition member)
+		public static string GetMemberLookupKeyInternal (IMemberDefinition member)
 		{
 			if (member is FieldDefinition fd)
 				return $"{GetMemberLookupKeyInternal (fd.DeclaringType)}.{fd.Name}";

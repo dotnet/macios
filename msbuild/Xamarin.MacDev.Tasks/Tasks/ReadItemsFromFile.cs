@@ -35,7 +35,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			var result = new List<ITaskItem> ();
 			foreach (var file in File) {
@@ -47,7 +47,7 @@ namespace Xamarin.MacDev.Tasks {
 				var items = document.Root
 					.Elements (ItemGroupElementName)
 					.SelectMany (element => element.Elements ())
-					.Select (element => this.CreateItemFromElement (element))
+					.Select (element => this.CreateItemFromElement (element, file.ItemSpec))
 					.ToList ();
 				result.AddRange (items);
 			}
@@ -60,13 +60,16 @@ namespace Xamarin.MacDev.Tasks {
 			return true;
 		}
 
-		private ITaskItem CreateItemFromElement (XElement element)
+		ITaskItem CreateItemFromElement (XElement element, string sourceFile)
 		{
 			var item = new TaskItem (element.Attribute (IncludeAttributeName).Value);
 
 			foreach (var metadata in element.Elements ()) {
 				item.SetMetadata (metadata.Name.LocalName, metadata.Value);
 			}
+
+			// Set the SourceFile metadata to the file from which this item was read.
+			item.SetMetadata ("SourceFile", Path.GetFileName (sourceFile));
 
 			return item;
 		}

@@ -388,7 +388,7 @@ namespace CoreMedia {
 	}
 
 	// untyped enum (used as OSStatus) -> CMSync.h
-	/// <summary>An enumeration whose values specify errors returned by <see cref="CoreMedia.CMClockOrTimebase.GetRelativeRateAndAnchorTime(CoreMedia.CMClockOrTimebase,CoreMedia.CMClockOrTimebase,ref System.Double,ref CoreMedia.CMTime,ref CoreMedia.CMTime)" />.</summary>
+	/// <summary>An enumeration whose values specify errors returned by <see cref="CoreMedia.CMClockOrTimebase.GetRelativeRateAndAnchorTime(CoreMedia.CMClockOrTimebase,CoreMedia.CMClockOrTimebase,out System.Double,out CoreMedia.CMTime,out CoreMedia.CMTime)" />.</summary>
 	[MacCatalyst (13, 1)]
 	public enum CMSyncError : int {
 		/// <summary>To be added.</summary>

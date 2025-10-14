@@ -2,7 +2,12 @@
   <Docs DocId="T:UIKit.UIContentSizeCategory">
     <summary>An enumeration whose values specify the various dynamic type sizes that can be chosen by the application user.</summary>
     <remarks>
-      <para>After the application user has set the "Text Size Property" in Settings, the application will receive a notification via <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged" />. It is the application developer's responsibility, at that point, to invalidate the layout in all view elements that implement Dynamic Type. The simplest way to do that is to have a method that re-sets the font in all components that support Dynamic Type:</para>
+      <para>
+        After the application user has set the "Text Size Property" in Settings, the application will receive a notification
+        via <see cref="UIKit.UIApplication.Notifications.ObserveContentSizeCategoryChanged(EventHandler{UIContentSizeCategoryChangedEventArgs})" />.
+        It is the application developer's responsibility, at that point, to invalidate the layout in all view elements that implement
+        Dynamic Type. The simplest way to do that is to have a method that re-sets the font in all components that support Dynamic Type:
+      </para>
       <example>
         <code lang="csharp lang-csharp"><![CDATA[
  UIApplication.Notifications.ObserveContentSizeCategoryChanged((s,e) => {

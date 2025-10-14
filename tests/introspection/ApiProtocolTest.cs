@@ -49,6 +49,10 @@ namespace Introspection {
 				if (TestRuntime.IsSimulator)
 					return !TestRuntime.CheckXcodeVersion (15, 0); // doesn't seem to be available in the iOS simulator until iOS 17+
 				break;
+			case "SensorKit": // SensorKit doesn't exist on iPads
+				if (TestRuntime.IsDevice && TestRuntime.IsiPad)
+					return true;
+				break;
 			}
 
 			switch (type.Name) {
@@ -108,6 +112,70 @@ namespace Introspection {
 					return true;
 				goto default;
 #endif
+			case "MTL4AccelerationStructureBoundingBoxGeometryDescriptor":
+			case "MTL4AccelerationStructureCurveGeometryDescriptor":
+			case "MTL4AccelerationStructureDescriptor":
+			case "MTL4AccelerationStructureGeometryDescriptor":
+			case "MTL4AccelerationStructureMotionBoundingBoxGeometryDescriptor":
+			case "MTL4AccelerationStructureMotionCurveGeometryDescriptor":
+			case "MTL4AccelerationStructureMotionTriangleGeometryDescriptor":
+			case "MTL4AccelerationStructureTriangleGeometryDescriptor":
+			case "MTL4ArgumentTableDescriptor":
+			case "MTL4BinaryFunctionDescriptor":
+			case "MTL4CommandAllocatorDescriptor":
+			case "MTL4CommandBufferOptions":
+			case "MTL4CommandQueueDescriptor":
+			case "MTL4CommitOptions":
+			case "MTL4CompilerDescriptor":
+			case "MTL4CompilerTaskOptions":
+			case "MTL4ComputePipelineDescriptor":
+			case "MTL4CounterHeapDescriptor":
+			case "MTL4FunctionDescriptor":
+			case "MTL4IndirectInstanceAccelerationStructureDescriptor":
+			case "MTL4InstanceAccelerationStructureDescriptor":
+			case "MTL4LibraryDescriptor":
+			case "MTL4LibraryFunctionDescriptor":
+			case "MTL4MachineLearningPipelineDescriptor":
+			case "MTL4MachineLearningPipelineReflection":
+			case "MTL4MeshRenderPipelineDescriptor":
+			case "MTL4PipelineDataSetSerializerDescriptor":
+			case "MTL4PipelineDescriptor":
+			case "MTL4PipelineOptions":
+			case "MTL4PipelineStageDynamicLinkingDescriptor":
+			case "MTL4PrimitiveAccelerationStructureDescriptor":
+			case "MTL4RenderPassDescriptor":
+			case "MTL4RenderPipelineBinaryFunctionsDescriptor":
+			case "MTL4RenderPipelineColorAttachmentDescriptor":
+			case "MTL4RenderPipelineColorAttachmentDescriptorArray":
+			case "MTL4RenderPipelineDescriptor":
+			case "MTL4RenderPipelineDynamicLinkingDescriptor":
+			case "MTL4SpecializedFunctionDescriptor":
+			case "MTL4StaticLinkingDescriptor":
+			case "MTL4StitchedFunctionDescriptor":
+			case "MTL4TileRenderPipelineDescriptor":
+			case "MTLLogicalToPhysicalColorAttachmentMap":
+			case "MTLResourceViewPoolDescriptor":
+			case "MTLTensorDescriptor":
+			case "MTLTensorExtents":
+			case "MTLTensorReferenceType":
+			case "MTLTextureViewDescriptor":
+			case "VTFrameRateConversionConfiguration":
+			case "VTFrameRateConversionParameters":
+			case "VTLowLatencyFrameInterpolationConfiguration":
+			case "VTLowLatencyFrameInterpolationParameters":
+			case "VTLowLatencySuperResolutionScalerConfiguration":
+			case "VTLowLatencySuperResolutionScalerParameters":
+			case "VTMotionBlurConfiguration":
+			case "VTMotionBlurParameters":
+			case "VTOpticalFlowConfiguration":
+			case "VTOpticalFlowParameters":
+			case "VTSuperResolutionScalerConfiguration":
+			case "VTSuperResolutionScalerParameters":
+			case "VTTemporalNoiseFilterConfiguration":
+			case "VTTemporalNoiseFilterParameters":
+				if (TestRuntime.IsSimulator)
+					return true;
+				goto default;
 			default:
 				return SkipDueToAttribute (type);
 			}
@@ -130,6 +198,13 @@ namespace Introspection {
 			}
 
 			switch (protocolName) {
+			case "AVRoutingPlaybackParticipant":
+				switch (type.Name) {
+				case "AVPlayer": // conformance defined in category
+				case "AVQueuePlayer": // conformance defined in category
+					return true;
+				}
+				break;
 			case "NSCopying":
 				switch (type.Name) {
 				// undocumented conformance (up to 7.0) and conformity varies between iOS versions
@@ -249,6 +324,11 @@ namespace Introspection {
 				case "SCRunningApplication":
 				case "SCWindow":
 				case "SCStreamConfiguration":
+					return true;
+				// Xcode 26.0 Conformance not in headers
+				case "ASPickerDisplaySettings":
+				case "ASPropertyCompareString":
+				case "PKAddIdentityDocumentMetadata":
 					return true;
 				}
 				break;
@@ -475,6 +555,11 @@ namespace Introspection {
 				case "FSMutableFileDataBuffer":
 				case "FSTask":
 				case "FSTaskOptions":
+					return true;
+				// Xcode 26.0 Conformance not in headers
+				case "ASPickerDisplaySettings":
+				case "ASPropertyCompareString":
+				case "PKAddIdentityDocumentMetadata":
 					return true;
 				}
 				break;
@@ -705,6 +790,11 @@ namespace Introspection {
 				case "FSTask":
 				case "FSTaskOptions":
 					return true;
+				// Xcode 26.0 Conformance not in headers
+				case "ASPickerDisplaySettings":
+				case "ASPropertyCompareString":
+				case "PKAddIdentityDocumentMetadata":
+					return true;
 				}
 				break;
 			// conformance added in Xcode 8 (iOS 10 / macOS 10.12)
@@ -823,6 +913,14 @@ namespace Introspection {
 					return true;
 				}
 				break;
+			case "BEExtensionProcess":
+				switch (type.Name) {
+				case "BENetworkingProcess": // conforming using a categeory in headers
+				case "BERenderingProcess": // conforming using a categeory in headers
+				case "BEWebContentProcess": // conforming using a categeory in headers
+					return true;
+				}
+				break;
 			}
 			return false;
 		}
@@ -905,28 +1003,13 @@ namespace Introspection {
 				if (result) {
 					// check that +supportsSecureCoding returns YES
 					if (!supports) {
-#if __IOS__
+#if __IOS__ && !__MACCATALYST__
 						// broken in xcode 12 beta 1 simulator (only)
-						if (TestRuntime.IsSimulatorOrDesktop && TestRuntime.CheckXcodeVersion (12, 0)) {
+						if (TestRuntime.IsSimulator) {
 							switch (type.Name) {
 							case "ARFaceGeometry":
-							case "ARPlaneGeometry":
 							case "ARPointCloud":
-							case "ARAnchor":
-							case "ARBodyAnchor":
-							case "AREnvironmentProbeAnchor":
-							case "ARFaceAnchor":
-							case "ARGeoAnchor":
-							case "ARGeometryElement":
-							case "ARGeometrySource":
-							case "ARImageAnchor":
-							case "ARMeshAnchor":
-							case "ARMeshGeometry":
-							case "ARObjectAnchor":
-							case "ARParticipantAnchor":
-							case "ARPlaneAnchor":
 							case "ARReferenceObject":
-							case "ARSkeletonDefinition": // iOS15 / device only
 							case "ARWorldMap":
 								return;
 							}
@@ -1055,7 +1138,7 @@ namespace Introspection {
 
 					if (t.IsPublic && !ConformTo (klass.Handle, protocol)) {
 						// note: some internal types, e.g. like UIAppearance subclasses, return false (and there's not much value in changing this)
-						var msg = $"Type {t.FullName} (native: {klass.Name}) does not conform {protocolName}";
+						var msg = $"Type {t.FullName} (native: {klass.Name}) does not conform to {protocolName}";
 						list.Add (msg);
 						ReportError (msg);
 					}

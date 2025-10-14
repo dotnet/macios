@@ -30,6 +30,9 @@ class BindingEqualityComparer : EqualityComparer<Binding> {
 		var namespaceComparer = new CollectionComparer<string> ();
 		if (!namespaceComparer.Equals (x.Namespace, y.Namespace))
 			return false;
+		var outerClassComparer = new OuterClassEqualityComparer ();
+		if (!outerClassComparer.Equals (x.OuterClasses, y.OuterClasses))
+			return false;
 		if (x.FullyQualifiedSymbol != y.FullyQualifiedSymbol)
 			return false;
 		if (x.Base != y.Base)
@@ -68,6 +71,9 @@ class BindingEqualityComparer : EqualityComparer<Binding> {
 		if (!propertyComparer.Equals (x.Properties, y.Properties))
 			return false;
 
+		if (!propertyComparer.Equals (x.ParentProtocolProperties, y.ParentProtocolProperties))
+			return false;
+
 		// compare constructors
 		var constructorComparer = new ConstructorsEqualityComparer ();
 		if (!constructorComparer.Equals (x.Constructors, y.Constructors))
@@ -78,8 +84,12 @@ class BindingEqualityComparer : EqualityComparer<Binding> {
 		if (!eventComparer.Equals (x.Events, y.Events))
 			return false;
 
+		// compare methods
 		var methodComparer = new MethodsEqualityComparer ();
-		return methodComparer.Equals (x.Methods, y.Methods);
+		if (!methodComparer.Equals (x.Methods, y.Methods))
+			return false;
+
+		return methodComparer.Equals (x.ParentProtocolMethods, y.ParentProtocolMethods);
 	}
 
 	/// <inheritdoc />

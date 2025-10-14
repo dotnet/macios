@@ -4367,9 +4367,6 @@ namespace Intents {
 		INEndWorkoutIntentResponseCode Code { get; }
 	}
 
-	/// <summary>Defines the <see cref="Intents.IINIntentHandlerProvider" /> interface implemented by <see cref="Intents.INExtension" />.</summary>
-	/// <remarks>
-	///     </remarks>
 	[TV (14, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]

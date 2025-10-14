@@ -9,16 +9,9 @@ namespace Xharness {
 	}
 
 	public class DeviceLogCapturerFactory : IDeviceLogCapturerFactory {
-		readonly IMlaunchProcessManager processManager;
-
-		public DeviceLogCapturerFactory (IMlaunchProcessManager processManager)
-		{
-			this.processManager = processManager ?? throw new ArgumentNullException (nameof (processManager));
-		}
-
 		public IDeviceLogCapturer Create (ILog mainLog, ILog deviceLog, string deviceName)
 		{
-			return new DeviceLogCapturer (processManager, mainLog, deviceLog, deviceName);
+			return new DeviceLogCapturer (mainLog, deviceLog, deviceName);
 		}
 	}
 }

@@ -1,0 +1,57 @@
+!missing-field! ar_error_domain not bound
+!missing-pinvoke! ar_anchor_get_identifier is not bound
+!missing-pinvoke! ar_anchor_get_origin_from_anchor_transform is not bound
+!missing-pinvoke! ar_anchor_get_timestamp is not bound
+!missing-pinvoke! ar_authorization_result_get_authorization_type is not bound
+!missing-pinvoke! ar_authorization_result_get_status is not bound
+!missing-pinvoke! ar_authorization_results_enumerate_results is not bound
+!missing-pinvoke! ar_authorization_results_enumerate_results_f is not bound
+!missing-pinvoke! ar_authorization_results_get_count is not bound
+!missing-pinvoke! ar_data_provider_get_required_authorization_type is not bound
+!missing-pinvoke! ar_data_provider_get_state is not bound
+!missing-pinvoke! ar_data_providers_add_data_provider is not bound
+!missing-pinvoke! ar_data_providers_add_data_providers is not bound
+!missing-pinvoke! ar_data_providers_create is not bound
+!missing-pinvoke! ar_data_providers_create_with_data_providers is not bound
+!missing-pinvoke! ar_data_providers_enumerate_data_providers is not bound
+!missing-pinvoke! ar_data_providers_enumerate_data_providers_f is not bound
+!missing-pinvoke! ar_data_providers_get_count is not bound
+!missing-pinvoke! ar_data_providers_remove_data_provider is not bound
+!missing-pinvoke! ar_data_providers_remove_data_providers is not bound
+!missing-pinvoke! ar_device_anchor_create is not bound
+!missing-pinvoke! ar_device_anchor_get_identifier is not bound
+!missing-pinvoke! ar_device_anchor_get_origin_from_anchor_transform is not bound
+!missing-pinvoke! ar_device_anchor_get_timestamp is not bound
+!missing-pinvoke! ar_device_anchor_get_tracking_state is not bound
+!missing-pinvoke! ar_device_anchor_is_tracked is not bound
+!missing-pinvoke! ar_error_copy_cf_error is not bound
+!missing-pinvoke! ar_error_get_error_code is not bound
+!missing-pinvoke! ar_release is not bound
+!missing-pinvoke! ar_retain is not bound
+!missing-pinvoke! ar_session_copy_data_providers is not bound
+!missing-pinvoke! ar_session_create_with_device is not bound
+!missing-pinvoke! ar_session_run is not bound
+!missing-pinvoke! ar_session_set_data_provider_state_change_handler is not bound
+!missing-pinvoke! ar_session_set_data_provider_state_change_handler_f is not bound
+!missing-pinvoke! ar_session_stop is not bound
+!missing-pinvoke! ar_trackable_anchor_is_tracked is not bound
+!missing-pinvoke! ar_world_tracking_configuration_create is not bound
+!missing-pinvoke! ar_world_tracking_provider_create is not bound
+!missing-pinvoke! ar_world_tracking_provider_get_required_authorization_type is not bound
+!missing-pinvoke! ar_world_tracking_provider_is_supported is not bound
+!missing-pinvoke! ar_world_tracking_provider_query_device_anchor_at_timestamp is not bound
+!missing-protocol! OS_ar_anchor not bound
+!missing-protocol! OS_ar_authorization_result not bound
+!missing-protocol! OS_ar_authorization_results not bound
+!missing-protocol! OS_ar_data_provider not bound
+!missing-protocol! OS_ar_data_providers not bound
+!missing-protocol! OS_ar_device not bound
+!missing-protocol! OS_ar_device_anchor not bound
+!missing-protocol! OS_ar_error not bound
+!missing-protocol! OS_ar_session not bound
+!missing-protocol! OS_ar_strings not bound
+!missing-protocol! OS_ar_trackable_anchor not bound
+!missing-protocol! OS_ar_world_anchor not bound
+!missing-protocol! OS_ar_world_anchors not bound
+!missing-protocol! OS_ar_world_tracking_configuration not bound
+!missing-protocol! OS_ar_world_tracking_provider not bound

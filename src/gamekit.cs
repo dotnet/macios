@@ -117,12 +117,6 @@ namespace GameKit {
 	delegate void GKChallengeComposeHandler2 (UIViewController composeController, bool issuedChallenge, [NullAllowed] GKPlayer [] sentPlayers);
 #endif
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="GameKit.GKVoiceChatClient" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="GameKit.GKVoiceChatClient" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="GameKit.GKVoiceChatClient" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="GameKit.GKVoiceChatClient_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IGKVoiceChatClient { }
 
 	/// <summary>The model that GKVoiceChatService uses.</summary>
@@ -619,6 +613,26 @@ namespace GameKit {
 		[MacCatalyst (14, 0)]
 		[Export ("type")]
 		GKLeaderboardType Type { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("leaderboardDescription")]
+		string LeaderboardDescription { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("releaseState", ArgumentSemantic.Assign)]
+		GKReleaseState ReleaseState { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("activityIdentifier")]
+		string ActivityIdentifier { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("activityProperties", ArgumentSemantic.Strong)]
+		NSDictionary<NSString, NSString> ActivityProperties { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("isHidden")]
+		bool IsHidden { get; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -683,7 +697,7 @@ namespace GameKit {
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
-	interface GKBasePlayer {
+	interface GKBasePlayer : NSCopying {
 		[Deprecated (PlatformName.iOS, 13, 0, message: "Use the GKPlayer.TeamPlayerId property to identify a player instead.")]
 		[Deprecated (PlatformName.TvOS, 13, 0, message: "Use the GKPlayer.TeamPlayerId property to identify a player instead.")]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use the GKPlayer.TeamPlayerId property to identify a player instead.")]
@@ -741,7 +755,6 @@ namespace GameKit {
 			""")]
 		void LoadPlayersForIdentifiers (string [] identifiers, [NullAllowed] GKPlayersHandler completionHandler);
 
-		/// <include file="../docs/api/GameKit/GKPlayer.xml" path="/Documentation/Docs[@DocId='P:GameKit.GKPlayer.DidChangeNotificationNameNotification']/*" />
 		[Field ("GKPlayerDidChangeNotificationName")]
 		[Notification]
 		// This name looks wrong, see the "Notification" at the end.
@@ -957,7 +970,6 @@ namespace GameKit {
 		UIViewController ChallengeComposeController ([NullAllowed] string message, [NullAllowed] GKPlayer [] players, [NullAllowed] GKChallengeComposeHandler completionHandler);
 	}
 
-	/// <include file="../docs/api/GameKit/IGKLeaderboardViewControllerDelegate.xml" path="/Documentation/Docs[@DocId='T:GameKit.IGKLeaderboardViewControllerDelegate']/*" />
 	interface IGKLeaderboardViewControllerDelegate { }
 
 	/// <summary>A delegate object that allows fine-grained control over <see cref="GameKit.GKLeaderboardViewController" /> events.</summary>
@@ -1104,7 +1116,6 @@ namespace GameKit {
 			""")]
 		void LoadFriends ([NullAllowed] GKFriendsHandler handler);
 
-		/// <include file="../docs/api/GameKit/GKLocalPlayer.xml" path="/Documentation/Docs[@DocId='P:GameKit.GKLocalPlayer.AuthenticationDidChangeNotificationName']/*" />
 		[Field ("GKPlayerAuthenticationDidChangeNotificationName")]
 		[Notification]
 		NSString AuthenticationDidChangeNotificationName { get; }
@@ -1466,12 +1477,6 @@ namespace GameKit {
 
 	interface IGKMatchDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="GameKit.GKMatchDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="GameKit.GKMatchDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="GameKit.GKMatchDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="GameKit.GKMatchDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2032,12 +2037,6 @@ namespace GameKit {
 
 	interface IGKMatchmakerViewControllerDelegate { }
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="GameKit.GKMatchmakerViewControllerDelegate" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="GameKit.GKMatchmakerViewControllerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="GameKit.GKMatchmakerViewControllerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="GameKit.GKMatchmakerViewControllerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -2322,11 +2321,19 @@ namespace GameKit {
 		[Export ("challengeComposeControllerWithMessage:players:completionHandler:")]
 		UIViewController ChallengeComposeController ([NullAllowed] string message, GKPlayer [] players, [NullAllowed] GKChallengeComposeHandler completionHandler);
 
+		[Deprecated (PlatformName.iOS, 26, 0)]
+		[Deprecated (PlatformName.MacOSX, 26, 0)]
+		[Deprecated (PlatformName.TvOS, 26, 0)]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0)]
 		[TV (17, 0), iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("challengeComposeControllerWithMessage:players:completion:")]
 		[Async (ResultTypeName = "GKChallengeComposeControllerResult")]
 		UIViewController ChallengeComposeControllerWithMessage ([NullAllowed] string message, GKPlayer [] players, [NullAllowed] GKChallengeComposeHandler2 completionHandler);
 
+		[Deprecated (PlatformName.iOS, 26, 0)]
+		[Deprecated (PlatformName.MacOSX, 26, 0)]
+		[Deprecated (PlatformName.TvOS, 26, 0)]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0)]
 		[MacCatalyst (13, 1)]
 		[Async (XmlDocs = """
 			<param name="players">To be added.</param>
@@ -2444,9 +2451,16 @@ namespace GameKit {
 		[TV (18, 4), Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4)]
 		[Export ("releaseState", ArgumentSemantic.Assign)]
 		GKReleaseState ReleaseState { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("activityIdentifier")]
+		string ActivityIdentifier { get; }
+
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		[Export ("activityProperties", ArgumentSemantic.Strong)]
+		NSDictionary<NSString, NSString> ActivityProperties { get; }
 	}
 
-	/// <include file="../docs/api/GameKit/IGKAchievementViewControllerDelegate.xml" path="/Documentation/Docs[@DocId='T:GameKit.IGKAchievementViewControllerDelegate']/*" />
 	interface IGKAchievementViewControllerDelegate { }
 
 	/// <summary>A delegate object that allows <see cref="GameKit.GKAchievementViewController" /> to respond to lifecycle events.</summary>
@@ -2528,9 +2542,13 @@ namespace GameKit {
 		GKDialogController SharedDialogController { get; }
 	}
 
-	/// <summary>A <see cref="UIKit.UINavigationController" /> that presents a screen for sending friend requests.</summary>
-	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameKit/Reference/GKFriendRequestComposeViewController_Ref/index.html">Apple documentation for <c>GKFriendRequestComposeViewController</c></related>
+#if MONOMAC
+	/// <summary>A <see cref="NSViewController" /> that presents a screen for sending friend requests.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameKit/Reference/GKFriendRequestComposeViewController_Ref/index.html">Apple documentation for <c>GKFriendRequestComposeViewController</c></related>
+#else
+	/// <summary>A <see cref="UINavigationController" /> that presents a screen for sending friend requests.</summary>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GameKit/Reference/GKFriendRequestComposeViewController_Ref/index.html">Apple documentation for <c>GKFriendRequestComposeViewController</c></related>
+#endif
 	[Deprecated (PlatformName.MacOSX, 10, 12)]
 	[Deprecated (PlatformName.iOS, 10, 0)]
 	[NoMacCatalyst]
@@ -2588,7 +2606,6 @@ namespace GameKit {
 		void SetMessage ([NullAllowed] string message);
 	}
 
-	/// <include file="../docs/api/GameKit/IGKFriendRequestComposeViewControllerDelegate.xml" path="/Documentation/Docs[@DocId='T:GameKit.IGKFriendRequestComposeViewControllerDelegate']/*" />
 	interface IGKFriendRequestComposeViewControllerDelegate { }
 
 	/// <summary>A delegate object that allows fine-grained response to <see cref="GameKit.GKFriendRequestComposeViewController" /> life-cycle events.</summary>
@@ -2678,12 +2695,6 @@ namespace GameKit {
 		NSDate TimeoutDate { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="GameKit.GKTurnBasedEventHandlerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="GameKit.GKTurnBasedEventHandlerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="GameKit.GKTurnBasedEventHandlerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="GameKit.GKTurnBasedEventHandlerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IGKTurnBasedEventHandlerDelegate { }
 
 	/// <summary>A delegate object that is allows fine-grained response to <see cref="GameKit.GKTurnBasedEventHandler" /> events.</summary>
@@ -3141,7 +3152,6 @@ namespace GameKit {
 
 	interface IGKTurnBasedMatchmakerViewControllerDelegate { }
 
-	/// <include file="../docs/api/GameKit/IGKTurnBasedMatchmakerViewControllerDelegate.xml" path="/Documentation/Docs[@DocId='T:GameKit.IGKTurnBasedMatchmakerViewControllerDelegate']/*" />
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[Model]
@@ -3191,6 +3201,10 @@ namespace GameKit {
 		void PlayerQuitForMatch (GKTurnBasedMatchmakerViewController viewController, GKTurnBasedMatch match);
 	}
 
+	[Deprecated (PlatformName.iOS, 26, 0)]
+	[Deprecated (PlatformName.MacOSX, 26, 0)]
+	[Deprecated (PlatformName.TvOS, 26, 0)]
+	[Deprecated (PlatformName.MacCatalyst, 26, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface GKChallenge : NSSecureCoding {
@@ -3253,6 +3267,10 @@ namespace GameKit {
 		GKPlayer ReceivingPlayer { get; }
 	}
 
+	[Deprecated (PlatformName.iOS, 26, 0)]
+	[Deprecated (PlatformName.MacOSX, 26, 0)]
+	[Deprecated (PlatformName.TvOS, 26, 0)]
+	[Deprecated (PlatformName.MacCatalyst, 26, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKChallenge))]
 	interface GKScoreChallenge {
@@ -3270,6 +3288,10 @@ namespace GameKit {
 		GKLeaderboardEntry LeaderboardEntry { get; }
 	}
 
+	[Deprecated (PlatformName.iOS, 26, 0)]
+	[Deprecated (PlatformName.MacOSX, 26, 0)]
+	[Deprecated (PlatformName.TvOS, 26, 0)]
+	[Deprecated (PlatformName.MacCatalyst, 26, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (GKChallenge))]
 	interface GKAchievementChallenge {
@@ -3279,6 +3301,10 @@ namespace GameKit {
 		GKAchievement Achievement { get; }
 	}
 
+	[Deprecated (PlatformName.iOS, 26, 0)]
+	[Deprecated (PlatformName.MacOSX, 26, 0)]
+	[Deprecated (PlatformName.TvOS, 26, 0)]
+	[Deprecated (PlatformName.MacCatalyst, 26, 0)]
 	[DisableDefaultCtor] // the native 'init' method returned nil.
 	[MacCatalyst (13, 1)]
 	[BaseType (
@@ -3383,7 +3409,10 @@ namespace GameKit {
 
 	interface IGKGameCenterControllerDelegate { }
 
-	/// <include file="../docs/api/GameKit/IGKGameCenterControllerDelegate.xml" path="/Documentation/Docs[@DocId='T:GameKit.IGKGameCenterControllerDelegate']/*" />
+	[Deprecated (PlatformName.iOS, 26, 0)]
+	[Deprecated (PlatformName.MacOSX, 26, 0)]
+	[Deprecated (PlatformName.TvOS, 26, 0)]
+	[Deprecated (PlatformName.MacCatalyst, 26, 0)]
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -3431,12 +3460,6 @@ namespace GameKit {
 		GKChallengeEventHandler Instance { get; }
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="GameKit.GKChallengeEventHandlerDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="GameKit.GKChallengeEventHandlerDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="GameKit.GKChallengeEventHandlerDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="GameKit.GKChallengeEventHandlerDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IGKChallengeEventHandlerDelegate { }
 
 	/// <summary>A delegate object that allows the application developer fine-grained response to life-cycle events relating to <see cref="GameKit.GKChallenge" />s, such as receiving or completing a challenge.</summary>
@@ -3635,7 +3658,6 @@ namespace GameKit {
 
 	interface IGKLocalPlayerListener { }
 
-	/// <include file="../docs/api/GameKit/IGKLocalPlayerListener.xml" path="/Documentation/Docs[@DocId='T:GameKit.IGKLocalPlayerListener']/*" />
 	[MacCatalyst (13, 1)]
 	[Model, Protocol, BaseType (typeof (NSObject))]
 	interface GKLocalPlayerListener : GKTurnBasedEventListener
@@ -3645,12 +3667,6 @@ namespace GameKit {
 		, GKChallengeListener, GKInviteEventListener {
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="GameKit.GKChallengeListener" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="GameKit.GKChallengeListener" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="GameKit.GKChallengeListener" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="GameKit.GKChallengeListener_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Model, Protocol, BaseType (typeof (NSObject))]
 	interface GKChallengeListener {
@@ -3685,12 +3701,6 @@ namespace GameKit {
 		void IssuedChallengeWasCompleted (GKPlayer player, GKChallenge challenge, GKPlayer friendPlayer);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="GameKit.GKInviteEventListener" />.</summary>
-	/// <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="GameKit.GKInviteEventListener" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="GameKit.GKInviteEventListener" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="GameKit.GKInviteEventListener_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol, Model, BaseType (typeof (NSObject))]
 	interface GKInviteEventListener {
@@ -4111,12 +4121,6 @@ namespace GameKit {
 	interface GKViewController {
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="GameKit.GKSessionDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="GameKit.GKSessionDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="GameKit.GKSessionDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="GameKit.GKSessionDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IGKSessionDelegate { }
 
 	/// <summary>Delegate for the GKSession class.</summary>
@@ -4185,6 +4189,10 @@ namespace GameKit {
 		[Export ("isPresentingGameCenter")]
 		bool IsPresentingGameCenter { get; }
 
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Unsupported.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, message: "Unsupported.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, message: "Unsupported.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Unsupported.")]
 		[Export ("showHighlights")]
 		bool ShowHighlights { get; set; }
 
@@ -4218,6 +4226,30 @@ namespace GameKit {
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 		[Export ("triggerAccessPointWithPlayer:handler:")]
 		void TriggerAccessPoint (GKPlayer player, [NullAllowed] Action handler);
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("triggerAccessPointForPlayTogetherWithHandler:")]
+		void TriggerAccessPointForPlayTogether ([NullAllowed] Action handler);
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("triggerAccessPointForChallengesWithHandler:")]
+		void TriggerAccessPointForChallenges ([NullAllowed] Action handler);
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("triggerAccessPointWithChallengeDefinitionID:handler:")]
+		void TriggerAccessPointWithChallengeDefinitionId (string challengeDefinitionId, [NullAllowed] Action handler);
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("triggerAccessPointWithGameActivityDefinitionID:handler:")]
+		void TriggerAccessPointWithGameActivityDefinitionId (string gameActivityDefinitionId, [NullAllowed] Action handler);
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("triggerAccessPointWithGameActivity:handler:")]
+		void TriggerAccessPointWithGameActivity (GKGameActivity gameActivity, [NullAllowed] Action handler);
+
+		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
+		[Export ("triggerAccessPointForFriendingWithHandler:")]
+		void TriggerAccessPointForFriending ([NullAllowed] Action handler);
 	}
 
 	[TV (14, 0), iOS (14, 0)]
@@ -4252,6 +4284,10 @@ namespace GameKit {
 		[Export ("challengeComposeControllerWithMessage:players:completionHandler:")]
 		UIViewController ChallengeComposeController ([NullAllowed] string message, [NullAllowed] GKPlayer [] players, [NullAllowed] GKChallengeComposeHandler completionHandler);
 
+		[Deprecated (PlatformName.iOS, 26, 0)]
+		[Deprecated (PlatformName.MacOSX, 26, 0)]
+		[Deprecated (PlatformName.TvOS, 26, 0)]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0)]
 		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Export ("challengeComposeControllerWithMessage:players:completion:")]
 		[Async (ResultTypeName = "GKChallengeComposeControllerResult")]
@@ -4295,5 +4331,290 @@ namespace GameKit {
 		Unknown,
 		Released,
 		Prereleased,
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	delegate void GKChallengeDefinitionLoadImageHandler ([NullAllowed] UIImage image, [NullAllowed] NSError error);
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	delegate void GKChallengeDefinitionLoadDefinitionsHandler (GKChallengeDefinition [] definitions, [NullAllowed] NSError error);
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	delegate void GKChallengeDefinitionHasActiveChallengesHandler (bool hasActiveChallenges, [NullAllowed] NSError error);
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface GKChallengeDefinition {
+
+		[Export ("identifier")]
+		string Identifier { get; }
+
+		[NullAllowed, Export ("groupIdentifier")]
+		string GroupIdentifier { get; }
+
+		[Export ("title")]
+		string Title { get; }
+
+		[NullAllowed, Export ("details")]
+		string Details { get; }
+
+		[Export ("durationOptions", ArgumentSemantic.Copy)]
+		NSDateComponents [] DurationOptions { get; }
+
+		[Export ("isRepeatable")]
+		bool IsRepeatable { get; }
+
+		[NullAllowed, Export ("leaderboard", ArgumentSemantic.Strong)]
+		GKLeaderboard Leaderboard { get; }
+
+		[Export ("releaseState")]
+		GKReleaseState ReleaseState { get; }
+
+		[Async]
+		[Export ("loadImageWithCompletionHandler:")]
+		void LoadImage (GKChallengeDefinitionLoadImageHandler completionHandler);
+
+		[Static]
+		[Async]
+		[Export ("loadChallengeDefinitionsWithCompletionHandler:")]
+		void LoadDefinitions (GKChallengeDefinitionLoadDefinitionsHandler completionHandler);
+
+		[Async]
+		[Export ("hasActiveChallengesWithCompletionHandler:")]
+		void HasActiveChallenges (GKChallengeDefinitionHasActiveChallengesHandler completionHandler);
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	delegate void GKGameActivityDefinitionLoadAchievementDescriptionsHandler ([NullAllowed] GKAchievementDescription [] descriptions, [NullAllowed] NSError error);
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	delegate void GKGameActivityDefinitionLoadLeaderboardsHandler ([NullAllowed] GKLeaderboard [] leaderboards, [NullAllowed] NSError error);
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	delegate void GKGameActivityDefinitionLoadImageHandler ([NullAllowed] UIImage image, [NullAllowed] NSError error);
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	delegate void GKGameActivityDefinitionLoadGameActivityDefinitionsHandler ([NullAllowed] GKGameActivityDefinition [] definitions, [NullAllowed] NSError error);
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface GKGameActivityDefinition {
+
+		[Export ("identifier")]
+		string Identifier { get; }
+
+		[NullAllowed, Export ("groupIdentifier")]
+		string GroupIdentifier { get; }
+
+		[Export ("title")]
+		string Title { get; }
+
+		[NullAllowed, Export ("details")]
+		string Details { get; }
+
+		[Export ("defaultProperties", ArgumentSemantic.Copy)]
+		NSDictionary<NSString, NSString> DefaultProperties { get; }
+
+		[NullAllowed, Export ("fallbackURL", ArgumentSemantic.Strong)]
+		NSUrl FallbackUrl { get; }
+
+		[Export ("supportsPartyCode")]
+		bool SupportsPartyCode { get; }
+
+		[Export ("maxPlayers", ArgumentSemantic.Strong)]
+		[BindAs (typeof (nuint?))]
+		NSNumber MaxPlayers { get; }
+
+		[Export ("minPlayers", ArgumentSemantic.Strong)]
+		[BindAs (typeof (nuint?))]
+		NSNumber MinPlayers { get; }
+
+		[Export ("supportsUnlimitedPlayers")]
+		bool SupportsUnlimitedPlayers { get; }
+
+		[Export ("playStyle", ArgumentSemantic.Assign)]
+		GKGameActivityPlayStyle PlayStyle { get; }
+
+		[Export ("releaseState")]
+		GKReleaseState ReleaseState { get; }
+
+		[Async]
+		[Export ("loadAchievementDescriptionsWithCompletionHandler:")]
+		void LoadAchievementDescriptions (GKGameActivityDefinitionLoadAchievementDescriptionsHandler completionHandler);
+
+		[Async]
+		[Export ("loadLeaderboardsWithCompletionHandler:")]
+		void LoadLeaderboards (GKGameActivityDefinitionLoadLeaderboardsHandler completionHandler);
+
+		[Async]
+		[Export ("loadImageWithCompletionHandler:")]
+		void LoadImage (GKGameActivityDefinitionLoadImageHandler completionHandler);
+
+		[Async]
+		[Static]
+		[Export ("loadGameActivityDefinitionsWithCompletionHandler:")]
+		void LoadDefinitions (GKGameActivityDefinitionLoadGameActivityDefinitionsHandler completionHandler);
+
+		[Async]
+		[Static]
+		[Export ("loadGameActivityDefinitionsWithIDs:completionHandler:")]
+		void LoadDefinitions ([NullAllowed] string [] activityDefinitionIds, GKGameActivityDefinitionLoadGameActivityDefinitionsHandler completionHandler);
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	delegate void GKGameActivityFindMatchHandler ([NullAllowed] GKMatch match, [NullAllowed] NSError error);
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	delegate void GKGameActivityFindPlayersForHostedMatchHandler ([NullAllowed] GKPlayer match, [NullAllowed] NSError error);
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	delegate void GKGameActivityCheckPendingGameActivityExistenceHandler (bool pendingGameActivityExists);
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface GKGameActivity {
+
+		[Export ("identifier")]
+		string Identifier { get; }
+
+		[Export ("activityDefinition", ArgumentSemantic.Strong)]
+		GKGameActivityDefinition ActivityDefinition { get; }
+
+		[Export ("properties", ArgumentSemantic.Copy)]
+		NSDictionary<NSString, NSString> Properties { get; set; }
+
+		[Export ("state", ArgumentSemantic.Assign)]
+		GKGameActivityState State { get; }
+
+		[NullAllowed, Export ("partyCode")]
+		string PartyCode { get; }
+
+		[NullAllowed, Export ("partyURL", ArgumentSemantic.Strong)]
+		NSUrl PartyUrl { get; }
+
+		[Export ("creationDate", ArgumentSemantic.Strong)]
+		NSDate CreationDate { get; }
+
+		[NullAllowed, Export ("startDate", ArgumentSemantic.Strong)]
+		NSDate StartDate { get; }
+
+		[NullAllowed, Export ("lastResumeDate", ArgumentSemantic.Strong)]
+		NSDate LastResumeDate { get; }
+
+		[NullAllowed, Export ("endDate", ArgumentSemantic.Strong)]
+		NSDate EndDate { get; }
+
+		[Export ("duration")]
+		double Duration { get; }
+
+		[Export ("achievements", ArgumentSemantic.Copy)]
+		NSSet<GKAchievement> Achievements { get; }
+
+		[Export ("leaderboardScores", ArgumentSemantic.Copy)]
+		NSSet<GKLeaderboardScore> LeaderboardScores { get; }
+
+		[Static]
+		[Export ("validPartyCodeAlphabet", ArgumentSemantic.Copy)]
+		string [] ValidPartyCodeAlphabet { get; }
+
+		[Static]
+		[Export ("startWithDefinition:partyCode:error:")]
+		[return: NullAllowed]
+		GKGameActivity Create (GKGameActivityDefinition activityDefinition, string partyCode, [NullAllowed] out NSError error);
+
+		[Static]
+		[Export ("startWithDefinition:error:")]
+		[return: NullAllowed]
+		GKGameActivity Create (GKGameActivityDefinition activityDefinition, [NullAllowed] out NSError error);
+
+		[Static]
+		[Export ("isValidPartyCode:")]
+		bool IsValidPartyCode (string partyCode);
+
+		[Export ("initWithDefinition:")]
+		NativeHandle Constructor (GKGameActivityDefinition activityDefinition);
+
+		[Export ("start")]
+		void Start ();
+
+		[Export ("pause")]
+		void Pause ();
+
+		[Export ("resume")]
+		void Resume ();
+
+		[Export ("end")]
+		void End ();
+
+		[Export ("setScoreOnLeaderboard:toScore:context:")]
+		void SetScore (GKLeaderboard leaderboard, nint score, nuint context);
+
+		[Export ("setScoreOnLeaderboard:toScore:")]
+		void SetScore (GKLeaderboard leaderboard, nint score);
+
+		[Export ("getScoreOnLeaderboard:")]
+		[return: NullAllowed]
+		GKLeaderboardScore GetScore (GKLeaderboard leaderboard);
+
+		[Export ("removeScoresFromLeaderboards:")]
+		void RemoveScores (GKLeaderboard [] leaderboards);
+
+		[Export ("setProgressOnAchievement:toPercentComplete:")]
+		void SetProgressOnAchievement (GKAchievement achievement, double percentComplete);
+
+		[Export ("setAchievementCompleted:")]
+		void SetAchievementCompleted (GKAchievement achievement);
+
+		[Export ("getProgressOnAchievement:")]
+		double GetProgressOnAchievement (GKAchievement achievement);
+
+		[Export ("removeAchievements:")]
+		void RemoveAchievements (GKAchievement [] achievements);
+
+		[return: NullAllowed]
+		[Export ("makeMatchRequest")]
+		GKMatchRequest MakeMatchRequest ();
+
+		[Async]
+		[Export ("findMatchWithCompletionHandler:")]
+		void FindMatch (GKGameActivityFindMatchHandler completionHandler);
+
+		[Async]
+		[Export ("findPlayersForHostedMatchWithCompletionHandler:")]
+		void FindPlayersForHostedMatch (GKGameActivityFindPlayersForHostedMatchHandler completionHandler);
+
+		[Static]
+		[Async]
+		[Export ("checkPendingGameActivityExistenceWithCompletionHandler:")]
+		void CheckPendingGameActivityExistence (GKGameActivityCheckPendingGameActivityExistenceHandler completionHandler);
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum GKGameActivityPlayStyle : long {
+		Unspecified = 0,
+		Synchronous = 1,
+		Asynchronous = 2,
+	}
+
+	[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Native]
+	public enum GKGameActivityState : ulong {
+		Initialized = 0,
+		Active = 1,
+		Paused = 2,
+		Ended = 4,
+	}
+
+	interface IGKGameActivityListener { }
+	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface GKGameActivityListener {
+
+		[Export ("player:wantsToPlayGameActivity:completionHandler:")]
+		void WantsToPlayGameActivity (GKPlayer player, GKGameActivity activity, Action<bool> completionHandler);
 	}
 }

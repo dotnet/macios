@@ -770,4 +770,46 @@ namespace Metal {
 		public ulong Impl;
 	}
 
+	/// <summary>A struct that represents a range of a Metal buffer.</summary>
+	[SupportedOSPlatform ("ios26.0")]
+	[SupportedOSPlatform ("maccatalyst26.0")]
+	[SupportedOSPlatform ("macos26.0")]
+	[SupportedOSPlatform ("tvos26.0")]
+	public struct MTL4BufferRange {
+		ulong bufferAddress;
+		ulong length;
+
+		/// <summary>The address of the buffer, including any offsets.</summary>
+		public ulong BufferAddress {
+			get => bufferAddress;
+			set => bufferAddress = value;
+		}
+
+		/// <summary>The length of the buffer. <see cref="ulong.MaxValue" /> specifies until the end of the buffer.</summary>
+		public ulong Length {
+			get => length;
+			set => length = value;
+		}
+
+		/// <summary>Create a new <see cref="MTL4BufferRange" /> with the specified buffer address and length.</summary>
+		/// <param name="bufferAddress">The buffer address, including any offest into the buffer.</param>
+		/// <param name="length">The length of the buffer.</param>
+		public MTL4BufferRange (ulong bufferAddress, ulong length)
+		{
+			this.bufferAddress = bufferAddress;
+			this.length = length;
+		}
+
+		/// <summary>Create a new <see cref="MTL4BufferRange" /> with the specified buffer address and length until the end of the buffer.</summary>
+		/// <param name="bufferAddress">The buffer address, including any offest into the buffer.</param>
+		public MTL4BufferRange (ulong bufferAddress)
+			: this (bufferAddress, ulong.MaxValue)
+		{
+		}
+
+		/// <summary>Create a new <see cref="MTL4BufferRange" /> with all zero values.</summary>
+		public MTL4BufferRange ()
+		{
+		}
+	}
 }

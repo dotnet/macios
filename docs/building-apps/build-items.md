@@ -198,6 +198,38 @@ Additional xml files to pass to the trimmer.
 
 This is the same as setting [TrimmerRootDescriptor](/dotnet/core/deploying/trimming/trimming-options?#root-descriptors).
 
+## LinkerArgument
+
+Additional arguments to pass to the native linker (`ld`) when compiling the main executable for an app or app extension.
+
+Example 1 (to link with the `AudioToolbox` framework):
+
+```xml
+<ItemGroup>
+    <LinkerArgument Include="-framework" />
+    <LinkerArgument Include="AudioToolbox" />
+</ItemGroup>
+```
+
+Example 2 (to link with a custom static library):
+
+```xml
+<ItemGroup>
+    <LinkerArgument Include="$(MSBuildProjectDirectory)/libCustom.a" />
+</ItemGroup>
+```
+
+Each argument to the linker is a separate `LinkerArgument`, and arguments must not be quoted.
+
+All the arguments will be passed to the native linker in the order they're
+added to the `LinkerArgument` item group, but the exact location within all
+the arguments passed to the native linker is not defined.
+
+The native executable will be rebuilt automatically if the set of
+`LinkerArgument` changes between builds, but if a `LinkerArgument` points to a
+file (such as a static library), and that file changes, this change will not
+be detected and the native executable will not be rebuilt automatically.
+
 ## Metal
 
 An item group that contains metal assets.
@@ -276,6 +308,27 @@ the `CollectAppManifestsDependsOn` property:
     </ItemGroup>
 </Target>
 ```
+
+### SkipCodesignItems
+
+An item group that specifies files or directories in the app bundle that should not be signed.
+
+The purpose is to exclude from signing files and directories that are copied
+manually (for instance through custom MSBuild targets in the project file) to
+the app bundle, and which are already signed.
+
+The path to include is the path to the file or directory relative to the root
+of the app bundle.
+
+Example:
+
+```xml
+<ItemGroup>
+    <SkipCodesignItems Include="Contents/SharedSupport/mysignedlibrary.dylib" />
+</ItemGroup>
+```
+
+Applicable to all platforms.
 
 ## XcodeProject
 

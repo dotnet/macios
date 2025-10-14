@@ -125,6 +125,14 @@ namespace CoreGraphics {
 		/// <summary>To be added.</summary>
 		RgbCif10 = 4 << 16,
 		/// <summary>To be added.</summary>
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("ios26.0", "Use 'CGBitmapInfo.ByteOrderInfoMask' instead.")]
+		[ObsoletedOSPlatform ("macos26.0", "Use 'CGBitmapInfo.ByteOrderInfoMask' instead.")]
+		[ObsoletedOSPlatform ("tvos26.0", "Use 'CGBitmapInfo.ByteOrderInfoMask' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst26.0", "Use 'CGBitmapInfo.ByteOrderInfoMask' instead.")]
 		Mask = 0xF0000,
 	}
 
@@ -877,6 +885,96 @@ namespace CoreGraphics {
 		[SupportedOSPlatform ("macos15.0")]
 		[SupportedOSPlatform ("tvos18.0")]
 		public bool ContainsImageSpecificToneMappingMetadata => CGImageContainsImageSpecificToneMappingMetadata (Handle) != 0;
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern float CGImageCalculateContentHeadroom (IntPtr /* CGImageRef cg_nullable */ image);
+
+		/// <summary>Get the calculated the content headroom.</summary>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public float CalculatedContentHeadroom {
+			get => CGImageCalculateContentHeadroom (this.GetHandle ());
+		}
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern float CGImageGetContentAverageLightLevel (IntPtr /* CGImageRef cg_nullable */ image);
+
+		/// <summary>Get the content average light level.</summary>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public float ContentAverageLightLevel {
+			get => CGImageGetContentAverageLightLevel (this.GetHandle ());
+		}
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern float CGImageCalculateContentAverageLightLevel (IntPtr /* CGImageRef cg_nullable */ image);
+
+		/// <summary>Get the calculated content average light level.</summary>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public float CalculatedContentAverageLightLevel {
+			get => CGImageCalculateContentAverageLightLevel (this.GetHandle ());
+		}
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern IntPtr /* CGImageRef cg_nullable */ CGImageCreateCopyWithContentAverageLightLevel (IntPtr /* CGImageRef cg_nullable */ image, float averageLightLevel);
+
+		/// <summary>Create a copy of this image, adding or replacing the content average light level.</summary>
+		/// <returns>A new <see cref="CGImage" /> instance of successful, <see langword="null" /> otherwise.</returns>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public CGImage? CopyWithContentAverageLightLevel (float contentAverageLightLevel)
+		{
+			var h = CGImageCreateCopyWithContentAverageLightLevel (this.GetHandle (), contentAverageLightLevel);
+			if (h == IntPtr.Zero)
+				return null;
+			return new CGImage (h, true);
+		}
+
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		[DllImport (Constants.CoreGraphicsLibrary)]
+		static extern IntPtr /* CGImageRef cg_nullable */ CGImageCreateCopyWithCalculatedHDRStats (IntPtr /* CGImageRef cg_nullable */ image);
+
+		/// <summary>Create a copy of this image, adding or replacing the calculated HDR stats.</summary>
+		/// <returns>A new <see cref="CGImage" /> instance of successful, <see langword="null" /> otherwise.</returns>
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[SupportedOSPlatform ("macos26.0")]
+		public CGImage? CopyWithCalculatedHdrStats ()
+		{
+			var h = CGImageCreateCopyWithCalculatedHDRStats (this.GetHandle ());
+			if (h == IntPtr.Zero)
+				return null;
+			return new CGImage (h, true);
+		}
 #endif // !COREBUILD
 	}
 }

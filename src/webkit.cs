@@ -41,9 +41,13 @@ using UIEdgeInsets = AppKit.NSEdgeInsets;
 using UIFindInteraction = Foundation.NSObject;
 using UIViewController = AppKit.NSViewController;
 using IUIEditMenuInteractionAnimating = Foundation.NSObject;
+using UIConversationContext = Foundation.NSObject;
+using UIInputSuggestion = Foundation.NSObject;
 #else
 #if __MACCATALYST__
 using AppKit;
+using UIConversationContext = Foundation.NSObject;
+using UIInputSuggestion = Foundation.NSObject;
 #else
 using NSDraggingInfo = Foundation.NSObject;
 using INSDraggingInfo = Foundation.NSObject;
@@ -2379,9 +2383,6 @@ namespace WebKit {
 		[Export ("alternateTitle")]
 		string AlternateTitle { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Field ("WebHistoryItemChangedNotification")]
 		[Notification]
 		NSString ChangedNotification { get; }
@@ -5072,6 +5073,7 @@ namespace WebKit {
 	/// <summary>A list of rules to apply to web content.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor] // Apple: "You don’t create a WKContentRuleList directly."
 	interface WKContentRuleList {
 		[Export ("identifier")]
 		string Identifier { get; }
@@ -5080,6 +5082,7 @@ namespace WebKit {
 	/// <summary>A store that contents rules for web content.</summary>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor] // instances created with the default ctor crashes on dealloc
 	interface WKContentRuleListStore {
 		[Static]
 		[Export ("defaultStore")]
@@ -5171,9 +5174,14 @@ namespace WebKit {
 			""")]
 		void DeleteCookie (NSHttpCookie cookie, [NullAllowed] Action completionHandler);
 
+		/// <summary>Add an observer to the cookie store.</summary>
+		/// <param name="observer">The observer to add.</param>
+		/// <remarks>The cookie store only keeps a weak reference to the <paramref name="observer" />, a separate (strong) reference must be kept for the observer to not be collected by the garbage collector. Call <see cref="RemoveObserver" /> to remove the observer to stop observing.</remarks>
 		[Export ("addObserver:")]
 		void AddObserver (IWKHttpCookieStoreObserver observer);
 
+		/// <summary>Remove an observer to the cookie store.</summary>
+		/// <param name="observer">The observer to remove.</param>
 		[Export ("removeObserver:")]
 		void RemoveObserver (IWKHttpCookieStoreObserver observer);
 
@@ -5186,6 +5194,11 @@ namespace WebKit {
 		[Export ("getCookiePolicy:")]
 		[Async]
 		void GetCookiePolicy (Action<WKCookiePolicy> completionHandler);
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Async]
+		[Export ("setCookies:completionHandler:")]
+		void SetCookies (NSHttpCookie [] cookies, [NullAllowed] Action completionHandler);
 	}
 
 	interface IWKHttpCookieStoreObserver { }
@@ -5279,6 +5292,10 @@ namespace WebKit {
 		[MacCatalyst (14, 5)]
 		[Export ("shouldPerformDownload")]
 		bool ShouldPerformDownload { get; }
+
+		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0)]
+		[Export ("isContentRuleListRedirect")]
+		bool IsContentRuleListRedirect { get; }
 	}
 
 	/// <summary>Delegate object for <see cref="WebKit.WKNavigation" /> objects, provides methods relating to navigation and load policies.</summary>
@@ -5391,12 +5408,6 @@ namespace WebKit {
 
 	delegate void WKNavigationDelegateShouldGoToBackForwardListItemCallback (bool shouldGoToItem);
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="WebKit.WKNavigationDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="WebKit.WKNavigationDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="WebKit.WKNavigationDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="WebKit.WKNavigationDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IWKNavigationDelegate { }
 
 	/// <summary>Information about a navigation response. Can be used for policy decisions.</summary>
@@ -5404,6 +5415,7 @@ namespace WebKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKNavigationResponse_Ref/index.html">Apple documentation for <c>WKNavigationResponse</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
 	interface WKNavigationResponse {
 
 		/// <summary>Gets a value that indicates whether the response resulted from a request that was sent by the main frame.</summary>
@@ -5517,7 +5529,6 @@ namespace WebKit {
 		WKContentWorld World { get; }
 	}
 
-	/// <include file="../docs/api/WebKit/IWKScriptMessageHandler.xml" path="/Documentation/Docs[@DocId='T:WebKit.IWKScriptMessageHandler']/*" />
 	interface IWKScriptMessageHandler { }
 
 	/// <summary>Allows messages from JavaScript to be handled by the app.</summary>
@@ -5729,6 +5740,10 @@ namespace WebKit {
 		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("WKWebsiteDataTypeHashSalt")]
 		NSString HashSalt { get; }
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Field ("WKWebsiteDataTypeScreenTime")]
+		NSString TypeScreenTime { get; }
 	}
 
 	[NoiOS, NoMacCatalyst, Mac (14, 0)]
@@ -5754,6 +5769,9 @@ namespace WebKit {
 		[Field ("WebViewDidChangeSelectionNotification")]
 		NSString DidChangeSelection { get; }
 	}
+
+	delegate void WKWebsiteDataStoreFetchDataHandler ([NullAllowed] NSData data, [NullAllowed] NSError error);
+	delegate void WKWebsiteDataStoreRestoreDataHandler ([NullAllowed] NSError error);
 
 	/// <summary>Data that is associated with a website, such as cookies and caches.</summary>
 	///     
@@ -5843,6 +5861,16 @@ namespace WebKit {
 		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
 		[Export ("proxyConfigurations", ArgumentSemantic.Copy), NullAllowed]
 		NWProxyConfig [] ProxyConfigurations { get; set; }
+
+		[Async]
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("fetchDataOfTypes:completionHandler:")]
+		void FetchData (NSSet<NSString> dataTypes, WKWebsiteDataStoreFetchDataHandler completionHandler);
+
+		[Async]
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("restoreData:completionHandler:")]
+		void RestoreData (NSData data, WKWebsiteDataStoreRestoreDataHandler completionHandler);
 	}
 
 	[iOS (18, 4), NoTV]
@@ -6021,14 +6049,12 @@ namespace WebKit {
 		[NoMac, iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("webView:willDismissEditMenuWithAnimator:")]
 		void WillDismissEditMenu (WKWebView webView, IUIEditMenuInteractionAnimating animator);
+
+		[NoMacCatalyst, iOS (26, 0), NoMac]
+		[Export ("webView:insertInputSuggestion:")]
+		void InsertInputSuggestion (WKWebView webView, UIInputSuggestion inputSuggestion);
 	}
 
-	/// <summary>Interface representing the required methods (if any) of the protocol <see cref="WebKit.WKUIDelegate" />.</summary>
-	///     <remarks>
-	///       <para>This interface contains the required methods (if any) from the protocol defined by <see cref="WebKit.WKUIDelegate" />.</para>
-	///       <para>If developers create classes that implement this interface, the implementation methods will automatically be exported to Objective-C with the matching signature from the method defined in the <see cref="WebKit.WKUIDelegate" /> protocol.</para>
-	///       <para>Optional methods (if any) are provided by the <see cref="WebKit.WKUIDelegate_Extensions" /> class as extension methods to the interface, allowing developers to invoke any optional methods on the protocol.</para>
-	///     </remarks>
 	interface IWKUIDelegate { }
 
 	/// <summary>Allows posting messages and injecting user scripts into a Web page.</summary>
@@ -6119,6 +6145,9 @@ namespace WebKit {
 		[Export ("forMainFrameOnly")]
 		bool IsForMainFrameOnly { [Bind ("isForMainFrameOnly")] get; }
 	}
+
+	delegate void WKWebViewFetchDataHandler ([NullAllowed] NSData data, [NullAllowed] NSError error);
+	delegate void WKWebViewRestoreDataHandler ([NullAllowed] NSError error);
 
 	/// <summary>Displays a Web page.</summary>
 	///     
@@ -6594,6 +6623,28 @@ namespace WebKit {
 		[Mac (15, 0), iOS (18, 2), MacCatalyst (18, 0)]
 		[Export ("writingToolsActive")]
 		bool WritingToolsActive { [Bind ("isWritingToolsActive")] get; }
+
+		[NoMacCatalyst, iOS (26, 0), NoMac]
+		[Export ("conversationContext", ArgumentSemantic.Strong)]
+		UIConversationContext ConversationContext { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Async]
+		[Export ("fetchDataOfTypes:completionHandler:")]
+		void FetchData (WKWebViewDataType dataTypes, WKWebViewFetchDataHandler completionHandler);
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Async]
+		[Export ("restoreData:completionHandler:")]
+		void RestoreData (NSData data, WKWebViewRestoreDataHandler completionHandler);
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("obscuredContentInsets", ArgumentSemantic.Assign)]
+		UIEdgeInsets ObscuredContentInsets { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("isBlockedByScreenTime")]
+		bool IsBlockedByScreenTime { get; }
 	}
 
 	/// <param name="result">The result of a successful evaluation. <see langword="null" /> if error occurred.</param>
@@ -6612,6 +6663,9 @@ namespace WebKit {
 	interface WKWebViewConfiguration : NSCopying, NSSecureCoding {
 
 		[Export ("processPool", ArgumentSemantic.Retain)]
+		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
 		WKProcessPool ProcessPool { get; set; }
 
 		[Export ("preferences", ArgumentSemantic.Retain)]
@@ -6657,6 +6711,8 @@ namespace WebKit {
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
+		[Deprecated (PlatformName.iOS, 26, 0, message: "No longer supported.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "No longer supported.")]
 		[Export ("selectionGranularity")]
 		WKSelectionGranularity SelectionGranularity { get; set; }
 
@@ -6733,12 +6789,19 @@ namespace WebKit {
 		[iOS (18, 4), MacCatalyst (18, 4), Mac (15, 4), NoTV]
 		[Export ("webExtensionController", ArgumentSemantic.Strong), NullAllowed]
 		WKWebExtensionController WebExtensionController { get; set; }
+
+		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+		[Export ("showsSystemScreenTimeBlockingView")]
+		bool ShowsSystemScreenTimeBlockingView { get; set; }
 	}
 
 	/// <summary>A pool of content processes.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKProcessPool_Ref/index.html">Apple documentation for <c>WKProcessPool</c></related>
 	[MacCatalyst (13, 1)]
+	[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
+	[Deprecated (PlatformName.MacOSX, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
+	[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'WKWebsiteDataStore' instead. Creating multiple instances of 'WKProcessPool' no longer works.")]
 	[BaseType (typeof (NSObject))]
 	interface WKProcessPool : NSSecureCoding {
 		// as of Mac 10.10, iOS 8.0 Beta 2,
@@ -8282,5 +8345,12 @@ namespace WebKit {
 
 		[Field ("WKWebExtensionPermissionWebRequest")]
 		WebRequest = 1 << 15,
+	}
+
+	[Flags]
+	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
+	[Native]
+	public enum WKWebViewDataType : ulong {
+		SessionStorage = 1uL << 0,
 	}
 }

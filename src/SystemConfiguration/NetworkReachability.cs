@@ -464,7 +464,8 @@ namespace SystemConfiguration {
 			flags = default;
 			int rv;
 			unsafe {
-				rv = SCNetworkReachabilityGetFlags (Handle, (NetworkReachabilityFlags*) Unsafe.AsPointer<NetworkReachabilityFlags> (ref flags));
+				fixed (NetworkReachabilityFlags* flagsPtr = &flags)
+					rv = SCNetworkReachabilityGetFlags (Handle, flagsPtr);
 			}
 			return rv == 0 ? StatusCodeError.SCError () : StatusCode.OK;
 		}

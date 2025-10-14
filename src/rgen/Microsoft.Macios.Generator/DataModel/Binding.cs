@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -27,11 +27,24 @@ readonly partial struct Binding {
 	/// </summary>
 	public string Name => name;
 
+	readonly TypeInfo typeInfo = TypeInfo.Default;
+	/// <summary>
+	/// Gets the type information for the named type that generated the code change.
+	/// </summary>
+	public TypeInfo TypeInfo => typeInfo;
+
 	readonly ImmutableArray<string> namespaces = ImmutableArray<string>.Empty;
 	/// <summary>
 	/// The namespace that contains the named type that generated the code change.
 	/// </summary>
 	public ImmutableArray<string> Namespace => namespaces;
+
+	readonly ImmutableArray<OuterClass> outerClasses = ImmutableArray<OuterClass>.Empty;
+
+	/// <summary>
+	/// The containing classes of the type, if it's a nested type.
+	/// </summary>
+	public ImmutableArray<OuterClass> OuterClasses => outerClasses;
 
 	readonly ImmutableArray<string> interfaces = ImmutableArray<string>.Empty;
 	/// <summary>
@@ -108,7 +121,6 @@ readonly partial struct Binding {
 		}
 	}
 
-	readonly Dictionary<string, int> enumIndex = new ();
 	readonly ImmutableArray<EnumMember> enumMembers = [];
 
 	/// <summary>
@@ -116,24 +128,9 @@ readonly partial struct Binding {
 	/// </summary>
 	public ImmutableArray<EnumMember> EnumMembers {
 		get => enumMembers;
-		init {
-			enumMembers = value;
-			// populate the enum index for fast lookup using the symbol name
-			for (var index = 0; index < enumMembers.Length; index++) {
-				var member = enumMembers [index];
-				if (member.Selector is null)
-					continue;
-				enumIndex [member.Selector] = index;
-			}
-		}
+		init => enumMembers = value;
 	}
 
-	/// <summary>
-	/// Returns all the selectors for the enum members.
-	/// </summary>
-	public ImmutableArray<string> EnumMemberSelectors => [.. enumIndex.Keys];
-
-	readonly Dictionary<string, int> propertyIndex = new ();
 	readonly ImmutableArray<Property> properties = [];
 
 	/// <summary>
@@ -141,25 +138,29 @@ readonly partial struct Binding {
 	/// </summary>
 	public ImmutableArray<Property> Properties {
 		get => properties;
-		init {
-			properties = value;
-			// populate the property index for fast lookup using the symbol name
-			for (var index = 0; index < properties.Length; index++) {
-				var property = properties [index];
-				// there are two type of properties, those that are fields and those that are properties
-				if (property.Selector is null)
-					continue;
-				propertyIndex [property.Selector!] = index;
-			}
-		}
+		init => properties = value;
 	}
 
-	/// <summary>
-	/// Returns all the selectors for the properties.
-	/// </summary>
-	public ImmutableArray<string> PropertySelectors => [.. propertyIndex.Keys];
+	readonly ImmutableArray<Property> parentProperties = [];
 
-	readonly Dictionary<string, int> constructorIndex = new ();
+	/// <summary>
+	/// Gets the properties inherited from parent protocols.
+	/// </summary>
+	public ImmutableArray<Property> ParentProtocolProperties {
+		get => parentProperties;
+		init => parentProperties = value;
+	}
+
+	readonly ImmutableArray<Property> strongDictproperties = [];
+
+	/// <summary>
+	/// Changes to the properties of the symbol that is a StrongDictionary.
+	/// </summary>
+	public ImmutableArray<Property> StrongDictionaryProperties {
+		get => strongDictproperties;
+		init => strongDictproperties = value;
+	}
+
 	readonly ImmutableArray<Constructor> constructors = [];
 
 	/// <summary>
@@ -167,24 +168,18 @@ readonly partial struct Binding {
 	/// </summary>
 	public ImmutableArray<Constructor> Constructors {
 		get => constructors;
-		init {
-			constructors = value;
-			// populate the constructor index for fast lookup using the symbol name
-			for (var index = 0; index < constructors.Length; index++) {
-				var constructor = constructors [index];
-				if (constructor.Selector is null)
-					continue;
-				constructorIndex [constructor.Selector] = index;
-			}
-		}
+		init => constructors = value;
 	}
 
-	/// <summary>
-	/// Returns all the selectors for the constructors.
-	/// </summary>
-	public ImmutableArray<string> ConstructorSelectors => [.. constructorIndex.Keys];
+	readonly ImmutableArray<Constructor> protocolConstructors = [];
 
-	readonly Dictionary<string, int> eventsIndex = new ();
+	/// <summary>
+	/// Gets the constructors inherited from parent protocols.
+	/// </summary>
+	public ImmutableArray<Constructor> ProtocolConstructors {
+		get => protocolConstructors;
+	}
+
 	readonly ImmutableArray<Event> events = [];
 
 	/// <summary>
@@ -192,22 +187,9 @@ readonly partial struct Binding {
 	/// </summary>
 	public ImmutableArray<Event> Events {
 		get => events;
-		init {
-			events = value;
-			// populate the event index for fast lookup using the symbol name
-			for (var index = 0; index < events.Length; index++) {
-				var eventItem = events [index];
-				eventsIndex [eventItem.Name] = index;
-			}
-		}
+		init => events = value;
 	}
 
-	/// <summary>
-	/// Returns all the selectors for the events.
-	/// </summary>
-	public ImmutableArray<string> EventSelectors => [.. eventsIndex.Keys];
-
-	readonly Dictionary<string, int> methodIndex = new ();
 	readonly ImmutableArray<Method> methods = [];
 
 	/// <summary>
@@ -215,22 +197,18 @@ readonly partial struct Binding {
 	/// </summary>
 	public ImmutableArray<Method> Methods {
 		get => methods;
-		init {
-			methods = value;
-			// populate the method index for fast lookup using the symbol name
-			for (var index = 0; index < methods.Length; index++) {
-				var method = methods [index];
-				if (method.Selector is null)
-					continue;
-				methodIndex [method.Selector] = index;
-			}
-		}
+		init => methods = value;
 	}
 
+	readonly ImmutableArray<Method> parentMethods = [];
+
 	/// <summary>
-	/// Returns all the selectors for the methods.
+	/// Gets the methods inherited from parent protocols.
 	/// </summary>
-	public ImmutableArray<string> MethodSelectors => [.. methodIndex.Keys];
+	public ImmutableArray<Method> ParentProtocolMethods {
+		get => parentMethods;
+		init => parentMethods = value;
+	}
 
 	delegate bool SkipDelegate<in T> (T declarationSyntax, SemanticModel semanticModel);
 
@@ -240,14 +218,14 @@ readonly partial struct Binding {
 		where TR : struct;
 
 	static void GetMembers<T, TR> (TypeDeclarationSyntax baseDeclarationSyntax, RootContext context,
-		SkipDelegate<T> skip, TryCreateDelegate<T, TR> tryCreate, out ImmutableArray<TR> members)
+		SkipDelegate<T> skip, TryCreateDelegate<T, TR> tryCreate, out ImmutableArray<TR> members, bool validateMembers)
 		where T : MemberDeclarationSyntax
 		where TR : struct
 	{
 		var bucket = ImmutableArray.CreateBuilder<TR> ();
 		var declarations = baseDeclarationSyntax.Members.OfType<T> ();
 		foreach (var declaration in declarations) {
-			if (skip (declaration, context.SemanticModel))
+			if (validateMembers && skip (declaration, context.SemanticModel))
 				continue;
 			if (tryCreate (declaration, context, out var change))
 				bucket.Add (change.Value);
@@ -255,61 +233,4 @@ readonly partial struct Binding {
 
 		members = bucket.ToImmutable ();
 	}
-
-	static bool TryGetFromIndex<T> (string selector, ImmutableArray<T> collection, Dictionary<string, int> index, [NotNullWhen (true)] out T? value)
-		where T : struct
-	{
-		if (index.TryGetValue (selector, out var indexValue)) {
-			value = collection [indexValue];
-			return true;
-		}
-
-		value = null;
-		return false;
-	}
-
-	/// <summary>
-	/// Get the enum member that matches the field name.
-	/// </summary>
-	/// <param name="fieldName">The native field name.</param>
-	/// <param name="enumMember">The enum member that matches the field name.</param>
-	/// <returns>True if the enum member was found. False otherwise.</returns>
-	public bool TryGetEnumValue (string fieldName, out EnumMember? enumMember)
-		=> TryGetFromIndex (fieldName, enumMembers, enumIndex, out enumMember);
-
-	/// <summary>
-	/// Get the property that matches the selector.
-	/// </summary>
-	/// <param name="selector">The selector used for the property. It can also be a field name.</param>
-	/// <param name="property">The property that matches the given selector/field name.</param>
-	/// <returns>True if the property was found. False otherwise.</returns>
-	public bool TryGetProperty (string selector, out Property? property)
-		=> TryGetFromIndex (selector, properties, propertyIndex, out property);
-
-	/// <summary>
-	/// Get the constructor that matches the selector.
-	/// </summary>
-	/// <param name="selector">The selector used for the constructor.</param>
-	/// <param name="constructor">The constructor that matches the given selector.</param>
-	/// <returns>True if the constructor was found. False otherwise.</returns>
-	public bool TryGetConstructor (string selector, out Constructor? constructor)
-		=> TryGetFromIndex (selector, constructors, constructorIndex, out constructor);
-
-	/// <summary>
-	/// Get the event that matches the selector.
-	/// </summary>
-	/// <param name="selector">The selector used for the event.</param>
-	/// <param name="event">The event that matches the given selector.</param>
-	/// <returns>True if the event was found. False otherwise.</returns>
-	public bool TryGetEvent (string selector, out Event? @event)
-		=> TryGetFromIndex (selector, events, eventsIndex, out @event);
-
-	/// <summary>
-	/// Get The method that matches the selector.
-	/// </summary>
-	/// <param name="selector">The selector used for the method.</param>
-	/// <param name="method">The method that matches the given selector.</param>
-	/// <returns>True if the method was found. False otherwise.</returns>
-	public bool TryGetMethod (string selector, out Method? method)
-		=> TryGetFromIndex (selector, methods, methodIndex, out method);
 }

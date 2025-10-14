@@ -218,7 +218,7 @@ steps:
 
 # Use the provisionator to install the test dependencies. Those have been generated in the 'Generate Provisionator csx file' step.
 - task: xamops.azdevex.provisionator-task.provisionator@2
-  displayName: 'Provision dependencies'
+  displayName: 'Provisionator dependencies'
   inputs:
     provisioning_script: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/build-provisioning.csx
     provisioning_extra_args: '-vvvv'
@@ -228,19 +228,21 @@ steps:
 - task: UseDotNet@2
   inputs:
     version: $(DotNetSdkVersion).x
+    installationPath: $(Agent.TempDirectory)/dotnet
 
 - bash: |
     set -x
     set -e
     ARGS=()
     ARGS+=(--provision-simulators)
+    ARGS+=(--provision-xcode-components)
     if [[ "$XCODE_CHANNEL" == "Beta" ]]; then
       ARGS+=(--provision-old-simulators)
     fi
     ARGS+=(--ignore-shellcheck)
     ARGS+=(--ignore-yamllint)
     $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/system-dependencies.sh "${ARGS[@]}"
-  displayName: 'Provision simulators'
+  displayName: 'Provision system dependencies'
   timeoutInMinutes: 250
   env:
     XCODE_CHANNEL: ${{ parameters.XcodeChannel }}

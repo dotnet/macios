@@ -123,19 +123,18 @@ namespace CoreAnimation {
 			}
 		}
 
-		/// <typeparam name="T">To be added.</typeparam>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Get the <see cref="Contents" /> property for an object that is not <see cref="CGImage" />.</summary>
+		/// <typeparam name="T">The type of the returned object.</typeparam>
+		/// <returns>The <see cref="Contents" /> property, but using the specified <typeparamref name="T" /> type.</returns>
+		/// <remarks>Specifying an incorrect type for <typeparamref name="T" /> will result in undefined behavior.</remarks>
 		public T? GetContentsAs<T> () where T : NSObject
 		{
 			return Runtime.GetNSObject<T> (_Contents);
 		}
 
-		/// <param name="value">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public void SetContents (NSObject value)
+		/// <summary>Set the <see cref="Contents" /> property to an object that is not <see cref="CGImage" />.</summary>
+		/// <param name="value">The value to set the <see cref="Contents" /> property to.</param>
+		public void SetContents (NSObject? value)
 		{
 			_Contents = value.GetHandle ();
 			GC.KeepAlive (value);

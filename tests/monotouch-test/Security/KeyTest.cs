@@ -297,6 +297,9 @@ namespace MonoTouchFixtures.Security {
 		[Test]
 		public void SignVerifyRSAMinPKCS1SHA1 ()
 		{
+			if (RuntimeInformation.ProcessArchitecture == Architecture.X64)
+				Assert.Ignore ("This test raises a SIGFPE signal which ends up killing the process on x64.");
+
 			SecKey private_key;
 			SecKey public_key;
 			var label = $"KeyTest.SignVerifyRSAMinPKCS1SHA1-{CFBundle.GetMain ().Identifier}-{GetType ().FullName}-{Process.GetCurrentProcess ().Id}";

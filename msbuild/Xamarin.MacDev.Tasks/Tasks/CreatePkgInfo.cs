@@ -24,7 +24,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			if (!File.Exists (OutputPath.ItemSpec)) {
 				Directory.CreateDirectory (Path.GetDirectoryName (OutputPath.ItemSpec));

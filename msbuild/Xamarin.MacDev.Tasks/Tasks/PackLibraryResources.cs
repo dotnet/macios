@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Xamarin.Localization.MSBuild;
+using Xamarin.Messaging.Build.Client;
 
 namespace Xamarin.MacDev.Tasks {
 	public class PackLibraryResources : XamarinTask, ICancelableTask {
@@ -47,6 +49,26 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
+			if (ShouldExecuteRemotely ()) {
+				// some of the files we're asked to pack might just be 0-length output/stamp files, so we need to get the content of those files from the Mac.
+				var itemsToCopyFromBuildServer = new List<ITaskItem> ();
+				foreach (var item in BundleResourcesWithLogicalNames) {
+					var itemPath = item.ItemSpec!;
+					if (!File.Exists (itemPath))
+						continue; // not sure what could be causing this, so just don't handle this condition
+
+					if (new FileInfo (itemPath).Length != 0)
+						continue; // we have a file with some contents, so we should be good
+
+					itemsToCopyFromBuildServer.Add (item);
+				}
+
+				if (itemsToCopyFromBuildServer.Any ()) {
+					var taskRunner = new TaskRunner (SessionId, BuildEngine4);
+					CopyFilesToWindowsAsync (taskRunner, itemsToCopyFromBuildServer).Wait ();
+				}
+			}
+
 			var results = new List<ITaskItem> ();
 
 			var hashOriginalResources = new HashSet<string> (BundleOriginalResourcesWithLogicalNames.Select (v => v.ItemSpec));

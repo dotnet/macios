@@ -29,7 +29,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			return ExecuteLocally ();
 		}

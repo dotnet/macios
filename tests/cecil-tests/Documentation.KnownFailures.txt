@@ -12434,6 +12434,8 @@ M:HomeKit.HMHomeManager.add_DidUpdateAuthorizationStatus(System.EventHandler{Hom
 M:HomeKit.HMHomeManager.add_DidUpdateHomes(System.EventHandler)
 M:HomeKit.HMHomeManager.add_DidUpdatePrimaryHome(System.EventHandler)
 M:HomeKit.HMHomeManager.Dispose(System.Boolean)
+M:HomeKit.HMHomeManager.FindVendorAccessory(Foundation.NSData,HomeKit.HMHomeManagerFindVendorAccessoryCallback)
+M:HomeKit.HMHomeManager.FindVendorAccessoryAsync(Foundation.NSData)
 M:HomeKit.HMHomeManager.remove_DidAddHome(System.EventHandler{HomeKit.HMHomeManagerEventArgs})
 M:HomeKit.HMHomeManager.remove_DidReceiveAddAccessoryRequest(System.EventHandler{HomeKit.HMHomeManagerAddAccessoryRequestEventArgs})
 M:HomeKit.HMHomeManager.remove_DidRemoveHome(System.EventHandler{HomeKit.HMHomeManagerEventArgs})
@@ -21405,6 +21407,8 @@ P:HealthKit.HKLiveWorkoutBuilder.Delegate
 P:HealthKit.HKMedicationConcept.GeneralForm
 P:HealthKit.HKMetadata.AppleFitnessPlusCatalogIdentifier
 P:HealthKit.HKWorkoutSession.Delegate
+P:HomeKit.HMAccessory.HapInstanceId
+P:HomeKit.HMAccessory.VendorAccessory
 P:HomeKit.HMAccessoryBrowserEventArgs.Accessory
 P:HomeKit.HMAccessoryFirmwareVersionEventArgs.FirmwareVersion
 P:HomeKit.HMAccessoryProfileEventArgs.Profile
@@ -26819,6 +26823,7 @@ T:HomeKit.HMCharacteristicValueVolumeSelector
 T:HomeKit.HMCharacteristicValueWiFiSatelliteStatus
 T:HomeKit.HMFetchRoomHandler
 T:HomeKit.HMHomeManagerAuthorizationStatus
+T:HomeKit.HMHomeManagerFindVendorAccessoryCallback
 T:IdentityLookup.ILMessageFilterCapabilitiesQueryRequest
 T:IdentityLookup.ILMessageFilterCapabilitiesQueryResponse
 T:IdentityLookup.ILMessageFilterError

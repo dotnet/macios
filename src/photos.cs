@@ -1433,7 +1433,7 @@ namespace Photos {
 		[Export ("uploadJobExtensionEnabled")]
 		bool UploadJobExtensionEnabled { [Bind ("isUploadJobExtensionEnabled")] get; }
 
-		[NoTV, NoMacCatalyst, NoMac, iOS (26,1)]
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
 		[Export ("setUploadJobExtensionEnabled:error:")]
 		bool SetUploadJobExtensionEnabled (bool enable, [NullAllowed] out NSError error);
 	}
@@ -1901,8 +1901,7 @@ namespace Photos {
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
 	[BaseType (typeof (PHObject))]
 	[DisableDefaultCtor]
-	interface PHAssetResourceUploadJob
-	{
+	interface PHAssetResourceUploadJob {
 		[Static]
 		[Export ("jobLimit")]
 		nint JobLimit { get; }
@@ -1922,10 +1921,9 @@ namespace Photos {
 	}
 
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
-	[BaseType (typeof(PHChangeRequest))]
+	[BaseType (typeof (PHChangeRequest))]
 	[DisableDefaultCtor]
-	interface PHAssetResourceUploadJobChangeRequest
-	{
+	interface PHAssetResourceUploadJobChangeRequest {
 		[Static]
 		[Export ("createJobWithDestination:resource:")]
 		void CreateJob (NSUrlRequest destination, PHAssetResource resource);
@@ -1944,8 +1942,7 @@ namespace Photos {
 
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
 	[Native]
-	public enum PHAssetResourceUploadJobState : long
-	{
+	public enum PHAssetResourceUploadJobState : long {
 		Registered = 1,
 		Pending = 2,
 		Failed = 3,
@@ -1954,8 +1951,7 @@ namespace Photos {
 
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
 	[Native]
-	public enum PHAssetResourceUploadJobAction : long
-	{
+	public enum PHAssetResourceUploadJobAction : long {
 		Acknowledge = 1,
 		Retry = 2,
 	}

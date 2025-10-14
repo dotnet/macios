@@ -177,7 +177,7 @@ namespace Xamarin.Linker {
 					var needle = "Overwrite=";
 					if (value.StartsWith (needle, StringComparison.Ordinal)) {
 						var pipe = value.IndexOf ('|', needle.Length);
-						if (pipe > 0 ) {
+						if (pipe > 0) {
 							var overwriteString = value [needle.Length..pipe];
 							if (!TryParseOptionalBoolean (overwriteString, out var parsedOverwrite))
 								throw new InvalidOperationException ($"Unable to parse the 'Overwrite' value '{overwriteString}' for the environment variable entry '{value}' in {linker_file}");

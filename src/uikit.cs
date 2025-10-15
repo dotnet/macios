@@ -38413,10 +38413,9 @@ namespace UIKit {
 
 	// Header says available in iOS 11+, but I don't believe that
 	[iOS (26, 1), TV (26, 1), MacCatalyst (26, 1)]
-	[BaseType (typeof(UIVisualEffect))]
+	[BaseType (typeof (UIVisualEffect))]
 	[DisableDefaultCtor]
-	interface UIColorEffect
-	{
+	interface UIColorEffect {
 		[Static]
 		[Export ("effectWithColor:")]
 		UIColorEffect Create ([NullAllowed] UIColor color);

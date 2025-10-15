@@ -150,6 +150,8 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("tvos18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		Apac = 0x61706163, // 'apac'
+
+		// any new entries here might need new entries in the CMMediaSubType enum as well
 	}
 
 	/// <summary>Flags describing the stream in the <see cref="AudioToolbox.AudioStreamBasicDescription" />.</summary>

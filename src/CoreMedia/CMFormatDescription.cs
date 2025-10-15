@@ -75,14 +75,37 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* FourCharCode */ uint CMFormatDescriptionGetMediaSubType (/* CMFormatDescriptionRef */ IntPtr desc);
 
+#if XAMCORE_5_0
+		/// <summary>Returns the media subtype.</summary>
+		/// <remarks>
+		///   <para>
+		///     The type of this property, the enum <see cref="CMMediaSubType" />, might not contain entries for all valid
+		///     media subtypes, but the value can be cast to a <see cref="uint" /> and then treated as a fourcc value.
+		///   </para>
+		///   <para>
+		///     It's also possible to use any of the other strongly-typed versions as well: <see cref="AudioFormatType" />, <see cref="SubtitleFormatType" />,
+		///     <see cref="ClosedCaptionFormatType" />, <see cref="MuxedStreamType" />, <see cref="VideoCodecType" />,
+		///     <see cref="MetadataFormatType" />, <see cref="TimeCodeFormatType" /> or <see cref="TaggedBufferGroupFormatType" />.
+		///   <para>
+		/// </remarks>
+		public CMMediaSubType MediaSubType {
+#else
 		/// <summary>Returns the media subtype (as a fourcc value).</summary>
 		/// <remarks>
-		///   Instead of using this untyped property, it's often easier to use any of the
-		///   strongly-typed versions instead: <see cref="AudioFormatType" />, <see cref="SubtitleFormatType" />,
-		///   <see cref="ClosedCaptionFormatType" />, <see cref="MuxedStreamType" />, <see cref="VideoCodecType" />,
-		///   <see cref="MetadataFormatType" />, <see cref="TimeCodeFormatType" /> or <see cref="TaggedBufferGroupFormatType" />.
+		///   <para>
+		///     Instead of using this untyped property, it's often easier to use any of the
+		///     strongly-typed versions instead: <see cref="AudioFormatType" />, <see cref="SubtitleFormatType" />,
+		///     <see cref="ClosedCaptionFormatType" />, <see cref="MuxedStreamType" />, <see cref="VideoCodecType" />,
+		///     <see cref="MetadataFormatType" />, <see cref="TimeCodeFormatType" /> or <see cref="TaggedBufferGroupFormatType" />.
+		///   </para>
+		///   <para>
+		///     It's also possible to cast this value to <see cref="CMMediaSubType" />, but note
+		///     that the <see cref="CMMediaSubType" /> enum might not contain entries for all valid
+		///     values for this property.
+		///   </para>
 		/// </remarks>
 		public uint MediaSubType {
+#endif // XAMCORE_5_0
 			get {
 				return CMFormatDescriptionGetMediaSubType (Handle);
 			}

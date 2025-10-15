@@ -429,7 +429,7 @@ namespace CoreMedia {
 
 	[MacCatalyst (13, 1)]
 	public enum CMAudioCodecType : uint {
-	    AacLCProtected      = 0x70616163, // 'paac'
+		AacLCProtected = 0x70616163, // 'paac'
 		AacAudibleProtected = 0x61616163, // 'aaac'
 
 		// any new entries here might need new entries in the CMMediaSubType enum as well

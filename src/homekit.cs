@@ -322,7 +322,7 @@ namespace HomeKit {
 		/// Headers state this property is available in iOS 13+, but I don't believe that
 		[TV (26, 1), NoMac, iOS (26, 1), MacCatalyst (26, 1)]
 		[Export ("bridgedAccessories", ArgumentSemantic.Copy)]
-		HMAccessory[] BridgedAccessories { get; }
+		HMAccessory [] BridgedAccessories { get; }
 	}
 
 	interface IHMAccessoryDelegate { }

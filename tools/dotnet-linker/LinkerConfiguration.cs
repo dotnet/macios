@@ -173,11 +173,23 @@ namespace Xamarin.Linker {
 					Application.EnableSGenConc = string.Equals (value, "true", StringComparison.OrdinalIgnoreCase);
 					break;
 				case "EnvironmentVariable":
+					var overwrite = true;
+					var needle = "Overwrite=";
+					if (value.StartsWith (needle, StringComparison.Ordinal)) {
+						var pipe = value.IndexOf ('|', needle.Length);
+						if (pipe > 0) {
+							var overwriteString = value [needle.Length..pipe];
+							if (!TryParseOptionalBoolean (overwriteString, out var parsedOverwrite))
+								throw new InvalidOperationException ($"Unable to parse the 'Overwrite' value '{overwriteString}' for the environment variable entry '{value}' in {linker_file}");
+							overwrite = parsedOverwrite.Value;
+							value = value [(pipe + 1)..];
+						}
+					}
 					var separators = new char [] { ':', '=' };
 					var equals = value.IndexOfAny (separators);
 					var name = value.Substring (0, equals);
 					var val = value.Substring (equals + 1);
-					Application.EnvironmentVariables.Add (name, val);
+					Application.EnvironmentVariables.Add (name, new (val, overwrite));
 					break;
 				case "FrameworkAssembly":
 					FrameworkAssemblies.Add (value);

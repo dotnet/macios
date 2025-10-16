@@ -19,7 +19,7 @@ cat test.config
 INCLUDE_MAC=$(grep ^INCLUDE_MAC= test.config | sed 's/.*=//')
 INCLUDE_MACCATALYST=$(grep ^INCLUDE_MACCATALYST= test.config | sed 's/.*=//')
 XCODE_DEVELOPER_ROOT=$(grep ^XCODE_DEVELOPER_ROOT= test.config | sed 's/.*=//')
-export MD_APPLE_SDK_ROOT="$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")"
+export DEVELOPER_DIR="$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")"
 export RootTestsDirectory="$(pwd)"
 
 make

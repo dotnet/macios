@@ -29,12 +29,6 @@ namespace Xamarin.MacDev.Tasks {
 		static readonly string [] macDirectDistributionPrefixes = { "Developer ID Application" };
 		static readonly string [] macDevelopmentPrefixes = { "Mac Developer", "Apple Development" };
 
-		protected string DeveloperRoot {
-			get {
-				return Sdks.GetAppleSdk (TargetFrameworkMoniker).DeveloperRoot;
-			}
-		}
-
 		protected string [] DevelopmentPrefixes {
 			get {
 				switch (Platform) {
@@ -583,7 +577,7 @@ namespace Xamarin.MacDev.Tasks {
 			else if (ProvisioningProfile == AutomaticAdHocProvision)
 				type = MobileProvisionDistributionType.AdHoc;
 
-			DetectedCodesignAllocate = Path.Combine (DeveloperRoot, "Toolchains", "XcodeDefault.xctoolchain", "usr", "bin", "codesign_allocate");
+			DetectedCodesignAllocate = Path.Combine (CurrentSdk.DeveloperRoot, "Toolchains", "XcodeDefault.xctoolchain", "usr", "bin", "codesign_allocate");
 			DetectedDistributionType = type.ToString ();
 
 			identity.BundleId = BundleIdentifier;

@@ -20,11 +20,11 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CompileAppManifest> ();
 			task.AppBundleName = "AppBundleName";
 			task.CompiledAppManifest = new TaskItem (Path.Combine (tmpdir, "TemporaryAppManifest.plist"));
-			task.DefaultSdkVersion = Sdks.GetAppleSdk (platform).GetInstalledSdkVersions (false).First ().ToString ()!;
 			task.MinSupportedOSPlatformVersion = "10.0";
 			task.SupportedOSPlatformVersion = "15.0";
 			task.SdkVersion = task.DefaultSdkVersion ?? string.Empty;
 			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
+			task.DefaultSdkVersion = task.CurrentSdk.GetInstalledSdkVersions (false).First ().ToString ()!;
 
 			return task;
 		}

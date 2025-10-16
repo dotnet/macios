@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.Versioning;
-using Foundation;
-using ObjCRuntime;
 
 #if MONOMAC
 using GLContext = global::OpenGL.CGLContext;

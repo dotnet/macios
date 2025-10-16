@@ -1,7 +1,6 @@
 //
 // Release attribute
 //
-using System;
 
 namespace ObjCRuntime {
 	/// <summary>This attribute indicates that the return value of a function is retained (the caller obtains a reference to the object returned).</summary>

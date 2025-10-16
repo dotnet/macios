@@ -2,11 +2,6 @@
 
 #if __IOS__ || __MACCATALYST__ || __MACOS__
 
-using System;
-
-using Foundation;
-using ObjCRuntime;
-
 #nullable enable
 
 namespace CoreLocation {

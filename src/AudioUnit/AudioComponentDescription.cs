@@ -31,12 +31,8 @@
 
 #nullable enable
 
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
 using AudioToolbox;
-using Foundation;
 
 namespace AudioUnit {
 	/// <summary>An enumeration whose values represent different types of audio components.</summary>

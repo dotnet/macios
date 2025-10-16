@@ -1,22 +1,16 @@
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-using Foundation;
-using ObjCRuntime;
 #if !__TVOS__
 using MapKit;
 #endif
 using CoreAnimation;
 using CoreGraphics;
 using CoreLocation;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures {
 	[TestFixture]

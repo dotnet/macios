@@ -194,8 +194,40 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 			}
 
+			var signatureFile = GetSignatureFileLocation (item);
+			if (!string.IsNullOrEmpty (signatureFile) && !File.Exists (signatureFile)) {
+				Log.LogMessage (MessageImportance.Low, "The signature file '{0}' for the item '{0}' does not exist, so the item must be codesigned.", signatureFile, item.ItemSpec);
+				return true;
+			}
+
 			Log.LogMessage (MessageImportance.Low, "The stamp file '{0}' for the item '{1}' is up-to-date, so the item does not need to be codesigned.", stampFile, item.ItemSpec);
 			return false;
+		}
+
+		string? GetSignatureFileLocation (ITaskItem? item)
+		{
+			var path = item?.ItemSpec;
+#if NET
+			if (string.IsNullOrEmpty (path))
+#else
+			if (path is null || string.IsNullOrEmpty (path))
+#endif
+				return null;
+
+			if (path.EndsWith (".framework", StringComparison.OrdinalIgnoreCase) || path.EndsWith (".xpc", StringComparison.OrdinalIgnoreCase)) {
+				switch (Platform) {
+				case ApplePlatform.iOS:
+				case ApplePlatform.TVOS:
+					return Path.Combine (path, "_CodeSignature", "CodeResources");
+				case ApplePlatform.MacOSX:
+				case ApplePlatform.MacCatalyst:
+					return Path.Combine (path, "Versions", "A", "_CodeSignature", "CodeResources");
+				default:
+					throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+				}
+			}
+
+			return null;
 		}
 
 		bool ParseBoolean (ITaskItem item, string metadataName, bool fallbackValue)

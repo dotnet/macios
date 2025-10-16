@@ -7,12 +7,6 @@
 // Copyright 2023 Microsoft Corp. All rights reserved.
 //
 
-using System;
-using Foundation;
-using CoreFoundation;
-
-using NUnit.Framework;
-
 namespace MonoTouchFixtures.CoreFoundation {
 
 	[TestFixture]

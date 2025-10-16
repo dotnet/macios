@@ -8,7 +8,6 @@
 // Copyright 2022 Microsoft Corp. All rights reserved.
 //
 
-using System;
 using System.Diagnostics;
 
 namespace ObjCRuntime {

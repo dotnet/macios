@@ -9,10 +9,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace Vision {
 	/// <summary>This enum is used to select how to initialize a new instance of a <see cref="VNCircle" />.</summary>
 	public enum VNCircleInitializationOption {

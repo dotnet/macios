@@ -1,12 +1,9 @@
 #if __MACOS__
-using System;
 using System.Threading.Tasks;
-using NUnit.Framework;
 
 using AppKit;
 using CoreAnimation;
 using CoreGraphics;
-using Foundation;
 
 namespace Xamarin.Mac.Tests {
 	[TestFixture]

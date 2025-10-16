@@ -8,11 +8,8 @@
 //
 
 #if !MONOMAC
-using System;
-using Foundation;
 using CoreGraphics;
 using UIKit;
-using NUnit.Framework;
 
 using TextAttributes = UIKit.UIStringAttributes;
 

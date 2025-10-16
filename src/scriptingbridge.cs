@@ -25,10 +25,7 @@
 //
 // scriptingbridge.cs: Bindings for the ScriptingBridge.Framework API
 //
-using System;
 using AppKit;
-using Foundation;
-using ObjCRuntime;
 
 namespace ScriptingBridge {
 

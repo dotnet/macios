@@ -24,9 +24,6 @@
 
 #if !__MACCATALYST__
 
-using System;
-
-using Foundation;
 using CoreGraphics;
 
 #nullable enable

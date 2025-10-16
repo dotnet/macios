@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace monotouchtest {

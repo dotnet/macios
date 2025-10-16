@@ -6,16 +6,11 @@
 //
 // Copyright 2012-2014, 2016 Xamarin Inc.
 //
-using System;
 using System.Reflection;
 using System.Linq;
 
-using NUnit.Framework;
 using Xamarin.Utils;
 using System.Runtime.CompilerServices;
-
-using Foundation;
-using ObjCRuntime;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

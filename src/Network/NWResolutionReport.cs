@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 
 using nw_report_resolution_source_t = System.IntPtr;

@@ -7,19 +7,15 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Foundation;
 using CoreText;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using ObjCRuntime;
-using NUnit.Framework;
 using System.Linq;
 
 namespace MonoTouchFixtures.CoreText {

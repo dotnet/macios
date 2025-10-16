@@ -9,15 +9,11 @@
 
 // #define VERBOSE_REGISTRAR
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Text;
 
-using Foundation;
-using ObjCRuntime;
 using Xamarin.Bundler;
 
 #if MTOUCH || MMP || BUNDLER

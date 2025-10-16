@@ -24,12 +24,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.ComponentModel;
 using System.Reflection;
 using AVFoundation;
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
 using CoreImage;
 using CoreML;
@@ -46,7 +43,6 @@ using UIKit;
 using AppKit;
 using ImageKit;
 #endif
-
 
 #if !MONOMAC
 using Color = UIKit.UIColor;

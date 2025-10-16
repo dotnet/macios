@@ -9,10 +9,6 @@
 
 #if !MONOMAC
 
-using System;
-using Foundation;
-using NUnit.Framework;
-using ObjCRuntime;
 using CoreVideo;
 using Metal;
 

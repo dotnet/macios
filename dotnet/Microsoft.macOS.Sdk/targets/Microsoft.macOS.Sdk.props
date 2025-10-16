@@ -2,6 +2,7 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PlatformName>macOS</_PlatformName>
+    <_PlatformRidNoArch>osx</_PlatformRidNoArch>
   </PropertyGroup>
 
   <Import Project="Xamarin.Shared.Sdk.props" Condition="'$(_IsWorkloadEol)' != 'true'" />

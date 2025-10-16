@@ -7,11 +7,6 @@
 // Copyright 2019 Microsoft Corp. All rights reserved.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
-
 namespace MonoTouchFixtures.Foundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]

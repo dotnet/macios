@@ -1,9 +1,5 @@
 #if __MACOS__
-using System;
-using Foundation;
 using AVFoundation;
-using NUnit.Framework;
-using ObjCRuntime;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.AVFoundation {

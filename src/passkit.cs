@@ -8,12 +8,9 @@
 // Copyright 2020 Microsoft Corp.
 //
 
-using System;
 using System.ComponentModel;
 using Contacts;
 using CoreGraphics;
-using ObjCRuntime;
-using Foundation;
 #if MONOMAC
 using AppKit;
 using ABRecord = Foundation.NSObject;

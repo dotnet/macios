@@ -113,8 +113,9 @@
 		<EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization Condition="'$(EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization)' == ''">false</EnableUnsafeBinaryFormatterInDesigntimeLicenseContextSerialization>
 		<EnableUnsafeBinaryFormatterSerialization Condition="'$(EnableUnsafeBinaryFormatterSerialization)' == ''">false</EnableUnsafeBinaryFormatterSerialization>
 		<EnableUnsafeUTF7Encoding Condition="'$(EnableUnsafeUTF7Encoding)' == ''">false</EnableUnsafeUTF7Encoding>
-		<EventSourceSupport Condition="'$(EventSourceSupport)' == ''">false</EventSourceSupport>
+		<EventSourceSupport Condition="'$(EventSourceSupport)' == '' And '$(Optimize)' == 'true' And '$(EnableDiagnostics)' != 'true'">false</EventSourceSupport>
 		<HttpActivityPropagationSupport Condition="'$(HttpActivityPropagationSupport)' == '' and '$(Optimize)' == 'true'">false</HttpActivityPropagationSupport>
+		<MetricsSupport Condition="'$(MetricsSupport)' == '' And '$(Optimize)' == 'true' And '$(EnableDiagnostics)' != 'true'">false</MetricsSupport>
 		<Http3Support Condition="'$(Http3Support)' == ''">false</Http3Support>
 		<InvariantGlobalization Condition="'$(InvariantGlobalization)' == ''">false</InvariantGlobalization>
 		<!-- Enable HybridGlobalization by default-->
@@ -139,15 +140,6 @@
 
 		<!-- We don't need to generate reference assemblies for apps or app extensions -->
 		<ProduceReferenceAssembly Condition="'$(ProduceReferenceAssembly)' == '' And ('$(OutputType)' == 'Exe' Or '$(IsAppExtension)' == 'true')">false</ProduceReferenceAssembly>
-
-		<!-- 
-			With NativeAOT we want to prevent ILLink from removing attributes like `IsTrimmable` so further trimming can be done by the NativeAOT toolchain.
-			For this reason, in case of NativeAOT, we set _AggressiveAttributeTrimming to false by default and store the overwriten default in 
-			_OriginalAggressiveAttributeTrimming property, which is later used to properly configure NativeAOT trimming.
-		-->
-		<_OriginalAggressiveAttributeTrimming>$(_AggressiveAttributeTrimming)</_OriginalAggressiveAttributeTrimming>
-		<_AggressiveAttributeTrimming Condition="'$(_UseNativeAot)' == 'true'">false</_AggressiveAttributeTrimming>
-		<_AggressiveAttributeTrimming Condition="'$(_AggressiveAttributeTrimming)' == ''">true</_AggressiveAttributeTrimming>
 
 		<!-- This property is also defined in Xamarin.Shared.props, but that file is imported too late for us to use the definition, and we can't remove it from Xamarin.Shared.props quite yet, because that would break legacy
 			 (in other words: once we drop support for legacy Xamarin, we can remove the other definition) -->
@@ -590,7 +582,7 @@
 				DeploymentTarget=$(_MinimumOSVersion)
 				@(_CustomLinkFlags -> 'CustomLinkFlags=%(Identity)')
 				EnableSGenConc=$(EnableSGenConc)
-				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=%(Identity)=%(Value)')
+				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=Overwrite=%(Overwrite)|%(Identity)=%(Value)')
 				@(_XamarinFrameworkAssemblies -> 'FrameworkAssembly=%(Filename)')
 				Interpreter=$(MtouchInterpreter)
 				IntermediateLinkDir=$(IntermediateLinkDir)
@@ -693,6 +685,10 @@
 			<!-- Linker -->
 			<_AdditionalTaskAssemblyDirectory>$(_XamarinSdkRootDirectoryOnMac)tools/dotnet-linker/</_AdditionalTaskAssemblyDirectory>
 			<_AdditionalTaskAssembly>$(_AdditionalTaskAssemblyDirectory)dotnet-linker.dll</_AdditionalTaskAssembly>
+
+			<MobileAggressiveAttributeTrimming Condition="'$(MobileAggressiveAttributeTrimming)' == '' And '$(_UseNativeAot)' != 'true'">true</MobileAggressiveAttributeTrimming>
+			<_TrimAttributesLinkDescriptionPath>$(_XamarinSdkRootDirectory)tools/TrimAttributes.LinkDescription.xml</_TrimAttributesLinkDescriptionPath>
+			<_ExtraTrimmerArgs>$(_ExtraTrimmerArgs) --link-attributes $(_TrimAttributesLinkDescriptionPath)</_ExtraTrimmerArgs>
 		</PropertyGroup>
 
 		<!-- Validate that one of our native handlers are selected (if using a native handler), otherwise we end up with crashes (infinite recursion) at runtime. -->
@@ -705,6 +701,9 @@
 
 		<ItemGroup>
 			<!-- Configure linker features -->
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.AggressiveAttributeTrimming" Value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true'" />
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.AggressiveAttributeTrimmingMono" Value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'" />
+			<RuntimeHostConfigurationOption Include="ObjCRUntime.AggressiveAttributeTrimmingOnlyWithStaticRegistrar" value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true' And ('$(Registrar)' == 'static' Or '$(Registrar)' == 'managed-static')" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.Arch.IsSimulator" Value="$(_IsSimulatorFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsManagedStaticRegistrar" Value="$(_IsManagedStaticRegistrarFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsNativeAOT" Value="$(_IsNativeAOTFeature)" Trim="true" />
@@ -919,10 +918,44 @@
 		</ItemGroup>
 	</Target>
 
+	<!-- When copying files into the app bundle, the final paths can be *long*. This is not a problem on macOS, but Windows still lives in a world where MAX_PATH is unreasonable,
+	     so we have to come up with some hopefully not too unreasonable workarounds.
+
+	     We want the _CopyDirectoriesToBundle task to have correct Inputs and Outputs (to support incremental builds properly), but to avoid ending up
+	     with Outputs paths that cause problems on Windows, we use a stamp file as the Output, and the stamp file is a hashed version of the actual Output location
+
+	     This target will compute that stamp file location.
+	-->
+	<Target Name="_CreateStampLocationForCopyDirectoriesToBundle">
+		<ComputeHashForItems
+			Input="@(_DirectoriesToPublish)"
+			InputMetadata="Identity;TargetDirectory"
+			OutputMetadata="StampHash"
+		>
+			<Output TaskParameter="Output" ItemName="_DirectoriesToPublishWithStampHash" />
+		</ComputeHashForItems>
+		<ItemGroup>
+			<_DirectoriesToPublish />
+			<_DirectoriesToPublish Include="@(_DirectoriesToPublishWithStampHash)">
+				<StampLocation>$(DeviceSpecificIntermediateOutputPath)copieddirectories\%(_DirectoriesToPublishWithStampHash.StampHash)</StampLocation>
+			</_DirectoriesToPublish>
+
+			<_StampFilesToDelete Include="@(_DirectoriesToPublish -> '%(StampLocation)')" Condition="!Exists('%(_DirectoriesToPublish.TargetDirectory)')">
+				<SourceDirectory>%(_DirectoriesToPublish.SourceDirectory)</SourceDirectory>
+				<TargetDirectory>%(_DirectoriesToPublish.TargetDirectory)</TargetDirectory>
+			</_StampFilesToDelete>
+		</ItemGroup>
+
+		<Delete
+			SessionId="$(BuildSessionId)"
+			Files="@(_StampFilesToDelete)"
+		/>
+	</Target>
+
 	<Target Name="_CopyDirectoriesToBundle"
-		DependsOnTargets="_CollectDecompressedPlugins;_ComputeFrameworkFilesToPublish;_CollectDecompressedXpcServices"
+		DependsOnTargets="_CollectDecompressedPlugins;_ComputeFrameworkFilesToPublish;_CollectDecompressedXpcServices;_CreateStampLocationForCopyDirectoriesToBundle"
 		Inputs="@(_DirectoriesToPublish)"
-		Outputs="@(_DirectoriesToPublish -> '%(TargetDirectory)/%(Filename)')"
+		Outputs="@(_DirectoriesToPublish -> '%(StampLocation)')"
 		>
 
 		<!-- Ask ditto to not copy architectures we don't care about. This can be overridden by passing 'SkipLibraryThinning=true' -->
@@ -943,6 +976,8 @@
 			Source="%(_DirectoriesToPublish.SourceDirectory)"
 			Destination="%(_DirectoriesToPublish.TargetDirectory)"
 			TouchDestinationFiles="true"
+			StampFile="%(_DirectoriesToPublish.StampLocation)"
+			CreateOutputFiles="false"
 		/>
 	</Target>
 
@@ -1063,10 +1098,11 @@
 
 			<_MonoNugetPackageId>Microsoft.NETCore.App.Runtime.$(_PackageIdInfix)$(RuntimeIdentifier)</_MonoNugetPackageId>
 			<_XamarinNugetPackageId>Microsoft.$(_PlatformName).Runtime.$(RuntimeIdentifier).$(_XamarinPackSuffix)</_XamarinNugetPackageId>
+			<_XamarinNugetManagedPackageId>Microsoft.$(_PlatformName).Runtime.$(_PlatformRidNoArch).$(_XamarinPackSuffix)</_XamarinNugetManagedPackageId>
 		</PropertyGroup>
 		<ItemGroup>
 			<!-- Look in the ResolvedFrameworkReference for our Microsoft.* package. This should only find a single package. -->
-			<_XamarinFrameworkReference Include="@(ResolvedFrameworkReference)" Condition="'%(ResolvedFrameworkReference.Identity)' == 'Microsoft.$(_PlatformName)'" />
+			<_XamarinFrameworkReference Include="@(ResolvedFrameworkReference)" Condition="'%(ResolvedFrameworkReference.Identity)' == 'Microsoft.$(_PlatformName).Runtimes'" />
 			<_MonoFrameworkReference Include="@(ResolvedFrameworkReference)" Condition="'%(ResolvedFrameworkReference.RuntimePackName)' == '$(_MonoNugetPackageId)'" />
 		</ItemGroup>
 		<PropertyGroup>
@@ -1460,21 +1496,12 @@
 			<IlcReference Include="@(ManagedAssemblyToLink)" Exclude="@(ManagedBinary)" />
 
 			<!-- Process UnmanagedCallersOnly attributes from every assembly -->
-			<UnmanagedEntryPointsAssembly Remove="System.Private.CoreLib" />
-			<UnmanagedEntryPointsAssembly Include="@(_UpdatedManagedAssemblyToLink->'%(Filename)')" />
+			<_UnmanagedEntryPointsAssembliesToAdd Include="@(_UpdatedManagedAssemblyToLink->'%(Filename)')" />
+			<_UnmanagedEntryPointsAssembliesToAdd Remove="System.Private.CoreLib" />
+			<UnmanagedEntryPointsAssembly Include="@(_UnmanagedEntryPointsAssembliesToAdd)" />
 
 			<!-- Link in the output from ILC -->
 			<_NativeExecutableObjectFiles Include="$(NativeObject)" />
-
-			<!-- By default perform aggressive attribute trimming, except when explicitly disabled -->
-			<_TrimmerFeatureSettings Condition="'$(_OriginalAggressiveAttributeTrimming)' != 'false' and '%(Identity)' == 'System.AggressiveAttributeTrimming'">
-				<Value>true</Value>
-				<Trim>true</Trim>
-			</_TrimmerFeatureSettings>
-			<RuntimeHostConfigurationOption Condition="'$(_OriginalAggressiveAttributeTrimming)' != 'false' and '%(Identity)' == 'System.AggressiveAttributeTrimming'">
-				<Value>true</Value>
-				<Trim>true</Trim>
-			</RuntimeHostConfigurationOption>
 		</ItemGroup>
 
 		<ItemGroup>
@@ -1943,7 +1970,7 @@
 		<ItemGroup>
 			<ReferenceCopyLocalPaths
 				Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).pdb')"
-				Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' == '$(_XamarinNugetPackageId)' and Exists('%(RootDir)%(Directory)%(Filename).pdb')" />
+				Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' == '$(_XamarinNugetManagedPackageId)' and Exists('%(RootDir)%(Directory)%(Filename).pdb')" />
 		</ItemGroup>
 	</Target>
 
@@ -2083,10 +2110,9 @@
 			<ResolvedFileToPublish Remove="$(ProjectRuntimeConfigFilePath)" Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true'" />
 		</ItemGroup>
 
-		<!-- This task is executed on Windows as well, for hotrestart builds -->
 		<ComputeBundleLocation
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true'"
 			AssemblyDirectory="$(_AppContentsRelativePath)"
 			BundleResource="@(BundleResource)"
 			BundlerDebug="$(_BundlerDebug)"
@@ -2177,16 +2203,17 @@
 			<ResolvedFileToPublish RelativePath="$(_RelativeAppBundlePath)\%(RelativePath)" OriginalRelativePath="%(RelativePath)" />
 		</ItemGroup>
 
-		<!-- This task is executed on Windows as well, for hotrestart builds -->
 		<!-- resolve any .xcframeworks and binding resource packages -->
-		<!-- Skip doing this when not building on macOS if we're not a remoteable platform (i.e. iOS), because we want such builds to succeed (even if they produce non-working output), and ResolveNativeReferences will fail if running into symlinks (which happens for macOS and Mac Catalyst builds) -->
+		<ItemGroup>
+			<_NativeReferencesToResolve Include="@(_UnresolvedXCFrameworks);@(_AppleBindingResourcePackage);@(_CompressedAppleFrameworks);@(_CompressedAppleBindingResourcePackage)" />
+		</ItemGroup>
 		<ResolveNativeReferences
 			SessionId="$(BuildSessionId)"
-			Condition="('$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true') And '$(_IsNonMacOSBuildForNonRemotablePlatform)' != 'true'"
+			Condition="'$(IsMacEnabled)' == 'true' And @(_NativeReferencesToResolve->Count()) &gt; 0"
 			Architectures="$(TargetArchitectures)"
 			FrameworksDirectory="$(_AppFrameworksRelativePath)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"
-			NativeReferences="@(_UnresolvedXCFrameworks);@(_AppleBindingResourcePackage);@(_CompressedAppleFrameworks);@(_CompressedAppleBindingResourcePackage)"
+			NativeReferences="@(_NativeReferencesToResolve)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			>
@@ -2244,10 +2271,9 @@
 			</_CompressedPlugIns>
 		</ItemGroup>
 
-		<!-- This task is executed from Windows as well when using HotRestart -->
 		<Unzip
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true'"
 			ZipFilePath="%(_CompressedPlugIns.Identity)"
 			ExtractionPath="%(_CompressedPlugIns.ExtractionPath)"
 			>
@@ -2287,10 +2313,9 @@
 			</_CompressedXpcServices>
 		</ItemGroup>
 
-		<!-- This task is executed from Windows as well when using HotRestart -->
 		<Unzip
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true'"
 			CopyToWindows="true"
 			ZipFilePath="%(_CompressedXpcServices.Identity)"
 			ExtractionPath="%(_CompressedXpcServices.ExtractionPath)"
@@ -2393,19 +2418,46 @@
 		<RelativeMlaunchPath Condition="'$(RelativeMlaunchPath)' == '' And '$(_RelativeMlaunchPath)' != ''">$(_RelativeMlaunchPath)</RelativeMlaunchPath>
 		<RelativeMlaunchPath Condition="'$(RelativeMlaunchPath)' == ''">$(XamarinRelativeSdkRootDirectory)tools\bin\mlaunch</RelativeMlaunchPath>
 		<_RelativeMlaunchPath Condition="'$(_RelativeMlaunchPath)' == ''">$(RelativeMlaunchPath)</_RelativeMlaunchPath>
+
+		<DeviceName Condition="'$(DeviceName)' == ''">$(_DeviceName)</DeviceName>
 	</PropertyGroup>
 
-	<Target Name="ComputeMlaunchInstallArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;_ComputeMlaunchInstallArguments" />
-	<Target Name="_ComputeMlaunchInstallArguments" Condition="'$(_SdkIsSimulator)' == 'false'">
+	<Target
+		Name="ShowRunHelp"
+		DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest">
+		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
+		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before showing how to launch it." />
+
+		<GetMlaunchArguments
+			AppManifestPath="$(_AppBundleManifestPath)"
+			Help="true"
+			MlaunchPath="$(MlaunchPath)"
+			SdkDevPath="$(_SdkDevPath)"
+			SdkIsSimulator="$(_SdkIsSimulator)"
+			SdkVersion="$(_SdkVersion)"
+			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		>
+		</GetMlaunchArguments>
+
+		<!-- If invoked from 'dotnet run', don't actually run anything -->
+		<PropertyGroup>
+			<RunCommand>true</RunCommand>
+			<RunArguments />
+		</PropertyGroup>
+	</Target>
+	<Target Name="_ShowRunHelpConditioned" Condition="'$(Help)' == 'true'" DependsOnTargets="ShowRunHelp" />
+
+	<Target Name="ComputeMlaunchInstallArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;_ShowRunHelpConditioned;_ComputeMlaunchInstallArguments" />
+	<Target Name="_ComputeMlaunchInstallArguments" Condition="'$(_SdkIsSimulator)' == 'false' And '$(Help)' != 'true'">
 		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
 		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
 		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before the arguments to launch the app using mlaunch can be computed." />
 
 		<GetMlaunchArguments
 			SessionId="$(BuildSessionId)"
-			AppBundlePath="$(_AppBundlePath)"
 			AppManifestPath="$(_AppBundleManifestPath)"
-			DeviceName="$(_DeviceName)"
+			DeviceName="$(DeviceName)"
 			InstallApp="$(_AppBundlePath)"
 			MlaunchPath="$(MlaunchPath)"
 			SdkDevPath="$(_SdkDevPath)"
@@ -2429,7 +2481,9 @@
 		<Exec SessionId="$(BuildSessionId)" Command="'$(MlaunchPath)' $(MlaunchInstallArguments)" />
 	</Target>
 
-	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest" Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
+	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;_ShowRunHelpConditioned;_ComputeMlaunchRunArguments" Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'" />
+
+	<Target Name="_ComputeMlaunchRunArguments" Condition="'$(Help)' != 'true'">
 		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
 		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
 		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before the arguments to launch the app using mlaunch can be computed." />
@@ -2452,10 +2506,9 @@
 		<GetMlaunchArguments
 			SessionId="$(BuildSessionId)"
 			AdditionalArguments="@(MlaunchAdditionalArguments)"
-			AppBundlePath="$(_AppBundlePath)"
 			AppManifestPath="$(_AppBundleManifestPath)"
 			CaptureOutput="$(_MlaunchCaptureOutput)"
-			DeviceName="$(_DeviceName)"
+			DeviceName="$(DeviceName)"
 			EnvironmentVariables="@(MlaunchEnvironmentVariables)"
 			LaunchApp="$(_AppBundlePath)"
 			MlaunchPath="$(MlaunchPath)"
@@ -2477,24 +2530,45 @@
 			WriteOnlyWhenDifferent="true"
 			Condition="'$(MlaunchRunScript)' != ''"
 			 />
-	</Target>
 
-	<!-- This is only needed for mobile platforms, RunCommand and RunArguments are defined for macOS in Microsoft.macOS.Sdk.targets. -->
-	<Target Name="_PrepareRunMobile" DependsOnTargets="_InstallMobile;ComputeMlaunchRunArguments" Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
 		<PropertyGroup>
-			<RunCommand>'$(MlaunchPath)'</RunCommand>
-			<RunArguments>$(MlaunchRunArguments)</RunArguments>
+			<RunCommand>$(MlaunchPath)</RunCommand>
+			<RunArguments>$(MlaunchRunArguments) -- </RunArguments>
 		</PropertyGroup>
 	</Target>
 
-	<PropertyGroup>
-		<_PrepareRunDependsOn>
-			Build;
-			_PrepareRunMobile;
-		</_PrepareRunDependsOn>
-	</PropertyGroup>
+	<!-- This is only needed for mobile platforms, RunCommand and RunArguments are defined for macOS in Microsoft.macOS.Sdk.targets. -->
+	<Target
+		Name="_PrepareRunMobile"
+		BeforeTargets="ComputeRunArguments"
+		DependsOnTargets="_InstallMobile;ComputeMlaunchRunArguments"
+		Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
+	</Target>
 
-	<Target Name="_PrepareRun" DependsOnTargets="$(_PrepareRunDependsOn)" BeforeTargets="Run" />
+	<Target
+		Name="_PrepareRunDesktop"
+		BeforeTargets="ComputeRunArguments"
+		Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">
+
+		<PropertyGroup Condition="'$(RunWithOpen)' != 'false'">
+			<_OpenArguments Condition="'$(XamarinDebugMode)' != ''">$(OpenArguments) --env __XAMARIN_DEBUG_MODE__=$(XamarinDebugMode)</_OpenArguments>
+			<_OpenArguments Condition="'$(XamarinDebugPort)' != ''">$(OpenArguments) --env __XAMARIN_DEBUG_PORT__=$(XamarinDebugPort)</_OpenArguments>
+			<_OpenArguments Condition="'$(XamarinDebugHosts)' != ''">$(OpenArguments) --env "__XAMARIN_DEBUG_HOSTS__=$(XamarinDebugHosts)"</_OpenArguments>
+			<_OpenArguments Condition="'$(XamarinDebugConnectTimeout)' != ''">$(OpenArguments) --env __XAMARIN_DEBUG_CONNECT_TIMEOUT__=$(XamarinDebugConnectTimeout)</_OpenArguments>
+			<_OpenArguments Condition="'$(StandardOutputPath)' != ''">$(OpenArguments) --stdout "$(StandardOutputPath)"</_OpenArguments>
+			<_OpenArguments Condition="'$(StandardErrorPath)' != ''">$(OpenArguments) --stderr "$(StandardErrorPath)"</_OpenArguments>
+			<_OpenArguments Condition="'$(StandardInputPath)' != ''">$(OpenArguments) --stdin "$(StandardInputPath)"</_OpenArguments>
+			<_OpenArguments Condition="'$(OpenNewInstance)' == 'true'">$(OpenArguments) -n</_OpenArguments>
+			<_OpenArguments>$(OpenArguments) $(RunEnvironment)</_OpenArguments>
+			<RunCommand>open</RunCommand>
+			<RunArguments>$(_OpenArguments) "$(TargetDir)/$(AssemblyName).app" --args</RunArguments>
+		</PropertyGroup>
+
+		<PropertyGroup Condition="'$(RunWithOpen)' == 'false'">
+			<RunCommand>$(TargetDir)/$(AssemblyName).app/Contents/MacOS/$(AssemblyName)</RunCommand>
+			<RunArguments />
+		</PropertyGroup>
+	</Target>
 
 	<!--
 		Add a 'global using nfloat = System.Runtime.InteropServices.NFloat' to ease migration from Xamarin.
@@ -2619,10 +2693,10 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 			treated as globs. The workaround is to use a custom task for this.
 
 			Note that this task should run remotely from Windows when there's
-			a Mac connected, but locally when there's not a Mac connected (for
-			Hot Restart builds for instance), so we're not conditioning this
-			task on IsMacEnabled. Instead we're only setting SessionId if we
-			have a session id *and* we're connected to a Mac.
+			a Mac connected, but locally when there's not a Mac connected, 
+			so we're not conditioning this task on IsMacEnabled. 
+			Instead we're only setting SessionId if we have a session id 
+			*and* we're connected to a Mac.
 
 		-->
 		<GetFileSystemEntries

@@ -7,12 +7,8 @@
 // Copyright 2022 Microsoft Corporation All rights reserved.
 //
 
-using System;
-
 using AVFoundation;
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace SharedWithYouCore {
 

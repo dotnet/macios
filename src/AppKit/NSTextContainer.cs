@@ -1,9 +1,6 @@
 #if !__MACCATALYST__ // there's a version in UIKit, use that one instead
-using System;
 
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

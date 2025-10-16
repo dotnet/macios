@@ -7,11 +7,6 @@
 // Copyright 2012, 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-
 namespace SystemConfiguration {
 
 	// untyped enum -> SystemConfiguration.framework/Headers/SystemConfiguration.h

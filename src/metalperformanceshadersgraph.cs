@@ -1,10 +1,7 @@
-using System;
 using CoreFoundation;
 using CoreGraphics;
-using Foundation;
 using Metal;
 using MetalPerformanceShaders;
-using ObjCRuntime;
 
 using MPSGraphTensorDataDictionary = Foundation.NSDictionary<MetalPerformanceShadersGraph.MPSGraphTensor, MetalPerformanceShadersGraph.MPSGraphTensorData>;
 using MPSGraphTensorShapedTypeDictionary = Foundation.NSDictionary<MetalPerformanceShadersGraph.MPSGraphTensor, MetalPerformanceShadersGraph.MPSGraphShapedType>;

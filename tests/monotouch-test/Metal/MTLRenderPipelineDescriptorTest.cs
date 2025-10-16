@@ -1,7 +1,4 @@
-using Foundation;
 using Metal;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Metal {
 

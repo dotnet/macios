@@ -67,6 +67,16 @@ for platform in $DOTNET_PLATFORMS; do
 	VALUE=$(cat "$FILE")
 	echo "##vso[task.setvariable variable=$VARIABLE;isOutput=true]$VALUE"
 
+	VARIABLE="DOTNET_${PLATFORM_UPPER}_RUNTIME_IDENTIFIERS_NO_ARCH"
+	make -C "$BUILD_SOURCESDIRECTORY/$BUILD_REPOSITORY_TITLE/tools/devops" print-variable-value-to-file FILE="$FILE" VARIABLE="$VARIABLE"
+	VALUE=$(cat "$FILE")
+	echo "##vso[task.setvariable variable=$VARIABLE;isOutput=true]$VALUE"
+
+	VARIABLE="${PLATFORM_UPPER}_NUGET_RUNTIME_MANAGED_NAME"
+	make -C "$BUILD_SOURCESDIRECTORY/$BUILD_REPOSITORY_TITLE/tools/devops" print-variable-value-to-file FILE="$FILE" VARIABLE="$VARIABLE"
+	VALUE=$(cat "$FILE")
+	echo "##vso[task.setvariable variable=$VARIABLE;isOutput=true]$VALUE"
+
 	RIDS=$VALUE
 	for rid in $RIDS; do
 		VARIABLE="${rid}_NUGET_RUNTIME_NAME"

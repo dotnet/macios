@@ -28,8 +28,6 @@
 
 #if MONOMAC
 
-using System;
-
 namespace Foundation {
 	public partial class NSPropertyListSerialization {
 		/// <param name="plist">To be added.</param>

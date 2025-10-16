@@ -3,16 +3,11 @@
 
 #if HAS_WEBKIT
 
-using System;
 using System.Linq;
 using System.Numerics;
 using System.Threading;
 
-using Foundation;
-using ObjCRuntime;
 using WebKit;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.WebKit {
 	[TestFixture]

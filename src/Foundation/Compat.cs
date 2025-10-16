@@ -6,10 +6,7 @@
 //
 // Copyright 2015 Xamarin, Inc.
 
-using System;
 using System.ComponentModel;
-
-using ObjCRuntime;
 
 namespace Foundation {
 #if !XAMCORE_5_0

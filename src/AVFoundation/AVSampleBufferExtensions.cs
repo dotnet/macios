@@ -7,10 +7,7 @@
 //
 
 #if false // requires tests
-using System;
-using System.Runtime.InteropServices;
 using CoreGraphics;
-using ObjCRuntime;
 
 using CMSampleBufferRef = System.IntPtr;
 using AVContentKey = System.IntPtr;

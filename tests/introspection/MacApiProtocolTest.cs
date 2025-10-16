@@ -7,13 +7,9 @@
 // Copyright 2013 Xamarin Inc.
 //
 
-using System;
-
-using Foundation;
 using AppKit;
 using CoreImage;
 
-using NUnit.Framework;
 using Xamarin.Tests;
 
 namespace Introspection {

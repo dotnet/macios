@@ -2,11 +2,8 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
 using CoreFoundation;
 using CoreMedia;
-using ObjCRuntime;
 
 namespace MediaToolbox {
 	/// <summary>To be added.</summary>

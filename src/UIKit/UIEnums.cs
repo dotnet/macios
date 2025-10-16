@@ -8,10 +8,6 @@
 //  Miguel de Icaza
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace UIKit {
 	// NSInteger -> UIImagePickerController.h
 	/// <summary>An enumeration of values used to specify video quality.</summary>

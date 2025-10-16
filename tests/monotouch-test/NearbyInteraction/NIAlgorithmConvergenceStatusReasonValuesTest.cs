@@ -2,11 +2,7 @@
 
 #if IOS || __MACCATALYST__
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using NearbyInteraction;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.NearbyInteraction {

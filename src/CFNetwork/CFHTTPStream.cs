@@ -9,10 +9,7 @@
 
 #nullable enable
 
-using System;
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 
 namespace CFNetwork {
 	// all fields constants that this is using are deprecated in Xcode 7

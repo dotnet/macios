@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 
-		<ApplicationTitle>NativeFrameworkReferences</ApplicationTitle>
+		<ApplicationTitle>NativeFrameworkReferencesApp</ApplicationTitle>
 		<ApplicationId>com.xamarin.nativeframeworkreferences</ApplicationId>
 		<ApplicationVersion>1.0</ApplicationVersion>
 	</PropertyGroup>

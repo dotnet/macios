@@ -30,15 +30,11 @@
 
 #nullable enable
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 
-using ObjCRuntime;
 using CoreFoundation;
 using CoreGraphics;
-using Foundation;
 
 namespace CoreText {
 

@@ -7,9 +7,7 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-using Foundation;
 using CoreBluetooth;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreBluetooth {
 

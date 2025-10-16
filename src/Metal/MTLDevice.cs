@@ -7,12 +7,7 @@
 // Copyrigh 2014-2015, Xamarin Inc.
 //
 
-using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

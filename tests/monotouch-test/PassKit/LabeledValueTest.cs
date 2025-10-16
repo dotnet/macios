@@ -1,9 +1,6 @@
 #if __IOS__
 
-using System;
-using Foundation;
 using PassKit;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.PassKit {
 

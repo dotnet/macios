@@ -1,7 +1,4 @@
-using System;
-using Foundation;
 using SpriteKit;
-using NUnit.Framework;
 using System.Numerics;
 
 namespace MonoTouchFixtures.SpriteKit {

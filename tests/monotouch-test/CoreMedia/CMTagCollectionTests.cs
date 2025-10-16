@@ -6,14 +6,8 @@
 //
 // Copyright 2024 Microsoft Corp. All rights reserved.
 //
-using System;
 
-using CoreFoundation;
 using CoreMedia;
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 using Xamarin.Utils;
 

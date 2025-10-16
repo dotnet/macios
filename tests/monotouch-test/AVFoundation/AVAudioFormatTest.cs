@@ -3,13 +3,8 @@
 // 		Whitney Schmidt (whschm@microsoft.com)
 // Copyright 2020 Microsoft Corp.
 
-using System;
-
 using AudioToolbox;
-using Foundation;
 using AVFoundation;
-using NUnit.Framework;
-using ObjCRuntime;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.AVFoundation {

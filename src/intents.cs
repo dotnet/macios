@@ -7,11 +7,8 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.ComponentModel;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 using CoreLocation;
 using UserNotifications;
 

@@ -1,11 +1,7 @@
-using System;
 using System.IO;
 using System.IO.Compression;
 
-using Foundation;
 using Compression;
-
-using NUnit.Framework;
 
 using DeflateStream = Compression.CompressionStream; // done to not differ from the mono tests
 

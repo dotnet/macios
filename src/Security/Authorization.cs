@@ -29,11 +29,6 @@
 
 #if MONOMAC || __MACCATALYST__
 
-using ObjCRuntime;
-using Foundation;
-using System;
-using System.Runtime.InteropServices;
-
 namespace Security {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>

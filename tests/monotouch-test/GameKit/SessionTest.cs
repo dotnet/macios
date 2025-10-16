@@ -9,12 +9,9 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
 using System.IO;
 using System.Threading;
-using Foundation;
 using GameKit;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.GameKit {
 

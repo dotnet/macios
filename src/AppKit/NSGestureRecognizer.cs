@@ -9,11 +9,7 @@
 
 #if !__MACCATALYST__
 
-using System;
 using System.Collections;
-using Foundation;
-using ObjCRuntime;
-using System.Runtime.Versioning;
 
 #nullable enable
 

@@ -2,7 +2,6 @@
 #define CAN_SHOW_ASYNC_UI
 #endif
 
-using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -10,9 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using CoreGraphics;
-using Foundation;
-
-using NUnit.Framework;
 
 #if HAS_UIKIT
 using UIKit;

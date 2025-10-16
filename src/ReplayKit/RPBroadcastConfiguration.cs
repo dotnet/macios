@@ -29,15 +29,12 @@
 
 #if !MONOMAC
 
-using System;
 using System.Drawing;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 
-using Foundation;
 using AVFoundation;
 
 namespace ReplayKit {

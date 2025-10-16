@@ -1,9 +1,5 @@
 
-using System;
-using Foundation;
 using SpriteKit;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 using System.Numerics;
 

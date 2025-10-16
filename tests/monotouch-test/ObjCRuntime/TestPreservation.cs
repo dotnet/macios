@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-
-using Foundation;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures {
 	[TestFixture]

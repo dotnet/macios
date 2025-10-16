@@ -1,11 +1,7 @@
 #if !MONOMAC
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 
-using CoreFoundation;
-using Foundation;
 using UIKit;
 using MonoTouch.NUnit.UI;
 using NUnit.Framework.Internal;
@@ -47,6 +43,5 @@ public partial class AppDelegate : UIApplicationDelegate {
 		}
 	}
 }
-
 
 #endif // !MONOMAC

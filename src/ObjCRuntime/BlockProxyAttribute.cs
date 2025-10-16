@@ -6,13 +6,8 @@
 // Authors:
 //   Miguel de Icaza (miguel@xamarin.com)
 //
-using System;
 using System.Reflection;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-using Foundation;
 
 namespace ObjCRuntime {
 	/// <summary>This attribute is used to notify the runtime which class is used to wrap Objective-C blocks into managed delegates.</summary>

@@ -8,10 +8,6 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using NUnit.Framework;
-
-using Foundation;
 using GameplayKit;
 
 using Vector3d = global::CoreGraphics.NVector3d;

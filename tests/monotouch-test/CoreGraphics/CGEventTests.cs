@@ -1,16 +1,12 @@
-using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Text;
 
-using Foundation;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
 using CoreGraphics;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreGraphics {
 

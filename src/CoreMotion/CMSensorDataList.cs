@@ -12,9 +12,6 @@
 #if !MONOMAC
 
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-
-using Foundation;
 
 namespace CoreMotion {
 	public partial class CMSensorDataList : IEnumerable<CMAccelerometerData> {

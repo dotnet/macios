@@ -1,7 +1,4 @@
-using Foundation;
 using Network;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Network {
 	[TestFixture]

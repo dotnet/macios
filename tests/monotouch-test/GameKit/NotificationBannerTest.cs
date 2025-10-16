@@ -7,10 +7,7 @@
 // Copyright 2012,2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
 using GameKit;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.GameKit {
 

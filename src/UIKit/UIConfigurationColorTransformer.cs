@@ -7,11 +7,6 @@
 // Copyright (c) Microsoft Corporation.
 //
 
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
-
 #nullable enable
 
 namespace UIKit {

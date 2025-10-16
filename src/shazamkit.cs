@@ -1,7 +1,4 @@
-using System;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 using AVFoundation;
 
 namespace ShazamKit {

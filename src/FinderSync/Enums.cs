@@ -1,8 +1,5 @@
 #nullable enable
 
-using System;
-using ObjCRuntime;
-
 namespace FinderSync {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>

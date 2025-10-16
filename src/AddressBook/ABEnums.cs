@@ -27,11 +27,7 @@
 
 #if !MONOMAC
 
-using System;
-
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 
 namespace AddressBook {
 	/// <summary>Possible <see cref="AddressBook.ABAddressBook" /> errors.</summary>

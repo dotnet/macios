@@ -20,11 +20,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.ComponentModel;
-using Foundation;
 using CoreML;
-using ObjCRuntime;
 
 namespace NaturalLanguage {
 

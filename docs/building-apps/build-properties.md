@@ -280,7 +280,7 @@ The `CompressBindingResourcePackage` property specifies whether to create a zip 
 The possible values are:
 
 * `auto`: create a zip file if a native reference contains symlinks (which is typical on macOS and Mac Catalyst, but rare on iOS and tvOS).
-* `true`: create a zipe file
+* `true`: create a zip file
 * `false`: create a directory
 
 The default is `auto`.
@@ -1021,7 +1021,7 @@ This property is a read-only property (setting it will have no effect) that
 specifies whether we're building for a simulator or not.
 
 It is only set after [imports and
-properties](https://learn.microsoft.com/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
+properties](/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
 have been evaluated. This means the property is not set while evaluating the
 properties in the project file, so this will _not_ work:
 

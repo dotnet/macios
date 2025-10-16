@@ -105,13 +105,13 @@ namespace Xamarin.Tests {
 					Console.WriteLine ($"Updated expected results: {expectedFile}");
 				}
 			} else {
-				Assert.Fail ($"App size changed significantly ( {FormatBytes (appSizeDifference)} different > tolerance of  {FormatBytes (appSizeDifference)}). Expected app size: {FormatBytes (expectedAppBundleSize)}, actual app size: {FormatBytes (appBundleSize)}. Set the environment variable WRITE_KNOWN_FAILURES=1, run the test again, and verify the modified files for more information");
+				Assert.Fail ($"App size changed significantly ({FormatBytes (appSizeDifference, true)} different > tolerance of +-{FormatBytes (toleranceInBytes)}). Expected app size: {FormatBytes (expectedAppBundleSize)}, actual app size: {FormatBytes (appBundleSize)}. Set the environment variable WRITE_KNOWN_FAILURES=1, run the test again, and verify the modified files for more information");
 			}
 		}
 
-		static string FormatBytes (long bytes)
+		static string FormatBytes (long bytes, bool alwaysShowSign = false)
 		{
-			return $"{bytes} bytes ({bytes / 1024.0:0.0} KB = {bytes / (1024.0 * 1024.0):0.0} MB)";
+			return $"{(alwaysShowSign && bytes > 0 ? "+" : "")}{bytes} bytes ({bytes / 1024.0:0.0} KB = {bytes / (1024.0 * 1024.0):0.0} MB)";
 		}
 	}
 

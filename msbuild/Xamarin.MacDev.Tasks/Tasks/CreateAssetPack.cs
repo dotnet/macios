@@ -80,7 +80,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			// We need to delete any existing ipa files, zip will just add to it otherwise
 			if (File.Exists (OutputFile!.ItemSpec))

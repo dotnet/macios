@@ -1,11 +1,4 @@
 #if !MONOMAC
-using System;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures {
 	[TestFixture]

@@ -10,13 +10,9 @@
 
 #if MONOMAC
 
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
-using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
 
 namespace CoreServices {
 	// FSEvents.h: typedef UInt32                          FSEventStreamCreateFlags;

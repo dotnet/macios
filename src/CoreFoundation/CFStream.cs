@@ -32,14 +32,10 @@
 
 #nullable enable
 
-using System;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using CFNetwork;
-using ObjCRuntime;
-using Foundation;
 
 using CFIndex = System.IntPtr;
 

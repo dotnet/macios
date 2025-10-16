@@ -4,10 +4,6 @@
 // Copyright 2014-2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace CoreFoundation {
 
 	/// <summary>A class that allows for explicit allocation and de-allocation of memory.</summary>

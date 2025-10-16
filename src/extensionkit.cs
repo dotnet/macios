@@ -4,9 +4,6 @@
 // Copyright 2022 Microsoft Corp. All rights reserved
 //
 
-using ObjCRuntime;
-using Foundation;
-
 #if MONOMAC
 using AppKit;
 using UIView = AppKit.NSView;

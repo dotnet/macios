@@ -12,7 +12,10 @@ DOTNET_NUPKG_DIR=$(make -C tools/devops print-abspath-variable VARIABLE=DOTNET_N
 
 rm -rf ../package/
 mkdir -p ../package/
+rm -rf ../symbols/
+mkdir -p ../symbols/
 cp -c "$DOTNET_NUPKG_DIR"/*.nupkg ../package/
+cp -c dotnet/nupkgs/*.symbols.nupkg ../symbols/
 cp -c "$DOTNET_NUPKG_DIR"/vs-workload.props ../package/
 cp -c dotnet/Workloads/SignList.xml ../package/
 cp -c dotnet/Workloads/SignList.targets ../package/

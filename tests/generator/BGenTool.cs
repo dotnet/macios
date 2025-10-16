@@ -1,13 +1,9 @@
 #pragma warning disable 0649 // Field 'X' is never assigned to, and will always have its default value null
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
-
-using NUnit.Framework;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;

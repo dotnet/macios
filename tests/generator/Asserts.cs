@@ -1,9 +1,6 @@
-using System;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
-
-using NUnit.Framework;
 
 namespace GeneratorTests {
 	public static class Asserts {

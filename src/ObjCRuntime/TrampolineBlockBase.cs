@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

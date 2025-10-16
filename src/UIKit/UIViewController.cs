@@ -8,11 +8,8 @@
 // Copyright 2013 Xamarin Inc. (http://xamarin.com)
 //
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
 
 #nullable enable

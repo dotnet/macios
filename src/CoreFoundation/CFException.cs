@@ -28,13 +28,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
-using System.Runtime.Versioning;
-
 namespace CoreFoundation {
 	/// <summary>A class whose static fields define error domains for <see cref="CoreFoundation.CFException.Domain" />.</summary>
 	///     <remarks>To be added.</remarks>

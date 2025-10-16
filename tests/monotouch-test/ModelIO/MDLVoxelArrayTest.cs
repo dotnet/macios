@@ -7,9 +7,7 @@
 // Copyright 2017 Microsoft Inc.
 //
 
-using System;
 using CoreGraphics;
-using Foundation;
 #if !MONOMAC
 using UIKit;
 #endif
@@ -17,8 +15,6 @@ using UIKit;
 using MultipeerConnectivity;
 #endif
 using ModelIO;
-using ObjCRuntime;
-using NUnit.Framework;
 
 using System.Numerics;
 using Vector4i = global::CoreGraphics.NVector4i;

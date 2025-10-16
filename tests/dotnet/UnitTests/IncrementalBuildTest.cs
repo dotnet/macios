@@ -216,6 +216,7 @@ class MainClass {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
 			properties ["UseInterpreter"] = interpreterEnabled.ToString ();
+			properties ["MtouchLink"] = "None";
 
 			// Build the first time
 			var rv = DotNet.AssertBuild (project_path, properties);

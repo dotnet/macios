@@ -1,11 +1,7 @@
 #if HAS_ARKIT
 
-using System;
 using System.Reflection;
 using ARKit;
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.ARKit {

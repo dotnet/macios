@@ -1,10 +1,5 @@
-using System;
 using System.IO;
 using System.Reflection;
-
-using Foundation;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures {
 	[TestFixture]

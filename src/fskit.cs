@@ -1,14 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
 using CoreFoundation;
 using Darwin;
-using Foundation;
-using ObjCRuntime;
 
 // Let's hope that by .NET 11 we've ironed out all the bugs in the API.
 // This can of course be adjusted as needed (until we've released as stable).

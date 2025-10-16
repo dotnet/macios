@@ -10,12 +10,7 @@
 
 #if HAS_OPENGLES && !__MACOS__ && !__MACCATALYST__
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
 using OpenGLES;
 
 #nullable enable

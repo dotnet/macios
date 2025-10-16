@@ -27,15 +27,10 @@
 
 #nullable enable
 
-using System;
 using System.Net;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.Versioning;
-using ObjCRuntime;
-using Foundation;
 using CFNetwork;
 
 namespace CoreFoundation {

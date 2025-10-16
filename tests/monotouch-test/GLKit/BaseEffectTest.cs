@@ -2,12 +2,8 @@
 
 #if HAS_GLKIT
 
-using System;
 using System.Drawing;
-using Foundation;
 using GLKit;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 using System.Numerics;

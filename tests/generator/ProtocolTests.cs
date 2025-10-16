@@ -1,7 +1,5 @@
-using System;
 using System.Linq;
 
-using NUnit.Framework;
 using Xamarin.Tests;
 
 namespace GeneratorTests {

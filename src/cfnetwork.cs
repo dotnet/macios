@@ -4,10 +4,6 @@
 // Copyright 2014-2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace CFNetwork {
 	/// <summary>A <see cref="CoreFoundation.CFReadStream" /> that reads HTTP stream data.</summary>
 	[Partial]

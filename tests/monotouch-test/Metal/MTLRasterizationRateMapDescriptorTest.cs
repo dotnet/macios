@@ -1,8 +1,5 @@
 #if __IOS__ || __MACOS__
-using Foundation;
 using Metal;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Metal {
 

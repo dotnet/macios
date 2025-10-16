@@ -11,10 +11,6 @@
 
 #if !TVOS && !MONOMAC
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 #nullable enable
 
 namespace MediaPlayer {

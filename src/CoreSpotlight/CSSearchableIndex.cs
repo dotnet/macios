@@ -11,10 +11,6 @@
 
 #if IOS
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace CoreSpotlight {
 
 	public partial class CSSearchableIndex {

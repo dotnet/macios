@@ -1,7 +1,4 @@
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
-using System;
 
 namespace HealthKit {
 	// NSInteger -> HKDefines.h

@@ -1,12 +1,8 @@
-using System;
 using System.IO;
 using System.Net;
 using System.ServiceModel;
 using System.Windows.Input;
 using System.Xml;
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace LinkSdk {
 

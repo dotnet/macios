@@ -408,7 +408,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			if (IsWatchApp && AppleSdkSettings.XcodeVersion < new Version (6, 2)) {
 				Log.LogError (MSBStrings.E0160, AppleSdkSettings.XcodeVersion);

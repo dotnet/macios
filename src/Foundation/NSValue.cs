@@ -23,11 +23,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 #if !NO_SYSTEM_DRAWING
 using System.Drawing;
 #endif
-using System.Runtime.InteropServices;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

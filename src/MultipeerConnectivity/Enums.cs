@@ -7,8 +7,6 @@
 //
 // Copyright 2013-2014, 2016 Xamarin, Inc.
 
-using ObjCRuntime;
-
 namespace MultipeerConnectivity {
 
 	// NSInteger -> MCSession.h

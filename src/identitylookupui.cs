@@ -7,9 +7,6 @@
 // Copyright 2018-2019 Microsoft Corporation.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using UIKit;
 using IdentityLookup;
 

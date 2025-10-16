@@ -9,14 +9,11 @@
 
 #if !MONOMAC
 using AVFoundation;
-using Foundation;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.AVFoundation {

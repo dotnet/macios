@@ -9,11 +9,7 @@
 //
 
 #if __IOS__
-using System;
-using NUnit.Framework;
-using Foundation;
 using UIKit;
-using ObjCRuntime;
 
 namespace MonoTouchFixtures.UIKit {
 	[TestFixture]

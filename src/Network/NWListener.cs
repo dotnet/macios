@@ -9,10 +9,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 
 using nw_connection_group_t = System.IntPtr;

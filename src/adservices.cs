@@ -1,6 +1,3 @@
-using ObjCRuntime;
-using Foundation;
-using System;
 
 namespace AdServices {
 

@@ -1,10 +1,7 @@
 #nullable enable
 
-using System;
 using System.Linq;
 using System.Collections.Generic;
-
-using Foundation;
 
 namespace NaturalLanguage {
 

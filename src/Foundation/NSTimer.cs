@@ -20,13 +20,9 @@
 //
 // Copyright 2011-2014 Xamarin Inc.
 //
-using System;
-using System.Diagnostics.CodeAnalysis;
+
 using System.Reflection;
 using System.Collections;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 
 namespace Foundation {
 

@@ -9,13 +9,9 @@
 
 #if HAS_ADDRESSBOOKUI
 
-using System;
 using System.Globalization;
-using Foundation;
 using AddressBookUI;
-using ObjCRuntime;
 using UIKit;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.AddressBookUI {

@@ -9,11 +9,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
 using CoreFoundation;
 
 using nw_parameters_t = System.IntPtr;

@@ -1,14 +1,9 @@
 #if !__TVOS__
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 using Photos;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Photos {
 

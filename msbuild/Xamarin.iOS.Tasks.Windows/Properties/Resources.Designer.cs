@@ -74,14 +74,5 @@ namespace Xamarin.iOS.Tasks.Windows.Properties {
                 return ResourceManager.GetString("CompileAppManifest_MissinInfoPList", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Linking with a static library is not supported when using Hot Restart..
-        /// </summary>
-        internal static string HotRestartStaticLibraryNotSupported {
-            get {
-                return ResourceManager.GetString("HotRestartStaticLibraryNotSupported", resourceCulture);
-            }
-        }
     }
 }

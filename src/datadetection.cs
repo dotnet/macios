@@ -1,9 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Foundation;
-using ObjCRuntime;
-
 namespace DataDetection {
 
 	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0), Mac (12, 0)]

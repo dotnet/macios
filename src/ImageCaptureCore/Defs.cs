@@ -24,10 +24,6 @@
 //
 // Defs.cs: Enumerations and definitions for ImageCaptureCore
 //
-using System;
-
-using Foundation;
-using ObjCRuntime;
 
 namespace ImageCaptureCore {
 

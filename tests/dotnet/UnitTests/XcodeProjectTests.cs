@@ -27,7 +27,7 @@ namespace Xamarin.Tests {
 
 		void AssertXcFrameworkOutput (ApplePlatform platform, string testDir, string xcodeProjName, string config = "Debug")
 		{
-			if (platform == ApplePlatform.iOS || platform == ApplePlatform.TVOS) {
+			if (!UsesCompressedBindingResourcePackage (platform)) {
 				var expectedXcodeFxOutput = Path.Combine (testDir, "bin", config, platform.ToFramework (), $"{TestName}.resources", $"{xcodeProjName}{platform.AsString ()}.xcframework");
 				Assert.That (expectedXcodeFxOutput, Does.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' did not exist.");
 			} else {
@@ -100,7 +100,12 @@ namespace Xamarin.Tests {
 				{ "Configuration", projConfig },
 			};
 			DotNet.AssertBuild (proj, properties: projProps);
-			var expectedXcodeFxOutput = Path.Combine (testDir, "bin", projConfig, platform.ToFramework (), $"{TestName}.resources", $"{xcodeProjName}{platform.AsString ()}.xcframework");
+			string expectedXcodeFxOutput;
+			if (UsesCompressedBindingResourcePackage (platform)) {
+				expectedXcodeFxOutput = Path.Combine (testDir, "bin", projConfig, platform.ToFramework (), $"{TestName}.resources.zip");
+			} else {
+				expectedXcodeFxOutput = Path.Combine (testDir, "bin", projConfig, platform.ToFramework (), $"{TestName}.resources", $"{xcodeProjName}{platform.AsString ()}.xcframework");
+			}
 			Assert.That (expectedXcodeFxOutput, createNativeReference ? Does.Exist : Does.Not.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' to exist when CreateNativeReference=true.");
 		}
 
@@ -181,7 +186,7 @@ public class Binding
 			List<string> zipContent = ZipHelpers.List (expectedNupkgOutput);
 			var tfm = platform.ToFrameworkWithPlatformVersion (isExecutable: false);
 			var expectedFxPath = $"lib/{tfm}/{TestName}.resources/{xcodeProjName}{platform.AsString ()}.xcframework/Info.plist";
-			if (platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst) {
+			if (UsesCompressedBindingResourcePackage (platform)) {
 				zipContent = ZipHelpers.ListInnerZip (expectedNupkgOutput, $"lib/{tfm}/{TestName}.resources.zip");
 				expectedFxPath = $"{xcodeProjName}{platform.AsString ()}.xcframework/Info.plist";
 			}
@@ -216,7 +221,7 @@ public class Binding
 			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			AssertTargetExecuted (allTargets, "_BuildXcodeProjects", "First _BuildXcodeProjects");
 			var expectedXcodeFxOutput = Path.Combine (testDir, "bin", "Debug", platform.ToFramework (), $"{TestName}.resources", $"{xcodeProjName}{platform.AsString ().ToLower ()}.xcframework");
-			if (platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst)
+			if (UsesCompressedBindingResourcePackage (platform))
 				expectedXcodeFxOutput = Path.Combine (testDir, "bin", "Debug", platform.ToFramework (), $"{TestName}.resources.zip");
 			Assert.That (expectedXcodeFxOutput, Does.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' did not exist.");
 			var outputFxFirstWriteTime = File.GetLastWriteTime (expectedXcodeFxOutput);

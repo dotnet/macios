@@ -2,13 +2,9 @@
 // Unit tests for NSGridView
 //
 
-
 #if __MACOS__
 
-using System;
 using AppKit;
-using Foundation;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.AppKit {
 

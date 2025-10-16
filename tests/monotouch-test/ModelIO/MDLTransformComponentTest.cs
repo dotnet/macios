@@ -9,9 +9,7 @@
 
 #if !MONOMAC
 
-using System;
 using CoreGraphics;
-using Foundation;
 #if !MONOMAC
 using UIKit;
 #endif
@@ -19,14 +17,12 @@ using UIKit;
 using MultipeerConnectivity;
 #endif
 using ModelIO;
-using ObjCRuntime;
 
 using System.Numerics;
 using Matrix4 = global::CoreGraphics.NMatrix4;
 using MatrixFloat4x4 = global::CoreGraphics.NMatrix4;
 
 using Bindings.Test;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.ModelIO {
 

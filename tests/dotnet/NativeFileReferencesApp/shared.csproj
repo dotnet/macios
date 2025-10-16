@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 
-		<ApplicationTitle>NativeFileReferences</ApplicationTitle>
+		<ApplicationTitle>NativeFileReferencesApp</ApplicationTitle>
 		<ApplicationId>com.xamarin.nativefilereferences</ApplicationId>
 		<ApplicationVersion>1.0</ApplicationVersion>
 	</PropertyGroup>

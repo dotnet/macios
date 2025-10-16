@@ -2,14 +2,8 @@
 // Unit tests for AudioUnit
 //
 
-using System.Runtime.InteropServices;
-
-using NUnit.Framework;
-
-using Foundation;
 using AudioUnit;
 using AudioToolbox;
-using ObjCRuntime;
 
 namespace MonoTouchFixtures.AudioUnit {
 	[TestFixture]

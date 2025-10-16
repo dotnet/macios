@@ -69,6 +69,11 @@
 		</PartialAppManifest>
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(Language)' == 'C#'">
+		<Compile Include="$(MSBuildThisFileDirectory)GlobalUsings.cs" />
+		<ObjcBindingCoreSource Include="$(MSBuildThisFileDirectory)GlobalUsings.cs" Condition="'$(IsBindingProject)' == 'true'" />
+	</ItemGroup>
+
 	<!-- Logic for NativeAOT -->
 	<PropertyGroup Condition="'$(PublishAot)' == 'true' And '$(_IsPublishing)' == 'true'">
 		<!-- Define NATIVEAOT when using NativeAOT -->
@@ -88,6 +93,8 @@
 		<TrimmerSingleWarn Condition="'$(TrimmerSingleWarn)' == ''">false</TrimmerSingleWarn>
 		<!-- IL2104: Assembly '...' produced trim warnings -->
 		<NoWarn>$(NoWarn);IL2104</NoWarn>
+		<!-- Touch.Unit is not trimmer-safe, so ignore any trimmer warnings if we're including Touch.Unit in the build -->
+		<SuppressTrimAnalysisWarnings Condition="'$(SuppressTrimAnalysisWarnings)' == '' And '$(ExcludeTouchUnitReference)' != 'true'">true</SuppressTrimAnalysisWarnings>
 	</PropertyGroup>
 	<Target Name="IgnoreTrimmerWarningsInNUnit" BeforeTargets="PrepareForILLink">
 		<ItemGroup>
@@ -103,6 +110,10 @@
 		<PackageReference Include="NUnitLite" Version="3.12.0" Condition="'$(ExcludeNUnitLiteReference)' != 'true'" />
 		<ProjectReference Include="$(MSBuildThisFileDirectory)\Touch.Unit\Touch.Client\dotnet\Touch.Client.$(_PlatformName).csproj" Condition="'$(ExcludeTouchUnitReference)' != 'true'" />
 	</ItemGroup>
+	<PropertyGroup>
+		<DefineConstants Condition="'$(ExcludeNUnitLiteReference)' == 'true'">$(DefineConstants);EXCLUDE_NUNITLITE_REFERENCE</DefineConstants>
+		<DefineConstants Condition="'$(ExcludeTouchUnitReference)' == 'true'">$(DefineConstants);EXCLUDE_TOUCH_UNIT_REFERENCE</DefineConstants>
+	</PropertyGroup>
 
 	<Import Project="$(MSBuildThisFileDirectory)/../ComputeRegistrarConstant.targets" />
 	<Import Project="$(MSBuildThisFileDirectory)/../nunit.framework.targets" Condition="'$(ExcludeNUnitLiteReference)' != 'true'" />

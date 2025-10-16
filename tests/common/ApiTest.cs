@@ -1,10 +1,6 @@
 // Tests are common to both mtouch and mmp
-using System;
 using System.IO;
-using System.Collections.Generic;
 using System.Linq;
-
-using NUnit.Framework;
 
 using Mono.Cecil;
 

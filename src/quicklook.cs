@@ -28,8 +28,6 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 #if MONOMAC
 using AppKit;
@@ -37,7 +35,6 @@ using UIWindowSceneActivationConfiguration = Foundation.NSObject;
 #else
 using UIKit;
 #endif
-using System;
 using System.ComponentModel;
 using UniformTypeIdentifiers;
 

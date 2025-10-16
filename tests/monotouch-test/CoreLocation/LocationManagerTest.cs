@@ -2,11 +2,7 @@
 
 #if __IOS__
 
-using Foundation;
 using CoreLocation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreLocation {
 

@@ -9,12 +9,8 @@
 // Copyright 2013, 2015 Xamarin Inc.
 // Copyright 2019, 2020 Microsoft Corporation
 
-using System;
-
 using CoreFoundation;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 using UIViewController = AppKit.NSViewController;

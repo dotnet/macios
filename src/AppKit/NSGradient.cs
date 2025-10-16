@@ -7,11 +7,6 @@
 
 #if !__MACCATALYST__
 
-using System;
-using Foundation;
-using ObjCRuntime;
-using System.Runtime.InteropServices;
-
 #nullable enable
 
 namespace AppKit {

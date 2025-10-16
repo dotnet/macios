@@ -2,6 +2,7 @@
 <Project>
 	<PropertyGroup>
 		<IsBindingProject>true</IsBindingProject>
+		<CompressBindingResourcePackage>false</CompressBindingResourcePackage>
 	</PropertyGroup>
 
 	<Import Project="../../common/shared-dotnet.csproj" />

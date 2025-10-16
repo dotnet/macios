@@ -9,12 +9,8 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
 using CoreFoundation;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 
 namespace ImageIO {
 	[SupportedOSPlatform ("ios")]

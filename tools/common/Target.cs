@@ -777,8 +777,12 @@ namespace Xamarin.Bundler {
 			if (!string.IsNullOrEmpty (app.MonoGCParams))
 				sw.WriteLine ("\tsetenv (\"MONO_GC_PARAMS\", \"{0}\", 1);", app.MonoGCParams);
 			// Do this last, so that the app developer can override any other environment variable we set.
-			foreach (var kvp in app.EnvironmentVariables)
-				sw.WriteLine ("\tsetenv (\"{0}\", \"{1}\", 1);", kvp.Key.Replace ("\"", "\\\""), kvp.Value.Replace ("\"", "\\\""));
+			foreach (var kvp in app.EnvironmentVariables) {
+				var name = kvp.Key;
+				var value = kvp.Value.Value;
+				var overwrite = kvp.Value.Overwrite;
+				sw.WriteLine ("\tsetenv (\"{0}\", \"{1}\", {2});", name.Replace ("\"", "\\\""), value.Replace ("\"", "\\\""), overwrite ? 1 : 0);
+			}
 			if (app.XamarinRuntime != XamarinRuntime.NativeAOT)
 				sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", app.DynamicRegistrationSupported ? "TRUE" : "FALSE");
 #if NET && !LEGACY_TOOLS

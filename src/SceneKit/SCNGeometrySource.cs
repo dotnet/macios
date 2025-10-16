@@ -7,10 +7,8 @@
 //
 // Copyright Xamarin Inc
 //
-using System;
 
 using CoreGraphics;
-using Foundation;
 using Metal;
 
 #nullable enable

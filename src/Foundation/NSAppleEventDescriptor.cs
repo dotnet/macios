@@ -5,8 +5,6 @@
 
 #if MONOMAC
 
-using System;
-
 using AppKit;
 
 namespace Foundation {

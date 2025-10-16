@@ -1,12 +1,6 @@
-using System;
 using System.Threading;
 
 using Network;
-using CoreFoundation;
-using Foundation;
-
-using NUnit.Framework;
-
 
 namespace monotouchtest.Network {
 	[TestFixture]

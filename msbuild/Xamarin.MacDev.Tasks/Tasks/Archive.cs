@@ -115,7 +115,7 @@ namespace Xamarin.MacDev.Tasks {
 				if (AppExtensionReferences is not null)
 					TaskItemFixer.ReplaceItemSpecsWithBuildServerPath (AppExtensionReferences, SessionId);
 
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 			}
 
 			var archiveDir = CreateArchiveDirectory ();

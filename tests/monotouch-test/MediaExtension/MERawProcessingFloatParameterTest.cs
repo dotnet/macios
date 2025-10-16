@@ -1,8 +1,5 @@
 #if HAS_MEDIAEXTENSION
-using Foundation;
 using MediaExtension;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.MediaExtension {
 	[TestFixture]

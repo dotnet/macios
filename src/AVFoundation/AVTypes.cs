@@ -1,11 +1,7 @@
-using System;
-using System.Runtime.InteropServices;
-
 #if !COREBUILD
 using Vector3 = global::System.Numerics.Vector3;
 #endif // !COREBUILD
 using CoreGraphics;
-using ObjCRuntime;
 using CoreMedia;
 
 #nullable enable

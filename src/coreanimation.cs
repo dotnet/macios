@@ -29,7 +29,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 #if MONOMAC
@@ -42,10 +41,8 @@ using UIKit;
 #if HAS_OPENGLES
 using OpenGLES;
 #endif
-using Foundation;
 using CoreImage;
 using CoreGraphics;
-using ObjCRuntime;
 using Metal;
 using SceneKit; // For SCNAnimationEvent
 

@@ -7,11 +7,9 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Linq;
 using System.Reflection;
 
-using NUnit.Framework;
 using Xamarin.Tests;
 
 namespace Introspection {

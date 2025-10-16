@@ -714,7 +714,7 @@ xamarin_copyWithZone_trampoline2 (id self, SEL sel, NSZone *zone)
 		xamarin_set_gchandle_with_flags (self, INVALID_GCHANDLE, XamarinGCHandleFlags_None);
 
 	// Call the managed implementation
-	id (*invoke) (id, SEL, NSZone*) = (id (*)(id, SEL, NSZone*)) xamarin_trampoline;
+	id (*invoke) (id, SEL, NSZone*) = (id (*)(id, SEL, NSZone*)) (void *) xamarin_trampoline;
 	rv = invoke (self, sel, zone);
 
 	// Restore our GCHandle
@@ -1674,7 +1674,7 @@ xamarin_get_managed_to_nsvalue_func (MonoClass *managedType, MonoMethod *method,
 	return (xamarin_managed_to_id_func) xamarin_get_nsvalue_converter (managedType, method, false, exception_gchandle);
 }
 
-void *
+id
 xamarin_smart_enum_to_nsstring (MonoObject *value, void *context /* token ref */, GCHandle *exception_gchandle)
 {
 	guint32 context_ref = GPOINTER_TO_UINT (context);

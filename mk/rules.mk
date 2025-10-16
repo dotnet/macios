@@ -38,6 +38,7 @@ CFLAGS=\
 	-Wno-objc-protocol-property-synthesis \
 	-Wignored-qualifiers \
 	-Wmissing-field-initializers \
+	-Wcast-function-type-mismatch \
 	-g \
 	-I.
 SWIFTFLAGS=-g -emit-library

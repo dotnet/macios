@@ -376,15 +376,6 @@ endif
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetIntermediateAssembly,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'))))
 
 define BuildDotNetPlatformAssembly
-## We build the ref assembly when building the 64-bit version of the platform assembly,
-## so we need some special logic here.
-ifeq ($(4),64)
-$(2)_$(4)_REFOUT_ARG = -refout:$($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll
-$(2)_$(4)_REF_TARGET = $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1)%dll
-$(2)_$(4)_DOC_ARG = -doc:$($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml
-$(2)_$(4)_DOC_TARGET = $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1)%xml
-endif
-
 $(2)_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES = \
 	$($(2)_DOTNET_SOURCES) \
 	$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp \
@@ -399,7 +390,6 @@ $(2)_DOTNET_PLATFORM_ASSEMBLY_DIR_DEPENDENCIES = \
 	$($(2)_DOTNET_BUILD_DIR)/$(4) \
 	$($(2)_DOTNET_BUILD_DIR)/ref \
 
-ifeq ($(4),64)
 PLATFORM_$(1)_CSPROJ = $(DOTNET_BUILD_DIR)/$(1)/csproj/platform/Microsoft.$(1).csproj
 CSPROJECTS += $$(PLATFORM_$(1)_CSPROJ)
 $$(PLATFORM_$(1)_CSPROJ): $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp Makefile $(RSP_TO_CSPROJ) $($(2)_DOTNET_BUILD_DIR)/embed-files.rsp
@@ -412,7 +402,6 @@ $$(PLATFORM_$(1)_CSPROJ): $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp Makefile $
 		--property=LowerCasePlatform=$(3) \
 		--output $$@.tmp
 	$$(Q) mv $$@.tmp $$@
-endif
 
 rsp:: $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp
 
@@ -430,12 +419,11 @@ $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(RSP_D
 		-optimize \
 		$$(ARGS_$(1)) \
 		-publicsign -keyfile:$(PRODUCT_KEY_PATH) \
-		$$($(2)_$(4)_REFOUT_ARG) \
-		$$($(2)_$(4)_DOC_ARG) \
+		-refout:$($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll \
+		-doc:$($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml \
 		-sourcelink:$($(2)_DOTNET_BUILD_DIR)/SourceLink.json \
 		@$$(abspath $($(2)_DOTNET_BUILD_DIR)/embed-files.rsp) \
 		$$($(2)_DEFINES) \
-		$(ARGS_$(4)) \
 		$$(DOTNET_WARNINGS_TO_FIX) \
 		@$$(abspath $(RSP_DIR)/dotnet/$(3)-defines-dotnet.rsp) \
 		-res:$($(2)_DOTNET_BUILD_DIR)/ILLink.LinkAttributes.xml \
@@ -448,8 +436,8 @@ $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(RSP_D
 		> $$@.tmp
 	$$(Q) mv $$@.tmp $$@
 
-$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%dll $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%pdb $$($(2)_$(4)_REF_TARGET) $$($(2)_$(4)_DOC_TARGET): $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES) $$(ROSLYN_GENERATOR) $$(ROSLYN_ANALYZER) | $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DIR_DEPENDENCIES)
-	$$(call Q_PROF_CSC,dotnet/$(4)-bit) $(DOTNET_CSC) @$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp
+$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%dll $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%pdb $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1)%dll $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1)%xml: $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES) $$(ROSLYN_GENERATOR) $$(ROSLYN_ANALYZER) | $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DIR_DEPENDENCIES)
+	$$(call Q_PROF_CSC,dotnet) $(DOTNET_CSC) @$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp
 
 dotnet-$(3):: $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll
 
@@ -479,13 +467,12 @@ endef
 # 1: Platform (correct case)
 # 2: PLATFORM (all upper case)
 # 3: platform (all lower case)
-# 4: 32 or 64 (architecture bitness)
+# 4: 64 (bits)
 #
 # pseudo-code:
 #     foreach (var platform in DOTNET_PLATFORMS)
-#        foreach (var bitness in DOTNET_<platform.ToUpper ()>_BITNESSES)
-#            BuildDotNetPlatformAssembly (platform, platform.ToUpper (), platform.ToLower (), bitness)
-$(foreach platform,$(DOTNET_PLATFORMS),$(foreach bitness, $(DOTNET_$(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_BITNESSES), $(eval $(call BuildDotNetPlatformAssembly,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'),$(bitness)))))
+#        BuildDotNetPlatformAssembly (platform, platform.ToUpper (), platform.ToLower (), 64)
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call BuildDotNetPlatformAssembly,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'),64)))
 
 define DefineTargets
 $(1)_NUGET_TARGETS = \

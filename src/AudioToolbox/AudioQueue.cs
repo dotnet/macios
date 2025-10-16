@@ -33,6 +33,7 @@
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using CoreFoundation;
@@ -352,53 +353,79 @@ namespace AudioToolbox {
 	}
 
 	/// <summary>Represents an audio queue buffer.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioQueueBuffer {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The size, in bytes, of the audio data for this buffer (<see cref="AudioData" />).</summary>
 		public uint AudioDataBytesCapacity;
+
 		/// <summary>Pointer to the audio data.</summary>
-		///         <remarks>To be added.</remarks>
 		public IntPtr AudioData;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+
+		/// <summary>The number of valid bytes in the audio data (<see cref="AudioData" />).</summary>
 		public uint AudioDataByteSize;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+
+		/// <summary>A custom value, not used by the system.</summary>
 		public IntPtr UserData;
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The capacity, in number of elements, of the array of packet descriptions.</summary>
 		public uint PacketDescriptionCapacity;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+
+		/// <summary>A C-style array of packet descriptions.</summary>
 		public IntPtr IntPtrPacketDescriptions;
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+
+		/// <summary>The number of valid elements in the array of packet descriptions.</summary>
 		public int PacketDescriptionCount;
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>An array of valid packet descriptions.</summary>
 		public AudioStreamPacketDescription []? PacketDescriptions {
 			get {
 				return AudioFile.PacketDescriptionFrom (PacketDescriptionCount, IntPtrPacketDescriptions);
 			}
+			set {
+				if (value is null)
+					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
+
+				if (value.Length > PacketDescriptionCapacity)
+					throw new ArgumentOutOfRangeException ("Too many elements for this audio queue buffer.", nameof (value));
+
+				unsafe {
+					fixed (AudioStreamPacketDescription* aspd = value)
+						NativeMemory.Copy ((void*) aspd, (void*) IntPtrPacketDescriptions, (nuint) (sizeof (AudioStreamPacketDescription) * value.Length));
+					PacketDescriptionCount = value.Length;
+				}
+			}
 		}
 
+		/// <summary>Copies the specified buffer's <see cref="AudioData" /> buffer.</summary>
 		/// <param name="source">Pointer to the data to copy.</param>
-		///         <param name="size">Number of bytes to copy.</param>
-		///         <summary>Copies the specified buffer AudioQueue's AudioData buffer.</summary>
-		///         <remarks>
-		///         </remarks>
+		/// <param name="size">Number of bytes to copy.</param>
 		public unsafe void CopyToAudioData (IntPtr source, int size)
 		{
-			Buffer.MemoryCopy ((void*) source, (void*) AudioData, AudioDataByteSize, size);
+			CopyToAudioData (new ReadOnlySpan<byte> ((void*) source, size));
+		}
+
+		/// <summary>Copies the specified buffer's <see cref="AudioData" /> buffer.</summary>
+		/// <param name="source">The data to copy.</param>
+		public void CopyToAudioData (ReadOnlySpan<byte> source)
+		{
+			source.CopyTo (AsSpan ());
+			AudioDataByteSize = (uint) source.Length;
+		}
+
+		/// <summary>Creates a new span over the valid audio data for this buffer (<see cref="AudioData" />, <see cref="AudioDataByteSize" />).</summary>
+		public unsafe Span<byte> AsSpanOfValidData ()
+		{
+			return new Span<byte> ((void*) AudioData, (int) AudioDataByteSize);
+		}
+
+		/// <summary>Creates a new span over the entire audio data buffer (<see cref="AudioData" />, <see cref="AudioDataBytesCapacity" />).</summary>
+		public unsafe Span<byte> AsSpan ()
+		{
+			return new Span<byte> ((void*) AudioData, (int) AudioDataBytesCapacity);
 		}
 	}
 
@@ -735,17 +762,18 @@ namespace AudioToolbox {
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static AudioQueueStatus AudioQueueAllocateBuffer (AudioQueueRef AQ, int bufferSize, IntPtr* audioQueueBuffer);
+
+#if !XAMCORE_5_0
+		/// <summary>Allocates an audio buffer associated with this <see cref="AudioQueue" />, used for fixed bit rate buffers.</summary>
 		/// <param name="bufferSize">The audio buffer size to allocate (in bytes).</param>
-		///         <param name="audioQueueBuffer">Returns the pointer to the allocated buffer as an IntPtr.</param>
-		///         <summary>Allocates an audio buffer associated with this AudioQueue, used for fixed bit rate buffers.</summary>
-		///         <returns>AudioQueueStatus.Ok on success, otherwise the error. </returns>
-		///         <remarks>
-		///           <para>
-		/// 	    Use the <see cref="AudioToolbox.AudioQueue.AllocateBufferWithPacketDescriptors(System.Int32,System.Int32,out System.IntPtr)" /> to allocate buffers that will be used with variable bit
-		/// 	    rate encodings.
-		/// 	  </para>
-		///           <para>Use <see cref="AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.</para>
-		///         </remarks>
+		/// <param name="audioQueueBuffer">The allocated buffer on return. Cast this to a pointer to a <see cref="AudioQueueBuffer" /> to use it.</param>
+		/// <returns><see cref="AudioQueueStatus.Ok" /> on success and the <paramref name="audioQueueBuffer" /> pointing to the buffer, otherwise the error code.</returns>
+		/// <remarks>
+		///   <para>Use the <see cref="AllocateBuffer(int,int,out AudioQueueBuffer*)" /> to allocate buffers that will be used with variable bit rate encodings.</para>
+		///   <para>Use <see cref="FreeBuffer(System.IntPtr)" /> to dispose the buffer.</para>
+		/// </remarks>
+		[Obsolete ("Call 'AllocateBuffer(int, out AudioQueueBuffer*)' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public AudioQueueStatus AllocateBuffer (int bufferSize, out IntPtr audioQueueBuffer)
 		{
 			audioQueueBuffer = default (IntPtr);
@@ -755,14 +783,16 @@ namespace AudioToolbox {
 				}
 			}
 		}
+#endif
 
+		/// <summary>Allocates an audio buffer associated with this <see cref="AudioQueue" />, used for fixed bit rate buffers.</summary>
 		/// <param name="bufferSize">The audio buffer size to allocate (in bytes).</param>
-		///         <param name="audioQueueBuffer">Returns the allocated buffer as an unsafe AudioQueueBuffer pointer.</param>
-		///         <summary>Allocates an audio buffer associated with this AudioQueue</summary>
-		///         <returns>AudioQueueStatus.Ok on success, otherwise the error. </returns>
-		///         <remarks>
-		/// 	  Use <see cref="AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.
-		///         </remarks>
+		/// <param name="audioQueueBuffer">Returns the allocated buffer as an unsafe <see cref="AudioQueueBuffer" /> pointer.</param>
+		/// <returns><see cref="AudioQueueStatus.Ok" /> on success and the <paramref name="audioQueueBuffer" /> pointing to the buffer, otherwise the error code.</returns>
+		/// <remarks>
+		///   <para>Use the <see cref="AllocateBuffer(int,int,out AudioQueueBuffer*)" /> to allocate buffers that will be used with variable bit rate encodings.</para>
+		///   <para>Use <see cref="FreeBuffer(AudioQueueBuffer*)" /> to dispose the buffer.</para>
+		/// </remarks>
 		public unsafe AudioQueueStatus AllocateBuffer (int bufferSize, out AudioQueueBuffer* audioQueueBuffer)
 		{
 			IntPtr buf;
@@ -774,18 +804,19 @@ namespace AudioToolbox {
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static AudioQueueStatus AudioQueueAllocateBufferWithPacketDescriptions (IntPtr AQ, int bufferSize, int nPackets, IntPtr* audioQueueBuffer);
-		/// <param name="bufferSize">Size of the buffer to allocate.</param>
-		///         <param name="nPackets">Number of packets descriptors in the audio queue buffer.</param>
-		///         <param name="audioQueueBuffer">The allocated buffer on return</param>
-		///         <summary>Allocates an audio queue object for variable-bit-rate buffers.</summary>
-		///         <returns>AudioQueueStatus.Ok on success and the audioQueueBuffer pointing to the buffer, otherwise the error.</returns>
-		///         <remarks>
-		///           <para>
-		/// 	    Use the <see cref="AudioToolbox.AudioQueue.AllocateBuffer(System.Int32,out AudioToolbox.AudioQueueBuffer*)" /> to allocate buffers that will be used with fixed bit
-		/// 	    rate encodings.
-		/// 	  </para>
-		///           <para>Use <see cref="AudioToolbox.AudioQueue.FreeBuffer(System.IntPtr)" /> to dispose the buffer.</para>
-		///         </remarks>
+
+#if !XAMCORE_5_0
+		/// <summary>Allocates an audio queue object for variable-bit-rate buffers.</summary>
+		/// <param name="bufferSize">Size of the audio data in the allocated buffer, in bytes.</param>
+		/// <param name="nPackets">The number of elements in the packet descriptions array in the returned buffer.</param>
+		/// <param name="audioQueueBuffer">The allocated buffer on return. Cast this to a pointer to a <see cref="AudioQueueBuffer" /> to use it.</param>
+		/// <returns><see cref="AudioQueueStatus.Ok" /> on success and the <paramref name="audioQueueBuffer" /> pointing to the buffer, otherwise the error code.</returns>
+		/// <remarks>
+		///   <para>Use the <see cref="AllocateBuffer(int,out AudioQueueBuffer*)" /> to allocate buffers that will be used with fixed bit rate encodings.</para>
+		///   <para>Use <see cref="FreeBuffer(System.IntPtr)" /> to free the buffer (if not it will be freed when this audio queue is disposed).</para>
+		/// </remarks>
+		[Obsolete ("Call 'AllocateBuffer(int, int, out AudioQueueBuffer*)' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public AudioQueueStatus AllocateBufferWithPacketDescriptors (int bufferSize, int nPackets, out IntPtr audioQueueBuffer)
 		{
 			audioQueueBuffer = default (IntPtr);
@@ -795,18 +826,48 @@ namespace AudioToolbox {
 				}
 			}
 		}
+#endif
+
+		/// <summary>Allocates an audio queue object for variable-bit-rate buffers.</summary>
+		/// <param name="bufferSize">Size of the audio data in the allocated buffer, in bytes.</param>
+		/// <param name="numberOfPacketDescriptions">The number of elements in the packet descriptions array in the returned buffer.</param>
+		/// <param name="audioQueueBuffer">The allocated buffer on return.</param>
+		/// <returns><see cref="AudioQueueStatus.Ok" /> on success and the <paramref name="audioQueueBuffer" /> pointing to the buffer, otherwise the error code.</returns>
+		/// <remarks>
+		///   <para>Use the <see cref="AllocateBuffer(int,out AudioQueueBuffer*)" /> to allocate buffers that will be used with fixed bit rate encodings.</para>
+		///   <para>Use <see cref="FreeBuffer(AudioQueueBuffer*)" /> to free the buffer (if not it will be freed when this audio queue is disposed).</para>
+		/// </remarks>
+		public unsafe AudioQueueStatus AllocateBuffer (int bufferSize, int numberOfPacketDescriptions, out AudioQueueBuffer* audioQueueBuffer)
+		{
+			fixed (AudioQueueBuffer** audioQueueBufferPtr = &audioQueueBuffer)
+				return AudioQueueAllocateBufferWithPacketDescriptions (GetCheckedHandle (), bufferSize, numberOfPacketDescriptions, (IntPtr*) audioQueueBufferPtr);
+		}
 
 		[DllImport (Constants.AudioToolboxLibrary)]
 		extern static AudioQueueStatus AudioQueueFreeBuffer (IntPtr AQ, IntPtr audioQueueBuffer);
+
+		/// <summary>Releases an AudioQueue buffer.</summary>
 		/// <param name="audioQueueBuffer">AudioQueue buffer previously allocated with AllocateBuffer.</param>
-		///         <summary>Releases an AudioQueue buffer.</summary>
-		///         <remarks>
-		///         </remarks>
-		public void FreeBuffer (IntPtr audioQueueBuffer)
+		public unsafe void FreeBuffer (IntPtr audioQueueBuffer)
 		{
-			if (audioQueueBuffer == IntPtr.Zero)
+			FreeBuffer ((AudioQueueBuffer*) audioQueueBuffer);
+		}
+
+		/// <summary>Releases an AudioQueue buffer.</summary>
+		/// <param name="audioQueueBuffer">AudioQueue buffer previously allocated with AllocateBuffer.</param>
+		public unsafe AudioQueueStatus FreeBuffer (AudioQueueBuffer* audioQueueBuffer)
+		{
+			if (audioQueueBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (audioQueueBuffer));
-			AudioQueueFreeBuffer (handle, audioQueueBuffer);
+			return AudioQueueFreeBuffer (GetCheckedHandle (), (IntPtr) audioQueueBuffer);
+		}
+
+		IntPtr GetCheckedHandle ()
+		{
+			var h = handle;
+			if (h == NativeHandle.Zero)
+				ObjCRuntime.ThrowHelper.ThrowObjectDisposedException (this);
+			return h;
 		}
 
 		public static void FillAudioData (IntPtr audioQueueBuffer, int offset, IntPtr source, int sourceOffset, nint size)

@@ -542,7 +542,6 @@ namespace AudioToolbox {
 	}
 
 	/// <summary>Describes audio packets that do not have a standard size and packets that are interleaved with non-audio data.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -550,18 +549,13 @@ namespace AudioToolbox {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioStreamPacketDescription {
 		/// <summary>The zero-based byte index from the beginning of the buffer to the beginning of the packet.</summary>
-		///         <remarks>To be added.</remarks>
 		public long StartOffset;
 		/// <summary>The number of frames in the packet, or <c>0</c> if the packets are of a constant size.</summary>
-		///         <remarks>To be added.</remarks>
 		public int VariableFramesInPacket;
 		/// <summary>The size of the packet, in bytes.</summary>
-		///         <remarks>To be added.</remarks>
 		public int DataByteSize;
 
 		/// <summary>Provides a string representation of the packet description.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("StartOffset={0} VariableFramesInPacket={1} DataByteSize={2}", StartOffset, VariableFramesInPacket, DataByteSize);

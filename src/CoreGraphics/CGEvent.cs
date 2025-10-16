@@ -12,13 +12,9 @@
 
 #if MONOMAC || __MACCATALYST__
 
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 
 namespace CoreGraphics {
 	/// <summary>To be added.</summary>

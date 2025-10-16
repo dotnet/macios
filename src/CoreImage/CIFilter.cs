@@ -106,11 +106,8 @@
 //    CIBlendWithBlueMask
 //    CIBlendWithRedMask
 //
-using System;
 using System.Diagnostics;
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
 #if !MONOMAC
 using UIKit;

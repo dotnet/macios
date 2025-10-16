@@ -9,18 +9,14 @@
 
 #if !MONOMAC
 
-using System;
 using System.IO;
 using System.Threading;
-using Foundation;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
 using GameKit;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.GameKit {

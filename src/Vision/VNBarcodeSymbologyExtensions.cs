@@ -9,9 +9,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
-
 namespace Vision {
 	public static partial class VNBarcodeSymbologyExtensions {
 		/// <param name="self">The instance on which this method operates.</param>

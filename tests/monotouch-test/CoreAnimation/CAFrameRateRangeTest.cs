@@ -1,7 +1,4 @@
-using System;
-using NUnit.Framework;
 
-using Foundation;
 using CoreAnimation;
 namespace MonoTouchFixtures.CoreAnimation {
 

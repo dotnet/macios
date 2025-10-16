@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Threading;
 
-using CoreFoundation;
 using MapKit;
 #if HAS_ADDRESSBOOK
 using AddressBook;
@@ -16,7 +12,6 @@ using AddressBook;
 #if HAS_ADDRESSBOOKUI
 using AddressBookUI;
 #endif
-using Foundation;
 #if MONOMAC
 using AppKit;
 using UIColor = AppKit.NSColor;
@@ -25,7 +20,6 @@ using UIKit;
 #endif
 using PlatformException = ObjCRuntime.RuntimeException;
 using NativeException = ObjCRuntime.ObjCException;
-using ObjCRuntime;
 using CoreAnimation;
 using CoreGraphics;
 using CoreLocation;
@@ -38,7 +32,6 @@ using CoreMidi;
 #if !__TVOS__
 using WebKit;
 #endif
-using NUnit.Framework;
 using Bindings.Test;
 
 using RectangleF = CoreGraphics.CGRect;

@@ -7,13 +7,9 @@
 // Copyright 2015 Xamarin, Inc.
 //
 //
-using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
-using Foundation;
 using CoreFoundation;
 using CoreGraphics;
-using ObjCRuntime;
 
 using Vector2i = global::CoreGraphics.NVector2i;
 using Vector3i = global::CoreGraphics.NVector3i;

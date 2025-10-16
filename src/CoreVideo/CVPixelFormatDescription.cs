@@ -25,12 +25,8 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 
 #if XAMCORE_5_0
 using CVFillExtendedPixelsCallBackDataStruct = CoreVideo.CVFillExtendedPixelsCallBackData;

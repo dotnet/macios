@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 
-using Foundation;
 #if !MONOMAC
 using UIKit;
 using NativeException = ObjCRuntime.ObjCException;
 #endif
 using Bindings.Test;
-using ObjCRuntime;
 #if !__TVOS__
 using MapKit;
 #endif
@@ -19,7 +14,6 @@ using CoreAnimation;
 using CoreGraphics;
 using CoreLocation;
 using PlatformException = ObjCRuntime.RuntimeException;
-using NUnit.Framework;
 
 using RectangleF = CoreGraphics.CGRect;
 using SizeF = CoreGraphics.CGSize;

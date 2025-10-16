@@ -4,11 +4,6 @@
 //
 // (C) 2009 Novell, Inc.
 //
-using System;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

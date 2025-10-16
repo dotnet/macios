@@ -2,6 +2,7 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PlatformName>MacCatalyst</_PlatformName>
+    <_PlatformRidNoArch>maccatalyst</_PlatformRidNoArch>
   </PropertyGroup>
 
   <Import Project="Xamarin.Shared.Sdk.props" Condition="'$(_IsWorkloadEol)' != 'true'" />

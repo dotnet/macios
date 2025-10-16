@@ -7,9 +7,6 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using ObjCRuntime;
-using Foundation;
 using Contacts;
 using CoreGraphics;
 #if MONOMAC

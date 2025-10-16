@@ -1,9 +1,5 @@
-using System;
 
-using Foundation;
 using MLCompute;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.MLCompute {
 

@@ -7,8 +7,6 @@
 //   Miguel de Icaza
 //
 
-using System;
-
 using TextAttributes = UIKit.UIStringAttributes;
 
 namespace UIKit {

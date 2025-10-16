@@ -196,7 +196,7 @@ namespace Xamarin.MacDev.Tasks {
 				var rv = taskRunner.RunAsync (task).Result;
 				if (!rv && !task.Log.HasLoggedErrors) {
 					// if we failed to execute remotely, but no error has been reported, then report an error
-					task.Log.LogError (MSBStrings.E7160 /* Unable to execute this task remotely for unknown reasons. The build log may have more information. */);
+					task.Log.LogError (MSBStrings.E7162 /* Unable to execute this task remotely for unknown reasons. The build log may have more information. */);
 				}
 				return rv;
 			} catch (Exception ex) {
@@ -211,7 +211,7 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				var rv = new TaskRunner (task.SessionId, task.BuildEngine4).CopyInputsAsync2 (task).Result;
 				if (!rv)
-					task.Log.LogError (MSBStrings.E7161 /* Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information. */);
+					task.Log.LogError (MSBStrings.E7163 /* Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information. */);
 				return rv;
 			} catch (Exception ex) {
 				task.Log.LogErrorFromException (ex);

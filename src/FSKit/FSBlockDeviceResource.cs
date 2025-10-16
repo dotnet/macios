@@ -1,10 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Runtime.InteropServices;
-
-using Foundation;
-
 #nullable enable
 
 namespace FSKit {

@@ -10,13 +10,9 @@
 
 #nullable enable
 
-using System;
 using System.Net;
 using System.Security.Authentication;
-using System.Runtime.InteropServices;
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 
 namespace CFNetwork {
 	/// <summary>An HTTP message.</summary>

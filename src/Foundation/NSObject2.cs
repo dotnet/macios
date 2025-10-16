@@ -19,23 +19,19 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading;
 #if !NO_SYSTEM_DRAWING
 using System.Drawing;
 #endif
-using System.Runtime.Versioning;
 using System.Diagnostics;
 
 using System.Runtime.InteropServices.ObjectiveC;
 
-using ObjCRuntime;
 #if !COREBUILD
 using Xamarin.Bundler;
 #if HAS_UIKIT

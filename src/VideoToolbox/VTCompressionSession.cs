@@ -7,14 +7,10 @@
 // 
 // Copyright 2014 Xamarin Inc.
 //
-using System;
+
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 using CoreMedia;
 using CoreVideo;
 

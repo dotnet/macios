@@ -54,6 +54,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeBundleLocation" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeBundleResourceOutputPaths" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeCodesignItems" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeHashForItems" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeRemoteGeneratorProperties" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.CoreMLCompiler" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.CreateAssetPack" AssemblyFile="$(_TaskAssemblyName)" />
@@ -103,7 +104,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.UnpackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.Unzip" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.ValidateAppBundleTask" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ValidateNoStaticLibraries" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.WriteAppManifest" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.WriteAssetPackManifest" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.WriteItemsToFile" AssemblyFile="$(_TaskAssemblyName)" />
@@ -120,10 +120,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_DetectBuildType">
 		<PropertyGroup>
-			<IsHotRestartBuild Condition="'$(IsHotRestartBuild)' == 'True' And '$(_PlatformName)' != 'iOS'">False</IsHotRestartBuild>
-			<IsRemoteBuild Condition="'$(IsHotRestartBuild)' == 'True'">False</IsRemoteBuild>
 			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(OutputType)' != 'Exe' And '$(BuildBindingProjectLocally)' != 'false'">False</IsRemoteBuild>
-			<_IsNonMacOSBuildForNonRemotablePlatform Condition="'$(_IsNonMacOSBuildForNonRemotablePlatform)' == '' And !$([System.OperatingSystem]::IsMacOS()) And '$(_PlatformName)' != 'iOS'">true</_IsNonMacOSBuildForNonRemotablePlatform>
 		</PropertyGroup>
 	</Target>
 
@@ -147,21 +144,26 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	-->
 	<Target
 		Name="_ExpandNativeReferences"
-		Condition="'$(_DisableBindingProjectBuild)' != 'true' And '$(_IsNonMacOSBuildForNonRemotablePlatform)' != 'true'"
+		Condition="'$(_DisableBindingProjectBuild)' != 'true'"
 		DependsOnTargets="_DetectSdkLocations;_ComputeTargetArchitectures;_GenerateBundleName;_SanitizeNativeReferences"
 		>
 		<ItemGroup>
-			<_XCFrameworkNativeReference Include="@(NativeReference -> '%(Identity)/.')" Condition="'%(Extension)' == '.xcframework' Or $([MSBuild]::ValueOrDefault('%(FileName)%(Extension)', '').EndsWith('.xcframework.zip'))" />
+			<_XCFrameworkNativeReference Include="@(NativeReference -> '%(Identity)/.')" Condition="'%(Extension)' == '.xcframework'" />
+			<_XCFrameworkNativeReference Include="@(NativeReference -> '%(Identity)')" Condition="$([MSBuild]::ValueOrDefault('%(FileName)%(Extension)', '').EndsWith('.xcframework.zip'))" />
 			<_FrameworkNativeReference Include="@(NativeReference -> '%(Identity)/%(Filename)')" Condition="'%(Extension)' == '.framework'" />
 			<_FileNativeReference Include="@(NativeReference)" Condition="'%(Extension)' != '.framework' And '%(Extension)' != '.xcframework' And '%(Extension)' != '.zip'" />
+
+			<_ReferencesWithNativeReferencesToExpand Include="@(ReferencePath)" Condition="Exists('%(RelativeDir)%(Filename).resources.zip') Or Exists('%(RelativeDir)%(Filename).resources')" />
+			<_NativeReferencesToExpand Include="@(_XCFrameworkNativeReference);@(_FrameworkNativeReference)" />
 		</ItemGroup>
 		<ResolveNativeReferences
-			Condition="'$(IsBindingProject)' != 'true'"
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(IsBindingProject)' != 'true' And ((@(_ReferencesWithNativeReferencesToExpand->Count()) &gt; 0) Or (@(_NativeReferencesToExpand->Count()) &gt; 0))"
 			Architectures="$(TargetArchitectures)"
 			FrameworksDirectory="$(_AppFrameworksRelativePath)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"
-			NativeReferences="@(_XCFrameworkNativeReference);@(_FrameworkNativeReference)"
-			References="@(ReferencePath)"
+			NativeReferences="@(_NativeReferencesToExpand)"
+			References="@(_ReferencesWithNativeReferencesToExpand)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			>
@@ -455,10 +457,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Content Remove="@(_ProcessedContent)" />
 		</ItemGroup>
 
-		<!-- This task may be executed locally on Windows (for Hot Restart) -->
 		<CollectBundleResources
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true' Or '$(_BundleOriginalResources)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true' Or '$(_BundleOriginalResources)' == 'true'"
 			OptimizePropertyLists="$(OptimizePropertyLists)"
 			OptimizePNGs="$(OptimizePNGs)"
 			BundleResources="@(Content);@(BundleResource)"
@@ -585,6 +586,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<PropertyGroup>
 		<_CompileAppManifestDependsOn>
 			CollectAppManifests;
+			_CompileAppManifestInputs;
 			$(_CompileAppManifestDependsOn);
 			_DetectBuildType;
 			_DetectAppManifest;
@@ -601,30 +603,85 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		 to the CollectAppManifestsDependsOn property. -->
 	<Target Name="CollectAppManifests" DependsOnTargets="$(CollectAppManifestsDependsOn)" />
 
-	<!-- This target has no inputs, because it must still be run if there are no input app manifests, to set default values -->
-	<Target Name="_CompileAppManifest"
-		Condition="'$(_BundleOriginalResources)' != 'true'"
-		DependsOnTargets="$(_CompileAppManifestDependsOn)"
-		Outputs="$(_TemporaryAppManifest)"
-		>
-
+	<Target Name="_CompileAppManifestInputs" Condition="'$(IsMacEnabled)' == 'true'" >
 		<ItemGroup>
 			<_FontFilesToRegister Include="@(BundleResource)" Condition="'%(BundleResource.RegisterFont)' == 'true'" />
 		</ItemGroup>
 
+		<PropertyGroup>
+			<_CompileAppManifestInputFile>$(DeviceSpecificIntermediateOutputPath)_CompileAppManifest.inputs</_CompileAppManifestInputFile>
+			<_CompileAppManifestFontFilesToRegister>@(_FontFilesToRegister)</_CompileAppManifestFontFilesToRegister>
+			<_CompileAppManifestPartialAppManifest>@(PartialAppManifest)</_CompileAppManifestPartialAppManifest>
+		</PropertyGroup>
+		<ItemGroup>
+			<!-- @(_CompileAppManifestInputLine) are lines to write in $(_CompileAppManifestInputFile) -->
+			<_CompileAppManifestInputLine Include="AppBundleName=$(_AppBundleName)" />
+			<_CompileAppManifestInputLine Include="ApplicationDisplayVersion=$(ApplicationDisplayVersion)" />
+			<_CompileAppManifestInputLine Include="ApplicationId=$(ApplicationId)" />
+			<_CompileAppManifestInputLine Include="ApplicationTitle=$(ApplicationTitle)" />
+			<_CompileAppManifestInputLine Include="ApplicationVersion=$(ApplicationVersion)" />
+			<_CompileAppManifestInputLine Include="AppManifest=$(AppBundleManifest)" />
+			<_CompileAppManifestInputLine Include="AssemblyName=$(AssemblyName)" />
+			<_CompileAppManifestInputLine Include="CompiledAppManifest=$(_TemporaryAppManifest)" />
+			<_CompileAppManifestInputLine Include="Debug=$(_BundlerDebug)" />
+			<_CompileAppManifestInputLine Include="DebugIPAddresses=$(_DebugIPAddresses)" />
+			<_CompileAppManifestInputLine Include="DefaultSdkVersion=$(_SdkVersion)" />
+			<_CompileAppManifestInputLine Include="FontFilesToRegister=$(_CompileAppManifestFontFilesToRegister)" />
+			<_CompileAppManifestInputLine Include="GenerateApplicationManifest=$(GenerateApplicationManifest)" />
+			<_CompileAppManifestInputLine Include="IsAppExtension=$(IsAppExtension)" />
+			<_CompileAppManifestInputLine Include="IsWatchApp=$(IsWatchApp)" />
+			<_CompileAppManifestInputLine Include="IsWatchExtension=$(IsWatchExtension)" />
+			<_CompileAppManifestInputLine Include="IsXPCService=$(IsXPCService)" />
+			<_CompileAppManifestInputLine Include="MinSupportedOSPlatformVersion=$(MinSupportedOSPlatformVersion)" />
+			<_CompileAppManifestInputLine Include="PartialAppManifests=$(_CompileAppManifestPartialAppManifest)" />
+			<_CompileAppManifestInputLine Include="ProjectDir=$(MSBuildProjectDirectory)" />
+			<_CompileAppManifestInputLine Include="ResourcePrefix=$(_ResourcePrefix)" />
+			<_CompileAppManifestInputLine Include="ResourceRules=$(_PreparedResourceRules)" />
+			<_CompileAppManifestInputLine Include="SdkIsSimulator=$(_SdkIsSimulator)" />
+			<_CompileAppManifestInputLine Include="SdkVersion=$(_SdkVersion)" />
+			<_CompileAppManifestInputLine Include="SupportedOSPlatformVersion=$(SupportedOSPlatformVersion)" />
+			<_CompileAppManifestInputLine Include="TargetArchitectures=$(TargetArchitectures)" />
+			<_CompileAppManifestInputLine Include="TargetFrameworkMoniker=$(_ComputedTargetFrameworkMoniker)" />
+			<_CompileAppManifestInputLine Include="Validate=$(_CreateAppManifest)" />
+			<!-- @(_CompileAppManifestInputFile) contains additional files to use as Inputs -->
+			<_CompileAppManifestInputFile Include="$(_CompileAppManifestInputFile)" />
+			<_CompileAppManifestInputFile Include="@(_FontFilesToRegister)" />
+			<_CompileAppManifestInputFile Include="@(PartialAppManifest)" />
+		</ItemGroup>
+		<!-- If any of the above values change, the file will be written and invalidate _CompileAppManifest -->
+		<WriteLinesToFile
+			File="$(_CompileAppManifestInputFile)"
+			Lines="@(_CompileAppManifestInputLine)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+		/>
+		<ItemGroup>
+			<FileWrites Include="$(_CompileAppManifestInputFile)" />
+		</ItemGroup>
+	</Target>
+
+	<!-- NOTE: Keep new parameters to <CompileAppManifest/> in sync with @(_CompileAppManifestInputLine) above -->
+	<Target Name="_CompileAppManifest"
+		Condition="'$(_BundleOriginalResources)' != 'true'"
+		DependsOnTargets="$(_CompileAppManifestDependsOn)"
+		Inputs="@(_CompileAppManifestInputFile)"
+		Outputs="$(_TemporaryAppManifest)"
+		>
+
 		<CompileAppManifest
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			AppBundleName="$(_AppBundleName)"
+			ApplicationDisplayVersion="$(ApplicationDisplayVersion)"
 			ApplicationId="$(ApplicationId)"
 			ApplicationTitle="$(ApplicationTitle)"
 			ApplicationVersion="$(ApplicationVersion)"
-			ApplicationDisplayVersion="$(ApplicationDisplayVersion)"
-			AppBundleName="$(_AppBundleName)"
 			AppManifest="$(AppBundleManifest)"
 			AssemblyName="$(AssemblyName)"
 			BundleExecutable="$(_NativeExecutableName)"
 			CompiledAppManifest="$(_TemporaryAppManifest)"
 			Debug="$(_BundlerDebug)"
+			DebugIPAddresses="$(_DebugIPAddresses)"
 			DefaultSdkVersion="$(_SdkVersion)"
 			FontFilesToRegister="@(_FontFilesToRegister)"
 			GenerateApplicationManifest="$(GenerateApplicationManifest)"
@@ -637,12 +694,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
 			ResourceRules="$(_PreparedResourceRules)"
-			TargetArchitectures="$(TargetArchitectures)"
-			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkVersion="$(_SdkVersion)"
 			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
-			DebugIPAddresses="$(_DebugIPAddresses)"
+			TargetArchitectures="$(TargetArchitectures)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			Validate="$(_CreateAppManifest)"
 			>
 		</CompileAppManifest>
@@ -661,7 +717,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_ReadAppManifest" DependsOnTargets="$(_ReadAppManifestDependsOn)">
 		<ReadAppManifest
-			Condition="('$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true') And '$(_BundleOriginalResources)' != 'true'"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(_BundleOriginalResources)' != 'true'"
 			SessionId="$(BuildSessionId)"
 			AppManifest="$(_TemporaryAppManifest)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
@@ -681,7 +737,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<!-- A bundle identifier is required when creating an app bundle. It's not when building a class library -->
 		<Error
-			Condition="('$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true') And '$(_BundleIdentifier)' == '' And '$(_CanOutputAppBundle)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(_BundleIdentifier)' == '' And '$(_CanOutputAppBundle)' == 'true'"
 			Text="A bundle identifier is required. Either add an 'ApplicationId' property in the project file, or add a 'CFBundleIdentifier' entry in the project's Info.plist file."
 		/>
 	</Target>
@@ -705,7 +761,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<WriteAppManifest
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true'"
 			AppBundleManifest="$(_AppBundleManifestPath)"
 			AppManifests="@(_PostCompilePartialAppManifest);$(_TemporaryAppManifest)"
 			>
@@ -2046,11 +2102,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="XamarinSdkRoot" PropertyName="_XamarinSdkRoot" />
 			<Output TaskParameter="XcodeVersion" PropertyName="_XcodeVersion" />
 		</DetectSdkLocations>
-
-		<PropertyGroup Condition="'$(IsHotRestartBuild)' == 'true'">
-			<!-- hot restart builds are always for device -->
-			<_SdkIsSimulator>false</_SdkIsSimulator>
-		</PropertyGroup>
 	</Target>
 
 	<Target Name="_EmbedProvisionProfile" Condition="'$(_ProvisioningProfile)' != ''" DependsOnTargets="_GenerateBundleName;_DetectSigningIdentity"
@@ -2129,7 +2180,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 
 		<Delete
-			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true'"
 			SessionId="$(BuildSessionId)"
 			Files="@(_UnpackLibraryResourceToDelete)"
 			/>
@@ -2186,7 +2237,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</UnpackLibraryResources>
 
 		<Touch
-			Condition="'$(IsMacEnabled)' == 'true' Or '$(IsHotRestartBuild)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true'"
 			Files="@(_UnpackLibraryResourceItems->'%(StampFile)')"
 			AlwaysCreate="True"
 		>
@@ -2550,6 +2601,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			DisallowResourcesSubdirectoryInAppBundle="$(CodesignDisallowResourcesSubdirectoryInAppBundle)"
 			MaxDegreeOfParallelism="$(CodesignMaxDegreeOfParallelism)"
 			Resources="@(_ComputedCodesignItems)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			ToolExe="$(CodesignExe)"
 			ToolPath="$(CodesignPath)"
 			>

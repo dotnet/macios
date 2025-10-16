@@ -7,10 +7,7 @@
 //
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
-using System;
-using Foundation;
 using CoreMedia;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreMedia {
 	[TestFixture]

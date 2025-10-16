@@ -8,8 +8,6 @@
 //
 
 #if IOS
-using System;
-using Foundation;
 
 #nullable enable
 

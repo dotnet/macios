@@ -29,6 +29,19 @@ namespace Xamarin.MacDev {
 			return path.EndsWith (".zip", StringComparison.OrdinalIgnoreCase);
 		}
 
+		static string CanonicalizeZipEntryPath (string path)
+		{
+			// The directory separator character is supposed to be '/' on all platforms in zip files,
+			// but that's not always the case, so canonicalize the path.
+			return path.Replace ('\\', '/');
+		}
+
+		static ZipArchiveEntry? GetCanonicalizedEntry (ZipArchive archive, string path)
+		{
+			var canonicalizedPath = CanonicalizeZipEntryPath (path);
+			return archive.Entries.SingleOrDefault (e => string.Equals (CanonicalizeZipEntryPath (e.FullName), canonicalizedPath, StringComparison.Ordinal));
+		}
+
 		/// <summary>
 		/// Finds a file from either a directory or a zip file.
 		/// </summary>
@@ -45,7 +58,7 @@ namespace Xamarin.MacDev {
 					return null;
 				}
 				using var zip = ZipFile.OpenRead (resources);
-				var contentEntry = zip.GetEntry (relativeFilePath.Replace ('\\', '/')); // directory separator character is '/' on all platforms in zip files.
+				var contentEntry = GetCanonicalizedEntry (zip, relativeFilePath);
 				if (contentEntry is null) {
 					log.LogWarning (MSBStrings.W7106 /* Expected a file named '{1}' in the zip file {0}. */, resources, relativeFilePath);
 					return null;
@@ -144,9 +157,9 @@ namespace Xamarin.MacDev {
 			if (!string.IsNullOrEmpty (resource)) {
 				using var archive = ZipFile.OpenRead (zip);
 				resource = resource.Replace ('\\', zipDirectorySeparator);
-				var entry = archive.GetEntry (resource);
+				var entry = GetCanonicalizedEntry (archive, resource);
 				if (entry is null) {
-					entry = archive.GetEntry (resource + zipDirectorySeparator);
+					entry = GetCanonicalizedEntry (archive, resource + zipDirectorySeparator);
 					if (entry is null) {
 						log.LogError (MSBStrings.E7112 /* Could not find the file or directory '{0}' in the zip file '{1}'. */, resource, zip);
 						return false;
@@ -154,8 +167,10 @@ namespace Xamarin.MacDev {
 				}
 
 				var zipPattern = entry.FullName;
-				if (zipPattern.Length > 0 && zipPattern [zipPattern.Length - 1] == zipDirectorySeparator) {
-					zipPattern += "*";
+				if (zipPattern.Length > 0) {
+					var last = zipPattern [zipPattern.Length - 1];
+					if (last == '\\' || last == '/')
+						zipPattern += "*";
 				}
 
 				args.Add (zipPattern);
@@ -178,7 +193,7 @@ namespace Xamarin.MacDev {
 			using var archive = ZipFile.OpenRead (zip);
 			foreach (var entry in archive.Entries) {
 				cancellationToken?.ThrowIfCancellationRequested ();
-				var entryPath = entry.FullName;
+				var entryPath = CanonicalizeZipEntryPath (entry.FullName);
 				if (entryPath.Length == 0)
 					continue;
 
@@ -331,16 +346,17 @@ namespace Xamarin.MacDev {
 
 			var rootDirLength = workingDirectory.Length + 1;
 			foreach (var resource in resourcePaths) {
-				log.LogMessage (MessageImportance.Low, $"Procesing {resource}");
+				log.LogMessage (MessageImportance.Low, $"Processing {resource}");
 				if (Directory.Exists (resource)) {
+					if (rootDirLength < resource.Length) {
+						var resourceZipName = resource.Substring (rootDirLength);
+						archive.CreateEntry (CanonicalizeZipEntryPath (resourceZipName) + zipDirectorySeparator);
+					}
 					var entries = Directory.GetFileSystemEntries (resource, "*", SearchOption.AllDirectories);
 					var entriesWithZipName = entries.Select (v => new { Path = v, ZipName = v.Substring (rootDirLength) });
 					foreach (var entry in entriesWithZipName) {
 						if (Directory.Exists (entry.Path)) {
-							if (entries.Where (v => v.StartsWith (entry.Path, StringComparison.Ordinal)).Count () == 1) {
-								// this is a directory with no files inside, we need to create an entry with a trailing directory separator.
-								archive.CreateEntry (entry.ZipName + zipDirectorySeparator);
-							}
+							archive.CreateEntry (CanonicalizeZipEntryPath (entry.ZipName) + zipDirectorySeparator);
 						} else {
 							WriteFileToZip (log, archive, entry.Path, entry.ZipName, maxCompression);
 						}
@@ -359,7 +375,7 @@ namespace Xamarin.MacDev {
 
 		static void WriteFileToZip (TaskLoggingHelper log, ZipArchive archive, string path, string zipName, bool maxCompression)
 		{
-			var zipEntry = archive.CreateEntry (zipName, maxCompression ? SmallestCompressionLevel : CompressionLevel.Optimal);
+			var zipEntry = archive.CreateEntry (CanonicalizeZipEntryPath (zipName), maxCompression ? SmallestCompressionLevel : CompressionLevel.Optimal);
 			using var fs = File.OpenRead (path);
 			using var zipStream = zipEntry.Open ();
 			fs.CopyTo (zipStream);

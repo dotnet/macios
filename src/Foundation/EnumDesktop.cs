@@ -23,9 +23,6 @@
 //
 
 // FIXME: EnumDesktop.cs should be merged into Enums.cs
-using System;
-
-using ObjCRuntime;
 
 namespace Foundation {
 	[NoiOS, NoTV, NoMacCatalyst]

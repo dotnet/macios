@@ -7,10 +7,6 @@
 // Copyright 2010-2011 Novell Inc
 // Copyright 2012-2014 Xamarin Inc
 //
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

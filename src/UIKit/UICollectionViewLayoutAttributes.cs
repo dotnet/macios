@@ -7,12 +7,9 @@
 // Copyright 2013 Xamarin Inc
 //
 
-using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
 
 // Disable until we get around to enable + fix any issues.

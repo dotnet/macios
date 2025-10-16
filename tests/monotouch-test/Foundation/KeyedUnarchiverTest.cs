@@ -7,12 +7,9 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Net;
 using System.IO;
 
-using Foundation;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 using PlatformException = ObjCRuntime.ObjCException;
@@ -20,8 +17,6 @@ using PlatformException = ObjCRuntime.ObjCException;
 using UIKit;
 using PlatformException = ObjCRuntime.ObjCException;
 #endif
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Foundation {
 

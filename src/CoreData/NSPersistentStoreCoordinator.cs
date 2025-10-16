@@ -1,8 +1,3 @@
-using System;
-using System.Runtime.Versioning;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 
 namespace CoreData {
 	/// <summary>Mediates between a persistent store and the managed object context or contexts.</summary>

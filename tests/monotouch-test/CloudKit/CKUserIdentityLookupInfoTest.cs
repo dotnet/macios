@@ -1,6 +1,3 @@
-using System;
-using NUnit.Framework;
-using Foundation;
 using CloudKit;
 
 namespace MonoTouchFixtures.CloudKit {

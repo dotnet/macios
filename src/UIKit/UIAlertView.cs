@@ -10,10 +10,6 @@
 
 #if IOS
 
-using System;
-using ObjCRuntime;
-using Foundation;
-
 namespace UIKit {
 	public partial class UIAlertView {
 		/// <summary>Constructor to initialize an alert view.</summary>

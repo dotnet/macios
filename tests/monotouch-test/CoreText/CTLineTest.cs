@@ -7,18 +7,14 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
 #if MONOMAC
 using AppKit;
 using UIColor = AppKit.NSColor;
 #else
-using ObjCRuntime;
 using UIKit;
 #endif
 using CoreGraphics;
 using CoreText;
-using NUnit.Framework;
 using System.Drawing;
 
 namespace MonoTouchFixtures.CoreText {

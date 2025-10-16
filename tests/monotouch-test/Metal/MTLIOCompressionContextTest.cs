@@ -1,11 +1,7 @@
-using System;
 using System.IO;
 using System.Diagnostics;
 using System.Linq;
-using Foundation;
 using Metal;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Metal {
 	[Preserve (AllMembers = true)]

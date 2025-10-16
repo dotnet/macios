@@ -7,9 +7,6 @@
 // Copyright 2018 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
 using System.Reflection;
 

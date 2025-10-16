@@ -1,15 +1,11 @@
 // Copyright 2011, 2013 Xamarin Inc. All rights reserved
 
 #if !MONOMAC
-using System;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using CoreGraphics;
-using Foundation;
 using UIKit;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.UIKit {
 

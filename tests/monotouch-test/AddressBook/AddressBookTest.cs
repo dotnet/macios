@@ -9,12 +9,8 @@
 
 #if !__MACCATALYST__ && HAS_ADDRESSBOOK
 
-using System;
-using Foundation;
 using UIKit;
 using AddressBook;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.AddressBook {

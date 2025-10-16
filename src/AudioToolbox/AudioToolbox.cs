@@ -6,12 +6,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 
 namespace AudioToolbox {
 	/// <summary>Information on an instrument. Returned by <see cref="AudioToolbox.SoundBank.GetInstrumentInfo(Foundation.NSUrl)" />.</summary>

@@ -8,13 +8,8 @@
 // Copyright 2019 Microsoft Corporation.
 //
 
-using System;
-
-using Foundation;
 using Metal;
 using MetalPerformanceShaders;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.MetalPerformanceShaders {
 	[TestFixture]

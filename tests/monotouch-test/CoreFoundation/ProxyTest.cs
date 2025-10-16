@@ -7,17 +7,11 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Threading;
 using System.IO;
 using System.Net;
 
-using Foundation;
-using CoreFoundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using MonoTests.System.Net.Http;
-
 
 namespace MonoTouchFixtures.CoreFoundation {
 

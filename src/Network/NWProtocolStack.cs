@@ -9,10 +9,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 
 using OS_nw_protocol_definition = System.IntPtr;

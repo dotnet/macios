@@ -1,15 +1,9 @@
 #if __MACOS__
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-using NUnit.Framework;
-
 using AppKit;
 using DataDetection;
-using ObjCRuntime;
-using Foundation;
 using UniformTypeIdentifiers;
 
 namespace Xamarin.Mac.Tests {

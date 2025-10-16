@@ -1,12 +1,7 @@
 //
 // Unit tests for AVSpeechSynthesisMarker
 
-using System;
-
 using AVFoundation;
-using Foundation;
-
-using NUnit.Framework;
 
 #nullable enable
 

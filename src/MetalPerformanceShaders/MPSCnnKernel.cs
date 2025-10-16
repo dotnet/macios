@@ -1,8 +1,6 @@
 #nullable enable
 
-using System;
 using Metal;
-using Foundation;
 
 namespace MetalPerformanceShaders {
 	public partial class MPSCnnBinaryConvolution {

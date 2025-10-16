@@ -1,16 +1,10 @@
 #if __IOS__ && !__MACCATALYST__
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 using UIKit;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.UIKit {
 

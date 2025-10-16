@@ -2,12 +2,9 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
 using System.Drawing;
 using CoreGraphics;
-using Foundation;
 using MediaPlayer;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.MediaPlayer {
 

@@ -9,13 +9,9 @@
 // Copyright 2019 Microsoft Corporation.
 //
 
-using System;
 using System.ComponentModel;
 using System.Threading;
-using ObjCRuntime;
-using System.Runtime.InteropServices;
 using CoreFoundation;
-using Foundation;
 
 #nullable enable
 

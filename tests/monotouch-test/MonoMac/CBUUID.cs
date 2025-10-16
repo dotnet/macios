@@ -8,13 +8,8 @@
 // Copyright 2013 Xamarin, Inc.
 //
 
-using System;
-
-using Foundation;
 using CoreBluetooth;
-using ObjCRuntime;
 
-using NUnit.Framework;
 using Xamarin.Mac.Tests;
 
 namespace MonoMacFixtures.CoreBluetooth {

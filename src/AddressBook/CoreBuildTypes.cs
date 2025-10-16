@@ -15,9 +15,6 @@
 
 #if COREBUILD
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
-using System;
 namespace AddressBook {
 	public class ABAddressBook : NativeObject {
 	}

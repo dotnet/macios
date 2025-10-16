@@ -39,6 +39,7 @@ CFLAGS=\
 	-Wignored-qualifiers \
 	-Wmissing-field-initializers \
 	-Wcast-function-type-mismatch \
+	-Wsemicolon-before-method-body \
 	-g \
 	-I.
 SWIFTFLAGS=-g -emit-library

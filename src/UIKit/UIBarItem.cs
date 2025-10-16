@@ -7,10 +7,6 @@
 // Copyright 2011, 2015 Xamarin Inc.
 //
 
-using System;
-using ObjCRuntime;
-using Foundation;
-
 using TextAttributes = UIKit.UIStringAttributes;
 
 namespace UIKit {

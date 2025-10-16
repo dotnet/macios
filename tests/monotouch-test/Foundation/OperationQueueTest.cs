@@ -7,12 +7,6 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
-
 namespace MonoTouchFixtures.Foundation {
 
 	[TestFixture]

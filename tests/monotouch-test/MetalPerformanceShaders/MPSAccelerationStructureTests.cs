@@ -8,14 +8,8 @@
 // Copyright 2019 Microsoft Corporation.
 //
 
-using System;
-using System.Runtime.InteropServices;
-
-using Foundation;
 using Metal;
 using MetalPerformanceShaders;
-
-using NUnit.Framework;
 
 using CoreGraphics;
 

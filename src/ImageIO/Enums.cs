@@ -8,9 +8,6 @@
 // Copyright 2020, Microsoft Corp.
 //
 
-using System;
-using ObjCRuntime;
-
 namespace ImageIO {
 
 	// untyped enum -> CGImageMetadata.h

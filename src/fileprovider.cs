@@ -9,10 +9,7 @@
 // Copyright 2019 Microsoft Corporation
 //
 
-using System;
-using ObjCRuntime;
 using CoreGraphics;
-using Foundation;
 using UniformTypeIdentifiers;
 
 namespace FileProvider {

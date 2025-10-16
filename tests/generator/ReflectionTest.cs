@@ -1,6 +1,4 @@
-using System;
 using System.Reflection;
-using NUnit.Framework;
 
 namespace GeneratorTests {
 

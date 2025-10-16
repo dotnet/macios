@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using CoreFoundation;
-using Foundation;
 using Network;
-using ObjCRuntime;
-using NUnit.Framework;
 using MonoTests.System.Net.Http;
-
 
 namespace MonoTouchFixtures.Network {
 

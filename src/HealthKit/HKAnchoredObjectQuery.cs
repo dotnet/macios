@@ -1,7 +1,5 @@
 #nullable enable
 
-using System;
-
 namespace HealthKit {
 
 	public partial class HKAnchoredObjectQuery {

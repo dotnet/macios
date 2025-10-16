@@ -2,15 +2,8 @@
 // Unit tests for AVSpeechSynthesisProviderAudioUnit
 //
 
-using System;
-using System.Runtime.InteropServices;
-
-using NUnit.Framework;
-
 using AudioUnit;
 using AVFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace MonoTouchFixtures.AudioUnit {
 	[TestFixture]

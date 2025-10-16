@@ -7,10 +7,6 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 #nullable enable
 
 namespace MediaPlayer {

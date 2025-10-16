@@ -7,12 +7,8 @@
 // Copyright 2015, Xamarin Inc.
 //
 
-using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.Runtime.Versioning;
-
-using ObjCRuntime;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

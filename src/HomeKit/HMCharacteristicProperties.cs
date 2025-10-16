@@ -1,10 +1,5 @@
 #nullable enable
 
-using System;
-
-using ObjCRuntime;
-using Foundation;
-
 namespace HomeKit {
 	/// <summary>Common capabilities of an <see cref="HomeKit.HMCharacteristic" />, such as whether it's writable or supports events.</summary>
 	///     <remarks>To be added.</remarks>

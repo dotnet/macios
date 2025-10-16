@@ -4,10 +4,6 @@
 
 #nullable enable
 
-using System;
-using ObjCRuntime;
-using Foundation;
-
 namespace Accounts {
 
 	/// <include file="../docs/api/Accounts/ACAccount.xml" path="/Documentation/Docs[@DocId='T:Accounts.ACAccount']/*" />

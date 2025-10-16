@@ -7,12 +7,8 @@
 // Copyright 2018 Microsoft. All rights reserved.
 //
 
-using System;
 using System.Linq;
-using Foundation;
 using CoreText;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreText {
 

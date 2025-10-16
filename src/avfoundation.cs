@@ -47,15 +47,12 @@ using MediaToolbox;
 using AudioToolbox;
 using Cinematic;
 using CoreMedia;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 using CoreVideo;
 using UniformTypeIdentifiers;
 using ImageIO;
 using MediaPlayer;
-using System;
 
 #if MONOMAC
 using AppKit;

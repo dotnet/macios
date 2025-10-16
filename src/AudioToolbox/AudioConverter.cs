@@ -28,13 +28,8 @@
 
 #nullable enable
 
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace AudioToolbox {
 	/// <summary>An enumeration whose values specify various types of errors relating to the <see cref="AudioToolbox.AudioConverter" />.</summary>

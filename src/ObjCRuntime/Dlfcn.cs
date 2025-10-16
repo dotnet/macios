@@ -31,11 +31,8 @@
 
 #nullable enable
 
-using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 #if !COREBUILD
-using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 using CoreMedia;

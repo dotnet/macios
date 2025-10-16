@@ -7,17 +7,12 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
 using CoreGraphics;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreGraphics {
 

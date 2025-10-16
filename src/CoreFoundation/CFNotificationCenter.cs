@@ -13,11 +13,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
 using CFNotificationCenterRef = global::System.IntPtr;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using System.Collections.Generic;
 

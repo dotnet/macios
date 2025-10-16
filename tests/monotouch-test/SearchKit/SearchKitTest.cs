@@ -1,11 +1,6 @@
 #if __MACOS__
-using System;
 using System.IO;
-using System.Runtime.InteropServices;
 
-using NUnit.Framework;
-
-using Foundation;
 using SearchKit;
 
 namespace apitest {

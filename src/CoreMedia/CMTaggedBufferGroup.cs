@@ -1,11 +1,7 @@
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 
 using CoreFoundation;
 using CoreVideo;
-using Foundation;
-using ObjCRuntime;
 
 namespace CoreMedia {
 	/// <summary>This class contains a list of pixel buffers or sample buffers, where each buffer is associated with a <see cref="CMTagCollection" />.</summary>

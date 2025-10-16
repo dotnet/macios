@@ -6,9 +6,7 @@
 // Author:
 //   Miguel de Icaza
 //
-using System;
 using CoreFoundation;
-using ObjCRuntime;
 
 #nullable enable
 

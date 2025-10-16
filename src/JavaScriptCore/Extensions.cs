@@ -8,9 +8,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
-
 namespace JavaScriptCore {
 
 	public partial class JSContext {

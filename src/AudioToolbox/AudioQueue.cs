@@ -30,16 +30,12 @@
 
 #nullable enable
 
-using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 using AudioQueueParameterValue = System.Single;
 using AudioQueueRef = System.IntPtr;

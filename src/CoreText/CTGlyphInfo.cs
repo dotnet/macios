@@ -27,11 +27,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 
 using CGGlyph = System.UInt16;

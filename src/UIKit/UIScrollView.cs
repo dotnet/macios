@@ -7,8 +7,6 @@
 // Copyright 2009, Novell, Inc.
 //
 
-using System;
-
 namespace UIKit {
 	/// <summary>Provides data for the <see cref="UIKit.UIScrollView.DraggingEnded" /> event.</summary>
 	///     <remarks>

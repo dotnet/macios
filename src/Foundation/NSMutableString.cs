@@ -1,7 +1,5 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 
-using System;
-
 namespace Foundation {
 
 	public partial class NSMutableString {

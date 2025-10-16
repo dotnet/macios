@@ -7,9 +7,7 @@
 // Copyright 2015 Xamarin Inc.
 //
 
-using System;
 using CoreGraphics;
-using Foundation;
 #if MONOMAC
 using AppKit;
 using UIColor = AppKit.NSColor;
@@ -20,7 +18,6 @@ using UIKit;
 using MultipeerConnectivity;
 #endif
 using ModelIO;
-using ObjCRuntime;
 using System.Numerics;
 using Matrix4 = global::System.Numerics.Matrix4x4;
 using MatrixFloat2x2 = global::CoreGraphics.NMatrix2;
@@ -28,7 +25,6 @@ using MatrixFloat3x3 = global::CoreGraphics.NMatrix3;
 using MatrixFloat4x4 = global::CoreGraphics.NMatrix4;
 using VectorFloat3 = global::CoreGraphics.NVector3;
 using Bindings.Test;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.ModelIO {
 

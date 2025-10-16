@@ -1,16 +1,12 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 
-using System;
-using Foundation;
 using Metal;
-using ObjCRuntime;
 using SceneKit;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.SceneKit {
 

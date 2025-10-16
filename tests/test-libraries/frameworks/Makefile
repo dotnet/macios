@@ -8,8 +8,11 @@ NAMES+=FrameworksInRuntimesNativeDirectory1 FrameworksInRuntimesNativeDirectory2
 NAMES+=FrameworkTest1 FrameworkTest2 FrameworkTest3 FrameworkTest4 FrameworkTest5
 NAMES+=UnknownD UnknownE UnknownF1 UnknownF2 SomewhatUnknownD SomewhatUnknownE SomewhatUnknownF1 SomewhatUnknownF2
 NAMES+=Framework.With.Dots
+NAMES+=FrameworkWithLongFileNames
 # Used in mmptest
 NAMES+=MmpTestFramework
+
+FRAMEWORKS_WITH_HEADERS+=FrameworkWithLongFileNames
 
 # These plugins are used in the BundleStructure test
 PLUGINS=PlugInA CompressedPlugInB PlugInC CompressedPlugInD
@@ -41,11 +44,18 @@ osx-arm64_ARCHITECTURES=arm64
 maccatalyst-x64_ARCHITECTURES=x86_64
 maccatalyst-arm64_ARCHITECTURES=arm64
 
+iphoneos_HEADERS_INFIX=/Headers
+iphonesimulator_HEADERS_INFIX=/Headers
+tvos_HEADERS_INFIX=/Headers
+tvsimulator_HEADERS_INFIX=/Headers
+
 mac_SYMLINKS=1
 mac_INFO_PLIST_INFIX=/Versions/A/Resources
+mac_HEADERS_INFIX=/Versions/A/Headers
 mac_BINARY_INFIX=/Versions/A
 maccatalyst_SYMLINKS=1
 maccatalyst_INFO_PLIST_INFIX=/Versions/A/Resources
+maccatalyst_HEADERS_INFIX=/Versions/A/Headers
 maccatalyst_BINARY_INFIX=/Versions/A
 
 # For XCFrameworks, we have to lipo some of the RID-specific frameworks together (the ones with multiple RIDs below)
@@ -61,6 +71,27 @@ ZIP=zip --symlinks --quiet
 else
 ZIP=zip --symlinks
 endif
+
+LONG_HEADER_NAME=full-paths-exceeding-two-hundred-and-sixty-characters/often-cause-trouble-on-windows/where-the-maximum-is-by-default-two-hundred-and-sixty-characters/because-frameworks-and-by-extension-xcframeworks/very-often-have-paths-longer-than-this-limit/especially-when-contained-in-other-directories.h
+
+define FrameworkWithHeadersTemplate
+$(3)_$(1)_DIRECTORIES += \
+	.libs/$(3)/$(1).framework/Resources/Headers \
+
+$(1)_$(3)_TARGETS += \
+	.libs/$(3)/$(1).framework$($(2)_HEADERS_INFIX)/$(LONG_HEADER_NAME) \
+
+ifeq ($($(2)_SYMLINKS),1)
+$(1)_$(3)_TARGETS += \
+	.libs/$(3)/$(1).framework/Headers \
+
+endif
+
+.libs/$(3)/$(1).framework$($(2)_HEADERS_INFIX)/$(LONG_HEADER_NAME): | .libs/$(3)/$(1).framework$($(2)_HEADERS_INFIX)
+	$$(Q) mkdir -p $$(dir $$@)
+	$$(Q) echo "#include <hello/windows.h>" > $$@
+endef
+$(foreach name,$(FRAMEWORKS_WITH_HEADERS),$(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call FrameworkWithHeadersTemplate,$(name),$(DOTNET_$(rid)_SDK_PLATFORM),$(rid))))))
 
 define FrameworkTemplate
 
@@ -99,7 +130,7 @@ all-local:: $$($(3)_TARGETS)
 .libs/$(3)/$(1).framework$($(2)_INFO_PLIST_INFIX)/Info.plist: Info-$(2).plist | .libs/$(3)/$(1).framework$($(2)_INFO_PLIST_INFIX)
 	$$(Q) sed 's/%NAME%/$(1)/g' $$^ > $$@
 
-$(3)_$(1)_DIRECTORIES = \
+$(3)_$(1)_DIRECTORIES += \
 	.libs/$(3)/$(1).framework \
 	.libs/$(3)/$(1).framework/Versions \
 
@@ -113,7 +144,7 @@ ZIPPED_TARGETS += .libs/$(3)/$(1).framework.zip
 
 # some additional targets if the framework has macOS-like structure (i.e. has symlinks)
 ifeq ($($(2)_SYMLINKS),1)
-.libs/$(3)/$(1).framework$($(2)_BINARY_INFIX) .libs/$(3)/$(1).framework$($(2)_INFO_PLIST_INFIX):
+.libs/$(3)/$(1).framework$($(2)_BINARY_INFIX) .libs/$(3)/$(1).framework$($(2)_INFO_PLIST_INFIX) .libs/$(3)/$(1).framework$($(2)_HEADERS_INFIX):
 	$$(Q) mkdir -p $$@
 
 .libs/$(3)/$(1).framework/$(1): | .libs/$(3)/$(1).framework
@@ -122,8 +153,14 @@ ifeq ($($(2)_SYMLINKS),1)
 .libs/$(3)/$(1).framework/Resources: | .libs/$(3)/$(1).framework
 	$$(Q) ln -fs Versions/Current/Resources $$@
 
+.libs/$(3)/$(1).framework/Headers: | .libs/$(3)/$(1).framework
+	$$(Q) ln -fs Versions/Current/Headers $$@
+
 .libs/$(3)/$(1).framework/Versions/Current: | .libs/$(3)/$(1).framework/Versions
 	$$(Q) ln -fs A $$@
+else
+.libs/$(3)/$(1).framework/Headers: | .libs/$(3)/$(1).framework
+	$$(Q) mkdir -p $$@
 endif
 
 # create binding resource package

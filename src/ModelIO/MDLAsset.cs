@@ -1,6 +1,5 @@
 #nullable enable
 
-using System;
 namespace ModelIO {
 	public partial class MDLAsset {
 		/// <param name="index">To be added.</param>

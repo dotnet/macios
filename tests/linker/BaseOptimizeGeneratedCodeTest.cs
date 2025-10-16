@@ -9,19 +9,11 @@
 // Copyright 2018 Microsoft Inc. All rights reserved.
 //
 
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace Linker.Shared {
 	[Preserve (AllMembers = true)]

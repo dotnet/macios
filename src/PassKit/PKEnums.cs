@@ -1,9 +1,5 @@
 // Copyright 2012-2014 Xamarin Inc. All rights reserved.
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace PassKit {
 	// NSInteger -> PKPass.h
 	/// <summary>An enumeration whose values specify errors relating to the passes and passbook functionality.</summary>

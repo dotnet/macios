@@ -7,11 +7,6 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
-
 using Vector2 = global::System.Numerics.Vector2;
 using Vector2d = global::CoreGraphics.NVector2d;
 using Vector3 = global::CoreGraphics.NVector3;

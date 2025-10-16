@@ -8,8 +8,6 @@
 // Copyright 2012-2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
-
 namespace Xamarin.Tests {
 	public static class Mac {
 		public static readonly Version Version_10_10 = new Version (10, 10);

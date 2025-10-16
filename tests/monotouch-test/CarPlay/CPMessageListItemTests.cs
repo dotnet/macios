@@ -8,12 +8,8 @@
 //
 
 #if HAS_CARPLAY
-using System;
-using NUnit.Framework;
 
 using CarPlay;
-using Foundation;
-using ObjCRuntime;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.CarPlay {

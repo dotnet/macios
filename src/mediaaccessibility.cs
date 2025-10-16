@@ -1,7 +1,4 @@
-using System;
 
-using ObjCRuntime;
-using Foundation;
 using Surface = IOSurface.IOSurface;
 
 namespace MediaAccessibility {

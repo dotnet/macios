@@ -5,11 +5,7 @@
 // Copyright 2020 Microsoft Corporation
 //
 
-using System;
-
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 using Metal;
 
 namespace CoreVideo {

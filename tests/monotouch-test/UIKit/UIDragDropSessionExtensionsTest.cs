@@ -10,12 +10,8 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 using UIKit;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.UIKit {
 	[TestFixture]

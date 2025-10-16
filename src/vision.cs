@@ -7,7 +7,6 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Numerics;
 using CoreFoundation;
 using CoreGraphics;
@@ -15,9 +14,7 @@ using CoreImage;
 using CoreMedia;
 using CoreML;
 using CoreVideo;
-using Foundation;
 using Metal;
-using ObjCRuntime;
 using ImageIO;
 using AVFoundation;
 

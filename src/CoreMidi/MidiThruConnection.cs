@@ -9,15 +9,9 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
 
 using MidiThruConnectionRef = System.UInt32;
-using System.Runtime.Versioning;
 
 namespace CoreMidi {
 #if !COREBUILD

@@ -2,7 +2,9 @@
   <PropertyGroup>
     <PackageId>Microsoft.$(_PlatformName).Runtime.$(_RuntimeIdentifier).$(PackageOSTargetVersion)</PackageId>
     <Description>Microsoft $(_PlatformName) runtime pack for $(_RuntimeIdentifier). Please do not reference directly.</Description>
-    <_CreateRuntimeList>true</_CreateRuntimeList>
+    <RuntimeIdentifier>$(_RuntimeIdentifier)</RuntimeIdentifier>
+    <OverridePackageId>$(PackageId)</OverridePackageId>
+    <PlatformPackageType>RuntimePack</PlatformPackageType>
   </PropertyGroup>
   <Import Project="common.csproj" />
 </Project>

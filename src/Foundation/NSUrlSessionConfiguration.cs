@@ -3,11 +3,7 @@
 //
 // Authors:
 //     Manuel de la Pena <mandel@microsoft.com>
-using System;
-using ObjCRuntime;
 using Network;
-
-using Foundation;
 
 namespace Foundation {
 

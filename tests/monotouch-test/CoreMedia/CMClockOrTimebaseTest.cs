@@ -1,8 +1,4 @@
-using System;
-using Foundation;
 using CoreMedia;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.CoreMedia {

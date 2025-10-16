@@ -26,9 +26,6 @@
 //
 // Enums.cs: Enums for PdfKit
 //
-using System;
-
-using ObjCRuntime;
 
 #nullable enable
 

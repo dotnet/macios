@@ -23,12 +23,9 @@
 
 #if !__MACCATALYST__
 
-using System;
 using System.ComponentModel;
 
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

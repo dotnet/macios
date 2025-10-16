@@ -6,8 +6,6 @@
 //
 // Copyright 2013-2014 Xamarin Inc
 
-using ObjCRuntime;
-
 #nullable enable
 
 namespace SpriteKit {

@@ -1,10 +1,6 @@
 #if !__TVOS__
 
-using System;
-using Foundation;
 using Metal;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Metal {
 

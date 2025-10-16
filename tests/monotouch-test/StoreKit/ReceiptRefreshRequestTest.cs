@@ -9,15 +9,11 @@
 
 #if !MONOMAC
 
-using System;
 using System.IO;
-using Foundation;
-using ObjCRuntime;
 using StoreKit;
 #if !MONOMAC
 using UIKit;
 #endif
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.StoreKit {

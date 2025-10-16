@@ -63,9 +63,16 @@ namespace Xamarin.MacDev.Tasks {
 			} else if (string.Equals (Compress, "false", StringComparison.OrdinalIgnoreCase)) {
 				compress = false;
 			} else if (string.Equals (Compress, "auto", StringComparison.OrdinalIgnoreCase)) {
-				compress = ContainsSymlinks (NativeReferences);
-				if (compress)
+				if (ContainsSymlinks (NativeReferences)) {
 					Log.LogMessage (MessageImportance.Low, MSBStrings.W7085 /* "Creating a compressed binding resource package because there are symlinks in the input." */);
+					compress = true;
+				} else if (NativeReferences.All (v => v.ItemSpec.EndsWith (".zip", StringComparison.OrdinalIgnoreCase))) {
+					compress = false;
+					Log.LogMessage (MessageImportance.Low, MSBStrings.W7161 /* "Not creating a compressed binding resource package, because all the native references are already compressed." */);
+				} else {
+					Log.LogMessage (MessageImportance.Low, MSBStrings.W7160 /* "Creating a compressed binding resource package to avoid MAX_PATH problems on Windows." */);
+					compress = true;
+				}
 			} else {
 				Log.LogError (MSBStrings.E7086 /* "The value '{0}' is invalid for the Compress property. Valid values: 'true', 'false' or 'auto'." */, Compress);
 			}

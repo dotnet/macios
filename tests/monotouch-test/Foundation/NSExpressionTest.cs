@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 [assembly: Preserve (typeof (NSExpression), AllMembers = true)]

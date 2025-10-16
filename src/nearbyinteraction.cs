@@ -7,12 +7,11 @@
 // Copyright 2020 Microsoft Inc.
 //
 
-using ObjCRuntime;
-using Foundation;
+using System.Numerics;
+
 using CoreFoundation;
 using CoreGraphics;
-using System;
-using System.Numerics;
+
 #if __MACCATALYST__ || !IOS
 using ARSession = Foundation.NSObject;
 #else

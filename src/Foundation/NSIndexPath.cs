@@ -7,12 +7,8 @@
 // Copyright 2009, Novell, Inc.
 // Copyright 2014, Xamarin Inc.
 //
-using System;
 using System.Reflection;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 
 namespace Foundation {
 

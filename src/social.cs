@@ -7,9 +7,6 @@
 // Copyright 2012-2013 Xamarin Inc
 //
 
-using System;
-using ObjCRuntime;
-using Foundation;
 using Accounts;
 
 #if !MONOMAC

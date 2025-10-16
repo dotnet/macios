@@ -8,12 +8,7 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Collections.Generic;
-
-using Foundation;
 using GameplayKit;
-using NUnit.Framework;
 
 using Vector2i = global::CoreGraphics.NVector2i;
 

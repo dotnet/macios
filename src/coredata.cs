@@ -7,9 +7,6 @@
 // Copyright 2009, 2011, MonoMac community
 // Copyright 2011, 2015 Xamarin Inc.
 //
-using System;
-using Foundation;
-using ObjCRuntime;
 using CloudKit;
 #if MONOMAC
 using AppKit;

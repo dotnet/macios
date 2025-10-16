@@ -7,14 +7,10 @@
 // Copyright 2015 Xamarin, Inc.
 //
 //
-using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
-using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 using Metal;
-using ObjCRuntime;
 
 using VectorInt4 = global::CoreGraphics.NVector4i;
 

@@ -7,13 +7,10 @@
 // While the framework exists on both platforms, they share no common API
 //
 
-using System;
 using System.ComponentModel;
 
 using AudioUnit;
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 using CoreAnimation;
 using CoreGraphics;
 #if MONOMAC

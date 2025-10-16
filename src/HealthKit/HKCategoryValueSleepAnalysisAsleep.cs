@@ -13,10 +13,6 @@
 
 #if !TVOS
 
-using System;
-using Foundation;
-using ObjCRuntime;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
 namespace HealthKit {

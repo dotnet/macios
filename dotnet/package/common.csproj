@@ -1,9 +1,8 @@
 <Project>
   <Import Project="../targets/Microsoft.$(_PlatformName).Sdk.Versions.props" />
-  <Import Project="..\..\eng\Versions.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageType Condition="'$(PackageType)'==''">DotnetPlatform</PackageType>
     <PackageVersion>$(_PackageVersion)</PackageVersion>
@@ -18,7 +17,6 @@
     <PackageIcon>Icon.png</PackageIcon>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-
     <GenerateDependencyFile>false</GenerateDependencyFile>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <!-- Remove the `<group targetFramework=".NETStandard2.0" />` entry from the .nuspec. -->
@@ -26,6 +24,12 @@
     <!-- Ignore TargetFramework reference group related warnings, these are workload packs not functional NuGets. -->
     <!-- NU5105: The package version '#.#.#-alpha.##+hash' uses SemVer 2.0.0 or components of SemVer 1.0.0 that are not supported on legacy clients. Change the package version to a SemVer 1.0.0 string. If the version contains a release label it must start with a letter. This message can be ignored if the package is not intended for older clients. -->
     <NoWarn>$(NoWarn);NU5105;NU5128;NU5131</NoWarn>
+    <!-- Properties to control ref, runtime, and tool pack creation managed by https://github.com/dotnet/arcade/blob/2b1931c05dd6ceb89120131a8b39eaa81735179a/src/Microsoft.DotNet.SharedFramework.Sdk/targets/sharedfx.targets -->
+    <SharedFrameworkName>Microsoft.$(_PlatformName)</SharedFrameworkName>
+    <SharedFrameworkFriendlyName>.NET $(BundledNETCoreAppTargetFrameworkVersion) - $(SharedFrameworkName)</SharedFrameworkFriendlyName>
+    <SkipInstallerBuild>true</SkipInstallerBuild>
+    <SkipValidatePackage>true</SkipValidatePackage>
+    <PermitDllAndExeFilesLackingFileVersion>true</PermitDllAndExeFilesLackingFileVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -38,83 +42,77 @@
     <_AssemblyInfix Condition="'$(_PlatformName)' == 'tvOS'">tvOS</_AssemblyInfix>
     <_AssemblyInfix Condition="'$(_PlatformName)' == 'macOS'">macOS</_AssemblyInfix>
     <_AssemblyInfix Condition="'$(_PlatformName)' == 'MacCatalyst'">MacCatalyst</_AssemblyInfix>
+    <LicenseFile>$(_RepositoryPath)/$(PackageLicenseFile)</LicenseFile>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition=" '$(PlatformPackageType)' == '' ">
     <None Include="$(_RepositoryPath)/LICENSE" Pack="true" PackagePath="/" />
     <None Include="$(MSBuildThisFileDirectory)Icon.png" Pack="true" PackagePath="/" />
     <Content Include="$(_packagePath)**" Pack="true" PackagePath="/" />
   </ItemGroup>
 
-  <!-- Code to automatically create FrameworkList.xml or RuntimeList.xml -->
+  <!-- Always include symbols files, otherwise set %(FilesToPackage.IsSymbolFile) to true to only include in symbols.nupkg files -->
+  <ItemGroup Condition=" '$(PlatformPackageType)' == 'RuntimePack' or '$(PlatformPackageType)' == 'ToolPack' ">
+    <Content Include="$(_packagePath)**/*.pdb" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.DotNet.Build.Tasks.Feed" Version="$(MicrosoftDotNetBuildTasksFeedPackageVersion)" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.DotNet.Build.Tasks.Packaging" Version="$(MicrosoftDotNetBuildTasksFeedPackageVersion)" PrivateAssets="all" />
     <PackageReference Include="Microsoft.DotNet.Arcade.Sdk" Version="$(MicrosoftDotNetBuildTasksFeedPackageVersion)" PrivateAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
 
-  <!-- do not load this Sdk for template packages -->
-  <!-- it overwrites packageType -->
-  <Import Project="Sdk.props" Sdk="Microsoft.DotNet.SharedFramework.Sdk" Version="$(MicrosoftDotNetSharedFrameworkSdkVersion)" Condition="'$(PackageType)' != 'Template'" />
-  <UsingTask TaskName="CreateFrameworkListFile" AssemblyFile="$(DotNetSharedFrameworkTaskFile)" Condition="'$(PackageType)' != 'Template'" />
+  <!-- Remove the KnownFrameworkReference declared in ../targets/Microsoft.$(_PlatformName).Sdk.Versions.props so that we do not attempt to restore/include the ref/runtime packs that we are trying to build -->
+  <Target Name="_RemoveThisFrameworkReference"
+      BeforeTargets="ProcessFrameworkReferences" >
+    <ItemGroup>
+      <KnownFrameworkReference Remove="Microsoft.$(_PlatformName)" />
+      <KnownFrameworkReference Remove="Microsoft.$(_PlatformName).Runtimes" />
+    </ItemGroup>
+  </Target>
 
-  <Target Name="_GenerateFrameworkListFile" Condition=" '$(_CreateFrameworkList)' == 'true' Or '$(_CreateRuntimeList)' == 'true' ">
-    <!-- https://github.com/dotnet/runtime/blob/0647ec314948904319da5eb15e9931f7c85ed1e2/src/installer/pkg/projects/Directory.Build.targets#L281 -->
-    <PropertyGroup Condition="'$(_CreateFrameworkList)' == 'true'">
-      <_FrameworkListFile>$(_packagePath)data/FrameworkList.xml</_FrameworkListFile>
+  <Target Name="_IncludePlatformPackageContent"
+      Condition=" '$(PlatformPackageType)' != '' "
+      BeforeTargets="GetFilesToPackage" >
+    <PropertyGroup Condition=" '$(PlatformPackageType)' == 'TargetingPack' ">
       <_PackTargetPath>ref/net$(BundledNETCoreAppTargetFrameworkVersion)</_PackTargetPath>
       <_PackNativePath>runtimes/$(_RuntimeIdentifier)/native</_PackNativePath>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(_CreateRuntimeList)' == 'true'">
-      <_FrameworkListFile>$(_packagePath)data/RuntimeList.xml</_FrameworkListFile>
+    <PropertyGroup Condition=" '$(PlatformPackageType)' == 'RuntimePack' ">
       <_PackTargetPath>runtimes/$(_RuntimeIdentifier)/lib/net$(BundledNETCoreAppTargetFrameworkVersion)</_PackTargetPath>
       <_PackNativePath>runtimes/$(_RuntimeIdentifier)/native</_PackNativePath>
     </PropertyGroup>
-    <ItemGroup>
-      <_PackageFiles Include="$(_packagePath)$(_PackTargetPath)/*.dll" PackagePath="$(_PackTargetPath)" TargetPath="$(_PackTargetPath)" />
-      <_PackageFiles Include="$(_packagePath)$(_PackNativePath)/*.a" PackagePath="$(_PackNativePath)" TargetPath="$(_PackNativePath)" IsNative="true" />
-      <_PackageFiles Include="$(_packagePath)$(_PackNativePath)/*.dylib" PackagePath="$(_PackNativePath)" TargetPath="$(_PackNativePath)" IsNative="true" />
-      <_FrameworkListFileClass Include="@(_PackageFiles->'%(Filename)%(Extension)')" Profile="$(_PlatformName)" />
+    <ItemGroup Condition=" '$(PlatformPackageType)' == 'TargetingPack' or '$(PlatformPackageType)' == 'RuntimePack' " >
+      <_FxAssembliesToPackage Include="$(_packagePath)$(_PackTargetPath)/*.dll" />
+      <FilesToPackage Include="@(_FxAssembliesToPackage)" TargetPath="$(_PackTargetPath)" />
+      <_RuntimeHeadersToPackage Include="$(_packagePath)$(_PackNativePath)/**/*.h" Condition=" '$(PlatformPackageType)' == 'RuntimePack' " />
+      <FilesToPackage Include="@(_RuntimeHeadersToPackage)" TargetPath="$(_PackNativePath)/%(RecursiveDir)" />
+      <NativeRuntimeAsset Include="$(_packagePath)$(_PackNativePath)/*.a" />
+      <NativeRuntimeAsset Include="$(_packagePath)$(_PackNativePath)/*.dylib" />
+      <FrameworkListFileClass Include="@(_FxAssembliesToPackage->'%(Filename)%(Extension)')" Profile="$(_PlatformName)" />
+      <FrameworkListFileClass Include="@(NativeRuntimeAsset->'%(Filename)%(Extension)')" Profile="$(_PlatformName)" />
     </ItemGroup>
-
-    <ItemGroup>
-      <!-- Hardcode framework attributes -->
-      <_FrameworkListRootAttributes Include="Name" Value="Microsoft $(_PlatformName) - NET $(BundledNETCoreAppTargetFrameworkVersion)" />
-      <_FrameworkListRootAttributes Include="TargetFrameworkIdentifier" Value=".NETCoreApp" />
-      <_FrameworkListRootAttributes Include="TargetFrameworkVersion" Value="$(BundledNETCoreAppTargetFrameworkVersion)" />
-      <_FrameworkListRootAttributes Include="FrameworkName" Value="Microsoft.$(_PlatformName)" />
-      <_PackageFiles Include="$(_FrameworkListFile)" PackagePath="data" />
-
-      <!-- The CreateFrameworkListFile task will add _PackageFiles to the files to pack, so remove them if they're already there -->
-      <Content Remove="@(_PackageFiles)" />
+    <ItemGroup Condition=" '$(PlatformPackageType)' == 'ToolPack' " >
+      <_ToolsFilesToPackage Include="$(_packagePath)**" />
+      <FilesToPackage Include="@(_ToolsFilesToPackage)" TargetPath="%(RecursiveDir)" />
     </ItemGroup>
-    <!-- https://github.com/dotnet/arcade/blob/5824baf1c9a900ee00c167f96201c750bba6a574/src/Microsoft.DotNet.SharedFramework.Sdk/src/CreateFrameworkListFile.cs -->
-    <CreateFrameworkListFile
-        Files="@(_PackageFiles)"
-        FileClassifications="@(_FrameworkListFileClass)"
-        TargetFile="$(_FrameworkListFile)"
-        TargetFilePrefixes="ref;runtimes"
-        RootAttributes="@(_FrameworkListRootAttributes)"
+    <ItemGroup>
+      <FilesToPackage Include="$(MSBuildThisFileDirectory)Icon.png" TargetPath="\" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_CopyFileLists"
+      Condition=" '$(PlatformPackageType)' == 'TargetingPack' or '$(PlatformPackageType)' == 'RuntimePack' "
+      AfterTargets="_GenerateFrameworkList" >
+    <PropertyGroup>
+     <_FrameworkListFileName Condition=" '$(PlatformPackageType)' == 'TargetingPack' ">FrameworkList.xml</_FrameworkListFileName>
+     <_FrameworkListFileName Condition=" '$(PlatformPackageType)' == 'RuntimePack' ">RuntimeList.xml</_FrameworkListFileName>
+    </PropertyGroup>
+    <Copy
+        SourceFiles="$(IntermediateOutputPath)$(_FrameworkListFileName)"
+        DestinationFiles="$(_packagePath)data/$(_FrameworkListFileName)"
     />
   </Target>
 
-  <PropertyGroup>
-    <BeforePack>
-      _GenerateFrameworkListFile;
-      $(BeforePack);
-    </BeforePack>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Content Include="$(IntermediateOutputPath)RuntimeList.xml" Condition="Exists ('$(IntermediateOutputPath)RuntimeList.xml')">
-      <Pack>true</Pack>
-      <PackagePath>data</PackagePath>
-    </Content>
-    <Content Include="$(IntermediateOutputPath)FrameworkList.xml" Condition="Exists ('$(IntermediateOutputPath)FrameworkList.xml')">
-      <Pack>true</Pack>
-      <PackagePath>data</PackagePath>
-    </Content>
-  </ItemGroup>
 
   <!-- https://github.com/dotnet/arcade/blob/00d6decc59f5030c2399a64fd3e4f6e8e11bacca/Documentation/DependencyFlowOnboardingWithoutArcade.md -->
   <Target Name="PushManifestToBuildAssetRegistry" >
@@ -129,9 +127,9 @@
     <Error Condition="Exists($(AssetManifestPath))" Text="The manifest file '$(AssetManifestPath)' already exists." />
 
     <ItemGroup>
-      <ItemsToPush Include="$(NupkgPath)\*.nupkg" />
+      <ItemsToPush Include="$(NupkgPath)\*.nupkg" Kind="Package" />
       <WorkloadArtifacts Include="$(NupkgPath)\*.zip" />
-      <ItemsToPush Include="@(WorkloadArtifacts)" PublishFlatContainer="true" RelativeBlobPath="macios/$(_PackageVersion)/%(Filename)%(Extension)" />
+      <ItemsToPush Include="@(WorkloadArtifacts)" PublishFlatContainer="true" RelativeBlobPath="macios/$(_PackageVersion)/%(Filename)%(Extension)" Kind="Blob" />
     </ItemGroup>
 
     <Error Condition="'@(ItemsToPush)' == ''" Text="No packages to push." />

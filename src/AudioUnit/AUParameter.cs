@@ -1,9 +1,5 @@
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
-
 namespace AudioUnit {
 	public partial class AUParameter {
 		/// <param name="value">The parameter value to represent as a string.</param>

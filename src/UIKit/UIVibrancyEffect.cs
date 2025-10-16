@@ -1,12 +1,8 @@
 // Copyright 2014 Xamarin, Inc.
 #if IOS || TVOS
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
 #if HAS_NOTIFICATIONCENTER
 using NotificationCenter;
 #endif
-using ObjCRuntime;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

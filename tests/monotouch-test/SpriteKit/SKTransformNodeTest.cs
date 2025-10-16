@@ -1,12 +1,9 @@
 #if !MONOMAC
 
-using System;
-using Foundation;
 #if !MONOMAC
 using UIKit;
 #endif
 using SpriteKit;
-using ObjCRuntime;
 
 using System.Numerics;
 using MatrixFloat2x2 = global::CoreGraphics.NMatrix2;
@@ -15,7 +12,6 @@ using MatrixFloat4x4 = global::CoreGraphics.NMatrix4;
 using VectorFloat3 = global::CoreGraphics.NVector3;
 
 using Bindings.Test;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.SpriteKit {
 

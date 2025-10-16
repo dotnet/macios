@@ -2,9 +2,6 @@
 // BindingImplAttrobute.cs: Apply this to binding methods to describe them.
 //
 
-using System;
-using System.Runtime.InteropServices;
-
 namespace ObjCRuntime {
 
 	/// <summary>This attribute provides information about binding code.</summary>

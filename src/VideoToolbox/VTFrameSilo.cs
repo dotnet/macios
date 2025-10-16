@@ -9,13 +9,9 @@
 
 #nullable enable
 
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 using CoreMedia;
 
 namespace VideoToolbox {

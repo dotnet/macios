@@ -1,13 +1,8 @@
 #if __MACOS__
-using System;
 using System.Reflection;
 
-using NUnit.Framework;
 using Xamarin.Tests;
 using Xamarin.Utils;
-
-using ObjCRuntime;
-using Foundation;
 
 namespace Xamarin.Mac.Tests {
 	public static class Asserts {

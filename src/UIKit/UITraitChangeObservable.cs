@@ -7,13 +7,7 @@
 // Copyright 2023 Microsoft Corp. All rights reserved.
 //
 
-using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

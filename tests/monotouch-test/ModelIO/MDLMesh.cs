@@ -7,14 +7,10 @@
 // Copyright 2015 Xamarin Inc.
 //
 
-using System;
-using Foundation;
 #if !__TVOS__
 using MultipeerConnectivity;
 #endif
 using ModelIO;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 using System.Numerics;

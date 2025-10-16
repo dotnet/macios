@@ -6,8 +6,6 @@
 //
 // Copyright 2014 Xamarin Inc
 //
-using System;
-using Foundation;
 using CoreMedia;
 using CoreVideo;
 using AVFoundation;

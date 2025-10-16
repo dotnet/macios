@@ -1,12 +1,7 @@
 //
 // Unit tests for AVSpeechUtterance
 
-using System;
-
 using AVFoundation;
-using Foundation;
-
-using NUnit.Framework;
 
 #nullable enable
 

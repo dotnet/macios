@@ -1,10 +1,7 @@
 // Copyright 2014-2015 Xamarin Inc. All rights reserved
 
-using System;
 using System.Diagnostics;
 
-using CoreFoundation;
-using Foundation;
 #if HAS_LOCALAUTHENTICATION
 using LocalAuthentication;
 #endif
@@ -14,7 +11,6 @@ using AppKit;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 using NUnit.Framework.Internal;
 using System.Security.Cryptography.X509Certificates;
 

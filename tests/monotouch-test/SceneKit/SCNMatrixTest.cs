@@ -9,14 +9,9 @@
 
 #nullable enable
 
-using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using CoreAnimation;
-using Foundation;
 using SceneKit;
-
-using NUnit.Framework;
 
 using Vector3d = global::CoreGraphics.NVector3d;
 using Quaterniond = global::CoreGraphics.NQuaterniond;

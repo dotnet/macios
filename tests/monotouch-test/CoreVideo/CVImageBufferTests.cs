@@ -7,10 +7,6 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
-using NUnit.Framework;
-using ObjCRuntime;
 using CoreVideo;
 
 namespace MonoTouchFixtures.CoreVideo {

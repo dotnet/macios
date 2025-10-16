@@ -9,11 +9,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
-
 namespace EventKitUI {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>

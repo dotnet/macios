@@ -7,14 +7,10 @@
 // Copyright 2015 Xamarin Inc.
 //
 
-using System;
-using Foundation;
 #if !__TVOS__
 using MultipeerConnectivity;
 #endif
 using ModelIO;
-using ObjCRuntime;
-using NUnit.Framework;
 
 using System.Numerics;
 using Vector2i = global::CoreGraphics.NVector2i;

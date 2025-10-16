@@ -39,7 +39,13 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public ITaskItem? Destination { get; set; }
 
+		// If set, this file will be created if the source was successfully copied to the destination.
+		public ITaskItem? StampFile { get; set; }
+
 		public bool TouchDestinationFiles { get; set; }
+
+		// Whether output files should be created on Windows when executing remotely
+		public bool CreateOutputFiles { get; set; } = true;
 
 		// This property is required for XVS to work properly, even though it's not used for anything in the targets.
 		[Output]
@@ -48,6 +54,24 @@ namespace Xamarin.MacDev.Tasks {
 		#endregion
 
 		public override bool Execute ()
+		{
+			var rv = ExecuteImpl ();
+
+			if (rv) {
+				// This is executed directly on Windows for remote builds
+				var stampPath = StampFile?.ItemSpec;
+				if (!string.IsNullOrEmpty (stampPath)) {
+					Directory.CreateDirectory (Path.GetDirectoryName (stampPath));
+					var src = Source?.ItemSpec;
+					var destination = Destination?.ItemSpec;
+					File.WriteAllText (stampPath, $"{src} -> {destination}");
+				}
+			}
+
+			return rv;
+		}
+
+		bool ExecuteImpl ()
 		{
 			if (ShouldExecuteRemotely ()) {
 				return ExecuteRemotely (out var _, (taskRunner) => {
@@ -82,18 +106,20 @@ namespace Xamarin.MacDev.Tasks {
 			ExecuteAsync (Log, executable, args, cancellationToken: cancellationTokenSource.Token).Wait ();
 
 			// Create a list of all the files we've copied
-			var copiedFiles = new List<ITaskItem> ();
-			var destination = Destination!.ItemSpec;
-			if (Directory.Exists (destination)) {
-				foreach (var file in Directory.EnumerateFiles (destination, "*", SearchOption.AllDirectories)) {
-					if (TouchDestinationFiles)
-						File.SetLastWriteTimeUtc (file, DateTime.UtcNow);
-					copiedFiles.Add (new TaskItem (file));
+			if (CreateOutputFiles) {
+				var copiedFiles = new List<ITaskItem> ();
+				var destination = Destination!.ItemSpec;
+				if (Directory.Exists (destination)) {
+					foreach (var file in Directory.EnumerateFiles (destination, "*", SearchOption.AllDirectories)) {
+						if (TouchDestinationFiles)
+							File.SetLastWriteTimeUtc (file, DateTime.UtcNow);
+						copiedFiles.Add (new TaskItem (file));
+					}
+				} else {
+					copiedFiles.Add (Destination);
 				}
-			} else {
-				copiedFiles.Add (Destination);
+				CopiedFiles = copiedFiles.ToArray ();
 			}
-			CopiedFiles = copiedFiles.ToArray ();
 
 			return !Log.HasLoggedErrors;
 		}
@@ -123,6 +149,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => true;
 
-		public bool ShouldCreateOutputFile (ITaskItem item) => true;
+		public bool ShouldCreateOutputFile (ITaskItem item) => CreateOutputFiles;
 	}
 }

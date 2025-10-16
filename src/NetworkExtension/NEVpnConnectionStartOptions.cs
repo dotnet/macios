@@ -1,9 +1,5 @@
 #nullable enable
 
-using System.Runtime.Versioning;
-
-using Foundation;
-
 namespace NetworkExtension {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>

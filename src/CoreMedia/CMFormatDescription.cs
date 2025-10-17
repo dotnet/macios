@@ -71,78 +71,108 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static /* FourCharCode */ uint CMFormatDescriptionGetMediaSubType (/* CMFormatDescriptionRef */ IntPtr desc);
 
-		/// <summary>Returns the media subtype, ideally you should use the strongly typed versions instead.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		/// 	  Instead of using this uint value, you can use the specific
-		/// 	  strongly-typed version: AudioFormatType, SubtitleFormatType,
-		/// 	  ClosedCaptionFormatType, MuxedStreamType, VideoCodecType,
-		/// 	  MetadataFormatType or TimeCodeFormatType.
-		/// 	</remarks>
+#if XAMCORE_5_0
+		/// <summary>Returns the media subtype.</summary>
+		/// <remarks>
+		///   <para>
+		///     The type of this property, the enum <see cref="CMMediaSubType" />, might not contain entries for all valid
+		///     media subtypes, but the value can be cast to a <see cref="uint" /> and then treated as a fourcc value.
+		///   </para>
+		///   <para>
+		///     It's also possible to use any of the other strongly-typed versions as well: <see cref="AudioFormatType" />, <see cref="SubtitleFormatType" />,
+		///     <see cref="ClosedCaptionFormatType" />, <see cref="MuxedStreamType" />, <see cref="VideoCodecType" />,
+		///     <see cref="MetadataFormatType" />, <see cref="TimeCodeFormatType" /> or <see cref="TaggedBufferGroupFormatType" />.
+		///   <para>
+		/// </remarks>
+		public CMMediaSubType MediaSubType {
+#else
+		/// <summary>Returns the media subtype (as a fourcc value).</summary>
+		/// <remarks>
+		///   <para>
+		///     Instead of using this untyped property, it's often easier to use any of the
+		///     strongly-typed versions instead: <see cref="AudioFormatType" />, <see cref="SubtitleFormatType" />,
+		///     <see cref="ClosedCaptionFormatType" />, <see cref="MuxedStreamType" />, <see cref="VideoCodecType" />,
+		///     <see cref="MetadataFormatType" />, <see cref="TimeCodeFormatType" /> or <see cref="TaggedBufferGroupFormatType" />.
+		///   </para>
+		///   <para>
+		///     It's also possible to cast this value to <see cref="CMMediaSubType" />, but note
+		///     that the <see cref="CMMediaSubType" /> enum might not contain entries for all valid
+		///     values for this property.
+		///   </para>
+		/// </remarks>
 		public uint MediaSubType {
+#endif // XAMCORE_5_0
 			get {
 				return CMFormatDescriptionGetMediaSubType (Handle);
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the <see cref="MediaSubType" /> property as a <see cref="AudioFormatType" />.</summary>
+		/// <returns>The <see cref="MediaSubType" /> property as a <see cref="AudioFormatType" />, if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.Audio" />, otherwise 0.</returns>
+		/// <remarks>Only applicable if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.Audio" />, otherwise 0 is returned.</remarks>
 		public AudioFormatType AudioFormatType {
 			get {
 				return MediaType == CMMediaType.Audio ? (AudioFormatType) MediaSubType : 0;
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the <see cref="MediaSubType" /> property as a <see cref="CMSubtitleFormatType" />.</summary>
+		/// <returns>The <see cref="MediaSubType" /> property as a <see cref="CMSubtitleFormatType" />, if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.Subtitle" />, otherwise 0.</returns>
+		/// <remarks>Only applicable if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.Subtitle" />, otherwise 0 is returned.</remarks>
 		public CMSubtitleFormatType SubtitleFormatType {
 			get {
 				return MediaType == CMMediaType.Subtitle ? (CMSubtitleFormatType) MediaSubType : 0;
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the <see cref="MediaSubType" /> property as a <see cref="CMClosedCaptionFormatType" />.</summary>
+		/// <returns>The <see cref="MediaSubType" /> property as a <see cref="CMClosedCaptionFormatType" />, if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.ClosedCaption" />, otherwise 0.</returns>
+		/// <remarks>Only applicable if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.ClosedCaption" />, otherwise 0 is returned.</remarks>
 		public CMClosedCaptionFormatType ClosedCaptionFormatType {
 			get {
 				return MediaType == CMMediaType.ClosedCaption ? (CMClosedCaptionFormatType) MediaSubType : 0;
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the <see cref="MediaSubType" /> property as a <see cref="CMMuxedStreamType" />.</summary>
+		/// <returns>The <see cref="MediaSubType" /> property as a <see cref="CMMuxedStreamType" />, if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.Muxed" />, otherwise 0.</returns>
+		/// <remarks>Only applicable if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.Muxed" />, otherwise 0 is returned.</remarks>
 		public CMMuxedStreamType MuxedStreamType {
 			get {
 				return MediaType == CMMediaType.Muxed ? (CMMuxedStreamType) MediaSubType : 0;
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the <see cref="MediaSubType" /> property as a <see cref="CMVideoCodecType" />.</summary>
+		/// <returns>The <see cref="MediaSubType" /> property as a <see cref="CMVideoCodecType" />, if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.Video" />, otherwise 0.</returns>
+		/// <remarks>Only applicable if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.Video" />, otherwise 0 is returned. If <see cref="MediaSubType" /> is a pixel format, use <see cref="PixelFormatType" /> instead.</remarks>
 		public CMVideoCodecType VideoCodecType {
 			get {
 				return MediaType == CMMediaType.Video ? (CMVideoCodecType) MediaSubType : 0;
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the <see cref="MediaSubType" /> property as a <see cref="CVPixelFormatType" />.</summary>
+		/// <returns>The <see cref="MediaSubType" /> property as a <see cref="CVPixelFormatType" />, if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.Video" />, otherwise 0.</returns>
+		/// <remarks>Only applicable if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.Video" />, otherwise 0 is returned. If <see cref="MediaSubType" /> property isn't a pixel format, use <see cref="VideoCodecType" /> instead.</remarks>
+		public CVPixelFormatType PixelFormatType {
+			get {
+				return MediaType == CMMediaType.Video ? (CVPixelFormatType) MediaSubType : 0;
+			}
+		}
+
+		/// <summary>Gets the <see cref="MediaSubType" /> property as a <see cref="CMMetadataFormatType" />.</summary>
+		/// <returns>The <see cref="MediaSubType" /> property as a <see cref="CMMetadataFormatType" />, if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.Metadata" />, otherwise 0.</returns>
+		/// <remarks>Only applicable if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.Metadata" />, otherwise 0 is returned.</remarks>
 		public CMMetadataFormatType MetadataFormatType {
 			get {
 				return MediaType == CMMediaType.Metadata ? (CMMetadataFormatType) MediaSubType : 0;
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the <see cref="MediaSubType" /> property as a <see cref="CMTimeCodeFormatType" />.</summary>
+		/// <returns>The <see cref="MediaSubType" /> property as a <see cref="CMTimeCodeFormatType" />, if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.TimeCode" />, otherwise 0.</returns>
+		/// <remarks>Only applicable if this format descripton's <see cref="MediaType" /> is <see cref="CMMediaType.TimeCode" />, otherwise 0 is returned.</remarks>
 		public CMTimeCodeFormatType TimeCodeFormatType {
 			get {
 				return MediaType == CMMediaType.TimeCode ? (CMTimeCodeFormatType) MediaSubType : 0;
@@ -161,9 +191,8 @@ namespace CoreMedia {
 		[DllImport (Constants.CoreMediaLibrary)]
 		extern static CMMediaType CMFormatDescriptionGetMediaType (/* CMFormatDescriptionRef */ IntPtr desc);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Get the media type of this format description.</summary>
+		/// <value>The media type of this format description.</value>
 		public CMMediaType MediaType {
 			get {
 				return CMFormatDescriptionGetMediaType (Handle);

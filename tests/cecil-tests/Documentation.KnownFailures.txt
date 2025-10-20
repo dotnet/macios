@@ -2356,6 +2356,8 @@ F:CoreLocationUI.CLLocationButtonLabel.SendCurrentLocation
 F:CoreLocationUI.CLLocationButtonLabel.SendMyCurrentLocation
 F:CoreLocationUI.CLLocationButtonLabel.ShareCurrentLocation
 F:CoreLocationUI.CLLocationButtonLabel.ShareMyCurrentLocation
+F:CoreMedia.CMAudioCodecType.AacAudibleProtected
+F:CoreMedia.CMAudioCodecType.AacLCProtected
 F:CoreMedia.CMFormatDescriptionAlphaChannelMode.PremultipliedAlpha
 F:CoreMedia.CMFormatDescriptionAlphaChannelMode.StraightAlpha
 F:CoreMedia.CMFormatDescriptionCameraCalibrationExtrinsicOriginSource.StereoCameraSystemBaseline
@@ -2484,6 +2486,7 @@ F:CoreMedia.CMMPEG2VideoProfile.XDCAM_HD422_720p30_CBR50
 F:CoreMedia.CMMPEG2VideoProfile.XDCAM_HD422_720p50_CBR50
 F:CoreMedia.CMMPEG2VideoProfile.XDCAM_HD422_720p60_CBR50
 F:CoreMedia.CMMPEG2VideoProfile.XF
+F:CoreMedia.CMMuxedStreamType.EmbeddedDeviceScreenRecording
 F:CoreMedia.CMPackingType.None
 F:CoreMedia.CMPackingType.OverUnder
 F:CoreMedia.CMPackingType.SideBySide
@@ -2534,9 +2537,15 @@ F:CoreMedia.CMTaggedBufferGroupError.InternalError
 F:CoreMedia.CMTaggedBufferGroupError.ParamErr
 F:CoreMedia.CMTaggedBufferGroupError.Success
 F:CoreMedia.CMTaggedBufferGroupFormatType.TaggedBufferGroup
+F:CoreMedia.CMTextFormatType.QTText
+F:CoreMedia.CMTextFormatType.Text3G
+F:CoreMedia.CMVideoCodecType.AppleProRes4444XQ
+F:CoreMedia.CMVideoCodecType.AppleProResRaw
+F:CoreMedia.CMVideoCodecType.AppleProResRawHQ
 F:CoreMedia.CMVideoCodecType.DepthHevc
 F:CoreMedia.CMVideoCodecType.DisparityHevc
 F:CoreMedia.CMVideoCodecType.DolbyVisionHevc
+F:CoreMedia.CMVideoCodecType.HevcWithAlpha
 F:CoreMedia.CMVideoCodecType.JPEG_XL
 F:CoreMedia.CMVideoCodecType.VP9
 F:CoreMidi.MidiCICategoryOptions.ProcessInquirySupported
@@ -26195,6 +26204,7 @@ T:CoreLocation.CLServiceSessionDiagnostic
 T:CoreLocation.CLUpdate
 T:CoreLocationUI.CLLocationButtonIcon
 T:CoreLocationUI.CLLocationButtonLabel
+T:CoreMedia.CMAudioCodecType
 T:CoreMedia.CMCompressionPropertyCameraCalibration
 T:CoreMedia.CMCompressionPropertyCameraCalibrationKey
 T:CoreMedia.CMFormatDescriptionAlphaChannelMode
@@ -26234,6 +26244,7 @@ T:CoreMedia.CMTagDataType
 T:CoreMedia.CMTagError
 T:CoreMedia.CMTaggedBufferGroupError
 T:CoreMedia.CMTaggedBufferGroupFormatType
+T:CoreMedia.CMTextFormatType
 T:CoreMedia.LensStabilizationStatus
 T:CoreMidi.Midi2DeviceInfo
 T:CoreMidi.Midi2DeviceManufacturer

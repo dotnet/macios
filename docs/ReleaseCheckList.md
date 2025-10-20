@@ -4,27 +4,25 @@ This is a checklist for what to do for every release.
 
 Copy this list into a new issue and then check off as the release progresses.
 
-# (release version)
+# ✅ Checklist 
+
+## Xcode X.Y
 
 * [ ] Create new milestone in GitHub.
 * [ ] Create a new issue with a copy of this list, assign it to the milestone.
+    
+### Beta 1
   
-## (for each Xcode beta/rc/stable release; copy this section as many times as needed for each Xcode version)
-  
-* [ ] Update binding status in wiki.
-* [ ] Create a new `xcodeX[.Y]` branch (only for the first Xcode bump) - this needs deciding where to branch from (which is outside the scope of this document). Push this branch to `origin` with no changes.
+* [ ] Update binding status in wiki (read instructions in the Makefile in the wiki's git repository)
+* [ ] Create a new `xcodeX[.Y]` branch - this needs deciding where to branch from (which is outside the scope of this document). Push this branch to `origin` with no changes.
 * [ ] Create PR with an Xcode bump.
-  * Update the following values in `Make.versions` (only for the first Xcode bump):
-    * \*_NUGET_OS_VERSION
+  * Update the following values in `Make.versions`:
+    * \*_NUGET\_OS\_VERSION
   * Update the following values in `Make.config`:
-    * XCODE_VERSION
-    * XCODE_URL
-    * XCODE_DEVELOPER_ROOT
+    * XCODE\_VERSION
+    * XCODE\_URL
+    * XCODE\_DEVELOPER\_ROOT
   * Update the `xcodeChannel` value in `tools/devops/automation/templates/variables/common.yml`. Change to `Beta` if using an Xcode beta or release candidate, and switch back to `Stable` with the final (stable) Xcode release.
-    ```shell
-    $ git grep -A 1 -E 'xcodeChannel' -- tools/devops/automation/templates/variables/common.yml
-      [...] # the value that needs to be updated
-    ```
   * Add the new OS versions to the `builds/Version-*.plist.in` files.
   * Build and fix any issues.
   * Run the following tests locally, and fix any issues (these are the ones that typically fail in Xcode bumps, but there may be other failing tests as well - CI will report any such failures once the PR is created):
@@ -36,7 +34,21 @@ Copy this list into a new issue and then check off as the release progresses.
 * [ ] Update any existing API bindings PRs if needed.
 * [ ] Bind APIs!
 
-## Pre-release process
+### Beta X
+  
+* [ ] Update binding status in wiki.
+* [ ] Create PR with an Xcode bump.
+  * Build and fix any issues.
+  * Run the following tests locally, and fix any issues (these are the ones that typically fail in Xcode bumps, but there may be other failing tests as well - CI will report any such failures once the PR is created):
+    * xtro
+    * monotouch-test
+    * introspection
+    * cecil
+    * bgen
+* [ ] Update any existing API bindings PRs if needed.
+* [ ] Bind APIs!
+
+### Pre-release process
 
 This happens after the stable version of Xcode has been released and the `xcodeX[.Y]` branch has been updated according to the previous section(s).
 

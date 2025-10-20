@@ -9,12 +9,8 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
-using Foundation;
 using UIKit;
 using PassKit;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.PassKit {

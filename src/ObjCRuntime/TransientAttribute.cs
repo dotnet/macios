@@ -7,7 +7,6 @@
 // Authors:
 //   Rolf Bjarne Kvinge <rolf@xamarin.com>
 //
-using System;
 
 namespace ObjCRuntime {
 	/// <include file="../../docs/api/ObjCRuntime/TransientAttribute.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.TransientAttribute']/*" />

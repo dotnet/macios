@@ -27,16 +27,12 @@
 
 #nullable enable
 
-using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Mono.Options;
-
-using ObjCRuntime;
-using Foundation;
 
 using Xamarin.Bundler;
 using Xamarin.Utils;

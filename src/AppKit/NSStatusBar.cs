@@ -9,8 +9,6 @@
 
 #if !__MACCATALYST__
 
-using System;
-
 #nullable enable
 
 namespace AppKit {

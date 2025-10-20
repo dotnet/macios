@@ -44,8 +44,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				var taskRunner = new TaskRunner (SessionId, BuildEngine4);
-				var rv = taskRunner.RunAsync (this).Result;
+				var rv = ExecuteRemotely (out var taskRunner);
 
 				if (rv && CopyToWindows)
 					CopyFilesToWindowsAsync (taskRunner, TouchedFiles).Wait ();

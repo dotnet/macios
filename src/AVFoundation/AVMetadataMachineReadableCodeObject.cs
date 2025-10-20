@@ -25,9 +25,6 @@
 
 #if IOS
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;

@@ -9,13 +9,9 @@
 
 #nullable enable
 
-using System;
 using System.Linq;
 
-using Foundation;
 using AudioToolbox;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.AudioToolbox {
 

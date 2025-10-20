@@ -8,10 +8,7 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-using NUnit.Framework;
-
 using AVFoundation;
-using Foundation;
 using ImageIO;
 
 namespace MonoTouchFixtures.AVFoundation {

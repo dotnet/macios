@@ -31,14 +31,10 @@
 
 #if !MONOMAC
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 
 namespace AddressBook {
 	/// <summary>Provides data for the <see cref="AddressBook.ABAddressBook.ExternalChange" /> event.</summary>

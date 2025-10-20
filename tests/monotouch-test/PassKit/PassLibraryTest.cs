@@ -9,12 +9,9 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
 using System.IO;
-using Foundation;
 using UIKit;
 using PassKit;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.PassKit {
 

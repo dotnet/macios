@@ -7,10 +7,6 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 #nullable enable
 
 namespace Intents {

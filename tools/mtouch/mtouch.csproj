@@ -13,6 +13,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="DotNetGlobals.cs" />
     <Compile Include="Application.mtouch.cs" />
     <Compile Include="AssemblyResolver.cs" />
     <Compile Include="..\common\error.cs">

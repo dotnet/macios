@@ -9,9 +9,7 @@
 
 #if !__TVOS__
 
-using Foundation;
 using CoreAudioKit;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreAudioKit {
 

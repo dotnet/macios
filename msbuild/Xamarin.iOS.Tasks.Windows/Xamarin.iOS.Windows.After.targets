@@ -68,6 +68,4 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		<!-- Task that will run remotely and delete the zip file in both Mac and Windows -->
 		<Delete SessionId="$(BuildSessionId)" Condition="'$(CleanChangedOutputFilesZipFile)' == 'true' And Exists('$(ChangedOutputFilesZipFile)')" Files="$(ChangedOutputFilesZipFile)" ContinueOnError="WarnAndContinue"/>
 	</Target>
-	
-	<Import Project="$(MSBuildThisFileDirectory)Xamarin.iOS.HotRestart.targets" Condition="Exists('$(MSBuildThisFileDirectory)Xamarin.iOS.HotRestart.targets')" /> 
 </Project>

@@ -8,11 +8,7 @@
 // Copyright 2009, Novell, Inc.
 // Copyright 2011-2016 Xamarin Inc.
 //
-using System;
-using System.Runtime.InteropServices;
 
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 
 // Disable until we get around to enable + fix any issues.

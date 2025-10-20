@@ -1,7 +1,3 @@
-using NUnit.Framework;
-
-using Foundation;
-using ObjCRuntime;
 
 namespace MonoTouchFixtures.Foundation {
 

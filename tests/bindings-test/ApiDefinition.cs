@@ -1,10 +1,8 @@
-using System;
 using System.Numerics;
 
 using CoreGraphics;
 using CoreMedia;
-using ObjCRuntime;
-using Foundation;
+
 #if __MACOS__
 using AppKit;
 #else

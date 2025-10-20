@@ -4,10 +4,7 @@
 // Copyright 2012-2014 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 #if !MONOMAC
 using UIKit;
 #endif

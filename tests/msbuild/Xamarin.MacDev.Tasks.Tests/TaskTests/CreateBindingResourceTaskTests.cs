@@ -74,8 +74,9 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var task = ExecuteTask ("auto", symlinks, out var tmpdir);
 
+			var compressed = true;
 			string extracted;
-			if (symlinks) {
+			if (compressed) {
 				var zipFile = task.BindingResourcePath + ".zip";
 				Assert.That (zipFile, Does.Exist, "Zip existence");
 

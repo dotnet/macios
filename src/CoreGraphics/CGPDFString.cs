@@ -29,10 +29,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 using CoreFoundation;
 
 namespace CoreGraphics {

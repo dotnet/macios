@@ -5,10 +5,6 @@
 //   Dorothy Tam (dottam@gmail.com)
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace AppTrackingTransparency {
 
 	[iOS (14, 0), TV (14, 0)]

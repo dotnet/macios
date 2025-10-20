@@ -2,13 +2,9 @@
 // Copyright 2024 Microsoft Corp
 //
 
-using System;
 using System.Threading.Tasks;
 
 using Accessibility;
-using Foundation;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Accessibility {
 

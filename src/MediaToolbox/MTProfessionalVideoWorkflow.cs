@@ -2,11 +2,6 @@
 
 #if MONOMAC
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-
 namespace MediaToolbox {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>

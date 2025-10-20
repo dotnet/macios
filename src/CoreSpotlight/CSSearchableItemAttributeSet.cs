@@ -4,10 +4,6 @@
 
 #if IOS || MONOMAC
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace CoreSpotlight {
 
 	public partial class CSSearchableItemAttributeSet {

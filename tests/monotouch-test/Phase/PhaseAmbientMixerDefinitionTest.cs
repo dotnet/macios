@@ -1,13 +1,8 @@
 #if __IOS__ || MONOMAC
 
-using System;
-
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 using Phase;
 
-using NUnit.Framework;
 using AVFoundation;
 using AudioToolbox;
 

@@ -1,4 +1,3 @@
-using System;
 using Xamarin.Utils;
 
 namespace Xamarin.Tests {

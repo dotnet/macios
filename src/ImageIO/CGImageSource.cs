@@ -28,12 +28,8 @@
 
 #nullable enable
 
-using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 

@@ -19,22 +19,17 @@
 // limitations under the License.
 //
 
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Text.RegularExpressions;
-using NUnit.Framework;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using Foundation;
 using Xamarin.Tests;
 using Xamarin.Utils;
 

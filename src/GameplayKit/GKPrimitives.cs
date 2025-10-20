@@ -9,10 +9,7 @@
 
 #nullable enable
 
-using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
 
 namespace GameplayKit {
 	/// <summary>An axis-aligned rectangular three-dimensional box.</summary>

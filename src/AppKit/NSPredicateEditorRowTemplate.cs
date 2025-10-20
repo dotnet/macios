@@ -9,11 +9,9 @@
 
 #if !__MACCATALYST__
 
-using System;
 using System.Linq;
 using System.Collections.Generic;
 
-using Foundation;
 using CoreData;
 
 #nullable enable

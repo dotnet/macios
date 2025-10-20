@@ -1,7 +1,4 @@
-using System;
 using System.ComponentModel;
-using ObjCRuntime;
-using Foundation;
 using CoreLocation;
 #if HAS_CONTACTS
 using Contacts;

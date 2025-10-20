@@ -7,13 +7,10 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
 #if !MONOMAC
 using UIKit;
 #endif
 using GameController;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.GameController {
 

@@ -1,9 +1,7 @@
-using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 using AudioToolbox;
-using ObjCRuntime;
 
 namespace AVFoundation {
 

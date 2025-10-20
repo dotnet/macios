@@ -8,20 +8,14 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Foundation;
 using VideoToolbox;
 using CoreMedia;
 using CoreVideo;
 using AVFoundation;
-using CoreFoundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.VideoToolbox {

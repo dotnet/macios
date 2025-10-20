@@ -1,6 +1,3 @@
-using System;
-using ObjCRuntime;
-using Foundation;
 using Security;
 
 namespace LocalAuthentication {

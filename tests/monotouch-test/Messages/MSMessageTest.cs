@@ -9,11 +9,7 @@
 
 #if HAS_MESSAGE
 
-using System;
-using Foundation;
 using Messages;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Messages
 {

@@ -1,9 +1,6 @@
 // Copyright 2011 Xamarin Inc. All rights reserved
 
-using System;
-using Foundation;
 using Security;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Security {
 

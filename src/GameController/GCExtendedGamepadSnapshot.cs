@@ -10,12 +10,7 @@
 
 #nullable enable
 
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-using Foundation;
 
 namespace GameController {
 	// GCExtendedGamepadSnapshot.h

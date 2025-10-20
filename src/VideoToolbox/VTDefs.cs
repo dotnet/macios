@@ -8,10 +8,6 @@
 // Copyright 2014 Xamarin Inc
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace VideoToolbox {
 
 	// untyped enum -> VTErrors.h

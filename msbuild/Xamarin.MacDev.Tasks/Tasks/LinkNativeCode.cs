@@ -59,7 +59,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (ShouldExecuteRemotely ()) {
 				outputPath = PathUtils.ConvertToMacPath (Path.GetDirectoryName (OutputFile.ItemSpec));
 
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 			}
 
 			try {

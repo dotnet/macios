@@ -29,8 +29,6 @@
 
 #if !__MACCATALYST__
 
-using Foundation;
-
 #nullable enable
 
 namespace AppKit {

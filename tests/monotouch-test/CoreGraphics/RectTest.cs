@@ -7,11 +7,7 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
 using CoreGraphics;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreGraphics {
 	[TestFixture]

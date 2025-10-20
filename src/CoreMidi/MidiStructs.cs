@@ -1,12 +1,7 @@
 #if !TVOS
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
 
 using MidiObjectRef = System.Int32;
 using MidiClientRef = System.Int32;

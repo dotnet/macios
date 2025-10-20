@@ -9,13 +9,9 @@
 
 #nullable enable
 
-using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
 
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 using MatrixFloat4x4 = global::CoreGraphics.NMatrix4;
 

@@ -1,17 +1,12 @@
 // Copyright 2011 Xamarin Inc. All rights reserved
 
 #if IOS || MONOMAC
-using System;
 using System.Drawing;
 using System.IO;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Foundation;
 using AudioToolbox;
 using AudioUnit;
-using CoreFoundation;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.AudioToolbox {
 

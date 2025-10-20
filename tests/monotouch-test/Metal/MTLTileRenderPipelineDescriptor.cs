@@ -1,12 +1,7 @@
 #if __IOS__
 
-using System;
-
-using Foundation;
 using Metal;
-using ObjCRuntime;
 
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.Metal {

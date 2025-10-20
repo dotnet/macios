@@ -8,11 +8,7 @@
 //
 #nullable enable
 
-using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using nw_connection_t = System.IntPtr;
 using nw_endpoint_t = System.IntPtr;

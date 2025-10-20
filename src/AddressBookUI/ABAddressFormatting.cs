@@ -9,12 +9,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
-
 namespace AddressBookUI {
 
 	// http://developer.apple.com/library/ios/#DOCUMENTATION/AddressBookUI/Reference/AddressBookUI_Functions/Reference/reference.html#//apple_ref/c/func/ABCreateStringWithAddressDictionary

@@ -1,8 +1,6 @@
 #nullable enable
 
-using System;
 using System.Collections.Generic;
-using Foundation;
 
 namespace BusinessChat {
 	/// <summary>To be added.</summary>

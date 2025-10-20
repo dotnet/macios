@@ -2,11 +2,7 @@
 // Copyright 2014 Xamarin Inc.
 //
 
-using System;
-using Foundation;
 using JavaScriptCore;
-using ObjCRuntime;
-using NUnit.Framework;
 
 using XamarinTests.ObjCRuntime;
 using MonoTouchFixtures.ObjCRuntime;

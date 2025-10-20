@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Text;
 
 using ModelIO;
@@ -30,8 +27,6 @@ using pfloat = System.Runtime.InteropServices.NFloat;
 #else
 using pfloat = System.Single;
 #endif
-
-using NUnit.Framework;
 
 public static class Asserts {
 	public static void AreEqual (bool expected, bool actual, string message)
@@ -544,7 +539,6 @@ public static class Asserts {
 		Assert.Fail (msg);
 	}
 
-
 	public static void AreEqual (SCNVector4 expected, SCNVector4 actual, pfloat delta, string message)
 	{
 		if (AreEqual (expected.X, actual.X, delta, out var dX) &
@@ -658,7 +652,6 @@ public static class Asserts {
 		var msg = $"{message}\nExpected:\n{expectedString}\nActual:\n{actualString}\nDiff:\n{diffString}";
 		Assert.Fail (msg);
 	}
-
 
 	// The m## arguments correspond with the M## fields in SCNMatrix4
 	// For .NET this means the first four values are the first column (and the first row for legacy Xamarin).

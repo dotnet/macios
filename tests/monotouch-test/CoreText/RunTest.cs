@@ -1,11 +1,7 @@
-using System;
 
 using CoreGraphics;
 using CoreText;
-using Foundation;
-using ObjCRuntime;
 
-using NUnit.Framework;
 using MonoTouchFixtures.CoreGraphics;
 
 namespace MonoTouchFixtures.CoreText {

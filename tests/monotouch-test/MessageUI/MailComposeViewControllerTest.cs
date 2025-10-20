@@ -9,13 +9,10 @@
 
 #if HAS_MESSAGEUI
 
-using System;
 using System.Drawing;
-using Foundation;
 using UIKit;
 
 using MessageUI;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.MessageUI {
 

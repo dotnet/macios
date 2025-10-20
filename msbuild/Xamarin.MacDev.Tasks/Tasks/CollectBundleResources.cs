@@ -50,7 +50,8 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				if (ShouldExecuteRemotely ()) {
 					// Copy the bundle files to the build server
-					new TaskRunner (SessionId, BuildEngine4).CopyInputsAsync (this).Wait ();
+					if (!CopyInputsToRemoteServerAsync (this))
+						return false;
 				}
 
 				// But execute locally
@@ -227,8 +228,9 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 			}
 
-			if (logicalName.StartsWith (".." + Path.DirectorySeparatorChar, StringComparison.Ordinal)) {
-				task.Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E0100, logicalName);
+			// Always check for both windows and non-windows style path separators, because we can get both on either platform.
+			if (logicalName.StartsWith ("..\\", StringComparison.Ordinal) || logicalName.StartsWith ("../", StringComparison.Ordinal)) {
+				task.Log.LogWarning (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E0100, logicalName);
 				return false;
 			}
 

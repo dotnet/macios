@@ -7,9 +7,6 @@
 // Copyright 2012, 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
 #if MONOMAC
 using AppKit;
 using UIColor = AppKit.NSColor;
@@ -17,8 +14,6 @@ using UIColor = AppKit.NSColor;
 using UIKit;
 #endif
 using CoreGraphics;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreGraphics {
 

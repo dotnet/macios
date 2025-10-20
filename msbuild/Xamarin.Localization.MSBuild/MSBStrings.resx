@@ -1488,26 +1488,10 @@
         </comment>
     </data>
 
-    <data name="E7141" xml:space="preserve">
-        <value>The library {0} is a static library, and static libraries are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error.</value>
-        <comment>
-            The following are literal names and should not be translated: SkipStaticLibraryValidation, true
-            {0}: the path to a file
-        </comment>
-    </data>
-
     <data name="E7142" xml:space="preserve">
         <value>Unknown value for 'SkipStaticLibraryValidation': {0}. Valid values are: 'true', 'false', 'warn'.</value>
         <comment>
             The following are literal names and should not be translated: SkipStaticLibraryValidation
-        </comment>
-    </data>
-
-    <data name="E7143" xml:space="preserve">
-        <value>The file {0} is an object file, and object files are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error.</value>
-        <comment>
-            The following are literal names and should not be translated: SkipStaticLibraryValidation, true
-            {0}: the path to a file
         </comment>
     </data>
 
@@ -1628,5 +1612,21 @@
             {0}: the name of the MSBuild task that's being skipped (Copy, GetFullPaths, FilterStaticFrameworks, etc.).
             {1}: the name of the property that is empty (SourceFiles, Items, FrameworkToPublish, etc.).
         </comment>
+    </data>
+
+    <data name="W7160" xml:space="preserve">
+        <value>Creating a compressed binding resource package to avoid MAX_PATH problems on Windows.</value>
+    </data>
+
+    <data name="W7161" xml:space="preserve">
+        <value>Not creating a compressed binding resource package, because all the native references are already compressed.</value>
+    </data>
+
+    <data name="E7162" xml:space="preserve">
+        <value>Unable to execute this task remotely for unknown reasons. The build log may have more information.</value>
+    </data>
+
+    <data name="E7163" xml:space="preserve">
+        <value>Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information.</value>
     </data>
 </root>

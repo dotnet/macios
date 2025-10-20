@@ -9,14 +9,9 @@
 
 #if HAS_ARKIT
 
-using System;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using ARKit;
 using AVFoundation;
-using Foundation;
-using NUnit.Framework;
-using ObjCRuntime;
 using Xamarin.Utils;
 
 using MatrixFloat2x2 = global::CoreGraphics.NMatrix2;

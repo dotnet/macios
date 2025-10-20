@@ -8,12 +8,8 @@
 // Copyright 2014-2016 Xamarin Inc.
 //
 
-using System;
-using System.Runtime.InteropServices;
 using CoreGraphics;
 using CoreLocation;
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

@@ -2,13 +2,10 @@
 
 #if !MONOMAC
 
-using System;
 using System.Drawing;
 using System.Reflection;
 using CoreGraphics;
-using Foundation;
 using UIKit;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.UIKit {
 	[TestFixture]

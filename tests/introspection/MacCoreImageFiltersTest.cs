@@ -20,9 +20,6 @@
 // limitations under the License.
 //
 
-using System;
-
-using NUnit.Framework;
 using Xamarin.Tests;
 
 namespace Introspection {

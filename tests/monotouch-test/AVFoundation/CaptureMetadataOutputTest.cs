@@ -9,13 +9,9 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
 using System.Reflection;
 using CoreGraphics;
-using Foundation;
 using AVFoundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.AVFoundation {
@@ -113,12 +109,6 @@ namespace MonoTouchFixtures.AVFoundation {
 								case AVMetadataObjectType.DogBody:
 								case AVMetadataObjectType.HumanBody:
 								case AVMetadataObjectType.SalientObject:
-									// fail *and crash* on iOS 8 (at least on 32bits devices)
-									if (!TestRuntime.CheckXcodeVersion (11, 0))
-										continue;
-									// xcode 12 beta 1 on device
-									if (TestRuntime.IsDevice && TestRuntime.CheckXcodeVersion (12, 0))
-										continue;
 									break;
 								case AVMetadataObjectType.CodabarCode:
 								case AVMetadataObjectType.GS1DataBarCode:

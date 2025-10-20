@@ -29,8 +29,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
 using CoreGraphics;
 
 #nullable enable

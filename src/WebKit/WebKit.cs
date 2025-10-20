@@ -2,8 +2,6 @@
 
 #nullable enable
 
-using Foundation;
-
 namespace WebKit {
 
 	public partial class WebFrame {

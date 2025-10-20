@@ -1,12 +1,8 @@
 // Copyright 2012-2013 Xamarin Inc. All rights reserved
 
-using System;
 using System.Drawing;
-using Foundation;
 using CoreGraphics;
 using ImageIO;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.ImageIO {
 

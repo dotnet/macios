@@ -55,6 +55,10 @@ print-dotnet-pkg-urls: dotnet-install.sh
 	$(Q) if ! test -f $@-found-it.stamp; then echo "No working urls were found."; exit 1; fi
 	$(Q) rm -f $@-found-it.stamp
 
+# We need https://github.com/dotnet/install-scripts/pull/555, which hasn't been released yet.
+# Revert to using https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh whenever https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh has been updated.
+# DOTNET_DOWNLOAD_URL?=https://raw.githubusercontent.com/dotnet/install-scripts/d48e000adad7243861d799ec86c0bf7210a8fc7a/src/dotnet-install.sh
+
 DOTNET_DOWNLOAD_URL?=https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.sh
 
 dotnet-install.sh: Makefile
@@ -70,15 +74,6 @@ DOWNLOAD_DOTNET_VERSION=$(BUNDLED_NETCORE_PLATFORMS_PACKAGE_VERSION)
 endif
 endif
 
-.stamp-install-custom-dotnet-runtime-workloads:
-ifneq ($(TRACKING_DOTNET_RUNTIME_SEPARATELY),)
-	@# mono toolchain
-	$(Q) mkdir -p ./downloads/$(DOTNET_INSTALL_NAME)/sdk-manifests/$(MONO_TOOLCHAIN_MANIFEST_VERSION_BAND)
-	@# emscripten, which mono depends on
-	$(Q) mkdir -p ./downloads/$(DOTNET_INSTALL_NAME)/sdk-manifests/$(EMSCRIPTEN_MANIFEST_VERSION_BAND)
-	$(Q) touch $@
-endif
-
 package-download/all-package-references.csproj: $(GIT_DIRECTORY)/HEAD $(GIT_DIRECTORY)/index ./create-csproj-for-all-packagereferences.sh
 	$(Q_GEN) ./create-csproj-for-all-packagereferences.sh --output "$(abspath $@.tmp)" $(if $(V),-v,)
 	$(Q) mv "$@.tmp" "$@"
@@ -92,12 +87,9 @@ package-download/all-package-references.csproj: $(GIT_DIRECTORY)/HEAD $(GIT_DIRE
 		/p:PackageRuntimeIdentifiersMonoVM="$(DOTNET_MONOVM_RUNTIME_IDENTIFIERS)" \
 		/p:PackageRuntimeIdentifiersCoreCLR="$(DOTNET_CORECLR_RUNTIME_IDENTIFIERS)" \
 		/p:CustomDotNetVersion="$(DOWNLOAD_DOTNET_VERSION)" \
-		/p:MonoToolChainManifestVersionBand="$(MONO_TOOLCHAIN_MANIFEST_VERSION_BAND)" \
-		/p:EmscriptenManifestVersionBand="$(EMSCRIPTEN_MANIFEST_VERSION_BAND)" \
 		/p:TrackingDotNetRuntimeSeparately="$(TRACKING_DOTNET_RUNTIME_SEPARATELY)" \
 		/bl \
 		$(DOTNET_BUILD_VERBOSITY)
-	$(MAKE) .stamp-install-custom-dotnet-runtime-workloads
 	$(Q) touch $@
 
 .stamp-install-t4: $(TOP)/.config/dotnet-tools.json .stamp-download-dotnet-packages

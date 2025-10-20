@@ -3,14 +3,9 @@
 //
 
 #if HAS_PASSKIT
-using System;
 
-using Foundation;
 using CoreGraphics;
-using ObjCRuntime;
 using PassKit;
-
-using NUnit.Framework;
 
 using Xamarin.Utils;
 

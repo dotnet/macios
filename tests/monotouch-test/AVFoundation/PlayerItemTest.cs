@@ -8,13 +8,11 @@
 //
 
 using AVFoundation;
-using Foundation;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.AVFoundation {
 

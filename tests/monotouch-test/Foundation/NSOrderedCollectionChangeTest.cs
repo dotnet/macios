@@ -1,8 +1,3 @@
-using System;
-
-using NUnit.Framework;
-
-using Foundation;
 
 namespace MonoTouchFixtures.Foundation {
 #if false // https://github.com/dotnet/macios/issues/15577

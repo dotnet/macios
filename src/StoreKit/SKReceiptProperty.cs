@@ -9,15 +9,12 @@
 
 #nullable enable
 
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using StoreKit;
 
 #if !MONOMAC
 using UIKit;
 #endif
-using System;
 
 namespace StoreKit {
 	/// <summary>Defines test properties for the <see cref="StoreKit.SKReceiptRefreshRequest(Foundation.NSDictionary)" /> constructor.</summary>

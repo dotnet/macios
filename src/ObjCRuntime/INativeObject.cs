@@ -1,8 +1,6 @@
 #nullable enable
 
-using System;
 using System.Runtime.CompilerServices;
-using Foundation;
 
 namespace ObjCRuntime {
 

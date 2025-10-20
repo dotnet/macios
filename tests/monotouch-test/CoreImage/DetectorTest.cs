@@ -8,7 +8,6 @@
 // Copyright 2012-2013 Xamarin Inc. All rights reserved.
 //
 
-using Foundation;
 using CoreImage;
 using CoreGraphics;
 #if MONOMAC
@@ -16,7 +15,6 @@ using AppKit;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreImage {
 

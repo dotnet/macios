@@ -9,16 +9,11 @@
 
 #if !__MACCATALYST__
 
-using System;
 using System.Threading;
-using Foundation;
 using CoreBluetooth;
-using CoreFoundation;
-using ObjCRuntime;
 #if !MONOMAC
 using UIKit;
 #endif
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.CoreBluetooth {

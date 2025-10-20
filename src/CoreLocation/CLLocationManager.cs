@@ -31,13 +31,10 @@
 
 #nullable enable
 
-using System;
 #if !MONOMAC
 using UIKit;
 #endif
-using Foundation;
 using CoreLocation;
-using ObjCRuntime;
 
 namespace CoreLocation {
 #if __TVOS__

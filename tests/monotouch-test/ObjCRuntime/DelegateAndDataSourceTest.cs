@@ -1,15 +1,10 @@
 #if __MACOS__
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using NUnit.Framework;
 using System.Runtime.CompilerServices;
 
-using Foundation;
 using AppKit;
-using ObjCRuntime;
 
 namespace Xamarin.Mac.Tests {
 	static class TypeExtension {

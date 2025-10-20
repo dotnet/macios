@@ -1,8 +1,4 @@
 #if MONOMAC
-using System;
-
-using Foundation;
-using ObjCRuntime;
 
 namespace MediaExtension {
 	/// <summary>This enum is used to select how to initialize a new instance of a <see cref="MERawProcessingBooleanParameter" />.</summary>

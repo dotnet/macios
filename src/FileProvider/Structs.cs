@@ -2,10 +2,7 @@
 
 #nullable enable
 
-using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
 
 namespace FileProvider {
 

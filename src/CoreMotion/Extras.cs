@@ -4,9 +4,6 @@
 
 #nullable enable
 
-using Foundation;
-using System;
-
 namespace CoreMotion {
 
 	public partial class CMAccelerometerData {

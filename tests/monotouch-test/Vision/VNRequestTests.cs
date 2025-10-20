@@ -8,12 +8,7 @@
 // Copyright 2018 Microsoft Corporation.
 //
 
-using System;
-using NUnit.Framework;
-
-using Foundation;
 using Vision;
-using System.Collections.Generic;
 using System.Collections;
 using CoreGraphics;
 

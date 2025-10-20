@@ -27,13 +27,8 @@
 
 #nullable enable
 
-using System;
-
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 using CoreImage;
-using System.Runtime.Versioning;
 
 namespace AudioUnit {
 	/// <summary>Holds key-value pairs on class information. Used with <see cref="AudioUnit.SetClassInfo(ClassInfoDictionary,AudioUnitScopeType,System.UInt32)" /> and <see cref="AudioUnit.GetClassInfo(AudioUnitScopeType,System.UInt32)" />.</summary>

@@ -4,11 +4,8 @@
 // Copyright 2019 Microsoft Corp. All rights reserved.
 //
 
-using System;
 using System.IO;
-using Foundation;
 using NaturalLanguage;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.NaturalLanguage {
 

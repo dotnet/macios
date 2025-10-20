@@ -7,10 +7,7 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
 using SystemConfiguration;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.SystemConfiguration {
 

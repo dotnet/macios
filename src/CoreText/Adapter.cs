@@ -29,12 +29,9 @@
 
 #nullable enable
 
-using System;
 using System.Collections.Generic;
 
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace CoreText {
 

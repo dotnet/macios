@@ -6,7 +6,6 @@
 #define BUNDLER
 #endif
 
-using System;
 using System.Collections.Generic;
 
 #if !BUNDLER && !TESTS

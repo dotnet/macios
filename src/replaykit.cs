@@ -7,11 +7,8 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using AVFoundation;
 using CoreMedia;
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 #if MONOMAC
 using AppKit;

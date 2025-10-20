@@ -6,8 +6,6 @@
 // Copyright 2017 Xamarin Inc.
 //
 
-using System;
-using Foundation;
 using Metal;
 
 #nullable enable

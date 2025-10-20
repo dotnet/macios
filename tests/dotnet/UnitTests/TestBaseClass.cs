@@ -38,7 +38,7 @@ namespace Xamarin.Tests {
 			}
 
 			if (!includeRemoteProperties.HasValue)
-				includeRemoteProperties = Configuration.IsBuildingRemotely && !rv.ContainsKey ("IsHotRestartBuild");
+				includeRemoteProperties = Configuration.IsBuildingRemotely;
 
 			if (includeRemoteProperties == true)
 				AddRemoteProperties (rv);
@@ -278,15 +278,24 @@ namespace Xamarin.Tests {
 			foreach (var assembly in assemblies) {
 				ModuleDefinition definition = ModuleDefinition.ReadModule (assembly, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 
-				bool onlyHasEmptyMethods = definition.Assembly.MainModule.Types.All (t =>
-					t.Methods.Where (m => m.HasBody).All (m => m.Body.Instructions.Count == 1));
+				var nonEmptyMethods = definition.Assembly.MainModule.Types.SelectMany (t =>
+					t.Methods.Where (m => m.HasBody && m.Body.Instructions.Count > 1)).ToArray ();
+				var onlyHasEmptyMethods = !nonEmptyMethods.Any ();
 				if (onlyHasEmptyMethods) {
 					assembliesWithOnlyEmptyMethods.Add (assembly);
+				} else if (shouldStrip) {
+					Console.WriteLine ($"The assembly {definition.Assembly.Name} has {nonEmptyMethods.Length} non-empty methods ({assembly}):");
+					foreach (var m in nonEmptyMethods)
+						Console.WriteLine ($"    {m}: {m.Body.Instructions.Count} instructions.");
 				}
 			}
 
 			// Some assemblies, such as Facades, will be completely empty even when not stripped
-			Assert.That (assemblies.Length == assembliesWithOnlyEmptyMethods.Count, Is.EqualTo (shouldStrip), $"Unexpected stripping status: of {assemblies.Length} assemblies {assembliesWithOnlyEmptyMethods.Count} were empty.");
+			if (shouldStrip) {
+				Assert.That (assembliesWithOnlyEmptyMethods, Is.EquivalentTo (assemblies), $"Unexpected stripping status: some assemblies contains methods that weren't fully stripped.");
+			} else {
+				Assert.That (assembliesWithOnlyEmptyMethods, Is.Not.EquivalentTo (assemblies), $"Unexpected stripping status: no methods in any assembly contains any code.");
+			}
 		}
 
 		protected void AssertDSymDirectory (string appPath)
@@ -597,35 +606,35 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		protected Dictionary<string, string> GetHotRestartProperties ()
+		protected void AddNoWarnForPreviewVersions (ApplePlatform platform, IList<string> supportedApiVersion, Dictionary<string, string> properties)
 		{
-			return GetHotRestartProperties (null, out var _, out var _);
+			// If any of the api versions we support are higher than the api version we're built for, we need to ignore any XCODE_*_PREVIEW warnings.
+			var osVersion = Version.Parse (Configuration.GetNuGetOsVersion (platform));
+			var nowarn = new List<string> ();
+			foreach (var apiVersion in supportedApiVersion) {
+				var v = apiVersion [(apiVersion.IndexOf ('-') + 1)..];
+				var version = Version.Parse (v);
+				if (version > osVersion)
+					nowarn.Add ($"XCODE_{v.Replace ('.', '_')}_PREVIEW");
+			}
+			if (nowarn.Count > 0)
+				properties ["NoWarn"] = string.Join (";", nowarn);
 		}
 
-		protected Dictionary<string, string> GetHotRestartProperties (string? tmpdir, out string hotRestartOutputDir, out string hotRestartAppBundlePath)
+		public static bool UsesCompressedBindingResourcePackage (ApplePlatform platform, string mode = "auto")
 		{
-			var properties = new Dictionary<string, string> ();
-			properties ["IsHotRestartBuild"] = "true";
-			properties ["IsHotRestartEnvironmentReady"] = "true";
-			properties ["EnableCodeSigning"] = "false"; // Skip code signing, since that would require making sure we have code signing configured on bots.
-			properties ["_IsAppSigned"] = "false";
-			properties ["_AppIdentifier"] = "placeholder_AppIdentifier"; // This needs to be set to a placeholder value because DetectSigningIdentity usually does it (and we've disabled signing)
-			properties ["_BundleIdentifier"] = "placeholder_BundleIdentifier"; // This needs to be set to a placeholder value because DetectSigningIdentity usually does it (and we've disabled signing)
-
-			if (!string.IsNullOrEmpty (tmpdir)) {
-				// Redirect hot restart output to a place we can control from here
-				hotRestartOutputDir = Path.Combine (tmpdir, "out")!;
-				Directory.CreateDirectory (hotRestartOutputDir);
-				properties ["HotRestartSignedAppOutputDir"] = hotRestartOutputDir + Path.DirectorySeparatorChar;
-
-				hotRestartAppBundlePath = Path.Combine (tmpdir, "HotRestartAppBundlePath")!; // Do not create this directory, it will be created and populated with default contents if it doesn't exist.
-				properties ["HotRestartAppBundlePath"] = hotRestartAppBundlePath; // no trailing directory separator char for this property.
+			if (string.Equals (mode, "true", StringComparison.OrdinalIgnoreCase)) {
+				return true;
+			} else if (string.Equals (mode, "false", StringComparison.OrdinalIgnoreCase)) {
+				return false;
+			} else if (string.Equals (mode, "auto", StringComparison.OrdinalIgnoreCase)) {
+				// we used to compress only if there were symlinks (would happen on macOS and Mac Catalyst),
+				// but now we always compress to avoid MAX_PATH issues with iOS on Windows.
+				return true;
 			} else {
-				hotRestartOutputDir = string.Empty;
-				hotRestartAppBundlePath = string.Empty;
+				throw new ArgumentOutOfRangeException (nameof (mode), "Must be 'true', 'false' or 'auto'");
 			}
 
-			return properties;
 		}
 	}
 }

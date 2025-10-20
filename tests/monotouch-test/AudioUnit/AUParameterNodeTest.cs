@@ -7,12 +7,8 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Threading;
 
-using NUnit.Framework;
-
-using Foundation;
 using AudioUnit;
 
 namespace monotouchtest {

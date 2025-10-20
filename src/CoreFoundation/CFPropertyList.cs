@@ -8,13 +8,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-
-using ObjCRuntime;
-using Foundation;
-
 namespace CoreFoundation {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>

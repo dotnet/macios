@@ -1,11 +1,5 @@
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
-
 namespace HealthKit {
 	/// <summary>This class contains helper functions for the <see cref="HKStateOfMindValenceClassification" /> enum.</summary>
 	[SupportedOSPlatform ("ios18.0")]

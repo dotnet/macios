@@ -8,9 +8,6 @@
 // Copyright 2011, 2013 Xamarin, Inc.
 //
 
-using System;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using Messages;
 using UIKit;

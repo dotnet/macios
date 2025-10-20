@@ -6,15 +6,11 @@ using AppKit;
 using UIKit;
 #endif
 
-using System;
 using System.IO;
 using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework;
 
 using CoreGraphics;
 using ImageIO;
-using Foundation;
 using Vision;
 using SceneKit;
 

@@ -7,11 +7,7 @@
 // Copyright 2022 Microsoft Corporation All rights reserved.
 //
 
-using System;
-
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace BackgroundAssets {
 	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]

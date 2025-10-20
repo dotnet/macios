@@ -232,7 +232,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			if (InputAppBundles.Length == 0) {
 				Log.LogError (MSBStrings.E7073 /* At least one app bundle must be specified. */);

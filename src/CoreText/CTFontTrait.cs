@@ -29,13 +29,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
-using System.Runtime.Versioning;
 
 namespace CoreText {
 	/// <summary>Describes the style of a font.</summary>

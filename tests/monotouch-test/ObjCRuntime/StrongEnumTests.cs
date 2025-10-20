@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.ObjCRuntime {
 
@@ -19,7 +12,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			TestRuntime.AssertMatchingOSVersionAndSdkVersion ();
 
 			Assert.Multiple (() => {
+#pragma warning disable IL2026 // we only care about types that survived trimming, so this is safe.
 				var allTypes = typeof (NSObject).Assembly.GetTypes ();
+#pragma warning restore IL2026
 				var types = allTypes.ToDictionary (v => v.FullName, v => v);
 				var valuesToSkip = GetSkippedEnumValues ().ToHashSet ();
 				var skippedValues = new List<object> ();

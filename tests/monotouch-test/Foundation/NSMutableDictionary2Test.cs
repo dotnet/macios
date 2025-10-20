@@ -1,12 +1,6 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 
-using NUnit.Framework;
-
-using Foundation;
-using ObjCRuntime;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.Foundation {

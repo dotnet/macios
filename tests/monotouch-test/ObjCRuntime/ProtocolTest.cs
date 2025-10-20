@@ -7,15 +7,7 @@
 // Copyright 2018 Microsoft Inc. All rights reserved.
 //
 
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.ObjCRuntime {
 

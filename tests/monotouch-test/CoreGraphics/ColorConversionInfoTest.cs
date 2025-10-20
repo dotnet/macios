@@ -7,12 +7,7 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Runtime.InteropServices;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 
 using GColorConversionInfoTriple = CoreGraphics.CGColorConversionInfoTriple;
 

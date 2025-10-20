@@ -16,12 +16,8 @@
 
 #nullable enable
 
-using System;
 using System.ComponentModel;
 using System.Numerics;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 
 // This type does not come from the CoreGraphics framework
 namespace CoreGraphics {

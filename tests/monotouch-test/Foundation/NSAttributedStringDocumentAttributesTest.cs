@@ -1,13 +1,7 @@
-using System;
 
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 using Xamarin.Utils;
-
 
 #if MONOMAC
 using XColor = AppKit.NSColor;

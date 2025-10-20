@@ -4,17 +4,13 @@
 
 using System.IO;
 
-using Foundation;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
 using CoreGraphics;
-using NUnit.Framework;
 using ImageIO;
-using System.Runtime.InteropServices;
-using System.Collections.Generic;
 
 namespace MonoTouchFixtures.CoreGraphics {
 	[TestFixture]

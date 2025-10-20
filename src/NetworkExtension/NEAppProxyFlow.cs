@@ -1,10 +1,6 @@
 #if __MACCATALYST__ || MONOMAC
 
-using System;
-using System.Runtime.Versioning;
-using Foundation;
 using Network;
-using ObjCRuntime;
 
 namespace NetworkExtension {
 

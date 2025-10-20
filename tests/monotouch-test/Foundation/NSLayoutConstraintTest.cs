@@ -8,9 +8,6 @@
 //
 #if !MONOMAC
 using UIKit;
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.Foundation {

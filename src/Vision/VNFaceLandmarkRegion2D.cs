@@ -9,7 +9,6 @@
 
 #nullable enable
 
-using System;
 using CoreGraphics;
 
 namespace Vision {

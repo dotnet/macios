@@ -9,9 +9,6 @@
 
 #nullable enable
 
-using System;
-using ObjCRuntime;
-
 using Vector2i = global::CoreGraphics.NVector2i;
 
 namespace GameplayKit {

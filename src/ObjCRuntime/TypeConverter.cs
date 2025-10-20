@@ -1,10 +1,7 @@
 // Copyright 2011, 2012 Xamarin Inc
-using System;
 using System.Text;
 using System.Reflection;
 using System.Collections.Generic;
-
-using Foundation;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

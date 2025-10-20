@@ -1,10 +1,6 @@
 // Copyright 2019 Microsoft Corporation
 
-using System;
-
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace ExecutionPolicy {
 

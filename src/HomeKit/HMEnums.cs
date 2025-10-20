@@ -1,6 +1,3 @@
-using System;
-using ObjCRuntime;
-using Foundation;
 
 namespace HomeKit {
 

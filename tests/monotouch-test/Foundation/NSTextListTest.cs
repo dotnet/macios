@@ -1,10 +1,4 @@
-using System;
-using System.Runtime.InteropServices;
 
-using NUnit.Framework;
-
-using Foundation;
-using ObjCRuntime;
 using Xamarin.Utils;
 
 #if HAS_UIKIT

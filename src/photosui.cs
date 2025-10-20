@@ -1,7 +1,5 @@
 using CoreGraphics;
 using CoreLocation;
-using ObjCRuntime;
-using Foundation;
 #if !MONOMAC
 using UIKit;
 using NSView = Foundation.NSObject;
@@ -19,7 +17,6 @@ using XView = AppKit.NSView;
 #endif
 using MapKit;
 using Photos;
-using System;
 
 namespace PhotosUI {
 	[NoTV]

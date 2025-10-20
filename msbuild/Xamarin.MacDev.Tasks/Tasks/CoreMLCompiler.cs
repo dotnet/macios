@@ -158,7 +158,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			var coremlcOutputDir = Path.Combine (IntermediateOutputPath, "coremlc");
 			var mapping = new Dictionary<string, IDictionary> ();

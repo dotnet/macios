@@ -9,12 +9,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace ImageIO {
 	/// <summary>A mutable container of metadata. (See <see cref="ImageIO.CGImageMetadata" />.)</summary>

@@ -107,7 +107,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			PDictionary plist;
 
@@ -174,8 +174,8 @@ namespace Xamarin.MacDev.Tasks {
 			Validation (plist);
 
 			// write the resulting app manifest
-			if (FileUtils.UpdateFile (CompiledAppManifest!.ItemSpec, (tmpfile) => plist.Save (tmpfile, true, true)))
-				Log.LogMessage (MessageImportance.Low, "The file {0} is up-to-date.", CompiledAppManifest.ItemSpec);
+			plist.Save (CompiledAppManifest!.ItemSpec, true, true);
+			Log.LogMessage (MessageImportance.Low, "The app manifest {0} was updated.", CompiledAppManifest.ItemSpec);
 
 			return !Log.HasLoggedErrors;
 		}
@@ -278,9 +278,6 @@ namespace Xamarin.MacDev.Tasks {
 				// Nothing is specified in the Info.plist - use SupportedOSPlatformVersion, and if that's not set, then use the sdkVersion
 				if (!string.IsNullOrEmpty (convertedSupportedOSPlatformVersion)) {
 					minimumOSVersion = convertedSupportedOSPlatformVersion;
-				} else if (OnWindows && string.IsNullOrEmpty (SdkVersion)) {
-					// When building on Windows (Hot Restart), we're not using any Xcode version, so there's no SdkVersion either, so use the min OS version we support if the project doesn't specify anything.
-					minimumOSVersion = Xamarin.SdkVersions.GetMinVersion (Platform).ToString ();
 				} else {
 					minimumOSVersion = SdkVersion;
 				}

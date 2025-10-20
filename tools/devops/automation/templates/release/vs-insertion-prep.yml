@@ -137,6 +137,15 @@ stages:
         name: AzurePipelines-EO
         demands:
         - ImageOverride -equals 1ESPT-Windows2022
+      templateContext:
+        outputs:
+        - output: artifactsDrop
+          dropServiceURI: https://devdiv.artifacts.visualstudio.com/DefaultCollection
+          buildNumber: $(ReleaseDropPrefix)/symbols
+          dropMetadataContainerName: DropMetadata-shipping-symbols
+          sourcePath: $(Build.StagingDirectory)\symbols
+          retentionDays: 120
+          toLowerCase: false
       steps:
       - pwsh: |
           New-Item "$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance" -ItemType Directory -ea 0
@@ -144,11 +153,16 @@ stages:
         displayName: Create credscan dummy ignore file
 
       - task: UseDotNet@2
-        displayName: Install .NET $(DotNetSdkVersion)
+        displayName: Install .NET $(DotNetPreviewSdkVersion)
         inputs:
-          version: $(DotNetSdkVersion).x
+          version: $(DotNetPreviewSdkVersion).x
           includePreviewVersions: true
           installationPath: $(Agent.TempDirectory)/dotnet
+
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifactName: not-signed-package-symbols
+          downloadPath: $(Build.StagingDirectory)\symbols
 
       - task: DownloadPipelineArtifact@2
         inputs:

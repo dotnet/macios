@@ -10,11 +10,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
-using ObjCRuntime;
-using System.Runtime.Versioning;
-
 namespace VideoToolbox {
 	/// <summary>Strongly typed representation of bytes and seconds used in <see cref="VideoToolbox.VTCompressionProperties.DataRateLimits" />.</summary>
 	///     <remarks>To be added.</remarks>

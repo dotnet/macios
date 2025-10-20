@@ -1,10 +1,7 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 // Copyright Microsoft Corp.
-using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

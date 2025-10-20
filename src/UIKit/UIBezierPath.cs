@@ -7,10 +7,7 @@
 // Copyright 2014-2015, Xamarin Inc
 //
 
-using System;
 using System.Collections;
-using ObjCRuntime;
-using Foundation;
 
 namespace UIKit {
 	public partial class UIBezierPath {

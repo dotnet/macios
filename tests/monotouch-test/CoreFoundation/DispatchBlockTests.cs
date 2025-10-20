@@ -7,12 +7,6 @@
 // Copyright 2019 Microsoft Corp.
 //
 
-using System;
-
-using Foundation;
-using CoreFoundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.CoreFoundation {

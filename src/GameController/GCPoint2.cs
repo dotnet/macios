@@ -3,16 +3,11 @@
 
 #nullable enable
 
-using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 
 using CoreFoundation;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 
 namespace GameController {
 	/// <summary>Represents an ordered pair of floating-point x- and y-coordinates that defines a point in a two-dimensional plane.</summary>

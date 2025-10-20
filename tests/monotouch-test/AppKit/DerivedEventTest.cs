@@ -1,12 +1,8 @@
 #if __MACOS__
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using NUnit.Framework;
 
-using Foundation;
 using AppKit;
 using CoreGraphics;
 

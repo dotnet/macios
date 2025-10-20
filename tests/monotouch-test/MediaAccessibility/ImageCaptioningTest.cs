@@ -7,13 +7,9 @@
 // Copyright 2019 Microsoft Corporation
 //
 
-using System;
 using System.Diagnostics;
 using System.IO;
-using Foundation;
 using MediaAccessibility;
-using ObjCRuntime;
-using NUnit.Framework;
 using MonoTests.System.Net.Http;
 
 namespace MonoTouchFixtures.MediaAccessibility {

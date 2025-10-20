@@ -12,8 +12,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
 namespace HealthKit {
 #pragma warning disable CS0618 // Type or member is obsolete
 	public partial class HKQuantityType {

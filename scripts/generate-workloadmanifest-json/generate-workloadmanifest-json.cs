@@ -3,7 +3,7 @@
 using System.IO;
 using System.Xml;
 
-var expectedArgumentCount = 9;
+var expectedArgumentCount = 10;
 if (args.Length != expectedArgumentCount) {
 	Console.WriteLine ($"Need {expectedArgumentCount} arguments, got {args.Length}");
 	return 1;
@@ -20,6 +20,7 @@ var hasWindows = Array.IndexOf (windowsPlatforms, platform) >= 0;
 var currentApiVersion = args [argumentIndex++];
 var supportedApiVersions = args [argumentIndex++].Split (new char [] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 var versionsPropsPath = args [argumentIndex++];
+var ridNoArch = args [argumentIndex++];
 
 var platformLowerCase = platform.ToLowerInvariant ();
 
@@ -66,6 +67,7 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 		}
 	}
 	writer.WriteLine ($"				\"Microsoft.{platform}.Ref.{currentApiVersion}\",");
+	writer.WriteLine ($"				\"Microsoft.{platform}.Runtime.{ridNoArch}.{currentApiVersion}\",");
 	foreach (var rid in runtimeIdentifiers) {
 		writer.WriteLine ($"				\"Microsoft.{platform}.Runtime.{rid}.{currentApiVersion}\",");
 	}
@@ -128,6 +130,10 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 		}
 	}
 	writer.WriteLine ($"		\"Microsoft.{platform}.Ref.{currentApiVersion}\": {{");
+	writer.WriteLine ($"			\"kind\": \"framework\",");
+	writer.WriteLine ($"			\"version\": \"{version}\"");
+	writer.WriteLine ($"		}},");
+	writer.WriteLine ($"		\"Microsoft.{platform}.Runtime.{ridNoArch}.{currentApiVersion}\": {{");
 	writer.WriteLine ($"			\"kind\": \"framework\",");
 	writer.WriteLine ($"			\"version\": \"{version}\"");
 	writer.WriteLine ($"		}},");

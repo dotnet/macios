@@ -8,9 +8,6 @@
 // Copyright 2011-2014 Xamarin Inc
 //
 
-using System;
-using ObjCRuntime;
-
 #nullable enable
 
 namespace CoreBluetooth {

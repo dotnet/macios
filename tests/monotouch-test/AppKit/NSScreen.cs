@@ -1,11 +1,7 @@
 #if __MACOS__
-using NUnit.Framework;
-using System;
 using System.Threading;
 
 using AppKit;
-using ObjCRuntime;
-using Foundation;
 
 namespace Xamarin.Mac.Tests {
 	[TestFixture]

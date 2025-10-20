@@ -8,13 +8,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.Versioning;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-using Foundation;
-
 namespace GameController {
 	[SupportedOSPlatform ("ios13.0")]
 	[SupportedOSPlatform ("macos")]

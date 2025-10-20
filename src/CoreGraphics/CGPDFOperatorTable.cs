@@ -8,12 +8,7 @@
 
 #nullable enable
 
-using System;
 using System.Collections.Generic;
-using System.Runtime.Versioning;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
 using CoreFoundation;
 
 namespace CoreGraphics {

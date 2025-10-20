@@ -4,18 +4,14 @@
 
 #nullable enable
 
-using System;
 using System.IO;
 using System.IO.Compression;
 using System.Buffers;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics.CodeAnalysis;
-
-using ObjCRuntime;
 
 namespace Compression {
 	/// <summary>Provides methods and properties for compressing and decompressing streams by using the deflate algorithm.</summary>

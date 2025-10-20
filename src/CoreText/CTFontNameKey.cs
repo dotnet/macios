@@ -29,12 +29,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-using Foundation;
-
 namespace CoreText {
 
 	// Utility enum for constant strings in ObjC

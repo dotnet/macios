@@ -37,10 +37,6 @@
 
 #if IOS
 
-using System;
-
-using ObjCRuntime;
-
 // Disable until we get around to enable + fix any issues.
 #nullable disable
 

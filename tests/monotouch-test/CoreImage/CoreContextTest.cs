@@ -7,14 +7,11 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Drawing;
 
-using Foundation;
 using CoreImage;
 using CoreGraphics;
 using CoreVideo;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 using OpenGL;
@@ -24,8 +21,6 @@ using UIKit;
 using OpenGLES;
 #endif
 #endif
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreImage {
 

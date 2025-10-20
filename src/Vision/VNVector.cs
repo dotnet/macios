@@ -9,10 +9,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace Vision {
 	public partial class VNVector {
 		/// <summary>Create a new <see cref="VNVector" /> instance using polar coordinates.</summary>

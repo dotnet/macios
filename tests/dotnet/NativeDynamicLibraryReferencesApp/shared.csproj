@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 
-		<ApplicationTitle>NativeDynamicLibraryReferences</ApplicationTitle>
+		<ApplicationTitle>NativeDynamicLibraryReferencesApp</ApplicationTitle>
 		<ApplicationId>com.xamarin.nativedynamiclibraryreferences</ApplicationId>
 		<ApplicationVersion>1.0</ApplicationVersion>
 	</PropertyGroup>

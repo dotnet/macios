@@ -7,10 +7,6 @@
 // Copyright 2012, Xamarin Inc
 //
 
-using System;
-using ObjCRuntime;
-using Foundation;
-
 namespace UIKit {
 	public partial class UIEvent {
 

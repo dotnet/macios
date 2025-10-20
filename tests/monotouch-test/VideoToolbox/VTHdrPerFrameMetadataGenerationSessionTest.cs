@@ -2,25 +2,18 @@
 // Unit tests for VTHdrPerFrameMetadataGenerationSession
 //
 
-using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
 
 using AVFoundation;
-using CoreFoundation;
 using CoreGraphics;
 using CoreMedia;
 using CoreVideo;
-using Foundation;
-using ObjCRuntime;
 using VideoToolbox;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-
-using NUnit.Framework;
 
 using Xamarin.Utils;
 

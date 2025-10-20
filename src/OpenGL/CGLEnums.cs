@@ -23,9 +23,6 @@
 
 #nullable enable
 
-using System;
-using ObjCRuntime;
-
 namespace OpenGL {
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>

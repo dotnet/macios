@@ -23,12 +23,8 @@
 
 #if !__MACCATALYST__
 
-using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 
 #nullable enable

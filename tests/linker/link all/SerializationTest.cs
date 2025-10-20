@@ -7,10 +7,7 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Runtime.Serialization;
-using Foundation;
-using NUnit.Framework;
 
 namespace LinkAll {
 	static class Helper {

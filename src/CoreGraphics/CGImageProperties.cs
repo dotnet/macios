@@ -27,12 +27,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.Versioning;
-
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 using CoreImage;
 #if !COREBUILD
 using Keys = ImageIO.CGImageProperties;

@@ -6,14 +6,10 @@
 //
 //
 
-using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 
 using AudioUnit;
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 using CoreAnimation;
 using CoreGraphics;
 #if IOS || MONOMAC

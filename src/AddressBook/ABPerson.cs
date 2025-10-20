@@ -32,13 +32,9 @@
 
 #if !MONOMAC
 
-using System;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace AddressBook {
 

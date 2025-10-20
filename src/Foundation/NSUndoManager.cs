@@ -10,10 +10,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace Foundation {
 	public partial class NSUndoManager {
 		/// <summary>Returns the modes governing the types of input handled during a cycle of the run loop.</summary>

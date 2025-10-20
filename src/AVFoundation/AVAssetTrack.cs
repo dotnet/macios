@@ -1,8 +1,4 @@
-using System;
-using System.Runtime.Versioning;
-using Foundation;
 using CoreMedia;
-
 
 namespace AVFoundation {
 	public partial class AVAssetTrack {

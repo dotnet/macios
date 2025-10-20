@@ -22,9 +22,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
 namespace Foundation {
 
 	public partial class NSRunLoop {

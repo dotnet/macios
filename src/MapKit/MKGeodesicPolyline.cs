@@ -24,12 +24,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.Threading.Tasks;
 using System.Threading;
 
-using Foundation;
-using ObjCRuntime;
 using CoreLocation;
 
 #nullable enable

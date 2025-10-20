@@ -151,7 +151,7 @@ namespace Xamarin.Bundler {
 		public bool EnableDiagnostics;
 		public bool? DebugTrack;
 
-		public Dictionary<string, string> EnvironmentVariables = new Dictionary<string, string> ();
+		public Dictionary<string, (string Value, bool Overwrite)> EnvironmentVariables = new Dictionary<string, (string Value, bool Overwrite)> ();
 
 		public MarshalObjectiveCExceptionMode MarshalObjectiveCExceptions;
 		public MarshalManagedExceptionMode MarshalManagedExceptions;

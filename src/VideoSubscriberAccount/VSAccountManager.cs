@@ -11,9 +11,7 @@
 
 #if !MONOMAC && !__MACCATALYST__
 
-using System;
 using System.Threading.Tasks;
-using Foundation;
 
 namespace VideoSubscriberAccount {
 	public partial class VSAccountManager {

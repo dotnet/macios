@@ -1,12 +1,7 @@
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
 using CoreFoundation;
 using CoreVideo;
-using Foundation;
-using ObjCRuntime;
 
 namespace VideoToolbox {
 	/// <summary>This class can be used to perform HDR Per Frame Metadata Generation.</summary>

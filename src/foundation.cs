@@ -35,11 +35,9 @@
 
 global using nfloat = global::System.Runtime.InteropServices.NFloat;
 
-using ObjCRuntime;
 using CloudKit;
 using CoreData;
 using CoreFoundation;
-using Foundation;
 using CoreGraphics;
 using UniformTypeIdentifiers;
 using Network;
@@ -71,7 +69,6 @@ using CoreLocation;
 using UIKit;
 #endif
 
-using System;
 using System.ComponentModel;
 
 // In Apple headers, this is a typedef to a pointer to a private struct

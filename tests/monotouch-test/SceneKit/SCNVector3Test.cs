@@ -11,11 +11,7 @@
 
 #nullable enable
 
-using System;
-using Foundation;
 using SceneKit;
-
-using NUnit.Framework;
 
 #if __MACOS__
 using pfloat = System.Runtime.InteropServices.NFloat;

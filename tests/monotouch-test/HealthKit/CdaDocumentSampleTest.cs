@@ -8,15 +8,10 @@
 //
 #if HAS_HEALTHKIT
 
-using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using Foundation;
-using ObjCRuntime;
-
 using HealthKit;
-using NUnit.Framework;
 #if MONOMAC
 using AppKit;
 #else

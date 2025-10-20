@@ -28,17 +28,12 @@
 
 #nullable enable
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
-using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
-using System.Runtime.Versioning;
 
 namespace AudioToolbox {
 	/// <summary>Encapsulates global audio-file information.</summary>

@@ -1,11 +1,7 @@
 #if !__MACCATALYST__
-using System;
 #if !NO_SYSTEM_DRAWING
 using System.Drawing;
 #endif
-
-using ObjCRuntime;
-using Foundation;
 
 #nullable enable
 

@@ -10,8 +10,6 @@
 #nullable enable
 
 #if !TVOS
-using System;
-using Foundation;
 
 namespace UserNotifications {
 	public partial class UNNotificationAttachment {

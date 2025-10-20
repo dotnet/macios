@@ -7,11 +7,8 @@
 // Copyright 2019 Microsoft Corporation All rights reserved.
 //
 
-using System;
 using AVFoundation;
 using CoreML;
-using Foundation;
-using ObjCRuntime;
 using CoreMedia;
 
 namespace SoundAnalysis {

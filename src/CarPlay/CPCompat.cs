@@ -9,10 +9,7 @@
 
 #nullable enable
 
-using System;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 using System.ComponentModel;
 
 namespace CarPlay {

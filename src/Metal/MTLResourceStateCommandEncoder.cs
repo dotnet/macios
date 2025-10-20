@@ -5,12 +5,7 @@
 //   Manuel de la Pena <mandel@microsoft.com>
 //
 #if IOS
-using System;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

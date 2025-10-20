@@ -279,7 +279,7 @@ The `CompressBindingResourcePackage` property specifies whether to create a zip 
 
 The possible values are:
 
-* `auto`: create a zip file if a native reference contains symlinks (which is typical on macOS and Mac Catalyst, but rare on iOS and tvOS).
+* `auto`: automatically decide the best option (currently a zip file is always created, but once Visual Studio supports long paths on Windows, this may change to only zip binding resource packages with symlinks).
 * `true`: create a zip file
 * `false`: create a directory
 
@@ -483,6 +483,18 @@ Enables the concurrent mode for the SGen garbage collector.
 
 Only applicable to iOS, tvOS and Mac Catalyst (when not using NativeAOT).
 
+## EventSourceSupport
+
+When set to `false`, disables .NET's [EventSource][eventsource] support from
+trimmed applications. Disabling this feature would prevent .NET diagnostic
+tools like `dotnet-counters` from functioning, but at the benefit of reduced
+application size.
+
+Default: set to `false` when `Optimize` is set to `true` (which is the default
+for `Release` builds), unless `$(EnableDiagnostics)` is enabled.
+
+[eventsource]: https://learn.microsoft.com/dotnet/core/diagnostics/eventsource
+
 ## GenerateApplicationManifest
 
 If an application manifest (`Info.plist`) should be generated.
@@ -680,6 +692,18 @@ The full path to the Metal compiler.
 
 The default behavior is to use `xcrun metal`.
 
+## MetricsSupport
+
+When set to `false`, disables .NET's [Metrics][dotnetmetrics] support from
+trimmed applications. Disabling this feature would prevent APIs such as
+`System.Diagnostics.Metrics` from functioning, but at the benefit of reduced
+application size.
+
+Default: set to `false` when `Optimize` is set to `true` (which is the default
+for `Release` builds), unless `$(EnableDiagnostics)` is enabled.
+
+[dotnetmetrics]: https://learn.microsoft.com/dotnet/core/diagnostics/metrics
+
 ## MmpDebug
 
 Enables debug mode for app bundle creation.
@@ -687,6 +711,90 @@ Enables debug mode for app bundle creation.
 Only applicable to macOS projects.
 
 See also [MtouchDebug](#mtouchdebug).
+
+## MobileAggressiveAttributeTrimming
+
+This property determines whether numerous attributes that are very rarely
+needed at runtime should be trimmed away.
+
+This is enabled by default.
+
+Note that while the attributes that are removed are very rarely used, it's
+technically possible that the removal can change runtime behavior.
+
+For example, System.Xml.Serialization will behave differently if a constructor
+has the `[Obsolete]` attribute (which is one of the attributes that are
+removed). This is low enough risk to justify removing these attributes by
+default because of the size savings.
+
+The list of attributes that are removed may change in the future, but at the
+time of this writing (for .NET 10), these are the attributes:
+
+* Microsoft.CodeAnalysis.EmbeddedAttribute
+* System.CLSCompliantAttribute
+* System.CodeDom.Compiler.GeneratedCodeAttribute
+* System.ComponentModel.EditorBrowsableAttribute
+* System.Diagnostics.CodeAnalysis.DoesNotReturnAttribute
+* System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute
+* System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute
+* System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute
+* System.Diagnostics.CodeAnalysis.ExperimentalAttribute
+* System.Diagnostics.CodeAnalysis.FeatureGuardAttribute
+* System.Diagnostics.CodeAnalysis.FeatureSwitchDefinitionAttribute
+* System.Diagnostics.CodeAnalysis.MemberNotNullAttribute
+* System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute
+* System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute
+* System.Diagnostics.CodeAnalysis.NotNullWhenAttribute
+* System.Diagnostics.CodeAnalysis.RequiresAssemblyFilesAttribute
+* System.Diagnostics.CodeAnalysis.RequiresDynamicCodeAttribute
+* System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute
+* System.Diagnostics.CodeAnalysis.StringSyntaxAttribute
+* System.Diagnostics.CodeAnalysis.SuppressMessageAttribute
+* System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute
+* System.Diagnostics.CodeAnalysis.UnscopedRefAttribute
+* System.ObsoleteAttribute
+* System.Reflection.AssemblyCompanyAttribute
+* System.Reflection.AssemblyConfigurationAttribute
+* System.Reflection.AssemblyCopyrightAttribute
+* System.Reflection.AssemblyDefaultAliasAttribute
+* System.Reflection.AssemblyDescriptionAttribute
+* System.Reflection.AssemblyMetadataAttribute
+* System.Reflection.AssemblyProductAttribute
+* System.Reflection.AssemblyTitleAttribute
+* System.Runtime.CompilerServices.AsyncMethodBuilderAttribute
+* System.Runtime.CompilerServices.CallerArgumentExpressionAttribute
+* System.Runtime.CompilerServices.CallerFilePathAttribute
+* System.Runtime.CompilerServices.CallerLineNumberAttribute
+* System.Runtime.CompilerServices.CallerMemberNameAttribute
+* System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute
+* System.Runtime.CompilerServices.CompilerGlobalScopeAttribute
+* System.Runtime.CompilerServices.EnumeratorCancellationAttribute
+* System.Runtime.CompilerServices.ExtensionAttribute
+* System.Runtime.CompilerServices.InterpolatedStringHandlerArgumentAttribute
+* System.Runtime.CompilerServices.InterpolatedStringHandlerAttribute
+* System.Runtime.CompilerServices.IntrinsicAttribute
+* System.Runtime.CompilerServices.IsReadOnlyAttribute
+* System.Runtime.CompilerServices.IsUnmanagedAttribute
+* System.Runtime.CompilerServices.NativeIntegerAttribute
+* System.Runtime.CompilerServices.RefSafetyRulesAttribute
+* System.Runtime.CompilerServices.ScopedRefAttribute
+* System.Runtime.CompilerServices.SkipLocalsInitAttribute
+* System.Runtime.CompilerServices.TupleElementNamesAttribute
+* System.Runtime.InteropServices.LibraryImportAttribute
+* System.Runtime.InteropServices.Marshalling.ContiguousCollectionMarshallerAttribute
+* System.Runtime.InteropServices.Marshalling.CustomMarshallerAttribute
+* System.Runtime.InteropServices.Marshalling.MarshalUsingAttribute
+* System.Runtime.InteropServices.Marshalling.NativeMarshallingAttribute
+* System.Runtime.Versioning.NonVersionableAttribute
+* System.Runtime.Versioning.ObsoletedOSPlatformAttribute
+* System.Runtime.Versioning.RequiresPreviewFeaturesAttribute
+* System.Runtime.Versioning.SupportedOSPlatformAttribute
+* System.Runtime.Versioning.SupportedOSPlatformGuardAttribute
+* System.Runtime.Versioning.TargetPlatformAttribute
+* System.Runtime.Versioning.UnsupportedOSPlatformAttribute
+* System.Runtime.Versioning.UnsupportedOSPlatformGuardAttribute
+
+This property was introduced in .NET 10.
 
 ## MonoBundlingExtraArgs
 
@@ -1015,6 +1123,99 @@ only scan libraries with the `[LinkWith]` attribute for Objective-C classes:
 </PropertyGroup>
 ```
 
+## RunWithOpen
+
+This property determines whether apps are launched using the `open` command on
+macOS, or if the app's executable is executed directly.
+
+This only applies to macOS and Mac Catalyst apps.
+
+The default value is `true`. In this mode, the app will be launched by macOS as any other UI application, any stdout/stderr output will be swallowed by macOS, and the `dotnet run` command will finish as soon as the app has launched.
+
+If set to `false`, any stdout/stderr output will be printed to the current terminal, and the `dotnet run` command won't finish until the app has exited.
+
+The following properties can be used to configure the behavior when set to `true` (i.e. using the `open` command):
+
+### OpenNewInstance
+
+If a new instance will be opened if the app is already running (defaults to `false`).
+
+This will pass `-n` to `open` if set to `true`.
+
+Example:
+
+```shell
+$ dotnet run -p:OpenNewInstance=false
+```
+
+### OpenArguments
+
+This property can be used to pass additional arguments to the `open` command.
+
+Example (to set environment variables):
+
+```shell
+$ dotnet run -p:OpenArguments="--env VARIABLE1=VALUE1 --env VARIABLE2=value2"
+```
+
+Example (to redirect stdout and stderr to a file):
+
+```shell
+$ dotnet run -p:OpenArguments="--stdout /tmp/stdout.txt --stderr /tmp/stderr.txt"
+```
+
+Run `man open` to see a list of all the options `open` accepts.
+
+### StandardOutputPath
+
+This property can be used to redirect the stdout output from the app to a file.
+
+Example writing to a file:
+
+```shell
+$ dotnet run -p:StandardOutputPath=stdout.txt
+```
+
+Example writing to the current terminal:
+
+```shell
+$ dotnet run -p:StandardOutputPath=$(tty)
+[... Console.WriteLine output from app ...]
+```
+
+Note: this can also be accomplished by passing `--stdout ...` using the [OpenArguments](#openarguments) property.
+
+### StandardErrorPath
+
+This property can be used to redirect the stderr output from the app to a file.
+
+Example writing to a file:
+
+```shell
+$ dotnet run -p:StandardErrorPath=stderr.txt
+```
+
+Example writing to the current terminal:
+
+```shell
+$ dotnet run -p:StandardErrorPath=$(tty)
+[... Console.Error.WriteLine output from app ...]
+```
+
+Note: this can also be accomplished by passing `--stderr ...` using the [OpenArguments](#openarguments) property.
+
+### StandardInputPath
+
+This property can be used to redirect the stdin input to the app from a file.
+
+Example:
+
+```shell
+$ dotnet run -p:StandardInputPath=stdin.txt
+```
+
+Note: this can also be accomplished by passing `--stdin ...` using the [OpenArguments](#openarguments) property.
+
 ## SdkIsSimulator
 
 This property is a read-only property (setting it will have no effect) that
@@ -1048,30 +1249,6 @@ However, the either of the following works:
 ```
 
 Note: this property will always be `false` on macOS and Mac Catalyst.
-
-## SkipStaticLibraryValidation
-
-Hot Restart doesn't support linking with static libraries, so by default we'll
-show an error if the project tries to link with any static libraries when
-using Hot Restart.
-
-However, in some cases it might be useful to ignore such errors (for instance if testing a code path in the app that doesn't require the static library in question), so it's possible to ignore them.
-
-The valid values are:
-
-* "true", "disable": Completely disable the validation.
-* "false", "error", empty string: Enable the validation (this is the default)
-* "warn": Validate, but show warnings instead of errors.
-
-Example:
-
-```xml
-<PropertyGroup>
-  <SkipStaticLibraryValidation>warn</SkipStaticLibraryValidation>
-</PropertyGroup>
-```
-
-This will show warnings instead of errors if the project tries to link with a static library.
 
 ## StripPath
 

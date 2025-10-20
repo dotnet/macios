@@ -2,11 +2,7 @@
 // Unit tests for SCNAction
 //
 
-using System;
-using Foundation;
 using SceneKit;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.SceneKit {

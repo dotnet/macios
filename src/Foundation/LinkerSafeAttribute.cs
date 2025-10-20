@@ -24,7 +24,6 @@
 
 #if !XAMCORE_5_0
 
-using System;
 using System.ComponentModel;
 
 namespace Foundation {

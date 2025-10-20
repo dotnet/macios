@@ -25,14 +25,10 @@
 
 #if MONOMAC
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 using OpenGL;
 
 #nullable enable

@@ -1,8 +1,5 @@
-using System;
 using System.Text;
 using System.Text.RegularExpressions;
-
-using NUnit.Framework;
 
 namespace Xamarin.Tests {
 	public delegate void Action ();

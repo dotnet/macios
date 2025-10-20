@@ -27,12 +27,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 
 namespace OpenGL {
 	/// <summary>To be added.</summary>

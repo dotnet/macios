@@ -20,17 +20,14 @@
 // but at the cost of more IL).
 #pragma warning disable 162 // Unreachable code detected.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 #if !BGENERATOR
 using Generator = System.Object;
 #endif
-using System.Runtime.InteropServices;
 
 #if !RGEN
-using Foundation;
 #endif
 
 // Disable until we get around to enable + fix any issues.

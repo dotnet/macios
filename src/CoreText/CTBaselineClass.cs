@@ -28,11 +28,6 @@
 
 #nullable enable
 
-using System;
-
-using ObjCRuntime;
-using Foundation;
-
 namespace CoreText {
 
 	// Convenience enum for string values in ObjC.

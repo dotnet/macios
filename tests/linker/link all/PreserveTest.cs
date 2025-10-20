@@ -7,11 +7,7 @@
 // Copyright 2013-2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Reflection;
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 
 // this will preserve the specified type (only)
 [assembly: Preserve (typeof (LinkAll.Attributes.TypeWithoutMembers))]

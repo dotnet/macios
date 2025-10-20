@@ -7,8 +7,6 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-using System;
-
 #nullable enable
 
 namespace SceneKit {

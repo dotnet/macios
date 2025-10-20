@@ -8,14 +8,10 @@
 
 #if !__MACCATALYST__
 
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 using CoreFoundation;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

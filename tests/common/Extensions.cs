@@ -1,7 +1,5 @@
 using System.Text;
 
-using Foundation;
-
 static class Extensions {
 	// [NSData description] changed its format in Xcode 11 beta 1.
 	// This method tries to hide that from tests, by producing the format from previous OS versions,

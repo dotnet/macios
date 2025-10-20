@@ -10,12 +10,7 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
-using ObjCRuntime;
-
-using Foundation;
 using AVFoundation;
-using NUnit.Framework;
 
 namespace monotouchtest {
 	[TestFixture]

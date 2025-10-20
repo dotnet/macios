@@ -22,11 +22,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 //
-using System;
 using System.ComponentModel;
-using Foundation;
-using ObjCRuntime;
-using System.Runtime.InteropServices;
 
 namespace AVFoundation {
 

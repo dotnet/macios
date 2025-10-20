@@ -7,7 +7,6 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using Foundation;
 using CoreAnimation;
 using CoreGraphics;
 #if MONOMAC
@@ -16,7 +15,6 @@ using UIColor = AppKit.NSColor;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreAnimation {
 

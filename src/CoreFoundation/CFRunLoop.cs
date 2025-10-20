@@ -30,13 +30,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-using Foundation;
-using System.Runtime.Versioning;
-
 using CFIndex = System.IntPtr;
 
 #nullable enable

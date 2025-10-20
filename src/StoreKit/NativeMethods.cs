@@ -1,9 +1,5 @@
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
-
 namespace StoreKit {
 
 	partial class SKReceiptRefreshRequest {

@@ -3,17 +3,10 @@
 
 #if __MACOS__
 
-using System;
-
 using AVFoundation;
-using CoreFoundation;
 using CoreMedia;
 using CoreVideo;
-using Foundation;
-using ObjCRuntime;
 using VideoToolbox;
-
-using NUnit.Framework;
 
 using Xamarin.Utils;
 

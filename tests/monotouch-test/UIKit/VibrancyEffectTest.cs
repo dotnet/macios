@@ -9,14 +9,10 @@
 
 #if HAS_NOTIFICATIONCENTER && HAS_UIKIT
 
-using System;
-using Foundation;
 using UIKit;
-using ObjCRuntime;
 #if !__TVOS__
 using NotificationCenter;
 #endif
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.UIKit {

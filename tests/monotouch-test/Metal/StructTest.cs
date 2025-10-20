@@ -1,10 +1,5 @@
-using System;
-using System.Runtime.InteropServices;
 
-using Foundation;
 using Metal;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Metal {
 

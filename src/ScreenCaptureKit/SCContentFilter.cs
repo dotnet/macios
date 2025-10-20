@@ -9,12 +9,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace ScreenCaptureKit {
 	/// <summary>This enum describes how to interpret some arguments when creating <see cref="SCContentFilter" /> instances.</summary>

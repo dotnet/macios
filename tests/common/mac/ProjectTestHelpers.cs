@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using NUnit.Framework;
 using System.Reflection;
 using Xamarin.Utils;
 using Xamarin.Tests;
@@ -470,7 +467,6 @@ module main =
         0";
 
 			const string MainTemplate = @"
-using Foundation;
 using AppKit;
 
 namespace TestCase

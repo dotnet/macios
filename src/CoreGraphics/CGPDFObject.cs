@@ -30,13 +30,8 @@
 
 #nullable enable
 
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
 using CoreFoundation;
-using System.Runtime.Versioning;
 
 namespace CoreGraphics {
 	/// <summary>Class that represents various objects in a PDF document.</summary>

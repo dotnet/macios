@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Foundation;
-
 namespace WebKit {
 	public partial class WKWebExtensionMatchPattern {
 		/// <summary>Create a new <see cref="WKWebExtensionMatchPattern" /> for the specified pattern.</summary>

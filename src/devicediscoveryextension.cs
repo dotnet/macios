@@ -8,9 +8,6 @@
 // Copyright 2022, 2024 Microsoft Corporation.
 //
 
-using System;
-using ObjCRuntime;
-using Foundation;
 using UniformTypeIdentifiers;
 
 using nw_endpoint_t = System.IntPtr;

@@ -3,16 +3,11 @@
 
 #nullable enable
 
-using System;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 
 using CoreFoundation;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 
 namespace GameController {
 	public partial class GCInput {

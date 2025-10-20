@@ -1,7 +1,4 @@
-using ObjCRuntime;
 using System.Runtime.CompilerServices;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.ObjCRuntime {
 

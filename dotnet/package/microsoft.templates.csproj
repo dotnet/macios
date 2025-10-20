@@ -8,7 +8,7 @@
     <LocalizableTemplatesPath>$(_packagePath)</LocalizableTemplatesPath>
   </PropertyGroup>
   <ItemGroup Condition=" '$(CIBuild)' != 'true' ">
-    <PackageReference Include="Microsoft.TemplateEngine.Tasks" Version="$(MicrosoftTemplateEngineTasksVersion)" PrivateAssets="all" IsImplicitlyDefined="true" />
+    <PackageReference Include="Microsoft.TemplateEngine.Authoring.Tasks" Version="$(MicrosoftTemplateEngineAuthoringTasksPackageVersion)" PrivateAssets="all" IsImplicitlyDefined="true" />
   </ItemGroup>
   <Import Project="common.csproj" />
 </Project>

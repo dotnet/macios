@@ -13,11 +13,9 @@
 using System.ComponentModel;
 
 using BackgroundAssets;
-using ObjCRuntime;
-using Foundation;
-using CoreFoundation;
 using CoreGraphics;
 using StoreKit;
+
 #if MONOMAC
 using AppKit;
 using UIViewController = AppKit.NSViewController;
@@ -25,7 +23,6 @@ using UIWindowScene = Foundation.NSObject;
 #else
 using UIKit;
 #endif
-using System;
 
 #nullable enable
 

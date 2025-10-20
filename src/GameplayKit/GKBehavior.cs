@@ -9,9 +9,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
-
 namespace GameplayKit {
 	public partial class GKBehavior {
 

@@ -8,12 +8,8 @@
 //
 
 #if !MONOMAC
-using System;
 using System.IO;
-using Foundation;
 using UIKit;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.UIKit {
 

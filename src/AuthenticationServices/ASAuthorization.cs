@@ -9,9 +9,6 @@
 
 #nullable enable
 
-using Foundation;
-using ObjCRuntime;
-
 namespace AuthenticationServices {
 
 	public partial class ASAuthorization {

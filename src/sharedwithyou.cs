@@ -7,15 +7,11 @@
 // Copyright 2022 Microsoft Corporation All rights reserved.
 //
 
-using System;
-
 using AVFoundation;
 using CoreFoundation;
 using CoreGraphics;
-using Foundation;
 using SharedWithYouCore;
 using UniformTypeIdentifiers;
-using ObjCRuntime;
 
 #if MONOMAC
 using AppKit;

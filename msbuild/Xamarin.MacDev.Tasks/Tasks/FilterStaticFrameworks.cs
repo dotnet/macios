@@ -70,7 +70,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			if (FrameworkToPublish is not null && FrameworkToPublish.Length > 0) {
 				var list = FrameworkToPublish.ToList ();

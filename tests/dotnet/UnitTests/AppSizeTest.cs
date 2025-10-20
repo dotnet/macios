@@ -82,36 +82,49 @@ namespace Xamarin.Tests {
 					return;
 			}
 
+			var msg = $"App size changed significantly ({FormatBytes (appSizeDifference, true)} different > tolerance of +-{FormatBytes (toleranceInBytes)}). Expected app size: {FormatBytes (expectedAppBundleSize)}, actual app size: {FormatBytes (appBundleSize)}.";
+
 			if (update) {
 				Directory.CreateDirectory (expectedDirectory);
 				File.WriteAllText (expectedSizeReportPath, report.ToString ());
-
-				// Create a file with all the APIs that survived the trimmer; this can be useful to determine what is not trimmed away.
-				// Note that any changes in this list when the test fails might be due to unrelated earlier changes, that didn't trigger the test
-				// to fail, because the corresponding app size difference was within the tolerance for app size changes.
-				if (supportsAssemblyInspection) {
-					var asmDir = Path.Combine (appPath, GetRelativeAssemblyDirectory (platform));
-					var preservedAPIs = new List<string> ();
-					foreach (var dll in Directory.GetFiles (asmDir, "*.dll", SearchOption.AllDirectories)) {
-						var relativePath = dll [(asmDir.Length + 1)..];
-						using var ad = AssemblyDefinition.ReadAssembly (dll, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
-						foreach (var member in ad.EnumerateMembers ()) {
-							preservedAPIs.Add ($"{relativePath}:{((ICustomAttributeProvider) member).AsFullName ()}");
-						}
-					}
-					preservedAPIs.Sort ();
-					var expectedFile = Path.Combine (expectedDirectory, $"{name}-preservedapis.txt");
-					File.WriteAllLines (expectedFile, preservedAPIs);
-					Console.WriteLine ($"Updated expected results: {expectedFile}");
-				}
 			} else {
-				Assert.Fail ($"App size changed significantly ({FormatBytes (appSizeDifference, true)} different > tolerance of +-{FormatBytes (toleranceInBytes)}). Expected app size: {FormatBytes (expectedAppBundleSize)}, actual app size: {FormatBytes (appBundleSize)}. Set the environment variable WRITE_KNOWN_FAILURES=1, run the test again, and verify the modified files for more information");
+				msg += " Set the environment variable WRITE_KNOWN_FAILURES=1, run the test again, and verify the modified files for more information.";
+				Console.WriteLine (msg);
+				Console.WriteLine (report);
 			}
+
+			// Create a file with all the APIs that survived the trimmer; this can be useful to determine what is not trimmed away.
+			// Note that any changes in this list when the test fails might be due to unrelated earlier changes, that didn't trigger the test
+			// to fail, because the corresponding app size difference was within the tolerance for app size changes.
+			if (supportsAssemblyInspection) {
+				var asmDir = Path.Combine (appPath, GetRelativeAssemblyDirectory (platform));
+				var preservedAPIs = new List<string> ();
+				foreach (var dll in Directory.GetFiles (asmDir, "*.dll", SearchOption.AllDirectories)) {
+					var relativePath = dll [(asmDir.Length + 1)..];
+					using var ad = AssemblyDefinition.ReadAssembly (dll, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
+					foreach (var member in ad.EnumerateMembers ()) {
+						preservedAPIs.Add ($"{relativePath}:{((ICustomAttributeProvider) member).AsFullName ()}");
+					}
+				}
+				preservedAPIs.Sort ();
+				var preservedAPIsText = string.Join ("\n", preservedAPIs);
+				if (update) {
+					var expectedFile = Path.Combine (expectedDirectory, $"{name}-preservedapis.txt");
+					File.WriteAllText (expectedFile, preservedAPIsText);
+					Console.WriteLine ($"Updated expected results: {expectedFile}");
+				} else {
+					Console.WriteLine ($"Expected results:");
+					Console.WriteLine (preservedAPIsText);
+				}
+			}
+
+			if (!update)
+				Assert.Fail (msg);
 		}
 
 		static string FormatBytes (long bytes, bool alwaysShowSign = false)
 		{
-			return $"{(alwaysShowSign && bytes > 0 ? "+" : "")}{bytes} bytes ({bytes / 1024.0:0.0} KB = {bytes / (1024.0 * 1024.0):0.0} MB)";
+			return $"{(alwaysShowSign && bytes > 0 ? "+" : "")}{bytes:N0} bytes ({bytes / 1024.0:0.0:N1} KB = {bytes / (1024.0 * 1024.0):N1} MB)";
 		}
 	}
 

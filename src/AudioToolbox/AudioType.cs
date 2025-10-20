@@ -32,16 +32,12 @@
 
 #nullable enable
 
-using System;
 using System.Text;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 
 namespace AudioToolbox {
 	/// <summary>Audio format identifiers used by <see cref="AudioToolbox.AudioStreamBasicDescription" />.</summary>
@@ -52,8 +48,14 @@ namespace AudioToolbox {
 		LinearPCM = 0x6c70636d,
 		/// <summary>AC-3  codec.</summary>
 		AC3 = 0x61632d33,
+#if !XAMCORE_5_0
 		/// <summary>CAC-3 codec.</summary>
+		[Obsolete ("Use 'AC3_60958' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		CAC3 = 0x63616333,
+#endif
+		/// <summary>The AC-3 codec, packaged to be compliant with an IEC 60958-compliant digital audio interface.</summary>
+		AC3_60958 = 0x63616333, // 'cac3'
 		/// <summary>Apple's IMA 4:1 ADPCM codec.</summary>
 		AppleIMA4 = 0x696d6134,
 		/// <summary>MPEG-4 AAC codec.</summary>
@@ -144,6 +146,8 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("tvos18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		Apac = 0x61706163, // 'apac'
+
+		// any new entries here might need new entries in the CMMediaSubType enum as well
 	}
 
 	/// <summary>Flags describing the stream in the <see cref="AudioToolbox.AudioStreamBasicDescription" />.</summary>
@@ -546,7 +550,6 @@ namespace AudioToolbox {
 	}
 
 	/// <summary>Describes audio packets that do not have a standard size and packets that are interleaved with non-audio data.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -554,18 +557,13 @@ namespace AudioToolbox {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioStreamPacketDescription {
 		/// <summary>The zero-based byte index from the beginning of the buffer to the beginning of the packet.</summary>
-		///         <remarks>To be added.</remarks>
 		public long StartOffset;
 		/// <summary>The number of frames in the packet, or <c>0</c> if the packets are of a constant size.</summary>
-		///         <remarks>To be added.</remarks>
 		public int VariableFramesInPacket;
 		/// <summary>The size of the packet, in bytes.</summary>
-		///         <remarks>To be added.</remarks>
 		public int DataByteSize;
 
 		/// <summary>Provides a string representation of the packet description.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public override string ToString ()
 		{
 			return String.Format ("StartOffset={0} VariableFramesInPacket={1} DataByteSize={2}", StartOffset, VariableFramesInPacket, DataByteSize);

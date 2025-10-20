@@ -90,28 +90,21 @@ namespace Xamarin.MacDev.Tasks {
 			builder.Append ('"');
 		}
 
-		bool ExecuteRemotely ()
+		new bool ExecuteRemotely ()
 		{
-			var taskRunner = new TaskRunner (SessionId, BuildEngine4);
+			var success = base.ExecuteRemotely (out var taskRunner);
 
-			try {
-				var success = taskRunner.RunAsync (this).Result;
+			if (success && LinkWithAttributes is not null)
+				taskRunner.GetFileAsync (this, LinkWithAttributes.ItemSpec).Wait ();
 
-				if (success && LinkWithAttributes is not null)
-					taskRunner.GetFileAsync (this, LinkWithAttributes.ItemSpec).Wait ();
-
-				return success;
-			} catch (Exception ex) {
-				Log.LogErrorFromException (ex);
-
-				return false;
-			}
+			return success;
 		}
 
 		public override bool Execute ()
 		{
-			if (ShouldExecuteRemotely ())
+			if (ShouldExecuteRemotely ()) {
 				return ExecuteRemotely ();
+			}
 
 			if (NativeReferences is null || NativeReferences.Length == 0)
 				return !Log.HasLoggedErrors;

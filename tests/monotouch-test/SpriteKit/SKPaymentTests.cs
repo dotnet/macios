@@ -1,10 +1,7 @@
 #if __MACOS__
-using System;
 using System.Threading.Tasks;
-using NUnit.Framework;
 
 using AppKit;
-using Foundation;
 using StoreKit;
 
 namespace Xamarin.Mac.Tests {

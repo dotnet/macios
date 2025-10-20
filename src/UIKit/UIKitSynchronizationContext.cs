@@ -7,9 +7,7 @@
 // Copyright 2011, Xamarin Inc.
 //
 
-using System;
 using System.Threading;
-using Foundation;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

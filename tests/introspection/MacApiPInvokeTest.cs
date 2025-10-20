@@ -1,8 +1,6 @@
-using System;
 using System.Linq;
 using System.Reflection;
 
-using NUnit.Framework;
 using Xamarin.Tests;
 
 namespace Introspection {

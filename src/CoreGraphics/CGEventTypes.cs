@@ -12,14 +12,10 @@
 
 #if MONOMAC || __MACCATALYST__
 
-using System;
-using System.Runtime.InteropServices;
 #if !NO_SYSTEM_DRAWING
 using System.Drawing;
 #endif
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 
 namespace CoreGraphics {
 

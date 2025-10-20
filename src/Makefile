@@ -455,17 +455,17 @@ dotnet-$(3):: $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll
 
 DOTNET_TARGETS_$(3) += \
 	$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll \
-	$(foreach rid,$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_$(4)),$(DOTNET_DESTDIR)/$($(rid)_NUGET_RUNTIME_NAME)/runtimes/$(rid)/lib/$(DOTNET_TFM)/Microsoft.$(1).dll) \
-	$(foreach rid,$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_$(4)),$(DOTNET_DESTDIR)/$($(rid)_NUGET_RUNTIME_NAME)/runtimes/$(rid)/lib/$(DOTNET_TFM)/Microsoft.$(1).pdb) \
+	$(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)/Microsoft.$(1).dll \
+	$(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)/Microsoft.$(1).pdb \
 
 DOTNET_TARGETS_DIRS_$(3) += \
 	$($(2)_DOTNET_BUILD_DIR)/$(4) \
-	$(foreach rid,$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_$(4)),$(DOTNET_DESTDIR)/$($(rid)_NUGET_RUNTIME_NAME)/runtimes/$(rid)/lib/$(DOTNET_TFM)) \
+	$(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM) \
 
-$(foreach rid,$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_$(4)),$(DOTNET_DESTDIR)/$($(rid)_NUGET_RUNTIME_NAME)/runtimes/$(rid)/lib/$(DOTNET_TFM)/Microsoft.$(1).dll): $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll | $(foreach rid,$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_$(4)),$(DOTNET_DESTDIR)/$($(rid)_NUGET_RUNTIME_NAME)/runtimes/$(rid)/lib/$(DOTNET_TFM))
+$(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)/Microsoft.$(1).dll: $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll | $(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)
 	$(Q) $(CP) $$< $$@
 
-$(foreach rid,$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_$(4)),$(DOTNET_DESTDIR)/$($(rid)_NUGET_RUNTIME_NAME)/runtimes/$(rid)/lib/$(DOTNET_TFM)/Microsoft.$(1).pdb): $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).pdb | $(foreach rid,$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_$(4)),$(DOTNET_DESTDIR)/$($(rid)_NUGET_RUNTIME_NAME)/runtimes/$(rid)/lib/$(DOTNET_TFM))
+$(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)/Microsoft.$(1).pdb: $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).pdb | $(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)
 	$(Q) $(CP) $$< $$@
 
 DOTNET_TARGETS += $$(DOTNET_TARGETS_$(3))
@@ -486,6 +486,17 @@ endef
 #        foreach (var bitness in DOTNET_<platform.ToUpper ()>_BITNESSES)
 #            BuildDotNetPlatformAssembly (platform, platform.ToUpper (), platform.ToLower (), bitness)
 $(foreach platform,$(DOTNET_PLATFORMS),$(foreach bitness, $(DOTNET_$(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_BITNESSES), $(eval $(call BuildDotNetPlatformAssembly,$(platform),$(shell echo $(platform) | tr '[:lower:]' '[:upper:]'),$(shell echo $(platform) | tr '[:upper:]' '[:lower:]'),$(bitness)))))
+
+define DefineTargets
+$(1)_NUGET_TARGETS = \
+	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/tools/TrimAttributes.LinkDescription.xml \
+
+$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/tools/TrimAttributes.LinkDescription.xml: TrimAttributes.LinkDescription.xml
+	$$(Q) $(CP) $$< $$@
+
+DOTNET_TARGETS += $$($(1)_NUGET_TARGETS)
+endef
+$(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call DefineTargets,$(platform))))
 
 #
 # Global targets

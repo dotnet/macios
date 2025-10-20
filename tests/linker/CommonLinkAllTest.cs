@@ -1,10 +1,5 @@
-using System;
 using System.ComponentModel;
 using System.Reflection;
-
-using NUnit.Framework;
-
-using Foundation;
 
 namespace ObjCRuntime {
 	public class Trampolines {
@@ -36,7 +31,7 @@ namespace ObjCRuntime {
 }
 namespace LinkAll {
 
-	public class CustomConverter : TypeConverter {
+	public class CustomConverter : global::System.ComponentModel.TypeConverter {
 		// note: the default ctor will be preserved by the linker because it's used in a [TypeConverter] attribute
 	}
 

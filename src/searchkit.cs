@@ -2,10 +2,6 @@
 // searchkit.cs: Definitions for AppKit
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace SearchKit {
 	[Static]
 	interface SKTextAnalysisKeys {

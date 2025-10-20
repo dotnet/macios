@@ -9,11 +9,7 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using UIKit;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.UIKit {
 

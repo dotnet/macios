@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -136,7 +135,6 @@ public class DocumentationManager {
 		}
 		return name;
 	}
-
 
 	static bool TryGetId (MemberInfo member, [NotNullWhen (true)] out string? name)
 	{

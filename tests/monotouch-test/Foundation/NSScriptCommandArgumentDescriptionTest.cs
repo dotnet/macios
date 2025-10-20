@@ -1,11 +1,6 @@
 #if __MACOS__
 // Copyright 2015 Xamarin, Inc.
 
-using System;
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
-
 namespace MonoTouchFixtures.Foundation {
 
 	[TestFixture]

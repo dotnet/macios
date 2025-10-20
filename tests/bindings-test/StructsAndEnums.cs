@@ -1,8 +1,4 @@
-using System;
-using System.Runtime.InteropServices;
 
-using Foundation;
-using ObjCRuntime;
 using SceneKit;
 
 using MatrixFloat2x2 = global::CoreGraphics.NMatrix2;

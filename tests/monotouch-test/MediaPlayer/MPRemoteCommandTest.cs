@@ -8,10 +8,7 @@
 // Copyright 2022 Microsoft. All rights reserved.
 //
 
-using System;
-using Foundation;
 using MediaPlayer;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.MediaPlayer {
 

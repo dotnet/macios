@@ -248,10 +248,8 @@ namespace Xamarin.Tests {
 				bool isCompressedBindingPackage;
 				if (compressedXcframework) {
 					isCompressedBindingPackage = false; // there are no symlinks if we only have zip files, so binding package isn't compressed
-				} else if (platformSpecificXcframework) {
-					isCompressedBindingPackage = platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst;
 				} else {
-					isCompressedBindingPackage = true;
+					isCompressedBindingPackage = UsesCompressedBindingResourcePackage (platform);
 				}
 
 				if (isCompressedBindingPackage) {
@@ -409,7 +407,7 @@ namespace Xamarin.Tests {
 				</NativeReference>
 				<NativeReference Name="XStaticArTest.xcframework.zip">
 					<ForceLoad></ForceLoad>
-					<Frameworks></Frameworks>
+					<Frameworks>CoreLocation ModelIO</Frameworks>
 					<IdentityWithoutPathSeparatorSuffix>../../../test-libraries/.libs/XStaticArTest.xcframework.zip</IdentityWithoutPathSeparatorSuffix>
 					<IsCxx></IsCxx>
 					<Kind>Static</Kind>
@@ -421,7 +419,7 @@ namespace Xamarin.Tests {
 				</NativeReference>
 				<NativeReference Name="XStaticObjectTest.xcframework.zip">
 					<ForceLoad></ForceLoad>
-					<Frameworks></Frameworks>
+					<Frameworks>CoreLocation ModelIO</Frameworks>
 					<IdentityWithoutPathSeparatorSuffix>../../../test-libraries/.libs/XStaticObjectTest.xcframework.zip</IdentityWithoutPathSeparatorSuffix>
 					<IsCxx></IsCxx>
 					<Kind>Static</Kind>
@@ -501,6 +499,9 @@ namespace Xamarin.Tests {
 
 			var properties = GetDefaultProperties ();
 			properties ["cmdline:AllTheTargetFrameworks"] = targetFrameworks;
+
+			// If any of the api versions we support are higher than the api version we're built for, we need to ignore any XCODE_*_PREVIEW warnings.
+			AddNoWarnForPreviewVersions (platform, supportedApiVersion, properties);
 
 			DotNet.AssertPack (project_path, properties);
 

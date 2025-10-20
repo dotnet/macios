@@ -10,12 +10,8 @@
 #nullable enable
 
 #if MONOMAC
-using System;
 using System.Text;
-using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 
 using OS_nw_ethernet_channel = System.IntPtr;

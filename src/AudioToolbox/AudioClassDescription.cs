@@ -28,12 +28,8 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
 using CoreFoundation;
-using Foundation;
 using AudioUnit;
-using System.Runtime.Versioning;
 
 namespace AudioToolbox {
 

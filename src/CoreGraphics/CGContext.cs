@@ -28,12 +28,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 
 namespace CoreGraphics {
 #if __MACOS__

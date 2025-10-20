@@ -543,7 +543,7 @@ namespace Xamarin.MacDev.Tasks {
 		bool ExecuteImpl ()
 		{
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			var type = MobileProvisionDistributionType.Any;
 			var identity = new CodeSignIdentity ();

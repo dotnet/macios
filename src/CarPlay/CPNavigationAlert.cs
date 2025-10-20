@@ -9,10 +9,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace CarPlay {
 	public partial class CPNavigationAlert {
 		// Defined inside CPNavigationAlert.h

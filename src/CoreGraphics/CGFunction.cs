@@ -28,13 +28,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 
 namespace CoreGraphics {
 	/// <summary>A callback function to be used with various <see cref="CoreGraphics" /> functions.</summary>

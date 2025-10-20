@@ -1,8 +1,4 @@
-using System;
-using System.Runtime.InteropServices;
 
-using Foundation;
-using ObjCRuntime;
 using CoreMedia;
 using Speech;
 using SoundAnalysis;

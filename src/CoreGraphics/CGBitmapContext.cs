@@ -26,15 +26,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#nullable enable
-
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 
-using ObjCRuntime;
-using Foundation;
+#nullable enable
 
 namespace CoreGraphics {
 	/// <summary>CGContext backed by an in-memory bitmap.</summary>

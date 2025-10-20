@@ -1,12 +1,8 @@
 #if !TVOS
 #nullable enable
 
-using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
 
 namespace CoreMidi {
 

@@ -1,11 +1,7 @@
-using System;
-using NUnit.Framework;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-
-using Foundation;
 
 namespace MonoTouchFixtures.Foundation {
 

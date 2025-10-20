@@ -7,15 +7,11 @@
 //
 // Copyright 2015 Xamarin Inc. All rights reserved.
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using System.Collections.Generic;
 using System.Runtime.Versioning;
 
-using ObjCRuntime;
-using Foundation;
 #if !(MONOMAC || __MACOS__)
 using UIKit;
 #endif

@@ -26,11 +26,7 @@
 
 #if !__MACCATALYST__ // Mac Catalyst doesn't have NSApplication
 
-using System;
 using System.Collections;
-
-using ObjCRuntime;
-using Foundation;
 
 #nullable enable
 

@@ -7,16 +7,10 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
-
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace LinkAll.Serialization.DataContract {
 

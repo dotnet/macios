@@ -9,9 +9,6 @@
 
 #if IOS
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using CoreAnimation;
 using CoreGraphics;
 using MediaPlayer;

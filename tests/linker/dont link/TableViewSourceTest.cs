@@ -9,13 +9,9 @@
 
 #if !__MACOS__
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Foundation;
 using UIKit;
-using NUnit.Framework;
 
 namespace DontLink.UIKit {
 

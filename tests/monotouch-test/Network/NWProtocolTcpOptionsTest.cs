@@ -1,9 +1,6 @@
-using System;
 
-using Foundation;
 using Network;
 
-using NUnit.Framework;
 using NUnit.Framework.Internal;
 
 namespace MonoTouchFixtures.Network {

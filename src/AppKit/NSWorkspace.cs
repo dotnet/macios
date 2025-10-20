@@ -1,10 +1,4 @@
 #if !__MACCATALYST__
-using System;
-using Foundation;
-
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 
 #nullable enable
 

@@ -1,7 +1,4 @@
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
 
 namespace OpenGLES {
 	public partial class EAGLContext {

@@ -14,10 +14,7 @@
 // NSProxy responds to far less selectors hence doing it internal so it is not a breaking change
 // when we provide the correct fix.
 
-using System;
 using System.ComponentModel;
-using Foundation;
-using ObjCRuntime;
 
 namespace Foundation {
 	[EditorBrowsable (EditorBrowsableState.Never)]

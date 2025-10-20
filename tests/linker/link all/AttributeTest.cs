@@ -7,17 +7,10 @@
 // Copyright 2013-2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Security.Permissions;
-
-using Foundation;
-
-using NUnit.Framework;
 
 [assembly: Debuggable (DebuggableAttribute.DebuggingModes.Default)]
 

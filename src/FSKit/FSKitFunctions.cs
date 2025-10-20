@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

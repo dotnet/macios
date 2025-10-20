@@ -1,11 +1,6 @@
-using System;
-using Foundation;
-using ObjCRuntime;
 
 using Metal;
 using MetalPerformanceShaders;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.MetalPerformanceShaders {
 

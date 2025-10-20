@@ -7,16 +7,12 @@
 // Copyright 2013, Xamarin Inc
 //
 
-using System;
 #if IOS
 using System.Drawing;
 #endif
-using System.Runtime.InteropServices;
 using System.Collections;
 
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 
 #if MONOMAC
 using UIFont = AppKit.NSFont;

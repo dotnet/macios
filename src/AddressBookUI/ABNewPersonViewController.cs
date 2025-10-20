@@ -8,11 +8,7 @@
 
 #nullable enable
 
-using System;
-
 using AddressBook;
-using Foundation;
-using ObjCRuntime;
 
 namespace AddressBookUI {
 

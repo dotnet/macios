@@ -2,13 +2,8 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
-using CoreFoundation;
-using Foundation;
 using PushKit;
 using UIKit;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.PushKit {

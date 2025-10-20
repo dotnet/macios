@@ -1,9 +1,6 @@
 #nullable enable
-using System;
 using System.Linq;
 using System.IO;
-using NUnit.Framework;
-using ObjCRuntime;
 using Xamarin.Utils;
 
 namespace GeneratorTests {

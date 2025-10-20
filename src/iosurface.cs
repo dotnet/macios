@@ -7,11 +7,8 @@
 // Copyright 2017 Microsoft Inc. All rights reserved.
 //
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace IOSurface {
 

@@ -6,9 +6,6 @@
 //
 // Copyright 2016 Xamarin Inc.
 
-using System;
-using Foundation;
-
 #nullable enable
 
 namespace ObjCRuntime {

@@ -2,10 +2,6 @@
 
 #if !XAMCORE_5_0
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace PushToTalk {
 	public partial class PTChannelManagerDelegate {
 		public override NativeHandle ClassHandle { get => base.ClassHandle; }

@@ -25,14 +25,11 @@
 
 #if MONOMAC
 
-using System;
 using System.Reflection;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.IO;
 
 using AppKit;
-using Foundation;
 using Registrar;
 
 namespace ObjCRuntime {

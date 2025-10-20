@@ -8,11 +8,6 @@
 
 #if !TVOS && !MONOMAC
 
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
-
 #nullable enable
 
 namespace MediaPlayer {

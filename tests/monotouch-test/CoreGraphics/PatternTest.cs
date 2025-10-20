@@ -7,12 +7,7 @@
 // Copyright 2019 Microsoft Corp. All rights reserved.
 //
 
-using System;
-using System.Runtime.InteropServices;
-
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 #if __MACOS__
 using AppKit;
 using UIImage = AppKit.NSImage;
@@ -20,8 +15,6 @@ using UIColor = AppKit.NSColor;
 #else
 using UIKit;
 #endif
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreGraphics {
 

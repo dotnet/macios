@@ -2,15 +2,11 @@
 
 #if !MONOMAC
 
-using System;
 using System.Drawing;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 using CoreGraphics;
-using Foundation;
 using UIKit;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.UIKit {
 

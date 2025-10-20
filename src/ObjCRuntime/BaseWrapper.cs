@@ -4,9 +4,6 @@
 
 #if !COREBUILD
 
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
 using CoreFoundation;
 
 namespace ObjCRuntime {

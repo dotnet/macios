@@ -14,10 +14,7 @@ using UIView = AppKit.NSView;
 using UIKit;
 #endif
 
-using System;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 
 namespace LinkPresentation {
 

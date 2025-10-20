@@ -9,9 +9,6 @@
 //
 using System.ComponentModel;
 
-using ObjCRuntime;
-using Foundation;
-using System;
 using CoreFoundation;
 
 namespace CoreBluetooth {

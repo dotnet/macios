@@ -14,9 +14,6 @@
 
 #pragma warning disable 618
 
-using System;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 #if MONOMAC

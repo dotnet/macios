@@ -1,17 +1,11 @@
 // Copyright 2011, 2013 Xamarin Inc. All rights reserved
 
-using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 
-using CoreFoundation;
-using Foundation;
 using Security;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.Security {

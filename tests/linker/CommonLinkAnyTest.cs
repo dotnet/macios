@@ -1,18 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 using MonoTests.System.Net.Http;
 

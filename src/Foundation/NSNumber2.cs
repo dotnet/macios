@@ -3,12 +3,8 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Reflection;
 using System.Collections;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

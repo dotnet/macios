@@ -9,9 +9,6 @@
 
 #nullable enable
 
-using System;
-using ObjCRuntime;
-
 namespace IOSurface {
 
 	/// <summary>To be added.</summary>

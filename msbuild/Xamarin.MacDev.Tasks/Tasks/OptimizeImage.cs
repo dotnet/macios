@@ -84,7 +84,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			var listOfArguments = new List<(List<string> Arguments, string Input)> ();
 			for (var index = 0; index < this.InputImages.Length && index < this.OutputImages.Length; index++) {

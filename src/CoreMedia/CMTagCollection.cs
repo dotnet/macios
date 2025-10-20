@@ -1,10 +1,6 @@
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace CoreMedia {
 	/// <summary>A delegate that is used to iterate over a <see cref="CMTagCollection" />.</summary>

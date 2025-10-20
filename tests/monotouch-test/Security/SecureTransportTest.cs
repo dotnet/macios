@@ -7,19 +7,15 @@
 // Copyright 2014 Xamarin Inc.
 //
 
-using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Foundation;
 using Security;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.Security {

@@ -12,10 +12,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-
 using Vector4d = global::CoreGraphics.NVector4d;
 
 // This type does not come from the CoreGraphics framework; it's defined in /usr/include/simd/matrix_types.h

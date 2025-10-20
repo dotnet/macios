@@ -7,12 +7,13 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Tasks;
 using Microsoft.Build.Utilities;
 
+using Xamarin.MacDev.Tasks;
 using Xamarin.Messaging.Build.Client;
 
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	public class MobileILStrip : global::ILStrip, ITaskCallback {
+	public class MobileILStrip : global::ILStrip, ITaskCallback, IHasSessionId {
 		public string SessionId { get; set; } = string.Empty;
 
 		[Output]
@@ -21,7 +22,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (this.ShouldExecuteRemotely (SessionId))
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return XamarinTask.ExecuteRemotely (this);
 
 			foreach (var item in Assemblies) {
 				var outputPath = item.GetMetadata ("OutputPath");

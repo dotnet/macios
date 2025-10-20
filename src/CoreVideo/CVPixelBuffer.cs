@@ -6,12 +6,8 @@
 // Copyright 2010 Novell, Inc
 // Copyright 2011-2014 Xamarin Inc
 //
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 
 using CFDictionaryRef = System.IntPtr;
 using CVPixelBufferRef = System.IntPtr;

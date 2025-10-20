@@ -7,10 +7,6 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using ObjCRuntime;
-using Foundation;
-using System;
-
 namespace AdSupport {
 
 	/// <summary>Provides a device identifier, only to be used for serving advertisements.</summary>

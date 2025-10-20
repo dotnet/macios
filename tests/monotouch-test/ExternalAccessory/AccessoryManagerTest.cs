@@ -7,11 +7,7 @@
 // Copyright 2013 Xamarin Inc.
 //
 
-using System;
-using Foundation;
 using ExternalAccessory;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.ExternalAccessory {

@@ -6,9 +6,6 @@
 //
 // Copyright 2013-2014 Xamarin, Inc.
 
-using System;
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 
 namespace JavaScriptCore {

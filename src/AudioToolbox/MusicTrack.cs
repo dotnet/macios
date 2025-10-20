@@ -13,17 +13,11 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-using Foundation;
 #if IOS
 using CoreMidi;
 #endif
 
 using MidiEndpointRef = System.Int32;
-using System.Runtime.Versioning;
 
 namespace AudioToolbox {
 

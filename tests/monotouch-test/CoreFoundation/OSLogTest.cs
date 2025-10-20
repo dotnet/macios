@@ -1,6 +1,3 @@
-using Foundation;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreFoundation {
 

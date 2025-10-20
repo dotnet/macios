@@ -1,4 +1,3 @@
-using System;
 
 namespace Xamarin.Utils {
 	// Boolean variable that defaults to false, unless a environmental variable is set. Setting value explictly overrides all other values.

@@ -9,15 +9,11 @@
 
 #if !__TVOS__
 
-using System;
-using Foundation;
 #if !MONOMAC
 using UIKit;
 #endif
 using MultipeerConnectivity;
-using ObjCRuntime;
 using Security;
-using NUnit.Framework;
 
 using MonoTouchFixtures.Security;
 using Xamarin.Utils;

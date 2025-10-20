@@ -9,8 +9,6 @@
 
 #nullable enable
 
-using System.Runtime.InteropServices;
-
 namespace CoreMotion {
 
 	// CMMagnetometer.h

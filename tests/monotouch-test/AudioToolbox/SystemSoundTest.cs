@@ -7,14 +7,10 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.IO;
 using System.Threading.Tasks;
 
-using Foundation;
 using AudioToolbox;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.AudioToolbox {

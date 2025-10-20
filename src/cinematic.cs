@@ -3,11 +3,7 @@ using CoreFoundation;
 using CoreGraphics;
 using CoreMedia;
 using CoreVideo;
-using Foundation;
 using Metal;
-using ObjCRuntime;
-
-using System;
 
 namespace Cinematic {
 

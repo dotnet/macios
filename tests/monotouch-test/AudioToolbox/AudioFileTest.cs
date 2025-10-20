@@ -1,13 +1,8 @@
 // Copyright 2011 Xamarin Inc. All rights reserved
 
-using System;
 using System.IO;
-using System.Runtime.InteropServices;
 
-using Foundation;
 using AudioToolbox;
-using CoreFoundation;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.AudioToolbox {
 

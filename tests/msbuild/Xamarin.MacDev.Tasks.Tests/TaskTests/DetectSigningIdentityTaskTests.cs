@@ -169,5 +169,25 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (task.DetectedProvisioningProfile, Is.Null.Or.Empty, "DetectedProvisioningProfile");
 			Assert.IsTrue (task.HasEntitlements, "HasEntitlements");
 		}
+
+		[Test]
+		public void Simulator ()
+		{
+			var dir = Cache.CreateTemporaryDirectory ();
+			var task = CreateTask (dir);
+			task.BundleIdentifier = "com.xamarin.simulatortest";
+			task.SdkIsSimulator = true;
+			task.CustomEntitlements = new ITaskItem [] { new TaskItem ("keychain-access-group") };
+			ExecuteTask (task);
+
+			Assert.Multiple (() => {
+				Assert.That (task.DetectedAppId, Does.EndWith ("." + task.BundleIdentifier), "DetectedAppId");
+				Assert.AreEqual ("-", task.DetectedCodeSigningKey, "DetectedCodeSigningKey");
+				Assert.AreEqual ($"{Xamarin.Tests.Configuration.XcodeLocation}/Toolchains/XcodeDefault.xctoolchain/usr/bin/codesign_allocate", task.DetectedCodesignAllocate, "DetectedCodesignAllocate");
+				Assert.AreEqual ("Any", task.DetectedDistributionType, "DetectedDistributionType");
+				Assert.That (task.DetectedProvisioningProfile, Is.Not.Null.And.Not.Empty, "DetectedProvisioningProfile");
+				Assert.IsTrue (task.HasEntitlements, "HasEntitlements");
+			});
+		}
 	}
 }

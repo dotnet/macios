@@ -394,6 +394,7 @@
 				_MtouchSymbolsList=%(_RuntimeIdentifiersAsItems.RidSpecificSymbolsListPath);
 				_UserFrameworksWithoutDebugSymbolsPath=%(_RuntimeIdentifiersAsItems.RidSpecificUserFrameworksWithoutDebugSymbolsPath);
 				$(_RidSpecificProperties);
+				ShouldDisconnect=false;
 				">
 			<Output TaskParameter="TargetOutputs" ItemName="_AssemblyPublishDirectories" />
 		</MSBuild>

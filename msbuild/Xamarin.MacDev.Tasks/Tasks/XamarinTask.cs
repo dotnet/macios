@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -154,6 +155,69 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		public bool ShouldExecuteRemotely () => this.ShouldExecuteRemotely (SessionId);
+
+		protected bool ExecuteRemotely ()
+		{
+			return ExecuteRemotely (out var _);
+		}
+
+#if NET
+		protected bool ExecuteRemotely ([NotNullWhen (true)] out TaskRunner? taskRunner, Action<TaskRunner>? preprocessTaskRunner = null)
+#else
+		protected bool ExecuteRemotely (out TaskRunner taskRunner, Action<TaskRunner>? preprocessTaskRunner = null)
+#endif
+		{
+			return ExecuteRemotely (this, out taskRunner, preprocessTaskRunner);
+		}
+
+		internal static bool ExecuteRemotely<T> (T task) where T : Task, IHasSessionId
+		{
+			return ExecuteRemotely (task, out var _, null);
+		}
+
+#if NET
+		internal static bool ExecuteRemotely<T> (T task, [NotNullWhen (true)] out TaskRunner? taskRunner, Action<TaskRunner>? preprocessTaskRunner = null) where T: Task, IHasSessionId
+#else
+		internal static bool ExecuteRemotely<T> (T task, out TaskRunner taskRunner, Action<TaskRunner>? preprocessTaskRunner = null) where T : Task, IHasSessionId
+#endif
+		{
+#if NET
+			taskRunner = null;
+#else
+			taskRunner = null!;
+#endif
+
+			try {
+				taskRunner = new TaskRunner (task.SessionId, task.BuildEngine4);
+
+				if (preprocessTaskRunner is not null)
+					preprocessTaskRunner (taskRunner);
+
+				var rv = taskRunner.RunAsync (task).Result;
+				if (!rv && !task.Log.HasLoggedErrors) {
+					// if we failed to execute remotely, but no error has been reported, then report an error
+					task.Log.LogError (MSBStrings.E7162 /* Unable to execute this task remotely for unknown reasons. The build log may have more information. */);
+				}
+				return rv;
+			} catch (Exception ex) {
+				task.Log.LogErrorFromException (ex);
+
+				return false;
+			}
+		}
+
+		internal static bool CopyInputsToRemoteServerAsync<T> (T task) where T : Task, IHasSessionId
+		{
+			try {
+				var rv = new TaskRunner (task.SessionId, task.BuildEngine4).CopyInputsAsync2 (task).Result;
+				if (!rv)
+					task.Log.LogError (MSBStrings.E7163 /* Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information. */);
+				return rv;
+			} catch (Exception ex) {
+				task.Log.LogErrorFromException (ex);
+				return false;
+			}
+		}
 
 		internal protected static ReportErrorCallback GetFileCopierReportErrorCallback (TaskLoggingHelper log)
 		{

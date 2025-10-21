@@ -1,8 +1,6 @@
 // Compatibility stubs
 
-using System;
 using System.ComponentModel;
-using ObjCRuntime;
 
 #nullable enable
 

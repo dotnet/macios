@@ -8,13 +8,10 @@
 // Copyright 2009, Novell, Inc.
 // Copyright 2014-2015, Xamarin Inc.
 //
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 using CoreLocation;
 using UIKit;
 using AddressBook;
-using System;
 
 namespace AddressBookUI {
 

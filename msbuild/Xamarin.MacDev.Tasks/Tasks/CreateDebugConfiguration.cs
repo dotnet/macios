@@ -35,7 +35,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			var ips = DebugIPAddresses?.Split (new char [] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 			var path = Path.Combine (AppBundleDir, "MonoTouchDebugConfiguration.txt");

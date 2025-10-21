@@ -19,9 +19,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.Reflection;
-using ObjCRuntime;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

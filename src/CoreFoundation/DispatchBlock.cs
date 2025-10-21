@@ -10,11 +10,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
 using System.Threading;
-using ObjCRuntime;
-using Foundation;
 
 namespace CoreFoundation {
 #if !COREBUILD

@@ -29,16 +29,11 @@
 
 #nullable enable
 
-using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 using System.Threading;
 
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace CoreFoundation {
 
@@ -351,7 +346,7 @@ namespace CoreFoundation {
 				using (var cfdata = new CFData (data, false)) {
 					if (cfdata.Length > 0) {
 						var ep = CFSocketAddress.EndPointFromAddressPtr (address, false)!;
-						socket.OnData (new CFSocketDataEventArgs (ep, cfdata.GetBuffer ()));
+						socket.OnData (new CFSocketDataEventArgs (ep, cfdata));
 					}
 				}
 			} else if (cbType == CFSocketCallBackType.NoCallBack) {
@@ -699,30 +694,45 @@ namespace CoreFoundation {
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
 		public class CFSocketDataEventArgs : EventArgs {
+			byte []? data;
+			CFData? cfdata;
+
 			/// <summary>The remote end points that connected</summary>
-			///         <value>To be added.</value>
-			///         <remarks>To be added.</remarks>
 			public IPEndPoint RemoteEndPoint {
 				get;
 				private set;
 			}
 
-			/// <summary>The data that was received on the socket.</summary>
-			///         <value>To be added.</value>
-			///         <remarks>To be added.</remarks>
+			/// <summary>The data that was received on the socket as a byte array.</summary>
 			public byte [] Data {
-				get;
-				private set;
+				get {
+					if (data is null)
+						data = cfdata?.GetBuffer () ?? Array.Empty<byte> ();
+					return data;
+				}
 			}
 
-			/// <param name="remote">To be added.</param>
-			///         <param name="data">To be added.</param>
-			///         <summary>Constructs a new instance with an endpoint and a byte buffer.</summary>
-			///         <remarks>To be added.</remarks>
+			/// <summary>The data that was received on the socket as a <see cref="CFData" />.</summary>
+			CFData? CFData {
+				get => cfdata;
+			}
+
+			/// <summary>Constructs a new instance with an endpoint and a byte buffer.</summary>
+			/// <param name="remote">The remote endpoint.</param>
+			/// <param name="data">The data for this event as a byte array.</param>
 			public CFSocketDataEventArgs (IPEndPoint remote, byte [] data)
 			{
 				this.RemoteEndPoint = remote;
-				this.Data = data;
+				this.data = data;
+			}
+
+			/// <summary>Constructs a new instance with an endpoint and a byte buffer.</summary>
+			/// <param name="remote">The remote endpoint.</param>
+			/// <param name="data">The data for this event as a <see cref="CFData" /> instance.</param>
+			internal CFSocketDataEventArgs (IPEndPoint remote, CFData data)
+			{
+				this.RemoteEndPoint = remote;
+				this.cfdata = data;
 			}
 		}
 

@@ -8,25 +8,18 @@
 // Coyright 2019 Microsoft Corporation
 //
 
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Foundation;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using CoreFoundation;
 using Security;
-using ObjCRuntime;
 
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.Security {

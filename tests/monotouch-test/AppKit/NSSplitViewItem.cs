@@ -1,11 +1,7 @@
 #if __MACOS__
-using System;
-using NUnit.Framework;
 using System.Linq;
 
 using AppKit;
-using ObjCRuntime;
-using Foundation;
 
 namespace Xamarin.Mac.Tests {
 	[Preserve (AllMembers = true)]

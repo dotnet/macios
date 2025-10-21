@@ -6,11 +6,8 @@
 //
 // Copyright 2019 Microsoft Corporation All rights reserved.
 //
-using System;
 
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace BackgroundTasks {
 

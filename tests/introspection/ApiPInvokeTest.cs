@@ -7,19 +7,11 @@
 //
 // Copyright 2013-2014 Xamarin, Inc.
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Xamarin.Tests;
-
-using NUnit.Framework;
-
-using ObjCRuntime;
-using Foundation;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

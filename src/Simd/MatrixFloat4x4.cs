@@ -12,12 +12,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-
-using ObjCRuntime;
-
 using VectorFloat4 = global::System.Numerics.Vector4;
 
 namespace CoreGraphics {

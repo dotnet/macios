@@ -1,9 +1,5 @@
-using System;
 
-using Foundation;
 using GameController;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.GameController {
 	[TestFixture]

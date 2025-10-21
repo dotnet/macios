@@ -28,15 +28,10 @@
 
 #nullable enable
 
-using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Runtime.InteropServices;
 
-using ObjCRuntime;
 using AudioToolbox;
-using Foundation;
-using System.Runtime.Versioning;
 
 namespace AudioUnit {
 	/// <summary>Utility class to hold miscellaneous functions relating to audio streams, samples, and output categories.</summary>

@@ -1,13 +1,9 @@
 #pragma warning disable 0649 // Field 'X' is never assigned to, and will always have its default value null
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
-
-using NUnit.Framework;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -216,7 +212,11 @@ namespace Xamarin.Tests {
 
 		public void AssertExecute (string message)
 		{
-			Assert.AreEqual (0, Execute (), message);
+			var rv = Execute ();
+			if (rv == 0)
+				return;
+
+			Assert.Fail ($"BGen failed with exit code {rv}: {message}\n{Output}");
 		}
 
 		public void AssertExecuteError (string message)

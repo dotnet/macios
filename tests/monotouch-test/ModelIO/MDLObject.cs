@@ -7,16 +7,12 @@
 // Copyright 2015 Xamarin Inc.
 //
 
-using System;
 using CoreGraphics;
-using Foundation;
 using ModelIO;
-using ObjCRuntime;
 using SceneKit;
 #if !MONOMAC
 using UIKit;
 #endif
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.ModelIO {
 

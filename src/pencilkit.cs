@@ -28,10 +28,7 @@ using UIKit;
 using BezierPath = UIKit.UIBezierPath;
 #endif
 
-using System;
 using System.ComponentModel;
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 
 namespace PencilKit {

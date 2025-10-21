@@ -1,6 +1,3 @@
-using System;
-using ObjCRuntime;
-using Foundation;
 using Security;
 
 namespace LocalAuthentication {
@@ -50,7 +47,7 @@ namespace LocalAuthentication {
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("canEvaluatePolicy:error:")]
-		bool CanEvaluatePolicy (LAPolicy policy, out NSError error);
+		bool CanEvaluatePolicy (LAPolicy policy, [NullAllowed] out NSError error);
 
 		/// <param name="policy">To be added.</param>
 		///         <param name="localizedReason">To be added.</param>

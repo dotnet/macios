@@ -7,9 +7,7 @@
 // Copyright 2019 Microsoft Inc. All rights reserved.
 //
 
-using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
 
 #nullable enable
 

@@ -179,6 +179,26 @@
 # same as NSDictionary::objectForKey according to docs
 !missing-selector! NSDictionary::objectForKeyedSubscript: not bound
 
+# We already have methods for decoding/encoding 'int32_t' and 'int64_t', so adding support 'int' as well doesn't make sense
+!missing-selector! NSCoder::decodeIntForKey: not bound
+!missing-selector! NSCoder::encodeInt:forKey: not bound
+
+# Apple's documentation says: "This method is present for historical reasons and has no effect."
+!missing-selector! NSCoder::objectZone not bound
+!missing-selector! NSCoder::setObjectZone: not bound
+
+# Apple's documentation says: "This method is present for historical reasons and is not used with keyed archivers."
+!missing-selector! NSCoder::versionForClassName: not bound
+
+# This has a varargs argument, which we don't really want to bind in C# unless we really, really have to.
+!missing-selector! NSCoder::encodeValuesOfObjCTypes: not bound
+
+# Apple's documentation says: "You should not use this method to encode Objective-C objects." (incorrect reference counting)
+!missing-selector! NSCoder::decodeArrayOfObjCType:count:at: not bound
+!missing-selector! NSCoder::decodeValuesOfObjCTypes: not bound
+!missing-selector! NSCoder::encodeArrayOfObjCType:count:at: not bound
+!missing-selector! NSCoder::encodeValueOfObjCType:at: not bound
+
 ## unsorted
 
 !extra-designated-initializer! NSSortDescriptor::initWithCoder: is incorrectly decorated with an [DesignatedInitializer] attribute
@@ -408,25 +428,6 @@
 !missing-selector! NSBundle::loadAndReturnError: not bound
 !missing-selector! NSBundle::localizedInfoDictionary not bound
 !missing-selector! NSBundle::preflightAndReturnError: not bound
-!missing-selector! NSCoder::allowsKeyedCoding not bound
-!missing-selector! NSCoder::decodeArrayOfObjCType:count:at: not bound
-!missing-selector! NSCoder::decodeIntForKey: not bound
-!missing-selector! NSCoder::decodeObjectOfClass:forKey: not bound
-!missing-selector! NSCoder::decodeObjectOfClasses:forKey: not bound
-!missing-selector! NSCoder::decodePropertyListForKey: not bound
-!missing-selector! NSCoder::decodeValueOfObjCType:at:size: not bound
-!missing-selector! NSCoder::decodeValuesOfObjCTypes: not bound
-!missing-selector! NSCoder::encodeArrayOfObjCType:count:at: not bound
-!missing-selector! NSCoder::encodeBycopyObject: not bound
-!missing-selector! NSCoder::encodeByrefObject: not bound
-!missing-selector! NSCoder::encodeBytes:length: not bound
-!missing-selector! NSCoder::encodeConditionalObject: not bound
-!missing-selector! NSCoder::encodeDataObject: not bound
-!missing-selector! NSCoder::encodeInt:forKey: not bound
-!missing-selector! NSCoder::encodeValueOfObjCType:at: not bound
-!missing-selector! NSCoder::encodeValuesOfObjCTypes: not bound
-!missing-selector! NSCoder::setObjectZone: not bound
-!missing-selector! NSCoder::versionForClassName: not bound
 !missing-selector! NSData::description not bound
 !missing-selector! NSData::initWithBytes:length: not bound
 !missing-selector! NSData::initWithBytesNoCopy:length: not bound
@@ -844,8 +845,6 @@
 !missing-selector! NSArray::objectEnumerator not bound
 !missing-selector! NSArray::reverseObjectEnumerator not bound
 !missing-selector! NSAutoreleasePool::drain not bound
-!missing-selector! NSCoder::decodeDataObject not bound
-!missing-selector! NSCoder::objectZone not bound
 !missing-selector! NSCountedSet::objectEnumerator not bound
 !missing-selector! NSDictionary::fileCreationDate not bound
 !missing-selector! NSDictionary::fileExtensionHidden not bound
@@ -897,7 +896,6 @@
 !extra-null-allowed! 'Foundation.NSUrlSessionDownloadTask Foundation.NSUrlSession::CreateDownloadTaskFromResumeData(Foundation.NSData,Foundation.NSUrlDownloadSessionResponse)' has a extraneous [NullAllowed] on parameter #1
 !extra-null-allowed! 'System.Boolean Foundation.NSFileManager::Remove(Foundation.NSUrl,Foundation.NSError&)' has a extraneous [NullAllowed] on parameter #0
 !extra-null-allowed! 'System.Boolean Foundation.NSFileManager::Remove(System.String,Foundation.NSError&)' has a extraneous [NullAllowed] on parameter #0
-!extra-null-allowed! 'System.Void Foundation.NSCoder::EncodeRoot(Foundation.NSObject)' has a extraneous [NullAllowed] on parameter #0
 !extra-null-allowed! 'System.Void Foundation.NSOperationQueue::AddOperation(Foundation.NSOperation)' has a extraneous [NullAllowed] on parameter #0
 !extra-null-allowed! 'System.Void Foundation.NSOperationQueue::AddOperations(Foundation.NSOperation[],System.Boolean)' has a extraneous [NullAllowed] on parameter #0
 !extra-null-allowed! 'System.Void Foundation.NSOrthography::.ctor(System.String,Foundation.NSDictionary)' has a extraneous [NullAllowed] on parameter #1
@@ -997,12 +995,6 @@
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSAttributedString::GetAttribute(System.String,System.IntPtr,Foundation.NSRange&,Foundation.NSRange)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSBundle::ObjectForInfoDictionary(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSCache::ObjectForKey(Foundation.NSObject)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSObject Foundation.NSCoder::DecodeObject()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSObject Foundation.NSCoder::DecodeObject(System.String)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSObject Foundation.NSCoder::DecodeTopLevelObject(Foundation.NSError&)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSObject Foundation.NSCoder::DecodeTopLevelObject(Foundation.NSSet`1<ObjCRuntime.Class>,System.String,Foundation.NSError&)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSObject Foundation.NSCoder::DecodeTopLevelObject(ObjCRuntime.Class,System.String,Foundation.NSError&)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSObject Foundation.NSCoder::DecodeTopLevelObject(System.String,Foundation.NSError&)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSEnumerator::NextObject()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSException::get_UserInfo()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSFileManager::get_UbiquityIdentityToken()' is missing an [NullAllowed] on return type
@@ -1030,7 +1022,6 @@
 !missing-null-allowed! 'Foundation.NSOrthography Foundation.NSTextCheckingResult::get_Orthography()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSProgress Foundation.NSProgress::get_CurrentProgress()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSRegularExpression Foundation.NSRegularExpression::Create(Foundation.NSString,Foundation.NSRegularExpressionOptions,Foundation.NSError&)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSSet Foundation.NSCoder::get_AllowedClasses()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSString Foundation.NSLocale::DisplayNameForKey(Foundation.NSString,System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSString Foundation.NSRunLoop::get_CurrentMode()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSString Foundation.NSString::AppendPathExtension(Foundation.NSString)' is missing an [NullAllowed] on return type

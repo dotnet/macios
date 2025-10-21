@@ -8,11 +8,6 @@
 //
 // Copyright 2018, 2020 Microsoft Corp
 //
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-using ObjCRuntime;
-using Foundation;
 
 #nullable enable
 

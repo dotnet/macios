@@ -235,9 +235,9 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<DiagnosticConfiguration Condition="'$(DiagnosticSuspend)' == 'true'">$(DiagnosticConfiguration),suspend</DiagnosticConfiguration>
 		<DiagnosticConfiguration Condition="'$(DiagnosticSuspend)' != 'true'">$(DiagnosticConfiguration),nosuspend</DiagnosticConfiguration>
 	</PropertyGroup>
-	<PropertyGroup Condition="'$(EnableDiagnostics)' == 'true' And '$(DiagnosticConfiguration)' != '' And '$(DiagnosticConfiguration)' != 'disable'">
-		<AppBundleExtraOptions>$(AppBundleExtraOptions) --setenv=DOTNET_DiagnosticPorts=$(DiagnosticConfiguration)</AppBundleExtraOptions>
-	</PropertyGroup>
+	<ItemGroup Condition="'$(EnableDiagnostics)' == 'true' And '$(DiagnosticConfiguration)' != '' And '$(DiagnosticConfiguration)' != 'disable'">
+		<_BundlerEnvironmentVariables Include="DOTNET_DiagnosticPorts" Value="$(DiagnosticConfiguration)" Overwrite="false" />
+	</ItemGroup>
 
 	<PropertyGroup Condition="'$(IsBindingProject)' == 'true'">
 		<GeneratedSourcesDir Condition="'$(GeneratedSourcesDir)' == ''">$(IntermediateOutputPath)$(_PlatformName)</GeneratedSourcesDir>

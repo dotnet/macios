@@ -4,10 +4,6 @@
 
 #if !XAMCORE_5_0
 
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
 using MapKit;
 
 #nullable enable

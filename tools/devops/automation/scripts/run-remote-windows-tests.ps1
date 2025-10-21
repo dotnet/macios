@@ -11,10 +11,14 @@ $Env:ServerUser = $Env:MAC_AGENT_USER
 $Env:ServerPassword = $Env:XMA_PASSWORD
 $Env:_DotNetRootRemoteDirectory = "/Users/$Env:MAC_AGENT_USER/Library/Caches/maui/PairToMac/Sdks/dotnet/"
 
+if ("$Env:TESTFILTER" -eq "") {
+    $Env:TESTFILTER = "Category=RemoteWindows|Category=RemoteWindowsInclusive"
+}
+
 & $Env:DOTNET `
     test `
     "$Env:BUILD_SOURCESDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tests/dotnet/UnitTests/DotNetUnitTests.csproj" `
-    --filter "Category=RemoteWindows|Category=RemoteWindowsInclusive" `
+    --filter "$Env:TESTFILTER" `
     --verbosity quiet `
     --settings $Env:BUILD_SOURCESDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/tests/dotnet/Windows/config.runsettings `
     "--results-directory:$Env:BUILD_SOURCESDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/jenkins-results/windows-remote-tests/" `

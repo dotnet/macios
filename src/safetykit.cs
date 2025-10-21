@@ -8,10 +8,7 @@
 // Copyright 2022, 2024 Microsoft Corporation.
 //
 
-using System;
 using CoreLocation;
-using Foundation;
-using ObjCRuntime;
 
 namespace SafetyKit {
 

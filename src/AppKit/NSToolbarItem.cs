@@ -4,9 +4,6 @@
 // Author:
 //   Johan Hammar
 //
-using System;
-using ObjCRuntime;
-using Foundation;
 
 #nullable enable
 

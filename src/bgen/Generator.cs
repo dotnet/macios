@@ -39,7 +39,6 @@
 //     Typically this is necessary for things like NSError.
 //
 
-using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -53,8 +52,6 @@ using System.Reflection;
 using System.Xml;
 
 using ObjCBindings;
-using ObjCRuntime;
-using Foundation;
 using Xamarin.Utils;
 
 // Disable until we get around to enable + fix any issues.
@@ -4909,6 +4906,9 @@ public partial class Generator : IMemberGatherer {
 		var allProtocolProperties = new List<PropertyInfo> ();
 		var allProtocolConstructors = new List<MethodInfo> ();
 		var ifaces = (IEnumerable<Type>) type.GetInterfaces ().Concat (new Type [] { ReflectionExtensions.GetBaseType (type, this) }).OrderBy (v => v.FullName, StringComparer.Ordinal);
+
+		if (AttributeManager.HasAttribute<BaseTypeAttribute> (type) && !AttributeManager.HasAttribute<ModelAttribute> (type))
+			exceptions.Add (ErrorHelper.CreateWarning (1123 /* "The type {0} has a [Protocol] and a [BaseType] attribute, but no [Model] attribute. This is likely incorrect; either remove the [BaseType] attribute, or add a [Model] attribute." */, type.FullName));
 
 		if (type.Namespace is not null) {
 			print ("namespace {0} {{", type.Namespace);

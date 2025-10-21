@@ -24,9 +24,6 @@
 
 #if MONOMAC
 
-using System;
-using System.Runtime.InteropServices;
-
 namespace ObjCRuntime {
 	/// <summary>Represents an Objective-C selector in managed code.</summary>
 	///     <remarks>

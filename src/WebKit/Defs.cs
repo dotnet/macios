@@ -7,10 +7,6 @@
 // Copyright 2014, 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
-
-using ObjCRuntime;
-
 #nullable enable
 
 namespace WebKit {

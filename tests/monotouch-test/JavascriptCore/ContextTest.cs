@@ -7,10 +7,7 @@
 // Copyright 2013, 2015 Xamarin Inc.
 //
 
-using System;
-using Foundation;
 using JavaScriptCore;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.JavascriptCore {
 

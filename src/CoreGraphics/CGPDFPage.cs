@@ -28,12 +28,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
 using CoreFoundation;
-using ObjCRuntime;
-using System.Runtime.Versioning;
 
 namespace CoreGraphics {
 	/// <summary>A PDF Page in a PDF Document.</summary>

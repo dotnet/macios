@@ -7,13 +7,9 @@
 // Copyright (c) Microsoft Corporation.
 //
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework;
 
 using CoreGraphics;
-using Foundation;
 using Vision;
 
 namespace MonoTouchFixtures.Vision {

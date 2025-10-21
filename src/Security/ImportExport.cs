@@ -28,11 +28,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
 
 namespace Security {
 

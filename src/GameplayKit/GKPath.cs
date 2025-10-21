@@ -9,12 +9,7 @@
 
 #nullable enable
 
-using System;
 using System.Numerics;
-using Foundation;
-using ObjCRuntime;
-
-using System.Runtime.InteropServices;
 
 namespace GameplayKit {
 	public partial class GKPath {

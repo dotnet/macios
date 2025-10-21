@@ -9,8 +9,6 @@
 
 #nullable enable
 
-using System;
-
 namespace Vision {
 	public partial class VNDetectBarcodesRequest {
 

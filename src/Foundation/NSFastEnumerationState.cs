@@ -9,11 +9,7 @@
 
 #nullable enable
 
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 
 namespace Foundation {
 	[StructLayout (LayoutKind.Sequential)]

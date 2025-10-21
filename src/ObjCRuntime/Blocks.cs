@@ -24,16 +24,11 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 //
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.InteropServices;
 using System.Threading;
-
-using Foundation;
-using ObjCRuntime;
 
 #if !COREBUILD
 using Xamarin.Bundler;

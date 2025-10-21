@@ -2,10 +2,6 @@
 
 #if __IOS__
 
-using System;
-using ObjCRuntime;
-using Foundation;
-
 namespace StoreKit {
 
 	partial class SKCloudServiceSetupOptions {

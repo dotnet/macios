@@ -1,7 +1,5 @@
 using System.IO;
-using Foundation;
 using AVFoundation;
-using NUnit.Framework;
 namespace monotouchtest.AVFoundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]

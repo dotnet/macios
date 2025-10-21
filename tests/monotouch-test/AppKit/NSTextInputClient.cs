@@ -1,10 +1,7 @@
 #if __MACOS__
-using System;
-using NUnit.Framework;
 
 using AppKit;
 using CoreGraphics;
-using Foundation;
 
 namespace apitest {
 	[TestFixture]

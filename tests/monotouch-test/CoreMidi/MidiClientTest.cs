@@ -8,13 +8,9 @@
 //
 
 #if !__TVOS__
-using System;
 using System.Diagnostics;
 
 using CoreMidi;
-using Foundation;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreMidi {
 	[TestFixture]

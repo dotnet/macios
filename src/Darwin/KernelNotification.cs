@@ -29,11 +29,8 @@
 
 #if MONOMAC
 
-using System;
 using CoreFoundation;
-using ObjCRuntime;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
 namespace Darwin {

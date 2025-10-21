@@ -7,9 +7,6 @@
 // Copyright 2022 Microsoft Corporation.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using UIKit;
 
 using OS_nw_browse_descriptor = System.IntPtr;

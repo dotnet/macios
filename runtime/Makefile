@@ -90,7 +90,7 @@ MONOTOUCH_ARM64_SOURCE_STEMS = $(patsubst %.s,%,$(patsubst %.m,%,$(SHARED_ARM64_
 #
 
 DOTNET_iOS_LIBRARIES = libextension-dotnet.a
-DOTNET_tvOS_LIBRARIES = libtvextension-dotnet.a
+DOTNET_tvOS_LIBRARIES = libextension-dotnet.a libtvextension-dotnet.a
 DOTNET_macOS_LIBRARIES = libextension-dotnet-coreclr.a
 DOTNET_MacCatalyst_LIBRARIES =
 

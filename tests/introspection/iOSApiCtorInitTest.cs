@@ -7,18 +7,12 @@
 // Copyright 2012-2013 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 #if !__TVOS__
 using PassKit;
 #endif
-using Foundation;
 using Metal;
-using ObjCRuntime;
 using UIKit;
-
-using NUnit.Framework;
 
 namespace Introspection {
 

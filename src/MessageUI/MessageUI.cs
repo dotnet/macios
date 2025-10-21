@@ -8,8 +8,6 @@
 // Copyright 2014 Xamarin, Inc.
 //
 
-using ObjCRuntime;
-
 namespace MessageUI {
 	/// <summary>The result from composing an email message.</summary>
 	[Native]

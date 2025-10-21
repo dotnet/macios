@@ -1,11 +1,8 @@
-using System;
 
 using AVFoundation;
 using CoreGraphics;
 using CoreMedia;
 using CoreVideo;
-using Foundation;
-using ObjCRuntime;
 using UniformTypeIdentifiers;
 
 namespace MediaExtension {

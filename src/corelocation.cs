@@ -9,8 +9,6 @@
 // Copyright 2009, Novell, Inc.
 // Copyright 2011, 2013, 2015 Xamarin Inc.
 //
-using ObjCRuntime;
-using Foundation;
 using CloudKit;
 using CoreGraphics;
 using CoreFoundation;
@@ -20,7 +18,6 @@ using UIKit;
 #if !TVOS
 using Contacts;
 #endif
-using System;
 
 #if TVOS
 using CNPostalAddress = Foundation.NSObject;

@@ -2,8 +2,6 @@
 
 #if !MONOMAC
 
-using Foundation;
-
 namespace NetworkExtension {
 
 	public partial class NEFilterProvider {

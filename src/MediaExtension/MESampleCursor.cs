@@ -1,9 +1,6 @@
 #if MONOMAC
-using System;
 
 using AVFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace MediaExtension {
 	public partial interface IMESampleCursor {

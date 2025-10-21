@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using NUnit.Framework;
-using ObjCRuntime;
 using Xamarin.Utils;
 
 #nullable enable

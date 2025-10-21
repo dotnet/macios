@@ -1,10 +1,7 @@
 #nullable enable
 
-using System;
 using System.ComponentModel;
 using CoreLocation;
-using ObjCRuntime;
-using Foundation;
 
 namespace AppClip {
 

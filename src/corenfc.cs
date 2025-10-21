@@ -7,10 +7,7 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
 
 namespace CoreNFC {
 

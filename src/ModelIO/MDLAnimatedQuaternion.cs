@@ -7,12 +7,7 @@
 // Copyright 2019 Microsoft Corp. All rights reserved.
 //
 
-using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
 
 using Vector2d = global::CoreGraphics.NVector2d;
 using Vector3 = global::CoreGraphics.NVector3;

@@ -9,14 +9,10 @@
 
 #if __MACOS__
 
-using System;
 using System.Threading;
 
-using Foundation;
 using AudioToolbox;
 using AudioUnit;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.AudioToolbox {
 	[TestFixture]

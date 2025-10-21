@@ -8,11 +8,6 @@
 // Copyright 2022, 2024 Microsoft Corporation.
 //
 
-using System;
-
-using ObjCRuntime;
-using Foundation;
-
 namespace DeviceDiscoveryExtension {
 
 	[Mac (15, 0), iOS (16, 0), MacCatalyst (18, 0), NoTV]

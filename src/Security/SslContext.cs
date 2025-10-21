@@ -9,17 +9,13 @@
 
 #nullable enable
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
 
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace Security {
 	/// <summary>Class that encapsulates SSL session state..</summary>

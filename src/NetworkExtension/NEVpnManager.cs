@@ -10,9 +10,6 @@
 #nullable enable
 
 #if MONOMAC
-using System;
-using Foundation;
-using ObjCRuntime;
 using Security;
 
 namespace NetworkExtension {

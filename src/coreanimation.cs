@@ -29,7 +29,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 #if MONOMAC
@@ -42,10 +41,8 @@ using UIKit;
 #if HAS_OPENGLES
 using OpenGLES;
 #endif
-using Foundation;
 using CoreImage;
 using CoreGraphics;
-using ObjCRuntime;
 using Metal;
 using SceneKit; // For SCNAnimationEvent
 
@@ -655,10 +652,7 @@ namespace CoreAnimation {
 		bool Contains (CGPoint p);
 
 		/// <summary>The contents of this layer, as a <see cref="CoreGraphics.CGImage" />.</summary>
-		///         <value>
-		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
-		///         </value>
-		///         <remarks>To be added.</remarks>
+		/// <remarks>To get or set this property using a different type, call <see cref="GetContentsAs{T}()" /> or <see cref="SetContents(NSObject)" />.</remarks>
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		[Export ("contents", ArgumentSemantic.Strong), NullAllowed]
 		CGImage Contents { get; set; }

@@ -8,9 +8,6 @@
 // Copyright 2014 Xamarin Inc. All rights reserved
 //
 
-using System;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 
 #nullable enable

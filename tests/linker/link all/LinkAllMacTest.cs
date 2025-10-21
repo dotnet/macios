@@ -1,5 +1,4 @@
 #if __MACOS__
-using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -7,10 +6,6 @@ using System.Xml;
 using System.Xml.Serialization;
 
 using AppKit;
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace LinkAllTests {
 	[TestFixture]

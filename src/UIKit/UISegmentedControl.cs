@@ -8,10 +8,7 @@
 // Copyright 2011 Xamarin, Inc
 //
 
-using System;
 using System.Collections;
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
 using UIKit;
 

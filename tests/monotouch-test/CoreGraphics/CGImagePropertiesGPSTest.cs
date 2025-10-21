@@ -1,16 +1,12 @@
-using System;
 using System.IO;
 
 using CoreGraphics;
 using CoreImage;
-using Foundation;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-
-using NUnit.Framework;
 
 namespace monotouchtest.CoreGraphics {
 	[TestFixture]

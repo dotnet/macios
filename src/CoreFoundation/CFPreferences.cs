@@ -12,13 +12,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-using Foundation;
-using System.Runtime.Versioning;
-
 namespace CoreFoundation {
 	/// <summary>A collection of utility methods for setting Core Foundation preferences.</summary>
 	///     <remarks>To be added.</remarks>

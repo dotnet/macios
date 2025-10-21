@@ -26,7 +26,7 @@ namespace Cecil.Tests {
 			"CoreFoundation.CFMutableString.Transform (CoreFoundation.CFStringTransform, System.Boolean)",
 			"CoreFoundation.CFNotificationCenter.AddObserver (System.String, ObjCRuntime.INativeObject, System.Action`2<System.String, Foundation.NSDictionary>, CoreFoundation.CFNotificationSuspensionBehavior)",
 			"CoreFoundation.CFPreferences.SetAppValue (System.String, System.Object, Foundation.NSString)",
-			"CoreFoundation.CFProxy.CFProxyTypeToEnum (Foundation.NSString)",
+			"CoreFoundation.CFProxy.get_ProxyType ()",
 			"CoreFoundation.CFSocketSignature..ctor (System.Net.Sockets.AddressFamily, System.Net.Sockets.SocketType, System.Net.Sockets.ProtocolType, CoreFoundation.CFSocketAddress)",
 			"CoreGraphics.CGBitmapParameters.set_ColorSpace (CoreGraphics.CGColorSpace)",
 			"CoreGraphics.CGColor.Create (CoreGraphics.CGConstantColor)",

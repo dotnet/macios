@@ -1,10 +1,7 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 // Copyright 2019 Microsoft Corporation
 
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
-using System;
 
 namespace CoreWlan {
 

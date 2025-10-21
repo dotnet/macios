@@ -7,14 +7,7 @@
 // Copyright 2017 Microsoft Inc. All rights reserved.
 //
 
-using System;
-using System.Runtime.InteropServices;
-
-using Foundation;
 using CoreML;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreML {
 

@@ -7,18 +7,13 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.IO;
 using CoreGraphics;
-using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 using System.Threading;
 using Xamarin.Utils;
 

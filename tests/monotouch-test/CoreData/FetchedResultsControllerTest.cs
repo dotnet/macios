@@ -8,11 +8,8 @@
 //
 
 #if !MONOMAC
-using System;
 using System.Linq;
-using Foundation;
 using CoreData;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreData {
 

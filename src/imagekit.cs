@@ -26,10 +26,7 @@
 //
 // imagekit.cs: Bindings for the Image Kit API
 //
-using System;
 using AppKit;
-using Foundation;
-using ObjCRuntime;
 using CoreImage;
 using ImageCaptureCore;
 using CoreGraphics;

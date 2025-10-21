@@ -7,14 +7,9 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Globalization;
 
-using Foundation;
-using ObjCRuntime;
 using Security;
-
-using NUnit.Framework;
 
 using RectangleF = CoreGraphics.CGRect;
 using SizeF = CoreGraphics.CGSize;

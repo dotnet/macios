@@ -1,6 +1,3 @@
-using System;
-using Foundation;
-using ObjCRuntime;
 using AppKit;
 
 namespace FinderSync {

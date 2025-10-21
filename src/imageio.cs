@@ -26,11 +26,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using CoreGraphics;
-using System;
 
 namespace ImageIO {
 

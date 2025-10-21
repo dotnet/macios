@@ -10,12 +10,7 @@
 
 #if HAS_HOMEKIT
 
-using System;
-using NUnit.Framework;
-
-using Foundation;
 using HomeKit;
-using ObjCRuntime;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.HomeKit {

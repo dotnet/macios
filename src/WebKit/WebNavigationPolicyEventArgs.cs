@@ -10,10 +10,6 @@
 
 #nullable enable
 
-using System;
-
-using Foundation;
-
 namespace WebKit {
 
 	// Convenience enum.

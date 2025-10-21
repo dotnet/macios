@@ -7,14 +7,9 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
-
-using Foundation;
-
-using NUnit.Framework;
 
 namespace LinkAll.Serialization.Xml {
 

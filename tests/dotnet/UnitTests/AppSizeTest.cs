@@ -56,7 +56,10 @@ namespace Xamarin.Tests {
 			var expectedDirectory = Path.Combine (Configuration.SourceRoot, "tests", "dotnet", "UnitTests", "expected");
 
 			// Compute the size of the app bundle, and compare it to the stored version on disk.
-			var allFiles = Directory.GetFiles (appPath, "*", SearchOption.AllDirectories).Select (v => new FileInfo (v));
+			var allFiles = Directory.GetFiles (appPath, "*", SearchOption.AllDirectories).
+								Select (v => new FileInfo (v)).
+								// skip 'embedded.mobileprovision', because its size depends on the provisioning profile chosen during the build, which may very well differ between CI builds and local builds
+								Where (v => v.Name != "embedded.mobileprovision");
 			var appBundleSize = allFiles.Sum (v => v.Length);
 			var report = new StringBuilder ();
 			report.AppendLine ($"AppBundleSize: {FormatBytes (appBundleSize)}");
@@ -87,10 +90,24 @@ namespace Xamarin.Tests {
 			if (update) {
 				Directory.CreateDirectory (expectedDirectory);
 				File.WriteAllText (expectedSizeReportPath, report.ToString ());
-			} else {
-				msg += " Set the environment variable WRITE_KNOWN_FAILURES=1, run the test again, and verify the modified files for more information.";
-				Console.WriteLine (msg);
-				Console.WriteLine (report);
+			}
+
+			msg += " Set the environment variable WRITE_KNOWN_FAILURES=1, run the test again, and verify the modified files for more information.";
+			Console.WriteLine ($"    {msg}");
+
+			var expectedLines = expectedSizeReport.SplitLines ().Skip (2).Where (v => v.IndexOf (':') >= 0).ToDictionary (v => v [..v.IndexOf (':')], v => v [(v.IndexOf (':') + 1)..]);
+			var actualLines = report.ToString ().SplitLines ().Skip (2).Where (v => v.IndexOf (':') >= 0).ToDictionary (v => v [..v.IndexOf (':')], v => v [(v.IndexOf (':') + 1)..]);
+			var allKeys = expectedLines.Keys.Union (actualLines.Keys).OrderBy (v => v);
+			foreach (var key in allKeys) {
+				if (!expectedLines.TryGetValue (key, out var expectedLine)) {
+					Console.WriteLine ($"        File '{key}' was removed from app bundle: {actualLines [key]}");
+				} else if (!actualLines.TryGetValue (key, out var actualLine)) {
+					Console.WriteLine ($"        File '{key}' was added to app bundle: {expectedLine}");
+				} else if (expectedLine != actualLine) {
+					Console.WriteLine ($"        File '{key}' changed in app bundle:");
+					Console.WriteLine ($"            -{expectedLine}");
+					Console.WriteLine ($"            +{actualLine}");
+				}
 			}
 
 			// Create a file with all the APIs that survived the trimmer; this can be useful to determine what is not trimmed away.
@@ -107,14 +124,20 @@ namespace Xamarin.Tests {
 					}
 				}
 				preservedAPIs.Sort ();
-				var preservedAPIsText = string.Join ("\n", preservedAPIs);
+				var expectedFile = Path.Combine (expectedDirectory, $"{name}-preservedapis.txt");
+				var expectedAPIs = File.ReadAllLines (expectedFile);
+				var addedAPIs = preservedAPIs.Except (expectedAPIs);
+				var removedAPIs = expectedAPIs.Except (preservedAPIs);
+
+				Console.WriteLine ($"    {addedAPIs.Count ()} additional APIs present:");
+				foreach (var line in addedAPIs)
+					Console.WriteLine ($"        {line}");
+				Console.WriteLine ($"    {removedAPIs.Count ()} APIs not present anymore:");
+				foreach (var line in removedAPIs)
+					Console.WriteLine ($"        {line}");
+
 				if (update) {
-					var expectedFile = Path.Combine (expectedDirectory, $"{name}-preservedapis.txt");
-					File.WriteAllText (expectedFile, preservedAPIsText);
-					Console.WriteLine ($"Updated expected results: {expectedFile}");
-				} else {
-					Console.WriteLine ($"Expected results:");
-					Console.WriteLine (preservedAPIsText);
+					File.WriteAllLines (expectedFile, preservedAPIs);
 				}
 			}
 
@@ -124,7 +147,7 @@ namespace Xamarin.Tests {
 
 		static string FormatBytes (long bytes, bool alwaysShowSign = false)
 		{
-			return $"{(alwaysShowSign && bytes > 0 ? "+" : "")}{bytes:N0} bytes ({bytes / 1024.0:0.0:N1} KB = {bytes / (1024.0 * 1024.0):N1} MB)";
+			return $"{(alwaysShowSign && bytes > 0 ? "+" : "")}{bytes:N0} bytes ({bytes / 1024.0:N1} KB = {bytes / (1024.0 * 1024.0):N1} MB)";
 		}
 	}
 

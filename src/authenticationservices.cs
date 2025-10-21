@@ -2394,11 +2394,6 @@ namespace AuthenticationServices {
 
 		[Export ("authorizationStateForPlatformCredentials")]
 		ASAuthorizationWebBrowserPublicKeyCredentialManagerAuthorizationState AuthorizationStateForPlatformCredentials { get; }
-
-		[Mac (26, 1), iOS (26, 1), MacCatalyst (26, 1)]
-		[Export ("getIsDeviceConfiguredForPasskeysWithCompletionHandler:")]
-		[Async]
-		void IsDeviceConfiguredForPasskeys (Action<bool> completionHandler);
 	}
 
 	delegate void ASSettingsHelperRequestToTurnOnCredentialProviderExtensionCallback (bool appWasEnabledForAutofill);

@@ -9210,8 +9210,6 @@ M:AuthenticationServices.ASAuthorizationSingleSignOnProvider.CreateProvider(Foun
 M:AuthenticationServices.ASAuthorizationSingleSignOnProvider.CreateRequest
 M:AuthenticationServices.ASAuthorizationWebBrowserPublicKeyCredentialManager.GetPlatformCredentials(System.String,System.Action{AuthenticationServices.ASAuthorizationWebBrowserPlatformPublicKeyCredential[]})
 M:AuthenticationServices.ASAuthorizationWebBrowserPublicKeyCredentialManager.GetPlatformCredentialsAsync(System.String)
-M:AuthenticationServices.ASAuthorizationWebBrowserPublicKeyCredentialManager.IsDeviceConfiguredForPasskeys(System.Action{System.Boolean})
-M:AuthenticationServices.ASAuthorizationWebBrowserPublicKeyCredentialManager.IsDeviceConfiguredForPasskeysAsync
 M:AuthenticationServices.ASAuthorizationWebBrowserPublicKeyCredentialManager.RequestAuthorization(System.Action{AuthenticationServices.ASAuthorizationWebBrowserPublicKeyCredentialManagerAuthorizationState})
 M:AuthenticationServices.ASAuthorizationWebBrowserPublicKeyCredentialManager.RequestAuthorizationAsync
 M:AuthenticationServices.ASCredentialIdentityStore.GetCredentialIdentities(AuthenticationServices.ASCredentialServiceIdentifier,AuthenticationServices.ASCredentialIdentityTypes,AuthenticationServices.ASCredentialIdentityStoreGetCredentialIdentitiesHandler)
@@ -12442,7 +12440,6 @@ M:HomeKit.HMHomeManager.add_DidUpdateAuthorizationStatus(System.EventHandler{Hom
 M:HomeKit.HMHomeManager.add_DidUpdateHomes(System.EventHandler)
 M:HomeKit.HMHomeManager.add_DidUpdatePrimaryHome(System.EventHandler)
 M:HomeKit.HMHomeManager.Dispose(System.Boolean)
-M:HomeKit.HMHomeManager.FindVendorAccessory(Foundation.NSData,HomeKit.HMHomeManagerFindVendorAccessoryCallback)
 M:HomeKit.HMHomeManager.FindVendorAccessoryAsync(Foundation.NSData)
 M:HomeKit.HMHomeManager.remove_DidAddHome(System.EventHandler{HomeKit.HMHomeManagerEventArgs})
 M:HomeKit.HMHomeManager.remove_DidReceiveAddAccessoryRequest(System.EventHandler{HomeKit.HMHomeManagerAddAccessoryRequestEventArgs})
@@ -15771,15 +15768,9 @@ M:Phase.PhaseSwitchNodeDefinition.#ctor(Phase.PhaseStringMetaParameterDefinition
 M:Phase.PhaseSwitchNodeDefinition.#ctor(Phase.PhaseStringMetaParameterDefinition)
 M:Phase.PhaseSwitchNodeDefinition.AddSubtree(Phase.PhaseSoundEventNodeDefinition,System.String)
 M:Photos.IPHPhotoLibraryAvailabilityObserver.PhotoLibraryDidBecomeUnavailable(Photos.PHPhotoLibrary)
-M:Photos.PHAssetResourceUploadJob.FetchJobs(Photos.PHAssetResourceUploadJobAction,Photos.PHFetchOptions)
-M:Photos.PHAssetResourceUploadJobChangeRequest.Acknowledge
-M:Photos.PHAssetResourceUploadJobChangeRequest.ChangeRequest(Photos.PHAssetResourceUploadJob)
-M:Photos.PHAssetResourceUploadJobChangeRequest.CreateJob(Foundation.NSUrlRequest,Photos.PHAssetResource)
-M:Photos.PHAssetResourceUploadJobChangeRequest.Retry(Foundation.NSUrlRequest)
 M:Photos.PHPhotoLibrary_CloudIdentifiers.GetCloudIdentifierMappings(Photos.PHPhotoLibrary,System.String[])
 M:Photos.PHPhotoLibrary_CloudIdentifiers.GetLocalIdentifierMappings(Photos.PHPhotoLibrary,Photos.PHCloudIdentifier[])
 M:Photos.PHPhotoLibrary.RequestAuthorizationAsync(Photos.PHAccessLevel)
-M:Photos.PHPhotoLibrary.SetUploadJobExtensionEnabled(System.Boolean,Foundation.NSError@)
 M:PhotosUI.IPHLivePhotoViewDelegate.CanBeginPlayback(PhotosUI.PHLivePhotoView,PhotosUI.PHLivePhotoViewPlaybackStyle)
 M:PhotosUI.IPHLivePhotoViewDelegate.GetExtraMinimumTouchDuration(PhotosUI.PHLivePhotoView,UIKit.UITouch,PhotosUI.PHLivePhotoViewPlaybackStyle)
 M:PhotosUI.IPHPickerViewControllerDelegate.DidFinishPicking(PhotosUI.PHPickerViewController,PhotosUI.PHPickerResult[])
@@ -17071,7 +17062,6 @@ M:UIKit.UICollisionBehavior.remove_BeganContact(System.EventHandler{UIKit.UIColl
 M:UIKit.UICollisionBehavior.remove_EndedBoundaryContact(System.EventHandler{UIKit.UICollisionEndedBoundaryContactEventArgs})
 M:UIKit.UICollisionBehavior.remove_EndedContact(System.EventHandler{UIKit.UICollisionEndedContactEventArgs})
 M:UIKit.UIColor.LoadDataAsync(System.String,Foundation.NSProgress@)
-M:UIKit.UIColorEffect.Create(UIKit.UIColor)
 M:UIKit.UIColorPickerViewController.Dispose(System.Boolean)
 M:UIKit.UIColorPickerViewControllerDelegate_Extensions.DidFinish(UIKit.IUIColorPickerViewControllerDelegate,UIKit.UIColorPickerViewController)
 M:UIKit.UIColorPickerViewControllerDelegate_Extensions.DidSelectColor(UIKit.IUIColorPickerViewControllerDelegate,UIKit.UIColorPickerViewController,UIKit.UIColor,System.Boolean)
@@ -21078,7 +21068,6 @@ P:Foundation.NSUbiquitousKeyValueStore.Item(System.String)
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangedKeys
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangeReason
 P:Foundation.NSUndoManagerCloseUndoGroupEventArgs.Discardable
-P:Foundation.NSUrlSessionConfiguration.AllowsUltraConstrainedNetworkAccess
 P:Foundation.NSUrlSessionConfiguration.ProxyConfigurations
 P:Foundation.NSUrlSessionConfiguration.SessionType
 P:Foundation.NSUrlSessionConfiguration.StrongConnectionProxyDictionary
@@ -21424,7 +21413,6 @@ P:HealthKit.HKLiveWorkoutBuilder.Delegate
 P:HealthKit.HKMedicationConcept.GeneralForm
 P:HealthKit.HKMetadata.AppleFitnessPlusCatalogIdentifier
 P:HealthKit.HKWorkoutSession.Delegate
-P:HomeKit.HMAccessory.HapInstanceId
 P:HomeKit.HMAccessory.VendorAccessory
 P:HomeKit.HMAccessoryBrowserEventArgs.Accessory
 P:HomeKit.HMAccessoryFirmwareVersionEventArgs.FirmwareVersion
@@ -23369,10 +23357,6 @@ P:Phase.PhaseStreamNode.GainMetaParameter
 P:Phase.PhaseStreamNode.Mixer
 P:Phase.PhaseStreamNode.RateMetaParameter
 P:Phase.PhaseSwitchNodeDefinition.SwitchMetaParameterDefinition
-P:Photos.PHAssetResourceUploadJob.Destination
-P:Photos.PHAssetResourceUploadJob.JobLimit
-P:Photos.PHAssetResourceUploadJob.Resource
-P:Photos.PHAssetResourceUploadJob.State
 P:Photos.PHPhotoLibrary.UploadJobExtensionEnabled
 P:PhotosUI.PHPickerViewController.Delegate
 P:PrintCore.PMPrinter.HostName
@@ -24118,6 +24102,7 @@ P:UIKit.UIContentUnavailableView.ScrollEnabled
 P:UIKit.UIContextMenuInteraction.Delegate
 P:UIKit.UIControl.ContextMenuInteractionEnabled
 P:UIKit.UIControl.SymbolAnimationEnabled
+P:UIKit.UIDocumentBrowserAction.ImageOnlyForContextMenu
 P:UIKit.UIDocumentMenuDocumentPickedEventArgs.DocumentPicker
 P:UIKit.UIDocumentPickedAtUrlsEventArgs.Urls
 P:UIKit.UIDocumentPickedEventArgs.Url
@@ -24278,7 +24263,6 @@ P:UIKit.UITabBarSelectionEventArgs.ViewController
 P:UIKit.UITabBarTabSelectionEventArgs.PreviousTab
 P:UIKit.UITabBarTabSelectionEventArgs.Tab
 P:UIKit.UITabBarTabVisibilityChangeEventArgs.Tabs
-P:UIKit.UITabGroup.IsSidebarDestination
 P:UIKit.UITableView.PrefetchingEnabled
 P:UIKit.UITableViewCell.UITableViewCellAppearance.FocusStyle
 P:UIKit.UITableViewCell.UITableViewCellAppearance.SeparatorInset
@@ -28114,9 +28098,7 @@ T:Phase.PhaseUpdateMode
 T:Photos.FigExifCustomRenderedValue
 T:Photos.PHAccessLevel
 T:Photos.PHAssetPlaybackStyle
-T:Photos.PHAssetResourceUploadJob
 T:Photos.PHAssetResourceUploadJobAction
-T:Photos.PHAssetResourceUploadJobChangeRequest
 T:Photos.PHAssetResourceUploadJobState
 T:Photos.PHImageManagerRequestImageDataHandler
 T:Photos.PHLivePhotoEditingError
@@ -28538,7 +28520,6 @@ T:UIKit.UICollectionViewDiffableDataSourceSupplementaryViewProvider
 T:UIKit.UICollectionViewFlowLayoutSectionInsetReference
 T:UIKit.UICollectionViewSelfSizingInvalidation
 T:UIKit.UICollectionViewSupplementaryRegistrationConfigurationHandler
-T:UIKit.UIColorEffect
 T:UIKit.UIColorProminence
 T:UIKit.UIConfigurationColorTransformer
 T:UIKit.UIConfigurationColorTransformerHandler

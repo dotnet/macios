@@ -71,7 +71,7 @@ namespace Xamarin.Tests {
 			var expectedAppBundleSize = 0L;
 			if (File.Exists (expectedSizeReportPath)) {
 				expectedSizeReport = File.ReadAllText (expectedSizeReportPath);
-				expectedAppBundleSize = long.Parse (expectedSizeReport.SplitLines ().First ().Replace ("AppBundleSize: ", "").RemoveAfterFirstSpace ());
+				expectedAppBundleSize = long.Parse (expectedSizeReport.SplitLines ().First ().Replace ("AppBundleSize: ", "").Replace (",", "").Replace (".", "").RemoveAfterFirstSpace ());
 			}
 
 			var appSizeDifference = appBundleSize - expectedAppBundleSize;

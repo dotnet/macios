@@ -354,6 +354,16 @@ namespace Accessibility {
 		[Notification]
 		[Field ("AXPrefersNonBlinkingTextInsertionIndicatorDidChangeNotification")]
 		NSString NonBlinkingTextInsertionIndicatorDidChangeNotification { get; }
+
+		[TV (26, 1), Mac (26, 1), iOS (26, 1), MacCatalyst (26, 1)]
+		[Notification]
+		[Field ("AXPrefersActionSliderAlternativeDidChangeNotification")]
+		NSString ActionSliderAlternativeDidChangeNotification { get; }
+
+		[TV (26, 1), Mac (26, 1), iOS (26, 1), MacCatalyst (26, 1)]
+		[Notification]
+		[Field ("AXShowBordersEnabledStatusDidChangeNotification")]
+		NSString ShowBordersEnabledStatusDidChangeNotification { get; }
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]

@@ -1148,6 +1148,8 @@ namespace Introspection {
 			case "CPListImageRowItem":
 				switch (selectorName) {
 				case "imageTitles":
+					if (TestRuntime.CheckXcodeVersion (26, 1))
+						return false; // fixed in Xcode 26.1, no longer need the skip
 					return TestRuntime.CheckXcodeVersion (26, 0); // https://github.com/rolfbjarne/apple-feedback/tree/main/FB18122430
 				}
 				break;

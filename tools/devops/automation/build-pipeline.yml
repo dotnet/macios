@@ -45,7 +45,7 @@ resources:
     - repository: yaml-templates
       type: git
       name: xamarin.yaml-templates
-      ref: refs/heads/checkout-retry
+      ref: refs/heads/main
 
     - repository: macios-adr
       type: git

@@ -40,7 +40,7 @@ namespace Accessibility {
 		DwellControl,
 	}
 
-	public static class AXSettings {
+	public static partial class AXSettings {
 		[SupportedOSPlatform ("ios18.0")]
 		[SupportedOSPlatform ("maccatalyst18.0")]
 		[SupportedOSPlatform ("macos15.0")]

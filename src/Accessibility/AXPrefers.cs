@@ -51,21 +51,5 @@ namespace Accessibility {
 		{
 			return AXPrefersActionSliderAlternative () != 0;
 		}
-
-		[SupportedOSPlatform ("ios26.1")]
-		[SupportedOSPlatform ("maccatalyst26.1")]
-		[SupportedOSPlatform ("macos26.1")]
-		[SupportedOSPlatform ("tvos26.1")]
-		[DllImport (Constants.AccessibilityLibrary)]
-		static extern byte AXShowBordersEnabled ();
-
-		[SupportedOSPlatform ("ios26.1")]
-		[SupportedOSPlatform ("maccatalyst26.1")]
-		[SupportedOSPlatform ("macos26.1")]
-		[SupportedOSPlatform ("tvos26.1")]
-		public static bool ShowBordersEnabled ()
-		{
-			return AXShowBordersEnabled () != 0;
-		}
 	}
 }

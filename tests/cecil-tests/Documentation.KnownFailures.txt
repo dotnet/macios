@@ -8151,7 +8151,7 @@ M:Accessibility.AXHearingUtilities.SupportsBidirectionalStreaming
 M:Accessibility.AXPrefers.ActionSliderAlternative
 M:Accessibility.AXPrefers.HorizontalTextEnabled
 M:Accessibility.AXPrefers.NonBlinkingTextInsertionIndicator
-M:Accessibility.AXPrefers.ShowBordersEnabled
+M:Accessibility.AXSettings.ShowBordersEnabled
 M:AccessorySetupKit.ASAccessorySession.FailAuthorizationAsync(AccessorySetupKit.ASAccessory)
 M:AccessorySetupKit.ASAccessorySession.FinishAuthorizationAsync(AccessorySetupKit.ASAccessory,AccessorySetupKit.ASAccessorySettings)
 M:AccessorySetupKit.ASAccessorySession.FinishPickerDiscoveryAsync

@@ -43,5 +43,8 @@
 			RuntimePackRuntimeIdentifiers="@RUNTIME_PACK_RUNTIME_IDENTIFIERS@"
 			Profile="@PLATFORM@"
 		/>
+
+		<!-- Need this until https://github.com/dotnet/sdk/pull/51428 is completed -->
+		<KnownFrameworkReference Update="Microsoft.NETCore.App" RuntimePackRuntimeIdentifiers="%(RuntimePackRuntimeIdentifiers);ios-arm64;iossimulator-x64;iossimulator-arm64;tvos-arm64;tvossimulator-x64;tvossimulator-arm64;maccatalyst-arm64;maccatalyst-x64" />
 	</ItemGroup>
 </Project>

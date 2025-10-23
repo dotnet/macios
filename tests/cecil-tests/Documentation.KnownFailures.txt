@@ -21121,7 +21121,6 @@ P:Foundation.NSUrlSessionHandler.SupportsAutomaticDecompression
 P:Foundation.NSUrlSessionHandler.SupportsProxy
 P:Foundation.NSUrlSessionHandler.SupportsRedirectConfiguration
 P:Foundation.NSUrlSessionHandler.TrustOverrideForUrl
-P:Foundation.NSUrlSessionHandler.UseCookies
 P:Foundation.NSUrlSessionHandler.UseProxy
 P:Foundation.NSUrlSessionTask.Delegate
 P:Foundation.NSUrlSessionTaskTransactionMetrics.Cellular
@@ -23653,7 +23652,6 @@ P:System.Net.Http.NSUrlSessionHandler.SupportsAutomaticDecompression
 P:System.Net.Http.NSUrlSessionHandler.SupportsProxy
 P:System.Net.Http.NSUrlSessionHandler.SupportsRedirectConfiguration
 P:System.Net.Http.NSUrlSessionHandler.TrustOverrideForUrl
-P:System.Net.Http.NSUrlSessionHandler.UseCookies
 P:System.Net.Http.NSUrlSessionHandler.UseProxy
 P:TouchController.ITCControl.ColliderShape
 P:TouchController.ITCControl.Enabled

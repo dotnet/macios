@@ -42,6 +42,7 @@ CFLAGS=\
 	-Wcast-function-type-mismatch \
 	-Wsemicolon-before-method-body \
 	-Wsign-compare \
+	-Wshadow \
 	-g \
 	-I.
 SWIFTFLAGS=-g -emit-library

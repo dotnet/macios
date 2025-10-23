@@ -2176,9 +2176,11 @@ xamarin_process_managed_exception (MonoObject *exception)
 	MarshalManagedExceptionMode mode;
 	GCHandle exception_gchandle = INVALID_GCHANDLE;
 
-	GCHandle handle = xamarin_gchandle_new (exception, false);
-	mode = xamarin_on_marshal_managed_exception (handle, &exception_gchandle);
-	xamarin_gchandle_free (handle);
+	{
+		GCHandle handle = xamarin_gchandle_new (exception, false);
+		mode = xamarin_on_marshal_managed_exception (handle, &exception_gchandle);
+		xamarin_gchandle_free (handle);
+	}
 
 	if (exception_gchandle != INVALID_GCHANDLE) {
 		PRINT (PRODUCT ": Got an exception while executing the MarshalManagedException event (this exception will be ignored):");
@@ -2197,7 +2199,7 @@ xamarin_process_managed_exception (MonoObject *exception)
 	switch (mode) {
 #if !defined (CORECLR_RUNTIME) // CoreCLR won't unwind through native frames, so we'll have to abort (in the default case statement)
 	case MarshalManagedExceptionModeDisable:
-	case MarshalManagedExceptionModeUnwindNativeCode:
+	case MarshalManagedExceptionModeUnwindNativeCode: {
 		//
 		// We want to maintain the original stack trace of the exception, but unfortunately
 		// calling mono_raise_exception directly with the original exception will overwrite
@@ -2210,7 +2212,7 @@ xamarin_process_managed_exception (MonoObject *exception)
 		// to throw an exception that contains the original stack trace.
 		//
 
-		handle = xamarin_gchandle_new (exception, false);
+		GCHandle handle = xamarin_gchandle_new (exception, false);
 		xamarin_rethrow_managed_exception (handle, &exception_gchandle);
 		xamarin_gchandle_free (handle);
 
@@ -2231,8 +2233,9 @@ xamarin_process_managed_exception (MonoObject *exception)
 		xamarin_handling_unhandled_exceptions = 0;
 
 		mono_raise_exception ((MonoException *) exception);
-#endif
 		break;
+	}
+#endif
 	case MarshalManagedExceptionModeThrowObjectiveCException: {
 		GCHandle handle = xamarin_gchandle_new (exception, false);
 		NSException *ns_exc = xamarin_unwrap_ns_exception (handle, &exception_gchandle);
@@ -2295,12 +2298,13 @@ xamarin_process_managed_exception (MonoObject *exception)
 	case MarshalManagedExceptionModeUnwindNativeCode:
 #endif
 	case MarshalManagedExceptionModeAbort:
-	default:
-		handle = xamarin_gchandle_new (exception, false);
+	default: {
+		GCHandle handle = xamarin_gchandle_new (exception, false);
 		const char *msg = [xamarin_print_all_exceptions (handle) UTF8String];
 		xamarin_gchandle_free (handle);
 		xamarin_assertion_message ("Aborting due to trying to marshal managed exception:\n%s\n", msg);
 		break;
+	}
 	}
 }
 

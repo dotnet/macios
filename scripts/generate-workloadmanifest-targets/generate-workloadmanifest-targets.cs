@@ -50,6 +50,15 @@ var highestTpvPerMajorDotNet = groupedByMajorDotNetVersion.
 				return max;
 			}).
 			ToHashSet ();
+var lowestTpvPerMajorDotNet = groupedByMajorDotNetVersion.
+			Select (gr => {
+				var min = gr.OrderBy (el => {
+					var rv = tfmToTpvAndTfv (el);
+					return float.Parse (rv.Tpv, System.Globalization.CultureInfo.InvariantCulture);
+				}).First ();
+				return min;
+			}).
+			ToHashSet ();
 
 using (var writer = new StreamWriter (outputPath)) {
 	writer.WriteLine ($"<Project>");
@@ -65,7 +74,11 @@ using (var writer = new StreamWriter (outputPath)) {
 			writer.WriteLine ($"	<ImportGroup Condition=\" '$(TargetPlatformIdentifier)' == '{platform}' And '$(UsingAppleNETSdk)' != 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '{tfv}'))\">");
 			writer.WriteLine ($"		<Import Project=\"Sdk.props\" Sdk=\"Microsoft.{platform}.Sdk.{workloadVersion}\" /> <!-- this SDK version will validate the TargetPlatformVersion and show an error (in .NET 9+) or a warning (.NET 8) if it's not valid -->");
 		} else if (tpv.Length > 0) {
-			writer.WriteLine ($"	<ImportGroup Condition=\" '$(TargetPlatformIdentifier)' == '{platform}' And '$(UsingAppleNETSdk)' != 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '{tfv}')) And '$(TargetPlatformVersion)' == '{tpv}'\">");
+			if (lowestTpvPerMajorDotNet.TryGetValue (tfm, out var lowest) && lowest.Split ('_')[1] == tpv) {
+				writer.WriteLine ($"	<ImportGroup Condition=\" '$(TargetPlatformIdentifier)' == '{platform}' And '$(UsingAppleNETSdk)' != 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '{tfv}')) And ('$(TargetPlatformVersion)' == '{tpv}' Or ('$(TargetPlatformVersion)' == '' And '$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true'))\">");
+			} else {
+				writer.WriteLine ($"	<ImportGroup Condition=\" '$(TargetPlatformIdentifier)' == '{platform}' And '$(UsingAppleNETSdk)' != 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '{tfv}')) And '$(TargetPlatformVersion)' == '{tpv}'\">");
+			}
 			writer.WriteLine ($"		<Import Project=\"Sdk.props\" Sdk=\"Microsoft.{platform}.Sdk.{workloadVersion}\" />");
 		} else {
 			writer.WriteLine ($"	<ImportGroup Condition=\" '$(TargetPlatformIdentifier)' == '{platform}' And '$(UsingAppleNETSdk)' != 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '{tfv}'))\">");

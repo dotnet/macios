@@ -31,6 +31,7 @@ CFLAGS=\
 	-Wdeprecated \
 	-Wuninitialized \
 	-fstack-protector-strong \
+	-ftrivial-auto-var-init=zero \
 	-Wformat \
 	-Wformat-security \
 	-Werror=format-security \

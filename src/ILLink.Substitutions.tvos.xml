@@ -4,8 +4,8 @@
       <method signature="System.Void WarnOnce()" body="stub" feature="System.Diagnostics.Debugger.IsSupported" featurevalue="false" />
     </type>
     <type fullname="ObjCRuntime.Runtime">
-      <method signature="System.Boolean get_IsCoreCLR()" body="stub" feature="ObjCRuntime.Runtime.IsNativeAOT" featurevalue="false" value="false" />
-      <method signature="System.Boolean get_IsCoreCLR()" body="stub" feature="ObjCRuntime.Runtime.IsNativeAOT" featurevalue="true" value="true" />
+      <method signature="System.Boolean get_IsCoreCLR()" body="stub" feature="ObjCRuntime.Runtime.IsCoreCLR" featurevalue="false" value="false" />
+      <method signature="System.Boolean get_IsCoreCLR()" body="stub" feature="ObjCRuntime.Runtime.IsCoreCLR" featurevalue="true" value="true" />
       <method signature="System.Boolean get_IsNativeAOT()" body="stub" feature="ObjCRuntime.Runtime.IsNativeAOT" featurevalue="false" value="false" />
       <method signature="System.Boolean get_IsNativeAOT()" body="stub" feature="ObjCRuntime.Runtime.IsNativeAOT" featurevalue="true" value="true" />
       <method signature="System.Int32 GetRuntimeArch()" body="stub" feature="ObjCRuntime.Runtime.Arch.IsSimulator" featurevalue="false" value="0" />

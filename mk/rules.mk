@@ -43,6 +43,7 @@ CFLAGS=\
 	-Wsemicolon-before-method-body \
 	-Wsign-compare \
 	-Wshadow \
+	-Wformat-nonliteral \
 	-g \
 	-I.
 SWIFTFLAGS=-g -emit-library

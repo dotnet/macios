@@ -1310,7 +1310,16 @@ xamarin_strdup_printf (const char *msg, ...)
 	char *formatted = NULL;
 
 	va_start (args, msg);
+
+// Silence this warning:
+// runtime.m:1313:25: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
+//  1313 |         vasprintf (&formatted, msg, args);
+//       |                                ^~~~~
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	vasprintf (&formatted, msg, args);
+#pragma clang diagnostic pop
+
 	va_end (args);
 
 	return formatted;
@@ -1323,7 +1332,16 @@ xamarin_assertion_message (const char *msg, ...)
 	char *formatted = NULL;
 
 	va_start (args, msg);
+
+// Silence this warning:
+// runtime.m:1335:25: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
+//  1335 |         vasprintf (&formatted, msg, args);
+//       |                                ^~~
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	vasprintf (&formatted, msg, args);
+#pragma clang diagnostic pop
+
 	if (formatted) {
 		PRINT ( PRODUCT ": %s", formatted);
 		free (formatted);
@@ -2552,7 +2570,14 @@ xamarin_printf (const char *format, ...)
 void
 xamarin_vprintf (const char *format, va_list args)
 {
+// Silence this warning:
+// runtime.m:2564:56: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
+//  2564 |         NSString *message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
+//       |                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	NSString *message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
+#pragma clang diagnostic pop
 	
 	NSLog (@"%@", message);	
 

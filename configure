@@ -126,6 +126,14 @@ while test "x$1" != x; do
         echo "DOTNET_RUNTIME_PATH=$2" >> "$CONFIGURED_FILE"
         shift 2
         ;;
+    --disable-device)
+        echo "ENABLE_DEVICE=" >> "$CONFIGURED_FILE"
+        shift
+        ;;
+    --disable-simulator)
+        echo "ENABLE_SIMULATOR=" >> "$CONFIGURED_FILE"
+        shift
+        ;;
     --ignore-unknown-params)
         echo "ignoring unknown parameters"
         IGNORE_UNKNOWN_PARAMS=true

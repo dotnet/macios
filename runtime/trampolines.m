@@ -905,7 +905,7 @@ xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum Xama
 	
 	pthread_mutex_lock (&gchandle_hash_lock);
 	if (gchandle_hash == NULL) {
-		CFDictionaryValueCallBacks value_callbacks = { 0 };
+		CFDictionaryValueCallBacks value_callbacks = { };
 		value_callbacks.release = release_gchandle_dictionary_entry;
 		gchandle_hash = CFDictionaryCreateMutable (kCFAllocatorDefault, 0, NULL, &value_callbacks);
 	}
@@ -1411,7 +1411,7 @@ xamarin_nsarray_to_managed_nsobject_array (NSArray *array, MonoType *array_type,
 		element_class = e_class;
 	}
 
-	struct conversion_data data = { 0 };
+	struct conversion_data data = { };
 	data.domain = mono_domain_get ();
 	data.element_class = element_class;
 	data.element_type = mono_class_get_type (data.element_class);
@@ -1437,7 +1437,7 @@ xamarin_nsarray_to_managed_inativeobject_array (NSArray *array, MonoType *array_
 		element_class = e_class;
 	}
 
-	struct conversion_data data = { 0 };
+	struct conversion_data data = { };
 	data.domain = mono_domain_get ();
 	data.element_class = element_class;
 	data.element_type = mono_class_get_type (data.element_class);
@@ -1463,7 +1463,7 @@ xamarin_nsarray_to_managed_inativeobject_array_static (NSArray *array, MonoType 
 		element_class = e_class;
 	}
 
-	struct conversion_data data = { 0 };
+	struct conversion_data data = { };
 	data.element_class = element_class;
 	data.element_type = mono_class_get_type (data.element_class);
 	data.iface_token_ref = iface_token_ref;

@@ -186,7 +186,7 @@ static struct Trampolines trampolines = {
 	(void *) &xamarin_get_nsobject_data_trampoline,
 };
 
-static struct InitializationOptions options = { 0 };
+static struct InitializationOptions options = { };
 
 #if !defined (CORECLR_RUNTIME)
 void

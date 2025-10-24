@@ -576,9 +576,8 @@ namespace Xamarin.MacDev.Tasks {
 
 				EntitlementsInExecutable = new TaskItem (simulatedXcent);
 
-				// No matter what, I've only been able to make Xcode apply a single entitlement to simulator builds: com.apple.security.get-task-allow
+				// No matter what, I haven't been able to make Xcode apply any entitlements to the when signing simulator apps
 				compiled = new PDictionary ();
-				compiled.Add ("com.apple.security.get-task-allow", new PBoolean (true));
 			} else {
 				archived = GetArchivedExpandedEntitlements (templates, compiled);
 			}

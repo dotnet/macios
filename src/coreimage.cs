@@ -5931,9 +5931,10 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIReductionFilter))]
 	interface CIAreaAverage {
-
+#if !XAMCORE_5_0
 		[CoreImageFilterProperty ("outputImageNonMPS")]
 		CIImage OutputImageNonMps { get; }
+#endif
 
 		[iOS (13, 4)]
 		[MacCatalyst (13, 1)]
@@ -5990,6 +5991,7 @@ namespace CoreImage {
 		[CoreImageFilterProperty ("inputExtent")]
 		CIVector Extent { get; set; }
 
+#if !XAMCORE_5_0
 		[CoreImageFilterProperty ("outputImageNonMPS")]
 		CIImage OutputImageNonMps { get; }
 
@@ -6001,6 +6003,7 @@ namespace CoreImage {
 
 		[CoreImageFilterProperty ("outputData")]
 		NSData OutputData { get; }
+#endif
 	}
 
 	[CoreImageFilter]
@@ -6096,8 +6099,10 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CICodeGenerator))]
 	interface CIAztecCodeGenerator : CIAztecCodeGeneratorProtocol {
+#if !XAMCORE_5_0
 		[CoreImageFilterProperty ("outputCGImage")]
 		CGImage OutputCGImage { get; }
+#endif
 	}
 
 	/// <summary>A <see cref="CoreImage.CITransitionFilter" /> that animates a transition between two images.</summary>
@@ -6359,9 +6364,10 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CICodeGenerator))]
 	interface CICode128BarcodeGenerator : CICode128BarcodeGeneratorProtocol {
-
+#if !XAMCORE_5_0
 		[CoreImageFilterProperty ("outputCGImage")]
 		CIImage OutputCGImage { get; }
+#endif
 	}
 
 	/// <summary>An abstract <see cref="CoreImage.CIFilter" /> that combines a background and foreground image.</summary>
@@ -7315,8 +7321,10 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CICodeGenerator), Name = "CIPDF417BarcodeGenerator")]
 	interface CIPdf417BarcodeGenerator : CIPdf417BarcodeGeneratorProtocol {
+#if !XAMCORE_5_0
 		[CoreImageFilterProperty ("outputCGImage")]
 		CGImage OutputCGImage { get; }
+#endif
 	}
 
 	/// <summary>A <see cref="CoreImage.CIPerspectiveTransform" /> that is cropped according to the perspective control points, but whose pixels are not transformed.</summary>
@@ -7480,9 +7488,10 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CICodeGenerator))]
 	interface CIQRCodeGenerator : CIQRCodeGeneratorProtocol {
-
+#if !XAMCORE_5_0
 		[CoreImageFilterProperty ("outputCGImage")]
 		CGImage OutputCGImage { get; }
+#endif
 	}
 
 	/// <include file="../docs/api/CoreImage/CIRadialGradient.xml" path="/Documentation/Docs[@DocId='T:CoreImage.CIRadialGradient']/*" />
@@ -8079,7 +8088,7 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIBarcodeGenerator : CIBarcodeGeneratorProtocol {
-
+#if !XAMCORE_5_0
 		[CoreImageFilterProperty ("outputCGImageForQRCodeDescriptor")]
 		CGImage OutputCGImageForQRCodeDescriptor { get; }
 
@@ -8094,6 +8103,7 @@ namespace CoreImage {
 
 		[CoreImageFilterProperty ("outputCGImage")]
 		CGImage OutputCGImage { get; }
+#endif
 	}
 
 	[CoreImageFilter]
@@ -9217,7 +9227,7 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIReductionFilter))]
 	interface CIAreaMinMax : CIAreaReductionFilterProtocol {
-
+#if !XAMCORE_5_0
 		[CoreImageFilterProperty ("outputImageNonMPS")]
 		CIImage OutputImageNonMps { get; }
 
@@ -9225,6 +9235,7 @@ namespace CoreImage {
 		[MacCatalyst (13, 1)]
 		[CoreImageFilterProperty ("outputImageMPS")]
 		CIImage OutputImageMps { get; }
+#endif
 	}
 
 	[CoreImageFilter]
@@ -9448,9 +9459,10 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIKeystoneCorrection))]
 	interface CIKeystoneCorrectionCombined : CIKeystoneCorrectionCombinedProtocol {
-
+#if !XAMCORE_5_0
 		[CoreImageFilterProperty ("outputTransform")]
 		CGAffineTransform OutputTransform { get; }
+#endif
 	}
 
 	[CoreImageFilter]
@@ -9459,14 +9471,10 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIKeystoneCorrection))]
 	interface CIKeystoneCorrectionHorizontal : CIKeystoneCorrectionHorizontalProtocol {
-
-#if false // no documentation about the type
-		[CoreImageFilterProperty ("outputRotationFilter")]
-		NSObject OutputRotationFilter { get; }
-#endif
-
+#if !XAMCORE_5_0
 		[CoreImageFilterProperty ("outputTransform")]
 		CGAffineTransform OutputTransform { get; }
+#endif
 	}
 
 	[CoreImageFilter]
@@ -9475,14 +9483,10 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIKeystoneCorrection))]
 	interface CIKeystoneCorrectionVertical : CIKeystoneCorrectionVerticalProtocol {
-
-#if false // no documentation about the type
-		[CoreImageFilterProperty ("outputRotationFilter")]
-		CGAffineTransform OutputRotationFilter { get; }
-#endif
-
+#if !XAMCORE_5_0
 		[CoreImageFilterProperty ("outputTransform")]
 		CGAffineTransform OutputTransform { get; }
+#endif
 	}
 
 	[CoreImageFilter]
@@ -9491,9 +9495,10 @@ namespace CoreImage {
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CIFilter))]
 	interface CIPerspectiveRotate : CIPerspectiveRotateProtocol {
-
+#if !XAMCORE_5_0
 		[CoreImageFilterProperty ("outputTransform")]
 		CGAffineTransform OutputTransform { get; }
+#endif
 	}
 
 	[CoreImageFilter]
@@ -13789,8 +13794,10 @@ namespace CoreImage {
 	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (CIFilter))]
 	interface CIRoundedQRCodeGenerator : CIRoundedQRCodeGeneratorProtocol {
+#if !XAMCORE_5_0
 		[CoreImageFilterProperty ("outputCGImage")]
 		CGImage OutputCGImage { get; }
+#endif
 	}
 
 	[TV (26, 0), Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0)]

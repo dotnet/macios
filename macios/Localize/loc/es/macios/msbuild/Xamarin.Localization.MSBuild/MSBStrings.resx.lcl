@@ -2605,29 +2605,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";E7141" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The library {0} is a static library, and static libraries are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[La biblioteca {0} es estática y las bibliotecas estáticas no se admiten con el reinicio rápido. Establezca "SkipStaticLibraryValidation=true" en el archivo de proyecto para omitir este error.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";E7142" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unknown value for 'SkipStaticLibraryValidation': {0}. Valid values are: 'true', 'false', 'warn'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Valor desconocido para "SkipStaticLibraryValidation": {0}. Los valores válidos son: "true", "false", "warn".]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";E7143" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The file {0} is an object file, and object files are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[El archivo {0} es un archivo objeto y los archivos objeto no se admiten con el reinicio rápido. Establezca "SkipStaticLibraryValidation=true" en el archivo de proyecto para omitir este error.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2740,11 +2722,20 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";E7160" ItemType="0;.resx" PsrId="211" Leaf="true">
+      <Item ItemId=";E7162" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unable to execute this task remotely for unknown reasons. The build log may have more information.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[No se puede ejecutar esta tarea de forma remota por razones desconocidas. El registro de compilación puede contener más información.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7163" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Por razones desconocidas, no se pueden copiar las entradas de esta tarea al servidor de compilación remoto. El registro de compilación puede contener más información.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -3619,6 +3610,18 @@
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Se ignoró el elemento {0} '{1}' porque hay otro elemento con el mismo LogicalName ('{2}')]]></Val>
           </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7160" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Creating a compressed binding resource package to avoid MAX_PATH problems on Windows.]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7161" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Not creating a compressed binding resource package, because all the native references are already compressed.]]></Val>
         </Str>
         <Disp Icon="Str" />
       </Item>

@@ -32,7 +32,7 @@ This file should be imported by eng/Versions.props
     <MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.25513.2</MicrosoftDotNetBuildTasksFeedPackageVersion>
     <MicrosoftDotNetSharedFrameworkSdkPackageVersion>10.0.0-beta.25513.2</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
     <!-- dotnet/xharness dependencies -->
-    <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25513.3</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
+    <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25516.4</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
   </PropertyGroup>
   <!--Property group for alternate package version names-->
   <PropertyGroup>

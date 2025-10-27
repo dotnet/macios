@@ -229,7 +229,7 @@ void			xamarin_bridge_raise_unhandled_exception_event (GCHandle exception_gchand
 bool			xamarin_register_monoassembly (MonoAssembly *assembly, GCHandle *exception_gchandle);
 void			xamarin_install_nsautoreleasepool_hooks ();
 void			xamarin_enable_new_refcount ();
-const char * const	xamarin_get_original_working_directory_path ();
+const char *	xamarin_get_original_working_directory_path ();
 int				xamarin_get_runtime_arch ();
 
 MonoObject *	xamarin_new_nsobject (id self, MonoClass *klass, GCHandle *exception_gchandle);

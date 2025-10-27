@@ -31,11 +31,17 @@ CFLAGS=\
 	-Wdeprecated \
 	-Wuninitialized \
 	-fstack-protector-strong \
+	-ftrivial-auto-var-init=zero \
 	-Wformat \
 	-Wformat-security \
 	-Werror=format-security \
 	-fdiagnostics-absolute-paths \
 	-Wno-objc-protocol-property-synthesis \
+	-Wignored-qualifiers \
+	-Wmissing-field-initializers \
+	-Wcast-function-type-mismatch \
+	-Wsemicolon-before-method-body \
+	-Wsign-compare \
 	-g \
 	-I.
 SWIFTFLAGS=-g -emit-library

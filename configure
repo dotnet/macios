@@ -127,11 +127,11 @@ while test "x$1" != x; do
         shift 2
         ;;
     --disable-device)
-        echo "ENABLE_DEVICE=" >> "$CONFIGURED_FILE"
+        echo "INCLUDE_DEVICE=" >> "$CONFIGURED_FILE"
         shift
         ;;
     --disable-simulator)
-        echo "ENABLE_SIMULATOR=" >> "$CONFIGURED_FILE"
+        echo "INCLUDE_SIMULATOR=" >> "$CONFIGURED_FILE"
         shift
         ;;
     --ignore-unknown-params)

@@ -23,6 +23,7 @@ steps:
     submodules: recursive
     path: s/$(BUILD_REPOSITORY_TITLE)
     fetchTags: false
+    retryCount: 3
 
 # some bots don't seem to have pwsh installed, so make sure it is
 - powershell: |

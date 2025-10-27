@@ -31,7 +31,6 @@ Copy this list into a new issue and then check off as the release progresses.
     * introspection
     * cecil
     * bgen
-* [ ] Update any existing API bindings PRs if needed.
 * [ ] Bind APIs!
 
 ### Beta X

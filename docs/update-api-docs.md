@@ -77,4 +77,5 @@ It can be helpful to view info about all monikers here: [All monikers](https://o
 ## References
 
 * [Document our documentation process/workflow/guidelines - #17401](https://github.com/dotnet/macios/issues/17401)
+* [Figure out how to publish XML documentation on our website - #17396](https://github.com/dotnet/macios/issues/17396)
 * [Code Documentation Guidelines](code-documentation-guidelines.md)

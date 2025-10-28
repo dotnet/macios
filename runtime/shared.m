@@ -47,7 +47,7 @@
 @implementation XamarinNSThreadObject
 {
 }
--(id) initWithData: (void *) targ selector:(SEL) sel argument:(id) arg is_direct_binding:(bool) is_direct;
+-(id) initWithData: (void *) targ selector:(SEL) sel argument:(id) arg is_direct_binding:(bool) is_direct
 {
 	target = targ;
 	if (is_direct)
@@ -58,7 +58,7 @@
 	return self;
 }
 
--(void) start: (id) arg;
+-(void) start: (id) arg
 {
 	if (is_direct_binding) {
 		id (*invoke) (id, SEL, id) = (id (*)(id, SEL, id)) objc_msgSend;
@@ -69,7 +69,7 @@
 	}
 }
 
--(void) dealloc;
+-(void) dealloc
 {
 	// Cast to void* so that ObjC doesn't do any funky retain/release
 	// on these objects when capturing them for the block, since we
@@ -125,7 +125,7 @@ xamarin_init_nsthread (id obj, bool is_direct, id target, SEL sel, id arg)
 		the_func ();
 	[pool drain];
 }
--(id) initWithFunc: (init_cocoa_func *) func;
+-(id) initWithFunc: (init_cocoa_func *) func
 {
 	self = [super init];
 	if (self != nil) {

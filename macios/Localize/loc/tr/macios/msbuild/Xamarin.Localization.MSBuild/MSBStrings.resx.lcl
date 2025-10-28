@@ -2605,29 +2605,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";E7141" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The library {0} is a static library, and static libraries are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0} kitaplığı bir statik kitaplıktır ve statik kitaplıklar Çalışırken Yeniden Başlatma ile desteklenmez. Bu hatayı yoksaymak için proje dosyasındaki 'SkipStaticLibraryValidation=true' değerini ayarlayın.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";E7142" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unknown value for 'SkipStaticLibraryValidation': {0}. Valid values are: 'true', 'false', 'warn'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA['SkipStaticLibraryValidation' için bilinmeyen değer: {0}. Geçerli değerler: 'true', 'false', 'warn'.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";E7143" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The file {0} is an object file, and object files are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[{0} dosyası bir nesne dosyasıdır ve nesne dosyaları Çalışırken Yeniden Başlatma ile desteklenmez. Bu hatayı yoksaymak için proje dosyasındaki 'SkipStaticLibraryValidation=true' değerini ayarlayın.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2740,7 +2722,7 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";E7160" ItemType="0;.resx" PsrId="211" Leaf="true">
+      <Item ItemId=";E7162" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unable to execute this task remotely for unknown reasons. The build log may have more information.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -2749,7 +2731,7 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";E7161" ItemType="0;.resx" PsrId="211" Leaf="true">
+      <Item ItemId=";E7163" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
@@ -3628,6 +3610,18 @@
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[{0} öğesi '{1}' göz ardı edildi, çünkü aynı LogicalName'e ('{2}') sahip başka bir öğe var]]></Val>
           </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7160" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Creating a compressed binding resource package to avoid MAX_PATH problems on Windows.]]></Val>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7161" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Not creating a compressed binding resource package, because all the native references are already compressed.]]></Val>
         </Str>
         <Disp Icon="Str" />
       </Item>

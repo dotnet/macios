@@ -5462,7 +5462,7 @@ public partial class Generator : IMemberGatherer {
 			return;
 
 		if (!BindThirdPartyLibrary)
-			throw new InvalidOperationException ($"Found [Preserve] on {FormatProvider (mi)}: [Preserve] is deprecated, so don't use it.");
+			exceptions.Add (ErrorHelper.CreateError (1124 /* Found a [Preserve] attribute on {0}: [Preserve] is deprecated; use [DynamicDependency] instead. */, FormatProvider (mi)));
 
 		if (p.AllMembers)
 			print ("[Preserve (AllMembers = true)]");

@@ -20,6 +20,7 @@
 //
 
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -155,9 +156,13 @@ namespace Introspection {
 		static void GenerateBinding (NSObject filter, TextWriter writer)
 		{
 			NSObject value;
+			var f = (CIFilter) filter;
 			var attributes = (filter as CIFilter).Attributes;
 
 			writer.WriteLine ("[CoreImageFilter]");
+			writer.WriteLine ($"/* Attributes for this filter REMOVE-ME:\n\n{attributes}\n\n */");
+			writer.WriteLine ($"/* Input Keys for this filter: {string.Join (", ", f.InputKeys.Select (v => v.ToString ()).OrderBy (v => v))} */");
+			writer.WriteLine ($"/* Output Keys for this filter: {string.Join (", ", f.OutputKeys.Select (v => v.ToString ()).OrderBy (v => v))} */");
 
 			if (!attributes.TryGetValue ((NSString) "CIAttributeFilterAvailable_iOS", out value)) {
 				writer.WriteLine ("[NoiOS]");
@@ -389,6 +394,7 @@ namespace Introspection {
 					continue;
 
 				CIFilter f = ctor.Invoke (null) as CIFilter;
+				var attributes = f.Attributes;
 
 				// first check that every property can be mapped to an input key - except if it starts with "Output"
 				foreach (var p in t.GetProperties (BindingFlags.Public | BindingFlags.Instance)) {
@@ -458,6 +464,13 @@ namespace Introspection {
 
 				// second check that every input key is mapped to an property
 				foreach (var key in f.InputKeys) {
+					if (!attributes.ContainsKey ((NSString) key)) {
+						// We're assuming that if an input key doesn't have an entry in the attributes, then it shouldn't really be used.
+						// Also, we don't know how to bind it anyway, because the (missing) entry in the attributes is where Apple describes the property type.
+						/// Console.WriteLine ($"{t.Name}: Input key '{key}' does not have a corresponding entry in the attributes");
+						continue;
+					}
+
 					string cap = Char.ToUpperInvariant (key [0]) + key.Substring (1);
 					// special cases (protocol names are better)
 					switch (t.Name) {
@@ -507,66 +520,11 @@ namespace Introspection {
 
 				// third check that every output key is mapped to an property
 				foreach (var key in f.OutputKeys) {
-					// special cases
-					switch (t.Name) {
-					case "CIKeystoneCorrectionCombined":
-					case "CIKeystoneCorrectionHorizontal":
-					case "CIKeystoneCorrectionVertical":
-						switch (key) {
-						case "outputRotationFilter":
-							continue; // lack of documentation about the returned type
-						}
-						break;
-					case "CILanczosScaleTransform":
-						switch (key) {
-						// ref: https://github.com/dotnet/macios/issues/7209
-						case "outputImageNewScaleX:scaleY:":
-						case "outputImageOldScaleX:scaleY:":
-							continue;
-						}
-						break;
-					case "CIDiscBlur":
-						switch (key) {
-						// existed in iOS 10.3 but not in iOS 13 - we're not adding them
-						case "outputImageOriginal":
-						case "outputImageEnhanced":
-							continue;
-						}
-						break;
-					case "CIGaussianBlur":
-						switch (key) {
-						case "outputImageV1":
-							// existed briefly in macOS 10.11, but neither before nor after.
-							continue;
-						}
-						break;
-					case "CIAreaAverage":
-					case "CIAreaHistogram":
-					case "CIAreaMinMax":
-						switch (key) {
-						case "outputImageMPS":
-						case "outputImageMPS:":
-						case "outputImageNonMPS:":
-							// no doc for argument
-							continue;
-						}
-						break;
-					case "CIAreaLogarithmicHistogram":
-						switch (key) {
-						case "outputImageNonMPS":
-						case "outputData":
-						case "outputImageMPS":
-							// no doc for argument
-							continue;
-						}
-						break;
-					case "CIToneMapHeadroom":
-						switch (key) {
-						case "outputValue:":
-							// no doc for argument
-							continue;
-						}
-						break;
+					if (key != "outputImage" && !attributes.ContainsKey ((NSString) key)) {
+						// We're assuming that if an output key doesn't have an entry in the attributes, then it shouldn't really be used.
+						// Also, we don't know how to bind it anyway, because the (missing) entry in the attributes is where Apple describes the property type.
+						// Console.WriteLine ($"{t.Name}: Output key '{key}' does not have a corresponding entry in the attributes");
+						continue;
 					}
 
 					var cap = Char.ToUpperInvariant (key [0]) + key.Substring (1);

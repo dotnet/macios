@@ -3107,7 +3107,7 @@ namespace Registrar {
 				sb.WriteLine ();
 			}
 
-			map.AppendLine ("{ NULL, 0 },");
+			map.AppendLine ("{ NULL, 0, 0 },");
 			map.AppendLine ("};");
 			map.AppendLine ();
 
@@ -4342,14 +4342,8 @@ namespace Registrar {
 			if (isVoid)
 				return;
 
-			switch (rettype) {
-			case "CGRect":
-				body_setup.AppendLine ("{0} res = {{{{0}}}};", rettype);
-				break;
-			default:
-				body_setup.AppendLine ("{0} res = {{0}};", rettype);
-				break;
-			}
+			body_setup.AppendLine ("{0} res = {{ }};", rettype);
+
 			var isArray = returntype is ArrayType;
 			var type = returntype.Resolve () ?? returntype;
 			var retain = method.RetainReturnValue;

@@ -348,6 +348,35 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		public void TeamIdentifierPrefix_Simulator ()
+		{
+			var customEntitlements = new TaskItem [] {
+				new TaskItem ("keychain-access-groups", new Dictionary<string, string> { {  "Type", "String" }, { "Value", "$(TeamIdentifierPrefix)org.xamarin" } }),
+			};
+			var task = CreateEntitlementsTask ("EmptyEntitlements.plist", out var compiledEntitlements, out var archivedEntitlements);
+			task.TargetFrameworkMoniker = ".NETCoreApp,Version=v6.0,Profile=ios";
+			task.CustomEntitlements = customEntitlements;
+			task.SdkIsSimulator = true;
+			ExecuteTask (task);
+
+			Assert.Multiple (() => {
+				Assert.That (archivedEntitlements, Does.Not.Exist, "archived");
+
+				var inExecutable = PDictionary.FromFile (task.EntitlementsInExecutable!.ItemSpec)!;
+				Assert.That (inExecutable.Count, Is.EqualTo (4), $"in executable count");
+				Assert.IsFalse (inExecutable.ContainsKey (EntitlementKeys.AllowExecutionOfJitCode), "#1");
+				Assert.IsTrue (inExecutable.ContainsKey ("keychain-access-groups"), "in executable");
+				Assert.That (((PString?) inExecutable ["keychain-access-groups"])?.Value, Is.EqualTo ("Z8CSQKJE7R.org.xamarin"), "in executable value 1");
+
+				Assert.IsFalse (inExecutable.ContainsKey ("com.apple.security.get-task-allow"), "in executable com.apple.security.get-task-allow");
+				Assert.IsTrue (inExecutable.ContainsKey ("get-task-allow"), $"in executable get-task-allow");
+
+				var inSignature = PDictionary.FromFile (task.EntitlementsInSignature!.ItemSpec)!;
+				Assert.That (inSignature.Count, Is.EqualTo (0), $"in signature count");
+			});
+		}
+
+		[Test]
 		[TestCase (EntitlementsMode.InCustomEntitlements)]
 		[TestCase (EntitlementsMode.InFile)]
 		public void ValidateEntitlements_Invalid (EntitlementsMode mode)

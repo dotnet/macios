@@ -425,7 +425,7 @@ xamarin_mmap_runtime_config_file (size_t *length)
 		return NULL;
 	}
 
-	struct stat stat_buf = { 0 };
+	struct stat stat_buf = { };
 	if (fstat (fd, &stat_buf) == -1) {
 		LOG (PRODUCT ": Could not stat the runtime config file '%s' in the app bundle: %s\n", path, strerror (errno));
 		close (fd);

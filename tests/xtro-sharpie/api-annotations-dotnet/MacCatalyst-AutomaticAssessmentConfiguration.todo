@@ -1,6 +1,0 @@
-!missing-selector! AEAssessmentConfiguration::allowsAccessibilityKeyboard not bound
-!missing-selector! AEAssessmentConfiguration::allowsAccessibilityLiveCaptions not bound
-!missing-selector! AEAssessmentConfiguration::allowsAccessibilityReader not bound
-!missing-selector! AEAssessmentConfiguration::setAllowsAccessibilityKeyboard: not bound
-!missing-selector! AEAssessmentConfiguration::setAllowsAccessibilityLiveCaptions: not bound
-!missing-selector! AEAssessmentConfiguration::setAllowsAccessibilityReader: not bound

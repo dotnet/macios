@@ -299,7 +299,6 @@
 !missing-null-allowed! 'AppKit.NSImageRep[] AppKit.NSImageRep::ImageRepsFromFile(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImageRep[] AppKit.NSImageRep::ImageRepsFromPasteboard(AppKit.NSPasteboard)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImageRep[] AppKit.NSImageRep::ImageRepsFromUrl(Foundation.NSUrl)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'AppKit.NSLayoutManager AppKit.NSTextView::get_LayoutManager()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSLayoutManager AppKit.NSTypesetter::get_LayoutManager()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSMenu AppKit.NSApplicationDelegate::ApplicationDockMenu(AppKit.NSApplication)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSMenu AppKit.NSCell::MenuForEvent(AppKit.NSEvent,CoreGraphics.CGRect,AppKit.NSView)' is missing an [NullAllowed] on return type
@@ -367,7 +366,6 @@
 !missing-null-allowed! 'AppKit.NSTextContainer AppKit.NSTypesetter::get_CurrentTextContainer()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSTextContainer[] AppKit.NSTypesetter::get_TextContainers()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSTextInputContext AppKit.NSTextInputContext::get_CurrentInputContext()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'AppKit.NSTextStorage AppKit.NSTextView::get_TextStorage()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSTextTab AppKit.NSTypesetter::GetTextTab(System.Runtime.InteropServices.NFloat,Foundation.NSWritingDirection,System.Runtime.InteropServices.NFloat)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSTextView AppKit.NSCell::FieldEditorForView(AppKit.NSView)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSTouchBar AppKit.NSResponder_NSTouchBarProvider::MakeTouchBar(AppKit.NSResponder)' is missing an [NullAllowed] on return type
@@ -414,9 +412,6 @@
 !missing-null-allowed! 'CoreGraphics.CGRect AppKit.NSPageControllerDelegate::GetFrame(AppKit.NSPageController,Foundation.NSObject)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'CoreImage.CIContext AppKit.NSGraphicsContext::get_CIContext()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSAffineTransform AppKit.NSFontDescriptor::get_Matrix()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSArray AppKit.NSTextView::RangesForUserCharacterAttributeChange()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSArray AppKit.NSTextView::RangesForUserParagraphAttributeChange()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSArray AppKit.NSTextView::RangesForUserTextChange()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSArray AppKit.NSWindow::WindowNumbersWithOptions(AppKit.NSWindowNumberListOptions)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSArray[] AppKit.NSFontManager::AvailableMembersOfFontFamily(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSAttributedString AppKit.NSHelpManager::Context(Foundation.NSObject)' is missing an [NullAllowed] on return type
@@ -488,9 +483,6 @@
 !missing-null-allowed! 'Foundation.NSObject AppKit.NSStoryboard::InstantiateInitialController()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject AppKit.NSTableViewDataSource::GetObjectValue(AppKit.NSTableView,AppKit.NSTableColumn,System.IntPtr)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'Foundation.NSObject AppKit.NSTableViewDataSource::GetObjectValue(AppKit.NSTableView,AppKit.NSTableColumn,System.IntPtr)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSObject AppKit.NSTextView::ValidRequestorForSendType(System.String,System.String)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'Foundation.NSObject AppKit.NSTextView::ValidRequestorForSendType(System.String,System.String)' is missing an [NullAllowed] on parameter #1
-!missing-null-allowed! 'Foundation.NSObject AppKit.NSTextView::ValidRequestorForSendType(System.String,System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject AppKit.NSTouch::get_Device()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject AppKit.NSTrackingArea::get_Owner()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject AppKit.NSTreeNode::get_RepresentedObject()' is missing an [NullAllowed] on return type
@@ -549,7 +541,6 @@
 !missing-null-allowed! 'System.Boolean AppKit.NSTableViewDelegate::ShouldTypeSelect(AppKit.NSTableView,AppKit.NSEvent,System.String)' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.Boolean AppKit.NSTabViewController::ShouldSelectTabViewItem(AppKit.NSTabView,AppKit.NSTabViewItem)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Boolean AppKit.NSTabViewDelegate::ShouldSelectTabViewItem(AppKit.NSTabView,AppKit.NSTabViewItem)' is missing an [NullAllowed] on parameter #1
-!missing-null-allowed! 'System.Boolean AppKit.NSTextView::ShouldChangeText(Foundation.NSArray,System.String[])' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Boolean AppKit.NSTextViewDelegate::ShouldChangeTextInRanges(AppKit.NSTextView,Foundation.NSValue[],System.String[])' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.Boolean AppKit.NSTreeController::SetSelectionIndexPath(Foundation.NSIndexPath)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Boolean AppKit.NSWindow::TryToPerform(ObjCRuntime.Selector,Foundation.NSObject)' is missing an [NullAllowed] on parameter #1
@@ -608,10 +599,6 @@
 !missing-null-allowed! 'System.String AppKit.NSTableViewDelegate::GetSelectString(AppKit.NSTableView,AppKit.NSTableColumn,System.IntPtr)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.String AppKit.NSTableViewDelegate::GetSelectString(AppKit.NSTableView,AppKit.NSTableColumn,System.IntPtr)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSTextInputContext::LocalizedNameForInputSource(System.String)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'System.String AppKit.NSTextView::GetPreferredPasteboardType(System.String[],System.String[])' is missing an [NullAllowed] on parameter #1
-!missing-null-allowed! 'System.String AppKit.NSTextView::GetPreferredPasteboardType(System.String[],System.String[])' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'System.String AppKit.NSTextView::SmartInsertAfter(System.String,Foundation.NSRange)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'System.String AppKit.NSTextView::SmartInsertBefore(System.String,Foundation.NSRange)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSTokenFieldCellDelegate::GetDisplayString(AppKit.NSTokenFieldCell,Foundation.NSObject)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSTokenFieldCellDelegate::GetEditingString(AppKit.NSTokenFieldCell,Foundation.NSObject)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSTokenFieldDelegate::GetDisplayString(AppKit.NSTokenField,Foundation.NSObject)' is missing an [NullAllowed] on return type
@@ -629,7 +616,6 @@
 !missing-null-allowed! 'System.String[] AppKit.NSSpellChecker::CompletionsForPartialWordRange(Foundation.NSRange,System.String,System.String,System.IntPtr)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String[] AppKit.NSSpellChecker::GuessesForWordRange(Foundation.NSRange,System.String,System.String,System.IntPtr)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String[] AppKit.NSSpellChecker::IgnoredWords(System.IntPtr)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'System.String[] AppKit.NSTextView::CompletionsForPartialWord(Foundation.NSRange,System.IntPtr&)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String[] AppKit.NSTokenFieldDelegate::GetCompletionStrings(AppKit.NSTokenField,System.String,System.IntPtr,System.IntPtr)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.Void AppKit.NSAlert::set_HelpAnchor(System.String)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSAlert::set_Icon(AppKit.NSImage)' is missing an [NullAllowed] on parameter #0
@@ -920,45 +906,6 @@
 !missing-null-allowed! 'System.Void AppKit.NSTextFinder::set_Client(AppKit.INSTextFinderClient)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextFinder::set_FindBarContainer(AppKit.INSTextFinderBarContainer)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextFinderBarContainer::set_FindBarView(AppKit.NSView)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::AlignJustified(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::ChangeAttributes(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::ChangeDocumentBackgroundColor(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::ChangeLayoutOrientation(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::CheckTextInDocument(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::CheckTextInSelection(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::LoosenKerning(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::LowerBaseline(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::OrderFrontLinkPanel(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::OrderFrontListPanel(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::OrderFrontSpacingPanel(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::OrderFrontSubstitutionsPanel(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::OrderFrontTablePanel(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::Outline(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::PerformFindPanelAction(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::RaiseBaseline(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::set_AllowedInputSourceLocales(System.String[])' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::set_DefaultParagraphStyle(AppKit.NSParagraphStyle)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::set_LinkTextAttributes(Foundation.NSDictionary)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::set_MarkedTextAttributes(Foundation.NSDictionary)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::set_TextContainer(AppKit.NSTextContainer)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::StartSpeaking(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::StopSpeaking(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::TightenKerning(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::ToggleAutomaticDashSubstitution(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::ToggleAutomaticDataDetection(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::ToggleAutomaticLinkDetection(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::ToggleAutomaticQuoteSubstitution(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::ToggleAutomaticSpellingCorrection(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::ToggleAutomaticTextReplacement(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::ToggleContinuousSpellChecking(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::ToggleGrammarChecking(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::ToggleQuickLookPreviewPanel(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::ToggleSmartInsertDelete(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::TurnOffKerning(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::TurnOffLigatures(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::UseAllLigatures(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::UseStandardKerning(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
-!missing-null-allowed! 'System.Void AppKit.NSTextView::UseStandardLigatures(Foundation.NSObject)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSTextView_SharingService::OrderFrontSharingServicePicker(AppKit.NSTextView,Foundation.NSObject)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Void AppKit.NSTokenField::set_CharacterSet(Foundation.NSCharacterSet)' is missing an [NullAllowed] on parameter #0
 !missing-null-allowed! 'System.Void AppKit.NSToolbarItem::set_MenuFormRepresentation(AppKit.NSMenuItem)' is missing an [NullAllowed] on parameter #0
@@ -1032,7 +979,6 @@
 !missing-null-allowed! 'System.Boolean AppKit.NSTextAttachmentCell::TrackMouse(AppKit.NSEvent,CoreGraphics.CGRect,AppKit.NSView,System.Boolean)' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.Boolean AppKit.NSTextAttachmentCell::TrackMouse(AppKit.NSEvent,CoreGraphics.CGRect,AppKit.NSView,System.UIntPtr,System.Boolean)' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.Boolean AppKit.NSTextAttachmentCell::WantsToTrackMouse(AppKit.NSEvent,CoreGraphics.CGRect,AppKit.NSView,System.UIntPtr)' is missing an [NullAllowed] on parameter #2
-!missing-null-allowed! 'System.Boolean AppKit.NSTextView::ShouldChangeText(Foundation.NSRange,System.String)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Boolean AppKit.NSTextViewDelegate::ShouldChangeTextInRange(AppKit.NSTextView,Foundation.NSRange,System.String)' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.IntPtr AppKit.NSBrowserDelegate::NextTypeSelectMatch(AppKit.NSBrowser,System.IntPtr,System.IntPtr,System.IntPtr,System.String)' is missing an [NullAllowed] on parameter #4
 !missing-null-allowed! 'System.IntPtr AppKit.NSSpellChecker::RequestChecking(System.String,Foundation.NSRange,Foundation.NSTextCheckingTypes,Foundation.NSDictionary,System.IntPtr,System.Action`4<System.IntPtr,Foundation.NSTextCheckingResult[],Foundation.NSOrthography,System.IntPtr>)' is missing an [NullAllowed] on parameter #5
@@ -1052,7 +998,6 @@
 !missing-null-allowed! 'System.Void AppKit.NSSpellChecker::RecordResponse(AppKit.NSCorrectionResponse,System.String,System.String,System.String,System.IntPtr)' is missing an [NullAllowed] on parameter #3
 !missing-null-allowed! 'System.Void AppKit.NSSpellChecker::ShowCorrectionIndicatorOfType(AppKit.NSCorrectionIndicatorType,System.String,System.String[],CoreGraphics.CGRect,AppKit.NSRulerView,AppKit.NSSpellCheckerShowCorrectionIndicatorOfTypeHandler)' is missing an [NullAllowed] on parameter #5
 !missing-null-allowed! 'System.Void AppKit.NSTextAttachmentCell::Highlight(System.Boolean,CoreGraphics.CGRect,AppKit.NSView)' is missing an [NullAllowed] on parameter #2
-!missing-null-allowed! 'System.Void AppKit.NSTextView::.ctor(CoreGraphics.CGRect,AppKit.NSTextContainer)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'System.Void AppKit.NSTrackingArea::.ctor(CoreGraphics.CGRect,AppKit.NSTrackingAreaOptions,Foundation.NSObject,Foundation.NSDictionary)' is missing an [NullAllowed] on parameter #2
 !missing-null-allowed! 'System.Void AppKit.NSViewController::TransitionFromViewController(AppKit.NSViewController,AppKit.NSViewController,AppKit.NSViewControllerTransitionOptions,System.Action)' is missing an [NullAllowed] on parameter #3
 !missing-null-allowed! 'System.Void AppKit.NSWindow::.ctor(CoreGraphics.CGRect,AppKit.NSWindowStyle,AppKit.NSBackingStore,System.Boolean,AppKit.NSScreen)' is missing an [NullAllowed] on parameter #4
@@ -1535,8 +1480,6 @@
 !missing-selector! NSTextFinder::findBarContainer not bound
 !missing-selector! NSTextFinder::incrementalSearchingShouldDimContentView not bound
 !missing-selector! NSTextFinder::setIncrementalSearchingShouldDimContentView: not bound
-!missing-selector! NSTextView::dragImageForSelectionWithEvent:origin: not bound
-!missing-selector! NSTextView::dragSelectionWithEvent:offset:slideBack: not bound
 !missing-selector! NSTreeController::selectedObjects not bound
 !missing-selector! NSTreeNode::mutableChildNodes not bound
 !missing-selector! NSView::enclosingMenuItem not bound

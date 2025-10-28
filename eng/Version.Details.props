@@ -6,13 +6,16 @@ This file should be imported by eng/Versions.props
 <Project>
   <PropertyGroup>
     <!-- dotnet/dotnet dependencies -->
-    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25512.102</MicrosoftDotNetCecilPackageVersion>
-    <MicrosoftNETILLinkPackageVersion>10.0.0-rtm.25512.102</MicrosoftNETILLinkPackageVersion>
-    <MicrosoftNETILLinkTasksPackageVersion>10.0.0-rtm.25512.102</MicrosoftNETILLinkTasksPackageVersion>
-    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>10.0.0-rtm.25512.102</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
-    <MicrosoftNETSdkPackageVersion>10.0.100-rtm.25512.102</MicrosoftNETSdkPackageVersion>
-    <MicrosoftNETCoreAppRefPackageVersion>10.0.0-rtm.25512.102</MicrosoftNETCoreAppRefPackageVersion>
-    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.100-rtm.25512.102</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
+    <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.25523.113</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.25523.113</MicrosoftDotNetBuildTasksFeedPackageVersion>
+    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25523.113</MicrosoftDotNetCecilPackageVersion>
+    <MicrosoftDotNetSharedFrameworkSdkPackageVersion>10.0.0-beta.25523.113</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
+    <MicrosoftNETILLinkPackageVersion>10.0.0-rtm.25523.113</MicrosoftNETILLinkPackageVersion>
+    <MicrosoftNETILLinkTasksPackageVersion>10.0.0</MicrosoftNETILLinkTasksPackageVersion>
+    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>10.0.0</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
+    <MicrosoftNETSdkPackageVersion>10.0.100-rtm.25523.113</MicrosoftNETSdkPackageVersion>
+    <MicrosoftNETCoreAppRefPackageVersion>10.0.0</MicrosoftNETCoreAppRefPackageVersion>
+    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.100</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <!-- dotnet/macios dependencies -->
     <MicrosoftiOSSdknet90_185PackageVersion>18.5.9227</MicrosoftiOSSdknet90_185PackageVersion>
     <MicrosoftiOSSdknet90_260PackageVersion>26.0.9754</MicrosoftiOSSdknet90_260PackageVersion>
@@ -27,17 +30,16 @@ This file should be imported by eng/Versions.props
     <MicrosoftMacCatalystSdknet90_180PackageVersion>18.0.9617</MicrosoftMacCatalystSdknet90_180PackageVersion>
     <MicrosoftmacOSSdknet90_150PackageVersion>15.0.9617</MicrosoftmacOSSdknet90_150PackageVersion>
     <MicrosofttvOSSdknet90_180PackageVersion>18.0.9617</MicrosofttvOSSdknet90_180PackageVersion>
-    <!-- dotnet/arcade dependencies -->
-    <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.25513.2</MicrosoftDotNetArcadeSdkPackageVersion>
-    <MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.25513.2</MicrosoftDotNetBuildTasksFeedPackageVersion>
-    <MicrosoftDotNetSharedFrameworkSdkPackageVersion>10.0.0-beta.25513.2</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
     <!-- dotnet/xharness dependencies -->
-    <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25516.4</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
+    <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25527.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
   </PropertyGroup>
   <!--Property group for alternate package version names-->
   <PropertyGroup>
     <!-- dotnet/dotnet dependencies -->
+    <MicrosoftDotNetArcadeSdkVersion>$(MicrosoftDotNetArcadeSdkPackageVersion)</MicrosoftDotNetArcadeSdkVersion>
+    <MicrosoftDotNetBuildTasksFeedVersion>$(MicrosoftDotNetBuildTasksFeedPackageVersion)</MicrosoftDotNetBuildTasksFeedVersion>
     <MicrosoftDotNetCecilVersion>$(MicrosoftDotNetCecilPackageVersion)</MicrosoftDotNetCecilVersion>
+    <MicrosoftDotNetSharedFrameworkSdkVersion>$(MicrosoftDotNetSharedFrameworkSdkPackageVersion)</MicrosoftDotNetSharedFrameworkSdkVersion>
     <MicrosoftNETILLinkVersion>$(MicrosoftNETILLinkPackageVersion)</MicrosoftNETILLinkVersion>
     <MicrosoftNETILLinkTasksVersion>$(MicrosoftNETILLinkTasksPackageVersion)</MicrosoftNETILLinkTasksVersion>
     <MicrosoftNETRuntimeMonoTargetsSdkVersion>$(MicrosoftNETRuntimeMonoTargetsSdkPackageVersion)</MicrosoftNETRuntimeMonoTargetsSdkVersion>
@@ -58,10 +60,6 @@ This file should be imported by eng/Versions.props
     <MicrosoftMacCatalystSdknet90_180Version>$(MicrosoftMacCatalystSdknet90_180PackageVersion)</MicrosoftMacCatalystSdknet90_180Version>
     <MicrosoftmacOSSdknet90_150Version>$(MicrosoftmacOSSdknet90_150PackageVersion)</MicrosoftmacOSSdknet90_150Version>
     <MicrosofttvOSSdknet90_180Version>$(MicrosofttvOSSdknet90_180PackageVersion)</MicrosofttvOSSdknet90_180Version>
-    <!-- dotnet/arcade dependencies -->
-    <MicrosoftDotNetArcadeSdkVersion>$(MicrosoftDotNetArcadeSdkPackageVersion)</MicrosoftDotNetArcadeSdkVersion>
-    <MicrosoftDotNetBuildTasksFeedVersion>$(MicrosoftDotNetBuildTasksFeedPackageVersion)</MicrosoftDotNetBuildTasksFeedVersion>
-    <MicrosoftDotNetSharedFrameworkSdkVersion>$(MicrosoftDotNetSharedFrameworkSdkPackageVersion)</MicrosoftDotNetSharedFrameworkSdkVersion>
     <!-- dotnet/xharness dependencies -->
     <MicrosoftDotNetXHarnessiOSSharedVersion>$(MicrosoftDotNetXHarnessiOSSharedPackageVersion)</MicrosoftDotNetXHarnessiOSSharedVersion>
   </PropertyGroup>

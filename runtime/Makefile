@@ -35,7 +35,7 @@ IOS_SIMULATOR_ARCHITECTURES+=x86_64
 IOS_DEVICE_ARCHITECTURES+=arm64
 
 coreclrhost.h: Makefile
-	$(Q_CURL) curl -L --fail --output "$@.tmp" https://raw.githubusercontent.com/dotnet/runtime/f1b8d5a4448d072c9d390744777a87921e45bf2f/src/coreclr/hosts/inc/coreclrhost.h
+	$(Q_CURL) curl -L --retry 3 --retry-all-errors --fail --output "$@.tmp" https://raw.githubusercontent.com/dotnet/runtime/f1b8d5a4448d072c9d390744777a87921e45bf2f/src/coreclr/hosts/inc/coreclrhost.h
 	$(Q) mv "$@.tmp" "$@"
 
 coreclr-bridge.m: coreclrhost.h

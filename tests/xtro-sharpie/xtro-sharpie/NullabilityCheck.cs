@@ -151,6 +151,10 @@ namespace Extrospection {
 				if (pt.IsByReference)
 					continue;
 
+				// if we used a pointer to a type, nullability won't be present
+				if (pt.IsPointer)
+					continue;
+
 				Null parameter_nullable;
 
 				// if we used a nullable type (e.g. `[BindAs]`)

@@ -31,6 +31,7 @@ CFLAGS=\
 	-Wdeprecated \
 	-Wuninitialized \
 	-fstack-protector-strong \
+	-ftrivial-auto-var-init=zero \
 	-Wformat \
 	-Wformat-security \
 	-Werror=format-security \
@@ -38,6 +39,11 @@ CFLAGS=\
 	-Wno-objc-protocol-property-synthesis \
 	-Wignored-qualifiers \
 	-Wmissing-field-initializers \
+	-Wcast-function-type-mismatch \
+	-Wsemicolon-before-method-body \
+	-Wsign-compare \
+	-Wshadow \
+	-Wformat-nonliteral \
 	-g \
 	-I.
 SWIFTFLAGS=-g -emit-library

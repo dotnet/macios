@@ -211,11 +211,11 @@ param_iter_next (enum IteratorAction action, void *context, const char *type, si
 	bool is_hfa = is_struct && struct_length >= 2 && struct_length <= 4;
 	if (is_hfa) {
 		is_hfa = struct_name [0] == 'f' || struct_name [0] == 'd';
-		for (int i = 1; i < struct_length; i++)
+		for (size_t i = 1; i < struct_length; i++)
 			is_hfa &= struct_name [i] == struct_name [0];
 	}
 
-	int ngrn_registers_left = 8 - it->ngrn;
+	size_t ngrn_registers_left = 8 - it->ngrn;
 	bool read_register = ngrn_registers_left > 0;
 
 	if (size > 16 && !is_hfa) {
@@ -310,7 +310,7 @@ marshal_return_value (void *context, const char *type, size_t size, void *vvalue
 			(size == 8 && !strncmp (struct_name, "d", 1))) {
 			LOGZ ("        marshalling as %i doubles (struct name: %s)\n", (int) size / 8, struct_name);
 			double* ptr = (double *) mono_object_unbox (value);
-			for (int i = 0; i < size / 8; i++) {
+			for (size_t i = 0; i < size / 8; i++) {
 				LOGZ ("        #%i: %f\n", i, ptr [i]);
 				it->q [i].q = ptr [i];
 			}
@@ -320,7 +320,7 @@ marshal_return_value (void *context, const char *type, size_t size, void *vvalue
 				   (size == 4 && !strncmp (struct_name, "f", 1))) {
 			LOGZ ("        marshalling as %i floats (struct name: %s)\n", (int) size / 4, struct_name);
 			float* ptr = (float *) mono_object_unbox (value);
-			for (int i = 0; i < size / 4; i++) {
+			for (size_t i = 0; i < size / 4; i++) {
 				LOGZ ("        #%i: %f\n", i, ptr [i]);
 				it->q [i].f.f1 = ptr [i];
 			}

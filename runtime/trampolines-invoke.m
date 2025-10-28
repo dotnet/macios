@@ -79,13 +79,13 @@ xamarin_nsstring_to_string (MonoDomain *domain, NSString *obj)
 }
 
 void
-xamarin_invoke_trampoline (enum TrampolineType type, id self, SEL sel, iterator_func iterator, marshal_return_value_func marshal_return_value, void *context)
+xamarin_invoke_trampoline (enum TrampolineType trampoline_type, id self, SEL sel, iterator_func iterator, marshal_return_value_func marshal_return_value, void *context)
 {
 	MonoObject *exception = NULL;
 	MonoObject **exception_ptr = xamarin_is_managed_exception_marshaling_disabled () ? NULL : &exception;
 	GCHandle exception_gchandle = INVALID_GCHANDLE;
-	bool is_static = (type & Tramp_Static) == Tramp_Static;
-	bool is_ctor = type == Tramp_Ctor;
+	bool is_static = (trampoline_type & Tramp_Static) == Tramp_Static;
+	bool is_ctor = trampoline_type == Tramp_Ctor;
 	const char *ret_type = NULL;
 	MonoType *sig_ret_type = NULL;
 
@@ -148,8 +148,6 @@ xamarin_invoke_trampoline (enum TrampolineType type, id self, SEL sel, iterator_
 	void *iter = NULL;
 	gboolean needs_writeback = FALSE; // determines if there are any ref/out parameters.
 	MonoType *p;
-	int ofs;
-	unsigned long i;
 	unsigned long mofs = 0;
 
 	unsigned long desc_arg_count = num_arg + 2; /* 1 for the return value + 1 if this is a category instance method */
@@ -207,11 +205,11 @@ xamarin_invoke_trampoline (enum TrampolineType type, id self, SEL sel, iterator_
 	if (exception_gchandle != INVALID_GCHANDLE)
 		goto exception_handling;
 
-	for (i = 0, ofs = 0; i < num_arg; i++) {
+	for (unsigned long i = 0, ofs = 0; i < num_arg; i++) {
 		const char *argType = [sig getArgumentTypeAtIndex: (i+2)];
 		const char *type = xamarin_skip_encoding_flags (argType);
 		unsigned long size = xamarin_objc_type_size (type);
-		int frameofs = ofs;
+		unsigned long frameofs = ofs;
 		p = mono_signature_get_params (msig, &iter);
 		ADD_TO_MONOOBJECT_RELEASE_LIST (p);
 		LOGZ (" argument %i's type: %s (argType: %s)\n", (int) i + 1, type, argType);
@@ -633,7 +631,7 @@ xamarin_invoke_trampoline (enum TrampolineType type, id self, SEL sel, iterator_
 		iterator (IteratorStart, context, NULL, 0, NULL, &exception_gchandle); // start
 		if (exception_gchandle != INVALID_GCHANDLE)
 			goto exception_handling;
-		for (i = 0; i < num_arg; i++) {
+		for (unsigned long i = 0; i < num_arg; i++) {
 			const char *type = [sig getArgumentTypeAtIndex: (i+2)];
 
 			type = xamarin_skip_encoding_flags (type);

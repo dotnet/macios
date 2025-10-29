@@ -10,14 +10,12 @@
 
 using System.IO;
 
-using Foundation;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
 using CoreGraphics;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreGraphics {
 

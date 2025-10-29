@@ -9,11 +9,8 @@
 
 #if !MONOMAC
 
-using System;
-using Foundation;
 using UIKit;
 using AdSupport;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.AdSupport {
 

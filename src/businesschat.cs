@@ -6,11 +6,8 @@
 //
 // Copyright 2017 Microsoft Inc. All rights reserved.
 //
-using System;
 using System.ComponentModel;
 
-using Foundation;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 using UIControl = AppKit.NSControl;

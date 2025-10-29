@@ -9,11 +9,7 @@
 
 #if !__TVOS__
 
-using System;
-using Foundation;
 using EventKit;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.EventKit {
 

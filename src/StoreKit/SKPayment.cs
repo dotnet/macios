@@ -2,8 +2,6 @@
 
 #nullable enable
 
-using System;
-
 using StoreKit;
 
 namespace StoreKit {

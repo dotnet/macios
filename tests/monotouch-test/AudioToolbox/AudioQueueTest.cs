@@ -7,10 +7,7 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System.Collections.Generic;
-using Foundation;
 using AudioToolbox;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.AudioToolbox {
 
@@ -84,6 +81,57 @@ namespace MonoTouchFixtures.AudioToolbox {
 		{
 			TestRuntime.RequestMicrophonePermission ();
 			Assert.Throws<AudioQueueException> (() => new InputAudioQueue (new AudioStreamBasicDescription ()), "A");
+		}
+
+		[Test]
+		public unsafe void AllocateBuffer_1 ()
+		{
+			var asbd = AudioStreamBasicDescription.CreateLinearPCM ();
+			using var aq = new InputAudioQueue (asbd);
+			Assert.AreEqual (AudioQueueStatus.Ok, aq.AllocateBuffer (5000, out AudioQueueBuffer* buffer), "AllocateBuffer");
+			Assert.Multiple (() => {
+				Assert.AreEqual (5000, buffer->AudioDataBytesCapacity, "AudioDataBytesCapacity");
+				Assert.AreNotEqual (IntPtr.Zero, buffer->AudioData, "AudioData");
+				Assert.AreEqual (0, buffer->AudioDataByteSize, "AudioDataByteSize");
+				Assert.AreEqual (IntPtr.Zero, buffer->UserData, "UserData");
+				Assert.AreEqual (0, buffer->PacketDescriptionCapacity, "PacketDescriptionCapacity");
+				Assert.AreEqual (IntPtr.Zero, buffer->IntPtrPacketDescriptions, "IntPtrPacketDescriptions");
+				Assert.AreEqual (0, buffer->PacketDescriptionCount, "PacketDescriptionCount");
+				Assert.AreEqual (0, buffer->PacketDescriptions.Length, "PacketDescriptions");
+				Assert.AreEqual (5000, buffer->AsSpan ().Length, "AsSpan ().Length");
+				Assert.AreEqual (0, buffer->AsSpanOfValidData ().Length, "AsSpanOfValidData ().Length");
+			});
+			Assert.AreEqual (AudioQueueStatus.Ok, aq.FreeBuffer (buffer), "FreeBuffer");
+		}
+
+		[Test]
+		public unsafe void AllocateBuffer_2 ()
+		{
+			var asbd = new AudioStreamBasicDescription () {
+				Format = AudioFormatType.MPEG4AAC_HE,
+				BytesPerPacket = 0,
+				BitsPerChannel = 0,
+				Reserved = 0,
+				FormatFlags = 0,
+				BytesPerFrame = 0,
+				SampleRate = 16000,
+				ChannelsPerFrame = 1,
+				FramesPerPacket = 1024,
+			};
+			using var aq = new OutputAudioQueue (asbd);
+			Assert.AreEqual (AudioQueueStatus.Ok, aq.AllocateBuffer (5000, 1, out var buffer), "AllocateBuffer");
+			Assert.Multiple (() => {
+				Assert.AreEqual (5000, buffer->AudioDataBytesCapacity, "AudioDataBytesCapacity");
+				Assert.AreNotEqual (IntPtr.Zero, buffer->AudioData, "AudioData");
+				Assert.AreEqual (0, buffer->AudioDataByteSize, "AudioDataByteSize");
+				Assert.AreEqual (IntPtr.Zero, buffer->UserData, "UserData");
+				Assert.AreEqual (1, buffer->PacketDescriptionCapacity, "PacketDescriptionCapacity");
+				Assert.AreNotEqual (IntPtr.Zero, buffer->IntPtrPacketDescriptions, "IntPtrPacketDescriptions");
+				Assert.AreEqual (0, buffer->PacketDescriptionCount, "PacketDescriptionCount");
+				Assert.AreEqual (0, buffer->PacketDescriptions.Length, "PacketDescriptions");
+				Assert.AreEqual (5000, buffer->AsSpan ().Length, "AsSpan ().Length");
+				Assert.AreEqual (0, buffer->AsSpanOfValidData ().Length, "AsSpanOfValidData ().Length");
+			});
 		}
 	}
 }

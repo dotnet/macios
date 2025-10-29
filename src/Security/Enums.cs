@@ -1,8 +1,4 @@
 // Copyright 2011-2015 Xamarin Inc. All rights reserved.
-using System;
-
-using Foundation;
-using ObjCRuntime;
 
 namespace Security {
 

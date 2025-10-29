@@ -4,13 +4,9 @@
 
 #if !TVOS
 
-using System;
 using System.Linq;
 
 using CoreData;
-using Foundation;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreData {
 

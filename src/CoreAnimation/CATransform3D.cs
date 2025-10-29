@@ -7,11 +7,7 @@
 // Copyright 2009 Novell, Inc
 // Copyright 2014 Xamarin Inc
 //
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 
-using ObjCRuntime;
 using CoreGraphics;
 
 #nullable enable

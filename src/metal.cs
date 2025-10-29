@@ -12,7 +12,6 @@
 //    * Make the *array classes implement all the ICollection methods.
 //
 
-using System;
 using System.ComponentModel;
 
 using CoreAnimation;
@@ -21,8 +20,6 @@ using CoreGraphics;
 using CoreImage;
 using CoreLocation;
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 #if TVOS
 using MTLAccelerationStructureSizes = Foundation.NSObject;

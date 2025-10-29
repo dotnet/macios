@@ -10,6 +10,9 @@
     <_TrimmerDefaultAction>copy</_TrimmerDefaultAction> <!-- https://github.com/dotnet/linker/issues/2981 -->
     <ThisTestDirectory>$(RootTestsDirectory)\linker\dont link</ThisTestDirectory>
 
+    <!-- trimmer warnings: the linker tests do a lot of trimmer-unsafe things, so ignore any trimmer warnings -->
+    <NoWarn>$(NoWarn);IL2057</NoWarn>
+
     <!-- We're warning-free, so let's make sure we stay that way -->
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors>Nullable</WarningsAsErrors>

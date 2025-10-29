@@ -1,11 +1,6 @@
 #nullable enable
-using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-
-using ObjCRuntime;
 
 namespace Foundation {
 #if false // https://github.com/dotnet/macios/issues/15577

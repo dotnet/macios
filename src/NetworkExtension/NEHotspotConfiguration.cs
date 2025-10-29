@@ -4,8 +4,6 @@
 
 #if !MONOMAC && !TVOS
 
-using Foundation;
-
 namespace NetworkExtension {
 
 	public partial class NEHotspotConfiguration {

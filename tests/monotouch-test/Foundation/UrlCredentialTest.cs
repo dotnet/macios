@@ -8,15 +8,12 @@
 //
 
 using System.Security.Cryptography.X509Certificates;
-using Foundation;
-using ObjCRuntime;
 using Security;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 
 using MonoTouchFixtures.Security;
 using Xamarin.Utils;

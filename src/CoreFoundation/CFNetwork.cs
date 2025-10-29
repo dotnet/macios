@@ -2,8 +2,6 @@
 
 #nullable enable
 
-using System;
-
 namespace CoreFoundation {
 
 	// note: Make sure names are identical/consistent with NSUrlError.*

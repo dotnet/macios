@@ -1,9 +1,6 @@
 #if !__TVOS__ && !MONOMAC
 
-using System;
-using Foundation;
 using AVFoundation;
-using NUnit.Framework;
 
 namespace monotouchtest {
 	[TestFixture]

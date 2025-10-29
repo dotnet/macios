@@ -6,15 +6,12 @@
 //
 // Copyright 2013-2015 Xamarin Inc
 
-using System;
 using System.ComponentModel;
 
 using CoreImage;
 using GameplayKit;
 
 using AVFoundation;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 using CoreVideo;

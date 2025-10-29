@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Reflection;
 using System.Text;
@@ -661,6 +660,7 @@ public class CategoryAttribute : Attribute {
 	public CategoryAttribute () { }
 }
 
+#if !XAMCORE_5_0 // we already have this attribute in the platform assembly, no need for it here too
 //
 // Apply this attribute when an `init*` selector is decorated with NS_DESIGNATED_INITIALIZER
 //
@@ -670,6 +670,7 @@ public class DesignatedInitializerAttribute : Attribute {
 	{
 	}
 }
+#endif // !XAMCORE_5_0
 
 //
 // Apple this attribute to ObjC types where the default `init` selector 

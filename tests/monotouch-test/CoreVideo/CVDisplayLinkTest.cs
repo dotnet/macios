@@ -1,9 +1,5 @@
 #if __MACOS__
-using System;
 using CoreGraphics;
-using Foundation;
-using NUnit.Framework;
-using ObjCRuntime;
 using CoreVideo;
 using Xamarin.Utils;
 

@@ -25,7 +25,7 @@ Usage: configure [options]
     --enable-xamarin
     --disable-xamarin       Enable/disable additional Xamarin-specific parts of the build.
 
-    --custom-dotnet=[artifacts] Use a locally built version of dotnet/runtime. See docs/CORECLR.md for detailed instructions about how to build dotnet/runtime from source.
+    --custom-dotnet=[dotnet/runtime] Use a locally built version of dotnet/runtime. Pass the path to an already build checkout of dotnet/runtime. See docs/CORECLR.md for detailed instructions about how to build dotnet/runtime from source.
 
     --ignore-unknown-params  alters the default behavior to not return an non-zero exit code when an unknown parameter is provided.
 EOL
@@ -125,6 +125,14 @@ while test "x$1" != x; do
         echo "CUSTOM_DOTNET=1" >> "$CONFIGURED_FILE"
         echo "DOTNET_RUNTIME_PATH=$2" >> "$CONFIGURED_FILE"
         shift 2
+        ;;
+    --disable-device)
+        echo "INCLUDE_DEVICE=" >> "$CONFIGURED_FILE"
+        shift
+        ;;
+    --disable-simulator)
+        echo "INCLUDE_SIMULATOR=" >> "$CONFIGURED_FILE"
+        shift
         ;;
     --ignore-unknown-params)
         echo "ignoring unknown parameters"

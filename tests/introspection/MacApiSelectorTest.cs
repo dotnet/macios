@@ -7,14 +7,8 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Collections.Generic;
 using System.Reflection;
 
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 using Xamarin.Tests;
 using Xamarin.Utils;
 

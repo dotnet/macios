@@ -104,17 +104,17 @@ namespace Xamarin.Tests {
 			Assert.That (result.StandardOutput.ToString (), Does.Not.Contain ("Task \"ILLink\""), "Linker executed unexpectedly.");
 		}
 
-		[TestCase ("iOS")]
-		[TestCase ("tvOS")]
-		[TestCase ("macOS")]
-		[TestCase ("MacCatalyst")]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
 		[Category ("WindowsInclusive")]
-		public void BuildEmbeddedResourcesTest (string platform)
+		public void BuildEmbeddedResourcesTest (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			var assemblyName = "EmbeddedResources";
 			var dotnet_bindings_dir = Path.Combine (Configuration.SourceRoot, "tests", assemblyName, "dotnet");
-			var project_dir = Path.Combine (dotnet_bindings_dir, platform);
+			var project_dir = Path.Combine (dotnet_bindings_dir, platform.AsString ());
 			var project_path = Path.Combine (project_dir, $"{assemblyName}.csproj");
 			Clean (project_path);
 			var result = DotNet.AssertBuild (project_path, verbosity);
@@ -129,25 +129,36 @@ namespace Xamarin.Tests {
 			Assert.That (asm, Does.Exist, "Assembly existence");
 			// Verify that there's one resource in the assembly, and its name
 			var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
-			Assert.That (ad.MainModule.Resources.Count, Is.EqualTo (1), "1 resource");
-			Assert.That (ad.MainModule.Resources [0].Name, Is.EqualTo ("EmbeddedResources.Welcome.resources"), "libtest.a");
+
+			var actualResources = ad.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
+			var expectedResources = new List<string> ()
+			{
+				"EmbeddedResources.Welcome.resources",
+			};
+			if (platform != ApplePlatform.MacOSX) {
+				// macOS doesn't have this resources, and it's removed by the linker for Mac Catalyst
+				// it's not removed for iOS/tvOS, because we don't bother removing resources for simulator builds.
+				expectedResources.Add ("__monotouch_item_PartialAppManifest_shared-dotnet.plist");
+			}
+			Assert.That (actualResources, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), $"embedded resources");
+
 			var asm_dir = Path.GetDirectoryName (asm)!;
 			Assert.That (Path.Combine (asm_dir, "en-AU", "EmbeddedResources.resources.dll"), Does.Exist, "en-AU");
 			Assert.That (Path.Combine (asm_dir, "de", "EmbeddedResources.resources.dll"), Does.Exist, "de");
 			Assert.That (Path.Combine (asm_dir, "es", "EmbeddedResources.resources.dll"), Does.Exist, "es");
 		}
 
-		[TestCase ("iOS")]
-		[TestCase ("tvOS")]
-		[TestCase ("macOS")]
-		[TestCase ("MacCatalyst")]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
 		[Category ("WindowsInclusive")]
-		public void BuildFSharpLibraryTest (string platform)
+		public void BuildFSharpLibraryTest (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			var assemblyName = "fsharplibrary";
 			var dotnet_bindings_dir = Path.Combine (Configuration.SourceRoot, "tests", assemblyName, "dotnet");
-			var project_dir = Path.Combine (dotnet_bindings_dir, platform);
+			var project_dir = Path.Combine (dotnet_bindings_dir, platform.AsString ());
 			var project_path = Path.Combine (project_dir, $"{assemblyName}.fsproj");
 			Clean (project_path);
 			var result = DotNet.AssertBuild (project_path, verbosity);
@@ -161,13 +172,15 @@ namespace Xamarin.Tests {
 			Assert.That (asm, Does.Exist, "Assembly existence");
 			// Verify that there's no resources in the assembly
 			var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
-			var expectedFSharpResources = new string [] {
+			var expectedFSharpResources = new List<string> {
 				"FSharpOptimizationCompressedData.fsharplibrary",
 				"FSharpSignatureCompressedData.fsharplibrary",
 				"FSharpSignatureCompressedDataB.fsharplibrary",
 			};
+			if (platform != ApplePlatform.MacOSX)
+				expectedFSharpResources.Add ("__monotouch_item_PartialAppManifest_shared-dotnet.plist");
 			var actualFSharpResources = ad.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
-			Assert.That (actualFSharpResources, Is.EqualTo (expectedFSharpResources), "F# resources:"); // There are some embedded resources by default by the F# compiler.
+			Assert.That (actualFSharpResources, Is.EqualTo (expectedFSharpResources.OrderBy (v => v).ToArray ()), "F# resources:"); // There are some embedded resources by default by the F# compiler.
 		}
 
 		[TestCase (ApplePlatform.iOS)]
@@ -197,7 +210,11 @@ namespace Xamarin.Tests {
 
 			// Verify that there's one resource in the binding assembly, and its name
 			var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
-			Assert.That (ad.MainModule.Resources.Count, Is.EqualTo (0), "no embedded resources");
+			var actualResources = ad.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
+			var expectedResources = new List<string> ();
+			if (platform != ApplePlatform.MacOSX)
+				expectedResources.Add ("__monotouch_item_PartialAppManifest_shared-dotnet.plist");
+			Assert.That (actualResources, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), "embedded resources");
 			var resourceBundle = Path.Combine (project_dir, "bin", "Debug", platform.ToFramework (), assemblyName + ".resources");
 			var resourceZip = resourceBundle + ".zip";
 			if (!Directory.Exists (resourceBundle) && !File.Exists (resourceZip))
@@ -230,8 +247,15 @@ namespace Xamarin.Tests {
 
 			// Verify that there's one resource in the binding assembly, and its name
 			var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
-			Assert.That (ad.MainModule.Resources.Count, Is.EqualTo (0), "no embedded resources");
+			var actualResources = ad.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
+			var expectedResources = new List<string> ();
+			if (platform != ApplePlatform.MacOSX)
+				expectedResources.Add ("__monotouch_item_PartialAppManifest_shared-dotnet.plist");
+			Assert.That (actualResources, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), "embedded resources");
+
 			var resourceBundle = Path.Combine (project_dir, "bin", "Debug", platform.ToFramework (), assemblyName + ".resources");
+			if (UsesCompressedBindingResourcePackage (platform))
+				resourceBundle += ".zip";
 			Assert.That (resourceBundle, Does.Exist, "Bundle existence");
 		}
 
@@ -283,7 +307,8 @@ namespace Xamarin.Tests {
 			var newPrefixed = expectedResources.Select (v => $"__{prefix}_item_BundleResource_{v}").ToList ();
 
 			// Add shared-dotnet.plist with PartialAppManifest prefix
-			if (platform != "macOS" && bundleOriginalResources == true) {
+			var actualBundleOriginalResources = bundleOriginalResources ?? Version.Parse (Configuration.DotNetTfm.Replace ("net", "")).Major >= 10;
+			if (platform != "macOS" && actualBundleOriginalResources) {
 				oldPrefixed.Add ($"__{prefix}_content_shared-dotnet.plist");
 				newPrefixed.Add ($"__{prefix}_item_PartialAppManifest_shared-dotnet.plist");
 			}
@@ -291,16 +316,16 @@ namespace Xamarin.Tests {
 			Assert.That (resources, Is.EquivalentTo (oldPrefixed).Or.EquivalentTo (newPrefixed), "Resources");
 		}
 
-		[TestCase ("iOS")]
-		[TestCase ("tvOS")]
-		[TestCase ("macOS")]
-		[TestCase ("MacCatalyst")]
-		public void BuildInterdependentBindingProjects (string platform)
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		public void BuildInterdependentBindingProjects (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			var assemblyName = "interdependent-binding-projects";
 			var dotnet_bindings_dir = Path.Combine (Configuration.SourceRoot, "tests", assemblyName, "dotnet");
-			var project_dir = Path.Combine (dotnet_bindings_dir, platform);
+			var project_dir = Path.Combine (dotnet_bindings_dir, platform.AsString ());
 			var project_path = Path.Combine (project_dir, $"{assemblyName}.csproj");
 
 			Clean (project_path);
@@ -321,13 +346,21 @@ namespace Xamarin.Tests {
 			Assert.That (ad.MainModule.Resources.Count, Is.EqualTo (0), "0 resources for interdependent-binding-projects.dll");
 
 			var ad1 = AssemblyDefinition.ReadAssembly (Path.Combine (asmDir, "bindings-test.dll"), new ReaderParameters { ReadingMode = ReadingMode.Deferred });
+
 			// The native library is removed from the resources by the linker
-			Assert.That (ad1.MainModule.Resources.Count, Is.EqualTo (0), "0 resources for bindings-test.dll");
+			var actualResources1 = ad1.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
+			var expectedResources = new List<string> ();
+			if (platform != ApplePlatform.MacOSX && platform != ApplePlatform.MacCatalyst) {
+				// macOS doesn't have this resources, and it's removed by the linker for Mac Catalyst
+				// it's not removed for iOS/tvOS, because we don't bother removing resources for simulator builds.
+				expectedResources.Add ("__monotouch_item_PartialAppManifest_shared-dotnet.plist");
+			}
+			Assert.That (actualResources1, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), $"embedded resources for bindings-test.dll");
 
 			var ad2 = AssemblyDefinition.ReadAssembly (Path.Combine (asmDir, "bindings-test2.dll"), new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 			// The native library is removed from the resources by the linker
-			Assert.That (ad2.MainModule.Resources.Count, Is.EqualTo (0), "0 resources for bindings-test2.dll");
-
+			var actualResources2 = ad2.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
+			Assert.That (actualResources2, Is.EqualTo (expectedResources.OrderBy (v => v).ToArray ()), "embedded resources for bindings-test2.dll");
 		}
 
 		[Test]
@@ -794,6 +827,16 @@ namespace Xamarin.Tests {
 			Assert.AreEqual (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-arm64")), File.Exists (arm64txt), "arm64.txt");
 			Assert.AreEqual (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-arm")), File.Exists (armtxt), "arm.txt");
 			Assert.AreEqual (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-x64")), File.Exists (x64txt), "x64.txt");
+
+			var b_otf = Path.Combine (Path.GetDirectoryName (project_path)!, "Resources", "B.otf");
+			Configuration.Touch (b_otf);
+			var rv = DotNet.AssertBuild (project_path, GetDefaultProperties (runtimeIdentifiers));
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest rebuild");
+
+			rv = DotNet.AssertBuild (project_path, GetDefaultProperties (runtimeIdentifiers));
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest rebuild 2");
 		}
 
 		[Category ("Windows")]
@@ -805,7 +848,8 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfNotOnWindows ();
 
 			// This should all execute locally on Windows when BundleOriginalResources=true
-			LibraryWithResources (platform, anyLibraryResources: bundleOriginalResources == true, bundleOriginalResources: bundleOriginalResources);
+			bool anyLibraryResources = bundleOriginalResources ?? Version.Parse (Configuration.DotNetTfm.Replace ("net", "")).Major >= 10;
+			LibraryWithResources (platform, anyLibraryResources: anyLibraryResources, bundleOriginalResources: bundleOriginalResources);
 		}
 
 
@@ -870,7 +914,8 @@ namespace Xamarin.Tests {
 			Assert.That (asm, Does.Exist, "Assembly existence");
 
 			using var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
-			var actualResources = ad.MainModule.Resources.Select (v => v.Name).OrderBy (v => v).ToArray ();
+			var actualAssemblyResources = ad.MainModule.Resources;
+			var actualResources = actualAssemblyResources.Select (v => v.Name).OrderBy (v => v).ToArray ();
 
 			List<string> expectedResources;
 
@@ -905,7 +950,7 @@ namespace Xamarin.Tests {
 						$"__{platformPrefix}_item_SceneKitAsset_DirWithResources_slinkedArt.scnassets_sscene.scn",
 						$"__{platformPrefix}_item_SceneKitAsset_DirWithResources_slinkedArt.scnassets_stexture.png",
 					};
-					if (platform != ApplePlatform.MacOSX && bundleOriginalResources == true) {
+					if (platform != ApplePlatform.MacOSX && actualBundleOriginalResources) {
 						expectedResources.Add ($"__{platformPrefix}_item_PartialAppManifest_shared-dotnet.plist");
 					}
 				} else {
@@ -957,6 +1002,9 @@ namespace Xamarin.Tests {
 				expectedResources = new List<string> ();
 			}
 			CollectionAssert.AreEquivalent (expectedResources, actualResources, "Resources");
+
+			var zeroLengthResources = actualAssemblyResources.Where (v => v.ResourceType == ResourceType.Embedded && ((EmbeddedResource) v).GetResourceData ().Length == 0).Select (v => v.Name).ToArray ();
+			Assert.That (zeroLengthResources, Is.Empty, $"0-length resources");
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
@@ -969,7 +1017,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
 		public void AppWithLibraryWithResourcesReference (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources)
 		{
-			AppWithLibraryWithResourcesReferenceImpl (platform, runtimeIdentifiers, bundleOriginalResources, false, false);
+			AppWithLibraryWithResourcesReferenceImpl (platform, runtimeIdentifiers, bundleOriginalResources, false);
 		}
 
 
@@ -980,20 +1028,10 @@ namespace Xamarin.Tests {
 		{
 			Configuration.IgnoreIfNotOnWindows ();
 
-			AppWithLibraryWithResourcesReferenceImpl (platform, runtimeIdentifiers, bundleOriginalResources, true, false);
+			AppWithLibraryWithResourcesReferenceImpl (platform, runtimeIdentifiers, bundleOriginalResources, true);
 		}
 
-		[Category ("Windows")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
-		public void AppWithLibraryWithResourcesReferenceWithHotRestart (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources)
-		{
-			Configuration.IgnoreIfNotOnWindows ();
-
-			AppWithLibraryWithResourcesReferenceImpl (platform, runtimeIdentifiers, bundleOriginalResources, false, isUsingHotRestart: true);
-		}
-
-		void AppWithLibraryWithResourcesReferenceImpl (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources, bool remoteWindows, bool isUsingHotRestart)
+		void AppWithLibraryWithResourcesReferenceImpl (ApplePlatform platform, string runtimeIdentifiers, bool bundleOriginalResources, bool remoteWindows)
 		{
 			var project = "AppWithLibraryWithResourcesReference";
 			var config = bundleOriginalResources ? "DebugOriginal" : "DebugCompiled";
@@ -1007,13 +1045,6 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 
 			Dictionary<string, string>? extraProperties = null;
-			string? tmpdir;
-			string? hotRestartOutputDir = null;
-			string? hotRestartAppBundlePath = null;
-			if (isUsingHotRestart) {
-				tmpdir = Cache.CreateTemporaryDirectory ();
-				extraProperties = GetHotRestartProperties (tmpdir, out hotRestartOutputDir, out hotRestartAppBundlePath);
-			}
 
 			var properties = GetDefaultProperties (runtimeIdentifiers, extraProperties);
 			properties ["Configuration"] = config;
@@ -1028,7 +1059,7 @@ namespace Xamarin.Tests {
 			var appExecutable = GetNativeExecutable (platform, appPath);
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
-			var appBundleInfo = new AppBundleInfo (platform, appPath, project_path, remoteWindows, runtimeIdentifiers, config, isUsingHotRestart, hotRestartOutputDir, hotRestartAppBundlePath);
+			var appBundleInfo = new AppBundleInfo (platform, appPath, project_path, remoteWindows, runtimeIdentifiers, config);
 			var appBundleContents = appBundleInfo.GetAppBundleFiles (true).ToHashSet ();
 
 			appBundleInfo.DumpAppBundleContents ();
@@ -1046,37 +1077,37 @@ namespace Xamarin.Tests {
 				Assert.That (appBundleContents, Does.Contain (fontCFile), "C.ttf existence");
 
 				var atlasTexture = Path.Combine (resourcesDirectory, "Archer_Attack.atlasc", "Archer_Attack.plist");
-				AssertExistsOrUsingHotRestart (atlasTexture, "AtlasTexture - Archer_Attack");
+				AssertExists (atlasTexture, "AtlasTexture - Archer_Attack");
 
 				var scnAssetsDir = Path.Combine (resourcesDirectory, "art.scnassets");
-				AssertExistsOrUsingHotRestart (Path.Combine (scnAssetsDir, "scene.scn"), "scene.scn");
-				AssertExistsOrUsingHotRestart (Path.Combine (scnAssetsDir, "texture.png"), "texture.png");
+				AssertExists (Path.Combine (scnAssetsDir, "scene.scn"), "scene.scn");
+				AssertExists (Path.Combine (scnAssetsDir, "texture.png"), "texture.png");
 
-				AssertExistsOrUsingHotRestart (Path.Combine (resourcesDirectory, "Assets.car"), "Assets.car");
+				AssertExists (Path.Combine (resourcesDirectory, "Assets.car"), "Assets.car");
 
-				AssertExistsOrUsingHotRestart (Path.Combine (resourcesDirectory, "DirWithResources", "linkedArt.scnassets", "scene.scn"), "DirWithResources/linkedArt.scnassets/scene.scn");
-				AssertExistsOrUsingHotRestart (Path.Combine (resourcesDirectory, "DirWithResources", "linkedArt.scnassets", "texture.png"), "DirWithResources/linkedArt.scnassets/texture.png");
+				AssertExists (Path.Combine (resourcesDirectory, "DirWithResources", "linkedArt.scnassets", "scene.scn"), "DirWithResources/linkedArt.scnassets/scene.scn");
+				AssertExists (Path.Combine (resourcesDirectory, "DirWithResources", "linkedArt.scnassets", "texture.png"), "DirWithResources/linkedArt.scnassets/texture.png");
 
 				var mainStoryboard = Path.Combine (resourcesDirectory, "Main.storyboardc");
-				AssertExistsOrUsingHotRestart (mainStoryboard, "Main.storyboardc");
-				AssertExistsOrUsingHotRestart (Path.Combine (mainStoryboard, "Info.plist"), "Main.storyboardc/Info.plist");
+				AssertExists (mainStoryboard, "Main.storyboardc");
+				AssertExists (Path.Combine (mainStoryboard, "Info.plist"), "Main.storyboardc/Info.plist");
 
 				var colladaScene = Path.Combine (resourcesDirectory, "scene.dae");
-				AssertExistsOrUsingHotRestart (colladaScene, "Collada - scene.dae");
+				AssertExists (colladaScene, "Collada - scene.dae");
 
 				var mlModel = Path.Combine (resourcesDirectory, "SqueezeNet.mlmodelc");
-				AssertExistsOrUsingHotRestart (mlModel, "CoreMLModel");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "analytics"), "CoreMLModel/analytics");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "analytics", "coremldata.bin"), "CoreMLModel/analytics/coremldata.bin");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "coremldata.bin"), "CoreMLModel/coremldata.bin");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "metadata.json"), "CoreMLModel/metadata.json");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model"), "CoreMLModel/model");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model.espresso.net"), "CoreMLModel/model.espresso.net");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model.espresso.shape"), "CoreMLModel/model.espresso.shape");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model.espresso.weights"), "CoreMLModel/model.espresso.weights");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "model", "coremldata.bin"), "CoreMLModel/model/coremldata.bin");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "neural_network_optionals"), "CoreMLModel/neural_network_optionals");
-				AssertExistsOrUsingHotRestart (Path.Combine (mlModel, "neural_network_optionals", "coremldata.bin"), "CoreMLModel/neural_network_optionals/coremldata.bin");
+				AssertExists (mlModel, "CoreMLModel");
+				AssertExists (Path.Combine (mlModel, "analytics"), "CoreMLModel/analytics");
+				AssertExists (Path.Combine (mlModel, "analytics", "coremldata.bin"), "CoreMLModel/analytics/coremldata.bin");
+				AssertExists (Path.Combine (mlModel, "coremldata.bin"), "CoreMLModel/coremldata.bin");
+				AssertExists (Path.Combine (mlModel, "metadata.json"), "CoreMLModel/metadata.json");
+				AssertExists (Path.Combine (mlModel, "model"), "CoreMLModel/model");
+				AssertExists (Path.Combine (mlModel, "model.espresso.net"), "CoreMLModel/model.espresso.net");
+				AssertExists (Path.Combine (mlModel, "model.espresso.shape"), "CoreMLModel/model.espresso.shape");
+				AssertExists (Path.Combine (mlModel, "model.espresso.weights"), "CoreMLModel/model.espresso.weights");
+				AssertExists (Path.Combine (mlModel, "model", "coremldata.bin"), "CoreMLModel/model/coremldata.bin");
+				AssertExists (Path.Combine (mlModel, "neural_network_optionals"), "CoreMLModel/neural_network_optionals");
+				AssertExists (Path.Combine (mlModel, "neural_network_optionals", "coremldata.bin"), "CoreMLModel/neural_network_optionals/coremldata.bin");
 
 				if (bundleOriginalResources) {
 					var infoPlist = appBundleInfo.GetFile (GetInfoPListPath (platform, ""));
@@ -1085,12 +1116,12 @@ namespace Xamarin.Tests {
 				}
 			});
 
-			void AssertExistsOrUsingHotRestart (string path, string message)
+			void AssertExists (string path, string message)
 			{
 				var exists = appBundleContents.Contains (path);
-				if (exists ^ isUsingHotRestart)
-					return;
-				Assert.Fail ($"Expected either hot restart to be enabled ({isUsingHotRestart}) or the file '{path}' to be in the app bundle ({exists}): {message}");
+				if (!exists) {
+					Assert.Fail ($"Expected the file '{path}' to be in the app bundle ({exists}): {message}");
+				}
 			}
 		}
 
@@ -1604,7 +1635,7 @@ namespace Xamarin.Tests {
 				if (hasDirectoryResources)
 					continue;
 
-				var zipContents = ZipHelpers.List (zip).ToHashSet ();
+				var zipContents = ZipHelpers.List (zip, '/').ToHashSet ();
 				var mustHaveContents = new List<string> {
 					"manifest",
 				};
@@ -1712,9 +1743,9 @@ namespace Xamarin.Tests {
 				});
 
 				var missing = mustHaveContents.ToHashSet ().Except (zipContents);
-				Assert.That (missing, Is.Empty, "No missing files");
-
 				var extra = zipContents.Except (mustHaveContents).Except (mayHaveContents);
+
+				Assert.That (missing, Is.Empty, "No missing files");
 				Assert.That (extra, Is.Empty, "No extra files");
 			}
 		}
@@ -1950,21 +1981,6 @@ namespace Xamarin.Tests {
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}
 
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
-		public void OlderCSharpLanguage (ApplePlatform platform, string runtimeIdentifier)
-		{
-			var project = "MySimpleApp";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
-
-			var project_path = GetProjectPath (project, platform: platform);
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifier);
-			properties ["LangVersion"] = "8";
-			properties ["ExcludeTouchUnitReference"] = "true";
-			DotNet.AssertBuild (project_path, properties);
-		}
-
 		// This test can be removed in .NET 7
 		[TestCase (ApplePlatform.iOS)]
 		[TestCase (ApplePlatform.TVOS)]
@@ -2012,62 +2028,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet6_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			var project = "Net6_0SimpleApp";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
-
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, netVersion: "net6.0");
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["ExcludeNUnitLiteReference"] = "true";
-			properties ["ExcludeTouchUnitReference"] = "true";
-			// This is to prevent this type of errors:
-			//     Unable to find package Microsoft.NETCore.App.Ref with version (= 6.0.27)
-			// which happens when we don't have a feed for the Microsoft.NETCore.App.Ref version in question
-			// (the specific package version may in fact not exist yet - which happens sometimes for maestro bumps,
-			// and if that happens, we can do nothing but wait, which may take a while).
-			// This works around the problem by just skipping the reference to the Microsoft.NETCore.App.Ref package,
-			// which we don't need for this test anyway.
-			properties ["DisableImplicitFrameworkReferences"] = "true";
-
-			var result = DotNet.AssertBuildFailure (project_path, properties);
-			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToList ();
-
-			// Due to an implementation detail in .NET, the same error message is shown twice.
-			var targetFramework = $"net6.0-{platform.AsString ().ToLowerInvariant ()}";
-			AssertErrorMessages (errors,
-				$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.",
-				$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.");
-		}
-
-		[Test]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
-		public void BuildNetFutureApp (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			// Builds an app with a higher .NET version than we support (for instance 'net9.0-ios' when we support 'net8.0-ios')
-			var project = "MySimpleApp";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
-
-			var majorNetVersion = Version.Parse (Configuration.DotNetTfm.Replace ("net", "")).Major;
-			var netVersion = $"net{majorNetVersion + 1}.0";
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, netVersion: netVersion);
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifiers);
-			var targetFramework = platform.ToFramework (netVersion);
-			properties ["TargetFramework"] = targetFramework;
-			properties ["ExcludeNUnitLiteReference"] = "true";
-			properties ["ExcludeTouchUnitReference"] = "true";
-
-			var result = DotNet.AssertBuildFailure (project_path, properties);
-			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToList ();
-
-			AssertErrorMessages (errors,
-				$"The current .NET SDK does not support targeting .NET {majorNetVersion + 1}.0.  Either target .NET {majorNetVersion}.0 or lower, or use a version of the .NET SDK that supports .NET {majorNetVersion + 1}.0. Download the .NET SDK from https://aka.ms/dotnet/download");
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 6, isFuture: false);
 		}
 
 		[Test]
@@ -2078,8 +2039,59 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet7_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			var tfm = "net7.0";
-			var project = "Net7_0SimpleApp";
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 7, isFuture: false);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet8_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 8, isFuture: false);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet9_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 9);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet10_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 10);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet11_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 11, isFuture: true);
+			// In .NET 11
+			// * Copy this test and create a new .NET 12 test
+			// * Update this test to call 'BuildSupportedNetVersionApp'
+			// * The SupportedOSPlatformVersion values in the test project might need updating.
+		}
+
+		void BuildUnsupportedNetVersionApp (ApplePlatform platform, string runtimeIdentifiers, int majorNetVersion, bool isFuture)
+		{
+			var tfm = $"net{majorNetVersion}.0";
+			var project = $"Net{majorNetVersion}_0SimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
@@ -2091,35 +2103,44 @@ namespace Xamarin.Tests {
 			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToList ();
 			// Due to an implementation detail in .NET, the same error message is shown twice.
 			var targetFramework = $"{tfm}-{platform.AsString ().ToLowerInvariant ()}";
-			AssertErrorMessages (errors,
-				$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.",
-				$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.");
+			if (isFuture) {
+				AssertErrorMessages (errors,
+					$"The current .NET SDK does not support targeting .NET {majorNetVersion}.0.  Either target .NET {majorNetVersion - 1}.0 or lower, or use a version of the .NET SDK that supports .NET {majorNetVersion}.0. Download the .NET SDK from https://aka.ms/dotnet/download");
+			} else {
+				AssertErrorMessages (errors,
+					$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.",
+					$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.");
+			}
 		}
 
-		[Test]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
-		public void BuildNet8_0App (ApplePlatform platform, string runtimeIdentifiers)
+		void BuildSupportedNetVersionApp (ApplePlatform platform, string runtimeIdentifiers, int majorNetVersion)
 		{
-			var tfm = "net8.0";
-			var project = "Net8_0SimpleApp";
+			if (majorNetVersion == Configuration.DotNetVersion.Major)
+				Assert.Ignore ("Don't need to run when we're on the current .NET version."); // this is just to speed up the test run
+
+			var netVersion = $"{majorNetVersion}.0";
+			var tfm = "net" + netVersion;
+			var project = $"Net{netVersion.Replace ('.', '_')}SimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, netVersion: "net8.0");
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, netVersion: tfm);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["ValidateXcodeVersion"] = "false"; // we might end up trying to build an older, but still supported, version, which requires a different version of Xcode than the one we currently have, which will show an error. Ignore this error.
 
-			var result = DotNet.AssertBuildFailure (project_path, properties);
-			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToList ();
-			// Due to an implementation detail in .NET, the same error message is shown twice.
-			var targetFramework = $"{tfm}-{platform.AsString ().ToLowerInvariant ()}";
-			AssertErrorMessages (errors,
-				$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.",
-				$"The workload '{targetFramework}' is out of support and will not receive security updates in the future. Please refer to https://aka.ms/maui-support-policy for more information about the support policy.");
+			var result = DotNet.AssertBuild (project_path, properties);
+			AssertThatLinkerExecuted (result);
+			var infoPlistPath = GetInfoPListPath (platform, appPath);
+			Assert.That (infoPlistPath, Does.Exist, "Info.plist");
+			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			Assert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
+			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+			Assert.AreEqual (netVersion, infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
+			Assert.AreEqual (netVersion, infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
+
+			var appExecutable = GetNativeExecutable (platform, appPath);
+			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}
 
 		[Test]
@@ -2189,7 +2210,7 @@ namespace Xamarin.Tests {
 			PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers);
 		}
 
-		internal static void PluralRuntimeIdentifiersImpl (ApplePlatform platform, string runtimeIdentifiers, Dictionary<string, string>? extraProperties = null, bool isUsingHotRestart = false)
+		internal static void PluralRuntimeIdentifiersImpl (ApplePlatform platform, string runtimeIdentifiers, Dictionary<string, string>? extraProperties = null)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -2199,13 +2220,8 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (extraProperties: extraProperties);
 			properties ["RuntimeIdentifiers"] = runtimeIdentifiers;
-			if (isUsingHotRestart) {
-				var rv = DotNet.AssertBuildFailure (project_path, properties);
-				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
-				AssertErrorMessages (errors, $"Hot Restart is not supported when 'RuntimeIdentifiers' (plural) is set. Use 'RuntimeIdentifier' (singular) instead.");
-			} else {
-				DotNet.AssertBuild (project_path, properties);
-			}
+
+			DotNet.AssertBuild (project_path, properties);
 		}
 
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
@@ -2583,6 +2599,10 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, platform: platform);
 			Clean (project_path);
 			var properties = GetDefaultProperties ();
+
+			// If any of the api versions we support are higher than the api version we're built for, we need to ignore any XCODE_*_PREVIEW warnings.
+			AddNoWarnForPreviewVersions (platform, supportedApiVersion, properties);
+
 			properties ["cmdline:AllTheTargetFrameworks"] = targetFrameworks;
 			var rv = DotNet.AssertBuild (project_path, properties);
 			rv.AssertNoWarnings ();
@@ -2749,6 +2769,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", "macOS")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", "MacCatalyst")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64;", "tvOS")]
+		[Ignore ("https://github.com/dotnet/runtime/issues/115145")]
 		public void SourcelinkTest (ApplePlatform platform, string runtimeIdentifiers, string platformName)
 		{
 			// Sourcelink uses the latest commit and tests to see if
@@ -2785,7 +2806,7 @@ namespace Xamarin.Tests {
 		[Test]
 		// [TestCase (ApplePlatform.iOS)] // Skipping because we're not executing tvOS apps anyway (but it should work)
 		// [TestCase (ApplePlatform.TVOS)] // Skipping because we're not executing tvOS apps anyway (but it should work)
-		[TestCase (ApplePlatform.MacOSX)] // https://github.com/dotnet/runtime/issues/102730
+		[TestCase (ApplePlatform.MacOSX)]
 		[TestCase (ApplePlatform.MacCatalyst)]
 		public void RaisesAppDomainUnhandledExceptionEvent (ApplePlatform platform)
 		{
@@ -3252,7 +3273,6 @@ namespace Xamarin.Tests {
 			"@executable_path/../../Contents/MonoBundle/libSystem.Native.dylib",
 			"@executable_path/../../Contents/MonoBundle/libSystem.Net.Security.Native.dylib",
 			"@executable_path/../../Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib",
-			"@executable_path/../../Contents/MonoBundle/libSystem.Security.Cryptography.Native.OpenSsl.dylib",
 			"/System/Library/Frameworks/Accelerate.framework/Versions/A/Accelerate",
 			"/System/Library/Frameworks/Accessibility.framework/Versions/A/Accessibility",
 			"/System/Library/Frameworks/Accounts.framework/Versions/A/Accounts",
@@ -3423,7 +3443,6 @@ namespace Xamarin.Tests {
 			"@executable_path/../../Contents/MonoBundle/libSystem.Native.dylib",
 			"@executable_path/../../Contents/MonoBundle/libSystem.Net.Security.Native.dylib",
 			"@executable_path/../../Contents/MonoBundle/libSystem.Security.Cryptography.Native.Apple.dylib",
-			"@executable_path/../../Contents/MonoBundle/libSystem.Security.Cryptography.Native.OpenSsl.dylib",
 			"/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
 			"/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices",
 			"/System/Library/Frameworks/CloudKit.framework/Versions/A/CloudKit",

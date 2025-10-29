@@ -7,13 +7,10 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //
 
-using System;
 using System.ComponentModel;
 using AVFoundation;
-using ObjCRuntime;
 using CoreVideo;
 using CoreGraphics;
-using Foundation;
 using CoreFoundation;
 using CoreMedia;
 using UniformTypeIdentifiers;

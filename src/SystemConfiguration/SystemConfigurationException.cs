@@ -9,8 +9,6 @@
 
 #nullable enable
 
-using System;
-
 namespace SystemConfiguration {
 
 	/// <summary>An exception relating to network reachability. The cause of the exception is specified by the <see cref="SystemConfiguration.SystemConfigurationException.StatusErrorCode" /> property.</summary>

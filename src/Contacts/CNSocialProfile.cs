@@ -9,9 +9,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
-
 namespace Contacts {
 	// Strong typed Keys to enum
 	/// <summary>Enumerates properties of social services that are always fetched.</summary>

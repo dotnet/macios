@@ -408,6 +408,7 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		<Codesign
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true' And '@(_AssetPack)' != '' And '$(_DistributionType)' == 'AppStore'"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			ToolExe="$(CodesignExe)"
 			ToolPath="$(CodesignPath)"
 			CodesignAllocate="$(_CodesignAllocate)"
@@ -449,6 +450,7 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 			ResourceRules="$(_PreparedResourceRules)"
 			Resources="@(_IpaAppBundleToSign)"
 			SigningKey="$(_CodeSigningKey)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			ExtraArgs="$(CodesignExtraArgs)"
 			/>
 

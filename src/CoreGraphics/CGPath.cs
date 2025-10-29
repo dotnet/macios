@@ -28,16 +28,12 @@
 
 #nullable enable
 
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 
 namespace CoreGraphics {
 

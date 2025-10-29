@@ -9,12 +9,8 @@
 
 #nullable enable
 
-using System;
 using System.IO;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 
 namespace Security {
 	/// <summary>Class that represents an SSL connection.</summary>

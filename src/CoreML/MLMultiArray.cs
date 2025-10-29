@@ -9,10 +9,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace CoreML {
 	public partial class MLMultiArray {
 		static NSNumber [] ConvertArray (nint [] value)

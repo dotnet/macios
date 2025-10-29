@@ -79,11 +79,9 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				var taskRunner = new TaskRunner (SessionId, BuildEngine4);
-
-				taskRunner.FixReferencedItems (this, SourceFiles);
-
-				return taskRunner.RunAsync (this).Result;
+				return ExecuteRemotely (out var _, (taskRunner) => {
+					taskRunner.FixReferencedItems (this, SourceFiles);
+				});
 			}
 
 			if (DestinationFiles is not null && DestinationFolder is not null) {

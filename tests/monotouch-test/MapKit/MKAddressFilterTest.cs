@@ -1,11 +1,6 @@
 #if HAS_MAPKIT
 
-using System;
-
-using Foundation;
 using MapKit;
-
-using NUnit.Framework;
 
 using Xamarin.Utils;
 

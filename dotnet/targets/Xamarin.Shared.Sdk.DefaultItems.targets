@@ -76,6 +76,7 @@
 
 	<ItemGroup Condition="'$(DisableImplicitFrameworkReferences)' != 'true'">
 		<FrameworkReference Include="Microsoft.$(_PlatformName)" IsImplicitlyDefined="true" Pack="false" PrivateAssets="All" />
+		<FrameworkReference Include="Microsoft.$(_PlatformName).Runtimes" IsImplicitlyDefined="true" Pack="false" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup>

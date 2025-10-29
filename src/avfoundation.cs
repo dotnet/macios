@@ -47,15 +47,12 @@ using MediaToolbox;
 using AudioToolbox;
 using Cinematic;
 using CoreMedia;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 using CoreVideo;
 using UniformTypeIdentifiers;
 using ImageIO;
 using MediaPlayer;
-using System;
 
 #if MONOMAC
 using AppKit;
@@ -6881,6 +6878,10 @@ namespace AVFoundation {
 		[return: NullAllowed]
 		[Static, Export ("assetWriterWithURL:fileType:error:")]
 		AVAssetWriter FromUrl (NSUrl outputUrl, string outputFileType, out NSError error);
+
+		[return: NullAllowed]
+		[Wrap ("FromUrl (outputUrl, outputFileType.GetConstant ()!, out error)")]
+		AVAssetWriter FromUrl (NSUrl outputUrl, AVFileTypes outputFileType, out NSError error);
 
 		[DesignatedInitializer]
 		[Export ("initWithURL:fileType:error:")]

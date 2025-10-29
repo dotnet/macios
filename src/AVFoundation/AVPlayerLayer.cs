@@ -7,7 +7,6 @@
 // Copyright 2015 Xamarin Inc.
 //
 
-using ObjCRuntime;
 using CoreVideo;
 
 #nullable enable

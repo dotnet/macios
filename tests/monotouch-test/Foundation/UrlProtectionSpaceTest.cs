@@ -7,16 +7,13 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Security.Cryptography.X509Certificates;
-using Foundation;
 using Security;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 
 using MonoTouchFixtures.Security;
 

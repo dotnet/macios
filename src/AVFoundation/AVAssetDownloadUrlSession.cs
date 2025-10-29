@@ -7,9 +7,6 @@
 // Copyright 2015 Xamarin Inc.
 //
 #if !TVOS
-using System;
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

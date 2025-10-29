@@ -34,7 +34,14 @@ all-local:: global.json
 global.json: $(TOP)/dotnet.config Makefile $(GIT_DIRECTORY)/HEAD $(GIT_DIRECTORY)/index
 	$(Q_GEN) \
 		printf "{\n" > $@; \
-		printf "  \"sdk\": {\n    \"version\": \"$(DOTNET_VERSION)\"\n  },\n" >> $@; \
+		printf "  \"sdk\": {\n" >> $@; \
+		printf "    \"version\": \"$(DOTNET_VERSION)\",\n" >> $@; \
+		printf "    \"paths\": [\n" >> $@; \
+		printf "      \"builds/downloads/dotnet\",\n" >> $@; \
+		printf "      \"\$$host\$$\"\n" >> $@; \
+		printf "    ],\n" >> $@; \
+		printf "    \"errorMessage\": \"The .NET SDK could not be found, please run 'make dotnet -C builds'.\"\n" >> $@; \
+		printf "  },\n" >> $@; \
 		printf "  \"tools\": {\n    \"dotnet\": \"$(DOTNET_VERSION)\"\n  },\n" >> $@; \
 		printf "  \"msbuild-sdks\": {\n    \"Microsoft.DotNet.Arcade.Sdk\": \"$(ARCADE_VERSION)\"\n  }\n" >> $@; \
 		printf "}\n" >> $@

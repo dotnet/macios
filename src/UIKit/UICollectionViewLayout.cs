@@ -7,10 +7,6 @@
 // Copyrigh 2012, Xamarin Inc.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace UIKit {
 
 	public partial class UICollectionViewLayout {

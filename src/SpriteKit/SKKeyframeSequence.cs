@@ -7,13 +7,10 @@
 // Copyright 2013,2015 Xamarin Inc.
 //
 
-using System;
 using System.Collections.Generic;
 #if !NO_SYSTEM_DRAWING
 using System.Drawing;
 #endif
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

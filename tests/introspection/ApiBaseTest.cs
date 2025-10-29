@@ -19,20 +19,15 @@
 // limitations under the License.
 //
 
-using System;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using System.Text;
-using NUnit.Framework;
 using Xamarin.Utils;
 using System.Linq;
 using Xamarin.Tests;
 
-using Foundation;
-using ObjCRuntime;
 #if MONOTOUCH
 using UIKit;
 #endif

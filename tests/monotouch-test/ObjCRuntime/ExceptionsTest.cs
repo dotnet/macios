@@ -1,17 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Threading;
 
-using Foundation;
-using ObjCRuntime;
 #if !MONOMAC
 using UIKit;
 #endif
 using Bindings.Test;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.ObjCRuntime {
 

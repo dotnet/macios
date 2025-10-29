@@ -6,10 +6,7 @@
 //
 // Copyright 2013-2014 Xamarin Inc
 //
-using System;
-using ObjCRuntime;
 using CoreGraphics;
-using Foundation;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

@@ -24,14 +24,9 @@
 
 #if !__MACCATALYST__
 
-using System;
 using System.ComponentModel;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Threading;
-
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

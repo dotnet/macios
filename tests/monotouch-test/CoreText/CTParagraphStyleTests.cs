@@ -7,13 +7,9 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using NUnit.Framework;
 using System.Linq;
 
-using Foundation;
 using CoreText;
-using ObjCRuntime;
 
 namespace MonoTouchFixtures.CoreText {
 

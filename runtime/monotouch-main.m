@@ -29,7 +29,7 @@
 
 static char original_working_directory_path [MAXPATHLEN];
 
-const char * const
+const char *
 xamarin_get_original_working_directory_path ()
 {
 	return original_working_directory_path;

@@ -1,8 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-using Foundation;
 
 namespace UIKit {
 	static public partial class UIContentSizeCategoryExtensions {

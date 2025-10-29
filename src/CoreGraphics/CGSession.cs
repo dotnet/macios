@@ -1,10 +1,5 @@
 #if __MACOS__ || __MACCATALYST__
 
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
-
 namespace CoreGraphics {
 
 	[SupportedOSPlatform ("maccatalyst")]

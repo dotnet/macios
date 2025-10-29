@@ -7,11 +7,6 @@
 //
 // Copyright 2019, 2020 Microsoft Corporation
 
-using System;
-
-using ObjCRuntime;
-using Foundation;
-
 namespace GameController {
 	[Deprecated (PlatformName.MacOSX, 10, 15, message: "Use 'GCController.GetMicroGamepadController()' instead.")]
 	[Deprecated (PlatformName.iOS, 13, 0, message: "Use 'GCController.GetMicroGamepadController()' instead.")]

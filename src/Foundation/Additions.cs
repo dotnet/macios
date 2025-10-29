@@ -2,8 +2,6 @@
 
 #if !MONOMAC
 
-using System;
-
 namespace Foundation {
 
 	// NSIndexPath UIKit Additions Reference

@@ -12,7 +12,7 @@ if (args.Length != expectedArgumentCount) {
 var idx = 0;
 var platform = args [idx++];
 var dotnetTfm = args [idx++];
-var supportedApiVersions = args [idx++].Split (' ').Select (v => v.Replace (dotnetTfm + "-", "")).ToArray ();
+var supportedApiVersions = args [idx++].Split (' ').Where (v => v.StartsWith (dotnetTfm)).Select (v => v.Replace (dotnetTfm + "-", "")).Distinct ().ToArray ();
 var outputPath = args [idx++];
 var plistPath = $"../builds/Versions-{platform}.plist.in";
 
@@ -20,12 +20,14 @@ var doc = new XmlDocument ();
 doc.Load (plistPath);
 var supportedTargetPlatformVersions = doc.SelectNodes ($"/plist/dict/key[text()='SupportedTargetPlatformVersions']/following-sibling::dict[1]/key[text()='{platform}']/following-sibling::array[1]/string")!.Cast<XmlNode> ().Select (v => v.InnerText).ToArray ();
 
-var currentSupportedTPVs = supportedTargetPlatformVersions.Where (v => v.StartsWith (dotnetTfm + "-", StringComparison.Ordinal)).Select (v => v.Substring (dotnetTfm.Length + 1));
+// we might support additioan TPV through BETA_API_VERSIONS_* values, so add those as well.
+supportedTargetPlatformVersions = supportedTargetPlatformVersions.Concat (supportedApiVersions).Distinct ().OrderBy (v => v).ToArray ();
+
 var minSdkVersionName = $"DOTNET_MIN_{platform.ToUpper ()}_SDK_VERSION";
 var minSdkVersionString = File.ReadAllLines ("../Make.config").Single (v => v.StartsWith (minSdkVersionName + "=", StringComparison.Ordinal)).Substring (minSdkVersionName.Length + 1);
 var minSdkVersion = Version.Parse (minSdkVersionString);
 
-Console.WriteLine (string.Join (";", supportedApiVersions));
+// Console.WriteLine (string.Join (";", supportedApiVersions));
 
 using (TextWriter writer = new StreamWriter (outputPath)) {
 	writer.WriteLine ($"<!-- This file contains a generated list of the {platform} platform versions that are supported for this SDK -->");

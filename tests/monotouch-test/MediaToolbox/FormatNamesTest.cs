@@ -1,11 +1,8 @@
-using System;
 using CoreMedia;
-using Foundation;
 #if !MONOMAC
 using UIKit;
 #endif
 using MediaToolbox;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.MediaToolbox {
 

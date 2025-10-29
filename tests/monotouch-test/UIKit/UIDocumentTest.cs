@@ -9,15 +9,11 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
 using System.IO;
 using System.Reflection;
 using System.Threading;
-using Foundation;
 using UIKit;
-using ObjCRuntime;
 using MonoTouchException = ObjCRuntime.RuntimeException;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.UIKit {

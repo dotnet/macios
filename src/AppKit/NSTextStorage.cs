@@ -1,6 +1,5 @@
 #if !__MACCATALYST__
 using CoreText;
-using Foundation;
 
 #nullable enable
 

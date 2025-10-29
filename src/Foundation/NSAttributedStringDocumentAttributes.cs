@@ -8,21 +8,18 @@
 
 #nullable enable
 
-using System;
 using System.ComponentModel;
 
 #if HAS_APPKIT
 using AppKit;
 #endif
 using CoreGraphics;
-using Foundation;
 #if HAS_UIKIT
 using UIKit;
 #endif
 #if !COREBUILD && HAS_WEBKIT
 using WebKit;
 #endif
-using ObjCRuntime;
 
 #if !COREBUILD
 #if __MACOS__

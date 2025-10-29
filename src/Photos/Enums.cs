@@ -1,6 +1,3 @@
-using System;
-using ObjCRuntime;
-using Foundation;
 
 namespace Photos {
 	// NSInteger -> PHImageManager.h

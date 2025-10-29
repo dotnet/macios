@@ -7,17 +7,12 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Net;
 using System.Threading.Tasks;
 using System.IO;
-using Foundation;
-using CoreFoundation;
-using NUnit.Framework;
 // Mac tries to use CFNetwork Namespace instead of Class for calls without this:
 using PlatformCFNetwork = CoreFoundation.CFNetwork;
 using MonoTests.System.Net.Http;
-
 
 namespace MonoTouchFixtures.CoreFoundation {
 

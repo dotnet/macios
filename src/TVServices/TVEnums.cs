@@ -1,11 +1,6 @@
 // Copyright 2015 Xamarin Inc.
 
-using System;
-using System.Runtime.InteropServices;
-
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

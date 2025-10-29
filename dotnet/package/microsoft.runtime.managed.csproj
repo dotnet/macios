@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <PackageId>Microsoft.$(_PlatformName).Runtime.$(_RuntimeIdentifier).$(PackageOSTargetVersion)</PackageId>
+    <Description>Microsoft $(_PlatformName) managed runtime pack for $(_RuntimeIdentifier). Please do not reference directly.</Description>
+    <RuntimeIdentifier>$(_RuntimeIdentifier)</RuntimeIdentifier>
+    <OverridePackageId>$(PackageId)</OverridePackageId>
+    <PlatformPackageType>RuntimePack</PlatformPackageType>
+  </PropertyGroup>
+  <Import Project="common.csproj" />
+</Project>

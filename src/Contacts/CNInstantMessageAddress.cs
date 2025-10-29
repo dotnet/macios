@@ -9,9 +9,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
-
 namespace Contacts {
 	// Strong typed Keys to enum
 	/// <summary>Enumeration of values used by all instant-message services.</summary>

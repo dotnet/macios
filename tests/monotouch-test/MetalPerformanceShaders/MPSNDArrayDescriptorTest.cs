@@ -3,14 +3,10 @@
 //
 
 #if HAS_METALPERFORMANCESHADERS
-using System;
 
 using CoreGraphics;
-using Foundation;
 using Metal;
 using MetalPerformanceShaders;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.MetalPerformanceShaders {
 	[TestFixture]

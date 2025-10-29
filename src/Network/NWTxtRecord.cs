@@ -9,12 +9,8 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using System.Text;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 
 using nw_advertise_descriptor_t = System.IntPtr;

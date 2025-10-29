@@ -8,10 +8,6 @@
 // Copyright (c) Microsoft Corporation.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace AutomaticAssessmentConfiguration {
 
 	[ErrorDomain ("AEAssessmentErrorDomain")]

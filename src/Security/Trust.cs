@@ -30,13 +30,9 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
-using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
 
 namespace Security {
 	/// <summary>A trust level. A trust object combines a certificate with a policy or policies. </summary>

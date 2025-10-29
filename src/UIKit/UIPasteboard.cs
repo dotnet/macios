@@ -1,13 +1,8 @@
 #if IOS
-using System;
 using System.Drawing;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.ComponentModel;
-
-using ObjCRuntime;
-using Foundation;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

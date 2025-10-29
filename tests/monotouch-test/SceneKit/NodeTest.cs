@@ -7,17 +7,13 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using CoreAnimation;
-using Foundation;
 using SceneKit;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.SceneKit {

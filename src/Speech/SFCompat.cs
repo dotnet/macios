@@ -1,8 +1,5 @@
 #nullable enable
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using System.ComponentModel;
 
 namespace Speech {

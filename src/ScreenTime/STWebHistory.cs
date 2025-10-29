@@ -1,7 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 
-using Foundation;
-
 namespace ScreenTime {
 	public partial class STWebHistory {
 		/// <summary>Create a new <see cref="STWebHistory" /> for the specified bundle identifier.</summary>

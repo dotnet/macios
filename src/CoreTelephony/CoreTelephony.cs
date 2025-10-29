@@ -1,9 +1,5 @@
 #nullable enable
 
-using Foundation;
-using ObjCRuntime;
-using System;
-
 namespace CoreTelephony {
 
 	public partial class CTCall {

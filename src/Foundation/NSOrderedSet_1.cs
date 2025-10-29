@@ -8,12 +8,8 @@
 //
 #nullable enable
 
-using System;
 using System.Collections.Generic;
 using System.Collections;
-using System.Runtime.Versioning;
-
-using ObjCRuntime;
 
 namespace Foundation {
 	[SupportedOSPlatform ("ios")]

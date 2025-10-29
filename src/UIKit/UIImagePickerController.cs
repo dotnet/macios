@@ -10,11 +10,8 @@
 
 #if !TVOS // __TVOS_PROHIBITED
 
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 using Photos;
-using System;
 using System.Drawing;
 
 // Disable until we get around to enable + fix any issues.

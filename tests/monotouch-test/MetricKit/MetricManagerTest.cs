@@ -1,12 +1,6 @@
 #if __IOS__
 
-using System;
-
-using CoreFoundation;
-using Foundation;
 using MetricKit;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.MetricKit {
 

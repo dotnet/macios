@@ -9,12 +9,8 @@
 
 #if __TVOS__
 
-using System;
 using DeviceDiscoveryUI;
-using Foundation;
-using ObjCRuntime;
 using Network;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.DeviceDiscoveryUI {

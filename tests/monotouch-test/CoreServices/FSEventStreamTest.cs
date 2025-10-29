@@ -4,19 +4,11 @@
 
 #if __MACOS__
 
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-using CoreFoundation;
 using CoreServices;
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreServices {
 	using static FSEventStreamCreateFlags;

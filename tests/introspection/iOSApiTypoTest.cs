@@ -1,8 +1,4 @@
-using System;
-using NUnit.Framework;
 
-using Foundation;
-using ObjCRuntime;
 using UIKit;
 
 namespace Introspection {

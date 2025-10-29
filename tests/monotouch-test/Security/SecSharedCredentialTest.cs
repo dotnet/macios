@@ -1,11 +1,7 @@
 #if __IOS__
-using System;
 using System.Threading;
 
-using Foundation;
 using Security;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.Security {

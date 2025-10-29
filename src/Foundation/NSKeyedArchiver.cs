@@ -20,11 +20,7 @@
 //
 // Copyright 2011, 2012 Xamarin Inc
 //
-using System;
-using System.Runtime.InteropServices;
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

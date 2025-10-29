@@ -9,8 +9,6 @@
 
 #nullable enable
 
-using ObjCRuntime;
-
 namespace Twitter {
 
 	// untyped enum -> TWTweetComposeViewController.h where the values are equals to those of

@@ -53,8 +53,7 @@ IOS_WINDOWS_TARGETS =                                                      \
 
 TASK_ASSEMBLIES = Xamarin.MacDev.Tasks $(LOCALIZATION_ASSEMBLIES)
 IOS_WINDOWS_TASK_ASSEMBLIES = Xamarin.iOS.Tasks.Windows
-IOS_WINDOWS_DEPENDENCIES = Xamarin.iOS.Windows.Client iSign.Core ws2_32 System.Diagnostics.Tracer System.Formats.Asn1 System.Buffers System.Memory System.Numerics.Vectors System.Runtime.CompilerServices.Unsafe System.Security.Cryptography.ProtectedData System.Security.Cryptography.Pkcs Microsoft.Win32.Registry
-IOS_WINDOWS_MOBILEDEVICE_TOOLS = iMobileDevice-net bz2 getopt ideviceactivation idevicebackup idevicebackup2 idevicecrashreport idevicedate idevicedebug idevicedebugserverproxy idevicediagnostics ideviceenterrecovery ideviceimagemounter ideviceinfo ideviceinstaller idevicename idevicenotificationproxy idevicepair ideviceprovision idevicerestore idevicescreenshot idevicesyslog idevice_id imobiledevice-net-lighthouse imobiledevice ios_webkit_debug_proxy iproxy irecovery irecovery libcharset libcurl LIBEAY32 libiconv libusb-1.0 libusb0 libxml2 lzma pcre pcreposix plist plistutil plist_cmp plist_test pthreadVC3 readline SSLEAY32 usbmuxd usbmuxd vcruntime140 zip zlib1
+IOS_WINDOWS_DEPENDENCIES = System.Diagnostics.Tracer System.Formats.Asn1 System.Buffers System.Memory System.Numerics.Vectors System.Runtime.CompilerServices.Unsafe System.Security.Cryptography.ProtectedData System.Security.Cryptography.Pkcs Microsoft.Win32.Registry
 
 PROPS_AND_TARGETS = \
 	$(wildcard Xamarin.Shared/*.props)   \
@@ -105,22 +104,14 @@ MSBUILD_PRODUCTS += $(DOTNET_TARGETS)
 DOTNET_IOS_WINDOWS_OUTPUT_FILES =                                \
 	$(foreach dll,$(IOS_WINDOWS_TASK_ASSEMBLIES),$(dll).*)       \
 	$(foreach dll,$(IOS_WINDOWS_DEPENDENCIES),$(dll).*)          \
-	iSign.Core.pdb                                               \
-	Xamarin.iOS.Windows.Client.pdb                               \
 	Broker.zip                                                   \
 
 DOTNET_IOS_WINDOWS_FILES = $(IOS_WINDOWS_TARGETS) $(foreach file,$(DOTNET_IOS_WINDOWS_OUTPUT_FILES),Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/$(file))
 DOTNET_IOS_WINDOWS_FILES += Messaging/Xamarin.Messaging.Build/obj/$(CONFIG)/Build.zip
-DOTNET_IOS_WINDOWS_MOBILEDEVICE_TOOLS_X86 = $(foreach file,$(IOS_WINDOWS_MOBILEDEVICE_TOOLS),Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/imobiledevice-x86/$(file).*)
-DOTNET_IOS_WINDOWS_MOBILEDEVICE_TOOLS_X64 = $(foreach file,$(IOS_WINDOWS_MOBILEDEVICE_TOOLS),Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/imobiledevice-x64/$(file).*)
 
 .copy-windows-files: .build-stamp
 	$(Q) mkdir -p $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS
 	$(Q) $(CP) $(DOTNET_IOS_WINDOWS_FILES) $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS/
-	$(Q) mkdir -p $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS/imobiledevice-x86
-	$(Q) $(CP) $(DOTNET_IOS_WINDOWS_MOBILEDEVICE_TOOLS_X86) $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS/imobiledevice-x86/
-	$(Q) mkdir -p $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS/imobiledevice-x64
-	$(Q) $(CP) $(DOTNET_IOS_WINDOWS_MOBILEDEVICE_TOOLS_X64) $(DOTNET_DESTDIR)/$(IOS_NUGET_WINDOWS_SDK_NAME)/tools/msbuild/iOS/imobiledevice-x64/
 
 .dotnet-windows: .build-stamp .copy-windows-files
 

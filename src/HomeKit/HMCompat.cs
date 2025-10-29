@@ -7,12 +7,9 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //
 
-using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 
 #nullable enable
 namespace HomeKit {

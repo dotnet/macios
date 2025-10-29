@@ -1,11 +1,4 @@
-using System;
-using System.Runtime.InteropServices;
 using System.Text;
-
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.ObjCRuntime {
 

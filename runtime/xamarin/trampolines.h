@@ -121,7 +121,7 @@ NSArray *   xamarin_convert_managed_to_nsarray_with_func (MonoArray *array, xama
 MonoArray * xamarin_convert_nsarray_to_managed_with_func (NSArray *array, MonoClass *managedElementType, xamarin_id_to_managed_func convert, void *context, GCHandle *exception_gchandle);
 
 void * xamarin_nsstring_to_smart_enum (id value, void *ptr, MonoClass *managedType, void *context, GCHandle *exception_gchandle);
-void * xamarin_smart_enum_to_nsstring (MonoObject *value, void *context /* token ref */, GCHandle *exception_gchandle);
+id xamarin_smart_enum_to_nsstring (MonoObject *value, void *context /* token ref */, GCHandle *exception_gchandle);
 
 // Returns a pointer to the value type, which must be freed using xamarin_free.
 void *xamarin_nsnumber_to_bool   (NSNumber *number, void *ptr, MonoClass *managedType, void *context, GCHandle *exception_gchandle);

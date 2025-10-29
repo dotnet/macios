@@ -27,6 +27,18 @@
 			LatestRuntimeFrameworkVersion="@NUGET_VERSION_NO_METADATA@"
 			TargetingPackName="Microsoft.@PLATFORM@.Ref.@DOTNET_TFM@_@NUGET_OS_VERSION@"
 			TargetingPackVersion="@NUGET_VERSION_NO_METADATA@"
+			RuntimePackNamePatterns="Microsoft.@PLATFORM@.Runtime.@PLATFORM_LOWER@.@DOTNET_TFM@_@NUGET_OS_VERSION@"
+			RuntimePackRuntimeIdentifiers="@RUNTIME_PACK_RUNTIME_IDENTIFIERS@"
+			Profile="@PLATFORM@"
+		/>
+		<KnownFrameworkReference
+			Include="Microsoft.@PLATFORM@.Runtimes"
+			TargetFramework="@DOTNET_TFM@"
+			RuntimeFrameworkName="Microsoft.@PLATFORM@.Runtimes"
+			DefaultRuntimeFrameworkVersion="@NUGET_VERSION_NO_METADATA@"
+			LatestRuntimeFrameworkVersion="@NUGET_VERSION_NO_METADATA@"
+			TargetingPackName="Microsoft.@PLATFORM@.Ref.@DOTNET_TFM@_@NUGET_OS_VERSION@"
+			TargetingPackVersion="@NUGET_VERSION_NO_METADATA@"
 			RuntimePackNamePatterns="Microsoft.@PLATFORM@.Runtime.**RID**.@DOTNET_TFM@_@NUGET_OS_VERSION@"
 			RuntimePackRuntimeIdentifiers="@RUNTIME_PACK_RUNTIME_IDENTIFIERS@"
 			Profile="@PLATFORM@"

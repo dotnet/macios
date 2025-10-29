@@ -1,10 +1,4 @@
 #if __MACOS__
-using System;
-using System.Runtime.InteropServices;
-using NUnit.Framework;
-
-using Foundation;
-using ObjCRuntime;
 
 namespace Xamarin.Mac.Tests {
 	[Register ("SimpleRegistrarTestClass")]

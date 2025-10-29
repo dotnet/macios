@@ -7,12 +7,8 @@
 // Copyright 2012-2013 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Reflection;
-using Foundation;
-using ObjCRuntime;
 using UIKit;
-using NUnit.Framework;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

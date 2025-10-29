@@ -7,10 +7,6 @@
 // Copyright 2014 Xamarin INc
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 #if MONOMAC
 using View = AppKit.NSView;
 #else

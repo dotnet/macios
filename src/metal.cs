@@ -1940,7 +1940,7 @@ namespace Metal {
 		[Export ("sparseTileSizeWithTextureType:pixelFormat:sampleCount:sparsePageSize:")]
 		MTLSize GetSparseTileSize (MTLTextureType textureType, MTLPixelFormat pixelFormat, nuint sampleCount, MTLSparsePageSize sparsePageSize);
 
-		[NoiOS, Mac (13, 3), NoTV, MacCatalyst (26, 0)]
+		[iOS (26, 1), Mac (13, 3), TV (26, 1), MacCatalyst (26, 0)]
 		[Abstract (GenerateExtensionMethod = true)]
 		[Export ("maximumConcurrentCompilationTaskCount")]
 		nuint MaximumConcurrentCompilationTaskCount { get; }

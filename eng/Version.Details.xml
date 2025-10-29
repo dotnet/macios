@@ -76,6 +76,23 @@
       <Uri>https://github.com/dotnet/macios</Uri>
       <Sha>4177c9d9590857cfb2617fd7a7ef3d5e1de48ed3</Sha>
     </Dependency>
+    <!-- This is a subscription of the .NET 10/Xcode 26.0 versions of our packages -->
+    <Dependency Name="Microsoft.MacCatalyst.Sdk.net10.0_26.0" Version="26.0.11017">
+      <Uri>https://github.com/dotnet/macios</Uri>
+      <Sha>23eb1c2c9465fe76c810c8a69982c1254161f4b0</Sha>
+    </Dependency>
+    <Dependency Name="Microsoft.macOS.Sdk.net10.0_26.0" Version="26.0.11017">
+      <Uri>https://github.com/dotnet/macios</Uri>
+      <Sha>23eb1c2c9465fe76c810c8a69982c1254161f4b0</Sha>
+    </Dependency>
+    <Dependency Name="Microsoft.iOS.Sdk.net10.0_26.0" Version="26.0.11017">
+      <Uri>https://github.com/dotnet/macios</Uri>
+      <Sha>23eb1c2c9465fe76c810c8a69982c1254161f4b0</Sha>
+    </Dependency>
+    <Dependency Name="Microsoft.tvOS.Sdk.net10.0_26.0" Version="26.0.11017">
+      <Uri>https://github.com/dotnet/macios</Uri>
+      <Sha>23eb1c2c9465fe76c810c8a69982c1254161f4b0</Sha>
+    </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
     <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="11.0.0-beta.25562.109">

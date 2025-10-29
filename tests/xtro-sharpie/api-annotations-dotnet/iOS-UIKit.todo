@@ -1,5 +1,0 @@
-!deprecated-attribute-missing! UIAccessibilityButtonShapesEnabled missing a [Deprecated] attribute
-!missing-selector! UIPresentationController::backgroundEffect not bound
-!missing-selector! UIPresentationController::setBackgroundEffect: not bound
-!missing-selector! UISheetPresentationControllerDetent::backgroundEffect not bound
-!missing-selector! UISheetPresentationControllerDetent::setBackgroundEffect: not bound

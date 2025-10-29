@@ -1123,6 +1123,9 @@ namespace UIKit {
 
 		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
+		[Deprecated (PlatformName.iOS, 26, 1, message: "Use 'AXSettings.ShowBordersEnabledStatusDidChangeNotification' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 1, message: "Use 'AXSettings.ShowBordersEnabledStatusDidChangeNotification' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 1, message: "Use 'AXSettings.ShowBordersEnabledStatusDidChangeNotification' instead.")]
 		[Notification]
 		[Field ("UIAccessibilityButtonShapesEnabledStatusDidChangeNotification")]
 		NSString ButtonShapesEnabledStatusDidChangeNotification { get; }
@@ -15276,6 +15279,11 @@ namespace UIKit {
 		[Deprecated (PlatformName.TvOS, 17, 0, message: "Use the 'TraitOverrides' property instead.")]
 		[Export ("overrideTraitCollection", ArgumentSemantic.Copy), NullAllowed]
 		UITraitCollection OverrideTraitCollection { get; set; }
+
+		[NoTV, NoMacCatalyst, iOS (26, 1)]
+		[NullAllowed]
+		[Export ("backgroundEffect", ArgumentSemantic.Strong)]
+		UIVisualEffect BackgroundEffect { get; set; }
 
 		[Export ("adaptivePresentationStyle")]
 		UIModalPresentationStyle AdaptivePresentationStyle ();
@@ -34526,6 +34534,11 @@ namespace UIKit {
 		[Static]
 		[Export ("customDetentWithIdentifier:resolver:")]
 		UISheetPresentationControllerDetent Create ([NullAllowed] string identifier, Func<IUISheetPresentationControllerDetentResolutionContext, nfloat> resolver);
+
+		[NoTV, NoMacCatalyst, iOS (26, 1)]
+		[NullAllowed]
+		[Export ("backgroundEffect", ArgumentSemantic.Strong)]
+		UIVisualEffect BackgroundEffect { get; set; }
 
 		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("resolvedValueInContext:")]

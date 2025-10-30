@@ -30,17 +30,13 @@
 
 #nullable enable
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading;
 using AudioToolbox;
-using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
 
 namespace AudioUnit {
 #if !COREBUILD

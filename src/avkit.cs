@@ -2,9 +2,6 @@
 // avkit.cs: Definitions for AVKit.cs
 //
 // Copyright 2014-2015 Xamarin Inc
-using System;
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
 using CoreImage;
 using CoreMedia;

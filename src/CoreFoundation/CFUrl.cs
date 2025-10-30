@@ -30,11 +30,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
-
 namespace CoreFoundation {
 
 	// CFURLPathStyle -> CFIndex -> CFURL.h

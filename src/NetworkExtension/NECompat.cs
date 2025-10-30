@@ -1,10 +1,7 @@
 #nullable enable
 
-using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using Foundation;
-using ObjCRuntime;
 
 namespace NetworkExtension {
 	[Obsolete (Constants.ApiRemovedGeneral)]

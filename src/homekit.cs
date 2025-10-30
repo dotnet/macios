@@ -1,9 +1,6 @@
 using CoreGraphics;
 using CoreLocation;
-using ObjCRuntime;
-using Foundation;
 using UIKit;
-using System;
 using System.ComponentModel;
 
 namespace HomeKit {

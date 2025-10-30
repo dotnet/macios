@@ -22,11 +22,8 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 using Security;
-using System;
 
 namespace CoreWlan {
 

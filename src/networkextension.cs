@@ -1,16 +1,12 @@
 // Copyright 2014-2015 Xamarin Inc. All rights reserved.
 // Copyright 2019 Microsoft Corporation
 
-using System;
-
 #if IOS && !__MACCATALYST__
 using AccessorySetupKit;
 #else
 using ASAccessory = Foundation.NSObject;
 #endif
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 using Security;
 using Network;
 using OS_nw_parameters = System.IntPtr;
@@ -2097,6 +2093,10 @@ namespace NetworkExtension {
 		NEProxySettings ProxySettings { get; set; }
 	}
 
+#if XAMCORE_5_0
+	delegate void NETunnelProviderHandleAppMessageCallback ([NullAllowed] NSData data);
+#endif
+
 	/// <summary>Base class for extensions that implement client-side ends of a network tunnel.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/NetworkExtension/Reference/NETunnelProviderClassRef/index.html">Apple documentation for <c>NETunnelProvider</c></related>
@@ -2120,7 +2120,11 @@ namespace NetworkExtension {
 			        </returns>
 			<remarks>To be added.</remarks>
 			""")]
+#if XAMCORE_5_0
+		void HandleAppMessage (NSData messageData, [NullAllowed] NETunnelProviderHandleAppMessageCallback completionHandler);
+#else
 		void HandleAppMessage (NSData messageData, [NullAllowed] Action<NSData> completionHandler);
+#endif
 
 		/// <param name="tunnelNetworkSettings">
 		///           <para>To be added.</para>

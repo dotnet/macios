@@ -4,11 +4,8 @@
 #define STABLE_CRYPTOTOKENKIT
 #endif
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 
-using Foundation;
-using ObjCRuntime;
 using Security;
 
 namespace CryptoTokenKit {

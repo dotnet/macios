@@ -6,7 +6,6 @@
 
 using ModelIO;
 using Metal;
-using Foundation;
 namespace MetalKit {
 
 	public partial class MTKMesh {

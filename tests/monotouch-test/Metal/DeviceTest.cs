@@ -1,10 +1,5 @@
-using System;
 
-using Foundation;
 using Metal;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Metal {
 

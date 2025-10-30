@@ -128,13 +128,10 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				var taskRunner = new TaskRunner (SessionId, BuildEngine4);
-
-				taskRunner.FixReferencedItems (this, SceneKitAssets);
-
-				FixUpRootedPaths (SceneKitAssets);
-
-				return taskRunner.RunAsync (this).Result;
+				return ExecuteRemotely (out var _, (taskRunner) => {
+					taskRunner.FixReferencedItems (this, SceneKitAssets);
+					FixUpRootedPaths (SceneKitAssets);
+				});
 			}
 
 			var intermediate = Path.Combine (IntermediateOutputPath, ToolName, AppBundleName);

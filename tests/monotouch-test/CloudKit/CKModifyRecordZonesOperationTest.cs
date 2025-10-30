@@ -1,8 +1,4 @@
-using System;
-using NUnit.Framework;
-using Foundation;
 using CloudKit;
-using ObjCRuntime;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.CloudKit {

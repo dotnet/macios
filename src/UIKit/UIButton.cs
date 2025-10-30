@@ -7,9 +7,6 @@
 // Copyright 2012, 2015 Xamarin Inc
 //
 
-using System;
-using ObjCRuntime;
-
 namespace UIKit {
 	public partial class UIButton {
 

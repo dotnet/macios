@@ -7,10 +7,7 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Reflection;
-using Foundation;
-using NUnit.Framework;
 
 namespace LinkSdk {
 

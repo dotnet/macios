@@ -12,8 +12,6 @@
 //
 
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 using CoreLocation;
 #if MONOMAC
@@ -25,7 +23,6 @@ using UIKit;
 #if !TVOS
 using Contacts;
 #endif
-using System;
 
 #if MONOMAC
 using UIImage = AppKit.NSImage;

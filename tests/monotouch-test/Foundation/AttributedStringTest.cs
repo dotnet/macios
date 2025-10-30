@@ -1,8 +1,5 @@
-using System;
 using System.IO;
 
-using NUnit.Framework;
-using Foundation;
 #if MONOMAC
 using AppKit;
 using UIColor = AppKit.NSColor;
@@ -10,7 +7,6 @@ using UIColor = AppKit.NSColor;
 using UIKit;
 #endif
 using CoreGraphics;
-using ObjCRuntime;
 using CoreText;
 using Xamarin.Utils;
 

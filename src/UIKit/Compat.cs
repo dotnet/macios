@@ -8,12 +8,9 @@
 // Copyright 2019 Microsoft Corporation
 //
 
-using System;
 using System.ComponentModel;
 
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 
 namespace UIKit {
 #if !XAMCORE_5_0

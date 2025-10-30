@@ -1,10 +1,7 @@
 // Copyright 2018 Microsoft Corporation
 
-using System;
 using System.ComponentModel;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 using UIKit;
 
 namespace TVUIKit {

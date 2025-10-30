@@ -7,12 +7,7 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Threading;
-
-using Foundation;
-using CoreFoundation;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreFoundation {
 	[TestFixture]

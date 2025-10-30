@@ -1,6 +1,5 @@
 // Copyright 2020, Microsoft Corp. All rights reserved,
 
-using System;
 using System.Collections.Generic;
 
 using ProductException = ObjCRuntime.RuntimeException;

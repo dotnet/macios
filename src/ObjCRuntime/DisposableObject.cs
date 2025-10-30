@@ -6,10 +6,6 @@
 //
 // Copyright 2021 Microsoft Corp
 //
-using System;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
-using Foundation;
 
 #nullable enable
 

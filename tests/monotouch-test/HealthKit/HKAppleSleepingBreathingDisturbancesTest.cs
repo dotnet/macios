@@ -1,11 +1,6 @@
 #if HAS_HEALTHKIT
 
-using System;
-
-using Foundation;
 using HealthKit;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.HealthKit {
 

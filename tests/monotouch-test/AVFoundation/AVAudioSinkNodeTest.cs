@@ -1,13 +1,8 @@
-using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
-
-using NUnit.Framework;
 
 using AudioToolbox;
 using AVFoundation;
-using Foundation;
 
 using Xamarin.Tests;
 

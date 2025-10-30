@@ -7,20 +7,14 @@
 // Copyright 2012-2013, 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 #if !__MACOS__
 using UIKit;
 #endif
-using NUnit.Framework;
 
 namespace Linker.Shared {
 

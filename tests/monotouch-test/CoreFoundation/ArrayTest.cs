@@ -1,14 +1,5 @@
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
-
 namespace MonoTouchFixtures.CoreFoundation {
 
 	[TestFixture]

@@ -1,11 +1,4 @@
-using System;
 using System.Threading;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 using Bindings.Test;
 

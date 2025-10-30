@@ -1,12 +1,7 @@
 
-using System;
 using System.Diagnostics;
 
-using Foundation;
 using CoreGraphics;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Simd {
 	[TestFixture]

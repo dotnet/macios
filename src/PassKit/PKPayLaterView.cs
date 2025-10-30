@@ -2,12 +2,8 @@
 
 #if IOS && !__MACCATALYST__
 
-using System;
-using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 
-using Foundation;
-using ObjCRuntime;
 using PassKit;
 
 namespace PassKit {

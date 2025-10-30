@@ -1,10 +1,7 @@
 #if __IOS__ || MONOMAC
 
-using System;
 using System.IO;
-using NUnit.Framework;
 
-using Foundation;
 using WebKit;
 
 namespace MonoTouchFixtures.WebKit {

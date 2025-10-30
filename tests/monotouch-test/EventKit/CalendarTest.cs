@@ -10,12 +10,8 @@
 
 #if !__TVOS__
 
-using System;
-using Foundation;
 using CoreGraphics;
-using ObjCRuntime;
 using EventKit;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.EventKit {

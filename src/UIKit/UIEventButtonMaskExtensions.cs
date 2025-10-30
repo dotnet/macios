@@ -7,10 +7,6 @@
 // Copyright (c) Microsoft Corporation.
 //
 #if IOS
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
 
 namespace UIKit {
 	[SupportedOSPlatform ("ios13.4")]

@@ -1,16 +1,12 @@
 #if MONOMAC
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
 using AVFoundation;
 using CoreFoundation;
 using CoreMedia;
 using CoreVideo;
-using Foundation;
-using ObjCRuntime;
 
 namespace VideoToolbox {
 	/// <summary>This delegate is called when available parameters or parameter values change without an explicit call to <see cref="VTRawProcessingSession.SetProcessingParameters(VTRawProcessingParameters)" />.</summary>

@@ -8,10 +8,6 @@
 // Copyright 2019 Microsoft Corporation.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace IdentityLookup {
 
 	/// <summary>Enumerates actions that can be taken in response to a message.</summary>

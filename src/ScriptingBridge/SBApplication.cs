@@ -1,10 +1,7 @@
 #nullable enable
 
-using System;
 using System.Reflection;
 using AppKit;
-using Foundation;
-using ObjCRuntime;
 
 namespace ScriptingBridge {
 	/// <summary>This class provides API to send Apple events to scriptable applications and get Apple events back.</summary>

@@ -8,7 +8,6 @@
 // Copyright 2013-2015 Xamarin, Inc. All rights reserved.
 //
 
-using System;
 using System.Diagnostics;
 
 #nullable enable

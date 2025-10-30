@@ -6,11 +6,7 @@
 // Copyright 2015 Xamarin Inc.
 //
 
-using System;
-
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 using AudioToolbox;
 
 #nullable enable

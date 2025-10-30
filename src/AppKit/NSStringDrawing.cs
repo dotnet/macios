@@ -1,8 +1,5 @@
 #if !__MACCATALYST__
-using System;
-using System.Runtime.Versioning;
 using AppKit;
-using Foundation;
 using CoreGraphics;
 
 #nullable enable

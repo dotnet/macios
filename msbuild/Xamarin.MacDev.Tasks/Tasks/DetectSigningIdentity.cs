@@ -543,7 +543,7 @@ namespace Xamarin.MacDev.Tasks {
 		bool ExecuteImpl ()
 		{
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			var type = MobileProvisionDistributionType.Any;
 			var identity = new CodeSignIdentity ();
@@ -597,8 +597,8 @@ namespace Xamarin.MacDev.Tasks {
 				return !Log.HasLoggedErrors;
 			}
 
-			// If we're building for the simulator, always use the placeholder codesign key.
-			if (SdkIsSimulator) {
+			// If we're building for the simulator, and we don't require a provisioning profile, we can just use the placeholder key.
+			if (SdkIsSimulator && !RequireProvisioningProfile) {
 				DetectedCodeSigningKey = "-";
 				return !Log.HasLoggedErrors;
 			}
@@ -661,7 +661,10 @@ namespace Xamarin.MacDev.Tasks {
 					return false;
 				}
 
-				if (identity.SigningKey is not null) {
+				if (SdkIsSimulator) {
+					// Always sign using the placeholder when when building for the simulator
+					DetectedCodeSigningKey = "-";
+				} else if (identity.SigningKey is not null) {
 					codesignCommonName = SecKeychain.GetCertificateCommonName (identity.SigningKey);
 					DetectedCodeSigningKey = identity.SigningKey.Thumbprint;
 				}
@@ -684,10 +687,15 @@ namespace Xamarin.MacDev.Tasks {
 			identity = GetBestMatch (pairs, identity);
 
 			if (identity.Profile is not null && identity.AppId is not null) {
-				codesignCommonName = identity.SigningKey is not null ? SecKeychain.GetCertificateCommonName (identity.SigningKey) : null;
 				provisioningProfileName = identity.Profile.Name;
 
-				DetectedCodeSigningKey = identity.SigningKey?.Thumbprint ?? "";
+				if (SdkIsSimulator) {
+					// Always sign using the placeholder when when building for the simulator
+					DetectedCodeSigningKey = "-";
+				} else {
+					codesignCommonName = identity.SigningKey is not null ? SecKeychain.GetCertificateCommonName (identity.SigningKey) : null;
+					DetectedCodeSigningKey = identity.SigningKey?.Thumbprint ?? "";
+				}
 				DetectedProvisioningProfile = identity.Profile.Uuid;
 				DetectedAppId = identity.AppId;
 			} else {

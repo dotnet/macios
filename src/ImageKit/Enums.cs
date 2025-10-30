@@ -29,10 +29,6 @@
 
 #nullable enable
 
-using System;
-
-using ObjCRuntime;
-
 namespace ImageKit {
 
 	/// <summary>To be added.</summary>

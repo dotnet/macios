@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using OS_nw_group_descriptor = System.IntPtr;
 using OS_nw_endpoint = System.IntPtr;

@@ -29,13 +29,9 @@
 
 #nullable enable
 
-using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 using AudioFileID = System.IntPtr;
 

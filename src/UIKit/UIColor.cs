@@ -7,9 +7,6 @@
 // Copyright 2009, Novell, Inc.
 //
 
-using System;
-using ObjCRuntime;
-using Foundation;
 #if !COREBUILD
 using CoreGraphics;
 #endif

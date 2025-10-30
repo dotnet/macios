@@ -243,8 +243,7 @@ namespace Xamarin.MacDev.Tasks {
 
 					TaskItemFixer.FixItemSpecs (Log, item => OutputPath, References.Where (x => !x.IsFrameworkItem ()).ToArray ());
 
-					var taskRunner = new TaskRunner (SessionId, BuildEngine4);
-					var success = taskRunner.RunAsync (this).Result;
+					var success = ExecuteRemotely (out var taskRunner);
 
 					if (success)
 						GetGeneratedSourcesAsync (taskRunner).Wait ();

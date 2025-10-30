@@ -7,13 +7,9 @@
 // Copyrigh 2012-2014, Xamarin Inc.
 //
 
-using Foundation;
-using ObjCRuntime;
 using UIKit;
 using CoreGraphics;
 
-using System;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 // Disable until we get around to enable + fix any issues.

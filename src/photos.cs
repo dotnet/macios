@@ -1,5 +1,3 @@
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using CoreLocation;
 using AVFoundation;
@@ -7,7 +5,6 @@ using CoreGraphics;
 using CoreImage;
 using CoreMedia;
 using ImageIO;
-using System;
 using UniformTypeIdentifiers;
 #if !MONOMAC
 using UIKit;

@@ -1,5 +1,4 @@
 #if !TV
-using Foundation;
 
 namespace LocalAuthentication {
 	public partial class LADomainStateCompanion {

@@ -9,11 +9,8 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using Foundation;
 using UIKit;
 using CoreLocation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.CoreLocation {

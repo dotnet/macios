@@ -3,10 +3,7 @@
 
 #nullable enable
 
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
-using System;
 
 namespace CoreWlan {
 	/// <summary>To be added.</summary>

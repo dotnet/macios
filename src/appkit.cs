@@ -31,12 +31,9 @@
 
 #nullable enable
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.ComponentModel;
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
 using CoreFoundation;
 using CoreImage;
@@ -22928,7 +22925,7 @@ namespace AppKit {
 	{
 		[DesignatedInitializer]
 		[Export ("initWithFrame:textContainer:")]
-		NativeHandle Constructor (CGRect frameRect, NSTextContainer container);
+		NativeHandle Constructor (CGRect frameRect, [NullAllowed] NSTextContainer container);
 
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frameRect);
@@ -22942,9 +22939,11 @@ namespace AppKit {
 		[Export ("invalidateTextContainerOrigin")]
 		void InvalidateTextContainerOrigin ();
 
+		[NullAllowed]
 		[Export ("layoutManager")]
 		NSLayoutManager LayoutManager { get; }
 
+		[NullAllowed]
 		[Export ("textStorage")]
 		NSTextStorage TextStorage { get; }
 
@@ -22966,62 +22965,62 @@ namespace AppKit {
 		void SetBaseWritingDirection (NSWritingDirection writingDirection, NSRange range);
 
 		[Export ("turnOffKerning:")]
-		void TurnOffKerning (NSObject sender);
+		void TurnOffKerning ([NullAllowed] NSObject sender);
 
 		[Export ("tightenKerning:")]
-		void TightenKerning (NSObject sender);
+		void TightenKerning ([NullAllowed] NSObject sender);
 
 		[Export ("loosenKerning:")]
-		void LoosenKerning (NSObject sender);
+		void LoosenKerning ([NullAllowed] NSObject sender);
 
 		[Export ("useStandardKerning:")]
-		void UseStandardKerning (NSObject sender);
+		void UseStandardKerning ([NullAllowed] NSObject sender);
 
 		[Export ("turnOffLigatures:")]
-		void TurnOffLigatures (NSObject sender);
+		void TurnOffLigatures ([NullAllowed] NSObject sender);
 
 		[Export ("useStandardLigatures:")]
-		void UseStandardLigatures (NSObject sender);
+		void UseStandardLigatures ([NullAllowed] NSObject sender);
 
 		[Export ("useAllLigatures:")]
-		void UseAllLigatures (NSObject sender);
+		void UseAllLigatures ([NullAllowed] NSObject sender);
 
 		[Export ("raiseBaseline:")]
-		void RaiseBaseline (NSObject sender);
+		void RaiseBaseline ([NullAllowed] NSObject sender);
 
 		[Export ("lowerBaseline:")]
-		void LowerBaseline (NSObject sender);
+		void LowerBaseline ([NullAllowed] NSObject sender);
 
 		[Deprecated (PlatformName.MacOSX, 10, 11, message: "Use unicode characters via the character palette.")]
 		[Export ("toggleTraditionalCharacterShape:")]
 		void ToggleTraditionalCharacterShape (NSObject sender);
 
 		[Export ("outline:")]
-		void Outline (NSObject sender);
+		void Outline ([NullAllowed] NSObject sender);
 
 		[Export ("performFindPanelAction:")]
-		void PerformFindPanelAction (NSObject sender);
+		void PerformFindPanelAction ([NullAllowed] NSObject sender);
 
 		[Export ("alignJustified:")]
-		void AlignJustified (NSObject sender);
+		void AlignJustified ([NullAllowed] NSObject sender);
 
 		[Export ("changeAttributes:")]
-		void ChangeAttributes (NSObject sender);
+		void ChangeAttributes ([NullAllowed] NSObject sender);
 
 		[Export ("changeDocumentBackgroundColor:")]
-		void ChangeDocumentBackgroundColor (NSObject sender);
+		void ChangeDocumentBackgroundColor ([NullAllowed] NSObject sender);
 
 		[Export ("orderFrontSpacingPanel:")]
-		void OrderFrontSpacingPanel (NSObject sender);
+		void OrderFrontSpacingPanel ([NullAllowed] NSObject sender);
 
 		[Export ("orderFrontLinkPanel:")]
-		void OrderFrontLinkPanel (NSObject sender);
+		void OrderFrontLinkPanel ([NullAllowed] NSObject sender);
 
 		[Export ("orderFrontListPanel:")]
-		void OrderFrontListPanel (NSObject sender);
+		void OrderFrontListPanel ([NullAllowed] NSObject sender);
 
 		[Export ("orderFrontTablePanel:")]
-		void OrderFrontTablePanel (NSObject sender);
+		void OrderFrontTablePanel ([NullAllowed] NSObject sender);
 
 		[Export ("rulerView:didMoveMarker:")]
 		void RulerViewDidMoveMarker (NSRulerView ruler, NSRulerMarker marker);
@@ -23078,15 +23077,15 @@ namespace AppKit {
 		void ClickedOnLink (NSObject link, nuint charIndex);
 
 		[Export ("startSpeaking:")]
-		void StartSpeaking (NSObject sender);
+		void StartSpeaking ([NullAllowed] NSObject sender);
 
 		[Export ("stopSpeaking:")]
-		void StopSpeaking (NSObject sender);
+		void StopSpeaking ([NullAllowed] NSObject sender);
 
 		[Export ("characterIndexForInsertionAtPoint:")]
 		nuint CharacterIndex (CGPoint point);
 
-		//Detected properties
+		[NullAllowed]
 		[Export ("textContainer")]
 		NSTextContainer TextContainer { get; set; }
 
@@ -23102,6 +23101,7 @@ namespace AppKit {
 		[Export ("rangeForUserCompletion")]
 		NSRange RangeForUserCompletion ();
 
+		[return: NullAllowed]
 		[Export ("completionsForPartialWordRange:indexOfSelectedItem:")]
 		string [] CompletionsForPartialWord (NSRange charRange, out nint index);
 
@@ -23121,8 +23121,9 @@ namespace AppKit {
 		[Export ("readablePasteboardTypes")]
 		string [] ReadablePasteboardTypes ();
 
+		[return: NullAllowed]
 		[Export ("preferredPasteboardTypeFromArray:restrictedToTypesFromArray:")]
-		string GetPreferredPasteboardType (string [] availableTypes, string [] allowedTypes);
+		string GetPreferredPasteboardType (string [] availableTypes, [NullAllowed] string [] allowedTypes);
 
 		[Export ("readSelectionFromPasteboard:type:")]
 		bool ReadSelectionFromPasteboard (NSPasteboard pboard, string type);
@@ -23134,8 +23135,9 @@ namespace AppKit {
 		[Export ("registerForServices")]
 		void RegisterForServices ();
 
+		[return: NullAllowed]
 		[Export ("validRequestorForSendType:returnType:")]
-		NSObject ValidRequestorForSendType (string sendType, string returnType);
+		NSObject ValidRequestorForSendType ([NullAllowed] string sendType, [NullAllowed] string returnType);
 
 		[Export ("pasteAsPlainText:")]
 		void PasteAsPlainText ([NullAllowed] NSObject sender);
@@ -23147,9 +23149,12 @@ namespace AppKit {
 		// Dragging support
 		//
 
-		// FIXME: Binding
-		//[Export ("dragImageForSelectionWithEvent:origin:")]
-		//NSImage DragImageForSelection (NSEvent theEvent, NSPointPointer origin);
+		[return: NullAllowed]
+		[Export ("dragImageForSelectionWithEvent:origin:")]
+		unsafe NSImage DragImage (NSEvent @event, CGPoint* origin);
+
+		[Export ("dragSelectionWithEvent:offset:slideBack:")]
+		bool DragSelection (NSEvent @event, CGSize mouseOffset, bool slideBack);
 
 		[Export ("acceptableDragTypes")]
 		string [] AcceptableDragTypes ();
@@ -23173,31 +23178,31 @@ namespace AppKit {
 		void UpdateInsertionPointStateAndRestartTimer (bool restartFlag);
 
 		[Export ("toggleContinuousSpellChecking:")]
-		void ToggleContinuousSpellChecking (NSObject sender);
+		void ToggleContinuousSpellChecking ([NullAllowed] NSObject sender);
 
 		[Export ("spellCheckerDocumentTag")]
 		nint SpellCheckerDocumentTag ();
 
 		[Export ("toggleGrammarChecking:")]
-		void ToggleGrammarChecking (NSObject sender);
+		void ToggleGrammarChecking ([NullAllowed] NSObject sender);
 
 		[Export ("setSpellingState:range:")]
 		void SetSpellingState (nint value, NSRange charRange);
 
 		[Export ("shouldChangeTextInRanges:replacementStrings:")]
-		bool ShouldChangeText (NSArray /* NSRange [] */ affectedRanges, string [] replacementStrings);
+		bool ShouldChangeText (NSArray /* NSRange [] */ affectedRanges, [NullAllowed] string [] replacementStrings);
 
+		[return: NullAllowed]
 		[Export ("rangesForUserTextChange")]
 		NSArray /* NSRange [] */ RangesForUserTextChange ();
 
+		[return: NullAllowed]
 		[Export ("rangesForUserCharacterAttributeChange")]
 		NSArray /* NSRange [] */ RangesForUserCharacterAttributeChange ();
 
+		[return: NullAllowed]
 		[Export ("rangesForUserParagraphAttributeChange")]
 		NSArray /* NSRange [] */ RangesForUserParagraphAttributeChange ();
-
-		//[Export ("shouldChangeTextInRange:replacementString:")]
-		//bool ShouldChangeText (NSRange affectedCharRange, string replacementString);
 
 		[Export ("rangeForUserTextChange")]
 		NSRange RangeForUserTextChange ();
@@ -23211,9 +23216,6 @@ namespace AppKit {
 		[Export ("breakUndoCoalescing")]
 		void BreakUndoCoalescing ();
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		[Export ("isCoalescingUndo")]
 		bool IsCoalescingUndo ();
 
@@ -23233,9 +23235,11 @@ namespace AppKit {
 		[Export ("insertionPointColor")]
 		NSColor InsertionPointColor { get; set; }
 
+		[NullAllowed]
 		[Export ("markedTextAttributes")]
 		NSDictionary MarkedTextAttributes { get; set; }
 
+		[NullAllowed]
 		[Export ("linkTextAttributes")]
 		NSDictionary LinkTextAttributes { get; set; }
 
@@ -23245,24 +23249,15 @@ namespace AppKit {
 		[Export ("acceptsGlyphInfo")]
 		bool AcceptsGlyphInfo { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("rulerVisible")]
 		bool RulerVisible { [Bind ("isRulerVisible")] get; set; }
 
 		[Export ("usesRuler")]
 		bool UsesRuler { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("continuousSpellCheckingEnabled")]
 		bool ContinuousSpellCheckingEnabled { [Bind ("isContinuousSpellCheckingEnabled")] get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("grammarCheckingEnabled")]
 		bool GrammarCheckingEnabled { [Bind ("isGrammarCheckingEnabled")] get; set; }
 
@@ -23275,6 +23270,7 @@ namespace AppKit {
 		[Export ("allowsDocumentBackgroundColorChange")]
 		bool AllowsDocumentBackgroundColorChange { get; set; }
 
+		[NullAllowed]
 		[Export ("defaultParagraphStyle")]
 		NSParagraphStyle DefaultParagraphStyle { get; set; }
 
@@ -23284,31 +23280,15 @@ namespace AppKit {
 		[Export ("allowsImageEditing")]
 		bool AllowsImageEditing { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Wrap ("WeakDelegate")]
 		INSTextViewDelegate Delegate { get; set; }
 
-#pragma warning disable 0109 // warning CS0109: The member 'NSTextView.Editable' does not hide an accessible member. The new keyword is not required.
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("editable")]
-		new bool Editable { [Bind ("isEditable")] get; set; }
-#pragma warning restore
+		bool Editable { [Bind ("isEditable")] get; set; }
 
-#pragma warning disable 0109 // warning CS0109: The member 'NSTextView.Selectable' does not hide an accessible member. The new keyword is not required.
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("selectable")]
-		new bool Selectable { [Bind ("isSelectable")] get; set; }
-#pragma warning restore
+		bool Selectable { [Bind ("isSelectable")] get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("richText")]
 		bool RichText { [Bind ("isRichText")] get; set; }
 
@@ -23321,36 +23301,18 @@ namespace AppKit {
 		[Export ("backgroundColor")]
 		NSColor BackgroundColor { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("fieldEditor")]
 		bool FieldEditor { [Bind ("isFieldEditor")] get; set; }
 
 		[Export ("usesFontPanel")]
 		bool UsesFontPanel { get; set; }
 
+		[NullAllowed]
 		[Export ("allowedInputSourceLocales")]
 		string [] AllowedInputSourceLocales { get; set; }
 
-		// FIXME: binding
-		//[Export ("shouldChangeTextInRanges:replacementStrings:")]
-		//bool ShouldChangeTextInRanges (NSArray affectedRanges, NSArray replacementStrings);
-
-		// FIXME: binding
-		//[Export ("rangesForUserTextChange")]
-		//NSArray RangesForUserTextChange ();
-
-		// FIXME: binding
-		//[Export ("rangesForUserCharacterAttributeChange")]
-		//NSArray RangesForUserCharacterAttributeChange ();
-
-		// FIXME: binding
-		//[Export ("rangesForUserParagraphAttributeChange")]
-		//NSArray RangesForUserParagraphAttributeChange ();
-
 		[Export ("shouldChangeTextInRange:replacementString:")]
-		bool ShouldChangeText (NSRange affectedCharRange, string replacementString);
+		bool ShouldChangeText (NSRange affectedCharRange, [NullAllowed] string replacementString);
 
 		[Export ("didChangeText")]
 		void DidChangeText ();
@@ -23365,34 +23327,36 @@ namespace AppKit {
 		NSRange SmartDeleteRangeForProposedRange (NSRange proposedCharRange);
 
 		[Export ("toggleSmartInsertDelete:")]
-		void ToggleSmartInsertDelete (NSObject sender);
+		void ToggleSmartInsertDelete ([NullAllowed] NSObject sender);
 
 		[Export ("smartInsertForString:replacingRange:beforeString:afterString:")]
 		void SmartInsert (string pasteString, NSRange charRangeToReplace, [NullAllowed] out string beforeString, [NullAllowed] out string afterString);
 
+		[return: NullAllowed]
 		[Export ("smartInsertBeforeStringForString:replacingRange:")]
 		string SmartInsertBefore (string pasteString, NSRange charRangeToReplace);
 
+		[return: NullAllowed]
 		[Export ("smartInsertAfterStringForString:replacingRange:")]
 		string SmartInsertAfter (string pasteString, NSRange charRangeToReplace);
 
 		[Export ("toggleAutomaticQuoteSubstitution:")]
-		void ToggleAutomaticQuoteSubstitution (NSObject sender);
+		void ToggleAutomaticQuoteSubstitution ([NullAllowed] NSObject sender);
 
 		[Export ("toggleAutomaticLinkDetection:")]
-		void ToggleAutomaticLinkDetection (NSObject sender);
+		void ToggleAutomaticLinkDetection ([NullAllowed] NSObject sender);
 
 		[Export ("toggleAutomaticDataDetection:")]
-		void ToggleAutomaticDataDetection (NSObject sender);
+		void ToggleAutomaticDataDetection ([NullAllowed] NSObject sender);
 
 		[Export ("toggleAutomaticDashSubstitution:")]
-		void ToggleAutomaticDashSubstitution (NSObject sender);
+		void ToggleAutomaticDashSubstitution ([NullAllowed] NSObject sender);
 
 		[Export ("toggleAutomaticTextReplacement:")]
-		void ToggleAutomaticTextReplacement (NSObject sender);
+		void ToggleAutomaticTextReplacement ([NullAllowed] NSObject sender);
 
 		[Export ("toggleAutomaticSpellingCorrection:")]
-		void ToggleAutomaticSpellingCorrection (NSObject sender);
+		void ToggleAutomaticSpellingCorrection ([NullAllowed] NSObject sender);
 
 		[Export ("checkTextInRange:types:options:")]
 		void CheckText (NSRange range, NSTextCheckingTypes checkingTypes, NSDictionary options);
@@ -23401,51 +23365,33 @@ namespace AppKit {
 		void HandleTextChecking (NSTextCheckingResult [] results, NSRange range, NSTextCheckingTypes checkingTypes, NSDictionary options, NSOrthography orthography, nint wordCount);
 
 		[Export ("orderFrontSubstitutionsPanel:")]
-		void OrderFrontSubstitutionsPanel (NSObject sender);
+		void OrderFrontSubstitutionsPanel ([NullAllowed] NSObject sender);
 
 		[Export ("checkTextInSelection:")]
-		void CheckTextInSelection (NSObject sender);
+		void CheckTextInSelection ([NullAllowed] NSObject sender);
 
 		[Export ("checkTextInDocument:")]
-		void CheckTextInDocument (NSObject sender);
+		void CheckTextInDocument ([NullAllowed] NSObject sender);
 
 		//Detected properties
 		[Export ("smartInsertDeleteEnabled")]
 		bool SmartInsertDeleteEnabled { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("automaticQuoteSubstitutionEnabled")]
 		bool AutomaticQuoteSubstitutionEnabled { [Bind ("isAutomaticQuoteSubstitutionEnabled")] get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("automaticLinkDetectionEnabled")]
 		bool AutomaticLinkDetectionEnabled { [Bind ("isAutomaticLinkDetectionEnabled")] get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("automaticDataDetectionEnabled")]
 		bool AutomaticDataDetectionEnabled { [Bind ("isAutomaticDataDetectionEnabled")] get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("automaticDashSubstitutionEnabled")]
 		bool AutomaticDashSubstitutionEnabled { [Bind ("isAutomaticDashSubstitutionEnabled")] get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("automaticTextReplacementEnabled")]
 		bool AutomaticTextReplacementEnabled { [Bind ("isAutomaticTextReplacementEnabled")] get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("automaticSpellingCorrectionEnabled")]
 		bool AutomaticSpellingCorrectionEnabled { [Bind ("isAutomaticSpellingCorrectionEnabled")] get; set; }
 
@@ -23456,15 +23402,12 @@ namespace AppKit {
 		bool UsesRolloverButtonForSelection { get; set; }
 
 		[Export ("toggleQuickLookPreviewPanel:")]
-		void ToggleQuickLookPreviewPanel (NSObject sender);
+		void ToggleQuickLookPreviewPanel ([NullAllowed] NSObject sender);
 
 		[Static]
 		[Export ("stronglyReferencesTextStorage")]
 		bool StronglyReferencesTextStorage { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("automaticTextCompletionEnabled")]
 		bool AutomaticTextCompletionEnabled { [Bind ("isAutomaticTextCompletionEnabled")] get; set; }
 
@@ -28788,7 +28731,7 @@ namespace AppKit {
 		void SetLayoutOrientation (NSTextLayoutOrientation theOrientation);
 
 		[Export ("changeLayoutOrientation:")]
-		void ChangeLayoutOrientation (NSObject sender);
+		void ChangeLayoutOrientation ([NullAllowed] NSObject sender);
 
 		[Export ("usesInspectorBar")]
 		bool UsesInspectorBar { get; set; }
@@ -28796,9 +28739,6 @@ namespace AppKit {
 		[Export ("usesFindBar")]
 		bool UsesFindBar { get; set; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[Export ("incrementalSearchingEnabled")]
 		bool IsIncrementalSearchingEnabled { [Bind ("isIncrementalSearchingEnabled")] get; set; }
 
@@ -35218,6 +35158,119 @@ namespace AppKit {
 
 		[Field ("NSAccessibilitySearchResultLoaderKey")]
 		NSString ResultLoader { get; }
+	}
+
+	[NoMacCatalyst]
+	[Static]
+	interface NSBindingOption {
+		[Field ("NSAllowsEditingMultipleValuesSelectionBindingOption")]
+		NSString AllowsEditingMultipleValuesSelection { get; }
+
+		[Field ("NSAllowsNullArgumentBindingOption")]
+		NSString AllowsNullArgument { get; }
+
+		[Field ("NSAlwaysPresentsApplicationModalAlertsBindingOption")]
+		NSString AlwaysPresentsApplicationModalAlerts { get; }
+
+		[Field ("NSConditionallySetsEditableBindingOption")]
+		NSString ConditionallySetsEditable { get; }
+
+		[Field ("NSConditionallySetsEnabledBindingOption")]
+		NSString ConditionallySetsEnabled { get; }
+
+		[Field ("NSConditionallySetsHiddenBindingOption")]
+		NSString ConditionallySetsHidden { get; }
+
+		[Field ("NSContinuouslyUpdatesValueBindingOption")]
+		NSString ContinuouslyUpdatesValue { get; }
+
+		[Field ("NSCreatesSortDescriptorBindingOption")]
+		NSString CreatesSortDescriptor { get; }
+
+		[Field ("NSDeletesObjectsOnRemoveBindingsOption")]
+		NSString DeletesObjectsOnRemoveBindingsOption { get; }
+
+		[Field ("NSDisplayNameBindingOption")]
+		NSString DisplayName { get; }
+
+		[Field ("NSDisplayPatternBindingOption")]
+		NSString DisplayPattern { get; }
+
+		[Field ("NSContentPlacementTagBindingOption")]
+		NSString ContentPlacementTag { get; }
+
+		[Field ("NSHandlesContentAsCompoundValueBindingOption")]
+		NSString HandlesContentAsCompoundValue { get; }
+
+		[Field ("NSInsertsNullPlaceholderBindingOption")]
+		NSString InsertsNullPlaceholder { get; }
+
+		[Field ("NSInvokesSeparatelyWithArrayObjectsBindingOption")]
+		NSString InvokesSeparatelyWithArrayObjects { get; }
+
+		[Field ("NSMultipleValuesPlaceholderBindingOption")]
+		NSString MultipleValuesPlaceholder { get; }
+
+		[Field ("NSNoSelectionPlaceholderBindingOption")]
+		NSString NoSelectionPlaceholder { get; }
+
+		[Field ("NSNotApplicablePlaceholderBindingOption")]
+		NSString NotApplicablePlaceholder { get; }
+
+		[Field ("NSNullPlaceholderBindingOption")]
+		NSString NullPlaceholder { get; }
+
+		[Field ("NSRaisesForNotApplicableKeysBindingOption")]
+		NSString RaisesForNotApplicableKeys { get; }
+
+		[Field ("NSPredicateFormatBindingOption")]
+		NSString PredicateFormat { get; }
+
+		[Field ("NSSelectorNameBindingOption")]
+		NSString SelectorName { get; }
+
+		[Field ("NSSelectsAllWhenSettingContentBindingOption")]
+		NSString SelectsAllWhenSettingContent { get; }
+
+		[Field ("NSValidatesImmediatelyBindingOption")]
+		NSString ValidatesImmediately { get; }
+
+		[Field ("NSValueTransformerNameBindingOption")]
+		NSString ValueTransformerName { get; }
+
+		[Field ("NSValueTransformerBindingOption")]
+		NSString ValueTransformer { get; }
+	}
+
+	[NoMacCatalyst]
+	[StrongDictionary ("NSBindingOption", Suffix = "")]
+	interface NSBindingOptions {
+		bool AllowsEditingMultipleValuesSelection { get; set; }
+		bool AllowsNullArgument { get; set; }
+		bool AlwaysPresentsApplicationModalAlerts { get; set; }
+		bool ConditionallySetsEditable { get; set; }
+		bool ConditionallySetsEnabled { get; set; }
+		bool ConditionallySetsHidden { get; set; }
+		bool ContinuouslyUpdatesValue { get; set; }
+		bool CreatesSortDescriptor { get; set; }
+		bool DeletesObjectsOnRemoveBindingsOption { get; set; }
+		string DisplayName { get; set; }
+		string DisplayPattern { get; set; }
+		nint ContentPlacementTag { get; set; }
+		bool HandlesContentAsCompoundValue { get; set; }
+		bool InsertsNullPlaceholder { get; set; }
+		bool InvokesSeparatelyWithArrayObjects { get; set; }
+		NSObject MultipleValuesPlaceholder { get; set; }
+		NSObject NoSelectionPlaceholder { get; set; }
+		NSObject NotApplicablePlaceholder { get; set; }
+		NSObject NullPlaceholder { get; set; }
+		bool RaisesForNotApplicableKeys { get; set; }
+		string PredicateFormat { get; set; }
+		string SelectorName { get; set; }
+		bool SelectsAllWhenSettingContent { get; set; }
+		bool ValidatesImmediately { get; set; }
+		string ValueTransformerName { get; set; }
+		NSValueTransformer ValueTransformer { get; set; }
 	}
 
 	[NoMacCatalyst, Mac (26, 1)]

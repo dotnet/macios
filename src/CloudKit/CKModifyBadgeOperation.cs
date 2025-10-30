@@ -1,12 +1,7 @@
 #if !XAMCORE_5_0
 
-using System;
 using System.ComponentModel;
-using System.Runtime.Versioning;
 using System.Diagnostics.CodeAnalysis;
-
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

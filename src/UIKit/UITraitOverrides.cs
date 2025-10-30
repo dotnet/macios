@@ -7,11 +7,6 @@
 // Copyright 2023 Microsoft Corp. All rights reserved.
 //
 
-using System;
-
-using Foundation;
-using ObjCRuntime;
-
 #nullable enable
 
 namespace UIKit {

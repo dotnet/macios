@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 
-		<ApplicationTitle>ExtensionConsumerWithFramework</ApplicationTitle>
+		<ApplicationTitle>ExtensionConsumerWithFrameworks</ApplicationTitle>
 		<ApplicationId>com.xamarin.extensionconsumerwithframework</ApplicationId>
 		<RootTestsDirectory Condition="'$(RootTestsDirectory)' == ''">$(MSBuildThisFileDirectory)/../..</RootTestsDirectory>
 	</PropertyGroup>

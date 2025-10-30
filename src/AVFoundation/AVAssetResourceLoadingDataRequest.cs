@@ -7,9 +7,6 @@
 // Copyright 2012, 2014 Xamarin Inc
 //
 
-using System;
-using Foundation;
-
 #nullable enable
 
 namespace AVFoundation {

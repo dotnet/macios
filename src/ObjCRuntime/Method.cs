@@ -1,6 +1,4 @@
-using System;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace ObjCRuntime {
 	internal static class Method {

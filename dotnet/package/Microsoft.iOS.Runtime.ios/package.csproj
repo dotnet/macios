@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Sdk Name="Microsoft.DotNet.SharedFramework.Sdk" Version="$(MicrosoftDotNetBuildTasksFeedPackageVersion)" />
+
+  <PropertyGroup>
+    <_PlatformName>iOS</_PlatformName>
+    <_RuntimeIdentifier>ios</_RuntimeIdentifier>
+  </PropertyGroup>
+
+  <Import Project="../microsoft.runtime.managed.csproj" />
+</Project>

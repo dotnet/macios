@@ -25,10 +25,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable
@@ -36,18 +33,16 @@ using ObjCRuntime;
 namespace Foundation {
 
 	public partial class NSCoder {
+		/// <summary>Encodes the byte array using the specified associated key.</summary>
 		/// <param name="buffer">Byte array to encode.</param>
-		///         <param name="key">Key to associate with the object being encoded.</param>
-		///         <summary>Encodes the byte array using the specified associated key.</summary>
-		///         <remarks>
-		///         </remarks>
+		/// <param name="key">Key to associate with the object being encoded.</param>
 		public void Encode (byte [] buffer, string key)
 		{
 			if (buffer is null)
-				throw new ArgumentNullException ("buffer");
+				throw new ArgumentNullException (nameof (buffer));
 
 			if (key is null)
-				throw new ArgumentNullException ("key");
+				throw new ArgumentNullException (nameof (key));
 
 			unsafe {
 				fixed (byte* p = buffer) {
@@ -56,20 +51,32 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>Encodes the byte array of an unspecified type.</summary>
 		/// <param name="buffer">Byte array to encode.</param>
-		///         <param name="offset">Starting point in the buffer to encode.</param>
-		///         <param name="count">Number of bytes starting at the specified offset to encode.</param>
-		///         <param name="key">Key to associate with the object being encoded.</param>
-		///         <summary>Encodes a segment of the buffer using the specified associated key.</summary>
-		///         <remarks>
-		///         </remarks>
+		public void Encode (byte [] buffer)
+		{
+			if (buffer is null)
+				throw new ArgumentNullException (nameof (buffer));
+
+			unsafe {
+				fixed (byte* p = buffer) {
+					Encode ((IntPtr) p, buffer.Length);
+				}
+			}
+		}
+
+		/// <summary>Encodes a segment of the buffer using the specified associated key.</summary>
+		/// <param name="buffer">Byte array to encode.</param>
+		/// <param name="offset">Starting point in the buffer to encode.</param>
+		/// <param name="count">Number of bytes starting at the specified offset to encode.</param>
+		/// <param name="key">Key to associate with the object being encoded.</param>
 		public void Encode (byte [] buffer, int offset, int count, string key)
 		{
 			if (buffer is null)
-				throw new ArgumentNullException ("buffer");
+				throw new ArgumentNullException (nameof (buffer));
 
 			if (key is null)
-				throw new ArgumentNullException ("key");
+				throw new ArgumentNullException (nameof (key));
 
 			if (offset < 0)
 				throw new ArgumentException ("offset < 0");
@@ -86,10 +93,9 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>Decodes the requested key as an array of bytes.</summary>
 		/// <param name="key">The key identifying the item to decode.</param>
-		///         <summary>Decodes the requested key as an array of bytes.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <returns>The decoded array of bytes.</returns>
 		public byte [] DecodeBytes (string key)
 		{
 			nuint len = 0;
@@ -103,9 +109,9 @@ namespace Foundation {
 			return retarray;
 		}
 
+		/// <remarks>The decoded array of bytes.</remarks>
 		/// <summary>Decodes the next item as an array of bytes.</summary>
-		///         <returns>The array of bytes decoded from the stream.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <returns>The array of bytes decoded from the stream.</returns>
 		public byte [] DecodeBytes ()
 		{
 			nuint len = 0;
@@ -119,11 +125,6 @@ namespace Foundation {
 			return retarray;
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <param name="result">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out bool result)
 		{
 			if (ContainsKey (key)) {
@@ -134,11 +135,6 @@ namespace Foundation {
 			return false;
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <param name="result">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out double result)
 		{
 			if (ContainsKey (key)) {
@@ -149,11 +145,6 @@ namespace Foundation {
 			return false;
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <param name="result">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out float result)
 		{
 			if (ContainsKey (key)) {
@@ -164,11 +155,6 @@ namespace Foundation {
 			return false;
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <param name="result">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out int result)
 		{
 			if (ContainsKey (key)) {
@@ -179,11 +165,6 @@ namespace Foundation {
 			return false;
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <param name="result">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out long result)
 		{
 			if (ContainsKey (key)) {
@@ -194,11 +175,6 @@ namespace Foundation {
 			return false;
 		}
 
-		/// <param name="key">To be added.</param>
-		/// <param name="result">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out nint result)
 		{
 			if (ContainsKey (key)) {
@@ -209,11 +185,6 @@ namespace Foundation {
 			return false;
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <param name="result">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out NSObject result)
 		{
 			if (ContainsKey (key)) {
@@ -224,11 +195,6 @@ namespace Foundation {
 			return false;
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <param name="result">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public bool TryDecode (string key, out byte [] result)
 		{
 			if (ContainsKey (key)) {
@@ -239,12 +205,6 @@ namespace Foundation {
 			return false;
 		}
 
-		/// <param name="type">To be added.</param>
-		///         <param name="key">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -252,16 +212,10 @@ namespace Foundation {
 		public NSObject DecodeTopLevelObject (Type type, string key, out NSError error)
 		{
 			if (type is null)
-				throw new ArgumentNullException ("type");
+				throw new ArgumentNullException (nameof (type));
 			return DecodeTopLevelObject (new Class (type), key, out error);
 		}
 
-		/// <param name="types">To be added.</param>
-		///         <param name="key">To be added.</param>
-		///         <param name="error">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -276,6 +230,22 @@ namespace Foundation {
 				typeSet = new NSSet<Class> (classes);
 			}
 			return DecodeTopLevelObject (typeSet, key, out error);
+		}
+
+		/// <summary>Decode a single value of the specified <paramref name="type" /> into the provided <paramref name="data" /> buffer.</summary>
+		/// <param name="type">The type of the value to decode.</param>
+		/// <param name="data">The buffer to store the decoded value. The buffer must be big enough to hold the decoded value.</param>
+		public void DecodeValue (Type type, Span<byte> data)
+		{
+			if (type is null)
+				throw new ArgumentNullException (nameof (type));
+
+			unsafe {
+				var typeCode = TypeConverter.ToNative (type);
+				using var typeCodePtr = new TransientString (typeCode);
+				fixed (byte* dataPtr = data)
+					DecodeValue (typeCodePtr, (IntPtr) dataPtr, (nuint) data.Length);
+			}
 		}
 	}
 }

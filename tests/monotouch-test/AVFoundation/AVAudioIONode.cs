@@ -1,9 +1,6 @@
 #if __MACOS__
-using System;
-using NUnit.Framework;
 
 using AppKit;
-using Foundation;
 using AudioUnit;
 using AUUnit = AudioUnit.AudioUnit;
 using AVFoundation;

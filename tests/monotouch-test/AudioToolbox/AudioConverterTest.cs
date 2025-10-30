@@ -1,22 +1,15 @@
 // Copyright 2022 Xamarin Inc. All rights reserved
 
 #if __IOS__ || __MACOS__
-using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 using AudioToolbox;
 using AudioUnit;
 using AVFoundation;
-using CoreFoundation;
-using Foundation;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.AudioToolbox {
 

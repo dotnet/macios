@@ -2,18 +2,13 @@
 
 #if !__TVOS__
 
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 #if !MONOMAC
 using UIKit;
 #endif
 using MapKit;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.MapKit {

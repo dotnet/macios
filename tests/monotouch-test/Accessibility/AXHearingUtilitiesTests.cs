@@ -7,10 +7,7 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
-using Foundation;
 using Accessibility;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Accessibility {
 

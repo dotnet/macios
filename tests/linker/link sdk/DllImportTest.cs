@@ -7,15 +7,10 @@
 // Copyright 2014-2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Net.NetworkInformation;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
 #if !__MACOS__
 using UIKit;
 #endif
-using NUnit.Framework;
 
 namespace LinkSdk {
 

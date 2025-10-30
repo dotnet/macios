@@ -2,9 +2,6 @@
 // UISearchController.cs: Simplify the UISearchController
 //
 
-using System;
-using Foundation;
-
 namespace UIKit {
 
 	public partial class UISearchController {

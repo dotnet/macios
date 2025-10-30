@@ -2,14 +2,8 @@
 // Unit tests for CVMetalBufferCache
 //
 
-using System;
-
 using CoreVideo;
-using Foundation;
 using Metal;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreVideo {
 

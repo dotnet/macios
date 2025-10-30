@@ -1,13 +1,8 @@
 //
 // Unit tests for CMTagCollectionVideoOutputPreset
 
-using System;
-
 using AVFoundation;
 using CoreMedia;
-using Foundation;
-
-using NUnit.Framework;
 
 #nullable enable
 

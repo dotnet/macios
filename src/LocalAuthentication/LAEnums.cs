@@ -1,9 +1,3 @@
-using System;
-using System.ComponentModel;
-
-using ObjCRuntime;
-using Foundation;
-
 namespace LocalAuthentication {
 
 	/// <summary>Authentication policies.</summary>

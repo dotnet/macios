@@ -167,7 +167,7 @@ namespace Xamarin.MacDev.Tasks {
 				if (!string.IsNullOrEmpty (SdkVersion) && SdkVersionDefaultValue.Equals (SdkVersion, StringComparison.OrdinalIgnoreCase))
 					SdkVersion = string.Empty;
 
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 			}
 
 			AppleSdkSettings.Init ();

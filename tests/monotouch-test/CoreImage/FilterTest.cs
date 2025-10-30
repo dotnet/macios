@@ -7,16 +7,11 @@
 // Copyright 2013-2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.IO;
-using System.Runtime.InteropServices;
 
 using CoreGraphics;
 using CoreImage;
 using CoreText;
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.CoreImage {

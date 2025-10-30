@@ -9,9 +9,6 @@
 
 #if !MONOMAC
 
-using System;
-using Foundation;
-using NUnit.Framework;
 using UIKit;
 
 namespace MonoTouchFixtures.UIKit {

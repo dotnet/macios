@@ -7,12 +7,9 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Drawing;
 using CoreGraphics;
-using Foundation;
 using SpriteKit;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.SpriteKit {
 

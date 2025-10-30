@@ -7,10 +7,6 @@
 // Copyright 2020 Microsoft Inc.
 //
 
-using ObjCRuntime;
-using Foundation;
-using System;
-
 namespace NearbyInteraction {
 
 	[NoTV, Mac (12, 0), iOS (14, 0)]

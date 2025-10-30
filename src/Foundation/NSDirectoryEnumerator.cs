@@ -5,8 +5,6 @@
 //
 // Copyright 2011 - 2014 Xamarin Inc
 //
-using ObjCRuntime;
-using System;
 using System.Collections.Generic;
 using System.Collections;
 

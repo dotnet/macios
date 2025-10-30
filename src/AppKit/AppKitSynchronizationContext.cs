@@ -3,8 +3,6 @@
 //
 using System.Threading;
 
-using Foundation;
-
 #nullable enable
 
 namespace AppKit {

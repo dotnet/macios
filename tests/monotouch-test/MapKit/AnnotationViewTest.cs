@@ -2,13 +2,10 @@
 
 #if !__TVOS__
 
-using System;
 using System.Drawing;
 using System.Reflection;
-using Foundation;
 using MapKit;
 using CoreGraphics;
-using ObjCRuntime;
 #if MONOMAC
 using PlatformImage = AppKit.NSImage;
 using PlatformView = AppKit.NSView;
@@ -17,7 +14,6 @@ using UIKit;
 using PlatformImage = UIKit.UIImage;
 using PlatformView = UIKit.UIView;
 #endif
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.MapKit {

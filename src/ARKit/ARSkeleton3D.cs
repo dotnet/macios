@@ -7,8 +7,6 @@
 // Copyright 2019 Microsoft Inc. All rights reserved.
 //
 
-using System;
-using System.Runtime.InteropServices;
 using Matrix4 = global::CoreGraphics.NMatrix4;
 
 #nullable enable

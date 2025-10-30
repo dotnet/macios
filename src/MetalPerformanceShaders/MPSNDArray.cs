@@ -1,10 +1,6 @@
 #nullable enable
 
-using System;
-
 using Metal;
-using Foundation;
-using ObjCRuntime;
 
 namespace MetalPerformanceShaders {
 	public partial class MPSNDArray {

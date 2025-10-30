@@ -425,7 +425,7 @@ xamarin_mmap_runtime_config_file (size_t *length)
 		return NULL;
 	}
 
-	struct stat stat_buf = { 0 };
+	struct stat stat_buf = { };
 	if (fstat (fd, &stat_buf) == -1) {
 		LOG (PRODUCT ": Could not stat the runtime config file '%s' in the app bundle: %s\n", path, strerror (errno));
 		close (fd);
@@ -1178,8 +1178,7 @@ mono_string_new (MonoDomain *domain, const char *text)
 void
 xamarin_bridge_raise_unhandled_exception_event (GCHandle exception_gchandle)
 {
-	// There's no way to raise the AppDomain.UnhandledException event.
-	// https://github.com/dotnet/runtime/issues/102730
+	xamarin_bridge_raise_appdomain_unhandled_exception_event (exception_gchandle);
 }
 
 #endif // CORECLR_RUNTIME

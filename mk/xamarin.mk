@@ -1,7 +1,7 @@
 ifdef ENABLE_XAMARIN
 ifdef ENABLE_ADR
-NEEDED_ADR_VERSION := 4eaa26dc8a9df5638ed133529224dd697a2f7755
-NEEDED_ADR_BRANCH := xcode26
+NEEDED_ADR_VERSION := f766ab0cf5ee79f9e254c0eb206bd77f7061f0b1
+NEEDED_ADR_BRANCH := main
 
 ADR_DIRECTORY := macios-adr
 ADR_MODULE    := https://devdiv@dev.azure.com/devdiv/DevDiv/_git/macios-adr
@@ -12,7 +12,7 @@ endif
 
 # Available versions can be seen here:
 # https://dev.azure.com/dnceng/public/_artifacts/feed/dotnet-eng/NuGet/Microsoft.Tools.Mlaunch/versions
-MLAUNCH_NUGET_VERSION=1.1.85
+MLAUNCH_NUGET_VERSION=1.1.92
 
 define CheckVersionTemplate
 check-$(1)::

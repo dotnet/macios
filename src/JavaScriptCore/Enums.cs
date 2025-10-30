@@ -6,10 +6,6 @@
 //
 // Copyright 2013-2014 Xamarin Inc.
 
-using System;
-
-using ObjCRuntime;
-
 namespace JavaScriptCore {
 	// untyped enum -> JSValueRef.h
 	/// <summary>An enumeration whose values specify JavaScript types, including <c>Object</c> and <c>undefined</c>.</summary>

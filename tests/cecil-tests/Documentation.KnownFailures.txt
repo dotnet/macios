@@ -18463,9 +18463,6 @@ P:AppKit.NSPopUpButtonCell.Item(System.IntPtr)
 P:AppKit.NSPopUpButtonCell.Item(System.String)
 P:AppKit.NSRulerView.WeakMeasurementUnits
 P:AppKit.NSSavePanel.GetDisplayName
-P:AppKit.NSScrollEdgeEffectStyle.AutomaticStyle
-P:AppKit.NSScrollEdgeEffectStyle.HardStyle
-P:AppKit.NSScrollEdgeEffectStyle.SoftStyle
 P:AppKit.NSSharingServiceDidFailToShareItemsEventArgs.Error
 P:AppKit.NSSharingServiceDidFailToShareItemsEventArgs.Items
 P:AppKit.NSSharingServiceItemsEventArgs.Items
@@ -18475,7 +18472,6 @@ P:AppKit.NSSharingServicePickerToolbarItem.Delegate
 P:AppKit.NSSoundFinishedEventArgs.Finished
 P:AppKit.NSSpellChecker.IsAutomaticInlinePredictionEnabled
 P:AppKit.NSSplitViewItemAccessoryViewController.Hidden
-P:AppKit.NSSplitViewItemAccessoryViewController.PreferredScrollEdgeEffectStyle
 P:AppKit.NSTableView.UserCanChangeVisibility
 P:AppKit.NSTableViewCellEventArgs.Cell
 P:AppKit.NSTableViewCellEventArgs.Row
@@ -18533,7 +18529,6 @@ P:AppKit.NSTextViewDraggedCellEventArgs.TheEvent
 P:AppKit.NSTextViewportLayoutController.Delegate
 P:AppKit.NSTextViewWillChangeNotifyingTextViewEventArgs.NewView
 P:AppKit.NSTextViewWillChangeNotifyingTextViewEventArgs.OldView
-P:AppKit.NSTitlebarAccessoryViewController.PreferredScrollEdgeEffectStyle
 P:AppKit.NSToolbar.GetItemCanBeInsertedAt
 P:AppKit.NSToolbar.GetToolbarImmovableItemIdentifiers
 P:AppKit.NSToolbarItem.Hidden
@@ -25224,7 +25219,6 @@ T:AppKit.NSRunResponse
 T:AppKit.NSSaveOperationType
 T:AppKit.NSSavePanelComplete
 T:AppKit.NSScrollArrowPosition
-T:AppKit.NSScrollEdgeEffectStyle
 T:AppKit.NSScrollElasticity
 T:AppKit.NSScrollerArrow
 T:AppKit.NSScrollerKnobStyle

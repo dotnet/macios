@@ -1476,8 +1476,8 @@ F:AVFoundation.AVMediaCharacteristics.MachineGenerated
 F:AVFoundation.AVMediaCharacteristics.TactileMinimal
 F:AVFoundation.AVMediaTypes.AuxiliaryPicture
 F:AVFoundation.AVMediaTypes.Haptic
-F:AVFoundation.AVMetadataObjectType.AVMetadataObjectTypeCatHead
 F:AVFoundation.AVMetadataObjectType.CatBody
+F:AVFoundation.AVMetadataObjectType.CatHead
 F:AVFoundation.AVMetadataObjectType.CodabarCode
 F:AVFoundation.AVMetadataObjectType.DogBody
 F:AVFoundation.AVMetadataObjectType.DogHead

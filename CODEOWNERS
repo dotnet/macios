@@ -1,4 +1,4 @@
-# Xamarin.iOS/Mac Code Owners File
+# Code Owners File
 #
 # GitHub uses this file to determine who to assign for reviews
 # on pull requests. Please keep this file alphabetically sorted.
@@ -29,27 +29,27 @@
 /src/AudioUnit @dalexsoto
 /src/audiounit.cs @dalexsoto
 /src/authenticationservices.cs
-/src/AVFoundation @mandel-macaque @dalexsoto
-/src/avfoundation.cs @mandel-macaque @dalexsoto
+/src/AVFoundation @dalexsoto
+/src/avfoundation.cs @dalexsoto
 /src/AVKit @dalexsoto
 /src/avkit.cs @dalexsoto
 /src/CallKit @dalexsoto
 /src/callkit.cs @dalexsoto
 /src/CarPlay @dalexsoto
 /src/carplay.cs @dalexsoto
-/src/CFNetwork @mandel-macaque
-/src/cfnetwork.cs @mandel-macaque
-/src/CloudKit @mandel-macaque
-/src/cloudkit.cs @mandel-macaque
-/src/Compression @mandel-macaque
+/src/CFNetwork
+/src/cfnetwork.cs
+/src/CloudKit
+/src/cloudkit.cs
+/src/Compression
 /src/Contacts @dalexsoto
 /src/contacts.cs @dalexsoto
 /src/CoreAudio @dalexsoto
 /src/coreaudio.cs @dalexsoto
 /src/CoreBluetooth @dalexsoto
 /src/corebluetooth.cs @dalexsoto
-/src/CoreData @mandel-macaque
-/src/coredata.cs @mandel-macaque
+/src/CoreData
+/src/coredata.cs
 /src/CoreFoundation @rolfbjarne
 /src/corefoundation.cs @rolfbjarne
 /src/CoreGraphics
@@ -79,7 +79,7 @@
 /src/ExternalAccessory @dalexsoto
 /src/externalaccessory.cs @dalexsoto
 /src/Foundation @rolfbjarne
-/src/Foundation/NSUrl* @mandel-macaque
+/src/Foundation/NSUrl*
 /src/foundation.cs @rolfbjarne
 /src/GameController
 /src/gamecontroller.cs
@@ -97,8 +97,8 @@
 /src/iad.cs
 /src/identitylookup.cs @dalexsoto
 /src/identitylookupui.cs @dalexsoto
-/src/ituneslibrary.cs @mandel-macaque
-/src/iTunesLibrary @mandel-macaque
+/src/ituneslibrary.cs
+/src/iTunesLibrary
 /src/ImageIO
 /src/imageio.cs
 /src/ImageKit
@@ -113,14 +113,14 @@
 /src/localauthentication.cs
 /src/MapKit
 /src/mapkit.cs
-/src/MediaPlayer @mandel-macaque
-/src/mediaplayer.cs @mandel-macaque
+/src/MediaPlayer
+/src/mediaplayer.cs
 /src/Messages
 /src/messages.cs
 /src/MessageUI
 /src/messageui.cs
-/src/Metal @mandel-macaque
-/src/metal.cs @mandel-macaque
+/src/Metal
+/src/metal.cs
 /src/MetalKit
 /src/metalkit.cs
 /src/MetalPerformanceShaders
@@ -133,9 +133,9 @@
 /src/modelio.cs
 /src/MultipeerConnectivity
 /src/multipeerconnectivity.cs
-/src/naturallanguage.cs @mandel-macaque
-/src/NaturalLanguage @mandel-macaque
-/src/Network @mandel-macaque
+/src/naturallanguage.cs
+/src/NaturalLanguage
+/src/Network
 /src/NetworkExtension
 /src/networkextension.cs
 /src/NotificationCenter
@@ -168,7 +168,7 @@
 /src/spritekit.cs
 /src/SystemConfiguration
 /src/systemconfiguration.cs
-/src/System.Net.Http @mandel-macaque
+/src/System.Net.Http
 /src/UIKit @dalexsoto @rolfbjarne
 /src/uikit.cs @dalexsoto @rolfbjarne
 /src/UserNotifications @dalexsoto
@@ -186,15 +186,14 @@
 /src/WebKit
 /src/webkit.cs
 
-/tests/xharness @rolfbjarne @mandel-macaque
+/tests/xharness @rolfbjarne
 /tests/xtro-sharpie
 /tests/mmptest @rolfbjarne
 /tests/common/mac @rolfbjarne
-/tests/bcl-tests @mandel-macaque
 
 /tools/common @rolfbjarne
 /tools/common/StaticRegistrar.cs @rolfbjarne
-/tools/tools/devops/device-tests @mandel-macaque
+/tools/dotnet-linker @rolfbjarne
 /tools/linker
 /tools/mmp
 /tools/mtouch @rolfbjarne

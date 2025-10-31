@@ -267,7 +267,6 @@ xamarin_is_class_nsvalue (MonoClass *cls)
 bool
 xamarin_is_class_nsstring (MonoClass *cls)
 {
-	MonoClass *nsstring_class = xamarin_get_nsstring_class ();
 	if (nsstring_class == NULL)
 		return false;
 

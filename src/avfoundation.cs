@@ -12395,9 +12395,15 @@ namespace AVFoundation {
 		[Field ("AVMetadataObjectTypeHumanFullBody")]
 		HumanFullBody = 1 << 24,
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'CatHead' instead.")]
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		AVMetadataObjectTypeCatHead = 1 << 25,
+#endif
+
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("AVMetadataObjectTypeCatHead")]
-		AVMetadataObjectTypeCatHead = 1 << 25,
+		CatHead = 1 << 25,
 
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("AVMetadataObjectTypeDogHead")]

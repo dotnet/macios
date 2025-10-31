@@ -523,12 +523,18 @@ namespace SystemConfiguration {
 				unsafe {
 					rv = SCNetworkReachabilitySetCallback (Handle, &Callback, &ctx) != 0;
 				}
+				if (!rv) {
+					gch.Free ();
+					return StatusCodeError.SCError ();
+				}
 			} else {
 				if (callback is null) {
 					this.notification = null;
 					unsafe {
 						rv = SCNetworkReachabilitySetCallback (Handle, null, null) != 0;
 					}
+					if (gch.IsAllocated)
+						gch.Free ();
 					if (!rv)
 						return StatusCodeError.SCError ();
 
@@ -677,6 +683,13 @@ namespace SystemConfiguration {
 			bool result = SCNetworkReachabilitySetDispatchQueue (GetCheckedHandle (), queue.GetHandle ()) != 0;
 			GC.KeepAlive (queue);
 			return result;
+		}
+
+		protected override void Dispose (bool disposing)
+		{
+			if (gch.IsAllocated)
+				gch.Free ();
+			base.Dispose (disposing);
 		}
 	}
 }

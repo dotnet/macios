@@ -2,9 +2,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <AutomaticallyUseReferenceAssemblyPackages>false</AutomaticallyUseReferenceAssemblyPackages>
     <BuildWithNetFrameworkHostedCompiler>false</BuildWithNetFrameworkHostedCompiler>
+    
+    <!-- Define MicroBuild versions for .NET 9 compatibility -->
+    <MicrosoftManifestToolCrossPlatformVersion Condition="'$(MicrosoftManifestToolCrossPlatformVersion)' == ''">1.1.279</MicrosoftManifestToolCrossPlatformVersion>
+    <MicrosoftVisualStudioEngMicroBuildCoreVersion Condition="'$(MicrosoftVisualStudioEngMicroBuildCoreVersion)' == ''">1.0.0</MicrosoftVisualStudioEngMicroBuildCoreVersion>
+    <MicrosoftVisualStudioEngMicroBuildPluginsSwixBuildVersion Condition="'$(MicrosoftVisualStudioEngMicroBuildPluginsSwixBuildVersion)' == ''">1.1.562</MicrosoftVisualStudioEngMicroBuildPluginsSwixBuildVersion>
+    <MicrosoftDotNetIBCMergeVersion Condition="'$(MicrosoftDotNetIBCMergeVersion)' == ''">9.0.0</MicrosoftDotNetIBCMergeVersion>
+    <DropAppVersion Condition="'$(DropAppVersion)' == ''">22.50.34905</DropAppVersion>
   </PropertyGroup>
   <ItemGroup>
     <!-- Clear references, the SDK may add some depending on UsuingToolXxx settings, but we only want to restore the following -->

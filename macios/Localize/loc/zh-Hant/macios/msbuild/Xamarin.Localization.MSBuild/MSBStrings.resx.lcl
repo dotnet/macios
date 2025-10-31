@@ -2898,12 +2898,12 @@
       </Item>
       <Item ItemId=";M0132" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{0}' doesn't match '{1}'.]]></Val>
+          <Val><![CDATA[The certificate '{0}' ({1}) allowed by the provisioning profile '{2}' doesn't match the certificate '{3}' ({4}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{0}' 與 '{1}' 不相符。]]></Val>
+            <Val><![CDATA[配置文件 '{2}' 允許的憑證 '{0}' ({1}) 與憑證 '{3}' ({4}) 不符。]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA['{0}' doesn't match '{1}'.]D;]A;        ]]></Val>
+            <Val><![CDATA['{0}' doesn't match '{1}'.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2922,12 +2922,12 @@
       </Item>
       <Item ItemId=";M0135" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]]></Val>
+          <Val><![CDATA[The profile {0} with AppId {0} was ruled out because we found a better match: {2} (with AppId {3}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[AppID: {0} 已排除，原因是找到更相符的項目: {1}。]]></Val>
+            <Val><![CDATA[文件 {0} 與 AppId {0} 被排除，因為我們找到更合適的比對: {2} (與 AppId {3})。]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]D;]A;        ]]></Val>
+            <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -3616,12 +3616,18 @@
       <Item ItemId=";W7160" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Creating a compressed binding resource package to avoid MAX_PATH problems on Windows.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[正在建立壓縮的繫結資源套件，以避免 Windows 上發生 MAX_PATH 問題。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W7161" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Not creating a compressed binding resource package, because all the native references are already compressed.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[未建立壓縮的繫結資源套件，因為所有原生參考都已壓縮。]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>

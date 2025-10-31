@@ -59,7 +59,7 @@ resources:
   - repository: yaml-templates
     type: git
     name: xamarin.yaml-templates
-    ref: refs/heads/main
+    ref: refs/heads/copilot/swe-wi2614268-ecb7c
 
   - repository: macios-adr
     type: git

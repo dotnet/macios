@@ -12,6 +12,8 @@ using UIKit;
 #endif
 using SystemConfiguration;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MonoTouchFixtures.SystemConfiguration {
 
@@ -164,6 +166,49 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			Assert.AreEqual (StatusCode.OK, statusCode, "SetNotification should succeed again");
 
 			// Test that disposing also works (should free the GCHandle in Dispose)
+		}
+
+		[Test]
+		public void SetNotification_GCHandleFreed ()
+		{
+			// Create weak references to track GC collection
+			var weakRefs = new WeakReference [10];
+
+			// Create NetworkReachability instances on a background thread
+			var thread = new Thread (() => {
+				for (int i = 0; i < 10; i++) {
+					var ip = new IPAddress (0);
+					var reachability = new NetworkReachability (ip);
+
+					// Set a notification to allocate the GCHandle
+					reachability.SetNotification ((flags) => {
+					});
+
+					// Store weak reference to track if object is collected
+					weakRefs [i] = new WeakReference (reachability);
+
+					// Dispose to ensure GCHandle is freed
+					reachability.Dispose ();
+				}
+			});
+
+			thread.Start ();
+			thread.Join ();
+
+			// Force garbage collection
+			GC.Collect ();
+			GC.WaitForPendingFinalizers ();
+			GC.Collect ();
+
+			// Assert that at least one NetworkReachability instance has been collected
+			var collectedCount = 0;
+			for (int i = 0; i < weakRefs.Length; i++) {
+				if (!weakRefs [i].IsAlive) {
+					collectedCount++;
+				}
+			}
+
+			Assert.IsTrue (collectedCount > 0, $"Expected at least one NetworkReachability instance to be collected, but {collectedCount} were collected");
 		}
 	}
 }

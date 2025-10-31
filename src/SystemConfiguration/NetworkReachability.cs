@@ -416,6 +416,15 @@ namespace SystemConfiguration {
 		{
 		}
 
+		protected override void Dispose (bool disposing)
+		{
+			if (gchAllocated) {
+				gch.Free ();
+				gchAllocated = false;
+			}
+			base.Dispose (disposing);
+		}
+
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -487,6 +496,7 @@ namespace SystemConfiguration {
 
 		Notification? notification;
 		GCHandle gch;
+		bool gchAllocated;
 
 		[UnmanagedCallersOnly]
 		static void Callback (IntPtr handle, NetworkReachabilityFlags flags, IntPtr info)
@@ -518,6 +528,7 @@ namespace SystemConfiguration {
 					return StatusCode.OK;
 
 				gch = GCHandle.Alloc (this);
+				gchAllocated = true;
 				var ctx = new SCNetworkReachabilityContext (GCHandle.ToIntPtr (gch));
 
 				unsafe {
@@ -531,6 +542,11 @@ namespace SystemConfiguration {
 					}
 					if (!rv)
 						return StatusCodeError.SCError ();
+
+					if (gchAllocated) {
+						gch.Free ();
+						gchAllocated = false;
+					}
 
 					return StatusCode.OK;
 				}

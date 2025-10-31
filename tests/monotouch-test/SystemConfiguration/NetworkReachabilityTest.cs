@@ -142,5 +142,98 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			Assert.IsTrue (defaultRouteReachability.Schedule (CFRunLoop.Main, CFRunLoop.ModeDefault), "Schedule");
 			Assert.IsTrue (defaultRouteReachability.Unschedule (CFRunLoop.Main, CFRunLoop.ModeDefault), "Unschedule");
 		}
+
+		[Test]
+		public void SetNotification_SetAndRemove ()
+		{
+			using var nr = new NetworkReachability (IPAddress.Loopback);
+			bool callbackInvoked = false;
+			NetworkReachability.Notification callback = (flags) => {
+				callbackInvoked = true;
+			};
+
+			// Set notification
+			var result = nr.SetNotification (callback);
+			Assert.AreEqual (StatusCode.OK, result, "SetNotification should succeed");
+
+			// Remove notification
+			result = nr.SetNotification (null);
+			Assert.AreEqual (StatusCode.OK, result, "Removing notification should succeed");
+
+			// Setting null again should be OK
+			result = nr.SetNotification (null);
+			Assert.AreEqual (StatusCode.OK, result, "Setting null when no notification is set should succeed");
+		}
+
+		[Test]
+		public void SetNotification_DisposeAfterSet ()
+		{
+			// This test ensures that disposing after setting a notification doesn't leak the GCHandle
+			var nr = new NetworkReachability (IPAddress.Loopback);
+			bool callbackInvoked = false;
+			NetworkReachability.Notification callback = (flags) => {
+				callbackInvoked = true;
+			};
+
+			var result = nr.SetNotification (callback);
+			Assert.AreEqual (StatusCode.OK, result, "SetNotification should succeed");
+
+			// Dispose without removing notification - should not leak
+			nr.Dispose ();
+		}
+
+		[Test]
+		public void SetNotification_MultipleSetRemoveCycles ()
+		{
+			using var nr = new NetworkReachability (IPAddress.Loopback);
+			bool callbackInvoked = false;
+			NetworkReachability.Notification callback = (flags) => {
+				callbackInvoked = true;
+			};
+
+			// Set notification
+			var result = nr.SetNotification (callback);
+			Assert.AreEqual (StatusCode.OK, result, "First SetNotification should succeed");
+
+			// Remove notification
+			result = nr.SetNotification (null);
+			Assert.AreEqual (StatusCode.OK, result, "First remove should succeed");
+
+			// Set notification again
+			result = nr.SetNotification (callback);
+			Assert.AreEqual (StatusCode.OK, result, "Second SetNotification should succeed");
+
+			// Remove notification again
+			result = nr.SetNotification (null);
+			Assert.AreEqual (StatusCode.OK, result, "Second remove should succeed");
+		}
+
+		[Test]
+		public void SetNotification_UpdateCallback ()
+		{
+			using var nr = new NetworkReachability (IPAddress.Loopback);
+			bool firstCallbackInvoked = false;
+			bool secondCallbackInvoked = false;
+
+			NetworkReachability.Notification firstCallback = (flags) => {
+				firstCallbackInvoked = true;
+			};
+
+			NetworkReachability.Notification secondCallback = (flags) => {
+				secondCallbackInvoked = true;
+			};
+
+			// Set first notification
+			var result = nr.SetNotification (firstCallback);
+			Assert.AreEqual (StatusCode.OK, result, "First SetNotification should succeed");
+
+			// Update with second notification
+			result = nr.SetNotification (secondCallback);
+			Assert.AreEqual (StatusCode.OK, result, "Updating notification should succeed");
+
+			// Remove notification
+			result = nr.SetNotification (null);
+			Assert.AreEqual (StatusCode.OK, result, "Removing notification should succeed");
+		}
 	}
 }

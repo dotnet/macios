@@ -142,5 +142,28 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			Assert.IsTrue (defaultRouteReachability.Schedule (CFRunLoop.Main, CFRunLoop.ModeDefault), "Schedule");
 			Assert.IsTrue (defaultRouteReachability.Unschedule (CFRunLoop.Main, CFRunLoop.ModeDefault), "Unschedule");
 		}
+
+		[Test]
+		public void SetNotification ()
+		{
+			var ip = new IPAddress (0);
+			using var reachability = new NetworkReachability (ip);
+
+			// Test setting a notification
+			var statusCode = reachability.SetNotification ((flags) => {
+			});
+			Assert.AreEqual (StatusCode.OK, statusCode, "SetNotification should succeed");
+
+			// Test clearing the notification (this should free the GCHandle)
+			statusCode = reachability.SetNotification (null);
+			Assert.AreEqual (StatusCode.OK, statusCode, "SetNotification(null) should succeed");
+
+			// Test setting notification again after clearing
+			statusCode = reachability.SetNotification ((flags) => {
+			});
+			Assert.AreEqual (StatusCode.OK, statusCode, "SetNotification should succeed again");
+
+			// Test that disposing also works (should free the GCHandle in Dispose)
+		}
 	}
 }

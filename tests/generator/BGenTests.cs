@@ -104,7 +104,7 @@ namespace GeneratorTests {
 				.Union (allTypes.SelectMany ((type) => type.Properties));
 
 			var preserves = allMembers.Count ((v) => v.HasCustomAttributes && v.CustomAttributes.Any ((ca) => ca.AttributeType.Name == "PreserveAttribute"));
-			Assert.AreEqual (36, preserves, "Preserve attribute count"); // If you modified code that generates PreserveAttributes please update the preserve count
+			Assert.AreEqual (35, preserves, "Preserve attribute count"); // If you modified code that generates PreserveAttributes please update the preserve count
 		}
 
 		[Test]

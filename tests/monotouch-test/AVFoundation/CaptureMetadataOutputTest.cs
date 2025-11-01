@@ -119,6 +119,11 @@ namespace MonoTouchFixtures.AVFoundation {
 									if (!TestRuntime.CheckXcodeVersion (13, 3))
 										continue;
 									break;
+								case AVMetadataObjectType.CatHead:
+								case AVMetadataObjectType.DogHead:
+									if (!TestRuntime.CheckXcodeVersion (26, 0))
+										continue;
+									break;
 								}
 								metadataOutput.MetadataObjectTypes = val;
 								all |= val;

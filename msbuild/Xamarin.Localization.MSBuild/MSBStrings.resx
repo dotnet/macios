@@ -490,7 +490,7 @@
     </data>
     
     <data name="M0132" xml:space="preserve">
-        <value>'{0}' doesn't match '{1}'.</value>
+        <value>The certificate '{0}' ({1}) allowed by the provisioning profile '{2}' doesn't match the certificate '{3}' ({4}).</value>
     </data>
     
     <data name="E0133" xml:space="preserve">
@@ -505,7 +505,7 @@
     </data>
     
     <data name="M0135" xml:space="preserve">
-        <value>AppID: {0} was ruled out because we found a better match: {1}.</value>
+        <value>The profile {0} with AppId {0} was ruled out because we found a better match: {2} (with AppId {3}).</value>
     </data>
     
     <data name="M0136" xml:space="preserve">

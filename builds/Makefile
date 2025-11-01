@@ -68,6 +68,10 @@ dotnet-install.sh: Makefile
 
 ifdef CUSTOM_DOTNET
 DOWNLOAD_DOTNET_VERSION=$(CUSTOM_DOTNET_VERSION)
+ALL_NUGET_FEEDS:=$(shell grep '^[[:space:]]*<add.*value="https.*' $(TOP)/NuGet.config | sed -e 's/.*value="//' -e 's/".*//')
+CUSTOM_DOTNET_NUGET_FEED=\
+	--source $(DOTNET_RUNTIME_PATH)/artifacts/packages/Debug/Shipping \
+	$(foreach feed,$(ALL_NUGET_FEEDS), --source $(feed))
 else
 ifneq ($(BUNDLED_NETCORE_PLATFORMS_PACKAGE_VERSION),)
 DOWNLOAD_DOTNET_VERSION=$(BUNDLED_NETCORE_PLATFORMS_PACKAGE_VERSION)
@@ -88,6 +92,7 @@ package-download/all-package-references.csproj: $(GIT_DIRECTORY)/HEAD $(GIT_DIRE
 		/p:PackageRuntimeIdentifiersCoreCLR="$(DOTNET_CORECLR_RUNTIME_IDENTIFIERS)" \
 		/p:CustomDotNetVersion="$(DOWNLOAD_DOTNET_VERSION)" \
 		/p:TrackingDotNetRuntimeSeparately="$(TRACKING_DOTNET_RUNTIME_SEPARATELY)" \
+		$(CUSTOM_DOTNET_NUGET_FEED) \
 		/bl \
 		$(DOTNET_BUILD_VERBOSITY)
 	$(Q) touch $@

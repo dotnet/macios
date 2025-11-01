@@ -588,7 +588,8 @@ namespace Xamarin.Bundler {
 			if (App.EnableDebug)
 				sw.WriteLine ("\txamarin_debug_mode = TRUE;");
 
-			sw.WriteLine ($"\tsetenv (\"MONO_GC_PARAMS\", \"{App.MonoGCParams}\", 1);");
+			if (!string.IsNullOrEmpty (App.MonoGCParams) && App.XamarinRuntime == XamarinRuntime.MonoVM)
+				sw.WriteLine ($"\tsetenv (\"MONO_GC_PARAMS\", \"{App.MonoGCParams}\", 1);");
 
 			sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", App.DynamicRegistrationSupported ? "TRUE" : "FALSE");
 
@@ -774,7 +775,7 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("\txamarin_marshal_objectivec_exception_mode = MarshalObjectiveCExceptionMode{0};", app.MarshalObjectiveCExceptions);
 			if (app.EnableDebug)
 				sw.WriteLine ("\txamarin_debug_mode = TRUE;");
-			if (!string.IsNullOrEmpty (app.MonoGCParams))
+			if (!string.IsNullOrEmpty (app.MonoGCParams) && app.XamarinRuntime == XamarinRuntime.MonoVM)
 				sw.WriteLine ("\tsetenv (\"MONO_GC_PARAMS\", \"{0}\", 1);", app.MonoGCParams);
 			// Do this last, so that the app developer can override any other environment variable we set.
 			foreach (var kvp in app.EnvironmentVariables) {

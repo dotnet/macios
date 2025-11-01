@@ -377,7 +377,7 @@
 {1} - The platform name, such as 'iOS'.</comment>
     </data>
   <data name="M0132" xml:space="preserve">
-        <value>'{0}' doesn't match '{1}'.</value>
+        <value>The certificate '{0}' ({1}) allowed by the provisioning profile '{2}' doesn't match the certificate '{3}' ({4}).</value>
     </data>
   <data name="E0133" xml:space="preserve">
         <value>No installed provisioning profiles match the installed {0} {1} signing identities.</value>
@@ -389,7 +389,7 @@
         <value>Finding matching provisioning profiles with compatible AppID, keeping only those with the longest matching (wildcard) IDs.</value>
     </data>
   <data name="M0135" xml:space="preserve">
-        <value>AppID: {0} was ruled out because we found a better match: {1}.</value>
+        <value>The profile {0} with AppId {0} was ruled out because we found a better match: {2} (with AppId {3}).</value>
     </data>
   <data name="M0136" xml:space="preserve">
         <value>AppID: {0} was ruled out because we already found better matches: {1}.</value>

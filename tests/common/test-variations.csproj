@@ -5,11 +5,28 @@
 		<TestVariations Include="interpreter" Description="Run with the interpreter ('UseInterpreter=true')" />
 		<TestVariations Include="bundle-original-resources" Description="Bundle original resources ('BundleOriginalResources=true')" />
 		<TestVariations Include="do-not-bundle-original-resources" Description="Do not bundle original resources ('BundleOriginalResources=false')" />
-		<TestVariations Include="nativeaot" Description="Enable NativeAOT ('PublishAot=true' and '_IsPublishing=true')" />
+		<TestVariations Include="nativeaot" Description="Run with NativeAOT ('PublishAot=true' and '_IsPublishing=true')" />
+		<TestVariations Include="linksdk" Description="Run with trimmer (MtouchLink/LinkMode) set to 'SdkOnly'" />
+		<TestVariations Include="linkall" Description="Run with trimmer (MtouchLink/LinkMode) set to 'Full'" />
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(TestVariation)' == 'interpreter'">
 		<UseInterpreter>true</UseInterpreter>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TestVariation)' == 'nativeaot'">
+		<PublishAot>true</PublishAot>
+		<_IsPublishing>true</_IsPublishing>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TestVariation)' == 'linksdk'">
+		<MtouchLink>SdkOnly</MtouchLink>
+		<LinkMode>$(MtouchLink)</LinkMode>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TestVariation)' == 'linkall'">
+		<MtouchLink>Full</MtouchLink>
+		<LinkMode>$(MtouchLink)</LinkMode>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TestVariation)' == 'bundle-original-resources'">

@@ -1413,7 +1413,27 @@ namespace Xamarin.Linker {
 			Driver.Log (4, "Optimized static constructor in the protocol interface {0} (static constructor was cleared and custom attributes removed)", method.DeclaringType.FullName);
 			method.Body.Instructions.Clear ();
 			method.Body.Instructions.Add (Instruction.Create (OpCodes.Ret));
-			method.CustomAttributes.Clear ();
+
+			// Only remove DynamicDependency attributes that takes a single string argument.
+			// The generator generates other DynamicDependency attributes, and we don't want to remove those.
+			for (var i = method.CustomAttributes.Count - 1; i >= 0; i--) {
+				var ca = method.CustomAttributes [i];
+
+				if (!ca.AttributeType.Is ("System.Diagnostics.CodeAnalysis", "DynamicDependencyAttribute"))
+					continue;
+
+				if (!ca.HasConstructorArguments)
+					continue;
+
+				if (ca.ConstructorArguments.Count != 1)
+					continue;
+
+				if (!ca.ConstructorArguments [0].Type.Is ("System", "String"))
+					continue;
+
+				method.CustomAttributes.RemoveAt (i);
+			}
+
 			return true;
 		}
 	}

@@ -637,4 +637,7 @@
 		<value>The type {0} has a [Protocol] and a [BaseType] attribute, but no [Model] attribute. This is likely incorrect; either remove the [BaseType] attribute, or add a [Model] attribute.</value>
 	</data>
 
+	<data name="BI1124" xml:space="preserve">
+		<value>Found a [Preserve] attribute on {0}: [Preserve] is deprecated; use [DynamicDependency] instead.</value>
+	</data>
 </root>

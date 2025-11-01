@@ -393,8 +393,14 @@ namespace Xamarin.Linker {
 					var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 					// we need to preserve the constructor because it might not be used anywhere else
-					if (IsTrimmed (ctor))
-						Annotations.Mark (ctor.Resolve ());
+					if (IsTrimmed (ctor)) {
+						var ctorDefinition = ctor.Resolve ();
+						Annotations.Mark (ctorDefinition);
+						foreach (var instr in ctorDefinition.Body.Instructions) {
+							if (instr.Operand is MethodReference mr)
+								Annotations.Mark (mr.Resolve ());
+						}
+					}
 
 					if (!ManagedRegistrarStep.IsOpenType (type)) {
 						EnsureVisible (createInstanceMethod, ctor);

@@ -120,6 +120,14 @@
 
 	<Import Project="$(GeneratedProjectFile)" Condition="'$(GeneratedProjectFile)' != ''" />
 
+	<!-- Logic for NativeAOT -->
+	<PropertyGroup Condition="'$(PublishAot)' == 'true' And '$(_IsPublishing)' == 'true'">
+		<!-- Define NATIVEAOT when using NativeAOT -->
+		<DefineConstants>$(DefineConstants);NATIVEAOT</DefineConstants>
+		<!-- We're enabling warnaserror by default, but we're not warning-free for ILC (especially for NUnit), so disable warnaserror for ILC - https://github.com/dotnet/macios/issues/19911 -->
+		<IlcTreatWarningsAsErrors>false</IlcTreatWarningsAsErrors>
+	</PropertyGroup>
+
 	<!--
 		This is a helper target for our tests to zip up the app bundle.
 		This is useful when building remotely, and we want to inspect the results on Windows:

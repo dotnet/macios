@@ -208,7 +208,7 @@ diag: prepare
 		select binlog in $(BINLOGS); do $(DOTNET) build /v:diag $$binlog; break; done \
 	fi
 
-list-variations listvariations show-variations showvariations variations:
+list-variations listvariations show-variations showvariations variations help:
 	$(Q) if ! command -v jq > /dev/null; then echo "$(shell tput setaf 9)jq isn't installed. Install by doing 'brew install jq'$(shell tput sgr0)"; exit 1; fi
 	$(Q) echo "Test variations for $(shell tput setaf 6)$(TESTNAME)$(shell tput sgr0):"
 	$(Q) echo ""

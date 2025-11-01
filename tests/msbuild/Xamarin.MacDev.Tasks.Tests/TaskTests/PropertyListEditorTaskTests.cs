@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 
 using Xamarin.MacDev;
@@ -28,6 +29,10 @@ namespace Xamarin.MacDev.Tasks {
 
 				CheckValue (value, kvp.Value);
 			}
+
+			var expectedKeys = expected.Select (v => v.Key);
+			var actualKeys = dict.Select (v => v.Key);
+			Assert.That (expectedKeys, Is.EquivalentTo (actualKeys), "Keys");
 		}
 
 		static void CheckValue (PObject value, PObject expected)
@@ -62,13 +67,19 @@ namespace Xamarin.MacDev.Tasks {
 
 		void TestExecuteTask (PDictionary input, PropertyListEditorAction action, string entry, string type, string value, PObject expected)
 		{
+			var propertyList = Path.Combine (Cache.CreateTemporaryDirectory (), "propertyList.plist");
+			input.Save (propertyList);
+			TestExecuteTask (propertyList, action, entry, type, value, expected);
+		}
+
+		void TestExecuteTask (string propertyList, PropertyListEditorAction action, string entry, string type, string value, PObject expected)
+		{
 			var task = CreateTask<PropertyListEditor> ();
-			task.PropertyList = Path.Combine (Cache.CreateTemporaryDirectory (), "propertyList.plist");
+			task.PropertyList = propertyList;
 			task.Action = action.ToString ();
 			task.Entry = entry;
 			task.Type = type;
 			task.Value = value;
-			input.Save (task.PropertyList);
 
 			if (expected is null) {
 				Assert.IsFalse (task.Execute (), "Task was expected to fail.");
@@ -344,6 +355,59 @@ namespace Xamarin.MacDev.Tasks {
 			array1.Save (tmp);
 
 			TestExecuteTask (plist, PropertyListEditorAction.Merge, ":CFArrayItems", null, tmp, expected);
+		}
+
+		[Test]
+		public void TestMergeTwoFiles ()
+		{
+			var tmp = Cache.CreateTemporaryDirectory ();
+			var f1 = Path.Combine (tmp, "A.plist");
+			var f2 = Path.Combine (tmp, "B.plist");
+			File.WriteAllText (f1,
+				"""
+				<?xml version="1.0" encoding="UTF-8"?>
+				<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+				<plist version="1.0">
+				<dict>
+					<key>com.apple.developer.applesignin</key>
+					<array>
+						<string>Default</string>
+					</array>
+				</dict>
+				</plist>
+				""");
+			File.WriteAllText (f2,
+				"""
+				<?xml version="1.0" encoding="UTF-8"?>
+				<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+				<plist version="1.0">
+				<dict>
+					<key>keychain-access-groups</key>
+					<array>
+						<string>$(AppIdentifierPrefix)com.xamarin.monotouch-test</string>
+					</array>
+				</dict>
+				</plist>
+				""");
+
+			var expected = PObject.FromString (
+				"""
+				<?xml version="1.0" encoding="UTF-8"?>
+				<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+				<plist version="1.0">
+				<dict>
+					<key>com.apple.developer.applesignin</key>
+					<array>
+						<string>Default</string>
+					</array>
+					<key>keychain-access-groups</key>
+					<array>
+						<string>$(AppIdentifierPrefix)com.xamarin.monotouch-test</string>
+					</array>
+				</dict>
+				</plist>
+				""");
+			TestExecuteTask (f1, PropertyListEditorAction.Merge, "", "", f2, expected);
 		}
 	}
 }

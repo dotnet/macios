@@ -1513,7 +1513,7 @@ static void block_called ()
 
 -(void) callDoSomething: (int*) nilObjectCount nonNilObjectCount: (int *) nonNilObjectCount gotExpectedResponse: (int *) gotExpectedResponse gotUnexpectedResponse: (int *) gotUnexpectedResponse gotFinalizedResponse: (int *) gotFinalizedResponse
 {
-	for (int i = 0; i < self.array.count; i++) {
+	for (unsigned int i = 0; i < self.array.count; i++) {
 		WeakReferencedObject *obj = (WeakReferencedObject *) [self.array pointerAtIndex: (NSUInteger) i];
 		if (obj) {
 			*nonNilObjectCount= *nonNilObjectCount + 1;

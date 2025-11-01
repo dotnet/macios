@@ -414,24 +414,20 @@ namespace Xamarin.MacDev.Tasks {
 
 		IList<MobileProvision>? GetProvisioningProfiles (MobileProvisionPlatform platform, MobileProvisionDistributionType type, CodeSignIdentity identity, IList<X509Certificate2> certs)
 		{
-			var failures = new List<string> ();
 			IList<MobileProvision> profiles;
 
 			if (identity.BundleId is not null) {
 				if (certs.Count > 0)
-					profiles = MobileProvisionIndex.GetMobileProvisions (platform, identity.BundleId, type, certs, unique: true, failures: failures);
+					profiles = MobileProvisionIndex.GetMobileProvisions (platform, identity.BundleId, type, certs, unique: true);
 				else
-					profiles = MobileProvisionIndex.GetMobileProvisions (platform, identity.BundleId, type, unique: true, failures: failures);
+					profiles = MobileProvisionIndex.GetMobileProvisions (platform, identity.BundleId, type, unique: true);
 			} else if (certs.Count > 0) {
-				profiles = MobileProvisionIndex.GetMobileProvisions (platform, type, certs, unique: true, failures: failures);
+				profiles = MobileProvisionIndex.GetMobileProvisions (platform, type, certs, unique: true);
 			} else {
-				profiles = MobileProvisionIndex.GetMobileProvisions (platform, type, unique: true, failures: failures);
+				profiles = MobileProvisionIndex.GetMobileProvisions (platform, type, unique: true);
 			}
 
 			if (profiles.Count == 0) {
-				foreach (var f in failures)
-					Log.LogMessage (MessageImportance.Low, "{0}", f);
-
 				Log.LogError (MSBStrings.E0131, AppBundleName, PlatformName);
 				return null;
 			}
@@ -453,7 +449,7 @@ namespace Xamarin.MacDev.Tasks {
 						 where p.DeveloperCertificates.Any (d => {
 							 var rv = d.Thumbprint == c.Thumbprint;
 							 if (!rv)
-								 Log.LogMessage (MessageImportance.Low, MSBStrings.M0132, d.Thumbprint, c.Thumbprint);
+								 Log.LogMessage (MessageImportance.Low, MSBStrings.M0132, SecKeychain.GetCertificateCommonName (d), d.Thumbprint, p.Name, SecKeychain.GetCertificateCommonName (c), c.Thumbprint);
 							 return rv;
 						 })
 						 select new CodeSignIdentity { SigningKey = c, Profile = p }).ToList ();
@@ -483,8 +479,8 @@ namespace Xamarin.MacDev.Tasks {
 					if (matchLength >= bestMatchLength) {
 						if (matchLength > bestMatchLength) {
 							bestMatchLength = matchLength;
-							foreach (var previousMatch in matches)
-								Log.LogMessage (MessageImportance.Low, MSBStrings.M0135, previousMatch.AppId, appid);
+							foreach (var previousMatch in matches.Where (v => v.AppId != appid))
+								Log.LogMessage (MessageImportance.Low, MSBStrings.M0135, previousMatch.Profile?.Name, previousMatch.AppId, appid, pair.Profile?.Name);
 							matches.Clear ();
 						}
 

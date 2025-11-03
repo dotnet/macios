@@ -16350,6 +16350,7 @@ M:StoreKit.SKStoreProductViewController.LoadProduct(StoreKit.StoreProductParamet
 M:StoreKit.SKStoreProductViewController.LoadProductAsync(Foundation.NSDictionary,StoreKit.SKAdImpression)
 M:StoreKit.SKStoreProductViewController.LoadProductAsync(StoreKit.StoreProductParameters,StoreKit.SKAdImpression)
 M:StoreKit.SKStoreProductViewController.remove_Finished(System.EventHandler)
+M:SystemConfiguration.NetworkReachability.Dispose(System.Boolean)
 M:ThreadNetwork.THClient.CheckPreferredNetworkAsync(Foundation.NSData)
 M:ThreadNetwork.THClient.DeleteCredentialsForBorderAgentAsync(Foundation.NSData)
 M:ThreadNetwork.THClient.IsPreferredNetworkAvailableAsync

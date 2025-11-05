@@ -1,0 +1,5 @@
+!missing-selector! +SFSafariExtensionManager::getStateOfExtensionWithIdentifier:completionHandler: not bound
+!missing-selector! +SFSafariSettings::openExtensionsSettingsForIdentifiers:completionHandler: not bound
+!missing-selector! SFSafariExtensionState::isEnabled not bound
+!missing-type! SFSafariExtensionManager not bound
+!missing-type! SFSafariExtensionState not bound

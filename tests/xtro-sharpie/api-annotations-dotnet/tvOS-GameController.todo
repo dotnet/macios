@@ -1,0 +1,2 @@
+!missing-protocol! GCPhysicalInputExtents not bound
+!missing-protocol-member! GCLinearInput::physicalExtents not found

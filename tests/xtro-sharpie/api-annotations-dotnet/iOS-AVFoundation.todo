@@ -1,0 +1,2 @@
+!missing-enum-value! AVAudioSessionCategoryOptions native value AVAudioSessionCategoryOptionFarFieldInput = 262144 not bound
+!missing-field! AVAudioSessionModeDualRoute not bound

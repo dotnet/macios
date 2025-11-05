@@ -1,0 +1,3 @@
+!missing-enum-value! ASCredentialServiceIdentifierType native value ASCredentialServiceIdentifierTypeApp = 2 not bound
+!missing-selector! ASCredentialServiceIdentifier::displayName not bound
+!missing-selector! ASCredentialServiceIdentifier::initWithIdentifier:type:displayName: not bound

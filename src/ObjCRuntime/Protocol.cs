@@ -6,11 +6,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using Foundation;
-
 namespace ObjCRuntime {
 	/// <summary>Representation of an Objective-C protocol.</summary>
 	///     <remarks>

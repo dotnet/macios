@@ -31,16 +31,11 @@
 
 #nullable enable
 
-using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Runtime.InteropServices;
 
-using ObjCRuntime;
 using CoreFoundation;
 using AudioToolbox;
-using Foundation;
-using System.Runtime.Versioning;
 
 namespace AudioUnit {
 	/// <summary>An enumeration whose values indicate various errors relating to <see cref="ExtAudioFile" />s.</summary>

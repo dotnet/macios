@@ -57,8 +57,8 @@ struct XamarinCallState {
 
 struct ParamIterator {
 	struct XamarinCallState *state;
-	int ngrn; // Next General-purpose Register Number
-	int nsrn; // Next SIMD and Floating-point Register Number
+	unsigned int ngrn; // Next General-purpose Register Number
+	unsigned int nsrn; // Next SIMD and Floating-point Register Number
 	size_t ngrn_offset; // Offset into the current general purpose register number
 	uint8_t *nsaa; // Next stacked argument address.
 

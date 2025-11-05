@@ -32,10 +32,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 #if IOS && !COREBUILD
 using Contacts;
 using Intents;

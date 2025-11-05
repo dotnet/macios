@@ -1,8 +1,5 @@
-using System;
 using System.ComponentModel;
 using CoreGraphics;
-using ObjCRuntime;
-using Foundation;
 
 #if !MONOMAC
 using UIKit;

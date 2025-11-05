@@ -158,5 +158,36 @@ namespace Cecil.Tests {
 
 			Helper.AssertFailures (failures, knownFailuresInvalidStrings, nameof (knownFailuresInvalidStrings), "In the file tests/cecil-tests/ApiTest.cs, read the guide carefully.", (v) => $"{v.Location}: {v.Message}");
 		}
+
+		[Test]
+		public void BannedAttributes ()
+		{
+			Configuration.IgnoreIfAnyIgnoredPlatforms ();
+
+			var bannedAttributeTypes = new [] {
+				new { Namespace = "Foundation", Name = "PreserveAttribute" },
+			};
+
+			var failures = new Dictionary<string, (string Message, string Location, ICustomAttributeProvider Provider)> ();
+			foreach (var info in Helper.NetPlatformImplementationAssemblyDefinitions) {
+				foreach (var ap in info.Assembly.EnumerateAttributeProviders ()) {
+					if (!ap.HasCustomAttributes)
+						continue;
+
+					foreach (var ca in ap.CustomAttributes) {
+						foreach (var tp in bannedAttributeTypes) {
+							if (!ca.AttributeType.Is (tp.Namespace, tp.Name))
+								continue;
+
+							var fullname = ap.AsFullName ();
+							failures [fullname] = (Message: $"'{fullname}' has a [Preserve] attribute", Location: ap.RenderLocation (), Provider: ap);
+							break;
+						}
+					}
+				}
+			}
+
+			Helper.AssertFailures (failures, knownFailuresBannedAttributes, nameof (knownFailuresBannedAttributes), "APIs with [Preserve] - alternative solutions must be found!", (v) => $"{v.Location}: {v.Message}");
+		}
 	}
 }

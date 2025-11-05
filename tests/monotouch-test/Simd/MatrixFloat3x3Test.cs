@@ -1,13 +1,7 @@
 
-using System;
 using System.Diagnostics;
 
-using Foundation;
-using ObjCRuntime;
-
 using MatrixFloat3x3 = global::CoreGraphics.NMatrix3;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Simd {
 	[TestFixture]

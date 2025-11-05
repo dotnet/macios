@@ -1,15 +1,10 @@
 #if MONOMAC
 
-using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Threading;
-using Foundation;
-using ObjCRuntime;
 using CoreWlan;
 using Security;
 
-using NUnit.Framework;
 using MonoTouchFixtures.Security;
 
 namespace MonoTouchFixtures.CoreWlan {

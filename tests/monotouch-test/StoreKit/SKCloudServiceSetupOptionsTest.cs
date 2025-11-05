@@ -9,9 +9,6 @@
 
 #if __IOS__
 
-using System;
-using Foundation;
-using NUnit.Framework;
 using StoreKit;
 
 namespace MonoTouchFixtures.StoreKit {

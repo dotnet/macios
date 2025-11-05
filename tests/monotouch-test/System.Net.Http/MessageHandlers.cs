@@ -2,9 +2,7 @@
 // MessageHandlers.cs
 //
 
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
@@ -14,12 +12,9 @@ using System.Security.Cryptography.X509Certificates;
 using System.Linq;
 using System.IO;
 
-using NUnit.Framework;
 using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Text;
-using Foundation;
-using ObjCRuntime;
 using Xamarin.Utils;
 
 namespace MonoTests.System.Net.Http {
@@ -69,9 +64,22 @@ namespace MonoTests.System.Net.Http {
 			Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
 		}
 
-		// ensure that we do get the same cookies as the managed handler
+		// ensure that we do get the same cookies as the managed handler for the default session
 		[Test]
 		public void TestNSUrlSessionHandlerCookies ()
+		{
+			TestNSUrlSessionHandlerCookiesImpl (new NSUrlSessionHandler ());
+		}
+
+		// ensure that we do get the same cookies as the managed handler for ephemeral sessions
+		[Test]
+		public void TestNSUrlSessionEphemeralHandlerCookies ()
+		{
+			using var ephemeralConfig = NSUrlSessionConfiguration.EphemeralSessionConfiguration;
+			TestNSUrlSessionHandlerCookiesImpl (new NSUrlSessionHandler (ephemeralConfig));
+		}
+
+		void TestNSUrlSessionHandlerCookiesImpl (NSUrlSessionHandler nativeHandler)
 		{
 			var managedCookieResult = false;
 			var nativeCookieResult = false;
@@ -87,13 +95,12 @@ namespace MonoTests.System.Net.Http {
 				var managedResponse = await managedClient.GetAsync (url);
 				managedCookieResult = managedResponse.Headers.TryGetValues ("Set-Cookie", out managedCookies);
 
-				var nativeHandler = new NSUrlSessionHandler () {
-					AllowAutoRedirect = false,
-				};
 				nativeHandler.AllowAutoRedirect = true;
 				var nativeClient = new HttpClient (nativeHandler);
 				var nativeResponse = await nativeClient.GetAsync (url);
 				nativeCookieResult = nativeResponse.Headers.TryGetValues ("Set-Cookie", out nativeCookies);
+
+				Assert.That (nativeHandler.UseCookies, Is.EqualTo (true), "UseCookies");
 			}, out var ex);
 
 			if (!completed || !managedCookieResult || !nativeCookieResult)
@@ -112,6 +119,18 @@ namespace MonoTests.System.Net.Http {
 		[Test]
 		public void TestNSUrlSessionHandlerCookieContainer ()
 		{
+			TestNSUrlSessionHandlerCookieContainerImpl (new NSUrlSessionHandler ());
+		}
+
+		[Test]
+		public void TestNSUrlSessionEphemeralHandlerCookieContainer ()
+		{
+			using var ephemeralConfig = NSUrlSessionConfiguration.EphemeralSessionConfiguration;
+			TestNSUrlSessionHandlerCookieContainerImpl (new NSUrlSessionHandler (ephemeralConfig));
+		}
+
+		void TestNSUrlSessionHandlerCookieContainerImpl (NSUrlSessionHandler nativeHandler)
+		{
 			var url = NetworkResources.Httpbin.CookiesUrl;
 			var cookie = new Cookie ("cookie", "chocolate-chip");
 			var cookieContainer = new CookieContainer ();
@@ -129,10 +148,8 @@ namespace MonoTests.System.Net.Http {
 				var managedResponse = await managedClient.GetAsync (url);
 				managedCookieResult = await managedResponse.Content.ReadAsStringAsync ();
 
-				var nativeHandler = new NSUrlSessionHandler () {
-					AllowAutoRedirect = true,
-					CookieContainer = cookieContainer,
-				};
+				nativeHandler.AllowAutoRedirect = true;
+				nativeHandler.CookieContainer = cookieContainer;
 				var nativeClient = new HttpClient (nativeHandler);
 				var nativeResponse = await nativeClient.GetAsync (url);
 				nativeCookieResult = await nativeResponse.Content.ReadAsStringAsync ();
@@ -260,14 +277,25 @@ namespace MonoTests.System.Net.Http {
 		[Test]
 		public void TestNSUrlSessionEphemeralDisabledCookies ()
 		{
-			// assert we do throw an exception with ephmeral configs.
-			using (var config = NSUrlSessionConfiguration.EphemeralSessionConfiguration) {
-				Assert.True (config.SessionType == NSUrlSessionConfiguration.SessionConfigurationType.Ephemeral, "Session type.");
-				var nativeHandler = new NSUrlSessionHandler (config);
-				Assert.Throws<InvalidOperationException> (() => {
-					nativeHandler.UseCookies = false;
-				});
-			}
+			// assert that we can't re-enable cookies for ephemeral sessions
+			using var config = NSUrlSessionConfiguration.EphemeralSessionConfiguration;
+			Assert.That (config.SessionType, Is.EqualTo (NSUrlSessionConfiguration.SessionConfigurationType.Ephemeral), "Session type.");
+			var nativeHandler = new NSUrlSessionHandler (config);
+			Assert.That (nativeHandler.UseCookies, Is.EqualTo (true), "UseCookies #1");
+			nativeHandler.UseCookies = true;
+			Assert.That (nativeHandler.UseCookies, Is.EqualTo (true), "UseCookies #2");
+			nativeHandler.UseCookies = false;
+			Assert.That (nativeHandler.UseCookies, Is.EqualTo (false), "UseCookies #3");
+			nativeHandler.UseCookies = false;
+			Assert.That (nativeHandler.UseCookies, Is.EqualTo (false), "UseCookies #4");
+			Assert.Throws<InvalidOperationException> (() => {
+				nativeHandler.UseCookies = true;
+			}, "UseCookies #5");
+			Assert.That (nativeHandler.UseCookies, Is.EqualTo (false), "UseCookies #6");
+			Assert.Throws<InvalidOperationException> (() => {
+				nativeHandler.UseCookies = true;
+			}, "UseCookies #7");
+			Assert.That (nativeHandler.UseCookies, Is.EqualTo (false), "UseCookies #8");
 		}
 
 		[Test]

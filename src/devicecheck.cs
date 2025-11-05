@@ -8,10 +8,6 @@
 // Copyright 2019 Microsoft Corporation.
 //
 
-using System;
-using ObjCRuntime;
-using Foundation;
-
 namespace DeviceCheck {
 
 	[MacCatalyst (13, 1)]

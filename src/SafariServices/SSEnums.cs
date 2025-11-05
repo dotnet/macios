@@ -8,11 +8,6 @@
 // Copyright 2019 Microsoft Corporation
 //
 
-using System;
-
-using Foundation;
-using ObjCRuntime;
-
 namespace SafariServices {
 
 	// NSInteger -> SSReadingList.h

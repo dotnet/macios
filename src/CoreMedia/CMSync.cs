@@ -6,13 +6,9 @@
 // Copyright 2012-2014 Xamarin Inc
 //
 
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 
 #nullable enable
 

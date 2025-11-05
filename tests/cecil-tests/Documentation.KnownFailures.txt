@@ -142,6 +142,7 @@ F:AccessorySetupKit.ASAccessoryEventType.AccessoryAdded
 F:AccessorySetupKit.ASAccessoryEventType.AccessoryChanged
 F:AccessorySetupKit.ASAccessoryEventType.AccessoryRemoved
 F:AccessorySetupKit.ASAccessoryEventType.Activated
+F:AccessorySetupKit.ASAccessoryEventType.Discovered
 F:AccessorySetupKit.ASAccessoryEventType.Invalidated
 F:AccessorySetupKit.ASAccessoryEventType.MigrationComplete
 F:AccessorySetupKit.ASAccessoryEventType.PickerDidDismiss
@@ -177,6 +178,8 @@ F:AccessorySetupKit.ASErrorCode.UserRestricted
 F:AccessorySetupKit.ASPickerDisplayItemSetupOptions.ConfirmAuthorization
 F:AccessorySetupKit.ASPickerDisplayItemSetupOptions.FinishInApp
 F:AccessorySetupKit.ASPickerDisplayItemSetupOptions.Rename
+F:AccessorySetupKit.ASPickerDisplaySettingsOptions.FilterDiscoveryResults
+F:AccessorySetupKit.ASPickerDisplaySettingsOptions.None
 F:AddressBook.ABPropertyType.MultiMask
 F:AdServices.AAAttributionErrorCode.InternalError
 F:AdServices.AAAttributionErrorCode.NetworkError
@@ -1463,6 +1466,7 @@ F:AVFoundation.AVFileTypeProfile.None
 F:AVFoundation.AVFileTypes.Ahap
 F:AVFoundation.AVFileTypes.AppleiTT
 F:AVFoundation.AVFileTypes.Dicom
+F:AVFoundation.AVFileTypes.QuickTimeAudio
 F:AVFoundation.AVFileTypes.Scc
 F:AVFoundation.AVMediaCharacteristics.CarriesVideoStereoMetadata
 F:AVFoundation.AVMediaCharacteristics.ContainsAlphaChannel
@@ -1476,8 +1480,8 @@ F:AVFoundation.AVMediaCharacteristics.MachineGenerated
 F:AVFoundation.AVMediaCharacteristics.TactileMinimal
 F:AVFoundation.AVMediaTypes.AuxiliaryPicture
 F:AVFoundation.AVMediaTypes.Haptic
-F:AVFoundation.AVMetadataObjectType.AVMetadataObjectTypeCatHead
 F:AVFoundation.AVMetadataObjectType.CatBody
+F:AVFoundation.AVMetadataObjectType.CatHead
 F:AVFoundation.AVMetadataObjectType.CodabarCode
 F:AVFoundation.AVMetadataObjectType.DogBody
 F:AVFoundation.AVMetadataObjectType.DogHead
@@ -2356,6 +2360,8 @@ F:CoreLocationUI.CLLocationButtonLabel.SendCurrentLocation
 F:CoreLocationUI.CLLocationButtonLabel.SendMyCurrentLocation
 F:CoreLocationUI.CLLocationButtonLabel.ShareCurrentLocation
 F:CoreLocationUI.CLLocationButtonLabel.ShareMyCurrentLocation
+F:CoreMedia.CMAudioCodecType.AacAudibleProtected
+F:CoreMedia.CMAudioCodecType.AacLCProtected
 F:CoreMedia.CMFormatDescriptionAlphaChannelMode.PremultipliedAlpha
 F:CoreMedia.CMFormatDescriptionAlphaChannelMode.StraightAlpha
 F:CoreMedia.CMFormatDescriptionCameraCalibrationExtrinsicOriginSource.StereoCameraSystemBaseline
@@ -2484,6 +2490,7 @@ F:CoreMedia.CMMPEG2VideoProfile.XDCAM_HD422_720p30_CBR50
 F:CoreMedia.CMMPEG2VideoProfile.XDCAM_HD422_720p50_CBR50
 F:CoreMedia.CMMPEG2VideoProfile.XDCAM_HD422_720p60_CBR50
 F:CoreMedia.CMMPEG2VideoProfile.XF
+F:CoreMedia.CMMuxedStreamType.EmbeddedDeviceScreenRecording
 F:CoreMedia.CMPackingType.None
 F:CoreMedia.CMPackingType.OverUnder
 F:CoreMedia.CMPackingType.SideBySide
@@ -2534,9 +2541,15 @@ F:CoreMedia.CMTaggedBufferGroupError.InternalError
 F:CoreMedia.CMTaggedBufferGroupError.ParamErr
 F:CoreMedia.CMTaggedBufferGroupError.Success
 F:CoreMedia.CMTaggedBufferGroupFormatType.TaggedBufferGroup
+F:CoreMedia.CMTextFormatType.QTText
+F:CoreMedia.CMTextFormatType.Text3G
+F:CoreMedia.CMVideoCodecType.AppleProRes4444XQ
+F:CoreMedia.CMVideoCodecType.AppleProResRaw
+F:CoreMedia.CMVideoCodecType.AppleProResRawHQ
 F:CoreMedia.CMVideoCodecType.DepthHevc
 F:CoreMedia.CMVideoCodecType.DisparityHevc
 F:CoreMedia.CMVideoCodecType.DolbyVisionHevc
+F:CoreMedia.CMVideoCodecType.HevcWithAlpha
 F:CoreMedia.CMVideoCodecType.JPEG_XL
 F:CoreMedia.CMVideoCodecType.VP9
 F:CoreMidi.MidiCICategoryOptions.ProcessInquirySupported
@@ -3315,6 +3328,7 @@ F:Foundation.NSUrlBookmarkResolutionOptions.WithoutImplicitStartAccessing
 F:Foundation.NSUrlErrorNetworkUnavailableReason.Cellular
 F:Foundation.NSUrlErrorNetworkUnavailableReason.Constrained
 F:Foundation.NSUrlErrorNetworkUnavailableReason.Expensive
+F:Foundation.NSUrlErrorNetworkUnavailableReason.UltraConstrained
 F:Foundation.NSURLRequestAttribution.Developer
 F:Foundation.NSURLRequestAttribution.User
 F:Foundation.NSUrlRequestNetworkServiceType.AVStreaming
@@ -4050,6 +4064,7 @@ F:HomeKit.HMError.MaximumAccessoriesOfTypeInHome
 F:HomeKit.HMError.ObjectWithSimilarNameExists
 F:HomeKit.HMError.OwnershipFailure
 F:HomeKit.HMError.PartialCommunicationFailure
+F:HomeKit.HMError.QuotaExceeded
 F:HomeKit.HMError.TimedOutWaitingForAccessory
 F:HomeKit.HMError.WiFiCredentialGenerationFailed
 F:HomeKit.HMHomeManagerAuthorizationStatus.Authorized
@@ -6008,6 +6023,12 @@ F:Photos.PHAssetResourceType.AdjustmentBasePairedVideo
 F:Photos.PHAssetResourceType.AdjustmentBaseVideo
 F:Photos.PHAssetResourceType.FullSizePairedVideo
 F:Photos.PHAssetResourceType.PhotoProxy
+F:Photos.PHAssetResourceUploadJobAction.Acknowledge
+F:Photos.PHAssetResourceUploadJobAction.Retry
+F:Photos.PHAssetResourceUploadJobState.Failed
+F:Photos.PHAssetResourceUploadJobState.Pending
+F:Photos.PHAssetResourceUploadJobState.Registered
+F:Photos.PHAssetResourceUploadJobState.Succeeded
 F:Photos.PHAuthorizationStatus.Limited
 F:Photos.PHObjectType.Asset
 F:Photos.PHObjectType.AssetCollection
@@ -6020,6 +6041,7 @@ F:Photos.PHPhotosError.InternalError
 F:Photos.PHPhotosError.InvalidResource
 F:Photos.PHPhotosError.LibraryInFileProviderSyncRoot
 F:Photos.PHPhotosError.LibraryVolumeOffline
+F:Photos.PHPhotosError.LimitExceeded
 F:Photos.PHPhotosError.MissingResource
 F:Photos.PHPhotosError.MultipleIdentifiersFound
 F:Photos.PHPhotosError.NetworkAccessRequired
@@ -8135,15 +8157,19 @@ M:Accessibility.AXHearingUtilities.AXSupportsBidirectionalAXMFiHearingDeviceStre
 M:Accessibility.AXHearingUtilities.GetMFiHearingDevicePairedUuids
 M:Accessibility.AXHearingUtilities.GetMFiHearingDeviceStreamingEar
 M:Accessibility.AXHearingUtilities.SupportsBidirectionalStreaming
+M:Accessibility.AXPrefers.ActionSliderAlternative
 M:Accessibility.AXPrefers.HorizontalTextEnabled
 M:Accessibility.AXPrefers.NonBlinkingTextInsertionIndicator
+M:Accessibility.AXSettings.ShowBordersEnabled
 M:AccessorySetupKit.ASAccessorySession.FailAuthorizationAsync(AccessorySetupKit.ASAccessory)
 M:AccessorySetupKit.ASAccessorySession.FinishAuthorizationAsync(AccessorySetupKit.ASAccessory,AccessorySetupKit.ASAccessorySettings)
+M:AccessorySetupKit.ASAccessorySession.FinishPickerDiscoveryAsync
 M:AccessorySetupKit.ASAccessorySession.RemoveAccessoryAsync(AccessorySetupKit.ASAccessory)
 M:AccessorySetupKit.ASAccessorySession.RenameAccessoryAsync(AccessorySetupKit.ASAccessory,AccessorySetupKit.ASAccessoryRenameOptions)
 M:AccessorySetupKit.ASAccessorySession.ShowPickerAsync
 M:AccessorySetupKit.ASAccessorySession.ShowPickerAsync(AccessorySetupKit.ASPickerDisplayItem[])
 M:AccessorySetupKit.ASAccessorySession.UpdateAuthorizationAsync(AccessorySetupKit.ASAccessory,AccessorySetupKit.ASDiscoveryDescriptor)
+M:AccessorySetupKit.ASAccessorySession.UpdatePickerAsync(AccessorySetupKit.ASDiscoveredDisplayItem[])
 M:Accounts.ACAccountStore.Dispose(System.Boolean)
 M:AddressBook.ABAddressBook.add_ExternalChange(System.EventHandler{AddressBook.ExternalChangeEventArgs})
 M:AddressBook.ABAddressBook.remove_ExternalChange(System.EventHandler{AddressBook.ExternalChangeEventArgs})
@@ -8831,6 +8857,7 @@ M:AppKit.NSTextView.add_DraggedCell(System.EventHandler{AppKit.NSTextViewDragged
 M:AppKit.NSTextView.add_WritingToolsDidEnd(System.EventHandler)
 M:AppKit.NSTextView.add_WritingToolsWillBegin(System.EventHandler)
 M:AppKit.NSTextView.Dispose(System.Boolean)
+M:AppKit.NSTextView.IsCoalescingUndo
 M:AppKit.NSTextView.remove_CellClicked(System.EventHandler{AppKit.NSTextViewClickedEventArgs})
 M:AppKit.NSTextView.remove_CellDoubleClicked(System.EventHandler{AppKit.NSTextViewDoubleClickEventArgs})
 M:AppKit.NSTextView.remove_DidChangeSelection(System.EventHandler)
@@ -9348,6 +9375,7 @@ M:AVFoundation.AVAssetTrack.LoadMetadataAsync(System.String)
 M:AVFoundation.AVAssetTrack.LoadSamplePresentationTimeAsync(CoreMedia.CMTime)
 M:AVFoundation.AVAssetTrack.LoadSegmentAsync(CoreMedia.CMTime)
 M:AVFoundation.AVAssetWriter.Dispose(System.Boolean)
+M:AVFoundation.AVAssetWriter.FromUrl(Foundation.NSUrl,AVFoundation.AVFileTypes,Foundation.NSError@)
 M:AVFoundation.AVAssetWriterDelegate_Extensions.DidOutputSegmentData(AVFoundation.IAVAssetWriterDelegate,AVFoundation.AVAssetWriter,Foundation.NSData,AVFoundation.AVAssetSegmentType,AVFoundation.AVAssetSegmentReport)
 M:AVFoundation.AVAssetWriterDelegate_Extensions.DidOutputSegmentData(AVFoundation.IAVAssetWriterDelegate,AVFoundation.AVAssetWriter,Foundation.NSData,AVFoundation.AVAssetSegmentType)
 M:AVFoundation.AVAudio3DAngularOrientation.op_Equality(AVFoundation.AVAudio3DAngularOrientation,AVFoundation.AVAudio3DAngularOrientation)
@@ -9488,8 +9516,6 @@ M:AVFoundation.AVComposition_AVCompositionTrackInspection.LoadTracksWithMediaTyp
 M:AVFoundation.AVComposition_AVCompositionTrackInspection.LoadTracksWithMediaTypeAsync(AVFoundation.AVComposition,System.String)
 M:AVFoundation.AVContentKeyRecipient_Extensions.DidProvideContentKey(AVFoundation.IAVContentKeyRecipient,AVFoundation.AVContentKeySession,AVFoundation.AVContentKey)
 M:AVFoundation.AVContentKeyRequest.Dispose(System.Boolean)
-M:AVFoundation.AVContentKeyRequest.RespondByRequestingPersistableContentKeyRequest
-M:AVFoundation.AVContentKeyRequest.RespondByRequestingPersistableContentKeyRequest(Foundation.NSError@)
 M:AVFoundation.AVContentKeyResponse.Create(Foundation.NSData,AVFoundation.AVContentKeyResponseDataType)
 M:AVFoundation.AVContentKeySession.Dispose(System.Boolean)
 M:AVFoundation.AVContentKeySessionDelegate_Extensions.DidProvideContentKeyRequests(AVFoundation.IAVContentKeySessionDelegate,AVFoundation.AVContentKeySession,AVFoundation.AVContentKeyRequest[],Foundation.NSData)
@@ -11779,6 +11805,18 @@ M:Foundation.NSCache.Dispose(System.Boolean)
 M:Foundation.NSCache.remove_WillEvictObject(System.EventHandler{Foundation.NSObjectEventArgs})
 M:Foundation.NSCache.SetObjectForKey(Foundation.NSObject,Foundation.NSObject)
 M:Foundation.NSCalendar.#ctor(Foundation.NSCalendarType)
+M:Foundation.NSCoder.DecodeObject(System.Type,System.String)
+M:Foundation.NSCoder.DecodeObject(System.Type[],System.String)
+M:Foundation.NSCoder.DecodeTopLevelObject(System.Type,System.String,Foundation.NSError@)
+M:Foundation.NSCoder.DecodeTopLevelObject(System.Type[],System.String,Foundation.NSError@)
+M:Foundation.NSCoder.TryDecode(System.String,Foundation.NSObject@)
+M:Foundation.NSCoder.TryDecode(System.String,System.Boolean@)
+M:Foundation.NSCoder.TryDecode(System.String,System.Byte[]@)
+M:Foundation.NSCoder.TryDecode(System.String,System.Double@)
+M:Foundation.NSCoder.TryDecode(System.String,System.Int32@)
+M:Foundation.NSCoder.TryDecode(System.String,System.Int64@)
+M:Foundation.NSCoder.TryDecode(System.String,System.IntPtr@)
+M:Foundation.NSCoder.TryDecode(System.String,System.Single@)
 M:Foundation.NSConnection.Dispose(System.Boolean)
 M:Foundation.NSDataDetector.#ctor(Foundation.NSTextCheckingType,Foundation.NSError@)
 M:Foundation.NSDataDetector.Create(Foundation.NSTextCheckingType,Foundation.NSError@)
@@ -11912,6 +11950,7 @@ M:Foundation.NSNumber.op_Implicit(System.UInt64)~Foundation.NSNumber
 M:Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)
 M:Foundation.NSObject.AutomaticallyNotifiesObserversForKey(System.String)
 M:Foundation.NSObject.AwakeFromNib
+M:Foundation.NSObject.Bind(Foundation.NSString,Foundation.NSObject,System.String,AppKit.NSBindingOptions)
 M:Foundation.NSObject.Bind(Foundation.NSString,Foundation.NSObject,System.String,Foundation.NSDictionary)
 M:Foundation.NSObject.CancelPreviousPerformRequest(Foundation.NSObject,ObjCRuntime.Selector,Foundation.NSObject)
 M:Foundation.NSObject.CancelPreviousPerformRequest(Foundation.NSObject)
@@ -12427,6 +12466,7 @@ M:HomeKit.HMHomeManager.add_DidUpdateAuthorizationStatus(System.EventHandler{Hom
 M:HomeKit.HMHomeManager.add_DidUpdateHomes(System.EventHandler)
 M:HomeKit.HMHomeManager.add_DidUpdatePrimaryHome(System.EventHandler)
 M:HomeKit.HMHomeManager.Dispose(System.Boolean)
+M:HomeKit.HMHomeManager.FindVendorAccessoryAsync(Foundation.NSData)
 M:HomeKit.HMHomeManager.remove_DidAddHome(System.EventHandler{HomeKit.HMHomeManagerEventArgs})
 M:HomeKit.HMHomeManager.remove_DidReceiveAddAccessoryRequest(System.EventHandler{HomeKit.HMHomeManagerAddAccessoryRequestEventArgs})
 M:HomeKit.HMHomeManager.remove_DidRemoveHome(System.EventHandler{HomeKit.HMHomeManagerEventArgs})
@@ -16326,6 +16366,7 @@ M:StoreKit.SKStoreProductViewController.LoadProduct(StoreKit.StoreProductParamet
 M:StoreKit.SKStoreProductViewController.LoadProductAsync(Foundation.NSDictionary,StoreKit.SKAdImpression)
 M:StoreKit.SKStoreProductViewController.LoadProductAsync(StoreKit.StoreProductParameters,StoreKit.SKAdImpression)
 M:StoreKit.SKStoreProductViewController.remove_Finished(System.EventHandler)
+M:SystemConfiguration.NetworkReachability.Dispose(System.Boolean)
 M:ThreadNetwork.THClient.CheckPreferredNetworkAsync(Foundation.NSData)
 M:ThreadNetwork.THClient.DeleteCredentialsForBorderAgentAsync(Foundation.NSData)
 M:ThreadNetwork.THClient.IsPreferredNetworkAvailableAsync
@@ -17208,6 +17249,7 @@ M:UIKit.UILargeContentViewerInteractionDelegate_Extensions.GetItem(UIKit.IUILarg
 M:UIKit.UILargeContentViewerInteractionDelegate_Extensions.GetViewController(UIKit.IUILargeContentViewerInteractionDelegate,UIKit.UILargeContentViewerInteraction)
 M:UIKit.UILayoutGuide.Dispose(System.Boolean)
 M:UIKit.UIListContentView.UIListContentViewAppearance.#ctor(System.IntPtr)
+M:UIKit.UIMenu.Create(System.String,UIKit.UIImage,UIKit.UIMenuIdentifier,UIKit.UIMenuOptions,UIKit.UIMenuElement[])
 M:UIKit.UIMenuLeaf_Extensions.GetSelectedImage(UIKit.IUIMenuLeaf)
 M:UIKit.UIMenuLeaf_Extensions.SetSelectedImage(UIKit.IUIMenuLeaf,UIKit.UIImage)
 M:UIKit.UINavigationBar.Dispose(System.Boolean)
@@ -18130,6 +18172,7 @@ P:Accessibility.IAXCustomContentProvider.AccessibilityCustomContentHandler
 P:Accessibility.IAXDataAxisDescriptor.AttributedTitle
 P:Accessibility.IAXDataAxisDescriptor.Title
 P:Accessibility.IAXMathExpressionProvider.AccessibilityMathExpression
+P:AccessorySetupKit.ASDiscoveredAccessory.BluetoothAdvertisementData
 P:AddressBook.ABMultiValue`1.Item(System.IntPtr)
 P:AppClip.APActivationPayload.Url
 P:AppKit.INSAccessibility.AccessibilityActivationPoint
@@ -18351,6 +18394,32 @@ P:AppKit.NSAttributedStringDocumentReadingOptions.TextSizeMultiplier
 P:AppKit.NSAttributedStringDocumentReadingOptions.Timeout
 P:AppKit.NSAttributedStringDocumentReadingOptions.WebPreferences
 P:AppKit.NSAttributedStringDocumentReadingOptions.WebResourceLoadDelegate
+P:AppKit.NSBindingOptions.AllowsEditingMultipleValuesSelection
+P:AppKit.NSBindingOptions.AllowsNullArgument
+P:AppKit.NSBindingOptions.AlwaysPresentsApplicationModalAlerts
+P:AppKit.NSBindingOptions.ConditionallySetsEditable
+P:AppKit.NSBindingOptions.ConditionallySetsEnabled
+P:AppKit.NSBindingOptions.ConditionallySetsHidden
+P:AppKit.NSBindingOptions.ContentPlacementTag
+P:AppKit.NSBindingOptions.ContinuouslyUpdatesValue
+P:AppKit.NSBindingOptions.CreatesSortDescriptor
+P:AppKit.NSBindingOptions.DeletesObjectsOnRemoveBindingsOption
+P:AppKit.NSBindingOptions.DisplayName
+P:AppKit.NSBindingOptions.DisplayPattern
+P:AppKit.NSBindingOptions.HandlesContentAsCompoundValue
+P:AppKit.NSBindingOptions.InsertsNullPlaceholder
+P:AppKit.NSBindingOptions.InvokesSeparatelyWithArrayObjects
+P:AppKit.NSBindingOptions.MultipleValuesPlaceholder
+P:AppKit.NSBindingOptions.NoSelectionPlaceholder
+P:AppKit.NSBindingOptions.NotApplicablePlaceholder
+P:AppKit.NSBindingOptions.NullPlaceholder
+P:AppKit.NSBindingOptions.PredicateFormat
+P:AppKit.NSBindingOptions.RaisesForNotApplicableKeys
+P:AppKit.NSBindingOptions.SelectorName
+P:AppKit.NSBindingOptions.SelectsAllWhenSettingContent
+P:AppKit.NSBindingOptions.ValidatesImmediately
+P:AppKit.NSBindingOptions.ValueTransformer
+P:AppKit.NSBindingOptions.ValueTransformerName
 P:AppKit.NSButtonTouchBarItem.Enabled
 P:AppKit.NSCell.AccessibilityActionNames
 P:AppKit.NSCell.AccessibilityAttributeNames
@@ -18428,8 +18497,24 @@ P:AppKit.NSTextSelectionNavigation.TextSelectionDataSource
 P:AppKit.NSTextStorageEventArgs.Delta
 P:AppKit.NSTextStorageEventArgs.EditedMask
 P:AppKit.NSTextStorageEventArgs.EditedRange
+P:AppKit.NSTextView.AutomaticDashSubstitutionEnabled
+P:AppKit.NSTextView.AutomaticDataDetectionEnabled
+P:AppKit.NSTextView.AutomaticLinkDetectionEnabled
+P:AppKit.NSTextView.AutomaticQuoteSubstitutionEnabled
+P:AppKit.NSTextView.AutomaticSpellingCorrectionEnabled
+P:AppKit.NSTextView.AutomaticTextCompletionEnabled
+P:AppKit.NSTextView.AutomaticTextReplacementEnabled
 P:AppKit.NSTextView.ContentType
+P:AppKit.NSTextView.ContinuousSpellCheckingEnabled
+P:AppKit.NSTextView.Delegate
+P:AppKit.NSTextView.Editable
+P:AppKit.NSTextView.FieldEditor
 P:AppKit.NSTextView.GetWritingToolsIgnoredRangesInEnclosingRange
+P:AppKit.NSTextView.GrammarCheckingEnabled
+P:AppKit.NSTextView.IsIncrementalSearchingEnabled
+P:AppKit.NSTextView.RichText
+P:AppKit.NSTextView.RulerVisible
+P:AppKit.NSTextView.Selectable
 P:AppKit.NSTextView.WritingToolsActive
 P:AppKit.NSTextViewClickedEventArgs.Cell
 P:AppKit.NSTextViewClickedEventArgs.CellFrame
@@ -18720,6 +18805,7 @@ P:AuthenticationServices.ASAuthorizationWebBrowserPlatformPublicKeyCredential.Pr
 P:AuthenticationServices.ASAuthorizationWebBrowserPlatformPublicKeyCredential.RelyingParty
 P:AuthenticationServices.ASAuthorizationWebBrowserPlatformPublicKeyCredential.UserHandle
 P:AuthenticationServices.ASAuthorizationWebBrowserPublicKeyCredentialManager.AuthorizationStateForPlatformCredentials
+P:AuthenticationServices.ASAuthorizationWebBrowserPublicKeyCredentialManager.IsDeviceConfiguredForPasskeys
 P:AuthenticationServices.ASOneTimeCodeCredential.Code
 P:AuthenticationServices.ASOneTimeCodeCredentialIdentity.Label
 P:AuthenticationServices.ASOneTimeCodeCredentialIdentity.Rank
@@ -18826,6 +18912,9 @@ P:AuthenticationServices.IASPublicKeyCredential.RawClientDataJson
 P:AutomaticAssessmentConfiguration.AEAssessmentApplication.BundleIdentifier
 P:AutomaticAssessmentConfiguration.AEAssessmentApplication.RequiresSignatureValidation
 P:AutomaticAssessmentConfiguration.AEAssessmentApplication.TeamIdentifier
+P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsAccessibilityKeyboard
+P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsAccessibilityLiveCaptions
+P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsAccessibilityReader
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsAccessibilitySpeech
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsAccessibilityTypingFeedback
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsActivityContinuation
@@ -18834,6 +18923,7 @@ P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsDictation
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsKeyboardShortcuts
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsPasswordAutoFill
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsPredictiveKeyboard
+P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsScreenshots
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsSpellCheck
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AutocorrectMode
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.ConfigurationsByApplication
@@ -19391,6 +19481,13 @@ P:CoreData.NSPersistentStoreRemoteChangeEventArgs.Uuid
 P:CoreData.NSStagedMigrationManager.Container
 P:CoreData.NSStagedMigrationManager.Stages
 P:CoreFoundation.CFArray.Count
+P:CoreFoundation.CFProxy.AutoConfigurationHttpResponse
+P:CoreFoundation.CFProxySettings.HTTPEnable
+P:CoreFoundation.CFProxySettings.HTTPPort
+P:CoreFoundation.CFProxySettings.HTTPProxy
+P:CoreFoundation.CFProxySettings.ProxyAutoConfigEnable
+P:CoreFoundation.CFProxySettings.ProxyAutoConfigJavaScript
+P:CoreFoundation.CFProxySettings.ProxyAutoConfigURLString
 P:CoreFoundation.CFRunLoop.AllModes
 P:CoreFoundation.CFRunLoop.CurrentMode
 P:CoreFoundation.CFSocket.Address
@@ -21042,6 +21139,7 @@ P:Foundation.NSObjectEventArgs.Obj
 P:Foundation.NSOrderedSet.Item(System.IntPtr)
 P:Foundation.NSOrderedSet`1.Item(System.IntPtr)
 P:Foundation.NSProcessInfo.IsiOSApplicationOnMac
+P:Foundation.NSProcessInfo.IsiOSAppOnVision
 P:Foundation.NSProcessInfo.IsMacCatalystApplication
 P:Foundation.NSStreamEventArgs.StreamEvent
 P:Foundation.NSString.Item(System.IntPtr)
@@ -21050,6 +21148,7 @@ P:Foundation.NSUbiquitousKeyValueStore.Item(System.String)
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangedKeys
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangeReason
 P:Foundation.NSUndoManagerCloseUndoGroupEventArgs.Discardable
+P:Foundation.NSUrlAuthenticationChallenge.SenderObject
 P:Foundation.NSUrlSessionConfiguration.ProxyConfigurations
 P:Foundation.NSUrlSessionConfiguration.SessionType
 P:Foundation.NSUrlSessionConfiguration.StrongConnectionProxyDictionary
@@ -21063,7 +21162,6 @@ P:Foundation.NSUrlSessionHandler.SupportsAutomaticDecompression
 P:Foundation.NSUrlSessionHandler.SupportsProxy
 P:Foundation.NSUrlSessionHandler.SupportsRedirectConfiguration
 P:Foundation.NSUrlSessionHandler.TrustOverrideForUrl
-P:Foundation.NSUrlSessionHandler.UseCookies
 P:Foundation.NSUrlSessionHandler.UseProxy
 P:Foundation.NSUrlSessionTask.Delegate
 P:Foundation.NSUrlSessionTaskTransactionMetrics.Cellular
@@ -21395,6 +21493,7 @@ P:HealthKit.HKLiveWorkoutBuilder.Delegate
 P:HealthKit.HKMedicationConcept.GeneralForm
 P:HealthKit.HKMetadata.AppleFitnessPlusCatalogIdentifier
 P:HealthKit.HKWorkoutSession.Delegate
+P:HomeKit.HMAccessory.VendorAccessory
 P:HomeKit.HMAccessoryBrowserEventArgs.Accessory
 P:HomeKit.HMAccessoryFirmwareVersionEventArgs.FirmwareVersion
 P:HomeKit.HMAccessoryProfileEventArgs.Profile
@@ -23338,6 +23437,7 @@ P:Phase.PhaseStreamNode.GainMetaParameter
 P:Phase.PhaseStreamNode.Mixer
 P:Phase.PhaseStreamNode.RateMetaParameter
 P:Phase.PhaseSwitchNodeDefinition.SwitchMetaParameterDefinition
+P:Photos.PHPhotoLibrary.UploadJobExtensionEnabled
 P:PhotosUI.PHPickerViewController.Delegate
 P:PrintCore.PMPrinter.HostName
 P:PrintCore.PMPrinter.Id
@@ -23595,7 +23695,6 @@ P:System.Net.Http.NSUrlSessionHandler.SupportsAutomaticDecompression
 P:System.Net.Http.NSUrlSessionHandler.SupportsProxy
 P:System.Net.Http.NSUrlSessionHandler.SupportsRedirectConfiguration
 P:System.Net.Http.NSUrlSessionHandler.TrustOverrideForUrl
-P:System.Net.Http.NSUrlSessionHandler.UseCookies
 P:System.Net.Http.NSUrlSessionHandler.UseProxy
 P:TouchController.ITCControl.ColliderShape
 P:TouchController.ITCControl.Enabled
@@ -24049,6 +24148,7 @@ P:UIKit.UIButton.Held
 P:UIKit.UIButton.Hovered
 P:UIKit.UIButton.PointerInteractionEnabled
 P:UIKit.UIButton.UIButtonAppearance.ContentEdgeInsets
+P:UIKit.UIButtonConfiguration.UISymbolContentTransition
 P:UIKit.UIButtonEventArgs.ButtonIndex
 P:UIKit.UICalendarSelectionMultiDate.Delegate
 P:UIKit.UICalendarSelectionSingleDate.Delegate
@@ -24082,6 +24182,7 @@ P:UIKit.UIContentUnavailableView.ScrollEnabled
 P:UIKit.UIContextMenuInteraction.Delegate
 P:UIKit.UIControl.ContextMenuInteractionEnabled
 P:UIKit.UIControl.SymbolAnimationEnabled
+P:UIKit.UIDocumentBrowserAction.ImageOnlyForContextMenu
 P:UIKit.UIDocumentMenuDocumentPickedEventArgs.DocumentPicker
 P:UIKit.UIDocumentPickedAtUrlsEventArgs.Urls
 P:UIKit.UIDocumentPickedEventArgs.Url
@@ -24124,6 +24225,7 @@ P:UIKit.UILargeContentViewerInteraction.Delegate
 P:UIKit.UILargeContentViewerInteraction.Enabled
 P:UIKit.UIListContentView.ListContentConfiguration
 P:UIKit.UIListSeparatorConfiguration.AutomaticInsets
+P:UIKit.UIMenu.Identifier
 P:UIKit.UIMenu.SelectedElements
 P:UIKit.UIMenuController.MenuVisible
 P:UIKit.UINavigationBar.UINavigationBarAppearance.CompactAppearance
@@ -24808,7 +24910,9 @@ T:Accessibility.ValueDescriptionProviderHandler
 T:AccessorySetupKit.ASAccessoryEventType
 T:AccessorySetupKit.ASAccessoryRenameOptions
 T:AccessorySetupKit.ASAccessorySessionCompletionHandler
+T:AccessorySetupKit.ASAccessorySessionFinishPickerDiscoveryHandler
 T:AccessorySetupKit.ASAccessorySessionUpdateAuthorizationHandler
+T:AccessorySetupKit.ASAccessorySessionUpdatePickerHandler
 T:AccessorySetupKit.ASAccessoryState
 T:AccessorySetupKit.ASAccessorySupportOptions
 T:AccessorySetupKit.ASDiscoveryDescriptorRange
@@ -24816,6 +24920,7 @@ T:AccessorySetupKit.ASDiscoveryDescriptorWiFiAwareServiceRole
 T:AccessorySetupKit.ASErrorCode
 T:AccessorySetupKit.ASPickerDisplayItemSetupOptions
 T:AccessorySetupKit.ASPickerDisplaySettingsDiscoveryTimeout
+T:AccessorySetupKit.ASPickerDisplaySettingsOptions
 T:Accounts.ACLinkedInKey
 T:AdServices.AAAttributionErrorCode
 T:AppClip.APActivationPayload
@@ -24885,6 +24990,8 @@ T:AppKit.NSBackgroundStyle
 T:AppKit.NSBackingStore
 T:AppKit.NSBezelStyle
 T:AppKit.NSBezierPathElement
+T:AppKit.NSBindingOption
+T:AppKit.NSBindingOptions
 T:AppKit.NSBitmapFormat
 T:AppKit.NSBitmapImageFileType
 T:AppKit.NSBorderType
@@ -25857,6 +25964,7 @@ T:CarPlay.CPTextButtonStyle
 T:CarPlay.CPTimeRemainingColor
 T:CarPlay.CPTrafficSide
 T:CarPlay.CPTripEstimateStyle
+T:CFNetwork.CFNetworkProxies
 T:Cinematic.CNAssetSpatialAudioInfoCheckIfContainsSpatialAudioCallback
 T:Cinematic.CNAssetSpatialAudioInfoLoadCallback
 T:Cinematic.CNCinematicErrorCode
@@ -26141,6 +26249,7 @@ T:CoreLocation.CLServiceSessionDiagnostic
 T:CoreLocation.CLUpdate
 T:CoreLocationUI.CLLocationButtonIcon
 T:CoreLocationUI.CLLocationButtonLabel
+T:CoreMedia.CMAudioCodecType
 T:CoreMedia.CMCompressionPropertyCameraCalibration
 T:CoreMedia.CMCompressionPropertyCameraCalibrationKey
 T:CoreMedia.CMFormatDescriptionAlphaChannelMode
@@ -26180,6 +26289,7 @@ T:CoreMedia.CMTagDataType
 T:CoreMedia.CMTagError
 T:CoreMedia.CMTaggedBufferGroupError
 T:CoreMedia.CMTaggedBufferGroupFormatType
+T:CoreMedia.CMTextFormatType
 T:CoreMedia.LensStabilizationStatus
 T:CoreMidi.Midi2DeviceInfo
 T:CoreMidi.Midi2DeviceManufacturer
@@ -26805,6 +26915,7 @@ T:HomeKit.HMCharacteristicValueVolumeSelector
 T:HomeKit.HMCharacteristicValueWiFiSatelliteStatus
 T:HomeKit.HMFetchRoomHandler
 T:HomeKit.HMHomeManagerAuthorizationStatus
+T:HomeKit.HMHomeManagerFindVendorAccessoryCallback
 T:IdentityLookup.ILMessageFilterCapabilitiesQueryRequest
 T:IdentityLookup.ILMessageFilterCapabilitiesQueryResponse
 T:IdentityLookup.ILMessageFilterError
@@ -28072,6 +28183,8 @@ T:Phase.PhaseUpdateMode
 T:Photos.FigExifCustomRenderedValue
 T:Photos.PHAccessLevel
 T:Photos.PHAssetPlaybackStyle
+T:Photos.PHAssetResourceUploadJobAction
+T:Photos.PHAssetResourceUploadJobState
 T:Photos.PHImageManagerRequestImageDataHandler
 T:Photos.PHLivePhotoEditingError
 T:Photos.PHObjectType

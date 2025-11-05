@@ -269,7 +269,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			var intermediate = Path.Combine (IntermediateOutputPath, ToolName);
 			var intermediateBundleDir = Path.Combine (intermediate, "bundle");

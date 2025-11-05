@@ -27,9 +27,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Runtime.InteropServices;
-
 namespace ObjCRuntime {
 
 	/// <include file="../../docs/api/ObjCRuntime/AdoptsAttribute.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.AdoptsAttribute']/*" />

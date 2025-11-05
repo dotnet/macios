@@ -28,13 +28,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 
 namespace CoreGraphics {
 	/// <summary>A type that represents a Quartz shading.</summary>

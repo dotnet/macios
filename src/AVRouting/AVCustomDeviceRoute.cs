@@ -5,7 +5,6 @@
 // Author:
 //   Manuel de la Pena <mandel@microsoft.com>
 //
-using System;
 using Network;
 
 #nullable enable

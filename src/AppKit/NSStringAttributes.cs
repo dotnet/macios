@@ -8,11 +8,7 @@
 
 #if !__MACCATALYST__
 
-using System;
-
-using ObjCRuntime;
 using CoreFoundation;
-using Foundation;
 
 #nullable enable
 

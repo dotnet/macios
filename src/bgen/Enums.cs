@@ -1,13 +1,10 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Foundation;
-using ObjCRuntime;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

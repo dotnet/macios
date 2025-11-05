@@ -8,11 +8,8 @@
 // Copyright 2013-2015 Xamarin Inc.
 // Copyright 2019 Microsoft Corporation
 //
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 using CoreLocation;
-using System;
 
 namespace CoreMotion {
 	/// <summary>An accelerometer event, encapsulates an instance of <see cref="CoreMotion.CMAcceleration" /></summary>

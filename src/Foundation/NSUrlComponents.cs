@@ -1,7 +1,6 @@
 // Copyright 2014 Xamarin Inc
 //
 //
-using System;
 
 namespace Foundation {
 

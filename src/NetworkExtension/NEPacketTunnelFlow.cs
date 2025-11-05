@@ -1,8 +1,5 @@
 #nullable enable
 
-using System.Runtime.Versioning;
-using Foundation;
-
 namespace NetworkExtension {
 
 	// needed for generated Async support

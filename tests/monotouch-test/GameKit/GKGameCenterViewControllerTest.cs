@@ -2,16 +2,12 @@
 // Unit tests for GKGameCenterViewControllerTest
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
 using GameKit;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.GameKit {

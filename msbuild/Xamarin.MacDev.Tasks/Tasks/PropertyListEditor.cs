@@ -198,7 +198,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		bool Clear (ref PObject plist)
 		{
-			if (Type is not null) {
+			if (!string.IsNullOrEmpty (Type)) {
 				switch (Type.ToLowerInvariant ()) {
 				case "string": plist = new PString (string.Empty); break;
 				case "array": plist = new PArray (); break;
@@ -391,7 +391,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		bool Merge (PObject plist)
 		{
-			if (Entry is not null) {
+			if (!string.IsNullOrEmpty (Entry)) {
 				var path = GetPropertyPath ();
 				PObject? current = plist;
 				PDictionary? dict;

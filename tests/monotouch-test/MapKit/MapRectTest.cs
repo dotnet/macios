@@ -1,12 +1,8 @@
 
 #if !__TVOS__
 
-using System;
-using Foundation;
 using MapKit;
 using CoreGraphics;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.MapKit {

@@ -1,13 +1,8 @@
 //
 // Copyright 2015 Xamarin Inc
 //
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Foundation;
-using CoreFoundation;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreFoundation {
 

@@ -50,7 +50,8 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				if (ShouldExecuteRemotely ()) {
 					// Copy the bundle files to the build server
-					new TaskRunner (SessionId, BuildEngine4).CopyInputsAsync (this).Wait ();
+					if (!CopyInputsToRemoteServerAsync (this))
+						return false;
 				}
 
 				// But execute locally

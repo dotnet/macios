@@ -7,14 +7,9 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 using CoreGraphics;
 using CoreMedia;
 using CoreVideo;
-using Foundation;
 
 #nullable enable
 

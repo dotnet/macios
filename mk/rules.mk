@@ -25,17 +25,36 @@ macos_DEFINES=-DMONOMAC
 OBJC_CFLAGS=-ObjC++ -std=c++14 -fno-exceptions -fno-objc-msgsend-selector-stubs -fobjc-abi-version=2 -fobjc-legacy-dispatch
 CFLAGS=\
 	-Wall \
+	-Wextra \
+	-Wno-unused-parameter \
+	-Wno-unused-but-set-parameter \
 	-fms-extensions \
 	-Werror \
 	-Wconversion \
 	-Wdeprecated \
 	-Wuninitialized \
 	-fstack-protector-strong \
+	-ftrivial-auto-var-init=zero \
 	-Wformat \
 	-Wformat-security \
 	-Werror=format-security \
 	-fdiagnostics-absolute-paths \
 	-Wno-objc-protocol-property-synthesis \
+	-Wignored-qualifiers \
+	-Wmissing-field-initializers \
+	-Wcast-function-type-mismatch \
+	-Wsemicolon-before-method-body \
+	-Wsign-compare \
+	-Wshadow \
+	-Wempty-body \
+	-Wbuiltin-memcpy-chk-size \
+	-Wformat-nonliteral \
+	-Warray-bounds \
+	-Warray-bounds-pointer-arithmetic \
+	-Wsuspicious-memaccess \
+	-Wsizeof-array-div \
+	-Wsizeof-pointer-div \
+	-Wreturn-stack-address \
 	-g \
 	-I.
 SWIFTFLAGS=-g -emit-library

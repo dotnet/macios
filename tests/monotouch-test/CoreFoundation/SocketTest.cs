@@ -7,16 +7,10 @@
 // Copyright 2019 Microsoft Inc. All rights reserved.
 //
 
-using System;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.InteropServices;
 using System.Threading;
-using Foundation;
-using CoreFoundation;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreFoundation {
 

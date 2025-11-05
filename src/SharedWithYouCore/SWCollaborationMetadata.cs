@@ -8,10 +8,6 @@
 //
 #nullable enable
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 #if !TVOS
 
 namespace SharedWithYouCore {

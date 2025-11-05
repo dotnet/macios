@@ -1,13 +1,7 @@
-using System;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.ObjCRuntime {
 	[TestFixture]

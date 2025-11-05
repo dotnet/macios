@@ -7,14 +7,11 @@
 // Copyright 2012, 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Drawing;
 using System.Reflection;
 using System.Threading;
 
-using Foundation;
 using CoreGraphics;
-using ObjCRuntime;
 using Security;
 #if MONOMAC
 using AppKit;
@@ -24,7 +21,6 @@ using UIView = AppKit.NSView;
 using UIKit;
 using PlatformException = ObjCRuntime.ObjCException;
 #endif
-using NUnit.Framework;
 using Xamarin.Utils;
 
 using RectangleF = CoreGraphics.CGRect;

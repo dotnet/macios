@@ -2,10 +2,7 @@
 // BACompar.cs: Compatibility functions
 //
 // Copyright 2022 Microsoft Inc. All rights reserved.
-using System;
 using System.ComponentModel;
-using System.Runtime.Versioning;
-using Foundation;
 
 #nullable enable
 

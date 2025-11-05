@@ -19,8 +19,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 // Copyright 2011, 2012 Xamarin Inc
-using ObjCRuntime;
-using System;
 using System.Net;
 
 #nullable enable

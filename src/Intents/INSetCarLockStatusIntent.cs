@@ -9,9 +9,7 @@
 
 #if IOS
 
-using Foundation;
 using Intents;
-using ObjCRuntime;
 
 namespace Intents {
 

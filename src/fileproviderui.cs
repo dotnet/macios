@@ -7,9 +7,6 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using ObjCRuntime;
-using Foundation;
 #if IOS
 using UIKit;
 #else

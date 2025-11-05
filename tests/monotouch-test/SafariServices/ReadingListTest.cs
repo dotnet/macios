@@ -9,13 +9,9 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
 using System.IO;
-using Foundation;
 using SafariServices;
 using UIKit;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.SafariServices {

@@ -7,14 +7,10 @@
 // Copyright 2013-2015 Xamarin Inc.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using UIKit;
 #if HAS_WATCHCONNECTIVITY
 using WatchConnectivity;
 #endif
-using NUnit.Framework;
 
 namespace Introspection {
 

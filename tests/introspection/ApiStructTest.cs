@@ -6,15 +6,8 @@
 //
 // Copyright 2013 Xamarin, Inc.
 
-using System;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-
-using NUnit.Framework;
-
-using ObjCRuntime;
-using Foundation;
 
 namespace Introspection {
 

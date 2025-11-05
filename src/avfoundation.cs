@@ -47,15 +47,12 @@ using MediaToolbox;
 using AudioToolbox;
 using Cinematic;
 using CoreMedia;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 using CoreVideo;
 using UniformTypeIdentifiers;
 using ImageIO;
 using MediaPlayer;
-using System;
 
 #if MONOMAC
 using AppKit;
@@ -436,6 +433,7 @@ namespace AVFoundation {
 		QuickTimeMovie = 0,
 
 		/// <summary>Indicates the MPEG-4 format.</summary>
+		/// <remarks>Typically files using format has an .mp4 extension.</remarks>
 		[Field ("AVFileTypeMPEG4")]
 		Mpeg4 = 1,
 
@@ -543,6 +541,10 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("AVFileTypeDICOM")]
 		Dicom = 24,
+
+		[MacCatalyst (26, 1), TV (26, 1), Mac (26, 1), iOS (26, 1)]
+		[Field ("AVFileTypeQuickTimeAudio")]
+		QuickTimeAudio = 25,
 	}
 
 	[MacCatalyst (13, 1)]
@@ -6877,6 +6879,10 @@ namespace AVFoundation {
 		[Static, Export ("assetWriterWithURL:fileType:error:")]
 		AVAssetWriter FromUrl (NSUrl outputUrl, string outputFileType, out NSError error);
 
+		[return: NullAllowed]
+		[Wrap ("FromUrl (outputUrl, outputFileType.GetConstant ()!, out error)")]
+		AVAssetWriter FromUrl (NSUrl outputUrl, AVFileTypes outputFileType, out NSError error);
+
 		[DesignatedInitializer]
 		[Export ("initWithURL:fileType:error:")]
 		NativeHandle Constructor (NSUrl outputUrl, string outputFileType, out NSError error);
@@ -12393,9 +12399,15 @@ namespace AVFoundation {
 		[Field ("AVMetadataObjectTypeHumanFullBody")]
 		HumanFullBody = 1 << 24,
 
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'CatHead' instead.")]
+		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
+		AVMetadataObjectTypeCatHead = 1 << 25,
+#endif
+
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("AVMetadataObjectTypeCatHead")]
-		AVMetadataObjectTypeCatHead = 1 << 25,
+		CatHead = 1 << 25,
 
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("AVMetadataObjectTypeDogHead")]

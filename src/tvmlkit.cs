@@ -1,12 +1,9 @@
 // Copyright 2015 Xamarin Inc.
 // Copyright 2018 Microsoft Corporation
 
-using System;
 using System.ComponentModel;
 using AVFoundation;
-using Foundation;
 using JavaScriptCore;
-using ObjCRuntime;
 using UIKit;
 
 namespace TVMLKit {

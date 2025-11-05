@@ -1,8 +1,5 @@
 #if IOS
-using System;
-using Foundation;
 using Intents;
-using ObjCRuntime;
 using UIKit;
 
 #nullable enable

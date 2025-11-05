@@ -25,7 +25,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -34,7 +33,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Security;
-using System.Runtime.InteropServices;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
@@ -43,8 +41,6 @@ using System.Text;
 using System.Diagnostics.CodeAnalysis;
 
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 using Security;
 
 #if !MONOMAC
@@ -403,19 +399,31 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>Enable or disable the use of cookies.</summary>
+		/// <remarks>
+		///   <para>
+		///       For default and background sessions, the shared cookie storage (<see cref="NSHttpCookieStorage.SharedStorage" /> will be used.
+		///       This shared cookie storage will persist beyond app restarts; to clear the cookies call <c>NSHttpCookieStorage.SharedStorage.RemoveCookiesSinceDate(NSDate.DistantPast)</c>.
+		///       To use a custom cookie storage, use a custom <see cref="NSUrlSessionConfiguration" />, set the <see cref="NSUrlSessionConfiguration.HttpCookieStorage" /> property, and then pass in the custom session configuration when creating the <see cref="NSUrlSessionHandler(NSUrlSessionConfiguration)" />.
+		///   </para>
+		///   <para>Ephemeral sessions have by default a private cookie storage area. This private cookie storage area can't be recreated, which means that if the use of cookies is disabled, then it can't be re-enabled.</para>
+		/// </remarks>
 		public bool UseCookies {
 			get {
 				return session.Configuration.HttpCookieStorage is not null;
 			}
 			set {
 				EnsureModifiability ();
-				if (sessionType == NSUrlSessionConfiguration.SessionConfigurationType.Ephemeral)
-					throw new InvalidOperationException ("Cannot set the use of cookies in Ephemeral sessions.");
+
+				// first check if anything changed
+				if (value == UseCookies)
+					return;
+
 				// we have to consider the following table of cases:
-				// 1. Value is set to true and cookie storage is not null -> we do nothing
+				// 1. Value is set to true and cookie storage is not null -> we do nothing (already handled above)
 				// 2. Value is set to true and cookie storage is null -> we create/set the storage.
 				// 3. Value is false and cookie container is not null -> we clear the cookie storage
-				// 4. Value is false and cookie container is null -> we do nothing
+				// 4. Value is false and cookie container is null -> we do nothing (already handled above)
 				var oldSession = session;
 				var configuration = session.Configuration;
 				if (value && configuration.HttpCookieStorage is null) {
@@ -423,7 +431,10 @@ namespace Foundation {
 					// consider the following:
 					// 1. Default Session -> uses sharedHTTPCookieStorage
 					// 2. Background Session -> uses sharedHTTPCookieStorage
-					// 3. Ephemeral Session -> no allowed. apple does not provide a way to access to the private implementation of the storage class :/
+					// 3. Ephemeral Session -> we can't create an instance of a private cookie storage. Note that ephemeral sessions have a private cookie storage by default, so this can only happen if the developer disables cookies, and then re-enables them.
+					if (sessionType == NSUrlSessionConfiguration.SessionConfigurationType.Ephemeral)
+						throw new InvalidOperationException ("Can't re-enable the use of cookies in Ephemeral sessions.");
+
 					configuration.HttpCookieStorage = NSHttpCookieStorage.SharedStorage;
 				}
 				if (!value && configuration.HttpCookieStorage is not null) {

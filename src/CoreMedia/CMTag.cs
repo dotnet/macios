@@ -1,10 +1,6 @@
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace CoreMedia {
 	/// <summary>A structure that is used to add additional data (tags) to a resource.</summary>

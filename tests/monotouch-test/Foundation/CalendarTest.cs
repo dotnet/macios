@@ -1,7 +1,3 @@
-using System;
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 using RectangleF = CoreGraphics.CGRect;

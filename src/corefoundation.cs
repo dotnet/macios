@@ -4,10 +4,6 @@
 // Copyright 2014-2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace CoreFoundation {
 
 	/// <summary>A class that allows for explicit allocation and de-allocation of memory.</summary>
@@ -174,5 +170,60 @@ namespace CoreFoundation {
 		Unknown,
 		LittleEndian,
 		BigEndian,
+	}
+
+	// The CFProxy + friends types should really be in CFNetwork
+	[Partial]
+	interface CFProxy {
+		[Field ("kCFProxyAutoConfigurationHTTPResponseKey", "CFNetwork")]
+		NSString AutoConfigurationHttpResponseKey { get; }
+
+		[Field ("kCFProxyAutoConfigurationJavaScriptKey", "CFNetwork")]
+		NSString AutoConfigurationJavaScriptKey { get; }
+
+		[Field ("kCFProxyAutoConfigurationURLKey", "CFNetwork")]
+		NSString AutoConfigurationUrlKey { get; }
+
+		[Field ("kCFProxyHostNameKey", "CFNetwork")]
+		NSString HostNameKey { get; }
+
+		[Field ("kCFProxyPasswordKey", "CFNetwork")]
+		NSString PasswordKey { get; }
+
+		[Field ("kCFProxyPortNumberKey", "CFNetwork")]
+		NSString PortNumberKey { get; }
+
+		[Field ("kCFProxyTypeKey", "CFNetwork")]
+		NSString TypeKey { get; }
+
+		[Field ("kCFProxyUsernameKey", "CFNetwork")]
+		NSString UsernameKey { get; }
+	}
+
+	// The CFProxy + friends types should really be in CFNetwork
+	/// <summary>An enum of <see cref="CoreFoundation.CFProxy" /> proxy types.</summary>
+	enum CFProxyType {
+		/// <summary>No proxy should be used.</summary>
+		[DefaultEnumValue]
+		[Field ("kCFProxyTypeNone", "CFNetwork")]
+		None,
+		/// <summary>An autoconfiguration url.</summary>
+		[Field ("kCFProxyTypeAutoConfigurationURL", "CFNetwork")]
+		AutoConfigurationUrl,
+		/// <summary>Proxy types available from the system.</summary>
+		[Field ("kCFProxyTypeAutoConfigurationJavaScript", "CFNetwork")]
+		AutoConfigurationJavaScript,
+		/// <summary>An FTP proxy.</summary>
+		[Field ("kCFProxyTypeFTP", "CFNetwork")]
+		FTP,
+		/// <summary>An HTTP proxy.</summary>
+		[Field ("kCFProxyTypeHTTP", "CFNetwork")]
+		HTTP,
+		/// <summary>An HTTPS proxy.</summary>
+		[Field ("kCFProxyTypeHTTPS", "CFNetwork")]
+		HTTPS,
+		/// <summary>A SOCKS proxy.</summary>
+		[Field ("kCFProxyTypeSOCKS", "CFNetwork")]
+		SOCKS,
 	}
 }

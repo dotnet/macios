@@ -6,14 +6,8 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-
 #if !COREBUILD
 using CoreFoundation;
-using Foundation;
 #endif
 
 namespace CoreGraphics {

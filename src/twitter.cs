@@ -5,9 +5,6 @@
 //   Miguel de Icaza
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using UIKit;
 using Twitter;
 using Accounts;

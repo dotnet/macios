@@ -10,10 +10,7 @@
 
 #if __IOS__ && !__MACCATALYST__
 
-using System;
 using FileProvider;
-using Foundation;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.FileProvider {
 

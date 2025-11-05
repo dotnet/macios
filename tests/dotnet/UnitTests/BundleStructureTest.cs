@@ -290,9 +290,7 @@ namespace Xamarin.Tests {
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkTest4", isSigned);
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkTest5", isSigned);
 
-			expectedFiles.Add (Path.Combine (assemblyDirectory, "bindings-framework-test.dll"));
-			if (includeDebugFiles)
-				expectedFiles.Add (Path.Combine (assemblyDirectory, "bindings-framework-test.pdb"));
+			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "bindings-framework-test", runtimeIdentifiers, forceSingleRid: platform != ApplePlatform.MacCatalyst, includeDebugFiles: includeDebugFiles);
 			AddExpectedFrameworkFiles (platform, expectedFiles, "XTest", isSigned);
 
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworkWithLongFileNames", isSigned, longHeader: true);
@@ -313,9 +311,7 @@ namespace Xamarin.Tests {
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunit.framework.dll"));
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunitlite.dll"));
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "Mono.Options.dll"));
-			expectedFiles.Add (Path.Combine (assemblyDirectory, "Touch.Client.dll"));
-			if (includeDebugFiles)
-				expectedFiles.Add (Path.Combine (assemblyDirectory, "Touch.Client.pdb"));
+			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "Touch.Client", runtimeIdentifiers, platform == ApplePlatform.MacOSX || (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, Path.GetFileNameWithoutExtension (Configuration.GetBaseLibraryName (platform)), runtimeIdentifiers, platform == ApplePlatform.MacOSX, includeDebugFiles: includeDebugFiles);
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "runtimeconfig.bin"));
 

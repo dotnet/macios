@@ -52,7 +52,7 @@ namespace Xamarin.MacDev.Tasks {
 						info.SetMetadata ("OutputFile", outputFile.Replace ("\\", "/"));
 				}
 
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 			}
 
 			// Sort the list of inputs to compile:

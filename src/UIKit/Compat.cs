@@ -8,14 +8,29 @@
 // Copyright 2019 Microsoft Corporation
 //
 
-using System;
 using System.ComponentModel;
 
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 
 namespace UIKit {
+#if !XAMCORE_5_0
+	partial class UIButtonConfiguration {
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Do not use; this API does not exist and will always return null.")]
+		[SupportedOSPlatform ("ios26.0")]
+		[SupportedOSPlatform ("tvos26.0")]
+		[SupportedOSPlatform ("maccatalyst26.0")]
+		[UnsupportedOSPlatform ("ios26.1")]
+		[UnsupportedOSPlatform ("tvos26.1")]
+		[UnsupportedOSPlatform ("maccatalyst26.1")]
+		public static UIButtonConfiguration? TintedGlassButtonConfiguration {
+			get {
+				return null;
+			}
+		}
+	}
+#endif
+
 #if !XAMCORE_5_0 && IOS
 	public partial class UIDocViewController {
 		[Obsolete ("Do not use; this constructor doesn't work.")]

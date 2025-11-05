@@ -8,12 +8,8 @@
 
 #nullable enable
 
-using System;
-
 using AddressBook;
-using Foundation;
 using UIKit;
-using ObjCRuntime;
 
 namespace AddressBookUI {
 	/// <summary>Provides data for the <see cref="AddressBookUI.ABPeoplePickerNavigationController.SelectPerson" /> event.</summary>

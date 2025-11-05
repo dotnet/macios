@@ -1,12 +1,5 @@
-using System;
-using System.Runtime.InteropServices;
 
 using AudioToolbox;
-using Foundation;
-
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.AudioToolbox {
 

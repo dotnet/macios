@@ -714,7 +714,7 @@ xamarin_copyWithZone_trampoline2 (id self, SEL sel, NSZone *zone)
 		xamarin_set_gchandle_with_flags (self, INVALID_GCHANDLE, XamarinGCHandleFlags_None);
 
 	// Call the managed implementation
-	id (*invoke) (id, SEL, NSZone*) = (id (*)(id, SEL, NSZone*)) xamarin_trampoline;
+	id (*invoke) (id, SEL, NSZone*) = (id (*)(id, SEL, NSZone*)) (void *) xamarin_trampoline;
 	rv = invoke (self, sel, zone);
 
 	// Restore our GCHandle
@@ -905,7 +905,7 @@ xamarin_set_gchandle_trampoline (id self, SEL sel, GCHandle gc_handle, enum Xama
 	
 	pthread_mutex_lock (&gchandle_hash_lock);
 	if (gchandle_hash == NULL) {
-		CFDictionaryValueCallBacks value_callbacks = { 0 };
+		CFDictionaryValueCallBacks value_callbacks = { };
 		value_callbacks.release = release_gchandle_dictionary_entry;
 		gchandle_hash = CFDictionaryCreateMutable (kCFAllocatorDefault, 0, NULL, &value_callbacks);
 	}
@@ -1411,7 +1411,7 @@ xamarin_nsarray_to_managed_nsobject_array (NSArray *array, MonoType *array_type,
 		element_class = e_class;
 	}
 
-	struct conversion_data data = { 0 };
+	struct conversion_data data = { };
 	data.domain = mono_domain_get ();
 	data.element_class = element_class;
 	data.element_type = mono_class_get_type (data.element_class);
@@ -1437,7 +1437,7 @@ xamarin_nsarray_to_managed_inativeobject_array (NSArray *array, MonoType *array_
 		element_class = e_class;
 	}
 
-	struct conversion_data data = { 0 };
+	struct conversion_data data = { };
 	data.domain = mono_domain_get ();
 	data.element_class = element_class;
 	data.element_type = mono_class_get_type (data.element_class);
@@ -1463,7 +1463,7 @@ xamarin_nsarray_to_managed_inativeobject_array_static (NSArray *array, MonoType 
 		element_class = e_class;
 	}
 
-	struct conversion_data data = { 0 };
+	struct conversion_data data = { };
 	data.element_class = element_class;
 	data.element_type = mono_class_get_type (data.element_class);
 	data.iface_token_ref = iface_token_ref;
@@ -1674,7 +1674,7 @@ xamarin_get_managed_to_nsvalue_func (MonoClass *managedType, MonoMethod *method,
 	return (xamarin_managed_to_id_func) xamarin_get_nsvalue_converter (managedType, method, false, exception_gchandle);
 }
 
-void *
+id
 xamarin_smart_enum_to_nsstring (MonoObject *value, void *context /* token ref */, GCHandle *exception_gchandle)
 {
 	guint32 context_ref = GPOINTER_TO_UINT (context);

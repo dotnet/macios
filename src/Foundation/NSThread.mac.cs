@@ -8,8 +8,6 @@
 
 #if MONOMAC
 
-using System;
-
 namespace Foundation {
 	public partial class NSThread {
 		class ActionThread : NSThread {

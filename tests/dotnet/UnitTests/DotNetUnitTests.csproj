@@ -41,6 +41,9 @@
 		<Compile Include="..\..\..\tools\common\Execution.cs">
 			<Link>external\Execution.cs</Link>
 		</Compile>
+		<Compile Include="..\..\..\tools\common\OSPlatformAttributeExtensions.cs">
+			<Link>external\OSPlatformAttributeExtensions.cs</Link>
+		</Compile>
 		<Compile Include="..\..\mtouch\Cache.cs">
 			<Link>external\Cache.cs</Link>
 		</Compile>
@@ -70,6 +73,12 @@
 		</Compile>
 		<Compile Include="..\..\..\tools\common\error.cs">
 			<Link>external\error.cs</Link>
+		</Compile>
+		<Compile Include="..\..\cecil-tests\CecilExtensions.cs">
+			<Link>external\CecilExtensions.cs</Link>
+		</Compile>
+		<Compile Include="..\..\cecil-tests\Helper.cs">
+			<Link>external\Helper.cs</Link>
 		</Compile>
 	</ItemGroup>
 	<ItemGroup>

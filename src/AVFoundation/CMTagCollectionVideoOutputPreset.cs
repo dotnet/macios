@@ -1,9 +1,6 @@
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 
 using CoreMedia;
-using ObjCRuntime;
 
 namespace AVFoundation {
 	// Yes, CMTagCollectionCreateWithVideoOutputPreset is in AVFoundation, not CoreMedia.

@@ -1,9 +1,6 @@
-using System;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Foundation;
-using NUnit.Framework;
 using MonoTests.System.Net.Http;
 
 namespace LinkSdk {

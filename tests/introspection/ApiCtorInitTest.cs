@@ -19,18 +19,13 @@
 // limitations under the License.
 //
 
-using System;
 using System.Reflection;
 using System.Linq;
 using System.Text;
 
-using NUnit.Framework;
 #if HAS_ARKIT
 using ARKit;
 #endif
-
-using Foundation;
-using ObjCRuntime;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable
@@ -457,6 +452,12 @@ namespace Introspection {
 			var cstr = ctor.ToString ();
 
 			switch (type.Name) {
+			case "ASDiscoveredDisplayItem":
+				switch (cstr) {
+				case "Void .ctor(System.String, UIKit.UIImage, AccessorySetupKit.ASDiscoveryDescriptor)": // NS_UNAVAILABLE
+					return true;
+				}
+				break;
 			case "MKTileOverlayRenderer":
 				// NSInvalidArgumentEception Expected a MKTileOverlay
 				// looks like Apple has not yet added a DI for this type, but it should be `initWithTileOverlay:`

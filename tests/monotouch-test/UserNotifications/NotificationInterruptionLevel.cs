@@ -1,7 +1,4 @@
-using System;
-using NUnit.Framework;
 
-using Foundation;
 using UserNotifications;
 
 namespace MonoTouchFixtures.UserNotifications {

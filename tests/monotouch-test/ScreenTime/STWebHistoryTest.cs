@@ -9,12 +9,7 @@
 
 #if HAS_SCREENTIME
 
-using System;
-
-using Foundation;
 using ScreenTime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.ScreenTime {
 

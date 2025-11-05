@@ -4,13 +4,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace CoreFoundation {
 	/// <summary>Base type for some Core Foundation classes, such as <see cref="CoreFoundation.CFSocket" /> and <see cref="CoreFoundation.CFStream" />.</summary>

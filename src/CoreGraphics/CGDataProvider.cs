@@ -28,13 +28,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-
 using CoreFoundation;
-using ObjCRuntime;
-using Foundation;
 
 namespace CoreGraphics {
 	/// <summary>A class that wraps a data source and exposes it to the CGImage class.</summary>

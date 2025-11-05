@@ -9,12 +9,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 
 namespace CoreMedia {
 

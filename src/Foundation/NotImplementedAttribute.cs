@@ -7,8 +7,6 @@
 // Copyright 2017 Xamarin Inc.
 //
 
-using System;
-
 #nullable enable
 
 namespace Foundation {

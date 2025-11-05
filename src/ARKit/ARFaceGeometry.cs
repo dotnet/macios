@@ -7,9 +7,7 @@
 // Copyright 2017 Microsoft Inc. All rights reserved.
 //
 
-using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
 
 using Vector3 = global::CoreGraphics.NVector3;
 

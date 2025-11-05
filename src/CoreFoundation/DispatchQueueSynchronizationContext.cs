@@ -29,7 +29,6 @@
 
 #nullable enable
 
-using System;
 using System.Threading;
 
 namespace CoreFoundation {

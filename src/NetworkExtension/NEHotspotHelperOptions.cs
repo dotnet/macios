@@ -2,8 +2,6 @@
 
 #if !MONOMAC && !TVOS
 
-using Foundation;
-
 namespace NetworkExtension {
 
 	/// <summary>Represents options for registering a Hotspot Helper.</summary>

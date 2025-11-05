@@ -9,12 +9,8 @@
 
 #nullable enable
 
-using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
 using CoreGraphics;
-using ObjCRuntime;
-using Foundation;
 
 namespace Vision {
 	/// <summary>A set of utility functions for working with images.</summary>

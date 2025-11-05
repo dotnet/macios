@@ -64,7 +64,7 @@ var highestTpvPerMajorDotNet = groupedByMajorDotNetVersion.
 var lowestTpvPerMajorDotNet = groupedByMajorDotNetVersion.
 			Select (gr => {
 				var min = gr.OrderBy (el => {
-				var rv = tfmToTpvAndTfv (el);
+					var rv = tfmToTpvAndTfv (el);
 					return float.Parse (rv.Tpv, System.Globalization.CultureInfo.InvariantCulture);
 				}).First ();
 				return min;
@@ -80,7 +80,7 @@ using (var writer = new StreamWriter (outputPath)) {
 		var tpv = parsed.Tpv;
 		supportedTFVs.Add (tfv);
 		var workloadVersion = tfm;
-		if (int.Parse (tfv.Split ('.') [0]) >= 10 && lowestTpvPerMajorDotNet.TryGetValue (tfm, out var lowest) && lowest.Split ('_')[1] == tpv) {
+		if (int.Parse (tfv.Split ('.') [0]) >= 10 && lowestTpvPerMajorDotNet.TryGetValue (tfm, out var lowest) && lowest.Split ('_') [1] == tpv) {
 			writer.WriteLine ($"	<ImportGroup Condition=\" '$(TargetPlatformIdentifier)' == '{platform}' And '$(UsingAppleNETSdk)' != 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '{tfv}')) And ('$(TargetPlatformVersion)' == '{tpv}' Or ('$(TargetPlatformVersion)' == '' And '$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(UseFloatingTargetPlatformVersion)' != 'true'))\">");
 		} else {
 			writer.WriteLine ($"	<ImportGroup Condition=\" '$(TargetPlatformIdentifier)' == '{platform}' And '$(UsingAppleNETSdk)' != 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '{tfv}')) And '$(TargetPlatformVersion)' == '{tpv}'\">");

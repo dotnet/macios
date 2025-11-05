@@ -107,7 +107,7 @@ namespace Xamarin.Tests {
 			Assert.That (result.StandardOutput.ToString (), Does.Not.Contain ("Task \"ILLink\""), "Linker executed unexpectedly.");
 
 			var expectedReferenceVersionString = Configuration.GetVariable ($"{platform.AsString ().ToUpperInvariant ()}_TARGET_PLATFORM_VERSION_LIBRARY", "");
-			Assert.That (expectedReferenceVersionString, Is.Not.EqualTo (""), $"Expected to have a default TPV for libraries");
+			Assert.That (expectedReferenceVersionString, Is.Not.EqualTo (""), $"Expected to find a default TPV for libraries; this is a problem in the test setup.");
 
 			var dll = Path.Combine (Path.GetDirectoryName (project_path)!, "bin", configuration, $"{Configuration.DotNetTfm}-{platform.AsString ()}", project + ".dll");
 			Assert.That (dll, Does.Exist, "Exists");

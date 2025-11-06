@@ -81,7 +81,7 @@ using (var writer = new StreamWriter (outputPath)) {
 		supportedTFVs.Add (tfv);
 		var workloadVersion = tfm;
 		if (int.Parse (tfv.Split ('.') [0]) >= 10 && lowestTpvPerMajorDotNet.TryGetValue (tfm, out var lowest) && lowest.Split ('_') [1] == tpv) {
-			writer.WriteLine ($"	<ImportGroup Condition=\" '$(TargetPlatformIdentifier)' == '{platform}' And '$(UsingAppleNETSdk)' != 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '{tfv}')) And ('$(TargetPlatformVersion)' == '{tpv}' Or ('$(TargetPlatformVersion)' == '' And '$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(UseFloatingTargetPlatformVersion)' != 'true'))\">");
+			writer.WriteLine ($"	<ImportGroup Condition=\" '$(TargetPlatformIdentifier)' == '{platform}' And '$(UsingAppleNETSdk)' != 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '{tfv}')) And ('$(TargetPlatformVersion)' == '{tpv}' Or ('$(TargetPlatformVersion)' == '' And '$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(UseFloatingTargetPlatformVersion)' != 'true' And '$(BundleOriginalResources)' != 'false'))\">");
 		} else {
 			writer.WriteLine ($"	<ImportGroup Condition=\" '$(TargetPlatformIdentifier)' == '{platform}' And '$(UsingAppleNETSdk)' != 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '{tfv}')) And '$(TargetPlatformVersion)' == '{tpv}'\">");
 		}

@@ -6,10 +6,7 @@
 //
 // Copyright 2014 Xamarin Inc.
 //
-using System;
 using System.Diagnostics;
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
 #if !MONOMAC
 using UIKit;

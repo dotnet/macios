@@ -1,13 +1,8 @@
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 using CoreFoundation;
 using CoreGraphics;
 using CoreText;
-using Foundation;
 
 namespace MediaAccessibility {
 	[SupportedOSPlatform ("tvos13.0")]

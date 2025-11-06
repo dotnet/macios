@@ -1,12 +1,9 @@
 #if __MACOS__
-using System;
 using System.Threading;
-using NUnit.Framework;
 
 using AppKit;
 using AudioUnit;
 using AudioToolbox;
-using Foundation;
 
 namespace Xamarin.Mac.Tests {
 	[TestFixture]

@@ -26,10 +26,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System;
-using Foundation;
 using CoreGraphics;
-using ObjCRuntime;
 
 using MidiObjectRef = System.Int32;
 using MidiEndpointRef = System.Int32;

@@ -29,11 +29,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
-
 using CFIndex = System.IntPtr;
 using CFArrayRef = System.IntPtr;
 using CFAllocatorRef = System.IntPtr;

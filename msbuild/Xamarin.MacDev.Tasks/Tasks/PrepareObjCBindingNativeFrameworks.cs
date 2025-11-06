@@ -13,16 +13,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
-			try {
-				//This task runs locally, and its purpose is just to copy the ObjCBindingNativeFrameworks to the build server
-				new TaskRunner (SessionId, BuildEngine4).CopyInputsAsync (this).Wait ();
-			} catch (Exception ex) {
-				Log.LogErrorFromException (ex);
-
-				return false;
-			}
-
-			return true;
+			//This task runs locally, and its purpose is just to copy the ObjCBindingNativeFrameworks to the build server
+			return CopyInputsToRemoteServerAsync (this);
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => true;

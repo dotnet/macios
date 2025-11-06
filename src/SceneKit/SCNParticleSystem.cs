@@ -7,12 +7,8 @@
 // Copyright Xamarin Inc.
 //
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
-
-using Foundation;
-using System.Runtime.Versioning;
 
 #nullable enable
 

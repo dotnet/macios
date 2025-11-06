@@ -7,10 +7,7 @@
 
 #if !TVOS
 
-
-using Foundation;
 using CoreLocation;
-using ObjCRuntime;
 
 #nullable enable
 

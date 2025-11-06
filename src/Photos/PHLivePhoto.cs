@@ -2,9 +2,6 @@
 
 #nullable enable
 
-using System;
-using Foundation;
-
 namespace Photos {
 
 	public partial class PHLivePhoto {

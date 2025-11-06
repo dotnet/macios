@@ -1,10 +1,5 @@
 #nullable enable
 
-using System;
-
-using Foundation;
-using ObjCRuntime;
-
 namespace MetricKit {
 
 	public partial class MXMetricPayload {

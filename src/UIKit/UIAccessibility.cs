@@ -7,13 +7,9 @@
 // Copyrigh 2012-2014, Xamarin Inc.
 //
 
-using Foundation;
-using ObjCRuntime;
 using UIKit;
 using CoreGraphics;
 
-using System;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 // Disable until we get around to enable + fix any issues.
@@ -375,12 +371,18 @@ namespace UIKit {
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("tvos26.1", "Use 'AXSettings.ShowBordersEnabled' instead.")]
+		[ObsoletedOSPlatform ("ios26.1", "Use 'AXSettings.ShowBordersEnabled' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst26.1", "Use 'AXSettings.ShowBordersEnabled' instead.")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityButtonShapesEnabled ();
 
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst")]
+		[ObsoletedOSPlatform ("tvos26.1", "Use 'AXSettings.ShowBordersEnabled' instead.")]
+		[ObsoletedOSPlatform ("ios26.1", "Use 'AXSettings.ShowBordersEnabled' instead.")]
+		[ObsoletedOSPlatform ("maccatalyst26.1", "Use 'AXSettings.ShowBordersEnabled' instead.")]
 		public static bool ButtonShapesEnabled => UIAccessibilityButtonShapesEnabled () != 0;
 
 		[SupportedOSPlatform ("ios")]

@@ -1,7 +1,4 @@
 #if !__MACCATALYST__
-using System;
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

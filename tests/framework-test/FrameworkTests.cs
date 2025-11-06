@@ -7,14 +7,7 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Runtime.InteropServices;
-
 using MonoTouch;
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 using Bindings.Test;
 

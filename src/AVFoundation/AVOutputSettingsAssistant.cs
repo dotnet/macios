@@ -1,12 +1,9 @@
 //
 #if IOS
-using System;
 using System.Drawing;
 using System.Threading.Tasks;
 using CoreMedia;
 using CoreMotion;
-using Foundation;
-using ObjCRuntime;
 using CoreAnimation;
 using CoreLocation;
 

@@ -7,13 +7,8 @@
 // Copyright 2012 Xamarin Inc, All rights reserved.
 //
 
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
-using ObjCRuntime;
 using MediaToolbox;
 using AudioToolbox;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.MediaToolbox {

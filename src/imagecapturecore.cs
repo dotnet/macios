@@ -24,10 +24,7 @@
 //
 // imagecapturecore.cs: Bindings for the ImageCaptureCore API
 //
-using System;
 using AppKit;
-using Foundation;
-using ObjCRuntime;
 using CoreImage;
 using CoreGraphics;
 using CoreAnimation;

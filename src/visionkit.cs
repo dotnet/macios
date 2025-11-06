@@ -7,9 +7,6 @@
 // Copyright 2019 Microsoft Corporation. All rights reserved.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using UIKit;
 
 namespace VisionKit {

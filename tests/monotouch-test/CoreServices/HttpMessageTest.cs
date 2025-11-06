@@ -7,12 +7,8 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Net;
 using CFNetwork;
-using Foundation;
-using CoreFoundation;
-using NUnit.Framework;
 using MonoTests.System.Net.Http;
 using System.Threading;
 using static CoreFoundation.CFStream;

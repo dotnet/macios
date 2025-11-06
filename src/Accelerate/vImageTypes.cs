@@ -26,12 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-
-using ObjCRuntime;
 
 using Pixel8 = System.Byte;
 using PixelF = System.Single;

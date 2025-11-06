@@ -1,14 +1,10 @@
 #if __IOS__ && !__MACCATALYST__
 
-using System;
 using System.Threading;
 
-using Foundation;
 using UIKit;
 
 using PassKit;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.PassKit {
 

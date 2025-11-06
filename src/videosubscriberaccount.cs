@@ -8,10 +8,7 @@
 // Copyright 2018-2019 Microsoft Corporation.
 //
 
-using System;
 using System.ComponentModel;
-using Foundation;
-using ObjCRuntime;
 #if MONOMAC
 using UIViewController = AppKit.NSViewController;
 #else

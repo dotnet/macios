@@ -24,10 +24,7 @@
 
 #if MONOMAC
 
-using System;
 using System.Reflection;
-
-using ObjCRuntime;
 
 namespace Foundation {
 	/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSObject']/*" />

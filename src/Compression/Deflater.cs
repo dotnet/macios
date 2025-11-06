@@ -4,13 +4,9 @@
 
 #nullable enable
 
-using System;
 using System.Buffers;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.Security;
-
-using ObjCRuntime;
 
 namespace Compression {
 

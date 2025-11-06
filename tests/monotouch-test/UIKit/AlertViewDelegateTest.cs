@@ -2,10 +2,7 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
-using Foundation;
 using UIKit;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.UIKit {
 

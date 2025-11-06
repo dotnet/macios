@@ -43,7 +43,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			var manifestPath = Path.Combine (AppBundleDir!.ItemSpec, "AssetPackManifestTemplate.plist");
 			var onDemandResourcesPath = Path.Combine (AppBundleDir!.ItemSpec, "OnDemandResources.plist");

@@ -1,8 +1,5 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.IO;
-
-using NUnit.Framework;
 
 using Xamarin.Tests;
 
@@ -25,12 +22,24 @@ namespace GeneratorTests {
 
 		internal BGenTool BuildFile (Profile profile, bool nowarnings, bool processEnums, IEnumerable<string> references, params string [] filenames)
 		{
+			return BuildFile (profile, nowarnings, (bgen) => {
+				bgen.ProcessEnums = processEnums;
+				bgen.References = references.ToList ();
+			}, filenames);
+		}
+
+		internal BGenTool BuildFile (Profile profile, Action<BGenTool> configure, params string [] filenames)
+		{
+			return BuildFile (profile, true, configure, filenames);
+		}
+
+		internal BGenTool BuildFile (Profile profile, bool nowarnings, Action<BGenTool> configure, params string [] filenames)
+		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.ProcessEnums = processEnums;
-			bgen.Defines = BGenTool.GetDefaultDefines (bgen.Profile);
-			bgen.References = references.ToList ();
+			bgen.Defines = BGenTool.GetDefaultDefines (profile);
+			configure (bgen);
 			TestContext.Out.WriteLine (TestContext.CurrentContext.Test.FullName);
 			foreach (var filename in filenames)
 				TestContext.Out.WriteLine ($"\t{filename}");

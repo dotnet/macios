@@ -7,7 +7,6 @@
 // Copyright 2012-2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
@@ -22,8 +21,6 @@ using System.Security.Cryptography.X509Certificates;
 
 using MonoTouch;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 using StoreKit;
 #if __MACOS__ || __IOS__
 using PdfKit;
@@ -31,7 +28,6 @@ using PdfKit;
 #if !__MACOS__
 using UIKit;
 #endif
-using NUnit.Framework;
 using MonoTests.System.Net.Http;
 
 namespace LinkAll {

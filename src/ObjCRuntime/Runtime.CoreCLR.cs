@@ -6,7 +6,6 @@
 //
 // Copyright 2021 Microsoft Corp.
 
-
 // Uncomment the TRACK_MONOOBJECTS define to show a summary at process exit of
 // the MonoObjects that were created, and if any were not freed. If there are
 // leaked MonoObjects, a list of them will be printed.
@@ -21,19 +20,15 @@
 
 #nullable enable
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ObjectiveC;
 using System.Runtime.Loader;
 using System.Text;
-
-using Foundation;
 
 using Xamarin.Bundler;
 

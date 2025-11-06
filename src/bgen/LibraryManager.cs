@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using ObjCRuntime;
 using Xamarin.Utils;
 
 #nullable enable

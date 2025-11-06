@@ -1,11 +1,8 @@
-using System;
 using System.ComponentModel;
 using System.Numerics;
 
 using CoreGraphics;
-using Foundation;
 using Metal;
-using ObjCRuntime;
 
 namespace MetalPerformanceShaders {
 	// MPSImageConvolution.h

@@ -2,10 +2,6 @@
 
 #nullable enable
 
-using System;
-using ObjCRuntime;
-using Foundation;
-
 namespace WebKit {
 	public partial class DomHtmlSelectElement {
 		public DomNode this [string name] { get { return this.NamedItem (name); } }

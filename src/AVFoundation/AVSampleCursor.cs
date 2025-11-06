@@ -1,9 +1,7 @@
 #if !XAMCORE_5_0 && __MACOS__
 
-using System;
 using System.ComponentModel;
 
-using Foundation;
 using AudioToolbox;
 
 #nullable enable

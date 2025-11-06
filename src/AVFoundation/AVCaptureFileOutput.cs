@@ -9,10 +9,6 @@
 
 #if !TVOS
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 #nullable enable
 
 namespace AVFoundation {

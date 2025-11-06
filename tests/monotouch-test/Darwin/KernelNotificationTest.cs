@@ -1,11 +1,7 @@
 #if __MACOS__
-using System;
 using System.Diagnostics;
 
-using Foundation;
 using Darwin;
-
-using NUnit.Framework;
 
 namespace apitest {
 	[TestFixture]

@@ -1,10 +1,6 @@
 using System.Threading;
-using Foundation;
 using Network;
-using CoreFoundation;
-using ObjCRuntime;
 using MonoTests.System.Net.Http;
-using NUnit.Framework;
 
 #nullable enable
 

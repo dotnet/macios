@@ -9,11 +9,7 @@
 
 #if !__TVOS__
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using EventKit;
-using NUnit.Framework;
 using System.Threading;
 using System.Linq;
 

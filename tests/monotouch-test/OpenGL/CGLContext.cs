@@ -1,7 +1,4 @@
 #if __MACOS__
-using System;
-using NUnit.Framework;
-using Foundation;
 using OpenGL;
 
 namespace Xamarin.Mac.Tests {

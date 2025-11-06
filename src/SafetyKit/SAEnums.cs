@@ -10,10 +10,6 @@
 
 #nullable enable
 
-using System;
-using ObjCRuntime;
-using Foundation;
-
 namespace SafetyKit {
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]

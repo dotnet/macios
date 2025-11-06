@@ -8,11 +8,7 @@
 
 #nullable enable
 
-using System;
-
 using AddressBook;
-using Foundation;
-using ObjCRuntime;
 
 namespace AddressBookUI {
 	/// <summary>Provides data for the <see cref="AddressBookUI.ABUnknownPersonViewController.PersonCreated" /> event.</summary>

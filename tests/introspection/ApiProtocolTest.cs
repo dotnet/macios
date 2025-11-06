@@ -7,14 +7,7 @@
 // Copyright 2013, 2015 Xamarin Inc.
 //
 
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using NUnit.Framework;
-
-using Foundation;
-using ObjCRuntime;
 
 namespace Introspection {
 
@@ -330,6 +323,10 @@ namespace Introspection {
 				case "ASPropertyCompareString":
 				case "PKAddIdentityDocumentMetadata":
 					return true;
+				// Xcode 26.1 Conformance not in headers
+				case "ASDiscoveredAccessory":
+				case "ASDiscoveredDisplayItem":
+					return true;
 				}
 				break;
 			case "NSMutableCopying":
@@ -560,6 +557,10 @@ namespace Introspection {
 				case "ASPickerDisplaySettings":
 				case "ASPropertyCompareString":
 				case "PKAddIdentityDocumentMetadata":
+					return true;
+				// Xcode 26.1 Conformance not in headers
+				case "ASDiscoveredAccessory":
+				case "ASDiscoveredDisplayItem":
 					return true;
 				}
 				break;
@@ -795,6 +796,10 @@ namespace Introspection {
 				case "ASPropertyCompareString":
 				case "PKAddIdentityDocumentMetadata":
 					return true;
+				// Xcode 26.1 Conformance not in headers
+				case "ASDiscoveredAccessory":
+				case "ASDiscoveredDisplayItem":
+					return true;
 				}
 				break;
 			// conformance added in Xcode 8 (iOS 10 / macOS 10.12)
@@ -1003,29 +1008,18 @@ namespace Introspection {
 				if (result) {
 					// check that +supportsSecureCoding returns YES
 					if (!supports) {
-#if __IOS__
+#if __IOS__ && !__MACCATALYST__
 						// broken in xcode 12 beta 1 simulator (only)
-						if (TestRuntime.IsSimulatorOrDesktop && TestRuntime.CheckXcodeVersion (12, 0)) {
+						if (TestRuntime.IsSimulator) {
 							switch (type.Name) {
 							case "ARFaceGeometry":
-							case "ARPlaneGeometry":
 							case "ARPointCloud":
-							case "ARAnchor":
-							case "ARBodyAnchor":
-							case "AREnvironmentProbeAnchor":
-							case "ARFaceAnchor":
-							case "ARGeoAnchor":
+							case "ARReferenceObject":
+							case "ARWorldMap":
+							case "ARPlaneGeometry":
 							case "ARGeometryElement":
 							case "ARGeometrySource":
-							case "ARImageAnchor":
-							case "ARMeshAnchor":
 							case "ARMeshGeometry":
-							case "ARObjectAnchor":
-							case "ARParticipantAnchor":
-							case "ARPlaneAnchor":
-							case "ARReferenceObject":
-							case "ARSkeletonDefinition": // iOS15 / device only
-							case "ARWorldMap":
 								return;
 							}
 						}

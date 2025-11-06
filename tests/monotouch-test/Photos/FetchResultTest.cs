@@ -9,14 +9,10 @@
 
 #if HAS_PHOTOS && !__TVOS__ && HAS_UIKIT
 
-using System;
 using System.Linq;
-using Foundation;
 using UIKit;
-using ObjCRuntime;
 using Photos;
 using CoreGraphics;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.Photos {

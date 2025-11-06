@@ -10,12 +10,7 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
 using AudioToolbox;
-using ObjCRuntime;
-using System.Runtime.Versioning;
 
 namespace AudioUnit {
 

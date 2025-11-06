@@ -10,9 +10,6 @@
 
 #nullable enable
 
-using Foundation;
-using ObjCRuntime;
-using System;
 using System.Threading.Tasks;
 
 namespace AuthenticationServices {

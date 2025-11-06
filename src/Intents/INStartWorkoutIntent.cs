@@ -1,9 +1,7 @@
 #if IOS
 #if !__MACOS__
 
-using Foundation;
 using Intents;
-using ObjCRuntime;
 
 #nullable enable
 

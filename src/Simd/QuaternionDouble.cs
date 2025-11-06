@@ -15,9 +15,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
 // This type does not come from the CoreGraphics framework; it's defined in /usr/include/simd/quaternion.h
 namespace CoreGraphics {
 	[StructLayout (LayoutKind.Sequential)]

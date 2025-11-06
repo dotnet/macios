@@ -2,14 +2,11 @@
 #define MONOMAC
 #endif
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
@@ -17,8 +14,6 @@ using System.Runtime.Versioning;
 
 using AVFoundation;
 using CoreBluetooth;
-using CoreFoundation;
-using Foundation;
 #if !__TVOS__
 using Contacts;
 #endif
@@ -34,11 +29,8 @@ using AddressBook;
 using MediaPlayer;
 using UIKit;
 #endif
-using ObjCRuntime;
 
 using Xamarin.Utils;
-
-using NUnit.Framework;
 
 #nullable enable
 

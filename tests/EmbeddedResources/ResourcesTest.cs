@@ -7,16 +7,11 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.IO;
 using System.Resources;
 using System.Globalization;
 using System.Reflection;
 using System.Reflection.Emit;
-using NUnit.Framework;
-
-using Foundation;
-using ObjCRuntime;
 
 namespace EmbeddedResources {
 

@@ -1,11 +1,7 @@
 #nullable enable
 
-using System;
 using System.Numerics;
-using System.Runtime.InteropServices;
 
-using Foundation;
-using ObjCRuntime;
 using Metal;
 
 namespace MetalPerformanceShaders {

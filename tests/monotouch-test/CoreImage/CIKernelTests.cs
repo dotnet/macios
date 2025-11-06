@@ -1,10 +1,7 @@
-using System;
 using System.Threading;
 
-using Foundation;
 using CoreImage;
 using CoreGraphics;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 using PlatformImage = AppKit.NSImage;
@@ -12,7 +9,6 @@ using PlatformImage = AppKit.NSImage;
 using UIKit;
 using PlatformImage = UIKit.UIImage;
 #endif
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.CoreImage {

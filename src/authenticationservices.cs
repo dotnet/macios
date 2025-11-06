@@ -4,9 +4,6 @@
 // Copyright 2018-2019 Microsoft Corporation
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using Security;
 #if MONOMAC
 using AppKit;
@@ -2383,6 +2380,11 @@ namespace AuthenticationServices {
 	[BaseType (typeof (NSObject))]
 	[DesignatedDefaultCtor]
 	interface ASAuthorizationWebBrowserPublicKeyCredentialManager {
+
+		[Mac (26, 1), iOS (26, 1), MacCatalyst (26, 1)]
+		[Static]
+		[Export ("isDeviceConfiguredForPasskeys")]
+		bool IsDeviceConfiguredForPasskeys { get; }
 
 		[Async]
 		[Export ("requestAuthorizationForPublicKeyCredentials:")]

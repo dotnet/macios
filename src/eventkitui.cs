@@ -7,13 +7,10 @@
 // Copyright 2010, Novell, Inc.
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
-using ObjCRuntime;
-using Foundation;
 using CoreGraphics;
 using CoreLocation;
 using UIKit;
 using EventKit;
-using System;
 
 namespace EventKitUI {
 	/// <summary>UIViewController used to display the details of a calendar event.</summary>

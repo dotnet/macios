@@ -7,11 +7,7 @@
 // Copyright 2014 Xamarin Inc.
 //
 
-using System;
-
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 
 namespace CoreText {
 

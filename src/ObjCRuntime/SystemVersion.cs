@@ -1,10 +1,5 @@
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using Foundation;
-
 #if !COREBUILD
 namespace ObjCRuntime {
 	internal static class SystemVersion {

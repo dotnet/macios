@@ -1,10 +1,5 @@
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
 using CoreFoundation;
 
 using OS_nw_resolver_config = System.IntPtr;

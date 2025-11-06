@@ -1,8 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-
-using Foundation;
-using ObjCRuntime;
 
 using MatrixFloat2x2 = global::CoreGraphics.NMatrix2;
 using MatrixFloat3x3 = global::CoreGraphics.NMatrix3;

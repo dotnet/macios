@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -62,7 +61,10 @@ public class AttributeManager {
 			return typeof (DelegateApiNameAttribute);
 		case "DelegateNameAttribute":
 			return typeof (DelegateNameAttribute);
+		case "ObjCRuntime.DesignatedInitializerAttribute":
+#if !XAMCORE_5_0
 		case "DesignatedInitializerAttribute":
+#endif
 			return typeof (DesignatedInitializerAttribute);
 		case "DisableDefaultCtorAttribute":
 			return typeof (DisableDefaultCtorAttribute);
@@ -262,7 +264,6 @@ public class AttributeManager {
 			throw ErrorHelper.CreateError (1055, type.AssemblyQualifiedName);
 		return rv;
 	}
-
 
 	static IEnumerable<System.Attribute> ConvertOldAttributes (CustomAttributeData attribute)
 	{

@@ -25,14 +25,11 @@
 //     - SCNParticleSystem (not important)
 //
 
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 
 using AVFoundation;
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 using NMatrix4 = global::CoreGraphics.NMatrix4;
 using NVector3 = global::CoreGraphics.NVector3;

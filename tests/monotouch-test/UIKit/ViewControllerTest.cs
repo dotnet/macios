@@ -9,12 +9,8 @@
 
 #if !MONOMAC
 
-using System;
 using System.Reflection;
-using Foundation;
 using UIKit;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.UIKit {

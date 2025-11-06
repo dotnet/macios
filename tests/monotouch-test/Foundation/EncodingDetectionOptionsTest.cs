@@ -7,9 +7,6 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.Foundation {

@@ -14,10 +14,14 @@
 
 #include <pthread.h>
 
-// Silence this warning:
+// Silence these warnings:
 // nsstring-localization.m:22:46: warning: format string is not a string literal (potentially insecure) [-Wformat-security]
 //        return [NSString localizedStringWithFormat: format];
 #pragma clang diagnostic ignored "-Wformat-security"
+// nsstring-localization.m:33:46: error: format string is not a string literal [-Werror,-Wformat-nonliteral]
+//    33 |         return [NSString localizedStringWithFormat: format, a];
+//       |                                                     ^~~~~~
+#pragma clang diagnostic ignored "-Wformat-nonliteral"
 
 extern "C" {
 

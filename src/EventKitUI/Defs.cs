@@ -9,8 +9,6 @@
 
 #nullable enable
 
-using ObjCRuntime;
-
 namespace EventKitUI {
 
 	// untyped enum -> EKCalendarChooser.h

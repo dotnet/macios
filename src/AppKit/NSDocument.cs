@@ -1,9 +1,5 @@
 #if !__MACCATALYST__
-using System;
 using System.Collections.Generic;
-
-using Foundation;
-using ObjCRuntime;
 
 #nullable enable
 

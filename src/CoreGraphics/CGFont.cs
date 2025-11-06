@@ -28,12 +28,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 
 using CoreText;

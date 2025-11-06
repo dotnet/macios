@@ -1,6 +1,4 @@
 #if IOS
-using System;
-using ObjCRuntime;
 
 #nullable enable
 

@@ -8,14 +8,9 @@
 // Copyright 2019 Microsoft Corporation.
 //
 
-using System;
-
-using Foundation;
 using Metal;
 using MetalPerformanceShaders;
-using ObjCRuntime;
 
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.MetalPerformanceShaders {

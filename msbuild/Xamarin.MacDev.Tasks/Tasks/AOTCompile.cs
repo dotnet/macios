@@ -232,7 +232,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (ShouldExecuteRemotely ())
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return ExecuteRemotely ();
 
 			var inputs = new List<string> (Assemblies.Length);
 			for (var i = 0; i < Assemblies.Length; i++) {

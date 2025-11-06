@@ -7,15 +7,11 @@
 // Copyright 2009, Novell, Inc.
 // Copyrigh 2014 Xamarin Inc.
 //
-using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Collections;
 
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
 
 #nullable enable

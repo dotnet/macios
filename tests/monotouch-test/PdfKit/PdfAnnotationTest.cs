@@ -9,14 +9,8 @@
 
 #if __IOS__ || MONOMAC
 
-using System;
-
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 using PdfKit;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.PdfKit {
 

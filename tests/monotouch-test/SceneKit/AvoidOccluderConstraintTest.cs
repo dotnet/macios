@@ -1,8 +1,4 @@
-using System;
-using Foundation;
 using SceneKit;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.SceneKit {
 

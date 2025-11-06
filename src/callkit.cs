@@ -7,11 +7,8 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using AVFoundation;
 using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 
 namespace CallKit {
 

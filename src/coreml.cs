@@ -7,12 +7,9 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using ObjCRuntime;
 using CoreFoundation;
 using CoreGraphics;
 using CoreVideo;
-using Foundation;
 using ImageIO;
 
 using Metal;

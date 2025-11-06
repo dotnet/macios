@@ -10,17 +10,11 @@
 
 #if ENABLE_MNIST_TESTER
 
-using System;
-using System.Collections.Generic;
 using System.Threading;
 
-using Foundation;
 using Metal;
 using MetalPerformanceShaders;
 using MetalPerformanceShadersGraph;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.MetalPerformanceShadersGraph {
 	[Preserve (AllMembers = true)]

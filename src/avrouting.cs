@@ -7,9 +7,6 @@
 // Copyright 2022 Microsoft Corp. All rights reserved.
 //
 
-using System;
-using ObjCRuntime;
-using Foundation;
 using UniformTypeIdentifiers;
 using AVKit;
 

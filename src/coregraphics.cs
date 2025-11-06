@@ -4,10 +4,6 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
-
 namespace CoreGraphics {
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]

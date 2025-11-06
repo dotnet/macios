@@ -1176,5 +1176,23 @@ namespace bgen {
                 return ResourceManager.GetString("BI1122", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The type {0} has a [Protocol] and a [BaseType] attribute, but no [Model] attribute. This is likely incorrect; either remove the [BaseType] attribute, or add a [Model] attribute..
+        /// </summary>
+        internal static string BI1123 {
+            get {
+                return ResourceManager.GetString("BI1123", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Found a [Preserve] attribute on {0}: [Preserve] is deprecated; use [DynamicDependency] instead..
+        /// </summary>
+        internal static string BI1124 {
+            get {
+                return ResourceManager.GetString("BI1124", resourceCulture);
+            }
+        }
     }
 }

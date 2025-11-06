@@ -357,7 +357,7 @@ static UltimateMachine *shared;
 @implementation FakeType2
 {
 }
-- (BOOL) isKindOfClass: (Class) cls;
+- (BOOL) isKindOfClass: (Class) cls
 {
 	if (cls == objc_getClass ("FakeType1"))
 		return YES;
@@ -873,7 +873,7 @@ static void block_called ()
 #pragma clang diagnostic pop
 }
 
-+(void) callProtocolWithBlockProperties: (id<ProtocolWithBlockProperties>) obj required: (bool) required instance: (bool) instance;
++(void) callProtocolWithBlockProperties: (id<ProtocolWithBlockProperties>) obj required: (bool) required instance: (bool) instance
 {
 	if (required) {
 		if (instance) {
@@ -890,7 +890,7 @@ static void block_called ()
 	}
 }
 
-+(void) callProtocolWithBlockReturnValue: (id<ObjCProtocolBlockTest>) obj required: (bool) required instance: (bool) instance;
++(void) callProtocolWithBlockReturnValue: (id<ObjCProtocolBlockTest>) obj required: (bool) required instance: (bool) instance
 {
 	if (required) {
 		if (instance) {
@@ -1438,7 +1438,7 @@ static void block_called ()
 	self.count = 1;
 }
 
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len;
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len
 {
 	if (len > 0)
 		buffer [0] = self.element;
@@ -1493,7 +1493,7 @@ static void block_called ()
 @end
 
 @implementation WeakReferencedObject : NSObject
--(int) doSomething;
+-(int) doSomething
 {
 	return 666;
 }
@@ -1513,7 +1513,7 @@ static void block_called ()
 
 -(void) callDoSomething: (int*) nilObjectCount nonNilObjectCount: (int *) nonNilObjectCount gotExpectedResponse: (int *) gotExpectedResponse gotUnexpectedResponse: (int *) gotUnexpectedResponse gotFinalizedResponse: (int *) gotFinalizedResponse
 {
-	for (int i = 0; i < self.array.count; i++) {
+	for (unsigned int i = 0; i < self.array.count; i++) {
 		WeakReferencedObject *obj = (WeakReferencedObject *) [self.array pointerAtIndex: (NSUInteger) i];
 		if (obj) {
 			*nonNilObjectCount= *nonNilObjectCount + 1;

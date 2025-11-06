@@ -7,8 +7,6 @@
 //  Miguel de Icaza
 //
 
-using Foundation;
-
 namespace UIKit {
 	public partial class UIPageViewController {
 		/// <param name="style">To be added.</param>

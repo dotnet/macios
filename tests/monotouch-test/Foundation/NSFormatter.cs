@@ -1,8 +1,5 @@
 #if __MACOS__
-using System;
-using NUnit.Framework;
 
-using Foundation;
 using AppKit;
 
 namespace apitest {

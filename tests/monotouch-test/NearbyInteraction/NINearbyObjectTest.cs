@@ -2,11 +2,7 @@
 
 #if __IOS__
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using NearbyInteraction;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 using System.Numerics;

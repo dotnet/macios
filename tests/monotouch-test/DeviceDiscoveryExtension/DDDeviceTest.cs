@@ -12,13 +12,9 @@
 
 #if __IOS__ && !__MACCATALYST__
 
-using System;
 using DeviceDiscoveryExtension;
-using Foundation;
 using Network;
-using ObjCRuntime;
 using UniformTypeIdentifiers;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.DeviceDiscoveryExtension {
 

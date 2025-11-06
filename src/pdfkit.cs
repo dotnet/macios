@@ -27,7 +27,6 @@
 // PdfKit.cs: Bindings for the PdfKit API
 //
 
-using System;
 #if MONOMAC
 using AppKit;
 using UIViewController = Foundation.NSObject;
@@ -49,8 +48,6 @@ using NSTextAlignment = UIKit.UITextAlignment;
 using NSPrintInfo = Foundation.NSObject;
 using NSPrintOperation = Foundation.NSObject;
 #endif
-using Foundation;
-using ObjCRuntime;
 using CoreGraphics;
 using System.ComponentModel;
 

@@ -8,11 +8,7 @@
 // Copyright 2019 Microsoft Corporation
 //
 
-using System;
-using Foundation;
-using ObjCRuntime;
 using Security;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.Security {
 

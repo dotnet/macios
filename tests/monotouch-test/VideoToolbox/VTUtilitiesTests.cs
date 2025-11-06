@@ -8,11 +8,8 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
 
-using Foundation;
 using VideoToolbox;
 using CoreMedia;
 #if MONOMAC
@@ -21,11 +18,8 @@ using AppKit;
 using UIKit;
 #endif
 using AVFoundation;
-using CoreFoundation;
 using CoreVideo;
 using CoreGraphics;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.VideoToolbox {

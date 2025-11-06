@@ -9,12 +9,8 @@
 
 #if !MONOMAC && !__TVOS__
 
-using System;
 using AudioToolbox;
-using Foundation;
-using ObjCRuntime;
 using CoreMidi;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.AudioToolbox {
 

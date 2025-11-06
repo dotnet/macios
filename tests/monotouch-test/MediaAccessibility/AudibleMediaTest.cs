@@ -7,11 +7,7 @@
 // Copyright 2015 Xamarin Inc.
 //
 
-using System;
-using Foundation;
 using MediaAccessibility;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.MediaAccessibility {

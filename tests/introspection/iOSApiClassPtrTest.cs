@@ -6,11 +6,7 @@
 //
 // Copyright 2012-2014 Xamarin Inc.
 //
-using System;
 using System.Reflection;
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace Introspection {
 	[TestFixture]

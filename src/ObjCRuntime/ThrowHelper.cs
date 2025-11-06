@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 // the linker will remove the attributes
 using System.Diagnostics.CodeAnalysis;

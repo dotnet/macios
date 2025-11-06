@@ -7,9 +7,6 @@
 // Copyright 2012-2014 Xamarin Inc
 //
 
-using Foundation;
-using ObjCRuntime;
-
 namespace Social {
 
 	// NSInteger -> SLRequest.h

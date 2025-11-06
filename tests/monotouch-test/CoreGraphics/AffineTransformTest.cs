@@ -8,14 +8,7 @@
 // Copyright 2019 Microsoft Corporation
 //
 
-using System;
-using System.Runtime.InteropServices;
-using Foundation;
 using CoreGraphics;
-using CoreFoundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreGraphics {
 

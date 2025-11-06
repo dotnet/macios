@@ -6,13 +6,10 @@
 
 #if !XAMCORE_5_0
 
-using System;
 using System.ComponentModel;
 using System.Numerics;
 using System.Threading.Tasks;
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 
 #if __MACCATALYST__ || !IOS
 using ARSession = Foundation.NSObject;

@@ -9,11 +9,8 @@
 // Copyright 2019 Microsoft Corporation All rights reserved.
 //
 
-using System;
 using AVFoundation;
 using CoreMedia;
-using Foundation;
-using ObjCRuntime;
 
 using System.ComponentModel;
 

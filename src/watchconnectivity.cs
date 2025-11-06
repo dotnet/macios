@@ -7,10 +7,7 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.ComponentModel;
-using ObjCRuntime;
-using Foundation;
 
 namespace WatchConnectivity {
 

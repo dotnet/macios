@@ -2605,29 +2605,11 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";E7141" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The library {0} is a static library, and static libraries are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Библиотека {0} является статической библиотекой, а статические библиотеки не поддерживаются при горячем перезапуске. Чтобы игнорировать эту ошибку, установите "SkipStaticLibraryValidation=true" в файле проекта.]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";E7142" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Unknown value for 'SkipStaticLibraryValidation': {0}. Valid values are: 'true', 'false', 'warn'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Неизвестное значение для "SkipStaticLibraryValidation": {0}. Допустимые значения: "true", "false", "warn".]]></Val>
-          </Tgt>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";E7143" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[The file {0} is an object file, and object files are not supported with Hot Restart. Set 'SkipStaticLibraryValidation=true' in the project file to ignore this error.]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Файл {0} является объектным файлом, а объектные файлы не поддерживаются при горячем перезапуске. Чтобы игнорировать эту ошибку, установите "SkipStaticLibraryValidation=true" в файле проекта.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2736,6 +2718,24 @@
           <Val><![CDATA[The {0} item '{1}' has been included more than once, with different 'LogicalName' metadata: {2}, {3}.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Элемент {0} "{1}" был включен несколько раз с разными метаданными "LogicalName": {2}, {3}.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7162" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to execute this task remotely for unknown reasons. The build log may have more information.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Не удалось выполнить эту задачу удаленно по неизвестным причинам. Дополнительные сведения могут может содержаться в журнале сборки.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7163" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Не удалось скопировать входные данные для этой задачи на удаленный сервер сборки по неизвестным причинам. Дополнительные сведения могут содержаться в журнале сборки.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -2898,12 +2898,12 @@
       </Item>
       <Item ItemId=";M0132" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{0}' doesn't match '{1}'.]]></Val>
+          <Val><![CDATA[The certificate '{0}' ({1}) allowed by the provisioning profile '{2}' doesn't match the certificate '{3}' ({4}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA["{0}" не соответствует "{1}".]]></Val>
+            <Val><![CDATA[Сертификат "{0}" ({1}), разрешенный профилем подготовки "{2}", не совпадает с сертификатом "{3}" ({4}).]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA['{0}' doesn't match '{1}'.]D;]A;        ]]></Val>
+            <Val><![CDATA['{0}' doesn't match '{1}'.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2922,12 +2922,12 @@
       </Item>
       <Item ItemId=";M0135" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]]></Val>
+          <Val><![CDATA[The profile {0} with AppId {0} was ruled out because we found a better match: {2} (with AppId {3}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[AppID {0} исключается, так как найдено более точное совпадение: {1}.]]></Val>
+            <Val><![CDATA[Профиль {0} с AppId {0} отклонен, поскольку найдено более подходящее соответствие: {2} (с AppId {3}).]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]D;]A;        ]]></Val>
+            <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -3609,6 +3609,24 @@
           <Val><![CDATA[The {0} item '{1}' was ignored, because there's another item with the same LogicalName ('{2}')]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Элемент {0} "{1}" проигнорирован, так как существует другой элемент с таким же LogicalName ("{2}")]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7160" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Creating a compressed binding resource package to avoid MAX_PATH problems on Windows.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Создается пакет ресурсов сжатой привязки, чтобы избежать проблем с MAX_PATH в Windows.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7161" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Not creating a compressed binding resource package, because all the native references are already compressed.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Пакет ресурсов сжатой привязки не создается, поскольку все собственные ссылки уже сжаты.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

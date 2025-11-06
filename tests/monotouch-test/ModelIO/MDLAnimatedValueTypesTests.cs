@@ -8,10 +8,8 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Linq;
 using CoreGraphics;
-using Foundation;
 #if !MONOMAC
 using UIKit;
 #endif
@@ -19,9 +17,6 @@ using UIKit;
 using MultipeerConnectivity;
 #endif
 using ModelIO;
-using ObjCRuntime;
-using NUnit.Framework;
-using System.Runtime.InteropServices;
 
 using System.Numerics;
 using Vector2d = global::CoreGraphics.NVector2d;

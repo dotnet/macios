@@ -7,9 +7,6 @@
 // Copyright 2021 Microsoft Corporation All rights reserved.
 //
 
-using System;
-using ObjCRuntime;
-using Foundation;
 using AppKit;
 using CoreGraphics;
 using LocalAuthentication;

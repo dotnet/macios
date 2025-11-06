@@ -1,9 +1,6 @@
 // TODO: The NSExpression class is a cluster class in cocoa. This means that now all the properties are supported by all the types of NSExpressions.
 //       At the point of this written all the properties have been tested with all types EXCEPT NSExpressionType.Subquery and NSExpressionType.Conditional because writting
 //       tests for those was not possible. The properties for these two types have been deduced from the other types yet bugs are possible and an objc exception will be thrown.
-using System;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
 
 namespace Foundation {
 

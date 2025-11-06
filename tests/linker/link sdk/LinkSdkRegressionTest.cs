@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
@@ -11,7 +9,6 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.Threading;
@@ -25,9 +22,6 @@ using AddressBookUI;
 #endif
 using CoreAnimation;
 using CoreData;
-using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 #if !__TVOS__
 using MapKit;
 #endif
@@ -42,10 +36,8 @@ using OpenGLES;
 #if !__TVOS__
 using WebKit;
 #endif
-using NUnit.Framework;
 using MonoTests.System.Net.Http;
 using Xamarin.Utils;
-
 
 namespace LinkSdk {
 	[TestFixture]

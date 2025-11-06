@@ -8,10 +8,6 @@
 // Copyright 2017 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using NUnit.Framework;
-
-using Foundation;
 using CoreAnimation;
 
 namespace MonoTouchFixtures.CoreAnimation {

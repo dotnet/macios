@@ -7,10 +7,7 @@
 
 #if !__TVOS__
 
-using System;
-using Foundation;
 using AuthenticationServices;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.AuthenticationServices {
 

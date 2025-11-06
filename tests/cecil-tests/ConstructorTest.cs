@@ -407,8 +407,43 @@ namespace Cecil.Tests {
 			Assert.That (failures, Is.Empty, "No failures");
 		}
 
+		bool IsPreservedByDynamicDependencyAttributeOnStaticCctor (MethodDefinition ctor)
+		{
+			var type = ctor.DeclaringType;
+			var cctor = type.Methods.SingleOrDefault (m => m.IsStatic && m.IsConstructor);
+			if (cctor is null)
+				return false;
+
+			if (!cctor.HasCustomAttributes)
+				return false;
+
+			foreach (var ca in cctor.CustomAttributes) {
+				if (ca.AttributeType.Name != "DynamicDependencyAttribute")
+					continue;
+				switch (ca.ConstructorArguments.Count) {
+				case 2:
+					var memberTypes = (DynamicallyAccessedMemberTypes) (int) ca.ConstructorArguments [0].Value;
+					var targetType = ca.ConstructorArguments [1].Value as TypeReference;
+					if (targetType is null)
+						continue;
+					if (targetType.FullName != type.FullName)
+						continue;
+					if ((memberTypes & DynamicallyAccessedMemberTypes.PublicConstructors) == DynamicallyAccessedMemberTypes.PublicConstructors && ctor.IsPublic)
+						return true;
+					if ((memberTypes & DynamicallyAccessedMemberTypes.NonPublicConstructors) == DynamicallyAccessedMemberTypes.NonPublicConstructors && !ctor.IsPublic)
+						return true;
+					break;
+				}
+			}
+
+			return false;
+		}
+
 		bool IsConditionallyPreserved (MethodDefinition ctor)
 		{
+			if (IsPreservedByDynamicDependencyAttributeOnStaticCctor (ctor))
+				return true;
+
 			if (!ctor.HasCustomAttributes)
 				return false;
 

@@ -45,6 +45,12 @@ namespace Xamarin.Linker.Steps {
 			if (Configuration.DerivedLinkContext.App.Optimizations.RegisterProtocols != true)
 				return;
 
+			if (Configuration.DerivedLinkContext.App.XamarinRuntime == Bundler.XamarinRuntime.NativeAOT) {
+				// We can't remove the static constructor in the trimmer if we're using NativeAOT,
+				// because NativeAOT needs it for its own trimming logic.
+				return;
+			}
+
 			if (!type.IsBeforeFieldInit && type.IsInterface && type.HasMethods) {
 				var cctor = type.GetTypeConstructor ();
 				if (cctor is not null && cctor.IsBindingImplOptimizableCode (LinkContext))

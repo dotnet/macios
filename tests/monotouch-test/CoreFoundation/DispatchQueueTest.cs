@@ -7,19 +7,14 @@
 // Copyright 2018 Microsoft Corp. All rights reserved.
 //
 
-using System;
 using System.IO;
 using System.Threading.Tasks;
 
-using CoreFoundation;
-using Foundation;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.CoreFoundation {

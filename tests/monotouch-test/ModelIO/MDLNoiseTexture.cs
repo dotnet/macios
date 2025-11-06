@@ -7,11 +7,7 @@
 // Copyright 2016 Microsoft
 //
 
-using System;
-using Foundation;
 using ModelIO;
-using ObjCRuntime;
-using NUnit.Framework;
 
 using System.Numerics;
 using Vector2i = global::CoreGraphics.NVector2i;

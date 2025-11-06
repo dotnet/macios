@@ -7,12 +7,8 @@
 // Copyright 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using AVFoundation;
 using CoreVideo;
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.AVFoundation {

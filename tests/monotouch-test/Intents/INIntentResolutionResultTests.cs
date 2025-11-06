@@ -10,10 +10,6 @@
 
 #if !__TVOS__ && !MONOMAC
 
-using System;
-using NUnit.Framework;
-
-using Foundation;
 using Intents;
 
 namespace MonoTouchFixtures.Intents {

@@ -7,17 +7,13 @@
 // Copyright 2012-2013, 2016 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.IO;
-using Foundation;
 #if MONOMAC
 using AppKit;
 #else
 using UIKit;
 #endif
 using CoreGraphics;
-using ObjCRuntime;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.CoreGraphics {
 
@@ -225,10 +221,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 #endif
 				using (var provider = new CGDataProvider (icc)) {
 					using (var cs = CGColorSpace.CreateIccData (provider)) {
-						// broke? with Xcode 13 beta 1 (iOS, tvOS)
-						if (TestRuntime.CheckXcodeVersion (13, 0))
-							Assert.Null (cs, "null colorspace");
-						else
+						// some OS versions work, some don't, so just check the ICC if we got a color space
+						if (cs is not null)
 							TestICC (cs);
 					}
 				}

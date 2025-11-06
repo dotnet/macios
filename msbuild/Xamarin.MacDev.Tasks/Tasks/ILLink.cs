@@ -6,12 +6,13 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Tasks;
 using Microsoft.Build.Utilities;
 
+using Xamarin.MacDev.Tasks;
 using Xamarin.Messaging.Build.Client;
 
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	public class ILLink : global::ILLink.Tasks.ILLink, ITaskCallback {
+	public class ILLink : global::ILLink.Tasks.ILLink, ITaskCallback, IHasSessionId {
 		public string SessionId { get; set; } = string.Empty;
 
 		public ITaskItem [] DebugSymbols { get; set; } = Array.Empty<ITaskItem> ();
@@ -34,7 +35,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (this.ShouldExecuteRemotely (SessionId))
-				return new TaskRunner (SessionId, BuildEngine4).RunAsync (this).Result;
+				return XamarinTask.ExecuteRemotely (this);
 
 			// Capture execution start time for Mac-side detection
 			var executionStartTime = DateTime.UtcNow;

@@ -1,7 +1,4 @@
-using System;
 
-using ObjCRuntime;
-using Foundation;
 #if __MACOS__
 using AppKit;
 #else

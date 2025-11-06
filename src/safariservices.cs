@@ -9,15 +9,11 @@
 // Copyright 2019 Microsoft Corporation
 //
 
-using System;
-
 #if HAS_BROWSERENGINEKIT
 using BrowserEngineKit;
 #else
 using BEWebAppManifest = Foundation.NSObject;
 #endif
-using Foundation;
-using ObjCRuntime;
 #if !MONOMAC
 using UIKit;
 using NSRunningApplication = System.Object;

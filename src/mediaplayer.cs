@@ -9,8 +9,6 @@
 //
 using System.ComponentModel;
 using AVFoundation;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using CoreGraphics;
 using CoreLocation;
@@ -20,7 +18,6 @@ using AppKit;
 #else
 using UIKit;
 #endif
-using System;
 
 #if MONOMAC
 using UIControlState = Foundation.NSObject;

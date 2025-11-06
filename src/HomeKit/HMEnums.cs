@@ -1,6 +1,3 @@
-using System;
-using ObjCRuntime;
-using Foundation;
 
 namespace HomeKit {
 
@@ -215,6 +212,8 @@ namespace HomeKit {
 		PartialCommunicationFailure = 104,
 		// iOS 18.4
 		HomeUpgradeRequired = 105,
+		// iOS 26.1
+		QuotaExceeded = 106,
 	}
 
 

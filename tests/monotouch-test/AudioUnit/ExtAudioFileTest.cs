@@ -7,10 +7,7 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
-using NUnit.Framework;
-using Foundation;
 using AudioUnit;
-using CoreFoundation;
 
 namespace MonoTouchFixtures.AudioUnit {
 

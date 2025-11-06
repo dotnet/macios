@@ -3,14 +3,10 @@ using System.Numerics;
 using AudioToolbox;
 using AVFoundation;
 using CoreFoundation;
-using Foundation;
 using ModelIO;
-using ObjCRuntime;
 
 using Vector2d = global::CoreGraphics.NVector2d;
 using NMatrix4 = global::CoreGraphics.NMatrix4;
-
-using System;
 
 namespace Phase {
 

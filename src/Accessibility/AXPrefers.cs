@@ -1,10 +1,6 @@
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 
 namespace Accessibility {
 
@@ -34,6 +30,22 @@ namespace Accessibility {
 		public static bool NonBlinkingTextInsertionIndicator ()
 		{
 			return AXPrefersNonBlinkingTextInsertionIndicator () != 0;
+		}
+
+		[SupportedOSPlatform ("ios26.1")]
+		[SupportedOSPlatform ("maccatalyst26.1")]
+		[SupportedOSPlatform ("macos26.1")]
+		[SupportedOSPlatform ("tvos26.1")]
+		[DllImport (Constants.AccessibilityLibrary)]
+		static extern byte AXPrefersActionSliderAlternative ();
+
+		[SupportedOSPlatform ("ios26.1")]
+		[SupportedOSPlatform ("maccatalyst26.1")]
+		[SupportedOSPlatform ("macos26.1")]
+		[SupportedOSPlatform ("tvos26.1")]
+		public static bool ActionSliderAlternative ()
+		{
+			return AXPrefersActionSliderAlternative () != 0;
 		}
 	}
 }

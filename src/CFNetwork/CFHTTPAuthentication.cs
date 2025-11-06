@@ -9,13 +9,8 @@
 
 #nullable enable
 
-using System;
 using System.Net;
-using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
-using Foundation;
 using CoreFoundation;
-using ObjCRuntime;
 
 namespace CFNetwork {
 	/// <summary>Represents HTTP authentication information for use with <see cref="CFHTTPMessage" />.</summary>

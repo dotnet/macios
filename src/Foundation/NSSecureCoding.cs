@@ -1,8 +1,5 @@
 // NSSecureCoding support
 
-using System;
-using ObjCRuntime;
-
 #nullable enable
 
 namespace Foundation {

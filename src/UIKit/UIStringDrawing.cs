@@ -1,11 +1,7 @@
 #if IOS
 
-using System;
-
 using UIKit;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 
 namespace UIKit {
 	public unsafe static partial class UIStringDrawing {

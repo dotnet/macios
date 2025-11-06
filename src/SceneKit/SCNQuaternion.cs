@@ -35,11 +35,8 @@ using pfloat = System.Runtime.InteropServices.NFloat;
 using pfloat = System.Single;
 #endif
 
-using System;
-using System.Runtime.InteropServices;
 using System.ComponentModel;
 using System.Xml.Serialization;
-using System.Runtime.Versioning;
 
 #nullable enable
 

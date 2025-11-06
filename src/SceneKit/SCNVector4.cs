@@ -24,10 +24,7 @@ SOFTWARE.
  */
 #endregion
 
-using System;
-using System.Runtime.InteropServices;
 using System.Xml.Serialization;
-using System.Runtime.Versioning;
 
 using Vector2 = global::System.Numerics.Vector2;
 using Vector3 = global::System.Numerics.Vector3;

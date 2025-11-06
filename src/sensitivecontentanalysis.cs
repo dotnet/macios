@@ -1,9 +1,6 @@
-using System;
 using AVFoundation;
 using CoreGraphics;
 using CoreVideo;
-using Foundation;
-using ObjCRuntime;
 using VideoToolbox;
 
 namespace SensitiveContentAnalysis {

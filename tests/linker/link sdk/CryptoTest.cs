@@ -7,14 +7,11 @@
 // Copyright 2012 Xamarin Inc.
 //
 
-using System;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using Foundation;
-using NUnit.Framework;
 using MonoTests.System.Net.Http;
 
 namespace LinkSdk {

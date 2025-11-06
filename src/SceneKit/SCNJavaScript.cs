@@ -7,10 +7,6 @@
 // Copyright 2014 Xamarin Inc. All rights reserved.
 //
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
 using JavaScriptCore;
 
 #nullable enable

@@ -1,12 +1,7 @@
-using System;
 using System.IO;
 using System.Reflection;
 using System.Reflection.Metadata;
-using System.Runtime.InteropServices;
-using Foundation;
 using Moq;
-using NUnit.Framework;
-using ObjCRuntime;
 
 namespace GeneratorTests {
 	[TestFixture]

@@ -8,10 +8,7 @@
 // Copyright 2011-2013 Xamarin Inc. All rights reserved
 //
 
-using System;
 using System.Collections.Generic;
-using Foundation;
-using ObjCRuntime;
 #nullable enable
 
 namespace UIKit {

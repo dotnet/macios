@@ -1,12 +1,6 @@
 #if __MACOS__
-using System;
-using System.Runtime.InteropServices;
 
 using AppKit;
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 
 namespace MonoMacFixtures.AppKit {
 	[TestFixture]

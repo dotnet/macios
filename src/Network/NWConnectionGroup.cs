@@ -1,7 +1,3 @@
-using System;
-using System.Runtime.InteropServices;
-using ObjCRuntime;
-using Foundation;
 using CoreFoundation;
 using OS_nw_connection = System.IntPtr;
 using OS_nw_connection_group = System.IntPtr;

@@ -9,11 +9,7 @@
 
 #if HAS_ARKIT
 
-using System;
 using ARKit;
-using Foundation;
-using ObjCRuntime;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 using MatrixFloat4x4 = global::CoreGraphics.NMatrix4;

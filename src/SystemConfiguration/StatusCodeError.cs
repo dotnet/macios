@@ -9,11 +9,6 @@
 
 #nullable enable
 
-using System;
-using System.Runtime.InteropServices;
-
-using ObjCRuntime;
-
 namespace SystemConfiguration {
 
 	// https://developer.apple.com/library/mac/#documentation/SystemConfiguration/Reference/SystemConfiguration_Utilities/Reference/reference.html

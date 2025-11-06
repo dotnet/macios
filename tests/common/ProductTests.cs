@@ -2,14 +2,10 @@
  * Shared unit tests between XI and XM.
  **/
 
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Text;
-
-using NUnit.Framework;
 
 using Xamarin;
 

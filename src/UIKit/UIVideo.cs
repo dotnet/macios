@@ -10,11 +10,7 @@
 
 #if IOS
 
-using System;
-using System.Runtime.InteropServices;
 using System.Collections;
-using Foundation;
-using ObjCRuntime;
 
 namespace UIKit {
 

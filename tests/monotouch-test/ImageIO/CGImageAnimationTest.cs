@@ -6,9 +6,7 @@
 //
 // Copyright 2020 Microsoft Corp. All rights reserved.
 //
-using System;
 using System.IO;
-using Foundation;
 using System.Threading.Tasks;
 #if MONOMAC
 using AppKit;
@@ -17,7 +15,6 @@ using UIKit;
 #endif
 using CoreGraphics;
 using ImageIO;
-using NUnit.Framework;
 
 namespace MonoTouchFixtures.ImageIO {
 

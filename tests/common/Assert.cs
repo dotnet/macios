@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Resources;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
 
-using Foundation;
-using ObjCRuntime;
-
-using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
 namespace MonoTests {

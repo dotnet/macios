@@ -1,8 +1,5 @@
 #nullable enable
 
-using System;
-using ObjCRuntime;
-
 namespace MetalPerformanceShaders {
 	public partial class MPSCnnConvolutionDescriptor {
 		/// <param name="mean">To be added.</param>

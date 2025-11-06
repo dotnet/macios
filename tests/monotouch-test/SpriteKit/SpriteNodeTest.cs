@@ -7,11 +7,8 @@
 // Copyright 2013 Xamarin Inc. All rights reserved.
 //
 
-using System;
 using System.Drawing;
 using CoreGraphics;
-using Foundation;
-using ObjCRuntime;
 #if MONOMAC
 using AppKit;
 using UIColor = AppKit.NSColor;
@@ -19,7 +16,6 @@ using UIColor = AppKit.NSColor;
 using UIKit;
 #endif
 using SpriteKit;
-using NUnit.Framework;
 using Xamarin.Utils;
 
 namespace MonoTouchFixtures.SpriteKit {

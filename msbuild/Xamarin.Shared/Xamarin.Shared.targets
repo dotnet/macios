@@ -1566,8 +1566,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<CoreMLCompiler
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
-			ToolExe="$(CoreMLCompilerExe)"
-			ToolPath="$(CoreMLCompilerPath)"
+			CoreMlcPath="$(CoreMLCompilerPath)"
 			Models="@(CoreMLModel)"
 			EnableOnDemandResources="$(EnableOnDemandResources)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"

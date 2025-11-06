@@ -34,15 +34,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		#endregion
 
-		static string GetExecutable (List<string> arguments, string toolName, string toolPathOverride)
-		{
-			if (string.IsNullOrEmpty (toolPathOverride)) {
-				arguments.Insert (0, toolName);
-				return "xcrun";
-			}
-			return toolPathOverride;
-		}
-
 		static List<string> GenerateCommandLineCommands (string inputImage, string outputImage)
 		{
 			var args = new List<string> ();

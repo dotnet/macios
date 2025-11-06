@@ -937,7 +937,7 @@ Additional information:
 		}
 
 		class ConformsToProtocolCreatesManagedInstanceTestClass : ClassWithNoDefaultCtor {
-			protected ConformsToProtocolCreatesManagedInstanceTestClass (NativeHandle handle) : base (handle) {}
+			protected ConformsToProtocolCreatesManagedInstanceTestClass (NativeHandle handle) : base (handle) { }
 		}
 	}
 

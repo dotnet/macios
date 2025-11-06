@@ -842,4 +842,8 @@ namespace Bindings.Test {
 		UIEdgeInsets UIEdgeInsetsField { get; set; }
 #endif // !__MACOS____MACOS__
 	}
+
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface ClassWithNoDefaultCtor { }
 }

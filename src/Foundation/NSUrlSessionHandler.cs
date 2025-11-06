@@ -1112,16 +1112,16 @@ namespace Foundation {
 				if (challenge.ProtectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodServerTrust) {
 					// if the trust delegate allows to ignore the cert, do it. Since we are using nullables, if the delegate is not present, by default is false
 					if (trustCallbackForUrl is not null) {
-						trustSec = trustCallbackForUrl (sessionHandler, inflight.RequestUrl, challenge.ProtectionSpace.ServerSecTrust);
+						trustSec = trustCallbackForUrl (sessionHandler, inflight.RequestUrl, challenge.ProtectionSpace.ServerSecTrust!);
 						usedCallback = true;
-					} else if (sessionHandler.TryInvokeServerCertificateCustomValidationCallback (inflight.Request, challenge.ProtectionSpace.ServerSecTrust, out trustSec)) {
+					} else if (sessionHandler.TryInvokeServerCertificateCustomValidationCallback (inflight.Request, challenge.ProtectionSpace.ServerSecTrust!, out trustSec)) {
 						usedCallback = true;
 					}
 				}
 
 				if (usedCallback) {
 					if (trustSec) {
-						var credential = new NSUrlCredential (challenge.ProtectionSpace.ServerSecTrust);
+						var credential = new NSUrlCredential (challenge.ProtectionSpace.ServerSecTrust!);
 						completionHandler (NSUrlSessionAuthChallengeDisposition.UseCredential, credential);
 					} else {
 						// user callback rejected the certificate, we want to set the exception, else the user will

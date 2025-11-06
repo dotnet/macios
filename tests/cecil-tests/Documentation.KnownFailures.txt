@@ -12033,9 +12033,6 @@ M:Foundation.NSUserNotificationCenter.add_DidDeliverNotification(System.EventHan
 M:Foundation.NSUserNotificationCenter.Dispose(System.Boolean)
 M:Foundation.NSUserNotificationCenter.remove_DidActivateNotification(System.EventHandler{Foundation.UNCDidActivateNotificationEventArgs})
 M:Foundation.NSUserNotificationCenter.remove_DidDeliverNotification(System.EventHandler{Foundation.UNCDidDeliverNotificationEventArgs})
-M:Foundation.NSXpcConnection.CreateRemoteObjectProxy``1
-M:Foundation.NSXpcConnection.CreateRemoteObjectProxy``1(System.Action{Foundation.NSError})
-M:Foundation.NSXpcConnection.CreateSynchronousRemoteObjectProxy``1(System.Action{Foundation.NSError})
 M:Foundation.NSXpcInterface.Create(System.Type)
 M:Foundation.NSXpcInterface.GetAllowedClasses(System.Reflection.MethodInfo,System.UIntPtr,System.Boolean)
 M:Foundation.NSXpcInterface.SetAllowedClasses(System.Reflection.MethodInfo,Foundation.NSSet{ObjCRuntime.Class},System.UIntPtr,System.Boolean)

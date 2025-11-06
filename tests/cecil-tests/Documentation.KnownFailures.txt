@@ -142,6 +142,7 @@ F:AccessorySetupKit.ASAccessoryEventType.AccessoryAdded
 F:AccessorySetupKit.ASAccessoryEventType.AccessoryChanged
 F:AccessorySetupKit.ASAccessoryEventType.AccessoryRemoved
 F:AccessorySetupKit.ASAccessoryEventType.Activated
+F:AccessorySetupKit.ASAccessoryEventType.Discovered
 F:AccessorySetupKit.ASAccessoryEventType.Invalidated
 F:AccessorySetupKit.ASAccessoryEventType.MigrationComplete
 F:AccessorySetupKit.ASAccessoryEventType.PickerDidDismiss
@@ -177,6 +178,8 @@ F:AccessorySetupKit.ASErrorCode.UserRestricted
 F:AccessorySetupKit.ASPickerDisplayItemSetupOptions.ConfirmAuthorization
 F:AccessorySetupKit.ASPickerDisplayItemSetupOptions.FinishInApp
 F:AccessorySetupKit.ASPickerDisplayItemSetupOptions.Rename
+F:AccessorySetupKit.ASPickerDisplaySettingsOptions.FilterDiscoveryResults
+F:AccessorySetupKit.ASPickerDisplaySettingsOptions.None
 F:AddressBook.ABPropertyType.MultiMask
 F:AdServices.AAAttributionErrorCode.InternalError
 F:AdServices.AAAttributionErrorCode.NetworkError
@@ -1463,6 +1466,7 @@ F:AVFoundation.AVFileTypeProfile.None
 F:AVFoundation.AVFileTypes.Ahap
 F:AVFoundation.AVFileTypes.AppleiTT
 F:AVFoundation.AVFileTypes.Dicom
+F:AVFoundation.AVFileTypes.QuickTimeAudio
 F:AVFoundation.AVFileTypes.Scc
 F:AVFoundation.AVMediaCharacteristics.CarriesVideoStereoMetadata
 F:AVFoundation.AVMediaCharacteristics.ContainsAlphaChannel
@@ -3324,6 +3328,7 @@ F:Foundation.NSUrlBookmarkResolutionOptions.WithoutImplicitStartAccessing
 F:Foundation.NSUrlErrorNetworkUnavailableReason.Cellular
 F:Foundation.NSUrlErrorNetworkUnavailableReason.Constrained
 F:Foundation.NSUrlErrorNetworkUnavailableReason.Expensive
+F:Foundation.NSUrlErrorNetworkUnavailableReason.UltraConstrained
 F:Foundation.NSURLRequestAttribution.Developer
 F:Foundation.NSURLRequestAttribution.User
 F:Foundation.NSUrlRequestNetworkServiceType.AVStreaming
@@ -4059,6 +4064,7 @@ F:HomeKit.HMError.MaximumAccessoriesOfTypeInHome
 F:HomeKit.HMError.ObjectWithSimilarNameExists
 F:HomeKit.HMError.OwnershipFailure
 F:HomeKit.HMError.PartialCommunicationFailure
+F:HomeKit.HMError.QuotaExceeded
 F:HomeKit.HMError.TimedOutWaitingForAccessory
 F:HomeKit.HMError.WiFiCredentialGenerationFailed
 F:HomeKit.HMHomeManagerAuthorizationStatus.Authorized
@@ -6017,6 +6023,12 @@ F:Photos.PHAssetResourceType.AdjustmentBasePairedVideo
 F:Photos.PHAssetResourceType.AdjustmentBaseVideo
 F:Photos.PHAssetResourceType.FullSizePairedVideo
 F:Photos.PHAssetResourceType.PhotoProxy
+F:Photos.PHAssetResourceUploadJobAction.Acknowledge
+F:Photos.PHAssetResourceUploadJobAction.Retry
+F:Photos.PHAssetResourceUploadJobState.Failed
+F:Photos.PHAssetResourceUploadJobState.Pending
+F:Photos.PHAssetResourceUploadJobState.Registered
+F:Photos.PHAssetResourceUploadJobState.Succeeded
 F:Photos.PHAuthorizationStatus.Limited
 F:Photos.PHObjectType.Asset
 F:Photos.PHObjectType.AssetCollection
@@ -6029,6 +6041,7 @@ F:Photos.PHPhotosError.InternalError
 F:Photos.PHPhotosError.InvalidResource
 F:Photos.PHPhotosError.LibraryInFileProviderSyncRoot
 F:Photos.PHPhotosError.LibraryVolumeOffline
+F:Photos.PHPhotosError.LimitExceeded
 F:Photos.PHPhotosError.MissingResource
 F:Photos.PHPhotosError.MultipleIdentifiersFound
 F:Photos.PHPhotosError.NetworkAccessRequired
@@ -8144,15 +8157,19 @@ M:Accessibility.AXHearingUtilities.AXSupportsBidirectionalAXMFiHearingDeviceStre
 M:Accessibility.AXHearingUtilities.GetMFiHearingDevicePairedUuids
 M:Accessibility.AXHearingUtilities.GetMFiHearingDeviceStreamingEar
 M:Accessibility.AXHearingUtilities.SupportsBidirectionalStreaming
+M:Accessibility.AXPrefers.ActionSliderAlternative
 M:Accessibility.AXPrefers.HorizontalTextEnabled
 M:Accessibility.AXPrefers.NonBlinkingTextInsertionIndicator
+M:Accessibility.AXSettings.ShowBordersEnabled
 M:AccessorySetupKit.ASAccessorySession.FailAuthorizationAsync(AccessorySetupKit.ASAccessory)
 M:AccessorySetupKit.ASAccessorySession.FinishAuthorizationAsync(AccessorySetupKit.ASAccessory,AccessorySetupKit.ASAccessorySettings)
+M:AccessorySetupKit.ASAccessorySession.FinishPickerDiscoveryAsync
 M:AccessorySetupKit.ASAccessorySession.RemoveAccessoryAsync(AccessorySetupKit.ASAccessory)
 M:AccessorySetupKit.ASAccessorySession.RenameAccessoryAsync(AccessorySetupKit.ASAccessory,AccessorySetupKit.ASAccessoryRenameOptions)
 M:AccessorySetupKit.ASAccessorySession.ShowPickerAsync
 M:AccessorySetupKit.ASAccessorySession.ShowPickerAsync(AccessorySetupKit.ASPickerDisplayItem[])
 M:AccessorySetupKit.ASAccessorySession.UpdateAuthorizationAsync(AccessorySetupKit.ASAccessory,AccessorySetupKit.ASDiscoveryDescriptor)
+M:AccessorySetupKit.ASAccessorySession.UpdatePickerAsync(AccessorySetupKit.ASDiscoveredDisplayItem[])
 M:Accounts.ACAccountStore.Dispose(System.Boolean)
 M:AddressBook.ABAddressBook.add_ExternalChange(System.EventHandler{AddressBook.ExternalChangeEventArgs})
 M:AddressBook.ABAddressBook.remove_ExternalChange(System.EventHandler{AddressBook.ExternalChangeEventArgs})
@@ -9499,8 +9516,6 @@ M:AVFoundation.AVComposition_AVCompositionTrackInspection.LoadTracksWithMediaTyp
 M:AVFoundation.AVComposition_AVCompositionTrackInspection.LoadTracksWithMediaTypeAsync(AVFoundation.AVComposition,System.String)
 M:AVFoundation.AVContentKeyRecipient_Extensions.DidProvideContentKey(AVFoundation.IAVContentKeyRecipient,AVFoundation.AVContentKeySession,AVFoundation.AVContentKey)
 M:AVFoundation.AVContentKeyRequest.Dispose(System.Boolean)
-M:AVFoundation.AVContentKeyRequest.RespondByRequestingPersistableContentKeyRequest
-M:AVFoundation.AVContentKeyRequest.RespondByRequestingPersistableContentKeyRequest(Foundation.NSError@)
 M:AVFoundation.AVContentKeyResponse.Create(Foundation.NSData,AVFoundation.AVContentKeyResponseDataType)
 M:AVFoundation.AVContentKeySession.Dispose(System.Boolean)
 M:AVFoundation.AVContentKeySessionDelegate_Extensions.DidProvideContentKeyRequests(AVFoundation.IAVContentKeySessionDelegate,AVFoundation.AVContentKeySession,AVFoundation.AVContentKeyRequest[],Foundation.NSData)
@@ -11792,16 +11807,6 @@ M:Foundation.NSCache.SetObjectForKey(Foundation.NSObject,Foundation.NSObject)
 M:Foundation.NSCalendar.#ctor(Foundation.NSCalendarType)
 M:Foundation.NSCoder.DecodeObject(System.Type,System.String)
 M:Foundation.NSCoder.DecodeObject(System.Type[],System.String)
-M:Foundation.NSCoder.DecodeTopLevelObject(System.Type,System.String,Foundation.NSError@)
-M:Foundation.NSCoder.DecodeTopLevelObject(System.Type[],System.String,Foundation.NSError@)
-M:Foundation.NSCoder.TryDecode(System.String,Foundation.NSObject@)
-M:Foundation.NSCoder.TryDecode(System.String,System.Boolean@)
-M:Foundation.NSCoder.TryDecode(System.String,System.Byte[]@)
-M:Foundation.NSCoder.TryDecode(System.String,System.Double@)
-M:Foundation.NSCoder.TryDecode(System.String,System.Int32@)
-M:Foundation.NSCoder.TryDecode(System.String,System.Int64@)
-M:Foundation.NSCoder.TryDecode(System.String,System.IntPtr@)
-M:Foundation.NSCoder.TryDecode(System.String,System.Single@)
 M:Foundation.NSConnection.Dispose(System.Boolean)
 M:Foundation.NSDataDetector.#ctor(Foundation.NSTextCheckingType,Foundation.NSError@)
 M:Foundation.NSDataDetector.Create(Foundation.NSTextCheckingType,Foundation.NSError@)
@@ -12451,6 +12456,7 @@ M:HomeKit.HMHomeManager.add_DidUpdateAuthorizationStatus(System.EventHandler{Hom
 M:HomeKit.HMHomeManager.add_DidUpdateHomes(System.EventHandler)
 M:HomeKit.HMHomeManager.add_DidUpdatePrimaryHome(System.EventHandler)
 M:HomeKit.HMHomeManager.Dispose(System.Boolean)
+M:HomeKit.HMHomeManager.FindVendorAccessoryAsync(Foundation.NSData)
 M:HomeKit.HMHomeManager.remove_DidAddHome(System.EventHandler{HomeKit.HMHomeManagerEventArgs})
 M:HomeKit.HMHomeManager.remove_DidReceiveAddAccessoryRequest(System.EventHandler{HomeKit.HMHomeManagerAddAccessoryRequestEventArgs})
 M:HomeKit.HMHomeManager.remove_DidRemoveHome(System.EventHandler{HomeKit.HMHomeManagerEventArgs})
@@ -18156,6 +18162,7 @@ P:Accessibility.IAXCustomContentProvider.AccessibilityCustomContentHandler
 P:Accessibility.IAXDataAxisDescriptor.AttributedTitle
 P:Accessibility.IAXDataAxisDescriptor.Title
 P:Accessibility.IAXMathExpressionProvider.AccessibilityMathExpression
+P:AccessorySetupKit.ASDiscoveredAccessory.BluetoothAdvertisementData
 P:AddressBook.ABMultiValue`1.Item(System.IntPtr)
 P:AppClip.APActivationPayload.Url
 P:AppKit.INSAccessibility.AccessibilityActivationPoint
@@ -18788,6 +18795,7 @@ P:AuthenticationServices.ASAuthorizationWebBrowserPlatformPublicKeyCredential.Pr
 P:AuthenticationServices.ASAuthorizationWebBrowserPlatformPublicKeyCredential.RelyingParty
 P:AuthenticationServices.ASAuthorizationWebBrowserPlatformPublicKeyCredential.UserHandle
 P:AuthenticationServices.ASAuthorizationWebBrowserPublicKeyCredentialManager.AuthorizationStateForPlatformCredentials
+P:AuthenticationServices.ASAuthorizationWebBrowserPublicKeyCredentialManager.IsDeviceConfiguredForPasskeys
 P:AuthenticationServices.ASOneTimeCodeCredential.Code
 P:AuthenticationServices.ASOneTimeCodeCredentialIdentity.Label
 P:AuthenticationServices.ASOneTimeCodeCredentialIdentity.Rank
@@ -18894,6 +18902,9 @@ P:AuthenticationServices.IASPublicKeyCredential.RawClientDataJson
 P:AutomaticAssessmentConfiguration.AEAssessmentApplication.BundleIdentifier
 P:AutomaticAssessmentConfiguration.AEAssessmentApplication.RequiresSignatureValidation
 P:AutomaticAssessmentConfiguration.AEAssessmentApplication.TeamIdentifier
+P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsAccessibilityKeyboard
+P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsAccessibilityLiveCaptions
+P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsAccessibilityReader
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsAccessibilitySpeech
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsAccessibilityTypingFeedback
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsActivityContinuation
@@ -18902,6 +18913,7 @@ P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsDictation
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsKeyboardShortcuts
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsPasswordAutoFill
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsPredictiveKeyboard
+P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsScreenshots
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AllowsSpellCheck
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.AutocorrectMode
 P:AutomaticAssessmentConfiguration.AEAssessmentConfiguration.ConfigurationsByApplication
@@ -21117,6 +21129,7 @@ P:Foundation.NSObjectEventArgs.Obj
 P:Foundation.NSOrderedSet.Item(System.IntPtr)
 P:Foundation.NSOrderedSet`1.Item(System.IntPtr)
 P:Foundation.NSProcessInfo.IsiOSApplicationOnMac
+P:Foundation.NSProcessInfo.IsiOSAppOnVision
 P:Foundation.NSProcessInfo.IsMacCatalystApplication
 P:Foundation.NSStreamEventArgs.StreamEvent
 P:Foundation.NSString.Item(System.IntPtr)
@@ -21470,6 +21483,7 @@ P:HealthKit.HKLiveWorkoutBuilder.Delegate
 P:HealthKit.HKMedicationConcept.GeneralForm
 P:HealthKit.HKMetadata.AppleFitnessPlusCatalogIdentifier
 P:HealthKit.HKWorkoutSession.Delegate
+P:HomeKit.HMAccessory.VendorAccessory
 P:HomeKit.HMAccessoryBrowserEventArgs.Accessory
 P:HomeKit.HMAccessoryFirmwareVersionEventArgs.FirmwareVersion
 P:HomeKit.HMAccessoryProfileEventArgs.Profile
@@ -23413,6 +23427,7 @@ P:Phase.PhaseStreamNode.GainMetaParameter
 P:Phase.PhaseStreamNode.Mixer
 P:Phase.PhaseStreamNode.RateMetaParameter
 P:Phase.PhaseSwitchNodeDefinition.SwitchMetaParameterDefinition
+P:Photos.PHPhotoLibrary.UploadJobExtensionEnabled
 P:PhotosUI.PHPickerViewController.Delegate
 P:PrintCore.PMPrinter.HostName
 P:PrintCore.PMPrinter.Id
@@ -24157,6 +24172,7 @@ P:UIKit.UIContentUnavailableView.ScrollEnabled
 P:UIKit.UIContextMenuInteraction.Delegate
 P:UIKit.UIControl.ContextMenuInteractionEnabled
 P:UIKit.UIControl.SymbolAnimationEnabled
+P:UIKit.UIDocumentBrowserAction.ImageOnlyForContextMenu
 P:UIKit.UIDocumentMenuDocumentPickedEventArgs.DocumentPicker
 P:UIKit.UIDocumentPickedAtUrlsEventArgs.Urls
 P:UIKit.UIDocumentPickedEventArgs.Url
@@ -24884,7 +24900,9 @@ T:Accessibility.ValueDescriptionProviderHandler
 T:AccessorySetupKit.ASAccessoryEventType
 T:AccessorySetupKit.ASAccessoryRenameOptions
 T:AccessorySetupKit.ASAccessorySessionCompletionHandler
+T:AccessorySetupKit.ASAccessorySessionFinishPickerDiscoveryHandler
 T:AccessorySetupKit.ASAccessorySessionUpdateAuthorizationHandler
+T:AccessorySetupKit.ASAccessorySessionUpdatePickerHandler
 T:AccessorySetupKit.ASAccessoryState
 T:AccessorySetupKit.ASAccessorySupportOptions
 T:AccessorySetupKit.ASDiscoveryDescriptorRange
@@ -24892,6 +24910,7 @@ T:AccessorySetupKit.ASDiscoveryDescriptorWiFiAwareServiceRole
 T:AccessorySetupKit.ASErrorCode
 T:AccessorySetupKit.ASPickerDisplayItemSetupOptions
 T:AccessorySetupKit.ASPickerDisplaySettingsDiscoveryTimeout
+T:AccessorySetupKit.ASPickerDisplaySettingsOptions
 T:Accounts.ACLinkedInKey
 T:AdServices.AAAttributionErrorCode
 T:AppClip.APActivationPayload
@@ -26886,6 +26905,7 @@ T:HomeKit.HMCharacteristicValueVolumeSelector
 T:HomeKit.HMCharacteristicValueWiFiSatelliteStatus
 T:HomeKit.HMFetchRoomHandler
 T:HomeKit.HMHomeManagerAuthorizationStatus
+T:HomeKit.HMHomeManagerFindVendorAccessoryCallback
 T:IdentityLookup.ILMessageFilterCapabilitiesQueryRequest
 T:IdentityLookup.ILMessageFilterCapabilitiesQueryResponse
 T:IdentityLookup.ILMessageFilterError
@@ -28153,6 +28173,8 @@ T:Phase.PhaseUpdateMode
 T:Photos.FigExifCustomRenderedValue
 T:Photos.PHAccessLevel
 T:Photos.PHAssetPlaybackStyle
+T:Photos.PHAssetResourceUploadJobAction
+T:Photos.PHAssetResourceUploadJobState
 T:Photos.PHImageManagerRequestImageDataHandler
 T:Photos.PHLivePhotoEditingError
 T:Photos.PHObjectType

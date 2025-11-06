@@ -26101,6 +26101,10 @@ namespace AppKit {
 
 		[Export ("automaticallyAdjustsSize")]
 		bool AutomaticallyAdjustsSize { get; set; }
+
+		[Mac (26, 1)]
+		[Export ("preferredScrollEdgeEffectStyle", ArgumentSemantic.Strong)]
+		NSScrollEdgeEffectStyle PreferredScrollEdgeEffectStyle { get; set; }
 	}
 
 	[NoMacCatalyst]
@@ -34977,6 +34981,10 @@ namespace AppKit {
 		[Export ("viewDidDisappear")]
 		[RequiresSuper]
 		void ViewDidDisappear ();
+
+		[Mac (26, 1)]
+		[Export ("preferredScrollEdgeEffectStyle", ArgumentSemantic.Strong)]
+		NSScrollEdgeEffectStyle PreferredScrollEdgeEffectStyle { get; set; }
 	}
 
 	// Not using smart enum intentionally as they would complicate the API
@@ -35263,5 +35271,23 @@ namespace AppKit {
 		bool ValidatesImmediately { get; set; }
 		string ValueTransformerName { get; set; }
 		NSValueTransformer ValueTransformer { get; set; }
+	}
+
+	[NoMacCatalyst, Mac (26, 1)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface NSScrollEdgeEffectStyle {
+
+		[Static]
+		[Export ("automaticStyle", ArgumentSemantic.Strong)]
+		NSScrollEdgeEffectStyle AutomaticStyle { get; }
+
+		[Static]
+		[Export ("softStyle", ArgumentSemantic.Strong)]
+		NSScrollEdgeEffectStyle SoftStyle { get; }
+
+		[Static]
+		[Export ("hardStyle", ArgumentSemantic.Strong)]
+		NSScrollEdgeEffectStyle HardStyle { get; }
 	}
 }

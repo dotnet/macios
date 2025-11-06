@@ -1535,4 +1535,8 @@ static void block_called ()
 
 @end
 
+@implementation ClassWithNoDefaultCtor : NSObject {
+}
+@end
+
 #include "libtest.decompile.m"

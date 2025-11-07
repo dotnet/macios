@@ -180,6 +180,7 @@ namespace Xamarin.Tests {
 			ParseConfigFiles (FindConfigFiles ("configure.inc"));
 			ParseConfigFiles (FindConfigFiles ("Make.config.local"));
 			ParseConfigFiles (FindConfigFiles ("Make.config"));
+			ParseConfigFiles (FindConfigFiles ("Make.versions"));
 		}
 
 		static void ParseConfigFiles (IEnumerable<string> files)

@@ -60,13 +60,8 @@ namespace Xamarin.MacDev.Tasks {
 			args.Add (outputScene);
 			args.Add ($"--sdk-root={SdkRoot}");
 			args.Add ($"--target-build-dir={IntermediateOutputPath}");
-			if (AppleSdkSettings.XcodeVersion.Major >= 13) {
-				// I'm not sure which Xcode version these options are available in, but it's at least Xcode 13+
-				args.Add ($"--target-version={SdkVersion}");
-				args.Add ($"--target-platform={PlatformUtils.GetTargetPlatform (SdkPlatform, IsWatchApp)}");
-			} else {
-				args.Add ($"--target-version-{PlatformFrameworkHelper.GetOperatingSystem (TargetFrameworkMoniker)}={SdkVersion}");
-			}
+			args.Add ($"--target-version={SdkVersion}");
+			args.Add ($"--target-platform={PlatformUtils.GetTargetPlatform (SdkPlatform, IsWatchApp)}");
 
 			return args;
 		}

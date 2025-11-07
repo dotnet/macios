@@ -312,6 +312,27 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
+		/// <summary>
+		///     Computes the executable to launch given the specified tool in the Xcode's toolchain:
+		///     * If <paramref name="toolPathOverride" /> is specified, return that.
+		///     * Otherwise return 'xcrun', and then inject the tool name as the first argument.
+		/// <summary>
+		/// <param name="arguments">The arguments to pass to the tool.</param>
+		/// <param name="toolName">The name of the tool (aka executable) to execute.</param>
+		/// <param name="toolPathOverride">If specified, an override for the path to the tool.</param>
+		protected static string GetExecutable (List<string> arguments, string toolName, string? toolPathOverride)
+		{
+#if NET
+			if (string.IsNullOrEmpty (toolPathOverride)) {
+#else
+			if (toolPathOverride is null || string.IsNullOrEmpty (toolPathOverride)) {
+#endif
+				arguments.Insert (0, toolName);
+				return "xcrun";
+			}
+			return toolPathOverride;
+		}
+
 		#region Xamarin.MacDev.ICustomLogger
 		void ICustomLogger.LogError (string message, Exception ex)
 		{

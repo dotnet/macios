@@ -2704,8 +2704,13 @@ namespace ObjCRuntime {
 		static nint InvokeConformsToProtocol (IntPtr gchandle, IntPtr handle, IntPtr protocol)
 		{
 			var obj = GetGCHandleTarget (gchandle) as NSObject;
-			if (obj is null)
-				return 0;
+			if (obj is null) {
+				// conformsToProtocol is special, we might get here before a managed instance has been created
+				// for a native instance, in which case we need to create the managed instance (which GetNSObject will do)
+				obj = GetNSObject (handle);
+				if (obj is null)
+					return 0;
+			}
 			var rv = obj.ConformsToProtocol (protocol);
 			return rv ? 1 : 0;
 		}

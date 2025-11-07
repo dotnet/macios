@@ -568,7 +568,8 @@ namespace Xharness {
 			return FindConfigFiles (useSystemXamarinIOSMac ? "test-system.config" : "test.config")
 				.Concat (FindConfigFiles ("configure.inc"))
 				.Concat (FindConfigFiles ("Make.config"))
-				.Concat (FindConfigFiles ("Make.config.local"));
+				.Concat (FindConfigFiles ("Make.config.local"))
+				.Concat (FindConfigFiles ("Make.versions"));
 		}
 
 		void ParseConfigFile (string file, Dictionary<string, string> configuration)

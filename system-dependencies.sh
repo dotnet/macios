@@ -412,7 +412,7 @@ function xcodebuild_download_selected_platforms ()
 	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform tvOS$TVOS_BUILD_VERSION' $1"
 	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform tvOS $TVOS_BUILD_VERSION 2>&1 | sed 's/^/        /'
 
-	exit 0
+	return 0
 }
 
 function download_xcode_platforms ()

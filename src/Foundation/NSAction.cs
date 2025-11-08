@@ -24,8 +24,7 @@
 
 using System.Threading;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 
@@ -53,7 +52,7 @@ namespace Foundation {
 		public NSActionDispatcher (Action action)
 		{
 			if (action is null)
-				throw new ArgumentNullException ("action");
+				throw new ArgumentNullException (nameof (action));
 
 			this.action = action;
 		}
@@ -90,7 +89,7 @@ namespace Foundation {
 		public NSTimerActionDispatcher (Action<NSTimer> action)
 		{
 			if (action is null)
-				throw new ArgumentNullException ("action");
+				throw new ArgumentNullException (nameof (action));
 
 			this.action = action;
 			IsDirectBinding = false;
@@ -122,7 +121,7 @@ namespace Foundation {
 	// Use this for asynchronous operations
 	[Register ("__MonoMac_NSAsyncActionDispatcher")]
 	internal sealed class NSAsyncActionDispatcher : NSAsyncDispatcher {
-		Action action;
+		Action? action;
 
 		public NSAsyncActionDispatcher (Action action)
 		{
@@ -135,7 +134,8 @@ namespace Foundation {
 		public override void Apply ()
 		{
 			try {
-				action ();
+				if (action is not null)
+					action ();
 			} finally {
 				action = null;
 				base.Apply ();
@@ -146,8 +146,8 @@ namespace Foundation {
 	// Use this for asynchronous operations
 	[Register ("__MonoMac_NSAsyncSynchronizationContextDispatcher")]
 	internal sealed class NSAsyncSynchronizationContextDispatcher : NSAsyncDispatcher {
-		SendOrPostCallback d;
-		object state;
+		SendOrPostCallback? d;
+		object? state;
 
 		public NSAsyncSynchronizationContextDispatcher (SendOrPostCallback d, object state)
 		{
@@ -161,7 +161,8 @@ namespace Foundation {
 		public override void Apply ()
 		{
 			try {
-				d (state);
+				if (d is not null)
+					d (state);
 			} finally {
 				d = null; // this is a one-shot dispatcher
 				state = null;

@@ -11025,6 +11025,10 @@ namespace Foundation {
 		[Export ("allowsConstrainedNetworkAccess")]
 		bool AllowsConstrainedNetworkAccess { get; set; }
 
+		[TV (26, 1), Mac (26, 1), iOS (26, 1), MacCatalyst (26, 1)]
+		[Export ("allowsUltraConstrainedNetworkAccess")]
+		bool AllowsUltraConstrainedNetworkAccess { get; set; }
+
 		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
 		[Export ("requiresDNSSECValidation")]
@@ -11637,6 +11641,11 @@ namespace Foundation {
 		[Export ("allowsConstrainedNetworkAccess")]
 		bool AllowsConstrainedNetworkAccess { get; [NotImplemented] set; }
 
+		// It's in the headers, but introspection says it's not, and an Xcode test confirms it's not there
+		// [TV (26, 1), Mac (26, 1), iOS (26, 1), MacCatalyst (26, 1)]
+		// [Export ("allowsUltraConstrainedNetworkAccess")]
+		// bool AllowsUltraConstrainedNetworkAccess { get; [NotImplemented] set; }
+
 		[Export ("HTTPMethod")]
 		string HttpMethod { get; }
 
@@ -11871,6 +11880,11 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		[Export ("allowsConstrainedNetworkAccess")]
 		bool AllowsConstrainedNetworkAccess { get; set; }
+
+		// It's in the headers, but introspection says it's not, and an Xcode test confirms it's not there
+		// [TV (26, 1), Mac (26, 1), iOS (26, 1), MacCatalyst (26, 1)]
+		// [Export ("allowsUltraConstrainedNetworkAccess")]
+		// bool AllowsUltraConstrainedNetworkAccess { get; set; }
 
 		[TV (14, 5), iOS (14, 5)]
 		[MacCatalyst (14, 5)]
@@ -17118,6 +17132,10 @@ namespace Foundation {
 		[MacCatalyst (14, 0)]
 		[Export ("iOSAppOnMac")]
 		bool IsiOSApplicationOnMac { [Bind ("isiOSAppOnMac")] get; }
+
+		[TV (26, 1), Mac (26, 1), iOS (26, 1), MacCatalyst (26, 1)]
+		[Export ("iOSAppOnVision")]
+		bool IsiOSAppOnVision { [Bind ("isiOSAppOnVision")] get; }
 		#endregion
 
 		[Field ("NSProcessInfoPerformanceProfileDidChangeNotification", "Metal")]
@@ -22643,6 +22661,8 @@ namespace Foundation {
 		Cellular = 0,
 		Expensive = 1,
 		Constrained = 2,
+		[TV (26, 1), Mac (26, 1), iOS (26, 1)]
+		UltraConstrained = 3,
 	}
 
 	[NoTV, NoiOS]

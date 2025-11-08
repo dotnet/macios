@@ -130,26 +130,24 @@ namespace Xamarin.MacDev.Tasks {
 			if (OptimizePNGs)
 				args.Add ("--compress-pngs");
 
-			if (AppleSdkSettings.XcodeVersion.Major >= 7) {
-				if (!string.IsNullOrEmpty (outputSpecs)) {
-					args.Add ("--enable-on-demand-resources");
-					args.Add (EnableOnDemandResources ? "YES" : "NO");
-				}
+			if (!string.IsNullOrEmpty (outputSpecs)) {
+				args.Add ("--enable-on-demand-resources");
+				args.Add (EnableOnDemandResources ? "YES" : "NO");
+			}
 
-				if (!string.IsNullOrEmpty (DeviceModel)) {
-					args.Add ("--filter-for-device-model");
-					args.Add (DeviceModel);
-				}
+			if (!string.IsNullOrEmpty (DeviceModel)) {
+				args.Add ("--filter-for-device-model");
+				args.Add (DeviceModel);
+			}
 
-				if (!string.IsNullOrEmpty (DeviceOSVersion)) {
-					args.Add ("--filter-for-device-os-version");
-					args.Add (DeviceOSVersion);
-				}
+			if (!string.IsNullOrEmpty (DeviceOSVersion)) {
+				args.Add ("--filter-for-device-os-version");
+				args.Add (DeviceOSVersion);
+			}
 
-				if (!string.IsNullOrEmpty (outputSpecs)) {
-					args.Add ("--asset-pack-output-specifications");
-					args.Add (Path.GetFullPath (outputSpecs));
-				}
+			if (!string.IsNullOrEmpty (outputSpecs)) {
+				args.Add ("--asset-pack-output-specifications");
+				args.Add (Path.GetFullPath (outputSpecs));
 			}
 
 			if (Platform == ApplePlatform.MacCatalyst) {
@@ -422,7 +420,7 @@ namespace Xamarin.MacDev.Tasks {
 					catalogs.Add (item);
 				}
 
-				if (AppleSdkSettings.XcodeVersion.Major >= 7 && SdkPlatform != "WatchSimulator") {
+				if (SdkPlatform != "WatchSimulator") {
 					var text = File.ReadAllText (assetItem.ItemSpec);
 
 					if (string.IsNullOrEmpty (text))

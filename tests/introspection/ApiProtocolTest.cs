@@ -323,6 +323,10 @@ namespace Introspection {
 				case "ASPropertyCompareString":
 				case "PKAddIdentityDocumentMetadata":
 					return true;
+				// Xcode 26.1 Conformance not in headers
+				case "ASDiscoveredAccessory":
+				case "ASDiscoveredDisplayItem":
+					return true;
 				}
 				break;
 			case "NSMutableCopying":
@@ -553,6 +557,10 @@ namespace Introspection {
 				case "ASPickerDisplaySettings":
 				case "ASPropertyCompareString":
 				case "PKAddIdentityDocumentMetadata":
+					return true;
+				// Xcode 26.1 Conformance not in headers
+				case "ASDiscoveredAccessory":
+				case "ASDiscoveredDisplayItem":
 					return true;
 				}
 				break;
@@ -788,6 +796,10 @@ namespace Introspection {
 				case "ASPropertyCompareString":
 				case "PKAddIdentityDocumentMetadata":
 					return true;
+				// Xcode 26.1 Conformance not in headers
+				case "ASDiscoveredAccessory":
+				case "ASDiscoveredDisplayItem":
+					return true;
 				}
 				break;
 			// conformance added in Xcode 8 (iOS 10 / macOS 10.12)
@@ -1004,6 +1016,10 @@ namespace Introspection {
 							case "ARPointCloud":
 							case "ARReferenceObject":
 							case "ARWorldMap":
+							case "ARPlaneGeometry":
+							case "ARGeometryElement":
+							case "ARGeometrySource":
+							case "ARMeshGeometry":
 								return;
 							}
 						}

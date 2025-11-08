@@ -31,5 +31,21 @@ namespace Accessibility {
 		{
 			return AXPrefersNonBlinkingTextInsertionIndicator () != 0;
 		}
+
+		[SupportedOSPlatform ("ios26.1")]
+		[SupportedOSPlatform ("maccatalyst26.1")]
+		[SupportedOSPlatform ("macos26.1")]
+		[SupportedOSPlatform ("tvos26.1")]
+		[DllImport (Constants.AccessibilityLibrary)]
+		static extern byte AXPrefersActionSliderAlternative ();
+
+		[SupportedOSPlatform ("ios26.1")]
+		[SupportedOSPlatform ("maccatalyst26.1")]
+		[SupportedOSPlatform ("macos26.1")]
+		[SupportedOSPlatform ("tvos26.1")]
+		public static bool ActionSliderAlternative ()
+		{
+			return AXPrefersActionSliderAlternative () != 0;
+		}
 	}
 }

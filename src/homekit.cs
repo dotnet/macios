@@ -91,7 +91,16 @@ namespace HomeKit {
 		[MacCatalyst (14, 0)]
 		[Export ("authorizationStatus")]
 		HMHomeManagerAuthorizationStatus AuthorizationStatus { get; }
+
+		// From the Vendor (HMHomeManager) category
+		// HAP=HomeKit Accessory Protocol
+		[Async]
+		[TV (26, 1), NoMac, iOS (26, 1), MacCatalyst (26, 1)]
+		[Export ("findVendorAccessoryWithHAPPublicKey:completionHandler:")]
+		void FindVendorAccessory (NSData hapPublicKey, HMHomeManagerFindVendorAccessoryCallback completion);
 	}
+
+	delegate void HMHomeManagerFindVendorAccessoryCallback ([NullAllowed] HMAccessory accessory, [NullAllowed] NSError error);
 
 	interface IHMHomeManagerDelegate { }
 
@@ -287,6 +296,30 @@ namespace HomeKit {
 		[MacCatalyst (14, 0)]
 		[Export ("supportsIdentify")]
 		bool SupportsIdentify { get; }
+
+		// From an unnamed category (@interface HMAccessory ())
+		[TV (26, 1), NoMac, iOS (26, 1), MacCatalyst (26, 1)]
+		[Export ("vendorAccessory")]
+		bool VendorAccessory { [Bind ("isVendorAccessory")] get; }
+
+		// From an unnamed category (@interface HMAccessory ())
+		// HAP=HomeKit Accessory Protocol
+		// No documention on what kind of NSNumber we're dealing with, so not binding using a better type.
+		[TV (26, 1), NoMac, iOS (26, 1), MacCatalyst (26, 1)]
+		[Export ("HAPInstanceID", ArgumentSemantic.Copy)]
+		[NullAllowed]
+		NSNumber HapInstanceId { get; }
+
+		/// Headers state this property is available in iOS 10+, but I don't believe that
+		[TV (26, 1), NoMac, iOS (26, 1), MacCatalyst (26, 1)]
+		[Export ("home", ArgumentSemantic.Weak)]
+		[NullAllowed]
+		HMHome Home { get; }
+
+		/// Headers state this property is available in iOS 13+, but I don't believe that
+		[TV (26, 1), NoMac, iOS (26, 1), MacCatalyst (26, 1)]
+		[Export ("bridgedAccessories", ArgumentSemantic.Copy)]
+		HMAccessory [] BridgedAccessories { get; }
 	}
 
 	interface IHMAccessoryDelegate { }

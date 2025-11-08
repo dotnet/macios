@@ -2381,6 +2381,11 @@ namespace AuthenticationServices {
 	[DesignatedDefaultCtor]
 	interface ASAuthorizationWebBrowserPublicKeyCredentialManager {
 
+		[Mac (26, 1), iOS (26, 1), MacCatalyst (26, 1)]
+		[Static]
+		[Export ("isDeviceConfiguredForPasskeys")]
+		bool IsDeviceConfiguredForPasskeys { get; }
+
 		[Async]
 		[Export ("requestAuthorizationForPublicKeyCredentials:")]
 		void RequestAuthorization (Action<ASAuthorizationWebBrowserPublicKeyCredentialManagerAuthorizationState> completionHandler);

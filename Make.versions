@@ -21,10 +21,10 @@
 # IMPORTANT: There must be *no* managed API differences unless the two first
 # numbers (major.minor) changes.
 
-IOS_NUGET_OS_VERSION=26.0
-TVOS_NUGET_OS_VERSION=26.0
-MACOS_NUGET_OS_VERSION=26.0
-MACCATALYST_NUGET_OS_VERSION=26.0
+IOS_NUGET_OS_VERSION=26.1
+TVOS_NUGET_OS_VERSION=26.1
+MACOS_NUGET_OS_VERSION=26.1
+MACCATALYST_NUGET_OS_VERSION=26.1
 
 # The following are the OS versions we first supported with the current .NET version.
 # These versions must *not* change with minor .NET updates, only major .NET releases.
@@ -119,6 +119,11 @@ SUPPORTED_API_VERSIONS_IOS+=net9.0-26.0
 SUPPORTED_API_VERSIONS_TVOS+=net9.0-26.0
 SUPPORTED_API_VERSIONS_MACOS+=net9.0-26.0
 SUPPORTED_API_VERSIONS_MACCATALYST+=net9.0-26.0
+
+SUPPORTED_API_VERSIONS_IOS+=net10.0-26.0
+SUPPORTED_API_VERSIONS_TVOS+=net10.0-26.0
+SUPPORTED_API_VERSIONS_MACOS+=net10.0-26.0
+SUPPORTED_API_VERSIONS_MACCATALYST+=net10.0-26.0
 
 # Add beta versions here!
 

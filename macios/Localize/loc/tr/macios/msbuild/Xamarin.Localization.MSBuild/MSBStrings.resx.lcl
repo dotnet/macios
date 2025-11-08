@@ -2898,12 +2898,12 @@
       </Item>
       <Item ItemId=";M0132" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{0}' doesn't match '{1}'.]]></Val>
+          <Val><![CDATA[The certificate '{0}' ({1}) allowed by the provisioning profile '{2}' doesn't match the certificate '{3}' ({4}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{0}', '{1}' ile eşleşmiyor.]]></Val>
+            <Val><![CDATA['{2}' hazırlık profili tarafından izin verilen '{0}' ({1}) sertifikası '{3}' ({4}) sertifikasıyla eşleşmiyor.]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA['{0}' doesn't match '{1}'.]D;]A;        ]]></Val>
+            <Val><![CDATA['{0}' doesn't match '{1}'.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2922,12 +2922,12 @@
       </Item>
       <Item ItemId=";M0135" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]]></Val>
+          <Val><![CDATA[The profile {0} with AppId {0} was ruled out because we found a better match: {2} (with AppId {3}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[AppID: Daha iyi bir eşleşme bulunduğundan {0} kaldırıldı: {1}.]]></Val>
+            <Val><![CDATA[Daha iyi bir eşleşme bulunduğundan {0} Uygulama kimliğine sahip {0} profili kaldırıldı: {2} ({3} Uygulama kimliğine sahip).]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]D;]A;        ]]></Val>
+            <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -3616,12 +3616,18 @@
       <Item ItemId=";W7160" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Creating a compressed binding resource package to avoid MAX_PATH problems on Windows.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Windows'ta MAX_PATH sorunlarını önlemek için sıkıştırılmış bir bağlama kaynak paketi oluşturuluyor.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W7161" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Not creating a compressed binding resource package, because all the native references are already compressed.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Tüm yerel referanslar zaten sıkıştırılmış olduğundan, sıkıştırılmış bir bağlama kaynak paketi oluşturulmaz.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>

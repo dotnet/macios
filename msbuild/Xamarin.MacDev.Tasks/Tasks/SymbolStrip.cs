@@ -33,15 +33,6 @@ namespace Xamarin.MacDev.Tasks {
 			return string.Equals (value, "Framework", StringComparison.OrdinalIgnoreCase);
 		}
 
-		static string GetExecutable (List<string> arguments, string toolName, string toolPathOverride)
-		{
-			if (string.IsNullOrEmpty (toolPathOverride)) {
-				arguments.Insert (0, toolName);
-				return "xcrun";
-			}
-			return toolPathOverride;
-		}
-
 		void ExecuteStrip (ITaskItem item)
 		{
 			var args = new List<string> ();

@@ -61,6 +61,15 @@ var highestTpvPerMajorDotNet = groupedByMajorDotNetVersion.
 				return max;
 			}).
 			ToHashSet ();
+var lowestTpvPerMajorDotNet = groupedByMajorDotNetVersion.
+			Select (gr => {
+				var min = gr.OrderBy (el => {
+					var rv = tfmToTpvAndTfv (el);
+					return float.Parse (rv.Tpv, System.Globalization.CultureInfo.InvariantCulture);
+				}).First ();
+				return min;
+			}).
+			ToHashSet ();
 
 using (var writer = new StreamWriter (outputPath)) {
 	writer.WriteLine ($"<Project>");
@@ -71,7 +80,11 @@ using (var writer = new StreamWriter (outputPath)) {
 		var tpv = parsed.Tpv;
 		supportedTFVs.Add (tfv);
 		var workloadVersion = tfm;
-		writer.WriteLine ($"	<ImportGroup Condition=\" '$(TargetPlatformIdentifier)' == '{platform}' And '$(UsingAppleNETSdk)' != 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '{tfv}')) And '$(TargetPlatformVersion)' == '{tpv}'\">");
+		if (int.Parse (tfv.Split ('.') [0]) >= 10 && lowestTpvPerMajorDotNet.TryGetValue (tfm, out var lowest) && lowest.Split ('_') [1] == tpv) {
+			writer.WriteLine ($"	<ImportGroup Condition=\" '$(TargetPlatformIdentifier)' == '{platform}' And '$(UsingAppleNETSdk)' != 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '{tfv}')) And ('$(TargetPlatformVersion)' == '{tpv}' Or ('$(TargetPlatformVersion)' == '' And '$(OutputType)' == 'Library' And '$(IsAppExtension)' != 'true' And '$(UseFloatingTargetPlatformVersion)' != 'true' And '$(BundleOriginalResources)' != 'false'))\">");
+		} else {
+			writer.WriteLine ($"	<ImportGroup Condition=\" '$(TargetPlatformIdentifier)' == '{platform}' And '$(UsingAppleNETSdk)' != 'true' And $([MSBuild]::VersionEquals($(TargetFrameworkVersion), '{tfv}')) And '$(TargetPlatformVersion)' == '{tpv}'\">");
+		}
 		writer.WriteLine ($"		<Import Project=\"Sdk.props\" Sdk=\"Microsoft.{platform}.Sdk.{workloadVersion}\" />");
 		if (hasWindows)
 			writer.WriteLine ($"		<Import Project=\"Sdk.props\" Sdk=\"Microsoft.{platform}.Windows.Sdk.Aliased.{tfm}\" Condition=\" $([MSBuild]::IsOSPlatform('windows'))\" />");

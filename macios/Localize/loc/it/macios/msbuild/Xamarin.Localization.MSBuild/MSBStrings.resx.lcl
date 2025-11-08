@@ -2898,12 +2898,12 @@
       </Item>
       <Item ItemId=";M0132" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA['{0}' doesn't match '{1}'.]]></Val>
+          <Val><![CDATA[The certificate '{0}' ({1}) allowed by the provisioning profile '{2}' doesn't match the certificate '{3}' ({4}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA['{0}' non corrisponde a '{1}'.]]></Val>
+            <Val><![CDATA[Il certificato ''{0}'' ({1}) consentito dal profilo di provisioning ''{2}'' non corrisponde al certificato ''{3}'' ({4}).]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA['{0}' doesn't match '{1}'.]D;]A;        ]]></Val>
+            <Val><![CDATA['{0}' doesn't match '{1}'.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2922,12 +2922,12 @@
       </Item>
       <Item ItemId=";M0135" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]]></Val>
+          <Val><![CDATA[The profile {0} with AppId {0} was ruled out because we found a better match: {2} (with AppId {3}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[L'ID app {0} è stato escluso perché è stata trovata una corrispondenza migliore: {1}.]]></Val>
+            <Val><![CDATA[Il profilo {0} con AppId {0} è stato escluso perché è stata trovata una corrispondenza migliore: {2} (con AppId {3}).]]></Val>
           </Tgt>
           <Prev Cat="Text">
-            <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]D;]A;        ]]></Val>
+            <Val><![CDATA[AppID: {0} was ruled out because we found a better match: {1}.]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -3616,12 +3616,18 @@
       <Item ItemId=";W7160" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Creating a compressed binding resource package to avoid MAX_PATH problems on Windows.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Creazione di un pacchetto di risorse di binding compresso per evitare problemi MAX_PATH in Windows.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>
       <Item ItemId=";W7161" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Not creating a compressed binding resource package, because all the native references are already compressed.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Non viene creato un pacchetto di risorse di binding compresso perché tutti i riferimenti nativi sono già compressi.]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
       </Item>

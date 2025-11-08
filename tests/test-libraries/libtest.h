@@ -361,6 +361,10 @@ typedef void (^outerBlock) (innerBlock callback);
 @property (retain) NSPointerArray* array;
 @end
 
+@interface ClassWithNoDefaultCtor : NSObject {
+}
+@end
+
 #pragma clang diagnostic pop
 // NS_ASSUME_NONNULL_END
 

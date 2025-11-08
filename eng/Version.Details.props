@@ -6,23 +6,27 @@ This file should be imported by eng/Versions.props
 <Project>
   <PropertyGroup>
     <!-- dotnet/dotnet dependencies -->
-    <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.25530.104</MicrosoftDotNetArcadeSdkPackageVersion>
-    <MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.25530.104</MicrosoftDotNetBuildTasksFeedPackageVersion>
-    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25530.104</MicrosoftDotNetCecilPackageVersion>
-    <MicrosoftDotNetSharedFrameworkSdkPackageVersion>10.0.0-beta.25530.104</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
-    <MicrosoftNETILLinkPackageVersion>10.0.0-rtm.25530.104</MicrosoftNETILLinkPackageVersion>
+    <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.25531.102</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.25531.102</MicrosoftDotNetBuildTasksFeedPackageVersion>
+    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25531.102</MicrosoftDotNetCecilPackageVersion>
+    <MicrosoftDotNetSharedFrameworkSdkPackageVersion>10.0.0-beta.25531.102</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
+    <MicrosoftNETILLinkPackageVersion>10.0.0-rtm.25531.102</MicrosoftNETILLinkPackageVersion>
     <MicrosoftNETILLinkTasksPackageVersion>10.0.0</MicrosoftNETILLinkTasksPackageVersion>
     <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>10.0.0</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
-    <MicrosoftNETSdkPackageVersion>10.0.100-rtm.25530.104</MicrosoftNETSdkPackageVersion>
+    <MicrosoftNETSdkPackageVersion>10.0.100-rtm.25531.102</MicrosoftNETSdkPackageVersion>
     <MicrosoftNETCoreAppRefPackageVersion>10.0.0</MicrosoftNETCoreAppRefPackageVersion>
     <MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.100</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <!-- dotnet/macios dependencies -->
+    <MicrosoftiOSSdknet100_260PackageVersion>26.0.11017</MicrosoftiOSSdknet100_260PackageVersion>
     <MicrosoftiOSSdknet90_185PackageVersion>18.5.9227</MicrosoftiOSSdknet90_185PackageVersion>
     <MicrosoftiOSSdknet90_260PackageVersion>26.0.9754</MicrosoftiOSSdknet90_260PackageVersion>
+    <MicrosoftMacCatalystSdknet100_260PackageVersion>26.0.11017</MicrosoftMacCatalystSdknet100_260PackageVersion>
     <MicrosoftMacCatalystSdknet90_185PackageVersion>18.5.9227</MicrosoftMacCatalystSdknet90_185PackageVersion>
     <MicrosoftMacCatalystSdknet90_260PackageVersion>26.0.9754</MicrosoftMacCatalystSdknet90_260PackageVersion>
+    <MicrosoftmacOSSdknet100_260PackageVersion>26.0.11017</MicrosoftmacOSSdknet100_260PackageVersion>
     <MicrosoftmacOSSdknet90_155PackageVersion>15.5.9227</MicrosoftmacOSSdknet90_155PackageVersion>
     <MicrosoftmacOSSdknet90_260PackageVersion>26.0.9754</MicrosoftmacOSSdknet90_260PackageVersion>
+    <MicrosofttvOSSdknet100_260PackageVersion>26.0.11017</MicrosofttvOSSdknet100_260PackageVersion>
     <MicrosofttvOSSdknet90_185PackageVersion>18.5.9227</MicrosofttvOSSdknet90_185PackageVersion>
     <MicrosofttvOSSdknet90_260PackageVersion>26.0.9754</MicrosofttvOSSdknet90_260PackageVersion>
     <!-- xamarin/xamarin-macios dependencies -->
@@ -47,12 +51,16 @@ This file should be imported by eng/Versions.props
     <MicrosoftNETCoreAppRefVersion>$(MicrosoftNETCoreAppRefPackageVersion)</MicrosoftNETCoreAppRefVersion>
     <MicrosoftTemplateEngineAuthoringTasksVersion>$(MicrosoftTemplateEngineAuthoringTasksPackageVersion)</MicrosoftTemplateEngineAuthoringTasksVersion>
     <!-- dotnet/macios dependencies -->
+    <MicrosoftiOSSdknet100_260Version>$(MicrosoftiOSSdknet100_260PackageVersion)</MicrosoftiOSSdknet100_260Version>
     <MicrosoftiOSSdknet90_185Version>$(MicrosoftiOSSdknet90_185PackageVersion)</MicrosoftiOSSdknet90_185Version>
     <MicrosoftiOSSdknet90_260Version>$(MicrosoftiOSSdknet90_260PackageVersion)</MicrosoftiOSSdknet90_260Version>
+    <MicrosoftMacCatalystSdknet100_260Version>$(MicrosoftMacCatalystSdknet100_260PackageVersion)</MicrosoftMacCatalystSdknet100_260Version>
     <MicrosoftMacCatalystSdknet90_185Version>$(MicrosoftMacCatalystSdknet90_185PackageVersion)</MicrosoftMacCatalystSdknet90_185Version>
     <MicrosoftMacCatalystSdknet90_260Version>$(MicrosoftMacCatalystSdknet90_260PackageVersion)</MicrosoftMacCatalystSdknet90_260Version>
+    <MicrosoftmacOSSdknet100_260Version>$(MicrosoftmacOSSdknet100_260PackageVersion)</MicrosoftmacOSSdknet100_260Version>
     <MicrosoftmacOSSdknet90_155Version>$(MicrosoftmacOSSdknet90_155PackageVersion)</MicrosoftmacOSSdknet90_155Version>
     <MicrosoftmacOSSdknet90_260Version>$(MicrosoftmacOSSdknet90_260PackageVersion)</MicrosoftmacOSSdknet90_260Version>
+    <MicrosofttvOSSdknet100_260Version>$(MicrosofttvOSSdknet100_260PackageVersion)</MicrosofttvOSSdknet100_260Version>
     <MicrosofttvOSSdknet90_185Version>$(MicrosofttvOSSdknet90_185PackageVersion)</MicrosofttvOSSdknet90_185Version>
     <MicrosofttvOSSdknet90_260Version>$(MicrosofttvOSSdknet90_260PackageVersion)</MicrosofttvOSSdknet90_260Version>
     <!-- xamarin/xamarin-macios dependencies -->

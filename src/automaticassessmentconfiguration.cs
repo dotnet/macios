@@ -76,6 +76,18 @@ namespace AutomaticAssessmentConfiguration {
 		[Export ("allowsDictation")]
 		bool AllowsDictation { get; set; }
 
+		[NoiOS, MacCatalyst (26, 1), Mac (26, 1)]
+		[Export ("allowsAccessibilityKeyboard")]
+		bool AllowsAccessibilityKeyboard { get; set; }
+
+		[MacCatalyst (26, 1), Mac (26, 1), iOS (26, 1)]
+		[Export ("allowsAccessibilityLiveCaptions")]
+		bool AllowsAccessibilityLiveCaptions { get; set; }
+
+		[MacCatalyst (26, 1), Mac (26, 1), iOS (26, 1)]
+		[Export ("allowsAccessibilityReader")]
+		bool AllowsAccessibilityReader { get; set; }
+
 		[NoMac, iOS (14, 0)]
 		[MacCatalyst (14, 0)]
 		[Export ("allowsAccessibilitySpeech")]
@@ -111,6 +123,10 @@ namespace AutomaticAssessmentConfiguration {
 		[iOS (17, 5), Mac (12, 0), MacCatalyst (15, 0)]
 		[Export ("setConfiguration:forApplication:")]
 		void SetConfiguration (AEAssessmentParticipantConfiguration configuration, AEAssessmentApplication application);
+
+		[NoiOS, MacCatalyst (26, 1), Mac (26, 1)]
+		[Export ("allowsScreenshots")]
+		bool AllowsScreenshots { get; set; }
 	}
 
 	[iOS (13, 4)]

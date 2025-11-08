@@ -1132,6 +1132,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";BI1124" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Found a [Preserve]5D; attribute on {0}: [Preserve]5D; is deprecated; use [DynamicDependency]5D; instead.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[在 {0} 上發現 [Preserve]5D; 屬性: [Preserve]5D; 已被棄用，請改用 [DynamicDependency]5D;。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";default" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/dotnet/macios/issues/new]]></Val>

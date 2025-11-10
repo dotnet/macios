@@ -1199,9 +1199,11 @@
 			<_IsDedupEnabled Condition="'$(_IsDedupEnabled)' == '' And '$(_RunAotCompiler)' == 'true' And '$(IsMacEnabled)' == 'true' And '$(TargetArchitectures)' == 'ARM64' And '$(MtouchInterpreter)' != 'all'">true</_IsDedupEnabled>
 			<_DedupAssembly Condition="'$(_IsDedupEnabled)' == 'true'">$(IntermediateOutputPath)aot-instances.dll</_DedupAssembly>
 
+			<!-- This property isn't accurate with CoreCLR, it should probably be renamed to something like '_LibRuntimeLinkMode' at some point -->
+			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And '$(UseMonoRuntime)' == 'false'">dylib</_LibMonoLinkMode>
 			<!-- default to 'static' for Mac Catalyst to work around https://github.com/dotnet/macios/issues/14686 -->
 			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And '$(_PlatformName)' == 'MacCatalyst'">static</_LibMonoLinkMode>
-			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And ('$(ComputedPlatform)' != 'iPhone' Or '$(_PlatformName)' == 'macOS')">dylib</_LibMonoLinkMode>
+			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And '$(ComputedPlatform)' != 'iPhone'">dylib</_LibMonoLinkMode>
 			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == ''">static</_LibMonoLinkMode>
 			<_LibMonoExtension Condition="'$(_LibMonoLinkMode)' == 'dylib'">dylib</_LibMonoExtension>
 			<_LibMonoExtension Condition="'$(_LibMonoLinkMode)' == 'static'">a</_LibMonoExtension>

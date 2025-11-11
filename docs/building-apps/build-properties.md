@@ -290,6 +290,12 @@ This also applies to how native references are stored inside NuGets.
 > [!NOTE]
 > In some cases it can be beneficial to force a zip file on iOS as well, especially when there's a framework with files that have long names, because the zip file can sometimes work around MAX_PATH issues on Windows.
 
+## CopySceneKitAssetsPath
+
+The full path to the `copySceneKitAssets` tool.
+
+The default behavior is to use `xcrun copySceneKitAssets`.
+
 ## CoreMLCompilerPath
 
 The full path to the `coremlc` tool.

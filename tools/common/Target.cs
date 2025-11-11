@@ -588,7 +588,8 @@ namespace Xamarin.Bundler {
 			if (App.EnableDebug)
 				sw.WriteLine ("\txamarin_debug_mode = TRUE;");
 
-			sw.WriteLine ($"\tsetenv (\"MONO_GC_PARAMS\", \"{App.MonoGCParams}\", 1);");
+			if (!string.IsNullOrEmpty (App.MonoGCParams) && App.XamarinRuntime == XamarinRuntime.MonoVM)
+				sw.WriteLine ($"\tsetenv (\"MONO_GC_PARAMS\", \"{App.MonoGCParams}\", 1);");
 
 			sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", App.DynamicRegistrationSupported ? "TRUE" : "FALSE");
 
@@ -612,7 +613,7 @@ namespace Xamarin.Bundler {
 			var assembly_location_count = 0;
 			var enable_llvm = (abi & Abi.LLVM) != 0;
 
-			if (app.XamarinRuntime != XamarinRuntime.NativeAOT) {
+			if (app.XamarinRuntime == XamarinRuntime.MonoVM) {
 				register_assemblies.AppendLine ("\tGCHandle exception_gchandle = INVALID_GCHANDLE;");
 				foreach (var s in assemblies) {
 					if (!s.IsAOTCompiled)
@@ -724,6 +725,8 @@ namespace Xamarin.Bundler {
 				}
 			} else if (app.XamarinRuntime == XamarinRuntime.NativeAOT) {
 				// don't call mono_jit_set_aot_mode
+			} else if (app.XamarinRuntime == XamarinRuntime.CoreCLR) {
+				// don't call mono_jit_set_aot_mode
 			} else if (app.IsDeviceBuild) {
 				sw.WriteLine ("\tmono_jit_set_aot_mode (MONO_AOT_MODE_FULL);");
 			} else if (app.Platform == ApplePlatform.MacCatalyst && ((abi & Abi.ARM64) == Abi.ARM64)) {
@@ -774,7 +777,7 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("\txamarin_marshal_objectivec_exception_mode = MarshalObjectiveCExceptionMode{0};", app.MarshalObjectiveCExceptions);
 			if (app.EnableDebug)
 				sw.WriteLine ("\txamarin_debug_mode = TRUE;");
-			if (!string.IsNullOrEmpty (app.MonoGCParams))
+			if (!string.IsNullOrEmpty (app.MonoGCParams) && app.XamarinRuntime == XamarinRuntime.MonoVM)
 				sw.WriteLine ("\tsetenv (\"MONO_GC_PARAMS\", \"{0}\", 1);", app.MonoGCParams);
 			// Do this last, so that the app developer can override any other environment variable we set.
 			foreach (var kvp in app.EnvironmentVariables) {

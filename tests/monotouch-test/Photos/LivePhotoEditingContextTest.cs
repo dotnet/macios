@@ -43,6 +43,17 @@ namespace MonoTouchFixtures.Photos {
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test pokes at internals, so it's expected to not be trimmer safe. It works though, so unless something changes, we're going to assume it's trimmer-compatible.")]
 		[UnconditionalSuppressMessage ("Trimming", "IL2075", Justification = "This test pokes at internals, so it's expected to not be trimmer safe. It works though, so unless something changes, we're going to assume it's trimmer-compatible.")]
 		[Test]
+#if __MACOS__
+		[DynamicDependency ("Invoke", "ObjCRuntime.Trampolines.SDPHLivePhotoFrameProcessingBlock", "Microsoft.macOS")]
+#elif __TVOS__
+		[DynamicDependency ("Invoke", "ObjCRuntime.Trampolines.SDPHLivePhotoFrameProcessingBlock", "Microsoft.tvOS")]
+#elif __MACCATALYST__
+		[DynamicDependency ("Invoke", "ObjCRuntime.Trampolines.SDPHLivePhotoFrameProcessingBlock", "Microsoft.MacCatalyst")]
+#elif __IOS__
+		[DynamicDependency ("Invoke", "ObjCRuntime.Trampolines.SDPHLivePhotoFrameProcessingBlock", "Microsoft.iOS")]
+#else
+#error Unknown platform
+#endif
 		public unsafe void FrameProcessingBlock2 ()
 		{
 			if (!Runtime.DynamicRegistrationSupported)

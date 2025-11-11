@@ -179,6 +179,11 @@
 # same as NSDictionary::objectForKey according to docs
 !missing-selector! NSDictionary::objectForKeyedSubscript: not bound
 
+# these selectors are in the headers, but introspection says they're not there, and an Xcode test confirms they're not available
+!missing-selector! NSURLRequest::allowsUltraConstrainedNetworkAccess not bound
+!missing-selector! NSMutableURLRequest::allowsUltraConstrainedNetworkAccess not bound
+!missing-selector! NSMutableURLRequest::setAllowsUltraConstrainedNetworkAccess: not bound
+
 # We already have methods for decoding/encoding 'int32_t' and 'int64_t', so adding support 'int' as well doesn't make sense
 !missing-selector! NSCoder::decodeIntForKey: not bound
 !missing-selector! NSCoder::encodeInt:forKey: not bound

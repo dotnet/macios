@@ -1425,6 +1425,14 @@ namespace Photos {
 		[MacCatalyst (16, 0)]
 		[Export ("currentChangeToken")]
 		PHPersistentChangeToken CurrentChangeToken { get; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+		[Export ("uploadJobExtensionEnabled")]
+		bool UploadJobExtensionEnabled { [Bind ("isUploadJobExtensionEnabled")] get; }
+
+		[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+		[Export ("setUploadJobExtensionEnabled:error:")]
+		bool SetUploadJobExtensionEnabled (bool enable, [NullAllowed] out NSError error);
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -1887,4 +1895,61 @@ namespace Photos {
 		NSSet<NSString> DeletedLocalIdentifiers { get; }
 	}
 
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+	[BaseType (typeof (PHObject))]
+	[DisableDefaultCtor]
+	interface PHAssetResourceUploadJob {
+		[Static]
+		[Export ("jobLimit")]
+		nint JobLimit { get; }
+
+		[Export ("resource", ArgumentSemantic.Strong)]
+		PHAssetResource Resource { get; }
+
+		[Export ("destination", ArgumentSemantic.Strong)]
+		NSUrlRequest Destination { get; }
+
+		[Export ("state")]
+		PHAssetResourceUploadJobState State { get; }
+
+		[Static]
+		[Export ("fetchJobsWithAction:options:")]
+		PHFetchResult FetchJobs (PHAssetResourceUploadJobAction action, [NullAllowed] PHFetchOptions options);
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+	[BaseType (typeof (PHChangeRequest))]
+	[DisableDefaultCtor]
+	interface PHAssetResourceUploadJobChangeRequest {
+		[Static]
+		[Export ("createJobWithDestination:resource:")]
+		void CreateJob (NSUrlRequest destination, PHAssetResource resource);
+
+		[Static]
+		[Export ("changeRequestForUploadJob:")]
+		[return: NullAllowed]
+		PHAssetResourceUploadJobChangeRequest ChangeRequest (PHAssetResourceUploadJob job);
+
+		[Export ("acknowledge")]
+		void Acknowledge ();
+
+		[Export ("retryWithDestination:")]
+		void Retry ([NullAllowed] NSUrlRequest destination);
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+	[Native]
+	public enum PHAssetResourceUploadJobState : long {
+		Registered = 1,
+		Pending = 2,
+		Failed = 3,
+		Succeeded = 4,
+	}
+
+	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
+	[Native]
+	public enum PHAssetResourceUploadJobAction : long {
+		Acknowledge = 1,
+		Retry = 2,
+	}
 }

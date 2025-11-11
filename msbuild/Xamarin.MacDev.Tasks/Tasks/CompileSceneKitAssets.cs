@@ -102,15 +102,12 @@ namespace Xamarin.MacDev.Tasks {
 			args.Add (Path.GetFullPath (output));
 			args.Add ($"--sdk-root={SdkRoot}");
 
-			if (AppleSdkSettings.XcodeVersion.Major >= 10) {
-				var platform = PlatformUtils.GetTargetPlatform (SdkPlatform, IsWatchApp);
-				if (platform is not null)
-					args.Add ($"--target-platform={platform}");
+			var platform = PlatformUtils.GetTargetPlatform (SdkPlatform, IsWatchApp);
+			if (platform is not null)
+				args.Add ($"--target-platform={platform}");
 
-				args.Add ($"--target-version={SdkVersion}");
-			} else {
-				args.Add ($"--target-version-{OperatingSystem}={SdkVersion}");
-			}
+			args.Add ($"--target-version={SdkVersion}");
+
 			args.Add ($"--target-build-dir={Path.GetFullPath (intermediate)}");
 			args.Add ($"--resources-folder-path={AppBundleName}");
 

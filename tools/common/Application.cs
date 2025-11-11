@@ -1354,18 +1354,13 @@ namespace Xamarin.Bundler {
 			return true;
 		}
 
-		// For mobile device builds: returns whether an assembly is AOT-compiled.
-		// For macOS: while AOT is supported for macOS, this particular method was not written for macOS, and would need
-		// revision/testing to be used so desired.
+		// Returns whether an assembly is Mono AOT-compiled.
 		public bool IsAOTCompiled (string assembly)
 		{
-#if NET && !LEGACY_TOOLS
-			if (Platform == ApplePlatform.MacOSX)
-				return false; // AOT on .NET for macOS hasn't been implemented yet.
-#else
-			if (Platform == ApplePlatform.MacOSX)
-				throw ErrorHelper.CreateError (99, Errors.MX0099, "IsAOTCompiled isn't a valid operation for macOS apps.");
-#endif
+			// We're never AOT compiled if we're using CoreCLR
+			if (XamarinRuntime == XamarinRuntime.CoreCLR)
+				return false;
+
 			if (!UseInterpreter) {
 				if (Platform == ApplePlatform.MacCatalyst)
 					return IsArchEnabled (Abi.ARM64);

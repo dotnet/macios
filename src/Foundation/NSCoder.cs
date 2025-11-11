@@ -27,8 +27,7 @@
 //
 using System.Collections.Generic;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 
@@ -96,7 +95,7 @@ namespace Foundation {
 		/// <summary>Decodes the requested key as an array of bytes.</summary>
 		/// <param name="key">The key identifying the item to decode.</param>
 		/// <returns>The decoded array of bytes.</returns>
-		public byte [] DecodeBytes (string key)
+		public byte []? DecodeBytes (string key)
 		{
 			nuint len = 0;
 			IntPtr ret = DecodeBytes (key, out len);
@@ -112,7 +111,7 @@ namespace Foundation {
 		/// <remarks>The decoded array of bytes.</remarks>
 		/// <summary>Decodes the next item as an array of bytes.</summary>
 		/// <returns>The array of bytes decoded from the stream.</returns>
-		public byte [] DecodeBytes ()
+		public byte []? DecodeBytes ()
 		{
 			nuint len = 0;
 			IntPtr ret = DecodeBytes (out len);
@@ -125,6 +124,10 @@ namespace Foundation {
 			return retarray;
 		}
 
+		/// <summary>Attempts to decode a boolean value associated with the specified key.</summary>
+		/// <param name="key">The key identifying the item to decode.</param>
+		/// <param name="result">When this method returns, contains the decoded boolean value if the key exists; otherwise, false.</param>
+		/// <returns><see langword="true" /> if the key exists and the value was decoded; otherwise, <see langword="false" />.</returns>
 		public bool TryDecode (string key, out bool result)
 		{
 			if (ContainsKey (key)) {
@@ -135,6 +138,10 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <summary>Attempts to decode a double value associated with the specified key.</summary>
+		/// <param name="key">The key identifying the item to decode.</param>
+		/// <param name="result">When this method returns, contains the decoded double value if the key exists; otherwise, 0.</param>
+		/// <returns><see langword="true" /> if the key exists and the value was decoded; otherwise, <see langword="false" />.</returns>
 		public bool TryDecode (string key, out double result)
 		{
 			if (ContainsKey (key)) {
@@ -145,6 +152,10 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <summary>Attempts to decode a float value associated with the specified key.</summary>
+		/// <param name="key">The key identifying the item to decode.</param>
+		/// <param name="result">When this method returns, contains the decoded float value if the key exists; otherwise, 0.</param>
+		/// <returns><see langword="true" /> if the key exists and the value was decoded; otherwise, <see langword="false" />.</returns>
 		public bool TryDecode (string key, out float result)
 		{
 			if (ContainsKey (key)) {
@@ -155,6 +166,10 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <summary>Attempts to decode an integer value associated with the specified key.</summary>
+		/// <param name="key">The key identifying the item to decode.</param>
+		/// <param name="result">When this method returns, contains the decoded integer value if the key exists; otherwise, 0.</param>
+		/// <returns><see langword="true" /> if the key exists and the value was decoded; otherwise, <see langword="false" />.</returns>
 		public bool TryDecode (string key, out int result)
 		{
 			if (ContainsKey (key)) {
@@ -165,6 +180,10 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <summary>Attempts to decode a long integer value associated with the specified key.</summary>
+		/// <param name="key">The key identifying the item to decode.</param>
+		/// <param name="result">When this method returns, contains the decoded long integer value if the key exists; otherwise, 0.</param>
+		/// <returns><see langword="true" /> if the key exists and the value was decoded; otherwise, <see langword="false" />.</returns>
 		public bool TryDecode (string key, out long result)
 		{
 			if (ContainsKey (key)) {
@@ -175,6 +194,10 @@ namespace Foundation {
 			return false;
 		}
 
+		/// <summary>Attempts to decode a native integer value associated with the specified key.</summary>
+		/// <param name="key">The key identifying the item to decode.</param>
+		/// <param name="result">When this method returns, contains the decoded native integer value if the key exists; otherwise, 0.</param>
+		/// <returns><see langword="true" /> if the key exists and the value was decoded; otherwise, <see langword="false" />.</returns>
 		public bool TryDecode (string key, out nint result)
 		{
 			if (ContainsKey (key)) {
@@ -185,7 +208,11 @@ namespace Foundation {
 			return false;
 		}
 
-		public bool TryDecode (string key, out NSObject result)
+		/// <summary>Attempts to decode an NSObject associated with the specified key.</summary>
+		/// <param name="key">The key identifying the item to decode.</param>
+		/// <param name="result">When this method returns, contains the decoded NSObject if the key exists; otherwise, <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the key exists and the value was decoded; otherwise, <see langword="false" />.</returns>
+		public bool TryDecode (string key, out NSObject? result)
 		{
 			if (ContainsKey (key)) {
 				result = DecodeObject (key);
@@ -195,7 +222,11 @@ namespace Foundation {
 			return false;
 		}
 
-		public bool TryDecode (string key, out byte [] result)
+		/// <summary>Attempts to decode a byte array associated with the specified key.</summary>
+		/// <param name="key">The key identifying the item to decode.</param>
+		/// <param name="result">When this method returns, contains the decoded byte array if the key exists; otherwise, <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the key exists and the value was decoded; otherwise, <see langword="false" />.</returns>
+		public bool TryDecode (string key, out byte []? result)
 		{
 			if (ContainsKey (key)) {
 				result = DecodeBytes (key);
@@ -205,24 +236,26 @@ namespace Foundation {
 			return false;
 		}
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
-		public NSObject DecodeTopLevelObject (Type type, string key, out NSError error)
+		/// <summary>Decodes a top-level object of the specified type associated with the specified key.</summary>
+		/// <param name="type">The type of the object to decode.</param>
+		/// <param name="key">The key identifying the item to decode.</param>
+		/// <param name="error">When this method returns, contains an error object if decoding failed; otherwise, <see langword="null" />.</param>
+		/// <returns>The decoded object, or <see langword="null" /> if decoding failed.</returns>
+		public NSObject? DecodeTopLevelObject (Type type, string key, out NSError? error)
 		{
 			if (type is null)
 				throw new ArgumentNullException (nameof (type));
 			return DecodeTopLevelObject (new Class (type), key, out error);
 		}
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
-		public NSObject DecodeTopLevelObject (Type [] types, string key, out NSError error)
+		/// <summary>Decodes a top-level object of one of the specified types associated with the specified key.</summary>
+		/// <param name="types">An array of types that the decoded object can be. If <see langword="null" />, any type is allowed.</param>
+		/// <param name="key">The key identifying the item to decode.</param>
+		/// <param name="error">When this method returns, contains an error object if decoding failed; otherwise, <see langword="null" />.</param>
+		/// <returns>The decoded object, or <see langword="null" /> if decoding failed.</returns>
+		public NSObject? DecodeTopLevelObject (Type []? types, string key, out NSError? error)
 		{
-			NSSet<Class> typeSet = null;
+			NSSet<Class>? typeSet = null;
 			if (types is not null) {
 				var classes = new Class [types.Length];
 				for (int i = 0; i < types.Length; i++)

@@ -36,6 +36,8 @@ namespace Xharness.Jenkins {
 			var x64_runtime_identifier = string.Empty;
 			var arm64_sim_runtime_identifier = string.Empty;
 			var x64_sim_runtime_identifier = string.Empty;
+			var supports_mono = test.Platform != TestPlatform.Mac;
+			var supports_coreclr = true;
 
 			switch (test.Platform) {
 			case TestPlatform.Mac:
@@ -67,6 +69,17 @@ namespace Xharness.Jenkins {
 					} else {
 						yield return new TestData { Variation = "Debug (don't bundle original resources)", TestVariation = "do-not-bundle-original-resources", Debug = true };
 					}
+				}
+				break;
+			case "introspection":
+				if (supports_coreclr && supports_mono) { // we only need specific coreclr test if we *also* support mono (otherwise the default test will be coreclr)
+					yield return new TestData { Variation = "CoreCLR", TestVariation = "coreclr", Ignored = ignore };
+				}
+				break;
+			case "monotouch-test":
+				if (supports_coreclr && supports_mono) { // we only need specific coreclr test if we *also* support mono (otherwise the default test will be coreclr)
+					yield return new TestData { Variation = "Debug (CoreCLR)", TestVariation = "debug|coreclr", Ignored = ignore };
+					yield return new TestData { Variation = "Release (CoreCLR)", TestVariation = "release|coreclr", Ignored = ignore };
 				}
 				break;
 			}

@@ -2,6 +2,8 @@
 <!-- This file contains various test variations valid for all test projects + some supporting logic -->
 <Project>
 	<ItemGroup>
+		<TestVariations Include="debug" Description="Debug ('Configuration=Debug')" />
+		<TestVariations Include="release" Description="Release ('Configuration=Release')" />
 		<TestVariations Include="interpreter" Description="Run with the interpreter ('UseInterpreter=true')" />
 		<TestVariations Include="bundle-original-resources" Description="Bundle original resources ('BundleOriginalResources=true')" />
 		<TestVariations Include="do-not-bundle-original-resources" Description="Do not bundle original resources ('BundleOriginalResources=false')" />
@@ -11,46 +13,58 @@
 		<TestVariations Include="coreclr" Description="Use CoreCLR ('UseMonoRuntime=false')" />
 	</ItemGroup>
 
-	<PropertyGroup Condition="'$(TestVariation)' == 'interpreter'">
+	<PropertyGroup>
+		<_TestVariationForComparison>|$([System.String]::Join('|', $(TestVariation.Split('|', StringSplitOptions.RemoveEmptyEntries))))|</_TestVariationForComparison>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|debug|'))">
+		<Configuration>Debug</Configuration>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|release|'))">
+		<Configuration>Release</Configuration>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|interpreter|'))">
 		<UseInterpreter>true</UseInterpreter>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TestVariation)' == 'nativeaot'">
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|nativeaot|'))">
 		<PublishAot>true</PublishAot>
 		<_IsPublishing>true</_IsPublishing>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TestVariation)' == 'linksdk'">
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|linksdk|'))">
 		<MtouchLink>SdkOnly</MtouchLink>
 		<LinkMode>$(MtouchLink)</LinkMode>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TestVariation)' == 'linkall'">
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|linkall|'))">
 		<MtouchLink>Full</MtouchLink>
 		<LinkMode>$(MtouchLink)</LinkMode>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TestVariation)' == 'bundle-original-resources'">
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|bundle-original-resources|'))">
 		<BundleOriginalResources>true</BundleOriginalResources>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TestVariation)' == 'do-not-bundle-original-resources'">
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|do-not-bundle-original-resources|'))">
 		<BundleOriginalResources>false</BundleOriginalResources>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TestVariation)' == 'nativeaot'">
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|nativeaot|'))">
 		<PublishAot>true</PublishAot>
 		<_IsPublishing>true</_IsPublishing>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(TestVariation)' == 'coreclr'">
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|coreclr|'))">
 		<UseMonoRuntime>false</UseMonoRuntime>
 	</PropertyGroup>
 
 	<Target Name="ValidateTestVariation" Condition="'$(TestVariation)' != '' And '$(OutputType)' == 'exe'" BeforeTargets="Build">
 		<ItemGroup>
-			<_FilteredTestVariations Include="@(TestVariations)" Condition="'%(Identity)' == '$(TestVariation)'" />
+			<_InvalidTestVariations Include="$(TestVariation.Split('|'))" Exclude="@(TestVariations)" />
 		</ItemGroup>
-		<Error Text="The test variation '$(TestVariation)' is not valid. Please run 'make list-variations' to list all the valid variations." Condition="@(_FilteredTestVariations->Count()) == '0'" />
+		<Error Text="Invalid test variation(s): '@(_InvalidTestVariations,', ')'. Please run 'make list-variations' to list all the valid variations." Condition="@(_InvalidTestVariations->Count()) != '0'" />
 	</Target>
 </Project>

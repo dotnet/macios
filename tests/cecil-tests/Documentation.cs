@@ -169,6 +169,35 @@ namespace Cecil.Tests {
 			}
 		}
 
+		[Test]
+		public void NoRemarksOnEnumFields ()
+		{
+			var xmlEnumFieldsWithRemarks = new Dictionary<string, string> ();
+			foreach (var info in Helper.NetPlatformAssemblyDefinitions) {
+				// create a dictionary lookup of all types in the assembly
+				var allTypes = info.Assembly.EnumerateTypes ().ToDictionary (k => k.FullName.Replace ('/', '.'), v => v);
+				// load the xml documentation, filtering to fields with a <remarks> section
+				var xmlPath = Path.ChangeExtension (info.Path, ".xml");
+				var doc = new XmlDocument ();
+				doc.LoadWithoutNetworkAccess (xmlPath);
+				foreach (XmlNode node in doc.SelectNodes ("/doc/members/member[starts-with(@name,'F:') and ./remarks]")!) {
+					var name = node.Attributes! ["name"]!.Value;
+
+					// extract the type name from the member name, and use it to check if the field's type is an enum
+					var typename = name [2..name.LastIndexOf ('.')];
+					var type = allTypes [typename];
+					if (!type.IsEnum)
+						continue;
+
+					// the field has a <remarks> section, and it's an enum field - record it as a failure
+					var remarks = node.SelectSingleNode ("remarks")?.InnerText ?? "";
+					xmlEnumFieldsWithRemarks [name] = remarks;
+				}
+			}
+
+			Assert.That (xmlEnumFieldsWithRemarks, Is.Empty, "No enum fields with <remarks> documentation.");
+		}
+
 		static HashSet<AssemblyApi> GetDocumentedMembers (string xml)
 		{
 			var rv = new HashSet<AssemblyApi> ();

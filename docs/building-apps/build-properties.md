@@ -499,7 +499,7 @@ application size.
 Default: set to `false` when `Optimize` is set to `true` (which is the default
 for `Release` builds), unless `$(EnableDiagnostics)` is enabled.
 
-[eventsource]: https://learn.microsoft.com/dotnet/core/diagnostics/eventsource
+[eventsource]: /dotnet/core/diagnostics/eventsource
 
 ## GenerateApplicationManifest
 
@@ -708,7 +708,7 @@ application size.
 Default: set to `false` when `Optimize` is set to `true` (which is the default
 for `Release` builds), unless `$(EnableDiagnostics)` is enabled.
 
-[dotnetmetrics]: https://learn.microsoft.com/dotnet/core/diagnostics/metrics
+[dotnetmetrics]: /dotnet/core/diagnostics/metrics
 
 ## MmpDebug
 

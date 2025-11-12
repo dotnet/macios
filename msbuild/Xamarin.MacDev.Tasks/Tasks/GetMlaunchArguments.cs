@@ -71,12 +71,14 @@ namespace Xamarin.MacDev.Tasks {
 			string productFamily;
 			switch (DeviceType) {
 			case IPhoneDeviceType.IPhone:
-			case IPhoneDeviceType.IPad:
-			case IPhoneDeviceType.TV:
-				productFamily = DeviceType.ToString ();
+				productFamily = "iPhone";
 				break;
+			case IPhoneDeviceType.IPad:
 			case IPhoneDeviceType.IPhoneAndIPad:
-				productFamily = "IPad";
+				productFamily = "iPad";
+				break;
+			case IPhoneDeviceType.TV:
+				productFamily = "Apple TV";
 				break;
 			default:
 				throw new InvalidOperationException ($"Invalid device type: {DeviceType}");
@@ -152,21 +154,6 @@ namespace Xamarin.MacDev.Tasks {
 			var deviceTypes = GetDeviceTypes ();
 			if (deviceTypes is null)
 				return rv;
-
-			// Which product family are we looking for?
-			string productFamily;
-			switch (DeviceType) {
-			case IPhoneDeviceType.IPhone:
-			case IPhoneDeviceType.IPad:
-			case IPhoneDeviceType.TV:
-				productFamily = DeviceType.ToString ();
-				break;
-			case IPhoneDeviceType.IPhoneAndIPad:
-				productFamily = "IPad";
-				break;
-			default:
-				throw new InvalidOperationException ($"Invalid device type: {DeviceType}");
-			}
 
 			// Load mlaunch's output
 			var xml = new XmlDocument ();

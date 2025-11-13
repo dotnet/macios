@@ -12,11 +12,9 @@ using Xamarin.Messaging.Build.Client;
 
 namespace Xamarin.MacDev.Tasks {
 	public class CoreMLCompiler : XamarinTask, ICancelableTask, IHasProjectDir, IHasResourcePrefix {
-		string? toolExe;
-
-		public string ToolName { get { return "coremlc"; } }
-
 		#region Inputs
+
+		public string CoreMlcPath { get; set; } = "";
 
 		public bool EnableOnDemandResources { get; set; }
 
@@ -37,14 +35,6 @@ namespace Xamarin.MacDev.Tasks {
 			get { return string.IsNullOrEmpty (sdkDevPath) ? "/" : sdkDevPath; }
 			set { sdkDevPath = value; }
 		}
-
-		public string ToolExe {
-			get { return toolExe ?? ToolName; }
-			set { toolExe = value; }
-		}
-
-		public string ToolPath { get; set; } = "";
-
 		#endregion
 
 		#region Outputs
@@ -57,19 +47,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		#endregion
 
-		string DeveloperRootBinDir {
-			get { return Path.Combine (SdkDevPath, "usr", "bin"); }
-		}
-
-		string GetFullPathToTool ()
-		{
-			if (!string.IsNullOrEmpty (ToolPath))
-				return Path.Combine (ToolPath, ToolExe);
-
-			var path = Path.Combine (DeveloperRootBinDir, ToolExe);
-
-			return File.Exists (path) ? path : ToolExe;
-		}
+		const string ToolName = "coremlc";
 
 		int Compile (ITaskItem item, string outputDir, string log, string partialPlist)
 		{
@@ -81,9 +59,8 @@ namespace Xamarin.MacDev.Tasks {
 			args.Add ("--output-partial-info-plist");
 			args.Add (partialPlist);
 
-			var fileName = GetFullPathToTool ();
-
-			var rv = ExecuteAsync (fileName, args, sdkDevPath, mergeOutput: false).Result;
+			var executable = GetExecutable (args, ToolName, CoreMlcPath);
+			var rv = ExecuteAsync (executable, args, sdkDevPath, mergeOutput: false).Result;
 			var exitCode = rv.ExitCode;
 			var output = rv.StandardOutput!.ToString ();
 			File.WriteAllText (log, output);

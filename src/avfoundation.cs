@@ -433,7 +433,6 @@ namespace AVFoundation {
 		QuickTimeMovie = 0,
 
 		/// <summary>Indicates the MPEG-4 format.</summary>
-		/// <remarks>Typically files using format has an .mp4 extension.</remarks>
 		[Field ("AVFileTypeMPEG4")]
 		Mpeg4 = 1,
 
@@ -541,6 +540,10 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Field ("AVFileTypeDICOM")]
 		Dicom = 24,
+
+		[MacCatalyst (26, 1), TV (26, 1), Mac (26, 1), iOS (26, 1)]
+		[Field ("AVFileTypeQuickTimeAudio")]
+		QuickTimeAudio = 25,
 	}
 
 	[MacCatalyst (13, 1)]

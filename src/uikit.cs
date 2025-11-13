@@ -1120,6 +1120,9 @@ namespace UIKit {
 
 		[TV (14, 0), iOS (14, 0)]
 		[MacCatalyst (14, 0)]
+		[Deprecated (PlatformName.iOS, 26, 1, message: "Use 'AXSettings.ShowBordersEnabledStatusDidChangeNotification' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 1, message: "Use 'AXSettings.ShowBordersEnabledStatusDidChangeNotification' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 1, message: "Use 'AXSettings.ShowBordersEnabledStatusDidChangeNotification' instead.")]
 		[Notification]
 		[Field ("UIAccessibilityButtonShapesEnabledStatusDidChangeNotification")]
 		NSString ButtonShapesEnabledStatusDidChangeNotification { get; }
@@ -15273,6 +15276,11 @@ namespace UIKit {
 		[Deprecated (PlatformName.TvOS, 17, 0, message: "Use the 'TraitOverrides' property instead.")]
 		[Export ("overrideTraitCollection", ArgumentSemantic.Copy), NullAllowed]
 		UITraitCollection OverrideTraitCollection { get; set; }
+
+		[NoTV, NoMacCatalyst, iOS (26, 1)]
+		[NullAllowed]
+		[Export ("backgroundEffect", ArgumentSemantic.Strong)]
+		UIVisualEffect BackgroundEffect { get; set; }
 
 		[Export ("adaptivePresentationStyle")]
 		UIModalPresentationStyle AdaptivePresentationStyle ();
@@ -30479,10 +30487,14 @@ namespace UIKit {
 		[Export ("supportsMultipleItems")]
 		bool SupportsMultipleItems { get; set; }
 
+#if !XAMCORE_5_0
 		[NullAllowed]
 		[NoTV, iOS (26, 0), MacCatalyst (26, 0)]
+		[Obsoleted (PlatformName.iOS, 26, 1, "This API has been removed.")]
+		[Obsoleted (PlatformName.MacCatalyst, 26, 1, "This API has been removed.")]
 		[Export ("imageOnlyForContextMenu", ArgumentSemantic.Strong)]
 		UIImage ImageOnlyForContextMenu { get; set; }
+#endif
 	}
 
 	interface IUIFocusItemContainer { }
@@ -34416,11 +34428,6 @@ namespace UIKit {
 		[Export ("glassButtonConfiguration")]
 		UIButtonConfiguration GlassButtonConfiguration { get; }
 
-		[Static]
-		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
-		[Export ("tintedGlassButtonConfiguration")]
-		UIButtonConfiguration TintedGlassButtonConfiguration { get; }
-
 #if !XAMCORE_5_0
 		[Obsolete ("Use 'UISymbolContentTransition' instead.")]
 #endif
@@ -34542,6 +34549,11 @@ namespace UIKit {
 		[Static]
 		[Export ("customDetentWithIdentifier:resolver:")]
 		UISheetPresentationControllerDetent Create ([NullAllowed] string identifier, Func<IUISheetPresentationControllerDetentResolutionContext, nfloat> resolver);
+
+		[NoTV, NoMacCatalyst, iOS (26, 1)]
+		[NullAllowed]
+		[Export ("backgroundEffect", ArgumentSemantic.Strong)]
+		UIVisualEffect BackgroundEffect { get; set; }
 
 		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("resolvedValueInContext:")]
@@ -37339,6 +37351,11 @@ namespace UIKit {
 
 		[Export ("initWithTitle:image:identifier:children:viewControllerProvider:")]
 		NativeHandle Constructor (string title, [NullAllowed] UIImage image, string identifier, UITab [] children, [NullAllowed] Func<UITab, UIViewController> viewControllerProvider);
+
+		// Header says available in iOS 26.0+, but let's use the actual version when it was released instead.
+		[NoTV, iOS (26, 1), MacCatalyst (26, 1)]
+		[Export ("isSidebarDestination")]
+		bool IsSidebarDestination { get; set; }
 	}
 
 	[NoTV, iOS (18, 0), MacCatalyst (18, 0)]
@@ -38420,5 +38437,15 @@ namespace UIKit {
 		[Static]
 		[Export ("containerConcentricRadiusWithMinimum:")]
 		UICornerRadius CreateContainerConcentric (nfloat minimum);
+	}
+
+	// Header says available in iOS 11+, but I don't believe that
+	[iOS (26, 1), TV (26, 1), MacCatalyst (26, 1)]
+	[BaseType (typeof (UIVisualEffect))]
+	[DisableDefaultCtor]
+	interface UIColorEffect {
+		[Static]
+		[Export ("effectWithColor:")]
+		UIColorEffect Create ([NullAllowed] UIColor color);
 	}
 }

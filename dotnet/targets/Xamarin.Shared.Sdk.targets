@@ -640,17 +640,6 @@
 			<_ExtraTrimmerArgs>$(_ExtraTrimmerArgs) -b</_ExtraTrimmerArgs>
 
 			<!--
-				Always preserve symbol paths, which will preserve the original path to the pdb in the trimmed assembly.
-				This ensures that building for different architectures don't end up with different trimmed assemblies
-				only because the path to the pdb in the trimmed assembly is different between those builds.
-				References:
-				* https://github.com/dotnet/runtime/pull/103295
-				* https://github.com/jbevain/cecil/pull/554
-				* https://github.com/rolfbjarne/macios/commit/53874c863996656eaba43a5582731b93eb6f53b7
-			-->
-			<_ExtraTrimmerArgs>$(_ExtraTrimmerArgs) --preserve-symbol-paths</_ExtraTrimmerArgs>
-
-			<!--
 
 				The linker will treat type checks as a constant value (false),
 				if the type in question is not instantiated, but we're
@@ -707,6 +696,8 @@
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.Arch.IsSimulator" Value="$(_IsSimulatorFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsManagedStaticRegistrar" Value="$(_IsManagedStaticRegistrarFeature)" Trim="true" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsNativeAOT" Value="$(_IsNativeAOTFeature)" Trim="true" />
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="true" Trim="true" Condition="'$(UseMonoRuntime)' != 'true'" />
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.Runtime.IsCoreCLR" Value="false" Trim="true" Condition="'$(UseMonoRuntime)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.Class.ValidateObjectPointers" Value="$(_ValidateObjectPointers)" Trim="true" />
 
 			<!-- Configure System.Net.Http Native Handlers -->
@@ -1165,8 +1156,8 @@
 			<!-- Don't run the AOT compiler by default -->
 			<_RunAotCompiler>false</_RunAotCompiler>
 		</PropertyGroup>
-		<!-- We don't run Mono's AOT compiler if we're using NativeAOT -->
-		<PropertyGroup Condition="'$(_UseNativeAot)' != 'true'" >
+		<!-- We don't run Mono's AOT compiler if we're not using Mono (aka if we're using NativeAOT or CoreCLR) -->
+		<PropertyGroup Condition="'$(UseMonoRuntime)' == 'true'" >
 			<!-- We need it for device builds for mobile platforms -->
 			<_RunAotCompiler Condition="'$(_SdkIsSimulator)' != 'true' And '$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">true</_RunAotCompiler>
 			<!-- We need it if the interpreter is enabled, no matter where -->

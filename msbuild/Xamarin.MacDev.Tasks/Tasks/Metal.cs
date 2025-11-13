@@ -52,15 +52,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public ITaskItem? OutputFile { get; set; }
 
-		static string GetExecutable (List<string> arguments, string toolName, string toolPathOverride)
-		{
-			if (string.IsNullOrEmpty (toolPathOverride)) {
-				arguments.Insert (0, toolName);
-				return "xcrun";
-			}
-			return toolPathOverride;
-		}
-
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ())

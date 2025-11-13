@@ -1185,5 +1185,14 @@ namespace bgen {
                 return ResourceManager.GetString("BI1123", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Found a [Preserve] attribute on {0}: [Preserve] is deprecated; use [DynamicDependency] instead..
+        /// </summary>
+        internal static string BI1124 {
+            get {
+                return ResourceManager.GetString("BI1124", resourceCulture);
+            }
+        }
     }
 }

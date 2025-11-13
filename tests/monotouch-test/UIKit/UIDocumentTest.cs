@@ -54,8 +54,6 @@ namespace MonoTouchFixtures.UIKit {
 			}
 		}
 
-		MyDocument doc;
-
 		string GetFileName ()
 		{
 			string file = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), "mydocument.txt");
@@ -72,7 +70,7 @@ namespace MonoTouchFixtures.UIKit {
 			TestRuntime.AssertIfSimulatorThenARM64 ();
 
 			using (NSUrl url = NSUrl.FromFilename (GetFileName ())) {
-				doc = new MyDocument (url);
+				using var doc = new MyDocument (url);
 				doc.Save (url, UIDocumentSaveOperation.ForCreating, OperationHandler);
 			}
 		}

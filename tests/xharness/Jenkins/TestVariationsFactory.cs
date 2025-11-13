@@ -111,8 +111,7 @@ namespace Xharness.Jenkins {
 					yield return new TestData { Variation = "Release (NativeAOT, x64)", Debug = false, PublishAot = true, Ignored = ignore, RuntimeIdentifier = x64_sim_runtime_identifier, LinkMode = "Full" };
 					if (supports_interpreter) {
 						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Debug = true, Profiling = false, Ignored = ignore };
-						// interpreter+release fails due to https://github.com/dotnet/runtime/issues/110649.
-						// yield return new TestData { Variation = "Release (interpreter)", TestVariation = "interpreter", Debug = false, Profiling = false, Ignored = ignore, UseLlvm = false };
+						yield return new TestData { Variation = "Release (interpreter)", TestVariation = "interpreter", Debug = false, Profiling = false, Ignored = ignore, UseLlvm = false };
 					}
 					break;
 				case "introspection":

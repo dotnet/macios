@@ -16,7 +16,7 @@ namespace NotificationServiceExtension {
 
 		public override void DidReceiveNotificationRequest (UNNotificationRequest request, Action<UNNotificationContent> contentHandler)
 		{
-			// Called when the OS receives a notification that can be muteated
+			// Called when the OS receives a notification that can be mutated
 
 			// Create a mutable copy of the notification
 			var mutableRequest = (UNMutableNotificationContent) request.Content.MutableCopy ();

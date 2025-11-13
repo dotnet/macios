@@ -57,15 +57,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string ProductBuildPath { get; set; } = string.Empty;
 		#endregion
 
-		static string GetExecutable (List<string> arguments, string toolName, string toolPathOverride)
-		{
-			if (string.IsNullOrEmpty (toolPathOverride)) {
-				arguments.Insert (0, toolName);
-				return "xcrun";
-			}
-			return toolPathOverride;
-		}
-
 		string? GetProjectVersion ()
 		{
 			PDictionary plist;

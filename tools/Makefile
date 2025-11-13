@@ -25,3 +25,4 @@ endif
 SUBDIRS+=mlaunch
 
 SUBDIRS += dotnet-linker
+SUBDIRS += spawner

@@ -46,6 +46,8 @@ namespace Xharness {
 		bool InCI { get; }
 		bool UseTcpTunnel { get; }
 		string VSDropsUri { get; }
+		string SpawnerPath { get; }
+		void UseSpawner (System.Diagnostics.ProcessStartInfo startInfo, IList<string> arguments);
 
 		#endregion
 

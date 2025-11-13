@@ -194,6 +194,29 @@ namespace Xharness {
 			return result;
 		}
 
+#nullable enable
+		string? spawnerPath;
+		public string SpawnerPath {
+			get {
+                if (spawnerPath is null)
+					spawnerPath = Path.GetFullPath (Path.Combine (RootDirectory, "..", "tools", "spawner", "spawner"));
+				return spawnerPath;
+            }
+		}
+
+		public void UseSpawner (ProcessStartInfo processStartInfo, IList<string> arguments)
+		{
+			if (!string.IsNullOrEmpty (processStartInfo.Arguments))
+				throw new InvalidOperationException ($"ProcessStartInfo.Arguments must be empty when using UseSpawner.");
+
+			var originalFileName = processStartInfo.FileName;
+			processStartInfo.FileName = SpawnerPath;
+			processStartInfo.ArgumentList.Add (originalFileName);
+			foreach (var args in arguments)
+				processStartInfo.ArgumentList.Add (args);
+		}
+#nullable disable
+
 		public List<TestProject> TestProjects { get; } = new ();
 
 		readonly bool useSystemXamarinIOSMac; // if the system XI/XM should be used, or the locally build XI/XM.

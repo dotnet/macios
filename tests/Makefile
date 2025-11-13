@@ -219,3 +219,9 @@ build-all:
 	$(MAKE) build-all -C introspection/dotnet
 	$(MAKE) build-all -C monotouch-test/dotnet
 	$(MAKE) build-all -C xcframework-test/dotnet
+	$(MAKE) build-all -C bindings-test/dotnet
+	$(MAKE) build-all -C bindings-test2/dotnet
+	$(MAKE) build-all -C bindings-xcframework-test/dotnet
+	$(MAKE) build-all -C BundledResources/dotnet
+	$(MAKE) build-all -C EmbeddedResources/dotnet
+	$(MAKE) build-all -C fsharplibrary/dotnet

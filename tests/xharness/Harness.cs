@@ -198,10 +198,10 @@ namespace Xharness {
 		string? spawnerPath;
 		public string SpawnerPath {
 			get {
-                if (spawnerPath is null)
+				if (spawnerPath is null)
 					spawnerPath = Path.GetFullPath (Path.Combine (RootDirectory, "..", "tools", "spawner", "spawner"));
 				return spawnerPath;
-            }
+			}
 		}
 
 		public void UseSpawner (ProcessStartInfo processStartInfo, IList<string> arguments)

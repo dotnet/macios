@@ -43,9 +43,11 @@ The steps are:
 	
 	Please fix all warnings, I went to a great effort to make sure we are free of warnings.
 
-6. The last step is to create a pull request in the [dotnet/macios-api-docs](https://github.com/dotnet/macios-api-docs) repository, from the branch `netX.Y-xcodeZ.W` to `main`.
+6. Create a pull request in the [dotnet/macios-api-docs](https://github.com/dotnet/macios-api-docs) repository, from the branch `netX.Y-xcodeZ.W` to `main`.
 
     Once this pull request has been merged, an automated publishing job will get any changes in the `main` branch into the `live` branch, which will then show up on https://learn.microsoft.com.
+
+7. The last step is to create a pull request in the [binaries](https://apidrop.visualstudio.com/_git/binaries) repository for the `netX.Y-xcodeZ.W` we created with the new assemblies (into the `master` branch).
 
 ## How to create new monikers
 

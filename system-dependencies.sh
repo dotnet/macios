@@ -314,6 +314,36 @@ function install_mono () {
 	rm -f $MONO_PKG
 }
 
+function delete_all_simulator_runtimes ()
+{
+	log "Executing 'xcrun simctl runtime delete all'..."
+	xcrun simctl runtime delete all
+
+	local TMPFILE
+	TMPFILE=$(mktemp)
+
+	local COUNT
+
+	# sadly simulator deletion is done asynchronously, so we have to wait until they're all gone
+	log "Waiting for the simulator runtimes to be deleted..."
+	printf "            "
+	for i in $(seq 1 60); do
+		sleep 1
+		xcrun simctl runtime list -j --json-output="$TMPFILE"
+		COUNT=$(jq "length" -r "$TMPFILE")
+		if [[ "$COUNT" == "0" ]]; then
+			break
+		fi
+		printf "$COUNT"
+	done
+	printf "\n"
+	if [[ "$COUNT" != "0" ]]; then
+		warn "Waited for 60 seconds, but there are still $COUNT simulators waiting to deleted."
+	fi
+
+	rm -rf "$TMPFILE"
+}
+
 SIMULATORS_WITHOUT_X64=()
 SIMULATORS_WITHOUT_X64_COUNT=0
 function get_non_universal_simulator_runtimes ()
@@ -350,19 +380,28 @@ function xcodebuild_download_selected_platforms ()
 
 	IOS_BUILD_VERSION=
 	TVOS_BUILD_VERSION=
-	if is_at_least_version "$XCODE_VERSION" 26.1; then
-		# passing -buildVersion .. --architectureVariant .. doesn't quite work in Xcode 26.0 (it works the first time, but then it always thinks it's the first time, tries to download and install, and gets confused), let's see if they fix it in Xcode 26.1
-		if [[ "$XCODE_IS_STABLE" == "YES" ]]; then
-			# we always want the universal variant, so that we can run x64 test apps on arm64
-			IOS_NUGET_OS_VERSION=$(grep '^IOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
-			IOS_BUILD_VERSION=" -buildVersion $IOS_NUGET_OS_VERSION -architectureVariant universal"
-			TVOS_NUGET_OS_VERSION=$(grep '^TVOS_NUGET_OS_VERSION=' Make.versions | sed 's/.*=//')
-			TVOS_BUILD_VERSION=" -buildVersion $TVOS_NUGET_OS_VERSION -architectureVariant universal"
-		fi
-	elif is_at_least_version "$XCODE_VERSION" 26.0; then
+	if is_at_least_version "$XCODE_VERSION" 26.0; then
 		# we always want the universal variant, so that we can run x64 test apps on arm64
 		IOS_BUILD_VERSION=" -architectureVariant universal"
 		TVOS_BUILD_VERSION=" -architectureVariant universal"
+	fi
+
+	local TMPFILE
+	TMPFILE=$(mktemp)
+	log "Checking if there are any simulator runtimes that aren't ready..."
+	xcrun simctl runtime list --json "--json-output=$TMPFILE"
+	NOT_READY_COUNT=$(jq 'map({identifier: .identifier, state: .state}) | map(select(.state != "Ready")) | length' "$TMPFILE")
+	if [[ "$NOT_READY_COUNT" != "0" ]]; then
+		log "Found simulator runtimes that aren't ready, will proceed to delete all simulator runtimes:"
+		(
+			export IFS=$'\n'
+			for line in $(jq 'map({identifier: .identifier, state: .state}) | map(select(.state != "Ready"))[] | "\(.identifier): \(.state)"' -r "$TMPFILE"); do
+				log "    $line"
+			done
+		)
+		delete_all_simulator_runtimes
+	else
+		log "    none found."
 	fi
 
 	# If we're executing on arm64, we need simulator runtimes that support x64 in order to run
@@ -383,7 +422,6 @@ function xcodebuild_download_selected_platforms ()
 			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, which will now be deleted: ${SIMULATORS_WITHOUT_X64[@]}"
 			for sim in "${SIMULATORS_WITHOUT_X64[@]}"; do
 				log "Executing 'xcrun simctl runtime delete $sim'"
-				sleep 60
 				xcrun simctl runtime delete "$sim"
 			done
 			# sadly simulator deletion is done asynchronously, so we have to wait until they're all gone

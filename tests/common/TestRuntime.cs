@@ -1582,6 +1582,7 @@ partial class TestRuntime {
 		IgnoreInCIfHttpStatusCodes (ex, HttpStatusCode.BadGateway, HttpStatusCode.GatewayTimeout, HttpStatusCode.ServiceUnavailable);
 		IgnoreInCIIfNetworkConnectionLost (ex);
 		IgnoreInCIIfDnsResolutionFailed (ex);
+		IgnoreInCIIfSshConnectionError (ex);
 	}
 
 	public static void IgnoreInCIIfBadNetwork (NSError? error)
@@ -1670,6 +1671,14 @@ partial class TestRuntime {
 	{
 		// Error Domain=NSURLErrorDomain Code=-1009 "The Internet connection appears to be offline."
 		IgnoreNetworkError (error, CFNetworkErrors.NotConnectedToInternet);
+	}
+
+	public static void IgnoreInCIIfSshConnectionError (Exception ex)
+	{
+		var msg = ex.Message;
+		if (msg.Contains ("The SSL connection could not be established")) {
+			IgnoreInCI ($"Ignored due to network error: {ex}");
+		}
 	}
 
 	static void IgnoreNetworkError (NSError error, params CFNetworkErrors [] errors)

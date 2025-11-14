@@ -1325,6 +1325,35 @@ Specifies the minimum tvOS version the app can run on.
 
 Applicable to tvOS; setting this value will set [SupportedOSPlatformVersion](#supportedosplatformversion) for tvOS projects (only).
 
+## UseFloatingTargetPlatformVersion
+
+A boolean property that controls whether library projects should use a floating target platform version or the oldest available platform version.
+
+By default (starting in .NET 10), library projects without an explicit `TargetPlatformVersion` will use the oldest available reference assemblies for the current .NET version. This ensures maximum compatibility and allows library code to compile against the minimum API surface available for the target framework.
+
+However, this default behavior means that library projects are built differently than executable projects (which use the latest platform version). Code that works in an executable project may not compile when moved to a library project if it uses APIs only available in newer platform versions.
+
+Setting this property to `true` disables the automatic selection of the oldest platform version, allowing the library project to use the default (latest) platform version like executable projects do.
+
+Example:
+
+```xml
+<PropertyGroup>
+  <!-- Use the latest platform version instead of the oldest -->
+  <UseFloatingTargetPlatformVersion>true</UseFloatingTargetPlatformVersion>
+</PropertyGroup>
+```
+
+Default: `false` (use oldest platform version for library projects in .NET 10+).
+
+This property only applies to library projects (`OutputType=Library`) that are
+not app extensions and have not specified an explicit target platform version
+(the target platform version is the optional version number at the end of the
+`TargetFramework` property, for example for the TargetFramework
+`net10.0-ios26.0` the target platform version is explicitly `26.0`).
+
+This property was introduced in .NET 10.
+
 ## UseHardenedRuntime
 
 A boolean property that specifies if a hardened runtime is enabled.

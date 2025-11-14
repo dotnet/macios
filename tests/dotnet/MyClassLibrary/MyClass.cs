@@ -1,6 +1,9 @@
 using System;
+
+using Foundation;
+
 namespace MyClassLibrary {
-	public class MyClass {
+	public class MyClass : NSObject {
 		public MyClass ()
 		{
 		}

@@ -9,6 +9,7 @@ using SpriteKit;
 using UIKit;
 #endif
 
+using Bindings.Test;
 using MonoTests.System.Net.Http;
 using Xamarin.Utils;
 
@@ -911,6 +912,27 @@ Additional information:
 				: base (handle, owns)
 			{
 			}
+		}
+
+		[Test]
+		public void ConformsToProtocolCreatesManagedInstance ()
+		{
+			// The point of this test is to verify what happens if an instance of a subclassed type is created
+			// through an Objective-C initializer that is not bound in managed code. In this case, no managed
+			// code will be executed when the native instance is created, which means there won't be a managed
+			// instance either.
+			// At some point this caused trouble for our conformsToProtocol: override/implementation: we'd just
+			// return 'false' if there was no managed instance for a native object.
+			var cls = new Class (typeof (ConformsToProtocolCreatesManagedInstanceTestClass));
+			var handle = Messaging.IntPtr_objc_msgSend (cls.Handle, Selector.GetHandle ("alloc"));
+			handle = Messaging.IntPtr_objc_msgSend (handle, Selector.GetHandle ("init"));
+			var conforms = Messaging.bool_objc_msgSend_IntPtr (handle, Selector.GetHandle ("conformsToProtocol:"), Runtime.GetProtocol ("NSObject"));
+			Messaging.void_objc_msgSend (handle, Selector.GetHandle ("release"));
+			Assert.That (conforms, Is.EqualTo (true), "Conforms");
+		}
+
+		class ConformsToProtocolCreatesManagedInstanceTestClass : ClassWithNoDefaultCtor {
+			protected ConformsToProtocolCreatesManagedInstanceTestClass (NativeHandle handle) : base (handle) { }
 		}
 	}
 

@@ -21114,8 +21114,6 @@ P:Foundation.NSProcessInfo.IsiOSAppOnVision
 P:Foundation.NSProcessInfo.IsMacCatalystApplication
 P:Foundation.NSStreamEventArgs.StreamEvent
 P:Foundation.NSString.Item(System.IntPtr)
-P:Foundation.NSUbiquitousKeyValueStore.Item(Foundation.NSString)
-P:Foundation.NSUbiquitousKeyValueStore.Item(System.String)
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangedKeys
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangeReason
 P:Foundation.NSUndoManagerCloseUndoGroupEventArgs.Discardable

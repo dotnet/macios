@@ -8,7 +8,6 @@ namespace Xharness.Jenkins {
 		public string Variation;
 		public KnownIssue KnownFailure;
 		public bool Debug;
-		public bool Profiling;
 		public string LinkMode;
 		public bool? Ignored;
 		public bool EnableSGenConc;

@@ -613,7 +613,7 @@ namespace Xamarin.Bundler {
 			var assembly_location_count = 0;
 			var enable_llvm = (abi & Abi.LLVM) != 0;
 
-			if (app.XamarinRuntime != XamarinRuntime.NativeAOT) {
+			if (app.XamarinRuntime == XamarinRuntime.MonoVM) {
 				register_assemblies.AppendLine ("\tGCHandle exception_gchandle = INVALID_GCHANDLE;");
 				foreach (var s in assemblies) {
 					if (!s.IsAOTCompiled)
@@ -724,6 +724,8 @@ namespace Xamarin.Bundler {
 					sw.WriteLine ("\tmono_jit_set_aot_mode (MONO_AOT_MODE_INTERP);");
 				}
 			} else if (app.XamarinRuntime == XamarinRuntime.NativeAOT) {
+				// don't call mono_jit_set_aot_mode
+			} else if (app.XamarinRuntime == XamarinRuntime.CoreCLR) {
 				// don't call mono_jit_set_aot_mode
 			} else if (app.IsDeviceBuild) {
 				sw.WriteLine ("\tmono_jit_set_aot_mode (MONO_AOT_MODE_FULL);");

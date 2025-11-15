@@ -48,22 +48,33 @@
 	</PropertyGroup>
 	<PropertyGroup Condition="'$(TrimMode)' == ''">
 		<!-- Linking is always on for all assemblies when using NativeAOT - this is because we need to modify all assemblies in the linker for them to be compatible with NativeAOT -->
-		<_DefaultLinkMode Condition="'$(_UseNativeAot)' == 'true'">Full</_DefaultLinkMode>
+		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_UseNativeAot)' == 'true'">Full</_DefaultLinkMode>
 
-		<_DefaultLinkMode Condition="'$(_UseNativeAot)' != 'true' And '$(_PlatformName)' == 'macOS'">None</_DefaultLinkMode> <!-- Linking is off by default for macOS apps -->
-		<_DefaultLinkMode Condition="'$(_UseNativeAot)' != 'true' And '$(_PlatformName)' == 'MacCatalyst' And '$(Configuration)' == 'Release'">SdkOnly</_DefaultLinkMode> <!-- Default linking is on for release builds for Mac Catalyst apps -->
-		<_DefaultLinkMode Condition="'$(_UseNativeAot)' != 'true' And '$(_PlatformName)' == 'MacCatalyst' And '$(Configuration)' != 'Release' And $(RuntimeIdentifier.Contains('arm64'))">SdkOnly</_DefaultLinkMode> <!-- Default linking is on for non-release builds for Mac Catalyst apps when building for arm64 -->
-		<_DefaultLinkMode Condition="'$(_UseNativeAot)' != 'true' And '$(_PlatformName)' == 'MacCatalyst' And '$(Configuration)' != 'Release' And !$(RuntimeIdentifier.Contains('arm64'))">None</_DefaultLinkMode> <!-- Default linking is off for non-release builds for Mac Catalyst apps when not building for arm64 -->
-		<_DefaultLinkMode Condition="'$(_UseNativeAot)' != 'true' And '$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst' And '$(_SdkIsSimulator)' == 'true' And $(RuntimeIdentifier.Contains('arm64')) And '$(MtouchInterpreter)' == ''">SdkOnly</_DefaultLinkMode> <!-- Linking is on by default in the simulator when building for arm64, as long as the interpreter is not enabled -->
-		<_DefaultLinkMode Condition="'$(_UseNativeAot)' != 'true' And '$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst' And '$(_SdkIsSimulator)' == 'true' And (!$(RuntimeIdentifier.Contains('arm64')) Or '$(MtouchInterpreter)' != '')">None</_DefaultLinkMode> <!-- Linking is off by default in the simulator when not building for arm64 -->
-		<_DefaultLinkMode Condition="'$(_UseNativeAot)' != 'true' And '$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst' And '$(_SdkIsSimulator)' != 'true'">SdkOnly</_DefaultLinkMode> <!-- Linking is SdkOnly for iOS/tvOS apps on device -->
+		<!-- Linking is off by default when using CoreCLR -->
+		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(UseMonoRuntime)' != 'true'">None</_DefaultLinkMode>
+
+		<!-- Default linking is on for release builds for Mac Catalyst apps -->
+		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_PlatformName)' == 'MacCatalyst' And '$(Configuration)' == 'Release'">SdkOnly</_DefaultLinkMode>
+		<!-- Default linking is on for non-release builds for Mac Catalyst apps when building for arm64 -->
+		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_PlatformName)' == 'MacCatalyst' And '$(Configuration)' != 'Release' And $(RuntimeIdentifier.Contains('arm64'))">SdkOnly</_DefaultLinkMode>
+		<!-- Default linking is off for non-release builds for Mac Catalyst apps when not building for arm64 -->
+		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_PlatformName)' == 'MacCatalyst' And '$(Configuration)' != 'Release' And !$(RuntimeIdentifier.Contains('arm64'))">None</_DefaultLinkMode>
+		<!-- Otherwise, default linking is off for Mac Catalyst (this is just a safety net, because all possible scenarios should be handled already) -->
+		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_PlatformName)' == 'MacCatalyst'">None</_DefaultLinkMode>
+
+		<!-- Linking is on by default in the simulator when building for arm64, as long as the interpreter is not enabled -->
+		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_SdkIsSimulator)' == 'true' And $(RuntimeIdentifier.Contains('arm64')) And '$(MtouchInterpreter)' == ''">SdkOnly</_DefaultLinkMode>
+		<!-- Linking is off by default in the simulator when not building for arm64 -->
+		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_SdkIsSimulator)' == 'true' And (!$(RuntimeIdentifier.Contains('arm64')) Or '$(MtouchInterpreter)' != '')">None</_DefaultLinkMode>
+		<!-- Otherwise, default linking is SdkOnly for iOS/tvOS apps -->
+		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == ''">SdkOnly</_DefaultLinkMode>
+
 	</PropertyGroup>
 	<PropertyGroup>
 		<_LinkMode Condition="'$(_LinkMode)' == '' And '$(_PlatformName)' == 'macOS'">$(LinkMode)</_LinkMode>
 		<_LinkMode Condition="'$(_LinkMode)' == '' And '$(_PlatformName)' != 'macOS'">$(MtouchLink)</_LinkMode>
 		<_LinkMode Condition="'$(_LinkMode)' == ''">$(_DefaultLinkMode)</_LinkMode>
-		<_LinkMode Condition="'$(_LinkMode)' == '' And '$(_PlatformName)' == 'macOS'">None</_LinkMode> <!-- Linking is off by default for macOS apps -->
-		<_LinkMode Condition="'$(_LinkMode)' == '' And '$(_PlatformName)' != 'macOS'">SdkOnly</_LinkMode> <!-- Default linking is SdkOnly for iOS/tvOS apps -->
+		<_LinkMode Condition="'$(_LinkMode)' == ''">SdkOnly</_LinkMode> <!-- We shouldn't ever hit this, but if we do, default to SdkOnly if no other scenario fits -->
 
 		<!-- TrimMode specifies what the linker will do with framework assemblies -->
 		<TrimMode Condition="'$(_LinkMode)' == 'TrimMode'">$(TrimMode)</TrimMode>

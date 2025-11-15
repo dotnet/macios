@@ -53,7 +53,6 @@ namespace Foundation {
 	[SupportedOSPlatform ("tvos")]
 	public enum NSObjectFlag {
 		/// <summary>Sentinel instance.</summary>
-		///         <remarks>To be added.</remarks>
 		Empty,
 	}
 

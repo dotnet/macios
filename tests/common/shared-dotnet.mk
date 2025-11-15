@@ -214,7 +214,8 @@ list-variations listvariations show-variations showvariations variations help:
 	$(Q) echo ""
 	$(Q) $(DOTNET) build -getItem:TestVariations | jq '.Items.TestVariations[] | "\(.Identity): \(.Description)"' | sed -e 's/^"/    /' -e 's/"$$//'
 	$(Q) echo ""
-	$(Q) echo "Build and run a specific variation by doing $(shell tput setaf 6)make build TEST_VARIATION=variation$(shell tput sgr0)"
+	$(Q) echo "Build and run a specific variation by doing $(shell tput setaf 6)make build TEST_VARIATION=variation$(shell tput sgr0)."
+	$(Q) echo "It's possible to select multiple variations by separating them with a pipe character: $(shell tput setaf 6)make build TEST_VARIATION='variation1|variation2'$(shell tput sgr0)."
 
 clean:
 	rm -Rf bin obj *.binlog

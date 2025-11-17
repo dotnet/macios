@@ -245,10 +245,10 @@ namespace Foundation {
 			return !first.IsEqualToOrderedSet (second);
 		}
 
-		/// <summary>Determines whether the specified object is equal to the current ordered set.</summary>
-		/// <param name="other">The object to compare with the current ordered set.</param>
-		/// <returns><see langword="true"/> if the specified object is equal to the current ordered set; otherwise, <see langword="false"/>.</returns>
-		public override bool Equals (object other)
+		/// <summary>Determines whether this <see cref="NSOrderedSet{TKey}" /> and the specified object are equal.</summary>
+		/// <param name="other">The object to compare with this instance.</param>
+		/// <returns><see langword="true" /> if <paramref name="other" /> is an <see cref="NSOrderedSet{TKey}" /> and has the same elements in the same order as this instance; otherwise, <see langword="false" />.</returns>
+		public override bool Equals (object? other)
 		{
 			var o = other as NSOrderedSet<TKey>;
 			if (o is null)

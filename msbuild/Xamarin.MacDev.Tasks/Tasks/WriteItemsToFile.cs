@@ -8,10 +8,8 @@ using Microsoft.Build.Utilities;
 using Microsoft.Build.Tasks;
 using System.Xml.Linq;
 
-using Xamarin.Messaging.Build.Client;
-
 namespace Xamarin.MacDev.Tasks {
-	public class WriteItemsToFile : XamarinTask, ICancelableTask {
+	public class WriteItemsToFile : XamarinTask {
 		static readonly XNamespace XmlNs = XNamespace.Get ("http://schemas.microsoft.com/developer/msbuild/2003");
 
 		static readonly XName ProjectElementName = XmlNs + "Project";
@@ -36,9 +34,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
-			if (ShouldExecuteRemotely ())
-				return ExecuteRemotely ();
-
 			Write (this, File?.ItemSpec, Items, ItemName, Overwrite, IncludeMetadata);
 			return true;
 		}
@@ -82,12 +77,6 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			return Enumerable.Empty<XElement> ();
-		}
-
-		public void Cancel ()
-		{
-			if (ShouldExecuteRemotely ())
-				BuildConnection.CancelAsync (BuildEngine4).Wait ();
 		}
 	}
 }

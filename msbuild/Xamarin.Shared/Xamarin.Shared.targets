@@ -372,7 +372,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<RemoveDir SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Directories="$(AppBundleDir).mSYM;@(_DebugSymbolDir)" />
 		<Delete SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Files="$(DeviceSpecificOutputPath)*.bcsymbolmap" />
-		<Delete SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Files="$(DeviceSpecificOutputPath)postprocessing.items" />
+		<Delete Files="$(DeviceSpecificOutputPath)postprocessing.items" />
 	</Target>
 
 	<Target Name="_CleanITunesArtwork" Condition="'$(_CanArchive)' == 'true'" DependsOnTargets="_ComputeTargetArchitectures">
@@ -405,9 +405,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_IpaPackageFile Include="$(DeviceSpecificOutputPath)*.ipa" />
 		</ItemGroup>
 
-		<Delete Condition="'$(IsMacEnabled)' == 'true'" Files="$(DeviceSpecificOutputPath)codesign.items" />
-		<Delete Condition="'$(IsMacEnabled)' == 'true'" Files="$(DeviceSpecificOutputPath)codesign-bundle.items" />
-		<Delete SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Files="$(DeviceSpecificOutputPath)native-frameworks.items" />
+		<Delete Files="$(DeviceSpecificOutputPath)codesign.items" />
+		<Delete Files="$(DeviceSpecificOutputPath)codesign-bundle.items" />
+		<Delete Files="$(DeviceSpecificOutputPath)native-frameworks.items" />
 		<Delete SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Files="@(_IpaPackageFile)" />
 	</Target>
 
@@ -2528,7 +2528,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 
 		<WriteItemsToFile
-			Condition="'$(IsMacEnabled)' == 'true'"
 			Items="@(_CodesignBundle)"
 			ItemName="_CodesignBundle"
 			File="$(DeviceSpecificOutputPath)codesign-bundle.items"
@@ -2537,7 +2536,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		/>
 
 		<WriteItemsToFile
-			Condition="'$(IsMacEnabled)' == 'true'"
 			Items="@(_CodesignItems)"
 			ItemName="_CodesignItems"
 			File="$(DeviceSpecificOutputPath)codesign.items"
@@ -2993,7 +2991,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 
 		<WriteItemsToFile
-			Condition="'$(IsMacEnabled)' == 'true' And '$(_PostProcessingItemPath)' != ''"
+			Condition="'$(_PostProcessingItemPath)' != ''"
 			Items="@(_PostProcessingItem)"
 			ItemName="_PostProcessingItem"
 			File="$(_PostProcessingItemPath)"

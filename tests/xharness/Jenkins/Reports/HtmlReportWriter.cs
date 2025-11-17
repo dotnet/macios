@@ -473,10 +473,11 @@ namespace Xharness.Jenkins.Reports {
 													if (line is null)
 														continue;
 													// Skip any timestamps if the file is timestamped
-													if (log.Timestamp)
-														if (line.Length > "HH:mm:ss.fffffff".Length)
-															line = line.Substring ("HH:mm:ss.fffffff".Length).Trim ();
-														else if (line.Length == "HH:mm:ss.fffffff".Length)
+													const string timestamp_format = "HH:mm:ss.fffffff";
+													if (log.Timestamp && line.Length >= timestamp_format.Length && DateTime.TryParseExact (line [..timestamp_format.Length], timestamp_format, null, System.Globalization.DateTimeStyles.None, out _))
+														if (line.Length > timestamp_format.Length)
+															line = line.Substring (timestamp_format.Length).Trim ();
+														else if (line.Length == timestamp_format.Length)
 															line = "";
 													if (line.StartsWith ("Tests run:", StringComparison.Ordinal)) {
 														summary = line;

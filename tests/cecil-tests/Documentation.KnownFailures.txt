@@ -11989,10 +11989,6 @@ M:Foundation.NSOrderedSet`1.op_Inequality(Foundation.NSOrderedSet{`0},Foundation
 M:Foundation.NSOrderedSet`1.op_Subtraction(Foundation.NSOrderedSet{`0},Foundation.NSOrderedSet{`0})
 M:Foundation.NSOrderedSet`1.op_Subtraction(Foundation.NSOrderedSet{`0},Foundation.NSSet{`0})
 M:Foundation.NSPort.Dispose(System.Boolean)
-M:Foundation.NSRange.#ctor(System.IntPtr,System.IntPtr)
-M:Foundation.NSRange.Equals(Foundation.NSRange)
-M:Foundation.NSRange.Equals(System.Object)
-M:Foundation.NSRange.GetHashCode
 M:Foundation.NSSet.op_Addition(Foundation.NSSet,Foundation.NSOrderedSet)
 M:Foundation.NSSet.op_Addition(Foundation.NSSet,Foundation.NSSet)
 M:Foundation.NSSet.op_Subtraction(Foundation.NSSet,Foundation.NSOrderedSet)

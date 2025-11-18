@@ -9892,6 +9892,8 @@ M:BrowserEngineKit.BERenderingProcess.CreateAsync(System.String,System.Action)
 M:BrowserEngineKit.BEScrollView.BEScrollViewAppearance.#ctor(System.IntPtr)
 M:BrowserEngineKit.BEScrollView.Dispose(System.Boolean)
 M:BrowserEngineKit.BETextInteraction.Dispose(System.Boolean)
+M:BrowserEngineKit.BEWebContentFilter.AllowUrlAsync(Foundation.NSUrl)
+M:BrowserEngineKit.BEWebContentFilter.EvaluateUrlAsync(Foundation.NSUrl)
 M:BrowserEngineKit.BEWebContentProcess.CreateAsync(System.Action)
 M:BrowserEngineKit.BEWebContentProcess.CreateAsync(System.String,System.Action)
 M:BrowserEngineKit.IBEAccessibilityTextMarkerSupport.GetAccessibilityBounds(BrowserEngineKit.BEAccessibilityTextMarkerRange)
@@ -25910,6 +25912,8 @@ T:BrowserEngineKit.BETextInputReplaceTextCallback
 T:BrowserEngineKit.BETextInputRequestTextContextForAutocorrectionCallback
 T:BrowserEngineKit.BETextInputRequestTextRectsCallback
 T:BrowserEngineKit.BETextReplacementOptions
+T:BrowserEngineKit.BEWebContentFilterAllowUrlCallback
+T:BrowserEngineKit.BEWebContentFilterEvaluateUrlCallback
 T:BrowserEngineKit.BEWebContentProcessCreateCallback
 T:BrowserEngineKit.NSObject_BEAccessibility
 T:BusinessChat.BCChatButton

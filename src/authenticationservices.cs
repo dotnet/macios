@@ -405,11 +405,11 @@ namespace AuthenticationServices {
 		ASCredentialServiceIdentifierType Type { get; }
 
 		/// <summary>
-        /// Constructs a new <see cref="AuthenticationServices.ASCredentialServiceIdentifier" /> with the specified <paramref name="identifier" />, of the specified <paramref name="type" />, and with the specified <paramref name="displayName" />.
-        /// </summary>
-        /// <param name="identifier">To be added.</param>
-        /// <param name="type">To be added.</param>
-        /// <param name="displayName">To be added.</param>
+		/// Constructs a new <see cref="AuthenticationServices.ASCredentialServiceIdentifier" /> with the specified <paramref name="identifier" />, of the specified <paramref name="type" />, and with the specified <paramref name="displayName" />.
+		/// </summary>
+		/// <param name="identifier">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <param name="displayName">To be added.</param>
 		/// <remarks>To be added.</remarks>
 		[NoTV, Mac (26, 2), iOS (26, 2), MacCatalyst (26, 2)]
 		[Export ("initWithIdentifier:type:displayName:")]
@@ -3164,9 +3164,9 @@ namespace AuthenticationServices {
 		NativeHandle Constructor (ASCredentialServiceIdentifier serviceIdentifier, ASPasswordCredential credential, [NullAllowed] string title, string sessionId, ASSavePasswordRequestEvent @event);
 
 		[Export ("initWithServiceIdentifier:credential:sessionID:event:passwordKind:")]
-		NativeHandle Constructor (ASCredentialServiceIdentifier serviceIdentifier, ASPasswordCredential credential, string sessionId, ASSavePasswordRequestEvent @event, [NullAllowed] [BindAs (typeof (ASGeneratedPasswordKind))] NSString passwordKind);
+		NativeHandle Constructor (ASCredentialServiceIdentifier serviceIdentifier, ASPasswordCredential credential, string sessionId, ASSavePasswordRequestEvent @event, [NullAllowed][BindAs (typeof (ASGeneratedPasswordKind))] NSString passwordKind);
 
 		[Export ("initWithServiceIdentifier:credential:title:sessionID:event:passwordKind:")]
-		NativeHandle Constructor (ASCredentialServiceIdentifier serviceIdentifier, ASPasswordCredential credential, [NullAllowed] string title, string sessionId, ASSavePasswordRequestEvent @event, [NullAllowed] [BindAs (typeof (ASGeneratedPasswordKind))] NSString passwordKind);
+		NativeHandle Constructor (ASCredentialServiceIdentifier serviceIdentifier, ASPasswordCredential credential, [NullAllowed] string title, string sessionId, ASSavePasswordRequestEvent @event, [NullAllowed][BindAs (typeof (ASGeneratedPasswordKind))] NSString passwordKind);
 	}
 }

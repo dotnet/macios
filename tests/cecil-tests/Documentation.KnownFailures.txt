@@ -1238,6 +1238,7 @@ F:AVFoundation.AVAudioRoutingArbitrationCategory.PlayAndRecord
 F:AVFoundation.AVAudioRoutingArbitrationCategory.PlayAndRecordVoice
 F:AVFoundation.AVAudioRoutingArbitrationCategory.Playback
 F:AVFoundation.AVAudioSessionCategoryOptions.BluetoothHighQualityRecording
+F:AVFoundation.AVAudioSessionCategoryOptions.FarFieldInput
 F:AVFoundation.AVAudioSessionCategoryOptions.OverrideMutedMicrophoneInterruption
 F:AVFoundation.AVAudioSessionErrorCode.ExpiredSession
 F:AVFoundation.AVAudioSessionErrorCode.SessionNotActive
@@ -1248,6 +1249,7 @@ F:AVFoundation.AVAudioSessionInterruptionReason.RouteDisconnected
 F:AVFoundation.AVAudioSessionMicrophoneInjectionMode.None
 F:AVFoundation.AVAudioSessionMicrophoneInjectionMode.SpokenAudio
 F:AVFoundation.AVAudioSessionMode.Default
+F:AVFoundation.AVAudioSessionMode.DualRoute
 F:AVFoundation.AVAudioSessionMode.GameChat
 F:AVFoundation.AVAudioSessionMode.Measurement
 F:AVFoundation.AVAudioSessionMode.MoviePlayback

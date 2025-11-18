@@ -4325,6 +4325,10 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
 		[Field ("AVAudioSessionModeShortFormVideo")]
 		ShortFormVideo,
+
+		[MacCatalyst (26, 2), NoTV, NoMac, iOS (26, 2)]
+		[Field ("AVAudioSessionModeDualRoute")]
+		DualRoute,
 	}
 
 	[NoMac]

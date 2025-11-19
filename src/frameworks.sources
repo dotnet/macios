@@ -904,7 +904,7 @@ FOUNDATION_SOURCES = \
 	Foundation/NSXpcConnection.cs \
 	Foundation/NSXpcInterface.cs \
 	Foundation/ObjCException.cs \
-	Foundation/ToString.cs \
+	Foundation/NSUrlRequest.cs \
 	Foundation/NSItemProvider.cs \
 
 # FSKit

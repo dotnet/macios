@@ -1,3 +1,0 @@
-!missing-selector! +AVCaptureDevice::isEdgeLightActive not bound
-!missing-selector! +AVCaptureDevice::isEdgeLightEnabled not bound
-!missing-selector! AVCaptureDeviceFormat::isEdgeLightSupported not bound

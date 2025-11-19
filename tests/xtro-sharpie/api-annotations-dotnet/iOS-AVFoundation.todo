@@ -1,2 +1,5 @@
 !missing-enum-value! AVAudioSessionCategoryOptions native value AVAudioSessionCategoryOptionFarFieldInput = 262144 not bound
 !missing-field! AVAudioSessionModeDualRoute not bound
+!missing-selector! +AVCaptureDevice::isEdgeLightActive not bound
+!missing-selector! +AVCaptureDevice::isEdgeLightEnabled not bound
+!missing-selector! AVCaptureDeviceFormat::isEdgeLightSupported not bound

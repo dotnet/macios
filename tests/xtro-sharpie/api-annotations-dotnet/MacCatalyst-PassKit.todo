@@ -1,2 +1,3 @@
 !missing-selector! PKIdentityRequest::setUsageDescriptionKey: not bound
 !missing-selector! PKIdentityRequest::usageDescriptionKey not bound
+!missing-field! PKPaymentNetworkConecs not bound

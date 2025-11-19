@@ -290,6 +290,18 @@ This also applies to how native references are stored inside NuGets.
 > [!NOTE]
 > In some cases it can be beneficial to force a zip file on iOS as well, especially when there's a framework with files that have long names, because the zip file can sometimes work around MAX_PATH issues on Windows.
 
+## CopySceneKitAssetsPath
+
+The full path to the `copySceneKitAssets` tool.
+
+The default behavior is to use `xcrun copySceneKitAssets`.
+
+## CoreMLCompilerPath
+
+The full path to the `coremlc` tool.
+
+The default behavior is to use `xcrun coremlc`.
+
 ## CreateAppBundleDependsOn
 
 This is an extension point for the build: a developer can add any targets to
@@ -493,7 +505,7 @@ application size.
 Default: set to `false` when `Optimize` is set to `true` (which is the default
 for `Release` builds), unless `$(EnableDiagnostics)` is enabled.
 
-[eventsource]: https://learn.microsoft.com/dotnet/core/diagnostics/eventsource
+[eventsource]: /dotnet/core/diagnostics/eventsource
 
 ## GenerateApplicationManifest
 
@@ -702,7 +714,7 @@ application size.
 Default: set to `false` when `Optimize` is set to `true` (which is the default
 for `Release` builds), unless `$(EnableDiagnostics)` is enabled.
 
-[dotnetmetrics]: https://learn.microsoft.com/dotnet/core/diagnostics/metrics
+[dotnetmetrics]: /dotnet/core/diagnostics/metrics
 
 ## MmpDebug
 
@@ -1324,6 +1336,35 @@ Exceptions:
 Specifies the minimum tvOS version the app can run on.
 
 Applicable to tvOS; setting this value will set [SupportedOSPlatformVersion](#supportedosplatformversion) for tvOS projects (only).
+
+## UseFloatingTargetPlatformVersion
+
+A boolean property that controls whether library projects should use a floating target platform version or the oldest available platform version.
+
+By default (starting in .NET 10), library projects without an explicit `TargetPlatformVersion` will use the oldest available reference assemblies for the current .NET version. This ensures maximum compatibility and allows library code to compile against the minimum API surface available for the target framework.
+
+However, this default behavior means that library projects are built differently than executable projects (which use the latest platform version). Code that works in an executable project may not compile when moved to a library project if it uses APIs only available in newer platform versions.
+
+Setting this property to `true` disables the automatic selection of the oldest platform version, allowing the library project to use the default (latest) platform version like executable projects do.
+
+Example:
+
+```xml
+<PropertyGroup>
+  <!-- Use the latest platform version instead of the oldest -->
+  <UseFloatingTargetPlatformVersion>true</UseFloatingTargetPlatformVersion>
+</PropertyGroup>
+```
+
+Default: `false` (use oldest platform version for library projects in .NET 10+).
+
+This property only applies to library projects (`OutputType=Library`) that are
+not app extensions and have not specified an explicit target platform version
+(the target platform version is the optional version number at the end of the
+`TargetFramework` property, for example for the TargetFramework
+`net10.0-ios26.0` the target platform version is explicitly `26.0`).
+
+This property was introduced in .NET 10.
 
 ## UseHardenedRuntime
 

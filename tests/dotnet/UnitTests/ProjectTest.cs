@@ -90,18 +90,33 @@ namespace Xamarin.Tests {
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
 		}
 
-		[TestCase ("iOS")]
-		[TestCase ("tvOS")]
-		[TestCase ("macOS")]
-		[TestCase ("MacCatalyst")]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacOSX)]
+		[TestCase (ApplePlatform.MacCatalyst)]
 		[Category ("WindowsInclusive")]
-		public void BuildMyClassLibrary (string platform)
+		public void BuildMyClassLibrary (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
-			var project_path = GetProjectPath ("MyClassLibrary", platform);
+			var configuration = "Debug";
+			var project = "MyClassLibrary";
+			var project_path = GetProjectPath (project, platform: platform);
 			Clean (project_path);
-			var result = DotNet.AssertBuild (project_path, verbosity);
+			var properties = GetDefaultProperties ();
+			var result = DotNet.AssertBuild (project_path, properties);
 			Assert.That (result.StandardOutput.ToString (), Does.Not.Contain ("Task \"ILLink\""), "Linker executed unexpectedly.");
+
+			var expectedReferenceVersionString = Configuration.GetVariable ($"{platform.AsString ().ToUpperInvariant ()}_TARGET_PLATFORM_VERSION_LIBRARY", "");
+			Assert.That (expectedReferenceVersionString, Is.Not.EqualTo (""), $"Expected to find a default TPV for libraries; this is a problem in the test setup.");
+
+			var dll = Path.Combine (Path.GetDirectoryName (project_path)!, "bin", configuration, $"{Configuration.DotNetTfm}-{platform.AsString ()}", project + ".dll");
+			Assert.That (dll, Does.Exist, "Exists");
+			using var ad = AssemblyDefinition.ReadAssembly (dll, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
+			var r = ad.MainModule.AssemblyReferences.Where (v => v.Name == $"Microsoft.{platform.AsString ()}").First ();
+			var actualReferenceVersionString = $"{r.Version.Major}.{r.Version.Minor}";
+			Assert.AreEqual (expectedReferenceVersionString, actualReferenceVersionString, $"Referenced version of Microsoft.{platform.AsString ()}.dll");
+			Assert.That (r.Version.Build, Is.EqualTo (0), "Build");
+			Assert.That (r.Version.Revision, Is.EqualTo (0), "Revision");
 		}
 
 		[TestCase (ApplePlatform.iOS)]

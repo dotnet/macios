@@ -1535,4 +1535,16 @@ static void block_called ()
 
 @end
 
+@implementation ClassWithNoDefaultCtor : NSObject {
+}
+@end
+
+@implementation Hitchhiker : NSObject {
+}
+-(void) destroyEarth
+{
+	[self.delegate buildIntergalacticHighway: self];
+}
+@end
+
 #include "libtest.decompile.m"

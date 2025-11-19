@@ -27,19 +27,15 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 	public partial class NSUrlRequest {
 		/// <summary>Returns a string representation of the value of the current instance.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
+		/// <returns>The absolute string of the <see cref="Url" /> if it is not <see langword="null" />, otherwise the base class string representation.</returns>
 		public override string ToString ()
 		{
-			return Url is not null ? Url.AbsoluteString : base.ToString ();
+			return Url?.AbsoluteString ?? base.ToString ();
 		}
 	}
 }

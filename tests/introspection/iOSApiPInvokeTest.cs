@@ -68,19 +68,19 @@ namespace Introspection {
 
 		protected override bool SkipAssembly (Assembly a)
 		{
-			// we only want to check this on a version of iOS that
-			// 1. is the current SDK target (or a newer one)
-			var sdk = new Version (Constants.SdkVersion);
-#if __IOS__ || __TVOS__
-			if (!UIDevice.CurrentDevice.CheckSystemVersion (sdk.Major, sdk.Minor))
-				return true;
-#else
-#error unknown target
-#endif
-			// 2. on the real target for Xamarin.iOS.dll/monotouch.dll
-			//    as the simulator miss some libraries and symbols
-			//    but the rest of the BCL is fine to test
-			return (a == typeof (NSObject).Assembly && TestRuntime.IsSimulatorOrDesktop);
+			if (a == typeof (NSObject).Assembly) {
+				// Don't test our product assembly in the simulator, because the
+				// simulator might lack some libraries and symbols.
+				if (TestRuntime.IsSimulator)
+					return true;
+
+				// Also we only want to check this on the OS version we're actually built for.
+				var sdk = new Version (Constants.SdkVersion);
+				if (!UIDevice.CurrentDevice.CheckSystemVersion (sdk.Major, sdk.Minor))
+					return true;
+			}
+
+			return false;
 		}
 
 		[Test]

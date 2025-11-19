@@ -45,11 +45,7 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		protected override bool UseCompilationDirectory {
-			get { return AppleSdkSettings.XcodeVersion >= new Version (6, 3); }
-		}
-
-		protected bool CanLinkStoryboards {
-			get { return AppleSdkSettings.XcodeVersion.Major > 7 || (AppleSdkSettings.XcodeVersion.Major == 7 && AppleSdkSettings.XcodeVersion.Minor >= 2); }
+			get => true;
 		}
 
 		protected override void AppendCommandLineArguments (IDictionary<string, string?> environment, List<string> args, ITaskItem [] items)
@@ -65,7 +61,7 @@ namespace Xamarin.MacDev.Tasks {
 				args.Add (targetDevice);
 			}
 
-			if (AppleSdkSettings.XcodeVersion.Major >= 6 && AutoActivateCustomFonts)
+			if (AutoActivateCustomFonts)
 				args.Add ("--auto-activate-custom-fonts");
 
 			if (!string.IsNullOrEmpty (SdkRoot)) {
@@ -222,12 +218,7 @@ namespace Xamarin.MacDev.Tasks {
 				if (EnableOnDemandResources && !string.IsNullOrEmpty (resourceTags))
 					expected.SetMetadata ("ResourceTags", resourceTags);
 
-				if (UseCompilationDirectory) {
-					// Note: When using --compilation-directory, we need to specify the output path as the parent directory
-					output = Path.GetDirectoryName (path);
-				} else {
-					output = expected.ItemSpec;
-				}
+				output = Path.GetDirectoryName (path);
 
 				if (InterfaceDefinitionChanged (item, manifest)) {
 					Directory.CreateDirectory (manifestDir);
@@ -252,37 +243,32 @@ namespace Xamarin.MacDev.Tasks {
 					continue;
 				}
 
-				if (UseCompilationDirectory) {
-					// Note: When using a compilation-directory, we'll scan dir the baseOutputDir later as
-					// an optimization to collect all of the compiled output in one fell swoop.
-					var metadata = expected.CloneCustomMetadata ();
+				// Note: When using a compilation-directory, we'll scan dir the baseOutputDir later as
+				// an optimization to collect all of the compiled output in one fell swoop.
+				var metadata = expected.CloneCustomMetadata ();
 
-					foreach (var target in targets) {
-						var key = name + "~" + target + extension;
+				foreach (var target in targets) {
+					var key = name + "~" + target + extension;
 
-						// Note: we don't blindly .Add() here because there may already be a mapping for this file if the
-						// source file is named something like "MyView.xib" and we've already processed "MyView~ipad.xib".
-						//
-						// When a situation like this occurs, we don't want to override the metadata.
-						if (!mapping.ContainsKey (key))
-							mapping.Add (key, metadata);
-					}
-
-					// Note: we don't use .Add() here because there may already be a mapping for this file if the
-					// source file is named something like "MyView~ipad.xib" and we've already processed "MyView.xib".
+					// Note: we don't blindly .Add() here because there may already be a mapping for this file if the
+					// source file is named something like "MyView.xib" and we've already processed "MyView~ipad.xib".
 					//
-					// In this case, we want to override the metadata for "MyView.xib" with the metadata for
-					// "MyView~ipad.xib".
-					mapping [path] = metadata;
-				} else {
-					compiled.AddRange (GetCompilationOutput (expected));
+					// When a situation like this occurs, we don't want to override the metadata.
+					if (!mapping.ContainsKey (key))
+						mapping.Add (key, metadata);
 				}
+
+				// Note: we don't use .Add() here because there may already be a mapping for this file if the
+				// source file is named something like "MyView~ipad.xib" and we've already processed "MyView.xib".
+				//
+				// In this case, we want to override the metadata for "MyView.xib" with the metadata for
+				// "MyView~ipad.xib".
+				mapping [path] = metadata;
 
 				manifests.Add (manifest);
 			}
 
-			if (UseCompilationDirectory)
-				compiled.AddRange (GetCompilationDirectoryOutput (baseOutputDir, mapping));
+			compiled.AddRange (GetCompilationDirectoryOutput (baseOutputDir, mapping));
 
 			return !Log.HasLoggedErrors;
 		}
@@ -410,12 +396,6 @@ namespace Xamarin.MacDev.Tasks {
 			if (ShouldExecuteRemotely ())
 				return ExecuteRemotely ();
 
-			if (IsWatchApp && AppleSdkSettings.XcodeVersion < new Version (6, 2)) {
-				Log.LogError (MSBStrings.E0160, AppleSdkSettings.XcodeVersion);
-
-				return !Log.HasLoggedErrors;
-			}
-
 			var ibtoolManifestDir = Path.Combine (IntermediateOutputPath, "ibtool-manifests");
 			var ibtoolOutputDir = Path.Combine (IntermediateOutputPath, "ibtool");
 			var outputManifests = new List<ITaskItem> ();
@@ -436,37 +416,32 @@ namespace Xamarin.MacDev.Tasks {
 				if (!CompileInterfaceDefinitions (interfaceDefinitions, ibtoolManifestDir, ibtoolOutputDir, compiled, outputManifests, out changed))
 					return false;
 
-				if (CanLinkStoryboards) {
-					var storyboards = new List<ITaskItem> ();
-					var linked = new List<ITaskItem> ();
-					var unique = new HashSet<string> ();
+				var storyboards = new List<ITaskItem> ();
+				var linked = new List<ITaskItem> ();
+				var unique = new HashSet<string> ();
 
-					for (int i = 0; i < compiled.Count; i++) {
-						// pretend that non-storyboardc items (e.g. *.nib) are already 'linked'
-						if (compiled [i].ItemSpec.EndsWith (".storyboardc", StringComparison.Ordinal)) {
-							var interfaceDefinition = compiled [i].GetMetadata ("InterfaceDefinition");
-							unique.Add (interfaceDefinition);
-							storyboards.Add (compiled [i]);
-							continue;
-						}
-
-						// just pretend any *nib's have already been 'linked'...
-						compiled [i].RemoveMetadata ("InterfaceDefinition");
-						linked.Add (compiled [i]);
+				for (int i = 0; i < compiled.Count; i++) {
+					// pretend that non-storyboardc items (e.g. *.nib) are already 'linked'
+					if (compiled [i].ItemSpec.EndsWith (".storyboardc", StringComparison.Ordinal)) {
+						var interfaceDefinition = compiled [i].GetMetadata ("InterfaceDefinition");
+						unique.Add (interfaceDefinition);
+						storyboards.Add (compiled [i]);
+						continue;
 					}
 
-					// only link the storyboards if there are multiple unique storyboards
-					if (unique.Count > 1) {
-						var linkOutputDir = Path.Combine (IntermediateOutputPath, "ibtool-link");
+					// just pretend any *nib's have already been 'linked'...
+					compiled [i].RemoveMetadata ("InterfaceDefinition");
+					linked.Add (compiled [i]);
+				}
 
-						if (!LinkStoryboards (ibtoolManifestDir, linkOutputDir, storyboards, linked, outputManifests, changed))
-							return false;
+				// only link the storyboards if there are multiple unique storyboards
+				if (unique.Count > 1) {
+					var linkOutputDir = Path.Combine (IntermediateOutputPath, "ibtool-link");
 
-						compiled = linked;
-					}
-				} else {
-					for (int i = 0; i < compiled.Count; i++)
-						compiled [i].RemoveMetadata ("InterfaceDefinition");
+					if (!LinkStoryboards (ibtoolManifestDir, linkOutputDir, storyboards, linked, outputManifests, changed))
+						return false;
+
+					compiled = linked;
 				}
 			}
 

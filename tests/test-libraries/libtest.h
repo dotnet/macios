@@ -361,6 +361,22 @@ typedef void (^outerBlock) (innerBlock callback);
 @property (retain) NSPointerArray* array;
 @end
 
+@interface ClassWithNoDefaultCtor : NSObject {
+}
+@end
+
+@class Hitchhiker;
+@protocol HitchhikerDelegate <NSObject>
+@optional
+	-(void) buildIntergalacticHighway: (Hitchhiker *) sender;
+@end
+
+@interface Hitchhiker : NSObject {
+}
+@property (retain) id<HitchhikerDelegate> delegate;
+-(void) destroyEarth;
+@end
+
 #pragma clang diagnostic pop
 // NS_ASSUME_NONNULL_END
 

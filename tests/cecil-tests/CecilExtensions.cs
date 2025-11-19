@@ -107,6 +107,9 @@ namespace Xamarin.Utils {
 			if (member is IMemberDefinition imd)
 				return imd.FullName;
 
+			if (member is AssemblyDefinition ad)
+				return ad.Name.Name;
+
 			return member.ToString ()!;
 		}
 

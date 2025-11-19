@@ -3,3 +3,4 @@
 !missing-selector! SFSafariExtensionState::isEnabled not bound
 !missing-type! SFSafariExtensionManager not bound
 !missing-type! SFSafariExtensionState not bound
+!missing-enum-value! SFErrorCode native value SFErrorMaximumAttemptsExceeded = 6 not bound

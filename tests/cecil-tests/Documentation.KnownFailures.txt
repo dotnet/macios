@@ -23169,6 +23169,7 @@ P:PassKit.PKIdentityPhotoIdDescriptor.Elements
 P:PassKit.PKIdentityRequest.Descriptor
 P:PassKit.PKIdentityRequest.MerchantIdentifier
 P:PassKit.PKIdentityRequest.Nonce
+P:PassKit.PKIdentityRequest.UsageDescriptionKey
 P:PassKit.PKIssuerProvisioningExtensionPassEntry.Art
 P:PassKit.PKIssuerProvisioningExtensionPassEntry.Identifier
 P:PassKit.PKIssuerProvisioningExtensionPassEntry.Title

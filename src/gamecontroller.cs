@@ -3377,7 +3377,7 @@ namespace Foundation {
 	interface IGCPhysicalInputExtents { }
 
 	[TV (26, 2), Mac (26, 2), iOS (26, 2), MacCatalyst (26, 2)]
-	[Protocol]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
 	interface GCPhysicalInputExtents {
 
 		[Abstract]

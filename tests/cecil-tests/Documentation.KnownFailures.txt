@@ -21075,6 +21075,9 @@ P:FileProvider.NSFileProviderRequest.IsSystemRequest
 P:FileProvider.NSFileProviderRequest.RequestingExecutable
 P:FileProvider.NSFileProviderStringSearchRequest.DesiredNumberOfResults
 P:FileProvider.NSFileProviderStringSearchRequest.Query
+P:Foundation.IGCPhysicalInputExtents.MaximumValue
+P:Foundation.IGCPhysicalInputExtents.MinimumValue
+P:Foundation.IGCPhysicalInputExtents.ScaledValue
 P:Foundation.INSObjectProtocol.DebugDescription
 P:Foundation.INSProgressReporting.Progress
 P:Foundation.NSArchiveReplaceEventArgs.NewObject
@@ -21433,6 +21436,7 @@ P:GameController.IGCLinearInput.Analog
 P:GameController.IGCLinearInput.CanWrap
 P:GameController.IGCLinearInput.LastValueLatency
 P:GameController.IGCLinearInput.LastValueTimestamp
+P:GameController.IGCLinearInput.PhysicalExtents
 P:GameController.IGCLinearInput.Sources
 P:GameController.IGCLinearInput.Value
 P:GameController.IGCLinearInput.ValueDidChangeHandler

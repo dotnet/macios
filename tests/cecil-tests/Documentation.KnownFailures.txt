@@ -3633,6 +3633,7 @@ F:HealthKit.HKCategoryTypeIdentifier.Headache
 F:HealthKit.HKCategoryTypeIdentifier.HeadphoneAudioExposureEvent
 F:HealthKit.HKCategoryTypeIdentifier.Heartburn
 F:HealthKit.HKCategoryTypeIdentifier.HotFlashes
+F:HealthKit.HKCategoryTypeIdentifier.HypertensionEvent
 F:HealthKit.HKCategoryTypeIdentifier.InfrequentMenstrualCycles
 F:HealthKit.HKCategoryTypeIdentifier.IrregularMenstrualCycles
 F:HealthKit.HKCategoryTypeIdentifier.Lactation

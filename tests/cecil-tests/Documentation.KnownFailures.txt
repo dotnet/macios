@@ -11861,8 +11861,6 @@ M:Foundation.NSMutableOrderedSet`1.op_Subtraction(Foundation.NSMutableOrderedSet
 M:Foundation.NSMutableOrderedSet`1.op_Subtraction(Foundation.NSMutableOrderedSet{`0},Foundation.NSSet{`0})
 M:Foundation.NSMutableSet.op_Addition(Foundation.NSMutableSet,Foundation.NSMutableSet)
 M:Foundation.NSMutableSet.op_Subtraction(Foundation.NSMutableSet,Foundation.NSMutableSet)
-M:Foundation.NSMutableSet`1.op_Addition(Foundation.NSMutableSet{`0},Foundation.NSMutableSet{`0})
-M:Foundation.NSMutableSet`1.op_Subtraction(Foundation.NSMutableSet{`0},Foundation.NSMutableSet{`0})
 M:Foundation.NSNetService.add_AddressResolved(System.EventHandler)
 M:Foundation.NSNetService.add_DidAcceptConnection(System.EventHandler{Foundation.NSNetServiceConnectionEventArgs})
 M:Foundation.NSNetService.add_Published(System.EventHandler)

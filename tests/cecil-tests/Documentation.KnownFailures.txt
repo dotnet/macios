@@ -11982,12 +11982,6 @@ M:Foundation.NSOrderedSet.op_Equality(Foundation.NSOrderedSet,Foundation.NSOrder
 M:Foundation.NSOrderedSet.op_Inequality(Foundation.NSOrderedSet,Foundation.NSOrderedSet)
 M:Foundation.NSOrderedSet.op_Subtraction(Foundation.NSOrderedSet,Foundation.NSOrderedSet)
 M:Foundation.NSOrderedSet.op_Subtraction(Foundation.NSOrderedSet,Foundation.NSSet)
-M:Foundation.NSOrderedSet`1.op_Addition(Foundation.NSOrderedSet{`0},Foundation.NSOrderedSet{`0})
-M:Foundation.NSOrderedSet`1.op_Addition(Foundation.NSOrderedSet{`0},Foundation.NSSet{`0})
-M:Foundation.NSOrderedSet`1.op_Equality(Foundation.NSOrderedSet{`0},Foundation.NSOrderedSet{`0})
-M:Foundation.NSOrderedSet`1.op_Inequality(Foundation.NSOrderedSet{`0},Foundation.NSOrderedSet{`0})
-M:Foundation.NSOrderedSet`1.op_Subtraction(Foundation.NSOrderedSet{`0},Foundation.NSOrderedSet{`0})
-M:Foundation.NSOrderedSet`1.op_Subtraction(Foundation.NSOrderedSet{`0},Foundation.NSSet{`0})
 M:Foundation.NSPort.Dispose(System.Boolean)
 M:Foundation.NSRange.#ctor(System.IntPtr,System.IntPtr)
 M:Foundation.NSRange.Equals(Foundation.NSRange)
@@ -21104,7 +21098,6 @@ P:Foundation.NSObject.AccessibilityUserInputLabels
 P:Foundation.NSObject.ExposedBindings
 P:Foundation.NSObjectEventArgs.Obj
 P:Foundation.NSOrderedSet.Item(System.IntPtr)
-P:Foundation.NSOrderedSet`1.Item(System.IntPtr)
 P:Foundation.NSProcessInfo.IsiOSApplicationOnMac
 P:Foundation.NSProcessInfo.IsiOSAppOnVision
 P:Foundation.NSProcessInfo.IsMacCatalystApplication

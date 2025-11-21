@@ -415,7 +415,7 @@ class ParallelTestsResults {
                         $stringBuilder.AppendLine("<summary>$($result.Failed) tests failed, $($result.Passed) tests passed.</summary>")
                         $stringBuilder.AppendLine("<details>")
                     }
-                    for ($i = 0; $i -lt $resultLines.Length; $i++) {
+                    for ($i = $startLine; $i -lt $resultLines.Length; $i++) {
                         $stringBuilder.AppendLine($resultLines[$i])
                     }
                     if ($addSummary) {

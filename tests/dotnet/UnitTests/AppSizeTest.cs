@@ -93,9 +93,6 @@ namespace Xamarin.Tests {
 			var appSizeDifference = appBundleSize - expectedAppBundleSize;
 			var toleranceInBytes = 1024 * 10; // 10kb
 			var withinTolerance = toleranceInBytes >= Math.Abs (appSizeDifference);
-			if (!withinTolerance) {
-				Console.WriteLine ($"App size difference is {FormatBytes (appSizeDifference)}, which is less than the tolerance ({toleranceInBytes})");
-			}
 
 			string msg;
 
@@ -157,8 +154,8 @@ namespace Xamarin.Tests {
 			preservedAPIs.Sort ();
 			var expectedFile = Path.Combine (expectedDirectory, $"{name}-preservedapis.txt");
 			var expectedAPIs = File.ReadAllLines (expectedFile);
-			var addedAPIs = preservedAPIs.Except (expectedAPIs);
-			var removedAPIs = expectedAPIs.Except (preservedAPIs);
+			var addedAPIs = preservedAPIs.Except (expectedAPIs).ToList ();
+			var removedAPIs = expectedAPIs.Except (preservedAPIs).ToList ();
 
 			if (addedAPIs.Count () > 0) {
 				Console.WriteLine ($"    {addedAPIs.Count ()} additional APIs present:");

@@ -399,11 +399,11 @@ class ParallelTestsResults {
                         for ($i = 0; $i -lt $resultLines.Length; $i++) {
                             $line = $resultLines[$i]
                             if ($line.Contains ("<details>")) {
-                                startLine = $i
-                                addSummary = $false
+                                $startLine = $i
+                                $addSummary = $false
                                 break
                             } elseif ($line.Contains("## Failed tests")) {
-                                startLine = $i + 1
+                                $startLine = $i + 1
                                 break
                             }
                         }

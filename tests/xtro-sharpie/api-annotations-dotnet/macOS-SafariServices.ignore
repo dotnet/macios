@@ -9,3 +9,4 @@
 # these values are not listed in the macOS headers, but it's an error enum, so we're keeping the same values across all platforms.
 !extra-enum-value! Managed value 4 for SFErrorCode.InternalError not found in native headers
 !extra-enum-value! Managed value 5 for SFErrorCode.MissingEntitlement not found in native headers
+!extra-enum-value! Managed value 6 for SFErrorCode.MaximumAttemptsExceeded not found in native headers

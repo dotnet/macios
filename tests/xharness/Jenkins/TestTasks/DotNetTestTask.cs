@@ -9,7 +9,6 @@ using Microsoft.DotNet.XHarness.iOS.Shared.Utilities;
 
 namespace Xharness.Jenkins.TestTasks {
 	class DotNetTestTask : RunTestTask {
-		public string Filter { get; set; } = string.Empty;
 		public DotNetTestTask (Jenkins jenkins, MSBuildTask build_task, IMlaunchProcessManager processManager)
 			: base (jenkins, build_task, processManager)
 		{
@@ -35,19 +34,20 @@ namespace Xharness.Jenkins.TestTasks {
 				if (TestProject?.IsNUnitTestProject == true)
 					args.Add ($"--logger:nunit;LogFileName={Path.GetFileName (xml.FullPath)}");
 
+				var filter = TestProject?.Filter;
 				var envTestFilter = global::System.Environment.GetEnvironmentVariable ("TEST_FILTER");
 				if (!string.IsNullOrEmpty (envTestFilter)) {
-					if (!string.IsNullOrEmpty (Filter)) {
-						Filter = $"({envTestFilter}) & ({Filter})";
+					if (!string.IsNullOrEmpty (filter)) {
+						filter = $"({envTestFilter}) & ({filter})";
 					} else {
-						Filter = $"{envTestFilter}";
+						filter = $"{envTestFilter}";
 					}
-					Jenkins.MainLog.WriteLine ($"Using test filter '{envTestFilter}' for '{TestName}'. Final filter: '{Filter}'");
+					Jenkins.MainLog.WriteLine ($"Using test filter '{envTestFilter}' for '{TestName}'. Final filter: '{filter}'");
 				}
 
-				if (!string.IsNullOrEmpty (Filter)) {
+				if (!string.IsNullOrEmpty (filter)) {
 					args.Add ("--filter");
-					args.Add (Filter);
+					args.Add (filter);
 				}
 
 				WorkingDirectory = Path.GetDirectoryName (ProjectFile);

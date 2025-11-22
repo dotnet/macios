@@ -19,30 +19,46 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 	public partial class NSXpcConnection : NSObject {
+		/// <summary>
+		/// Creates a proxy object for the remote object exposed by the connection.
+		/// </summary>
+		/// <typeparam name="TProtocol">The protocol interface type that the remote object conforms to.</typeparam>
+		/// <returns>A proxy object that conforms to the specified protocol.</returns>
 		public TProtocol CreateRemoteObjectProxy<TProtocol> ()
 			where TProtocol : class, INativeObject
 		{
 			IntPtr nativeProxyPtr = _CreateRemoteObjectProxy ();
-			return Runtime.GetINativeObject<TProtocol> (nativeProxyPtr, true);
+			return Runtime.GetINativeObject<TProtocol> (nativeProxyPtr, true)!;
 		}
 
+		/// <summary>
+		/// Creates a proxy object for the remote object exposed by the connection with an error handler.
+		/// </summary>
+		/// <typeparam name="TProtocol">The protocol interface type that the remote object conforms to.</typeparam>
+		/// <param name="errorHandler">A handler that is called when an error occurs during the communication with the remote object.</param>
+		/// <returns>A proxy object that conforms to the specified protocol.</returns>
 		public TProtocol CreateRemoteObjectProxy<TProtocol> (Action<NSError> errorHandler)
 			where TProtocol : class, INativeObject
 		{
 			IntPtr nativeProxyPtr = _CreateRemoteObjectProxy (errorHandler);
-			return Runtime.GetINativeObject<TProtocol> (nativeProxyPtr, true);
+			return Runtime.GetINativeObject<TProtocol> (nativeProxyPtr, true)!;
 		}
 
+		/// <summary>
+		/// Creates a synchronous proxy object for the remote object exposed by the connection with an error handler.
+		/// </summary>
+		/// <typeparam name="TProtocol">The protocol interface type that the remote object conforms to.</typeparam>
+		/// <param name="errorHandler">A handler that is called when an error occurs during the communication with the remote object.</param>
+		/// <returns>A synchronous proxy object that conforms to the specified protocol.</returns>
 		public TProtocol CreateSynchronousRemoteObjectProxy<TProtocol> (Action<NSError> errorHandler)
 			where TProtocol : class, INativeObject
 		{
 			IntPtr nativeProxyPtr = _CreateSynchronousRemoteObjectProxy (errorHandler);
-			return Runtime.GetINativeObject<TProtocol> (nativeProxyPtr, true);
+			return Runtime.GetINativeObject<TProtocol> (nativeProxyPtr, true)!;
 		}
 	}
 }

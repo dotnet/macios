@@ -1583,6 +1583,7 @@ partial class TestRuntime {
 		IgnoreInCIIfNetworkConnectionLost (ex);
 		IgnoreInCIIfDnsResolutionFailed (ex);
 		IgnoreInCIIfSshConnectionError (ex);
+		IgnoreInCIIfTimedOut (ex);
 	}
 
 	public static void IgnoreInCIIfBadNetwork (NSError? error)
@@ -1622,6 +1623,16 @@ partial class TestRuntime {
 	public static void IgnoreInCIIfTimedOut (NSError error)
 	{
 		IgnoreNetworkError (error, CFNetworkErrors.TimedOut);
+	}
+
+	public static void IgnoreInCIIfTimedOut (Exception ex)
+	{
+		if (ex is WebException wex) {
+			var msg = wex.Message;
+			if (msg.Contains ("The operation has timed out.")) {
+				IgnoreInCI ($"Ignored due to network error: {wex}");
+			}
+		}
 	}
 
 	public static void IgnoreInCIIfForbidden (Exception ex)

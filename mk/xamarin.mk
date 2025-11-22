@@ -12,7 +12,7 @@ endif
 
 # Available versions can be seen here:
 # https://dev.azure.com/dnceng/public/_artifacts/feed/dotnet-eng/NuGet/Microsoft.Tools.Mlaunch/versions
-MLAUNCH_NUGET_VERSION=1.1.92
+MLAUNCH_NUGET_VERSION=1.1.93
 
 define CheckVersionTemplate
 check-$(1)::

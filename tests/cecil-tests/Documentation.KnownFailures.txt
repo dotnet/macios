@@ -12016,7 +12016,6 @@ M:Foundation.NSUrlAuthenticationChallengeSender_Extensions.RejectProtectionSpace
 M:Foundation.NSUrlSession.CreateUploadTaskAsync(Foundation.NSData,Foundation.NSUrlSessionUploadTask@)
 M:Foundation.NSUrlSession.CreateUploadTaskAsync(Foundation.NSData)
 M:Foundation.NSUrlSessionConfiguration.Dispose(System.Boolean)
-M:Foundation.NSUrlSessionDownloadTaskRequest.Finalize
 M:Foundation.NSUrlSessionTaskDelegate_Extensions.DidCreateTask(Foundation.INSUrlSessionTaskDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionTask)
 M:Foundation.NSUrlSessionTaskDelegate_Extensions.DidReceiveInformationalResponse(Foundation.INSUrlSessionTaskDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionTask,Foundation.NSHttpUrlResponse)
 M:Foundation.NSUrlSessionTaskDelegate_Extensions.NeedNewBodyStream(Foundation.INSUrlSessionTaskDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionTask,System.Int64,System.Action{Foundation.NSInputStream})
@@ -12033,12 +12032,6 @@ M:Foundation.NSUserNotificationCenter.add_DidDeliverNotification(System.EventHan
 M:Foundation.NSUserNotificationCenter.Dispose(System.Boolean)
 M:Foundation.NSUserNotificationCenter.remove_DidActivateNotification(System.EventHandler{Foundation.UNCDidActivateNotificationEventArgs})
 M:Foundation.NSUserNotificationCenter.remove_DidDeliverNotification(System.EventHandler{Foundation.UNCDidDeliverNotificationEventArgs})
-M:Foundation.NSXpcConnection.CreateRemoteObjectProxy``1
-M:Foundation.NSXpcConnection.CreateRemoteObjectProxy``1(System.Action{Foundation.NSError})
-M:Foundation.NSXpcConnection.CreateSynchronousRemoteObjectProxy``1(System.Action{Foundation.NSError})
-M:Foundation.NSXpcInterface.Create(System.Type)
-M:Foundation.NSXpcInterface.GetAllowedClasses(System.Reflection.MethodInfo,System.UIntPtr,System.Boolean)
-M:Foundation.NSXpcInterface.SetAllowedClasses(System.Reflection.MethodInfo,Foundation.NSSet{ObjCRuntime.Class},System.UIntPtr,System.Boolean)
 M:Foundation.NSXpcListener.Dispose(System.Boolean)
 M:Foundation.NSXpcListenerDelegate_Extensions.ShouldAcceptConnection(Foundation.INSXpcListenerDelegate,Foundation.NSXpcListener,Foundation.NSXpcConnection)
 M:Foundation.OptionalMemberAttribute.#ctor
@@ -21117,8 +21110,6 @@ P:Foundation.NSProcessInfo.IsiOSAppOnVision
 P:Foundation.NSProcessInfo.IsMacCatalystApplication
 P:Foundation.NSStreamEventArgs.StreamEvent
 P:Foundation.NSString.Item(System.IntPtr)
-P:Foundation.NSUbiquitousKeyValueStore.Item(Foundation.NSString)
-P:Foundation.NSUbiquitousKeyValueStore.Item(System.String)
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangedKeys
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangeReason
 P:Foundation.NSUndoManagerCloseUndoGroupEventArgs.Discardable

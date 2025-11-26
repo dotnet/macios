@@ -663,6 +663,11 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ();
 			sw.WriteLine (assembly_externs);
 
+			if (app.PublishReadyToRun == true) {
+				sw.WriteLine ("extern void* RTR_HEADER;");
+				sw.WriteLine ();
+			}
+
 			sw.WriteLine ("void xamarin_register_modules_impl ()");
 			sw.WriteLine ("{");
 			sw.WriteLine (assembly_aot_modules);
@@ -793,6 +798,8 @@ namespace Xamarin.Bundler {
 #endif
 			if (app.Registrar == RegistrarMode.ManagedStatic)
 				sw.WriteLine ("\txamarin_set_is_managed_static_registrar (true);");
+			if (app.PublishReadyToRun == true)
+				sw.WriteLine ("\txamarin_rtr_header = &RTR_HEADER;");
 			sw.WriteLine ("}");
 			sw.WriteLine ();
 			sw.Write ("int main");

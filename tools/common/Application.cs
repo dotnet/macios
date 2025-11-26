@@ -87,6 +87,7 @@ namespace Xamarin.Bundler {
 		public RegistrarOptions RegistrarOptions = RegistrarOptions.Default;
 		public SymbolMode SymbolMode;
 		public HashSet<string> IgnoredSymbols = new HashSet<string> ();
+		public bool? PublishReadyToRun;
 
 		// The AOT arguments are currently not used for macOS, but they could eventually be used there as well (there's no mmp option to set these yet).
 		public List<string> AotArguments = new List<string> ();

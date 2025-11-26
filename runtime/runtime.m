@@ -11,6 +11,8 @@
 #include <sys/stat.h>
 #include <dlfcn.h>
 #include <mach/mach.h>
+#include <mach-o/dyld.h>
+#include <mach-o/loader.h>
 
 #include "product.h"
 #include "shared.h"
@@ -22,6 +24,7 @@
 #include "xamarin/monovm-bridge.h"
 #else
 #include "xamarin/coreclr-bridge.h"
+#include "host_runtime_contract.h"
 #endif
 
 #if defined (DEBUG)
@@ -2436,10 +2439,116 @@ xamarin_compute_native_dll_search_directories ()
 	return rv;
 }
 
+#if defined (CORECLR_RUNTIME)
+size_t get_image_size(void* base_address)
+{
+    uint32_t image_count = _dyld_image_count();
+    for (uint32_t i = 0; i < image_count; ++i)
+    {
+        const struct mach_header_64* header = (const struct mach_header_64*)_dyld_get_image_header(i);
+        if ((const void*)header != base_address)
+            continue;
+
+        const struct load_command* cmd = (const struct load_command*)((const char*)header + sizeof(struct mach_header_64));
+
+        size_t image_size = 0;
+        for (uint32_t j = 0; j < header->ncmds; ++j)
+        {
+            if (cmd->cmd == LC_SEGMENT_64)
+            {
+                const struct segment_command_64* seg = (const struct segment_command_64*)cmd;
+                size_t end_addr = (size_t)(seg->vmaddr + seg->vmsize);
+                if (end_addr > image_size)
+                    image_size = end_addr;
+            }
+
+            cmd = (const struct load_command*)((const char*)cmd + cmd->cmdsize);
+        }
+
+        return image_size;
+    }
+
+    return 0;
+}
+
+bool get_native_code_data(const struct host_runtime_contract_native_code_context* context, struct host_runtime_contract_native_code_data* data)
+{
+	// TODO: Remove fprintf logs
+    fprintf (stderr, "R2R: get_native_code_data called for assembly: %s, composite: %s\n", 
+             context ? context->assembly_path : "(null)", 
+             context ? context->owner_composite_name : "(null)");
+    
+    if (!context || !data || !context->assembly_path || !context->owner_composite_name)
+        return false;
+
+    // Look for the owner composite R2R image in the same directory as the assembly
+    char r2r_path[PATH_MAX];
+    const char *last_slash = strrchr(context->assembly_path, '/');
+    size_t dir_len = last_slash ? (size_t)(last_slash - context->assembly_path) : 0;
+    if (dir_len >= sizeof(r2r_path) - 1)
+        return false;
+
+    strncpy(r2r_path, context->assembly_path, dir_len);
+    int written = snprintf(r2r_path + dir_len, sizeof(r2r_path) - dir_len, "/%s", context->owner_composite_name);
+    if (written <= 0 || (size_t)written >= sizeof(r2r_path) - dir_len)
+        return false;
+
+    fprintf (stderr, "R2R: Attempting to load R2R image from: %s\n", r2r_path);
+    
+    void* handle = dlopen(r2r_path, RTLD_LAZY | RTLD_LOCAL);
+    if (handle == NULL) {
+        fprintf (stderr, "R2R: Failed to dlopen R2R image: %s\n", dlerror ());
+        return false;
+    }
+
+    fprintf (stderr, "R2R: Successfully loaded R2R image, looking for RTR_HEADER symbol\n");
+    
+    void* r2r_header = dlsym(handle, "RTR_HEADER");
+    if (r2r_header == NULL)
+    {
+        fprintf (stderr, "R2R: Failed to find RTR_HEADER symbol: %s\n", dlerror ());
+        dlclose(handle);
+        return false;
+    }
+
+    fprintf (stderr, "R2R: Found RTR_HEADER at %p\n", r2r_header);
+    
+    Dl_info info;
+    if (dladdr(r2r_header, &info) == 0)
+    {
+        fprintf (stderr, "R2R: Failed to get dladdr info for RTR_HEADER\n");
+        dlclose(handle);
+        return false;
+    }
+
+    data->size = sizeof(struct host_runtime_contract_native_code_data);
+    data->r2r_header_ptr = r2r_header;
+    data->image_size = get_image_size(info.dli_fbase);
+    data->image_base = info.dli_fbase;
+    
+    fprintf (stderr, "R2R: Successfully loaded R2R data - header: %p, base: %p, size: %lu\n",
+             data->r2r_header_ptr, data->image_base, (unsigned long)data->image_size);
+    
+    return true;
+}
+#endif // defined (CORECLR_RUNTIME)
+
 void
 xamarin_vm_initialize ()
 {
+#if defined (CORECLR_RUNTIME)
+    struct host_runtime_contract host_contract = {
+        .size = sizeof(struct host_runtime_contract),
+        .pinvoke_override = &xamarin_pinvoke_override,
+        .get_native_code_data = &get_native_code_data
+    };
+
+    char contract_str[19]; // 0x + 16 hex digits + '\0'
+    snprintf(contract_str, 19, "0x%zx", (size_t)(&host_contract));
+#else
 	char *pinvokeOverride = xamarin_strdup_printf ("%p", &xamarin_pinvoke_override);
+#endif
+
 	char *trusted_platform_assemblies = xamarin_compute_trusted_platform_assemblies ();
 	char *native_dll_search_directories = xamarin_compute_native_dll_search_directories ();
 
@@ -2447,18 +2556,22 @@ xamarin_vm_initialize ()
 	// for the _CreateRuntimeConfiguration target in dotnet/targets/Xamarin.Shared.Sdk.targets.
 	const char *propertyKeys[] = {
 		"APP_CONTEXT_BASE_DIRECTORY", // path to where the managed assemblies are (usually at least - RID-specific assemblies will be in subfolders)
-		"APP_PATHS",
+#if defined (CORECLR_RUNTIME)
+		"HOST_RUNTIME_CONTRACT",
+#else
 		"PINVOKE_OVERRIDE",
+#endif
 		"TRUSTED_PLATFORM_ASSEMBLIES",
-		"NATIVE_DLL_SEARCH_DIRECTORIES",
 		"RUNTIME_IDENTIFIER",
 	};
 	const char *propertyValues[] = {
 		xamarin_get_bundle_path (),
-		xamarin_get_bundle_path (),
+#if defined (CORECLR_RUNTIME)
+		contract_str,
+#else
 		pinvokeOverride,
+#endif
 		trusted_platform_assemblies,
-		native_dll_search_directories,
 		RUNTIMEIDENTIFIER,
 	};
 	static_assert (sizeof (propertyKeys) == sizeof (propertyValues), "The number of keys and values must be the same.");
@@ -2466,7 +2579,9 @@ xamarin_vm_initialize ()
 	int propertyCount = (int) (sizeof (propertyValues) / sizeof (propertyValues [0]));
 	bool rv = xamarin_bridge_vm_initialize (propertyCount, propertyKeys, propertyValues);
 
+#if !defined (CORECLR_RUNTIME)
 	xamarin_free (pinvokeOverride);
+#endif
 	xamarin_free (trusted_platform_assemblies);
 	xamarin_free (native_dll_search_directories);
 
@@ -2502,7 +2617,7 @@ xamarin_is_native_library (const char *libraryName)
 	return rv;
 }
 
-void*
+const void*
 xamarin_pinvoke_override (const char *libraryName, const char *entrypointName)
 {
 

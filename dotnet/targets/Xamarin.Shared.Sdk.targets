@@ -1250,9 +1250,10 @@
 
 		<!-- CoreCLR: these are variables currently needed to make CoreCLR work -->
 		<ItemGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS'">
-			<!-- Only the interpreter works so far, so make sure only the interpreter executes and that everything is executed with the interpreter -->
+			<!-- TODO: Remove DOTNET_Interpreter -->
 			<_BundlerEnvironmentVariables Include="DOTNET_Interpreter" Value="%2A%21%2A" /> <!-- This is the string "*!*" url encoded -->
-			<_BundlerEnvironmentVariables Include="DOTNET_ReadyToRun" Value="0" />
+			<_BundlerEnvironmentVariables Include="DOTNET_ReadyToRun" Value="1" Condition="'$(PublishReadyToRun)' == 'true'" />
+			<_BundlerEnvironmentVariables Include="DOTNET_ReadyToRun" Value="0" Condition="'$(PublishReadyToRun)' != 'true'" />
 		</ItemGroup>
 	</Target>
 
@@ -2752,5 +2753,28 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 	
 	<Import Project="dotnet-xcsync.targets" />
 	<Import Project="Microsoft.MaciOS.Sdk.Xcode.targets" />
+
+	<!-- TODO: Remove ResolveReadyToRunCompilers target -->
+	<Target Name="ResolveReadyToRunCompilers" Condition="'$(PublishReadyToRun)' == 'true' And '$(UseMonoRuntime)' != 'true'">
+		<PropertyGroup>
+			<_Crossgen2Path Condition="'$(Crossgen2Path)' != ''">$(Crossgen2Path)</_Crossgen2Path>
+			<_Crossgen2Path Condition="'$(Crossgen2Path)' == ''">$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', '..', 'packs', 'Microsoft.NETCore.App.Runtime.$(_PlatformName.ToLowerInvariant())-$(RuntimeIdentifier.Split('-')[1])', '$(BundledNETCoreAppPackageVersion)', 'tools', 'crossgen2'))</_Crossgen2Path>
+			
+			<_TargetArch>$(RuntimeIdentifier.Split('-')[1])</_TargetArch>
+			<_TargetOS>$(RuntimeIdentifier.Split('-')[0])</_TargetOS>
+		</PropertyGroup>
+
+		<ItemGroup>
+			<Crossgen2Tool Include="$(_Crossgen2Path)"
+			               TargetArch="$(_TargetArch)"
+			               TargetOS="$(_TargetOS)"
+			               PerfmapFormatVersion="$(PublishReadyToRunPerfmapFormatVersion)"/>
+		</ItemGroup>
+
+		<Message Text="Using crossgen2: $(_Crossgen2Path)" Importance="high" />
+		<Message Text="  RuntimeIdentifier: $(RuntimeIdentifier)" Importance="high" />
+		<Message Text="  TargetArch: $(_TargetArch)" Importance="high" />
+		<Message Text="  TargetOS: $(_TargetOS)" Importance="high" />
+	</Target>
 
 </Project>

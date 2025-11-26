@@ -213,6 +213,12 @@
 		<CustomNativeMain Condition="'$(OutputType)' == 'Exe'">true</CustomNativeMain>
 	</PropertyGroup>
 
+	<!-- ReadyToRun configuration for CoreCLR -->
+	<PropertyGroup Condition="'$(UseMonoRuntime)' != 'true' And '$(PublishReadyToRun)' == 'true'">
+		<PublishReadyToRunComposite>true</PublishReadyToRunComposite>
+		<PublishReadyToRunContainerFormat>macho</PublishReadyToRunContainerFormat>
+	</PropertyGroup>
+
 	<!-- Compute _SdkIsSimulator from the RuntimeIdentifier -->
 	<PropertyGroup>
 		<_SdkIsSimulator Condition="'$(RuntimeIdentifier)' != '' And '$(_SdkIsSimulator)' == ''">$(RuntimeIdentifier.Contains('simulator'))</_SdkIsSimulator>

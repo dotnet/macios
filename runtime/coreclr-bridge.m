@@ -484,27 +484,29 @@ bool
 xamarin_bridge_vm_initialize (int propertyCount, const char **propertyKeys, const char **propertyValues)
 {
 	// TODO: Remove fprintf logs
-	fprintf (stderr, "xamarin_bridge_vm_initialize: ENTRY propertyCount=%i\n", propertyCount);
+	// fprintf (stderr, "xamarin_bridge_vm_initialize: ENTRY propertyCount=%i\n", propertyCount);
 	int rv;
 
 	int combinedPropertyCount = 0;
 	const char **combinedPropertyKeys = NULL;
 	const char **combinedPropertyValues = NULL;
 
-	fprintf (stderr, "xamarin_bridge_vm_initialize: calling xamarin_bridge_compute_properties\n");
+	// fprintf (stderr, "xamarin_bridge_vm_initialize: calling xamarin_bridge_compute_properties\n");
 	xamarin_bridge_compute_properties (propertyCount, propertyKeys, propertyValues, &combinedPropertyCount, &combinedPropertyKeys, &combinedPropertyValues);
-	fprintf (stderr, "xamarin_bridge_vm_initialize: xamarin_bridge_compute_properties returned, combinedPropertyCount=%i\n", combinedPropertyCount);
+	// fprintf (stderr, "xamarin_bridge_vm_initialize: xamarin_bridge_compute_properties returned, combinedPropertyCount=%i\n", combinedPropertyCount);
 
 	const char *executablePath = [[[[NSBundle mainBundle] executableURL] path] UTF8String];
 	
-	fprintf (stderr, "xamarin_vm_initialize: executablePath: %s\n", executablePath);
-	fprintf (stderr, "xamarin_vm_initialize: xamarin_executable_name: %s\n", xamarin_executable_name);
-	fprintf (stderr, "xamarin_vm_initialize: combinedPropertyCount: %i\n", combinedPropertyCount);
-	for (int i = 0; i < combinedPropertyCount; i++) {
-		fprintf (stderr, "  Property[%i]: %s = %s\n", i, combinedPropertyKeys[i], combinedPropertyValues[i]);
-	}
-	fprintf (stderr, "xamarin_vm_initialize: calling coreclr_initialize\n");
-	fprintf (stderr, "xamarin_vm_initialize: calling coreclr_initialize\n");
+	// fprintf (stderr, "xamarin_vm_initialize: executablePath: %s\n", executablePath);
+	// fprintf (stderr, "xamarin_vm_initialize: xamarin_executable_name: %s\n", xamarin_executable_name);
+	// fprintf (stderr, "xamarin_vm_initialize: combinedPropertyCount: %i\n", combinedPropertyCount);
+	// for (int i = 0; i < combinedPropertyCount; i++) {
+	// 	fprintf (stderr, "  Property[%i]: %s = %s\n", i, combinedPropertyKeys[i], combinedPropertyValues[i]);
+	// }
+	// fprintf (stderr, "xamarin_vm_initialize: calling coreclr_initialize\n");
+	// struct timespec ts_init;
+	// clock_gettime (CLOCK_MONOTONIC, &ts_init);
+	// fprintf (stderr, "[PERF] Before coreclr_initialize at %lld.%09ld\n", (long long)ts_init.tv_sec, ts_init.tv_nsec);
 	
 	rv = coreclr_initialize (
 		executablePath,
@@ -516,7 +518,11 @@ xamarin_bridge_vm_initialize (int propertyCount, const char **propertyKeys, cons
 		&coreclr_domainId
 		);
 
-	fprintf (stderr, "xamarin_vm_initialize: coreclr_initialize returned rv=%i\n", rv);
+	// struct timespec ts_after_init;
+	// clock_gettime (CLOCK_MONOTONIC, &ts_after_init);
+	// fprintf (stderr, "[PERF] After coreclr_initialize at %lld.%09ld\n", (long long)ts_after_init.tv_sec, ts_after_init.tv_nsec);
+
+	// fprintf (stderr, "xamarin_vm_initialize: coreclr_initialize returned rv=%i\n", rv);
 
 	for (int i = 0; i < combinedPropertyCount; i++) {
 		free ((void *) combinedPropertyKeys [i]);
@@ -525,7 +531,7 @@ xamarin_bridge_vm_initialize (int propertyCount, const char **propertyKeys, cons
 	free ((void *) combinedPropertyKeys);
 	free ((void *) combinedPropertyValues);
 
-	fprintf (stderr, "xamarin_vm_initialize (%i, %p, %p): rv: %i (0x%x) domainId: %i handle: %p\n", combinedPropertyCount, combinedPropertyKeys, combinedPropertyValues, rv, rv, coreclr_domainId, coreclr_handle);
+	// fprintf (stderr, "xamarin_vm_initialize (%i, %p, %p): rv: %i (0x%x) domainId: %i handle: %p\n", combinedPropertyCount, combinedPropertyKeys, combinedPropertyValues, rv, rv, coreclr_domainId, coreclr_handle);
 
 	return rv == 0;
 }

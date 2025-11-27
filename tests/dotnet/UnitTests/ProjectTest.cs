@@ -3881,7 +3881,7 @@ namespace Xamarin.Tests {
 
 			Assert.Multiple (() => {
 				var envContents = File.ReadAllText (tmpfile);
-				var env = File.ReadAllLines (tmpfile).Select (v => (Name: v [0..v.IndexOf ('=')], Value: v[(v.IndexOf('=') + 1)..])).ToDictionary (v => v.Name, v => v.Value);
+				var env = File.ReadAllLines (tmpfile).Select (v => (Name: v [0..v.IndexOf ('=')], Value: v [(v.IndexOf ('=') + 1)..])).ToDictionary (v => v.Name, v => v.Value);
 				Assert.That (envContents, Does.Not.Contain ("XAMARIN"), "__XAMARIN_DEBUG_*__");
 				Assert.That (env.Keys, Does.Contain ("VARIABLE"), "VARIABLE");
 				Assert.That (env ["VARIABLE"], Is.EqualTo ("VALUE"), "VALUE");

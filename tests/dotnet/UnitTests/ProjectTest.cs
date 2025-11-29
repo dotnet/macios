@@ -103,6 +103,7 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, platform: platform);
 			Clean (project_path);
 			var properties = GetDefaultProperties ();
+			properties.Remove ("UseFloatingTargetPlatformVersion"); // This test verifies that we use the correct workload to build library projects, so we can't use a floating TPF version.
 			var result = DotNet.AssertBuild (project_path, properties);
 			Assert.That (result.StandardOutput.ToString (), Does.Not.Contain ("Task \"ILLink\""), "Linker executed unexpectedly.");
 

@@ -36,7 +36,6 @@ using Mono.Cecil;
 using Mono.Linker;
 using Mono.Tuner;
 using ClassRedirector;
-using Xamarin.Linker.Steps;
 
 // Disable warnings about nullability attributes in code until we've reviewed this file for nullability (and enabled it).
 // This way we can add nullability attributes to new code in this file without getting warnings about these attributes.

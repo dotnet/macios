@@ -19,9 +19,6 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-#define LOGGING
-#define CONSISTENCY_CHECKS
-
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Collections.Generic;
@@ -79,10 +76,6 @@ namespace Foundation {
 	}
 
 	class NSObjectDataHandle : CriticalHandle {
-#if LOGGING
-		static int counter;
-		public int ID = Interlocked.Increment (ref counter);
-#endif
 		bool invalidated;
 		public NSObjectDataHandle ()
 			: base (IntPtr.Zero)
@@ -95,17 +88,11 @@ namespace Foundation {
 		public NSObjectDataHandle (IntPtr handle)
 			: base (handle)
 		{
-#if LOGGING
-			Runtime.NSLog ($"NSObjectDataHandle (0x{handle:x}): wrapped existing pointer");
-#endif
 		}
 
 		public void Invalidate ()
 		{
 			invalidated = true;
-#if LOGGING
-			Runtime.NSLog ($"NSObjectDataHandle.Invalidate (): invalidated 0x{handle:x}");
-#endif
 		}
 
 		public unsafe NSObjectData* Data {
@@ -121,16 +108,10 @@ namespace Foundation {
 			if (handle != IntPtr.Zero) {
 				if (invalidated) {
 					// nothing to do here.
-#if LOGGING
-					Runtime.NSLog ($"NSObjectDataHandle.ReleaseHandle (): NOT released 0x{handle:x}; not owned");
-#endif
 				} else {
 					unsafe {
 						NativeMemory.Free ((void*) handle);
 					}
-#if LOGGING
-					Runtime.NSLog ($"NSObjectDataHandle.ReleaseHandle (): released 0x{handle:x}");
-#endif
 				}
 			}
 			handle = IntPtr.Zero;
@@ -188,23 +169,14 @@ namespace Foundation {
 			var rv = AllocateData ().Data;
 
 			if (rv is null) {
-#if LOGGING
-				Runtime.NSLog ($"{GetType ().Name}.GetData (): id={objectId} no handle\n{Environment.StackTrace}");
-				throw new ObjectDisposedException ($"{GetType ().Name}.GetData (): id={objectId} No data???");
-#else
 				// Throwing an exception here is better than returning a null pointer, because that will crash the process when the pointer is dereferenced
 				// (and none of the callers can do anything useful with a null pointer anyway).
 				throw new ObjectDisposedException ($"This object (of type {GetType ().Name}) does not have a data pointer anymore, possibly because of a race condition. Please file a bug at https://github.com/dotnet/macios/issues.");
-#endif
 			}
 
 			return rv;
 		}
 
-#if LOGGING
-		static int objectIdCounter;
-		int objectId;
-#endif
 		unsafe NSObjectDataHandle AllocateData ()
 		{
 			var dh = data_handle;
@@ -219,10 +191,6 @@ namespace Foundation {
 				return previousValue;
 			}
 
-#if LOGGING
-			objectId = Interlocked.Increment (ref objectIdCounter);
-			Runtime.NSLog ($"{GetType ().Name}.AllocateData () id={objectId} allocated 0x{((IntPtr) data.Data):x}");
-#endif
 			if (!Runtime.IsCoreCLR) // This condition (and the assignment to __handle_for_mono if applicable) is trimmed away by the linker.
 				__data_for_mono = data.Data;
 
@@ -1108,9 +1076,6 @@ namespace Foundation {
 #endif
 			}
 
-#if LOGGING
-			Runtime.NSLog ($"{GetType ().Name}: id={objectId} previous value invalidated and disposed. Current flags: {flags}");
-#endif
 			previous_data.Invalidate ();
 			// Don't dispose previous_data, because another thread might be referencing it, and trying to access its pointer - which is still valid.
 			// The GC will dispose of previous_data when its not accessible anymore.

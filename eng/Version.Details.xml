@@ -1,29 +1,29 @@
 <Dependencies>
   <ProductDependencies>
-    <Dependency Name="Microsoft.NET.Sdk" Version="10.0.101-servicing.25569.104">
+    <Dependency Name="Microsoft.NET.Sdk" Version="10.0.102-servicing.25576.107">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>4090eb301f5e5db13760aa57eeb32b516c42c56b</Sha>
+      <Sha>20abd87658f89b288b8beeb3a0fcb2c89b0af69a</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.NET.ILLink" Version="10.0.1-servicing.25569.104">
+    <Dependency Name="Microsoft.NET.ILLink" Version="10.0.2-servicing.25576.107">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>4090eb301f5e5db13760aa57eeb32b516c42c56b</Sha>
+      <Sha>20abd87658f89b288b8beeb3a0fcb2c89b0af69a</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.NET.ILLink.Tasks" Version="10.0.1">
+    <Dependency Name="Microsoft.NET.ILLink.Tasks" Version="10.0.2">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>4090eb301f5e5db13760aa57eeb32b516c42c56b</Sha>
+      <Sha>20abd87658f89b288b8beeb3a0fcb2c89b0af69a</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.NET.Runtime.MonoTargets.Sdk" Version="10.0.1">
+    <Dependency Name="Microsoft.NET.Runtime.MonoTargets.Sdk" Version="10.0.2">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>4090eb301f5e5db13760aa57eeb32b516c42c56b</Sha>
+      <Sha>20abd87658f89b288b8beeb3a0fcb2c89b0af69a</Sha>
     </Dependency>
     <!-- Set TRACKING_DOTNET_RUNTIME_SEPARATELY to something in Make.config if changing the version outside of dependency flow -->
-    <Dependency Name="Microsoft.NETCore.App.Ref" Version="10.0.1">
+    <Dependency Name="Microsoft.NETCore.App.Ref" Version="10.0.2">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>4090eb301f5e5db13760aa57eeb32b516c42c56b</Sha>
+      <Sha>20abd87658f89b288b8beeb3a0fcb2c89b0af69a</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Cecil" Version="0.11.5-alpha.25569.104">
+    <Dependency Name="Microsoft.DotNet.Cecil" Version="0.11.5-alpha.25576.107">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>4090eb301f5e5db13760aa57eeb32b516c42c56b</Sha>
+      <Sha>20abd87658f89b288b8beeb3a0fcb2c89b0af69a</Sha>
     </Dependency>
     <!-- This is a subscription of the .NET 9 latest stable versions of our packages -->
     <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_18.5" Version="18.5.9227">
@@ -60,21 +60,21 @@
       <Sha>797d30720e5e629d23eb146935da94cb1b61047e</Sha>
     </Dependency>
     <!-- This is a subscription of the .NET 9/Xcode 26.0 versions of our packages -->
-    <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_26.0" Version="26.0.9754">
+    <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_26.0" Version="26.0.9777">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>4177c9d9590857cfb2617fd7a7ef3d5e1de48ed3</Sha>
+      <Sha>ab5c9f5f6fadadfcf612bb2a0928c58387967eef</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.macOS.Sdk.net9.0_26.0" Version="26.0.9754">
+    <Dependency Name="Microsoft.macOS.Sdk.net9.0_26.0" Version="26.0.9777">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>4177c9d9590857cfb2617fd7a7ef3d5e1de48ed3</Sha>
+      <Sha>ab5c9f5f6fadadfcf612bb2a0928c58387967eef</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.iOS.Sdk.net9.0_26.0" Version="26.0.9754">
+    <Dependency Name="Microsoft.iOS.Sdk.net9.0_26.0" Version="26.0.9777">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>4177c9d9590857cfb2617fd7a7ef3d5e1de48ed3</Sha>
+      <Sha>ab5c9f5f6fadadfcf612bb2a0928c58387967eef</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.tvOS.Sdk.net9.0_26.0" Version="26.0.9754">
+    <Dependency Name="Microsoft.tvOS.Sdk.net9.0_26.0" Version="26.0.9777">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>4177c9d9590857cfb2617fd7a7ef3d5e1de48ed3</Sha>
+      <Sha>ab5c9f5f6fadadfcf612bb2a0928c58387967eef</Sha>
     </Dependency>
     <!-- This is a subscription of the .NET 10/Xcode 26.0 versions of our packages -->
     <Dependency Name="Microsoft.MacCatalyst.Sdk.net10.0_26.0" Version="26.0.11017">
@@ -95,25 +95,25 @@
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.25569.104">
+    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.25576.107">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>4090eb301f5e5db13760aa57eeb32b516c42c56b</Sha>
+      <Sha>20abd87658f89b288b8beeb3a0fcb2c89b0af69a</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.SharedFramework.Sdk" Version="10.0.0-beta.25569.104">
+    <Dependency Name="Microsoft.DotNet.SharedFramework.Sdk" Version="10.0.0-beta.25576.107">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>4090eb301f5e5db13760aa57eeb32b516c42c56b</Sha>
+      <Sha>20abd87658f89b288b8beeb3a0fcb2c89b0af69a</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.TemplateEngine.Authoring.Tasks" Version="10.0.101">
+    <Dependency Name="Microsoft.TemplateEngine.Authoring.Tasks" Version="10.0.102">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>4090eb301f5e5db13760aa57eeb32b516c42c56b</Sha>
+      <Sha>20abd87658f89b288b8beeb3a0fcb2c89b0af69a</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.25569.2">
+    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.25575.1">
       <Uri>https://github.com/dotnet/xharness</Uri>
-      <Sha>f02363153e30c96ad6e170852b2e272103b71945</Sha>
+      <Sha>06be2b96a9dd0ce238be2d50dd150fb283398e0c</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25569.104">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25576.107">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>4090eb301f5e5db13760aa57eeb32b516c42c56b</Sha>
+      <Sha>20abd87658f89b288b8beeb3a0fcb2c89b0af69a</Sha>
       <SourceBuild RepoName="arcade" ManagedOnly="true" />
     </Dependency>
   </ToolsetDependencies>

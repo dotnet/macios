@@ -655,6 +655,7 @@ Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(ObjCRuntime.NativeHandle, Syst
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr, ObjCRuntime.Runtime/MissingCtorResolution, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr, System.Boolean, ObjCRuntime.Runtime/MissingCtorResolution, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.Boolean, System.Boolean, out System.Boolean&)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr, System.IntPtr, System.RuntimeMethodHandle, System.Boolean, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr, System.IntPtr, System.RuntimeMethodHandle, System.Boolean)

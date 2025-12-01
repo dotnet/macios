@@ -4537,7 +4537,7 @@ namespace Registrar {
 		{
 			return GetDelegateProxyType (obj_method.Method, obj_method);
 		}
-		
+
 		public TypeDefinition GetDelegateProxyType (MethodDefinition method, ObjCMethod? obj_method = null)
 		{
 			// A mirror of this method is also implemented in BlockLiteral:GetDelegateProxyType

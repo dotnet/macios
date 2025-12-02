@@ -290,13 +290,6 @@ if test -z "$USE_EXISTING_BUILD"; then
 
 	cd "$OUTPUT_SRC_DIR"
 
-	echo "    ${BLUE}Getting ADR from existing clone to avoid having to setup auth to get it again...${CLEAR}"
-	FILE="$ROOT_DIR/adr-path.raw"
-	make print-variable-value-to-file VARIABLE=ADR_PATH FILE=$FILE -C "$ROOT_DIR/tools/devops"
-	ADR_PATH=$(cat "$FILE")
-	rm -f "$FILE"
-	cp -cr "$ADR_PATH" .
-
 	echo "    ${BLUE}Cloning macios...${CLEAR}"
 	git clone https://github.com/dotnet/macios --reference "$ROOT_DIR" 2>&1 | sed 's/^/        /'
 	cd macios

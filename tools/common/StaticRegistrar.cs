@@ -4600,7 +4600,7 @@ namespace Registrar {
 			return null;
 		}
 
-		List<TypeDefinition> CollectAllProtocolsInHierarchy (TypeDefinition type, List<TypeDefinition>? allProtocols = null)
+		List<TypeDefinition> CollectAllProtocolsInHierarchy (TypeDefinition type)
 		{
 			var rv = new List<TypeDefinition> ();
 			CollectInterfaces (ref rv, type);

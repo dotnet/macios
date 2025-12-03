@@ -243,9 +243,16 @@ namespace Foundation {
 		}
 #endif
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>The maximum amount of content to load into memory when sending content with a request.</summary>
+		/// <value>The maximum size of content to load into memory.</value>
+		/// <remarks>
+		///   <para>When sending content with a request, the content can be provided either in memory, or in a streaming manner.</para>
+		///   <para>If the content is provided in memory, the underlying NSURLSession will set the Content-Length header to the size of the content.</para>
+		///   <para>If the content is provided in a streaming manner, the underlying NSURLSession will send the content using a chunked encoding, and the Content-Length header will not be set.</para>
+		///   <para>This means that if a chunked encoding is not desirable, or a Content-Length header is required, then the content must be provided in memory.</para>
+		///   <para>On the other hand, if upload progress is needed, it's required to provide the content in a streaming manner, and this can be forced by setting this property to 0.</para>
+		///   <para>If the content to upload doesn't have a pre-determined length, then it will always be sent in a streaming manner.</para>
+		/// </remarks>
 		public long MaxInputInMemory { get; set; } = long.MaxValue;
 
 		void RemoveInflightData (NSUrlSessionTask task, bool cancel = true)

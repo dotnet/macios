@@ -12012,7 +12012,6 @@ M:Foundation.NSUrlAuthenticationChallengeSender_Extensions.RejectProtectionSpace
 M:Foundation.NSUrlSession.CreateUploadTaskAsync(Foundation.NSData,Foundation.NSUrlSessionUploadTask@)
 M:Foundation.NSUrlSession.CreateUploadTaskAsync(Foundation.NSData)
 M:Foundation.NSUrlSessionConfiguration.Dispose(System.Boolean)
-M:Foundation.NSUrlSessionDownloadTaskRequest.Finalize
 M:Foundation.NSUrlSessionTaskDelegate_Extensions.DidCreateTask(Foundation.INSUrlSessionTaskDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionTask)
 M:Foundation.NSUrlSessionTaskDelegate_Extensions.DidReceiveInformationalResponse(Foundation.INSUrlSessionTaskDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionTask,Foundation.NSHttpUrlResponse)
 M:Foundation.NSUrlSessionTaskDelegate_Extensions.NeedNewBodyStream(Foundation.INSUrlSessionTaskDelegate,Foundation.NSUrlSession,Foundation.NSUrlSessionTask,System.Int64,System.Action{Foundation.NSInputStream})
@@ -21107,8 +21106,6 @@ P:Foundation.NSProcessInfo.IsiOSAppOnVision
 P:Foundation.NSProcessInfo.IsMacCatalystApplication
 P:Foundation.NSStreamEventArgs.StreamEvent
 P:Foundation.NSString.Item(System.IntPtr)
-P:Foundation.NSUbiquitousKeyValueStore.Item(Foundation.NSString)
-P:Foundation.NSUbiquitousKeyValueStore.Item(System.String)
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangedKeys
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangeReason
 P:Foundation.NSUndoManagerCloseUndoGroupEventArgs.Discardable

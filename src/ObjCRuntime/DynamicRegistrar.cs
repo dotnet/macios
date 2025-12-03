@@ -346,7 +346,7 @@ namespace Registrar {
 			return SharedDynamic.GetOneAttribute<ConnectAttribute> (property);
 		}
 
-		protected override ExportAttribute GetExportAttribute (MethodBase method)
+		public override ExportAttribute GetExportAttribute (MethodBase method)
 		{
 			MethodInfo minfo = method as MethodInfo;
 			if (minfo is not null)

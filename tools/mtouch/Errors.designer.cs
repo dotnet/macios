@@ -3857,5 +3857,14 @@ namespace Xamarin.Bundler {
                 return ResourceManager.GetString("MX8059", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No &apos;Invoke&apos; method found. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
+        /// </summary>
+        public static string MX8060 {
+            get {
+                return ResourceManager.GetString("MX8060", resourceCulture);
+            }
+        }
     }
 }

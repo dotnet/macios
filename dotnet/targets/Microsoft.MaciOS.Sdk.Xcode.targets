@@ -13,7 +13,7 @@ This file contains MSBuild targets that support building Xcode framework project
   <UsingTask TaskName="Xamarin.MacDev.Tasks.CreateXcFramework"      AssemblyFile="$(_XamarinTaskAssembly)"/>
 
   <PropertyGroup>
-    <_XcodeProjectDefaultOutputPathRoot>$(MSBuildProjectDirectory)/$(IntermediateOutputPath)xcode/</_XcodeProjectDefaultOutputPathRoot>
+    <_XcodeProjectDefaultOutputPathRoot>$(IntermediateOutputPath)xcode/</_XcodeProjectDefaultOutputPathRoot>
     <_BuildXcodeProjectsStamp>$(_MaciOSStampDirectory)_BuildXcodeProjects.stamp</_BuildXcodeProjectsStamp>
   </PropertyGroup>
 

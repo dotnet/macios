@@ -7,7 +7,7 @@ using System.Text;
 
 using Foundation;
 
-namespace MySimpleApp {
+namespace MyRunApp {
 	public class Program {
 		static int Main (string [] args)
 		{

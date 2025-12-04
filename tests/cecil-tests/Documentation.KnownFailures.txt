@@ -11851,7 +11851,6 @@ M:Foundation.NSKeyValueSharedObserverRegistration_NSObject.SetSharedObservers(Fo
 M:Foundation.NSKeyValueSharedObservers.#ctor(System.Type)
 M:Foundation.NSMachPort.Dispose(System.Boolean)
 M:Foundation.NSMetadataQuery.Dispose(System.Boolean)
-M:Foundation.NSMutableDictionary.LowlevelSetObject(System.String,System.IntPtr)
 M:Foundation.NSMutableDictionary`2.FromObjectsAndKeys(`1[],`0[])
 M:Foundation.NSMutableOrderedSet`1.op_Addition(Foundation.NSMutableOrderedSet{`0},Foundation.NSMutableOrderedSet{`0})
 M:Foundation.NSMutableOrderedSet`1.op_Addition(Foundation.NSMutableOrderedSet{`0},Foundation.NSOrderedSet{`0})
@@ -21038,9 +21037,6 @@ P:Foundation.NSMetadataItem.UbiquitousItemDownloadingStatus
 P:Foundation.NSMorphology.Unspecified
 P:Foundation.NSMutableArray`1.Item(System.UIntPtr)
 P:Foundation.NSMutableData.Item(System.IntPtr)
-P:Foundation.NSMutableDictionary.Item(Foundation.NSObject)
-P:Foundation.NSMutableDictionary.Item(Foundation.NSString)
-P:Foundation.NSMutableDictionary.Item(System.String)
 P:Foundation.NSMutableDictionary`2.Item(`0)
 P:Foundation.NSMutableOrderedSet`1.Item(System.IntPtr)
 P:Foundation.NSNetDomainEventArgs.Domain

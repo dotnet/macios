@@ -40,6 +40,8 @@ namespace SceneKit {
 
 		internal void Set (NSString key, SCNParticlePropertyController? value)
 		{
+			ArgumentNullException.ThrowIfNull (value);
+
 			if (mutDict is null) {
 				mutDict = new NSMutableDictionary (dict);
 				dict = mutDict;

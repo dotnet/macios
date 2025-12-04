@@ -126,3 +126,4 @@ stages:
         gitHubToken: ${{ parameters.gitHubToken }}
         xqaCertPass: ${{ parameters.xqaCertPass }}
         XcodeChannel: ${{ parameters.XcodeChannel }}
+        statusContext: ${{ parameters.statusContext }}

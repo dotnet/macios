@@ -159,7 +159,13 @@ namespace Foundation {
 				return new NSSet<TKey> (second!);
 
 			if (second is null)
-				return new NSSet<TKey> (first!);
+				return new NSSet<TKey> (first);
+
+			if (first.Count == 0)
+				return new NSSet<TKey> (second);
+
+			if (second.Count == 0)
+				return new NSSet<TKey> (first);
 
 			var result = new NSSet<TKey> (first._SetByAddingObjectsFromSet (second.Handle));
 			GC.KeepAlive (second);

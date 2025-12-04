@@ -147,7 +147,7 @@ namespace Foundation {
 		/// <summary>Adds two sets together, creating a new set that contains all elements from both sets.</summary>
 		/// <param name="first">The first set.</param>
 		/// <param name="second">The second set.</param>
-		/// <returns>A new <see cref="NSSet{TKey}" /> containing all elements from both sets, or <see langword="null" /> of both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
+		/// <returns>A new <see cref="NSSet{TKey}" /> containing all elements from both sets, or <see langword="null" /> if both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
 		[return: NotNullIfNotNull (nameof (first))]
 		[return: NotNullIfNotNull (nameof (second))]
 		public static NSSet<TKey>? operator + (NSSet<TKey>? first, NSSet<TKey>? second)

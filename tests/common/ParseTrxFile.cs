@@ -36,7 +36,7 @@ public class TrxParser {
 			if (outcome is null) {
 				outcome = $"Could not find outcome in trx file {path}";
 			} else {
-				var failedTestsQuery = xml.SelectNodes ("/*[local-name() = 'TestRun']/*[local-name() = 'Results']/*[local-name() = 'UnitTestResult'][@outcome != 'Passed']")?.Cast<XmlNode> ();
+				var failedTestsQuery = xml.SelectNodes ("/*[local-name() = 'TestRun']/*[local-name() = 'Results']/*[local-name() = 'UnitTestResult'][@outcome != 'Passed' and @outcome != 'NotExecuted']")?.Cast<XmlNode> ();
 				if (failedTestsQuery?.Any () == true) {
 					foreach (var node in failedTestsQuery) {
 						var testName = node.Attributes? ["testName"]?.Value ?? "<unknown test name>";

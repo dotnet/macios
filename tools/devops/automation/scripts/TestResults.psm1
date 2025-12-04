@@ -398,7 +398,7 @@ class ParallelTestsResults {
                         $resultLines = Get-Content -Path $r.ResultsPath
                         for ($i = 0; $i -lt $resultLines.Length; $i++) {
                             $line = $resultLines[$i]
-                            if ($line.Contains ("<details>")) {
+                            if ($line.Contains("<details>")) {
                                 $startLine = $i
                                 $addSummary = $false
                                 break

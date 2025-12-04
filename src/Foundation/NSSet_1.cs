@@ -147,13 +147,20 @@ namespace Foundation {
 		/// <summary>Adds two sets together, creating a new set that contains all elements from both sets.</summary>
 		/// <param name="first">The first set.</param>
 		/// <param name="second">The second set.</param>
-		/// <returns>A new <see cref="NSSet{TKey}" /> containing all elements from both sets.</returns>
+		/// <returns>A new <see cref="NSSet{TKey}" /> containing all elements from both sets, or <see langword="null" /> of both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
+		[return: NotNullIfNotNull (nameof (second))]
 		public static NSSet<TKey>? operator + (NSSet<TKey>? first, NSSet<TKey>? second)
 		{
-			if (first is null || first.Count == 0)
-				return second is not null ? new NSSet<TKey> (second) : null;
-			if (second is null || second.Count == 0)
-				return new NSSet<TKey> (first);
+			if (first is null && second is null)
+				return null;
+
+			if (first is null)
+				return new NSSet<TKey> (second!);
+
+			if (second is null)
+				return new NSSet<TKey> (first!);
+
 			var result = new NSSet<TKey> (first._SetByAddingObjectsFromSet (second.Handle));
 			GC.KeepAlive (second);
 			return result;

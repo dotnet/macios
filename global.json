@@ -11,6 +11,6 @@
     "dotnet": "10.0.102-servicing.25603.103"
   },
   "msbuild-sdks": {
-    "Microsoft.DotNet.Arcade.Sdk": "10.0.0-beta.25603.103"
+    "Microsoft.DotNet.Arcade.Sdk": "10.0.0-beta.25604.105"
   }
 }

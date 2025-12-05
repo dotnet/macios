@@ -1034,7 +1034,7 @@ namespace Foundation {
 		{
 			// OK, this code is _weird_.
 			// We need to delay the deletion of the native memory pointed to by data_handle until
-			// after this instance has been collected. A CriticalHandle seems to fit this purpose like glove, until
+			// after this instance has been collected. A CriticalHandle seems to fit this purpose like a glove, until
 			// you realize that a CriticalHandle is only kept alive until the parent object _becomes finalizable_,
 			// not _is collected_, which is very different - in other words, resurrected objects don't keep CriticalHandles
 			// they contain alive. This is a problem because every single managed NSObject instance is resurrected, and we

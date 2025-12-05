@@ -99,8 +99,8 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 			// package name will be different, so we can use any version number we want,
 			// so we'll use the correct one).
 			var minimumVersion = new Version (255, 220, 39248); // This is the last incorrect MSI version, we need to produce something higher than this.
-			// bump minor version according to current Xcode version:
-			// minor = minimumVersion.Minor + (26 - Major Xcode version) * 10 + (Minor Xcode version)
+																// bump minor version according to current Xcode version:
+																// minor = minimumVersion.Minor + (26 - Major Xcode version) * 10 + (Minor Xcode version)
 			var minorVersionBump = int.Parse (new Version (26 - Version.Parse (xcodeVersion).Major, Version.Parse (xcodeVersion).Minor).ToString ().Replace (".", ""));
 			// just use the commit distance for the build version, our minor version will be higher than the minimum version, so we can use any build version.
 			var buildVersionBump = commitDistances [platform];

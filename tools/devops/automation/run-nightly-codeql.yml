@@ -44,6 +44,7 @@ stages:
       demands:
       - Agent.OS -equals Darwin
       - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
+      - macOS.Architecture -equals $(defaultMacOSArchitecture)
       - macOS.Name -equals ${{ parameters.macOSName }}
       - XcodeChannel -equals $(xcodeChannel)
     workspace:

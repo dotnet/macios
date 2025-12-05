@@ -73,5 +73,8 @@ variables:
 - name: minimumMacOSVersion
   value: 15.6
 
+- name: defaultMacOSArchitecture
+  value: arm64
+
 - name: xcodeChannel
   value: Stable

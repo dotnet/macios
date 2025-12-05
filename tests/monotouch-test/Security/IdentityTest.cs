@@ -21,8 +21,8 @@ namespace MonoTouchFixtures.Security {
 		{
 			using (var options = NSDictionary.FromObjectAndKey (new NSString ("farscape"), SecImportExport.Passphrase)) {
 				NSDictionary [] array;
-				if (SecImportExport.ImportPkcs12 (ImportExportTest.farscape_pfx, options, out array) != SecStatusCode.Success)
-					Assert.Fail ("ImportPkcs12");
+				var rv = SecImportExport.ImportPkcs12 (ImportExportTest.farscape_pfx, options, out array);
+				Assert.That (rv, Is.EqualTo (SecStatusCode.Success), "ImportPkcs12");
 				return Runtime.GetINativeObject<SecIdentity> (array [0].LowlevelObjectForKey (SecImportExport.Identity.Handle), false);
 			}
 		}

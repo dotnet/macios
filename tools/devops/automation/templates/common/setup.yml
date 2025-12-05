@@ -8,6 +8,7 @@ parameters:
   type: string
 - name: requiredDiskSpace
   type: number
+  default: 20
 - name: statusContext
   type: string
 

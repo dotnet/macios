@@ -32,7 +32,7 @@ steps:
   continueOnError: true
   timeoutInMinutes: 60
 
-# Use a cmdlet to check if the space available in the devices root system is larger than 50 gb. If there is not
+# Use a cmdlet to check if the space available in the device's root system is larger than the required amount (parameterized via 'requiredDiskSpace'). If there is not
 # enough space available it:
 # 1. Set the status of the build to error. It is not a failure since no tests have been ran.
 # 2. Set a comment stating the same as what was sent to the status.

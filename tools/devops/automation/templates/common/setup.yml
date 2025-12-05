@@ -8,6 +8,8 @@ parameters:
   type: string
 - name: requiredDiskSpace
   type: number
+- name: statusContext
+  type: string
 
 steps:
 - template: agent-cleanser/v1.yml@yaml-templates # Uninstalls mono, Xamarin.Mac (if installed) plus cleanses the Provisionator Xcode cache and kills processes at the end

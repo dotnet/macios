@@ -293,6 +293,7 @@ namespace Foundation {
 
 				inflightRequests.Clear ();
 			}
+			session.InvalidateAndCancel();
 			base.Dispose (disposing);
 		}
 
@@ -449,6 +450,7 @@ namespace Foundation {
 					configuration.HttpCookieStorage = null;
 				}
 				session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
+				oldSession.FinishTasksAndInvalidate();
 				oldSession.Dispose ();
 			}
 		}

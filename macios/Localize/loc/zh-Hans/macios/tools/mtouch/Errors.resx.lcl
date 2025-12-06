@@ -4864,6 +4864,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MX8060" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No 'Invoke' method found. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[方法 {0}.{1} 的返回值的 DelegateProxyAttribute 无效: 找不到 "Invoke" 方法。请提交包含测试用例的 Bug 报告(https://github.com/dotnet/macios/issues/new)。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MX_ConfigurationAwareStep" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The linker step '{0}' failed during processing: {1}]]></Val>

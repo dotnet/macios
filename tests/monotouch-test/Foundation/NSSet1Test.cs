@@ -139,6 +139,129 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
+		public void OperatorAddNullTest ()
+		{
+			var v1 = (NSString) "1";
+			var v2 = (NSString) "2";
+			NSSet<NSString> nullSet = null;
+
+			// Both null -> null
+			var result1 = nullSet + nullSet;
+			Assert.IsNull (result1, "null + null");
+
+			// First null, second non-null -> copy of second
+			using (var second = new NSSet<NSString> (v2)) {
+				using (var result2 = nullSet + second) {
+					Assert.IsNotNull (result2, "null + non-null");
+					Assert.AreEqual ((nuint) 1, result2.Count, "null + non-null Count");
+					Assert.IsTrue (result2.Contains (v2), "null + non-null contains");
+				}
+			}
+
+			// First non-null, second null -> copy of first
+			using (var first = new NSSet<NSString> (v1)) {
+				using (var result3 = first + nullSet) {
+					Assert.IsNotNull (result3, "non-null + null");
+					Assert.AreEqual ((nuint) 1, result3.Count, "non-null + null Count");
+					Assert.IsTrue (result3.Contains (v1), "non-null + null contains");
+				}
+			}
+		}
+
+		[Test]
+		public void OperatorAddEmptyTest ()
+		{
+			var v1 = (NSString) "1";
+			var v2 = (NSString) "2";
+
+			// First empty, second non-empty -> copy of second
+			using (var first = new NSSet<NSString> ()) {
+				using (var second = new NSSet<NSString> (v2)) {
+					using (var result = first + second) {
+						Assert.IsNotNull (result, "empty + non-empty");
+						Assert.AreEqual ((nuint) 1, result.Count, "empty + non-empty Count");
+						Assert.IsTrue (result.Contains (v2), "empty + non-empty contains");
+					}
+				}
+			}
+
+			// First non-empty, second empty -> copy of first
+			using (var first = new NSSet<NSString> (v1)) {
+				using (var second = new NSSet<NSString> ()) {
+					using (var result = first + second) {
+						Assert.IsNotNull (result, "non-empty + empty");
+						Assert.AreEqual ((nuint) 1, result.Count, "non-empty + empty Count");
+						Assert.IsTrue (result.Contains (v1), "non-empty + empty contains");
+					}
+				}
+			}
+		}
+
+		[Test]
+		public void OperatorSubtractNullTest ()
+		{
+			var v1 = (NSString) "1";
+			var v2 = (NSString) "2";
+			NSSet<NSString> nullSet = null;
+
+			// null - null -> null
+			var result1 = nullSet - nullSet;
+			Assert.IsNull (result1, "null - null");
+
+			// null - non-null -> null
+			using (var second = new NSSet<NSString> (v2)) {
+				var result2 = nullSet - second;
+				Assert.IsNull (result2, "null - non-null");
+			}
+
+			// non-null - null -> copy of first
+			using (var first = new NSSet<NSString> (v1, v2)) {
+				using (var result3 = first - nullSet) {
+					Assert.IsNotNull (result3, "non-null - null");
+					Assert.AreEqual ((nuint) 2, result3.Count, "non-null - null Count");
+					Assert.IsTrue (result3.Contains (v1), "non-null - null contains v1");
+					Assert.IsTrue (result3.Contains (v2), "non-null - null contains v2");
+				}
+			}
+		}
+
+		[Test]
+		public void OperatorSubtractEmptyTest ()
+		{
+			var v1 = (NSString) "1";
+			var v2 = (NSString) "2";
+
+			// empty - non-empty -> null
+			using (var first = new NSSet<NSString> ()) {
+				using (var second = new NSSet<NSString> (v2)) {
+					var result = first - second;
+					Assert.IsNull (result, "empty - non-empty");
+				}
+			}
+
+			// non-empty - empty -> copy of first
+			using (var first = new NSSet<NSString> (v1, v2)) {
+				using (var second = new NSSet<NSString> ()) {
+					using (var result = first - second) {
+						Assert.IsNotNull (result, "non-empty - empty");
+						Assert.AreEqual ((nuint) 2, result.Count, "non-empty - empty Count");
+						Assert.IsTrue (result.Contains (v1), "non-empty - empty contains v1");
+						Assert.IsTrue (result.Contains (v2), "non-empty - empty contains v2");
+					}
+				}
+			}
+
+			// Result is empty after subtraction -> null
+			using (var first = new NSSet<NSString> (v1)) {
+				using (var second = new NSSet<NSString> (v1)) {
+					var result = first - second;
+					Assert.IsNotNull (result, "result is not null");
+					Assert.AreEqual ((nuint) 0, result.Count, "result is empty");
+				}
+			}
+		}
+
+		[Test]
 		public void IEnumerable1Test ()
 		{
 			const int C = 16 * 2 + 3; // NSFastEnumerator has a array of size 16, use more than that, and not an exact multiple.

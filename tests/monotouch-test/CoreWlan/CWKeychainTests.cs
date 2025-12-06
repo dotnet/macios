@@ -91,9 +91,9 @@ namespace MonoTouchFixtures.CoreWlan {
 		[Test]
 		public void TrySetWiFiEAPIdentityTest ()
 		{
+			var identity = IdentityTest.GetIdentity ();
 			RunOnBackgroundThread (() => {
 				// false because the ssid is not present
-				var identity = IdentityTest.GetIdentity ();
 				Assert.True (CWKeychain.TrySetWiFiEAPIdentity (domain, ssid, identity), "A");
 
 				Assert.True (CWKeychain.TrySetWiFiEAPIdentity (domain, ssid, identity, out var status), "B");

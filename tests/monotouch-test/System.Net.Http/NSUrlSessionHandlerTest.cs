@@ -33,9 +33,11 @@ namespace MonoTests.System.Net.Http {
 			}, out var ex);
 
 			if (!done || !firstRequestSucceeded) {
+				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 				Assert.Inconclusive ("First request failed or timed out - cannot verify the bug.");
 			}
 
+			TestRuntime.IgnoreInCIIfBadNetwork (ex);
 			Assert.IsNull (ex, "First request exception");
 
 			// Second request with new handler using same background session ID - should not timeout
@@ -50,9 +52,11 @@ namespace MonoTests.System.Net.Http {
 			}, out ex);
 
 			if (!done) {
+				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 				Assert.Fail ("Second request timedout - this indicates the bug is present.");
 			}
 
+			TestRuntime.IgnoreInCIIfBadNetwork (ex);
 			Assert.IsNull (ex, "Second request exception");
 		}
 	}

@@ -137,14 +137,6 @@ steps:
     workingDirectory: "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)"
     timeoutInMinutes: 5
 
-  - bash: |
-      set -x
-      set -e
-      cat configure.inc
-    displayName: "Print configuration"
-    workingDirectory: "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)"
-    timeoutInMinutes: 5
-
   # Make sure we have the right maccore hash checked out before we try to add
   # the provisioning profiles.
   - bash: |

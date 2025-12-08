@@ -1250,8 +1250,6 @@
 
 		<!-- CoreCLR: these are variables currently needed to make CoreCLR work -->
 		<ItemGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS'">
-			<!-- TODO: Remove DOTNET_Interpreter -->
-			<_BundlerEnvironmentVariables Include="DOTNET_Interpreter" Value="%2A%21%2A" /> <!-- This is the string "*!*" url encoded -->
 			<_BundlerEnvironmentVariables Include="DOTNET_ReadyToRun" Value="1" Condition="'$(PublishReadyToRun)' == 'true'" />
 			<_BundlerEnvironmentVariables Include="DOTNET_ReadyToRun" Value="0" Condition="'$(PublishReadyToRun)' != 'true'" />
 		</ItemGroup>

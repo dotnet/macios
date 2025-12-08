@@ -450,7 +450,6 @@ namespace Foundation {
 					configuration.HttpCookieStorage = null;
 				}
 				session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
-				oldSession.FinishTasksAndInvalidate ();
 				oldSession.Dispose ();
 			}
 		}

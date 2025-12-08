@@ -13,7 +13,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64", "true")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "true")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", "true")]
-		public void DisableLinker (ApplePlatform platform, string runtimeIdentifiers, string value)
+		public void PublishTrimmedNotSupported (ApplePlatform platform, string runtimeIdentifiers, string value)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);

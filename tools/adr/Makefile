@@ -3,8 +3,6 @@ TOP=../..
 include $(TOP)/Make.config
 include $(TOP)/mk/xamarin.mk
 
-ADR_NUGET_VERSION=1.0.0
-
 DOWNLOAD_STAMP_FILE=.download-$(ADR_NUGET_VERSION).stamp
 
 $(DOWNLOAD_STAMP_FILE):

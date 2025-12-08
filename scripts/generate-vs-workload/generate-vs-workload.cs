@@ -94,7 +94,7 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 			// Due to a bug, we've inserted packages with wildly incorrect (and random) MSI versions into VS.
 			// This poses a problem, for a couple of reasons:
 			// * We can't insert a new package with an MSI version lower than the existing one.
-			// * The incorrect MS version is rather close to the maximum version number - the major part is already there (255), the minor version is close (220).
+			// * The incorrect MSI version is rather close to the maximum version number - the major part is already there (255), the minor version is close (220).
 			// So implement a custom version scheme for .NET 10 (in .NET 11 the inserted
 			// package name will be different, so we can use any version number we want,
 			// so we'll use the correct one).

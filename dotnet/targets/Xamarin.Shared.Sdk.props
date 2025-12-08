@@ -214,10 +214,15 @@
 	</PropertyGroup>
 
 	<!-- ReadyToRun configuration for CoreCLR -->
-	<PropertyGroup Condition="'$(UseMonoRuntime)' != 'true' And '$(PublishReadyToRun)' == 'true'">
-		<PublishReadyToRunComposite>true</PublishReadyToRunComposite>
-		<PublishReadyToRunContainerFormat>macho</PublishReadyToRunContainerFormat>
+	<PropertyGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS'">
+		<PublishReadyToRun Condition="'$(PublishReadyToRun)' == ''">true</PublishReadyToRun>
+		<PublishReadyToRunComposite Condition="'$(PublishReadyToRun)' == 'true'">true</PublishReadyToRunComposite>
+		<PublishReadyToRunContainerFormat Condition="'$(PublishReadyToRun)' == 'true'">macho</PublishReadyToRunContainerFormat>
 	</PropertyGroup>
+
+	<ItemGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(PublishReadyToRun)' != 'true'">
+		<_BundlerEnvironmentVariables Include="DOTNET_ReadyToRun" Value="0" />
+	</ItemGroup>
 
 	<!-- Compute _SdkIsSimulator from the RuntimeIdentifier -->
 	<PropertyGroup>

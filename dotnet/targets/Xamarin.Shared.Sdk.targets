@@ -1247,12 +1247,6 @@
 							"
 			/>
 		</ItemGroup>
-
-		<!-- CoreCLR: these are variables currently needed to make CoreCLR work -->
-		<ItemGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS'">
-			<_BundlerEnvironmentVariables Include="DOTNET_ReadyToRun" Value="1" Condition="'$(PublishReadyToRun)' == 'true'" />
-			<_BundlerEnvironmentVariables Include="DOTNET_ReadyToRun" Value="0" Condition="'$(PublishReadyToRun)' != 'true'" />
-		</ItemGroup>
 	</Target>
 
 	<!-- App bundle creation tasks -->

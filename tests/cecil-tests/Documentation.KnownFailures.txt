@@ -11983,8 +11983,6 @@ M:Foundation.NSOrderedSet.op_Inequality(Foundation.NSOrderedSet,Foundation.NSOrd
 M:Foundation.NSOrderedSet.op_Subtraction(Foundation.NSOrderedSet,Foundation.NSOrderedSet)
 M:Foundation.NSOrderedSet.op_Subtraction(Foundation.NSOrderedSet,Foundation.NSSet)
 M:Foundation.NSPort.Dispose(System.Boolean)
-M:Foundation.NSSet`1.op_Addition(Foundation.NSSet{`0},Foundation.NSSet{`0})
-M:Foundation.NSSet`1.op_Subtraction(Foundation.NSSet{`0},Foundation.NSSet{`0})
 M:Foundation.NSStream.add_OnEvent(System.EventHandler{Foundation.NSStreamEventArgs})
 M:Foundation.NSStream.Dispose(System.Boolean)
 M:Foundation.NSStream.remove_OnEvent(System.EventHandler{Foundation.NSStreamEventArgs})

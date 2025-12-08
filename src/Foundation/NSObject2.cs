@@ -76,6 +76,7 @@ namespace Foundation {
 	}
 
 	class NSObjectDataHandle : CriticalHandle {
+		bool invalidated;
 		public NSObjectDataHandle ()
 			: base (IntPtr.Zero)
 		{
@@ -84,18 +85,34 @@ namespace Foundation {
 			}
 		}
 
+		public NSObjectDataHandle (IntPtr handle)
+			: base (handle)
+		{
+		}
+
+		public void Invalidate ()
+		{
+			invalidated = true;
+		}
+
 		public unsafe NSObjectData* Data {
 			get => (NSObjectData*) handle;
 		}
 
 		public override bool IsInvalid {
-			get => handle != IntPtr.Zero;
+			get => handle == IntPtr.Zero;
 		}
 
 		protected override bool ReleaseHandle ()
 		{
-			unsafe {
-				NativeMemory.Free ((void*) handle);
+			if (handle != IntPtr.Zero) {
+				if (invalidated) {
+					// nothing to do here.
+				} else {
+					unsafe {
+						NativeMemory.Free ((void*) handle);
+					}
+				}
 			}
 			handle = IntPtr.Zero;
 			return true;
@@ -149,13 +166,22 @@ namespace Foundation {
 
 		internal unsafe NSObjectData* GetData ()
 		{
-			return AllocateData ().Data;
+			var rv = AllocateData ().Data;
+
+			if (rv is null) {
+				// Throwing an exception here is better than returning a null pointer, because that will crash the process when the pointer is dereferenced
+				// (and none of the callers can do anything useful with a null pointer anyway).
+				throw new ObjectDisposedException ($"This object (of type {GetType ().Name}) does not have a data pointer anymore, possibly because of a race condition. Please file a bug at https://github.com/dotnet/macios/issues.");
+			}
+
+			return rv;
 		}
 
 		unsafe NSObjectDataHandle AllocateData ()
 		{
-			if (data_handle is not null)
-				return data_handle;
+			var dh = data_handle;
+			if (dh is not null)
+				return dh;
 
 			var data = new NSObjectDataHandle ();
 			var previousValue = Interlocked.CompareExchange (ref data_handle, data, null);
@@ -998,9 +1024,63 @@ namespace Foundation {
 					ReleaseManagedRef ();
 				} else {
 					NSObject_Disposer.Add (this);
+					RecreateDataHandle ();
 				}
 			}
 		}
+
+#nullable enable
+		void RecreateDataHandle ()
+		{
+			// OK, this code is _weird_.
+			// We need to delay the deletion of the native memory pointed to by data_handle until
+			// after this instance has been collected. A CriticalHandle seems to fit this purpose like a glove, until
+			// you realize that a CriticalHandle is only kept alive until the parent object _becomes finalizable_,
+			// not _is collected_, which is very different - in other words, resurrected objects don't keep CriticalHandles
+			// they contain alive. This is a problem because every single managed NSObject instance is resurrected, and we
+			// need the native memory to stay alive after resurrection.
+			//
+			// So this solution depends on a few bits:
+			// * At this point, this instance may have become finalizable, but the native memory shouldn't have been freed yet.
+			// * The original NSObjectDataHandle (aka CriticalHandle) will be collected in this/upcoming GC cycle, and can't
+			//   be trusted to keep the native memory alive anymore.
+			// * So we just create a new one, pointing to the same native memory, and replace the original NSObjectDataHandle (aka
+			//   CriticalHandle) with it
+			// * This works, because since this instance has become / will become resurrected, it's not finalizable anymore,
+			//   and it will keep the new NSObjectDataHandle instance (and the native memory it points to) alive.
+			// * Now if this instance is deemed finalizable, and then resurrected *again*, bad things will likely happen. This
+			//   is a bit more unlikely though, because we don't re-register the finalizer for execution, so unless somebody
+			//   else does that, it's quite unlikely this instance will become resurrected a second time.
+			var previous_data = data_handle;
+			if (previous_data is null) {
+				var msg = $"This object (of type {GetType ().Name}) does not have an existing data pointer, possibly because of a race condition. Please file a bug at https://github.com/dotnet/macios/issues.";
+#if CONSISTENCY_CHECKS
+				throw new InvalidOperationException (msg);
+#else
+				Runtime.NSLog (msg);
+				return;
+#endif
+			}
+
+			unsafe {
+				data_handle = new NSObjectDataHandle ((IntPtr) previous_data.Data);
+			}
+
+			if (previous_data.IsInvalid) {
+				var msg = $"This object (of type {GetType ().Name}) does not have valid data pointer, possibly because of a race condition. Please file a bug at https://github.com/dotnet/macios/issues.";
+#if CONSISTENCY_CHECKS
+				throw new InvalidOperationException (msg);
+#else
+				Runtime.NSLog (msg);
+				return;
+#endif
+			}
+
+			previous_data.Invalidate ();
+			// Don't dispose previous_data, because another thread might be referencing it, and trying to access its pointer - which is still valid.
+			// The GC will dispose of previous_data when its not accessible anymore.
+		}
+#nullable disable
 
 		[Register ("__NSObject_Disposer")]
 		[Preserve (AllMembers = true)]

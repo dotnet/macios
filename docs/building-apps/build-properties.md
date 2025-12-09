@@ -1299,6 +1299,12 @@ See [TrimMode](/dotnet/core/deploying/trimming/trimming-options) for a bit more 
 > to `false` - to disable trimming, set `TrimMode=copy` instead (a build error
 > will be raised if `PublishTrimmed` is set to `false`).
 
+> [!NOTE]
+> Due to [a known issue](https://github.com/dotnet/runtime/issues/108269), setting `PublishTrimmed`
+> to `true` may cause confusing problems, so the build will report an error if this
+> is detected (the solution is to not set `PublishTrimmed` at all).
+
+
 The `TrimMode` property is equivalent to the existing
 [MtouchLink](#mtouchlink) (for iOS, tvOS and Mac Catalyst) and
 [LinkMode](#linkmode) (for macOS) properties, but the valid properties values

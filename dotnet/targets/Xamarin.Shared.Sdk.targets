@@ -291,13 +291,25 @@
 	<!-- PublishTrimmed must be calculated as part of a target because IsMacEnabled on Windows will be set after connecting to the Mac -->
 	<Target Name="_ComputePublishTrimmed">
 		<PropertyGroup>
-			<_MustTrim Condition="'$(_MustTrim)' == '' And '$(RuntimeIdentifier)' != '' And ($(_ProjectType.EndsWith('ExecutableProject')) Or $(_ProjectType.EndsWith('AppExtensionProject'))) And '$(IsMacEnabled)' == 'true'">true</_MustTrim>
-			<PublishTrimmed Condition="'$(PublishTrimmed)' == '' And '$(_MustTrim)' == 'true'">true</PublishTrimmed>
-
 			<_LinkModeProperty Condition="'$(_PlatformName)' == 'macOS'">LinkMode</_LinkModeProperty>
 			<_LinkModeProperty Condition="'$(_PlatformName)' != 'macOS'">MtouchLink</_LinkModeProperty>
+
+			<!-- The trimmer must be enabled, so if it was explicitly disabled, show an error. -->
+			<_PublishTrimmedError Condition="'$(_PublishTrimmedError)' == '' And '$(PublishTrimmed)' != 'true' And '$(PublishTrimmed)' != ''">true</_PublishTrimmedError>
+			<!-- Also disallow explicitly enabling the trimmer, because it causes problems (https://github.com/dotnet/runtime/issues/108269),
+			     except then PublishAot=true, because then the .NET SDK sets PublishTrimmed=true before we get to here, so we can't distinguish
+			     between developers setting it and the .NET SDK setting it  -->
+			<_PublishTrimmedError Condition="'$(_PublishTrimmedError)' == '' And '$(PublishTrimmed)' != '' And '$(PublishAot)' != 'true'">true</_PublishTrimmedError>
 		</PropertyGroup>
-		<Error Condition="'$(_MustTrim)' == 'true' And '$(PublishTrimmed)' != 'true'" Text="$(_PlatformName) projects must build with PublishTrimmed=true. Current value: $(PublishTrimmed). Set '$(_LinkModeProperty)=None' instead to disable trimming for all assemblies." />
+
+		<Error Condition="'$(_PublishTrimmedError)' == 'true'" Text="$(_PlatformName) projects do not support setting 'PublishTrimmed' to any value (current value: $(PublishTrimmed)). Use the '$(_LinkModeProperty)' property to configure trimming behavior instead." />
+
+		<PropertyGroup>
+			<_MustTrim Condition="'$(_MustTrim)' == '' And '$(RuntimeIdentifier)' != '' And ($(_ProjectType.EndsWith('ExecutableProject')) Or $(_ProjectType.EndsWith('AppExtensionProject'))) And '$(IsMacEnabled)' == 'true'">true</_MustTrim>
+			<PublishTrimmed Condition="'$(PublishTrimmed)' == '' And '$(_MustTrim)' == 'true'">true</PublishTrimmed>
+		</PropertyGroup>
+
+		<!-- Show a warning if the trimmer was disabled because there's no connection to a Mac -->
 		<PropertyGroup Condition="'$(PublishTrimmed)' != '' And '$(IsMacEnabled)' != 'true'">
 			<_PreviousPublishTrimmedValue>$(PublishTrimmed)</_PreviousPublishTrimmedValue>
 			<PublishTrimmed />

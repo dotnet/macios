@@ -457,7 +457,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64", false)]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true, null, "Release")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", true, "PublishTrimmed=true;UseInterpreter=true")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true, "UseInterpreter=true")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false)]
 		[Category ("WindowsInclusive")]
 		public void IsNotMacBuild (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties = null, string configuration = "Debug")

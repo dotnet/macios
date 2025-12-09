@@ -3,9 +3,9 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 
-		<ApplicationTitle>MySimpleApp</ApplicationTitle>
+		<ApplicationTitle>Net11_0SimpleApp</ApplicationTitle>
 		<ApplicationId>com.xamarin.mysimpleapp</ApplicationId>
-		<ApplicationVersion>9.0</ApplicationVersion>
+		<ApplicationVersion>11.0</ApplicationVersion>
 
 		<ExcludeNUnitLiteReference>true</ExcludeNUnitLiteReference>
 		<ExcludeTouchUnitReference>true</ExcludeTouchUnitReference>

@@ -2098,9 +2098,19 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet11_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 11, isFuture: true);
-			// In .NET 11
-			// * Copy this test and create a new .NET 12 test
+			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 11);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet12_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 12, isFuture: true);
+			// In .NET 12
+			// * Copy this test and create a new .NET 13 test
 			// * Update this test to call 'BuildSupportedNetVersionApp'
 			// * The SupportedOSPlatformVersion values in the test project might need updating.
 		}
@@ -2152,7 +2162,11 @@ namespace Xamarin.Tests {
 			Assert.That (infoPlistPath, Does.Exist, "Info.plist");
 			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
 			Assert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
-			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+			if (majorNetVersion >= 10) {
+				Assert.AreEqual (project, infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+			} else {
+				Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+			}
 			Assert.AreEqual (netVersion, infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
 			Assert.AreEqual (netVersion, infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
 

@@ -2088,6 +2088,19 @@
 			<ResolvedFileToPublish Remove="@(_CreateDumpExecutable)" />
 			<ResolvedFileToPublish Include="@(_CreateDumpExecutable)" Condition="'$(BundleCreateDump)' == 'true'" />
 
+			<!-- Remove libclrjit.dylib when using CoreCLR on Apple mobile platforms -->
+			<ResolvedFileToPublish
+				Remove="@(ResolvedFileToPublish)"
+				Condition=" '$(_XamarinRuntime)' == 'CoreCLR' And
+				            '$(_PlatformName)' != 'macOS' And
+				            '%(ResolvedFileToPublish.Filename)' == 'libclrjit' And
+				            '%(ResolvedFileToPublish.Extension)' == '.dylib' And
+				            '%(ResolvedFileToPublish.AssetType)' == 'native' And
+				            '%(ResolvedFileToPublish.RuntimeIdentifier)' == '$(RuntimeIdentifier)' And
+				            '%(ResolvedFileToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)'
+				            "
+			/>
+
 			<!-- Remove any dylibs Mono told us not to link with -->
 			<ResolvedFileToPublish
 				Remove="@(_MonoRuntimeComponentDontLink -> '$(_MonoRuntimePackPath)/native/%(Identity)')"

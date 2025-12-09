@@ -237,10 +237,6 @@ extern void mono_gc_init_finalizer_thread (void);
 int
 xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 {
-	struct timespec ts_main_start;
-	clock_gettime (CLOCK_MONOTONIC, &ts_main_start);
-	fprintf (stderr, "[PERF] StartupTotal %lld.%09ld\n", (long long)ts_main_start.tv_sec, ts_main_start.tv_nsec);
-	
 #ifdef DEBUG
 	monotouch_start_launch_timer ();
 #endif
@@ -417,11 +413,6 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 	xamarin_bridge_initialize ();
 
 	xamarin_initialize ();
-
-	struct timespec ts_main_end;
-	clock_gettime (CLOCK_MONOTONIC, &ts_main_end);
-	fprintf (stderr, "[PERF] RuntimeInit %lld.%09ld\n", (long long)ts_main_end.tv_sec, ts_main_end.tv_nsec);
-	
 	DEBUG_LAUNCH_TIME_PRINT ("\tmonotouch init time");
 
 	if (xamarin_register_assemblies != NULL)

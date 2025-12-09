@@ -344,15 +344,7 @@ xamarin_bridge_vm_initialize (int propertyCount, const char **propertyKeys, cons
 
 	xamarin_initialize_runtime_config ();
 
-	// struct timespec ts_init;
-	// clock_gettime (CLOCK_MONOTONIC, &ts_init);
-	// fprintf (stderr, "[PERF] Before monovm_initialize at %lld.%09ld\n", (long long)ts_init.tv_sec, ts_init.tv_nsec);
-
 	rv = monovm_initialize (propertyCount, propertyKeys, propertyValues);
-
-	// struct timespec ts_after_init;
-	// clock_gettime (CLOCK_MONOTONIC, &ts_after_init);
-	// fprintf (stderr, "[PERF] After monovm_initialize at %lld.%09ld\n", (long long)ts_after_init.tv_sec, ts_after_init.tv_nsec);
 
 	LOG_MONOVM (stderr, "xamarin_vm_initialize (%i, %p, %p): rv: %i\n", propertyCount, propertyKeys, propertyValues, rv);
 

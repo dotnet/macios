@@ -2473,11 +2473,6 @@ size_t get_image_size(void* base_address)
 
 bool get_native_code_data(const struct host_runtime_contract_native_code_context* context, struct host_runtime_contract_native_code_data* data)
 {
-	// TODO: Remove fprintf logs
-    // fprintf (stderr, "R2R: get_native_code_data called for assembly: %s, composite: %s\n", 
-    //          context ? context->assembly_path : "(null)", 
-    //          context ? context->owner_composite_name : "(null)");
-    
     if (!context || !data || !context->assembly_path || !context->owner_composite_name)
         return false;
 
@@ -2492,31 +2487,22 @@ bool get_native_code_data(const struct host_runtime_contract_native_code_context
     int written = snprintf(r2r_path + dir_len, sizeof(r2r_path) - dir_len, "/%s", context->owner_composite_name);
     if (written <= 0 || (size_t)written >= sizeof(r2r_path) - dir_len)
         return false;
-
-    // fprintf (stderr, "R2R: Attempting to load R2R image from: %s\n", r2r_path);
     
     void* handle = dlopen(r2r_path, RTLD_LAZY | RTLD_LOCAL);
     if (handle == NULL) {
-        // fprintf (stderr, "R2R: Failed to dlopen R2R image: %s\n", dlerror ());
         return false;
     }
-
-    // fprintf (stderr, "R2R: Successfully loaded R2R image, looking for RTR_HEADER symbol\n");
     
     void* r2r_header = dlsym(handle, "RTR_HEADER");
     if (r2r_header == NULL)
     {
-        // fprintf (stderr, "R2R: Failed to find RTR_HEADER symbol: %s\n", dlerror ());
         dlclose(handle);
         return false;
     }
-
-    // fprintf (stderr, "R2R: Found RTR_HEADER at %p\n", r2r_header);
     
     Dl_info info;
     if (dladdr(r2r_header, &info) == 0)
     {
-        // fprintf (stderr, "R2R: Failed to get dladdr info for RTR_HEADER\n");
         dlclose(handle);
         return false;
     }
@@ -2525,9 +2511,6 @@ bool get_native_code_data(const struct host_runtime_contract_native_code_context
     data->r2r_header_ptr = r2r_header;
     data->image_size = get_image_size(info.dli_fbase);
     data->image_base = info.dli_fbase;
-    
-    // fprintf (stderr, "R2R: Successfully loaded R2R data - header: %p, base: %p, size: %lu\n",
-    //          data->r2r_header_ptr, data->image_base, (unsigned long)data->image_size);
     
     return true;
 }

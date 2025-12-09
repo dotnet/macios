@@ -1246,6 +1246,14 @@
 							'%(ResolvedFileToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)'
 							"
 			/>
+			<!-- Don't link with libclrjit.dylib when using CoreCLR on Apple mobile platforms -->
+			<_MonoLibrary
+				Remove="@(_MonoLibrary)"
+				Condition=" '$(_XamarinRuntime)' == 'CoreCLR' And
+							'$(_PlatformName)' != 'macOS' And
+							'%(Filename)' == 'libclrjit'
+							"
+			/>
 		</ItemGroup>
 	</Target>
 

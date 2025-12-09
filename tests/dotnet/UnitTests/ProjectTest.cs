@@ -2078,7 +2078,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet9_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 9);
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 9, isFuture: false);
 		}
 
 		[Test]

@@ -1,29 +1,29 @@
 <Dependencies>
   <ProductDependencies>
-    <Dependency Name="Microsoft.NET.Sdk" Version="10.0.102-servicing.25605.116">
+    <Dependency Name="Microsoft.NET.Sdk" Version="10.0.102-servicing.25608.105">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>ed2ddf8a7ae00575eadfc737cb828f1c3a632305</Sha>
+      <Sha>279bb6e979485785576d9279b6582cf7006c6f91</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.NET.ILLink" Version="10.0.2-servicing.25605.116">
+    <Dependency Name="Microsoft.NET.ILLink" Version="10.0.2-servicing.25608.105">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>ed2ddf8a7ae00575eadfc737cb828f1c3a632305</Sha>
+      <Sha>279bb6e979485785576d9279b6582cf7006c6f91</Sha>
     </Dependency>
     <Dependency Name="Microsoft.NET.ILLink.Tasks" Version="10.0.2">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>ed2ddf8a7ae00575eadfc737cb828f1c3a632305</Sha>
+      <Sha>279bb6e979485785576d9279b6582cf7006c6f91</Sha>
     </Dependency>
     <Dependency Name="Microsoft.NET.Runtime.MonoTargets.Sdk" Version="10.0.2">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>ed2ddf8a7ae00575eadfc737cb828f1c3a632305</Sha>
+      <Sha>279bb6e979485785576d9279b6582cf7006c6f91</Sha>
     </Dependency>
     <!-- Set TRACKING_DOTNET_RUNTIME_SEPARATELY to something in Make.config if changing the version outside of dependency flow -->
     <Dependency Name="Microsoft.NETCore.App.Ref" Version="10.0.2">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>ed2ddf8a7ae00575eadfc737cb828f1c3a632305</Sha>
+      <Sha>279bb6e979485785576d9279b6582cf7006c6f91</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Cecil" Version="0.11.5-alpha.25605.116">
+    <Dependency Name="Microsoft.DotNet.Cecil" Version="0.11.5-alpha.25608.105">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>ed2ddf8a7ae00575eadfc737cb828f1c3a632305</Sha>
+      <Sha>279bb6e979485785576d9279b6582cf7006c6f91</Sha>
     </Dependency>
     <!-- This is a subscription of the .NET 9 latest stable versions of our packages -->
     <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_18.5" Version="18.5.9227">
@@ -95,25 +95,25 @@
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.25605.116">
+    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.25608.105">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>ed2ddf8a7ae00575eadfc737cb828f1c3a632305</Sha>
+      <Sha>279bb6e979485785576d9279b6582cf7006c6f91</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.SharedFramework.Sdk" Version="10.0.0-beta.25605.116">
+    <Dependency Name="Microsoft.DotNet.SharedFramework.Sdk" Version="10.0.0-beta.25608.105">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>ed2ddf8a7ae00575eadfc737cb828f1c3a632305</Sha>
+      <Sha>279bb6e979485785576d9279b6582cf7006c6f91</Sha>
     </Dependency>
     <Dependency Name="Microsoft.TemplateEngine.Authoring.Tasks" Version="10.0.102">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>ed2ddf8a7ae00575eadfc737cb828f1c3a632305</Sha>
+      <Sha>279bb6e979485785576d9279b6582cf7006c6f91</Sha>
     </Dependency>
     <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.25603.1">
       <Uri>https://github.com/dotnet/xharness</Uri>
       <Sha>3df2923500447ee925d59f026c81720c7a9b4e4b</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25605.116">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25608.105">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>ed2ddf8a7ae00575eadfc737cb828f1c3a632305</Sha>
+      <Sha>279bb6e979485785576d9279b6582cf7006c6f91</Sha>
       <SourceBuild RepoName="arcade" ManagedOnly="true" />
     </Dependency>
   </ToolsetDependencies>

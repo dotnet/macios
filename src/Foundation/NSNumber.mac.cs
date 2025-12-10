@@ -16,7 +16,7 @@ namespace Foundation {
 		/// <summary>Creates an <see cref="NSNumber" /> from a boxed numeric value or boolean.</summary>
 		/// <param name="value">A boxed numeric value (float, double, sbyte, byte, short, ushort, int, uint, long, ulong, nint, nuint, nfloat) or boolean.</param>
 		/// <returns>An <see cref="NSNumber" /> representing the value, or <see langword="null" /> if the value type is not supported.</returns>
-		public static NSNumber? FromObject (object value)
+		public static NSNumber? FromObject (object? value)
 		{
 			if (value is float) {
 				return FromFloat ((float) value);

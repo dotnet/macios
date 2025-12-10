@@ -518,6 +518,7 @@ namespace Foundation {
 		/// <returns><see langword="true"/> if the specified <see cref="NSNumber"/> is equal to the current <see cref="NSNumber"/>; otherwise, <see langword="false"/>.</returns>
 		public bool IsEqualTo (NSNumber number)
 		{
+			ArgumentNullException.ThrowIfNull (number);
 			var result = IsEqualTo (number.GetHandle ());
 			GC.KeepAlive (number);
 			return result;

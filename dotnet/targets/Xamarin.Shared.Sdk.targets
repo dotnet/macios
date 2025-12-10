@@ -2626,5 +2626,6 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 	
 	<Import Project="dotnet-xcsync.targets" />
 	<Import Project="Microsoft.MaciOS.Sdk.Xcode.targets" />
+	<Import Project="Microsoft.Sdk.R2R.targets" />
 
 </Project>

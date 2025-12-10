@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- Workaround for https://github.com/dotnet/runtime/issues/79902 -->
+	<Target Name="_FixR2ROutputPaths" AfterTargets="_PrepareForReadyToRunCompilation">
+		<ItemGroup>
+			<_ReadyToRunFilesToPublishFixed Include="@(_ReadyToRunFilesToPublish->'$(_ReadyToRunOutputPath)/%(Filename)%(Extension)')" />
+			<_ReadyToRunFilesToPublish Remove="@(_ReadyToRunFilesToPublish)" />
+			<_ReadyToRunFilesToPublish Include="@(_ReadyToRunFilesToPublishFixed)" />
+		</ItemGroup>
+	</Target>
+</Project>

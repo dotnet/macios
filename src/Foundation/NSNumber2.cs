@@ -470,7 +470,7 @@ namespace Foundation {
 			// value must not be `nil` to call the `compare:` selector
 			// that match well with the not same type of .NET check
 			if (other is null)
-				throw new ArgumentException (nameof (other));
+				ArgumentNullException.ThrowIfNull (other);
 			return (int) Compare (other);
 		}
 

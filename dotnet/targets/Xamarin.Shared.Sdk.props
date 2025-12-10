@@ -218,9 +218,13 @@
 		<PublishReadyToRun Condition="'$(PublishReadyToRun)' == ''">true</PublishReadyToRun>
 		<PublishReadyToRunComposite Condition="'$(PublishReadyToRun)' == 'true'">true</PublishReadyToRunComposite>
 		<PublishReadyToRunContainerFormat Condition="'$(PublishReadyToRun)' == 'true'">macho</PublishReadyToRunContainerFormat>
-		<!-- Strip native symbols from the R2R composite dylib in Release builds -->
-		<StripSymbols Condition="'$(PublishReadyToRun)' == 'true' And '$(Configuration)' == 'Release'">true</StripSymbols>
+		<StripSymbols Condition="'$(PublishReadyToRun)' == 'true'">true</StripSymbols>
 	</PropertyGroup>
+
+	<!-- Exclude user assemblies from R2R composite so they run interpreted for debugging -->
+	<ItemGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(PublishReadyToRun)' == 'true' And '$(Configuration)' != 'Release'">
+		<PublishReadyToRunExclude Include="$(TargetFileName)" />
+	</ItemGroup>
 
 	<ItemGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(PublishReadyToRun)' != 'true'">
 		<_BundlerEnvironmentVariables Include="DOTNET_ReadyToRun" Value="0" />

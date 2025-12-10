@@ -39,7 +39,29 @@
 	<PropertyGroup Condition="'$(PublishReadyToRun)' == 'true' And '$(UseMonoRuntime)' == 'false' And '$(_UseNativeAot)' != 'true'">
 		<CreateR2RFramework Condition="'$(CreateR2RFramework)' == '' ">true</CreateR2RFramework>
 		<CreateR2RDylib Condition="'$(CreateR2RDylib)' == '' And '$(CreateR2RFramework)' != 'true'">true</CreateR2RDylib>
+
+		<FilterReadyToRunAssemblies Condition="'$(FilterReadyToRunAssemblies)' == '' And '$(Configuration)' != 'Release'">true</FilterReadyToRunAssemblies>
 	</PropertyGroup>
+
+
+	<!-- Exclude user assemblies from R2R composite so they run interpreted for debugging -->
+	<Target Name="_SelectR2RAssemblies"
+			Condition="'$(FilterReadyToRunAssemblies)' == 'true'"
+			BeforeTargets="ResolveReadyToRunCompilers">
+		<ItemGroup>
+			<_ResolvedAssembliesToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And '%(ResolvedFileToPublish.DestinationSubDirectory)' == ''" />
+			<_NonUserAssemblies
+				Include="@(_ResolvedAssembliesToPublish)"
+				Condition="(
+							'%(_ResolvedAssembliesToPublish.NuGetPackageId)' == 'Microsoft.NETCore.App.Ref' Or
+							'%(_ResolvedAssembliesToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)' Or
+							'%(_ResolvedAssembliesToPublish.NuGetPackageId)' == '$(_XamarinNugetPackageId)' Or
+							'%(_ResolvedAssembliesToPublish.NuGetPackageId)' == '$(_XamarinNugetManagedPackageId)'
+						)" />
+			<_UserAssemblies Include="@(_ResolvedAssembliesToPublish)" Exclude="@(_NonUserAssemblies)" />
+			<PublishReadyToRunExcludeTest Include="@(_UserAssemblies -> '%(Filename)')" />
+		</ItemGroup>
+	</Target>
 
 	<!--
 		The following section is to create either a .dylib or a .framework from the Composite

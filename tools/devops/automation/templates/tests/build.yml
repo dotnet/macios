@@ -108,7 +108,6 @@ steps:
     set -e
     cd "$BUILD_REPOSITORY_TITLE"
     TEST_PLATFORM=$(echo "${{ parameters.testPlatform }}" | tr '[:upper:]' '[:lower:]')
-    ARGS=(--enable-xamarin)
     if test -n "$TEST_PLATFORM"; then
       ARGS+=("--disable-all-platforms")
       ARGS+=("--enable-$TEST_PLATFORM")

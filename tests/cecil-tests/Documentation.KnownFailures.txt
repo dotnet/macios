@@ -11976,12 +11976,6 @@ M:Foundation.NSOperatingSystemVersion.Equals(System.Object)
 M:Foundation.NSOperatingSystemVersion.GetHashCode
 M:Foundation.NSOperatingSystemVersion.op_Equality(Foundation.NSOperatingSystemVersion,Foundation.NSOperatingSystemVersion)
 M:Foundation.NSOperatingSystemVersion.op_Inequality(Foundation.NSOperatingSystemVersion,Foundation.NSOperatingSystemVersion)
-M:Foundation.NSOrderedSet.op_Addition(Foundation.NSOrderedSet,Foundation.NSOrderedSet)
-M:Foundation.NSOrderedSet.op_Addition(Foundation.NSOrderedSet,Foundation.NSSet)
-M:Foundation.NSOrderedSet.op_Equality(Foundation.NSOrderedSet,Foundation.NSOrderedSet)
-M:Foundation.NSOrderedSet.op_Inequality(Foundation.NSOrderedSet,Foundation.NSOrderedSet)
-M:Foundation.NSOrderedSet.op_Subtraction(Foundation.NSOrderedSet,Foundation.NSOrderedSet)
-M:Foundation.NSOrderedSet.op_Subtraction(Foundation.NSOrderedSet,Foundation.NSSet)
 M:Foundation.NSPort.Dispose(System.Boolean)
 M:Foundation.NSStream.add_OnEvent(System.EventHandler{Foundation.NSStreamEventArgs})
 M:Foundation.NSStream.Dispose(System.Boolean)
@@ -21071,7 +21065,6 @@ P:Foundation.NSMutableDictionary.Item(Foundation.NSObject)
 P:Foundation.NSMutableDictionary.Item(Foundation.NSString)
 P:Foundation.NSMutableDictionary.Item(System.String)
 P:Foundation.NSMutableDictionary`2.Item(`0)
-P:Foundation.NSMutableOrderedSet.Item(System.IntPtr)
 P:Foundation.NSMutableOrderedSet`1.Item(System.IntPtr)
 P:Foundation.NSNetDomainEventArgs.Domain
 P:Foundation.NSNetDomainEventArgs.MoreComing
@@ -21087,7 +21080,6 @@ P:Foundation.NSObject.AccessibilityTextualContext
 P:Foundation.NSObject.AccessibilityUserInputLabels
 P:Foundation.NSObject.ExposedBindings
 P:Foundation.NSObjectEventArgs.Obj
-P:Foundation.NSOrderedSet.Item(System.IntPtr)
 P:Foundation.NSProcessInfo.IsiOSApplicationOnMac
 P:Foundation.NSProcessInfo.IsiOSAppOnVision
 P:Foundation.NSProcessInfo.IsMacCatalystApplication

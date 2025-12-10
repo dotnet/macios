@@ -127,21 +127,13 @@ steps:
         displayName: "Configure install extra args"
         timeoutInMinutes: 5
 
-  - bash: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/configure-build.sh
+  - bash: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/configure
     env:
       ${{ if eq(parameters.isPR, true) }}:
         IsPR: 'True'
       ${{ else }}:
         IsPR: 'False'
     displayName: "Configure build"
-    workingDirectory: "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)"
-    timeoutInMinutes: 5
-
-  - bash: |
-      set -x
-      set -e
-      cat configure.inc
-    displayName: "Print configuration"
     workingDirectory: "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)"
     timeoutInMinutes: 5
 

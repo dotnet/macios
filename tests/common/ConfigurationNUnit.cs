@@ -131,13 +131,5 @@ namespace Xamarin.Tests {
 				return;
 			Assert.Ignore ($"This test is only applicable on {platform}");
 		}
-
-		public static void IgnoreIfNotXamarinEnabled ()
-		{
-			if (EnableXamarin)
-				return;
-			Assert.Ignore ($"This test is only applicable if Xamarin-specific bits are enabled.");
-		}
-
 	}
 }

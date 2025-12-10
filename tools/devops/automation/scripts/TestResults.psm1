@@ -392,26 +392,36 @@ class ParallelTestsResults {
                     $stringBuilder.AppendLine($this.GetDownloadLinks($r))
                     $stringBuilder.AppendLine("")
                 } else {
-                    # create a detail per test result with the name of the test and will contain the exact summary
-                    $stringBuilder.AppendLine("<summary>$($result.Failed) tests failed, $($result.Passed) tests passed.</summary>")
-                    $stringBuilder.AppendLine("<details>")
+                    $addSummary = $true
+                    $startLine = 0
                     if (Test-Path -Path $r.ResultsPath -PathType Leaf) {
-                        $stringBuilder.AppendLine("")
-                        $foundTests = $false
-                        foreach ($line in Get-Content -Path $r.ResultsPath)
-                        {
-                            if (-not $foundTests) {
-                                $foundTests = $line.Contains("## Failed tests")
-                            } else {
-                                if (-not [string]::IsNullOrEmpty($line)) {
-                                    $stringBuilder.AppendLine("$line") # the extra space is needed for the multiline list item
-                                }
+                        $resultLines = Get-Content -Path $r.ResultsPath
+                        for ($i = 0; $i -lt $resultLines.Length; $i++) {
+                            $line = $resultLines[$i]
+                            if ($line.Contains("<details>")) {
+                                $startLine = $i
+                                $addSummary = $false
+                                break
+                            } elseif ($line.Contains("## Failed tests")) {
+                                $startLine = $i + 1
+                                break
                             }
                         }
                     } else {
-                        $stringBuilder.AppendLine(" Test has no summary file.")
+                        $resultLines = @("Test has no summary file.")
                     }
-                    $stringBuilder.AppendLine("</details>")
+
+                    if ($addSummary) {
+                        $stringBuilder.AppendLine("<summary>$($result.Failed) tests failed, $($result.Passed) tests passed.</summary>")
+                        $stringBuilder.AppendLine("<details>")
+                    }
+                    for ($i = $startLine; $i -lt $resultLines.Length; $i++) {
+                        $stringBuilder.AppendLine($resultLines[$i])
+                    }
+                    if ($addSummary) {
+                        $stringBuilder.AppendLine("</details>")
+                    }
+
                     $stringBuilder.AppendLine("")
                     $stringBuilder.AppendLine($this.GetDownloadLinks($r))
                     $stringBuilder.AppendLine("")

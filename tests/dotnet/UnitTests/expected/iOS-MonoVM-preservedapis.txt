@@ -136,6 +136,7 @@ Microsoft.iOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle,
 Microsoft.iOS.dll:Foundation.NSObject.InitializeObject(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSObject.IsEqual(Foundation.NSObject)
+Microsoft.iOS.dll:Foundation.NSObject.RecreateDataHandle()
 Microsoft.iOS.dll:Foundation.NSObject.ReleaseManagedRef()
 Microsoft.iOS.dll:Foundation.NSObject.set_disposed(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.set_flags(Foundation.NSObject/Flags)
@@ -179,8 +180,10 @@ Microsoft.iOS.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::Data()
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle Foundation.NSObject::data_handle
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle..ctor()
+Microsoft.iOS.dll:Foundation.NSObjectDataHandle..ctor(System.IntPtr)
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle.get_Data()
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle.get_IsInvalid()
+Microsoft.iOS.dll:Foundation.NSObjectDataHandle.Invalidate()
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle.ReleaseHandle()
 Microsoft.iOS.dll:Foundation.NSObjectFlag
 Microsoft.iOS.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
@@ -497,6 +500,7 @@ Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(ObjCRuntime.NativeHandle, Syst
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr, ObjCRuntime.Runtime/MissingCtorResolution, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr, System.Boolean, ObjCRuntime.Runtime/MissingCtorResolution, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.Boolean, System.Boolean, out System.Boolean&)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr, System.IntPtr, System.RuntimeMethodHandle, System.Boolean, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr, System.IntPtr, System.RuntimeMethodHandle, System.Boolean)
@@ -657,6 +661,7 @@ Microsoft.iOS.dll:System.Boolean Foundation.NSObject::InFinalizerQueue()
 Microsoft.iOS.dll:System.Boolean Foundation.NSObject::IsDirectBinding()
 Microsoft.iOS.dll:System.Boolean Foundation.NSObject::IsRegisteredToggleRef()
 Microsoft.iOS.dll:System.Boolean Foundation.NSObject/NSObject_Disposer::draining
+Microsoft.iOS.dll:System.Boolean Foundation.NSObjectDataHandle::invalidated
 Microsoft.iOS.dll:System.Boolean Foundation.NSObjectDataHandle::IsInvalid()
 Microsoft.iOS.dll:System.Boolean Foundation.ProtocolAttribute::<BackwardsCompatibleCodeGeneration>k__BackingField
 Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::is_wrapper
@@ -1001,6 +1006,7 @@ System.Private.CoreLib.dll:<PrivateImplementationDetails>.InlineArrayAsReadOnlyS
 System.Private.CoreLib.dll:<PrivateImplementationDetails>.InlineArrayAsSpan`2(TBuffer&, System.Int32)
 System.Private.CoreLib.dll:<PrivateImplementationDetails>.InlineArrayElementRef`2(TBuffer&, System.Int32)
 System.Private.CoreLib.dll:<PrivateImplementationDetails>.InlineArrayFirstElementRef`2(TBuffer&)
+System.Private.CoreLib.dll:<PrivateImplementationDetails>.InlineArrayFirstElementRefReadOnly`2(TBuffer&)
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=12
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=12 <PrivateImplementationDetails>::69EADD2D8A0D38E5F581C5F3533EE497009AD4A2B8ECA04B388D4CB5B41ACEA5
 System.Private.CoreLib.dll:<PrivateImplementationDetails>/__StaticArrayInitTypeSize=12 <PrivateImplementationDetails>::9D61D7D7A1AA7E8ED5214C2F39E0C55230433C7BA728C92913CA4E1967FAF8EA
@@ -6621,6 +6627,7 @@ System.Private.CoreLib.dll:System.Number.<FormatInt64>g__FormatInt64Slow|23_0(Sy
 System.Private.CoreLib.dll:System.Number.<FormatUInt128>g__FormatUInt128Slow|29_0(System.UInt128, System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Number.<FormatUInt32>g__FormatUInt32Slow|21_0(System.UInt32, System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Number.<FormatUInt64>g__FormatUInt64Slow|25_0(System.UInt64, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<GetFloatingPointMaxDigitsAndPrecision>g__Slow|13_0(System.Char, System.Int32&, System.Globalization.NumberFormatInfo, out System.Boolean&)
 System.Private.CoreLib.dll:System.Number.<RoundNumber>g__ShouldRoundUp|160_0(System.Byte*, System.Int32, System.Number/NumberBufferKind, System.Boolean)
 System.Private.CoreLib.dll:System.Number.<TryFormatInt128>g__TryFormatInt128Slow|28_0`1(System.Int128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
 System.Private.CoreLib.dll:System.Number.<TryFormatInt32>g__TryFormatInt32Slow|20_0`1(System.Int32, System.Int32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
@@ -6744,13 +6751,13 @@ System.Private.CoreLib.dll:System.Number.WriteFourDigits`1(System.UInt32, TChar*
 System.Private.CoreLib.dll:System.Number.WriteTwoDigits`1(System.UInt32, TChar*)
 System.Private.CoreLib.dll:System.Number/BigInteger
 System.Private.CoreLib.dll:System.Number/BigInteger.Add(System.Number/BigInteger&, System.Number/BigInteger&, out System.Number/BigInteger&)
-System.Private.CoreLib.dll:System.Number/BigInteger.Clear(System.UInt32)
+System.Private.CoreLib.dll:System.Number/BigInteger.Clear(System.Int32)
 System.Private.CoreLib.dll:System.Number/BigInteger.Compare(System.Number/BigInteger&, System.Number/BigInteger&)
-System.Private.CoreLib.dll:System.Number/BigInteger.DivRem32(System.UInt32, out System.UInt32&)
+System.Private.CoreLib.dll:System.Number/BigInteger.DivRem32(System.Int32, out System.Int32&)
 System.Private.CoreLib.dll:System.Number/BigInteger.get_Pow10BigNumTable()
 System.Private.CoreLib.dll:System.Number/BigInteger.get_Pow10BigNumTableIndices()
 System.Private.CoreLib.dll:System.Number/BigInteger.get_Pow10UInt32Table()
-System.Private.CoreLib.dll:System.Number/BigInteger.GetBlock(System.UInt32)
+System.Private.CoreLib.dll:System.Number/BigInteger.GetBlock(System.Int32)
 System.Private.CoreLib.dll:System.Number/BigInteger.GetLength()
 System.Private.CoreLib.dll:System.Number/BigInteger.HeuristicDivide(System.Number/BigInteger&, System.Number/BigInteger&)
 System.Private.CoreLib.dll:System.Number/BigInteger.IsZero()
@@ -6761,15 +6768,15 @@ System.Private.CoreLib.dll:System.Number/BigInteger.Multiply(System.UInt32)
 System.Private.CoreLib.dll:System.Number/BigInteger.Multiply10()
 System.Private.CoreLib.dll:System.Number/BigInteger.MultiplyPow10(System.UInt32)
 System.Private.CoreLib.dll:System.Number/BigInteger.Pow10(System.UInt32, out System.Number/BigInteger&)
-System.Private.CoreLib.dll:System.Number/BigInteger.Pow2(System.UInt32, out System.Number/BigInteger&)
+System.Private.CoreLib.dll:System.Number/BigInteger.Pow2(System.Int32, out System.Number/BigInteger&)
 System.Private.CoreLib.dll:System.Number/BigInteger.SetUInt32(out System.Number/BigInteger&, System.UInt32)
 System.Private.CoreLib.dll:System.Number/BigInteger.SetUInt64(out System.Number/BigInteger&, System.UInt64)
 System.Private.CoreLib.dll:System.Number/BigInteger.SetValue(out System.Number/BigInteger&, System.Number/BigInteger&)
 System.Private.CoreLib.dll:System.Number/BigInteger.SetZero(out System.Number/BigInteger&)
-System.Private.CoreLib.dll:System.Number/BigInteger.ShiftLeft(System.UInt32)
+System.Private.CoreLib.dll:System.Number/BigInteger.ShiftLeft(System.Int32)
 System.Private.CoreLib.dll:System.Number/BigInteger.ToUInt32()
-System.Private.CoreLib.dll:System.Number/BigInteger/<_blocks>e__FixedBuffer
-System.Private.CoreLib.dll:System.Number/BigInteger/<_blocks>e__FixedBuffer System.Number/BigInteger::_blocks
+System.Private.CoreLib.dll:System.Number/BigInteger/BlocksBuffer
+System.Private.CoreLib.dll:System.Number/BigInteger/BlocksBuffer System.Number/BigInteger::_blocks
 System.Private.CoreLib.dll:System.Number/BinaryParser`1
 System.Private.CoreLib.dll:System.Number/BinaryParser`1.FromChar(System.UInt32)
 System.Private.CoreLib.dll:System.Number/BinaryParser`1.get_MaxDigitCount()
@@ -11858,7 +11865,7 @@ System.Private.CoreLib.dll:System.UInt32 System.HashCode::_v3
 System.Private.CoreLib.dll:System.UInt32 System.HashCode::_v4
 System.Private.CoreLib.dll:System.UInt32 System.HashCode::s_seed
 System.Private.CoreLib.dll:System.UInt32 System.HexConverter/Casing::value__
-System.Private.CoreLib.dll:System.UInt32 System.Number/BigInteger/<_blocks>e__FixedBuffer::FixedElementField
+System.Private.CoreLib.dll:System.UInt32 System.Number/BigInteger/BlocksBuffer::e0
 System.Private.CoreLib.dll:System.UInt32 System.Number/BinaryParser`1::MaxDigitValue()
 System.Private.CoreLib.dll:System.UInt32 System.Number/HexParser`1::MaxDigitValue()
 System.Private.CoreLib.dll:System.UInt32 System.Number/IHexOrBinaryParser`1::MaxDigitValue()

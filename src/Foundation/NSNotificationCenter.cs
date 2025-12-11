@@ -78,7 +78,7 @@ namespace Foundation {
 		/// <param name="fromObject">If not <see langword="null"/>, filters the notifications to those sent by this object.</param>
 		/// <returns>An observer token that can be used later as the parameter passed to <see cref="RemoveObserver(NSObject)"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="notify"/> is <see langword="null"/>.</exception>
-		public NSObject AddObserver (NSString aName, Action<NSNotification> notify, NSObject? fromObject)
+		public NSObject AddObserver (NSString? aName, Action<NSNotification> notify, NSObject? fromObject)
 		{
 			ArgumentNullException.ThrowIfNull (notify);
 
@@ -96,7 +96,7 @@ namespace Foundation {
 		/// <param name="notify">The delegate that will be invoked when the notification is posted.</param>
 		/// <returns>An observer token that can be used later as the parameter passed to <see cref="RemoveObserver(NSObject)"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="notify"/> is <see langword="null"/>.</exception>
-		public NSObject AddObserver (NSString aName, Action<NSNotification> notify)
+		public NSObject AddObserver (NSString? aName, Action<NSNotification> notify)
 		{
 			return AddObserver (aName, notify, null);
 		}

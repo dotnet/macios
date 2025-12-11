@@ -501,7 +501,7 @@ namespace MonoTouchFixtures.Foundation {
 			using (var set = new NSMutableSet<NSString> ()) {
 				set.Add (v1);
 				Assert.AreEqual ((nuint) 1, set.Count, "Count after first add");
-				
+
 				set.Add (v1);
 				Assert.AreEqual ((nuint) 1, set.Count, "Count after duplicate add");
 			}

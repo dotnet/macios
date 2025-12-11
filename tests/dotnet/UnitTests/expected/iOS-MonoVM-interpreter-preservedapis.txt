@@ -1950,28 +1950,28 @@ System.Private.CoreLib.dll:Interop/Range
 System.Private.CoreLib.dll:Interop/Sys
 System.Private.CoreLib.dll:Interop/Sys..cctor()
 System.Private.CoreLib.dll:Interop/Sys.<Close>g____PInvoke|11_0(System.IntPtr)
-System.Private.CoreLib.dll:Interop/Sys.<CloseDir>g____PInvoke|108_0(System.IntPtr)
-System.Private.CoreLib.dll:Interop/Sys.<FAllocate>g____PInvoke|98_0(System.IntPtr, System.Int64, System.Int64)
+System.Private.CoreLib.dll:Interop/Sys.<CloseDir>g____PInvoke|107_0(System.IntPtr)
+System.Private.CoreLib.dll:Interop/Sys.<FAllocate>g____PInvoke|97_0(System.IntPtr, System.Int64, System.Int64)
 System.Private.CoreLib.dll:Interop/Sys.<FLock>g____PInvoke|25_0(System.IntPtr, Interop/Sys/LockOperations)
 System.Private.CoreLib.dll:Interop/Sys.<FLock>g____PInvoke|26_0(System.IntPtr, Interop/Sys/LockOperations)
-System.Private.CoreLib.dll:Interop/Sys.<FStat>g____PInvoke|119_0(System.IntPtr, Interop/Sys/FileStatus*)
+System.Private.CoreLib.dll:Interop/Sys.<FStat>g____PInvoke|116_0(System.IntPtr, Interop/Sys/FileStatus*)
 System.Private.CoreLib.dll:Interop/Sys.<FTruncate>g____PInvoke|28_0(System.IntPtr, System.Int64)
 System.Private.CoreLib.dll:Interop/Sys.<GetCwd>g____PInvoke|31_0(System.Byte*, System.Int32)
 System.Private.CoreLib.dll:Interop/Sys.<GetDefaultTimeZone>g____PInvoke|34_0()
 System.Private.CoreLib.dll:Interop/Sys.<GetEnv>g____PInvoke|35_0(System.Byte*)
 System.Private.CoreLib.dll:Interop/Sys.<GetFileSystemType>g____PInvoke|22_0(System.IntPtr)
-System.Private.CoreLib.dll:Interop/Sys.<GetGroups>g____PInvoke|142_0(System.Int32, System.UInt32*)
+System.Private.CoreLib.dll:Interop/Sys.<GetGroups>g____PInvoke|137_0(System.Int32, System.UInt32*)
 System.Private.CoreLib.dll:Interop/Sys.<LSeek>g____PInvoke|71_0(System.IntPtr, System.Int64, Interop/Sys/SeekWhence)
-System.Private.CoreLib.dll:Interop/Sys.<LStat>g____PInvoke|124_0(System.Byte*, Interop/Sys/FileStatus*)
-System.Private.CoreLib.dll:Interop/Sys.<Open>g____PInvoke|92_0(System.Byte*, Interop/Sys/OpenFlags, System.Int32)
-System.Private.CoreLib.dll:Interop/Sys.<OpenDir>g____PInvoke|106_0(System.Byte*)
-System.Private.CoreLib.dll:Interop/Sys.<PosixFAdvise>g____PInvoke|97_0(System.IntPtr, System.Int64, System.Int64, Interop/Sys/FileAdvice)
-System.Private.CoreLib.dll:Interop/Sys.<PRead>g____PInvoke|99_0(System.IntPtr, System.Byte*, System.Int32, System.Int64)
-System.Private.CoreLib.dll:Interop/Sys.<Read>g____PInvoke|103_0(System.IntPtr, System.Byte*, System.Int32)
-System.Private.CoreLib.dll:Interop/Sys.<ReadLink>g____PInvoke|109_0(System.Byte*, System.Byte*, System.Int32)
-System.Private.CoreLib.dll:Interop/Sys.<Stat>g____PInvoke|120_0(System.Byte*, Interop/Sys/FileStatus*)
-System.Private.CoreLib.dll:Interop/Sys.<Stat>g____PInvoke|122_0(System.Byte*, Interop/Sys/FileStatus*)
-System.Private.CoreLib.dll:Interop/Sys.<Unlink>g____PInvoke|133_0(System.Byte*)
+System.Private.CoreLib.dll:Interop/Sys.<LStat>g____PInvoke|120_0(System.Byte*, Interop/Sys/FileStatus*)
+System.Private.CoreLib.dll:Interop/Sys.<Open>g____PInvoke|91_0(System.Byte*, Interop/Sys/OpenFlags, System.Int32)
+System.Private.CoreLib.dll:Interop/Sys.<OpenDir>g____PInvoke|105_0(System.Byte*)
+System.Private.CoreLib.dll:Interop/Sys.<PosixFAdvise>g____PInvoke|96_0(System.IntPtr, System.Int64, System.Int64, Interop/Sys/FileAdvice)
+System.Private.CoreLib.dll:Interop/Sys.<PRead>g____PInvoke|98_0(System.IntPtr, System.Byte*, System.Int32, System.Int64)
+System.Private.CoreLib.dll:Interop/Sys.<Read>g____PInvoke|102_0(System.IntPtr, System.Byte*, System.Int32)
+System.Private.CoreLib.dll:Interop/Sys.<ReadLink>g____PInvoke|108_0(System.Byte*, System.Byte*, System.Int32)
+System.Private.CoreLib.dll:Interop/Sys.<Stat>g____PInvoke|117_0(System.Byte*, Interop/Sys/FileStatus*)
+System.Private.CoreLib.dll:Interop/Sys.<Stat>g____PInvoke|119_0(System.Byte*, Interop/Sys/FileStatus*)
+System.Private.CoreLib.dll:Interop/Sys.<Unlink>g____PInvoke|128_0(System.Byte*)
 System.Private.CoreLib.dll:Interop/Sys.Calloc(System.UIntPtr, System.UIntPtr)
 System.Private.CoreLib.dll:Interop/Sys.CanGetHiddenFlag()
 System.Private.CoreLib.dll:Interop/Sys.Close(System.IntPtr)
@@ -2012,7 +2012,6 @@ System.Private.CoreLib.dll:Interop/Sys.LowLevelMonitor_Release(System.IntPtr)
 System.Private.CoreLib.dll:Interop/Sys.LowLevelMonitor_Signal_Release(System.IntPtr)
 System.Private.CoreLib.dll:Interop/Sys.LowLevelMonitor_Wait(System.IntPtr)
 System.Private.CoreLib.dll:Interop/Sys.LSeek(Microsoft.Win32.SafeHandles.SafeFileHandle, System.Int64, Interop/Sys/SeekWhence)
-System.Private.CoreLib.dll:Interop/Sys.LStat(System.Byte&, out Interop/Sys/FileStatus&)
 System.Private.CoreLib.dll:Interop/Sys.LStat(System.ReadOnlySpan`1<System.Char>, out Interop/Sys/FileStatus&)
 System.Private.CoreLib.dll:Interop/Sys.Malloc(System.UIntPtr)
 System.Private.CoreLib.dll:Interop/Sys.Open(System.String, Interop/Sys/OpenFlags, System.Int32)
@@ -2021,11 +2020,10 @@ System.Private.CoreLib.dll:Interop/Sys.PosixFAdvise(Microsoft.Win32.SafeHandles.
 System.Private.CoreLib.dll:Interop/Sys.PRead(System.Runtime.InteropServices.SafeHandle, System.Byte*, System.Int32, System.Int64)
 System.Private.CoreLib.dll:Interop/Sys.Read(System.Runtime.InteropServices.SafeHandle, System.Byte*, System.Int32)
 System.Private.CoreLib.dll:Interop/Sys.ReadDir(System.IntPtr, Interop/Sys/DirectoryEntry*)
-System.Private.CoreLib.dll:Interop/Sys.ReadLink(System.Byte&, System.Byte&, System.Int32)
+System.Private.CoreLib.dll:Interop/Sys.ReadLink(System.ReadOnlySpan`1<System.Char>, System.Byte&, System.Int32)
 System.Private.CoreLib.dll:Interop/Sys.ReadLink(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:Interop/Sys.SchedGetCpu()
 System.Private.CoreLib.dll:Interop/Sys.SetErrNo(System.Int32)
-System.Private.CoreLib.dll:Interop/Sys.Stat(System.Byte&, out Interop/Sys/FileStatus&)
 System.Private.CoreLib.dll:Interop/Sys.Stat(System.ReadOnlySpan`1<System.Char>, out Interop/Sys/FileStatus&)
 System.Private.CoreLib.dll:Interop/Sys.Stat(System.String, out Interop/Sys/FileStatus&)
 System.Private.CoreLib.dll:Interop/Sys.StrError(System.Int32)
@@ -2723,6 +2721,7 @@ System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImpo
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::ThrowOnUnmappableChar
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedIn::_addRefd
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedOut::_initialized
+System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.Marshalling.SpanOfCharAsUtf8StringMarshaller/ManagedToUnmanagedIn::_allocated
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.Marshalling.Utf8StringMarshaller/ManagedToUnmanagedIn::_allocated
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.SafeHandle::_fullyInitialized
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.SafeHandle::_ownsHandle
@@ -3204,9 +3203,9 @@ System.Private.CoreLib.dll:System.Byte[] System.Reflection.Emit.RuntimeILGenerat
 System.Private.CoreLib.dll:System.Byte[] System.Reflection.Emit.RuntimeModuleBuilder::guid
 System.Private.CoreLib.dll:System.Byte[] System.Runtime.CompilerServices.NullableAttribute::NullableFlags
 System.Private.CoreLib.dll:System.Byte[] System.Text.DecoderFallbackException::_bytesUnknown
-System.Private.CoreLib.dll:System.Byte[] System.Text.ValueUtf8Converter::_arrayToReturnToPool
 System.Private.CoreLib.dll:System.Byte* Interop/Sys/DirectoryEntry::Name
 System.Private.CoreLib.dll:System.Byte* System.Number/NumberBuffer::DigitsPtr()
+System.Private.CoreLib.dll:System.Byte* System.Runtime.InteropServices.Marshalling.SpanOfCharAsUtf8StringMarshaller/ManagedToUnmanagedIn::_unmanagedValue
 System.Private.CoreLib.dll:System.Byte* System.Runtime.InteropServices.Marshalling.Utf8StringMarshaller/ManagedToUnmanagedIn::_unmanagedValue
 System.Private.CoreLib.dll:System.Byte* System.Text.DecoderFallbackBuffer::byteStart
 System.Private.CoreLib.dll:System.Byte& System.ByReference::Value
@@ -4225,8 +4224,8 @@ System.Private.CoreLib.dll:System.Diagnostics.Stopwatch
 System.Private.CoreLib.dll:System.Diagnostics.Stopwatch..cctor()
 System.Private.CoreLib.dll:System.Diagnostics.Stopwatch.GetTimestamp()
 System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource
-System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource..ctor(System.Guid, System.String, System.Diagnostics.Tracing.EventSourceSettings, System.String[])
-System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource..ctor(System.Guid, System.String)
+System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource..ctor(System.String, System.Guid, System.Diagnostics.Tracing.EventSourceSettings, System.String[])
+System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource..ctor(System.String, System.Guid)
 System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource.Dispose()
 System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource.Dispose(System.Boolean)
 System.Private.CoreLib.dll:System.Diagnostics.Tracing.EventSource.Finalize()
@@ -7756,6 +7755,8 @@ System.Private.CoreLib.dll:System.Number/ParsingStatus System.Number/ParsingStat
 System.Private.CoreLib.dll:System.Number/ParsingStatus System.Number/ParsingStatus::OK
 System.Private.CoreLib.dll:System.Number/ParsingStatus System.Number/ParsingStatus::Overflow
 System.Private.CoreLib.dll:System.Numerics.BitOperations
+System.Private.CoreLib.dll:System.Numerics.BitOperations.<PopCount>g__SoftwareFallback|22_0(System.UInt32)
+System.Private.CoreLib.dll:System.Numerics.BitOperations.<PopCount>g__SoftwareFallback|23_0(System.UInt64)
 System.Private.CoreLib.dll:System.Numerics.BitOperations.get_Log2DeBruijn()
 System.Private.CoreLib.dll:System.Numerics.BitOperations.get_TrailingZeroCountDeBruijn()
 System.Private.CoreLib.dll:System.Numerics.BitOperations.IsPow2(System.Int32)
@@ -7764,6 +7765,9 @@ System.Private.CoreLib.dll:System.Numerics.BitOperations.LeadingZeroCount(System
 System.Private.CoreLib.dll:System.Numerics.BitOperations.Log2(System.UInt32)
 System.Private.CoreLib.dll:System.Numerics.BitOperations.Log2(System.UInt64)
 System.Private.CoreLib.dll:System.Numerics.BitOperations.Log2SoftwareFallback(System.UInt32)
+System.Private.CoreLib.dll:System.Numerics.BitOperations.PopCount(System.UInt32)
+System.Private.CoreLib.dll:System.Numerics.BitOperations.PopCount(System.UInt64)
+System.Private.CoreLib.dll:System.Numerics.BitOperations.PopCount(System.UIntPtr)
 System.Private.CoreLib.dll:System.Numerics.BitOperations.ResetLowestSetBit(System.UInt32)
 System.Private.CoreLib.dll:System.Numerics.BitOperations.RotateLeft(System.UInt32, System.Int32)
 System.Private.CoreLib.dll:System.Numerics.BitOperations.RotateRight(System.UInt32, System.Int32)
@@ -7913,8 +7917,6 @@ System.Private.CoreLib.dll:System.Object System.Runtime.Loader.AssemblyLoadConte
 System.Private.CoreLib.dll:System.Object System.RuntimeType/TypeCache::EnumInfo
 System.Private.CoreLib.dll:System.Object System.Threading.Thread::abort_exc
 System.Private.CoreLib.dll:System.Object System.Threading.Thread::pending_exception
-System.Private.CoreLib.dll:System.Object System.ThreeObjects::_arg0
-System.Private.CoreLib.dll:System.Object System.TwoObjects::_arg0
 System.Private.CoreLib.dll:System.Object System.Type::Missing
 System.Private.CoreLib.dll:System.Object..ctor()
 System.Private.CoreLib.dll:System.Object.Equals(System.Object, System.Object)
@@ -10213,7 +10215,7 @@ System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo System.Reflection.Emit.DynamicMethod::_method
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo..ctor()
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo..ctor(System.RuntimeMethodHandle)
-System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.<ComputeAndUpdateInvocationFlags>g__IsDisallowedByRefType|81_0(System.Type)
+System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.<ComputeAndUpdateInvocationFlags>g__IsDisallowedByRefType|83_0(System.Type)
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.ComputeAndUpdateInvocationFlags()
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.CreateDelegate(System.Type, System.Object)
 System.Private.CoreLib.dll:System.Reflection.RuntimeMethodInfo.get_ArgumentTypes()
@@ -10944,6 +10946,11 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshalling.SafeHandle
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedOut.Free()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedOut.FromUnmanaged(System.IntPtr)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedOut.ToManaged()
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshalling.SpanOfCharAsUtf8StringMarshaller
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshalling.SpanOfCharAsUtf8StringMarshaller/ManagedToUnmanagedIn
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshalling.SpanOfCharAsUtf8StringMarshaller/ManagedToUnmanagedIn.Free()
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshalling.SpanOfCharAsUtf8StringMarshaller/ManagedToUnmanagedIn.FromManaged(System.ReadOnlySpan`1<System.Char>, System.Span`1<System.Byte>)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshalling.SpanOfCharAsUtf8StringMarshaller/ManagedToUnmanagedIn.ToUnmanaged()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshalling.Utf16StringMarshaller
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshalling.Utf16StringMarshaller.GetPinnableReference(System.String)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshalling.Utf8StringMarshaller
@@ -11203,9 +11210,11 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.ExtractNarrowin
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.ExtractNarrowingSaturateUpper(System.Runtime.Intrinsics.Vector64`1<System.Byte>, System.Runtime.Intrinsics.Vector128`1<System.UInt16>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.get_IsSupported()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.LoadVector128(System.Byte*)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.PopCount(System.Runtime.Intrinsics.Vector64`1<System.Byte>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.Store(System.Byte*, System.Runtime.Intrinsics.Vector64`1<System.Byte>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.StoreSelectedScalar(System.UInt32*, System.Runtime.Intrinsics.Vector64`1<System.UInt32>, System.Byte)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd/Arm64
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd/Arm64.AddAcross(System.Runtime.Intrinsics.Vector64`1<System.Byte>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd/Arm64.AddPairwise(System.Runtime.Intrinsics.Vector128`1<System.Byte>, System.Runtime.Intrinsics.Vector128`1<System.Byte>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd/Arm64.get_IsSupported()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd/Arm64.MaxPairwise(System.Runtime.Intrinsics.Vector128`1<System.Byte>, System.Runtime.Intrinsics.Vector128`1<System.Byte>)
@@ -11276,7 +11285,6 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.AsDouble`1(System
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.AsInt16`1(System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.AsInt32`1(System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.AsInt64`1(System.Runtime.Intrinsics.Vector128`1<T>)
-System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.AsNUInt`1(System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.AsSByte`1(System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.AsUInt16`1(System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.AsUInt32`1(System.Runtime.Intrinsics.Vector128`1<T>)
@@ -11344,6 +11352,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.StoreLowerUnsafe`
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.StoreUnsafe`1(System.Runtime.Intrinsics.Vector128`1<T>, T&, System.UIntPtr)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.StoreUnsafe`1(System.Runtime.Intrinsics.Vector128`1<T>, T&)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.SubtractSaturate`1(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.Sum`1(System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.ToScalar`1(System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.UnpackHigh(System.Runtime.Intrinsics.Vector128`1<System.Byte>, System.Runtime.Intrinsics.Vector128`1<System.Byte>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.UnpackLow(System.Runtime.Intrinsics.Vector128`1<System.Byte>, System.Runtime.Intrinsics.Vector128`1<System.Byte>)
@@ -11358,7 +11367,6 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.EqualsFloatingP
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.get_AllBitsSet()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.get_Count()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.get_IsSupported()
-System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.get_Item(System.Int32)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.get_Zero()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.GetHashCode()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128`1.op_Addition(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
@@ -11550,6 +11558,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AddSaturate`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AndNot`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.As`2(System.Runtime.Intrinsics.Vector64`1<TFrom>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AsByte`1(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AsInt32`1(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AsInt64`1(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AsUInt32`1(System.Runtime.Intrinsics.Vector64`1<T>)
@@ -11559,6 +11568,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Create(System.Int1
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Create(System.Int64)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Create(System.UInt64)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Create`1(T)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.CreateScalar(System.UInt32)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.CreateScalar`1(T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Equals`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.EqualsAny`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
@@ -11584,6 +11594,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Store`1(System.Run
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.StoreUnsafe`1(System.Runtime.Intrinsics.Vector64`1<T>, T&, System.UIntPtr)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.StoreUnsafe`1(System.Runtime.Intrinsics.Vector64`1<T>, T&)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.SubtractSaturate`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Sum`1(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.ToScalar`1(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.ToVector128`1(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.ToVector128Unsafe`1(System.Runtime.Intrinsics.Vector64`1<T>)
@@ -12137,7 +12148,6 @@ System.Private.CoreLib.dll:System.Span`1.ToArray()
 System.Private.CoreLib.dll:System.Span`1.ToString()
 System.Private.CoreLib.dll:System.Span`1.TryCopyTo(System.Span`1<T>)
 System.Private.CoreLib.dll:System.Span`1<System.Byte> System.Number/NumberBuffer::Digits
-System.Private.CoreLib.dll:System.Span`1<System.Byte> System.Text.ValueUtf8Converter::_bytes
 System.Private.CoreLib.dll:System.Span`1<System.Char> System.IO.Enumeration.FileSystemEntry::_pathBuffer
 System.Private.CoreLib.dll:System.Span`1<System.Char> System.Runtime.CompilerServices.DefaultInterpolatedStringHandler::_chars
 System.Private.CoreLib.dll:System.Span`1<System.Char> System.Text.StringBuilder::RemainingCurrentChunk()
@@ -13140,6 +13150,9 @@ System.Private.CoreLib.dll:System.Text.Unicode.Utf16Utility.ConvertAllAsciiChars
 System.Private.CoreLib.dll:System.Text.Unicode.Utf16Utility.ConvertAllAsciiCharsInUInt64ToLowercase(System.UInt64)
 System.Private.CoreLib.dll:System.Text.Unicode.Utf16Utility.ConvertAllAsciiCharsInUInt64ToUppercase(System.UInt64)
 System.Private.CoreLib.dll:System.Text.Unicode.Utf16Utility.GetPointerToFirstInvalidChar(System.Char*, System.Int32, out System.Int64&, out System.Int32&)
+System.Private.CoreLib.dll:System.Text.Unicode.Utf16Utility.GetSurrogateMask(System.Runtime.Intrinsics.Vector128`1<System.UInt16>)
+System.Private.CoreLib.dll:System.Text.Unicode.Utf16Utility.IsLastCharHighSurrogate(System.UIntPtr)
+System.Private.CoreLib.dll:System.Text.Unicode.Utf16Utility.IsSurrogatesMatch(System.UIntPtr, System.UIntPtr)
 System.Private.CoreLib.dll:System.Text.Unicode.Utf16Utility.UInt32ContainsAnyLowercaseAsciiChar(System.UInt32)
 System.Private.CoreLib.dll:System.Text.Unicode.Utf16Utility.UInt32ContainsAnyUppercaseAsciiChar(System.UInt32)
 System.Private.CoreLib.dll:System.Text.Unicode.Utf16Utility.UInt32OrdinalIgnoreCaseAscii(System.UInt32, System.UInt32)
@@ -13266,10 +13279,6 @@ System.Private.CoreLib.dll:System.Text.ValueStringBuilder.Grow(System.Int32)
 System.Private.CoreLib.dll:System.Text.ValueStringBuilder.GrowAndAppend(System.Char)
 System.Private.CoreLib.dll:System.Text.ValueStringBuilder.set_Length(System.Int32)
 System.Private.CoreLib.dll:System.Text.ValueStringBuilder.ToString()
-System.Private.CoreLib.dll:System.Text.ValueUtf8Converter
-System.Private.CoreLib.dll:System.Text.ValueUtf8Converter..ctor(System.Span`1<System.Byte>)
-System.Private.CoreLib.dll:System.Text.ValueUtf8Converter.ConvertAndTerminateString(System.ReadOnlySpan`1<System.Char>)
-System.Private.CoreLib.dll:System.Text.ValueUtf8Converter.Dispose()
 System.Private.CoreLib.dll:System.Threading.AsyncLocal`1
 System.Private.CoreLib.dll:System.Threading.AsyncLocal`1..ctor()
 System.Private.CoreLib.dll:System.Threading.AsyncLocal`1.get_Value()
@@ -13496,8 +13505,6 @@ System.Private.CoreLib.dll:System.Threading.WaitSubsystem/WaitableObject.Abandon
 System.Private.CoreLib.dll:System.Threading.WaitSubsystem/WaitableObject[] System.Threading.WaitSubsystem/ThreadWaitInfo::_waitedObjects
 System.Private.CoreLib.dll:System.ThreadStaticAttribute
 System.Private.CoreLib.dll:System.ThreadStaticAttribute..ctor()
-System.Private.CoreLib.dll:System.ThreeObjects
-System.Private.CoreLib.dll:System.ThreeObjects..ctor(System.Object, System.Object, System.Object)
 System.Private.CoreLib.dll:System.ThrowHelper
 System.Private.CoreLib.dll:System.ThrowHelper.CreateEndOfFileException()
 System.Private.CoreLib.dll:System.ThrowHelper.GetAddingDuplicateWithKeyArgumentException(System.Object)
@@ -13826,8 +13833,6 @@ System.Private.CoreLib.dll:System.TimeZoneInfo/TZVersion System.TimeZoneInfo/TZV
 System.Private.CoreLib.dll:System.TimeZoneInfoOptions
 System.Private.CoreLib.dll:System.TimeZoneInfoOptions System.TimeZoneInfoOptions::None
 System.Private.CoreLib.dll:System.TimeZoneInfoOptions System.TimeZoneInfoOptions::NoThrowOnInvalidTime
-System.Private.CoreLib.dll:System.TwoObjects
-System.Private.CoreLib.dll:System.TwoObjects..ctor(System.Object, System.Object)
 System.Private.CoreLib.dll:System.Type
 System.Private.CoreLib.dll:System.Type System.DelegateData::target_type
 System.Private.CoreLib.dll:System.Type System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<Type>k__BackingField
@@ -14666,7 +14671,6 @@ System.Private.CoreLib.dll:T System.Reflection.MethodBase/ArgumentData`1::_arg0
 System.Private.CoreLib.dll:T System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedIn::_handle
 System.Private.CoreLib.dll:T System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedOut::_newHandle
 System.Private.CoreLib.dll:T System.Runtime.Intrinsics.Scalar`1::AllBitsSet()
-System.Private.CoreLib.dll:T System.Runtime.Intrinsics.Vector128`1::Item(System.Int32)
 System.Private.CoreLib.dll:T System.RuntimeType/ListBuilder`1::_item
 System.Private.CoreLib.dll:T System.RuntimeType/ListBuilder`1::Item(System.Int32)
 System.Private.CoreLib.dll:T System.SZGenericArrayEnumerator`1::Current()

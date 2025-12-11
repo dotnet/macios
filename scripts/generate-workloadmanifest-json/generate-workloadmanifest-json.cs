@@ -75,13 +75,21 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 	writer.WriteLine ($"			],");
 	writer.WriteLine ($"			\"extends\": [");
 	if (platform == "macOS") {
+		// Hopefully when https://github.com/dotnet/runtime/issues/122264 is done we can use the versioned workload for every version
 		writer.WriteLine ($"				\"microsoft-net-runtime-mono-tooling\",");
-		for (var i = earliestDotNetVersion; i < latestDotNetVersion; i++)
+		for (var i = earliestDotNetVersion; i < latestDotNetVersion; i++) {
+			if (i == 10)
+				continue; // 'microsoft-net-runtime-<platform>-net10' doesn't seem to exist yet, we'll probably have to remove this special case at some point (https://github.com/dotnet/macios/issues/24417)
 			writer.WriteLine ($"				\"microsoft-net-runtime-mono-tooling-net{i}\",");
+		}
 	} else {
+		// Hopefully when https://github.com/dotnet/runtime/issues/122264 is done we can use the versioned workload for every version
 		writer.WriteLine ($"				\"microsoft-net-runtime-{platformLowerCase}\",");
-		for (var i = earliestDotNetVersion; i < latestDotNetVersion; i++)
+		for (var i = earliestDotNetVersion; i < latestDotNetVersion; i++) {
+			if (i == 10)
+				continue; // 'microsoft-net-runtime-<platform>-net10' doesn't seem to exist yet, we'll probably have to remove this special case at some point (https://github.com/dotnet/macios/issues/24417).
 			writer.WriteLine ($"				\"microsoft-net-runtime-{platformLowerCase}-net{i}\",");
+		}
 	}
 	writer.WriteLine ($"			]");
 	writer.WriteLine ($"		}},");

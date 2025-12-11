@@ -17,9 +17,9 @@ using OS_nw_protocol_options = System.IntPtr;
 using IntPtr = System.IntPtr;
 
 namespace Network {
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public class NWProtocolIPOptions : NWProtocolOptions {
 		[Preserve (Conditional = true)]

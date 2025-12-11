@@ -35,7 +35,7 @@ namespace StoreKit {
 	interface XamarinSwiftFunctions {
 		[Export ("requestReview:")]
 		[Static]
-		[iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0), NoTV]
+		[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 #if MONOMAC
 		void RequestReview (NSViewController viewController);
 #else
@@ -102,7 +102,6 @@ namespace StoreKit {
 		long ContentLength { get; }
 #endif
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("expectedContentLength")]
 		long ExpectedContentLength { get; }
@@ -315,20 +314,15 @@ namespace StoreKit {
 		[Export ("cancelDownloads:")]
 		void CancelDownloads (SKDownload [] downloads);
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ISKPaymentQueueDelegate Delegate { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("storefront")]
 		SKStorefront Storefront { get; }
@@ -395,8 +389,6 @@ namespace StoreKit {
 		[Export ("downloadContentLengths")]
 		NSNumber [] DownloadContentLengths { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'DownloadContentVersion' instead.")]
 		[MacCatalyst (13, 1)]
 		[Export ("contentVersion")]
@@ -489,8 +481,6 @@ namespace StoreKit {
 		[Export ("paymentQueue:shouldAddStorePayment:forProduct:")]
 		bool ShouldAddStorePayment (SKPaymentQueue queue, SKPayment payment, SKProduct product);
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("paymentQueueDidChangeStorefront:")]
 		void DidChangeStorefront (SKPaymentQueue queue);
@@ -1449,8 +1439,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // no `init` but non-null properties
@@ -1469,7 +1457,6 @@ namespace StoreKit {
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.TvOS, 18, 0 /* Apple's replacement requires Swift */ )]
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
@@ -1497,8 +1484,6 @@ namespace StoreKit {
 	[NoMacCatalyst]
 	delegate void SKArcadeServiceSubscriptionHandler ([NullAllowed] NSData subscriptionStatus, uint /* uint32_t */ subscriptionStatusLength, [NullAllowed] NSData cmacOfNonce, uint /* uint32_t */ cmacOfNonceLength, [NullAllowed] NSError error);
 
-	[iOS (13, 0)]
-	[TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // all static members so far

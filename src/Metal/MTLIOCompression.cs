@@ -7,7 +7,7 @@ using CoreFoundation;
 namespace Metal {
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("maccatalyst16.0")]
-	[SupportedOSPlatform ("macos13.0")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos16.0")]
 	public class MTLIOCompressionContext : DisposableObject {
 

@@ -22,7 +22,6 @@ namespace JavaScriptCore {
 		String,
 		/// <summary>To be added.</summary>
 		Object,
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		Symbol,
 		[iOS (18, 0), MacCatalyst (18, 0), TV (18, 0), NoMac]

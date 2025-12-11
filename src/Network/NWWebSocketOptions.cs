@@ -16,9 +16,9 @@ using OS_nw_protocol_options = System.IntPtr;
 using nw_ws_request_t = System.IntPtr;
 
 namespace Network {
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public class NWWebSocketOptions : NWProtocolOptions {
 		bool autoReplyPing = false;

@@ -356,7 +356,6 @@ namespace AudioUnit {
 
 		AUParameterTree ParameterTree {
 			get;
-			[TV (13, 0), iOS (13, 0)]
 			[MacCatalyst (13, 1)]
 			set;
 		}
@@ -582,28 +581,23 @@ namespace AudioUnit {
 		[Export ("enableProfile:cable:onChannel:error:")]
 		bool Enable (MidiCIProfile profile, byte cable, byte channel, [NullAllowed] out NSError outError);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("userPresets", ArgumentSemantic.Copy)]
 		AUAudioUnitPreset [] UserPresets { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("saveUserPreset:error:")]
 		bool SaveUserPreset (AUAudioUnitPreset userPreset, [NullAllowed] out NSError outError);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("deleteUserPreset:error:")]
 		bool DeleteUserPreset (AUAudioUnitPreset userPreset, [NullAllowed] out NSError outError);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("presetStateFor:error:")]
 		[return: NullAllowed]
 		NSDictionary<NSString, NSObject> GetPresetState (AUAudioUnitPreset userPreset, [NullAllowed] out NSError outError);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("supportsUserPresets")]
 		bool SupportsUserPresets { get; }
@@ -613,7 +607,7 @@ namespace AudioUnit {
 		[Export ("isLoadedInProcess")]
 		bool IsLoadedInProcess { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("migrateFromPlugin")]
 		NSData [] MigrateFromPlugin { get; }
 	}

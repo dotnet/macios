@@ -176,8 +176,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void OperatorSubtract_FirstNull ()
 		{
 			NSMutableSet first = null;
-			using (var second = new NSMutableSet ("1", "2"))
-			{
+			using (var second = new NSMutableSet ("1", "2")) {
 				var result = first - second;
 				Assert.IsNull (result, "FirstNull should return null");
 			}

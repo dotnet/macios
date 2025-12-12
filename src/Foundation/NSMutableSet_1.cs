@@ -131,7 +131,7 @@ namespace Foundation {
 		/// <summary>Creates a new mutable set containing all objects from both sets.</summary>
 		/// <param name="first">The first set.</param>
 		/// <param name="second">The second set.</param>
-		/// <returns>A new <see cref="NSMutableSet{TKey}" /> containing the union of both sets.</returns>
+		/// <returns>A new <see cref="NSMutableSet{TKey}" /> containing the union of both sets, or <see langword="null" /> if both sets are <see langword="null" />.</returns>
 		public static NSMutableSet<TKey>? operator + (NSMutableSet<TKey>? first, NSMutableSet<TKey>? second)
 		{
 			if (first is null && second is null)

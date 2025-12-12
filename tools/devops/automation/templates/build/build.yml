@@ -50,6 +50,14 @@ parameters:
   - name: XcodeChannel
     type: string
 
+  - name: requiredDiskSpace
+    type: number
+    default: 20
+
+  - name: statusContext
+    type: string
+    default: "Unknown context"
+
 steps:
 
   - template: ../common/checkout.yml
@@ -62,6 +70,8 @@ steps:
     parameters:
       disableCodeQL: ${{ parameters.disableCodeQL }}
       keyringPass: ${{ parameters.keyringPass }}
+      requiredDiskSpace: ${{ parameters.requiredDiskSpace }}
+      statusContext: ${{ parameters.statusContext }}
 
   - template: install-certificates.yml@yaml-templates
     parameters:

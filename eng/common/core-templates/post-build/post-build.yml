@@ -307,26 +307,25 @@ stages:
 
       - task: NuGetAuthenticate@1
 
-        # Populate internal runtime variables.
-        - template: /eng/common/templates/steps/enable-internal-sources.yml
-          parameters:
-            legacyCredential: $(dn-bot-dnceng-artifact-feeds-rw)
+      # Populate internal runtime variables.
+      - template: /eng/common/templates/steps/enable-internal-sources.yml
+        parameters:
+          legacyCredential: $(dn-bot-dnceng-artifact-feeds-rw)
 
-        - template: /eng/common/templates/steps/enable-internal-runtimes.yml
+      - template: /eng/common/templates/steps/enable-internal-runtimes.yml
 
-        # Darc is targeting 8.0, so make sure it's installed
-        - task: UseDotNet@2
-          inputs:
-            version: 8.0.x
+      - task: UseDotNet@2
+        inputs:
+          version: 8.0.x
 
-        - task: AzureCLI@2
-          displayName: Publish Using Darc
-          inputs:
-            azureSubscription: "Darc: Maestro Production"
-            scriptType: ps
-            scriptLocation: scriptPath
-            scriptPath: $(System.DefaultWorkingDirectory)/eng/common/post-build/publish-using-darc.ps1
-            arguments: >
+      - task: AzureCLI@2
+        displayName: Publish Using Darc
+        inputs:
+          azureSubscription: "Darc: Maestro Production"
+          scriptType: ps
+          scriptLocation: scriptPath
+          scriptPath: $(System.DefaultWorkingDirectory)/eng/common/post-build/publish-using-darc.ps1
+          arguments: >
               -BuildId $(BARBuildId)
               -PublishingInfraVersion ${{ parameters.publishingInfraVersion }}
               -AzdoToken '$(System.AccessToken)'

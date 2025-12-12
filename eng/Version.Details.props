@@ -18,9 +18,13 @@ This file should be imported by eng/Versions.props
     <MicrosoftTemplateEngineAuthoringTasksPackageVersion>11.0.100-alpha.25611.103</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <!-- dotnet/macios dependencies -->
     <MicrosoftiOSSdknet100_260PackageVersion>26.0.11017</MicrosoftiOSSdknet100_260PackageVersion>
+    <MicrosoftiOSSdknet100_261PackageVersion>26.1.10516</MicrosoftiOSSdknet100_261PackageVersion>
     <MicrosoftMacCatalystSdknet100_260PackageVersion>26.0.11017</MicrosoftMacCatalystSdknet100_260PackageVersion>
+    <MicrosoftMacCatalystSdknet100_261PackageVersion>26.1.10516</MicrosoftMacCatalystSdknet100_261PackageVersion>
     <MicrosoftmacOSSdknet100_260PackageVersion>26.0.11017</MicrosoftmacOSSdknet100_260PackageVersion>
+    <MicrosoftmacOSSdknet100_261PackageVersion>26.1.10516</MicrosoftmacOSSdknet100_261PackageVersion>
     <MicrosofttvOSSdknet100_260PackageVersion>26.0.11017</MicrosofttvOSSdknet100_260PackageVersion>
+    <MicrosofttvOSSdknet100_261PackageVersion>26.1.10516</MicrosofttvOSSdknet100_261PackageVersion>
     <!-- dotnet/xharness dependencies -->
     <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25516.4</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
   </PropertyGroup>
@@ -39,9 +43,13 @@ This file should be imported by eng/Versions.props
     <MicrosoftTemplateEngineAuthoringTasksVersion>$(MicrosoftTemplateEngineAuthoringTasksPackageVersion)</MicrosoftTemplateEngineAuthoringTasksVersion>
     <!-- dotnet/macios dependencies -->
     <MicrosoftiOSSdknet100_260Version>$(MicrosoftiOSSdknet100_260PackageVersion)</MicrosoftiOSSdknet100_260Version>
+    <MicrosoftiOSSdknet100_261Version>$(MicrosoftiOSSdknet100_261PackageVersion)</MicrosoftiOSSdknet100_261Version>
     <MicrosoftMacCatalystSdknet100_260Version>$(MicrosoftMacCatalystSdknet100_260PackageVersion)</MicrosoftMacCatalystSdknet100_260Version>
+    <MicrosoftMacCatalystSdknet100_261Version>$(MicrosoftMacCatalystSdknet100_261PackageVersion)</MicrosoftMacCatalystSdknet100_261Version>
     <MicrosoftmacOSSdknet100_260Version>$(MicrosoftmacOSSdknet100_260PackageVersion)</MicrosoftmacOSSdknet100_260Version>
+    <MicrosoftmacOSSdknet100_261Version>$(MicrosoftmacOSSdknet100_261PackageVersion)</MicrosoftmacOSSdknet100_261Version>
     <MicrosofttvOSSdknet100_260Version>$(MicrosofttvOSSdknet100_260PackageVersion)</MicrosofttvOSSdknet100_260Version>
+    <MicrosofttvOSSdknet100_261Version>$(MicrosofttvOSSdknet100_261PackageVersion)</MicrosofttvOSSdknet100_261Version>
     <!-- dotnet/xharness dependencies -->
     <MicrosoftDotNetXHarnessiOSSharedVersion>$(MicrosoftDotNetXHarnessiOSSharedPackageVersion)</MicrosoftDotNetXHarnessiOSSharedVersion>
   </PropertyGroup>

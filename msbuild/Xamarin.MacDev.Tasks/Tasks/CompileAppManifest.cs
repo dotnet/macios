@@ -35,19 +35,11 @@ namespace Xamarin.MacDev.Tasks {
 		public ITaskItem? AppManifest { get; set; }
 
 		[Required]
-		public string AssemblyName { get; set; } = String.Empty;
-
-		[Required]
 		public string BundleExecutable { get; set; } = "";
 
 		[Required]
 		[Output] // This is required to create an empty file on Windows for the Input/Outputs check.
 		public ITaskItem? CompiledAppManifest { get; set; }
-
-		[Required]
-		public bool Debug { get; set; }
-
-		public string DebugIPAddresses { get; set; } = String.Empty;
 
 		public string DefaultSdkVersion { get; set; } = String.Empty;
 
@@ -58,12 +50,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		[Required]
 		public bool IsAppExtension { get; set; }
-
-		public bool IsXPCService { get; set; }
-
-		public bool IsWatchApp { get; set; }
-
-		public bool IsWatchExtension { get; set; }
 
 		[Required]
 		public string MinSupportedOSPlatformVersion { get; set; } = string.Empty;
@@ -183,8 +169,6 @@ namespace Xamarin.MacDev.Tasks {
 		void AddXamarinVersionNumber (PDictionary plist)
 		{
 			// Add our own version number
-			if (IsWatchApp)
-				return;
 
 			// This key is our supported way of determining if an app
 			// was built with Xamarin, so it needs to be present in all apps.
@@ -479,9 +463,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		bool CompileMac (PDictionary plist)
 		{
-			if (!IsAppExtension || (IsAppExtension && IsXPCService))
-				plist.SetIfNotPresent ("MonoBundleExecutable", AssemblyName + ".exe");
-
 			return !Log.HasLoggedErrors;
 		}
 
@@ -512,11 +493,6 @@ namespace Xamarin.MacDev.Tasks {
 
 			SetDeviceFamily (plist);
 
-			if (IsWatchExtension) {
-				if (Debug)
-					SetAppTransportSecurity (plist);
-			}
-
 			SetRequiredArchitectures (plist);
 
 			return !Log.HasLoggedErrors;
@@ -531,7 +507,7 @@ namespace Xamarin.MacDev.Tasks {
 			SetValueIfNotNull (plist, "DTCompiler", sdkSettings.DTCompiler);
 			SetValueIfNotNull (plist, "DTPlatformBuild", dtSettings.DTPlatformBuild);
 			SetValueIfNotNull (plist, "DTSDKBuild", sdkSettings.DTSDKBuild);
-			SetValueIfNotNull (plist, "DTPlatformName", PlatformUtils.GetTargetPlatform (SdkPlatform, IsWatchApp));
+			SetValueIfNotNull (plist, "DTPlatformName", PlatformUtils.GetTargetPlatform (SdkPlatform, false));
 			SetValueIfNotNull (plist, "DTPlatformVersion", dtSettings.DTPlatformVersion);
 			SetValueIfNotNull (plist, "DTSDKName", sdkSettings.CanonicalName);
 			SetValueIfNotNull (plist, "DTXcode", AppleSdkSettings.DTXcode);
@@ -630,31 +606,6 @@ namespace Xamarin.MacDev.Tasks {
 			// Don't set UIDeviceFamily if the plist already contains it
 			if (uiDeviceFamily != IPhoneDeviceType.NotSet && supportedDevices == IPhoneDeviceType.NotSet)
 				plist.SetUIDeviceFamily (uiDeviceFamily);
-		}
-
-		void SetAppTransportSecurity (PDictionary plist)
-		{
-			// Debugging over http has a couple of gotchas:
-			// * We can't use https, because that requires a valid server certificate,
-			//   which we can't ensure.
-			//   It would also require a hostname for the mac, which it might not have either.
-			// * NSAppTransportSecurity/NSExceptionDomains does not allow exceptions based
-			//   on IP address (only hostname).
-			// Good news: watchOS 3 will apparently not apply ATS when connecting
-			// directly to IP addresses, which means we won't have to do this at all
-			// (sometime in the future).
-
-			PDictionary? ats;
-
-			if (!plist.TryGetValue (ManifestKeys.NSAppTransportSecurity, out ats))
-				plist.Add (ManifestKeys.NSAppTransportSecurity, ats = new PDictionary ());
-
-			if (ats.GetBoolean (ManifestKeys.NSAllowsArbitraryLoads)) {
-				Log.LogMessage (MessageImportance.Low, MSBStrings.M0017);
-			} else {
-				Log.LogMessage (MessageImportance.Low, MSBStrings.M0018);
-				ats.SetBooleanOrRemove (ManifestKeys.NSAllowsArbitraryLoads, true);
-			}
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item)

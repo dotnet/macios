@@ -117,6 +117,9 @@
       <Link>ApplePlatform.cs</Link>
     </Compile>
     <Compile Include="IAppBundleInformationParserExtensions.cs" />
+    <Compile Include="..\common\ParseTrxFile.cs">
+      <Link>ParseTrxFile.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\tools\common\SdkVersions.cs">

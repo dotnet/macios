@@ -1160,6 +1160,18 @@ Example:
 $ dotnet run -p:OpenNewInstance=false
 ```
 
+### OpenWaitForExit
+
+If 'dotnet run' should wait for the app to exit (defaults to `false`).
+
+This will pass `-W` to `open` if set to `true`.
+
+Example:
+
+```shell
+$ dotnet run -p:OpenWaitForExit=false
+```
+
 ### OpenArguments
 
 This property can be used to pass additional arguments to the `open` command.

@@ -293,6 +293,7 @@ namespace Foundation {
 
 				inflightRequests.Clear ();
 			}
+			session.InvalidateAndCancel ();
 			base.Dispose (disposing);
 		}
 

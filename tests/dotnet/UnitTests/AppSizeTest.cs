@@ -13,19 +13,19 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		public void MonoVM (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM", true);
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM", true, new Dictionary<string, string> () { { "UseMonoRuntime", "true" } });
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		public void MonoVM_Interpreter (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM-interpreter", true, new Dictionary<string, string> () { { "UseInterpreter", "true" } });
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM-interpreter", true, new Dictionary<string, string> () { { "UseInterpreter", "true" }, { "UseMonoRuntime", "true" } });
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		public void NativeAOT (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, new Dictionary<string, string> () { { "PublishAot", "true" } });
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, new Dictionary<string, string> () { { "PublishAot", "true" }, { "_IsPublishing", "true" } });
 		}
 
 		// This test will build the SizeTestApp, and capture the resulting app size.

@@ -109,11 +109,11 @@ while test "x$1" != x; do
         shift
         ;;
     --enable-xamarin)
-        echo "ENABLE_XAMARIN=1" >> $CONFIGURED_FILE
+        echo "The argument '$1' is no longer in use."
         shift
         ;;
     --disable-xamarin)
-        echo "ENABLE_XAMARIN=" >> $CONFIGURED_FILE
+        echo "The argument '$1' is no longer in use."
         shift
         ;;
     --custom-dotnet=*)

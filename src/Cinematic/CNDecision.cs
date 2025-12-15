@@ -6,7 +6,7 @@ using CoreMedia;
 
 namespace Cinematic {
 	[SupportedOSPlatform ("tvos17.0")]
-	[SupportedOSPlatform ("macos14.0")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("maccatalyst17.0")]
 	public enum CNDecisionIdentifierType {

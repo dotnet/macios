@@ -6,7 +6,7 @@ using Foundation;
 namespace Bug35176 {
 
 	[Introduced (PlatformName.iOS, 14, 3)]
-	[Introduced (PlatformName.MacOSX, 12, 2)]
+	[Introduced (PlatformName.MacOSX, 26, 2)]
 	[Introduced (PlatformName.MacCatalyst, 15, 3)]
 	[Protocol]
 	interface FooInterface {

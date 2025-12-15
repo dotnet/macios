@@ -73,7 +73,7 @@ namespace Foundation {
 		/// <summary>Gets or sets the proxy configurations for this session.</summary>
 		/// <value>An array of <see cref="Network.NWProxyConfig" /> objects representing the proxy configurations.</value>
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		public NWProxyConfig [] ProxyConfigurations {

@@ -90,9 +90,9 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		FLAC = 0x666c6163, // flac
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		LatmInLoas = 0x6c6f6173, // loas
 	}
@@ -357,9 +357,9 @@ namespace AudioToolbox {
 		}
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketRangeByteCountTranslation {
@@ -368,9 +368,9 @@ namespace AudioToolbox {
 		public long ByteCountUpperBound;
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketRollDistanceTranslation {
@@ -378,9 +378,9 @@ namespace AudioToolbox {
 		public long RollDistance;
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioIndependentPacketTranslation {
@@ -388,9 +388,9 @@ namespace AudioToolbox {
 		public long IndependentlyDecodablePacket;
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketDependencyInfoTranslation {
@@ -1700,7 +1700,7 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus AudioFileGetUserDataSize64 (AudioFileID audioFile, uint userDataID, int index, ulong* userDataSize);
 
@@ -1712,7 +1712,7 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserDataSize (uint userDataId, int index, out ulong size)
 		{
 			size = 0;
@@ -1730,7 +1730,7 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserDataSize (AudioFileChunkType chunkType, int index, out ulong size)
 		{
 			return GetUserDataSize ((uint) chunkType, index, out size);
@@ -1771,7 +1771,7 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus AudioFileGetUserDataAtOffset (AudioFileID audioFile, uint userDataID, int index, long inOffset, int* userDataSize, IntPtr userData);
 
@@ -1785,7 +1785,7 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserData (uint userDataId, int index, long offset, ref int size, IntPtr userData)
 		{
 			unsafe {
@@ -1804,7 +1804,7 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserData (AudioFileChunkType chunkType, int index, long offset, ref int size, IntPtr userData)
 		{
 			return GetUserData ((uint) chunkType, index, offset, ref size, userData);
@@ -1820,7 +1820,7 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserData (uint userDataId, int index, long offset, byte [] data, out int size)
 		{
 			size = data.Length;
@@ -1840,7 +1840,7 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserData (AudioFileChunkType chunkType, int index, long offset, byte [] data, out int size)
 		{
 			return GetUserData ((uint) chunkType, index, offset, data, out size);

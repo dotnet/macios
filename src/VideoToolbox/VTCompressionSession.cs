@@ -345,7 +345,7 @@ namespace VideoToolbox {
 			return VTSessionSetProperties (GetCheckedHandle (), options.Dictionary.Handle);
 		}
 
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -354,7 +354,7 @@ namespace VideoToolbox {
 
 		/// <summary>Returns whether the current system supports stereo MV-HEVC encode.</summary>
 		/// <returns>True if the current system supports stereo MV-HEVC encode, false otherwise.</returns>
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -364,7 +364,7 @@ namespace VideoToolbox {
 		}
 
 #if !__TVOS__
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -386,7 +386,7 @@ namespace VideoToolbox {
 		/// <param name="sourceFrame">This value will be passed to the <see cref="VTCompressionOutputCallback" /> callback that was specified when the compression session was created.</param>
 		/// <param name="infoFlags">Upon return, any information flags from the encoder for this frame.</param>
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -411,7 +411,7 @@ namespace VideoToolbox {
 			}
 		}
 
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -433,7 +433,7 @@ namespace VideoToolbox {
 		/// <param name="infoFlags">Upon return, any information flags from the encoder for this frame.</param>
 		/// <param name="outputHandler">A callback that will be invoked to process a compressed frame. See the delegate type for more information on the received parameters.</param>
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst17.0")]

@@ -53,14 +53,14 @@ namespace Network {
 		}
 
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_privacy_context_add_proxy (OS_nw_privacy_context privacy_context, OS_nw_proxy_config proxy_config);
 
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		public void AddProxy (NWProxyConfig proxyConfig)
@@ -72,14 +72,14 @@ namespace Network {
 		}
 
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_privacy_context_clear_proxies (OS_nw_privacy_context privacy_context);
 
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		public void ClearProxies ()

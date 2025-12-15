@@ -296,7 +296,7 @@ namespace VideoToolbox {
 			return VTIsHardwareDecodeSupported (codecType) != 0;
 		}
 
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -305,7 +305,7 @@ namespace VideoToolbox {
 
 		/// <summary>Returns whether the current system supports stereo MV-HEVC decode.</summary>
 		/// <returns>True if the current system supports stereo MV-HEVC decode, false otherwise.</returns>
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
@@ -315,7 +315,7 @@ namespace VideoToolbox {
 		}
 
 #if !__TVOS__
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -334,7 +334,7 @@ namespace VideoToolbox {
 		/// <param name="multiImageCapableOutputHandler">A callback that will be called when the decoding operation is complete.</param>
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -385,7 +385,7 @@ namespace VideoToolbox {
 #endif // !__TVOS__
 
 #if !__TVOS__
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -399,7 +399,7 @@ namespace VideoToolbox {
 		/// <param name="outputMultiImageCallback">The callback that will be called when a single call to <see cref="DecodeFrame(CMSampleBuffer,VTDecodeFrameFlags,IntPtr,out VTDecodeInfoFlags)" /> produces multiple images.</param>
 		/// <param name="outputMultiImageReference">A user-provided value that is passed to the callback.</param>
 		/// <returns><see cref="VTStatus.Ok" /> if successful, or an error code otherwise.</returns>
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[UnsupportedOSPlatform ("tvos")]

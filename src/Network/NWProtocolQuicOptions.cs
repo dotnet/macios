@@ -136,21 +136,21 @@ namespace Network {
 		}
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern ushort nw_quic_get_max_datagram_frame_size (OS_nw_protocol_options options);
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_quic_set_max_datagram_frame_size (OS_nw_protocol_options options, ushort max_datagram_frame_size);
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		public ushort DatagramFrameSize {
@@ -159,21 +159,21 @@ namespace Network {
 		}
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_quic_get_stream_is_datagram (OS_nw_protocol_options options);
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_quic_set_stream_is_datagram (OS_nw_protocol_options options, byte is_datagram);
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		public bool StreamIsDatagram {
@@ -182,27 +182,27 @@ namespace Network {
 		}
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern ushort nw_quic_get_stream_usable_datagram_frame_size (OS_nw_protocol_metadata metadata);
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		public ushort StreamUsableDatagramFrameSize => nw_quic_get_stream_usable_datagram_frame_size (GetCheckedHandle ());
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_quic_get_stream_type (OS_nw_protocol_metadata stream_metadata);
 
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		public NWQuicStreamType StreamType => (NWQuicStreamType) nw_quic_get_stream_type (GetCheckedHandle ());

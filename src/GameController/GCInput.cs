@@ -55,7 +55,7 @@ namespace GameController {
 
 		// headers claim macOS 13.0 / iOS 16.0, but introspection says macOS 14.0 / iOS 17.0, so use that.
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[DllImport (Constants.GameControllerLibrary)]
@@ -68,7 +68,7 @@ namespace GameController {
 		/// <param name="column">The column of the arcade button.</param>
 		/// <returns>The name of the arcade button on the controller for the specified position.</returns>
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		public static NSString? GetArcadeButtonName (nint row, nint column)

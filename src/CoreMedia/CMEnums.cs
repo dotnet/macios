@@ -35,7 +35,7 @@ namespace CoreMedia {
 							   // note: the 4CC was obsoleted, i.e. Metadata is a new 4CC
 		/// <summary>To be added.</summary>
 		Metadata = 0x6D657461, // 'meta'
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		TaggedBufferGroup = ('t' << 24) + ('b' << 16) + ('g' << 8) + 'r', // 'tbgr',
 	}
 
@@ -65,7 +65,7 @@ namespace CoreMedia {
 		MPEG2Program = 0x6D703270, // 'mp2p',
 		/// <summary>To be added.</summary>
 		DV = 0x64762020, // 'dv  '
-		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0), Mac (14, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 		EmbeddedDeviceScreenRecording = 0x69737220, // 'isr '
 
 		// any new entries here might need new entries in the CMMediaSubType enum as well
@@ -634,7 +634,7 @@ namespace CoreMedia {
 		/// <summary>This has the same value as <see cref="CMMuxedStreamType.DV" />.</summary>
 		Dv = (uint) CMMuxedStreamType.DV,
 		/// <summary>This has the same value as <see cref="CMMuxedStreamType.EmbeddedDeviceScreenRecording" />.</summary>
-		[iOS (17, 0), Mac (14, 0), TV (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0)]
 		EmbeddedDeviceScreenRecording = (uint) CMMuxedStreamType.EmbeddedDeviceScreenRecording,
 		/// <summary>This has the same value as <see cref="CMClosedCaptionFormatType.CEA608" />.</summary>
 		Cea608 = (uint) CMClosedCaptionFormatType.CEA608,

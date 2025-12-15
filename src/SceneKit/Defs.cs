@@ -621,7 +621,6 @@ namespace SceneKit {
 		Focusable,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNLightProbeType : long {
@@ -629,7 +628,6 @@ namespace SceneKit {
 		Radiance = 1,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNLightProbeUpdateType : long {
@@ -637,7 +635,6 @@ namespace SceneKit {
 		Realtime = 1,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum SCNLightAreaType : long {

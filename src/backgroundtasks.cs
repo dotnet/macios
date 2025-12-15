@@ -11,7 +11,7 @@ using CoreFoundation;
 
 namespace BackgroundTasks {
 
-	[TV (13, 0), NoMac, iOS (13, 0)]
+	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (BGTaskRequest))]
 	[DisableDefaultCtor]
@@ -20,7 +20,7 @@ namespace BackgroundTasks {
 		NativeHandle Constructor (string identifier);
 	}
 
-	[TV (13, 0), NoMac, iOS (13, 0)]
+	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (BGTaskRequest))]
 	[DisableDefaultCtor]
@@ -36,7 +36,7 @@ namespace BackgroundTasks {
 	}
 
 	[Abstract]
-	[TV (13, 0), NoMac, iOS (13, 0)]
+	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -48,7 +48,7 @@ namespace BackgroundTasks {
 		NSDate EarliestBeginDate { get; set; }
 	}
 
-	[TV (13, 0), NoMac, iOS (13, 0)]
+	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -63,21 +63,21 @@ namespace BackgroundTasks {
 		void SetTaskCompleted (bool success);
 	}
 
-	[TV (13, 0), NoMac, iOS (13, 0)]
+	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (BGTask))]
 	[DisableDefaultCtor]
 	interface BGAppRefreshTask {
 	}
 
-	[TV (13, 0), NoMac, iOS (13, 0)]
+	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (BGTask))]
 	[DisableDefaultCtor]
 	interface BGProcessingTask {
 	}
 
-	[TV (13, 0), NoMac, iOS (13, 0)]
+	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]

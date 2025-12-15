@@ -1,7 +1,7 @@
 
 namespace ServiceManagement {
 	[Native]
-	[NoTV, NoiOS, MacCatalyst (16, 0), Mac (13, 0)]
+	[NoTV, NoiOS, MacCatalyst (16, 0)]
 	public enum SMAppServiceStatus : long {
 		NotRegistered,
 		Enabled,
@@ -10,7 +10,7 @@ namespace ServiceManagement {
 	}
 
 	// @interface SMAppService : NSObject
-	[NoTV, NoiOS, MacCatalyst (16, 0), Mac (13, 0)]
+	[NoTV, NoiOS, MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SMAppService {

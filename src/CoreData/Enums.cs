@@ -78,7 +78,7 @@ namespace CoreData {
 		Transformable = 1800,
 		/// <summary>Indicates an Object ID.</summary>
 		ObjectID = 2000,
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		CompositeAttributeType = 2100,
 	}
 
@@ -119,8 +119,6 @@ namespace CoreData {
 		Fetch = 1,
 		/// <summary>Indicates that the fetch request was to save managed objects.</summary>
 		Save,
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		BatchInsert = 5,
 		/// <summary>Indicates that the fetch request was for a batch update.</summary>
@@ -334,7 +332,6 @@ namespace CoreData {
 		TransactionsAndChanges = 5,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSBatchInsertRequestResultType : ulong {
@@ -343,7 +340,6 @@ namespace CoreData {
 		Count = 2,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Flags]
 	[Native]

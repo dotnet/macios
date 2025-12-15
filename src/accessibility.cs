@@ -130,7 +130,7 @@ namespace Accessibility {
 		[NullAllowed, Export ("accessibilityCustomContent", ArgumentSemantic.Copy)]
 		AXCustomContent [] AccessibilityCustomContent { get; set; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("accessibilityCustomContentBlock", ArgumentSemantic.Copy)]
 		Func<AXCustomContent []?> AccessibilityCustomContentHandler { get; set; }
 
@@ -302,7 +302,7 @@ namespace Accessibility {
 		NativeHandle Constructor (NSAttributedString attributedTitle, double lowerBound, double upperBound, [NullAllowed] NSNumber [] gridlinePositions, Func<double, NSString> valueDescriptionProvider);
 	}
 
-	[TV (15, 2), Mac (12, 1), iOS (15, 2), MacCatalyst (15, 2)]
+	[TV (15, 2), iOS (15, 2), MacCatalyst (15, 2)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AXBrailleMap : NSCopying, NSSecureCoding {
@@ -320,7 +320,7 @@ namespace Accessibility {
 		void Present (CGImage image);
 	}
 
-	[TV (15, 2), Mac (12, 1), iOS (15, 2), MacCatalyst (15, 2)]
+	[TV (15, 2), iOS (15, 2), MacCatalyst (15, 2)]
 	[Protocol]
 	interface AXBrailleMapRenderer {
 		[Export ("accessibilityBrailleMapRenderRegion", ArgumentSemantic.Assign)]
@@ -330,7 +330,7 @@ namespace Accessibility {
 		Action<AXBrailleMap> AccessibilityBrailleMapRenderer { get; set; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Static]
 	[Partial]
 	partial interface AXAnimatedImagesUtilities {
@@ -339,7 +339,7 @@ namespace Accessibility {
 		NSString AnimatedImagesEnabledDidChangeNotification { get; }
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Static]
 	[Partial]
 	partial interface AXPrefers {

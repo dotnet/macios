@@ -110,14 +110,16 @@ namespace monotouchtest {
 		public void MissingKey_NSObjectIndexer ()
 		{
 			using (var dict = new NSMutableDictionary ()) {
-				dict [(NSString) "existingKey"] = (NSString) "value";
+				var existingKey = NSDate.Now;
+				var missingKey = NSDate.DistantPast;
+				dict [existingKey] = NSDate.DistantFuture;
 
 				// Accessing a missing key should return null
-				var result = dict [(NSString) "missingKey"];
+				var result = dict [missingKey];
 				Assert.IsNull (result, "Missing key should return null");
 
 				// Verify the existing key still works
-				Assert.IsNotNull (dict [(NSString) "existingKey"], "Existing key should return value");
+				Assert.IsNotNull (existingKey, "Existing key should return value");
 			}
 		}
 

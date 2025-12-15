@@ -75,6 +75,9 @@ namespace AuthenticationServices {
 		Domain,
 		/// <summary>The identifier specifies a URL.</summary>
 		Url,
+		/// <summary>The identifier specifies an app.</summary>
+		[MacCatalyst (26, 2), iOS (26, 2), Mac (26, 2)]
+		App,
 	}
 
 	/// <summary>Enumerates errors associated with a <see cref="AuthenticationServices.ASWebAuthenticationSession" />.</summary>
@@ -364,6 +367,16 @@ namespace AuthenticationServices {
 		[NoTV, NoMac, iOS (18, 0), NoMacCatalyst]
 		[Export ("completeRequestWithTextToInsert:completionHandler:")]
 		void CompleteRequest (string textToInsert, [NullAllowed] Action<bool> completionHandler);
+
+		[Async]
+		[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+		[Export ("completeSavePasswordRequestWithCompletionHandler:")]
+		void CompleteSavePasswordRequest ([NullAllowed] Action<bool> completionHandler);
+
+		[Async]
+		[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+		[Export ("completeGeneratePasswordRequestWithResults:completionHandler:")]
+		void CompleteGeneratePasswordRequest (ASGeneratedPassword [] results, [NullAllowed] Action<bool> completionHandler);
 	}
 
 	/// <summary>Holds the identification for a credential service.</summary>
@@ -390,6 +403,24 @@ namespace AuthenticationServices {
 		///         <remarks>To be added.</remarks>
 		[Export ("type")]
 		ASCredentialServiceIdentifierType Type { get; }
+
+		/// <summary>
+		/// Constructs a new <see cref="AuthenticationServices.ASCredentialServiceIdentifier" /> with the specified <paramref name="identifier" />, of the specified <paramref name="type" />, and with the specified <paramref name="displayName" />.
+		/// </summary>
+		/// <param name="identifier">To be added.</param>
+		/// <param name="type">To be added.</param>
+		/// <param name="displayName">To be added.</param>
+		/// <remarks>To be added.</remarks>
+		[NoTV, Mac (26, 2), iOS (26, 2), MacCatalyst (26, 2)]
+		[Export ("initWithIdentifier:type:displayName:")]
+		NativeHandle Constructor (string identifier, ASCredentialServiceIdentifierType type, string displayName);
+
+		/// <summary>Gets the display name.</summary>
+		/// <value>To be added.</value>
+		/// <remarks>To be added.</remarks>
+		[NoTV, Mac (26, 2), iOS (26, 2), MacCatalyst (26, 2)]
+		[NullAllowed, Export ("displayName")]
+		string DisplayName { get; }
 	}
 
 	/// <summary>Associates a <see cref="AuthenticationServices.ASPasswordCredentialIdentity.User" /> string with a record in the developer's credential database.</summary>
@@ -525,6 +556,22 @@ namespace AuthenticationServices {
 		[iOS (26, 0), Mac (26, 0), MacCatalyst (26, 0), NoTV]
 		[Export ("reportUnusedPasswordCredentialForDomain:userName:")]
 		void ReportUnusedPasswordCredential (string domain, string userName);
+
+		[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+		[Export ("performSavePasswordRequestWithoutUserInteractionIfPossible:")]
+		void PerformSavePasswordRequestWithoutUserInteractionIfPossible (ASSavePasswordRequest savePasswordRequest);
+
+		[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+		[Export ("prepareInterfaceForSavePasswordRequest:")]
+		void PrepareInterfaceForSavePasswordRequest (ASSavePasswordRequest savePasswordRequest);
+
+		[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+		[Export ("performGeneratePasswordsRequestWithoutUserInteraction:")]
+		void PerformGeneratePasswordsRequestWithoutUserInteraction (ASGeneratePasswordsRequest generatePasswordsRequest);
+
+		[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+		[Export ("prepareInterfaceForGeneratePasswordsRequest:")]
+		void PrepareInterfaceForGeneratePasswordsRequest (ASGeneratePasswordsRequest generatePasswordsRequest);
 	}
 
 	/// <summary>Associates a username and a password.</summary>
@@ -3025,5 +3072,101 @@ namespace AuthenticationServices {
 
 		[Field ("ASAuthorizationProviderExtensionSigningAlgorithmEd25519")]
 		NSNumber Ed25519 { get; }
+	}
+
+	[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+	[Native]
+	public enum ASSavePasswordRequestEvent : long {
+		UserInitiated,
+		FormDidDisappear,
+		GeneratedPasswordFilled
+	}
+
+
+	[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+	enum ASGeneratedPasswordKind {
+		[Field ("ASGeneratedPasswordKindAlphanumeric")]
+		Alphanumeric,
+		[Field ("ASGeneratedPasswordKindPassphrase")]
+		Passphrase,
+		[Field ("ASGeneratedPasswordKindStrong")]
+		Strong,
+	}
+
+	[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface ASGeneratedPassword : NSCopying, NSSecureCoding {
+
+		[BindAs (typeof (ASGeneratedPasswordKind))]
+		[Export ("kind")]
+		NSString Kind { get; }
+
+		[Export ("localizedName")]
+		string LocalizedName { get; }
+
+		[Export ("value")]
+		string Value { get; }
+
+		[Export ("initWithKind:value:")]
+		NativeHandle Constructor ([BindAs (typeof (ASGeneratedPasswordKind))] NSString kind, string value);
+	}
+
+	[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface ASGeneratePasswordsRequest : NSCopying, NSSecureCoding {
+
+		[Export ("serviceIdentifier")]
+		ASCredentialServiceIdentifier ServiceIdentifier { get; }
+
+		[NullAllowed, Export ("passwordFieldPasswordRules")]
+		string PasswordFieldPasswordRules { get; }
+
+		[NullAllowed, Export ("confirmPasswordFieldPasswordRules")]
+		string ConfirmPasswordFieldPasswordRules { get; }
+
+		[NullAllowed, Export ("passwordRulesFromQuirks")]
+		string PasswordRulesFromQuirks { get; }
+
+		[Export ("initWithServiceIdentifier:passwordFieldPasswordRules:confirmPasswordFieldPasswordRules:passwordRulesFromQuirks:")]
+		NativeHandle Constructor (ASCredentialServiceIdentifier serviceIdentifier, [NullAllowed] string passwordFieldPasswordRules, [NullAllowed] string confirmPasswordFieldPasswordRules, [NullAllowed] string passwordRulesFromQuirks);
+	}
+
+	[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface ASSavePasswordRequest : NSCopying, NSSecureCoding {
+
+		[Export ("serviceIdentifier")]
+		ASCredentialServiceIdentifier ServiceIdentifier { get; }
+
+		[Export ("credential")]
+		ASPasswordCredential Credential { get; }
+
+		[NullAllowed, Export ("title")]
+		string Title { get; }
+
+		[Export ("sessionID")]
+		string SessionId { get; }
+
+		[Export ("event")]
+		ASSavePasswordRequestEvent Event { get; }
+
+		[BindAs (typeof (ASGeneratedPasswordKind))]
+		[NullAllowed, Export ("passwordKind")]
+		NSString PasswordKind { get; }
+
+		[Export ("initWithServiceIdentifier:credential:sessionID:event:")]
+		NativeHandle Constructor (ASCredentialServiceIdentifier serviceIdentifier, ASPasswordCredential credential, string sessionId, ASSavePasswordRequestEvent @event);
+
+		[Export ("initWithServiceIdentifier:credential:title:sessionID:event:")]
+		NativeHandle Constructor (ASCredentialServiceIdentifier serviceIdentifier, ASPasswordCredential credential, [NullAllowed] string title, string sessionId, ASSavePasswordRequestEvent @event);
+
+		[Export ("initWithServiceIdentifier:credential:sessionID:event:passwordKind:")]
+		NativeHandle Constructor (ASCredentialServiceIdentifier serviceIdentifier, ASPasswordCredential credential, string sessionId, ASSavePasswordRequestEvent @event, [NullAllowed][BindAs (typeof (ASGeneratedPasswordKind))] NSString passwordKind);
+
+		[Export ("initWithServiceIdentifier:credential:title:sessionID:event:passwordKind:")]
+		NativeHandle Constructor (ASCredentialServiceIdentifier serviceIdentifier, ASPasswordCredential credential, [NullAllowed] string title, string sessionId, ASSavePasswordRequestEvent @event, [NullAllowed][BindAs (typeof (ASGeneratedPasswordKind))] NSString passwordKind);
 	}
 }

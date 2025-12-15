@@ -154,6 +154,7 @@ Microsoft.iOS.dll:Foundation.NSObject.InitializeObject(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSObject.IsEqual(Foundation.NSObject)
 Microsoft.iOS.dll:Foundation.NSObject.IsProtocol(System.Type, System.IntPtr)
+Microsoft.iOS.dll:Foundation.NSObject.RecreateDataHandle()
 Microsoft.iOS.dll:Foundation.NSObject.ReleaseManagedRef()
 Microsoft.iOS.dll:Foundation.NSObject.set_disposed(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.set_flags(Foundation.NSObject/Flags)
@@ -197,8 +198,10 @@ Microsoft.iOS.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::Data()
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle Foundation.NSObject::data_handle
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle..ctor()
+Microsoft.iOS.dll:Foundation.NSObjectDataHandle..ctor(System.IntPtr)
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle.get_Data()
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle.get_IsInvalid()
+Microsoft.iOS.dll:Foundation.NSObjectDataHandle.Invalidate()
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle.ReleaseHandle()
 Microsoft.iOS.dll:Foundation.NSObjectFlag
 Microsoft.iOS.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
@@ -1201,6 +1204,7 @@ Microsoft.iOS.dll:System.Boolean Foundation.NSObject::InFinalizerQueue()
 Microsoft.iOS.dll:System.Boolean Foundation.NSObject::IsDirectBinding()
 Microsoft.iOS.dll:System.Boolean Foundation.NSObject::IsRegisteredToggleRef()
 Microsoft.iOS.dll:System.Boolean Foundation.NSObject/NSObject_Disposer::draining
+Microsoft.iOS.dll:System.Boolean Foundation.NSObjectDataHandle::invalidated
 Microsoft.iOS.dll:System.Boolean Foundation.NSObjectDataHandle::IsInvalid()
 Microsoft.iOS.dll:System.Boolean Foundation.ProtocolAttribute::<BackwardsCompatibleCodeGeneration>k__BackingField
 Microsoft.iOS.dll:System.Boolean Foundation.ProtocolAttribute::<IsInformal>k__BackingField

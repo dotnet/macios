@@ -43,6 +43,9 @@ namespace Xamarin.Tests {
 			if (includeRemoteProperties == true)
 				AddRemoteProperties (rv);
 
+			// We must set 'UseFloatingTargetPlatformVersion=true' for our test projects, to avoid building them with other workloads than the current workload.
+			rv ["UseFloatingTargetPlatformVersion"] = "true";
+
 			return rv;
 		}
 

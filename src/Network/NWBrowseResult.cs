@@ -38,7 +38,14 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_txt_record nw_browse_result_copy_txt_record_object (OS_nw_browse_result result);
 
-		public NWTxtRecord TxtRecord => new NWTxtRecord (nw_browse_result_copy_txt_record_object (GetCheckedHandle ()), owns: true);
+		public NWTxtRecord? TxtRecord {
+			get {
+				var record = nw_browse_result_copy_txt_record_object (GetCheckedHandle ());
+				if (record == IntPtr.Zero)
+					return null;
+				return new NWTxtRecord (record, owns: true);
+			}
+		}
 
 		[DllImport (Constants.NetworkLibrary)]
 		static extern NWBrowseResultChange nw_browse_result_get_changes (OS_nw_browse_result old_result, OS_nw_browse_result new_result);

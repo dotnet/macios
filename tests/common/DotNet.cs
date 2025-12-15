@@ -64,6 +64,11 @@ namespace Xamarin.Tests {
 			return Execute ("build", project, properties, true, target: target, timeout: timeout);
 		}
 
+		public static ExecutionResult AssertRun (string project, Dictionary<string, string>? properties = null, TimeSpan? timeout = null)
+		{
+			return Execute ("run", project, properties, true, timeout: timeout);
+		}
+
 		public static ExecutionResult AssertBuildFailure (string project, Dictionary<string, string>? properties = null)
 		{
 			var rv = Execute ("build", project, properties, false);
@@ -215,6 +220,7 @@ namespace Xamarin.Tests {
 			case "pack":
 			case "publish":
 			case "restore":
+			case "run":
 				var args = new List<string> ();
 				args.Add (verb);
 				args.Add (project);

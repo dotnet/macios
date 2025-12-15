@@ -21,6 +21,8 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string TargetFrameworkIdentifier { get; set; } = string.Empty;
 
+		public string UseFloatingTargetPlatformVersion { get; set; } = string.Empty;
+
 		// Outputs
 		[Output]
 		public string BaseLibDllPath { get; set; } = string.Empty;
@@ -88,6 +90,8 @@ namespace Xamarin.MacDev.Tasks {
 			arguments.Add ("/t:_WriteRemoteGeneratorProperties");
 			if (!string.IsNullOrEmpty (TargetFrameworkIdentifier))
 				arguments.Add ($"/p:TargetFrameworkIdentifier={TargetFrameworkIdentifier}");
+			if (!string.IsNullOrEmpty (UseFloatingTargetPlatformVersion))
+				arguments.Add ($"/p:UseFloatingTargetPlatformVersion={UseFloatingTargetPlatformVersion}");
 			arguments.Add ($"/p:_PlatformName={PlatformName}");
 			arguments.Add ($"/bl:{binlog}");
 

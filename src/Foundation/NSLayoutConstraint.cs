@@ -52,7 +52,7 @@ namespace UIKit
 		/// <remarks>
 		///   <example>
 		///     <code lang="csharp lang-csharp"><![CDATA[
-		/// NSLayoutConstraint.FromVisualFormat ("|-8-[messageView]-8-|", NSLayoutOptions.None, "messageView", MakeMessageView ());
+		/// NSLayoutConstraint.FromVisualFormat ("|-8-[messageView]-8-|", NSLayoutFormatOptions.None, "messageView", MakeMessageView ());
 		/// ]]></code>
 		///   </example>
 		/// </remarks>

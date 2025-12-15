@@ -100,7 +100,7 @@ namespace Foundation {
 				else if (obj is string str)
 					Append (new NSAttributedString (str));
 				else
-					Append (new NSAttributedString (obj.ToString () ?? ""));
+					Append (new NSAttributedString (obj?.ToString () ?? ""));
 
 			}
 		}

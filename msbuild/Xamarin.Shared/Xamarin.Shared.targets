@@ -372,7 +372,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<RemoveDir SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Directories="$(AppBundleDir).mSYM;@(_DebugSymbolDir)" />
 		<Delete SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Files="$(DeviceSpecificOutputPath)*.bcsymbolmap" />
-		<Delete SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Files="$(DeviceSpecificOutputPath)postprocessing.items" />
+		<Delete Files="$(DeviceSpecificOutputPath)postprocessing.items" />
 	</Target>
 
 	<Target Name="_CleanITunesArtwork" Condition="'$(_CanArchive)' == 'true'" DependsOnTargets="_ComputeTargetArchitectures">
@@ -405,9 +405,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_IpaPackageFile Include="$(DeviceSpecificOutputPath)*.ipa" />
 		</ItemGroup>
 
-		<Delete Condition="'$(IsMacEnabled)' == 'true'" Files="$(DeviceSpecificOutputPath)codesign.items" />
-		<Delete Condition="'$(IsMacEnabled)' == 'true'" Files="$(DeviceSpecificOutputPath)codesign-bundle.items" />
-		<Delete SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Files="$(DeviceSpecificOutputPath)native-frameworks.items" />
+		<Delete Files="$(DeviceSpecificOutputPath)codesign.items" />
+		<Delete Files="$(DeviceSpecificOutputPath)codesign-bundle.items" />
+		<Delete Files="$(DeviceSpecificOutputPath)native-frameworks.items" />
 		<Delete SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Files="@(_IpaPackageFile)" />
 	</Target>
 
@@ -621,17 +621,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_CompileAppManifestInputLine Include="ApplicationTitle=$(ApplicationTitle)" />
 			<_CompileAppManifestInputLine Include="ApplicationVersion=$(ApplicationVersion)" />
 			<_CompileAppManifestInputLine Include="AppManifest=$(AppBundleManifest)" />
-			<_CompileAppManifestInputLine Include="AssemblyName=$(AssemblyName)" />
 			<_CompileAppManifestInputLine Include="CompiledAppManifest=$(_TemporaryAppManifest)" />
-			<_CompileAppManifestInputLine Include="Debug=$(_BundlerDebug)" />
-			<_CompileAppManifestInputLine Include="DebugIPAddresses=$(_DebugIPAddresses)" />
 			<_CompileAppManifestInputLine Include="DefaultSdkVersion=$(_SdkVersion)" />
 			<_CompileAppManifestInputLine Include="FontFilesToRegister=$(_CompileAppManifestFontFilesToRegister)" />
 			<_CompileAppManifestInputLine Include="GenerateApplicationManifest=$(GenerateApplicationManifest)" />
 			<_CompileAppManifestInputLine Include="IsAppExtension=$(IsAppExtension)" />
-			<_CompileAppManifestInputLine Include="IsWatchApp=$(IsWatchApp)" />
-			<_CompileAppManifestInputLine Include="IsWatchExtension=$(IsWatchExtension)" />
-			<_CompileAppManifestInputLine Include="IsXPCService=$(IsXPCService)" />
 			<_CompileAppManifestInputLine Include="MinSupportedOSPlatformVersion=$(MinSupportedOSPlatformVersion)" />
 			<_CompileAppManifestInputLine Include="PartialAppManifests=$(_CompileAppManifestPartialAppManifest)" />
 			<_CompileAppManifestInputLine Include="ProjectDir=$(MSBuildProjectDirectory)" />
@@ -677,18 +671,12 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			ApplicationTitle="$(ApplicationTitle)"
 			ApplicationVersion="$(ApplicationVersion)"
 			AppManifest="$(AppBundleManifest)"
-			AssemblyName="$(AssemblyName)"
 			BundleExecutable="$(_NativeExecutableName)"
 			CompiledAppManifest="$(_TemporaryAppManifest)"
-			Debug="$(_BundlerDebug)"
-			DebugIPAddresses="$(_DebugIPAddresses)"
 			DefaultSdkVersion="$(_SdkVersion)"
 			FontFilesToRegister="@(_FontFilesToRegister)"
 			GenerateApplicationManifest="$(GenerateApplicationManifest)"
 			IsAppExtension="$(IsAppExtension)"
-			IsWatchApp="$(IsWatchApp)"
-			IsWatchExtension="$(IsWatchExtension)"
-			IsXPCService="$(IsXPCService)"
 			MinSupportedOSPlatformVersion="$(MinSupportedOSPlatformVersion)"
 			PartialAppManifests="@(PartialAppManifest)"
 			ProjectDir="$(MSBuildProjectDirectory)"
@@ -1153,8 +1141,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			SessionId="$(BuildSessionId)"
 			AppBundleName="$(_AppBundleName)$(AppBundleExtension)"
 			Condition="'$(IsMacEnabled)' == 'true'"
-			ToolExe="$(CopySceneKitAssetsExe)"
-			ToolPath="$(CopySceneKitAssetsPath)"
+			CopySceneKitAssetsPath="$(CopySceneKitAssetsPath)"
 			SceneKitAssets="@(SceneKitAsset)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
@@ -1566,8 +1553,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<CoreMLCompiler
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
-			ToolExe="$(CoreMLCompilerExe)"
-			ToolPath="$(CoreMLCompilerPath)"
+			CoreMlcPath="$(CoreMLCompilerPath)"
 			Models="@(CoreMLModel)"
 			EnableOnDemandResources="$(EnableOnDemandResources)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"
@@ -1985,6 +1971,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Condition="'$(IsMacEnabled)' == 'true' And '$(BindingProjectBuildSessionId)' != ''"
 			IntermediateOutputPath="$(IntermediateOutputPath)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+			UseFloatingTargetPlatformVersion="$(UseFloatingTargetPlatformVersion)"
 		>
 			<Output TaskParameter="BaseLibDllPath" PropertyName="BaseLibDllPath" />
 			<Output TaskParameter="BGenToolExe" PropertyName="BGenToolExe" />
@@ -2530,7 +2517,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 
 		<WriteItemsToFile
-			Condition="'$(IsMacEnabled)' == 'true'"
 			Items="@(_CodesignBundle)"
 			ItemName="_CodesignBundle"
 			File="$(DeviceSpecificOutputPath)codesign-bundle.items"
@@ -2539,7 +2525,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		/>
 
 		<WriteItemsToFile
-			Condition="'$(IsMacEnabled)' == 'true'"
 			Items="@(_CodesignItems)"
 			ItemName="_CodesignItems"
 			File="$(DeviceSpecificOutputPath)codesign.items"
@@ -2995,7 +2980,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 
 		<WriteItemsToFile
-			Condition="'$(IsMacEnabled)' == 'true' And '$(_PostProcessingItemPath)' != ''"
+			Condition="'$(_PostProcessingItemPath)' != ''"
 			Items="@(_PostProcessingItem)"
 			ItemName="_PostProcessingItem"
 			File="$(_PostProcessingItemPath)"

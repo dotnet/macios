@@ -34,8 +34,6 @@ namespace Xamarin.Tests {
 		public static bool include_mac;
 		public static bool include_tvos;
 		public static bool include_maccatalyst;
-		public static bool EnableXamarin;
-		public static bool EnableAdr;
 		public static bool XcodeIsStable;
 		public static string DOTNET_DIR;
 
@@ -301,8 +299,6 @@ namespace Xamarin.Tests {
 			DotNetCscCommand = GetVariable ("DOTNET_CSC_COMMAND", null)?.Trim ('\'');
 			DotNetExecutable = GetVariable ("DOTNET", null);
 			DotNetTfm = GetVariable ("DOTNET_TFM", null);
-			EnableXamarin = !string.IsNullOrEmpty (GetVariable ("ENABLE_XAMARIN", ""));
-			EnableAdr = !string.IsNullOrEmpty (GetVariable ("ENABLE_ADR", ""));
 			XcodeIsStable = string.Equals (GetVariable ("XCODE_IS_STABLE", ""), "true",
 				StringComparison.OrdinalIgnoreCase);
 			DOTNET_DIR = GetVariable ("DOTNET_DIR", "");

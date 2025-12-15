@@ -65,10 +65,7 @@
     
     <Target Name="BuildTestLibraries" BeforeTargets="BeforeBuild">
         <Message Text="Processing platform: %(Platform.Identity)" /> 
-        <Exec Condition="$(BUILD_BUILDID) == '' Or $(DOTNET_PLATFORMS.Contains('iOS'))" Command="make -j8 -C $(SourceDirectory) $(DotnetBuildDirectory)/ios/apidefinition-ios.dll"/>
-        <Exec Condition="$(BUILD_BUILDID) == '' Or $(DOTNET_PLATFORMS.Contains('macOS'))" Command="make -j8 -C $(SourceDirectory) $(DotnetBuildDirectory)/macos/apidefinition-macos.dll"/>
-        <Exec Condition="$(BUILD_BUILDID) == '' Or $(DOTNET_PLATFORMS.Contains('tvOS'))" Command="make -j8 -C $(SourceDirectory) $(DotnetBuildDirectory)/tvos/apidefinition-tvos.dll"/>
-        <Exec Condition="$(BUILD_BUILDID) == '' Or $(DOTNET_PLATFORMS.Contains('MacCatalyst'))" Command="make -j8 -C $(SourceDirectory) $(DotnetBuildDirectory)/maccatalyst/apidefinition-maccatalyst.dll"/>
+        <Exec Command="make -j8 -C $(SourceDirectory) apidefinition"/>
     </Target>
 
 </Project>

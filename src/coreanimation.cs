@@ -2570,7 +2570,6 @@ namespace CoreAnimation {
 		/// <summary>Gets the settling time for the animation.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Export ("settlingDuration")]
 		double /* CFTimeInterval */ SettlingDuration { get; }
 

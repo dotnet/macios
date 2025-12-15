@@ -27,15 +27,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string FilePath { get; set; } = string.Empty;
 
-		static string GetExecutable (List<string> arguments, string toolName, string toolPathOverride)
-		{
-			if (string.IsNullOrEmpty (toolPathOverride)) {
-				arguments.Insert (0, toolName);
-				return "xcrun";
-			}
-			return toolPathOverride;
-		}
-
 		[Required]
 		public string SdkDevPath { get; set; } = string.Empty;
 

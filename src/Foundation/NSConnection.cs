@@ -50,10 +50,8 @@ namespace Foundation {
 		/// <param name="hostName">The name of the host on which the connection is registered.</param>
 		/// <returns>The root proxy object for the specified connection, cast to the specified type.</returns>
 		/// <remarks>This method retrieves the root object from a connection identified by <paramref name="name" /> on the specified <paramref name="hostName" />.</remarks>
-		public static TProxy GetRootProxy<TProxy> (string name, string hostName) where TProxy : NSObject
+		public static TProxy GetRootProxy<TProxy> (string name, string? hostName) where TProxy : NSObject
 		{
-			ArgumentNullException.ThrowIfNull (name);
-			ArgumentNullException.ThrowIfNull (hostName);
 			return GetRootProxy<TProxy> (_GetRootProxy (name, hostName));
 		}
 
@@ -64,11 +62,8 @@ namespace Foundation {
 		/// <param name="server">The <see cref="NSPortNameServer" /> to use for looking up the connection.</param>
 		/// <returns>The root proxy object for the specified connection, cast to the specified type.</returns>
 		/// <remarks>This method retrieves the root object from a connection identified by <paramref name="name" /> on the specified <paramref name="hostName" /> using the given port name server.</remarks>
-		public static TProxy GetRootProxy<TProxy> (string name, string hostName, NSPortNameServer server) where TProxy : NSObject
+		public static TProxy GetRootProxy<TProxy> (string name, string? hostName, NSPortNameServer server) where TProxy : NSObject
 		{
-			ArgumentNullException.ThrowIfNull (name);
-			ArgumentNullException.ThrowIfNull (hostName);
-			ArgumentNullException.ThrowIfNull (server);
 			return GetRootProxy<TProxy> (_GetRootProxy (name, hostName, server));
 		}
 

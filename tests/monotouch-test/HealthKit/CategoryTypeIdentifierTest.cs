@@ -131,6 +131,10 @@ namespace MonoTouchFixtures.HealthKit {
 					if (!TestRuntime.CheckXcodeVersion (16, 0))
 						continue;
 					break;
+				case HKCategoryTypeIdentifier.HypertensionEvent:
+					if (!TestRuntime.CheckXcodeVersion (26, 2))
+						continue;
+					break;
 				default:
 					if (!TestRuntime.CheckXcodeVersion (7, 0))
 						continue;

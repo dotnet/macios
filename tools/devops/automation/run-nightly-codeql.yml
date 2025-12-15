@@ -63,6 +63,7 @@ stages:
         use1ES: false
         disableCodeQL: false
         xcodeChannel: $(xcodeChannel)
+        statusContext: "Nightly CodeQL"
         buildSteps:
         - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/build-nugets.sh
           displayName: 'Build Nugets'

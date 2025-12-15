@@ -85,23 +85,10 @@ steps:
 - template: ../common/setup.yml
   parameters:
     keyringPass: ${{ parameters.keyringPass }}
+    requiredDiskSpace: 20
+    statusContext: ${{ parameters.statusContext }}
 
-# Use a cmdlet to check if the space available in the devices root system is larger than 50 gb. If there is not
-# enough space available it:
-# 1. Set a comment stating the same as what was sent to the status.
-# 2. Cancel the pipeline and do not execute any of the following steps.
-- pwsh: | 
-    Import-Module ./MaciosCI.psd1
-    Assert-HDFreeSpace -Size 20
-  env:
-    CONTEXT: ${{ parameters.statusContext }}
-    GITHUB_TOKEN: $(GitHub.Token)
-    ACCESSTOKEN: $(System.AccessToken)
-  displayName: 'Check HD Free Space'
-  timeoutInMinutes: 5
-  workingDirectory: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/
-
-# if we got to this point, it means that we do have at least 50 Gb to run the test, should
+# if we got to this point, it means that we do have at least 20 Gb to run the test, should
 # be more than enough, else the above script would have stopped the pipeline
 - bash: |
     set -x

@@ -24,14 +24,13 @@
 //
 using System.Collections.Generic;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 
 	[Register]
 	internal class InternalNSNotificationHandler : NSObject {
-		NSNotificationCenter notificationCenter;
+		NSNotificationCenter? notificationCenter;
 		Action<NSNotification> notify;
 
 		public InternalNSNotificationHandler (NSNotificationCenter notificationCenter, Action<NSNotification> notify)
@@ -64,24 +63,24 @@ namespace Foundation {
 		const string postSelector = "post:";
 
 		class ObservedData {
-			public NSObject Observer;
-			public string Name;
-			public NSObject Object;
+			public NSObject? Observer;
+			public string? Name;
+			public NSObject? Object;
 		}
 
 		List<ObservedData> __mt_ObserverList_var = new List<ObservedData> ();
 
+		/// <summary>
+		/// Adds an observer for the specified notification.
+		/// </summary>
 		/// <param name="aName">The name of the notification to observe.</param>
-		///         <param name="notify">The delegate that will be invoked when the notification is posted.</param>
-		///         <param name="fromObject">If not-null, filters the notifications to those sent by this object.</param>
-		///         <summary>Adds an observer for the specified notification</summary>
-		///         <returns>An observer token that can be used later as the parameter passed to RemoveObserver (NSObject observer).</returns>
-		///         <remarks>
-		///         </remarks>
-		public NSObject AddObserver (NSString aName, Action<NSNotification> notify, NSObject fromObject)
+		/// <param name="notify">The delegate that will be invoked when the notification is posted.</param>
+		/// <param name="fromObject">If not <see langword="null"/>, filters the notifications to those sent by this object.</param>
+		/// <returns>An observer token that can be used later as the parameter passed to <see cref="RemoveObserver(NSObject)"/>.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="notify"/> is <see langword="null"/>.</exception>
+		public NSObject AddObserver (NSString? aName, Action<NSNotification> notify, NSObject? fromObject)
 		{
-			if (notify is null)
-				throw new ArgumentNullException ("notify");
+			ArgumentNullException.ThrowIfNull (notify);
 
 			var proxy = new InternalNSNotificationHandler (this, notify);
 
@@ -90,21 +89,24 @@ namespace Foundation {
 			return proxy;
 		}
 
+		/// <summary>
+		/// Adds an observer for the specified notification.
+		/// </summary>
 		/// <param name="aName">The name of the notification to observe.</param>
-		///         <param name="notify">The delegate that will be invoked when the notification is posted.</param>
-		///         <summary>Adds an observer for the specified notification</summary>
-		///         <returns>An observer token that can be used later as the parameter passed to RemoveObserver (NSObject observer).</returns>
-		///         <remarks>
-		///         </remarks>
-		public NSObject AddObserver (NSString aName, Action<NSNotification> notify)
+		/// <param name="notify">The delegate that will be invoked when the notification is posted.</param>
+		/// <returns>An observer token that can be used later as the parameter passed to <see cref="RemoveObserver(NSObject)"/>.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="notify"/> is <see langword="null"/>.</exception>
+		public NSObject AddObserver (NSString? aName, Action<NSNotification> notify)
 		{
 			return AddObserver (aName, notify, null);
 		}
 
-		/// <param name="keys">To be added.</param>
-		///         <summary>Removes multiple observers in one call.</summary>
-		///         <remarks>This removes all of the observers in the IEnumerable&lt;NSObject&gt; parameter.</remarks>
-		public void RemoveObservers (IEnumerable<NSObject> keys)
+		/// <summary>
+		/// Removes multiple observers in one call.
+		/// </summary>
+		/// <param name="keys">The collection of observer tokens to remove.</param>
+		/// <remarks>This removes all of the observers in the <see cref="IEnumerable{NSObject}"/> parameter.</remarks>
+		public void RemoveObservers (IEnumerable<NSObject>? keys)
 		{
 			if (keys is null)
 				return;
@@ -112,14 +114,14 @@ namespace Foundation {
 				RemoveObserver (k);
 		}
 
-		void AddObserverToList (NSObject observer, string aName, NSObject anObject)
+		void AddObserverToList (NSObject observer, string? aName, NSObject? anObject)
 		{
 			lock (__mt_ObserverList_var)
 				__mt_ObserverList_var.Add (new ObservedData { Observer = observer, Name = aName, Object = anObject });
 			MarkDirty ();
 		}
 
-		void RemoveObserversFromList (NSObject observer, string aName, NSObject anObject)
+		void RemoveObserversFromList (NSObject observer, string? aName, NSObject? anObject)
 		{
 			lock (__mt_ObserverList_var) {
 				for (int i = __mt_ObserverList_var.Count - 1; i >= 0; i--) {
@@ -140,13 +142,20 @@ namespace Foundation {
 		}
 	}
 
-	/// <summary>Provides data for an event based on a posted <see cref="NSNotification" /> object.</summary>
+	/// <summary>
+	/// Provides data for an event based on a posted <see cref="NSNotification"/> object.
+	/// </summary>
 	public class NSNotificationEventArgs : EventArgs {
-		/// <summary>The underlying <see cref="NSNotification" /> object from the posted notification.</summary>
+		/// <summary>
+		/// Gets the underlying <see cref="NSNotification"/> object from the posted notification.
+		/// </summary>
+		/// <value>The notification object.</value>
 		public NSNotification Notification { get; private set; }
 
-		/// <summary>Initializes a new instance of the <see cref="NSNotificationEventArgs" /> class.</summary>
-		/// <param name="notification">The underlying <see cref="NSNotification" /> object from the posted notification.</param>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="NSNotificationEventArgs"/> class.
+		/// </summary>
+		/// <param name="notification">The underlying <see cref="NSNotification"/> object from the posted notification.</param>
 		public NSNotificationEventArgs (NSNotification notification)
 		{
 			Notification = notification;

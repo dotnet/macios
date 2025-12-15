@@ -20,32 +20,25 @@
 //
 // Copyright 2011 - 2014 Xamarin Inc (http://www.xamarin.com)
 //
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 using CoreFoundation;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 
 	public partial class NSMutableDictionary : NSDictionary, IDictionary, IDictionary<NSObject, NSObject> {
-
-		// some API, like SecItemCopyMatching, returns a retained NSMutableDictionary
-		internal NSMutableDictionary (NativeHandle handle, bool owns)
-			: base (handle)
-		{
-			if (!owns)
-				DangerousRelease ();
-		}
-
-		/// <param name="objects">To be added.</param>
-		///         <param name="keys">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a mutable dictionary from the specified arrays of objects and keys.</summary>
+		/// <param name="objects">The array of objects to add to the dictionary.</param>
+		/// <param name="keys">The array of keys for the objects.</param>
+		/// <returns>A new mutable dictionary containing the specified objects and keys.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="objects"/> or <paramref name="keys"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException">Thrown when the arrays have different sizes.</exception>
 		public static NSMutableDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys)
 		{
 			if (objects is null)
@@ -60,11 +53,12 @@ namespace Foundation {
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
-		/// <param name="objects">To be added.</param>
-		///         <param name="keys">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a mutable dictionary from the specified arrays of objects and keys.</summary>
+		/// <param name="objects">The array of objects to add to the dictionary.</param>
+		/// <param name="keys">The array of keys for the objects.</param>
+		/// <returns>A new mutable dictionary containing the specified objects and keys.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="objects"/> or <paramref name="keys"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException">Thrown when the arrays have different sizes.</exception>
 		public static NSMutableDictionary FromObjectsAndKeys (object [] objects, object [] keys)
 		{
 			if (objects is null)
@@ -79,12 +73,13 @@ namespace Foundation {
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
-		/// <param name="objects">To be added.</param>
-		/// <param name="keys">To be added.</param>
-		/// <param name="count">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates a mutable dictionary from the specified number of objects and keys from the arrays.</summary>
+		/// <param name="objects">The array of objects to add to the dictionary.</param>
+		/// <param name="keys">The array of keys for the objects.</param>
+		/// <param name="count">The number of elements to copy from the arrays.</param>
+		/// <returns>A new mutable dictionary containing the specified objects and keys.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="objects"/> or <paramref name="keys"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException">Thrown when the arrays have different sizes or <paramref name="count"/> is invalid.</exception>
 		public static NSMutableDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
 		{
 			if (objects is null)
@@ -101,12 +96,13 @@ namespace Foundation {
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
-		/// <param name="objects">To be added.</param>
-		/// <param name="keys">To be added.</param>
-		/// <param name="count">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Creates a mutable dictionary from the specified number of objects and keys from the arrays.</summary>
+		/// <param name="objects">The array of objects to add to the dictionary.</param>
+		/// <param name="keys">The array of keys for the objects.</param>
+		/// <param name="count">The number of elements to copy from the arrays.</param>
+		/// <returns>A new mutable dictionary containing the specified objects and keys.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="objects"/> or <paramref name="keys"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException">Thrown when the arrays have different sizes or <paramref name="count"/> is invalid.</exception>
 		public static NSMutableDictionary FromObjectsAndKeys (object [] objects, object [] keys, nint count)
 		{
 			if (objects is null)
@@ -129,8 +125,7 @@ namespace Foundation {
 			SetObject (item.Value, item.Key);
 		}
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Removes all objects from the dictionary.</summary>
 		public void Clear ()
 		{
 			RemoveAllObjects ();
@@ -175,11 +170,11 @@ namespace Foundation {
 		#endregion
 
 		#region IDictionary
-		/// <param name="key">To be added.</param>
-		///         <param name="value">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		void IDictionary.Add (object key, object value)
+		/// <summary>Adds an element with the provided key and value to the dictionary.</summary>
+		/// <param name="key">The key of the element to add.</param>
+		/// <param name="value">The value of the element to add.</param>
+		/// <exception cref="ArgumentException">Thrown when the key or value is not an <see cref="NSObject"/>.</exception>
+		void IDictionary.Add (object key, object? value)
 		{
 			var nsokey = key as NSObject;
 			var nsovalue = value as NSObject;
@@ -191,10 +186,10 @@ namespace Foundation {
 			SetObject (nsovalue, nsokey);
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Determines whether the dictionary contains an element with the specified key.</summary>
+		/// <param name="key">The key to locate in the dictionary.</param>
+		/// <returns><see langword="true"/> if the dictionary contains an element with the key; otherwise, <see langword="false"/>.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="key"/> is <see langword="null"/>.</exception>
 		bool IDictionary.Contains (object key)
 		{
 			if (key is null)
@@ -207,17 +202,17 @@ namespace Foundation {
 			return result;
 		}
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns an enumerator that iterates through the dictionary.</summary>
+		/// <returns>An <see cref="IDictionaryEnumerator"/> for the dictionary.</returns>
 		IDictionaryEnumerator IDictionary.GetEnumerator ()
 		{
 			return (IDictionaryEnumerator) ((IEnumerable<KeyValuePair<NSObject, NSObject>>) this).GetEnumerator ();
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Removes the element with the specified key from the dictionary.</summary>
+		/// <param name="key">The key of the element to remove.</param>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="key"/> is <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException">Thrown when the key is not an <see cref="INativeObject"/>.</exception>
 		void IDictionary.Remove (object key)
 		{
 			if (key is null)
@@ -230,26 +225,28 @@ namespace Foundation {
 			GC.KeepAlive (nskey);
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets a value indicating whether the dictionary has a fixed size.</summary>
+		/// <value><see langword="false"/> since the dictionary is mutable.</value>
 		bool IDictionary.IsFixedSize {
 			get { return false; }
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets a value indicating whether the dictionary is read-only.</summary>
+		/// <value><see langword="false"/> since the dictionary is mutable.</value>
 		bool IDictionary.IsReadOnly {
 			get { return false; }
 		}
 
-		object IDictionary.this [object key] {
+		/// <summary>Gets or sets the object associated with the specified key.</summary>
+		/// <param name="key">The key of the object to get or set.</param>
+		/// <value>The object associated with the specified key.</value>
+		/// <exception cref="ArgumentException">Thrown when setting a value and the key or value is not an <see cref="INativeObject"/>.</exception>
+		object? IDictionary.this [object key] {
 			get {
 				var _key = key as INativeObject;
 				if (_key is null)
 					return null;
-				object result = _ObjectForKey (_key.Handle);
+				object? result = _ObjectForKey (_key.Handle);
 				GC.KeepAlive (_key);
 				return result;
 			}
@@ -266,36 +263,33 @@ namespace Foundation {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets an <see cref="ICollection"/> containing the keys of the dictionary.</summary>
+		/// <value>An <see cref="ICollection"/> containing the keys of the dictionary.</value>
 		ICollection IDictionary.Keys {
 			get { return Keys; }
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets an <see cref="ICollection"/> containing the values in the dictionary.</summary>
+		/// <value>An <see cref="ICollection"/> containing the values in the dictionary.</value>
 		ICollection IDictionary.Values {
 			get { return Values; }
 		}
 		#endregion
 
 		#region IDictionary<NSObject, NSObject>
-		/// <param name="key">To be added.</param>
-		///         <param name="value">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Adds an element with the provided key and value to the dictionary.</summary>
+		/// <param name="key">The key of the element to add.</param>
+		/// <param name="value">The value of the element to add.</param>
 		public void Add (NSObject key, NSObject value)
 		{
 			// Inverted args.
 			SetObject (value, key);
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Removes the element with the specified key from the dictionary.</summary>
+		/// <param name="key">The key of the element to remove.</param>
+		/// <returns><see langword="true"/> if the element is successfully removed; otherwise, <see langword="false"/>.</returns>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="key"/> is <see langword="null"/>.</exception>
 		public bool Remove (NSObject key)
 		{
 			if (key is null)
@@ -306,18 +300,40 @@ namespace Foundation {
 			return last != Count;
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <param name="value">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public bool TryGetValue (NSObject key, out NSObject value)
+		/// <summary>Gets the value associated with the specified key.</summary>
+		/// <param name="key">The key whose value to get.</param>
+		/// <param name="value">When this method returns, the value associated with the specified key, if the key is found; otherwise, <see langword="null"/>.</param>
+		/// <returns><see langword="true"/> if the dictionary contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter 'value' of 'bool NSMutableDictionary.TryGetValue(NSObject key, out NSObject? value)' doesn't match implicitly implemented member 'bool IDictionary<NSObject, NSObject>.TryGetValue(NSObject key, out NSObject value)' (possibly because of nullability attributes).
+		public bool TryGetValue (NSObject key, [NotNullWhen (true)] out NSObject? value)
+#pragma warning restore CS8767
 		{
 			// Can't put null in NSDictionaries, so if null is returned, the key wasn't found.
 			return (value = ObjectForKey (key)) is not null;
 		}
 
-		public override NSObject this [NSObject key] {
+		/// <summary>Gets or sets the object associated with the specified key.</summary>
+		/// <param name="key">The key of the object to get or set.</param>
+		/// <value>The object associated with the specified key.</value>
+		/// <remarks>Returns <see langword="null" /> if the key wasn't found.</remarks>
+		[DisallowNull] // don't allow setting null values
+		public override NSObject? this [NSObject key] {
+#pragma warning disable CS8766 // Nullability of reference types in return type of 'NSObject? NSMutableDictionary.this[NSObject key].get' doesn't match implicitly implemented member 'NSObject IDictionary<NSObject, NSObject>.this[NSObject key].get'
+			get {
+#pragma warning restore CS8766
+				return ObjectForKey (key);
+			}
+			set {
+				SetObject (value, key);
+			}
+		}
+
+		/// <summary>Gets or sets the object associated with the specified key.</summary>
+		/// <param name="key">The key of the object to get or set.</param>
+		/// <value>The object associated with the specified key.</value>
+		/// <remarks>Returns <see langword="null" /> if the key wasn't found.</remarks>
+		[DisallowNull] // don't allow setting null values
+		public override NSObject? this [NSString key] {
 			get {
 				return ObjectForKey (key);
 			}
@@ -326,19 +342,16 @@ namespace Foundation {
 			}
 		}
 
-		public override NSObject this [NSString key] {
-			get {
-				return ObjectForKey (key);
-			}
-			set {
-				SetObject (value, key);
-			}
-		}
-
-		public override NSObject this [string key] {
+		/// <summary>Gets or sets the object associated with the specified key.</summary>
+		/// <param name="key">The key of the object to get or set.</param>
+		/// <value>The object associated with the specified key.</value>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="key"/> is <see langword="null"/>.</exception>
+		/// <remarks>Returns <see langword="null" /> if the key wasn't found.</remarks>
+		[DisallowNull] // don't allow setting null values
+		public override NSObject? this [string key] {
 			get {
 				if (key is null)
-					throw new ArgumentNullException ("key");
+					throw new ArgumentNullException (nameof (key));
 				var nss = NSString.CreateNative (key, false);
 				try {
 					return Runtime.GetNSObject (LowlevelObjectForKey (nss));
@@ -348,7 +361,7 @@ namespace Foundation {
 			}
 			set {
 				if (key is null)
-					throw new ArgumentNullException ("key");
+					throw new ArgumentNullException (nameof (key));
 				var nss = NSString.CreateNative (key, false);
 				try {
 					LowlevelSetObject (value, nss);
@@ -358,19 +371,22 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>Gets an <see cref="ICollection{T}"/> containing the keys of the dictionary.</summary>
+		/// <value>An <see cref="ICollection{T}"/> containing the keys of the dictionary.</value>
 		ICollection<NSObject> IDictionary<NSObject, NSObject>.Keys {
 			get { return Keys; }
 		}
 
+		/// <summary>Gets an <see cref="ICollection{T}"/> containing the values in the dictionary.</summary>
+		/// <value>An <see cref="ICollection{T}"/> containing the values in the dictionary.</value>
 		ICollection<NSObject> IDictionary<NSObject, NSObject>.Values {
 			get { return Values; }
 		}
 		#endregion
 
 		#region IEnumerable
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns an enumerator that iterates through the dictionary.</summary>
+		/// <returns>An <see cref="IEnumerator"/> for the dictionary.</returns>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return ((IEnumerable<KeyValuePair<NSObject, NSObject>>) this).GetEnumerator ();
@@ -383,29 +399,27 @@ namespace Foundation {
 		public IEnumerator<KeyValuePair<NSObject, NSObject>> GetEnumerator ()
 		{
 			foreach (var key in Keys) {
-				yield return new KeyValuePair<NSObject, NSObject> (key, ObjectForKey (key));
+				yield return new KeyValuePair<NSObject, NSObject> (key, this [key]!);
 			}
 		}
 		#endregion
 
-		/// <param name="obj">To be added.</param>
-		///         <param name="key">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a mutable dictionary from a low-level object and key pointer.</summary>
+		/// <param name="obj">The object pointer.</param>
+		/// <param name="key">The key pointer.</param>
+		/// <returns>A new mutable dictionary containing the specified object and key.</returns>
 		public static NSMutableDictionary LowlevelFromObjectAndKey (IntPtr obj, IntPtr key)
 		{
 #if MONOMAC
-			return (NSMutableDictionary) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (class_ptr, selDictionaryWithObject_ForKey_XHandle, obj, key));
+			return (NSMutableDictionary) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (class_ptr, selDictionaryWithObject_ForKey_XHandle, obj, key))!;
 #else
-			return (NSMutableDictionary) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (class_ptr, Selector.GetHandle ("dictionaryWithObject:forKey:"), obj, key));
+			return (NSMutableDictionary) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (class_ptr, Selector.GetHandle ("dictionaryWithObject:forKey:"), obj, key))!;
 #endif
 		}
 
-		/// <param name="obj">To be added.</param>
-		///         <param name="key">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets an object for a key using low-level pointers.</summary>
+		/// <param name="obj">The object pointer.</param>
+		/// <param name="key">The key pointer.</param>
 		public void LowlevelSetObject (IntPtr obj, IntPtr key)
 		{
 #if MONOMAC
@@ -415,10 +429,10 @@ namespace Foundation {
 #endif
 		}
 
-		/// <param name="obj">To be added.</param>
-		///         <param name="key">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets an object for a key using a low-level key pointer.</summary>
+		/// <param name="obj">The object to set.</param>
+		/// <param name="key">The key pointer.</param>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="obj"/> is <see langword="null"/>.</exception>
 		public void LowlevelSetObject (NSObject obj, IntPtr key)
 		{
 			if (obj is null)
@@ -428,6 +442,10 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
+		/// <summary>Sets a string value for a key using a low-level key pointer.</summary>
+		/// <param name="str">The string to set.</param>
+		/// <param name="key">The key pointer.</param>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="str"/> is <see langword="null"/>.</exception>
 		public void LowlevelSetObject (string str, IntPtr key)
 		{
 			if (str is null)

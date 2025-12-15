@@ -11876,10 +11876,7 @@ M:Foundation.NSKeyValueSharedObserverRegistration_NSObject.SetSharedObservers(Fo
 M:Foundation.NSKeyValueSharedObservers.#ctor(System.Type)
 M:Foundation.NSMachPort.Dispose(System.Boolean)
 M:Foundation.NSMetadataQuery.Dispose(System.Boolean)
-M:Foundation.NSMutableDictionary.LowlevelSetObject(System.String,System.IntPtr)
 M:Foundation.NSMutableDictionary`2.FromObjectsAndKeys(`1[],`0[])
-M:Foundation.NSMutableSet`1.op_Addition(Foundation.NSMutableSet{`0},Foundation.NSMutableSet{`0})
-M:Foundation.NSMutableSet`1.op_Subtraction(Foundation.NSMutableSet{`0},Foundation.NSMutableSet{`0})
 M:Foundation.NSNetService.add_AddressResolved(System.EventHandler)
 M:Foundation.NSNetService.add_DidAcceptConnection(System.EventHandler{Foundation.NSNetServiceConnectionEventArgs})
 M:Foundation.NSNetService.add_Published(System.EventHandler)
@@ -21078,9 +21075,6 @@ P:Foundation.NSMetadataItem.UbiquitousItemDownloadingStatus
 P:Foundation.NSMorphology.Unspecified
 P:Foundation.NSMutableArray`1.Item(System.UIntPtr)
 P:Foundation.NSMutableData.Item(System.IntPtr)
-P:Foundation.NSMutableDictionary.Item(Foundation.NSObject)
-P:Foundation.NSMutableDictionary.Item(Foundation.NSString)
-P:Foundation.NSMutableDictionary.Item(System.String)
 P:Foundation.NSMutableDictionary`2.Item(`0)
 P:Foundation.NSNetDomainEventArgs.Domain
 P:Foundation.NSNetDomainEventArgs.MoreComing

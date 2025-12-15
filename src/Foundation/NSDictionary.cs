@@ -23,6 +23,7 @@
 //
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable
@@ -472,13 +473,13 @@ namespace Foundation {
 			return value is not null;
 		}
 
-		/// <param name="key">Key to lookup</param>
-		/// <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
-		/// <value>
-		///         </value>
-		/// <remarks>
-		///         </remarks>
-		public virtual NSObject this [NSObject key] {
+#nullable enable
+		/// <summary>Gets the object associated with the specified key.</summary>
+		/// <param name="key">The key of the object to get.</param>
+		/// <value>The object associated with the specified key.</value>
+		/// <remarks>Returns <see langword="null" /> if the key wasn't found.</remarks>
+		[DisallowNull] // don't allow setting null values
+		public virtual NSObject? this [NSObject key] {
 			get {
 				return ObjectForKey (key);
 			}
@@ -487,13 +488,12 @@ namespace Foundation {
 			}
 		}
 
-		/// <param name="key">Key to lookup</param>
-		/// <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
-		/// <value>
-		///         </value>
-		/// <remarks>
-		///         </remarks>
-		public virtual NSObject this [NSString key] {
+		/// <summary>Gets the object associated with the specified key.</summary>
+		/// <param name="key">The key of the object to get.</param>
+		/// <value>The object associated with the specified key.</value>
+		/// <remarks>Returns <see langword="null" /> if the key wasn't found.</remarks>
+		[DisallowNull] // don't allow setting null values
+		public virtual NSObject? this [NSString key] {
 			get {
 				return ObjectForKey (key);
 			}
@@ -502,12 +502,13 @@ namespace Foundation {
 			}
 		}
 
-		/// <param name="key">Key to lookup</param>
-		/// <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
-		/// <value>
-		///         </value>
-		/// <remarks>The string will be marshalled as an NSString before performing the lookup.</remarks>
-		public virtual NSObject this [string key] {
+		/// <summary>Gets the object associated with the specified key.</summary>
+		/// <param name="key">The key of the object to get.</param>
+		/// <value>The object associated with the specified key.</value>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="key"/> is <see langword="null"/>.</exception>
+		/// <remarks>Returns <see langword="null" /> if the key wasn't found.</remarks>
+		[DisallowNull] // don't allow setting null values
+		public virtual NSObject? this [string key] {
 			get {
 				if (key is null)
 					throw new ArgumentNullException ("key");
@@ -522,6 +523,7 @@ namespace Foundation {
 				throw new NotSupportedException ();
 			}
 		}
+#nullable disable
 
 		ICollection<NSObject> IDictionary<NSObject, NSObject>.Keys {
 			get { return Keys; }

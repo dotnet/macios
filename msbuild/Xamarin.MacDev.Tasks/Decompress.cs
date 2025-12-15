@@ -97,7 +97,7 @@ namespace Xamarin.MacDev {
 		/// <param name="zip">The zip to search in</param>
 		/// <param name="resource">The relative path inside the zip to extract (may be a file or a directory).</param>
 		/// <param name="decompressionDir">The location on disk to store the extracted results</param>
-		/// <param name="cancellationToken">The cancellation token (if any=</param>
+		/// <param name="cancellationToken">The cancellation token (if any)</param>
 		/// <param name="decompressedResource">The location on disk to the extracted resource</param>
 		/// <returns>True if successfully decompressed, false otherwise.</returns>
 		public static bool TryDecompress (XamarinTask task, string zip, string resource, string decompressionDir, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? decompressedResource)

@@ -507,7 +507,7 @@ namespace Foundation {
 		/// <value>The object associated with the specified key.</value>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="key"/> is <see langword="null"/>.</exception>
 		/// <remarks>Returns <see langword="null" /> if the key wasn't found.</remarks>
-		[DisallowNull] // don't allow setting null valuese performing the lookup.</remarks>
+		[DisallowNull] // don't allow setting null values
 		public virtual NSObject? this [string key] {
 			get {
 				if (key is null)

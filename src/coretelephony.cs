@@ -145,7 +145,6 @@ namespace CoreTelephony {
 	interface ICTTelephonyNetworkInfoDelegate { }
 
 	[MacCatalyst (14, 0)]
-	[iOS (13, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface CTTelephonyNetworkInfoDelegate {
@@ -223,18 +222,15 @@ namespace CoreTelephony {
 		[Field ("CTServiceRadioAccessTechnologyDidChangeNotification")]
 		NSString ServiceRadioAccessTechnologyDidChangeNotification { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("dataServiceIdentifier")]
 		string DataServiceIdentifier { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (14, 0)]
 		[Wrap ("WeakDelegate")]
 		[NullAllowed]
 		ICTTelephonyNetworkInfoDelegate Delegate { get; set; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (14, 0)]
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }

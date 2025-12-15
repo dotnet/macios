@@ -252,8 +252,8 @@ namespace UIKit {
 		}
 
 		/// <summary>Raised when the text selection changed.</summary>
-		[SupportedOSPlatform ("tvos13.0")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public event EventHandler DidChangeSelection {
 			add { EnsureUITextFieldDelegate ().didChangeSelection += value; }

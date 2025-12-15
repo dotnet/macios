@@ -53,10 +53,8 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'Medium' instead.")]
 		Gray,
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		Medium = 100,
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		Large = 101,
 	}
@@ -158,7 +156,7 @@ namespace UIKit {
 		[Deprecated (PlatformName.TvOS, 11, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 13, 1)]
 		PageCurl,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		Close,
 		[iOS (18, 2), NoTV, MacCatalyst (18, 2)]
@@ -509,7 +507,7 @@ namespace UIKit {
 		[NoiOS]
 		[NoMacCatalyst]
 		Plain,
-		[NoTV, iOS (13, 0)]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		Close,
 		/// <summary>Added in iOS 7, this is the preferred default style. It lacks visible edges, background, etc.</summary>
@@ -922,7 +920,7 @@ namespace UIKit {
 		Plain,
 		/// <summary>Table style where each section is grouped into a rounded-rectangle. The table view's background can be see behind the rounded-rectangle groupings. Section headers and footers do not 'float' while scrolling.</summary>
 		Grouped,
-		[NoTV, iOS (13, 0)]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		InsetGrouped,
 	}
@@ -1385,7 +1383,6 @@ namespace UIKit {
 		[Deprecated (PlatformName.MacCatalyst, 13, 1, message: "Use 'LightContent' instead.")]
 		BlackOpaque = 2,
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		DarkContent = 3,
 	}
@@ -1515,7 +1512,6 @@ namespace UIKit {
 	public enum UIModalPresentationStyle : long {
 		/// <summary>A non-modal presentation or dismissal.</summary>
 		None = -1,
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		Automatic = -2,
 		/// <summary>A UIModalPresentationStyle that encompasses the whole screen.</summary>
@@ -2035,13 +2031,10 @@ namespace UIKit {
 		DefaultLow = 250,
 		/// <summary>Generally not used; the priority at which a view wants to conform to the value of UIView.SystemLayoutSizeFitting.</summary>
 		FittingSizeLevel = 50,
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		DragThatCanResizeScene = 510,
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		SceneSizeStayPut = 500,
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		DragThatCannotResizeScene = 490,
 	}
@@ -2647,49 +2640,49 @@ namespace UIKit {
 		/// <summary>The blur effect adapts to the style of UI so that it is noticeable.</summary>
 		[MacCatalyst (13, 1)]
 		Prominent = 5,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemUltraThinMaterial,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemThinMaterial,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemMaterial,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemThickMaterial,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemChromeMaterial,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemUltraThinMaterialLight,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemThinMaterialLight,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemMaterialLight,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemThickMaterialLight,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemChromeMaterialLight,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemUltraThinMaterialDark,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemThinMaterialDark,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemMaterialDark,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemThickMaterialDark,
-		[iOS (13, 0), NoTV]
+		[NoTV]
 		[MacCatalyst (13, 1)]
 		SystemChromeMaterialDark,
 	}
@@ -3307,7 +3300,6 @@ namespace UIKit {
 		List,
 		/// <summary>To be added.</summary>
 		Landmark,
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		SemanticGroup,
 	}
@@ -3726,7 +3718,6 @@ namespace UIKit {
 		JobFailedError,
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[ErrorDomain ("UISceneErrorDomain")]
 	[Native]
@@ -3737,7 +3728,6 @@ namespace UIKit {
 		GeometryRequestDenied,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIImageSymbolScale : long {
@@ -3748,7 +3738,6 @@ namespace UIKit {
 		Large,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIImageSymbolWeight : long {
@@ -3764,7 +3753,6 @@ namespace UIKit {
 		Black,
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UISceneActivationState : long {
@@ -3774,7 +3762,6 @@ namespace UIKit {
 		Background,
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIMenuElementState : long {
@@ -3783,7 +3770,6 @@ namespace UIKit {
 		Mixed,
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIMenuElementAttributes : ulong {
@@ -3795,7 +3781,6 @@ namespace UIKit {
 	}
 
 	[Flags]
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIMenuOptions : ulong {
@@ -3807,7 +3792,7 @@ namespace UIKit {
 		DisplayAsPalette = 1uL << 7,
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIContextMenuInteractionCommitStyle : long {
@@ -3815,7 +3800,6 @@ namespace UIKit {
 		Pop,
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum UIWindowSceneSessionRole {
 		[Field ("UIWindowSceneSessionRoleApplication")]
@@ -3840,7 +3824,6 @@ namespace UIKit {
 		AssistiveAccessApplication,
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum UIMenuIdentifier {
 		[DefaultEnumValue]
@@ -3964,7 +3947,6 @@ namespace UIKit {
 		NewItem,
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum UIAccessibilityTextualContext {
 		[Field ("UIAccessibilityTextualContextWordProcessing")]
@@ -3983,7 +3965,6 @@ namespace UIKit {
 		Console,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UICollectionLayoutSectionOrthogonalScrollingBehavior : long {
@@ -3995,7 +3976,6 @@ namespace UIKit {
 		GroupPagingCentered,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIAccessibilityContrast : long {
@@ -4004,7 +3984,6 @@ namespace UIKit {
 		High,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UILegibilityWeight : long {
@@ -4013,7 +3992,7 @@ namespace UIKit {
 		Bold,
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIUserInterfaceLevel : long {
@@ -4022,7 +4001,6 @@ namespace UIKit {
 		Elevated,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIEditingInteractionConfiguration : long {
@@ -4030,7 +4008,7 @@ namespace UIKit {
 		Default = 1,
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UISplitViewControllerBackgroundStyle : long {
@@ -4038,7 +4016,6 @@ namespace UIKit {
 		Sidebar,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITabBarItemAppearanceStyle : long {
@@ -4047,7 +4024,6 @@ namespace UIKit {
 		CompactInline,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextAlternativeStyle : long {
@@ -4055,7 +4031,6 @@ namespace UIKit {
 		LowConfidence,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UITextInteractionMode : long {
@@ -4063,7 +4038,7 @@ namespace UIKit {
 		NonEditable,
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIVibrancyEffectStyle : long {
@@ -4077,7 +4052,6 @@ namespace UIKit {
 		Separator,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum UIWindowSceneDismissalAnimation : long {
@@ -4086,7 +4060,7 @@ namespace UIKit {
 		Decline = 3,
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	public enum UIActivityItemsConfigurationInteraction {
 		[Field ("UIActivityItemsConfigurationInteractionShare")]
@@ -4096,7 +4070,7 @@ namespace UIKit {
 		Copy,
 	}
 
-	[NoTV, iOS (13, 0)]
+	[NoTV]
 	[MacCatalyst (13, 1)]
 	public enum UIActivityItemsConfigurationPreviewIntent {
 		[Field ("UIActivityItemsConfigurationPreviewIntentFullSize")]

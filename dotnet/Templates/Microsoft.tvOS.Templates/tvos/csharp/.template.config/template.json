@@ -35,7 +35,7 @@
       "description": "Overrides SupportedOSPlatformVersion in the project file",
       "replaces": "minOSVersion",
       "datatype": "string",
-      "defaultValue": "12.2"
+      "defaultValue": "13.0"
     }
   },
   "defaultName": "tvOSApp1"

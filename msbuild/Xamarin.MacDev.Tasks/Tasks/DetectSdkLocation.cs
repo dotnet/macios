@@ -33,17 +33,7 @@ namespace Xamarin.MacDev.Tasks {
 		} = "";
 
 		[Output]
-		public string SdkBinPath {
-			get; set;
-		} = "";
-
-		[Output]
 		public string SdkDevPath {
-			get; set;
-		} = "";
-
-		[Output]
-		public string SdkUsrPath {
 			get; set;
 		} = "";
 
@@ -130,14 +120,6 @@ namespace Xamarin.MacDev.Tasks {
 			SdkRoot = currentSdk.GetSdkPath (SdkVersion, SdkIsSimulator);
 			if (string.IsNullOrEmpty (SdkRoot))
 				Log.LogError (MSBStrings.E0084 /* Could not locate the {0} '{1}' SDK at path '{2}' */, PlatformName, SdkVersion, SdkRoot);
-
-			SdkUsrPath = DirExists ("SDK usr directory", Path.Combine (currentSdk.DeveloperRoot, "usr")) ?? "";
-			if (string.IsNullOrEmpty (SdkUsrPath))
-				Log.LogError (MSBStrings.E0085 /* Could not locate the {0} '{1}' SDK usr path at '{2}' */, PlatformName, SdkVersion, SdkRoot);
-
-			SdkBinPath = DirExists ("SDK bin directory", Path.Combine (SdkUsrPath, "bin")) ?? "";
-			if (string.IsNullOrEmpty (SdkBinPath))
-				Log.LogError (MSBStrings.E0032 /* Could not locate SDK bin directory */);
 		}
 
 		void EnsureXamarinSdkRoot ()

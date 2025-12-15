@@ -22,8 +22,6 @@ namespace Xamarin.MacDev.Tasks {
 			var sdk = Sdks.GetSdk (framework);
 			var version = AppleSdkVersion.GetDefault (sdk, false);
 			var root = sdk.GetSdkPath (version, false);
-			var usr = Path.Combine (sdk.DeveloperRoot, "usr");
-			var bin = Path.Combine (usr, "bin");
 			string platform;
 
 			switch (framework) {
@@ -50,8 +48,6 @@ namespace Xamarin.MacDev.Tasks {
 			task.SdkDevPath = Configuration.xcode_root;
 			task.SdkPlatform = platform;
 			task.SdkVersion = version.ToString ();
-			task.SdkUsrPath = usr;
-			task.SdkBinPath = bin;
 			task.SdkRoot = root;
 			task.TargetFrameworkMoniker = TargetFramework.DotNet_iOS_String;
 			return task;

@@ -12,7 +12,7 @@
 
 namespace SafetyKit {
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum SAAuthorizationStatus : long {
 		NotDetermined = 0,
@@ -20,14 +20,14 @@ namespace SafetyKit {
 		Authorized,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum SACrashDetectionEventResponse : long {
 		Attempted,
 		Disabled,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[Native]
 	public enum SAEmergencyResponseManagerVoiceCallStatus : long {
 		Dialing,
@@ -36,7 +36,7 @@ namespace SafetyKit {
 		Failed,
 	}
 
-	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[iOS (16, 0), MacCatalyst (16, 0), NoTV]
 	[ErrorDomain ("SAErrorDomain")]
 	[Native]
 	public enum SAErrorCode : long {

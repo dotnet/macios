@@ -147,7 +147,7 @@ namespace UIKit {
 		ContainerBreak = (1 << 5),
 	}
 
-	[TV (13, 0), iOS (13, 0), MacCatalyst (13, 0)]
+	[MacCatalyst (13, 0)]
 	[Flags]
 	[Native]
 	public enum NSDirectionalRectEdge : ulong {
@@ -342,7 +342,6 @@ namespace UIKit {
 		Standard = 0xffff,
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSRectAlignment : long {
@@ -357,7 +356,6 @@ namespace UIKit {
 		TopTrailing,
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum NSTextScalingType : long {
@@ -1485,7 +1483,6 @@ namespace UIKit {
 		[Export ("showCGGlyphs:positions:count:font:matrix:attributes:inContext:")]
 		void ShowGlyphs (IntPtr glyphs, IntPtr positions, nuint glyphCount, NSFont font, CGAffineTransform textMatrix, NSDictionary attributes, CGContext graphicsContext);
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Protected] // Can be overridden
 		[Export ("showCGGlyphs:positions:count:font:textMatrix:attributes:inContext:")]
@@ -1548,7 +1545,6 @@ namespace UIKit {
 		[Export ("limitsLayoutForSuspiciousContents")]
 		bool LimitsLayoutForSuspiciousContents { get; set; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("usesDefaultHyphenation")]
 		bool UsesDefaultHyphenation { get; set; }
@@ -1716,7 +1712,6 @@ namespace UIKit {
 		bool ShouldSetLineFragmentRect (NSLayoutManager layoutManager, ref CGRect lineFragmentRect, ref CGRect lineFragmentUsedRect, ref nfloat baselineOffset, NSTextContainer textContainer, NSRange glyphRange);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType> : NSCopying
@@ -2226,11 +2221,9 @@ namespace UIKit {
 		NSLineBreakStrategy LineBreakStrategy { get; set; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	delegate NSCollectionLayoutGroupCustomItem [] NSCollectionLayoutGroupCustomItemProvider (INSCollectionLayoutEnvironment layoutEnvironment);
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSCollectionLayoutItem))]
 	[DisableDefaultCtor]
@@ -2268,22 +2261,20 @@ namespace UIKit {
 		[Export ("visualDescription")]
 		string VisualDescription { get; }
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Static]
 		[Export ("horizontalGroupWithLayoutSize:repeatingSubitem:count:")]
 		NSCollectionLayoutGroup GetHorizontalGroup (NSCollectionLayoutSize layoutSize, NSCollectionLayoutItem repeatingSubitem, nint count);
 
-		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0), Mac (13, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Static]
 		[Export ("verticalGroupWithLayoutSize:repeatingSubitem:count:")]
 		NSCollectionLayoutGroup GetVerticalGroup (NSCollectionLayoutSize layoutSize, NSCollectionLayoutItem repeatingSubitem, nint count);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	delegate void NSCollectionLayoutSectionVisibleItemsInvalidationHandler (INSCollectionLayoutVisibleItem [] visibleItems, CGPoint contentOffset, INSCollectionLayoutEnvironment layoutEnvironment);
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2347,7 +2338,6 @@ namespace UIKit {
 		UICollectionLayoutSectionOrthogonalScrollingProperties OrthogonalScrollingProperties { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2369,7 +2359,6 @@ namespace UIKit {
 
 	interface INSCollectionLayoutContainer { }
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSCollectionLayoutContainer {
@@ -2392,7 +2381,6 @@ namespace UIKit {
 
 	interface INSCollectionLayoutEnvironment { }
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSCollectionLayoutEnvironment {
@@ -2410,7 +2398,6 @@ namespace UIKit {
 
 	interface INSCollectionLayoutVisibleItem { }
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Protocol]
 	interface NSCollectionLayoutVisibleItem
@@ -2986,7 +2973,6 @@ namespace UIKit {
 		NSTextAttachmentCell AttachmentCell { get; set; }
 
 		[NoMac]
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("textAttachmentWithImage:")]
@@ -3215,7 +3201,6 @@ namespace UIKit {
 		void DidProcessEditing (NSTextStorage textStorage, NSTextStorageEditActions editedMask, NSRange editedRange, nint delta);
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3245,7 +3230,6 @@ namespace UIKit {
 		bool IsFractionalOffset { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3292,7 +3276,6 @@ namespace UIKit {
 	}
 
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3308,7 +3291,6 @@ namespace UIKit {
 		NSCollectionLayoutDimension HeightDimension { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3331,7 +3313,6 @@ namespace UIKit {
 		bool IsFixedSpacing { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3353,7 +3334,6 @@ namespace UIKit {
 		NSCollectionLayoutSpacing Bottom { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSCollectionLayoutItem))]
 	[DisableDefaultCtor]
@@ -3379,7 +3359,6 @@ namespace UIKit {
 		NSCollectionLayoutAnchor ItemAnchor { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3405,7 +3384,6 @@ namespace UIKit {
 		NSCollectionLayoutSupplementaryItem [] SupplementaryItems { get; }
 	}
 
-	[TV (13, 0), iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSCollectionLayoutSupplementaryItem))]
 	[DisableDefaultCtor]
@@ -3432,7 +3410,6 @@ namespace UIKit {
 	}
 
 	[MacCatalyst (13, 1)]
-	[TV (13, 0), iOS (13, 0)]
 	[BaseType (typeof (NSCollectionLayoutItem))]
 	[DisableDefaultCtor]
 	interface NSCollectionLayoutDecorationItem : NSCopying {
@@ -4058,15 +4035,15 @@ namespace UIKit {
 		[NullAllowed, Export ("elementRange", ArgumentSemantic.Strong)]
 		NSTextRange ElementRange { get; set; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("childElements", ArgumentSemantic.Copy)]
 		NSTextElement [] ChildElements { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[NullAllowed, Export ("parentElement", ArgumentSemantic.Weak)]
 		NSTextElement ParentElement { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("isRepresentedElement")]
 		bool IsRepresentedElement { get; }
 	}
@@ -4223,12 +4200,12 @@ namespace UIKit {
 		[Export ("frameForTextAttachmentAtLocation:")]
 		CGRect GetFrameForTextAttachment (INSTextLocation location);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("textLineFragmentForVerticalOffset:requiresExactMatch:")]
 		[return: NullAllowed]
 		NSTextLineFragment GetTextLineFragment (nfloat verticalOffset, bool requiresExactMatch);
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("textLineFragmentForTextLocation:isUpstreamAffinity:")]
 		[return: NullAllowed]
 		NSTextLineFragment GetTextLineFragment (INSTextLocation textLocation, bool isUpstreamAffinity);
@@ -4733,7 +4710,7 @@ namespace UIKit {
 		[Export ("markerFormat")]
 		string CustomMarkerFormat { get; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("initWithMarkerFormat:options:startingItemNumber:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string markerFormat, NSTextListOptions options, nint startingItemNumber);
@@ -4748,7 +4725,7 @@ namespace UIKit {
 		[Export ("startingItemNumber")]
 		nint StartingItemNumber { get; set; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("ordered")]
 		bool Ordered { [Bind ("isOrdered")] get; }
 
@@ -4758,7 +4735,7 @@ namespace UIKit {
 		bool IncludesTextListMarkers { get; }
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSTextParagraph))]
 	interface NSTextListElement {
 		[Export ("initWithAttributedString:")]
@@ -4976,22 +4953,19 @@ namespace UIKit {
 		NSString PrefixSpacesDocumentAttribute { get; }
 
 		[Field ("NSTextScalingDocumentAttribute")]
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		NSString TextScalingDocumentAttribute { get; }
 
 		[Field ("NSSourceTextScalingDocumentAttribute")]
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		NSString SourceTextScalingDocumentAttribute { get; }
 
 		[Field ("NSCocoaVersionDocumentAttribute")]
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		NSString CocoaVersionDocumentAttribute { get; }
 
 		[Field ("NSDefaultFontExcludedDocumentAttribute")]
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		NSString DefaultFontExcludedDocumentAttribute { get; }
 	}
 
@@ -5027,12 +5001,8 @@ namespace UIKit {
 		[NoiOS, NoTV, NoMacCatalyst]
 		float Timeout { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		NSTextScalingType TargetTextScaling { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		NSTextScalingType SourceTextScaling { get; set; }
 
 		[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
@@ -5078,18 +5048,16 @@ namespace UIKit {
 		[Field ("NSTimeoutDocumentOption")]
 		NSString TimeoutDocumentOption { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("NSTargetTextScalingDocumentOption")]
 		NSString TargetTextScalingDocumentOption { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("NSSourceTextScalingDocumentOption")]
 		NSString SourceTextScalingDocumentOption { get; }
 
 		// comes from webkit
-		[iOS (13, 0), MacCatalyst (13, 1), NoTV]
+		[MacCatalyst (13, 1), NoTV]
 		[Field ("NSReadAccessURLDocumentOption", "WebKit")]
 		NSString ReadAccessUrlDocumentOption { get; }
 

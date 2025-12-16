@@ -137,7 +137,7 @@ namespace CoreLocation {
 		/// <param name="major">Can be used by the app developer for any purpose.</param>
 		/// <param name="minor">Can be used by the app developer for any purpose.</param>
 		/// <param name="identifier">The name of the region to be created.</param>
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]

@@ -75,9 +75,9 @@ namespace UIKit {
 		/// <param name="textMatrix">To be added.</param>
 		/// <param name="attributes">To be added.</param>
 		/// <param name="graphicsContext">To be added.</param>
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe void ShowGlyphs (
 			short [] /* const CGGlyph* = CGFontIndex* = unsigned short* */ glyphs,

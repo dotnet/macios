@@ -2550,11 +2550,11 @@
 			<_OpenArgumentsPre Condition="'$(OpenWaitForExit)' == 'true'">$(_OpenArgumentsPre) -W </_OpenArgumentsPre>
 			<_OpenArguments>$(_OpenArguments) $(RunEnvironment)</_OpenArguments>
 			<RunCommand>open</RunCommand>
-			<RunArguments>$(_OpenArgumentsPre) -a "$(TargetDir)/$(AssemblyName).app" $(OpenArguments) $(_OpenArguments) --args</RunArguments>
+			<RunArguments>$(_OpenArgumentsPre) -a "$(TargetDir)/$(_AppBundleName).app" $(OpenArguments) $(_OpenArguments) --args</RunArguments>
 		</PropertyGroup>
 
 		<PropertyGroup Condition="'$(RunWithOpen)' == 'false'">
-			<RunCommand>$(TargetDir)/$(AssemblyName).app/Contents/MacOS/$(AssemblyName)</RunCommand>
+			<RunCommand>$(TargetDir)/$(_AppBundleName).app/Contents/MacOS/$(_NativeExecutableName)</RunCommand>
 			<RunArguments />
 		</PropertyGroup>
 	</Target>

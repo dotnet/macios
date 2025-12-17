@@ -237,13 +237,11 @@ namespace Foundation {
 		/// Gets or sets the value associated with the specified key.
 		/// </summary>
 		/// <param name="index">The key of the value to get or set.</param>
-		/// <returns>The value associated with the specified key.</returns>
-		public TValue this [TKey index] {
+		/// <returns>The value associated with the specified key, or <see langword="null" /> if the key wasn't found.</returns>
+		[DisallowNull] // don't allow setting null values
+		public TValue? this [TKey index] {
 			get {
-				var result = ObjectForKey (index);
-				if (result is null)
-					throw new KeyNotFoundException ();
-				return result;
+				return ObjectForKey (index);
 			}
 			set {
 				Add (index, value);
@@ -368,15 +366,16 @@ namespace Foundation {
 			return Remove (key);
 		}
 
-		bool IDictionary<TKey, TValue>.TryGetValue (TKey key, [MaybeNullWhen (false)] out TValue value)
+		bool IDictionary<TKey, TValue>.TryGetValue (TKey key, [NotNullWhen (true)]  out TValue? value)
 		{
-			var result = TryGetValue (key, out var nullableValue);
-			value = nullableValue!;
-			return result;
+			return TryGetValue (key, out value);
 		}
 
-		TValue IDictionary<TKey, TValue>.this [TKey index] {
+		[DisallowNull] // don't allow setting null values
+		TValue? IDictionary<TKey, TValue>.this [TKey index] {
+#pragma warning disable CS8768 // Nullability of reference types in return type doesn't match implemented member 'TValue IDictionary<TKey, TValue>.this[TKey key].get'
 			get {
+#pragma warning restore CS8768
 				return this [index];
 			}
 			set {

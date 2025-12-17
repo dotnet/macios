@@ -358,7 +358,7 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
-		public void IndexerGetterThrowsKeyNotFoundTest ()
+		public void IndexerGetterKeyNotFoundBehaviorTest ()
 		{
 			var value1 = NSDate.FromTimeIntervalSinceNow (1);
 			var key1 = new NSString ("key1");
@@ -366,10 +366,10 @@ namespace MonoTouchFixtures.Foundation {
 
 			var dict = new NSMutableDictionary<NSString, NSDate> (key1, value1);
 
-			// Accessing via the indexer property should throw KeyNotFoundException for missing keys
-			Assert.Throws<KeyNotFoundException> (() => GC.KeepAlive (dict [keyMissing]), "missing key");
+			// Accessing via the indexer property should return null
+			Assert.IsNull (dict [keyMissing], "missing key");
 
-			// But accessing via IDictionary interface should return null
+			// Accessing via IDictionary interface should return null too
 			IDictionary<NSString, NSDate> idict = dict;
 			Assert.IsNull (idict [keyMissing], "missing key via interface");
 		}
@@ -399,10 +399,10 @@ namespace MonoTouchFixtures.Foundation {
 			// ContainsKey should return false for missing keys
 			Assert.IsFalse (dict.ContainsKey (keyMissing), "ContainsKey missing");
 
-			// Indexer getter should throw KeyNotFoundException
-			Assert.Throws<KeyNotFoundException> (() => GC.KeepAlive (dict [keyMissing]), "Indexer missing");
+			// Indexer getter should return null
+			Assert.IsNull (dict [keyMissing], "Indexer missing");
 
-			// But IDictionary indexer should return null
+			// IDictionary indexer should also return null
 			IDictionary<NSString, NSDate> idict = dict;
 			Assert.IsNull (idict [keyMissing], "IDictionary indexer missing");
 		}
@@ -421,7 +421,7 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.IsFalse (dict.TryGetValue (keyMissing, out value), "TryGetValue");
 			Assert.IsNull (value, "TryGetValue out");
 
-			Assert.Throws<KeyNotFoundException> (() => GC.KeepAlive (dict [keyMissing]), "Indexer");
+			Assert.IsNull (dict [keyMissing], "Indexer");
 
 			IDictionary<NSString, NSDate> idict = dict;
 			Assert.IsNull (idict [keyMissing], "IDictionary indexer");

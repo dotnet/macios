@@ -64,7 +64,6 @@ This happens after the stable version of Xcode has been released and the `xcodeX
 * [ ] Write release notes.
 * [ ] Publish NuGets to nuget.org.
 * [ ] Publish release notes.
-* [ ] Update https://github.com/dotnet/maui/wiki/Release-Versions
 * [ ] Update API diff (the `STABLE_NUGET_VERSION_*` variables in `Make.config`). Can only be done after the NuGets have been published to nuget.org.
 * [ ] Update docs by executing `docs/sync-mobile-docs.sh`. Beware if docs were modified in the [docs-mobile](https://github.com/dotnet/docs-mobile) repository by somebody else, any such changes will have to be copied back first.
 * [ ] Update API / reference docs. See [update-api-docs.md](https://github.com/dotnet/macios/blob/main/docs/update-api-docs.md) for instructions.

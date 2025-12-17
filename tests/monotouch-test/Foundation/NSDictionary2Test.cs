@@ -362,7 +362,7 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
-		public void IndexerGetterThrowsKeyNotFoundTest ()
+		public void IndexerGetterKeyNotFoundBehaviorTest ()
 		{
 			var value1 = NSDate.FromTimeIntervalSinceNow (1);
 			var key1 = new NSString ("key1");
@@ -406,7 +406,7 @@ namespace MonoTouchFixtures.Foundation {
 			// Indexer getter should return null for missing keys
 			Assert.IsNull (dict [keyMissing], "Indexer missing");
 
-			// IDictionary indexer should also return null (NSDictionary can have null values)
+			// IDictionary indexer should also return null for missing keys
 			IDictionary<NSString, NSDate> idict = dict;
 			Assert.IsNull (idict [keyMissing], "IDictionary indexer missing");
 		}

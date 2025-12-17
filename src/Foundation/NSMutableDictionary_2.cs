@@ -366,7 +366,7 @@ namespace Foundation {
 			return Remove (key);
 		}
 
-		bool IDictionary<TKey, TValue>.TryGetValue (TKey key, [NotNullWhen (true)]  out TValue? value)
+		bool IDictionary<TKey, TValue>.TryGetValue (TKey key, [NotNullWhen (true)] out TValue? value)
 		{
 			return TryGetValue (key, out value);
 		}

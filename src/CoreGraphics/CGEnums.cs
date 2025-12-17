@@ -168,7 +168,6 @@ namespace CoreGraphics {
 		PlusLighter,
 	}
 
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum CGPdfTagType /* int32_t */ {
 		Document = 100,

@@ -84,7 +84,6 @@ namespace UserNotifications {
 		HiddenPreviewsShowTitle = (1 << 2),
 		/// <summary>Display subtitles for notification previews, even when hidden.</summary>
 		HiddenPreviewsShowSubtitle = (1 << 3),
-		[iOS (13, 0)]
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		AllowAnnouncement = (1 << 4),
@@ -161,8 +160,6 @@ namespace UserNotifications {
 		/// <summary>Indicates authorization to make provisional noncritical notifications.</summary>
 		[MacCatalyst (13, 1)]
 		Provisional = (1 << 6),
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[Deprecated (PlatformName.iOS, 15, 0, message: "Announcement is always included.")]
 		[Deprecated (PlatformName.TvOS, 15, 0, message: "Announcement is always included.")]
 		[Deprecated (PlatformName.MacOSX, 15, 0, message: "Announcement is always included.")]
@@ -646,8 +643,6 @@ namespace UserNotifications {
 		[Export ("summaryArgumentCount")]
 		nuint SummaryArgumentCount { get; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("targetContentIdentifier")]
 		string TargetContentIdentifier { get; [NotImplemented] set; }
@@ -665,7 +660,7 @@ namespace UserNotifications {
 		[Export ("relevanceScore")]
 		double RelevanceScore { get; }
 
-		[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("filterCriteria")]
 		[NullAllowed]
 		string FilterCriteria { get; }
@@ -772,8 +767,6 @@ namespace UserNotifications {
 		[Export ("summaryArgumentCount")]
 		nuint SummaryArgumentCount { get; set; }
 
-		[iOS (13, 0)]
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("targetContentIdentifier")]
 		string TargetContentIdentifier { get; set; }
@@ -786,7 +779,7 @@ namespace UserNotifications {
 		[Export ("relevanceScore")]
 		double RelevanceScore { get; set; }
 
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[NullAllowed, Export ("filterCriteria")]
 		string FilterCriteria { get; set; }
 	}
@@ -886,7 +879,7 @@ namespace UserNotifications {
 		[Wrap ("!IsDefaultAction && !IsDismissAction")]
 		bool IsCustomAction { get; }
 
-		[iOS (13, 0), NoMac]
+		[NoMac]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("targetScene")]
 		UIScene TargetScene { get; }
@@ -1018,7 +1011,7 @@ namespace UserNotifications {
 		[Export ("providesAppNotificationSettings")]
 		bool ProvidesAppNotificationSettings { get; }
 
-		[NoTV, NoMac, iOS (13, 0)]
+		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("announcementSetting")]
 		UNNotificationSetting AnnouncementSetting { get; }
@@ -1401,7 +1394,7 @@ namespace UserNotifications {
 		void RemoveAllDeliveredNotifications ();
 
 		[Async]
-		[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("setBadgeCount:withCompletionHandler:")]
 		void SetBadgeCount (nint newBadgeCount, [NullAllowed] Action<NSError> completionHandler);
 	}

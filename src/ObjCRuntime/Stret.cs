@@ -27,8 +27,6 @@ using System.Reflection;
 using Generator = System.Object;
 #endif
 
-#if !RGEN
-#endif
 
 // Disable until we get around to enable + fix any issues.
 #nullable disable

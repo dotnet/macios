@@ -29,7 +29,7 @@ namespace NetworkExtension {
 		/// <summary>Create a new <see cref="NEHotspotConfiguration" /> with the specified SSID.</summary>
 		/// <param name="ssid">The SSID the new <see cref="NEHotspotConfiguration" /> applies to.</param>
 		/// <param name="ssidIsPrefix">Whether <paramref name="ssid" /> specifies the prefix of an SSID, or a complete SSID.</param>
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -48,7 +48,7 @@ namespace NetworkExtension {
 		/// <param name="passphrase">The passphrase for the network specified by <paramref name="ssid" />.</param>
 		/// <param name="isWep">Whether the network is a WEP network (otherwise a WPA or WPA2 network).</param>
 		/// <param name="ssidIsPrefix">Whether <paramref name="ssid" /> specifies the prefix of an SSID, or a complete SSID.</param>
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]

@@ -134,11 +134,11 @@ namespace Xamarin.Tests {
 			var allKeys = expectedLines.Keys.Union (actualLines.Keys).OrderBy (v => v);
 			foreach (var key in allKeys) {
 				if (!expectedLines.TryGetValue (key, out var expectedLine)) {
-					Console.WriteLine ($"        File '{key}' was removed from app bundle: {actualLines [key]}");
-					Assert.Fail ($"The file '{key}' was removed from the app bundle.");
-				} else if (!actualLines.TryGetValue (key, out var actualLine)) {
-					Console.WriteLine ($"        File '{key}' was added to app bundle: {expectedLine}");
+					Console.WriteLine ($"        File '{key}' was added to app bundle: {actualLines [key]}");
 					Assert.Fail ($"The file '{key}' was added to the app bundle.");
+				} else if (!actualLines.TryGetValue (key, out var actualLine)) {
+					Console.WriteLine ($"        File '{key}' was removed from app bundle: {expectedLine}");
+					Assert.Fail ($"The file '{key}' was removed from the app bundle.");
 				} else if (expectedLine != actualLine) {
 					Console.WriteLine ($"        File '{key}' changed in app bundle:");
 					Console.WriteLine ($"            -{expectedLine}");

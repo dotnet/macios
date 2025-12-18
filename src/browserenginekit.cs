@@ -1363,4 +1363,27 @@ namespace BrowserEngineKit {
 		[Export ("initWithIdentifier:hostPid:")]
 		NativeHandle Constructor (string identifier, int hostPid);
 	}
+
+	[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+	delegate void BEWebContentFilterEvaluateUrlCallback (bool allowed, [NullAllowed] NSData data);
+
+	[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+	delegate void BEWebContentFilterAllowUrlCallback (bool allowed, [NullAllowed] NSError error);
+
+	[NoTV, NoMac, iOS (26, 2), MacCatalyst (26, 2)]
+	[BaseType (typeof (NSObject))]
+	interface BEWebContentFilter {
+
+		[Static]
+		[Export ("shouldEvaluateURLs")]
+		bool ShouldEvaluateUrls { get; }
+
+		[Async (ResultTypeName = "BEWebContentFilterEvaluateUrlCandidates")]
+		[Export ("evaluateURL:completionHandler:")]
+		void EvaluateUrl (NSUrl url, BEWebContentFilterEvaluateUrlCallback completionHandler);
+
+		[Async]
+		[Export ("allowURL:completionHandler:")]
+		void AllowUrl (NSUrl url, BEWebContentFilterAllowUrlCallback completionHandler);
+	}
 }

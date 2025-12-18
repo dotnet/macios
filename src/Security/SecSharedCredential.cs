@@ -10,6 +10,13 @@ namespace Security {
 
 	public static partial class SecSharedCredential {
 
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("ios26.2")]
+		[ObsoletedOSPlatform ("maccatalyst26.2")]
+		[ObsoletedOSPlatform ("macos26.2")]
 		[DllImport (Constants.SecurityLibrary)]
 		unsafe extern static void SecAddSharedWebCredential (IntPtr /* CFStringRef */ fqdn, IntPtr /* CFStringRef */ account, IntPtr /* CFStringRef */ password,
 			BlockLiteral* /* void (^completionHandler)( CFErrorRef error) ) */ completionHandler);
@@ -34,6 +41,13 @@ namespace Security {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
+		[UnsupportedOSPlatform ("tvos")]
+		[ObsoletedOSPlatform ("ios26.2")]
+		[ObsoletedOSPlatform ("maccatalyst26.2")]
+		[ObsoletedOSPlatform ("macos26.2")]
 		public static void AddSharedWebCredential (string domainName, string account, string password, Action<NSError> handler)
 		{
 			if (domainName is null)

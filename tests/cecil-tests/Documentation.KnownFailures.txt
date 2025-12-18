@@ -11837,7 +11837,6 @@ M:Foundation.NSDataDetector.#ctor(Foundation.NSTextCheckingType,Foundation.NSErr
 M:Foundation.NSDataDetector.Create(Foundation.NSTextCheckingType,Foundation.NSError@)
 M:Foundation.NSDate.op_Explicit(Foundation.NSDate)~System.DateTime
 M:Foundation.NSDate.op_Explicit(System.DateTime)~Foundation.NSDate
-M:Foundation.NSDictionary`2.FromObjectsAndKeys(`1[],`0[])
 M:Foundation.NSEnumerator`1.NextObject
 M:Foundation.NSExceptionError.#ctor(System.Exception)
 M:Foundation.NSFileAttributes.#ctor
@@ -21061,7 +21060,6 @@ P:Foundation.NSAttributedStringDocumentAttributes.Title
 P:Foundation.NSAttributedStringDocumentAttributes.TopMargin
 P:Foundation.NSBundle.AllBundles
 P:Foundation.NSDateComponents.IsRepeatedDay
-P:Foundation.NSDictionary`2.Item(`0)
 P:Foundation.NSExceptionError.Exception
 P:Foundation.NSFileHandleConnectionAcceptedEventArgs.NearSocketConnection
 P:Foundation.NSFileHandleConnectionAcceptedEventArgs.UnixErrorCode

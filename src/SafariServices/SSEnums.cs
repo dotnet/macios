@@ -55,6 +55,8 @@ namespace SafariServices {
 		InternalError = 4,
 		/// <summary>The app is missing an entitlement.</summary>
 		MissingEntitlement = 5,
+		/// <summary>The maximum number of allowed attempts to load the extension has been exceeded.</summary>
+		MaximumAttemptsExceeded = 6,
 	}
 
 	[NoMac]

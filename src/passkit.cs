@@ -1987,6 +1987,10 @@ namespace PassKit {
 		[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), NoTV]
 		[Field ("PKPaymentNetworkMyDebit")]
 		NSString MyDebit { get; }
+
+		[Mac (26, 2), iOS (26, 2), MacCatalyst (26, 2), NoTV]
+		[Field ("PKPaymentNetworkConecs")]
+		NSString Conecs { get; }
 	}
 
 	/// <summary>A button used to activate an Apple Pay payment. Available styles and types are defined by <see cref="PassKit.PKPaymentButtonStyle" /> and <see cref="PassKit.PKPaymentButtonType" />.</summary>
@@ -3602,6 +3606,10 @@ namespace PassKit {
 
 		[NullAllowed, Export ("merchantIdentifier")]
 		string MerchantIdentifier { get; set; }
+
+		[iOS (26, 2), MacCatalyst (26, 2)]
+		[NullAllowed, Export ("usageDescriptionKey")]
+		string UsageDescriptionKey { get; set; }
 	}
 
 	[iOS (16, 0), MacCatalyst (16, 0), NoTV]

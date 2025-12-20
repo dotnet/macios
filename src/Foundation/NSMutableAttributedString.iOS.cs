@@ -11,28 +11,33 @@
 using UIKit;
 using CoreText;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 
 	public partial class NSMutableAttributedString {
-		/// <param name="attrs">To be added.</param>
-		///         <param name="range">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Sets the attributes for the specified range. Any previous attributes in that range are replaced with the new values.
+		/// </summary>
+		/// <param name="attrs">The UIKit attributes to set.</param>
+		/// <param name="range">The range to which the attributes will be applied.</param>
 		public void SetAttributes (UIStringAttributes attrs, NSRange range)
 		{
-			SetAttributes (attrs is null ? null : attrs.Dictionary, range);
+			ArgumentNullException.ThrowIfNull (attrs);
+
+			SetAttributes (attrs.Dictionary, range);
 		}
 
-		/// <param name="attrs">To be added.</param>
-		///         <param name="range">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Adds attributes to the specified range of characters in the string.
+		/// </summary>
+		/// <param name="attrs">The UIKit attributes to add.</param>
+		/// <param name="range">The range to which the attributes will be applied.</param>
 		public void AddAttributes (UIStringAttributes attrs, NSRange range)
 		{
-			AddAttributes (attrs is null ? null : attrs.Dictionary, range);
+			ArgumentNullException.ThrowIfNull (attrs);
+
+			AddAttributes (attrs.Dictionary, range);
 		}
 
 	}

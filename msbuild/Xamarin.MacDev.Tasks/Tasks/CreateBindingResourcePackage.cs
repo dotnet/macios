@@ -100,7 +100,7 @@ namespace Xamarin.MacDev.Tasks {
 					var workingDirectory = Path.GetDirectoryName (nativeRef);
 					if (string.IsNullOrEmpty (workingDirectory))
 						workingDirectory = Directory.GetCurrentDirectory ();
-					CompressionHelper.TryCompress (Log, zipFile, new string [] { nativeRef }, false, workingDirectory, true);
+					CompressionHelper.TryCompress (this, zipFile, new string [] { nativeRef }, false, workingDirectory, true);
 				}
 				packagedFiles.Add (zipFile);
 			} else {

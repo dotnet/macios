@@ -14,11 +14,11 @@ using MonoTouch;
 
 namespace Xamarin {
 	static class SdkVersions {
-		public const string Xcode = "26.1";
-		public const string OSX = "26.1";
-		public const string iOS = "26.1";
-		public const string TVOS = "26.1";
-		public const string MacCatalyst = "26.1";
+		public const string Xcode = "26.2";
+		public const string OSX = "26.2";
+		public const string iOS = "26.2";
+		public const string TVOS = "26.2";
+		public const string MacCatalyst = "26.2";
 
 		public const string MinOSX = "12.0";
 		public const string MiniOS = "12.2";
@@ -32,16 +32,16 @@ namespace Xamarin {
 		public const string MiniOSSimulator = "16.0";
 		public const string MinTVOSSimulator = "16.0";
 
-		public const string MaxiOSSimulator = "26.1";
-		public const string MaxTVOSSimulator = "26.1";
+		public const string MaxiOSSimulator = "26.2";
+		public const string MaxTVOSSimulator = "26.2";
 
-		public const string MaxiOSDeploymentTarget = "26.1";
-		public const string MaxTVOSDeploymentTarget = "26.1";
+		public const string MaxiOSDeploymentTarget = "26.2";
+		public const string MaxTVOSDeploymentTarget = "26.2";
 
-		public const string TargetPlatformVersionExecutableiOS = "26.1";
-		public const string TargetPlatformVersionExecutabletvOS = "26.1";
-		public const string TargetPlatformVersionExecutablemacOS = "26.1";
-		public const string TargetPlatformVersionExecutableMacCatalyst = "26.1";
+		public const string TargetPlatformVersionExecutableiOS = "26.2";
+		public const string TargetPlatformVersionExecutabletvOS = "26.2";
+		public const string TargetPlatformVersionExecutablemacOS = "26.2";
+		public const string TargetPlatformVersionExecutableMacCatalyst = "26.2";
 
 		public const string TargetPlatformVersionLibraryiOS = "26.0";
 		public const string TargetPlatformVersionLibrarytvOS = "26.0";

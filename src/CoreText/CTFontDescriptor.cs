@@ -315,7 +315,7 @@ namespace CoreText {
 		///         <remarks>
 		///         </remarks>
 		public NSCharacterSet? CharacterSet {
-			get { return (NSCharacterSet) Dictionary [CTFontDescriptorAttributeKey.CharacterSet]; }
+			get { return (NSCharacterSet) Dictionary [CTFontDescriptorAttributeKey.CharacterSet]!; }
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.CharacterSet!, value); }
 		}
 
@@ -515,7 +515,7 @@ namespace CoreText {
 		///         </remarks>
 		public bool Enabled {
 			get {
-				var value = (NSNumber) Dictionary [CTFontDescriptorAttributeKey.Enabled];
+				var value = (NSNumber?) Dictionary [CTFontDescriptorAttributeKey.Enabled];
 				if (value is null)
 					return false;
 				return value.Int32Value != 0;

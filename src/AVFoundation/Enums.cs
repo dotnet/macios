@@ -609,6 +609,8 @@ namespace AVFoundation {
 		OverrideMutedMicrophoneInterruption = 128,
 		[iOS (26, 0), NoTV, NoMacCatalyst, NoMac]
 		BluetoothHighQualityRecording = 1uL << 19,
+		[iOS (26, 2), NoTV, MacCatalyst (26, 2), NoMac]
+		FarFieldInput = 1uL << 18,
 	}
 
 	/// <summary>An enumeration whose values specify the beginning and ending of an audio interruption.</summary>

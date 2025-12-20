@@ -3763,6 +3763,10 @@ namespace HealthKit {
 		[iOS (18, 0), MacCatalyst (18, 0), Mac (15, 0)]
 		[Field ("HKCategoryTypeIdentifierSleepApneaEvent")]
 		SleepApneaEvent,
+
+		[MacCatalyst (26, 2), Mac (26, 2), iOS (26, 2)]
+		[Field ("HKCategoryTypeIdentifierHypertensionEvent")]
+		HypertensionEvent,
 	}
 
 	/// <summary>Enumerates the forms of <see cref="HealthKit.HKCharacteristicType" />.</summary>

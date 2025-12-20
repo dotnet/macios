@@ -1008,7 +1008,6 @@
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSKeyedArchiverDelegate::WillEncode(Foundation.NSKeyedArchiver,Foundation.NSObject)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSKeyedUnarchiverDelegate::DecodedObject(Foundation.NSKeyedUnarchiver,Foundation.NSObject)' is missing an [NullAllowed] on parameter #1
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSKeyedUnarchiverDelegate::DecodedObject(Foundation.NSKeyedUnarchiver,Foundation.NSObject)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSObject Foundation.NSLocale::ObjectForKey(Foundation.NSString)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSMetadataItem::ValueForAttribute(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSMetadataQuery::ValueOfAttribute(System.String,System.IntPtr)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSObject Foundation.NSMetadataQueryAttributeValueTuple::get_Value()' is missing an [NullAllowed] on return type
@@ -1027,7 +1026,6 @@
 !missing-null-allowed! 'Foundation.NSOrthography Foundation.NSTextCheckingResult::get_Orthography()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSProgress Foundation.NSProgress::get_CurrentProgress()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSRegularExpression Foundation.NSRegularExpression::Create(Foundation.NSString,Foundation.NSRegularExpressionOptions,Foundation.NSError&)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSString Foundation.NSLocale::DisplayNameForKey(Foundation.NSString,System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSString Foundation.NSRunLoop::get_CurrentMode()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSString Foundation.NSString::AppendPathExtension(Foundation.NSString)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSString Foundation.NSUrlUtilities_NSString::CreateStringByAddingPercentEncoding(Foundation.NSString,Foundation.NSCharacterSet)' is missing an [NullAllowed] on return type

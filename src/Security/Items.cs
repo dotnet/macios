@@ -325,8 +325,11 @@ namespace Security {
 				copy.LowlevelSetObject (CFBoolean.TrueHandle, SecItem.ReturnAttributes);
 				copy.LowlevelSetObject (CFBoolean.TrueHandle, SecItem.ReturnData);
 				result = SecItem.SecItemCopyMatching (copy.Handle, out var ptr);
-				if (result == SecStatusCode.Success)
-					return new SecRecord (new NSMutableDictionary (ptr, true));
+				if (result == SecStatusCode.Success) {
+					var dict = Runtime.GetNSObject<NSMutableDictionary> (ptr, true);
+					if (dict is not null)
+						return new SecRecord (dict);
+				}
 				return null;
 			}
 		}

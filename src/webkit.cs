@@ -5216,7 +5216,16 @@ namespace WebKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKFrameInfo_Ref/index.html">Apple documentation for <c>WKFrameInfo</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor] // No public init method and every property is get-only
 	interface WKFrameInfo : NSCopying {
+
+#if !XAMCORE_5_0
+		[Obsoleted (PlatformName.iOS, 26, 2, message: ".ctor is not usable.")]
+		[Obsoleted (PlatformName.MacCatalyst, 26, 2, message: ".ctor is not usable.")]
+		[Obsoleted (PlatformName.MacOSX, 26, 2, message: ".ctor is not usable.")]
+		[Export ("init")]
+		NativeHandle Constructor ();
+#endif
 
 		/// <summary>Gets a value that indicates whether the frame is the main frame or a subframe.</summary>
 		///         <value>To be added.</value>

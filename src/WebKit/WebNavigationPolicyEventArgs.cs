@@ -36,7 +36,7 @@ namespace WebKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public WebNavigationType NavigationType {
-			get { return (WebNavigationType) ((NSNumber) ActionInformation [WebPolicyDelegate.WebActionNavigationTypeKey]).Int32Value; }
+			get { return (WebNavigationType) (((NSNumber?) ActionInformation [WebPolicyDelegate.WebActionNavigationTypeKey])?.Int32Value ?? 0); }
 		}
 
 		/// <summary>To be added.</summary>
@@ -64,7 +64,7 @@ namespace WebKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		public uint Flags {
-			get { return ((NSNumber) ActionInformation [WebPolicyDelegate.WebActionModifierFlagsKey]).UInt32Value; }
+			get { return ((NSNumber?) ActionInformation [WebPolicyDelegate.WebActionModifierFlagsKey])?.UInt32Value ?? 0; }
 		}
 
 		/// <summary>To be added.</summary>

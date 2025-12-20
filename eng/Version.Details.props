@@ -6,16 +6,16 @@ This file should be imported by eng/Versions.props
 <Project>
   <PropertyGroup>
     <!-- dotnet/dotnet dependencies -->
-    <MicrosoftDotNetArcadeSdkPackageVersion>11.0.0-beta.25618.104</MicrosoftDotNetArcadeSdkPackageVersion>
-    <MicrosoftDotNetBuildTasksFeedPackageVersion>11.0.0-beta.25618.104</MicrosoftDotNetBuildTasksFeedPackageVersion>
-    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25618.104</MicrosoftDotNetCecilPackageVersion>
-    <MicrosoftDotNetSharedFrameworkSdkPackageVersion>11.0.0-beta.25618.104</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
-    <MicrosoftNETILLinkPackageVersion>11.0.0-alpha.1.25618.104</MicrosoftNETILLinkPackageVersion>
-    <MicrosoftNETILLinkTasksPackageVersion>11.0.0-alpha.1.25618.104</MicrosoftNETILLinkTasksPackageVersion>
-    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>11.0.0-alpha.1.25618.104</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
-    <MicrosoftNETSdkPackageVersion>11.0.100-alpha.1.25618.104</MicrosoftNETSdkPackageVersion>
-    <MicrosoftNETCoreAppRefPackageVersion>11.0.0-alpha.1.25618.104</MicrosoftNETCoreAppRefPackageVersion>
-    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>11.0.100-alpha.25618.104</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
+    <MicrosoftDotNetArcadeSdkPackageVersion>11.0.0-beta.25618.115</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftDotNetBuildTasksFeedPackageVersion>11.0.0-beta.25618.115</MicrosoftDotNetBuildTasksFeedPackageVersion>
+    <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.25618.115</MicrosoftDotNetCecilPackageVersion>
+    <MicrosoftDotNetSharedFrameworkSdkPackageVersion>11.0.0-beta.25618.115</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
+    <MicrosoftNETILLinkPackageVersion>11.0.0-alpha.1.25618.115</MicrosoftNETILLinkPackageVersion>
+    <MicrosoftNETILLinkTasksPackageVersion>11.0.0-alpha.1.25618.115</MicrosoftNETILLinkTasksPackageVersion>
+    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>11.0.0-alpha.1.25618.115</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
+    <MicrosoftNETSdkPackageVersion>11.0.100-alpha.1.25618.115</MicrosoftNETSdkPackageVersion>
+    <MicrosoftNETCoreAppRefPackageVersion>11.0.0-alpha.1.25618.115</MicrosoftNETCoreAppRefPackageVersion>
+    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>11.0.100-alpha.25618.115</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <!-- dotnet/macios dependencies -->
     <MicrosoftiOSSdknet100_260PackageVersion>26.0.11017</MicrosoftiOSSdknet100_260PackageVersion>
     <MicrosoftiOSSdknet100_262PackageVersion>26.2.10192</MicrosoftiOSSdknet100_262PackageVersion>

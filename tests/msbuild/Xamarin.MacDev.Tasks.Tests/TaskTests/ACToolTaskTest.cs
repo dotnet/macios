@@ -634,5 +634,45 @@ namespace Xamarin.MacDev.Tasks {
 			ExecuteTask (actool, 1);
 			Assert.AreEqual ("Can't specify both 'XSAppIconAssets' in the Info.plist and 'AppIcon' in the project file. Please select one or the other.", Engine.Logger.ErrorEvents [0].Message, "Error message");
 		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[TestCase (ApplePlatform.MacOSX)]
+		public void IconFileSupport (ApplePlatform platform)
+		{
+			// Test that .icon folders (Icon Composer format) are recognized as app icons
+			var projectDir = Cache.CreateTemporaryDirectory ();
+			var iconFolderPath = Path.Combine (projectDir, "Resources", "AppIcon.icon");
+			var assetsPath = Path.Combine (iconFolderPath, "Assets");
+			Directory.CreateDirectory (assetsPath);
+			
+			// Create a dummy icon.json file (simplified structure for testing)
+			var iconJsonPath = Path.Combine (iconFolderPath, "icon.json");
+			File.WriteAllText (iconJsonPath, @"{""version"":1}");
+			
+			// Create a dummy image file in the Assets folder
+			var imagePath = Path.Combine (assetsPath, "icon_512x512.png");
+			File.WriteAllText (imagePath, "dummy image");
+
+			var actool = CreateACToolTask (
+				platform,
+				projectDir,
+				out var _,
+				iconJsonPath + "|Resources/AppIcon.icon/icon.json",
+				imagePath + "|Resources/AppIcon.icon/Assets/icon_512x512.png"
+			);
+			actool.AppIcon = "AppIcon";
+
+			// The task should recognize AppIcon as a valid icon
+			// Note: This will fail at actool execution since we don't have a real .icon structure,
+			// but we're testing that the icon is recognized in the validation phase
+			ExecuteTask (actool, expectedErrorCount: 1); // Expected to fail at actool execution
+
+			// Verify that no error was logged about the icon not being found
+			var errorMessages = Engine.Logger.ErrorEvents.Select (e => e.Message).ToList ();
+			Assert.IsFalse (errorMessages.Any (m => m.Contains ("Can't find the AppIcon")), 
+				"Should not report that AppIcon is not found among image resources");
+		}
 	}
 }

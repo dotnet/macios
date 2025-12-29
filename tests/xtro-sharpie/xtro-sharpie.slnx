@@ -4,4 +4,6 @@
   <Project Path="xtro-report/xtro-report.csproj" />
   <Project Path="xtro-sanity/xtro-sanity.csproj" />
   <Project Path="xtro-sharpie/xtro-sharpie.csproj" />
+  <Project Path="../../tools/sharpie/Sharpie.Bind/Sharpie.Bind.csproj" />
+  <Project Path="../../tools/sharpie/Sharpie.Bind.Tool/Sharpie.Bind.Tool.csproj" />
 </Solution>

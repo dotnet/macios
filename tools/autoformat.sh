@@ -46,8 +46,14 @@ $DOTNET --info
 
 function af_whitespace ()
 {
-	echo "Processing $1..."
+	echo "Processing whitespace in $1..."
 	$DOTNET format whitespace "$1"
+}
+
+function af ()
+{
+	echo "Formatting $i"
+	$DOTNET format "$1"
 }
 
 # Start formatting!
@@ -90,6 +96,8 @@ af_whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client
 af_whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client.MacCatalyst.csproj"
 af_whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client.macOS.csproj"
 af_whitespace "$SRC_DIR/tests/common/Touch.Unit/Touch.Client/dotnet/Touch.Client.tvOS.csproj"
+
+af "$SRC_DIR/tools/sharpie/sharpie.slnx"
 
 echo "Processing $SRC_DIR..."
 $DOTNET format whitespace --folder "$SRC_DIR"

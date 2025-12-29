@@ -1610,14 +1610,7 @@ namespace AuthenticationServices {
 		NSData Signature { get; }
 	}
 
-#if !XAMCORE_5_0 // Removed in Xcode 14.3 Beta 3
-	[Obsoleted (PlatformName.iOS, 16, 4, message: Constants.ApiRemovedGeneral)]
-	[Obsoleted (PlatformName.MacCatalyst, 16, 4, message: Constants.ApiRemovedGeneral)]
-	[Obsoleted (PlatformName.TvOS, 16, 4, message: Constants.ApiRemovedGeneral)]
-	[Mac (13, 3), iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
-#else
-	[NoTV, NoiOS, NoMacCatalyst, Mac (13, 3)]
-#endif
+	[Mac (12, 0), iOS (15, 0), MacCatalyst (15, 0), TV (16, 0)]
 	[BaseType (typeof (ASAuthorizationRequest))]
 	[DisableDefaultCtor]
 	interface ASAuthorizationPlatformPublicKeyCredentialAssertionRequest : ASAuthorizationPublicKeyCredentialAssertionRequest {

@@ -26,6 +26,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 //
+
+using System.Diagnostics.CodeAnalysis;
+
 using CoreFoundation;
 
 #nullable enable
@@ -307,7 +310,8 @@ namespace Foundation {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		public static NSFileAttributes? FromDictionary (NSDictionary dict)
+		[return: NotNullIfNotNull (nameof (dict))]
+		public static NSFileAttributes? FromDictionary (NSDictionary? dict)
 		{
 			if (dict is null)
 				return null;

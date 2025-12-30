@@ -484,7 +484,6 @@ namespace Foundation {
 			return TryGetValue<NSObject> (key, out value);
 		}
 
-#nullable enable
 		/// <summary>Gets the object associated with the specified key.</summary>
 		/// <param name="key">The key of the object to get.</param>
 		/// <value>The object associated with the specified key.</value>
@@ -536,7 +535,6 @@ namespace Foundation {
 				throw new NotSupportedException ();
 			}
 		}
-#nullable disable
 
 		ICollection<NSObject> IDictionary<NSObject, NSObject>.Keys {
 			get { return Keys; }
@@ -562,7 +560,7 @@ namespace Foundation {
 		public IEnumerator<KeyValuePair<NSObject, NSObject>> GetEnumerator ()
 		{
 			foreach (var key in Keys) {
-				yield return new KeyValuePair<NSObject, NSObject> (key, ObjectForKey (key));
+				yield return new KeyValuePair<NSObject, NSObject> (key, ObjectForKey (key)!);
 			}
 		}
 

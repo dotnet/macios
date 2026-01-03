@@ -1139,7 +1139,7 @@ This will pass `-W` to `open` if set to `true`.
 Example:
 
 ```shell
-$ dotnet run -p:OpenWaitForExit=false
+$ dotnet run -p:OpenWaitForExit=true
 ```
 
 ### OpenArguments

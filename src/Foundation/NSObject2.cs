@@ -1345,7 +1345,7 @@ namespace Foundation {
 	/// Changes that occurred to an object being observed by Key-Value-Observing.
 	/// </summary>
 	/// <remarks>
-	/// <para>This class exposes the various components that were changes in a Key-Value-Observed property.</para>
+	/// <para>This class exposes the various components that were changed in a Key-Value-Observed property.</para>
 	/// <para>These are merely accessors to the underlying <see cref="NSDictionary"/> that is provided to the <see cref="NSObject.ObserveValue(NSString, NSObject, NSDictionary, IntPtr)"/> method.</para>
 	/// <para>Instances of this class are provided to your callback methods that you provide to <see cref="NSObject.AddObserver(NSObject, string, NSKeyValueObservingOptions, IntPtr)"/>.</para>
 	/// <para>You can also create these objects if you have a dictionary that contains the keys from a key-value-observing change. For example if you override the <see cref="NSObject.ObserveValue(NSString, NSObject, NSDictionary, IntPtr)"/> method.</para>

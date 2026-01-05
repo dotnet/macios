@@ -1,11 +1,8 @@
 #nullable enable
 
+using System.Drawing;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-
-#if !NO_SYSTEM_DRAWING
-using System.Drawing;
-#endif
 
 using CoreFoundation;
 
@@ -47,7 +44,6 @@ namespace CoreGraphics {
 			return new CGPoint (l.x - r.Width, l.y - r.Height);
 		}
 
-#if !NO_SYSTEM_DRAWING
 		public static implicit operator CGPoint (PointF point)
 		{
 			return new CGPoint (point.X, point.Y);
@@ -67,7 +63,6 @@ namespace CoreGraphics {
 		{
 			return new Point ((int) point.X, (int) point.Y);
 		}
-#endif
 
 		/// <param name="point">To be added.</param>
 		///         <param name="size">To be added.</param>

@@ -1,11 +1,8 @@
 #nullable enable
 
+using System.Drawing;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-
-#if !NO_SYSTEM_DRAWING
-using System.Drawing;
-#endif
 
 using CoreFoundation;
 
@@ -75,7 +72,6 @@ namespace CoreGraphics {
 				left.Height != right.Height;
 		}
 
-#if !NO_SYSTEM_DRAWING
 		public static implicit operator CGRect (RectangleF rect)
 		{
 			return new CGRect (rect.X, rect.Y, rect.Width, rect.Height);
@@ -95,7 +91,6 @@ namespace CoreGraphics {
 		{
 			return new Rectangle ((int) rect.X, (int) rect.Y, (int) rect.Width, (int) rect.Height);
 		}
-#endif
 
 		/// <param name="a">
 		///           <attribution license="cc4" from="Microsoft" modified="false" />A rectangle to intersect. </param>

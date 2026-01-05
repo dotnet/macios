@@ -1,7 +1,5 @@
 #if !__MACCATALYST__
-#if !NO_SYSTEM_DRAWING
 using System.Drawing;
-#endif
 
 #nullable enable
 
@@ -24,7 +22,6 @@ namespace AppKit {
 			return ret;
 		}
 
-#if !NO_SYSTEM_DRAWING
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
@@ -38,7 +35,6 @@ namespace AppKit {
 				SetValues ((IntPtr) (&value), NSOpenGLContextParameter.SwapRectangle);
 			}
 		}
-#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

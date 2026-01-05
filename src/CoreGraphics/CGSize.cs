@@ -1,11 +1,8 @@
 #nullable enable
 
+using System.Drawing;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-
-#if !NO_SYSTEM_DRAWING
-using System.Drawing;
-#endif
 
 using CoreFoundation;
 
@@ -44,7 +41,6 @@ namespace CoreGraphics {
 			return new CGSize (l.width - r.Width, l.height - r.Height);
 		}
 
-#if !NO_SYSTEM_DRAWING
 		public static implicit operator CGSize (SizeF size)
 		{
 			return new CGSize (size.Width, size.Height);
@@ -64,7 +60,6 @@ namespace CoreGraphics {
 		{
 			return new Size ((int) size.Width, (int) size.Height);
 		}
-#endif
 
 		public static explicit operator CGPoint (CGSize size)
 		{

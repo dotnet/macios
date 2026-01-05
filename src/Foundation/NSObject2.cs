@@ -442,7 +442,7 @@ namespace Foundation {
 		/// <summary>Promotes a regular peer object (IsDirectBinding is true) into a toggleref object.</summary>
 		/// <remarks>
 		///   This turns a regular peer object (one that has <see cref="IsDirectBinding" /> set to true)
-		///   into a toggleref object. This is necessary when storing managated state (for instance into
+		///   into a toggleref object. This is necessary when storing managed state (for instance into
 		///   a backing field), so that the managed peer isn't collected by the GC before the native object
 		///   is freed. This is an internal method.
 		/// </remarks>

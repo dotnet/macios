@@ -347,7 +347,7 @@ $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).xml: $
 	$(Q) $(CP) $$< $$@
 
 $($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll build/.build-adr-stamp | $($(2)_DOTNET_BUILD_DIR)/doc
-	$(TOP)/packages/appledocreader.$(ADR_RUNTIME_IDENTIFIER)/$(ADR_NUGET_VERSION)/tools/any/$(ADR_RUNTIME_IDENTIFIER)/AppleDocReader inject docs --assembly="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" --input="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" --output="$(abspath $$@)" --xcode="$(DEVELOPER_DIR)/../.." --runtimeDll="$(DOTNET_BCL_DIR)/System.Runtime.dll" -f
+	$(Q_GEN) $(TOP)/packages/appledocreader.$(ADR_RUNTIME_IDENTIFIER)/$(ADR_NUGET_VERSION)/tools/any/$(ADR_RUNTIME_IDENTIFIER)/AppleDocReader inject docs --assembly="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" --input="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" --output="$(abspath $$@)" --xcode="$(DEVELOPER_DIR)/../.." --runtimeDll="$(DOTNET_BCL_DIR)/System.Runtime.dll" -f
 endef
 
 build/.build-adr-stamp:

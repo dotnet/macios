@@ -60,21 +60,21 @@
       <Sha>797d30720e5e629d23eb146935da94cb1b61047e</Sha>
     </Dependency>
     <!-- This is a subscription of the .NET 9/Xcode 26.0 versions of our packages -->
-    <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_26.0" Version="26.0.9783">
+    <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_26.0" Version="26.0.9784">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>69e5712550c0fb2f678c048fe74475bfe07f5bb3</Sha>
+      <Sha>e6a0fb79426493766332ad077290212fb1c9db4e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.macOS.Sdk.net9.0_26.0" Version="26.0.9783">
+    <Dependency Name="Microsoft.macOS.Sdk.net9.0_26.0" Version="26.0.9784">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>69e5712550c0fb2f678c048fe74475bfe07f5bb3</Sha>
+      <Sha>e6a0fb79426493766332ad077290212fb1c9db4e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.iOS.Sdk.net9.0_26.0" Version="26.0.9783">
+    <Dependency Name="Microsoft.iOS.Sdk.net9.0_26.0" Version="26.0.9784">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>69e5712550c0fb2f678c048fe74475bfe07f5bb3</Sha>
+      <Sha>e6a0fb79426493766332ad077290212fb1c9db4e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.tvOS.Sdk.net9.0_26.0" Version="26.0.9783">
+    <Dependency Name="Microsoft.tvOS.Sdk.net9.0_26.0" Version="26.0.9784">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>69e5712550c0fb2f678c048fe74475bfe07f5bb3</Sha>
+      <Sha>e6a0fb79426493766332ad077290212fb1c9db4e</Sha>
     </Dependency>
     <!-- This is a subscription of the .NET 10/Xcode 26.0 versions of our packages -->
     <Dependency Name="Microsoft.MacCatalyst.Sdk.net10.0_26.0" Version="26.0.11017">
@@ -107,9 +107,9 @@
       <Uri>https://github.com/dotnet/dotnet</Uri>
       <Sha>7aa15f07c40a487d471b5df81e26e6b8c06c9461</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.25603.1">
+    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.25615.1">
       <Uri>https://github.com/dotnet/xharness</Uri>
-      <Sha>3df2923500447ee925d59f026c81720c7a9b4e4b</Sha>
+      <Sha>39545dffac1cee604915785456394ef00a4a5456</Sha>
     </Dependency>
     <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.25631.101">
       <Uri>https://github.com/dotnet/dotnet</Uri>

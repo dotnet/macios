@@ -836,7 +836,7 @@ namespace Foundation {
 			InvokeOnMainThread (sel, obj, false);
 		}
 
-		/// <summary>Invokes synchrously the specified code on the main UI thread.</summary>
+		/// <summary>Invokes synchronously the specified code on the main UI thread.</summary>
 		/// <param name="sel">Selector to invoke</param>
 		/// <param name="obj">Object in which the selector is invoked</param>
 		/// <remarks>

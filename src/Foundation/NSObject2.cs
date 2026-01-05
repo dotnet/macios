@@ -810,7 +810,7 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
-		/// <summary>Invokes asynchrously the specified code on the main UI thread.</summary>
+		/// <summary>Invokes asynchronously the specified code on the main UI thread.</summary>
 		/// <param name="sel">Selector to invoke</param>
 		/// <param name="obj">Object in which the selector is invoked</param>
 		/// <remarks>

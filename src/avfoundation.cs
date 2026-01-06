@@ -4325,6 +4325,10 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
 		[Field ("AVAudioSessionModeShortFormVideo")]
 		ShortFormVideo,
+
+		[MacCatalyst (26, 2), NoTV, NoMac, iOS (26, 2)]
+		[Field ("AVAudioSessionModeDualRoute")]
+		DualRoute,
 	}
 
 	[NoMac]
@@ -18681,6 +18685,18 @@ namespace AVFoundation {
 		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("cameraLensSmudgeDetectionStatus")]
 		AVCaptureCameraLensSmudgeDetectionStatus CameraLensSmudgeDetectionStatus { get; }
+
+		// From the AVCaptureDeviceEdgeLight (AVCaptureDevice) category
+
+		[TV (26, 2), MacCatalyst (26, 2), Mac (26, 2), iOS (26, 2)]
+		[Static]
+		[Export ("edgeLightEnabled")]
+		bool EdgeLightEnabled { [Bind ("isEdgeLightEnabled")] get; }
+
+		[TV (26, 2), MacCatalyst (26, 2), Mac (26, 2), iOS (26, 2)]
+		[Static]
+		[Export ("edgeLightActive")]
+		bool EdgeLightActive { [Bind ("isEdgeLightActive")] get; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -19087,6 +19103,10 @@ namespace AVFoundation {
 		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 		[Export ("smartFramingSupported")]
 		bool SmartFramingSupported { [Bind ("isSmartFramingSupported")] get; }
+
+		[TV (26, 2), MacCatalyst (26, 2), Mac (26, 2), iOS (26, 2)]
+		[Export ("edgeLightSupported")]
+		bool EdgeLightSupported { [Bind ("isEdgeLightSupported")] get; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]

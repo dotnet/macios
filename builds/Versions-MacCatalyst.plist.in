@@ -26,6 +26,7 @@
 			<string>18.5</string>
 			<string>26.0</string>
 			<string>26.1</string>
+			<string>26.2</string>
 		</array>
 	</dict>
 	<key>SupportedTargetPlatformVersions</key>
@@ -62,6 +63,7 @@
 			<string>18.5</string>
 			<string>26.0</string>
 			<string>26.1</string>
+			<string>26.2</string>
 		</array>
 	</dict>
 	<key>MacCatalystVersionMap</key>
@@ -120,6 +122,8 @@
 		<string>26.0</string>
 		<key>26.1</key>
 		<string>26.1</string>
+		<key>26.2</key>
+		<string>26.2</string>
 	</dict>
 	<key>RecommendedXcodeVersion</key>
 	<string>@XCODE_VERSION@</string>

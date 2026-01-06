@@ -79,7 +79,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var createdFiles = new List<string> ();
 			cancellationTokenSource = new CancellationTokenSource ();
-			if (!CompressionHelper.TryDecompress (Log, ZipFilePath!.ItemSpec, Resource, ExtractionPath, createdFiles, cancellationTokenSource.Token, out var _))
+			if (!CompressionHelper.TryDecompress (this, ZipFilePath!.ItemSpec, Resource, ExtractionPath, createdFiles, cancellationTokenSource.Token, out var _))
 				return false;
 
 			TouchedFiles = createdFiles.Select (v => new TaskItem (v)).ToArray ();

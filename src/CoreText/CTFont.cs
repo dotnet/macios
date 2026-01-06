@@ -429,7 +429,10 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public FontFeatureGroup FeatureGroup {
 			get {
-				return (FontFeatureGroup) (int) (NSNumber) Dictionary [CTFontFeatureKey.Identifier];
+				var number = (NSNumber?) Dictionary [CTFontFeatureKey.Identifier];
+				if (number is null)
+					return default;
+				return (FontFeatureGroup) (int) number;
 			}
 		}
 
@@ -591,7 +594,10 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		protected int FeatureWeak {
 			get {
-				return (int) (NSNumber) Dictionary [CTFontFeatureSelectorKey.Identifier];
+				var number = (NSNumber?) Dictionary [CTFontFeatureSelectorKey.Identifier];
+				if (number is null)
+					return default;
+				return (int) number;
 			}
 		}
 
@@ -2327,7 +2333,10 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public FontFeatureGroup FeatureGroup {
 			get {
-				return (FontFeatureGroup) (int) (NSNumber) Dictionary [CTFontFeatureKey.Identifier];
+				var number = (NSNumber?) Dictionary [CTFontFeatureKey.Identifier];
+				if (number is null)
+					return default;
+				return (FontFeatureGroup) (int) number;
 			}
 		}
 
@@ -2336,7 +2345,10 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public int FeatureWeak {
 			get {
-				return (int) (NSNumber) Dictionary [CTFontFeatureSelectorKey.Identifier];
+				var number = (NSNumber?) Dictionary [CTFontFeatureSelectorKey.Identifier];
+				if (number is null)
+					return default;
+				return (int) number;
 			}
 		}
 	}
@@ -2375,32 +2387,32 @@ namespace CoreText {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public NSNumber Identifier {
-			get { return (NSNumber) Dictionary [CTFontVariationAxisKey.Identifier]; }
+		public NSNumber? Identifier {
+			get { return (NSNumber?) Dictionary [CTFontVariationAxisKey.Identifier]; }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.Identifier, value); }
 		}
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public NSNumber MinimumValue {
-			get { return (NSNumber) Dictionary [CTFontVariationAxisKey.MinimumValue]; }
+		public NSNumber? MinimumValue {
+			get { return (NSNumber?) Dictionary [CTFontVariationAxisKey.MinimumValue]; }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.MinimumValue, value); }
 		}
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public NSNumber MaximumValue {
-			get { return (NSNumber) Dictionary [CTFontVariationAxisKey.MaximumValue]; }
+		public NSNumber? MaximumValue {
+			get { return (NSNumber?) Dictionary [CTFontVariationAxisKey.MaximumValue]; }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.MaximumValue, value); }
 		}
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public NSNumber DefaultValue {
-			get { return (NSNumber) Dictionary [CTFontVariationAxisKey.DefaultValue]; }
+		public NSNumber? DefaultValue {
+			get { return (NSNumber?) Dictionary [CTFontVariationAxisKey.DefaultValue]; }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.DefaultValue, value); }
 		}
 

@@ -21,10 +21,10 @@
 # IMPORTANT: There must be *no* managed API differences unless the two first
 # numbers (major.minor) changes.
 
-IOS_NUGET_OS_VERSION=26.1
-TVOS_NUGET_OS_VERSION=26.1
-MACOS_NUGET_OS_VERSION=26.1
-MACCATALYST_NUGET_OS_VERSION=26.1
+IOS_NUGET_OS_VERSION=26.2
+TVOS_NUGET_OS_VERSION=26.2
+MACOS_NUGET_OS_VERSION=26.2
+MACCATALYST_NUGET_OS_VERSION=26.2
 
 # The following are the OS versions we first supported with the current .NET version.
 # These versions must *not* change with minor .NET updates, only major .NET releases.

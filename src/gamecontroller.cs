@@ -3043,6 +3043,11 @@ namespace GameController {
 		[Abstract]
 		[Export ("sources", ArgumentSemantic.Copy)]
 		NSSet<IGCPhysicalInputSource> Sources { get; }
+
+		[TV (26, 2), Mac (26, 2), iOS (26, 2), MacCatalyst (26, 2)]
+		[Abstract]
+		[NullAllowed, Export ("physicalExtents")]
+		IGCPhysicalInputExtents PhysicalExtents { get; }
 	}
 
 	interface IGCPhysicalInputElement { }
@@ -3367,5 +3372,24 @@ namespace Foundation {
 		[TV (17, 4), Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("GCPoint2Value")]
 		GCPoint2 GCPoint2Value { get; }
+	}
+
+	interface IGCPhysicalInputExtents { }
+
+	[TV (26, 2), Mac (26, 2), iOS (26, 2), MacCatalyst (26, 2)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface GCPhysicalInputExtents {
+
+		[Abstract]
+		[Export ("scaledValue")]
+		double ScaledValue { get; }
+
+		[Abstract]
+		[Export ("minimumValue")]
+		double MinimumValue { get; }
+
+		[Abstract]
+		[Export ("maximumValue")]
+		double MaximumValue { get; }
 	}
 }

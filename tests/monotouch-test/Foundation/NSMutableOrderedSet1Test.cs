@@ -417,5 +417,539 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.AreNotEqual (IntPtr.Zero, one.Handle, "Handle must be != IntPtr.Zero");
 			Assert.AreNotEqual (IntPtr.Zero, two.Handle, "Handle must be != IntPtr.Zero");
 		}
+
+		[Test]
+		public void OperatorAdd_NullNull ()
+		{
+			NSMutableOrderedSet<NSString> first = null;
+			NSMutableOrderedSet<NSString> second = null;
+			var result = first + second;
+			Assert.IsNull (result, "null + null should be null");
+		}
+
+		[Test]
+		public void OperatorAdd_NullNonEmpty ()
+		{
+			NSMutableOrderedSet<NSString> first = null;
+			var second = new NSMutableOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			var result = first + second;
+			Assert.IsNotNull (result, "null + non-empty should not be null");
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains ((NSString) "1"), "Should contain 1");
+			Assert.IsTrue (result.Contains ((NSString) "2"), "Should contain 2");
+		}
+
+		[Test]
+		public void OperatorAdd_NonEmptyNull ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			NSMutableOrderedSet<NSString> second = null;
+			var result = first + second;
+			Assert.IsNotNull (result, "non-empty + null should not be null");
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains ((NSString) "1"), "Should contain 1");
+			Assert.IsTrue (result.Contains ((NSString) "2"), "Should contain 2");
+		}
+
+		[Test]
+		public void OperatorAdd_EmptyEmpty ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ();
+			var second = new NSMutableOrderedSet<NSString> ();
+			var result = first + second;
+			Assert.IsNotNull (result, "empty + empty should not be null");
+			Assert.AreEqual ((nint) 0, result.Count, "Count should be 0");
+		}
+
+		[Test]
+		public void OperatorAdd_EmptyNonEmpty ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ();
+			var second = new NSMutableOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			var result = first + second;
+			Assert.IsNotNull (result, "empty + non-empty should not be null");
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains ((NSString) "1"), "Should contain 1");
+			Assert.IsTrue (result.Contains ((NSString) "2"), "Should contain 2");
+		}
+
+		[Test]
+		public void OperatorAdd_NonEmptyEmpty ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			var second = new NSMutableOrderedSet<NSString> ();
+			var result = first + second;
+			Assert.IsNotNull (result, "non-empty + empty should not be null");
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains ((NSString) "1"), "Should contain 1");
+			Assert.IsTrue (result.Contains ((NSString) "2"), "Should contain 2");
+		}
+
+		[Test]
+		public void OperatorAdd_WithNSSet_NullNull ()
+		{
+			NSMutableOrderedSet<NSString> first = null;
+			NSSet<NSString> second = null;
+			var result = first + second;
+			Assert.IsNull (result, "null + null should be null");
+		}
+
+		[Test]
+		public void OperatorAdd_WithNSSet_NullNonEmpty ()
+		{
+			NSMutableOrderedSet<NSString> first = null;
+			var second = new NSSet<NSString> ((NSString) "1", (NSString) "2");
+			var result = first + second;
+			Assert.IsNotNull (result, "null + non-empty NSSet should not be null");
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains ((NSString) "1"), "Should contain 1");
+			Assert.IsTrue (result.Contains ((NSString) "2"), "Should contain 2");
+		}
+
+		[Test]
+		public void OperatorAdd_WithNSSet_NonEmptyNull ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			NSSet<NSString> second = null;
+			var result = first + second;
+			Assert.IsNotNull (result, "non-empty + null NSSet should not be null");
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains ((NSString) "1"), "Should contain 1");
+			Assert.IsTrue (result.Contains ((NSString) "2"), "Should contain 2");
+		}
+
+		[Test]
+		public void OperatorAdd_WithNSSet_EmptyEmpty ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ();
+			var second = new NSSet<NSString> ();
+			var result = first + second;
+			Assert.IsNotNull (result, "empty + empty NSSet should not be null");
+			Assert.AreEqual ((nint) 0, result.Count, "Count should be 0");
+		}
+
+		[Test]
+		public void OperatorAdd_WithNSOrderedSet_NullNull ()
+		{
+			NSMutableOrderedSet<NSString> first = null;
+			NSOrderedSet<NSString> second = null;
+			var result = first + second;
+			Assert.IsNull (result, "null + null should be null");
+		}
+
+		[Test]
+		public void OperatorAdd_WithNSOrderedSet_NullNonEmpty ()
+		{
+			NSMutableOrderedSet<NSString> first = null;
+			var second = new NSOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			var result = first + second;
+			Assert.IsNotNull (result, "null + non-empty NSOrderedSet should not be null");
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains ((NSString) "1"), "Should contain 1");
+			Assert.IsTrue (result.Contains ((NSString) "2"), "Should contain 2");
+		}
+
+		[Test]
+		public void OperatorAdd_WithNSOrderedSet_NonEmptyNull ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			NSOrderedSet<NSString> second = null;
+			var result = first + second;
+			Assert.IsNotNull (result, "non-empty + null NSOrderedSet should not be null");
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains ((NSString) "1"), "Should contain 1");
+			Assert.IsTrue (result.Contains ((NSString) "2"), "Should contain 2");
+		}
+
+		[Test]
+		public void OperatorAdd_WithNSOrderedSet_EmptyEmpty ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ();
+			var second = new NSOrderedSet<NSString> ();
+			var result = first + second;
+			Assert.IsNotNull (result, "empty + empty NSOrderedSet should not be null");
+			Assert.AreEqual ((nint) 0, result.Count, "Count should be 0");
+		}
+
+		[Test]
+		public void OperatorSubtract_NullNull ()
+		{
+			NSMutableOrderedSet<NSString> first = null;
+			NSMutableOrderedSet<NSString> second = null;
+			var result = first - second;
+			Assert.IsNull (result, "null - null should be null");
+		}
+
+		[Test]
+		public void OperatorSubtract_NullNonEmpty ()
+		{
+			NSMutableOrderedSet<NSString> first = null;
+			var second = new NSMutableOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			var result = first - second;
+			Assert.IsNull (result, "null - non-empty should be null");
+		}
+
+		[Test]
+		public void OperatorSubtract_NonEmptyNull ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			NSMutableOrderedSet<NSString> second = null;
+			var result = first - second;
+			Assert.IsNotNull (result, "non-empty - null should not be null");
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains ((NSString) "1"), "Should contain 1");
+			Assert.IsTrue (result.Contains ((NSString) "2"), "Should contain 2");
+		}
+
+		[Test]
+		public void OperatorSubtract_EmptyEmpty ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ();
+			var second = new NSMutableOrderedSet<NSString> ();
+			var result = first - second;
+			Assert.IsNotNull (result, "empty - empty should not be null");
+			Assert.AreEqual ((nint) 0, result.Count, "Count should be 0");
+		}
+
+		[Test]
+		public void OperatorSubtract_EmptyNonEmpty ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ();
+			var second = new NSMutableOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			var result = first - second;
+			Assert.IsNotNull (result, "empty - non-empty should not be null");
+			Assert.AreEqual ((nint) 0, result.Count, "Count should be 0");
+		}
+
+		[Test]
+		public void OperatorSubtract_NonEmptyEmpty ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			var second = new NSMutableOrderedSet<NSString> ();
+			var result = first - second;
+			Assert.IsNotNull (result, "non-empty - empty should not be null");
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains ((NSString) "1"), "Should contain 1");
+			Assert.IsTrue (result.Contains ((NSString) "2"), "Should contain 2");
+		}
+
+		[Test]
+		public void OperatorSubtract_WithNSSet_NullNull ()
+		{
+			NSMutableOrderedSet<NSString> first = null;
+			NSSet<NSString> second = null;
+			var result = first - second;
+			Assert.IsNull (result, "null - null should be null");
+		}
+
+		[Test]
+		public void OperatorSubtract_WithNSSet_NullNonEmpty ()
+		{
+			NSMutableOrderedSet<NSString> first = null;
+			var second = new NSSet<NSString> ((NSString) "1", (NSString) "2");
+			var result = first - second;
+			Assert.IsNull (result, "null - non-empty NSSet should be null");
+		}
+
+		[Test]
+		public void OperatorSubtract_WithNSSet_NonEmptyNull ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			NSSet<NSString> second = null;
+			var result = first - second;
+			Assert.IsNotNull (result, "non-empty - null NSSet should not be null");
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains ((NSString) "1"), "Should contain 1");
+			Assert.IsTrue (result.Contains ((NSString) "2"), "Should contain 2");
+		}
+
+		[Test]
+		public void OperatorSubtract_WithNSSet_EmptyEmpty ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ();
+			var second = new NSSet<NSString> ();
+			var result = first - second;
+			Assert.IsNotNull (result, "empty - empty NSSet should not be null");
+			Assert.AreEqual ((nint) 0, result.Count, "Count should be 0");
+		}
+
+		[Test]
+		public void OperatorSubtract_WithNSOrderedSet_NullNull ()
+		{
+			NSMutableOrderedSet<NSString> first = null;
+			NSOrderedSet<NSString> second = null;
+			var result = first - second;
+			Assert.IsNull (result, "null - null should be null");
+		}
+
+		[Test]
+		public void OperatorSubtract_WithNSOrderedSet_NullNonEmpty ()
+		{
+			NSMutableOrderedSet<NSString> first = null;
+			var second = new NSOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			var result = first - second;
+			Assert.IsNull (result, "null - non-empty NSOrderedSet should be null");
+		}
+
+		[Test]
+		public void OperatorSubtract_WithNSOrderedSet_NonEmptyNull ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ((NSString) "1", (NSString) "2");
+			NSOrderedSet<NSString> second = null;
+			var result = first - second;
+			Assert.IsNotNull (result, "non-empty - null NSOrderedSet should not be null");
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains ((NSString) "1"), "Should contain 1");
+			Assert.IsTrue (result.Contains ((NSString) "2"), "Should contain 2");
+		}
+
+		[Test]
+		public void OperatorSubtract_WithNSOrderedSet_EmptyEmpty ()
+		{
+			var first = new NSMutableOrderedSet<NSString> ();
+			var second = new NSOrderedSet<NSString> ();
+			var result = first - second;
+			Assert.IsNotNull (result, "empty - empty NSOrderedSet should not be null");
+			Assert.AreEqual ((nint) 0, result.Count, "Count should be 0");
+		}
+
+		[Test]
+		public void OperatorAdd_WithDuplicates ()
+		{
+			var str1 = (NSString) "1";
+			var str2 = (NSString) "2";
+			var str3 = (NSString) "3";
+
+			var first = new NSMutableOrderedSet<NSString> (str1, str2);
+			var second = new NSMutableOrderedSet<NSString> (str2, str3);
+			var result = first + second;
+
+			Assert.AreEqual ((nint) 3, result.Count, "Count should be 3 (no duplicates)");
+			Assert.IsTrue (result.Contains (str1), "Should contain 1");
+			Assert.IsTrue (result.Contains (str2), "Should contain 2");
+			Assert.IsTrue (result.Contains (str3), "Should contain 3");
+		}
+
+		[Test]
+		public void OperatorSubtract_PartialOverlap ()
+		{
+			var str1 = (NSString) "1";
+			var str2 = (NSString) "2";
+			var str3 = (NSString) "3";
+			var str4 = (NSString) "4";
+
+			var first = new NSMutableOrderedSet<NSString> (str1, str2, str3);
+			var second = new NSMutableOrderedSet<NSString> (str2, str4);
+			var result = first - second;
+
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains (str1), "Should contain 1");
+			Assert.IsFalse (result.Contains (str2), "Should not contain 2");
+			Assert.IsTrue (result.Contains (str3), "Should contain 3");
+			Assert.IsFalse (result.Contains (str4), "Should not contain 4");
+		}
+
+		[Test]
+		public void OperatorSubtract_NoOverlap ()
+		{
+			var str1 = (NSString) "1";
+			var str2 = (NSString) "2";
+			var str3 = (NSString) "3";
+			var str4 = (NSString) "4";
+
+			var first = new NSMutableOrderedSet<NSString> (str1, str2);
+			var second = new NSMutableOrderedSet<NSString> (str3, str4);
+			var result = first - second;
+
+			Assert.AreEqual ((nint) 2, result.Count, "Count should be 2");
+			Assert.IsTrue (result.Contains (str1), "Should contain 1");
+			Assert.IsTrue (result.Contains (str2), "Should contain 2");
+			Assert.IsFalse (result.Contains (str3), "Should not contain 3");
+			Assert.IsFalse (result.Contains (str4), "Should not contain 4");
+		}
+
+		[Test]
+		public void Insert_NullObject ()
+		{
+			var oSet = new NSMutableOrderedSet<NSString> ();
+			Assert.Throws<ArgumentNullException> (() => oSet.Insert (null, 0), "Insert should throw for null");
+		}
+
+		[Test]
+		public void Replace_NullObject ()
+		{
+			var str1 = (NSString) "1";
+			var oSet = new NSMutableOrderedSet<NSString> (str1);
+			Assert.Throws<ArgumentNullException> (() => oSet.Replace (0, null), "Replace should throw for null");
+		}
+
+		[Test]
+		public void Add_NullObject ()
+		{
+			var oSet = new NSMutableOrderedSet<NSString> ();
+			Assert.Throws<ArgumentNullException> (() => oSet.Add (null), "Add should throw for null");
+		}
+
+		[Test]
+		public void AddObjects_NullArray ()
+		{
+			var oSet = new NSMutableOrderedSet<NSString> ();
+			Assert.Throws<ArgumentNullException> (() => oSet.AddObjects (null), "AddObjects should throw for null array");
+		}
+
+		[Test]
+		public void InsertObjects_NullArray ()
+		{
+			var oSet = new NSMutableOrderedSet<NSString> ();
+			var indexSet = NSIndexSet.FromNSRange (new NSRange (0, 1));
+			Assert.Throws<ArgumentNullException> (() => oSet.InsertObjects (null, indexSet), "InsertObjects should throw for null array");
+		}
+
+		[Test]
+		public void InsertObjects_NullIndexSet ()
+		{
+			var str1 = (NSString) "1";
+			var oSet = new NSMutableOrderedSet<NSString> ();
+			Assert.Throws<ArgumentNullException> (() => oSet.InsertObjects (new [] { str1 }, null), "InsertObjects should throw for null index set");
+		}
+
+		[Test]
+		public void ReplaceObjects_NullArray ()
+		{
+			var str1 = (NSString) "1";
+			var oSet = new NSMutableOrderedSet<NSString> (str1);
+			var indexSet = NSIndexSet.FromNSRange (new NSRange (0, 1));
+			Assert.Throws<ArgumentNullException> (() => oSet.ReplaceObjects (indexSet, null), "ReplaceObjects should throw for null array");
+		}
+
+		[Test]
+		public void ReplaceObjects_NullIndexSet ()
+		{
+			var str1 = (NSString) "1";
+			var str2 = (NSString) "2";
+			var oSet = new NSMutableOrderedSet<NSString> (str1);
+			Assert.Throws<ArgumentNullException> (() => oSet.ReplaceObjects (null, str2), "ReplaceObjects should throw for null index set");
+		}
+
+		[Test]
+		public void RemoveObject_NullObject ()
+		{
+			var oSet = new NSMutableOrderedSet<NSString> ();
+			Assert.Throws<ArgumentNullException> (() => oSet.RemoveObject (null), "RemoveObject should throw for null");
+		}
+
+		[Test]
+		public void RemoveObjects_NullArray ()
+		{
+			var oSet = new NSMutableOrderedSet<NSString> ();
+			Assert.Throws<ArgumentNullException> (() => oSet.RemoveObjects (null), "RemoveObjects should throw for null array");
+		}
+
+		[Test]
+		public void Indexer_OrderPreservation ()
+		{
+			var str1 = (NSString) "1";
+			var str2 = (NSString) "2";
+			var str3 = (NSString) "3";
+			var oSet = new NSMutableOrderedSet<NSString> (str1, str2, str3);
+
+			Assert.AreSame (str1, oSet [0], "Index 0 should be str1");
+			Assert.AreSame (str2, oSet [1], "Index 1 should be str2");
+			Assert.AreSame (str3, oSet [2], "Index 2 should be str3");
+		}
+
+		[Test]
+		public void Indexer_SetValue ()
+		{
+			var str1 = (NSString) "1";
+			var str2 = (NSString) "2";
+			var str3 = (NSString) "3";
+			var oSet = new NSMutableOrderedSet<NSString> (str1, str2);
+
+			oSet [1] = str3;
+			Assert.AreSame (str3, oSet [1], "Index 1 should now be str3");
+			Assert.AreEqual ((nint) 2, oSet.Count, "Count should remain 2");
+		}
+
+		[Test]
+		public void Add_DuplicateElement ()
+		{
+			var str1 = (NSString) "1";
+			var oSet = new NSMutableOrderedSet<NSString> (str1);
+			Assert.AreEqual ((nint) 1, oSet.Count, "Initial count should be 1");
+
+			oSet.Add (str1);
+			Assert.AreEqual ((nint) 1, oSet.Count, "Count should still be 1 after adding duplicate");
+		}
+
+		[Test]
+		public void Insert_AtBeginning ()
+		{
+			var str1 = (NSString) "1";
+			var str2 = (NSString) "2";
+			var str3 = (NSString) "3";
+			var oSet = new NSMutableOrderedSet<NSString> (str2, str3);
+
+			oSet.Insert (str1, 0);
+			Assert.AreEqual ((nint) 3, oSet.Count, "Count should be 3");
+			Assert.AreSame (str1, oSet [0], "Index 0 should be str1");
+			Assert.AreSame (str2, oSet [1], "Index 1 should be str2");
+			Assert.AreSame (str3, oSet [2], "Index 2 should be str3");
+		}
+
+		[Test]
+		public void Insert_AtEnd ()
+		{
+			var str1 = (NSString) "1";
+			var str2 = (NSString) "2";
+			var str3 = (NSString) "3";
+			var oSet = new NSMutableOrderedSet<NSString> (str1, str2);
+
+			oSet.Insert (str3, 2);
+			Assert.AreEqual ((nint) 3, oSet.Count, "Count should be 3");
+			Assert.AreSame (str1, oSet [0], "Index 0 should be str1");
+			Assert.AreSame (str2, oSet [1], "Index 1 should be str2");
+			Assert.AreSame (str3, oSet [2], "Index 2 should be str3");
+		}
+
+		[Test]
+		public void AsSet_EmptySet ()
+		{
+			var oSet = new NSMutableOrderedSet<NSString> ();
+			var set = oSet.AsSet ();
+			Assert.IsNotNull (set, "AsSet should not return null");
+			Assert.AreEqual ((nuint) 0, set.Count, "Set count should be 0");
+		}
+
+		[Test]
+		public void RemoveObject_NotPresent ()
+		{
+			var str1 = (NSString) "1";
+			var str2 = (NSString) "2";
+			var oSet = new NSMutableOrderedSet<NSString> (str1);
+
+			oSet.RemoveObject (str2);
+			Assert.AreEqual ((nint) 1, oSet.Count, "Count should remain 1");
+			Assert.IsTrue (oSet.Contains (str1), "Should still contain str1");
+		}
+
+		[Test]
+		public void RemoveObjects_EmptyArray ()
+		{
+			var str1 = (NSString) "1";
+			var oSet = new NSMutableOrderedSet<NSString> (str1);
+
+			oSet.RemoveObjects (new NSString [0]);
+			Assert.AreEqual ((nint) 1, oSet.Count, "Count should remain 1");
+			Assert.IsTrue (oSet.Contains (str1), "Should still contain str1");
+		}
+
+		[Test]
+		public void AddObjects_EmptyArray ()
+		{
+			var oSet = new NSMutableOrderedSet<NSString> ();
+			oSet.AddObjects (new NSString [0]);
+			Assert.AreEqual ((nint) 0, oSet.Count, "Count should be 0");
+		}
 	}
 }

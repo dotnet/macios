@@ -10,8 +10,9 @@ namespace NaturalLanguage {
 		static internal Dictionary<NLLanguage, double> Convert (NSDictionary<NSString, NSNumber> dict)
 		{
 			var result = new Dictionary<NLLanguage, double> ((int) dict.Count);
-			foreach (var k in dict.Keys) {
-				result [NLLanguageExtensions.GetValue (k)] = dict [k].DoubleValue;
+			var e = (IEnumerable<KeyValuePair<NSString, NSNumber>>) dict;
+			foreach (var kvp in e) {
+				result [NLLanguageExtensions.GetValue (kvp.Key)] = kvp.Value.DoubleValue;
 			}
 			return result;
 		}

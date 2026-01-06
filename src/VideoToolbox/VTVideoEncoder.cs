@@ -136,7 +136,7 @@ namespace VideoToolbox {
 
 				constant = VTVideoEncoderList.SupportedSelectionProperties;
 				if (constant is not null) {
-					if (dict.TryGetValue (constant, out NSDictionary d)) // optional
+					if (dict.TryGetValue<NSDictionary> (constant, out var d)) // optional
 						SupportedSelectionProperties = d;
 				}
 

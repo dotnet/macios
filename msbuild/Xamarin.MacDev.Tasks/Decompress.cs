@@ -97,11 +97,13 @@ namespace Xamarin.MacDev {
 		/// <param name="zip">The zip to search in</param>
 		/// <param name="resource">The relative path inside the zip to extract (may be a file or a directory).</param>
 		/// <param name="decompressionDir">The location on disk to store the extracted results</param>
-		/// <param name="cancellationToken">The cancellation token (if any=</param>
+		/// <param name="cancellationToken">The cancellation token (if any)</param>
 		/// <param name="decompressedResource">The location on disk to the extracted resource</param>
 		/// <returns>True if successfully decompressed, false otherwise.</returns>
-		public static bool TryDecompress (TaskLoggingHelper log, string zip, string resource, string decompressionDir, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? decompressedResource)
+		public static bool TryDecompress (XamarinTask task, string zip, string resource, string decompressionDir, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? decompressedResource)
 		{
+			var log = task.Log;
+
 			decompressedResource = Path.Combine (decompressionDir, resource);
 
 			var stampFile = decompressedResource.TrimEnd ('\\', '/') + ".stamp";
@@ -118,11 +120,11 @@ namespace Xamarin.MacDev {
 
 			bool rv;
 			if (Environment.OSVersion.Platform == PlatformID.Win32NT) {
-				rv = TryDecompressUsingSystemIOCompression (log, zip, resource, decompressionDir, cancellationToken);
+				rv = TryDecompressUsingSystemIOCompression (task, zip, resource, decompressionDir, cancellationToken);
 			} else if (!string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("XAMARIN_USE_SYSTEM_IO_COMPRESSION"))) {
-				rv = TryDecompressUsingSystemIOCompression (log, zip, resource, decompressionDir, cancellationToken);
+				rv = TryDecompressUsingSystemIOCompression (task, zip, resource, decompressionDir, cancellationToken);
 			} else {
-				rv = TryDecompressUsingUnzip (log, zip, resource, decompressionDir, cancellationToken);
+				rv = TryDecompressUsingUnzip (task, zip, resource, decompressionDir, cancellationToken);
 			}
 
 			if (rv) {
@@ -145,8 +147,9 @@ namespace Xamarin.MacDev {
 		// The dir separator character in zip files is always "/", even on Windows
 		const char zipDirectorySeparator = '/';
 
-		static bool TryDecompressUsingUnzip (TaskLoggingHelper log, string zip, string resource, string decompressionDir, CancellationToken? cancellationToken)
+		static bool TryDecompressUsingUnzip (XamarinTask task, string zip, string resource, string decompressionDir, CancellationToken? cancellationToken)
 		{
+			var log = task.Log;
 			Directory.CreateDirectory (decompressionDir);
 			var args = new List<string> {
 				"-u", "-o",
@@ -176,12 +179,13 @@ namespace Xamarin.MacDev {
 				args.Add (zipPattern);
 			}
 
-			var rv = XamarinTask.ExecuteAsync (log, "unzip", args, cancellationToken: cancellationToken).Result;
+			var rv = task.ExecuteAsync ("unzip", args, cancellationToken: cancellationToken).Result;
 			return rv.ExitCode == 0;
 		}
 
-		static bool TryDecompressUsingSystemIOCompression (TaskLoggingHelper log, string zip, string resource, string decompressionDir, CancellationToken? cancellationToken)
+		static bool TryDecompressUsingSystemIOCompression (XamarinTask task, string zip, string resource, string decompressionDir, CancellationToken? cancellationToken)
 		{
+			var log = task.Log;
 			var rv = true;
 
 			// canonicalize input
@@ -270,8 +274,9 @@ namespace Xamarin.MacDev {
 		///     testing the System.IO.Compression implementation locally (with the caveat that if the resources
 		///     to compress has symlinks, it may not work).
 		/// </remarks>
-		public static bool TryCompress (TaskLoggingHelper log, string zip, IEnumerable<string> resources, bool overwrite, string workingDirectory, bool maxCompression = false)
+		public static bool TryCompress (XamarinTask task, string zip, IEnumerable<string> resources, bool overwrite, string workingDirectory, bool maxCompression = false)
 		{
+			var log = task.Log;
 			if (overwrite) {
 				if (File.Exists (zip)) {
 					log.LogMessage (MessageImportance.Low, "Replacing zip file {0} with {1}", zip, string.Join (", ", resources));
@@ -293,19 +298,20 @@ namespace Xamarin.MacDev {
 
 			bool rv;
 			if (Environment.OSVersion.Platform == PlatformID.Win32NT) {
-				rv = TryCompressUsingSystemIOCompression (log, zip, resources, workingDirectory, maxCompression);
+				rv = TryCompressUsingSystemIOCompression (task, zip, resources, workingDirectory, maxCompression);
 			} else if (!string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("XAMARIN_USE_SYSTEM_IO_COMPRESSION"))) {
-				rv = TryCompressUsingSystemIOCompression (log, zip, resources, workingDirectory, maxCompression);
+				rv = TryCompressUsingSystemIOCompression (task, zip, resources, workingDirectory, maxCompression);
 			} else {
-				rv = TryCompressUsingZip (log, zip, resources, workingDirectory, maxCompression);
+				rv = TryCompressUsingZip (task, zip, resources, workingDirectory, maxCompression);
 			}
 
 			return rv;
 		}
 
 		// Will always add to an existing zip file (not replace)
-		static bool TryCompressUsingZip (TaskLoggingHelper log, string zip, IEnumerable<string> resources, string workingDirectory, bool maxCompression)
+		static bool TryCompressUsingZip (XamarinTask task, string zip, IEnumerable<string> resources, string workingDirectory, bool maxCompression)
 		{
+			var log = task.Log;
 			var zipArguments = new List<string> ();
 			if (maxCompression)
 				zipArguments.Add ("-9");
@@ -318,7 +324,7 @@ namespace Xamarin.MacDev {
 				var relativePath = PathUtils.AbsoluteToRelative (workingDirectory, fullPath);
 				zipArguments.Add (relativePath);
 			}
-			var rv = XamarinTask.ExecuteAsync (log, "zip", zipArguments, workingDirectory: workingDirectory).Result;
+			var rv = task.ExecuteAsync ("zip", zipArguments, workingDirectory: workingDirectory).Result;
 			log.LogMessage (MessageImportance.Low, "Updated {0} with {1}: {2}", zip, string.Join (", ", resources), rv.ExitCode == 0);
 			return rv.ExitCode == 0;
 		}
@@ -330,8 +336,9 @@ namespace Xamarin.MacDev {
 #endif
 
 		// Will always add to an existing zip file (not replace)
-		static bool TryCompressUsingSystemIOCompression (TaskLoggingHelper log, string zip, IEnumerable<string> resources, string workingDirectory, bool maxCompression)
+		static bool TryCompressUsingSystemIOCompression (XamarinTask task, string zip, IEnumerable<string> resources, string workingDirectory, bool maxCompression)
 		{
+			var log = task.Log;
 			var rv = true;
 
 			workingDirectory = Path.GetFullPath (workingDirectory);

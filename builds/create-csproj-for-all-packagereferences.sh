@@ -35,7 +35,7 @@ while [[ $# -gt 0 ]]; do
 	esac
 done
 
-TMPPATH=$(PWD)/packagereferences.tmp.csproj
+TMPPATH="$PWD/packagereferences.tmp.csproj"
 
 # Go to the root directory
 cd "$(git rev-parse --show-toplevel)"

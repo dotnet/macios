@@ -633,7 +633,7 @@ namespace Foundation {
 			if (NullCheckObjectAndRemoveKey (key, values)) {
 				var nsValues = new NSObject [values.Length];
 				for (var i = 0; i < values.Length; i++)
-					nsValues [i] = NSObject.FromObject (values [i]);
+					nsValues [i] = NSObject.FromObject (values [i])!;
 				Dictionary [key] = NSArray.FromNSObjects (nsValues);
 			}
 		}

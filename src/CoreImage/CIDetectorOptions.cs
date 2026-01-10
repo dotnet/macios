@@ -89,19 +89,19 @@ namespace CoreImage {
 			// Tracking exists only in iOS6+, before this the field is null (and would throw if used)
 			if (CIDetector.Tracking is not null && TrackingEnabled is not null) {
 				keys.Add (CIDetector.Tracking);
-				values.Add (NSObject.FromObject (TrackingEnabled.Value));
+				values.Add (NSObject.FromObject (TrackingEnabled.Value)!);
 			}
 
 			// EyeBlink exists only in iOS7+, before this the field is null (and would throw if used)
 			if (CIDetector.EyeBlink is not null && EyeBlink is not null) {
 				keys.Add (CIDetector.EyeBlink);
-				values.Add (NSObject.FromObject (EyeBlink.Value));
+				values.Add (NSObject.FromObject (EyeBlink.Value)!);
 			}
 
 			// Smile exists only in iOS7+, before this the field is null (and would throw if used)
 			if (CIDetector.Smile is not null && Smile is not null) {
 				keys.Add (CIDetector.Smile);
-				values.Add (NSObject.FromObject (Smile.Value));
+				values.Add (NSObject.FromObject (Smile.Value)!);
 			}
 			// AspectRation exists only in iOS8+, before this the field is null (and would throw if used)
 			if (CIDetector.AspectRatio is not null && AspectRatio is not null) {

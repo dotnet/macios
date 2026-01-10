@@ -110,7 +110,7 @@ namespace CoreBluetooth {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		public override bool Equals (object obj)
+		public override bool Equals (object? obj)
 		{
 			return base.Equals (obj);
 		}

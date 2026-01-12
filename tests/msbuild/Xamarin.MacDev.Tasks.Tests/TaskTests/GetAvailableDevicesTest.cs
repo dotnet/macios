@@ -106,6 +106,9 @@ namespace Xamarin.MacDev.Tasks {
 		[Test]
 		public void SimCtl1 ()
 		{
+			if (!Configuration.CanRunArm64)
+				Assert.Ignore ("This test currently only works on arm64"); // because the set of available simulators is different on x64
+
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, "");
 			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
@@ -152,6 +155,9 @@ namespace Xamarin.MacDev.Tasks {
 		[Test]
 		public void Ctl1 ()
 		{
+			if (!Configuration.CanRunArm64)
+				Assert.Ignore ("This test currently only works on arm64"); // because the set of available simulators is different on x64
+
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1);
 			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
@@ -227,6 +233,9 @@ namespace Xamarin.MacDev.Tasks {
 		[Test]
 		public void Ctl1_iPhone ()
 		{
+			if (!Configuration.CanRunArm64)
+				Assert.Ignore ("This test currently only works on arm64"); // because the set of available simulators is different on x64
+
 			var platform = ApplePlatform.iOS;
 			var appManifestXml =
 			"""
@@ -314,6 +323,9 @@ namespace Xamarin.MacDev.Tasks {
 		[Test]
 		public void Ctl1_iPad ()
 		{
+			if (!Configuration.CanRunArm64)
+				Assert.Ignore ("This test currently only works on arm64"); // because the set of available simulators is different on x64
+
 			var platform = ApplePlatform.iOS;
 			var appManifestXml =
 			"""
@@ -405,6 +417,9 @@ namespace Xamarin.MacDev.Tasks {
 		[Test]
 		public void Ctl1_OSVersion ()
 		{
+			if (!Configuration.CanRunArm64)
+				Assert.Ignore ("This test currently only works on arm64"); // because the set of available simulators is different on x64
+
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1);
 
@@ -496,6 +511,9 @@ namespace Xamarin.MacDev.Tasks {
 		[Test]
 		public void Ctl1_RuntimeIdentifier ()
 		{
+			if (!Configuration.CanRunArm64)
+				Assert.Ignore ("This test currently only works on arm64"); // because the set of available simulators is different on x64
+
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1);
 
@@ -586,6 +604,9 @@ namespace Xamarin.MacDev.Tasks {
 		[Test]
 		public void Ctl1_AppleTV ()
 		{
+			if (!Configuration.CanRunArm64)
+				Assert.Ignore ("This test currently only works on arm64"); // because the set of available simulators is different on x64
+
 			var platform = ApplePlatform.TVOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1);
 			Assert.IsTrue (task.Execute (), "Task should have succeeded.");

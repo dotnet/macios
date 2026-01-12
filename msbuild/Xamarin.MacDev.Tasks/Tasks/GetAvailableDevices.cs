@@ -11,6 +11,7 @@ using Microsoft.Build.Utilities;
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
+
 namespace Xamarin.MacDev.Tasks;
 
 public class GetAvailableDevices : XamarinTask, ICancelableTask {
@@ -24,7 +25,6 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 	[Output]
 	public ITaskItem [] DiscardedDevices { get; set; } = Array.Empty<ITaskItem> ();
 
-	[Output]
 	public string RuntimeIdentifier { get; set; } = "";
 
 	public string SdkDevPath { get; set; } = "";
@@ -268,7 +268,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 				Version.TryParse (productVersion, out var minimumOSVersion);
 				var maximumOSVersion = new Version (65535, 255, 255);
 
-				rv.Add (new DeviceInfo (item, [runtimeIdentifier], platform, deviceType, minimumOSVersion, maximumOSVersion, discardedReason));
+				rv.Add (new DeviceInfo (item, [runtimeIdentifier], platform, deviceType, minimumOSVersion ?? new Version (0, 0), maximumOSVersion, discardedReason));
 			}
 		}
 		return rv;
@@ -403,8 +403,10 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 								discardedReason = $"Unknown product family '{productFamily}'";
 								break;
 							}
-							Version.TryParse (deviceTypeElement.GetStringProperty ("minRuntimeVersionString"), out minimumOSVersion);
-							Version.TryParse (deviceTypeElement.GetStringProperty ("maxRuntimeVersionString"), out maximumOSVersion);
+							if (Version.TryParse (deviceTypeElement.GetStringProperty ("minRuntimeVersionString"), out var parsedMinimumOSVersion))
+								minimumOSVersion = parsedMinimumOSVersion;
+							if (Version.TryParse (deviceTypeElement.GetStringProperty ("maxRuntimeVersionString"), out var parsedMaximumOSVersion))
+								maximumOSVersion = parsedMaximumOSVersion;
 						} else {
 							discardedReason = $"Unknown device type identifier '{deviceTypeIdentifier}'";
 						}

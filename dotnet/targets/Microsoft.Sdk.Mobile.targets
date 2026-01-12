@@ -147,7 +147,8 @@
 
 	Target that queries available devices and simulators.
 	This target is called by 'dotnet run' to support device selection.
-	Returns @(Devices) items with metadata: ???????
+	Returns @(Devices) items that always has these metadata: Description, Type, OSVersion, UDID, RuntimeIdentifier
+	(but others might be present too, for debug purposes, depending on whether it's a simulator or a device)
 
 	See: https://github.com/dotnet/sdk/blob/2b9fc02a265c735f2132e4e3626e94962e48bdf5/documentation/specs/dotnet-run-for-maui.md
 	***********************************************************************************************

@@ -13,11 +13,9 @@ namespace GLKit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		public static GLKMesh []? FromAsset (MDLAsset asset, out MDLMesh [] sourceMeshes, out NSError error)
+		public static GLKMesh []? FromAsset (MDLAsset asset, out MDLMesh []? sourceMeshes, out NSError? error)
 		{
-			NSArray aret;
-
-			var ret = FromAsset (asset, out aret, out error);
+			var ret = FromAsset (asset, out NSArray? aret, out error);
 			sourceMeshes = NSArray.FromArray<MDLMesh> (aret);
 			return ret;
 		}

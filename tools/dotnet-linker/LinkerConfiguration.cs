@@ -169,6 +169,9 @@ namespace Xamarin.Linker {
 				case "Dlsym":
 					Application.ParseDlsymOptions (value);
 					break;
+				case "DylibToConvertToFramework":
+					Application.DylibsToConvertToFrameworks.Add (value);
+					break;
 				case "EnableSGenConc":
 					Application.EnableSGenConc = string.Equals (value, "true", StringComparison.OrdinalIgnoreCase);
 					break;
@@ -522,6 +525,9 @@ namespace Xamarin.Linker {
 				Console.WriteLine ($"    Debug: {Application.EnableDebug}");
 				Console.WriteLine ($"    Dlsym: {Application.DlsymOptions} {(Application.DlsymAssemblies is not null ? string.Join (" ", Application.DlsymAssemblies.Select (v => (v.Item2 ? "+" : "-") + v.Item1)) : string.Empty)}");
 				Console.WriteLine ($"    DeploymentTarget: {DeploymentTarget}");
+				Console.WriteLine ($"    DylibToConvertToFramework ({Application.DylibsToConvertToFrameworks.Count}):");
+				foreach (var lib in Application.DylibsToConvertToFrameworks.OrderBy (v => v))
+					Console.WriteLine ($"        {lib}");
 				Console.WriteLine ($"    EnableSGenConc {Application.EnableSGenConc}");
 				Console.WriteLine ($"    IntermediateLinkDir: {IntermediateLinkDir}");
 				Console.WriteLine ($"    InterpretedAssemblies: {string.Join (", ", Application.InterpretedAssemblies)}");

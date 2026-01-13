@@ -1619,4 +1619,16 @@
     <data name="E7163" xml:space="preserve">
         <value>Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information.</value>
     </data>
+
+    <data name="E7164" xml:space="preserve">
+        <value>Invalid RuntimeLibLinkMode value: '{0}'</value>
+    </data>
+
+    <data name="E7165" xml:space="preserve">
+        <value>Invalid DotNetRuntime value: '{0}'</value>
+    </data>
+
+    <data name="E7166" xml:space="preserve">
+        <value>Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}'</value>
+    </data>
 </root>

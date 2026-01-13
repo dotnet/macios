@@ -283,6 +283,7 @@ namespace Foundation {
 			}
 		}
 
+#nullable enable
 		/// <summary>Create an <see cref="NSArray" /> from the specified pointers.</summary>
 		/// <param name="items">Array of pointers (to <see cref="NSObject" /> instances).</param>
 		/// <remarks>If the <paramref name="items" /> array is null, an <see cref="ArgumentNullException" /> is thrown.</remarks>
@@ -293,24 +294,25 @@ namespace Foundation {
 
 			unsafe {
 				fixed (IntPtr* valuesPtr = items)
-					return Runtime.GetNSObject<NSArray> (NSArray.FromObjects ((IntPtr) valuesPtr, items.Length))!;
+					return Runtime.GetNSObject<NSArray> (NSArray.FromObjects ((IntPtr) valuesPtr, items.Length)) ?? new NSArray ();
 			}
 		}
 
-		static public NSArray FromIntPtrs (NativeHandle [] vals)
+		/// <summary>Create an <see cref="NSArray" /> from the specified pointers.</summary>
+		/// <param name="vals">Array of pointers (to <see cref="NSObject" /> instances).</param>
+		/// <remarks>If the <paramref name="vals" /> array is null, an <see cref="ArgumentNullException" /> is thrown.</remarks>
+		public static NSArray FromIntPtrs (NativeHandle [] vals)
 		{
 			if (vals is null)
-				throw new ArgumentNullException ("vals");
-			int n = vals.Length;
-			IntPtr buf = Marshal.AllocHGlobal (n * IntPtr.Size);
-			for (int i = 0; i < n; i++)
-				Marshal.WriteIntPtr (buf, i * IntPtr.Size, vals [i]);
+				throw new ArgumentNullException (nameof (vals));
 
-			NSArray arr = Runtime.GetNSObject<NSArray> (NSArray.FromObjects (buf, vals.Length));
-
-			Marshal.FreeHGlobal (buf);
-			return arr;
+			unsafe {
+				fixed (NativeHandle* valuesPtr = vals) {
+					return Runtime.GetNSObject<NSArray> (NSArray.FromObjects ((IntPtr) valuesPtr, vals.Length)) ?? new NSArray ();
+				}
+			}
 		}
+#nullable disable
 
 		internal static nuint GetCount (IntPtr handle)
 		{

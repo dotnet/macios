@@ -189,9 +189,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Assert.That (calledOnFree, Is.True, "calledOnFree#2");
 			Assert.That (calledOnError, Is.False, "calledOnError#2");
 
-			Assert.That (calledOnLockPointer, Is.True.Or.False, "calledOnLockPointer#2");
-			Assert.That (calledOnUnlockPointer, Is.True.Or.False, "calledOnUnlockPointer#2");
-			Assert.That (calledOnReleaseInfo, Is.True.Or.False, "calledOnReleaseInfo#2");
+			Assert.That (calledOnLockPointer, Is.True, "calledOnLockPointer#2");
+			Assert.That (calledOnUnlockPointer, Is.True, "calledOnUnlockPointer#2");
+			Assert.That (calledOnReleaseInfo, Is.False, "calledOnReleaseInfo#2");
 		}
 
 		[Test]
@@ -264,9 +264,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Assert.That (calledOnFree, Is.True, "calledOnFree#3");
 			Assert.That (calledOnError, Is.False, "calledOnError#3");
 
-			Assert.That (calledOnLockPointer, Is.True.Or.False, "calledOnLockPointer#3");
-			Assert.That (calledOnUnlockPointer, Is.True.Or.False, "calledOnUnlockPointer#3");
-			Assert.That (calledOnReleaseInfo, Is.True.Or.False, "calledOnReleaseInfo#3");
+			Assert.That (calledOnLockPointer, Is.True, "calledOnLockPointer#3");
+			Assert.That (calledOnUnlockPointer, Is.True, "calledOnUnlockPointer#3");
+			Assert.That (calledOnReleaseInfo, Is.False, "calledOnReleaseInfo#3");
 		}
 
 		[Test]

@@ -28,30 +28,24 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
 	[Register ("NSSet", SkipRegistration = true)]
 	public sealed class NSSet<TKey> : NSSet, IEnumerable<TKey>
 		where TKey : class, INativeObject {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new instance of the <see cref="NSSet{TKey}" /> class.</summary>
 		public NSSet ()
 		{
 		}
 
+		/// <summary>Initializes a new instance of the <see cref="NSSet{TKey}" /> class from the data stored in the unarchiver object.</summary>
 		/// <param name="coder">The unarchiver object.</param>
-		///         <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
-		///         <remarks>
-		///           <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="Foundation.NSCoding" />  protocol.</para>
-		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
-		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
-		///         </remarks>
+		/// <remarks>
+		/// <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization). This is part of the <see cref="NSCoding" /> protocol.</para>
+		/// <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+		/// <para>The state of this object can also be serialized by using the companion method, <see cref="INSCoding.EncodeTo" />.</para>
+		/// </remarks>
 		public NSSet (NSCoder coder)
 			: base (coder)
 		{
@@ -62,31 +56,26 @@ namespace Foundation {
 		{
 		}
 
-		/// <param name="objs">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new instance of the <see cref="NSSet{TKey}" /> class with the specified objects.</summary>
+		/// <param name="objs">An array of objects to include in the set.</param>
 		public NSSet (params TKey [] objs)
 			: base (objs)
 		{
 		}
 
-		/// <param name="other">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new instance of the <see cref="NSSet{TKey}" /> class by copying another set.</summary>
+		/// <param name="other">The set to copy.</param>
 		public NSSet (NSSet<TKey> other)
 			: base (other)
 		{
 		}
 
-		/// <param name="other">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new instance of the <see cref="NSSet{TKey}" /> class by copying a mutable set.</summary>
+		/// <param name="other">The mutable set to copy.</param>
 		public NSSet (NSMutableSet<TKey> other)
 			: base (other)
 		{
 		}
-
-#nullable enable
 		/// <summary>Create an <see cref="NSSet{TKey}" /> from a collection of items.</summary>
 		/// <param name="items">The items to add to the created <see cref="NSSet{TKey}" />.</param>
 		/// <param name="convertCallback">A callback function to convert from the type of the element into the type to add to the returned set.</param>
@@ -113,67 +102,81 @@ namespace Foundation {
 				rv.Add (convertCallback (item));
 			return rv;
 		}
-#nullable disable
 
 		// Strongly typed versions of API from NSSet
 
-		/// <param name="probe">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public TKey LookupMember (TKey probe)
+		/// <summary>Returns the object in the set that is equal to the specified object.</summary>
+		/// <param name="probe">The object to look up.</param>
+		/// <returns>The object in the set that is equal to <paramref name="probe" />, or <see langword="null" /> if no such object exists.</returns>
+		public TKey? LookupMember (TKey probe)
 		{
-			if (probe is null)
-				throw new ArgumentNullException (nameof (probe));
+			ArgumentNullException.ThrowIfNull (probe);
 
-			TKey result = Runtime.GetINativeObject<TKey> (_LookupMember (probe.Handle), false);
+			TKey? result = Runtime.GetINativeObject<TKey> (_LookupMember (probe.Handle), false);
 			GC.KeepAlive (probe);
 			return result;
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public TKey AnyObject {
+		/// <summary>Gets one of the objects in the set.</summary>
+		/// <value>One of the objects in the set, or <see langword="null" /> if the set is empty.</value>
+		public TKey? AnyObject {
 			get {
 				return Runtime.GetINativeObject<TKey> (_AnyObject, false);
 			}
 		}
 
-		/// <param name="obj">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Determines whether the set contains the specified object.</summary>
+		/// <param name="obj">The object to locate in the set.</param>
+		/// <returns><see langword="true" /> if the set contains the specified object; otherwise, <see langword="false" />.</returns>
 		public bool Contains (TKey obj)
 		{
-			if (obj is null)
-				throw new ArgumentNullException (nameof (obj));
+			ArgumentNullException.ThrowIfNull (obj);
 
 			bool result = _Contains (obj.Handle);
 			GC.KeepAlive (obj);
 			return result;
 		}
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns the contents of the set as an array.</summary>
+		/// <returns>An array containing all objects in the set.</returns>
 		public TKey [] ToArray ()
 		{
 			return base.ToArray<TKey> ();
 		}
 
-		public static NSSet<TKey> operator + (NSSet<TKey> first, NSSet<TKey> second)
+		/// <summary>Adds two sets together, creating a new set that contains all elements from both sets.</summary>
+		/// <param name="first">The first set.</param>
+		/// <param name="second">The second set.</param>
+		/// <returns>A new <see cref="NSSet{TKey}" /> containing all elements from both sets, or <see langword="null" /> if both <paramref name="first" /> and <paramref name="second" /> are <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
+		[return: NotNullIfNotNull (nameof (second))]
+		public static NSSet<TKey>? operator + (NSSet<TKey>? first, NSSet<TKey>? second)
 		{
-			if (first is null || first.Count == 0)
-				return new NSSet<TKey> (second);
-			if (second is null || second.Count == 0)
+			if (first is null && second is null)
+				return null;
+
+			if (first is null)
+				return new NSSet<TKey> (second!);
+
+			if (second is null)
 				return new NSSet<TKey> (first);
+
+			if (first.Count == 0)
+				return new NSSet<TKey> (second);
+
+			if (second.Count == 0)
+				return new NSSet<TKey> (first);
+
 			var result = new NSSet<TKey> (first._SetByAddingObjectsFromSet (second.Handle));
 			GC.KeepAlive (second);
 			return result;
 		}
 
-		public static NSSet<TKey> operator - (NSSet<TKey> first, NSSet<TKey> second)
+		/// <summary>Subtracts the elements of the second set from the first set.</summary>
+		/// <param name="first">The set to subtract from.</param>
+		/// <param name="second">The set whose elements should be removed.</param>
+		/// <returns>A new <see cref="NSSet{TKey}" /> containing the elements in <paramref name="first" /> that are not in <paramref name="second" />, or <see langword="null" /> if <paramref name="first" /> is <see langword="null" /> or empty.</returns>
+		public static NSSet<TKey>? operator - (NSSet<TKey>? first, NSSet<TKey>? second)
 		{
 			if (first is null || first.Count == 0)
 				return null;
@@ -194,9 +197,8 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerable implementation
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns an enumerator that iterates through the set.</summary>
+		/// <returns>An enumerator that can be used to iterate through the set.</returns>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return new NSFastEnumerator<TKey> (this);

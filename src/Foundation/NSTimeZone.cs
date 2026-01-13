@@ -1,18 +1,16 @@
 using System.Collections.ObjectModel;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 
 	public partial class NSTimeZone {
 
-		static ReadOnlyCollection<string> known_time_zone_names;
+		static ReadOnlyCollection<string>? known_time_zone_names;
 
-		// avoid exposing an array - it's too easy to break
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets a read-only collection of all known time zone names.</summary>
+		/// <value>A <see cref="ReadOnlyCollection{T}" /> of strings containing all known time zone names.</value>
+		/// <remarks>This property provides a read-only view of the time zone names to prevent modification of the underlying array.</remarks>
 		public static ReadOnlyCollection<string> KnownTimeZoneNames {
 			get {
 				if (known_time_zone_names is null)
@@ -21,11 +19,8 @@ namespace Foundation {
 			}
 		}
 
-		/// <summary>Returns a string representation of the value of the current instance.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Returns a string representation of the current <see cref="NSTimeZone" /> instance.</summary>
+		/// <returns>A string containing the name of the time zone.</returns>
 		public override string ToString ()
 		{
 			return Name;

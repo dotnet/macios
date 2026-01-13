@@ -1160,6 +1160,18 @@ Example:
 $ dotnet run -p:OpenNewInstance=false
 ```
 
+### OpenWaitForExit
+
+If 'dotnet run' should wait for the app to exit (defaults to `false`).
+
+This will pass `-W` to `open` if set to `true`.
+
+Example:
+
+```shell
+$ dotnet run -p:OpenWaitForExit=false
+```
+
 ### OpenArguments
 
 This property can be used to pass additional arguments to the `open` command.
@@ -1298,6 +1310,12 @@ See [TrimMode](/dotnet/core/deploying/trimming/trimming-options) for a bit more 
 > [PublishTrimmed](/dotnet/core/deploying/trimming/trimming-options?#enable-trimming)
 > to `false` - to disable trimming, set `TrimMode=copy` instead (a build error
 > will be raised if `PublishTrimmed` is set to `false`).
+
+> [!NOTE]
+> Due to [a known issue](https://github.com/dotnet/runtime/issues/108269), setting `PublishTrimmed`
+> to `true` may cause confusing problems, so the build will report an error if this
+> is detected (the solution is to not set `PublishTrimmed` at all).
+
 
 The `TrimMode` property is equivalent to the existing
 [MtouchLink](#mtouchlink) (for iOS, tvOS and Mac Catalyst) and

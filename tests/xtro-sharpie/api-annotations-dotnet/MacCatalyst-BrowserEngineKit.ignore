@@ -207,3 +207,7 @@
 !missing-selector! BEAccessibilityRemoteHostElement::setAccessibilityContainer: not bound
 !missing-type! BEAccessibilityRemoteElement not bound
 !missing-type! BEAccessibilityRemoteHostElement not bound
+!missing-selector! +BEWebContentFilter::shouldEvaluateURLs not bound
+!missing-selector! BEWebContentFilter::allowURL:completionHandler: not bound
+!missing-selector! BEWebContentFilter::evaluateURL:completionHandler: not bound
+!missing-type! BEWebContentFilter not bound

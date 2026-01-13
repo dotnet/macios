@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
 using Xharness.Jenkins.TestTasks;
 
 #nullable enable
@@ -30,6 +32,15 @@ namespace Xharness.Jenkins.Reports {
 						if (test.KnownFailure is not null)
 							writer.Write ($" Known issue: [{test.KnownFailure.HumanMessage}]({test.KnownFailure.IssueLink})");
 						writer.WriteLine ();
+						var trxLog = test.Logs.FirstOrDefault (v => v.Description == LogType.TrxLog.ToString ());
+						if (trxLog is not null && Xamarin.Utils.TrxParser.TryParseTrxFile (trxLog.FullPath, out var failedTrxTests, out var outcome, out var allTestsSucceeded, out var exception)) {
+							foreach (var failedTrxTest in failedTrxTests.OrderBy (v => v.Name).Take (3)) {
+								writer.WriteLine ($"    * {failedTrxTest.Name.Cap (64)}: {failedTrxTest.Message.Cap (128)}");
+							}
+							if (failedTrxTests.Count > 3) {
+								writer.WriteLine ($"    * ... and {failedTrxTests.Count - 3} more");
+							}
+						}
 					}
 					continue;
 				}
@@ -91,6 +102,20 @@ namespace Xharness.Jenkins.Reports {
 			if (details)
 				writer.WriteLine ("</details>");
 			writer.Flush ();
+		}
+	}
+
+	static class StringExtensions {
+		[return: NotNullIfNotNull (nameof (value))]
+		public static string? Cap (this string? value, int length)
+		{
+			if (string.IsNullOrEmpty (value))
+				return value;
+
+			if (value.Length <= length)
+				return value;
+
+			return value [0..length] + "...";
 		}
 	}
 }

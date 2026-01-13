@@ -221,6 +221,7 @@ $(DOTNET_NUPKG_DIR)/vs-workload.props: Makefile $(GENERATE_VS_WORKLOAD)
 		--shorten Microsoft.tvOS.Runtime.tvossimulator=Microsoft.tvOS.Runtime \
 		--tfm $(DOTNET_TFM) \
 		--xcode $(XCODE_VERSION) \
+		$(foreach platform,$(DOTNET_PLATFORMS),--commit-distance-$(platform) "$($(shell echo $(platform) | tr a-z A-Z)_NUGET_COMMIT_DISTANCE)") \
 		--output $@.tmp
 	$(Q) mv $@.tmp $@
 

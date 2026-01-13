@@ -52,7 +52,7 @@ namespace CoreText {
 		/// <summary>Prevents font activation.</summary>
 		PreventAutoActivation = 1 << 0,
 		[SupportedOSPlatform ("tvos16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
 		PreventAutoDownload = 1 << 1,
@@ -2882,9 +2882,9 @@ namespace CoreText {
 			}
 		}
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern /* CTFontRef */ IntPtr CTFontCreateForStringWithLanguage (
@@ -2893,9 +2893,9 @@ namespace CoreText {
 			NSRange range,
 			/* CFStringRef _Nullable */ IntPtr language);
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public CTFont? ForString (string value, NSRange range, string? language)
 		{
@@ -3645,10 +3645,10 @@ namespace CoreText {
 			GC.KeepAlive (context);
 		}
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static byte CTFontHasTable (
 			/* CTFontRef */ IntPtr font,
@@ -3658,10 +3658,10 @@ namespace CoreText {
 		/// <param name="tag">The table identifier to check for.</param>
 		/// <returns>Whether the table is present in the font or not.</returns>
 		/// <remarks>The check behaves as if <see cref="CTFontTableOptions.None" /> was specified.</remarks>
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		public bool HasTable (CTFontTable tag)
 		{
 			return CTFontHasTable (GetCheckedHandle (), tag) != 0;

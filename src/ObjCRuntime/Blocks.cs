@@ -577,7 +577,10 @@ namespace ObjCRuntime {
 				throw ErrorHelper.CreateError (8012, $"Invalid DelegateProxyAttribute for the return value for the method {baseMethod.DeclaringType.FullName}.{baseMethod.Name}: DelegateType is null. {Constants.PleaseFileBugReport}");
 
 			var delegateInvokeMethod = delegateProxyType.GetMethod ("Invoke", BindingFlags.NonPublic | BindingFlags.Static);
-			if (delegateInvokeMethod is not null && delegateInvokeMethod.IsDefined (typeof (UnmanagedCallersOnlyAttribute), false))
+			if (delegateInvokeMethod is null)
+				throw ErrorHelper.CreateError (8060, Errors.MX8060 /* Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No 'Invoke' method found. {Constants.PleaseFileBugReport} */, baseMethod.DeclaringType.FullName, baseMethod.Name);
+
+			if (delegateInvokeMethod.IsDefined (typeof (UnmanagedCallersOnlyAttribute), false))
 				return GetBlockForFunctionPointer (delegateInvokeMethod, @delegate, signature);
 
 			var delegateProxyField = delegateProxyType.GetField ("Handler", BindingFlags.NonPublic | BindingFlags.Static);

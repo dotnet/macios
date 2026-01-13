@@ -9,7 +9,7 @@ using OS_nw_protocol_options = System.IntPtr;
 
 namespace Network {
 	[SupportedOSPlatform ("tvos17.0")]
-	[SupportedOSPlatform ("macos14.0")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("maccatalyst17.0")]
 	public class NWRelayHop : NativeObject {

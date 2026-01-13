@@ -33,10 +33,4 @@ if which ccache > /dev/null 2>&1; then
 	echo "Found ccache on the system, enabling it"
 fi
 
-# Detect ADR
-if test -d ../macios-adr; then
-	printf "ENABLE_XAMARIN=1\n" >> "$OUTPUT_FILE"
-	echo "Detected the macios-adr repository, automatically enabled the Xamarin build"
-fi
-
 mv "$OUTPUT_FILE" "$OUTPUT"

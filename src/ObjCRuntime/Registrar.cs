@@ -1108,7 +1108,7 @@ namespace Registrar {
 		protected abstract void GetNamespaceAndName (TType type, out string @namespace, out string name);
 		protected abstract bool TryGetAttribute (TType type, string attributeNamespace, string attributeType, out object attribute);
 		protected abstract ExportAttribute GetExportAttribute (TProperty property); // Return null if no attribute is found. Must check the base property (i.e. if property is overriding a property in a base class, must check the overridden property for the attribute).
-		protected abstract ExportAttribute GetExportAttribute (TMethod method); // Return null if no attribute is found. Must check the base method (i.e. if method is overriding a method in a base class, must check the overridden method for the attribute).
+		public abstract ExportAttribute GetExportAttribute (TMethod method); // Return null if no attribute is found. Must check the base method (i.e. if method is overriding a method in a base class, must check the overridden method for the attribute).
 		protected abstract Dictionary<TMethod, List<TMethod>> PrepareMethodMapping (TType type);
 		public abstract RegisterAttribute GetRegisterAttribute (TType type); // Return null if no attribute is found. Do not consider base types.
 		public abstract CategoryAttribute GetCategoryAttribute (TType type); // Return null if no attribute is found. Do not consider base types.

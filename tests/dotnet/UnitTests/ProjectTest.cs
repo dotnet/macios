@@ -457,7 +457,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64", false)]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true, null, "Release")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", true, "PublishTrimmed=true;UseInterpreter=true")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true, "UseInterpreter=true")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false)]
 		[Category ("WindowsInclusive")]
 		public void IsNotMacBuild (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties = null, string configuration = "Debug")
@@ -2078,7 +2078,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet9_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 9);
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 9, isFuture: false);
 		}
 
 		[Test]
@@ -2098,9 +2098,19 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet11_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 11, isFuture: true);
-			// In .NET 11
-			// * Copy this test and create a new .NET 12 test
+			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 11);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet12_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 12, isFuture: true);
+			// In .NET 12
+			// * Copy this test and create a new .NET 13 test
 			// * Update this test to call 'BuildSupportedNetVersionApp'
 			// * The SupportedOSPlatformVersion values in the test project might need updating.
 		}
@@ -2152,7 +2162,11 @@ namespace Xamarin.Tests {
 			Assert.That (infoPlistPath, Does.Exist, "Info.plist");
 			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
 			Assert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
-			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+			if (majorNetVersion >= 10) {
+				Assert.AreEqual (project, infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+			} else {
+				Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+			}
 			Assert.AreEqual (netVersion, infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
 			Assert.AreEqual (netVersion, infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
 
@@ -3434,7 +3448,6 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
-			"/usr/lib/swift/libswiftFoundation.dylib",
 			"/usr/lib/swift/libswiftIOKit.dylib",
 			"/usr/lib/swift/libswiftMetal.dylib",
 			"/usr/lib/swift/libswiftObjectiveC.dylib",
@@ -3852,6 +3865,52 @@ namespace Xamarin.Tests {
 			default:
 				throw new InvalidOperationException ();
 			}
+		}
+
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[TestCase (ApplePlatform.MacOSX)]
+		public void Run (ApplePlatform platform)
+		{
+			var project = "MyRunApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project_path = GetProjectPath (project, platform: platform);
+			Clean (project_path);
+
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+			var tmpfile = Path.Combine (tmpdir, "file.txt");
+			var stdout = Path.Combine (tmpdir, "stdout.txt");
+			var stderr = Path.Combine (tmpdir, "stderr.txt");
+
+			var properties = GetDefaultProperties ();
+			properties ["XamarinDebugMode"] = "telegraph";
+			properties ["XamarinDebugHosts"] = "localhost";
+			properties ["XamarinDebugPort"] = "123";
+			properties ["StandardOutputPath"] = stdout;
+			properties ["StandardErrorPath"] = stderr;
+			properties ["OpenNewInstance"] = "true";
+			properties ["OpenWaitForExit"] = "true";
+			properties ["RunEnvironment"] = $"--env TEST_CASE=1 --env VARIABLE=VALUE --env TEST_FILENAME={tmpfile}";
+			DotNet.AssertRun (project_path, properties);
+
+			Assert.Multiple (() => {
+				var envContents = File.ReadAllText (tmpfile);
+				var env = File.ReadAllLines (tmpfile).Select (v => (Name: v [0..v.IndexOf ('=')], Value: v [(v.IndexOf ('=') + 1)..])).ToDictionary (v => v.Name, v => v.Value);
+				if (platform == ApplePlatform.MacOSX) {
+					Assert.That (envContents, Does.Contain ("__XAMARIN_DEBUG_"), "Xamarin debug environment variables should not leak to app");
+				} else {
+					Assert.That (envContents, Does.Not.Contain ("__XAMARIN_DEBUG_"), "Xamarin debug environment variables should not leak to app");
+				}
+				Assert.That (env.Keys, Does.Contain ("VARIABLE"), "VARIABLE");
+				Assert.That (env ["VARIABLE"], Is.EqualTo ("VALUE"), "VALUE");
+
+				Assert.That (File.ReadAllText (stdout).Trim (), Is.Empty, "Stdout");
+				var stderrContents = File.ReadAllText (stderr);
+				Assert.That (stderrContents, Does.Contain ("Found debug mode telegraph in environment variables"), "mode");
+				Assert.That (stderrContents, Does.Contain ("Found port 123 in environment variables"), "port");
+				Assert.That (stderrContents, Does.Contain ("Found host localhost in environment variables"), "host");
+				Assert.That (stderrContents, Does.Contain ("IDE Port: 123 Transport: WiFi Connect Timeout: -1"), "summary");
+			});
 		}
 	}
 }

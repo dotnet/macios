@@ -1,16 +1,18 @@
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 	public partial class NSNull {
 
-		static NSNull _null;
+		static NSNull? _null;
 
-		// helper to avoid all, but one, native calls when called repeatedly
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Gets the singleton <see cref="NSNull"/> instance.
+		/// </summary>
+		/// <value>The singleton <see cref="NSNull"/> instance representing a null value in Objective-C collections.</value>
+		/// <remarks>
+		/// This property caches the native <see cref="NSNull"/> instance to avoid repeated native calls.
+		/// </remarks>
 		static public NSNull Null {
 			get {
 				if (_null is null)

@@ -54,6 +54,32 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		}
 
 		[Test]
+		public void EventTestCustomType ()
+		{
+			var earthDestroyed = false;
+			using var vogons = new Hitchhiker ();
+			vogons.BuildIntergalacticHighway += (object sender, EventArgs ea) => {
+				earthDestroyed = true;
+			};
+			vogons.DestroyEarth ();
+			Assert.That (earthDestroyed, Is.True, "Event raised");
+		}
+
+
+		[Test]
+		public void EventTestSdkType ()
+		{
+			var eventRaised = false;
+			using var cache = new NSCache ();
+			cache.WillEvictObject += (object sender, NSObjectEventArgs ea) => {
+				eventRaised = true;
+			};
+			cache.SetObjectForKey (new NSObject (), new NSObject ());
+			cache.RemoveAllObjects ();
+			Assert.That (eventRaised, Is.True, "Event raised");
+		}
+
+		[Test]
 		public void NSRangeOutParameter ()
 		{
 			using var obj = new NSRangeOutParameterClass ();

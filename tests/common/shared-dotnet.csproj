@@ -62,7 +62,7 @@
 
 		<CustomBeforeMicrosoftCommonTargets>$(CustomBeforeMicrosoftCommonTargets);$(MSBuildThisFileDirectory)SupportedOSPlatformVersions.targets</CustomBeforeMicrosoftCommonTargets>
 
-		<!-- Use a floating target platform version, otherwise library projects might end up being built using a different workload than the current one -->
+		<!-- We must set 'UseFloatingTargetPlatformVersion=true' for our test projects, to avoid building them with other workloads than the current workload. -->
 		<UseFloatingTargetPlatformVersion Condition="'$(UseFloatingTargetPlatformVersion)' == ''">true</UseFloatingTargetPlatformVersion>
 	</PropertyGroup>
 

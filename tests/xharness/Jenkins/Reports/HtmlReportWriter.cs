@@ -424,11 +424,13 @@ namespace Xharness.Jenkins.Reports {
 						}
 
 						if (logs.Count () > 0) {
-							foreach (var log in logs) {
-								if (!(log is IFileBackedLog fileLog)) {
-									continue;
-								}
-
+							var query = logs.
+								OfType<IFileBackedLog> ().
+								OrderBy (v => v.Description).
+								ThenBy (v => v.FullPath);
+							var hasListedErrors = false;
+							foreach (var fileLog in query) {
+								var log = fileLog;
 								log.Flush ();
 								var exists = File.Exists (fileLog.FullPath);
 								string log_type = GetMimeMapping (fileLog.FullPath);
@@ -495,11 +497,12 @@ namespace Xharness.Jenkins.Reports {
 												fails = data_tuple.Item2;
 											}
 										}
-										if (fails.Count > 0) {
+										if (!hasListedErrors && fails.Count > 0) {
 											writer.WriteLine ("<div style='padding-left: 15px;'>");
 											foreach (var fail in fails)
 												writer.WriteLine ("{0} <br />", fail.AsHtml ());
 											writer.WriteLine ("</div>");
+											hasListedErrors = true;
 										}
 										if (!string.IsNullOrEmpty (summary))
 											writer.WriteLine ("<span style='padding-left: 15px;'>{0}</span><br />", summary);
@@ -532,20 +535,22 @@ namespace Xharness.Jenkins.Reports {
 												errors = (HashSet<string>) data.Item2;
 											}
 										}
-										if (errors.Count > 0) {
+										if (!hasListedErrors && errors.Count > 0) {
 											writer.WriteLine ("<div style='padding-left: 15px;'>");
 											foreach (var error in errors)
 												writer.WriteLine ("{0} <br />", error.AsHtml ());
 											writer.WriteLine ("</div>");
+											hasListedErrors = true;
 										}
 									} catch (Exception ex) {
 										writer.WriteLine ("<span style='padding-left: 15px;'>Could not parse log file: {0}: {1}</span><br />", ex.Message?.AsHtml (), ex.StackTrace?.AsHtml ());
 									}
 								} else if (log.Description == LogType.NUnitResult.ToString () || log.Description == LogType.XmlLog.ToString ()) {
 									try {
-										if (File.Exists (fileLog.FullPath) && new FileInfo (fileLog.FullPath).Length > 0) {
+										if (!hasListedErrors && File.Exists (fileLog.FullPath) && new FileInfo (fileLog.FullPath).Length > 0) {
 											if (resultParser.IsValidXml (fileLog.FullPath, out var jargon)) {
 												resultParser.GenerateTestReport (writer, fileLog.FullPath, jargon);
+												hasListedErrors = true;
 											}
 										}
 									} catch (Exception ex) {
@@ -553,8 +558,9 @@ namespace Xharness.Jenkins.Reports {
 									}
 								} else if (log.Description == LogType.TrxLog.ToString ()) {
 									try {
-										if (resultParser.IsValidXml (fileLog.FullPath, out var jargon)) {
+										if (!hasListedErrors && resultParser.IsValidXml (fileLog.FullPath, out var jargon)) {
 											resultParser.GenerateTestReport (writer, fileLog.FullPath, jargon);
+											hasListedErrors = true;
 										}
 									} catch (Exception ex) {
 										writer.WriteLine ($"<span style='padding-left: 15px;'>Could not parse {log.Description}: {ex.Message?.AsHtml ()}</span><br />");

@@ -28,28 +28,19 @@
 
 using CoreFoundation;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
-	/// <summary>Search paths utilities.</summary>
-	///     <remarks>
-	///     </remarks>
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
+	/// <summary>Provides search paths utilities for finding system directories.</summary>
 	public static class NSSearchPath {
-		/// <param name="directory">Searched directory kind.</param>
-		///         <param name="domainMask">Searched domains mask.</param>
-		///         <param name="expandTilde">Controls whether to expand tildes.</param>
-		///         <summary>Builds an array of directory search paths in specified directory and domains.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>The array is in the order in which you should search the directories. The directory returned may not exist.</remarks>
+		/// <summary>Builds an array of directory search paths in the specified directory and domains.</summary>
+		/// <param name="directory">The directory kind to search for.</param>
+		/// <param name="domainMask">The domains to search in.</param>
+		/// <param name="expandTilde">If <see langword="true" />, tildes in the paths will be expanded; otherwise, <see langword="false" />. Default is <see langword="true" />.</param>
+		/// <returns>An array of directory paths. The array is in the order in which you should search the directories. The directories returned may not exist.</returns>
 		public static string [] GetDirectories (NSSearchPathDirectory directory, NSSearchPathDomain domainMask, bool expandTilde = true)
 		{
-			return CFArray.StringArrayFromHandle (NSSearchPathForDirectoriesInDomains ((nuint) (ulong) directory, (nuint) (ulong) domainMask, expandTilde.AsByte ()));
+			return CFArray.StringArrayFromHandle (NSSearchPathForDirectoriesInDomains ((nuint) (ulong) directory, (nuint) (ulong) domainMask, expandTilde.AsByte ()))!;
 		}
 
 		[DllImport (Constants.FoundationLibrary)]

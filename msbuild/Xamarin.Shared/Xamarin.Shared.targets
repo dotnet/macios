@@ -621,17 +621,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_CompileAppManifestInputLine Include="ApplicationTitle=$(ApplicationTitle)" />
 			<_CompileAppManifestInputLine Include="ApplicationVersion=$(ApplicationVersion)" />
 			<_CompileAppManifestInputLine Include="AppManifest=$(AppBundleManifest)" />
-			<_CompileAppManifestInputLine Include="AssemblyName=$(AssemblyName)" />
 			<_CompileAppManifestInputLine Include="CompiledAppManifest=$(_TemporaryAppManifest)" />
-			<_CompileAppManifestInputLine Include="Debug=$(_BundlerDebug)" />
-			<_CompileAppManifestInputLine Include="DebugIPAddresses=$(_DebugIPAddresses)" />
 			<_CompileAppManifestInputLine Include="DefaultSdkVersion=$(_SdkVersion)" />
 			<_CompileAppManifestInputLine Include="FontFilesToRegister=$(_CompileAppManifestFontFilesToRegister)" />
 			<_CompileAppManifestInputLine Include="GenerateApplicationManifest=$(GenerateApplicationManifest)" />
 			<_CompileAppManifestInputLine Include="IsAppExtension=$(IsAppExtension)" />
-			<_CompileAppManifestInputLine Include="IsWatchApp=$(IsWatchApp)" />
-			<_CompileAppManifestInputLine Include="IsWatchExtension=$(IsWatchExtension)" />
-			<_CompileAppManifestInputLine Include="IsXPCService=$(IsXPCService)" />
 			<_CompileAppManifestInputLine Include="MinSupportedOSPlatformVersion=$(MinSupportedOSPlatformVersion)" />
 			<_CompileAppManifestInputLine Include="PartialAppManifests=$(_CompileAppManifestPartialAppManifest)" />
 			<_CompileAppManifestInputLine Include="ProjectDir=$(MSBuildProjectDirectory)" />
@@ -677,18 +671,12 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			ApplicationTitle="$(ApplicationTitle)"
 			ApplicationVersion="$(ApplicationVersion)"
 			AppManifest="$(AppBundleManifest)"
-			AssemblyName="$(AssemblyName)"
 			BundleExecutable="$(_NativeExecutableName)"
 			CompiledAppManifest="$(_TemporaryAppManifest)"
-			Debug="$(_BundlerDebug)"
-			DebugIPAddresses="$(_DebugIPAddresses)"
 			DefaultSdkVersion="$(_SdkVersion)"
 			FontFilesToRegister="@(_FontFilesToRegister)"
 			GenerateApplicationManifest="$(GenerateApplicationManifest)"
 			IsAppExtension="$(IsAppExtension)"
-			IsWatchApp="$(IsWatchApp)"
-			IsWatchExtension="$(IsWatchExtension)"
-			IsXPCService="$(IsXPCService)"
 			MinSupportedOSPlatformVersion="$(MinSupportedOSPlatformVersion)"
 			PartialAppManifests="@(PartialAppManifest)"
 			ProjectDir="$(MSBuildProjectDirectory)"

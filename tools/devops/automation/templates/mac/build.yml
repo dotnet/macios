@@ -96,21 +96,6 @@ steps:
 
   displayName: 'Set VM Vendor'
 
-# Use a cmdlet to check if the space available in the devices root system is larger than 50 gb. If there is not
-# enough space available it:
-# 1. Set the status of the build to error. It is not a failure since no tests have been ran.
-# 2. Set a comment stating the same as what was sent to the status.
-# 3. Cancel the pipeline and do not execute any of the following steps.
-- pwsh: |
-    Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tools\devops\automation\scripts\MaciosCI.psd1
-    Assert-HDFreeSpace -Size 5
-  env:
-    CONTEXT: ${{ parameters.statusContext }}
-    GITHUB_TOKEN: $(GitHub.Token)
-    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-  displayName: 'Check HD Free Space'
-  timeoutInMinutes: 5
-
 - task: xamops.azdevex.provisionator-task.provisionator@2
   displayName: 'Provision Brew components'
   inputs:

@@ -8,7 +8,7 @@ namespace AVFoundation {
 	/// <summary>This enum is used to select how to initialize a new <see cref="AVSpeechSynthesisMarker" /> instance.</summary>
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("maccatalyst17.0")]
-	[SupportedOSPlatform ("macos14.0")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos17.0")]
 	public enum AVSpeechSynthesisMarkerRangeOption {
 		/// <summary>The <c>range</c> parameter passed to the constructor is a word range.</summary>
@@ -22,7 +22,7 @@ namespace AVFoundation {
 	/// <summary>This enum is used to select how to initialize a new <see cref="AVSpeechSynthesisMarker" /> instance.</summary>
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("maccatalyst17.0")]
-	[SupportedOSPlatform ("macos14.0")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos17.0")]
 	public enum AVSpeechSynthesisMarkerStringOption {
 		/// <summary>The <c>value</c> parameter passed to the constructor is a phoneme.</summary>
@@ -38,7 +38,7 @@ namespace AVFoundation {
 		/// <param name="option">Use this option to specify how to interpret the <paramref name="range" /> parameter.</param>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
 		public AVSpeechSynthesisMarker (NSRange range, nint byteSampleOffset, AVSpeechSynthesisMarkerRangeOption option)
 			: base (NSObjectFlag.Empty)
@@ -64,7 +64,7 @@ namespace AVFoundation {
 		/// <param name="option">Use this option to specify how to interpret the <paramref name="value" /> parameter.</param>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
-		[SupportedOSPlatform ("macos14.0")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
 		public AVSpeechSynthesisMarker (string value, nint byteSampleOffset, AVSpeechSynthesisMarkerStringOption option)
 			: base (NSObjectFlag.Empty)

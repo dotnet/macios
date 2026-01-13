@@ -8,6 +8,7 @@ PROJECT_DIR=.
 
 include $(TOP)/src/frameworks.sources
 include $(TOP)/mk/rules.mk
+include $(TOP)/mk/xamarin.mk
 
 MACOS_DOTNET_BUILD_DIR=$(DOTNET_BUILD_DIR)/macos
 IOS_DOTNET_BUILD_DIR=$(DOTNET_BUILD_DIR)/ios
@@ -346,24 +347,11 @@ $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).xml: $
 	$(Q) $(CP) $$< $$@
 
 $($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll build/.build-adr-stamp | $($(2)_DOTNET_BUILD_DIR)/doc
-ifdef ENABLE_XAMARIN
-ifdef ENABLE_ADR
-	$(Q) $(MAKE) run -C $(ADR_PATH) ASSEMBLY="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" INPUT="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" OUTPUT="$(abspath $$@)"
-else
-	$$(Q) $$(CP) $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $$@
-endif
-else
-	$$(Q) $$(CP) $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $$@
-endif
+	$(TOP)/packages/appledocreader.$(ADR_RUNTIME_IDENTIFIER)/$(ADR_NUGET_VERSION)/tools/any/$(ADR_RUNTIME_IDENTIFIER)/AppleDocReader inject docs --assembly="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" --input="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" --output="$(abspath $$@)" --xcode="$(DEVELOPER_DIR)/../.." --runtimeDll="$(DOTNET_BCL_DIR)/System.Runtime.dll" -f
 endef
 
 build/.build-adr-stamp:
-ifdef ENABLE_XAMARIN
-ifdef ENABLE_ADR
-	$(Q) $(MAKE) build -C $(ADR_PATH)
-	$(Q) $(MAKE) create -C $(ADR_PATH)
-endif
-endif
+	$(MAKE) -C $(TOP)/tools/adr
 	$(Q) touch $@
 
 # Template variables:

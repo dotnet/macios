@@ -59,7 +59,7 @@ namespace Speech {
 		Authorized,
 	}
 
-	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
+	[iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
 	[Native]
 	[ErrorDomain ("SFSpeechErrorDomain")]
 	public enum SFSpeechErrorCode : long {
@@ -102,16 +102,15 @@ namespace Speech {
 		[NullAllowed, Export ("interactionIdentifier")]
 		string InteractionIdentifier { get; set; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("requiresOnDeviceRecognition")]
 		bool RequiresOnDeviceRecognition { get; set; }
 
-		[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+		[iOS (16, 0), MacCatalyst (16, 0)]
 		[Export ("addsPunctuation")]
 		bool AddsPunctuation { get; set; }
 
-		[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[iOS (17, 0), MacCatalyst (17, 0)]
 		[NullAllowed, Export ("customizedLanguageModel", ArgumentSemantic.Copy)]
 		SFSpeechLanguageModelConfiguration CustomizedLanguageModel { get; set; }
 	}
@@ -262,7 +261,7 @@ namespace Speech {
 		[Export ("speechRecognitionTask:didFinishSuccessfully:")]
 		void DidFinishSuccessfully (SFSpeechRecognitionTask task, bool successfully);
 
-		[iOS (18, 0), Mac (10, 15), TV (18, 0)]
+		[iOS (18, 0), TV (18, 0)]
 		[Export ("speechRecognitionTask:didProcessAudioDuration:")]
 		void DidProcessAudioDuration (SFSpeechRecognitionTask task, double duration);
 	}
@@ -318,7 +317,6 @@ namespace Speech {
 		[Export ("locale", ArgumentSemantic.Copy)]
 		NSLocale Locale { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("supportsOnDeviceRecognition")]
 		bool SupportsOnDeviceRecognition { get; set; }
@@ -375,7 +373,6 @@ namespace Speech {
 		[Export ("segments", ArgumentSemantic.Copy)]
 		SFTranscriptionSegment [] Segments { get; }
 
-		[iOS (13, 0)]
 		[Export ("speakingRate")]
 		[Deprecated (PlatformName.iOS, 14, 5)]
 		[MacCatalyst (13, 1)]
@@ -384,7 +381,6 @@ namespace Speech {
 		[Advice ("Use 'SpeakingRate' from 'SFSpeechRecognitionMetadata' instead.")]
 		double SpeakingRate { get; }
 
-		[iOS (13, 0)]
 		[Export ("averagePauseDuration")]
 		[Deprecated (PlatformName.iOS, 14, 5)]
 		[MacCatalyst (13, 1)]
@@ -417,7 +413,6 @@ namespace Speech {
 		[Export ("alternativeSubstrings")]
 		string [] AlternativeSubstrings { get; }
 
-		[iOS (13, 0)]
 		[NullAllowed, Export ("voiceAnalytics")]
 		[Deprecated (PlatformName.iOS, 14, 5)]
 		[MacCatalyst (13, 1)]
@@ -427,7 +422,6 @@ namespace Speech {
 		SFVoiceAnalytics VoiceAnalytics { get; }
 	}
 
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1), TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -440,7 +434,6 @@ namespace Speech {
 		double FrameDuration { get; }
 	}
 
-	[iOS (13, 0)]
 	[MacCatalyst (13, 1), TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -459,7 +452,7 @@ namespace Speech {
 		SFAcousticFeature Voicing { get; }
 	}
 
-	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
+	[iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	interface SFSpeechLanguageModelConfiguration : NSCopying, NSSecureCoding {
 		[Export ("initWithLanguageModel:")]
@@ -484,7 +477,7 @@ namespace Speech {
 		NativeHandle Constructor (NSUrl languageModel, [NullAllowed] NSUrl vocabulary, [NullAllowed][BindAs (typeof (float?))] NSNumber weight);
 	}
 
-	[Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
+	[iOS (17, 0), MacCatalyst (17, 0), TV (18, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SFSpeechLanguageModel {

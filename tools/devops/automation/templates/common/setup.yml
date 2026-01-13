@@ -6,6 +6,11 @@ parameters:
   default: true
 - name: keyringPass
   type: string
+- name: requiredDiskSpace
+  type: number
+  default: 20
+- name: statusContext
+  type: string
 
 steps:
 - template: agent-cleanser/v1.yml@yaml-templates # Uninstalls mono, Xamarin.Mac (if installed) plus cleanses the Provisionator Xcode cache and kills processes at the end
@@ -27,6 +32,21 @@ steps:
   displayName: 'Clean bot'
   continueOnError: true
   timeoutInMinutes: 60
+
+# Use a cmdlet to check if the space available in the device's root system is larger than the required amount (parameterized via 'requiredDiskSpace'). If there is not
+# enough space available it:
+# 1. Set the status of the build to error. It is not a failure since no tests have been ran.
+# 2. Set a comment stating the same as what was sent to the status.
+# 3. Cancel the pipeline and do not execute any of the following steps.
+- pwsh: |
+    Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tools\devops\automation\scripts\MaciosCI.psd1
+    Assert-HDFreeSpace -Size ${{ parameters.requiredDiskSpace }}
+  env:
+    CONTEXT: ${{ parameters.statusContext }}
+    GITHUB_TOKEN: $(GitHub.Token)
+    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+  displayName: 'Check HD Free Space'
+  timeoutInMinutes: 5
 
 - bash: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/remove-ui-prompt.sh
   env:

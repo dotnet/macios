@@ -57,7 +57,9 @@ $CP -p ../Make.config "$DIR"
 $CP -p ../Make.versions "$DIR"
 $CP -p test-dependencies.sh "$DIR"
 $CP -p ../system-dependencies.sh "$DIR"
-$CP -p ../configure.inc "$DIR"
+if test -f ../configure.inc; then
+	$CP -p ../configure.inc "$DIR"
+fi
 mkdir -p "$DIR/mk"
 $CP -p ../mk/subdirs.mk "$DIR/mk"
 $CP -p ../mk/rules.mk "$DIR/mk"

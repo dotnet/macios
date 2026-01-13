@@ -41,7 +41,6 @@ namespace Xamarin.MacDev.Tasks {
 			Task.ApplicationId = identifier;
 			Task.AppBundleName = appBundleName;
 			Task.CompiledAppManifest = new TaskItem (Path.Combine (Cache.CreateTemporaryDirectory (), "AppBundlePath", "Info.plist"));
-			Task.AssemblyName = assemblyName;
 			Task.AppManifest = new TaskItem (CreateTempFile ("foo.plist"));
 			Task.BundleExecutable = assemblyName;
 			Task.MinSupportedOSPlatformVersion = "10.0";

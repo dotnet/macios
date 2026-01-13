@@ -1898,4 +1898,8 @@
 		<value>Unable to find a delegate to invoke for the block {0} (delegate type: {1}).</value>
 		<comment>{0} - The block address. {1} - The delegate type.</comment>
 	</data>
+
+	<data name="MX8060" xml:space="preserve">
+		<value>Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No 'Invoke' method found. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).</value>
+	</data>
 </root>

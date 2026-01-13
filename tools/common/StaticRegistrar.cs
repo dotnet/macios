@@ -1392,7 +1392,7 @@ namespace Registrar {
 			}
 		}
 
-		protected override ExportAttribute GetExportAttribute (MethodDefinition method)
+		public override ExportAttribute GetExportAttribute (MethodDefinition method)
 		{
 			return CreateExportAttribute (GetBaseMethodInTypeHierarchy (method) ?? method);
 		}
@@ -1485,6 +1485,11 @@ namespace Registrar {
 
 		ProtocolMemberAttribute GetProtocolMemberAttribute (TypeReference type, string selector, ObjCMethod obj_method, MethodDefinition method)
 		{
+			return GetProtocolMemberAttribute (type, selector, obj_method.IsPropertyAccessor, method);
+		}
+
+		ProtocolMemberAttribute GetProtocolMemberAttribute (TypeReference type, string selector, bool isPropertyAccessor, MethodDefinition method)
+		{
 			var memberAttributes = GetProtocolMemberAttributes (type);
 			foreach (var attrib in memberAttributes) {
 				if (attrib.IsStatic != method.IsStatic)
@@ -1500,7 +1505,7 @@ namespace Registrar {
 						continue;
 				}
 
-				if (!obj_method.IsPropertyAccessor) {
+				if (!isPropertyAccessor) {
 					var attribParameters = new TypeReference [attrib.ParameterType?.Length ?? 0];
 					for (var i = 0; i < attribParameters.Length; i++) {
 						attribParameters [i] = attrib.ParameterType [i];
@@ -4529,9 +4534,13 @@ namespace Registrar {
 
 		public TypeDefinition GetDelegateProxyType (ObjCMethod obj_method)
 		{
+			return GetDelegateProxyType (obj_method.Method, obj_method);
+		}
+
+		public TypeDefinition GetDelegateProxyType (MethodDefinition method, ObjCMethod? obj_method = null)
+		{
 			// A mirror of this method is also implemented in BlockLiteral:GetDelegateProxyType
 			// If this method is changed, that method will probably have to be updated too (tests!!!)
-			MethodDefinition method = obj_method.Method;
 			MethodDefinition first = method;
 			MethodDefinition last = null;
 			while (method != last) {
@@ -4555,23 +4564,47 @@ namespace Registrar {
 			}
 
 			// Might be an implementation of an optional protocol member.
-			var allProtocols = obj_method.DeclaringType.AllProtocolsInHierarchy;
-			if (allProtocols is not null) {
-				string selector = null;
+			if (obj_method is not null) {
+				var allProtocols = obj_method.DeclaringType.AllProtocolsInHierarchy;
+				if (allProtocols is not null) {
+					string selector = null;
 
-				foreach (var proto in allProtocols) {
-					// We store the DelegateProxy type in the ProtocolMemberAttribute, so check those.
-					if (selector is null)
-						selector = obj_method.Selector ?? string.Empty;
-					if (selector is not null) {
-						var attrib = GetProtocolMemberAttribute (proto.Type, selector, obj_method, method);
-						if (attrib?.ReturnTypeDelegateProxy is not null)
-							return attrib.ReturnTypeDelegateProxy.Resolve ();
+					foreach (var proto in allProtocols) {
+						// We store the DelegateProxy type in the ProtocolMemberAttribute, so check those.
+						if (selector is null)
+							selector = obj_method.Selector ?? string.Empty;
+						if (selector is not null) {
+							var attrib = GetProtocolMemberAttribute (proto.Type, selector, obj_method, method);
+							if (attrib?.ReturnTypeDelegateProxy is not null)
+								return attrib.ReturnTypeDelegateProxy.Resolve ();
+						}
+					}
+				}
+			} else {
+				var allProtocols = CollectAllProtocolsInHierarchy (method.DeclaringType);
+				if (allProtocols is not null) {
+					string selector = null;
+					foreach (var proto in allProtocols) {
+						// We store the DelegateProxy type in the ProtocolMemberAttribute, so check those.
+						if (selector is null)
+							selector = ((Registrar) this).GetExportAttribute (method)?.Selector ?? string.Empty;
+						if (selector is not null) {
+							var attrib = GetProtocolMemberAttribute (proto, selector, IsPropertyAccessor (method), method);
+							if (attrib?.ReturnTypeDelegateProxy is not null)
+								return attrib.ReturnTypeDelegateProxy.Resolve ();
+						}
 					}
 				}
 			}
 
 			return null;
+		}
+
+		List<TypeDefinition> CollectAllProtocolsInHierarchy (TypeDefinition type)
+		{
+			var rv = new List<TypeDefinition> ();
+			CollectInterfaces (ref rv, type);
+			return rv;
 		}
 
 		//

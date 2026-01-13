@@ -18,7 +18,7 @@ namespace StoreKit {
 		/// <param name="in">The scene or view controller to display the interface in.</param>
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("maccatalyst16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 #if __MACOS__
 		public static void RequestReview (NSViewController @in)

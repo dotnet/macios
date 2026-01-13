@@ -785,20 +785,14 @@ namespace GameKit {
 		[NullAllowed]
 		string GuestIdentifier { get; }
 
-		[TV (12, 4)]
-		[iOS (12, 4)]
 		[MacCatalyst (13, 1)]
 		[Export ("gamePlayerID", ArgumentSemantic.Retain)]
 		string GamePlayerId { get; }
 
-		[TV (12, 4)]
-		[iOS (12, 4)]
 		[MacCatalyst (13, 1)]
 		[Export ("teamPlayerID", ArgumentSemantic.Retain)]
 		string TeamPlayerId { get; }
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("scopedIDsArePersistent")]
 		bool ScopedIdsArePersistent { get; }
@@ -1138,6 +1132,10 @@ namespace GameKit {
 		[Export ("presentFriendRequestCreatorFromWindow:error:")]
 		bool PresentFriendRequestCreator ([NullAllowed] NSWindow window, [NullAllowed] out NSError error);
 
+		[Deprecated (PlatformName.iOS, 26, 2, message: "No longer supported.")]
+		[Deprecated (PlatformName.MacOSX, 26, 2, message: "No longer supported.")]
+		[Deprecated (PlatformName.TvOS, 26, 2, message: "No longer supported.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 2, message: "No longer supported.")]
 		[MacCatalyst (13, 1)]
 		[Export ("loadDefaultLeaderboardIdentifierWithCompletionHandler:")]
 		[Async (XmlDocs = """
@@ -1149,6 +1147,10 @@ namespace GameKit {
 			""")]
 		void LoadDefaultLeaderboardIdentifier ([NullAllowed] Action<string, NSError> completionHandler);
 
+		[Deprecated (PlatformName.iOS, 26, 2, message: "No longer supported.")]
+		[Deprecated (PlatformName.MacOSX, 26, 2, message: "No longer supported.")]
+		[Deprecated (PlatformName.TvOS, 26, 2, message: "No longer supported.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 2, message: "No longer supported.")]
 		[MacCatalyst (13, 1)]
 		[Export ("setDefaultLeaderboardIdentifier:completionHandler:")]
 		[Async (XmlDocs = """
@@ -1259,21 +1261,15 @@ namespace GameKit {
 		[Export ("resolveConflictingSavedGames:withData:completionHandler:")]
 		void ResolveConflictingSavedGames (GKSavedGame [] conflictingSavedGames, NSData data, [NullAllowed] Action<GKSavedGame [], NSError> handler);
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("multiplayerGamingRestricted")]
 		bool MultiplayerGamingRestricted { [Bind ("isMultiplayerGamingRestricted")] get; }
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("loadChallengableFriendsWithCompletionHandler:")]
 		[Async]
 		void LoadChallengeableFriends ([NullAllowed] Action<GKPlayer [], NSError> completionHandler);
 
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("local")]
@@ -1727,8 +1723,6 @@ namespace GameKit {
 		[Deprecated (PlatformName.iOS, 14, 0, message: "Use 'GKMatchmakerViewController.MatchmakingMode' instead.")]
 		[Deprecated (PlatformName.TvOS, 14, 0, message: "Use 'GKMatchmakerViewController.MatchmakingMode' instead.")]
 		[Deprecated (PlatformName.MacOSX, 11, 0, message: "Use 'GKMatchmakerViewController.MatchmakingMode' instead.")]
-		[TV (13, 0)]
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Deprecated (PlatformName.MacCatalyst, 14, 0, message: "Use 'GKMatchmakerViewController.MatchmakingMode' instead.")]
 		[Export ("restrictToAutomatch")]
@@ -1931,12 +1925,12 @@ namespace GameKit {
 		[Export ("startBrowsingForNearbyPlayersWithHandler:")]
 		void StartBrowsingForNearbyPlayers ([NullAllowed] Action<GKPlayer, bool> handler);
 
-		[Mac (13, 1), iOS (16, 2), NoTV]
+		[iOS (16, 2), NoTV]
 		[MacCatalyst (16, 2)]
 		[Export ("startGroupActivityWithPlayerHandler:")]
 		void StartGroupActivity (Action<GKPlayer> handler);
 
-		[Mac (13, 1), iOS (16, 2), NoTV]
+		[iOS (16, 2), NoTV]
 		[MacCatalyst (16, 2)]
 		[Export ("stopGroupActivity")]
 		void StopGroupActivity ();
@@ -2322,7 +2316,7 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacOSX, 26, 0)]
 		[Deprecated (PlatformName.TvOS, 26, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 26, 0)]
-		[TV (17, 0), iOS (17, 0), Mac (14, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("challengeComposeControllerWithMessage:players:completion:")]
 		[Async (ResultTypeName = "GKChallengeComposeControllerResult")]
 		UIViewController ChallengeComposeControllerWithMessage ([NullAllowed] string message, GKPlayer [] players, [NullAllowed] GKChallengeComposeHandler2 completionHandler);
@@ -2440,7 +2434,7 @@ namespace GameKit {
 		[Export ("placeholderCompletedAchievementImage")]
 		UIImage PlaceholderCompletedAchievementImage { get; }
 
-		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("rarityPercent", ArgumentSemantic.Copy)]
 		[NullAllowed]
 		NSNumber RarityPercent { get; }
@@ -4247,6 +4241,10 @@ namespace GameKit {
 		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 		[Export ("triggerAccessPointForFriendingWithHandler:")]
 		void TriggerAccessPointForFriending ([NullAllowed] Action handler);
+
+		[NoTV, Mac (26, 2), iOS (26, 2), MacCatalyst (26, 2)]
+		[Export ("triggerAccessPointForArcadeWithHandler:")]
+		void TriggerAccessPointForArcade ([NullAllowed] Action handler);
 	}
 
 	[TV (14, 0), iOS (14, 0)]
@@ -4285,7 +4283,7 @@ namespace GameKit {
 		[Deprecated (PlatformName.MacOSX, 26, 0)]
 		[Deprecated (PlatformName.TvOS, 26, 0)]
 		[Deprecated (PlatformName.MacCatalyst, 26, 0)]
-		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
+		[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("challengeComposeControllerWithMessage:players:completion:")]
 		[Async (ResultTypeName = "GKChallengeComposeControllerResult")]
 		UIViewController ChallengeComposeControllerWithMessage ([NullAllowed] string message, [NullAllowed] GKPlayer [] players, [NullAllowed] GKChallengeComposeHandler2 completionHandler);

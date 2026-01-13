@@ -93,32 +93,7 @@ git-clean-all:
 	@git clean -xffdq
 	@echo "Cleaning submodules..."
 	@git submodule foreach -q --recursive 'git clean -xffdq && git reset --hard -q'
-	@set -e; \
-	for dir in $(DEPENDENCY_DIRECTORIES); do \
-		if test -d $$dir; then \
-			echo "Cleaning $$(basename $$dir)..."; \
-			cd $$dir; \
-			git clean -xffdq; \
-			git reset --hard -q; \
-			git submodule foreach -q --recursive 'git clean -xffdq'; \
-		else \
-			echo "Skipped $$dir (does not exist)"; \
-		fi; \
-	done
-
-	@set -e;  \
-	if [ -n "$(ENABLE_XAMARIN)" ]; then \
-		CONFIGURE_FLAGS=""; \
-		if [ -n "$(ENABLE_XAMARIN)" ]; then \
-			echo "Xamarin-specific build has been re-enabled"; \
-			CONFIGURE_FLAGS="$$CONFIGURE_FLAGS --enable-xamarin"; \
-		fi; \
-		./configure $$CONFIGURE_FLAGS; \
-		$(MAKE) reset; \
-		echo "Done"; \
-	else \
-		echo "Done"; \
-	fi; \
+	@echo "Done"
 
 SUBDIRS += tests
 

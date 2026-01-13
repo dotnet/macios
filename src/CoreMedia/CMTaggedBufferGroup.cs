@@ -7,7 +7,7 @@ namespace CoreMedia {
 	/// <summary>This class contains a list of pixel buffers or sample buffers, where each buffer is associated with a <see cref="CMTagCollection" />.</summary>
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("maccatalyst17.0")]
-	[SupportedOSPlatform ("macos14.0")]
+	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos17.0")]
 	public class CMTaggedBufferGroup : NativeObject {
 #if !COREBUILD

@@ -28,6 +28,7 @@ namespace Xharness {
 		public string? FailureMessage;
 		public TimeSpan Timeout = TimeSpan.FromMinutes (10);
 		public bool? Ignore;
+		public string? Filter;
 
 		public IEnumerable<TestProject> ProjectReferences = Array.Empty<TestProject> ();
 

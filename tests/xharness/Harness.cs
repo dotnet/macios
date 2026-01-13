@@ -409,6 +409,7 @@ namespace Xharness {
 					TestPlatform = TestPlatform.All,
 					IsExecutableProject = false,
 					Name = projectInfo.Name,
+					Filter = projectInfo.Filter,
 				};
 				if (projectInfo.Timeout is not null)
 					project.Timeout = projectInfo.Timeout.Value;

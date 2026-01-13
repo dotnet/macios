@@ -6748,6 +6748,8 @@ public partial class Generator : IMemberGatherer {
 						} else
 							previous_miname = miname;
 
+						// Tell the trimmer to not remove the delegate's method if someone is listening for the event
+						print ($"[DynamicDependency (nameof ({mi.Name}))]");
 						if (mi.ReturnType == TypeCache.System_Void) {
 							if (bta.Singleton || mi.GetParameters ().Length == 1)
 								print ("internal EventHandler? {0};", miname);

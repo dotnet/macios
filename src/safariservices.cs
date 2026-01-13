@@ -809,7 +809,7 @@ namespace SafariServices {
 		[Field ("SFExtensionMessageKey")]
 		NSString MessageKey { get; }
 
-		[iOS (17, 0), Mac (14, 0), MacCatalyst (17, 1)]
+		[iOS (17, 0), MacCatalyst (17, 1)]
 		[Field ("SFExtensionProfileKey")]
 		NSString ProfileKey { get; }
 	}
@@ -899,6 +899,9 @@ namespace SafariServices {
 
 	delegate void SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler ([NullAllowed] NSError error);
 
+	[NoTV, NoMacCatalyst, iOS (26, 2), NoMac]
+	delegate void SFSafariSettingsOpenExtensionsSettingsCompletionHandler ([NullAllowed] NSError error);
+
 	[NoTV, NoMacCatalyst, iOS (26, 0), NoMac]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -907,6 +910,35 @@ namespace SafariServices {
 		[Static]
 		[Export ("openExportBrowsingDataSettingsWithCompletionHandler:")]
 		void OpenExportBrowsingDataSettings ([NullAllowed] SFSafariSettingsOpenExportBrowsingDataSettingsCompletionHandler completionHandler);
+
+		[Async]
+		[iOS (26, 2)]
+		[Static]
+		[Export ("openExtensionsSettingsForIdentifiers:completionHandler:")]
+		void OpenExtensionsSettings (string [] extensionIdentifiers, [NullAllowed] SFSafariSettingsOpenExtensionsSettingsCompletionHandler completionHandler);
+	}
+
+	[NoTV, iOS (26, 2), MacCatalyst (26, 2), NoMac]
+	delegate void SFSafariExtensionManagerHandler ([NullAllowed] SFSafariExtensionState state, [NullAllowed] NSError error);
+
+	[NoTV, iOS (26, 2), MacCatalyst (26, 2), NoMac]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface SFSafariExtensionManager {
+
+		[Async]
+		[Static]
+		[Export ("getStateOfExtensionWithIdentifier:completionHandler:")]
+		void GetState (string identifier, SFSafariExtensionManagerHandler completionHandler);
+	}
+
+	[NoTV, iOS (26, 2), MacCatalyst (26, 2), NoMac]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface SFSafariExtensionState {
+
+		[Export ("enabled")]
+		bool Enabled { [Bind ("isEnabled")] get; }
 	}
 
 }

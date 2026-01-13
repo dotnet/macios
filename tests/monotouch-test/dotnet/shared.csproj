@@ -62,37 +62,6 @@
 
   <Import Project="$(RootTestsDirectory)/common/shared-dotnet.csproj" />
 
-  <!-- Any additional variations must be added after importing shared-dotnet.csproj -->
-  <ItemGroup>
-    <TestVariations Include="static-registrar-all-optimizations" Description="Static registrar + all optimizations" />
-    <TestVariations Include="static-registrar-all-optimizations-linkall" Description="Static registrar + all optimizations + Link all" />
-    <TestVariations Include="static-registrar-optimizations-except-uithread-checks-linkall" Description="Static registrar + all optimizations + Link all" />
-    <TestVariations Include="managed-static-registrar-all-optimizations-linkall" Description="Managed static registrar + all optimizations" />
-  </ItemGroup>
-  <PropertyGroup Condition="$(_TestVariationForComparison.Contains('|static-registrar-all-optimizations|'))">
-    <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
-    <Registrar>static</Registrar>
-    <DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(_TestVariationForComparison.Contains('|static-registrar-all-optimizations|'))">
-    <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
-    <Registrar>static</Registrar>
-    <LinkMode>Full</LinkMode>
-    <DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(_TestVariationForComparison.Contains('|static-registrar-optimizations-except|'))">
-    <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all,-remove-uithread-checks</AppBundleExtraOptions>
-    <Registrar>static</Registrar>
-    <LinkMode>Full</LinkMode>
-    <DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(_TestVariationForComparison.Contains('|managed-static-registrar-all-optimizations|'))">
-    <AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
-    <Registrar>managed-static</Registrar>
-    <LinkMode>Full</LinkMode>
-    <DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="$(RootTestsDirectory)\EmbeddedResources\dotnet\$(_PlatformName)\EmbeddedResources.csproj" />
     <ProjectReference Include="$(RootTestsDirectory)\bindings-test\dotnet\$(_PlatformName)\bindings-test.csproj" />

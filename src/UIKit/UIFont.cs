@@ -277,8 +277,8 @@ namespace UIKit {
 			return MonospacedDigitSystemFontOfSize (fontSize, weight.GetWeight ());
 		}
 
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static UIFont GetMonospacedSystemFont (nfloat size, nfloat weight)
 		{
@@ -286,8 +286,8 @@ namespace UIKit {
 			return ptr == IntPtr.Zero ? null : new UIFont (ptr);
 		}
 
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static UIFont GetMonospacedSystemFont (nfloat size, UIFontWeight weight) => GetMonospacedSystemFont (size, weight.GetWeight ());
 

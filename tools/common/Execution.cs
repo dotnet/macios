@@ -19,8 +19,7 @@ using System.Threading.Tasks;
 #nullable enable
 
 namespace Xamarin.Utils {
-	public class ExecutionOutput
-	{
+	public class ExecutionOutput {
 		public bool Complete { get; internal set; }
 
 		List<(bool IsError, string Line)> lines = new ();
@@ -96,7 +95,7 @@ namespace Xamarin.Utils {
 			lock (lines)
 				lines.Add ((false, line));
 		}
-		
+
 		public void WriteStandardError (string line)
 		{
 			VerifyNotComplete ();

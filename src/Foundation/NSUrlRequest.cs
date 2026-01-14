@@ -33,7 +33,7 @@ namespace Foundation {
 	public partial class NSUrlRequest {
 		/// <summary>Returns a string representation of the value of the current instance.</summary>
 		/// <returns>The absolute string of the <see cref="Url" /> if it is not <see langword="null" />, otherwise the base class string representation.</returns>
-		public override string ToString ()
+		public override string? ToString ()
 		{
 			return Url?.AbsoluteString ?? base.ToString ();
 		}

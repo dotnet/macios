@@ -39,7 +39,7 @@ namespace Foundation {
 		/// <returns>A new mutable dictionary containing the specified objects and keys.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="objects"/> or <paramref name="keys"/> is <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentException">Thrown when the arrays have different sizes.</exception>
-		public static NSMutableDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys)
+		public static NSMutableDictionary FromObjectsAndKeys (NSObject? [] objects, NSObject? [] keys)
 		{
 			if (!ValidateFromObjectsAndKeys (objects, keys))
 				return new NSMutableDictionary ();
@@ -68,7 +68,7 @@ namespace Foundation {
 		/// <returns>A new mutable dictionary containing the specified objects and keys.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="objects"/> or <paramref name="keys"/> is <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentException">Thrown when <paramref name="count"/> is invalid.</exception>
-		public static NSMutableDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
+		public static NSMutableDictionary FromObjectsAndKeys (NSObject? [] objects, NSObject? [] keys, nint count)
 		{
 			if (!ValidateFromObjectsAndKeys (objects, keys, count))
 				return new NSMutableDictionary ();

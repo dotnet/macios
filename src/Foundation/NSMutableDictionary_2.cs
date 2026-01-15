@@ -80,7 +80,7 @@ namespace Foundation {
 		{
 		}
 
-		NSMutableDictionary (TKey [] keys, TValue [] values, bool validation)
+		NSMutableDictionary (TKey? [] keys, TValue? [] values, bool validation)
 			: base (NSArray.FromNSObjects (values), NSArray.FromNSObjects (keys))
 		{
 		}
@@ -100,7 +100,7 @@ namespace Foundation {
 		/// </summary>
 		/// <param name="key">The key.</param>
 		/// <param name="value">The value.</param>
-		public NSMutableDictionary (TKey key, TValue value)
+		public NSMutableDictionary (TKey? key, TValue? value)
 			: base (NSArray.FromNSObjects (value), NSArray.FromNSObjects (key))
 		{
 		}
@@ -173,7 +173,7 @@ namespace Foundation {
 			if (keys.Length == 0)
 				return [];
 
-			var keysArray = NSArray.From<TKey> (keys);
+			var keysArray = NSArray.FromNativeObjects<TKey> (keys);
 			var result = NSArray.ArrayFromHandle<TValue> (_ObjectsForKeys (keysArray.Handle, marker.Handle));
 			GC.KeepAlive (keysArray);
 			GC.KeepAlive (marker);
@@ -263,7 +263,7 @@ namespace Foundation {
 		/// <param name="keys">An array of keys.</param>
 		/// <param name="count">The number of elements to use from each array.</param>
 		/// <returns>A new mutable dictionary containing the specified key-value pairs.</returns>
-		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (TValue [] objects, TKey [] keys, nint count)
+		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (TValue? [] objects, TKey? [] keys, nint count)
 		{
 			if (!ValidateFromObjectsAndKeys (objects, keys, count))
 				return new NSMutableDictionary<TKey, TValue> ();
@@ -279,7 +279,7 @@ namespace Foundation {
 		/// <param name="objects">An array of values.</param>
 		/// <param name="keys">An array of keys.</param>
 		/// <returns>A new mutable dictionary containing the specified key-value pairs.</returns>
-		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (TValue [] objects, TKey [] keys)
+		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (TValue? [] objects, TKey? [] keys)
 		{
 			if (!ValidateFromObjectsAndKeys (objects, keys))
 				return new NSMutableDictionary<TKey, TValue> ();
@@ -308,7 +308,7 @@ namespace Foundation {
 		/// <param name="keys">An array of <see cref="NSObject"/> keys.</param>
 		/// <param name="count">The number of elements to use from each array.</param>
 		/// <returns>A new mutable dictionary containing the specified key-value pairs.</returns>
-		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
+		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (NSObject? [] objects, NSObject? [] keys, nint count)
 		{
 			if (!ValidateFromObjectsAndKeys (objects, keys, count))
 				return new NSMutableDictionary<TKey, TValue> ();

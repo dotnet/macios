@@ -105,7 +105,7 @@ namespace Cecil.Tests {
 			"Foundation.DictionaryContainer.SetNativeValue (Foundation.NSString, ObjCRuntime.INativeObject, System.Boolean)",
 			"Foundation.DictionaryContainer.TryGetNativeValue (ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle&)",
 			"Foundation.DictionaryContainerHelper.GetHandle (Foundation.DictionaryContainer)",
-			"Foundation.NSArray.FromNativeObjects`1 (T[], System.IntPtr)",
+			"Foundation.NSArray.FromNativeObjectsImpl`1 (T[], System.IntPtr, System.Boolean)",
 			"Foundation.NSArray.FromNSObjects (System.Collections.Generic.IList`1<Foundation.NSObject>)",
 			"Foundation.NSArray.FromStrings (System.Collections.Generic.IReadOnlyList`1<System.String>)",
 			"Foundation.NSArray.UnsafeGetItem (ObjCRuntime.NativeHandle, System.UIntPtr, System.Type)",

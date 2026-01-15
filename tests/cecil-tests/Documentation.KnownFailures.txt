@@ -11806,8 +11806,6 @@ M:Foundation.INSUrlSessionWebSocketDelegate.DidOpen(Foundation.NSUrlSession,Foun
 M:Foundation.INSXpcListenerDelegate.ShouldAcceptConnection(Foundation.NSXpcListener,Foundation.NSXpcConnection)
 M:Foundation.NSArray.ArrayFromHandle``1(ObjCRuntime.NativeHandle,System.Converter{ObjCRuntime.NativeHandle,``0},System.Boolean)
 M:Foundation.NSArray.EnumsFromHandle``1(ObjCRuntime.NativeHandle)
-M:Foundation.NSArray.FromNSObjects``1(``0[][])
-M:Foundation.NSArray.FromNSObjects``1(``0[0:,0:])
 M:Foundation.NSArray.FromStrings(System.Collections.Generic.IReadOnlyList{System.String})
 M:Foundation.NSArray.ToArray
 M:Foundation.NSArray.ToArray``1

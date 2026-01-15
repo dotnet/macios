@@ -2,28 +2,6 @@
 name: Linux Build Verification
 on:
   pull_request:
-    paths:
-      - 'Makefile'
-      - 'Make.config'
-      - 'builds/**'
-      - 'src/**'
-      - 'msbuild/**'
-      - 'tools/**'
-      - 'system-dependencies.sh'
-      - '.github/workflows/linux-build.yml'
-  push:
-    branches:
-      - main
-      - 'release/**'
-    paths:
-      - 'Makefile'
-      - 'Make.config'
-      - 'builds/**'
-      - 'src/**'
-      - 'msbuild/**'
-      - 'tools/**'
-      - 'system-dependencies.sh'
-      - '.github/workflows/linux-build.yml'
 
 permissions:
   contents: read
@@ -42,44 +20,10 @@ jobs:
 
       - name: Check system dependencies
         run: |
-          echo "Running system dependency check on Linux..."
+          set -ex
           ./system-dependencies.sh
-          echo "System dependency check passed"
 
       - name: Build on Linux
-        env:
-          IGNORE_XAMARIN_MACDEV_VERSION: 1
         run: |
-          echo "Starting Linux build verification..."
-          echo "This verifies that .NET downloads and managed code builds work on Linux"
-
-          # Build should iterate into builds directory and download .NET
-          # Then into src directory to build managed code
-          # It will fail at native compilation (expected), but should get past .NET download
-          make || echo "Build stopped (expected on Linux when native compilation is needed)"
-
-          # Verify .NET was downloaded
-          if [ ! -d "builds/downloads" ]; then
-            echo "ERROR: builds/downloads directory not created"
-            exit 1
-          fi
-
-          if [ ! -f "builds/downloads/dotnet/dotnet" ]; then
-            echo "ERROR: .NET SDK not downloaded"
-            exit 1
-          fi
-
-          echo "SUCCESS: .NET SDK was downloaded successfully"
-
-          # Verify build progressed to managed code
-          echo "Verifying build progression..."
-          echo "Linux build verification completed successfully"
-
-      - name: Verify runtime directory was skipped
-        run: |
-          # Check that runtime directory builds were not attempted
-          if [ -f "runtime/.libs" ]; then
-            echo "ERROR: Runtime directory should be skipped on Linux"
-            exit 1
-          fi
-          echo "SUCCESS: Runtime directory was correctly skipped"
+          set -ex
+          make

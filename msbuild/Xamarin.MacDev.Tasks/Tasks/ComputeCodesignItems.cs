@@ -73,7 +73,7 @@ namespace Xamarin.MacDev.Tasks {
 				if (string.IsNullOrEmpty (enableCodeSigning))
 					enableCodeSigning = bundle.GetMetadata ("RequireCodeSigning");
 				var codesignSigningKey = bundle.GetMetadata ("CodesignSigningKey");
-				if (!string.Equals (enableCodeSigning, "true") && string.IsNullOrEmpty (codesignSigningKey))
+				if (!string.Equals (enableCodeSigning, "true", StringComparison.OrdinalIgnoreCase) && string.IsNullOrEmpty (codesignSigningKey))
 					continue;
 
 				// Create a new item for the app bundle, and copy any metadata over.

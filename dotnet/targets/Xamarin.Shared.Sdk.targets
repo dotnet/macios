@@ -618,6 +618,7 @@
 				PartialStaticRegistrarLibrary=$(_LibPartialStaticRegistrar)
 				Platform=$(_PlatformName)
 				PlatformAssembly=$(_PlatformAssemblyName).dll
+				PublishReadyToRun=$(PublishReadyToRun)
 				RelativeAppBundlePath=$(_RelativeAppBundlePath)
 				Registrar=$(Registrar)
 				@(ReferenceNativeSymbol -> 'ReferenceNativeSymbol=%(SymbolType):%(SymbolMode):%(Identity)')
@@ -1271,13 +1272,6 @@
 							'%(Filename)' == 'libclrjit'
 							"
 			/>
-		</ItemGroup>
-
-		<!-- CoreCLR: these are variables currently needed to make CoreCLR work -->
-		<ItemGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS'">
-			<!-- Only the interpreter works so far, so make sure only the interpreter executes and that everything is executed with the interpreter -->
-			<_BundlerEnvironmentVariables Include="DOTNET_Interpreter" Value="%2A%21%2A" /> <!-- This is the string "*!*" url encoded -->
-			<_BundlerEnvironmentVariables Include="DOTNET_ReadyToRun" Value="0" />
 		</ItemGroup>
 	</Target>
 
@@ -2626,5 +2620,5 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 	
 	<Import Project="dotnet-xcsync.targets" />
 	<Import Project="Microsoft.MaciOS.Sdk.Xcode.targets" />
-
+	<Import Project="Microsoft.Sdk.R2R.targets" />
 </Project>

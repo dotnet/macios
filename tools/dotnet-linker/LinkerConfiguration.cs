@@ -271,6 +271,13 @@ namespace Xamarin.Linker {
 				case "PlatformAssembly":
 					PlatformAssembly = Path.GetFileNameWithoutExtension (value);
 					break;
+				case "PublishReadyToRun":
+					if (!string.IsNullOrEmpty (value)) {
+						if (!TryParseOptionalBoolean (value, out var publishReadyToRun))
+							throw new InvalidOperationException ($"Unable to parse the {key} value: {value} in {linker_file}");
+						Application.PublishReadyToRun = publishReadyToRun;
+					}
+					break;
 				case "ReferenceNativeSymbol": {
 					(string symbolType, string symbolMode, string symbol) = SplitString3 (value, ':');
 					var mode = SymbolMode.Default;

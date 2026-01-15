@@ -238,7 +238,7 @@ namespace Foundation {
 			if (count < 0)
 				throw new ArgumentException ("count is negative");
 
-			var handles = new IntPtr[count];
+			var handles = new IntPtr [count];
 			for (nint i = 0; i < count; i++) {
 				var item = items [i];
 				// The analyzer cannot deal with arrays, we manually keep alive the whole array below

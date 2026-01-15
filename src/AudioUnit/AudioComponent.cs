@@ -648,64 +648,40 @@ namespace AudioUnit {
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.AudioUnitLibrary)]
-		static extern int /* OSStatus */ AudioUnitExtensionSetComponentList (IntPtr /* CFString */ extensionIdentifier, /* CFArrayRef */ IntPtr audioComponentInfo);
+		static extern int /* OSStatus */ AudioUnitExtensionSetComponentList (IntPtr /* CFString */ extensionIdentifier, /* __nullable CFArrayRef */ IntPtr audioComponentInfo);
 
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.AudioUnitLibrary)]
-		static extern /* CFArrayRef */ IntPtr AudioUnitExtensionCopyComponentList (IntPtr /* CFString */ extensionIdentifier);
+		static extern /* __nullable CFArrayRef */ IntPtr AudioUnitExtensionCopyComponentList (IntPtr /* CFString */ extensionIdentifier);
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets or sets the component list for this audio unit extension.</summary>
+		/// <value>An array of <see cref="AudioComponentInfo" /> objects describing the audio components, or <see langword="null" /> if no components are available.</value>
+		/// <remarks>
+		///   <para>This property allows you to get or set the list of audio components associated with this audio unit extension.</para>
+		///   <para>When setting this property, an <see cref="InvalidOperationException" /> will be thrown if the operation fails.</para>
+		/// </remarks>
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		public AudioComponentInfo []? ComponentList {
 			get {
-				var nameHandle = CFString.CreateNative (Name);
-				try {
-					var cHandle = AudioUnitExtensionCopyComponentList (nameHandle);
-					if (cHandle == IntPtr.Zero)
-						return null;
-					using (var nsArray = Runtime.GetNSObject<NSArray> (cHandle, owns: true)) {
-						if (nsArray is null)
-							return null;
-						// make things easier for developers since we do not know how to have an implicit conversion from NSObject to AudioComponentInfo
-						var dics = NSArray.FromArray<NSDictionary> (nsArray);
-						var result = new AudioComponentInfo [dics.Length];
-						for (var i = 0; i < result.Length; i++) {
-							result [i] = new AudioComponentInfo (dics [i]);
-						}
-						return result;
-					}
-				} finally {
-					CFString.ReleaseNative (nameHandle);
-				}
+				using var nameHandle = new TransientCFString (Name);
+				var cHandle = AudioUnitExtensionCopyComponentList (nameHandle);
+				return NSArray.ArrayFromHandle<AudioComponentInfo> (cHandle, h => new AudioComponentInfo (Runtime.GetNSObject<NSDictionary> (h)!), releaseHandle: true);
 			}
 			set {
-				if (value is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (value));
-				var nameHandle = CFString.CreateNative (Name);
-				try {
-					var dics = new NSDictionary [value.Length];
-					for (var i = 0; i < value.Length; i++) {
-						dics [i] = value [i].Dictionary;
-					}
-					using (var array = NSArray.FromNSObjects (dics)) {
-						var result = (AudioConverterError) AudioUnitExtensionSetComponentList (nameHandle, array.Handle);
-						switch (result) {
-						case AudioConverterError.None:
-							return;
-						default:
-							throw new InvalidOperationException ($"ComponentList could not be set, error {result.ToString ()}");
-						}
-					}
-				} finally {
-					CFString.ReleaseNative (nameHandle);
+				using var nameHandle = new TransientCFString (Name);
+				using var array = NSArray.FromNSObjects (h => h.Dictionary, value);
+				var result = (AudioConverterError) AudioUnitExtensionSetComponentList (nameHandle, array.GetHandle ());
+				switch (result) {
+				case AudioConverterError.None:
+					return;
+				default:
+					throw new InvalidOperationException ($"ComponentList could not be set, error {result.ToString ()}");
 				}
 			}
 		}

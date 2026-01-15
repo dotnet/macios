@@ -82,7 +82,7 @@ namespace Xamarin.MacDev.Tasks {
 				var inputImage = this.InputImages [index].ItemSpec;
 				var outputImage = this.OutputImages [index].ItemSpec;
 
-				Directory.CreateDirectory (Path.GetDirectoryName (outputImage));
+				Directory.CreateDirectory (Path.GetDirectoryName (outputImage)!);
 
 				var args = GenerateCommandLineCommands (inputImage, outputImage);
 				listOfArguments.Add ((args, inputImage));

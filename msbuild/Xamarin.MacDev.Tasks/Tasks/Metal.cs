@@ -65,7 +65,7 @@ namespace Xamarin.MacDev.Tasks {
 			var logicalName = BundleResource.GetLogicalName (this, SourceFile!);
 			var path = Path.Combine (intermediate, logicalName);
 			var args = new List<string> ();
-			var dir = Path.GetDirectoryName (path);
+			var dir = Path.GetDirectoryName (path)!;
 
 			Directory.CreateDirectory (dir);
 

@@ -46,7 +46,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (ShouldExecuteRemotely ())
 				return ExecuteRemotely ();
 
-			Directory.CreateDirectory (Path.GetDirectoryName (Output!.ItemSpec));
+			Directory.CreateDirectory (Path.GetDirectoryName (Output!.ItemSpec)!);
 			var args = GenerateCommandLineCommands ();
 			var executable = GetExecutable (args, "plutil", PlutilPath);
 			cancellationTokenSource = new CancellationTokenSource ();

@@ -82,7 +82,7 @@ namespace Xamarin.MacDev.Tasks {
 							frameworkExecutablePath = GetFrameworkExecutablePath (frameworkExecutablePath, Platform, Log);
 						}
 
-						if (OnlyFilterFrameworks && !Path.GetDirectoryName (frameworkExecutablePath).EndsWith (".framework", StringComparison.OrdinalIgnoreCase)) {
+						if (OnlyFilterFrameworks && !Path.GetDirectoryName (frameworkExecutablePath)!.EndsWith (".framework", StringComparison.OrdinalIgnoreCase)) {
 							Log.LogMessage (MessageImportance.Low, $"Skipped processing {item.ItemSpec} because it's not a framework");
 							continue;
 						}

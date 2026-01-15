@@ -57,7 +57,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				outputPath = PathUtils.ConvertToMacPath (Path.GetDirectoryName (OutputFile.ItemSpec));
+				outputPath = PathUtils.ConvertToMacPath (Path.GetDirectoryName (OutputFile.ItemSpec)!);
 
 				return ExecuteRemotely ();
 			}
@@ -94,14 +94,14 @@ namespace Xamarin.MacDev.Tasks {
 				foreach (var framework in linkerArguments.Frameworks) {
 					var fullPath = Path.GetFullPath (framework);
 					arguments.Add ("-F");
-					arguments.Add (Path.GetDirectoryName (fullPath));
+					arguments.Add (Path.GetDirectoryName (fullPath)!);
 					arguments.Add ("-framework");
 					arguments.Add (Path.GetFileNameWithoutExtension (fullPath));
 				}
 				foreach (var framework in linkerArguments.WeakFrameworks) {
 					var fullPath = Path.GetFullPath (framework);
 					arguments.Add ("-F");
-					arguments.Add (Path.GetDirectoryName (fullPath));
+					arguments.Add (Path.GetDirectoryName (fullPath)!);
 					arguments.Add ("-weak_framework");
 					arguments.Add (Path.GetFileNameWithoutExtension (fullPath));
 				}
@@ -185,7 +185,7 @@ namespace Xamarin.MacDev.Tasks {
 					if (framework.EndsWith (".framework", StringComparison.Ordinal)) {
 						// user framework, we need to pass -F to the linker so that the linker finds the user framework.
 						arguments.Add ("-F");
-						arguments.Add (Path.GetDirectoryName (Path.GetFullPath (framework)));
+						arguments.Add (Path.GetDirectoryName (Path.GetFullPath (framework))!);
 						framework = Path.GetFileNameWithoutExtension (framework);
 						hasEmbeddedFrameworks = true;
 					}

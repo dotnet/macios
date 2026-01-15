@@ -242,7 +242,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			// All the assemblies to AOT must be in the same directory
-			var assemblyDirectories = inputs.Select (v => Path.GetDirectoryName (Path.GetFullPath (v))).Distinct ().ToArray ();
+			var assemblyDirectories = inputs.Select (v => Path.GetDirectoryName (Path.GetFullPath (v))!).Distinct ().ToArray ();
 			if (assemblyDirectories.Length > 1) {
 				// The assemblies are not in the same directory, so copy them somewhere else (to InputDirectory)
 				Directory.CreateDirectory (InputDirectory);

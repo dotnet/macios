@@ -134,9 +134,9 @@ namespace Xamarin.MacDev {
 			// Then find the directory we should use to compute the result relative to.
 			string relativeToDirectory; // this is an absolute path.
 			if (isDefaultItem) {
-				relativeToDirectory = Path.GetDirectoryName (localMSBuildProjectFullPath);
+				relativeToDirectory = Path.GetDirectoryName (localMSBuildProjectFullPath)!;
 			} else {
-				relativeToDirectory = Path.GetDirectoryName (localDefiningProjectFullPath);
+				relativeToDirectory = Path.GetDirectoryName (localDefiningProjectFullPath)!;
 			}
 			var originalRelativeToDirectory = relativeToDirectory;
 

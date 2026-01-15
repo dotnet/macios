@@ -341,7 +341,7 @@ namespace Xamarin.MacDev.Tasks {
 			// on macOS apps {item.ItemSpec} can be a symlink to `Versions/Current/{item.ItemSpec}`
 			// and `Current` also a symlink to `A`... and `_CodeSignature` will be found there
 			var path = item.ItemSpec;
-			var parent = Path.GetDirectoryName (path);
+			var parent = Path.GetDirectoryName (path)!;
 
 			// so do not don't sign `A.framework/A`, sign `A.framework` which will always sign the *bundle*
 			if ((Path.GetExtension (parent) == ".framework") && (Path.GetFileName (path) == Path.GetFileNameWithoutExtension (parent)))
@@ -464,7 +464,7 @@ namespace Xamarin.MacDev.Tasks {
 			// while also not codesigning directories before files inside them.
 			foreach (var res in resourcesToSign) {
 				var path = res.ItemSpec;
-				var parent = Path.GetDirectoryName (path);
+				var parent = Path.GetDirectoryName (path)!;
 
 				// so do not don't sign `A.framework/A`, sign `A.framework` which will always sign the *bundle*
 				if (Path.GetExtension (parent) == ".framework" && Path.GetFileName (path) == Path.GetFileNameWithoutExtension (parent))

@@ -558,7 +558,7 @@ namespace Xamarin.MacDev.Tasks {
 			var compiledEntitlementsFullPath = Path.GetFullPath (CompiledEntitlements!.ItemSpec);
 			var compiledEntitlementsFullPathItem = new TaskItem (compiledEntitlementsFullPath);
 
-			Directory.CreateDirectory (Path.GetDirectoryName (compiledEntitlementsFullPath));
+			Directory.CreateDirectory (Path.GetDirectoryName (compiledEntitlementsFullPath)!);
 
 			if (BundleEntitlementsInExecutable) {
 				// Any entitlements the app desires are stored inside the executable for simulator builds,

@@ -38,7 +38,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (ShouldExecuteRemotely ())
 				return ExecuteRemotely ();
 
-			var dir = Path.GetDirectoryName (OutputLibrary);
+			var dir = Path.GetDirectoryName (OutputLibrary)!;
 			Directory.CreateDirectory (dir);
 
 			var env = new Dictionary<string, string?> {

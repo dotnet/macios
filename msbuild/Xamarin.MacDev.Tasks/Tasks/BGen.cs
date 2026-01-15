@@ -215,7 +215,7 @@ namespace Xamarin.MacDev.Tasks {
 				};
 				// OutputAssembly is optional so it can be null
 				if (!string.IsNullOrEmpty (target)) {
-					var d = Path.GetDirectoryName (target);
+					var d = Path.GetDirectoryName (target)!;
 					var n = Path.GetFileName (target);
 					customTags.Add ("targetpath", Path.Combine (d, n));
 					customTags.Add ("targetdir", d);
@@ -243,12 +243,12 @@ namespace Xamarin.MacDev.Tasks {
 
 					TaskItemFixer.FixItemSpecs (Log, item => OutputPath, References.Where (x => !x.IsFrameworkItem ()).ToArray ());
 
-					var success = ExecuteRemotely (out var taskRunner);
-
-					if (success)
+					if (ExecuteRemotely (out var taskRunner)) {
 						GetGeneratedSourcesAsync (taskRunner).Wait ();
+						return true;
+					}
 
-					return success;
+					return false;
 				} catch (Exception ex) {
 					Log.LogErrorFromException (ex);
 

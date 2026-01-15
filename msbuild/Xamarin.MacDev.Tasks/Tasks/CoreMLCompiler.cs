@@ -115,7 +115,7 @@ namespace Xamarin.MacDev.Tasks {
 					}
 				}
 
-				if (metadata is null)
+				if (metadata is null || rpath is null)
 					continue;
 
 				var compiled = new TaskItem (path, metadata);
@@ -150,7 +150,7 @@ namespace Xamarin.MacDev.Tasks {
 					var logicalName = model.GetMetadata ("LogicalName");
 					var bundleName = GetPathWithoutExtension (logicalName) + ".mlmodelc";
 					var outputPath = Path.Combine (coremlcOutputDir, bundleName);
-					var outputDir = Path.GetDirectoryName (outputPath);
+					var outputDir = Path.GetDirectoryName (outputPath)!;
 					var partialPlist = GetPathWithoutExtension (outputPath) + "-partial.plist";
 					var log = GetPathWithoutExtension (outputPath) + ".log";
 					var resourceTags = model.GetMetadata ("ResourceTags");

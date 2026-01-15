@@ -40,7 +40,7 @@ namespace Xamarin.MacDev.Tasks {
 				var temporaryTarget = target + ".tmp";
 
 				// install_name_tool modifies the file in-place, so copy it first to a temporary file first.
-				Directory.CreateDirectory (Path.GetDirectoryName (temporaryTarget));
+				Directory.CreateDirectory (Path.GetDirectoryName (temporaryTarget)!);
 				File.Copy (src, temporaryTarget, true);
 
 				var arguments = new List<string> ();

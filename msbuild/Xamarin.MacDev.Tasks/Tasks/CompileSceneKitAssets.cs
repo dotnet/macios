@@ -94,7 +94,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			scnassets = file;
 			while (scnassets.Length > 0 && Path.GetExtension (scnassets).ToLowerInvariant () != ".scnassets")
-				scnassets = Path.GetDirectoryName (scnassets);
+				scnassets = Path.GetDirectoryName (scnassets)!;
 			return scnassets.Length > 0;
 		}
 

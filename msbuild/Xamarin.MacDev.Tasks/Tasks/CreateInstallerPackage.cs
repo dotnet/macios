@@ -122,7 +122,7 @@ namespace Xamarin.MacDev.Tasks {
 			PkgPackagePath = Path.GetFullPath (PkgPackagePath);
 			args.Add (PkgPackagePath);
 
-			Directory.CreateDirectory (Path.GetDirectoryName (PkgPackagePath));
+			Directory.CreateDirectory (Path.GetDirectoryName (PkgPackagePath)!);
 
 			return args;
 		}
@@ -133,10 +133,10 @@ namespace Xamarin.MacDev.Tasks {
 
 			string [] argv = StringUtils.ParseArguments (extraArgs);
 			var customTags = new Dictionary<string, string> (StringComparer.OrdinalIgnoreCase) {
-				{ "projectdir",   Path.GetDirectoryName (this.ProjectPath) },
+				{ "projectdir",   Path.GetDirectoryName (this.ProjectPath)! },
 				{ "appbundledir", this.AppBundleDir },
-				{ "targetpath",   Path.Combine (Path.GetDirectoryName (target), Path.GetFileName (target)) },
-				{ "targetdir",    Path.GetDirectoryName (target) },
+				{ "targetpath",   Path.Combine (Path.GetDirectoryName (target)!, Path.GetFileName (target)) },
+				{ "targetdir",    Path.GetDirectoryName (target)! },
 				{ "targetname",   Path.GetFileName (target) },
 				{ "targetext",    Path.GetExtension (target) },
 			};

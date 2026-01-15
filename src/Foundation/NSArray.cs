@@ -236,7 +236,7 @@ namespace Foundation {
 				throw new ArgumentException ("count is larger than the number of items", "count");
 
 			if (count < 0)
-				throw new ArgumentException ("count is negative");
+				throw new ArgumentOutOfRangeException (nameof (count), "count is negative");
 
 			var handles = new IntPtr [count];
 			for (nint i = 0; i < count; i++) {

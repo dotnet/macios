@@ -1763,7 +1763,7 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public ushort UmpActiveGroupBitmap {
@@ -1776,7 +1776,7 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public bool UmpCanTransmitGroupless {
@@ -2941,7 +2941,7 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public ushort UmpActiveGroupBitmap {
@@ -2954,7 +2954,7 @@ namespace CoreMidi {
 		}
 
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public bool UmpCanTransmitGroupless {

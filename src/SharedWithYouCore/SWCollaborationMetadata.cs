@@ -14,7 +14,7 @@ namespace SharedWithYouCore {
 	[UnsupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios16.0")]
-	[SupportedOSPlatform ("maccatalyst16.0")]
+	[SupportedOSPlatform ("maccatalyst")]
 	public enum SWIdentifierType {
 		Local,
 		Collaboration,
@@ -27,7 +27,7 @@ namespace SharedWithYouCore {
 		[UnsupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.1")]
-		[SupportedOSPlatform ("maccatalyst16.1")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public SWCollaborationMetadata (string identifier, SWIdentifierType identifierType) : base (NSObjectFlag.Empty)
 		{
 			switch (identifierType) {

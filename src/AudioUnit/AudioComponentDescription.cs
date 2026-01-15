@@ -66,7 +66,7 @@ namespace AudioUnit {
 		[SupportedOSPlatform ("tvos")]
 		MIDIProcessor = 0x61756d69, // 'aumi'
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos16.0")]
 		SpeechSynthesize = 0x61757370, // ausp

@@ -118,7 +118,7 @@ namespace ObjCRuntime {
 		static CoreMedia.CMTimeRange xamarin_nsvalue_to_cmtimerange (IntPtr value) { if (value == IntPtr.Zero) return default (CoreMedia.CMTimeRange); return Runtime.GetNSObject<NSValue> (value)?.CMTimeRangeValue ?? default (CoreMedia.CMTimeRange); }
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos16.0")]
 		static CoreMedia.CMVideoDimensions xamarin_nsvalue_to_cmvideodimensions (IntPtr value) { if (value == IntPtr.Zero) return default (CoreMedia.CMVideoDimensions); return Runtime.GetNSObject<NSValue> (value)?.CMVideoDimensionsValue ?? default (CoreMedia.CMVideoDimensions); }
 		static MapKit.MKCoordinateSpan xamarin_nsvalue_to_mkcoordinatespan (IntPtr value) { if (value == IntPtr.Zero) return default (MapKit.MKCoordinateSpan); return Runtime.GetNSObject<NSValue> (value)?.CoordinateSpanValue ?? default (MapKit.MKCoordinateSpan); }
@@ -163,7 +163,7 @@ namespace ObjCRuntime {
 		static IntPtr xamarin_cmtimerange_to_nsvalue (CoreMedia.CMTimeRange value) { using var rv = NSValue.FromCMTimeRange (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		[SupportedOSPlatform ("ios16.0")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos16.0")]
 		static IntPtr xamarin_cmvideodimensions_to_nsvalue (CoreMedia.CMVideoDimensions value) { using var rv = NSValue.FromCMVideoDimensions (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }
 		static IntPtr xamarin_mkcoordinatespan_to_nsvalue (MapKit.MKCoordinateSpan value) { using var rv = NSValue.FromMKCoordinateSpan (value); rv.DangerousRetain ().DangerousAutorelease (); return rv.Handle; }

@@ -17,7 +17,7 @@ namespace StoreKit {
 		/// <summary>Ask StoreKit to request an App Store review or rating from the user.</summary>
 		/// <param name="in">The scene or view controller to display the interface in.</param>
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 #if __MACOS__

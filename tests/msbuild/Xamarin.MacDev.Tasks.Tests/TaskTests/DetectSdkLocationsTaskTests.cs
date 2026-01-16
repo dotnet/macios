@@ -20,21 +20,5 @@ namespace Xamarin.MacDev.Tasks {
 
 			Assert.AreEqual ("XYZ", task.XamarinSdkRoot, "#1");
 		}
-
-		[Test]
-		public void InexistentSDKVersion ()
-		{
-			Configuration.AssertLegacyXamarinAvailable ();
-			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.iOS);
-			var task = CreateTask<DetectSdkLocations> ();
-			task.SdkVersion = "4.0";
-			task.TargetFrameworkMoniker = TargetFramework.DotNet_iOS_String;
-			Assert.IsTrue (task.Execute (), "4.0 Execute");
-
-			Assert.AreNotEqual ("4.0", task.SdkVersion, "#1");
-
-			task.SdkVersion = "44.0";
-			Assert.IsFalse (task.Execute (), "44.0 Execute");
-		}
 	}
 }

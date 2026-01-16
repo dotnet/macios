@@ -125,7 +125,10 @@ endif
 ##
 
 # we must install locally during 'make all', because the F# build depends on the msbuild targets/assemblies.
-all-local:: $(MSBUILD_PRODUCTS) .stamp-test-xml
+all-local:: $(MSBUILD_PRODUCTS)
+ifndef IS_LINUX
+all-local:: .stamp-test-xml
+endif
 
 # I haven't found a way to execute ilrepack.exe on .NET (it will probably have to be built for .NET), so run it using Mono.
 

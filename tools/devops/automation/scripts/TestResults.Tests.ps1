@@ -915,7 +915,7 @@ Describe "TestResults tests" {
 
 <summary>1 tests failed, 0 tests passed.</summary>
 <details>
-
+# :tada: All 5 tests passed :tada:
 </details>
 
 [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_maccatalyst-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_maccatalyst-1&api-version=6.0&`$format=zip)
@@ -970,9 +970,8 @@ Describe "TestResults tests" {
 
 ### :x: dotnettests tests (MacCatalyst)
 
-<summary>5 tests failed, 6 tests passed.</summary>
 <details>
-
+<summary>5 tests failed, 6 tests passed.</summary>
 </details>
 
 [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_maccatalyst-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_maccatalyst-1&api-version=6.0&`$format=zip)

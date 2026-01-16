@@ -115,8 +115,10 @@ DOTNET_IOS_WINDOWS_FILES += Messaging/Xamarin.Messaging.Build/obj/$(CONFIG)/Buil
 
 .dotnet-windows: .build-stamp .copy-windows-files
 
+ifndef IS_LINUX
 all-local:: .dotnet-windows
 dotnet:: .dotnet-windows
+endif
 
 ##
 ## Common targets ##

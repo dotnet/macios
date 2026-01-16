@@ -404,15 +404,16 @@ class ParallelTestsResults {
                                     $startLine = $i
                                 }
                                 $addDetails = $false
-                                break
                             } elseif ($line.Contains("<summary>")) {
                                 if ($startLine -eq -1) {
                                     $startLine = $i
                                 }
                                 $addSummary = $false
-                                break
                             } elseif ($line.Contains("## Failed tests")) {
                                 $startLine = $i + 1
+                                break
+                            }
+                            if (($addDetails -eq $false) -and ($addSummary -eq $false)) {
                                 break
                             }
                         }

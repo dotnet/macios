@@ -29,24 +29,22 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 
 	public partial class NSMutableSet : IEnumerable<NSObject> {
-		/// <param name="objs">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new mutable set with the specified objects.</summary>
+		/// <param name="objs">The objects to add to the set.</param>
 		public NSMutableSet (params NSObject [] objs)
 			: this (NSArray.FromNSObjects (objs))
 		{
 		}
 
-		/// <param name="strings">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new mutable set with the specified strings.</summary>
+		/// <param name="strings">The strings to add to the set.</param>
 		public NSMutableSet (params string [] strings)
 			: this (NSArray.FromStrings (strings))
 		{
@@ -57,10 +55,18 @@ namespace Foundation {
 		{
 		}
 
-		public static NSMutableSet operator + (NSMutableSet first, NSMutableSet second)
+		/// <summary>Creates a new mutable set containing all objects from both sets.</summary>
+		/// <param name="first">The first set.</param>
+		/// <param name="second">The second set.</param>
+		/// <returns>A new <see cref="NSMutableSet" /> containing the union of both sets, or <see langword="null" /> if both sets are <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
+		[return: NotNullIfNotNull (nameof (second))]
+		public static NSMutableSet? operator + (NSMutableSet? first, NSMutableSet? second)
 		{
+			if (first is null && second is null)
+				return null;
 			if (first is null || first.Count == 0)
-				return new NSMutableSet (second);
+				return second is null ? new NSMutableSet () : new NSMutableSet (second);
 			if (second is null || second.Count == 0)
 				return new NSMutableSet (first);
 
@@ -69,10 +75,17 @@ namespace Foundation {
 			return copy;
 		}
 
-		public static NSMutableSet operator - (NSMutableSet first, NSMutableSet second)
+		/// <summary>Creates a new mutable set with objects from the first set that are not in the second set.</summary>
+		/// <param name="first">The first set.</param>
+		/// <param name="second">The second set.</param>
+		/// <returns>A new <see cref="NSMutableSet" /> containing the difference, or <see langword="null" /> if the first set is <see langword="null" />.</returns>
+		[return: NotNullIfNotNull (nameof (first))]
+		public static NSMutableSet? operator - (NSMutableSet? first, NSMutableSet? second)
 		{
-			if (first is null || first.Count == 0)
+			if (first is null)
 				return null;
+			if (first.Count == 0)
+				return new NSMutableSet ();
 			if (second is null || second.Count == 0)
 				return new NSMutableSet (first);
 

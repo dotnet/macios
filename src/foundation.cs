@@ -6914,9 +6914,11 @@ namespace Foundation {
 		[Notification]
 		NSString CurrentLocaleDidChangeNotification { get; }
 
+		[return: NullAllowed]
 		[Export ("objectForKey:"), Internal]
 		NSObject ObjectForKey (NSString key);
 
+		[return: NullAllowed]
 		[Export ("displayNameForKey:value:"), Internal]
 		NSString DisplayNameForKey (NSString key, string value);
 

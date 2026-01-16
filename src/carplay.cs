@@ -419,8 +419,6 @@ namespace CarPlay {
 	interface CPGridButton : NSSecureCoding {
 
 		[Export ("initWithTitleVariants:image:handler:")]
-		[Deprecated (PlatformName.iOS, 26, 0, message: "Use 'Constructor (string[], UIImage, CPMessageGridItemConfiguration, Action<CPGridButton>)' instead.")]
-		[Deprecated (PlatformName.MacCatalyst, 26, 0, message: "Use 'Constructor (string[], UIImage, CPMessageGridItemConfiguration, Action<CPGridButton>)' instead.")]
 		NativeHandle Constructor (string [] titleVariants, UIImage image, [NullAllowed] Action<CPGridButton> handler);
 
 		[iOS (26, 0), MacCatalyst (26, 0)]

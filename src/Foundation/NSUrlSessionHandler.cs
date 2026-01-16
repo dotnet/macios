@@ -93,10 +93,9 @@ namespace Foundation {
 				AppendSegment (header, NSHttpCookie.KeyExpires.ToString (), dateStr);
 			}
 
-			if (cookie.Properties.ContainsKey (NSHttpCookie.KeyMaximumAge)) {
-				var timeStampString = (NSString) cookie.Properties [NSHttpCookie.KeyMaximumAge];
+			var timeStampStringValue = cookie.Properties [NSHttpCookie.KeyMaximumAge];
+			if (timeStampStringValue is NSString timeStampString)
 				AppendSegment (header, NSHttpCookie.KeyMaximumAge.ToString (), timeStampString);
-			}
 
 			if (cookie.IsSecure)
 				AppendSegment (header, NSHttpCookie.KeySecure.ToString (), null);

@@ -215,7 +215,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var rv = ExecuteAsync ("xcrun", arguments, sdkDevPath: SdkDevPath, showErrorIfFailure: false).Result;
 			if (rv.ExitCode != 0) {
-				var stderr = rv.StandardError?.ToString ()?.Trim ();
+				var stderr = rv.Output.MergedOutput;
 #if NET
 				if (string.IsNullOrEmpty (stderr)) {
 #else

@@ -25,8 +25,6 @@ namespace Xamarin.MacDev.Tasks {
 			var sdk = Sdks.GetAppleSdk (platform);
 			var version = AppleSdkVersion.UseDefault.ToString ();
 			var root = sdk.GetSdkPath (version, false);
-			var usr = Path.Combine (sdk.DeveloperRoot, "usr");
-			var bin = Path.Combine (usr, "bin");
 			string sdkPlatform;
 			var uiDeviceFamily = "";
 
@@ -66,8 +64,6 @@ namespace Xamarin.MacDev.Tasks {
 			task.SdkDevPath = Configuration.xcode_root;
 			task.SdkPlatform = sdkPlatform;
 			task.SdkVersion = version.ToString ();
-			task.SdkUsrPath = usr;
-			task.SdkBinPath = bin;
 			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 			task.UIDeviceFamily = uiDeviceFamily;
 			return task;

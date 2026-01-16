@@ -90,5 +90,119 @@ namespace monotouchtest {
 				}
 			}
 		}
+
+		[Test]
+		public void MissingKey_StringIndexer ()
+		{
+			using (var dict = new NSMutableDictionary ()) {
+				dict ["existingKey"] = (NSString) "value";
+
+				// Accessing a missing key should return null
+				var result = dict ["missingKey"];
+				Assert.IsNull (result, "Missing key should return null");
+
+				// Verify the existing key still works
+				Assert.IsNotNull (dict ["existingKey"], "Existing key should return value");
+			}
+		}
+
+		[Test]
+		public void MissingKey_NSObjectIndexer ()
+		{
+			using (var dict = new NSMutableDictionary ()) {
+				var existingKey = NSDate.Now;
+				var missingKey = NSDate.DistantPast;
+				dict [existingKey] = NSDate.DistantFuture;
+
+				// Accessing a missing key should return null
+				var result = dict [missingKey];
+				Assert.IsNull (result, "Missing key should return null");
+
+				// Verify the existing key still works
+				Assert.IsNotNull (existingKey, "Existing key should return value");
+			}
+		}
+
+		[Test]
+		public void MissingKey_NSStringIndexer ()
+		{
+			using (var dict = new NSMutableDictionary ()) {
+				dict [(NSString) "existingKey"] = (NSString) "value";
+
+				// Accessing a missing key should return null
+				var result = dict [(NSString) "missingKey"];
+				Assert.IsNull (result, "Missing key should return null");
+
+				// Verify the existing key still works
+				Assert.IsNotNull (dict [(NSString) "existingKey"], "Existing key should return value");
+			}
+		}
+
+		[Test]
+		public void MissingKey_ObjectForKey ()
+		{
+			using (var dict = new NSMutableDictionary ()) {
+				dict [(NSString) "existingKey"] = (NSString) "value";
+
+				// ObjectForKey with missing key should return null
+				var result = dict.ObjectForKey ((NSString) "missingKey");
+				Assert.IsNull (result, "ObjectForKey with missing key should return null");
+
+				// Verify the existing key still works
+				Assert.IsNotNull (dict.ObjectForKey ((NSString) "existingKey"), "ObjectForKey with existing key should return value");
+			}
+		}
+
+		[Test]
+		public void MissingKey_TryGetValue ()
+		{
+			using (var dict = new NSMutableDictionary ()) {
+				dict [(NSString) "existingKey"] = (NSString) "value";
+
+				// TryGetValue with missing key should return false
+				var found = dict.TryGetValue ((NSString) "missingKey", out var result);
+				Assert.IsFalse (found, "TryGetValue should return false for missing key");
+				Assert.IsNull (result, "Output value should be null for missing key");
+
+				// Verify the existing key works
+				found = dict.TryGetValue ((NSString) "existingKey", out result);
+				Assert.IsTrue (found, "TryGetValue should return true for existing key");
+				Assert.IsNotNull (result, "Output value should not be null for existing key");
+				Assert.AreEqual ("value", result.ToString (), "Output value should match");
+			}
+		}
+
+		[Test]
+		public void MissingKey_IDictionaryIndexer ()
+		{
+			using (var dict = new NSMutableDictionary ()) {
+				System.Collections.IDictionary idict = dict;
+				idict [(NSString) "existingKey"] = (NSString) "value";
+
+				// Accessing a missing key through IDictionary indexer returns IntPtr.Zero (not null)
+				// This is different from the typed indexers which return null
+				var result = idict [(NSString) "missingKey"];
+				// The IDictionary indexer calls _ObjectForKey which returns IntPtr.Zero boxed
+				Assert.AreEqual (IntPtr.Zero, result, "IDictionary indexer with missing key returns IntPtr.Zero");
+
+				// Verify the existing key still works
+				Assert.IsNotNull (idict [(NSString) "existingKey"], "IDictionary indexer with existing key should return value");
+			}
+		}
+
+		[Test]
+		public void MissingKey_IDictionaryContains ()
+		{
+			using (var dict = new NSMutableDictionary ()) {
+				System.Collections.IDictionary idict = dict;
+				idict [(NSString) "existingKey"] = (NSString) "value";
+
+				// Contains should return false for missing key
+				Assert.IsFalse (idict.Contains ((NSString) "missingKey"), "Contains should return false for missing key");
+
+				// Contains should return true for existing key
+				Assert.IsTrue (idict.Contains ((NSString) "existingKey"), "Contains should return true for existing key");
+			}
+		}
 	}
 }

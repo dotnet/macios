@@ -8,9 +8,7 @@
 //
 
 using System.Collections.Generic;
-#if !NO_SYSTEM_DRAWING
 using System.Drawing;
-#endif
 
 #nullable enable
 

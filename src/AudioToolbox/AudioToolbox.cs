@@ -39,8 +39,8 @@ namespace AudioToolbox {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public string Name {
-			get { return Dictionary [NameKey].ToString (); }
+		public string? Name {
+			get { return Dictionary [NameKey]?.ToString (); }
 		}
 
 		/// <summary>To be added.</summary>

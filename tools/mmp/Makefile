@@ -74,10 +74,12 @@ Microsoft.macOS.registrar.coreclr.arm64.m: $(TOP)/src/build/dotnet/macos/64/Micr
 %.arm64.a: %.arm64.m
 	$(Q_CC) $(CLANG) -isysroot $(macos_SDK) -DDEBUG -g -gdwarf-2 -x objective-c++ -std=c++14 -o $@ -c -arch arm64 $< -Wall -Wno-unguarded-availability-new -I$(TOP)/runtime -mmacosx-version-min=$(DOTNET_MIN_MACOS_SDK_VERSION) -fobjc-runtime=macosx $(EXTRA_DEFINES)
 
+ifndef IS_LINUX
 dotnet: $(MMP_TARGETS_DOTNET)
 ifdef INCLUDE_MAC
 install-local:: $(MMP_TARGETS_DOTNET)
 all-local:: $(MMP_TARGETS_DOTNET)
+endif
 endif
 
 clean-local::

@@ -22,9 +22,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string EntitlementsInExecutable { get; set; } = string.Empty;
 
 		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
-		[Required]
 		public bool SdkIsSimulator { get; set; }
 
 		[Required]

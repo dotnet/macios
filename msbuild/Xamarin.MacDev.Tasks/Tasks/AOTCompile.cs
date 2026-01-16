@@ -36,9 +36,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string OutputDirectory { get; set; } = string.Empty;
 
-		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
 		#region Output
 		[Output]
 		public ITaskItem []? AssemblyFiles { get; set; }

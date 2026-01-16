@@ -39,9 +39,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string SdkVersion { get; set; } = string.Empty;
 
-		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
 		#endregion
 
 		#region Outputs

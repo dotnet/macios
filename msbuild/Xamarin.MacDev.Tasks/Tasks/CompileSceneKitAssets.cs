@@ -38,9 +38,6 @@ namespace Xamarin.MacDev.Tasks {
 		public ITaskItem [] SceneKitAssets { get; set; } = Array.Empty<ITaskItem> ();
 
 		[Required]
-		public string SdkDevPath { get; set; } = "";
-
-		[Required]
 		public string SdkPlatform { get; set; } = "";
 
 		[Required]

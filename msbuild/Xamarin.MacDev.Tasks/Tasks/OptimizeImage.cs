@@ -29,9 +29,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string PngCrushPath { get; set; } = string.Empty;
 
-		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
 		#endregion
 
 		static List<string> GenerateCommandLineCommands (string inputImage, string outputImage)

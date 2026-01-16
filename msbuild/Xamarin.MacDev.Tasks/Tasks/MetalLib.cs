@@ -26,9 +26,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string OutputLibrary { get; set; } = string.Empty;
 
 		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
-		[Required]
 		public string SdkRoot { get; set; } = string.Empty;
 
 		#endregion

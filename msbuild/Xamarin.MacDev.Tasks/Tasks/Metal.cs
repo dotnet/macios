@@ -33,9 +33,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string ResourcePrefix { get; set; } = string.Empty;
 
 		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
-		[Required]
 		public string SdkVersion { get; set; } = string.Empty;
 
 		[Required]

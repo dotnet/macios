@@ -21,9 +21,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public ITaskItem [] Executable { get; set; } = Array.Empty<ITaskItem> ();
 
-		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
 		#endregion
 
 		#region Outputs

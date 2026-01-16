@@ -30,9 +30,10 @@ namespace Xamarin.MacDev.Tasks {
 		} = "";
 
 		[Output]
-		public string SdkDevPath {
-			get; set;
-		} = "";
+		public new string SdkDevPath {
+			get => base.SdkDevPath;
+			set => base.SdkDevPath = value;
+		}
 
 		[Output]
 		public string SdkPlatform {

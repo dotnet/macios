@@ -23,11 +23,29 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string TargetFrameworkMoniker { get; set; } = string.Empty;
 
+		protected string? sdkDevPath;
+		public string SdkDevPath {
+			get {
+#if NET
+				if (string.IsNullOrEmpty (sdkDevPath)) {
+#else
+				if (string.IsNullOrEmpty (sdkDevPath) || sdkDevPath is null) {
+#endif
+					Log.LogError (MSBStrings.E7169, /* The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */ GetType ().Name, "SdkDevPath");
+					return "";
+				}
+				return sdkDevPath;
+			}
+			set {
+				sdkDevPath = value;
+			}
+		}
+
 		void VerifyTargetFrameworkMoniker ()
 		{
 			if (!string.IsNullOrEmpty (TargetFrameworkMoniker))
 				return;
-			Log.LogError ($"The task {GetType ().Name} requires TargetFrameworkMoniker to be set.");
+			Log.LogError (MSBStrings.E7169, /* The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */ GetType ().Name, "TargetFrameworkMoniker");
 		}
 
 		public string Product {

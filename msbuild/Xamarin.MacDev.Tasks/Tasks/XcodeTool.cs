@@ -27,9 +27,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string ResourcePrefix { get; set; } = string.Empty;
 
-		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
 		public string ToolExe {
 			get { return toolExe ?? ToolName; }
 			set { toolExe = value; }

@@ -26,9 +26,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string MinimumOSVersion { get; set; } = "";
 
 		[Required]
-		public string SdkDevPath { get; set; } = "";
-
-		[Required]
 		public string SdkRoot { get; set; } = "";
 
 		[Required]

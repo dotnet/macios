@@ -15,9 +15,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public ITaskItem [] DynamicLibrary { get; set; } = [];
 
-		[Required]
-		public string SdkDevPath { get; set; } = "";
-
 		// This isn't consumed from the targets files, but it's needed for VSX to create corresponding
 		// files on Windows.
 		[Output]

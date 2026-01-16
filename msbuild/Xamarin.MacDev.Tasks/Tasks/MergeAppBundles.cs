@@ -46,9 +46,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string OutputAppBundle { get; set; } = "";
 
-		[Required]
-		public string SdkDevPath { get; set; } = "";
-
 		#endregion
 
 		enum FileType {

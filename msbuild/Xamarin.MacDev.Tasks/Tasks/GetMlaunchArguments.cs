@@ -27,9 +27,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string AppManifestPath { get; set; } = string.Empty;
 
-		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
 		public ITaskItem [] AdditionalArguments { get; set; } = Array.Empty<ITaskItem> ();
 		public string DeviceName { get; set; } = string.Empty;
 		public ITaskItem [] EnvironmentVariables { get; set; } = Array.Empty<ITaskItem> ();

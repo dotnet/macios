@@ -30,11 +30,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string ResourcePrefix { get; set; } = "";
 
-		string sdkDevPath = "";
-		public string SdkDevPath {
-			get { return string.IsNullOrEmpty (sdkDevPath) ? "/" : sdkDevPath; }
-			set { sdkDevPath = value; }
-		}
 		#endregion
 
 		#region Outputs

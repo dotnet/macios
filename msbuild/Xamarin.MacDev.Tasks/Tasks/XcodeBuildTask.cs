@@ -4,9 +4,6 @@ using System.Collections.Generic;
 namespace Xamarin.MacDev.Tasks {
 	public abstract class XcodeBuildTask : XamarinTask {
 
-		// Task input parameters
-		public string SdkDevPath { get; set; } = string.Empty;
-
 		public string WorkingDirectory { get; set; } = string.Empty;
 
 		public string OutputPath { get; set; } = string.Empty;

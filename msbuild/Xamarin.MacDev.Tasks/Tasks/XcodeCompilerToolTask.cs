@@ -41,16 +41,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string SdkPlatform { get; set; } = string.Empty;
 
-		string? sdkDevPath;
-		public string SdkDevPath {
-#if NET
-			get { return string.IsNullOrEmpty (sdkDevPath) ? "/" : sdkDevPath; }
-#else
-			get { return (sdkDevPath is null || string.IsNullOrEmpty (sdkDevPath)) ? "/" : sdkDevPath; }
-#endif
-			set { sdkDevPath = value; }
-		}
-
 		[Required]
 		public string SdkVersion { get; set; } = string.Empty;
 
@@ -180,8 +170,8 @@ namespace Xamarin.MacDev.Tasks {
 			var environment = new Dictionary<string, string?> ();
 			var args = new List<string> ();
 
-			if (!string.IsNullOrEmpty (SdkDevPath))
-				environment.Add ("DEVELOPER_DIR", SdkDevPath);
+			if (!string.IsNullOrEmpty (sdkDevPath))
+				environment.Add ("DEVELOPER_DIR", sdkDevPath);
 
 			// workaround for ibtool[d] bug / asserts if Intel version is loaded
 			string tool;

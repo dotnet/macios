@@ -338,16 +338,16 @@ $($(2)_DOTNET_BUILD_DIR)/embed-files.rsp: $($(2)_DOTNET_BUILD_DIR)/$(3)-generate
 	$$(Q) mv $$@.tmp $$@
 
 $($(2)_DOTNET_BUILD_DIR)/ILLink.Substitutions.xml: $(TOP)/src/ILLink.Substitutions.$(1).xml | $($(2)_DOTNET_BUILD_DIR)
-	$(Q) $(CP) $$< $$@
+	$$(Q) $(CP) $$< $$@
 
 $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).dll: $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll | $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)
-	$(Q) $(CP) $$< $$@
+	$$(Q) $(CP) $$< $$@
 
 $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml | $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)
-	$(Q) $(CP) $$< $$@
+	$$(Q) $(CP) $$< $$@
 
 $($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll build/.build-adr-stamp | $($(2)_DOTNET_BUILD_DIR)/doc
-	$(Q_GEN) $(TOP)/packages/appledocreader.$(ADR_RUNTIME_IDENTIFIER)/$(ADR_NUGET_VERSION)/tools/any/$(ADR_RUNTIME_IDENTIFIER)/AppleDocReader inject docs --assembly="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" --input="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" --output="$(abspath $$@)" --xcode="$(DEVELOPER_DIR)/../.." --runtimeDll="$(DOTNET_BCL_DIR)/System.Runtime.dll" -f
+	$$(Q_GEN) $(TOP)/packages/appledocreader.$(ADR_RUNTIME_IDENTIFIER)/$(ADR_NUGET_VERSION)/tools/any/$(ADR_RUNTIME_IDENTIFIER)/AppleDocReader inject docs --assembly="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" --input="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" --output="$(abspath $$@)" --xcode="$(DEVELOPER_DIR)/../.." --runtimeDll="$(DOTNET_BCL_DIR)/System.Runtime.dll" -f
 endef
 
 build/.build-adr-stamp:

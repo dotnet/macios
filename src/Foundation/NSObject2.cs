@@ -25,9 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
-#if !NO_SYSTEM_DRAWING
 using System.Drawing;
-#endif
 using System.Diagnostics;
 
 using System.Runtime.InteropServices.ObjectiveC;
@@ -947,14 +945,12 @@ namespace Foundation {
 			default:
 				if (t == typeof (NativeHandle))
 					return NSValue.ValueFromPointer ((NativeHandle) obj);
-#if !NO_SYSTEM_DRAWING
 				if (t == typeof (SizeF))
 					return NSValue.FromSizeF ((SizeF) obj);
 				else if (t == typeof (RectangleF))
 					return NSValue.FromRectangleF ((RectangleF) obj);
 				else if (t == typeof (PointF))
 					return NSValue.FromPointF ((PointF) obj);
-#endif
 				if (t == typeof (nint))
 					return NSNumber.FromNInt ((nint) obj);
 				else if (t == typeof (nuint))

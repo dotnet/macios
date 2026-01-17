@@ -250,11 +250,11 @@ namespace Foundation {
 		/// <summary>
 		/// Creates a dictionary from parallel arrays of values and keys, using only the first <paramref name="count"/> elements.
 		/// </summary>
-		/// <param name="objects">An array of values.</param>
+		/// <param name="objects">An array of values. Null elements are stored as <see cref="NSNull.Null"/>.</param>
 		/// <param name="keys">An array of keys.</param>
 		/// <param name="count">The number of elements to use from each array.</param>
 		/// <returns>A new dictionary containing the specified key-value pairs.</returns>
-		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (TValue [] objects, TKey [] keys, nint count)
+		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (TValue? [] objects, TKey [] keys, nint count)
 		{
 			ArgumentNullException.ThrowIfNull (objects);
 			ArgumentNullException.ThrowIfNull (keys);
@@ -272,10 +272,10 @@ namespace Foundation {
 		/// <summary>
 		/// Creates a dictionary from parallel arrays of values and keys.
 		/// </summary>
-		/// <param name="objects">An array of values.</param>
+		/// <param name="objects">An array of values. Null elements are stored as <see cref="NSNull.Null"/>.</param>
 		/// <param name="keys">An array of keys.</param>
 		/// <returns>A new dictionary containing the specified key-value pairs.</returns>
-		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (TValue [] objects, TKey [] keys)
+		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (TValue? [] objects, TKey [] keys)
 		{
 			ArgumentNullException.ThrowIfNull (objects);
 			ArgumentNullException.ThrowIfNull (keys);
@@ -283,9 +283,7 @@ namespace Foundation {
 			if (objects.Length != keys.Length)
 				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
 
-			using (var no = NSArray.FromNSObjects (objects))
-			using (var nk = NSArray.FromNSObjects (keys))
-				return GenericFromObjectsAndKeysInternal (no, nk);
+			return FromObjectsAndKeys (objects, keys, keys.Length);
 		}
 
 		/// <summary>
@@ -310,11 +308,11 @@ namespace Foundation {
 		/// <summary>
 		/// Creates a dictionary from parallel arrays of <see cref="NSObject"/> values and keys, using only the first <paramref name="count"/> elements.
 		/// </summary>
-		/// <param name="objects">An array of <see cref="NSObject"/> values.</param>
+		/// <param name="objects">An array of <see cref="NSObject"/> values. Null elements are stored as <see cref="NSNull.Null"/>.</param>
 		/// <param name="keys">An array of <see cref="NSObject"/> keys.</param>
 		/// <param name="count">The number of elements to use from each array.</param>
 		/// <returns>A new dictionary containing the specified key-value pairs.</returns>
-		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
+		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (NSObject? [] objects, NSObject [] keys, nint count)
 		{
 			ArgumentNullException.ThrowIfNull (objects);
 			ArgumentNullException.ThrowIfNull (keys);

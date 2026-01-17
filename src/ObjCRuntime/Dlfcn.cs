@@ -32,13 +32,11 @@
 #nullable enable
 
 using System.ComponentModel;
+using System.Drawing;
 #if !COREBUILD
 using CoreFoundation;
 using CoreGraphics;
 using CoreMedia;
-#endif
-#if !NO_SYSTEM_DRAWING
-using System.Drawing;
 #endif
 
 namespace ObjCRuntime {

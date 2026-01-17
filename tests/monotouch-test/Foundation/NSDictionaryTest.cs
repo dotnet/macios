@@ -155,6 +155,30 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
+		public void FromObjectsAndKeysTest_NullValue ()
+		{
+			var keys = new NSObject [] { new NSNumber (1), new NSNumber (2), new NSNumber (3) };
+			var objs = new NSObject? [] { new NSNumber (1), null, new NSNumber (4) };
+			NSDictionary ns = NSDictionary.FromObjectsAndKeys (objs, keys, 3);
+			Assert.AreEqual ((nuint) 3, ns.Count, "Count");
+			Assert.AreEqual (1, ((NSNumber) ns [new NSNumber (1)]).Int32Value, "Value 1");
+			Assert.IsInstanceOf<NSNull> (ns [new NSNumber (2)], "Null value");
+			Assert.AreEqual (4, ((NSNumber) ns [new NSNumber (3)]).Int32Value, "Value 3");
+		}
+
+		[Test]
+		public void FromObjectsAndKeysTest_NullValue_NoCount ()
+		{
+			var keys = new NSObject [] { new NSNumber (1), new NSNumber (2), new NSNumber (3) };
+			var objs = new NSObject? [] { new NSNumber (1), null, new NSNumber (4) };
+			NSDictionary ns = NSDictionary.FromObjectsAndKeys (objs, keys);
+			Assert.AreEqual ((nuint) 3, ns.Count, "Count");
+			Assert.AreEqual (1, ((NSNumber) ns [new NSNumber (1)]).Int32Value, "Value 1");
+			Assert.IsInstanceOf<NSNull> (ns [new NSNumber (2)], "Null value");
+			Assert.AreEqual (4, ((NSNumber) ns [new NSNumber (3)]).Int32Value, "Value 3");
+		}
+
+		[Test]
 		public void Copy ()
 		{
 			using (var k = new NSString ("key"))

@@ -15,13 +15,10 @@ namespace Xamarin.MacDev.Tasks {
 		const string SdkVersionDefaultValue = "default";
 		#region Inputs
 
-		public string TargetArchitectures {
+		[Required]
+		public bool SdkIsSimulator {
 			get; set;
-		} = "";
-
-		public string IsDotNetSimulatorBuild {
-			get; set;
-		} = "";
+		}
 
 		#endregion Inputs
 
@@ -36,11 +33,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string SdkDevPath {
 			get; set;
 		} = "";
-
-		[Output]
-		public bool SdkIsSimulator {
-			get; set;
-		}
 
 		[Output]
 		public string SdkPlatform {
@@ -154,8 +146,6 @@ namespace Xamarin.MacDev.Tasks {
 
 			AppleSdkSettings.Init ();
 
-			SetIsSimulator ();
-
 			if (EnsureAppleSdkRoot ())
 				EnsureSdkPath ();
 			EnsureXamarinSdkRoot ();
@@ -163,25 +153,6 @@ namespace Xamarin.MacDev.Tasks {
 			XcodeVersion = AppleSdkSettings.XcodeVersion.ToString ();
 
 			return !Log.HasLoggedErrors;
-		}
-
-		void SetIsSimulator ()
-		{
-			switch (Platform) {
-			case ApplePlatform.MacCatalyst:
-			case ApplePlatform.MacOSX:
-				return;
-			}
-
-			TargetArchitecture architectures;
-			if (string.IsNullOrEmpty (TargetArchitectures) || !Enum.TryParse (TargetArchitectures, out architectures))
-				architectures = TargetArchitecture.Default;
-
-			if (!string.IsNullOrEmpty (IsDotNetSimulatorBuild)) {
-				SdkIsSimulator = string.Equals (IsDotNetSimulatorBuild, "true", StringComparison.OrdinalIgnoreCase);
-			} else {
-				SdkIsSimulator = (architectures & (TargetArchitecture.i386 | TargetArchitecture.x86_64)) != 0;
-			}
 		}
 
 		protected bool EnsureAppleSdkRoot ()

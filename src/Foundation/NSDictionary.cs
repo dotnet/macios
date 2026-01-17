@@ -132,10 +132,10 @@ namespace Foundation {
 		/// <summary>
 		/// Creates a dictionary from a set of values and keys.
 		/// </summary>
-		/// <param name="objects">Array of values for the dictionary.</param>
+		/// <param name="objects">Array of values for the dictionary. Null elements are stored as <see cref="NSNull.Null"/>.</param>
 		/// <param name="keys">Array of keys for the dictionary.</param>
 		/// <returns>A new <see cref="NSDictionary"/> containing the specified key-value pairs.</returns>
-		public static NSDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys)
+		public static NSDictionary FromObjectsAndKeys (NSObject? [] objects, NSObject [] keys)
 		{
 			if (objects is null)
 				throw new ArgumentNullException (nameof (objects));
@@ -144,9 +144,7 @@ namespace Foundation {
 			if (objects.Length != keys.Length)
 				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
 
-			using (var no = NSArray.FromNSObjects (objects))
-			using (var nk = NSArray.FromNSObjects (keys))
-				return FromObjectsAndKeysInternal (no, nk);
+			return FromObjectsAndKeys (objects, keys, keys.Length);
 		}
 
 		/// <summary>
@@ -177,11 +175,11 @@ namespace Foundation {
 		/// <summary>
 		/// Creates a dictionary from a set of values and keys.
 		/// </summary>
-		/// <param name="objects">Array of values for the dictionary.</param>
+		/// <param name="objects">Array of values for the dictionary. Null elements are stored as <see cref="NSNull.Null"/>.</param>
 		/// <param name="keys">Array of keys for the dictionary.</param>
 		/// <param name="count">Number of items to use in the creation; the number must be less than or equal to the number of elements in the arrays.</param>
 		/// <returns>A new <see cref="NSDictionary"/> containing the specified key-value pairs.</returns>
-		public static NSDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
+		public static NSDictionary FromObjectsAndKeys (NSObject? [] objects, NSObject [] keys, nint count)
 		{
 			if (objects is null)
 				throw new ArgumentNullException (nameof (objects));

@@ -125,6 +125,38 @@ namespace MonoTouchFixtures.Foundation {
 			}
 		}
 
+		[Test]
+		public void FromIntPtrs_NativeHandle ()
+		{
+			var str1 = (NSString) "1";
+			var str2 = (NSString) "2";
+			var str3 = (NSString) "3";
+
+			var handles = new NativeHandle [] { str1.Handle, str2.Handle, str3.Handle };
+			using (var arr = NSArray.FromIntPtrs (handles)) {
+				Assert.AreEqual ((nuint) 3, arr.Count, "NSArray Count");
+				Assert.AreEqual ("1", arr.GetItem<NSString> (0).ToString (), "NSArray item 0");
+				Assert.AreEqual ("2", arr.GetItem<NSString> (1).ToString (), "NSArray item 1");
+				Assert.AreEqual ("3", arr.GetItem<NSString> (2).ToString (), "NSArray item 2");
+			}
+		}
+
+		[Test]
+		public void FromIntPtrs_NativeHandle_Null ()
+		{
+			NativeHandle []? handles = null;
+			Assert.Throws<ArgumentNullException> (() => NSArray.FromIntPtrs (handles!), "Null array");
+		}
+
+		[Test]
+		public void FromIntPtrs_NativeHandle_Empty ()
+		{
+			var handles = new NativeHandle [0];
+			using (var arr = NSArray.FromIntPtrs (handles)) {
+				Assert.AreEqual ((nuint) 0, arr.Count, "NSArray Count");
+			}
+		}
+
 #if false // https://github.com/dotnet/macios/issues/15577
 		[Test]
 		public void GetDifferenceFromArrayTest ()

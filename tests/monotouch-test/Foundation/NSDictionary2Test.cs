@@ -85,6 +85,98 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
+		public void FromObjectsAndKeysGenericTest_NullValue ()
+		{
+			var keys = new [] {
+				new NSString ("Key1"),
+				new NSString ("Key2"),
+				new NSString ("Key3"),
+			};
+			var values = new NSNumber? [] {
+				NSNumber.FromByte (0x1),
+				null,
+				NSNumber.FromInt32 (42),
+			};
+
+			var dict = NSDictionary<NSString, NSNumber>.FromObjectsAndKeys (values, keys, values.Length);
+			Assert.AreEqual (dict.Count, (nuint) 3, "count");
+			Assert.AreEqual (dict [keys [0]], values [0], "key lookup 0");
+			var baseDict = (NSDictionary) dict;
+			var rawValue = baseDict.ObjectForKey (keys [1]);
+			Assert.IsInstanceOf<NSNull> (rawValue, "Null value");
+			Assert.AreEqual (dict [keys [2]], values [2], "key lookup 2");
+		}
+
+		[Test]
+		public void FromObjectsAndKeysGenericTest_NSObjects_NullValue ()
+		{
+			var keys = new [] {
+				(NSObject) new NSString ("Key1"),
+				(NSObject) new NSString ("Key2"),
+				(NSObject) new NSString ("Key3"),
+			};
+			var values = new NSObject? [] {
+				NSNumber.FromByte (0x1),
+				null,
+				NSNumber.FromInt32 (42),
+			};
+
+			var dict = NSDictionary<NSString, NSNumber>.FromObjectsAndKeys (values, keys, values.Length);
+			Assert.AreEqual (dict.Count, (nuint) 3, "count");
+			Assert.AreEqual (1, dict [(NSString) keys [0]].ByteValue, "key lookup 0");
+			var baseDict = (NSDictionary) dict;
+			var rawValue = baseDict.ObjectForKey ((NSString) keys [1]);
+			Assert.IsInstanceOf<NSNull> (rawValue, "Null value");
+			Assert.AreEqual (42, dict [(NSString) keys [2]].Int32Value, "key lookup 2");
+		}
+
+		[Test]
+		public void FromObjectsAndKeysGenericTest_NullValue_NoCount ()
+		{
+			var keys = new [] {
+				new NSString ("Key1"),
+				new NSString ("Key2"),
+				new NSString ("Key3"),
+			};
+			var values = new NSNumber? [] {
+				NSNumber.FromByte (0x1),
+				null,
+				NSNumber.FromInt32 (42),
+			};
+
+			var dict = NSDictionary<NSString, NSNumber>.FromObjectsAndKeys (values, keys);
+			Assert.AreEqual (dict.Count, (nuint) 3, "count");
+			Assert.AreEqual (dict [keys [0]], values [0], "key lookup 0");
+			var baseDict = (NSDictionary) dict;
+			var rawValue = baseDict.ObjectForKey (keys [1]);
+			Assert.IsInstanceOf<NSNull> (rawValue, "Null value");
+			Assert.AreEqual (dict [keys [2]], values [2], "key lookup 2");
+		}
+
+		[Test]
+		public void FromObjectsAndKeysGenericTest_NSObjects_NullValue_NoCount ()
+		{
+			var keys = new [] {
+				(NSObject) new NSString ("Key1"),
+				(NSObject) new NSString ("Key2"),
+				(NSObject) new NSString ("Key3"),
+			};
+			var values = new NSObject? [] {
+				NSNumber.FromByte (0x1),
+				null,
+				NSNumber.FromInt32 (42),
+			};
+
+			var dict = NSDictionary<NSString, NSNumber>.FromObjectsAndKeys (values, keys);
+			Assert.AreEqual (dict.Count, (nuint) 3, "count");
+			Assert.AreEqual (1, dict [(NSString) keys [0]].ByteValue, "key lookup 0");
+			var baseDict = (NSDictionary) dict;
+			var rawValue = baseDict.ObjectForKey ((NSString) keys [1]);
+			Assert.IsInstanceOf<NSNull> (rawValue, "Null value");
+			Assert.AreEqual (42, dict [(NSString) keys [2]].Int32Value, "key lookup 2");
+		}
+
+		[Test]
 		public void KeyValue_Autorelease ()
 		{
 			using (var k = new NSString ("keyz"))

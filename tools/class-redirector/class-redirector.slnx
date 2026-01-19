@@ -1,32 +1,4 @@
 <Solution>
   <Project Path="class-redirector-tests/class-redirector-tests.csproj" />
   <Project Path="class-redirector/class-redirector.csproj" />
-  <Properties Name="MonoDevelopProperties">
-    <Property Name="$0.CSharpFormattingPolicy" Value="$2" />
-    <Property Name="$0.TextStylePolicy" Value="$1" />
-    <Property Name="$1.FileWidth" Value="80" />
-    <Property Name="$1.IndentWidth" Value="8" />
-    <Property Name="$1.scope" Value="text/x-csharp" />
-    <Property Name="$1.TabWidth" Value="8" />
-    <Property Name="$2.IndentSwitchSection" Value="False" />
-    <Property Name="$2.NewLineForCatch" Value="False" />
-    <Property Name="$2.NewLineForClausesInQuery" Value="False" />
-    <Property Name="$2.NewLineForElse" Value="False" />
-    <Property Name="$2.NewLineForFinally" Value="False" />
-    <Property Name="$2.NewLineForMembersInAnonymousTypes" Value="False" />
-    <Property Name="$2.NewLineForMembersInObjectInit" Value="False" />
-    <Property Name="$2.NewLinesForBracesInAccessors" Value="False" />
-    <Property Name="$2.NewLinesForBracesInAnonymousMethods" Value="False" />
-    <Property Name="$2.NewLinesForBracesInAnonymousTypes" Value="False" />
-    <Property Name="$2.NewLinesForBracesInControlBlocks" Value="False" />
-    <Property Name="$2.NewLinesForBracesInLambdaExpressionBody" Value="False" />
-    <Property Name="$2.NewLinesForBracesInObjectCollectionArrayInitializers" Value="False" />
-    <Property Name="$2.NewLinesForBracesInProperties" Value="False" />
-    <Property Name="$2.NewLinesForBracesInTypes" Value="False" />
-    <Property Name="$2.scope" Value="text/x-csharp" />
-    <Property Name="$2.SpaceAfterMethodCallName" Value="True" />
-    <Property Name="$2.SpaceBeforeOpenSquareBracket" Value="True" />
-    <Property Name="$2.SpacingAfterMethodDeclarationName" Value="True" />
-    <Property Name="Policies" Value="$0" />
-  </Properties>
 </Solution>

@@ -5,7 +5,4 @@
   <Project Path="MyCatalystApp.csproj">
     <Platform Project="MacCatalyst" />
   </Project>
-  <Properties Name="MonoDevelopProperties">
-    <Property Name="StartupItem" Value="MyCatalystApp.csproj" />
-  </Properties>
 </Solution>

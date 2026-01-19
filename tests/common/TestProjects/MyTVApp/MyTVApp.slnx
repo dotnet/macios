@@ -11,7 +11,4 @@
     <Platform Solution="*|iPhone" Project="iPhone" />
     <Platform Solution="*|iPhoneSimulator" Project="iPhoneSimulator" />
   </Project>
-  <Properties Name="MonoDevelopProperties">
-    <Property Name="StartupItem" Value="MyTVApp.csproj" />
-  </Properties>
 </Solution>

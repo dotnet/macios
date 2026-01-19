@@ -283,9 +283,6 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 	{
 		/*
 		 * Command line arguments for mobile targets (iOS / tvOS / macOS / Mac Catalyst):
-		 * -debugtrack: [Simulator only]
-		 *         If we should track zombie NSObjects and aggressively poke the GC to collect
-		 *         every second.
 		 * -monodevelop-port=<port>
 		 *         The port MonoDevelop is listening on (or we should listen on).
 		 *         Overrides whatever any configuration file says.
@@ -350,9 +347,7 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 				value = NULL;
 
 #ifdef DEBUG
-			if (!strcmp (name, "debugtrack")) {
-				xamarin_gc_pump = true;
-			} else if (!strcmp (name, "monodevelop-port")) {
+			if (!strcmp (name, "monodevelop-port")) {
 				if (!value && argc > i + 1)
 					value = argv [++i];
 				if (value) {

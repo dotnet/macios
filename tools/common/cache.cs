@@ -9,9 +9,7 @@ using Xamarin.Utils;
 using Xamarin.Bundler;
 
 public class Cache {
-#if MMP
-	const string NAME = "mmp";
-#elif MTOUCH
+#if LEGACY_TOOLS
 	const string NAME = "mtouch";
 #elif BUNDLER
 	const string NAME = "dotnet-linker";
@@ -44,7 +42,7 @@ public class Cache {
 					break;
 				} while (true);
 
-				cache_dir = Target.GetRealPath (cache_dir);
+				cache_dir = Application.GetRealPath (cache_dir);
 
 				temporary_cache = true;
 				if (!Directory.Exists (cache_dir))
@@ -59,7 +57,7 @@ public class Cache {
 			cache_dir = value;
 			if (!Directory.Exists (cache_dir))
 				Directory.CreateDirectory (cache_dir);
-			cache_dir = Target.GetRealPath (Path.GetFullPath (cache_dir));
+			cache_dir = Application.GetRealPath (Path.GetFullPath (cache_dir));
 		}
 	}
 

@@ -82,7 +82,7 @@ namespace Xamarin.Bundler {
 				return;
 			}
 
-#if MMP || MTOUCH || BUNDLER
+#if LEGACY_TOOLS || BUNDLER
 			// LogMessage and LogError are instance objects on the tasks themselves and bubbling an event up is not ideal
 			Driver.Log (min_verbosity, format, arguments);
 #else
@@ -97,7 +97,7 @@ namespace Xamarin.Bundler {
 				return;
 			}
 
-#if MMP || MTOUCH || BUNDLER
+#if LEGACY_TOOLS || BUNDLER
 			throw ErrorHelper.CreateError (code, format, arguments);
 #else
 			// msbuild handles uncaught exceptions as a task error
@@ -117,7 +117,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-#if MMP || MTOUCH || BUNDLER
+#if LEGACY_TOOLS || BUNDLER
 		public static void UpdateDirectory (string source, string target)
 #else
 		static void UpdateDirectory (string source, string target)
@@ -272,13 +272,13 @@ namespace Xamarin.Bundler {
 		//
 		// If check_stamp is true, the function will use the timestamp of a "target".stamp file
 		// if it's later than the timestamp of the "target" file itself.
-#if MMP || MTOUCH || BUNDLER
+#if LEGACY_TOOLS || BUNDLER
 		public static bool IsUptodate (string source, string target, bool check_contents = false, bool check_stamp = true)
 #else
 		static bool IsUptodate (string source, string target, bool check_contents = false, bool check_stamp = true)
 #endif
 		{
-#if MMP || MTOUCH || BUNDLER   // msbuild does not have force                                  
+#if LEGACY_TOOLS || BUNDLER   // msbuild does not have force                                  
 			if (Driver.Force)
 				return false;
 #endif
@@ -305,7 +305,7 @@ namespace Xamarin.Bundler {
 				return true;
 			}
 
-#if MMP || MTOUCH || BUNDLER   // msbuild usages do not require CompareFiles optimization                                                              
+#if LEGACY_TOOLS || BUNDLER   // msbuild usages do not require CompareFiles optimization                                                              
 			if (check_contents && Cache.CompareFiles (source, target)) {
 				Log (3, "Prerequisite '{0}' is newer than the target '{1}', but the contents are identical.", source, target);
 				return true;
@@ -335,13 +335,13 @@ namespace Xamarin.Bundler {
 		//
 		// If check_stamp is true, the function will use the timestamp of a "target".stamp file
 		// if it's later than the timestamp of the "target" file itself.
-#if MMP || MTOUCH || BUNDLER
+#if LEGACY_TOOLS || BUNDLER
 		public static bool IsUptodate (IEnumerable<string> sources, IEnumerable<string> targets, bool check_stamp = true)
 #else
 		static bool IsUptodate (IEnumerable<string> sources, IEnumerable<string> targets, bool check_stamp = true)
 #endif
 		{
-#if MMP || MTOUCH || BUNDLER  // msbuild does not have force
+#if LEGACY_TOOLS || BUNDLER  // msbuild does not have force
 			if (Driver.Force)
 				return false;
 #endif

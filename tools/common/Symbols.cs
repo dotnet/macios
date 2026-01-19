@@ -157,7 +157,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public void Load (string filename, Target target)
+		public void Load (string filename, Application app)
 		{
 			using (var reader = new StreamReader (filename)) {
 				string line;
@@ -168,7 +168,7 @@ namespace Xamarin.Bundler {
 					if (line [0] == '\t') {
 						var asm = line.Substring (1);
 						Assembly assembly;
-						if (!target.Assemblies.TryGetValue (Assembly.GetIdentity (asm), out assembly))
+						if (!app.Assemblies.TryGetValue (Assembly.GetIdentity (asm), out assembly))
 							throw ErrorHelper.CreateError (99, Errors.MX0099, $"serialized assembly {asm} for symbol {current.Name}, but no such assembly loaded");
 						current.AddAssembly (assembly.AssemblyDefinition);
 					} else {

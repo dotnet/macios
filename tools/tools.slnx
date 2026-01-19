@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="dotnet-linker/dotnet-linker.csproj" />
+  <Project Path="mmp/mmp.csproj" />
+  <Project Path="mtouch/mtouch.csproj" />
+</Solution>

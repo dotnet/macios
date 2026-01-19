@@ -48,15 +48,15 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		protected string DeveloperRootBinDir {
-			get { return Path.Combine (SdkDevPath, "usr", "bin"); }
+			get { return Path.Combine (GetSdkDevPath (), "usr", "bin"); }
 		}
 
 		protected string DevicePlatformBinDir {
-			get { return Path.Combine (SdkDevPath, "Platforms", "iPhoneOS.platform", "Developer", "usr", "bin"); }
+			get { return Path.Combine (GetSdkDevPath (), "Platforms", "iPhoneOS.platform", "Developer", "usr", "bin"); }
 		}
 
 		protected string SimulatorPlatformBinDir {
-			get { return Path.Combine (SdkDevPath, "Platforms", "iPhoneSimulator.platform", "Developer", "usr", "bin"); }
+			get { return Path.Combine (GetSdkDevPath (), "Platforms", "iPhoneSimulator.platform", "Developer", "usr", "bin"); }
 		}
 
 		protected abstract string ToolName { get; }

@@ -139,7 +139,7 @@ namespace Xamarin.MacDev.Tasks {
 				arguments.Add ("-c");
 				arguments.Add (src);
 
-				processes [i] = ExecuteAsync ("xcrun", arguments, sdkDevPath: SdkDevPath);
+				processes [i] = ExecuteAsync ("xcrun", arguments, sdkDevPath: GetSdkDevPath ());
 			}
 
 			System.Threading.Tasks.Task.WaitAll (processes);

@@ -47,7 +47,7 @@ namespace Xamarin.MacDev.Tasks {
 				arguments.Add (input.GetMetadata ("DynamicLibraryId"));
 				arguments.Add (temporaryTarget);
 
-				processes [i] = ExecuteAsync ("xcrun", arguments, sdkDevPath: SdkDevPath).ContinueWith ((v) => {
+				processes [i] = ExecuteAsync ("xcrun", arguments, sdkDevPath: GetSdkDevPath ()).ContinueWith ((v) => {
 					if (v.IsFaulted)
 						throw v.Exception;
 					if (v.Status == TaskStatus.RanToCompletion) {

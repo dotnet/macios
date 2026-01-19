@@ -62,7 +62,7 @@ namespace Xamarin.MacDev.Tasks {
 			args.Add (dSymDir);
 
 			args.Add (Path.GetFullPath (item.ItemSpec));
-			ExecuteAsync ("xcrun", args, sdkDevPath: SdkDevPath).Wait ();
+			ExecuteAsync ("xcrun", args, sdkDevPath: GetSdkDevPath ()).Wait ();
 
 			var contentsDir = Path.Combine (dSymDir, "Contents");
 			if (Directory.Exists (contentsDir))

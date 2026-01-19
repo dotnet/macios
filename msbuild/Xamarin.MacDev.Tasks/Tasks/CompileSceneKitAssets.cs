@@ -84,7 +84,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var executable = GetExecutable (args, ToolName, CopySceneKitAssetsPath);
 
-			return ExecuteAsync (executable, args, sdkDevPath: SdkDevPath, environment: environment, showErrorIfFailure: true);
+			return ExecuteAsync (executable, args, sdkDevPath: GetSdkDevPath (), environment: environment, showErrorIfFailure: true);
 		}
 
 		static bool TryGetScnAssetsPath (string file, out string scnassets)

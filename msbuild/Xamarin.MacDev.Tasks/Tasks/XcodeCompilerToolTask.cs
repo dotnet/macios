@@ -92,7 +92,7 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		protected string DeveloperRootBinDir {
-			get { return Path.Combine (SdkDevPath, "usr", "bin"); }
+			get { return Path.Combine (GetSdkDevPath (), "usr", "bin"); }
 		}
 
 		protected abstract string ToolName { get; }
@@ -170,8 +170,8 @@ namespace Xamarin.MacDev.Tasks {
 			var environment = new Dictionary<string, string?> ();
 			var args = new List<string> ();
 
-			if (!string.IsNullOrEmpty (sdkDevPath))
-				environment.Add ("DEVELOPER_DIR", sdkDevPath);
+			if (!string.IsNullOrEmpty (SdkDevPath))
+				environment.Add ("DEVELOPER_DIR", SdkDevPath);
 
 			// workaround for ibtool[d] bug / asserts if Intel version is loaded
 			string tool;
@@ -209,7 +209,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (Log.HasLoggedErrors)
 				return 1;
 
-			var rv = ExecuteAsync (tool, args, sdkDevPath, environment: environment).Result;
+			var rv = ExecuteAsync (tool, args, SdkDevPath, environment: environment).Result;
 			var exitCode = rv.ExitCode;
 			var messages = rv.Output.StandardOutput;
 			File.WriteAllText (manifest.ItemSpec, messages);

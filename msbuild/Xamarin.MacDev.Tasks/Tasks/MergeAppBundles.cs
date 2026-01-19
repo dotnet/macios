@@ -438,7 +438,7 @@ namespace Xamarin.MacDev.Tasks {
 			arguments.Add ("-output");
 			arguments.Add (output);
 			arguments.AddRange (sourceFiles);
-			ExecuteAsync ("lipo", arguments, sdkDevPath: SdkDevPath).Wait ();
+			ExecuteAsync ("lipo", arguments, sdkDevPath: GetSdkDevPath ()).Wait ();
 		}
 
 		FileType GetFileType (string path)

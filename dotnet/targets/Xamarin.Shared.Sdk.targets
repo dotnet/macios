@@ -501,6 +501,11 @@
 		<IlcCompileDependsOn>Compile;_ComputeLinkerArguments;_ComputeManagedAssemblyToLink;SetupOSSpecificProps;PrepareForILLink;_XamarinComputeIlcCompileInputs</IlcCompileDependsOn>
 	</PropertyGroup>
 
+	<Target Name="SetupOSSpecificProps">
+		<Warning Text="Skipped the 'SetupOSSpecificProps' target (TODO: might be enough to just remove it from the DependsOn further above?)." />
+	</Target>
+
+
 	<Target Name="SelectRegistrar" DependsOnTargets="_ComputeLinkMode">
 		<PropertyGroup>
 			<!--

@@ -339,7 +339,6 @@ namespace Xamarin.Tests {
 			Configuration.IgnoreIfNotOnWindows ();
 
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
-			var project_dir = Path.GetDirectoryName (project_path)!;
 			Clean (project_path);
 
 			var properties = GetDefaultProperties (runtimeIdentifiers);

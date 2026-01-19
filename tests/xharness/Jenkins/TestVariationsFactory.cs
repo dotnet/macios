@@ -75,13 +75,13 @@ namespace Xharness.Jenkins {
 				break;
 			case "introspection":
 				if (supports_coreclr && supports_mono) { // we only need specific coreclr test if we *also* support mono (otherwise the default test will be coreclr)
-					yield return new TestData { Variation = "CoreCLR", TestVariation = "coreclr", Ignored = ignore_coreclr };
+					yield return new TestData { Variation = "CoreCLR", TestVariation = "coreclr", Ignored = ignore_coreclr, Debug = true };
 				}
 				break;
 			case "monotouch-test":
 				if (supports_coreclr && supports_mono) { // we only need specific coreclr test if we *also* support mono (otherwise the default test will be coreclr)
-					yield return new TestData { Variation = "Debug (CoreCLR)", TestVariation = "debug|coreclr", Ignored = ignore_coreclr };
-					yield return new TestData { Variation = "Release (CoreCLR)", TestVariation = "release|coreclr", Ignored = ignore_coreclr };
+					yield return new TestData { Variation = "Debug (CoreCLR)", TestVariation = "debug|coreclr", Ignored = ignore_coreclr, Debug = true };
+					yield return new TestData { Variation = "Release (CoreCLR)", TestVariation = "release|coreclr", Ignored = ignore_coreclr, Debug = false };
 				}
 				break;
 			}

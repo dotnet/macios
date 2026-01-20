@@ -60,6 +60,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<MergeAppBundles> ();
 			task.InputAppBundles = inputItems.ToArray ();
 			task.OutputAppBundle = outputBundle;
+			task.SdkDevPath = Configuration.xcode_root;
 			return task;
 		}
 
@@ -98,7 +99,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
 			var task = CreateTask (outputBundle, bundles);
-			Assert.IsTrue (task.Execute (), "Task execution");
+			ExecuteTask (task);
 
 			// The bundle should only contain a single file.
 			Assert.AreEqual (1, Directory.GetFileSystemEntries (outputBundle).Length, "Files in bundle");

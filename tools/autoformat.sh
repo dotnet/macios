@@ -68,7 +68,7 @@ af_whitespace "$SRC_DIR/src/rgen/Microsoft.Macios.Transformer/Microsoft.Macios.T
 af_whitespace "$SRC_DIR/tools/dotnet-linker/dotnet-linker.csproj"
 af_whitespace "$SRC_DIR/tools/mmp/mmp.csproj"
 af_whitespace "$SRC_DIR/tools/mtouch/mtouch.csproj"
-af_whitespace "$SRC_DIR/tests/xharness/xharness.sln"
+af_whitespace "$SRC_DIR/tests/xharness/xharness.slnx"
 af_whitespace "$SRC_DIR/tests/introspection/dotnet/iOS/introspection.csproj"
 af_whitespace "$SRC_DIR/tests/introspection/dotnet/MacCatalyst/introspection.csproj"
 af_whitespace "$SRC_DIR/tests/introspection/dotnet/macOS/introspection.csproj"

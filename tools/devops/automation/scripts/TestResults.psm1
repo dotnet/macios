@@ -393,17 +393,27 @@ class ParallelTestsResults {
                     $stringBuilder.AppendLine("")
                 } else {
                     $addSummary = $true
-                    $startLine = 0
+                    $addDetails = $true
+                    $startLine = -1
                     if (Test-Path -Path $r.ResultsPath -PathType Leaf) {
-                        $resultLines = Get-Content -Path $r.ResultsPath
+                        $resultLines = @(Get-Content -Path $r.ResultsPath)
                         for ($i = 0; $i -lt $resultLines.Length; $i++) {
                             $line = $resultLines[$i]
                             if ($line.Contains("<details>")) {
-                                $startLine = $i
+                                if ($startLine -eq -1) {
+                                    $startLine = $i
+                                }
+                                $addDetails = $false
+                            } elseif ($line.Contains("<summary>")) {
+                                if ($startLine -eq -1) {
+                                    $startLine = $i
+                                }
                                 $addSummary = $false
-                                break
                             } elseif ($line.Contains("## Failed tests")) {
                                 $startLine = $i + 1
+                                break
+                            }
+                            if (($addDetails -eq $false) -and ($addSummary -eq $false)) {
                                 break
                             }
                         }
@@ -413,12 +423,17 @@ class ParallelTestsResults {
 
                     if ($addSummary) {
                         $stringBuilder.AppendLine("<summary>$($result.Failed) tests failed, $($result.Passed) tests passed.</summary>")
+                    }
+                    if ($addDetails) {
                         $stringBuilder.AppendLine("<details>")
+                    }
+                    if ($startLine -eq -1) {
+                        $startLine = 0
                     }
                     for ($i = $startLine; $i -lt $resultLines.Length; $i++) {
                         $stringBuilder.AppendLine($resultLines[$i])
                     }
-                    if ($addSummary) {
+                    if ($addDetails) {
                         $stringBuilder.AppendLine("</details>")
                     }
 

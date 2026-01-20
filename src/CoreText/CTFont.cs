@@ -54,7 +54,7 @@ namespace CoreText {
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		PreventAutoDownload = 1 << 1,
 		/// <summary>Give preferences to Apple/System fonts.</summary>
 		PreferSystemFont = 1 << 2,

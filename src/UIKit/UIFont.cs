@@ -271,7 +271,7 @@ namespace UIKit {
 		}
 
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos16.0")]
 		static nfloat GetFontWidth (UIFontWidth width)
 		{
@@ -461,7 +461,7 @@ namespace UIKit {
 		/// <param name="width">The width of the font.</param>
 		/// <returns>A new system <see cref="UIFont" /> of the specified size, weight, and width, or <see langword="null" /> if the font could not be created.</returns>
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos16.0")]
 		public static UIFont? SystemFontOfSize (nfloat fontSize, UIFontWeight weight, UIFontWidth width)
 		{

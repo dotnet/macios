@@ -31,14 +31,14 @@ namespace Network {
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_parameters nw_parameters_create_application_service ();
 
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public static NWParameters CreateApplicationService () => new NWParameters (nw_parameters_create_application_service (), true);
 
 		static unsafe BlockLiteral* DEFAULT_CONFIGURATION () => (BlockLiteral*) NWParametersConstants._DefaultConfiguration;
@@ -631,21 +631,21 @@ namespace Network {
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_parameters_requires_dnssec_validation (OS_nw_parameters parameters);
 
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_parameters_set_requires_dnssec_validation (OS_nw_parameters parameters, byte requires_dnssec_validation);
 
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public bool RequiresDnssecValidation {
 			get => nw_parameters_requires_dnssec_validation (GetCheckedHandle ()) != 0;
 			set => nw_parameters_set_requires_dnssec_validation (GetCheckedHandle (), value.AsByte ());

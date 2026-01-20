@@ -11,7 +11,7 @@ namespace AVFoundation {
 		PlainText,
 		/// <summary>The <c>string</c> parameter passed to the constructor is an SSML (Speech Synthesis Markup Language) string.</summary>
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos16.0")]
 		SsmlRepresentation,

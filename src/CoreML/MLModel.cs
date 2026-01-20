@@ -7,14 +7,14 @@ namespace CoreML {
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreMLLibrary)]
 		static extern /* MLComputeDeviceProtocol[] */ IntPtr MLAllComputeDevices ();
 
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public static IMLComputeDeviceProtocol [] AllComputeDevices {
 			get {
 				var ptr = MLAllComputeDevices ();

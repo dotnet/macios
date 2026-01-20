@@ -2073,10 +2073,6 @@ System.Private.CoreLib.dll:System.Boolean[] System.Reflection.ParameterModifier:
 System.Private.CoreLib.dll:System.Buffer
 System.Private.CoreLib.dll:System.Buffer.BulkMoveWithWriteBarrier(System.Byte&, System.Byte&, System.UIntPtr, System.IntPtr)
 System.Private.CoreLib.dll:System.Buffer.Memmove`1(T&, T&, System.UIntPtr)
-System.Private.CoreLib.dll:System.Buffer.MemmoveInternal(System.Byte*, System.Byte*, System.UIntPtr)
-System.Private.CoreLib.dll:System.Buffer.MemmoveInternal(System.Byte&, System.Byte&, System.UIntPtr)
-System.Private.CoreLib.dll:System.Buffer.ZeroMemoryInternal(System.Byte&, System.UIntPtr)
-System.Private.CoreLib.dll:System.Buffer.ZeroMemoryInternal(System.Void*, System.UIntPtr)
 System.Private.CoreLib.dll:System.Buffers.Any1SearchValues`2
 System.Private.CoreLib.dll:System.Buffers.Any1SearchValues`2..ctor(System.ReadOnlySpan`1<TImpl>)
 System.Private.CoreLib.dll:System.Buffers.Any1SearchValues`2.IndexOfAnyExcept(System.ReadOnlySpan`1<T>)
@@ -9831,7 +9827,7 @@ System.Private.CoreLib.dll:System.Span`1<T> System.Collections.Generic.ValueList
 System.Private.CoreLib.dll:System.Span`1<T> System.Span`1::Empty()
 System.Private.CoreLib.dll:System.Span`1<TUnmanagedElement> System.Runtime.InteropServices.Marshalling.ArrayMarshaller`2/ManagedToUnmanagedIn::_span
 System.Private.CoreLib.dll:System.SpanHelpers
-System.Private.CoreLib.dll:System.SpanHelpers.<LastIndexOfValueType>g__SimdImpl|95_0`3(TValue&, TValue, System.Int32)
+System.Private.CoreLib.dll:System.SpanHelpers.<LastIndexOfValueType>g__SimdImpl|99_0`3(TValue&, TValue, System.Int32)
 System.Private.CoreLib.dll:System.SpanHelpers.BinarySearch`2(System.ReadOnlySpan`1<T>, TComparable)
 System.Private.CoreLib.dll:System.SpanHelpers.BinarySearch`2(T&, System.Int32, TComparable)
 System.Private.CoreLib.dll:System.SpanHelpers.ClearWithoutReferences(System.Byte&, System.UIntPtr)
@@ -9880,6 +9876,9 @@ System.Private.CoreLib.dll:System.SpanHelpers.LoadUInt(System.Byte&, System.UInt
 System.Private.CoreLib.dll:System.SpanHelpers.LoadUInt(System.Byte&)
 System.Private.CoreLib.dll:System.SpanHelpers.LoadUShort(System.Byte&)
 System.Private.CoreLib.dll:System.SpanHelpers.Memmove(System.Byte&, System.Byte&, System.UIntPtr)
+System.Private.CoreLib.dll:System.SpanHelpers.memmove(System.Void*, System.Void*, System.UIntPtr)
+System.Private.CoreLib.dll:System.SpanHelpers.MemmoveNative(System.Byte&, System.Byte&, System.UIntPtr)
+System.Private.CoreLib.dll:System.SpanHelpers.memset(System.Void*, System.Int32, System.UIntPtr)
 System.Private.CoreLib.dll:System.SpanHelpers.NonPackedContainsValueType`1(T&, T, System.Int32)
 System.Private.CoreLib.dll:System.SpanHelpers.NonPackedIndexOfAnyInRangeUnsignedNumber`2(T&, T, T, System.Int32)
 System.Private.CoreLib.dll:System.SpanHelpers.NonPackedIndexOfAnyValueType`2(TValue&, TValue, TValue, System.Int32)
@@ -9895,6 +9894,7 @@ System.Private.CoreLib.dll:System.SpanHelpers.SequenceEqual`1(T&, T&, System.Int
 System.Private.CoreLib.dll:System.SpanHelpers.ThrowMustBeNullTerminatedString()
 System.Private.CoreLib.dll:System.SpanHelpers.UnalignedCountVector128(System.Byte*)
 System.Private.CoreLib.dll:System.SpanHelpers.UnalignedCountVector128(System.Char*)
+System.Private.CoreLib.dll:System.SpanHelpers.ZeroMemoryNative(System.Byte&, System.UIntPtr)
 System.Private.CoreLib.dll:System.SpanHelpers/Block16
 System.Private.CoreLib.dll:System.SpanHelpers/Block64
 System.Private.CoreLib.dll:System.SpanHelpers/DontNegate`1

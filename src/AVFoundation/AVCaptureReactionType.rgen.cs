@@ -10,7 +10,7 @@ namespace AVFoundation {
 	[BindingType<SmartEnum>]
 	[SupportedOSPlatform ("ios17.0")]
 	[SupportedOSPlatform ("tvos17.0")]
-	[SupportedOSPlatform ("maccatalyst17.0")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	public enum AVCaptureReactionType {
 		[Field<EnumValue> ("AVCaptureReactionTypeThumbsUp")]
@@ -42,7 +42,7 @@ namespace AVFoundation {
 		[DllImport (Constants.AVFoundationLibrary)]
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		static extern IntPtr AVCaptureReactionSystemImageNameForType (IntPtr reactionType);
 
@@ -51,7 +51,7 @@ namespace AVFoundation {
 		/// <returns>The name of the system image that is the recommended iconography for the specified reaction type.</returns>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public static string GetSystemImage (this AVCaptureReactionType reactionType)
 		{

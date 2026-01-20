@@ -49,7 +49,7 @@ public partial class NSValue : NSObject {
 	/// <returns>The CMTimeRange.</returns>
 	[SupportedOSPlatform ("ios16.0")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("maccatalyst16.0")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("tvos16.0")]
 	public static CMVideoDimensions ToCMVideoDimensions (NativeHandle handle)
 	{

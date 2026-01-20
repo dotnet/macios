@@ -12,7 +12,7 @@ namespace Network {
 	[SupportedOSPlatform ("tvos17.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("ios17.0")]
-	[SupportedOSPlatform ("maccatalyst17.0")]
+	[SupportedOSPlatform ("maccatalyst")]
 	public class NWProxyConfig : NativeObject {
 		[Preserve (Conditional = true)]
 		internal NWProxyConfig (NativeHandle handle, bool owns) : base (handle, owns) { }

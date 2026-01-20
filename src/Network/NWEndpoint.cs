@@ -200,14 +200,14 @@ namespace Network {
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern unsafe byte* nw_endpoint_get_signature (OS_nw_endpoint endpoint, nuint* out_signature_length);
 
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public ReadOnlySpan<byte> Signature {
 			get {
 				unsafe {
@@ -224,14 +224,14 @@ namespace Network {
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern OS_nw_txt_record nw_endpoint_copy_txt_record (OS_nw_endpoint endpoint);
 
 		[SupportedOSPlatform ("tvos16.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public NWTxtRecord? TxtRecord {
 			get {
 				var record = nw_endpoint_copy_txt_record (GetCheckedHandle ());

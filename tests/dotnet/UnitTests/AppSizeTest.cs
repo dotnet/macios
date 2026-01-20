@@ -35,7 +35,6 @@ namespace Xamarin.Tests {
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[Ignore ("R2R is not implemented yet")]
 		public void CoreCLR_R2R (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-R2R", true, new Dictionary<string, string> () { { "UseMonoRuntime", "false" }, { "PublishReadyToRun", "true" } });

@@ -41,16 +41,10 @@ namespace Foundation {
 		/// <exception cref="ArgumentException">Thrown when the arrays have different sizes.</exception>
 		public static NSMutableDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
+			if (!ValidateFromObjectsAndKeys (objects, keys))
+				return new NSMutableDictionary ();
 
-			using (var no = NSArray.FromNSObjects (objects))
-			using (var nk = NSArray.FromNSObjects (keys))
-				return FromObjectsAndKeysInternal (no, nk);
+			return FromObjectsAndKeys (objects, keys, objects.Length);
 		}
 
 		/// <summary>Creates a mutable dictionary from the specified arrays of objects and keys.</summary>
@@ -61,16 +55,10 @@ namespace Foundation {
 		/// <exception cref="ArgumentException">Thrown when the arrays have different sizes.</exception>
 		public static NSMutableDictionary FromObjectsAndKeys (object [] objects, object [] keys)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
+			if (!ValidateFromObjectsAndKeys (objects, keys))
+				return new NSMutableDictionary ();
 
-			using (var no = NSArray.FromObjects (objects))
-			using (var nk = NSArray.FromObjects (keys))
-				return FromObjectsAndKeysInternal (no, nk);
+			return FromObjectsAndKeys (objects, keys, objects.Length);
 		}
 
 		/// <summary>Creates a mutable dictionary from the specified number of objects and keys from the arrays.</summary>
@@ -79,20 +67,14 @@ namespace Foundation {
 		/// <param name="count">The number of elements to copy from the arrays.</param>
 		/// <returns>A new mutable dictionary containing the specified objects and keys.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="objects"/> or <paramref name="keys"/> is <see langword="null"/>.</exception>
-		/// <exception cref="ArgumentException">Thrown when the arrays have different sizes or <paramref name="count"/> is invalid.</exception>
+		/// <exception cref="ArgumentException">Thrown when <paramref name="count"/> is invalid.</exception>
 		public static NSMutableDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-			if (count < 1 || objects.Length < count || keys.Length < count)
-				throw new ArgumentException (nameof (count));
+			if (!ValidateFromObjectsAndKeys (objects, keys, count))
+				return new NSMutableDictionary ();
 
-			using (var no = NSArray.FromNSObjects (objects))
-			using (var nk = NSArray.FromNSObjects (keys))
+			using (var no = NSArray.FromNativeObjects (objects, count))
+			using (var nk = NSArray.FromNativeObjects (keys, count))
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
@@ -102,20 +84,14 @@ namespace Foundation {
 		/// <param name="count">The number of elements to copy from the arrays.</param>
 		/// <returns>A new mutable dictionary containing the specified objects and keys.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="objects"/> or <paramref name="keys"/> is <see langword="null"/>.</exception>
-		/// <exception cref="ArgumentException">Thrown when the arrays have different sizes or <paramref name="count"/> is invalid.</exception>
+		/// <exception cref="ArgumentException">Thrown when <paramref name="count"/> is invalid.</exception>
 		public static NSMutableDictionary FromObjectsAndKeys (object [] objects, object [] keys, nint count)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-			if (count < 1 || objects.Length < count || keys.Length < count)
-				throw new ArgumentException (nameof (count));
+			if (!ValidateFromObjectsAndKeys (objects, keys, count))
+				return new NSMutableDictionary ();
 
-			using (var no = NSArray.FromObjects (objects))
-			using (var nk = NSArray.FromObjects (keys))
+			using (var no = NSArray.FromObjects (count, objects))
+			using (var nk = NSArray.FromObjects (count, keys))
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 

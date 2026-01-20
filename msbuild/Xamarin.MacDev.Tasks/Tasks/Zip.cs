@@ -54,7 +54,7 @@ namespace Xamarin.MacDev.Tasks {
 			for (int i = 0; i < Sources.Length; i++)
 				sources.Add (Sources [i].GetMetadata ("FullPath"));
 
-			if (!CompressionHelper.TryCompress (Log, zip, sources, false, workingDirectory, false))
+			if (!CompressionHelper.TryCompress (this, zip, sources, false, workingDirectory, false))
 				return false;
 
 			return !Log.HasLoggedErrors;

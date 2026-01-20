@@ -128,17 +128,17 @@ namespace Foundation {
 		}
 
 		/// <summary>Adds the objects in the specified array to the ordered set.</summary>
-		/// <param name="source">An array of objects to add to the set.</param>
-		public void AddObjects (params TKey [] source)
+		/// <param name="source">An array of objects to add to the set. Null elements are stored as <see cref="NSNull.Null"/>.</param>
+		public void AddObjects (params TKey? [] source)
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			_AddObjects (NSArray.FromNativeObjects (source));
 		}
 
 		/// <summary>Inserts the specified objects at the specified indexes in the ordered set.</summary>
-		/// <param name="objects">An array of objects to insert.</param>
+		/// <param name="objects">An array of objects to insert. Null elements are stored as <see cref="NSNull.Null"/>.</param>
 		/// <param name="atIndexes">The indexes at which to insert the objects.</param>
-		public void InsertObjects (TKey [] objects, NSIndexSet atIndexes)
+		public void InsertObjects (TKey? [] objects, NSIndexSet atIndexes)
 		{
 			ArgumentNullException.ThrowIfNull (objects);
 			ArgumentNullException.ThrowIfNull (atIndexes);
@@ -147,8 +147,8 @@ namespace Foundation {
 
 		/// <summary>Replaces the objects at the specified indexes with the specified replacement objects.</summary>
 		/// <param name="indexSet">The indexes of the objects to replace.</param>
-		/// <param name="replacementObjects">An array of objects to use as replacements.</param>
-		public void ReplaceObjects (NSIndexSet indexSet, params TKey [] replacementObjects)
+		/// <param name="replacementObjects">An array of objects to use as replacements. Null elements are stored as <see cref="NSNull.Null"/>.</param>
+		public void ReplaceObjects (NSIndexSet indexSet, params TKey? [] replacementObjects)
 		{
 			ArgumentNullException.ThrowIfNull (replacementObjects);
 			ArgumentNullException.ThrowIfNull (indexSet);
@@ -165,8 +165,8 @@ namespace Foundation {
 		}
 
 		/// <summary>Removes the specified objects from the ordered set.</summary>
-		/// <param name="objects">An array of objects to remove from the set.</param>
-		public void RemoveObjects (params TKey [] objects)
+		/// <param name="objects">An array of objects to remove from the set. Null elements are interpreted as <see cref="NSNull.Null"/>.</param>
+		public void RemoveObjects (params TKey? [] objects)
 		{
 			ArgumentNullException.ThrowIfNull (objects);
 			_RemoveObjects (NSArray.FromNativeObjects (objects));

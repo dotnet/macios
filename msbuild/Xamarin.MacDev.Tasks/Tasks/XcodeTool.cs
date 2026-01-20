@@ -28,13 +28,7 @@ namespace Xamarin.MacDev.Tasks {
 		public string ResourcePrefix { get; set; } = string.Empty;
 
 		[Required]
-		public string SdkBinPath { get; set; } = string.Empty;
-
-		[Required]
 		public string SdkDevPath { get; set; } = string.Empty;
-
-		[Required]
-		public string SdkUsrPath { get; set; } = string.Empty;
 
 		public string ToolExe {
 			get { return toolExe ?? ToolName; }
@@ -106,9 +100,6 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var environment = new Dictionary<string, string?> ();
 			var args = new List<string> ();
-
-			environment.Add ("PATH", SdkBinPath);
-			environment.Add ("XCODE_DEVELOPER_USR_PATH", SdkUsrPath);
 
 			AppendCommandLineArguments (environment, args, input, output);
 

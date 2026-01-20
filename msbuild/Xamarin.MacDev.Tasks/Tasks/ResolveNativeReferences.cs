@@ -198,7 +198,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			// (compressed) xcframework
 			if (name.EndsWith (".xcframework", StringComparison.OrdinalIgnoreCase) || name.EndsWith (".xcframework.zip", StringComparison.OrdinalIgnoreCase)) {
-				if (!TryResolveXCFramework (Log, TargetFrameworkMoniker, SdkIsSimulator, Architectures, name, GetIntermediateDecompressionDir (item), createdFiles, cancellationToken, out var nativeLibraryPath))
+				if (!TryResolveXCFramework (this, TargetFrameworkMoniker, SdkIsSimulator, Architectures, name, GetIntermediateDecompressionDir (item), createdFiles, cancellationToken, out var nativeLibraryPath))
 					return;
 				var nr = new TaskItem (item);
 				SetMetadataNativeLibrary (nr, nativeLibraryPath);
@@ -208,7 +208,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			// compressed framework
 			if (name.EndsWith (".framework.zip", StringComparison.OrdinalIgnoreCase)) {
-				if (!CompressionHelper.TryDecompress (Log, name, Path.GetFileNameWithoutExtension (name), GetIntermediateDecompressionDir (item), createdFiles, cancellationToken, out var frameworkPath))
+				if (!CompressionHelper.TryDecompress (this, name, Path.GetFileNameWithoutExtension (name), GetIntermediateDecompressionDir (item), createdFiles, cancellationToken, out var frameworkPath))
 					return;
 				var nr = new TaskItem (item);
 				nr.ItemSpec = GetActualLibrary (frameworkPath);
@@ -311,14 +311,14 @@ namespace Xamarin.MacDev.Tasks {
 				ITaskItem t = new TaskItem (r);
 				var name = referenceNode.Attributes ["Name"].Value.Trim ('\\', '/');
 				if (name.EndsWith (".xcframework", StringComparison.Ordinal) || name.EndsWith (".xcframework.zip", StringComparison.Ordinal)) {
-					if (!TryResolveXCFramework (Log, TargetFrameworkMoniker, SdkIsSimulator, Architectures, resources, name, GetIntermediateDecompressionDir (resources), createdFiles, cancellationToken, out var nativeLibraryPath))
+					if (!TryResolveXCFramework (this, TargetFrameworkMoniker, SdkIsSimulator, Architectures, resources, name, GetIntermediateDecompressionDir (resources), createdFiles, cancellationToken, out var nativeLibraryPath))
 						continue;
 					SetMetadataNativeLibrary (t, nativeLibraryPath);
 				} else if (name.EndsWith (".framework", StringComparison.Ordinal)) {
 					string? frameworkPath;
 					if (!isCompressed) {
 						frameworkPath = Path.Combine (resources, name);
-					} else if (!CompressionHelper.TryDecompress (Log, resources, name, GetIntermediateDecompressionDir (resources), createdFiles, cancellationToken, out frameworkPath)) {
+					} else if (!CompressionHelper.TryDecompress (this, resources, name, GetIntermediateDecompressionDir (resources), createdFiles, cancellationToken, out frameworkPath)) {
 						continue;
 					}
 					t.ItemSpec = GetActualLibrary (frameworkPath);
@@ -330,7 +330,7 @@ namespace Xamarin.MacDev.Tasks {
 					string? dylibPath;
 					if (!isCompressed) {
 						dylibPath = Path.Combine (resources, name);
-					} else if (!CompressionHelper.TryDecompress (Log, resources, name, GetIntermediateDecompressionDir (resources), createdFiles, cancellationToken, out dylibPath)) {
+					} else if (!CompressionHelper.TryDecompress (this, resources, name, GetIntermediateDecompressionDir (resources), createdFiles, cancellationToken, out dylibPath)) {
 						continue;
 					}
 					t.ItemSpec = dylibPath;
@@ -341,7 +341,7 @@ namespace Xamarin.MacDev.Tasks {
 					string? aPath;
 					if (!isCompressed) {
 						aPath = Path.Combine (resources, name);
-					} else if (!CompressionHelper.TryDecompress (Log, resources, name, GetIntermediateDecompressionDir (resources), createdFiles, cancellationToken, out aPath)) {
+					} else if (!CompressionHelper.TryDecompress (this, resources, name, GetIntermediateDecompressionDir (resources), createdFiles, cancellationToken, out aPath)) {
 						continue;
 					}
 					t.ItemSpec = aPath;
@@ -378,7 +378,7 @@ namespace Xamarin.MacDev.Tasks {
 		/// <param name="nativeLibraryPath">A full path to the resolved native library within the xcframework. If 'resourcePath' is compressed, this will point to where the native library is decompressed on disk.</param>
 		/// <param name="intermediateDecompressionDir"></param>
 		/// <returns>True if a native library was successfully found. Otherwise false, and an error will have been printed to the log.</returns>
-		public static bool TryResolveXCFramework (TaskLoggingHelper log, string targetFrameworkMoniker, bool isSimulator, string? architectures, string path, string intermediateDecompressionDir, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? nativeLibraryPath)
+		public static bool TryResolveXCFramework (XamarinTask task, string targetFrameworkMoniker, bool isSimulator, string? architectures, string path, string intermediateDecompressionDir, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? nativeLibraryPath)
 		{
 			string resourcePath;
 			string xcframework;
@@ -390,7 +390,7 @@ namespace Xamarin.MacDev.Tasks {
 				resourcePath = Path.GetDirectoryName (path);
 				xcframework = Path.GetFileName (path);
 			}
-			return TryResolveXCFramework (log, targetFrameworkMoniker, isSimulator, architectures, resourcePath, xcframework, intermediateDecompressionDir, createdFiles, cancellationToken, out nativeLibraryPath);
+			return TryResolveXCFramework (task, targetFrameworkMoniker, isSimulator, architectures, resourcePath, xcframework, intermediateDecompressionDir, createdFiles, cancellationToken, out nativeLibraryPath);
 		}
 
 		/// <summary>
@@ -405,8 +405,9 @@ namespace Xamarin.MacDev.Tasks {
 		/// <param name="nativeLibraryPath">A full path to the resolved native library within the xcframework. If 'resourcePath' is compressed, this will point to where the native library is decompressed on disk.</param>
 		/// <param name="intermediateDecompressionDir"></param>
 		/// <returns>True if a native library was successfully found. Otherwise false, and an error will have been printed to the log.</returns>
-		public static bool TryResolveXCFramework (TaskLoggingHelper log, string targetFrameworkMoniker, bool isSimulator, string? architectures, string resourcePath, string xcframework, string intermediateDecompressionDir, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? nativeLibraryPath)
+		public static bool TryResolveXCFramework (XamarinTask task, string targetFrameworkMoniker, bool isSimulator, string? architectures, string resourcePath, string xcframework, string intermediateDecompressionDir, List<string> createdFiles, CancellationToken? cancellationToken, [NotNullWhen (true)] out string? nativeLibraryPath)
 		{
+			var log = task.Log;
 			nativeLibraryPath = null;
 
 			try {
@@ -421,7 +422,7 @@ namespace Xamarin.MacDev.Tasks {
 				if (!isCompressed && CompressionHelper.IsCompressed (xcframework)) {
 					var zipPath = Path.Combine (resourcePath, xcframework);
 					var xcframeworkName = Path.GetFileNameWithoutExtension (xcframework);
-					if (!CompressionHelper.TryDecompress (log, zipPath, xcframeworkName, intermediateDecompressionDir, createdFiles, cancellationToken, out var decompressedXcframeworkPath))
+					if (!CompressionHelper.TryDecompress (task, zipPath, xcframeworkName, intermediateDecompressionDir, createdFiles, cancellationToken, out var decompressedXcframeworkPath))
 						return false;
 
 					nativeLibraryPath = Path.Combine (intermediateDecompressionDir, xcframeworkName, nativeLibraryRelativePath);
@@ -434,7 +435,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 
 				var zipResource = Path.Combine (xcframework, Path.GetDirectoryName (nativeLibraryRelativePath));
-				if (!CompressionHelper.TryDecompress (log, resourcePath, zipResource, intermediateDecompressionDir, createdFiles, cancellationToken, out var decompressedPath))
+				if (!CompressionHelper.TryDecompress (task, resourcePath, zipResource, intermediateDecompressionDir, createdFiles, cancellationToken, out var decompressedPath))
 					return false;
 
 				nativeLibraryPath = Path.Combine (intermediateDecompressionDir, xcframework, nativeLibraryRelativePath);

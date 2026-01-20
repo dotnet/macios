@@ -358,6 +358,107 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
+		public void IndexerGetterKeyNotFoundBehaviorTest ()
+		{
+			var value1 = NSDate.FromTimeIntervalSinceNow (1);
+			var key1 = new NSString ("key1");
+			var keyMissing = new NSString ("missing");
+
+			var dict = new NSMutableDictionary<NSString, NSDate> (key1, value1);
+
+			// Accessing via the indexer property should return null
+			Assert.IsNull (dict [keyMissing], "missing key");
+
+			// Accessing via IDictionary interface should return null too
+			IDictionary<NSString, NSDate> idict = dict;
+			Assert.IsNull (idict [keyMissing], "missing key via interface");
+		}
+
+		[Test]
+		public void MissingKeyAccessTest ()
+		{
+			var value1 = NSDate.FromTimeIntervalSinceNow (1);
+			var value2 = NSDate.FromTimeIntervalSinceNow (2);
+			var key1 = new NSString ("key1");
+			var key2 = new NSString ("key2");
+			var keyMissing = new NSString ("missing");
+
+			var dict = new NSMutableDictionary<NSString, NSDate> (
+				new NSString [] { key1, key2 },
+				new NSDate [] { value1, value2 }
+			);
+
+			// ObjectForKey should return null for missing keys
+			Assert.IsNull (dict.ObjectForKey (keyMissing), "ObjectForKey missing");
+
+			// TryGetValue should return false for missing keys
+			NSDate value;
+			Assert.IsFalse (dict.TryGetValue (keyMissing, out value), "TryGetValue missing");
+			Assert.IsNull (value, "TryGetValue out value");
+
+			// ContainsKey should return false for missing keys
+			Assert.IsFalse (dict.ContainsKey (keyMissing), "ContainsKey missing");
+
+			// Indexer getter should return null
+			Assert.IsNull (dict [keyMissing], "Indexer missing");
+
+			// IDictionary indexer should also return null
+			IDictionary<NSString, NSDate> idict = dict;
+			Assert.IsNull (idict [keyMissing], "IDictionary indexer missing");
+		}
+
+		[Test]
+		public void EmptyDictionaryMissingKeyTest ()
+		{
+			var dict = new NSMutableDictionary<NSString, NSDate> ();
+			var keyMissing = new NSString ("missing");
+
+			// All access methods should handle missing keys in empty dictionary
+			Assert.IsNull (dict.ObjectForKey (keyMissing), "ObjectForKey");
+			Assert.IsFalse (dict.ContainsKey (keyMissing), "ContainsKey");
+
+			NSDate value;
+			Assert.IsFalse (dict.TryGetValue (keyMissing, out value), "TryGetValue");
+			Assert.IsNull (value, "TryGetValue out");
+
+			Assert.IsNull (dict [keyMissing], "Indexer");
+
+			IDictionary<NSString, NSDate> idict = dict;
+			Assert.IsNull (idict [keyMissing], "IDictionary indexer");
+		}
+
+		[Test]
+		public void ObjectsForKeysMissingKeysTest ()
+		{
+			var value1 = NSDate.FromTimeIntervalSinceNow (1);
+			var value2 = NSDate.FromTimeIntervalSinceNow (2);
+			var marker = NSDate.FromTimeIntervalSinceNow (999);
+			var key1 = new NSString ("key1");
+			var key2 = new NSString ("key2");
+			var keyMissing1 = new NSString ("missing1");
+			var keyMissing2 = new NSString ("missing2");
+
+			var dict = new NSMutableDictionary<NSString, NSDate> (
+				new NSString [] { key1, key2 },
+				new NSDate [] { value1, value2 }
+			);
+
+			// Request mix of existing and missing keys - marker should replace missing values
+			var result = dict.ObjectsForKeys (new NSString [] { key1, keyMissing1, key2, keyMissing2 }, marker);
+			Assert.AreEqual (4, result.Length, "Length");
+			Assert.AreSame (value1, result [0], "0 - existing");
+			Assert.AreSame (marker, result [1], "1 - missing");
+			Assert.AreSame (value2, result [2], "2 - existing");
+			Assert.AreSame (marker, result [3], "3 - missing");
+
+			// Request all missing keys
+			result = dict.ObjectsForKeys (new NSString [] { keyMissing1, keyMissing2 }, marker);
+			Assert.AreEqual (2, result.Length, "All missing length");
+			Assert.AreSame (marker, result [0], "All missing 0");
+			Assert.AreSame (marker, result [1], "All missing 1");
+		}
+
+		[Test]
 		public void IDictionary2Test ()
 		{
 			var value1 = NSDate.FromTimeIntervalSinceNow (1);

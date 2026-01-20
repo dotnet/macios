@@ -2376,10 +2376,11 @@ namespace AudioToolbox {
 		public AudioFileInfoDictionary? InfoDictionary {
 			get {
 				var ptr = GetIntPtr (AudioFileProperty.InfoDictionary);
-				if (ptr == IntPtr.Zero)
+				var dict = Runtime.GetNSObject<NSMutableDictionary> (ptr, owns: true);
+				if (dict is null)
 					return null;
 
-				return new AudioFileInfoDictionary (new NSMutableDictionary (ptr, true));
+				return new AudioFileInfoDictionary (dict);
 			}
 		}
 

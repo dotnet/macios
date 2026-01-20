@@ -12,9 +12,8 @@
 
 #if MONOMAC || __MACCATALYST__
 
-#if !NO_SYSTEM_DRAWING
 using System.Drawing;
-#endif
+
 using CoreFoundation;
 
 namespace CoreGraphics {

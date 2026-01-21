@@ -39,6 +39,9 @@
     <Compile Include="..\common\cache.cs">
       <Link>external/tools/common/cache.cs</Link>
     </Compile>
+    <Compile Include="..\common\RegistrarMode.cs">
+      <Link>tools\common\RegistrarMode.cs</Link>
+    </Compile>
     <Compile Include="..\linker\MonoTouch.Tuner\Extensions.cs">
       <Link>external/tools/linker/MonoTouch.Tuner/Extensions.cs</Link>
     </Compile>

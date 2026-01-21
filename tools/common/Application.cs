@@ -59,15 +59,6 @@ namespace Xamarin.Bundler {
 		Trace = 1,
 	}
 
-	public enum RegistrarMode {
-		Default,
-		Dynamic,
-		PartialStatic,
-		Static,
-		ManagedStatic,
-		TrimmableStatic,
-	}
-
 	public partial class Application : IToolLog {
 		public Cache? Cache;
 		public string AppDirectory = ".";

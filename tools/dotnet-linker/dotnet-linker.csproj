@@ -110,6 +110,9 @@
     <Compile Include="..\common\CSToObjCMap.cs">
       <Link>external/tools/common/CSToObjCMap.cs</Link>
     </Compile>
+    <Compile Include="..\common\RegistrarMode.cs">
+      <Link>tools\common\RegistrarMode.cs</Link>
+    </Compile>
     <Compile Include="..\common\Rewriter.cs">
       <Link>external/tools/common/Rewriter.cs</Link>
     </Compile>

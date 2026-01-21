@@ -1,5 +1,5 @@
 [submodule "external/Xamarin.MacDev"]
     path = external/Xamarin.MacDev
-    url = ../../dotnet/macios-devtools 
+    url = https://github.com/dotnet/macios-devtools
     branch = main
 

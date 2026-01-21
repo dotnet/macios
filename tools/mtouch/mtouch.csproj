@@ -33,6 +33,9 @@
     <Compile Include="..\common\AssemblyBuildTarget.cs">
       <Link>external/tools/common/AssemblyBuildTarget.cs</Link>
     </Compile>
+    <Compile Include="..\common\NormalizedStringComparer.cs">
+      <Link>tools\common\NormalizedStringComparer.cs</Link>
+    </Compile>
     <Compile Include="..\common\PListExtensions.cs">
       <Link>external/tools/common/PListExtensions.cs</Link>
     </Compile>

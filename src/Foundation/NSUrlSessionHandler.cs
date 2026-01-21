@@ -1148,21 +1148,20 @@ namespace Foundation {
 						var identity = SecIdentity.Import (certificate);
 						var credential = new NSUrlCredential (identity, new SecCertificate [] { cert }, NSUrlCredentialPersistence.ForSession);
 						completionHandler (NSUrlSessionAuthChallengeDisposition.UseCredential, credential);
-                        return;
-                    }
-                    else if (!AppContext.TryGetSwitch("Foundation.NSUrlSessionHandler.NoMissingCertificateHandling", out bool enabled) || !enabled) {
-                        // The server requested a certificate, but we don't have one to provide. Fail the request with a meaningful exception
-                        // that allows the developer to identify this, ask the user for a certificate, add it to the ClientCertificates collection
-                        // and then re-try the request.
-                        lock (inflight.Lock) {
-                            inflight.Exception = new HttpRequestException("An error occurred while sending the request.",
-                                new WebException("Error: Certificate Required", 
-                                    new AuthenticationException("Error: Certificate Required"),
-                                WebExceptionStatus.SecureChannelFailure, null));
-                        }
-                        completionHandler(NSUrlSessionAuthChallengeDisposition.CancelAuthenticationChallenge, null!);
-                        return;
-                    }
+						return;
+					} else if (!AppContext.TryGetSwitch ("Foundation.NSUrlSessionHandler.NoMissingCertificateHandling", out bool enabled) || !enabled) {
+						// The server requested a certificate, but we don't have one to provide. Fail the request with a meaningful exception
+						// that allows the developer to identify this, ask the user for a certificate, add it to the ClientCertificates collection
+						// and then re-try the request.
+						lock (inflight.Lock) {
+							inflight.Exception = new HttpRequestException ("An error occurred while sending the request.",
+								new WebException ("Error: Certificate Required",
+									new AuthenticationException ("Error: Certificate Required"),
+								WebExceptionStatus.SecureChannelFailure, null));
+						}
+						completionHandler (NSUrlSessionAuthChallengeDisposition.CancelAuthenticationChallenge, null!);
+						return;
+					}
 				}
 
 				// case for the basic auth failing up front. As per apple documentation:

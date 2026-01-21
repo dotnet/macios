@@ -58,6 +58,7 @@ namespace Xamarin.Bundler {
 			if (action != Action.RunRegistrar)
 				throw ErrorHelper.CreateError (99, Errors.MX0099, "Only --runregistrar is supported.");
 
+			app.InitializeCommon ();
 			app.RunRegistrar ();
 
 			return 0;

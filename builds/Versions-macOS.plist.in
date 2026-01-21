@@ -94,8 +94,6 @@
 	<key>Optimizations</key>
 	<dict>
 		<!-- The key is the value to be passed to mmp. The string is a very short description. Any IDE UI should also point to the documentation for the optimizations. -->
-		<key>inline-intptr-size</key>
-		<string>Inline IntPtr.Size</string>
 		<key>inline-runtime-arch</key>
 		<string>Inline Runtime.Arch</string>
 		<key>inline-isdirectbinding</key>

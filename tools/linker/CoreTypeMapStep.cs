@@ -168,14 +168,14 @@ namespace MonoTouch.Tuner {
 		// Cache the results of the IsCIFilter check in a dictionary. It makes this method slightly faster
 		// (total time spent in IsCIFilter when linking monotouch-test went from 11 ms to 3ms).
 		Dictionary<TypeReference, bool> ci_filter_types = new Dictionary<TypeReference, bool> ();
-		bool IsCIFilter (TypeReference type)
+		bool IsCIFilter (TypeReference? type)
 		{
 			if (type is null)
 				return false;
 
 			bool rv;
 			if (!ci_filter_types.TryGetValue (type, out rv)) {
-				rv = type.Is (Namespaces.CoreImage, "CIFilter") || IsCIFilter (Context.Resolve (type).BaseType);
+				rv = type.Is (Namespaces.CoreImage, "CIFilter") || IsCIFilter (Context.Resolve (type)?.BaseType);
 				ci_filter_types [type] = rv;
 			}
 			return rv;
@@ -198,7 +198,7 @@ namespace MonoTouch.Tuner {
 				var base_type = Context.Resolve (type.BaseType);
 				while (base_type is not null && IsNSObject (base_type)) {
 					isdirectbinding_value [base_type] = null;
-					base_type = Context.Resolve (base_type.BaseType);
+					base_type = LinkContext.Resolve (base_type.BaseType);
 				}
 				return;
 			}

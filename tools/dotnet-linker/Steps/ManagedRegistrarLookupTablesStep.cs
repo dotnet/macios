@@ -57,11 +57,28 @@ namespace Xamarin.Linker {
 				return;
 
 			abr.SetCurrentAssembly (assembly);
-
-			CreateRegistrarType (info);
-
-			abr.SaveCurrentAssembly ();
+			if (App.IsPostProcessingAssemblies) {
+				// We need to load what the PrepareAssemblies task did/produced
+				CollectRegistrarType (info, assembly);
+			} else {
+				CreateRegistrarType (info);
+				abr.SaveCurrentAssembly ();
+			}
 			abr.ClearCurrentAssembly ();
+		}
+
+		void CollectRegistrarType (AssemblyTrampolineInfo info, AssemblyDefinition currentAssembly)
+		{
+			var registrarType = currentAssembly.MainModule.Types.SingleOrDefault (v => v.Is ("ObjCRuntime", "__Registrar__"));
+			if (registrarType is null)
+				throw ErrorHelper.CreateError (99, $"No __Registrar__ was found in the assembly {currentAssembly.Name.Name} after the PrepareAssemblies step, but none was found. This might be a sign that the PrepareAssemblies step didn't run, or didn't run correctly.");
+
+			info.RegistrarType = registrarType;
+
+			// We don't care about getting the types, but we need the mapping to happen.
+			// None of the types in the generated table should be trimmed away by the trimmer, so sorting
+			// them when the table is generated, and then again after trimming (aka here), should result in the same order and thus the same mapping.
+			GetAndMapTypesToRegister (registrarType, info);
 		}
 
 		void CreateRegistrarType (AssemblyTrampolineInfo info)
@@ -119,7 +136,7 @@ namespace Xamarin.Linker {
 			AddLoadTypeToModuleConstructor (registrarType);
 
 			// Compute the list of types that we need to register
-			var types = GetTypesToRegister (registrarType, info);
+			var types = GetAndMapTypesToRegister (registrarType, info);
 
 			GenerateLookupUnmanagedFunction (registrarType, sorted);
 			GenerateLookupType (info, registrarType, types);
@@ -164,7 +181,7 @@ namespace Xamarin.Linker {
 			Annotations.Mark (moduleConstructor);
 		}
 
-		List<TypeData> GetTypesToRegister (TypeDefinition registrarType, AssemblyTrampolineInfo info)
+		List<TypeData> GetAndMapTypesToRegister (TypeDefinition registrarType, AssemblyTrampolineInfo info)
 		{
 			// Compute the list of types that we need to register
 			var types = new List<TypeData> ();
@@ -201,6 +218,9 @@ namespace Xamarin.Linker {
 				types.Add (new (wrapperType, wrapperType.Resolve ()));
 			}
 
+			// Sort the types by their full name to make sure the generated code is deterministic.
+			types.Sort ((x, y) => string.Compare (x.Definition.FullName, y.Definition.FullName, StringComparison.Ordinal));
+
 			// Now create a mapping from type to index
 			for (var i = 0; i < types.Count; i++)
 				info.RegisterType (types [i].Definition, (uint) i);
@@ -228,7 +248,11 @@ namespace Xamarin.Linker {
 
 		bool IsTrimmed (MemberReference type)
 		{
+#if ASSEMBLY_PREPARER
+			return false;
+#else
 			return StaticRegistrar.IsTrimmed (type, Annotations);
+#endif
 		}
 
 		void GenerateLookupTypeId (AssemblyTrampolineInfo infos, TypeDefinition registrarType, List<TypeData> types)

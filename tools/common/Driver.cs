@@ -12,6 +12,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
+using Xamarin.Bundler;
 using Xamarin.MacDev;
 using Xamarin.Utils;
 
@@ -80,14 +81,14 @@ namespace Xamarin.Bundler {
 		}
 #endif // !LEGACY_TOOLS
 
-		public static int GetDefaultVerbosity ()
+		public static int GetDefaultVerbosity (string toolName)
 		{
 			var v = 0;
-			var fn = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), $".{NAME}-verbosity");
+			var fn = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), $".{toolName}-verbosity");
 			if (File.Exists (fn)) {
 				v = (int) new FileInfo (fn).Length;
 				if (v == 0)
-					v = 4; // this is the magic verbosity level we give everybody.
+					v = 4; // this is the magic verbosity level we give everybody if the file exists, but has no size.
 			}
 			return v;
 		}

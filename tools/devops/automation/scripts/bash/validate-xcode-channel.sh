@@ -7,15 +7,15 @@ fi
 
 cd "$(dirname "${BASH_SOURCE[0]}")/../../.."
 
-FILE=$(pwd)/tmp.txt
+# FILE=$(pwd)/tmp.txt
 
-make print-variable-value-to-file FILE="$FILE" VARIABLE=XCODE_IS_PREVIEW
-XCODE_IS_PREVIEW=$(cat "$FILE")
+# make print-variable-value-to-file FILE="$FILE" VARIABLE=XCODE_IS_PREVIEW
+# XCODE_IS_PREVIEW=$(cat "$FILE")
 
-make print-variable-value-to-file FILE="$FILE" VARIABLE=XCODE_IS_STABLE
-XCODE_IS_STABLE=$(cat "$FILE")
+# make print-variable-value-to-file FILE="$FILE" VARIABLE=XCODE_IS_STABLE
+# XCODE_IS_STABLE=$(cat "$FILE")
 
-rm -f "$FILE"
+# rm -f "$FILE"
 
 # if [[ "$XCODE_IS_PREVIEW $XCODE_IS_STABLE" == "true false" ]]; then
 # 	if [[ "${XCODE_CHANNEL}" != "Beta" ]]; then

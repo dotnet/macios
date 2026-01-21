@@ -107,13 +107,13 @@ namespace Cecil.Tests {
 			Assert.Multiple (() => {
 				// fail for each of the new failures
 				foreach (var failure in newFailures) {
-					Assert.Fail (failure.ToString ());
+					Assert.Fail (failure.ToString () ?? "");
 				}
 
 				// The list of known failures often doesn't separate based on platform, which means that we might not see all the known failures
 				// unless we're currently building for all platforms. As such, only verify the list of known failures if we're building for all platforms.
 				if (!Configuration.AnyIgnoredPlatforms ())
-					Assert.IsEmpty (fixedFailures, $"Known failures that aren't failing anymore - remove these from the list of known failures: {message}");
+					Assert.That (fixedFailures, Is.Empty, $"Known failures that aren't failing anymore - remove these from the list of known failures: {message}");
 			});
 
 		}

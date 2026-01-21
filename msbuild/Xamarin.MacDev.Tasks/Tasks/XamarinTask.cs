@@ -97,13 +97,13 @@ namespace Xamarin.MacDev.Tasks {
 			return PlatformFrameworkHelper.GetSdkPlatform (Platform, isSimulator);
 		}
 
-		internal protected System.Threading.Tasks.Task<Execution> ExecuteAsync (string fileName, IList<string> arguments, string? sdkDevPath = null, Dictionary<string, string?>? environment = null, bool mergeOutput = true, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
+		internal protected System.Threading.Tasks.Task<Execution> ExecuteAsync (string fileName, IList<string> arguments, string? sdkDevPath = null, Dictionary<string, string?>? environment = null, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
 		{
-			return ExecuteAsync (Log, fileName, arguments, sdkDevPath, environment, mergeOutput, showErrorIfFailure, workingDirectory, cancellationToken);
+			return ExecuteAsync (Log, fileName, arguments, sdkDevPath, environment, showErrorIfFailure, workingDirectory, cancellationToken);
 		}
 
 		static int executionCounter;
-		internal protected static async System.Threading.Tasks.Task<Execution> ExecuteAsync (TaskLoggingHelper log, string fileName, IList<string> arguments, string? sdkDevPath = null, Dictionary<string, string?>? environment = null, bool mergeOutput = true, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
+		internal protected static async System.Threading.Tasks.Task<Execution> ExecuteAsync (TaskLoggingHelper log, string fileName, IList<string> arguments, string? sdkDevPath = null, Dictionary<string, string?>? environment = null, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
 		{
 			// Create a new dictionary if we're given one, to make sure we don't change the caller's dictionary.
 			var launchEnvironment = environment is null ? new Dictionary<string, string?> () : new Dictionary<string, string?> (environment);
@@ -123,16 +123,11 @@ namespace Xamarin.MacDev.Tasks {
 					log.LogMessage (MessageImportance.Low, "        {0}={1}", kvp.Key, kvp.Value);
 				}
 			}
-			var rv = await Execution.RunAsync (fileName, arguments, environment: launchEnvironment, mergeOutput: mergeOutput, workingDirectory: workingDirectory, cancellationToken: cancellationToken);
+			var rv = await Execution.RunAsync (fileName, arguments, environment: launchEnvironment, workingDirectory: workingDirectory, cancellationToken: cancellationToken);
 			log.LogMessage (rv.ExitCode == 0 ? MessageImportance.Low : MessageImportance.High, MSBStrings.M0002, currentId, rv.Duration, rv.ExitCode); // Finished external tool execution #{0} in {1} and with exit code {2}.
 
 			// Show the output
-			var output = rv.StandardOutput!.ToString ();
-			if (!mergeOutput) {
-				if (output.Length > 0)
-					output += Environment.NewLine;
-				output += rv.StandardError!.ToString ();
-			}
+			var output = rv.Output.MergedOutput;
 			if (output.Length > 0) {
 				var importance = MessageImportance.Low;
 				if (rv.ExitCode != 0)
@@ -141,7 +136,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (showErrorIfFailure && rv.ExitCode != 0) {
-				var stderr = rv.StandardError!.ToString ().Trim ();
+				var stderr = rv.Output.StandardError.Trim ();
 				if (stderr.Length > 1024)
 					stderr = stderr.Substring (0, 1024);
 				if (string.IsNullOrEmpty (stderr)) {

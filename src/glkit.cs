@@ -433,7 +433,8 @@ namespace GLKit {
 		[Static]
 		[Export ("newMeshesFromAsset:sourceMeshes:error:")]
 		[return: NullAllowed]
-		GLKMesh [] FromAsset (MDLAsset asset, out NSArray sourceMeshes, out NSError error);
+		[return: Release]
+		GLKMesh [] FromAsset (MDLAsset asset, [NullAllowed] out NSArray sourceMeshes, [NullAllowed] out NSError error);
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

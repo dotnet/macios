@@ -126,7 +126,6 @@ namespace Xamarin.Linker {
 			Application = new Application (this);
 			CompilerFlags = new CompilerFlags (Application);
 
-			var use_llvm = false;
 			var lines = File.ReadAllLines (linker_file);
 			var significantLines = new List<string> (); // This is the input the cache uses to verify if the cache is still valid
 			for (var i = 0; i < lines.Length; i++) {
@@ -437,10 +436,6 @@ namespace Xamarin.Linker {
 				var messages = new List<ProductException> ();
 				Application.Optimizations.Parse (Application.Platform, user_optimize_flags, messages);
 				ErrorHelper.Show (Application, messages);
-			}
-
-			if (use_llvm) {
-				Abi |= Abi.LLVM;
 			}
 
 			Application.CreateCache (significantLines.ToArray ());

@@ -714,6 +714,27 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		[Test]
+		public void TestNSUrlSessionHandlerDetectMissingClientCertificate ()
+		{
+			string content = "";
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				using var handler = new NSUrlSessionHandler ();
+				using var client = new HttpClient (handler);
+				var response = await client.GetAsync (NetworkResources.EchoClientCertificateUrl);
+				content = await response.EnsureSuccessStatusCode ().Content.ReadAsStringAsync ();
+			}, out var ex);
+			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
+				Assert.Inconclusive ("Request timedout.");
+			} else {
+				Assert.IsNotNull (ex, "Exception was expected.");
+				Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
+				Assert.IsInstanceOf (typeof (WebException), ex.InnerException, "InnerException Type");
+				Assert.AreEqual (WebExceptionStatus.SecureChannelFailure, ((WebException) ex.InnerException).Status, "InnerException Status");
+				Assert.IsInstanceOf (typeof (AuthenticationException), ex.InnerException.InnerException, "InnerException.InnerException Type");
+			}
+		}
+
+		[Test]
 		public void AssertDefaultValuesNSUrlSessionHandler ()
 		{
 			using (var handler = new NSUrlSessionHandler ()) {

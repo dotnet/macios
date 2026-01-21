@@ -716,9 +716,9 @@ namespace MonoTests.System.Net.Http {
 		[Test]
 		public void TestNSUrlSessionHandlerDetectMissingClientCertificate ()
 		{
+			string content = "";
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				using var handler = new NSUrlSessionHandler ();
-				handler.ClientCertificates.Add (certificate);
 				using var client = new HttpClient (handler);
 				var response = await client.GetAsync (NetworkResources.EchoClientCertificateUrl);
 				content = await response.EnsureSuccessStatusCode ().Content.ReadAsStringAsync ();
@@ -730,7 +730,7 @@ namespace MonoTests.System.Net.Http {
 				Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
 				Assert.IsInstanceOf (typeof (WebException), ex.InnerException, "InnerException Type");
 				Assert.AreEqual (WebExceptionStatus.SecureChannelFailure, ((WebException) ex.InnerException).Status, "InnerException Status");
-				Assert.IsInstanceOf (typeof (AuthenticationException), ex.InnerException.Inner, "InnerException.InnerException Type");
+				Assert.IsInstanceOf (typeof (AuthenticationException), ex.InnerException.InnerException, "InnerException.InnerException Type");
 			}
 		}
 

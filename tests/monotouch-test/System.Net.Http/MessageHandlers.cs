@@ -729,7 +729,7 @@ namespace MonoTests.System.Net.Http {
 				Assert.IsNotNull (ex, "Exception was expected.");
 				Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
 				Assert.IsInstanceOf (typeof (WebException), ex.InnerException, "InnerException Type");
-				Assert.AreEqual (WebExceptionStatus.SecureChannelFailure, (WebException) ex.InnerException).Status, "InnerException Status");
+				Assert.AreEqual (WebExceptionStatus.SecureChannelFailure, ((WebException) ex.InnerException).Status, "InnerException Status");
 				Assert.IsInstanceOf (typeof (AuthenticationException), ex.InnerException.Inner, "InnerException.InnerException Type");
 			}
 		}

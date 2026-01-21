@@ -2,7 +2,8 @@ using System;
 using System.Linq;
 
 using Mono.Cecil;
-
+using Mono.Cecil.Cil;
+using Mono.Cecil.Rocks;
 using Mono.Linker;
 using Mono.Linker.Steps;
 using Mono.Tuner;

@@ -140,10 +140,13 @@ namespace Xamarin.Linker {
 			case Code.Conv_I1:
 			case Code.Conv_I2:
 			case Code.Conv_I4:
+			case Code.Conv_I8:
 			case Code.Conv_U:
 			case Code.Sizeof:
 			case Code.Ldfld:
 			case Code.Ldflda:
+			case Code.Mul:
+			case Code.And:
 				return null; // just to not hit the CWL below
 #endif
 			default:
@@ -1076,7 +1079,7 @@ namespace Xamarin.Linker {
 		static MethodReference GetBlockSetupImpl (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins)
 		{
 			if (data.SetupBlockImplDefinition is null) {
-				var type = data.LinkContext.GetAssembly (Driver.GetProductAssembly (data.LinkContext.App)).MainModule.GetType (Namespaces.ObjCRuntime, "BlockLiteral");
+				var type = data.LinkContext.GetProductAssembly ().MainModule.GetType (Namespaces.ObjCRuntime, "BlockLiteral");
 				foreach (var method in type.Methods) {
 					if (method.Name != "SetupBlockImpl")
 						continue;
@@ -1093,7 +1096,7 @@ namespace Xamarin.Linker {
 		static MethodReference GetBlockLiteralConstructor (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins)
 		{
 			if (data.BlockCtorDefinition is null) {
-				var type = data.LinkContext.GetAssembly (Driver.GetProductAssembly (data.LinkContext.App)).MainModule.GetType (Namespaces.ObjCRuntime, "BlockLiteral");
+				var type = data.LinkContext.GetProductAssembly ().MainModule.GetType (Namespaces.ObjCRuntime, "BlockLiteral");
 				foreach (var method in type.Methods) {
 					if (!method.IsConstructor)
 						continue;

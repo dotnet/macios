@@ -80,6 +80,8 @@ namespace Xamarin.Linker {
 			// Find corlib and the platform assemblies
 			foreach (var asm in configuration.Assemblies) {
 				if (asm.Name.Name == Driver.CorlibName) {
+					if (corlib_assembly is not null)
+						throw new InvalidOperationException ($"Already have a corlib assembly named {corlib_assembly.Name}");
 					corlib_assembly = asm;
 				} else if (asm.Name.Name == configuration.PlatformAssembly) {
 					platform_assembly = asm;
@@ -250,6 +252,13 @@ namespace Xamarin.Linker {
 				return GetTypeReference (CorlibAssembly, "System.Exception", out var _);
 			}
 		}
+
+		public TypeReference System_GC {
+			get {
+				return GetTypeReference (CorlibAssembly, "System.GC", out var _);
+			}
+		}
+
 		public TypeReference System_Int32 {
 			get {
 				return CurrentAssembly.MainModule.ImportReference (CorlibAssembly.MainModule.TypeSystem.Int32);
@@ -528,6 +537,17 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public MethodReference System_GC__KeepAlive {
+			get {
+				return GetMethodReference (CorlibAssembly, System_GC, "KeepAlive", (v) =>
+					v.IsStatic
+					&& v.HasParameters
+					&& v.Parameters.Count == 1
+					&& v.Parameters [0].ParameterType.Is ("System", "Object")
+					&& !v.HasGenericParameters);
+			}
+		}
+
 		public MethodReference System_Object__ctor {
 			get {
 				return GetMethodReference (CorlibAssembly, System_Object, ".ctor", (v) => v.IsDefaultConstructor ());
@@ -556,6 +576,12 @@ namespace Xamarin.Linker {
 		public MethodReference Nullable_Value {
 			get {
 				return GetMethodReference (CorlibAssembly, System_Nullable_1, "get_Value", isStatic: false);
+			}
+		}
+
+		public MethodReference Nullable_ctor {
+			get {
+				return GetMethodReference (CorlibAssembly, System_Nullable_1, ".ctor", isStatic: false, System_Nullable_1.GenericParameters [0]);
 			}
 		}
 
@@ -1403,7 +1429,6 @@ namespace Xamarin.Linker {
 			}
 		}
 
-#if NET
 		public bool TryGet_NSObject_RegisterToggleRef ([NotNullWhen (true)] out MethodDefinition? md)
 		{
 			// the NSObject.RegisterToggleRef method isn't present on all platforms (for example on Mac)
@@ -1415,7 +1440,6 @@ namespace Xamarin.Linker {
 				return false;
 			}
 		}
-#endif
 
 		public void SetCurrentAssembly (AssemblyDefinition value)
 		{
@@ -1434,6 +1458,7 @@ namespace Xamarin.Linker {
 			var annotations = configuration.Context.Annotations;
 			var action = annotations.GetAction (assembly);
 			if (action == AssemblyAction.Copy) {
+#if !ASSEMBLY_PREPARER
 				// Preserve TypeForwardedTo which would the linker sweep otherwise
 				// Note that the linker will sweep type forwarders even if the assembly isn't trimmed:
 				// https://github.com/dotnet/runtime/blob/9dd59af3aee2f403e63887afef50d98022a2e575/src/tools/illink/src/linker/Linker.Steps/SweepStep.cs#L191-L200
@@ -1442,6 +1467,7 @@ namespace Xamarin.Linker {
 						annotations.Mark (type);
 					}
 				}
+#endif // !ASSEMBLY_PREPARER
 				annotations.SetAction (assembly, AssemblyAction.Save);
 			}
 		}
@@ -1457,9 +1483,11 @@ namespace Xamarin.Linker {
 
 		public CustomAttribute CreateAttribute (MethodReference constructor)
 		{
+#if !ASSEMBLY_PREPARER
 			// For some reason the trimmer doesn't mark attribute constructors
 			// This is probably only needed when running as a custom linker step.
 			configuration.Context.Annotations.Mark (constructor.Resolve ());
+#endif // !ASSEMBLY_PREPARER
 			return new CustomAttribute (constructor);
 		}
 
@@ -1478,8 +1506,7 @@ namespace Xamarin.Linker {
 				return false;
 
 			if (addToMethod.DeclaringType == dependsOn.DeclaringType) {
-				var attribute = CreateAttribute (DynamicDependencyAttribute_ctor__String);
-				attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, DocumentationComments.GetSignature (dependsOn)));
+				var attribute = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (dependsOn));
 				return AddAttributeOnlyOnce (addToMethod, attribute);
 			} else if (addToMethod.DeclaringType.Module == dependsOn.DeclaringType.Module) {
 				var attribute = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (dependsOn), dependsOn.DeclaringType);
@@ -1501,9 +1528,21 @@ namespace Xamarin.Linker {
 			return attribute;
 		}
 
+		public CustomAttribute CreateDynamicDependencyAttribute (string memberSignature)
+		{
+			var attribute = CreateAttribute (DynamicDependencyAttribute_ctor__String);
+			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, memberSignature));
+			return attribute;
+		}
+
 		public CustomAttribute CreateDynamicDependencyAttribute (string memberSignature, TypeDefinition type, AssemblyDefinition assembly)
 		{
 			return CreateDynamicDependencyAttribute (memberSignature, DocumentationComments.GetSignature (type), assembly.Name.Name);
+		}
+
+		public CustomAttribute CreateDynamicDependencyAttribute (string memberSignature, string typeName, AssemblyDefinition assembly)
+		{
+			return CreateDynamicDependencyAttribute (memberSignature, typeName, assembly.Name.Name);
 		}
 
 		public CustomAttribute CreateDynamicDependencyAttribute (string memberSignature, string typeName, string assemblyName)
@@ -1531,7 +1570,16 @@ namespace Xamarin.Linker {
 		/// <param name="forMethod">The method that is the target of the dynamic dependency.</param>
 		public bool AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, MethodDefinition forMethod)
 		{
-			var attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod), forMethod.DeclaringType, forMethod.Module.Assembly);
+			CustomAttribute attrib;
+
+			if (onType == forMethod.DeclaringType) {
+				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod));
+			} else if (onType.Module == forMethod.DeclaringType.Module) {
+				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod), forMethod.DeclaringType);
+			} else {
+				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod), forMethod.DeclaringType, forMethod.Module.Assembly);
+			}
+
 			return AddAttributeToStaticConstructor (onType, attrib);
 		}
 
@@ -1580,13 +1628,6 @@ namespace Xamarin.Linker {
 		{
 			var cctor = GetOrCreateStaticConstructor (onType, out var modified);
 			modified |= AddAttributeOnlyOnce (cctor, attribute);
-
-			// Remove the BeforeFieldInit attribute from the type, otherwise the linker may trim away the static constructor, and taking our attributes with it.
-			if (onType.Attributes.HasFlag (TypeAttributes.BeforeFieldInit)) {
-				onType.Attributes &= ~TypeAttributes.BeforeFieldInit;
-				modified = true;
-			}
-
 			return modified;
 		}
 
@@ -1599,8 +1640,20 @@ namespace Xamarin.Linker {
 				staticCtor = type.AddMethod (".cctor", MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.RTSpecialName | MethodAttributes.SpecialName | MethodAttributes.Static, System_Void);
 				staticCtor.CreateBody (out var il);
 				il.Emit (OpCodes.Ret);
-
 				modified = true;
+			}
+
+			// Remove the BeforeFieldInit attribute from the type, otherwise the linker may trim away the static constructor, and taking our attributes with it.
+			if (type.Attributes.HasFlag (TypeAttributes.BeforeFieldInit)) {
+				type.Attributes &= ~TypeAttributes.BeforeFieldInit;
+				modified = true;
+			}
+
+			if (!staticCtor.Body.Instructions.Any (v => v.OpCode != OpCodes.Ret && v.OpCode != OpCodes.Nop)) {
+				// FIXME: improve workaround.
+				var body = staticCtor.Body;
+				body.Instructions.Insert (0, Instruction.Create (OpCodes.Call, this.System_GC__KeepAlive));
+				body.Instructions.Insert (0, Instruction.Create (OpCodes.Ldnull));
 			}
 
 			return staticCtor;

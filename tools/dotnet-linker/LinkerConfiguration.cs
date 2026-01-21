@@ -23,6 +23,7 @@ namespace Xamarin.Linker {
 		public Abi Abi = Abi.None;
 		public string AOTCompiler = string.Empty;
 		public string AOTOutputDirectory = string.Empty;
+		public string AssemblyPublishDir = string.Empty;
 		public string DedupAssembly = string.Empty;
 		public string CacheDirectory { get; private set; } = string.Empty;
 		public Version? DeploymentTarget { get; private set; }
@@ -43,10 +44,13 @@ namespace Xamarin.Linker {
 		public string PartialStaticRegistrarLibrary { get; set; } = string.Empty;
 		public ApplePlatform Platform { get; private set; }
 		public string PlatformAssembly { get; private set; } = string.Empty;
+		public bool PublishTrimmed { get; private set; }
 		public string RelativeAppBundlePath { get; private set; } = string.Empty;
 		public Version? SdkVersion { get; private set; }
 		public string SdkRootDirectory { get; private set; } = string.Empty;
 		public string TypeMapFilePath { get; set; } = string.Empty;
+		public string TrimMode { get; private set; } = string.Empty;
+		public string UnmanagedCallersOnlyMapPath { get; private set; } = string.Empty;
 		public int Verbosity => Application.Verbosity;
 		public string XamarinNativeLibraryDirectory { get; private set; } = string.Empty;
 
@@ -54,17 +58,41 @@ namespace Xamarin.Linker {
 
 		public Application Application { get; private set; }
 
+		public IToolLog Logger { get; private set; }
+
 		public IList<string> RegistrationMethods { get; set; } = new List<string> ();
 		public List<string> NativeCodeToCompileAndLink { get; private set; } = new List<string> ();
+#if !ASSEMBLY_PREPARER
 		public CompilerFlags CompilerFlags;
+#endif
 
+#if ASSEMBLY_PREPARER
+		List<ProductException> exceptions = new List<ProductException> ();
+		public List<ProductException> Exceptions {
+			get {
+				return exceptions;
+			}
+		}
+		public DotNetResolver AssemblyResolver { get; private set; }
+	 	public IMetadataResolver MetadataResolver { get; private set; }
+#endif
+
+#if ASSEMBLY_PREPARER
+		public LinkContext Context { get =>  DerivedLinkContext; }
+#else
 		LinkContext? context;
 		public LinkContext Context { get => context!; private set { context = value; } }
+#endif
 		public DerivedLinkContext DerivedLinkContext { get => Application.LinkContext; }
 		public Profile Profile { get; private set; }
 
+#if ASSEMBLY_PREPARER
+		public List<AssemblyDefinition> Assemblies => Application.LinkContext.Assemblies;
+		public List<(string Path, AssemblyDefinition Assembly, string? OriginatingAssembly)> AddedAssemblies = new ();
+#else
 		// The list of assemblies is populated in CollectAssembliesStep.
 		public List<AssemblyDefinition> Assemblies = new List<AssemblyDefinition> ();
+#endif
 
 		string? user_optimize_flags;
 
@@ -93,23 +121,29 @@ namespace Xamarin.Linker {
 		// This dictionary contains information about the trampolines created for each assembly.
 		public AssemblyTrampolineInfos AssemblyTrampolineInfos = new ();
 
+		// ASSEMBLY_PREPARER TODO move pinvoke wrapper generation out of ListExportedFields step (and remove the #pragma warning)
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value null
 		internal PInvokeWrapperGenerator? PInvokeWrapperGenerationState;
+#pragma warning restore CS0649
 
 		public static bool TryGetInstance (LinkContext context, [NotNullWhen (true)] out LinkerConfiguration? configuration)
 		{
 			return configurations.TryGetValue (context, out configuration);
 		}
-
 		public static LinkerConfiguration GetInstance (LinkContext context)
 		{
 			if (!TryGetInstance (context, out var instance)) {
+#if ASSEMBLY_PREPARER
+				throw new InvalidOperationException ($"No LinkerConfiguration instance found for the given LinkContext.");
+#else
 				if (!context.TryGetCustomData ("LinkerOptionsFile", out var linker_options_file))
 					throw new Exception ($"No custom linker options file was passed to the linker (using --custom-data LinkerOptionsFile=...");
-				instance = new LinkerConfiguration (linker_options_file) {
+				instance = new LinkerConfiguration (ConsoleLog.Instance, linker_options_file) {
 					Context = context,
 				};
 
 				configurations.Add (context, instance);
+#endif
 			}
 
 			return instance;
@@ -147,6 +181,7 @@ namespace Xamarin.Linker {
 				if (!TryParseOptionalBoolean (value, out result))
 					throw new InvalidOperationException ($"Unable to parse the {key} value: {value} in {linker_file}");
 			});
+
 			var loadWarningLevel = new Action<string, string, ErrorHelper.WarningLevel> ((key, value, level) => {
 				try {
 					ErrorHelper.ParseWarningLevel (Application, level, value);
@@ -176,6 +211,11 @@ namespace Xamarin.Linker {
 					// This is the _AssemblyName MSBuild property for the main project (which is also the root/entry assembly)
 					new LoadValue ((key, value) => Application.RootAssemblies.Add (value)),
 					new SaveValue ((key, storage) => storage.AddRange (Application.RootAssemblies.Select (v => $"{key}={v}")))
+				)},
+				{ "AssemblyPublishDir", (
+					// This is the AssemblyPublishDir MSBuild property for the main project
+					new LoadValue ((key, value) => AssemblyPublishDir = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, AssemblyPublishDir, storage))
 				)},
 				{ "AOTArgument",  (
 					new LoadValue ((key, value) =>
@@ -511,6 +551,10 @@ namespace Xamarin.Linker {
 					}),
 					new SaveValue ((key, storage) => saveNonEmpty (key, Application.TargetFramework.ToString (), storage))
 				)},
+				{ "TrimMode", (
+					new LoadValue ((key, value) => TrimMode = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, TrimMode, storage))
+				)},
 				{ "TypeMapAssemblyName", (
 					new LoadValue ((key, value) => Application.TypeMapAssemblyName = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, Application.TypeMapAssemblyName, storage))
@@ -522,6 +566,10 @@ namespace Xamarin.Linker {
 				{ "TypeMapOutputDirectory", (
 					new LoadValue ((key, value) => Application.TypeMapOutputDirectory = value),
 					new SaveValue ((key, storage) => saveNonEmpty (key, Application.TypeMapOutputDirectory, storage))
+				)},
+				{ "UnmanagedCallersOnlyMapPath", (
+					new LoadValue ((key, value) => UnmanagedCallersOnlyMapPath = value),
+					new SaveValue ((key, storage) => saveNonEmpty (key, UnmanagedCallersOnlyMapPath, storage))
 				)},
 				{ "UseLlvm", (
 					new LoadValue ((key, value) => {
@@ -580,28 +628,42 @@ namespace Xamarin.Linker {
 			return dict;
 		}
 
-		LinkerConfiguration (string linker_file)
+		public LinkerConfiguration (IToolLog log, string linker_file, Configurator? customConfigurator = null)
+			 : this (log, File.ReadAllLines (linker_file).ToList (), linker_file, customConfigurator)
 		{
-			if (!File.Exists (linker_file))
-				throw new FileNotFoundException ($"The custom linker file {linker_file} does not exist.");
+		}
+
+		public LinkerConfiguration (IToolLog log, List<string> lines, string linker_file, Configurator? customConfigurator = null)
+		{
+			this.Logger = log;
 
 			LinkerFile = linker_file;
 
 			Profile = new BaseProfile (this);
 			Application = new Application (this);
+
+#if ASSEMBLY_PREPARER
+			AssemblyResolver = new DotNetResolver (Application);
+			MetadataResolver = new MetadataResolver (AssemblyResolver);
+
+			configurations.Add (this.Context, this);
+#endif
+
+#if !ASSEMBLY_PREPARER
 			CompilerFlags = new CompilerFlags (Application);
+#endif
 
 			var configurator = GetConfigurator (linker_file);
-			var lines = File.ReadAllLines (linker_file);
+
 			var significantLines = new List<string> (); // This is the input the cache uses to verify if the cache is still valid
-			for (var i = 0; i < lines.Length; i++) {
+			for (var i = 0; i < lines.Count; i++) {
 				var line = lines [i].TrimStart ();
 				if (line.Length == 0 || line [0] == '#')
 					continue; // Allow comments
 
 				var eq = line.IndexOf ('=');
 				if (eq == -1)
-					throw new InvalidOperationException ($"Invalid syntax for line {i + 1} in {linker_file}: No equals sign.");
+					throw new InvalidOperationException ($"Invalid syntax for line {i + 1} ('{line}') in {linker_file}:{i + 1} : No equals sign.");
 
 				significantLines.Add (line);
 
@@ -613,6 +675,8 @@ namespace Xamarin.Linker {
 
 				if (configurator.TryGetValue (key, out var actions)) {
 					actions.Load (key, value);
+				} else if (customConfigurator?.TryGetValue (key, out var customActions) == true) {
+					customActions.Load (key, value);
 				} else {
 					throw new InvalidOperationException ($"Unknown configuration key '{key}' in {linker_file} at line {i + 1}.");
 				}
@@ -626,7 +690,7 @@ namespace Xamarin.Linker {
 			}
 
 			Application.CreateCache (significantLines.ToArray ());
-			if (Application.Cache is not null)
+			if (Application.Cache is not null && !string.IsNullOrEmpty (CacheDirectory))
 				Application.Cache.SetLocation (Application, CacheDirectory);
 			if (DeploymentTarget is not null)
 				Application.DeploymentTarget = DeploymentTarget;
@@ -665,11 +729,17 @@ namespace Xamarin.Linker {
 			Application.Initialize ();
 		}
 
-		public void Save (List<string> storage)
+		public void Save (List<string> storage, Configurator? customConfigurator = null)
 		{
 			var configurator = GetConfigurator (LinkerFile);
 			foreach (var kvp in configurator.OrderBy (v => v.Key)) {
 				kvp.Value.Save (kvp.Key, storage);
+			}
+
+			if (customConfigurator is not null) {
+				foreach (var kvp in customConfigurator.OrderBy (v => v.Key)) {
+					kvp.Value.Save (kvp.Key, storage);
+				}
 			}
 		}
 
@@ -771,6 +841,7 @@ namespace Xamarin.Linker {
 				Application.Log ($"    TypeMapAssemblyName: {Application.TypeMapAssemblyName}");
 				Application.Log ($"    TypeMapFilePath: {TypeMapFilePath}");
 				Application.Log ($"    TypeMapOutputDirectory: {Application.TypeMapOutputDirectory}");
+				Application.Log ($"    UnmanagedCallersOnlyMapPath: {UnmanagedCallersOnlyMapPath}");
 				Application.Log ($"    UseInterpreter: {Application.UseInterpreter}");
 				Application.Log ($"    UseLlvm: {Application.IsLLVM}");
 				Application.Log ($"    Verbosity: {Verbosity}");
@@ -779,10 +850,12 @@ namespace Xamarin.Linker {
 			}
 		}
 
+#if !ASSEMBLY_PREPARER
 		public string GetAssemblyFileName (AssemblyDefinition assembly)
 		{
 			return Context.GetAssemblyLocation (assembly);
 		}
+#endif
 
 		public void WriteOutputForMSBuild (string itemName, List<MSBuildItem> items)
 		{
@@ -821,12 +894,27 @@ namespace Xamarin.Linker {
 
 		public static void Report (LinkContext context, IList<Exception> exceptions)
 		{
+			// Unwrap aggregate exceptions, and collect all exceptions into a single list.
+			var list = ErrorHelper.CollectExceptions (exceptions);
+#if ASSEMBLY_PREPARER
+			var log = context.Configuration.Logger;
+			foreach (var ex in list) {
+				if (ex is ProductException pe) {
+					if (pe.IsError (context.Configuration.Application)) {
+						log.LogError (pe);
+					} else {
+						log.LogWarning (pe);
+					}
+				} else {
+					log.LogException (ex);
+				}
+			}
+#else
 			// We can't really use the linker's reporting facilities and keep our own error codes, because we'll
 			// end up re-using the same error codes the linker already uses for its own purposes. So instead show
 			// a generic error using the linker's Context.LogMessage API, and then print our own errors to stderr.
 			// Since we print using a standard message format, msbuild will parse those error messages and show
 			// them as msbuild errors.
-			var list = ErrorHelper.CollectExceptions (exceptions);
 			if (!TryGetInstance (context, out var instance)) {
 				// Something went very wrong. Just dump out everything.
 				context.LogMessage (MessageContainer.CreateCustomErrorMessage ("No linker configuration available.", 7000));
@@ -844,6 +932,7 @@ namespace Xamarin.Linker {
 			}
 			// ErrorHelper.Show will print our errors and warnings to stderr.
 			ErrorHelper.Show (instance.Application, list);
+#endif
 		}
 
 		public IEnumerable<AssemblyDefinition> GetNonDeletedAssemblies (BaseStep step)
@@ -853,6 +942,38 @@ namespace Xamarin.Linker {
 					continue;
 				yield return assembly;
 			}
+		}
+
+		public void Log (string value)
+		{
+			Log (0, value);
+		}
+
+		public void Log (string format, params object? [] args)
+		{
+			Log (0, format, args);
+		}
+
+		public void Log (int min_verbosity, string value)
+		{
+			if (min_verbosity > Verbosity)
+				return;
+
+			if (Logger is not null) {
+				Logger.Log (value);
+				return;
+			}
+
+			Console.WriteLine (value);
+		}
+
+		public void Log (int min_verbosity, string format, params object? [] args)
+		{
+			if (min_verbosity > Verbosity)
+				return;
+
+			var value = string.Format (format, args);
+			Log (min_verbosity, value);
 		}
 	}
 }

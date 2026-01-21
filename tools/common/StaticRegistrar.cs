@@ -2735,7 +2735,7 @@ namespace Registrar {
 
 		public void Rewrite ()
 		{
-#if !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 			if (App.Optimizations.RedirectClassHandles == true) {
 				var exceptions = new List<Exception> ();
 				var map_dict = GetTypeMapDictionary (exceptions);
@@ -3964,7 +3964,7 @@ namespace Registrar {
 				nslog_start.AppendLine (");");
 			}
 
-#if !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 			// Generate the native trampoline to call the generated UnmanagedCallersOnly method if we're using the managed static registrar.
 			if (LinkContext.App.Registrar == RegistrarMode.ManagedStatic || LinkContext.App.Registrar == RegistrarMode.TrimmableStatic) {
 				GenerateCallToUnmanagedCallersOnlyMethod (sb, method, isCtor, isVoid, num_arg, descriptiveMethodName, exceptions);
@@ -4194,7 +4194,7 @@ namespace Registrar {
 			}
 		}
 
-#if !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 		void GenerateCallToUnmanagedCallersOnlyMethod (AutoIndentStringBuilder sb, ObjCMethod method, bool isCtor, bool isVoid, int num_arg, string descriptiveMethodName, List<Exception> exceptions)
 		{
 			// Generate the native trampoline to call the generated UnmanagedCallersOnly method.
@@ -5170,7 +5170,7 @@ namespace Registrar {
 		{
 			var token = member.MetadataToken;
 
-#if !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 			if (App.Registrar == RegistrarMode.TrimmableStatic)
 				throw ErrorHelper.CreateError (99, $"Can't create a token reference when using the trimmable static registrar (for: {member.FullName})");
 
@@ -5388,7 +5388,7 @@ namespace Registrar {
 			}
 		}
 
-#if !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 		static bool IsPropertyTrimmed (PropertyDefinition? pd, AnnotationStore annotations)
 		{
 			if (pd is null)

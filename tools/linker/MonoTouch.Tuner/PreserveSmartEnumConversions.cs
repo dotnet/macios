@@ -12,8 +12,7 @@ using Mono.Tuner;
 using Xamarin.Bundler;
 
 namespace Xamarin.Linker.Steps {
-	public class PreserveSmartEnumConversionsHandler : ExceptionalMarkHandler
-	{
+	public class PreserveSmartEnumConversionsHandler : ExceptionalMarkHandler {
 		Dictionary<TypeDefinition, Tuple<MethodDefinition, MethodDefinition>> cache;
 		protected override string Name { get; } = "Smart Enum Conversion Preserver";
 		protected override int ErrorCode { get; } = 2200;

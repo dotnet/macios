@@ -21,8 +21,7 @@ using Xamarin.Tuner;
 namespace MonoTouch.Tuner {
 
 	// This class is shared between Xamarin.Mac and Xamarin.iOS
-	public class CoreTypeMapStep : ConfigurationAwareStep
-	{
+	public class CoreTypeMapStep : ConfigurationAwareStep {
 		protected override string Name { get; } = "CoreTypeMap";
 		protected override int ErrorCode { get; } = 2390;
 

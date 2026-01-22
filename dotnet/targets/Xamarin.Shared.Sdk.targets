@@ -7,14 +7,24 @@
 		<Version Condition="'$(GenerateApplicationManifest)' == 'true' and '$(ApplicationDisplayVersion)' != ''">$(ApplicationDisplayVersion)</Version>
 	</PropertyGroup>
 
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CompileNativeCode" AssemblyFile="$(_XamarinTaskAssembly)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.FindAotCompiler" AssemblyFile="$(_XamarinTaskAssembly)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.GetFullPaths" AssemblyFile="$(_XamarinTaskAssembly)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.InstallNameTool" AssemblyFile="$(_XamarinTaskAssembly)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.LinkNativeCode" AssemblyFile="$(_XamarinTaskAssembly)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.MergeAppBundles" AssemblyFile="$(_XamarinTaskAssembly)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.MobileILStrip" AssemblyFile="$(_XamarinTaskAssembly)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.MacDevMessage" AssemblyFile="$(_XamarinTaskAssembly)" />
+	<PropertyGroup Condition="'$(_TaskAssemblyName)' == ''">
+		<_TaskAssemblyFileName>Xamarin.MacDev.Tasks.dll</_TaskAssemblyFileName>
+		<_TaskAssemblyFileNameWindows>Xamarin.iOS.Tasks.Windows.dll</_TaskAssemblyFileNameWindows>
+		<_TaskAssemblyRootDirectory>$(MSBuildThisFileDirectory)\..\tools\msbuild\</_TaskAssemblyRootDirectory>
+		<_TaskAssemblyName Condition="'$(_UseDesktopTaskAssemblies)' != 'true'">$(_TaskAssemblyRootDirectory)net$(BundledNETCoreAppTargetFrameworkVersion)\$(_TaskAssemblyFileName)</_TaskAssemblyName>
+		<_TaskAssemblyName Condition="'$(_UseDesktopTaskAssemblies)' == 'true'">$(_TaskAssemblyRootDirectory)netstandard2.0\$(_TaskAssemblyFileName)</_TaskAssemblyName>
+		<_TaskRuntime Condition="'$(_UseDesktopTaskAssemblies)' != 'true'">NET</_TaskRuntime>
+		<_TaskRuntime Condition="'$(_UseDesktopTaskAssemblies)' == 'true'">CurrentRuntime</_TaskRuntime>
+	</PropertyGroup>
+
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CompileNativeCode" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FindAotCompiler" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetFullPaths" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.InstallNameTool" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.LinkNativeCode" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MergeAppBundles" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MobileILStrip" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MacDevMessage" AssemblyFile="$(_TaskAssemblyName)" />
 
 	<!-- Project types and how do we distinguish between them
 

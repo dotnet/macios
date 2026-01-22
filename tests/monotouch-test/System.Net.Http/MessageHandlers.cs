@@ -714,12 +714,31 @@ namespace MonoTests.System.Net.Http {
 		}
 
 		[Test]
+		public void TestNSUrlSessionHandlerOptionalClientCertificate ()
+		{
+			string content = "";
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				using var handler = new NSUrlSessionHandler ();
+				using var client = new HttpClient (handler);
+				// This service doesn't require a certificate and should succeed even if one isn't provided
+				var response = await client.GetAsync (NetworkResources.EchoClientCertificateUrl);
+				content = await response.EnsureSuccessStatusCode ().Content.ReadAsStringAsync ();
+			}, out var ex);
+			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
+				Assert.Inconclusive ("Request timedout.");
+			} else {
+				Assert.IsNull (ex, "Exception wasn't expected.");
+			}
+		}
+
+		[Test]
 		public void TestNSUrlSessionHandlerDetectMissingClientCertificate ()
 		{
 			string content = "";
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				using var handler = new NSUrlSessionHandler ();
 				using var client = new HttpClient (handler);
+				// TODO: Replace with a service that actually requires a certificate and uses TLS1.2
 				var response = await client.GetAsync (NetworkResources.EchoClientCertificateUrl);
 				content = await response.EnsureSuccessStatusCode ().Content.ReadAsStringAsync ();
 			}, out var ex);

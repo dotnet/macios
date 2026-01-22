@@ -16,7 +16,6 @@ namespace Xamarin.MacDev.Tasks {
 		public void PartialAppManifest ()
 		{
 			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.MacOSX);
-			Configuration.AssertDotNetAvailable ();
 
 			var csproj = $@"<?xml version=""1.0"" encoding=""utf-8""?>
 <Project Sdk=""Microsoft.NET.Sdk"">
@@ -65,7 +64,7 @@ namespace Xamarin.MacDev.Tasks {
 			var properties = new Dictionary<string, string> {
 				{ "_CreateAppManifest", "true" },
 			};
-			var rv = engine.RunTarget (ApplePlatform.MacOSX, ExecutionMode.DotNet, csprojPath, target: "_WriteAppManifest", properties: properties);
+			var rv = engine.RunTarget (ApplePlatform.MacOSX, csprojPath, target: "_WriteAppManifest", properties: properties);
 			Assert.AreEqual (0, rv.ExitCode, "Exit code");
 
 			var appManifestPath = Path.Combine (tmpdir, "bin", "Debug", Configuration.DotNetTfm + "-macos", "osx-x64", "PartialAppManifest.app", "Contents", "Info.plist");

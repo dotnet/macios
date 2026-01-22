@@ -74,7 +74,11 @@ namespace Xamarin.Tests {
 
 		public static int Execute (string fileName, IList<string> arguments, out bool timed_out, string workingDirectory = null, Dictionary<string, string> environment_variables = null, StringBuilder stdout = null, StringBuilder stderr = null, TimeSpan? timeout = null)
 		{
-			var rv = Execution.RunWithStringBuildersAsync (fileName, arguments, workingDirectory: workingDirectory, environment: environment_variables, standardOutput: stdout, standardError: stderr, timeout: timeout).Result;
+			var rv = Execution.RunAsync (fileName, arguments, workingDirectory: workingDirectory, environment: environment_variables, timeout: timeout).Result;
+			if (stdout is not null)
+				stdout.Append (rv.Output.StandardOutput);
+			if (stderr is not null)
+				stderr.Append (rv.Output.StandardError);
 			timed_out = rv.TimedOut;
 			if (rv.TimedOut)
 				Console.WriteLine ($"Command '{fileName} {StringUtils.FormatArguments (arguments)}' didn't finish in {timeout.Value.TotalMilliseconds} ms, and was killed.", timeout.Value.TotalMinutes);
@@ -110,8 +114,8 @@ namespace Xamarin.Tests {
 
 		public static string Execute (string fileName, IList<string> arguments, bool throwOnError = true, Dictionary<string, string> environmentVariables = null, bool hide_output = false, TimeSpan? timeout = null)
 		{
-			var rv = Execution.RunAsync (fileName, arguments, mergeOutput: true, environment: environmentVariables, timeout: timeout).Result;
-			var output = rv.StandardOutput.ToString ();
+			var rv = Execution.RunAsync (fileName, arguments, environment: environmentVariables, timeout: timeout).Result;
+			var output = rv.Output.MergedOutput;
 			var throw_exc = throwOnError && rv.ExitCode != 0;
 			if (!hide_output || throw_exc) {
 				Console.WriteLine ($"{fileName} {StringUtils.FormatArguments (arguments)} (exit code: {rv.ExitCode})");

@@ -57,8 +57,6 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			base.Setup ();
 
-			Configuration.AssertDotNetAvailable ();
-
 			ConfigureTask ();
 
 			ExecuteTask (Task);

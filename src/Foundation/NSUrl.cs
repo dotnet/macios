@@ -100,7 +100,7 @@ namespace Foundation {
 		///         </returns>
 		///         <remarks>
 		///         </remarks>
-		public override string ToString ()
+		public override string? ToString ()
 		{
 			return AbsoluteString ?? base.ToString ();
 		}

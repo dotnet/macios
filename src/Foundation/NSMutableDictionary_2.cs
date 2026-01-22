@@ -26,33 +26,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
 	[Register ("NSMutableDictionary", SkipRegistration = true)]
 	public sealed partial class NSMutableDictionary<TKey, TValue> : NSMutableDictionary, IDictionary<TKey, TValue>
 		where TKey : class, INativeObject
 		where TValue : class, INativeObject {
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="NSMutableDictionary{TKey, TValue}"/> class.
+		/// </summary>
 		public NSMutableDictionary ()
 		{
 		}
 
+		/// <summary>
+		/// A constructor that initializes the object from the data stored in the unarchiver object.
+		/// </summary>
 		/// <param name="coder">The unarchiver object.</param>
-		///         <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
-		///         <remarks>
-		///           <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="Foundation.NSCoding" />  protocol.</para>
-		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
-		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
-		///         </remarks>
+		/// <remarks>
+		/// <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization). This is part of the <see cref="Foundation.NSCoding"/> protocol.</para>
+		/// <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder"/> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+		/// <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+		/// </remarks>
 		public NSMutableDictionary (NSCoder coder)
 			: base (coder)
 		{
@@ -63,17 +62,19 @@ namespace Foundation {
 		{
 		}
 
-		/// <param name="other">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="NSMutableDictionary{TKey, TValue}"/> class from another mutable dictionary.
+		/// </summary>
+		/// <param name="other">The mutable dictionary to copy from.</param>
 		public NSMutableDictionary (NSMutableDictionary<TKey, TValue> other)
 			: base (other)
 		{
 		}
 
-		/// <param name="other">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="NSMutableDictionary{TKey, TValue}"/> class from a dictionary.
+		/// </summary>
+		/// <param name="other">The dictionary to copy from.</param>
 		public NSMutableDictionary (NSDictionary<TKey, TValue> other)
 			: base (other)
 		{
@@ -84,82 +85,46 @@ namespace Foundation {
 		{
 		}
 
-		/// <param name="keys">To be added.</param>
-		///         <param name="values">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="NSMutableDictionary{TKey, TValue}"/> class from parallel arrays of keys and values.
+		/// </summary>
+		/// <param name="keys">An array of keys.</param>
+		/// <param name="values">An array of values.</param>
 		public NSMutableDictionary (TKey [] keys, TValue [] values)
 			: this (keys, values, NSDictionary<TKey, TValue>.ValidateKeysAndValues (keys, values))
 		{
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <param name="value">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="NSMutableDictionary{TKey, TValue}"/> class with a single key-value pair.
+		/// </summary>
+		/// <param name="key">The key.</param>
+		/// <param name="value">The value.</param>
 		public NSMutableDictionary (TKey key, TValue value)
 			: base (NSArray.FromNSObjects (value), NSArray.FromNSObjects (key))
 		{
-
 		}
-
-#if hide_loosely_typed_members
-		// Hide any loosely typed base members.
-		[EditorBrowsable (EditorBrowsableState.Never)]
-		public override NSObject this[NSObject key] {
-			get {
-				return (NSObject) (object) this [(TKey) (object) key];
-			}
-			set {
-				this [(TKey) (object) key] = (TValue) (object) value;
-			}
-		}
-
-		// This one can never be correct, so make it an error to use it.
-		[Obsolete ("This indexer does not have the correct key type.", true)]
-		[EditorBrowsable (EditorBrowsableState.Never)]
-#pragma warning disable 809
-		public override NSObject this[string key] {
-#pragma warning restore 809
-			get {
-				throw new NotSupportedException ();
-			}
-			set {
-				throw new NotSupportedException ();
-			}
-		}
-
-		// This can be correct if TKey=NSString and TValue=NSObject (but still hide it).
-		[EditorBrowsable (EditorBrowsableState.Never)]
-		public override NSObject this[NSString key] {
-			get {
-				return (NSObject) (object) this [(TKey) (object) key];
-			}
-			set {
-				this [(TKey) (object) key] = (TValue) (object) value;
-			}
-		}
-#endif
 
 		// Strongly typed methods from NSDictionary
 
-		/// <param name="key">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public TValue ObjectForKey (TKey key)
+		/// <summary>
+		/// Returns the value associated with the specified key, or <see langword="null"/> if the key is not present.
+		/// </summary>
+		/// <param name="key">The key to look up.</param>
+		/// <returns>The value associated with the specified key, or <see langword="null"/> if the key is not present.</returns>
+		public TValue? ObjectForKey (TKey key)
 		{
-			if (key is null)
-				throw new ArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 
 			var result = Runtime.GetINativeObject<TValue> (_ObjectForKey (key.Handle), false);
 			GC.KeepAlive (key);
 			return result;
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Gets an array containing all keys in the dictionary.
+		/// </summary>
+		/// <value>An array of keys.</value>
 		public TKey [] Keys {
 			get {
 				using (var pool = new NSAutoreleasePool ())
@@ -167,14 +132,14 @@ namespace Foundation {
 			}
 		}
 
-		/// <param name="obj">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Returns an array of keys corresponding to all occurrences of the specified value in the dictionary.
+		/// </summary>
+		/// <param name="obj">The value to search for.</param>
+		/// <returns>An array of keys whose corresponding values are equal to the specified value.</returns>
 		public TKey [] KeysForObject (TValue obj)
 		{
-			if (obj is null)
-				throw new ArgumentNullException (nameof (obj));
+			ArgumentNullException.ThrowIfNull (obj);
 
 			using (var pool = new NSAutoreleasePool ()) {
 				var result = NSArray.ArrayFromHandle<TKey> (_AllKeysForObject (obj.Handle));
@@ -183,9 +148,10 @@ namespace Foundation {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Gets an array containing all values in the dictionary.
+		/// </summary>
+		/// <value>An array of values.</value>
 		public TValue [] Values {
 			get {
 				using (var pool = new NSAutoreleasePool ())
@@ -193,21 +159,19 @@ namespace Foundation {
 			}
 		}
 
-		/// <param name="keys">To be added.</param>
-		///         <param name="marker">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Returns an array of values corresponding to a specified set of keys.
+		/// </summary>
+		/// <param name="keys">An array of keys.</param>
+		/// <param name="marker">The marker object to substitute for values that are not present in the dictionary.</param>
+		/// <returns>An array of values corresponding to the keys in the <paramref name="keys"/> array, with the marker object substituted for missing values.</returns>
 		public TValue [] ObjectsForKeys (TKey [] keys, TValue marker)
 		{
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
-
-			if (marker is null)
-				throw new ArgumentNullException (nameof (marker));
+			ArgumentNullException.ThrowIfNull (keys);
+			ArgumentNullException.ThrowIfNull (marker);
 
 			if (keys.Length == 0)
-				return new TValue [] { };
+				return [];
 
 			var keysArray = NSArray.From<TKey> (keys);
 			var result = NSArray.ArrayFromHandle<TValue> (_ObjectsForKeys (keysArray.Handle, marker.Handle));
@@ -218,31 +182,29 @@ namespace Foundation {
 
 		// Strongly typed methods from NSMutableDictionary
 
-		/// <param name="key">To be added.</param>
-		///         <param name="value">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Adds a key-value pair to the dictionary.
+		/// </summary>
+		/// <param name="key">The key to add.</param>
+		/// <param name="value">The value to add.</param>
 		public void Add (TKey key, TValue value)
 		{
-			if (key is null)
-				throw new ArgumentNullException (nameof (key));
-
-			if (value is null)
-				throw new ArgumentNullException (nameof (value));
+			ArgumentNullException.ThrowIfNull (key);
+			ArgumentNullException.ThrowIfNull (value);
 
 			_SetObject (value.Handle, key.Handle);
 			GC.KeepAlive (value);
 			GC.KeepAlive (key);
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Removes the value associated with the specified key from the dictionary.
+		/// </summary>
+		/// <param name="key">The key to remove.</param>
+		/// <returns><see langword="true"/> if the key was found and removed; otherwise, <see langword="false"/>.</returns>
 		public bool Remove (TKey key)
 		{
-			if (key is null)
-				throw new ArgumentNullException (nameof (key));
+			ArgumentNullException.ThrowIfNull (key);
 
 			var last = Count;
 			_RemoveObjectForKey (key.Handle);
@@ -250,26 +212,34 @@ namespace Foundation {
 			return last != Count;
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <param name="value">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public bool TryGetValue (TKey key, out TValue value)
+		/// <summary>
+		/// Gets the value associated with the specified key.
+		/// </summary>
+		/// <param name="key">The key to look up.</param>
+		/// <param name="value">When this method returns, contains the value associated with the specified key, if the key is found; otherwise, <see langword="null"/>.</param>
+		/// <returns><see langword="true"/> if the dictionary contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
+		public bool TryGetValue (TKey key, [NotNullWhen (true)] out TValue? value)
 		{
 			return (value = ObjectForKey (key)) is not null;
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Determines whether the dictionary contains the specified key.
+		/// </summary>
+		/// <param name="key">The key to locate in the dictionary.</param>
+		/// <returns><see langword="true"/> if the dictionary contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
 		public bool ContainsKey (TKey key)
 		{
 			return ObjectForKey (key) is not null;
 		}
 
-		public TValue this [TKey index] {
+		/// <summary>
+		/// Gets or sets the value associated with the specified key.
+		/// </summary>
+		/// <param name="index">The key of the value to get or set.</param>
+		/// <returns>The value associated with the specified key, or <see langword="null" /> if the key wasn't found.</returns>
+		[DisallowNull] // don't allow setting null values
+		public TValue? this [TKey index] {
 			get {
 				return ObjectForKey (index);
 			}
@@ -278,7 +248,7 @@ namespace Foundation {
 			}
 		}
 
-		static NSMutableDictionary<TKey, TValue> GenericFromObjectsAndKeysInternal (NSArray objects, NSArray keys)
+		static NSMutableDictionary<TKey, TValue>? GenericFromObjectsAndKeysInternal (NSArray objects, NSArray keys)
 		{
 			var result = Runtime.GetNSObject<NSMutableDictionary<TKey, TValue>> (_FromObjectsAndKeysInternal (objects.Handle, keys.Handle));
 			GC.KeepAlive (objects);
@@ -286,18 +256,17 @@ namespace Foundation {
 			return result;
 		}
 
-		/// <param name="objects">To be added.</param>
-		/// <param name="keys">To be added.</param>
-		/// <param name="count">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
-		public static NSMutableDictionary<TKey, TValue> FromObjectsAndKeys (TValue [] objects, TKey [] keys, nint count)
+		/// <summary>
+		/// Creates a mutable dictionary from parallel arrays of values and keys, using only the first <paramref name="count"/> elements.
+		/// </summary>
+		/// <param name="objects">An array of values.</param>
+		/// <param name="keys">An array of keys.</param>
+		/// <param name="count">The number of elements to use from each array.</param>
+		/// <returns>A new mutable dictionary containing the specified key-value pairs.</returns>
+		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (TValue [] objects, TKey [] keys, nint count)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
+			ArgumentNullException.ThrowIfNull (objects);
+			ArgumentNullException.ThrowIfNull (keys);
 			if (objects.Length != keys.Length)
 				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
 			if (count < 1 || objects.Length < count)
@@ -308,12 +277,16 @@ namespace Foundation {
 				return GenericFromObjectsAndKeysInternal (no, nk);
 		}
 
-		public static NSMutableDictionary<TKey, TValue> FromObjectsAndKeys (TValue [] objects, TKey [] keys)
+		/// <summary>
+		/// Creates a mutable dictionary from parallel arrays of values and keys.
+		/// </summary>
+		/// <param name="objects">An array of values.</param>
+		/// <param name="keys">An array of keys.</param>
+		/// <returns>A new mutable dictionary containing the specified key-value pairs.</returns>
+		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (TValue [] objects, TKey [] keys)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
+			ArgumentNullException.ThrowIfNull (objects);
+			ArgumentNullException.ThrowIfNull (keys);
 			if (objects.Length != keys.Length)
 				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
 
@@ -322,17 +295,16 @@ namespace Foundation {
 				return GenericFromObjectsAndKeysInternal (no, nk);
 		}
 
-		/// <param name="objects">To be added.</param>
-		///         <param name="keys">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public static NSMutableDictionary<TKey, TValue> FromObjectsAndKeys (object [] objects, object [] keys)
+		/// <summary>
+		/// Creates a mutable dictionary from parallel arrays of object values and keys.
+		/// </summary>
+		/// <param name="objects">An array of object values.</param>
+		/// <param name="keys">An array of object keys.</param>
+		/// <returns>A new mutable dictionary containing the specified key-value pairs.</returns>
+		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (object [] objects, object [] keys)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
+			ArgumentNullException.ThrowIfNull (objects);
+			ArgumentNullException.ThrowIfNull (keys);
 			if (objects.Length != keys.Length)
 				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
 
@@ -341,18 +313,17 @@ namespace Foundation {
 				return GenericFromObjectsAndKeysInternal (no, nk);
 		}
 
-		/// <param name="objects">To be added.</param>
-		/// <param name="keys">To be added.</param>
-		/// <param name="count">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
-		public static NSMutableDictionary<TKey, TValue> FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
+		/// <summary>
+		/// Creates a mutable dictionary from parallel arrays of <see cref="NSObject"/> values and keys, using only the first <paramref name="count"/> elements.
+		/// </summary>
+		/// <param name="objects">An array of <see cref="NSObject"/> values.</param>
+		/// <param name="keys">An array of <see cref="NSObject"/> keys.</param>
+		/// <param name="count">The number of elements to use from each array.</param>
+		/// <returns>A new mutable dictionary containing the specified key-value pairs.</returns>
+		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
+			ArgumentNullException.ThrowIfNull (objects);
+			ArgumentNullException.ThrowIfNull (keys);
 			if (objects.Length != keys.Length)
 				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
 			if (count < 1 || objects.Length < count || keys.Length < count)
@@ -363,18 +334,17 @@ namespace Foundation {
 				return GenericFromObjectsAndKeysInternal (no, nk);
 		}
 
-		/// <param name="objects">To be added.</param>
-		/// <param name="keys">To be added.</param>
-		/// <param name="count">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
-		public static NSMutableDictionary<TKey, TValue> FromObjectsAndKeys (object [] objects, object [] keys, nint count)
+		/// <summary>
+		/// Creates a mutable dictionary from parallel arrays of object values and keys, using only the first <paramref name="count"/> elements.
+		/// </summary>
+		/// <param name="objects">An array of object values.</param>
+		/// <param name="keys">An array of object keys.</param>
+		/// <param name="count">The number of elements to use from each array.</param>
+		/// <returns>A new mutable dictionary containing the specified key-value pairs.</returns>
+		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (object [] objects, object [] keys, nint count)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
+			ArgumentNullException.ThrowIfNull (objects);
+			ArgumentNullException.ThrowIfNull (keys);
 			if (objects.Length != keys.Length)
 				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
 			if (count < 1 || objects.Length < count || keys.Length < count)
@@ -384,6 +354,7 @@ namespace Foundation {
 			using (var nk = NSArray.FromObjects (keys))
 				return GenericFromObjectsAndKeysInternal (no, nk);
 		}
+
 		#region IDictionary<K,V>
 		void IDictionary<TKey, TValue>.Add (TKey key, TValue value)
 		{
@@ -395,13 +366,16 @@ namespace Foundation {
 			return Remove (key);
 		}
 
-		bool IDictionary<TKey, TValue>.TryGetValue (TKey key, out TValue value)
+		bool IDictionary<TKey, TValue>.TryGetValue (TKey key, [NotNullWhen (true)] out TValue? value)
 		{
 			return TryGetValue (key, out value);
 		}
 
-		TValue IDictionary<TKey, TValue>.this [TKey index] {
+		[DisallowNull] // don't allow setting null values
+		TValue? IDictionary<TKey, TValue>.this [TKey index] {
+#pragma warning disable CS8768 // Nullability of reference types in return type doesn't match implemented member 'TValue IDictionary<TKey, TValue>.this[TKey key].get'
 			get {
+#pragma warning restore CS8768
 				return this [index];
 			}
 			set {
@@ -440,18 +414,17 @@ namespace Foundation {
 
 		bool ICollection<KeyValuePair<TKey, TValue>>.Contains (KeyValuePair<TKey, TValue> item)
 		{
-			TValue value;
+			TValue? value;
 
 			if (!TryGetValue (item.Key, out value))
 				return false;
 
-			return (object) value == (object) item.Value;
+			return (object?) value == (object?) item.Value;
 		}
 
 		void ICollection<KeyValuePair<TKey, TValue>>.CopyTo (KeyValuePair<TKey, TValue> [] array, int arrayIndex)
 		{
-			if (array is null)
-				throw new ArgumentNullException (nameof (array));
+			ArgumentNullException.ThrowIfNull (array);
 			if (arrayIndex < 0)
 				throw new ArgumentOutOfRangeException (nameof (arrayIndex));
 			int c = array.Length;
@@ -461,13 +434,16 @@ namespace Foundation {
 				throw new ArgumentException ("Not enough room from " + nameof (arrayIndex) + " to end of " + nameof (array) + " for this dictionary");
 
 			var idx = arrayIndex;
-			foreach (var kvp in (IEnumerable<KeyValuePair<TKey, TValue>>) this)
-				array [idx++] = kvp;
+			foreach (var key in Keys) {
+				var value = ObjectForKey (key);
+				if (value is not null)
+					array [idx++] = new KeyValuePair<TKey, TValue> (key, value);
+			}
 		}
 
 		bool ICollection<KeyValuePair<TKey, TValue>>.Remove (KeyValuePair<TKey, TValue> item)
 		{
-			TValue value;
+			TValue? value;
 
 			if (item.Key is null)
 				throw new ArgumentNullException (nameof (item) + ".Key");
@@ -478,7 +454,7 @@ namespace Foundation {
 			if (!TryGetValue (item.Key, out value))
 				return false;
 
-			if ((object) value == (object) item.Value) {
+			if ((object?) value == (object?) item.Value) {
 				Remove (item.Key);
 				return true;
 			}
@@ -502,15 +478,19 @@ namespace Foundation {
 		#region IEnumerable<KeyValuePair<TKey, TValue>>
 		IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator ()
 		{
-			foreach (var key in Keys)
-				yield return new KeyValuePair<TKey, TValue> (key, ObjectForKey (key));
+			foreach (var key in Keys) {
+				var value = ObjectForKey (key);
+				if (value is not null)
+					yield return new KeyValuePair<TKey, TValue> (key, value);
+			}
 		}
 		#endregion
 
 		#region IEnumerable
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Returns an enumerator that iterates through the dictionary.
+		/// </summary>
+		/// <returns>An enumerator that can be used to iterate through the dictionary.</returns>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return ((IEnumerable<KeyValuePair<TKey, TValue>>) this).GetEnumerator ();

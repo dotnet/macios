@@ -63,8 +63,8 @@ namespace CoreText {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public NSCharacterSet ColumnTerminators {
-			get { return (NSCharacterSet) Dictionary [CTTextTabOptionKey.ColumnTerminators]; }
+		public NSCharacterSet? ColumnTerminators {
+			get { return (NSCharacterSet?) Dictionary [CTTextTabOptionKey.ColumnTerminators]!; }
 			set { Adapter.SetValue (Dictionary, CTTextTabOptionKey.ColumnTerminators, value); }
 		}
 	}

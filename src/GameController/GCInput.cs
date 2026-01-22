@@ -57,7 +57,7 @@ namespace GameController {
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.GameControllerLibrary)]
 		static extern IntPtr /* GCButtonElementName */ GCInputArcadeButtonName (nint row, nint column);
 
@@ -70,7 +70,7 @@ namespace GameController {
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public static NSString? GetArcadeButtonName (nint row, nint column)
 		{
 			return Runtime.GetNSObject<NSString> (GCInputArcadeButtonName (row, column));

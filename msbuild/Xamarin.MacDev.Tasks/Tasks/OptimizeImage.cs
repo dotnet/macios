@@ -92,13 +92,13 @@ namespace Xamarin.MacDev.Tasks {
 			ForEach (listOfArguments, (arg) => {
 				var args = arg.Arguments;
 				var executable = GetExecutable (args, "pngcrush", PngCrushPath);
-				ExecuteAsync (Log, executable, args, sdkDevPath: SdkDevPath, mergeOutput: true, showErrorIfFailure: false /* we show our own error below */, cancellationToken: cancellationTokenSource.Token)
+				ExecuteAsync (Log, executable, args, sdkDevPath: SdkDevPath, showErrorIfFailure: false /* we show our own error below */, cancellationToken: cancellationTokenSource.Token)
 					.ContinueWith ((v) => {
 						Execution execution = v.Result;
 						if (execution.ExitCode != 0)
 							Log.LogError (MSBStrings.E7134 /* Failed to optimize the image {0}, pngcrush exited with code {1}. */, Path.GetFileName (arg.Input), execution.ExitCode);
 
-						var output = execution.StandardOutput?.ToString () ?? string.Empty;
+						var output = execution.Output.MergedOutput;
 						foreach (var line in output.Split ('\n')) {
 							LogEventsFromTextOutput (line, arg.Input, MessageImportance.Normal);
 						}

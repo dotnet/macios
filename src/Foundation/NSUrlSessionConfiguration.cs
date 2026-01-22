@@ -72,7 +72,7 @@ namespace Foundation {
 
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos17.0")]
 		public NWProxyConfig [] ProxyConfigurations {
 			get => NSArray.ArrayFromHandleFunc (_ProxyConfigurations, handle => new NWProxyConfig (handle, owns: false));

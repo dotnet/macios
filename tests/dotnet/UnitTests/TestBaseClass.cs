@@ -410,7 +410,7 @@ namespace Xamarin.Tests {
 			return outputString;
 		}
 
-		protected Execution Execute (string executable, out StringBuilder output, out string magicWord, Dictionary<string, string?>? environment = null)
+		protected Execution Execute (string executable, out string output, out string magicWord, Dictionary<string, string?>? environment = null)
 		{
 			if (!File.Exists (executable))
 				throw new FileNotFoundException ($"The executable '{executable}' does not exists.");
@@ -425,8 +425,9 @@ namespace Xamarin.Tests {
 					env [kvp.Key] = kvp.Value;
 			}
 
-			output = new StringBuilder ();
-			return Execution.RunWithStringBuildersAsync (executable, Array.Empty<string> (), environment: env, standardOutput: output, standardError: output, timeout: TimeSpan.FromSeconds (30)).Result;
+			var rv = Execution.RunAsync (executable, Array.Empty<string> (), environment: env, timeout: TimeSpan.FromSeconds (30)).Result;
+			output = rv.Output.MergedOutput;
+			return rv;
 		}
 
 		public static StringBuilder AssertExecute (string executable, params string [] arguments)

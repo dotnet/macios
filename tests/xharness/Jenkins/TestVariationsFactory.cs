@@ -229,6 +229,8 @@ namespace Xharness.Jenkins {
 						if (publishaot) {
 							clone.Xml.SetProperty ("PublishAot", "true", last: false);
 							clone.Xml.SetProperty ("_IsPublishing", "true", last: false); // quack like "dotnet publish", otherwise PublishAot=true has no effect.
+							if (!string.IsNullOrEmpty (runtime_identifer))
+								clone.Xml.SetProperty ("PublishRuntimeIdentifier", runtime_identifer);
 						}
 						if (!string.IsNullOrEmpty (test_variation)) {
 							clone.Xml.SetProperty ("TestVariation", test_variation);

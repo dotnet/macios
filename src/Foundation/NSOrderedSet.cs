@@ -219,9 +219,12 @@ namespace Foundation {
 		/// <summary>Determines whether the ordered set contains the specified object.</summary>
 		/// <param name="obj">The object to locate in the ordered set.</param>
 		/// <returns><see langword="true" /> if the ordered set contains the specified object; otherwise, <see langword="false" />.</returns>
-		public bool Contains (object obj)
+		public bool Contains (object? obj)
 		{
-			return Contains (NSObject.FromObject (obj));
+			var nsobj = NSObject.FromObject (obj);
+			if (nsobj is null)
+				return false;
+			return Contains (nsobj);
 		}
 	}
 

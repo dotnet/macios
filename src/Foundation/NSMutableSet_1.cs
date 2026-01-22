@@ -27,30 +27,26 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
+	/// <summary>A strongly-typed mutable set that contains objects of type <typeparamref name="TKey" />.</summary>
+	/// <typeparam name="TKey">The type of objects in the set.</typeparam>
 	[Register ("NSMutableSet", SkipRegistration = true)]
 	public sealed partial class NSMutableSet<TKey> : NSMutableSet, IEnumerable<TKey>
 		where TKey : class, INativeObject {
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new empty mutable set.</summary>
 		public NSMutableSet ()
 		{
 		}
 
+		/// <summary>Initializes the object from the data stored in the unarchiver object.</summary>
 		/// <param name="coder">The unarchiver object.</param>
-		///         <summary>A constructor that initializes the object from the data stored in the unarchiver object.</summary>
-		///         <remarks>
-		///           <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization).   This is part of the <see cref="Foundation.NSCoding" />  protocol.</para>
-		///           <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
-		///           <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
-		///         </remarks>
+		/// <remarks>
+		/// <para>This constructor is provided to allow the class to be initialized from an unarchiver (for example, during NIB deserialization). This is part of the <see cref="Foundation.NSCoding" /> protocol.</para>
+		/// <para>If developers want to create a subclass of this object and continue to support deserialization from an archive, they should implement a constructor with an identical signature: taking a single parameter of type <see cref="Foundation.NSCoder" /> and decorate it with the [Export("initWithCoder:"] attribute declaration.</para>
+		/// <para>The state of this object can also be serialized by using the companion method, EncodeTo.</para>
+		/// </remarks>
 		public NSMutableSet (NSCoder coder)
 			: base (coder)
 		{
@@ -61,33 +57,29 @@ namespace Foundation {
 		{
 		}
 
-		/// <param name="objs">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new mutable set with the specified objects.</summary>
+		/// <param name="objs">The objects to add to the set.</param>
 		public NSMutableSet (params TKey [] objs)
 			: base (objs)
 		{
 		}
 
-		/// <param name="other">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new mutable set with the contents of the specified set.</summary>
+		/// <param name="other">The set whose contents will be copied to the new set.</param>
 		public NSMutableSet (NSSet<TKey> other)
 			: base (other)
 		{
 		}
 
-		/// <param name="other">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new mutable set with the contents of the specified mutable set.</summary>
+		/// <param name="other">The mutable set whose contents will be copied to the new set.</param>
 		public NSMutableSet (NSMutableSet<TKey> other)
 			: base (other)
 		{
 		}
 
-		/// <param name="capacity">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <summary>Initializes a new mutable set with the specified initial capacity.</summary>
+		/// <param name="capacity">The initial capacity of the set.</param>
 		public NSMutableSet (nint capacity)
 			: base (capacity)
 		{
@@ -95,33 +87,30 @@ namespace Foundation {
 
 		// Strongly typed versions of API from NSSet
 
-		/// <param name="probe">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public TKey LookupMember (TKey probe)
+		/// <summary>Returns the object in the set that is equal to the specified object.</summary>
+		/// <param name="probe">The object to search for in the set.</param>
+		/// <returns>The object in the set that is equal to <paramref name="probe" />, or <see langword="null" /> if no such object exists.</returns>
+		public TKey? LookupMember (TKey probe)
 		{
 			if (probe is null)
 				throw new ArgumentNullException (nameof (probe));
 
-			TKey result = Runtime.GetINativeObject<TKey> (_LookupMember (probe.Handle), false);
+			TKey? result = Runtime.GetINativeObject<TKey> (_LookupMember (probe.Handle), false);
 			GC.KeepAlive (probe);
 			return result;
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public TKey AnyObject {
+		/// <summary>Gets one of the objects in the set, or <see langword="null" /> if the set is empty.</summary>
+		/// <value>An arbitrary object from the set, or <see langword="null" /> if the set contains no objects.</value>
+		public TKey? AnyObject {
 			get {
 				return Runtime.GetINativeObject<TKey> (_AnyObject, false);
 			}
 		}
 
-		/// <param name="obj">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Determines whether the set contains the specified object.</summary>
+		/// <param name="obj">The object to locate in the set.</param>
+		/// <returns><see langword="true" /> if the set contains <paramref name="obj" />; otherwise, <see langword="false" />.</returns>
 		public bool Contains (TKey obj)
 		{
 			if (obj is null)
@@ -132,18 +121,23 @@ namespace Foundation {
 			return result;
 		}
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Converts the set to an array.</summary>
+		/// <returns>An array containing all the objects in the set.</returns>
 		public TKey [] ToArray ()
 		{
 			return base.ToArray<TKey> ();
 		}
 
-		public static NSMutableSet<TKey> operator + (NSMutableSet<TKey> first, NSMutableSet<TKey> second)
+		/// <summary>Creates a new mutable set containing all objects from both sets.</summary>
+		/// <param name="first">The first set.</param>
+		/// <param name="second">The second set.</param>
+		/// <returns>A new <see cref="NSMutableSet{TKey}" /> containing the union of both sets, or <see langword="null" /> if both sets are <see langword="null" />.</returns>
+		public static NSMutableSet<TKey>? operator + (NSMutableSet<TKey>? first, NSMutableSet<TKey>? second)
 		{
+			if (first is null && second is null)
+				return null;
 			if (first is null || first.Count == 0)
-				return new NSMutableSet<TKey> (second);
+				return second is null ? new NSMutableSet<TKey> () : new NSMutableSet<TKey> (second);
 			if (second is null || second.Count == 0)
 				return new NSMutableSet<TKey> (first);
 			var result = new NSMutableSet<TKey> (first._SetByAddingObjectsFromSet (second.Handle));
@@ -151,7 +145,11 @@ namespace Foundation {
 			return result;
 		}
 
-		public static NSMutableSet<TKey> operator - (NSMutableSet<TKey> first, NSMutableSet<TKey> second)
+		/// <summary>Creates a new mutable set with objects from the first set that are not in the second set.</summary>
+		/// <param name="first">The first set.</param>
+		/// <param name="second">The second set.</param>
+		/// <returns>A new <see cref="NSMutableSet{TKey}" /> containing the difference, or <see langword="null" /> if the first set is <see langword="null" /> or empty.</returns>
+		public static NSMutableSet<TKey>? operator - (NSMutableSet<TKey>? first, NSMutableSet<TKey>? second)
 		{
 			if (first is null || first.Count == 0)
 				return null;
@@ -163,9 +161,8 @@ namespace Foundation {
 		}
 
 		// Strongly typed versions of API from NSMutableSet
-		/// <param name="obj">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Adds the specified object to the set.</summary>
+		/// <param name="obj">The object to add to the set.</param>
 		public void Add (TKey obj)
 		{
 			if (obj is null)
@@ -175,9 +172,8 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
-		/// <param name="obj">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Removes the specified object from the set.</summary>
+		/// <param name="obj">The object to remove from the set.</param>
 		public void Remove (TKey obj)
 		{
 			if (obj is null)
@@ -187,9 +183,8 @@ namespace Foundation {
 			GC.KeepAlive (obj);
 		}
 
-		/// <param name="objects">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Adds multiple objects to the set.</summary>
+		/// <param name="objects">The objects to add to the set.</param>
 		public void AddObjects (params TKey [] objects)
 		{
 			if (objects is null)
@@ -213,9 +208,8 @@ namespace Foundation {
 		#endregion
 
 		#region IEnumerable implementation
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns an enumerator that iterates through the set.</summary>
+		/// <returns>An enumerator that can be used to iterate through the set.</returns>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return new NSFastEnumerator<TKey> (this);

@@ -137,6 +137,12 @@
 
 	</PropertyGroup>
 
+	<!-- Set the default RuntimeIdentifier when publishing -->
+	<PropertyGroup Condition="'$(PublishRuntimeIdentifier)' == ''">
+		<PublishRuntimeIdentifier Condition="'$(_PlatformName)' == 'iOS'">ios-arm64</PublishRuntimeIdentifier>
+		<PublishRuntimeIdentifier Condition="'$(_PlatformName)' == 'tvOS'">tvos-arm64</PublishRuntimeIdentifier>
+	</PropertyGroup>
+
 	<!-- Now that we know the runtime identifier, we can determine if we're building for a simulator -->
 	<PropertyGroup>
 		<_SdkIsSimulator Condition="$(RuntimeIdentifier.Contains('simulator')) Or $(RuntimeIdentifiers.Contains('simulator'))">true</_SdkIsSimulator>

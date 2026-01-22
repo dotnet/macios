@@ -1699,7 +1699,7 @@ namespace AudioToolbox {
 
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus AudioFileGetUserDataSize64 (AudioFileID audioFile, uint userDataID, int index, ulong* userDataSize);
@@ -1711,7 +1711,7 @@ namespace AudioToolbox {
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserDataSize (uint userDataId, int index, out ulong size)
 		{
@@ -1729,7 +1729,7 @@ namespace AudioToolbox {
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserDataSize (AudioFileChunkType chunkType, int index, out ulong size)
 		{
@@ -1770,7 +1770,7 @@ namespace AudioToolbox {
 
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[DllImport (Constants.AudioToolboxLibrary)]
 		unsafe extern static OSStatus AudioFileGetUserDataAtOffset (AudioFileID audioFile, uint userDataID, int index, long inOffset, int* userDataSize, IntPtr userData);
@@ -1784,7 +1784,7 @@ namespace AudioToolbox {
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserData (uint userDataId, int index, long offset, ref int size, IntPtr userData)
 		{
@@ -1803,7 +1803,7 @@ namespace AudioToolbox {
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserData (AudioFileChunkType chunkType, int index, long offset, ref int size, IntPtr userData)
 		{
@@ -1819,7 +1819,7 @@ namespace AudioToolbox {
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserData (uint userDataId, int index, long offset, byte [] data, out int size)
 		{
@@ -1839,7 +1839,7 @@ namespace AudioToolbox {
 		/// <returns>Returns <see cref="AudioFileError.Success" /> on success, otherwise an <see cref="AudioFileError" /> error code.</returns>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		public AudioFileError GetUserData (AudioFileChunkType chunkType, int index, long offset, byte [] data, out int size)
 		{
@@ -2376,10 +2376,11 @@ namespace AudioToolbox {
 		public AudioFileInfoDictionary? InfoDictionary {
 			get {
 				var ptr = GetIntPtr (AudioFileProperty.InfoDictionary);
-				if (ptr == IntPtr.Zero)
+				var dict = Runtime.GetNSObject<NSMutableDictionary> (ptr, owns: true);
+				if (dict is null)
 					return null;
 
-				return new AudioFileInfoDictionary (new NSMutableDictionary (ptr, true));
+				return new AudioFileInfoDictionary (dict);
 			}
 		}
 

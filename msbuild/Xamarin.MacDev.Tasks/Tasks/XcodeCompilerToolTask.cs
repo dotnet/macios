@@ -38,8 +38,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string ResourcePrefix { get; set; } = string.Empty;
 
-		public string SdkBinPath { get; set; } = string.Empty;
-
 		[Required]
 		public string SdkPlatform { get; set; } = string.Empty;
 
@@ -52,8 +50,6 @@ namespace Xamarin.MacDev.Tasks {
 #endif
 			set { sdkDevPath = value; }
 		}
-
-		public string SdkUsrPath { get; set; } = string.Empty;
 
 		[Required]
 		public string SdkVersion { get; set; } = string.Empty;
@@ -184,12 +180,6 @@ namespace Xamarin.MacDev.Tasks {
 			var environment = new Dictionary<string, string?> ();
 			var args = new List<string> ();
 
-			if (!string.IsNullOrEmpty (SdkBinPath))
-				environment.Add ("PATH", SdkBinPath);
-
-			if (!string.IsNullOrEmpty (SdkUsrPath))
-				environment.Add ("XCODE_DEVELOPER_USR_PATH", SdkUsrPath);
-
 			if (!string.IsNullOrEmpty (SdkDevPath))
 				environment.Add ("DEVELOPER_DIR", SdkDevPath);
 
@@ -229,16 +219,16 @@ namespace Xamarin.MacDev.Tasks {
 			if (Log.HasLoggedErrors)
 				return 1;
 
-			var rv = ExecuteAsync (tool, args, sdkDevPath, environment: environment, mergeOutput: false).Result;
+			var rv = ExecuteAsync (tool, args, sdkDevPath, environment: environment).Result;
 			var exitCode = rv.ExitCode;
-			var messages = rv.StandardOutput!.ToString ();
+			var messages = rv.Output.StandardOutput;
 			File.WriteAllText (manifest.ItemSpec, messages);
 
 			if (exitCode != 0) {
 				// Note: ibtool or actool exited with an error. Dump everything we can to help the user
 				// diagnose the issue and then delete the manifest log file so that rebuilding tries
 				// again (in case of ibtool's infamous spurious errors).
-				var errors = rv.StandardError!.ToString ();
+				var errors = rv.Output.StandardError;
 				if (errors.Length > 0)
 					Log.LogError (null, null, null, items [0].ItemSpec, 0, 0, 0, 0, "{0}", errors);
 

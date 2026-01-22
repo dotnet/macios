@@ -42,7 +42,7 @@ namespace GameController {
 
 #if !XAMCORE_5_0
 	[SupportedOSPlatform ("ios15.4")]
-	[SupportedOSPlatform ("maccatalyst15.4")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos15.4")]
 	[StructLayout (LayoutKind.Sequential)]
@@ -72,7 +72,7 @@ namespace GameController {
 	[StructLayout (LayoutKind.Sequential)]
 #if XAMCORE_5_0
 	[SupportedOSPlatform ("ios15.4")]
-	[SupportedOSPlatform ("maccatalyst15.4")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos15.4")]
 	public struct GCDualSenseAdaptiveTriggerPositionalAmplitudes {
@@ -143,7 +143,7 @@ namespace GameController {
 
 #if !XAMCORE_5_0
 	[SupportedOSPlatform ("ios15.4")]
-	[SupportedOSPlatform ("maccatalyst15.4")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos15.4")]
 	[StructLayout (LayoutKind.Sequential)]
@@ -173,7 +173,7 @@ namespace GameController {
 	[StructLayout (LayoutKind.Sequential)]
 #if XAMCORE_5_0
 	[SupportedOSPlatform ("ios15.4")]
-	[SupportedOSPlatform ("maccatalyst15.4")]
+	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("tvos15.4")]
 	public struct GCDualSenseAdaptiveTriggerPositionalResistiveStrengths {

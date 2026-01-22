@@ -233,6 +233,77 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
+		public void AddObjectsTest_NullValue ()
+		{
+			var str1 = (NSString) "1";
+			NSString? str2 = null;
+			var str3 = (NSString) "3";
+			var oSet = new NSMutableOrderedSet<NSString> ();
+			oSet.AddObjects (str1, str2, str3);
+
+			Assert.AreEqual ((nint) 3, oSet.Count, "AddObjectsTest_NullValue Count");
+			Assert.IsTrue (oSet.Contains (str1), "AddObjectsTest_NullValue Contains 1");
+			Assert.IsTrue (oSet.Contains (NSNull.Null), "AddObjectsTest_NullValue Contains NSNull");
+			Assert.IsTrue (oSet.Contains (str3), "AddObjectsTest_NullValue Contains 3");
+		}
+
+		[Test]
+		public void InsertObjectsTest_NullValue ()
+		{
+			var str1 = (NSString) "1";
+			NSString? str2 = null;
+			var str3 = (NSString) "3";
+			var str4 = (NSString) "4";
+			var oSet = new NSMutableOrderedSet<NSString> (str4);
+			oSet.InsertObjects (new NSString? [] { str1, str2, str3 }, NSIndexSet.FromNSRange (new NSRange (0, 3)));
+
+			Assert.AreEqual ((nint) 4, oSet.Count, "InsertObjectsTest_NullValue Count");
+			Assert.IsTrue (oSet.Contains (str1), "InsertObjectsTest_NullValue Contains 1");
+			Assert.IsTrue (oSet.Contains (NSNull.Null), "InsertObjectsTest_NullValue Contains NSNull");
+			Assert.IsTrue (oSet.Contains (str3), "InsertObjectsTest_NullValue Contains 3");
+			Assert.IsTrue (oSet.Contains (str4), "InsertObjectsTest_NullValue Contains 4");
+			Assert.AreSame (str1, oSet [0], "InsertObjectsTest_NullValue 1 == 1");
+			Assert.AreSame (str4, oSet [3], "InsertObjectsTest_NullValue 4 == 4");
+		}
+
+		[Test]
+		public void ReplaceObjectsTest_NullValue ()
+		{
+			var str1 = (NSString) "1";
+			var str2 = (NSString) "2";
+			NSString? str3 = null;
+			var str4 = (NSString) "4";
+
+			var oSet = new NSMutableOrderedSet<NSString> (str1, str2);
+			Assert.AreEqual ((nint) 2, oSet.Count, "ReplaceObjectsTest_NullValue Count");
+			Assert.AreSame (str1, oSet [0], "ReplaceObjectsTest_NullValue 1 == 1");
+			Assert.AreSame (str2, oSet [1], "ReplaceObjectsTest_NullValue 2 == 2");
+
+			oSet.ReplaceObjects (NSIndexSet.FromNSRange (new NSRange (0, 2)), str3, str4);
+			var baseSet = (NSOrderedSet) oSet;
+			var item0 = baseSet [0];
+			Assert.IsInstanceOf<NSNull> (item0, "ReplaceObjectsTest_NullValue NSNull");
+			Assert.AreSame (str4, oSet [1], "ReplaceObjectsTest_NullValue 4 == 4");
+		}
+
+		[Test]
+		public void RemoveObjectsTest_NullValue ()
+		{
+			var str1 = (NSString) "1";
+			NSString? str2 = null;
+			var str3 = (NSString) "3";
+			var oSet = new NSMutableOrderedSet<NSString> ();
+			oSet.AddObjects (str1, str2, str3);
+			Assert.AreEqual ((nint) 3, oSet.Count, "RemoveObjectsTest_NullValue Count");
+
+			oSet.RemoveObjects (str1, str2);
+			Assert.AreEqual ((nint) 1, oSet.Count, "RemoveObjectsTest_NullValue Count After Remove");
+			Assert.IsFalse (oSet.Contains (str1), "RemoveObjectsTest_NullValue must not contain 1");
+			Assert.IsFalse (oSet.Contains (NSNull.Null), "RemoveObjectsTest_NullValue must not contain NSNull");
+			Assert.IsTrue (oSet.Contains (str3), "RemoveObjectsTest_NullValue Contains 3");
+		}
+
+		[Test]
 		public void IEnumerable1Test ()
 		{
 			const int C = 16 * 2 + 3; // NSFastEnumerator has a array of size 16, use more than that, and not an exact multiple.

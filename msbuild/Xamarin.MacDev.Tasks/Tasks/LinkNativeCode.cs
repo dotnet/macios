@@ -210,7 +210,7 @@ namespace Xamarin.MacDev.Tasks {
 					arguments.Add (flag.ItemSpec);
 			}
 
-			var rv = ExecuteAsync ("xcrun", arguments, sdkDevPath: GetSdkDevPath (), showErrorIfFailure: false).Result;
+			var rv = ExecuteAsync ("xcrun", arguments, showErrorIfFailure: false).Result;
 			if (rv.ExitCode != 0) {
 				var stderr = rv.Output.MergedOutput;
 #if NET
@@ -281,7 +281,7 @@ namespace Xamarin.MacDev.Tasks {
 				"-o", derEntitlements,
 				"--raw",
 			};
-			ExecuteAsync ("xcrun", arguments, sdkDevPath: GetSdkDevPath ()).Wait ();
+			ExecuteAsync ("xcrun", arguments).Wait ();
 			return derEntitlements;
 		}
 

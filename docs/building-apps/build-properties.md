@@ -352,8 +352,8 @@ Specifies which mobile device or emulator to target when using `dotnet run
 
 The value can be anything the command-line tools `simctl` or `devicectl`
 accept for the device name; this is typically either the UDID or the name of
-the device. For example, for the device `My iOS Device` with UDID `0000-aaaabbbb`, use
-either `-p:Device="My iOS Device"` or `-p:Device=0000-aaaabbbb`.
+the device. For example, for the device `My iOS Device` with UDID `00001111-012301230123ABCD`, use
+either `-p:Device="My iOS Device"` or `-p:Device=00001111-012301230123ABCD`.
 
 For more information about device selection, see the
 [.NET SDK device selection specification](https://github.com/dotnet/sdk/blob/2b9fc02a265c735f2132e4e3626e94962e48bdf5/documentation/specs/dotnet-run-for-maui.md).

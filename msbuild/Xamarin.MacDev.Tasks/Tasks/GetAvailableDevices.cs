@@ -274,9 +274,9 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 		return rv;
 	}
 
-	System.Threading.Tasks.Task<IEnumerable<DeviceInfo>> RunSimCtlAsync ()
+	async System.Threading.Tasks.Task<IEnumerable<DeviceInfo>> RunSimCtlAsync ()
 	{
-		var doc = ExecuteCtlToJsonAsync ("simctl", "list", "--json").Result;
+		var doc = await ExecuteCtlToJsonAsync ("simctl", "list", "--json");
 		var rv = new List<DeviceInfo> ();
 
 		var runtimes = new Dictionary<string, JsonElement> ();

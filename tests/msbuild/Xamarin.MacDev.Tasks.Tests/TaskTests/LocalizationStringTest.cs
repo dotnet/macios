@@ -41,8 +41,7 @@ namespace Xamarin.MacDev.Tasks {
 				var task = CreateTask<CollectITunesArtwork> ();
 				task.ITunesArtwork = new TaskItem [] { new TaskItem (Assembly.GetExecutingAssembly ().Location) };
 
-				Assert.IsFalse (task.Execute (), "Execute failure");
-				Assert.AreEqual (1, Engine.Logger.ErrorEvents.Count, "ErrorCount");
+				ExecuteTask (task, 1);
 				bool isTranslated = Engine.Logger.ErrorEvents [0].Message.Contains (errorMessage);
 				Assert.IsTrue (isTranslated, $"Should contain \"{errorMessage}\", but instead has value: \"{Engine.Logger.ErrorEvents [0].Message}\"");
 			} finally {

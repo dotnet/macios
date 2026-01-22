@@ -82,11 +82,11 @@ namespace Xamarin.MacDev.Tasks {
 			task.Value = value;
 
 			if (expected is null) {
-				Assert.IsFalse (task.Execute (), "Task was expected to fail.");
+				ExecuteTask (task, 1);
 				return;
 			}
 
-			Assert.IsTrue (task.Execute (), "Task was expected to execute successfully.");
+			ExecuteTask (task);
 
 			var output = PObject.FromFile (task.PropertyList);
 

@@ -11,8 +11,7 @@ namespace Xamarin.MacDev.Tasks {
 		public void GetBundleName_MissingName ()
 		{
 			var task = CreateTask<GenerateBundleName> ();
-			Assert.IsFalse (task.Execute (), "#1");
-			Assert.AreEqual (1, Engine.Logger.ErrorEvents.Count, "#2");
+			ExecuteTask (task, 1);
 		}
 
 		[Test]
@@ -21,9 +20,8 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<GenerateBundleName> ();
 			task.ProjectName = "!@£///Hello_World%£";
 
-			Assert.IsTrue (task.Execute (), "#1");
+			ExecuteTask (task);
 			Assert.AreEqual ("Hello_World", task.BundleName, "#2");
-			Assert.AreEqual (0, Engine.Logger.ErrorEvents.Count, "#3");
 		}
 	}
 }

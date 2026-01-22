@@ -728,7 +728,6 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("Request timedout.");
 			} else {
 				Assert.IsNull (ex, "Exception wasn't expected.");
-				Assert.IsInstanceOf (typeof (HttpRequ;
 			}
 		}
 

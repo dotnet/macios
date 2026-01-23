@@ -26,4 +26,4 @@ jobs:
       - name: Build on Linux
         run: |
           set -ex
-          make
+          make -j$(nproc)

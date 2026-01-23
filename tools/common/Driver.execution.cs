@@ -144,7 +144,7 @@ namespace Xamarin.Bundler {
 
 #if BGENERATOR
 		internal static int Verbosity => ErrorHelper.Verbosity;
-#elif !MTOUCH && !MMP && !BUNDLER
+#elif !LEGACY_TOOLS && !BUNDLER
 		internal static int Verbosity;
 #endif
 	}

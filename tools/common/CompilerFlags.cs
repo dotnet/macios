@@ -8,8 +8,7 @@ using Xamarin.Bundler;
 
 namespace Xamarin.Utils {
 	public class CompilerFlags {
-		public Application Application { get { return Target.App; } }
-		public Target Target;
+		public Application Application;
 
 		public HashSet<string> Frameworks; // if a file, "-F /path/to/X --framework X" and added to Inputs, otherwise "--framework X".
 		public HashSet<string> WeakFrameworks;
@@ -28,11 +27,11 @@ namespace Xamarin.Utils {
 		// tracking).
 		public List<string> Inputs;
 
-		public CompilerFlags (Target target)
+		public CompilerFlags (Application app)
 		{
-			if (target is null)
-				throw new ArgumentNullException (nameof (target));
-			this.Target = target;
+			if (app is null)
+				throw new ArgumentNullException (nameof (app));
+			this.Application = app;
 		}
 
 		public HashSet<string> AllLibraries {
@@ -126,44 +125,6 @@ namespace Xamarin.Utils {
 			OtherFlags.Add (flags);
 		}
 
-		public void LinkWithMono ()
-		{
-			var mode = Target.App.LibMonoLinkMode;
-			switch (mode) {
-			case AssemblyBuildTarget.DynamicLibrary:
-			case AssemblyBuildTarget.StaticObject:
-				AddLinkWith (Application.GetLibMono (mode));
-				break;
-			case AssemblyBuildTarget.Framework:
-				AddFramework (Application.GetLibMono (mode));
-				break;
-			default:
-				throw ErrorHelper.CreateError (100, Errors.MT0100, mode);
-			}
-			AddOtherFlag ("-lz");
-			AddOtherFlag ("-liconv");
-		}
-
-		public void LinkWithXamarin ()
-		{
-			var mode = Target.App.LibXamarinLinkMode;
-			switch (mode) {
-			case AssemblyBuildTarget.DynamicLibrary:
-			case AssemblyBuildTarget.StaticObject:
-				AddLinkWith (Application.GetLibXamarin (mode));
-				break;
-			case AssemblyBuildTarget.Framework:
-				AddFramework (Application.GetLibXamarin (mode));
-				break;
-			default:
-				throw ErrorHelper.CreateError (100, Errors.MT0100, mode);
-			}
-			AddFramework ("Foundation");
-			AddOtherFlag ("-lz");
-			if (Application.Platform != ApplePlatform.TVOS)
-				AddFramework ("CFNetwork"); // required by xamarin_start_wwan
-		}
-
 		public void AddFramework (string framework)
 		{
 			if (Frameworks is null)
@@ -237,13 +198,6 @@ namespace Xamarin.Utils {
 					args.Insert (idx, flag);
 					idx++;
 				}
-			}
-
-			// There are known bugs in the classic linker with Xcode 15, so keep use the classic linker in that case
-			//  In Xcode 16 we don't know of any problems for now, so enable the new linker by default
-			if (Driver.XcodeVersion.Major >= 15 && Driver.XcodeVersion.Major < 16 && !Application.DisableAutomaticLinkerSelection) {
-				args.Insert (0, "-Xlinker");
-				args.Insert (1, "-ld_classic");
 			}
 
 			ProcessFrameworksForArguments (args);

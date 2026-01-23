@@ -19,14 +19,10 @@ using Xamarin.Linker;
 using Xamarin.Tuner;
 using Xamarin.Utils;
 
-#if MONOTOUCH
+#if LEGACY_TOOLS
 using PlatformResolver = MonoTouch.Tuner.MonoTouchResolver;
-#elif MMP
-using PlatformResolver = Xamarin.Bundler.MonoMacResolver;
-#elif NET
-using PlatformResolver = Xamarin.Linker.DotNetResolver;
 #else
-#error Invalid defines
+using PlatformResolver = Xamarin.Linker.DotNetResolver;
 #endif
 
 using Registrar;
@@ -222,20 +218,15 @@ namespace Registrar {
 	}
 
 	class StaticRegistrar : Registrar {
-		static string NFloatTypeName { get => Driver.IsDotNet ? "System.Runtime.InteropServices.NFloat" : "System.nfloat"; }
+		const string NFloatTypeName = "System.Runtime.InteropServices.NFloat";
 		const uint INVALID_TOKEN_REF = 0xFFFFFFFF;
 
 		Dictionary<ICustomAttribute, MethodDefinition> protocol_member_method_map;
 
 		public Dictionary<ICustomAttribute, MethodDefinition> ProtocolMemberMethodMap {
 			get {
-				if (protocol_member_method_map is null) {
-					if (App.Platform != ApplePlatform.MacOSX && App.IsExtension && App.IsCodeShared) {
-						protocol_member_method_map = Target.ContainerTarget.StaticRegistrar.ProtocolMemberMethodMap;
-					} else {
-						protocol_member_method_map = new Dictionary<ICustomAttribute, MethodDefinition> ();
-					}
-				}
+				if (protocol_member_method_map is null)
+					protocol_member_method_map = new Dictionary<ICustomAttribute, MethodDefinition> ();
 				return protocol_member_method_map;
 			}
 		}
@@ -508,7 +499,7 @@ namespace Registrar {
 				if (invokeMethod is null)
 					return "id";
 
-				StringBuilder builder = new StringBuilder ();
+				var builder = new StringBuilder ();
 				builder.Append (ToObjCType (invokeMethod.ReturnType));
 				builder.Append (" (^");
 				if (cSyntaxForBlocks)
@@ -602,7 +593,6 @@ namespace Registrar {
 			return tr.Is (Registrar.ObjCRuntime, Registrar.StringConstants.INativeObject);
 		}
 
-		public Target Target { get; private set; }
 		public bool IsSingleAssembly { get { return !string.IsNullOrEmpty (single_assembly); } }
 
 		string single_assembly;
@@ -610,13 +600,13 @@ namespace Registrar {
 		Dictionary<IMetadataTokenProvider, object> availability_annotations;
 
 		PlatformResolver resolver;
-		PlatformResolver Resolver { get { return resolver ?? Target.Resolver; } }
+		PlatformResolver Resolver { get { return resolver ?? App.Resolver; } }
 
 		readonly Version MacOSTenTwelveVersion = new Version (10, 12);
 
 		public Xamarin.Tuner.DerivedLinkContext LinkContext {
 			get {
-				return Target?.GetLinkContext ();
+				return App?.GetLinkContext ();
 			}
 		}
 
@@ -685,12 +675,6 @@ namespace Registrar {
 		public StaticRegistrar (Application app)
 		{
 			Init (app);
-		}
-
-		public StaticRegistrar (Target target)
-		{
-			Init (target.App);
-			this.Target = target;
 		}
 
 		protected override PropertyDefinition FindProperty (TypeReference type, string name)
@@ -809,7 +793,7 @@ namespace Registrar {
 
 		protected override bool IsARM64 {
 			get {
-				return Application.IsArchEnabled (Target?.Abis ?? App.Abis, Xamarin.Abi.ARM64);
+				return Application.IsArchEnabled (App.Abi, Xamarin.Abi.ARM64);
 			}
 		}
 
@@ -1604,7 +1588,7 @@ namespace Registrar {
 			}
 		}
 
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 		bool GetDotNetAvailabilityAttribute (ICustomAttribute ca, ApplePlatform currentPlatform, out Version sdkVersion, out string message)
 		{
 			var caType = ca.AttributeType;
@@ -1656,7 +1640,7 @@ namespace Registrar {
 
 			ApplePlatform [] platforms;
 
-#if !NET || LEGACY_TOOLS
+#if LEGACY_TOOLS
 			if (currentPlatform == ApplePlatform.MacCatalyst) {
 				// Fall back to any iOS attributes if we can't find something for Mac Catalyst
 				platforms = new ApplePlatform [] {
@@ -1678,7 +1662,7 @@ namespace Registrar {
 			foreach (var platform in platforms) {
 				foreach (var ca in attributes) {
 					var caType = ca.AttributeType;
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 					if (!caType.Is ("System.Runtime.Versioning", "SupportedOSPlatformAttribute"))
 						continue;
 					if (GetDotNetAvailabilityAttribute (ca, platform, out sdkVersion, out message))
@@ -2184,15 +2168,6 @@ namespace Registrar {
 					header.WriteLine ("#import <CoreTelephony/CTSubscriberInfo.h>");
 				}
 				return;
-			case "Accounts":
-				if (App.Platform != ApplePlatform.MacOSX) {
-					var compiler = Path.GetFileName (App.CompilerPath);
-					if (compiler == "gcc" || compiler == "g++") {
-						exceptions.Add (new ProductException (4121, true, "Cannot use GCC/G++ to compile the generated code from the static registrar when using the Accounts framework (the header files provided by Apple used during the compilation require Clang). Either use Clang (--compiler:clang) or the dynamic registrar (--registrar:dynamic)."));
-						return;
-					}
-				}
-				goto default;
 			case "IOSurface": // There is no IOSurface.h
 				h = "<IOSurface/IOSurfaceObjC.h>";
 				break;
@@ -2213,7 +2188,7 @@ namespace Registrar {
 		string CheckStructure (TypeDefinition structure, string descriptiveMethodName, MemberReference inMember)
 		{
 			string n;
-			StringBuilder name = new StringBuilder ();
+			var name = new StringBuilder ();
 			var body = new AutoIndentStringBuilder (1);
 			int size = 0;
 
@@ -2345,7 +2320,7 @@ namespace Registrar {
 
 		string ToObjCParameterType (TypeReference type, string descriptiveMethodName, List<Exception> exceptions, MemberReference inMethod, bool delegateToBlockType = false, bool cSyntaxForBlocks = false)
 		{
-			GenericParameter gp = type as GenericParameter;
+			var gp = type as GenericParameter;
 			if (gp is not null)
 				return "id";
 
@@ -2360,7 +2335,7 @@ namespace Registrar {
 			if (type is PointerType pt)
 				return ToObjCParameterType (pt.ElementType, descriptiveMethodName, exceptions, inMethod, delegateToBlockType) + "*";
 
-			ArrayType arrtype = type as ArrayType;
+			var arrtype = type as ArrayType;
 			if (arrtype is not null)
 				return "NSArray *";
 
@@ -2741,7 +2716,6 @@ namespace Registrar {
 			return all_types;
 		}
 
-#if NET || LEGACY_TOOLS
 		CSToObjCMap type_map_dictionary;
 		public CSToObjCMap GetTypeMapDictionary (List<Exception> exceptions)
 		{
@@ -2762,11 +2736,10 @@ namespace Registrar {
 			type_map_dictionary = map_dict;
 			return type_map_dictionary;
 		}
-#endif // NET || LEGACY_TOOLS
 
 		public void Rewrite ()
 		{
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 			if (App.Optimizations.RedirectClassHandles == true) {
 				var exceptions = new List<Exception> ();
 				var map_dict = GetTypeMapDictionary (exceptions);
@@ -2782,12 +2755,12 @@ namespace Registrar {
 
 		void Specialize (AutoIndentStringBuilder sb, out string initialization_method)
 		{
-			List<Exception> exceptions = new List<Exception> ();
-			List<ObjCMember> skip = new List<ObjCMember> ();
+			var exceptions = new List<Exception> ();
+			var skip = new List<ObjCMember> ();
 
 			var map = new AutoIndentStringBuilder (1);
 			var map_init = new AutoIndentStringBuilder ();
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 			var map_dict = new CSToObjCMap (); // maps CS type to ObjC type name and index
 #endif
 			var protocol_wrapper_map = new Dictionary<uint, Tuple<ObjCType, uint>> ();
@@ -3241,18 +3214,13 @@ namespace Registrar {
 					continue;
 				if (!method.Parameters [1].ParameterType.Is ("System", "Boolean"))
 					continue;
-				if (Driver.IsDotNet) {
-					if (method.Parameters [0].ParameterType.Is ("System", "IntPtr")) {
-						// The registrar found a non-optimal type `{0}`: the type does not have a constructor that takes two (ObjCRuntime.NativeHandle, bool) arguments. However, a constructor that takes two (System.IntPtr, bool) arguments was found (and will be used instead). It's highly recommended to change the signature of the (System.IntPtr, bool) constructor to be (ObjCRuntime.NativeHandle, bool).
-						exceptions.Add (ErrorHelper.CreateWarning (App, 4186, method, Errors.MT4186, type.FullName));
-						return true;
-					}
-					if (!method.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
-						continue;
-				} else {
-					if (!method.Parameters [0].ParameterType.Is ("System", "IntPtr"))
-						continue;
+				if (method.Parameters [0].ParameterType.Is ("System", "IntPtr")) {
+					// The registrar found a non-optimal type `{0}`: the type does not have a constructor that takes two (ObjCRuntime.NativeHandle, bool) arguments. However, a constructor that takes two (System.IntPtr, bool) arguments was found (and will be used instead). It's highly recommended to change the signature of the (System.IntPtr, bool) constructor to be (ObjCRuntime.NativeHandle, bool).
+					exceptions.Add (ErrorHelper.CreateWarning (App, 4186, method, Errors.MT4186, type.FullName));
+					return true;
 				}
+				if (!method.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
+					continue;
 				ctor = method;
 				return true;
 			}
@@ -3345,7 +3313,7 @@ namespace Registrar {
 				sb.AppendLine ("}");
 				return true;
 			case Trampoline.CopyWithZone2:
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 				// Managed Static Registrar handles CopyWithZone2 in GenerateCallToUnmanagedCallersOnlyMethod
 				if (LinkContext.App.Registrar == RegistrarMode.ManagedStatic) {
 					return false;
@@ -3374,11 +3342,7 @@ namespace Registrar {
 
 			var customConformsToProtocol = method.Selector == "conformsToProtocol:" && method.Method.DeclaringType.Is ("Foundation", "NSObject") && method.Method.Name == "InvokeConformsToProtocol" && method.Parameters.Length == 1;
 			if (customConformsToProtocol) {
-				if (Driver.IsDotNet) {
-					customConformsToProtocol &= method.Parameters [0].Is ("ObjCRuntime", "NativeHandle");
-				} else {
-					customConformsToProtocol &= method.Parameters [0].Is ("System", "IntPtr");
-				}
+				customConformsToProtocol &= method.Parameters [0].Is ("ObjCRuntime", "NativeHandle");
 				if (customConformsToProtocol) {
 					sb.AppendLine ("-(BOOL) conformsToProtocol: (void *) protocol");
 					sb.AppendLine ("{");
@@ -3923,7 +3887,7 @@ namespace Registrar {
 
 			// a couple of debug printfs
 			if (trace) {
-				StringBuilder args = new StringBuilder ();
+				var args = new StringBuilder ();
 				nslog_start.AppendFormat ("NSLog (@\"{0} (this: %@, sel: %@", name);
 				for (int i = 0; i < num_arg; i++) {
 					var type = method.Method.Parameters [i].ParameterType;
@@ -3993,7 +3957,7 @@ namespace Registrar {
 				nslog_start.AppendLine (");");
 			}
 
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 			// Generate the native trampoline to call the generated UnmanagedCallersOnly method if we're using the managed static registrar.
 			if (LinkContext.App.Registrar == RegistrarMode.ManagedStatic) {
 				GenerateCallToUnmanagedCallersOnlyMethod (sb, method, isCtor, isVoid, num_arg, descriptiveMethodName, exceptions);
@@ -4161,7 +4125,7 @@ namespace Registrar {
 			}
 
 			Body existing;
-			Body b = new Body () {
+			var b = new Body () {
 				Code = body.ToString (),
 				Signature = objc_signature.ToString (),
 			};
@@ -4227,7 +4191,7 @@ namespace Registrar {
 			}
 		}
 
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 		void GenerateCallToUnmanagedCallersOnlyMethod (AutoIndentStringBuilder sb, ObjCMethod method, bool isCtor, bool isVoid, int num_arg, string descriptiveMethodName, List<Exception> exceptions)
 		{
 			// Generate the native trampoline to call the generated UnmanagedCallersOnly method.
@@ -5190,7 +5154,7 @@ namespace Registrar {
 		{
 			var token = member.MetadataToken;
 
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 			if (App.Registrar == RegistrarMode.ManagedStatic) {
 				if (implied_type == TokenType.TypeDef && member is TypeDefinition td) {
 					if (App.Configuration.AssemblyTrampolineInfos.TryGetValue (td.Module.Assembly, out var infos) && infos.TryGetRegisteredTypeIndex (td, out var id)) {
@@ -5257,7 +5221,7 @@ namespace Registrar {
 			return "__p__" + i.ToString ();
 		}
 
-#if !MMP && !MTOUCH
+#if !LEGACY_TOOLS
 		string TryGeneratePInvokeWrapper (PInvokeWrapperGenerator state, MethodDefinition method)
 		{
 			var signatures = state.signatures;
@@ -5388,7 +5352,7 @@ namespace Registrar {
 			pinfo.Module = mr;
 			pinfo.EntryPoint = wrapperName;
 		}
-#endif // MMP
+#endif // !LEGACY_TOOLS
 
 		public void Register (IEnumerable<AssemblyDefinition> assemblies)
 		{
@@ -5398,10 +5362,6 @@ namespace Registrar {
 		public void Register (PlatformResolver resolver, IEnumerable<AssemblyDefinition> assemblies)
 		{
 			this.resolver = resolver;
-
-			if (Target?.CachedLink == true)
-				throw ErrorHelper.CreateError (99, Errors.MX0099, "the static registrar should not execute unless the linker also executed (or was disabled). A potential workaround is to pass '-f' as an additional " + Driver.NAME + " argument to force a full build");
-
 			this.input_assemblies = assemblies;
 
 			foreach (var assembly in assemblies) {
@@ -5410,7 +5370,7 @@ namespace Registrar {
 			}
 		}
 
-#if !MMP && !MTOUCH
+#if !LEGACY_TOOLS
 		static bool IsPropertyTrimmed (PropertyDefinition pd, AnnotationStore annotations)
 		{
 			if (pd is null)
@@ -5499,7 +5459,7 @@ namespace Registrar {
 				}
 			}
 		}
-#endif // !MMP && !MTOUCH
+#endif // !LEGACY_TOOLS
 
 		public void GenerateSingleAssembly (PlatformResolver resolver, IEnumerable<AssemblyDefinition> assemblies, string header_path, string source_path, string assembly, out string initialization_method)
 		{
@@ -5620,7 +5580,7 @@ namespace Registrar {
 			return null;
 		}
 
-#if !MMP && !MTOUCH
+#if !LEGACY_TOOLS
 		public MethodReference GetDelegateInvoke (TypeReference delegateType)
 		{
 			var td = delegateType.Resolve ();
@@ -5677,14 +5637,14 @@ namespace Registrar {
 				var parameters = new TypeReference [userMethod.Parameters.Count];
 				for (int p = 0; p < parameters.Length; p++)
 					parameters [p] = userMethod.Parameters [p].ParameterType;
-				signature = LinkContext.Target.StaticRegistrar.ComputeSignature (userMethod.DeclaringType, false, userMethod.ReturnType, parameters, userMethod.Resolve (), isBlockSignature: blockSignature);
+				signature = LinkContext.App.StaticRegistrar.ComputeSignature (userMethod.DeclaringType, false, userMethod.ReturnType, parameters, userMethod.Resolve (), isBlockSignature: blockSignature);
 				return true;
 			} catch (Exception e) {
 				exception = ErrorHelper.CreateError (App, 4188 /* Unable to compute the block signature for the type '{0}': {1} */, e, codeLocation, Errors.MX4188, trampolineDelegateType.FullName, e.Message);
 				return false;
 			}
 		}
-#endif // !MMP && !MTOUCH
+#endif // !LEGACY_TOOLS
 	}
 
 	// Replicate a few attribute types here, with TypeDefinition instead of Type
@@ -5774,7 +5734,7 @@ namespace Registrar {
 	}
 
 	[Flags]
-	internal enum MTTypeFlags : uint {
+	enum MTTypeFlags : uint {
 		None = 0,
 		CustomType = 1,
 		UserType = 2,

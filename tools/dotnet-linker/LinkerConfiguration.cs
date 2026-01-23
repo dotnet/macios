@@ -20,7 +20,7 @@ namespace Xamarin.Linker {
 	public class LinkerConfiguration {
 		string LinkerFile;
 
-		public List<Abi> Abis = new List<Abi> ();
+		public Abi Abi = Abi.None;
 		public string AOTCompiler = string.Empty;
 		public string AOTOutputDirectory = string.Empty;
 		public string DedupAssembly = string.Empty;
@@ -44,7 +44,6 @@ namespace Xamarin.Linker {
 		static ConditionalWeakTable<LinkContext, LinkerConfiguration> configurations = new ConditionalWeakTable<LinkContext, LinkerConfiguration> ();
 
 		public Application Application { get; private set; }
-		public Target Target { get; private set; }
 
 		public IList<string> RegistrationMethods { get; set; } = new List<string> ();
 		public CompilerFlags CompilerFlags;
@@ -104,9 +103,8 @@ namespace Xamarin.Linker {
 
 			Profile = new BaseProfile (this);
 			Application = new Application (this);
-			Target = new Target (Application);
-			DerivedLinkContext = new DerivedLinkContext (this, Target);
-			CompilerFlags = new CompilerFlags (Target);
+			DerivedLinkContext = new DerivedLinkContext (this, Application);
+			CompilerFlags = new CompilerFlags (Application);
 
 			var use_llvm = false;
 			var lines = File.ReadAllLines (linker_file);
@@ -337,14 +335,8 @@ namespace Xamarin.Linker {
 					Application.SkipMarkingNSObjectsInUserAssemblies = skip_marking_nsobjects_in_user_assemblies.Value;
 					break;
 				case "TargetArchitectures":
-					if (!Enum.TryParse<Abi> (value, out var arch))
+					if (!Enum.TryParse<Abi> (value, out Abi))
 						throw new InvalidOperationException ($"Unknown target architectures: {value} in {linker_file}");
-					// Add to the list of Abis as separate entries (instead of a flags enum value), because that way it's easier to enumerate over them.
-					for (var b = 0; b < 32; b++) {
-						var a = (Abi) (1 << b);
-						if ((a & arch) == a)
-							Abis.Add (a);
-					}
 					break;
 				case "TargetFramework":
 					if (!TargetFramework.TryParse (value, out var tf))
@@ -402,9 +394,7 @@ namespace Xamarin.Linker {
 			}
 
 			if (use_llvm) {
-				for (var i = 0; i < Abis.Count; i++) {
-					Abis [i] |= Abi.LLVM;
-				}
+				Abi |= Abi.LLVM;
 			}
 
 			Application.CreateCache (significantLines.ToArray ());
@@ -416,9 +406,8 @@ namespace Xamarin.Linker {
 				Application.NativeSdkVersion = SdkVersion;
 			}
 
-			Target.Abis = Abis;
-			Target.LinkContext = DerivedLinkContext;
-			Application.Abis = Abis;
+			Application.Abi = Abi;
+			Application.LinkContext = DerivedLinkContext;
 
 			switch (Platform) {
 			case ApplePlatform.iOS:
@@ -493,8 +482,6 @@ namespace Xamarin.Linker {
 				return AssemblyBuildTarget.DynamicLibrary;
 			} else if (string.Equals (value, "static", StringComparison.OrdinalIgnoreCase)) {
 				return AssemblyBuildTarget.StaticObject;
-			} else if (string.Equals (value, "framework", StringComparison.OrdinalIgnoreCase)) {
-				return AssemblyBuildTarget.Framework;
 			}
 
 			throw new InvalidOperationException ($"Invalid {variableName} '{value}' in {LinkerFile}");
@@ -504,7 +491,7 @@ namespace Xamarin.Linker {
 		{
 			if (Verbosity > 0) {
 				Console.WriteLine ($"LinkerConfiguration:");
-				Console.WriteLine ($"    ABIs: {string.Join (", ", Abis.Select (v => v.AsArchString ()))}");
+				Console.WriteLine ($"    ABI: {Abi.AsArchString ()}");
 				Console.WriteLine ($"    AOTArguments: {string.Join (", ", Application.AotArguments)}");
 				Console.WriteLine ($"    AOTOutputDirectory: {AOTOutputDirectory}");
 				Console.WriteLine ($"    DedupAssembly: {DedupAssembly}");

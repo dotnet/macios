@@ -134,7 +134,7 @@ namespace Foundation {
 		// * count isn't negative
 		// * count isn't higher than the number of elements in either array
 		// returns false if an empty dictionary can be returned
-		private protected static bool ValidateFromObjectsAndKeys<T, K> (T[] objects, K[] keys, nint count)
+		private protected static bool ValidateFromObjectsAndKeys<T, K> (T [] objects, K [] keys, nint count)
 		{
 			ArgumentNullException.ThrowIfNull (objects);
 			ArgumentNullException.ThrowIfNull (keys);
@@ -149,7 +149,7 @@ namespace Foundation {
 		// * 'objects' and 'keys' for null
 		// * 'objects' and 'keys' have the same number of elements
 		// returns false if an empty dictionary can be returned
-		private protected static bool ValidateFromObjectsAndKeys<T, K> (T[] objects, K[] keys)
+		private protected static bool ValidateFromObjectsAndKeys<T, K> (T [] objects, K [] keys)
 		{
 			ArgumentNullException.ThrowIfNull (objects);
 			ArgumentNullException.ThrowIfNull (keys);

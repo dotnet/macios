@@ -79,7 +79,7 @@ namespace Xamarin.MacDev.Tasks {
 			});
 
 			if (!Directory.Exists (Path.GetDirectoryName (path)))
-				Directory.CreateDirectory (Path.GetDirectoryName (path));
+				Directory.CreateDirectory (Path.GetDirectoryName (path)!);
 
 			plist.Save (path, true, true);
 

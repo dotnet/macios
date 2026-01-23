@@ -206,7 +206,13 @@ namespace Foundation {
 			return FromNSObjects (nsoa);
 		}
 
-		internal static NSArray FromNativeObjects<T> (T [] items) where T : class, INativeObject
+#nullable enable
+		/// <summary>Creates an <see cref="NSArray" /> from an array of native objects.</summary>
+		/// <typeparam name="T">The type of native objects in the array.</typeparam>
+		/// <param name="items">An array of objects implementing <see cref="INativeObject" />. If null, returns an empty <see cref="NSArray" />.</param>
+		/// <returns>A new <see cref="NSArray" /> containing the specified objects. Null items are represented as <see cref="NSNull.Null" />.</returns>
+		/// <remarks>This method creates a native NSArray from managed objects. Null items in the array are converted to NSNull.Null instances.</remarks>
+		internal static NSArray FromNativeObjects<T> (T? []? items) where T : class, INativeObject
 		{
 			if (items is null)
 				return new NSArray ();
@@ -214,7 +220,14 @@ namespace Foundation {
 			return FromNativeObjects<T> (items, items.Length);
 		}
 
-		internal static NSArray FromNativeObjects<T> (T [] items, nint count) where T : class, INativeObject
+		/// <summary>Creates an <see cref="NSArray" /> from an array of native objects with a specified count.</summary>
+		/// <typeparam name="T">The type of native objects in the array.</typeparam>
+		/// <param name="items">An array of objects implementing <see cref="INativeObject" />. If null, returns an empty <see cref="NSArray" />.</param>
+		/// <param name="count">The number of items from the array to include in the <see cref="NSArray" />.</param>
+		/// <returns>A new <see cref="NSArray" /> containing the specified number of objects from the array. Null items are represented as <see cref="NSNull.Null" />.</returns>
+		/// <exception cref="ArgumentException">Thrown when <paramref name="count" /> is greater than the length of <paramref name="items" />, or when <paramref name="count" /> is negative.</exception>
+		/// <remarks>This method creates a native NSArray from the first <paramref name="count" /> elements of the managed array. Null items are converted to NSNull.Null instances.</remarks>
+		internal static NSArray FromNativeObjects<T> (T? []? items, nint count) where T : class, INativeObject
 		{
 			if (items is null)
 				return new NSArray ();
@@ -222,20 +235,23 @@ namespace Foundation {
 			if (count > items.Length)
 				throw new ArgumentException ("count is larger than the number of items", "count");
 
-			IntPtr buf = Marshal.AllocHGlobal ((IntPtr) (count * IntPtr.Size));
+			if (count < 0)
+				throw new ArgumentOutOfRangeException (nameof (count), "count is negative");
+
+			var handles = new IntPtr [count];
 			for (nint i = 0; i < count; i++) {
 				var item = items [i];
 				// The analyzer cannot deal with arrays, we manually keep alive the whole array below
 #pragma warning disable RBI0014
 				IntPtr h = item is null ? NSNull.Null.Handle : item.Handle;
-				Marshal.WriteIntPtr (buf, (int) (i * IntPtr.Size), h);
+				handles [i] = h;
 #pragma warning restore RBI0014
 			}
-			NSArray arr = Runtime.GetNSObject<NSArray> (NSArray.FromObjects (buf, count));
-			Marshal.FreeHGlobal (buf);
+			var rv = FromIntPtrs (handles);
 			GC.KeepAlive (items);
-			return arr;
+			return rv;
 		}
+#nullable disable
 
 		internal static NSArray FromNSObjects (IList<NSObject> items)
 		{

@@ -12,11 +12,6 @@ using Xamarin.Tuner;
 namespace Xamarin.Linker.Steps {
 
 	public class ApplyPreserveAttribute : ApplyPreserveAttributeBase {
-
-#if !NET || LEGACY_TOOLS
-		HashSet<TypeDefinition> preserve_synonyms;
-#endif
-
 		// We need to run the ApplyPreserveAttribute step even if we're only linking sdk assemblies, because even
 		// though we know that sdk assemblies will never have Preserve attributes, user assemblies may have
 		// [assembly: LinkSafe] attributes, which means we treat them as sdk assemblies and those may have
@@ -26,23 +21,11 @@ namespace Xamarin.Linker.Steps {
 			return Annotations.GetAction (assembly) == AssemblyAction.Link;
 		}
 
-#if NET && !LEGACY_TOOLS
 		protected override void Process (AssemblyDefinition assembly)
 		{
 			base.Process (assembly);
 			ProcessAssemblyAttributes (assembly);
 		}
-#else
-		public override void Initialize (LinkContext context)
-		{
-			base.Initialize (context);
-
-			// we cannot override ProcessAssembly as some decisions needs to be done before applying the [Preserve]
-			// synonyms
-			foreach (var assembly in context.GetAssemblies ())
-				ProcessAssemblyAttributes (assembly);
-		}
-#endif
 
 		void ProcessAssemblyAttributes (AssemblyDefinition assembly)
 		{
@@ -64,29 +47,7 @@ namespace Xamarin.Linker.Steps {
 				// (b) it will try to fetch the [Preserve] attribute on the type (and it's not there) as `base` would
 				var type = tr.Resolve ();
 
-#if NET && !LEGACY_TOOLS
 				PreserveType (type, attribute);
-#else
-				Annotations.Mark (type);
-				if (attribute.HasFields) {
-					foreach (var named_argument in attribute.Fields) {
-						if (named_argument.Name == "AllMembers" && (bool) named_argument.Argument.Value)
-							Annotations.SetPreserve (type, TypePreserve.All);
-					}
-				}
-#endif
-
-				// In .NET6, ApplyPreserveAttribute no longer runs on all assemblies.
-				// [assembly: Preserve (typeof (SomeAttribute))] no longer gives SomeAttribute "Preserve" semantics.
-#if !NET || LEGACY_TOOLS
-				// if the type is a custom attribute then it means we want to preserve what's decorated
-				// with this attribute (not just the attribute alone)
-				if (type.Inherits ("System", "Attribute")) {
-					if (preserve_synonyms is null)
-						preserve_synonyms = new HashSet<TypeDefinition> ();
-					preserve_synonyms.Add (type);
-				}
-#endif
 			}
 		}
 
@@ -100,12 +61,7 @@ namespace Xamarin.Linker.Steps {
 				removeAttribute = true;
 				return true;
 			}
-#if NET && !LEGACY_TOOLS
 			return false;
-#else
-			// we need to resolve (as many reference instances can exists)
-			return ((preserve_synonyms is not null) && preserve_synonyms.Contains (type.Resolve ()));
-#endif
 		}
 	}
 }

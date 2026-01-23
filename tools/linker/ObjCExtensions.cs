@@ -91,7 +91,7 @@ namespace Xamarin.Linker {
 		public static bool IsNSObject (this TypeReference type, DerivedLinkContext link_context)
 		{
 			return
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 				link_context.LinkerConfiguration.Context.Resolve (type)
 #else
 				type.Resolve ()
@@ -106,7 +106,7 @@ namespace Xamarin.Linker {
 				return link_context.CachedIsNSObject.Contains (type);
 
 			return type.Inherits (Namespaces.Foundation, "NSObject"
-#if NET && !LEGACY_TOOLS
+#if !LEGACY_TOOLS
 				, link_context.LinkerConfiguration.Context
 #endif
 			);

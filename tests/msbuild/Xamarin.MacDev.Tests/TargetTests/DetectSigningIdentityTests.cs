@@ -19,7 +19,6 @@ namespace Xamarin.MacDev.Tasks {
 		public void BundleIdentifierInPartialAppManifest ()
 		{
 			Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.MacOSX);
-			Configuration.AssertDotNetAvailable ();
 
 			// https://github.com/dotnet/macios/issues/12051
 			var csproj = $@"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -59,7 +58,7 @@ namespace Xamarin.MacDev.Tasks {
 			var properties = new Dictionary<string, string> {
 				{ "_CanOutputAppBundle", "true" },
 			};
-			var rv = engine.RunTarget (ApplePlatform.MacOSX, ExecutionMode.DotNet, csprojPath, target: "_DetectSigningIdentity", properties: properties);
+			var rv = engine.RunTarget (ApplePlatform.MacOSX, csprojPath, target: "_DetectSigningIdentity", properties: properties);
 			Assert.AreEqual (0, rv.ExitCode, "Exit code");
 
 			// Find the BundleIdentifier parameter to the DetectSigningIdentity task.

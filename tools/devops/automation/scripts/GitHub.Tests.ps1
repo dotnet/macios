@@ -247,11 +247,7 @@ Describe 'IsCurrentCommitLatestInPR' {
                 }
             } -ModuleName 'GitHub'
 
-            $githubComments = [GitHubComments]::new("testorg", "testrepo", "test-token", "abc123def456")
-            $githubComments.PRIds = @("123")
-            
-            $result = $githubComments.IsCurrentCommitLatestInPR()
-            
+            $result = Get-IsCurrentCommitLatestInPR -Org "testorg" -Repo "testrepo" -Token "test-token" -Hash "abc123def456" -PrIDs @("123")
             $result | Should -Be $true
         }
 
@@ -264,20 +260,20 @@ Describe 'IsCurrentCommitLatestInPR' {
                 }
             } -ModuleName 'GitHub'
 
-            $githubComments = [GitHubComments]::new("testorg", "testrepo", "test-token", "abc123def456")
-            $githubComments.PRIds = @("123")
-            
-            $result = $githubComments.IsCurrentCommitLatestInPR()
-            
+            $result = Get-IsCurrentCommitLatestInPR -Org "testorg" -Repo "testrepo" -Token "test-token" -Hash "abc123def456" -PrIDs @("123")
             $result | Should -Be $false
         }
 
         It 'returns true when not in PR context' {
-            $githubComments = [GitHubComments]::new("testorg", "testrepo", "test-token", "abc123def456")
-            $githubComments.PRIds = @()  # Empty array means not in PR
-            
-            $result = $githubComments.IsCurrentCommitLatestInPR()
-            
+            Mock Invoke-Request {
+                return @{
+                    "head" = @{
+                        "sha" = "different123hash"
+                    }
+                }
+            } -ModuleName 'GitHub'
+
+            $result = Get-IsCurrentCommitLatestInPR -Org "testorg" -Repo "testrepo" -Token "test-token" -Hash "abc123def456" -PrIDs @() # Empty array means not in PR
             $result | Should -Be $true
         }
     }

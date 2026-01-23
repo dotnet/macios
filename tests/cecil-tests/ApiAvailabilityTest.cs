@@ -29,7 +29,7 @@ namespace Cecil.Tests {
 				"analyze"
 			};
 			var rv = ExecutionHelper.Execute ("make", args, TimeSpan.FromMinutes (10));
-			Assert.AreEqual (0, rv, "'make analyze' exit code");
+			Assert.That (rv, Is.EqualTo (0), "'make analyze' exit code");
 
 			var platforms = Configuration.GetAllPlatforms ().Select (v => v.AsString ());
 			var binlogs = new List<string> ();

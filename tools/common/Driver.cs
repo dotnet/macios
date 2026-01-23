@@ -6,47 +6,23 @@
  *
  */
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.MacDev;
 using Xamarin.Utils;
-using ObjCRuntime;
-
-using Mono.Linker;
 
 namespace Xamarin.Bundler {
 	public partial class Driver {
-
 		public static bool Force { get; set; }
 
-		public static bool IsUnifiedFullXamMacFramework { get { return false; } }
-		public static bool IsUnifiedFullSystemFramework { get { return false; } }
-		public static bool IsUnifiedMobile { get { return false; } }
-
-#if MMP
-		// We know that Xamarin.Mac apps won't compile unless the developer is using Xcode 12+: https://github.com/dotnet/macios/issues/11937, so just set that as the min Xcode version.
-		static Version min_xcode_version = new Version (12, 0);
-#else
-		static Version min_xcode_version = new Version (6, 0);
-#endif
-
-#if !NET || LEGACY_TOOLS
+#if LEGACY_TOOLS
 		public static int Main (string [] args)
 		{
 			try {
-#if MMP
-				ErrorHelper.Platform = ApplePlatform.MacOSX;
-#else
-				ErrorHelper.Platform = ApplePlatform.iOS;
-#endif
 				Console.OutputEncoding = new UTF8Encoding (false, false);
 				SetCurrentLanguage ();
 				return Main2 (args);
@@ -59,15 +35,8 @@ namespace Xamarin.Bundler {
 		}
 
 		// Returns true if the process should exit (with a 0 exit code; failures are propagated using exceptions)
-		static bool ParseOptions (Application app, Mono.Options.OptionSet options, string [] args, ref Action action)
+		static void ParseOptions (Application app, Mono.Options.OptionSet options, string [] args)
 		{
-			Action a = Action.None; // Need a temporary local variable, since anonymous functions can't write directly to ref/out arguments.
-
-			List<string> optimize = null;
-
-			options.Add ("h|?|help", "Displays the help.", v => a = Action.Help);
-			options.Add ("f|force", "Forces the recompilation of code, regardless of timestamps.", v => Force = true);
-			options.Add ("version", "Output version information and exit.", v => a = Action.Version);
 			options.Add ("v|verbose", "Specify how verbose the output should be. This can be passed multiple times to increase the verbosity.", v => Verbosity++);
 			options.Add ("q|quiet", "Specify how quiet the output should be. This can be passed multiple times to increase the silence.", v => Verbosity--);
 			options.Add ("reference=", "Add an assembly to be processed.", v => app.References.Add (v));
@@ -80,32 +49,23 @@ namespace Xamarin.Bundler {
 					throw ErrorHelper.CreateError (26, ex, Errors.MX0026, $"sdk:{v}", ex.Message);
 				}
 			});
-			options.Add ("target-framework=", "Specify target framework to use. Currently supported: '" + string.Join ("', '", TargetFramework.ValidFrameworks.Select ((v) => v.ToString ())) + "'.", v => SetTargetFramework (v));
+			options.Add ("target-framework=", "Specify target framework to use. Currently supported: '" + string.Join ("', '", TargetFramework.ValidFrameworks.Select ((v) => v.ToString ())) + "'.", v => {
+				targetFramework = TargetFramework.Parse (v);
+			});
 			options.Add ("abi=", "Comma-separated list of ABIs to target.", v => app.ParseAbi (v));
-			options.Add ("root-assembly=", "Specifies any root assemblies. There must be at least one root assembly, usually the main executable.", (v) => {
-				app.RootAssemblies.Add (v);
-			});
-			options.Add ("registrar:", "Specify the registrar to use (dynamic, static or default (dynamic in the simulator, static on device)).", v => {
-				app.ParseRegistrar (v);
-			});
 			options.Add ("runregistrar:", "Runs the registrar on the input assembly and outputs a corresponding native library.",
 				v => {
-					a = Action.RunRegistrar;
 					app.RegistrarOutputLibrary = v;
-				},
-				true /* this is an internal option */
+				}
 			);
 			options.Add ("xamarin-runtime=", "Which runtime to use (MonoVM or CoreCLR).", v => {
 				if (!Enum.TryParse<XamarinRuntime> (v, out var rv))
 					throw new InvalidOperationException ($"Invalid XamarinRuntime '{v}'");
 				app.XamarinRuntime = rv;
-			}, true /* hidden - this is only for build-time --runregistrar support */);
+			});
 			options.Add ("rid=", "The runtime identifier we're building for", v => {
 				app.RuntimeIdentifier = v;
-			}, true /* hidden - this is only for build-time --runregistrar support */);
-
-			// Keep the ResponseFileSource option at the end.
-			options.Add (new Mono.Options.ResponseFileSource ());
+			});
 
 			try {
 				app.RootAssemblies.AddRange (options.Parse (args));
@@ -114,44 +74,8 @@ namespace Xamarin.Bundler {
 			} catch (Exception e) {
 				throw ErrorHelper.CreateError (10, e, Errors.MX0010, e);
 			}
-
-			if (a != Action.None)
-				action = a;
-
-			if (action == Action.Help || args.Length == 0) {
-				ShowHelp (options);
-				return true;
-			} else if (action == Action.Version) {
-				Console.WriteLine (NAME + " {0}.{1}", Constants.Version, Constants.Revision);
-				return true;
-			}
-
-			LogArguments (args);
-
-			var validateFramework = true;
-			if (validateFramework)
-				ValidateTargetFramework ();
-
-			if (optimize is not null) {
-				// This must happen after the call to ValidateTargetFramework, so that app.Platform is correct.
-				var messages = new List<ProductException> ();
-				foreach (var opt in optimize)
-					app.Optimizations.Parse (app.Platform, opt, messages);
-				ErrorHelper.Show (messages);
-			}
-
-			return false;
 		}
-#endif // !NET
-
-#if !NET && !LEGACY_TOOLS
-		static int Jobs;
-		public static int Concurrency {
-			get {
-				return Jobs == 0 ? Environment.ProcessorCount : Jobs;
-			}
-		}
-#endif
+#endif // !LEGACY_TOOLS
 
 		public static int Verbosity {
 			get { return ErrorHelper.Verbosity; }
@@ -204,10 +128,6 @@ namespace Xamarin.Bundler {
 				Console.WriteLine (format);
 		}
 
-		public static bool IsDotNet {
-			get { return TargetFramework.IsDotNet; }
-		}
-
 		static TargetFramework targetFramework;
 
 		public static TargetFramework TargetFramework {
@@ -215,52 +135,6 @@ namespace Xamarin.Bundler {
 			set { targetFramework = value; }
 		}
 
-		// We need to delay validating the target framework until we've parsed all the command line arguments,
-		// so first store it here, and then we call ValidateTargetFramework when we're done parsing the command
-		// line arguments.
-		static string target_framework;
-		static void SetTargetFramework (string value)
-		{
-			target_framework = value;
-		}
-
-		static void ValidateTargetFramework ()
-		{
-			if (string.IsNullOrEmpty (target_framework))
-				throw ErrorHelper.CreateError (86, Errors.MX0086 /* A target framework (--target-framework) must be specified */);
-
-			var fx = target_framework;
-			TargetFramework parsedFramework;
-			if (!TargetFramework.TryParse (fx, out parsedFramework))
-				throw ErrorHelper.CreateError (68, Errors.MX0068, fx);
-
-			targetFramework = parsedFramework;
-
-			bool show_0090 = false;
-#if MONOMAC
-			if (!TargetFramework.IsValidFramework (targetFramework)) {
-				// For historic reasons this is messy.
-				// If the TargetFramework we got isn't any of the one we accept, we have to do some fudging.
-				bool force45From40UnifiedSystemFull = false;
-
-				// Detect Classic usage, and show an error.
-				if (App.References.Any ((v) => Path.GetFileName (v) == "XamMac.dll"))
-					throw ErrorHelper.CreateError (143, Errors.MM0143 /* Projects using the Classic API are not supported anymore. Please migrate the project to the Unified API. */);
-
-				show_0090 = true;
-			}
-#endif
-
-			// Verify that our TargetFramework is our limited list of valid target frameworks.
-			if (!TargetFramework.IsValidFramework (TargetFramework))
-				throw ErrorHelper.CreateError (70, Errors.MX0070, fx, "'" + string.Join ("', '", TargetFramework.ValidFrameworks.Select ((v) => v.ToString ()).ToArray ()) + "'");
-
-			// Only show the warning if no errors were shown.
-			if (show_0090)
-				ErrorHelper.Warning (90, Errors.MX0090, /* The target framework '{0}' is deprecated. Use '{1}' instead. */ fx, TargetFramework);
-		}
-
-#if !MMP_TEST
 		static void FileMove (string source, string target)
 		{
 			File.Delete (target);
@@ -335,8 +209,6 @@ namespace Xamarin.Bundler {
 				File.Delete (tmp);
 			}
 		}
-#endif
-
 
 		internal static string GetFullPath ()
 		{
@@ -386,28 +258,6 @@ namespace Xamarin.Bundler {
 				}
 			} catch (Exception e) {
 				ErrorHelper.Warning (124, e, Errors.MT0124, lang, lang_variable, e.Message);
-			}
-		}
-
-		static void LogArguments (string [] arguments)
-		{
-			if (Verbosity < 1)
-				return;
-			if (!arguments.Any ((v) => v.Length > 0 && v [0] == '@'))
-				return; // no need to print arguments unless we get response files
-			LogArguments (arguments, 1);
-		}
-
-		static void LogArguments (string [] arguments, int indentation)
-		{
-			Log ("Provided arguments:");
-			var indent = new string (' ', indentation * 4);
-			foreach (var arg in arguments) {
-				Log (indent + StringUtils.Quote (arg));
-				if (arg.Length > 0 && arg [0] == '@') {
-					var fn = arg.Substring (1);
-					LogArguments (File.ReadAllLines (fn), indentation + 1);
-				}
 			}
 		}
 
@@ -504,176 +354,17 @@ namespace Xamarin.Bundler {
 			return Path.Combine (PlatformsDirectory, GetPlatform (app) + ".platform");
 		}
 
-		static string local_build;
-		public static string WalkUpDirHierarchyLookingForLocalBuild (Application app)
-		{
-			if (local_build is null) {
-				var localPath = Path.GetDirectoryName (GetFullPath ());
-				while (localPath.Length > 1) {
-					if (File.Exists (Path.Combine (localPath, "Make.config"))) {
-						local_build = Path.Combine (localPath, app.LocalBuildDir, "Library", "Frameworks", app.ProductName + ".framework", "Versions", "Current");
-						return local_build;
-					}
-
-					localPath = Path.GetDirectoryName (localPath);
-				}
-			}
-			return local_build;
-		}
-
-		// This is the 'Current' directory of the installed framework
-		// For XI/XM installed from package it's /Library/Frameworks/Xamarin.iOS.framework/Versions/Current or /Library/Frameworks/Xamarin.Mac.framework/Versions/Current
 		static string framework_dir;
 		public static string GetFrameworkCurrentDirectory (Application app)
 		{
-			if (framework_dir is null) {
-				var env_framework_dir = Environment.GetEnvironmentVariable (app.FrameworkLocationVariable);
-				if (!string.IsNullOrEmpty (env_framework_dir)) {
-					framework_dir = env_framework_dir;
-				} else {
-#if DEBUG
-					// when launched from Visual Studio, the executable is not in the final install location,
-					// so walk the directory hierarchy to find the root source directory.
-					framework_dir = WalkUpDirHierarchyLookingForLocalBuild (app);
-#else
-					framework_dir = Path.GetDirectoryName (Path.GetDirectoryName (Path.GetDirectoryName (GetFullPath ())));
-#endif
-				}
-				framework_dir = Target.GetRealPath (framework_dir);
-			}
+			if (framework_dir is null)
+				throw new InvalidOperationException ($"Teh current framework directory hasn't been set.");
 			return framework_dir;
 		}
 
 		public static void SetFrameworkCurrentDirectory (string value)
 		{
 			framework_dir = value;
-		}
-
-		// This is the 'Current/bin' directory of the installed framework
-		// For XI/XM installed from package it's one of these two:
-		//    /Library/Frameworks/Xamarin.iOS.framework/Versions/Current/bin
-		//    /Library/Frameworks/Xamarin.Mac.framework/Versions/Current/bin
-		public static string GetFrameworkBinDirectory (Application app)
-		{
-			return Path.Combine (GetFrameworkCurrentDirectory (app), "bin");
-		}
-
-		// This is the 'Current/lib' directory of the installed framework
-		// For XI/XM installed from package it's one of these two:
-		//    /Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib
-		//    /Library/Frameworks/Xamarin.Mac.framework/Versions/Current/lib
-		public static string GetFrameworkLibDirectory (Application app)
-		{
-			return Path.Combine (GetFrameworkCurrentDirectory (app), "lib");
-		}
-
-		// This is the directory where the libxamarin*.[a|dylib] and libxammac*.[a|dylib] libraries are
-		public static string GetXamarinLibraryDirectory (Application app)
-		{
-			return GetProductSdkLibDirectory (app);
-		}
-
-		// This is the directory where the Xamarin[-debug].framework frameworks are
-		public static string GetXamarinFrameworkDirectory (Application app)
-		{
-			return GetProductFrameworksDirectory (app);
-		}
-
-		public static string GetProductFrameworksDirectory (Application app)
-		{
-			return Path.Combine (GetProductSdkDirectory (app), "Frameworks");
-		}
-
-		// This is the directory where the platform assembly (Xamarin.*.dll) can be found
-		public static string GetPlatformFrameworkDirectory (Application app)
-		{
-			switch (app.Platform) {
-			case ApplePlatform.iOS:
-				return Path.Combine (GetFrameworkLibDirectory (app), "mono", "Xamarin.iOS");
-			case ApplePlatform.TVOS:
-				return Path.Combine (GetFrameworkLibDirectory (app), "mono", "Xamarin.TVOS");
-			case ApplePlatform.MacCatalyst:
-				return Path.Combine (GetFrameworkLibDirectory (app), "mono", "Xamarin.MacCatalyst");
-			case ApplePlatform.MacOSX:
-#if MMP
-				if (IsUnifiedMobile)
-					return Path.Combine (GetFrameworkLibDirectory (app), "mono", "Xamarin.Mac");
-				return Path.Combine (GetFrameworkLibDirectory (app), "mono", "4.5");
-#endif
-			default:
-				throw ErrorHelper.CreateError (71, Errors.MX0071, app.Platform, app.ProductName);
-			}
-		}
-
-		// This is the directory that contains the native libraries (libmono*.[a|dylib]) that come from mono.
-		// For Xamarin.Mac it can be:
-		// * /Library/Frameworks/Mono.framework/Versions/Current/lib/ (when using system mono)
-		// * /Library/Frameworks/Xamarin.Mac.framework/Versions/Current/SDKs/*.sdk/lib
-		// For Xamarin.iOS it can be:
-		// * /Library/Frameworks/Xamarin.iOS.framework/Versions/Current/SDKs/*.sdk/lib
-		static string mono_lib_directory;
-		public static string GetMonoLibraryDirectory (Application app)
-		{
-			if (mono_lib_directory is null) {
-#if MMP
-				mono_lib_directory = GetProductSdkLibDirectory (app);
-#else
-				mono_lib_directory = GetProductSdkLibDirectory (app);
-#endif
-			}
-			return mono_lib_directory;
-		}
-
-		// /Library/Frameworks/Xamarin.*.framework/Versions/Current/SDKs/*.sdk/Frameworks
-		public static string GetMonoFrameworksDirectory (Application app)
-		{
-#if MMP
-			if (IsUnifiedFullSystemFramework)
-				throw ErrorHelper.CreateError (99, Errors.MX0099, "Calling 'GetMonoFrameworksDirectory' is not allowed when targetting the full system framework.");
-#endif
-			return Path.Combine (GetProductSdkDirectory (app), "Frameworks");
-		}
-
-		// /Library/Frameworks/Xamarin.*.framework/Versions/Current/SDKs/*.sdk/lib
-		public static string GetProductSdkLibDirectory (Application app)
-		{
-			return Path.Combine (GetProductSdkDirectory (app), "lib");
-		}
-
-		// /Library/Frameworks/Xamarin.*.framework/Versions/Current/SDKs/*.sdk/include
-		public static string GetProductSdkIncludeDirectory (Application app)
-		{
-			return Path.Combine (GetProductSdkDirectory (app), "include");
-		}
-
-		// /Library/Frameworks/Xamarin.*.framework/Versions/Current/SDKs/*.sdk/Frameworks
-		public static string GetProductSdkFrameworksDirectory (Application app)
-		{
-			return Path.Combine (GetProductSdkDirectory (app), "Frameworks");
-		}
-
-		// /Library/Frameworks/Xamarin.*.framework/Versions/Current/SDKs/*.sdk
-		public static string GetProductSdkDirectory (Application app)
-		{
-			var sdksDir = Path.Combine (GetFrameworkCurrentDirectory (app), "SDKs");
-			string sdkName;
-			switch (app.Platform) {
-			case ApplePlatform.iOS:
-				sdkName = app.IsDeviceBuild ? "MonoTouch.iphoneos.sdk" : "MonoTouch.iphonesimulator.sdk";
-				break;
-			case ApplePlatform.TVOS:
-				sdkName = app.IsDeviceBuild ? "Xamarin.AppleTVOS.sdk" : "Xamarin.AppleTVSimulator.sdk";
-				break;
-			case ApplePlatform.MacOSX:
-				sdkName = "Xamarin.macOS.sdk";
-				break;
-			case ApplePlatform.MacCatalyst:
-				sdkName = "Xamarin.MacCatalyst.sdk";
-				break;
-			default:
-				throw ErrorHelper.CreateError (71, Errors.MX0071, app.Platform, app.ProductName);
-			}
-			return Path.Combine (sdksDir, sdkName);
 		}
 
 		// This returns the platform to use in /Applications/Xcode*.app/Contents/Developer/Platforms/*.platform
@@ -704,13 +395,13 @@ namespace Xamarin.Bundler {
 		{
 			switch (app.Platform) {
 			case ApplePlatform.iOS:
-				return IsDotNet ? "Microsoft.iOS" : "Xamarin.iOS";
+				return "Microsoft.iOS";
 			case ApplePlatform.TVOS:
-				return IsDotNet ? "Microsoft.tvOS" : "Xamarin.TVOS";
+				return "Microsoft.tvOS";
 			case ApplePlatform.MacOSX:
-				return IsDotNet ? "Microsoft.macOS" : "Xamarin.Mac";
+				return "Microsoft.macOS";
 			case ApplePlatform.MacCatalyst:
-				return IsDotNet ? "Microsoft.MacCatalyst" : "Xamarin.MacCatalyst";
+				return "Microsoft.MacCatalyst";
 			default:
 				throw ErrorHelper.CreateError (71, Errors.MX0071, app.Platform, app.ProductName);
 			}
@@ -769,14 +460,6 @@ namespace Xamarin.Bundler {
 				xcode_product_version = plist.GetString ("ProductBuildVersion");
 			} else {
 				throw ErrorHelper.CreateError (58, Errors.MT0058, Path.GetDirectoryName (Path.GetDirectoryName (DeveloperDirectory)), plist_path);
-			}
-
-			if (!accept_any_xcode_version) {
-				if (min_xcode_version is not null && XcodeVersion < min_xcode_version)
-					throw ErrorHelper.CreateError (51, Errors.MT0051, app.ProductConstants.Version, XcodeVersion.ToString (), sdk_root, app.ProductName, min_xcode_version);
-
-				if (XcodeVersion < SdkVersions.XcodeVersion)
-					ErrorHelper.Warning (79, Errors.MT0079, app.ProductConstants.Version, XcodeVersion.ToString (), sdk_root, SdkVersions.Xcode, app.ProductName);
 			}
 
 			Driver.Log (1, "Using Xcode {0} ({2}) found in {1}", XcodeVersion, sdk_root, XcodeProductVersion);
@@ -1018,9 +701,7 @@ namespace Xamarin.Bundler {
 
 		public static string CorlibName {
 			get {
-				if (IsDotNet)
-					return "System.Private.CoreLib";
-				return "mscorlib";
+				return "System.Private.CoreLib";
 			}
 		}
 

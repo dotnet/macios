@@ -362,7 +362,7 @@ namespace Xamarin.MacDev.Tasks {
 			var environment = new Dictionary<string, string?> () {
 				{ "CODESIGN_ALLOCATE", GetCodesignAllocate (item) },
 			};
-			var rv = ExecuteAsync (fileName, arguments, null, environment).Result;
+			var rv = ExecuteAsync (fileName, arguments, environment).Result;
 			var exitCode = rv.ExitCode;
 			var messages = rv.Output.StandardOutput;
 

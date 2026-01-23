@@ -111,7 +111,7 @@ namespace Xamarin.MacDev.Tasks {
 				var tmpfile = Path.GetTempFileName ();
 				try {
 					var output = new StringBuilder ();
-					var result = ExecuteAsync (MlaunchPath, new string [] { "--listsim", tmpfile }, GetSdkDevPath ()).Result;
+					var result = ExecuteAsync (MlaunchPath, new string [] { "--listsim", tmpfile }).Result;
 					if (result.ExitCode != 0)
 						return string.Empty;
 					simulator_list = File.ReadAllText (tmpfile);
@@ -129,7 +129,7 @@ namespace Xamarin.MacDev.Tasks {
 				var tmpfile = Path.GetTempFileName ();
 				try {
 					var output = new StringBuilder ();
-					var result = ExecuteAsync (MlaunchPath, new string [] { $"--listdev:{tmpfile}", "--output-format:xml", "--use-amdevice:false" }, GetSdkDevPath ()).Result;
+					var result = ExecuteAsync (MlaunchPath, new string [] { $"--listdev:{tmpfile}", "--output-format:xml", "--use-amdevice:false" }).Result;
 					if (result.ExitCode != 0)
 						return string.Empty;
 					device_list = File.ReadAllText (tmpfile);

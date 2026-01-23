@@ -89,7 +89,7 @@ namespace Xamarin.MacDev.Tasks {
 			ForEach (listOfArguments, (arg) => {
 				var args = arg.Arguments;
 				var executable = GetExecutable (args, "pngcrush", PngCrushPath);
-				ExecuteAsync (Log, executable, args, sdkDevPath: GetSdkDevPath (), showErrorIfFailure: false /* we show our own error below */, cancellationToken: cancellationTokenSource.Token)
+				ExecuteAsync (executable, args, showErrorIfFailure: false /* we show our own error below */, cancellationToken: cancellationTokenSource.Token)
 					.ContinueWith ((v) => {
 						Execution execution = v.Result;
 						if (execution.ExitCode != 0)

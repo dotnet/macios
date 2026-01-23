@@ -83,8 +83,7 @@ namespace Xamarin.MacDev.Tasks {
 			args.Add ($"--resources-folder-path={AppBundleName}");
 
 			var executable = GetExecutable (args, ToolName, CopySceneKitAssetsPath);
-
-			return ExecuteAsync (executable, args, sdkDevPath: GetSdkDevPath (), environment: environment, showErrorIfFailure: true);
+			return ExecuteAsync (executable, args, environment: environment, showErrorIfFailure: true);
 		}
 
 		static bool TryGetScnAssetsPath (string file, out string scnassets)

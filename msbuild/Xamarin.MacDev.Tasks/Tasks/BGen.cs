@@ -286,7 +286,7 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 
 			cancellationTokenSource = new CancellationTokenSource ();
-			ExecuteAsync (Log, executable, args, environment: env, cancellationToken: cancellationTokenSource.Token).Wait ();
+			ExecuteAsync (executable, args, environment: env, cancellationToken: cancellationTokenSource.Token).Wait ();
 			return !Log.HasLoggedErrors;
 		}
 

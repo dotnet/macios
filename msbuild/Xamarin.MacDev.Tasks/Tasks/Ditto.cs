@@ -103,7 +103,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			cancellationTokenSource = new CancellationTokenSource ();
-			ExecuteAsync (Log, executable, args, cancellationToken: cancellationTokenSource.Token).Wait ();
+			ExecuteAsync (executable, args, cancellationToken: cancellationTokenSource.Token).Wait ();
 
 			// Create a list of all the files we've copied
 			if (CreateOutputFiles) {

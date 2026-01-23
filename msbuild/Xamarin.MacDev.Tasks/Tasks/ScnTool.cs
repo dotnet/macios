@@ -88,7 +88,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			ForEach (listOfArguments, (arg) => {
-				ExecuteAsync ("xcrun", arg.Arguments, sdkDevPath: GetSdkDevPath ()).Wait ();
+				ExecuteAsync ("xcrun", arg.Arguments).Wait ();
 			});
 
 			BundleResources = bundleResources.ToArray ();

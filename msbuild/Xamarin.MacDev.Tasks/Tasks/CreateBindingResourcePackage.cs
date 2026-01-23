@@ -36,13 +36,12 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				var success = ExecuteRemotely (out var taskRunner);
-
-				if (success) {
+				if (ExecuteRemotely (out var taskRunner)) {
 					TransferBindingResourcePackagesToWindowsAsync (taskRunner).Wait ();
+					return true;
 				}
 
-				return success;
+				return false;
 			}
 
 			if (NativeReferences.Length == 0) {
@@ -88,7 +87,7 @@ namespace Xamarin.MacDev.Tasks {
 				Log.LogMessage (MSBStrings.M0121, zipFile);
 				if (File.Exists (zipFile))
 					File.Delete (zipFile);
-				Directory.CreateDirectory (Path.GetDirectoryName (zipFile));
+				Directory.CreateDirectory (Path.GetDirectoryName (zipFile)!);
 
 				var filesToZip = NativeReferences
 									// Canonicalize directory separators to the current platform

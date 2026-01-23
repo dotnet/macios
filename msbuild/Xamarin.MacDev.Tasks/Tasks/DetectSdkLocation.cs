@@ -30,9 +30,10 @@ namespace Xamarin.MacDev.Tasks {
 		} = "";
 
 		[Output]
-		public string SdkDevPath {
-			get; set;
-		} = "";
+		public new string SdkDevPath {
+			get => base.SdkDevPath;
+			set => base.SdkDevPath = value;
+		}
 
 		[Output]
 		public string SdkPlatform {
@@ -107,7 +108,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 				Log.LogWarning (MSBStrings.E0173 /* The {0} SDK version '{1}' is not installed. Using newer version '{2}' instead'. */, PlatformName, requestedSdkVersion, sdkVersion);
 			}
-			SdkVersion = sdkVersion.ToString ();
+			SdkVersion = sdkVersion.ToString () ?? "";
 
 			SdkRoot = currentSdk.GetSdkPath (SdkVersion, SdkIsSimulator);
 			if (string.IsNullOrEmpty (SdkRoot))

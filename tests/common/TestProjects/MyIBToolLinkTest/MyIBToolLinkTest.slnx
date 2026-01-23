@@ -1,0 +1,10 @@
+<Solution>
+  <Configurations>
+    <Platform Name="iPhone" />
+    <Platform Name="iPhoneSimulator" />
+  </Configurations>
+  <Project Path="MyIBToolLinkTest.csproj">
+    <Platform Solution="*|iPhone" Project="iPhone" />
+    <Platform Solution="*|iPhoneSimulator" Project="iPhoneSimulator" />
+  </Project>
+</Solution>

@@ -8,55 +8,19 @@
 //   Sebastien Pouliot
 //
 
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Threading;
-
 using Mono.Options;
-
-using ObjCRuntime;
-
-using Xamarin.Utils;
-
-public enum OutputFormat {
-	Default,
-	Xml,
-}
 
 namespace Xamarin.Bundler {
 	public partial class Driver {
 		internal const string NAME = "mtouch";
 
-		public static void ShowHelp (OptionSet os)
-		{
-			Console.WriteLine ("mtouch - Mono Compiler for iOS");
-			Console.WriteLine ("Copyright 2009-2011, Novell, Inc.");
-			Console.WriteLine ("Copyright 2011-2016, Xamarin Inc.");
-			Console.WriteLine ("Usage is: mtouch [options]");
-
-			os.WriteOptionDescriptions (Console.Out);
-		}
-
-		enum Action {
-			None,
-			Help,
-			Version,
-			RunRegistrar,
-		}
-
 		static int Main2 (string [] args)
 		{
-			var action = Action.None;
-			var app = new Application (args);
+			var app = new Application ();
 			var os = new OptionSet ();
-			if (ParseOptions (app, os, args, ref action))
-				return 0;
+			ParseOptions (app, os, args);
 
 			ValidateXcode (app, false, false);
-
-			if (action != Action.RunRegistrar)
-				throw ErrorHelper.CreateError (99, Errors.MX0099, "Only --runregistrar is supported.");
 
 			app.InitializeCommon ();
 			app.RunRegistrar ();

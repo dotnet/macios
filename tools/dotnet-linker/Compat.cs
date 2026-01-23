@@ -21,6 +21,7 @@ namespace Xamarin.Bundler {
 		public string? RuntimeConfigurationFile { get; set; }
 
 		public Application (LinkerConfiguration configuration)
+			: this ()
 		{
 			this.configuration = configuration;
 		}
@@ -44,8 +45,6 @@ namespace Xamarin.Bundler {
 
 		public void Initialize ()
 		{
-			// mSYM support is not implemented in the runtime on .NET 6 afaik
-			EnableMSym = false;
 		}
 
 		public bool HasAnyDynamicLibraries {

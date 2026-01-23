@@ -27,9 +27,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string ResourcePrefix { get; set; } = string.Empty;
 
-		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
 		public string ToolExe {
 			get { return toolExe ?? ToolName; }
 			set { toolExe = value; }
@@ -51,15 +48,15 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		protected string DeveloperRootBinDir {
-			get { return Path.Combine (SdkDevPath, "usr", "bin"); }
+			get { return Path.Combine (GetSdkDevPath (), "usr", "bin"); }
 		}
 
 		protected string DevicePlatformBinDir {
-			get { return Path.Combine (SdkDevPath, "Platforms", "iPhoneOS.platform", "Developer", "usr", "bin"); }
+			get { return Path.Combine (GetSdkDevPath (), "Platforms", "iPhoneOS.platform", "Developer", "usr", "bin"); }
 		}
 
 		protected string SimulatorPlatformBinDir {
-			get { return Path.Combine (SdkDevPath, "Platforms", "iPhoneSimulator.platform", "Developer", "usr", "bin"); }
+			get { return Path.Combine (GetSdkDevPath (), "Platforms", "iPhoneSimulator.platform", "Developer", "usr", "bin"); }
 		}
 
 		protected abstract string ToolName { get; }
@@ -132,7 +129,7 @@ namespace Xamarin.MacDev.Tasks {
 				output.SetMetadata ("LogicalName", relative);
 
 				if (NeedsBuilding (input, output)) {
-					Directory.CreateDirectory (Path.GetDirectoryName (output.ItemSpec));
+					Directory.CreateDirectory (Path.GetDirectoryName (output.ItemSpec)!);
 
 					if (ExecuteTool (input, output) == -1)
 						return false;

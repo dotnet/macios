@@ -17,11 +17,11 @@ namespace Xamarin.MacDev.Tasks {
 			task.Property = property;
 
 			if (expected is null) {
-				Assert.IsFalse (task.Execute (), "Task was expected to fail.");
+				ExecuteTask (task, 1);
 				return;
 			}
 
-			Assert.IsTrue (task.Execute (), "Task was expected to execute successfully.");
+			ExecuteTask (task);
 
 			Assert.AreEqual (expected, task.Value, "Task produced the incorrect plist output.");
 		}

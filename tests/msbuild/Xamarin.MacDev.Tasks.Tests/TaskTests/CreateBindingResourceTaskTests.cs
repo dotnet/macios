@@ -26,7 +26,7 @@ namespace Xamarin.MacDev.Tasks {
 			var currentDir = Environment.CurrentDirectory;
 			try {
 				Environment.CurrentDirectory = tmpdir;
-				Assert.IsTrue (task.Execute (), "Execute");
+				ExecuteTask (task);
 			} finally {
 				Environment.CurrentDirectory = currentDir;
 			}

@@ -72,7 +72,7 @@ namespace Xamarin.Bundler {
 				return assembly;
 
 			try {
-				fileName = Target.GetRealPath (fileName);
+				fileName = Application.GetRealPath (fileName);
 
 				// Check the architecture-specific directory
 				if (Path.GetDirectoryName (fileName) == FrameworkDirectory && !string.IsNullOrEmpty (ArchDirectory)) {

@@ -16,7 +16,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<DetectSdkLocations> ();
 			task.XamarinSdkRoot = "XYZ";
 			task.TargetFrameworkMoniker = TargetFramework.DotNet_iOS_String;
-			task.Execute ();
+			ExecuteTask (task, 1);
 
 			Assert.AreEqual ("XYZ", task.XamarinSdkRoot, "#1");
 		}

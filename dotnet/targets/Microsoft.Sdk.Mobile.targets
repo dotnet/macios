@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<!-- Install & Run -->
+
+	<PropertyGroup>
+		<!-- We used to use '_MlaunchPath' as the property name, but we've made it public, so it's MlaunchPath now, but keep setting/supporting the underscored version for a while -->
+		<MlaunchPath Condition="'$(MlaunchPath)' == '' And '$(_MlaunchPath)' != ''">$(_MlaunchPath)</MlaunchPath>
+		<MlaunchPath Condition="'$(MlaunchPath)' == ''">$(_XamarinSdkRootDirectory)tools\bin\mlaunch</MlaunchPath>
+		<_MlaunchPath Condition="'$(_MlaunchPath)' == ''">$(MlaunchPath)</_MlaunchPath>
+		<!-- this is the path to mlaunch relative to the root of the .NET installation -->
+		<!-- We used to use '_RelativeMlaunchPath' as the property name, but we've made it public, so it's RelativeMlaunchPath now, but keep setting/supporting the underscored version for a while -->
+		<RelativeMlaunchPath Condition="'$(RelativeMlaunchPath)' == '' And '$(_RelativeMlaunchPath)' != ''">$(_RelativeMlaunchPath)</RelativeMlaunchPath>
+		<RelativeMlaunchPath Condition="'$(RelativeMlaunchPath)' == ''">$(XamarinRelativeSdkRootDirectory)tools\bin\mlaunch</RelativeMlaunchPath>
+		<_RelativeMlaunchPath Condition="'$(_RelativeMlaunchPath)' == ''">$(RelativeMlaunchPath)</_RelativeMlaunchPath>
+
+		<!-- Try to keep _DeviceName working for a while yet -->
+		<Device Condition="'$(Device)' == ''">$(_DeviceName)</Device>
+	</PropertyGroup>
+
+	<Target
+		Name="ShowRunHelp"
+		DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest">
+		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
+		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before showing how to launch it." />
+
+		<GetMlaunchArguments
+			AppManifestPath="$(_AppBundleManifestPath)"
+			Help="true"
+			MlaunchPath="$(MlaunchPath)"
+			SdkDevPath="$(_SdkDevPath)"
+			SdkIsSimulator="$(_SdkIsSimulator)"
+			SdkVersion="$(_SdkVersion)"
+			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		>
+		</GetMlaunchArguments>
+
+		<!-- If invoked from 'dotnet run', don't actually run anything -->
+		<PropertyGroup>
+			<RunCommand>true</RunCommand>
+			<RunArguments />
+		</PropertyGroup>
+	</Target>
+	<Target Name="_ShowRunHelpConditioned" Condition="'$(Help)' == 'true'" DependsOnTargets="ShowRunHelp" />
+
+	<Target Name="ComputeMlaunchInstallArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;_ShowRunHelpConditioned;_ComputeMlaunchInstallArguments" />
+	<Target Name="_ComputeMlaunchInstallArguments" Condition="'$(_SdkIsSimulator)' == 'false' And '$(Help)' != 'true'">
+		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
+		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
+		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before the arguments to launch the app using mlaunch can be computed." />
+
+		<GetMlaunchArguments
+			SessionId="$(BuildSessionId)"
+			AppManifestPath="$(_AppBundleManifestPath)"
+			DeviceName="$(Device)"
+			InstallApp="$(_AppBundlePath)"
+			MlaunchPath="$(MlaunchPath)"
+			SdkDevPath="$(_SdkDevPath)"
+			SdkIsSimulator="$(_SdkIsSimulator)"
+			SdkVersion="$(_SdkVersion)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		>
+			<Output TaskParameter="MlaunchArguments" PropertyName="MlaunchInstallArguments" />
+		</GetMlaunchArguments>
+
+		<WriteLinesToFile
+			File="$(MlaunchInstallScript)"
+			Lines="$(MlaunchPath) $(MlaunchInstallArguments)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+			Condition="'$(MlaunchInstallScript)' != ''"
+			 />
+	</Target>
+
+	<Target Name="_InstallMobile" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;ComputeMlaunchInstallArguments" Condition="'$(_SdkIsSimulator)' == 'false'">
+		<Exec SessionId="$(BuildSessionId)" Command="'$(MlaunchPath)' $(MlaunchInstallArguments)" />
+	</Target>
+
+	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;_ShowRunHelpConditioned;_ComputeMlaunchRunArguments" Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'" />
+
+	<Target Name="_ComputeMlaunchRunArguments" Condition="'$(Help)' != 'true'">
+		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
+		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
+		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before the arguments to launch the app using mlaunch can be computed." />
+
+		<PropertyGroup>
+			<!-- capture output by default -->
+			<_MlaunchCaptureOutput Condition="'$(_MlaunchCaptureOutput)' == ''">true</_MlaunchCaptureOutput>
+			<!-- wait for exit by default -->
+			<_MlaunchWaitForExit Condition="'$(_MlaunchWaitForExit)' == ''">true</_MlaunchWaitForExit>
+			<!-- don't set standard output/error path, mlaunch will by default write to stdout/stderr -->
+		</PropertyGroup>
+		<ItemGroup>
+			<MlaunchEnvironmentVariables Include="__XAMARIN_DEBUG_MODE__=$(XamarinDebugMode)" Condition="'$(XamarinDebugMode)' != ''" />
+			<MlaunchEnvironmentVariables Include="__XAMARIN_DEBUG_PORT__=$(XamarinDebugPort)" Condition="'$(XamarinDebugPort)' != ''" />
+			<MlaunchEnvironmentVariables Include="__XAMARIN_DEBUG_HOSTS__=$(XamarinDebugHosts.Replace(';', '%3B'))" Condition="'$(XamarinDebugHosts)' != ''" />
+			<MlaunchEnvironmentVariables Include="__XAMARIN_DEBUG_CONNECT_TIMEOUT__=$(XamarinDebugConnectTimeout)" Condition="'$(XamarinDebugConnectTimeout)' != ''" />
+			<!-- It's not possible to set an item group from the command line, so add support for setting a property (with semi-colon separated items) that we'll include into the item group -->
+			<MlaunchAdditionalArguments Include="$(MlaunchAdditionalArgumentsProperty)" Condition="'$(MlaunchAdditionalArgumentsProperty)' != ''" />
+		</ItemGroup>
+		<GetMlaunchArguments
+			SessionId="$(BuildSessionId)"
+			AdditionalArguments="@(MlaunchAdditionalArguments)"
+			AppManifestPath="$(_AppBundleManifestPath)"
+			CaptureOutput="$(_MlaunchCaptureOutput)"
+			DeviceName="$(Device)"
+			EnvironmentVariables="@(MlaunchEnvironmentVariables)"
+			LaunchApp="$(_AppBundlePath)"
+			MlaunchPath="$(MlaunchPath)"
+			SdkIsSimulator="$(_SdkIsSimulator)"
+			SdkDevPath="$(_SdkDevPath)"
+			SdkVersion="$(_SdkVersion)"
+			StandardErrorPath="$(_MlaunchStandardErrorPath)"
+			StandardOutputPath="$(_MlaunchStandardOutputPath)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+			WaitForExit="$(_MlaunchWaitForExit)"
+		>
+			<Output TaskParameter="MlaunchArguments" PropertyName="MlaunchRunArguments" />
+		</GetMlaunchArguments>
+
+		<WriteLinesToFile
+			File="$(MlaunchRunScript)"
+			Lines="$(MlaunchPath) $(MlaunchRunArguments)"
+			Overwrite="true"
+			WriteOnlyWhenDifferent="true"
+			Condition="'$(MlaunchRunScript)' != ''"
+			 />
+
+		<PropertyGroup>
+			<RunCommand>$(MlaunchPath)</RunCommand>
+			<RunArguments>$(MlaunchRunArguments) -- </RunArguments>
+		</PropertyGroup>
+	</Target>
+
+	<!-- This is only needed for mobile platforms, RunCommand and RunArguments are defined for macOS in Microsoft.macOS.Sdk.targets. -->
+	<Target
+		Name="_PrepareRunMobile"
+		BeforeTargets="ComputeRunArguments"
+		DependsOnTargets="_InstallMobile;ComputeMlaunchRunArguments"
+		Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
+	</Target>
+
+	<!--
+	***********************************************************************************************
+	ComputeAvailableDevices
+
+	Target that queries available devices and simulators.
+	This target is called by 'dotnet run' to support device selection.
+	Returns @(Devices) items that always has these metadata: Description, Type, OSVersion, UDID, RuntimeIdentifier
+	(but others might be present too, for debug purposes, depending on whether it's a simulator or a device)
+
+	See: https://github.com/dotnet/sdk/blob/2b9fc02a265c735f2132e4e3626e94962e48bdf5/documentation/specs/dotnet-run-for-maui.md
+	***********************************************************************************************
+	-->
+	<Target Name="ComputeAvailableDevices"
+		DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;"
+		Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS'"
+		Returns="@(Devices)">
+		<PropertyGroup>
+			<_FilterDevicesToRuntimeIdentifier Condition="'$(_XamarinUsingDefaultRuntimeIdentifier)' != 'true'">$(RuntimeIdentifier)</_FilterDevicesToRuntimeIdentifier>
+		</PropertyGroup>
+		<GetAvailableDevices
+			Condition="'$(IsMacEnabled)' == 'true'"
+			SessionId="$(BuildSessionId)"
+			AppBundleManifestPath="$(_AppBundleManifestPath)"
+			RuntimeIdentifier="$(_FilterDevicesToRuntimeIdentifier)"
+			SdkDevPath="$(_SdkDevPath)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+			Verbose="$(Verbose)"
+		>
+			<Output TaskParameter="Devices" ItemName="Devices" />
+			<Output TaskParameter="DiscardedDevices" ItemName="DiscardedDevices" />
+		</GetAvailableDevices>
+	</Target>
+
+</Project>

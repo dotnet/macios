@@ -41,16 +41,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string SdkPlatform { get; set; } = string.Empty;
 
-		string? sdkDevPath;
-		public string SdkDevPath {
-#if NET
-			get { return string.IsNullOrEmpty (sdkDevPath) ? "/" : sdkDevPath; }
-#else
-			get { return (sdkDevPath is null || string.IsNullOrEmpty (sdkDevPath)) ? "/" : sdkDevPath; }
-#endif
-			set { sdkDevPath = value; }
-		}
-
 		[Required]
 		public string SdkVersion { get; set; } = string.Empty;
 
@@ -102,7 +92,7 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		protected string DeveloperRootBinDir {
-			get { return Path.Combine (SdkDevPath, "usr", "bin"); }
+			get { return Path.Combine (GetSdkDevPath (), "usr", "bin"); }
 		}
 
 		protected abstract string ToolName { get; }
@@ -180,9 +170,6 @@ namespace Xamarin.MacDev.Tasks {
 			var environment = new Dictionary<string, string?> ();
 			var args = new List<string> ();
 
-			if (!string.IsNullOrEmpty (SdkDevPath))
-				environment.Add ("DEVELOPER_DIR", SdkDevPath);
-
 			// workaround for ibtool[d] bug / asserts if Intel version is loaded
 			string tool;
 			if (IsTranslated ()) {
@@ -219,7 +206,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (Log.HasLoggedErrors)
 				return 1;
 
-			var rv = ExecuteAsync (tool, args, sdkDevPath, environment: environment).Result;
+			var rv = ExecuteAsync (tool, args, environment: environment).Result;
 			var exitCode = rv.ExitCode;
 			var messages = rv.Output.StandardOutput;
 			File.WriteAllText (manifest.ItemSpec, messages);
@@ -282,7 +269,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (plist.TryGetValue (string.Format ("com.apple.{0}.document.notices", ToolName), out dictionary)) {
 				foreach (var valuePair in dictionary) {
 					array = valuePair.Value as PArray;
-					foreach (var item in array.OfType<PDictionary> ()) {
+					foreach (var item in array?.OfType<PDictionary> () ?? Array.Empty<PDictionary> ()) {
 						if (item.TryGetValue ("message", out message))
 							Log.LogMessage (MessageImportance.Low, "{0} notice : {1}", ToolName, message.Value);
 					}
@@ -292,7 +279,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (plist.TryGetValue (string.Format ("com.apple.{0}.document.warnings", ToolName), out dictionary)) {
 				foreach (var valuePair in dictionary) {
 					array = valuePair.Value as PArray;
-					foreach (var item in array.OfType<PDictionary> ()) {
+					foreach (var item in array?.OfType<PDictionary> () ?? Array.Empty<PDictionary> ()) {
 						if (item.TryGetValue ("message", out message))
 							Log.LogWarning (ToolName, null, null, file.ItemSpec, 0, 0, 0, 0, "{0}", message.Value);
 					}
@@ -302,7 +289,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (plist.TryGetValue (string.Format ("com.apple.{0}.document.errors", ToolName), out dictionary)) {
 				foreach (var valuePair in dictionary) {
 					array = valuePair.Value as PArray;
-					foreach (var item in array.OfType<PDictionary> ()) {
+					foreach (var item in array?.OfType<PDictionary> () ?? Array.Empty<PDictionary> ()) {
 						if (item.TryGetValue ("message", out message))
 							Log.LogError (ToolName, null, null, file.ItemSpec, 0, 0, 0, 0, "{0}", message.Value);
 					}

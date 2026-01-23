@@ -15,9 +15,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public ITaskItem [] DynamicLibrary { get; set; } = [];
 
-		[Required]
-		public string SdkDevPath { get; set; } = "";
-
 		// This isn't consumed from the targets files, but it's needed for VSX to create corresponding
 		// files on Windows.
 		[Output]
@@ -40,7 +37,7 @@ namespace Xamarin.MacDev.Tasks {
 				var temporaryTarget = target + ".tmp";
 
 				// install_name_tool modifies the file in-place, so copy it first to a temporary file first.
-				Directory.CreateDirectory (Path.GetDirectoryName (temporaryTarget));
+				Directory.CreateDirectory (Path.GetDirectoryName (temporaryTarget)!);
 				File.Copy (src, temporaryTarget, true);
 
 				var arguments = new List<string> ();
@@ -50,7 +47,7 @@ namespace Xamarin.MacDev.Tasks {
 				arguments.Add (input.GetMetadata ("DynamicLibraryId"));
 				arguments.Add (temporaryTarget);
 
-				processes [i] = ExecuteAsync ("xcrun", arguments, sdkDevPath: SdkDevPath).ContinueWith ((v) => {
+				processes [i] = ExecuteAsync ("xcrun", arguments).ContinueWith ((v) => {
 					if (v.IsFaulted)
 						throw v.Exception;
 					if (v.Status == TaskStatus.RanToCompletion) {

@@ -62,7 +62,7 @@ namespace Xamarin.MacDev.Tasks {
 		/// This is the prefered way to run tasks as we want error messages to show up in the test results.</remarks>
 		/// <param name="task">An msbuild task.</param>
 		/// <param name="expectedErrorCount">Expected error count. 0 by default.</param>
-		public void ExecuteTask (Task task, int expectedErrorCount = 0)
+		public void ExecuteTask (Task task, int expectedErrorCount = 0, string message = "")
 		{
 			var rv = task.Execute ();
 			string messages = string.Empty;
@@ -71,9 +71,9 @@ namespace Xamarin.MacDev.Tasks {
 				messages = "\n\t" + string.Join ("\n\t", allEvents.Select ((v) => v.AsString ()).ToArray ());
 			}
 			if (expectedErrorCount != Engine.Logger.ErrorEvents.Count) {
-				Assert.AreEqual (expectedErrorCount, Engine.Logger.ErrorEvents.Count, "#RunTask-ErrorCount" + messages);
+				Assert.AreEqual (expectedErrorCount, Engine.Logger.ErrorEvents.Count, $"#RunTask-ErrorCount{(string.IsNullOrEmpty (message) ? "" : $" ({message})")}" + messages);
 			}
-			Assert.AreEqual (expectedErrorCount == 0, rv, "Failure" + messages);
+			Assert.AreEqual (expectedErrorCount == 0, rv, $"Failure{(string.IsNullOrEmpty (message) ? "" : $" ({message})")}" + messages);
 		}
 
 		protected string CreateTempFile (string path)

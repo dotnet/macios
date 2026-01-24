@@ -98,7 +98,7 @@ namespace Xamarin.Linker {
 			if (App.Registrar != RegistrarMode.ManagedStatic)
 				return;
 
-			Configuration.Target.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
+			Configuration.Application.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
 		}
 
 		protected override void TryEndProcess (out List<Exception>? exceptions)
@@ -858,7 +858,7 @@ namespace Xamarin.Linker {
 					return true;
 				}
 
-				GenericParameter? gp = elementType as GenericParameter;
+				var gp = elementType as GenericParameter;
 				if (gp is not null) {
 					if (!StaticRegistrar.VerifyIsConstrainedToNSObject (gp, out var constrained)) {
 						AddException (ErrorHelper.CreateError (99, "Incorrectly constrained generic parameter. Method: {0}", GetMethodSignatureWithSourceCode (method)));

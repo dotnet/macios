@@ -45,11 +45,12 @@ namespace Xamarin.MacDev.Tasks {
 				var document = XDocument.Load (stream);
 
 				var items = document.Root
-					.Elements (ItemGroupElementName)
-					.SelectMany (element => element.Elements ())
-					.Select (element => this.CreateItemFromElement (element, file.ItemSpec))
-					.ToList ();
-				result.AddRange (items);
+					?.Elements (ItemGroupElementName)
+					?.SelectMany (element => element.Elements ())
+					?.Select (element => this.CreateItemFromElement (element, file.ItemSpec))
+					?.ToList ();
+				if (items is not null)
+					result.AddRange (items);
 			}
 
 			if (Items is not null)
@@ -62,7 +63,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		ITaskItem CreateItemFromElement (XElement element, string sourceFile)
 		{
-			var item = new TaskItem (element.Attribute (IncludeAttributeName).Value);
+			var item = new TaskItem (element.Attribute (IncludeAttributeName)!.Value);
 
 			foreach (var metadata in element.Elements ()) {
 				item.SetMetadata (metadata.Name.LocalName, metadata.Value);

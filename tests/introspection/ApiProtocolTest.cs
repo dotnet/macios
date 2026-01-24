@@ -926,6 +926,13 @@ namespace Introspection {
 					return true;
 				}
 				break;
+			case "AVMetricEventStreamPublisher":
+				switch (type.Name) {
+				case "AVPlayerItem":
+					// AVPlayerItem started implementing AVMetricEventStreamPublisher in Xcode 16
+					return !TestRuntime.CheckXcodeVersion (16, 0);
+				}
+				break;
 			}
 			return false;
 		}

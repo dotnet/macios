@@ -258,7 +258,11 @@ namespace Xamarin.MacDev.Tasks {
 				}
 			}
 
+#if NET
 			if (string.IsNullOrEmpty (minimumOSVersionInManifest)) {
+#else
+			if (string.IsNullOrEmpty (minimumOSVersionInManifest) || minimumOSVersionInManifest is null) {
+#endif
 				// Nothing is specified in the Info.plist - use SupportedOSPlatformVersion, and if that's not set, then use the sdkVersion
 				if (!string.IsNullOrEmpty (convertedSupportedOSPlatformVersion)) {
 					minimumOSVersion = convertedSupportedOSPlatformVersion;
@@ -294,7 +298,7 @@ namespace Xamarin.MacDev.Tasks {
 			return true;
 		}
 
-		protected string? GetMinimumOSVersion (PDictionary plist, out Version version)
+		protected string? GetMinimumOSVersion (PDictionary plist, out Version? version)
 		{
 			var rv = plist.Get<PString> (PlatformFrameworkHelper.GetMinimumOSVersionKey (Platform))?.Value;
 			Version.TryParse (rv, out version);

@@ -214,7 +214,7 @@ namespace Xamarin.MacDev.Tasks {
 				args.Add ("--include-all-app-icons");
 
 			args.Add ("--output-partial-info-plist");
-			args.Add (Path.GetFullPath (partialAppManifestPath));
+			args.Add (Path.GetFullPath (partialAppManifestPath!));
 		}
 
 		IEnumerable<ITaskItem> GetCompiledBundleResources (PDictionary output, string intermediateBundleDir)
@@ -297,8 +297,8 @@ namespace Xamarin.MacDev.Tasks {
 					var catalogFullPath = imageAsset.GetMetadata ("FullPath");
 
 					// get the parent (which will typically be .appiconset, .launchimage, .imageset, .iconset, etc)
-					var catalog = Path.GetDirectoryName (vpath);
-					catalogFullPath = Path.GetDirectoryName (catalogFullPath);
+					var catalog = Path.GetDirectoryName (vpath)!;
+					catalogFullPath = Path.GetDirectoryName (catalogFullPath)!;
 
 					var assetType = Path.GetExtension (catalog).TrimStart ('.');
 
@@ -368,7 +368,7 @@ namespace Xamarin.MacDev.Tasks {
 						}
 
 						var dest = Path.Combine (intermediateCloneDir, vpath);
-						var dir = Path.GetDirectoryName (dest);
+						var dir = Path.GetDirectoryName (dest)!;
 
 						Directory.CreateDirectory (dir);
 
@@ -404,13 +404,13 @@ namespace Xamarin.MacDev.Tasks {
 
 				if (Platform == ApplePlatform.TVOS) {
 					if (assetType.Equals ("imagestack", StringComparison.OrdinalIgnoreCase)) {
-						imageStacksInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)));
+						imageStacksInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)!));
 					} else if (assetType.Equals ("brandassets", StringComparison.OrdinalIgnoreCase)) {
-						brandAssetsInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)));
+						brandAssetsInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)!));
 					}
 				} else {
 					if (assetType.Equals ("appiconset", StringComparison.OrdinalIgnoreCase))
-						appIconsInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)));
+						appIconsInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)!));
 				}
 
 				if (unique.Add (catalog)) {

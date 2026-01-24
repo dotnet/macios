@@ -17,12 +17,12 @@ namespace Xamarin.Linker {
 			// No attributes are currently linked away, which means we don't need to worry about linked away LinkWith attributes.
 			// Ref: https://github.com/mono/linker/issues/952 (still open as of this writing).
 			var exceptions = new List<Exception> ();
-			Configuration.Target.ExtractNativeLinkInfo (exceptions);
+			Configuration.Application.ExtractNativeLinkInfo (exceptions);
 			Report (exceptions);
 
 			// Tell MSBuild about the native libraries we found
 			var linkWith = new List<MSBuildItem> ();
-			foreach (var asm in Configuration.Target.Assemblies) {
+			foreach (var asm in Configuration.Application.Assemblies) {
 				foreach (var arg in asm.LinkWith) {
 					var item = new MSBuildItem (
 						arg,
@@ -39,7 +39,7 @@ namespace Xamarin.Linker {
 
 			// Tell MSBuild about the frameworks libraries we found
 			var frameworks = new List<MSBuildItem> ();
-			foreach (var asm in Configuration.Target.Assemblies) {
+			foreach (var asm in Configuration.Application.Assemblies) {
 				foreach (var fw in asm.Frameworks) {
 					var item = new MSBuildItem (
 						fw,
@@ -63,7 +63,7 @@ namespace Xamarin.Linker {
 			Configuration.WriteOutputForMSBuild ("_BindingLibraryFrameworks", frameworks);
 
 			var frameworksToPublish = new List<MSBuildItem> ();
-			foreach (var asm in Configuration.Target.Assemblies) {
+			foreach (var asm in Configuration.Application.Assemblies) {
 				var fwks = new HashSet<string> ();
 				fwks.UnionWith (asm.Frameworks);
 				fwks.UnionWith (asm.WeakFrameworks);
@@ -89,18 +89,12 @@ namespace Xamarin.Linker {
 			Configuration.WriteOutputForMSBuild ("_FrameworkToPublish", frameworksToPublish);
 
 			var dynamicLibraryToPublish = new List<MSBuildItem> ();
-			foreach (var asm in Configuration.Target.Assemblies) {
+			foreach (var asm in Configuration.Application.Assemblies) {
 				foreach (var arg in asm.LinkWith) {
 					if (!arg.EndsWith (".dylib", StringComparison.OrdinalIgnoreCase))
 						continue;
 
-					var item = new MSBuildItem (
-						arg,
-						new Dictionary<string, string> {
-							{ "RelativePath", Path.Combine (Configuration.RelativeAppBundlePath, Configuration.Application.RelativeDylibPublishPath, Path.GetFileName (arg)) },
-						}
-					);
-					dynamicLibraryToPublish.Add (item);
+					dynamicLibraryToPublish.Add (new MSBuildItem (arg));
 				}
 			}
 			Configuration.WriteOutputForMSBuild ("_DynamicLibraryToPublish", dynamicLibraryToPublish);

@@ -92,12 +92,13 @@ namespace Xamarin.MacDev.Tasks {
 
 		new bool ExecuteRemotely ()
 		{
-			var success = base.ExecuteRemotely (out var taskRunner);
+			if (base.ExecuteRemotely (out var taskRunner)) {
+				if (LinkWithAttributes is not null)
+					taskRunner.GetFileAsync (this, LinkWithAttributes.ItemSpec).Wait ();
+				return true;
+			}
 
-			if (success && LinkWithAttributes is not null)
-				taskRunner.GetFileAsync (this, LinkWithAttributes.ItemSpec).Wait ();
-
-			return success;
+			return false;
 		}
 
 		public override bool Execute ()
@@ -159,7 +160,7 @@ namespace Xamarin.MacDev.Tasks {
 				skipLinkWithGeneration = String.Equals (existingLinkWithText, linkWithText, StringComparison.Ordinal);
 			}
 			if (!skipLinkWithGeneration) {
-				Directory.CreateDirectory (Path.GetDirectoryName (linkWithPath));
+				Directory.CreateDirectory (Path.GetDirectoryName (linkWithPath)!);
 				File.WriteAllText (linkWithPath, linkWithText);
 			}
 

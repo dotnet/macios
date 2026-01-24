@@ -29,9 +29,9 @@ namespace Xamarin {
 		protected override void TryEndProcess ()
 		{
 
-			Configuration.Target.ComputeLinkerFlags ();
+			Configuration.Application.ComputeLinkerFlags ();
 
-			foreach (var asm in Configuration.Target.Assemblies) {
+			foreach (var asm in Configuration.Application.Assemblies) {
 				Frameworks.UnionWith (asm.Frameworks);
 				WeakFrameworks.UnionWith (asm.WeakFrameworks);
 			}

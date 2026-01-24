@@ -21,15 +21,7 @@ using Xamarin.Tuner;
 namespace MonoTouch.Tuner {
 
 	// This class is shared between Xamarin.Mac and Xamarin.iOS
-	public class CoreTypeMapStep :
-#if NET && !LEGACY_TOOLS
-		ConfigurationAwareStep
-#else
-		TypeMapStep
-#endif
-	{
-
-#if NET && !LEGACY_TOOLS
+	public class CoreTypeMapStep : ConfigurationAwareStep {
 		protected override string Name { get; } = "CoreTypeMap";
 		protected override int ErrorCode { get; } = 2390;
 
@@ -134,40 +126,18 @@ namespace MonoTouch.Tuner {
 		}
 
 		DerivedLinkContext LinkContext => Configuration.DerivedLinkContext;
-#else
-		DerivedLinkContext LinkContext {
-			get {
-				return (DerivedLinkContext) base.Context;
-			}
-		}
-#endif
 
 		HashSet<TypeDefinition> cached_isnsobject = new HashSet<TypeDefinition> ();
 		Dictionary<TypeDefinition, bool?> isdirectbinding_value = new Dictionary<TypeDefinition, bool?> ();
 
-#if NET && !LEGACY_TOOLS
 		protected override void TryEndProcess ()
 		{
-#else
-		protected override void EndProcess ()
-		{
-			base.EndProcess ();
-#endif
-
 			LinkContext.CachedIsNSObject = cached_isnsobject;
 			LinkContext.IsDirectBindingValue = isdirectbinding_value;
 		}
 
-		protected
-#if !NET || LEGACY_TOOLS
-		override
-#endif
-		void MapType (TypeDefinition type)
+		protected void MapType (TypeDefinition type)
 		{
-#if !NET || LEGACY_TOOLS
-			base.MapType (type);
-#endif
-
 			// additional checks for NSObject to check if the type is a *generated* bindings
 			// bonus: we cache, for every type, whether or not it inherits from NSObject (very useful later)
 			if (!IsNSObject (type))

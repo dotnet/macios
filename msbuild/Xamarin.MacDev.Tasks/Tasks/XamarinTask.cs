@@ -23,11 +23,23 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string TargetFrameworkMoniker { get; set; } = string.Empty;
 
+		public string SdkDevPath { get; set; } = string.Empty;
+
+		public string GetSdkDevPath ()
+		{
+			if (string.IsNullOrEmpty (SdkDevPath)) {
+				Log.LogError (MSBStrings.E7169, /* The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */ GetType ().Name, "SdkDevPath");
+				return "";
+			}
+
+			return SdkDevPath;
+		}
+
 		void VerifyTargetFrameworkMoniker ()
 		{
 			if (!string.IsNullOrEmpty (TargetFrameworkMoniker))
 				return;
-			Log.LogError ($"The task {GetType ().Name} requires TargetFrameworkMoniker to be set.");
+			Log.LogError (MSBStrings.E7169, /* The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */ GetType ().Name, "TargetFrameworkMoniker");
 		}
 
 		public string Product {
@@ -97,13 +109,13 @@ namespace Xamarin.MacDev.Tasks {
 			return PlatformFrameworkHelper.GetSdkPlatform (Platform, isSimulator);
 		}
 
-		internal protected System.Threading.Tasks.Task<Execution> ExecuteAsync (string fileName, IList<string> arguments, string? sdkDevPath = null, Dictionary<string, string?>? environment = null, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
+		internal protected System.Threading.Tasks.Task<Execution> ExecuteAsync (string fileName, IList<string> arguments, Dictionary<string, string?>? environment = null, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
 		{
-			return ExecuteAsync (Log, fileName, arguments, sdkDevPath, environment, showErrorIfFailure, workingDirectory, cancellationToken);
+			return ExecuteAsync (Log, fileName, arguments, SdkDevPath, environment, showErrorIfFailure, workingDirectory, cancellationToken);
 		}
 
 		static int executionCounter;
-		internal protected static async System.Threading.Tasks.Task<Execution> ExecuteAsync (TaskLoggingHelper log, string fileName, IList<string> arguments, string? sdkDevPath = null, Dictionary<string, string?>? environment = null, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
+		static async System.Threading.Tasks.Task<Execution> ExecuteAsync (TaskLoggingHelper log, string fileName, IList<string> arguments, string? sdkDevPath = null, Dictionary<string, string?>? environment = null, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
 		{
 			// Create a new dictionary if we're given one, to make sure we don't change the caller's dictionary.
 			var launchEnvironment = environment is null ? new Dictionary<string, string?> () : new Dictionary<string, string?> (environment);

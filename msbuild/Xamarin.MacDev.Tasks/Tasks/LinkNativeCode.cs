@@ -22,9 +22,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string EntitlementsInExecutable { get; set; } = string.Empty;
 
 		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
-		[Required]
 		public bool SdkIsSimulator { get; set; }
 
 		[Required]
@@ -57,7 +54,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				outputPath = PathUtils.ConvertToMacPath (Path.GetDirectoryName (OutputFile.ItemSpec));
+				outputPath = PathUtils.ConvertToMacPath (Path.GetDirectoryName (OutputFile.ItemSpec)!);
 
 				return ExecuteRemotely ();
 			}
@@ -94,14 +91,14 @@ namespace Xamarin.MacDev.Tasks {
 				foreach (var framework in linkerArguments.Frameworks) {
 					var fullPath = Path.GetFullPath (framework);
 					arguments.Add ("-F");
-					arguments.Add (Path.GetDirectoryName (fullPath));
+					arguments.Add (Path.GetDirectoryName (fullPath)!);
 					arguments.Add ("-framework");
 					arguments.Add (Path.GetFileNameWithoutExtension (fullPath));
 				}
 				foreach (var framework in linkerArguments.WeakFrameworks) {
 					var fullPath = Path.GetFullPath (framework);
 					arguments.Add ("-F");
-					arguments.Add (Path.GetDirectoryName (fullPath));
+					arguments.Add (Path.GetDirectoryName (fullPath)!);
 					arguments.Add ("-weak_framework");
 					arguments.Add (Path.GetFileNameWithoutExtension (fullPath));
 				}
@@ -185,7 +182,7 @@ namespace Xamarin.MacDev.Tasks {
 					if (framework.EndsWith (".framework", StringComparison.Ordinal)) {
 						// user framework, we need to pass -F to the linker so that the linker finds the user framework.
 						arguments.Add ("-F");
-						arguments.Add (Path.GetDirectoryName (Path.GetFullPath (framework)));
+						arguments.Add (Path.GetDirectoryName (Path.GetFullPath (framework))!);
 						framework = Path.GetFileNameWithoutExtension (framework);
 						hasEmbeddedFrameworks = true;
 					}
@@ -213,7 +210,7 @@ namespace Xamarin.MacDev.Tasks {
 					arguments.Add (flag.ItemSpec);
 			}
 
-			var rv = ExecuteAsync ("xcrun", arguments, sdkDevPath: SdkDevPath, showErrorIfFailure: false).Result;
+			var rv = ExecuteAsync ("xcrun", arguments, showErrorIfFailure: false).Result;
 			if (rv.ExitCode != 0) {
 				var stderr = rv.Output.MergedOutput;
 #if NET
@@ -284,7 +281,7 @@ namespace Xamarin.MacDev.Tasks {
 				"-o", derEntitlements,
 				"--raw",
 			};
-			ExecuteAsync ("xcrun", arguments, sdkDevPath: SdkDevPath).Wait ();
+			ExecuteAsync ("xcrun", arguments).Wait ();
 			return derEntitlements;
 		}
 

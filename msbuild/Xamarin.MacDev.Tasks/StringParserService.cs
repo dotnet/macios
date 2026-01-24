@@ -31,9 +31,8 @@ namespace Xamarin.MacDev {
 					}
 
 					var tag = text.Substring (startIndex, i - startIndex);
-					string value;
 
-					if (!tags.TryGetValue (tag, out value)) {
+					if (!tags.TryGetValue (tag, out var value)) {
 						builder.Append ('$').Append (open).Append (tag).Append (close);
 					} else {
 						builder.Append (value);

@@ -6,45 +6,24 @@ using System.Collections.Generic;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Linker;
-using Mono.Tuner;
-#if NET
 using Mono.Linker.Steps;
-#else
-using MonoTouch.Tuner;
-#endif
+using Mono.Tuner;
 
 using Xamarin.Bundler;
 
 namespace Xamarin.Linker.Steps {
-#if NET && !LEGACY_TOOLS
-	public class PreserveSmartEnumConversionsHandler : ExceptionalMarkHandler
-#else
-	public class PreserveSmartEnumConversionsSubStep : ExceptionalSubStep
-#endif
-	{
+	public class PreserveSmartEnumConversionsHandler : ExceptionalMarkHandler {
 		Dictionary<TypeDefinition, Tuple<MethodDefinition, MethodDefinition>> cache;
 		protected override string Name { get; } = "Smart Enum Conversion Preserver";
 		protected override int ErrorCode { get; } = 2200;
 
-#if NET && !LEGACY_TOOLS
 		public override void Initialize (LinkContext context, MarkContext markContext)
 		{
 			base.Initialize (context);
 			markContext.RegisterMarkMethodAction (ProcessMethod);
 		}
-#else
-		public override SubStepTargets Targets {
-			get {
-				return SubStepTargets.Method | SubStepTargets.Property;
-			}
-		}
-#endif
 
-#if NET && !LEGACY_TOOLS
 		bool IsActiveFor (AssemblyDefinition assembly)
-#else
-		public override bool IsActiveFor (AssemblyDefinition assembly)
-#endif
 		{
 			if (Profile.IsProductAssembly (assembly))
 				return true;
@@ -58,31 +37,13 @@ namespace Xamarin.Linker.Steps {
 			return false;
 		}
 
-#if NET && !LEGACY_TOOLS
 		void Mark (Tuple<MethodDefinition, MethodDefinition> pair)
 		{
 			Context.Annotations.Mark (pair.Item1);
 			Context.Annotations.Mark (pair.Item2);
 		}
-#else
-		void Preserve (Tuple<MethodDefinition, MethodDefinition> pair, MethodDefinition conditionA, MethodDefinition conditionB = null)
-		{
-			if (conditionA is not null) {
-				context.Annotations.AddPreservedMethod (conditionA, pair.Item1);
-				context.Annotations.AddPreservedMethod (conditionA, pair.Item2);
-			}
-			if (conditionB is not null) {
-				context.Annotations.AddPreservedMethod (conditionB, pair.Item1);
-				context.Annotations.AddPreservedMethod (conditionB, pair.Item2);
-			}
-		}
-#endif
 
-#if NET && !LEGACY_TOOLS
 		void ProcessAttributeProvider (ICustomAttributeProvider provider)
-#else
-		void ProcessAttributeProvider (ICustomAttributeProvider provider, MethodDefinition conditionA, MethodDefinition conditionB = null)
-#endif
 		{
 			if (provider?.HasCustomAttributes != true)
 				return;
@@ -94,14 +55,14 @@ namespace Xamarin.Linker.Steps {
 					continue;
 
 				if (ca.ConstructorArguments.Count != 1) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (LinkContext.Target.App, 4124, provider, Errors.MT4124_E, provider.AsString (), ca.ConstructorArguments.Count));
+					ErrorHelper.Show (ErrorHelper.CreateWarning (LinkContext.App, 4124, provider, Errors.MT4124_E, provider.AsString (), ca.ConstructorArguments.Count));
 					continue;
 				}
 
 				var managedType = ca.ConstructorArguments [0].Value as TypeReference;
 				var managedEnumType = managedType?.GetElementType ().Resolve ();
 				if (managedEnumType is null) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (LinkContext.Target.App, 4124, provider, Errors.MT4124_H, provider.AsString (), managedType?.FullName));
+					ErrorHelper.Show (ErrorHelper.CreateWarning (LinkContext.App, 4124, provider, Errors.MT4124_H, provider.AsString (), managedType?.FullName));
 					continue;
 				}
 
@@ -111,11 +72,7 @@ namespace Xamarin.Linker.Steps {
 
 				Tuple<MethodDefinition, MethodDefinition> pair;
 				if (cache is not null && cache.TryGetValue (managedEnumType, out pair)) {
-#if NET && !LEGACY_TOOLS
 					// The pair was already marked if it was cached.
-#else
-					Preserve (pair, conditionA, conditionB);
-#endif
 					continue;
 				}
 
@@ -173,17 +130,12 @@ namespace Xamarin.Linker.Steps {
 				if (cache is null)
 					cache = new Dictionary<TypeDefinition, Tuple<MethodDefinition, MethodDefinition>> ();
 				cache.Add (managedEnumType, pair);
-#if NET && !LEGACY_TOOLS
 				Mark (pair);
-#else
-				Preserve (pair, conditionA, conditionB);
-#endif
 			}
 		}
 
 		protected override void Process (MethodDefinition method)
 		{
-#if NET && !LEGACY_TOOLS
 			static bool IsPropertyMethod (MethodDefinition method)
 			{
 				return method.IsGetter || method.IsSetter;
@@ -203,25 +155,6 @@ namespace Xamarin.Linker.Steps {
 						break;
 					}
 			}
-#else
-			ProcessAttributeProvider (method, method);
-			ProcessAttributeProvider (method.MethodReturnType, method);
-			if (method.HasParameters) {
-				foreach (var p in method.Parameters)
-					ProcessAttributeProvider (p, method);
-			}
-#endif
 		}
-
-#if !NET || LEGACY_TOOLS
-		protected override void Process (PropertyDefinition property)
-		{
-			ProcessAttributeProvider (property, property.GetMethod, property.SetMethod);
-			if (property.GetMethod is not null)
-				Process (property.GetMethod);
-			if (property.SetMethod is not null)
-				Process (property.SetMethod);
-		}
-#endif
 	}
 }

@@ -6,15 +6,8 @@ using Mono.Linker;
 
 using Xamarin.Bundler;
 using Xamarin.Linker;
-#if !NET || LEGACY_TOOLS
-using Mono.Linker.Steps;
-using Mono.Tuner;
-using Xamarin.Tuner;
-#endif
 
 namespace MonoTouch.Tuner {
-
-#if NET && !LEGACY_TOOLS
 	public class RegistrarRemovalTrackingStep : ConfigurationAwareStep {
 
 		protected override string Name { get; } = "RegistrarRemovalTracking";
@@ -32,21 +25,7 @@ namespace MonoTouch.Tuner {
 		{
 			Process (assembly);
 		}
-#else
-	public class RegistrarRemovalTrackingStep : BaseStep {
 
-		Optimizations Optimizations => ((DerivedLinkContext) Context).App.Optimizations;
-
-		string PlatformAssemblyName => ((MobileProfile) Profile.Current).ProductAssembly;
-
-		int WarnCode => 2107; // for compatibility
-
-		protected override void ProcessAssembly (AssemblyDefinition assembly)
-		{
-			Process (assembly);
-			base.ProcessAssembly (assembly);
-		}
-#endif
 		AssemblyDefinition PlatformAssembly;
 
 		bool dynamic_registration_support_required;
@@ -146,11 +125,7 @@ namespace MonoTouch.Tuner {
 							break;
 						case ".ctor":
 							var md = mr.Resolve () as MethodDefinition;
-#if NET && !LEGACY_TOOLS
 							requires |= Xamarin.Linker.OptimizeGeneratedCodeHandler.IsBlockLiteralCtor_Type_String (md);
-#else
-							requires |= Xamarin.Linker.OptimizeGeneratedCodeSubStep.IsBlockLiteralCtor_Type_String (md);
-#endif
 							if (requires && warnIfRequired)
 								Warn (assembly, mr);
 							break;
@@ -179,14 +154,8 @@ namespace MonoTouch.Tuner {
 			ErrorHelper.Warning (WarnCode, Errors.MM2107, assembly.Name.Name, mr.DeclaringType.FullName, mr.Name, string.Join (", ", ((MethodReference) mr).Parameters.Select ((v) => v.ParameterType.FullName)));
 		}
 
-#if NET && !LEGACY_TOOLS
 		protected override void TryEndProcess ()
 		{
-#else
-		protected override void EndProcess ()
-		{
-			base.EndProcess ();
-#endif
 			if (!Optimizations.RemoveDynamicRegistrar.HasValue) {
 				// If dynamic registration is not required, and removal of the dynamic registrar hasn't already
 				// been disabled, then we can remove it!
@@ -209,16 +178,6 @@ namespace MonoTouch.Tuner {
 					instr.Add (Instruction.Create (OpCodes.Ret));
 				}
 			}
-#if MTOUCH
-			var app = (Context as DerivedLinkContext).App;
-			if (app.IsCodeShared) {
-				foreach (var appex in app.AppExtensions) {
-					if (!appex.IsCodeShared)
-						continue;
-					appex.Optimizations.RemoveDynamicRegistrar = app.Optimizations.RemoveDynamicRegistrar;
-				}
-			}
-#endif
 		}
 	}
 }

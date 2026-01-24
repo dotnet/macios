@@ -35,7 +35,7 @@ parameters:
   default: [
     {
       stageName: 'mac_12_m1',
-      displayName: 'M1 - Mac Ventura (12)',
+      displayName: 'M1 - Mac Monterey (12)',
       macPool: 'VSEng-VSMac-Xamarin-Shared',
       useImage: false,
       statusContext: 'M1 - Mac Monterey (12)',

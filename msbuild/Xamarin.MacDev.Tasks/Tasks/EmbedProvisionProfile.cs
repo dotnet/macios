@@ -60,7 +60,7 @@ namespace Xamarin.MacDev.Tasks {
 					return true;
 			}
 
-			Directory.CreateDirectory (Path.GetDirectoryName (embedded));
+			Directory.CreateDirectory (Path.GetDirectoryName (embedded)!);
 			profile.Save (embedded);
 
 			return true;

@@ -33,9 +33,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string ResourcePrefix { get; set; } = string.Empty;
 
 		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
-		[Required]
 		public string SdkVersion { get; set; } = string.Empty;
 
 		[Required]
@@ -65,7 +62,7 @@ namespace Xamarin.MacDev.Tasks {
 			var logicalName = BundleResource.GetLogicalName (this, SourceFile!);
 			var path = Path.Combine (intermediate, logicalName);
 			var args = new List<string> ();
-			var dir = Path.GetDirectoryName (path);
+			var dir = Path.GetDirectoryName (path)!;
 
 			Directory.CreateDirectory (dir);
 
@@ -96,7 +93,7 @@ namespace Xamarin.MacDev.Tasks {
 			args.Add (SourceFile!.ItemSpec);
 
 			cancellationTokenSource = new CancellationTokenSource ();
-			ExecuteAsync (Log, executable, args, environment: env, cancellationToken: cancellationTokenSource.Token).Wait ();
+			ExecuteAsync (executable, args, environment: env, cancellationToken: cancellationTokenSource.Token).Wait ();
 
 			return !Log.HasLoggedErrors;
 		}

@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="u2ignore/u2ignore.csproj" />
+  <Project Path="u2todo/u2todo.csproj" />
+  <Project Path="xtro-report/xtro-report.csproj" />
+  <Project Path="xtro-sanity/xtro-sanity.csproj" />
+  <Project Path="xtro-sharpie/xtro-sharpie.csproj" />
+</Solution>

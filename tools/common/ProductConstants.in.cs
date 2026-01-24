@@ -1,12 +1,8 @@
 using System;
 
-#if MTOUCH || MMP || BUNDLER
+#if LEGACY_TOOLS || BUNDLER
 using Xamarin.Bundler;
 using Xamarin.Utils;
-#endif
-
-#if MTOUCH
-using MonoTouch;
 #endif
 
 namespace Xamarin {

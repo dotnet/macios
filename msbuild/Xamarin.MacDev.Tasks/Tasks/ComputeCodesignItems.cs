@@ -77,7 +77,7 @@ namespace Xamarin.MacDev.Tasks {
 					continue;
 
 				// Create a new item for the app bundle, and copy any metadata over.
-				var bundlePath = Path.Combine (Path.GetDirectoryName (AppBundleDir), bundle.ItemSpec);
+				var bundlePath = Path.Combine (Path.GetDirectoryName (AppBundleDir)!, bundle.ItemSpec);
 				var item = new TaskItem (bundlePath);
 				bundle.CopyMetadataTo (item);
 
@@ -88,12 +88,12 @@ namespace Xamarin.MacDev.Tasks {
 				var additionalStampFiles = new List<string> ();
 				// We must touch the dSYM directory's Info.plist, to ensure that we don't end up running dsymutil again after codesigning in the next build
 				var generateDSymItem = GenerateDSymItems.FirstOrDefault (v => {
-					return string.Equals (Path.Combine (Path.GetDirectoryName (AppBundleDir), Path.GetDirectoryName (v.ItemSpec)), item.ItemSpec, StringComparison.OrdinalIgnoreCase);
+					return string.Equals (Path.Combine (Path.GetDirectoryName (AppBundleDir)!, Path.GetDirectoryName (v.ItemSpec)!), item.ItemSpec, StringComparison.OrdinalIgnoreCase);
 				});
 				if (generateDSymItem is not null)
 					additionalStampFiles.Add (generateDSymItem.GetMetadata ("dSYMUtilStampFile"));
 				// We must touch the stamp file for native stripping, to ensure that we don't want to run strip again after codesigning in the next build
-				var nativeStripItem = NativeStripItems.FirstOrDefault (v => string.Equals (Path.Combine (Path.GetDirectoryName (AppBundleDir), Path.GetDirectoryName (v.ItemSpec)), item.ItemSpec, StringComparison.OrdinalIgnoreCase));
+				var nativeStripItem = NativeStripItems.FirstOrDefault (v => string.Equals (Path.Combine (Path.GetDirectoryName (AppBundleDir)!, Path.GetDirectoryName (v.ItemSpec)!), item.ItemSpec, StringComparison.OrdinalIgnoreCase));
 				if (nativeStripItem is not null)
 					additionalStampFiles.Add (nativeStripItem.GetMetadata ("StripStampFile"));
 				// Set the CodesignAdditionalFilesToTouch metadata
@@ -111,7 +111,7 @@ namespace Xamarin.MacDev.Tasks {
 			//	- *.framework directories
 			//  - *.xpc directories
 			foreach (var bundle in CodesignBundle) {
-				var bundlePath = Path.Combine (Path.GetDirectoryName (Path.GetDirectoryName (appBundlePath)), bundle.ItemSpec);
+				var bundlePath = Path.Combine (Path.GetDirectoryName (Path.GetDirectoryName (appBundlePath)!)!, bundle.ItemSpec);
 				var filesToSign = FindFilesToSign (bundlePath);
 				foreach (var lib in filesToSign) {
 					if (Array.Find (CodesignItems, (v) => string.Equals (v.ItemSpec, lib, StringComparison.OrdinalIgnoreCase)) is not null)
@@ -207,7 +207,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			// Canonicalize the paths and split into files and directories
 			var canonicalizedItemsToSkip = SkipCodesignItems
-				.Select (v => Path.Combine (Path.GetDirectoryName (appBundlePath), v.ItemSpec))
+				.Select (v => Path.Combine (Path.GetDirectoryName (appBundlePath)!, v.ItemSpec))
 				.ToArray ();
 			var canonicalizedDirectoriesToSkip = canonicalizedItemsToSkip
 				.Where (v => Directory.Exists (v))

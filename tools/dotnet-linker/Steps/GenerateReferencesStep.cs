@@ -29,7 +29,7 @@ namespace Xamarin {
 				break;
 			case SymbolMode.Code:
 				var reference_m = Path.Combine (Configuration.CacheDirectory, "reference.m");
-				reference_m = Configuration.Target.GenerateReferencingSource (reference_m, required_symbols);
+				reference_m = Configuration.Application.GenerateReferencingSource (reference_m, required_symbols);
 				if (!string.IsNullOrEmpty (reference_m)) {
 					var item = new MSBuildItem (reference_m);
 					items.Add (item);

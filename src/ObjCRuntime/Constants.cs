@@ -1,4 +1,4 @@
-#if MTOUCH || MMP || BUNDLER
+#if LEGACY_TOOLS || BUNDLER
 namespace Xamarin.Bundler {
 #else
 namespace ObjCRuntime {

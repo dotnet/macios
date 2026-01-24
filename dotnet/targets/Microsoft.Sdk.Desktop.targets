@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target
+		Name="_PrepareRunDesktop"
+		BeforeTargets="ComputeRunArguments"
+		Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">
+
+		<PropertyGroup Condition="'$(RunWithOpen)' != 'false'">
+			<_OpenArguments Condition="'$(XamarinDebugMode)' != ''">$(_OpenArguments) --env __XAMARIN_DEBUG_MODE__=$(XamarinDebugMode)</_OpenArguments>
+			<_OpenArguments Condition="'$(XamarinDebugPort)' != ''">$(_OpenArguments) --env __XAMARIN_DEBUG_PORT__=$(XamarinDebugPort)</_OpenArguments>
+			<_OpenArguments Condition="'$(XamarinDebugHosts)' != ''">$(_OpenArguments) --env "__XAMARIN_DEBUG_HOSTS__=$(XamarinDebugHosts)"</_OpenArguments>
+			<_OpenArguments Condition="'$(XamarinDebugConnectTimeout)' != ''">$(_OpenArguments) --env __XAMARIN_DEBUG_CONNECT_TIMEOUT__=$(XamarinDebugConnectTimeout)</_OpenArguments>
+			<_OpenArguments Condition="'$(StandardOutputPath)' != ''">$(_OpenArguments) --stdout "$(StandardOutputPath)"</_OpenArguments>
+			<_OpenArguments Condition="'$(StandardErrorPath)' != ''">$(_OpenArguments) --stderr "$(StandardErrorPath)"</_OpenArguments>
+			<_OpenArguments Condition="'$(StandardInputPath)' != ''">$(_OpenArguments) --stdin "$(StandardInputPath)"</_OpenArguments>
+			<_OpenArgumentsPre Condition="'$(OpenNewInstance)' == 'true'">-n </_OpenArgumentsPre>
+			<_OpenArgumentsPre Condition="'$(OpenWaitForExit)' == 'true'">$(_OpenArgumentsPre) -W </_OpenArgumentsPre>
+			<_OpenArguments>$(_OpenArguments) $(RunEnvironment)</_OpenArguments>
+			<RunCommand>open</RunCommand>
+			<RunArguments>$(_OpenArgumentsPre) -a "$(TargetDir)/$(_AppBundleName).app" $(OpenArguments) $(_OpenArguments) --args</RunArguments>
+		</PropertyGroup>
+
+		<PropertyGroup Condition="'$(RunWithOpen)' == 'false'">
+			<RunCommand>$(TargetDir)/$(_AppBundleName).app/Contents/MacOS/$(_NativeExecutableName)</RunCommand>
+			<RunArguments />
+		</PropertyGroup>
+	</Target>
+</Project>

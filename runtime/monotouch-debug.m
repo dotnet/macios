@@ -998,7 +998,6 @@ monotouch_process_connection (int fd)
 				use_fd = true;
 				profiler_description = xamarin_strdup_printf ("%s,output=#%i", prof, fd);
 #endif
-				xamarin_set_gc_pump_enabled (false);
 			} else {
 				LOG (PRODUCT ": Unknown profiler, expect unexpected behavior (%s)\n", prof);
 				profiler_description = strdup (prof);

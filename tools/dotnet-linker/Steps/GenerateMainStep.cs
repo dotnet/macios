@@ -24,24 +24,35 @@ namespace Xamarin {
 			// We want this called before any other initialization methods.
 			registration_methods.Insert (0, "xamarin_initialize_dotnet");
 
-			foreach (var abi in Configuration.Abis) {
+			var abi = Configuration.Abi;
+			var file = Path.Combine (Configuration.CacheDirectory, $"main.{abi.AsArchString ()}.mm");
+			var contents = new StringBuilder ();
 
-				var file = Path.Combine (Configuration.CacheDirectory, $"main.{abi.AsArchString ()}.mm");
-				var contents = new StringBuilder ();
+			contents.AppendLine ("#include <stdlib.h>");
+			contents.AppendLine ();
+			contents.AppendLine ("static void xamarin_initialize_dotnet ()");
+			contents.AppendLine ("{");
+			if (Configuration.Application.PackageManagedDebugSymbols && Configuration.Application.UseInterpreter)
+				contents.AppendLine ($"\tsetenv (\"DOTNET_MODIFIABLE_ASSEMBLIES\", \"debug\", 1);");
+			contents.AppendLine ("}");
+			contents.AppendLine ();
 
-				contents.AppendLine ("#include <stdlib.h>");
-				contents.AppendLine ();
-				contents.AppendLine ("static void xamarin_initialize_dotnet ()");
-				contents.AppendLine ("{");
-				if (Configuration.Application.PackageManagedDebugSymbols && Configuration.Application.UseInterpreter)
-					contents.AppendLine ($"\tsetenv (\"DOTNET_MODIFIABLE_ASSEMBLIES\", \"debug\", 1);");
-				contents.AppendLine ("}");
-				contents.AppendLine ();
+			Configuration.Application.GenerateMain (contents, app.Platform, abi, file, registration_methods);
 
-				Configuration.Target.GenerateMain (contents, app.Platform, abi, file, registration_methods);
+			var item = new MSBuildItem (
+				file,
+				new Dictionary<string, string> {
+					{ "Arch", abi.AsArchString () },
+				}
+			);
+			if (app.EnableDebug)
+				item.Metadata.Add ("Arguments", "-DDEBUG");
+			items.Add (item);
 
-				var item = new MSBuildItem (
-					file,
+			if (app.RequiresPInvokeWrappers) {
+				var state = Configuration.PInvokeWrapperGenerationState!;
+				item = new MSBuildItem (
+					state.SourcePath,
 					new Dictionary<string, string> {
 						{ "Arch", abi.AsArchString () },
 					}
@@ -49,19 +60,6 @@ namespace Xamarin {
 				if (app.EnableDebug)
 					item.Metadata.Add ("Arguments", "-DDEBUG");
 				items.Add (item);
-
-				if (app.RequiresPInvokeWrappers) {
-					var state = Configuration.PInvokeWrapperGenerationState!;
-					item = new MSBuildItem (
-						state.SourcePath,
-						new Dictionary<string, string> {
-							{ "Arch", abi.AsArchString () },
-						}
-					);
-					if (app.EnableDebug)
-						item.Metadata.Add ("Arguments", "-DDEBUG");
-					items.Add (item);
-				}
 			}
 
 			Configuration.WriteOutputForMSBuild ("_MainFile", items);

@@ -286,17 +286,12 @@ namespace Xamarin.Bundler {
 					// Both the linker and the static registrar are also required
 					RemoveDynamicRegistrar = false;
 				} else {
-					if (app.Platform != ApplePlatform.MacOSX) {
-						// we can't predict is unknown (at build time) code will require registration (at runtime)
-						if (app.UseInterpreter) {
-							RemoveDynamicRegistrar = false;
-						}
-						// We don't have enough information yet to determine if we can remove the dynamic
-						// registrar or not, so let the value stay unset until we do know (when running the linker).
-					} else {
-						// By default disabled for XM apps
+					// we can't predict is unknown (at build time) code will require registration (at runtime)
+					if (app.UseInterpreter) {
 						RemoveDynamicRegistrar = false;
 					}
+					// We don't have enough information yet to determine if we can remove the dynamic
+					// registrar or not, so let the value stay unset until we do know (when running the linker).
 				}
 			}
 

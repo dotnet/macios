@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-#if MTOUCH || MMP || BUNDLER
+#if LEGACY_TOOLS || BUNDLER
 using Mono.Cecil;
 
 using Xamarin.Bundler;
@@ -32,7 +32,7 @@ public class Framework {
 		}
 	}
 
-#if MTOUCH || MMP || BUNDLER
+#if LEGACY_TOOLS || BUNDLER
 	public bool IsFrameworkAvailableInSimulator (Application app)
 	{
 		if (VersionAvailableInSimulator is null)
@@ -701,7 +701,7 @@ public class Frameworks : Dictionary<string, Framework> {
 		}
 	}
 
-#if MTOUCH || MMP || BUNDLER
+#if LEGACY_TOOLS || BUNDLER
 	static void Gather (Application app, AssemblyDefinition product_assembly, HashSet<string> frameworks, HashSet<string> weak_frameworks, Func<Framework, bool> include_framework)
 	{
 		var namespaces = new HashSet<string> ();
@@ -756,10 +756,6 @@ public class Frameworks : Dictionary<string, Framework> {
 		case ApplePlatform.iOS:
 			switch (framework.Name) {
 			case "GameKit":
-				if (Driver.XcodeVersion.Major >= 14 && app.Is32Build) {
-					Driver.Log (3, "Not linking with the framework {0} because it's not available when using Xcode 14+ and building for a 32-bit simulator architecture.", framework.Name);
-					return false;
-				}
 				break;
 			case "NewsstandKit":
 				if (Driver.XcodeVersion.Major >= 15) {
@@ -775,7 +771,7 @@ public class Frameworks : Dictionary<string, Framework> {
 		case ApplePlatform.MacOSX:
 			return true;
 		default:
-			throw ErrorHelper.CreateError (71, Errors.MX0071 /* "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case." */, app.Platform, app.GetProductName ());
+			throw ErrorHelper.CreateError (71, Errors.MX0071 /* "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case." */, app.Platform, app.ProductName);
 		}
 		return true;
 	}
@@ -784,5 +780,5 @@ public class Frameworks : Dictionary<string, Framework> {
 	{
 		Gather (app, product_assembly, frameworks, weak_frameworks, (framework) => FilterFrameworks (app, framework));
 	}
-#endif // MTOUCH || MMP || BUNDLER
+#endif // LEGACY_TOOLS || BUNDLER
 }

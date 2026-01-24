@@ -1305,6 +1305,33 @@ function Convert-Markdown {
     return $InputContents
 }
 
+function Get-IsCurrentCommitLatestInPR {
+    param (
+        [ValidateNotNullOrEmpty ()]
+        [string]
+        $Org,
+
+        [ValidateNotNullOrEmpty ()]
+        [string]
+        $Repo,
+
+        [ValidateNotNullOrEmpty ()]
+        [string]
+        $Token,
+
+        [string]
+        $Hash,
+
+        [string[]]
+        $PrIDs
+    )
+
+    $githubComments = New-GitHubCommentsObject -Org $Org -Repo $Repo -Token $Token -Hash $Hash
+    $githubComments.PRIds = $PrIDs
+    $result = $githubComments.IsCurrentCommitLatestInPR()
+    return $result
+}
+
 # module exports, any other functions are private and should not be used outside the module.
 Export-ModuleMember -Function New-GitHubComment
 Export-ModuleMember -Function Get-GitHubPRInfo
@@ -1313,6 +1340,7 @@ Export-ModuleMember -Function New-GistWithFiles
 Export-ModuleMember -Function New-GistObjectDefinition 
 Export-ModuleMember -Function New-GistWithContent 
 Export-ModuleMember -Function Convert-Markdown
+Export-ModuleMember -Function Get-IsCurrentCommitLatestInPR
 
 # new future API that uses objects.
 Export-ModuleMember -Function New-GitHubCommentsObject

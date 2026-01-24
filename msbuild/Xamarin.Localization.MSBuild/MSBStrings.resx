@@ -1619,4 +1619,8 @@
     <data name="E7163" xml:space="preserve">
         <value>Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information.</value>
     </data>
+
+    <data name="E7169" xml:space="preserve">
+        <value>The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
+    </data>
 </root>

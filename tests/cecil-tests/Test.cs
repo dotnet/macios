@@ -171,36 +171,36 @@ namespace Cecil.Tests {
 			}
 			Assert.That (platform, Is.Not.EqualTo (PlatformName.None), "None");
 
-			Assert.False (IsUnavailable (assembly, platform), "Assembly");
-			Assert.False (IsUnavailable (assembly.MainModule, platform), "MainModule");
+			Assert.That (IsUnavailable (assembly, platform), Is.False, "Assembly");
+			Assert.That (IsUnavailable (assembly.MainModule, platform), Is.False, "MainModule");
 			foreach (var type in assembly.MainModule.Types)
 				Unavailable (type, platform);
 		}
 
 		void Unavailable (TypeDefinition type, PlatformName platform)
 		{
-			Assert.False (IsUnavailable (type, platform), type.FullName);
+			Assert.That (IsUnavailable (type, platform), Is.False, type.FullName);
 			if (type.HasNestedTypes) {
 				foreach (var nt in type.NestedTypes)
 					Unavailable (nt, platform);
 			}
 			if (type.HasEvents) {
 				foreach (var @event in type.Events)
-					Assert.False (IsUnavailable (@event, platform), @event.FullName);
+					Assert.That (IsUnavailable (@event, platform), Is.False, @event.FullName);
 			}
 			// Enum members are generated with `[No*` by design
 			// as they ease code sharing and don't risk exposing private symbols
 			if (!type.IsEnum && type.HasFields) {
 				foreach (var field in type.Fields)
-					Assert.False (IsUnavailable (field, platform), field.FullName);
+					Assert.That (IsUnavailable (field, platform), Is.False, field.FullName);
 			}
 			if (type.HasMethods) {
 				foreach (var method in type.Methods)
-					Assert.False (IsUnavailable (method, platform), method.FullName);
+					Assert.That (IsUnavailable (method, platform), Is.False, method.FullName);
 			}
 			if (type.HasProperties) {
 				foreach (var property in type.Properties)
-					Assert.False (IsUnavailable (property, platform), property.FullName);
+					Assert.That (IsUnavailable (property, platform), Is.False, property.FullName);
 			}
 		}
 

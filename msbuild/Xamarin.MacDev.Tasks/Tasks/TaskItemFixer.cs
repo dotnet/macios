@@ -12,7 +12,7 @@ namespace Xamarin.MacDev.Tasks {
 				var targetPath = Path.Combine (itemPathFactory (item), Path.GetFileName (item.ItemSpec));
 
 				if (!Directory.Exists (Path.GetDirectoryName (targetPath)))
-					Directory.CreateDirectory (Path.GetDirectoryName (targetPath));
+					Directory.CreateDirectory (Path.GetDirectoryName (targetPath)!);
 
 				// HACK: If the target path is a network directory, GetLastWriteTimeUtc returns some a difference of some milliseconds
 				// for the same file. So we just use Year/Month/Day/Hour/Minute/Second to decide if we should copy the item to the target location.

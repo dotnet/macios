@@ -39,13 +39,7 @@ namespace Xamarin.Utils {
 			get { return ValidFrameworksMac.Union (ValidFrameworksiOS); }
 		}
 
-#if MTOUCH
-		public static IEnumerable<TargetFramework> ValidFrameworks { get { return ValidFrameworksiOS; } }
-#elif MMP
-		public static IEnumerable<TargetFramework> ValidFrameworks { get { return ValidFrameworksMac; } }
-#else
 		public static IEnumerable<TargetFramework> ValidFrameworks { get { return AllValidFrameworks; } }
-#endif
 
 		public static bool IsValidFramework (TargetFramework framework)
 		{

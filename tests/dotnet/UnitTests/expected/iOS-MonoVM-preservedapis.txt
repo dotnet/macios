@@ -997,9 +997,6 @@ SizeTestApp.dll:ObjCRuntime.__Registrar__.LookupTypeId(System.RuntimeTypeHandle)
 SizeTestApp.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunction(System.String, System.Int32)
 SizeTestApp.dll:ObjCRuntime.__Registrar__.RegisterWrapperTypes(System.Collections.Generic.Dictionary`2<System.RuntimeTypeHandle,System.RuntimeTypeHandle>)
 SizeTestApp.dll:UIKit.UIWindow MySimpleApp.AppDelegate::window
-System.Private.CoreLib.dll:<>y__InlineArray2`1
-System.Private.CoreLib.dll:<>y__InlineArray3`1
-System.Private.CoreLib.dll:<>y__InlineArray4`1
 System.Private.CoreLib.dll:<Module>
 System.Private.CoreLib.dll:<PrivateImplementationDetails>
 System.Private.CoreLib.dll:<PrivateImplementationDetails>.InlineArrayAsReadOnlySpan`2(TBuffer&, System.Int32)
@@ -1254,28 +1251,28 @@ System.Private.CoreLib.dll:Interop/Range
 System.Private.CoreLib.dll:Interop/Sys
 System.Private.CoreLib.dll:Interop/Sys..cctor()
 System.Private.CoreLib.dll:Interop/Sys.<Close>g____PInvoke|11_0(System.IntPtr)
-System.Private.CoreLib.dll:Interop/Sys.<CloseDir>g____PInvoke|107_0(System.IntPtr)
-System.Private.CoreLib.dll:Interop/Sys.<FAllocate>g____PInvoke|97_0(System.IntPtr, System.Int64, System.Int64)
-System.Private.CoreLib.dll:Interop/Sys.<FLock>g____PInvoke|25_0(System.IntPtr, Interop/Sys/LockOperations)
-System.Private.CoreLib.dll:Interop/Sys.<FLock>g____PInvoke|26_0(System.IntPtr, Interop/Sys/LockOperations)
-System.Private.CoreLib.dll:Interop/Sys.<FStat>g____PInvoke|116_0(System.IntPtr, Interop/Sys/FileStatus*)
-System.Private.CoreLib.dll:Interop/Sys.<FTruncate>g____PInvoke|28_0(System.IntPtr, System.Int64)
-System.Private.CoreLib.dll:Interop/Sys.<GetCwd>g____PInvoke|31_0(System.Byte*, System.Int32)
-System.Private.CoreLib.dll:Interop/Sys.<GetDefaultTimeZone>g____PInvoke|34_0()
-System.Private.CoreLib.dll:Interop/Sys.<GetEnv>g____PInvoke|35_0(System.Byte*)
-System.Private.CoreLib.dll:Interop/Sys.<GetFileSystemType>g____PInvoke|22_0(System.IntPtr)
-System.Private.CoreLib.dll:Interop/Sys.<GetGroups>g____PInvoke|137_0(System.Int32, System.UInt32*)
-System.Private.CoreLib.dll:Interop/Sys.<LSeek>g____PInvoke|71_0(System.IntPtr, System.Int64, Interop/Sys/SeekWhence)
-System.Private.CoreLib.dll:Interop/Sys.<LStat>g____PInvoke|120_0(System.Byte*, Interop/Sys/FileStatus*)
-System.Private.CoreLib.dll:Interop/Sys.<Open>g____PInvoke|91_0(System.Byte*, Interop/Sys/OpenFlags, System.Int32)
-System.Private.CoreLib.dll:Interop/Sys.<OpenDir>g____PInvoke|105_0(System.Byte*)
-System.Private.CoreLib.dll:Interop/Sys.<PosixFAdvise>g____PInvoke|96_0(System.IntPtr, System.Int64, System.Int64, Interop/Sys/FileAdvice)
-System.Private.CoreLib.dll:Interop/Sys.<PRead>g____PInvoke|98_0(System.IntPtr, System.Byte*, System.Int32, System.Int64)
-System.Private.CoreLib.dll:Interop/Sys.<Read>g____PInvoke|102_0(System.IntPtr, System.Byte*, System.Int32)
-System.Private.CoreLib.dll:Interop/Sys.<ReadLink>g____PInvoke|108_0(System.Byte*, System.Byte*, System.Int32)
+System.Private.CoreLib.dll:Interop/Sys.<CloseDir>g____PInvoke|105_0(System.IntPtr)
+System.Private.CoreLib.dll:Interop/Sys.<FAllocate>g____PInvoke|95_0(System.IntPtr, System.Int64, System.Int64)
+System.Private.CoreLib.dll:Interop/Sys.<FileSystemSupportsLocking>g____PInvoke|21_0(System.IntPtr, Interop/Sys/LockOperations, System.Int32)
+System.Private.CoreLib.dll:Interop/Sys.<FLock>g____PInvoke|23_0(System.IntPtr, Interop/Sys/LockOperations)
+System.Private.CoreLib.dll:Interop/Sys.<FLock>g____PInvoke|24_0(System.IntPtr, Interop/Sys/LockOperations)
+System.Private.CoreLib.dll:Interop/Sys.<FStat>g____PInvoke|114_0(System.IntPtr, Interop/Sys/FileStatus*)
+System.Private.CoreLib.dll:Interop/Sys.<FTruncate>g____PInvoke|26_0(System.IntPtr, System.Int64)
+System.Private.CoreLib.dll:Interop/Sys.<GetCwd>g____PInvoke|29_0(System.Byte*, System.Int32)
+System.Private.CoreLib.dll:Interop/Sys.<GetDefaultTimeZone>g____PInvoke|32_0()
+System.Private.CoreLib.dll:Interop/Sys.<GetEnv>g____PInvoke|33_0(System.Byte*)
+System.Private.CoreLib.dll:Interop/Sys.<GetGroups>g____PInvoke|135_0(System.Int32, System.UInt32*)
+System.Private.CoreLib.dll:Interop/Sys.<LSeek>g____PInvoke|69_0(System.IntPtr, System.Int64, Interop/Sys/SeekWhence)
+System.Private.CoreLib.dll:Interop/Sys.<LStat>g____PInvoke|118_0(System.Byte*, Interop/Sys/FileStatus*)
+System.Private.CoreLib.dll:Interop/Sys.<Open>g____PInvoke|89_0(System.Byte*, Interop/Sys/OpenFlags, System.Int32)
+System.Private.CoreLib.dll:Interop/Sys.<OpenDir>g____PInvoke|103_0(System.Byte*)
+System.Private.CoreLib.dll:Interop/Sys.<PosixFAdvise>g____PInvoke|94_0(System.IntPtr, System.Int64, System.Int64, Interop/Sys/FileAdvice)
+System.Private.CoreLib.dll:Interop/Sys.<PRead>g____PInvoke|96_0(System.IntPtr, System.Byte*, System.Int32, System.Int64)
+System.Private.CoreLib.dll:Interop/Sys.<Read>g____PInvoke|100_0(System.IntPtr, System.Byte*, System.Int32)
+System.Private.CoreLib.dll:Interop/Sys.<ReadLink>g____PInvoke|106_0(System.Byte*, System.Byte*, System.Int32)
+System.Private.CoreLib.dll:Interop/Sys.<Stat>g____PInvoke|115_0(System.Byte*, Interop/Sys/FileStatus*)
 System.Private.CoreLib.dll:Interop/Sys.<Stat>g____PInvoke|117_0(System.Byte*, Interop/Sys/FileStatus*)
-System.Private.CoreLib.dll:Interop/Sys.<Stat>g____PInvoke|119_0(System.Byte*, Interop/Sys/FileStatus*)
-System.Private.CoreLib.dll:Interop/Sys.<Unlink>g____PInvoke|128_0(System.Byte*)
+System.Private.CoreLib.dll:Interop/Sys.<Unlink>g____PInvoke|126_0(System.Byte*)
 System.Private.CoreLib.dll:Interop/Sys.Calloc(System.UIntPtr, System.UIntPtr)
 System.Private.CoreLib.dll:Interop/Sys.CanGetHiddenFlag()
 System.Private.CoreLib.dll:Interop/Sys.Close(System.IntPtr)
@@ -1285,6 +1282,7 @@ System.Private.CoreLib.dll:Interop/Sys.ConvertErrorPlatformToPal(System.Int32)
 System.Private.CoreLib.dll:Interop/Sys.CreateAutoreleasePool()
 System.Private.CoreLib.dll:Interop/Sys.DrainAutoreleasePool(System.IntPtr)
 System.Private.CoreLib.dll:Interop/Sys.FAllocate(Microsoft.Win32.SafeHandles.SafeFileHandle, System.Int64, System.Int64)
+System.Private.CoreLib.dll:Interop/Sys.FileSystemSupportsLocking(Microsoft.Win32.SafeHandles.SafeFileHandle, Interop/Sys/LockOperations, System.Boolean)
 System.Private.CoreLib.dll:Interop/Sys.FLock(Microsoft.Win32.SafeHandles.SafeFileHandle, Interop/Sys/LockOperations)
 System.Private.CoreLib.dll:Interop/Sys.FLock(System.IntPtr, Interop/Sys/LockOperations)
 System.Private.CoreLib.dll:Interop/Sys.Free(System.Void*)
@@ -1298,7 +1296,6 @@ System.Private.CoreLib.dll:Interop/Sys.GetEGid()
 System.Private.CoreLib.dll:Interop/Sys.GetEnv(System.String)
 System.Private.CoreLib.dll:Interop/Sys.GetErrNo()
 System.Private.CoreLib.dll:Interop/Sys.GetEUid()
-System.Private.CoreLib.dll:Interop/Sys.GetFileSystemType(Microsoft.Win32.SafeHandles.SafeFileHandle)
 System.Private.CoreLib.dll:Interop/Sys.GetGroups(System.Int32, System.UInt32*)
 System.Private.CoreLib.dll:Interop/Sys.GetLastError()
 System.Private.CoreLib.dll:Interop/Sys.GetLastErrorInfo()
@@ -1331,7 +1328,6 @@ System.Private.CoreLib.dll:Interop/Sys.Stat(System.ReadOnlySpan`1<System.Char>, 
 System.Private.CoreLib.dll:Interop/Sys.Stat(System.String, out Interop/Sys/FileStatus&)
 System.Private.CoreLib.dll:Interop/Sys.StrError(System.Int32)
 System.Private.CoreLib.dll:Interop/Sys.StrErrorR(System.Int32, System.Byte*, System.Int32)
-System.Private.CoreLib.dll:Interop/Sys.TryGetFileSystemType(Microsoft.Win32.SafeHandles.SafeFileHandle, out Interop/Sys/UnixFileSystemTypes&)
 System.Private.CoreLib.dll:Interop/Sys.Unlink(System.String)
 System.Private.CoreLib.dll:Interop/Sys/DirectoryEntry
 System.Private.CoreLib.dll:Interop/Sys/DirectoryEntry System.IO.Enumeration.FileSystemEntry::_directoryEntry
@@ -1380,117 +1376,6 @@ System.Private.CoreLib.dll:Interop/Sys/SeekWhence
 System.Private.CoreLib.dll:Interop/Sys/SeekWhence Interop/Sys/SeekWhence::SEEK_CUR
 System.Private.CoreLib.dll:Interop/Sys/SeekWhence Interop/Sys/SeekWhence::SEEK_END
 System.Private.CoreLib.dll:Interop/Sys/SeekWhence Interop/Sys/SeekWhence::SEEK_SET
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::adfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::affs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::afs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::anoninode
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::apfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::aufs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::autofs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::autofs4
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::bdev
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::befs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::bfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::binfmt_misc
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::bootfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::bpf_fs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::btrfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::ceph
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::cgroup
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::cgroup2
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::cifs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::coda
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::coherent
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::configfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::cramfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::debugfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::dev
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::devpts
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::ecryptfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::efs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::exofs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::ext
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::ext2
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::ext2_old
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::f2fs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::fat
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::fd
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::fhgfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::fuse
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::fusectl
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::futexfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::gfs2
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::gpfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::hfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::hfsplus
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::hpfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::hugetlbfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::inodefs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::inotifyfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::isofs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::jffs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::jffs2
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::jfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::kafs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::logfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::lustre
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::minix
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::minix_old
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::minix2
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::minix2v2
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::minix3
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::mqueue
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::msdos
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::nfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::nfsd
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::nilfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::novell
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::ntfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::ocfs2
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::omfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::openprom
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::overlay
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::overlayfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::panfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::pipefs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::proc
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::pstore
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::qnx4
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::qnx6
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::ramfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::reiserfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::romfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::rootfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::rpc_pipefs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::sdcardfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::securityfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::selinuxfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::smb
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::smb2
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::sockfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::squashfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::sysfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::sysv2
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::sysv4
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::tmpfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::tracefs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::ubifs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::udf
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::ufs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::ufs2
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::ufscigam
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::usbdevice
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::v9fs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::vboxfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::vmhgfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::vxfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::vzfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::xenfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::xenix
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::xfs
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::xia
-System.Private.CoreLib.dll:Interop/Sys/UnixFileSystemTypes Interop/Sys/UnixFileSystemTypes::zfs
 System.Private.CoreLib.dll:InteropErrorExtensions
 System.Private.CoreLib.dll:InteropErrorExtensions.Info(Interop/Error)
 System.Private.CoreLib.dll:Microsoft.Win32.SafeHandles.SafeFileHandle
@@ -2076,10 +1961,6 @@ System.Private.CoreLib.dll:System.Boolean[] System.Reflection.ParameterModifier:
 System.Private.CoreLib.dll:System.Buffer
 System.Private.CoreLib.dll:System.Buffer.BulkMoveWithWriteBarrier(System.Byte&, System.Byte&, System.UIntPtr, System.IntPtr)
 System.Private.CoreLib.dll:System.Buffer.Memmove`1(T&, T&, System.UIntPtr)
-System.Private.CoreLib.dll:System.Buffer.MemmoveInternal(System.Byte*, System.Byte*, System.UIntPtr)
-System.Private.CoreLib.dll:System.Buffer.MemmoveInternal(System.Byte&, System.Byte&, System.UIntPtr)
-System.Private.CoreLib.dll:System.Buffer.ZeroMemoryInternal(System.Byte&, System.UIntPtr)
-System.Private.CoreLib.dll:System.Buffer.ZeroMemoryInternal(System.Void*, System.UIntPtr)
 System.Private.CoreLib.dll:System.Buffers.Any1SearchValues`2
 System.Private.CoreLib.dll:System.Buffers.Any1SearchValues`2..ctor(System.ReadOnlySpan`1<TImpl>)
 System.Private.CoreLib.dll:System.Buffers.Any1SearchValues`2.IndexOfAnyExcept(System.ReadOnlySpan`1<T>)
@@ -8402,6 +8283,9 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.ExtensionAttribute..c
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.FixedBufferAttribute
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.FixedBufferAttribute..ctor(System.Type, System.Int32)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.IAsyncStateMachine
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.InlineArray2`1
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.InlineArray3`1
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.InlineArray4`1
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.InlineArrayAttribute
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.InlineArrayAttribute..ctor(System.Int32)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.IsByRefLikeAttribute
@@ -9831,7 +9715,7 @@ System.Private.CoreLib.dll:System.Span`1<T> System.Collections.Generic.ValueList
 System.Private.CoreLib.dll:System.Span`1<T> System.Span`1::Empty()
 System.Private.CoreLib.dll:System.Span`1<TUnmanagedElement> System.Runtime.InteropServices.Marshalling.ArrayMarshaller`2/ManagedToUnmanagedIn::_span
 System.Private.CoreLib.dll:System.SpanHelpers
-System.Private.CoreLib.dll:System.SpanHelpers.<LastIndexOfValueType>g__SimdImpl|95_0`3(TValue&, TValue, System.Int32)
+System.Private.CoreLib.dll:System.SpanHelpers.<LastIndexOfValueType>g__SimdImpl|99_0`3(TValue&, TValue, System.Int32)
 System.Private.CoreLib.dll:System.SpanHelpers.BinarySearch`2(System.ReadOnlySpan`1<T>, TComparable)
 System.Private.CoreLib.dll:System.SpanHelpers.BinarySearch`2(T&, System.Int32, TComparable)
 System.Private.CoreLib.dll:System.SpanHelpers.ClearWithoutReferences(System.Byte&, System.UIntPtr)
@@ -9880,6 +9764,9 @@ System.Private.CoreLib.dll:System.SpanHelpers.LoadUInt(System.Byte&, System.UInt
 System.Private.CoreLib.dll:System.SpanHelpers.LoadUInt(System.Byte&)
 System.Private.CoreLib.dll:System.SpanHelpers.LoadUShort(System.Byte&)
 System.Private.CoreLib.dll:System.SpanHelpers.Memmove(System.Byte&, System.Byte&, System.UIntPtr)
+System.Private.CoreLib.dll:System.SpanHelpers.memmove(System.Void*, System.Void*, System.UIntPtr)
+System.Private.CoreLib.dll:System.SpanHelpers.MemmoveNative(System.Byte&, System.Byte&, System.UIntPtr)
+System.Private.CoreLib.dll:System.SpanHelpers.memset(System.Void*, System.Int32, System.UIntPtr)
 System.Private.CoreLib.dll:System.SpanHelpers.NonPackedContainsValueType`1(T&, T, System.Int32)
 System.Private.CoreLib.dll:System.SpanHelpers.NonPackedIndexOfAnyInRangeUnsignedNumber`2(T&, T, T, System.Int32)
 System.Private.CoreLib.dll:System.SpanHelpers.NonPackedIndexOfAnyValueType`2(TValue&, TValue, TValue, System.Int32)
@@ -9895,6 +9782,7 @@ System.Private.CoreLib.dll:System.SpanHelpers.SequenceEqual`1(T&, T&, System.Int
 System.Private.CoreLib.dll:System.SpanHelpers.ThrowMustBeNullTerminatedString()
 System.Private.CoreLib.dll:System.SpanHelpers.UnalignedCountVector128(System.Byte*)
 System.Private.CoreLib.dll:System.SpanHelpers.UnalignedCountVector128(System.Char*)
+System.Private.CoreLib.dll:System.SpanHelpers.ZeroMemoryNative(System.Byte&, System.UIntPtr)
 System.Private.CoreLib.dll:System.SpanHelpers/Block16
 System.Private.CoreLib.dll:System.SpanHelpers/Block64
 System.Private.CoreLib.dll:System.SpanHelpers/DontNegate`1
@@ -11035,6 +10923,7 @@ System.Private.CoreLib.dll:System.Threading.Thread.InitInternal(System.Threading
 System.Private.CoreLib.dll:System.Threading.Thread.OnThreadExiting(System.Threading.Thread)
 System.Private.CoreLib.dll:System.Threading.Thread.SpinWait_nop()
 System.Private.CoreLib.dll:System.Threading.Thread.SpinWait(System.Int32)
+System.Private.CoreLib.dll:System.Threading.Thread.ThrowIfSingleThreaded()
 System.Private.CoreLib.dll:System.Threading.Thread.UninterruptibleSleep0()
 System.Private.CoreLib.dll:System.Threading.Thread.Yield()
 System.Private.CoreLib.dll:System.Threading.Thread.YieldInternal()
@@ -11814,7 +11703,6 @@ System.Private.CoreLib.dll:System.UInt32
 System.Private.CoreLib.dll:System.UInt32 Interop/Sys/FileStatus::Gid
 System.Private.CoreLib.dll:System.UInt32 Interop/Sys/FileStatus::Uid
 System.Private.CoreLib.dll:System.UInt32 Interop/Sys/FileStatus::UserFlags
-System.Private.CoreLib.dll:System.UInt32 Interop/Sys/UnixFileSystemTypes::value__
 System.Private.CoreLib.dll:System.UInt32 Mono.MonoAssemblyName::flags
 System.Private.CoreLib.dll:System.UInt32 Mono.MonoAssemblyName::hash_alg
 System.Private.CoreLib.dll:System.UInt32 Mono.MonoAssemblyName::hash_len
@@ -12147,9 +12035,6 @@ System.Private.CoreLib.dll:System.WeakReference`1.Create(T, System.Boolean)
 System.Private.CoreLib.dll:System.WeakReference`1.Finalize()
 System.Private.CoreLib.dll:System.WeakReference`1.get_Target()
 System.Private.CoreLib.dll:System.WeakReference`1.TryGetTarget(out T&)
-System.Private.CoreLib.dll:T <>y__InlineArray2`1::_element0
-System.Private.CoreLib.dll:T <>y__InlineArray3`1::_element0
-System.Private.CoreLib.dll:T <>y__InlineArray4`1::_element0
 System.Private.CoreLib.dll:T System.Collections.Generic.HashSet`1/Entry::Value
 System.Private.CoreLib.dll:T System.Collections.Generic.HashSet`1/Enumerator::_current
 System.Private.CoreLib.dll:T System.Collections.Generic.HashSet`1/Enumerator::Current()
@@ -12167,6 +12052,9 @@ System.Private.CoreLib.dll:T System.Nullable`1::value
 System.Private.CoreLib.dll:T System.Nullable`1::Value()
 System.Private.CoreLib.dll:T System.ReadOnlySpan`1/Enumerator::System.Collections.Generic.IEnumerator<T>.Current()
 System.Private.CoreLib.dll:T System.Reflection.MethodBase/ArgumentData`1::_arg0
+System.Private.CoreLib.dll:T System.Runtime.CompilerServices.InlineArray2`1::t
+System.Private.CoreLib.dll:T System.Runtime.CompilerServices.InlineArray3`1::t
+System.Private.CoreLib.dll:T System.Runtime.CompilerServices.InlineArray4`1::t
 System.Private.CoreLib.dll:T System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedIn::_handle
 System.Private.CoreLib.dll:T System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedOut::_newHandle
 System.Private.CoreLib.dll:T System.Runtime.Intrinsics.Scalar`1::AllBitsSet()

@@ -6,9 +6,9 @@ include $(TOP)/mk/versions.mk
 # On Linux, skip directories that require native compilation
 ifdef IS_LINUX
 SUBDIRS := $(filter-out runtime,$(SUBDIRS))
-endif
-
+else
 SUBDIRS += dotnet
+endif
 
 #
 # Common

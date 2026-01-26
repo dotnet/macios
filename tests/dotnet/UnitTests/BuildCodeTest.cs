@@ -24,6 +24,7 @@ namespace Xamarin.Tests {
 					"libSystem.Native.a",
 					"libSystem.Net.Security.Native.a",
 					"libSystem.Security.Cryptography.Native.Apple.a",
+					"libzstd.a",
 				});
 				yield return new TestCaseData (ApplePlatform.iOS, "iossimulator-arm64", new string [] {
 					"libmono-component-debugger.dylib",
@@ -55,6 +56,7 @@ namespace Xamarin.Tests {
 					"libSystem.Native.a",
 					"libSystem.Net.Security.Native.a",
 					"libSystem.Security.Cryptography.Native.Apple.a",
+					"libzstd.a",
 				});
 				yield return new TestCaseData (ApplePlatform.TVOS, "tvossimulator-arm64", new string [] {
 					"libmono-component-debugger.dylib",
@@ -84,6 +86,7 @@ namespace Xamarin.Tests {
 					"libSystem.IO.Compression.Native.a",
 					"libSystem.Native.a",
 					"libSystem.Security.Cryptography.Native.Apple.a",
+					"libzstd.a",
 				});
 				yield return new TestCaseData (ApplePlatform.MacOSX, "osx-arm64", new string [] {
 					"libclrgc.dylib",
@@ -133,7 +136,9 @@ namespace Xamarin.Tests {
 
 			// NUnit's rendering of assertions failures if the arrays are different is rather lacking.
 			if (expectedLibraries.Length != libs.Length) {
-				Assert.Fail ($"Expected {expectedLibraries.Length} components, got {libs.Length} components.\nExpected:\n\t{string.Join ("\n\t", expectedLibraries)}\nActual:\n\t{string.Join ("\n\t", libs)}");
+				var newLibraries = libs.Except (expectedLibraries).OrderBy (v => v).ToArray ();
+				var missingLibraries = expectedLibraries.Except (libs).OrderBy (v => v).ToArray ();
+				Assert.Fail ($"Expected {expectedLibraries.Length} components, got {libs.Length} components.\nExpected:\n\t{string.Join ("\n\t", expectedLibraries)}\nActual:\n\t{string.Join ("\n\t", libs)}\nMissing ({missingLibraries.Length}):{string.Join ("", missingLibraries.Select (v => "\n\t" + v))}\nExtra libraries ({newLibraries.Length}):{string.Join ("", newLibraries.Select (v => "\n\t" + v))}");
 			} else {
 				for (var i = 0; i < expectedLibraries.Length; i++) {
 					if (expectedLibraries [i] == libs [i])

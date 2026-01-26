@@ -11,9 +11,11 @@ using Mono.Tuner;
 
 using Xamarin.Bundler;
 
+#nullable enable
+
 namespace Xamarin.Linker.Steps {
 	public class PreserveSmartEnumConversionsHandler : ExceptionalMarkHandler {
-		Dictionary<TypeDefinition, Tuple<MethodDefinition, MethodDefinition>> cache;
+		Dictionary<TypeDefinition, Tuple<MethodDefinition, MethodDefinition>>? cache;
 		protected override string Name { get; } = "Smart Enum Conversion Preserver";
 		protected override int ErrorCode { get; } = 2200;
 
@@ -62,7 +64,7 @@ namespace Xamarin.Linker.Steps {
 				var managedType = ca.ConstructorArguments [0].Value as TypeReference;
 				var managedEnumType = managedType?.GetElementType ().Resolve ();
 				if (managedEnumType is null) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (LinkContext.App, 4124, provider, Errors.MT4124_H, provider.AsString (), managedType?.FullName));
+					ErrorHelper.Show (ErrorHelper.CreateWarning (LinkContext.App, 4124, provider, Errors.MT4124_H, provider.AsString (), managedType?.FullName ?? "(null)"));
 					continue;
 				}
 
@@ -70,14 +72,14 @@ namespace Xamarin.Linker.Steps {
 				if (!managedEnumType.IsEnum)
 					continue;
 
-				Tuple<MethodDefinition, MethodDefinition> pair;
+				Tuple<MethodDefinition, MethodDefinition>? pair;
 				if (cache is not null && cache.TryGetValue (managedEnumType, out pair)) {
 					// The pair was already marked if it was cached.
 					continue;
 				}
 
 				// Find the Extension type
-				TypeDefinition extensionType = null;
+				TypeDefinition? extensionType = null;
 				var extensionName = managedEnumType.Name + "Extensions";
 				foreach (var type in managedEnumType.Module.Types) {
 					if (type.Namespace != managedEnumType.Namespace)
@@ -93,8 +95,8 @@ namespace Xamarin.Linker.Steps {
 				}
 
 				// Find the GetConstant/GetValue methods
-				MethodDefinition getConstant = null;
-				MethodDefinition getValue = null;
+				MethodDefinition? getConstant = null;
+				MethodDefinition? getValue = null;
 
 				foreach (var method in extensionType.Methods) {
 					if (!method.IsStatic)

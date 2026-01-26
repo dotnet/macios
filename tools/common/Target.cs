@@ -21,15 +21,14 @@ using PlatformLinkContext = Xamarin.Tuner.DerivedLinkContext;
 using PlatformResolver = Xamarin.Linker.DotNetResolver;
 #endif
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.Bundler {
 	public partial class Application {
 		public Application App => this;
 		public AssemblyCollection Assemblies = new AssemblyCollection (); // The root assembly is not in this list.
 
-		public PlatformLinkContext LinkContext;
+		public PlatformLinkContext? LinkContext;
 		public PlatformResolver Resolver = new PlatformResolver ();
 
 		internal StaticRegistrar StaticRegistrar { get; set; }
@@ -42,7 +41,7 @@ namespace Xamarin.Bundler {
 		}
 
 		// This will find the link context, possibly looking in container targets.
-		public PlatformLinkContext GetLinkContext ()
+		public PlatformLinkContext? GetLinkContext ()
 		{
 			if (LinkContext is not null)
 				return LinkContext;
@@ -98,7 +97,7 @@ namespace Xamarin.Bundler {
 
 		public void GatherFrameworks ()
 		{
-			Assembly asm = null;
+			Assembly? asm = null;
 
 			foreach (var assembly in Assemblies) {
 				if (assembly.AssemblyDefinition.Name.Name == Driver.GetProductAssembly (App)) {
@@ -132,8 +131,7 @@ namespace Xamarin.Bundler {
 						continue;
 					processed.Add (nspace);
 
-					Framework framework;
-					if (Driver.GetFrameworks (App).TryGetValue (nspace, out framework)) {
+					if (Driver.GetFrameworks (App).TryGetValue (nspace, out var framework) && framework is not null) {
 						// framework specific processing
 						switch (framework.Name) {
 						case "Metal":
@@ -191,7 +189,7 @@ namespace Xamarin.Bundler {
 		}
 
 #if !LEGACY_TOOLS
-		internal string GenerateReferencingSource (string reference_m, IEnumerable<Symbol> symbols)
+		internal string? GenerateReferencingSource (string reference_m, IEnumerable<Symbol> symbols)
 		{
 			if (!symbols.Any ()) {
 				if (File.Exists (reference_m))

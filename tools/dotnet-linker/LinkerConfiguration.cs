@@ -398,7 +398,8 @@ namespace Xamarin.Linker {
 			}
 
 			Application.CreateCache (significantLines.ToArray ());
-			Application.Cache.Location = CacheDirectory;
+			if (Application.Cache is not null)
+				Application.Cache.Location = CacheDirectory;
 			if (DeploymentTarget is not null)
 				Application.DeploymentTarget = DeploymentTarget;
 			if (SdkVersion is not null) {

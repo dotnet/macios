@@ -13,12 +13,14 @@ using Xamarin.Linker;
 using Xamarin.Tuner;
 using Xamarin.Utils;
 
+#nullable enable
+
 namespace Xamarin.Linker.Steps {
 	public class ListExportedSymbols : BaseStep {
-		PInvokeWrapperGenerator state;
+		PInvokeWrapperGenerator? state;
 		bool is_product_assembly;
 
-		PInvokeWrapperGenerator State {
+		PInvokeWrapperGenerator? State {
 			get {
 				if (state is null && DerivedLinkContext.App.RequiresPInvokeWrappers) {
 					Configuration.PInvokeWrapperGenerationState = new PInvokeWrapperGenerator () {
@@ -122,26 +124,29 @@ namespace Xamarin.Linker.Steps {
 				}
 			}
 
-			var registerAttribute = DerivedLinkContext.StaticRegistrar?.GetRegisterAttribute (type);
+			var staticRegistrar = DerivedLinkContext.StaticRegistrar;
+			if (staticRegistrar is null)
+				return;
+
+			var registerAttribute = staticRegistrar.GetRegisterAttribute (type);
 			if (registerAttribute is null)
 				return;
 
 			if (!registerAttribute.IsWrapper)
 				return;
 
-			if (DerivedLinkContext.StaticRegistrar.HasProtocolAttribute (type))
+			if (staticRegistrar.HasProtocolAttribute (type))
 				return;
 
 			if (DerivedLinkContext.App.RequireLinkWithAttributeForObjectiveCClassSearch) {
-				Assembly asm;
-				bool has_linkwith_attributes = false;
-				if (DerivedLinkContext.App.Assemblies.TryGetValue (type.Module.Assembly, out asm))
+				var has_linkwith_attributes = false;
+				if (DerivedLinkContext.App.Assemblies.TryGetValue (type.Module.Assembly, out var asm))
 					has_linkwith_attributes = asm.HasLinkWithAttributes;
 				if (!has_linkwith_attributes)
 					return;
 			}
 
-			var exportedName = DerivedLinkContext.StaticRegistrar.GetExportedTypeName (type, registerAttribute);
+			var exportedName = staticRegistrar.GetExportedTypeName (type, registerAttribute);
 			DerivedLinkContext.RequiredSymbols.AddObjectiveCClass (exportedName).AddMember (type);
 		}
 
@@ -208,10 +213,9 @@ namespace Xamarin.Linker.Steps {
 
 			if (method.IsPropertyMethod ()) {
 				var property = method.GetProperty ();
-				object symbol;
 				// The Field attribute may have been linked away, but we've stored it in an annotation.
-				if (property is not null && Annotations.GetCustomAnnotations ("ExportedFields").TryGetValue (property, out symbol)) {
-					DerivedLinkContext.RequiredSymbols.AddField ((string) symbol).AddMember (property);
+				if (property is not null && Annotations.GetCustomAnnotations ("ExportedFields").TryGetValue (property, out var symbol) && symbol is string symbolStr) {
+					DerivedLinkContext.RequiredSymbols.AddField (symbolStr).AddMember (property);
 				}
 			}
 

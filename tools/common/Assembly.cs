@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -12,14 +13,16 @@ using ObjCRuntime;
 using Xamarin;
 using Xamarin.Utils;
 
+#nullable enable
+
 namespace Xamarin.Bundler {
 
 	struct NativeReferenceMetadata {
 		public bool ForceLoad;
-		public string Frameworks;
-		public string WeakFrameworks;
-		public string LibraryName;
-		public string LinkerFlags;
+		public string? Frameworks;
+		public string? WeakFrameworks;
+		public string? LibraryName;
+		public string? LinkerFlags;
 		public LinkTarget LinkTarget;
 		public bool NeedsGccExceptionHandling;
 		public bool IsCxx;
@@ -59,6 +62,7 @@ namespace Xamarin.Bundler {
 			get {
 				return full_path;
 			}
+			[MemberNotNull (nameof (full_path))]
 			set {
 				full_path = value;
 				if (!is_framework_assembly.HasValue && !string.IsNullOrEmpty (full_path)) {
@@ -66,7 +70,7 @@ namespace Xamarin.Bundler {
 					is_framework_assembly = App.Configuration.FrameworkAssemblies.Contains (GetIdentity (full_path));
 #else
 					var real_full_path = Application.GetRealPath (full_path);
-					is_framework_assembly = real_full_path.StartsWith (Path.GetDirectoryName (Path.GetDirectoryName (App.Resolver.FrameworkDirectory)), StringComparison.Ordinal);
+					is_framework_assembly = real_full_path.StartsWith (Path.GetDirectoryName (Path.GetDirectoryName (App.Resolver.FrameworkDirectory))!, StringComparison.Ordinal);
 #endif
 				}
 			}
@@ -94,13 +98,12 @@ namespace Xamarin.Bundler {
 		public HashSet<string> WeakFrameworks = new HashSet<string> ();
 		public List<string> LinkerFlags = new List<string> (); // list of extra linker flags
 		public List<string> LinkWith = new List<string> (); // list of paths to native libraries to link with, from LinkWith attributes
-		public HashSet<ModuleReference> UnresolvedModuleReferences;
+		public HashSet<ModuleReference>? UnresolvedModuleReferences;
 		public bool HasLinkWithAttributes { get; private set; }
 
 		bool? symbols_loaded;
 
-		List<string> link_with_resources; // a list of resources that must be removed from the app
-
+		List<string>? link_with_resources; // a list of resources that must be removed from the app
 
 		public Assembly (Application app, AssemblyDefinition definition)
 		{
@@ -183,7 +186,7 @@ namespace Xamarin.Bundler {
 			foreach (XmlNode referenceNode in document.GetElementsByTagName ("NativeReference")) {
 
 				var metadata = new NativeReferenceMetadata ();
-				metadata.LibraryName = Path.Combine (Path.GetDirectoryName (manifestPath), referenceNode.Attributes ["Name"].Value);
+				metadata.LibraryName = Path.Combine (Path.GetDirectoryName (manifestPath)!, referenceNode.Attributes? ["Name"]?.Value!);
 
 				var attributes = new Dictionary<string, string> ();
 				foreach (XmlNode attribute in referenceNode.ChildNodes)
@@ -247,7 +250,6 @@ namespace Xamarin.Bundler {
 				if (!string.IsNullOrEmpty (linkWith.LibraryName)) {
 					switch (Path.GetExtension (linkWith.LibraryName).ToLowerInvariant ()) {
 					case ".framework": {
-						AssertiOSVersionSupportsUserFrameworks (linkWith.LibraryName);
 						// TryExtractFramework prints a error/warning if something goes wrong, so no need for us to have an error handling path.
 						if (TryExtractFramework (assembly, metadata, out var framework))
 							Frameworks.Add (framework);
@@ -268,14 +270,6 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		void AssertiOSVersionSupportsUserFrameworks (string path)
-		{
-			if (App.Platform == ApplePlatform.iOS && App.DeploymentTarget.Major < 8) {
-				throw ErrorHelper.CreateError (1305, Errors.MT1305,
-					FileName, Path.GetFileName (path), App.DeploymentTarget);
-			}
-		}
-
 		void ProcessNativeReferenceOptions (NativeReferenceMetadata metadata)
 		{
 			// We can't add -dead_strip if there are any LinkWith attributes where smart linking is disabled.
@@ -291,7 +285,7 @@ namespace Xamarin.Bundler {
 			if (!string.IsNullOrEmpty (metadata.LinkerFlags)) {
 				if (LinkerFlags is null)
 					LinkerFlags = new List<string> ();
-				if (!StringUtils.TryParseArguments (metadata.LinkerFlags, out string [] args, out var ex))
+				if (!StringUtils.TryParseArguments (metadata.LinkerFlags, out var args, out var ex))
 					throw ErrorHelper.CreateError (148, ex, Errors.MX0148, metadata.LinkerFlags, metadata.LibraryName, FileName, ex.Message);
 				LinkerFlags.AddRange (args);
 			}
@@ -322,9 +316,13 @@ namespace Xamarin.Bundler {
 				LinkWithSwiftSystemLibraries = true;
 		}
 
-		bool TryExtractNativeLibrary (AssemblyDefinition assembly, NativeReferenceMetadata metadata, out string library)
+		bool TryExtractNativeLibrary (AssemblyDefinition assembly, NativeReferenceMetadata metadata, [NotNullWhen (true)] out string? library)
 		{
-			string path = Path.Combine (App.Cache.Location, metadata.LibraryName);
+			if (metadata.LibraryName is null || App.Cache is null) {
+				library = null;
+				return false;
+			}
+			var path = Path.Combine (App.Cache.Location, metadata.LibraryName);
 
 			library = null;
 
@@ -346,9 +344,13 @@ namespace Xamarin.Bundler {
 			return true;
 		}
 
-		bool TryExtractFramework (AssemblyDefinition assembly, NativeReferenceMetadata metadata, out string framework)
+		bool TryExtractFramework (AssemblyDefinition assembly, NativeReferenceMetadata metadata, [NotNullWhen (true)] out string? framework)
 		{
-			string path = Path.Combine (App.Cache.Location, metadata.LibraryName);
+			if (metadata.LibraryName is null || App.Cache is null) {
+				framework = null;
+				return false;
+			}
+			var path = Path.Combine (App.Cache.Location, metadata.LibraryName);
 
 			var zipPath = path + ".zip";
 
@@ -576,8 +578,8 @@ namespace Xamarin.Bundler {
 #endif
 					default:
 						if (App.Platform == ApplePlatform.MacOSX) {
-							string path = Path.GetDirectoryName (name);
-							if (!path.StartsWith ("/System/Library/Frameworks", StringComparison.Ordinal))
+							var path = Path.GetDirectoryName (name);
+							if (path?.StartsWith ("/System/Library/Frameworks", StringComparison.Ordinal) != true)
 								continue;
 
 							// CoreServices has multiple sub-frameworks that can be used by customer code
@@ -640,7 +642,7 @@ namespace Xamarin.Bundler {
 			this.comparer = comparer;
 		}
 
-		public bool Equals (string x, string y)
+		public bool Equals (string? x, string? y)
 		{
 			// From what I gather it doesn't matter which normalization form
 			// is used, but I chose Form D because HFS normalizes to Form D.
@@ -651,9 +653,9 @@ namespace Xamarin.Bundler {
 			return comparer.Equals (x, y);
 		}
 
-		public int GetHashCode (string obj)
+		public int GetHashCode (string? obj)
 		{
-			return comparer.GetHashCode (obj?.Normalize (System.Text.NormalizationForm.FormD));
+			return comparer.GetHashCode (obj?.Normalize (System.Text.NormalizationForm.FormD) ?? "");
 		}
 	}
 
@@ -662,8 +664,7 @@ namespace Xamarin.Bundler {
 
 		public void Add (Assembly assembly)
 		{
-			Assembly other;
-			if (HashedAssemblies.TryGetValue (assembly.Identity, out other))
+			if (HashedAssemblies.TryGetValue (assembly.Identity, out var other))
 				throw ErrorHelper.CreateError (2018, Errors.MT2018, assembly.Identity, other.FullPath, assembly.FullPath);
 			HashedAssemblies.Add (assembly.Identity, assembly);
 		}
@@ -684,12 +685,12 @@ namespace Xamarin.Bundler {
 			get { return HashedAssemblies; }
 		}
 
-		public bool TryGetValue (string identity, out Assembly assembly)
+		public bool TryGetValue (string identity, [NotNullWhen (true)] out Assembly? assembly)
 		{
 			return HashedAssemblies.TryGetValue (identity, out assembly);
 		}
 
-		public bool TryGetValue (AssemblyDefinition asm, out Assembly assembly)
+		public bool TryGetValue (AssemblyDefinition asm, [NotNullWhen (true)] out Assembly? assembly)
 		{
 			return HashedAssemblies.TryGetValue (Assembly.GetIdentity (asm), out assembly);
 		}

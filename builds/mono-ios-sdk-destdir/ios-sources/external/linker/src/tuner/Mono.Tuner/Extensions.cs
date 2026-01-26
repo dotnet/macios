@@ -5,12 +5,14 @@ using Mono.Cecil;
 
 using Mono.Linker;
 
+#nullable enable
+
 namespace Mono.Tuner {
 
 	public static partial class Extensions {
 
 #if !LEGACY_TOOLS
-		public static bool TryGetLinkedAssembly (this LinkContext context, string name, out AssemblyDefinition assembly)
+		public static bool TryGetLinkedAssembly (this LinkContext context, string name, [NotNullWhen (true)] out AssemblyDefinition? assembly)
 		{
 			assembly = GetAssembly (context, name);
 			if (assembly is null)
@@ -20,7 +22,7 @@ namespace Mono.Tuner {
 		}
 #endif
 
-		public static AssemblyDefinition GetAssembly (this LinkContext context, string assembly_name)
+		public static AssemblyDefinition? GetAssembly (this LinkContext context, string assembly_name)
 		{
 			foreach (var assembly in context.GetAssemblies ())
 				if (assembly.Name.Name == assembly_name)

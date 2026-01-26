@@ -1195,7 +1195,7 @@ namespace Xamarin.Linker {
 		}
 
 #if NET
-		public bool TryGet_NSObject_RegisterToggleRef (out MethodDefinition? md)
+		public bool TryGet_NSObject_RegisterToggleRef ([NotNullWhen (true)] out MethodDefinition? md)
 		{
 			// the NSObject.RegisterToggleRef method isn't present on all platforms (for example on Mac)
 			try {

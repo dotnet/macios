@@ -275,7 +275,7 @@ namespace Foundation {
 			if (!ValidateFromObjectsAndKeys (objects, keys))
 				return new NSDictionary<TKey, TValue> ();
 
-			return FromObjectsAndKeys (objects, keys, keys.Length);
+			return FromObjectsAndKeys (objects, keys, objects.Length);
 		}
 
 		/// <summary>

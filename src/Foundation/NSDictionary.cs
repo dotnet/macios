@@ -139,8 +139,11 @@ namespace Foundation {
 			ArgumentNullException.ThrowIfNull (objects);
 			ArgumentNullException.ThrowIfNull (keys);
 
-			if (count < 0 || objects.Length < count || keys.Length < count)
-				throw new ArgumentException (nameof (count));
+			if (count < 0)
+				throw new ArgumentOutOfRangeException (nameof (count), "Must be non-negative and not greater than the length of either array");
+
+			if (objects.Length < count || keys.Length < count)
+				throw new ArgumentException ("Must be non-negative and not greater than the length of either array", nameof (count));
 
 			return count > 0;
 		}
@@ -171,7 +174,7 @@ namespace Foundation {
 			if (!ValidateFromObjectsAndKeys (objects, keys))
 				return new NSDictionary ();
 
-			return FromObjectsAndKeys (objects, keys, keys.Length);
+			return FromObjectsAndKeys (objects, keys, objects.Length);
 		}
 
 		/// <summary>

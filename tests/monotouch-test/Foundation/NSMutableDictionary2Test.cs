@@ -203,7 +203,7 @@ namespace MonoTouchFixtures.Foundation {
 			var values = new NSString [] { (NSString) "value1", (NSString) "value2" };
 
 			// Should throw for negative count
-			Assert.Throws<ArgumentException> (() => NSMutableDictionary<NSString, NSString>.FromObjectsAndKeys (values, keys, -1), "Should throw for negative count");
+			Assert.Throws<ArgumentOutOfRangeException> (() => NSMutableDictionary<NSString, NSString>.FromObjectsAndKeys (values, keys, -1), "Should throw for negative count");
 		}
 
 		[Test]

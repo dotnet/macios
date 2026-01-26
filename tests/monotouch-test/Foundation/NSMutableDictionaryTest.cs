@@ -309,7 +309,7 @@ namespace monotouchtest {
 			var objs = new NSObject [] { new NSString ("value1"), new NSString ("value2") };
 
 			// Should throw for negative count
-			Assert.Throws<ArgumentException> (() => NSMutableDictionary.FromObjectsAndKeys (objs, keys, -1), "Should throw for negative count");
+			Assert.Throws<ArgumentOutOfRangeException> (() => NSMutableDictionary.FromObjectsAndKeys (objs, keys, -1), "Should throw for negative count");
 		}
 	}
 }

@@ -78,7 +78,7 @@ Microsoft.iOS.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::A
 Microsoft.iOS.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Descending
 Microsoft.iOS.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Same
 Microsoft.iOS.dll:Foundation.NSDictionary
-Microsoft.iOS.dll:Foundation.NSDictionary Foundation.NSDictionary/<GetEnumerator>d__64::<>4__this
+Microsoft.iOS.dll:Foundation.NSDictionary Foundation.NSDictionary/<GetEnumerator>d__66::<>4__this
 Microsoft.iOS.dll:Foundation.NSDictionary._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSDictionary._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:Foundation.NSDictionary..cctor()
@@ -91,11 +91,11 @@ Microsoft.iOS.dll:Foundation.NSDictionary.GetEnumerator()
 Microsoft.iOS.dll:Foundation.NSDictionary.ObjectForKey(Foundation.NSObject)
 Microsoft.iOS.dll:Foundation.NSDictionary.System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.CopyTo(System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject>[], System.Int32)
 Microsoft.iOS.dll:Foundation.NSDictionary.System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.get_Count()
-Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__64
-Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__64..ctor(System.Int32)
-Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__64.MoveNext()
-Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__64.System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.get_Current()
-Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__64.System.IDisposable.Dispose()
+Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66
+Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66..ctor(System.Int32)
+Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66.MoveNext()
+Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66.System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.get_Current()
+Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66.System.IDisposable.Dispose()
 Microsoft.iOS.dll:Foundation.NSException
 Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionEventArgs::<Exception>k__BackingField
 Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionEventArgs::Exception()
@@ -166,7 +166,7 @@ Microsoft.iOS.dll:Foundation.NSObject.ToString()
 Microsoft.iOS.dll:Foundation.NSObject.xamarin_release_managed_ref(System.IntPtr, System.Byte)
 Microsoft.iOS.dll:Foundation.NSObject.xamarin_set_gchandle_with_flags_safe(System.IntPtr, System.IntPtr, Foundation.NSObject/XamarinGCHandleFlags, System.IntPtr)
 Microsoft.iOS.dll:Foundation.NSObject[] Foundation.NSDictionary::Keys()
-Microsoft.iOS.dll:Foundation.NSObject[] Foundation.NSDictionary/<GetEnumerator>d__64::<>7__wrap1
+Microsoft.iOS.dll:Foundation.NSObject[] Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap1
 Microsoft.iOS.dll:Foundation.NSObject/Flags
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject::flags()
 Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::Disposed
@@ -1280,8 +1280,8 @@ Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Obj
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_bool_ctor_cache
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_ctor_cache
 Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.UInt64,System.Reflection.MemberInfo> ObjCRuntime.Class::token_to_member
-Microsoft.iOS.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__64::<>2__current
-Microsoft.iOS.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__64::System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Current()
+Microsoft.iOS.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::<>2__current
+Microsoft.iOS.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Current()
 Microsoft.iOS.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::drainList1
 Microsoft.iOS.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::drainList2
 Microsoft.iOS.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::handles
@@ -1294,8 +1294,8 @@ Microsoft.iOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs:
 Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,System.String> CoreFoundation.CFArray/<>O::<0>__FromHandle
 Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__24_0`1::<0>__DefaultConvert
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary::System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Count()
-Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__64::<>1__state
-Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__64::<>7__wrap2
+Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>1__state
+Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap2
 Microsoft.iOS.dll:System.Int32 Foundation.NSObjectFlag::value__
 Microsoft.iOS.dll:System.Int32 ObjCRuntime.Arch::value__
 Microsoft.iOS.dll:System.Int32 ObjCRuntime.ArgumentSemantic::value__

@@ -178,7 +178,7 @@ run-bare:
 
 # Get the list of applicable simulators, and pick the first in the list.
 # Make sure to have a matching simulator runtime installed, otherwise this won't work.
-run-old: RUN_ARGUMENTS=-p:_DeviceName=$(shell xcrun simctl list devices "$(PLATFORM) $(MIN_$(PLATFORM_UPPERCASE)_SIMULATOR_VERSION)" -j | jq -c '.[][][].udid' | head -1 | sed 's/"//g')
+run-old: RUN_ARGUMENTS=-p:Device=$(shell xcrun simctl list devices "$(PLATFORM) $(MIN_$(PLATFORM_UPPERCASE)_SIMULATOR_VERSION)" -j | jq -c '.[][][].udid' | head -1 | sed 's/"//g')
 run-old: export RUNTIMEIDENTIFIER=
 run-old:
 	$(MAKE) run

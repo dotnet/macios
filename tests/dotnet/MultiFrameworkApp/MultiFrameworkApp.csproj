@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net$(BundledNETCoreAppTargetFrameworkVersion)-ios;net$(BundledNETCoreAppTargetFrameworkVersion)-tvos;net$(BundledNETCoreAppTargetFrameworkVersion)-maccatalyst;net$(BundledNETCoreAppTargetFrameworkVersion)-macos</TargetFrameworks>
+		<OutputType>Exe</OutputType>
+
+		<ApplicationTitle>MultiFrameworkApp</ApplicationTitle>
+		<ApplicationId>com.xamarin.multiframeworkapp</ApplicationId>
+
+		<ExcludeNUnitLiteReference>true</ExcludeNUnitLiteReference>
+		<ExcludeTouchUnitReference>true</ExcludeTouchUnitReference>
+	</PropertyGroup>
+
+	<Import Project="../../common/shared-dotnet.csproj" />
+</Project>

@@ -1130,7 +1130,6 @@ namespace Xamarin.Linker {
 		CustomAttribute CreateUnmanagedCallersAttribute (string entryPoint)
 		{
 			var unmanagedCallersAttribute = new CustomAttribute (abr.UnmanagedCallersOnlyAttribute_Constructor);
-			// Mono didn't prefix the entry point with an underscore until .NET 8: https://github.com/dotnet/runtime/issues/79491
 			unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPoint)));
 			return unmanagedCallersAttribute;
 		}

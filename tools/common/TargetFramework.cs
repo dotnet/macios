@@ -93,10 +93,10 @@ namespace Xamarin.Utils {
 			}
 
 			if (identifier is null)
-				throw new Exception ($"No identifier found in target framework '{targetFrameworkString}");
+				return false;
 
 			if (version is null)
-				throw new Exception ($"No version found in target framework '{targetFrameworkString}");
+				return false;
 
 			identifier = identifier.Trim ();
 			version = version.Trim ();

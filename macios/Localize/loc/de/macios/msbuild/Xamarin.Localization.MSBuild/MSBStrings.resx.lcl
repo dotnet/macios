@@ -178,18 +178,6 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";E0032" ItemType="0;.resx" PsrId="211" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Could not locate SDK bin directory]]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Das bin-Verzeichnis für das SDK wurde nicht gefunden.]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Could not locate SDK bin directory]D;]A;        ]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
       <Item ItemId=";E0044" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Could not find a valid Xcode app bundle at '{0}'. Please update your Apple SDK location in Visual Studio's preferences {1}.]]></Val>
@@ -471,18 +459,6 @@
           </Tgt>
           <Prev Cat="Text">
             <Val><![CDATA[Could not locate the {0} '{1}' SDK at path '{}']D;]A;        ]]></Val>
-          </Prev>
-        </Str>
-        <Disp Icon="Str" />
-      </Item>
-      <Item ItemId=";E0085" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
-        <Str Cat="Text">
-          <Val><![CDATA[Could not locate the {0} '{1}' SDK usr path at '{2}']]></Val>
-          <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Der SDK-USR-Pfad {0} „{1}“ wurde unter „{2}“ nicht gefunden.]]></Val>
-          </Tgt>
-          <Prev Cat="Text">
-            <Val><![CDATA[Could not locate the {0} '{1}' SDK usr path at '{2}']D;]A;        ]]></Val>
           </Prev>
         </Str>
         <Disp Icon="Str" />
@@ -2736,6 +2712,15 @@
           <Val><![CDATA[Unable to copy the inputs to this task to the remote build server for unknown reasons. The build log may have more information.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Die Eingaben für diese Aufgabe können aus unbekannten Gründen nicht auf den Remotebuildserver kopiert werden. Im Buildprotokoll finden sich möglicherweise weitere Informationen.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7169" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Für die Aufgabe „{0}“ muss die Eigenschaft „{1}“ festgelegt werden. Melden Sie unter https://github.com/dotnet/macios/issues/new/choose ein Problem.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

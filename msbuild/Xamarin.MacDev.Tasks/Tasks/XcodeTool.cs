@@ -3,18 +3,20 @@ using System.IO;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Threading;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Xamarin.Localization.MSBuild;
 
 using Xamarin.MacDev;
+using Xamarin.Messaging.Build.Client;
 
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	public abstract class XcodeToolTaskBase : XamarinTask, IHasProjectDir, IHasResourcePrefix {
-		string? toolExe;
+	public abstract class XcodeToolTaskBase : XamarinTask, IHasProjectDir, IHasResourcePrefix, ICancelableTask {
+		CancellationTokenSource cancellationTokenSource = new ();
 
 		#region Inputs
 
@@ -27,11 +29,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string ResourcePrefix { get; set; } = string.Empty;
 
-		public string ToolExe {
-			get { return toolExe ?? ToolName; }
-			set { toolExe = value; }
-		}
-
 		public string ToolPath { get; set; } = string.Empty;
 
 		#endregion
@@ -43,27 +40,11 @@ namespace Xamarin.MacDev.Tasks {
 
 		#endregion
 
-		protected abstract string DefaultBinDir {
-			get;
-		}
-
-		protected string DeveloperRootBinDir {
-			get { return Path.Combine (GetSdkDevPath (), "usr", "bin"); }
-		}
-
-		protected string DevicePlatformBinDir {
-			get { return Path.Combine (GetSdkDevPath (), "Platforms", "iPhoneOS.platform", "Developer", "usr", "bin"); }
-		}
-
-		protected string SimulatorPlatformBinDir {
-			get { return Path.Combine (GetSdkDevPath (), "Platforms", "iPhoneSimulator.platform", "Developer", "usr", "bin"); }
-		}
-
 		protected abstract string ToolName { get; }
 
 		protected abstract IEnumerable<ITaskItem> EnumerateInputs ();
 
-		protected abstract void AppendCommandLineArguments (IDictionary<string, string?> environment, List<string> args, ITaskItem input, ITaskItem output);
+		protected abstract void AppendCommandLineArguments (List<string> args, ITaskItem input, ITaskItem output);
 
 		protected virtual string GetBundleRelativeOutputPath (ITaskItem input)
 		{
@@ -83,24 +64,14 @@ namespace Xamarin.MacDev.Tasks {
 			return !File.Exists (dest) || File.GetLastWriteTimeUtc (src) > File.GetLastWriteTimeUtc (dest);
 		}
 
-		string GetFullPathToTool ()
-		{
-			if (!string.IsNullOrEmpty (ToolPath))
-				return Path.Combine (ToolPath, ToolExe);
-
-			var path = Path.Combine (DefaultBinDir, ToolExe);
-
-			return File.Exists (path) ? path : ToolExe;
-		}
-
 		int ExecuteTool (ITaskItem input, ITaskItem output)
 		{
-			var environment = new Dictionary<string, string?> ();
 			var args = new List<string> ();
 
-			AppendCommandLineArguments (environment, args, input, output);
+			AppendCommandLineArguments (args, input, output);
 
-			var rv = ExecuteAsync (GetFullPathToTool (), args, environment: environment).Result;
+			var executable = GetExecutable (args, ToolName, ToolPath);
+			var rv = ExecuteAsync (executable, args, cancellationToken: cancellationTokenSource.Token).Result;
 			return rv.ExitCode;
 		}
 
@@ -141,6 +112,15 @@ namespace Xamarin.MacDev.Tasks {
 			BundleResources = bundleResources.ToArray ();
 
 			return !Log.HasLoggedErrors;
+		}
+
+		public void Cancel ()
+		{
+			if (ShouldExecuteRemotely ()) {
+				BuildConnection.CancelAsync (BuildEngine4).Wait ();
+			} else {
+				cancellationTokenSource?.Cancel ();
+			}
 		}
 	}
 }

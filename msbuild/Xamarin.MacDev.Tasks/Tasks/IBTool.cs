@@ -11,7 +11,7 @@ using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks {
-	public class IBTool : XcodeCompilerToolTask, ICancelableTask {
+	public class IBTool : XcodeCompilerToolTask {
 		static readonly string [] WatchAppExtensions = { "-glance.plist", "-notification.plist" };
 
 		#region Inputs
@@ -29,10 +29,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string SdkRoot { get; set; } = string.Empty;
 
 		#endregion
-
-		protected override string DefaultBinDir {
-			get { return DeveloperRootBinDir; }
-		}
 
 		protected override string ToolName {
 			get { return "ibtool"; }
@@ -458,12 +454,6 @@ namespace Xamarin.MacDev.Tasks {
 			Log.LogTaskProperty ("OutputManifests Output", OutputManifests);
 
 			return !Log.HasLoggedErrors;
-		}
-
-		public void Cancel ()
-		{
-			if (ShouldExecuteRemotely ())
-				BuildConnection.CancelAsync (BuildEngine4).Wait ();
 		}
 	}
 }

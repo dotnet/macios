@@ -350,6 +350,7 @@
 			ResolveReferences;
 			_DetectSdkLocations;
 			_GenerateBundleName;
+			_CompileEntitlements;
 		</_RunRidSpecificBuildDependsOn>
 	</PropertyGroup>
 
@@ -394,6 +395,7 @@
 				_ProcessedColladaAssetsPath=$(_ProcessedColladaAssetsPath);
 				_ProcessedTextureAtlasesPath=$(_ProcessedTextureAtlasesPath);
 				_ProcessedCoreMLModelsPath=$(_ProcessedCoreMLModelsPath);
+				_CompiledEntitlements=$(_CompiledEntitlements);
 				_CompiledEntitlementsPath=$(_CompiledEntitlementsPath);
 			</_RidSpecificProperties>
 		</PropertyGroup>

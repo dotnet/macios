@@ -73,15 +73,15 @@ namespace UIKit {
 
 		// UIAccessibility.h
 		[DllImport (Constants.UIKitLibrary)]
-		extern static /* NSObject */ IntPtr UIAccessibilityFocusedElement (IntPtr assistiveTechnologyIdentifier);
+		extern static /* __nullable NSObject */ IntPtr UIAccessibilityFocusedElement (/* __nullable */ IntPtr assistiveTechnologyIdentifier);
 
 		/// <param name="assistiveTechnologyIdentifier">The identifier of the assistive technology to query.</param>
 		/// <summary>Retrieves the currently focused element for the specified assistive technology.</summary>
 		/// <returns>The focused element, or <see langword="null"/> if no element is focused.</returns>
-		public static NSObject? FocusedElement (string assistiveTechnologyIdentifier)
+		public static NSObject? FocusedElement (string? assistiveTechnologyIdentifier)
 		{
-			using (var s = new NSString (assistiveTechnologyIdentifier))
-				return Runtime.GetNSObject (UIAccessibilityFocusedElement (s.Handle));
+			using var s = new TransientCFString (assistiveTechnologyIdentifier);
+			return Runtime.GetNSObject (UIAccessibilityFocusedElement (s));
 		}
 
 		// UIAccessibility.h

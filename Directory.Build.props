@@ -18,5 +18,14 @@
 		<!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.1 brought by Microsoft.Build.Tasks.Core package -->
 		<SystemSecurityCryptographyXmlPackageVersion>8.0.0</SystemSecurityCryptographyXmlPackageVersion>
 	</PropertyGroup>
+
+	<PropertyGroup>
+		<!-- workarounds for https://github.com/dotnet/runtime/issues/123503 -->
+		<!-- https://github.com/dotnet/macios/issues/24558 -->
+		<EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+		<EnableAotAnalyzer>false</EnableAotAnalyzer>
+		<NoWarn>$(NoWarn);AD0001</NoWarn>
+	</PropertyGroup>
+
 	<Import Project="Build.props" Condition="Exists('Build.props')" />
 </Project>

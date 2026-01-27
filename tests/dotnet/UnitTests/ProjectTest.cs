@@ -2534,6 +2534,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[Ignore ("https://github.com/dotnet/macios/issues/24558")]
 		public void BuildMyNativeAotAppWithTrimAnalysisWarning (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "MyNativeAotAppWithTrimAnalysisWarning";

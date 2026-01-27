@@ -24041,11 +24041,6 @@ P:UIKit.NSTextStorageEventArgs.EditedMask
 P:UIKit.NSTextStorageEventArgs.EditedRange
 P:UIKit.NSTextViewportLayoutController.Delegate
 P:UIKit.UIAccelerometerEventArgs.Acceleration
-P:UIKit.UIAccessibility.ButtonShapesEnabled
-P:UIKit.UIAccessibility.IsOnOffSwitchLabelsEnabled
-P:UIKit.UIAccessibility.IsVideoAutoplayEnabled
-P:UIKit.UIAccessibility.PrefersCrossFadeTransitions
-P:UIKit.UIAccessibility.ShouldDifferentiateWithoutColor
 P:UIKit.UIAccessibilityAnnouncementFinishedEventArgs.Announcement
 P:UIKit.UIAccessibilityAnnouncementFinishedEventArgs.WasSuccessful
 P:UIKit.UIApplication.AccessibilityActivationPoint

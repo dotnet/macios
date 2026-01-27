@@ -27,7 +27,7 @@ namespace Xamarin.Bundler {
 		public static int RunCommand (string path, IList<string> args, Dictionary<string, string?>? env, out StringBuilder output, bool suppressPrintOnErrors)
 		{
 			output = new StringBuilder ();
-			return RunCommand (path, args, env, output, output, suppressPrintOnErrors, Verbosity);
+			return RunCommand (path, args, env, output, suppressPrintOnErrors, Verbosity);
 		}
 
 		public static int RunCommand (string path, IList<string> args, Dictionary<string, string?>? env, StringBuilder output, bool suppressPrintOnErrors, int verbosity)

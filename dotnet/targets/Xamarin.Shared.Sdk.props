@@ -137,6 +137,11 @@
 
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<!-- Disable the default PublishRuntimeIdentifier behavior: https://github.com/dotnet/sdk/pull/52566 -->
+		<UseDefaultPublishRuntimeIdentifier>false</UseDefaultPublishRuntimeIdentifier>
+	</PropertyGroup>
+
 	<!-- Now that we know the runtime identifier, we can determine if we're building for a simulator -->
 	<PropertyGroup>
 		<_SdkIsSimulator Condition="$(RuntimeIdentifier.Contains('simulator')) Or $(RuntimeIdentifiers.Contains('simulator'))">true</_SdkIsSimulator>

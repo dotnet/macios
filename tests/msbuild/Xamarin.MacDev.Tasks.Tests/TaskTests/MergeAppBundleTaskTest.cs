@@ -129,7 +129,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
 			var task = CreateTask (outputBundle, bundles);
-			Assert.IsTrue (task.Execute (), "Task execution");
+			ExecuteTask (task);
 
 			// The bundle should have all the files
 			Assert.AreEqual (complexFiles.Length, Directory.GetFileSystemEntries (outputBundle).Length, "Files in bundle");
@@ -151,8 +151,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
 			var task = CreateTask (outputBundle, bundles);
-			Assert.IsFalse (task.Execute (), "Task execution");
-			Assert.AreEqual (3, Engine.Logger.ErrorEvents.Count, "Errors:\n\t" + string.Join ("\n\t", Engine.Logger.ErrorEvents.Select ((v) => v.Message).ToArray ()));
+			ExecuteTask (task, 3);
 			Assert.AreEqual ("Unable to merge the file 'Something.txt', it's different between the input app bundles.", Engine.Logger.ErrorEvents [0].Message, "Error message");
 			Assert.That (Engine.Logger.ErrorEvents [1].Message, Does.Match ("App bundle file #1: .*/MergeMe.app/Something.txt"), "Error message 2");
 			Assert.That (Engine.Logger.ErrorEvents [2].Message, Does.Match ("App bundle file #2: .*/MergeMe.app/Something.txt"), "Error message 3");
@@ -177,7 +176,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
 			var task = CreateTask (outputBundle, bundleA, bundleB);
-			Assert.IsTrue (task.Execute (), "Task execution");
+			ExecuteTask (task);
 			Assert.IsTrue (PathUtils.IsSymlink (Path.Combine (outputBundle, "B.txt")), "IsSymlink");
 		}
 
@@ -205,8 +204,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
 			var task = CreateTask (outputBundle, bundleA, bundleB);
-			Assert.IsFalse (task.Execute (), "Task execution");
-			Assert.AreEqual (3, Engine.Logger.ErrorEvents.Count, "Errors:\n\t" + string.Join ("\n\t", Engine.Logger.ErrorEvents.Select ((v) => v.Message).ToArray ()));
+			ExecuteTask (task, 3);
 			Assert.AreEqual ("Can't merge the symlink 'B.txt', it has different targets.", Engine.Logger.ErrorEvents [0].Message, "Error message");
 			Assert.That (Engine.Logger.ErrorEvents [1].Message, Does.Match ("App bundle file #1: .*/MergeMe.app/B.txt"), "Error message 2");
 			Assert.That (Engine.Logger.ErrorEvents [2].Message, Does.Match ("App bundle file #2: .*/MergeMe.app/B.txt"), "Error message 3");
@@ -239,7 +237,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
 			var task = CreateTask (outputBundle, bundleA, bundleB);
-			Assert.IsTrue (task.Execute (), "Task execution");
+			ExecuteTask (task);
 			Assert.That (Path.Combine (outputBundle, onlyA), Does.Exist, "onlyA");
 			Assert.That (Path.Combine (outputBundle, onlyB), Does.Exist, "onlyB");
 			Assert.That (Path.Combine (outputBundle, bothAB), Does.Exist, "bothAB");
@@ -261,7 +259,7 @@ namespace Xamarin.MacDev.Tasks {
 			var bundle = CreateAppBundle (Path.GetDirectoryName (fileA), Path.GetFileName (fileA));
 			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
 			var task = CreateTask (outputBundle, bundle);
-			Assert.IsTrue (task.Execute (), "Task execution");
+			ExecuteTask (task);
 
 			// The bundle should only contain a single file.
 			Assert.AreEqual (1, Directory.GetFileSystemEntries (outputBundle).Length, "Files in bundle");
@@ -294,7 +292,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
 			var task = CreateTask (outputBundle, bundleA, bundleB);
-			Assert.IsTrue (task.Execute (), "Task execution");
+			ExecuteTask (task);
 			Assert.IsTrue (PathUtils.IsSymlink (Path.Combine (outputBundle, "B")), "IsSymlink");
 			Assert.IsFalse (PathUtils.IsSymlink (Path.Combine (outputBundle, "A", "A.txt")), "IsSymlink");
 			Assert.IsFalse (PathUtils.IsSymlink (Path.Combine (outputBundle, "B", "A.txt")), "IsSymlink");

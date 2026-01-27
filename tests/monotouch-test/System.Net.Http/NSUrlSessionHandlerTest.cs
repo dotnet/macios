@@ -37,6 +37,7 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("First request failed or timed out - cannot verify the bug.");
 			}
 
+			IgnoreIfExceptionDueToBackgroundServiceInUseByAnotherProcess (ex);
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
 			Assert.IsNull (ex, "First request exception");
 
@@ -56,8 +57,26 @@ namespace MonoTests.System.Net.Http {
 				Assert.Fail ("Second request timedout - this indicates the bug is present.");
 			}
 
+			IgnoreIfExceptionDueToBackgroundServiceInUseByAnotherProcess (ex);
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
 			Assert.IsNull (ex, "Second request exception");
+		}
+
+		void IgnoreIfExceptionDueToBackgroundServiceInUseByAnotherProcess (Exception? e)
+		{
+			if (e is null)
+				return;
+
+			if (e is not HttpRequestException hre)
+				return;
+
+			if (hre.InnerException is not NSErrorException nee)
+				return;
+
+			if (nee.Code != (nint) NSUrlError.BackgroundSessionInUseByAnotherProcess)
+				return;
+
+			Assert.Ignore ("The background service is in use by another process.");
 		}
 	}
 }

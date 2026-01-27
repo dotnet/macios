@@ -17,9 +17,9 @@ cd "$(dirname "$0")"
 
 # Detect OS for sed syntax
 if [[ "$OSTYPE" == "darwin"* ]]; then
-	SED_INPLACE_FLAGS="-i ''"
+	SED_INPLACE_FLAGS=(-i '')
 else
-	SED_INPLACE_FLAGS="-i"
+	SED_INPLACE_FLAGS=(-i)
 fi
 
 if test -z "$1"; then
@@ -111,12 +111,12 @@ for proj in $(sort "$REFERENCES_PATH" | uniq); do
 
 	# The output contains relative paths, relative to the csproj directory
 	# Change those to full paths by prepending the csproj directory.
-	sed $SED_INPLACE_FLAGS "s@^@$proj_dir/@" "$inputs_path"
+	sed "${SED_INPLACE_FLAGS[@]}" "s@^@$proj_dir/@" "$inputs_path"
 
 	# Change to Make syntax. This is horrifically difficult in MSBuild,
 	# because MSBuild blindly replaces backslashes with forward slashes (i.e.
 	# windows paths to unix paths...)
-	sed $SED_INPLACE_FLAGS "s_^\\(.*\\)\$_    \\1 \\\\_" "$inputs_path"
+	sed "${SED_INPLACE_FLAGS[@]}" "s_^\\(.*\\)\$_    \\1 \\\\_" "$inputs_path"
 
 	# Clean up
 	rm -f "$TMPPROJ"
@@ -132,7 +132,7 @@ sort "${INPUT_PATHS[@]}" | uniq >> "$FRAGMENT_PATH"
 
 # Simplify paths somewhat by removing the current directory
 if test -z "$ABSOLUTE_PATHS"; then
-	sed $SED_INPLACE_FLAGS "s@$PROJECT_DIR/@@" "$FRAGMENT_PATH"
+	sed "${SED_INPLACE_FLAGS[@]}" "s@$PROJECT_DIR/@@" "$FRAGMENT_PATH"
 fi
 
 # Cleanup

@@ -3,7 +3,6 @@ Make.config.inc
 Make.config.local
 configure.inc
 dotnet.config
-ProjectInspector.csproj
 _ios-build
 _mac-build
 _build

@@ -6,9 +6,9 @@ CLEAR=$(tput sgr0 || true)
 
 # Detect the OS to use the right sed syntax
 if [[ "$(uname -s)" == "Darwin" ]]; then
-	SED_INPLACE="-i ''"
+	SED_INPLACE_FLAGS="-i ''"
 else
-	SED_INPLACE="-i"
+	SED_INPLACE_FLAGS="-i"
 fi
 
 OUTPUTPATH=
@@ -51,16 +51,16 @@ cd "$(git rev-parse --show-toplevel)"
 git grep -e '<PackageReference.*Include="[a-zA-Z0-9._-]*".*Version="[a-zA-Z0-9._-]*".*>' -h > "$TMPPATH"
 
 # Replace double double quotes with a single double quote. This happens in source code that generates project files (for tests).
-sed $SED_INPLACE 's/""/"/g' "$TMPPATH"
+sed $SED_INPLACE_FLAGS 's/""/"/g' "$TMPPATH"
 
 # Remove packages that we build locally
-sed $SED_INPLACE '/Xamarin.Tests.FrameworksInRuntimesNativeDirectory/d' "$TMPPATH"
-sed $SED_INPLACE '/Xamarin.Tests.DynamicLibrariesInRuntimesNativeDirectory/d' "$TMPPATH"
-sed $SED_INPLACE '/Xamarin.Tests.XCFrameworkWithStaticLibraryInRuntimesNativeDirectory/d' "$TMPPATH"
-sed $SED_INPLACE '/Xamarin.Tests.XCFrameworkWithSymlinks/d' "$TMPPATH"
+sed $SED_INPLACE_FLAGS '/Xamarin.Tests.FrameworksInRuntimesNativeDirectory/d' "$TMPPATH"
+sed $SED_INPLACE_FLAGS '/Xamarin.Tests.DynamicLibrariesInRuntimesNativeDirectory/d' "$TMPPATH"
+sed $SED_INPLACE_FLAGS '/Xamarin.Tests.XCFrameworkWithStaticLibraryInRuntimesNativeDirectory/d' "$TMPPATH"
+sed $SED_INPLACE_FLAGS '/Xamarin.Tests.XCFrameworkWithSymlinks/d' "$TMPPATH"
 
 # Get only the name and version of each package, and write that back in a PackageDownload item
-sed $SED_INPLACE 's@.*<PackageReference.*Include="\([a-zA-Z0-9._-]*\)".*Version="\([a-zA-Z0-9._-]*\)".*>.*@\t\t<PackageDownload Include="\1" Version="[\2]" />@g' "$TMPPATH"
+sed $SED_INPLACE_FLAGS 's@.*<PackageReference.*Include="\([a-zA-Z0-9._-]*\)".*Version="\([a-zA-Z0-9._-]*\)".*>.*@\t\t<PackageDownload Include="\1" Version="[\2]" />@g' "$TMPPATH"
 
 # Sort the references and only list each once.
 sort -u -o "$TMPPATH" "$TMPPATH"

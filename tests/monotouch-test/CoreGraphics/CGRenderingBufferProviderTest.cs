@@ -33,7 +33,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var calledOnUnlockPointer = false;
 			var calledOnReleaseInfo = false;
 			using (var pool = new NSAutoreleasePool ()) {
-				var provider = CGRenderingBufferProvider.Create ((nint) 0x0ee1f00d, (nuint) size,
+				using var provider = CGRenderingBufferProvider.Create ((nint) 0x0ee1f00d, (nuint) size,
 					lockPointer: (info) => {
 						calledOnLockPointer = true;
 						var rv = Marshal.AllocHGlobal (size);

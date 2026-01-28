@@ -853,6 +853,14 @@ namespace Bindings.Test {
 		[EventArgs ("")]
 		[Export ("buildIntergalacticHighway:")]
 		void BuildIntergalacticHighway (Hitchhiker sender);
+
+		[EventArgs ("")]
+		[Export ("byeByeDolphins:")]
+		void ByeByeDolphins (Hitchhiker sender);
+
+		[EventArgs ("")]
+		[Export ("hitchhikeWithVogons:")]
+		void HitchhikeWithVogons (Hitchhiker sender);
 	}
 
 	[BaseType (typeof (NSObject), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (HitchhikerDelegate) })]
@@ -862,5 +870,8 @@ namespace Bindings.Test {
 
 		[Export ("destroyEarth")]
 		void DestroyEarth ();
+
+		[Export ("buildHighway")]
+		void BuildHighway ();
 	}
 }

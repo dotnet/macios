@@ -9,21 +9,21 @@
 
 using CoreGraphics;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 
+	/// <summary>
+	/// A custom action to be presented to an assistive application.
+	/// </summary>
 	public partial class UIAccessibilityCustomAction {
-		object action;
+		object? action;
 
-		/// <param name="name">To be added.</param>
-		///         <param name="probe">To be added.</param>
-		///         <summary>Creates a <see cref="UIKit.UIAccessibilityCustomAction" /> withthe specified <paramref name="name" />.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a <see cref="UIAccessibilityCustomAction" /> with the specified <paramref name="name" />.</summary>
+		/// <param name="name">The name of the action.</param>
+		/// <param name="probe">A callback to invoke when the action is activated.</param>
 		public UIAccessibilityCustomAction (string name, Func<UIAccessibilityCustomAction, bool> probe) : this (name, FuncBoolDispatcher.Selector, new FuncBoolDispatcher (probe))
 		{
-
 		}
 
 		internal UIAccessibilityCustomAction (string name, Selector sel, FuncBoolDispatcher disp) : this (name, disp, sel)
@@ -42,8 +42,7 @@ namespace UIKit {
 
 			public FuncBoolDispatcher (Func<UIAccessibilityCustomAction, bool> probe)
 			{
-				if (probe is null)
-					throw new ArgumentNullException ("probe");
+				ArgumentNullException.ThrowIfNull (probe);
 
 				this.probe = probe;
 				IsDirectBinding = false;

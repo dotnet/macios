@@ -278,7 +278,7 @@ namespace MonoTouchFixtures.Foundation {
 			var arr = NSArray.FromNSObjects<int?> (x => x.HasValue ? NSNumber.FromInt32 (x.Value) : null, numbers);
 			Assert.IsNotNull (arr, "Array should not be null");
 			Assert.AreEqual ((nuint) 3, arr!.Count, "Count");
-			
+
 			// Check if the array actually contains NSNull at index 1
 			// Use reflection or try-catch to see what's there
 			try {
@@ -288,12 +288,12 @@ namespace MonoTouchFixtures.Foundation {
 			} catch (Exception ex) {
 				Assert.Fail ($"Item 0 failed: {ex.Message}");
 			}
-			
+
 			// The converter returns null, so we expect NSNull in the array
 			// But GetItem<T> might skip null items or return null
 			var count = arr.Count;
 			Assert.AreEqual ((nuint) 3, count, "Should have 3 items including null");
-			
+
 			try {
 				var item2 = arr.GetItem<NSNumber> (2);
 				Assert.IsNotNull (item2, "Item 2 should not be null");
@@ -301,7 +301,7 @@ namespace MonoTouchFixtures.Foundation {
 			} catch (Exception ex) {
 				Assert.Fail ($"Item 2 failed: {ex.Message}");
 			}
-			
+
 			arr.Dispose ();
 		}
 
@@ -309,7 +309,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void FromObjects_WithCount_ConvertsOnlyCount ()
 		{
 			var items = new object [] { 1, 2, 3, 4, 5 };
-			
+
 			using (var arr = NSArray.FromObjects (2, items)) {
 				// This should only convert the first 2 items
 				Assert.AreEqual ((nuint) 2, arr.Count, "Count should be 2");

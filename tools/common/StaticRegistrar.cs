@@ -533,7 +533,7 @@ namespace Registrar {
 				if (type.FullName == "System.Delegate")
 					return true;
 
-				type = type.BaseType?.Resolve ();
+				type = type?.BaseType?.Resolve ();
 			}
 
 			return false;
@@ -678,8 +678,8 @@ namespace Registrar {
 		}
 
 		public StaticRegistrar (Application app)
+			: base (app)
 		{
-			this.App = app;
 			this.input_assemblies = [];
 			trace = !LaxMode && (app.RegistrarOptions & RegistrarOptions.Trace) == RegistrarOptions.Trace;
 		}
@@ -804,12 +804,12 @@ namespace Registrar {
 			}
 		}
 
-		protected override Exception CreateExceptionImpl (int code, bool error, Exception innerException, MethodDefinition method, string message, params object [] args)
+		protected override Exception CreateExceptionImpl (int code, bool error, Exception? innerException, MethodDefinition? method, string message, params object? [] args)
 		{
 			return ErrorHelper.Create (App, code, error, innerException, method, message, args);
 		}
 
-		protected override Exception CreateExceptionImpl (int code, bool error, Exception innerException, TypeReference type, string message, params object [] args)
+		protected override Exception CreateExceptionImpl (int code, bool error, Exception? innerException, TypeReference? type, string message, params object? [] args)
 		{
 			return ErrorHelper.Create (App, code, error, innerException, type, message, args);
 		}
@@ -898,9 +898,9 @@ namespace Registrar {
 			return assembly.Name.Name;
 		}
 
-		protected override string GetTypeFullName (TypeReference type)
+		protected override string? GetTypeFullName (TypeReference? type)
 		{
-			return type.FullName;
+			return type?.FullName;
 		}
 
 		protected override string GetMethodName (MethodDefinition method)
@@ -1235,8 +1235,11 @@ namespace Registrar {
 			return IsNativeObject (tr);
 		}
 
-		protected override TypeReference? GetBaseType (TypeReference tr)
+		protected override TypeReference? GetBaseType (TypeReference? tr)
 		{
+			if (tr is null)
+				return null;
+
 			var gp = tr as GenericParameter;
 			if (gp is not null) {
 				foreach (var constr in gp.Constraints) {
@@ -1261,7 +1264,7 @@ namespace Registrar {
 			return GetEnumUnderlyingType (type);
 		}
 
-		bool TryGetEnumUnderlyingType ([NotNullWhen (true)] TypeReference? tr, [NotNullWhen (true)] out TypeReference? underlyingType)
+		protected override bool TryGetEnumUnderlyingType ([NotNullWhen (true)] TypeReference? tr, [NotNullWhen (true)] out TypeReference? underlyingType)
 		{
 			underlyingType = null;
 
@@ -1286,7 +1289,7 @@ namespace Registrar {
 			return types;
 		}
 
-		protected override string GetParameterName (MethodDefinition method, int parameter_index)
+		protected override string GetParameterName (MethodDefinition? method, int parameter_index)
 		{
 			if (method is null)
 				return "?";
@@ -1706,9 +1709,9 @@ namespace Registrar {
 			return null;
 		}
 
-		protected override Version? GetSDKVersion ()
+		protected override Version GetSDKVersion ()
 		{
-			return App.SdkVersion;
+			return App.SdkVersion!;
 		}
 
 		protected override Dictionary<MethodDefinition, List<MethodDefinition>>? PrepareMethodMapping (TypeReference type)
@@ -1785,7 +1788,7 @@ namespace Registrar {
 			}
 		}
 
-		public override BindAsAttribute? GetBindAsAttribute (PropertyDefinition property)
+		public override BindAsAttribute? GetBindAsAttribute (PropertyDefinition? property)
 		{
 			if (property is null)
 				return null;
@@ -2182,7 +2185,7 @@ namespace Registrar {
 			header.WriteLine ("#import {0}", h);
 		}
 
-		string CheckStructure (TypeDefinition structure, string descriptiveMethodName, MemberReference inMember)
+		string CheckStructure (TypeDefinition structure, string descriptiveMethodName, MemberReference? inMember)
 		{
 			if (declarations is null)
 				throw ErrorHelper.CreateError (99, Errors.MX0099, "No declarations?");
@@ -2204,7 +2207,7 @@ namespace Registrar {
 			return n;
 		}
 
-		void ProcessStructure (StringBuilder name, AutoIndentStringBuilder body, TypeDefinition structure, ref int size, string descriptiveMethodName, TypeDefinition root_structure, MemberReference inMember)
+		void ProcessStructure (StringBuilder name, AutoIndentStringBuilder body, TypeDefinition structure, ref int size, string descriptiveMethodName, TypeDefinition root_structure, MemberReference? inMember)
 		{
 			switch (structure.FullName) {
 			case "System.Char":
@@ -2308,7 +2311,7 @@ namespace Registrar {
 		// Some declarations can be generalized to NSObject for its subclasses
 		// (and System.String too as we convert it into an NSString)
 		// since the generated code, except the function signature, is identical anyway
-		string ToSimpleObjCParameterType (TypeReference type, string descriptiveMethodName, List<Exception> exceptions, MemberReference inMethod)
+		string ToSimpleObjCParameterType (TypeReference type, string descriptiveMethodName, List<Exception> exceptions, MemberReference? inMethod)
 		{
 			var byref = type.IsByReference;
 			var t = byref ? type.GetElementType () : type;
@@ -2318,7 +2321,7 @@ namespace Registrar {
 			return ToObjCParameterType (type, descriptiveMethodName, exceptions, inMethod);
 		}
 
-		string ToObjCParameterType (TypeReference type, string descriptiveMethodName, List<Exception> exceptions, MemberReference inMethod, bool delegateToBlockType = false, bool cSyntaxForBlocks = false)
+		string ToObjCParameterType (TypeReference type, string descriptiveMethodName, List<Exception> exceptions, MemberReference? inMethod, bool delegateToBlockType = false, bool cSyntaxForBlocks = false)
 		{
 			var gp = type as GenericParameter;
 			if (gp is not null)
@@ -2532,7 +2535,7 @@ namespace Registrar {
 					sb.Append (split [i]);
 					sb.Append (':');
 					sb.Append ('(');
-					sb.Append (ToObjCParameterType (method.NativeParameters [i + indexOffset], method.DescriptiveMethodName, exceptions, method.Method, delegateToBlockType: true));
+					sb.Append (ToObjCParameterType (method.NativeParameters! [i + indexOffset], method.DescriptiveMethodName, exceptions, method.Method, delegateToBlockType: true));
 					sb.Append (')');
 					sb.AppendFormat ("p{0}", i);
 				}
@@ -2915,7 +2918,7 @@ namespace Registrar {
 
 				if (@class.IsCategory) {
 					var exportedName = EncodeNonAsciiCharacters (@class.BaseType!.ExportedName);
-					iface.Write ("@interface {0} ({1})", exportedName, @class.CategoryName);
+					iface.Write ("@interface {0} ({1})", exportedName, @class.CategoryName!);
 					declarations.AppendFormat ("@class {0};\n", exportedName);
 				} else if (is_protocol) {
 					var exportedName = EncodeNonAsciiCharacters (@class.ProtocolName);
@@ -2925,7 +2928,7 @@ namespace Registrar {
 					var is_stub_class = @class.RegisterAttribute?.IsStubClass;
 					if (is_stub_class == true)
 						iface.WriteLine ("__attribute__((objc_class_stub)) __attribute__((objc_subclassing_restricted))");
-					iface.Write ("@interface {0} : {1}", class_name, EncodeNonAsciiCharacters (@class.SuperType.ExportedName));
+					iface.Write ("@interface {0} : {1}", class_name, EncodeNonAsciiCharacters (@class.SuperType!.ExportedName));
 					declarations.AppendFormat ("@class {0};\n", class_name);
 				}
 				var implementedProtocols = new HashSet<string> ();
@@ -2989,7 +2992,7 @@ namespace Registrar {
 								default:
 									throw ErrorHelper.CreateError (4120, Errors.MT4120, field.FieldType, field.DeclaringType.Type.FullName, field.Name);
 								}
-								fields.Write (field.Name);
+								fields.Write (field.Name!);
 								fields.WriteLine (";");
 							} catch (Exception ex) {
 								exceptions.Add (ex);
@@ -3056,7 +3059,7 @@ namespace Registrar {
 							exceptions.Add (ex);
 						} catch (Exception ex) {
 							skip.Add (method);
-							exceptions.Add (ErrorHelper.CreateError (4114, ex, Errors.MT4114, method.DeclaringType.Type.FullName, method.Method.Name));
+							exceptions.Add (ErrorHelper.CreateError (4114, ex, Errors.MT4114, method.DeclaringType.Type.FullName, method.Method?.Name));
 						}
 					}
 				}
@@ -3074,7 +3077,7 @@ namespace Registrar {
 						sb.WriteLine ("#pragma clang diagnostic ignored \"-Wobjc-property-implementation\"");
 					}
 					if (@class.IsCategory) {
-						sb.WriteLine ("@implementation {0} ({1})", EncodeNonAsciiCharacters (@class.BaseType!.ExportedName), @class.CategoryName);
+						sb.WriteLine ("@implementation {0} ({1})", EncodeNonAsciiCharacters (@class.BaseType!.ExportedName), @class.CategoryName!);
 					} else {
 						sb.WriteLine ("@implementation {0} {{", class_name);
 						if (implementation_fields is not null) {
@@ -3155,7 +3158,7 @@ namespace Registrar {
 				var ordered = protocol_wrapper_map.OrderBy ((v) => v.Key);
 				map.AppendLine ("static const MTProtocolWrapperMap __xamarin_protocol_wrapper_map [] = {");
 				foreach (var p in ordered) {
-					map.AppendLine ("{{ 0x{0:X} /* {1} */, 0x{2:X} /* {3} */ }},", p.Key, p.Value.Item1.Name, p.Value.Item2, p.Value.Item1.ProtocolWrapperType.Name);
+					map.AppendLine ("{{ 0x{0:X} /* {1} */, 0x{2:X} /* {3} */ }},", p.Key, p.Value.Item1.Name!, p.Value.Item2, p.Value.Item1.ProtocolWrapperType!.Name);
 				}
 				map.AppendLine ("};");
 				map.AppendLine ();
@@ -3361,9 +3364,9 @@ namespace Registrar {
 				return true;
 			}
 
-			var customConformsToProtocol = method.Selector == "conformsToProtocol:" && method.Method.DeclaringType.Is ("Foundation", "NSObject") && method.Method.Name == "InvokeConformsToProtocol" && method.Parameters.Length == 1;
+			var customConformsToProtocol = method.Selector == "conformsToProtocol:" && method.Method!.DeclaringType.Is ("Foundation", "NSObject") && method.Method.Name == "InvokeConformsToProtocol" && method.Parameters!.Length == 1;
 			if (customConformsToProtocol) {
-				customConformsToProtocol &= method.Parameters [0].Is ("ObjCRuntime", "NativeHandle");
+				customConformsToProtocol &= method.Parameters! [0].Is ("ObjCRuntime", "NativeHandle");
 				if (customConformsToProtocol) {
 					sb.AppendLine ("-(BOOL) conformsToProtocol: (void *) protocol");
 					sb.AppendLine ("{");
@@ -3436,13 +3439,14 @@ namespace Registrar {
 		void SpecializePrepareParameters (AutoIndentStringBuilder sb, ObjCMethod method, int num_arg, string descriptiveMethodName, List<Exception> exceptions)
 		{
 			// prepare the parameters
-			var baseMethod = GetBaseMethodInTypeHierarchy (method.Method);
+			var mthd = method.Method!;
+			var baseMethod = GetBaseMethodInTypeHierarchy (mthd);
 			for (int i = 0; i < num_arg; i++) {
-				var param = method.Method.Parameters [i];
+				var param = mthd.Parameters [i];
 				var paramBase = baseMethod.Parameters [i];
-				var type = method.Parameters [i];
-				var nativetype = method.NativeParameters [i];
-				var objctype = ToObjCParameterType (nativetype, descriptiveMethodName, exceptions, method.Method);
+				var type = method.Parameters! [i];
+				var nativetype = method.NativeParameters! [i];
+				var objctype = ToObjCParameterType (nativetype, descriptiveMethodName, exceptions, mthd);
 				var original_objctype = objctype;
 				var isRef = type.IsByReference;
 				var isOut = param.IsOut || paramBase.IsOut;
@@ -3856,10 +3860,10 @@ namespace Registrar {
 			var returntype = method.ReturnType;
 			var isStatic = method.IsStatic;
 			var isInstanceCategory = method.IsCategoryInstance;
-			var num_arg = method.Method.HasParameters ? method.Method.Parameters.Count : 0;
+			var num_arg = method.Method!.HasParameters ? method.Method.Parameters.Count : 0;
 			var descriptiveMethodName = method.DescriptiveMethodName;
 			var name = GetUniqueTrampolineName ("native_to_managed_trampoline_" + descriptiveMethodName);
-			var isVoid = returntype.FullName == "System.Void";
+			var isVoid = returntype?.FullName == "System.Void";
 			var merge_bodies = true;
 
 			if (!TryGetReturnType (method, descriptiveMethodName, exceptions, out var rettype, out var isCtor))
@@ -4144,7 +4148,7 @@ namespace Registrar {
 
 			var objc_signature = new StringBuilder ().Append (rettype).Append (":");
 			if (method.Method.HasParameters) {
-				for (int i = 0; i < method.NativeParameters.Length; i++)
+				for (int i = 0; i < method.NativeParameters!.Length; i++)
 					objc_signature.Append (ToSimpleObjCParameterType (method.NativeParameters [i], descriptiveMethodName, exceptions, method.Method)).Append (":");
 			}
 
@@ -4162,9 +4166,9 @@ namespace Registrar {
 				if (merge_bodies) {
 					methods.Append ("static ");
 					methods.Append (rettype).Append (" ").Append (b.Name).Append (" (id self, SEL _cmd, MonoMethod **managed_method_ptr");
-					var pcount = method.Method.HasParameters ? method.NativeParameters.Length : 0;
+					var pcount = method.Method.HasParameters ? method.NativeParameters!.Length : 0;
 					for (int i = (isInstanceCategory ? 1 : 0); i < pcount; i++) {
-						methods.Append (", ").Append (ToSimpleObjCParameterType (method.NativeParameters [i], descriptiveMethodName, exceptions, method.Method));
+						methods.Append (", ").Append (ToSimpleObjCParameterType (method.NativeParameters! [i], descriptiveMethodName, exceptions, method.Method));
 						methods.Append (" ").Append ("p").Append (i.ToString ());
 					}
 					if (isCtor)
@@ -4223,7 +4227,7 @@ namespace Registrar {
 			// method (we store the result in a static variable, so that we only do this once
 			// per method, the first time it's called).
 			var staticCall = App.IsAOTCompiled (method.DeclaringType.Type.Module.Assembly.Name.Name);
-			if (!App.Configuration.AssemblyTrampolineInfos.TryFindInfo (method.Method, out var pinvokeMethodInfo)) {
+			if (!App.Configuration.AssemblyTrampolineInfos.TryFindInfo (method.Method!, out var pinvokeMethodInfo)) {
 				exceptions.Add (ErrorHelper.CreateError (99, "Could not find the managed callback for {0}", descriptiveMethodName));
 				return;
 			}
@@ -4257,7 +4261,7 @@ namespace Registrar {
 			var indexOffset = method.IsCategoryInstance ? 1 : 0;
 			for (var i = indexOffset; i < num_arg; i++) {
 				sb.Append (", ");
-				var parameterType = ToObjCParameterType (method.NativeParameters [i], method.DescriptiveMethodName, exceptions, method.Method, delegateToBlockType: true, cSyntaxForBlocks: true);
+				var parameterType = ToObjCParameterType (method.NativeParameters! [i], method.DescriptiveMethodName, exceptions, method.Method, delegateToBlockType: true, cSyntaxForBlocks: true);
 				var containsBlock = parameterType.Contains ("%PARAMETERNAME%");
 				parameterType = parameterType.Replace ("%PARAMETERNAME%", $"p{i - indexOffset}");
 				sb.Append (parameterType);
@@ -4291,7 +4295,7 @@ namespace Registrar {
 
 			if (!staticCall) {
 				sb.WriteLine ($"static {ucoEntryPoint}_function {ucoEntryPoint};");
-				sb.WriteLine ($"xamarin_registrar_dlsym ((void **) &{ucoEntryPoint}, \"{method.Method.Module.Assembly.Name.Name}\", \"{ucoEntryPoint}\", {pinvokeMethodInfo.Id});");
+				sb.WriteLine ($"xamarin_registrar_dlsym ((void **) &{ucoEntryPoint}, \"{method.Method!.Module.Assembly.Name.Name}\", \"{ucoEntryPoint}\", {pinvokeMethodInfo.Id});");
 			}
 			if (hasReturnType)
 				sb.Write ("rv = ");
@@ -4326,7 +4330,7 @@ namespace Registrar {
 		void SpecializePrepareReturnValue (AutoIndentStringBuilder sb, ObjCMethod method, string descriptiveMethodName, string rettype, List<Exception> exceptions)
 		{
 			var returntype = method.ReturnType;
-			var isVoid = returntype.FullName == "System.Void";
+			var isVoid = returntype!.FullName == "System.Void";
 
 			if (isVoid)
 				return;
@@ -4446,7 +4450,7 @@ namespace Registrar {
 		void GenerateCallToSuperForConstructor (AutoIndentStringBuilder sb, ObjCMethod method, List<Exception> exceptions)
 		{
 			sb.WriteLine ("if (call_super && rv) {");
-			sb.Write ("struct objc_super super = {  rv, [").Write (method.DeclaringType.SuperType.ExportedName).WriteLine (" class] };");
+			sb.Write ("struct objc_super super = {  rv, [").Write (method.DeclaringType.SuperType!.ExportedName).WriteLine (" class] };");
 			sb.Write ("rv = ((id (*)(objc_super*, SEL");
 
 			if (method.Parameters is not null) {
@@ -4520,7 +4524,7 @@ namespace Registrar {
 
 		public TypeDefinition? GetDelegateProxyType (ObjCMethod obj_method)
 		{
-			return GetDelegateProxyType (obj_method.Method, obj_method);
+			return GetDelegateProxyType (obj_method.Method!, obj_method);
 		}
 
 		public TypeDefinition? GetDelegateProxyType (MethodDefinition method, ObjCMethod? obj_method = null)
@@ -4602,7 +4606,7 @@ namespace Registrar {
 		{
 			// A mirror of this method is also implemented in Runtime:GetBlockWrapperCreator
 			// If this method is changed, that method will probably have to be updated too (tests!!!)
-			MethodDefinition method = obj_method.Method;
+			MethodDefinition method = obj_method.Method!;
 			MethodDefinition first = method;
 			MethodDefinition? last = null;
 			while (method != last) {
@@ -4655,7 +4659,7 @@ namespace Registrar {
 
 							MethodDefinition? extensionMethod = pMethod.Method;
 							if (extensionMethod is null) {
-								MapProtocolMember (obj_method.Method, out extensionMethod);
+								MapProtocolMember (obj_method.Method!, out extensionMethod);
 								if (extensionMethod is null)
 									return null;
 							}
@@ -4682,7 +4686,7 @@ namespace Registrar {
 			if (TryFindType (method.DeclaringType, out var type)) {
 				if (type.Methods is not null) {
 					foreach (var m in type.Methods) {
-						if ((object) m.Method == (object) method) {
+						if ((object?) m.Method == (object) method) {
 							objcMethod = m;
 							return true;
 						}
@@ -4981,8 +4985,7 @@ namespace Registrar {
 				func = GetNSValueToManagedFunc (underlyingManagedType, inputType, outputType, descriptiveMethodName, out nativeTypeName);
 			} else if (underlyingNativeType.Is (Foundation, "NSString")) {
 				func = GetNSStringToSmartEnumFunc (underlyingManagedType, inputType, outputType, descriptiveMethodName, managedClassExpression, out nativeTypeName);
-				MethodDefinition getConstantMethod, getValueMethod;
-				if (!IsSmartEnum (underlyingManagedType, out getConstantMethod, out getValueMethod)) {
+				if (!IsSmartEnum (underlyingManagedType, out var _, out var getValueMethod)) {
 					// method linked away!? this should already be verified
 					ErrorHelper.Show (ErrorHelper.CreateWarning (99, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
 					token = "INVALID_TOKEN_REF";
@@ -5078,8 +5081,7 @@ namespace Registrar {
 				func = GetManagedToNSValueFunc (underlyingManagedType, inputType, outputType, descriptiveMethodName);
 			} else if (underlyingNativeType.Is (Foundation, "NSString")) {
 				func = GetSmartEnumToNSStringFunc (underlyingManagedType, inputType, outputType, descriptiveMethodName, classVariableName);
-				MethodDefinition getConstantMethod, getValueMethod;
-				if (!IsSmartEnum (underlyingManagedType, out getConstantMethod, out getValueMethod)) {
+				if (!IsSmartEnum (underlyingManagedType, out var getConstantMethod, out var _)) {
 					// method linked away!? this should already be verified
 					ErrorHelper.Show (ErrorHelper.CreateWarning (99, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
 					token = "INVALID_TOKEN_REF";
@@ -5405,7 +5407,7 @@ namespace Registrar {
 		}
 
 #if !LEGACY_TOOLS
-		static bool IsPropertyTrimmed (PropertyDefinition pd, AnnotationStore annotations)
+		static bool IsPropertyTrimmed (PropertyDefinition? pd, AnnotationStore annotations)
 		{
 			if (pd is null)
 				return false;
@@ -5419,7 +5421,7 @@ namespace Registrar {
 			return true;
 		}
 
-		public static bool IsTrimmed (MemberReference tr, AnnotationStore annotations)
+		public static bool IsTrimmed (MemberReference? tr, AnnotationStore annotations)
 		{
 			if (tr is null)
 				return false;

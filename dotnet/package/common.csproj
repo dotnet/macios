@@ -57,8 +57,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.DotNet.Build.Tasks.Feed" Version="$(MicrosoftDotNetBuildTasksFeedPackageVersion)" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.DotNet.Arcade.Sdk" Version="$(MicrosoftDotNetBuildTasksFeedPackageVersion)" PrivateAssets="all" GeneratePathProperty="true" />
+    <!-- Use net10.0 version since CI only has the .NET 10 SDK installed for BAR manifest publishing -->
+    <PackageReference Include="Microsoft.DotNet.Build.Tasks.Feed" Version="$(MicrosoftDotNetBuildTasksFeedPackageVersionNet10)" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.DotNet.Arcade.Sdk" Version="$(MicrosoftDotNetBuildTasksFeedPackageVersionNet10)" PrivateAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
 
   <!-- Remove the KnownFrameworkReference declared in ../targets/Microsoft.$(_PlatformName).Sdk.Versions.props so that we do not attempt to restore/include the ref/runtime packs that we are trying to build -->

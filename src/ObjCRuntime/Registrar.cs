@@ -11,6 +11,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 
@@ -78,10 +79,10 @@ namespace Registrar {
 		public static List<ProductException> GetMT4127 (TMethod impl, List<TMethod> ifaceMethods)
 		{
 			var exceptions = new List<ProductException> ();
-			exceptions.Add (ErrorHelper.CreateError (4127, Errors.MT4127, impl.DeclaringType.FullName, impl.Name));
+			exceptions.Add (ErrorHelper.CreateError (4127, Errors.MT4127, impl.DeclaringType?.FullName, impl.Name));
 			for (int i = 0; i < ifaceMethods.Count; i++) {
 				var ifaceM = ifaceMethods [i];
-				exceptions.Add (ErrorHelper.CreateError (4137, Errors.MT4137, impl.DeclaringType.FullName, impl.Name, ifaceM.DeclaringType.FullName, ifaceM.Name));
+				exceptions.Add (ErrorHelper.CreateError (4137, Errors.MT4137, impl.DeclaringType?.FullName, impl.Name, ifaceM.DeclaringType?.FullName, ifaceM.Name));
 			}
 			return exceptions;
 		}
@@ -265,10 +266,10 @@ namespace Registrar {
 
 					if (method.IsVariadic) {
 						ex = Registrar.CreateException (4140, method, Errors.MT4140,
-							method.Method.DeclaringType.FullName, method.MethodName, nativeParamCount, paramCount, method.Selector);
+							method.Method.DeclaringType?.FullName, method.MethodName, nativeParamCount, paramCount, method.Selector);
 					} else {
 						ex = Registrar.CreateException (4117, method, Errors.MT4117,
-							method.Method.DeclaringType.FullName, method.MethodName, nativeParamCount, paramCount, method.Selector);
+							method.Method.DeclaringType?.FullName, method.MethodName, nativeParamCount, paramCount, method.Selector);
 					}
 
 					Registrar.AddException (ref exceptions, ex);
@@ -648,7 +649,7 @@ namespace Registrar {
 
 			internal void WriteUnmanagedDescription (IntPtr desc)
 			{
-				WriteUnmanagedDescription (desc, (System.Reflection.MethodBase) (object) Method);
+				WriteUnmanagedDescription (desc, (System.Reflection.MethodBase) (object) Method!);
 			}
 
 			internal void WriteUnmanagedDescription (IntPtr desc, System.Reflection.MethodBase method_base)
@@ -1091,8 +1092,8 @@ namespace Registrar {
 		protected abstract TMethod GetBaseMethod (TMethod method);
 		protected abstract TType []? GetParameters (TMethod method);
 		protected abstract string GetParameterName (TMethod? method, int parameter_index);
-		protected abstract TMethod GetGetMethod (TProperty property);
-		protected abstract TMethod GetSetMethod (TProperty property);
+		protected abstract TMethod? GetGetMethod (TProperty property);
+		protected abstract TMethod? GetSetMethod (TProperty property);
 		protected abstract TType GetSystemVoidType ();
 		protected abstract bool IsVirtual (TMethod method);
 		protected abstract bool IsByRef (TType type);
@@ -1102,9 +1103,9 @@ namespace Registrar {
 		protected abstract TType MakeByRef (TType type);
 		public abstract bool HasThisAttribute (TMethod method);
 		protected abstract bool IsConstructor (TMethod method);
-		public abstract TType GetElementType (TType type);
+		public abstract TType? GetElementType (TType type);
 		protected abstract TType GetReturnType (TMethod method);
-		protected abstract void GetNamespaceAndName (TType type, out string @namespace, out string name);
+		protected abstract void GetNamespaceAndName (TType type, out string? @namespace, out string name);
 		protected abstract bool TryGetAttribute (TType type, string attributeNamespace, string attributeType, [NotNullWhen (true)] out object? attribute);
 		protected abstract ExportAttribute? GetExportAttribute (TProperty property); // Return null if no attribute is found. Must check the base property (i.e. if property is overriding a property in a base class, must check the overridden property for the attribute).
 		public abstract ExportAttribute? GetExportAttribute (TMethod method); // Return null if no attribute is found. Must check the base method (i.e. if method is overriding a method in a base class, must check the overridden method for the attribute).
@@ -1145,7 +1146,7 @@ namespace Registrar {
 		protected abstract Exception CreateExceptionImpl (int code, bool error, Exception? innerException, TMethod? method, string message, params object? [] args);
 		protected abstract Exception CreateExceptionImpl (int code, bool error, Exception? innerException, TType? type, string message, params object? [] args);
 		protected abstract string PlatformName { get; }
-		public abstract TType FindType (TType relative, string @namespace, string name);
+		public abstract TType? FindType (TType relative, string @namespace, string name);
 		protected abstract IEnumerable<TMethod>? FindMethods (TType type, string name); // will return null if nothing was found
 		protected abstract TProperty? FindProperty (TType type, string name); // will return null if nothing was found
 

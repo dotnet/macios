@@ -90,7 +90,9 @@ namespace Registrar {
 
 	abstract partial class Registrar {
 #if LEGACY_TOOLS || BUNDLER
+#nullable enable
 		public Application App { get; protected set; }
+#nullable disable
 #endif
 
 		const string NFloatTypeName = "System.Runtime.InteropServices.NFloat";

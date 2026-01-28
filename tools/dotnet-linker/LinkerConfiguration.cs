@@ -50,7 +50,7 @@ namespace Xamarin.Linker {
 
 		LinkContext? context;
 		public LinkContext Context { get => context!; private set { context = value; } }
-		public DerivedLinkContext DerivedLinkContext { get; private set; }
+		public DerivedLinkContext DerivedLinkContext { get => Application.LinkContext; }
 		public Profile Profile { get; private set; }
 
 		// The list of assemblies is populated in CollectAssembliesStep.
@@ -103,7 +103,6 @@ namespace Xamarin.Linker {
 
 			Profile = new BaseProfile (this);
 			Application = new Application (this);
-			DerivedLinkContext = new DerivedLinkContext (this, Application);
 			CompilerFlags = new CompilerFlags (Application);
 
 			var use_llvm = false;

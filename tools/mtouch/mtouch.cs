@@ -10,13 +10,15 @@
 
 using Mono.Options;
 
+using Xamarin.Linker;
+
 namespace Xamarin.Bundler {
 	public partial class Driver {
 		internal const string NAME = "mtouch";
 
 		static int Main2 (string [] args)
 		{
-			var app = new Application ();
+			var app = new Application (new LinkerConfiguration ());
 			var os = new OptionSet ();
 			ParseOptions (app, os, args);
 

@@ -56,6 +56,8 @@ namespace Foundation {
 		/// <param name="items">Strongly typed array of NSObjects. Null elements are stored as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
 		/// <returns>A new <see cref="NSArray"/> containing the first <paramref name="count"/> objects from the array.</returns>
 		/// <remarks>Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		// Don't obsolete this method, because forcing the first parameter to a 'nint' to pick the good overload to avoid the obsolete warning makes the calling code ugly.
 		public static NSArray FromNSObjects (int count, params NSObject? []? items)
 		{
 			return FromNativeObjects (items, count);
@@ -87,6 +89,8 @@ namespace Foundation {
 		/// <param name="items">Array of objects implementing <see cref="INativeObject"/>. Null elements are stored as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
 		/// <returns>A new <see cref="NSArray"/> containing the first <paramref name="count"/> objects from the array.</returns>
 		/// <remarks>Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		// Don't obsolete this method, because forcing the first parameter to a 'nint' to pick the good overload to avoid the obsolete warning makes the calling code ugly.
 		public static NSArray FromNSObjects (int count, params INativeObject? []? items)
 		{
 			return FromNativeObjects (items, count);
@@ -172,6 +176,8 @@ namespace Foundation {
 		/// <param name="items">Array of objects. Null elements are stored as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
 		/// <returns>A new <see cref="NSArray"/> containing the first <paramref name="count"/> objects from the array.</returns>
 		/// <remarks>Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		// Don't obsolete this method, because forcing the first parameter to a 'nint' to pick the good overload to avoid the obsolete warning makes the calling code ugly.
 		public static NSArray FromNSObjects<T> (int count, params T? []? items) where T : class, INativeObject
 		{
 			return FromNativeObjects (items, count);

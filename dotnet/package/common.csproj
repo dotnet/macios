@@ -2,7 +2,8 @@
   <Import Project="../targets/Microsoft.$(_PlatformName).Sdk.Versions.props" />
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework Condition="'$(ForceStableDotNet)' != 'true'">net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
+    <TargetFramework Condition="'$(ForceStableDotNet)' == 'true'">net10.0</TargetFramework>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageType Condition="'$(PackageType)'==''">DotnetPlatform</PackageType>
     <PackageVersion>$(_PackageVersion)</PackageVersion>

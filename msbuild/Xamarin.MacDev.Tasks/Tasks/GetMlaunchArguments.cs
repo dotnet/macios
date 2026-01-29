@@ -27,9 +27,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string AppManifestPath { get; set; } = string.Empty;
 
-		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
 		public ITaskItem [] AdditionalArguments { get; set; } = Array.Empty<ITaskItem> ();
 		public string DeviceName { get; set; } = string.Empty;
 		public ITaskItem [] EnvironmentVariables { get; set; } = Array.Empty<ITaskItem> ();
@@ -88,13 +85,13 @@ namespace Xamarin.MacDev.Tasks {
 			var xml = new XmlDocument ();
 			xml.LoadXml (output);
 			// Get the device types for the product family we're looking for
-			var nodes = xml.SelectNodes ($"/MTouch/Simulator/SupportedDeviceTypes/SimDeviceType[ProductFamilyId='{productFamily}']").Cast<XmlNode> ();
+			var nodes = xml.SelectNodes ($"/MTouch/Simulator/SupportedDeviceTypes/SimDeviceType[ProductFamilyId='{productFamily}']")?.Cast<XmlNode> () ?? Array.Empty<XmlNode> ();
 			// Create a list of them all
 			var deviceTypes = new List<(long Min, long Max, string Identifier)> ();
 			foreach (var node in nodes) {
-				var minRuntimeVersionValue = node.SelectSingleNode ("MinRuntimeVersion").InnerText;
-				var maxRuntimeVersionValue = node.SelectSingleNode ("MaxRuntimeVersion").InnerText;
-				var identifier = node.SelectSingleNode ("Identifier").InnerText;
+				var minRuntimeVersionValue = node.SelectSingleNode ("MinRuntimeVersion")?.InnerText ?? string.Empty;
+				var maxRuntimeVersionValue = node.SelectSingleNode ("MaxRuntimeVersion")?.InnerText ?? string.Empty;
+				var identifier = node.SelectSingleNode ("Identifier")?.InnerText ?? string.Empty;
 				if (!long.TryParse (minRuntimeVersionValue, out var minRuntimeVersion))
 					continue;
 				if (!long.TryParse (maxRuntimeVersionValue, out var maxRuntimeVersion))
@@ -114,7 +111,7 @@ namespace Xamarin.MacDev.Tasks {
 				var tmpfile = Path.GetTempFileName ();
 				try {
 					var output = new StringBuilder ();
-					var result = ExecuteAsync (MlaunchPath, new string [] { "--listsim", tmpfile }, SdkDevPath).Result;
+					var result = ExecuteAsync (MlaunchPath, new string [] { "--listsim", tmpfile }).Result;
 					if (result.ExitCode != 0)
 						return string.Empty;
 					simulator_list = File.ReadAllText (tmpfile);
@@ -132,7 +129,7 @@ namespace Xamarin.MacDev.Tasks {
 				var tmpfile = Path.GetTempFileName ();
 				try {
 					var output = new StringBuilder ();
-					var result = ExecuteAsync (MlaunchPath, new string [] { $"--listdev:{tmpfile}", "--output-format:xml", "--use-amdevice:false" }, SdkDevPath).Result;
+					var result = ExecuteAsync (MlaunchPath, new string [] { $"--listdev:{tmpfile}", "--output-format:xml", "--use-amdevice:false" }).Result;
 					if (result.ExitCode != 0)
 						return string.Empty;
 					device_list = File.ReadAllText (tmpfile);
@@ -159,9 +156,9 @@ namespace Xamarin.MacDev.Tasks {
 			var xml = new XmlDocument ();
 			xml.LoadXml (output);
 			// Get the device types for the product family we're looking for
-			var nodes = xml.SelectNodes ($"/MTouch/Simulator/AvailableDevices/SimDevice").Cast<XmlNode> ();
+			var nodes = xml.SelectNodes ($"/MTouch/Simulator/AvailableDevices/SimDevice")?.Cast<XmlNode> () ?? Array.Empty<XmlNode> ();
 			foreach (var node in nodes) {
-				var simDeviceType = node.SelectSingleNode ("SimDeviceType").InnerText;
+				var simDeviceType = node.SelectSingleNode ("SimDeviceType")?.InnerText ?? string.Empty;
 				if (!deviceTypes.Contains (simDeviceType))
 					continue;
 				var udid = node.Attributes? ["UDID"]?.Value ?? string.Empty;
@@ -213,10 +210,10 @@ namespace Xamarin.MacDev.Tasks {
 			var xml = new XmlDocument ();
 			xml.LoadXml (output);
 			// Get the device types for the device classes we're looking for
-			var nodes = xml.SelectNodes ($"/MTouch/Device{deviceClassCondition}").Cast<XmlNode> ();
+			var nodes = xml.SelectNodes ($"/MTouch/Device{deviceClassCondition}")?.Cast<XmlNode> () ?? Array.Empty<XmlNode> ();
 			foreach (var node in nodes) {
-				var deviceIdentifier = node.SelectSingleNode ("DeviceIdentifier").InnerText;
-				var name = node.SelectSingleNode ("Name").InnerText;
+				var deviceIdentifier = node.SelectSingleNode ("DeviceIdentifier")?.InnerText ?? string.Empty;
+				var name = node.SelectSingleNode ("Name")?.InnerText ?? string.Empty;
 				var productVersionString = node.SelectSingleNode ("ProductVersion")?.InnerText;
 
 				string? notApplicableBecause = null;
@@ -330,7 +327,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (isatty (fd) != 1)
 				return string.Empty;
 
-			return Marshal.PtrToStringAuto (ttyname (fd));
+			return Marshal.PtrToStringAuto (ttyname (fd)) ?? string.Empty;
 		}
 
 		void ShowHelp ()

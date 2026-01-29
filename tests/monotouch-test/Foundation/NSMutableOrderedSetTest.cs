@@ -93,5 +93,26 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.IsFalse (oSet.Equals (oSet2), "NSMutableOrderedSetTest Equals must be false");
 			}
 		}
+
+		[Test]
+		public void Ctor_WithNull ()
+		{
+			var str1 = (NSString) "1";
+			NSObject? nullObj = null;
+			using (var set = new NSMutableOrderedSet (str1, nullObj)) {
+				Assert.AreEqual (2, (int) set.Count, "Count should include null");
+				Assert.AreEqual (str1, set [0], "First item");
+				Assert.IsInstanceOf<NSNull> (set [1], "Second item should be NSNull");
+			}
+		}
+
+		[Test]
+		public void Ctor_NullArray ()
+		{
+			NSObject []? objs = null;
+			using (var set = new NSMutableOrderedSet (objs)) {
+				Assert.AreEqual (0, (int) set.Count, "Null array should create empty set");
+			}
+		}
 	}
 }

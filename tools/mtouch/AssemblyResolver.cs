@@ -19,6 +19,8 @@ using Mono.Tuner;
 
 using Xamarin.Bundler;
 
+#nullable enable
+
 namespace MonoTouch.Tuner {
 
 	public partial class MonoTouchManifestResolver : MonoTouchResolver {
@@ -50,12 +52,13 @@ namespace MonoTouch.Tuner {
 			cache [Path.GetFileNameWithoutExtension (assembly.MainModule.FileName)] = assembly;
 		}
 
-		public override AssemblyDefinition Resolve (AssemblyNameReference name, ReaderParameters parameters)
+#pragma warning disable CS8764 // Nullability of return type doesn't match overridden member (possibly because of nullability attributes).
+		public override AssemblyDefinition? Resolve (AssemblyNameReference name, ReaderParameters parameters)
+#pragma warning restore CS8764
 		{
 			var aname = name.Name;
 
-			AssemblyDefinition assembly;
-			if (cache.TryGetValue (aname, out assembly))
+			if (cache.TryGetValue (aname, out var assembly))
 				return assembly;
 
 			if (FrameworkDirectory is not null) {
@@ -71,17 +74,21 @@ namespace MonoTouch.Tuner {
 					return assembly;
 			}
 
-			assembly = SearchDirectory (aname, FrameworkDirectory);
-			if (assembly is not null)
-				return assembly;
+			if (FrameworkDirectory is not null) {
+				assembly = SearchDirectory (aname, FrameworkDirectory);
+				if (assembly is not null)
+					return assembly;
+			}
 
-			assembly = SearchDirectory (aname, RootDirectory);
-			if (assembly is not null)
-				return assembly;
+			if (RootDirectory is not null) {
+				assembly = SearchDirectory (aname, RootDirectory);
+				if (assembly is not null)
+					return assembly;
 
-			assembly = SearchDirectory (aname, RootDirectory, ".exe");
-			if (assembly is not null)
-				return assembly;
+				assembly = SearchDirectory (aname, RootDirectory, ".exe");
+				if (assembly is not null)
+					return assembly;
+			}
 
 			return null;
 		}

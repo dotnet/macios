@@ -405,8 +405,14 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		class SigningIdentityComparer : IComparer<CodeSignIdentity> {
-			public int Compare (CodeSignIdentity x, CodeSignIdentity y)
+			public int Compare (CodeSignIdentity? x, CodeSignIdentity? y)
 			{
+				if (x is null && y is null)
+					return 0;
+				if (x is null)
+					return -1;
+				if (y is null)
+					return 1;
 				// reverse sort by provisioning profile creation date
 				return y.Profile!.CreationDate.CompareTo (x.Profile!.CreationDate);
 			}

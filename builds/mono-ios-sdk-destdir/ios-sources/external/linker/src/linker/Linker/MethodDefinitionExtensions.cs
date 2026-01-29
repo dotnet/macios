@@ -1,5 +1,7 @@
 using Mono.Cecil;
 
+#nullable enable
+
 namespace Mono.Linker {
 	public static class MethodDefinitionExtensions {
 		public static bool IsDefaultConstructor (this MethodDefinition method)
@@ -44,20 +46,20 @@ namespace Mono.Linker {
 				(md.SemanticsAttributes & MethodSemanticsAttributes.RemoveOn) != 0;
 		}
 
-		public static PropertyDefinition GetProperty (this MethodDefinition md)
+		public static PropertyDefinition? GetProperty (this MethodDefinition md)
 		{
-			TypeDefinition declaringType = md.DeclaringType;
-			foreach (PropertyDefinition prop in declaringType.Properties)
+			var declaringType = md.DeclaringType;
+			foreach (var prop in declaringType.Properties)
 				if (prop.GetMethod == md || prop.SetMethod == md)
 					return prop;
 
 			return null;
 		}
 
-		public static EventDefinition GetEvent (this MethodDefinition md)
+		public static EventDefinition? GetEvent (this MethodDefinition md)
 		{
-			TypeDefinition declaringType = md.DeclaringType;
-			foreach (EventDefinition evt in declaringType.Events)
+			var declaringType = md.DeclaringType;
+			foreach (var evt in declaringType.Events)
 				if (evt.AddMethod == md || evt.InvokeMethod == md || evt.RemoveMethod == md)
 					return evt;
 

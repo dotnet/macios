@@ -2428,6 +2428,7 @@
 
 		<Warning Condition="'$(_XamarinTargetPlatformVersionSupported)' != 'true'" Text="$(TargetPlatformVersion) is not a valid TargetPlatformVersion for $(_PlatformName). This warning will become an error in future versions of the $(_PlatformName) workload. Valid versions include:%0a$(_XamarinValidTargetPlatformVersions)" />
 	</Target>
+
 	<!--
 		Add a 'global using nfloat = System.Runtime.InteropServices.NFloat' to ease migration from Xamarin.
 		We're not using a the Usings item group, because this code shows a warning in .NET 7:

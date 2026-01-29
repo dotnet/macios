@@ -286,5 +286,26 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.AreEqual ((nuint) 0, result.Count, "Superset Count");
 			}
 		}
+
+		[Test]
+		public void Ctor_WithNull ()
+		{
+			var str1 = (NSString) "1";
+			NSObject? nullObj = null;
+			using (var set = new NSMutableSet (str1, nullObj)) {
+				Assert.AreEqual ((nuint) 2, set.Count, "Count should include null");
+				Assert.IsTrue (set.Contains (str1), "Should contain string");
+				Assert.IsTrue (set.Contains (NSNull.Null), "Should contain NSNull");
+			}
+		}
+
+		[Test]
+		public void Ctor_NullArray ()
+		{
+			NSObject []? objs = null;
+			using (var set = new NSMutableSet (objs)) {
+				Assert.AreEqual ((nuint) 0, set.Count, "Null array should create empty set");
+			}
+		}
 	}
 }

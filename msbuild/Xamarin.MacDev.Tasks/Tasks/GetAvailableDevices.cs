@@ -27,8 +27,6 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 
 	public string RuntimeIdentifier { get; set; } = "";
 
-	public string SdkDevPath { get; set; } = "";
-
 	public bool Verbose { get; set; }
 
 	CancellationTokenSource? cancellationTokenSource;
@@ -156,7 +154,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			var arguments = new List<string> (args) {
 				"--json-output=" + tmpfile
 			};
-			await ExecuteAsync (Log, "xcrun", arguments, sdkDevPath: SdkDevPath, cancellationToken: cancellationTokenSource!.Token);
+			await ExecuteAsync ("xcrun", arguments, cancellationToken: cancellationTokenSource!.Token);
 			return File.ReadAllText (tmpfile);
 		} finally {
 			File.Delete (tmpfile);
@@ -274,9 +272,9 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 		return rv;
 	}
 
-	System.Threading.Tasks.Task<IEnumerable<DeviceInfo>> RunSimCtlAsync ()
+	async System.Threading.Tasks.Task<IEnumerable<DeviceInfo>> RunSimCtlAsync ()
 	{
-		var doc = ExecuteCtlToJsonAsync ("simctl", "list", "--json").Result;
+		var doc = await ExecuteCtlToJsonAsync ("simctl", "list", "--json");
 		var rv = new List<DeviceInfo> ();
 
 		var runtimes = new Dictionary<string, JsonElement> ();
@@ -416,7 +414,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 				}
 			}
 		}
-		return System.Threading.Tasks.Task.FromResult<IEnumerable<DeviceInfo>> (rv);
+		return rv;
 	}
 
 	public void Cancel ()

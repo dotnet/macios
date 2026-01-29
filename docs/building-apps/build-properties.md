@@ -17,6 +17,12 @@ The full path to the `altool` tool.
 
 The default behavior is to use `xcrun altool`.
 
+## ACToolPath
+
+The full path to the `actool` tool.
+
+The default behavior is to use `xcrun actool`.
+
 ## AppBundleResourcePrefix
 
 The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).
@@ -352,8 +358,8 @@ Specifies which mobile device or emulator to target when using `dotnet run
 
 The value can be anything the command-line tools `simctl` or `devicectl`
 accept for the device name; this is typically either the UDID or the name of
-the device. For example, for the device `My iOS Device` with UDID `0000-aaaabbbb`, use
-either `-p:Device="My iOS Device"` or `-p:Device=0000-aaaabbbb`.
+the device. For example, for the device `My iOS Device` with UDID `00001111-012301230123ABCD`, use
+either `-p:Device="My iOS Device"` or `-p:Device=00001111-012301230123ABCD`.
 
 For more information about device selection, see the
 [.NET SDK device selection specification](https://github.com/dotnet/sdk/blob/2b9fc02a265c735f2132e4e3626e94962e48bdf5/documentation/specs/dotnet-run-for-maui.md).
@@ -530,6 +536,12 @@ Default: true
 ## GeneratedSourcesDir
 
 Where the generated source from the generator are saved.
+
+## IBToolPath
+
+The full path to the `ibtool` tool.
+
+The default behavior is to use `xcrun ibtool`.
 
 ## IncludeAllAppIcons
 
@@ -1274,6 +1286,12 @@ It's also possible to use a platform-specific property:
 * [tvOSMinimumVersion](#tvosminimumversion)
 * [macOSMinimumVersion](#macosminimumversion)
 * [MacCatalystMinimumVersion](#maccatalystminimumversion)
+
+## TextureAtlasPath
+
+The full path to the `TextureAtlas` tool.
+
+The default behavior is to use `xcrun TextureAtlas`.
 
 ## TrimMode
 

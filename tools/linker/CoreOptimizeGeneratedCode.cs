@@ -8,30 +8,20 @@ using ObjCRuntime;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Linker;
+using Mono.Linker.Steps;
 using Mono.Tuner;
+using MonoTouch.Tuner;
+
 using Xamarin.Bundler;
 
-using MonoTouch.Tuner;
-#if NET && !LEGACY_TOOLS
-using Mono.Linker.Steps;
-#endif
+#nullable enable
 
 namespace Xamarin.Linker {
-
-#if NET && !LEGACY_TOOLS
 	public class OptimizeGeneratedCodeHandler : ExceptionalMarkHandler {
-#else
-	public class OptimizeGeneratedCodeSubStep : ExceptionalSubStep {
-		// If the type currently being processed is a direct binding or not.
-		// A null value means it's not a constant value, and can't be inlined.
-		bool? isdirectbinding_constant;
-#endif
-
 		protected override string Name { get; } = "Binding Optimizer";
 		protected override int ErrorCode { get; } = 2020;
 
-#if NET && !LEGACY_TOOLS
-		Dictionary<AssemblyDefinition, bool?> _hasOptimizableCode;
+		Dictionary<AssemblyDefinition, bool?>? _hasOptimizableCode;
 		Dictionary<AssemblyDefinition, bool?> HasOptimizableCode {
 			get {
 				if (_hasOptimizableCode is null)
@@ -40,7 +30,7 @@ namespace Xamarin.Linker {
 			}
 		}
 
-		Dictionary<AssemblyDefinition, bool> _inlineIntPtrSize;
+		Dictionary<AssemblyDefinition, bool>? _inlineIntPtrSize;
 		Dictionary<AssemblyDefinition, bool> InlineIntPtrSize {
 			get {
 				if (_inlineIntPtrSize is null)
@@ -48,20 +38,9 @@ namespace Xamarin.Linker {
 				return _inlineIntPtrSize;
 			}
 		}
-#else
-		protected bool HasOptimizableCode { get; private set; }
-		protected bool IsExtensionType { get; private set; }
-
-		// This is per assembly, so we set it in 'void Process (AssemblyDefinition)'
-		bool InlineIntPtrSize { get; set; }
-#endif
 
 		public bool Device {
 			get { return LinkContext.App.IsDeviceBuild; }
-		}
-
-		public int Arch {
-			get { return LinkContext.Target.Is64Build ? 8 : 4; }
 		}
 
 		protected Optimizations Optimizations {
@@ -72,78 +51,43 @@ namespace Xamarin.Linker {
 
 		bool? is_arm64_calling_convention;
 
-#if NET && !LEGACY_TOOLS
 		public override void Initialize (LinkContext context, MarkContext markContext)
-#else
-		public override void Initialize (LinkContext context)
-#endif
 		{
 			base.Initialize (context);
 
 			if (Optimizations.InlineIsARM64CallingConvention == true) {
-				var target = LinkContext.Target;
-				if (target.Abis.Count == 1) {
-					// We can usually inline Runtime.InlineIsARM64CallingConvention if the generated code will execute on a single architecture
-					switch ((target.Abis [0] & Abi.ArchMask)) {
-					case Abi.i386:
-					case Abi.ARMv7:
-					case Abi.ARMv7s:
-					case Abi.x86_64:
-						is_arm64_calling_convention = false;
-						break;
-					case Abi.ARM64:
-					case Abi.ARM64e:
-					case Abi.ARM64_32:
-						is_arm64_calling_convention = true;
-						break;
-					case Abi.ARMv7k:
-						// ARMv7k binaries can run on ARM64_32, so this can't be inlined :/
-						break;
-					default:
-						LinkContext.Exceptions.Add (ErrorHelper.CreateWarning (99, Errors.MX0099, $"unknown abi: {target.Abis [0]}"));
-						break;
-					}
-				} else if (target.Abis.Count == 2 && target.Is32Build && target.Abis.Contains (Abi.ARMv7) && target.Abis.Contains (Abi.ARMv7s)) {
-					// We know we won't be running on arm64 if we're building for armv7+armv7s.
+				var app = LinkContext.App;
+				// We can usually inline Runtime.InlineIsARM64CallingConvention if the generated code will execute on a single architecture
+				switch (app.Abi & Abi.ArchMask) {
+				case Abi.x86_64:
 					is_arm64_calling_convention = false;
+					break;
+				case Abi.ARM64:
+				case Abi.ARM64e:
+					is_arm64_calling_convention = true;
+					break;
+				default:
+					LinkContext.Exceptions.Add (ErrorHelper.CreateWarning (99, Errors.MX0099, $"unknown abi: {app.Abi}"));
+					break;
 				}
 			}
-#if NET && !LEGACY_TOOLS
 			markContext.RegisterMarkMethodAction (ProcessMethod);
-#endif
 		}
 
-
-#if !NET || LEGACY_TOOLS
-		public override SubStepTargets Targets {
-			get { return SubStepTargets.Assembly | SubStepTargets.Type | SubStepTargets.Method; }
-		}
-#endif
-
-#if NET && !LEGACY_TOOLS
 		bool IsActiveFor (AssemblyDefinition assembly, out bool hasOptimizableCode)
-#else
-		public override bool IsActiveFor (AssemblyDefinition assembly)
-#endif
 		{
-#if NET && !LEGACY_TOOLS
 			hasOptimizableCode = false;
 			if (HasOptimizableCode.TryGetValue (assembly, out bool? optimizable)) {
 				if (optimizable == true)
 					hasOptimizableCode = true;
 				return optimizable is not null;
 			}
-#else
-			bool hasOptimizableCode = false;
-#endif
 			// we're sure "pure" SDK assemblies don't use XamMac.dll (i.e. they are the Product assemblies)
 			if (Profile.IsSdkAssembly (assembly)) {
 #if DEBUG
 				Console.WriteLine ("Assembly {0} : skipped (SDK)", assembly);
 #endif
-#if NET && !LEGACY_TOOLS
 				HasOptimizableCode.Add (assembly, null);
-#endif
 				return false;
 			}
 
@@ -153,9 +97,7 @@ namespace Xamarin.Linker {
 #if DEBUG
 				Console.WriteLine ("Assembly {0} : skipped ({1})", assembly, action);
 #endif
-#if NET && !LEGACY_TOOLS
 				HasOptimizableCode.Add (assembly, null);
-#endif
 				return false;
 			}
 
@@ -179,25 +121,9 @@ namespace Xamarin.Linker {
 				Console.WriteLine ("Assembly {0} : no [CompilerGeneratedAttribute] nor [BindingImplAttribute] present (applying basic optimizations)", assembly);
 #endif
 			// we always apply the step
-#if NET && !LEGACY_TOOLS
 			HasOptimizableCode.Add (assembly, hasOptimizableCode);
-#else
-			HasOptimizableCode = hasOptimizableCode;
-#endif
 			return true;
 		}
-
-#if !NET || LEGACY_TOOLS
-		protected override void Process (TypeDefinition type)
-		{
-			if (!HasOptimizableCode)
-				return;
-
-			isdirectbinding_constant = IsDirectBindingConstant (type);
-
-			IsExtensionType = GetIsExtensionType (type);
-		}
-#endif
 
 		// [GeneratedCode] is not enough - e.g. it's used for anonymous delegates even if the 
 		// code itself is not tool/compiler generated
@@ -240,7 +166,7 @@ namespace Xamarin.Linker {
 			return false;
 		}
 
-		static int? GetConstantValue (Instruction ins)
+		static int? GetConstantValue (Instruction? ins)
 		{
 			if (ins is null)
 				return null;
@@ -361,7 +287,7 @@ namespace Xamarin.Linker {
 					switch (ins.OpCode.Code) {
 					case Code.Brtrue:
 					case Code.Brtrue_S: {
-						var v = GetConstantValue (ins?.Previous);
+						var v = GetConstantValue (ins.Previous);
 						if (v.HasValue)
 							branch = v.Value != 0;
 						cond_instruction_count = 2;
@@ -369,7 +295,7 @@ namespace Xamarin.Linker {
 					}
 					case Code.Brfalse:
 					case Code.Brfalse_S: {
-						var v = GetConstantValue (ins?.Previous);
+						var v = GetConstantValue (ins.Previous);
 						if (v.HasValue)
 							branch = v.Value == 0;
 						cond_instruction_count = 2;
@@ -377,8 +303,8 @@ namespace Xamarin.Linker {
 					}
 					case Code.Beq:
 					case Code.Beq_S: {
-						var x1 = GetConstantValue (ins?.Previous?.Previous);
-						var x2 = GetConstantValue (ins?.Previous);
+						var x1 = GetConstantValue (ins.Previous?.Previous);
+						var x2 = GetConstantValue (ins.Previous);
 						if (x1.HasValue && x2.HasValue)
 							branch = x1.Value == x2.Value;
 						cond_instruction_count = 3;
@@ -386,8 +312,8 @@ namespace Xamarin.Linker {
 					}
 					case Code.Bne_Un:
 					case Code.Bne_Un_S: {
-						var x1 = GetConstantValue (ins?.Previous?.Previous);
-						var x2 = GetConstantValue (ins?.Previous);
+						var x1 = GetConstantValue (ins.Previous?.Previous);
+						var x2 = GetConstantValue (ins.Previous);
 						if (x1.HasValue && x2.HasValue)
 							branch = x1.Value != x2.Value;
 						cond_instruction_count = 3;
@@ -397,8 +323,8 @@ namespace Xamarin.Linker {
 					case Code.Ble_S:
 					case Code.Ble_Un:
 					case Code.Ble_Un_S: {
-						var x1 = GetConstantValue (ins?.Previous?.Previous);
-						var x2 = GetConstantValue (ins?.Previous);
+						var x1 = GetConstantValue (ins.Previous?.Previous);
+						var x2 = GetConstantValue (ins.Previous);
 						if (x1.HasValue && x2.HasValue)
 							branch = x1.Value <= x2.Value;
 						cond_instruction_count = 3;
@@ -408,8 +334,8 @@ namespace Xamarin.Linker {
 					case Code.Blt_S:
 					case Code.Blt_Un:
 					case Code.Blt_Un_S: {
-						var x1 = GetConstantValue (ins?.Previous?.Previous);
-						var x2 = GetConstantValue (ins?.Previous);
+						var x1 = GetConstantValue (ins.Previous?.Previous);
+						var x2 = GetConstantValue (ins.Previous);
 						if (x1.HasValue && x2.HasValue)
 							branch = x1.Value < x2.Value;
 						cond_instruction_count = 3;
@@ -419,8 +345,8 @@ namespace Xamarin.Linker {
 					case Code.Bge_S:
 					case Code.Bge_Un:
 					case Code.Bge_Un_S: {
-						var x1 = GetConstantValue (ins?.Previous?.Previous);
-						var x2 = GetConstantValue (ins?.Previous);
+						var x1 = GetConstantValue (ins.Previous?.Previous);
+						var x2 = GetConstantValue (ins.Previous);
 						if (x1.HasValue && x2.HasValue)
 							branch = x1.Value >= x2.Value;
 						cond_instruction_count = 3;
@@ -430,8 +356,8 @@ namespace Xamarin.Linker {
 					case Code.Bgt_S:
 					case Code.Bgt_Un:
 					case Code.Bgt_Un_S: {
-						var x1 = GetConstantValue (ins?.Previous?.Previous);
-						var x2 = GetConstantValue (ins?.Previous);
+						var x1 = GetConstantValue (ins.Previous?.Previous);
+						var x2 = GetConstantValue (ins.Previous);
 						if (x1.HasValue && x2.HasValue)
 							branch = x1.Value > x2.Value;
 						cond_instruction_count = 3;
@@ -528,7 +454,7 @@ namespace Xamarin.Linker {
 				return;
 
 			// Handle exception handlers specially, they do not follow normal code flow.
-			bool [] reachableExceptionHandlers = null;
+			bool []? reachableExceptionHandlers = null;
 			if (caller.Body.HasExceptionHandlers) {
 				reachableExceptionHandlers = new bool [caller.Body.ExceptionHandlers.Count];
 				for (var e = 0; e < reachableExceptionHandlers.Length; e++) {
@@ -665,12 +591,9 @@ namespace Xamarin.Linker {
 
 		bool GetInlineIntPtrSize (AssemblyDefinition assembly)
 		{
-#if NET && !LEGACY_TOOLS
 			if (InlineIntPtrSize.TryGetValue (assembly, out bool inlineIntPtrSize))
 				return inlineIntPtrSize;
-#else
-			bool inlineIntPtrSize;
-#endif
+
 			// The "get_Size" is a performance (over size) optimization.
 			// It always makes sense for platform assemblies because:
 			// * Xamarin.TVOS.dll only ship the 64 bits code paths (all 32 bits code is extra weight better removed)
@@ -691,22 +614,9 @@ namespace Xamarin.Linker {
 			if (inlineIntPtrSize)
 				Driver.Log (4, "Optimization 'inline-intptr-size' enabled for assembly '{0}'.", assembly.Name);
 
-#if NET && !LEGACY_TOOLS
 			InlineIntPtrSize.Add (assembly, inlineIntPtrSize);
-#else
-			InlineIntPtrSize = inlineIntPtrSize;
-#endif
 			return inlineIntPtrSize;
 		}
-
-#if !NET || LEGACY_TOOLS
-		protected override void Process (AssemblyDefinition assembly)
-		{
-			GetInlineIntPtrSize (assembly);
-
-			base.Process (assembly);
-		}
-#endif
 
 		bool GetIsExtensionType (TypeDefinition type)
 		{
@@ -717,10 +627,8 @@ namespace Xamarin.Linker {
 
 		protected override void Process (MethodDefinition method)
 		{
-#if NET && !LEGACY_TOOLS
 			if (!IsActiveFor (method.DeclaringType.Module.Assembly, out bool hasOptimizableCode))
 				return;
-#endif
 
 			if (!method.HasBody)
 				return;
@@ -728,11 +636,7 @@ namespace Xamarin.Linker {
 			if (method.IsBindingImplOptimizableCode (LinkContext)) {
 				// We optimize all methods that have the [BindingImpl (BindingImplAttributes.Optimizable)] attribute.
 			} else if ((method.IsGeneratedCode (LinkContext) && (
-#if NET && !LEGACY_TOOLS
 				GetIsExtensionType (method.DeclaringType)
-#else
-				IsExtensionType
-#endif
 				|| IsExport (method)))) {
 				// We optimize methods that have the [GeneratedCodeAttribute] and is either an extension type or an exported method
 			} else {
@@ -783,13 +687,6 @@ namespace Xamarin.Linker {
 			case "get_IsDirectBinding":
 				ProcessIsDirectBinding (caller, ins);
 				break;
-#if !NET || LEGACY_TOOLS
-			// ILLink does this optimization since the property returns a constant `true` (built time)
-			// or `false` - if `RegistrarRemovalTrackingStep` decide it's possible to do without
-			case "get_DynamicRegistrationSupported":
-				ProcessIsDynamicSupported (caller, ins);
-				break;
-#endif
 			case "SetupBlock":
 			case "SetupBlockUnsafe":
 				return ProcessSetupBlock (caller, ins);
@@ -804,7 +701,7 @@ namespace Xamarin.Linker {
 
 		protected virtual void ProcessLoadStaticField (MethodDefinition caller, Instruction ins)
 		{
-			FieldReference fr = ins.Operand as FieldReference;
+			var fr = ins.Operand as FieldReference;
 			switch (fr?.Name) {
 			case "IsARM64CallingConvention":
 				ProcessIsARM64CallingConvention (caller, ins);
@@ -825,7 +722,7 @@ namespace Xamarin.Linker {
 			var declaringTypeNamespace = LinkContext.App.Platform == Utils.ApplePlatform.MacOSX ? Namespaces.AppKit : Namespaces.UIKit;
 			var declaringTypeName = LinkContext.App.Platform == Utils.ApplePlatform.MacOSX ? "NSApplication" : "UIApplication";
 			var mr = ins.Operand as MethodReference;
-			if (!mr.DeclaringType.Is (declaringTypeNamespace, declaringTypeName))
+			if (mr is null || !mr.DeclaringType.Is (declaringTypeNamespace, declaringTypeName))
 				return;
 
 			// Verify a few assumptions before doing anything
@@ -839,23 +736,18 @@ namespace Xamarin.Linker {
 
 		void ProcessIntPtrSize (MethodDefinition caller, Instruction ins)
 		{
-#if NET && !LEGACY_TOOLS
 			if (!GetInlineIntPtrSize (caller.Module.Assembly))
 				return;
-#else
-			if (!InlineIntPtrSize)
-				return;
-#endif
 
 			// This will inline IntPtr.Size to load the corresponding constant value instead
 
 			// Verify we're checking the right get_Size call
 			var mr = ins.Operand as MethodReference;
-			if (!mr.DeclaringType.Is ("System", "IntPtr"))
+			if (mr is null || !mr.DeclaringType.Is ("System", "IntPtr"))
 				return;
 
 			// We're fine, inline the get_Size call
-			ins.OpCode = Arch == 8 ? OpCodes.Ldc_I4_8 : OpCodes.Ldc_I4_4;
+			ins.OpCode = OpCodes.Ldc_I4_8;
 			ins.Operand = null;
 		}
 
@@ -871,16 +763,15 @@ namespace Xamarin.Linker {
 			if (Optimizations.InlineIsDirectBinding != true)
 				return;
 
-#if NET && !LEGACY_TOOLS
 			bool? isdirectbinding_constant = IsDirectBindingConstant (caller.DeclaringType);
-#endif
+
 			// If we don't know the constant isdirectbinding value, then we can't inline anything
 			if (!isdirectbinding_constant.HasValue)
 				return;
 
 			// Verify we're checking the right get_IsDirectBinding call
 			var mr = ins.Operand as MethodReference;
-			if (!mr.DeclaringType.Is (Namespaces.Foundation, "NSObject"))
+			if (mr is null || !mr.DeclaringType.Is (Namespaces.Foundation, "NSObject"))
 				return;
 
 			// Verify a few assumptions before doing anything
@@ -898,28 +789,6 @@ namespace Xamarin.Linker {
 			ins.Operand = null;
 		}
 
-#if !NET || LEGACY_TOOLS
-		void ProcessIsDynamicSupported (MethodDefinition caller, Instruction ins)
-		{
-			const string operation = "inline Runtime.DynamicRegistrationSupported";
-
-			if (Optimizations.InlineDynamicRegistrationSupported != true)
-				return;
-
-			// Verify we're checking the right Runtime.IsDynamicSupported call
-			var mr = ins.Operand as MethodReference;
-			if (!mr.DeclaringType.Is (Namespaces.ObjCRuntime, "Runtime"))
-				return;
-
-			if (!ValidateInstruction (caller, ins, operation, Code.Call))
-				return;
-
-			// We're fine, inline the Runtime.IsDynamicSupported condition
-			ins.OpCode = LinkContext.App.DynamicRegistrationSupported ? OpCodes.Ldc_I4_1 : OpCodes.Ldc_I4_0;
-			ins.Operand = null;
-		}
-#endif
-
 		int ProcessSetupBlock (MethodDefinition caller, Instruction ins)
 		{
 			if (Optimizations.OptimizeBlockLiteralSetupBlock != true)
@@ -932,7 +801,7 @@ namespace Xamarin.Linker {
 			//
 			// This code is a mirror of the code in BlockLiteral.SetupBlock (to calculate the block signature).
 			var mr = ins.Operand as MethodReference;
-			if (!mr.DeclaringType.Is (Namespaces.ObjCRuntime, "BlockLiteral"))
+			if (mr is null || !mr.DeclaringType.Is (Namespaces.ObjCRuntime, "BlockLiteral"))
 				return 0;
 
 			if (caller.DeclaringType.Is ("ObjCRuntime", "BlockLiteral")) {
@@ -944,7 +813,7 @@ namespace Xamarin.Linker {
 				}
 			}
 
-			string signature = null;
+			string? signature = null;
 			try {
 				// We need to figure out the type of the first argument to the call to SetupBlock[Impl].
 				// 
@@ -989,7 +858,7 @@ namespace Xamarin.Linker {
 					return 0;
 				}
 
-				if (!LinkContext.Target.StaticRegistrar.TryComputeBlockSignature (caller, trampolineDelegateType, out var exception, out signature)) {
+				if (!LinkContext.App.StaticRegistrar.TryComputeBlockSignature (caller, trampolineDelegateType, out var exception, out signature)) {
 					ErrorHelper.Show (ErrorHelper.CreateWarning (LinkContext.App, 2106, exception, caller, ins, Errors.MM2106_D, caller, ins.Offset, exception.Message));
 					return 0;
 
@@ -1050,15 +919,15 @@ namespace Xamarin.Linker {
 			//
 			// This code is a mirror of the code in BlockLiteral.SetupBlock (to calculate the block signature).
 			var mr = ins.Operand as MethodReference;
-			if (!mr.DeclaringType.Is (Namespaces.ObjCRuntime, "BlockLiteral"))
+			if (mr is null || !mr.DeclaringType.Is (Namespaces.ObjCRuntime, "BlockLiteral"))
 				return 0;
 
 			var md = mr.Resolve ();
-			if (!IsBlockLiteralCtor_Type_String (md))
+			if (md is null || !IsBlockLiteralCtor_Type_String (md))
 				return 0;
 
-			string signature = null;
-			Instruction sequenceStart;
+			string? signature = null;
+			Instruction? sequenceStart;
 			try {
 				// We need to figure out the last argument to the call to the ctor
 				// 
@@ -1141,20 +1010,25 @@ namespace Xamarin.Linker {
 					return 0;
 				}
 
-				var userDelegateType = LinkContext.Target.StaticRegistrar.GetUserDelegateType (trampolineMethod);
-				MethodReference userMethod = null;
+				var userDelegateType = LinkContext.App.StaticRegistrar.GetUserDelegateType (trampolineMethod);
+				MethodReference? userMethod = null;
 				var blockSignature = true;
 				if (userDelegateType is not null) {
-					userMethod = LinkContext.Target.StaticRegistrar.GetDelegateInvoke (userDelegateType);
+					userMethod = LinkContext.App.StaticRegistrar.GetDelegateInvoke (userDelegateType);
 				} else {
 					userMethod = trampolineMethod;
+				}
+
+				if (userMethod is null) {
+					ErrorHelper.Show (ErrorHelper.CreateWarning (LinkContext.App, 2106, caller, ins, Errors.MM2106_D, caller, ins.Offset, "Could not find delegate invoke method"));
+					return 0;
 				}
 
 				// Calculate the block signature.
 				var parameters = new TypeReference [userMethod.Parameters.Count];
 				for (int p = 0; p < parameters.Length; p++)
 					parameters [p] = userMethod.Parameters [p].ParameterType;
-				signature = LinkContext.Target.StaticRegistrar.ComputeSignature (userMethod.DeclaringType, false, userMethod.ReturnType, parameters, userMethod.Resolve (), isBlockSignature: blockSignature);
+				signature = LinkContext.App.StaticRegistrar.ComputeSignature (userMethod.DeclaringType, false, userMethod.ReturnType, parameters, userMethod.Resolve (), isBlockSignature: blockSignature);
 
 				sequenceStart = loadType;
 			} catch (Exception e) {
@@ -1188,7 +1062,7 @@ namespace Xamarin.Linker {
 			return ins;
 		}
 
-		static Instruction SkipNops (Instruction ins)
+		static Instruction? SkipNops (Instruction? ins)
 		{
 			if (ins is null)
 				return null;
@@ -1213,7 +1087,7 @@ namespace Xamarin.Linker {
 
 			// Verify we're checking the right IsARM64CallingConvention field
 			var fr = ins.Operand as FieldReference;
-			if (!fr.DeclaringType.Is (Namespaces.ObjCRuntime, "Runtime"))
+			if (fr is null || !fr.DeclaringType.Is (Namespaces.ObjCRuntime, "Runtime"))
 				return 0;
 
 			if (!ValidateInstruction (caller, ins, operation, Code.Ldsfld))
@@ -1235,7 +1109,7 @@ namespace Xamarin.Linker {
 
 			// Verify we're checking the right Arch field
 			var fr = ins.Operand as FieldReference;
-			if (!fr.DeclaringType.Is (Namespaces.ObjCRuntime, "Runtime"))
+			if (fr is null || !fr.DeclaringType.Is (Namespaces.ObjCRuntime, "Runtime"))
 				return;
 
 			// Verify a few assumptions before doing anything
@@ -1250,7 +1124,7 @@ namespace Xamarin.Linker {
 
 		// Returns the type of the value pushed on the stack by the given instruction.
 		// Returns null for unknown instructions, or for instructions that don't push anything on the stack.
-		TypeReference GetPushedType (MethodDefinition method, Instruction ins)
+		TypeReference? GetPushedType (MethodDefinition method, Instruction ins)
 		{
 			var index = 0;
 			switch (ins.OpCode.Code) {
@@ -1311,11 +1185,11 @@ namespace Xamarin.Linker {
 			}
 		}
 
-		MethodDefinition setupblock_def;
+		MethodDefinition? setupblock_def;
 		MethodReference GetBlockSetupImpl (MethodDefinition caller, Instruction ins)
 		{
 			if (setupblock_def is null) {
-				var type = LinkContext.GetAssembly (Driver.GetProductAssembly (LinkContext.Target.App)).MainModule.GetType (Namespaces.ObjCRuntime, "BlockLiteral");
+				var type = LinkContext.GetAssembly (Driver.GetProductAssembly (LinkContext.App)).MainModule.GetType (Namespaces.ObjCRuntime, "BlockLiteral");
 				foreach (var method in type.Methods) {
 					if (method.Name != "SetupBlockImpl")
 						continue;
@@ -1329,11 +1203,11 @@ namespace Xamarin.Linker {
 			return caller.Module.ImportReference (setupblock_def);
 		}
 
-		MethodDefinition block_ctor_def;
+		MethodDefinition? block_ctor_def;
 		MethodReference GetBlockLiteralConstructor (MethodDefinition caller, Instruction ins)
 		{
 			if (block_ctor_def is null) {
-				var type = LinkContext.GetAssembly (Driver.GetProductAssembly (LinkContext.Target.App)).MainModule.GetType (Namespaces.ObjCRuntime, "BlockLiteral");
+				var type = LinkContext.GetAssembly (Driver.GetProductAssembly (LinkContext.App)).MainModule.GetType (Namespaces.ObjCRuntime, "BlockLiteral");
 				foreach (var method in type.Methods) {
 					if (!method.IsConstructor)
 						continue;
@@ -1385,11 +1259,12 @@ namespace Xamarin.Linker {
 			}
 
 			ins = SkipNops (ins.Next);
-			var callGCKeepAlive = ins;
 			if (ins is null) {
 				ErrorHelper.Show (ErrorHelper.CreateWarning (LinkContext.App, 2112, method, ins, Errors.MX2112_A /* Could not optimize the static constructor in the interface {0} because it did not have the expected instruction sequence (found end of method too soon). */, method.DeclaringType.FullName));
 				return false;
-			} else if (callGCKeepAlive.OpCode != OpCodes.Call || !(callGCKeepAlive.Operand is MethodReference methodOperand) || methodOperand.Name != "KeepAlive" || !methodOperand.DeclaringType.Is ("System", "GC")) {
+			}
+			var callGCKeepAlive = ins;
+			if (callGCKeepAlive.OpCode != OpCodes.Call || !(callGCKeepAlive.Operand is MethodReference methodOperand) || methodOperand.Name != "KeepAlive" || !methodOperand.DeclaringType.Is ("System", "GC")) {
 				ErrorHelper.Show (ErrorHelper.CreateWarning (LinkContext.App, 2112, method, ins, Errors.MX2112_B /* Could not optimize the static constructor in the interface {0} because it had an unexpected instruction {1} at offset {2}. */, method.DeclaringType.FullName, ins.OpCode, ins.Offset));
 				return false;
 			}

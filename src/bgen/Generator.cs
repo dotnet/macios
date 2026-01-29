@@ -6720,6 +6720,13 @@ public partial class Generator : IMemberGatherer {
 					} else
 						print ("public _{0} () {{ IsDirectBinding = false; }}\n", dtype.Name);
 
+					// Tell the trimmer to not remove any of our protocol implementations, they might be called from native
+					// code even if we don't have any event handlers listening for them.
+					print ($"[DynamicDependency (DynamicallyAccessedMemberTypes.PublicMethods, typeof (_{dtype.Name}))]");
+					print ($"static _{dtype.Name} ()");
+					print ("{");
+					print ("\tGC.KeepAlive (null);"); // need to do _something_ (doesn't seem to matter what), otherwise the static cctor (and the DynamicDependency attributes) are trimmed away.
+					print ("}");
 
 					string shouldOverrideDelegateString = isProtocolEventBacked ? "" : "override ";
 
@@ -6748,8 +6755,6 @@ public partial class Generator : IMemberGatherer {
 						} else
 							previous_miname = miname;
 
-						// Tell the trimmer to not remove the delegate's method if someone is listening for the event
-						print ($"[DynamicDependency (nameof ({mi.Name}))]");
 						if (mi.ReturnType == TypeCache.System_Void) {
 							if (bta.Singleton || mi.GetParameters ().Length == 1)
 								print ("internal EventHandler? {0};", miname);

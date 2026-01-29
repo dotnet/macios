@@ -107,7 +107,6 @@ namespace Cecil.Tests {
 			"Foundation.DictionaryContainerHelper.GetHandle (Foundation.DictionaryContainer)",
 			"Foundation.NSArray.FromNativeObjectsImpl`1 (T[], System.IntPtr, System.Boolean)",
 			"Foundation.NSArray.FromNSObjects (System.Collections.Generic.IList`1<Foundation.NSObject>)",
-			"Foundation.NSArray.FromStrings (System.Collections.Generic.IReadOnlyList`1<System.String>)",
 			"Foundation.NSArray.UnsafeGetItem (ObjCRuntime.NativeHandle, System.UIntPtr, System.Type)",
 			"Foundation.NSArray.UnsafeGetItem`1 (ObjCRuntime.NativeHandle, System.UIntPtr)",
 			"Foundation.NSArray`1.FromNSObjects`0 (System.Int32, TKey[])",

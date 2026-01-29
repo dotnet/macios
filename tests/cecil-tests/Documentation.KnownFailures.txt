@@ -10422,8 +10422,6 @@ M:CoreFoundation.CFArray.ArrayFromHandle``1(ObjCRuntime.NativeHandle)
 M:CoreFoundation.CFArray.ArrayFromHandleFunc``1(ObjCRuntime.NativeHandle,System.Func{ObjCRuntime.NativeHandle,``0},System.Boolean)
 M:CoreFoundation.CFArray.ArrayFromHandleFunc``1(ObjCRuntime.NativeHandle,System.Func{ObjCRuntime.NativeHandle,``0})
 M:CoreFoundation.CFArray.Create(ObjCRuntime.INativeObject[])
-M:CoreFoundation.CFArray.Create(System.String[])
-M:CoreFoundation.CFArray.FromStrings(System.String[])
 M:CoreFoundation.CFArray.GetValue(System.IntPtr)
 M:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle,System.Boolean)
 M:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle)
@@ -11806,7 +11804,6 @@ M:Foundation.INSUrlSessionWebSocketDelegate.DidOpen(Foundation.NSUrlSession,Foun
 M:Foundation.INSXpcListenerDelegate.ShouldAcceptConnection(Foundation.NSXpcListener,Foundation.NSXpcConnection)
 M:Foundation.NSArray.ArrayFromHandle``1(ObjCRuntime.NativeHandle,System.Converter{ObjCRuntime.NativeHandle,``0},System.Boolean)
 M:Foundation.NSArray.EnumsFromHandle``1(ObjCRuntime.NativeHandle)
-M:Foundation.NSArray.FromStrings(System.Collections.Generic.IReadOnlyList{System.String})
 M:Foundation.NSArray.ToArray
 M:Foundation.NSArray.ToArray``1
 M:Foundation.NSArray`1.ToArray

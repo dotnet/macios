@@ -599,6 +599,7 @@
 				Debug=$(_BundlerDebug)
 				DeploymentTarget=$(_MinimumOSVersion)
 				@(_CustomLinkFlags -> 'CustomLinkFlags=%(Identity)')
+				@(_DylibsToConvertToFrameworks -> 'DylibToConvertToFramework=%(Identity)')
 				EnableSGenConc=$(EnableSGenConc)
 				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=Overwrite=%(Overwrite)|%(Identity)=%(Value)')
 				@(_XamarinFrameworkAssemblies -> 'FrameworkAssembly=%(Filename)')
@@ -855,6 +856,7 @@
 			_ExpandNativeReferences;
 			_ComputeVariables;
 			_LoadLinkerOutput;
+			_CreateFrameworksForDylibs;
 		</_ComputeFrameworkFilesToPublishDependsOn>
 	</PropertyGroup>
 
@@ -878,6 +880,7 @@
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			FrameworkToPublish="@(_FrameworkToPublish)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		>
 			<Output TaskParameter="FrameworkToPublish" ItemName="_FilteredFrameworkToPublish" />
 		</FilterStaticFrameworks>
@@ -1218,10 +1221,10 @@
 			<_IsDedupEnabled Condition="'$(_IsDedupEnabled)' == '' And '$(_RunAotCompiler)' == 'true' And '$(IsMacEnabled)' == 'true' And '$(TargetArchitectures)' == 'ARM64' And '$(MtouchInterpreter)' != 'all'">true</_IsDedupEnabled>
 			<_DedupAssembly Condition="'$(_IsDedupEnabled)' == 'true'">$(IntermediateOutputPath)aot-instances.dll</_DedupAssembly>
 
+			<!-- Always link statically when using NativeAOT -->
+			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And '$(_UseNativeAot)' == 'true'">static</_LibMonoLinkMode>
 			<!-- default to 'static' for Mac Catalyst to work around https://github.com/dotnet/macios/issues/14686 -->
 			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And '$(_PlatformName)' == 'MacCatalyst' And '$(UseMonoRuntime)' == 'true'">static</_LibMonoLinkMode>
-			<!-- temporarily use 'dylib' for CoreCLR on mobile because we need to implement .dylib -> .framework conversion to use 'static' -->
-			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(_XamarinRuntime)' == 'CoreCLR'">dylib</_LibMonoLinkMode>
 			<!-- we can't use dylibs for mobile apps when building for device, because the App Store won't allow it -->
 			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == '' And '$(ComputedPlatform)' == 'iPhone'">static</_LibMonoLinkMode>
 			<_LibMonoLinkMode Condition="'$(_LibMonoLinkMode)' == ''">dylib</_LibMonoLinkMode>
@@ -1274,6 +1277,18 @@
 							'%(Filename)' == 'libclrjit'
 							"
 			/>
+			<!-- Don't link with a .a file if the library is also present as a .dylib file when using CoreCLR on Apple mobile platforms -->
+			<_MonoLibraryStatic
+				Include="@(ResolvedFileToPublish -> '%(RelativeDir)%(Filename).a')"
+				Condition=" '$(_XamarinRuntime)' == 'CoreCLR' And
+							'$(_PlatformName)' != 'macOS' And
+							'%(ResolvedFileToPublish.AssetType)' == 'native' And
+							'%(ResolvedFileToPublish.Extension)' == '.dylib' And
+							'%(ResolvedFileToPublish.RuntimeIdentifier)' == '$(RuntimeIdentifier)' And
+							'%(ResolvedFileToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)'
+							"
+			/>
+			<_MonoLibrary Remove="@(_MonoLibraryStatic)" />
 		</ItemGroup>
 	</Target>
 
@@ -1856,7 +1871,7 @@
 			</_DynamicLibraryToReidentify>
 			<!-- Compute DynamicLibraryId and ReidentifiedPath -->
 			<_DynamicLibraryToReidentify Update="@(_DynamicLibraryToReidentify)" Condition="'%(SourceItemGroup)' == '_FileNativeReference'">
-				<DynamicLibraryId Condition="'%(_DynamicLibraryToReidentify.DynamicLibraryId)' == ''">$([System.String]::Copy('$(_ExecutablePathPrefix)%(_DynamicLibraryToReidentify.ComputedRelativePath)').Replace('\', '/'))</DynamicLibraryId>
+				<UpdatedId Condition="'%(_DynamicLibraryToReidentify.DynamicLibraryId)' == ''">$([System.String]::Copy('$(_ExecutablePathPrefix)%(_DynamicLibraryToReidentify.ComputedRelativePath)').Replace('\', '/'))</UpdatedId>
 				<ReidentifiedPath Condition="'%(_DynamicLibraryToReidentify.ReidentifiedPath)' == ''">$(_IntermediateNativeLibraryDir)/%(_DynamicLibraryToReidentify.ComputedRelativePath)</ReidentifiedPath>
 			</_DynamicLibraryToReidentify>
 		</ItemGroup>
@@ -1885,6 +1900,9 @@
 
 	<Target Name="_ReidentifyDynamicLibraries" DependsOnTargets="$(_ReidentifyDynamicLibrariesDependsOn)" />
 
+	<!--
+		Link the native executable
+	-->
 	<Target Name="_LinkNativeExecutable"
 			DependsOnTargets="$(_LinkNativeExecutableDependsOn)"
 			Inputs="@(_LinkNativeExecutableInputs)"
@@ -2058,17 +2076,6 @@
 			<!-- Remove the libxamarin-*.dylib files we don't want -->
 			<ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dylib' And '%(Filename)%(Extension)' != '$(_LibXamarinName)' And $([System.String]::new('%(Filename)').StartsWith('libxamarin-dotnet', StringComparison.Ordinal))" />
 
-			<!-- Remove the runtime dylibs if we're linking the runtime statically -->
-			<ResolvedFileToPublish
-				Remove="@(ResolvedFileToPublish)"
-				Condition=" '$(_LibMonoExtension)' != 'dylib' And
-				            '%(ResolvedFileToPublish.AssetType)' == 'native' And
-				            '%(ResolvedFileToPublish.RuntimeIdentifier)' == '$(RuntimeIdentifier)' And
-				            '%(ResolvedFileToPublish.Extension)' == '.dylib' And
-				            '%(ResolvedFileToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)'
-				            "
-			/>
-
 			<!-- There's no need to ship .a files -->
 			<!-- We need to remove these from ResolvedFileToPublish before calling ComputeBundleLocation, because we don't want to link with all of these static libraries -->
 			<ResolvedFileToPublish
@@ -2076,27 +2083,7 @@
 				Condition=" '%(ResolvedFileToPublish.AssetType)' == 'native' And
 				            '%(ResolvedFileToPublish.RuntimeIdentifier)' == '$(RuntimeIdentifier)' And
 				            '%(ResolvedFileToPublish.Extension)' == '.a' And
-				            '%(ResolvedFileToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)'
-				            "
-			/>
-			<ResolvedFileToPublish
-				Remove="@(ResolvedFileToPublish)"
-				Condition=" '%(ResolvedFileToPublish.AssetType)' == 'native' And
-				            '%(ResolvedFileToPublish.RuntimeIdentifier)' == '$(RuntimeIdentifier)' And
-				            '%(ResolvedFileToPublish.Extension)' == '.a' And
 				            '%(ResolvedFileToPublish.NuGetPackageId)' == '$(_XamarinNugetPackageId)'
-				            "
-			/>
-
-			<!-- There's no need to ship any *.o files shipped by NativeAOT -->
-			<!-- We need to remove these from ResolvedFileToPublish before calling ComputeBundleLocation, because otherwise we get warnings about not knowing what to do with these files -->
-			<ResolvedFileToPublish
-				Remove="@(ResolvedFileToPublish)"
-				Condition=" '%(ResolvedFileToPublish.AssetType)' == 'native' And
-				            '%(ResolvedFileToPublish.RuntimeIdentifier)' == '$(RuntimeIdentifier)' And
-				            '%(ResolvedFileToPublish.Extension)' == '.o' And
-				            '%(ResolvedFileToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)' And
-				            '$(_UseNativeAot)' == 'true'
 				            "
 			/>
 
@@ -2116,19 +2103,6 @@
 			<ResolvedFileToPublish Remove="@(_CreateDumpExecutable)" />
 			<ResolvedFileToPublish Include="@(_CreateDumpExecutable)" Condition="'$(BundleCreateDump)' == 'true'" />
 
-			<!-- Remove libclrjit.dylib when using CoreCLR on Apple mobile platforms -->
-			<ResolvedFileToPublish
-				Remove="@(ResolvedFileToPublish)"
-				Condition=" '$(_XamarinRuntime)' == 'CoreCLR' And
-				            '$(_PlatformName)' != 'macOS' And
-				            '%(ResolvedFileToPublish.Filename)' == 'libclrjit' And
-				            '%(ResolvedFileToPublish.Extension)' == '.dylib' And
-				            '%(ResolvedFileToPublish.AssetType)' == 'native' And
-				            '%(ResolvedFileToPublish.RuntimeIdentifier)' == '$(RuntimeIdentifier)' And
-				            '%(ResolvedFileToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)'
-				            "
-			/>
-
 			<!-- Remove any dylibs Mono told us not to link with -->
 			<ResolvedFileToPublish
 				Remove="@(_MonoRuntimeComponentDontLink -> '$(_MonoRuntimePackPath)/native/%(Identity)')"
@@ -2140,6 +2114,24 @@
 
 			<!-- We don't ship the runtimeconfig.json file -->
 			<ResolvedFileToPublish Remove="$(ProjectRuntimeConfigFilePath)" Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true'" />
+		</ItemGroup>
+
+		<ProcessRuntimeLibraries
+			DotNetRuntime="$(_XamarinRuntime)"
+			ResolvedFileToPublish="@(ResolvedFileToPublish)"
+			RuntimeIdentifier="$(RuntimeIdentifier)"
+			RuntimeLibLinkMode="$(_LibMonoLinkMode)"
+			RuntimeNuGetPackageId="$(_MonoNugetPackageId)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		>
+			<Output TaskParameter="DylibsToConvertToFrameworks" ItemName="_DylibsToConvertToFrameworks" />
+			<Output TaskParameter="OutputResolvedFileToPublish" ItemName="_OutputResolvedFileToPublish" />
+		</ProcessRuntimeLibraries>
+
+		<ItemGroup>
+			<ResolvedFileToPublish Remove="@(ResolvedFileToPublish)" />
+			<ResolvedFileToPublish Include="@(_OutputResolvedFileToPublish)" />
+			<_OutputResolvedFileToPublish Remove="@(_OutputResolvedFileToPublish)" />
 		</ItemGroup>
 
 		<ComputeBundleLocation

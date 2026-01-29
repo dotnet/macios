@@ -1,12 +1,16 @@
 TOP=.
-SUBDIRS=builds runtime src msbuild tools
+SUBDIRS=builds
 include $(TOP)/Make.config
 include $(TOP)/mk/versions.mk
 
-# On Linux, skip directories that require native compilation
-ifdef IS_LINUX
-SUBDIRS := $(filter-out runtime,$(SUBDIRS))
-else
+# On Linux, skip directories that require native compilation or macOS platform
+ifndef IS_LINUX
+SUBDIRS += runtime
+endif
+
+SUBDIRS += src msbuild tools
+
+ifndef IS_LINUX
 SUBDIRS += dotnet
 endif
 

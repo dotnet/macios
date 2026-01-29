@@ -4,10 +4,10 @@ include $(TOP)/Make.config
 
 # Skip test-libraries on Linux (requires native compilation with Xcode/clang)
 ifndef IS_LINUX
-SUBDIRS=test-libraries dotnet
-else
-SUBDIRS=dotnet
+SUBDIRS=test-libraries
 endif
+
+SUBDIRS += dotnet
 include $(TOP)/mk/rules.mk
 
 XHARNESS_EXECUTABLE=xharness/bin/Debug/xharness.dll

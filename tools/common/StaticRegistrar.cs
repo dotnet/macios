@@ -717,7 +717,7 @@ namespace Registrar {
 			return list;
 		}
 
-		public override TypeReference FindType (TypeReference relative, string @namespace, string name)
+		public override TypeReference FindType (TypeReference relative, string? @namespace, string name)
 		{
 			return relative.Resolve ().Module.GetType (@namespace, name);
 		}

@@ -68,7 +68,7 @@ namespace ObjCRuntime {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public System.Reflection.AssemblyName AssemblyName { get; internal set; }
+		public System.Reflection.AssemblyName? AssemblyName { get; internal set; }
 	}
 }
 #endif
@@ -669,16 +669,16 @@ namespace Registrar {
 					semantic |= (ArgumentSemantic) (InstanceCategoryFlag);
 
 				var bindas_count = Marshal.ReadInt32 (desc + IntPtr.Size + 4);
-				if (bindas_count < 1 + Parameters.Length)
-					throw ErrorHelper.CreateError (8018, $"Internal consistency error: BindAs array is not big enough (expected at least {1 + parameters.Length} elements, got {bindas_count} elements) for {method_base.DeclaringType.FullName + "." + method_base.Name}. Please file a bug report at https://github.com/dotnet/macios/issues/new.");
+				if (bindas_count < 1 + Parameters!.Length)
+					throw ErrorHelper.CreateError (8018, $"Internal consistency error: BindAs array is not big enough (expected at least {1 + parameters!.Length} elements, got {bindas_count} elements) for {method_base.DeclaringType?.FullName + "." + method_base.Name}. Please file a bug report at https://github.com/dotnet/macios/issues/new.");
 
 				Marshal.WriteIntPtr (desc, Runtime.AllocGCHandle (method_base));
 				Marshal.WriteInt32 (desc + IntPtr.Size, (int) semantic);
 
 				if (!IsConstructor && ReturnType != NativeReturnType)
 					Marshal.WriteIntPtr (desc + IntPtr.Size + 8, Runtime.AllocGCHandle (NativeReturnType));
-				for (int i = 0; i < NativeParameters.Length; i++) {
-					if (parameters [i] == native_parameters [i])
+				for (int i = 0; i < NativeParameters!.Length; i++) {
+					if (parameters! [i] == native_parameters! [i])
 						continue;
 					Marshal.WriteIntPtr (desc + IntPtr.Size + 8 + IntPtr.Size * (i + 1), Runtime.AllocGCHandle (native_parameters [i]));
 				}
@@ -739,8 +739,8 @@ namespace Registrar {
 						return false;
 					if (!Registrar.IsArray (inputType))
 						return false;
-					underlyingOutputType = Registrar.GetElementType (outputType);
-					underlyingInputType = Registrar.GetElementType (inputType);
+					underlyingOutputType = Registrar.GetElementType (outputType)!;
+					underlyingInputType = Registrar.GetElementType (inputType)!;
 				}
 				var outputTypeName = Registrar.GetTypeFullName (underlyingOutputType);
 
@@ -879,7 +879,7 @@ namespace Registrar {
 #if LEGACY_TOOLS || BUNDLER
 					throw ErrorHelper.CreateError (8018, Errors.MT8018);
 #else
-					var mi = (System.Reflection.MethodInfo) Method;
+					var mi = (System.Reflection.MethodInfo?) Method;
 					bool is_stret;
 #if MONOMAC || __MACCATALYST__
 					if (Runtime.IsARM64CallingConvention) {
@@ -1146,7 +1146,7 @@ namespace Registrar {
 		protected abstract Exception CreateExceptionImpl (int code, bool error, Exception? innerException, TMethod? method, string message, params object? [] args);
 		protected abstract Exception CreateExceptionImpl (int code, bool error, Exception? innerException, TType? type, string message, params object? [] args);
 		protected abstract string PlatformName { get; }
-		public abstract TType? FindType (TType relative, string @namespace, string name);
+		public abstract TType? FindType (TType relative, string? @namespace, string name);
 		protected abstract IEnumerable<TMethod>? FindMethods (TType type, string name); // will return null if nothing was found
 		protected abstract TProperty? FindProperty (TType type, string name); // will return null if nothing was found
 
@@ -1197,7 +1197,7 @@ namespace Registrar {
 			if (!IsPropertyAccessor (method))
 				return false;
 
-			property = FindProperty (method.DeclaringType, method.Name.Substring (4));
+			property = FindProperty (method.DeclaringType!, method.Name.Substring (4));
 			return property is not null;
 		}
 
@@ -1501,10 +1501,7 @@ namespace Registrar {
 		// overridable so that descendant classes can provide faster implementations
 		protected virtual bool IsNSObject (TType type)
 		{
-			string @namespace;
-			string name;
-
-			GetNamespaceAndName (type, out @namespace, out name);
+			GetNamespaceAndName (type, out var @namespace, out var name);
 
 			if (@namespace == Foundation && name == "NSObject")
 				return true;
@@ -1516,15 +1513,14 @@ namespace Registrar {
 			return false;
 		}
 
-		protected virtual bool AreEqual (TType a, TType b)
+		protected virtual bool AreEqual (TType? a, TType? b)
 		{
 			return a == b;
 		}
 
 		protected bool Is (TType type, string @namespace, string name)
 		{
-			string ns, n;
-			GetNamespaceAndName (type, out ns, out n);
+			GetNamespaceAndName (type, out var ns, out var n);
 			return ns == @namespace && n == name;
 		}
 
@@ -1656,8 +1652,7 @@ namespace Registrar {
 		bool IsSubClassOf (TType? type, string @namespace, string name)
 		{
 			while ((type = GetBaseType (type)) is not null) {
-				string ns, n;
-				GetNamespaceAndName (type, out ns, out n);
+				GetNamespaceAndName (type, out var ns, out var n);
 				if (ns == @namespace && n == name)
 					return true;
 			}
@@ -2306,8 +2301,8 @@ namespace Registrar {
 					PropertyType = property_type,
 				};
 
-				TMethod getter = GetGetMethod (property);
-				TMethod setter = GetSetMethod (property);
+				TMethod? getter = GetGetMethod (property);
+				TMethod? setter = GetSetMethod (property);
 
 				if (getter is not null && VerifyNonGenericMethod (ref exceptions, type, getter)) {
 					var method = new ObjCMethod (this, objcType, getter) {
@@ -2319,7 +2314,7 @@ namespace Registrar {
 					List<Exception>? excs = null;
 					if (!method.ValidateSignature (ref excs)) {
 						AddException (ref exceptions, CreateException (4138, excs [0], property, Errors.MT4138,
-							GetTypeFullName (property.PropertyType), property.DeclaringType.FullName, property.Name));
+							GetTypeFullName (property.PropertyType), property.DeclaringType?.FullName, property.Name));
 						continue;
 					}
 
@@ -2341,7 +2336,7 @@ namespace Registrar {
 					List<Exception>? excs = null;
 					if (!method.ValidateSignature (ref excs)) {
 						AddException (ref exceptions, CreateException (4138, excs [0], property, Errors.MT4138,
-							GetTypeFullName (property.PropertyType), property.DeclaringType.FullName, property.Name));
+							GetTypeFullName (property.PropertyType), property.DeclaringType?.FullName, property.Name));
 						continue;
 					}
 
@@ -2602,7 +2597,7 @@ namespace Registrar {
 					var type = parameters [i];
 					if (IsByRef (type)) {
 						signature.Append ("^");
-						var elementType = GetElementType (type);
+						var elementType = GetElementType (type)!;
 						if (IsNullable (elementType)) {
 							signature.Append (ToSignature (GetNullableType (elementType)!, member, ref success));
 						} else {
@@ -2741,12 +2736,12 @@ namespace Registrar {
 				return ValueTypeSignature (type, member, ref success);
 
 			if (IsArray (type)) {
-				ToSignature (GetElementType (type), member, ref success); // this validates that the element type is a type we support.
+				ToSignature (GetElementType (type)!, member, ref success); // this validates that the element type is a type we support.
 				return "@"; // But we don't care about the actual type, we'll just return '@'. We only support NSArrays of the element type, so '@' is always right.
 			}
 
 			if (IsPointer (type))
-				return "^" + ToSignature (GetElementType (type), member, ref success);
+				return "^" + ToSignature (GetElementType (type)!, member, ref success);
 
 			success = false;
 			return string.Empty;

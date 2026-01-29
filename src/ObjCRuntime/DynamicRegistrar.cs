@@ -224,7 +224,7 @@ namespace Registrar {
 		// IL2026: Using member 'System.Reflection.Assembly.GetTypes()' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Types might be removed.
 		[UnconditionalSuppressMessage ("", "IL2026", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		public override Type? FindType (Type relative, string @namespace, string name)
+		public override Type? FindType (Type relative, string? @namespace, string name)
 		{
 			// Note that the code in this method shouldn't be called when using any static registrar, so throw an exception in that case.
 			if (!Runtime.DynamicRegistrationSupported)

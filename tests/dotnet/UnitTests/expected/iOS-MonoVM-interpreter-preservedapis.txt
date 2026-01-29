@@ -1,5 +1,3 @@
-Microsoft.iOS.dll:<>y__InlineArray4`1
-Microsoft.iOS.dll:<>y__InlineArray6`1
 Microsoft.iOS.dll:<Module>
 Microsoft.iOS.dll:<Module>..cctor()
 Microsoft.iOS.dll:<PrivateImplementationDetails>
@@ -1574,8 +1572,6 @@ Microsoft.iOS.dll:System.UInt32 ObjCRuntime.Runtime/MTTypeFlags::value__
 Microsoft.iOS.dll:System.UInt32* ObjCRuntime.Runtime/MTProtocolMap::protocol_tokens
 Microsoft.iOS.dll:System.UInt64 UIKit.UIControlState::value__
 Microsoft.iOS.dll:System.UIntPtr Foundation.NSDictionary::Count()
-Microsoft.iOS.dll:T <>y__InlineArray4`1::_element0
-Microsoft.iOS.dll:T <>y__InlineArray6`1::_element0
 Microsoft.iOS.dll:UIKit.UIApplication
 Microsoft.iOS.dll:UIKit.UIApplication._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIApplication._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
@@ -10572,6 +10568,8 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.ExtensionAttribute..c
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.FixedBufferAttribute
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.FixedBufferAttribute..ctor(System.Type, System.Int32)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.IAsyncStateMachine
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.InlineArray4`1
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.InlineArray6`1
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.InlineArrayAttribute
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.InlineArrayAttribute..ctor(System.Int32)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.IsByRefLikeAttribute
@@ -14544,6 +14542,8 @@ System.Private.CoreLib.dll:T System.Nullable`1::value
 System.Private.CoreLib.dll:T System.Nullable`1::Value()
 System.Private.CoreLib.dll:T System.ReadOnlySpan`1/Enumerator::System.Collections.Generic.IEnumerator<T>.Current()
 System.Private.CoreLib.dll:T System.Reflection.MethodBase/ArgumentData`1::_arg0
+System.Private.CoreLib.dll:T System.Runtime.CompilerServices.InlineArray4`1::t
+System.Private.CoreLib.dll:T System.Runtime.CompilerServices.InlineArray6`1::t
 System.Private.CoreLib.dll:T System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedIn::_handle
 System.Private.CoreLib.dll:T System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedOut::_newHandle
 System.Private.CoreLib.dll:T System.Runtime.Intrinsics.Scalar`1::AllBitsSet()

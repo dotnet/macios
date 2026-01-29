@@ -2940,6 +2940,7 @@ System.Private.CoreLib.dll:System.Buffers.SpanAction`2
 System.Private.CoreLib.dll:System.Buffers.SpanAction`2..ctor(System.Object, System.IntPtr)
 System.Private.CoreLib.dll:System.Buffers.SpanAction`2.Invoke(System.Span`1<T>, TArg)
 System.Private.CoreLib.dll:System.Buffers.SpanAction`2<System.Char,System.IntPtr> System.Enum/<>c__62`1::<>9__62_0
+System.Private.CoreLib.dll:System.Buffers.SpanAction`2<System.Char,System.ValueTuple`2<System.Int32,System.String>> System.Globalization.TextInfo/<>c::<>9__45_0
 System.Private.CoreLib.dll:System.Buffers.SpanFunc`5
 System.Private.CoreLib.dll:System.Buffers.SpanFunc`5..ctor(System.Object, System.IntPtr)
 System.Private.CoreLib.dll:System.Buffers.SpanFunc`5.Invoke(System.Span`1<TSpan>, T1, T2, T3)
@@ -5446,6 +5447,11 @@ System.Private.CoreLib.dll:System.Globalization.TextInfo.ToLowerInvariant(System
 System.Private.CoreLib.dll:System.Globalization.TextInfo.ToString()
 System.Private.CoreLib.dll:System.Globalization.TextInfo.ToUpperAsciiInvariant(System.Char)
 System.Private.CoreLib.dll:System.Globalization.TextInfo.ToUpperInvariant(System.Char)
+System.Private.CoreLib.dll:System.Globalization.TextInfo/<>c
+System.Private.CoreLib.dll:System.Globalization.TextInfo/<>c System.Globalization.TextInfo/<>c::<>9
+System.Private.CoreLib.dll:System.Globalization.TextInfo/<>c..cctor()
+System.Private.CoreLib.dll:System.Globalization.TextInfo/<>c..ctor()
+System.Private.CoreLib.dll:System.Globalization.TextInfo/<>c.<ToLowerAsciiInvariant>b__45_0(System.Span`1<System.Char>, System.ValueTuple`2<System.Int32,System.String>)
 System.Private.CoreLib.dll:System.Globalization.TextInfo/ToLowerConversion
 System.Private.CoreLib.dll:System.Globalization.TextInfo/ToUpperConversion
 System.Private.CoreLib.dll:System.Globalization.TextInfo/Tristate
@@ -6936,8 +6942,7 @@ System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEntry.ToSpecifiedFull
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEntry/FileNameBuffer
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEntry/FileNameBuffer System.IO.Enumeration.FileSystemEntry::_fileNameBuffer
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1
-System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1..ctor(System.String, System.IO.Enumeration.FileSystemEnumerable`1/FindTransform<TResult>, System.IO.EnumerationOptions, System.Boolean)
-System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1..ctor(System.String, System.IO.Enumeration.FileSystemEnumerable`1/FindTransform<TResult>, System.IO.EnumerationOptions)
+System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1..ctor(System.String, System.IO.Enumeration.FileSystemEnumerable`1/FindTransform<TResult>, System.IO.EnumerationOptions, System.Boolean, System.String)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1.get_ShouldIncludePredicate()
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1.get_ShouldRecursePredicate()
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerable`1.GetEnumerator()
@@ -6986,8 +6991,9 @@ System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerableFactory/<>c
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerableFactory/<>c.<UserEntries>b__4_0(System.IO.Enumeration.FileSystemEntry&)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerableFactory/<>c.<UserFiles>b__2_0(System.IO.Enumeration.FileSystemEntry&)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1
+System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1..ctor(System.String, System.Boolean, System.IO.EnumerationOptions, System.String)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1..ctor(System.String, System.Boolean, System.IO.EnumerationOptions)
-System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.<MoveNext>g__ShouldSkip|35_0(System.IO.FileAttributes)
+System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.<MoveNext>g__ShouldSkip|36_0(System.IO.FileAttributes)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.CloseDirectoryHandle()
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.ContinueOnError(System.Int32)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEnumerator`1.CreateDirectoryHandle(System.String, System.Boolean)
@@ -12313,6 +12319,7 @@ System.Private.CoreLib.dll:System.String System.Int16::System.IBinaryIntegerPars
 System.Private.CoreLib.dll:System.String System.Int32::System.IBinaryIntegerParseAndFormatInfo<System.Int32>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.Int64::System.IBinaryIntegerParseAndFormatInfo<System.Int64>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerable`1::_directory
+System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerable`1::_expression
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerableFactory/<>c__DisplayClass2_0::expression
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerableFactory/<>c__DisplayClass3_0::expression
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerableFactory/<>c__DisplayClass4_0::expression

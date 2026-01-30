@@ -325,4 +325,135 @@
 			DependsOnTargets="$(_CreateR2RDylibDependsOn)"
 			AfterTargets="CreateReadyToRunImages"
 	/>
+
+	<!--
+
+		We need to convert any dylibs that CoreCLR needs at runtime into .framework bundles when building for device (iOS/tvOS),
+		because the App Store doesn't allow .dylibs in apps.
+
+		This means we need to:
+
+		1. Create an Info.plist for the .framework
+		2. Copy the dylib into the .framework, while running install_name_tool to:
+			* Change its identity to @rpath/<framework>.framework/<framework>
+			* Update any of its links to other dylibs to point to the corresponding .framework instead.
+
+		Note: currently this is only capable of creating .framework structured for mobile (everything in the root directory),
+		if we ever decide to do this for desktop (macOS/Mac Catalyst), support for desktop-structured .framework bundles
+		will have to be implemented.
+
+	-->
+
+	<PropertyGroup>
+		<_CreateFrameworksForDylibsDependsOn>
+			_ComputeVariables;
+			_ParseBundlerArguments;
+			_ComputePublishLocation;
+			_ComputeFrameworksToCreate;
+			_CreateInfoPlistForFrameworks;
+			_CreateFrameworkBinaryForFrameworks;
+			_UpdateWithCreatedFrameworks;
+		</_CreateFrameworksForDylibsDependsOn>
+	</PropertyGroup>
+
+	<Target Name="_ComputeFrameworksToCreate">
+		<PropertyGroup>
+			<_ComputeFrameworksForDylibsIntermediatePath>$(DeviceSpecificIntermediateOutputPath)dylibtoframework/</_ComputeFrameworksForDylibsIntermediatePath>
+			<_ComputeFrameworksToCreateAppManifestHashedInputsPath>$(_ComputeFrameworksForDylibsIntermediatePath)appmanifestinputs.txt</_ComputeFrameworksToCreateAppManifestHashedInputsPath>
+		</PropertyGroup>
+		<ItemGroup>
+			<!-- Create the ComputedRelativePath metadata from RelativePath -->
+			<_CreatedFrameworksFromDylibs Include="@(_DylibsToConvertToFrameworks->'$(_ComputeFrameworksForDylibsIntermediatePath)%(Filename).framework')">
+				<OriginatingDylib>%(_DylibsToConvertToFrameworks.Identity)</OriginatingDylib>
+			</_CreatedFrameworksFromDylibs>
+			<_CreatedFrameworksFromDylibs Update="@(_CreatedFrameworksFromDylibs)">
+				<AppManifestPath>%(Identity)/Info.plist</AppManifestPath>
+				<FrameworkExecutable>%(Identity)/%(Filename)</FrameworkExecutable>
+			</_CreatedFrameworksFromDylibs>
+			<_CreatedFrameworkExecutableFromDylibs Include="@(_CreatedFrameworksFromDylibs->'%(OriginatingDylib)')">
+				<ReidentifiedPath>%(FrameworkExecutable)</ReidentifiedPath>
+				<UpdatedId>@rpath/%(Filename).framework/%(Filename)</UpdatedId>
+				<StampFile>$(_ComputeFrameworksForDylibsIntermediatePath)%(Filename)-install-name-tool.cache</StampFile>
+			</_CreatedFrameworkExecutableFromDylibs>
+		</ItemGroup>
+
+		<!-- Hash the inputs to the task that creates the Info.plist, so that we can reliably re-trigger it if some important property changes -->
+
+		<ItemGroup>
+			<!-- Include all relevant properties to the CompileAppManifest task in the _CreateInfoPlistForFrameworks target -->
+			<_ComputeFrameworksToCreateAppManifestInputs Include="$(_SdkVersion)" />
+			<_ComputeFrameworksToCreateAppManifestInputs Include="$(MinSupportedOSPlatformVersion)" />
+			<_ComputeFrameworksToCreateAppManifestInputs Include="$(_ResourcePrefix)" />
+			<_ComputeFrameworksToCreateAppManifestInputs Include="$(_SdkIsSimulator)" />
+			<_ComputeFrameworksToCreateAppManifestInputs Include="$(SupportedOSPlatformVersion)" />
+			<_ComputeFrameworksToCreateAppManifestInputs Include="$(TargetArchitectures)" />
+			<_ComputeFrameworksToCreateAppManifestInputs Include="$(_ComputedTargetFrameworkMoniker)" />
+		</ItemGroup>
+
+		<Hash
+			ItemsToHash="@(_ComputeFrameworksToCreateAppManifestInputs)"
+			IgnoreCase="false">
+			<Output TaskParameter="HashResult" PropertyName="_ComputeFrameworksToCreateAppManifestHashedInputs" />
+		</Hash>
+
+		<WriteLinesToFile Lines="$(_ComputeFrameworksToCreateAppManifestHashedInputs)" File="$(_ComputeFrameworksToCreateAppManifestHashedInputsPath)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+
+		<ItemGroup>
+			<FileWrites Include="$(_ComputeFrameworksToCreateAppManifestHashedInputsPath)" />
+		</ItemGroup>
+	</Target>
+
+	<Target
+		Name="_CreateInfoPlistForFrameworks"
+		Inputs="@(_CreatedFrameworksFromDylibs->'%(OriginatingDylib)');$(_ComputeFrameworksToCreateAppManifestHashedInputs)"
+		Outputs="@(_CreatedFrameworksFromDylibs->'%(AppManifestPath)')"
+		>
+
+		<!-- if any new inputs are added here, those might have to be added to the _ComputeFrameworksToCreateAppManifestInputs item group above as well -->
+		<CompileAppManifest
+			Condition="'$(IsMacEnabled)' == 'true'"
+			SessionId="$(BuildSessionId)"
+			AppBundleName="%(_CreatedFrameworksFromDylibs.Filename)"
+			ApplicationId="$(_BundleIdentifier).%(_CreatedFrameworksFromDylibs.Filename)"
+			BundleExecutable="%(_CreatedFrameworksFromDylibs.Filename)"
+			CompiledAppManifest="%(_CreatedFrameworksFromDylibs.Identity)/Info.plist"
+			DefaultSdkVersion="$(_SdkVersion)"
+			GenerateApplicationManifest="true"
+			IsAppExtension="false"
+			IsFramework="true"
+			MinSupportedOSPlatformVersion="$(MinSupportedOSPlatformVersion)"
+			ProjectDir="$(MSBuildProjectDirectory)"
+			ResourcePrefix="$(_ResourcePrefix)"
+			SdkIsSimulator="$(_SdkIsSimulator)"
+			SdkVersion="$(_SdkVersion)"
+			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
+			TargetArchitectures="$(TargetArchitectures)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+			/>
+
+		<ItemGroup>
+			<FileWrites Include="%(_CreatedFrameworksFromDylibs.AppManifestPath)" />
+		</ItemGroup>
+	</Target>
+
+
+	<Target Name="_CreateFrameworkBinaryForFrameworks">
+		<!-- This target doesn't have Inputs and Outputs, because the InstallNameTool task does dependency checking -->
+		<InstallNameTool
+			Condition="'$(IsMacEnabled)' == 'true'"
+			SessionId="$(BuildSessionId)"
+			DynamicLibrary="@(_CreatedFrameworkExecutableFromDylibs)"
+			FixupLibraryReferences="true"
+			SdkDevPath="$(_SdkDevPath)"
+		/>
+	</Target>
+
+	<Target Name="_UpdateWithCreatedFrameworks">
+		<!-- Update our item groups -->
+		<ItemGroup Condition="'$(IsMacEnabled)' == 'true'">
+			<_FrameworkNativeReference Include="@(_CreatedFrameworksFromDylibs->'%(Identity)/%(Filename)')" Kind="Framework" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="_CreateFrameworksForDylibs" DependsOnTargets="$(_CreateFrameworksForDylibsDependsOn)" />
 </Project>

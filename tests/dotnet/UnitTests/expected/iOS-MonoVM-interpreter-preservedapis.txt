@@ -2940,7 +2940,6 @@ System.Private.CoreLib.dll:System.Buffers.SpanAction`2
 System.Private.CoreLib.dll:System.Buffers.SpanAction`2..ctor(System.Object, System.IntPtr)
 System.Private.CoreLib.dll:System.Buffers.SpanAction`2.Invoke(System.Span`1<T>, TArg)
 System.Private.CoreLib.dll:System.Buffers.SpanAction`2<System.Char,System.IntPtr> System.Enum/<>c__62`1::<>9__62_0
-System.Private.CoreLib.dll:System.Buffers.SpanAction`2<System.Char,System.ValueTuple`2<System.Int32,System.String>> System.Globalization.TextInfo/<>c::<>9__45_0
 System.Private.CoreLib.dll:System.Buffers.SpanFunc`5
 System.Private.CoreLib.dll:System.Buffers.SpanFunc`5..ctor(System.Object, System.IntPtr)
 System.Private.CoreLib.dll:System.Buffers.SpanFunc`5.Invoke(System.Span`1<TSpan>, T1, T2, T3)
@@ -5447,11 +5446,6 @@ System.Private.CoreLib.dll:System.Globalization.TextInfo.ToLowerInvariant(System
 System.Private.CoreLib.dll:System.Globalization.TextInfo.ToString()
 System.Private.CoreLib.dll:System.Globalization.TextInfo.ToUpperAsciiInvariant(System.Char)
 System.Private.CoreLib.dll:System.Globalization.TextInfo.ToUpperInvariant(System.Char)
-System.Private.CoreLib.dll:System.Globalization.TextInfo/<>c
-System.Private.CoreLib.dll:System.Globalization.TextInfo/<>c System.Globalization.TextInfo/<>c::<>9
-System.Private.CoreLib.dll:System.Globalization.TextInfo/<>c..cctor()
-System.Private.CoreLib.dll:System.Globalization.TextInfo/<>c..ctor()
-System.Private.CoreLib.dll:System.Globalization.TextInfo/<>c.<ToLowerAsciiInvariant>b__45_0(System.Span`1<System.Char>, System.ValueTuple`2<System.Int32,System.String>)
 System.Private.CoreLib.dll:System.Globalization.TextInfo/ToLowerConversion
 System.Private.CoreLib.dll:System.Globalization.TextInfo/ToUpperConversion
 System.Private.CoreLib.dll:System.Globalization.TextInfo/Tristate

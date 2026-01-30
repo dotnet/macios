@@ -187,20 +187,22 @@ namespace ObjCRuntime {
 			return objc_getClass (name);
 		}
 
+		/// <summary>Gets the Objective-C handle of the given type.</summary>
 		/// <param name="type">Type for an NSObject-derived class</param>
-		///         <summary>Gets the Objective-C handle of the given type.</summary>
-		///         <returns>The Objective-C handle to the object.</returns>
-		///         <remarks>
-		///           <para>
-		/// 	    This method looks up the Objective-C handle for the specified type, or registers the specified type with the Objective-C runtime if it was not previously registered.
-		/// 	  </para>
-		///           <para>
-		/// 	    The class must be derived from NSObject.   If the class is flagged with the [Register] attribute, the name specified in this Register attribute is the name that will be used for looking up or register the class.
-		///
-		/// 	  </para>
-		///         </remarks>
-		public static NativeHandle GetHandle (Type type)
+		/// <returns>The Objective-C handle to the object.</returns>
+		/// <remarks>
+		///   <para>
+		///     This method looks up the Objective-C handle for the specified type, or registers the specified type with the Objective-C runtime if it was not previously registered.
+		///   </para>
+		///   <para>
+		///     The class must be derived from <see cref="NSObject" />. If the class is flagged with the <see cref="RegisterAttribute" /> attribute, the name specified in this Register attribute is the name that will be used for looking up or register the class.
+		///   </para>
+		/// </remarks>
+		public static NativeHandle GetHandle (Type? type)
 		{
+			if (type is null)
+				return NativeHandle.Zero;
+
 			return GetClassHandle (type, true, out _);
 		}
 

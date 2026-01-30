@@ -212,6 +212,7 @@ stages:
             -p:NupkgPath=$(Build.StagingDirectory)\nuget-signed
             -p:PrereleaseIdentifier=$(PrereleaseIdentifier)
             -bl:$(Build.StagingDirectory)\maestro-binlogs\generate-bar-manifest.binlog
+            -p:ForceStableDotNet=true
           workingDirectory: $(Build.SourcesDirectory)\..
         condition: and(succeeded(), eq('${{ parameters.pushNugetsToMaestro }}', 'true'))
 

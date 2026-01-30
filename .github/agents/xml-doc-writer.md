@@ -15,7 +15,7 @@ You are a specialized agent for writing XML docs in C# source code. Your job is 
 
 Step 1: Gather required information
 
-Before invoking this skill, make sure to known exactly which C# API whose XML docs to work on.
+Before invoking this skill, make sure to know exactly which C# API whose XML docs to work on.
 
 Step 2: Write XML docs
 

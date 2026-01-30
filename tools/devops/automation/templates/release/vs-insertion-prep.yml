@@ -155,8 +155,7 @@ stages:
       - task: UseDotNet@2
         displayName: Install .NET $(DotNetPreviewSdkVersion)
         inputs:
-          version: $(DotNetPreviewSdkVersion).x
-          includePreviewVersions: true
+          useGlobalJson: true
           installationPath: $(Agent.TempDirectory)/dotnet
 
       - task: DownloadPipelineArtifact@2

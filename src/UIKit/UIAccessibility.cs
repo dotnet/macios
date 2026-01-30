@@ -12,15 +12,14 @@ using CoreGraphics;
 
 using System.Threading.Tasks;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 
-	// helper enum - not part of Apple API
-	/// <summary>Notification types for UIAccessibility's PostNotification method.</summary>
-	///     <remarks>
-	///     </remarks>
+	/// <summary>Notification types for the <see cref="UIAccessibility.PostNotification(UIAccessibilityPostNotification, NSObject?)"/> method.</summary>
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("tvos")]
 	public enum UIAccessibilityPostNotification {
 		/// <summary>Inform the accessibility system that an announcement must be made to the user, use an NSString argument for this notification.</summary>
 		Announcement,
@@ -32,27 +31,27 @@ namespace UIKit {
 		ScreenChanged,
 	}
 
-	// NSInteger -> UIAccessibilityZoom.h
 	/// <summary>An enumeration that specifies what elements (currently, only the insertion point) is involved in automatic accessibility zooming.</summary>
-	///     <remarks>To be added.</remarks>
 	[Native]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("tvos")]
 	public enum UIAccessibilityZoomType : long {
 		/// <summary>The system zoom type is the text insertion point.</summary>
 		InsertionPoint,
 	}
 
 	/// <summary>Provides access to the accessibility framework for UIKit.</summary>
-	///     <remarks>To be added.</remarks>
-	public static partial class UIAccessibility {
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("maccatalyst")]
+	[SupportedOSPlatform ("tvos")]
+	public static class UIAccessibility {
 		// UIAccessibility.h
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* BOOL */ byte UIAccessibilityIsVoiceOverRunning ();
 
-		/// <summary>Determines whether voiceover is currently active.</summary>
-		///         <value>eturns a Boolean indicating whether voiceover is enabled.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Gets a value indicating whether VoiceOver is currently active.</summary>
+		/// <value><see langword="true"/> if VoiceOver is running; otherwise, <see langword="false"/>.</value>
 		static public bool IsVoiceOverRunning {
 			get {
 				return UIAccessibilityIsVoiceOverRunning () != 0;
@@ -63,11 +62,8 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* BOOL */ byte UIAccessibilityIsMonoAudioEnabled ();
 
-		/// <summary>Determines whether the system is running with mono audio.</summary>
-		///         <value>Returns a Boolean indicating whether mono audio is enabled.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Gets a value indicating whether mono audio is enabled.</summary>
+		/// <value><see langword="true"/> if mono audio is enabled; otherwise, <see langword="false"/>.</value>
 		static public bool IsMonoAudioEnabled {
 			get {
 				return UIAccessibilityIsMonoAudioEnabled () != 0;
@@ -76,38 +72,24 @@ namespace UIKit {
 
 
 		// UIAccessibility.h
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
-		extern static /* NSObject */ IntPtr UIAccessibilityFocusedElement (IntPtr assistiveTechnologyIdentifier);
+		extern static /* __nullable NSObject */ IntPtr UIAccessibilityFocusedElement (/* __nullable */ IntPtr assistiveTechnologyIdentifier);
 
-		/// <param name="assistiveTechnologyIdentifier">To be added.</param>
-		///         <summary>Retrieves the currently focused element for the given <paramref name="assistiveTechnologyIdentifier" /> assistive technology.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
-		public static NSObject FocusedElement (string assistiveTechnologyIdentifier)
+		/// <param name="assistiveTechnologyIdentifier">The identifier of the assistive technology to query.</param>
+		/// <summary>Retrieves the currently focused element for the specified assistive technology.</summary>
+		/// <returns>The focused element, or <see langword="null"/> if no element is focused.</returns>
+		public static NSObject? FocusedElement (string? assistiveTechnologyIdentifier)
 		{
-			using (var s = new NSString (assistiveTechnologyIdentifier))
-				return Runtime.GetNSObject (UIAccessibilityFocusedElement (s.Handle));
+			using var s = new TransientCFString (assistiveTechnologyIdentifier);
+			return Runtime.GetNSObject (UIAccessibilityFocusedElement (s));
 		}
 
 		// UIAccessibility.h
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* BOOL */ byte UIAccessibilityIsShakeToUndoEnabled ();
 
-		/// <summary>Whether the "shake to undo" gesture is enabled on the device.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Gets a value indicating whether the "shake to undo" gesture is enabled.</summary>
+		/// <value><see langword="true"/> if shake to undo is enabled; otherwise, <see langword="false"/>.</value>
 		public static bool IsShakeToUndoEnabled {
 			get {
 				return UIAccessibilityIsShakeToUndoEnabled () != 0;
@@ -118,11 +100,8 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* BOOL */ byte UIAccessibilityIsClosedCaptioningEnabled ();
 
-		/// <summary>Determines whether close captioning is currently enabled.</summary>
-		///         <value>Returns a Boolean indicating whether closed captioning is enabled.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Gets a value indicating whether closed captioning is enabled.</summary>
+		/// <value><see langword="true"/> if closed captioning is enabled; otherwise, <see langword="false"/>.</value>
 		static public bool IsClosedCaptioningEnabled {
 			get {
 				return UIAccessibilityIsClosedCaptioningEnabled () != 0;
@@ -133,11 +112,8 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* BOOL */ byte UIAccessibilityIsInvertColorsEnabled ();
 
-		/// <summary>Determines if the system is currently rendering with inverted colors for accessibility</summary>
-		///         <value>Returns a Boolean indicating whether inverted colors are enabled.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Gets a value indicating whether inverted colors are enabled.</summary>
+		/// <value><see langword="true"/> if inverted colors are enabled; otherwise, <see langword="false"/>.</value>
 		static public bool IsInvertColorsEnabled {
 			get {
 				return UIAccessibilityIsInvertColorsEnabled () != 0;
@@ -148,11 +124,8 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* BOOL */ byte UIAccessibilityIsGuidedAccessEnabled ();
 
-		/// <summary>Determines whether guide access is currently enabled.</summary>
-		///         <value>Returns a Boolean indicating whether guide access is enabled.
-		///         </value>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Gets a value indicating whether Guided Access is enabled.</summary>
+		/// <value><see langword="true"/> if Guided Access is enabled; otherwise, <see langword="false"/>.</value>
 		static public bool IsGuidedAccessEnabled {
 			get {
 				return UIAccessibilityIsGuidedAccessEnabled () != 0;
@@ -164,22 +137,18 @@ namespace UIKit {
 		extern static void UIAccessibilityPostNotification (/* UIAccessibilityNotifications */ int notification, /* id */ IntPtr argument);
 		// typedef uint32_t UIAccessibilityNotifications
 
-		/// <param name="notification">Notification to post.</param>
-		///         <param name="argument">Parameter to the notification.</param>
-		///         <summary>Posts an accessibility notification.</summary>
-		///         <remarks>
-		///         </remarks>
-		public static void PostNotification (UIAccessibilityPostNotification notification, NSObject argument)
+		/// <summary>Posts an accessibility notification.</summary>
+		/// <param name="notification">The notification to post.</param>
+		/// <param name="argument">The argument to pass with the notification, or <see langword="null"/>.</param>
+		public static void PostNotification (UIAccessibilityPostNotification notification, NSObject? argument)
 		{
 			PostNotification (NotificationEnumToInt (notification), argument);
 		}
 
-		/// <param name="notification">Notification to post.</param>
-		///         <param name="argument">Parameter to the notification.</param>
-		///         <summary>Posts an accessibility notification.</summary>
-		///         <remarks>
-		///         </remarks>
-		public static void PostNotification (int notification, NSObject argument)
+		/// <summary>Posts an accessibility notification using a raw notification identifier.</summary>
+		/// <param name="notification">The notification identifier to post.</param>
+		/// <param name="argument">The argument to pass with the notification, or <see langword="null"/>.</param>
+		public static void PostNotification (int notification, NSObject? argument)
 		{
 			UIAccessibilityPostNotification (notification, argument is null ? IntPtr.Zero : argument.Handle);
 			GC.KeepAlive (argument);
@@ -205,45 +174,33 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		extern static void UIAccessibilityZoomFocusChanged (/* UIAccessibilityZoomType */ IntPtr type, CGRect frame, IntPtr view);
 
-		/// <param name="type">To be added.</param>
-		///         <param name="frame">To be added.</param>
-		///         <param name="view">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		public static void ZoomFocusChanged (UIAccessibilityZoomType type, CGRect frame, UIView view)
+		/// <summary>Notifies the accessibility system that the zoom focus has changed.</summary>
+		/// <param name="type">The type of zoom focus change.</param>
+		/// <param name="frame">The frame to zoom to.</param>
+		/// <param name="view">The view containing the frame, or <see langword="null"/>.</param>
+		public static void ZoomFocusChanged (UIAccessibilityZoomType type, CGRect frame, UIView? view)
 		{
 			UIAccessibilityZoomFocusChanged ((IntPtr) type, frame, view is not null ? view.Handle : IntPtr.Zero);
 			GC.KeepAlive (view);
 		}
 
 		// UIAccessibilityZoom.h
-		/// <summary>Used to inform the user that the accessibility zoom gesture conflicts with a gesture used by this application.</summary>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Informs the user that the accessibility zoom gesture conflicts with a gesture used by this application.</summary>
 		[DllImport (Constants.UIKitLibrary, EntryPoint = "UIAccessibilityRegisterGestureConflictWithZoom")]
 		extern public static void RegisterGestureConflictWithZoom ();
 
 		// UIAccessibility.h
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* UIBezierPath* */ IntPtr UIAccessibilityConvertPathToScreenCoordinates (/* UIBezierPath* */ IntPtr path, /* UIView* */ IntPtr view);
 
-		/// <param name="path">The path object that is the target of conversion.</param>
-		///         <param name="view">The view on which the coordinate system path definition was defined.</param>
-		///         <summary>Converts the path to screen coordinates and returns a new path using those values.</summary>
-		///         <returns>A new path object utilizing the same shape as path, but in which the points are specified in screen coordinates.</returns>
-		///         <remarks>Adjusts the points of your path to values the accessibility system can use.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Converts the specified path to screen coordinates.</summary>
+		/// <param name="path">The path to convert.</param>
+		/// <param name="view">The view whose coordinate system the path is defined in.</param>
+		/// <returns>A new <see cref="UIBezierPath"/> with coordinates in screen space.</returns>
 		public static UIBezierPath ConvertPathToScreenCoordinates (UIBezierPath path, UIView view)
 		{
-			if (path is null)
-				throw new ArgumentNullException ("path");
-			if (view is null)
-				throw new ArgumentNullException ("view");
+			ArgumentNullException.ThrowIfNull (path);
+			ArgumentNullException.ThrowIfNull (view);
 
 			UIBezierPath result = new UIBezierPath (UIAccessibilityConvertPathToScreenCoordinates (path.Handle, view.Handle));
 			GC.KeepAlive (path);
@@ -252,24 +209,16 @@ namespace UIKit {
 		}
 
 		// UIAccessibility.h
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		extern static CGRect UIAccessibilityConvertFrameToScreenCoordinates (CGRect rect, /* UIView* */ IntPtr view);
 
-		/// <param name="rect">The rectangle, in view coordinates, to convert.</param>
-		///         <param name="view">The view in whose coordinates <paramref name="rect" /> are specified.</param>
-		///         <summary>Converts the provided rectangle in the specified view to screen coordinates.</summary>
-		///         <returns>A rectangle with coordinates in screen space.</returns>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Converts the specified rectangle to screen coordinates.</summary>
+		/// <param name="rect">The rectangle in view coordinates to convert.</param>
+		/// <param name="view">The view whose coordinate system the rectangle is defined in.</param>
+		/// <returns>A rectangle with coordinates in screen space.</returns>
 		public static CGRect ConvertFrameToScreenCoordinates (CGRect rect, UIView view)
 		{
-			if (view is null)
-				throw new ArgumentNullException ("view");
+			ArgumentNullException.ThrowIfNull (view);
 
 			var result = UIAccessibilityConvertFrameToScreenCoordinates (rect, view.Handle);
 			GC.KeepAlive (view);
@@ -277,26 +226,16 @@ namespace UIKit {
 		}
 
 		// UIAccessibility.h
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		extern unsafe static void UIAccessibilityRequestGuidedAccessSession (/* BOOL */ byte enable, /* void(^completionHandler)(BOOL didSucceed) */ BlockLiteral* completionHandler);
 
-		/// <param name="enable">Determines whether you want to enter (true) enable or leave (false) guided access mode.</param>
-		///         <param name="completionHandler">Method to invoke once the system has successfully transitioned to that state.   The method takes a boolean that determines if the transition was successfull.</param>
-		///         <summary>Requests that the system to enter Guided Access mode.</summary>
-		///         <remarks>
-		///           <para>
-		/// 	    When an application is running in Guided Access mode, it can prevent the home button from working, and can control other features of the operating system from working.
-		/// 	  </para>
-		///           <para>
-		/// 	    For this API call to succeed, the application must be Supervised, and the application must have been enabled for single app mode using Mobile Device Management.
-		/// 	  </para>
-		///         </remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Requests that the system enter or leave Guided Access mode.</summary>
+		/// <param name="enable"><see langword="true"/> to enter Guided Access mode; <see langword="false"/> to leave it.</param>
+		/// <param name="completionHandler">A callback invoked when the transition completes, with a parameter indicating success.</param>
+		/// <remarks>
+		///   <para>When an application is running in Guided Access mode, it can prevent the home button from working, and can control other features of the operating system from working.</para>
+		///   <para>For this API call to succeed, the application must be Supervised, and the application must have been enabled for single app mode using Mobile Device Management.</para>
+		/// </remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void RequestGuidedAccessSession (bool enable, Action<bool> completionHandler)
 		{
@@ -307,13 +246,9 @@ namespace UIKit {
 			}
 		}
 
-		/// <param name="enable">Determines whether you want to enter (true) enable or leave (false) guided access mode.</param>
-		///         <summary>Asynchronously requests a transition between normal and Single App modes.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Asynchronously requests a transition between normal and Guided Access modes.</summary>
+		/// <param name="enable"><see langword="true"/> to enter Guided Access mode; <see langword="false"/> to leave it.</param>
+		/// <returns>A task that completes with <see langword="true"/> if the transition succeeded; otherwise, <see langword="false"/>.</returns>
 		public static Task<bool> RequestGuidedAccessSessionAsync (bool enable)
 		{
 			var tcs = new TaskCompletionSource<bool> ();
@@ -332,36 +267,22 @@ namespace UIKit {
 				del (enable != 0);
 		}
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityDarkerSystemColorsEnabled ();
 
-		/// <summary>Determines whether darker system colors are currently enabled</summary>
-		///         <value>Returns a Boolean indicating whether colors are enabled.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Gets a value indicating whether darker system colors are enabled.</summary>
+		/// <value><see langword="true"/> if darker system colors are enabled; otherwise, <see langword="false"/>.</value>
 		public static bool DarkerSystemColorsEnabled {
 			get {
 				return UIAccessibilityDarkerSystemColorsEnabled () != 0;
 			}
 		}
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityIsBoldTextEnabled ();
 
-		/// <summary>Determines whether bold text is currently enabled</summary>
-		///         <value>Returns a Boolean indicating whether bold text is enabled.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Gets a value indicating whether bold text is enabled.</summary>
+		/// <value><see langword="true"/> if bold text is enabled; otherwise, <see langword="false"/>.</value>
 		public static bool IsBoldTextEnabled {
 			get {
 				return UIAccessibilityIsBoldTextEnabled () != 0;
@@ -377,6 +298,8 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityButtonShapesEnabled ();
 
+		/// <summary>Gets a value indicating whether button shapes are enabled.</summary>
+		/// <value><see langword="true"/> if button shapes are enabled; otherwise, <see langword="false"/>.</value>
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -385,36 +308,22 @@ namespace UIKit {
 		[ObsoletedOSPlatform ("maccatalyst26.1", "Use 'AXSettings.ShowBordersEnabled' instead.")]
 		public static bool ButtonShapesEnabled => UIAccessibilityButtonShapesEnabled () != 0;
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityIsGrayscaleEnabled ();
 
-		/// <summary>Determines whether gray scale is currently enabled</summary>
-		///         <value>Returns a Boolean indicating whether gray scale is enabled.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Gets a value indicating whether grayscale mode is enabled.</summary>
+		/// <value><see langword="true"/> if grayscale mode is enabled; otherwise, <see langword="false"/>.</value>
 		static public bool IsGrayscaleEnabled {
 			get {
 				return UIAccessibilityIsGrayscaleEnabled () != 0;
 			}
 		}
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityIsReduceMotionEnabled ();
 
-		/// <summary>Determines whether the system is running with reduced motion.</summary>
-		///         <value>Returns a Boolean indicating whether reduced motion is enabled.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Gets a value indicating whether reduce motion is enabled.</summary>
+		/// <value><see langword="true"/> if reduce motion is enabled; otherwise, <see langword="false"/>.</value>
 		static public bool IsReduceMotionEnabled {
 			get {
 				return UIAccessibilityIsReduceMotionEnabled () != 0;
@@ -427,6 +336,8 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityPrefersCrossFadeTransitions ();
 
+		/// <summary>Gets a value indicating whether the user prefers cross-fade transitions over sliding transitions.</summary>
+		/// <value><see langword="true"/> if cross-fade transitions are preferred; otherwise, <see langword="false"/>.</value>
 		[SupportedOSPlatform ("tvos14.0")]
 		[SupportedOSPlatform ("ios14.0")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -438,95 +349,62 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityIsVideoAutoplayEnabled ();
 
+		/// <summary>Gets a value indicating whether videos should autoplay.</summary>
+		/// <value><see langword="true"/> if video autoplay is enabled; otherwise, <see langword="false"/>.</value>
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		static public bool IsVideoAutoplayEnabled => UIAccessibilityIsVideoAutoplayEnabled () != 0;
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityIsReduceTransparencyEnabled ();
 
-		/// <summary>Determines whether the system is running with reduced transparency.</summary>
-		///         <value>Returns a Boolean indicating whether reduced transparency is enabled.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Gets a value indicating whether reduce transparency is enabled.</summary>
+		/// <value><see langword="true"/> if reduce transparency is enabled; otherwise, <see langword="false"/>.</value>
 		static public bool IsReduceTransparencyEnabled {
 			get {
 				return UIAccessibilityIsReduceTransparencyEnabled () != 0;
 			}
 		}
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityIsSwitchControlRunning ();
 
-		/// <summary>Determines whether the system is running with switch control enabled.</summary>
-		///         <value>Returns a Boolean indicating whether switch control is enabled.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Gets a value indicating whether Switch Control is running.</summary>
+		/// <value><see langword="true"/> if Switch Control is running; otherwise, <see langword="false"/>.</value>
 		static public bool IsSwitchControlRunning {
 			get {
 				return UIAccessibilityIsSwitchControlRunning () != 0;
 			}
 		}
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityIsSpeakSelectionEnabled ();
 
-		/// <summary>Determines whether the system is running with speak selection enabled.</summary>
-		///         <value>Returns a Boolean indicating whether speak selecton is enabled.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Gets a value indicating whether Speak Selection is enabled.</summary>
+		/// <value><see langword="true"/> if Speak Selection is enabled; otherwise, <see langword="false"/>.</value>
 		static public bool IsSpeakSelectionEnabled {
 			get {
 				return UIAccessibilityIsSpeakSelectionEnabled () != 0;
 			}
 		}
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityIsSpeakScreenEnabled ();
 
-		/// <summary>Determines whether the system is running with the speak screen enabled.</summary>
-		///         <value>Returns a Boolean indicating whether the speak screen is enabled.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Gets a value indicating whether Speak Screen is enabled.</summary>
+		/// <value><see langword="true"/> if Speak Screen is enabled; otherwise, <see langword="false"/>.</value>
 		static public bool IsSpeakScreenEnabled {
 			get {
 				return UIAccessibilityIsSpeakScreenEnabled () != 0;
 			}
 		}
 
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityIsAssistiveTouchRunning ();
 
-		/// <summary>Whether assistive touch is active.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("tvos")]
-		[SupportedOSPlatform ("maccatalyst")]
+		/// <summary>Gets a value indicating whether AssistiveTouch is running.</summary>
+		/// <value><see langword="true"/> if AssistiveTouch is running; otherwise, <see langword="false"/>.</value>
 		public static bool IsAssistiveTouchRunning {
 			get {
 				return UIAccessibilityIsAssistiveTouchRunning () != 0;
@@ -539,6 +417,8 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityShouldDifferentiateWithoutColor ();
 
+		/// <summary>Gets a value indicating whether the user prefers UI elements to differentiate without relying solely on color.</summary>
+		/// <value><see langword="true"/> if differentiation without color is preferred; otherwise, <see langword="false"/>.</value>
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -550,6 +430,8 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityIsOnOffSwitchLabelsEnabled ();
 
+		/// <summary>Gets a value indicating whether on/off switch labels are enabled.</summary>
+		/// <value><see langword="true"/> if on/off switch labels are enabled; otherwise, <see langword="false"/>.</value>
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -562,9 +444,8 @@ namespace UIKit {
 		[DllImport (Constants.UIKitLibrary)]
 		static extern nuint UIAccessibilityHearingDevicePairedEar ();
 
-		/// <summary>Retrieves the status of how a hearing device is paired to one, both, or no ears.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the pairing status of a hearing device to one, both, or no ears.</summary>
+		/// <value>A <see cref="UIAccessibilityHearingDeviceEar"/> value indicating which ears have paired hearing devices.</value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]

@@ -117,7 +117,7 @@ namespace Foundation {
 			return true;
 		}
 
-		NSDictionary (TKey [] keys, TValue [] values, bool validation)
+		NSDictionary (TKey? [] keys, TValue? [] values, bool validation)
 			: base (NSArray.FromNSObjects (values), NSArray.FromNSObjects (keys))
 		{
 		}
@@ -137,7 +137,7 @@ namespace Foundation {
 		/// </summary>
 		/// <param name="key">The key.</param>
 		/// <param name="value">The value.</param>
-		public NSDictionary (TKey key, TValue value)
+		public NSDictionary (TKey? key, TValue? value)
 			: base (NSArray.FromNSObjects (value), NSArray.FromNSObjects (key))
 		{
 		}
@@ -231,7 +231,7 @@ namespace Foundation {
 				return [];
 
 			using (var pool = new NSAutoreleasePool ()) {
-				var keysArray = NSArray.From<TKey> (keys);
+				var keysArray = NSArray.FromNativeObjects<TKey> (keys);
 				var result = NSArray.ArrayFromHandle<TValue> (_ObjectsForKeys (keysArray.Handle, marker.Handle));
 				GC.KeepAlive (keysArray);
 				GC.KeepAlive (marker);

@@ -96,7 +96,7 @@ namespace Registrar {
 		const string NFloatTypeName = "System.Runtime.InteropServices.NFloat";
 
 		Dictionary<TAssembly, object?> assemblies = new (); // Use Dictionary instead of HashSet to avoid pulling in System.Core.dll.
-																						 // locking: all accesses must lock 'types'.
+															// locking: all accesses must lock 'types'.
 		Dictionary<TType, ObjCType> types = new Dictionary<TType, ObjCType> ();
 		// this is used to check if multiple types are registered with the same name.
 		// locking: all accesses must lock 'type_map'.
@@ -943,7 +943,7 @@ namespace Registrar {
 				}
 			}
 
-			public bool ValidateSignature ([NotNullWhen (false)] [NotNullIfNotNull (nameof (exceptions))] ref List<Exception>? exceptions)
+			public bool ValidateSignature ([NotNullWhen (false)][NotNullIfNotNull (nameof (exceptions))] ref List<Exception>? exceptions)
 			{
 				if (Registrar.LaxMode)
 					return true;
@@ -2730,7 +2730,7 @@ namespace Registrar {
 				return "^v";
 
 			if (TryGetEnumUnderlyingType (type, out var underlyingType))
-				return ToSignature (underlyingType, member, ref success);	
+				return ToSignature (underlyingType, member, ref success);
 
 			if (IsValueType (type))
 				return ValueTypeSignature (type, member, ref success);

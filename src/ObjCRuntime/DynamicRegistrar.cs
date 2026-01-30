@@ -468,7 +468,7 @@ namespace Registrar {
 
 			if (tr?.IsEnum != true)
 				return false;
-			
+
 			underlyingType = Enum.GetUnderlyingType (tr);
 			return true;
 		}

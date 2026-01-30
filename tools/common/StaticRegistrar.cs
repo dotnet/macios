@@ -1273,7 +1273,7 @@ namespace Registrar {
 
 			if (!IsEnum (tr))
 				return false;
-			
+
 			underlyingType = GetEnumUnderlyingType (tr);
 			return underlyingType is not null;
 		}
@@ -2417,7 +2417,7 @@ namespace Registrar {
 				if (td is null) {
 					exceptions.Add (ErrorHelper.CreateError (99, Errors.MX0099, $"Unable to resolve the type {type.FullName} when generating the registrar for the method '{descriptiveMethodName}'."));
 					return "";
-				} else if (IsNSObject (td)) {
+				} else if (IsNSObject (td)) {
 					if (!IsPlatformType (td))
 						return "id";
 
@@ -2647,7 +2647,7 @@ namespace Registrar {
 			public ObjCType Actual;
 			public uint SkippedTokenReference;
 			public uint ActualTokenReference;
-			
+
 			public SkippedType (TypeReference skipped, ObjCType actual)
 			{
 				Skipped = skipped;
@@ -4153,7 +4153,7 @@ namespace Registrar {
 			}
 
 			var b = new Body (body.ToString (), objc_signature.ToString ());
-			
+
 			if (merge_bodies && bodies.TryGetValue (b, out var existing)) {
 				/* We already have an identical trampoline, use it instead */
 				b = existing;
@@ -4962,7 +4962,7 @@ namespace Registrar {
 			} else if (isManagedNullable) {
 				underlyingManagedType = GetNullableType (managedType);
 				if (underlyingManagedType is null)
-					throw ErrorHelper.CreateError (99, Errors.MX0099, $"can't convert from '{inputType.FullName}' to '{outputType.FullName}' in {descriptiveMethodName}: {managedType.FullName} is not a valid nullable type");	
+					throw ErrorHelper.CreateError (99, Errors.MX0099, $"can't convert from '{inputType.FullName}' to '{outputType.FullName}' in {descriptiveMethodName}: {managedType.FullName} is not a valid nullable type");
 				sb.AppendLine ($"{classVariableName} = xamarin_get_nullable_type ({managedClassExpression}, &exception_gchandle);");
 				sb.AppendLine ($"if (exception_gchandle != INVALID_GCHANDLE) goto exception_handling;");
 				cleanup.AppendLine ($"xamarin_mono_object_release (&{classVariableName});");

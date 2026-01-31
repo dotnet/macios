@@ -2716,6 +2716,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7164" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The task '{0}' is trying to call an external process, but a path to Xcode has not been provided. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[작업 '{0}'이(가) 외부 프로세스를 호출하려고 하지만 Xcode 경로가 제공되지 않았습니다. https://github.com/dotnet/macios/issues/new/choose에서 문제를 제기하세요.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";E7169" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.]]></Val>

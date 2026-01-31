@@ -6464,53 +6464,53 @@ public partial class Generator : IMemberGatherer {
 						//
 						if (Frameworks.HaveCoreMedia && Frameworks.HaveAVFoundation && (field_pi.PropertyType == TypeCache.CMTime ||
 						   field_pi.PropertyType == TypeCache.AVCaptureWhiteBalanceGains)) {
-						print ("return *(({3} *) Dlfcn.dlsym (Libraries.{2}.Handle, \"{1}\"));", field_pi.Name, fieldAttr.SymbolName, library_name,
-							TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name));
-					} else if (field_pi.PropertyType == TypeCache.System_nint) {
-						print ("return Dlfcn.GetNInt (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
-					} else if (field_pi.PropertyType == TypeCache.System_nuint) {
-						print ("return Dlfcn.GetNUInt (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
-					} else if (field_pi.PropertyType == TypeCache.System_nfloat) {
-						print ("return Dlfcn.GetNFloat (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
-					} else if (field_pi.PropertyType == TypeCache.CoreGraphics_CGSize) {
-						print ("return Dlfcn.GetCGSize (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
-					} else if (field_pi.PropertyType == TypeCache.CMTag) {
-						print ("return Dlfcn.GetStruct<CoreMedia.CMTag> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
-					} else if (field_pi.PropertyType.Namespace == "Foundation" && field_pi.PropertyType.Name == "NSOperatingSystemVersion") {
-						print ("return Dlfcn.GetStruct<Foundation.NSOperatingSystemVersion> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
-					} else if (field_pi.PropertyType.IsEnum) {
-						var btype = field_pi.PropertyType.GetEnumUnderlyingType ();
-						if (smartEnumTypeName is not null) {
-							print ("if (_{0} is null)", field_pi.Name);
-							indent++;
-							print ("_{0} = Dlfcn.GetStringConstant (Libraries.{2}.Handle, \"{1}\")!;", field_pi.Name, fieldAttr.SymbolName, library_name);
-							indent--;
-							print ($"return {smartEnumTypeName}Extensions.GetValue (_{field_pi.Name});");
-						} else if (GetNativeEnumToManagedExpression (field_pi.PropertyType, out var preExpression, out var postExpression, out var _)) {
-							if (btype == TypeCache.System_nint || btype == TypeCache.System_Int64)
-								print ($"return {preExpression}Dlfcn.GetNInt (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\"){postExpression};");
-							else if (btype == TypeCache.System_nuint || btype == TypeCache.System_UInt64)
-								print ($"return {preExpression}Dlfcn.GetNUInt (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\"){postExpression};");
-							else
-								throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
+							print ("return *(({3} *) Dlfcn.dlsym (Libraries.{2}.Handle, \"{1}\"));", field_pi.Name, fieldAttr.SymbolName, library_name,
+								TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name));
+						} else if (field_pi.PropertyType == TypeCache.System_nint) {
+							print ("return Dlfcn.GetNInt (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						} else if (field_pi.PropertyType == TypeCache.System_nuint) {
+							print ("return Dlfcn.GetNUInt (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						} else if (field_pi.PropertyType == TypeCache.System_nfloat) {
+							print ("return Dlfcn.GetNFloat (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						} else if (field_pi.PropertyType == TypeCache.CoreGraphics_CGSize) {
+							print ("return Dlfcn.GetCGSize (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						} else if (field_pi.PropertyType == TypeCache.CMTag) {
+							print ("return Dlfcn.GetStruct<CoreMedia.CMTag> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						} else if (field_pi.PropertyType.Namespace == "Foundation" && field_pi.PropertyType.Name == "NSOperatingSystemVersion") {
+							print ("return Dlfcn.GetStruct<Foundation.NSOperatingSystemVersion> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						} else if (field_pi.PropertyType.IsEnum) {
+							var btype = field_pi.PropertyType.GetEnumUnderlyingType ();
+							if (smartEnumTypeName is not null) {
+								print ("if (_{0} is null)", field_pi.Name);
+								indent++;
+								print ("_{0} = Dlfcn.GetStringConstant (Libraries.{2}.Handle, \"{1}\")!;", field_pi.Name, fieldAttr.SymbolName, library_name);
+								indent--;
+								print ($"return {smartEnumTypeName}Extensions.GetValue (_{field_pi.Name});");
+							} else if (GetNativeEnumToManagedExpression (field_pi.PropertyType, out var preExpression, out var postExpression, out var _)) {
+								if (btype == TypeCache.System_nint || btype == TypeCache.System_Int64)
+									print ($"return {preExpression}Dlfcn.GetNInt (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\"){postExpression};");
+								else if (btype == TypeCache.System_nuint || btype == TypeCache.System_UInt64)
+									print ($"return {preExpression}Dlfcn.GetNUInt (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\"){postExpression};");
+								else
+									throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
+							} else {
+								if (btype == TypeCache.System_Int32)
+									print ($"return ({fieldTypeName}) Dlfcn.GetInt32 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
+								else if (btype == TypeCache.System_UInt32)
+									print ($"return ({fieldTypeName}) Dlfcn.GetUInt32 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
+								else if (btype == TypeCache.System_Int64)
+									print ($"return ({fieldTypeName}) Dlfcn.GetInt64 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
+								else if (btype == TypeCache.System_UInt64)
+									print ($"return ({fieldTypeName}) Dlfcn.GetUInt64 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
+								else
+									throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
+							}
 						} else {
-							if (btype == TypeCache.System_Int32)
-								print ($"return ({fieldTypeName}) Dlfcn.GetInt32 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
-							else if (btype == TypeCache.System_UInt32)
-								print ($"return ({fieldTypeName}) Dlfcn.GetUInt32 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
-							else if (btype == TypeCache.System_Int64)
-								print ($"return ({fieldTypeName}) Dlfcn.GetInt64 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
-							else if (btype == TypeCache.System_UInt64)
-								print ($"return ({fieldTypeName}) Dlfcn.GetUInt64 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
+							if (field_pi.PropertyType == TypeCache.System_String)
+								throw new BindingException (1013, true);
 							else
 								throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
 						}
-					} else {
-						if (field_pi.PropertyType == TypeCache.System_String)
-							throw new BindingException (1013, true);
-						else
-							throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
-					}
 
 					indent--;
 					print ("}");

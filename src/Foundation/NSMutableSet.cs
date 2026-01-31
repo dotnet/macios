@@ -38,7 +38,7 @@ namespace Foundation {
 	public partial class NSMutableSet : IEnumerable<NSObject> {
 		/// <summary>Initializes a new mutable set with the specified objects.</summary>
 		/// <param name="objs">The objects to add to the set.</param>
-		public NSMutableSet (params NSObject [] objs)
+		public NSMutableSet (params NSObject? []? objs)
 			: this (NSArray.FromNSObjects (objs))
 		{
 		}
@@ -50,7 +50,7 @@ namespace Foundation {
 		{
 		}
 
-		internal NSMutableSet (params INativeObject [] objs)
+		internal NSMutableSet (params INativeObject? []? objs)
 			: this (NSArray.FromNSObjects (objs))
 		{
 		}

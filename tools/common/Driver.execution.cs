@@ -14,90 +14,89 @@ using System.Threading.Tasks;
 
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.Bundler {
 	public partial class Driver {
-		public static int RunCommand (string path, IList<string> args, Dictionary<string, string> env, out StringBuilder output, bool suppressPrintOnErrors, int verbose)
+		public static int RunCommand (string path, IList<string> args, Dictionary<string, string?>? env, out StringBuilder output, bool suppressPrintOnErrors, int verbose)
 		{
 			output = new StringBuilder ();
 			return RunCommand (path, args, env, output, suppressPrintOnErrors, verbose);
 		}
 
-		public static int RunCommand (string path, IList<string> args, Dictionary<string, string> env, out StringBuilder output, bool suppressPrintOnErrors)
+		public static int RunCommand (string path, IList<string> args, Dictionary<string, string?>? env, out StringBuilder output, bool suppressPrintOnErrors)
 		{
 			output = new StringBuilder ();
 			return RunCommand (path, args, env, output, suppressPrintOnErrors, Verbosity);
 		}
 
-		public static int RunCommand (string path, IList<string> args, Dictionary<string, string> env, StringBuilder output, bool suppressPrintOnErrors, int verbosity)
+		public static int RunCommand (string path, IList<string> args, Dictionary<string, string?>? env, StringBuilder output, bool suppressPrintOnErrors, int verbosity)
 		{
 			return RunCommand (path, args, env, output, output, suppressPrintOnErrors, verbosity);
 		}
 
-		public static int RunCommand (string path, IList<string> args, Dictionary<string, string> env, StringBuilder output, bool suppressPrintOnErrors = false)
+		public static int RunCommand (string path, IList<string> args, Dictionary<string, string?>? env, StringBuilder output, bool suppressPrintOnErrors = false)
 		{
 			return RunCommand (path, args, env, output, output, suppressPrintOnErrors, Verbosity);
 		}
 
 		public static int RunCommand (string path, params string [] args)
 		{
-			return RunCommand (path, args, null, (Action<string>) null, (Action<string>) null, false, Verbosity);
+			return RunCommand (path, args, null, (Action<string?>?) null, (Action<string?>?) null, false, Verbosity);
 		}
 
 		public static int RunCommand (string path, IList<string> args)
 		{
-			return RunCommand (path, args, null, (Action<string>) null, (Action<string>) null, false, Verbosity);
+			return RunCommand (path, args, null, (Action<string?>?) null, (Action<string?>?) null, false, Verbosity);
 		}
 
-		public static int RunCommand (string path, IList<string> args, StringBuilder output)
+		public static int RunCommand (string path, IList<string> args, StringBuilder? output)
 		{
 			return RunCommand (path, args, null, output, output, false, Verbosity);
 		}
 
-		public static int RunCommand (string path, IList<string> args, StringBuilder output, bool suppressPrintOnErrors)
+		public static int RunCommand (string path, IList<string> args, StringBuilder? output, bool suppressPrintOnErrors)
 		{
 			return RunCommand (path, args, null, output, output, suppressPrintOnErrors, Verbosity);
 		}
 
-		public static int RunCommand (string path, IList<string> args, StringBuilder output, StringBuilder error)
+		public static int RunCommand (string path, IList<string> args, StringBuilder? output, StringBuilder? error)
 		{
 			return RunCommand (path, args, null, output, error, false, Verbosity);
 		}
 
-		public static int RunCommand (string path, IList<string> args, StringBuilder output, StringBuilder error, bool suppressPrintOnErrors)
+		public static int RunCommand (string path, IList<string> args, StringBuilder? output, StringBuilder? error, bool suppressPrintOnErrors)
 		{
 			return RunCommand (path, args, null, output, error, suppressPrintOnErrors, Verbosity);
 		}
 
-		public static int RunCommand (string path, IList<string> args, Dictionary<string, string> env, StringBuilder output, StringBuilder error, bool suppressPrintOnErrors, int verbosity)
+		public static int RunCommand (string path, IList<string> args, Dictionary<string, string?>? env, StringBuilder? output, StringBuilder? error, bool suppressPrintOnErrors, int verbosity)
 		{
-			var output_received = output is null ? null : new Action<string> ((v) => { if (v is not null) output.AppendLine (v); });
-			var error_received = error is null ? null : new Action<string> ((v) => { if (v is not null) error.AppendLine (v); });
+			var output_received = output is null ? null : new Action<string?> ((v) => { if (v is not null) output.AppendLine (v); });
+			var error_received = error is null ? null : new Action<string?> ((v) => { if (v is not null) error.AppendLine (v); });
 			return RunCommand (path, args, env, output_received, error_received, suppressPrintOnErrors, verbosity);
 		}
 
-		static int RunCommand (string path, IList<string> args, Dictionary<string, string> env, Action<string> output_received, bool suppressPrintOnErrors)
+		static int RunCommand (string path, IList<string> args, Dictionary<string, string?>? env, Action<string?>? output_received, bool suppressPrintOnErrors)
 		{
 			return RunCommand (path, args, env, output_received, output_received, suppressPrintOnErrors, Verbosity);
 		}
 
-		static int RunCommand (string path, IList<string> args, Dictionary<string, string> env, Action<string> output_received, Action<string> error_received)
+		static int RunCommand (string path, IList<string> args, Dictionary<string, string?>? env, Action<string?>? output_received, Action<string?>? error_received)
 		{
 			return RunCommand (path, args, env, output_received, error_received, false, Verbosity);
 		}
 
-		static int RunCommand (string path, IList<string> args, Dictionary<string, string> env, Action<string> output_received, Action<string> error_received, bool suppressPrintOnErrors, int verbosity)
+		static int RunCommand (string path, IList<string> args, Dictionary<string, string?>? env, Action<string?>? output_received, Action<string?>? error_received, bool suppressPrintOnErrors, int verbosity)
 		{
 			var output = new StringBuilder ();
-			var outputCallback = new Action<string> ((string line) => {
+			var outputCallback = new Action<string?> ((line) => {
 				if (output_received is not null)
 					output_received (line);
 				lock (output)
 					output.AppendLine (line);
 			});
-			var errorCallback = new Action<string> ((string line) => {
+			var errorCallback = new Action<string?> ((line) => {
 				if (error_received is not null)
 					error_received (line);
 				lock (output)
@@ -132,12 +131,12 @@ namespace Xamarin.Bundler {
 			return p.ExitCode;
 		}
 
-		public static Task<int> RunCommandAsync (string path, IList<string> args, Dictionary<string, string> env = null, Action<string> output_received = null, bool suppressPrintOnErrors = false, int? verbosity = null)
+		public static Task<int> RunCommandAsync (string path, IList<string> args, Dictionary<string, string?>? env = null, Action<string?>? output_received = null, bool suppressPrintOnErrors = false, int? verbosity = null)
 		{
 			return Task.Run (() => RunCommand (path, args, env, output_received, output_received, suppressPrintOnErrors, verbosity ?? Verbosity));
 		}
 
-		public static Task<int> RunCommandAsync (string path, IList<string> args, Dictionary<string, string> env = null, StringBuilder output = null, bool suppressPrintOnErrors = false, int? verbosity = null)
+		public static Task<int> RunCommandAsync (string path, IList<string> args, Dictionary<string, string?>? env = null, StringBuilder? output = null, bool suppressPrintOnErrors = false, int? verbosity = null)
 		{
 			return Task.Run (() => RunCommand (path, args, env, output, output, suppressPrintOnErrors, verbosity ?? Verbosity));
 		}

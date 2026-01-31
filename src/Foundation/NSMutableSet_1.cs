@@ -190,11 +190,7 @@ namespace Foundation {
 			if (objects is null)
 				throw new ArgumentNullException (nameof (objects));
 
-			for (int i = 0; i < objects.Length; i++)
-				if (objects [i] is null)
-					throw new ArgumentNullException (nameof (objects) + "[" + i.ToString () + "]");
-
-			using (var array = NSArray.From<TKey> (objects))
+			using (var array = NSArray.FromNonNullNativeObjects<TKey> (objects))
 				_AddObjects (array.Handle);
 		}
 

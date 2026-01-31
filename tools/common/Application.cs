@@ -32,8 +32,7 @@ using PlatformResolver = Xamarin.Linker.DotNetResolver;
 #error Invalid defines
 #endif
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 #if LEGACY_TOOLS
 namespace Mono.Linker {
@@ -69,7 +68,7 @@ namespace Xamarin.Bundler {
 	}
 
 	public partial class Application {
-		public Cache Cache;
+		public Cache? Cache;
 		public string AppDirectory = ".";
 		public bool DeadStrip = true;
 		public bool EnableDebug;
@@ -89,14 +88,14 @@ namespace Xamarin.Bundler {
 
 		// The AOT arguments are currently not used for macOS, but they could eventually be used there as well (there's no mmp option to set these yet).
 		public List<string> AotArguments = new List<string> ();
-		public List<string> AotOtherArguments = null;
+		public List<string>? AotOtherArguments = null;
 		public bool? AotFloat32 = null;
 
 #if !LEGACY_TOOLS
 		public DlsymOptions DlsymOptions;
-		public List<Tuple<string, bool>> DlsymAssemblies;
+		public List<Tuple<string, bool>>? DlsymAssemblies;
 #endif // !LEGACY_TOOLS
-		public List<string> CustomLinkFlags;
+		public List<string>? CustomLinkFlags;
 
 		public HashSet<string> Frameworks = new HashSet<string> ();
 		public HashSet<string> WeakFrameworks = new HashSet<string> ();
@@ -141,12 +140,12 @@ namespace Xamarin.Bundler {
 		}
 		public List<string> RootAssemblies = new List<string> ();
 		public List<string> References = new List<string> ();
-		public string RegistrarOutputLibrary;
+		public string? RegistrarOutputLibrary;
 
 		public BuildTarget BuildTarget;
 
 		public XamarinRuntime XamarinRuntime;
-		public string RuntimeIdentifier; // Only used for build-time --run-registrar support
+		public string? RuntimeIdentifier; // Only used for build-time --run-registrar support
 
 		public bool SkipMarkingNSObjectsInUserAssemblies { get; set; }
 
@@ -154,6 +153,8 @@ namespace Xamarin.Bundler {
 		AssemblyBuildTarget? libmono_link_mode;
 		public AssemblyBuildTarget LibMonoLinkMode {
 			get {
+				if (!libmono_link_mode.HasValue)
+					throw new InvalidOperationException ("LibMonoLinkMode has not been set.");
 				return libmono_link_mode.Value;
 			}
 			set {
@@ -165,6 +166,8 @@ namespace Xamarin.Bundler {
 		AssemblyBuildTarget? libxamarin_link_mode;
 		public AssemblyBuildTarget LibXamarinLinkMode {
 			get {
+				if (!libxamarin_link_mode.HasValue)
+					throw new InvalidOperationException ("LibXamarinLinkMode has not been set.");
 				return libxamarin_link_mode.Value;
 			}
 			set {
@@ -176,6 +179,8 @@ namespace Xamarin.Bundler {
 		public AssemblyBuildTarget LibMonoNativeLinkMode {
 			get {
 				// if there's a specific way libmono is being linked, use the same way.
+				if (!libmono_link_mode.HasValue)
+					throw new InvalidOperationException ("LibMonoNativeLinkMode has not been set.");
 				return libmono_link_mode.Value;
 			}
 		}
@@ -231,16 +236,20 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public Version DeploymentTarget;
-		public Version SdkVersion; // for Mac Catalyst this is the iOS version
-		public Version NativeSdkVersion; // this is the same as SdkVersion, except that for Mac Catalyst it's the macOS SDK version.
+		public Version? DeploymentTarget;
+		public Version? SdkVersion; // for Mac Catalyst this is the iOS version
+		public Version? NativeSdkVersion; // this is the same as SdkVersion, except that for Mac Catalyst it's the macOS SDK version.
 
 		Abi abi;
 		public bool IsLLVM { get { return IsArchEnabled (Abi.LLVM); } }
 
 		bool? package_managed_debug_symbols;
 		public bool PackageManagedDebugSymbols {
-			get { return package_managed_debug_symbols.Value; }
+			get {
+				if (!package_managed_debug_symbols.HasValue)
+					throw new InvalidOperationException ("PackageManagedDebugSymbols has not been set.");
+				return package_managed_debug_symbols.Value;
+			}
 			set { package_managed_debug_symbols = value; }
 		}
 
@@ -302,12 +311,14 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public string ExtensionIdentifier {
+		public string? ExtensionIdentifier {
 			get {
 				if (!IsExtension)
 					return null;
 
 				var plist = Driver.FromPList (InfoPListPath);
+				if (plist is null)
+					return null;
 				var dict = plist.Get<PDictionary> ("NSExtension");
 				if (dict is null)
 					return null;
@@ -315,7 +326,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		string info_plistpath;
+		string? info_plistpath;
 		public string InfoPListPath {
 			get {
 				if (info_plistpath is not null)
@@ -431,8 +442,8 @@ namespace Xamarin.Bundler {
 				if (embedded is null || embedded.Name != name)
 					continue;
 
-				string dirname = Path.GetDirectoryName (path);
-				if (!Directory.Exists (dirname))
+				var dirname = Path.GetDirectoryName (path);
+				if (!string.IsNullOrEmpty (dirname) && !Directory.Exists (dirname))
 					Directory.CreateDirectory (dirname);
 
 				using (Stream ostream = File.OpenWrite (path)) {
@@ -469,6 +480,8 @@ namespace Xamarin.Bundler {
 			if (Platform == ApplePlatform.MacCatalyst) {
 				// Our input SdkVersion is the macOS SDK version, but the rest of our code expects the supporting iOS version, so convert here.
 				// The macOS SDK version is still stored in NativeSdkVersion for when we need it.
+				if (NativeSdkVersion is null)
+					throw ErrorHelper.CreateError (183, Errors.MX0183 /* NativeSdkVersion is required for Mac Catalyst builds. */);
 				SdkVersion = GetMacCatalystiOSVersion (NativeSdkVersion);
 			}
 
@@ -528,6 +541,8 @@ namespace Xamarin.Bundler {
 				throw ErrorHelper.CreateError (130, Errors.MX0130);
 
 			var registrar_m = RegistrarOutputLibrary;
+			if (registrar_m is null)
+				throw ErrorHelper.CreateError (99, "RegistrarOutputLibrary must be specified.");
 			var RootAssembly = RootAssemblies [0];
 			var resolvedAssemblies = new Dictionary<string, AssemblyDefinition> ();
 			var resolver = new PlatformResolver () {
@@ -896,7 +911,7 @@ namespace Xamarin.Bundler {
 			return processArguments;
 		}
 
-		public void GetAotArguments (string filename, Abi abi, string outputDir, string outputFile, string llvmOutputFile, string dataFile, bool? isDedupAssembly, out List<string> processArguments, out List<string> aotArguments, string llvm_path = null)
+		public void GetAotArguments (string filename, Abi abi, string outputDir, string outputFile, string llvmOutputFile, string dataFile, bool? isDedupAssembly, out List<string> processArguments, out List<string> aotArguments, string? llvm_path = null)
 		{
 			string fname = Path.GetFileName (filename);
 			processArguments = new List<string> ();

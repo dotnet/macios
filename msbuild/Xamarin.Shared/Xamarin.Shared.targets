@@ -894,7 +894,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<IBTool
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
-			ToolExe="$(IBToolExe)"
 			ToolPath="$(IBToolPath)"
 			BundleIdentifier="$(_BundleIdentifier)"
 			CLKComplicationGroup="$(_CLKComplicationGroup)"
@@ -1021,7 +1020,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<ACTool
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true' And '@(ImageAsset)' != ''"
-			ToolExe="$(ACToolExe)"
 			ToolPath="$(ACToolPath)"
 			AccentColor="$(AccentColor)"
 			AlternateAppIcons="@(AlternateAppIcon)"
@@ -1447,7 +1445,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<TextureAtlas
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
-			ToolExe="$(TextureAtlasExe)"
 			ToolPath="$(TextureAtlasPath)"
 			AtlasTextures="@(AtlasTexture)"
 			IntermediateOutputPath="$(DeviceSpecificIntermediateOutputPath)"

@@ -675,7 +675,7 @@ namespace AudioUnit {
 			}
 			set {
 				using var nameHandle = new TransientCFString (Name);
-				using var array = NSArray.FromNSObjects (h => h.Dictionary, value);
+				using var array = NSArray.FromNSObjects (h => h?.Dictionary, value);
 				var result = (AudioConverterError) AudioUnitExtensionSetComponentList (nameHandle, array.GetHandle ());
 				switch (result) {
 				case AudioConverterError.None:

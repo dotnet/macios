@@ -5,6 +5,8 @@ using Mono.Tuner;
 
 using Xamarin.Tuner;
 
+#nullable enable
+
 namespace Xamarin.Linker {
 
 	static class Namespaces {
@@ -88,21 +90,30 @@ namespace Xamarin.Linker {
 	static class ObjCExtensions {
 
 		const string INativeObject = Namespaces.ObjCRuntime + ".INativeObject";
-		public static bool IsNSObject (this TypeReference type, DerivedLinkContext link_context)
+		public static bool IsNSObject (this TypeReference? type, DerivedLinkContext? link_context)
 		{
+			if (type is null)
+				return false;
+
 			return
 #if !LEGACY_TOOLS
-				link_context.LinkerConfiguration.Context.Resolve (type)
+				link_context?.LinkerConfiguration?.Context?.Resolve (type)
 #else
 				type.Resolve ()
 #endif
-				.IsNSObject (link_context);
+				.IsNSObject (link_context) == true;
 		}
 
 		// warning: *Is* means does 'type' inherits from Foundation.NSObject ?
-		public static bool IsNSObject (this TypeDefinition type, DerivedLinkContext link_context)
+		public static bool IsNSObject (this TypeDefinition? type, DerivedLinkContext? link_context)
 		{
-			if (link_context?.CachedIsNSObject is not null)
+			if (type is null)
+				return false;
+
+			if (link_context is null)
+				return false;
+
+			if (link_context.CachedIsNSObject is not null)
 				return link_context.CachedIsNSObject.Contains (type);
 
 			return type.Inherits (Namespaces.Foundation, "NSObject"
@@ -112,8 +123,11 @@ namespace Xamarin.Linker {
 			);
 		}
 
-		public static bool IsNativeObject (this TypeDefinition type)
+		public static bool IsNativeObject (this TypeDefinition? type)
 		{
+			if (type is null)
+				return false;
+
 			return type.Implements (INativeObject);
 		}
 	}

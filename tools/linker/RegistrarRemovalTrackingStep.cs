@@ -7,6 +7,8 @@ using Mono.Linker;
 using Xamarin.Bundler;
 using Xamarin.Linker;
 
+#nullable enable
+
 namespace MonoTouch.Tuner {
 	public class RegistrarRemovalTrackingStep : ConfigurationAwareStep {
 
@@ -26,7 +28,7 @@ namespace MonoTouch.Tuner {
 			Process (assembly);
 		}
 
-		AssemblyDefinition PlatformAssembly;
+		AssemblyDefinition? PlatformAssembly;
 
 		bool dynamic_registration_support_required;
 
@@ -124,8 +126,8 @@ namespace MonoTouch.Tuner {
 							requires = true;
 							break;
 						case ".ctor":
-							var md = mr.Resolve () as MethodDefinition;
-							requires |= Xamarin.Linker.OptimizeGeneratedCodeHandler.IsBlockLiteralCtor_Type_String (md);
+							if (mr.Resolve () is MethodDefinition md)
+								requires |= Xamarin.Linker.OptimizeGeneratedCodeHandler.IsBlockLiteralCtor_Type_String (md);
 							if (requires && warnIfRequired)
 								Warn (assembly, mr);
 							break;

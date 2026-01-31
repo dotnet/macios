@@ -17,6 +17,12 @@ The full path to the `altool` tool.
 
 The default behavior is to use `xcrun altool`.
 
+## ACToolPath
+
+The full path to the `actool` tool.
+
+The default behavior is to use `xcrun actool`.
+
 ## AppBundleResourcePrefix
 
 The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).
@@ -530,6 +536,12 @@ Default: true
 ## GeneratedSourcesDir
 
 Where the generated source from the generator are saved.
+
+## IBToolPath
+
+The full path to the `ibtool` tool.
+
+The default behavior is to use `xcrun ibtool`.
 
 ## IncludeAllAppIcons
 
@@ -1274,6 +1286,12 @@ It's also possible to use a platform-specific property:
 * [tvOSMinimumVersion](#tvosminimumversion)
 * [macOSMinimumVersion](#macosminimumversion)
 * [MacCatalystMinimumVersion](#maccatalystminimumversion)
+
+## TextureAtlasPath
+
+The full path to the `TextureAtlas` tool.
+
+The default behavior is to use `xcrun TextureAtlas`.
 
 ## TrimMode
 

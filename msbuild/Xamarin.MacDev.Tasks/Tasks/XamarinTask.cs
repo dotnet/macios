@@ -111,16 +111,22 @@ namespace Xamarin.MacDev.Tasks {
 
 		internal protected System.Threading.Tasks.Task<Execution> ExecuteAsync (string fileName, IList<string> arguments, Dictionary<string, string?>? environment = null, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
 		{
-			return ExecuteAsync (Log, fileName, arguments, SdkDevPath, environment, showErrorIfFailure, workingDirectory, cancellationToken);
+			return ExecuteAsync (this, fileName, arguments, SdkDevPath, environment, showErrorIfFailure, workingDirectory, cancellationToken);
 		}
 
 		static int executionCounter;
-		static async System.Threading.Tasks.Task<Execution> ExecuteAsync (TaskLoggingHelper log, string fileName, IList<string> arguments, string? sdkDevPath = null, Dictionary<string, string?>? environment = null, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
+		static async System.Threading.Tasks.Task<Execution> ExecuteAsync (Task task, string fileName, IList<string> arguments, string? sdkDevPath = null, Dictionary<string, string?>? environment = null, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
 		{
+			var log = task.Log;
 			// Create a new dictionary if we're given one, to make sure we don't change the caller's dictionary.
 			var launchEnvironment = environment is null ? new Dictionary<string, string?> () : new Dictionary<string, string?> (environment);
 			if (!string.IsNullOrEmpty (sdkDevPath))
 				launchEnvironment ["DEVELOPER_DIR"] = sdkDevPath;
+
+			if (Environment.OSVersion.Platform == PlatformID.MacOSX && string.IsNullOrEmpty (sdkDevPath)) {
+				log.LogWarning (MSBStrings.E7164 /* The task '{0}' is trying to call an external process, but a path to Xcode has not been provided. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */, task.GetType ().Name);
+				log.LogMessage (MessageImportance.Low, Environment.StackTrace);
+			}
 
 			var currentId = Interlocked.Increment (ref executionCounter);
 			log.LogMessage (MessageImportance.Normal, MSBStrings.M0001, currentId, fileName, StringUtils.FormatArguments (arguments)); // Started external tool execution #{0}: {1} {2}

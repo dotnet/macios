@@ -80,7 +80,7 @@ namespace Foundation {
 		{
 		}
 
-		NSMutableDictionary (TKey [] keys, TValue [] values, bool validation)
+		NSMutableDictionary (TKey? [] keys, TValue? [] values, bool validation)
 			: base (NSArray.FromNSObjects (values), NSArray.FromNSObjects (keys))
 		{
 		}
@@ -100,7 +100,7 @@ namespace Foundation {
 		/// </summary>
 		/// <param name="key">The key.</param>
 		/// <param name="value">The value.</param>
-		public NSMutableDictionary (TKey key, TValue value)
+		public NSMutableDictionary (TKey? key, TValue? value)
 			: base (NSArray.FromNSObjects (value), NSArray.FromNSObjects (key))
 		{
 		}
@@ -173,7 +173,7 @@ namespace Foundation {
 			if (keys.Length == 0)
 				return [];
 
-			var keysArray = NSArray.From<TKey> (keys);
+			var keysArray = NSArray.FromNativeObjects<TKey> (keys);
 			var result = NSArray.ArrayFromHandle<TValue> (_ObjectsForKeys (keysArray.Handle, marker.Handle));
 			GC.KeepAlive (keysArray);
 			GC.KeepAlive (marker);
@@ -263,17 +263,13 @@ namespace Foundation {
 		/// <param name="keys">An array of keys.</param>
 		/// <param name="count">The number of elements to use from each array.</param>
 		/// <returns>A new mutable dictionary containing the specified key-value pairs.</returns>
-		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (TValue [] objects, TKey [] keys, nint count)
+		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (TValue? [] objects, TKey? [] keys, nint count)
 		{
-			ArgumentNullException.ThrowIfNull (objects);
-			ArgumentNullException.ThrowIfNull (keys);
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-			if (count < 1 || objects.Length < count)
-				throw new ArgumentException (nameof (count));
+			if (!ValidateFromObjectsAndKeys (objects, keys, count))
+				return new NSMutableDictionary<TKey, TValue> ();
 
-			using (var no = NSArray.FromNSObjects (objects))
-			using (var nk = NSArray.FromNSObjects (keys))
+			using (var no = NSArray.FromNativeObjects (objects, count))
+			using (var nk = NSArray.FromNativeObjects (keys, count))
 				return GenericFromObjectsAndKeysInternal (no, nk);
 		}
 
@@ -283,16 +279,12 @@ namespace Foundation {
 		/// <param name="objects">An array of values.</param>
 		/// <param name="keys">An array of keys.</param>
 		/// <returns>A new mutable dictionary containing the specified key-value pairs.</returns>
-		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (TValue [] objects, TKey [] keys)
+		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (TValue? [] objects, TKey? [] keys)
 		{
-			ArgumentNullException.ThrowIfNull (objects);
-			ArgumentNullException.ThrowIfNull (keys);
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
+			if (!ValidateFromObjectsAndKeys (objects, keys))
+				return new NSMutableDictionary<TKey, TValue> ();
 
-			using (var no = NSArray.FromNSObjects (objects))
-			using (var nk = NSArray.FromNSObjects (keys))
-				return GenericFromObjectsAndKeysInternal (no, nk);
+			return FromObjectsAndKeys (objects, keys, objects.Length);
 		}
 
 		/// <summary>
@@ -303,14 +295,10 @@ namespace Foundation {
 		/// <returns>A new mutable dictionary containing the specified key-value pairs.</returns>
 		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (object [] objects, object [] keys)
 		{
-			ArgumentNullException.ThrowIfNull (objects);
-			ArgumentNullException.ThrowIfNull (keys);
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
+			if (!ValidateFromObjectsAndKeys (objects, keys))
+				return new NSMutableDictionary<TKey, TValue> ();
 
-			using (var no = NSArray.FromObjects (objects))
-			using (var nk = NSArray.FromObjects (keys))
-				return GenericFromObjectsAndKeysInternal (no, nk);
+			return FromObjectsAndKeys (objects, keys, objects.Length);
 		}
 
 		/// <summary>
@@ -320,17 +308,13 @@ namespace Foundation {
 		/// <param name="keys">An array of <see cref="NSObject"/> keys.</param>
 		/// <param name="count">The number of elements to use from each array.</param>
 		/// <returns>A new mutable dictionary containing the specified key-value pairs.</returns>
-		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
+		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (NSObject? [] objects, NSObject? [] keys, nint count)
 		{
-			ArgumentNullException.ThrowIfNull (objects);
-			ArgumentNullException.ThrowIfNull (keys);
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-			if (count < 1 || objects.Length < count || keys.Length < count)
-				throw new ArgumentException (nameof (count));
+			if (!ValidateFromObjectsAndKeys (objects, keys, count))
+				return new NSMutableDictionary<TKey, TValue> ();
 
-			using (var no = NSArray.FromNSObjects (objects))
-			using (var nk = NSArray.FromNSObjects (keys))
+			using (var no = NSArray.FromNativeObjects (objects, count))
+			using (var nk = NSArray.FromNativeObjects (keys, count))
 				return GenericFromObjectsAndKeysInternal (no, nk);
 		}
 
@@ -343,15 +327,11 @@ namespace Foundation {
 		/// <returns>A new mutable dictionary containing the specified key-value pairs.</returns>
 		public static NSMutableDictionary<TKey, TValue>? FromObjectsAndKeys (object [] objects, object [] keys, nint count)
 		{
-			ArgumentNullException.ThrowIfNull (objects);
-			ArgumentNullException.ThrowIfNull (keys);
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-			if (count < 1 || objects.Length < count || keys.Length < count)
-				throw new ArgumentException (nameof (count));
+			if (!ValidateFromObjectsAndKeys (objects, keys, count))
+				return new NSMutableDictionary<TKey, TValue> ();
 
-			using (var no = NSArray.FromObjects (objects))
-			using (var nk = NSArray.FromObjects (keys))
+			using (var no = NSArray.FromObjects (count, objects))
+			using (var nk = NSArray.FromObjects (count, keys))
 				return GenericFromObjectsAndKeysInternal (no, nk);
 		}
 

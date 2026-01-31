@@ -25,6 +25,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 
 using CoreFoundation;
 
@@ -39,64 +40,91 @@ namespace Foundation {
 
 	public partial class NSArray : IEnumerable<NSObject> {
 
-		//
-		// Creates an array with the elements;   If the value passed is null, it
-		// still creates an NSArray object, but the Handle is set to IntPtr.Zero,
-		// this is so it makes it simpler for the generator to support
-		// [NullAllowed] on array parameters.
-		//
-		/// <param name="items">Strongly typed array of NSObjects.</param>
-		///         <summary>Creates an NSArray from a C# array of NSObjects.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
-		static public NSArray FromNSObjects (params NSObject [] items)
+#nullable enable
+		/// <summary>Creates an NSArray from a C# array of NSObjects.</summary>
+		/// <param name="items">Strongly typed array of NSObjects. Null elements are stored as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
+		/// <returns>A new <see cref="NSArray"/> containing the specified objects.</returns>
+		/// <remarks>Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		public static NSArray FromNSObjects (params NSObject? []? items)
 		{
 			return FromNativeObjects (items);
 		}
 
+#if !XAMCORE_5_0
+		/// <summary>Creates an NSArray from the first <paramref name="count"/> elements of a C# array of NSObjects.</summary>
 		/// <param name="count">Number of items to copy from the items array.</param>
-		///         <param name="items">Strongly typed array of NSObjects.</param>
-		///         <summary>Creates an NSArray from a C# array of NSObjects.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
-		static public NSArray FromNSObjects (int count, params NSObject [] items)
+		/// <param name="items">Strongly typed array of NSObjects. Null elements are stored as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
+		/// <returns>A new <see cref="NSArray"/> containing the first <paramref name="count"/> objects from the array.</returns>
+		/// <remarks>Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		// Don't obsolete this method, because forcing the first parameter to a 'nint' to pick the good overload to avoid the obsolete warning makes the calling code ugly.
+		public static NSArray FromNSObjects (int count, params NSObject? []? items)
+		{
+			return FromNativeObjects (items, count);
+		}
+#endif
+
+		/// <summary>Creates an NSArray from the first <paramref name="count"/> elements of a C# array of NSObjects.</summary>
+		/// <param name="count">Number of items to copy from the items array.</param>
+		/// <param name="items">Strongly typed array of NSObjects. Null elements are stored as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
+		/// <returns>A new <see cref="NSArray"/> containing the first <paramref name="count"/> objects from the array.</returns>
+		/// <remarks>Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		public static NSArray FromNSObjects (nint count, params NSObject? []? items)
 		{
 			return FromNativeObjects (items, count);
 		}
 
-		/// <param name="items">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public static NSArray FromNSObjects (params INativeObject [] items)
+		/// <summary>Creates an NSArray from a C# array of objects implementing <see cref="INativeObject"/>.</summary>
+		/// <param name="items">Array of objects implementing <see cref="INativeObject"/>. Null elements are stored as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
+		/// <returns>A new <see cref="NSArray"/> containing the specified objects.</returns>
+		/// <remarks>Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		public static NSArray FromNSObjects (params INativeObject? []? items)
 		{
 			return FromNativeObjects (items);
 		}
 
-		/// <param name="count">To be added.</param>
-		///         <param name="items">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public static NSArray FromNSObjects (int count, params INativeObject [] items)
+#if !XAMCORE_5_0
+		/// <summary>Creates an NSArray from a C# array of objects implementing <see cref="INativeObject"/>, using the first <paramref name="count"/> elements.</summary>
+		/// <param name="count">Number of items to copy from the items array.</param>
+		/// <param name="items">Array of objects implementing <see cref="INativeObject"/>. Null elements are stored as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
+		/// <returns>A new <see cref="NSArray"/> containing the first <paramref name="count"/> objects from the array.</returns>
+		/// <remarks>Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		// Don't obsolete this method, because forcing the first parameter to a 'nint' to pick the good overload to avoid the obsolete warning makes the calling code ugly.
+		public static NSArray FromNSObjects (int count, params INativeObject? []? items)
+		{
+			return FromNativeObjects (items, count);
+		}
+#endif
+
+		/// <summary>Creates an NSArray from a C# array of objects implementing <see cref="INativeObject"/>, using the first <paramref name="count"/> elements.</summary>
+		/// <param name="count">Number of items to copy from the items array.</param>
+		/// <param name="items">Array of objects implementing <see cref="INativeObject"/>. Null elements are stored as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
+		/// <returns>A new <see cref="NSArray"/> containing the first <paramref name="count"/> objects from the array.</returns>
+		/// <remarks>Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		public static NSArray FromNSObjects (nint count, params INativeObject? []? items)
 		{
 			return FromNativeObjects (items, count);
 		}
 
-		/// <typeparam name="T">To be added.</typeparam>
-		///         <param name="items">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public static NSArray FromNSObjects<T> (params T [] items) where T : class, INativeObject
+		/// <summary>Creates an NSArray from a C# array of objects implementing <see cref="INativeObject"/>.</summary>
+		/// <typeparam name="T">The type of objects in the array, which must implement <see cref="INativeObject"/>.</typeparam>
+		/// <param name="items">Array of objects. Null elements are stored as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
+		/// <returns>A new <see cref="NSArray"/> containing the specified objects.</returns>
+		/// <remarks>Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		public static NSArray FromNSObjects<T> (params T? []? items) where T : class, INativeObject
 		{
 			return FromNativeObjects (items);
 		}
-		public static NSArray FromNSObjects<T> (params T [] [] items) where T : class, INativeObject
+
+		/// <summary>Creates a nested NSArray from a jagged array of objects implementing <see cref="INativeObject"/>.</summary>
+		/// <typeparam name="T">The type of objects in the array, which must implement <see cref="INativeObject"/>.</typeparam>
+		/// <param name="items">A jagged array of objects. If null, returns null.</param>
+		/// <returns>A new <see cref="NSArray"/> containing nested NSArrays for each row. Returns null if <paramref name="items"/> is null.</returns>
+		/// <exception cref="ArgumentNullException">Thrown if any row or element in the jagged array is null.</exception>
+		/// <remarks>Each row of the jagged array is converted to an NSArray, and these NSArrays are then stored in the returned NSArray. Individual row elements and rows themselves cannot be null.</remarks>
+		[return: NotNullIfNotNull (nameof (items))]
+		public static NSArray? FromNSObjects<T> (params T [] []? items) where T : class, INativeObject
 		{
 			if (items is null)
 				return null;
@@ -116,7 +144,14 @@ namespace Foundation {
 
 			return ret;
 		}
-		public static NSArray FromNSObjects<T> (T [,] items) where T : class, INativeObject
+
+		/// <summary>Creates a nested NSArray from a two-dimensional array of objects implementing <see cref="INativeObject"/>.</summary>
+		/// <typeparam name="T">The type of objects in the array, which must implement <see cref="INativeObject"/>.</typeparam>
+		/// <param name="items">A two-dimensional array of objects. If null, returns null.</param>
+		/// <returns>A new <see cref="NSArray"/> containing nested NSArrays, one for each row of the 2D array. Returns null if <paramref name="items"/> is null.</returns>
+		/// <remarks>The two-dimensional array is converted to a jagged array structure where each row becomes a nested NSArray.</remarks>
+		[return: NotNullIfNotNull (nameof (items))]
+		public static NSArray? FromNSObjects<T> (T [,]? items) where T : class, INativeObject
 		{
 			if (items is null)
 				return null;
@@ -133,91 +168,139 @@ namespace Foundation {
 			}
 			return FromNSObjects (ret);
 		}
-		/// <typeparam name="T">To be added.</typeparam>
-		///         <param name="count">To be added.</param>
-		///         <param name="items">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public static NSArray FromNSObjects<T> (int count, params T [] items) where T : class, INativeObject
+
+#if !XAMCORE_5_0
+		/// <summary>Creates an NSArray from a C# array of objects implementing <see cref="INativeObject"/>, using the first <paramref name="count"/> elements.</summary>
+		/// <typeparam name="T">The type of objects in the array, which must implement <see cref="INativeObject"/>.</typeparam>
+		/// <param name="count">Number of items to copy from the items array.</param>
+		/// <param name="items">Array of objects. Null elements are stored as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
+		/// <returns>A new <see cref="NSArray"/> containing the first <paramref name="count"/> objects from the array.</returns>
+		/// <remarks>Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		// Don't obsolete this method, because forcing the first parameter to a 'nint' to pick the good overload to avoid the obsolete warning makes the calling code ugly.
+		public static NSArray FromNSObjects<T> (int count, params T? []? items) where T : class, INativeObject
+		{
+			return FromNativeObjects (items, count);
+		}
+#endif
+
+		/// <summary>Creates an NSArray from a C# array of objects implementing <see cref="INativeObject"/>, using the first <paramref name="count"/> elements.</summary>
+		/// <typeparam name="T">The type of objects in the array, which must implement <see cref="INativeObject"/>.</typeparam>
+		/// <param name="count">Number of items to copy from the items array.</param>
+		/// <param name="items">Array of objects. Null elements are stored as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
+		/// <returns>A new <see cref="NSArray"/> containing the first <paramref name="count"/> objects from the array.</returns>
+		/// <remarks>Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		public static NSArray FromNSObjects<T> (nint count, params T? []? items) where T : class, INativeObject
 		{
 			return FromNativeObjects (items, count);
 		}
 
-		/// <typeparam name="T">To be added.</typeparam>
-		///         <param name="nsobjectificator">To be added.</param>
-		///         <param name="items">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public static NSArray FromNSObjects<T> (Func<T, NSObject> nsobjectificator, params T [] items)
+		/// <summary>Creates an NSArray from a C# array using a custom conversion function.</summary>
+		/// <typeparam name="T">The type of objects in the input array.</typeparam>
+		/// <param name="nsobjectificator">A function that converts each item in the array to an <see cref="NSObject"/>. The function may return null.</param>
+		/// <param name="items">Array of objects to convert. If null, returns null.</param>
+		/// <returns>A new <see cref="NSArray"/> containing the converted objects. Returns null if <paramref name="items"/> is null.</returns>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="nsobjectificator"/> is null.</exception>
+		/// <remarks>Each item is converted using the provided function. Null results from the conversion function are stored as <see cref="NSNull.Null"/> in the resulting array.</remarks>
+		[return: NotNullIfNotNull (nameof (items))]
+		public static NSArray? FromNSObjects<T> (Func<T?, NSObject?> nsobjectificator, params T? []? items)
+		{
+			return FromNSObjects<T> ((nint) (items?.Length ?? 0), nsobjectificator, items);
+		}
+
+		/// <summary>Creates an NSArray from a C# array using a custom conversion function.</summary>
+		/// <typeparam name="T">The type of objects in the input array.</typeparam>
+		/// <param name="count">Number of items to copy from the items array.</param>
+		/// <param name="nsobjectificator">A function that converts each item in the array to an <see cref="NSObject"/>. The function may return null.</param>
+		/// <param name="items">Array of objects to convert. If null, returns null.</param>
+		/// <returns>A new <see cref="NSArray"/> containing the converted objects. Returns null if <paramref name="items"/> is null.</returns>
+		/// <exception cref="ArgumentNullException">Thrown if <paramref name="nsobjectificator"/> is null.</exception>
+		/// <remarks>Each item is converted using the provided function. Null results from the conversion function are stored as <see cref="NSNull.Null"/> in the resulting array.</remarks>
+		[return: NotNullIfNotNull (nameof (items))]
+		static NSArray? FromNSObjects<T> (nint count, Func<T?, NSObject?> nsobjectificator, params T? []? items)
 		{
 			if (nsobjectificator is null)
 				throw new ArgumentNullException (nameof (nsobjectificator));
+
 			if (items is null)
 				return null;
 
-			var arr = new NSObject [items.Length];
-			for (int i = 0; i < items.Length; i++) {
+			if (count > items.Length)
+				throw new ArgumentException ("count is larger than the number of items", nameof (count));
+
+			if (count < 0)
+				throw new ArgumentOutOfRangeException (nameof (count), "count is negative");
+
+			if (count == 0)
+				return new NSArray ();
+
+			var arr = new NSObject? [count];
+			for (int i = 0; i < count; i++) {
 				arr [i] = nsobjectificator (items [i]);
 			}
 
 			return FromNativeObjects (arr);
 		}
 
-		/// <param name="items">Array of C# objects.</param>
-		///         <summary>Creates an NSArray from a C# array of NSObjects.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>The values will be boxed into
-		/// 	NSObjects using <see cref="Foundation.NSObject.FromObject(System.Object)" />.</remarks>
-		public static NSArray FromObjects (params object [] items)
+		/// <summary>Creates an NSArray from a C# array of objects.</summary>
+		/// <param name="items">Array of C# objects. Null elements will be boxed as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
+		/// <returns>A new <see cref="NSArray"/> containing the boxed objects.</returns>
+		/// <remarks>The values will be boxed into NSObjects using <see cref="Foundation.NSObject.FromObject(System.Object)" />. Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		public static NSArray FromObjects (params object? []? items)
 		{
-			return From<object> (items);
+			return FromObjects (items?.Length ?? 0, items);
 		}
 
-		/// <param name="count">To be added.</param>
-		/// <param name="items">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
-		public static NSArray FromObjects (nint count, params object [] items)
+		/// <summary>Creates an NSArray from the first <paramref name="count"/> elements of a C# array.</summary>
+		/// <param name="count">Number of items to copy from the items array.</param>
+		/// <param name="items">Array of C# objects. Null elements will be boxed as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
+		/// <returns>A new <see cref="NSArray"/> containing the first <paramref name="count"/> boxed objects from the array.</returns>
+		/// <remarks>The values will be boxed into NSObjects using <see cref="Foundation.NSObject.FromObject(System.Object)" />. Null items in the array are converted to <see cref="NSNull.Null"/> instances.</remarks>
+		public static NSArray FromObjects (nint count, params object? []? items)
 		{
 			return From<object> (items, count);
 		}
 
-		internal static NSArray From<T> (T [] items, long count = -1)
+		internal static NSArray From<T> (T? []? items)
 		{
-			if ((items is null) || (count == 0))
-				return new NSArray ();
-
-			if (count == -1)
-				count = items.Length;
-			else if (count > items.Length)
-				throw new ArgumentException ("count is larger than the number of items", "count");
-
-			NSObject [] nsoa = new NSObject [count];
-			for (nint i = 0; i < count; i++) {
-				var k = NSObject.FromObject (items [i]);
-				if (k is null)
-					throw new ArgumentException (String.Format ("Do not know how to marshal object of type '{0}' to an NSObject", items [i].GetType ()));
-				nsoa [i] = k;
-			}
-			return FromNSObjects (nsoa);
+			return From<T> (items, items?.Length ?? 0);
 		}
 
-#nullable enable
+		internal static NSArray From<T> (T? []? items, nint count)
+		{
+			if (items is null || count == 0)
+				return new NSArray ();
+
+			return FromNSObjects (count, (item) => {
+				var k = NSObject.FromObject (item);
+				if (k is null)
+					throw new ArgumentException (String.Format ("Do not know how to marshal object of type '{0}' to an NSObject", item?.GetType ()));
+				return k;
+			}, items);
+		}
+
+		/// <summary>Creates an <see cref="NSArray" /> from an array of native objects.</summary>
+		/// <typeparam name="T">The type of native objects in the array.</typeparam>
+		/// <param name="items">An array of objects implementing <see cref="INativeObject" />. If null, returns an empty <see cref="NSArray" />. Any <see langword="null" /> elements will throw an exception.</param>
+		/// <returns>A new <see cref="NSArray" /> containing the specified objects. </returns>
+		/// <remarks>This method creates a native NSArray from managed objects. An exception will be thrown if there are any <see langword="null" /> elements.</remarks>
+		internal static NSArray FromNonNullNativeObjects<T> (T []? items) where T : class, INativeObject
+		{
+			return FromNativeObjectsImpl<T> (items, items?.Length ?? 0, allowNullElements: false);
+		}
+
 		/// <summary>Creates an <see cref="NSArray" /> from an array of native objects.</summary>
 		/// <typeparam name="T">The type of native objects in the array.</typeparam>
 		/// <param name="items">An array of objects implementing <see cref="INativeObject" />. If null, returns an empty <see cref="NSArray" />.</param>
 		/// <returns>A new <see cref="NSArray" /> containing the specified objects. Null items are represented as <see cref="NSNull.Null" />.</returns>
-		/// <remarks>This method creates a native NSArray from managed objects. Null items in the array are converted to NSNull.Null instances.</remarks>
+		/// <remarks>
+		///   <para>
+		///     This method creates a native NSArray from managed objects. Null items are represented as <see cref="NSNull.Null" />.
+		///   </para>
+		/// </remarks>
 		internal static NSArray FromNativeObjects<T> (T? []? items) where T : class, INativeObject
 		{
-			if (items is null)
-				return new NSArray ();
-
-			return FromNativeObjects<T> (items, items.Length);
+			return FromNativeObjectsImpl<T> (items, items?.Length ?? 0, allowNullElements: true);
 		}
 
 		/// <summary>Creates an <see cref="NSArray" /> from an array of native objects with a specified count.</summary>
@@ -226,8 +309,13 @@ namespace Foundation {
 		/// <param name="count">The number of items from the array to include in the <see cref="NSArray" />.</param>
 		/// <returns>A new <see cref="NSArray" /> containing the specified number of objects from the array. Null items are represented as <see cref="NSNull.Null" />.</returns>
 		/// <exception cref="ArgumentException">Thrown when <paramref name="count" /> is greater than the length of <paramref name="items" />, or when <paramref name="count" /> is negative.</exception>
-		/// <remarks>This method creates a native NSArray from the first <paramref name="count" /> elements of the managed array. Null items are converted to NSNull.Null instances.</remarks>
+		/// <remarks>This method creates a native NSArray from the first <paramref name="count" /> elements of the managed array. Null items are represented as <see cref="NSNull.Null" />.</remarks>
 		internal static NSArray FromNativeObjects<T> (T? []? items, nint count) where T : class, INativeObject
+		{
+			return FromNativeObjectsImpl<T> (items, count, allowNullElements: true);
+		}
+
+		static NSArray FromNativeObjectsImpl<T> (T? []? items, nint count, bool allowNullElements) where T : class, INativeObject
 		{
 			if (items is null)
 				return new NSArray ();
@@ -241,6 +329,8 @@ namespace Foundation {
 			var handles = new IntPtr [count];
 			for (nint i = 0; i < count; i++) {
 				var item = items [i];
+				if (item is null && !allowNullElements)
+					throw new ArgumentNullException ($"{nameof (items)}[{i}]");
 				// The analyzer cannot deal with arrays, we manually keep alive the whole array below
 #pragma warning disable RBI0014
 				IntPtr h = item is null ? NSNull.Null.Handle : item.Handle;
@@ -251,21 +341,22 @@ namespace Foundation {
 			GC.KeepAlive (items);
 			return rv;
 		}
-#nullable disable
 
-		internal static NSArray FromNSObjects (IList<NSObject> items)
+		internal static NSArray FromNSObjects (IList<NSObject>? items)
 		{
 			if (items is null)
 				return new NSArray ();
 
-			int count = items.Count;
-			IntPtr buf = Marshal.AllocHGlobal (count * IntPtr.Size);
+			var count = items.Count;
+			var handles = new IntPtr [count];
 			for (int i = 0; i < count; i++)
-				Marshal.WriteIntPtr (buf, i * IntPtr.Size, items [i].Handle);
-			NSArray arr = Runtime.GetNSObject<NSArray> (NSArray.FromObjects (buf, count));
-			Marshal.FreeHGlobal (buf);
-			return arr;
+				handles [i] = items [i].Handle;
+
+			var rv = FromIntPtrs (handles);
+			GC.KeepAlive (items);
+			return rv;
 		}
+#nullable disable
 
 		/// <param name="items">Array of C# strings.</param>
 		///         <summary>Creates an NSArray from a C# array of strings.</summary>

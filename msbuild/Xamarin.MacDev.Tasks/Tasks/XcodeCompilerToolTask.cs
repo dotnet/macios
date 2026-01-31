@@ -13,14 +13,16 @@ using Microsoft.Build.Utilities;
 using Xamarin.Localization.MSBuild;
 
 using Xamarin.MacDev;
+using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	public abstract class XcodeCompilerToolTask : XamarinTask, IHasProjectDir, IHasResourcePrefix {
+	public abstract class XcodeCompilerToolTask : XamarinTask, IHasProjectDir, IHasResourcePrefix, ICancelableTask {
+		CancellationTokenSource cancellationTokenSource = new ();
+
 		protected bool Link { get; set; }
-		string? toolExe;
 
 		#region Inputs
 
@@ -43,11 +45,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		[Required]
 		public string SdkVersion { get; set; } = string.Empty;
-
-		public string ToolExe {
-			get { return toolExe ?? ToolName; }
-			set { toolExe = value; }
-		}
 
 		public string ToolPath { get; set; } = string.Empty;
 
@@ -85,14 +82,6 @@ namespace Xamarin.MacDev.Tasks {
 					return (IPhoneDeviceType) Enum.Parse (typeof (IPhoneDeviceType), UIDeviceFamily);
 				return IPhoneDeviceType.NotSet;
 			}
-		}
-
-		protected abstract string DefaultBinDir {
-			get;
-		}
-
-		protected string DeveloperRootBinDir {
-			get { return Path.Combine (GetSdkDevPath (), "usr", "bin"); }
 		}
 
 		protected abstract string ToolName { get; }
@@ -170,18 +159,6 @@ namespace Xamarin.MacDev.Tasks {
 			var environment = new Dictionary<string, string?> ();
 			var args = new List<string> ();
 
-			// workaround for ibtool[d] bug / asserts if Intel version is loaded
-			string tool;
-			if (IsTranslated ()) {
-				// we force the Intel (translated) msbuild process to launch ibtool as "Apple"
-				tool = "arch";
-				args.Add ("-arch");
-				args.Add ("arm64e");
-				args.Add ("/usr/bin/xcrun");
-			} else {
-				tool = "/usr/bin/xcrun";
-			}
-			args.Add (ToolName);
 			args.Add ("--errors");
 			args.Add ("--warnings");
 			args.Add ("--notices");
@@ -202,11 +179,21 @@ namespace Xamarin.MacDev.Tasks {
 			foreach (var item in items)
 				args.Add (item.GetMetadata ("FullPath"));
 
-			// don't bother executing the tool if we've already looged errors.
+			var executable = GetExecutable (args, ToolName, ToolPath);
+			// workaround for ibtool[d] bug / asserts if Intel version is loaded
+			if (IsTranslated ()) {
+				// we force the Intel (translated) msbuild process to launch ibtool as "Apple"
+				args.Insert (0, "-arch");
+				args.Insert (1, "arm64e");
+				args.Insert (2, executable);
+				executable = "arch";
+			}
+
+			// don't bother executing the tool if we've already logged errors.
 			if (Log.HasLoggedErrors)
 				return 1;
 
-			var rv = ExecuteAsync (tool, args, environment: environment).Result;
+			var rv = ExecuteAsync (executable, args, environment: environment, cancellationToken: cancellationTokenSource.Token).Result;
 			var exitCode = rv.ExitCode;
 			var messages = rv.Output.StandardOutput;
 			File.WriteAllText (manifest.ItemSpec, messages);
@@ -308,6 +295,15 @@ namespace Xamarin.MacDev.Tasks {
 					if (item.TryGetValue ("description", out message))
 						Log.LogMessage (MessageImportance.Low, "{0} notice : {1}", ToolName, message.Value);
 				}
+			}
+		}
+
+		public void Cancel ()
+		{
+			if (ShouldExecuteRemotely ()) {
+				BuildConnection.CancelAsync (BuildEngine4).Wait ();
+			} else {
+				cancellationTokenSource?.Cancel ();
 			}
 		}
 	}

@@ -8,6 +8,8 @@ using System.Text;
 using Xamarin.Utils;
 using Xamarin.Bundler;
 
+#nullable enable
+
 public class Cache {
 #if LEGACY_TOOLS
 	const string NAME = "mtouch";
@@ -17,7 +19,7 @@ public class Cache {
 #error Wrong defines
 #endif
 
-	string cache_dir;
+	string? cache_dir;
 	bool temporary_cache;
 	string [] arguments;
 

@@ -21,6 +21,7 @@ using UIKit;
 using PlatformException = ObjCRuntime.RuntimeException;
 using NativeException = ObjCRuntime.ObjCException;
 using CoreAnimation;
+using CoreBluetooth;
 using CoreGraphics;
 using CoreLocation;
 #if !__TVOS__
@@ -56,15 +57,31 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void EventTestCustomType ()
 		{
-			var earthDestroyed = false;
+			var earthDestroyed = 0;
 			using var vogons = new Hitchhiker ();
 			vogons.BuildIntergalacticHighway += (object sender, EventArgs ea) => {
-				earthDestroyed = true;
+				earthDestroyed++;
 			};
 			vogons.DestroyEarth ();
-			Assert.That (earthDestroyed, Is.True, "Event raised");
+			Assert.That (earthDestroyed, Is.EqualTo (1), "Event raised");
+
+			vogons.BuildHighway ();
+			Assert.That (earthDestroyed, Is.EqualTo (2), "Event raised");
 		}
 
+		[Test]
+		public void EventTestOSType ()
+		{
+			using var mgr = new CBCentralManager (new DispatchQueue ("com.xamarin.tests.ios-plain"));
+			// The bug happens when there's no event listener for 'UpdatedState', which is a required protocol method.
+			// mgr.UpdatedState += (sender, e) => { };
+
+			// attach at least one event handler, to create an instance of the internal class that transforms protocol callbacks into events
+			mgr.DiscoveredPeripheral += (sender, e) => { };
+
+			// mimic what CBCentralManager does, instead of having to spin up the entire Bluetooth stack.
+			Messaging.void_objc_msgSend_IntPtr (mgr.Delegate.Handle, Selector.GetHandle ("centralManagerDidUpdateState:"), IntPtr.Zero);
+		}
 
 		[Test]
 		public void EventTestSdkType ()

@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-#nullable disable // until we get around to fixing this file
+#nullable enable
 
 namespace Xamarin.Utils {
 	public struct TargetFramework : IEquatable<TargetFramework> {
@@ -49,10 +49,6 @@ namespace Xamarin.Utils {
 			return false;
 		}
 
-		public bool IsDotNet {
-			get { return Identifier == ".NETCoreApp" && Version.Major >= 5; }
-		}
-
 		public static TargetFramework Parse (string targetFrameworkString)
 		{
 			TargetFramework targetFramework;
@@ -72,9 +68,9 @@ namespace Xamarin.Utils {
 
 			s = s.Trim ();
 
-			string identifier = null;
-			string version = null;
-			string profile = null;
+			string? identifier = null;
+			string? version = null;
+			string? profile = null;
 
 			var fields = targetFrameworkString.Split (new char [] { ',' });
 			switch (fields.Length) {
@@ -96,6 +92,12 @@ namespace Xamarin.Utils {
 				throw new Exception ();
 			}
 
+			if (identifier is null)
+				return false;
+
+			if (version is null)
+				return false;
+
 			identifier = identifier.Trim ();
 			version = version.Trim ();
 			profile = profile?.Trim ();
@@ -106,8 +108,7 @@ namespace Xamarin.Utils {
 				version = version.Substring ("Version=".Length);
 			if (version.StartsWith ("v", StringComparison.OrdinalIgnoreCase))
 				version = version.Substring (1);
-			Version parsed_version;
-			if (!Version.TryParse (version, out parsed_version))
+			if (!Version.TryParse (version, out var parsed_version))
 				return false;
 
 			// If we got a profile, then the 'Profile=' part is mandatory.
@@ -132,14 +133,14 @@ namespace Xamarin.Utils {
 			get { return version; }
 		}
 
-		readonly string profile;
-		public string Profile {
+		readonly string? profile;
+		public string? Profile {
 			get { return profile; }
 		}
 
-		public TargetFramework (string identifier, Version version, string profile = null)
+		public TargetFramework (string identifier, Version version, string? profile = null)
 		{
-			this.identifier = identifier is not null ? identifier.Trim () : null;
+			this.identifier = identifier;
 			this.version = version;
 			this.profile = profile;
 		}
@@ -161,9 +162,9 @@ namespace Xamarin.Utils {
 				&& other.Profile == Profile;
 		}
 
-		public override bool Equals (object obj)
+		public override bool Equals (object? obj)
 		{
-			return obj is TargetFramework ? Equals ((TargetFramework) obj) : false;
+			return obj is TargetFramework tf && Equals (tf);
 		}
 
 		public override int GetHashCode ()

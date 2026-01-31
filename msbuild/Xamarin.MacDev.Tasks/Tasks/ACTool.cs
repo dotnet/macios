@@ -12,7 +12,7 @@ using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks {
-	public class ACTool : XcodeCompilerToolTask, ICancelableTask {
+	public class ACTool : XcodeCompilerToolTask {
 		string? outputSpecs;
 		string? partialAppManifestPath;
 
@@ -57,10 +57,6 @@ namespace Xamarin.MacDev.Tasks {
 		HashSet<string> appIconsInAssets = new (); // iOS, macOS and Mac Catalyst
 		HashSet<string> brandAssetsInAssets = new (); // tvOS
 		HashSet<string> imageStacksInAssets = new (); // tvOS
-
-		protected override string DefaultBinDir {
-			get { return DeveloperRootBinDir; }
-		}
 
 		protected override string ToolName {
 			get { return "actool"; }
@@ -543,12 +539,6 @@ namespace Xamarin.MacDev.Tasks {
 			OutputManifests = outputManifests.ToArray ();
 
 			return !Log.HasLoggedErrors;
-		}
-
-		public void Cancel ()
-		{
-			if (ShouldExecuteRemotely ())
-				BuildConnection.CancelAsync (BuildEngine4).Wait ();
 		}
 	}
 

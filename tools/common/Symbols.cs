@@ -5,6 +5,8 @@ using System.IO;
 
 using Mono.Cecil;
 
+#nullable enable
+
 namespace Xamarin.Bundler {
 	public enum SymbolType {
 		Function,
@@ -31,7 +33,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		string name;
+		string? name;
 		public string Name {
 			get {
 				if (name is not null)
@@ -48,7 +50,7 @@ namespace Xamarin.Bundler {
 				}
 			}
 		}
-		public string ObjectiveCName;
+		public string? ObjectiveCName;
 
 		public string Prefix {
 			get {
@@ -103,7 +105,7 @@ namespace Xamarin.Bundler {
 
 		public Symbol AddField (string name, SymbolMode mode = SymbolMode.Default)
 		{
-			Symbol rv = Find (name);
+			var rv = Find (name);
 			if (rv is null) {
 				rv = new Symbol { Name = name, Type = SymbolType.Field, Mode = mode };
 				Add (rv);
@@ -113,7 +115,7 @@ namespace Xamarin.Bundler {
 
 		public Symbol AddFunction (string name, SymbolMode mode = SymbolMode.Default)
 		{
-			Symbol rv = Find (name);
+			var rv = Find (name);
 			if (rv is null) {
 				rv = new Symbol { Name = name, Type = SymbolType.Function, Mode = mode };
 				Add (rv);
@@ -139,10 +141,9 @@ namespace Xamarin.Bundler {
 			return store.Values.GetEnumerator ();
 		}
 
-		public Symbol Find (string name)
+		public Symbol? Find (string name)
 		{
-			Symbol rv;
-			store.TryGetValue (name, out rv);
+			store.TryGetValue (name, out var rv);
 			return rv;
 		}
 
@@ -160,16 +161,17 @@ namespace Xamarin.Bundler {
 		public void Load (string filename, Application app)
 		{
 			using (var reader = new StreamReader (filename)) {
-				string line;
-				Symbol current = null;
+				string? line;
+				Symbol? current = null;
 				while ((line = reader.ReadLine ()) is not null) {
 					if (line.Length == 0)
 						continue;
 					if (line [0] == '\t') {
 						var asm = line.Substring (1);
-						Assembly assembly;
-						if (!app.Assemblies.TryGetValue (Assembly.GetIdentity (asm), out assembly))
-							throw ErrorHelper.CreateError (99, Errors.MX0099, $"serialized assembly {asm} for symbol {current.Name}, but no such assembly loaded");
+						if (current is null)
+							throw ErrorHelper.CreateError (99, Errors.MX0099, $"serialized symbol for assembly {asm}, but no current symbol");
+						if (!app.Assemblies.TryGetValue (Assembly.GetIdentity (asm), out var assembly))
+							throw ErrorHelper.CreateError (99, Errors.MX0099, $"serialized assembly {asm} for symbol {current?.Name}, but no such assembly loaded");
 						current.AddAssembly (assembly.AssemblyDefinition);
 					} else {
 						var eq = line.IndexOf ('=');

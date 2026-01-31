@@ -179,6 +179,26 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
+		public void DictionaryCtorKeyValues_WithNull ()
+		{
+			var key1 = new NSString ("key1");
+			var key2 = new NSString ("key2");
+			var value = new NSString ("value");
+
+			// Test null value
+			var dict = new NSDictionary (key1, null);
+			Assert.AreEqual ((nuint) 1, dict.Count, "count with null value");
+			var rawValue = dict.ObjectForKey (key1);
+			Assert.IsInstanceOf<NSNull> (rawValue, "Null value should be NSNull");
+
+			// Test null in variadic args (value position)
+			dict = new NSDictionary (key1, value, key2, null);
+			Assert.AreEqual ((nuint) 2, dict.Count, "count with null in args");
+			rawValue = dict.ObjectForKey (key2);
+			Assert.IsInstanceOf<NSNull> (rawValue, "Null value in args should be NSNull");
+		}
+
+		[Test]
 		public void Copy ()
 		{
 			using (var k = new NSString ("key"))

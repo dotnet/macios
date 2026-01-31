@@ -41,6 +41,17 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
+		public void Ctor_WithNullValue ()
+		{
+			var key = (NSString) "key";
+			var dict = new NSDictionary<NSString, NSString> (key, null);
+			Assert.AreEqual ((nuint) 1, dict.Count, "count");
+			var baseDict = (NSDictionary) dict;
+			var rawValue = baseDict.ObjectForKey (key);
+			Assert.IsInstanceOf<NSNull> (rawValue, "Null value should be NSNull");
+		}
+
+		[Test]
 		public void Ctor_NSDictionary ()
 		{
 			var other = new NSDictionary<NSString, NSString> ((NSString) "key", (NSString) "value");

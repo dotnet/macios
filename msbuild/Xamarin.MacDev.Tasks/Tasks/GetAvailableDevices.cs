@@ -33,6 +33,9 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 
 	CancellationTokenSource? cancellationTokenSource;
 
+	public string DeviceCtlFile { get; set; } = "";
+	public string SimCtlFile { get; set; } = "";
+
 	public override bool Execute ()
 	{
 		if (ShouldExecuteRemotely ())
@@ -151,6 +154,10 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 
 	protected virtual async System.Threading.Tasks.Task<string> ExecuteCtlAsync (params string [] args)
 	{
+		var file = args [0] == "devicectl" ? DeviceCtlFile : SimCtlFile;
+		if (File.Exists (file))
+			return File.ReadAllText (file);
+
 		var tmpfile = Path.GetTempFileName ();
 		try {
 			var arguments = new List<string> (args) {
@@ -182,6 +189,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			foreach (var device in array) {
 				var name = device.GetStringPropertyOrEmpty ("deviceProperties", "name");
 				var udid = device.GetStringPropertyOrEmpty ("hardwareProperties", "udid");
+				var identifier = device.GetStringPropertyOrEmpty ("identifier");
 
 				var deviceProperties = device.GetNullableProperty ("deviceProperties");
 				var buildVersion = deviceProperties.GetStringPropertyOrEmpty ("osBuildUpdate");
@@ -201,6 +209,12 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 				var connectionProperties = device.GetNullableProperty ("connectionProperties");
 				var transportType = connectionProperties.GetStringPropertyOrEmpty ("transportType");
 				var pairingState = connectionProperties.GetStringPropertyOrEmpty ("pairingState");
+
+				if (string.IsNullOrEmpty (udid))
+					udid = identifier;
+
+				if (string.IsNullOrEmpty (udid))
+					udid = $"<unknown udid #{rv.Count + 1}>";
 
 				var item = new TaskItem (udid);
 				item.SetMetadata ("Name", name);

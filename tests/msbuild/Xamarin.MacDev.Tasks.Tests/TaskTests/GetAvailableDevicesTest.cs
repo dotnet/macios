@@ -679,6 +679,23 @@ namespace Xamarin.MacDev.Tasks {
 			});
 		}
 
+		[Test]
+		public void DeviceCtl2_Mac ()
+		{
+			var platform = ApplePlatform.iOS;
+			var task = CreateTask (platform, "", DEVICECTL_JSON_2);
+			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+
+			Assert.Multiple (() => {
+				Assert.That (task.DiscardedDevices [0].ItemSpec, Is.EqualTo ("12345678-1234-1234-ABCD-1234567980AB"), "Discarded Device 1 itemspec mismatch.");
+				Assert.That (task.DiscardedDevices [0].GetMetadata ("Description"), Is.EqualTo (""), "Discarded Device 1 Name mismatch.");
+				Assert.That (task.DiscardedDevices [0].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 1 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [0].GetMetadata ("UDID"), Is.EqualTo ("12345678-1234-1234-ABCD-1234567980AB"), "Discarded Device 1 UDID mismatch.");
+				Assert.That (task.DiscardedDevices [0].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 1 RuntimeIdentifier mismatch.");
+				Assert.That (task.DiscardedDevices [0].GetMetadata ("DiscardedReason"), Is.EqualTo ("'mac' devices are not supported"), "Discarded Device 1 reason mismatch.");
+			});
+		}
+
 		const string DEVICECTL_JSON_1 =
 		"""
 		{
@@ -894,6 +911,40 @@ namespace Xamarin.MacDev.Tasks {
 			}
 			]
 		}
+		}
+		""";
+
+		const string DEVICECTL_JSON_2 =
+		"""
+		{
+			"result" : {
+				"devices" : [
+				{
+					"connectionProperties" : {
+					"isMobileDeviceOnly" : false,
+					"pairingState" : "unsupported",
+					"potentialHostnames" : [
+						"12345678-1234-1234-ABCD-1234567980AB.coredevice.local"
+					],
+					"tunnelState" : "unavailable"
+					},
+					"deviceProperties" : {
+					"bootState" : "booted",
+					"ddiServicesAvailable" : false,
+					"providerSpecificValues" : {
+						"hasAMRestorableDeviceRef" : "true"
+					}
+					},
+					"hardwareProperties" : {
+					"deviceType" : "mac",
+					"platform" : "macOS",
+					"productType" : "MacBookPro17,1"
+					},
+					"identifier" : "12345678-1234-1234-ABCD-1234567980AB",
+					"visibilityClass" : "default"
+				}
+				]
+			}
 		}
 		""";
 

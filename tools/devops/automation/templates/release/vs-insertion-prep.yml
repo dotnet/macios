@@ -152,11 +152,11 @@ stages:
           New-Item -Path "$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance" -Name "CredScanSuppressions.json" -Value '{"tool":"Crendential Scanner", "supressions":[]}'
         displayName: Create credscan dummy ignore file
 
-      - task: UseDotNet@2
-        displayName: Install .NET $(DotNetPreviewSdkVersion)
-        inputs:
-          useGlobalJson: true
-          installationPath: $(Agent.TempDirectory)/dotnet
+      - bash: |
+          set -ex
+          make dotnet.config
+          make -C builds dotnet
+        displayName: "Install local .NET"
 
       - task: DownloadPipelineArtifact@2
         inputs:

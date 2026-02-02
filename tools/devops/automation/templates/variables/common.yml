@@ -67,10 +67,6 @@ variables:
 - name: DotNetSdkVersion
   value: 10.0
 
-# Bump the net11.0 version here to net12.0 when we branch for .NET 12 (and update this comment too, so it shows up when grepping for 'net11.0')
-- name: DotNetPreviewSdkVersion
-  value: 11.0
-
 - name: minimumMacOSVersion
   value: 15.6
 

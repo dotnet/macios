@@ -1726,7 +1726,6 @@ namespace UIKit {
 		bool AdjustsImageSizeForAccessibilityContentSizeCategory { get; set; }
 	}
 
-	/// <include file="../docs/api/UIKit/UIActionSheet.xml" path="/Documentation/Docs[@DocId='T:UIKit.UIActionSheet']/*" />
 	[NoTV]
 	[BaseType (typeof (UIView), KeepRefUntil = "Dismissed", Delegates = new string [] { "WeakDelegate" }, Events = new Type [] { typeof (UIActionSheetDelegate) })]
 	[Deprecated (PlatformName.iOS, 8, 3, message: "Use 'UIAlertController' with 'UIAlertControllerStyle.ActionSheet' instead.")]

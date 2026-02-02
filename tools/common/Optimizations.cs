@@ -14,7 +14,7 @@ namespace Xamarin.Bundler {
 			"remove-uithread-checks",
 			"dead-code-elimination",
 			"inline-isdirectbinding",
-			"inline-intptr-size",
+			"inline-intptr-size", // this optimization has been removed, but leave it here so that we won't break customers trying to enable/disable it
 			"inline-runtime-arch",
 			"blockliteral-setupblock",
 			"register-protocols",
@@ -35,7 +35,7 @@ namespace Xamarin.Bundler {
 			/* Opt.RemoveUIThreadChecks               */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.DeadCodeElimination                */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.InlineIsDirectBinding              */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
-			/* Opt.InlineIntPtrSize                   */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
+			/* Opt.InlineIntPtrSize                   */ new ApplePlatform [] {                                                                                        },
 			/* Opt.InlineRuntimeArch                  */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS                            },
 			/* Opt.BlockLiteralSetupBlock             */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.RegisterProtocols                  */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },

@@ -33,9 +33,6 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 
 	CancellationTokenSource? cancellationTokenSource;
 
-	public string DeviceCtlFile { get; set; } = "";
-	public string SimCtlFile { get; set; } = "";
-
 	public override bool Execute ()
 	{
 		if (ShouldExecuteRemotely ())
@@ -154,10 +151,6 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 
 	protected virtual async System.Threading.Tasks.Task<string> ExecuteCtlAsync (params string [] args)
 	{
-		var file = args [0] == "devicectl" ? DeviceCtlFile : SimCtlFile;
-		if (File.Exists (file))
-			return File.ReadAllText (file);
-
 		var tmpfile = Path.GetTempFileName ();
 		try {
 			var arguments = new List<string> (args) {

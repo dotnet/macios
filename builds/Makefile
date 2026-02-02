@@ -25,7 +25,8 @@ downloads/$(DOTNET_INSTALL_NAME): dotnet-install.sh
 			tar -xzf $(DOTNET_CACHE_FILENAME) -C "$@.tmp"; \
 		else \
 			./dotnet-install.sh --install-dir "$@.tmp" --version "$(DOTNET_VERSION)" --architecture $(DOTNET_ARCH) --no-path --keep-zip --zip-path "downloads/$(DOTNET_FILENAME)" $$DOTNET_INSTALL_EXTRA_ARGS; \
-			cp -c downloads/$(DOTNET_FILENAME) $(DOTNET_CACHE_FILENAME); \
+			mkdir -p $$(dirname $(DOTNET_CACHE_FILENAME)); \
+			$(CP) downloads/$(DOTNET_FILENAME) $(DOTNET_CACHE_FILENAME); \
 			echo "Cached the download of $(DOTNET_FILENAME) in ~/Library/Caches/xamarin-macios"; \
 		fi
 	$(Q) rm -Rf "$@"

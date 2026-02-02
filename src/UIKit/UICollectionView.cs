@@ -73,14 +73,12 @@ namespace UIKit {
 		/// <param name="reuseIdentifier">A non-empty string to be associated with the <paramref name="cellType" />.</param>
 		/// <remarks>
 		/// <para>The <see cref="UICollectionView" /> maintains a highly-efficient reuse queue for offscreen components. This requires that the <see cref="UICollectionView" /> be responsible for the lifecycle management of its component views. This method (and related methods such as <see cref="RegisterClassForSupplementaryView(Type,UICollectionElementKindSection,string)" />) provide the <see cref="UICollectionView" /> the knowledge of which types it needs to instantiate.</para>
-		/// <para>The application developer may pass <see langword="null" /> as the <paramref name="reuseIdentifier" />, in which case the <paramref name="cellType" /> will be "un-registered" and no longer instantiated. The application developer may pass in a <paramref name="reuseIdentifier" /> previously associated with another type, in which case the old type will be "de-registered" and the new <paramref name="cellType" /> will be used.</para>
+		/// <para>The application developer may pass <see langword="null" /> as the <paramref name="cellType" />, in which case the <paramref name="cellType" /> will be "un-registered" and no longer instantiated. The application developer may pass in a <paramref name="reuseIdentifier" /> previously associated with another type, in which case the old type will be "de-registered" and the new <paramref name="cellType" /> will be used.</para>
 		/// <para>It is very important that the type that you specify implements a public constructor that takes a <see cref="CoreGraphics.CGRect" /> parameter, this is used to initialize the class from an object allocated by Objective-C.</para>
 		/// <para>Developers should not call this method if they have prototyped their <see cref="UICollectionViewCell" /> type using a Storyboard. If they do so, they will overwrite the Storyboard-defined definition instantiation of the <see cref="UICollectionViewCell" /> object's children.</para>
 		/// </remarks>
 		public void RegisterClassForCell (Type? cellType, NSString reuseIdentifier)
 		{
-			ArgumentNullException.ThrowIfNull (cellType);
-
 			RegisterClassForCell (Class.GetHandle (cellType), reuseIdentifier);
 		}
 
@@ -143,7 +141,7 @@ namespace UIKit {
 		/// <param name="reuseIdentifier">A non-empty string to be associated with the <paramref name="nib" />.</param>
 		/// <remarks>
 		///   <para>The <see cref="UICollectionView" /> maintains a highly-efficient reuse queue for offscreen components. This requires that the <see cref="UICollectionView" /> be responsible for the lifecycle management of its component views. This method (and related methods such as <see cref="RegisterNibForCell(UINib,string)" />) provide the <see cref="UICollectionView" /> the knowledge of which types it needs to instantiate.</para>
-		///   <para>The application developer may pass <see langword="null" /> as the <paramref name="reuseIdentifier" />, in which case the <paramref name="nib" /> will be "un-registered" and no longer instantiated. The application developer may pass in a <paramref name="reuseIdentifier" /> previously associated with another nib, in which case the old nib will be "de-registered" and the new <paramref name="nib" /> will be used.</para>
+		///   <para>The application developer may pass <see langword="null" /> as the <paramref name="nib" />, in which case the <paramref name="nib" /> will be "un-registered" and no longer instantiated. The application developer may pass in a <paramref name="reuseIdentifier" /> previously associated with another nib, in which case the old nib will be "de-registered" and the new <paramref name="nib" /> will be used.</para>
 		/// </remarks>
 		public void RegisterNibForSupplementaryView (UINib? nib, UICollectionElementKindSection section, NSString reuseIdentifier)
 		{

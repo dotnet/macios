@@ -35,7 +35,7 @@ namespace UIKit {
 				return;
 
 			for (int i = 0; i < Counter; i++)
-				eh.Invoke (source, EventArgs.Empty);
+				eh (source, EventArgs.Empty);
 		}
 
 		protected override void Dispose (bool disposing)

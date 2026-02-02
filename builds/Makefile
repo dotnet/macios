@@ -40,10 +40,10 @@ dotnet:: downloads/dotnet
 
 ifeq ($(OS),Windows_NT)
 # On Windows, for simplicity just copy the entire directory
-downloads/dotnet: $(abspath downloads/$(DOTNET_INSTALL_NAME))
+downloads/dotnet: downloads/$(DOTNET_INSTALL_NAME)
 	$(Q) mkdir -p downloads
 	$(Q) rm -f $@
-	$(Q) cp -r "$(abspath downloads/$(DOTNET_INSTALL_NAME))" $@
+	$(Q) cp -r downloads/$(DOTNET_INSTALL_NAME) $@
 else
 downloads/dotnet: .stamp-dotnet-symlink-$(DOTNET_VERSION)
 	$(Q) mkdir -p downloads

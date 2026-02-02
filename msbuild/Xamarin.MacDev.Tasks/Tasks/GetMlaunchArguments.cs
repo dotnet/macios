@@ -68,16 +68,16 @@ namespace Xamarin.MacDev.Tasks {
 			string [] productFamilies;
 			switch (DeviceType) {
 			case IPhoneDeviceType.IPhone:
-				productFamilies = [ "iPhone" ];
+				productFamilies = ["iPhone"];
 				break;
 			case IPhoneDeviceType.IPad:
-				productFamilies = [ "iPad" ];
+				productFamilies = ["iPad"];
 				break;
 			case IPhoneDeviceType.IPhoneAndIPad:
-				productFamilies = [ "iPhone", "iPad" ];
+				productFamilies = ["iPhone", "iPad"];
 				break;
 			case IPhoneDeviceType.TV:
-				productFamilies = [ "Apple TV" ];
+				productFamilies = ["Apple TV"];
 				break;
 			default:
 				throw new InvalidOperationException ($"Invalid device type: {DeviceType}");

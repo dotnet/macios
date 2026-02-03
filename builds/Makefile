@@ -129,6 +129,7 @@ DOTNET_DOWNLOADS = \
 	.stamp-download-dotnet-packages \
 	.stamp-install-t4 \
 
+download: downloads/$(DOTNET_INSTALL_NAME)
 dotnet:: $(DOTNET_DOWNLOADS)
 all-local:: $(DOTNET_DOWNLOADS)
 

@@ -103,7 +103,7 @@ stages:
               set -ex
               cd macios
               make dotnet.config
-              make -C builds dotnet
+              make -C builds download
             displayName: "Install local .NET"
 
   - stage: build_packages

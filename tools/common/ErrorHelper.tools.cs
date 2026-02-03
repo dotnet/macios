@@ -9,8 +9,7 @@ using Mono.Cecil.Cil;
 
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.Bundler {
 	public static partial class ErrorHelper {
@@ -39,12 +38,12 @@ namespace Xamarin.Bundler {
 			Disable = 1,
 		}
 
-		static Dictionary<int, WarningLevel> warning_levels;
+		static Dictionary<int, WarningLevel>? warning_levels;
 		public static int Verbosity { get; set; }
 
 #pragma warning disable 649
-		public static Func<Exception, bool> IsExpectedException;
-		public static Action<int> ExitCallback;
+		public static Func<Exception, bool>? IsExpectedException;
+		public static Action<int>? ExitCallback;
 #pragma warning restore 649
 
 		public static WarningLevel GetWarningLevel (int code)
@@ -85,7 +84,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public static void SetLocation (Application app, ProductException ex, MethodDefinition method, Instruction instruction = null)
+		public static void SetLocation (Application app, ProductException ex, MethodDefinition method, Instruction? instruction = null)
 		{
 			if (!method.HasBody)
 				return;
@@ -102,7 +101,7 @@ namespace Xamarin.Bundler {
 				return;
 
 			// Find the sequence point with the highest offset that is less than or equal to the instruction's offset
-			SequencePoint seq = null;
+			SequencePoint? seq = null;
 			foreach (var pnt in method.DebugInformation.SequencePoints) {
 				if (pnt.Offset > instruction.Offset)
 					continue;
@@ -159,7 +158,7 @@ namespace Xamarin.Bundler {
 			return Create (app, code, false, null, member, null, message, args);
 		}
 
-		public static ProductException CreateWarning (Application app, int code, MemberReference member, Instruction instruction, string message, params object [] args)
+		public static ProductException CreateWarning (Application app, int code, MemberReference member, Instruction? instruction, string message, params object [] args)
 		{
 			return Create (app, code, false, null, member, instruction, message, args);
 		}
@@ -194,12 +193,12 @@ namespace Xamarin.Bundler {
 			return Create (app, code, false, innerException, provider, message, args);
 		}
 
-		public static ProductException Create (Application app, int code, bool error, Exception innerException, ICustomAttributeProvider provider, string message, params object [] args)
+		public static ProductException Create (Application app, int code, bool error, Exception? innerException, ICustomAttributeProvider provider, string message, params object [] args)
 		{
 			return Create (app, code, error, innerException, provider, null, message, args);
 		}
 
-		public static ProductException Create (Application app, int code, bool error, Exception innerException, ICustomAttributeProvider provider, Instruction instruction, string message, params object [] args)
+		public static ProductException Create (Application app, int code, bool error, Exception? innerException, ICustomAttributeProvider provider, Instruction? instruction, string message, params object [] args)
 		{
 			if (provider is MemberReference member) {
 				if (instruction is not null)
@@ -213,7 +212,7 @@ namespace Xamarin.Bundler {
 			return new ProductException (code, error, innerException, message, args);
 		}
 
-		public static ProductException Create (Application app, int code, bool error, Exception innerException, MemberReference member, Instruction instruction, string message, params object [] args)
+		public static ProductException Create (Application app, int code, bool error, Exception? innerException, MemberReference member, Instruction? instruction, string message, params object [] args)
 		{
 			var method = member as MethodReference;
 			if (method is null) {
@@ -227,7 +226,7 @@ namespace Xamarin.Bundler {
 			return Create (app, code, error, innerException, method is null ? null : method.Resolve (), instruction, message, args);
 		}
 
-		public static ProductException Create (Application app, int code, bool error, Exception innerException, MethodDefinition location, Instruction instruction, string message, params object [] args)
+		public static ProductException Create (Application app, int code, bool error, Exception? innerException, MethodDefinition? location, Instruction? instruction, string message, params object [] args)
 		{
 			var e = new ProductException (code, error, innerException, message, args);
 			if (location is not null)
@@ -235,7 +234,7 @@ namespace Xamarin.Bundler {
 			return e;
 		}
 
-		public static ProductException Create (Application app, int code, bool error, Exception innerException, TypeReference location, string message, params object [] args)
+		public static ProductException Create (Application app, int code, bool error, Exception? innerException, TypeReference? location, string message, params object [] args)
 		{
 			var e = new ProductException (code, error, innerException, message, args);
 			if (location is not null) {
@@ -308,7 +307,7 @@ namespace Xamarin.Bundler {
 
 		static bool ShowInternal (Exception e)
 		{
-			ProductException mte = (e as ProductException);
+			var mte = e as ProductException;
 			bool error = true;
 
 			if (mte is not null) {
@@ -338,7 +337,7 @@ namespace Xamarin.Bundler {
 
 		static void ShowInner (Exception e)
 		{
-			Exception ie = e.InnerException;
+			var ie = e.InnerException;
 			if (ie is null)
 				return;
 

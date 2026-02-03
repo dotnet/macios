@@ -15,8 +15,8 @@ MTOUCH_DIR=bin/$(MTOUCH_CONF)
 LOCAL_MTOUCH=$(MTOUCH_DIR)/mtouch.dll
 LOCAL_MTOUCH_COMMAND=$(DOTNET) exec $(LOCAL_MTOUCH)
 
-DOTNET_PLATFORMS_MTOUCH=$(filter-out macOS,$(DOTNET_PLATFORMS))
-DOTNET_PLATFORMS_CORECLR_MTOUCH=$(filter-out macOS,$(DOTNET_CORECLR_PLATFORMS))
+DOTNET_PLATFORMS_MTOUCH=$(DOTNET_PLATFORMS)
+DOTNET_PLATFORMS_CORECLR_MTOUCH=$(DOTNET_CORECLR_PLATFORMS)
 
 # mtouch.csproj.inc contains the mtouch_dependencies variable used to determine if mtouch needs to be rebuilt or not.
 mtouch.csproj.inc: export BUILD_VERBOSITY=$(MSBUILD_VERBOSITY)
@@ -36,14 +36,14 @@ $(abspath Constants.cs): Constants.cs.in Makefile $(TOP)/Make.config.inc
 #
 define RunRegistrar
 .libs/Microsoft.$(9).registrar.$(10)%m .libs/Microsoft.$(9).registrar.$(10)%h: $(TOP)/src/build/dotnet/$(1)/$(3)/Microsoft.$(9).dll $(LOCAL_MTOUCH) | .libs
-	$$(Q_GEN) $$(LOCAL_MTOUCH_COMMAND) $$(MTOUCH_VERBOSITY) --runregistrar:$$(abspath $$(basename $$@).m) --sdkroot $$(XCODE_DEVELOPER_ROOT) --sdk $(4) $$< --registrar:static --target-framework .NETCoreApp,Version=$(subst net,,$(DOTNET_TFM)),Profile=$(1) --abi $(2) --reference:$(DOTNET_BCL_DIR)/System.Runtime.dll --reference:$(DOTNET_BCL_DIR)/System.Runtime.InteropServices.dll --rid $(10)
+	$$(Q_GEN) $$(LOCAL_MTOUCH_COMMAND) $$(MTOUCH_VERBOSITY) --runregistrar:$$(abspath $$(basename $$@).m) --sdkroot $$(XCODE_DEVELOPER_ROOT) --sdk $(4) $$< --target-framework .NETCoreApp,Version=$(subst net,,$(DOTNET_TFM)),Profile=$(1) --abi $(2) --reference:$(DOTNET_BCL_DIR)/System.Runtime.dll --reference:$(DOTNET_BCL_DIR)/System.Runtime.InteropServices.dll --rid $(10)
 	$$(Q) touch $$(basename $$@).m $$(basename $$@).h
 
 .libs/Microsoft.$(9).registrar.$(10).a: .libs/Microsoft.$(9).registrar.$(10).m .libs/Microsoft.$(9).registrar.$(10).h | .libs
 	$$(Q_CC) $$(CLANG) -DDEBUG -g -gdwarf-2 $(6) -stdlib=libc++ -std=c++14 -x objective-c++ -o $$@ -c $$< -Wall -Wno-unguarded-availability-new -I$(TOP)/runtime
 
 .libs/Microsoft.$(9).registrar.coreclr.$(10)%m .libs/Microsoft.$(9).registrar.coreclr.$(10)%h: $(TOP)/src/build/dotnet/$(1)/$(3)/Microsoft.$(9).dll $(LOCAL_MTOUCH) | .libs
-	$$(Q_GEN) $$(LOCAL_MTOUCH_COMMAND) $$(MTOUCH_VERBOSITY) --runregistrar:$$(abspath $$(basename $$@).m) --sdkroot $$(XCODE_DEVELOPER_ROOT) --sdk $(4) $$< --registrar:static --target-framework .NETCoreApp,Version=$(subst net,,$(DOTNET_TFM)),Profile=$(1) --abi $(2) --reference:$(DOTNET_BCL_DIR)/System.Runtime.dll --reference:$(DOTNET_BCL_DIR)/System.Runtime.InteropServices.dll --rid $(10) --xamarin-runtime CoreCLR
+	$$(Q_GEN) $$(LOCAL_MTOUCH_COMMAND) $$(MTOUCH_VERBOSITY) --runregistrar:$$(abspath $$(basename $$@).m) --sdkroot $$(XCODE_DEVELOPER_ROOT) --sdk $(4) $$< --target-framework .NETCoreApp,Version=$(subst net,,$(DOTNET_TFM)),Profile=$(1) --abi $(2) --reference:$(DOTNET_BCL_DIR)/System.Runtime.dll --reference:$(DOTNET_BCL_DIR)/System.Runtime.InteropServices.dll --rid $(10) --xamarin-runtime CoreCLR
 	$$(Q) touch $$(basename $$@).m $$(basename $$@).h
 
 .libs/Microsoft.$(9).registrar.coreclr.$(10).a: .libs/Microsoft.$(9).registrar.coreclr.$(10).m .libs/Microsoft.$(9).registrar.$(10).h | .libs
@@ -57,6 +57,8 @@ $(eval $(call RunRegistrar,tvos,arm64,64,$(TVOS_SDK_VERSION),TVOS,$(tvossimulato
 $(eval $(call RunRegistrar,tvos,arm64,64,$(TVOS_SDK_VERSION),TVOS,$(tvos-arm64_CFLAGS),,,tvOS,tvos-arm64))
 $(eval $(call RunRegistrar,maccatalyst,x86_64,64,$(MACCATALYST_SDK_VERSION),MacCatalyst,$(maccatalyst-x64_CFLAGS),,,MacCatalyst,maccatalyst-x64))
 $(eval $(call RunRegistrar,maccatalyst,arm64,64,$(MACCATALYST_SDK_VERSION),MacCatalyst,$(maccatalyst-arm64_CFLAGS),,,MacCatalyst,maccatalyst-arm64))
+$(eval $(call RunRegistrar,macos,arm64,64,$(MACOS_SDK_VERSION),macOS,$(osx-arm64_CFLAGS),,,macOS,osx-arm64))
+$(eval $(call RunRegistrar,macos,x86_64,64,$(MACOS_SDK_VERSION),macOS,$(osx-x64_CFLAGS),,,macOS,osx-x64))
 
 TARGETS_DOTNET = \
 	$(foreach platform,$(DOTNET_PLATFORMS_MTOUCH),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(DOTNET_DESTDIR)/$($(rid)_NUGET_RUNTIME_NAME)/runtimes/$(rid)/native/Microsoft.$(platform).registrar.a)) \

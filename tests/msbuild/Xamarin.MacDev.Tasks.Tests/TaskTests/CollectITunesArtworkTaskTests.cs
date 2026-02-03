@@ -16,8 +16,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CollectITunesArtwork> ();
 			task.ITunesArtwork = new TaskItem [] { new TaskItem (Assembly.GetExecutingAssembly ().Location) };
 
-			Assert.IsFalse (task.Execute (), "Execute failure");
-			Assert.AreEqual (1, Engine.Logger.ErrorEvents.Count, "ErrorCount");
+			ExecuteTask (task, 1);
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Does.Match ("Error loading '.*/Xamarin.MacDev.Tasks.Tests.dll': Unknown image format."), "ErrorMessage");
 		}
 
@@ -27,8 +26,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CollectITunesArtwork> ();
 			task.ITunesArtwork = new TaskItem [] { new TaskItem ("this-file-does-not-exist.tiff") };
 
-			Assert.IsFalse (task.Execute (), "Execute failure");
-			Assert.AreEqual (1, Engine.Logger.ErrorEvents.Count, "ErrorCount");
+			ExecuteTask (task, 1);
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Does.Match ("'.*/this-file-does-not-exist.tiff' not found."), "ErrorMessage");
 		}
 
@@ -40,8 +38,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CollectITunesArtwork> ();
 			task.ITunesArtwork = new TaskItem [] { new TaskItem (Path.Combine (AppPath, "Resources", "iTunesArtwork-invalid-size." + extension)) };
 
-			Assert.IsFalse (task.Execute (), "Execute failure");
-			Assert.AreEqual (1, Engine.Logger.ErrorEvents.Count, "ErrorCount");
+			ExecuteTask (task, 1);
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Does.Match ($"Invalid iTunesArtwork dimensions [(]124x124[)] for '.*/iTunesArtwork-invalid-size.{extension}'."), "ErrorMessage");
 		}
 
@@ -56,8 +53,7 @@ namespace Xamarin.MacDev.Tasks {
 				new TaskItem (Path.Combine (AppPath, "Resources", $"iTunesArtwork{size}.png")),
 			};
 
-			Assert.IsFalse (task.Execute (), "Execute failure");
-			Assert.AreEqual (1, Engine.Logger.ErrorEvents.Count, "ErrorCount");
+			ExecuteTask (task, 1);
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Does.Match ($"Multiple iTunesArtwork files with the same dimensions detected [(]{dimension}[)] for '.*/Resources/iTunesArtwork{size}.png'."), "ErrorMessage");
 		}
 
@@ -72,8 +68,7 @@ namespace Xamarin.MacDev.Tasks {
 				new TaskItem (Path.Combine (AppPath, "Resources", $"iTunesArtwork@2x.{extension}")),
 			};
 
-			Assert.IsTrue (task.Execute (), "Execute");
-			Assert.AreEqual (0, Engine.Logger.ErrorEvents.Count, "ErrorCount");
+			ExecuteTask (task);
 			Assert.AreEqual (2, task.ITunesArtworkWithLogicalNames.Length, "ITunesArtworkWithLogicalNames.Count");
 			for (var i = 0; i < task.ITunesArtworkWithLogicalNames.Length; i++) {
 				Assert.AreEqual (Path.GetFileNameWithoutExtension (task.ITunesArtwork [i].GetMetadata ("FullPath")), task.ITunesArtworkWithLogicalNames [i].GetMetadata ("LogicalName"), $"LogicalName #{i}");

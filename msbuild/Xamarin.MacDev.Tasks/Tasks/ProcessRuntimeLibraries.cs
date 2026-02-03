@@ -86,7 +86,7 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 					output.AddRange (group.Where (v => string.Equals (v.GetMetadata ("Extension"), ".dylib", StringComparison.OrdinalIgnoreCase)));
 					continue;
 				default:
-					Log.LogError (MSBStrings.E7164 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
+					Log.LogError (MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
 					return false;
 				}
 			}
@@ -103,7 +103,7 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 					Log.LogError (MSBStrings.E7166 /* Unexpected RuntimeLibLinkMode value for 'NativeAOT': '{0}' */, RuntimeLibLinkMode);
 					continue;
 				default:
-					Log.LogError (MSBStrings.E7164 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
+					Log.LogError (MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
 					return false;
 				}
 			}
@@ -129,7 +129,7 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 					output.AddRange (group.Where (v => v.GetMetadata ("Extension").Equals (".dylib", StringComparison.OrdinalIgnoreCase)));
 					continue;
 				default:
-					Log.LogError (MSBStrings.E7164 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
+					Log.LogError (MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
 					return false;
 				}
 			}

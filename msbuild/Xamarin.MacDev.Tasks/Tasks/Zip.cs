@@ -39,13 +39,13 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				var rv = ExecuteRemotely (out var taskRunner);
-
-				// Copy the zipped file back to Windows.
-				if (rv)
+				// Execute the task remotely.				// Copy the zipped file back to Windows.
+				if (ExecuteRemotely (out var taskRunner)) {
 					taskRunner.GetFileAsync (this, OutputFile!.ItemSpec).Wait ();
+					return true;
+				}
 
-				return rv;
+				return false;
 			}
 
 			var zip = OutputFile!.GetMetadata ("FullPath");

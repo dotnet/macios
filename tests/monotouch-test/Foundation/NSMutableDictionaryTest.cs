@@ -204,5 +204,112 @@ namespace monotouchtest {
 				Assert.IsTrue (idict.Contains ((NSString) "existingKey"), "Contains should return true for existing key");
 			}
 		}
+
+		[Test]
+		public void FromObjectsAndKeys_WithNull ()
+		{
+			var keys = new NSObject [] { new NSString ("key1"), new NSString ("key2") };
+			var objs = new NSObject? [] { new NSString ("value1"), null };
+
+			using (var dict = NSMutableDictionary.FromObjectsAndKeys (objs, keys)) {
+				Assert.AreEqual ((nuint) 2, dict.Count, "Count");
+				Assert.AreEqual ("value1", dict [keys [0]].ToString (), "First value");
+				Assert.IsInstanceOf<NSNull> (dict [keys [1]], "Null value should be NSNull");
+			}
+		}
+
+		[Test]
+		public void FromObjectsAndKeys_NSObject_WithCount_WithNull ()
+		{
+			var keys = new NSObject [] { new NSString ("key1"), new NSString ("key2"), new NSString ("key3") };
+			var objs = new NSObject? [] { new NSString ("value1"), null, new NSString ("value3") };
+
+			using (var dict = NSMutableDictionary.FromObjectsAndKeys (objs, keys, 2)) {
+				Assert.AreEqual ((nuint) 2, dict.Count, "Count");
+				Assert.AreEqual ("value1", dict [keys [0]].ToString (), "First value");
+				Assert.IsInstanceOf<NSNull> (dict [keys [1]], "Null value should be NSNull");
+			}
+		}
+
+		[Test]
+		public void FromObjectsAndKeys_NSObject_WithCount ()
+		{
+			var keys = new NSObject [] { new NSString ("key1"), new NSString ("key2"), new NSString ("key3") };
+			var objs = new NSObject [] { new NSString ("value1"), new NSString ("value2"), new NSString ("value3") };
+
+			using (var dict = NSMutableDictionary.FromObjectsAndKeys (objs, keys, 2)) {
+				Assert.AreEqual ((nuint) 2, dict.Count, "Count");
+				Assert.AreEqual ("value1", dict [keys [0]].ToString (), "First value");
+				Assert.AreEqual ("value2", dict [keys [1]].ToString (), "Second value");
+			}
+		}
+
+		[Test]
+		public void FromObjectsAndKeys_NSObject_WithCountZero ()
+		{
+			var keys = new NSObject [] { new NSString ("key1"), new NSString ("key2") };
+			var objs = new NSObject [] { new NSString ("value1"), new NSString ("value2") };
+
+			using (var dict = NSMutableDictionary.FromObjectsAndKeys (objs, keys, 0)) {
+				Assert.AreEqual ((nuint) 0, dict.Count, "Count should be 0");
+			}
+		}
+
+		[Test]
+		public void FromObjectsAndKeys_Object_WithCount_WithNull ()
+		{
+			var keys = new object [] { "key1", "key2", "key3" };
+			var objs = new object [] { "value1", "value2", "value3" };
+
+			using (var dict = NSMutableDictionary.FromObjectsAndKeys (objs, keys, 2)) {
+				Assert.AreEqual ((nuint) 2, dict.Count, "Count");
+				Assert.AreEqual ("value1", dict [(NSString) "key1"].ToString (), "First value");
+				Assert.AreEqual ("value2", dict [(NSString) "key2"].ToString (), "Second value");
+			}
+		}
+
+		[Test]
+		public void FromObjectsAndKeys_DifferentArrayLengths_WithCount ()
+		{
+			var keys = new NSObject [] { new NSString ("key1"), new NSString ("key2") };
+			var objs = new NSObject [] { new NSString ("value1"), new NSString ("value2"), new NSString ("value3"), new NSString ("value4") };
+
+			// Should work fine since we only use first 2 items from each array
+			using (var dict = NSMutableDictionary.FromObjectsAndKeys (objs, keys, 2)) {
+				Assert.AreEqual ((nuint) 2, dict.Count, "Count");
+				Assert.AreEqual ("value1", dict [keys [0]].ToString (), "First value");
+				Assert.AreEqual ("value2", dict [keys [1]].ToString (), "Second value");
+			}
+		}
+
+		[Test]
+		public void FromObjectsAndKeys_CountLargerThanKeys ()
+		{
+			var keys = new NSObject [] { new NSString ("key1"), new NSString ("key2") };
+			var objs = new NSObject [] { new NSString ("value1"), new NSString ("value2"), new NSString ("value3") };
+
+			// Should throw because count > keys.Length
+			Assert.Throws<ArgumentException> (() => NSMutableDictionary.FromObjectsAndKeys (objs, keys, 3), "Should throw when count > keys.Length");
+		}
+
+		[Test]
+		public void FromObjectsAndKeys_CountLargerThanObjects ()
+		{
+			var keys = new NSObject [] { new NSString ("key1"), new NSString ("key2"), new NSString ("key3") };
+			var objs = new NSObject [] { new NSString ("value1"), new NSString ("value2") };
+
+			// Should throw because count > objs.Length
+			Assert.Throws<ArgumentException> (() => NSMutableDictionary.FromObjectsAndKeys (objs, keys, 3), "Should throw when count > objs.Length");
+		}
+
+		[Test]
+		public void FromObjectsAndKeys_NegativeCount ()
+		{
+			var keys = new NSObject [] { new NSString ("key1"), new NSString ("key2") };
+			var objs = new NSObject [] { new NSString ("value1"), new NSString ("value2") };
+
+			// Should throw for negative count
+			Assert.Throws<ArgumentOutOfRangeException> (() => NSMutableDictionary.FromObjectsAndKeys (objs, keys, -1), "Should throw for negative count");
+		}
 	}
 }

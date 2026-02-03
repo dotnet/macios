@@ -44,12 +44,13 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			if (ShouldExecuteRemotely ()) {
-				var rv = ExecuteRemotely (out var taskRunner);
+				if (ExecuteRemotely (out var taskRunner)) {
+					if (CopyToWindows)
+						CopyFilesToWindowsAsync (taskRunner, TouchedFiles).Wait ();
+					return true;
+				}
 
-				if (rv && CopyToWindows)
-					CopyFilesToWindowsAsync (taskRunner, TouchedFiles).Wait ();
-
-				return rv;
+				return false;
 			}
 
 			return ExecuteLocally ();

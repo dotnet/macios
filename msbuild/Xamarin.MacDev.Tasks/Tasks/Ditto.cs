@@ -61,7 +61,7 @@ namespace Xamarin.MacDev.Tasks {
 				// This is executed directly on Windows for remote builds
 				var stampPath = StampFile?.ItemSpec;
 				if (!string.IsNullOrEmpty (stampPath)) {
-					Directory.CreateDirectory (Path.GetDirectoryName (stampPath));
+					Directory.CreateDirectory (Path.GetDirectoryName (stampPath)!);
 					var src = Source?.ItemSpec;
 					var destination = Destination?.ItemSpec;
 					File.WriteAllText (stampPath, $"{src} -> {destination}");
@@ -103,7 +103,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			cancellationTokenSource = new CancellationTokenSource ();
-			ExecuteAsync (Log, executable, args, cancellationToken: cancellationTokenSource.Token).Wait ();
+			ExecuteAsync (executable, args, cancellationToken: cancellationTokenSource.Token).Wait ();
 
 			// Create a list of all the files we've copied
 			if (CreateOutputFiles) {

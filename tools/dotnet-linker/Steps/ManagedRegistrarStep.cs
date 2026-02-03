@@ -98,7 +98,7 @@ namespace Xamarin.Linker {
 			if (App.Registrar != RegistrarMode.ManagedStatic)
 				return;
 
-			Configuration.Target.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
+			Configuration.Application.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
 		}
 
 		protected override void TryEndProcess (out List<Exception>? exceptions)
@@ -858,7 +858,7 @@ namespace Xamarin.Linker {
 					return true;
 				}
 
-				GenericParameter? gp = elementType as GenericParameter;
+				var gp = elementType as GenericParameter;
 				if (gp is not null) {
 					if (!StaticRegistrar.VerifyIsConstrainedToNSObject (gp, out var constrained)) {
 						AddException (ErrorHelper.CreateError (99, "Incorrectly constrained generic parameter. Method: {0}", GetMethodSignatureWithSourceCode (method)));
@@ -1130,9 +1130,7 @@ namespace Xamarin.Linker {
 		CustomAttribute CreateUnmanagedCallersAttribute (string entryPoint)
 		{
 			var unmanagedCallersAttribute = new CustomAttribute (abr.UnmanagedCallersOnlyAttribute_Constructor);
-			// Mono didn't prefix the entry point with an underscore until .NET 8: https://github.com/dotnet/runtime/issues/79491
-			var entryPointPrefix = Driver.TargetFramework.Version.Major < 8 ? "_" : string.Empty;
-			unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPointPrefix + entryPoint)));
+			unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPoint)));
 			return unmanagedCallersAttribute;
 		}
 

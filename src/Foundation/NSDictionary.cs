@@ -51,7 +51,7 @@ namespace Foundation {
 		/// ]]></code>
 		/// </example>
 		/// </remarks>
-		public NSDictionary (NSObject first, NSObject second, params NSObject [] args) : this (PickOdd (second, args), PickEven (first, args))
+		public NSDictionary (NSObject? first, NSObject? second, params NSObject? [] args) : this (PickOdd (second, args), PickEven (first, args))
 		{
 		}
 
@@ -87,21 +87,21 @@ namespace Foundation {
 		{
 		}
 
-		internal static NSArray PickEven (NSObject f, NSObject [] args)
+		internal static NSArray PickEven (NSObject? f, NSObject? [] args)
 		{
 			int al = args.Length;
 			if ((al % 2) != 0)
 				throw new ArgumentException ("The arguments to NSDictionary should be a multiple of two", "args");
-			var ret = new NSObject [1 + al / 2];
+			var ret = new NSObject? [1 + al / 2];
 			ret [0] = f;
 			for (int i = 0, target = 1; i < al; i += 2)
 				ret [target++] = args [i];
 			return NSArray.FromNSObjects (ret);
 		}
 
-		internal static NSArray PickOdd (NSObject f, NSObject [] args)
+		internal static NSArray PickOdd (NSObject? f, NSObject? [] args)
 		{
-			var ret = new NSObject [1 + args.Length / 2];
+			var ret = new NSObject? [1 + args.Length / 2];
 			ret [0] = f;
 			for (int i = 1, target = 1; i < args.Length; i += 2)
 				ret [target++] = args [i];
@@ -129,6 +129,40 @@ namespace Foundation {
 			return NSArray.FromObjects (ret);
 		}
 
+		// Checks:
+		// * 'objects' and 'keys' for null
+		// * count isn't negative
+		// * count isn't higher than the number of elements in either array
+		// returns false if an empty dictionary can be returned
+		private protected static bool ValidateFromObjectsAndKeys<T, K> (T [] objects, K [] keys, nint count)
+		{
+			ArgumentNullException.ThrowIfNull (objects);
+			ArgumentNullException.ThrowIfNull (keys);
+
+			if (count < 0)
+				throw new ArgumentOutOfRangeException (nameof (count), "Must be non-negative and not greater than the length of either array");
+
+			if (objects.Length < count || keys.Length < count)
+				throw new ArgumentException ("Must be non-negative and not greater than the length of either array", nameof (count));
+
+			return count > 0;
+		}
+
+		// Checks:
+		// * 'objects' and 'keys' for null
+		// * 'objects' and 'keys' have the same number of elements
+		// returns false if an empty dictionary can be returned
+		private protected static bool ValidateFromObjectsAndKeys<T, K> (T [] objects, K [] keys)
+		{
+			ArgumentNullException.ThrowIfNull (objects);
+			ArgumentNullException.ThrowIfNull (keys);
+
+			if (objects.Length != keys.Length)
+				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
+
+			return objects.Length > 0;
+		}
+
 		/// <summary>
 		/// Creates a dictionary from a set of values and keys.
 		/// </summary>
@@ -137,14 +171,10 @@ namespace Foundation {
 		/// <returns>A new <see cref="NSDictionary"/> containing the specified key-value pairs.</returns>
 		public static NSDictionary FromObjectsAndKeys (NSObject? [] objects, NSObject [] keys)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
+			if (!ValidateFromObjectsAndKeys (objects, keys))
+				return new NSDictionary ();
 
-			return FromObjectsAndKeys (objects, keys, keys.Length);
+			return FromObjectsAndKeys (objects, keys, objects.Length);
 		}
 
 		/// <summary>
@@ -160,16 +190,10 @@ namespace Foundation {
 		/// </remarks>
 		public static NSDictionary FromObjectsAndKeys (object [] objects, object [] keys)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
+			if (!ValidateFromObjectsAndKeys (objects, keys))
+				return new NSDictionary ();
 
-			using (var no = NSArray.FromObjects (objects))
-			using (var nk = NSArray.FromObjects (keys))
-				return FromObjectsAndKeysInternal (no, nk);
+			return FromObjectsAndKeys (objects, keys, objects.Length);
 		}
 
 		/// <summary>
@@ -177,18 +201,12 @@ namespace Foundation {
 		/// </summary>
 		/// <param name="objects">Array of values for the dictionary. Null elements are stored as <see cref="NSNull.Null"/>.</param>
 		/// <param name="keys">Array of keys for the dictionary.</param>
-		/// <param name="count">Number of items to use in the creation; the number must be less than or equal to the number of elements in the arrays.</param>
+		/// <param name="count">Number of items to use in the creation; the number must be less than or equal to the number of elements in both arrays.</param>
 		/// <returns>A new <see cref="NSDictionary"/> containing the specified key-value pairs.</returns>
 		public static NSDictionary FromObjectsAndKeys (NSObject? [] objects, NSObject [] keys, nint count)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-			if (count < 1 || objects.Length < count || keys.Length < count)
-				throw new ArgumentException ("count");
+			if (!ValidateFromObjectsAndKeys (objects, keys, count))
+				return new NSDictionary ();
 
 			using (var no = NSArray.FromNativeObjects (objects, count))
 			using (var nk = NSArray.FromNativeObjects (keys, count))
@@ -200,7 +218,7 @@ namespace Foundation {
 		/// </summary>
 		/// <param name="objects">Array of values for the dictionary.</param>
 		/// <param name="keys">Array of keys for the dictionary.</param>
-		/// <param name="count">Number of items to use in the creation; the number must be less than or equal to the number of elements in the arrays.</param>
+		/// <param name="count">Number of items to use in the creation; the number must be less than or equal to the number of elements in both arrays.</param>
 		/// <returns>A new <see cref="NSDictionary"/> containing the specified key-value pairs.</returns>
 		/// <remarks>
 		/// <para>
@@ -209,14 +227,8 @@ namespace Foundation {
 		/// </remarks>
 		public static NSDictionary FromObjectsAndKeys (object [] objects, object [] keys, nint count)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-			if (count < 1 || objects.Length < count || keys.Length < count)
-				throw new ArgumentException ("count");
+			if (!ValidateFromObjectsAndKeys (objects, keys, count))
+				return new NSDictionary ();
 
 			using (var no = NSArray.FromObjects (count, objects))
 			using (var nk = NSArray.FromObjects (count, keys))

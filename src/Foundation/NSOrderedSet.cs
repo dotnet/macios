@@ -39,7 +39,7 @@ namespace Foundation {
 
 		/// <summary>Initializes a new instance of the <see cref="NSOrderedSet" /> class from an array of <see cref="NSObject" /> instances.</summary>
 		/// <param name="objs">An array of <see cref="NSObject" /> instances to include in the set.</param>
-		public NSOrderedSet (params NSObject [] objs) : this (NSArray.FromNSObjects (objs))
+		public NSOrderedSet (params NSObject? []? objs) : this (NSArray.FromNSObjects (objs))
 		{
 		}
 
@@ -77,7 +77,7 @@ namespace Foundation {
 		/// <typeparam name="T">The type of values in the array, must be a class that derives from <see cref="NSObject" />.</typeparam>
 		/// <param name="values">An array of strongly typed values to include in the ordered set.</param>
 		/// <returns>A new <see cref="NSOrderedSet" /> containing the specified values.</returns>
-		public static NSOrderedSet MakeNSOrderedSet<T> (T [] values) where T : NSObject
+		public static NSOrderedSet MakeNSOrderedSet<T> (T? []? values) where T : NSObject
 		{
 			NSArray a = NSArray.FromNSObjects (values);
 			var result = (NSOrderedSet) Runtime.GetNSObject (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle (selSetWithArray), a.Handle))!;
@@ -231,7 +231,7 @@ namespace Foundation {
 	public partial class NSMutableOrderedSet {
 		/// <summary>Initializes a new instance of the <see cref="NSMutableOrderedSet" /> class from an array of <see cref="NSObject" /> instances.</summary>
 		/// <param name="objs">An array of <see cref="NSObject" /> instances to include in the set.</param>
-		public NSMutableOrderedSet (params NSObject [] objs) : this (NSArray.FromNSObjects (objs))
+		public NSMutableOrderedSet (params NSObject? []? objs) : this (NSArray.FromNSObjects (objs))
 		{
 		}
 

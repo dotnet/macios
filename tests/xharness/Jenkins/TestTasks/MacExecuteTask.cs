@@ -44,7 +44,7 @@ namespace Xharness.Jenkins.TestTasks {
 			if (string.Equals ("mac", name, StringComparison.OrdinalIgnoreCase))
 				name = System.IO.Path.GetFileName (System.IO.Path.GetDirectoryName (projectDir));
 			var suffix = string.Empty;
-			if (ProjectFile.EndsWith (".sln", StringComparison.Ordinal)) {
+			if (ProjectFile.EndsWith (".slnx", StringComparison.Ordinal)) {
 				Path = System.IO.Path.Combine (System.IO.Path.GetDirectoryName (ProjectFile), "bin", BuildTask.ProjectPlatform, BuildTask.ProjectConfiguration + suffix, name + ".app", "Contents", "MacOS", name);
 			} else {
 				var project = new XmlDocument ();

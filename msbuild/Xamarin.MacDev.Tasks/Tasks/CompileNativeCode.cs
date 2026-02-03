@@ -26,9 +26,6 @@ namespace Xamarin.MacDev.Tasks {
 		public string MinimumOSVersion { get; set; } = "";
 
 		[Required]
-		public string SdkDevPath { get; set; } = "";
-
-		[Required]
 		public string SdkRoot { get; set; } = "";
 
 		[Required]
@@ -142,7 +139,7 @@ namespace Xamarin.MacDev.Tasks {
 				arguments.Add ("-c");
 				arguments.Add (src);
 
-				processes [i] = ExecuteAsync ("xcrun", arguments, sdkDevPath: SdkDevPath);
+				processes [i] = ExecuteAsync ("xcrun", arguments);
 			}
 
 			System.Threading.Tasks.Task.WaitAll (processes);

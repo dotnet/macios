@@ -218,7 +218,6 @@ namespace Cecil.Tests {
 			"UIKit.UIAlertView..ctor (System.String, System.String, UIKit.IUIAlertViewDelegate, System.String, System.String[])",
 			"UIKit.UIAppearance.Equals (System.Object)",
 			"UIKit.UIContentSizeCategoryExtensions.Compare (UIKit.UIContentSizeCategory, UIKit.UIContentSizeCategory)",
-			"UIKit.UIDragDropSessionExtensions/<>c__DisplayClass0_0`1.<LoadObjects>b__0 (Foundation.INSItemProviderReading[])",
 			"UIKit.UIFontFeature.ObjCRuntime.INativeObject.get_Handle ()",
 			"UIKit.UIPasteboard.set_Images (UIKit.UIImage[])",
 			"UIKit.UIToolbar.SetItems (UIKit.UIBarButtonItem[], System.Boolean)",

@@ -86,6 +86,25 @@ stages:
               uploadArtifacts: true
               use1ES: true
 
+      - job: testdotnetinstall
+        displayName: 'Test .NET install on Windows'
+        pool:
+          name: AzurePipelines-EO
+          os: windows
+          image: 1ESPT-Windows2022
+
+        steps:
+          - template: checkout.yml
+            parameters:
+              isPR: true
+              repositoryAlias: ${{ parameters.repositoryAlias }}
+              commit: ${{ parameters.commit }}
+          - bash: |
+              set -ex
+              make dotnet.config
+              make -C builds dotnet
+            displayName: "Install local .NET"
+
   - stage: build_packages
     displayName: '${{ parameters.stageDisplayNamePrefix }}Build'
     dependsOn: [configure_build]

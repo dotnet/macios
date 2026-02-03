@@ -23,8 +23,9 @@ namespace UIKit {
 		/// <returns>An <see cref="NSProgress" /> object that can be used to track the loading progress.</returns>
 		public static NSProgress LoadObjects<T> (this IUIDropSession session, Action<T []?> completion) where T : NSObject, INSItemProviderReading
 		{
+			// allowing null for 'completion' doesn't make much sense, but we have tests verifying that it's allowed,
+			// so make the implementation work with a null 'completion' handler.
 			ArgumentNullException.ThrowIfNull (session);
-			ArgumentNullException.ThrowIfNull (completion);
 
 			return session.LoadObjects (new Class (typeof (T)), (v) => {
 				var arr = v as T [];
@@ -37,7 +38,8 @@ namespace UIKit {
 				}
 				GC.KeepAlive (v);
 
-				completion (arr);
+				if (completion is not null)
+					completion (arr);
 			});
 		}
 

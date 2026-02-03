@@ -12894,8 +12894,6 @@ M:MapKit.MKUserTrackingButton.MKUserTrackingButtonAppearance.#ctor(System.IntPtr
 M:MapKit.MKZoomControl.#ctor(CoreGraphics.CGRect)
 M:MapKit.MKZoomControl.Dispose(System.Boolean)
 M:MapKit.MKZoomControl.MKZoomControlAppearance.#ctor(System.IntPtr)
-M:MediaAccessibility.MACaptionAppearance.DidDisplayCaptions(Foundation.NSAttributedString[])
-M:MediaAccessibility.MACaptionAppearance.DidDisplayCaptions(System.String[])
 M:MediaAccessibility.MAFlashingLightsProcessor.CanProcess(IOSurface.IOSurface)
 M:MediaAccessibility.MAFlashingLightsProcessor.Process(IOSurface.IOSurface,IOSurface.IOSurface,System.Double,Foundation.NSDictionary)
 M:MediaAccessibility.MAImageCaptioning.GetCaption(Foundation.NSUrl,Foundation.NSError@)

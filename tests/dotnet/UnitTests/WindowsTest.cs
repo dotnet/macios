@@ -329,6 +329,7 @@ namespace Xamarin.Tests {
 
 		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[Ignore ("Causes hangs in later tests (in .NET 9 only)")]
 		public void BuildEmbeddedFrameworkInBindingProjectApp (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "EmbeddedFrameworkInBindingProjectApp";

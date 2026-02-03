@@ -94,7 +94,7 @@ stages:
           image: 1ESPT-Windows2022
 
         steps:
-          - template: checkout.yml
+          - template: common/checkout.yml
             parameters:
               isPR: true
               repositoryAlias: ${{ parameters.repositoryAlias }}

@@ -16947,8 +16947,6 @@ M:UIKit.UIAlertView.remove_Presented(System.EventHandler)
 M:UIKit.UIAlertView.remove_WillDismiss(System.EventHandler{UIKit.UIButtonEventArgs})
 M:UIKit.UIAlertView.remove_WillPresent(System.EventHandler)
 M:UIKit.UIAlertView.UIAlertViewAppearance.#ctor(System.IntPtr)
-M:UIKit.UIAppearance.op_Equality(UIKit.UIAppearance,UIKit.UIAppearance)
-M:UIKit.UIAppearance.op_Inequality(UIKit.UIAppearance,UIKit.UIAppearance)
 M:UIKit.UIApplication_DefaultApplication.GetDefaultStatus(UIKit.UIApplication,UIKit.UIApplicationCategory,Foundation.NSError@)
 M:UIKit.UIApplication.AccessibilityActivate
 M:UIKit.UIApplication.Dispose(System.Boolean)

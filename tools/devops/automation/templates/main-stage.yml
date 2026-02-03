@@ -101,6 +101,7 @@ stages:
               commit: ${{ parameters.commit }}
           - bash: |
               set -ex
+              cd macios
               make dotnet.config
               make -C builds dotnet
             displayName: "Install local .NET"

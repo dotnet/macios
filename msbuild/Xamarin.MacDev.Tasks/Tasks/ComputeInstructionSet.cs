@@ -235,7 +235,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				var instructionSet = ComputeMinimumInstructionSet (Platform, SupportedOSPlatformVersion);
 				if (!string.IsNullOrEmpty (instructionSet)) {
-					InstructionSet = instructionSet;
+					InstructionSet = instructionSet!;
 					Log.LogMessage (MessageImportance.Low, $"Computed instruction set '{InstructionSet}' for {PlatformName} {SupportedOSPlatformVersion}");
 				} else {
 					Log.LogMessage (MessageImportance.Low, $"No instruction set computed for {PlatformName} {SupportedOSPlatformVersion}");

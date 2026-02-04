@@ -23,11 +23,11 @@
 
   <ItemGroup>
     <Compile Include="../../../external/Xamarin.MacDev/Xamarin.MacDev/PListObject.cs" />
-    <Compile Include="../../../tools/common/ApplePlatform.cs" />
-    <Compile Include="../../../tools/common/Execution.cs" />
-    <Compile Include="../../../tools/common/ProductConstants.cs" />
-    <Compile Include="../../../tools/common/SdkVersions.cs" />
-    <Compile Include="../../../tools/common/StringUtils.cs" />
+    <Compile Include="../../common/ApplePlatform.cs" />
+    <Compile Include="../../common/Execution.cs" />
+    <Compile Include="../../common/ProductConstants.cs" />
+    <Compile Include="../../common/SdkVersions.cs" />
+    <Compile Include="../../common/StringUtils.cs" />
     <Compile Remove="Resources.designer.cs" Condition="'$(DesignTimeBuild)' != 'true'" />
 
     <EmbeddedResource Update="Resources.resx">
@@ -44,4 +44,11 @@
       <PublicClass>true</PublicClass>
     </EmbeddedResource>
   </ItemGroup>
+
+  <Target Name="BuildSdkVersions"
+          Inputs="../common/../SdkVersions.in.cs;../../common/ProductConstants.in.cs" Outputs="../../common/SdkVersions.cs;../../common/ProductConstants.cs"
+          BeforeTargets="CoreCompile"
+          >
+    <Exec Command="make -C .. generated-files" />
+  </Target>
 </Project>

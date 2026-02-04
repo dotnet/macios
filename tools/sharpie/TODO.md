@@ -8,7 +8,6 @@ TODO
 * Build & package & publish in CI.
 * Translate resources.
 * Show a nice error if trying to execute on x64.
-* Improve makefile to use better targets.
 * We'll be shipping clang headers.
 	* Update NOTICE.txt
 * Fix/check all NotImplementedExceptions

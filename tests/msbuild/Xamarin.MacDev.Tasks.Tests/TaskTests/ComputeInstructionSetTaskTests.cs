@@ -93,8 +93,6 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask (ApplePlatform.iOS);
 			task.SupportedOSPlatformVersion = "9.0";
 
-			ExecuteTask (task);
-
 			// iOS 9 was supported by iPhone 4s (A5), but we don't have data for that era
 			// The task should handle this gracefully
 			ExecuteTask (task);

@@ -53,7 +53,6 @@ dotnet:: downloads/dotnet
 ifeq ($(OS),Windows_NT)
 # On Windows, for simplicity just copy the entire directory
 downloads/dotnet: downloads/$(DOTNET_INSTALL_NAME)
-	$(Q) mkdir -p downloads
 	$(Q) rm -f $@
 	$(Q) $(CP) -r downloads/$(DOTNET_INSTALL_NAME) $@
 else
@@ -129,7 +128,7 @@ DOTNET_DOWNLOADS = \
 	.stamp-download-dotnet-packages \
 	.stamp-install-t4 \
 
-download: downloads/$(DOTNET_INSTALL_NAME)
+download: downloads/dotnet
 dotnet:: $(DOTNET_DOWNLOADS)
 all-local:: $(DOTNET_DOWNLOADS)
 

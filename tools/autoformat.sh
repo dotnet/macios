@@ -34,8 +34,7 @@ IFS=$'\n'
 	done
 )
 
-# Go one directory up, to avoid any global.json in dotnet/macios
-cd ..
+make -C builds dotnet
 
 if test -z "${DOTNET:-}"; then
 	DOTNET=dotnet
@@ -97,6 +96,14 @@ $DOTNET format whitespace --folder "$SRC_DIR"
 for file in "$SRC_DIR"/dotnet/Templates/Microsoft.*.Templates/*/*/.template.config/localize/*.json "$SRC_DIR"/dotnet/Templates/Microsoft.*.Templates/*/.template.config/localize/*.json; do
 	tr -d $'\r' < "$file" > "$file".tmp
 	mv "$file".tmp "$file"
+done
+
+make -C src csproj
+for platform in $(make print-variable -C tools/devops VARIABLE=DOTNET_PLATFORMS | sed 's/.*=//' | xargs | sed 's/ /\n/g'); do
+	pl=$(echo $platform | tr 'A-Z' 'a-z')
+	af_whitespace src/build/dotnet/$pl/csproj/core/Core.$platform.csproj
+	af_whitespace src/build/dotnet/$pl/csproj/api/ApiDefinition.$platform.csproj
+	af_whitespace src/build/dotnet/$pl/csproj/platform/Microsoft.$platform.csproj
 done
 
 # dotnet format "$SRC_DIR/[...]"

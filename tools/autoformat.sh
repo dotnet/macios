@@ -99,7 +99,13 @@ for file in "$SRC_DIR"/dotnet/Templates/Microsoft.*.Templates/*/*/.template.conf
 done
 
 make -C src csproj
-for platform in $(make print-variable -C tools/devops VARIABLE=DOTNET_PLATFORMS | sed 's/.*=//' | xargs | sed 's/ /\n/g'); do
+
+FILE=$(pwd)/tmp.txt
+make print-variable-value-to-file FILE="$FILE" VARIABLE=DOTNET_PLATFORMS -C tools/devops
+DOTNET_PLATFORMS=$(cat "$FILE" | sed 's/.*=//' | xargs)
+rm -f "$FILE"
+
+for platform in $(echo "$DOTNET_PLATFORMS" | sed 's/ /\n/g'); do
 	pl=$(echo $platform | tr 'A-Z' 'a-z')
 	af_whitespace src/build/dotnet/$pl/csproj/core/Core.$platform.csproj
 	af_whitespace src/build/dotnet/$pl/csproj/api/ApiDefinition.$platform.csproj

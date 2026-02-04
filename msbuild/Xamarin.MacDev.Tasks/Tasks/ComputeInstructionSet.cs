@@ -264,7 +264,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			// For iOS and tvOS, find the oldest device that can run this OS version
-			var devicesToCheck = platform == ApplePlatform.TVOS ? 
+			var devicesToCheck = platform == ApplePlatform.TVOS ?
 				DeviceToMaxOS.Where (kv => kv.Key.StartsWith ("AppleTV")) :
 				DeviceToMaxOS.Where (kv => !kv.Key.StartsWith ("AppleTV"));
 
@@ -286,7 +286,7 @@ namespace Xamarin.MacDev.Tasks {
 						if (CpuToInstructionSet.TryGetValue (cpu, out var instructionSet)) {
 							// Keep track of the oldest instruction set we've seen
 							// We want the minimum instruction set that all compatible devices support
-							if (oldestCpu == null || IsOlderInstructionSet (instructionSet, oldestInstructionSet)) {
+							if (oldestCpu is null || IsOlderInstructionSet (instructionSet, oldestInstructionSet)) {
 								oldestCpu = cpu;
 								oldestInstructionSet = instructionSet;
 							}
@@ -296,7 +296,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			// Validate that the instruction set is supported by crossgen2
-			if (oldestInstructionSet != null && !SupportedInstructionSets.Contains (oldestInstructionSet)) {
+			if (oldestInstructionSet is not null && !SupportedInstructionSets.Contains (oldestInstructionSet)) {
 				Log.LogMessage (MessageImportance.Low, $"Instruction set '{oldestInstructionSet}' is not supported by crossgen2, skipping");
 				return null;
 			}
@@ -324,13 +324,13 @@ namespace Xamarin.MacDev.Tasks {
 
 		bool IsOlderInstructionSet (string? instructionSet1, string? instructionSet2)
 		{
-			if (instructionSet2 == null)
+			if (instructionSet2 is null)
 				return true;
-			if (instructionSet1 == null)
+			if (instructionSet1 is null)
 				return false;
 
 			// Order instruction sets from oldest to newest
-			var order = new[] {
+			var order = new [] {
 				"armv8-a",
 				"armv8.1-a",
 				"armv8.2-a",

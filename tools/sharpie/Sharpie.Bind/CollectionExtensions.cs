@@ -6,9 +6,9 @@ namespace Sharpie.Bind;
 public static class CollectionExtensions {
 	public static void ForEach<T> (this IEnumerable<T> source, Action<T> action)
 	{
-		if (source == null)
+		if (source is null)
 			throw new ArgumentNullException (nameof (source));
-		if (action == null)
+		if (action is null)
 			throw new ArgumentNullException (nameof (action));
 
 		foreach (var item in source)
@@ -17,9 +17,9 @@ public static class CollectionExtensions {
 
 	public static void AddRange (this System.Collections.ObjectModel.Collection<string> collection, IEnumerable<string> items)
 	{
-		if (collection == null)
+		if (collection is null)
 			throw new ArgumentNullException (nameof (collection));
-		if (items == null)
+		if (items is null)
 			throw new ArgumentNullException (nameof (items));
 
 		foreach (var item in items)
@@ -28,7 +28,7 @@ public static class CollectionExtensions {
 
 	public static T? DequeueOrDefault<T> (this Queue<T> queue)
 	{
-		if (queue == null)
+		if (queue is null)
 			throw new ArgumentNullException (nameof (queue));
 
 		return queue.Count == 0 ? default (T) : queue.Dequeue ();
@@ -36,7 +36,7 @@ public static class CollectionExtensions {
 
 	public static T? PeekOrDefault<T> (this Queue<T> queue)
 	{
-		if (queue == null)
+		if (queue is null)
 			throw new ArgumentNullException (nameof (queue));
 
 		return queue.Count == 0 ? default (T) : queue.Peek ();
@@ -44,7 +44,7 @@ public static class CollectionExtensions {
 
 	public static T? PeekOrDefault<T> (this Stack<T> stack)
 	{
-		if (stack == null)
+		if (stack is null)
 			throw new ArgumentNullException (nameof (stack));
 
 		return stack.Count == 0 ? default (T) : stack.Peek ();
@@ -52,7 +52,7 @@ public static class CollectionExtensions {
 
 	public static IEnumerable<T> Append<T> (this IEnumerable<T> target, T item)
 	{
-		if (target == null)
+		if (target is null)
 			throw new ArgumentNullException (nameof (target));
 
 		return target.Concat (new [] { item });
@@ -60,7 +60,7 @@ public static class CollectionExtensions {
 
 	public static T? RemoveFirst<T> (this ICollection<T> target, Func<T, bool> predicate)
 	{
-		if (predicate == null)
+		if (predicate is null)
 			return default (T);
 
 		foreach (var item in target) {

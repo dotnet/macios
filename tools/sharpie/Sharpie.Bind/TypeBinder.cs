@@ -41,9 +41,9 @@ public class TypeBinder : AstVisitor {
 		Type = resolvedTypes.Pop ();
 
 		var composedType = Type as ComposedType;
-		if (composedType != null &&
+		if (composedType is not null &&
 			composedType.PointerRank == 1 &&
-			composedType.BaseType.Annotation<ObjCObjectType> () != null) {
+			composedType.BaseType.Annotation<ObjCObjectType> () is not null) {
 			ParameterType = composedType.BaseType.Clone ();
 			ParameterModifier = ParameterModifier.Out;
 		} else {
@@ -61,7 +61,7 @@ public class TypeBinder : AstVisitor {
 		typedefs.Clear ();
 
 		resolvedTypes.Push (astType);
-		if (nativeType != null)
+		if (nativeType is not null)
 			astType.AddAnnotation (nativeType);
 	}
 
@@ -303,7 +303,7 @@ public class TypeBinder : AstVisitor {
 	{
 		AstType astType;
 
-		if (type.Interface == null) {
+		if (type.Interface is null) {
 			switch ((type.BaseType as BuiltinType)?.Kind) {
 			case CXTypeKind.CXType_ObjCClass:
 				astType = new ObjCClassType ();
@@ -327,7 +327,7 @@ public class TypeBinder : AstVisitor {
 			astType = AstType.Create (type.Protocols.First ().Name);
 			break;
 		default:
-			var protocolPrefix = type.Interface != null && type.Interface.TypeParamList.Any ()
+			var protocolPrefix = type.Interface is not null && type.Interface.TypeParamList.Any ()
 				? "PROTOCOL: "
 				: String.Empty;
 			astType.GetChildrenByRole<AstType> (Roles.TypeArgument).AddRange (
@@ -385,7 +385,7 @@ public class TypeBinder : AstVisitor {
 			// represented as elaborated types with sugar.
 
 			var desugar = type.Desugar;
-			if (desugar != null) {
+			if (desugar is not null) {
 				switch (desugar) {
 				case ComplexType complexType:
 					VisitComplexType (complexType);
@@ -451,7 +451,7 @@ public class TypeBinder : AstVisitor {
 		var delegateArgTypes = new List<AstType> ();
 
 		var proto = type as FunctionProtoType;
-		if (proto != null) {
+		if (proto is not null) {
 			foreach (var paramType in proto.ParamTypes) {
 				paramType.Accept (this);
 				delegateArgTypes.Add (resolvedTypes.Pop ());
@@ -492,7 +492,7 @@ public class TypeBinder : AstVisitor {
 	static AstType AstTypeWithDecl (Decl decl, string name)
 	{
 		var module = GetTopLevelModuleName (decl);
-		if (module == null)
+		if (module is null)
 			return AstType.Create (name);
 
 		return AstType.Create (module + "." + name);
@@ -500,14 +500,14 @@ public class TypeBinder : AstVisitor {
 
 	static string? GetTopLevelModuleName (Decl decl)
 	{
-		if (decl == null)
+		if (decl is null)
 			return null;
 
 		if (!decl.TryGetPresumedLoc (out var presumedLoc))
 			return null;
 
 		var path = presumedLoc?.FileName;
-		if (path == null)
+		if (path is null)
 			return null;
 
 		var ofs = path.IndexOf (".framework/", StringComparison.Ordinal);

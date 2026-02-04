@@ -2,8 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using Foundation;
 
-static class CFunctions
-{
+static class CFunctions {
 	// extern void Action ();
 	[DllImport ("__Internal")]
 	[Verify (PlatformInvoke)]
@@ -31,8 +30,7 @@ static class CFunctions
 }
 
 // @interface ObjCMethods
-interface ObjCMethods
-{
+interface ObjCMethods {
 	// -(void)action;
 	[Export ("action")]
 	void Action ();

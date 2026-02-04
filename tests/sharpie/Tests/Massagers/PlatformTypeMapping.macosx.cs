@@ -2,9 +2,8 @@ using Foundation;
 using ObjCRuntime;
 
 // @interface WebFetcher : NSObject <NSURLConnectionDelegate>
-[BaseType (typeof(NSObject))]
-interface WebFetcher : INSUrlConnectionDelegate
-{
+[BaseType (typeof (NSObject))]
+interface WebFetcher : INSUrlConnectionDelegate {
 	// @property (readonly, copy, nonatomic) NSURL * url;
 	[Export ("url", ArgumentSemantic.Copy)]
 	NSUrl Url { get; }

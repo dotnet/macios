@@ -2,37 +2,31 @@ using System;
 using System.Runtime.InteropServices;
 
 [StructLayout (LayoutKind.Sequential)]
-public struct ElaboratedNameOnlyStruct
-{
+public struct ElaboratedNameOnlyStruct {
 	public int foo;
 }
 
 [StructLayout (LayoutKind.Sequential)]
-public struct AnonStructRenamedByTypedef
-{
+public struct AnonStructRenamedByTypedef {
 	public int foo;
 }
 
 [StructLayout (LayoutKind.Sequential)]
-public struct ElaboratedNameStructRenamedByTypedef
-{
+public struct ElaboratedNameStructRenamedByTypedef {
 	public int foo;
 }
 
 [StructLayout (LayoutKind.Sequential)]
-public struct Parent
-{
+public struct Parent {
 	public int fully_anon_struct;
 }
 
 [StructLayout (LayoutKind.Sequential)]
-public struct Parent
-{
+public struct Parent {
 	public sbyte first;
 
 	[StructLayout (LayoutKind.Sequential)]
-	public struct ChildStruct
-	{
+	public struct ChildStruct {
 		public int a;
 
 		public sbyte b;
@@ -44,13 +38,11 @@ public struct Parent
 	public nuint third;
 
 	[StructLayout (LayoutKind.Sequential)]
-	public struct AnotherChild
-	{
+	public struct AnotherChild {
 		public int foo;
 
 		[StructLayout (LayoutKind.Sequential)]
-		public struct AndAnotherChild
-		{
+		public struct AndAnotherChild {
 			public unsafe sbyte* name;
 
 			public int age;
@@ -67,8 +59,7 @@ public struct Parent
 }
 
 [StructLayout (LayoutKind.Sequential)]
-public struct NXTabletPointData
-{
+public struct NXTabletPointData {
 	public int x;
 
 	public int y;
@@ -80,8 +71,7 @@ public struct NXTabletPointData
 	public ushort pressure;
 
 	[StructLayout (LayoutKind.Sequential)]
-	public struct tilt
-	{
+	public struct tilt {
 		public short x;
 
 		public short y;
@@ -104,8 +94,7 @@ public struct NXTabletPointData
 }
 
 [StructLayout (LayoutKind.Sequential)]
-public struct NXTabletProximityData
-{
+public struct NXTabletProximityData {
 	public ushort vendorID;
 
 	public ushort tabletID;
@@ -132,11 +121,9 @@ public struct NXTabletProximityData
 }
 
 [StructLayout (LayoutKind.Explicit)]
-public struct NXEventData
-{
+public struct NXEventData {
 	[StructLayout (LayoutKind.Sequential)]
-	public struct mouse
-	{
+	public struct mouse {
 		public byte subx;
 
 		public byte suby;
@@ -156,8 +143,7 @@ public struct NXEventData
 		public int reserved3;
 
 		[StructLayout (LayoutKind.Explicit)]
-		public struct tablet
-		{
+		public struct tablet {
 			[FieldOffset (0)]
 			public NXTabletPointData point;
 
@@ -174,8 +160,7 @@ public struct NXEventData
 	public mouse mouse;
 
 	[StructLayout (LayoutKind.Sequential)]
-	public struct mouseMove
-	{
+	public struct mouseMove {
 		public int dx;
 
 		public int dy;
@@ -191,8 +176,7 @@ public struct NXEventData
 		public int reserved2;
 
 		[StructLayout (LayoutKind.Explicit)]
-		public struct tablet
-		{
+		public struct tablet {
 			[FieldOffset (0)]
 			public NXTabletPointData point;
 
@@ -209,8 +193,7 @@ public struct NXEventData
 	public mouseMove mouseMove;
 
 	[StructLayout (LayoutKind.Sequential)]
-	public struct key
-	{
+	public struct key {
 		public ushort origCharSet;
 
 		public short repeat;
@@ -233,7 +216,7 @@ public struct NXEventData
 
 		public int reserved4;
 
-		public int[] reserved5;
+		public int [] reserved5;
 	}
 
 
@@ -241,8 +224,7 @@ public struct NXEventData
 	public key key;
 
 	[StructLayout (LayoutKind.Sequential)]
-	public struct tracking
-	{
+	public struct tracking {
 		public short reserved;
 
 		public short eventNum;
@@ -261,7 +243,7 @@ public struct NXEventData
 
 		public int reserved5;
 
-		public int[] reserved6;
+		public int [] reserved6;
 	}
 
 
@@ -269,8 +251,7 @@ public struct NXEventData
 	public tracking tracking;
 
 	[StructLayout (LayoutKind.Sequential)]
-	public struct scrollWheel
-	{
+	public struct scrollWheel {
 		public short deltaAxis1;
 
 		public short deltaAxis2;
@@ -291,7 +272,7 @@ public struct NXEventData
 
 		public int pointDeltaAxis3;
 
-		public int[] reserved8;
+		public int [] reserved8;
 	}
 
 
@@ -302,26 +283,24 @@ public struct NXEventData
 	public scrollWheel zoom;
 
 	[StructLayout (LayoutKind.Sequential)]
-	public struct compound
-	{
+	public struct compound {
 		public short reserved;
 
 		public short subType;
 
 		[StructLayout (LayoutKind.Explicit)]
-		public struct misc
-		{
+		public struct misc {
 			[FieldOffset (0)]
-			public float[] F;
+			public float [] F;
 
 			[FieldOffset (0)]
-			public int[] L;
+			public int [] L;
 
 			[FieldOffset (0)]
-			public short[] S;
+			public short [] S;
 
 			[FieldOffset (0)]
-			public sbyte[] C;
+			public sbyte [] C;
 		}
 
 
@@ -333,8 +312,7 @@ public struct NXEventData
 	public compound compound;
 
 	[StructLayout (LayoutKind.Sequential)]
-	public struct tablet
-	{
+	public struct tablet {
 		public int x;
 
 		public int y;
@@ -346,8 +324,7 @@ public struct NXEventData
 		public ushort pressure;
 
 		[StructLayout (LayoutKind.Sequential)]
-		public struct tilt
-		{
+		public struct tilt {
 			public short x;
 
 			public short y;
@@ -368,7 +345,7 @@ public struct NXEventData
 
 		public short vendor3;
 
-		public int[] reserved;
+		public int [] reserved;
 	}
 
 
@@ -376,8 +353,7 @@ public struct NXEventData
 	public tablet tablet;
 
 	[StructLayout (LayoutKind.Sequential)]
-	public struct proximity
-	{
+	public struct proximity {
 		public ushort vendorID;
 
 		public ushort tabletID;
@@ -402,7 +378,7 @@ public struct NXEventData
 
 		public short reserved1;
 
-		public int[] reserved2;
+		public int [] reserved2;
 	}
 
 
@@ -411,18 +387,16 @@ public struct NXEventData
 }
 
 [StructLayout (LayoutKind.Sequential)]
-public struct BluetoothHCIEventReturnLinkKeysResults
-{
+public struct BluetoothHCIEventReturnLinkKeysResults {
 	public int numLinkKeys;
 
 	[StructLayout (LayoutKind.Sequential)]
-	public struct linkKeys
-	{
+	public struct linkKeys {
 		public int deviceAddress;
 
 		public int linkKey;
 	}
 
 
-	public linkKeys[] linkKeys;
+	public linkKeys [] linkKeys;
 }

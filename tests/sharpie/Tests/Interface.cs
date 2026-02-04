@@ -1,19 +1,16 @@
 using Foundation;
 
 // @interface Root
-interface Root
-{
+interface Root {
 }
 
 // @interface Sub : Root
-[BaseType (typeof(Root))]
-interface Sub
-{
+[BaseType (typeof (Root))]
+interface Sub {
 }
 
 // @interface Members
-interface Members
-{
+interface Members {
 	// -(void)instanceMethod;
 	[Export ("instanceMethod")]
 	void InstanceMethod ();
@@ -48,8 +45,7 @@ interface Members
 }
 
 // @interface Fields
-interface Fields
-{
+interface Fields {
 	// -(int)getIntField;
 	[Export ("getIntField")]
 	[Verify (MethodToProperty)]

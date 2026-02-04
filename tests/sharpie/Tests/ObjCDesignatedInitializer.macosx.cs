@@ -3,8 +3,7 @@ using ObjCRuntime;
 
 // @interface NSDesignatedInitializerTest
 [DisableDefaultCtor]
-interface NSDesignatedInitializerTest
-{
+interface NSDesignatedInitializerTest {
 	// -(instancetype)initWithInt:(int)value;
 	[Export ("initWithInt:")]
 	NativeHandle Constructor (int value);
@@ -17,8 +16,7 @@ interface NSDesignatedInitializerTest
 
 // @interface ObjDesignatedInitializerAttributeTest
 [DisableDefaultCtor]
-interface ObjDesignatedInitializerAttributeTest
-{
+interface ObjDesignatedInitializerAttributeTest {
 	// -(instancetype)initWithInt:(int)value;
 	[Export ("initWithInt:")]
 	NativeHandle Constructor (int value);

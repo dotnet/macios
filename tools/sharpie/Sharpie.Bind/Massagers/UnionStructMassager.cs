@@ -24,7 +24,7 @@ public class UnionStructMassager : Massager<UnionStructMassager> {
 		base.VisitTypeDeclaration (typeDeclaration);
 
 		var nativeDecl = typeDeclaration.Annotation<RecordDecl> ();
-		if (nativeDecl == null || nativeDecl.CursorKind != CXCursorKind.CXCursor_UnionDecl)
+		if (nativeDecl is null || nativeDecl.CursorKind != CXCursorKind.CXCursor_UnionDecl)
 			return;
 
 		typeDeclaration.AddAttribute (new Attributes.StructLayoutAttribute (LayoutKind.Explicit));

@@ -22,7 +22,7 @@ public sealed class ExplicitBaseTypeNameMassager : Massager<ExplicitBaseTypeName
 
 		if (attribute is BaseTypeAttribute baseTypeAttribute) {
 			var nativeDecl = attribute.Annotation<ObjCContainerDecl> ();
-			if (nativeDecl != null)
+			if (nativeDecl is not null)
 				baseTypeAttribute.Arguments.Add (
 					new NamedExpression (
 						"Name",

@@ -9,9 +9,9 @@ using Foundation;
   the generated interface. If consumers are not supposed to implement this
   protocol, then [Model] is redundant and will generate code that will never
   be used.
-*/[Protocol]
-interface ProtocolA
-{
+*/
+[Protocol]
+interface ProtocolA {
 }
 
 // @protocol ProtocolB
@@ -23,9 +23,9 @@ interface ProtocolA
   the generated interface. If consumers are not supposed to implement this
   protocol, then [Model] is redundant and will generate code that will never
   be used.
-*/[Protocol]
-interface ProtocolB
-{
+*/
+[Protocol]
+interface ProtocolB {
 }
 
 // @protocol ProtocolC <ProtocolB>
@@ -37,35 +37,30 @@ interface ProtocolB
   the generated interface. If consumers are not supposed to implement this
   protocol, then [Model] is redundant and will generate code that will never
   be used.
-*/[Protocol]
-interface ProtocolC : IProtocolB
-{
+*/
+[Protocol]
+interface ProtocolC : IProtocolB {
 }
 
 // @interface Impl_A <ProtocolA>
-interface Impl_A : IProtocolA
-{
+interface Impl_A : IProtocolA {
 }
 
 // @interface Impl_A_C <ProtocolA, ProtocolC>
-interface Impl_A_C : IProtocolA, IProtocolC
-{
+interface Impl_A_C : IProtocolA, IProtocolC {
 }
 
 // @interface Root
-interface Root
-{
+interface Root {
 }
 
 // @interface Sub : Root <ProtocolA, ProtocolB>
-[BaseType (typeof(Root))]
-interface Sub : IProtocolA, IProtocolB
-{
+[BaseType (typeof (Root))]
+interface Sub : IProtocolA, IProtocolB {
 }
 
 // @interface Usage
-interface Usage
-{
+interface Usage {
 	// -(Root<ProtocolA,ProtocolB> *)root_A_C;
 	[Export ("root_A_C")]
 	[Verify (MethodToProperty)]
@@ -91,9 +86,9 @@ interface Usage
   the generated interface. If consumers are not supposed to implement this
   protocol, then [Model] is redundant and will generate code that will never
   be used.
-*/[Protocol]
-interface RequiredAndOptional
-{
+*/
+[Protocol]
+interface RequiredAndOptional {
 	// @required -(void)implicitRequiredMethod;
 	[Abstract]
 	[Export ("implicitRequiredMethod")]

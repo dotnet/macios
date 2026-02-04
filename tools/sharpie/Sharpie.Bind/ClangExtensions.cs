@@ -86,7 +86,7 @@ public static class ClangExtensions {
 		BindingResult bindingResult,
 		bool parameterContext, out ParameterModifier parameterModifier)
 	{
-		if (type == null) {
+		if (type is null) {
 			parameterModifier = ParameterModifier.None;
 			return null;
 		}

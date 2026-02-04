@@ -1,8 +1,7 @@
 using Foundation;
 
 // @interface HelloModules
-interface HelloModules
-{
+interface HelloModules {
 	// -(NSString *)hello;
 	[Export ("hello")]
 	[Verify (MethodToProperty)]

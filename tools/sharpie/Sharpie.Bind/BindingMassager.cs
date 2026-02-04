@@ -136,25 +136,25 @@ public sealed class BindingMassager {
 
 	public void RegisterMassager (MassagerBase massager)
 	{
-		if (massager == null)
+		if (massager is null)
 			throw new ArgumentNullException ("massager");
 
 		var registerBefore = massager.GetType ().GetCustomAttribute<RegisterBeforeAttribute> ();
 		var registerAfter = massager.GetType ().GetCustomAttribute<RegisterAfterAttribute> ();
 
-		if (registerBefore != null && registerAfter != null)
+		if (registerBefore is not null && registerAfter is not null)
 			throw new InvalidOperationException ("a massager cannot have both a " +
 				"[RegisterBefore] and [RegisterAfter] attribute");
 
-		for (int i = 0; (registerBefore != null || registerAfter != null) && i < massagers.Count; i++) {
+		for (int i = 0; (registerBefore is not null || registerAfter is not null) && i < massagers.Count; i++) {
 			var type = massagers [i].GetType ();
 
-			if (registerBefore != null && type == registerBefore.Type) {
+			if (registerBefore is not null && type == registerBefore.Type) {
 				massagers.Insert (i, massager);
 				return;
 			}
 
-			if (registerAfter != null && type == registerAfter.Type) {
+			if (registerAfter is not null && type == registerAfter.Type) {
 				massagers.Insert (i + 1, massager);
 				return;
 			}
@@ -165,7 +165,7 @@ public sealed class BindingMassager {
 
 	public void Massage (AstNode astNode)
 	{
-		if (astNode == null)
+		if (astNode is null)
 			throw new ArgumentNullException (nameof (astNode));
 
 		foreach (var massager in massagers) {

@@ -9,9 +9,9 @@ using Foundation;
   the generated interface. If consumers are not supposed to implement this
   protocol, then [Model] is redundant and will generate code that will never
   be used.
-*/[Protocol]
-interface ProtocolSameFirstSlotNames
-{
+*/
+[Protocol]
+interface ProtocolSameFirstSlotNames {
 	// @required -(void)firstSlot;
 	[Abstract]
 	[Export ("firstSlot")]

@@ -2,18 +2,15 @@ using Foundation;
 using ObjCRuntime;
 
 // @interface PrimaryDelegate
-interface PrimaryDelegate
-{
+interface PrimaryDelegate {
 }
 
 // @interface SecondaryDelegate
-interface SecondaryDelegate
-{
+interface SecondaryDelegate {
 }
 
 // @interface DelegateConsumer
-interface DelegateConsumer
-{
+interface DelegateConsumer {
 	[Wrap ("WeakDelegate")]
 	PrimaryDelegate Delegate { get; set; }
 

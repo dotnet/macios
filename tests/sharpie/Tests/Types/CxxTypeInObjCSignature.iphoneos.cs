@@ -1,16 +1,14 @@
 using Foundation;
 
 // @interface ForceNSStringRMServicesAdditionsToLoad : NSObject
-[BaseType (typeof(NSObject))]
-interface ForceNSStringRMServicesAdditionsToLoad
-{
+[BaseType (typeof (NSObject))]
+interface ForceNSStringRMServicesAdditionsToLoad {
 }
 
 // @interface RMServicesAdditions (NSString)
 [Category]
-[BaseType (typeof(NSString))]
-interface NSString_RMServicesAdditions
-{
+[BaseType (typeof (NSString))]
+interface NSString_RMServicesAdditions {
 	// +(NSString *)stringWithDPString:(const dp::String &)string;
 	[Static]
 	[Export ("stringWithDPString:")]

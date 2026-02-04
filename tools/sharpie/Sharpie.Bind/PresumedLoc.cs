@@ -17,7 +17,7 @@ public struct PresumedLoc {
 	}
 
 	public unsafe bool IsInvalid {
-		get { return filename.data == null; }
+		get { return filename.data is null; }
 	}
 
 	public bool IsValid {

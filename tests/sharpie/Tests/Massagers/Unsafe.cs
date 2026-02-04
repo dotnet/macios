@@ -2,8 +2,7 @@ using Foundation;
 using ObjCRuntime;
 
 // @interface UnsafeMassagerTest
-interface UnsafeMassagerTest
-{
+interface UnsafeMassagerTest {
 	// -(int *)returnPointerMethod;
 	[Export ("returnPointerMethod")]
 	[Verify (MethodToProperty)]

@@ -32,7 +32,7 @@ public sealed class DefaultConstructorMassager : Massager<DefaultConstructorMass
 
 		// annotate the interface with [DisableDefaultCtor] if unavailable in Obj-C
 		var native = methodDeclaration.Annotation<ObjCMethodDecl> ();
-		if (native != null && (native.Attrs.IsUnavailableAttr () ||
+		if (native is not null && (native.Attrs.IsUnavailableAttr () ||
 				native.Attrs.IsAnyAvailabilityAttributeUnavailable ()))
 			methodDeclaration.GetParent<TypeDeclaration> ().AddAttribute (new DisableDefaultCtorAttribute ());
 

@@ -2,9 +2,8 @@ using Foundation;
 using ObjCRuntime;
 
 // audit-objc-generics: @interface CNLabeledValue<UnboundedValueType, ValueType : id<NSCopying,NSSecureCoding>, __covariant CovariantValueType> : NSObject <NSCopying, NSSecureCoding>
-[BaseType (typeof(NSObject))]
-interface CNLabeledValue : INSCopying, INSSecureCoding
-{
+[BaseType (typeof (NSObject))]
+interface CNLabeledValue : INSCopying, INSSecureCoding {
 	// @property (readonly, copy, nonatomic) ValueType ValueTypeProperty;
 	[Export ("ValueTypeProperty", ArgumentSemantic.Copy)]
 	NSObject<NSCopying, NSSecureCoding> ValueTypeProperty { get; }
@@ -28,9 +27,9 @@ interface CNLabeledValue : INSCopying, INSSecureCoding
   the generated interface. If consumers are not supposed to implement this
   protocol, then [Model] is redundant and will generate code that will never
   be used.
-*/[Protocol]
-interface A
-{
+*/
+[Protocol]
+interface A {
 }
 
 // @protocol B
@@ -42,14 +41,13 @@ interface A
   the generated interface. If consumers are not supposed to implement this
   protocol, then [Model] is redundant and will generate code that will never
   be used.
-*/[Protocol]
-interface B
-{
+*/
+[Protocol]
+interface B {
 }
 
 // @interface GenericTypesTest
-interface GenericTypesTest
-{
+interface GenericTypesTest {
 	// -(NSDictionary<NSString *,NSNumber *> *)NSDictionaryOfNSStringToNSNumber;
 	[Export ("NSDictionaryOfNSStringToNSNumber")]
 	[Verify (MethodToProperty)]
@@ -63,7 +61,7 @@ interface GenericTypesTest
 	// -(NSArray<NSString *> *)NSArrayOfNSString;
 	[Export ("NSArrayOfNSString")]
 	[Verify (MethodToProperty)]
-	string[] NSArrayOfNSString { get; }
+	string [] NSArrayOfNSString { get; }
 
 	// -(NSSet<NSArray<NSString *> *> *)NSSetOfNSArrayOfNSString;
 	[Export ("NSSetOfNSArrayOfNSString")]

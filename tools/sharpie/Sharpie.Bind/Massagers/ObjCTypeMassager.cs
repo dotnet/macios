@@ -30,9 +30,9 @@ public class ObjCTypeMassager : Massager<ObjCTypeMassager> {
 
 		if (primitiveType is ObjCInstanceTypeType) {
 			var method = primitiveType.Parent as MethodDeclaration;
-			if (method != null) {
+			if (method is not null) {
 				var type = method.Parent as TypeDeclaration;
-				if (type != null) {
+				if (type is not null) {
 					var baseType = type.GetAttributes<BaseTypeAttribute> ().FirstOrDefault ();
 					if (baseType is not null && type.HasAttribute<CategoryAttribute> ())
 						primitiveType.ReplaceWith (newType = baseType.BaseType!.Clone ());
@@ -45,7 +45,7 @@ public class ObjCTypeMassager : Massager<ObjCTypeMassager> {
 			// during Sema by clang and replaces the node with the defining type,
 			// so we need to do the same thing here that Clang does so we can later
 			// navigate from the instancetype to the defining decl
-			if (newType != null && typeDeclaration != null) {
+			if (newType is not null && typeDeclaration is not null) {
 				newType.RemoveAnnotations<object> ();
 				newType.AddAnnotation (typeDeclaration);
 			}
@@ -64,7 +64,7 @@ public class ObjCTypeMassager : Massager<ObjCTypeMassager> {
 		AstType newType;
 
 		var idType = simpleType as ObjCIdType;
-		if (idType != null)
+		if (idType is not null)
 			newType = AstType.Create ("Foundation.NSObject");
 		else if (simpleType is ObjCClassType)
 			newType = AstType.Create ("ObjCRuntime.Class");
@@ -85,17 +85,17 @@ public class ObjCTypeMassager : Massager<ObjCTypeMassager> {
 	void AnnotateGenerics (AstType type)
 	{
 		var tpDecl = type.Annotation<ObjCTypeParamDecl> ();
-		if (tpDecl == null)
+		if (tpDecl is null)
 			return;
 
 		var parentDecl = type.GetParent<EntityDeclaration> ();
-		if (parentDecl == null)
+		if (parentDecl is null)
 			return;
 
 		if ((from section in parentDecl.Attributes
 			 from attr in section.Attributes.OfType<VerifyAttribute> ()
 			 where attr.Annotation<ObjCTypeParamDecl> () == tpDecl
-			 select attr).FirstOrDefault () != null)
+			 select attr).FirstOrDefault () is not null)
 			return;
 
 		var writer = new StringWriter ();

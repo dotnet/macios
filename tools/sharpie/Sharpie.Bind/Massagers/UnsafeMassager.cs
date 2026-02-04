@@ -25,7 +25,7 @@ public sealed class UnsafeMassager : Massager<UnsafeMassager> {
 			return;
 
 		var entity = composedType.GetParent<EntityDeclaration> ();
-		if (entity != null)
+		if (entity is not null)
 			entity.Modifiers |= Modifiers.Unsafe;
 	}
 }

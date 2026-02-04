@@ -3,8 +3,7 @@ using Foundation;
 using ObjCRuntime;
 
 // @interface DispatchTests
-interface DispatchTests
-{
+interface DispatchTests {
 	// @property (assign) dispatch_object_t object;
 	[Export ("object", ArgumentSemantic.Assign)]
 	DispatchObject Object { get; set; }

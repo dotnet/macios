@@ -12,7 +12,7 @@ public class CodeWriter : ICodeWriter {
 
 	public CodeWriter (TextWriter baseWriter)
 	{
-		if (baseWriter == null)
+		if (baseWriter is null)
 			throw new ArgumentNullException (nameof (baseWriter));
 
 		this.BaseWriter = baseWriter;
@@ -54,7 +54,7 @@ public class CodeWriter : ICodeWriter {
 
 	public void WriteStringLiteral (string literal, string nullToken)
 	{
-		if (literal == null) {
+		if (literal is null) {
 			Write (Term.TypeReferenceName, nullToken);
 			return;
 		}

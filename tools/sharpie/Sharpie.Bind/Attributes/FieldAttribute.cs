@@ -17,7 +17,7 @@ public sealed class FieldAttribute : GroupedAttribute {
 		Type = AstType.Create ("Foundation.FieldAttribute");
 
 		Arguments.Add (new PrimitiveExpression (SymbolName));
-		if (LibraryName != null)
+		if (LibraryName is not null)
 			Arguments.Add (new PrimitiveExpression (LibraryName));
 	}
 }

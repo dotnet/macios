@@ -3,12 +3,10 @@ using Foundation;
 using ObjCRuntime;
 
 // @interface NSString
-interface NSString
-{
+interface NSString {
 }
 
-static class CFunctions
-{
+static class CFunctions {
 	// extern NSString * _NSString ();
 	[DllImport ("__Internal")]
 	[Verify (PlatformInvoke)]
@@ -74,9 +72,9 @@ static class CFunctions
   the generated interface. If consumers are not supposed to implement this
   protocol, then [Model] is redundant and will generate code that will never
   be used.
-*/[Protocol]
-interface ProtoA
-{
+*/
+[Protocol]
+interface ProtoA {
 }
 
 // @protocol ProtoB
@@ -88,14 +86,13 @@ interface ProtoA
   the generated interface. If consumers are not supposed to implement this
   protocol, then [Model] is redundant and will generate code that will never
   be used.
-*/[Protocol]
-interface ProtoB
-{
+*/
+[Protocol]
+interface ProtoB {
 }
 
 // @interface Foo
-interface Foo
-{
+interface Foo {
 	// +(instancetype)create;
 	[Static]
 	[Export ("create")]

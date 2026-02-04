@@ -9,7 +9,7 @@ public sealed class BaseTypeAttribute : GroupedAttribute {
 	public AstType? BaseType {
 		get {
 			var typeofExpr = Arguments.FirstOrNullObject () as TypeOfExpression;
-			if (typeofExpr != null)
+			if (typeofExpr is not null)
 				return typeofExpr.Type;
 			return null;
 		}

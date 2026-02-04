@@ -35,7 +35,7 @@ public sealed class ProtocolMethodMassager : Massager<ProtocolMethodMassager> {
 
 		foreach (var method in typeDeclaration.Members.OfType<MethodDeclaration> ()) {
 			var nativeDecl = method.Annotation<ObjCMethodDecl> ();
-			if (nativeDecl != null && nativeDecl.GetSelector ().ArgumentCount > 1)
+			if (nativeDecl is not null && nativeDecl.GetSelector ().ArgumentCount > 1)
 				method.Name = nativeDecl.GetSelector ().GetNameForSlot (1).UCFirst ();
 		}
 	}

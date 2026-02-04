@@ -4,8 +4,7 @@ using ObjCRuntime;
 
 [Static]
 [Verify (ConstantsInterfaceAssociation)]
-partial interface Constants
-{
+partial interface Constants {
 	// extern NSString * kFirstField;
 	[Field ("kFirstField", "__Internal")]
 	NSString kFirstField { get; }
@@ -16,14 +15,12 @@ partial interface Constants
 }
 
 // @interface FirstInterface
-interface FirstInterface
-{
+interface FirstInterface {
 }
 
 [Static]
 [Verify (ConstantsInterfaceAssociation)]
-partial interface Constants
-{
+partial interface Constants {
 	// extern int64_t FirstFieldAfterFirstInterface;
 	[Field ("FirstFieldAfterFirstInterface", "__Internal")]
 	long FirstFieldAfterFirstInterface { get; }
@@ -34,32 +31,28 @@ partial interface Constants
 }
 
 [Native]
-public enum FirstEnum : long
-{
+public enum FirstEnum : long {
 	Zero,
 	One = Zero + 1
 }
 
 [Static]
 [Verify (ConstantsInterfaceAssociation)]
-partial interface Constants
-{
+partial interface Constants {
 	// extern _Bool FirstFieldAfterFirstEnum;
 	[Field ("FirstFieldAfterFirstEnum", "__Internal")]
 	bool FirstFieldAfterFirstEnum { get; }
 }
 
 [Verify (InferredFromMemberPrefix)]
-public enum LooselyCoupledEnum : uint
-{
+public enum LooselyCoupledEnum : uint {
 	Zero,
 	One
 }
 
 [Static]
 [Verify (ConstantsInterfaceAssociation)]
-partial interface Constants
-{
+partial interface Constants {
 	// extern LooselyCoupledEnum EnumField;
 	[Field ("EnumField", "__Internal")]
 	nint EnumField { get; }

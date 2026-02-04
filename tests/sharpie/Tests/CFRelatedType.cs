@@ -1,4 +1,3 @@
 // @interface NSParagraphStyle
-interface NSParagraphStyle
-{
+interface NSParagraphStyle {
 }

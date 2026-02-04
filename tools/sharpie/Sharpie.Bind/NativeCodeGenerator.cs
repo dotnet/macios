@@ -15,7 +15,7 @@ public class NativeCodeGenerator : AstVisitor {
 	public NativeCodeGenerator (ObjectiveCBinder binder, TextWriter writer)
 		: base (binder.BindingResult)
 	{
-		if (writer == null)
+		if (writer is null)
 			throw new ArgumentNullException ("writer");
 
 		this.writer = new CodeWriter (writer);
@@ -24,7 +24,7 @@ public class NativeCodeGenerator : AstVisitor {
 	public NativeCodeGenerator (ObjectiveCBinder binder, CodeWriter writer)
 		: base (binder.BindingResult)
 	{
-		if (writer == null)
+		if (writer is null)
 			throw new ArgumentNullException ("writer");
 
 		this.writer = writer;
@@ -54,7 +54,7 @@ public class NativeCodeGenerator : AstVisitor {
 	public override void VisitFunctionType (FunctionType type)
 	{
 		var pointerType = pointerStack.PeekOrDefault ();
-		if (contextNames.Count == 0 || pointerType == null)
+		if (contextNames.Count == 0 || pointerType is null)
 			return;
 
 		writer.Write (Term.TypeReferenceName, type.ReturnType.ToString ());
@@ -67,7 +67,7 @@ public class NativeCodeGenerator : AstVisitor {
 		writer.Write (")(");
 
 		var protoType = type as FunctionProtoType;
-		if (protoType == null) {
+		if (protoType is null) {
 			writer.Write (")");
 			return;
 		}
@@ -90,9 +90,9 @@ public class NativeCodeGenerator : AstVisitor {
 		writer.WriteIndent (indentLevel);
 		writer.Write (decl.Name);
 
-		if (decl.InitExpr != null) {
+		if (decl.InitExpr is not null) {
 			var initExpr = decl.InitExpr.ToString ();
-			if (initExpr != null) {
+			if (initExpr is not null) {
 				writer.Write (" ");
 				writer.Write ("=");
 				writer.Write (" ");
@@ -194,7 +194,7 @@ public class NativeCodeGenerator : AstVisitor {
 				writer.Write (" ");
 			}
 
-			var name = param.Name == null && forceNames
+			var name = param.Name is null && forceNames
 				? String.Format ("_{0}", i)
 				: param.Name;
 
@@ -205,7 +205,7 @@ public class NativeCodeGenerator : AstVisitor {
 
 			var typeSpelling = param.Type.ToString ();
 
-			if (name == null) {
+			if (name is null) {
 				writer.Write (Term.TypeReferenceName, typeSpelling);
 				continue;
 			}
@@ -272,9 +272,9 @@ public class NativeCodeGenerator : AstVisitor {
 		var isForwardDeclared = false;
 		string keyword;
 
-		if (proto != null && proto.IsThisDeclarationADefinition)
+		if (proto is not null && proto.IsThisDeclarationADefinition)
 			keyword = "@protocol";
-		else if ((iface != null && iface.IsThisDeclarationADefinition) || category != null)
+		else if ((iface is not null && iface.IsThisDeclarationADefinition) || category is not null)
 			keyword = "@interface";
 		else {
 			isForwardDeclared = true;
@@ -283,14 +283,14 @@ public class NativeCodeGenerator : AstVisitor {
 
 		var typeParams = iface?.TypeParamList?.ToArray ();
 
-		if (typeParams != null && typeParams.Length > 0)
+		if (typeParams is not null && typeParams.Length > 0)
 			writer.Write ("audit-objc-generics: ");
 
 		writer.Write (Term.ObjCKeyword, keyword);
 		writer.Write (" ");
 		writer.Write (Term.TypeDefinitionName, decl.Name);
 
-		for (int i = 0; typeParams != null && i < typeParams.Length; i++) {
+		for (int i = 0; typeParams is not null && i < typeParams.Length; i++) {
 			if (i == 0)
 				writer.Write ("<");
 			else if (i > 0)
@@ -311,14 +311,14 @@ public class NativeCodeGenerator : AstVisitor {
 			return;
 		}
 
-		if (iface != null && iface.SuperClass != null) {
+		if (iface is not null && iface.SuperClass is not null) {
 			writer.Write (" ");
 			writer.Write (":");
 			writer.Write (" ");
 			writer.Write (Term.TypeReferenceName, iface.SuperClass.Name);
 		}
 
-		if (category != null && category.ClassInterface != null) {
+		if (category is not null && category.ClassInterface is not null) {
 			writer.Write (" ");
 			writer.Write ("(");
 			writer.Write (Term.TypeReferenceName, category.ClassInterface.Name);

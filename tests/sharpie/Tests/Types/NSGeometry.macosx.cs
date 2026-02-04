@@ -2,8 +2,7 @@ using CoreFoundation;
 using Foundation;
 
 // @interface NSGeometryTest
-interface NSGeometryTest
-{
+interface NSGeometryTest {
 	// -(NSPoint)getPoint;
 	[Export ("getPoint")]
 	[Verify (MethodToProperty)]

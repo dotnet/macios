@@ -1,8 +1,7 @@
 using Foundation;
 
 // @interface OutParams
-interface OutParams
-{
+interface OutParams {
 	// -(void)foo:(id)foo withError:(NSError **)error;
 	[Export ("foo:withError:")]
 	void Foo (NSObject foo, out NSError error);

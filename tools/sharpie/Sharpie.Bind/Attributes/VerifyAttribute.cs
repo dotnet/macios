@@ -79,7 +79,7 @@ public sealed class VerifyAttribute : ObjectiveSharpieHintAttribute {
 		Hint = hint;
 		Type = AstType.Create ("VerifyAttribute");
 		Arguments.Add (new IdentifierExpression (hint.ToString ()));
-		if (message != null)
+		if (message is not null)
 			Arguments.Add (new PrimitiveExpression (message));
 	}
 }

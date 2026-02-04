@@ -31,7 +31,7 @@ public sealed class BindingGenerator : AstVisitor {
 			((TypeDeclaration) entityStack.Peek ()).Members.Add (entity);
 
 		var nativeNode = entity.Annotation<object> ();
-		if (nativeNode != null) {
+		if (nativeNode is not null) {
 			foreach (var attr in entity.Attributes.SelectMany (s => s.Attributes))
 				attr.AddLinkAnnotation (nativeNode);
 		}
@@ -46,7 +46,7 @@ public sealed class BindingGenerator : AstVisitor {
 
 		if (String.IsNullOrEmpty (entity.Name)) {
 			var type = entity as TypeDeclaration;
-			if (type != null && type.Members.Count > 0)
+			if (type is not null && type.Members.Count > 0)
 				return entity;
 
 			entity.Remove ();
@@ -94,12 +94,12 @@ public sealed class BindingGenerator : AstVisitor {
 		switch (underlyingDesugaredType?.TypeClass) {
 		case CX_TypeClass.CX_TypeClass_Enum:
 			var boundEnum = ((EnumType) underlyingDesugaredType).Decl.Annotation<TypeDeclaration> ();
-			if (boundEnum != null)
+			if (boundEnum is not null)
 				boundEnum.Name = decl.Name;
 			break;
 		case CX_TypeClass.CX_TypeClass_Record:
 			var boundRecord = ((RecordType) underlyingDesugaredType).Decl.Annotation<TypeDeclaration> ();
-			if (boundRecord != null)
+			if (boundRecord is not null)
 				boundRecord.Name = decl.Name;
 			break;
 		case CX_TypeClass.CX_TypeClass_BlockPointer:
@@ -120,7 +120,7 @@ public sealed class BindingGenerator : AstVisitor {
 			return;
 
 		var anonDelegate = type.Bind (BindingResult) as DelegateType;
-		if (anonDelegate == null)
+		if (anonDelegate is null)
 			throw new InvalidOperationException ("expected DelegateType from " +
 				"BlockPointerType.Bind; should never happen");
 
@@ -137,9 +137,9 @@ public sealed class BindingGenerator : AstVisitor {
 		}
 
 		var functionProtoType = anonDelegate.Annotation<FunctionProtoType> ();
-		if (functionProtoType != null && functionProtoType.IsVariadic) {
+		if (functionProtoType is not null && functionProtoType.IsVariadic) {
 			var vaParam = del.Parameters.LastOrNullObject ();
-			if (vaParam != null)
+			if (vaParam is not null)
 				vaParam.Name = "varArgs";
 		}
 
@@ -175,7 +175,7 @@ public sealed class BindingGenerator : AstVisitor {
 		if (decl is CXXMethodDecl)
 			return;
 
-		if (dllImportsType == null)
+		if (dllImportsType is null)
 			root.Members.Add (dllImportsType = new TypeDeclaration {
 				ClassType = ClassType.Class,
 				Modifiers = Modifiers.Static,
@@ -199,7 +199,7 @@ public sealed class BindingGenerator : AstVisitor {
 		}
 
 		var cxxDecl = decl as CXXRecordDecl;
-		if (cxxDecl != null && !cxxDecl.IsPOD)
+		if (cxxDecl is not null && !cxxDecl.IsPOD)
 			return;
 
 		PushEntity (Bind (BindingResult, decl));
@@ -212,7 +212,7 @@ public sealed class BindingGenerator : AstVisitor {
 		if (decl.IsBitField && decl.BitWidthValue == 0)
 			return;
 
-		if (CurrentType != null && !(decl is ObjCIvarDecl))
+		if (CurrentType is not null && !(decl is ObjCIvarDecl))
 			CurrentType.Members.Add (Bind (decl));
 	}
 
@@ -230,11 +230,11 @@ public sealed class BindingGenerator : AstVisitor {
 
 	public override void VisitVarDecl (VarDecl decl)
 	{
-		if (decl.Name == null)
+		if (decl.Name is null)
 			return;
 
 		var type = root.Members.LastOrNullObject () as ConstantsInterfaceTypeDeclaration;
-		if (type == null)
+		if (type is null)
 			root.Members.Add (type = new ConstantsInterfaceTypeDeclaration ());
 
 		var property = new PropertyDeclaration {
@@ -283,14 +283,14 @@ public sealed class BindingGenerator : AstVisitor {
 				swiftName = name;
 		}
 
-		if (decl is ObjCInterfaceDecl iface && iface.SuperClass != null) {
+		if (decl is ObjCInterfaceDecl iface && iface.SuperClass is not null) {
 			var bt = new BaseTypeAttribute (iface.SuperClass.Name);
-			if (swiftName != null)
+			if (swiftName is not null)
 				bt.Arguments.Add (new NamedExpression ("Name", new PrimitiveExpression (swiftName)));
 			type.AddAttribute (bt);
 		}
 
-		if (decl is ObjCCategoryDecl category && category.ClassInterface != null) {
+		if (decl is ObjCCategoryDecl category && category.ClassInterface is not null) {
 			type.Name = category.ClassInterface.Name + "_" + type.Name;
 			type.AddAttribute (new CategoryAttribute ());
 			type.AddAttribute (new BaseTypeAttribute (category.ClassInterface.Name));
@@ -306,7 +306,7 @@ public sealed class BindingGenerator : AstVisitor {
 			}
 
 			var pa = new ProtocolAttribute ();
-			if (swiftName != null)
+			if (swiftName is not null)
 				pa.Arguments.Add (new NamedExpression ("Name", new PrimitiveExpression (swiftName)));
 			type.AddAttribute (pa);
 		}
@@ -315,7 +315,7 @@ public sealed class BindingGenerator : AstVisitor {
 			AstType protoType;
 			if (protocol.Name == "NSObject") {
 				var bt = new BaseTypeAttribute (protoType = AstType.Create ("Foundation.NSObject"));
-				if (swiftName != null)
+				if (swiftName is not null)
 					bt.Arguments.Add (new NamedExpression ("Name", new PrimitiveExpression (swiftName)));
 				type.AddAttribute (bt);
 			} else
@@ -411,13 +411,13 @@ public sealed class BindingGenerator : AstVisitor {
 
 		property.AddAttribute (new ExportAttribute (decl.Name, decl.ArgumentSemantic));
 
-		if (decl.GetterMethodDecl != null) {
+		if (decl.GetterMethodDecl is not null) {
 			property.Getter = new Accessor ();
 			if (decl.GetPropertyAttributes ().HasFlag (ObjCPropertyAttributeKind.Getter))
 				property.Getter.AddAttribute (new BindAttribute (decl.GetterMethodDecl.Name));
 		}
 
-		if (decl.SetterMethodDecl != null) {
+		if (decl.SetterMethodDecl is not null) {
 			property.Setter = new Accessor ();
 			if (decl.GetPropertyAttributes ().HasFlag (ObjCPropertyAttributeKind.Setter))
 				property.Setter.AddAttribute (new BindAttribute (decl.SetterMethodDecl.Name));
@@ -471,28 +471,28 @@ public sealed class BindingGenerator : AstVisitor {
 					// want to allow builtin, typedef, or enum types in the chain.
 					while (true) {
 						var builtinType = type as BuiltinType;
-						if (builtinType != null) {
+						if (builtinType is not null) {
 							builtinKind = builtinType.Kind;
 							break;
 						}
 
 						var typedefType = type as TypedefType;
-						if (typedefType != null) {
+						if (typedefType is not null) {
 							type = typedefType.Decl.UnderlyingType;
 							continue;
 						}
 
 						var enumType = type as EnumType;
-						if (enumType != null) {
+						if (enumType is not null) {
 							type = enumType.Decl.IntegerType;
 							continue;
 						}
 						var elabType = type as ElaboratedType;
-						if (elabType != null) {
+						if (elabType is not null) {
 							// get the most basic type from the QualType and if we are dealing with a long, set the type accordingly, this 
 							// is because we might be dealing with a NSInteger, the issue happens when the enum is exposed to swift
 							var namedType = elabType.Desugar.UnqualifiedDesugaredType as BuiltinType;
-							if (namedType != null) {
+							if (namedType is not null) {
 								// switch on the builtin type and set the type accordingly
 								switch (namedType.Kind) {
 								case CXTypeKind.CXType_UChar:
@@ -540,9 +540,9 @@ public sealed class BindingGenerator : AstVisitor {
 			return member;
 		} catch (Exception e) {
 			string initExpr = "<unable to Expr::PrettyPrint(AstContext)>";
-			if (decl.InitExpr != null) {
+			if (decl.InitExpr is not null) {
 				var expr = decl.InitExpr.ToString ();
-				if (expr != null)
+				if (expr is not null)
 					initExpr = expr;
 			}
 			throw new AggregateException ("Unable to bind expression `" + initExpr + "'", e);

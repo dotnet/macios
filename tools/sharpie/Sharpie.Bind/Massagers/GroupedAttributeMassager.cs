@@ -72,11 +72,11 @@ public class GroupedAttributeMassager : Massager<GroupedAttributeMassager> {
 	int GetGroupNumber (ICSharpCode.NRefactory.CSharp.Attribute attr)
 	{
 		var groupedAttribute = attr as GroupedAttribute;
-		if (groupedAttribute != null)
+		if (groupedAttribute is not null)
 			return groupedAttribute.GroupNumber;
 
 		var availabilityAttr = attr as AvailabilityBaseAttribute;
-		if (availabilityAttr != null && availabilityAttr.IsShorthand)
+		if (availabilityAttr is not null && availabilityAttr.IsShorthand)
 			return 0;
 
 		switch (attr.Type.ToString ()) {

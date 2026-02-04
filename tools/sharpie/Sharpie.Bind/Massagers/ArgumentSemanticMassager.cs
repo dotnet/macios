@@ -26,11 +26,11 @@ public sealed class ArgumentSemanticMassager : Massager<ArgumentSemanticMassager
 		MarkVisited (propertyDeclaration);
 
 		var type = propertyDeclaration.ReturnType as PrimitiveType;
-		if (type == null)
+		if (type is null)
 			return;
 
 		var exportAttr = propertyDeclaration.GetAttributes<ExportAttribute> ().FirstOrDefault ();
-		if (exportAttr == null)
+		if (exportAttr is null)
 			return;
 
 		if (exportAttr.ArgumentSemantic == ArgumentSemantic.UnsafeUnretained ||

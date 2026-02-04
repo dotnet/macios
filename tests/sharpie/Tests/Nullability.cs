@@ -2,8 +2,7 @@ using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
 
-static class CFunctions
-{
+static class CFunctions {
 	// extern void Func (const char * _Nullable str);
 	[DllImport ("__Internal")]
 	[Verify (PlatformInvoke)]
@@ -11,8 +10,7 @@ static class CFunctions
 }
 
 // @interface Foo
-interface Foo
-{
+interface Foo {
 	// @property SEL _Nullable selector;
 	[NullAllowed, Export ("selector", ArgumentSemantic.Assign)]
 	Selector Selector { get; set; }

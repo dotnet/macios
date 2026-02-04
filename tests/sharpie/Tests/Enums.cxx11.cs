@@ -3,34 +3,29 @@ using System.Runtime.InteropServices;
 using ObjCRuntime;
 
 [Native]
-public enum StronglyTypedObjCOrCXXEnum : long
-{
+public enum StronglyTypedObjCOrCXXEnum : long {
 	Zero = 0,
 	One = 1
 }
 
-public enum TypedefEnum : uint
-{
+public enum TypedefEnum : uint {
 	One,
 	Two,
 	Three
 }
 
-public enum TestNameFixOne : uint
-{
+public enum TestNameFixOne : uint {
 	A,
 	B,
 	C
 }
 
-public enum ThisWasRenamedByATypedef : uint
-{
+public enum ThisWasRenamedByATypedef : uint {
 	A,
 	B
 }
 
-static class CFunctions
-{
+static class CFunctions {
 	// enum TestNameFixOne GetTestNameFixOne ();
 	[DllImport ("__Internal")]
 	[Verify (PlatformInvoke)]
@@ -42,8 +37,7 @@ static class CFunctions
 	static extern void ConsumeForwardDeclaredCxx11ScopedEnum (ForwardDeclaredCxx11ScopedEnum e);
 }
 
-public enum ConstantExpressionEnum : uint
-{
+public enum ConstantExpressionEnum : uint {
 	Implicit,
 	One = 1,
 	OneChar = 97,
@@ -54,52 +48,44 @@ public enum ConstantExpressionEnum : uint
 }
 
 [Native]
-public enum DeclRefExprEnum : long
-{
+public enum DeclRefExprEnum : long {
 	One = 1,
 	Two = 2,
 	Three = One + Two
 }
 
-public enum UnaryExprOrTypeTraitExprEnum : uint
-{
+public enum UnaryExprOrTypeTraitExprEnum : uint {
 	SizeOf = 8
 }
 
-public enum TypedefFirstAnonEnum : uint
-{
+public enum TypedefFirstAnonEnum : uint {
 	All = 0,
 	One,
 	Two
 }
 
-public enum TypedefSecondAnonEnum : uint
-{
+public enum TypedefSecondAnonEnum : uint {
 	All = 0,
 	One,
 	Two
 }
 
-public enum TypedefFirstNamedEnum : uint
-{
+public enum TypedefFirstNamedEnum : uint {
 	TdFirstNamedAll = 0
 }
 
-public enum AnonymousEnum1 : uint
-{
+public enum AnonymousEnum1 : uint {
 	AnonEnumFollowingTypedefedEnum
 }
 
-public enum LongAndUnsignedConstants : ulong
-{
+public enum LongAndUnsignedConstants : ulong {
 	Int32Max = 2147483647,
 	Int32MaxPlusOne = 2147483648L,
 	Int64Max = 9223372036854775807L,
 	Int64MaxPlusOne = 9223372036854775808uL
 }
 
-public enum Shifts : uint
-{
+public enum Shifts : uint {
 	Sh1 = 1u << 1,
 	Sh2 = 1u << 2,
 	Sh3 = 1u << 3,
@@ -107,70 +93,59 @@ public enum Shifts : uint
 }
 
 [Verify (InferredFromMemberPrefix)]
-public enum FullyAnonEnum : uint
-{
+public enum FullyAnonEnum : uint {
 	Zero,
 	One
 }
 
-public enum TypedefAnonCEnum : uint
-{
+public enum TypedefAnonCEnum : uint {
 	Zero,
 	One,
 	Two = 1 + 1
 }
 
-public enum NamedCEnum : uint
-{
+public enum NamedCEnum : uint {
 	NamedCEnumZero
 }
 
-public enum NamedCEnumRenamedByTypedef : uint
-{
+public enum NamedCEnumRenamedByTypedef : uint {
 	NamedCEnumToBeRenamedByTypedefZero
 }
 
-public enum NamedCEnumRenamedByInlineTypedef : uint
-{
+public enum NamedCEnumRenamedByInlineTypedef : uint {
 	NamedCEnumToBeRenamedByInlineTypedefZero
 }
 
-public enum SugarLevelFourEnum : uint
-{
+public enum SugarLevelFourEnum : uint {
 	FullyDesugaredEnumZero
 }
 
-public enum Cxx11EnumClass
-{
+public enum Cxx11EnumClass {
 	Zero,
 	One,
 	Two
 }
 
 [Native]
-public enum Cxx11TypedEnumClass : ulong
-{
+public enum Cxx11TypedEnumClass : ulong {
 	Zero,
 	One,
 	Two
 }
 
-public enum Cxx11EnumStruct
-{
+public enum Cxx11EnumStruct {
 	Zero,
 	One,
 	Two
 }
 
 [Native]
-public enum Cxx11TypedEnumStruct : long
-{
+public enum Cxx11TypedEnumStruct : long {
 	Zero
 }
 
 [Flags]
-public enum NSActivityOptions : ulong
-{
+public enum NSActivityOptions : ulong {
 	IdleDisplaySleepDisabled = (1uL << 40),
 	IdleSystemSleepDisabled = (1uL << 20),
 	SuddenTerminationDisabled = (1uL << 14),

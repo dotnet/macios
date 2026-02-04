@@ -1,8 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-static class CFunctions
-{
+static class CFunctions {
 	// extern void _void ();
 	[DllImport ("__Internal")]
 	[Verify (PlatformInvoke)]

@@ -1,5 +1,4 @@
 // @interface ExplicitBaseType : NSObject
-[BaseType (typeof(NSObject), Name = "ExplicitBaseType")]
-interface ExplicitBaseType
-{
+[BaseType (typeof (NSObject), Name = "ExplicitBaseType")]
+interface ExplicitBaseType {
 }

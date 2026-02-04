@@ -83,7 +83,7 @@ class AvailabilityBaseAttribute : ICSharpCode.NRefactory.CSharp.Attribute {
 		if (!version.IsEmpty) {
 			Arguments.Add (new PrimitiveExpression (version.Major));
 			Arguments.Add (new PrimitiveExpression (version.Minor.GetValueOrDefault ()));
-			if (version.Subminor != null)
+			if (version.Subminor is not null)
 				Arguments.Add (new PrimitiveExpression (version.Subminor.Value));
 		}
 
@@ -98,7 +98,7 @@ class AvailabilityBaseAttribute : ICSharpCode.NRefactory.CSharp.Attribute {
 		var platform = GetPlatform (attr.AvailabilityAttributePlatformIdentifierName);
 
 		var shorthand = ShorthandFromClang (platform, attr);
-		if (shorthand != null) {
+		if (shorthand is not null) {
 			yield return shorthand;
 			yield break;
 		}

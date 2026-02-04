@@ -14,9 +14,8 @@ using Security;
 delegate IMTLTexture AHorribleType (MPSKernel arg0, IMTLCommandBuffer arg1, IMTLTexture arg2);
 
 // @interface TestObject : NSObject
-[BaseType (typeof(NSObject))]
-interface TestObject
-{
+[BaseType (typeof (NSObject))]
+interface TestObject {
 	// @property (assign) CGColorRef color;
 	[Export ("color", ArgumentSemantic.Assign)]
 	CGColor Color { get; set; }

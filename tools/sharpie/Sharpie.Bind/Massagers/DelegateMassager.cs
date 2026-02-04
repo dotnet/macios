@@ -25,8 +25,8 @@ public sealed class DelegateMassager : Massager<DelegateMassager> {
 
 		var parent = strongDelegate.Parent as TypeDeclaration;
 
-		if (parent == null ||
-			strongDelegate?.Name == null ||
+		if (parent is null ||
+			strongDelegate?.Name is null ||
 			!(strongDelegate.Name.EndsWith ("Delegate", StringComparison.OrdinalIgnoreCase) ||
 			strongDelegate.Name.EndsWith ("DataSource", StringComparison.OrdinalIgnoreCase)))
 			return;

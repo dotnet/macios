@@ -28,7 +28,7 @@ public class AnonymousStructMassager : Massager<AnonymousStructMassager> {
 
 		FieldDeclaration? field;
 		if (String.IsNullOrEmpty (typeDeclaration.Name) &&
-			(field = typeDeclaration.NextSibling as FieldDeclaration) != null) {
+			(field = typeDeclaration.NextSibling as FieldDeclaration) is not null) {
 			var nativeDecl = typeDeclaration.Annotation<RecordDecl> ();
 			var nativeType = field.ReturnType.Annotation<RecordType> ();
 

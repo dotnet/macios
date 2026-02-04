@@ -2,8 +2,7 @@ using Foundation;
 using ObjCRuntime;
 
 // @interface PropertyTests
-interface PropertyTests
-{
+interface PropertyTests {
 	// @property (readonly) int readonly;
 	[Export ("readonly")]
 	int Readonly { get; }

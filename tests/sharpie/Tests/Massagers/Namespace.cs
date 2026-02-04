@@ -1,19 +1,16 @@
 using Foundation;
 using ObjCRuntime;
 
-namespace CatOverflow
-{
+namespace CatOverflow {
 	// @interface SuperCats
-	interface SuperCats
-	{
+	interface SuperCats {
 		// -(void)meow;
 		[Export ("meow")]
 		void Meow ();
 	}
 
 	[Native]
-	public enum CatBehavior : long
-	{
+	public enum CatBehavior : long {
 		CatBehaviorEvil
 	}
 }

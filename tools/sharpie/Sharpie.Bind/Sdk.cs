@@ -59,7 +59,7 @@ public sealed class Sdk {
 		if (!string.IsNullOrEmpty (Variant)) {
 			LoadVersionMaps ();
 
-			if (Version != null) {
+			if (Version is not null) {
 				if (!macOS_iOSMac_map.TryGetValue (Version.ToString (), out var iOSVersion))
 					throw new NotSupportedException ($"Unable to map the macOS version '{Version}' to an iOS version for Mac Catalyst.");
 
@@ -120,7 +120,7 @@ public sealed class Sdk {
 		};
 
 		var minVersion = GetMinVersionFlag ();
-		if (minVersion != null)
+		if (minVersion is not null)
 			cflags.Add (minVersion);
 
 		if (IsMacCatalyst) {
@@ -252,7 +252,7 @@ public sealed class Sdk {
 
 	public bool IsSupportedBySharpie {
 		get {
-			if (Version == null)
+			if (Version is null)
 				return false;
 
 			if (Architectures.Count <= 0)

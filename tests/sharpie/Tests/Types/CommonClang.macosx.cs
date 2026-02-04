@@ -2,8 +2,7 @@ using System;
 using Foundation;
 
 // @interface CommonClang
-interface CommonClang
-{
+interface CommonClang {
 	// +(instancetype)_instancetype;
 	[Static]
 	[Export ("_instancetype")]

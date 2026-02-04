@@ -26,7 +26,7 @@ public class GenerateUsingStatementsMassager : Massager<GenerateUsingStatementsM
 		MarkVisited (primitiveType);
 
 		var tree = primitiveType.GetParent<SyntaxTree> ();
-		if (tree == null)
+		if (tree is null)
 			return;
 
 		if (primitiveType is NIntType || primitiveType is NUIntType || primitiveType is NFloatType)
@@ -44,7 +44,7 @@ public class GenerateUsingStatementsMassager : Massager<GenerateUsingStatementsM
 			return;
 
 		var tree = memberType.GetParent<SyntaxTree> ();
-		if (tree == null)
+		if (tree is null)
 			return;
 
 		// it seems generic type arguments are not visited automatically

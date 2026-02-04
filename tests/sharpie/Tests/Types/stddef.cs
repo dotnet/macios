@@ -1,8 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-static class CFunctions
-{
+static class CFunctions {
 	// extern ptrdiff_t _ptrdiff_t ();
 	[DllImport ("__Internal")]
 	[Verify (PlatformInvoke)]

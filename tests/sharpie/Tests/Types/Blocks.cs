@@ -15,8 +15,7 @@ delegate int Named_Func_Long_Int (long arg0);
 delegate void Variadic (int arg0, IntPtr varArgs);
 
 // @interface TypedefBlockTests
-interface TypedefBlockTests
-{
+interface TypedefBlockTests {
 	// -(Action)get_Action;
 	[Export ("get_Action")]
 	[Verify (MethodToProperty)]
@@ -34,8 +33,7 @@ interface TypedefBlockTests
 }
 
 // @interface PropertyBlockTests
-interface PropertyBlockTests
-{
+interface PropertyBlockTests {
 	// @property (readonly, copy) void (^action)();
 	[Export ("action", ArgumentSemantic.Copy)]
 	Action Action { get; }
@@ -66,8 +64,7 @@ interface PropertyBlockTests
 }
 
 // @interface AnonymousBlockTests
-interface AnonymousBlockTests
-{
+interface AnonymousBlockTests {
 	// -(void)set_Action:(void (^)())handler;
 	[Export ("set_Action:")]
 	void Set_Action (Action handler);

@@ -50,7 +50,7 @@ public static class StringExtensions {
 	[return: NotNullIfNotNull (nameof (strings))]
 	public static string? SharedPrefix (this IEnumerable<string>? strings)
 	{
-		return strings == null ? null : SharedPrefix (strings.ToArray ());
+		return strings is null ? null : SharedPrefix (strings.ToArray ());
 	}
 
 	/// <summary>
@@ -73,7 +73,7 @@ public static class StringExtensions {
 		for (int length = 0; length < first.Length; length++) {
 			var c = first [length];
 			for (int i = 1; i < strings.Length; i++) {
-				if (strings [i] != null && (
+				if (strings [i] is not null && (
 					length >= strings [i].Length ||
 					strings [i] [length] != c))
 					return length == 0 ? "" : strings [i].Substring (0, length);

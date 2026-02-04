@@ -2,33 +2,29 @@ using System.Runtime.InteropServices;
 using Foundation;
 
 // @interface NSArrayToArrayOfNSObjectTest
-interface NSArrayToArrayOfNSObjectTest
-{
+interface NSArrayToArrayOfNSObjectTest {
 	// -(NSArray *)getNSArray;
 	[Export ("getNSArray")]
 	[Verify (MethodToProperty), Verify (StronglyTypedNSArray)]
-	NSObject[] NSArray { get; }
+	NSObject [] NSArray { get; }
 }
 
 // @interface NSArrayOfNSStringToArrayOfStringTest
-interface NSArrayOfNSStringToArrayOfStringTest
-{
+interface NSArrayOfNSStringToArrayOfStringTest {
 	// -(NSArray<NSString *> *)getStrings;
 	[Export ("getStrings")]
 	[Verify (MethodToProperty)]
-	string[] Strings { get; }
+	string [] Strings { get; }
 }
 
 // @interface NSStringPropertyTest
-interface NSStringPropertyTest
-{
+interface NSStringPropertyTest {
 	// @property (readonly, copy) NSString * someString;
 	[Export ("someString")]
 	string SomeString { get; }
 }
 
-static class CFunctions
-{
+static class CFunctions {
 	// extern NSString * _Nullable CFunctionWithNSStringTest (NSString * _Nonnull , int c, NSString * _Nullable );
 	[DllImport ("__Internal")]
 	[Verify (PlatformInvoke)]

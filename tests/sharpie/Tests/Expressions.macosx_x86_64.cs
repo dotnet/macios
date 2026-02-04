@@ -1,13 +1,11 @@
 using System.Runtime.InteropServices;
 
 [StructLayout (LayoutKind.Sequential)]
-public struct SomeStruct
-{
-	public sbyte[] buf;
+public struct SomeStruct {
+	public sbyte [] buf;
 }
 
-public enum Expressions
-{
+public enum Expressions {
 	One = 1,
 	Char = 97,
 	FourCC = 1650812274,
@@ -30,19 +28,19 @@ public enum Expressions
 	ConditionalAnd = 2 && 0,
 	ConditionalOr = 2 || 0,
 	Plus = +10,
-	Minus = (int)-273.15,
+	Minus = (int) -273.15,
 	Not = !100,
 	BitNot = ~200,
 	BinaryTreeSimple = 1 + 2 * 3,
 	BinaryTreeParen = ((2 + (3 * (4 / 1) + 8))),
 	ParenSubExpr = (0),
-	SizeofChar = sizeof(sbyte),
-	SizeofShort = sizeof(short),
-	SizeofInt = sizeof(int),
+	SizeofChar = sizeof (sbyte),
+	SizeofShort = sizeof (short),
+	SizeofInt = sizeof (int),
 	SizeofLong = 8,
-	SizeofLongLong = sizeof(long),
-	SizeofFloat = sizeof(float),
-	SizeofDouble = sizeof(double),
+	SizeofLongLong = sizeof (long),
+	SizeofFloat = sizeof (float),
+	SizeofDouble = sizeof (double),
 	SizeofLongDouble = 16,
 	SizeofPointer = 8,
 	SizeofSomeStruct = 32,

@@ -1,8 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-static class CFunctions
-{
+static class CFunctions {
 	// extern int8_t _int8_t ();
 	[DllImport ("__Internal")]
 	[Verify (PlatformInvoke)]

@@ -14,7 +14,7 @@ public sealed class NamespaceMassager : Massager<NamespaceMassager> {
 	public NamespaceMassager (ObjectiveCBinder binder, string @namespace)
 		: base (binder)
 	{
-		if (@namespace == null)
+		if (@namespace is null)
 			throw new ArgumentNullException ("namespace");
 
 		if (String.IsNullOrWhiteSpace (@namespace))

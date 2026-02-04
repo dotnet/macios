@@ -18,7 +18,7 @@ public sealed class AttributeMassager : Massager<AttributeMassager> {
 	static string? RemoveSuffix (string? name)
 	{
 		const string attr = "Attribute";
-		if (name != null &&
+		if (name is not null &&
 			name.Length > attr.Length &&
 			name.EndsWith (attr, System.StringComparison.Ordinal))
 			return name.Substring (0, name.Length - attr.Length);
@@ -33,13 +33,13 @@ public sealed class AttributeMassager : Massager<AttributeMassager> {
 		MarkVisited (attribute);
 
 		var simpleType = attribute.Type as SimpleType;
-		if (simpleType != null) {
+		if (simpleType is not null) {
 			simpleType.Identifier = RemoveSuffix (simpleType.Identifier);
 			return;
 		}
 
 		var memberType = attribute.Type as MemberType;
-		if (memberType != null) {
+		if (memberType is not null) {
 			memberType.MemberName = RemoveSuffix (memberType.MemberName);
 			return;
 		}

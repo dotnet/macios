@@ -10,12 +10,12 @@ using Foundation;
   the generated interface. If consumers are not supposed to implement this
   protocol, then [Model] is redundant and will generate code that will never
   be used.
-*/[Mac (10,9)]
+*/
+[Mac (10, 9)]
 [Protocol]
-interface Foo
-{
+interface Foo {
 	// @required +(id)availability_StaticAbstractInternal_Export:(int)n, ... __attribute__((availability(macos, introduced=10.10))) __attribute__((availability(ios, introduced=8.0)));
-	[Mac (10,10), iOS (8,0)]
+	[Mac (10, 10), iOS (8, 0)]
 	[Static, Internal, Abstract]
 	[Export ("availability_StaticAbstractInternal_Export:", IsVariadic = true)]
 	NSObject Availability_StaticAbstractInternal_Export (int n, IntPtr varArgs);

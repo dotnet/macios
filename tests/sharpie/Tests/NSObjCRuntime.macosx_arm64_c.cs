@@ -3,8 +3,7 @@ using Foundation;
 
 [Static]
 [Verify (ConstantsInterfaceAssociation)]
-partial interface Constants
-{
+partial interface Constants {
 	// extern NSInteger NSIntegerType;
 	[Field ("NSIntegerType", "__Internal")]
 	nint NSIntegerType { get; }

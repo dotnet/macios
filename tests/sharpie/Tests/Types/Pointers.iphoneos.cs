@@ -1,8 +1,7 @@
 using System.Runtime.InteropServices;
 using Foundation;
 
-static class CFunctions
-{
+static class CFunctions {
 	// extern void * _void_ptr ();
 	[DllImport ("__Internal")]
 	[Verify (PlatformInvoke)]
@@ -25,8 +24,7 @@ static class CFunctions
 }
 
 // @interface ObjCObjectOutPointers
-interface ObjCObjectOutPointers
-{
+interface ObjCObjectOutPointers {
 	// -(void)getError:(NSError **)error;
 	[Export ("getError:")]
 	void GetError (out NSError error);

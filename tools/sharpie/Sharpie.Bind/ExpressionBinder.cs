@@ -14,7 +14,7 @@ public class ExpressionBinder : AstVisitor {
 	public static Expression? Bind (BindingResult bindingResult, Expr? expr,
 		Func<ulong, object>? numericLiteralResolver = null)
 	{
-		if (expr == null)
+		if (expr is null)
 			return null;
 
 		var binder = new ExpressionBinder (bindingResult, numericLiteralResolver);
@@ -46,7 +46,7 @@ public class ExpressionBinder : AstVisitor {
 	void ResolveNumericLiteral (ulong literal)
 	{
 		object resolved = literal;
-		if (numericLiteralResolver != null)
+		if (numericLiteralResolver is not null)
 			resolved = numericLiteralResolver (literal) ?? resolved;
 		stack.Push (new PrimitiveExpression (resolved));
 	}

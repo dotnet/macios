@@ -26,7 +26,7 @@ public class BindingTokenWriter : TokenWriter {
 
 	public BindingTokenWriter (ObjectiveCBinder binder, TokenWriter writer)
 	{
-		if (writer == null)
+		if (writer is null)
 			throw new ArgumentNullException (nameof (writer));
 
 		this.Binder = binder;
@@ -95,7 +95,7 @@ public class BindingTokenWriter : TokenWriter {
 			disableNewLine = false;
 			inPropertyDeclaration = false;
 			NewLine ();
-		} else if ((node is TypeDeclaration || node is DelegateDeclaration) && node.NextSibling != null) {
+		} else if ((node is TypeDeclaration || node is DelegateDeclaration) && node.NextSibling is not null) {
 			NewLine ();
 		} else if (node is AttributeSection) {
 			inAttributeSection = false;
@@ -150,7 +150,7 @@ public class BindingTokenWriter : TokenWriter {
 
 	public override void WritePrimitiveValue (object value, string? literalValue = null)
 	{
-		if (literalValue != null) {
+		if (literalValue is not null) {
 			writer.WritePrimitiveValue (value, literalValue);
 			return;
 		}
@@ -187,7 +187,7 @@ public class BindingTokenWriter : TokenWriter {
 				.OfType<TypeDeclaration> ()
 				.FirstOrDefault (t => t.ClassType == ClassType.Enum);
 
-			hexFormat = enumDecl != null && enumDecl.HasAttribute<Attributes.FlagsAttribute> ();
+			hexFormat = enumDecl is not null && enumDecl.HasAttribute<Attributes.FlagsAttribute> ();
 		}
 
 		// The base version will always write the 'u' and 'L'

@@ -50,7 +50,7 @@ public sealed class NSArrayMassager : Massager<NSArrayMassager> {
 			var parentEntity =
 				arrayType.GetParent<MethodDeclaration> () ??
 				arrayType.GetParent<PropertyDeclaration> () as EntityDeclaration;
-			if (parentEntity != null)
+			if (parentEntity is not null)
 				parentEntity.AddAttribute (new VerifyAttribute (VerifyHint.StronglyTypedNSArray));
 		}
 	}

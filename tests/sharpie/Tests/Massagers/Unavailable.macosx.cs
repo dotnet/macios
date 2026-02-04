@@ -3,8 +3,7 @@ using ObjCRuntime;
 
 // @interface UnavailableCtors
 [DisableDefaultCtor]
-interface UnavailableCtors
-{
+interface UnavailableCtors {
 	// -(instancetype)initWithBar:(int)bar __attribute__((objc_designated_initializer));
 	[Export ("initWithBar:")]
 	[DesignatedInitializer]

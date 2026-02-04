@@ -3,26 +3,22 @@ using ObjCRuntime;
 
 // @interface UnavailableWatchOS
 [NoWatch]
-interface UnavailableWatchOS
-{
+interface UnavailableWatchOS {
 }
 
 // @interface UnavailableTvOS
 [NoTV]
-interface UnavailableTvOS
-{
+interface UnavailableTvOS {
 }
 
 // @interface iOSAndMacOnly
-[NoWatch, NoTV, Mac (10,11), iOS (9,1)]
-interface iOSAndMacOnly
-{
+[NoWatch, NoTV, Mac (10, 11), iOS (9, 1)]
+interface iOSAndMacOnly {
 }
 
 // @interface Availability
-[Mac (10,8), iOS (7,0)]
-interface Availability
-{
+[Mac (10, 8), iOS (7, 0)]
+interface Availability {
 	// -(void)thisIsDeprecated __attribute__((availability(macos, deprecated=10.10.3))) __attribute__((availability(ios, deprecated=8.3)));
 	[Deprecated (PlatformName.MacOSX, 10, 10, 3, message: "Don't use this in Mac homie")]
 	[Deprecated (PlatformName.iOS, 8, 3, message: "Don't use this in iOS homie")]
@@ -47,17 +43,17 @@ interface Availability
 	void ThisWasIntroducedThenDeprecatedThenObsoletedInBothMacAndIos ();
 
 	// -(void)thisShouldBeShorthandMac __attribute__((availability(macos, introduced=10.10.3)));
-	[Mac (10,10,3)]
+	[Mac (10, 10, 3)]
 	[Export ("thisShouldBeShorthandMac")]
 	void ThisShouldBeShorthandMac ();
 
 	// -(void)thisShouldBeShorthandMacOnlyOn64 __attribute__((availability(macos, introduced=10.13.4)));
-	[Mac (10,13,4)]
+	[Mac (10, 13, 4)]
 	[Export ("thisShouldBeShorthandMacOnlyOn64")]
 	void ThisShouldBeShorthandMacOnlyOn64 ();
 
 	// -(void)thisShouldBeShorthandIos __attribute__((availability(ios, introduced=8.3.1)));
-	[iOS (8,3,1)]
+	[iOS (8, 3, 1)]
 	[Export ("thisShouldBeShorthandIos")]
 	void ThisShouldBeShorthandIos ();
 
@@ -73,7 +69,7 @@ interface Availability
 
 	// -(void)introducedOnMac64BitOnlyAndLaterDeprecated __attribute__((availability(macos, introduced=10.13.4))) __attribute__((availability(macos, deprecated=10.13.5)));
 	[Deprecated (PlatformName.MacOSX, 10, 13, 5)]
-	[Mac (10,13,4)]
+	[Mac (10, 13, 4)]
 	[Export ("introducedOnMac64BitOnlyAndLaterDeprecated")]
 	void IntroducedOnMac64BitOnlyAndLaterDeprecated ();
 }

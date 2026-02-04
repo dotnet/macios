@@ -6,8 +6,9 @@ namespace Extrospection {
 		{
 		}
 
-		public void Execute (IEnumerable<string> assemblyNames, string outputDirectory, IEnumerable<string> searchDirectories, string responseFile)		{
-			string[] arguments = new string [] {
+		public void Execute (IEnumerable<string> assemblyNames, string outputDirectory, IEnumerable<string> searchDirectories, string responseFile)
+		{
+			string [] arguments = new string [] {
 				$"@{responseFile}",
 			};
 
@@ -202,7 +203,7 @@ namespace Extrospection {
 			foreach (var v in Visitors)
 				v.VisitArrayType (type);
 		}
-		
+
 		public override void VisitPointerType (ClangSharp.PointerType type)
 		{
 			base.VisitPointerType (type);

@@ -24,7 +24,7 @@ public sealed class MethodToPropertyMassager : Massager<MethodToPropertyMassager
 			return;
 
 		var nativeDecl = methodDeclaration.Annotation<ObjCMethodDecl> ();
-		if (nativeDecl == null)
+		if (nativeDecl is null)
 			return;
 
 		if (methodDeclaration.Parameters.Count > 0 || methodDeclaration.ReturnsVoid ())
@@ -56,13 +56,13 @@ public sealed class MethodToPropertyMassager : Massager<MethodToPropertyMassager
 		methodDeclaration.ReplaceWith (propertyDeclaration);
 
 		var parentType = propertyDeclaration.Parent as TypeDeclaration;
-		if (parentType == null)
+		if (parentType is null)
 			return;
 
 		// try to match a compatible setter method
 		foreach (var setterMethodDeclaration in parentType.Members.OfType<MethodDeclaration> ()) {
 			var nativeSetterDecl = setterMethodDeclaration.Annotation<ObjCMethodDecl> ();
-			if (nativeSetterDecl == null)
+			if (nativeSetterDecl is null)
 				continue;
 
 			if (setterMethodDeclaration.Parameters.Count == 1 &&

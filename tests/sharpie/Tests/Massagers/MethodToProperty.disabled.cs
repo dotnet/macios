@@ -1,8 +1,7 @@
 using Foundation;
 
 // @interface MethodToProperty
-interface MethodToProperty
-{
+interface MethodToProperty {
 	// -(bool)isEnabled;
 	[Export ("isEnabled")]
 	bool IsEnabled ();

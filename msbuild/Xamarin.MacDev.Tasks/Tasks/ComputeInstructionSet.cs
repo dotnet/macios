@@ -28,7 +28,15 @@ namespace Xamarin.MacDev.Tasks {
 		#endregion
 
 		// Device-to-CPU mapping
-		// This maps each device model to its CPU model
+		// This maps each device model to its CPU model.
+		//
+		// Sources for device-to-CPU information:
+		// - iPhone models and chips: https://en.wikipedia.org/wiki/List_of_iPhone_models
+		// - iPad models and chips: https://en.wikipedia.org/wiki/List_of_iPad_models
+		// - Apple TV models and chips: https://en.wikipedia.org/wiki/Apple_TV#Specifications
+		// - Apple's technical specifications pages for each device (e.g., https://support.apple.com/kb/SP714 for iPhone 6s)
+		//
+		// To update: Cross-reference Wikipedia articles with Apple's official tech specs when new devices are released.
 		static readonly Dictionary<string, string> DeviceToCpu = new Dictionary<string, string> {
 			// iOS devices
 			{ "iPhone6s", "A9" },
@@ -104,7 +112,17 @@ namespace Xamarin.MacDev.Tasks {
 		};
 
 		// Device-to-max-OS mapping
-		// This maps each device to its maximum supported OS version
+		// This maps each device to its maximum supported OS version.
+		//
+		// Sources for maximum OS version support:
+		// - iOS compatibility: https://en.wikipedia.org/wiki/IOS_version_history#Overview
+		// - iPadOS compatibility: https://en.wikipedia.org/wiki/IPadOS_version_history#Overview
+		// - tvOS compatibility: https://en.wikipedia.org/wiki/TvOS_version_history#Overview
+		// - Apple's official iOS/iPadOS/tvOS release notes and compatibility pages
+		// - https://support.apple.com/en-us/120256 (iOS and iPadOS compatibility)
+		//
+		// To update: Check Wikipedia compatibility tables and Apple's official support documents when new OS versions are released.
+		// Note: These represent the latest known maximum versions and may need updates as Apple releases new OS versions.
 		static readonly Dictionary<string, string> DeviceToMaxOS = new Dictionary<string, string> {
 			// iOS devices
 			{ "iPhone6s", "15.8" },
@@ -180,7 +198,20 @@ namespace Xamarin.MacDev.Tasks {
 		};
 
 		// CPU-to-instruction-set mapping
-		// This maps each CPU model to the instruction set it supports
+		// This maps each CPU model to the instruction set it supports.
+		//
+		// Sources for CPU instruction set architecture information:
+		// - Apple A-series chips: https://en.wikipedia.org/wiki/Apple_silicon#A_series
+		// - Apple M-series chips: https://en.wikipedia.org/wiki/Apple_silicon#M_series
+		// - ARM architecture versions: https://en.wikipedia.org/wiki/ARM_architecture_family#Cores
+		// - Apple's LLVM source and documentation for architecture features
+		// - ARM Architecture Reference Manuals: https://developer.arm.com/documentation/
+		//
+		// Crossgen2 instruction set compatibility:
+		// Run `crossgen2 --help` to see supported instruction sets (current list):
+		// x86-64-v2, x86-64-v3, x86-64-v4, armv8-a, armv8.1-a, armv8.2-a, armv8.3-a, armv8.4-a, armv8.5-a, armv8.6-a, apple-m1
+		//
+		// To update: Verify new Apple chip architectures against ARM documentation and crossgen2 supported instruction sets.
 		static readonly Dictionary<string, string> CpuToInstructionSet = new Dictionary<string, string> {
 			// ARM chips
 			{ "A8", "armv8-a" },         // ARMv8.0-A (iPhone 6, iPad Air 2, Apple TV 4)

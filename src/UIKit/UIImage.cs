@@ -30,7 +30,7 @@ namespace UIKit {
 		extern static void UIImageWriteToSavedPhotosAlbum (/* UIImage */ IntPtr image, /* id */ IntPtr obj, /* SEL */ IntPtr selector, /*vcoid* */ IntPtr ctx);
 
 		/// <include file="../../docs/api/UIKit/UIImage.xml" path="/Documentation/Docs[@DocId='M:UIKit.UIImage.SaveToPhotosAlbum(UIKit.UIImage.SaveStatus)']/*" />
-	public void SaveToPhotosAlbum (SaveStatus status)
+		public void SaveToPhotosAlbum (SaveStatus status)
 		{
 			UIImageStatusDispatcher? dis = null;
 			UIApplication.EnsureUIThread ();

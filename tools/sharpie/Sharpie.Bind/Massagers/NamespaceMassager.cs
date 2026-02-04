@@ -40,8 +40,8 @@ public sealed class NamespaceMassager : Massager<NamespaceMassager> {
 
 		syntaxTree.Members.MoveTo (namespaceDeclaration.Members);
 
-		foreach (var usignDecl in usings)
-			syntaxTree.Members.Add (usignDecl);
+		foreach (var usingDecl in usings)
+			syntaxTree.Members.Add (usingDecl);
 
 		syntaxTree.Members.Add (namespaceDeclaration);
 	}

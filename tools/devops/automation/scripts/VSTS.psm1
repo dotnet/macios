@@ -517,15 +517,24 @@ class BuildConfiguration {
         # the following list will be used to track the tags and set them in VSTS to make the monitoring person life easier
         [System.Collections.Generic.List[string]]$tags = @()
 
-        if ($configuration.BuildReason -eq "Schedule") {
+        $buildReason = $configuration.PARENT_BUILD_BUILD_REASON
+        if (-not $buildReason) {
+            $buildReason = $Env:BUILD_REASON
+        }
+
+        if ($buildReason -eq "Schedule") {
             $tags.Add("cronjob")
         }
 
-        if ($Env:IS_PR -eq "true" -or $configuration.BuildReason -eq "PullRequest" -or (($configuration.BuildReason -eq "Manual") -and ($configuration.PARENT_BUILD_BUILD_SOURCEBRANCH -eq "merge")) ) {
+        $prId = $null
+        if ($Env:IS_PR -eq "true" -or $buildReason -eq "PullRequest" -or (($buildReason -eq "Manual" -or $buildReason -eq "IndividualCI") -and ($configuration.PARENT_BUILD_BUILD_SOURCEBRANCHNAME -eq "merge")) ) {
           Write-Host "Configuring build from PR."
 
           # retrieve the PR data to be able to fwd the labels from github
           $prId = $this.ExportPRId($configuration)
+        }
+
+        if ($prId) {
           $prInfo = Get-GitHubPRInfo -ChangeId $prId
           Write-Host $prInfo
 
@@ -544,8 +553,10 @@ class BuildConfiguration {
 
           # set output variables based on the git labels
           $this.SetLabelsFromPR($prInfo, $true)
-
         } else {
+          if ($Env:IS_PR -eq "true") {
+            Write-Host "No PR id found; treating build as CI."
+          }
           # thee are not labels to add in a CI build and we will set the build as a ci build.
           $this.SetLabelsFromPR($null, $false)
           if ($tags.Contains("cronjob")) {
@@ -1039,4 +1050,3 @@ Export-ModuleMember -Function Get-YamlPreview
 Export-ModuleMember -Function New-AzureDevOpsWorkItem
 Export-ModuleMember -Function New-AzureDevOpsWorkItemComment
 Export-ModuleMember -Function Find-AzureDevOpsWorkItemWithTitle
-

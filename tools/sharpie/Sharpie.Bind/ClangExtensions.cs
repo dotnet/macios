@@ -259,8 +259,9 @@ public static class ClangExtensions {
 	}
 
 	extension(Decl self) {
-		public bool IsLastInContext {
-			get { throw new NotImplementedException (); }
+		public bool GetIsLastInContext (AstVisitor visitor)
+		{
+			throw visitor.BindingResult.CreateInternalError ("Need a test case for this scenario: is last in context.");
 		}
 
 		public void Accept (AstVisitor visitor)

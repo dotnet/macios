@@ -100,7 +100,7 @@ public class NativeCodeGenerator : AstVisitor {
 			}
 		}
 
-		if (!decl.IsLastInContext)
+		if (!decl.GetIsLastInContext (this))
 			writer.Write (",");
 
 		writer.WriteLine ();
@@ -306,7 +306,7 @@ public class NativeCodeGenerator : AstVisitor {
 		if (isForwardDeclared) {
 			writer.Write (";");
 			writer.WriteLine ();
-			if (!decl.IsLastInContext)
+			if (!decl.GetIsLastInContext (this))
 				writer.WriteLine ();
 			return;
 		}

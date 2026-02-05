@@ -17,11 +17,6 @@ static class NRefactoryExtensions {
 		entity.Attributes.Add (new AttributeSection (attribute));
 	}
 
-	public static void AddAttribute (this EntityDeclaration entity, object attribute)
-	{
-		throw new System.NotImplementedException ();
-	}
-
 	public static void RemoveAttributesOfType<T> (this EntityDeclaration entity) where T : ICSharpCode.NRefactory.CSharp.Attribute
 	{
 		foreach (var attrSection in entity.Attributes.ToList ()) {

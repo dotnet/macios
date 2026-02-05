@@ -17,13 +17,6 @@ all-local:: $(SHARPIE_BIND_TOOL_DEBUG)
 $(SHARPIE_BIND_TOOL_DEBUG): $(Sharpie.Bind_dependencies)
 	$(Q_BUILD) $(DOTNET) build Sharpie.Bind.Tool/Sharpie.Bind.Tool.csproj $(DOTNET_BUILD_VERBOSITY) -bl:$@-build.binlog
 
-
-SHARPIE_BIND_TOOL_RELEASE=Sharpie.Bind.Tool/bin/Release/osx-arm64/publish/Sharpie.Bind.Tool
-
-all-local:: $(SHARPIE_BIND_TOOL_RELEASE)
-$(SHARPIE_BIND_TOOL_RELEASE): $(Sharpie.Bind_dependencies)
-	$(Q_BUILD) $(DOTNET) publish Sharpie.Bind.Tool/Sharpie.Bind.Tool.csproj $(DOTNET_PACK_VERBOSITY) -bl:$@-publish.binlog
-
 SHARPIE_BIND_TOOL_NUPKG_NAME=Sharpie.Bind.Tool.$(SHARPIE_VERSION).nupkg
 SHARPIE_BIND_TOOL_NUPKG=Sharpie.Bind.Tool/bin/Release/$(SHARPIE_BIND_TOOL_NUPKG_NAME)
 

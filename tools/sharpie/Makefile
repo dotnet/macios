@@ -26,6 +26,7 @@ $(SHARPIE_BIND_TOOL_NUPKG): $(Sharpie.Bind_dependencies)
 
 all-local:: $(DOTNET_NUPKG_DIR)/$(SHARPIE_BIND_TOOL_NUPKG_NAME)
 $(DOTNET_NUPKG_DIR)/$(SHARPIE_BIND_TOOL_NUPKG_NAME): $(SHARPIE_BIND_TOOL_NUPKG)
+	$(Q) mkdir -p $(dir $@)
 	$(Q) $(CP) $< $@
 
 run-tests: $(Sharpie.Bind_dependencies)

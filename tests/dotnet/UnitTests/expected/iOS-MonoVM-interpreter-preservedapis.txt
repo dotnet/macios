@@ -4080,7 +4080,7 @@ System.Private.CoreLib.dll:System.Diagnostics.StackFrame[] System.Diagnostics.St
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace..ctor(System.Boolean)
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace..ctor(System.Exception, System.Boolean)
-System.Private.CoreLib.dll:System.Diagnostics.StackTrace.<TryResolveStateMachineMethod>g__GetDeclaredMethods|32_0(System.Type)
+System.Private.CoreLib.dll:System.Diagnostics.StackTrace.<TryResolveStateMachineMethod>g__GetDeclaredMethods|34_0(System.Type)
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace.GetCustomAttributesSafe(System.Reflection.MemberInfo, System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace.GetFrame(System.Int32)
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace.GetTrace(System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Int32, System.Boolean)

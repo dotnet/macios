@@ -15,7 +15,16 @@ XCODE_IS_PREVIEW=$(cat "$FILE")
 make print-variable-value-to-file FILE="$FILE" VARIABLE=XCODE_IS_STABLE
 XCODE_IS_STABLE=$(cat "$FILE")
 
+make print-variable-value-to-file FILE="$FILE" VARIABLE=XCODE_DEVELOPER_ROOT
+XCODE_DEVELOPER_ROOT=$(cat "$FILE")
+
 rm -f "$FILE"
+
+XCODE_NAME=$(basename "$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")")
+if [[ "$XCODE_NAME" =~ -([Rr][Cc]|[Bb]eta) ]]; then
+	XCODE_IS_PREVIEW=true
+	XCODE_IS_STABLE=false
+fi
 
 if [[ "$XCODE_IS_PREVIEW $XCODE_IS_STABLE" == "true false" ]]; then
 	if [[ "${XCODE_CHANNEL}" != "Beta" ]]; then

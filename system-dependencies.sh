@@ -396,7 +396,7 @@ function xcodebuild_download_selected_platforms ()
 	XCODE_DEVELOPER_ROOT=$(grep XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
 	XCODE_NAME=$(basename "$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")")
 	# we use the same logic here as in Make.config to determine whether we're using a stable version of Xcode or not (search for XCODE_IS_STABLE/XCODE_IS_PREVIEW)
-	XCODE_IS_STABLE=$(echo "$XCODE_NAME" | sed -e 's@^Xcode[_0-9.]*[.]app$@YES@')
+	XCODE_IS_STABLE=$(echo "$XCODE_NAME" | sed -e 's/.*-[Rr][Cc].*//' -e 's/.*-[Bb]eta.*//' -e 's@^Xcode[_0-9.]*[.]app$@YES@')
 	XCODE_VERSION=$(grep ^XCODE_VERSION= Make.config | sed 's/.*=//')
 
 	IOS_BUILD_VERSION=
@@ -1174,4 +1174,3 @@ else
 	echo "System check failed"
 	exit 1
 fi
-

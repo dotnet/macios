@@ -340,7 +340,8 @@ namespace Xamarin.MacDev.Tasks {
 		string? ComputeMacInstructionSet (ApplePlatform platform, Version targetVersion)
 		{
 			// For macOS and Mac Catalyst, we need to determine the instruction set based on RuntimeIdentifier
-			// RuntimeIdentifier format: <os>-<arch> (e.g., "osx-x64", "osx-arm64", "maccatalyst-x64", "maccatalyst-arm64")
+			// RuntimeIdentifier format: <os>-<arch> or <os>.<version>-<arch> 
+			// Examples: "osx-x64", "osx-arm64", "osx.13.0-arm64", "maccatalyst-x64", "maccatalyst-arm64"
 			
 			if (string.IsNullOrEmpty (RuntimeIdentifier)) {
 				Log.LogMessage (MessageImportance.Low, $"RuntimeIdentifier is not set, cannot determine instruction set for {platform}");
@@ -353,7 +354,8 @@ namespace Xamarin.MacDev.Tasks {
 				return null;
 			}
 
-			var arch = parts [1];
+			// The architecture is always the last segment after the last hyphen
+			var arch = parts [parts.Length - 1];
 
 			// Determine instruction set based on architecture
 			if (arch == "x64") {

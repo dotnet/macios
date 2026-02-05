@@ -50,19 +50,24 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
-		[TestCase (ApplePlatform.MacOSX, "10.15", "x86-64-v2")]
-		[TestCase (ApplePlatform.MacOSX, "11.0", "x86-64-v2")]
-		[TestCase (ApplePlatform.MacOSX, "12.0", "x86-64-v2")]
-		[TestCase (ApplePlatform.MacCatalyst, "14.0", "x86-64-v2")]
-		[TestCase (ApplePlatform.MacCatalyst, "15.0", "x86-64-v2")]
-		public void TestmacOSInstructionSets (ApplePlatform platform, string osVersion, string expectedInstructionSet)
+		[TestCase (ApplePlatform.MacOSX, "10.15", "osx-x64", "x86-64-v2")]
+		[TestCase (ApplePlatform.MacOSX, "11.0", "osx-x64", "x86-64-v2")]
+		[TestCase (ApplePlatform.MacOSX, "11.0", "osx-arm64", "apple-m1")]
+		[TestCase (ApplePlatform.MacOSX, "12.0", "osx-x64", "x86-64-v2")]
+		[TestCase (ApplePlatform.MacOSX, "12.0", "osx-arm64", "apple-m1")]
+		[TestCase (ApplePlatform.MacCatalyst, "14.0", "maccatalyst-x64", "x86-64-v2")]
+		[TestCase (ApplePlatform.MacCatalyst, "14.0", "maccatalyst-arm64", "apple-m1")]
+		[TestCase (ApplePlatform.MacCatalyst, "15.0", "maccatalyst-x64", "x86-64-v2")]
+		[TestCase (ApplePlatform.MacCatalyst, "15.0", "maccatalyst-arm64", "apple-m1")]
+		public void TestmacOSInstructionSets (ApplePlatform platform, string osVersion, string runtimeIdentifier, string expectedInstructionSet)
 		{
 			var task = CreateTask (platform);
 			task.SupportedOSPlatformVersion = osVersion;
+			task.RuntimeIdentifier = runtimeIdentifier;
 
 			ExecuteTask (task);
 
-			Assert.AreEqual (expectedInstructionSet, task.InstructionSet, $"Instruction set for {platform} {osVersion}");
+			Assert.AreEqual (expectedInstructionSet, task.InstructionSet, $"Instruction set for {platform} {osVersion} with {runtimeIdentifier}");
 		}
 
 		[Test]

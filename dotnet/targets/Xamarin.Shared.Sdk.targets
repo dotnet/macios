@@ -8,7 +8,6 @@
 	</PropertyGroup>
 
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.CompileNativeCode" AssemblyFile="$(_XamarinTaskAssembly)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeInstructionSet" AssemblyFile="$(_XamarinTaskAssembly)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.FindAotCompiler" AssemblyFile="$(_XamarinTaskAssembly)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.GetFullPaths" AssemblyFile="$(_XamarinTaskAssembly)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.InstallNameTool" AssemblyFile="$(_XamarinTaskAssembly)" />
@@ -529,29 +528,6 @@
 			<Registrar Condition="'$(Registrar)' == '' And '$(_BundlerDebug)' != 'true' And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst')">managed-static</Registrar>
 			<Registrar Condition="'$(Registrar)' == '' And '$(_AreAnyAssembliesTrimmed)' != 'true' And ('$(MarshalManagedExceptionMode)' == '' Or '$(MarshalManagedExceptionMode)' == 'default')">partial-static</Registrar>
 			<Registrar Condition="'$(Registrar)' == ''">dynamic</Registrar>
-		</PropertyGroup>
-	</Target>
-
-	<!-- 
-		Compute the instruction set for R2R/NAOT compilation based on the SupportedOSPlatformVersion.
-		This target runs early in the build to set PublishReadyToRunCrossgen2ExtraArgs if needed.
-	-->
-	<Target Name="_ComputeInstructionSetForCrossgen2"
-		Condition="'$(PublishReadyToRun)' == 'true'"
-		BeforeTargets="PrepareForILLink">
-		<ComputeInstructionSet
-			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
-			SessionId="$(SessionId)"
-			TargetFrameworkMoniker="$(TargetFramework)"
-			SdkDevPath="$(_SdkDevPath)"
-			>
-			<Output TaskParameter="InstructionSet" PropertyName="_ComputedInstructionSet" />
-		</ComputeInstructionSet>
-
-		<PropertyGroup Condition="'$(_ComputedInstructionSet)' != ''">
-			<!-- Append the instruction set to the existing PublishReadyToRunCrossgen2ExtraArgs -->
-			<PublishReadyToRunCrossgen2ExtraArgs Condition="'$(PublishReadyToRunCrossgen2ExtraArgs)' == ''">--instruction-set:$(_ComputedInstructionSet)</PublishReadyToRunCrossgen2ExtraArgs>
-			<PublishReadyToRunCrossgen2ExtraArgs Condition="'$(PublishReadyToRunCrossgen2ExtraArgs)' != ''">$(PublishReadyToRunCrossgen2ExtraArgs) --instruction-set:$(_ComputedInstructionSet)</PublishReadyToRunCrossgen2ExtraArgs>
 		</PropertyGroup>
 	</Target>
 

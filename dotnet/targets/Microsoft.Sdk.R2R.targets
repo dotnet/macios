@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeInstructionSet" AssemblyFile="$(_XamarinTaskAssembly)" />
+
+	<!-- 
+		Compute the instruction set for R2R/NAOT compilation based on the SupportedOSPlatformVersion and RuntimeIdentifier.
+		This target runs early in the build to set PublishReadyToRunCrossgen2ExtraArgs if needed.
+	-->
+	<Target Name="_ComputeInstructionSetForCrossgen2"
+		Condition="'$(PublishReadyToRun)' == 'true'"
+		BeforeTargets="ResolveReadyToRunCompilers">
+		<ComputeInstructionSet
+			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
+			RuntimeIdentifier="$(RuntimeIdentifier)"
+			SessionId="$(SessionId)"
+			TargetFrameworkMoniker="$(TargetFramework)"
+			SdkDevPath="$(_SdkDevPath)"
+			>
+			<Output TaskParameter="InstructionSet" PropertyName="_ComputedInstructionSet" />
+		</ComputeInstructionSet>
+
+		<PropertyGroup Condition="'$(_ComputedInstructionSet)' != ''">
+			<!-- Append the instruction set to the existing PublishReadyToRunCrossgen2ExtraArgs -->
+			<PublishReadyToRunCrossgen2ExtraArgs Condition="'$(PublishReadyToRunCrossgen2ExtraArgs)' == ''">--instruction-set:$(_ComputedInstructionSet)</PublishReadyToRunCrossgen2ExtraArgs>
+			<PublishReadyToRunCrossgen2ExtraArgs Condition="'$(PublishReadyToRunCrossgen2ExtraArgs)' != ''">$(PublishReadyToRunCrossgen2ExtraArgs) --instruction-set:$(_ComputedInstructionSet)</PublishReadyToRunCrossgen2ExtraArgs>
+		</PropertyGroup>
+	</Target>
+
 	<!-- Workaround for https://github.com/dotnet/runtime/issues/79902 -->
 	<Target Name="_FixR2ROutputPaths" AfterTargets="_PrepareForReadyToRunCompilation">
 		<ItemGroup>

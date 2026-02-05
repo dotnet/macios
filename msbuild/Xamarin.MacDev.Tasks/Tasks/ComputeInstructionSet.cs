@@ -18,6 +18,8 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string SupportedOSPlatformVersion { get; set; } = "";
 
+		public string RuntimeIdentifier { get; set; } = "";
+
 		#endregion
 
 		#region Outputs
@@ -337,19 +339,32 @@ namespace Xamarin.MacDev.Tasks {
 
 		string? ComputeMacInstructionSet (ApplePlatform platform, Version targetVersion)
 		{
-			// For macOS, we need to consider both Intel and Apple Silicon
-			// For now, we'll use a conservative approach:
-			// - macOS 11.0+ (Big Sur): First version to support Apple Silicon
-			// - macOS < 11.0: Intel only
+			// For macOS and Mac Catalyst, we need to determine the instruction set based on RuntimeIdentifier
+			// RuntimeIdentifier format: <os>-<arch> (e.g., "osx-x64", "osx-arm64", "maccatalyst-x64", "maccatalyst-arm64")
+			
+			if (string.IsNullOrEmpty (RuntimeIdentifier)) {
+				Log.LogMessage (MessageImportance.Low, $"RuntimeIdentifier is not set, cannot determine instruction set for {platform}");
+				return null;
+			}
 
-			if (targetVersion.Major >= 11) {
-				// Supports Apple Silicon, but we need to support Intel too
-				// For cross-platform support, we'll return the Intel instruction set
-				// The actual instruction set will depend on the RuntimeIdentifier
-				return "x86-64-v2"; // Conservative Intel support
-			} else {
-				// Intel only
+			var parts = RuntimeIdentifier.Split ('-');
+			if (parts.Length < 2) {
+				Log.LogMessage (MessageImportance.Low, $"RuntimeIdentifier '{RuntimeIdentifier}' has unexpected format");
+				return null;
+			}
+
+			var arch = parts [1];
+
+			// Determine instruction set based on architecture
+			if (arch == "x64") {
+				// Intel/AMD x64 architecture
 				return "x86-64-v2";
+			} else if (arch == "arm64") {
+				// Apple Silicon
+				return "apple-m1";
+			} else {
+				Log.LogMessage (MessageImportance.Low, $"Unknown architecture '{arch}' in RuntimeIdentifier '{RuntimeIdentifier}'");
+				return null;
 			}
 		}
 

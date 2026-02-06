@@ -87,6 +87,7 @@ parameters:
       label: sharpie,
       splitByPlatforms: false,
       testPrefix: 'simulator_tests',
+      extraBotDemand: 'macOS.Architecture -equals arm64',
     },
     {
       label: xcframework,
@@ -97,6 +98,7 @@ parameters:
       label: xtro,
       splitByPlatforms: false,
       testPrefix: 'simulator_tests',
+      extraBotDemand: 'macOS.Architecture -equals arm64',
     },
   ]
 

@@ -97,6 +97,7 @@ stages:
       - XcodeChannel -equals ${{ parameters.XcodeChannel }}
       - ${{ each demand in parameters.extraBotDemands }}:
         - demand
+      - $(EXTRA_BOT_DEMAND)
       workspace:
         clean: all
     strategy:

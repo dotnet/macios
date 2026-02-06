@@ -49,7 +49,7 @@ namespace UIKit {
 	/// <summary>Font representation for UIKit classes.</summary>
 	/// <remarks>
 	///   <para>
-	///     <see cref="UIFont" /> object are not instantiated directly, but instead are created from static methods on this class.
+	///     <see cref="UIFont" /> objects are not instantiated directly, but instead are created from static methods on this class.
 	///     You can use the
 	///        <see cref="UIKit.UIFont.PreferredBody" />,
 	///        <see cref="UIKit.UIFont.PreferredCaption1" />,
@@ -69,7 +69,7 @@ namespace UIKit {
 	///     <h2>System Information and Fonts</h2>
 	///   </format>
 	///   <para>
-	///     To get a normal, italic of bold fonts representing the system font, use the static methods
+	///     To get a normal, italic or bold font representing the system font, use the static methods
 	///     <see cref="UIKit.UIFont.SystemFontOfSize(nfloat,UIKit.UIFontWeight)" />,
 	///     <see cref="UIKit.UIFont.ItalicSystemFontOfSize(nfloat)" /> and
 	///     <see cref="UIKit.UIFont.BoldSystemFontOfSize(nfloat)" />.
@@ -86,7 +86,7 @@ namespace UIKit {
 	///   </para>
 	///   <para>
 	///     The following example shows how to alter the existing
-	///	    font to set enable the CoreText typographic features for
+	///	    font to enable the CoreText typographic features for
 	///	    proportional numbers and to use the character alternative:
 	///	  </para>
 	///   <example>

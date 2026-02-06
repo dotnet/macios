@@ -7,6 +7,7 @@
 // Copyright 2012 Xamarin Inc. All rights reserved.
 //
 
+using System.Collections.Generic;
 using System.Linq;
 using Security;
 
@@ -26,6 +27,56 @@ namespace MonoTouchFixtures.Foundation {
 			using (var a = NSArray.FromStrings (new string [1])) {
 				Assert.That (a.Count, Is.EqualTo ((nuint) 1), "null item");
 				Assert.IsNull (a.GetItem<NSString> (0), "0");
+			}
+		}
+
+		[Test]
+		public void FromStrings_WithNullItems ()
+		{
+			using (var a = NSArray.FromStrings (new string? [] { "a", null, "b" })) {
+				Assert.That (a.Count, Is.EqualTo ((nuint) 3), "Count");
+				Assert.AreEqual ("a", a.GetItem<NSString> (0)?.ToString (), "0");
+				Assert.IsNull (a.GetItem<NSString> (1), "1 - null item");
+				Assert.AreEqual ("b", a.GetItem<NSString> (2)?.ToString (), "2");
+			}
+		}
+
+		[Test]
+		public void FromStrings_IReadOnlyList ()
+		{
+			IReadOnlyList<string?> list = new List<string?> { "x", null, "y" };
+			using (var a = NSArray.FromStrings (list)) {
+				Assert.That (a.Count, Is.EqualTo ((nuint) 3), "Count");
+				Assert.AreEqual ("x", a.GetItem<NSString> (0)?.ToString (), "0");
+				Assert.IsNull (a.GetItem<NSString> (1), "1 - null item");
+				Assert.AreEqual ("y", a.GetItem<NSString> (2)?.ToString (), "2");
+			}
+		}
+
+		[Test]
+		public void FromNullableStrings_Null ()
+		{
+			Assert.IsNull (NSArray.FromNullableStrings (null), "null returns null");
+		}
+
+		[Test]
+		public void FromNullableStrings_WithValues ()
+		{
+			using (var a = NSArray.FromNullableStrings (new string? [] { "hello", null, "world" })) {
+				Assert.IsNotNull (a, "not null");
+				Assert.That (a!.Count, Is.EqualTo ((nuint) 3), "Count");
+				Assert.AreEqual ("hello", a.GetItem<NSString> (0)?.ToString (), "0");
+				Assert.IsNull (a.GetItem<NSString> (1), "1 - null item");
+				Assert.AreEqual ("world", a.GetItem<NSString> (2)?.ToString (), "2");
+			}
+		}
+
+		[Test]
+		public void FromNullableStrings_Empty ()
+		{
+			using (var a = NSArray.FromNullableStrings (Array.Empty<string?> ())) {
+				Assert.IsNotNull (a, "not null");
+				Assert.That (a!.Count, Is.EqualTo ((nuint) 0), "Count");
 			}
 		}
 

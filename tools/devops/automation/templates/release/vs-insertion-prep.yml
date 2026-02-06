@@ -152,12 +152,8 @@ stages:
           New-Item -Path "$(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/governance" -Name "CredScanSuppressions.json" -Value '{"tool":"Crendential Scanner", "supressions":[]}'
         displayName: Create credscan dummy ignore file
 
-      - task: UseDotNet@2
-        displayName: Install .NET $(DotNetPreviewSdkVersion)
-        inputs:
-          version: $(DotNetPreviewSdkVersion).x
-          includePreviewVersions: true
-          installationPath: $(Agent.TempDirectory)/dotnet
+      - bash: make -C builds download
+        displayName: "Install local .NET"
 
       - task: DownloadPipelineArtifact@2
         inputs:
@@ -207,7 +203,9 @@ stages:
           scriptType: pscore
           scriptLocation: inlineScript
           inlineScript: >-
-            dotnet build $(Build.SourcesDirectory)\dotnet\package\Microsoft.$(MaestroProjectPlatformName).Ref\package.csproj
+            $(Build.SourcesDirectory)\builds\downloads\dotnet\dotnet.exe
+            build
+            $(Build.SourcesDirectory)\dotnet\package\Microsoft.$(MaestroProjectPlatformName).Ref\package.csproj
             -t:PushManifestToBuildAssetRegistry
             -p:NupkgPath=$(Build.StagingDirectory)\nuget-signed
             -p:PrereleaseIdentifier=$(PrereleaseIdentifier)

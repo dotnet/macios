@@ -20,9 +20,9 @@
 		</ComputeInstructionSet>
 
 		<PropertyGroup Condition="'$(_ComputedInstructionSet)' != ''">
-			<!-- Append the instruction set to the existing PublishReadyToRunCrossgen2ExtraArgs -->
+			<!-- Append the instruction set to the existing PublishReadyToRunCrossgen2ExtraArgs, but only if not already present -->
 			<PublishReadyToRunCrossgen2ExtraArgs Condition="'$(PublishReadyToRunCrossgen2ExtraArgs)' == ''">--instruction-set $(_ComputedInstructionSet)</PublishReadyToRunCrossgen2ExtraArgs>
-			<PublishReadyToRunCrossgen2ExtraArgs Condition="'$(PublishReadyToRunCrossgen2ExtraArgs)' != ''">$(PublishReadyToRunCrossgen2ExtraArgs) --instruction-set $(_ComputedInstructionSet)</PublishReadyToRunCrossgen2ExtraArgs>
+			<PublishReadyToRunCrossgen2ExtraArgs Condition="'$(PublishReadyToRunCrossgen2ExtraArgs)' != '' And !$(PublishReadyToRunCrossgen2ExtraArgs.Contains('--instruction-set'))">$(PublishReadyToRunCrossgen2ExtraArgs) --instruction-set $(_ComputedInstructionSet)</PublishReadyToRunCrossgen2ExtraArgs>
 		</PropertyGroup>
 	</Target>
 

@@ -6,7 +6,6 @@ TODO
 	* New: https://github.com/rolfbjarne/docs-maui/tree/sharpie
 * Update aka.ms/sharpie-docs to point to the new location.
 * Build & package & publish in CI.
-* Translate resources.
 * Show a nice error if trying to execute on x64.
 * We'll be shipping clang headers.
 	* Update NOTICE.txt

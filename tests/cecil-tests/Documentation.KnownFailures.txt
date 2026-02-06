@@ -17138,8 +17138,6 @@ M:UIKit.UIFontPickerViewControllerDelegate_Extensions.DidCancel(UIKit.IUIFontPic
 M:UIKit.UIFontPickerViewControllerDelegate_Extensions.DidPickFont(UIKit.IUIFontPickerViewControllerDelegate,UIKit.UIFontPickerViewController)
 M:UIKit.UIGestureRecognizer.Dispose(System.Boolean)
 M:UIKit.UIGestureRecognizerDelegate_Extensions.ShouldReceiveEvent(UIKit.IUIGestureRecognizerDelegate,UIKit.UIGestureRecognizer,UIKit.UIEvent)
-M:UIKit.UIGraphics.BeginImageContextWithOptions(CoreGraphics.CGSize,System.Boolean,System.Runtime.InteropServices.NFloat)
-M:UIKit.UIGraphics.EndPDFContext
 M:UIKit.UIHoverGestureRecognizer.#ctor(System.Action)
 M:UIKit.UIHoverGestureRecognizer.#ctor(System.Action{UIKit.UIHoverGestureRecognizer})
 M:UIKit.UIImage.AccessibilityActivate

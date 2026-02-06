@@ -102,7 +102,7 @@ namespace UIKit {
 		[UnsupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos17.0")]
 		[UnsupportedOSPlatform ("maccatalyst17.0")]
-		public UIImage Scale (CGSize newSize, nfloat scaleFactor)
+		public UIImage? Scale (CGSize newSize, nfloat scaleFactor)
 		{
 			UIGraphics.BeginImageContextWithOptions (newSize, false, scaleFactor);
 
@@ -126,7 +126,7 @@ namespace UIKit {
 		[UnsupportedOSPlatform ("ios17.0")]
 		[UnsupportedOSPlatform ("tvos17.0")]
 		[UnsupportedOSPlatform ("maccatalyst17.0")]
-		public UIImage Scale (CGSize newSize)
+		public UIImage? Scale (CGSize newSize)
 		{
 			UIGraphics.BeginImageContext (newSize);
 

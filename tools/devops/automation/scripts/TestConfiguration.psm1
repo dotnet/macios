@@ -30,7 +30,6 @@ class TestConfiguration {
             $splitByPlatforms = $config.splitByPlatforms
             $testPrefix = $config.testPrefix
             $testStage = $config.testStage ? $config.testStage : $config.testPrefix
-            $extraBotDemand = $config.extraBotDemand
 
             if ($this.stageFilter) {
                 if ($testStage -eq $this.stageFilter) {
@@ -48,7 +47,6 @@ class TestConfiguration {
             $vars["LABEL"] = $label
             $vars["TESTS_LABELS"] = "$($this.testsLabels),run-$($label)-tests"
             $vars["TEST_STAGE"] = $testStage
-            $vars["EXTRA_BOT_DEMAND"] = $extraBotDemand
 
             if ($splitByPlatforms -eq "True") {
                 if ($enabledPlatformsForConfig.Length -eq 0) {

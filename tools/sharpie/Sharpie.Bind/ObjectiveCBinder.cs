@@ -463,7 +463,14 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 		foreach (var document in generator.SyntaxTree.AllDocuments) {
 			var writer = new StringWriter ();
 			var bindingTokenWriter = new BindingTokenWriter (this, writer);
-			var v = new CSharpOutputVisitor (bindingTokenWriter, FormattingOptionsFactory.CreateMono ());
+			var formatting = FormattingOptionsFactory.CreateMono ();
+			formatting.NamespaceBraceStyle = BraceStyle.EndOfLine;
+			formatting.InterfaceBraceStyle = BraceStyle.EndOfLine;
+			formatting.ClassBraceStyle = BraceStyle.EndOfLine;
+			formatting.EnumBraceStyle = BraceStyle.EndOfLine;
+			formatting.StructBraceStyle = BraceStyle.EndOfLine;
+			formatting.SpaceAfterTypecast = true;
+			var v = new CSharpOutputVisitor (bindingTokenWriter, formatting);
 			document.AcceptVisitor (v);
 
 			var bindingCode = writer.ToString ();

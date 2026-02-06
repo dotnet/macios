@@ -18,8 +18,8 @@ public class BindingTokenWriter : TokenWriter {
 
 	bool inAttributeSection;
 	bool inPropertyDeclaration;
+	int inComposedType;
 	bool disableNewLine;
-	int inShorthandAvailabilityAttrState;
 
 	readonly TokenWriter writer;
 	readonly ObjectiveCBinder Binder;
@@ -55,6 +55,8 @@ public class BindingTokenWriter : TokenWriter {
 	public override void WriteComment (CommentType commentType, string content)
 	{
 		writer.WriteComment (commentType, content);
+		if (content == ModelAttribute.ModelRemovedComment)
+			writer.NewLine ();
 	}
 
 	public override void WritePreProcessorDirective (PreProcessorDirectiveType type, string argument)
@@ -68,8 +70,8 @@ public class BindingTokenWriter : TokenWriter {
 
 		inPropertyDeclaration |= node is PropertyDeclaration;
 		inAttributeSection |= node is AttributeSection;
-		inShorthandAvailabilityAttrState = node is AvailabilityBaseAttribute &&
-			((AvailabilityBaseAttribute) node).IsShorthand ? 1 : inShorthandAvailabilityAttrState;
+		if (node is ComposedType)
+			inComposedType++;
 
 		if (inPropertyDeclaration && disableNewLine && node is AttributeSection)
 			WriteToken (Roles.Whitespace, " ");
@@ -99,8 +101,8 @@ public class BindingTokenWriter : TokenWriter {
 			NewLine ();
 		} else if (node is AttributeSection) {
 			inAttributeSection = false;
-		} else if (node is AvailabilityBaseAttribute) {
-			inShorthandAvailabilityAttrState = 0;
+		} else if (node is ComposedType) {
+			inComposedType--;
 		}
 
 		writer.EndNode (node);
@@ -116,16 +118,6 @@ public class BindingTokenWriter : TokenWriter {
 			return;
 		}
 
-		// we track this state to compress shorthand availability attributes
-		// (e.g. [Mac (10,13,4)] instead of [Mac (10, 13, 4)]), however if we
-		// have walked into named arguments inside the shorthand attribute,
-		// stop compressing them so we end up with [Mac (10,13,4, onlyOn64: true)]
-		// instead of [Mac (10,13,4,onlyOn64:true)].
-		if (inShorthandAvailabilityAttrState == 2) {
-			inShorthandAvailabilityAttrState = 0;
-			writer.Space ();
-		}
-
 		writer.WriteIdentifier (identifier);
 	}
 
@@ -136,16 +128,17 @@ public class BindingTokenWriter : TokenWriter {
 				disableNewLine = true;
 			else if (role == Roles.RBrace)
 				WriteKeyword (Roles.Whitespace, " ");
-		} else if (inShorthandAvailabilityAttrState == 1 && role == Roles.LPar)
-			inShorthandAvailabilityAttrState = 2;
+		} 
+		
+		if (inComposedType > 0 && role == Roles.LBracket)
+			writer.Space ();
 
 		writer.WriteToken (role, token);
 	}
 
 	public override void Space ()
 	{
-		if (inShorthandAvailabilityAttrState < 2)
-			writer.Space ();
+		writer.Space ();
 	}
 
 	public override void WritePrimitiveValue (object value, string? literalValue = null)
@@ -245,6 +238,11 @@ public class BindingTokenWriter : TokenWriter {
 			WriteToken (Roles.Whitespace, " ");
 
 		writer.WriteKeyword (role, keyword);
+
+		if (keyword == TypeOfExpression.TypeofKeywordRole.Token)
+			writer.Space ();
+		else if (keyword == SizeOfExpression.SizeofKeywordRole.Token)
+			writer.Space ();
 	}
 
 	public override void NewLine ()

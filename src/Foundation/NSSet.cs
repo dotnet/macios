@@ -52,7 +52,7 @@ namespace Foundation {
 		/// <summary>Creates a new <see cref="NSSet" /> from an array of strings.</summary>
 		/// <param name="strings">An array of strings.</param>
 		/// <remarks>The C# strings are stored as <see cref="NSString" /> objects in the set.</remarks>
-		public NSSet (params string [] strings) : this (NSArray.FromStrings (strings))
+		public NSSet (params string? [] strings) : this (NSArray.FromStrings (strings))
 		{
 		}
 

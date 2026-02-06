@@ -74,7 +74,7 @@ namespace ObjCRuntime {
 
 			for (int i = 0; i < map->assembly_count; i++) {
 				var assembly = map->assemblies [i];
-				Runtime.Registrar.SetAssemblyRegistered (Marshal.PtrToStringAuto (assembly.name));
+				Runtime.Registrar.SetAssemblyRegistered (Marshal.PtrToStringAuto (assembly.name)!);
 			}
 		}
 

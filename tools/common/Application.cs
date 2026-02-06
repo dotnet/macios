@@ -263,8 +263,12 @@ namespace Xamarin.Bundler {
 			return value;
 		}
 
-		public Application ()
+		public Application (LinkerConfiguration configuration)
 		{
+#if !LEGACY_TOOLS
+			this.configuration = configuration;
+			this.LinkContext = new Tuner.DerivedLinkContext (configuration, this);
+#endif
 			this.StaticRegistrar = new StaticRegistrar (this);
 		}
 

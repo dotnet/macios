@@ -28,7 +28,11 @@ namespace Xamarin.Bundler {
 		public Application App => this;
 		public AssemblyCollection Assemblies = new AssemblyCollection (); // The root assembly is not in this list.
 
+#if LEGACY_TOOLS
 		public PlatformLinkContext? LinkContext;
+#else
+		public PlatformLinkContext LinkContext;
+#endif
 		public PlatformResolver Resolver = new PlatformResolver ();
 
 		internal StaticRegistrar StaticRegistrar { get; set; }
@@ -40,12 +44,9 @@ namespace Xamarin.Bundler {
 			return asm;
 		}
 
-		// This will find the link context, possibly looking in container targets.
 		public PlatformLinkContext? GetLinkContext ()
 		{
-			if (LinkContext is not null)
-				return LinkContext;
-			return null;
+			return LinkContext;
 		}
 
 		public void ExtractNativeLinkInfo (List<Exception> exceptions)

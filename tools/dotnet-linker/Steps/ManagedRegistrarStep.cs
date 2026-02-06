@@ -698,6 +698,10 @@ namespace Xamarin.Linker {
 			if (!(parameter == -1 && !method.IsStatic && method.DeclaringType == type)) {
 				var bindAsAttribute = GetBindAsAttribute (method, parameter);
 				if (bindAsAttribute is not null) {
+					if (bindAsAttribute.OriginalType is null) {
+						AddException (ErrorHelper.CreateError (99, "BindAs attribute without OriginalType. Method: {0}", GetMethodSignatureWithSourceCode (method)));
+						return false;
+					}
 					if (toManaged) {
 						GenerateConversionToManaged (method, il, bindAsAttribute.OriginalType, type, "descriptiveMethodName", parameter, out nativeType);
 						return true;
@@ -751,10 +755,14 @@ namespace Xamarin.Linker {
 
 			if (type is ByReferenceType brt) {
 				if (toManaged) {
-					var elementType = brt.ElementType;
+					var elementType = brt.ElementType!;
 					if (elementType is GenericParameter gp) {
 						if (!StaticRegistrar.VerifyIsConstrainedToNSObject (gp, out var constrained)) {
 							AddException (ErrorHelper.CreateError (99, "Incorrectly constrained generic parameter. Method: {0}", GetMethodSignatureWithSourceCode (method)));
+							return false;
+						}
+						if (constrained is null) {
+							AddException (ErrorHelper.CreateError (99, "Incorrectly constrained generic parameter (2). Method: {0}", GetMethodSignatureWithSourceCode (method)));
 							return false;
 						}
 						elementType = constrained;
@@ -888,7 +896,7 @@ namespace Xamarin.Linker {
 					return true;
 				}
 
-				AddException (ErrorHelper.CreateError (99, "Don't know how (3) to convert array element type {1} for array type {0} between managed and native code. Method: {2}", type.FullName, elementType.FullName, GetMethodSignatureWithSourceCode (method)));
+				AddException (ErrorHelper.CreateError (99, "Don't know how (3) to convert array element type {1} for array type {0} between managed and native code. Method: {2}", type.FullName, elementType?.FullName, GetMethodSignatureWithSourceCode (method)));
 				return false;
 			}
 
@@ -1162,6 +1170,8 @@ namespace Xamarin.Linker {
 				underlyingManagedType = StaticRegistrar.GetElementType (managedType);
 			} else if (isManagedNullable) {
 				underlyingManagedType = StaticRegistrar.GetNullableType (managedType);
+				if (underlyingManagedType is null)
+					throw ErrorHelper.CreateError (99, Errors.MX0099, $"can't convert from '{inputType.FullName}' to '{outputType.FullName}' in {descriptiveMethodName}: {managedType.FullName} is not a nullable type");
 			}
 
 			string? func = null;
@@ -1259,6 +1269,8 @@ namespace Xamarin.Linker {
 				underlyingManagedType = StaticRegistrar.GetElementType (managedType);
 			} else if (isManagedNullable) {
 				underlyingManagedType = StaticRegistrar.GetNullableType (managedType);
+				if (underlyingManagedType is null)
+					throw ErrorHelper.CreateError (99, Errors.MX0099, $"can't convert from '{inputType.FullName}' to '{outputType.FullName}' in {descriptiveMethodName}: {managedType.FullName} is not a nullable type");
 			}
 
 			string? func = null;

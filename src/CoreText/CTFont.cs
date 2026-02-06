@@ -3597,9 +3597,9 @@ namespace CoreText {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		public CTFontDescriptor? []? GetDefaultCascadeList (string [] languages)
+		public CTFontDescriptor? []? GetDefaultCascadeList (string []? languages)
 		{
-			using (var arr = languages is null ? null : NSArray.FromStrings (languages)) {
+			using (var arr = NSArray.FromNullableStrings (languages)) {
 				var h = CTFontCopyDefaultCascadeListForLanguages (Handle, arr.GetHandle ());
 				return CFArray.ArrayFromHandleFunc<CTFontDescriptor> (h,
 					(handle) => new CTFontDescriptor (handle, false), true);

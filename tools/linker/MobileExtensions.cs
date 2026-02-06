@@ -128,7 +128,7 @@ namespace Xamarin.Linker {
 			return null;
 		}
 
-		public static bool IsGeneratedCode (this MethodDefinition self, DerivedLinkContext link_context)
+		public static bool IsGeneratedCode (this MethodDefinition self, DerivedLinkContext? link_context)
 		{
 			// check the property too
 			if (self.IsGetter || self.IsSetter) {
@@ -138,7 +138,7 @@ namespace Xamarin.Linker {
 			return HasGeneratedCodeAttribute (self, link_context);
 		}
 
-		public static bool IsBindingImplOptimizableCode (this MethodDefinition self, DerivedLinkContext link_context)
+		public static bool IsBindingImplOptimizableCode (this MethodDefinition self, DerivedLinkContext? link_context)
 		{
 			var attrib = GetBindingImplAttribute (self, link_context);
 			if ((attrib & BindingImplOptions.Optimizable) == BindingImplOptions.Optimizable)
@@ -154,7 +154,7 @@ namespace Xamarin.Linker {
 			return false;
 		}
 
-		public static bool IsOptimizableCode (this MethodDefinition self, DerivedLinkContext link_context)
+		public static bool IsOptimizableCode (this MethodDefinition self, DerivedLinkContext? link_context)
 		{
 			if (IsBindingImplOptimizableCode (self, link_context))
 				return true;

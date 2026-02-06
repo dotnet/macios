@@ -118,87 +118,87 @@ namespace Xamarin.Bundler {
 			ex.LineNumber = seq.StartLine;
 		}
 
-		public static ProductException CreateError (Application app, int code, MemberReference member, string message, params object [] args)
+		public static ProductException CreateError (Application app, int code, MemberReference? member, string message, params object? [] args)
 		{
 			return Create (app, code, true, null, member, null, message, args);
 		}
 
-		public static ProductException CreateError (Application app, int code, MethodDefinition location, string message, params object [] args)
+		public static ProductException CreateError (Application app, int code, MethodDefinition? location, string message, params object? [] args)
 		{
 			return Create (app, code, true, null, location, null, message, args);
 		}
 
-		public static ProductException CreateError (Application app, int code, MethodDefinition location, Instruction instruction, string message, params object [] args)
+		public static ProductException CreateError (Application app, int code, MethodDefinition? location, Instruction? instruction, string message, params object? [] args)
 		{
 			return Create (app, code, true, null, location, instruction, message, args);
 		}
 
-		public static ProductException CreateError (Application app, int code, ICustomAttributeProvider provider, string message, params object [] args)
+		public static ProductException CreateError (Application app, int code, ICustomAttributeProvider? provider, string message, params object? [] args)
 		{
 			return Create (app, code, true, null, provider, null, message, args);
 		}
 
-		public static ProductException CreateError (Application app, int code, Exception innerException, MethodDefinition location, string message, params object [] args)
+		public static ProductException CreateError (Application app, int code, Exception? innerException, MethodDefinition? location, string message, params object? [] args)
 		{
 			return Create (app, code, true, innerException, location, message, args);
 		}
 
-		public static ProductException CreateError (Application app, int code, Exception innerException, TypeReference location, string message, params object [] args)
+		public static ProductException CreateError (Application app, int code, Exception? innerException, TypeReference? location, string message, params object? [] args)
 		{
 			return Create (app, code, true, innerException, location, message, args);
 		}
 
-		public static ProductException CreateError (Application app, int code, Exception innerException, ICustomAttributeProvider provider, string message, params object [] args)
+		public static ProductException CreateError (Application app, int code, Exception? innerException, ICustomAttributeProvider? provider, string message, params object? [] args)
 		{
 			return Create (app, code, true, innerException, provider, message, args);
 		}
 
-		public static ProductException CreateWarning (Application app, int code, MemberReference member, string message, params object [] args)
+		public static ProductException CreateWarning (Application app, int code, MemberReference? member, string message, params object? [] args)
 		{
 			return Create (app, code, false, null, member, null, message, args);
 		}
 
-		public static ProductException CreateWarning (Application app, int code, MemberReference member, Instruction? instruction, string message, params object [] args)
+		public static ProductException CreateWarning (Application app, int code, MemberReference? member, Instruction? instruction, string message, params object? [] args)
 		{
 			return Create (app, code, false, null, member, instruction, message, args);
 		}
 
-		public static ProductException CreateWarning (Application app, int code, MethodDefinition location, string message, params object [] args)
+		public static ProductException CreateWarning (Application app, int code, MethodDefinition? location, string message, params object? [] args)
 		{
 			return Create (app, code, false, null, location, message, args);
 		}
 
-		public static ProductException CreateWarning (Application app, int code, ICustomAttributeProvider provider, string message, params object [] args)
+		public static ProductException CreateWarning (Application app, int code, ICustomAttributeProvider? provider, string message, params object? [] args)
 		{
 			return Create (app, code, false, null, provider, message, args);
 		}
 
-		public static ProductException CreateWarning (Application app, int code, Exception innerException, MethodDefinition location, string message, params object [] args)
+		public static ProductException CreateWarning (Application app, int code, Exception? innerException, MethodDefinition? location, string message, params object? [] args)
 		{
 			return Create (app, code, false, innerException, location, message, args);
 		}
 
-		public static ProductException CreateWarning (Application app, int code, Exception innerException, MethodDefinition location, Instruction instruction, string message, params object [] args)
+		public static ProductException CreateWarning (Application app, int code, Exception? innerException, MethodDefinition? location, Instruction? instruction, string message, params object? [] args)
 		{
 			return Create (app, code, false, innerException, location, instruction, message, args);
 		}
 
-		public static ProductException CreateWarning (Application app, int code, Exception innerException, TypeReference location, string message, params object [] args)
+		public static ProductException CreateWarning (Application app, int code, Exception? innerException, TypeReference? location, string message, params object? [] args)
 		{
 			return Create (app, code, false, innerException, location, message, args);
 		}
 
-		public static ProductException CreateWarning (Application app, int code, Exception innerException, ICustomAttributeProvider provider, string message, params object [] args)
+		public static ProductException CreateWarning (Application app, int code, Exception? innerException, ICustomAttributeProvider? provider, string message, params object? [] args)
 		{
 			return Create (app, code, false, innerException, provider, message, args);
 		}
 
-		public static ProductException Create (Application app, int code, bool error, Exception? innerException, ICustomAttributeProvider provider, string message, params object [] args)
+		public static ProductException Create (Application app, int code, bool error, Exception? innerException, ICustomAttributeProvider? provider, string message, params object? [] args)
 		{
 			return Create (app, code, error, innerException, provider, null, message, args);
 		}
 
-		public static ProductException Create (Application app, int code, bool error, Exception? innerException, ICustomAttributeProvider provider, Instruction? instruction, string message, params object [] args)
+		public static ProductException Create (Application app, int code, bool error, Exception? innerException, ICustomAttributeProvider? provider, Instruction? instruction, string message, params object? [] args)
 		{
 			if (provider is MemberReference member) {
 				if (instruction is not null)
@@ -212,7 +212,7 @@ namespace Xamarin.Bundler {
 			return new ProductException (code, error, innerException, message, args);
 		}
 
-		public static ProductException Create (Application app, int code, bool error, Exception? innerException, MemberReference member, Instruction? instruction, string message, params object [] args)
+		public static ProductException Create (Application app, int code, bool error, Exception? innerException, MemberReference? member, Instruction? instruction, string message, params object? [] args)
 		{
 			var method = member as MethodReference;
 			if (method is null) {
@@ -226,7 +226,7 @@ namespace Xamarin.Bundler {
 			return Create (app, code, error, innerException, method is null ? null : method.Resolve (), instruction, message, args);
 		}
 
-		public static ProductException Create (Application app, int code, bool error, Exception? innerException, MethodDefinition? location, Instruction? instruction, string message, params object [] args)
+		public static ProductException Create (Application app, int code, bool error, Exception? innerException, MethodDefinition? location, Instruction? instruction, string message, params object? [] args)
 		{
 			var e = new ProductException (code, error, innerException, message, args);
 			if (location is not null)
@@ -234,7 +234,7 @@ namespace Xamarin.Bundler {
 			return e;
 		}
 
-		public static ProductException Create (Application app, int code, bool error, Exception? innerException, TypeReference? location, string message, params object [] args)
+		public static ProductException Create (Application app, int code, bool error, Exception? innerException, TypeReference? location, string message, params object? [] args)
 		{
 			var e = new ProductException (code, error, innerException, message, args);
 			if (location is not null) {

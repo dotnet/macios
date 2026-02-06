@@ -65,9 +65,6 @@ variables:
   value: 'https://vsdrop.corp.microsoft.com/file/v1/$(BUILD_REPOSITORY_TITLE)/device-tests'
 
 - name: DotNetSdkVersion
-  value: 9.0
-
-- name: DotNetPreviewSdkVersion
   value: 10.0
 
 - name: minimumMacOSVersion

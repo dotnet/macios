@@ -1042,7 +1042,7 @@ namespace Xamarin.MacDev.Tasks {
 				var allowedEntitlement = GetValue<T, M> (provisioningPEntitlement);
 				var requestedEntitlement = GetValue<T, M> (requestedPEntitlement);
 				if (CompareValues (requestedEntitlement, allowedEntitlement)) {
-					Log.LogMessage (MessageImportance.Low, $"The app requests the entitlement '{key}' with the value '{requestedEntitlement}', which the provisioning profile '{provisioningProfileName}' grants, because it grants this value for this entitlement: '{allowedEntitlement}.");
+					Log.LogMessage (MessageImportance.Low, $"The app requests the entitlement '{key}' with the value '{requestedEntitlement}', which the provisioning profile '{provisioningProfileName}' grants, because it grants this value for this entitlement: '{allowedEntitlement}'.");
 				} else {
 					LogEntitlementValidationFailure (onlyWarn, 7137, MSBStrings.E7137, key, requestedEntitlement, provisioningProfileName, allowedEntitlement); // The app requests the entitlement '{0}' with the value '{1}', but the provisioning profile '{2}' grants it for the value '{3}'."
 				}

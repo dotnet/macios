@@ -17132,14 +17132,10 @@ M:UIKit.UIFocusItem_Extensions.GetFocusItemDeferralMode(UIKit.IUIFocusItem)
 M:UIKit.UIFocusItem_Extensions.GetIsTransparentFocusItem(UIKit.IUIFocusItem)
 M:UIKit.UIFocusSystem.Dispose(System.Boolean)
 M:UIKit.UIFocusUpdateContext.Dispose(System.Boolean)
-M:UIKit.UIFont.GetMonospacedSystemFont(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
-M:UIKit.UIFont.GetMonospacedSystemFont(System.Runtime.InteropServices.NFloat,UIKit.UIFontWeight)
-M:UIKit.UIFont.SystemFontOfSize(System.Runtime.InteropServices.NFloat,UIKit.UIFontWeight,UIKit.UIFontWidth)
 M:UIKit.UIFontDescriptor.CreateWithDesign(UIKit.UIFontDescriptorSystemDesign)
 M:UIKit.UIFontPickerViewController.Dispose(System.Boolean)
 M:UIKit.UIFontPickerViewControllerDelegate_Extensions.DidCancel(UIKit.IUIFontPickerViewControllerDelegate,UIKit.UIFontPickerViewController)
 M:UIKit.UIFontPickerViewControllerDelegate_Extensions.DidPickFont(UIKit.IUIFontPickerViewControllerDelegate,UIKit.UIFontPickerViewController)
-M:UIKit.UIFontWeightExtensions.GetWeight(UIKit.UIFontWeight)
 M:UIKit.UIGestureRecognizer.Dispose(System.Boolean)
 M:UIKit.UIGestureRecognizerDelegate_Extensions.ShouldReceiveEvent(UIKit.IUIGestureRecognizerDelegate,UIKit.UIGestureRecognizer,UIKit.UIEvent)
 M:UIKit.UIGraphics.BeginImageContextWithOptions(CoreGraphics.CGSize,System.Boolean,System.Runtime.InteropServices.NFloat)
@@ -28582,7 +28578,6 @@ T:UIKit.UIFocusItemDeferralMode
 T:UIKit.UIFocusSoundIdentifier
 T:UIKit.UIFontDescriptorSystemDesign
 T:UIKit.UIFontWeightConstants
-T:UIKit.UIFontWeightExtensions
 T:UIKit.UIFontWidth
 T:UIKit.UIGestureProbe
 T:UIKit.UIGesturesEvent

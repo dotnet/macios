@@ -5,6 +5,7 @@ using Microsoft.Build.Framework;
 
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
+using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks;
 
@@ -120,9 +121,15 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 					if (group.All (v => v.GetMetadata ("Extension").Equals (".a", StringComparison.OrdinalIgnoreCase)))
 						continue;
 
-					// if we have a single .dylib, but we're linking statically, we need to convert it to a framework
+					// if we have a single .dylib, but we're linking statically, we need to convert it to a framework (if we're targeting a mobile platform)
 					// if we have both a .dylib and a .a, and we're linking statically, we still need to convert the .dylib to a .framework, because the .a is ignored/irrelevant
-					dylibsToFrameworks.AddRange (group.Where (v => v.GetMetadata ("Extension").Equals (".dylib", StringComparison.OrdinalIgnoreCase)));
+					var dylib = group.Where (v => v.GetMetadata ("Extension").Equals (".dylib", StringComparison.OrdinalIgnoreCase));
+					if (Platform == ApplePlatform.iOS || Platform == ApplePlatform.TVOS) {
+						dylibsToFrameworks.AddRange (dylib);
+					} else {
+						// on desktop just link with the dylib
+						output.AddRange (dylib);
+					}
 					continue;
 				case "dylib":
 					// we don't want any .a files, but we want all .dylib files.

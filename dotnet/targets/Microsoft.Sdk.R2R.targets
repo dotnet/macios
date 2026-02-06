@@ -37,7 +37,7 @@
 
 	<!-- Set some default properties -->
 	<PropertyGroup Condition="'$(PublishReadyToRun)' == 'true' And '$(UseMonoRuntime)' == 'false' And '$(_UseNativeAot)' != 'true'">
-		<CreateR2RFramework Condition="'$(CreateR2RFramework)' == '' ">true</CreateR2RFramework>
+		<CreateR2RFramework Condition="'$(CreateR2RFramework)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">true</CreateR2RFramework>
 		<CreateR2RDylib Condition="'$(CreateR2RDylib)' == '' And '$(CreateR2RFramework)' != 'true'">true</CreateR2RDylib>
 
 		<FilterReadyToRunAssemblies Condition="'$(FilterReadyToRunAssemblies)' == '' And '$(Configuration)' != 'Release'">true</FilterReadyToRunAssemblies>

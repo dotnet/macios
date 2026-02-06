@@ -140,7 +140,10 @@ extends:
 
       - template: localization/v1.yml@yaml-templates
         parameters:
-          condition: endsWith(coalesce(variables['System.PullRequest.SourceBranch'], variables['Build.SourceBranch'], 'refs/heads/main'), 'main')
+          condition: or(
+                      endsWith(coalesce(variables['System.PullRequest.SourceBranch'], variables['Build.SourceBranch'], 'refs/heads/main'), 'main'),
+                      endsWith(coalesce(variables['System.PullRequest.SourceBranch'], variables['Build.SourceBranch'], 'nope'), '/sharpie'),
+                     )
           preSteps:
             - template: ../sdk-unified/steps/checkout/v1.yml@yaml-templates
               parameters:

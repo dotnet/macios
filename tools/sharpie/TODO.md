@@ -10,7 +10,6 @@ TODO
 * Show a nice error if trying to execute on x64.
 * We'll be shipping clang headers.
 	* Update NOTICE.txt
-* Fix/check all NotImplementedExceptions
 * Remove Options.cs?
 
 ## Links

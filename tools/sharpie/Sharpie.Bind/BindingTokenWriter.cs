@@ -128,8 +128,8 @@ public class BindingTokenWriter : TokenWriter {
 				disableNewLine = true;
 			else if (role == Roles.RBrace)
 				WriteKeyword (Roles.Whitespace, " ");
-		} 
-		
+		}
+
 		if (inComposedType > 0 && role == Roles.LBracket)
 			writer.Space ();
 

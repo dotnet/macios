@@ -45,7 +45,7 @@ namespace Foundation {
 
 		/// <summary>Initializes a new mutable set with the specified strings.</summary>
 		/// <param name="strings">The strings to add to the set.</param>
-		public NSMutableSet (params string [] strings)
+		public NSMutableSet (params string? [] strings)
 			: this (NSArray.FromStrings (strings))
 		{
 		}

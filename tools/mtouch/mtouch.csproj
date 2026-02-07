@@ -18,6 +18,7 @@
     <Compile Include="DotNetGlobals.cs" />
     <Compile Include="Application.mtouch.cs" />
     <Compile Include="AssemblyResolver.cs" />
+    <Compile Include="LinkerConfiguration.cs" />
     <Compile Include="..\common\error.cs">
       <Link>external/tools/common/error.cs</Link>
     </Compile>

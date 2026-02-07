@@ -87,9 +87,11 @@ endef
 
 $(foreach platform,$(DOTNET_PLATFORMS_MTOUCH),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call InstallRegistrar,$(platform),$(rid)))))
 
+ifndef IS_LINUX
 dotnet: $(TARGETS_DOTNET)
 install-local:: $(TARGETS_DOTNET)
 all-local:: $(TARGETS_DOTNET)
+endif
 
 clean-local::
 	rm -Rf bin obj

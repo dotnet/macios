@@ -4,6 +4,27 @@ set -o pipefail
 
 cd $(dirname $0)
 
+# Detect if we're running on Linux
+if [[ "$(uname -s)" == "Linux" ]]; then
+	IS_LINUX=1
+	# On Linux, ignore all macOS-specific dependencies
+	IGNORE_OSX=1
+	IGNORE_XCODE=1
+	IGNORE_XCODE_COMPONENTS=1
+	IGNORE_MONO=1
+	IGNORE_VISUAL_STUDIO=1
+	IGNORE_SHARPIE=1
+	IGNORE_SIMULATORS=1
+	IGNORE_OLD_SIMULATORS=1
+	IGNORE_7Z=1
+	IGNORE_HOMEBREW=1
+	IGNORE_SHELLCHECK=1
+	IGNORE_YAMLLINT=1
+	IGNORE_PYTHON3=1
+else
+	IS_LINUX=
+fi
+
 FAIL=
 PROVISION_DOWNLOAD_DIR=/tmp/x-provisioning
 SUDO=sudo
@@ -924,6 +945,11 @@ function check_osx_version () {
 }
 
 function check_checkout_dir () {
+	# Skip on Linux - this check is macOS-specific
+	if test -n "$IS_LINUX"; then
+		return
+	fi
+	
 	# use apple script to get the possibly translated special folders and check that we are not a subdir
 	for special in documents downloads desktop; do
 		path=$(osascript -e "set result to POSIX path of (path to $special folder as string)")
@@ -1115,6 +1141,11 @@ function check_old_simulators ()
 }
 
 echo "Checking system..."
+
+if test -n "$IS_LINUX"; then
+	ok "Running on ${COLOR_BLUE}Linux${COLOR_CLEAR} - skipping macOS-specific checks"
+	ok "Only .NET download and managed code builds will be available"
+fi
 
 check_osx_version
 check_checkout_dir

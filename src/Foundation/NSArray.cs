@@ -356,41 +356,34 @@ namespace Foundation {
 			GC.KeepAlive (items);
 			return rv;
 		}
-#nullable disable
 
+		/// <summary>Creates an NSArray from a C# array of strings.</summary>
 		/// <param name="items">Array of C# strings.</param>
-		///         <summary>Creates an NSArray from a C# array of strings.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>To be added.</remarks>
-		static public NSArray FromStrings (params string [] items) => FromStrings ((IReadOnlyList<string>) items);
+		/// <returns>A new <see cref="NSArray" /> containing the strings.</returns>
+		/// <remarks>If any string in <paramref name="items" /> is null, a <see cref="NSNull" /> entry will be created for that element.</remarks>
+		public static NSArray FromStrings (params string? [] items) => FromStrings ((IReadOnlyList<string?>) items);
 
-		static public NSArray FromStrings (IReadOnlyList<string> items)
+		/// <summary>Creates an NSArray from a list of C# strings.</summary>
+		/// <param name="items">List of C# strings.</param>
+		/// <returns>A new <see cref="NSArray" /> containing the strings.</returns>
+		/// <remarks>If any string in <paramref name="items" /> is null, a <see cref="NSNull" /> entry will be created for that element.</remarks>
+		public static NSArray FromStrings (IReadOnlyList<string?> items)
 		{
-			if (items is null)
-				throw new ArgumentNullException (nameof (items));
-
-			IntPtr buf = Marshal.AllocHGlobal (items.Count * IntPtr.Size);
-			try {
-				for (int i = 0; i < items.Count; i++) {
-					IntPtr val;
-
-					if (items [i] is null)
-						val = NSNull.Null.Handle;
-					else {
-						val = NSString.CreateNative (items [i], true);
-					}
-
-					Marshal.WriteIntPtr (buf, i * IntPtr.Size, val);
-				}
-				NSArray arr = Runtime.GetNSObject<NSArray> (NSArray.FromObjects (buf, items.Count));
-				return arr;
-			} finally {
-				Marshal.FreeHGlobal (buf);
-			}
+			return Runtime.GetNSObject<NSArray> (CFArray.Create (items), owns: true)!;
 		}
 
-#nullable enable
+		/// <summary>Creates an NSArray from a potentially null array of strings.</summary>
+		/// <param name="items">Array of C# strings, or null.</param>
+		/// <returns>A new <see cref="NSArray" /> containing the strings, or null if <paramref name="items" /> is null.</returns>
+		/// <remarks>If any string in <paramref name="items" /> is null, a <see cref="NSNull" /> entry will be created for that element.</remarks>
+		[return: NotNullIfNotNull (nameof (items))]
+		public static NSArray? FromNullableStrings (params string? []? items)
+		{
+			if (items is null)
+				return null;
+			return FromStrings ((IReadOnlyList<string?>) items);
+		}
+
 		/// <summary>Create an <see cref="NSArray" /> from the specified pointers.</summary>
 		/// <param name="items">Array of pointers (to <see cref="NSObject" /> instances).</param>
 		/// <remarks>If the <paramref name="items" /> array is null, an <see cref="ArgumentNullException" /> is thrown.</remarks>
@@ -419,7 +412,6 @@ namespace Foundation {
 				}
 			}
 		}
-#nullable disable
 
 		internal static nuint GetCount (IntPtr handle)
 		{
@@ -435,26 +427,19 @@ namespace Foundation {
 			return Messaging.NativeHandle_objc_msgSend_UIntPtr (handle, Selector.GetHandle ("objectAtIndex:"), (UIntPtr) i);
 		}
 
+#if !XAMCORE_5_0
+		/// <summary>Creates a string array from a handle to a native NSArray object.</summary>
 		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
-		/// <summary>Creates a string array from an NSArray handle.</summary>
-		/// <returns>
-		///         </returns>
-		/// <remarks>
-		///         </remarks>
-		[Obsolete ("Use of 'CFArray.StringArrayFromHandle' offers better performance.")]
+		/// <returns>A string array, or <see langword="null" /> if handle is <see cref="NativeHandle.Zero" />.</returns>
+		/// <remarks>Call <see cref="CFArray.StringArrayFromHandle(NativeHandle)" /> instead for better performance.</remarks>
+		[Obsolete ("Use 'CFArray.StringArrayFromHandle' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		static public string [] StringArrayFromHandle (NativeHandle handle)
+		public static string? []? StringArrayFromHandle (NativeHandle handle)
 		{
-			if (handle == NativeHandle.Zero)
-				return null;
-
-			var c = GetCount (handle);
-			string [] ret = new string [c];
-
-			for (nuint i = 0; i < c; i++)
-				ret [i] = CFString.FromHandle (GetAtIndex (handle, i));
-			return ret;
+			return CFArray.StringArrayFromHandle (handle);
 		}
+#endif // !XAMCORE_5_0
+#nullable disable
 
 		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
 		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>

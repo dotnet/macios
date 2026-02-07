@@ -3329,7 +3329,7 @@ public partial class Generator : IMemberGatherer {
 					disposes.AppendFormat ("\nnsb_{0}?.Dispose ();", propInfo.Name);
 				} else if (etype == TypeCache.System_String) {
 					if (null_allowed_override || AttributeManager.IsNullable (pi)) {
-						convs.AppendFormat ("using var nsa_{0} = {1} is null ? null : NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
+						convs.AppendFormat ("using var nsa_{0} = NSArray.FromNullableStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					} else {
 						convs.AppendFormat ("using var nsa_{0} = NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					}
@@ -3409,7 +3409,7 @@ public partial class Generator : IMemberGatherer {
 						by_ref_init.Insert (0, string.Format ("NSArray {0}ArrayValue = NSArray.FromNSObjects ({0});\n", pi.Name.GetSafeParamName ()));
 						by_ref_init.AppendFormat ("{0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle;\n", pi.Name.GetSafeParamName ());
 					} else if (isArrayOfString) {
-						by_ref_init.Insert (0, string.Format ("NSArray? {0}ArrayValue = {0} is null ? null : NSArray.FromStrings ({0});\n", pi.Name.GetSafeParamName ()));
+						by_ref_init.Insert (0, string.Format ("var {0}ArrayValue = NSArray.FromNullableStrings ({0});\n", pi.Name.GetSafeParamName ()));
 						by_ref_init.AppendFormat ("{0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle;\n", pi.Name.GetSafeParamName ());
 					} else if (isNSObject || isINativeObjectSubclass) {
 						by_ref_init.AppendFormat ("Runtime.RetainAndAutoreleaseNativeObject ({0});\n", pi.Name.GetSafeParamName ());

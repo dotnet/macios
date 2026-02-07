@@ -8,6 +8,7 @@ using Mono.Collections.Generic;
 using Registrar;
 using Mono.Tuner;
 using Xamarin.Bundler;
+using Xamarin.Linker;
 
 #if !LEGACY_TOOLS
 using LinkContext = Xamarin.Bundler.DotNetLinkContext;
@@ -19,8 +20,8 @@ namespace Xamarin.Tuner {
 	public class DerivedLinkContext : LinkContext {
 #if !LEGACY_TOOLS
 		internal StaticRegistrar StaticRegistrar => App.StaticRegistrar;
-		internal Application App;
 #endif
+		internal Application App;
 		Symbols? required_symbols;
 
 		// Any errors or warnings during the link process that won't prevent linking from continuing can be stored here.
@@ -47,13 +48,13 @@ namespace Xamarin.Tuner {
 		// so we need a second dictionary
 		Dictionary<TypeDefinition, LinkedAwayTypeReference> LinkedAwayTypeMap = new Dictionary<TypeDefinition, LinkedAwayTypeReference> ();
 
+		public DerivedLinkContext (LinkerConfiguration configuration, Application app)
 #if !LEGACY_TOOLS
-		public DerivedLinkContext (Xamarin.Linker.LinkerConfiguration configuration, Application app)
 			: base (configuration)
+#endif
 		{
 			this.App = app;
 		}
-#endif
 
 		AssemblyDefinition? corlib;
 		public AssemblyDefinition Corlib {

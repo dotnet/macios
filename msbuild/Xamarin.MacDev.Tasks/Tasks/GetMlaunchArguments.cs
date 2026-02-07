@@ -65,17 +65,19 @@ namespace Xamarin.MacDev.Tasks {
 				return null;
 
 			// Which product family are we looking for?
-			string productFamily;
+			string [] productFamilies;
 			switch (DeviceType) {
 			case IPhoneDeviceType.IPhone:
-				productFamily = "iPhone";
+				productFamilies = ["iPhone"];
 				break;
 			case IPhoneDeviceType.IPad:
+				productFamilies = ["iPad"];
+				break;
 			case IPhoneDeviceType.IPhoneAndIPad:
-				productFamily = "iPad";
+				productFamilies = ["iPhone", "iPad"];
 				break;
 			case IPhoneDeviceType.TV:
-				productFamily = "Apple TV";
+				productFamilies = ["Apple TV"];
 				break;
 			default:
 				throw new InvalidOperationException ($"Invalid device type: {DeviceType}");
@@ -85,7 +87,7 @@ namespace Xamarin.MacDev.Tasks {
 			var xml = new XmlDocument ();
 			xml.LoadXml (output);
 			// Get the device types for the product family we're looking for
-			var nodes = xml.SelectNodes ($"/MTouch/Simulator/SupportedDeviceTypes/SimDeviceType[ProductFamilyId='{productFamily}']")?.Cast<XmlNode> () ?? Array.Empty<XmlNode> ();
+			var nodes = xml.SelectNodes ($"/MTouch/Simulator/SupportedDeviceTypes/SimDeviceType[{string.Join (" or ", productFamilies.Select (v => $"ProductFamilyId='{v}'"))}]")?.Cast<XmlNode> () ?? Array.Empty<XmlNode> ();
 			// Create a list of them all
 			var deviceTypes = new List<(long Min, long Max, string Identifier)> ();
 			foreach (var node in nodes) {

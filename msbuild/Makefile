@@ -115,15 +115,20 @@ DOTNET_IOS_WINDOWS_FILES += Messaging/Xamarin.Messaging.Build/obj/$(CONFIG)/Buil
 
 .dotnet-windows: .build-stamp .copy-windows-files
 
+ifndef IS_LINUX
 all-local:: .dotnet-windows
 dotnet:: .dotnet-windows
+endif
 
 ##
 ## Common targets ##
 ##
 
 # we must install locally during 'make all', because the F# build depends on the msbuild targets/assemblies.
-all-local:: $(MSBUILD_PRODUCTS) .stamp-test-xml
+all-local:: $(MSBUILD_PRODUCTS)
+ifndef IS_LINUX
+all-local:: .stamp-test-xml
+endif
 
 # I haven't found a way to execute ilrepack.exe on .NET (it will probably have to be built for .NET), so run it using Mono.
 

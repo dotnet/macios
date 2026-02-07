@@ -312,13 +312,13 @@ define InstallWorkload
 	$(Q) touch $$@
 
 $(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)/microsoft.net.sdk.$3: .stamp-workload-replace-$1-$(DOTNET_VERSION) | $(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)
-	$$(Q_LN) ln -Fhs $$(abspath Workloads/Microsoft.NET.Sdk.$1) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath Workloads/Microsoft.NET.Sdk.$1) $$(abspath $$@)
 
 $(DOTNET_PACKS_PATH)/$($(1)_NUGET_SDK_NAME)/$2: | $(DOTNET_PACKS_PATH)/$($(1)_NUGET_SDK_NAME)
-	$$(Q_LN) ln -Fhs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)) $$(abspath $$@)
 
 $(DOTNET_PACKS_PATH)/$($(1)_NUGET_REF_NAME)/$2: | $(DOTNET_PACKS_PATH)/$($(1)_NUGET_REF_NAME)
-	$$(Q_LN) ln -Fhs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)) $$(abspath $$@)
 
 $(DOTNET_TEMPLATE_PACKS_PATH)/Microsoft.$1.Templates.$(2).nupkg: $(TEMPLATE_PACKS_$(shell echo $(1) | tr a-z A-Z)) | $(DOTNET_TEMPLATE_PACKS_PATH)
 	$$(Q) $$(CP) $$< $$@
@@ -333,7 +333,7 @@ $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallWorkload,$(platform)
 
 define InstallRuntimeManagedWorkload
 $(DOTNET_PACKS_PATH)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)/$2: | $(DOTNET_PACKS_PATH)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)
-	$$(Q_LN) ln -Fhs $$(abspath $(DOTNET_DESTDIR)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)) $$(abspath $$@)
 
 WORKLOAD_TARGETS += \
 	$(DOTNET_PACKS_PATH)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)/$2
@@ -342,7 +342,7 @@ $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallRuntimeManagedWorklo
 
 define InstallRuntimeWorkload
 $(DOTNET_PACKS_PATH)/$$($(2)_NUGET_RUNTIME_NAME)/$3: | $(DOTNET_PACKS_PATH)/$$($(2)_NUGET_RUNTIME_NAME)
-	$$(Q_LN) ln -Fhs $$(abspath $(DOTNET_DESTDIR)/$$($(2)_NUGET_RUNTIME_NAME)) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$$($(2)_NUGET_RUNTIME_NAME)) $$(abspath $$@)
 
 WORKLOAD_TARGETS += \
 	$(DOTNET_PACKS_PATH)/$$($(2)_NUGET_RUNTIME_NAME)/$3

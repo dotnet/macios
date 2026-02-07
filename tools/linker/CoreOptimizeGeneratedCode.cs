@@ -30,15 +30,6 @@ namespace Xamarin.Linker {
 			}
 		}
 
-		Dictionary<AssemblyDefinition, bool>? _inlineIntPtrSize;
-		Dictionary<AssemblyDefinition, bool> InlineIntPtrSize {
-			get {
-				if (_inlineIntPtrSize is null)
-					_inlineIntPtrSize = new Dictionary<AssemblyDefinition, bool> ();
-				return _inlineIntPtrSize;
-			}
-		}
-
 		public bool Device {
 			get { return LinkContext.App.IsDeviceBuild; }
 		}
@@ -589,35 +580,6 @@ namespace Xamarin.Linker {
 				instructions.RemoveAt (last_reachable + 1);
 		}
 
-		bool GetInlineIntPtrSize (AssemblyDefinition assembly)
-		{
-			if (InlineIntPtrSize.TryGetValue (assembly, out bool inlineIntPtrSize))
-				return inlineIntPtrSize;
-
-			// The "get_Size" is a performance (over size) optimization.
-			// It always makes sense for platform assemblies because:
-			// * Xamarin.TVOS.dll only ship the 64 bits code paths (all 32 bits code is extra weight better removed)
-			// * Xamarin.WatchOS.dll only ship the 32 bits code paths (all 64 bits code is extra weight better removed)
-			// * Xamarin.iOS.dll  ship different 32/64 bits versions of the assembly anyway (nint... support)
-			//   Each is better to be optimized (it will be smaller anyway)
-			//
-			// However for fat (32/64) apps (i.e. iOS only right now) the optimization can duplicate the assembly
-			// (metadata) for 3rd parties binding projects, increasing app size for very minimal performance gains.
-			// For non-fat apps (the AppStore allows 64bits only iOS apps) then it's better to be applied
-			//
-			// TODO: we could make this an option "optimize for size vs optimize for speed" in the future
-			if (Optimizations.InlineIntPtrSize.HasValue) {
-				inlineIntPtrSize = Optimizations.InlineIntPtrSize.Value;
-			} else {
-				inlineIntPtrSize = true;
-			}
-			if (inlineIntPtrSize)
-				Driver.Log (4, "Optimization 'inline-intptr-size' enabled for assembly '{0}'.", assembly.Name);
-
-			InlineIntPtrSize.Add (assembly, inlineIntPtrSize);
-			return inlineIntPtrSize;
-		}
-
 		bool GetIsExtensionType (TypeDefinition type)
 		{
 			// if 'type' inherits from NSObject inside an assembly that has [GeneratedCode]
@@ -681,9 +643,6 @@ namespace Xamarin.Linker {
 			case "EnsureUIThread":
 				ProcessEnsureUIThread (caller, ins);
 				break;
-			case "get_Size":
-				ProcessIntPtrSize (caller, ins);
-				break;
 			case "get_IsDirectBinding":
 				ProcessIsDirectBinding (caller, ins);
 				break;
@@ -732,23 +691,6 @@ namespace Xamarin.Linker {
 
 			// This is simple: just remove the call
 			Nop (ins); // call void UIKit.UIApplication::EnsureUIThread()
-		}
-
-		void ProcessIntPtrSize (MethodDefinition caller, Instruction ins)
-		{
-			if (!GetInlineIntPtrSize (caller.Module.Assembly))
-				return;
-
-			// This will inline IntPtr.Size to load the corresponding constant value instead
-
-			// Verify we're checking the right get_Size call
-			var mr = ins.Operand as MethodReference;
-			if (mr is null || !mr.DeclaringType.Is ("System", "IntPtr"))
-				return;
-
-			// We're fine, inline the get_Size call
-			ins.OpCode = OpCodes.Ldc_I4_8;
-			ins.Operand = null;
 		}
 
 		bool? IsDirectBindingConstant (TypeDefinition type)

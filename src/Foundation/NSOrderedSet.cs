@@ -51,7 +51,7 @@ namespace Foundation {
 
 		/// <summary>Initializes a new instance of the <see cref="NSOrderedSet" /> class from an array of strings.</summary>
 		/// <param name="strings">An array of strings to include in the set.</param>
-		public NSOrderedSet (params string [] strings) : this (NSArray.FromStrings (strings))
+		public NSOrderedSet (params string? [] strings) : this (NSArray.FromStrings (strings))
 		{
 		}
 
@@ -243,7 +243,7 @@ namespace Foundation {
 
 		/// <summary>Initializes a new instance of the <see cref="NSMutableOrderedSet" /> class from an array of strings.</summary>
 		/// <param name="strings">An array of strings to include in the set.</param>
-		public NSMutableOrderedSet (params string [] strings) : this (NSArray.FromStrings (strings))
+		public NSMutableOrderedSet (params string? [] strings) : this (NSArray.FromStrings (strings))
 		{
 		}
 

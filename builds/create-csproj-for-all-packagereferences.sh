@@ -4,6 +4,13 @@ WHITE=$(tput setaf 7 || true)
 RED=$(tput setaf 9 || true)
 CLEAR=$(tput sgr0 || true)
 
+# Detect the OS to use the right sed syntax
+if [[ "$(uname -s)" == "Darwin" ]]; then
+	SED_INPLACE_FLAGS=(-i '')
+else
+	SED_INPLACE_FLAGS=(-i)
+fi
+
 OUTPUTPATH=
 while [[ $# -gt 0 ]]; do
 	case $1 in
@@ -35,7 +42,7 @@ while [[ $# -gt 0 ]]; do
 	esac
 done
 
-TMPPATH=$(PWD)/packagereferences.tmp.csproj
+TMPPATH="$PWD/packagereferences.tmp.csproj"
 
 # Go to the root directory
 cd "$(git rev-parse --show-toplevel)"
@@ -44,16 +51,16 @@ cd "$(git rev-parse --show-toplevel)"
 git grep -e '<PackageReference.*Include="[a-zA-Z0-9._-]*".*Version="[a-zA-Z0-9._-]*".*>' -h > "$TMPPATH"
 
 # Replace double double quotes with a single double quote. This happens in source code that generates project files (for tests).
-sed -i '' 's/""/"/g' "$TMPPATH"
+sed "${SED_INPLACE_FLAGS[@]}" 's/""/"/g' "$TMPPATH"
 
 # Remove packages that we build locally
-sed -i '' '/Xamarin.Tests.FrameworksInRuntimesNativeDirectory/d' "$TMPPATH"
-sed -i '' '/Xamarin.Tests.DynamicLibrariesInRuntimesNativeDirectory/d' "$TMPPATH"
-sed -i '' '/Xamarin.Tests.XCFrameworkWithStaticLibraryInRuntimesNativeDirectory/d' "$TMPPATH"
-sed -i '' '/Xamarin.Tests.XCFrameworkWithSymlinks/d' "$TMPPATH"
+sed "${SED_INPLACE_FLAGS[@]}" '/Xamarin.Tests.FrameworksInRuntimesNativeDirectory/d' "$TMPPATH"
+sed "${SED_INPLACE_FLAGS[@]}" '/Xamarin.Tests.DynamicLibrariesInRuntimesNativeDirectory/d' "$TMPPATH"
+sed "${SED_INPLACE_FLAGS[@]}" '/Xamarin.Tests.XCFrameworkWithStaticLibraryInRuntimesNativeDirectory/d' "$TMPPATH"
+sed "${SED_INPLACE_FLAGS[@]}" '/Xamarin.Tests.XCFrameworkWithSymlinks/d' "$TMPPATH"
 
 # Get only the name and version of each package, and write that back in a PackageDownload item
-sed -i '' 's@.*<PackageReference.*Include="\([a-zA-Z0-9._-]*\)".*Version="\([a-zA-Z0-9._-]*\)".*>.*@\t\t<PackageDownload Include="\1" Version="[\2]" />@g' "$TMPPATH"
+sed "${SED_INPLACE_FLAGS[@]}" 's@.*<PackageReference.*Include="\([a-zA-Z0-9._-]*\)".*Version="\([a-zA-Z0-9._-]*\)".*>.*@\t\t<PackageDownload Include="\1" Version="[\2]" />@g' "$TMPPATH"
 
 # Sort the references and only list each once.
 sort -u -o "$TMPPATH" "$TMPPATH"

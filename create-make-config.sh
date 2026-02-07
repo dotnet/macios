@@ -14,13 +14,13 @@ export LANG
 # Compute commit distances
 for platform in $ALL_DOTNET_PLATFORMS; do
 	PLATFORM=$(echo "$platform" | tr '[:lower:]' '[:upper:]')
-	COMMIT=$(git blame -- ./Make.versions HEAD | grep "${PLATFORM}_NUGET_OS_VERSION=" | sed 's/ .*//')
+	COMMIT=$(git blame -- ./Make.versions HEAD | grep "${PLATFORM}_NUGET_OS_VERSION=" | sed 's/ .*//' | sed 's/^\^//')
 	COMMIT_DISTANCE=$(git log "$COMMIT..HEAD" --oneline | wc -l | sed -e 's/ //g')
 	TOTAL_DISTANCE=$((NUGET_VERSION_COMMIT_DISTANCE_START+COMMIT_DISTANCE))
 	printf "${PLATFORM}_NUGET_COMMIT_DISTANCE:=$TOTAL_DISTANCE\\n" >> "$OUTPUT_FILE"
 done
 
-STABLE_COMMIT=$(git blame -L '/^[#[:blank:]]*NUGET_RELEASE_BRANCH=/,+1' -- ./Make.config HEAD | sed 's/ .*//')
+STABLE_COMMIT=$(git blame -L '/^[#[:blank:]]*NUGET_RELEASE_BRANCH=/,+1' -- ./Make.config HEAD | sed 's/ .*//' | sed 's/^\^//')
 STABLE_COMMIT_DISTANCE=$(git log "$STABLE_COMMIT..HEAD" --oneline | wc -l | sed -e 's/ //g')
 STABLE_TOTAL_DISTANCE=$((STABLE_COMMIT_DISTANCE+NUGET_VERSION_STABLE_COMMIT_DISTANCE_START))
 

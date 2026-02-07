@@ -335,7 +335,7 @@ namespace CoreServices {
 
 			if (options.NSPathsToWatch is not null) {
 				pathsToWatch = options.NSPathsToWatch;
-			} else if (options.PathsToWatch?.Count == 0) {
+			} else if (options.PathsToWatch is null || options.PathsToWatch.Count == 0) {
 				throw new ArgumentException (
 					$"must specify at least one path to watch on " +
 					$"{nameof (FSEventStreamCreateOptions)}.{nameof (FSEventStreamCreateOptions.PathsToWatch)}",

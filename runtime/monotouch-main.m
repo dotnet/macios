@@ -151,31 +151,35 @@ xamarin_assembly_preload_hook (MonoAssemblyName *aname, char **assemblies_path, 
 }
 #endif // !defined (CORECLR_RUNTIME)
 
-#ifdef DEBUG_LAUNCH_TIME
-uint64_t startDate = 0;
-uint64_t date = 0;
+static uint64_t debug_launch_startDate = 0;
+static uint64_t debug_launch_date = 0;
+static int debug_launch_time_enabled = -1;
+
 void debug_launch_time_print (const char *msg)
 {
+	if (debug_launch_time_enabled == -1) {
+		const char *env = getenv ("DEBUG_LAUNCH_TIME");
+		debug_launch_time_enabled = (env != NULL && env[0] == '1') ? 1 : 0;
+	}
+
+	if (!debug_launch_time_enabled)
+		return;
+
 	uint64_t unow;
 	struct timeval now;
 
 	gettimeofday (&now, NULL);
-	unow = now.tv_sec * 1000000ULL + now.tv_usec;
+	unow = (uint64_t) now.tv_sec * 1000000ULL + (uint64_t) now.tv_usec;
 
-	if (startDate == 0) {
-		startDate = unow;
-		date = startDate;
+	if (debug_launch_startDate == 0) {
+		debug_launch_startDate = unow;
+		debug_launch_date = debug_launch_startDate;
 	}
 
-	PRINT ("%s: %llu us Total: %llu us", msg, unow - date, unow - startDate);
+	PRINT ("%s: %llu us Total: %llu us", msg, unow - debug_launch_date, unow - debug_launch_startDate);
 
-	date = unow;
+	debug_launch_date = unow;
 }
-#else
-inline void debug_launch_time_print (const char *msg)
-{
-}
-#endif
 
 /*
  * This class will listen for memory warnings and when received, force

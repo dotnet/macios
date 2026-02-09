@@ -18,6 +18,7 @@
     <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PackAsTool)' != 'true'">$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
 
     <PublishAot>true</PublishAot>
+    <RollForward>major</RollForward>
   </PropertyGroup>
 
   <ItemGroup>

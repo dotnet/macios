@@ -55,8 +55,7 @@ public class Tests {
 using Foundation;
 
 // @interface MyClass
-interface MyClass
-{
+interface MyClass {
 	// @property int P1;
 	[Export ("P1")]
 	int P1 { get; set; }
@@ -96,8 +95,7 @@ interface MyClass
 using Foundation;
 
 // @interface MyClass
-interface MyClass
-{
+interface MyClass {
 	// @property int P1;
 	[Export ("P1")]
 	int P1 { get; set; }
@@ -109,8 +107,7 @@ interface MyClass
 		using System.Runtime.InteropServices;
 
 		[StructLayout (LayoutKind.Sequential)]
-		public struct MyStruct
-		{
+		public struct MyStruct {
 			public int X;
 
 			public int Y;

@@ -201,7 +201,6 @@ Defined in `templates/variables/`:
 ### `common.yml`
 Core variables used across all pipelines:
 - Build pools: `PRBuildPool`, `CIBuildPool`
-- SDK versions: `DotNetSdkVersion`, `DotNetPreviewSdkVersion`
 - Environment: `xcodeChannel`, `minimumMacOSVersion`
 - Azure DevOps groups: `XamarinCompatLab`, `Xamarin-Secrets`, etc.
 

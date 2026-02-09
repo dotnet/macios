@@ -98,22 +98,15 @@ for file in "$SRC_DIR"/dotnet/Templates/Microsoft.*.Templates/*/*/.template.conf
 	mv "$file".tmp "$file"
 done
 
-make -C src csproj -j8
-(
-	cd src/build
-	find . -name '*.csproj'
-)
-
 FILE=$(pwd)/tmp.txt
 make print-variable-value-to-file FILE="$FILE" VARIABLE=DOTNET_PLATFORMS -C tools/devops
 DOTNET_PLATFORMS=$(cat "$FILE" | sed 's/.*=//' | xargs)
 rm -f "$FILE"
 
 for platform in $(echo "$DOTNET_PLATFORMS" | sed 's/ /\n/g'); do
-	pl=$(echo $platform | tr 'A-Z' 'a-z')
-	af_whitespace src/build/dotnet/$pl/csproj/core/Core.$platform.csproj
-	af_whitespace src/build/dotnet/$pl/csproj/api/ApiDefinition.$platform.csproj
-	af_whitespace src/build/dotnet/$pl/csproj/platform/Microsoft.$platform.csproj
+	af_whitespace src/build/dotnet/$platform/csproj/core/Core.$platform.csproj
+	af_whitespace src/build/dotnet/$platform/csproj/api/ApiDefinition.$platform.csproj
+	af_whitespace src/build/dotnet/$platform/csproj/platform/Microsoft.$platform.csproj
 done
 
 # dotnet format "$SRC_DIR/[...]"

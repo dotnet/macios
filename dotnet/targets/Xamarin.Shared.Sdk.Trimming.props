@@ -50,8 +50,10 @@
 		<!-- Linking is always on for all assemblies when using NativeAOT - this is because we need to modify all assemblies in the linker for them to be compatible with NativeAOT -->
 		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_UseNativeAot)' == 'true'">Full</_DefaultLinkMode>
 
-		<!-- Linking is off by default when using CoreCLR -->
-		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(UseMonoRuntime)' != 'true'">None</_DefaultLinkMode>
+		<!-- Full linking is on by default when using CoreCLR in Release -->
+		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(UseMonoRuntime)' != 'true' And '$(Configuration)' == 'Release'">Full</_DefaultLinkMode>
+		<!-- SdkOnly linking is on by default when using CoreCLR in non-Release -->
+		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(UseMonoRuntime)' != 'true' And '$(Configuration)' != 'Release'">SdkOnly</_DefaultLinkMode>
 
 		<!-- Default linking is on for release builds for Mac Catalyst apps -->
 		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_PlatformName)' == 'MacCatalyst' And '$(Configuration)' == 'Release'">SdkOnly</_DefaultLinkMode>

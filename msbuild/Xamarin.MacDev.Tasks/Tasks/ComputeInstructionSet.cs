@@ -201,10 +201,12 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			try {
 				var instructionSet = ComputeMinimumInstructionSet (Platform, SupportedOSPlatformVersion);
+#if NET
 				if (!string.IsNullOrEmpty (instructionSet)) {
-					// The null-forgiving operator is required here because the compiler doesn't understand
-					// that !string.IsNullOrEmpty guarantees non-null
-					InstructionSet = instructionSet!;
+#else
+				if (!string.IsNullOrEmpty (instructionSet) && instructionSet is not null) {
+#endif
+					InstructionSet = instructionSet;
 					Log.LogMessage (MessageImportance.Low, $"Computed instruction set '{InstructionSet}' for {PlatformName} {SupportedOSPlatformVersion}");
 				} else {
 					Log.LogMessage (MessageImportance.Low, $"No instruction set computed for {PlatformName} {SupportedOSPlatformVersion}");
@@ -225,8 +227,8 @@ namespace Xamarin.MacDev.Tasks {
 				return null;
 			}
 
-			// For macOS and Mac Catalyst, we need different logic
-			if (platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst) {
+			// For macOS, Mac Catalyst, and simulators (which run on Mac hardware), we need different logic
+			if (platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst || RuntimeIdentifier.Contains ("simulator")) {
 				return ComputeMacInstructionSet (platform, targetVersion);
 			}
 

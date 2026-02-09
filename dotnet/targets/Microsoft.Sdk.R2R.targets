@@ -5,16 +5,17 @@
 	<!-- 
 		Compute the instruction set for R2R/NAOT compilation based on the SupportedOSPlatformVersion and RuntimeIdentifier.
 		This target runs early in the build to set PublishReadyToRunCrossgen2ExtraArgs if needed.
+		Set ComputeInstructionSetForCrossgen2 to false to opt out of this computation.
 	-->
 	<Target Name="_ComputeInstructionSetForCrossgen2"
-		Condition="'$(PublishReadyToRun)' == 'true'"
+		Condition="'$(PublishReadyToRun)' == 'true' And '$(ComputeInstructionSetForCrossgen2)' != 'false'"
 		BeforeTargets="ResolveReadyToRunCompilers">
 		<ComputeInstructionSet
-			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
 			RuntimeIdentifier="$(RuntimeIdentifier)"
-			SessionId="$(SessionId)"
-			TargetFrameworkMoniker="$(TargetFramework)"
 			SdkDevPath="$(_SdkDevPath)"
+			SessionId="$(SessionId)"
+			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
+			TargetFrameworkMoniker="$(TargetFramework)"
 			>
 			<Output TaskParameter="InstructionSet" PropertyName="_ComputedInstructionSet" />
 		</ComputeInstructionSet>

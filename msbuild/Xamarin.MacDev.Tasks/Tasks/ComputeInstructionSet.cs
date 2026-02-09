@@ -18,6 +18,7 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string SupportedOSPlatformVersion { get; set; } = "";
 
+		[Required]
 		public string RuntimeIdentifier { get; set; } = "";
 
 		#endregion
@@ -29,175 +30,113 @@ namespace Xamarin.MacDev.Tasks {
 
 		#endregion
 
-		// Device-to-CPU mapping
-		// This maps each device model to its CPU model.
+		// Device information structure
+		class DeviceInfo {
+			public string Cpu { get; }
+			public string MaxOSVersion { get; }
+
+			public DeviceInfo (string cpu, string maxOSVersion)
+			{
+				Cpu = cpu;
+				MaxOSVersion = maxOSVersion;
+			}
+		}
+
+		// Device information mapping
+		// This maps each device model to its CPU model and maximum supported OS version.
 		//
-		// Sources for device-to-CPU information:
+		// Sources for device information:
 		// - iPhone models and chips: https://en.wikipedia.org/wiki/List_of_iPhone_models
 		// - iPad models and chips: https://en.wikipedia.org/wiki/List_of_iPad_models
 		// - Apple TV models and chips: https://en.wikipedia.org/wiki/Apple_TV#Specifications
 		// - Apple's technical specifications pages for each device (e.g., https://support.apple.com/kb/SP714 for iPhone 6s)
-		//
-		// To update: Cross-reference Wikipedia articles with Apple's official tech specs when new devices are released.
-		static readonly Dictionary<string, string> DeviceToCpu = new Dictionary<string, string> {
-			// iOS devices
-			{ "iPhone6s", "A9" },
-			{ "iPhone6sPlus", "A9" },
-			{ "iPhoneSE", "A9" },
-			{ "iPhone7", "A10" },
-			{ "iPhone7Plus", "A10" },
-			{ "iPhone8", "A11" },
-			{ "iPhone8Plus", "A11" },
-			{ "iPhoneX", "A11" },
-			{ "iPhoneXR", "A12" },
-			{ "iPhoneXS", "A12" },
-			{ "iPhoneXSMax", "A12" },
-			{ "iPhone11", "A13" },
-			{ "iPhone11Pro", "A13" },
-			{ "iPhone11ProMax", "A13" },
-			{ "iPhoneSE2", "A13" },
-			{ "iPhone12mini", "A14" },
-			{ "iPhone12", "A14" },
-			{ "iPhone12Pro", "A14" },
-			{ "iPhone12ProMax", "A14" },
-			{ "iPhone13mini", "A15" },
-			{ "iPhone13", "A15" },
-			{ "iPhone13Pro", "A15" },
-			{ "iPhone13ProMax", "A15" },
-			{ "iPhoneSE3", "A15" },
-			{ "iPhone14", "A15" },
-			{ "iPhone14Plus", "A15" },
-			{ "iPhone14Pro", "A16" },
-			{ "iPhone14ProMax", "A16" },
-			{ "iPhone15", "A16" },
-			{ "iPhone15Plus", "A16" },
-			{ "iPhone15Pro", "A17Pro" },
-			{ "iPhone15ProMax", "A17Pro" },
-			{ "iPhone16", "A18" },
-			{ "iPhone16Plus", "A18" },
-			{ "iPhone16Pro", "A18Pro" },
-			{ "iPhone16ProMax", "A18Pro" },
-
-			// iPad models
-			{ "iPadAir2", "A8X" },
-			{ "iPadMini4", "A8" },
-			{ "iPadPro9_7", "A9X" },
-			{ "iPadPro12_9", "A9X" },
-			{ "iPad5", "A9" },
-			{ "iPadPro10_5", "A10X" },
-			{ "iPadPro12_9_2", "A10X" },
-			{ "iPad6", "A10" },
-			{ "iPadAir3", "A12" },
-			{ "iPadMini5", "A12" },
-			{ "iPad7", "A10" },
-			{ "iPadPro11", "A12X" },
-			{ "iPadPro12_9_3", "A12X" },
-			{ "iPad8", "A12" },
-			{ "iPadAir4", "A14" },
-			{ "iPad9", "A13" },
-			{ "iPadMini6", "A15" },
-			{ "iPadAir5", "M1" },
-			{ "iPadPro11_3", "M1" },
-			{ "iPadPro12_9_5", "M1" },
-			{ "iPad10", "A14" },
-			{ "iPadPro11_4", "M2" },
-			{ "iPadPro12_9_6", "M2" },
-			{ "iPadAir6", "M2" },
-			{ "iPadPro11_M4", "M4" },
-			{ "iPadPro13_M4", "M4" },
-
-			// Apple TV models
-			{ "AppleTV4", "A8" },
-			{ "AppleTV4K", "A10X" },
-			{ "AppleTV4K2", "A12" },
-			{ "AppleTV4K3", "A15" },
-		};
-
-		// Device-to-max-OS mapping
-		// This maps each device to its maximum supported OS version.
-		//
-		// Sources for maximum OS version support:
 		// - iOS compatibility: https://en.wikipedia.org/wiki/IOS_version_history#Overview
 		// - iPadOS compatibility: https://en.wikipedia.org/wiki/IPadOS_version_history#Overview
 		// - tvOS compatibility: https://en.wikipedia.org/wiki/TvOS_version_history#Overview
-		// - Apple's official iOS/iPadOS/tvOS release notes and compatibility pages
 		// - https://support.apple.com/en-us/120256 (iOS and iPadOS compatibility)
 		//
-		// To update: Check Wikipedia compatibility tables and Apple's official support documents when new OS versions are released.
-		// Note: These represent the latest known maximum versions and may need updates as Apple releases new OS versions.
-		static readonly Dictionary<string, string> DeviceToMaxOS = new Dictionary<string, string> {
-			// iOS devices
-			{ "iPhone6s", "15.8" },
-			{ "iPhone6sPlus", "15.8" },
-			{ "iPhoneSE", "15.8" },
-			{ "iPhone7", "15.8" },
-			{ "iPhone7Plus", "15.8" },
-			{ "iPhone8", "16.7" },
-			{ "iPhone8Plus", "16.7" },
-			{ "iPhoneX", "16.7" },
-			{ "iPhoneXR", "18.2" },
-			{ "iPhoneXS", "18.2" },
-			{ "iPhoneXSMax", "18.2" },
-			{ "iPhone11", "18.2" },
-			{ "iPhone11Pro", "18.2" },
-			{ "iPhone11ProMax", "18.2" },
-			{ "iPhoneSE2", "18.2" },
-			{ "iPhone12mini", "18.2" },
-			{ "iPhone12", "18.2" },
-			{ "iPhone12Pro", "18.2" },
-			{ "iPhone12ProMax", "18.2" },
-			{ "iPhone13mini", "18.2" },
-			{ "iPhone13", "18.2" },
-			{ "iPhone13Pro", "18.2" },
-			{ "iPhone13ProMax", "18.2" },
-			{ "iPhoneSE3", "18.2" },
-			{ "iPhone14", "18.2" },
-			{ "iPhone14Plus", "18.2" },
-			{ "iPhone14Pro", "18.2" },
-			{ "iPhone14ProMax", "18.2" },
-			{ "iPhone15", "18.2" },
-			{ "iPhone15Plus", "18.2" },
-			{ "iPhone15Pro", "18.2" },
-			{ "iPhone15ProMax", "18.2" },
-			{ "iPhone16", "18.2" },
-			{ "iPhone16Plus", "18.2" },
-			{ "iPhone16Pro", "18.2" },
-			{ "iPhone16ProMax", "18.2" },
+		// To update: Cross-reference Wikipedia articles with Apple's official tech specs when new devices are released.
+		// Note: For devices that support the latest OS version, use SdkVersions constants instead of hardcoding the version number.
+		static Dictionary<string, DeviceInfo> GetDeviceInfo ()
+		{
+			// Use SdkVersions for the latest OS versions
+			var latestIOSVersion = SdkVersions.iOS;
+			var latestTVOSVersion = SdkVersions.TVOS;
 
-			// iPad models
-			{ "iPadAir2", "15.8" },
-			{ "iPadMini4", "15.8" },
-			{ "iPadPro9_7", "16.7" },
-			{ "iPadPro12_9", "16.7" },
-			{ "iPad5", "16.7" },
-			{ "iPadPro10_5", "16.7" },
-			{ "iPadPro12_9_2", "16.7" },
-			{ "iPad6", "16.7" },
-			{ "iPadAir3", "17.7" },
-			{ "iPadMini5", "17.7" },
-			{ "iPad7", "17.7" },
-			{ "iPadPro11", "18.2" },
-			{ "iPadPro12_9_3", "18.2" },
-			{ "iPad8", "18.2" },
-			{ "iPadAir4", "18.2" },
-			{ "iPad9", "18.2" },
-			{ "iPadMini6", "18.2" },
-			{ "iPadAir5", "18.2" },
-			{ "iPadPro11_3", "18.2" },
-			{ "iPadPro12_9_5", "18.2" },
-			{ "iPad10", "18.2" },
-			{ "iPadPro11_4", "18.2" },
-			{ "iPadPro12_9_6", "18.2" },
-			{ "iPadAir6", "18.2" },
-			{ "iPadPro11_M4", "18.2" },
-			{ "iPadPro13_M4", "18.2" },
+			return new Dictionary<string, DeviceInfo> {
+				// iOS devices
+				{ "iPhone6s", new DeviceInfo ("A9", "15.8") },
+				{ "iPhone6sPlus", new DeviceInfo ("A9", "15.8") },
+				{ "iPhoneSE", new DeviceInfo ("A9", "15.8") },
+				{ "iPhone7", new DeviceInfo ("A10", "15.8") },
+				{ "iPhone7Plus", new DeviceInfo ("A10", "15.8") },
+				{ "iPhone8", new DeviceInfo ("A11", "16.7") },
+				{ "iPhone8Plus", new DeviceInfo ("A11", "16.7") },
+				{ "iPhoneX", new DeviceInfo ("A11", "16.7") },
+				{ "iPhoneXR", new DeviceInfo ("A12", latestIOSVersion) },
+				{ "iPhoneXS", new DeviceInfo ("A12", latestIOSVersion) },
+				{ "iPhoneXSMax", new DeviceInfo ("A12", latestIOSVersion) },
+				{ "iPhone11", new DeviceInfo ("A13", latestIOSVersion) },
+				{ "iPhone11Pro", new DeviceInfo ("A13", latestIOSVersion) },
+				{ "iPhone11ProMax", new DeviceInfo ("A13", latestIOSVersion) },
+				{ "iPhoneSE2", new DeviceInfo ("A13", latestIOSVersion) },
+				{ "iPhone12mini", new DeviceInfo ("A14", latestIOSVersion) },
+				{ "iPhone12", new DeviceInfo ("A14", latestIOSVersion) },
+				{ "iPhone12Pro", new DeviceInfo ("A14", latestIOSVersion) },
+				{ "iPhone12ProMax", new DeviceInfo ("A14", latestIOSVersion) },
+				{ "iPhone13mini", new DeviceInfo ("A15", latestIOSVersion) },
+				{ "iPhone13", new DeviceInfo ("A15", latestIOSVersion) },
+				{ "iPhone13Pro", new DeviceInfo ("A15", latestIOSVersion) },
+				{ "iPhone13ProMax", new DeviceInfo ("A15", latestIOSVersion) },
+				{ "iPhoneSE3", new DeviceInfo ("A15", latestIOSVersion) },
+				{ "iPhone14", new DeviceInfo ("A15", latestIOSVersion) },
+				{ "iPhone14Plus", new DeviceInfo ("A15", latestIOSVersion) },
+				{ "iPhone14Pro", new DeviceInfo ("A16", latestIOSVersion) },
+				{ "iPhone14ProMax", new DeviceInfo ("A16", latestIOSVersion) },
+				{ "iPhone15", new DeviceInfo ("A16", latestIOSVersion) },
+				{ "iPhone15Plus", new DeviceInfo ("A16", latestIOSVersion) },
+				{ "iPhone15Pro", new DeviceInfo ("A17Pro", latestIOSVersion) },
+				{ "iPhone15ProMax", new DeviceInfo ("A17Pro", latestIOSVersion) },
+				{ "iPhone16", new DeviceInfo ("A18", latestIOSVersion) },
+				{ "iPhone16Plus", new DeviceInfo ("A18", latestIOSVersion) },
+				{ "iPhone16Pro", new DeviceInfo ("A18Pro", latestIOSVersion) },
+				{ "iPhone16ProMax", new DeviceInfo ("A18Pro", latestIOSVersion) },
 
-			// Apple TV models - tvOS versions
-			{ "AppleTV4", "15.6" },
-			{ "AppleTV4K", "18.2" },
-			{ "AppleTV4K2", "18.2" },
-			{ "AppleTV4K3", "18.2" },
-		};
+				// iPad models
+				{ "iPadAir2", new DeviceInfo ("A8X", "15.8") },
+				{ "iPadMini4", new DeviceInfo ("A8", "15.8") },
+				{ "iPadPro9_7", new DeviceInfo ("A9X", "16.7") },
+				{ "iPadPro12_9", new DeviceInfo ("A9X", "16.7") },
+				{ "iPad5", new DeviceInfo ("A9", "16.7") },
+				{ "iPadPro10_5", new DeviceInfo ("A10X", "16.7") },
+				{ "iPadPro12_9_2", new DeviceInfo ("A10X", "16.7") },
+				{ "iPad6", new DeviceInfo ("A10", "16.7") },
+				{ "iPadAir3", new DeviceInfo ("A12", "17.7") },
+				{ "iPadMini5", new DeviceInfo ("A12", "17.7") },
+				{ "iPad7", new DeviceInfo ("A10", "17.7") },
+				{ "iPadPro11", new DeviceInfo ("A12X", latestIOSVersion) },
+				{ "iPadPro12_9_3", new DeviceInfo ("A12X", latestIOSVersion) },
+				{ "iPad8", new DeviceInfo ("A12", latestIOSVersion) },
+				{ "iPadAir4", new DeviceInfo ("A14", latestIOSVersion) },
+				{ "iPad9", new DeviceInfo ("A13", latestIOSVersion) },
+				{ "iPadMini6", new DeviceInfo ("A15", latestIOSVersion) },
+				{ "iPadAir5", new DeviceInfo ("M1", latestIOSVersion) },
+				{ "iPadPro11_3", new DeviceInfo ("M1", latestIOSVersion) },
+				{ "iPadPro12_9_5", new DeviceInfo ("M1", latestIOSVersion) },
+				{ "iPad10", new DeviceInfo ("A14", latestIOSVersion) },
+				{ "iPadPro11_4", new DeviceInfo ("M2", latestIOSVersion) },
+				{ "iPadPro12_9_6", new DeviceInfo ("M2", latestIOSVersion) },
+				{ "iPadAir6", new DeviceInfo ("M2", latestIOSVersion) },
+				{ "iPadPro11_M4", new DeviceInfo ("M4", latestIOSVersion) },
+				{ "iPadPro13_M4", new DeviceInfo ("M4", latestIOSVersion) },
+
+				// Apple TV models
+				{ "AppleTV4", new DeviceInfo ("A8", "15.6") },
+				{ "AppleTV4K", new DeviceInfo ("A10X", latestTVOSVersion) },
+				{ "AppleTV4K2", new DeviceInfo ("A12", latestTVOSVersion) },
+				{ "AppleTV4K3", new DeviceInfo ("A15", latestTVOSVersion) },
+			};
+		}
 
 		// CPU-to-instruction-set mapping
 		// This maps each CPU model to the instruction set it supports.
@@ -261,11 +200,6 @@ namespace Xamarin.MacDev.Tasks {
 		public override bool Execute ()
 		{
 			try {
-				if (string.IsNullOrEmpty (SupportedOSPlatformVersion)) {
-					Log.LogMessage (MessageImportance.Low, "SupportedOSPlatformVersion is not set, skipping instruction set computation");
-					return true;
-				}
-
 				var instructionSet = ComputeMinimumInstructionSet (Platform, SupportedOSPlatformVersion);
 				if (!string.IsNullOrEmpty (instructionSet)) {
 					// The null-forgiving operator is required here because the compiler doesn't understand
@@ -297,16 +231,18 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			// For iOS and tvOS, find the oldest device that can run this OS version
+			var deviceInfo = GetDeviceInfo ();
 			var devicesToCheck = platform == ApplePlatform.TVOS ?
-				DeviceToMaxOS.Where (kv => kv.Key.StartsWith ("AppleTV")) :
-				DeviceToMaxOS.Where (kv => !kv.Key.StartsWith ("AppleTV"));
+				deviceInfo.Where (kv => kv.Key.StartsWith ("AppleTV")) :
+				deviceInfo.Where (kv => !kv.Key.StartsWith ("AppleTV"));
 
 			string? oldestCpu = null;
 			string? oldestInstructionSet = null;
 
 			foreach (var device in devicesToCheck) {
 				var deviceName = device.Key;
-				var maxOSString = device.Value;
+				var info = device.Value;
+				var maxOSString = info.MaxOSVersion;
 
 				if (!Version.TryParse (maxOSString, out var maxOS))
 					continue;
@@ -315,14 +251,13 @@ namespace Xamarin.MacDev.Tasks {
 				// A device can run the target OS if its max OS >= target OS
 				if (maxOS >= targetVersion) {
 					// This device can run the target OS
-					if (DeviceToCpu.TryGetValue (deviceName, out var cpu)) {
-						if (CpuToInstructionSet.TryGetValue (cpu, out var instructionSet)) {
-							// Keep track of the oldest instruction set we've seen
-							// We want the minimum instruction set that all compatible devices support
-							if (oldestCpu is null || IsOlderInstructionSet (instructionSet, oldestInstructionSet)) {
-								oldestCpu = cpu;
-								oldestInstructionSet = instructionSet;
-							}
+					var cpu = info.Cpu;
+					if (CpuToInstructionSet.TryGetValue (cpu, out var instructionSet)) {
+						// Keep track of the oldest instruction set we've seen
+						// We want the minimum instruction set that all compatible devices support
+						if (oldestCpu is null || IsOlderInstructionSet (instructionSet, oldestInstructionSet)) {
+							oldestCpu = cpu;
+							oldestInstructionSet = instructionSet;
 						}
 					}
 				}
@@ -342,11 +277,6 @@ namespace Xamarin.MacDev.Tasks {
 			// For macOS and Mac Catalyst, we need to determine the instruction set based on RuntimeIdentifier
 			// RuntimeIdentifier format: <os>-<arch> or <os>.<version>-<arch> 
 			// Examples: "osx-x64", "osx-arm64", "osx.13.0-arm64", "maccatalyst-x64", "maccatalyst-arm64"
-			
-			if (string.IsNullOrEmpty (RuntimeIdentifier)) {
-				Log.LogMessage (MessageImportance.Low, $"RuntimeIdentifier is not set, cannot determine instruction set for {platform}");
-				return null;
-			}
 
 			var parts = RuntimeIdentifier.Split ('-');
 			if (parts.Length < 2) {
@@ -358,10 +288,10 @@ namespace Xamarin.MacDev.Tasks {
 			var arch = parts [parts.Length - 1];
 
 			// Determine instruction set based on architecture
-			if (arch == "x64") {
+			if (string.Equals (arch, "x64", StringComparison.OrdinalIgnoreCase)) {
 				// Intel/AMD x64 architecture
 				return "x86-64-v2";
-			} else if (arch == "arm64") {
+			} else if (string.Equals (arch, "arm64", StringComparison.OrdinalIgnoreCase)) {
 				// Apple Silicon
 				return "apple-m1";
 			} else {

@@ -19,6 +19,9 @@
 
     <PublishAot>true</PublishAot>
     <RollForward>major</RollForward>
+
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,5 +33,9 @@
 
   <ItemGroup>
     <None Include="../clang/include/**/*" Pack="true" PackagePath="content/clang/include" Link="clang/include" />
+
+    <None Include="README.md" Pack="true" PackagePath="/"/>
+    <None Include="../../../LICENSE" Pack="true" PackagePath="/"/>
+    <None Include="../../../NOTICE.txt" Pack="true" PackagePath="/"/>
   </ItemGroup>
 </Project>

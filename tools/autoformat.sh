@@ -98,6 +98,9 @@ for file in "$SRC_DIR"/dotnet/Templates/Microsoft.*.Templates/*/*/.template.conf
 	mv "$file".tmp "$file"
 done
 
+make -C src csproj -j8
+find . -name '*.csproj'
+
 FILE=$(pwd)/tmp.txt
 make print-variable-value-to-file FILE="$FILE" VARIABLE=DOTNET_PLATFORMS -C tools/devops
 DOTNET_PLATFORMS=$(cat "$FILE" | sed 's/.*=//' | xargs)

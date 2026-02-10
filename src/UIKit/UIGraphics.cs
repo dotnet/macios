@@ -70,7 +70,7 @@ namespace UIKit {
 		/// <remarks>
 		///   <para>UIKit keeps a stack of image contexts. This method creates a new image context, makes it the default and places it at the top of the graphic context stack.</para>
 		///   <para>To restore the previous graphics context, call the <see cref="EndImageContext" /> method.</para>
-		///   <para>You can get the current context by calling the <see cref="GetImageFromCurrentImageContext" /> method.</para>
+		///   <para>You can get the image from the current image context by calling the <see cref="GetImageFromCurrentImageContext" /> method.</para>
 		///   <para>Developers can call this method from any thread.</para>
 		/// </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -98,7 +98,7 @@ namespace UIKit {
 		/// <remarks>
 		///   <para>UIKit keeps a stack of image contexts. This method creates a new image context, makes it the default and places it at the top of the graphic context stack.</para>
 		///   <para>To restore the previous graphics context, call the <see cref="EndImageContext" /> method.</para>
-		///   <para>You can get the current context by calling the <see cref="GetImageFromCurrentImageContext" /> method.</para>
+		///   <para>You can get the image from the current image context by calling the <see cref="GetImageFromCurrentImageContext" /> method.</para>
 		///   <para>Developers can call this method from any thread.</para>
 		/// </remarks>
 		[SupportedOSPlatform ("ios")]
@@ -201,7 +201,7 @@ namespace UIKit {
 		public static void BeginPDFContext (string file, CGRect bounds, NSDictionary? documentInfo)
 		{
 			using (var nsstr = new NSString (file)) {
-				UIGraphicsBeginPDFContextToFile (nsstr.Handle, bounds, documentInfo is null ? IntPtr.Zero : documentInfo.Handle);
+				UIGraphicsBeginPDFContextToFile (nsstr.Handle, bounds, documentInfo.GetHandle ());
 				GC.KeepAlive (documentInfo);
 			}
 		}
@@ -217,9 +217,9 @@ namespace UIKit {
 		/// </remarks>
 		public static void BeginPDFContext (string file, CGRect bounds, CGPDFInfo? documentInfo)
 		{
-			using (var dict = documentInfo is null ? null : documentInfo.ToDictionary ())
+			using (var dict = documentInfo?.ToDictionary ())
 			using (var nsstr = new NSString (file)) {
-				UIGraphicsBeginPDFContextToFile (nsstr.Handle, bounds, dict is null ? IntPtr.Zero : dict.Handle);
+				UIGraphicsBeginPDFContextToFile (nsstr.Handle, bounds, dict.GetHandle ());
 			}
 		}
 
@@ -238,7 +238,9 @@ namespace UIKit {
 		/// </remarks>
 		public static void BeginPDFContext (NSMutableData data, CGRect bounds, NSDictionary? documentInfo)
 		{
-			UIGraphicsBeginPDFContextToData (data.Handle, bounds, documentInfo is null ? IntPtr.Zero : documentInfo.Handle);
+			System.ArgumentNullException.ThrowIfNull (data);
+
+			UIGraphicsBeginPDFContextToData (data.Handle, bounds, documentInfo.GetHandle ());
 			GC.KeepAlive (data);
 			GC.KeepAlive (documentInfo);
 		}

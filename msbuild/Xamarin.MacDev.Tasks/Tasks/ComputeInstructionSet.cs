@@ -16,10 +16,10 @@ namespace Xamarin.MacDev.Tasks {
 		#region Inputs
 
 		[Required]
-		public string SupportedOSPlatformVersion { get; set; } = "";
+		public string RuntimeIdentifier { get; set; } = "";
 
 		[Required]
-		public string RuntimeIdentifier { get; set; } = "";
+		public string SupportedOSPlatformVersion { get; set; } = "";
 
 		#endregion
 

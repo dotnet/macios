@@ -287,12 +287,11 @@ This computed instruction set is then passed to crossgen2 via the `--instruction
 
 Set this property to `false` to disable automatic instruction set computation and use crossgen2's default behavior.
 
-Default: `true` (when `PublishReadyToRun` is enabled)
+Default: `true`
 
 Example:
 ```xml
 <PropertyGroup>
-  <PublishReadyToRun>true</PublishReadyToRun>
   <ComputeInstructionSetForReadyToRun>false</ComputeInstructionSetForReadyToRun>
 </PropertyGroup>
 ```

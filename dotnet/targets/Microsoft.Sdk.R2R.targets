@@ -9,6 +9,7 @@
 	-->
 	<Target Name="_ComputeInstructionSetForCrossgen2"
 		Condition="'$(PublishReadyToRun)' == 'true' And '$(ComputeInstructionSetForReadyToRun)' != 'false'"
+		DependsOnTargets="_DetectSdkLocations"
 		BeforeTargets="ResolveReadyToRunCompilers">
 		<ComputeInstructionSet
 			RuntimeIdentifier="$(RuntimeIdentifier)"

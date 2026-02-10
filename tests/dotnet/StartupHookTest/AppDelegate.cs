@@ -17,10 +17,9 @@ namespace MySimpleApp {
 	}
 }
 
-class StartupHook
-{
+class StartupHook {
 	public static bool Initialized { get; private set; }
-	public static void Initialize()
+	public static void Initialize ()
 	{
 		Console.WriteLine ("STARTUP");
 

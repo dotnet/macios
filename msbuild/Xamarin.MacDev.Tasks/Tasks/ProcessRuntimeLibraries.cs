@@ -120,7 +120,7 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 				if (Platform != Utils.ApplePlatform.MacOSX && string.Equals (Configuration, "Release", StringComparison.OrdinalIgnoreCase)) {
 					// libmscordaccore and libmscordbi are debug-only libraries, don't include them in Release builds on mobile platforms
 					if (string.Equals (kvp.Key, "libmscordaccore", StringComparison.OrdinalIgnoreCase) ||
-					    string.Equals (kvp.Key, "libmscordbi", StringComparison.OrdinalIgnoreCase)) {
+						string.Equals (kvp.Key, "libmscordbi", StringComparison.OrdinalIgnoreCase)) {
 						continue;
 					}
 				}

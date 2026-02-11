@@ -19,7 +19,7 @@ namespace UIKit {
 						ret [i] = new UIImage (data);
 					} else if (obj is UIImage img) {
 						ret [i] = img;
-					} else if (obj != null) {
+					} else if (obj is not null) {
 						throw new System.InvalidOperationException ("Unexpected object type in UIPasteboard images array: " + obj.GetType ().FullName);
 					}
 				}

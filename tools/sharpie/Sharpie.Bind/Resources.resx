@@ -84,6 +84,18 @@
 		<value>Unknown argument: {0}</value>
 	</data>
 
+	<data name="SHARPIE0016" xml:space="preserve">
+		<value>Cannot specify both a source framework and a source file.</value>
+	</data>
+
+	<data name="SHARPIE0017" xml:space="preserve">
+		<value>The framework '{0}' doesn't exist.</value>
+	</data>
+
+	<data name="SHARPIE0018" xml:space="preserve">
+		<value>The framework '{0}' does not have an umbrella header or module map.</value>
+	</data>
+
 	<data name="SHARPIE0099" xml:space="preserve">
 		<value>Internal error: {0}. Please file an issue at https://github.com/dotnet/macios/issues.</value>
 	</data>

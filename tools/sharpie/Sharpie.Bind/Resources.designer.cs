@@ -211,6 +211,33 @@ namespace Sharpie.Bind {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot specify both a source framework and a source file..
+        /// </summary>
+        public static string SHARPIE0016 {
+            get {
+                return ResourceManager.GetString("SHARPIE0016", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The framework &apos;{0}&apos; doesn&apos;t exist..
+        /// </summary>
+        public static string SHARPIE0017 {
+            get {
+                return ResourceManager.GetString("SHARPIE0017", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The framework &apos;{0}&apos; does not have an umbrella header or module map..
+        /// </summary>
+        public static string SHARPIE0018 {
+            get {
+                return ResourceManager.GetString("SHARPIE0018", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Internal error: {0}. Please file an issue at https://github.com/dotnet/macios/issues..
         /// </summary>
         public static string SHARPIE0099 {

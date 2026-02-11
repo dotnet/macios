@@ -21,16 +21,30 @@
   <ItemGroup>
     <Using Include="NUnit.Framework" />
 
-    <ProjectReference Include="..\..\..\tools\sharpie\Sharpie.Bind\Sharpie.Bind.csproj" />
-    <ProjectReference Include="..\..\..\tools\sharpie\Sharpie.Bind.Tool\Sharpie.Bind.Tool.csproj" />
+    <ProjectReference Include="../../../tools/sharpie/Sharpie.Bind/Sharpie.Bind.csproj" />
+    <ProjectReference Include="../../../tools/sharpie/Sharpie.Bind.Tool/Sharpie.Bind.Tool.csproj" />
 
-    <Compile Include="../../../tools/common/SdkVersions.cs" />
-    <Compile Include="../../../tools/common/StringUtils.cs" />
-    <Compile Include="../../../tools/common/TargetFramework.cs" />
-    <Compile Include="../../common/Configuration.cs" />
-    <Compile Include="../../common/ConfigurationNUnit.cs" />
-    <Compile Include="../../common/ExecutionHelper.cs" />
-    <Compile Include="../../mtouch/Cache.cs" />
+    <Compile Include="../../../tools/common/SdkVersions.cs">
+      <Link>external/tools/common/SdkVersions.cs</Link>
+    </Compile>
+    <Compile Include="../../../tools/common/StringUtils.cs">
+      <Link>external/tools/common/StringUtils.cs</Link>
+    </Compile>
+    <Compile Include="../../../tools/common/TargetFramework.cs">
+      <Link>external/tools/common/TargetFramework.cs</Link>
+    </Compile>
+    <Compile Include="../../common/Configuration.cs">
+      <Link>external/tests/common/Configuration.cs</Link>
+    </Compile>
+    <Compile Include="../../common/ConfigurationNUnit.cs">
+      <Link>external/tests/common/ConfigurationNUnit.cs</Link>
+    </Compile>
+    <Compile Include="../../common/ExecutionHelper.cs">
+      <Link>external/tests/common/ExecutionHelper.cs</Link>
+    </Compile>
+    <Compile Include="../../mtouch/Cache.cs">
+      <Link>external/tests/mtouch/Cache.cs</Link>
+    </Compile>
   </ItemGroup>
 
 </Project>

@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 
 using ICSharpCode.NRefactory.CSharp;
-
+using Mono.Cecil.Cil;
 using Sharpie.Bind.Massagers;
-
+using Xamarin.MacDev;
 using Xamarin.Utils;
 
 namespace Sharpie.Bind;
@@ -18,9 +18,16 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 
 	public int Verbosity { get => bindingResult.Verbosity; set => bindingResult.Verbosity = value; }
 	public string Namespace { get; set; } = "";
-	public string Sdk { get; set; } = "macosx";
+
+	string? sdk;
+	public string Sdk {
+		get => sdk ?? "macosx";
+		set => sdk = value;
+	}
+
 	public List<(string Massager, bool Enable)> Massagers { get; } = new List<(string, bool)> ();
 	public string SourceFile { get; set; } = "";
+	public string SourceFramework { get; set; } = string.Empty;
 	public List<string> DirectoriesInScope { get; } = new List<string> ();
 	public string OutputDirectory { get; set; } = "";
 	public string ClangResourceDirectory { get; set; } = "";
@@ -178,11 +185,11 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 		}
 	}
 
-	protected virtual void AddArguments (List<string> args)
+	protected virtual bool AddArguments (List<string> args)
 	{
-		if (!string.IsNullOrEmpty (Sdk)) {
+		if (!string.IsNullOrEmpty (sdk)) {
 			args.Add ("--sdk");
-			args.Add (Sdk);
+			args.Add (sdk);
 		}
 
 		if (!string.IsNullOrEmpty (OutputDirectory)) {
@@ -206,6 +213,11 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 		if (!string.IsNullOrEmpty (SourceFile)) {
 			args.Add ("--header");
 			args.Add (SourceFile);
+		}
+
+		if (!string.IsNullOrEmpty (SourceFramework)) {
+			args.Add ("--framework");
+			args.Add (SourceFramework);
 		}
 
 		foreach (var scope in DirectoriesInScope) {
@@ -245,6 +257,7 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 			foreach (var cArg in ClangArguments)
 				args.Add (cArg);
 		}
+		return true;
 	}
 
 	public BindingResult ExecuteOutOfProcess ()
@@ -255,7 +268,8 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 			throw new InvalidOperationException ("The Tool property must be set before calling ExecuteOutOfProcess.");
 		args.Add (Tool);
 
-		AddArguments (args);
+		if (!AddArguments (args))
+			return bindingResult;
 
 		var stdout = new List<string> ();
 		var stderr = new List<string> ();
@@ -345,16 +359,19 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 		// Can't use detailed preprocessing records when using modules: https://github.com/llvm/llvm-project/issues/170491
 		// translationFlags |= CXTranslationUnit_Flags.CXTranslationUnit_DetailedPreprocessingRecord;
 
+		if (string.IsNullOrEmpty (OutputDirectory)) {
+			bindingResult.ReportError (2 /* The output directory must be specified. */);
+			return null;
+		}
+
+		if (!ResolveFramework ())
+			return null;
+
 		var clangArgs = new List<string> (ClangArguments);
 		clangArgs.AddRange (GetSdk ().GetCflags ());
 
 		if (Verbosity > 0)
 			clangArgs.Add ("-v");
-
-		if (string.IsNullOrEmpty (OutputDirectory)) {
-			bindingResult.ReportError (2 /* The output directory must be specified. */);
-			return null;
-		}
 
 		FixupClangArguments (clangArgs, SourceFile);
 
@@ -492,6 +509,88 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 		bindingResult.Log (0, $"Bindings generated successfully.");
 
 		return bindingResult;
+	}
+
+	bool ResolveFramework ()
+	{
+		if (string.IsNullOrEmpty (SourceFramework))
+			return true;
+
+		if (!string.IsNullOrEmpty (SourceFile)) {
+			bindingResult.ReportError (16 /* Cannot specify both a source framework and a source file. */);
+			return false;
+		}
+
+		if (!Directory.Exists (SourceFramework)) {
+			bindingResult.ReportError (17 /* The framework '{0}' doesn't exist. */, SourceFramework);
+			return false;
+		}
+
+		SourceFramework = Path.GetFullPath (SourceFramework);
+		SourceFramework = SourceFramework.TrimEnd ('\\', '/');
+
+		var frameworkName = Path.GetFileNameWithoutExtension (SourceFramework);
+		if (string.IsNullOrEmpty (Namespace))
+			Namespace = frameworkName;
+
+		DirectoriesInScope.Add (SourceFramework);
+
+		// Add the parent directory as a framework search path so clang can resolve framework imports.
+		var parentDir = Path.GetDirectoryName (SourceFramework);
+		if (!string.IsNullOrEmpty (parentDir))
+			ClangArguments.AddRange (["-F", parentDir]);
+
+		// Find the umbrella header or module map for the framework and set SourceFile.
+		var headersDir = Path.Combine (SourceFramework, "Headers");
+		var umbrellaHeader = Path.Combine (headersDir, frameworkName + ".h");
+		var moduleMapFile = Path.Combine (SourceFramework, "Modules", "module.modulemap");
+
+		if (File.Exists (moduleMapFile)) {
+			// Generate an import file that imports the module.
+			var importDir = Path.Combine (Path.GetTempPath (), "sharpie");
+			Directory.CreateDirectory (importDir);
+			var importFile = Path.Combine (importDir, $"framework-{frameworkName}.h");
+			File.WriteAllText (importFile, $"@import {frameworkName};\n");
+			SourceFile = importFile;
+		} else if (File.Exists (umbrellaHeader)) {
+			SourceFile = umbrellaHeader;
+		} else {
+			bindingResult.ReportError (18 /* The framework '{0}' does not have an umbrella header or module map. */, SourceFramework);
+			return false;
+		}
+
+		if (sdk is null) {
+			var infoPlistPaths = new string [] {
+				Path.Combine (SourceFramework, "Info.plist"),
+				Path.Combine (SourceFramework, "Versions", "A", "Resources", "Info.plist"),
+			};
+			foreach (var infoPlistPath in infoPlistPaths) {
+				if (!File.Exists (infoPlistPath))
+					continue;
+
+				var plist = PDictionary.FromFile (infoPlistPath)!;
+				if (plist is null)
+					continue;
+
+				if (!plist.TryGetValue ("DTSDKName", out PString? sdkNameValue))
+					continue;
+
+				var sdkName = sdkNameValue.Value;
+				if (string.IsNullOrEmpty (sdkName))
+					continue;
+
+				// Strip the version number from the SDK name (e.g. "macosx11.0" → "macosx")
+				// since the exact version from the framework's build may not be installed.
+				var firstDigit = sdkName.IndexOfAny (['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']);
+				if (firstDigit > 0)
+					sdkName = sdkName [0..firstDigit];
+
+				Sdk = sdkName;
+				break;
+			}
+		}	
+
+		return true;
 	}
 
 	void FixupClangArguments (List<string> clangArguments, string sourceFile)

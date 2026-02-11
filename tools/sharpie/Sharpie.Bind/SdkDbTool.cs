@@ -14,7 +14,7 @@ public class SdkDbTool : ObjectiveCBinder {
 		SplitDocuments = false;
 	}
 
-	protected override void AddArguments (List<string> args)
+	protected override bool AddArguments (List<string> args)
 	{
 		foreach (var framework in ExcludedFrameworks)
 			args.Add ($"-x={framework}");
@@ -22,7 +22,7 @@ public class SdkDbTool : ObjectiveCBinder {
 		foreach (var import in ExtraHashImports)
 			args.Add ($"-i={import}");
 
-		base.AddArguments (args);
+		return base.AddArguments (args);
 	}
 
 	public void PrepareArguments ()

@@ -23,26 +23,27 @@ public static class Tools {
 
 		var os = new OptionSet {
 			{ "Options:" },
-			{ "h|help", "Show detailed", v => showHelp = true },
-			{ "v|verbose", "Be verbose with output", v => binder.Verbosity++ },
-			{ "q|quiet", "Suppress fluffy status messages", v => binder.Verbosity-- },
+			{ "h|help", "Show detailed help information.", v => showHelp = true },
+			{ "v|verbose", "Be verbose with output.", v => binder.Verbosity++ },
+			{ "q|quiet", "Suppress fluffy status messages.", v => binder.Verbosity-- },
 			new ResponseFileSource (),
 
 			{ "" },
 			{ "Parse options:" },
-			{ "s|sdk=", "Target SDK", v => binder.Sdk = v },
-			{ "f|header=", "The input header file to bind", v => binder.SourceFile = v },
-			{   "scope=", "Restrict following #include and #import directives declared in header files to within the specified DIR directory", v => binder.DirectoriesInScope.Add (v) },
-			{ "c|clang", "All arguments after this argument are not processed by Objective Sharpie and are proxied directly to Clang", v => { } },
-			{ "clang-resource-dir=", "Specify the Clang resource directory", v => binder.ClangResourceDirectory = v },
-			{ "platform-assembly=", "Specify the platform assembly to use for binding", v => binder.PlatformAssembly = v },
+			{ "s|sdk=", "Target SDK.", v => binder.Sdk = v },
+			{ "f|framework=", "The input framework to bind. Implies setting the scope (--scope) to the framework, setting the namespace (--namespace) to the name of the framework, and no other sources/headers can be specified. If the framework provides an 'Info.plist' with SDK information (DTSDKName), the '-sdk' option will be implied as well (if not manually specified).", v => binder.SourceFramework = v },
+			{ "header=", "The input header file to bind. This can also be a .framework directory.", v => binder.SourceFile = v },
+			{   "scope=", "Restrict following #include and #import directives declared in header files to within the specified DIR directory.", v => binder.DirectoriesInScope.Add (v) },
+			{ "c|clang", "All arguments after this argument are not processed by Objective Sharpie and are proxied directly to Clang.", v => { } },
+			{ "clang-resource-dir=", "Specify the Clang resource directory.", v => binder.ClangResourceDirectory = v },
+			{ "platform-assembly=", "Specify the platform assembly to use for binding.", v => binder.PlatformAssembly = v },
 
 			{ "" },
 			{ "Bind options:" },
-			{ "o|output=", "Output directory for generated binding files", v => binder.OutputDirectory = v },
-			{ "n|namespace=", "Namespace under which to generate the binding", v => binder.Namespace = v },
-			{ "m|massage=", "Register (+ prefix) or exclude (- prefix) a massager by name", v => binder.AddMassager (v) },
-			{ "nosplit", "Do not split the generated binding into multiple files", v => binder.SplitDocuments = false },
+			{ "o|output=", "Output directory for generated binding files.", v => binder.OutputDirectory = v },
+			{ "n|namespace=", "Namespace under which to generate the binding. The default is to use the framework's name as the namespace.", v => binder.Namespace = v },
+			{ "m|massage=", "Register (+ prefix) or exclude (- prefix) a massager by name.", v => binder.AddMassager (v) },
+			{ "nosplit", "Do not split the generated binding into multiple files.", v => binder.SplitDocuments = false },
 		};
 
 		os.EndOfParsingArguments.Clear ();
@@ -95,23 +96,23 @@ public static class Tools {
 
 		var os = new OptionSet {
 			{ "Options:" },
-			{ "h|help", "Show detailed", v => showHelp = true },
-			{ "v|verbose", "Be verbose with output", v => binder.Verbosity++ },
-			{ "q|quiet", "Suppress fluffy status messages", v => binder.Verbosity-- },
+			{ "h|help", "Show detailed help information.", v => showHelp = true },
+			{ "v|verbose", "Be verbose with output.", v => binder.Verbosity++ },
+			{ "q|quiet", "Suppress fluffy status messages.", v => binder.Verbosity-- },
 			new ResponseFileSource (),
 
 			{ "" },
 			{ "Options:" },
-			{ "a|arch=", "Specify which architecture(s) to build for", v => arch = v },
-			{ "o|output=", "Output directory for generated binding files", v => binder.OutputDirectory = v },
-			{ "s|sdk=", "Target SDK", v => binder.Sdk = v },
-			{ "x|exclude=", "Exclude a framework by name from the SDK", v => binder.ExcludedFrameworks.Add (v) },
+			{ "a|arch=", "Specify which architecture(s) to build for.", v => arch = v },
+			{ "o|output=", "Output directory for generated binding files.", v => binder.OutputDirectory = v },
+			{ "s|sdk=", "Target SDK.", v => binder.Sdk = v },
+			{ "x|exclude=", "Exclude a framework by name from the SDK.", v => binder.ExcludedFrameworks.Add (v) },
 			{ "i|extra-hash-import=", " Framework-relative header for which to generate an #import; use this option whena framework's module map or umbrella header is known to be broken, such aswith AVFoundation in Xcode 9 Beta 1: '-i AVFoundation/AVAssetDownloadStorageManager.h'", v => binder.ExtraHashImports.Add (v) },
-			{ "modules=", "Enable/use modules (-fmodules). Defaults to 'true'", v => binder.EnableModules = bool.Parse (v) },
-			{ "c|clang", "All arguments after this argument are not processed by Objective Sharpie and are proxied directly to Clang", v => { } },
-			{ "clang-resource-dir=", "Specify the Clang resource directory", v => binder.ClangResourceDirectory = v },
-			{ "platform-assembly=", "Specify the platform assembly to use for binding", v => binder.PlatformAssembly = v },
-			{ "nosplit", "Do not split the generated binding into multiple files", v => binder.SplitDocuments = false },
+			{ "modules=", "Enable/use modules (-fmodules). Defaults to 'true'.", v => binder.EnableModules = bool.Parse (v) },
+			{ "c|clang", "All arguments after this argument are not processed by Objective Sharpie and are proxied directly to Clang.", v => { } },
+			{ "clang-resource-dir=", "Specify the Clang resource directory.", v => binder.ClangResourceDirectory = v },
+			{ "platform-assembly=", "Specify the platform assembly to use for binding.", v => binder.PlatformAssembly = v },
+			{ "nosplit", "Do not split the generated binding into multiple files.", v => binder.SplitDocuments = false },
 		};
 
 		os.EndOfParsingArguments.Clear ();

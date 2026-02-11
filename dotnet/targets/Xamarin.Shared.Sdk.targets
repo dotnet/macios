@@ -142,6 +142,8 @@
 		<_ComObjectDescriptorSupport Condition="'$(_ComObjectDescriptorSupport)' == ''">false</_ComObjectDescriptorSupport>
 
 		<!-- StartupHookSupport is used for Hot Reload, so we enable it unless the Optimize flag is set. -->
+		<!-- When we set StartupHookSupport=true ourselves, suppress the resulting trimmer warning (but not if the developer set it). -->
+		<_SuppressStartupHookSupportTrimWarning Condition="'$(StartupHookSupport)' == '' And '$(Optimize)' != 'true'">true</_SuppressStartupHookSupportTrimWarning>
 		<StartupHookSupport Condition="'$(StartupHookSupport)' == '' And '$(Optimize)' != 'true'">true</StartupHookSupport>
 		<StartupHookSupport Condition="'$(StartupHookSupport)' == ''">false</StartupHookSupport>
 
@@ -697,6 +699,7 @@
 
 		<ItemGroup>
 			<!-- Configure linker features -->
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.SuppressStartupHookTrimWarning" Value="true" Trim="true" Condition="'$(_SuppressStartupHookSupportTrimWarning)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.AggressiveAttributeTrimming" Value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.AggressiveAttributeTrimmingMono" Value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'" />
 			<RuntimeHostConfigurationOption Include="ObjCRUntime.AggressiveAttributeTrimmingOnlyWithStaticRegistrar" value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true' And ('$(Registrar)' == 'static' Or '$(Registrar)' == 'managed-static')" />

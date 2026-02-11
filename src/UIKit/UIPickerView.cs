@@ -2,17 +2,14 @@
 
 using CoreGraphics;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 	public partial class UIPickerView : UIView, IUITableViewDataSource {
-		private UIPickerViewModel model;
+		UIPickerViewModel? model;
 
-		/// <summary>The UIPickerViewModel that this UIPickerView is representing.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public UIPickerViewModel Model {
+		/// <summary>Gets or sets the <see cref="UIPickerViewModel" /> that this <see cref="UIPickerView" /> is representing.</summary>
+		public UIPickerViewModel? Model {
 			get {
 				return model;
 			}

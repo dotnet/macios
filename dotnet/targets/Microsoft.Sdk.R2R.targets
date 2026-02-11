@@ -14,7 +14,6 @@
 		<ComputeInstructionSet
 			RuntimeIdentifier="$(RuntimeIdentifier)"
 			SdkDevPath="$(_SdkDevPath)"
-			SessionId="$(SessionId)"
 			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
 			TargetFrameworkMoniker="$(TargetFramework)"
 			>

@@ -2585,6 +2585,36 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 		</ItemGroup>
 	</Target>
 
+	<!--
+		Add CoreCLR/R2R framework to post-processing so they get stripped.
+	-->
+	<Target Name="_CollectR2RFrameworksForPostProcessing"
+		AfterTargets="_CollectItemsForPostProcessing"
+		BeforeTargets="_StoreCollectedItemsForPostProcessing;_PreparePostProcessing">
+		<ItemGroup>
+			<!-- Add CoreCLR runtime -->
+			<_PostProcessingItem
+				Include="@(_CreatedFrameworksFromDylibs->'$([System.IO.Path]::GetFileName($(AppBundleDir)))/$(_AppFrameworksRelativePath)%(Filename).framework/%(Filename)')">
+				<Kind>Framework</Kind>
+				<NoSymbolStrip>false</NoSymbolStrip>
+				<NoDSymUtil>true</NoDSymUtil>
+				<DSymName>%(Filename).dSYM</DSymName>
+				<dSYMInfoPlistRelativePath>%(Filename).dSYM\Contents\Info.plist</dSYMInfoPlistRelativePath>
+				<BCSymbolMapName>%(Filename).bcsymbolmap</BCSymbolMapName>
+			</_PostProcessingItem>
+			<!-- Add R2R composite -->
+			<_PostProcessingItem
+				Include="$([System.IO.Path]::GetFileName('$(AppBundleDir)'))/$(_AppFrameworksRelativePath)$(_R2RFrameworkName).framework/$(_R2RFrameworkName)" Condition="'$(CreateR2RFramework)' == 'true'">
+				<Kind>Framework</Kind>
+				<NoSymbolStrip>false</NoSymbolStrip>
+				<NoDSymUtil>true</NoDSymUtil>
+				<DSymName>$(_R2RFrameworkName).dSYM</DSymName>
+				<dSYMInfoPlistRelativePath>$(_R2RFrameworkName).dSYM\Contents\Info.plist</dSYMInfoPlistRelativePath>
+				<BCSymbolMapName>$(_R2RFrameworkName).bcsymbolmap</BCSymbolMapName>
+			</_PostProcessingItem>
+		</ItemGroup>
+	</Target>
+
 	<!-- Import existing targets -->
 
 	<PropertyGroup>

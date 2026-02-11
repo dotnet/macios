@@ -1096,4 +1096,112 @@ Describe "TestResults tests" {
 "
         }
     }
+
+    Context "macOS bot test results" {
+        It "includes macOS test results in the unified comment" {
+            $VerbosePreference = "Continue"
+            $DebugPreference = "Continue"
+
+            $macMatrix = @"
+{
+    "cecil": {
+        "LABEL": "cecil",
+        "TESTS_LABELS": "--label=skip-all-tests,run-cecil-tests",
+        "TEST_STAGE": "simulator_tests",
+        "LABEL_WITH_PLATFORM": "cecil",
+        "STATUS_CONTEXT": "VSTS: simulator tests - cecil",
+        "TEST_PREFIX": "simulator_testscecil",
+        "TEST_PLATFORM": ""
+    },
+    "mac_monterey": {
+        "LABEL": "mac_monterey",
+        "TESTS_LABELS": "--label=skip-all-tests,run-mac_monterey-tests",
+        "TEST_STAGE": "mac_12_m1",
+        "LABEL_WITH_PLATFORM": "mac_monterey",
+        "STATUS_CONTEXT": " - mac_monterey",
+        "TEST_PREFIX": "mac_12_m1mac_monterey",
+        "TEST_PLATFORM": ""
+    }
+}
+"@
+            $macStageDeps = @"
+{
+  "configure_build": {
+    "configure": {
+      "outputs": {
+        "test_matrix.TEST_MATRIX": "$($macMatrix.Replace("`n", "\n").Replace("`"", "\`""))"
+      }
+    }
+  },
+  "simulator_tests": {
+    "tests": {
+      "outputs": {
+        "cecil.PowerShell15.TESTS_ATTEMPT": "1",
+        "cecil.PowerShell15.TESTS_BOT": "XAMMINI-013.Ventura",
+        "cecil.PowerShell15.TESTS_LABEL": "cecil",
+        "cecil.PowerShell15.TESTS_PLATFORM": "",
+        "cecil.PowerShell15.TESTS_TITLE": "cecil",
+        "cecil.runTests.TESTS_JOBSTATUS": "Succeeded"
+      },
+      "identifier": null,
+      "name": "tests",
+      "attempt": 1,
+      "startTime": null,
+      "finishTime": null,
+      "state": "NotStarted",
+      "result": "Succeeded"
+    }
+  },
+  "mac_12_m1": {
+    "tests": {
+      "outputs": {
+        "PowerShell1.TESTS_ATTEMPT": "1",
+        "PowerShell1.TESTS_BOT": "XAMMINI-020.Monterey",
+        "PowerShell1.TESTS_LABEL": "mac_monterey",
+        "PowerShell1.TESTS_PLATFORM": "",
+        "PowerShell1.TESTS_TITLE": "mac_monterey",
+        "runTests.TESTS_JOBSTATUS": "Succeeded"
+      },
+      "identifier": null,
+      "name": "tests",
+      "attempt": 1,
+      "startTime": null,
+      "finishTime": null,
+      "state": "NotStarted",
+      "result": "Succeeded"
+    }
+  }
+}
+"@
+            $testDirectory = Join-Path "." "subdir"
+            New-Item -Path "$testDirectory" -ItemType "directory" -Force
+            New-Item -Path "$testDirectory/TestSummary-simulator_testscecil-1" -Name "TestSummary.md" -Value "# :tada: All 1 tests passed :tada:" -Force
+            New-Item -Path "$testDirectory/TestSummary-mac_12_m1mac_monterey-1" -Name "TestSummary.md" -Value "# :tada: All 5 tests passed :tada:" -Force
+
+            $parallelResults = New-ParallelTestsResults -Path "$testDirectory" -StageDependencies "$macStageDeps" -Context "context" -VSDropsIndex "vsdropsIndex"
+
+            $parallelResults.IsSuccess() | Should -Be $true
+
+            $sb = [System.Text.StringBuilder]::new()
+            $parallelResults.WriteComment($sb)
+
+            Remove-Item -Path $testDirectory -Recurse
+
+            $content = $sb.ToString()
+
+            Write-Host $content
+
+            $content | Should -Be "# Test results
+:white_check_mark: All tests passed on context.
+
+:tada: All 6 tests passed :tada:
+
+## Tests counts
+:white_check_mark: cecil: All 1 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testscecil-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testscecil-1&api-version=6.0&`$format=zip)
+:white_check_mark: mac_monterey: All 5 tests passed. [Html Report (VSDrops)](vsdropsIndex/mac_12_m1mac_monterey-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-mac_12_m1mac_monterey-1&api-version=6.0&`$format=zip)
+
+[comment]: <> (This is a test result report added by Azure DevOps)
+"
+        }
+    }
 }

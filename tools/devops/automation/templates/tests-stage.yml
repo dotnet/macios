@@ -36,6 +36,7 @@ parameters:
     {
       stageName: 'mac_12_m1',
       displayName: 'M1 - Mac Monterey (12)',
+      label: 'mac_monterey',
       macPool: 'VSEng-VSMac-Xamarin-Shared',
       useImage: false,
       statusContext: 'M1 - Mac Monterey (12)',
@@ -50,6 +51,7 @@ parameters:
     {
       stageName: 'mac_13_m1',
       displayName: 'M1 - Mac Ventura (13)',
+      label: 'mac_ventura',
       macPool: 'VSEng-VSMac-Xamarin-Shared',
       useImage: false,
       statusContext: 'M1 - Mac Ventura (13)',
@@ -64,6 +66,7 @@ parameters:
     {
       stageName: 'mac_14_x64',
       displayName: 'X64 - Mac Sonoma (14)',
+      label: 'mac_sonoma',
       macPool: 'VSEng-VSMac-Xamarin-Shared',
       useImage: false,
       statusContext: 'X64 - Mac Sonoma (14)',
@@ -78,6 +81,7 @@ parameters:
     {
       stageName: 'mac_15_arm64',
       displayName: 'arm64 - Mac Sequoia (15)',
+      label: 'mac_sequoia',
       macPool: 'VSEng-VSMac-Xamarin-Shared',
       useImage: false,
       statusContext: 'arm64 - Mac Sequoia (15)',
@@ -92,6 +96,7 @@ parameters:
     {
       stageName: 'mac_26_arm64',
       displayName: 'arm64 - Mac Tahoe (26)',
+      label: 'mac_tahoe',
       macPool: 'VSEng-VSMac-Xamarin-Shared',
       useImage: false,
       statusContext: 'arm64 - Mac Tahoe (26)',
@@ -222,3 +227,4 @@ stages:
       demands: ${{ config.demands }}
       xqaCertPass: $(xqa--certificates--password)
       postPipeline: true
+      label: ${{ config.label }}

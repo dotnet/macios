@@ -93,6 +93,36 @@ parameters:
       splitByPlatforms: false,
       testPrefix: 'simulator_tests',
     },
+    {
+      label: mac_monterey,
+      splitByPlatforms: false,
+      testPrefix: 'mac_12_m1',
+      testStage: 'mac_12_m1',
+    },
+    {
+      label: mac_ventura,
+      splitByPlatforms: false,
+      testPrefix: 'mac_13_m1',
+      testStage: 'mac_13_m1',
+    },
+    {
+      label: mac_sonoma,
+      splitByPlatforms: false,
+      testPrefix: 'mac_14_x64',
+      testStage: 'mac_14_x64',
+    },
+    {
+      label: mac_sequoia,
+      splitByPlatforms: false,
+      testPrefix: 'mac_15_arm64',
+      testStage: 'mac_15_arm64',
+    },
+    {
+      label: mac_tahoe,
+      splitByPlatforms: false,
+      testPrefix: 'mac_26_arm64',
+      testStage: 'mac_26_arm64',
+    },
   ]
 
 # Note that this is _all_ the platforms we support (not just the enabled ones).

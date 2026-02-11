@@ -34,6 +34,14 @@ parameters:
   type: number
   default: 3
 
+- name: label
+  type: string
+  default: ''
+
+- name: stageName
+  type: string
+  default: ''
+
 steps:
 
 - template: ../common/checkout.yml
@@ -153,6 +161,15 @@ steps:
       AUTH_TOKEN_VSENG_XAMARIN_MAC_DEVICES_P12: ${{ parameters.xqaCertPass }}
       AUTH_TOKEN_VSENG_XAMARIN_MAC_DEVICES_2_P12: ${{ parameters.xqaCertPass }}
 
+- pwsh: |
+    Write-Host "Running tests on $($Env:AGENT_NAME)"
+    Write-Host "##vso[task.setvariable variable=TESTS_BOT;isOutput=true]$($Env:AGENT_NAME)"
+    Write-Host "##vso[task.setvariable variable=TESTS_LABEL;isOutput=true]${{ parameters.label }}"
+    Write-Host "##vso[task.setvariable variable=TESTS_PLATFORM;isOutput=true]"
+    Write-Host "##vso[task.setvariable variable=TESTS_ATTEMPT;isOutput=true]$($Env:SYSTEM_JOBATTEMPT)"
+    Write-Host "##vso[task.setvariable variable=TESTS_TITLE;isOutput=true]${{ parameters.label }}"
+  displayName: 'Set output variables'
+
 - pwsh: >-
     $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/run_mac_tests.ps1
     -GithubToken $(GitHub.Token)
@@ -160,7 +177,10 @@ steps:
     -SourcesDirectory "$(Build.SourcesDirectory)"
     -GithubFailureCommentFile "$Env:GITHUB_FAILURE_COMMENT_FILE"
     -StatusContext "${{ parameters.statusContext }}"
+    -TestSummaryPath "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/TestSummary.md"
+    -HtmlReportPath "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/jenkins-results/index.html"
   displayName: 'Run tests'
+  name: runTests
   timeoutInMinutes: 90
   ${{ if not(parameters.isPR) }}:
     retryCountOnTaskFailure: ${{ parameters.retryCount }}
@@ -178,6 +198,33 @@ steps:
   continueOnError: true
   env:
     MACIOS_UPLOAD_PREFIX: ${{ parameters.uploadPrefix }}
+
+# Upload TestSummary as an artifact.
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Artifact: TestSummary'
+  inputs:
+    targetPath: '$(BUILD_REPOSITORY_TITLE)/tests/TestSummary.md'
+    artifactName: '${{ parameters.uploadPrefix }}TestSummary-${{ parameters.stageName }}${{ parameters.label }}-$(System.JobAttempt)'
+  continueOnError: true
+  condition: succeededOrFailed()
+
+# Archive files for the Html Report so that the report can be easily uploaded as artifacts of the build.
+- task: ArchiveFiles@1
+  displayName: 'Archive HtmlReport'
+  inputs:
+    rootFolder: '$(BUILD_REPOSITORY_TITLE)/jenkins-results'
+    includeRootFolder: false
+    archiveFile: '$(Build.ArtifactStagingDirectory)/HtmlReport.zip'
+  continueOnError: true
+  condition: succeededOrFailed()
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Artifact: HtmlReport'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/HtmlReport.zip'
+    artifactName: '${{ parameters.uploadPrefix }}HtmlReport-${{ parameters.stageName }}${{ parameters.label }}-$(System.JobAttempt)'
+  continueOnError: true
+  condition: succeededOrFailed()
 
 # Make sure to report any errors
 - pwsh: |

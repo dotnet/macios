@@ -11,5 +11,7 @@
 
 	<ItemGroup>
 		<Compile Include="../*.cs" />
+
+		<ProjectReference Include="../../StartupHookLibrary/$(_PlatformName)/StartupHookLibrary.csproj" />
 	</ItemGroup>
 </Project>

@@ -22,12 +22,19 @@ namespace Xamarin.Tests {
 			if (CanExecute (platform, properties)) {
 				var appExecutable = GetNativeExecutable (platform, appPath);
 				var env = new Dictionary<string, string?> {
-					{ "DOTNET_STARTUP_HOOKS", "StartupHookTest" },
+					{ "DOTNET_STARTUP_HOOKS", "StartupHookTest:StartupHookLibrary" },
 				};
 				ExecuteWithMagicWordAndAssert (appExecutable, env);
 
-				env = new Dictionary<string, string?> ();
+				env = new Dictionary<string, string?> {
+					{ "DOTNET_STARTUP_HOOKS", "StartupHookLibrary" },
+				};
 				ExecuteWithMagicWordAndAssert (appExecutable, env, expectedExitCode: 1); // this should fail
+
+				env = new Dictionary<string, string?> {
+					{ "DOTNET_STARTUP_HOOKS", "StartupHookTest" },
+				};
+				ExecuteWithMagicWordAndAssert (appExecutable, env, expectedExitCode: 2); // this should fail
 			}
 		}
 
@@ -48,12 +55,22 @@ namespace Xamarin.Tests {
 			if (CanExecute (platform, properties)) {
 				var appExecutable = GetNativeExecutable (platform, appPath);
 				var env = new Dictionary<string, string?> {
-					{ "DOTNET_STARTUP_HOOKS", "StartupHookTest" },
+					{ "DOTNET_STARTUP_HOOKS", "StartupHookTest:StartupHookLibrary" },
 				};
-				ExecuteWithMagicWordAndAssert (appExecutable, env, expectedExitCode: 1); // this should fail
+				ExecuteWithMagicWordAndAssert (appExecutable, env, expectedExitCode: 3); // this should fail
 
 				env = new Dictionary<string, string?> ();
-				ExecuteWithMagicWordAndAssert (appExecutable, env, expectedExitCode: 1); // this should fail
+				ExecuteWithMagicWordAndAssert (appExecutable, env, expectedExitCode: 3); // this should fail
+
+				env = new Dictionary<string, string?> {
+					{ "DOTNET_STARTUP_HOOKS", "StartupHookLibrary" },
+				};
+				ExecuteWithMagicWordAndAssert (appExecutable, env, expectedExitCode: 3); // this should fail
+
+				env = new Dictionary<string, string?> {
+					{ "DOTNET_STARTUP_HOOKS", "StartupHookTest" },
+				};
+				ExecuteWithMagicWordAndAssert (appExecutable, env, expectedExitCode: 3); // this should fail
 			}
 		}
 
@@ -75,12 +92,22 @@ namespace Xamarin.Tests {
 			if (CanExecute (platform, properties)) {
 				var appExecutable = GetNativeExecutable (platform, appPath);
 				var env = new Dictionary<string, string?> {
-					{ "DOTNET_STARTUP_HOOKS", "StartupHookTest" },
+					{ "DOTNET_STARTUP_HOOKS", "StartupHookTest:StartupHookLibrary" },
 				};
 				ExecuteWithMagicWordAndAssert (appExecutable, env); // this should work
 
 				env = new Dictionary<string, string?> ();
+				ExecuteWithMagicWordAndAssert (appExecutable, env, expectedExitCode: 3); // this should fail
+
+				env = new Dictionary<string, string?> {
+					{ "DOTNET_STARTUP_HOOKS", "StartupHookLibrary" },
+				};
 				ExecuteWithMagicWordAndAssert (appExecutable, env, expectedExitCode: 1); // this should fail
+
+				env = new Dictionary<string, string?> {
+					{ "DOTNET_STARTUP_HOOKS", "StartupHookTest" },
+				};
+				ExecuteWithMagicWordAndAssert (appExecutable, env, expectedExitCode: 2); // this should fail
 			}
 		}
 	}

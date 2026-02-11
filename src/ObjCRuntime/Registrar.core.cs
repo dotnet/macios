@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 #nullable enable
 
 namespace Registrar {
 	abstract partial class Registrar {
+		[return: NotNullIfNotNull (nameof (getterSelector))]
 		internal static string? CreateSetterSelector (string? getterSelector)
 		{
 			if (string.IsNullOrEmpty (getterSelector))
@@ -16,8 +18,12 @@ namespace Registrar {
 			return "set" + ((char) first).ToString () + getterSelector.Substring (1) + ":";
 		}
 
-		public static string SanitizeObjectiveCName (string name)
+		[return: NotNullIfNotNull (nameof (name))]
+		public static string? SanitizeObjectiveCName (string? name)
 		{
+			if (string.IsNullOrEmpty (name))
+				return name;
+
 			StringBuilder? sb = null;
 
 			for (int i = 0; i < name.Length; i++) {

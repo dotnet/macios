@@ -14,7 +14,7 @@ Microsoft.iOS.dll:CoreFoundation.CFArray.GetCount(System.IntPtr)
 Microsoft.iOS.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:CoreFoundation.CFArray/<>O
-Microsoft.iOS.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__24_0`1
+Microsoft.iOS.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1
 Microsoft.iOS.dll:CoreFoundation.CFObject
 Microsoft.iOS.dll:CoreFoundation.CFObject.CFRelease(System.IntPtr)
 Microsoft.iOS.dll:CoreFoundation.CFObject.CFRetain(System.IntPtr)
@@ -692,7 +692,7 @@ Microsoft.iOS.dll:System.Collections.Generic.List`1<System.Object> ObjCRuntime.R
 Microsoft.iOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::<Exception>k__BackingField
 Microsoft.iOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::Exception()
 Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,System.String> CoreFoundation.CFArray/<>O::<0>__FromHandle
-Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__24_0`1::<0>__DefaultConvert
+Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1::<0>__DefaultConvert
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary::System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Count()
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>1__state
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap2
@@ -3250,7 +3250,7 @@ System.Private.CoreLib.dll:System.Diagnostics.StackFrame[] System.Diagnostics.St
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace..ctor(System.Boolean)
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace..ctor(System.Exception, System.Boolean)
-System.Private.CoreLib.dll:System.Diagnostics.StackTrace.<TryResolveStateMachineMethod>g__GetDeclaredMethods|32_0(System.Type)
+System.Private.CoreLib.dll:System.Diagnostics.StackTrace.<TryResolveStateMachineMethod>g__GetDeclaredMethods|34_0(System.Type)
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace.GetCustomAttributesSafe(System.Reflection.MemberInfo, System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace.GetFrame(System.Int32)
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace.GetTrace(System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Int32, System.Boolean)

@@ -19,7 +19,7 @@ Microsoft.iOS.dll:CoreFoundation.CFArray.GetCount(System.IntPtr)
 Microsoft.iOS.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:CoreFoundation.CFArray/<>O
-Microsoft.iOS.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__24_0`1
+Microsoft.iOS.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1
 Microsoft.iOS.dll:CoreFoundation.CFObject
 Microsoft.iOS.dll:CoreFoundation.CFObject.CFRelease(System.IntPtr)
 Microsoft.iOS.dll:CoreFoundation.CFObject.CFRetain(System.IntPtr)
@@ -861,7 +861,6 @@ Microsoft.iOS.dll:Registrar.DynamicRegistrar.GetBindAsAttribute(System.Reflectio
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.GetCategoryAttribute(System.Type)
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.GetConnectAttribute(System.Reflection.PropertyInfo)
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.GetElementType(System.Type)
-Microsoft.iOS.dll:Registrar.DynamicRegistrar.GetEnumUnderlyingType(System.Type)
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.GetExportAttribute(System.Reflection.MethodBase)
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.GetExportAttribute(System.Reflection.PropertyInfo)
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.GetFields(System.Type)
@@ -930,6 +929,7 @@ Microsoft.iOS.dll:Registrar.DynamicRegistrar.ReportError(System.Int32, System.St
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.SetAssemblyRegistered(System.String)
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.SkipRegisterAssembly(System.Reflection.Assembly)
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.TryGetAttribute(System.Type, System.String, System.String, out System.Object&)
+Microsoft.iOS.dll:Registrar.DynamicRegistrar.TryGetEnumUnderlyingType(System.Type, out System.Type&)
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.TryMatchProperty(System.Type, System.Reflection.PropertyInfo)
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.TypeMatch(System.Type, System.Type)
 Microsoft.iOS.dll:Registrar.DynamicRegistrar.VerifyIsConstrainedToNSObject(System.Type, out System.Type&)
@@ -988,7 +988,6 @@ Microsoft.iOS.dll:Registrar.Registrar.GetConnectAttribute(System.Reflection.Prop
 Microsoft.iOS.dll:Registrar.Registrar.GetDescriptiveMethodName(System.Reflection.MethodBase)
 Microsoft.iOS.dll:Registrar.Registrar.GetDescriptiveMethodName(System.Type, System.Reflection.MethodBase)
 Microsoft.iOS.dll:Registrar.Registrar.GetElementType(System.Type)
-Microsoft.iOS.dll:Registrar.Registrar.GetEnumUnderlyingType(System.Type)
 Microsoft.iOS.dll:Registrar.Registrar.GetExportAttribute(System.Reflection.MethodBase)
 Microsoft.iOS.dll:Registrar.Registrar.GetExportAttribute(System.Reflection.PropertyInfo)
 Microsoft.iOS.dll:Registrar.Registrar.GetExportedTypeName(System.Type, Foundation.RegisterAttribute)
@@ -1067,6 +1066,7 @@ Microsoft.iOS.dll:Registrar.Registrar.SkipRegisterAssembly(System.Reflection.Ass
 Microsoft.iOS.dll:Registrar.Registrar.ToSignature(System.Type, Registrar.Registrar/ObjCMember, System.Boolean)
 Microsoft.iOS.dll:Registrar.Registrar.ToSignature(System.Type, Registrar.Registrar/ObjCMember, System.Boolean&, System.Boolean)
 Microsoft.iOS.dll:Registrar.Registrar.TryGetAttribute(System.Type, System.String, System.String, out System.Object&)
+Microsoft.iOS.dll:Registrar.Registrar.TryGetEnumUnderlyingType(System.Type, out System.Type&)
 Microsoft.iOS.dll:Registrar.Registrar.UnlockRegistrar()
 Microsoft.iOS.dll:Registrar.Registrar.ValueTypeSignature(System.Type, Registrar.Registrar/ObjCMember, System.Boolean&)
 Microsoft.iOS.dll:Registrar.Registrar.VerifyInSdk(System.Collections.Generic.List`1<System.Exception>&, Registrar.Registrar/ObjCMethod)
@@ -1076,13 +1076,12 @@ Microsoft.iOS.dll:Registrar.Registrar.VerifyIsConstrainedToNSObject(System.Type,
 Microsoft.iOS.dll:Registrar.Registrar.VerifyNonGenericMethod(System.Collections.Generic.List`1<System.Exception>&, System.Type, System.Reflection.MethodBase)
 Microsoft.iOS.dll:Registrar.Registrar.VerifyTypeInSDK(System.Collections.Generic.List`1<System.Exception>&, System.Type, Registrar.Registrar/ObjCMethod, Registrar.Registrar/ObjCMethod, Registrar.Registrar/ObjCProperty, System.Type)
 Microsoft.iOS.dll:Registrar.Registrar/ObjCField
-Microsoft.iOS.dll:Registrar.Registrar/ObjCField..ctor()
+Microsoft.iOS.dll:Registrar.Registrar/ObjCField..ctor(Registrar.Registrar, Registrar.Registrar/ObjCType, System.String)
 Microsoft.iOS.dll:Registrar.Registrar/ObjCField.get_FullName()
 Microsoft.iOS.dll:Registrar.Registrar/ObjCField.get_IsNativeStatic()
 Microsoft.iOS.dll:Registrar.Registrar/ObjCField.get_IsStatic()
 Microsoft.iOS.dll:Registrar.Registrar/ObjCField.set_IsStatic(System.Boolean)
 Microsoft.iOS.dll:Registrar.Registrar/ObjCMember
-Microsoft.iOS.dll:Registrar.Registrar/ObjCMember..ctor()
 Microsoft.iOS.dll:Registrar.Registrar/ObjCMember..ctor(Registrar.Registrar, Registrar.Registrar/ObjCType)
 Microsoft.iOS.dll:Registrar.Registrar/ObjCMember.get_FullName()
 Microsoft.iOS.dll:Registrar.Registrar/ObjCMember.get_IsImplicit()
@@ -1124,7 +1123,7 @@ Microsoft.iOS.dll:Registrar.Registrar/ObjCMethod.ValidateSignature(System.Collec
 Microsoft.iOS.dll:Registrar.Registrar/ObjCMethod.WriteUnmanagedDescription(System.IntPtr, System.Reflection.MethodBase)
 Microsoft.iOS.dll:Registrar.Registrar/ObjCMethod.WriteUnmanagedDescription(System.IntPtr)
 Microsoft.iOS.dll:Registrar.Registrar/ObjCProperty
-Microsoft.iOS.dll:Registrar.Registrar/ObjCProperty..ctor()
+Microsoft.iOS.dll:Registrar.Registrar/ObjCProperty..ctor(Registrar.Registrar, Registrar.Registrar/ObjCType)
 Microsoft.iOS.dll:Registrar.Registrar/ObjCProperty.get_FullName()
 Microsoft.iOS.dll:Registrar.Registrar/ObjCProperty.get_IsNativeStatic()
 Microsoft.iOS.dll:Registrar.Registrar/ObjCProperty.get_IsReadOnly()
@@ -1140,7 +1139,7 @@ Microsoft.iOS.dll:Registrar.Registrar/ObjCType Registrar.Registrar/ObjCType::Bas
 Microsoft.iOS.dll:Registrar.Registrar/ObjCType Registrar.Registrar/ObjCType::superType
 Microsoft.iOS.dll:Registrar.Registrar/ObjCType Registrar.Registrar/ObjCType::SuperType()
 Microsoft.iOS.dll:Registrar.Registrar/ObjCType..cctor()
-Microsoft.iOS.dll:Registrar.Registrar/ObjCType..ctor()
+Microsoft.iOS.dll:Registrar.Registrar/ObjCType..ctor(Registrar.Registrar, System.Type)
 Microsoft.iOS.dll:Registrar.Registrar/ObjCType.Add(Registrar.Registrar/ObjCField, System.Collections.Generic.List`1<System.Exception>&)
 Microsoft.iOS.dll:Registrar.Registrar/ObjCType.Add(Registrar.Registrar/ObjCMethod, System.Collections.Generic.List`1<System.Exception>&)
 Microsoft.iOS.dll:Registrar.Registrar/ObjCType.Add(Registrar.Registrar/ObjCProperty, System.Collections.Generic.List`1<System.Exception>&)
@@ -1290,7 +1289,7 @@ Microsoft.iOS.dll:System.Collections.Generic.List`1<System.Reflection.Assembly> 
 Microsoft.iOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::<Exception>k__BackingField
 Microsoft.iOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::Exception()
 Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,System.String> CoreFoundation.CFArray/<>O::<0>__FromHandle
-Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__24_0`1::<0>__DefaultConvert
+Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1::<0>__DefaultConvert
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary::System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Count()
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>1__state
 Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap2
@@ -4080,7 +4079,7 @@ System.Private.CoreLib.dll:System.Diagnostics.StackFrame[] System.Diagnostics.St
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace..ctor(System.Boolean)
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace..ctor(System.Exception, System.Boolean)
-System.Private.CoreLib.dll:System.Diagnostics.StackTrace.<TryResolveStateMachineMethod>g__GetDeclaredMethods|32_0(System.Type)
+System.Private.CoreLib.dll:System.Diagnostics.StackTrace.<TryResolveStateMachineMethod>g__GetDeclaredMethods|34_0(System.Type)
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace.GetCustomAttributesSafe(System.Reflection.MemberInfo, System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace.GetFrame(System.Int32)
 System.Private.CoreLib.dll:System.Diagnostics.StackTrace.GetTrace(System.Runtime.CompilerServices.ObjectHandleOnStack, System.Runtime.CompilerServices.ObjectHandleOnStack, System.Int32, System.Boolean)

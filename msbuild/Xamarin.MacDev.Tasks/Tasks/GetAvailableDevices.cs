@@ -180,6 +180,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 			foreach (var device in array) {
 				var name = device.GetStringPropertyOrEmpty ("deviceProperties", "name");
 				var udid = device.GetStringPropertyOrEmpty ("hardwareProperties", "udid");
+				var identifier = device.GetStringPropertyOrEmpty ("identifier");
 
 				var deviceProperties = device.GetNullableProperty ("deviceProperties");
 				var buildVersion = deviceProperties.GetStringPropertyOrEmpty ("osBuildUpdate");
@@ -199,6 +200,12 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 				var connectionProperties = device.GetNullableProperty ("connectionProperties");
 				var transportType = connectionProperties.GetStringPropertyOrEmpty ("transportType");
 				var pairingState = connectionProperties.GetStringPropertyOrEmpty ("pairingState");
+
+				if (string.IsNullOrEmpty (udid))
+					udid = identifier;
+
+				if (string.IsNullOrEmpty (udid))
+					udid = $"<unknown udid #{rv.Count + 1}>";
 
 				var item = new TaskItem (udid);
 				item.SetMetadata ("Name", name);

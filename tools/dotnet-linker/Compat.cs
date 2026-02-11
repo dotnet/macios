@@ -10,6 +10,7 @@ using Mono.Linker.Steps;
 
 using Xamarin.Bundler;
 using Xamarin.Linker;
+using Xamarin.Tuner;
 using Xamarin.Utils;
 
 #nullable enable
@@ -19,12 +20,6 @@ namespace Xamarin.Bundler {
 		LinkerConfiguration? configuration;
 		public LinkerConfiguration Configuration { get => configuration!; }
 		public string? RuntimeConfigurationFile { get; set; }
-
-		public Application (LinkerConfiguration configuration)
-			: this ()
-		{
-			this.configuration = configuration;
-		}
 
 		public string ProductName {
 			get {

@@ -588,7 +588,7 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 				Sdk = sdkName;
 				break;
 			}
-		}	
+		}
 
 		return true;
 	}

@@ -178,7 +178,7 @@ steps:
     -GithubFailureCommentFile "$Env:GITHUB_FAILURE_COMMENT_FILE"
     -StatusContext "${{ parameters.statusContext }}"
     -TestSummaryPath "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/TestSummary.md"
-    -HtmlReportPath "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/jenkins-results/index.html"
+    -HtmlReportPath "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/jenkins-results/tests/vsdrops_index.html"
   displayName: 'Run tests'
   name: runTests
   timeoutInMinutes: 90
@@ -205,6 +205,19 @@ steps:
   inputs:
     targetPath: '$(BUILD_REPOSITORY_TITLE)/tests/TestSummary.md'
     artifactName: '${{ parameters.uploadPrefix }}TestSummary-${{ parameters.stageName }}${{ parameters.label }}-$(System.JobAttempt)'
+  continueOnError: true
+  condition: succeededOrFailed()
+
+# Upload to VSDrops so that the Html Report link in the GitHub comment works.
+- task: artifactDropTask@1
+  displayName: 'Publish to Artifact Services Drop'
+  inputs:
+    dropServiceURI: 'https://devdiv.artifacts.visualstudio.com/DefaultCollection'
+    dropMetadataContainerName: '${{ parameters.uploadPrefix }}DropMetadata-${{ parameters.stageName }}${{ parameters.label }}-$(System.JobAttempt)'
+    buildNumber: '$(BUILD_REPOSITORY_TITLE)/device-tests/$(Build.BuildNumber)/$(Build.BuildId)/${{ parameters.stageName }}${{ parameters.label }}-$(System.JobAttempt)'
+    sourcePath: '$(BUILD_REPOSITORY_TITLE)/jenkins-results'
+    detailedLog: true
+    usePat: true
   continueOnError: true
   condition: succeededOrFailed()
 

@@ -12,10 +12,8 @@
 
 using CoreGraphics;
 using Photos;
-using System.Drawing;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 	public partial class UIImagePickerController {
@@ -25,134 +23,110 @@ namespace UIKit {
 		//
 		// That is, the type can contain either one, but we still want it strongly typed
 		//
-		/// <summary>The delegate object that can be used to respond to events relating to this UIImagePickerController.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public IUIImagePickerControllerDelegate ImagePickerControllerDelegate {
+		/// <summary>Gets or sets the delegate object used to respond to events relating to this <see cref="UIImagePickerController" />.</summary>
+		public IUIImagePickerControllerDelegate? ImagePickerControllerDelegate {
 			get {
 				return Delegate as IUIImagePickerControllerDelegate;
 			}
 			set {
-				Delegate = (NSObject) value;
+				Delegate = (NSObject?) value;
 			}
 		}
 
-		/// <summary>A delegate object that can be used to respond to navigation events.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public IUINavigationControllerDelegate NavigationControllerDelegate {
+		/// <summary>Gets or sets a delegate object used to respond to navigation events.</summary>
+		public IUINavigationControllerDelegate? NavigationControllerDelegate {
 			get {
 				return Delegate as IUINavigationControllerDelegate;
 			}
 			set {
-				Delegate = (NSObject) value;
+				Delegate = (NSObject?) value;
 			}
 		}
 	}
 
-	/// <summary>Provides data for the <see cref="UIKit.UIImagePickerController.FinishedPickingMedia" /> event.</summary>
-	///     <remarks>These arguments are available if you use the <see cref="UIKit.UIImagePickerController.FinishedPickingMedia" /> event in <see cref="UIKit.UIImagePickerController" />.</remarks>
+	/// <summary>Provides data for the <see cref="UIImagePickerController.FinishedPickingMedia" /> event.</summary>
+	/// <remarks>These arguments are available when using the <see cref="UIImagePickerController.FinishedPickingMedia" /> event in <see cref="UIImagePickerController" />.</remarks>
 	public partial class UIImagePickerMediaPickedEventArgs {
-		/// <summary>Indicates the media type.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public string MediaType {
+		/// <summary>Gets the media type of the picked media.</summary>
+		public string? MediaType {
 			get {
-				return ((NSString) Info [UIImagePickerController.MediaType]).ToString ();
+				return ((NSString?) Info [UIImagePickerController.MediaType])?.ToString ();
 			}
 		}
 
-		/// <summary>The original image prior to editing by the user.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public UIImage OriginalImage {
+		/// <summary>Gets the original image prior to editing by the user.</summary>
+		public UIImage? OriginalImage {
 			get {
-				return (UIImage) Info [UIImagePickerController.OriginalImage];
+				return (UIImage?) Info [UIImagePickerController.OriginalImage];
 			}
 		}
 
-		/// <summary>The image edited by the user.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public UIImage EditedImage {
+		/// <summary>Gets the image edited by the user.</summary>
+		public UIImage? EditedImage {
 			get {
-				return (UIImage) Info [UIImagePickerController.EditedImage];
+				return (UIImage?) Info [UIImagePickerController.EditedImage];
 			}
 		}
 
-		/// <summary>The cropping rectangle that was applied to the original image.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the cropping rectangle that was applied to the original image.</summary>
 		public CGRect? CropRect {
 			get {
-				var nsv = ((NSValue) Info [UIImagePickerController.CropRect]);
+				var nsv = (NSValue?) Info [UIImagePickerController.CropRect];
 				if (nsv is null)
 					return null;
 				return nsv.CGRectValue;
 			}
 		}
 
-		/// <summary>The filesystem URL for a movie.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public NSUrl MediaUrl {
+		/// <summary>Gets the filesystem URL for a movie.</summary>
+		public NSUrl? MediaUrl {
 			get {
-				return (NSUrl) Info [UIImagePickerController.MediaURL];
+				return (NSUrl?) Info [UIImagePickerController.MediaURL];
 			}
 		}
 
-		/// <summary>Gets the <see cref="Photos.PHLivePhoto" /> of the photo.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the <see cref="PHLivePhoto" /> of the photo.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-		public PHLivePhoto LivePhoto {
+		public PHLivePhoto? LivePhoto {
 			get {
-				return (PHLivePhoto) Info [UIImagePickerController.LivePhoto];
+				return (PHLivePhoto?) Info [UIImagePickerController.LivePhoto];
 			}
 		}
 
-		/// <summary>For newly-captured photos only, retrieves the metadata of the photo.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public NSDictionary MediaMetadata {
+		/// <summary>Gets the metadata for newly-captured photos.</summary>
+		public NSDictionary? MediaMetadata {
 			get {
-				return (NSDictionary) Info [UIImagePickerController.MediaMetadata];
+				return (NSDictionary?) Info [UIImagePickerController.MediaMetadata];
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the reference URL for the picked asset.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("ios", "Use 'UIImagePickerController.PHAsset' instead.")]
 		[ObsoletedOSPlatform ("maccatalyst", "Use 'UIImagePickerController.PHAsset' instead.")]
-		public NSUrl ReferenceUrl {
+		public NSUrl? ReferenceUrl {
 			get {
-				return (NSUrl) Info [UIImagePickerController.ReferenceUrl];
+				return (NSUrl?) Info [UIImagePickerController.ReferenceUrl];
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the <see cref="Photos.PHAsset" /> associated with the picked media.</summary>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-		public PHAsset PHAsset {
+		public PHAsset? PHAsset {
 			get {
-				return (PHAsset) Info [UIImagePickerController.PHAsset];
+				return (PHAsset?) Info [UIImagePickerController.PHAsset];
 			}
 		}
 
 		/// <summary>Gets the <see cref="Foundation.NSUrl" /> of the image file.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
-		public NSUrl ImageUrl {
+		public NSUrl? ImageUrl {
 			get {
-				return (NSUrl) Info [UIImagePickerController.ImageUrl];
+				return (NSUrl?) Info [UIImagePickerController.ImageUrl];
 			}
 		}
 	}

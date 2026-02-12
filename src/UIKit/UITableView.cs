@@ -44,7 +44,7 @@ namespace UIKit {
 		}
 
 		/// <summary>Registers the <paramref name="cellType" /> type for header or footer view reuse, keyed by the identifier <paramref name="reuseIdentifier" />.</summary>
-		/// <param name="cellType">The type of a <see cref="UIView" /> to create, or <see langword="null" /> to unregister the reuse identifier.</param>
+		/// <param name="cellType">The type of a <see cref="UITableViewHeaderFooterView" /> to create, or <see langword="null" /> to unregister the reuse identifier.</param>
 		/// <param name="reuseIdentifier">The reuse identifier string.</param>
 		public void RegisterClassForHeaderFooterViewReuse (Type? cellType, string reuseIdentifier)
 		{
@@ -52,15 +52,15 @@ namespace UIKit {
 				RegisterClassForHeaderFooterViewReuse (cellType is null ? IntPtr.Zero : Class.GetHandle (cellType), str);
 		}
 
-		/// <summary>Registers a type to provide <see cref="UIView" /> instances for headers or footers for a specific reuse identifier.</summary>
-		/// <param name="cellType">The type of a <see cref="UIView" /> to create when the specified <paramref name="reuseIdentifier" /> is passed to <see cref="DequeueReusableHeaderFooterView(string)" />, or <see langword="null" /> to unregister the reuse identifier.</param>
+		/// <summary>Registers a type to provide <see cref="UITableViewHeaderFooterView" /> instances for headers or footers for a specific reuse identifier.</summary>
+		/// <param name="cellType">The type of a <see cref="UITableViewHeaderFooterView" /> to create when the specified <paramref name="reuseIdentifier" /> is passed to <see cref="DequeueReusableHeaderFooterView(string)" />, or <see langword="null" /> to unregister the reuse identifier.</param>
 		/// <param name="reuseIdentifier">The reuse identifier.</param>
 		/// <remarks>
 		///   <para>
-		///     Registering types with reuse identifiers helps reduce the amount of code that you have to write in your <see cref="UITableViewSource.GetViewForFooter(UITableView,System.IntPtr)" /> or <see cref="UITableViewSource.GetViewForHeader(UITableView,System.IntPtr)" /> methods. It means that your code only needs to call <see cref="DequeueReusableHeaderFooterView(string)" /> with the reuse identifier, and if there is no available cell, the <see cref="UITableView" /> will create an instance of the specified type and return it.
+		///     Registering types with reuse identifiers helps reduce the amount of code that you have to write in your <see cref="UITableViewSource.GetViewForFooter(UITableView,System.IntPtr)" /> or <see cref="UITableViewSource.GetViewForHeader(UITableView,System.IntPtr)" /> methods. It means that your code only needs to call <see cref="DequeueReusableHeaderFooterView(string)" /> with the reuse identifier, and if there is no available header or footer view, the <see cref="UITableView" /> will create an instance of the specified type and return it.
 		///   </para>
 		///   <para>
-		///     The type that you register must provide a constructor that takes a <see cref="ObjCRuntime.NativeHandle" /> parameter and needs to chain to the <see cref="UIView(ObjCRuntime.NativeHandle)" /> constructor.
+		///     The type that you register must provide a constructor that takes a <see cref="ObjCRuntime.NativeHandle" /> parameter and needs to chain to the <see cref="UITableViewHeaderFooterView(ObjCRuntime.NativeHandle)" /> constructor.
 		///   </para>
 		/// </remarks>
 		public void RegisterClassForHeaderFooterViewReuse (Type? cellType, NSString reuseIdentifier)

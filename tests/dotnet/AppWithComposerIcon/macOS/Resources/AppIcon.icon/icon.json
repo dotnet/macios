@@ -1,0 +1,19 @@
+{
+  "version" : 1,
+  "layers" : [
+    {
+      "filename" : "back.png",
+      "size" : {
+        "width" : 1024,
+        "height" : 1024
+      }
+    },
+    {
+      "filename" : "front.png",
+      "size" : {
+        "width" : 1024,
+        "height" : 1024
+      }
+    }
+  ]
+}

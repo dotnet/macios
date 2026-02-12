@@ -132,8 +132,11 @@ if ($TestSummaryPath -ne "") {
 if ($HtmlReportPath -ne "") {
   $crashReportsDir = "$Env:HOME/Library/Logs/DiagnosticReports"
 
-  $toolDir = "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/scripts/mac-test-report-generator"
-  $toolArgs = @("run", "--project", $toolDir, "--", "--title", $StatusContext, "--output", $HtmlReportPath, "--test-output-dir", $testOutputDir)
+  # Build the report generator tool (uses the same pattern as run-with-timeout)
+  make -C $testsPath -f packaged-macos-tests.mk "$testsPath/../scripts/mac-test-report-generator/bin/Debug/mac-test-report-generator.dll"
+  $toolDll = "$testsPath/../scripts/mac-test-report-generator/bin/Debug/mac-test-report-generator.dll"
+
+  $toolArgs = @("exec", $toolDll, "--title", $StatusContext, "--output", $HtmlReportPath, "--test-output-dir", $testOutputDir)
   foreach ($t in $macTest) {
     $result = if ($failures.Contains($t)) { "fail" } else { "pass" }
     $toolArgs += @("--test", "$t`:$result")

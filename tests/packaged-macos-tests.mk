@@ -17,6 +17,7 @@ CONFIG?=Debug
 LAUNCH_ARGUMENTS=--autostart --autoexit
 
 include $(TOP)/scripts/run-with-timeout/fragment.mk
+include $(TOP)/scripts/mac-test-report-generator/fragment.mk
 
 # Time test runs out after 5 minutes (300 seconds)
 LAUNCH_WITH_TIMEOUT=$(RUN_WITH_TIMEOUT_EXEC) 300

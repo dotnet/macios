@@ -49,6 +49,9 @@ namespace Xamarin.MacDev.Tasks {
 				// Only remove debug symbols from frameworks.
 				args.Add ("-S");
 				args.Add ("-x");
+				// Remove atom info (LC_ATOM_INFO) from mergeable libraries to reduce size.
+				// This is a no-op for non-mergeable libraries.
+				args.Add ("-no_atom_info");
 			}
 
 			args.Add (Path.GetFullPath (item.ItemSpec));

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
 using System.Net.Security;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Linq;
 using System.IO;
@@ -16,6 +17,9 @@ using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Text;
 using Xamarin.Utils;
+
+using Network;
+using Security;
 
 namespace MonoTests.System.Net.Http {
 	[TestFixture]
@@ -716,41 +720,116 @@ namespace MonoTests.System.Net.Http {
 		[Test]
 		public void TestNSUrlSessionHandlerOptionalClientCertificate ()
 		{
-			string content = "";
-			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-				using var handler = new NSUrlSessionHandler ();
-				using var client = new HttpClient (handler);
-				// This service doesn't require a certificate and should succeed even if one isn't provided
-				var response = await client.GetAsync (NetworkResources.EchoClientCertificateUrl);
-				content = await response.EnsureSuccessStatusCode ().Content.ReadAsStringAsync ();
-			}, out var ex);
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
-				Assert.Inconclusive ("Request timedout.");
-			} else {
-				Assert.IsNull (ex, "Exception wasn't expected.");
+			NWListener? listener = null;
+			try {
+				listener = CreateNWTlsListener (requireClientCert: false);
+				var port = listener.Port;
+
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					using var handler = new NSUrlSessionHandler ();
+					handler.TrustOverrideForUrl = (sender, url, trust) => true;
+					using var client = new HttpClient (handler);
+					var response = await client.GetAsync ($"https://localhost:{port}/");
+					response.EnsureSuccessStatusCode ();
+				}, out var ex);
+				Assert.IsTrue (done, "Request to localhost timed out.");
+				Assert.IsNull (ex, $"Exception wasn't expected, but got: {ex}");
+			} finally {
+				listener?.Cancel ();
+				listener?.Dispose ();
 			}
 		}
 
 		[Test]
 		public void TestNSUrlSessionHandlerDetectMissingClientCertificate ()
 		{
-			string content = "";
-			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-				using var handler = new NSUrlSessionHandler ();
-				using var client = new HttpClient (handler);
-				// TODO: Replace with a service that actually requires a certificate and uses TLS1.2
-				var response = await client.GetAsync (NetworkResources.EchoClientCertificateUrl);
-				content = await response.EnsureSuccessStatusCode ().Content.ReadAsStringAsync ();
-			}, out var ex);
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
-				Assert.Inconclusive ("Request timedout.");
-			} else {
+			NWListener? listener = null;
+			try {
+				listener = CreateNWTlsListener (requireClientCert: true);
+				var port = listener.Port;
+
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					using var handler = new NSUrlSessionHandler ();
+					handler.TrustOverrideForUrl = (sender, url, trust) => true;
+					using var client = new HttpClient (handler);
+					await client.GetAsync ($"https://localhost:{port}/");
+				}, out var ex);
+				Assert.IsTrue (done, "Request to localhost timed out.");
 				Assert.IsNotNull (ex, "Exception was expected.");
 				Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
-				Assert.IsInstanceOf (typeof (WebException), ex.InnerException, "InnerException Type");
-				Assert.AreEqual (WebExceptionStatus.SecureChannelFailure, ((WebException) ex.InnerException).Status, "InnerException Status");
+				Assert.IsInstanceOf (typeof (WebException), ex!.InnerException, "InnerException Type");
+				Assert.That (((WebException) ex.InnerException!).Status, Is.EqualTo (WebExceptionStatus.SecureChannelFailure), "InnerException Status");
 				Assert.IsInstanceOf (typeof (AuthenticationException), ex.InnerException.InnerException, "InnerException.InnerException Type");
+			} finally {
+				listener?.Cancel ();
+				listener?.Dispose ();
 			}
+		}
+
+		static NWListener CreateNWTlsListener (bool requireClientCert)
+		{
+			using var serverCert = CreateSelfSignedServerCertificate ();
+			using var secIdentity = SecIdentity.Import (serverCert);
+			using var secIdentity2 = new SecIdentity2 (secIdentity);
+			var readyEvent = new ManualResetEventSlim (false);
+
+			var parameters = NWParameters.CreateSecureTcp (
+				configureTls: tlsOptions => {
+					var tls = (NWProtocolTlsOptions) tlsOptions;
+					var secOptions = tls.ProtocolOptions;
+					secOptions.SetLocalIdentity (secIdentity2);
+					secOptions.SetPeerAuthenticationRequired (requireClientCert);
+				});
+			using var localEndpoint = NWEndpoint.Create ("127.0.0.1", "0");
+			parameters.LocalEndpoint = localEndpoint;
+
+			var listener = NWListener.Create (parameters);
+			parameters.Dispose ();
+
+			listener.SetQueue (CoreFoundation.DispatchQueue.DefaultGlobalQueue);
+
+			listener.SetStateChangedHandler ((state, error) => {
+				if (state == NWListenerState.Ready)
+					readyEvent.Set ();
+				if (state == NWListenerState.Failed)
+					readyEvent.Set ();
+			});
+
+			listener.SetNewConnectionHandler (connection => {
+				connection.SetQueue (CoreFoundation.DispatchQueue.DefaultGlobalQueue);
+				connection.SetStateChangeHandler ((connState, connError) => {
+					if (connState == NWConnectionState.Ready) {
+						// Read the HTTP request (just consume it), then send a response
+						connection.ReceiveReadOnlyData (1, 4096, (data, context, isComplete, error) => {
+							var response = Encoding.UTF8.GetBytes ("HTTP/1.1 200 OK\r\nContent-Length: 2\r\nConnection: close\r\n\r\nOK");
+							connection.Send (response, NWContentContext.FinalMessage, true, sendError => {
+								connection.Cancel ();
+							});
+						});
+					}
+				});
+				connection.Start ();
+			});
+
+			listener.Start ();
+
+			if (!readyEvent.Wait (TimeSpan.FromSeconds (10)))
+				throw new TimeoutException ("NWListener did not become ready in time.");
+
+			return listener;
+		}
+
+		static X509Certificate2 CreateSelfSignedServerCertificate ()
+		{
+			using var rsa = RSA.Create (2048);
+			var certRequest = new CertificateRequest (
+				"CN=localhost", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+			var sanBuilder = new SubjectAlternativeNameBuilder ();
+			sanBuilder.AddIpAddress (IPAddress.Loopback);
+			sanBuilder.AddDnsName ("localhost");
+			certRequest.CertificateExtensions.Add (sanBuilder.Build ());
+			var cert = certRequest.CreateSelfSigned (DateTimeOffset.UtcNow.AddDays (-1), DateTimeOffset.UtcNow.AddYears (1));
+			return X509CertificateLoader.LoadPkcs12 (cert.Export (X509ContentType.Pfx), null);
 		}
 
 		[Test]

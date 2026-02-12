@@ -365,7 +365,8 @@ class ParallelTestsResults {
 
         # Split results into regular tests and macOS tests
         $regularResults = @($this.Results | Where-Object { -not $_.IsMacTest })
-        $macResults = @($this.Results | Where-Object { $_.IsMacTest } | Sort-Object -Property TestStage)
+        # Sort macOS tests by the version number extracted from the TestStage (e.g. mac_12_m1 => 12)
+        $macResults = @($this.Results | Where-Object { $_.IsMacTest } | Sort-Object { if ($_.TestStage -match '_(\d+)_') { [int]$matches[1] } else { 0 } })
 
         $stringBuilder.AppendLine("# Test results")
         # We need to add a small summary at the top. We check if it was a success, if that is
@@ -398,8 +399,12 @@ class ParallelTestsResults {
             $stringBuilder.AppendLine("")
             $stringBuilder.AppendLine("## Failures")
             $stringBuilder.AppendLine("")
+            # Show non-mac failures first, then mac failures sorted by version
+            $regularFailures = @($failingTests | Where-Object { -not $_.IsMacTest })
+            $macFailures = @($failingTests | Where-Object { $_.IsMacTest } | Sort-Object { if ($_.TestStage -match '_(\d+)_') { [int]$matches[1] } else { 0 } })
+            $sortedFailures = @($regularFailures) + @($macFailures)
             # loop over all results and add the content
-            foreach ($r in $failingTests)
+            foreach ($r in $sortedFailures)
             {
                 $attemptText = $r.GetAttemptText()
                 $stringBuilder.AppendLine("### :x: $($r.GetLabelWithSuffix(`" tests`"))$attemptText")
@@ -470,7 +475,7 @@ class ParallelTestsResults {
                 $this.PrintSuccessMessage($r, $stringBuilder)
             }
             if ($macResults.Count -gt 0) {
-                $macSuccesses = @($this.GetSuccessfulTests() | Where-Object { $_.IsMacTest } | Sort-Object -Property TestStage)
+                $macSuccesses = @($this.GetSuccessfulTests() | Where-Object { $_.IsMacTest } | Sort-Object { if ($_.TestStage -match '_(\d+)_') { [int]$matches[1] } else { 0 } })
                 $stringBuilder.AppendLine("")
                 $stringBuilder.AppendLine("## macOS tests")
                 $stringBuilder.AppendLine("")

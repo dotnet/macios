@@ -405,9 +405,10 @@ namespace Xamarin.MacDev.Tasks {
 				var assetType = asset.AssetType;
 
 				if (Platform == ApplePlatform.TVOS) {
-					if (assetType.Equals ("imagestack", StringComparison.OrdinalIgnoreCase)) {
+					if (assetType.Equals ("imagestack", StringComparison.OrdinalIgnoreCase) || assetType.Equals ("icon", StringComparison.OrdinalIgnoreCase)) {
 						imageStacksInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)));
-					} else if (assetType.Equals ("brandassets", StringComparison.OrdinalIgnoreCase)) {
+					}
+					if (assetType.Equals ("brandassets", StringComparison.OrdinalIgnoreCase) || assetType.Equals ("icon", StringComparison.OrdinalIgnoreCase)) {
 						brandAssetsInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)));
 					}
 				} else {

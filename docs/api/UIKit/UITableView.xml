@@ -304,65 +304,6 @@
     <related type="recipe" href="https://docs.xamarin.com/recipes/ios/content_controls/tables">Tables and UITableViewController</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UITableView_Class/index.html">Apple documentation for <c>UITableView</c></related>
   </Docs>
-  <Docs DocId="M:UIKit.UITableView.RegisterClassForHeaderFooterViewReuse(System.Type,Foundation.NSString)">
-    <param name="cellType">The type of a UIView to create when the specified reuseIdentifier is passed to DequeueReusableCell.</param>
-    <param name="reuseIdentifier">The reuse identifier.</param>
-    <summary>Registers a type to provide UIViews for headers or footers for a specific reuseIdentifier.</summary>
-    <remarks>
-      <para>
-              You can use this method to register the type of a class
-              that should be instantiated if the UITableView needs to
-              create a new header or footer in response to a request in
-              DequeueReusableHeaderFooterView for the specified reuseIdentifier.
-              
-            </para>
-      <para>
-              Registering types with reuse identifiers helps reduce the
-              amount of code that you have to write in your GetFooterView or GetHeaderView methods.
-              It means that your code only needs to
-              call DequeueReusableHeaderFooterView with the reuse identifier, and
-              if there is no available cell, the UITableView will
-              create an instance of the specified type and return it.
-              
-            </para>
-      <para> 
-              The type that you register must provide a constructor
-              that takes an <see cref="NativeHandle" /> constructor and needs to chain to
-              the <see cref="UIKit.UIView(NativeHandle)" />
-              constructor.
-            </para>
-    </remarks>
-  </Docs>
-  <Docs DocId="M:UIKit.UITableView.RegisterClassForCellReuse(System.Type,Foundation.NSString)">
-    <param name="cellType">The type of a UITableViewCell to create when the specified reuseIdentifier is passed to DequeueReusableCell.</param>
-    <param name="reuseIdentifier">The reuse identifier.</param>
-    <summary>Registers a type to provide UITableViewCells for a specific reuseIdentifier.</summary>
-    <remarks>
-      <para>
-              Mono can use this method to register the type of a class
-              that should be instantiated if the UITableView needs to
-              create a new cell in response to a request in
-              DequeueReusableCell for the specified reuseIdentifier.
-              
-            </para>
-      <para>
-              Registering types with cell identifiers helps reduce the
-              amount of code that you have to write in your GetCell
-              method.  It means that your GetCell method only needs to
-              call DequeueReusableCell with the reuse identifier, and
-              if there is no available cell, the UITableView will
-              create an instance of the specified type and return it.
-              
-            </para>
-      <para> 
-              The type that you register must provide a constructor
-              that takes an IntPtr constructor and needs to chain to
-              the <see cref="UIKit.UITableViewCell(NativeHandle)" />
-              constructor.
-              
-            </para>
-    </remarks>
-  </Docs>
   <Docs DocId="M:UIKit.UITableView.DequeueReusableCell(Foundation.NSString)">
     <param name="identifier">A string identifying the cell type being requested.</param>
     <summary>Returns a reusable table view cell that was created with the given ReuseIdentifier.</summary>

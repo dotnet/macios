@@ -321,6 +321,9 @@ namespace Cecil.Tests {
 
 		static string GetDocId (TypeReference tr)
 		{
+			if (tr is FunctionPointerType)
+				return "";
+
 			string name = "";
 			if (tr.IsNested) {
 				var decl = tr.DeclaringType;

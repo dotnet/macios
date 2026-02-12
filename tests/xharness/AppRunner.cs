@@ -438,9 +438,9 @@ namespace Xharness {
 				using var reader = log.GetReader ();
 				string line;
 				while ((line = reader.ReadLine ()) is not null) {
-					if (line.Contains ("Could not launch the app"))
+					if (line.Contains ("Could not launch the app", StringComparison.Ordinal))
 						return true;
-					if (line.Contains ("error HE0042"))
+					if (line.Contains ("error HE0042", StringComparison.Ordinal))
 						return true;
 				}
 			} catch {

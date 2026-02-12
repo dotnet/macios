@@ -15,13 +15,10 @@ namespace Xamarin.MacDev.Tasks {
 		const string SdkVersionDefaultValue = "default";
 		#region Inputs
 
-		public string TargetArchitectures {
+		[Required]
+		public bool SdkIsSimulator {
 			get; set;
-		} = "";
-
-		public string IsDotNetSimulatorBuild {
-			get; set;
-		} = "";
+		}
 
 		#endregion Inputs
 
@@ -33,13 +30,9 @@ namespace Xamarin.MacDev.Tasks {
 		} = "";
 
 		[Output]
-		public string SdkDevPath {
-			get; set;
-		} = "";
-
-		[Output]
-		public bool SdkIsSimulator {
-			get; set;
+		public new string SdkDevPath {
+			get => base.SdkDevPath;
+			set => base.SdkDevPath = value;
 		}
 
 		[Output]
@@ -115,7 +108,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 				Log.LogWarning (MSBStrings.E0173 /* The {0} SDK version '{1}' is not installed. Using newer version '{2}' instead'. */, PlatformName, requestedSdkVersion, sdkVersion);
 			}
-			SdkVersion = sdkVersion.ToString ();
+			SdkVersion = sdkVersion.ToString () ?? "";
 
 			SdkRoot = currentSdk.GetSdkPath (SdkVersion, SdkIsSimulator);
 			if (string.IsNullOrEmpty (SdkRoot))
@@ -154,8 +147,6 @@ namespace Xamarin.MacDev.Tasks {
 
 			AppleSdkSettings.Init ();
 
-			SetIsSimulator ();
-
 			if (EnsureAppleSdkRoot ())
 				EnsureSdkPath ();
 			EnsureXamarinSdkRoot ();
@@ -163,25 +154,6 @@ namespace Xamarin.MacDev.Tasks {
 			XcodeVersion = AppleSdkSettings.XcodeVersion.ToString ();
 
 			return !Log.HasLoggedErrors;
-		}
-
-		void SetIsSimulator ()
-		{
-			switch (Platform) {
-			case ApplePlatform.MacCatalyst:
-			case ApplePlatform.MacOSX:
-				return;
-			}
-
-			TargetArchitecture architectures;
-			if (string.IsNullOrEmpty (TargetArchitectures) || !Enum.TryParse (TargetArchitectures, out architectures))
-				architectures = TargetArchitecture.Default;
-
-			if (!string.IsNullOrEmpty (IsDotNetSimulatorBuild)) {
-				SdkIsSimulator = string.Equals (IsDotNetSimulatorBuild, "true", StringComparison.OrdinalIgnoreCase);
-			} else {
-				SdkIsSimulator = (architectures & (TargetArchitecture.i386 | TargetArchitecture.x86_64)) != 0;
-			}
 		}
 
 		protected bool EnsureAppleSdkRoot ()

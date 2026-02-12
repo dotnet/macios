@@ -128,7 +128,7 @@ namespace Xamarin.MacDev {
 			}
 
 			if (rv) {
-				Directory.CreateDirectory (Path.GetDirectoryName (stampFile));
+				Directory.CreateDirectory (Path.GetDirectoryName (stampFile)!);
 				using var touched = new FileStream (stampFile, FileMode.Create, FileAccess.Write);
 				createdFiles.Add (stampFile);
 			}
@@ -240,7 +240,7 @@ namespace Xamarin.MacDev {
 				if (isDir) {
 					Directory.CreateDirectory (targetPath);
 				} else {
-					Directory.CreateDirectory (Path.GetDirectoryName (targetPath));
+					Directory.CreateDirectory (Path.GetDirectoryName (targetPath)!);
 					using var streamWrite = File.OpenWrite (targetPath);
 					using var streamRead = entry.Open ();
 #if NET

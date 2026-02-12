@@ -155,6 +155,50 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
+		public void FromObjectsAndKeysTest_NullValue ()
+		{
+			var keys = new NSObject [] { new NSNumber (1), new NSNumber (2), new NSNumber (3) };
+			var objs = new NSObject? [] { new NSNumber (1), null, new NSNumber (4) };
+			NSDictionary ns = NSDictionary.FromObjectsAndKeys (objs, keys, 3);
+			Assert.AreEqual ((nuint) 3, ns.Count, "Count");
+			Assert.AreEqual (1, ((NSNumber) ns [new NSNumber (1)]).Int32Value, "Value 1");
+			Assert.IsInstanceOf<NSNull> (ns [new NSNumber (2)], "Null value");
+			Assert.AreEqual (4, ((NSNumber) ns [new NSNumber (3)]).Int32Value, "Value 3");
+		}
+
+		[Test]
+		public void FromObjectsAndKeysTest_NullValue_NoCount ()
+		{
+			var keys = new NSObject [] { new NSNumber (1), new NSNumber (2), new NSNumber (3) };
+			var objs = new NSObject? [] { new NSNumber (1), null, new NSNumber (4) };
+			NSDictionary ns = NSDictionary.FromObjectsAndKeys (objs, keys);
+			Assert.AreEqual ((nuint) 3, ns.Count, "Count");
+			Assert.AreEqual (1, ((NSNumber) ns [new NSNumber (1)]).Int32Value, "Value 1");
+			Assert.IsInstanceOf<NSNull> (ns [new NSNumber (2)], "Null value");
+			Assert.AreEqual (4, ((NSNumber) ns [new NSNumber (3)]).Int32Value, "Value 3");
+		}
+
+		[Test]
+		public void DictionaryCtorKeyValues_WithNull ()
+		{
+			var key1 = new NSString ("key1");
+			var key2 = new NSString ("key2");
+			var value = new NSString ("value");
+
+			// Test null value
+			var dict = new NSDictionary (key1, null);
+			Assert.AreEqual ((nuint) 1, dict.Count, "count with null value");
+			var rawValue = dict.ObjectForKey (key1);
+			Assert.IsInstanceOf<NSNull> (rawValue, "Null value should be NSNull");
+
+			// Test null in variadic args (value position)
+			dict = new NSDictionary (key1, value, key2, null);
+			Assert.AreEqual ((nuint) 2, dict.Count, "count with null in args");
+			rawValue = dict.ObjectForKey (key2);
+			Assert.IsInstanceOf<NSNull> (rawValue, "Null value in args should be NSNull");
+		}
+
+		[Test]
 		public void Copy ()
 		{
 			using (var k = new NSString ("key"))

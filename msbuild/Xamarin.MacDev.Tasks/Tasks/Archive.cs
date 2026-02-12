@@ -156,7 +156,7 @@ namespace Xamarin.MacDev.Tasks {
 				ArchiveMSym (MSYMDir, archiveDir);
 
 				// Archive the Bitcode symbol maps
-				var bcSymbolMaps = Directory.GetFiles (Path.GetDirectoryName (DSYMDir), "*.bcsymbolmap");
+				var bcSymbolMaps = Directory.GetFiles (Path.GetDirectoryName (DSYMDir)!, "*.bcsymbolmap");
 				if (bcSymbolMaps.Length > 0) {
 					var bcSymbolMapsDir = Path.Combine (archiveDir, "BCSymbolMaps");
 
@@ -306,7 +306,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			// Note: App Extension dSYM dirs exist alongside the main app bundle now that they are generated from the main app's MSBuild targets
-			var dsymDir = Path.Combine (Path.GetDirectoryName (AppBundleDir.ItemSpec), Path.GetFileName (appex.ItemSpec) + ".dSYM");
+			var dsymDir = Path.Combine (Path.GetDirectoryName (AppBundleDir.ItemSpec)!, Path.GetFileName (appex.ItemSpec) + ".dSYM");
 			ArchiveDSym (dsymDir, archiveDir);
 
 			var msymDir = appex.ItemSpec + ".mSYM";

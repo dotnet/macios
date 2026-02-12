@@ -12,7 +12,7 @@ using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks {
-	public class ACTool : XcodeCompilerToolTask, ICancelableTask {
+	public class ACTool : XcodeCompilerToolTask {
 		string? outputSpecs;
 		string? partialAppManifestPath;
 
@@ -57,10 +57,6 @@ namespace Xamarin.MacDev.Tasks {
 		HashSet<string> appIconsInAssets = new (); // iOS, macOS and Mac Catalyst
 		HashSet<string> brandAssetsInAssets = new (); // tvOS
 		HashSet<string> imageStacksInAssets = new (); // tvOS
-
-		protected override string DefaultBinDir {
-			get { return DeveloperRootBinDir; }
-		}
 
 		protected override string ToolName {
 			get { return "actool"; }
@@ -214,7 +210,7 @@ namespace Xamarin.MacDev.Tasks {
 				args.Add ("--include-all-app-icons");
 
 			args.Add ("--output-partial-info-plist");
-			args.Add (Path.GetFullPath (partialAppManifestPath));
+			args.Add (Path.GetFullPath (partialAppManifestPath!));
 		}
 
 		IEnumerable<ITaskItem> GetCompiledBundleResources (PDictionary output, string intermediateBundleDir)
@@ -297,8 +293,8 @@ namespace Xamarin.MacDev.Tasks {
 					var catalogFullPath = imageAsset.GetMetadata ("FullPath");
 
 					// get the parent (which will typically be .appiconset, .launchimage, .imageset, .iconset, .icon, etc)
-					var catalog = Path.GetDirectoryName (vpath);
-					catalogFullPath = Path.GetDirectoryName (catalogFullPath);
+					var catalog = Path.GetDirectoryName (vpath)!;
+					catalogFullPath = Path.GetDirectoryName (catalogFullPath)!;
 
 					var assetType = Path.GetExtension (catalog).TrimStart ('.');
 
@@ -368,7 +364,7 @@ namespace Xamarin.MacDev.Tasks {
 						}
 
 						var dest = Path.Combine (intermediateCloneDir, vpath);
-						var dir = Path.GetDirectoryName (dest);
+						var dir = Path.GetDirectoryName (dest)!;
 
 						Directory.CreateDirectory (dir);
 
@@ -403,17 +399,18 @@ namespace Xamarin.MacDev.Tasks {
 				var catalog = asset.Catalog;
 				var path = assetItem.GetMetadata ("FullPath");
 				var assetType = asset.AssetType;
+				var vpathDirNameWithoutExtension = Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)!);
 
 				if (Platform == ApplePlatform.TVOS) {
 					if (assetType.Equals ("imagestack", StringComparison.OrdinalIgnoreCase) || assetType.Equals ("icon", StringComparison.OrdinalIgnoreCase)) {
-						imageStacksInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)));
+						imageStacksInAssets.Add (vpathDirNameWithoutExtension);
 					}
 					if (assetType.Equals ("brandassets", StringComparison.OrdinalIgnoreCase) || assetType.Equals ("icon", StringComparison.OrdinalIgnoreCase)) {
-						brandAssetsInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)));
+						brandAssetsInAssets.Add (vpathDirNameWithoutExtension);
 					}
 				} else {
 					if (assetType.Equals ("appiconset", StringComparison.OrdinalIgnoreCase) || assetType.Equals ("icon", StringComparison.OrdinalIgnoreCase)) {
-						appIconsInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)));
+						appIconsInAssets.Add (vpathDirNameWithoutExtension);
 					}
 				}
 
@@ -548,12 +545,6 @@ namespace Xamarin.MacDev.Tasks {
 			OutputManifests = outputManifests.ToArray ();
 
 			return !Log.HasLoggedErrors;
-		}
-
-		public void Cancel ()
-		{
-			if (ShouldExecuteRemotely ())
-				BuildConnection.CancelAsync (BuildEngine4).Wait ();
 		}
 	}
 

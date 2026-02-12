@@ -17,6 +17,12 @@ The full path to the `altool` tool.
 
 The default behavior is to use `xcrun altool`.
 
+## ACToolPath
+
+The full path to the `actool` tool.
+
+The default behavior is to use `xcrun actool`.
+
 ## AppBundleResourcePrefix
 
 The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).
@@ -344,6 +350,20 @@ Only applicable to macOS and Mac Catalyst projects.
 
 See [BuildIpa](#buildipa) for iOS and tvOS projects.
 
+## Device
+
+Specifies which mobile device or emulator to target when using `dotnet run
+--device <Device>` or MSBuild targets that interact with devices (such as
+`Run`, `Install`, or `Uninstall`).
+
+The value can be anything the command-line tools `simctl` or `devicectl`
+accept for the device name; this is typically either the UDID or the name of
+the device. For example, for the device `My iOS Device` with UDID `00001111-012301230123ABCD`, use
+either `-p:Device="My iOS Device"` or `-p:Device=00001111-012301230123ABCD`.
+
+For more information about device selection, see the
+[.NET SDK device selection specification](https://github.com/dotnet/sdk/blob/2b9fc02a265c735f2132e4e3626e94962e48bdf5/documentation/specs/dotnet-run-for-maui.md).
+
 ## DeviceSpecificBuild
 
 If the build should be specific to the selected device.
@@ -516,6 +536,12 @@ Default: true
 ## GeneratedSourcesDir
 
 Where the generated source from the generator are saved.
+
+## IBToolPath
+
+The full path to the `ibtool` tool.
+
+The default behavior is to use `xcrun ibtool`.
 
 ## IncludeAllAppIcons
 
@@ -1139,7 +1165,7 @@ This will pass `-W` to `open` if set to `true`.
 Example:
 
 ```shell
-$ dotnet run -p:OpenWaitForExit=false
+$ dotnet run -p:OpenWaitForExit=true
 ```
 
 ### OpenArguments
@@ -1261,6 +1287,12 @@ It's also possible to use a platform-specific property:
 * [macOSMinimumVersion](#macosminimumversion)
 * [MacCatalystMinimumVersion](#maccatalystminimumversion)
 
+## TextureAtlasPath
+
+The full path to the `TextureAtlas` tool.
+
+The default behavior is to use `xcrun TextureAtlas`.
+
 ## TrimMode
 
 Specifies the trimming granularity.
@@ -1298,7 +1330,7 @@ The default trim mode depends on numerous factors, and may also change in the fu
 
 The current (as of .NET 9) default values are:
 
-* iOS and iOS: `partial` when building for device, `copy` when building for the simulator.
+* iOS and tvOS: `partial` when building for device, `copy` when building for the simulator.
 * macOS: always `copy`.
 * Mac Catalyst: `partial` when building for the `"Release"` configuration, `copy` otherwise.
 

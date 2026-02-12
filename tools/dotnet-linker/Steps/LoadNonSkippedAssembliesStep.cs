@@ -27,7 +27,7 @@ namespace Xamarin.Linker {
 				case AssemblyAction.CopyUsed:
 				case AssemblyAction.Link:
 				case AssemblyAction.Save:
-					var ad = Configuration.Target.AddAssembly (assembly);
+					var ad = Configuration.Application.AddAssembly (assembly);
 					var assemblyFileName = Configuration.GetAssemblyFileName (assembly);
 					ad.IsDedupAssembly = Path.GetFileName (Configuration.DedupAssembly).Equals (Path.GetFileName (assemblyFileName), StringComparison.OrdinalIgnoreCase);
 					ad.FullPath = assemblyFileName;

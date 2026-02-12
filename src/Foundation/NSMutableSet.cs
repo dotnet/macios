@@ -38,19 +38,19 @@ namespace Foundation {
 	public partial class NSMutableSet : IEnumerable<NSObject> {
 		/// <summary>Initializes a new mutable set with the specified objects.</summary>
 		/// <param name="objs">The objects to add to the set.</param>
-		public NSMutableSet (params NSObject [] objs)
+		public NSMutableSet (params NSObject? []? objs)
 			: this (NSArray.FromNSObjects (objs))
 		{
 		}
 
 		/// <summary>Initializes a new mutable set with the specified strings.</summary>
 		/// <param name="strings">The strings to add to the set.</param>
-		public NSMutableSet (params string [] strings)
+		public NSMutableSet (params string? [] strings)
 			: this (NSArray.FromStrings (strings))
 		{
 		}
 
-		internal NSMutableSet (params INativeObject [] objs)
+		internal NSMutableSet (params INativeObject? []? objs)
 			: this (NSArray.FromNSObjects (objs))
 		{
 		}

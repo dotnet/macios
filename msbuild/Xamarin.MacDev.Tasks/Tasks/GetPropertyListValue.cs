@@ -86,7 +86,11 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 			}
 
-			Value = value is IPValueObject pvalue ? pvalue.Value.ToString () : value.ToString ();
+			if (value is IPValueObject pvalue) {
+				Value = pvalue.Value.ToString () ?? string.Empty;
+			} else {
+				Value = value.ToString () ?? string.Empty;
+			}
 
 			return !Log.HasLoggedErrors;
 		}

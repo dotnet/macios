@@ -1,0 +1,29 @@
+# yamllint disable rule:line-length rule:document-start rule:truthy
+name: Linux Build Verification
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  linux-build:
+    name: Verify Linux Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Check system dependencies
+        run: |
+          set -ex
+          ./system-dependencies.sh
+
+      - name: Build on Linux
+        run: |
+          set -ex
+          make -j$(nproc)

@@ -198,7 +198,7 @@ namespace Xamarin.MacDev.Tasks {
 				if (peReader is null)
 					throw new ObjectDisposedException ("this");
 
-				Directory.CreateDirectory (Path.GetDirectoryName (path));
+				Directory.CreateDirectory (Path.GetDirectoryName (path)!);
 
 				var manifestResource = resource.ManifestResource;
 				var resourceDirectory = peReader.GetSectionData (peReader.PEHeaders.CorHeader!.ResourcesDirectory.RelativeVirtualAddress);

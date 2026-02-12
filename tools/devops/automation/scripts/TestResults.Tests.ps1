@@ -167,6 +167,95 @@ Describe "TestResults tests" {
 }
 "@
 
+        $stageDependenciesWithMoreFailingTests = @"
+{    
+  "build_macos_tests": {
+    "build_macos_tests_job": {
+      "result": "Succeeded"
+    }
+  },
+  "configure_build": {
+    "configure": {
+      "outputs": {
+        "test_matrix.TEST_MATRIX": "$($matrix.Replace("`n", "\n").Replace("`"", "\`""))"
+      }
+    }
+  },
+    "simulator_tests": {
+        "tests": {
+            "outputs": {
+                "dotnettests_tvos.runTests.TESTS_JOBSTATUS": "Succeeded",
+                "dotnettests_tvos.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
+                "dotnettests_tvos.DownloadPipelineArtifact1.BuildNumber": "8894907",
+                "dotnettests_tvos.Bash23.TESTS_ATTEMPT": "1",
+                "dotnettests_tvos.Bash23.TESTS_BOT": "XAMMINI-012.Ventura",
+                "dotnettests_tvos.Bash23.TESTS_JOBSTATUS": "Failed",
+                "dotnettests_tvos.Bash23.TESTS_LABEL": "dotnettests",
+                "dotnettests_tvos.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_tvos.Bash23.TESTS_TITLE": "dotnettests_tvos",
+                "dotnettests_tvos.DownloadPipelineArtifact2.BuildNumber": "8894907",
+                "dotnettests_maccatalyst.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
+                "dotnettests_maccatalyst.DownloadPipelineArtifact1.BuildNumber": "8894907",
+                "dotnettests_maccatalyst.Bash23.TESTS_ATTEMPT": "1",
+                "dotnettests_maccatalyst.Bash23.TESTS_BOT": "XAMBOT-1023.Ventura",
+                "dotnettests_maccatalyst.Bash23.TESTS_JOBSTATUS": "Failed",
+                "dotnettests_maccatalyst.Bash23.TESTS_LABEL": "dotnettests",
+                "dotnettests_maccatalyst.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_maccatalyst.Bash23.TESTS_TITLE": "dotnettests_maccatalyst",
+                "dotnettests_maccatalyst.DownloadPipelineArtifact2.BuildNumber": "8894907",
+                "dotnettests_macos.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
+                "dotnettests_macos.DownloadPipelineArtifact1.BuildNumber": "8894907",
+                "dotnettests_macos.Bash23.TESTS_ATTEMPT": "1",
+                "dotnettests_macos.Bash23.TESTS_BOT": "XAMMINI-015.Ventura",
+                "dotnettests_macos.Bash23.TESTS_JOBSTATUS": "Failed",
+                "dotnettests_macos.Bash23.TESTS_LABEL": "dotnettests",
+                "dotnettests_macos.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_macos.Bash23.TESTS_TITLE": "dotnettests_macos",
+                "dotnettests_macos.DownloadPipelineArtifact2.BuildNumber": "8894907",
+                "dotnettests_macos.runTests.TESTS_JOBSTATUS": "Failed",
+                "dotnettests_ios.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
+                "dotnettests_ios.DownloadPipelineArtifact1.BuildNumber": "8894907",
+                "dotnettests_ios.Bash23.TESTS_ATTEMPT": "1",
+                "dotnettests_ios.Bash23.TESTS_BOT": "XAMMINI-014.Ventura",
+                "dotnettests_ios.Bash23.TESTS_JOBSTATUS": "Failed",
+                "dotnettests_ios.Bash23.TESTS_LABEL": "dotnettests",
+                "dotnettests_ios.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_ios.Bash23.TESTS_TITLE": "dotnettests_ios",
+                "dotnettests_ios.DownloadPipelineArtifact2.BuildNumber": "8894907",
+                "dotnettests_ios.runTests.TESTS_JOBSTATUS": "Succeeded",
+                "dotnettests_multiple.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
+                "dotnettests_multiple.DownloadPipelineArtifact1.BuildNumber": "8894907",
+                "dotnettests_multiple.Bash23.TESTS_ATTEMPT": "1",
+                "dotnettests_multiple.Bash23.TESTS_BOT": "XAMMINI-010.Ventura",
+                "dotnettests_multiple.Bash23.TESTS_JOBSTATUS": "Failed",
+                "dotnettests_multiple.Bash23.TESTS_LABEL": "dotnettests",
+                "dotnettests_multiple.Bash23.TESTS_PLATFORM": "",
+                "dotnettests_multiple.Bash23.TESTS_TITLE": "dotnettests_multiple",
+                "dotnettests_multiple.DownloadPipelineArtifact2.BuildNumber": "8894907",
+                "dotnettests_multiple.runTests.TESTS_JOBSTATUS": "Succeeded",
+                "cecil.fix_commit.GIT_HASH": "fa3d1deb4e2d0ac358f2e0ac80e3d305ca541848",
+                "cecil.DownloadPipelineArtifact1.BuildNumber": "8894907",
+                "cecil.Bash23.TESTS_ATTEMPT": "1",
+                "cecil.Bash23.TESTS_BOT": "XAMMINI-013.Ventura",
+                "cecil.Bash23.TESTS_JOBSTATUS": "Failed",
+                "cecil.Bash23.TESTS_LABEL": "cecil",
+                "cecil.Bash23.TESTS_PLATFORM": "",
+                "cecil.Bash23.TESTS_TITLE": "cecil",
+                "cecil.DownloadPipelineArtifact2.BuildNumber": "8894907",
+                "cecil.runTests.TESTS_JOBSTATUS": "Succeeded"
+            },
+            "identifier": null,
+            "name": "tests",
+            "attempt": 1,
+            "startTime": null,
+            "finishTime": null,
+            "state": "NotStarted",
+            "result": "Failed"
+        }
+    }
+}
+"@
+
         $stageDependenciesWithMissingResults = @"
 {
   "build_macos_tests": {
@@ -915,7 +1004,7 @@ Describe "TestResults tests" {
 
 <summary>1 tests failed, 0 tests passed.</summary>
 <details>
-
+# :tada: All 5 tests passed :tada:
 </details>
 
 [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_maccatalyst-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_maccatalyst-1&api-version=6.0&`$format=zip)
@@ -942,10 +1031,18 @@ Describe "TestResults tests" {
             New-Item -Path "$testDirectory/TestSummary-simulator_testsdotnettests_ios-1" -Name "TestSummary.md" -Value "# :tada: All 3 tests passed :tada:" -Force
             New-Item -Path "$testDirectory/TestSummary-simulator_testsdotnettests_tvos-1" -Name "TestSummary.md" -Value "# :tada: All 4 tests passed :tada:" -Force
             New-Item -Path "$testDirectory/TestSummary-simulator_testsdotnettests_maccatalyst-1" -Name "TestSummary.md" -Value "<summary>5 tests failed, 6 tests passed.</summary>" -Force
-            New-Item -Path "$testDirectory/TestSummary-simulator_testsdotnettests_macos-1" -Name "TestSummary.md" -Value "# :tada: All 6 tests passed :tada:" -Force
+            New-Item -Path "$testDirectory/TestSummary-simulator_testsdotnettests_macos-1" -Name "TestSummary.md" -Value "# Test results
+
+<details>
+<summary>1 tests failed, 4 tests passed.</summary>
+
+## Failed tests
+
+ * Roslyn Transformer tests: TimedOut (Execution timed out after 30 minutes.)
+</details>" -Force
             New-Item -Path "$testDirectory/TestSummary-simulator_testsdotnettests_multiple-1" -Name "TestSummary.md" -Value "# :tada: All 7 tests passed :tada:" -Force
 
-            $parallelResults = New-ParallelTestsResults -Path "$testDirectory" -StageDependencies "$stageDependencies" -Context "context" -VSDropsIndex "vsdropsIndex"
+            $parallelResults = New-ParallelTestsResults -Path "$testDirectory" -StageDependencies "$stageDependenciesWithMoreFailingTests" -Context "context" -VSDropsIndex "vsdropsIndex"
 
             Write-Host "New-ParallelTestsResults return value:"
             Write-Host $parallelResults
@@ -964,24 +1061,34 @@ Describe "TestResults tests" {
             $content | Should -Be "# Test results
 :x: Tests failed on context
 
-0 tests crashed, 5 tests failed, 27 tests passed.
+0 tests crashed, 6 tests failed, 25 tests passed.
 
 ## Failures
 
 ### :x: dotnettests tests (MacCatalyst)
 
-<summary>5 tests failed, 6 tests passed.</summary>
 <details>
-
+<summary>5 tests failed, 6 tests passed.</summary>
 </details>
 
 [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_maccatalyst-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_maccatalyst-1&api-version=6.0&`$format=zip)
+
+### :x: dotnettests tests (macOS)
+
+<details>
+<summary>1 tests failed, 4 tests passed.</summary>
+
+## Failed tests
+
+ * Roslyn Transformer tests: TimedOut (Execution timed out after 30 minutes.)
+</details>
+
+[Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_macos-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_macos-1&api-version=6.0&`$format=zip)
 
 ## Successes
 
 :white_check_mark: cecil: All 1 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagececil-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagececil-1&api-version=6.0&`$format=zip)
 :white_check_mark: dotnettests (iOS): All 3 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_ios-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_ios-1&api-version=6.0&`$format=zip)
-:white_check_mark: dotnettests (macOS): All 6 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_macos-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_macos-1&api-version=6.0&`$format=zip)
 :white_check_mark: dotnettests (Multiple platforms): All 7 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_multiple-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_multiple-1&api-version=6.0&`$format=zip)
 :white_check_mark: dotnettests (tvOS): All 4 tests passed. [Html Report (VSDrops)](vsdropsIndex/testStagedotnettests_tvos-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-testStagedotnettests_tvos-1&api-version=6.0&`$format=zip)
 

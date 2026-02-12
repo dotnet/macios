@@ -117,7 +117,7 @@ namespace Foundation {
 			return true;
 		}
 
-		NSDictionary (TKey [] keys, TValue [] values, bool validation)
+		NSDictionary (TKey? [] keys, TValue? [] values, bool validation)
 			: base (NSArray.FromNSObjects (values), NSArray.FromNSObjects (keys))
 		{
 		}
@@ -137,7 +137,7 @@ namespace Foundation {
 		/// </summary>
 		/// <param name="key">The key.</param>
 		/// <param name="value">The value.</param>
-		public NSDictionary (TKey key, TValue value)
+		public NSDictionary (TKey? key, TValue? value)
 			: base (NSArray.FromNSObjects (value), NSArray.FromNSObjects (key))
 		{
 		}
@@ -231,7 +231,7 @@ namespace Foundation {
 				return [];
 
 			using (var pool = new NSAutoreleasePool ()) {
-				var keysArray = NSArray.From<TKey> (keys);
+				var keysArray = NSArray.FromNativeObjects<TKey> (keys);
 				var result = NSArray.ArrayFromHandle<TValue> (_ObjectsForKeys (keysArray.Handle, marker.Handle));
 				GC.KeepAlive (keysArray);
 				GC.KeepAlive (marker);
@@ -250,19 +250,14 @@ namespace Foundation {
 		/// <summary>
 		/// Creates a dictionary from parallel arrays of values and keys, using only the first <paramref name="count"/> elements.
 		/// </summary>
-		/// <param name="objects">An array of values.</param>
+		/// <param name="objects">An array of values. Null elements are stored as <see cref="NSNull.Null"/>.</param>
 		/// <param name="keys">An array of keys.</param>
 		/// <param name="count">The number of elements to use from each array.</param>
 		/// <returns>A new dictionary containing the specified key-value pairs.</returns>
-		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (TValue [] objects, TKey [] keys, nint count)
+		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (TValue? [] objects, TKey [] keys, nint count)
 		{
-			ArgumentNullException.ThrowIfNull (objects);
-			ArgumentNullException.ThrowIfNull (keys);
-
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-			if (count < 1 || objects.Length < count)
-				throw new ArgumentException (nameof (count));
+			if (!ValidateFromObjectsAndKeys (objects, keys, count))
+				return new NSDictionary<TKey, TValue> ();
 
 			using (var no = NSArray.FromNativeObjects (objects, count))
 			using (var nk = NSArray.FromNativeObjects (keys, count))
@@ -272,20 +267,15 @@ namespace Foundation {
 		/// <summary>
 		/// Creates a dictionary from parallel arrays of values and keys.
 		/// </summary>
-		/// <param name="objects">An array of values.</param>
+		/// <param name="objects">An array of values. Null elements are stored as <see cref="NSNull.Null"/>.</param>
 		/// <param name="keys">An array of keys.</param>
 		/// <returns>A new dictionary containing the specified key-value pairs.</returns>
-		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (TValue [] objects, TKey [] keys)
+		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (TValue? [] objects, TKey [] keys)
 		{
-			ArgumentNullException.ThrowIfNull (objects);
-			ArgumentNullException.ThrowIfNull (keys);
+			if (!ValidateFromObjectsAndKeys (objects, keys))
+				return new NSDictionary<TKey, TValue> ();
 
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-
-			using (var no = NSArray.FromNSObjects (objects))
-			using (var nk = NSArray.FromNSObjects (keys))
-				return GenericFromObjectsAndKeysInternal (no, nk);
+			return FromObjectsAndKeys (objects, keys, objects.Length);
 		}
 
 		/// <summary>
@@ -296,33 +286,23 @@ namespace Foundation {
 		/// <returns>A new dictionary containing the specified key-value pairs.</returns>
 		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (object [] objects, object [] keys)
 		{
-			ArgumentNullException.ThrowIfNull (objects);
-			ArgumentNullException.ThrowIfNull (keys);
+			if (!ValidateFromObjectsAndKeys (objects, keys))
+				return new NSDictionary<TKey, TValue> ();
 
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-
-			using (var no = NSArray.FromObjects (objects))
-			using (var nk = NSArray.FromObjects (keys))
-				return GenericFromObjectsAndKeysInternal (no, nk);
+			return FromObjectsAndKeys (objects, keys, objects.Length);
 		}
 
 		/// <summary>
 		/// Creates a dictionary from parallel arrays of <see cref="NSObject"/> values and keys, using only the first <paramref name="count"/> elements.
 		/// </summary>
-		/// <param name="objects">An array of <see cref="NSObject"/> values.</param>
+		/// <param name="objects">An array of <see cref="NSObject"/> values. Null elements are stored as <see cref="NSNull.Null"/>.</param>
 		/// <param name="keys">An array of <see cref="NSObject"/> keys.</param>
 		/// <param name="count">The number of elements to use from each array.</param>
 		/// <returns>A new dictionary containing the specified key-value pairs.</returns>
-		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
+		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (NSObject? [] objects, NSObject [] keys, nint count)
 		{
-			ArgumentNullException.ThrowIfNull (objects);
-			ArgumentNullException.ThrowIfNull (keys);
-
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-			if (count < 1 || objects.Length < count || keys.Length < count)
-				throw new ArgumentException (nameof (count));
+			if (!ValidateFromObjectsAndKeys (objects, keys, count))
+				return new NSDictionary<TKey, TValue> ();
 
 			using (var no = NSArray.FromNativeObjects (objects, count))
 			using (var nk = NSArray.FromNativeObjects (keys, count))
@@ -338,13 +318,8 @@ namespace Foundation {
 		/// <returns>A new dictionary containing the specified key-value pairs.</returns>
 		public static NSDictionary<TKey, TValue> FromObjectsAndKeys (object [] objects, object [] keys, nint count)
 		{
-			ArgumentNullException.ThrowIfNull (objects);
-			ArgumentNullException.ThrowIfNull (keys);
-
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-			if (count < 1 || objects.Length < count || keys.Length < count)
-				throw new ArgumentException (nameof (count));
+			if (!ValidateFromObjectsAndKeys (objects, keys, count))
+				return new NSDictionary<TKey, TValue> ();
 
 			using (var no = NSArray.FromObjects (count, objects))
 			using (var nk = NSArray.FromObjects (count, keys))

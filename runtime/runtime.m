@@ -36,9 +36,6 @@
  * the simlauncher binaries).
  */
 
-#if DEBUG
-bool xamarin_gc_pump = false;
-#endif
 #if MONOMAC
 // FIXME: implement release mode for monomac.
 bool xamarin_debug_mode = true;
@@ -1049,24 +1046,6 @@ exception_handler (NSException *exc)
 	xamarin_handling_unhandled_exceptions = 0;
 }
 
-#if defined (DEBUG)
-static void *
-pump_gc (void *context)
-{
-#if !defined (CORECLR_RUNTIME)
-	mono_thread_attach (mono_get_root_domain ());
-#endif
-
-	while (xamarin_gc_pump) {
-		GCHandle exception_gchandle = INVALID_GCHANDLE;
-		xamarin_gc_collect (&exception_gchandle);
-		xamarin_process_fatal_exception_gchandle (exception_gchandle, "An exception occurred while running the GC in a loop");
-		usleep (1000000);
-	}
-	return NULL;
-}
-#endif /* DEBUG */
-
 #if !defined (CORECLR_RUNTIME)
 static void
 log_callback (const char *log_domain, const char *log_level, const char *message, mono_bool fatal, void *user_data)
@@ -1218,13 +1197,6 @@ xamarin_initialize ()
 #endif
 
 	xamarin_install_nsautoreleasepool_hooks ();
-
-#if defined (DEBUG)
-	if (xamarin_gc_pump) {
-		pthread_t gc_thread;
-		pthread_create (&gc_thread, NULL, pump_gc, NULL);
-	}
-#endif
 
 	pthread_mutexattr_t attr;
 	pthread_mutexattr_init (&attr);
@@ -2036,14 +2008,6 @@ xamarin_get_use_sgen ()
 	return true;
 }
 
-void
-xamarin_set_gc_pump_enabled (bool value)
-{
-#if DEBUG
-	xamarin_gc_pump = value;
-#endif
-}
-
 const char *
 xamarin_skip_encoding_flags (const char *encoding)
 {
@@ -2442,6 +2406,7 @@ xamarin_vm_initialize ()
 	char *pinvokeOverride = xamarin_strdup_printf ("%p", &xamarin_pinvoke_override);
 	char *trusted_platform_assemblies = xamarin_compute_trusted_platform_assemblies ();
 	char *native_dll_search_directories = xamarin_compute_native_dll_search_directories ();
+	const char *startupHooks = getenv ("DOTNET_STARTUP_HOOKS");
 
 	// All the properties we pass here must also be listed in the _RuntimeConfigReservedProperties item group
 	// for the _CreateRuntimeConfiguration target in dotnet/targets/Xamarin.Shared.Sdk.targets.
@@ -2452,6 +2417,7 @@ xamarin_vm_initialize ()
 		"TRUSTED_PLATFORM_ASSEMBLIES",
 		"NATIVE_DLL_SEARCH_DIRECTORIES",
 		"RUNTIME_IDENTIFIER",
+		"STARTUP_HOOKS", // must be last entry (because we just decrement propertyCount to not pass it if it's not set)
 	};
 	const char *propertyValues[] = {
 		xamarin_get_bundle_path (),
@@ -2460,10 +2426,14 @@ xamarin_vm_initialize ()
 		trusted_platform_assemblies,
 		native_dll_search_directories,
 		RUNTIMEIDENTIFIER,
+		startupHooks,
 	};
 	static_assert (sizeof (propertyKeys) == sizeof (propertyValues), "The number of keys and values must be the same.");
 
 	int propertyCount = (int) (sizeof (propertyValues) / sizeof (propertyValues [0]));
+	if (startupHooks == NULL || startupHooks [0] == 0)
+		propertyCount--;
+
 	bool rv = xamarin_bridge_vm_initialize (propertyCount, propertyKeys, propertyValues);
 
 	xamarin_free (pinvokeOverride);

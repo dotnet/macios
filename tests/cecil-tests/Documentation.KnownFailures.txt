@@ -10422,8 +10422,6 @@ M:CoreFoundation.CFArray.ArrayFromHandle``1(ObjCRuntime.NativeHandle)
 M:CoreFoundation.CFArray.ArrayFromHandleFunc``1(ObjCRuntime.NativeHandle,System.Func{ObjCRuntime.NativeHandle,``0},System.Boolean)
 M:CoreFoundation.CFArray.ArrayFromHandleFunc``1(ObjCRuntime.NativeHandle,System.Func{ObjCRuntime.NativeHandle,``0})
 M:CoreFoundation.CFArray.Create(ObjCRuntime.INativeObject[])
-M:CoreFoundation.CFArray.Create(System.String[])
-M:CoreFoundation.CFArray.FromStrings(System.String[])
 M:CoreFoundation.CFArray.GetValue(System.IntPtr)
 M:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle,System.Boolean)
 M:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle)
@@ -11806,10 +11804,6 @@ M:Foundation.INSUrlSessionWebSocketDelegate.DidOpen(Foundation.NSUrlSession,Foun
 M:Foundation.INSXpcListenerDelegate.ShouldAcceptConnection(Foundation.NSXpcListener,Foundation.NSXpcConnection)
 M:Foundation.NSArray.ArrayFromHandle``1(ObjCRuntime.NativeHandle,System.Converter{ObjCRuntime.NativeHandle,``0},System.Boolean)
 M:Foundation.NSArray.EnumsFromHandle``1(ObjCRuntime.NativeHandle)
-M:Foundation.NSArray.FromIntPtrs(ObjCRuntime.NativeHandle[])
-M:Foundation.NSArray.FromNSObjects``1(``0[][])
-M:Foundation.NSArray.FromNSObjects``1(``0[0:,0:])
-M:Foundation.NSArray.FromStrings(System.Collections.Generic.IReadOnlyList{System.String})
 M:Foundation.NSArray.ToArray
 M:Foundation.NSArray.ToArray``1
 M:Foundation.NSArray`1.ToArray
@@ -11875,7 +11869,6 @@ M:Foundation.NSKeyValueSharedObserverRegistration_NSObject.SetSharedObservers(Fo
 M:Foundation.NSKeyValueSharedObservers.#ctor(System.Type)
 M:Foundation.NSMachPort.Dispose(System.Boolean)
 M:Foundation.NSMetadataQuery.Dispose(System.Boolean)
-M:Foundation.NSMutableDictionary`2.FromObjectsAndKeys(`1[],`0[])
 M:Foundation.NSNetService.add_AddressResolved(System.EventHandler)
 M:Foundation.NSNetService.add_DidAcceptConnection(System.EventHandler{Foundation.NSNetServiceConnectionEventArgs})
 M:Foundation.NSNetService.add_Published(System.EventHandler)
@@ -11946,7 +11939,6 @@ M:Foundation.NSObject.RemoveObserver(Foundation.NSObject,System.String)
 M:Foundation.NSObject.SetDefaultPlaceholder(Foundation.NSObject,Foundation.NSObject,Foundation.NSString)
 M:Foundation.NSObject.SetNilValueForKey(Foundation.NSString)
 M:Foundation.NSObject.SetValueForKeyPath(Foundation.NSObject,Foundation.NSString)
-M:Foundation.NSObject.SetValueForKeyPath(ObjCRuntime.NativeHandle,Foundation.NSString)
 M:Foundation.NSObject.SetValueForUndefinedKey(Foundation.NSObject,Foundation.NSString)
 M:Foundation.NSObject.SetValuesForKeysWithDictionary(Foundation.NSDictionary)
 M:Foundation.NSObject.Unbind(Foundation.NSString)
@@ -12899,8 +12891,6 @@ M:MapKit.MKUserTrackingButton.MKUserTrackingButtonAppearance.#ctor(System.IntPtr
 M:MapKit.MKZoomControl.#ctor(CoreGraphics.CGRect)
 M:MapKit.MKZoomControl.Dispose(System.Boolean)
 M:MapKit.MKZoomControl.MKZoomControlAppearance.#ctor(System.IntPtr)
-M:MediaAccessibility.MACaptionAppearance.DidDisplayCaptions(Foundation.NSAttributedString[])
-M:MediaAccessibility.MACaptionAppearance.DidDisplayCaptions(System.String[])
 M:MediaAccessibility.MAFlashingLightsProcessor.CanProcess(IOSurface.IOSurface)
 M:MediaAccessibility.MAFlashingLightsProcessor.Process(IOSurface.IOSurface,IOSurface.IOSurface,System.Double,Foundation.NSDictionary)
 M:MediaAccessibility.MAImageCaptioning.GetCaption(Foundation.NSUrl,Foundation.NSError@)
@@ -16954,8 +16944,6 @@ M:UIKit.UIAlertView.remove_Presented(System.EventHandler)
 M:UIKit.UIAlertView.remove_WillDismiss(System.EventHandler{UIKit.UIButtonEventArgs})
 M:UIKit.UIAlertView.remove_WillPresent(System.EventHandler)
 M:UIKit.UIAlertView.UIAlertViewAppearance.#ctor(System.IntPtr)
-M:UIKit.UIAppearance.op_Equality(UIKit.UIAppearance,UIKit.UIAppearance)
-M:UIKit.UIAppearance.op_Inequality(UIKit.UIAppearance,UIKit.UIAppearance)
 M:UIKit.UIApplication_DefaultApplication.GetDefaultStatus(UIKit.UIApplication,UIKit.UIApplicationCategory,Foundation.NSError@)
 M:UIKit.UIApplication.AccessibilityActivate
 M:UIKit.UIApplication.Dispose(System.Boolean)
@@ -17144,18 +17132,12 @@ M:UIKit.UIFocusItem_Extensions.GetFocusItemDeferralMode(UIKit.IUIFocusItem)
 M:UIKit.UIFocusItem_Extensions.GetIsTransparentFocusItem(UIKit.IUIFocusItem)
 M:UIKit.UIFocusSystem.Dispose(System.Boolean)
 M:UIKit.UIFocusUpdateContext.Dispose(System.Boolean)
-M:UIKit.UIFont.GetMonospacedSystemFont(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
-M:UIKit.UIFont.GetMonospacedSystemFont(System.Runtime.InteropServices.NFloat,UIKit.UIFontWeight)
-M:UIKit.UIFont.SystemFontOfSize(System.Runtime.InteropServices.NFloat,UIKit.UIFontWeight,UIKit.UIFontWidth)
 M:UIKit.UIFontDescriptor.CreateWithDesign(UIKit.UIFontDescriptorSystemDesign)
 M:UIKit.UIFontPickerViewController.Dispose(System.Boolean)
 M:UIKit.UIFontPickerViewControllerDelegate_Extensions.DidCancel(UIKit.IUIFontPickerViewControllerDelegate,UIKit.UIFontPickerViewController)
 M:UIKit.UIFontPickerViewControllerDelegate_Extensions.DidPickFont(UIKit.IUIFontPickerViewControllerDelegate,UIKit.UIFontPickerViewController)
-M:UIKit.UIFontWeightExtensions.GetWeight(UIKit.UIFontWeight)
 M:UIKit.UIGestureRecognizer.Dispose(System.Boolean)
 M:UIKit.UIGestureRecognizerDelegate_Extensions.ShouldReceiveEvent(UIKit.IUIGestureRecognizerDelegate,UIKit.UIGestureRecognizer,UIKit.UIEvent)
-M:UIKit.UIGraphics.BeginImageContextWithOptions(CoreGraphics.CGSize,System.Boolean,System.Runtime.InteropServices.NFloat)
-M:UIKit.UIGraphics.EndPDFContext
 M:UIKit.UIHoverGestureRecognizer.#ctor(System.Action)
 M:UIKit.UIHoverGestureRecognizer.#ctor(System.Action{UIKit.UIHoverGestureRecognizer})
 M:UIKit.UIImage.AccessibilityActivate
@@ -17199,9 +17181,6 @@ M:UIKit.UINavigationItem.Dispose(System.Boolean)
 M:UIKit.UINavigationItemRenameDelegate_Extensions.ShouldBeginRenaming(UIKit.IUINavigationItemRenameDelegate,UIKit.UINavigationItem)
 M:UIKit.UINavigationItemRenameDelegate_Extensions.ShouldEndRenaming(UIKit.IUINavigationItemRenameDelegate,UIKit.UINavigationItem,System.String)
 M:UIKit.UINavigationItemRenameDelegate_Extensions.WillBeginRenaming(UIKit.IUINavigationItemRenameDelegate,UIKit.UINavigationItem,System.String,Foundation.NSRange)
-M:UIKit.UIOffset.#ctor(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
-M:UIKit.UIOffset.op_Equality(UIKit.UIOffset,UIKit.UIOffset)
-M:UIKit.UIOffset.op_Inequality(UIKit.UIOffset,UIKit.UIOffset)
 M:UIKit.UIPageControl.UIPageControlAppearance.#ctor(System.IntPtr)
 M:UIKit.UIPageControlProgress.Dispose(System.Boolean)
 M:UIKit.UIPageControlProgressDelegate_Extensions.GetInitialProgressForPage(UIKit.IUIPageControlProgressDelegate,UIKit.UIPageControlProgress,System.IntPtr)
@@ -21073,7 +21052,6 @@ P:Foundation.NSMetadataItem.UbiquitousItemDownloadingStatus
 P:Foundation.NSMorphology.Unspecified
 P:Foundation.NSMutableArray`1.Item(System.UIntPtr)
 P:Foundation.NSMutableData.Item(System.IntPtr)
-P:Foundation.NSMutableDictionary`2.Item(`0)
 P:Foundation.NSNetDomainEventArgs.Domain
 P:Foundation.NSNetDomainEventArgs.MoreComing
 P:Foundation.NSNetServiceConnectionEventArgs.InputStream
@@ -24045,11 +24023,6 @@ P:UIKit.NSTextStorageEventArgs.EditedMask
 P:UIKit.NSTextStorageEventArgs.EditedRange
 P:UIKit.NSTextViewportLayoutController.Delegate
 P:UIKit.UIAccelerometerEventArgs.Acceleration
-P:UIKit.UIAccessibility.ButtonShapesEnabled
-P:UIKit.UIAccessibility.IsOnOffSwitchLabelsEnabled
-P:UIKit.UIAccessibility.IsVideoAutoplayEnabled
-P:UIKit.UIAccessibility.PrefersCrossFadeTransitions
-P:UIKit.UIAccessibility.ShouldDifferentiateWithoutColor
 P:UIKit.UIAccessibilityAnnouncementFinishedEventArgs.Announcement
 P:UIKit.UIAccessibilityAnnouncementFinishedEventArgs.WasSuccessful
 P:UIKit.UIApplication.AccessibilityActivationPoint
@@ -28600,7 +28573,6 @@ T:UIKit.UIFocusItemDeferralMode
 T:UIKit.UIFocusSoundIdentifier
 T:UIKit.UIFontDescriptorSystemDesign
 T:UIKit.UIFontWeightConstants
-T:UIKit.UIFontWeightExtensions
 T:UIKit.UIFontWidth
 T:UIKit.UIGestureProbe
 T:UIKit.UIGesturesEvent

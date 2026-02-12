@@ -58,7 +58,6 @@ IOS_WINDOWS_DEPENDENCIES = System.Diagnostics.Tracer System.Formats.Asn1 System.
 PROPS_AND_TARGETS = \
 	$(wildcard Xamarin.Shared/*.props)   \
 	$(wildcard Xamarin.Shared/*.targets) \
-	$(wildcard Xamarin.ObjcBinding.Tasks/*.targets) \
 
 MSBUILD_TASK_ASSEMBLIES += $(TASK_ASSEMBLIES)
 
@@ -90,9 +89,6 @@ $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/%: Xamarin.MacDev.Tasks/b
 
 $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/%: Xamarin.Localization.MSBuild/bin/$(CONFIG)/$(TARGETFRAMEWORK)/% | $$(DOTNET_DIRECTORIES_$(1))
 	$$(Q) install -m 644 $$< $$@
-
-$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/%: Xamarin.ObjcBinding.Tasks/% | $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild
-	$$(Q) install -m 644 $$< $$@
 endef
 
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallFiles,$(platform),$(shell echo $(platform) | tr 'a-z' 'A-Z'))))
@@ -115,15 +111,20 @@ DOTNET_IOS_WINDOWS_FILES += Messaging/Xamarin.Messaging.Build/obj/$(CONFIG)/Buil
 
 .dotnet-windows: .build-stamp .copy-windows-files
 
+ifndef IS_LINUX
 all-local:: .dotnet-windows
 dotnet:: .dotnet-windows
+endif
 
 ##
 ## Common targets ##
 ##
 
 # we must install locally during 'make all', because the F# build depends on the msbuild targets/assemblies.
-all-local:: $(MSBUILD_PRODUCTS) .stamp-test-xml
+all-local:: $(MSBUILD_PRODUCTS)
+ifndef IS_LINUX
+all-local:: .stamp-test-xml
+endif
 
 # I haven't found a way to execute ilrepack.exe on .NET (it will probably have to be built for .NET), so run it using Mono.
 

@@ -386,7 +386,7 @@ namespace Xamarin.Tests {
 			return ExecuteWithMagicWordAndAssert (executable, environment);
 		}
 
-		protected string ExecuteWithMagicWordAndAssert (string executable, Dictionary<string, string?>? environment = null)
+		protected string ExecuteWithMagicWordAndAssert (string executable, Dictionary<string, string?>? environment = null, int expectedExitCode = 0)
 		{
 			if (Environment.OSVersion.Platform == PlatformID.Win32NT) {
 				Console.WriteLine ($"Not executing '{executable}' because we're on Windows.");
@@ -395,8 +395,8 @@ namespace Xamarin.Tests {
 
 			var rv = Execute (executable, out var output, out string magicWord, environment);
 			var outputString = output.ToString ();
-			if (rv.ExitCode != 0) {
-				var msg = $"'{executable}' exited with exit code {rv.ExitCode} (timed out: {rv.TimedOut} timeout: {rv.Timeout}):" +
+			if (rv.ExitCode != expectedExitCode) {
+				var msg = $"'{executable}' exited with exit code {rv.ExitCode} (expected exit code {expectedExitCode}) (timed out: {rv.TimedOut} timeout: {rv.Timeout}):" +
 							"\t" + outputString.Replace ("\n", "\n\t").TrimEnd (new char [] { '\n', '\t' });
 				Console.WriteLine (msg);
 				Assert.Fail (msg);
@@ -410,7 +410,7 @@ namespace Xamarin.Tests {
 			return outputString;
 		}
 
-		protected Execution Execute (string executable, out StringBuilder output, out string magicWord, Dictionary<string, string?>? environment = null)
+		protected Execution Execute (string executable, out string output, out string magicWord, Dictionary<string, string?>? environment = null)
 		{
 			if (!File.Exists (executable))
 				throw new FileNotFoundException ($"The executable '{executable}' does not exists.");
@@ -425,8 +425,9 @@ namespace Xamarin.Tests {
 					env [kvp.Key] = kvp.Value;
 			}
 
-			output = new StringBuilder ();
-			return Execution.RunWithStringBuildersAsync (executable, Array.Empty<string> (), environment: env, standardOutput: output, standardError: output, timeout: TimeSpan.FromSeconds (30)).Result;
+			var rv = Execution.RunAsync (executable, Array.Empty<string> (), environment: env, timeout: TimeSpan.FromSeconds (30)).Result;
+			output = rv.Output.MergedOutput;
+			return rv;
 		}
 
 		public static StringBuilder AssertExecute (string executable, params string [] arguments)

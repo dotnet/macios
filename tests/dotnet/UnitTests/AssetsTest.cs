@@ -125,11 +125,10 @@ namespace Xamarin.Tests {
 
 		void MakeSymlinks (string sourceDir, string destDir)
 		{
-			var output = new StringBuilder ();
 			var executable = "ln";
 			var arguments = new string [] { "-s", sourceDir, destDir };
-			var rv = Execution.RunWithStringBuildersAsync (executable, arguments, standardOutput: output, standardError: output, timeout: TimeSpan.FromSeconds (60)).Result;
-			Assert.AreEqual (0, rv.ExitCode, $"Creating Symlink Error: {rv.StandardError}. Unexpected ExitCode");
+			var rv = Execution.RunAsync (executable, arguments, timeout: TimeSpan.FromSeconds (60)).Result;
+			Assert.AreEqual (0, rv.ExitCode, $"Creating Symlink Error: {rv.Output.MergedOutput}. Unexpected ExitCode");
 		}
 
 		public static string GetFullSdkVersion (ApplePlatform platform, string runtimeIdentifiers)
@@ -159,7 +158,6 @@ namespace Xamarin.Tests {
 		// so we will touch the first (non-DS_Store) file the symlink points to in order to give them newer modified times
 		void ProcessUpdateSymlink (string xcassetsDir)
 		{
-			var output = new StringBuilder ();
 			var assets = Directory.EnumerateFiles (xcassetsDir, "*.*", SearchOption.AllDirectories).ToArray ();
 
 			// assets first value is a .DS_Store file that work trigger MSBuild recompile so we want the second value
@@ -167,20 +165,18 @@ namespace Xamarin.Tests {
 
 			var executable = "touch";
 			var arguments = new string [] { assets [1] };
-			var rv = Execution.RunWithStringBuildersAsync (executable, arguments, standardOutput: output, standardError: output, timeout: TimeSpan.FromSeconds (120)).Result;
-			Assert.AreEqual (0, rv.ExitCode, $"Processing Update Symlink Error: {rv.StandardError}. Unexpected ExitCode");
+			var rv = Execution.RunAsync (executable, arguments, timeout: TimeSpan.FromSeconds (120)).Result;
+			Assert.AreEqual (0, rv.ExitCode, $"Processing Update Symlink Error: {rv.Output.MergedOutput}. Unexpected ExitCode");
 		}
 
 		public static JsonDocument ProcessAssets (string assetsPath, string sdkVersion)
 		{
-			var output = new StringBuilder ();
-			var stderr = new StringBuilder ();
 			var executable = "xcrun";
 			var tmpdir = Cache.CreateTemporaryDirectory ();
 			var tmpfile = Path.Combine (tmpdir, "Assets.json");
 			var arguments = new string [] { "--sdk", sdkVersion, "assetutil", "--info", assetsPath, "-o", tmpfile };
-			var rv = Execution.RunWithStringBuildersAsync (executable, arguments, standardOutput: output, standardError: stderr, timeout: TimeSpan.FromSeconds (120)).Result;
-			Assert.AreEqual (0, rv.ExitCode, $"Processing Assets Error: {stderr}. Unexpected ExitCode");
+			var rv = Execution.RunAsync (executable, arguments, timeout: TimeSpan.FromSeconds (120)).Result;
+			Assert.AreEqual (0, rv.ExitCode, $"Processing Assets Error: {rv.Output.StandardError}. Unexpected ExitCode");
 			var s = File.ReadAllText (tmpfile);
 
 			try {

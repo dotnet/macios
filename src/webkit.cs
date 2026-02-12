@@ -7290,7 +7290,7 @@ namespace WebKit {
 
 		[Export ("menuItems", ArgumentSemantic.Copy)]
 #if IOS || MACCATALYST
-		UIMenuElement[] MenuItems { get; }
+		UIMenuElement [] MenuItems { get; }
 #else
 		NSMenuItem [] MenuItems { get; }
 #endif
@@ -7698,7 +7698,7 @@ namespace WebKit {
 
 		[Export ("menuItemsForTab:")]
 #if IOS || MACCATALYST
-		UIMenuElement[] GetMenuItems (IWKWebExtensionTab tab);
+		UIMenuElement [] GetMenuItems (IWKWebExtensionTab tab);
 #else
 		NSMenuItem [] GetMenuItems (IWKWebExtensionTab tab);
 #endif

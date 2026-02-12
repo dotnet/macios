@@ -3329,7 +3329,7 @@ public partial class Generator : IMemberGatherer {
 					disposes.AppendFormat ("\nnsb_{0}?.Dispose ();", propInfo.Name);
 				} else if (etype == TypeCache.System_String) {
 					if (null_allowed_override || AttributeManager.IsNullable (pi)) {
-						convs.AppendFormat ("using var nsa_{0} = {1} is null ? null : NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
+						convs.AppendFormat ("using var nsa_{0} = NSArray.FromNullableStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					} else {
 						convs.AppendFormat ("using var nsa_{0} = NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					}
@@ -3409,7 +3409,7 @@ public partial class Generator : IMemberGatherer {
 						by_ref_init.Insert (0, string.Format ("NSArray {0}ArrayValue = NSArray.FromNSObjects ({0});\n", pi.Name.GetSafeParamName ()));
 						by_ref_init.AppendFormat ("{0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle;\n", pi.Name.GetSafeParamName ());
 					} else if (isArrayOfString) {
-						by_ref_init.Insert (0, string.Format ("NSArray? {0}ArrayValue = {0} is null ? null : NSArray.FromStrings ({0});\n", pi.Name.GetSafeParamName ()));
+						by_ref_init.Insert (0, string.Format ("var {0}ArrayValue = NSArray.FromNullableStrings ({0});\n", pi.Name.GetSafeParamName ()));
 						by_ref_init.AppendFormat ("{0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle;\n", pi.Name.GetSafeParamName ());
 					} else if (isNSObject || isINativeObjectSubclass) {
 						by_ref_init.AppendFormat ("Runtime.RetainAndAutoreleaseNativeObject ({0});\n", pi.Name.GetSafeParamName ());
@@ -6464,53 +6464,53 @@ public partial class Generator : IMemberGatherer {
 						//
 						if (Frameworks.HaveCoreMedia && Frameworks.HaveAVFoundation && (field_pi.PropertyType == TypeCache.CMTime ||
 						   field_pi.PropertyType == TypeCache.AVCaptureWhiteBalanceGains)) {
-						print ("return *(({3} *) Dlfcn.dlsym (Libraries.{2}.Handle, \"{1}\"));", field_pi.Name, fieldAttr.SymbolName, library_name,
-							TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name));
-					} else if (field_pi.PropertyType == TypeCache.System_nint) {
-						print ("return Dlfcn.GetNInt (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
-					} else if (field_pi.PropertyType == TypeCache.System_nuint) {
-						print ("return Dlfcn.GetNUInt (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
-					} else if (field_pi.PropertyType == TypeCache.System_nfloat) {
-						print ("return Dlfcn.GetNFloat (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
-					} else if (field_pi.PropertyType == TypeCache.CoreGraphics_CGSize) {
-						print ("return Dlfcn.GetCGSize (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
-					} else if (field_pi.PropertyType == TypeCache.CMTag) {
-						print ("return Dlfcn.GetStruct<CoreMedia.CMTag> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
-					} else if (field_pi.PropertyType.Namespace == "Foundation" && field_pi.PropertyType.Name == "NSOperatingSystemVersion") {
-						print ("return Dlfcn.GetStruct<Foundation.NSOperatingSystemVersion> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
-					} else if (field_pi.PropertyType.IsEnum) {
-						var btype = field_pi.PropertyType.GetEnumUnderlyingType ();
-						if (smartEnumTypeName is not null) {
-							print ("if (_{0} is null)", field_pi.Name);
-							indent++;
-							print ("_{0} = Dlfcn.GetStringConstant (Libraries.{2}.Handle, \"{1}\")!;", field_pi.Name, fieldAttr.SymbolName, library_name);
-							indent--;
-							print ($"return {smartEnumTypeName}Extensions.GetValue (_{field_pi.Name});");
-						} else if (GetNativeEnumToManagedExpression (field_pi.PropertyType, out var preExpression, out var postExpression, out var _)) {
-							if (btype == TypeCache.System_nint || btype == TypeCache.System_Int64)
-								print ($"return {preExpression}Dlfcn.GetNInt (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\"){postExpression};");
-							else if (btype == TypeCache.System_nuint || btype == TypeCache.System_UInt64)
-								print ($"return {preExpression}Dlfcn.GetNUInt (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\"){postExpression};");
-							else
-								throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
+							print ("return *(({3} *) Dlfcn.dlsym (Libraries.{2}.Handle, \"{1}\"));", field_pi.Name, fieldAttr.SymbolName, library_name,
+								TypeManager.FormatType (type, field_pi.PropertyType.Namespace, field_pi.PropertyType.Name));
+						} else if (field_pi.PropertyType == TypeCache.System_nint) {
+							print ("return Dlfcn.GetNInt (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						} else if (field_pi.PropertyType == TypeCache.System_nuint) {
+							print ("return Dlfcn.GetNUInt (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						} else if (field_pi.PropertyType == TypeCache.System_nfloat) {
+							print ("return Dlfcn.GetNFloat (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						} else if (field_pi.PropertyType == TypeCache.CoreGraphics_CGSize) {
+							print ("return Dlfcn.GetCGSize (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						} else if (field_pi.PropertyType == TypeCache.CMTag) {
+							print ("return Dlfcn.GetStruct<CoreMedia.CMTag> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						} else if (field_pi.PropertyType.Namespace == "Foundation" && field_pi.PropertyType.Name == "NSOperatingSystemVersion") {
+							print ("return Dlfcn.GetStruct<Foundation.NSOperatingSystemVersion> (Libraries.{2}.Handle, \"{1}\");", field_pi.Name, fieldAttr.SymbolName, library_name);
+						} else if (field_pi.PropertyType.IsEnum) {
+							var btype = field_pi.PropertyType.GetEnumUnderlyingType ();
+							if (smartEnumTypeName is not null) {
+								print ("if (_{0} is null)", field_pi.Name);
+								indent++;
+								print ("_{0} = Dlfcn.GetStringConstant (Libraries.{2}.Handle, \"{1}\")!;", field_pi.Name, fieldAttr.SymbolName, library_name);
+								indent--;
+								print ($"return {smartEnumTypeName}Extensions.GetValue (_{field_pi.Name});");
+							} else if (GetNativeEnumToManagedExpression (field_pi.PropertyType, out var preExpression, out var postExpression, out var _)) {
+								if (btype == TypeCache.System_nint || btype == TypeCache.System_Int64)
+									print ($"return {preExpression}Dlfcn.GetNInt (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\"){postExpression};");
+								else if (btype == TypeCache.System_nuint || btype == TypeCache.System_UInt64)
+									print ($"return {preExpression}Dlfcn.GetNUInt (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\"){postExpression};");
+								else
+									throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
+							} else {
+								if (btype == TypeCache.System_Int32)
+									print ($"return ({fieldTypeName}) Dlfcn.GetInt32 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
+								else if (btype == TypeCache.System_UInt32)
+									print ($"return ({fieldTypeName}) Dlfcn.GetUInt32 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
+								else if (btype == TypeCache.System_Int64)
+									print ($"return ({fieldTypeName}) Dlfcn.GetInt64 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
+								else if (btype == TypeCache.System_UInt64)
+									print ($"return ({fieldTypeName}) Dlfcn.GetUInt64 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
+								else
+									throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
+							}
 						} else {
-							if (btype == TypeCache.System_Int32)
-								print ($"return ({fieldTypeName}) Dlfcn.GetInt32 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
-							else if (btype == TypeCache.System_UInt32)
-								print ($"return ({fieldTypeName}) Dlfcn.GetUInt32 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
-							else if (btype == TypeCache.System_Int64)
-								print ($"return ({fieldTypeName}) Dlfcn.GetInt64 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
-							else if (btype == TypeCache.System_UInt64)
-								print ($"return ({fieldTypeName}) Dlfcn.GetUInt64 (Libraries.{library_name}.Handle, \"{fieldAttr.SymbolName}\");");
+							if (field_pi.PropertyType == TypeCache.System_String)
+								throw new BindingException (1013, true);
 							else
 								throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
 						}
-					} else {
-						if (field_pi.PropertyType == TypeCache.System_String)
-							throw new BindingException (1013, true);
-						else
-							throw new BindingException (1014, true, fieldTypeName, FormatPropertyInfo (field_pi));
-					}
 
 					indent--;
 					print ("}");
@@ -6720,6 +6720,13 @@ public partial class Generator : IMemberGatherer {
 					} else
 						print ("public _{0} () {{ IsDirectBinding = false; }}\n", dtype.Name);
 
+					// Tell the trimmer to not remove any of our protocol implementations, they might be called from native
+					// code even if we don't have any event handlers listening for them.
+					print ($"[DynamicDependency (DynamicallyAccessedMemberTypes.PublicMethods, typeof (_{dtype.Name}))]");
+					print ($"static _{dtype.Name} ()");
+					print ("{");
+					print ("\tGC.KeepAlive (null);"); // need to do _something_ (doesn't seem to matter what), otherwise the static cctor (and the DynamicDependency attributes) are trimmed away.
+					print ("}");
 
 					string shouldOverrideDelegateString = isProtocolEventBacked ? "" : "override ";
 
@@ -6748,8 +6755,6 @@ public partial class Generator : IMemberGatherer {
 						} else
 							previous_miname = miname;
 
-						// Tell the trimmer to not remove the delegate's method if someone is listening for the event
-						print ($"[DynamicDependency (nameof ({mi.Name}))]");
 						if (mi.ReturnType == TypeCache.System_Void) {
 							if (bta.Singleton || mi.GetParameters ().Length == 1)
 								print ("internal EventHandler? {0};", miname);

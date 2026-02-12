@@ -47,7 +47,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			// write the resulting app manifest
 			var appBundleManifestPath = AppBundleManifest!.ItemSpec;
-			Directory.CreateDirectory (Path.GetDirectoryName (appBundleManifestPath));
+			Directory.CreateDirectory (Path.GetDirectoryName (appBundleManifestPath)!);
 			plist.Save (appBundleManifestPath, true, true);
 
 			return !Log.HasLoggedErrors;

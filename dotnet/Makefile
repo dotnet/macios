@@ -33,7 +33,9 @@ $(1)_NUGET_TARGETS = \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.$(1).Sdk.props \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.$(1).Sdk.Versions.props \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.$(1).Sdk.targets \
+	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.Sdk.Desktop.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.Sdk.Eol.targets \
+	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.Sdk.Mobile.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Xamarin.Shared.Sdk.DefaultItems.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Xamarin.Shared.Sdk.Publish.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Xamarin.Shared.Sdk.TargetFrameworkInference.props \
@@ -310,13 +312,13 @@ define InstallWorkload
 	$(Q) touch $$@
 
 $(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)/microsoft.net.sdk.$3: .stamp-workload-replace-$1-$(DOTNET_VERSION) | $(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)
-	$$(Q_LN) ln -Fhs $$(abspath Workloads/Microsoft.NET.Sdk.$1) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath Workloads/Microsoft.NET.Sdk.$1) $$(abspath $$@)
 
 $(DOTNET_PACKS_PATH)/$($(1)_NUGET_SDK_NAME)/$2: | $(DOTNET_PACKS_PATH)/$($(1)_NUGET_SDK_NAME)
-	$$(Q_LN) ln -Fhs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)) $$(abspath $$@)
 
 $(DOTNET_PACKS_PATH)/$($(1)_NUGET_REF_NAME)/$2: | $(DOTNET_PACKS_PATH)/$($(1)_NUGET_REF_NAME)
-	$$(Q_LN) ln -Fhs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)) $$(abspath $$@)
 
 $(DOTNET_TEMPLATE_PACKS_PATH)/Microsoft.$1.Templates.$(2).nupkg: $(TEMPLATE_PACKS_$(shell echo $(1) | tr a-z A-Z)) | $(DOTNET_TEMPLATE_PACKS_PATH)
 	$$(Q) $$(CP) $$< $$@
@@ -326,12 +328,14 @@ WORKLOAD_TARGETS += \
 	$(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)/microsoft.net.sdk.$3 \
 	$(DOTNET_PACKS_PATH)/$($(1)_NUGET_SDK_NAME)/$2 \
 	$(DOTNET_PACKS_PATH)/$($(1)_NUGET_REF_NAME)/$2
+
+INSTALLED_SDK_MANIFESTS += $(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)/microsoft.net.sdk.$3
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallWorkload,$(platform),$($(platform)_NUGET_VERSION_NO_METADATA),$(shell echo $(platform) | tr A-Z a-z))))
 
 define InstallRuntimeManagedWorkload
 $(DOTNET_PACKS_PATH)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)/$2: | $(DOTNET_PACKS_PATH)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)
-	$$(Q_LN) ln -Fhs $$(abspath $(DOTNET_DESTDIR)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)) $$(abspath $$@)
 
 WORKLOAD_TARGETS += \
 	$(DOTNET_PACKS_PATH)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)/$2
@@ -340,7 +344,7 @@ $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallRuntimeManagedWorklo
 
 define InstallRuntimeWorkload
 $(DOTNET_PACKS_PATH)/$$($(2)_NUGET_RUNTIME_NAME)/$3: | $(DOTNET_PACKS_PATH)/$$($(2)_NUGET_RUNTIME_NAME)
-	$$(Q_LN) ln -Fhs $$(abspath $(DOTNET_DESTDIR)/$$($(2)_NUGET_RUNTIME_NAME)) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$$($(2)_NUGET_RUNTIME_NAME)) $$(abspath $$@)
 
 WORKLOAD_TARGETS += \
 	$(DOTNET_PACKS_PATH)/$$($(2)_NUGET_RUNTIME_NAME)/$3
@@ -518,7 +522,7 @@ clean-local::
 	$(Q) rm -Rf $(DOTNET_NUPKG_DIR)
 	$(Q) git clean -xfdq
 
-.stamp-workaround-for-maccore-issue-2427: $(TOP)/eng/Versions.props $(LOCAL_WORKLOAD_TARGETS)
+.stamp-workaround-for-maccore-issue-2427: $(TOP)/eng/Versions.props $(LOCAL_WORKLOAD_TARGETS) $(INSTALLED_SDK_MANIFESTS)
 	$(Q) $(DOTNET) restore package/workaround-for-maccore-issue-2427/restore.csproj /bl:package/workaround-for-maccore-issue-2427/restore.binlog $(MSBUILD_VERBOSITY)
 	$(Q) touch $@
 

@@ -105,9 +105,6 @@ extern bool mono_use_llvm; // this is defined inside mono
 #define SUPPORTS_DYNAMIC_REGISTRATION 1
 #endif
 
-#if DEBUG
-extern bool xamarin_gc_pump;
-#endif
 extern bool xamarin_debug_mode;
 extern bool xamarin_disable_lldb_attach;
 extern bool xamarin_disable_omit_fp;

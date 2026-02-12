@@ -37,7 +37,7 @@ namespace UIKit {
 		/// <include file="../../docs/api/UIKit/UITableView.xml" path="/Documentation/Docs[@DocId='M:UIKit.UITableView.RegisterClassForCellReuse(System.Type,Foundation.NSString)']/*" />
 		public void RegisterClassForCellReuse (Type cellType, NSString reuseIdentifier)
 		{
-			RegisterClassForCellReuse (cellType is null ? IntPtr.Zero : Class.GetHandle (cellType), reuseIdentifier);
+			RegisterClassForCellReuse (Class.GetHandle (cellType), reuseIdentifier);
 		}
 
 		/// <param name="cellType">To be added.</param>
@@ -47,7 +47,7 @@ namespace UIKit {
 		public void RegisterClassForCellReuse (Type cellType, string reuseIdentifier)
 		{
 			using (var str = (NSString) reuseIdentifier)
-				RegisterClassForCellReuse (cellType is null ? IntPtr.Zero : Class.GetHandle (cellType), str);
+				RegisterClassForCellReuse (Class.GetHandle (cellType), str);
 		}
 
 		/// <param name="cellType">To be added.</param>
@@ -57,13 +57,13 @@ namespace UIKit {
 		public void RegisterClassForHeaderFooterViewReuse (Type cellType, string reuseIdentifier)
 		{
 			using (var str = (NSString) reuseIdentifier)
-				RegisterClassForHeaderFooterViewReuse (cellType is null ? IntPtr.Zero : Class.GetHandle (cellType), str);
+				RegisterClassForHeaderFooterViewReuse (Class.GetHandle (cellType), str);
 		}
 
 		/// <include file="../../docs/api/UIKit/UITableView.xml" path="/Documentation/Docs[@DocId='M:UIKit.UITableView.RegisterClassForHeaderFooterViewReuse(System.Type,Foundation.NSString)']/*" />
 		public void RegisterClassForHeaderFooterViewReuse (Type cellType, NSString reuseIdentifier)
 		{
-			RegisterClassForHeaderFooterViewReuse (cellType is null ? IntPtr.Zero : Class.GetHandle (cellType), reuseIdentifier);
+			RegisterClassForHeaderFooterViewReuse (Class.GetHandle (cellType), reuseIdentifier);
 		}
 
 		// This is not obsolete, we provide both a (UINib,string) overload and a (UINib,NSString) overload.

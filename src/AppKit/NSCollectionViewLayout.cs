@@ -11,7 +11,7 @@ namespace AppKit {
 		///         <remarks>To be added.</remarks>
 		public void RegisterClassForDecorationView (Type itemClass, NSString elementKind)
 		{
-			_RegisterClassForDecorationView (itemClass is null ? IntPtr.Zero : Class.GetHandle (itemClass), elementKind);
+			_RegisterClassForDecorationView (Class.GetHandle (itemClass), elementKind);
 		}
 	}
 }

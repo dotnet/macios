@@ -239,27 +239,4 @@ steps:
   continueOnError: true
   condition: succeededOrFailed()
 
-# Make sure to report any errors
-- pwsh: |
-    Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tools\devops\automation\scripts\MaciosCI.psd1
-    $githubComments = New-GitHubCommentsObjectFromUrl -Url "$(Build.Repository.Uri)" -Token $(GitHub.Token) -Hash $Env:COMMENT_HASH
 
-    if (Test-Path -Path "$Env:GITHUB_FAILURE_COMMENT_FILE" -PathType Leaf)  {
-      $githubComments.NewCommentFromFile("Tests on macOS ${{ parameters.statusContext }} failed", ":x:", "$Env:GITHUB_FAILURE_COMMENT_FILE", "macOS ${{ parameters.statusContext }}")
-    } else {
-      $message = ":white_check_mark: **All** tests on macOS ${{ parameters.statusContext }} passed."
-      $githubComments.NewCommentFromMessage("Tests on macOS ${{ parameters.statusContext }} passed", ":computer:", $message, "macOS ${{ parameters.statusContext }}")
-    }
-  displayName: 'Report results to GitHub'
-  timeoutInMinutes: 5
-  condition: always() # in particular we care if something failed, but let's always run just in case
-  continueOnError: true
-  env:
-    CONTEXT: ${{ parameters.statusContext }}
-    GITHUB_TOKEN: $(GitHub.Token)
-    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-    TEST_BOT: $(Agent.Name)
-    ${{ if eq(parameters.repositoryAlias, 'self') }}:
-      COMMENT_HASH: $(fix_commit.GIT_HASH)
-    ${{ else }}:
-      COMMENT_HASH: $(Build.SourceVersion)

@@ -42,15 +42,39 @@ dir env:
 # Claim that the tests timed out before we start
 Set-Content -Path "$GithubFailureCommentFile" -Value "Tests timed out"
 
+# Create a directory for per-test output
+$testOutputDir = "$SourcesDirectory/mac-test-output"
+if (-not (Test-Path -Path $testOutputDir)) {
+  New-Item -ItemType Directory -Path $testOutputDir -Force | Out-Null
+}
+
 $macTest = @("dontlink", "introspection", "linksdk", "linkall", "monotouch-test")
+
+# TEMPORARY: Force failures in some test suites for verification.
+# Remove this block once failure reporting has been verified.
+$temporaryForcedFailures = @("linksdk", "introspection")
+
 foreach ($t in $macTest) {
   $testName = "exec-$t"
   Write-Host "Execution test $testName"
-  make -d -C $testsPath $testName -f packaged-macos-tests.mk
-  if ($LastExitCode -eq 0) {
+
+  $stdoutFile = "$testOutputDir/$t-stdout.txt"
+  $stderrFile = "$testOutputDir/$t-stderr.txt"
+
+  # Run the test and capture stdout/stderr separately
+  $proc = Start-Process -FilePath "make" `
+    -ArgumentList "-d", "-C", $testsPath, $testName, "-f", "packaged-macos-tests.mk" `
+    -RedirectStandardOutput $stdoutFile `
+    -RedirectStandardError $stderrFile `
+    -NoNewWindow -Wait -PassThru
+
+  if ($proc.ExitCode -eq 0 -and -not $temporaryForcedFailures.Contains($t)) {
     Write-Host "$t succeeded"
   } else {
-    Write-Host "$t failed with error $LastExitCode"
+    if ($temporaryForcedFailures.Contains($t)) {
+      Write-Host "$t TEMPORARILY FORCED TO FAIL for verification"
+    }
+    Write-Host "$t failed with error $($proc.ExitCode)"
     $failures.Add($t)
   }
 }
@@ -104,49 +128,25 @@ if ($TestSummaryPath -ne "") {
   Write-Host "TestSummary written to $TestSummaryPath"
 }
 
-# Generate HTML report
+# Generate HTML report using C# tool
 if ($HtmlReportPath -ne "") {
-  $reportDir = Split-Path -Path $HtmlReportPath -Parent
-  if (-not (Test-Path -Path $reportDir)) {
-    New-Item -ItemType Directory -Path $reportDir -Force | Out-Null
-  }
-  $htmlSb = [System.Text.StringBuilder]::new()
-  $htmlSb.AppendLine("<!DOCTYPE html>")
-  $htmlSb.AppendLine("<html>")
-  $htmlSb.AppendLine("<head><title>macOS Test Results - $StatusContext</title>")
-  $htmlSb.AppendLine("<style>")
-  $htmlSb.AppendLine("body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; margin: 40px; }")
-  $htmlSb.AppendLine("table { border-collapse: collapse; width: 100%; max-width: 800px; }")
-  $htmlSb.AppendLine("th, td { border: 1px solid #ddd; padding: 12px 16px; text-align: left; }")
-  $htmlSb.AppendLine("th { background-color: #f6f8fa; font-weight: 600; }")
-  $htmlSb.AppendLine(".passed { color: #1a7f37; font-weight: 600; }")
-  $htmlSb.AppendLine(".failed { color: #cf222e; font-weight: 600; }")
-  $htmlSb.AppendLine("h1 { border-bottom: 1px solid #d0d7de; padding-bottom: 8px; }")
-  $htmlSb.AppendLine(".summary { margin: 16px 0; padding: 12px; border-radius: 6px; }")
-  $htmlSb.AppendLine(".summary.pass { background-color: #dafbe1; }")
-  $htmlSb.AppendLine(".summary.fail { background-color: #ffebe9; }")
-  $htmlSb.AppendLine("</style>")
-  $htmlSb.AppendLine("</head>")
-  $htmlSb.AppendLine("<body>")
-  $htmlSb.AppendLine("<h1>macOS Test Results - $StatusContext</h1>")
-  if ($failedCount -eq 0) {
-    $htmlSb.AppendLine("<div class=`"summary pass`">&#x2705; All $passedCount tests passed.</div>")
-  } else {
-    $htmlSb.AppendLine("<div class=`"summary fail`">&#x274C; $failedCount tests failed, $passedCount tests passed.</div>")
-  }
-  $htmlSb.AppendLine("<table>")
-  $htmlSb.AppendLine("<tr><th>Test Suite</th><th>Result</th></tr>")
+  $crashReportsDir = "$Env:HOME/Library/Logs/DiagnosticReports"
+
+  $toolDir = "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$Env:BUILD_REPOSITORY_TITLE/scripts/mac-test-report-generator"
+  $toolArgs = @("run", "--project", $toolDir, "--", "--title", $StatusContext, "--output", $HtmlReportPath, "--test-output-dir", $testOutputDir)
   foreach ($t in $macTest) {
-    if ($failures.Contains($t)) {
-      $htmlSb.AppendLine("<tr><td>$t</td><td class=`"failed`">Failed</td></tr>")
-    } else {
-      $htmlSb.AppendLine("<tr><td>$t</td><td class=`"passed`">Passed</td></tr>")
-    }
+    $result = if ($failures.Contains($t)) { "fail" } else { "pass" }
+    $toolArgs += @("--test", "$t`:$result")
   }
-  $htmlSb.AppendLine("</table>")
-  $htmlSb.AppendLine("</body></html>")
-  Set-Content -Path $HtmlReportPath -Value $htmlSb.ToString()
-  Write-Host "HTML report written to $HtmlReportPath"
+  if (Test-Path -Path $crashReportsDir) {
+    $toolArgs += @("--crash-reports-dir", $crashReportsDir)
+  }
+
+  Write-Host "Running HTML report generator: dotnet $($toolArgs -join ' ')"
+  & dotnet @toolArgs
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "Warning: HTML report generation failed with exit code $LASTEXITCODE"
+  }
 }
 
 # Set TESTS_JOBSTATUS output variable

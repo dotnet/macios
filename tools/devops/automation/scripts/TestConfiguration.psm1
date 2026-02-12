@@ -47,6 +47,12 @@ class TestConfiguration {
             $vars["LABEL"] = $label
             $vars["TESTS_LABELS"] = "$($this.testsLabels),run-$($label)-tests"
             $vars["TEST_STAGE"] = $testStage
+            if ($config.displayName) {
+                $vars["DISPLAY_NAME"] = $config.displayName
+            }
+            if ($config.isMacTest -eq "true" -or $config.isMacTest -eq $true) {
+                $vars["IS_MAC_TEST"] = "true"
+            }
 
             if ($splitByPlatforms -eq "True") {
                 if ($enabledPlatformsForConfig.Length -eq 0) {

@@ -1120,7 +1120,9 @@ Describe "TestResults tests" {
         "LABEL_WITH_PLATFORM": "mac_monterey",
         "STATUS_CONTEXT": " - mac_monterey",
         "TEST_PREFIX": "mac_12_m1mac_monterey",
-        "TEST_PLATFORM": ""
+        "TEST_PLATFORM": "",
+        "DISPLAY_NAME": "Tests on macOS Monterey (12)",
+        "IS_MAC_TEST": "true"
     }
 }
 "@
@@ -1198,7 +1200,10 @@ Describe "TestResults tests" {
 
 ## Tests counts
 :white_check_mark: cecil: All 1 tests passed. [Html Report (VSDrops)](vsdropsIndex/simulator_testscecil-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-simulator_testscecil-1&api-version=6.0&`$format=zip)
-:white_check_mark: mac_monterey: All 5 tests passed. [Html Report (VSDrops)](vsdropsIndex/mac_12_m1mac_monterey-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-mac_12_m1mac_monterey-1&api-version=6.0&`$format=zip)
+
+## macOS tests
+
+:white_check_mark: Tests on macOS Monterey (12): All 5 tests passed. [Html Report (VSDrops)](vsdropsIndex/mac_12_m1mac_monterey-1/;/tests/vsdrops_index.html) [Download](/_apis/build/builds//artifacts?artifactName=HtmlReport-mac_12_m1mac_monterey-1&api-version=6.0&`$format=zip)
 
 [comment]: <> (This is a test result report added by Azure DevOps)
 "

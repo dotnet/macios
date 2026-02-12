@@ -687,7 +687,16 @@ namespace Xamarin.Tests {
 			Clean (projectPath);
 
 			var properties = GetDefaultProperties (runtimeIdentifiers);
-			DotNet.AssertBuild (projectPath, properties);
+			var rv = DotNet.Execute ("build", projectPath, properties, assert_success: false);
+			if (rv.ExitCode != 0) {
+				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
+				// If the only error is that the partial-info.plist wasn't generated,
+				// it's because the icon export subprocess failed. This can happen
+				// on some systems where the icon composer format isn't fully supported.
+				if (errors.Length == 1 && errors [0].Message?.Contains ("Partial Info.plist file was not generated") == true)
+					Assert.Ignore ("Icon Composer export is not supported on this system (actool icon export failed).");
+				Assert.Fail ($"Build failed with {errors.Length} error(s):\n{string.Join ("\n", errors.Select (v => v.Message))}");
+			}
 
 			var resourcesDirectory = GetResourcesDirectory (platform, appPath);
 

@@ -27,7 +27,7 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 	[Required]
 	public string RuntimeNuGetPackageId { get; set; } = string.Empty;
 
-	public string Configuration { get; set; } = string.Empty;
+	public bool DebuggerSupport { get; set; }
 
 	[Output]
 	public ITaskItem [] OutputResolvedFileToPublish { get; set; } = [];
@@ -117,8 +117,8 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 					continue;
 				}
 
-				if (Platform != Utils.ApplePlatform.MacOSX && string.Equals (Configuration, "Release", StringComparison.OrdinalIgnoreCase)) {
-					// libmscordaccore and libmscordbi are debug-only libraries, don't include them in Release builds on mobile platforms
+				if (Platform != Utils.ApplePlatform.MacOSX && !DebuggerSupport) {
+					// libmscordaccore and libmscordbi are debug-only libraries, don't include them when debugger support is disabled on mobile platforms
 					if (string.Equals (kvp.Key, "libmscordaccore", StringComparison.OrdinalIgnoreCase) ||
 					    string.Equals (kvp.Key, "libmscordbi", StringComparison.OrdinalIgnoreCase)) {
 						continue;

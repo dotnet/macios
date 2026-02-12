@@ -365,7 +365,7 @@ class ParallelTestsResults {
 
         # Split results into regular tests and macOS tests
         $regularResults = @($this.Results | Where-Object { -not $_.IsMacTest })
-        $macResults = @($this.Results | Where-Object { $_.IsMacTest })
+        $macResults = @($this.Results | Where-Object { $_.IsMacTest } | Sort-Object -Property TestStage)
 
         $stringBuilder.AppendLine("# Test results")
         # We need to add a small summary at the top. We check if it was a success, if that is
@@ -470,7 +470,7 @@ class ParallelTestsResults {
                 $this.PrintSuccessMessage($r, $stringBuilder)
             }
             if ($macResults.Count -gt 0) {
-                $macSuccesses = @($this.GetSuccessfulTests() | Where-Object { $_.IsMacTest })
+                $macSuccesses = @($this.GetSuccessfulTests() | Where-Object { $_.IsMacTest } | Sort-Object -Property TestStage)
                 $stringBuilder.AppendLine("")
                 $stringBuilder.AppendLine("## macOS tests")
                 $stringBuilder.AppendLine("")

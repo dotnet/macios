@@ -120,7 +120,7 @@ if ($TestSummaryPath -ne "") {
     $sb.AppendLine("## Failed tests")
     $sb.AppendLine("")
     foreach ($test in $failures) {
-      $sb.AppendLine("* $test``: Failed")
+      $sb.AppendLine("* ${test}: Failed")
     }
     $sb.AppendLine("</details>")
     Set-Content -Path $TestSummaryPath -Value $sb.ToString()

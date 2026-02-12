@@ -2,8 +2,7 @@
 
 #if IOS
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 
@@ -13,11 +12,13 @@ namespace UIKit {
 		// previously we 'lost' the managed reference to the array and this caused bug #410
 		// http://bugzilla.xamarin.com/show_bug.cgi?id=410
 
+		/// <summary>Sets the items on the toolbar, optionally animating the transition.</summary>
+		/// <param name="items">The array of <see cref="UIBarButtonItem" /> instances to display on the toolbar.</param>
+		/// <param name="animated">Whether to animate the transition to the new items.</param>
 		[Export ("setItems:animated:")]
 		public virtual void SetItems (UIBarButtonItem [] items, bool animated)
 		{
-			if (items is null)
-				throw new ArgumentNullException ("items");
+			ArgumentNullException.ThrowIfNull (items);
 
 			// must be identical the [get|set]_Items
 			var nsa_items = NSArray.FromNSObjects (items);

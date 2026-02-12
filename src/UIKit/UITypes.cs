@@ -184,8 +184,8 @@ namespace UIKit {
 		/// <returns><see langword="true" /> if the specified object is an equal <see cref="UIFloatRange" />; otherwise, <see langword="false" />.</returns>
 		public override bool Equals (object? other)
 		{
-			if (other is UIFloatRange)
-				return Equals ((UIFloatRange) other);
+			if (other is UIFloatRange range)
+				return Equals (range);
 			return false;
 		}
 

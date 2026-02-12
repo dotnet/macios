@@ -1,19 +1,16 @@
 {
-  "version" : 1,
-  "layers" : [
+  "groups" : [
     {
-      "filename" : "back.png",
-      "size" : {
-        "width" : 1024,
-        "height" : 1024
-      }
-    },
-    {
-      "filename" : "front.png",
-      "size" : {
-        "width" : 1024,
-        "height" : 1024
-      }
+      "layers" : [
+        {
+          "image-name" : "back.png",
+          "name" : "back"
+        },
+        {
+          "image-name" : "front.png",
+          "name" : "front"
+        }
+      ]
     }
   ]
 }

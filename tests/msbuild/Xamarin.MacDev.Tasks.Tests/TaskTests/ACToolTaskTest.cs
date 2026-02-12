@@ -648,13 +648,13 @@ namespace Xamarin.MacDev.Tasks {
 			var assetsPath = Path.Combine (iconFolderPath, "Assets");
 			Directory.CreateDirectory (assetsPath);
 
-			// Create a dummy icon.json file (simplified structure for testing)
+			// Create a placeholder icon.json file (simplified structure for testing)
 			var iconJsonPath = Path.Combine (iconFolderPath, "icon.json");
-			File.WriteAllText (iconJsonPath, @"{""version"":1}");
+			File.WriteAllText (iconJsonPath, @"{""groups"":[{""layers"":[{""image-name"":""icon_512x512.png"",""name"":""icon""}]}]}");
 
-			// Create a dummy image file in the Assets folder
+			// Create a placeholder image file in the Assets folder
 			var imagePath = Path.Combine (assetsPath, "icon_512x512.png");
-			File.WriteAllText (imagePath, "dummy image");
+			File.WriteAllText (imagePath, "placeholder image");
 
 			var actool = CreateACToolTask (
 				platform,
@@ -665,10 +665,8 @@ namespace Xamarin.MacDev.Tasks {
 			);
 			actool.AppIcon = "AppIcon";
 
-			// The task should recognize AppIcon as a valid icon
-			// Note: This will fail at actool execution since we don't have a real .icon structure,
-			// but we're testing that the icon is recognized in the validation phase
-			ExecuteTask (actool, expectedErrorCount: 1); // Expected to fail at actool execution
+			// actool may fail on the placeholder .icon content, but the validation phase should pass
+			actool.Execute ();
 
 			// Verify that no error was logged about the icon not being found
 			var errorMessages = Engine.Logger.ErrorEvents.Select (e => e.Message).ToList ();
@@ -690,10 +688,10 @@ namespace Xamarin.MacDev.Tasks {
 			Directory.CreateDirectory (assetsPath);
 
 			var iconJsonPath = Path.Combine (iconFolderPath, "icon.json");
-			File.WriteAllText (iconJsonPath, @"{""version"":1}");
+			File.WriteAllText (iconJsonPath, @"{""groups"":[{""layers"":[{""image-name"":""icon_512x512.png"",""name"":""icon""}]}]}");
 
 			var imagePath = Path.Combine (assetsPath, "icon_512x512.png");
-			File.WriteAllText (imagePath, "dummy image");
+			File.WriteAllText (imagePath, "placeholder image");
 
 			var actool = CreateACToolTask (
 				platform,
@@ -705,7 +703,8 @@ namespace Xamarin.MacDev.Tasks {
 			actool.AppIcon = "AppIcon";
 			actool.IncludeAllAppIcons = true;
 
-			ExecuteTask (actool, expectedErrorCount: 1);
+			// actool may fail on the placeholder .icon content, but the validation phase should pass
+			actool.Execute ();
 
 			var errorMessages = Engine.Logger.ErrorEvents.Select (e => e.Message).ToList ();
 			Assert.IsFalse (errorMessages.Any (m => m.Contains ("Can't find the AppIcon")),
@@ -726,10 +725,10 @@ namespace Xamarin.MacDev.Tasks {
 			Directory.CreateDirectory (assetsPath);
 
 			var iconJsonPath = Path.Combine (iconFolderPath, "icon.json");
-			File.WriteAllText (iconJsonPath, @"{""version"":1}");
+			File.WriteAllText (iconJsonPath, @"{""groups"":[{""layers"":[{""image-name"":""icon_512x512.png"",""name"":""icon""}]}]}");
 
 			var imagePath = Path.Combine (assetsPath, "icon_512x512.png");
-			File.WriteAllText (imagePath, "dummy image");
+			File.WriteAllText (imagePath, "placeholder image");
 
 			// Also need a primary icon for the alternate icon test to make sense
 			var primaryIconPath = Path.Combine (projectDir, "Resources", "AppIcon.icon");
@@ -737,10 +736,10 @@ namespace Xamarin.MacDev.Tasks {
 			Directory.CreateDirectory (primaryAssetsPath);
 
 			var primaryIconJsonPath = Path.Combine (primaryIconPath, "icon.json");
-			File.WriteAllText (primaryIconJsonPath, @"{""version"":1}");
+			File.WriteAllText (primaryIconJsonPath, @"{""groups"":[{""layers"":[{""image-name"":""icon_512x512.png"",""name"":""icon""}]}]}");
 
 			var primaryImagePath = Path.Combine (primaryAssetsPath, "icon_512x512.png");
-			File.WriteAllText (primaryImagePath, "dummy image");
+			File.WriteAllText (primaryImagePath, "placeholder image");
 
 			var actool = CreateACToolTask (
 				platform,
@@ -754,7 +753,8 @@ namespace Xamarin.MacDev.Tasks {
 			actool.AppIcon = "AppIcon";
 			actool.AlternateAppIcons = new ITaskItem [] { new TaskItem ("AlternateIcon") };
 
-			ExecuteTask (actool, expectedErrorCount: 1);
+			// actool may fail on the placeholder .icon content, but the validation phase should pass
+			actool.Execute ();
 
 			var errorMessages = Engine.Logger.ErrorEvents.Select (e => e.Message).ToList ();
 			Assert.IsFalse (errorMessages.Any (m => m.Contains ("Can't find the AlternateAppIcon")),
@@ -777,10 +777,10 @@ namespace Xamarin.MacDev.Tasks {
 			Directory.CreateDirectory (assetsPath);
 
 			var iconJsonPath = Path.Combine (iconFolderPath, "icon.json");
-			File.WriteAllText (iconJsonPath, @"{""version"":1}");
+			File.WriteAllText (iconJsonPath, @"{""groups"":[{""layers"":[{""image-name"":""icon_512x512.png"",""name"":""icon""}]}]}");
 
 			var imagePath = Path.Combine (assetsPath, "icon_512x512.png");
-			File.WriteAllText (imagePath, "dummy image");
+			File.WriteAllText (imagePath, "placeholder image");
 
 			var actool = CreateACToolTask (
 				platform,
@@ -816,10 +816,10 @@ namespace Xamarin.MacDev.Tasks {
 			Directory.CreateDirectory (assetsPath);
 
 			var iconJsonPath = Path.Combine (iconFolderPath, "icon.json");
-			File.WriteAllText (iconJsonPath, @"{""version"":1}");
+			File.WriteAllText (iconJsonPath, @"{""groups"":[{""layers"":[{""image-name"":""icon_512x512.png"",""name"":""icon""}]}]}");
 
 			var imagePath = Path.Combine (assetsPath, "icon_512x512.png");
-			File.WriteAllText (imagePath, "dummy image");
+			File.WriteAllText (imagePath, "placeholder image");
 
 			imageAssets.Add (iconJsonPath + "|Resources/ComposerIcon.icon/icon.json");
 			imageAssets.Add (imagePath + "|Resources/ComposerIcon.icon/Assets/icon_512x512.png");
@@ -832,7 +832,7 @@ namespace Xamarin.MacDev.Tasks {
 			);
 			actool.AppIcon = "AppIcons";
 
-			// actool may fail on the dummy .icon content, but the validation phase should pass
+			// actool may fail on the placeholder .icon content, but the validation phase should pass
 			actool.Execute ();
 
 			var errorMessages = Engine.Logger.ErrorEvents.Select (e => e.Message).ToList ();

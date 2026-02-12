@@ -26,7 +26,7 @@ namespace UIKit {
 		[ObsoletedOSPlatform ("maccatalyst", "Use 'CreatePrimaryVibrancyEffectForNotificationCenter' instead.")]
 		static public UIVibrancyEffect CreateForNotificationCenter ()
 		{
-			return (null as UIVibrancyEffect).NotificationCenterVibrancyEffect ();
+			return (null as UIVibrancyEffect)!.NotificationCenterVibrancyEffect ();
 		}
 
 		/// <summary>Returns the primary vibrancy effect for use with the notification center.</summary>
@@ -39,7 +39,7 @@ namespace UIKit {
 		[ObsoletedOSPlatform ("maccatalyst", "Use 'UIVibrancyEffect.CreateWidgetEffectForNotificationCenter' instead.")]
 		static public UIVibrancyEffect CreatePrimaryVibrancyEffectForNotificationCenter ()
 		{
-			return (null as UIVibrancyEffect).GetWidgetPrimaryVibrancyEffect ();
+			return (null as UIVibrancyEffect)!.GetWidgetPrimaryVibrancyEffect ();
 		}
 
 		/// <summary>Returns the secondary vibrancy effect for use with the notification center.</summary>
@@ -52,7 +52,7 @@ namespace UIKit {
 		[ObsoletedOSPlatform ("maccatalyst", "Use 'UIVibrancyEffect.CreateWidgetEffectForNotificationCenter' instead.")]
 		static public UIVibrancyEffect CreateSecondaryVibrancyEffectForNotificationCenter ()
 		{
-			return (null as UIVibrancyEffect).GetWidgetSecondaryVibrancyEffect ();
+			return (null as UIVibrancyEffect)!.GetWidgetSecondaryVibrancyEffect ();
 		}
 
 		/// <summary>Returns a vibrancy effect with the specified style for use with the notification center.</summary>
@@ -63,7 +63,7 @@ namespace UIKit {
 		[SupportedOSPlatform ("tvos")]
 		static public UIVibrancyEffect CreateWidgetEffectForNotificationCenter (UIVibrancyEffectStyle vibrancyStyle)
 		{
-			return (null as UIVibrancyEffect).GetWidgetEffect (vibrancyStyle);
+			return (null as UIVibrancyEffect)!.GetWidgetEffect (vibrancyStyle);
 		}
 #endif // HAS_NOTIFICATIONCENTER
 	}

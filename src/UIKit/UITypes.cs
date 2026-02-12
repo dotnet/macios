@@ -79,8 +79,8 @@ namespace UIKit {
 		/// <returns><see langword="true" /> if the specified object is an equal <see cref="UIEdgeInsets" />; otherwise, <see langword="false" />.</returns>
 		public override bool Equals (object? obj)
 		{
-			if (obj is UIEdgeInsets)
-				return Equals ((UIEdgeInsets) obj);
+			if (obj is UIEdgeInsets other)
+				return Equals (other);
 			return false;
 		}
 

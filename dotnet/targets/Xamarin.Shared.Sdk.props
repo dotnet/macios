@@ -228,10 +228,15 @@
 		<PublishReadyToRun Condition="'$(PublishReadyToRun)' == ''">true</PublishReadyToRun>
 		<PublishReadyToRunComposite Condition="'$(PublishReadyToRunComposite)' == '' And '$(PublishReadyToRun)' == 'true'">true</PublishReadyToRunComposite>
 		<PublishReadyToRunContainerFormat Condition="'$(PublishReadyToRunContainerFormat)' == '' And '$(PublishReadyToRun)' == 'true'">macho</PublishReadyToRunContainerFormat>
+		<PublishReadyToRunCreateSharedLibrary>false</PublishReadyToRunCreateSharedLibrary>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(PublishReadyToRun)' != 'true'">
 		<_BundlerEnvironmentVariables Include="DOTNET_ReadyToRun" Value="0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(DebugLaunchTime)' == 'true'">
+		<_BundlerEnvironmentVariables Include="DEBUG_LAUNCH_TIME" Value="1" />
 	</ItemGroup>
 
 	<!-- Compute _SdkIsSimulator from the RuntimeIdentifier -->

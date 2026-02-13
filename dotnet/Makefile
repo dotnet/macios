@@ -328,6 +328,8 @@ WORKLOAD_TARGETS += \
 	$(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)/microsoft.net.sdk.$3 \
 	$(DOTNET_PACKS_PATH)/$($(1)_NUGET_SDK_NAME)/$2 \
 	$(DOTNET_PACKS_PATH)/$($(1)_NUGET_REF_NAME)/$2
+
+INSTALLED_SDK_MANIFESTS += $(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)/microsoft.net.sdk.$3
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallWorkload,$(platform),$($(platform)_NUGET_VERSION_NO_METADATA),$(shell echo $(platform) | tr A-Z a-z))))
 
@@ -520,7 +522,7 @@ clean-local::
 	$(Q) rm -Rf $(DOTNET_NUPKG_DIR)
 	$(Q) git clean -xfdq
 
-.stamp-workaround-for-maccore-issue-2427: $(TOP)/eng/Versions.props $(LOCAL_WORKLOAD_TARGETS)
+.stamp-workaround-for-maccore-issue-2427: $(TOP)/eng/Versions.props $(LOCAL_WORKLOAD_TARGETS) $(INSTALLED_SDK_MANIFESTS)
 	$(Q) $(DOTNET) restore package/workaround-for-maccore-issue-2427/restore.csproj /bl:package/workaround-for-maccore-issue-2427/restore.binlog $(MSBUILD_VERBOSITY)
 	$(Q) touch $@
 

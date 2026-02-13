@@ -2117,6 +2117,7 @@
 		</ItemGroup>
 
 		<ProcessRuntimeLibraries
+			DebuggerSupport="$(DebuggerSupport)"
 			DotNetRuntime="$(_XamarinRuntime)"
 			ResolvedFileToPublish="@(ResolvedFileToPublish)"
 			RuntimeIdentifier="$(RuntimeIdentifier)"

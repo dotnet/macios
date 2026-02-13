@@ -14,12 +14,14 @@ ZIP=zip --symlinks
 endif
 
 TEST_FRAMEWORKS+=XTest
+TEST_FRAMEWORKS+=XMergeableTest
 TEST_FRAMEWORKS+=XStaticArTest
 TEST_FRAMEWORKS+=XStaticObjectTest
 TEST_FRAMEWORKS+=SwiftTest
 TEST_FRAMEWORKS+=SwiftTest2
 
 DYNAMIC_TEST_FRAMEWORKS+=XTest
+DYNAMIC_TEST_FRAMEWORKS+=XMergeableTest
 STATIC_AR_TEST_FRAMEWORKS+=XStaticArTest
 STATIC_OBJECT_TEST_FRAMEWORKS+=XStaticObjectTest
 DYNAMIC_TEST_FRAMEWORKS+=SwiftTest
@@ -293,6 +295,10 @@ EXTRA_DEPENDENCIES = libtest.h $(GENERATED_FILES) rename.h
 .libs/$(1)/libXTest.dylib: .libs/$(1)/libframework.dylib
 	$$(Q) $(CP) $$^ $$@
 	$$(Q) $(XCODE_DEVELOPER_ROOT)/Toolchains/XcodeDefault.xctoolchain/usr/bin/install_name_tool -id @rpath/XTest.framework/XTest $$@
+
+# XMergeableTest is a framework where the binary code is a (fat) mergeable dynamic library (built with -make_mergeable)
+.libs/$(1)/libXMergeableTest.dylib: libframework.m
+.libs/$(1)/libXMergeableTest.dylib: EXTRA_FLAGS += -Wl,-make_mergeable
 
 # XStaticObjectTest is a framework where the binary code is a (fat) object file
 .libs/$(1)/libXStaticObjectTest.o: .libs/$(1)/libtest-object.o

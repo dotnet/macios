@@ -538,6 +538,8 @@ namespace Xamarin.Tests {
 		[TestCase ("NativeFrameworkReferencesApp", ApplePlatform.MacOSX, "osx-x64")]
 		[TestCase ("NativeXCFrameworkReferencesApp", ApplePlatform.iOS, "iossimulator-x64")]
 		[TestCase ("NativeXCFrameworkReferencesApp", ApplePlatform.MacOSX, "osx-x64")]
+		[TestCase ("NativeMergeableFrameworkReferencesApp", ApplePlatform.iOS, "iossimulator-x64")]
+		[TestCase ("NativeMergeableFrameworkReferencesApp", ApplePlatform.MacOSX, "osx-x64")]
 		public void BuildAndExecuteNativeReferencesTestApp (string project, ApplePlatform platform, string runtimeIdentifier)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -552,6 +554,31 @@ namespace Xamarin.Tests {
 				var appExecutable = Path.Combine (appPath, "Contents", "MacOS", Path.GetFileNameWithoutExtension (project_path));
 				Assert.That (appExecutable, Does.Exist, "There is an executable");
 				ExecuteWithMagicWordAndAssert (appExecutable);
+			}
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64", true)] // Optimize=true should strip atom info
+		[TestCase (ApplePlatform.MacOSX, "osx-x64", false)] // Optimize=false should preserve atom info
+		public void BuildNativeMergeableFrameworkReferencesApp_AtomInfoStripping (ApplePlatform platform, string runtimeIdentifier, bool optimize)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifier);
+
+			var project = "NativeMergeableFrameworkReferencesApp";
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifier, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties ["Optimize"] = optimize.ToString ().ToLowerInvariant ();
+			DotNet.AssertBuild (project_path, properties);
+
+			var frameworkPath = Path.Combine (appPath, GetFrameworksRelativePath (platform), "XMergeableTest.framework", "XMergeableTest");
+			Assert.That (frameworkPath, Does.Exist, "Framework should exist in app bundle");
+
+			if (optimize) {
+				Assert.That (MachO.IsMergeableLibrary (frameworkPath), Is.False, "Framework should not be mergeable when Optimize=true");
+			} else {
+				Assert.That (MachO.IsMergeableLibrary (frameworkPath), Is.True, "Framework should be mergeable when Optimize=false");
 			}
 		}
 

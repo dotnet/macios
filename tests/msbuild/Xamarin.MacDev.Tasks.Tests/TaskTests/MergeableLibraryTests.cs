@@ -247,15 +247,44 @@ namespace Xamarin.MacDev.Tasks.Tests {
 
 			Assert.That (MachO.IsMergeableLibrary (executablePath), Is.True, "Framework should be mergeable before stripping");
 
-			// Run the SymbolStrip task
+			// Run the SymbolStrip task with StripMergeableLibraries=true
 			var task = CreateTask<SymbolStrip> ();
 			var item = new TaskItem (executablePath);
 			item.SetMetadata ("Kind", "Framework");
 			task.Executable = new Microsoft.Build.Framework.ITaskItem [] { item };
+			task.StripMergeableLibraries = true;
 			ExecuteTask (task);
 
 			// Verify atom info was removed
-			Assert.That (MachO.IsMergeableLibrary (executablePath), Is.False, "Framework should not be mergeable after SymbolStrip");
+			Assert.That (MachO.IsMergeableLibrary (executablePath), Is.False, "Framework should not be mergeable after SymbolStrip with StripMergeableLibraries=true");
+			Assert.That (MachO.IsDynamicFramework (executablePath), Is.True, "Framework should still be dynamic after SymbolStrip");
+		}
+
+		[Test]
+		public void SymbolStrip_PreservesAtomInfoWhenNotStripping ()
+		{
+			var tempDir = Cache.CreateTemporaryDirectory ();
+			var sourcePath = Path.Combine (tempDir, "test.c");
+			File.WriteAllText (sourcePath, "int mergeable_test_func (int a, int b) { return a + b; }");
+
+			// Create a mergeable framework
+			var frameworkDir = Path.Combine (tempDir, "TestMergeable.framework");
+			Directory.CreateDirectory (frameworkDir);
+			var executablePath = Path.Combine (frameworkDir, "TestMergeable");
+			RunProcess ("xcrun", $"clang -dynamiclib -o {executablePath} {sourcePath} -arch arm64 -Wl,-make_mergeable -install_name @rpath/TestMergeable.framework/TestMergeable");
+
+			Assert.That (MachO.IsMergeableLibrary (executablePath), Is.True, "Framework should be mergeable before stripping");
+
+			// Run the SymbolStrip task with StripMergeableLibraries=false (debug mode)
+			var task = CreateTask<SymbolStrip> ();
+			var item = new TaskItem (executablePath);
+			item.SetMetadata ("Kind", "Framework");
+			task.Executable = new Microsoft.Build.Framework.ITaskItem [] { item };
+			task.StripMergeableLibraries = false;
+			ExecuteTask (task);
+
+			// Verify atom info was preserved
+			Assert.That (MachO.IsMergeableLibrary (executablePath), Is.True, "Framework should still be mergeable after SymbolStrip with StripMergeableLibraries=false");
 			Assert.That (MachO.IsDynamicFramework (executablePath), Is.True, "Framework should still be dynamic after SymbolStrip");
 		}
 	}

@@ -3089,6 +3089,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Executable="$(_AppContainerDir)%(_NativeStripItems.Identity)"
 			Kind="%(_NativeStripItems.Kind)"
 			MaxDegreeOfParallelism="$(SymbolStripMaxDegreeOfParallelism)"
+			StripMergeableLibraries="$(StripMergeableLibraries)"
 			StripPath="$(StripPath)"
 			SymbolFile="%(_NativeStripItems.SymbolFile)"
 		/>

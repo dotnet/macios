@@ -154,8 +154,8 @@ namespace Xamarin {
 			MinwatchOS = 0x30,//#define LC_VERSION_MIN_WATCHOS 0x30 /* build for Watch min OS version */
 							  //#define LC_NOTE 0x31 /* arbitrary data included within a Mach-O file */
 			BuildVersion = 0x32,//#define LC_BUILD_VERSION 0x32 /* build for platform min OS version */
-							   //#define LC_DYLD_CHAINED_FIXUPS (0x34 | LC_REQ_DYLD) /* used with linkedit_data_command */
-							   //#define LC_FILESET_ENTRY (0x35 | LC_REQ_DYLD) /* used with fileset_entry_command */
+								//#define LC_DYLD_CHAINED_FIXUPS (0x34 | LC_REQ_DYLD) /* used with linkedit_data_command */
+								//#define LC_FILESET_ENTRY (0x35 | LC_REQ_DYLD) /* used with fileset_entry_command */
 			AtomInfo = 0x36,//#define LC_ATOM_INFO 0x36 /* used with linkedit_data_command, used by mergeable libraries */
 		}
 

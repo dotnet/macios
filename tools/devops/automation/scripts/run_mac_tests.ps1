@@ -77,7 +77,10 @@ foreach ($t in $macTest) {
   $failLines = @()
   foreach ($logFile in @($stdoutFile, $stderrFile)) {
     if (Test-Path -Path $logFile) {
-      $failLines += @(Get-Content -Path $logFile | ForEach-Object { $_.TrimStart() } | Where-Object { $_.StartsWith("[FAIL]") })
+      $failLines += @(Get-Content -Path $logFile | ForEach-Object {
+        $idx = $_.IndexOf("[FAIL]")
+        if ($idx -ge 0) { $_.Substring($idx) }
+      } | Where-Object { $_ })
     }
   }
   $failLinesByTest[$t] = $failLines

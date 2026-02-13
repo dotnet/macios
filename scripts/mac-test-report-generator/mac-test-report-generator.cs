@@ -75,9 +75,9 @@ foreach (var test in tests) {
 			files.Add (("stdout", destName));
 			// Extract [FAIL] lines from stdout
 			foreach (var line in File.ReadLines (testStdout)) {
-				var trimmed = line.TrimStart ();
-				if (trimmed.StartsWith ("[FAIL]", StringComparison.Ordinal))
-					failLines.Add (trimmed);
+				var idx = line.IndexOf ("[FAIL]", StringComparison.Ordinal);
+				if (idx >= 0)
+					failLines.Add (line.Substring (idx));
 			}
 		}
 		if (File.Exists (testStderr)) {
@@ -86,9 +86,9 @@ foreach (var test in tests) {
 			files.Add (("stderr", destName));
 			// Extract [FAIL] lines from stderr too
 			foreach (var line in File.ReadLines (testStderr)) {
-				var trimmed = line.TrimStart ();
-				if (trimmed.StartsWith ("[FAIL]", StringComparison.Ordinal))
-					failLines.Add (trimmed);
+				var idx = line.IndexOf ("[FAIL]", StringComparison.Ordinal);
+				if (idx >= 0)
+					failLines.Add (line.Substring (idx));
 			}
 		}
 	}

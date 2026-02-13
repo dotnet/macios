@@ -66,6 +66,7 @@ namespace Xamarin.Tests {
 				if (supportsAssemblyInspection)
 					AssertAssemblyReport (platform, name, appPath, update, expectedDirectory);
 
+				AssertDSyms (platform, appPath);
 			});
 		}
 
@@ -181,6 +182,57 @@ namespace Xamarin.Tests {
 		static string FormatBytes (long bytes, bool alwaysShowSign = false)
 		{
 			return $"{(alwaysShowSign && bytes > 0 ? "+" : "")}{bytes:N0} bytes ({bytes / 1024.0:N1} KB = {bytes / (1024.0 * 1024.0):N1} MB)";
+		}
+
+		// Assert that the expected dSYMs exist for all binaries in the app bundle, and that no unexpected dSYMs exist.
+		void AssertDSyms (ApplePlatform platform, string appPath)
+		{
+			var appContainerDir = Path.GetDirectoryName (appPath)!;
+			var appBundleName = Path.GetFileName (appPath);
+
+			// Collect expected dSYM names based on the binaries in the app bundle
+			var expectedDSyms = new HashSet<string> ();
+
+			// The app bundle itself should have a dSYM
+			expectedDSyms.Add (appBundleName + ".dSYM");
+
+			// Find frameworks in the app bundle (Frameworks/ on iOS, Contents/Frameworks/ on macOS)
+			var frameworksRelativeDir = GetFrameworksRelativePath (platform);
+			var frameworksDir = Path.Combine (appPath, frameworksRelativeDir);
+			if (Directory.Exists (frameworksDir)) {
+				foreach (var frameworkDir in Directory.GetDirectories (frameworksDir, "*.framework")) {
+					var frameworkName = Path.GetFileNameWithoutExtension (frameworkDir);
+					var frameworkBinary = Path.Combine (frameworkDir, frameworkName);
+					if (File.Exists (frameworkBinary))
+						expectedDSyms.Add (frameworkName + ".framework.dSYM");
+				}
+			}
+
+			// Find dylibs in the app bundle (root on iOS, Contents/MonoBundle/ on macOS)
+			var contentsRelativeDir = GetRelativeDylibDirectory (platform);
+			var contentsDir = string.IsNullOrEmpty (contentsRelativeDir) ? appPath : Path.Combine (appPath, contentsRelativeDir);
+			if (Directory.Exists (contentsDir)) {
+				foreach (var dylib in Directory.GetFiles (contentsDir, "*.dylib")) {
+					var fileName = Path.GetFileNameWithoutExtension (dylib);
+					expectedDSyms.Add (fileName + ".dSYM");
+				}
+			}
+
+			// Find actual dSYM directories
+			var actualDSyms = Directory.GetDirectories (appContainerDir, "*.dSYM")
+				.Select (d => Path.GetFileName (d))
+				.ToHashSet ();
+
+			var missingDSyms = expectedDSyms.Except (actualDSyms).OrderBy (v => v).ToList ();
+			var unexpectedDSyms = actualDSyms.Except (expectedDSyms).OrderBy (v => v).ToList ();
+
+			if (missingDSyms.Count > 0)
+				Console.WriteLine ($"    Missing dSYMs:\n        {string.Join ("\n        ", missingDSyms)}");
+			if (unexpectedDSyms.Count > 0)
+				Console.WriteLine ($"    Unexpected dSYMs:\n        {string.Join ("\n        ", unexpectedDSyms)}");
+
+			Assert.That (missingDSyms, Is.Empty, "Missing dSYMs");
+			Assert.That (unexpectedDSyms, Is.Empty, "Unexpected dSYMs");
 		}
 	}
 

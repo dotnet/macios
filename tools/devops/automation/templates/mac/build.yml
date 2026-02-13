@@ -191,6 +191,8 @@ steps:
     MONO_DEBUG: no-gdb-backtrace
     TEST_BOT: $(Agent.Name)
     IS_PR: $(parameters.isPr)
+    MAC_TEST_PREFIX: ${{ parameters.stageName }}${{ parameters.label }}
+    VSDROPSPREFIX: $(VSDropsPrefix)
 
 - bash: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/collect-and-upload-crash-reports.sh
   displayName: 'Collect and upload crash reports'

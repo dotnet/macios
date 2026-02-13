@@ -145,6 +145,17 @@ if ($HtmlReportPath -ne "") {
     $toolArgs += @("--crash-reports-dir", $crashReportsDir)
   }
 
+  # Construct vsdrops URI for link rewriting (same pattern as create-windows-html-report)
+  $vsdropsPrefix = $Env:VSDROPSPREFIX
+  $testPrefix = $Env:MAC_TEST_PREFIX
+  if ($vsdropsPrefix -and $testPrefix) {
+    $buildNumber = $Env:BUILD_BUILDNUMBER
+    $buildId = $Env:BUILD_BUILDID
+    $jobAttempt = $Env:SYSTEM_JOBATTEMPT
+    $vsdropsUri = "$vsdropsPrefix/$buildNumber/$buildId/$testPrefix-$jobAttempt/;/tests/"
+    $toolArgs += @("--vsdrops-uri", $vsdropsUri)
+  }
+
   Write-Host "Running HTML report generator: dotnet $($toolArgs -join ' ')"
   & dotnet @toolArgs
   if ($LASTEXITCODE -ne 0) {

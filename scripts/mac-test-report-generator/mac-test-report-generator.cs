@@ -60,10 +60,12 @@ tests.Sort ((a, b) => string.Compare (a.Name, b.Name, StringComparison.OrdinalIg
 var passedCount = tests.Count (t => t.Passed);
 var failedCount = tests.Count - passedCount;
 
-// Copy per-test output files to output directory
+// Copy per-test output files to output directory, and extract [FAIL] lines
 var perTestFiles = new Dictionary<string, List<(string DisplayName, string FileName)>> ();
+var perTestFailures = new Dictionary<string, List<string>> ();
 foreach (var test in tests) {
 	var files = new List<(string DisplayName, string FileName)> ();
+	var failLines = new List<string> ();
 	if (!string.IsNullOrEmpty (testOutputDir)) {
 		var testStdout = Path.Combine (testOutputDir, $"{test.Name}-stdout.txt");
 		var testStderr = Path.Combine (testOutputDir, $"{test.Name}-stderr.txt");
@@ -71,14 +73,27 @@ foreach (var test in tests) {
 			var destName = $"{test.Name}-stdout.txt";
 			File.Copy (testStdout, Path.Combine (outputDir!, destName), overwrite: true);
 			files.Add (("stdout", destName));
+			// Extract [FAIL] lines from stdout
+			foreach (var line in File.ReadLines (testStdout)) {
+				var trimmed = line.TrimStart ();
+				if (trimmed.StartsWith ("[FAIL]", StringComparison.Ordinal))
+					failLines.Add (trimmed);
+			}
 		}
 		if (File.Exists (testStderr)) {
 			var destName = $"{test.Name}-stderr.txt";
 			File.Copy (testStderr, Path.Combine (outputDir!, destName), overwrite: true);
 			files.Add (("stderr", destName));
+			// Extract [FAIL] lines from stderr too
+			foreach (var line in File.ReadLines (testStderr)) {
+				var trimmed = line.TrimStart ();
+				if (trimmed.StartsWith ("[FAIL]", StringComparison.Ordinal))
+					failLines.Add (trimmed);
+			}
 		}
 	}
 	perTestFiles [test.Name] = files;
+	perTestFailures [test.Name] = failLines;
 }
 
 // Collect crash reports
@@ -129,6 +144,18 @@ foreach (var test in tests) {
 	var cssClass = test.Passed ? "passed" : "failed";
 	var resultText = test.Passed ? "Passed" : "Failed";
 	sb.AppendLine ($"<h3>{statusEmoji} {HttpUtility.HtmlEncode (test.Name)} — <span class='{cssClass}'>{resultText}</span></h3>");
+
+	// Show first 10 [FAIL] lines for failing tests
+	var failLines = perTestFailures [test.Name];
+	if (failLines.Count > 0) {
+		sb.AppendLine ("<ul style='color: #cf222e; font-family: monospace; font-size: 0.9em;'>");
+		var maxFails = Math.Min (failLines.Count, 10);
+		for (var j = 0; j < maxFails; j++)
+			sb.AppendLine ($"<li>{HttpUtility.HtmlEncode (failLines [j])}</li>");
+		if (failLines.Count > 10)
+			sb.AppendLine ($"<li>... and {failLines.Count - 10} more failures</li>");
+		sb.AppendLine ("</ul>");
+	}
 
 	var files = perTestFiles [test.Name];
 	if (files.Count > 0) {

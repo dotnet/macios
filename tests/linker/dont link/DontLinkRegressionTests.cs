@@ -130,5 +130,31 @@ namespace DontLink {
 		[DllImport ("/usr/lib/libsqlite3.dylib")]
 		static extern void foo ();
 #endif
+
+		// TEMPORARY: Intentionally failing tests to verify failure rendering.
+		// Remove this block once failure reporting has been verified.
+		[Test]
+		public void TemporaryFailing_RenderingVerification_1 ()
+		{
+			Assert.Fail ("This test intentionally fails to verify failure rendering in the HTML report and GitHub comment.");
+		}
+
+		[Test]
+		public void TemporaryFailing_RenderingVerification_2 ()
+		{
+			Assert.AreEqual (42, 0, "This test intentionally fails to verify how multiple failures are shown.");
+		}
+
+		[Test]
+		public void TemporaryFailing_RenderingVerification_3 ()
+		{
+			Assert.IsTrue (false, "Third intentional failure to verify truncation behavior in the GitHub comment.");
+		}
+
+		[Test]
+		public void TemporaryFailing_RenderingVerification_4 ()
+		{
+			Assert.IsNotNull (null, "Fourth intentional failure to verify the 'and X more...' truncation.");
+		}
 	}
 }

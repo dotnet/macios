@@ -38,6 +38,8 @@ Write-Host "Tests path is $testsPath"
 dir env:
 
 [System.Collections.Generic.List[string]]$failures = @()
+# Track [FAIL] lines per test suite for the GitHub comment
+$failLinesByTest = @{}
 
 # Claim that the tests timed out before we start
 Set-Content -Path "$GithubFailureCommentFile" -Value "Tests timed out"
@@ -49,10 +51,6 @@ if (-not (Test-Path -Path $testOutputDir)) {
 }
 
 $macTest = @("dontlink", "introspection", "linksdk", "linkall", "monotouch-test")
-
-# TEMPORARY: Force failures in some test suites for verification.
-# Remove this block once failure reporting has been verified.
-$temporaryForcedFailures = @("linksdk", "introspection")
 
 foreach ($t in $macTest) {
   $testName = "exec-$t"
@@ -68,15 +66,21 @@ foreach ($t in $macTest) {
     -RedirectStandardError $stderrFile `
     -NoNewWindow -Wait -PassThru
 
-  if ($proc.ExitCode -eq 0 -and -not $temporaryForcedFailures.Contains($t)) {
+  if ($proc.ExitCode -eq 0) {
     Write-Host "$t succeeded"
   } else {
-    if ($temporaryForcedFailures.Contains($t)) {
-      Write-Host "$t TEMPORARILY FORCED TO FAIL for verification"
-    }
     Write-Host "$t failed with error $($proc.ExitCode)"
     $failures.Add($t)
   }
+
+  # Extract [FAIL] lines from stdout/stderr
+  $failLines = @()
+  foreach ($logFile in @($stdoutFile, $stderrFile)) {
+    if (Test-Path -Path $logFile) {
+      $failLines += @(Get-Content -Path $logFile | ForEach-Object { $_.TrimStart() } | Where-Object { $_.StartsWith("[FAIL]") })
+    }
+  }
+  $failLinesByTest[$t] = $failLines
 }
 if ($failures.Count -ne 0) {
   # post status and comment in the build
@@ -121,6 +125,17 @@ if ($TestSummaryPath -ne "") {
     $sb.AppendLine("")
     foreach ($test in $failures) {
       $sb.AppendLine("* ${test}: Failed")
+      # Show first 3 [FAIL] lines from the test output
+      $testFailLines = $failLinesByTest[$test]
+      if ($testFailLines -and $testFailLines.Count -gt 0) {
+        $maxShow = [Math]::Min($testFailLines.Count, 3)
+        for ($i = 0; $i -lt $maxShow; $i++) {
+          $sb.AppendLine("    * ``$($testFailLines[$i])``")
+        }
+        if ($testFailLines.Count -gt 3) {
+          $sb.AppendLine("    * ... and $($testFailLines.Count - 3) more failures")
+        }
+      }
     }
     $sb.AppendLine("</details>")
     Set-Content -Path $TestSummaryPath -Value $sb.ToString()

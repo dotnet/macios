@@ -17606,7 +17606,6 @@ M:UIKit.UITraitChangeObservable_Extensions.RegisterForTraitChanges(UIKit.IUITrai
 M:UIKit.UITraitChangeObservable_Extensions.RegisterForTraitChanges(UIKit.IUITraitChangeObservable,ObjCRuntime.Class[],ObjCRuntime.Selector)
 M:UIKit.UITraitChangeObservable_Extensions.RegisterForTraitChanges(UIKit.IUITraitChangeObservable,ObjCRuntime.Class[],System.Action{UIKit.IUITraitEnvironment,UIKit.UITraitCollection})
 M:UIKit.UITraitCollection.GetChangedTraits2(UIKit.UITraitCollection)
-M:UIKit.UIVibrancyEffect.CreateWidgetEffectForNotificationCenter(UIKit.UIVibrancyEffectStyle)
 M:UIKit.UIVideoEditorController.add_Failed(System.EventHandler{Foundation.NSErrorEventArgs})
 M:UIKit.UIVideoEditorController.add_Saved(System.EventHandler{UIKit.UIPathEventArgs})
 M:UIKit.UIVideoEditorController.add_UserCancelled(System.EventHandler)

@@ -58,7 +58,6 @@ IOS_WINDOWS_DEPENDENCIES = System.Diagnostics.Tracer System.Formats.Asn1 System.
 PROPS_AND_TARGETS = \
 	$(wildcard Xamarin.Shared/*.props)   \
 	$(wildcard Xamarin.Shared/*.targets) \
-	$(wildcard Xamarin.ObjcBinding.Tasks/*.targets) \
 
 MSBUILD_TASK_ASSEMBLIES += $(TASK_ASSEMBLIES)
 
@@ -89,9 +88,6 @@ $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/%: Xamarin.MacDev.Tasks/b
 	$$(Q) install -m 644 $$< $$@
 
 $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/%: Xamarin.Localization.MSBuild/bin/$(CONFIG)/$(TARGETFRAMEWORK)/% | $$(DOTNET_DIRECTORIES_$(1))
-	$$(Q) install -m 644 $$< $$@
-
-$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/%: Xamarin.ObjcBinding.Tasks/% | $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild
 	$$(Q) install -m 644 $$< $$@
 endef
 

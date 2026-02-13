@@ -259,7 +259,7 @@ namespace ObjCRuntime {
 			return Runtime.RetainAndAutoreleaseNSObject (rv);
 		}
 
-		unsafe static void NSArray_string_native_to_managed (IntPtr* ptr, ref string []? value, ref string []? copy)
+		unsafe static void NSArray_string_native_to_managed (IntPtr* ptr, ref string? []? value, ref string? []? copy)
 		{
 			if (ptr is not null) {
 				value = NSArray.StringArrayFromHandle (*ptr);

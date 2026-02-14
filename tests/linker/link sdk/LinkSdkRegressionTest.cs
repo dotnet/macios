@@ -1075,5 +1075,17 @@ namespace LinkSdk {
 			Thread.CurrentPrincipal = new CustomPrincipal ();
 			Assert.That (Thread.CurrentPrincipal.Identity.Name, Is.EqualTo ("abc"), "Name");
 		}
+
+		[Test]
+		// https://github.com/dotnet/macios/issues/24663
+		public void TrimmedINativeObjectConstructorFieldsMustBePreserved ()
+		{
+			// Reference AudioBuffers (an INativeObject) as a type without calling
+			// any of its constructors. This causes the type to be preserved but its
+			// constructors to be trimmed. The managed static registrar's lookup table
+			// step re-marks the constructor, and must also mark the fields referenced
+			// by the constructor body.
+			GC.KeepAlive (typeof (AudioToolbox.AudioBuffers));
+		}
 	}
 }

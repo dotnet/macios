@@ -335,8 +335,7 @@ namespace Xamarin.Linker {
 				}
 
 				var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
-				if (IsTrimmed (ctor))
-					Annotations.Mark (ctor.Resolve ());
+				MarkConstructorIfTrimmed (ctor);
 
 				// We can only add a type to the table if it's not an open type.
 				if (!ManagedRegistrarStep.IsOpenType (type)) {
@@ -393,14 +392,7 @@ namespace Xamarin.Linker {
 					var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 					// we need to preserve the constructor because it might not be used anywhere else
-					if (IsTrimmed (ctor)) {
-						var ctorDefinition = ctor.Resolve ();
-						Annotations.Mark (ctorDefinition);
-						foreach (var instr in ctorDefinition.Body.Instructions) {
-							if (instr.Operand is MethodReference mr)
-								Annotations.Mark (mr.Resolve ());
-						}
-					}
+					MarkConstructorIfTrimmed (ctor);
 
 					if (!ManagedRegistrarStep.IsOpenType (type)) {
 						EnsureVisible (createInstanceMethod, ctor);
@@ -431,6 +423,25 @@ namespace Xamarin.Linker {
 			il.Emit (OpCodes.Ret);
 
 			body.GenerateILOffsets ();
+		}
+
+		// We need to preserve the constructor because it might not be used anywhere else.
+		// We also need to preserve all method and field references from the constructor body,
+		// because the mark step has already completed and won't transitively mark them.
+		// Ref: https://github.com/dotnet/macios/issues/24663
+		void MarkConstructorIfTrimmed (MethodReference ctor)
+		{
+			if (!IsTrimmed (ctor))
+				return;
+
+			var ctorDefinition = ctor.Resolve ();
+			Annotations.Mark (ctorDefinition);
+			foreach (var instr in ctorDefinition.Body.Instructions) {
+				if (instr.Operand is MethodReference mr)
+					Annotations.Mark (mr.Resolve ());
+				else if (instr.Operand is FieldReference fr)
+					Annotations.Mark (fr.Resolve ());
+			}
 		}
 
 		void AddTypeInterfaceImplementation (TypeDefinition type, TypeReference iface)

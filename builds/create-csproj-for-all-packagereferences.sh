@@ -50,6 +50,9 @@ cd "$(git rev-parse --show-toplevel)"
 # Find all <PackageReference /> items that has an Include="..." and a Version="..."
 git grep -e '<PackageReference.*Include="[a-zA-Z0-9._-]*".*Version="[a-zA-Z0-9._-]*".*>' -h > "$TMPPATH"
 
+# Find all <Sdk Name="..." Version=".."> nodes
+git grep -e '^[[:space:]]*<Sdk Name="[a-zA-Z0-9._-]*".*Version="['\$'()a-zA-Z0-9._-]*".*>' -h | sed -e 's/Name=/Include=/' -e 's/<Sdk/<PackageReference/' >> "$TMPPATH"
+
 # Replace double double quotes with a single double quote. This happens in source code that generates project files (for tests).
 sed "${SED_INPLACE_FLAGS[@]}" 's/""/"/g' "$TMPPATH"
 
@@ -60,7 +63,7 @@ sed "${SED_INPLACE_FLAGS[@]}" '/Xamarin.Tests.XCFrameworkWithStaticLibraryInRunt
 sed "${SED_INPLACE_FLAGS[@]}" '/Xamarin.Tests.XCFrameworkWithSymlinks/d' "$TMPPATH"
 
 # Get only the name and version of each package, and write that back in a PackageDownload item
-sed "${SED_INPLACE_FLAGS[@]}" 's@.*<PackageReference.*Include="\([a-zA-Z0-9._-]*\)".*Version="\([a-zA-Z0-9._-]*\)".*>.*@\t\t<PackageDownload Include="\1" Version="[\2]" />@g' "$TMPPATH"
+sed "${SED_INPLACE_FLAGS[@]}" 's@.*<PackageReference.*Include="\([a-zA-Z0-9._-]*\)".*Version="\(['\$'()a-zA-Z0-9._-]*\)".*>.*@\t\t<PackageDownload Include="\1" Version="[\2]" />@g' "$TMPPATH"
 
 # Sort the references and only list each once.
 sort -u -o "$TMPPATH" "$TMPPATH"

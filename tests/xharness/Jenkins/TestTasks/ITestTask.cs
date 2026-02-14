@@ -26,6 +26,7 @@ namespace Xharness.Jenkins.TestTasks {
 		bool Failed { get; }
 		bool TimedOut { get; }
 		bool Crashed { get; }
+		bool LaunchFailure { get; }
 		bool DeviceNotFound { get; }
 
 		public TimeSpan WaitingDuration { get; }

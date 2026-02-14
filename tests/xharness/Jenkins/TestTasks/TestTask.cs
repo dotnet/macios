@@ -72,6 +72,7 @@ namespace Xharness.Jenkins.TestTasks {
 		public bool DeviceNotFound => ExecutionResult == TestExecutingResult.DeviceNotFound;
 
 		public bool Crashed => (ExecutionResult & TestExecutingResult.Crashed) == TestExecutingResult.Crashed;
+		public bool LaunchFailure => (ExecutionResult & TestExecutingResult.LaunchFailure) == TestExecutingResult.LaunchFailure;
 		public bool TimedOut => (ExecutionResult & TestExecutingResult.TimedOut) == TestExecutingResult.TimedOut;
 		public bool BuildFailure => (ExecutionResult & TestExecutingResult.BuildFailure) == TestExecutingResult.BuildFailure;
 		public bool HarnessException => (ExecutionResult & TestExecutingResult.HarnessException) == TestExecutingResult.HarnessException;

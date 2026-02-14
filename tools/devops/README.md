@@ -447,7 +447,6 @@ build-pipeline.yml (Entry Point - CI)
 │
 ├─► resources:
 │   ├─► xamarin.yaml-templates
-│   ├─► macios-adr
 │   └─► 1ESPipelineTemplates/MicroBuildTemplate
 │
 └─► stages:
@@ -576,7 +575,6 @@ build-pull-request.yml (Entry Point - PR)
 │
 ├─► resources:
 │   ├─► xamarin.yaml-templates
-│   ├─► macios-adr
 │   └─► 1ESPipelineTemplates/MicroBuildTemplate
 │
 └─► stages:
@@ -588,7 +586,6 @@ build-pull-request.yml (Entry Point - PR)
         │       ├─► templates/common/checkout.yml
         │       │   ├─► sdk-unified/steps/checkout/v1.yml@yaml-templates
         │       │   ├─► scripts/undo_github_merge.ps1
-        │       │   └─► checkout: macios-adr, yaml-templates
         │       ├─► scripts/bash/configure-platforms.sh
         │       ├─► scripts/bash/validate-xcode-channel.sh
         │       ├─► scripts/parse_pr_labels.ps1 (via MaciosCI.psd1)
@@ -781,7 +778,6 @@ Symbol  Meaning
 | Repository | Purpose |
 |------------|---------|
 | `xamarin.yaml-templates` | Shared YAML templates |
-| `macios-adr` | API diff reference data |
 | `1ESPipelineTemplates/MicroBuildTemplate` | 1ES compliance templates |
 
 ### Azure DevOps Variable Groups
@@ -812,7 +808,6 @@ Symbol  Meaning
    - Check keychain password is correct
 
 4. **API diff failures**
-   - Verify `macios-adr` repository is accessible
    - Check base commit exists
 
 ### Debug Mode

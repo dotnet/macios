@@ -14,6 +14,8 @@ namespace Xharness.Jenkins.TestTasks {
 				return first.GetTestColor ();
 			if (tests.Any ((v) => v.Crashed))
 				return "maroon";
+			else if (tests.Any ((v) => v.LaunchFailure))
+				return "coral";
 			else if (tests.Any ((v) => v.TimedOut))
 				return "purple";
 			else if (tests.Any ((v) => v.BuildFailure))
@@ -49,6 +51,8 @@ namespace Xharness.Jenkins.TestTasks {
 			} else {
 				if (test.Crashed) {
 					return "maroon";
+				} else if (test.LaunchFailure) {
+					return "coral";
 				} else if (test.HarnessException) {
 					return "orange";
 				} else if (test.TimedOut) {

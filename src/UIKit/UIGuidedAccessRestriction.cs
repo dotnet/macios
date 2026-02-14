@@ -10,32 +10,25 @@
 using System.Threading.Tasks;
 using UIKit;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 
 	/// <summary>A static class that provides a method to determine the state of a Guided Access restriction.</summary>
-	///     <remarks>
-	///     </remarks>
 	public static partial class UIGuidedAccessRestriction {
 #if !COREBUILD
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		extern static /* UIGuidedAccessRestrictionState */ nint UIGuidedAccessRestrictionStateForIdentifier (/* NSString */ IntPtr restrictionIdentifier);
 
+		/// <summary>Returns the state (allow, deny) for the specified <paramref name="restrictionIdentifier" />.</summary>
 		/// <param name="restrictionIdentifier">The identifier of the restriction.</param>
-		///         <summary>Returns the state (allow,deny) for the specified <paramref name="restrictionIdentifier" />.</summary>
-		///         <returns>
-		///           <see cref="UIKit.UIGuidedAccessRestrictionState.Allow" /> means that the application should allow the behavior. <see cref="UIKit.UIGuidedAccessRestrictionState.Deny" /> means that the application should not allow the behavior.</returns>
-		///         <remarks>
-		/// 	  You can enable Guided Access mode by calling <see cref="UIKit.UIAccessibility.RequestGuidedAccessSession(System.Boolean,System.Action{System.Boolean})" />.
-		/// 	</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <returns>
+		/// <see cref="UIGuidedAccessRestrictionState.Allow" /> means that the application should allow the behavior.
+		/// <see cref="UIGuidedAccessRestrictionState.Deny" /> means that the application should not allow the behavior.
+		/// </returns>
+		/// <remarks>
+		/// You can enable Guided Access mode by calling <see cref="UIAccessibility.RequestGuidedAccessSession(bool, Action{bool})" />.
+		/// </remarks>
 		public static UIGuidedAccessRestrictionState GetState (string restrictionIdentifier)
 		{
 			IntPtr p = NSString.CreateNative (restrictionIdentifier);
@@ -45,17 +38,13 @@ namespace UIKit {
 		}
 
 #if IOS
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.UIKitLibrary)]
 		static unsafe extern void UIGuidedAccessConfigureAccessibilityFeatures (/* UIGuidedAccessAccessibilityFeature */ nuint features, byte enabled, BlockLiteral* completion);
 
-		/// <param name="success">To be added.</param>
-		///     <param name="error">To be added.</param>
-		///     <summary>To be added.</summary>
-		///     <remarks>To be added.</remarks>
-		public delegate void UIGuidedAccessConfigureAccessibilityFeaturesCompletionHandler (bool success, NSError error);
+		/// <summary>A handler that is called when the guided access accessibility features configuration completes.</summary>
+		/// <param name="success">Whether the configuration was successful.</param>
+		/// <param name="error">The error that occurred, or <see langword="null" /> if the operation was successful.</param>
+		public delegate void UIGuidedAccessConfigureAccessibilityFeaturesCompletionHandler (bool success, NSError? error);
 
 		static internal class UIGuidedAccessConfigureAccessibilityFeaturesTrampoline {
 			[UnmanagedCallersOnlyAttribute]
@@ -68,19 +57,14 @@ namespace UIKit {
 			}
 		}
 
-		/// <param name="features">To be added.</param>
-		///         <param name="enabled">To be added.</param>
-		///         <param name="completionHandler">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Configures the specified guided access accessibility features.</summary>
+		/// <param name="features">The accessibility features to configure.</param>
+		/// <param name="enabled">Whether the features should be enabled or disabled.</param>
+		/// <param name="completionHandler">The handler that is called when the configuration completes.</param>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void ConfigureAccessibilityFeatures (UIGuidedAccessAccessibilityFeature features, bool enabled, UIGuidedAccessConfigureAccessibilityFeaturesCompletionHandler completionHandler)
 		{
-			if (completionHandler is null)
-				throw new ArgumentNullException (nameof (completionHandler));
+			ArgumentNullException.ThrowIfNull (completionHandler);
 
 			unsafe {
 				delegate* unmanaged<IntPtr, byte, IntPtr, void> trampoline = &UIGuidedAccessConfigureAccessibilityFeaturesTrampoline.Invoke;
@@ -89,18 +73,14 @@ namespace UIKit {
 			}
 		}
 
-		/// <param name="features">To be added.</param>
-		///         <param name="enabled">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		[SupportedOSPlatform ("ios")]
-		[SupportedOSPlatform ("maccatalyst")]
-		[SupportedOSPlatform ("tvos")]
+		/// <summary>Asynchronously configures the specified guided access accessibility features.</summary>
+		/// <param name="features">The accessibility features to configure.</param>
+		/// <param name="enabled">Whether the features should be enabled or disabled.</param>
+		/// <returns>A task that represents the asynchronous operation, containing a tuple with the success status and any error that occurred.</returns>
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		public static Task<(bool Success, NSError Error)> ConfigureAccessibilityFeaturesAsync (UIGuidedAccessAccessibilityFeature features, bool enabled)
+		public static Task<(bool Success, NSError? Error)> ConfigureAccessibilityFeaturesAsync (UIGuidedAccessAccessibilityFeature features, bool enabled)
 		{
-			var tcs = new TaskCompletionSource<(bool, NSError)> ();
+			var tcs = new TaskCompletionSource<(bool, NSError?)> ();
 			ConfigureAccessibilityFeatures (features, enabled, (success_, error_) => tcs.SetResult ((success_, error_)));
 			return tcs.Task;
 		}

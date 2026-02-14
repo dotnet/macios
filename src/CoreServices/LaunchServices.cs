@@ -167,8 +167,7 @@ namespace CoreServices {
 				return Runtime.GetNSObject<NSUrl> (
 					LSCopyDefaultApplicationURLForContentType (contentTypeHandle, roles, IntPtr.Zero)
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (contentTypeHandle);
 			}
 		}
@@ -263,8 +262,7 @@ namespace CoreServices {
 				return NSArray.ArrayFromHandle<NSUrl> (
 					LSCopyApplicationURLsForBundleIdentifier (bundleIdentifierHandle, IntPtr.Zero)
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (bundleIdentifierHandle);
 			}
 		}
@@ -355,8 +353,7 @@ namespace CoreServices {
 				return CFArray.StringArrayFromHandle (
 					LSCopyAllRoleHandlersForContentType (contentTypeHandle, roles)
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (contentTypeHandle);
 			}
 		}
@@ -383,8 +380,7 @@ namespace CoreServices {
 				return Runtime.GetNSObject<NSString> (
 					LSCopyDefaultRoleHandlerForContentType (contentTypeHandle, roles)
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (contentTypeHandle);
 			}
 		}
@@ -420,8 +416,7 @@ namespace CoreServices {
 					roles,
 					handlerBundleIdHandle
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (contentTypeHandle);
 				CFString.ReleaseNative (handlerBundleIdHandle);
 			}
@@ -448,8 +443,7 @@ namespace CoreServices {
 				return CFArray.StringArrayFromHandle (
 					LSCopyAllHandlersForURLScheme (urlSchemeHandle)
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (urlSchemeHandle);
 			}
 		}
@@ -475,8 +469,7 @@ namespace CoreServices {
 				return Runtime.GetNSObject<NSString> (
 					LSCopyDefaultHandlerForURLScheme (urlSchemeHandle)
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (urlSchemeHandle);
 			}
 		}
@@ -507,8 +500,7 @@ namespace CoreServices {
 					urlSchemeHandle,
 					handlerBundleIdHandle
 				);
-			}
-			finally {
+			} finally {
 				CFString.ReleaseNative (urlSchemeHandle);
 				CFString.ReleaseNative (handlerBundleIdHandle);
 			}

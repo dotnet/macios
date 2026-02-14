@@ -219,7 +219,6 @@ namespace Cecil.Tests {
 			"UIKit.UIContentSizeCategoryExtensions.Compare (UIKit.UIContentSizeCategory, UIKit.UIContentSizeCategory)",
 			"UIKit.UIFontFeature.ObjCRuntime.INativeObject.get_Handle ()",
 			"UIKit.UIPasteboard.set_Images (UIKit.UIImage[])",
-			"UIKit.UIToolbar.SetItems (UIKit.UIBarButtonItem[], System.Boolean)",
 			"VideoToolbox.VTCompressionSession.SetCompressionProperties (VideoToolbox.VTCompressionProperties)",
 			"VideoToolbox.VTDecompressionSession.SetDecompressionProperties (VideoToolbox.VTDecompressionProperties)",
 			"VideoToolbox.VTPixelRotationSession.SetRotationProperties (VideoToolbox.VTPixelRotationProperties)",

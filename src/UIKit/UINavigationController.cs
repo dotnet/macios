@@ -3,7 +3,7 @@ namespace UIKit {
 	public partial class UINavigationController {
 		static IntPtr LookupClass (Type t)
 		{
-			return t is null ? IntPtr.Zero : Class.GetHandle (t);
+			return Class.GetHandle (t);
 		}
 
 		/// <param name="navigationBarType">To be added.</param>

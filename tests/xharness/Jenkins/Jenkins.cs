@@ -286,6 +286,7 @@ namespace Xharness.Jenkins {
 				Console.WriteLine ($"    Succeeded: {Tasks.Count (v => v.Succeeded)}");
 				Console.WriteLine ($"    Failed: {Tasks.Count (v => v.Failed)}");
 				Console.WriteLine ($"    Crashed: {Tasks.Count (v => v.Crashed)}");
+				Console.WriteLine ($"    LaunchFailure: {Tasks.Count (v => v.LaunchFailure)}");
 				Console.WriteLine ($"    TimedOut: {Tasks.Count (v => v.TimedOut)}");
 				Console.WriteLine ($"    DeviceNotFound: {Tasks.Count (v => v.DeviceNotFound)}");
 				Console.WriteLine ($"    NotStarted: {Tasks.Count (v => v.NotStarted)}");

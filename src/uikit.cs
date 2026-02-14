@@ -21217,9 +21217,8 @@ namespace UIKit {
 		[Export ("translucent", ArgumentSemantic.Assign)]
 		bool Translucent { [Bind ("isTranslucent")] get; set; }
 
-		// done manually so we can keep this "in sync" with 'Items' property
-		//[Export ("setItems:animated:")][PostGet ("Items")]
-		//void SetItems (UIBarButtonItem [] items, bool animated);
+		[Export ("setItems:animated:")]
+		void SetItems ([NullAllowed] UIBarButtonItem [] items, bool animated);
 
 		/// <param name="backgroundImage">To be added.</param>
 		/// <param name="position">To be added.</param>

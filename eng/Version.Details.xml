@@ -107,7 +107,7 @@
       <Uri>https://github.com/dotnet/dotnet</Uri>
       <Sha>24f66fec875855c1e7bcddebf0703b2fcab1ee3e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.26107.1">
+    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.26114.1">
       <Uri>https://github.com/dotnet/xharness</Uri>
       <Sha>bfbac237157e59cdbd19334325b2af80bd6e9828</Sha>
     </Dependency>

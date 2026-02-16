@@ -1,11 +1,7 @@
 #if IOS
-using System.Drawing;
 using System.Runtime.CompilerServices;
-using System.Diagnostics;
-using System.ComponentModel;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 	public partial class UIPasteboard {
@@ -18,16 +14,14 @@ namespace UIKit {
 				var ret = new UIImage [array.Count];
 				for (uint i = 0; i < ret.Length; i++) {
 					var obj = Runtime.GetNSObject (array.ValueAt (i));
-					var data = obj as NSData;
-					UIImage img;
 
-					if (data is not null) {
-						img = new UIImage (data);
-					} else {
-						img = (UIImage) obj;
+					if (obj is NSData data) {
+						ret [i] = new UIImage (data);
+					} else if (obj is UIImage img) {
+						ret [i] = img;
+					} else if (obj is not null) {
+						throw new System.InvalidOperationException ("Unexpected object type in UIPasteboard images array: " + obj.GetType ().FullName);
 					}
-
-					ret [i] = img;
 				}
 
 				return ret;
@@ -40,6 +34,7 @@ namespace UIKit {
 		// the NSData objects whenever required, so that we can keep our existing
 		// API and not make users change their code.
 
+		/// <summary>Gets or sets the images on the pasteboard.</summary>
 		[CompilerGenerated]
 		public virtual UIImage [] Images {
 			[Export ("images", ArgumentSemantic.Copy)]

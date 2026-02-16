@@ -43,8 +43,7 @@ namespace UIKit {
 		[UnmanagedCallersOnly]
 		static unsafe IntPtr Invoke (IntPtr block, IntPtr color)
 		{
-			var descriptor = (BlockLiteral*) block;
-			var del = (UIConfigurationColorTransformerHandler) (descriptor->Target);
+			var del = BlockLiteral.GetTarget<UIConfigurationColorTransformerHandler> (block);
 			var retval = del is null ? null : del (Runtime.GetNSObject<UIColor> (color)!);
 			return Runtime.RetainAndAutoreleaseNSObject (retval);
 		}

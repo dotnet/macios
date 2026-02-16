@@ -3120,7 +3120,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	</Target>
 
 	<!--
-		Strip mergeable library metadata (LC_ATOM_INFO) from frameworks in the app bundle.
+		Strip mergeable library metadata (LC_ATOM_INFO) from frameworks and dylibs in the app bundle.
 		This runs independently of the regular symbol stripping, because symbol stripping
 		may be disabled (e.g. simulator builds, debug builds, macOS/MacCatalyst).
 	-->
@@ -3134,6 +3134,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
 			FrameworksDirectory="$(_AppFrameworksPath)"
+			DylibDirectories="$(_AppContentsPath)"
 		/>
 	</Target>
 

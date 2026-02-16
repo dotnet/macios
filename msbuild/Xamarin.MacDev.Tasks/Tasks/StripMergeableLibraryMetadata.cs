@@ -9,12 +9,15 @@ using Xamarin.Messaging.Build.Client;
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	// Strips LC_ATOM_INFO (mergeable library metadata) from all frameworks in a directory.
+	// Strips LC_ATOM_INFO (mergeable library metadata) from frameworks and dylibs in an app bundle.
 	public class StripMergeableLibraryMetadata : XamarinTask, ITaskCallback {
 		#region Inputs
 
-		[Required]
+		// The Frameworks directory inside the app bundle.
 		public string FrameworksDirectory { get; set; } = string.Empty;
+
+		// Additional directories to scan for mergeable dylibs (e.g. MonoBundle).
+		public string [] DylibDirectories { get; set; } = [];
 
 		public string StripPath { get; set; } = string.Empty;
 
@@ -25,40 +28,56 @@ namespace Xamarin.MacDev.Tasks {
 			if (ShouldExecuteRemotely ())
 				return ExecuteRemotely ();
 
-			if (!Directory.Exists (FrameworksDirectory)) {
-				Log.LogMessage (MessageImportance.Low, $"Frameworks directory does not exist: {FrameworksDirectory}");
-				return true;
-			}
-
-			var frameworks = Directory.GetDirectories (FrameworksDirectory, "*.framework");
-			if (frameworks.Length == 0) {
-				Log.LogMessage (MessageImportance.Low, $"No frameworks found in: {FrameworksDirectory}");
-				return true;
-			}
-
-			foreach (var framework in frameworks) {
-				var name = Path.GetFileNameWithoutExtension (framework);
-				var executable = Path.Combine (framework, name);
-				if (!File.Exists (executable)) {
-					Log.LogMessage (MessageImportance.Low, $"Framework executable does not exist: {executable}");
-					continue;
-				}
-
-				if (!MachO.IsMergeableLibrary (executable)) {
-					Log.LogMessage (MessageImportance.Low, $"Framework is not a mergeable library: {executable}");
-					continue;
-				}
-
-				Log.LogMessage (MessageImportance.Normal, $"Stripping mergeable library metadata from: {executable}");
-
-				var args = new List<string> ();
-				var stripExecutable = GetExecutable (args, "strip", StripPath);
-				args.Add ("-no_atom_info");
-				args.Add (Path.GetFullPath (executable));
-				ExecuteAsync (stripExecutable, args).Wait ();
-			}
+			StripFrameworks ();
+			StripDylibs ();
 
 			return !Log.HasLoggedErrors;
+		}
+
+		void StripFrameworks ()
+		{
+			if (string.IsNullOrEmpty (FrameworksDirectory) || !Directory.Exists (FrameworksDirectory))
+				return;
+
+			foreach (var framework in Directory.GetDirectories (FrameworksDirectory, "*.framework")) {
+				var name = Path.GetFileNameWithoutExtension (framework);
+				var executable = Path.Combine (framework, name);
+				StripIfMergeable (executable);
+			}
+		}
+
+		void StripDylibs ()
+		{
+			if (DylibDirectories is null)
+				return;
+
+			foreach (var dir in DylibDirectories) {
+				if (string.IsNullOrEmpty (dir) || !Directory.Exists (dir))
+					continue;
+
+				foreach (var dylib in Directory.GetFiles (dir, "*.dylib")) {
+					StripIfMergeable (dylib);
+				}
+			}
+		}
+
+		void StripIfMergeable (string path)
+		{
+			if (!File.Exists (path))
+				return;
+
+			if (!MachO.IsMergeableLibrary (path)) {
+				Log.LogMessage (MessageImportance.Low, $"Not a mergeable library: {path}");
+				return;
+			}
+
+			Log.LogMessage (MessageImportance.Normal, $"Stripping mergeable library metadata from: {path}");
+
+			var args = new List<string> ();
+			var stripExecutable = GetExecutable (args, "strip", StripPath);
+			args.Add ("-no_atom_info");
+			args.Add (Path.GetFullPath (path));
+			ExecuteAsync (stripExecutable, args).Wait ();
 		}
 
 		public bool ShouldCopyToBuildServer (ITaskItem item) => false;

@@ -79,7 +79,7 @@ foreach ($t in $macTest) {
     if (Test-Path -Path $logFile) {
       $failLines += @(Get-Content -Path $logFile | ForEach-Object {
         $idx = $_.IndexOf("[FAIL]")
-        if ($idx -ge 0) { $_.Substring($idx) }
+        if ($idx -ge 0) { $_.Substring($idx + 6).TrimStart() }
       } | Where-Object { $_ })
     }
   }

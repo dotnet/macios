@@ -77,7 +77,7 @@ foreach (var test in tests) {
 			foreach (var line in File.ReadLines (testStdout)) {
 				var idx = line.IndexOf ("[FAIL]", StringComparison.Ordinal);
 				if (idx >= 0)
-					failLines.Add (line.Substring (idx));
+					failLines.Add (line.Substring (idx + "[FAIL]".Length).TrimStart ());
 			}
 		}
 		if (File.Exists (testStderr)) {
@@ -88,7 +88,7 @@ foreach (var test in tests) {
 			foreach (var line in File.ReadLines (testStderr)) {
 				var idx = line.IndexOf ("[FAIL]", StringComparison.Ordinal);
 				if (idx >= 0)
-					failLines.Add (line.Substring (idx));
+					failLines.Add (line.Substring (idx + "[FAIL]".Length).TrimStart ());
 			}
 		}
 	}

@@ -513,8 +513,34 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(_UseNativeAot)' == 'true'">
-		<IlcCompileDependsOn>Compile;_ComputeLinkerArguments;_ComputeManagedAssemblyToLink;SetupOSSpecificProps;PrepareForILLink;_XamarinComputeIlcCompileInputs</IlcCompileDependsOn>
+		<IlcCompileDependsOn>
+			Compile;
+			_ComputeLinkerArguments;
+			_ComputeManagedAssemblyToLink;
+			_XamarinComputeIlcProps;
+			SetupOSSpecificProps;
+			PrepareForILLink;
+			_XamarinComputeIlcCompileInputs;
+		</IlcCompileDependsOn>
 	</PropertyGroup>
+
+	<Target Name="_XamarinComputeIlcProps" DependsOnTargets="_DetectSdkLocations;_ComputeLinkerProperties">
+		<!-- Set a few properties needed by SetupOSSpecificProps -->
+		<PropertyGroup>
+			<!-- Set the 'SysRoot' variable, so that NativeAOT's build logic doesn't try to compute it, which doesn't work when building remotely from Windows. -->
+			<SysRoot Condition="'$(SysRoot)' == ''">$(_SdkRoot)</SysRoot>
+
+			<!-- default 'UseLdClassicXCodeLinker' to our value for '_UseClassicLinker', and in case it's still not set, default to 'false', since typically the new linker will work. -->
+			<UseLdClassicXCodeLinker Condition="'$(UseLdClassicXCodeLinker)' == ''">$(_UseClassicLinker)</UseLdClassicXCodeLinker>
+			<UseLdClassicXCodeLinker Condition="'$(UseLdClassicXCodeLinker)' == ''">false</UseLdClassicXCodeLinker>
+
+			<!-- Ask ILC to produce a static library -->
+			<NativeLib>static</NativeLib>
+
+			<!-- We will handle stripping ourselves, because NativeAOT's logic doesn't work when executing remotely from Windows -->
+			<StripSymbols>false</StripSymbols>
+		</PropertyGroup>
+	</Target>
 
 	<Target Name="SelectRegistrar" DependsOnTargets="_ComputeLinkMode">
 		<PropertyGroup>
@@ -1519,9 +1545,6 @@
 
 	<Target Name="_XamarinComputeIlcCompileInputs">
 		<PropertyGroup>
-			<!-- Ask ILC to produce a static library -->
-			<NativeLib>static</NativeLib>
-
 			<!-- Always enable trim warnings by default with NativeAOT -->
 			<SuppressTrimAnalysisWarnings Condition="'$(_OriginalSuppressTrimAnalysisWarnings)' != 'true'">false</SuppressTrimAnalysisWarnings>
 		</PropertyGroup>
@@ -1688,6 +1711,7 @@
 			_CompileNativeExecutable;
 			_ReidentifyDynamicLibraries;
 			_AddSwiftLinkerFlags;
+			_ComputeLinkerProperties;
 			_ComputeLinkNativeExecutableInputs;
 			_ForceLinkNativeExecutable;
 		</_LinkNativeExecutableDependsOn>
@@ -1716,6 +1740,18 @@
 			<_MainLinkerFlags Include="-L$(_SdkDevPath)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(_SwiftTargetPlatform)/" />
 			<_MainLinkerFlags Include="-L$(_SdkRoot)/usr/lib/swift/" />
 		</ItemGroup>
+	</Target>
+
+	<Target Name="_ComputeLinkerProperties"
+			DependsOnTargets="_DetectSdkLocations"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			>
+		<PropertyGroup>
+			<!-- There are known bugs in the classic linker with Xcode 15, so keep use the classic linker in that case -->
+			<!-- In Xcode 16 we don't know of any problems for now, so enable the new linker by default -->
+			<_UseClassicLinker Condition="'$(_UseClassicLinker)' == '' And $([MSBuild]::VersionGreaterThanOrEquals('$(_XcodeVersion)', '16.0'))">false</_UseClassicLinker>
+			<_UseClassicLinker Condition="'$(_UseClassicLinker)' == '' And $([MSBuild]::VersionGreaterThanOrEquals('$(_XcodeVersion)', '15.0'))">true</_UseClassicLinker>
+		</PropertyGroup>
 	</Target>
 
 	<Target Name="_ComputeLinkNativeExecutableInputs" Condition="'$(IsMacEnabled)' == 'true'">
@@ -1775,13 +1811,6 @@
 		</ItemGroup>
 
 		<WriteLinesToFile File="$(_MtouchSymbolsList)" Lines="@(_ProcessedReferenceNativeSymbol)" Overwrite="true" />
-
-		<PropertyGroup>
-			<!-- There are known bugs in the classic linker with Xcode 15, so keep use the classic linker in that case -->
-			<!-- In Xcode 16 we don't know of any problems for now, so enable the new linker by default -->
-			<_UseClassicLinker Condition="'$(_UseClassicLinker)' == '' And $([MSBuild]::VersionGreaterThanOrEquals('$(_XcodeVersion)', '16.0'))">false</_UseClassicLinker>
-			<_UseClassicLinker Condition="'$(_UseClassicLinker)' == '' And $([MSBuild]::VersionGreaterThanOrEquals('$(_XcodeVersion)', '15.0'))">true</_UseClassicLinker>
-		</PropertyGroup>
 
 		<ItemGroup>
 			<_AllLinkerFlags Include="@(_AssemblyLinkerFlags);@(_MainLinkerFlags);@(_CustomLinkFlags)" />

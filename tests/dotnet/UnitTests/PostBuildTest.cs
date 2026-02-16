@@ -264,6 +264,11 @@ namespace Xamarin.Tests {
 			// Verify the DSymName is correct for a dylib (should be "libframework.dSYM", not "libframework.dylib.dSYM")
 			var dSymName = dylibItem.GetMetadata ("DSymName");
 			Assert.That (dSymName, Is.EqualTo ("libframework.dSYM"), "DSymName for dylib");
+
+			// Debug builds don't generate dSYMs, verify none exist
+			var appContainerDir = Path.GetDirectoryName (appPath)!;
+			var dSymDirs = Directory.GetDirectories (appContainerDir, "*.dSYM");
+			Assert.That (dSymDirs, Is.Empty, "No dSYMs should exist for Debug builds");
 		}
 
 		[Test]
@@ -290,6 +295,11 @@ namespace Xamarin.Tests {
 			// Verify the DSymName is correct for a framework (should be "XTest.framework.dSYM")
 			var dSymName = frameworkItem.GetMetadata ("DSymName");
 			Assert.That (dSymName, Is.EqualTo ("XTest.framework.dSYM"), "DSymName for framework");
+
+			// Debug builds don't generate dSYMs, verify none exist
+			var appContainerDir = Path.GetDirectoryName (appPath)!;
+			var dSymDirs = Directory.GetDirectories (appContainerDir, "*.dSYM");
+			Assert.That (dSymDirs, Is.Empty, "No dSYMs should exist for Debug builds");
 		}
 
 		static List<ITaskItem> GetPostProcessingItems (string binLogPath)

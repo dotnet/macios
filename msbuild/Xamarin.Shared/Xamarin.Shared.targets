@@ -2947,7 +2947,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<IsAppExtension>$(IsAppExtension)</IsAppExtension>
 			</_PostProcessingItem>
 
-			<!-- Compute a few default values that's applicable to all _PostProcessingItem -->
+			<!-- Compute a few default values that are applicable to all _PostProcessingItem -->
 			<_PostProcessingItem>
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
 				<DSymName Condition="'%(_PostProcessingItem.DSymName)' == ''">%(Filename).dSYM</DSymName>

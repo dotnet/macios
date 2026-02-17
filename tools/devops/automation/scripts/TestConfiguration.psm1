@@ -95,6 +95,10 @@ class TestConfiguration {
                     $rv[$platformLabel] = $platformVars
                 }
             } else {
+                if ($this.enabledPlatforms.Length -eq 0 -and $config.supportsNoPlatforms -ne "true") {
+                    Write-Host "No enabled platforms, skipping test $label (supportsNoPlatforms=$($config.supportsNoPlatforms))"
+                    continue
+                }
                 # set non-platform specific variables
                 $vars["LABEL_WITH_PLATFORM"] = "$label"
                 $vars["STATUS_CONTEXT"] = "$($this.statusContext) - $($label)"

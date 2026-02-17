@@ -25,6 +25,8 @@ Usage: configure [options]
     --enable-xamarin
     --disable-xamarin       Enable/disable additional Xamarin-specific parts of the build.
 
+    --only-sharpie          Only build Objective-Sharpie. This is on by default for the branch 'release/sharpie', and disabled otherwise.
+
     --custom-dotnet=[dotnet/runtime] Use a locally built version of dotnet/runtime. Pass the path to an already build checkout of dotnet/runtime. See docs/CORECLR.md for detailed instructions about how to build dotnet/runtime from source.
 
     --ignore-unknown-params  alters the default behavior to not return an non-zero exit code when an unknown parameter is provided.
@@ -132,6 +134,14 @@ while test "x$1" != x; do
         ;;
     --disable-simulator)
         echo "INCLUDE_SIMULATOR=" >> "$CONFIGURED_FILE"
+        shift
+        ;;
+    --only-sharpie)
+        echo "ONLY_SHARPIE=1" >> "$CONFIGURED_FILE"
+        echo "INCLUDE_MAC=" >> $CONFIGURED_FILE
+        echo "INCLUDE_IOS=" >> $CONFIGURED_FILE
+        echo "INCLUDE_TVOS=" >> $CONFIGURED_FILE
+        echo "INCLUDE_MACCATALYST=" >> $CONFIGURED_FILE
         shift
         ;;
     --ignore-unknown-params)

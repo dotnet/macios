@@ -8,7 +8,13 @@ ifndef IS_LINUX
 SUBDIRS += runtime
 endif
 
-SUBDIRS += src msbuild tools
+SUBDIRS += src
+
+ifndef ONLY_SHARPIE
+SUBDIRS += msbuild
+endif
+
+SUBDIRS += tools
 
 ifndef IS_LINUX
 SUBDIRS += dotnet

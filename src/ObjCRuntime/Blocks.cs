@@ -83,7 +83,7 @@ namespace ObjCRuntime {
 	/// {
 	///     // Find the delegate for the block and call it
 	///     var callback = BlockLiteral.GetTarget<SetupHandlerCallback> (block);
-	///     if (callback != null)
+	///     if (callback is not null)
 	///         callback (offset, count);
 	/// }
 	///
@@ -92,7 +92,7 @@ namespace ObjCRuntime {
 	///
 	/// public void SetupHandler (SetupHandlerCallback callback)
 	/// {
-	///     if (callback == null)
+	///     if (callback is null)
 	///         throw new ArgumentNullException (nameof (callback));
 	///     delegate* unmanaged<IntPtr, double, int, void> trampoline = &TrampolineHandler;
 	///     usint var block = new BlockLiteral (trampoline, callback, GetType (), nameof (TrampolineHandler));

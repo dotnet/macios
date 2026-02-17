@@ -73,17 +73,6 @@
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_EnableTrimmingForR2RAssemblies"
-			Condition="'$(FilterReadyToRunAssemblies)' == 'true'"
-			AfterTargets="PrepareForILLink"
-			BeforeTargets="ILLink">
-		<ItemGroup>
-			<ManagedAssemblyToLink Update="@(ManagedAssemblyToLink)" Condition="'%(ManagedAssemblyToLink.NuGetPackageId)' != ''">
-				<TrimMode>link</TrimMode>
-			</ManagedAssemblyToLink>
-		</ItemGroup>
-	</Target>
-
 	<!--
 		The following section is to create either a .dylib or a .framework from the Composite
 		ReadyToRun output (which is an object file, which must be linked into a dynamic library).

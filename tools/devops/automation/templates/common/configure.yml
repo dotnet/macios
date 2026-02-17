@@ -84,6 +84,11 @@ parameters:
       testPrefix: 'simulator_tests',
     },
     {
+      label: sharpie,
+      splitByPlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+    {
       label: xcframework,
       splitByPlatforms: false,
       testPrefix: 'simulator_tests',

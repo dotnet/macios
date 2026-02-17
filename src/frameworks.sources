@@ -1749,7 +1749,6 @@ UIKIT_SOURCES = \
 	UIKit/UITraitChangeObservable.cs \
 	UIKit/UITraitOverrides.cs \
 	UIKit/UITraitCollection.cs \
-	UIKit/UIToolbar.cs \
 	UIKit/UIVibrancyEffect.cs \
 	UIKit/UIVideo.cs \
 	UIKit/UIView.cs \

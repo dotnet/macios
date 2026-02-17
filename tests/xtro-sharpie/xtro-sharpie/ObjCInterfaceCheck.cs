@@ -1,16 +1,14 @@
-using System;
-using System.Collections.Generic;
-
-using Mono.Cecil;
-
-using Clang.Ast;
-
 namespace Extrospection {
 
 	public class ObjCInterfaceCheck : BaseVisitor {
 
 		Dictionary<string, TypeDefinition> type_map = new Dictionary<string, TypeDefinition> ();
 		Dictionary<string, TypeDefinition> type_map_copy = new Dictionary<string, TypeDefinition> ();
+
+		public ObjCInterfaceCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
 
 		public override void VisitManagedType (TypeDefinition type)
 		{
@@ -62,11 +60,8 @@ namespace Extrospection {
 			}
 		}
 
-		public override void VisitObjCCategoryDecl (ObjCCategoryDecl decl, VisitKind visitKind)
+		public override void VisitObjCCategoryDecl (ObjCCategoryDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
-				return;
-
 			var categoryName = decl.Name;
 			if (categoryName is null)
 				return;
@@ -93,11 +88,9 @@ namespace Extrospection {
 			}
 		}
 
-		public override void VisitObjCInterfaceDecl (ObjCInterfaceDecl decl, VisitKind visitKind)
+		public override void VisitObjCInterfaceDecl (ObjCInterfaceDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
-				return;
-			if (!decl.IsDefinition)
+			if (!decl.IsThisDeclarationADefinition)
 				return;
 
 			var name = decl.Name;
@@ -139,7 +132,7 @@ namespace Extrospection {
 			type_map.Remove (name);
 		}
 
-		public override void End ()
+		public override void EndVisit ()
 		{
 			// at this stage anything else we have is not something we could find in Apple's headers
 			foreach (var kvp in type_map) {

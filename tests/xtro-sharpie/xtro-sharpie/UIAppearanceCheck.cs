@@ -8,13 +8,6 @@
 //		when an API is decorated with [Appearance] attribute but ObjC headers don't have a UI_APPEARANCE_SELECTOR
 //
 
-using System;
-using System.Collections.Generic;
-
-using Mono.Cecil;
-
-using Clang.Ast;
-
 namespace Extrospection {
 
 	public class UIAppearanceCheck : BaseVisitor {
@@ -22,6 +15,11 @@ namespace Extrospection {
 		static HashSet<TypeDefinition> appearance_types = new HashSet<TypeDefinition> ();
 		static HashSet<MethodDefinition> appearance_methods = new HashSet<MethodDefinition> ();
 		static Dictionary<string, MethodDefinition> methods = new Dictionary<string, MethodDefinition> ();
+
+		public UIAppearanceCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
 
 		static MethodDefinition GetMethod (ObjCMethodDecl decl)
 		{
@@ -55,34 +53,31 @@ namespace Extrospection {
 				return;
 
 			// does not look exposed, but part of the dump
-			if (decl.DumpToString ().IndexOf ("UI_APPEARANCE_SELECTOR", StringComparison.OrdinalIgnoreCase) < 0)
+			if (!decl.IsUIAppearanceSelector)
 				return;
 
-			var getter = decl.Getter;
+			var getter = decl.GetterMethodDecl;
 			if (getter is not null)
-				VisitObjCMethodDecl (getter);
-			var setter = decl.Setter;
+				VisitObjCMethodDeclImpl (getter);
+			var setter = decl.SetterMethodDecl;
 			if (setter is not null)
-				VisitObjCMethodDecl (setter);
+				VisitObjCMethodDeclImpl (setter);
 		}
 
-		public override void VisitObjCMethodDecl (ObjCMethodDecl decl, VisitKind visitKind)
+		public override void VisitObjCMethodDecl (ObjCMethodDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
-				return;
-
 			// don't process methods (or types) that are unavailable for the current platform
 			if (!decl.IsAvailable () || !(decl.DeclContext as Decl).IsAvailable ())
 				return;
 
 			// does not look exposed, but part of the dump
-			if (decl.DumpToString ().IndexOf ("UI_APPEARANCE_SELECTOR", StringComparison.OrdinalIgnoreCase) < 0)
+			if (!decl.IsUIAppearanceSelector)
 				return;
 
-			VisitObjCMethodDecl (decl);
+			VisitObjCMethodDeclImpl (decl);
 		}
 
-		void VisitObjCMethodDecl (ObjCMethodDecl decl)
+		void VisitObjCMethodDeclImpl (ObjCMethodDecl decl)
 		{
 			var framework = Helpers.GetFramework (decl);
 			if (framework is null)
@@ -113,7 +108,7 @@ namespace Extrospection {
 			Log.On (framework).Add ($"!missing-ui-appearance-support! {method.GetName ()} is missing [Appearance]");
 		}
 
-		public override void End ()
+		public override void EndVisit ()
 		{
 			// looking for extra [Appearance] attributes
 			foreach (var t in appearance_types) {

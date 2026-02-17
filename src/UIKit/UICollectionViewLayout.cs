@@ -17,7 +17,7 @@ namespace UIKit {
 		///         <remarks>To be added.</remarks>
 		public void RegisterClassForDecorationView (Type viewType, NSString kind)
 		{
-			RegisterClassForDecorationView (viewType is null ? IntPtr.Zero : Class.GetHandle (viewType), kind);
+			RegisterClassForDecorationView (Class.GetHandle (viewType), kind);
 		}
 
 		/// <param name="section">To be added.</param>

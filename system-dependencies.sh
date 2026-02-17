@@ -11,7 +11,6 @@ if [[ "$(uname -s)" == "Linux" ]]; then
 	IGNORE_OSX=1
 	IGNORE_XCODE=1
 	IGNORE_XCODE_COMPONENTS=1
-	IGNORE_MONO=1
 	IGNORE_VISUAL_STUDIO=1
 	IGNORE_SIMULATORS=1
 	IGNORE_OLD_SIMULATORS=1
@@ -62,11 +61,6 @@ while ! test -z $1; do
 			unset IGNORE_VISUAL_STUDIO
 			shift
 			;;
-		--provision-mono)
-			PROVISION_MONO=1
-			unset IGNORE_MONO
-			shift
-			;;
 		--provision-7z)
 			PROVISION_7Z=1
 			unset IGNORE_7Z
@@ -110,8 +104,6 @@ while ! test -z $1; do
 			shift
 			;;
 		--provision-all)
-			PROVISION_MONO=1
-			unset IGNORE_MONO
 			PROVISION_VS=1
 			unset IGNORE_VISUAL_STUDIO
 			PROVISION_XCODE=1
@@ -138,7 +130,6 @@ while ! test -z $1; do
 			;;
 		--ignore-all)
 			IGNORE_OSX=1
-			IGNORE_MONO=1
 			IGNORE_VISUAL_STUDIO=1
 			IGNORE_XCODE=1
 			IGNORE_7Z=1
@@ -165,10 +156,6 @@ while ! test -z $1; do
 			;;
 		--ignore-*-studio)
 			IGNORE_VISUAL_STUDIO=1
-			shift
-			;;
-		--ignore-mono)
-			IGNORE_MONO=1
 			shift
 			;;
 		--ignore-autotools)
@@ -292,27 +279,6 @@ function is_at_least_version () {
 		# more version fields in min than actual (1.0 vs 1.0.1 for instance): not OK
 		return 1
 	fi
-}
-
-function install_mono () {
-	local MONO_URL=`grep MIN_MONO_URL= Make.config | sed 's/.*=//'`
-	local MIN_MONO_VERSION=`grep MIN_MONO_VERSION= Make.config | sed 's/.*=//'`
-
-	if test -z $MONO_URL; then
-		fail "No MIN_MONO_URL set in Make.config, cannot provision"
-		return
-	fi
-
-	mkdir -p $PROVISION_DOWNLOAD_DIR
-	log "Downloading Mono $MIN_MONO_VERSION from $MONO_URL to $PROVISION_DOWNLOAD_DIR..."
-	local MONO_NAME=`basename $MONO_URL`
-	local MONO_PKG=$PROVISION_DOWNLOAD_DIR/$MONO_NAME
-	curl -L $MONO_URL > $MONO_PKG
-
-	log "Installing Mono $MIN_MONO_VERSION from $MONO_URL..."
-	$SUDO installer -pkg $MONO_PKG -target /
-
-	rm -f $MONO_PKG
 }
 
 function delete_all_simulator_runtimes ()
@@ -772,63 +738,6 @@ function check_xcode_components ()
 	xcrun -k
 }
 
-function check_mono () {
-	if ! test -z $IGNORE_MONO; then return; fi
-
-	MONO_VERSION_FILE=/Library/Frameworks/Mono.framework/Versions/Current/VERSION
-	if ! /Library/Frameworks/Mono.framework/Commands/mono --version 2>/dev/null >/dev/null; then
-		if ! test -z $PROVISION_MONO; then
-			install_mono
-		else
-			fail "You must install the Mono MDK. Download URL: $MIN_MONO_URL"
-			return
-		fi
-	elif ! test -e $MONO_VERSION_FILE; then
-		if ! test -z $PROVISION_MONO; then
-			install_mono
-		else
-			fail "Could not find Mono's VERSION file, you must install the Mono MDK. Download URL: $MIN_MONO_URL"
-			return
-		fi
-	fi
-
-	MIN_MONO_VERSION=`grep MIN_MONO_VERSION= Make.config | sed 's/.*=//'`
-	MAX_MONO_VERSION=`grep MAX_MONO_VERSION= Make.config | sed 's/.*=//'`
-
-	ACTUAL_MONO_VERSION=`cat $MONO_VERSION_FILE`
-	if ! is_at_least_version $ACTUAL_MONO_VERSION $MIN_MONO_VERSION; then
-		if ! test -z $PROVISION_MONO; then
-			install_mono
-			ACTUAL_MONO_VERSION=`cat $MONO_VERSION_FILE`
-		else
-			MIN_MONO_URL=$(grep ^MIN_MONO_URL= Make.config | sed 's/.*=//')
-			fail "You must have at least Mono $MIN_MONO_VERSION, found $ACTUAL_MONO_VERSION. Download URL: $MIN_MONO_URL"
-			return
-		fi
-	elif [[ "$ACTUAL_MONO_VERSION" == "$MAX_MONO_VERSION" ]]; then
-		: # this is ok
-	elif is_at_least_version $ACTUAL_MONO_VERSION $MAX_MONO_VERSION; then
-		if ! test -z $PROVISION_MONO; then
-			install_mono
-			ACTUAL_MONO_VERSION=`cat $MONO_VERSION_FILE`
-		else
-			fail "Your mono version is too new, max version is $MAX_MONO_VERSION, found $ACTUAL_MONO_VERSION."
-			fail "You may edit Make.config and change MAX_MONO_VERSION to your actual version to continue the"
-			fail "build (unless you're on a release branch). Once the build completes successfully, please"
-			fail "commit the new MAX_MONO_VERSION value."
-			fail "Alternatively you can ${COLOR_MAGENTA}export IGNORE_MONO=1${COLOR_RED} to skip this check."
-			return
-		fi
-	fi
-
-	if ! which mono > /dev/null 2>&1; then
-		fail "Mono is not in PATH. You must add '/Library/Frameworks/Mono.framework/Versions/Current/Commands' to PATH. Current PATH is: $PATH".
-		return
-	fi
-
-	ok "Found Mono $ACTUAL_MONO_VERSION (at least $MIN_MONO_VERSION and not more than $MAX_MONO_VERSION is required)"
-}
-
 function install_shellcheck () {
 	if ! brew --version >& /dev/null; then
 		fail "Asked to install shellcheck, but brew is not installed."
@@ -1054,7 +963,6 @@ check_homebrew
 check_shellcheck
 check_yamllint
 check_python3
-check_mono
 check_7z
 check_old_simulators
 if test -z "$IGNORE_DOTNET"; then

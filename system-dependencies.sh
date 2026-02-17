@@ -13,7 +13,6 @@ if [[ "$(uname -s)" == "Linux" ]]; then
 	IGNORE_XCODE_COMPONENTS=1
 	IGNORE_MONO=1
 	IGNORE_VISUAL_STUDIO=1
-	IGNORE_SHARPIE=1
 	IGNORE_SIMULATORS=1
 	IGNORE_OLD_SIMULATORS=1
 	IGNORE_7Z=1
@@ -30,7 +29,6 @@ PROVISION_DOWNLOAD_DIR=/tmp/x-provisioning
 SUDO=sudo
 VERBOSE=
 
-OPTIONAL_SHARPIE=1
 OPTIONAL_SIMULATORS=1
 OPTIONAL_OLD_SIMULATORS=1
 
@@ -84,12 +82,6 @@ while ! test -z $1; do
 			unset IGNORE_PYTHON3
 			shift
 			;;
-		--provision-sharpie)
-			PROVISION_SHARPIE=1
-			unset OPTIONAL_SHARPIE
-			unset IGNORE_SHARPIE
-			shift
-			;;
 		--provision-simulators)
 			PROVISION_SIMULATORS=1
 			unset OPTIONAL_SIMULATORS
@@ -128,8 +120,6 @@ while ! test -z $1; do
 			unset IGNORE_7Z
 			PROVISION_HOMEBREW=1
 			unset IGNORE_HOMEBREW
-			PROVISION_SHARPIE=1
-			unset IGNORE_SHARPIE
 			PROVISION_SIMULATORS=1
 			unset IGNORE_SIMULATORS
 			PROVISION_OLD_SIMULATORS=1
@@ -153,7 +143,6 @@ while ! test -z $1; do
 			IGNORE_XCODE=1
 			IGNORE_7Z=1
 			IGNORE_HOMEBREW=1
-			IGNORE_SHARPIE=1
 			IGNORE_SIMULATORS=1
 			IGNORE_PYTHON3=1
 			IGNORE_DOTNET=1
@@ -192,15 +181,6 @@ while ! test -z $1; do
 			;;
 		--ignore-7z)
 			IGNORE_7Z=1
-			shift
-			;;
-		--ignore-sharpie)
-			IGNORE_SHARPIE=1
-			shift
-			;;
-		--enforce-sharpie)
-			unset IGNORE_SHARPIE
-			unset OPTIONAL_SHARPIE
 			shift
 			;;
 		--ignore-simulators)
@@ -1005,87 +985,6 @@ IFS='
 IFS=$IFS_tmp
 }
 
-function install_objective_sharpie () {
-	local SHARPIE_URL=$(grep MIN_SHARPIE_URL= Make.config | sed 's/.*=//')
-	local MIN_SHARPIE_VERSION=$(grep MIN_SHARPIE_VERSION= Make.config | sed 's/.*=//')
-
-	if test -z "$SHARPIE_URL"; then
-		fail "No MIN_SHARPIE_URL set in Make.config, cannot provision Objective Sharpie"
-		return
-	fi
-
-	mkdir -p "$PROVISION_DOWNLOAD_DIR"
-	log "Downloading Objective Sharpie $MIN_SHARPIE_VERSION from $SHARPIE_URL to $PROVISION_DOWNLOAD_DIR..."
-	local SHARPIE_NAME=$(basename "$SHARPIE_URL")
-	local SHARPIE_PKG=$PROVISION_DOWNLOAD_DIR/$SHARPIE_NAME
-	curl -L "$SHARPIE_URL" > "$SHARPIE_PKG"
-
-	log "Installing Objective-Sharpie $MIN_SHARPIE_VERSION from $SHARPIE_URL..."
-	sudo installer -pkg "$SHARPIE_PKG" -target /
-
-	rm -f "$SHARPIE_PKG"
-}
-
-function check_objective_sharpie () {
-	if ! test -z $IGNORE_SHARPIE; then return; fi
-
-	SHARPIE_URL=$(grep MIN_SHARPIE_URL= Make.config | sed 's/.*=//')
-	MIN_SHARPIE_VERSION=$(grep MIN_SHARPIE_VERSION= Make.config | sed 's/.*=//')
-	MAX_SHARPIE_VERSION=$(grep MAX_SHARPIE_VERSION= Make.config | sed 's/.*=//')
-
-	if ! test -f /Library/Frameworks/ObjectiveSharpie.framework/Versions/Current/Version; then
-		if ! test -z "$PROVISION_SHARPIE"; then
-			install_objective_sharpie
-			ACTUAL_SHARPIE_VERSION=$(cat /Library/Frameworks/ObjectiveSharpie.framework/Versions/Current/Version)
-		else
-			if test -z $OPTIONAL_SHARPIE; then
-				fail "You must install Objective Sharpie, at least $MIN_SHARPIE_VERSION (no Objective Sharpie found). You can download it from $SHARPIE_URL"
-				fail "Alternatively you can ${COLOR_MAGENTA}export IGNORE_SHARPIE=1${COLOR_RED} to skip this check."
-			else
-				warn "You do not have Objective Sharpie installed (should be at least $MIN_SHARPIE_VERSION). You can download it from $SHARPIE_URL"
-			fi
-			return
-		fi
-	else
-		ACTUAL_SHARPIE_VERSION=$(cat /Library/Frameworks/ObjectiveSharpie.framework/Versions/Current/Version)
-		if ! is_at_least_version "$ACTUAL_SHARPIE_VERSION" "$MIN_SHARPIE_VERSION"; then
-			if ! test -z "$PROVISION_SHARPIE"; then
-				install_objective_sharpie
-				ACTUAL_SHARPIE_VERSION=$(cat /Library/Frameworks/ObjectiveSharpie.framework/Versions/Current/Version)
-			else
-				if test -z $OPTIONAL_SHARPIE; then
-					fail "You must have at least Objective Sharpie $MIN_SHARPIE_VERSION, found $ACTUAL_SHARPIE_VERSION. You can download it from $SHARPIE_URL"
-					fail "Alternatively you can ${COLOR_MAGENTA}export IGNORE_SHARPIE=1${COLOR_RED} to skip this check."
-				else
-					warn "You do not have have at least Objective Sharpie $MIN_SHARPIE_VERSION (found $ACTUAL_SHARPIE_VERSION). You can download it from $SHARPIE_URL"
-				fi
-				return
-			fi
-		elif [[ "$ACTUAL_SHARPIE_VERSION" == "$MAX_SHARPIE_VERSION" ]]; then
-			: # this is ok
-		elif is_at_least_version "$ACTUAL_SHARPIE_VERSION" "$MAX_SHARPIE_VERSION"; then
-			if ! test -z "$PROVISION_SHARPIE"; then
-				install_objective_sharpie
-				ACTUAL_SHARPIE_VERSION=$(cat /Library/Frameworks/ObjectiveSharpie.framework/Versions/Current/Version)
-			else
-				if test -z $OPTIONAL_SHARPIE; then
-					fail "Your Objective Sharpie version is too new, max version is $MAX_SHARPIE_VERSION, found $ACTUAL_SHARPIE_VERSION. We recommend you download $SHARPIE_URL"
-					fail "Alternatively you can ${COLOR_MAGENTA}export IGNORE_SHARPIE=1${COLOR_RED} to skip this check."
-				else
-					warn "You do not have have at most Objective Sharpie $MAX_SHARPIE_VERSION (found $ACTUAL_SHARPIE_VERSION). We recommend you download $SHARPIE_URL"
-				fi
-				return
-			fi
-		fi
-	fi
-
-	if test -z $OPTIONAL_SHARPIE; then
-		ok "Found Objective Sharpie $ACTUAL_SHARPIE_VERSION (at least $MIN_SHARPIE_VERSION and not more than $MAX_SHARPIE_VERSION is required)"
-	else
-		ok "Found Objective Sharpie $ACTUAL_SHARPIE_VERSION (at least $MIN_SHARPIE_VERSION and not more than $MAX_SHARPIE_VERSION is recommended)"
-	fi
-}
-
 function check_old_simulators ()
 {
 	if test -n "$IGNORE_OLD_SIMULATORS"; then return; fi
@@ -1157,7 +1056,6 @@ check_yamllint
 check_python3
 check_mono
 check_7z
-check_objective_sharpie
 check_old_simulators
 if test -z "$IGNORE_DOTNET"; then
 	if test -f /usr/local/share/dotnet/dotnet; then

@@ -59,7 +59,10 @@
 	</PropertyGroup>
 
 
-	<!-- Exclude user assemblies from R2R composite so they run interpreted for debugging -->
+	<!--
+		Exclude user assemblies from R2R composite so they run interpreted for debugging.
+		User assembly is defined as anything not coming from a NuGet package.
+	-->
 	<Target Name="_SelectR2RAssemblies"
 			Condition="'$(FilterReadyToRunAssemblies)' == 'true'"
 			BeforeTargets="ResolveReadyToRunCompilers">

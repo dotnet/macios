@@ -1,0 +1,3 @@
+!deprecated-attribute-missing! UIAccessibilityButtonShapesEnabled missing a [Deprecated] attribute
+!missing-selector! +UIColorEffect::effectWithColor: not bound
+!missing-type! UIColorEffect not bound

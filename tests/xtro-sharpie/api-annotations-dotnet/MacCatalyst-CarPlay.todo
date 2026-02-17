@@ -1,0 +1,4 @@
+!missing-pinvoke! NSStringFromCPJunctionType is not bound
+!missing-pinvoke! NSStringFromCPLaneStatus is not bound
+!missing-pinvoke! NSStringFromCPManeuverType is not bound
+!missing-pinvoke! NSStringFromCPTrafficSide is not bound

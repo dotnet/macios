@@ -1,0 +1,5 @@
+!missing-selector! HMAccessory::bridgedAccessories not bound
+!missing-selector! HMAccessory::home not bound
+!missing-selector! HMAccessoryHMAccessory::HAPInstanceID not bound
+!missing-selector! HMAccessoryHMAccessory::isVendorAccessory not bound
+!missing-selector! HMHomeManager::findHMHomeManagerAccessoryWithHAPPublicKey:completionHandler: not bound

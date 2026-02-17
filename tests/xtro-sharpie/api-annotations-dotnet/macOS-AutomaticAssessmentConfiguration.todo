@@ -1,5 +1,3 @@
-# header says this ctor is available in Mac Catalyst, Apple's documentation + xtro says it's not, so don't add it for now.
-!missing-selector! AEAssessmentApplication::initWithBundleIdentifier:teamIdentifier: not bound
 !missing-selector! AEAssessmentConfiguration::allowsAccessibilityKeyboard not bound
 !missing-selector! AEAssessmentConfiguration::allowsAccessibilityLiveCaptions not bound
 !missing-selector! AEAssessmentConfiguration::allowsAccessibilityReader not bound

@@ -1,0 +1,9 @@
+!deprecated-attribute-missing! UIAccessibilityButtonShapesEnabled missing a [Deprecated] attribute
+!missing-selector! +UIColorEffect::effectWithColor: not bound
+!missing-selector! UIPresentationController::backgroundEffect not bound
+!missing-selector! UIPresentationController::setBackgroundEffect: not bound
+!missing-selector! UISheetPresentationControllerDetent::backgroundEffect not bound
+!missing-selector! UISheetPresentationControllerDetent::setBackgroundEffect: not bound
+!missing-selector! UITabGroup::isSidebarDestination not bound
+!missing-selector! UITabGroup::setIsSidebarDestination: not bound
+!missing-type! UIColorEffect not bound

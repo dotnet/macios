@@ -1,5 +1,8 @@
 # We check in SdkVersions.cs so that it's easier to use this file when building tests on Windows.
 
+LAST_XCODE_BUMP:=$(shell git blame -- $(TOP)/Make.config HEAD | grep " XCODE_VERSION=" | sed 's/ .*//')
+XCODE_BUMP_COMMIT_DISTANCE:=$(shell git log "$(LAST_XCODE_BUMP)..HEAD" --oneline | wc -l | sed -e 's/ //g')
+
 $(abspath ../common/SdkVersions.cs): ../common/SdkVersions.in.cs Makefile $(TOP)/Make.config $(TOP)/Make.versions
 	$(Q_GEN) sed \
 		-e 's/@IOS_SDK_VERSION@/$(IOS_SDK_VERSION)/g' -e 's/@TVOS_SDK_VERSION@/$(TVOS_SDK_VERSION)/' -e 's/@MACOS_SDK_VERSION@/$(MACOS_SDK_VERSION)/' \
@@ -53,4 +56,7 @@ $(abspath ../common/ProductConstants.cs): ../common/ProductConstants.in.cs Makef
 		$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),-e "s/@$(platform)_NUGET_REVISION@/$(NUGET_PRERELEASE_IDENTIFIER)$($(platform)_NUGET_COMMIT_DISTANCE)$(NUGET_BUILD_METADATA)/g")  \
 		\
 		-e "s/@PRODUCT_HASH@/$(CURRENT_HASH_LONG)/g" \
+		\
+		-e "s/@XCODE_VERSION@/$(XCODE_VERSION)/g" \
+		-e "s/@XCODE_BUMP_COMMIT_DISTANCE@/$(XCODE_BUMP_COMMIT_DISTANCE)/g" \
 		$< > $@

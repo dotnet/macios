@@ -423,7 +423,30 @@ namespace Xharness {
 			// check the final status, copy all the required data
 			(Result, FailureMessage) = await testReporter.ParseResult ();
 
+			// If the result is "Crashed" but the log shows a launch failure, report it as such
+			if (Result == TestExecutingResult.Crashed && IsLaunchFailure (MainLog)) {
+				Result = TestExecutingResult.LaunchFailure;
+				FailureMessage = "Test app failed to launch.";
+			}
+
 			return testReporter.Success.Value ? 0 : 1;
+		}
+
+		static bool IsLaunchFailure (IFileBackedLog log)
+		{
+			try {
+				using var reader = log.GetReader ();
+				string line;
+				while ((line = reader.ReadLine ()) is not null) {
+					if (line.Contains ("Could not launch the app", StringComparison.Ordinal))
+						return true;
+					if (line.Contains ("error HE0042", StringComparison.Ordinal))
+						return true;
+				}
+			} catch {
+				// Ignore any errors reading the log
+			}
+			return false;
 		}
 	}
 }

@@ -2936,7 +2936,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
-				<dSYMSourcePath>$([System.IO.Path]::GetDirectoryName('%(Identity)')).dSYM</dSYMSourcePath>
+				<dSYMSourcePath>%(Identity).dSYM</dSYMSourcePath>
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
 				<DSymName>%(Filename).dSYM</DSymName>
 			</_PostProcessingItem>

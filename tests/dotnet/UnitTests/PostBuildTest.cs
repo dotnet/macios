@@ -265,6 +265,12 @@ namespace Xamarin.Tests {
 			var dSymName = dylibItem.GetMetadata ("DSymName");
 			Assert.That (dSymName, Is.EqualTo ("libframework.dSYM"), "DSymName for dylib");
 
+			// Verify dSYMSourcePath points to where a pre-existing dSYM would be for the dylib.
+			// For a dylib at /path/to/libfoo.dylib, the dSYMSourcePath should be /path/to/libfoo.dylib.dSYM
+			var dSYMSourcePath = dylibItem.GetMetadata ("dSYMSourcePath");
+			var itemSourcePath = dylibItem.GetMetadata ("ItemSourcePath");
+			Assert.That (dSYMSourcePath, Is.EqualTo (itemSourcePath + ".dSYM"), "dSYMSourcePath for dylib");
+
 			// Debug builds don't generate dSYMs, verify none exist
 			var appContainerDir = Path.GetDirectoryName (appPath)!;
 			var dSymDirs = Directory.GetDirectories (appContainerDir, "*.dSYM");
@@ -295,6 +301,12 @@ namespace Xamarin.Tests {
 			// Verify the DSymName is correct for a framework (should be "XTest.framework.dSYM")
 			var dSymName = frameworkItem.GetMetadata ("DSymName");
 			Assert.That (dSymName, Is.EqualTo ("XTest.framework.dSYM"), "DSymName for framework");
+
+			// Verify dSYMSourcePath points to where a pre-existing dSYM would be for the framework.
+			// For a framework at /path/to/XTest.framework/XTest, the dSYMSourcePath should be /path/to/XTest.framework.dSYM
+			var dSYMSourcePath = frameworkItem.GetMetadata ("dSYMSourcePath");
+			var itemSourcePath = frameworkItem.GetMetadata ("ItemSourcePath");
+			Assert.That (dSYMSourcePath, Is.EqualTo (Path.GetDirectoryName (itemSourcePath) + ".dSYM"), "dSYMSourcePath for framework");
 
 			// Debug builds don't generate dSYMs, verify none exist
 			var appContainerDir = Path.GetDirectoryName (appPath)!;

@@ -95,7 +95,7 @@ namespace ObjCRuntime {
 	///     if (callback is null)
 	///         throw new ArgumentNullException (nameof (callback));
 	///     delegate* unmanaged<IntPtr, double, int, void> trampoline = &TrampolineHandler;
-	///     usint var block = new BlockLiteral (trampoline, callback, GetType (), nameof (TrampolineHandler));
+	///     using var block = new BlockLiteral (trampoline, callback, GetType (), nameof (TrampolineHandler));
 	///     SetupHandler (&block);
 	/// }
 	/// ]]></code>

@@ -2923,13 +2923,13 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ItemGroup>
 			<!-- add frameworks, with the path relative to the app bundle -->
-			<_PostProcessingItem Include="@(_ResolvedNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename).framework/%(Filename)')" Condition="'%(Kind)' == 'Framework'">
+			<_PostProcessingItem Include="@(_ResolvedNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')" Condition="'%(Kind)' == 'Framework'">
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
 				<dSYMSourcePath>$([System.IO.Path]::GetDirectoryName('%(Identity)')).dSYM</dSYMSourcePath>
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
-				<DSymName>%(Filename).framework.dSYM</DSymName>
+				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
 			</_PostProcessingItem>
 			<!-- add dylibs, with the path relative to the app bundle -->
 			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'%(Kind)' == 'Dynamic'">

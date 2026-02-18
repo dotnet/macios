@@ -314,13 +314,7 @@ namespace Xamarin.Tests {
 			Assert.That (dSymDirs, Is.Empty, "No dSYMs should exist for Debug builds");
 		}
 
-		// The BundleStructure project includes Framework.With.Dots.framework, which causes dsymutil
-		// to fail because the framework binary name ("Framework.With") doesn't match what dsymutil
-		// expects. This makes the _GenerateDSym target fail, preventing dSYMs from being generated
-		// for all items in the app bundle.
-		// This test is ignored until the Framework.With.Dots issue is resolved.
 		[Test]
-		[Ignore ("dsymutil fails on Framework.With.Dots.framework - the framework binary name is truncated")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64", "Release")]
 		public void BundleStructureDSyms (ApplePlatform platform, string runtimeIdentifiers, string configuration)
@@ -334,6 +328,9 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["Configuration"] = configuration;
 			properties ["_IsAppSigned"] = "true";
+			// macOS and Mac Catalyst default to NoDSymUtil=true (dSYMs only generated when archiving),
+			// so explicitly disable it to test dSYM generation.
+			properties ["NoDSymUtil"] = "false";
 
 			DotNet.AssertBuild (project_path, properties);
 

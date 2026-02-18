@@ -94,6 +94,25 @@
 		</_CreateR2RFrameworkDependsOn>
 	</PropertyGroup>
 
+	<Target Name="_FilterR2RCompositeInputs"
+			Condition="'$(FilterReadyToRunAssemblies)' == 'true'"
+			AfterTargets="_PrepareForReadyToRunCompilation"
+			BeforeTargets="_CreateR2RImages">
+
+		<PropertyGroup>
+			<_UserAssemblyFilenames>;@(_UserAssemblies->'%(Filename)', ';');</_UserAssemblyFilenames>
+		</PropertyGroup>
+		
+		<!-- TODO: Disable CreateR2RFramework and CreateR2RDylib -->
+		<ItemGroup>
+			<_ChangedNonUserTrimmedDlls Include="@(_ChangedTrimmedDlls)"
+				Condition="!$(_UserAssemblyFilenames.Contains(';%(Filename);'))" />
+		</ItemGroup>
+
+		<Touch Files="@(_ReadyToRunCompileList->'%(OutputR2RImage)')"
+			Condition="@(_ChangedTrimmedDlls->Count()) > 0 And @(_ChangedNonUserTrimmedDlls->Count()) == 0 And @(_ReadyToRunCompileList->Count()) > 0" />
+	</Target>
+
 	<!-- Prepare properties and item groups for r2r framework creation -->
 	<Target Name="_PrepareR2RFrameworkCreation"
 			DependsOnTargets="CreateReadyToRunImages"

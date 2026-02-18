@@ -158,14 +158,8 @@ namespace Xamarin.Tests {
 			Assert.That (files, Does.Contain (project + ".nuspec"), "nuspec");
 			Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.dll"), $"{project}.dll");
 			if (noBindingEmbedding) {
-				var hasSymlinks = platform == ApplePlatform.MacCatalyst || platform == ApplePlatform.MacOSX;
-				if (hasSymlinks) {
-					Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources.zip"), $"{project}.resources.zip");
-				} else {
-					Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources/XMergeableTest.framework/XMergeableTest"), $"XMergeableTest.framework/XMergeableTest");
-					Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources/XMergeableTest.framework/Info.plist"), $"XMergeableTest.framework/Info.plist");
-					Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources/manifest"), $"manifest");
-				}
+				// The XMergeableTest framework is always packaged as a .resources.zip
+				Assert.That (files, Does.Contain ($"lib/{tfm}/{project}.resources.zip"), $"{project}.resources.zip");
 			}
 		}
 

@@ -1620,6 +1620,10 @@ public partial class Generator : IMemberGatherer {
 				}
 				print ("}");
 			} else {
+				print ("if (del is null)");
+				indent++;
+				print ("return default;");
+				indent--;
 				if (ti.Convert.Length > 0)
 					print (ti.Convert);
 				print ("var retval = del ({1});", ti.DelegateReturnType, ti.Invoke);

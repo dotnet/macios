@@ -15322,9 +15322,7 @@ M:ObjCRuntime.ThrowHelper.ThrowArgumentNullException(System.String)
 M:ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException(System.String,System.Object,System.String)
 M:ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException(System.String,System.String)
 M:ObjCRuntime.ThrowHelper.ThrowObjectDisposedException(System.Object)
-M:ObjCRuntime.TrampolineBlockBase.#ctor(ObjCRuntime.BlockLiteral*)
 M:ObjCRuntime.TrampolineBlockBase.Finalize
-M:ObjCRuntime.TrampolineBlockBase.GetExistingManagedDelegate(System.IntPtr)
 M:ObjCRuntime.TransientAttribute.#ctor
 M:OpenGL.CGLContext.Release
 M:OpenGL.CGLContext.Retain
@@ -22960,7 +22958,6 @@ P:ObjCRuntime.ObjCException.Message
 P:ObjCRuntime.ObjCException.Name
 P:ObjCRuntime.ObjCException.NSException
 P:ObjCRuntime.ObjCException.Reason
-P:ObjCRuntime.TrampolineBlockBase.BlockPointer
 P:OSLog.IOSLogEntryFromProcess.ActivityIdentifier
 P:OSLog.IOSLogEntryFromProcess.Process
 P:OSLog.IOSLogEntryFromProcess.ProcessIdentifier

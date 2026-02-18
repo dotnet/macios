@@ -45,7 +45,7 @@ endif
 package-tests:
 	$(MAKE) mac-test-package.zip
 
-test.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Version.Details.xml
+test.config: Makefile $(TOP)/Make.config $(TOP)/eng/Version.Details.xml
 	@rm -f $@
 	@echo "JENKINS_RESULTS_DIRECTORY=$(abspath $(JENKINS_RESULTS_DIRECTORY))" >> $@
 	@echo "XCODE_DEVELOPER_ROOT=$(XCODE_DEVELOPER_ROOT)" >> $@
@@ -77,7 +77,7 @@ test.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Version.De
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_OS_VERSION=$($(platform)_NUGET_OS_VERSION)\\n)" | sed 's/^ //' >> $@
 	@printf "NUGET_PRERELEASE_IDENTIFIER=$(NUGET_PRERELEASE_IDENTIFIER)\n" >> $@
 
-test-system.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Version.Details.xml
+test-system.config: Makefile $(TOP)/Make.config $(TOP)/eng/Version.Details.xml
 	@rm -f $@
 	@echo "JENKINS_RESULTS_DIRECTORY=$(abspath $(JENKINS_RESULTS_DIRECTORY))" >> $@
 	@echo "DOTNET=$(DOTNET)" >> $@

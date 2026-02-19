@@ -78,7 +78,10 @@
 		</ItemGroup>
 
 		<!-- Hash the R2R input assemblies so we can detect when the set actually changes -->
-		<Hash ItemsToHash="@(_NonUserAssemblies)" IgnoreCase="false">
+		<GetFileHash Files="@(_NonUserAssemblies)" Algorithm="SHA256">
+			<Output TaskParameter="Items" ItemName="_NonUserAssembliesWithHash" />
+		</GetFileHash>
+		<Hash ItemsToHash="@(_NonUserAssembliesWithHash->'%(FileHash)')" IgnoreCase="false">
 			<Output TaskParameter="HashResult" PropertyName="_R2RInputHash" />
 		</Hash>
 

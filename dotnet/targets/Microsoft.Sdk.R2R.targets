@@ -72,7 +72,7 @@
 				Include="@(_ResolvedAssembliesToPublish)"
 				Condition="'%(_ResolvedAssembliesToPublish.NuGetPackageId)' != ''" />
 			<_UserAssemblies Include="@(_ResolvedAssembliesToPublish)" Exclude="@(_NonUserAssemblies)" />
-			<PublishReadyToRunExclude Include="@(_UserAssemblies -> '%(Filename)')" />
+			<PublishReadyToRunExclude Include="@(_UserAssemblies -> '%(Filename)%(Extension)')" />
 		</ItemGroup>
 	</Target>
 

@@ -163,5 +163,16 @@ namespace MonoTouchFixtures.CoreText {
 				return null;
 			}
 		}
+
+		[Test]
+		public void GetVariationAxes ()
+		{
+			using (var font = new CTFont ("HoeflerText-Regular", 10)) {
+				var axes = font.GetVariationAxes ();
+				Assert.IsNotNull (axes, "axes");
+				// HoeflerText-Regular has no variation axes, so we expect an empty array
+				Assert.That (axes.Length, Is.EqualTo (0), "Length");
+			}
+		}
 	}
 }

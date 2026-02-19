@@ -469,6 +469,28 @@ namespace Foundation {
 			return ret;
 		}
 
+		/// <summary>Returns a strongly-typed C# array of the parametrized type from a handle to an NSArray.</summary>
+		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
+		/// <param name="releaseHandle">Whether the native NSArray instance should be released before returning or not.</param>
+		/// <returns>A C# array with the values.</returns>
+		/// <remarks>
+		///   <para>Use this method to get a set of NSObject arrays from a handle to an NSArray</para>
+		///   <example>
+		///     <code lang="c#"><![CDATA[
+		/// var someHandle = GetCopyOfNativeArray (...);
+		/// var values = NSArray.ArrayFromHandle<NSString> (someHandle, releaseHandle: true);
+		/// ]]></code>
+		///   </example>
+		/// </remarks>
+		public static T [] ArrayFromHandle<T> (NativeHandle handle, bool releaseHandle) where T : class, INativeObject
+		{
+			var rv = ArrayFromHandle<T> (handle);
+			if (releaseHandle && handle != NativeHandle.Zero)
+				NSObject.DangerousRelease (handle);
+			return rv;
+		}
+
 		static Array ArrayFromHandle (NativeHandle handle, Type elementType)
 		{
 			if (handle == NativeHandle.Zero)

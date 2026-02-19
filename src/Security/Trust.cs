@@ -239,7 +239,7 @@ namespace Security {
 		[SupportedOSPlatform ("ios15.0")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public SecCertificate [] GetCertificateChain ()
-			=> NSArray.ArrayFromHandle<SecCertificate> (SecTrustCopyCertificateChain (Handle));
+			=> NSArray.ArrayFromHandle<SecCertificate> (SecTrustCopyCertificateChain (Handle), releaseHandle: true);
 
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]

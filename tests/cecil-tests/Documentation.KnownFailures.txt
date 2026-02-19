@@ -15214,7 +15214,6 @@ M:ObjCRuntime.AssemblyRegistrationEventArgs.#ctor
 M:ObjCRuntime.BaseWrapper.#ctor(ObjCRuntime.NativeHandle,System.Boolean)
 M:ObjCRuntime.BaseWrapper.Release
 M:ObjCRuntime.BaseWrapper.Retain
-M:ObjCRuntime.BlockLiteral.Dispose
 M:ObjCRuntime.Class.#ctor(ObjCRuntime.NativeHandle)
 M:ObjCRuntime.Class.Equals(ObjCRuntime.Class)
 M:ObjCRuntime.Class.Equals(System.Object)

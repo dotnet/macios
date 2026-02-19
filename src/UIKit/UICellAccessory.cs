@@ -64,8 +64,9 @@ namespace UIKit {
 		[UnmanagedCallersOnly]
 		static unsafe nuint Invoke (IntPtr block, IntPtr accessories)
 		{
-			var descriptor = (BlockLiteral*) block;
-			var del = (UICellAccessoryPosition) (descriptor->Target);
+			var del = BlockLiteral.GetTarget<UICellAccessoryPosition> (block);
+			if (del is null)
+				return default;
 			nuint retval = del (NSArray.ArrayFromHandle<UICellAccessory> (accessories));
 			return retval;
 		}

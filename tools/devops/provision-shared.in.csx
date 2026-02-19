@@ -109,7 +109,3 @@ void ProvisionMono ()
 	Item ("@MONO_PACKAGE@");
 }
 
-void ProvisionSharpie ()
-{
-	Item ("@MIN_SHARPIE_URL@");
-}

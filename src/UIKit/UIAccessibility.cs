@@ -261,8 +261,7 @@ namespace UIKit {
 		[UnmanagedCallersOnly]
 		static unsafe void TrampolineRequestGuidedAccessSession (IntPtr block, byte enable)
 		{
-			var descriptor = (BlockLiteral*) block;
-			var del = (Action<bool>) (descriptor->Target);
+			var del = BlockLiteral.GetTarget<Action<bool>> (block);
 			if (del is not null)
 				del (enable != 0);
 		}

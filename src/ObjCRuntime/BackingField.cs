@@ -49,7 +49,7 @@ namespace ObjCRuntime {
 		/// <param name="handle">The native handle.</param>
 		/// <param name="c">A converter that creates a managed wrapper from a native handle.</param>
 		/// <returns>The cached or newly created managed value, or <see langword="null"/> if <paramref name="handle"/> is <see cref="IntPtr.Zero"/>.</returns>
-		public static T? Get<T> (ref T? value, IntPtr handle, Converter<IntPtr, T> c)
+		public static T? Get<T> (ref T? value, IntPtr handle, Converter<IntPtr, T?> c)
 			where T : class, INativeObject, IDisposable
 		{
 			c = ThrowHelper.ThrowIfNull (c);

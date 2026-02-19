@@ -128,7 +128,6 @@ endif
 
 # I haven't found a way to execute ilrepack.exe on .NET (it will probably have to be built for .NET), so run it using Mono.
 
-.build-stamp: export SYSTEM_MONO:=$(SYSTEM_MONO)
 .build-stamp: $(ALL_SOURCES)
 	$(Q) $(DOTNET) build "/bl:$@.binlog" $(XBUILD_VERBOSITY)
 	$(Q) touch $@

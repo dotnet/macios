@@ -2,6 +2,5 @@
 
 if (!ProvisionXcode ())
 	return 1;
-ProvisionMono ();
 ProvisionBrewPackages ();
 SetDefaultXcodeInVSMac ();

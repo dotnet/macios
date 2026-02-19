@@ -239,7 +239,10 @@ namespace ObjCRuntime {
 
 		static string GetTypeName (Type? type)
 		{
-			return type?.FullName ?? type?.Name ?? "<unknown>";
+			if (type is null)
+				return "<unknown>";
+
+			return type.FullName ?? type.Name ?? "<unknown>";
 		}
 
 #if BGENERATOR

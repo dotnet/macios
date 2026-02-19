@@ -564,8 +564,6 @@ namespace ObjCRuntime {
 			return Marshal.StringToHGlobalAuto (str.ToString ());
 		}
 
-		// IL2026: Using member 'System.Reflection.Assembly.LoadFile(String)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Types and members the loaded assembly depends on might be removed.
-		[UnconditionalSuppressMessage ("", "IL2026", Justification = "We only want the entry assembly, and then we only want the entry point, which survives trimming.")]
 		static unsafe Assembly? GetEntryAssembly ()
 		{
 			return Assembly.GetEntryAssembly ();

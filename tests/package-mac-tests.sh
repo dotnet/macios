@@ -71,5 +71,8 @@ $CP -cp ../scripts/Directory.Build.props "$DIR/scripts/"
 $CP -cp ../scripts/*.mk "$DIR/scripts/"
 $CP -cp ../scripts/run-with-timeout/*.cs* "$DIR/scripts/run-with-timeout/"
 $CP -cp ../scripts/run-with-timeout/*.mk "$DIR/scripts/run-with-timeout/"
+mkdir -p "$DIR/scripts/mac-test-report-generator"
+$CP -cp ../scripts/mac-test-report-generator/*.cs* "$DIR/scripts/mac-test-report-generator/"
+$CP -cp ../scripts/mac-test-report-generator/*.mk "$DIR/scripts/mac-test-report-generator/"
 
 cd mac-test-package && 7z a ../mac-test-package.7z ./*

@@ -22,19 +22,16 @@
 // Notes: Both limitations could be _mostly_ lifted by another tests that would check types conformance to a protocol
 //
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-using Mono.Cecil;
-
-using Clang.Ast;
-
 namespace Extrospection {
 
 	public class ObjCProtocolCheck : BaseVisitor {
 
 		Dictionary<string, TypeDefinition> protocol_map = new Dictionary<string, TypeDefinition> ();
+
+		public ObjCProtocolCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
 
 		public override void VisitManagedType (TypeDefinition type)
 		{
@@ -71,11 +68,9 @@ namespace Extrospection {
 				protocol_map.Add (pname, type);
 		}
 
-		public override void VisitObjCProtocolDecl (ObjCProtocolDecl decl, VisitKind visitKind)
+		public override void VisitObjCProtocolDecl (ObjCProtocolDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
-				return;
-			if (!decl.IsDefinition)
+			if (!decl.IsThisDeclarationADefinition)
 				return;
 
 			// check availability macros to see if the API is available on the OS and not deprecated
@@ -175,7 +170,7 @@ namespace Extrospection {
 
 					bool is_abstract;
 					if (map.TryGetValue (selector, out is_abstract)) {
-						bool required = method.ImplementationControl == ObjCImplementationControl.Required;
+						bool required = !method.Handle.IsObjCOptional;
 						if (required) {
 							if (!is_abstract)
 								Log.On (framework).Add ($"!incorrect-protocol-member! {GetName (decl, method)} is REQUIRED and should be abstract");
@@ -231,7 +226,7 @@ namespace Extrospection {
 			return Char.IsUpper (selector [4]);
 		}
 
-		public override void End ()
+		public override void EndVisit ()
 		{
 			// at this stage anything else we have is not something we could find in Apple's headers
 			foreach (var kvp in protocol_map) {

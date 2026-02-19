@@ -381,3 +381,8 @@
 
 ## This is basically ToString for an enum, which managed code has built-in support for
 !missing-pinvoke! UIWritingToolsCoordinatorTextAnimationDebugDescription is not bound
+
+# updated sharpie results
+!missing-protocol-conformance! UIDocument should conform to UINavigationItemRenameDelegate (defined in '' category)
+!missing-protocol-conformance! UITextView should conform to UIFindInteractionDelegate (defined in '' category)
+!missing-protocol-conformance! UITextView should conform to UITextSearching (defined in '' category)

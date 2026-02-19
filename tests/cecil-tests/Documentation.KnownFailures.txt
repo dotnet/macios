@@ -7421,8 +7421,6 @@ F:UIKit.UIPencilInteractionPhase.Ended
 F:UIKit.UIPencilPreferredAction.RunSystemShortcut
 F:UIKit.UIPencilPreferredAction.ShowContextualPalette
 F:UIKit.UIPencilPreferredAction.ShowInkAttributes
-F:UIKit.UIPointerAccessoryPosition.Angle
-F:UIKit.UIPointerAccessoryPosition.Offset
 F:UIKit.UIPointerEffectTintMode.None
 F:UIKit.UIPointerEffectTintMode.Overlay
 F:UIKit.UIPointerEffectTintMode.Underlay
@@ -15216,7 +15214,6 @@ M:ObjCRuntime.AssemblyRegistrationEventArgs.#ctor
 M:ObjCRuntime.BaseWrapper.#ctor(ObjCRuntime.NativeHandle,System.Boolean)
 M:ObjCRuntime.BaseWrapper.Release
 M:ObjCRuntime.BaseWrapper.Retain
-M:ObjCRuntime.BlockLiteral.Dispose
 M:ObjCRuntime.Class.#ctor(ObjCRuntime.NativeHandle)
 M:ObjCRuntime.Class.Equals(ObjCRuntime.Class)
 M:ObjCRuntime.Class.Equals(System.Object)
@@ -17106,9 +17103,6 @@ M:UIKit.UIDocViewController.OpenDocumentAsync
 M:UIKit.UIDragInteraction.Dispose(System.Boolean)
 M:UIKit.UIDropInteraction.Dispose(System.Boolean)
 M:UIKit.UIDynamicAnimator.Dispose(System.Boolean)
-M:UIKit.UIEdgeInsets.#ctor(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
-M:UIKit.UIEdgeInsets.op_Equality(UIKit.UIEdgeInsets,UIKit.UIEdgeInsets)
-M:UIKit.UIEdgeInsets.op_Inequality(UIKit.UIEdgeInsets,UIKit.UIEdgeInsets)
 M:UIKit.UIEditMenuInteraction.Dispose(System.Boolean)
 M:UIKit.UIEditMenuInteractionDelegate_Extensions.GetMenu(UIKit.IUIEditMenuInteractionDelegate,UIKit.UIEditMenuInteraction,UIKit.UIEditMenuConfiguration,UIKit.UIMenuElement[])
 M:UIKit.UIEditMenuInteractionDelegate_Extensions.GetTargetRect(UIKit.IUIEditMenuInteractionDelegate,UIKit.UIEditMenuInteraction,UIKit.UIEditMenuConfiguration)
@@ -17120,7 +17114,6 @@ M:UIKit.UIFeedbackGenerator.Dispose(System.Boolean)
 M:UIKit.UIFindInteraction.Dispose(System.Boolean)
 M:UIKit.UIFindInteractionDelegate_Extensions.DidBeginFindSession(UIKit.IUIFindInteractionDelegate,UIKit.UIFindInteraction,UIKit.UIFindSession)
 M:UIKit.UIFindInteractionDelegate_Extensions.DidEndFindSession(UIKit.IUIFindInteractionDelegate,UIKit.UIFindInteraction,UIKit.UIFindSession)
-M:UIKit.UIFloatRange.#ctor(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
 M:UIKit.UIFocusDebugger.CheckFocusGroupTree(UIKit.IUIFocusEnvironment)
 M:UIKit.UIFocusEnvironment_Extensions.GetFocusGroupIdentifier(UIKit.IUIFocusEnvironment)
 M:UIKit.UIFocusEnvironment_Extensions.GetSoundIdentifier(UIKit.IUIFocusEnvironment,UIKit.UIFocusUpdateContext)
@@ -17206,7 +17199,6 @@ M:UIKit.UIPickerView.Dispose(System.Boolean)
 M:UIKit.UIPickerView.UIPickerViewAppearance.#ctor(System.IntPtr)
 M:UIKit.UIPickerViewAccessibilityDelegate_Extensions.GetAccessibilityAttributedUserInputLabels(UIKit.IUIPickerViewAccessibilityDelegate,UIKit.UIPickerView,System.IntPtr)
 M:UIKit.UIPickerViewAccessibilityDelegate_Extensions.GetAccessibilityUserInputLabels(UIKit.IUIPickerViewAccessibilityDelegate,UIKit.UIPickerView,System.IntPtr)
-M:UIKit.UIPointerAccessoryPosition.#ctor(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
 M:UIKit.UIPointerInteraction.Dispose(System.Boolean)
 M:UIKit.UIPointerInteractionDelegate_Extensions.GetRegionForRequest(UIKit.IUIPointerInteractionDelegate,UIKit.UIPointerInteraction,UIKit.UIPointerRegionRequest,UIKit.UIPointerRegion)
 M:UIKit.UIPointerInteractionDelegate_Extensions.GetStyleForRegion(UIKit.IUIPointerInteractionDelegate,UIKit.UIPointerInteraction,UIKit.UIPointerRegion)
@@ -17606,7 +17598,6 @@ M:UIKit.UITraitChangeObservable_Extensions.RegisterForTraitChanges(UIKit.IUITrai
 M:UIKit.UITraitChangeObservable_Extensions.RegisterForTraitChanges(UIKit.IUITraitChangeObservable,ObjCRuntime.Class[],ObjCRuntime.Selector)
 M:UIKit.UITraitChangeObservable_Extensions.RegisterForTraitChanges(UIKit.IUITraitChangeObservable,ObjCRuntime.Class[],System.Action{UIKit.IUITraitEnvironment,UIKit.UITraitCollection})
 M:UIKit.UITraitCollection.GetChangedTraits2(UIKit.UITraitCollection)
-M:UIKit.UIVibrancyEffect.CreateWidgetEffectForNotificationCenter(UIKit.UIVibrancyEffectStyle)
 M:UIKit.UIVideoEditorController.add_Failed(System.EventHandler{Foundation.NSErrorEventArgs})
 M:UIKit.UIVideoEditorController.add_Saved(System.EventHandler{UIKit.UIPathEventArgs})
 M:UIKit.UIVideoEditorController.add_UserCancelled(System.EventHandler)
@@ -24173,14 +24164,6 @@ P:UIKit.UIPageViewFinishedAnimationEventArgs.PreviousViewControllers
 P:UIKit.UIPasteboardChangeEventArgs.TypesAdded
 P:UIKit.UIPasteboardChangeEventArgs.TypesRemoved
 P:UIKit.UIPathEventArgs.Path
-P:UIKit.UIPointerAccessoryPosition.Bottom
-P:UIKit.UIPointerAccessoryPosition.BottomLeft
-P:UIKit.UIPointerAccessoryPosition.BottomRight
-P:UIKit.UIPointerAccessoryPosition.Left
-P:UIKit.UIPointerAccessoryPosition.Right
-P:UIKit.UIPointerAccessoryPosition.Top
-P:UIKit.UIPointerAccessoryPosition.TopLeft
-P:UIKit.UIPointerAccessoryPosition.TopRight
 P:UIKit.UIPointerInteraction.Enabled
 P:UIKit.UIPointerLockState.Locked
 P:UIKit.UIPointerLockStateDidChangeEventArgs.Scene
@@ -28627,7 +28610,6 @@ T:UIKit.UIPasteboardOptionKeys
 T:UIKit.UIPasteControlDisplayMode
 T:UIKit.UIPencilInteractionPhase
 T:UIKit.UIPencilPreferredAction
-T:UIKit.UIPointerAccessoryPosition
 T:UIKit.UIPointerEffectTintMode
 T:UIKit.UIPopoverControllerCondition
 T:UIKit.UIPreviewHandler

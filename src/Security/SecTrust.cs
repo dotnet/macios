@@ -61,7 +61,7 @@ namespace Security {
 			}
 			if (result != SecStatusCode.Success)
 				throw new InvalidOperationException (result.ToString ());
-			return NSArray.ArrayFromHandle<SecPolicy> (p);
+			return NSArray.ArrayFromHandle<SecPolicy> (p, releaseHandle: true);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
@@ -173,7 +173,7 @@ namespace Security {
 			}
 			if (result != SecStatusCode.Success)
 				throw new InvalidOperationException (result.ToString ());
-			return NSArray.ArrayFromHandle<SecCertificate> (p);
+			return NSArray.ArrayFromHandle<SecCertificate> (p, releaseHandle: true);
 		}
 
 		[SupportedOSPlatform ("ios")]

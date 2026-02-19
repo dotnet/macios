@@ -1,8 +1,8 @@
 #nullable enable
 
 using System;
-using System.Diagnostics;
 using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Build.Utilities;
@@ -174,26 +174,11 @@ namespace Xamarin.MacDev.Tasks.Tests {
 				Assert.That (mf.HasAtomInfo, Is.False, "Normal MachOFile should not have atom info");
 		}
 
-		static string? RunProcess (string filename, string arguments, string? workingDirectory = null)
+		static void RunProcess (string filename, IList<string> arguments)
 		{
-			var psi = new ProcessStartInfo (filename, arguments) {
-				RedirectStandardOutput = true,
-				RedirectStandardError = true,
-				UseShellExecute = false,
-			};
-			if (workingDirectory is not null)
-				psi.WorkingDirectory = workingDirectory;
-			// Set DEVELOPER_DIR so xcrun finds the right tools
-			var xcodeDir = Path.GetDirectoryName (Path.GetDirectoryName (Configuration.xcode_root));
-			if (xcodeDir is not null)
-				psi.EnvironmentVariables ["DEVELOPER_DIR"] = xcodeDir;
-			var process = Process.Start (psi)!;
-			var output = process.StandardOutput.ReadToEnd ();
-			var error = process.StandardError.ReadToEnd ();
-			process.WaitForExit ();
-			if (process.ExitCode != 0)
-				Assert.Fail ($"Process '{filename} {arguments}' failed with exit code {process.ExitCode}.\nstdout: {output}\nstderr: {error}");
-			return output;
+			var rv = ExecutionHelper.Execute (filename, arguments, out var output, null, TimeSpan.FromSeconds (30));
+			if (rv != 0)
+				Assert.Fail ($"Process '{filename} {string.Join (" ", arguments)}' failed with exit code {rv}.\nOutput: {output}");
 		}
 
 		[Test]
@@ -207,8 +192,8 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			var normalDylib = Path.Combine (tempDir, "normal.dylib");
 			var mergeableDylib = Path.Combine (tempDir, "mergeable.dylib");
 
-			RunProcess ("xcrun", $"clang -dynamiclib -o {normalDylib} {sourcePath} -arch arm64");
-			RunProcess ("xcrun", $"clang -dynamiclib -o {mergeableDylib} {sourcePath} -arch arm64 -Wl,-make_mergeable");
+			RunProcess ("xcrun", new [] { "clang", "-dynamiclib", "-o", normalDylib, sourcePath, "-arch", "arm64" });
+			RunProcess ("xcrun", new [] { "clang", "-dynamiclib", "-o", mergeableDylib, sourcePath, "-arch", "arm64", "-Wl,-make_mergeable" });
 
 			// Verify detection
 			Assert.That (MachO.IsMergeableLibrary (normalDylib), Is.False, "Normal dylib should not be mergeable");
@@ -221,7 +206,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			// Strip atom info and verify
 			var strippedDylib = Path.Combine (tempDir, "stripped.dylib");
 			File.Copy (mergeableDylib, strippedDylib);
-			RunProcess ("xcrun", $"strip -no_atom_info -S {strippedDylib}");
+			RunProcess ("xcrun", new [] { "strip", "-no_atom_info", "-S", strippedDylib });
 
 			Assert.That (MachO.IsMergeableLibrary (strippedDylib), Is.False, "Stripped dylib should not be mergeable");
 			Assert.That (MachO.IsDynamicFramework (strippedDylib), Is.True, "Stripped dylib should still be dynamic");
@@ -243,7 +228,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			var frameworkDir = Path.Combine (tempDir, "TestMergeable.framework");
 			Directory.CreateDirectory (frameworkDir);
 			var executablePath = Path.Combine (frameworkDir, "TestMergeable");
-			RunProcess ("xcrun", $"clang -dynamiclib -o {executablePath} {sourcePath} -arch arm64 -Wl,-make_mergeable -install_name @rpath/TestMergeable.framework/TestMergeable");
+			RunProcess ("xcrun", new [] { "clang", "-dynamiclib", "-o", executablePath, sourcePath, "-arch", "arm64", "-Wl,-make_mergeable", "-install_name", "@rpath/TestMergeable.framework/TestMergeable" });
 
 			Assert.That (MachO.IsMergeableLibrary (executablePath), Is.True, "Framework should be mergeable before stripping");
 
@@ -271,7 +256,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			var frameworkDir = Path.Combine (tempDir, "TestMergeable.framework");
 			Directory.CreateDirectory (frameworkDir);
 			var executablePath = Path.Combine (frameworkDir, "TestMergeable");
-			RunProcess ("xcrun", $"clang -dynamiclib -o {executablePath} {sourcePath} -arch arm64 -Wl,-make_mergeable -install_name @rpath/TestMergeable.framework/TestMergeable");
+			RunProcess ("xcrun", new [] { "clang", "-dynamiclib", "-o", executablePath, sourcePath, "-arch", "arm64", "-Wl,-make_mergeable", "-install_name", "@rpath/TestMergeable.framework/TestMergeable" });
 
 			Assert.That (MachO.IsMergeableLibrary (executablePath), Is.True, "Framework should be mergeable before stripping");
 

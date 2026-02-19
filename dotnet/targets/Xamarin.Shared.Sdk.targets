@@ -1396,35 +1396,6 @@
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_PrintChangedTrimmedAssemblies" AfterTargets="ILLink">
-		<PropertyGroup>
-			<_TrimHashesFile>$(IntermediateOutputPath)trimmed-hashes.txt</_TrimHashesFile>
-			<_PreviousTrimHashesContent Condition="Exists('$(_TrimHashesFile)')">$([System.IO.File]::ReadAllText('$(_TrimHashesFile)'))</_PreviousTrimHashesContent>
-			<_PreviousTrimHashesContent Condition="'$(_PreviousTrimHashesContent)' == ''">EMPTY</_PreviousTrimHashesContent>
-		</PropertyGroup>
-
-		<ItemGroup>
-			<_TrimmedDlls Include="$(IntermediateLinkDir)*.dll" />
-		</ItemGroup>
-
-		<GetFileHash Files="@(_TrimmedDlls)" Algorithm="SHA256">
-			<Output TaskParameter="Items" ItemName="_TrimmedDllsWithHash" />
-		</GetFileHash>
-
-		<ItemGroup>
-			<_ChangedTrimmedDlls Include="@(_TrimmedDllsWithHash)" Condition="!$(_PreviousTrimHashesContent.Contains('%(FileHash)'))" />
-		</ItemGroup>
-
-		<WriteLinesToFile
-			File="$(_TrimHashesFile)"
-			Lines="@(_TrimmedDllsWithHash->'%(Identity)|%(FileHash)')"
-			Overwrite="true" />
-
-		<ItemGroup>
-			<FileWrites Include="$(_TrimHashesFile)" />
-		</ItemGroup>
-	</Target>
-
 	<Target Name="_CreateAOTDedupAssembly"
 			Condition="'$(_IsDedupEnabled)' == 'true'"
 			DependsOnTargets="_ComputeManagedAssemblyToLink"

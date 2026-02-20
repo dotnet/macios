@@ -373,7 +373,7 @@ if test -n "$ENABLE_GENERATOR_DIFF"; then
 	echo "    ${BLUE}Computing diff of the generated sources into ${WHITE}$GENERATOR_DIFF_FILE${BLUE}...${CLEAR}"
 	cd "$OUTPUT_TMP_DIR/generator/build"
 	git diff --no-index old new > "$GENERATOR_DIFF_FILE" || true
-	"$ROOT_DIR/tools/diff-to-html" "$GENERATOR_DIFF_FILE" "$GENERATOR_HTML_FILE"
+	dotnet run --project "$ROOT_DIR/scripts/diff-to-html/diff-to-html.csproj" -- "$GENERATOR_DIFF_FILE" "$GENERATOR_HTML_FILE"
 	echo "    ${BLUE}Computed generator diff: ${WHITE}$GENERATOR_HTML_FILE${BLUE}.${CLEAR}"
 	echo ""
 else

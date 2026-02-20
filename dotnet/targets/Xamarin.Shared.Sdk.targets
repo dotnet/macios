@@ -474,17 +474,6 @@
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_ComputeMonoLibraries" Condition="'$(UseMonoRuntime)' == 'true'" DependsOnTargets="_ComputeMonoComponents;_MonoSelectRuntimeComponents">
-		<!-- We only include any mono components when linking with mono statically. The components are already included in the dynamic versions of Mono (both the dylib and the framework) -->
-		<ItemGroup Condition="'$(_LibMonoLinkMode)' == 'static'">
-			<!-- Remove files mono told us not to link with -->
-			<_MonoLibrary Remove="@(_MonoRuntimeComponentDontLink -> '$(_MonoRuntimePackPathNative)%(Identity)')" />
-
-			<!-- Add files mono told us to link with -->
-			<_MonoLibrary Include="@(_MonoRuntimeComponentLink -> '$(_MonoRuntimePackPathNative)%(Identity)')" />
-		</ItemGroup>
-	</Target>
-
 	<PropertyGroup>
 		<_ComputeLinkerArgumentsDependsOn>
 			_ComputeLinkMode;
@@ -500,7 +489,6 @@
 			_ParseBundlerArguments;
 			_ComputeVariables;
 			_CreateRuntimeConfiguration;
-			_ComputeMonoLibraries;
 			_FindAotCompiler;
 			_DetectAppManifest;
 			_ReadAppManifest;
@@ -1290,38 +1278,6 @@
 			<_CustomLinkFlags Include="@executable_path/../../Frameworks" Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS'" />
 			<_CustomLinkFlags Include="@executable_path/../../../../Frameworks" Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" />
 		</ItemGroup>
-
-		<ItemGroup>
-			<!-- Select the native libraries from mono we need to link with and potentially copy into the app -->
-			<_MonoLibrary
-				Include="@(ResolvedFileToPublish)"
-				Condition=" '%(ResolvedFileToPublish.AssetType)' == 'native' And
-							'%(ResolvedFileToPublish.RuntimeIdentifier)' == '$(RuntimeIdentifier)' And
-							'%(ResolvedFileToPublish.Extension)' == '.$(_LibMonoExtension)' And
-							'%(ResolvedFileToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)'
-							"
-			/>
-			<!-- Don't link with libclrjit.dylib when using CoreCLR on Apple mobile platforms -->
-			<_MonoLibrary
-				Remove="@(_MonoLibrary)"
-				Condition=" '$(_XamarinRuntime)' == 'CoreCLR' And
-							'$(_PlatformName)' != 'macOS' And
-							'%(Filename)' == 'libclrjit'
-							"
-			/>
-			<!-- Don't link with a .a file if the library is also present as a .dylib file when using CoreCLR on Apple mobile platforms -->
-			<_MonoLibraryStatic
-				Include="@(ResolvedFileToPublish -> '%(RelativeDir)%(Filename).a')"
-				Condition=" '$(_XamarinRuntime)' == 'CoreCLR' And
-							'$(_PlatformName)' != 'macOS' And
-							'%(ResolvedFileToPublish.AssetType)' == 'native' And
-							'%(ResolvedFileToPublish.Extension)' == '.dylib' And
-							'%(ResolvedFileToPublish.RuntimeIdentifier)' == '$(RuntimeIdentifier)' And
-							'%(ResolvedFileToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)'
-							"
-			/>
-			<_MonoLibrary Remove="@(_MonoLibraryStatic)" />
-		</ItemGroup>
 	</Target>
 
 	<!-- App bundle creation tasks -->
@@ -2052,10 +2008,10 @@
 			$(_ComputePublishLocationDependsOn);
 			_GenerateBundleName;
 			_ParseBundlerArguments;
-			_ComputeMonoLibraries;
 			_DetectSigningIdentity;
 			_PrepareResourceRules;
 			_AddDebugSymbolsToBundle;
+			_ComputeMonoComponents;
 		</_ComputePublishLocationDependsOn>
 	</PropertyGroup>
 
@@ -2155,6 +2111,8 @@
 		<ProcessRuntimeLibraries
 			DebuggerSupport="$(DebuggerSupport)"
 			DotNetRuntime="$(_XamarinRuntime)"
+			MonoRuntimeComponentLink="@(_MonoRuntimeComponentLink)"
+			MonoRuntimeComponentDontLink="@(_MonoRuntimeComponentDontLink)"
 			ResolvedFileToPublish="@(ResolvedFileToPublish)"
 			RuntimeIdentifier="$(RuntimeIdentifier)"
 			RuntimeLibLinkMode="$(_LibMonoLinkMode)"
@@ -2162,6 +2120,7 @@
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		>
 			<Output TaskParameter="DylibsToConvertToFrameworks" ItemName="_DylibsToConvertToFrameworks" />
+			<Output TaskParameter="LinkWithRuntimeLibraries" ItemName="_MonoLibrary" />
 			<Output TaskParameter="OutputResolvedFileToPublish" ItemName="_OutputResolvedFileToPublish" />
 		</ProcessRuntimeLibraries>
 

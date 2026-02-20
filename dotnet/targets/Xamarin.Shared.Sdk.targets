@@ -124,7 +124,6 @@
 		<InvariantGlobalization Condition="'$(InvariantGlobalization)' == ''">false</InvariantGlobalization>
 		<!-- Enable HybridGlobalization by default-->
 		<HybridGlobalization Condition="'$(InvariantGlobalization)' != 'true'">true</HybridGlobalization>
-		<StartupHookSupport Condition="'$(StartupHookSupport)' == ''">false</StartupHookSupport>
 		<UseSizeOptimizedLinq Condition="'$(UseSizeOptimizedLinq)' == ''">true</UseSizeOptimizedLinq>
 		<UseSystemResourceKeys Condition="'$(UseSystemResourceKeys)' == '' And '$(_BundlerDebug)' != 'true'">true</UseSystemResourceKeys>
 		<UseSystemResourceKeys Condition="'$(UseSystemResourceKeys)' == '' And '$(_BundlerDebug)' == 'true'">false</UseSystemResourceKeys>
@@ -141,6 +140,12 @@
 		<!-- This should be set by dotnet/sdk instead, once https://github.com/dotnet/sdk/issues/25392 gets resolved.  -->
 		<DynamicCodeSupport Condition="'$(DynamicCodeSupport)' == '' And ( '$(MtouchInterpreter)' == '' And '$(UseInterpreter)' != 'true' ) And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'MacCatalyst')">false</DynamicCodeSupport>
 		<_ComObjectDescriptorSupport Condition="'$(_ComObjectDescriptorSupport)' == ''">false</_ComObjectDescriptorSupport>
+
+		<!-- StartupHookSupport is used for Hot Reload, so we enable it unless the Optimize flag is set. -->
+		<!-- When we set StartupHookSupport=true ourselves, suppress the resulting trimmer warning (but not if the developer set it). -->
+		<_SuppressStartupHookSupportTrimWarning Condition="'$(StartupHookSupport)' == '' And '$(Optimize)' != 'true'">true</_SuppressStartupHookSupportTrimWarning>
+		<StartupHookSupport Condition="'$(StartupHookSupport)' == '' And '$(Optimize)' != 'true'">true</StartupHookSupport>
+		<StartupHookSupport Condition="'$(StartupHookSupport)' == ''">false</StartupHookSupport>
 
 		<!-- We don't need to generate reference assemblies for apps or app extensions -->
 		<ProduceReferenceAssembly Condition="'$(ProduceReferenceAssembly)' == '' And ('$(OutputType)' == 'Exe' Or '$(IsAppExtension)' == 'true')">false</ProduceReferenceAssembly>
@@ -508,8 +513,34 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(_UseNativeAot)' == 'true'">
-		<IlcCompileDependsOn>Compile;_ComputeLinkerArguments;_ComputeManagedAssemblyToLink;SetupOSSpecificProps;PrepareForILLink;_XamarinComputeIlcCompileInputs</IlcCompileDependsOn>
+		<IlcCompileDependsOn>
+			Compile;
+			_ComputeLinkerArguments;
+			_ComputeManagedAssemblyToLink;
+			_XamarinComputeIlcProps;
+			SetupOSSpecificProps;
+			PrepareForILLink;
+			_XamarinComputeIlcCompileInputs;
+		</IlcCompileDependsOn>
 	</PropertyGroup>
+
+	<Target Name="_XamarinComputeIlcProps" DependsOnTargets="_DetectSdkLocations;_ComputeLinkerProperties">
+		<!-- Set a few properties needed by SetupOSSpecificProps -->
+		<PropertyGroup>
+			<!-- Set the 'SysRoot' variable, so that NativeAOT's build logic doesn't try to compute it, which doesn't work when building remotely from Windows. -->
+			<SysRoot Condition="'$(SysRoot)' == ''">$(_SdkRoot)</SysRoot>
+
+			<!-- default 'UseLdClassicXCodeLinker' to our value for '_UseClassicLinker', and in case it's still not set, default to 'false', since typically the new linker will work. -->
+			<UseLdClassicXCodeLinker Condition="'$(UseLdClassicXCodeLinker)' == ''">$(_UseClassicLinker)</UseLdClassicXCodeLinker>
+			<UseLdClassicXCodeLinker Condition="'$(UseLdClassicXCodeLinker)' == ''">false</UseLdClassicXCodeLinker>
+
+			<!-- Ask ILC to produce a static library -->
+			<NativeLib>static</NativeLib>
+
+			<!-- We will handle stripping ourselves, because NativeAOT's logic doesn't work when executing remotely from Windows -->
+			<StripSymbols>false</StripSymbols>
+		</PropertyGroup>
+	</Target>
 
 	<Target Name="SelectRegistrar" DependsOnTargets="_ComputeLinkMode">
 		<PropertyGroup>
@@ -710,6 +741,7 @@
 
 		<ItemGroup>
 			<!-- Configure linker features -->
+			<RuntimeHostConfigurationOption Include="ObjCRuntime.SuppressStartupHookTrimWarning" Value="true" Trim="true" Condition="'$(_SuppressStartupHookSupportTrimWarning)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.AggressiveAttributeTrimming" Value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true'" />
 			<RuntimeHostConfigurationOption Include="ObjCRuntime.AggressiveAttributeTrimmingMono" Value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true' And '$(_XamarinRuntime)' == 'MonoVM'" />
 			<RuntimeHostConfigurationOption Include="ObjCRUntime.AggressiveAttributeTrimmingOnlyWithStaticRegistrar" value="true" Trim="true" Condition="'$(MobileAggressiveAttributeTrimming)' == 'true' And ('$(Registrar)' == 'static' Or '$(Registrar)' == 'managed-static')" />
@@ -1307,6 +1339,7 @@
 			<_RuntimeConfigReservedProperties Include="NATIVE_DLL_SEARCH_DIRECTORIES" />
 			<_RuntimeConfigReservedProperties Include="RUNTIME_IDENTIFIER" />
 			<_RuntimeConfigReservedProperties Include="APP_CONTEXT_BASE_DIRECTORY" />
+			<_RuntimeConfigReservedProperties Include="STARTUP_HOOKS" />
 		</ItemGroup>
 		<RuntimeConfigParserTask
 			Condition="'$(GenerateRuntimeConfigurationFiles)' == 'true'"
@@ -1512,9 +1545,6 @@
 
 	<Target Name="_XamarinComputeIlcCompileInputs">
 		<PropertyGroup>
-			<!-- Ask ILC to produce a static library -->
-			<NativeLib>static</NativeLib>
-
 			<!-- Always enable trim warnings by default with NativeAOT -->
 			<SuppressTrimAnalysisWarnings Condition="'$(_OriginalSuppressTrimAnalysisWarnings)' != 'true'">false</SuppressTrimAnalysisWarnings>
 		</PropertyGroup>
@@ -1681,6 +1711,7 @@
 			_CompileNativeExecutable;
 			_ReidentifyDynamicLibraries;
 			_AddSwiftLinkerFlags;
+			_ComputeLinkerProperties;
 			_ComputeLinkNativeExecutableInputs;
 			_ForceLinkNativeExecutable;
 		</_LinkNativeExecutableDependsOn>
@@ -1709,6 +1740,18 @@
 			<_MainLinkerFlags Include="-L$(_SdkDevPath)/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/$(_SwiftTargetPlatform)/" />
 			<_MainLinkerFlags Include="-L$(_SdkRoot)/usr/lib/swift/" />
 		</ItemGroup>
+	</Target>
+
+	<Target Name="_ComputeLinkerProperties"
+			DependsOnTargets="_DetectSdkLocations"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			>
+		<PropertyGroup>
+			<!-- There are known bugs in the classic linker with Xcode 15, so keep use the classic linker in that case -->
+			<!-- In Xcode 16 we don't know of any problems for now, so enable the new linker by default -->
+			<_UseClassicLinker Condition="'$(_UseClassicLinker)' == '' And $([MSBuild]::VersionGreaterThanOrEquals('$(_XcodeVersion)', '16.0'))">false</_UseClassicLinker>
+			<_UseClassicLinker Condition="'$(_UseClassicLinker)' == '' And $([MSBuild]::VersionGreaterThanOrEquals('$(_XcodeVersion)', '15.0'))">true</_UseClassicLinker>
+		</PropertyGroup>
 	</Target>
 
 	<Target Name="_ComputeLinkNativeExecutableInputs" Condition="'$(IsMacEnabled)' == 'true'">
@@ -1768,13 +1811,6 @@
 		</ItemGroup>
 
 		<WriteLinesToFile File="$(_MtouchSymbolsList)" Lines="@(_ProcessedReferenceNativeSymbol)" Overwrite="true" />
-
-		<PropertyGroup>
-			<!-- There are known bugs in the classic linker with Xcode 15, so keep use the classic linker in that case -->
-			<!-- In Xcode 16 we don't know of any problems for now, so enable the new linker by default -->
-			<_UseClassicLinker Condition="'$(_UseClassicLinker)' == '' And $([MSBuild]::VersionGreaterThanOrEquals('$(_XcodeVersion)', '16.0'))">false</_UseClassicLinker>
-			<_UseClassicLinker Condition="'$(_UseClassicLinker)' == '' And $([MSBuild]::VersionGreaterThanOrEquals('$(_XcodeVersion)', '15.0'))">true</_UseClassicLinker>
-		</PropertyGroup>
 
 		<ItemGroup>
 			<_AllLinkerFlags Include="@(_AssemblyLinkerFlags);@(_MainLinkerFlags);@(_CustomLinkFlags)" />
@@ -2117,6 +2153,7 @@
 		</ItemGroup>
 
 		<ProcessRuntimeLibraries
+			DebuggerSupport="$(DebuggerSupport)"
 			DotNetRuntime="$(_XamarinRuntime)"
 			ResolvedFileToPublish="@(ResolvedFileToPublish)"
 			RuntimeIdentifier="$(RuntimeIdentifier)"

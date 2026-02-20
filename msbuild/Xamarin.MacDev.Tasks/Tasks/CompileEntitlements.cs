@@ -863,7 +863,7 @@ namespace Xamarin.MacDev.Tasks {
 					new EntitlementData ("com.apple.vm.device-access", desktop, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.vm.hypervisor", desktop, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.vm.networking", desktop, EntitlementType.Boolean ),
-					new EntitlementData ("get-task-allow", mobile, EntitlementType.Boolean ),
+					new EntitlementData ("get-task-allow", allPlatforms, EntitlementType.Boolean ),
 					new EntitlementData ("inter-app-audio", iOS, EntitlementType.Boolean ),
 					new EntitlementData ("keychain-access-groups", allPlatforms, EntitlementType.ArrayOfStrings ),
 				};

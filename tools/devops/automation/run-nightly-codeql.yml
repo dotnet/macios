@@ -22,10 +22,6 @@ resources:
     type: git
     name: xamarin.yaml-templates
     ref: refs/heads/main
-  - repository: macios-adr
-    type: git
-    name: macios-adr
-    ref: refs/heads/main
 
 variables:
 - template: /tools/devops/automation/templates/variables/common.yml

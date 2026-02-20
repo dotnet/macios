@@ -138,7 +138,7 @@ static string ParseDiff (string diff)
 	bool started = false;
 	result.Append ("<div>");
 	using (StringReader reader = new StringReader (diff)) {
-		while ((line = reader.ReadLine ()) != null) {
+		while ((line = reader.ReadLine ()) is not null) {
 			if (line.StartsWith ("diff --git")) {
 				// New file
 				if (started)

@@ -103,13 +103,3 @@ string GetSettingValue (string settingFile, string keyName)
 {
 	return Exec ("defaults", "read", settingFile, keyName).FirstOrDefault ();
 }
-
-void ProvisionMono ()
-{
-	Item ("@MONO_PACKAGE@");
-}
-
-void ProvisionSharpie ()
-{
-	Item ("@MIN_SHARPIE_URL@");
-}

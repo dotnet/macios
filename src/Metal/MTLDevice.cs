@@ -113,8 +113,7 @@ namespace Metal {
 		[UnmanagedCallersOnly]
 		public static unsafe void TrampolineNotificationHandler (IntPtr block, IntPtr device, IntPtr notifyName)
 		{
-			var descriptor = (BlockLiteral*) block;
-			var del = (MTLDeviceNotificationHandler) (descriptor->Target);
+			var del = BlockLiteral.GetTarget<MTLDeviceNotificationHandler> (block);
 			if (del is not null)
 				del ((IMTLDevice) Runtime.GetNSObject (device)!, (Foundation.NSString) Runtime.GetNSObject (notifyName)!);
 		}

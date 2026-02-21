@@ -161,7 +161,7 @@ namespace CoreText {
 				return NSArray.ArrayFromHandle<T> (handle);
 			} finally {
 				if (releaseAfterUse)
-					CFObject.CFRetain (handle);
+					CFObject.CFRelease (handle);
 			}
 		}
 

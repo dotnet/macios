@@ -1534,3 +1534,8 @@
 
 # Likely a mistake '_' denotes internal selector
 !missing-selector! +NSCell::_bulletStringForString:bulletCharacter: not bound
+
+# updated sharpie results
+!missing-protocol-conformance! NSImage should conform to NSItemProviderReading (defined in '' category)
+!missing-protocol-conformance! NSImage should conform to NSItemProviderWriting (defined in '' category)
+!missing-protocol-conformance! NSLayoutConstraint should conform to NSAnimatablePropertyContainer (defined in '' category)

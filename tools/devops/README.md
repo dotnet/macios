@@ -304,6 +304,7 @@ testConfigurations:
   - label: linker         # Linker tests
   - label: monotouch      # MonoTouch tests (split by platform)
   - label: msbuild        # MSBuild tests
+  - label: sharpie        # Sharpie tests
   - label: xcframework    # XCFramework tests
   - label: xtro           # Xtro tests
   - label: windows        # Windows integration tests

@@ -422,7 +422,7 @@ namespace AddressBook {
 		public ABPerson [] GetPeople ()
 		{
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeople (GetCheckedHandle ());
-			return NSArray.ArrayFromHandle (cfArrayRef, h => new ABPerson (h, this));
+			return NSArray.ArrayFromHandle (cfArrayRef, h => new ABPerson (h, this), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -438,7 +438,7 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeopleInSource (GetCheckedHandle (), source.Handle);
 			GC.KeepAlive (source);
-			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABPerson (l, this));
+			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABPerson (l, this), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -455,7 +455,7 @@ namespace AddressBook {
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (source));
 			var cfArrayRef = ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering (GetCheckedHandle (), source.Handle, sortOrdering);
 			GC.KeepAlive (source);
-			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABPerson (l, this));
+			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABPerson (l, this), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -490,7 +490,7 @@ namespace AddressBook {
 		public ABGroup [] GetGroups ()
 		{
 			var cfArrayRef = ABAddressBookCopyArrayOfAllGroups (GetCheckedHandle ());
-			return NSArray.ArrayFromHandle (cfArrayRef, h => new ABGroup (h, this));
+			return NSArray.ArrayFromHandle (cfArrayRef, h => new ABGroup (h, this), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -507,7 +507,7 @@ namespace AddressBook {
 
 			var cfArrayRef = ABAddressBookCopyArrayOfAllGroupsInSource (GetCheckedHandle (), source.Handle);
 			GC.KeepAlive (source);
-			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABGroup (l, this));
+			return NSArray.ArrayFromHandle (cfArrayRef, l => new ABGroup (l, this), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -720,7 +720,7 @@ namespace AddressBook {
 			var nameHandle = CFString.CreateNative (name);
 			try {
 				var cfArrayRef = ABAddressBookCopyPeopleWithName (Handle, nameHandle);
-				return NSArray.ArrayFromHandle (cfArrayRef, h => new ABPerson (h, this));
+				return NSArray.ArrayFromHandle (cfArrayRef, h => new ABPerson (h, this), releaseHandle: true);
 			} finally {
 				CFString.ReleaseNative (nameHandle);
 			}
@@ -739,7 +739,7 @@ namespace AddressBook {
 		public ABSource []? GetAllSources ()
 		{
 			var cfArrayRef = ABAddressBookCopyArrayOfAllSources (GetCheckedHandle ());
-			return NSArray.ArrayFromHandle (cfArrayRef, h => new ABSource (h, this));
+			return NSArray.ArrayFromHandle (cfArrayRef, h => new ABSource (h, this), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]

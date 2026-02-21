@@ -281,7 +281,7 @@ namespace CoreVideo {
 		/// <summary>Get all the known pixel format types.</summary>
 		public static NSNumber [] AllTypes {
 			get {
-				return NSArray.ArrayFromHandle<NSNumber> (CVPixelFormatDescriptionArrayCreateWithAllPixelFormatTypes (IntPtr.Zero));
+				return NSArray.ArrayFromHandle<NSNumber> (CVPixelFormatDescriptionArrayCreateWithAllPixelFormatTypes (IntPtr.Zero), releaseHandle: true);
 			}
 		}
 

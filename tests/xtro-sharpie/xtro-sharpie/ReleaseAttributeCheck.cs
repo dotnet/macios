@@ -5,16 +5,13 @@
 //             for methods whose objc family indicates the returned value is retained, and the method doesn't have a [return: Release] attribute.
 //
 
-using System;
-using System.Collections.Generic;
-
-using Mono.Cecil;
-
-using Clang.Ast;
-
 namespace Extrospection {
 
 	public class ReleaseAttributeCheck : BaseVisitor {
+		public ReleaseAttributeCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
 
 		// most selectors will be found in [Export] attributes
 		public override void VisitManagedMethod (MethodDefinition method)

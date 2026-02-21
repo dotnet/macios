@@ -8,13 +8,6 @@
 //		when a method parameters or return value does not have an [NullAllowed] when one is present in the ObjC headers
 //
 
-using System;
-using System.Collections.Generic;
-
-using Mono.Cecil;
-
-using Clang.Ast;
-
 namespace Extrospection {
 
 	public class NullabilityCheck : BaseVisitor {
@@ -28,6 +21,11 @@ namespace Extrospection {
 
 		static Dictionary<string, TypeDefinition> types = new Dictionary<string, TypeDefinition> ();
 		static Dictionary<string, MethodDefinition> methods = new Dictionary<string, MethodDefinition> ();
+
+		public NullabilityCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
 
 		static TypeDefinition GetType (ObjCInterfaceDecl decl)
 		{
@@ -105,11 +103,8 @@ namespace Extrospection {
 			return Array.Empty<Null> ();
 		}
 
-		public override void VisitObjCMethodDecl (ObjCMethodDecl decl, VisitKind visitKind)
+		public override void VisitObjCMethodDecl (ObjCMethodDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
-				return;
-
 			// don't process methods (or types) that are unavailable for the current platform
 			if (!decl.IsAvailable () || !(decl.DeclContext as Decl).IsAvailable ())
 				return;
@@ -175,17 +170,17 @@ namespace Extrospection {
 				}
 
 				// match with native and, if needed, report discrepancies
-				p.QualType.Type.GetNullability (p.AstContext, out var nullability);
+				var nullability = p.Type.Handle.Nullability;
 				switch (nullability) {
-				case NullabilityKind.NonNull:
+				case CXTypeNullabilityKind.CXTypeNullability_NonNull:
 					if (parameter_nullable == Null.Annotated)
 						Log.On (framework).Add ($"!extra-null-allowed! '{method.FullName}' has a extraneous [NullAllowed] on parameter #{i - 1}");
 					break;
-				case NullabilityKind.Nullable:
+				case CXTypeNullabilityKind.CXTypeNullability_Nullable:
 					if (parameter_nullable != Null.Annotated)
 						Log.On (framework).Add ($"!missing-null-allowed! '{method.FullName}' is missing an [NullAllowed] on parameter #{i - 1}");
 					break;
-				case NullabilityKind.Unspecified:
+				case CXTypeNullabilityKind.CXTypeNullability_Unspecified:
 					break;
 				}
 			}
@@ -229,18 +224,18 @@ namespace Extrospection {
 				}
 			}
 
-			var rt = decl.ReturnQualType;
-			rt.Type.GetNullability (decl.AstContext, out var rnull);
+			var rt = decl.ReturnType;
+			var rnull = rt.Handle.Nullability;
 			switch (rnull) {
-			case NullabilityKind.NonNull:
+			case CXTypeNullabilityKind.CXTypeNullability_NonNull:
 				if (return_nullable == Null.Annotated)
 					Log.On (framework).Add ($"!extra-null-allowed! '{method}' has a extraneous [NullAllowed] on return type");
 				break;
-			case NullabilityKind.Nullable:
+			case CXTypeNullabilityKind.CXTypeNullability_Nullable:
 				if (return_nullable != Null.Annotated)
 					Log.On (framework).Add ($"!missing-null-allowed! '{method}' is missing an [NullAllowed] on return type");
 				break;
-			case NullabilityKind.Unspecified:
+			case CXTypeNullabilityKind.CXTypeNullability_Unspecified:
 				break;
 			}
 		}

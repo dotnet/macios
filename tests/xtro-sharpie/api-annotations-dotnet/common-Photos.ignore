@@ -1,1 +1,4 @@
 !missing-protocol-conformance! PHFetchResult should conform to NSFastEnumeration
+
+# updated sharpie results
+!missing-protocol-conformance! PHCloudIdentifier should conform to NSCopying (defined in '' category)

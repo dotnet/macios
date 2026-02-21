@@ -188,3 +188,7 @@
 # empirical evidence shows the UIView parameter can be null for UITableViewDelegate::WillDisplay[Header|Footer]View: https://github.com/dotnet/macios/issues/9814
 !extra-null-allowed! 'System.Void UIKit.UITableViewDelegate::WillDisplayFooterView(UIKit.UITableView,UIKit.UIView,System.IntPtr)' has a extraneous [NullAllowed] on parameter #1
 !extra-null-allowed! 'System.Void UIKit.UITableViewDelegate::WillDisplayHeaderView(UIKit.UITableView,UIKit.UIView,System.IntPtr)' has a extraneous [NullAllowed] on parameter #1
+
+# updated sharpie results
+!missing-protocol-conformance! UIWindowScene should conform to UITraitEnvironment (defined in '' category)
+

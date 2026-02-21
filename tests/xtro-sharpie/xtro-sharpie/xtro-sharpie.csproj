@@ -1,45 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net4.7.2</TargetFramework>
+    <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
     <OutputType>Exe</OutputType>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <LangVersion>latest</LangVersion>
+
+    <!-- sharpie only supports arm64, do enforce that. -->
+    <!-- It's also necessary to actually specify it due to https://github.com/dotnet/ClangSharp/issues/118 -->
+    <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
-  <Import Project="../pch-info.proj" />
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'iOS (.NET)' ">
-    <StartAction>Project</StartAction>
-    <StartArguments>../$(iOS_PCH) --output-directory ../api-annotations-dotnet --lib ../../../packages/microsoft.netcore.app.ref/$(MicrosoftNETCoreAppRefPackageVersion)/ref/$(DOTNET_TFM) $(iOS_DLL)</StartArguments>
-    <StartWorkingDirectory>.</StartWorkingDirectory>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'tvOS (.NET)' ">
-    <StartAction>Project</StartAction>
-    <StartArguments>../$(tvOS_PCH) --output-directory ../api-annotations-dotnet --lib ../../../packages/microsoft.netcore.app.ref/$(MicrosoftNETCoreAppRefPackageVersion)/ref/$(DOTNET_TFM) $(tvOS_DLL)</StartArguments>
-    <StartWorkingDirectory>.</StartWorkingDirectory>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'macOS (.NET)' ">
-    <StartAction>Project</StartAction>
-    <StartArguments>../$(macOS_PCH) --output-directory ../api-annotations-dotnet --lib ../../../packages/microsoft.netcore.app.ref/$(MicrosoftNETCoreAppRefPackageVersion)/ref/$(DOTNET_TFM) $(macOS_DLL)</StartArguments>
-    <StartWorkingDirectory>.</StartWorkingDirectory>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(RunConfiguration)' == 'MacCatalyst (.NET)' ">
-    <StartAction>Project</StartAction>
-    <StartArguments>../$(MacCatalyst_PCH) --output-directory ../api-annotations-dotnet --lib ../../../packages/microsoft.netcore.app.ref/$(MicrosoftNETCoreAppRefPackageVersion)/ref/$(DOTNET_TFM) $(MacCatalyst_DLL)</StartArguments>
-    <StartWorkingDirectory>.</StartWorkingDirectory>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Clang">
-      <HintPath>\Library\Frameworks\ObjectiveSharpie.framework\Versions\Current\bin\Clang.dll</HintPath>
-    </Reference>
     <PackageReference Include="Mono.Cecil" Version="$(MonoCecilPackageVersion)" />
-    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
-    <PackageReference Include="Mono.Options" Version="6.12.0.148" />
+    <ProjectReference Include="../../../tools/sharpie/Sharpie.Bind/Sharpie.Bind.csproj" />
   </ItemGroup>
-  <Target Name="CopyMono" AfterTargets="AfterBuild">
-    <PropertyGroup>
-      <LibClangMonoPath Condition="'$(SHARPIE)' != 'sharpie'">$(SHARPIE)/../bin/x64/Release/libclang-mono.dylib</LibClangMonoPath>
-      <LibClangMonoPath Condition="'$(SHARPIE)' == 'sharpie' or '$(SHARPIE)' == ''">/Library/Frameworks/ObjectiveSharpie.framework/Versions/Current/bin/libclang-mono.dylib</LibClangMonoPath>
-    </PropertyGroup>
-    <Copy SourceFiles="$(LibClangMonoPath)" DestinationFolder="$(TargetDir)" />
-  </Target>
 </Project>

@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutputType>Exe</OutputType>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <!-- packing options -->
+    <!-- there's no x64 version of libClang, so we're only supporting arm64 -->
+    <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>sharpie</ToolCommandName>
+
+    <!-- https://github.com/dotnet/ClangSharp/issues/118 -->
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PackAsTool)' != 'true'">$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
+
+    <PublishAot>true</PublishAot>
+    <RollForward>major</RollForward>
+
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sharpie.Bind\Sharpie.Bind.csproj" />
+
+    <LinkerArg Include="-rpath" />
+    <LinkerArg Include="@executable_path/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../clang/include/**/*" Pack="true" PackagePath="content/clang/include" Link="clang/include" />
+
+    <None Include="README.md" Pack="true" PackagePath="/"/>
+    <None Include="../../../LICENSE" Pack="true" PackagePath="/"/>
+    <None Include="../../../NOTICE.txt" Pack="true" PackagePath="/"/>
+  </ItemGroup>
+</Project>

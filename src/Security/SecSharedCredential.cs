@@ -26,8 +26,7 @@ namespace Security {
 			[UnmanagedCallersOnly]
 			internal static unsafe void Invoke (IntPtr block, IntPtr obj)
 			{
-				var descriptor = (BlockLiteral*) block;
-				var del = (global::System.Action<NSError?>) (descriptor->Target);
+				var del = BlockLiteral.GetTarget<Action<NSError?>> (block);
 				if (del is not null) {
 					del (Runtime.GetNSObject<NSError> (obj));
 				}
@@ -89,8 +88,7 @@ namespace Security {
 			[UnmanagedCallersOnly]
 			internal static unsafe void Invoke (IntPtr block, IntPtr array, IntPtr err)
 			{
-				var descriptor = (BlockLiteral*) block;
-				var del = (global::System.Action<NSArray?, NSError?>) (descriptor->Target);
+				var del = BlockLiteral.GetTarget<Action<NSArray?, NSError?>> (block);
 				if (del is not null)
 					del (Runtime.GetNSObject<NSArray> (array), Runtime.GetNSObject<NSError> (err));
 			}

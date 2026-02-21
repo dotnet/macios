@@ -55,3 +55,12 @@
 !missing-protocol! OS_ar_world_anchors not bound
 !missing-protocol! OS_ar_world_tracking_configuration not bound
 !missing-protocol! OS_ar_world_tracking_provider not bound
+
+# updated sharpie results
+!missing-enum! ar_authorization_status_t not bound
+!missing-enum! ar_authorization_type_t not bound
+!missing-enum! ar_data_provider_state_t not bound
+!missing-enum! ar_device_anchor_query_status_t not bound
+!missing-enum! ar_device_anchor_tracking_state_t not bound
+!missing-enum! ar_session_error_code_t not bound
+!missing-enum! ar_world_tracking_error_code_t not bound

@@ -1,0 +1,45 @@
+using System.Runtime.InteropServices;
+using Foundation;
+using ObjCRuntime;
+
+static class CFunctions {
+	// extern void Func (const char * _Nullable str);
+	[DllImport ("__Internal")]
+	[Verify (PlatformInvoke)]
+	static extern unsafe void Func ([NullAllowed] sbyte* str);
+}
+
+// @interface Foo
+interface Foo {
+	// @property SEL _Nullable selector;
+	[NullAllowed, Export ("selector", ArgumentSemantic.Assign)]
+	Selector Selector { get; set; }
+
+	// @property (readonly) id _Nullable someObject;
+	[NullAllowed, Export ("someObject")]
+	NSObject SomeObject { get; }
+
+	// @property (readonly, nonatomic) __kindof NSObject * _Nullable presentedObject;
+	[NullAllowed, Export ("presentedObject")]
+	NSObject PresentedObject { get; }
+
+	// -(id _Nullable)nullableReturnPointer;
+	[NullAllowed, Export ("nullableReturnPointer")]
+	[Verify (MethodToProperty)]
+	NSObject NullableReturnPointer { get; }
+
+	// -(id _Nullable)nullableReturnPointer:(int)arg withNullable:(id _Nullable)obj;
+	[Export ("nullableReturnPointer:withNullable:")]
+	[return: NullAllowed]
+	NSObject NullableReturnPointer (int arg, [NullAllowed] NSObject obj);
+
+	// -(__kindof NSObject * _Nullable)AnObject;
+	[NullAllowed, Export ("AnObject")]
+	[Verify (MethodToProperty)]
+	NSObject AnObject { get; }
+
+	// -(__kindof NSObject * _Nullable)createObjectWithObject:(__kindof NSObject * _Nullable)otherObject;
+	[Export ("createObjectWithObject:")]
+	[return: NullAllowed]
+	NSObject CreateObjectWithObject ([NullAllowed] NSObject otherObject);
+}

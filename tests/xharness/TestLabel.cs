@@ -72,6 +72,8 @@ namespace Xharness {
 		PackagedMacOS = 1 << 28,
 		[Label ("windows")]
 		Windows = 1 << 29,
+		[Label ("sharpie")]
+		Sharpie = 1 << 30,
 		[Label ("all")]
 		All = Int64.MaxValue,
 	}

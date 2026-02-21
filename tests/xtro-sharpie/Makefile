@@ -2,9 +2,7 @@ TOP=../..
 
 include $(TOP)/Make.config
 
-# a 64bits mono is required because of the clang requirement
-MONO ?= mono64 --debug
-SHARPIE ?= sharpie
+SHARPIE ?= $(TOP)/tools/sharpie/Sharpie.Bind.Tool/bin/Release/osx-arm64/publish/Sharpie.Bind.Tool
 
 XCODE=$(abspath $(XCODE_DEVELOPER_ROOT)/../..)
 
@@ -18,18 +16,17 @@ all-local::
 clean-local::
 	rm -rf */bin */obj
 	rm -f *.tmp
-	rm -rf *os*.pch*
 
 XTRO_REPORT=xtro-report/bin/Debug/xtro-report
 XTRO_REPORT_EXEC=$(XTRO_REPORT)
 XTRO_SANITY=xtro-sanity/bin/Debug/xtro-sanity
 XTRO_SANITY_EXEC=$(XTRO_SANITY)
-XTRO_SHARPIE=xtro-sharpie/bin/Debug/xtro-sharpie.exe
-XTRO_SHARPIE_EXEC=$(MONO) --debug $(XTRO_SHARPIE)
+XTRO_SHARPIE=xtro-sharpie/bin/Debug/xtro-sharpie
+XTRO_SHARPIE_EXEC=$(XTRO_SHARPIE)
 
 build: $(XTRO_SHARPIE) $(XTRO_REPORT) $(XTRO_SANITY)
 
-$(XTRO_SHARPIE): $(wildcard xtro-sharpie/*.cs) $(wildcard xtro-sharpie/*.csproj) pch-info.proj $(XTRO_REPORT)
+$(XTRO_SHARPIE): $(wildcard xtro-sharpie/*.cs) $(wildcard xtro-sharpie/*.csproj) $(XTRO_REPORT)
 	$(Q_GEN) unset MSBUILD_EXE_PATH && $(DOTNET) build xtro-sharpie/xtro-sharpie.csproj /bl:xtro-sharpie.binlog $(DOTNET_BUILD_VERBOSITY)
 
 $(XTRO_REPORT): $(wildcard xtro-report/*.cs) $(wildcard xtro-report/*.csproj) xtro-sharpie/Filter.cs Makefile
@@ -37,6 +34,15 @@ $(XTRO_REPORT): $(wildcard xtro-report/*.cs) $(wildcard xtro-report/*.csproj) xt
 
 $(XTRO_SANITY): $(wildcard xtro-sanity/*.cs) $(wildcard xtro-sanity/*.csproj) $(wildcard $(TOP)/tools/common/*.cs) Makefile
 	$(Q_GEN) unset MSBUILD_EXE_PATH && $(DOTNET) build xtro-sanity/xtro-sanity.csproj /bl:xtro-sanity.binlog $(DOTNET_BUILD_VERBOSITY)
+
+define DotNetAssemblyPath
+ifdef TESTS_USE_SYSTEM
+X$(2)_DOTNET ?= $(DOTNET_DIR)/packs/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/$($(2)_WORKLOAD_VERSION)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)/$(DOTNET_$(2)_ASSEMBLY_NAME).dll
+else
+X$(2)_DOTNET ?= $(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)/$(DOTNET_$(2)_ASSEMBLY_NAME).dll
+endif
+endef
+$(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetAssemblyPath,$(platform),$(shell echo $(platform) | tr a-z A-Z))))
 
 CORETELEPHONY_HEADERS = \
 	-i CoreTelephony/CoreTelephonyDefines.h \
@@ -80,6 +86,11 @@ IGNORED_MACOS_FRAMEWORKS = \
 	$(COMMON_IGNORED_FRAMEWORKS) \
 	AccessorySetupKit \
 	CompositorServices \
+	DriverKit \
+	Kerberos \
+	IOUSBHost \
+	Ruby \
+	Tk \
 
 IGNORED_MACCATALYST_FRAMEWORKS = \
 	$(COMMON_IGNORED_FRAMEWORKS) \
@@ -92,47 +103,49 @@ IGNORED_MACCATALYST_FRAMEWORKS = \
 	ClockKit \
 	CompositorServices \
 	DiscRecordingUI \
+	DriverKit \
 	FSKit \
 	GLKit \
+	Hypervisor \
 	ICADevices \
 	InputMethodKit \
 	InstallerPlugins \
 	IOBluetooth \
 	IOBluetoothUI \
+	IOUSBHost \
+	Kerberos \
 	LDAP \
 	Python \
 	Quartz \
 	QuickLookUI \
+	Ruby \
 	SecurityInterface \
+	Tk \
 	Virtualization \
 
 COMMON_SHARPIE_ARGUMENTS = \
-	--xcode $(XCODE) \
 	-a arm64 \
-	-modules false \
+	-modules true \
+	--clang-resource-dir $(TOP)/tools/sharpie/clang \
 
 IOS_SHARPIE_ARGUMENTS = \
 	$(COMMON_SHARPIE_ARGUMENTS) \
 	$(CORETELEPHONY_HEADERS) \
-	--compiler-arguments=-F \
-	--compiler-arguments=$(XCODE_DEVELOPER_ROOT)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS$(IOS_SDK_VERSION).sdk/System/Library/SubFrameworks
+	--platform-assembly $(XIOS_DOTNET) \
 
 TVOS_SHARPIE_ARGUMENTS = \
 	$(COMMON_SHARPIE_ARGUMENTS) \
-	--compiler-arguments=-F \
-	--compiler-arguments=$(XCODE_DEVELOPER_ROOT)/Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS$(TVOS_SDK_VERSION).sdk/System/Library/SubFrameworks
+	--platform-assembly $(XTVOS_DOTNET) \
 
 MACCATALYST_SHARPIE_ARGUMENTS = \
 	$(COMMON_SHARPIE_ARGUMENTS) \
 	$(CORETELEPHONY_HEADERS) \
-	--compiler-arguments=-F \
-	--compiler-arguments=$(XCODE_DEVELOPER_ROOT)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX$(MACOS_SDK_VERSION).sdk/System/Library/SubFrameworks
+	--platform-assembly $(XMACCATALYST_DOTNET) \
 
 MACOS_SHARPIE_ARGUMENTS = \
 	$(COMMON_SHARPIE_ARGUMENTS) \
 	$(CORETELEPHONY_HEADERS) \
-	--compiler-arguments=-F \
-	--compiler-arguments=$(XCODE_DEVELOPER_ROOT)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX$(MACOS_SDK_VERSION).sdk/System/Library/SubFrameworks
+	--platform-assembly $(XMACOS_DOTNET) \
 
 IOS_PLATFORM=iphoneos$(IOS_SDK_VERSION)
 TVOS_PLATFORM=appletvos$(TVOS_SDK_VERSION)
@@ -145,23 +158,16 @@ XMACOS_RID = osx-arm64
 XMACCATALYST_RID = maccatalyst-arm64
 
 define DotNetAssembly
-X$(2)_PCH = $($(2)_PLATFORM)-arm64.pch
-$$(X$(2)_PCH): .stamp-check-sharpie
-	$(SHARPIE) sdk-db -s $($(2)_PLATFORM) $$($(2)_SHARPIE_ARGUMENTS) $$(foreach framework,$$(IGNORED_$(2)_FRAMEWORKS),-exclude $$(framework))
+$(1).rsp: Makefile
+	$$(Q_GEN) echo \
+		-s $($(2)_PLATFORM) $$($(2)_SHARPIE_ARGUMENTS) $$(foreach framework,$$(IGNORED_$(2)_FRAMEWORKS),-exclude $$(framework)) \
+		--output api/$(1) \
+		> $$@
 
-pch:: $$(X$(2)_PCH)
+api/$(1)/ApiDefinition.cs: $(1).rsp
+	$$(Q_GEN) $$(SHARPIE) sdk-db @$(1).rsp
 
-ifdef TESTS_USE_SYSTEM
-X$(2)_DOTNET ?= $(DOTNET_DIR)/packs/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/$($(2)_WORKLOAD_VERSION)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)/$(DOTNET_$(2)_ASSEMBLY_NAME).dll
-else
-X$(2)_DOTNET ?= $(DOTNET_DESTDIR)/$($(2)_NUGET_RUNTIME_MANAGED_NAME)/runtimes/$(DOTNET_$(2)_RUNTIME_IDENTIFIERS_NO_ARCH)/lib/$(DOTNET_TFM)/$(DOTNET_$(2)_ASSEMBLY_NAME).dll
-endif
-
-$(3)-$($(2)_SDK_VERSION).g.cs: .stamp-check-sharpie $$(X$(2)_PCH)
-	$$(Q_GEN) $$(SHARPIE) query -bind $$(X$(2)_PCH) > $$@.tmp
-	$$(Q) mv $$@.tmp $$@
-
-gen-$(3): $(3)-$$($(2)_SDK_VERSION).g.cs
+gen-$(3): api/$(1)/ApiDefinition.cs
 gen-all:: gen-$(3)
 endef
 $(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetAssembly,$(platform),$(shell echo $(platform) | tr a-z A-Z),$(shell echo $(platform) | tr A-Z a-z))))
@@ -169,16 +175,6 @@ $(foreach platform,$(XTRO_DOTNET_PLATFORMS),$(eval $(call DotNetAssembly,$(platf
 ifeq ($(XCODE_IS_STABLE),false)
 all: gen-all
 endif
-
-pch-info.proj: Makefile
-	$(Q) rm -f $@.tmp
-	$(Q) printf "<Project>\\n" >> $@.tmp
-	$(Q) printf "\\t<PropertyGroup>\\n" >> $@.tmp
-	$(Q) printf "$(foreach platform,$(ALL_DOTNET_PLATFORMS),\\t\\t<$(platform)_PCH>$(X$(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_PCH)</$(platform)_PCH>\\n)" >> $@.tmp
-	$(Q) printf "$(foreach platform,$(ALL_DOTNET_PLATFORMS),\\t\\t<$(platform)_DLL>$(X$(shell echo $(platform) | tr '[:lower:]' '[:upper:]')_DOTNET)</$(platform)_DLL>\\n)" >> $@.tmp
-	$(Q) printf "\\t</PropertyGroup>\\n" >> $@.tmp
-	$(Q) printf "</Project>\\n" >> $@.tmp
-	$(Q_GEN) mv $@.tmp $@
 
 report-dotnet/index.html: $(XTRO_REPORT) .stamp-dotnet-classify
 	$(Q) rm -rf report-dotnet
@@ -194,9 +190,14 @@ report-short:
 	JENKINS_SERVER_COOKIE=1 make report
 
 define DotNetClassify
-.stamp-dotnet-classify-$(1): $(XTRO_SHARPIE) $$(X$(2)_PCH) $$(X$(2)_DOTNET)
+xtro-sharpie-$(1).rsp: Makefile $(1).rsp
+	$$(Q_GEN) echo \
+		--output-directory $$(DOTNET_ANNOTATIONS_DIR) --lib $(DOTNET_BCL_DIR) $$(X$(2)_DOTNET) --rsp $(abspath $(1).rsp) \
+		> $$@
+
+.stamp-dotnet-classify-$(1): $(XTRO_SHARPIE) $$(X$(2)_DOTNET) xtro-sharpie-$(1).rsp
 	$$(Q) rm -f $$(DOTNET_ANNOTATIONS_DIR)/$(1)-*.raw
-	$$(Q_GEN) $(XTRO_SHARPIE_EXEC) --output-directory $$(DOTNET_ANNOTATIONS_DIR) --lib $(DOTNET_BCL_DIR) $$(X$(2)_PCH) $$(X$(2)_DOTNET)
+	$$(Q_GEN) $(XTRO_SHARPIE_EXEC) @xtro-sharpie-$(1).rsp
 	$$(Q) touch $$@
 
 dotnet-classify-$(1): .stamp-dotnet-classify-$(1)
@@ -218,10 +219,6 @@ remove-empty:
 
 all: dotnet-report
 
-.stamp-check-sharpie:
-	@$(TOP)/system-dependencies.sh --ignore-all --enforce-sharpie
-	@touch $@
-	
 remove-empty-files:
 	find . -empty -exec git rm -f {} \;
 
@@ -235,3 +232,9 @@ unclassified2todo: $(U2TODO)
 
 run-tests run-unit-tests:
 	$(Q) $(MAKE) -C UnitTests $@
+
+PROFILE_PATH:=/tmp/clangsharp-$(shell date "+%Y-%m-%d_%H-%M-%S").trace
+profile: MacCatalyst.rsp
+	dotnet publish $(TOP)/tools/sharpie/Sharpie.Bind.Tool
+	xctrace record --output $(PROFILE_PATH) --template 'Time Profiler' --target-stdout - --launch -- $(TOP)/tools/sharpie/Sharpie.Bind.Tool/bin/Release/osx-arm64/publish/Sharpie.Bind.Tool sdk-db @MacCatalyst.rsp
+	@echo "Created: $(PROFILE_PATH)"

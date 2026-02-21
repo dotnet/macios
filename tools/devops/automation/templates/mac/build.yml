@@ -34,6 +34,14 @@ parameters:
   type: number
   default: 3
 
+- name: label
+  type: string
+  default: ''
+
+- name: stageName
+  type: string
+  default: ''
+
 steps:
 
 - template: ../common/checkout.yml
@@ -153,6 +161,15 @@ steps:
       AUTH_TOKEN_VSENG_XAMARIN_MAC_DEVICES_P12: ${{ parameters.xqaCertPass }}
       AUTH_TOKEN_VSENG_XAMARIN_MAC_DEVICES_2_P12: ${{ parameters.xqaCertPass }}
 
+- pwsh: |
+    Write-Host "Running tests on $($Env:AGENT_NAME)"
+    Write-Host "##vso[task.setvariable variable=TESTS_BOT;isOutput=true]$($Env:AGENT_NAME)"
+    Write-Host "##vso[task.setvariable variable=TESTS_LABEL;isOutput=true]${{ parameters.label }}"
+    Write-Host "##vso[task.setvariable variable=TESTS_PLATFORM;isOutput=true]"
+    Write-Host "##vso[task.setvariable variable=TESTS_ATTEMPT;isOutput=true]$($Env:SYSTEM_JOBATTEMPT)"
+    Write-Host "##vso[task.setvariable variable=TESTS_TITLE;isOutput=true]${{ parameters.label }}"
+  displayName: 'Set output variables'
+
 - pwsh: >-
     $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/run_mac_tests.ps1
     -GithubToken $(GitHub.Token)
@@ -160,7 +177,10 @@ steps:
     -SourcesDirectory "$(Build.SourcesDirectory)"
     -GithubFailureCommentFile "$Env:GITHUB_FAILURE_COMMENT_FILE"
     -StatusContext "${{ parameters.statusContext }}"
+    -TestSummaryPath "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tests/TestSummary.md"
+    -HtmlReportPath "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/jenkins-results/tests/vsdrops_index.html"
   displayName: 'Run tests'
+  name: runTests
   timeoutInMinutes: 90
   ${{ if not(parameters.isPR) }}:
     retryCountOnTaskFailure: ${{ parameters.retryCount }}
@@ -171,6 +191,8 @@ steps:
     MONO_DEBUG: no-gdb-backtrace
     TEST_BOT: $(Agent.Name)
     IS_PR: $(parameters.isPr)
+    MAC_TEST_PREFIX: ${{ parameters.stageName }}${{ parameters.label }}
+    VSDROPSPREFIX: $(VSDropsPrefix)
 
 - bash: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/collect-and-upload-crash-reports.sh
   displayName: 'Collect and upload crash reports'
@@ -179,27 +201,44 @@ steps:
   env:
     MACIOS_UPLOAD_PREFIX: ${{ parameters.uploadPrefix }}
 
-# Make sure to report any errors
-- pwsh: |
-    Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tools\devops\automation\scripts\MaciosCI.psd1
-    $githubComments = New-GitHubCommentsObjectFromUrl -Url "$(Build.Repository.Uri)" -Token $(GitHub.Token) -Hash $Env:COMMENT_HASH
-
-    if (Test-Path -Path "$Env:GITHUB_FAILURE_COMMENT_FILE" -PathType Leaf)  {
-      $githubComments.NewCommentFromFile("Tests on macOS ${{ parameters.statusContext }} failed", ":x:", "$Env:GITHUB_FAILURE_COMMENT_FILE", "macOS ${{ parameters.statusContext }}")
-    } else {
-      $message = ":white_check_mark: **All** tests on macOS ${{ parameters.statusContext }} passed."
-      $githubComments.NewCommentFromMessage("Tests on macOS ${{ parameters.statusContext }} passed", ":computer:", $message, "macOS ${{ parameters.statusContext }}")
-    }
-  displayName: 'Report results to GitHub'
-  timeoutInMinutes: 5
-  condition: always() # in particular we care if something failed, but let's always run just in case
+# Upload TestSummary as an artifact.
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Artifact: TestSummary'
+  inputs:
+    targetPath: '$(BUILD_REPOSITORY_TITLE)/tests/TestSummary.md'
+    artifactName: '${{ parameters.uploadPrefix }}TestSummary-${{ parameters.stageName }}${{ parameters.label }}-$(System.JobAttempt)'
   continueOnError: true
-  env:
-    CONTEXT: ${{ parameters.statusContext }}
-    GITHUB_TOKEN: $(GitHub.Token)
-    SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-    TEST_BOT: $(Agent.Name)
-    ${{ if eq(parameters.repositoryAlias, 'self') }}:
-      COMMENT_HASH: $(fix_commit.GIT_HASH)
-    ${{ else }}:
-      COMMENT_HASH: $(Build.SourceVersion)
+  condition: succeededOrFailed()
+
+# Upload to VSDrops so that the Html Report link in the GitHub comment works.
+- task: artifactDropTask@1
+  displayName: 'Publish to Artifact Services Drop'
+  inputs:
+    dropServiceURI: 'https://devdiv.artifacts.visualstudio.com/DefaultCollection'
+    dropMetadataContainerName: '${{ parameters.uploadPrefix }}DropMetadata-${{ parameters.stageName }}${{ parameters.label }}-$(System.JobAttempt)'
+    buildNumber: '$(BUILD_REPOSITORY_TITLE)/device-tests/$(Build.BuildNumber)/$(Build.BuildId)/${{ parameters.stageName }}${{ parameters.label }}-$(System.JobAttempt)'
+    sourcePath: '$(BUILD_REPOSITORY_TITLE)/jenkins-results'
+    detailedLog: true
+    usePat: true
+  continueOnError: true
+  condition: succeededOrFailed()
+
+# Archive files for the Html Report so that the report can be easily uploaded as artifacts of the build.
+- task: ArchiveFiles@1
+  displayName: 'Archive HtmlReport'
+  inputs:
+    rootFolder: '$(BUILD_REPOSITORY_TITLE)/jenkins-results'
+    includeRootFolder: false
+    archiveFile: '$(Build.ArtifactStagingDirectory)/HtmlReport.zip'
+  continueOnError: true
+  condition: succeededOrFailed()
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Artifact: HtmlReport'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/HtmlReport.zip'
+    artifactName: '${{ parameters.uploadPrefix }}HtmlReport-${{ parameters.stageName }}${{ parameters.label }}-$(System.JobAttempt)'
+  continueOnError: true
+  condition: succeededOrFailed()
+
+

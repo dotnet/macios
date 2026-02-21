@@ -7,7 +7,7 @@ using System.Text;
 #nullable enable
 
 namespace Xamarin.Utils {
-	internal class StringUtils {
+	class StringUtils {
 		static StringUtils ()
 		{
 			PlatformID pid = Environment.OSVersion.Platform;
@@ -235,6 +235,150 @@ namespace Xamarin.Utils {
 			if (int.TryParse (v, out major))
 				return new Version (major, 0);
 			return Version.Parse (v);
+		}
+
+		/// <summary>
+		/// Format a message according to MSBuild diagnostic format.
+		/// </summary>
+		/// <param name="fileName">The file name in the formatted message (null if no file name is present).</param>
+		/// <param name="lineNumber">The line number in the formatted message (null if no line number is present).</param>
+		/// <param name="isError">True if the message is an error, false if it is a warning.</param>
+		/// <param name="prefix">The prefix of the message.</param>
+		/// <param name="code">The code of the message.</param>
+		/// <param name="message">The message text.</param>
+		/// <returns></returns>
+		/// <see cref="https://learn.microsoft.com/visualstudio/msbuild/msbuild-diagnostic-format-for-tasks"/>
+		public static string FormatMessage (string? fileName, long? lineNumber, bool isError, string prefix, int code, string message)
+		{
+			var sb = new StringBuilder ();
+			if (!string.IsNullOrEmpty (fileName)) {
+				sb.Append (fileName);
+				if (lineNumber is not null && lineNumber.Value > 0)
+					sb.Append ('(').Append (lineNumber.Value).Append (")");
+				sb.Append (": ");
+			}
+			sb.Append (isError ? "error" : "warning").Append (' ');
+			sb.Append (prefix).Append (code.ToString ("0000: "));
+			sb.Append (message);
+			return sb.ToString ();
+		}
+
+		/// <summary>
+		/// Parse a formatted message created with <see cref="FormatMessage" />.
+		/// </summary>
+		/// <param name="line">The formatted message line to parse.</param>
+		/// <param name="fileName">The file name in the formatted message (null if no file name is present).</param>
+		/// <param name="lineNumber">The line number in the formatted message (null if no line number is present).</param>
+		/// <param name="isError">True if the message is an error, false if it is a warning, null if neither.</param>
+		/// <param name="prefix">The prefix of the message.</param>
+		/// <param name="code">The code of the message.</param>
+		/// <param name="message">The message text.</param>
+		/// <returns></returns>
+		public static bool TryParseFormattedMessage (string? line, out string? fileName, out int? lineNumber, out bool isError, [NotNullWhen (true)] out string? prefix, out int code, [NotNullWhen (true)] out string? message)
+		{
+			fileName = null;
+			lineNumber = null;
+			isError = false;
+			prefix = null;
+			code = 0;
+			message = null;
+
+#if NET
+			if (string.IsNullOrEmpty (line))
+#else
+			if (string.IsNullOrEmpty (line) || line is null)
+#endif
+				return false;
+
+			var origin = string.Empty;
+
+			if (IndexOfAny (line, out var idxError, out var endError, ": error ", ":  error ")) {
+				isError = true;
+				origin = line.Substring (0, idxError);
+				line = line.Substring (endError);
+				line = RemovePathAtEnd (line);
+			} else if (IndexOfAny (line, out var idxWarning, out var endWarning, ": warning ", ":  warning ")) {
+				isError = false;
+				origin = line.Substring (0, idxWarning);
+				line = line.Substring (endWarning);
+				line = RemovePathAtEnd (line);
+			} else if (line.StartsWith ("error ", StringComparison.Ordinal)) {
+				isError = true;
+				line = line.Substring (6);
+			} else if (line.StartsWith ("warning ", StringComparison.Ordinal)) {
+				isError = false;
+				line = line.Substring (8);
+			} else {
+				// something else
+				return false;
+			}
+
+			if (line.Length < 7)
+				return false; // something else
+
+			var firstNumber = line.IndexOfAny ("0123456789".ToCharArray ());
+			if (firstNumber == -1)
+				return false; // something else)
+			prefix = line.Substring (0, firstNumber);
+			if (!int.TryParse (line.Substring (firstNumber, 4), out var codeValue))
+				return false; // something else
+			code = codeValue;
+			line = line.Substring (firstNumber + 4);
+
+			if (line.StartsWith (": "))
+				line = line.Substring (2);
+
+			message = line;
+
+			if (!string.IsNullOrEmpty (origin)) {
+				var idx = origin.IndexOf ('(');
+				if (idx > 0) {
+					var closing = origin.IndexOf (')');
+					if (!int.TryParse (origin.Substring (idx + 1, closing - idx - 1), out var number))
+						return false;
+					lineNumber = number;
+					fileName = origin.Substring (0, idx);
+				} else {
+					fileName = origin;
+				}
+			}
+
+			return true;
+		}
+
+		static bool IndexOfAny (string line, out int start, out int end, params string [] values)
+		{
+			foreach (var value in values) {
+				start = line.IndexOf (value, StringComparison.Ordinal);
+				if (start >= 0) {
+					end = start + value.Length;
+					return true;
+				}
+			}
+			start = -1;
+			end = -1;
+			return false;
+		}
+
+		static string RemovePathAtEnd (string line)
+		{
+#if NET
+			if (line.TrimEnd ().EndsWith (']')) {
+#else
+			if (line.TrimEnd ().EndsWith ("]")) {
+#endif
+				var start = line.LastIndexOf ('[');
+				if (start >= 0) {
+					// we want to get the space before `[` too.
+					if (start > 0 && line [start - 1] == ' ')
+						start--;
+
+					line = line.Substring (0, start);
+					return line;
+				}
+			}
+
+			return line;
 		}
 	}
 

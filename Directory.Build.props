@@ -17,6 +17,15 @@
 		<SystemDrawingCommonPackageVersion>4.7.2</SystemDrawingCommonPackageVersion>
 		<!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.1 brought by Microsoft.Build.Tasks.Core package -->
 		<SystemSecurityCryptographyXmlPackageVersion>8.0.0</SystemSecurityCryptographyXmlPackageVersion>
+
+		<ClangSharpPackageVersion>21.1.8.2</ClangSharpPackageVersion>
+		<ICSharpCodeNRefactoryPackageVersion>5.5.1</ICSharpCodeNRefactoryPackageVersion>
+		<libclangPackageVersion>21.1.8</libclangPackageVersion>
+		<MicrosoftNETTestSdkPackageVersion>17.14.0</MicrosoftNETTestSdkPackageVersion>
+		<MonoCecilPackageVersion>0.11.6</MonoCecilPackageVersion>
+		<NUnit3TestAdapterPackageVersion>5.0.0</NUnit3TestAdapterPackageVersion>
+		<NUnitAnalyzersPackageVersion>4.7.0</NUnitAnalyzersPackageVersion>
+		<NUnitPackageVersion>4.3.2</NUnitPackageVersion>
 	</PropertyGroup>
 	<Import Project="Build.props" Condition="Exists('Build.props')" />
 </Project>

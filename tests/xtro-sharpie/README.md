@@ -123,6 +123,4 @@ Anything we do not check but for which data is available, e.g.
 
 ## Notes
 
-* To develop you need to install ObjectiveSharpie. You can install the required version of ObjectiveSharpie by executing `./system-dependencies.sh --provision-sharpie` in this repository's root directory.
-
 * You can use the `gen-[platform]` or `gen-all` target of the `Makefile` to generate C# code for all the API from the headers. You can then copy/paste from the (large) files to create the missing bindings;

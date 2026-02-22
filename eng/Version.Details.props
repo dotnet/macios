@@ -6,16 +6,16 @@ This file should be imported by eng/Versions.props
 <Project>
   <PropertyGroup>
     <!-- dotnet/dotnet dependencies -->
-    <MicrosoftDotNetArcadeSdkPackageVersion>11.0.0-beta.26120.112</MicrosoftDotNetArcadeSdkPackageVersion>
-    <MicrosoftDotNetBuildTasksFeedPackageVersion>11.0.0-beta.26120.112</MicrosoftDotNetBuildTasksFeedPackageVersion>
-    <MicrosoftDotNetCecilPackageVersion>0.11.5-preview.26120.112</MicrosoftDotNetCecilPackageVersion>
-    <MicrosoftDotNetSharedFrameworkSdkPackageVersion>11.0.0-beta.26120.112</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
-    <MicrosoftNETILLinkPackageVersion>11.0.0-preview.3.26120.112</MicrosoftNETILLinkPackageVersion>
-    <MicrosoftNETILLinkTasksPackageVersion>11.0.0-preview.3.26120.112</MicrosoftNETILLinkTasksPackageVersion>
-    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>11.0.0-preview.3.26120.112</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
-    <MicrosoftNETSdkPackageVersion>11.0.100-preview.3.26120.112</MicrosoftNETSdkPackageVersion>
-    <MicrosoftNETCoreAppRefPackageVersion>11.0.0-preview.3.26120.112</MicrosoftNETCoreAppRefPackageVersion>
-    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>11.0.100-preview.3.26120.112</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
+    <MicrosoftDotNetArcadeSdkPackageVersion>11.0.0-beta.26121.104</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftDotNetBuildTasksFeedPackageVersion>11.0.0-beta.26121.104</MicrosoftDotNetBuildTasksFeedPackageVersion>
+    <MicrosoftDotNetCecilPackageVersion>0.11.5-preview.26121.104</MicrosoftDotNetCecilPackageVersion>
+    <MicrosoftDotNetSharedFrameworkSdkPackageVersion>11.0.0-beta.26121.104</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
+    <MicrosoftNETILLinkPackageVersion>11.0.0-preview.3.26121.104</MicrosoftNETILLinkPackageVersion>
+    <MicrosoftNETILLinkTasksPackageVersion>11.0.0-preview.3.26121.104</MicrosoftNETILLinkTasksPackageVersion>
+    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>11.0.0-preview.3.26121.104</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
+    <MicrosoftNETSdkPackageVersion>11.0.100-preview.3.26121.104</MicrosoftNETSdkPackageVersion>
+    <MicrosoftNETCoreAppRefPackageVersion>11.0.0-preview.3.26121.104</MicrosoftNETCoreAppRefPackageVersion>
+    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>11.0.100-preview.3.26121.104</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <!-- dotnet/macios dependencies -->
     <MicrosoftiOSSdknet100_260PackageVersion>26.0.11017</MicrosoftiOSSdknet100_260PackageVersion>
     <MicrosoftiOSSdknet100_262PackageVersion>26.2.10196</MicrosoftiOSSdknet100_262PackageVersion>

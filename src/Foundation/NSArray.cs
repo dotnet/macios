@@ -333,7 +333,7 @@ namespace Foundation {
 					throw new ArgumentNullException ($"{nameof (items)}[{i}]");
 				// The analyzer cannot deal with arrays, we manually keep alive the whole array below
 #pragma warning disable RBI0014
-				IntPtr h = item is null ? NSNull.Null.Handle : item.Handle;
+				IntPtr h = item is null ? NSNull.NullHandle : item.Handle;
 				handles [i] = h;
 #pragma warning restore RBI0014
 			}
@@ -672,7 +672,7 @@ namespace Foundation {
 			// A native code could return NSArray with NSNull.Null elements
 			// and they should be valid for things like T : NSDate so we handle
 			// them as just null values inside the array
-			if (val == NSNull.Null.Handle)
+			if (val == NSNull.NullHandle)
 				return null;
 
 			return Runtime.GetINativeObject<T> (val, false);
@@ -684,7 +684,7 @@ namespace Foundation {
 			// A native code could return NSArray with NSNull.Null elements
 			// and they should be valid for things like T : NSDate so we handle
 			// them as just null values inside the array
-			if (val == NSNull.Null.Handle)
+			if (val == NSNull.NullHandle)
 				return null;
 
 			return Runtime.GetINativeObject (val, false, type);

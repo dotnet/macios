@@ -177,15 +177,6 @@ namespace ObjCRuntime {
 			IsNativeAOT = 0x40,
 		}
 
-#if MONOMAC
-		/* This enum must always match the identical enum in runtime/xamarin/main.h */
-		internal enum LaunchMode : int {
-			App = 0,
-			Extension = 1,
-			Embedded = 2,
-		}
-#endif
-
 		[StructLayout (LayoutKind.Sequential)]
 		internal unsafe struct InitializationOptions {
 			public int Size;
@@ -195,10 +186,6 @@ namespace ObjCRuntime {
 			public MTRegistrationMap* RegistrationMap;
 			public MarshalObjectiveCExceptionMode MarshalObjectiveCExceptionMode;
 			public MarshalManagedExceptionMode MarshalManagedExceptionMode;
-#if MONOMAC
-			public LaunchMode LaunchMode;
-			public IntPtr EntryAssemblyPath; /* char * */
-#endif
 			IntPtr AssemblyLocations;
 
 			public IntPtr xamarin_objc_msgsend;
@@ -577,16 +564,9 @@ namespace ObjCRuntime {
 			return Marshal.StringToHGlobalAuto (str.ToString ());
 		}
 
-		// IL2026: Using member 'System.Reflection.Assembly.LoadFile(String)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Types and members the loaded assembly depends on might be removed.
-		[UnconditionalSuppressMessage ("", "IL2026", Justification = "We only want the entry assembly, and then we only want the entry point, which survives trimming.")]
 		static unsafe Assembly? GetEntryAssembly ()
 		{
-			var asm = Assembly.GetEntryAssembly ();
-#if MONOMAC
-			if (asm is null)
-				asm = Assembly.LoadFile (Marshal.PtrToStringAuto (options->EntryAssemblyPath)!);
-#endif
-			return asm;
+			return Assembly.GetEntryAssembly ();
 		}
 
 		// This method will register all assemblies referenced by the entry assembly.

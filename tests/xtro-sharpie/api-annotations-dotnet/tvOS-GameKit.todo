@@ -1,0 +1,2 @@
+!deprecated-attribute-missing! GKLocalPlayer::loadDefaultLeaderboardIdentifierWithCompletionHandler: missing a [Deprecated] attribute
+!deprecated-attribute-missing! GKLocalPlayer::setDefaultLeaderboardIdentifier:completionHandler: missing a [Deprecated] attribute

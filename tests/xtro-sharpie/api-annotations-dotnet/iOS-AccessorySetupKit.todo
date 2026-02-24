@@ -1,0 +1,14 @@
+!missing-enum! ASPickerDisplaySettingsOptions not bound
+!missing-enum-value! ASAccessoryEventType native value ASAccessoryEventTypeAccessoryDiscovered = 33 not bound
+!missing-field! ASPickerDisplaySettingsDiscoveryTimeoutUnbounded not bound
+!missing-selector! ASAccessorySession::finishPickerDiscovery: not bound
+!missing-selector! ASAccessorySession::updatePickerShowingDiscoveredDisplayItems:completionHandler: not bound
+!missing-selector! ASDiscoveredAccessory::bluetoothAdvertisementData not bound
+!missing-selector! ASDiscoveredAccessory::bluetoothRSSI not bound
+!missing-selector! ASDiscoveredDisplayItem::initWithName:productImage:accessory: not bound
+!missing-selector! ASMigrationDisplayItem::setWifiAwarePairedDeviceID: not bound
+!missing-selector! ASMigrationDisplayItem::wifiAwarePairedDeviceID not bound
+!missing-selector! ASPickerDisplaySettings::options not bound
+!missing-selector! ASPickerDisplaySettings::setOptions: not bound
+!missing-type! ASDiscoveredAccessory not bound
+!missing-type! ASDiscoveredDisplayItem not bound

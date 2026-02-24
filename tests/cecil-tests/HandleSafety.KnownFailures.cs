@@ -15,7 +15,6 @@ namespace Cecil.Tests {
 			"AudioUnit.AUScheduledAudioFileRegion.GetAudioFileRegion ()",
 			"AudioUnit.SamplerInstrumentData.ToStruct ()",
 			"AVFoundation.AVCaptureReactionType_Extensions.GetSystemImage (AVFoundation.AVCaptureReactionType)",
-			"CoreAnimation.CAGradientLayer.set_Colors (CoreGraphics.CGColor[])",
 			"CoreFoundation.CFArray.Create (ObjCRuntime.INativeObject[])",
 			"CoreFoundation.CFDataBuffer.get_Handle ()",
 			"CoreFoundation.CFDictionary.FromObjectsAndKeys (ObjCRuntime.INativeObject[], ObjCRuntime.INativeObject[])",

@@ -46,6 +46,10 @@ parameters:
   type: string
   default: ''
 
+- name: label
+  type: string
+  default: ''
+
 
 stages:
 
@@ -59,7 +63,7 @@ stages:
     GITHUB_FAILURE_COMMENT_FILE: $(System.DefaultWorkingDirectory)/github-comment-file.md
 
   jobs:
-  - job: run_tests
+  - job: tests
     displayName: 'macOS tests'
     timeoutInMinutes: 120
     workspace:
@@ -84,3 +88,5 @@ stages:
         statusContext: ${{ parameters.statusContext }}
         keyringPass: ${{ parameters.keyringPass }} 
         xqaCertPass: ${{ parameters.xqaCertPass }}
+        label: ${{ parameters.label }}
+        stageName: ${{ parameters.stageName }}

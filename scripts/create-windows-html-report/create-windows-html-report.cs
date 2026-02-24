@@ -85,7 +85,7 @@ public class Program {
 
 		var indexContents = new StringBuilder ();
 		var summaryContents = new StringBuilder ();
-		var allFailedTests = new List<(string TrxName, TrxTestResult Test)> ();
+		var allFailedTests = new List<(string TrxName, TrxParser.TrxTestResult Test)> ();
 		var failedTrxNames = new List<string> ();
 		var passedTrxCount = 0;
 		var failedTrxCount = 0;

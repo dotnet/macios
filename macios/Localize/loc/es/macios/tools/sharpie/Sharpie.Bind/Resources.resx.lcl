@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LCX SchemaVersion="6.0" Name="D:\a\_work\1\s\macios\tools\sharpie\Sharpie.Bind\Resources.resx" PsrId="211" SrcCul="en-US" xmlns="http://schemas.microsoft.com/locstudio/2006/6/lcx" TgtCul="es-ES">
+<LCX SchemaVersion="6.0" Name="D:\a\_work\1\s\macios\tools\sharpie\Sharpie.Bind\Resources.resx" PsrId="211" FileType="1" SrcCul="en-US" TgtCul="es-ES" xmlns="http://schemas.microsoft.com/locstudio/2006/6/lcx">
   <OwnedComments>
     <Cmt Name="Dev" />
     <Cmt Name="LcxAdmin" />
     <Cmt Name="Rccx" />
   </OwnedComments>
+  <Settings Name="@vsLocTools@\default.lss" Type="Lss" />
   <Item ItemId=";Resources.resx" ItemType="0" PsrId="211" Leaf="false">
     <Disp Icon="Expand" Expand="true" Disp="true" LocTbl="false" />
     <Item ItemId=";Strings" ItemType="0" PsrId="211" Leaf="false">
@@ -12,11 +13,11 @@
       <Item ItemId=";ErrorMessageNotFound" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The error message for code {0} could not be found. Please report this missing message on GitHub at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se encontró el mensaje de error para el código {0}. Informe de este mensaje faltante en GitHub en https://github.com/dotnet/macios/issues/new]]></Val>
+          </Tgt>
         </Str>
         <Disp Icon="Str" />
-        <Cmts>
-          <Cmt Name="Dev"><![CDATA[]D;]A;			This is the default message when an error code can not be found.]D;]A;		]]></Cmt>
-        </Cmts>
       </Item>
       <Item ItemId=";SHARPIE0000" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
@@ -146,4 +147,4 @@
       </Item>
     </Item>
   </Item>
-<Settings Name="@vsLocTools@\default.lss" Type="Lss" /></LCX>
+</LCX>

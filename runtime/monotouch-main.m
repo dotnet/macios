@@ -454,9 +454,6 @@ xamarin_main (int argc, char *argv[], enum XamarinLaunchMode launch_mode)
 	case XamarinLaunchModeApp:
 		rv = mono_jit_exec (mono_domain_get (), assembly, managed_argc, managed_argv);
 		break;
-	case XamarinLaunchModeEmbedded:
-		// do nothing
-		break;
 	default:
 		xamarin_assertion_message ("Invalid launch mode: %i.", launch_mode);
 		break;

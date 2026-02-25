@@ -90,7 +90,7 @@ namespace UIKit {
 		{
 			if (block == IntPtr.Zero)
 				return null;
-			var del = (UICellAccessoryPosition) GetExistingManagedDelegate (block);
+			var del = (UICellAccessoryPosition?) GetExistingManagedDelegate (block);
 			return del ?? new NIDUICellAccessoryPosition ((BlockLiteral*) block).Invoke;
 		}
 

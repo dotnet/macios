@@ -64,7 +64,7 @@ namespace UIKit {
 		{
 			if (block == IntPtr.Zero)
 				return null;
-			var del = (UIConfigurationColorTransformerHandler) GetExistingManagedDelegate (block);
+			var del = (UIConfigurationColorTransformerHandler?) GetExistingManagedDelegate (block);
 			return del ?? new NIDUIConfigurationColorTransformerHandler ((BlockLiteral*) block).Invoke;
 		}
 

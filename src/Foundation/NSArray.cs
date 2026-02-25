@@ -645,7 +645,7 @@ namespace Foundation {
 
 				for (nuint i = 0; i < count; i++) {
 					var val = GetAtIndex (handle, i);
-					if (val == IntPtr.Zero || val == NSNull.Null.Handle)
+					if (val == IntPtr.Zero || val == NSNull.NullHandle)
 						continue;
 					var dict = Runtime.GetNSObject<NSDictionary> (val);
 					if (dict is null)

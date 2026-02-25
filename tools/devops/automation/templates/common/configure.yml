@@ -271,6 +271,8 @@ steps:
     if ($apiScanMatrix.length -gt 0) {
       $apiScanMatrix = $apiScanMatrix | ConvertFrom-Json | ConvertTo-Json -Compress
       Edit-BuildConfiguration -ConfigKey APISCAN_MATRIX -ConfigValue $apiScanMatrix -ConfigFile $Env:CONFIG_PATH
+    } else {
+      $apiScanMatrix = "{}"
     }
     Write-Host "##vso[task.setvariable variable=APISCAN_MATRIX;isOutput=true]$apiScanMatrix"
   name: apiscan_matrix

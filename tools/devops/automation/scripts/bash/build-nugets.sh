@@ -16,7 +16,7 @@ rm -rf ../symbols/
 mkdir -p ../symbols/
 cp -c "$DOTNET_NUPKG_DIR"/*.nupkg ../package/
 mv ../package/*.symbols.nupkg ../symbols/
-if test -f dotnet/nupkgs/*.symbols.nupkg; then
+if compgen -G 'dotnet/nupkgs/*.symbols.nupkg' > /dev/null; then
     cp -c dotnet/nupkgs/*.symbols.nupkg ../symbols/
 fi
 if test -f "$DOTNET_NUPKG_DIR"/vs-workload.props; then

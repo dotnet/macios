@@ -41,7 +41,6 @@ enum MarshalManagedExceptionMode : int {
 enum XamarinLaunchMode {
 	XamarinLaunchModeApp = 0,
 	XamarinLaunchModeExtension = 1,
-	XamarinLaunchModeEmbedded = 2,
 };
 
 // This has a managed equivalent in NSObject2.cs
@@ -111,7 +110,6 @@ extern bool xamarin_disable_omit_fp;
 #if MONOMAC
 extern bool xamarin_mac_hybrid_aot;
 extern bool xamarin_mac_modern;
-extern char *xamarin_entry_assembly_path;
 #endif
 extern bool xamarin_init_mono_debug;
 extern int xamarin_log_level;

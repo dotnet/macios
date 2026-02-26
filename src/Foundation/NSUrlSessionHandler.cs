@@ -830,7 +830,7 @@ namespace Foundation {
 					} else if (!chain.Build (certificate)) {
 						sslPolicyErrors |= SslPolicyErrors.RemoteCertificateChainErrors;
 					}
-				} catch (ArgumentException) {
+				} catch {
 					sslPolicyErrors |= SslPolicyErrors.RemoteCertificateChainErrors;
 				}
 

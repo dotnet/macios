@@ -56,7 +56,7 @@ namespace ObjCRuntime {
 	///     <param name="args">To be added.</param>
 	///     <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
-	public delegate void AssemblyRegistrationHandler (object sender, AssemblyRegistrationEventArgs args);
+	public delegate void AssemblyRegistrationHandler (object? sender, AssemblyRegistrationEventArgs args);
 
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>

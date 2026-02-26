@@ -238,3 +238,173 @@ stages:
           artifact: ${{ parameters.uploadPrefix }}maestro-binlogs-$(System.JobAttempt)
           condition: and(succeededOrFailed(), eq('${{ parameters.pushNugetsToMaestro }}', 'true'))
           continueOnError: true
+
+  - job: post_github_comment
+    displayName: Post GitHub Comment
+    ${{ if eq(parameters.pushNugets, true) }}:
+      dependsOn: [signing, nuget_convert, push_signed_nugets]
+    ${{ else }}:
+      dependsOn: [signing, nuget_convert]
+    condition: succeededOrFailed()
+    pool:
+      name: AzurePipelines-EO
+      demands:
+      - ImageOverride -equals 1ESPT-Windows2022
+    variables:
+    - name: SIGNING_RESULT
+      value: $[ dependencies.signing.result ]
+    - name: NUGET_CONVERT_RESULT
+      value: $[ dependencies.nuget_convert.result ]
+    - name: PUSH_NUGETS_RESULT
+      ${{ if eq(parameters.pushNugets, true) }}:
+        value: $[ dependencies.push_signed_nugets.result ]
+      ${{ else }}:
+        value: 'Skipped'
+    steps:
+    - template: ../common/checkout.yml
+      parameters:
+        isPR: ${{ parameters.isPR }}
+        repositoryAlias: ${{ parameters.repositoryAlias }}
+        commit: ${{ parameters.commit }}
+
+    - pwsh: |
+        Write-Host "##vso[task.setvariable variable=DYLD_INSERT_LIBRARIES]"
+      displayName: 'Disable CodeQL'
+
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download signed NuGets'
+      inputs:
+        artifactName: '${{ parameters.uploadPrefix }}nuget-signed'
+        downloadPath: $(Build.StagingDirectory)\nuget-signed
+      condition: in(variables['SIGNING_RESULT'], 'Succeeded', 'SucceededWithIssues')
+      continueOnError: true
+
+    - pwsh: |
+        Import-Module $Env:SYSTEM_DEFAULTWORKINGDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tools\devops\automation\scripts\MaciosCI.psd1
+
+        $signingResult = $Env:SIGNING_RESULT
+        $nugetConvertResult = $Env:NUGET_CONVERT_RESULT
+        $pushNugetsResult = $Env:PUSH_NUGETS_RESULT
+        $pushNugetsEnabled = '${{ parameters.pushNugets }}' -eq 'True'
+        $pushToMaestroEnabled = '${{ parameters.pushNugetsToMaestro }}' -eq 'True'
+
+        function Test-JobSucceeded([string] $result) {
+            return ($result -eq 'Succeeded' -or $result -eq 'SucceededWithIssues')
+        }
+
+        $allSucceeded = (Test-JobSucceeded $signingResult) `
+                    -and (Test-JobSucceeded $nugetConvertResult) `
+                    -and (-not $pushNugetsEnabled -or (Test-JobSucceeded $pushNugetsResult))
+
+        $content = [System.Text.StringBuilder]::new()
+
+        if (-not $allSucceeded) {
+            $content.AppendLine("The following jobs reported a non-successful result:")
+            $content.AppendLine()
+            $content.AppendLine("| Job | Result |")
+            $content.AppendLine("| --- | ------ |")
+
+            $resultEmoji = @{
+                "Succeeded" = ":white_check_mark: Succeeded"
+                "SucceededWithIssues" = ":warning: Succeeded with issues"
+                "Failed" = ":x: Failed"
+                "Canceled" = ":no_entry_sign: Canceled"
+                "Skipped" = ":next_track_button: Skipped"
+            }
+
+            function Get-ResultText([string] $result) {
+                if ($resultEmoji.ContainsKey($result)) { return $resultEmoji[$result] }
+                return $result
+            }
+
+            $content.AppendLine("| Sign NuGets | $(Get-ResultText $signingResult) |")
+            $content.AppendLine("| Convert NuGet to MSI | $(Get-ResultText $nugetConvertResult) |")
+            if ($pushNugetsEnabled) {
+                $content.AppendLine("| Push NuGets | $(Get-ResultText $pushNugetsResult) |")
+            }
+            $content.AppendLine()
+        } else {
+            $nugetDir = Join-Path $Env:BUILD_STAGINGDIRECTORY "nuget-signed"
+            if (Test-Path $nugetDir) {
+                $nupkgs = Get-ChildItem -Path $nugetDir -Recurse -Filter "*.nupkg" |
+                    Where-Object { $_.Name -notlike "*.symbols.nupkg" } |
+                    Select-Object -ExpandProperty Name |
+                    Sort-Object
+
+                if ($nupkgs.Count -gt 0) {
+                    $platforms = [ordered]@{
+                        "iOS" = [System.Collections.ArrayList]@()
+                        "MacCatalyst" = [System.Collections.ArrayList]@()
+                        "macOS" = [System.Collections.ArrayList]@()
+                        "tvOS" = [System.Collections.ArrayList]@()
+                        "Other" = [System.Collections.ArrayList]@()
+                    }
+
+                    foreach ($nupkg in $nupkgs) {
+                        if ($nupkg -match '(?i)^Microsoft\.(iOS|NET\.Sdk\.iOS)') {
+                            $null = $platforms["iOS"].Add($nupkg)
+                        } elseif ($nupkg -match '(?i)^Microsoft\.(MacCatalyst|NET\.Sdk\.MacCatalyst)') {
+                            $null = $platforms["MacCatalyst"].Add($nupkg)
+                        } elseif ($nupkg -match '(?i)^Microsoft\.(macOS|NET\.Sdk\.macOS)') {
+                            $null = $platforms["macOS"].Add($nupkg)
+                        } elseif ($nupkg -match '(?i)^Microsoft\.(tvOS|NET\.Sdk\.tvOS)') {
+                            $null = $platforms["tvOS"].Add($nupkg)
+                        } else {
+                            $null = $platforms["Other"].Add($nupkg)
+                        }
+                    }
+
+                    $content.AppendLine("<details>")
+                    $content.AppendLine("<summary>:package: Published NuGet packages ($($nupkgs.Count) packages)</summary>")
+                    $content.AppendLine()
+
+                    foreach ($platform in $platforms.Keys) {
+                        $pkgs = $platforms[$platform]
+                        if ($pkgs.Count -gt 0) {
+                            $content.AppendLine("#### $platform")
+                            foreach ($pkg in $pkgs) {
+                                $content.AppendLine("- ``$pkg``")
+                            }
+                            $content.AppendLine()
+                        }
+                    }
+
+                    $content.AppendLine("</details>")
+                    $content.AppendLine()
+                }
+            }
+        }
+
+        if (-not $Env:GITHUB_TOKEN -or $Env:GITHUB_TOKEN.StartsWith('$(')) {
+            Write-Warning "GitHub token not available, skipping comment posting."
+            Write-Host "Comment that would have been posted:"
+            Write-Host $content.ToString()
+            exit 0
+        }
+
+        $commentHash = $Env:COMMENT_HASH
+        if (-not $commentHash) {
+            $commentHash = $Env:BUILD_SOURCEVERSION
+        }
+
+        $githubComments = New-GitHubCommentsObjectFromUrl -Url "$(Build.Repository.Uri)" -Token $Env:GITHUB_TOKEN -Hash $commentHash
+
+        if ($allSucceeded) {
+            $title = "Prepare .NET Release succeeded"
+            $emoji = ":white_check_mark:"
+        } else {
+            $title = "Prepare .NET Release failed"
+            $emoji = ":x:"
+        }
+
+        $result = $githubComments.NewCommentFromMessage($title, $emoji, $content.ToString(), "prepare-release")
+      displayName: 'Post GitHub comment for Prepare .NET Release'
+      timeoutInMinutes: 10
+      continueOnError: true
+      condition: succeededOrFailed()
+      env:
+        GITHUB_TOKEN: $(GitHub.Token)
+        ${{ if eq(parameters.repositoryAlias, 'self') }}:
+          COMMENT_HASH: $(fix_commit.GIT_HASH)
+        ${{ else }}:
+          COMMENT_HASH: $(Build.SourceVersion)

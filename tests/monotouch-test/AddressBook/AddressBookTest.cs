@@ -58,6 +58,16 @@ namespace MonoTouchFixtures.AddressBook {
 			// GetSource(0) is not reliable across device/simulator and iOS versions
 			Assert.Null (ab.GetSource (Int32.MaxValue), "MaxValue");
 		}
+
+		[Test]
+		public void LocalizedLabel ()
+		{
+			TestRuntime.CheckAddressBookPermission ();
+			var label = ABPersonPhoneLabel.Mobile;
+			var result = ABAddressBook.LocalizedLabel (label);
+			Assert.NotNull (result, "result");
+			Assert.That (result.Length, Is.GreaterThan (0), "Length");
+		}
 	}
 }
 

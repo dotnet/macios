@@ -109,8 +109,7 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 			if (string.Equals (DotNetRuntime, "nativeaot", StringComparison.OrdinalIgnoreCase)) {
 				switch (RuntimeLibLinkMode.ToLowerInvariant ()) {
 				case "static":
-					// only link
-					linkWithRuntimeLibraries.AddRange (staticlibs);
+					// only link, but NativeAOT's build logic computes these libraries, so there's nothing for us to do here.
 					continue;
 				case "dylib":
 					// NativeAOT is static only

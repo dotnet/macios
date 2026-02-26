@@ -464,7 +464,7 @@
 		</Touch>
 	</Target>
 
-	<Target Name="_ComputeMonoComponents" Condition="'$(UseMonoRuntime)' == 'true' And '$(_LibMonoLinkMode)' == 'static'" BeforeTargets="_MonoSelectRuntimeComponents" DependsOnTargets="_ComputeVariables">
+	<Target Name="_ConfigureMonoComponents" DependsOnTargets="_ComputeVariables">
 		<!-- https://github.com/dotnet/runtime/blob/main/docs/design/mono/components.md -->
 		<ItemGroup>
 			<_MonoComponent Include="hot_reload" Condition="'$(MtouchInterpreter)' != ''" />
@@ -473,6 +473,8 @@
 			<_MonoComponent Include="marshal-ilgen" Condition="'$(_AppleExcludeMarshalIlgenComponent)' != 'true'" />
 		</ItemGroup>
 	</Target>
+
+	<Target Name="_ComputeMonoComponents" Condition="'$(UseMonoRuntime)' == 'true' And '$(_LibMonoLinkMode)' == 'static'" DependsOnTargets="_ConfigureMonoComponents;_MonoSelectRuntimeComponents" />
 
 	<PropertyGroup>
 		<_ComputeLinkerArgumentsDependsOn>

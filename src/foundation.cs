@@ -6644,6 +6644,10 @@ namespace Foundation {
 		[Export ("null"), Static]
 		[Internal]
 		NSNull _Null { get; }
+
+		[Export ("null"), Static]
+		[Internal]
+		IntPtr _NullHandle { get; }
 	}
 
 	[MacCatalyst (13, 1)]

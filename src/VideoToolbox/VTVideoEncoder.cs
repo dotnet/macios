@@ -35,13 +35,7 @@ namespace VideoToolbox {
 					return null;
 			}
 
-			var dicts = NSArray.ArrayFromHandle<NSDictionary> (array);
-			var ret = new VTVideoEncoder [dicts.Length];
-			int i = 0;
-			foreach (var dict in dicts)
-				ret [i++] = new VTVideoEncoder (dict);
-			CFObject.CFRelease (array);
-			return ret;
+			return NSArray.DictionaryArrayFromHandleDropNullElements<VTVideoEncoder> (array, dict => new VTVideoEncoder (dict), releaseHandle: true);
 		}
 
 		/// <summary>To be added.</summary>

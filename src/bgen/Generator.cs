@@ -1681,7 +1681,7 @@ public partial class Generator : IMemberGatherer {
 			print ("public unsafe static {0}? Create (IntPtr block)\n{{", ti.UserDelegate); indent++;
 			print ("if (block == IntPtr.Zero)"); indent++;
 			print ("return null;"); indent--;
-			print ($"var del = ({ti.UserDelegate}) GetExistingManagedDelegate (block);");
+			print ($"var del = ({ti.UserDelegate}?) GetExistingManagedDelegate (block);");
 			print ($"return del ?? new {ti.NativeInvokerName} ((BlockLiteral *) block).Invoke;");
 			indent--; print ("}");
 			print ("");

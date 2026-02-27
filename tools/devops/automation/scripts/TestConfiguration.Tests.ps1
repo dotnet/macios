@@ -217,8 +217,31 @@ Describe 'Get-TestConfiguration' {
   It 'succeeds when no dotnet platforms enabled' {
     $EnabledPlatforms = ""
 
+    $TestConfigurationsWithSharpie = @"
+[
+  {
+    "label": "cecil",
+    "splitByPlatforms": "false",
+    "testPrefix": "test-prefix_",
+    "testStage": "simulator",
+  },
+  {
+    "label": "sharpie",
+    "splitByPlatforms": "false",
+    "supportsNoPlatforms": "true",
+    "testPrefix": "simulator_tests",
+  },
+  {
+    "label": "dotnettests",
+    "splitByPlatforms": "true",
+    "needsMultiplePlatforms": "true",
+    "testPrefix": "test-prefix_",
+  }
+]
+"@
+
     $config = Get-TestConfiguration `
-      -TestConfigurations $TestConfigurations `
+      -TestConfigurations $TestConfigurationsWithSharpie `
       -SupportedPlatforms $SupportedPlatforms `
       -EnabledPlatforms $EnabledPlatforms `
       -TestsLabels "extra-test-labels" `
@@ -226,13 +249,13 @@ Describe 'Get-TestConfiguration' {
     Write-Host $config
     $config | Should -Be @"
 {
-  "cecil": {
-    "LABEL": "cecil",
-    "TESTS_LABELS": "extra-test-labels,run-cecil-tests",
-    "TEST_STAGE": "simulator",
-    "LABEL_WITH_PLATFORM": "cecil",
-    "STATUS_CONTEXT": "status-context - cecil",
-    "TEST_PREFIX": "test-prefix_cecil",
+  "sharpie": {
+    "LABEL": "sharpie",
+    "TESTS_LABELS": "extra-test-labels,run-sharpie-tests",
+    "TEST_STAGE": "simulator_tests",
+    "LABEL_WITH_PLATFORM": "sharpie",
+    "STATUS_CONTEXT": "status-context - sharpie",
+    "TEST_PREFIX": "simulator_testssharpie",
     "TEST_PLATFORM": ""
   }
 }

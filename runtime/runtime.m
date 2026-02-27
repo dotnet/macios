@@ -140,10 +140,6 @@ struct InitializationOptions {
 	struct MTRegistrationMap* RegistrationData;
 	enum MarshalObjectiveCExceptionMode MarshalObjectiveCExceptionMode;
 	enum MarshalManagedExceptionMode MarshalManagedExceptionMode;
-#if MONOMAC
-	enum XamarinLaunchMode LaunchMode;
-	const char *EntryAssemblyPath;
-#endif
 	struct AssemblyLocations* AssemblyLocations;
 	// This struct must be kept in sync with the corresponding struct in Runtime.cs, and since we use the same managed code for both MonoVM and CoreCLR,
 	// we can't restrict the following fields to CORECLR_RUNTIME only, we can only exclude it from legacy Xamarin.
@@ -1085,37 +1081,6 @@ xamarin_find_protocol_wrapper_type (uint32_t token_ref)
 	return entry->wrapper_token;
 }
 
-void
-xamarin_initialize_embedded ()
-{
-	static bool initialized = false;
-	if (initialized)
-		return;
-	initialized = true;
-
-	char *argv[] = { NULL };
-	char *libname = NULL;
-
-	Dl_info info;
-	if (dladdr ((void *) xamarin_initialize_embedded, &info) != 0) {
-		const char *last_sep = strrchr (info.dli_fname, '/');
-		if (last_sep == NULL) {
-			libname = strdup (info.dli_fname);
-		} else {
-			libname = strdup (last_sep + 1);
-		}
-		argv [0] = libname;
-	}
-
-	if (argv [0] == NULL)
-		argv [0] = (char *) "embedded";
-
-	xamarin_main (1, argv, XamarinLaunchModeEmbedded);
-
-	if (libname != NULL)
-		free (libname);
-}
-
 /* Installs g_print/g_error handlers that will redirect output to the system Console */
 void
 xamarin_install_log_callbacks ()
@@ -1168,10 +1133,6 @@ xamarin_initialize ()
 	options.Trampolines = &trampolines;
 	options.MarshalObjectiveCExceptionMode = xamarin_marshal_objectivec_exception_mode;
 	options.MarshalManagedExceptionMode = xamarin_marshal_managed_exception_mode;
-#if MONOMAC
-	options.LaunchMode = xamarin_launch_mode;
-	options.EntryAssemblyPath = xamarin_entry_assembly_path;
-#endif
 
 #if defined (CORECLR_RUNTIME)
 	options.xamarin_objc_msgsend = (void *) xamarin_dyn_objc_msgSend;
@@ -1238,11 +1199,7 @@ xamarin_get_bundle_path ()
 		xamarin_assertion_message ("Could not find the main bundle in the app ([NSBundle mainBundle] returned nil)");
 
 #if TARGET_OS_MACCATALYST || TARGET_OS_OSX
-	if (xamarin_launch_mode == XamarinLaunchModeEmbedded) {
-		bundle_path = [[[NSBundle bundleForClass: [XamarinAssociatedObject class]] bundlePath] stringByAppendingPathComponent: @"Versions/Current"];
-	} else {
-		bundle_path = [[main_bundle bundlePath] stringByAppendingPathComponent:@"Contents"];
-	}
+	bundle_path = [[main_bundle bundlePath] stringByAppendingPathComponent:@"Contents"];
 	bundle_path = [bundle_path stringByAppendingPathComponent: xamarin_custom_bundle_name];
 #else
 	bundle_path = [main_bundle bundlePath];

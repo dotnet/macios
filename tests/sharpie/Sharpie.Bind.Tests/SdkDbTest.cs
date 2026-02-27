@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Xamarin;
+using Xamarin.Tests;
 
 namespace Sharpie.Bind.Tests;
 
@@ -70,6 +71,7 @@ public class SdkDbTest {
 		binder.Sdk = sdk;
 		binder.OutputDirectory = tmpdir;
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		var rv = binder.BindInOrOut ();
 		rv.AssertSuccess (null);

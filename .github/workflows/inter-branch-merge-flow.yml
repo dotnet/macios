@@ -1,0 +1,33 @@
+# Inter-branch merge workflow
+# Uses the shared dotnet/arcade merge flow infrastructure to automatically
+# create PRs when changes are pushed to source branches.
+#
+# Configuration is in /github-merge-flow.jsonc at the repository root.
+# Currently configured merge paths:
+#   main → net11.0
+#
+# Key features (from arcade):
+#   - ResetToTargetPaths: auto-resets version files (global.json, eng/*, etc.)
+#     to target branch versions, avoiding common merge conflicts
+#   - QuietComments: reduces GitHub notification noise
+#   - Skips PRs when only Maestro bot commits exist
+#   - Detailed PR body with merge/conflict resolution instructions
+
+name: Inter-branch merge workflow
+
+on:
+  push:
+    branches:
+      - main
+
+  # Run every day at 3:00 AM UTC
+  schedule:
+    - cron: '0 3 * * *'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  Merge:
+    uses: dotnet/arcade/.github/workflows/inter-branch-merge-base.yml@main

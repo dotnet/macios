@@ -182,7 +182,7 @@ namespace AddressBook {
 		///         </remarks>
 		public override string? ToString ()
 		{
-			return CFString.FromHandle (ABRecordCopyCompositeName (Handle));
+			return CFString.FromHandle (ABRecordCopyCompositeName (Handle), true);
 		}
 
 		// TODO: Should SetValue/CopyValue/RemoveValue be public?
@@ -238,12 +238,12 @@ namespace AddressBook {
 			where T : NSObject
 		{
 			IntPtr value = CopyValue (id);
-			return (T?) Runtime.GetNSObject (value);
+			return (T?) Runtime.GetNSObject (value, true);
 		}
 
 		internal string? PropertyToString (int id)
 		{
-			return CFString.FromHandle (CopyValue (id));
+			return CFString.FromHandle (CopyValue (id), true);
 		}
 	}
 }

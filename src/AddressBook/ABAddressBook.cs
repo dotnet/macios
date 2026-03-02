@@ -535,7 +535,7 @@ namespace AddressBook {
 			if (label is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (label));
 
-			string? result = CFString.FromHandle (ABAddressBookCopyLocalizedLabel (label.Handle));
+			string? result = CFString.FromHandle (ABAddressBookCopyLocalizedLabel (label.Handle), true);
 			GC.KeepAlive (label);
 			return result;
 		}
@@ -754,7 +754,7 @@ namespace AddressBook {
 			var h = ABAddressBookCopyDefaultSource (GetCheckedHandle ());
 			if (h == IntPtr.Zero)
 				return null;
-			return new ABSource (h, this);
+			return new ABSource (h, true) { AddressBook = this };
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]

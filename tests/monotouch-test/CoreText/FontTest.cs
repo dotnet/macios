@@ -153,6 +153,16 @@ namespace MonoTouchFixtures.CoreText {
 			Assert.AreEqual (0, provider.Count, "#Count");
 		}
 
+		[Test]
+		public void GetAttribute ()
+		{
+			using (var font = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default)) {
+				using (var name = font.GetAttribute (CTFontDescriptorAttributeKey.Name)) {
+					Assert.NotNull (name, "Name");
+				}
+			}
+		}
+
 		class AdaptiveImageProvider : NSObject, ICTAdaptiveImageProviding {
 			public int Count;
 			public CGImage? GetImage (CGSize proposedSize, nfloat scaleFactor, out CGPoint imageOffset, out CGSize imageSize)
@@ -161,6 +171,17 @@ namespace MonoTouchFixtures.CoreText {
 				imageSize = default (CGSize);
 				Count++;
 				return null;
+			}
+		}
+
+		[Test]
+		public void GetVariationAxes ()
+		{
+			using (var font = new CTFont ("HoeflerText-Regular", 10)) {
+				var axes = font.GetVariationAxes ();
+				Assert.IsNotNull (axes, "axes");
+				// HoeflerText-Regular has no variation axes, so we expect an empty array
+				Assert.That (axes.Length, Is.EqualTo (0), "Length");
 			}
 		}
 	}

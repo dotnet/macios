@@ -743,8 +743,7 @@ namespace CoreFoundation {
 		{
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
-			// follow the create rule, no need to retain
-			NSDictionary? result = Runtime.GetNSObject<NSDictionary> (CFBundleCopyInfoDictionaryForURL (url.Handle));
+			var result = Runtime.GetNSObject<NSDictionary> (CFBundleCopyInfoDictionaryForURL (url.Handle), true);
 			GC.KeepAlive (url);
 			return result;
 		}

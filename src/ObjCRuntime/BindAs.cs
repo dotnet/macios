@@ -70,7 +70,7 @@ namespace ObjCRuntime {
 				for (nint i = 0; i < count; i++) {
 					var item = convert2 (convert1 (array [i]));
 					if (item == IntPtr.Zero)
-						item = NSNull.Null.Handle;
+						item = NSNull.NullHandle;
 					ptrs [i] = item;
 				}
 				fixed (void* ptr = ptrs) {

@@ -1,0 +1,13 @@
+// Configuration for the inter-branch merge flow workflow.
+// This file is read from the 'main' branch by the arcade-based merge flow.
+// See: https://github.com/dotnet/arcade/blob/main/.github/workflows/inter-branch-merge-base.yml
+{
+    "merge-flow-configurations": {
+        // Merge main into net11.0
+        "main": {
+            "MergeToBranch": "net11.0",
+            "ExtraSwitches": "-QuietComments",
+            "ResetToTargetPaths": "global.json;NuGet.config;eng/Version.Details.xml;eng/Version.Details.props;eng/common/*"
+        }
+    }
+}

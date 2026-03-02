@@ -198,6 +198,7 @@ stages:
 - stage: build_macos_tests
   displayName: '${{ parameters.stageDisplayNamePrefix }}Build macOS tests'
   dependsOn: [configure_build]
+  condition: and(succeeded(), ne(dependencies.configure_build.outputs['configure.configure_platforms.DOTNET_PLATFORMS'], ''))
   jobs:
   - template: ./build/build-mac-tests-stage.yml
     parameters:

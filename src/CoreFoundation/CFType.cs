@@ -50,7 +50,7 @@ namespace CoreFoundation {
 			if (handle == IntPtr.Zero)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handle));
 
-			return CFString.FromHandle (CFCopyDescription (handle));
+			return CFString.FromHandle (CFCopyDescription (handle), true);
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]

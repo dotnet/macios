@@ -331,6 +331,16 @@ namespace MonoTouchFixtures.CoreFoundation {
 		}
 
 		[Test]
+		public void TestGetInfoDictionary ()
+		{
+			var main = CFBundle.GetMain ();
+			Assert.NotNull (main.Url, "Url");
+			var dict = CFBundle.GetInfoDictionary (main.Url);
+			Assert.NotNull (dict, "GetInfoDictionary");
+			Assert.That (dict.Count, Is.GreaterThan ((nuint) 0), "Count");
+		}
+
+		[Test]
 		public void GetLocalizedString ()
 		{
 			var main = CFBundle.GetMain ();

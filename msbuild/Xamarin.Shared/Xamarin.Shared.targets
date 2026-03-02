@@ -2882,9 +2882,18 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		This target runs always, because container projects might want to create debug symbols or strip even if this project doesn't want to, and
 		in that case the container project would still need to know what to do for contained projects.
 	-->
+	<PropertyGroup>
+		<_CollectItemsForPostProcessingDependsOn>
+			_CompileToNative;
+			_ParseBundlerArguments;
+			_ExpandNativeReferences;
+			_PrepareForPostProcessing;
+			$(_CollectItemsForPostProcessingDependsOn);
+		</_CollectItemsForPostProcessingDependsOn>
+	</PropertyGroup>
 	<Target
 		Name="_CollectItemsForPostProcessing"
-		DependsOnTargets="_CompileToNative;_ParseBundlerArguments;_ExpandNativeReferences;_PrepareForPostProcessing"
+		DependsOnTargets="$(_CollectItemsForPostProcessingDependsOn)"
 		>
 
 		<!-- read any data from app extensions -->
@@ -2908,24 +2917,28 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="FullPath" PropertyName="_SymbolsListFullPath" />
 		</GetFullPath>
 
+		<PropertyGroup>
+			<_AppContentsRelativePathForPostProcessing Condition="'$(_AppContentsRelativePath)' != ''">$(_AppContentsRelativePath)/</_AppContentsRelativePathForPostProcessing>
+		</PropertyGroup>
+
 		<ItemGroup>
 			<!-- add frameworks, with the path relative to the app bundle -->
-			<_PostProcessingItem Include="@(_ResolvedNativeReference->'$(_AppBundleName)$(AppBundleExtension/$(_AppFrameworksRelativePath)%(Filename).framework/%(Filename)')" Condition="'%(_ResolvedNativeReference.Kind' == 'Framework'">
+			<_PostProcessingItem Include="@(_ResolvedNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')" Condition="'%(Kind)' == 'Framework'">
 				<!-- Store where this item came from -->
-				<ItemSourcePath>%(_ResolvedNativeReference.Identity)</ItemSourcePath>
+				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
-				<dSYMSourcePath>$([System.IO.Path]::GetDirectoryName('%(_ResolvedNativeReference.Identity)')).dSYM</dSYMSourcePath>
+				<dSYMSourcePath>$([System.IO.Path]::GetDirectoryName('%(Identity)')).dSYM</dSYMSourcePath>
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
-				<DSymName>%(_ResolvedNativeReference.Filename)%(_ResolvedNativeReference.Extension).dSYM</DSymName>
+				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
 			</_PostProcessingItem>
 			<!-- add dylibs, with the path relative to the app bundle -->
-			<_PostProcessingItem Include="@(_ResolvedNativeReference->'$(_AppBundleName)$(AppBundleExtension/$(_AppContentsRelativePath)%(Filename).framework/%(Filename)')" Condition="'%(_ResolvedNativeReference.Kind' == 'Dynamic'">
+			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'%(Kind)' == 'Dynamic'">
 				<!-- Store where this item came from -->
-				<ItemSourcePath>%(_ResolvedNativeReference.Identity)</ItemSourcePath>
+				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
-				<dSYMSourcePath>$([System.IO.Path]::GetDirectoryName('%(_ResolvedNativeReference.Identity)')).dSYM</dSYMSourcePath>
+				<dSYMSourcePath>%(Identity).dSYM</dSYMSourcePath>
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
-				<DSymName>%(_ResolvedNativeReference.Filename)%(_ResolvedNativeReference.Extension).dSYM</DSymName>
+				<DSymName>%(Filename).dSYM</DSymName>
 			</_PostProcessingItem>
 			<_PostProcessingItem Include="$([System.IO.Path]::GetFileName('$(AppBundleDir)'))/$(_NativeExecutableRelativePath)" Condition="'$(IsWatchApp)' != 'true'">
 				<SymbolFile>$(_SymbolsListFullPath)</SymbolFile>
@@ -2934,7 +2947,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<IsAppExtension>$(IsAppExtension)</IsAppExtension>
 			</_PostProcessingItem>
 
+			<!-- Compute a few default values that are applicable to all _PostProcessingItem -->
 			<_PostProcessingItem>
+				<!-- This is the name of the dSYM that will be created (if that's the case) -->
+				<DSymName Condition="'%(_PostProcessingItem.DSymName)' == ''">%(Filename).dSYM</DSymName>
+				<!-- Set the default values for NoSymbolStrip and NoDSymUtil from the global values -->
 				<NoSymbolStrip Condition="'%(_PostProcessingItem.NoSymbolStrip)' == ''">$(NoSymbolStrip)</NoSymbolStrip>
 				<NoDSymUtil Condition="'%(_PostProcessingItem.NoDSymUtil)' == ''">$(NoDSymUtil)</NoDSymUtil>
 				<!-- Did the item in question come with a .dSYM directory? -->
@@ -2943,6 +2960,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- Compute info.plist path inside the dSYM -->
 				<dSYMInfoPlistRelativePath>%(DSymName)\Contents\Info.plist</dSYMInfoPlistRelativePath>
 				<BCSymbolMapName>%(Filename)%(Extension).bcsymbolmap</BCSymbolMapName>
+			</_PostProcessingItem>
+
+			<!-- Don't strip dylibs from the .NET runtime - they may contain symbols that can't be stripped (https://github.com/dotnet/runtime/issues/124570) -->
+			<_PostProcessingItem Condition="$([MSBuild]::ValueOrDefault('%(_PostProcessingItem.NuGetPackageId)', '').StartsWith('Microsoft.NETCore.App.Runtime'))">
+				<NoSymbolStrip>true</NoSymbolStrip>
 			</_PostProcessingItem>
 
 			<!-- Add any items from app extensions -->

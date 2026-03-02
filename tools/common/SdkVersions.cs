@@ -10,7 +10,7 @@ using Xamarin.Utils;
 
 namespace Xamarin {
 	static class SdkVersions {
-		public const string Xcode = "26.2";
+		public const string Xcode = "26.3";
 		public const string OSX = "26.2";
 		public const string iOS = "26.2";
 		public const string TVOS = "26.2";

@@ -42,6 +42,15 @@ class TestConfiguration {
                 Write-Host "Test $label with testStage '$testStage' is included, because there's no stage filter set"
             }
 
+            # Skip macOS tests if neither macOS nor MacCatalyst platforms are enabled
+            if ($config.isMacTest -eq "true" -or $config.isMacTest -eq $true) {
+                $hasMacPlatform = ($this.enabledPlatforms -contains "macOS") -or ($this.enabledPlatforms -contains "MacCatalyst")
+                if (-not $hasMacPlatform) {
+                    Write-Host "Skipping mac test $label - neither macOS nor MacCatalyst platforms are enabled"
+                    continue
+                }
+            }
+
             $vars = [ordered]@{}
             # set common variables
             $vars["LABEL"] = $label
@@ -95,6 +104,10 @@ class TestConfiguration {
                     $rv[$platformLabel] = $platformVars
                 }
             } else {
+                if ($this.enabledPlatforms.Length -eq 0 -and $config.supportsNoPlatforms -ne "true" -and $config.supportsNoPlatforms -ne $true) {
+                    Write-Host "No enabled platforms, skipping test $label (supportsNoPlatforms=$($config.supportsNoPlatforms))"
+                    continue
+                }
                 # set non-platform specific variables
                 $vars["LABEL_WITH_PLATFORM"] = "$label"
                 $vars["STATUS_CONTEXT"] = "$($this.statusContext) - $($label)"

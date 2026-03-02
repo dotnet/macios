@@ -13,6 +13,7 @@
     <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>sharpie</ToolCommandName>
+    <IncludeSymbols>true</IncludeSymbols>
 
     <!-- https://github.com/dotnet/ClangSharp/issues/118 -->
     <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PackAsTool)' != 'true'">$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>

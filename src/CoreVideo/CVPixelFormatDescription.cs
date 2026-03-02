@@ -304,7 +304,7 @@ namespace CoreVideo {
 		/// <param name="pixelFormat">The pixel format to create a description of.</param>
 		public static NSDictionary? Create (CVPixelFormatType pixelFormat)
 		{
-			return Runtime.GetNSObject<NSDictionary> (CVPixelFormatDescriptionCreateWithPixelFormatType (IntPtr.Zero, (int) pixelFormat));
+			return Runtime.GetNSObject<NSDictionary> (CVPixelFormatDescriptionCreateWithPixelFormatType (IntPtr.Zero, (int) pixelFormat), true);
 		}
 
 		/// <summary>Create a description of the specified pixel format.</summary>

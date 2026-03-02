@@ -167,5 +167,35 @@ namespace MonoTouchFixtures.MobileCoreServices {
 			Assert.False (UTType.Equals (UTType.PDF, null), "PDF-null");
 			Assert.True (UTType.Equals (UTType.PDF, UTType.PDF), "PDF-PDF");
 		}
+
+		[Test]
+		public void CreateAllIdentifiers ()
+		{
+			TestRuntime.AssertIfSimulatorThenARM64 ();
+
+			var result = UTType.CreateAllIdentifiers (UTType.TagClassFilenameExtension, "pdf", null);
+			Assert.NotNull (result, "result");
+			Assert.That (result.Length, Is.GreaterThan (0), "Length");
+		}
+
+		[Test]
+		public void CopyAllTags ()
+		{
+			TestRuntime.AssertIfSimulatorThenARM64 ();
+
+			var result = UTType.CopyAllTags (UTType.PDF, UTType.TagClassFilenameExtension);
+			Assert.NotNull (result, "result");
+			Assert.That (result.Length, Is.GreaterThan (0), "Length");
+		}
+
+		[Test]
+		public void GetDescription ()
+		{
+			TestRuntime.AssertIfSimulatorThenARM64 ();
+
+			var result = UTType.GetDescription (UTType.PDF);
+			Assert.NotNull (result, "result");
+			Assert.That (result.Length, Is.GreaterThan (0), "Length");
+		}
 	}
 }

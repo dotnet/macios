@@ -17,7 +17,8 @@ all-local:: $(SHARPIE_BIND_TOOL_DEBUG)
 $(SHARPIE_BIND_TOOL_DEBUG): $(Sharpie.Bind_dependencies)
 	$(Q_BUILD) $(DOTNET) build Sharpie.Bind.Tool/Sharpie.Bind.Tool.csproj $(DOTNET_BUILD_VERBOSITY) -bl:$@-build.binlog
 
-SHARPIE_BIND_TOOL_NUPKG_NAME=Sharpie.Bind.Tool.$(SHARPIE_VERSION).nupkg
+SHARPIE_BIND_TOOL_NUGET_VERSION=$(if $(filter 0,$(XCODE_BUMP_COMMIT_DISTANCE)),$(XCODE_VERSION).$(SHARPIE_VERSION_BUILD)$(NUGET_PRERELEASE_IDENTIFIER),$(SHARPIE_VERSION))
+SHARPIE_BIND_TOOL_NUPKG_NAME=Sharpie.Bind.Tool.$(SHARPIE_BIND_TOOL_NUGET_VERSION).nupkg
 SHARPIE_BIND_TOOL_NUPKG=Sharpie.Bind.Tool/bin/Release/$(SHARPIE_BIND_TOOL_NUPKG_NAME)
 
 pack: $(SHARPIE_BIND_TOOL_NUPKG)
@@ -27,7 +28,7 @@ $(SHARPIE_BIND_TOOL_NUPKG): $(Sharpie.Bind_dependencies)
 all-local:: $(DOTNET_NUPKG_DIR)/$(SHARPIE_BIND_TOOL_NUPKG_NAME)
 $(DOTNET_NUPKG_DIR)/$(SHARPIE_BIND_TOOL_NUPKG_NAME): $(SHARPIE_BIND_TOOL_NUPKG)
 	$(Q) mkdir -p $(dir $@)
-	$(Q) $(CP) $< $@
+	$(Q) $(CP) $(dir $<)/*.nupkg $(dir $@)
 
 run-tests: $(Sharpie.Bind_dependencies)
 	$(Q_BUILD) $(DOTNET) test $(TOP)/tests/sharpie/Sharpie.Bind.Tests/Sharpie.Bind.Tests.csproj --logger "console;verbosity=detailed" $(DOTNET_BUILD_VERBOSITY) -bl:$@.binlog

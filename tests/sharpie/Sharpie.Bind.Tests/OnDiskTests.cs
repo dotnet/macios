@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using ClangSharp.Interop;
 using NUnit.Framework.Constraints;
 using Xamarin;
+using Xamarin.Tests;
 
 namespace Sharpie.Bind.Tests;
 
@@ -150,6 +151,7 @@ public class OnDiskTests {
 		binder.ClangArguments.AddRange (clangArguments);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
 		var result = binder.BindInOrOut ();
 
 		var tmpdir = Cache.CreateTemporaryDirectory ();

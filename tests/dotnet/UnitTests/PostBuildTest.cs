@@ -233,5 +233,126 @@ namespace Xamarin.Tests {
 
 			Assert.That (pkgPath, Does.Not.Exist, "ipa/pkg creation");
 		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void DylibPostProcessingItems (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "NativeDynamicLibraryReferencesApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers, platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			var result = DotNet.AssertBuild (project_path, properties);
+			var postProcessingItems = GetPostProcessingItems (result.BinLogPath);
+
+			// Find the user's dylib item (not SDK runtime dylibs)
+			var dylibItems = postProcessingItems.Where (i => i.ItemSpec.Contains ("libframework.dylib")).ToList ();
+			Assert.That (dylibItems.Count, Is.EqualTo (1), $"Expected 1 libframework.dylib post-processing item, got {dylibItems.Count}. All items:\n\t{string.Join ("\n\t", postProcessingItems.Select (i => i.ItemSpec))}");
+			var dylibItem = dylibItems [0];
+
+			// Verify the path does NOT contain ".framework/" (the bug was that dylibs were treated as frameworks)
+			Assert.That (dylibItem.ItemSpec, Does.Not.Contain (".framework/"), "Dylib path should not contain .framework/");
+
+			// Verify the path contains the full dylib filename
+			Assert.That (dylibItem.ItemSpec, Does.Contain ("libframework.dylib"), "Dylib path should contain the full dylib filename");
+
+			// Verify the DSymName is correct for a dylib (should be "libframework.dSYM", not "libframework.dylib.dSYM")
+			var dSymName = dylibItem.GetMetadata ("DSymName");
+			Assert.That (dSymName, Is.EqualTo ("libframework.dSYM"), "DSymName for dylib");
+
+			// Verify dSYMSourcePath points to where a pre-existing dSYM would be for the dylib.
+			// For a dylib at /path/to/libfoo.dylib, the dSYMSourcePath should be /path/to/libfoo.dylib.dSYM
+			var dSYMSourcePath = dylibItem.GetMetadata ("dSYMSourcePath");
+			var itemSourcePath = dylibItem.GetMetadata ("ItemSourcePath");
+			Assert.That (dSYMSourcePath, Is.EqualTo (itemSourcePath + ".dSYM"), "dSYMSourcePath for dylib");
+
+			// Debug builds don't generate dSYMs, verify none exist
+			var appContainerDir = Path.GetDirectoryName (appPath)!;
+			var dSymDirs = Directory.GetDirectories (appContainerDir, "*.dSYM");
+			Assert.That (dSymDirs, Is.Empty, "No dSYMs should exist for Debug builds");
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void FrameworkPostProcessingItems (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "NativeFrameworkReferencesApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers, platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			var result = DotNet.AssertBuild (project_path, properties);
+			var postProcessingItems = GetPostProcessingItems (result.BinLogPath);
+
+			// Find the framework item (XTest.framework is the dynamic framework)
+			var frameworkItems = postProcessingItems.Where (i => i.ItemSpec.Contains ("XTest.framework/XTest")).ToList ();
+			Assert.That (frameworkItems.Count, Is.EqualTo (1), $"Expected 1 XTest framework post-processing item, got {frameworkItems.Count}. All items:\n\t{string.Join ("\n\t", postProcessingItems.Select (i => i.ItemSpec))}");
+			var frameworkItem = frameworkItems [0];
+
+			// Verify the DSymName is correct for a framework (should be "XTest.framework.dSYM")
+			var dSymName = frameworkItem.GetMetadata ("DSymName");
+			Assert.That (dSymName, Is.EqualTo ("XTest.framework.dSYM"), "DSymName for framework");
+
+			// Verify dSYMSourcePath points to where a pre-existing dSYM would be for the framework.
+			// For a framework at /path/to/XTest.framework/XTest, the dSYMSourcePath should be /path/to/XTest.framework.dSYM
+			var dSYMSourcePath = frameworkItem.GetMetadata ("dSYMSourcePath");
+			var itemSourcePath = frameworkItem.GetMetadata ("ItemSourcePath");
+			Assert.That (dSYMSourcePath, Is.EqualTo (Path.GetDirectoryName (itemSourcePath) + ".dSYM"), "dSYMSourcePath for framework");
+
+			// Debug builds don't generate dSYMs, verify none exist
+			var appContainerDir = Path.GetDirectoryName (appPath)!;
+			var dSymDirs = Directory.GetDirectories (appContainerDir, "*.dSYM");
+			Assert.That (dSymDirs, Is.Empty, "No dSYMs should exist for Debug builds");
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64", "Release")]
+		public void BundleStructureDSyms (ApplePlatform platform, string runtimeIdentifiers, string configuration)
+		{
+			var project = "BundleStructure";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = configuration;
+			properties ["_IsAppSigned"] = "true";
+			// macOS and Mac Catalyst default to NoDSymUtil=true (dSYMs only generated when archiving),
+			// so explicitly disable it to test dSYM generation.
+			properties ["NoDSymUtil"] = "false";
+
+			DotNet.AssertBuild (project_path, properties);
+
+			AssertExpectedDSyms (platform, appPath);
+		}
+
+		static List<ITaskItem> GetPostProcessingItems (string binLogPath)
+		{
+			var items = new Dictionary<string, ITaskItem> ();
+			foreach (var args in BinLog.ReadBuildEvents (binLogPath)) {
+				if (args is not TaskParameterEventArgs tpea)
+					continue;
+				if (tpea.Kind != TaskParameterMessageKind.AddItem)
+					continue;
+				if (tpea.ItemType != "_PostProcessingItem")
+					continue;
+				foreach (var item in tpea.Items) {
+					if (item is ITaskItem taskItem)
+						items [taskItem.ItemSpec] = taskItem;
+				}
+			}
+			return items.Values.ToList ();
+		}
 	}
 }

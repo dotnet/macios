@@ -219,7 +219,7 @@ namespace CFNetwork {
 
 		public NSDictionary? GetAllHeaderFields ()
 		{
-			return Runtime.GetNSObject<NSDictionary> (CFHTTPMessageCopyAllHeaderFields (GetCheckedHandle ()));
+			return Runtime.GetNSObject<NSDictionary> (CFHTTPMessageCopyAllHeaderFields (GetCheckedHandle ()), true);
 		}
 
 		#region Authentication

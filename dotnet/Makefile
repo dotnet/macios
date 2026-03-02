@@ -135,7 +135,15 @@ Microsoft.$1.Sdk/targets/Microsoft.$1.Sdk.Versions.props: targets/Microsoft.$1.S
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call VersionsTemplate,$(platform),$(shell echo $(platform) | tr a-z A-Z),$(DOTNET_$(shell echo $(platform) | tr a-z A-Z)_RUNTIME_IDENTIFIERS),$(shell echo $(DOTNET_$(shell echo $(platform) | tr a-z A-Z)_RUNTIME_IDENTIFIERS) | tr ' ' ';'),$(DOTNET_$(shell echo $(platform) | tr a-z A-Z)_RUNTIME_IDENTIFIERS_NO_ARCH))))
 
+# When building only sharpie, generate iOS version props so setup-publish-bar-manifest works for DARC
+ifdef ONLY_SHARPIE
+$(eval $(call VersionsTemplate,iOS,IOS,,,ios))
+endif
+
 version-props: $(foreach platform,$(DOTNET_PLATFORMS),targets/Microsoft.$(platform).Sdk.Versions.props)
+ifdef ONLY_SHARPIE
+version-props: targets/Microsoft.iOS.Sdk.Versions.props
+endif
 
 setup-publish-bar-manifest: version-props
 	echo \#\#vso[task.setvariable variable=PrereleaseIdentifier]$(NUGET_PRERELEASE_IDENTIFIER)
@@ -465,7 +473,9 @@ NUGET_SOURCES:=$(shell grep https://pkgs.dev.azure.com $(TOP)/NuGet.config | sed
 		$(foreach platform,$(DOTNET_PLATFORMS),$(shell echo $(platform) | tr A-Z a-z))
 	$(Q) touch $@
 
+ifndef ONLY_SHARPIE
 TARGETS += .stamp-install-workloads
+endif
 
 TARGETS += $(WORKLOAD_TARGETS) $(WINDOWS_PACKAGE_TARGETS)
 

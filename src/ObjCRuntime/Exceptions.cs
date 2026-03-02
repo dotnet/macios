@@ -14,7 +14,7 @@ namespace ObjCRuntime {
 	/// <param name="sender">Always null.</param>
 	/// <param name="args">The exception data for the Objective-C exception.</param>
 	/// <seealso href="https://learn.microsoft.com/dotnet/ios/platform/exception-marshaling">Exception marshaling</seealso>
-	public delegate void MarshalObjectiveCExceptionHandler (object sender, MarshalObjectiveCExceptionEventArgs args);
+	public delegate void MarshalObjectiveCExceptionHandler (object? sender, MarshalObjectiveCExceptionEventArgs args);
 
 	/// <summary>The event args for the <see cref="Runtime.MarshalObjectiveCException" /> event.</summary>
 	/// <seealso href="https://learn.microsoft.com/dotnet/ios/platform/exception-marshaling">Exception marshaling</seealso>
@@ -47,7 +47,7 @@ namespace ObjCRuntime {
 	/// <param name="sender">Always null.</param>
 	/// <param name="args">The exception data for the managed exception.</param>
 	/// <seealso href="https://learn.microsoft.com/dotnet/ios/platform/exception-marshaling">Exception marshaling</seealso>
-	public delegate void MarshalManagedExceptionHandler (object sender, MarshalManagedExceptionEventArgs args);
+	public delegate void MarshalManagedExceptionHandler (object? sender, MarshalManagedExceptionEventArgs args);
 
 	/// <summary>The event args for the <see cref="Runtime.MarshalManagedException" /> event.</summary>
 	/// <seealso href="https://learn.microsoft.com/dotnet/ios/platform/exception-marshaling">Exception marshaling</seealso>

@@ -794,6 +794,7 @@ Microsoft.iOS.dll:ObjCRuntime.Selector.sel_isMapped(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Selector.sel_registerName(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Stret
 Microsoft.iOS.dll:ObjCRuntime.Stret.AlignAndAdd(System.Type, System.Int32, System.Int32, System.Int32&)
+Microsoft.iOS.dll:ObjCRuntime.Stret.GetTypeName(System.Type)
 Microsoft.iOS.dll:ObjCRuntime.Stret.GetValueTypeSize(System.Type, System.Collections.Generic.List`1<System.Type>, System.Object)
 Microsoft.iOS.dll:ObjCRuntime.Stret.GetValueTypeSize(System.Type, System.Type, System.Collections.Generic.List`1<System.Type>, System.Int32&, System.Int32&, System.Object)
 Microsoft.iOS.dll:ObjCRuntime.Stret.IsBuiltInType(System.Type, out System.Int32&)
@@ -1590,7 +1591,7 @@ Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_613_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_595_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.iOS.dll:UIKit.UIButton
 Microsoft.iOS.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIButton._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)

@@ -1,2 +1,10 @@
 # xtro did not pick up on this enum
 !unknown-native-enum! ASCoseAlgorithmIdentifier bound
+
+# updated sharpie results
+!missing-protocol-conformance! ASAuthorizationPlatformPublicKeyCredentialAssertionRequest should conform to ASAuthorizationWebBrowserPlatformPublicKeyCredentialAssertionRequest (defined in '' category)
+!missing-protocol-conformance! ASAuthorizationPlatformPublicKeyCredentialProvider should conform to ASAuthorizationWebBrowserPlatformPublicKeyCredentialProvider (defined in '' category)
+!missing-protocol-conformance! ASAuthorizationPlatformPublicKeyCredentialRegistrationRequest should conform to ASAuthorizationWebBrowserPlatformPublicKeyCredentialRegistrationRequest (defined in '' category)
+!missing-protocol-conformance! ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest should conform to ASAuthorizationWebBrowserSecurityKeyPublicKeyCredentialAssertionRequest (defined in '' category)
+!missing-protocol-conformance! ASAuthorizationSecurityKeyPublicKeyCredentialProvider should conform to ASAuthorizationWebBrowserSecurityKeyPublicKeyCredentialProvider (defined in '' category)
+!missing-protocol-conformance! ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest should conform to ASAuthorizationWebBrowserSecurityKeyPublicKeyCredentialRegistrationRequest (defined in '' category)

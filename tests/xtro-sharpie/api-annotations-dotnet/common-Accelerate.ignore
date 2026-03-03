@@ -1,6 +1,11 @@
 ## 
 !unknown-native-enum! vImageError bound
 
+# updated sharpie results
+!missing-enum! vImage_InterpolationMethod not bound
+!missing-enum! vImageARGBType not bound
+!missing-enum! vImageYpCbCrType not bound
+
 ## only a subset of this framework is presently supported
 
 !missing-field! kvImage_ARGBToYpCbCrMatrix_ITU_R_601_4 not bound

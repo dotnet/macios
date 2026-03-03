@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-
-using Mono.Cecil;
-
-using Clang.Ast;
-
 namespace Extrospection {
 
 	class EnumCheck : BaseVisitor {
@@ -17,6 +10,11 @@ namespace Extrospection {
 		Dictionary<string, TypeDefinition> obsoleted_enums = new Dictionary<string, TypeDefinition> ();
 		Dictionary<object, ManagedValue> managed_values = new Dictionary<object, ManagedValue> ();
 		Dictionary<object, (string Name, EnumConstantDecl Decl)> native_values = new Dictionary<object, (string Name, EnumConstantDecl Decl)> ();
+
+		public EnumCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
 
 		public override void VisitManagedType (TypeDefinition type)
 		{
@@ -53,11 +51,12 @@ namespace Extrospection {
 			}
 		}
 
-		public override void VisitEnumDecl (EnumDecl decl, VisitKind visitKind)
+		public override void VisitEnumDecl (EnumDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
+			if (!decl.IsThisDeclarationADefinition)
 				return;
-			if (!decl.IsDefinition)
+
+			if (decl.GetIsUnnamedOrAnonymous (BindingResult))
 				return;
 
 			string name = decl.Name;
@@ -88,7 +87,7 @@ namespace Extrospection {
 			int native_size = 4;
 			bool native = false;
 			// FIXME: this can be simplified
-			switch (decl.IntegerQualType.ToString ()) {
+			switch (decl.IntegerType.ToString ()) {
 			case "NSInteger":
 			case "NSUInteger":
 			case "CFIndex":
@@ -133,7 +132,7 @@ namespace Extrospection {
 				native_size = 1;
 				break;
 			default:
-				throw new NotImplementedException (decl.IntegerQualType.ToString ());
+				throw new NotImplementedException (decl.IntegerType.ToString ());
 			}
 
 			// check correct [Native] decoration
@@ -185,12 +184,12 @@ namespace Extrospection {
 
 			// collect all the native enum values
 			var nativeConstant = signed ? (object) 0L : (object) 0UL;
-			foreach (var value in decl.Values) {
-				if ((value.InitExpr is not null) && value.InitExpr.EvaluateAsInt (decl.AstContext, out var integer)) {
+			foreach (var value in decl.Enumerators) {
+				if ((value.InitExpr is not null) && value.InitExpr.EvaluateAsInt (out var signedValue, out var unsignedValue)) {
 					if (signed) {
-						nativeConstant = integer.SExtValue;
+						nativeConstant = signedValue;
 					} else {
-						nativeConstant = integer.ZExtValue;
+						nativeConstant = unsignedValue;
 					}
 				}
 
@@ -359,7 +358,7 @@ namespace Extrospection {
 			throw new ArgumentException ();
 		}
 
-		public override void End ()
+		public override void EndVisit ()
 		{
 			// report any [Native] decorated enum for which we could not find a match in the header files
 			// e.g. a typo in the name

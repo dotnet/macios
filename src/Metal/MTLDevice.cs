@@ -186,7 +186,7 @@ namespace Metal {
 		}
 #if IOS
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -209,7 +209,7 @@ namespace Metal {
 			}
 		}
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]

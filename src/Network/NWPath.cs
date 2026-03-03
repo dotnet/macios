@@ -166,22 +166,22 @@ namespace Network {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern byte nw_path_is_constrained (IntPtr path);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool IsConstrained => nw_path_is_constrained (GetCheckedHandle ()) != 0;
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_path_enumerate_gateways (IntPtr path, BlockLiteral* enumerate_block);
@@ -199,9 +199,9 @@ namespace Network {
 		}
 
 #if !XAMCORE_5_0
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[Obsolete ("Use the overload that takes a 'Func<NWEndpoint, bool>' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
@@ -215,9 +215,9 @@ namespace Network {
 		}
 #endif
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void EnumerateGateways (Func<NWEndpoint, bool> callback)

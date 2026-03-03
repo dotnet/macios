@@ -32,10 +32,20 @@ namespace Xamarin.MacDev.Tasks {
 		[Output]
 		public ITaskItem [] LinkedItems { get; set; } = Array.Empty<ITaskItem> ();
 
+		// if the linked output should be copied to windows (as opposed to only creating empty output files)
+		public bool CopyToWindows { get; set; }
+
 		public override bool Execute ()
 		{
-			if (this.ShouldExecuteRemotely (SessionId))
-				return XamarinTask.ExecuteRemotely (this);
+			if (this.ShouldExecuteRemotely (SessionId)) {
+				if (XamarinTask.ExecuteRemotely (this, out var taskRunner)) {
+					if (CopyToWindows)
+						XamarinTask.CopyFilesToWindowsAsync (this, taskRunner, LinkedItems).Wait ();
+					return true;
+				}
+
+				return false;
+			}
 
 			// Capture execution start time for Mac-side detection
 			var executionStartTime = DateTime.UtcNow;
@@ -86,6 +96,11 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool ShouldCreateOutputFile (ITaskItem item)
 		{
+			if (CopyToWindows && Array.IndexOf (LinkedItems, item) >= 0) {
+				Log.LogMessage (MessageImportance.Low, "Not creating output file '{0}' because the entire file will be copied to Windows", item.ItemSpec);
+				return false;
+			}
+
 			var modifiedMetadata = item.GetMetadata ("Modified");
 			var wasModified = bool.TryParse (modifiedMetadata, out var modified) && modified;
 

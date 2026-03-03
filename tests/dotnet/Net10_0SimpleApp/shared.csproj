@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 
-		<ApplicationTitle>MySimpleApp</ApplicationTitle>
+		<ApplicationTitle>Net10_0SimpleApp</ApplicationTitle>
 		<ApplicationId>com.xamarin.mysimpleapp</ApplicationId>
 		<ApplicationVersion>10.0</ApplicationVersion>
 

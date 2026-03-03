@@ -339,7 +339,7 @@ xamarin_coreclr_reference_tracking_tracked_object_entered_finalization (void* pt
 {
 	struct TrackedObjectInfo *info = (struct TrackedObjectInfo *) ptr;
 	info->data->flags = (enum NSObjectFlags) (info->data->flags | NSObjectFlagsInFinalizerQueue);
-	LOG_CORECLR (stderr, "%s (%p) flags: %i\n", __func__, ptr, (int) info->flags);
+	LOG_CORECLR (stderr, "%s (%p) flags: %i\n", __func__, ptr, (int) info->data->flags);
 }
 
 void

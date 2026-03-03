@@ -5,12 +5,8 @@
 //             if headers defines a selector for which we have no bindings
 //
 
-using System;
-using System.Collections.Generic;
-
-using Mono.Cecil;
-
-using Clang.Ast;
+using System.Diagnostics;
+using System.Runtime.Serialization;
 
 namespace Extrospection {
 
@@ -18,6 +14,11 @@ namespace Extrospection {
 
 		HashSet<string> qualified_selectors = new HashSet<string> ();
 		Dictionary<string, List<Tuple<MethodDefinition, Helpers.ArgumentSemantic>>> qualified_properties = new Dictionary<string, List<Tuple<MethodDefinition, Helpers.ArgumentSemantic>>> ();
+
+		public SelectorCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
 
 		// most selectors will be found in [Export] attribtues
 		public override void VisitManagedMethod (MethodDefinition method)
@@ -65,7 +66,7 @@ namespace Extrospection {
 			if (framework is null)
 				return;
 
-			var nativeArgumentSemantic = decl.Attributes.ToArgumentSemantic ();
+			var nativeArgumentSemantic = decl.GetPropertyAttributes ().ToArgumentSemantic ();
 			var nativeMethodDefinition = decl.QualifiedName;
 
 			if (qualified_properties.TryGetValue (nativeMethodDefinition, out var managedArgumentSemanticList)) {
@@ -84,11 +85,8 @@ namespace Extrospection {
 			}
 		}
 
-		public override void VisitObjCMethodDecl (ObjCMethodDecl decl, VisitKind visitKind)
+		public override void VisitObjCMethodDecl (ObjCMethodDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
-				return;
-
 			// protocol members are checked in ObjCProtocolCheck
 			if (decl.DeclContext is ObjCProtocolDecl)
 				return;

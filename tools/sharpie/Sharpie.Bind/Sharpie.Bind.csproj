@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
+    <OutputType>Library</OutputType>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+
+    <!-- https://github.com/dotnet/ClangSharp/issues/118 -->
+    <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PackAsTool)' != 'true'">$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>
+
+    <!-- <WarningLevel>0</WarningLevel> -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+    <NoWarn>$(NoWarn);NU1507;NU1701</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ICSharpCode.NRefactory" Version="$(ICSharpCodeNRefactoryPackageVersion)" />
+    <PackageReference Include="ClangSharp" Version="$(ClangSharpPackageVersion)" />
+    <PackageReference Include="libclang" Version="$(libClangPackageVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../external/Xamarin.MacDev/Xamarin.MacDev/PListObject.cs" />
+    <Compile Include="../../common/ApplePlatform.cs" />
+    <Compile Include="../../common/Execution.cs" />
+    <Compile Include="../../common/ProductConstants.cs" />
+    <Compile Include="../../common/SdkVersions.cs" />
+    <Compile Include="../../common/StringUtils.cs" />
+    <Compile Remove="Resources.designer.cs" Condition="'$(DesignTimeBuild)' != 'true'" />
+
+    <EmbeddedResource Update="Resources.resx">
+      <Type>Resx</Type>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Errors.designer.cs</LastGenOutput>
+      <CustomToolNamespace>Sharpie.Bind</CustomToolNamespace>
+      <ManifestResourceName>Sharpie.Bind.Resources</ManifestResourceName>
+      <StronglyTypedFileName>Resources.designer.cs</StronglyTypedFileName>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <StronglyTypedNamespace>Sharpie.Bind</StronglyTypedNamespace>
+      <StronglyTypedClassName>Resources</StronglyTypedClassName>
+      <GenerateResource>true</GenerateResource>
+      <PublicClass>true</PublicClass>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <Target Name="BuildSdkVersions"
+          Inputs="../common/../SdkVersions.in.cs;../../common/ProductConstants.in.cs" Outputs="../../common/SdkVersions.cs;../../common/ProductConstants.cs"
+          BeforeTargets="CoreCompile"
+          >
+    <Exec Command="make -C .. generated-files" />
+  </Target>
+</Project>

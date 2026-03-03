@@ -34,8 +34,7 @@ using System.Threading;
 using Xamarin.Bundler;
 #endif
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 // http://clang.llvm.org/docs/Block-ABI-Apple.html
 
@@ -60,7 +59,48 @@ namespace ObjCRuntime {
 		// followed by variable-length string (the signature)
 	}
 
-	/// <include file="../../docs/api/ObjCRuntime/BlockLiteral.xml" path="/Documentation/Docs[@DocId='T:ObjCRuntime.BlockLiteral']/*" />
+	/// <summary>Wraps an ECMA CLI delegate (C# lambdas, anonymous methods, or delegates) as an Objective-C block.</summary>
+	/// <remarks>
+	///   <para>
+	///   This is a low-level class that is automatically used when using Objective-C block APIs.
+	///   </para>
+	///   <para>
+	///   In the C#/ECMA CLI world, delegates are automatically turned into blocks that can be consumed by Objective-C block-aware APIs.
+	///   </para>
+	///   <para>
+	///     If you need to P/Invoke a native C method that takes a block parameter, you would need to manually setup the <see cref="BlockLiteral" /> object and declare a proxy method that is invoked by the block handler and will invoke your managed code.
+	///   </para>
+	///   <example>
+	///     <code lang="csharp lang-csharp"><![CDATA[
+	/// // Imagine that you want to invoke the following method:
+	/// // void SetupHandler (void (^block)(double offset, int count));
+	///
+	/// // Declare a trampoline method, which is the method that will be called when
+	/// // the block is invoked. The trampoline method must have an [UnmanagedCallersOnly]
+	/// // attribute, so that it can be called directly from native code.
+	/// [UnmanagedCallersOnly]
+	/// static void TrampolineHandler (IntPtr block, double offset, int count)
+	/// {
+	///     // Find the delegate for the block and call it
+	///     var callback = BlockLiteral.GetTarget<SetupHandlerCallback> (block);
+	///     if (callback is not null)
+	///         callback (offset, count);
+	/// }
+	///
+	/// [DllImport ("YourLibrary")]
+	/// unsafe static extern void SetupHandler (BlockLiteral* block);
+	///
+	/// public void SetupHandler (SetupHandlerCallback callback)
+	/// {
+	///     if (callback is null)
+	///         throw new ArgumentNullException (nameof (callback));
+	///     delegate* unmanaged<IntPtr, double, int, void> trampoline = &TrampolineHandler;
+	///     using var block = new BlockLiteral (trampoline, callback, GetType (), nameof (TrampolineHandler));
+	///     SetupHandler (&block);
+	/// }
+	/// ]]></code>
+	///   </example>
+	/// </remarks>
 	[StructLayout (LayoutKind.Sequential)]
 #if XAMCORE_5_0
 	// Let's try to make this a ref struct in XAMCORE_5_0, that will mean blocks can't be boxed (which is good, because it would most likely result in broken code).
@@ -98,13 +138,13 @@ namespace ObjCRuntime {
 		/// <summary>
 		/// Creates a block literal.
 		/// </summary>
-		/// <param name="trampoline">A function pointer that will be called when the block is called. This function must have an [UnmanagedCallersOnly] attribute.</param>
+		/// <param name="trampoline">A function pointer that will be called when the block is called. This method must have an <see cref="UnmanagedCallersOnlyAttribute"/> attribute.</param>
 		/// <param name="context">A context object that can be retrieved from the trampoline. This is typically a delegate to the managed function to call.</param>
 		/// <param name="trampolineType">The type where the trampoline is located.</param>
 		/// <param name="trampolineMethod">The name of the trampoline method.</param>
 		/// <remarks>
-		/// The 'trampolineType' and 'trampolineMethod' must uniquely define the trampoline method (it will be looked up using reflection).
-		/// If there are multiple methods with the same name, use the overload that takes a MethodInfo instead.
+		/// <paramref name="trampolineType"/> and <paramref name="trampolineMethod"/> must uniquely define the trampoline method (it is looked up using reflection).
+		/// If there are multiple methods with the same name, call <see cref="BlockLiteral(void*,object,MethodInfo)" /> instead.
 		/// </remarks>
 		public BlockLiteral (void* trampoline, object context, Type trampolineType, string trampolineMethod)
 			: this (trampoline, context, FindTrampoline (trampolineType, trampolineMethod))
@@ -114,9 +154,9 @@ namespace ObjCRuntime {
 		/// <summary>
 		/// Creates a block literal.
 		/// </summary>
-		/// <param name="trampoline">A function pointer that will be called when the block is called. This function must have an [UnmanagedCallersOnly] attribute.</param>
+		/// <param name="trampoline">A function pointer that will be called when the block is called. This method must have an <see cref="UnmanagedCallersOnlyAttribute"/> attribute.</param>
 		/// <param name="context">A context object that can be retrieved from the trampoline. This is typically a delegate to the managed function to call.</param>
-		/// <param name="trampolineMethod">The MethodInfo instance corresponding with the trampoline method.</param>
+		/// <param name="trampolineMethod">The <see cref="MethodInfo"/> instance corresponding to the trampoline method.</param>
 		public BlockLiteral (void* trampoline, object context, MethodInfo trampolineMethod)
 			: this (trampoline, context, GetBlockSignature (trampoline, trampolineMethod))
 		{
@@ -125,7 +165,7 @@ namespace ObjCRuntime {
 		/// <summary>
 		/// Creates a block literal.
 		/// </summary>
-		/// <param name="trampoline">A function pointer that will be called when the block is called. This function must have an [UnmanagedCallersOnly] attribute.</param>
+		/// <param name="trampoline">A function pointer that will be called when the block is called. This method must have an <see cref="UnmanagedCallersOnlyAttribute"/> attribute.</param>
 		/// <param name="context">A context object that can be retrieved from the trampoline. This is typically a delegate to the managed function to call.</param>
 		/// <param name="trampolineSignature">The Objective-C signature of the trampoline method.</param>
 		public BlockLiteral (void* trampoline, object context, string trampolineSignature)
@@ -157,6 +197,16 @@ namespace ObjCRuntime {
 			return rv;
 		}
 
+		static string GetTypeName (Type? type)
+		{
+			return type?.FullName ?? type?.Name ?? "<unknown>";
+		}
+
+		static string GetMethodName (MethodInfo method)
+		{
+			return GetTypeName (method.DeclaringType) + "." + method.Name;
+		}
+
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		static string GetBlockSignature (void* trampoline, MethodInfo trampolineMethod)
 		{
@@ -166,17 +216,17 @@ namespace ObjCRuntime {
 			// Verify that there's at least one parameter, and it must be System.IntPtr, void* or ObjCRuntime.BlockLiteral*.
 			var parameters = trampolineMethod.GetParameters ();
 			if (parameters.Length < 1)
-				throw ErrorHelper.CreateError (8048, Errors.MX8048 /* The trampoline method {0} must have at least one parameter. */, trampolineMethod.DeclaringType.FullName + "." + trampolineMethod.Name);
+				throw ErrorHelper.CreateError (8048, Errors.MX8048 /* The trampoline method {0} must have at least one parameter. */, GetMethodName (trampolineMethod));
 			var firstParameterType = parameters [0].ParameterType;
 			if (firstParameterType != typeof (IntPtr) &&
 				firstParameterType != typeof (void*) &&
 				firstParameterType != typeof (BlockLiteral*)) {
-				throw ErrorHelper.CreateError (8049, Errors.MX8049 /* The first parameter in the trampoline method {0} must be either 'System.IntPtr', 'void*' or 'ObjCRuntime.BlockLiteral*'. */, trampolineMethod.DeclaringType.FullName + "." + trampolineMethod.Name);
+				throw ErrorHelper.CreateError (8049, Errors.MX8049 /* The first parameter in the trampoline method {0} must be either 'System.IntPtr', 'void*' or 'ObjCRuntime.BlockLiteral*'. */, GetMethodName (trampolineMethod));
 			}
 
 			// Verify that the method as an [UnmanagedCallersOnly] attribute
 			if (!trampolineMethod.IsDefined (typeof (UnmanagedCallersOnlyAttribute), false))
-				throw ErrorHelper.CreateError (8051, Errors.MX8051 /* The trampoline method {0} must have an [UnmanagedCallersOnly] attribute. */, trampolineMethod.DeclaringType.FullName + "." + trampolineMethod.Name);
+				throw ErrorHelper.CreateError (8051, Errors.MX8051 /* The trampoline method {0} must have an [UnmanagedCallersOnly] attribute. */, GetMethodName (trampolineMethod));
 
 			// We need to get the signature of the target method, so that we can compute
 			// the ObjC signature correctly (the generated method that's actually
@@ -223,7 +273,10 @@ namespace ObjCRuntime {
 		{
 			var userDelegateType = provider.GetCustomAttribute<UserDelegateTypeAttribute> ()?.UserDelegateType;
 			if (userDelegateType is not null) {
-				userMethod = userDelegateType.GetMethod ("Invoke");
+				var invokeMethod = userDelegateType.GetMethod ("Invoke");
+				if (invokeMethod is null)
+					throw new InvalidOperationException ($"The user delegate type {GetTypeName (userDelegateType)} does not have an Invoke method.");
+				userMethod = invokeMethod;
 				return true;
 			} else {
 				userMethod = noUserDelegateTypeMethod;
@@ -288,11 +341,9 @@ namespace ObjCRuntime {
 		}
 
 		// trampoline must be static, and someone else needs to keep a ref to it
-		/// <param name="trampoline">The trampoline must be a static delegate. The developer's code must keep a reference to it.</param>
-		///         <param name="userDelegate">The user code to invoke.</param>
-		///         <summary>Sets up a block using a trampoline and a user delegate.</summary>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Sets up a block using a trampoline and a user delegate.</summary>
+		/// <param name="trampoline">The trampoline must be a static delegate. The developer's code must keep a reference to this delegate.</param>
+		/// <param name="userDelegate">The user code to invoke.</param>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public void SetupBlockUnsafe (Delegate trampoline, Delegate userDelegate)
 		{
@@ -300,11 +351,9 @@ namespace ObjCRuntime {
 		}
 
 		// trampoline must be static, but it's not necessary to keep a ref to it
+		/// <summary>Sets up a block using a trampoline and a user delegate.</summary>
 		/// <param name="trampoline">The trampoline must be a static delegate. Xamarin.iOS will automatically keep a reference to this delegate.</param>
-		///         <param name="userDelegate">The user code to invoke.</param>
-		///         <summary>Sets up a block using a trampoline and a user delegate.</summary>
-		///         <remarks>
-		///         </remarks>
+		/// <param name="userDelegate">The user code to invoke.</param>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public void SetupBlock (Delegate trampoline, Delegate userDelegate)
 		{
@@ -333,24 +382,28 @@ namespace ObjCRuntime {
 				// It should be enough to run this check in the simulator
 				var method = trampoline.Method;
 				if (!method.IsStatic)
-					ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (trampoline), $"The method {method.DeclaringType.FullName}.{method.Name} is not static.");
+					ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (trampoline), $"The method {GetMethodName (method)} is not static.");
 				var attrib = method.GetCustomAttribute<MonoPInvokeCallbackAttribute> (false);
 				if (attrib is null)
-					ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (trampoline), $"The method {method.DeclaringType.FullName}.{method.Name} does not have a [MonoPInvokeCallback] attribute.");
+					ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (trampoline), $"The method {GetMethodName (method)} does not have a [MonoPInvokeCallback] attribute.");
 
-				Type delegateType = attrib.DelegateType;
+				var delegateType = attrib.DelegateType;
+				if (delegateType is null)
+					ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (trampoline), $"The method {GetMethodName (method)} has a [MonoPInvokeCallback] attribute with an invalid delegate type.");
 				var signatureMethod = delegateType.GetMethod ("Invoke");
+				if (signatureMethod is null)
+					ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (trampoline), $"The method {GetMethodName (method)} has a [MonoPInvokeCallback] attribute with an invalid delegate type ({GetTypeName (delegateType)}).");
 				if (method.ReturnType != signatureMethod.ReturnType)
-					ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (trampoline), $"The method {method.DeclaringType.FullName}.{method.Name}'s return type ({method.ReturnType.FullName}) does not match the return type of the delegate in its [MonoPInvokeCallback] attribute ({signatureMethod.ReturnType.FullName}).");
+					ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (trampoline), $"The method {GetMethodName (method)}'s return type ({method.ReturnType.FullName}) does not match the return type of the delegate in its [MonoPInvokeCallback] attribute ({signatureMethod.ReturnType.FullName}).");
 
 				var parameters = method.GetParameters ();
 				var signatureParameters = signatureMethod.GetParameters ();
 				if (parameters.Length != signatureParameters.Length)
-					ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (trampoline), $"The method {method.DeclaringType.FullName}.{method.Name}'s parameter count ({parameters.Length}) does not match the parameter count of the delegate in its [MonoPInvokeCallback] attribute ({signatureParameters.Length}).");
+					ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (trampoline), $"The method {GetMethodName (method)}'s parameter count ({parameters.Length}) does not match the parameter count of the delegate in its [MonoPInvokeCallback] attribute ({signatureParameters.Length}).");
 
 				for (int i = 0; i < parameters.Length; i++) {
 					if (parameters [i].ParameterType != signatureParameters [i].ParameterType)
-						ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (trampoline), $"The method {method.DeclaringType.FullName}.{method.Name}'s parameter #{i + 1}'s type ({parameters [i].ParameterType.FullName}) does not match the corresponding parameter type of the delegate in its [MonoPInvokeCallback] attribute ({signatureParameters [i].ParameterType.FullName}).");
+						ObjCRuntime.ThrowHelper.ThrowArgumentException (nameof (trampoline), $"The method {GetMethodName (method)}'s parameter #{i + 1}'s type ({parameters [i].ParameterType.FullName}) does not match the corresponding parameter type of the delegate in its [MonoPInvokeCallback] attribute ({signatureParameters [i].ParameterType.FullName}).");
 				}
 			}
 #endif
@@ -358,14 +411,15 @@ namespace ObjCRuntime {
 		}
 
 		/// <summary>Releases the resources associated with this block.</summary>
-		///         <remarks>
-		///           <para>This releases the GCHandle that points to the user delegate.</para>
-		///         </remarks>
+		/// <remarks>
+		/// <para>This releases the <see cref="GCHandle"/> that points to the user delegate.</para>
+		/// </remarks>
 		public void CleanupBlock ()
 		{
 			Dispose ();
 		}
 
+		/// <summary>Releases the resources associated with this block.</summary>
 		public void Dispose ()
 		{
 			if (local_handle != IntPtr.Zero) {
@@ -389,22 +443,18 @@ namespace ObjCRuntime {
 			}
 		}
 
-		/// <summary>
-		/// This is the 'context' value that was specified when creating the BlockLiteral.
-		/// </summary>
-		public object Context {
+		/// <summary>Gets the context value that was specified when creating the <see cref="BlockLiteral"/>.</summary>
+		/// <value>The context value.</value>
+		public object? Context {
 			get {
 				var handle = global_handle != IntPtr.Zero ? global_handle : local_handle;
 				return GCHandle.FromIntPtr (handle).Target;
 			}
 		}
 
-		/// <summary>Returns the target object for the block.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
-		public object Target {
+		/// <summary>Gets the target object for the block.</summary>
+		/// <value>The target object if this block wraps a managed delegate; otherwise the context value.</value>
+		public object? Target {
 			get {
 				var target = Context;
 				var tuple = target as Tuple<Delegate, Delegate>;
@@ -414,33 +464,33 @@ namespace ObjCRuntime {
 			}
 		}
 
-		/// <typeparam name="T">Desired type to get, the delegate must be compatible with this type.</typeparam>
-		///         <summary>This method supports the Xamarin.iOS runtime and is not intended for use by application developers.</summary>
-		///         <returns>Returns a delegate of the given type that can be used to invoke the Objective-C block in the provided handle.</returns>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Returns a managed delegate of type <typeparamref name="T"/> that can invoke the native block.</summary>
+		/// <typeparam name="T">The delegate type to create.</typeparam>
+		/// <returns>The delegate of type <typeparamref name="T"/> for this block.</returns>
+		/// <remarks>This method supports the Xamarin.iOS runtime and is not intended for use by application developers.</remarks>
 		public T GetDelegateForBlock<T> () where T : System.MulticastDelegate
 		{
 			return Runtime.GetDelegateForBlock<T> (invoke);
 		}
 
+		/// <summary>Returns the managed delegate represented by the specified block.</summary>
 		/// <typeparam name="T">The type of the managed delegate to return.</typeparam>
-		///         <param name="block">The pointer to the native block.</param>
-		///         <summary>If this block represents a managed delegate, this method will return that managed delegate.</summary>
-		///         <returns>The managed delegate for this block.</returns>
-		///         <remarks>
-		///           <para>Behavior is undefined if this block does not represent a managed delegate.</para>
-		///         </remarks>
-		public unsafe static T GetTarget<T> (IntPtr block) where T : System.MulticastDelegate
+		/// <param name="block">The pointer to the native block.</param>
+		/// <returns>The managed delegate for this block, or <see langword="null"/> if no managed delegate is available.</returns>
+		/// <remarks>
+		/// <para>Behavior is undefined if this block does not represent a managed delegate.</para>
+		/// </remarks>
+		public unsafe static T? GetTarget<T> (IntPtr block) where T : System.MulticastDelegate
 		{
-			return (T) ((BlockLiteral*) block)->Target;
+			var target = ((BlockLiteral*) block)->Target;
+			if (target is null)
+				return null;
+			return (T) target;
 		}
 
+		/// <summary>Determines whether the specified block wraps a managed delegate.</summary>
 		/// <param name="block">The pointer to the native block.</param>
-		///         <summary>This method determines whether a block is wrapping a managed delegate or if it's an Objective-C block.</summary>
-		///         <returns>Returns true if the specified block contains a managed delegate.</returns>
-		///         <remarks>
-		///         </remarks>
+		/// <returns><see langword="true"/> if the block contains a managed delegate; otherwise, <see langword="false"/>.</returns>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static bool IsManagedBlock (IntPtr block)
 		{
@@ -459,7 +509,7 @@ namespace ObjCRuntime {
 		[UnconditionalSuppressMessage ("", "IL2075", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		// IL2072: 'interfaceType' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicMethods', 'DynamicallyAccessedMemberTypes.NonPublicMethods' in call to 'System.Type.GetInterfaceMap(Type)'. The return value of method 'System.Type.GetInterfaces()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2072", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-		static Type GetDelegateProxyType (MethodInfo minfo, uint token_ref, out MethodInfo baseMethod)
+		static Type? GetDelegateProxyType (MethodInfo minfo, uint token_ref, out MethodInfo? baseMethod)
 		{
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception if using the managed static registrar (which is required for NativeAOT)
 			if (Runtime.IsManagedStaticRegistrar)
@@ -478,12 +528,15 @@ namespace ObjCRuntime {
 				return ((DelegateProxyAttribute) delegateProxies [0]).DelegateType;
 
 			// We might be implementing a protocol, find any DelegateProxy attributes on the corresponding interface as well.
-			string selector = null;
-			foreach (var iface in minfo.DeclaringType.GetInterfaces ()) {
+			string? selector = null;
+			var declaringType = minfo.DeclaringType;
+			if (declaringType is null)
+				throw ErrorHelper.CreateError (8011, $"Unable to locate the delegate to block conversion attribute ([DelegateProxy]) for the return value for the method {GetMethodName (minfo)}. {Constants.PleaseFileBugReport}");
+			foreach (var iface in declaringType.GetInterfaces ()) {
 				if (!iface.IsDefined (typeof (ProtocolAttribute), false))
 					continue;
 
-				var map = minfo.DeclaringType.GetInterfaceMap (iface);
+				var map = declaringType.GetInterfaceMap (iface);
 				for (int i = 0; i < map.TargetMethods.Length; i++) {
 					if (map.TargetMethods [i] == minfo) {
 						delegateProxies = map.InterfaceMethods [i].ReturnTypeCustomAttributes.GetCustomAttributes (typeof (DelegateProxyAttribute), false);
@@ -502,11 +555,11 @@ namespace ObjCRuntime {
 				}
 			}
 
-			throw ErrorHelper.CreateError (8011, $"Unable to locate the delegate to block conversion attribute ([DelegateProxy]) for the return value for the method {baseMethod.DeclaringType.FullName}.{baseMethod.Name}. {Constants.PleaseFileBugReport}");
+			throw ErrorHelper.CreateError (8011, $"Unable to locate the delegate to block conversion attribute ([DelegateProxy]) for the return value for the method {GetMethodName (baseMethod ?? minfo)}. {Constants.PleaseFileBugReport}");
 		}
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		unsafe static IntPtr GetBlockForFunctionPointer (MethodInfo delegateInvokeMethod, object @delegate, string signature)
+		unsafe static IntPtr GetBlockForFunctionPointer (MethodInfo delegateInvokeMethod, object @delegate, string? signature)
 		{
 			void* invokeFunctionPointer = (void*) delegateInvokeMethod.MethodHandle.GetFunctionPointer ();
 			if (signature is null) {
@@ -523,7 +576,7 @@ namespace ObjCRuntime {
 
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		static IntPtr CreateBlockForDelegate (Delegate @delegate, Delegate delegateProxyFieldValue, string /*?*/ signature)
+		static IntPtr CreateBlockForDelegate (Delegate @delegate, Delegate delegateProxyFieldValue, string? signature)
 		{
 			if (@delegate is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (@delegate));
@@ -555,7 +608,7 @@ namespace ObjCRuntime {
 		// IL2075: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.NonPublicFields' in call to 'System.Type.GetField(String, BindingFlags)'. The return value of method 'ObjCRuntime.BlockLiteral.GetDelegateProxyType(MethodInfo, UInt32, MethodInfo&)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		// IL2075: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.NonPublicMethods' in call to 'System.Type.GetMethod(String, BindingFlags)'. The return value of method 'ObjCRuntime.BlockLiteral.GetDelegateProxyType(MethodInfo, UInt32, MethodInfo&)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to."
 		[UnconditionalSuppressMessage ("", "IL2075", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
-		internal static IntPtr GetBlockForDelegate (MethodInfo minfo, object @delegate, uint token_ref, string signature)
+		internal static IntPtr GetBlockForDelegate (MethodInfo minfo, object? @delegate, uint token_ref, string? signature)
 		{
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception if using the managed static registrar (which is required for NativeAOT)
 			if (Runtime.IsManagedStaticRegistrar)
@@ -564,35 +617,35 @@ namespace ObjCRuntime {
 			if (@delegate is null)
 				return IntPtr.Zero;
 
-			if (!(@delegate is Delegate))
-				throw ErrorHelper.CreateError (8016, $"Unable to convert delegate to block for the return value for the method {minfo.DeclaringType.FullName}.{minfo.Name}, because the input isn't a delegate, it's a {@delegate.GetType ().FullName}. {Constants.PleaseFileBugReport}");
+			if (@delegate is not Delegate managedDelegate)
+				throw ErrorHelper.CreateError (8016, $"Unable to convert delegate to block for the return value for the method {GetMethodName (minfo)}, because the input isn't a delegate, it's a {@delegate.GetType ().FullName}. {Constants.PleaseFileBugReport}");
 
 			if (Runtime.IsNativeAOT)
 				throw Runtime.CreateNativeAOTNotSupportedException ();
 
-			Type delegateProxyType = GetDelegateProxyType (minfo, token_ref, out var baseMethod);
+			var delegateProxyType = GetDelegateProxyType (minfo, token_ref, out var baseMethod);
 			if (baseMethod is null)
 				baseMethod = minfo; // 'baseMethod' is only used in error messages, and if it's null, we just use the closest alternative we have (minfo).
 			if (delegateProxyType is null)
-				throw ErrorHelper.CreateError (8012, $"Invalid DelegateProxyAttribute for the return value for the method {baseMethod.DeclaringType.FullName}.{baseMethod.Name}: DelegateType is null. {Constants.PleaseFileBugReport}");
+				throw ErrorHelper.CreateError (8012, $"Invalid DelegateProxyAttribute for the return value for the method {GetMethodName (baseMethod)}: DelegateType is null. {Constants.PleaseFileBugReport}");
 
 			var delegateInvokeMethod = delegateProxyType.GetMethod ("Invoke", BindingFlags.NonPublic | BindingFlags.Static);
 			if (delegateInvokeMethod is null)
-				throw ErrorHelper.CreateError (8060, Errors.MX8060 /* Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No 'Invoke' method found. {Constants.PleaseFileBugReport} */, baseMethod.DeclaringType.FullName, baseMethod.Name);
+				throw ErrorHelper.CreateError (8060, Errors.MX8060 /* Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No 'Invoke' method found. {Constants.PleaseFileBugReport} */, GetTypeName (baseMethod.DeclaringType), baseMethod.Name);
 
 			if (delegateInvokeMethod.IsDefined (typeof (UnmanagedCallersOnlyAttribute), false))
-				return GetBlockForFunctionPointer (delegateInvokeMethod, @delegate, signature);
+				return GetBlockForFunctionPointer (delegateInvokeMethod, managedDelegate, signature);
 
 			var delegateProxyField = delegateProxyType.GetField ("Handler", BindingFlags.NonPublic | BindingFlags.Static);
 			if (delegateProxyField is null)
-				throw ErrorHelper.CreateError (8013, $"Invalid DelegateProxyAttribute for the return value for the method {baseMethod.DeclaringType.FullName}.{baseMethod.Name}: DelegateType ({delegateProxyType.FullName}) specifies a type without a 'Handler' field. {Constants.PleaseFileBugReport}");
+				throw ErrorHelper.CreateError (8013, $"Invalid DelegateProxyAttribute for the return value for the method {GetMethodName (baseMethod)}: DelegateType ({GetTypeName (delegateProxyType)}) specifies a type without a 'Handler' field. {Constants.PleaseFileBugReport}");
 
 			var handlerDelegate = delegateProxyField.GetValue (null);
 			if (handlerDelegate is null)
-				throw ErrorHelper.CreateError (8014, $"Invalid DelegateProxyAttribute for the return value for the method {baseMethod.DeclaringType.FullName}.{baseMethod.Name}: The DelegateType's ({delegateProxyType.FullName}) 'Handler' field is null. {Constants.PleaseFileBugReport}");
+				throw ErrorHelper.CreateError (8014, $"Invalid DelegateProxyAttribute for the return value for the method {GetMethodName (baseMethod)}: The DelegateType's ({GetTypeName (delegateProxyType)}) 'Handler' field is null. {Constants.PleaseFileBugReport}");
 
-			if (!(handlerDelegate is Delegate))
-				throw ErrorHelper.CreateError (8015, $"Invalid DelegateProxyAttribute for the return value for the method {baseMethod.DeclaringType.FullName}.{baseMethod.Name}: The DelegateType's ({delegateProxyType.FullName}) 'Handler' field is not a delegate, it's a {handlerDelegate.GetType ().FullName}. {Constants.PleaseFileBugReport}");
+			if (handlerDelegate is not Delegate handler)
+				throw ErrorHelper.CreateError (8015, $"Invalid DelegateProxyAttribute for the return value for the method {GetMethodName (baseMethod)}: The DelegateType's ({GetTypeName (delegateProxyType)}) 'Handler' field is not a delegate, it's a {handlerDelegate.GetType ().FullName}. {Constants.PleaseFileBugReport}");
 
 			// We now have the information we need to create the block.
 			// Note that we must create a heap-allocated block, so we 
@@ -602,12 +655,12 @@ namespace ObjCRuntime {
 			using var block = new BlockLiteral ();
 			if (signature is null) {
 				if (Runtime.DynamicRegistrationSupported) {
-					block.SetupBlock ((Delegate) handlerDelegate, (Delegate) @delegate);
+					block.SetupBlock (handler, managedDelegate);
 				} else {
-					throw ErrorHelper.CreateError (8026, $"BlockLiteral.GetBlockForDelegate with a null signature is not supported when the dynamic registrar has been linked away (delegate type: {@delegate.GetType ().FullName}).");
+					throw ErrorHelper.CreateError (8026, $"BlockLiteral.GetBlockForDelegate with a null signature is not supported when the dynamic registrar has been linked away (delegate type: {managedDelegate.GetType ().FullName}).");
 				}
 			} else {
-				block.SetupBlockImpl ((Delegate) handlerDelegate, (Delegate) @delegate, true, signature);
+				block.SetupBlockImpl (handler, managedDelegate, true, signature);
 			}
 
 			unsafe {
@@ -680,10 +733,10 @@ namespace ObjCRuntime {
 #endif
 
 	/// <summary>Flags for the BlockLiteral enum.</summary>
-	///     <remarks>
-	///       <para>Xamarin.iOS as of version 12.0 only uses the flags BlockFlags.BLOCK_HAS_COPY_DISPOSE | BlockFlags.BLOCK_HAS_SIGNATURE for its blocks.</para>
-	///       <para>See <format type="text/html"><a href="https://clang.llvm.org/docs/Block-ABI-Apple.html">Block ABI</a></format> for more detailed information about the Block ABI.</para>
-	///     </remarks>
+	/// <remarks>
+	///   <para>Only the flags <see cref="BlockFlags.BLOCK_HAS_COPY_DISPOSE" /> and <see cref="BlockFlags.BLOCK_HAS_SIGNATURE" /> are used for the blocks we create.</para>
+	///   <para>See <see href="https://clang.llvm.org/docs/Block-ABI-Apple.html">Block ABI</see> for more detailed information about the Block ABI.</para>
+	/// </remarks>
 	[Flags]
 	internal enum BlockFlags : int {
 		/// <summary>Objective-C Block ABI Flags.</summary>

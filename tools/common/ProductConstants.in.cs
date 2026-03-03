@@ -6,10 +6,14 @@ using Xamarin.Utils;
 #endif
 
 namespace Xamarin {
-	sealed class ProductConstants {
+	public sealed class ProductConstants {
 		public string Version;
 		public string Revision;
 		public const string Hash = "@PRODUCT_HASH@";
+
+		internal const string XcodeVersion = "@XCODE_VERSION@";
+		internal const string XcodeBumpCommitDistance = "@XCODE_BUMP_COMMIT_DISTANCE@";
+		public const string SharpieVersion = XcodeVersion + ".0." + XcodeBumpCommitDistance;
 
 		ProductConstants (string version, string revision)
 		{

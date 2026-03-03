@@ -23,6 +23,8 @@ class TestConfiguration {
     [string] $Platform
     [string] $Context
     [string] $TestStage
+    [string] $DisplayName
+    [bool] $IsMacTest
 
     TestConfiguration (
         [TestSuite] $suite,
@@ -37,6 +39,8 @@ class TestConfiguration {
         $this.Platform = $platform
         $this.Context = $context
         $this.TestStage = $testStage
+        $this.DisplayName = ""
+        $this.IsMacTest = $false
     }
     
     [string]
@@ -55,6 +59,8 @@ class TestResult {
     [string] $Platform
     [string] $Context
     [string] $TestStage
+    [string] $DisplayName
+    [bool] $IsMacTest
     hidden [int] $Passed
     hidden [int] $Failed
     hidden [string[]] $NotTestSummaryLabels = @()
@@ -76,6 +82,8 @@ class TestResult {
         $this.Platform = $testConfiguration.Platform
         $this.Context = $testConfiguration.Context
         $this.TestStage = $testConfiguration.TestStage
+        $this.DisplayName = $testConfiguration.DisplayName
+        $this.IsMacTest = $testConfiguration.IsMacTest
         Write-Host "TestsResult::new($path, $status, $testConfiguration, $attempt) Label: $($this.Label) Platform: $($this.Platform) Title: $($this.Title) Context: $($this.Context)"
     }
 
@@ -110,7 +118,8 @@ class TestResult {
     }
 
     [string] GetLabelWithSuffix([string] $infix) {
-        return $this.Label + $infix + $this.GetLabelSuffix()
+        $name = if ($this.DisplayName) { $this.DisplayName } else { $this.Label }
+        return $name + $infix + $this.GetLabelSuffix()
     }
 
     [void] WriteComment($stringBuilder) {
@@ -354,6 +363,11 @@ class ParallelTestsResults {
             return
         }
 
+        # Split results into regular tests and macOS tests
+        $regularResults = @($this.Results | Where-Object { -not $_.IsMacTest })
+        # Sort macOS tests by the version number extracted from the TestStage (e.g. mac_12_m1 => 12)
+        $macResults = @($this.Results | Where-Object { $_.IsMacTest } | Sort-Object { if ($_.TestStage -match '_(\d+)_') { [int]$matches[1] } else { 0 } })
+
         $stringBuilder.AppendLine("# Test results")
         # We need to add a small summary at the top. We check if it was a success, if that is
         # the case, we just need to state it and
@@ -366,9 +380,17 @@ class ParallelTestsResults {
             # enumerate the tests context and its tests, since it is nice to know
             $stringBuilder.AppendLine("")
             $stringBuilder.AppendLine("## Tests counts")
-            foreach($r in $this.Results)
+            foreach($r in $regularResults)
             {
                 $this.PrintSuccessMessage($r, $stringBuilder)
+            }
+            if ($macResults.Count -gt 0) {
+                $stringBuilder.AppendLine("")
+                $stringBuilder.AppendLine("## macOS tests")
+                $stringBuilder.AppendLine("")
+                foreach ($r in $macResults) {
+                    $this.PrintSuccessMessage($r, $stringBuilder)
+                }
             }
         } else {
             $stringBuilder.AppendLine(":x: Tests failed on $($this.Context)")
@@ -377,8 +399,12 @@ class ParallelTestsResults {
             $stringBuilder.AppendLine("")
             $stringBuilder.AppendLine("## Failures")
             $stringBuilder.AppendLine("")
+            # Show non-mac failures first, then mac failures sorted by version
+            $regularFailures = @($failingTests | Where-Object { -not $_.IsMacTest })
+            $macFailures = @($failingTests | Where-Object { $_.IsMacTest } | Sort-Object { if ($_.TestStage -match '_(\d+)_') { [int]$matches[1] } else { 0 } })
+            $sortedFailures = @($regularFailures) + @($macFailures)
             # loop over all results and add the content
-            foreach ($r in $failingTests)
+            foreach ($r in $sortedFailures)
             {
                 $attemptText = $r.GetAttemptText()
                 $stringBuilder.AppendLine("### :x: $($r.GetLabelWithSuffix(`" tests`"))$attemptText")
@@ -442,11 +468,21 @@ class ParallelTestsResults {
                     $stringBuilder.AppendLine("")
                 }
             }
-            $successfulTests = $this.GetSuccessfulTests()
+            $successfulTests = @($this.GetSuccessfulTests() | Where-Object { -not $_.IsMacTest })
             $stringBuilder.AppendLine("## Successes")
             $stringBuilder.AppendLine("")
             foreach ($r in $successfulTests) {
                 $this.PrintSuccessMessage($r, $stringBuilder)
+            }
+            if ($macResults.Count -gt 0) {
+                $macSuccesses = @($this.GetSuccessfulTests() | Where-Object { $_.IsMacTest } | Sort-Object { if ($_.TestStage -match '_(\d+)_') { [int]$matches[1] } else { 0 } })
+                $stringBuilder.AppendLine("")
+                $stringBuilder.AppendLine("## macOS tests")
+                $stringBuilder.AppendLine("")
+                foreach ($r in $macSuccesses) {
+                    $this.PrintSuccessMessage($r, $stringBuilder)
+                }
+                # macOS failures are already included in the Failures section above
             }
         }
 
@@ -491,6 +527,12 @@ class ParallelTestsResults {
                 $suites[$label] = $suite
             }
             $testConfig = [TestConfiguration]::new($suite, $title, $platform, "$Context - $title", $testStage)
+            if ($entry.ContainsKey("DISPLAY_NAME")) {
+                $testConfig.DisplayName = $entry["DISPLAY_NAME"]
+            }
+            if ($entry.ContainsKey("IS_MAC_TEST") -and $entry["IS_MAC_TEST"] -eq "true") {
+                $testConfig.IsMacTest = $true
+            }
             $suite.TestConfigurations += $testConfig
             Write-Host "Added test config: $( $testConfig.Title )"
             Write-Host "To suite: $( $suite.Label )"

@@ -84,6 +84,11 @@ parameters:
       testPrefix: 'simulator_tests',
     },
     {
+      label: sharpie,
+      splitByPlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+    {
       label: xcframework,
       splitByPlatforms: false,
       testPrefix: 'simulator_tests',
@@ -92,6 +97,30 @@ parameters:
       label: xtro,
       splitByPlatforms: false,
       testPrefix: 'simulator_tests',
+    },
+    {
+      label: mac_sonoma,
+      displayName: 'Tests on macOS Sonoma (14)',
+      splitByPlatforms: false,
+      testPrefix: 'mac_14_x64',
+      testStage: 'mac_14_x64',
+      isMacTest: true,
+    },
+    {
+      label: mac_sequoia,
+      displayName: 'Tests on macOS Sequoia (15)',
+      splitByPlatforms: false,
+      testPrefix: 'mac_15_arm64',
+      testStage: 'mac_15_arm64',
+      isMacTest: true,
+    },
+    {
+      label: mac_tahoe,
+      displayName: 'Tests on macOS Tahoe (26)',
+      splitByPlatforms: false,
+      testPrefix: 'mac_26_arm64',
+      testStage: 'mac_26_arm64',
+      isMacTest: true,
     },
   ]
 

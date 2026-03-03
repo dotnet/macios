@@ -9,6 +9,7 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
 using Xamarin.Localization.MSBuild;
+using Xamarin.MacDev.Models;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
 
@@ -281,145 +282,141 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 
 	async System.Threading.Tasks.Task<IEnumerable<DeviceInfo>> RunSimCtlAsync ()
 	{
-		var doc = await ExecuteCtlToJsonAsync ("simctl", "list", "--json");
+		var json = await ExecuteCtlAsync ("simctl", "list", "--json");
 		var rv = new List<DeviceInfo> ();
 
-		var runtimes = new Dictionary<string, JsonElement> ();
-		if (doc.TryGetProperty ("runtimes", out var runtimesElement)) {
-			foreach (var runtime in runtimesElement.EnumerateIfArray ()) {
-				var name = runtime.GetStringProperty ("identifier") ?? string.Empty;
-				runtimes [name] = runtime;
-			}
-		}
+		// Use shared parser from Xamarin.MacDev for device and runtime extraction
+		var parsedDevices = SimctlOutputParser.ParseDevices (json);
+		var parsedRuntimes = SimctlOutputParser.ParseRuntimes (json);
 
+		// Index runtimes by identifier for SupportedArchitectures lookup
+		var runtimesByIdentifier = new Dictionary<string, SimulatorRuntimeInfo> ();
+		foreach (var rt in parsedRuntimes)
+			runtimesByIdentifier [rt.Identifier] = rt;
+
+		// devicetypes still needs raw JSON parsing (productFamily, min/maxRuntime not yet in shared parser)
 		var deviceTypes = new Dictionary<string, JsonElement> ();
-		if (doc.TryGetProperty ("devicetypes", out var deviceTypesElement)) {
-			foreach (var deviceType in deviceTypesElement.EnumerateIfArray ()) {
-				var name = deviceType.GetStringProperty ("identifier") ?? string.Empty;
-				deviceTypes [name] = deviceType;
-			}
-		}
-
-		if (doc.TryGetProperty ("devices", out var devicesElement)) {
-			foreach (var runtime in devicesElement.EnumerateObject ()) {
-				var runtimeName = runtime.Name;
-				var hasRuntime = runtimes.TryGetValue (runtimeName, out var runtimeElement);
-				var runtimePlatform = hasRuntime ? runtimeElement.GetStringProperty ("platform") ?? string.Empty : string.Empty;
-				var runtimeVersion = hasRuntime ? runtimeElement.GetStringProperty ("version") ?? string.Empty : string.Empty;
-				var supportedArchitectures = hasRuntime ? runtimeElement.GetProperty ("supportedArchitectures").EnumerateIfArray ().Select (v => v.GetString () ?? "") : Enumerable.Empty<string> ();
-				foreach (var element in runtime.Value.EnumerateIfArray ()) {
-					var udid = element.GetStringProperty ("udid") ?? string.Empty;
-					var isAvailable = element.GetBooleanProperty ("isAvailable") ?? false;
-					var availabilityError = element.GetStringProperty ("availabilityError") ?? string.Empty;
-					var deviceTypeIdentifier = element.GetStringProperty ("deviceTypeIdentifier") ?? string.Empty;
-					var state = element.GetStringProperty ("state") ?? string.Empty;
-					var name = element.GetStringProperty ("name") ?? string.Empty;
-
-					var item = new TaskItem (udid);
-					item.SetMetadata ("Runtime", runtimeName);
-					item.SetMetadata ("IsAvailable", isAvailable.ToString ());
-					item.SetMetadata ("AvailabilityError", availabilityError);
-					item.SetMetadata ("DeviceTypeIdentifier", deviceTypeIdentifier);
-					item.SetMetadata ("State", state);
-					item.SetMetadata ("Name", name);
-					item.SetMetadata ("SupportedArchitectures", string.Join (",", supportedArchitectures));
-
-					// we provide the following metadata for both simulator and device
-					item.SetMetadata ("Description", name);
-					item.SetMetadata ("Type", "Simulator");
-					item.SetMetadata ("OSVersion", runtimeVersion);
-					item.SetMetadata ("UDID", udid);
-
-					var discardedReason = "";
-					var runtimeIdentifier = "";
-					var runtimeIdentifiers = new List<string> ();
-					if (isAvailable) {
-						switch (runtimePlatform.ToLowerInvariant ()) {
-						case "ios":
-							runtimeIdentifier += "iossimulator-";
-							break;
-						case "tvos":
-							runtimeIdentifier += "tvossimulator-";
-							break;
-						default:
-							discardedReason = $"'{runtimePlatform}' simulators are not supported";
-							break;
-						}
-
-						// pick the first architecture as the simulator architecture
-						if (string.IsNullOrEmpty (discardedReason)) {
-							foreach (var arch in supportedArchitectures) {
-								switch (arch.ToLowerInvariant ()) {
-								case "x64":
-								case "x86_64":
-									runtimeIdentifiers.Add (runtimeIdentifier + "x64");
-									break;
-								case "arm64":
-									runtimeIdentifiers.Add (runtimeIdentifier + "arm64");
-									if (!CanRunArm64)
-										discardedReason = $"Can't run an arm64 simulator on an x86_64 macOS desktop.";
-									break;
-								default:
-									discardedReason = $"Unknown CPU architecture '{arch}'";
-									break;
-								}
-							}
-						}
-					} else {
-						discardedReason = $"Device is not available: {availabilityError}";
-					}
-
-					var platformName = runtimeName.Replace ("com.apple.CoreSimulator.SimRuntime.", "").Split ('-') [0];
-					var platform = ApplePlatform.None;
-					if (string.IsNullOrEmpty (discardedReason)) {
-						switch (platformName.ToLowerInvariant ()) {
-						case "ios":
-							platform = ApplePlatform.iOS;
-							break;
-						case "tvos":
-							platform = ApplePlatform.TVOS;
-							break;
-						case "watchos":
-						case "visionos":
-						default:
-							discardedReason = $"'{platformName}' simulators are not supported";
-							break;
-						}
-					}
-					var deviceType = IPhoneDeviceType.NotSet;
-					var minimumOSVersion = new Version (0, 0);
-					var maximumOSVersion = new Version (65535, 255, 255);
-					if (string.IsNullOrEmpty (discardedReason)) {
-						if (deviceTypes.TryGetValue (deviceTypeIdentifier, out var deviceTypeElement)) {
-							var productFamily = deviceTypeElement.GetStringProperty ("productFamily") ?? string.Empty;
-							switch (productFamily.ToLowerInvariant ()) {
-							case "iphone":
-							case "ipod":
-								deviceType = IPhoneDeviceType.IPhone;
-								break;
-							case "ipad":
-								deviceType = IPhoneDeviceType.IPad;
-								break;
-							case "appletv":
-							case "apple tv":
-								deviceType = IPhoneDeviceType.TV;
-								break;
-							default:
-								discardedReason = $"Unknown product family '{productFamily}'";
-								break;
-							}
-							if (Version.TryParse (deviceTypeElement.GetStringProperty ("minRuntimeVersionString"), out var parsedMinimumOSVersion))
-								minimumOSVersion = parsedMinimumOSVersion;
-							if (Version.TryParse (deviceTypeElement.GetStringProperty ("maxRuntimeVersionString"), out var parsedMaximumOSVersion))
-								maximumOSVersion = parsedMaximumOSVersion;
-						} else {
-							discardedReason = $"Unknown device type identifier '{deviceTypeIdentifier}'";
-						}
-					}
-
-					rv.Add (new DeviceInfo (item, runtimeIdentifiers, platform, deviceType, minimumOSVersion, maximumOSVersion, discardedReason));
+		var options = new JsonDocumentOptions {
+			AllowTrailingCommas = true,
+			CommentHandling = JsonCommentHandling.Skip,
+		};
+		using (var doc = JsonDocument.Parse (string.IsNullOrEmpty (json) ? "{}" : json, options)) {
+			if (doc.RootElement.TryGetProperty ("devicetypes", out var deviceTypesElement)) {
+				foreach (var deviceType in deviceTypesElement.EnumerateIfArray ()) {
+					var dtName = deviceType.GetStringProperty ("identifier") ?? string.Empty;
+					deviceTypes [dtName] = deviceType.Clone ();
 				}
 			}
+		}
+
+		foreach (var device in parsedDevices) {
+			var hasRuntime = runtimesByIdentifier.TryGetValue (device.RuntimeIdentifier, out var runtimeInfo);
+			var runtimePlatform = hasRuntime ? runtimeInfo!.Platform : string.Empty;
+			var runtimeVersion = hasRuntime ? runtimeInfo!.Version : device.OSVersion;
+			var supportedArchitectures = hasRuntime ? runtimeInfo!.SupportedArchitectures : new List<string> ();
+
+			var item = new TaskItem (device.Udid);
+			item.SetMetadata ("Runtime", device.RuntimeIdentifier);
+			item.SetMetadata ("IsAvailable", device.IsAvailable.ToString ());
+			item.SetMetadata ("AvailabilityError", device.AvailabilityError);
+			item.SetMetadata ("DeviceTypeIdentifier", device.DeviceTypeIdentifier);
+			item.SetMetadata ("State", device.State);
+			item.SetMetadata ("Name", device.Name);
+			item.SetMetadata ("SupportedArchitectures", string.Join (",", supportedArchitectures));
+
+			// we provide the following metadata for both simulator and device
+			item.SetMetadata ("Description", device.Name);
+			item.SetMetadata ("Type", "Simulator");
+			item.SetMetadata ("OSVersion", runtimeVersion);
+			item.SetMetadata ("UDID", device.Udid);
+
+			var discardedReason = "";
+			var runtimeIdentifier = "";
+			var runtimeIdentifiers = new List<string> ();
+			if (device.IsAvailable) {
+				switch (runtimePlatform.ToLowerInvariant ()) {
+				case "ios":
+					runtimeIdentifier += "iossimulator-";
+					break;
+				case "tvos":
+					runtimeIdentifier += "tvossimulator-";
+					break;
+				default:
+					discardedReason = $"'{runtimePlatform}' simulators are not supported";
+					break;
+				}
+
+				// pick the first architecture as the simulator architecture
+				if (string.IsNullOrEmpty (discardedReason)) {
+					foreach (var arch in supportedArchitectures) {
+						switch (arch.ToLowerInvariant ()) {
+						case "x64":
+						case "x86_64":
+							runtimeIdentifiers.Add (runtimeIdentifier + "x64");
+							break;
+						case "arm64":
+							runtimeIdentifiers.Add (runtimeIdentifier + "arm64");
+							if (!CanRunArm64)
+								discardedReason = $"Can't run an arm64 simulator on an x86_64 macOS desktop.";
+							break;
+						default:
+							discardedReason = $"Unknown CPU architecture '{arch}'";
+							break;
+						}
+					}
+				}
+			} else {
+				discardedReason = $"Device is not available: {device.AvailabilityError}";
+			}
+
+			var platform = ApplePlatform.None;
+			if (string.IsNullOrEmpty (discardedReason)) {
+				switch (device.Platform.ToLowerInvariant ()) {
+				case "ios":
+					platform = ApplePlatform.iOS;
+					break;
+				case "tvos":
+					platform = ApplePlatform.TVOS;
+					break;
+				case "watchos":
+				case "visionos":
+				default:
+					discardedReason = $"'{device.Platform}' simulators are not supported";
+					break;
+				}
+			}
+			var deviceType = IPhoneDeviceType.NotSet;
+			var minimumOSVersion = new Version (0, 0);
+			var maximumOSVersion = new Version (65535, 255, 255);
+			if (string.IsNullOrEmpty (discardedReason)) {
+				if (deviceTypes.TryGetValue (device.DeviceTypeIdentifier, out var deviceTypeElement)) {
+					var productFamily = deviceTypeElement.GetStringProperty ("productFamily") ?? string.Empty;
+					switch (productFamily.ToLowerInvariant ()) {
+					case "iphone":
+					case "ipod":
+						deviceType = IPhoneDeviceType.IPhone;
+						break;
+					case "ipad":
+						deviceType = IPhoneDeviceType.IPad;
+						break;
+					case "appletv":
+					case "apple tv":
+						deviceType = IPhoneDeviceType.TV;
+						break;
+					default:
+						discardedReason = $"Unknown product family '{productFamily}'";
+						break;
+					}
+					if (Version.TryParse (deviceTypeElement.GetStringProperty ("minRuntimeVersionString"), out var parsedMinimumOSVersion))
+						minimumOSVersion = parsedMinimumOSVersion;
+					if (Version.TryParse (deviceTypeElement.GetStringProperty ("maxRuntimeVersionString"), out var parsedMaximumOSVersion))
+						maximumOSVersion = parsedMaximumOSVersion;
+				} else {
+					discardedReason = $"Unknown device type identifier '{device.DeviceTypeIdentifier}'";
+				}
+			}
+
+			rv.Add (new DeviceInfo (item, runtimeIdentifiers, platform, deviceType, minimumOSVersion, maximumOSVersion, discardedReason));
 		}
 		return rv;
 	}

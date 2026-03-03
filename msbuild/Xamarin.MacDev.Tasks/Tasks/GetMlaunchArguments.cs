@@ -311,8 +311,16 @@ namespace Xamarin.MacDev.Tasks {
 				sb.Add (StandardErrorPath);
 			}
 
-			foreach (var envvar in EnvironmentVariables)
-				sb.Add ("--setenv=" + envvar.ItemSpec);
+			foreach (var envvar in EnvironmentVariables) {
+				var hasValue = envvar.MetadataNames.Cast<string> ().Contains ("Value");
+				if (hasValue) {
+					var value = envvar.GetMetadata ("Value");
+					sb.Add ("--setenv=" + envvar.ItemSpec + "=" + value);
+
+				} else {
+					sb.Add ("--setenv=" + envvar.ItemSpec);
+				}
+			}
 
 			sb.Add (WaitForExit ? "--wait-for-exit:true" : "--wait-for-exit:false");
 

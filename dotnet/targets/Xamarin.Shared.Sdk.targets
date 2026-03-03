@@ -63,6 +63,7 @@
 	<ItemGroup>
 		<ProjectCapability Include="Apple" />
 		<ProjectCapability Include="Mobile" />
+		<ProjectCapability Include="RuntimeEnvironmentVariableSupport" />
 		
 		<ProjectCapability Include="IOSApplication" Condition="'$(_ProjectType)' == 'iOSExecutableProject'" />
 		<ProjectCapability Include="IOSAppExtension" Condition="'$(_ProjectType)' == 'iOSAppExtensionProject'" />

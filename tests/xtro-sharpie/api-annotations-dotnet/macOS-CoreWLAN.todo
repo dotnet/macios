@@ -1,1 +1,2 @@
 !missing-selector! CWWiFiClient::interfaceNames not bound
+!missing-enum-value! CWPhyMode native value kCWPHYMode11be = 7 not bound

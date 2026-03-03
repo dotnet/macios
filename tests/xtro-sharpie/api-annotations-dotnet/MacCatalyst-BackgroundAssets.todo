@@ -1,0 +1,5 @@
+!deprecated-attribute-missing! BAAssetPackManager::getStatusOfAssetPackWithIdentifier:completionHandler: missing a [Deprecated] attribute
+!missing-selector! BAAssetPackManager::assetPackIsAvailableLocallyWithIdentifier: not bound
+!missing-selector! BAAssetPackManager::ensureLocalAvailabilityOfAssetPack:requireLatestVersion:completionHandler: not bound
+!missing-selector! BAAssetPackManager::getLocalStatusOfAssetPackWithIdentifier:completionHandler: not bound
+!missing-selector! BAAssetPackManager::getStatusRelativeToAssetPack:completionHandler: not bound

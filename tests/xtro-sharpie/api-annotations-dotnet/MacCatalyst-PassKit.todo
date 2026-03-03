@@ -1,0 +1,14 @@
+!missing-field! PKPaymentNetworkElCorteIngles not bound
+!missing-null-allowed! 'System.Void PassKit.PKAddCarKeyPassConfiguration::set_ManufacturerIdentifier(System.String)' is missing an [NullAllowed] on parameter #0
+!missing-selector! +PKIdentityElement::dhsTemporaryLawfulStatusElement not bound
+!missing-selector! +PKIdentityElement::nationalityElement not bound
+!missing-selector! +PKIdentityElement::placeOfBirthElement not bound
+!missing-selector! +PKIdentityElement::signatureUsualMarkElement not bound
+!missing-selector! PKAddCarKeyPassConfiguration::productPlanIdentifier not bound
+!missing-selector! PKAddCarKeyPassConfiguration::setProductPlanIdentifier: not bound
+!missing-selector! PKDisbursementRequest::isDelegatedRequest not bound
+!missing-selector! PKDisbursementRequest::setIsDelegatedRequest: not bound
+!missing-selector! PKPaymentRequest::isDelegatedRequest not bound
+!missing-selector! PKPaymentRequest::issuerRegions not bound
+!missing-selector! PKPaymentRequest::setIsDelegatedRequest: not bound
+!missing-selector! PKPaymentRequest::setIssuerRegions: not bound

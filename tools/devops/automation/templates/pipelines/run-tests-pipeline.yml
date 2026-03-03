@@ -14,7 +14,7 @@ parameters:
   - name: macOSName # comes from the build agent demand named macOS.Name
     displayName: Name of the version of macOS to use
     type: string
-    default: 'Sequoia'
+    default: 'Tahoe'
 
   - name: runTests
     displayName: Run Simulator Tests
@@ -40,11 +40,6 @@ resources:
     - repository: yaml-templates
       type: git
       name: xamarin.yaml-templates
-      ref: refs/heads/main
-      
-    - repository: macios-adr
-      type: git
-      name: macios-adr
       ref: refs/heads/main
 
 variables:

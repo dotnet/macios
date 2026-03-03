@@ -9,11 +9,16 @@ using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks;
 
-// This task will select which runtime (monovm/coreclr/nativeaot) libraries to add
-// to the app bundle.
+// This task will select which runtime (monovm/coreclr/nativeaot) libraries to:
+// * Add to the app bundle
+// * Link with
 public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 	[Required]
 	public string DotNetRuntime { get; set; } = string.Empty;
+
+	public ITaskItem [] MonoRuntimeComponentLink { get; set; } = [];
+
+	public ITaskItem [] MonoRuntimeComponentDontLink { get; set; } = [];
 
 	[Required]
 	public ITaskItem [] ResolvedFileToPublish { get; set; } = [];
@@ -27,16 +32,22 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 	[Required]
 	public string RuntimeNuGetPackageId { get; set; } = string.Empty;
 
+	public bool DebuggerSupport { get; set; }
+
 	[Output]
 	public ITaskItem [] OutputResolvedFileToPublish { get; set; } = [];
 
 	[Output]
 	public ITaskItem [] DylibsToConvertToFrameworks { get; set; } = [];
 
+	[Output]
+	public ITaskItem [] LinkWithRuntimeLibraries { get; set; } = [];
+
 	public override bool Execute ()
 	{
-		var output = new List<ITaskItem> ();
+		var copyToAppBundle = new List<ITaskItem> ();
 		var dylibsToFrameworks = new List<ITaskItem> ();
+		var linkWithRuntimeLibraries = new List<ITaskItem> ();
 
 		// Split the ResolvedFileToPublish into runtime libraries and others
 		var splitRuntimeLibraries = ResolvedFileToPublish
@@ -59,7 +70,7 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 			.ToDictionary (g => g.Key, g => g.ToList ());
 
 		// Add non-runtime libraries to output as-is
-		output.AddRange (splitRuntimeLibraries [false]);
+		copyToAppBundle.AddRange (splitRuntimeLibraries [false]);
 
 		var runtimeLibraries = splitRuntimeLibraries [true];
 
@@ -75,16 +86,19 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 			if (group.Count == 0)
 				continue;
 
+			var dylibs = group.Where (v => string.Equals (v.GetMetadata ("Extension"), ".dylib", StringComparison.OrdinalIgnoreCase));
+			var staticlibs = group.Where (v => string.Equals (v.GetMetadata ("Extension"), ".a", StringComparison.OrdinalIgnoreCase));
+
 			if (string.Equals (DotNetRuntime, "monovm", StringComparison.OrdinalIgnoreCase)) {
 				switch (RuntimeLibLinkMode.ToLowerInvariant ()) {
 				case "static":
-					// don't keep any:
-					// * static libraries are linked into the binary, so they're not copied as-is to the app bundle
-					// * we're linking statically, so we don't want the .dylib files either.
+					// only link
+					linkWithRuntimeLibraries.AddRange (staticlibs);
 					continue;
 				case "dylib":
-					// keep .dylib, remove anything else
-					output.AddRange (group.Where (v => string.Equals (v.GetMetadata ("Extension"), ".dylib", StringComparison.OrdinalIgnoreCase)));
+					// copy + link
+					copyToAppBundle.AddRange (dylibs);
+					linkWithRuntimeLibraries.AddRange (staticlibs);
 					continue;
 				default:
 					Log.LogError (MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
@@ -95,9 +109,7 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 			if (string.Equals (DotNetRuntime, "nativeaot", StringComparison.OrdinalIgnoreCase)) {
 				switch (RuntimeLibLinkMode.ToLowerInvariant ()) {
 				case "static":
-					// don't keep any:
-					// * static libraries are linked into the binary, so they're not copied as-is to the app bundle
-					// * we're linking statically, so we don't want the .dylib files either.
+					// only link, but NativeAOT's build logic computes these libraries, so there's nothing for us to do here.
 					continue;
 				case "dylib":
 					// NativeAOT is static only
@@ -115,25 +127,34 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 					continue;
 				}
 
+				if (Platform != Utils.ApplePlatform.MacOSX && !DebuggerSupport) {
+					// libmscordaccore and libmscordbi are debug-only libraries, don't include them when debugger support is disabled on mobile platforms
+					if (string.Equals (kvp.Key, "libmscordaccore", StringComparison.OrdinalIgnoreCase) ||
+						string.Equals (kvp.Key, "libmscordbi", StringComparison.OrdinalIgnoreCase)) {
+						continue;
+					}
+				}
+
 				switch (RuntimeLibLinkMode.ToLowerInvariant ()) {
 				case "static":
-					// if we only have a single .a, we don't need to keep it (it's linked into the binary, not copied as-is to the app bundle)
-					if (group.All (v => v.GetMetadata ("Extension").Equals (".a", StringComparison.OrdinalIgnoreCase)))
+					// if we only have a single .a, we need to link with it, but not copy to the app bundle
+					if (staticlibs.Count () == group.Count ()) {
+						linkWithRuntimeLibraries.AddRange (staticlibs);
 						continue;
+					}
 
 					// if we have a single .dylib, but we're linking statically, we need to convert it to a framework (if we're targeting a mobile platform)
 					// if we have both a .dylib and a .a, and we're linking statically, we still need to convert the .dylib to a .framework, because the .a is ignored/irrelevant
-					var dylib = group.Where (v => v.GetMetadata ("Extension").Equals (".dylib", StringComparison.OrdinalIgnoreCase));
 					if (Platform == ApplePlatform.iOS || Platform == ApplePlatform.TVOS) {
-						dylibsToFrameworks.AddRange (dylib);
+						dylibsToFrameworks.AddRange (dylibs);
 					} else {
 						// on desktop just link with the dylib
-						output.AddRange (dylib);
+						copyToAppBundle.AddRange (dylibs);
 					}
 					continue;
 				case "dylib":
 					// we don't want any .a files, but we want all .dylib files.
-					output.AddRange (group.Where (v => v.GetMetadata ("Extension").Equals (".dylib", StringComparison.OrdinalIgnoreCase)));
+					copyToAppBundle.AddRange (dylibs);
 					continue;
 				default:
 					Log.LogError (MSBStrings.E7170 /* Invalid RuntimeLibLinkMode value: '{0}' */, RuntimeLibLinkMode);
@@ -145,8 +166,18 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 			return false;
 		}
 
-		OutputResolvedFileToPublish = output.ToArray ();
+		if (string.Equals (DotNetRuntime, "monovm", StringComparison.OrdinalIgnoreCase) && RuntimeLibLinkMode.ToLowerInvariant () == "static") {
+			var dontLinkWithFilenames = new HashSet<string> (MonoRuntimeComponentDontLink.Select (v => v.ItemSpec));
+			var dontLinkWith = linkWithRuntimeLibraries.Where (v => dontLinkWithFilenames.Contains (v.GetMetadata ("Filename") + v.GetMetadata ("Extension")));
+			linkWithRuntimeLibraries = linkWithRuntimeLibraries.Except (dontLinkWith).ToList ();
+			Log.LogMessage (MessageImportance.Low, "Not linking with the following libraries, because the corresponding component was enabled/disabled:");
+			foreach (var item in dontLinkWith)
+				Log.LogMessage (MessageImportance.Low, $"    {item.ItemSpec}");
+		}
+
+		OutputResolvedFileToPublish = copyToAppBundle.ToArray ();
 		DylibsToConvertToFrameworks = dylibsToFrameworks.ToArray ();
+		LinkWithRuntimeLibraries = linkWithRuntimeLibraries.ToArray ();
 
 		return !Log.HasLoggedErrors;
 	}

@@ -358,7 +358,7 @@ namespace Extrospection {
 
 			// If the framework is registered for the current platform, then it's included.
 			var frameworks = Frameworks.GetFrameworks (ApplePlatformExtensions.Parse (platform), false);
-			if (frameworks.Any (x => string.Equals (x.Key, framework, StringComparison.OrdinalIgnoreCase)))
+			if (frameworks?.Any (x => string.Equals (x.Key, framework, StringComparison.OrdinalIgnoreCase)) == true)
 				return true;
 
 			// found only for platforms that aren't included in the current build

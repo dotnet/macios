@@ -3475,10 +3475,7 @@ namespace CoreText {
 		public CTFontVariationAxes [] GetVariationAxes ()
 		{
 			var cfArrayRef = CTFontCopyVariationAxes (Handle);
-			if (cfArrayRef == IntPtr.Zero)
-				return Array.Empty<CTFontVariationAxes> ();
-			return NSArray.ArrayFromHandle (cfArrayRef,
-					d => new CTFontVariationAxes (Runtime.GetNSObject<NSDictionary> (d)!), true);
+			return NSArray.NonNullDictionaryArrayFromHandleDropNullElements (cfArrayRef, d => new CTFontVariationAxes (d), true);
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -3507,10 +3504,8 @@ namespace CoreText {
 		public CTFontFeatures [] GetFeatures ()
 		{
 			var cfArrayRef = CTFontCopyFeatures (Handle);
-			if (cfArrayRef == IntPtr.Zero)
-				return Array.Empty<CTFontFeatures> ();
-			return NSArray.ArrayFromHandle (cfArrayRef,
-					d => new CTFontFeatures (Runtime.GetNSObject<NSDictionary> (d)!), true);
+			return NSArray.NonNullDictionaryArrayFromHandleDropNullElements (cfArrayRef,
+					d => new CTFontFeatures (d), true);
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -3523,10 +3518,8 @@ namespace CoreText {
 		public CTFontFeatureSettings [] GetFeatureSettings ()
 		{
 			var cfArrayRef = CTFontCopyFeatureSettings (Handle);
-			if (cfArrayRef == IntPtr.Zero)
-				return Array.Empty<CTFontFeatureSettings> ();
-			return NSArray.ArrayFromHandle (cfArrayRef,
-					d => new CTFontFeatureSettings (Runtime.GetNSObject<NSDictionary> (d)!), true);
+			return NSArray.NonNullDictionaryArrayFromHandleDropNullElements (cfArrayRef,
+					d => new CTFontFeatureSettings (d), true);
 		}
 		#endregion
 

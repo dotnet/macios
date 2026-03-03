@@ -333,7 +333,7 @@ namespace Foundation {
 					throw new ArgumentNullException ($"{nameof (items)}[{i}]");
 				// The analyzer cannot deal with arrays, we manually keep alive the whole array below
 #pragma warning disable RBI0014
-				IntPtr h = item is null ? NSNull.Null.Handle : item.Handle;
+				IntPtr h = item is null ? NSNull.NullHandle : item.Handle;
 				handles [i] = h;
 #pragma warning restore RBI0014
 			}
@@ -412,7 +412,6 @@ namespace Foundation {
 				}
 			}
 		}
-#nullable disable
 
 		internal static nuint GetCount (IntPtr handle)
 		{
@@ -428,26 +427,19 @@ namespace Foundation {
 			return Messaging.NativeHandle_objc_msgSend_UIntPtr (handle, Selector.GetHandle ("objectAtIndex:"), (UIntPtr) i);
 		}
 
+#if !XAMCORE_5_0
+		/// <summary>Creates a string array from a handle to a native NSArray object.</summary>
 		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
-		/// <summary>Creates a string array from an NSArray handle.</summary>
-		/// <returns>
-		///         </returns>
-		/// <remarks>
-		///         </remarks>
-		[Obsolete ("Use of 'CFArray.StringArrayFromHandle' offers better performance.")]
+		/// <returns>A string array, or <see langword="null" /> if handle is <see cref="NativeHandle.Zero" />.</returns>
+		/// <remarks>Call <see cref="CFArray.StringArrayFromHandle(NativeHandle)" /> instead for better performance.</remarks>
+		[Obsolete ("Use 'CFArray.StringArrayFromHandle' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		static public string [] StringArrayFromHandle (NativeHandle handle)
+		public static string? []? StringArrayFromHandle (NativeHandle handle)
 		{
-			if (handle == NativeHandle.Zero)
-				return null;
-
-			var c = GetCount (handle);
-			string [] ret = new string [c];
-
-			for (nuint i = 0; i < c; i++)
-				ret [i] = CFString.FromHandle (GetAtIndex (handle, i));
-			return ret;
+			return CFArray.StringArrayFromHandle (handle);
 		}
+#endif // !XAMCORE_5_0
+#nullable disable
 
 		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
 		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
@@ -475,6 +467,28 @@ namespace Foundation {
 				ret [i] = UnsafeGetItem<T> (handle, i);
 			}
 			return ret;
+		}
+
+		/// <summary>Returns a strongly-typed C# array of the parametrized type from a handle to an NSArray.</summary>
+		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
+		/// <param name="releaseHandle">Whether the native NSArray instance should be released before returning or not.</param>
+		/// <returns>A C# array with the values.</returns>
+		/// <remarks>
+		///   <para>Use this method to get a set of NSObject arrays from a handle to an NSArray</para>
+		///   <example>
+		///     <code lang="c#"><![CDATA[
+		/// var someHandle = GetCopyOfNativeArray (...);
+		/// var values = NSArray.ArrayFromHandle<NSString> (someHandle, releaseHandle: true);
+		/// ]]></code>
+		///   </example>
+		/// </remarks>
+		public static T [] ArrayFromHandle<T> (NativeHandle handle, bool releaseHandle) where T : class, INativeObject
+		{
+			var rv = ArrayFromHandle<T> (handle);
+			if (releaseHandle && handle != NativeHandle.Zero)
+				NSObject.DangerousRelease (handle);
+			return rv;
 		}
 
 		static Array ArrayFromHandle (NativeHandle handle, Type elementType)
@@ -609,6 +623,64 @@ namespace Foundation {
 			return rv;
 		}
 
+		/// <summary>Creates a managed array from a pointer to a native NSArray of NSDictionary objects, dropping null and NSNull elements.</summary>
+		/// <typeparam name="T">The type of objects to create from the dictionaries.</typeparam>
+		/// <param name="handle">The pointer to the native NSArray instance containing NSDictionary objects.</param>
+		/// <param name="createObjectFromDictionary">A factory function that creates an instance of type T from an NSDictionary.</param>
+		/// <param name="releaseHandle">Whether the native NSArray instance should be released before returning or not. Defaults to false.</param>
+		/// <returns>A C# array with the values, or null if the handle is zero. Null and NSNull elements are excluded from the result.</returns>
+		/// <remarks>
+		///   <para>This method converts a native NSArray of NSDictionary objects into a managed array. Any null or NSNull elements in the source array are skipped, and the resulting array is resized accordingly.</para>
+		/// </remarks>
+#nullable enable
+		internal static T []? DictionaryArrayFromHandleDropNullElements<T> (NativeHandle handle, Func<NSDictionary, T> createObjectFromDictionary, bool releaseHandle = false)
+		{
+			if (handle == NativeHandle.Zero)
+				return null;
+
+			try {
+				var count = GetCount (handle);
+				var ret = new T [count];
+				nuint nextIndex = 0;
+
+				for (nuint i = 0; i < count; i++) {
+					var val = GetAtIndex (handle, i);
+					if (val == IntPtr.Zero || val == NSNull.NullHandle)
+						continue;
+					var dict = Runtime.GetNSObject<NSDictionary> (val);
+					if (dict is null)
+						continue;
+					ret [nextIndex++] = createObjectFromDictionary (dict);
+				}
+
+				if (nextIndex != count)
+					Array.Resize<T> (ref ret, (int) nextIndex);
+
+				return ret;
+			} finally {
+				if (releaseHandle)
+					NSObject.DangerousRelease (handle);
+			}
+		}
+
+		/// <summary>Creates a managed array from a pointer to a native NSArray of NSDictionary objects, dropping null and NSNull elements. Always returns a non-null array.</summary>
+		/// <typeparam name="T">The type of objects to create from the dictionaries.</typeparam>
+		/// <param name="handle">The pointer to the native NSArray instance containing NSDictionary objects.</param>
+		/// <param name="createObjectFromDictionary">A factory function that creates an instance of type T from an NSDictionary.</param>
+		/// <param name="releaseHandle">Whether the native NSArray instance should be released before returning or not. Defaults to false.</param>
+		/// <returns>A C# array with the values. Returns an empty array if the handle is zero. Null and NSNull elements are excluded from the result.</returns>
+		/// <remarks>
+		///   <para>This method is a wrapper around <see cref="DictionaryArrayFromHandleDropNullElements{T}"/> that guarantees a non-null return value. If the handle is zero or null, an empty array is returned instead of null.</para>
+		/// </remarks>
+		internal static T [] NonNullDictionaryArrayFromHandleDropNullElements<T> (NativeHandle handle, Func<NSDictionary, T> createObjectFromDictionary, bool releaseHandle = false)
+		{
+			var rv = DictionaryArrayFromHandleDropNullElements<T> (handle, createObjectFromDictionary, releaseHandle);
+			if (rv is null)
+				return Array.Empty<T> ();
+			return rv;
+		}
+#nullable disable
+
 		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
 		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
 		/// <param name="creator">Method that can create objects of type T from a given IntPtr.</param>
@@ -658,7 +730,7 @@ namespace Foundation {
 			// A native code could return NSArray with NSNull.Null elements
 			// and they should be valid for things like T : NSDate so we handle
 			// them as just null values inside the array
-			if (val == NSNull.Null.Handle)
+			if (val == NSNull.NullHandle)
 				return null;
 
 			return Runtime.GetINativeObject<T> (val, false);
@@ -670,7 +742,7 @@ namespace Foundation {
 			// A native code could return NSArray with NSNull.Null elements
 			// and they should be valid for things like T : NSDate so we handle
 			// them as just null values inside the array
-			if (val == NSNull.Null.Handle)
+			if (val == NSNull.NullHandle)
 				return null;
 
 			return Runtime.GetINativeObject (val, false, type);

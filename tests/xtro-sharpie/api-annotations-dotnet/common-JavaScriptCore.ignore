@@ -122,3 +122,6 @@
 !missing-pinvoke! JSValueToInt64 is not bound
 !missing-pinvoke! JSValueToUInt32 is not bound
 !missing-pinvoke! JSValueToUInt64 is not bound
+
+# updated sharpie results
+!missing-enum! JSTypedArrayType not bound

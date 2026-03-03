@@ -3,3 +3,4 @@
 !missing-selector! +ICCameraFile::fingerprintForFileAtURL: not bound
 !missing-selector! ICCameraFile::fingerprint not bound
 !missing-selector! ICCameraFile::requestFingerprintWithCompletion: not bound
+!missing-enum! ICReturnCodeOffset not bound

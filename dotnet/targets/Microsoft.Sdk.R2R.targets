@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeInstructionSet" AssemblyFile="$(_XamarinTaskAssembly)" />
+
 	<!-- Workaround until https://github.com/dotnet/sdk/pull/52480 is merged -->
 	<Target Name="_LinkReadyToRunMachO">
 		<Message Text="Skipped built-in dylib creation" />
@@ -12,6 +14,31 @@
 			<_ReadyToRunFilesToPublish Remove="@(_ReadyToRunFilesToPublish)" />
 			<_ReadyToRunFilesToPublish Include="@(_ReadyToRunFilesToPublishFixed)" />
 		</ItemGroup>
+	</Target>
+
+	<!--
+		Compute the instruction set for R2R/NAOT compilation based on the SupportedOSPlatformVersion and RuntimeIdentifier.
+		This target runs early in the build to set PublishReadyToRunCrossgen2ExtraArgs if needed.
+		Set ComputeInstructionSetForReadyToRun to false to opt out of this computation.
+	-->
+	<Target Name="_ComputeInstructionSetForCrossgen2"
+		Condition="'$(PublishReadyToRun)' == 'true' And '$(ComputeInstructionSetForReadyToRun)' != 'false'"
+		DependsOnTargets="_DetectSdkLocations"
+		BeforeTargets="ResolveReadyToRunCompilers">
+		<ComputeInstructionSet
+			RuntimeIdentifier="$(RuntimeIdentifier)"
+			SdkDevPath="$(_SdkDevPath)"
+			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
+			TargetFrameworkMoniker="$(TargetFramework)"
+			>
+			<Output TaskParameter="InstructionSet" PropertyName="_ComputedInstructionSet" />
+		</ComputeInstructionSet>
+
+		<PropertyGroup Condition="'$(_ComputedInstructionSet)' != ''">
+			<!-- Append the instruction set to the existing PublishReadyToRunCrossgen2ExtraArgs, but only if not already present -->
+			<PublishReadyToRunCrossgen2ExtraArgs Condition="'$(PublishReadyToRunCrossgen2ExtraArgs)' == ''">--instruction-set:$(_ComputedInstructionSet)</PublishReadyToRunCrossgen2ExtraArgs>
+			<PublishReadyToRunCrossgen2ExtraArgs Condition="'$(PublishReadyToRunCrossgen2ExtraArgs)' != '' And !$(PublishReadyToRunCrossgen2ExtraArgs.Contains('--instruction-set'))">$(PublishReadyToRunCrossgen2ExtraArgs) --instruction-set:$(_ComputedInstructionSet)</PublishReadyToRunCrossgen2ExtraArgs>
+		</PropertyGroup>
 	</Target>
 
 	<!-- Pluck R2R's object files from @(ResolvedFileToPublish) so that we can link them into a .dylib or .framework -->
@@ -76,6 +103,36 @@
 			<_UserAssemblies Include="@(_ResolvedAssembliesToPublish)" Exclude="@(_NonUserAssemblies)" />
 			<PublishReadyToRunExcludeTest Include="@(_UserAssemblies -> '%(Filename)')" />
 		</ItemGroup>
+
+		<!-- Hash the R2R input assemblies so we can detect when the set actually changes -->
+		<GetFileHash Files="@(_NonUserAssemblies)" Algorithm="SHA256">
+			<Output TaskParameter="Items" ItemName="_NonUserAssembliesWithHash" />
+		</GetFileHash>
+		<Hash ItemsToHash="@(_NonUserAssembliesWithHash->'%(FileHash)')" IgnoreCase="false">
+			<Output TaskParameter="HashResult" PropertyName="_R2RInputHash" />
+		</Hash>
+
+		<PropertyGroup>
+			<_R2RInputHashFile>$(IntermediateOutputPath)r2r-input.hash</_R2RInputHashFile>
+		</PropertyGroup>
+		<!-- Create trigger file before writing hash, so we can compare timestamps -->
+		<Touch Files="$(_R2RInputHashFile).trigger" AlwaysCreate="true" />
+
+		<WriteLinesToFile Lines="$(_R2RInputHash)" File="$(_R2RInputHashFile)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+
+		<ItemGroup>
+			<FileWrites Include="$(_R2RInputHashFile)" />
+			<FileWrites Include="$(_R2RInputHashFile).trigger" />
+		</ItemGroup>
+	</Target>
+
+	<!-- Touch R2R outputs when only user assemblies changed. If hash file is older than trigger, hash didn't change, so touch outputs to skip R2R -->
+	<Target Name="_TouchR2ROutputs"
+			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And Exists('$(_R2RInputHashFile)') And Exists('$(_R2RInputHashFile).trigger') And $([System.IO.File]::GetLastWriteTime('$(_R2RInputHashFile)').Ticks) &lt; $([System.IO.File]::GetLastWriteTime('$(_R2RInputHashFile).trigger').Ticks)"
+			AfterTargets="_PrepareForReadyToRunCompilation"
+			BeforeTargets="_CreateR2RImages">
+		<Touch Files="%(_ReadyToRunCompileList.OutputR2RImage)"
+			Condition="Exists('%(_ReadyToRunCompileList.OutputR2RImage)')" />
 	</Target>
 
 	<!--

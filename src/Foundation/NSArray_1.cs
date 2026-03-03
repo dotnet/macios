@@ -79,7 +79,7 @@ namespace Foundation {
 				var item = items [i];
 				// The analyzer cannot deal with arrays, we manually keep alive the whole array below
 #pragma warning disable RBI0014
-				IntPtr h = item is null ? NSNull.Null.Handle : item.Handle;
+				IntPtr h = item is null ? NSNull.NullHandle : item.Handle;
 				Marshal.WriteIntPtr (buf, (int) (i * IntPtr.Size), h);
 #pragma warning restore RBI0014
 			}

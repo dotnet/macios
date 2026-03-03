@@ -57,12 +57,6 @@ steps:
   env:
     IS_PR: and(eq(parameters.isPR, 'true'), not(startsWith(variables['Build.SourceBranch'], 'refs/pull')))
 
-- checkout: macios-adr
-  clean: true
-  fetchDepth: 0
-  persistCredentials: true
-  fetchTags: false
-
 - checkout: yaml-templates
   clean: true
   fetchTags: false

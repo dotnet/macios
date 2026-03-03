@@ -1,5 +1,3 @@
-using System;
-using Clang;
 using static Extrospection.Helpers;
 
 namespace Extrospection {

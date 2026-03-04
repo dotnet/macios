@@ -10927,7 +10927,6 @@ System.Private.CoreLib.dll:System.Threading.Thread.InitInternal(System.Threading
 System.Private.CoreLib.dll:System.Threading.Thread.OnThreadExiting(System.Threading.Thread)
 System.Private.CoreLib.dll:System.Threading.Thread.SpinWait_nop()
 System.Private.CoreLib.dll:System.Threading.Thread.SpinWait(System.Int32)
-System.Private.CoreLib.dll:System.Threading.Thread.ThrowIfSingleThreaded()
 System.Private.CoreLib.dll:System.Threading.Thread.UninterruptibleSleep0()
 System.Private.CoreLib.dll:System.Threading.Thread.Yield()
 System.Private.CoreLib.dll:System.Threading.Thread.YieldInternal()

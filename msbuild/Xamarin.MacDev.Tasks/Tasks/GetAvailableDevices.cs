@@ -10,6 +10,7 @@ using Microsoft.Build.Utilities;
 using Xamarin.Localization.MSBuild;
 using Xamarin.MacDev.Models;
 using Xamarin.Messaging.Build.Client;
+using Xamarin.Utils;
 
 namespace Xamarin.MacDev.Tasks;
 

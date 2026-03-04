@@ -1575,30 +1575,49 @@ xamarin_objc_type_size (const char *type)
 //#define DEBUG_REF_COUNTING
 
 static GCHandle
-get_strong_gchandle (id self)
+clear_strong_gchandle (id self)
 {
 	GCHandle rv = INVALID_GCHANDLE;
 	pthread_mutex_lock (&strong_gchandle_hash_lock);
 	if (strong_gchandle_hash != NULL) {
 		const void *value;
-		if (CFDictionaryGetValueIfPresent (strong_gchandle_hash, self, &value))
+		if (CFDictionaryGetValueIfPresent (strong_gchandle_hash, self, &value)) {
 			rv = (GCHandle) value;
+			CFDictionaryRemoveValue (strong_gchandle_hash, self);
+		}
 	}
 	pthread_mutex_unlock (&strong_gchandle_hash_lock);
+	if (rv != INVALID_GCHANDLE)
+		xamarin_gchandle_free (rv);
 	return rv;
 }
 
-static void
-set_strong_gchandle (id self, GCHandle gc_handle)
+// Creates a strong gchandle for the given managed object and associates it
+// with the native object. If a strong gchandle already exists for this
+// native object, the newly created one is freed and the existing one is kept.
+// Returns true if a new strong gchandle was set, false if one already existed.
+static bool
+set_strong_gchandle (id self, MonoObject *managed_object)
 {
+	GCHandle new_gchandle = xamarin_gchandle_new (managed_object, FALSE);
+
+	GCHandle existing = INVALID_GCHANDLE;
 	pthread_mutex_lock (&strong_gchandle_hash_lock);
 	if (strong_gchandle_hash == NULL)
 		strong_gchandle_hash = CFDictionaryCreateMutable (kCFAllocatorDefault, 0, NULL, NULL);
-	if (gc_handle == INVALID_GCHANDLE)
-		CFDictionaryRemoveValue (strong_gchandle_hash, self);
-	else
-		CFDictionarySetValue (strong_gchandle_hash, self, (const void *) gc_handle);
+	const void *value;
+	if (CFDictionaryGetValueIfPresent (strong_gchandle_hash, self, &value))
+		existing = (GCHandle) value;
+	if (existing == INVALID_GCHANDLE)
+		CFDictionarySetValue (strong_gchandle_hash, self, (const void *) new_gchandle);
 	pthread_mutex_unlock (&strong_gchandle_hash_lock);
+
+	if (existing != INVALID_GCHANDLE) {
+		// Another thread already set a strong gchandle, free ours.
+		xamarin_gchandle_free (new_gchandle);
+		return false;
+	}
+	return true;
 }
 
 void
@@ -1671,41 +1690,31 @@ xamarin_switch_gchandle (id self, bool to_weak)
 		// concurrent readers (fixing https://github.com/dotnet/macios/issues/24702).
 
 		if (to_weak) {
-			GCHandle strong = get_strong_gchandle (self);
+			GCHandle strong = clear_strong_gchandle (self);
 			if (strong == INVALID_GCHANDLE) {
 #if defined(DEBUG_REF_COUNTING)
 				PRINT ("Object %p is already in weak mode\n", self);
 #endif
 				return;
 			}
-			xamarin_gchandle_free (strong);
-			set_strong_gchandle (self, INVALID_GCHANDLE);
 #if defined(DEBUG_REF_COUNTING)
 			PRINT ("Object %p switched to weak mode (freed strong GCHandle = %d)\n", self, strong);
 #endif
 		} else {
-			GCHandle strong = get_strong_gchandle (self);
-			if (strong != INVALID_GCHANDLE) {
-#if defined(DEBUG_REF_COUNTING)
-				PRINT ("Object %p is already in strong mode (strong GCHandle = %d)\n", self, strong);
-#endif
-				return;
-			}
-
 			MONO_THREAD_ATTACH;
 
 			managed_object = xamarin_gchandle_get_target (old_gchandle);
 			if (managed_object) {
-				strong = xamarin_gchandle_new (managed_object, FALSE);
-				set_strong_gchandle (self, strong);
-				xamarin_set_nsobject_flags (managed_object, xamarin_get_nsobject_flags (managed_object) | NSObjectFlagsHasManagedRef);
+				if (set_strong_gchandle (self, managed_object)) {
+					xamarin_set_nsobject_flags (managed_object, xamarin_get_nsobject_flags (managed_object) | NSObjectFlagsHasManagedRef);
+				}
 			}
 
 			MONO_THREAD_DETACH;
 			xamarin_mono_object_release (&managed_object);
 
 #if defined(DEBUG_REF_COUNTING)
-			PRINT ("Object %p switched to strong mode (strong GCHandle = %d)\n", self, strong);
+			PRINT ("Object %p switched to strong mode\n", self);
 #endif
 		}
 	}
@@ -1728,14 +1737,13 @@ xamarin_free_gchandle (id self, GCHandle gchandle)
 	}
 
 	// Also free any strong gchandle from the dual-gchandle scheme.
-	GCHandle strong = get_strong_gchandle (self);
-	if (strong != INVALID_GCHANDLE) {
 #if defined(DEBUG_REF_COUNTING)
+	GCHandle strong = clear_strong_gchandle (self);
+	if (strong != INVALID_GCHANDLE)
 		PRINT ("\tStrong GCHandle %i destroyed for object %p\n", strong, self);
+#else
+	clear_strong_gchandle (self);
 #endif
-		xamarin_gchandle_free (strong);
-		set_strong_gchandle (self, INVALID_GCHANDLE);
-	}
 }
 
 void

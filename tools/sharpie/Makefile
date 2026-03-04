@@ -34,3 +34,6 @@ run-tests: $(Sharpie.Bind_dependencies)
 	$(Q_BUILD) $(DOTNET) test $(TOP)/tests/sharpie/Sharpie.Bind.Tests/Sharpie.Bind.Tests.csproj --logger "console;verbosity=detailed" $(DOTNET_BUILD_VERBOSITY) -bl:$@.binlog
 
 generated-files: $(abspath ../common/SdkVersions.cs) $(abspath ../common/ProductConstants.cs)
+
+show-version:
+	@echo "        Sharpie.Bind.Tool $(SHARPIE_BIND_TOOL_NUGET_VERSION)"

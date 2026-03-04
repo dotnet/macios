@@ -291,7 +291,6 @@
 !missing-null-allowed! 'AppKit.NSImage AppKit.NSSharingServiceDelegate::TransitionImageForShareItem(AppKit.NSSharingService,AppKit.INSPasteboardWriting,CoreGraphics.CGRect)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImage AppKit.NSTableView::GetIndicatorImage(AppKit.NSTableColumn)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImage AppKit.NSWorkspace::IconForFiles(System.String[])' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'AppKit.NSImage Foundation.NSBundle::ImageForResource(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImageRep AppKit.NSImage::BestRepresentation(CoreGraphics.CGRect,AppKit.NSGraphicsContext,Foundation.NSDictionary)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImageRep AppKit.NSImageRep::ImageRepFromFile(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'AppKit.NSImageRep AppKit.NSImageRep::ImageRepFromPasteboard(AppKit.NSPasteboard)' is missing an [NullAllowed] on return type
@@ -415,7 +414,6 @@
 !missing-null-allowed! 'Foundation.NSArray AppKit.NSWindow::WindowNumbersWithOptions(AppKit.NSWindowNumberListOptions)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSArray[] AppKit.NSFontManager::AvailableMembersOfFontFamily(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSAttributedString AppKit.NSHelpManager::Context(Foundation.NSObject)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSAttributedString Foundation.NSBundle::GetContextHelp(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSBundle AppKit.NSViewController::get_NibBundle()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSData AppKit.NSColorSpace::get_ICCProfileData()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSData AppKit.NSDocument::GetAsData(System.String,Foundation.NSError&)' is missing an [NullAllowed] on return type
@@ -513,7 +511,6 @@
 !missing-null-allowed! 'Foundation.NSUrl AppKit.NSWorkspace::DesktopImageUrl(AppKit.NSScreen)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSUrl AppKit.NSWorkspace::UrlForApplication(Foundation.NSUrl)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSUrl AppKit.NSWorkspace::UrlForApplication(System.String)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'Foundation.NSUrl Foundation.NSBundle::GetUrlForImageResource(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSUrl[] AppKit.NSDocumentController::UrlsFromRunningOpenPanel()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSUrl[] AppKit.NSSharingService::get_AttachmentFileUrls()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'ObjCRuntime.Class AppKit.NSDocumentController::DocumentClassForType(System.String)' is missing an [NullAllowed] on return type
@@ -609,8 +606,6 @@
 !missing-null-allowed! 'System.String AppKit.NSViewController::get_NibName()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSWindowController::get_WindowNibName()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String AppKit.NSWindowController::get_WindowNibPath()' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'System.String Foundation.NSBundle::PathForImageResource(System.String)' is missing an [NullAllowed] on return type
-!missing-null-allowed! 'System.String Foundation.NSBundle::PathForSoundResource(System.String)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String[] AppKit.NSFontManager::AvailableFontNamesWithTraits(AppKit.NSFontTraitMask)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String[] AppKit.NSPasteboard::get_Types()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.String[] AppKit.NSSpellChecker::CompletionsForPartialWordRange(Foundation.NSRange,System.String,System.String,System.IntPtr)' is missing an [NullAllowed] on return type

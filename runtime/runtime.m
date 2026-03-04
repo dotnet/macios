@@ -419,16 +419,6 @@ xamarin_get_nullable_type (MonoClass *cls, GCHandle *exception_gchandle)
 -(struct NSObjectData*) xamarinGetNSObjectData;
 @end
 
-static inline GCHandle
-get_gchandle_safe (id self, enum XamarinGCHandleFlags *gchandle_flags)
-{
-	id<XamarinExtendedObject> xself = self;
-	GCHandle rv = [xself xamarinGetGCHandle];
-	if (gchandle_flags)
-		*gchandle_flags = [xself xamarinGetGCHandleFlags];
-	return rv;
-}
-
 static inline bool
 set_gchandle (id self, GCHandle gc_handle, enum XamarinGCHandleFlags flags, struct NSObjectData *data)
 {
@@ -1625,9 +1615,8 @@ xamarin_switch_gchandle (id self, bool to_weak)
 {
 	GCHandle old_gchandle;
 	MonoObject *managed_object = NULL;
-	enum XamarinGCHandleFlags flags = XamarinGCHandleFlags_None;
 
-	old_gchandle = get_gchandle_safe (self, &flags);
+	old_gchandle = get_gchandle_without_flags (self);
 	if (!old_gchandle) {
 		// We don't have a GCHandle. This means there's no managed instance for this
 		// native object.
@@ -1643,80 +1632,38 @@ xamarin_switch_gchandle (id self, bool to_weak)
 		return;
 	}
 
-	bool gchandle_is_weak = (flags & XamarinGCHandleFlags_WeakGCHandle) == XamarinGCHandleFlags_WeakGCHandle;
+	// The object's gc_handle is always a weak handle used for lookups. It is
+	// never modified here. A separate strong gchandle (stored in a global hash
+	// table) is created/freed as needed to keep the managed object alive.
+	// Since gc_handle is never modified, there is no race with concurrent
+	// readers (fixing https://github.com/dotnet/macios/issues/24702).
 
-	if (!gchandle_is_weak) {
-		// The object's gc_handle is still the initial strong handle (before any switch).
-		// Convert to the dual-handle scheme: replace gc_handle with a permanent weak
-		// handle for lookups, and manage a separate strong handle for liveness.
-		// This one-time conversion is safe because it only happens during object
-		// initialization (from RegisterToggleReferenceCoreCLR), before there is
-		// concurrent access to this object.
-
-		if (!to_weak) {
-			// Already strong, nothing to do.
+	if (to_weak) {
 #if defined(DEBUG_REF_COUNTING)
-			PRINT ("Object %p already has a strong GCHandle = %d\n", self, old_gchandle);
+		GCHandle strong = clear_strong_gchandle (self);
+		if (strong == INVALID_GCHANDLE)
+			PRINT ("Object %p is already in weak mode\n", self);
+		else
+			PRINT ("Object %p switched to weak mode (freed strong GCHandle = %d)\n", self, strong);
+#else
+		clear_strong_gchandle (self);
 #endif
-			return;
-		}
-
+	} else {
 		MONO_THREAD_ATTACH;
 
 		managed_object = xamarin_gchandle_get_target (old_gchandle);
-
-		// Create the permanent weak handle for lookups.
-		GCHandle weak_gchandle = xamarin_gchandle_new_weakref (managed_object, TRUE);
-		flags = (enum XamarinGCHandleFlags) (flags | XamarinGCHandleFlags_WeakGCHandle);
-
-		// Switching to weak: free the old strong handle, no strong_gc_handle needed.
-		xamarin_gchandle_free (old_gchandle);
-
-		if (managed_object)
-			xamarin_set_nsobject_flags (managed_object, xamarin_get_nsobject_flags (managed_object) | NSObjectFlagsHasManagedRef);
-
-		set_gchandle (self, weak_gchandle, flags, NULL);
+		if (managed_object) {
+			if (set_strong_gchandle (self, managed_object)) {
+				xamarin_set_nsobject_flags (managed_object, xamarin_get_nsobject_flags (managed_object) | NSObjectFlagsHasManagedRef);
+			}
+		}
 
 		MONO_THREAD_DETACH;
 		xamarin_mono_object_release (&managed_object);
 
 #if defined(DEBUG_REF_COUNTING)
-		PRINT ("Converted object %p to dual-gchandle scheme (weak lookup GCHandle = %d)\n", self, weak_gchandle);
+		PRINT ("Object %p switched to strong mode\n", self);
 #endif
-	} else {
-		// gc_handle is already the permanent weak lookup handle.
-		// Only manage the separate strong_gc_handle for liveness.
-		// Since gc_handle is never modified here, there is no race with
-		// concurrent readers (fixing https://github.com/dotnet/macios/issues/24702).
-
-		if (to_weak) {
-			GCHandle strong = clear_strong_gchandle (self);
-			if (strong == INVALID_GCHANDLE) {
-#if defined(DEBUG_REF_COUNTING)
-				PRINT ("Object %p is already in weak mode\n", self);
-#endif
-				return;
-			}
-#if defined(DEBUG_REF_COUNTING)
-			PRINT ("Object %p switched to weak mode (freed strong GCHandle = %d)\n", self, strong);
-#endif
-		} else {
-			MONO_THREAD_ATTACH;
-
-			managed_object = xamarin_gchandle_get_target (old_gchandle);
-			if (managed_object) {
-				if (set_strong_gchandle (self, managed_object)) {
-					xamarin_set_nsobject_flags (managed_object, xamarin_get_nsobject_flags (managed_object) | NSObjectFlagsHasManagedRef);
-				}
-			}
-
-			MONO_THREAD_DETACH;
-			xamarin_mono_object_release (&managed_object);
-
-#if defined(DEBUG_REF_COUNTING)
-			PRINT ("Object %p switched to strong mode\n", self);
-#endif
-		}
 	}
 }
 

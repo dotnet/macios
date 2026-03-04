@@ -16,7 +16,6 @@ extern "C" {
 // Must be kept in sync with the same enum in NSObject2.cs
 enum XamarinGCHandleFlags : uint32_t {
 	XamarinGCHandleFlags_None = 0,
-	XamarinGCHandleFlags_WeakGCHandle = 1,
 	XamarinGCHandleFlags_HasManagedRef = 2,
 	XamarinGCHandleFlags_InitialSet = 4,
 };

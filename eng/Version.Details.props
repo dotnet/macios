@@ -18,13 +18,13 @@ This file should be imported by eng/Versions.props
     <MicrosoftTemplateEngineAuthoringTasksPackageVersion>11.0.100-preview.3.26124.102</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <!-- dotnet/macios dependencies -->
     <MicrosoftiOSSdknet100_260PackageVersion>26.0.11017</MicrosoftiOSSdknet100_260PackageVersion>
-    <MicrosoftiOSSdknet100_262PackageVersion>26.2.10219</MicrosoftiOSSdknet100_262PackageVersion>
+    <MicrosoftiOSSdknet100_262PackageVersion>26.2.10221</MicrosoftiOSSdknet100_262PackageVersion>
     <MicrosoftMacCatalystSdknet100_260PackageVersion>26.0.11017</MicrosoftMacCatalystSdknet100_260PackageVersion>
-    <MicrosoftMacCatalystSdknet100_262PackageVersion>26.2.10219</MicrosoftMacCatalystSdknet100_262PackageVersion>
+    <MicrosoftMacCatalystSdknet100_262PackageVersion>26.2.10221</MicrosoftMacCatalystSdknet100_262PackageVersion>
     <MicrosoftmacOSSdknet100_260PackageVersion>26.0.11017</MicrosoftmacOSSdknet100_260PackageVersion>
-    <MicrosoftmacOSSdknet100_262PackageVersion>26.2.10219</MicrosoftmacOSSdknet100_262PackageVersion>
+    <MicrosoftmacOSSdknet100_262PackageVersion>26.2.10221</MicrosoftmacOSSdknet100_262PackageVersion>
     <MicrosofttvOSSdknet100_260PackageVersion>26.0.11017</MicrosofttvOSSdknet100_260PackageVersion>
-    <MicrosofttvOSSdknet100_262PackageVersion>26.2.10219</MicrosofttvOSSdknet100_262PackageVersion>
+    <MicrosofttvOSSdknet100_262PackageVersion>26.2.10221</MicrosofttvOSSdknet100_262PackageVersion>
     <!-- dotnet/xharness dependencies -->
     <MicrosoftDotNetXHarnessiOSSharedPackageVersion>10.0.0-prerelease.25516.4</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
   </PropertyGroup>

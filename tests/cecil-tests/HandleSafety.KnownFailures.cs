@@ -149,7 +149,6 @@ namespace Cecil.Tests {
 			"ObjCRuntime.RegistrarHelper.INativeObject_managed_to_native (System.IntPtr, ObjCRuntime.INativeObject, ObjCRuntime.INativeObject, System.Boolean)",
 			"ObjCRuntime.Runtime.ConvertSmartEnumToNSString (System.IntPtr)",
 			"ObjCRuntime.Runtime.GetHandleForINativeObject (System.IntPtr)",
-			"ObjCRuntime.Runtime.RetainAndAutoreleaseHandle (ObjCRuntime.INativeObject)",
 			"ObjCRuntime.Runtime.RetainAndAutoreleaseNativeObject (ObjCRuntime.INativeObject)",
 			"ObjCRuntime.Runtime.RetainAndAutoreleaseNSObject (Foundation.NSObject)",
 			"ObjCRuntime.Runtime.RetainNativeObject (ObjCRuntime.INativeObject)",

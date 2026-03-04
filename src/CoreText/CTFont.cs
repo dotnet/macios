@@ -2953,7 +2953,7 @@ namespace CoreText {
 		{
 			if (attribute is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attribute));
-			var result = Runtime.GetNSObject (CTFontCopyAttribute (Handle, attribute.Handle));
+			var result = Runtime.GetNSObject (CTFontCopyAttribute (Handle, attribute.Handle), true);
 			GC.KeepAlive (attribute);
 			return result;
 		}

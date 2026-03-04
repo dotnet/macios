@@ -447,17 +447,21 @@ class ParallelTestsResults {
                         $resultLines = @("Test has no summary file.")
                     }
 
-                    if ($addSummary) {
-                        $stringBuilder.AppendLine("<summary>$($result.Failed) tests failed, $($result.Passed) tests passed.</summary>")
-                    }
                     if ($addDetails) {
                         $stringBuilder.AppendLine("<details>")
                     }
-                    if ($startLine -eq -1) {
-                        $startLine = 0
+                    if ($addSummary) {
+                        $stringBuilder.AppendLine("<summary>$($result.Failed) tests failed, $($result.Passed) tests passed.</summary>")
                     }
-                    for ($i = $startLine; $i -lt $resultLines.Length; $i++) {
-                        $stringBuilder.AppendLine($resultLines[$i])
+                    if ($startLine -eq -1) {
+                        # No <details>, <summary>, or ## Failed tests found in the file.
+                        # The file likely has the success format (e.g. "# :tada: All N tests passed :tada:"),
+                        # which would be misleading in a failure section. Show a job failure message instead.
+                        $stringBuilder.AppendLine("Test results reported success, but the tests job failed.")
+                    } else {
+                        for ($i = $startLine; $i -lt $resultLines.Length; $i++) {
+                            $stringBuilder.AppendLine($resultLines[$i])
+                        }
                     }
                     if ($addDetails) {
                         $stringBuilder.AppendLine("</details>")

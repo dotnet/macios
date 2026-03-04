@@ -85,6 +85,10 @@ public class Program {
 
 		var indexContents = new StringBuilder ();
 		var summaryContents = new StringBuilder ();
+		var allFailedTests = new List<(string TrxName, TrxParser.TrxTestResult Test)> ();
+		var failedTrxNames = new List<string> ();
+		var passedTrxCount = 0;
+		var failedTrxCount = 0;
 
 		indexContents.AppendLine ($"<!DOCTYPE html>");
 		indexContents.AppendLine ($"<html>");
@@ -123,9 +127,12 @@ public class Program {
 			var name = trx.Name;
 			var path = trx.TestResults;
 			var messageLines = new List<string> ();
+			var trxSucceeded = true;
 
-			if (TrxParser.TryParseTrxFile (path, out var failedTests, out var outcome, out allTestsSucceeded, out var ex)) {
+			if (TrxParser.TryParseTrxFile (path, out var failedTests, out var outcome, out trxSucceeded, out var ex)) {
 				if (failedTests?.Any () == true) {
+					foreach (var ft in failedTests)
+						allFailedTests.Add ((name, ft));
 					messageLines.Add ("        <ul>");
 					foreach (var ft in failedTests) {
 						var testName = ft.Name;
@@ -152,7 +159,15 @@ public class Program {
 				outcome = "Failed to parse test results";
 				if (ex is not null)
 					messageLines.Add ($"<div>{FormatHtml (ex.ToString ())}</div>");
+				trxSucceeded = false;
+			}
+
+			if (!trxSucceeded) {
 				allTestsSucceeded = false;
+				failedTrxNames.Add (name);
+				failedTrxCount++;
+			} else {
+				passedTrxCount++;
 			}
 
 			try {
@@ -194,7 +209,23 @@ public class Program {
 		if (allTestsSucceeded) {
 			summaryContents.AppendLine ($"# :tada: All {trxFiles.Length} tests passed :tada:");
 		} else {
-			summaryContents.AppendLine ($"# :tada: All {trxFiles.Length} tests passed :tada:");
+			summaryContents.AppendLine ("# Test results");
+			summaryContents.AppendLine ("<details>");
+			summaryContents.AppendLine ($"<summary>{failedTrxCount} tests failed, {passedTrxCount} tests passed.</summary>");
+			summaryContents.AppendLine ();
+			summaryContents.AppendLine ("## Failed tests");
+			summaryContents.AppendLine ();
+			if (allFailedTests.Any ()) {
+				foreach (var (trxName, test) in allFailedTests) {
+					var msg = string.IsNullOrEmpty (test.Message) ? "" : $": {test.Message.Split ('\n') [0]}";
+					summaryContents.AppendLine ($" * {trxName}/{test.Name}: {test.Outcome}{msg}");
+				}
+			} else {
+				foreach (var trxName in failedTrxNames) {
+					summaryContents.AppendLine ($" * {trxName}: Failed");
+				}
+			}
+			summaryContents.AppendLine ("</details>");
 		}
 
 		Directory.CreateDirectory (outputDirectory);

@@ -118,6 +118,15 @@ namespace MonoTouchFixtures.CoreGraphics {
 
 		[DllImport ("/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices")]
 		static extern int GetProcessForPID (int pid, out IntPtr psn);
+
+		[Test]
+		public void ToData ()
+		{
+			using var evt = new CGEvent (null, CGScrollEventUnit.Pixel, 0);
+			using var data = evt.ToData ();
+			Assert.NotNull (data, "data");
+			Assert.That (data.Length, Is.GreaterThan ((nuint) 0), "Length");
+		}
 #endif // __MACOS__ || __MACCATALYST__
 	}
 }

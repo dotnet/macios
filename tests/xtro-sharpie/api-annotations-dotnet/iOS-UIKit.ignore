@@ -146,7 +146,6 @@
 !extra-null-allowed! 'UIKit.UIView UIKit.UIScreen::SnapshotView(System.Boolean)' has a extraneous [NullAllowed] on return type
 
 # Initial result from new rule missing-null-allowed
-!missing-null-allowed! 'Foundation.NSArray Foundation.NSBundle::LoadNib(System.String,Foundation.NSObject,Foundation.NSDictionary)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSAttributedString UIKit.UIPickerViewDelegate::GetAttributedTitle(UIKit.UIPickerView,System.IntPtr,System.IntPtr)' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'Foundation.NSProgress UIKit.UIDocument::get_Progress()' is missing an [NullAllowed] on return type
 !missing-null-allowed! 'System.Boolean UIKit.UIManagedDocument::ConfigurePersistentStoreCoordinator(Foundation.NSUrl,System.String,System.String,Foundation.NSDictionary,Foundation.NSError)' is missing an [NullAllowed] on parameter #2

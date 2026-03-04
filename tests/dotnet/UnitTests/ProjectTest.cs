@@ -3130,6 +3130,8 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftos.dylib",
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftsimd.dylib",
+			"/usr/lib/swift/libswiftSpatial.dylib",
 			"/usr/lib/swift/libswiftUIKit.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
@@ -3257,8 +3259,11 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftos.dylib",
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftsimd.dylib",
+			"/usr/lib/swift/libswiftSpatial.dylib",
 			"/usr/lib/swift/libswiftUIKit.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
+			"/usr/lib/swift/libswiftXPC.dylib",
 		];
 
 		static string [] expectedFrameworks_tvOS_Full = [
@@ -3441,6 +3446,7 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
 			"/usr/lib/swift/libswiftsimd.dylib",
+			"/usr/lib/swift/libswiftSpatial.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
 		];
@@ -3633,6 +3639,8 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftos.dylib",
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftsimd.dylib",
+			"/usr/lib/swift/libswiftSpatial.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
 		];

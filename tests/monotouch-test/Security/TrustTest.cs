@@ -327,6 +327,8 @@ namespace MonoTouchFixtures.Security {
 			trust.SetVerifyDate (new DateTime (2025, 10, 1, 0, 0, 0, DateTimeKind.Utc));
 
 			SecTrustResult trust_result = SecTrustResult.Unspecified;
+			if (TestRuntime.CheckSystemVersion (TestRuntime.CurrentPlatform, 26, 4))
+				trust_result = SecTrustResult.RecoverableTrustFailure;
 			var result = Evaluate (trust, out var trustError, true);
 			Assert.That (result, Is.EqualTo (trust_result), $"Evaluate: {trustError}");
 
@@ -355,8 +357,13 @@ namespace MonoTouchFixtures.Security {
 			// since we modified the `trust` instance it's result was invalidated (marked as unspecified on iOS 11)
 			Assert.That (trust.GetTrustResult (), Is.EqualTo (SecTrustResult.Unspecified), "GetTrustResult-2");
 
-			Assert.True (trust.Evaluate (out var error), $"Evaluate: {error}");
-			Assert.Null (error, "error");
+			if (trust_result == SecTrustResult.Unspecified) {
+				Assert.True (trust.Evaluate (out var error), $"Evaluate: {error}");
+				Assert.Null (error, "error");
+			} else {
+				Assert.False (trust.Evaluate (out var error), $"Evaluate: {error}");
+				Assert.NotNull (error, "error");
+			}
 		}
 
 		[Test]

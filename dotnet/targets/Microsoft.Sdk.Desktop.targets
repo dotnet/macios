@@ -16,7 +16,7 @@
 			<_OpenArgumentsPre Condition="'$(OpenNewInstance)' == 'true'">-n </_OpenArgumentsPre>
 			<_OpenArgumentsPre Condition="'$(OpenWaitForExit)' == 'true'">$(_OpenArgumentsPre) -W </_OpenArgumentsPre>
 			<_OpenRunEnvironment>$(RunEnvironment)</_OpenRunEnvironment>
-			<_OpenRunEnvironment>$(_OpenRunEnvironment) @(RuntimeEnvironmentVariable->'--env "%(Identity)=%(Value)"')</_OpenRunEnvironment>
+			<_OpenRunEnvironment>$(_OpenRunEnvironment) @(RuntimeEnvironmentVariable->'--env "%(Identity)=%(Value)"', ' ')</_OpenRunEnvironment>
 			<_OpenArguments>$(_OpenArguments) $(_OpenRunEnvironment)</_OpenArguments>
 			<RunCommand>open</RunCommand>
 			<RunArguments>$(_OpenArgumentsPre) -a "$(TargetDir)/$(_AppBundleName).app" $(OpenArguments) $(_OpenArguments) --args</RunArguments>

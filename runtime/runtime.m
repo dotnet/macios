@@ -90,6 +90,13 @@ xamarin_extension_main_callback xamarin_extension_main = NULL;
 static pthread_mutex_t framework_peer_release_lock;
 static MonoGHashTable *xamarin_wrapper_hash;
 
+// Hash table mapping native object pointers (id) to strong GCHandles.
+// Used by the dual-gchandle scheme: the object's gc_handle is always a weak
+// handle used for lookups, while this table holds an optional strong handle
+// that keeps the managed object alive. See xamarin_switch_gchandle.
+static CFMutableDictionaryRef strong_gchandle_hash = NULL;
+static pthread_mutex_t strong_gchandle_hash_lock = PTHREAD_MUTEX_INITIALIZER;
+
 static bool initialize_started = FALSE;
 
 #include "delegates.inc"
@@ -1567,26 +1574,43 @@ xamarin_objc_type_size (const char *type)
  */
 //#define DEBUG_REF_COUNTING
 
+static GCHandle
+get_strong_gchandle (id self)
+{
+	GCHandle rv = INVALID_GCHANDLE;
+	pthread_mutex_lock (&strong_gchandle_hash_lock);
+	if (strong_gchandle_hash != NULL) {
+		const void *value;
+		if (CFDictionaryGetValueIfPresent (strong_gchandle_hash, self, &value))
+			rv = (GCHandle) value;
+	}
+	pthread_mutex_unlock (&strong_gchandle_hash_lock);
+	return rv;
+}
+
+static void
+set_strong_gchandle (id self, GCHandle gc_handle)
+{
+	pthread_mutex_lock (&strong_gchandle_hash_lock);
+	if (strong_gchandle_hash == NULL)
+		strong_gchandle_hash = CFDictionaryCreateMutable (kCFAllocatorDefault, 0, NULL, NULL);
+	if (gc_handle == INVALID_GCHANDLE)
+		CFDictionaryRemoveValue (strong_gchandle_hash, self);
+	else
+		CFDictionarySetValue (strong_gchandle_hash, self, (const void *) gc_handle);
+	pthread_mutex_unlock (&strong_gchandle_hash_lock);
+}
+
 void
 xamarin_switch_gchandle (id self, bool to_weak)
 {
-	GCHandle new_gchandle;
 	GCHandle old_gchandle;
-	MonoObject *managed_object;
+	MonoObject *managed_object = NULL;
 	enum XamarinGCHandleFlags flags = XamarinGCHandleFlags_None;
 
 	old_gchandle = get_gchandle_safe (self, &flags);
-	if (old_gchandle) {
-		bool is_weak = (flags & XamarinGCHandleFlags_WeakGCHandle) == XamarinGCHandleFlags_WeakGCHandle;
-		if (to_weak == is_weak) {
-			// we already have the GCHandle we need
-#if defined(DEBUG_REF_COUNTING)
-			PRINT ("Object %p already has a %s GCHandle = %d\n", self, to_weak ? "weak" : "strong", old_gchandle);
-#endif
-			return;
-		}
-	} else {
-		// We don't have a GCHandle. This means there's no managed instance for this 
+	if (!old_gchandle) {
+		// We don't have a GCHandle. This means there's no managed instance for this
 		// native object.
 		// If to_weak is true, then there's obviously nothing to do
 		// (why create a managed object which can immediately be freed by the GC?).
@@ -1600,40 +1624,91 @@ xamarin_switch_gchandle (id self, bool to_weak)
 		return;
 	}
 
-	MONO_THREAD_ATTACH;
+	bool gchandle_is_weak = (flags & XamarinGCHandleFlags_WeakGCHandle) == XamarinGCHandleFlags_WeakGCHandle;
 
-	managed_object = xamarin_gchandle_get_target (old_gchandle);
+	if (!gchandle_is_weak) {
+		// The object's gc_handle is still the initial strong handle (before any switch).
+		// Convert to the dual-handle scheme: replace gc_handle with a permanent weak
+		// handle for lookups, and manage a separate strong handle for liveness.
+		// This one-time conversion is safe because it only happens during object
+		// initialization (from RegisterToggleReferenceCoreCLR), before there is
+		// concurrent access to this object.
 
-	if (to_weak) {
-		new_gchandle = xamarin_gchandle_new_weakref (managed_object, TRUE);
+		if (!to_weak) {
+			// Already strong, nothing to do.
+#if defined(DEBUG_REF_COUNTING)
+			PRINT ("Object %p already has a strong GCHandle = %d\n", self, old_gchandle);
+#endif
+			return;
+		}
+
+		MONO_THREAD_ATTACH;
+
+		managed_object = xamarin_gchandle_get_target (old_gchandle);
+
+		// Create the permanent weak handle for lookups.
+		GCHandle weak_gchandle = xamarin_gchandle_new_weakref (managed_object, TRUE);
 		flags = (enum XamarinGCHandleFlags) (flags | XamarinGCHandleFlags_WeakGCHandle);
-	} else {
-		new_gchandle = xamarin_gchandle_new (managed_object, FALSE);
-		flags = (enum XamarinGCHandleFlags) (flags & ~XamarinGCHandleFlags_WeakGCHandle);
-	}
 
-	xamarin_gchandle_free (old_gchandle);
-	
-	if (managed_object) {
-		// It's possible to not have a managed object if:
-		// 1. Objective-C holds a weak reference to the native object (and no other strong references)
-		//    - in which case the original (old) gchandle would be a weak one.
-		// 2. Managed code does not reference the managed object.
-		// 3. The GC ran and collected the managed object, but the main thread has not gotten
-		//    around to release the native object yet.
-		// If all these conditions hold, then the original gchandle will point to
-		// null, because the target would be collected.
-		xamarin_set_nsobject_flags (managed_object, xamarin_get_nsobject_flags (managed_object) | NSObjectFlagsHasManagedRef);
-	}
-	set_gchandle (self, new_gchandle, flags, NULL);
+		// Switching to weak: free the old strong handle, no strong_gc_handle needed.
+		xamarin_gchandle_free (old_gchandle);
 
-	MONO_THREAD_DETACH;
+		if (managed_object)
+			xamarin_set_nsobject_flags (managed_object, xamarin_get_nsobject_flags (managed_object) | NSObjectFlagsHasManagedRef);
 
-	xamarin_mono_object_release (&managed_object);
+		set_gchandle (self, weak_gchandle, flags, NULL);
+
+		MONO_THREAD_DETACH;
+		xamarin_mono_object_release (&managed_object);
 
 #if defined(DEBUG_REF_COUNTING)
-	PRINT ("Switched object %p to %s GCHandle = %d managed object = %p\n", self, to_weak ? "weak" : "strong", new_gchandle, managed_object);
+		PRINT ("Converted object %p to dual-gchandle scheme (weak lookup GCHandle = %d)\n", self, weak_gchandle);
 #endif
+	} else {
+		// gc_handle is already the permanent weak lookup handle.
+		// Only manage the separate strong_gc_handle for liveness.
+		// Since gc_handle is never modified here, there is no race with
+		// concurrent readers (fixing https://github.com/dotnet/macios/issues/24702).
+
+		if (to_weak) {
+			GCHandle strong = get_strong_gchandle (self);
+			if (strong == INVALID_GCHANDLE) {
+#if defined(DEBUG_REF_COUNTING)
+				PRINT ("Object %p is already in weak mode\n", self);
+#endif
+				return;
+			}
+			xamarin_gchandle_free (strong);
+			set_strong_gchandle (self, INVALID_GCHANDLE);
+#if defined(DEBUG_REF_COUNTING)
+			PRINT ("Object %p switched to weak mode (freed strong GCHandle = %d)\n", self, strong);
+#endif
+		} else {
+			GCHandle strong = get_strong_gchandle (self);
+			if (strong != INVALID_GCHANDLE) {
+#if defined(DEBUG_REF_COUNTING)
+				PRINT ("Object %p is already in strong mode (strong GCHandle = %d)\n", self, strong);
+#endif
+				return;
+			}
+
+			MONO_THREAD_ATTACH;
+
+			managed_object = xamarin_gchandle_get_target (old_gchandle);
+			if (managed_object) {
+				strong = xamarin_gchandle_new (managed_object, FALSE);
+				set_strong_gchandle (self, strong);
+				xamarin_set_nsobject_flags (managed_object, xamarin_get_nsobject_flags (managed_object) | NSObjectFlagsHasManagedRef);
+			}
+
+			MONO_THREAD_DETACH;
+			xamarin_mono_object_release (&managed_object);
+
+#if defined(DEBUG_REF_COUNTING)
+			PRINT ("Object %p switched to strong mode (strong GCHandle = %d)\n", self, strong);
+#endif
+		}
+	}
 }
 
 void
@@ -1650,6 +1725,16 @@ xamarin_free_gchandle (id self, GCHandle gchandle)
 #if defined(DEBUG_REF_COUNTING)
 		PRINT ("\tNo GCHandle for the object %p\n", self);
 #endif
+	}
+
+	// Also free any strong gchandle from the dual-gchandle scheme.
+	GCHandle strong = get_strong_gchandle (self);
+	if (strong != INVALID_GCHANDLE) {
+#if defined(DEBUG_REF_COUNTING)
+		PRINT ("\tStrong GCHandle %i destroyed for object %p\n", strong, self);
+#endif
+		xamarin_gchandle_free (strong);
+		set_strong_gchandle (self, INVALID_GCHANDLE);
 	}
 }
 
@@ -1952,6 +2037,13 @@ xamarin_release_static_dictionaries ()
 	xamarin_mono_object_release (&xamarin_wrapper_hash);
 	pthread_mutex_unlock (&wrapper_hash_lock);
 #endif
+
+	pthread_mutex_lock (&strong_gchandle_hash_lock);
+	if (strong_gchandle_hash != NULL) {
+		CFRelease (strong_gchandle_hash);
+		strong_gchandle_hash = NULL;
+	}
+	pthread_mutex_unlock (&strong_gchandle_hash_lock);
 }
 
 void

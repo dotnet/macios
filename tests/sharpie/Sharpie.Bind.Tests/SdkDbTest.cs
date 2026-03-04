@@ -19,7 +19,6 @@ public class SdkDbTest {
 			};
 
 			var macOSExclude = new string [] {
-				//"AccessorySetupKit", // not available on macOS, causes SHARPIE0014: The framework 'AccessorySetupKit' was specified in the excluded frameworks list but was not found in the SDK
 				"DriverKit", // must be compiled as C++?
 				"Tk", // depends on X11 headers, which don't exist anymore
 			};

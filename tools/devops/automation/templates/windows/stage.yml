@@ -62,7 +62,7 @@ stages:
       - agent.os -equals Darwin
       - SSH.Enabled -equals True
       - macOS.Architecture -equals arm64
-      - macOS.Name -equals Sequoia
+      - macOS.Name -equals Tahoe
 
     steps:
     - template: reserve-mac.yml

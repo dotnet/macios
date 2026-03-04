@@ -719,7 +719,7 @@ namespace Foundation {
 			var rv = ArrayFromHandle<T> (handle, createObject, nsNullElementBehavior, releaseHandle);
 			if (rv is null)
 				return Array.Empty<T> ();
-			return rv;
+			return rv!;
 		}
 
 #nullable disable

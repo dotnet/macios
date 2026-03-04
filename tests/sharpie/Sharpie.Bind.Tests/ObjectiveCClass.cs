@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Xamarin;
+using Xamarin.Tests;
 using Xamarin.Utils;
 
 namespace Sharpie.Bind.Tests;
@@ -24,6 +25,7 @@ public class Tests {
 		File.WriteAllText (tmpfile, code);
 		binder.SourceFile = tmpfile;
 		binder.OutputDirectory = tmpdir;
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		var bindings = binder.BindInOrOut ();
@@ -48,6 +50,7 @@ public class Tests {
 		binder.SplitDocuments = false;
 		binder.SourceFile = tmpfile;
 		binder.OutputDirectory = tmpdir;
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		var bindings = binder.BindInOrOut ();
@@ -86,6 +89,7 @@ interface MyClass {
 		binder.SplitDocuments = false;
 		binder.SourceFramework = frameworkDir;
 		binder.OutputDirectory = tmpdir;
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		var bindings = binder.BindInOrOut ();
@@ -127,6 +131,7 @@ namespace MyFramework {
 		binder.SplitDocuments = false;
 		binder.SourceFramework = frameworkDir;
 		binder.OutputDirectory = tmpdir;
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		var bindings = binder.BindInOrOut ();
@@ -169,6 +174,7 @@ namespace CustomKit {
 		binder.SourceFramework = frameworkDir;
 		binder.Namespace = "CustomNamespace";
 		binder.OutputDirectory = tmpdir;
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		var bindings = binder.BindInOrOut ();
@@ -202,6 +208,7 @@ namespace CustomNamespace {
 		binder.SourceFile = tmpfile;
 		binder.SourceFramework = frameworkDir;
 		binder.OutputDirectory = tmpdir;
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		var bindings = binder.BindInOrOut ();
@@ -217,6 +224,7 @@ namespace CustomNamespace {
 		var frameworkDir = Path.Combine (tmpdir, "NonExistent.framework");
 		binder.SourceFramework = frameworkDir;
 		binder.OutputDirectory = tmpdir;
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		var bindings = binder.BindInOrOut ();
@@ -233,6 +241,7 @@ namespace CustomNamespace {
 		Directory.CreateDirectory (frameworkDir);
 		binder.SourceFramework = frameworkDir;
 		binder.OutputDirectory = tmpdir;
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		var bindings = binder.BindInOrOut ();
@@ -274,6 +283,7 @@ namespace CustomNamespace {
 		binder.SplitDocuments = false;
 		binder.SourceFramework = frameworkDir;
 		binder.OutputDirectory = tmpdir;
+		Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.MacOSX);
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (ApplePlatform.MacOSX);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		// Don't set binder.Sdk - it should be read from the Info.plist
@@ -328,6 +338,7 @@ namespace MyFramework {
 		binder.SplitDocuments = false;
 		binder.SourceFramework = frameworkDir;
 		binder.OutputDirectory = tmpdir;
+		Configuration.IgnoreIfIgnoredPlatform (ApplePlatform.MacOSX);
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (ApplePlatform.MacOSX);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		var bindings = binder.BindInOrOut ();
@@ -368,6 +379,7 @@ namespace MyFramework {
 		binder.SplitDocuments = false;
 		binder.SourceFramework = frameworkDir;
 		binder.OutputDirectory = tmpdir;
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		// Do NOT manually set ClangArguments with -F — it should be auto-added.
@@ -410,6 +422,7 @@ namespace ModKit {
 		File.WriteAllText (tmpfile, code);
 		binder.SourceFile = tmpfile;
 		binder.OutputDirectory = tmpdir;
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
 		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
 		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
 		var bindings = binder.BindInOrOut ();

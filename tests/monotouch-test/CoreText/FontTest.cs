@@ -153,6 +153,16 @@ namespace MonoTouchFixtures.CoreText {
 			Assert.AreEqual (0, provider.Count, "#Count");
 		}
 
+		[Test]
+		public void GetAttribute ()
+		{
+			using (var font = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default)) {
+				using (var name = font.GetAttribute (CTFontDescriptorAttributeKey.Name)) {
+					Assert.NotNull (name, "Name");
+				}
+			}
+		}
+
 		class AdaptiveImageProvider : NSObject, ICTAdaptiveImageProviding {
 			public int Count;
 			public CGImage? GetImage (CGSize proposedSize, nfloat scaleFactor, out CGPoint imageOffset, out CGSize imageSize)

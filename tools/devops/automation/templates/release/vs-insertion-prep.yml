@@ -79,6 +79,7 @@ stages:
       use1ESTemplate: true
       yamlResourceName: yaml-templates
       dependsOn: signing
+      condition: ne(stageDependencies.configure_build.configure.outputs['configure_platforms.DOTNET_PLATFORMS'], '')
       artifactName: '${{ parameters.uploadPrefix }}nuget-signed'
       propsArtifactName: ${{ parameters.uploadPrefix }}not-signed-package
       binlogsArtifactName: ${{ parameters.uploadPrefix }}nuget-msi-convert-binlogs
@@ -119,12 +120,15 @@ stages:
           ),
           or(
             eq(dependencies.nuget_convert.result, 'Succeeded'), 
-            eq(dependencies.nuget_convert.result, 'SucceededWithIssues')
+            eq(dependencies.nuget_convert.result, 'SucceededWithIssues'),
+            eq(dependencies.nuget_convert.result, 'Skipped')
           )
         )
       variables:
       - name: skipNugetSecurityAnalysis
         value: true
+      - name: DOTNET_PLATFORMS
+        value: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.DOTNET_PLATFORMS'] ]
       - name: INCLUDE_DOTNET_IOS
         value: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.INCLUDE_DOTNET_IOS'] ]
       - name: INCLUDE_DOTNET_MACCATALYST
@@ -160,17 +164,25 @@ stages:
           artifactName: not-signed-package-symbols
           downloadPath: $(Build.StagingDirectory)\symbols
 
+      - powershell: |
+          $buildNumber = "$(Build.BuildNumber)"
+          Write-Host "##vso[task.setvariable variable=ReleaseDropPrefix]$buildNumber"
+        displayName: Set fallback ReleaseDropPrefix
+        condition: and(succeeded(), eq(variables['DOTNET_PLATFORMS'], ''))
+
       - task: DownloadPipelineArtifact@2
         inputs:
           artifactName: DropMetadata-shipping-nugets
           downloadPath: $(Build.StagingDirectory)\metadata
         displayName: Download nugets drop metadata
+        condition: and(succeeded(), ne(variables['DOTNET_PLATFORMS'], ''))
 
       - powershell: |
           $jsonContent = Get-Content -Path "$(Build.StagingDirectory)\metadata\VSTSDrop.json" -Raw | ConvertFrom-Json
           $dropPrefix = $jsonContent.VstsDropBuildArtifact.VstsDropUrl -replace 'https://devdiv.artifacts.visualstudio.com/DefaultCollection/_apis/drop/drops/' -replace '/nugets'
           Write-Host "##vso[task.setvariable variable=ReleaseDropPrefix]$dropPrefix"
         displayName: Set variable ReleaseDropPrefix
+        condition: and(succeeded(), ne(variables['DOTNET_PLATFORMS'], ''))
 
       # Download nugets drop created by nuget-msi-convert/job/v4.yml and publish to maestro
       - task: ms-vscs-artifact.build-tasks.artifactDropDownloadTask-1.artifactDropDownloadTask@1
@@ -179,6 +191,15 @@ stages:
           dropServiceURI: https://devdiv.artifacts.visualstudio.com/DefaultCollection
           buildNumber: $(ReleaseDropPrefix)/nugets
           destinationPath: $(Build.StagingDirectory)\nuget-signed
+        condition: and(succeeded(), ne(variables['DOTNET_PLATFORMS'], ''))
+
+      # Download signed nugets from pipeline artifact when nuget-msi-convert was skipped
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifactName: '${{ parameters.uploadPrefix }}nuget-signed'
+          downloadPath: $(Build.StagingDirectory)\nuget-signed
+        displayName: Download signed nugets from pipeline artifact
+        condition: and(succeeded(), eq(variables['DOTNET_PLATFORMS'], ''))
 
       - script: make -C $(Build.SourcesDirectory)/dotnet setup-publish-bar-manifest
         displayName: make setup-publish-bar-manifest
@@ -194,6 +215,9 @@ stages:
                   exit 0;
               }
           }
+          # Fallback to iOS when no platforms are configured (e.g. ONLY_SHARPIE)
+          Write-Host "No platform variable was set, defaulting MaestroProjectPlatformName to 'iOS'"
+          Write-Host "##vso[task.setvariable variable=MaestroProjectPlatformName]iOS"
         displayName: Set maestro project variable
 
       - task: AzureCLI@2

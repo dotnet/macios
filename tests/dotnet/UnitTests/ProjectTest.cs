@@ -3886,7 +3886,7 @@ namespace Xamarin.Tests {
 				dotnetRunEnvironment ["VARIABLE"] = "VALUE";
 				dotnetRunEnvironment ["TEST_FILENAME"] = tmpfile;
 			}
-			DotNet.AssertRun (project_path, properties);
+			DotNet.AssertRun (project_path, properties, environmentVariables: dotnetRunEnvironment);
 
 			Assert.Multiple (() => {
 				var envContents = File.ReadAllText (tmpfile);

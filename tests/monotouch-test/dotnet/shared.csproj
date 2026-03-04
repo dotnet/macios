@@ -56,6 +56,7 @@
 
   <ItemGroup>
     <ReferenceNativeSymbol Include="Inexistent" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
+    <ReferenceNativeSymbol Include="inexistent_symbol" SymbolType="Field" SymbolMode="Ignore" />
     <ReferenceNativeSymbol Include="x_native_field" SymbolType="Field" />
   </ItemGroup>
 

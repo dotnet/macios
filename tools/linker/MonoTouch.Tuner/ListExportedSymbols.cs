@@ -211,7 +211,7 @@ namespace Xamarin.Linker.Steps {
 				}
 			}
 
-			if (method.IsPropertyMethod ()) {
+			if (method.IsPropertyMethod () && !Configuration.InlineDlfcnMethodsEnabled) {
 				var property = method.GetProperty ();
 				// The Field attribute may have been linked away, but we've stored it in an annotation.
 				if (property is not null && Annotations.GetCustomAnnotations ("ExportedFields").TryGetValue (property, out var symbol) && symbol is string symbolStr) {

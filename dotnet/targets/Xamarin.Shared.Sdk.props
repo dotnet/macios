@@ -101,6 +101,12 @@
 		<AccelerateBuildsInVisualStudio Condition="'$(AccelerateBuildsInVisualStudio)' == ''">false</AccelerateBuildsInVisualStudio>
 	</PropertyGroup>
 
+	<!-- Set default value for InlineDlfcnMethods based on .NET version and NativeAOT -->
+	<PropertyGroup Condition="'$(InlineDlfcnMethods)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">
+		<InlineDlfcnMethods Condition="'$(_UseNativeAot)' == 'true'">strict</InlineDlfcnMethods>
+		<InlineDlfcnMethods Condition="'$(InlineDlfcnMethods)' == ''">compatibility</InlineDlfcnMethods>
+	</PropertyGroup>
+
 	<!-- Set the default RuntimeIdentifier if not already specified. -->
 	<PropertyGroup Condition="'$(_RuntimeIdentifierIsRequired)' == 'true' And '$(RuntimeIdentifier)' == '' And '$(RuntimeIdentifiers)' == '' ">
 		<!-- The _<platform>RuntimeIdentifier values are set from the IDE -->

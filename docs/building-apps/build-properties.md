@@ -559,6 +559,36 @@ See also:
 * The [AlternateAppIcon](build-items.md#alternateappicon) item group.
 * The [AppIcon](#appicon) property.
 
+## InlineDlfcnMethods
+
+Controls whether the build system replaces runtime calls to `ObjCRuntime.Dlfcn` methods with direct native symbol lookups at build time, eliminating the overhead of `dlsym` at runtime.
+
+The valid options are:
+
+* `compatibility`: Only inlines symbol usages backed by `[Field]` attributes. This is more conservative and avoids link errors for symbols that don't exist at build time.
+* `strict`: Inlines dlfcn method calls and creates native references for all symbols. This is more aggressive and may cause link errors if referenced native symbols don't exist.
+* (empty): Disables inlining of dlfcn method calls.
+
+Default value:
+* .NET 11+: `strict` when using NativeAOT (`PublishAot=true`), `compatibility` otherwise.
+* .NET 10 and earlier: not set (disabled).
+
+Example:
+
+```xml
+<PropertyGroup>
+    <InlineDlfcnMethods>compatibility</InlineDlfcnMethods>
+</PropertyGroup>
+```
+
+Custom behavior for specific symbols can be set using the [ReferenceNativeSymbol](build-items.md#referencenativesymbols) item group:
+
+```xml
+<ItemGroup>
+    <ReferenceNativeSymbol SymbolMode="Ignore" SymbolType="Field" Include="InexistentSymbol" />
+</ItemGroup>
+```
+
 ## iOSMinimumVersion
 
 Specifies the minimum iOS version the app can run on.

@@ -18,6 +18,9 @@
 	</PropertyGroup>
 
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CompileNativeCode" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectPostILTrimInformation" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectUnresolvedNativeSymbols" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeNativeAOTSurvivingNativeSymbols" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FindAotCompiler" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetFullPaths" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.InstallNameTool" AssemblyFile="$(_TaskAssemblyName)" />
@@ -25,6 +28,7 @@
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MergeAppBundles" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MobileILStrip" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MacDevMessage" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PostTrimmingProcessing" AssemblyFile="$(_TaskAssemblyName)" />
 
 	<!-- Project types and how do we distinguish between them
 
@@ -638,7 +642,9 @@
 				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=Overwrite=%(Overwrite)|%(Identity)=%(Value)')
 				@(_XamarinFrameworkAssemblies -> 'FrameworkAssembly=%(Filename)')
 				Interpreter=$(MtouchInterpreter)
+				InlineDlfcnMethods=$(InlineDlfcnMethods)
 				IntermediateLinkDir=$(IntermediateLinkDir)
+				IntermediateOutputPath=$(DeviceSpecificIntermediateOutputPath)
 				InvariantGlobalization=$(InvariantGlobalization)
 				HybridGlobalization=$(HybridGlobalization)
 				ItemsDirectory=$(_LinkerItemsDirectory)
@@ -785,6 +791,7 @@
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.ApplyPreserveAttributeStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseLinkDescriptionForApplyPreserveAttribute)' == 'true'" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.MarkForStaticRegistrarStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForMarkStaticRegistrar)' == 'true'" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.MarkNSObjectsStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForMarkNSObjects)' == 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.InlineDlfcnMethodsStep" Condition="'$(InlineDlfcnMethods)' != ''" />
 			<!-- The final decision to remove/keep the dynamic registrar must be done before the linking step -->
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="MonoTouch.Tuner.RegistrarRemovalTrackingStep" />
 			<!-- TODO: these steps should probably run after mark. -->
@@ -1670,6 +1677,87 @@
 		</ItemGroup>
 	</Target>
 
+	<Target Name="_ComputeTrimmedAssemblies"
+		DependsOnTargets="_LoadLinkerOutput"
+		>
+		<ItemGroup>
+			<_TrimmedAssembly Include="$(IntermediateLinkDir)*.dll" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="_ComputePostTrimmingPaths">
+		<PropertyGroup>
+			<_ILTrimSurvivingNativeSymbolsFile>$(DeviceSpecificIntermediateOutputPath)inlined-dlfcn\iltrim-surviving-native-symbols.txt</_ILTrimSurvivingNativeSymbolsFile>
+			<_NativeAOTUnresolvedSymbolsFile>$(DeviceSpecificIntermediateOutputPath)nativeaot-unresolved-symbols.txt</_NativeAOTUnresolvedSymbolsFile>
+			<_NativeAOTSurvivingNativeSymbolsFile>$(DeviceSpecificIntermediateOutputPath)nativeaot-surviving-native-symbols.txt</_NativeAOTSurvivingNativeSymbolsFile>
+		</PropertyGroup>
+	</Target>
+
+	<!-- See docs/code/native-symbols.md for an overview of native symbol handling. -->
+	<Target Name="_CollectPostILTrimInformation"
+		Condition="'$(InlineDlfcnMethods)' != ''"
+		DependsOnTargets="_ComputeTrimmedAssemblies;_ComputePostTrimmingPaths"
+		Inputs="@(_TrimmedAssembly)"
+		Outputs="$(_ILTrimSurvivingNativeSymbolsFile)"
+		>
+		<CollectPostILTrimInformation
+			TrimmedAssemblies="@(_TrimmedAssembly)"
+			SurvivingNativeSymbolsFile="$(_ILTrimSurvivingNativeSymbolsFile)"
+			CacheDirectory="$(DeviceSpecificIntermediateOutputPath)posttrim-info\cache"
+		/>
+		<ReadLinesFromFile File="$(_ILTrimSurvivingNativeSymbolsFile)">
+			<Output TaskParameter="Lines" ItemName="_AllExecutableSymbols" />
+		</ReadLinesFromFile>
+		<ItemGroup>
+			<FileWrites Include="$(_ILTrimSurvivingNativeSymbolsFile)" />
+		</ItemGroup>
+	</Target>
+
+	<!-- See docs/code/native-symbols.md for an overview of native symbol handling. -->
+	<Target Name="_PostTrimmingProcessing"
+		DependsOnTargets="_CollectPostILTrimInformation;_CollectPostNativeAOTTrimInformation;_ComputeTargetArchitectures;_ComputePostTrimmingPaths"
+		>
+		<ItemGroup>
+			<_SurvivingNativeSymbolsFile Include="$(_ILTrimSurvivingNativeSymbolsFile)" Condition="Exists('$(_ILTrimSurvivingNativeSymbolsFile)')" />
+			<_SurvivingNativeSymbolsFile Include="$(_NativeAOTSurvivingNativeSymbolsFile)" Condition="Exists('$(_NativeAOTSurvivingNativeSymbolsFile)')" />
+		</ItemGroup>
+		<PostTrimmingProcessing
+			Architecture="$(TargetArchitectures)"
+			OutputDirectory="$(DeviceSpecificIntermediateOutputPath)inlined-dlfcn"
+			ReferenceNativeSymbol="@(ReferenceNativeSymbol)"
+			SurvivingNativeSymbolsFiles="@(_SurvivingNativeSymbolsFile)"
+		>
+			<Output TaskParameter="NativeSourceFiles" ItemName="_PostTrimmingSourceFiles" />
+		</PostTrimmingProcessing>
+
+		<ItemGroup>
+			<FileWrites Include="@(_PostTrimmingSourceFiles)" />
+			<_PostTrimmingSourceFiles>
+				<OutputFile>$(DeviceSpecificIntermediateOutputPath)posttrim-info-compiled/%(Arch)/%(Filename).o</OutputFile>
+			</_PostTrimmingSourceFiles>
+		</ItemGroup>
+
+		<CompileNativeCode
+			SessionId="$(BuildSessionId)"
+			Condition="'$(IsMacEnabled)' == 'true'"
+			CompileInfo="@(_PostTrimmingSourceFiles)"
+			DotNetRoot="$(_DotNetRoot)"
+			MinimumOSVersion="$(_MinimumOSVersion)"
+			IncludeDirectories="@(_XamarinMainIncludeDirectory)"
+			SdkDevPath="$(_SdkDevPath)"
+			SdkIsSimulator="$(_SdkIsSimulator)"
+			SdkRoot="$(_SdkRoot)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		>
+		</CompileNativeCode>
+
+		<ItemGroup>
+			<_CompiledPostTrimmingFiles Include="@(_PostTrimmingSourceFiles -> '%(OutputFile)')" />
+			<_NativeExecutableObjectFiles Include="@(_CompiledPostTrimmingFiles)" />
+			<FileWrites Include="@(_CompiledPostTrimmingFiles)" />
+		</ItemGroup>
+	</Target>
+
 	<PropertyGroup>
 		<_CompileNativeExecutableDependsOn>
 			$(_CompileNativeExecutableDependsOn);
@@ -1726,12 +1814,32 @@
 			_ReadAppManifest;
 			_WriteAppManifest;
 			_CompileNativeExecutable;
+			_PostTrimmingProcessing;
 			_ReidentifyDynamicLibraries;
 			_AddSwiftLinkerFlags;
 			_ComputeLinkNativeExecutableInputs;
 			_ForceLinkNativeExecutable;
 		</_LinkNativeExecutableDependsOn>
 	</PropertyGroup>
+
+	<!-- See docs/code/native-symbols.md for an overview of native symbol handling. -->
+	<Target Name="_CollectPostNativeAOTTrimInformation"
+		Condition="'$(_UseNativeAot)' == 'true'"
+		DependsOnTargets="_ComputePostTrimmingPaths;_CompileNativeExecutable"
+		Inputs="$(NativeObject)"
+		Outputs="$(_NativeAOTSurvivingNativeSymbolsFile)"
+		>
+		<CollectUnresolvedNativeSymbols
+			SessionId="$(BuildSessionId)"
+			StaticLibrary="$(NativeObject)"
+			OutputFile="$(_NativeAOTUnresolvedSymbolsFile)"
+		/>
+		<ComputeNativeAOTSurvivingNativeSymbols
+			SessionId="$(BuildSessionId)"
+			UnresolvedSymbolsFile="$(_NativeAOTUnresolvedSymbolsFile)"
+			SurvivingNativeSymbolsFile="$(_NativeAOTSurvivingNativeSymbolsFile)"
+		/>
+	</Target>
 
 	<Target Name="_AddSwiftLinkerFlags" DependsOnTargets="_DetectSdkLocations">
 		<PropertyGroup>

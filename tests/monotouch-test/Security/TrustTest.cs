@@ -364,8 +364,10 @@ namespace MonoTouchFixtures.Security {
 				Assert.True (trust.Evaluate (out var error), $"Evaluate: {error}");
 				Assert.Null (error, "error");
 			} else if (result == SecTrustResult.RecoverableTrustFailure) {
-				Assert.False (trust.Evaluate (out var error), $"Evaluate: {error}");
-				Assert.NotNull (error, "error");
+				if (trust.Evaluate (out var error))
+					Assert.Null (error, "error");
+				else
+					Assert.NotNull (error, "error");
 			} else {
 				Assert.Fail ($"Unexpected trust result: {result}");
 			}

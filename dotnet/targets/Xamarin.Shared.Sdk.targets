@@ -2563,6 +2563,14 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 
 	<!-- Import existing targets -->
 
+	<!-- Make sure post-processing only includes dynamic frameworks that will actually be in the app bundle. Ref: https://github.com/dotnet/macios/issues/24840 -->
+	<PropertyGroup>
+		<_CollectItemsForPostProcessingDependsOn>
+			_ComputeFrameworkFilesToPublish;
+			$(_CollectItemsForPostProcessingDependsOn);
+		</_CollectItemsForPostProcessingDependsOn>
+	</PropertyGroup>
+
 	<PropertyGroup>
 		<_ProjectLanguage>$(Language)</_ProjectLanguage>
 		<_ProjectLanguage Condition="'$(_ProjectLanguage)' == '' Or '$(_ProjectLanguage)' == 'C#' ">CSharp</_ProjectLanguage>

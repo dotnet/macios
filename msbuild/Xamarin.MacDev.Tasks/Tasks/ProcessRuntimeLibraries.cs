@@ -127,14 +127,6 @@ public class ProcessRuntimeLibraries : XamarinTask, ICancelableTask {
 					continue;
 				}
 
-				if (Platform != Utils.ApplePlatform.MacOSX && !DebuggerSupport) {
-					// libmscordaccore and libmscordbi are debug-only libraries, don't include them when debugger support is disabled on mobile platforms
-					if (string.Equals (kvp.Key, "libmscordaccore", StringComparison.OrdinalIgnoreCase) ||
-						string.Equals (kvp.Key, "libmscordbi", StringComparison.OrdinalIgnoreCase)) {
-						continue;
-					}
-				}
-
 				switch (RuntimeLibLinkMode.ToLowerInvariant ()) {
 				case "static":
 					// if we only have a single .a, we need to link with it, but not copy to the app bundle

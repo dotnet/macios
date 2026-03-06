@@ -43,7 +43,7 @@ using AVRouting;
 #endif
 
 namespace AVKit {
-	[NoTV, Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[NoTV, iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	enum AVVideoFrameAnalysisType : ulong {
 		AVVideoFrameAnalysisTypeNone = 0,
@@ -118,13 +118,11 @@ namespace AVKit {
 		[Export ("pictureInPictureSuspended")]
 		bool PictureInPictureSuspended { [Bind ("isPictureInPictureSuspended")] get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("pictureInPictureButtonStartImage")]
 		UIImage PictureInPictureButtonStartImage { get; }
 
-		[iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Static]
 		[Export ("pictureInPictureButtonStopImage")]
@@ -364,12 +362,11 @@ namespace AVKit {
 		[Export ("appliesPreferredDisplayCriteriaAutomatically")]
 		bool AppliesPreferredDisplayCriteriaAutomatically { get; set; }
 
-		[TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("pixelBufferAttributes", ArgumentSemantic.Copy)]
 		NSDictionary<NSString, NSObject> PixelBufferAttributes { get; set; }
 
-		[NoiOS, TV (13, 0)]
+		[NoiOS]
 		[NoMacCatalyst]
 		[NullAllowed, Export ("customOverlayViewController", ArgumentSemantic.Strong)]
 		UIViewController CustomOverlayViewController { get; set; }
@@ -592,32 +589,32 @@ namespace AVKit {
 		[Export ("playerViewController:willTransitionToVisibilityOfTransportBar:withAnimationCoordinator:")]
 		void WillTransitionToVisibilityOfTransportBar (AVPlayerViewController playerViewController, bool visible, IAVPlayerViewControllerAnimationCoordinator coordinator);
 
-		[iOS (13, 0), NoTV, NoMac]
+		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewController:willBeginFullScreenPresentationWithAnimationCoordinator:"), EventArgs ("AVPlayerViewFullScreenPresentationWillBegin")]
 		void WillBeginFullScreenPresentation (AVPlayerViewController playerViewController, IUIViewControllerTransitionCoordinator coordinator);
 
-		[iOS (13, 0), NoTV, NoMac]
+		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("playerViewController:willEndFullScreenPresentationWithAnimationCoordinator:"), EventArgs ("AVPlayerViewFullScreenPresentationWillEnd")]
 		void WillEndFullScreenPresentation (AVPlayerViewController playerViewController, IUIViewControllerTransitionCoordinator coordinator);
 
-		[TV (13, 0), NoiOS, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("nextChannelInterstitialViewControllerForPlayerViewController:")]
 		UIViewController GetNextChannelInterstitialViewController (AVPlayerViewController playerViewController);
 
-		[TV (13, 0), NoiOS, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("playerViewController:skipToNextChannel:"), EventArgs ("AVPlayerViewSkipToNextChannel")]
 		void SkipToNextChannel (AVPlayerViewController playerViewController, Action<bool> completion);
 
-		[TV (13, 0), NoiOS, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("playerViewController:skipToPreviousChannel:"), EventArgs ("AVPlayerViewSkipToPreviousChannel")]
 		void SkipToPreviousChannel (AVPlayerViewController playerViewController, Action<bool> completion);
 
-		[TV (13, 0), NoiOS, NoMac]
+		[NoiOS, NoMac]
 		[NoMacCatalyst]
 		[Export ("previousChannelInterstitialViewControllerForPlayerViewController:")]
 		UIViewController GetPreviousChannelInterstitialViewController (AVPlayerViewController playerViewController);
@@ -627,7 +624,7 @@ namespace AVKit {
 		void RestoreUserInterfaceForFullScreenExit (AVPlayerViewController playerViewController, Action<bool> completionHandler);
 	}
 
-	[NoTV, NoMac, iOS (13, 0)]
+	[NoTV, NoMac]
 	[MacCatalyst (13, 1)]
 	[Category]
 	[BaseType (typeof (AVAudioSession))]
@@ -743,35 +740,34 @@ namespace AVKit {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+		[NoiOS, NoMacCatalyst, NoTV]
 		[Export ("speeds", ArgumentSemantic.Copy)]
 		AVPlaybackSpeed [] Speeds { get; set; }
 
-		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+		[NoiOS, NoMacCatalyst, NoTV]
 		[NullAllowed, Export ("selectedSpeed")]
 		AVPlaybackSpeed SelectedSpeed { get; }
 
-		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+		[NoiOS, NoMacCatalyst, NoTV]
 		[Export ("selectSpeed:")]
 		void SelectSpeed (AVPlaybackSpeed speed);
 
-		[NoTV, NoMacCatalyst, NoiOS, Mac (13, 0)]
+		[NoTV, NoMacCatalyst, NoiOS]
 		[Export ("allowsVideoFrameAnalysis")]
 		bool AllowsVideoFrameAnalysis { get; set; }
 
-		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+		[NoiOS, NoMacCatalyst, NoTV]
 		[Export ("allowsMagnification")]
 		bool AllowsMagnification { get; set; }
 
-		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+		[NoiOS, NoMacCatalyst, NoTV]
 		[Export ("magnification")]
 		nfloat Magnification { get; set; }
 
-		[Mac (13, 0), NoiOS, NoMacCatalyst, NoTV]
+		[NoiOS, NoMacCatalyst, NoTV]
 		[Export ("setMagnification:centeredAtPoint:")]
 		void SetMagnification (nfloat magnification, CGPoint centeredAtPoint);
 
-		[Mac (14, 0)]
 		[Export ("videoFrameAnalysisTypes")]
 		AVVideoFrameAnalysisType VideoFrameAnalysisTypes { get; set; }
 
@@ -992,7 +988,6 @@ namespace AVKit {
 		AVRoutePickerViewButtonStyle RoutePickerButtonStyle { get; set; }
 
 		[NoMac]
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Export ("prioritizesVideoDevices")]
 		bool PrioritizesVideoDevices { get; set; }
@@ -1217,7 +1212,7 @@ namespace AVKit {
 		CancelButton,
 	}
 
-	[TV (16, 0), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (16, 0), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface AVPlaybackSpeed {

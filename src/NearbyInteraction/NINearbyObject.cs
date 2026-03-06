@@ -38,7 +38,7 @@ namespace NearbyInteraction {
 		static MatrixFloat4x4? _WorldTransformNotAvailable;
 
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("tvos")]
 		[UnsupportedOSPlatform ("macos")]
 		// Following similar strategy found here: https://github.com/xamarin/maccore/issues/2274

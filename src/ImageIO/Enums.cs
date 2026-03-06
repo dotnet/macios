@@ -88,7 +88,6 @@ namespace ImageIO {
 		Paeth = 0x80,
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	public enum CGImageAnimationStatus {
 		Ok = 0,

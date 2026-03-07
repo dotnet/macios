@@ -2337,9 +2337,9 @@ namespace ObjCRuntime {
 		{
 			if (obj is null)
 				return NativeHandle.Zero;
-#pragma warning disable RBI0014
-			return RetainAndAutoreleaseHandle (obj.GetHandle ());
-#pragma warning restore RBI0014
+			var rv = RetainAndAutoreleaseHandle (obj.GetHandle ());
+			GC.KeepAlive (obj);
+			return rv;
 		}
 
 		/// <summary>Retain and autorelease the given handle, then return the handle.</summary>

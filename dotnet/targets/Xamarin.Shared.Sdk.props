@@ -15,8 +15,8 @@
 		<_MobilePropsPath>$(_MobilePropsDir)$(MSBuildProjectName).mobile.props</_MobilePropsPath>
 	</PropertyGroup>
 
-	<!-- Imports the .mobile.props file if exists and the build is from VS -->
-	<Import Project="$(_MobilePropsPath)" Condition="Exists('$(_MobilePropsPath)') And '$(BuildingInsideVisualStudio)' == 'true'" />
+	<!-- Imports the .mobile.props file if exists and the build is from VS/VSCode -->
+	<Import Project="$(_MobilePropsPath)" Condition="Exists('$(_MobilePropsPath)') And ('$(BuildingInsideVisualStudio)' == 'true' Or '$(DesignTimeBuild)' == 'true')" />
 	
 	<PropertyGroup>
 		<!-- Set to true when using the Microsoft.<platform>.Sdk NuGet. This is used by pre-existing/shared targets to tweak behavior depending on build system -->

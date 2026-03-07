@@ -6,29 +6,29 @@ This file should be imported by eng/Versions.props
 <Project>
   <PropertyGroup>
     <!-- dotnet/dotnet dependencies -->
-    <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.26126.103</MicrosoftDotNetArcadeSdkPackageVersion>
-    <MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.26126.103</MicrosoftDotNetBuildTasksFeedPackageVersion>
+    <MicrosoftDotNetArcadeSdkPackageVersion>10.0.0-beta.26153.116</MicrosoftDotNetArcadeSdkPackageVersion>
+    <MicrosoftDotNetBuildTasksFeedPackageVersion>10.0.0-beta.26153.116</MicrosoftDotNetBuildTasksFeedPackageVersion>
     <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.26070.104</MicrosoftDotNetCecilPackageVersion>
-    <MicrosoftDotNetSharedFrameworkSdkPackageVersion>10.0.0-beta.26126.103</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
+    <MicrosoftDotNetSharedFrameworkSdkPackageVersion>10.0.0-beta.26153.116</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
     <MicrosoftNETILLinkPackageVersion>10.0.3-servicing.26070.104</MicrosoftNETILLinkPackageVersion>
     <MicrosoftNETILLinkTasksPackageVersion>10.0.3</MicrosoftNETILLinkTasksPackageVersion>
     <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>10.0.3</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
-    <MicrosoftNETSdkPackageVersion>10.0.300-preview.26126.103</MicrosoftNETSdkPackageVersion>
+    <MicrosoftNETSdkPackageVersion>10.0.300-preview.26153.116</MicrosoftNETSdkPackageVersion>
     <MicrosoftNETCoreAppRefPackageVersion>10.0.3</MicrosoftNETCoreAppRefPackageVersion>
-    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.300-preview.26126.103</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
+    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>10.0.300-preview.26153.116</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
     <!-- dotnet/macios dependencies -->
     <MicrosoftiOSSdknet100_260PackageVersion>26.0.11017</MicrosoftiOSSdknet100_260PackageVersion>
     <MicrosoftiOSSdknet90_185PackageVersion>18.5.9227</MicrosoftiOSSdknet90_185PackageVersion>
-    <MicrosoftiOSSdknet90_262PackageVersion>26.2.9000</MicrosoftiOSSdknet90_262PackageVersion>
+    <MicrosoftiOSSdknet90_262PackageVersion>26.2.9001</MicrosoftiOSSdknet90_262PackageVersion>
     <MicrosoftMacCatalystSdknet100_260PackageVersion>26.0.11017</MicrosoftMacCatalystSdknet100_260PackageVersion>
     <MicrosoftMacCatalystSdknet90_185PackageVersion>18.5.9227</MicrosoftMacCatalystSdknet90_185PackageVersion>
-    <MicrosoftMacCatalystSdknet90_262PackageVersion>26.2.9000</MicrosoftMacCatalystSdknet90_262PackageVersion>
+    <MicrosoftMacCatalystSdknet90_262PackageVersion>26.2.9001</MicrosoftMacCatalystSdknet90_262PackageVersion>
     <MicrosoftmacOSSdknet100_260PackageVersion>26.0.11017</MicrosoftmacOSSdknet100_260PackageVersion>
     <MicrosoftmacOSSdknet90_155PackageVersion>15.5.9227</MicrosoftmacOSSdknet90_155PackageVersion>
-    <MicrosoftmacOSSdknet90_262PackageVersion>26.2.9000</MicrosoftmacOSSdknet90_262PackageVersion>
+    <MicrosoftmacOSSdknet90_262PackageVersion>26.2.9001</MicrosoftmacOSSdknet90_262PackageVersion>
     <MicrosofttvOSSdknet100_260PackageVersion>26.0.11017</MicrosofttvOSSdknet100_260PackageVersion>
     <MicrosofttvOSSdknet90_185PackageVersion>18.5.9227</MicrosofttvOSSdknet90_185PackageVersion>
-    <MicrosofttvOSSdknet90_262PackageVersion>26.2.9000</MicrosofttvOSSdknet90_262PackageVersion>
+    <MicrosofttvOSSdknet90_262PackageVersion>26.2.9001</MicrosofttvOSSdknet90_262PackageVersion>
     <!-- xamarin/xamarin-macios dependencies -->
     <MicrosoftiOSSdknet90_180PackageVersion>18.0.9617</MicrosoftiOSSdknet90_180PackageVersion>
     <MicrosoftMacCatalystSdknet90_180PackageVersion>18.0.9617</MicrosoftMacCatalystSdknet90_180PackageVersion>

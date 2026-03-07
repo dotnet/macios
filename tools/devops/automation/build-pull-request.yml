@@ -60,6 +60,7 @@ trigger:
     - refs/heads/locfiles/*
     - refs/heads/copilot/*
     - refs/heads/dependabot/*
+    - refs/heads/merge/*
 
 pr:
   autoCancel: true

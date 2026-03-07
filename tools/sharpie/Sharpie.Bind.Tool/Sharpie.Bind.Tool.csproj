@@ -21,8 +21,18 @@
     <PublishAot>true</PublishAot>
     <RollForward>major</RollForward>
 
+    <RepositoryUrl>https://github.com/dotnet/macios</RepositoryUrl>
+    <RepositoryBranch>$(CurrentBranch)</RepositoryBranch>
+    <RepositoryCommit>$(CurrentHash)</RepositoryCommit>
+
+    <Authors>Microsoft</Authors>
+    <Owners>microsoft,dotnetframework</Owners>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>Icon.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/dotnet/macios</PackageProjectUrl>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -34,6 +44,7 @@
 
   <ItemGroup>
     <None Include="../clang/include/**/*" Pack="true" PackagePath="content/clang/include" Link="clang/include" />
+    <None Include="../../../dotnet/package/Icon.png" Pack="true" PackagePath="/" />
 
     <None Include="README.md" Pack="true" PackagePath="/"/>
     <None Include="../../../LICENSE" Pack="true" PackagePath="/"/>

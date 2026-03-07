@@ -18,7 +18,7 @@
       <Type>Resx</Type>
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MSBStrings.Designer.cs</LastGenOutput>
-      <StronglyTypedFileName>MSBStrings.Designer.cs</StronglyTypedFileName>
+      <StronglyTypedFileName>$(IntermediateOutputPath)MSBStrings.Designer.cs</StronglyTypedFileName>
       <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
       <StronglyTypedNamespace>Xamarin.Localization.MSBuild</StronglyTypedNamespace>
       <StronglyTypedClassName>MSBStrings</StronglyTypedClassName>

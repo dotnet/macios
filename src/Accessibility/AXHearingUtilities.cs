@@ -38,7 +38,7 @@ namespace Accessibility {
 
 		public static NSUuid [] GetMFiHearingDevicePairedUuids ()
 		{
-			return NSArray.ArrayFromHandle<NSUuid> (AXMFiHearingDevicePairedUUIDs ());
+			return NSArray.NonNullArrayFromHandleDropNullElements<NSUuid> (AXMFiHearingDevicePairedUUIDs ());
 		}
 	}
 }

@@ -1,2 +1,6 @@
 !missing-selector! ASAuthorizationSecurityKeyPublicKeyCredentialAssertion::prf not bound
 !missing-selector! ASAuthorizationSecurityKeyPublicKeyCredentialRegistration::prf not bound
+!missing-selector! ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest::prf not bound
+!missing-selector! ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest::setPrf: not bound
+!missing-selector! ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest::prf not bound
+!missing-selector! ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest::setPrf: not bound

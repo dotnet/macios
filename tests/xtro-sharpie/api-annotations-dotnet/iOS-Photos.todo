@@ -1,0 +1,9 @@
+!missing-enum-value! PHAssetResourceUploadJobState native value PHAssetResourceUploadJobStateCancelled = 5 not bound
+!missing-enum! PHAssetResourceUploadJobType not bound
+!missing-selector! +PHAssetResourceUploadJobChangeRequest::creationRequestForDownloadJobWithResource: not bound
+!missing-selector! +PHAssetResourceUploadJobChangeRequest::creationRequestForJobWithDestination:resource: not bound
+!missing-selector! PHAssetResourceUploadJob::error not bound
+!missing-selector! PHAssetResourceUploadJob::responseHeaderFields not bound
+!missing-selector! PHAssetResourceUploadJob::type not bound
+!missing-selector! PHAssetResourceUploadJobChangeRequest::cancel not bound
+!missing-selector! PHAssetResourceUploadJobChangeRequest::placeholderForCreatedAssetResourceUploadJob not bound

@@ -5,6 +5,5 @@
 !missing-selector! PKDisbursementRequest::isDelegatedRequest not bound
 !missing-selector! PKDisbursementRequest::setIsDelegatedRequest: not bound
 !missing-selector! PKPaymentRequest::isDelegatedRequest not bound
-!missing-selector! PKPaymentRequest::issuerRegions not bound
 !missing-selector! PKPaymentRequest::setIsDelegatedRequest: not bound
-!missing-selector! PKPaymentRequest::setIssuerRegions: not bound
+!missing-selector! PKPassLibrary::openPaymentSetupWithMerchantIdentifier: not bound

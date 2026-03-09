@@ -153,18 +153,6 @@ namespace CoreText {
 			return NSArray.FromObjects (items);
 		}
 
-		static T []? ArrayFromHandle<T> (IntPtr handle, bool releaseAfterUse) where T : class, INativeObject
-		{
-			if (handle == IntPtr.Zero)
-				return null;
-			try {
-				return NSArray.ArrayFromHandle<T> (handle);
-			} finally {
-				if (releaseAfterUse)
-					CFObject.CFRelease (handle);
-			}
-		}
-
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -198,7 +186,7 @@ namespace CoreText {
 						return null;
 					GC.KeepAlive (arr);
 				}
-				return ArrayFromHandle<NSError> (error_array, releaseAfterUse: true);
+				return NSArray.ArrayFromHandleDropNullElements<NSError> (error_array, releaseHandle: true);
 			}
 		}
 
@@ -211,7 +199,7 @@ namespace CoreText {
 			if (del is null)
 				return 0;
 
-			var rv = del (NSArray.ArrayFromHandle<NSError> (errors), done == 0 ? false : true);
+			var rv = del (NSArray.NonNullArrayFromHandleDropNullElements<NSError> (errors), done == 0 ? false : true);
 			return rv ? (byte) 1 : (byte) 0;
 		}
 
@@ -308,7 +296,7 @@ namespace CoreText {
 						return null;
 					GC.KeepAlive (arr);
 				}
-				return ArrayFromHandle<NSError> (error_array, releaseAfterUse: true);
+				return NSArray.ArrayFromHandleDropNullElements<NSError> (error_array, releaseHandle: true);
 			}
 		}
 
@@ -589,7 +577,7 @@ namespace CoreText {
 		{
 			var p = CTFontManagerCopyRegisteredFontDescriptors (scope, enabled.AsByte ());
 			// Copy/Create rule - we must release the CFArrayRef
-			return ArrayFromHandle<CTFontDescriptor> (p, releaseAfterUse: true);
+			return NSArray.ArrayFromHandleDropNullElements<CTFontDescriptor> (p, releaseHandle: true);
 		}
 #endif
 
@@ -628,7 +616,7 @@ namespace CoreText {
 			var p = CTFontManagerCreateFontDescriptorsFromData (data.Handle);
 			GC.KeepAlive (data);
 			// Copy/Create rule - we must release the CFArrayRef
-			return ArrayFromHandle<CTFontDescriptor> (p, releaseAfterUse: true);
+			return NSArray.ArrayFromHandleDropNullElements<CTFontDescriptor> (p, releaseHandle: true);
 		}
 
 #if __IOS__
@@ -676,7 +664,7 @@ namespace CoreText {
 		{
 			var del = BlockLiteral.GetTarget<CTFontManagerRequestFontsHandler> (block);
 			if (del is not null)
-				del (NSArray.ArrayFromHandle<CTFontDescriptor> (fontDescriptors));
+				del (NSArray.NonNullArrayFromHandleDropNullElements<CTFontDescriptor> (fontDescriptors));
 		}
 
 		[SupportedOSPlatform ("ios13.0")]

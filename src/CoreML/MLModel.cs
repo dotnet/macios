@@ -18,9 +18,7 @@ namespace CoreML {
 		public static IMLComputeDeviceProtocol [] AllComputeDevices {
 			get {
 				var ptr = MLAllComputeDevices ();
-				if (ptr == IntPtr.Zero)
-					return Array.Empty<IMLComputeDeviceProtocol> ();
-				return NSArray.ArrayFromHandle<IMLComputeDeviceProtocol> (ptr);
+				return NSArray.NonNullArrayFromHandleDropNullElements<IMLComputeDeviceProtocol> (ptr);
 			}
 		}
 	}

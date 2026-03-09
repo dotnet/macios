@@ -26,13 +26,13 @@ namespace Vision {
 		///     ]]></code>
 		///           </example>
 		///         </remarks>
-		public virtual T [] GetResults<T> () where T : VNObservation
+		public virtual T []? GetResults<T> () where T : VNObservation
 		{
 			// From docs: If the request failed, this property will be nil;
 			// otherwise, it will be an array of zero or more VNObservation
 			// subclasses specific to the VNRequest subclass.
 			// ArrayFromHandle<T> does the null checking for us.
-			return NSArray.ArrayFromHandle<T> (_Results);
+			return NSArray.ArrayFromHandleDropNullElements<T> (_Results);
 		}
 	}
 }

@@ -52,7 +52,7 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		public SecPolicy [] GetPolicies ()
+		public SecPolicy []? GetPolicies ()
 		{
 			IntPtr p = IntPtr.Zero;
 			SecStatusCode result;
@@ -61,7 +61,7 @@ namespace Security {
 			}
 			if (result != SecStatusCode.Success)
 				throw new InvalidOperationException (result.ToString ());
-			return NSArray.ArrayFromHandle<SecPolicy> (p, releaseHandle: true);
+			return NSArray.ArrayFromHandleDropNullElements<SecPolicy> (p, releaseHandle: true);
 		}
 
 		[DllImport (Constants.SecurityLibrary)]
@@ -164,7 +164,7 @@ namespace Security {
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos")]
-		public SecCertificate [] GetCustomAnchorCertificates ()
+		public SecCertificate []? GetCustomAnchorCertificates ()
 		{
 			IntPtr p;
 			SecStatusCode result;
@@ -173,7 +173,7 @@ namespace Security {
 			}
 			if (result != SecStatusCode.Success)
 				throw new InvalidOperationException (result.ToString ());
-			return NSArray.ArrayFromHandle<SecCertificate> (p, releaseHandle: true);
+			return NSArray.ArrayFromHandleDropNullElements<SecCertificate> (p, releaseHandle: true);
 		}
 
 		[SupportedOSPlatform ("ios")]

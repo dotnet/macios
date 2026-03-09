@@ -2963,11 +2963,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<BCSymbolMapName>%(Filename)%(Extension).bcsymbolmap</BCSymbolMapName>
 			</_PostProcessingItem>
 
-			<!-- Don't strip dylibs from the .NET runtime - they may contain symbols that can't be stripped (https://github.com/dotnet/runtime/issues/124570) -->
-			<_PostProcessingItem Condition="$([MSBuild]::ValueOrDefault('%(_PostProcessingItem.NuGetPackageId)', '').StartsWith('Microsoft.NETCore.App.Runtime'))">
-				<NoSymbolStrip>true</NoSymbolStrip>
-			</_PostProcessingItem>
-
 			<!-- Add any items from app extensions -->
 			<_PostProcessingAppExtensions Include="@(_AppExtensionPostProcessingItems)" Condition="'%(_AppExtensionPostProcessingItems.IsAppExtension)' == 'true' And '%(_AppExtensionPostProcessingItems.IsXPCService)' != 'true'" />
 			<_PostProcessingXpcServices Include="@(_AppExtensionPostProcessingItems)" Condition="'%(_AppExtensionPostProcessingItems.IsAppExtension)' == 'true' And '%(_AppExtensionPostProcessingItems.IsXPCService)' == 'true'" />

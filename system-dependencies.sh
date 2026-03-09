@@ -721,12 +721,26 @@ function check_xcode_components ()
 
 	for comp in "${COMPONENTS[@]}"; do
 		componentInfo=$(xcrun xcodebuild -showComponent "$comp")
-		if  [[ "$componentInfo" =~ .*Status:" "installed.* ]]; then
+		local NEEDS_INSTALL=
+		local NEEDS_UPDATE=
+		if [[ "$componentInfo" =~ .*Status:" "installedUpdateAvailable.* ]]; then
+			NEEDS_UPDATE=1
+		elif [[ "$componentInfo" =~ .*Status:" "installed.* ]]; then
+			NEEDS_INSTALL=
+		else
+			NEEDS_INSTALL=1
+		fi
+
+		if test -z "$NEEDS_INSTALL$NEEDS_UPDATE"; then
 			ok "The Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} is installed."
 		elif test -z "$PROVISION_XCODE_COMPONENTS"; then
-			fail "The Xcode component ${COLOR_BLUE}$comp${COLOR_RESET} is not installed. Execute ${COLOR_MAGENTA}xcrun xcodebuild -downloadComponent $comp${COLOR_RESET} or ${COLOR_MAGENTA}./system-dependencies.sh --provision-xcode-components${COLOR_RESET} to install."
+			if test -n "$NEEDS_UPDATE"; then
+				fail "The Xcode component ${COLOR_BLUE}$comp${COLOR_RESET} is installed, but an update is available. Execute ${COLOR_MAGENTA}xcrun xcodebuild -downloadComponent $comp${COLOR_RESET} or ${COLOR_MAGENTA}./system-dependencies.sh --provision-xcode-components${COLOR_RESET} to install."
+			else
+				fail "The Xcode component ${COLOR_BLUE}$comp${COLOR_RESET} is not installed. Execute ${COLOR_MAGENTA}xcrun xcodebuild -downloadComponent $comp${COLOR_RESET} or ${COLOR_MAGENTA}./system-dependencies.sh --provision-xcode-components${COLOR_RESET} to install."
+			fi
 			fail "Alternatively you can ${COLOR_MAGENTA}export IGNORE_XCODE_COMPONENTS=1${COLOR_RED} to skip this check."
-		else
+		elif test -n "$PROVISION_XCODE_COMPONENTS"; then
 			log "Installing the Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} by executing ${COLOR_BLUE}xcrun xcodebuild -downloadComponent $comp${COLOR_CLEAR}..."
 			xcrun xcodebuild -downloadComponent "$comp"
 

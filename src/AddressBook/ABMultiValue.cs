@@ -212,7 +212,7 @@ namespace AddressBook {
 		public NSString? Label {
 			get {
 				AssertValid ();
-				return Runtime.GetNSObject<NSString> (ABMultiValue.CopyLabelAtIndex (self.Handle, index));
+				return Runtime.GetNSObject<NSString> (ABMultiValue.CopyLabelAtIndex (self.Handle, index), true);
 			}
 			set {
 				if (IsReadOnly)
@@ -319,7 +319,7 @@ namespace AddressBook {
 		///         </remarks>
 		public T [] GetValues ()
 		{
-			return NSArray.ArrayFromHandle (ABMultiValue.CopyArrayOfAllValues (Handle), toManaged)
+			return NSArray.ArrayFromHandle (ABMultiValue.CopyArrayOfAllValues (Handle), toManaged, releaseHandle: true)
 				?? Array.Empty<T> ();
 		}
 

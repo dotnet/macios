@@ -920,7 +920,7 @@ namespace AddressBook {
 		///         </remarks>
 		public static string? LocalizedPropertyName (ABPersonProperty property)
 		{
-			return CFString.FromHandle (ABPersonCopyLocalizedPropertyName (ABPersonPropertyId.ToId (property)));
+			return CFString.FromHandle (ABPersonCopyLocalizedPropertyName (ABPersonPropertyId.ToId (property)), true);
 		}
 
 		/// <param name="propertyId">A value that corresponds to one of the low-level kABPersonProperty fields.
@@ -946,7 +946,7 @@ namespace AddressBook {
 		///         </remarks>
 		public static string? LocalizedPropertyName (int propertyId)
 		{
-			return CFString.FromHandle (ABPersonCopyLocalizedPropertyName (propertyId));
+			return CFString.FromHandle (ABPersonCopyLocalizedPropertyName (propertyId), true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -1014,7 +1014,7 @@ namespace AddressBook {
 		///         <altmember cref="AddressBook.ABPerson.HasImage" />
 		///         <altmember cref="AddressBook.ABPerson.RemoveImage" />
 		public NSData? Image {
-			get { return Runtime.GetNSObject<NSData> (ABPersonCopyImageData (Handle)); }
+			get { return Runtime.GetNSObject<NSData> (ABPersonCopyImageData (Handle), true); }
 			set {
 				IntPtr error;
 				unsafe {
@@ -1744,7 +1744,7 @@ namespace AddressBook {
 		public ABPerson? []? GetLinkedPeople ()
 		{
 			var linked = ABPersonCopyArrayOfAllLinkedPeople (Handle);
-			return NSArray.ArrayFromHandle (linked, l => new ABPerson (l, null));
+			return NSArray.ArrayFromHandle (linked, l => new ABPerson (l, null), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -1756,7 +1756,7 @@ namespace AddressBook {
 		///         <remarks>To be added.</remarks>
 		public NSData? GetImage (ABPersonImageFormat format)
 		{
-			return Runtime.GetNSObject<NSData> (ABPersonCopyImageDataWithFormat (Handle, (nint) (long) format));
+			return Runtime.GetNSObject<NSData> (ABPersonCopyImageDataWithFormat (Handle, (nint) (long) format), true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]
@@ -1799,7 +1799,7 @@ namespace AddressBook {
 			GC.KeepAlive (source);
 			GC.KeepAlive (vCardData);
 
-			return NSArray.ArrayFromHandle (res, l => new ABPerson (l, null));
+			return NSArray.ArrayFromHandle (res, l => new ABPerson (l, null), releaseHandle: true);
 		}
 	}
 

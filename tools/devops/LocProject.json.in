@@ -62,6 +62,16 @@
 			"LciFile": "",
 			"Parser": "",
 			"LssFiles": []
+		  },
+		  {
+			"SourceFile": "@WORKING_DIRECTORY@/../../tools/sharpie/Sharpie.Bind/Resources.resx",
+			"Languages": "",
+			"CopyOption": "LangIDOnName",
+			"OutputPath": "@WORKING_DIRECTORY@/../../tools/sharpie/Sharpie.Bind/TranslatedAssemblies",
+			"LclFile": "",
+			"LciFile": "",
+			"Parser": "",
+			"LssFiles": []
 		  }
 		],
 		"LssFiles": [],

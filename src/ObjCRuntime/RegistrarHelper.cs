@@ -295,7 +295,7 @@ namespace ObjCRuntime {
 			*ptr = rv;
 		}
 
-		unsafe static void NSArray_native_to_managed<T> (IntPtr* ptr, ref T []? value, ref T []? copy) where T : class, INativeObject
+		unsafe static void NSArray_native_to_managed<T> (IntPtr* ptr, ref T? []? value, ref T? []? copy) where T : class, INativeObject
 		{
 			if (ptr is not null) {
 				value = NSArray.ArrayFromHandle<T> (*ptr);

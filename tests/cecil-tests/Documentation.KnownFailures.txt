@@ -11800,7 +11800,6 @@ M:Foundation.INSUrlSessionTaskDelegate.NeedNewBodyStream(Foundation.NSUrlSession
 M:Foundation.INSUrlSessionWebSocketDelegate.DidClose(Foundation.NSUrlSession,Foundation.NSUrlSessionWebSocketTask,Foundation.NSUrlSessionWebSocketCloseCode,Foundation.NSData)
 M:Foundation.INSUrlSessionWebSocketDelegate.DidOpen(Foundation.NSUrlSession,Foundation.NSUrlSessionWebSocketTask,System.String)
 M:Foundation.INSXpcListenerDelegate.ShouldAcceptConnection(Foundation.NSXpcListener,Foundation.NSXpcConnection)
-M:Foundation.NSArray.ArrayFromHandle``1(ObjCRuntime.NativeHandle,System.Converter{ObjCRuntime.NativeHandle,``0},System.Boolean)
 M:Foundation.NSArray.EnumsFromHandle``1(ObjCRuntime.NativeHandle)
 M:Foundation.NSArray.ToArray
 M:Foundation.NSArray.ToArray``1

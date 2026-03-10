@@ -534,7 +534,6 @@ namespace Security {
 				throw new ArgumentException (nameof (password));
 			using (var pwstring = new NSString (password))
 			using (var options = NSMutableDictionary.FromObjectAndKey (pwstring, SecImportExport.Passphrase)) {
-				NSDictionary [] array;
 #if __MACOS__
 				/* There are unfortunate platform differences for SecPKCS12Import:
 				 *
@@ -609,11 +608,11 @@ namespace Security {
 				if (OperatingSystem.IsMacOSVersionAtLeast (15, 0))
 					options.Add (SecImportExport.ToMemoryOnly, NSNumber.FromBoolean (true));
 #endif
-				SecStatusCode result = SecImportExport.ImportPkcs12 (data, options, out array);
+				SecStatusCode result = SecImportExport.ImportPkcs12 (data, options, out var array);
 				if (result != SecStatusCode.Success)
 					throw new InvalidOperationException (result.ToString ());
 
-				return new SecIdentity (array [0].LowlevelObjectForKey (SecImportExport.Identity.Handle), false);
+				return new SecIdentity (array! [0].LowlevelObjectForKey (SecImportExport.Identity.Handle), false);
 			}
 		}
 

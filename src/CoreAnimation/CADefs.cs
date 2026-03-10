@@ -52,24 +52,14 @@ namespace CoreAnimation {
 		/// <summary>An array of colors defining the gradient.   These values can be animated.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public CGColor [] Colors {
+		public CGColor []? Colors {
 			get {
-				return NSArray.ArrayFromHandle<CGColor> (_Colors, CreateColor);
+				return NSArray.ArrayFromHandleDropNullElements<CGColor> (_Colors, CreateColor);
 			}
 
 			set {
-				if (value is null) {
-					_Colors = IntPtr.Zero;
-					return;
-				}
-
-				var ptrs = new NativeHandle [value.Length];
-				for (int i = 0; i < ptrs.Length; i++)
-					ptrs [i] = value [i].Handle;
-
-				using (NSArray array = NSArray.FromIntPtrs (ptrs)) {
-					_Colors = array.Handle;
-				}
+				using var array = NSArray.FromIntPtrs (value, NativeObjectExtensions.GetHandle);
+				_Colors = array.GetHandle ();
 			}
 		}
 	}

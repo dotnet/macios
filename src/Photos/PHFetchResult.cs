@@ -40,10 +40,10 @@ namespace Photos {
 		///         <summary>Returns the objects at <paramref name="indexes" />, all of which must be type T.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		public T [] ObjectsAt<T> (NSIndexSet indexes) where T : NSObject
+		public T? [] ObjectsAt<T> (NSIndexSet indexes) where T : NSObject
 		{
 			var nsarr = _ObjectsAt (indexes);
-			return NSArray.ArrayFromHandle<T> (nsarr);
+			return NSArray.NonNullArrayFromHandle<T> (nsarr);
 		}
 	}
 }

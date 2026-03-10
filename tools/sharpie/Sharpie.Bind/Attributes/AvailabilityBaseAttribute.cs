@@ -20,6 +20,7 @@ enum PlatformName : byte {
 	MacCatalyst,
 	DriverKit,
 	VisionOS,
+	VisionOSAppExtension,
 	MacCatalystAppExtension,
 }
 
@@ -155,6 +156,9 @@ class AvailabilityBaseAttribute : ICSharpCode.NRefactory.CSharp.Attribute {
 		case "visionOS":
 		case "visionos":
 			return PlatformName.VisionOS;
+		case "xros_app_extension":
+		case "visionos_app_extension":
+			return PlatformName.VisionOSAppExtension;
 		case "maccatalyst_app_extension":
 			return PlatformName.MacCatalystAppExtension;
 		default:

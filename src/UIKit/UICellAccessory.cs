@@ -67,7 +67,7 @@ namespace UIKit {
 			var del = BlockLiteral.GetTarget<UICellAccessoryPosition> (block);
 			if (del is null)
 				return default;
-			nuint retval = del (NSArray.ArrayFromHandle<UICellAccessory> (accessories));
+			nuint retval = del (NSArray.NonNullArrayFromHandleDropNullElements<UICellAccessory> (accessories));
 			return retval;
 		}
 	} /* class SDUICellAccessoryPosition */

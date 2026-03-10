@@ -29,7 +29,7 @@ namespace GameplayKit {
 		{
 			if (randomSource is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (randomSource));
-			T [] result = NSArray.ArrayFromHandle<T> (Messaging.IntPtr_objc_msgSend_IntPtr (This.Handle, Selector.GetHandle ("shuffledArrayWithRandomSource:"), randomSource.Handle));
+			var result = NSArray.NonNullArrayFromHandleDropNullElements<T> (Messaging.IntPtr_objc_msgSend_IntPtr (This.Handle, Selector.GetHandle ("shuffledArrayWithRandomSource:"), randomSource.Handle));
 			GC.KeepAlive (This);
 			GC.KeepAlive (randomSource);
 			return result;
@@ -43,7 +43,7 @@ namespace GameplayKit {
 		[Export ("shuffledArray")]
 		public static T [] GetShuffledArray<T> (this NSArray This) where T : class, INativeObject
 		{
-			T [] result = NSArray.ArrayFromHandle<T> (Messaging.IntPtr_objc_msgSend (This.Handle, Selector.GetHandle ("shuffledArray")));
+			var result = NSArray.NonNullArrayFromHandleDropNullElements<T> (Messaging.IntPtr_objc_msgSend (This.Handle, Selector.GetHandle ("shuffledArray")));
 			GC.KeepAlive (This);
 			return result;
 		}

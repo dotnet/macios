@@ -70,7 +70,7 @@ namespace Foundation {
 		public T [] ToArray<T> () where T : class, INativeObject
 		{
 			IntPtr nsarr = _ToArray ();
-			return NSArray.ArrayFromHandle<T> (nsarr);
+			return NSArray.NonNullArrayFromHandleDropNullElements<T> (nsarr, nsNullElementBehavior: NSNullBehavior.DropIfIncompatible);
 		}
 
 		/// <summary>Creates a new <see cref="NSOrderedSet" /> from an array of strongly typed values.</summary>

@@ -286,11 +286,11 @@ namespace MediaPlayer {
 				DefaultPlaybackRate = (result as NSNumber)?.DoubleValue;
 
 			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyAvailableLanguageOptions, out result)) {
-				AvailableLanguageOptions = NSArray.ArrayFromHandle<MPNowPlayingInfoLanguageOptionGroup> (result.Handle);
+				AvailableLanguageOptions = NSArray.ArrayFromHandleDropNullElements<MPNowPlayingInfoLanguageOptionGroup> (result.Handle);
 				GC.KeepAlive (result);
 			}
 			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyCurrentLanguageOptions, out result)) {
-				CurrentLanguageOptions = NSArray.ArrayFromHandle<MPNowPlayingInfoLanguageOption> (result.Handle);
+				CurrentLanguageOptions = NSArray.ArrayFromHandleDropNullElements<MPNowPlayingInfoLanguageOption> (result.Handle);
 				GC.KeepAlive (result);
 			}
 			if (TryGetValue (source, MPNowPlayingInfoCenter.PropertyCollectionIdentifier, out result))

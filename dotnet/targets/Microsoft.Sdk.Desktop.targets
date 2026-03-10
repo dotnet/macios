@@ -15,7 +15,9 @@
 			<_OpenArguments Condition="'$(StandardInputPath)' != ''">$(_OpenArguments) --stdin "$(StandardInputPath)"</_OpenArguments>
 			<_OpenArgumentsPre Condition="'$(OpenNewInstance)' == 'true'">-n </_OpenArgumentsPre>
 			<_OpenArgumentsPre Condition="'$(OpenWaitForExit)' == 'true'">$(_OpenArgumentsPre) -W </_OpenArgumentsPre>
-			<_OpenArguments>$(_OpenArguments) $(RunEnvironment)</_OpenArguments>
+			<_OpenRunEnvironment>$(RunEnvironment)</_OpenRunEnvironment>
+			<_OpenRunEnvironment>$(_OpenRunEnvironment) @(RuntimeEnvironmentVariable->'--env "%(Identity)=%(Value)"', ' ')</_OpenRunEnvironment>
+			<_OpenArguments>$(_OpenArguments) $(_OpenRunEnvironment)</_OpenArguments>
 			<RunCommand>open</RunCommand>
 			<RunArguments>$(_OpenArgumentsPre) -a "$(TargetDir)/$(_AppBundleName).app" $(OpenArguments) $(_OpenArguments) --args</RunArguments>
 		</PropertyGroup>

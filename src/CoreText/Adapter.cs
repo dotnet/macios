@@ -84,9 +84,7 @@ namespace CoreText {
 			var cfArrayRef = CFDictionary.GetValue (dictionary.Handle, key.Handle);
 			GC.KeepAlive (dictionary);
 			GC.KeepAlive (key);
-			if (cfArrayRef == NativeHandle.Zero || CFArray.GetCount (cfArrayRef) == 0)
-				return new T [0];
-			return NSArray.ArrayFromHandle (cfArrayRef, converter);
+			return NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, converter);
 		}
 
 		public static float? GetSingleValue (IDictionary<NSObject, NSObject> dictionary, NSObject? key)

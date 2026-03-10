@@ -16,9 +16,9 @@ namespace GameplayKit {
 		///         <summary>Returns the array of <see cref="GameplayKit.GKGraphNode2D" /> corresponding to the <paramref name="obstacle" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		public GKGraphNode2D [] GetNodes (GKPolygonObstacle obstacle)
+		public GKGraphNode2D []? GetNodes (GKPolygonObstacle obstacle)
 		{
-			return NSArray.ArrayFromHandle<GKGraphNode2D> (_GetNodes (obstacle));
+			return NSArray.ArrayFromHandleDropNullElements<GKGraphNode2D> (_GetNodes (obstacle));
 		}
 	}
 
@@ -67,9 +67,9 @@ namespace GameplayKit {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		public new NodeType [] GetNodes (GKPolygonObstacle obstacle)
+		public new NodeType []? GetNodes (GKPolygonObstacle obstacle)
 		{
-			return NSArray.ArrayFromHandle<NodeType> (_GetNodes (obstacle));
+			return NSArray.ArrayFromHandleDropNullElements<NodeType> (_GetNodes (obstacle));
 		}
 	}
 }

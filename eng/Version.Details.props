@@ -30,7 +30,7 @@ This file should be imported by eng/Versions.props
   </PropertyGroup>
   <!--Property group for alternate package version names-->
   <PropertyGroup>
-    <!-- dotnet/dotnet dependencies -->
+    <!-- dotnet-dotnet dependencies -->
     <MicrosoftDotNetArcadeSdkVersion>$(MicrosoftDotNetArcadeSdkPackageVersion)</MicrosoftDotNetArcadeSdkVersion>
     <MicrosoftDotNetBuildTasksFeedVersion>$(MicrosoftDotNetBuildTasksFeedPackageVersion)</MicrosoftDotNetBuildTasksFeedVersion>
     <MicrosoftDotNetCecilVersion>$(MicrosoftDotNetCecilPackageVersion)</MicrosoftDotNetCecilVersion>
@@ -41,7 +41,7 @@ This file should be imported by eng/Versions.props
     <MicrosoftNETSdkVersion>$(MicrosoftNETSdkPackageVersion)</MicrosoftNETSdkVersion>
     <MicrosoftNETCoreAppRefVersion>$(MicrosoftNETCoreAppRefPackageVersion)</MicrosoftNETCoreAppRefVersion>
     <MicrosoftTemplateEngineAuthoringTasksVersion>$(MicrosoftTemplateEngineAuthoringTasksPackageVersion)</MicrosoftTemplateEngineAuthoringTasksVersion>
-    <!-- dotnet/macios dependencies -->
+    <!-- dotnet-macios dependencies -->
     <MicrosoftiOSSdknet100_260Version>$(MicrosoftiOSSdknet100_260PackageVersion)</MicrosoftiOSSdknet100_260Version>
     <MicrosoftiOSSdknet100_262Version>$(MicrosoftiOSSdknet100_262PackageVersion)</MicrosoftiOSSdknet100_262Version>
     <MicrosoftMacCatalystSdknet100_260Version>$(MicrosoftMacCatalystSdknet100_260PackageVersion)</MicrosoftMacCatalystSdknet100_260Version>

@@ -3560,9 +3560,7 @@ namespace CoreText {
 		public CTFontTable [] GetAvailableTables (CTFontTableOptions options)
 		{
 			var cfArrayRef = CTFontCopyAvailableTables (Handle, options);
-			if (cfArrayRef == IntPtr.Zero)
-				return Array.Empty<CTFontTable> ();
-			return NSArray.ArrayFromHandle (cfArrayRef, v => {
+			return NSArray.NonNullArrayFromHandle (cfArrayRef, v => {
 				return (CTFontTable) (uint) (IntPtr) v;
 			}, true);
 		}

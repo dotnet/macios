@@ -316,8 +316,12 @@ stages:
             return ($result -eq 'Succeeded' -or $result -eq 'SucceededWithIssues')
         }
 
+        function Test-JobAcceptable([string] $result) {
+            return (Test-JobSucceeded $result) -or ($result -eq 'Skipped')
+        }
+
         $allSucceeded = (Test-JobSucceeded $signingResult) `
-                    -and (Test-JobSucceeded $nugetConvertResult) `
+                    -and (Test-JobAcceptable $nugetConvertResult) `
                     -and (-not $pushNugetsEnabled -or (Test-JobSucceeded $pushNugetsResult))
 
         $content = [System.Text.StringBuilder]::new()
@@ -347,55 +351,59 @@ stages:
                 $content.AppendLine("| Push NuGets | $(Get-ResultText $pushNugetsResult) |")
             }
             $content.AppendLine()
-        } else {
-            $nugetDir = Join-Path $Env:BUILD_STAGINGDIRECTORY "nuget-signed"
-            if (Test-Path $nugetDir) {
-                $nupkgs = Get-ChildItem -Path $nugetDir -Recurse -Filter "*.nupkg" |
-                    Where-Object { $_.Name -notlike "*.symbols.nupkg" } |
-                    Select-Object -ExpandProperty Name |
-                    Sort-Object
+        }
 
-                if ($nupkgs.Count -gt 0) {
-                    $platforms = [ordered]@{
-                        "iOS" = [System.Collections.ArrayList]@()
-                        "MacCatalyst" = [System.Collections.ArrayList]@()
-                        "macOS" = [System.Collections.ArrayList]@()
-                        "tvOS" = [System.Collections.ArrayList]@()
-                        "Other" = [System.Collections.ArrayList]@()
-                    }
+        $nugetDir = Join-Path $Env:BUILD_STAGINGDIRECTORY "nuget-signed"
+        if (Test-Path $nugetDir) {
+            $nupkgs = Get-ChildItem -Path $nugetDir -Recurse -Filter "*.nupkg" |
+                Where-Object { $_.Name -notlike "*.symbols.nupkg" } |
+                Select-Object -ExpandProperty Name |
+                Sort-Object
 
-                    foreach ($nupkg in $nupkgs) {
-                        if ($nupkg -match '(?i)^Microsoft\.(iOS|NET\.Sdk\.iOS)') {
-                            $null = $platforms["iOS"].Add($nupkg)
-                        } elseif ($nupkg -match '(?i)^Microsoft\.(MacCatalyst|NET\.Sdk\.MacCatalyst)') {
-                            $null = $platforms["MacCatalyst"].Add($nupkg)
-                        } elseif ($nupkg -match '(?i)^Microsoft\.(macOS|NET\.Sdk\.macOS)') {
-                            $null = $platforms["macOS"].Add($nupkg)
-                        } elseif ($nupkg -match '(?i)^Microsoft\.(tvOS|NET\.Sdk\.tvOS)') {
-                            $null = $platforms["tvOS"].Add($nupkg)
-                        } else {
-                            $null = $platforms["Other"].Add($nupkg)
-                        }
-                    }
-
-                    $content.AppendLine("<details>")
-                    $content.AppendLine("<summary>:package: Published NuGet packages ($($nupkgs.Count) packages)</summary>")
-                    $content.AppendLine()
-
-                    foreach ($platform in $platforms.Keys) {
-                        $pkgs = $platforms[$platform]
-                        if ($pkgs.Count -gt 0) {
-                            $content.AppendLine("#### $platform")
-                            foreach ($pkg in $pkgs) {
-                                $content.AppendLine("- ``$pkg``")
-                            }
-                            $content.AppendLine()
-                        }
-                    }
-
-                    $content.AppendLine("</details>")
-                    $content.AppendLine()
+            if ($nupkgs.Count -gt 0) {
+                $platforms = [ordered]@{
+                    "iOS" = [System.Collections.ArrayList]@()
+                    "MacCatalyst" = [System.Collections.ArrayList]@()
+                    "macOS" = [System.Collections.ArrayList]@()
+                    "tvOS" = [System.Collections.ArrayList]@()
+                    "Other" = [System.Collections.ArrayList]@()
                 }
+
+                foreach ($nupkg in $nupkgs) {
+                    if ($nupkg -match '(?i)^Microsoft\.(iOS|NET\.Sdk\.iOS)') {
+                        $null = $platforms["iOS"].Add($nupkg)
+                    } elseif ($nupkg -match '(?i)^Microsoft\.(MacCatalyst|NET\.Sdk\.MacCatalyst)') {
+                        $null = $platforms["MacCatalyst"].Add($nupkg)
+                    } elseif ($nupkg -match '(?i)^Microsoft\.(macOS|NET\.Sdk\.macOS)') {
+                        $null = $platforms["macOS"].Add($nupkg)
+                    } elseif ($nupkg -match '(?i)^Microsoft\.(tvOS|NET\.Sdk\.tvOS)') {
+                        $null = $platforms["tvOS"].Add($nupkg)
+                    } else {
+                        $null = $platforms["Other"].Add($nupkg)
+                    }
+                }
+
+                $content.AppendLine("<details>")
+                if ($allSucceeded) {
+                    $content.AppendLine("<summary>:package: Published NuGet packages ($($nupkgs.Count) packages)</summary>")
+                } else {
+                    $content.AppendLine("<summary>:package: Signed NuGet packages ($($nupkgs.Count) packages)</summary>")
+                }
+                $content.AppendLine()
+
+                foreach ($platform in $platforms.Keys) {
+                    $pkgs = $platforms[$platform]
+                    if ($pkgs.Count -gt 0) {
+                        $content.AppendLine("#### $platform")
+                        foreach ($pkg in $pkgs) {
+                            $content.AppendLine("- ``$pkg``")
+                        }
+                        $content.AppendLine()
+                    }
+                }
+
+                $content.AppendLine("</details>")
+                $content.AppendLine()
             }
         }
 

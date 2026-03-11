@@ -1,4 +1,0 @@
-!missing-enum-value! AXSettingsFeature native value AXSettingsFeatureCaptionStyles = 6 not bound
-!missing-field! AXReduceHighlightingEffectsEnabledDidChangeNotification not bound
-!missing-pinvoke! AXOpenSettingsFeatureIsSupported is not bound
-!missing-pinvoke! AXReduceHighlightingEffectsEnabled is not bound

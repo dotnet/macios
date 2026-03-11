@@ -70,16 +70,17 @@ namespace Foundation {
 			return config;
 		}
 
+		/// <summary>Gets or sets the proxy configurations for this session.</summary>
+		/// <value>An array of <see cref="Network.NWProxyConfig" /> objects representing the proxy configurations.</value>
 		[SupportedOSPlatform ("ios17.0")]
 		[SupportedOSPlatform ("macos14.0")]
 		[SupportedOSPlatform ("maccatalyst17.0")]
 		[SupportedOSPlatform ("tvos17.0")]
 		public NWProxyConfig [] ProxyConfigurations {
-			get => NSArray.ArrayFromHandleFunc (_ProxyConfigurations, handle => new NWProxyConfig (handle, owns: false));
+			get => NSArray.NonNullArrayFromHandleDropNullElements (_ProxyConfigurations, handle => new NWProxyConfig (handle, owns: false));
 			set {
-				var arr = NSArray.FromNSObjects (value);
-				_ProxyConfigurations = arr.Handle;
-				GC.KeepAlive (arr);
+				using var arr = NSArray.FromNSObjects (value);
+				_ProxyConfigurations = arr.GetHandle ();
 			}
 		}
 

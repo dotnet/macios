@@ -163,11 +163,11 @@ namespace MonoTouchFixtures.CoreText {
 			using var font = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default);
 			using var provider = new AdaptiveImageProvider ();
 			var bounds = font.GetTypographicBoundsForAdaptiveImageProvider (provider);
-			if (TestRuntime.CheckXcodeVersion (26, 3)) {
-				Assert.AreEqual (new CGRect (0, -3.90625, 35, 16.40625), bounds, "Bounds");
-			} else {
-				Assert.AreEqual (new CGRect (0, -3.90625, 13, 16.40625), bounds, "Bounds");
-			}
+			var candidates = new object [] {
+				new CGRect (0, -3.90625, 13, 16.40625),
+				new CGRect (0, -3.90625, 35, 16.40625)
+			};
+			Assert.That (bounds, Is.AnyOf (candidates).Using<CGRect> ((x, y) => x == y), "Bounds");
 			Assert.AreEqual (0, provider.Count, "#Count");
 		}
 

@@ -48,10 +48,10 @@ namespace CoreGraphics {
 		{
 		}
 
-		static CGFont Create (IntPtr handle)
+		static CGFont? Create (IntPtr handle)
 		{
 			if (handle == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handle));
+				return null;
 			return new CGFont (handle, true);
 		}
 
@@ -121,12 +121,8 @@ namespace CoreGraphics {
 			// and have a unit tests to make sure this behavior does not change over time
 			if (name is null)
 				return null;
-			var nameHandle = CFString.CreateNative (name);
-			try {
-				return Create (CGFontCreateWithFontName (nameHandle));
-			} finally {
-				CFString.ReleaseNative (nameHandle);
-			}
+			var nameHandle = new TransientCFString (name);
+			return Create (CGFontCreateWithFontName (nameHandle));
 		}
 
 		//[DllImport (Constants.CoreGraphicsLibrary)]

@@ -125,11 +125,6 @@ namespace Security {
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void RequestSharedWebCredential (string? domainName, string? account, Action<SecSharedCredentialInfo []?, NSError?> handler)
 		{
-			Action<NSArray, NSError> onComplete = (NSArray a, NSError e) => {
-				var creds = NSArray.NonNullDictionaryArrayFromHandleDropNullElements<SecSharedCredentialInfo> (a.Handle, (dict) => new SecSharedCredentialInfo (dict));
-				GC.KeepAlive (a);
-				handler (creds, e);
-			};
 			// we need to create our own block literal.
 			using var nsDomain = (NSString?) domainName;
 			using var nsAccount = (NSString?) account;

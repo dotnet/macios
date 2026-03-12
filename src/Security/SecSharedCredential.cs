@@ -123,7 +123,7 @@ namespace Security {
 		[ObsoletedOSPlatform ("ios14.0", "Use 'ASAuthorizationPasswordRequest' instead.")]
 		[UnsupportedOSPlatform ("tvos")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		public static void RequestSharedWebCredential (string domainName, string account, Action<SecSharedCredentialInfo []?, NSError?> handler)
+		public static void RequestSharedWebCredential (string? domainName, string? account, Action<SecSharedCredentialInfo []?, NSError?> handler)
 		{
 			Action<NSArray, NSError> onComplete = (NSArray a, NSError e) => {
 				var creds = NSArray.NonNullDictionaryArrayFromHandleDropNullElements<SecSharedCredentialInfo> (a.Handle, (dict) => new SecSharedCredentialInfo (dict));

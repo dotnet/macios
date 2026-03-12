@@ -817,7 +817,7 @@ namespace Foundation {
 		///     <code lang="c#"><![CDATA[
 		/// NSArray someArray = ...;
 		///
-		/// var myImages = NSArray.FromArray<CGImage> (someArray);
+		/// var myImages = NSArray.FromArrayNative<CGImage> (someArray);
 		/// ]]></code>
 		///   </example>
 		/// </remarks>

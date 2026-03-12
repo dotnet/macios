@@ -75,7 +75,7 @@ namespace MonoTests.System.Net.Http {
 				// * Add a Thread.Sleep before creating the second NSUrlSessionHandler - but this will slow down every test run,
 				// * Wait for the session to become invalid in NSUrlSessionHandler (add a 'DidBecomeInvalid' implementation, and wait for that in Dispose) - which may unnecessarily slow down working code.
 				// * Detect this scenario here, and just mark the test as inconclusive. The test does something somewhat unusual (create two background sessions with the same identifier in quick succession), so this seems like the best approach for now.
-				Assert.Inconclusive ("The previous background session wasn't fully invalidated before we tried to create a new background (with the same identifier)");
+				Assert.Inconclusive ("The previous background session wasn't fully invalidated before we tried to create a new background session (with the same identifier)");
 			}
 			Assert.IsNull (ex, "Second request exception");
 		}

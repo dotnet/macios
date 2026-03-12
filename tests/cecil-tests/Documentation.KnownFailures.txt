@@ -20996,7 +20996,6 @@ P:Foundation.INSObjectProtocol.DebugDescription
 P:Foundation.INSProgressReporting.Progress
 P:Foundation.NSArchiveReplaceEventArgs.NewObject
 P:Foundation.NSArchiveReplaceEventArgs.OldObject
-P:Foundation.NSArray`1.Item(System.IntPtr)
 P:Foundation.NSAttributedStringDocumentAttributes.Appearance
 P:Foundation.NSAttributedStringDocumentAttributes.Author
 P:Foundation.NSAttributedStringDocumentAttributes.BottomMargin
@@ -21037,7 +21036,6 @@ P:Foundation.NSFileManager.TemporaryDirectory
 P:Foundation.NSFileManager.UserName
 P:Foundation.NSMetadataItem.UbiquitousItemDownloadingStatus
 P:Foundation.NSMorphology.Unspecified
-P:Foundation.NSMutableArray`1.Item(System.UIntPtr)
 P:Foundation.NSMutableData.Item(System.IntPtr)
 P:Foundation.NSNetDomainEventArgs.Domain
 P:Foundation.NSNetDomainEventArgs.MoreComing
@@ -23188,8 +23186,6 @@ P:PassKit.PKVehicleConnectionSession.Delegate
 P:PassKit.PKVehicleConnectionSession.WeakDelegate
 P:PdfKit.IPdfViewDelegate.ParentViewController
 P:PdfKit.PdfAnnotation.ActivatableTextField
-P:PdfKit.PdfAnnotationMarkup.QuadrilateralPoints
-P:PdfKit.PdfBorder.DashPattern
 P:PdfKit.PdfDocument.AccessPermissions
 P:PdfKit.PdfDocument.GetClassForAnnotationClass
 P:PdfKit.PdfDocumentWriteOptions.AccessPermissions

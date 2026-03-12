@@ -627,34 +627,4 @@ interface GoodClass {
 """;
 		bindings.AssertSuccess (expectedBindings);
 	}
-
-	[Test]
-	public void HandleCrash_ReportsUsefulError ()
-	{
-		// Verify that when ClangSharp throws an ArgumentOutOfRangeException for a handle,
-		// the error message is actionable rather than opaque.
-		var result = new BindingResult ();
-		var exception = new ArgumentOutOfRangeException ("handle", "some internal value");
-		result.ReportUnexpectedError (exception);
-
-		Assert.That (result.Errors.Count, Is.EqualTo (1), "Expected one error");
-		var error = result.Errors [0];
-		Assert.That (error.Code, Is.EqualTo (0), "Error code");
-		Assert.That (error.Message, Does.Contain ("too complex"), "Error should mention complexity");
-		Assert.That (error.Message, Does.Contain ("--scope"), "Error should suggest --scope");
-		Assert.That (error.Message, Does.Not.Contain ("handle"), "Error should not expose raw parameter name");
-	}
-
-	[Test]
-	public void HandleCrash_OtherExceptionsUnchanged ()
-	{
-		// Verify that non-handle ArgumentOutOfRangeExceptions still report the original message.
-		var result = new BindingResult ();
-		var exception = new InvalidOperationException ("Something went wrong.");
-		result.ReportUnexpectedError (exception);
-
-		Assert.That (result.Errors.Count, Is.EqualTo (1), "Expected one error");
-		var error = result.Errors [0];
-		Assert.That (error.Message, Does.Contain ("Something went wrong"), "Should contain original message");
-	}
 }

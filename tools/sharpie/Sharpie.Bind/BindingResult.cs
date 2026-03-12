@@ -66,14 +66,7 @@ public class BindingResult {
 
 	public void ReportUnexpectedError (Exception exception)
 	{
-		if (exception is ArgumentOutOfRangeException aoore && string.Equals (aoore.ParamName, "handle", StringComparison.Ordinal)) {
-			ReportError (0 /* An unexpected error occurred: {0}. Please fill a bug report at https://github.com/dotnet/macios/issues. */,
-				"The translation unit is too complex for ClangSharp to process. " +
-				"This is typically caused by binding a very large number of headers at once. " +
-				"Try binding fewer headers at a time, or use the --scope option to limit which declarations are bound");
-		} else {
-			ReportError (0 /* An unexpected error occurred: {0}. Please fill a bug report at https://github.com/dotnet/macios/issues. */, exception.Message.TrimEnd ('.'));
-		}
+		ReportError (0 /* An unexpected error occurred: {0}. Please fill a bug report at https://github.com/dotnet/macios/issues. */, exception.Message.TrimEnd ('.'));
 	}
 
 	public void ReportInternalError (CXSourceLocation? location, string message)

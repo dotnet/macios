@@ -810,7 +810,7 @@ namespace Foundation {
 		/// <summary>Returns a strongly-typed C# array of the parametrized type from a weakly typed NSArray.</summary>
 		/// <typeparam name="T">Parameter type, determines the kind of array returned, can be either an <see cref="NSObject" />, or other CoreGraphics data types.</typeparam>
 		/// <param name="weakArray">Handle to a weakly typed NSArray.</param>
-		/// <returns>An C# array with the values.</returns>
+		/// <returns>A C# array with the values.</returns>
 		/// <remarks>
 		///   <para>Use this method to get a set of NSObject arrays from an NSArray.</para>
 		///   <example>

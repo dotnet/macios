@@ -6,7 +6,7 @@ using CoreGraphics;
 namespace CoreAnimation {
 	public partial class CAKeyFrameAnimation {
 		/// <summary>Returns the elements of the key frame animation as an array of strongly typed values of <see cref="NSObject" /> or CoreGraphics objects.</summary>
-		/// <typeparam name="T">Generic type to get teh values as.</typeparam>
+		/// <typeparam name="T">Generic type to get the values as.</typeparam>
 		public T []? GetValuesAs<T> () where T : class, INativeObject
 		{
 			return NSArray.FromArrayNative<T> (_Values);

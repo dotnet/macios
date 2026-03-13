@@ -64,6 +64,8 @@
 		<ProjectCapability Include="Apple" />
 		<ProjectCapability Include="Mobile" />
 		<ProjectCapability Include="RuntimeEnvironmentVariableSupport" />
+		<!-- We have to use a network connection (web sockets) to connect hot reload / dotnet watch when running on device, so enable that. Since this also works locally (simulator/desktop), just enable it always -->
+		<ProjectCapability Include="HotReloadWebSockets" />
 		
 		<ProjectCapability Include="IOSApplication" Condition="'$(_ProjectType)' == 'iOSExecutableProject'" />
 		<ProjectCapability Include="IOSAppExtension" Condition="'$(_ProjectType)' == 'iOSAppExtensionProject'" />
@@ -2560,6 +2562,28 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 				<PublishFolderType>None</PublishFolderType>
 			</ReferenceCopyLocalPaths>
 		</ItemGroup>
+	</Target>
+
+	<!--
+		Validate that the build configuration will work for Hot Reload.
+		This target is executed when doing 'dotnet run'
+	-->
+	<Target Name="_ValidateHotReloadConfiguration">
+		<ItemGroup>
+			<_HotReloadVariable Include="@(RuntimeEnvironmentVariable)" Condition="'%(Identity)' == 'DOTNET_WATCH' And '%(Value)' == '1'" />
+		</ItemGroup>
+		<PropertyGroup Condition="@(_HotReloadVariable->Count()) &gt; 0">
+			<_IsHotReloadLaunch>true</_IsHotReloadLaunch>
+		</PropertyGroup>
+
+		<Error
+			Condition="'$(_IsHotReloadLaunch)' == 'true' And '$(UseMonoRuntime)' == 'true' And '$(MtouchInterpreter)' == ''"
+			Text="Can't use Hot Reload or 'dotnet watch' unless the interpreter is enabled. Set 'UseInterpreter=true' in the project file to use the interpreter."
+			/>
+		<Error
+			Condition="'$(_IsHotReloadLaunch)' == 'true' And '$(_AreAnyAssembliesTrimmed)' == 'true'"
+			Text="Can't use Hot Reload or 'dotnet watch' if any assemblies are trimmed. Set 'MtouchLink=None' in the project file to disable trimming."
+			/>
 	</Target>
 
 	<!-- Import existing targets -->

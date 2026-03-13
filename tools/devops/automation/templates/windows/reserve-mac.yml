@@ -102,6 +102,7 @@ steps:
 - task: xamops.azdevex.provisionator-task.provisionator@3
   displayName: 'Provision Xcode'
   inputs:
+    provisionator_uri: https://dl.internalx.com/provisionator/664bd334021e3102cdef1af66c4fc9f1b2ecd2a21b47419e80d08da1f6c61c2a
     provisioning_script: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/provision-xcode.csx
     provisioning_extra_args: '-vvvv'
     github_token: ${{ parameters.gitHubToken }}

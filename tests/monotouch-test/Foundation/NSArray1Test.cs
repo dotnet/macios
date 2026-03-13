@@ -488,5 +488,76 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.NotNull (diff, "Not null");
 		}
 #endif
+
+		[Test]
+		public void FromArrayOfArray ()
+		{
+			var inner1 = NSArray.FromNSObjects ((NSString) "a", (NSString) "b");
+			var inner2 = NSArray.FromNSObjects ((NSString) "c");
+			using var outer = NSArray.FromNSObjects (inner1, inner2);
+
+			var result = NSArray.FromArrayOfArray (outer);
+
+			Assert.IsNotNull (result, "result");
+			Assert.AreEqual (2, result!.Length, "outer length");
+			Assert.AreEqual (2, result [0].Length, "inner1 length");
+			Assert.AreEqual (1, result [1].Length, "inner2 length");
+			Assert.AreEqual ("a", result [0] [0].ToString (), "inner1[0]");
+			Assert.AreEqual ("b", result [0] [1].ToString (), "inner1[1]");
+			Assert.AreEqual ("c", result [1] [0].ToString (), "inner2[0]");
+		}
+
+		[Test]
+		public void FromArrayOfArray_Null ()
+		{
+			var result = NSArray.FromArrayOfArray (null);
+			Assert.IsNull (result, "result");
+		}
+
+		[Test]
+		public void From_JaggedArray ()
+		{
+			var items = new NSObject [] [] {
+				new NSObject [] { (NSString) "x", (NSString) "y" },
+				new NSObject [] { (NSString) "z" },
+			};
+
+			using var arr = NSArray.From (items);
+
+			Assert.IsNotNull (arr, "arr");
+			Assert.AreEqual ((nuint) 2, arr!.Count, "outer count");
+			var row0 = arr.GetItem<NSArray> (0)!;
+			var row1 = arr.GetItem<NSArray> (1)!;
+			Assert.AreEqual ((nuint) 2, row0.Count, "row0 count");
+			Assert.AreEqual ((nuint) 1, row1.Count, "row1 count");
+		}
+
+		[Test]
+		public void From_JaggedArray_Null ()
+		{
+			var result = NSArray.From ((NSObject [] []?) null);
+			Assert.IsNull (result, "result");
+		}
+
+		[Test]
+		public void FromArrayOfArray_Roundtrip ()
+		{
+			var original = new NSObject [] [] {
+				new NSObject [] { (NSString) "1", (NSString) "2" },
+				new NSObject [] { (NSString) "3" },
+			};
+
+			using var native = NSArray.From (original);
+			Assert.IsNotNull (native, "native");
+
+			var roundtripped = NSArray.FromArrayOfArray (native);
+			Assert.IsNotNull (roundtripped, "roundtripped");
+			Assert.AreEqual (original.Length, roundtripped!.Length, "outer length");
+			Assert.AreEqual (original [0].Length, roundtripped [0].Length, "inner0 length");
+			Assert.AreEqual (original [1].Length, roundtripped [1].Length, "inner1 length");
+			Assert.AreEqual ("1", roundtripped [0] [0].ToString (), "[0][0]");
+			Assert.AreEqual ("2", roundtripped [0] [1].ToString (), "[0][1]");
+			Assert.AreEqual ("3", roundtripped [1] [0].ToString (), "[1][0]");
+		}
 	}
 }

@@ -23,3 +23,4 @@
 | RBI0017 | Usage    | Error    | Field used with the wrong flag.                                                      |
 | RBI0018 | Usage    | Error    | The export attribute must have a nonnull selector.                                   |
 | RBI0019 | Usage    | Error    | The selector string cannot contain any whitespace characters.                        |
+| RBI0042 | Usage    | Error    | Transient disposable type not declared with 'using'.                                 |

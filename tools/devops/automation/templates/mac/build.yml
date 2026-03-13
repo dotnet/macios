@@ -104,7 +104,7 @@ steps:
 
   displayName: 'Set VM Vendor'
 
-- task: xamops.azdevex.provisionator-task.provisionator@2
+- task: xamops.azdevex.provisionator-task.provisionator@3
   displayName: 'Provision Brew components'
   inputs:
     provisioning_script: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/provision-brew-packages.csx

@@ -85,7 +85,7 @@ steps:
       make -C $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops provisioning
     displayName: 'Generate provisionator files.'
 
-  - task: xamops.azdevex.provisionator-task.provisionator@2
+  - task: xamops.azdevex.provisionator-task.provisionator@3
     displayName: 'Provision Products & Frameworks'
     inputs:
       provisioning_script: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/build-provisioning.csx

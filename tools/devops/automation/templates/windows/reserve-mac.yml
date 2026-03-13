@@ -99,7 +99,7 @@ steps:
     rm -f ~/Library/Preferences/Xamarin/Settings.plist
   displayName: 'Clear old Xcode settings'
 
-- task: xamops.azdevex.provisionator-task.provisionator@2
+- task: xamops.azdevex.provisionator-task.provisionator@3
   displayName: 'Provision Xcode'
   inputs:
     provisioning_script: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/provision-xcode.csx

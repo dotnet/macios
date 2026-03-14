@@ -111,15 +111,13 @@ steps:
   displayName: 'Check HD Free Space'
   timeoutInMinutes: 5
 
-- task: xamops.azdevex.provisionator-task.provisionator@3
-  displayName: 'Provision Brew components'
-  inputs:
-    provisionator_uri: https://dl.internalx.com/provisionator/664bd334021e3102cdef1af66c4fc9f1b2ecd2a21b47419e80d08da1f6c61c2a
+- template: ../common/provision.yml
+  parameters:
     provisioning_script: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/provision-brew-packages.csx
-    provisioning_extra_args: '-vvvv'
-    github_token: $(Github.Token)
-  timeoutInMinutes: 30
-  enabled: false
+    displayName: 'Provision Brew components'
+    provisionatorChannel: $(PROVISIONATOR_CHANNEL)
+    timeoutInMinutes: 30
+    enabled: false
 
 - bash: |
     sudo rm -Rf $(Build.SourcesDirectory)/package

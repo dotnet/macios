@@ -203,7 +203,7 @@ namespace Foundation {
 			if (!TryGetNativeValue (key, out var value))
 				return null;
 
-			return NSArray.ArrayFromHandle<T> (value);
+			return NSArray.ArrayFromHandleDropNullElements<T> (value);
 		}
 
 		/// <summary>Returns the nullable array of <typeparamref name="T" /> associated with the specified <paramref name="key" />.</summary>

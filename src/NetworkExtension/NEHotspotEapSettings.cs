@@ -22,7 +22,7 @@ namespace NetworkExtension {
 		///         <remarks>To be added.</remarks>
 		public NEHotspotConfigurationEapType [] SupportedEapTypes {
 			get {
-				return NSArray.EnumsFromHandle<NEHotspotConfigurationEapType> (_SupportedEapTypes)!;
+				return NSArray.NonNullEnumsFromHandle<NEHotspotConfigurationEapType> (_SupportedEapTypes);
 			}
 			set {
 				if (value is null)

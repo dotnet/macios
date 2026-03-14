@@ -1,8 +1,8 @@
 <Dependencies>
   <ProductDependencies>
-    <Dependency Name="Microsoft.NET.Sdk" Version="10.0.300-preview.26153.116">
+    <Dependency Name="Microsoft.NET.Sdk" Version="10.0.300-preview.26160.113">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>cdfa38403fbb85d0c2f582b8dbc522c1df9a9b83</Sha>
+      <Sha>37ac471dd9cf9b9b784497fa71dcce9045eb1a78</Sha>
     </Dependency>
     <Dependency Name="Microsoft.NET.ILLink" Version="10.0.3-servicing.26070.104">
       <Uri>https://github.com/dotnet/dotnet</Uri>
@@ -60,21 +60,21 @@
       <Sha>797d30720e5e629d23eb146935da94cb1b61047e</Sha>
     </Dependency>
     <!-- This is a subscription of the .NET 9/Xcode 26.2 versions of our packages -->
-    <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_26.2" Version="26.2.9001">
+    <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_26.2" Version="26.2.9002">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>42038e186c8e8d9ce0f4a4ff0961bb2b061a35eb</Sha>
+      <Sha>b34b8d33dfd662493a68b1e443fa04071eebe2b6</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.macOS.Sdk.net9.0_26.2" Version="26.2.9001">
+    <Dependency Name="Microsoft.macOS.Sdk.net9.0_26.2" Version="26.2.9002">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>42038e186c8e8d9ce0f4a4ff0961bb2b061a35eb</Sha>
+      <Sha>b34b8d33dfd662493a68b1e443fa04071eebe2b6</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.iOS.Sdk.net9.0_26.2" Version="26.2.9001">
+    <Dependency Name="Microsoft.iOS.Sdk.net9.0_26.2" Version="26.2.9002">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>42038e186c8e8d9ce0f4a4ff0961bb2b061a35eb</Sha>
+      <Sha>b34b8d33dfd662493a68b1e443fa04071eebe2b6</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.tvOS.Sdk.net9.0_26.2" Version="26.2.9001">
+    <Dependency Name="Microsoft.tvOS.Sdk.net9.0_26.2" Version="26.2.9002">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>42038e186c8e8d9ce0f4a4ff0961bb2b061a35eb</Sha>
+      <Sha>b34b8d33dfd662493a68b1e443fa04071eebe2b6</Sha>
     </Dependency>
     <!-- This is a subscription of the .NET 10/Xcode 26.0 versions of our packages -->
     <Dependency Name="Microsoft.MacCatalyst.Sdk.net10.0_26.0" Version="26.0.11017">
@@ -95,25 +95,25 @@
     </Dependency>
   </ProductDependencies>
   <ToolsetDependencies>
-    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.26153.116">
+    <Dependency Name="Microsoft.DotNet.Build.Tasks.Feed" Version="10.0.0-beta.26160.113">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>cdfa38403fbb85d0c2f582b8dbc522c1df9a9b83</Sha>
+      <Sha>37ac471dd9cf9b9b784497fa71dcce9045eb1a78</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.SharedFramework.Sdk" Version="10.0.0-beta.26153.116">
+    <Dependency Name="Microsoft.DotNet.SharedFramework.Sdk" Version="10.0.0-beta.26160.113">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>cdfa38403fbb85d0c2f582b8dbc522c1df9a9b83</Sha>
+      <Sha>37ac471dd9cf9b9b784497fa71dcce9045eb1a78</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.TemplateEngine.Authoring.Tasks" Version="10.0.300-preview.26153.116">
+    <Dependency Name="Microsoft.TemplateEngine.Authoring.Tasks" Version="10.0.300-preview.26160.113">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>cdfa38403fbb85d0c2f582b8dbc522c1df9a9b83</Sha>
+      <Sha>37ac471dd9cf9b9b784497fa71dcce9045eb1a78</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.26117.1">
+    <Dependency Name="Microsoft.DotNet.XHarness.iOS.Shared" Version="11.0.0-prerelease.26160.2">
       <Uri>https://github.com/dotnet/xharness</Uri>
-      <Sha>0eeaa60169fe6a95932d29d822e20eb225ce0143</Sha>
+      <Sha>c32a7777a0f8f7a4fc8d9920d445f5f4b5658d38</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.26153.116">
+    <Dependency Name="Microsoft.DotNet.Arcade.Sdk" Version="10.0.0-beta.26160.113">
       <Uri>https://github.com/dotnet/dotnet</Uri>
-      <Sha>cdfa38403fbb85d0c2f582b8dbc522c1df9a9b83</Sha>
+      <Sha>37ac471dd9cf9b9b784497fa71dcce9045eb1a78</Sha>
       <SourceBuild RepoName="arcade" ManagedOnly="true" />
     </Dependency>
   </ToolsetDependencies>

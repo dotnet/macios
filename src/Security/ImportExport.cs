@@ -45,7 +45,7 @@ namespace Security {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		static public SecStatusCode ImportPkcs12 (byte [] buffer, NSDictionary options, out NSDictionary [] array)
+		static public SecStatusCode ImportPkcs12 (byte [] buffer, NSDictionary options, out NSDictionary []? array)
 		{
 			using (NSData data = NSData.FromArray (buffer)) {
 				return ImportPkcs12 (data, options, out array);
@@ -58,7 +58,7 @@ namespace Security {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		static public SecStatusCode ImportPkcs12 (NSData data, NSDictionary options, out NSDictionary [] array)
+		static public SecStatusCode ImportPkcs12 (NSData data, NSDictionary options, out NSDictionary []? array)
 		{
 			if (options is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (options));
@@ -70,8 +70,7 @@ namespace Security {
 				GC.KeepAlive (data);
 				GC.KeepAlive (options);
 			}
-			array = NSArray.ArrayFromHandle<NSDictionary> (handle);
-			NSObject.DangerousRelease (handle);
+			array = NSArray.ArrayFromHandleDropNullElements<NSDictionary> (handle, releaseHandle: true);
 			return code;
 		}
 	}

@@ -16,7 +16,7 @@ namespace MetalKit {
 		///         <summary>Creates and returns a new Metal Kit mesh from the supplied Model IO asset.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		public static MTKMesh []? FromAsset (MDLAsset asset, IMTLDevice device, out MDLMesh [] sourceMeshes, out NSError error)
+		public static MTKMesh []? FromAsset (MDLAsset asset, IMTLDevice device, out MDLMesh []? sourceMeshes, out NSError error)
 		{
 			NSArray aret;
 

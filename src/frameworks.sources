@@ -870,6 +870,7 @@ FOUNDATION_SOURCES = \
 	Foundation/NSNetService.cs \
 	Foundation/NSNotificationCenter.cs \
 	Foundation/NSNull.cs \
+	Foundation/NSNullBehavior.cs \
 	Foundation/NSOrderedSet.cs \
 	Foundation/NSOrderedSet_1.cs \
 	Foundation/NSOutputStream.cs \

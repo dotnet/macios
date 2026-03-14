@@ -189,7 +189,7 @@ namespace CoreServices {
 			if (url is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (url));
 
-			var result = NSArray.ArrayFromHandle<NSUrl> (
+			var result = NSArray.NonNullArrayFromHandleDropNullElements<NSUrl> (
 				LSCopyApplicationURLsForURL (url.Handle, roles),
 				releaseHandle: true
 			);
@@ -260,7 +260,7 @@ namespace CoreServices {
 
 			var bundleIdentifierHandle = CFString.CreateNative (bundleIdentifier);
 			try {
-				return NSArray.ArrayFromHandle<NSUrl> (
+				return NSArray.NonNullArrayFromHandleDropNullElements<NSUrl> (
 					LSCopyApplicationURLsForBundleIdentifier (bundleIdentifierHandle, IntPtr.Zero),
 					releaseHandle: true
 				);

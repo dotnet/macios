@@ -133,7 +133,6 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var calledOnLockPointer = false;
 			var calledOnUnlockPointer = false;
 			var calledOnReleaseInfo = false;
-			const int renderingBufferProviderSize = 512;
 
 			var calledOnResolve = false;
 			var calledOnAllocate = false;
@@ -150,10 +149,11 @@ namespace MonoTouchFixtures.CoreGraphics {
 					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
 						// TestRuntime.NSLog ($"CreateAdaptive () OnAllocate#2 info={info} parameters={parameters}");
 						calledOnAllocate = true;
+						var renderingBufferProviderSize = checked(parameters.AlignedBytesPerRow * parameters.Height);
 						var renderingBufferProvider = CGRenderingBufferProvider.Create (IntPtr.Zero, renderingBufferProviderSize,
 							lockPointer: (info) => {
 								calledOnLockPointer = true;
-								var rv = Marshal.AllocHGlobal (renderingBufferProviderSize);
+								var rv = Marshal.AllocHGlobal (checked((nint) renderingBufferProviderSize));
 								// TestRuntime.NSLog ($"CreateAdaptive3 () OnLockPointer#2 (0x{info:x}) => 0x{rv:x}");
 								return rv;
 							},

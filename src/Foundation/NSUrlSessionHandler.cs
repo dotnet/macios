@@ -782,8 +782,8 @@ namespace Foundation {
 
 			public bool Invoke (HttpRequestMessage request, SecTrust secTrust)
 			{
-				X509Certificate2 [] certificates = ConvertCertificates (secTrust);
-				X509Certificate2? certificate = certificates.Length > 0 ? certificates [0] : null;
+				var certificates = ConvertCertificates (secTrust);
+				var certificate = certificates.Length > 0 ? certificates [0] : null;
 				using X509Chain chain = CreateChain (certificates);
 				SslPolicyErrors sslPolicyErrors = EvaluateSslPolicyErrors (certificate, chain, secTrust);
 
@@ -796,6 +796,8 @@ namespace Foundation {
 
 				if (SystemVersion.IsAtLeastXcode13) {
 					var originalChain = secTrust.GetCertificateChain ();
+					if (originalChain is null)
+						return Array.Empty<X509Certificate2> ();
 					for (int i = 0; i < originalChain.Length; i++)
 						certificates [i] = originalChain [i].ToX509Certificate2 ();
 				} else {

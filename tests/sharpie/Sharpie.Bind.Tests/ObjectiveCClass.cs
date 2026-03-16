@@ -456,4 +456,175 @@ interface MyClass {
 		Assert.That (bindings.AdditionalFiles ["ApiDefinition.cs"].Trim (), Is.EqualTo (expectedApiDefinitionBindings.Trim ()), "Api definition");
 		Assert.That (bindings.AdditionalFiles ["StructsAndEnums.cs"].Trim (), Is.EqualTo (expectedStructAndEnumsBindings.Trim ()), "Struct and enums");
 	}
+
+	[Test]
+	public void Scope_RelativePath ()
+	{
+		// Verify that --scope with a relative path works correctly
+		// (the relative path should be resolved to absolute before matching).
+		var binder = new BindTool ();
+		var tmpdir = Cache.CreateTemporaryDirectory ();
+		var subdir = Path.Combine (tmpdir, "headers");
+		Directory.CreateDirectory (subdir);
+
+		// Create a header in the scoped directory
+		var scopedHeader = Path.Combine (subdir, "InScope.h");
+		File.WriteAllText (scopedHeader,
+		"""
+		@interface InScopeClass {
+		}
+			@property int Value;
+		@end
+		""");
+
+		// Create an umbrella header that includes both
+		var mainHeader = Path.Combine (tmpdir, "main.h");
+		File.WriteAllText (mainHeader, $"#import \"{scopedHeader}\"\n");
+
+		binder.SplitDocuments = false;
+		binder.SourceFile = mainHeader;
+		binder.OutputDirectory = tmpdir;
+
+		// Use a relative scope path (the bug was that this produced empty output)
+		var oldCwd = Environment.CurrentDirectory;
+		try {
+			Environment.CurrentDirectory = tmpdir;
+			binder.DirectoriesInScope.Add (Path.GetFullPath ("headers"));
+		} finally {
+			Environment.CurrentDirectory = oldCwd;
+		}
+
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
+		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
+		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
+		var bindings = binder.BindInOrOut ();
+		var expectedBindings =
+"""
+using Foundation;
+
+// @interface InScopeClass
+interface InScopeClass {
+	// @property int Value;
+	[Export ("Value")]
+	int Value { get; set; }
+}
+
+""";
+		bindings.AssertSuccess (expectedBindings);
+	}
+
+	[Test]
+	public void Scope_FiltersOutOfScopeDeclarations ()
+	{
+		// Verify that declarations from headers outside the scope directory are not bound.
+		var binder = new BindTool ();
+		var tmpdir = Cache.CreateTemporaryDirectory ();
+		var scopedDir = Path.Combine (tmpdir, "scoped");
+		var unscopedDir = Path.Combine (tmpdir, "unscoped");
+		Directory.CreateDirectory (scopedDir);
+		Directory.CreateDirectory (unscopedDir);
+
+		var scopedHeader = Path.Combine (scopedDir, "Scoped.h");
+		File.WriteAllText (scopedHeader,
+		"""
+		@interface ScopedClass {
+		}
+			@property int A;
+		@end
+		""");
+
+		var unscopedHeader = Path.Combine (unscopedDir, "Unscoped.h");
+		File.WriteAllText (unscopedHeader,
+		"""
+		@interface UnscopedClass {
+		}
+			@property int B;
+		@end
+		""");
+
+		var mainHeader = Path.Combine (tmpdir, "main.h");
+		File.WriteAllText (mainHeader, $"#import \"{scopedHeader}\"\n#import \"{unscopedHeader}\"\n");
+
+		binder.SplitDocuments = false;
+		binder.SourceFile = mainHeader;
+		binder.OutputDirectory = tmpdir;
+		binder.DirectoriesInScope.Add (scopedDir);
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
+		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
+		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
+		var bindings = binder.BindInOrOut ();
+
+		// Only ScopedClass should be in the output, not UnscopedClass
+		var expectedBindings =
+"""
+using Foundation;
+
+// @interface ScopedClass
+interface ScopedClass {
+	// @property int A;
+	[Export ("A")]
+	int A { get; set; }
+}
+
+""";
+		bindings.AssertSuccess (expectedBindings);
+	}
+
+	[Test]
+	public void Scope_PrefixDoesNotFalseMatch ()
+	{
+		// Verify that a scope of "/foo/bar" does not match "/foo/barbaz/header.h"
+		// (the scope must be a proper directory prefix with separator).
+		var binder = new BindTool ();
+		var tmpdir = Cache.CreateTemporaryDirectory ();
+		var scopedDir = Path.Combine (tmpdir, "scope");
+		var falseMatchDir = Path.Combine (tmpdir, "scopeextra");
+		Directory.CreateDirectory (scopedDir);
+		Directory.CreateDirectory (falseMatchDir);
+
+		var scopedHeader = Path.Combine (scopedDir, "Good.h");
+		File.WriteAllText (scopedHeader,
+		"""
+		@interface GoodClass {
+		}
+			@property int X;
+		@end
+		""");
+
+		var falseMatchHeader = Path.Combine (falseMatchDir, "Bad.h");
+		File.WriteAllText (falseMatchHeader,
+		"""
+		@interface BadClass {
+		}
+			@property int Y;
+		@end
+		""");
+
+		var mainHeader = Path.Combine (tmpdir, "main.h");
+		File.WriteAllText (mainHeader, $"#import \"{scopedHeader}\"\n#import \"{falseMatchHeader}\"\n");
+
+		binder.SplitDocuments = false;
+		binder.SourceFile = mainHeader;
+		binder.OutputDirectory = tmpdir;
+		binder.DirectoriesInScope.Add (scopedDir);
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
+		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
+		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
+		var bindings = binder.BindInOrOut ();
+
+		// Only GoodClass should appear (from "scope/"), not BadClass (from "scopeextra/")
+		var expectedBindings =
+"""
+using Foundation;
+
+// @interface GoodClass
+interface GoodClass {
+	// @property int X;
+	[Export ("X")]
+	int X { get; set; }
+}
+
+""";
+		bindings.AssertSuccess (expectedBindings);
+	}
 }

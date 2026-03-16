@@ -44,6 +44,7 @@ public static class Tools {
 			{ "n|namespace=", "Namespace under which to generate the binding. The default is to use the framework's name as the namespace.", v => binder.Namespace = v },
 			{ "m|massage=", "Register (+ prefix) or exclude (- prefix) a massager by name.", v => binder.AddMassager (v) },
 			{ "nosplit", "Do not split the generated binding into multiple files.", v => binder.SplitDocuments = false },
+			{ "deepsplit", "Split the generated binding into one file per source header.", v => binder.DeepSplit = true },
 		};
 
 		os.EndOfParsingArguments.Clear ();

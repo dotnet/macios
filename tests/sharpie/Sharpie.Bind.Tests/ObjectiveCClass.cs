@@ -627,4 +627,130 @@ interface GoodClass {
 """;
 		bindings.AssertSuccess (expectedBindings);
 	}
+
+	[Test]
+	public void DeepSplit_SplitsPerHeader ()
+	{
+		// Verify that --deepsplit creates one .cs file per source header.
+		var binder = new BindTool ();
+		var tmpdir = Cache.CreateTemporaryDirectory ();
+		var headersDir = Path.Combine (tmpdir, "headers");
+		Directory.CreateDirectory (headersDir);
+
+		File.WriteAllText (Path.Combine (headersDir, "ClassA.h"),
+		"""
+		@interface ClassA {
+		}
+			@property int valueA;
+		@end
+		""");
+
+		File.WriteAllText (Path.Combine (headersDir, "ClassB.h"),
+		"""
+		@interface ClassB {
+		}
+			@property int valueB;
+		@end
+		""");
+
+		var mainHeader = Path.Combine (tmpdir, "main.h");
+		File.WriteAllText (mainHeader, $"#import \"{Path.Combine (headersDir, "ClassA.h")}\"\n#import \"{Path.Combine (headersDir, "ClassB.h")}\"\n");
+
+		binder.SourceFile = mainHeader;
+		binder.DirectoriesInScope.Add (headersDir);
+		binder.OutputDirectory = tmpdir;
+		binder.DeepSplit = true;
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
+		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
+		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
+		var bindings = binder.BindInOrOut ();
+		bindings.AssertSuccess (null);
+
+		Assert.That (bindings.AdditionalFiles.ContainsKey ("ClassA.cs"), Is.True, "Should have ClassA.cs");
+		Assert.That (bindings.AdditionalFiles.ContainsKey ("ClassB.cs"), Is.True, "Should have ClassB.cs");
+		Assert.That (bindings.AdditionalFiles ["ClassA.cs"], Does.Contain ("ClassA"), "ClassA.cs should contain ClassA");
+		Assert.That (bindings.AdditionalFiles ["ClassA.cs"], Does.Not.Contain ("ClassB"), "ClassA.cs should not contain ClassB");
+		Assert.That (bindings.AdditionalFiles ["ClassB.cs"], Does.Contain ("ClassB"), "ClassB.cs should contain ClassB");
+		Assert.That (bindings.AdditionalFiles ["ClassB.cs"], Does.Not.Contain ("ClassA"), "ClassB.cs should not contain ClassA");
+	}
+
+	[Test]
+	public void DeepSplit_StructsAndEnumsSeparate ()
+	{
+		// Verify that structs and enums go into StructsAndEnums.cs even in deepsplit mode.
+		var binder = new BindTool ();
+		var tmpdir = Cache.CreateTemporaryDirectory ();
+		var headersDir = Path.Combine (tmpdir, "headers");
+		Directory.CreateDirectory (headersDir);
+
+		File.WriteAllText (Path.Combine (headersDir, "Widget.h"),
+		"""
+		struct WidgetSize {
+			int width;
+			int height;
+		};
+		@interface Widget {
+		}
+			@property int tag;
+		@end
+		""");
+
+		var mainHeader = Path.Combine (tmpdir, "main.h");
+		File.WriteAllText (mainHeader, $"#import \"{Path.Combine (headersDir, "Widget.h")}\"\n");
+
+		binder.SourceFile = mainHeader;
+		binder.DirectoriesInScope.Add (headersDir);
+		binder.OutputDirectory = tmpdir;
+		binder.DeepSplit = true;
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
+		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
+		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
+		var bindings = binder.BindInOrOut ();
+		bindings.AssertSuccess (null);
+
+		Assert.That (bindings.AdditionalFiles.ContainsKey ("Widget.cs"), Is.True, "Should have Widget.cs for the interface");
+		Assert.That (bindings.AdditionalFiles.ContainsKey ("StructsAndEnums.cs"), Is.True, "Should have StructsAndEnums.cs for the struct");
+		Assert.That (bindings.AdditionalFiles ["Widget.cs"], Does.Contain ("Widget"), "Widget.cs should contain Widget interface");
+		Assert.That (bindings.AdditionalFiles ["Widget.cs"], Does.Not.Contain ("WidgetSize"), "Widget.cs should not contain the struct");
+		Assert.That (bindings.AdditionalFiles ["StructsAndEnums.cs"], Does.Contain ("WidgetSize"), "StructsAndEnums.cs should contain the struct");
+	}
+
+	[Test]
+	public void DeepSplit_MultipleClassesInOneHeader ()
+	{
+		// Verify that multiple classes from the same header go into the same .cs file.
+		var binder = new BindTool ();
+		var tmpdir = Cache.CreateTemporaryDirectory ();
+		var headersDir = Path.Combine (tmpdir, "headers");
+		Directory.CreateDirectory (headersDir);
+
+		File.WriteAllText (Path.Combine (headersDir, "Models.h"),
+		"""
+		@interface Person {
+		}
+			@property int age;
+		@end
+		@interface Car {
+		}
+			@property int speed;
+		@end
+		""");
+
+		var mainHeader = Path.Combine (tmpdir, "main.h");
+		File.WriteAllText (mainHeader, $"#import \"{Path.Combine (headersDir, "Models.h")}\"\n");
+
+		binder.SourceFile = mainHeader;
+		binder.DirectoriesInScope.Add (headersDir);
+		binder.OutputDirectory = tmpdir;
+		binder.DeepSplit = true;
+		Configuration.IgnoreIfIgnoredPlatform (binder.Platform);
+		binder.PlatformAssembly = Extensions.GetPlatformAssemblyPath (binder.Platform);
+		binder.ClangResourceDirectory = Extensions.GetClangResourceDirectory ();
+		var bindings = binder.BindInOrOut ();
+		bindings.AssertSuccess (null);
+
+		Assert.That (bindings.AdditionalFiles.ContainsKey ("Models.cs"), Is.True, "Should have Models.cs");
+		Assert.That (bindings.AdditionalFiles ["Models.cs"], Does.Contain ("Person"), "Models.cs should contain Person");
+		Assert.That (bindings.AdditionalFiles ["Models.cs"], Does.Contain ("Car"), "Models.cs should contain Car");
+	}
 }

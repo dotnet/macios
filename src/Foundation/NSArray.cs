@@ -806,39 +806,33 @@ namespace Foundation {
 			GC.KeepAlive (weakArray);
 			return rv;
 		}
-#nullable disable
-		/// <typeparam name="T">Parameter type, determines the kind of
-		/// 	array returned, can be either an NSObject, or other
-		/// 	CoreGraphics data types.</typeparam>
-		///         <param name="weakArray">Handle to an weakly typed NSArray.</param>
-		///         <summary>Returns a strongly-typed C# array of the parametrized type from a weakly typed NSArray.</summary>
-		///         <returns>An C# array with the values.</returns>
-		///         <remarks>
-		///           <para>Use this method to get a set of NSObject arrays from an NSArray.</para>
-		///           <example>
-		///             <code lang="c#"><![CDATA[
+
+		/// <summary>Returns a strongly-typed C# array of the parametrized type from a weakly typed NSArray.</summary>
+		/// <typeparam name="T">Parameter type, determines the kind of array returned, can be either an <see cref="NSObject" />, or other CoreGraphics data types.</typeparam>
+		/// <param name="weakArray">Handle to a weakly typed NSArray.</param>
+		/// <returns>A C# array with the values.</returns>
+		/// <remarks>
+		///   <para>Use this method to get a set of NSObject arrays from an NSArray.</para>
+		///   <example>
+		///     <code lang="c#"><![CDATA[
 		/// NSArray someArray = ...;
 		///
-		/// CGImage [] myImages = NSArray.FromArray<CGImage> (someArray);
+		/// var myImages = NSArray.FromArrayNative<CGImage> (someArray);
 		/// ]]></code>
-		///           </example>
-		///         </remarks>
-		static public T [] FromArrayNative<T> (NSArray weakArray) where T : class, INativeObject
+		///   </example>
+		/// </remarks>
+		public static T []? FromArrayNative<T> (NSArray? weakArray) where T : class, INativeObject
 		{
-			if (weakArray is null || weakArray.Handle == NativeHandle.Zero)
-				return null;
 			try {
-				nuint n = weakArray.Count;
-				T [] ret = new T [n];
-				for (nuint i = 0; i < n; i++) {
-					ret [i] = Runtime.GetINativeObject<T> (weakArray.ValueAt (i), false);
-				}
-				return ret;
+				var rv = ArrayFromHandleDropNullElements<T> (weakArray.GetHandle (), NSNullBehavior.DropIfIncompatible);
+				GC.KeepAlive (weakArray);
+				return rv;
 			} catch {
 				return null;
 			}
 		}
 
+#nullable disable
 		// Used when we need to provide our constructor
 		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
 		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>

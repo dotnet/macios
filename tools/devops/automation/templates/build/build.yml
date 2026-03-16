@@ -85,14 +85,12 @@ steps:
       make -C $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops provisioning
     displayName: 'Generate provisionator files.'
 
-  - task: xamops.azdevex.provisionator-task.provisionator@2
-    displayName: 'Provision Products & Frameworks'
-    inputs:
+  - template: ../common/provision.yml
+    parameters:
       provisioning_script: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/build-provisioning.csx
-      provisioning_extra_args: '-vvvv'
-      github_token: ${{ parameters.gitHubToken }}
-    timeoutInMinutes: 250
-    retryCountOnTaskFailure: ${{ parameters.retryCount }}  # mono does give issues sometimes to download, we will retry
+      displayName: 'Provision Products & Frameworks'
+      provisionatorChannel: $(PROVISIONATOR_CHANNEL)
+      retryCount: ${{ parameters.retryCount }}  # mono does give issues sometimes to download, we will retry
 
   - bash: |
       set -x

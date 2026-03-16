@@ -99,13 +99,11 @@ steps:
     rm -f ~/Library/Preferences/Xamarin/Settings.plist
   displayName: 'Clear old Xcode settings'
 
-- task: xamops.azdevex.provisionator-task.provisionator@2
-  displayName: 'Provision Xcode'
-  inputs:
+- template: ../common/provision.yml
+  parameters:
     provisioning_script: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/provision-xcode.csx
-    provisioning_extra_args: '-vvvv'
-    github_token: ${{ parameters.gitHubToken }}
-  timeoutInMinutes: 250
+    displayName: 'Provision Xcode'
+    provisionatorChannel: $(PROVISIONATOR_CHANNEL)
 
 - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/system-dependencies.sh --ignore-visual-studio --ignore-shellcheck --ignore-yamllint --provision-simulators --ignore-xcode-components
   displayName: 'Provision simulators'

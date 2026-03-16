@@ -5720,13 +5720,13 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 	// These classes implement Metal* protocols, so that the generated registrar code includes the corresponding Metal* headers.
 	// https://github.com/dotnet/macios/issues/4422
-	class MetalKitTypesInTheSimulator : NSObject, MetalKit.IMTKViewDelegate {
-		public void Draw (MetalKit.MTKView view)
+	class MetalKitTypesInTheSimulator : NSObject, global::MetalKit.IMTKViewDelegate {
+		public void Draw (global::MetalKit.MTKView view)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void DrawableSizeWillChange (MetalKit.MTKView view, CGSize size)
+		public void DrawableSizeWillChange (global::MetalKit.MTKView view, CGSize size)
 		{
 			throw new NotImplementedException ();
 		}

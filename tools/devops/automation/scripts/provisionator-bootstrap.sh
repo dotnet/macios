@@ -1,4 +1,5 @@
 #!/bin/bash -e
+# shellcheck disable=SC2220,SC2181
 #
 # Remove the following GUID if you do not wish for this script self-update:
 # D6F71FB5-F2A7-4A62-86D3-10DFE08301CC

@@ -12,15 +12,15 @@ namespace Microsoft.Macios.Bindings.Analyzer;
 
 /// <summary>
 /// Analyzer to ensure that transient disposable types (TransientString, TransientCFString, TransientCFObject)
-/// are always declared with 'using var' to guarantee proper disposal of native resources.
+/// are always declared with the 'using' keyword to guarantee proper disposal of native resources.
 /// </summary>
 [DiagnosticAnalyzer (LanguageNames.CSharp)]
 public class TransientDisposableAnalyzer : DiagnosticAnalyzer {
 
-	static readonly ImmutableHashSet<string> transientTypeNames = ImmutableHashSet.Create (
-		"TransientString",
-		"TransientCFString",
-		"TransientCFObject"
+	static readonly ImmutableHashSet<string> transientTypeFullNames = ImmutableHashSet.Create (
+		"ObjCRuntime.TransientString",
+		"ObjCRuntime.TransientCFString",
+		"ObjCRuntime.TransientCFObject"
 	);
 
 	public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create (RBI0042);
@@ -46,11 +46,11 @@ public class TransientDisposableAnalyzer : DiagnosticAnalyzer {
 			if (symbol is not ILocalSymbol localSymbol)
 				continue;
 
-			var typeName = localSymbol.Type.Name;
-			if (!transientTypeNames.Contains (typeName))
+			var typeDisplayName = localSymbol.Type.ToDisplayString ();
+			if (!transientTypeFullNames.Contains (typeDisplayName))
 				continue;
 
-			var diagnostic = Diagnostic.Create (RBI0042, variable.GetLocation (), variable.Identifier.Text, typeName);
+			var diagnostic = Diagnostic.Create (RBI0042, variable.GetLocation (), variable.Identifier.Text, localSymbol.Type.Name);
 			context.ReportDiagnostic (diagnostic);
 		}
 	}

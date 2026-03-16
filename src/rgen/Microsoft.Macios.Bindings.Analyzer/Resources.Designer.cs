@@ -1192,7 +1192,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Transient types (TransientString, TransientCFString, TransientCFObject) allocate native memory and must be disposed. Use &apos;using var&apos; to ensure proper cleanup..
+        ///   Looks up a localized string similar to Transient types (TransientString, TransientCFString, TransientCFObject) allocate native memory and must be disposed. Use the &apos;using&apos; keyword to ensure proper cleanup..
         /// </summary>
         internal static string RBI0042Description {
             get {
@@ -1201,7 +1201,7 @@ namespace Microsoft.Macios.Bindings.Analyzer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Variable &apos;{0}&apos; of type &apos;{1}&apos; must be declared with &apos;using var&apos; to ensure proper disposal of native resources.
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; of type &apos;{1}&apos; must be declared with the &apos;using&apos; keyword to ensure proper disposal of native resources.
         /// </summary>
         internal static string RBI0042MessageFormat {
             get {

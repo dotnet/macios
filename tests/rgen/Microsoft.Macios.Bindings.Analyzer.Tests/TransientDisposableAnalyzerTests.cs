@@ -20,15 +20,17 @@ public class TransientDisposableAnalyzerTests : BaseGeneratorWithAnalyzerTestCla
 				"""
 				using System;
 
-				struct TransientString : IDisposable {
-					public void Dispose () { }
+				namespace ObjCRuntime {
+					struct TransientString : IDisposable {
+						public void Dispose () { }
+					}
 				}
 
 				class Test
 				{
 					void Method ()
 					{
-						var s = new TransientString ();
+						var s = new ObjCRuntime.TransientString ();
 					}
 				}
 				"""];
@@ -38,15 +40,17 @@ public class TransientDisposableAnalyzerTests : BaseGeneratorWithAnalyzerTestCla
 				"""
 				using System;
 
-				ref struct TransientCFString {
-					public void Dispose () { }
+				namespace ObjCRuntime {
+					ref struct TransientCFString {
+						public void Dispose () { }
+					}
 				}
 
 				class Test
 				{
 					void Method ()
 					{
-						TransientCFString s = new TransientCFString ();
+						ObjCRuntime.TransientCFString s = new ObjCRuntime.TransientCFString ();
 					}
 				}
 				"""];
@@ -56,15 +60,17 @@ public class TransientDisposableAnalyzerTests : BaseGeneratorWithAnalyzerTestCla
 				"""
 				using System;
 
-				ref struct TransientCFObject {
-					public void Dispose () { }
+				namespace ObjCRuntime {
+					ref struct TransientCFObject {
+						public void Dispose () { }
+					}
 				}
 
 				class Test
 				{
 					void Method ()
 					{
-						var obj = new TransientCFObject ();
+						var obj = new ObjCRuntime.TransientCFObject ();
 					}
 				}
 				"""];
@@ -81,15 +87,17 @@ public class TransientDisposableAnalyzerTests : BaseGeneratorWithAnalyzerTestCla
 				"""
 				using System;
 
-				struct TransientString : IDisposable {
-					public void Dispose () { }
+				namespace ObjCRuntime {
+					struct TransientString : IDisposable {
+						public void Dispose () { }
+					}
 				}
 
 				class Test
 				{
 					void Method ()
 					{
-						using var s = new TransientString ();
+						using var s = new ObjCRuntime.TransientString ();
 					}
 				}
 				"""];
@@ -99,15 +107,17 @@ public class TransientDisposableAnalyzerTests : BaseGeneratorWithAnalyzerTestCla
 				"""
 				using System;
 
-				ref struct TransientCFString {
-					public void Dispose () { }
+				namespace ObjCRuntime {
+					ref struct TransientCFString {
+						public void Dispose () { }
+					}
 				}
 
 				class Test
 				{
 					void Method ()
 					{
-						using var s = new TransientCFString ();
+						using var s = new ObjCRuntime.TransientCFString ();
 					}
 				}
 				"""];
@@ -117,15 +127,17 @@ public class TransientDisposableAnalyzerTests : BaseGeneratorWithAnalyzerTestCla
 				"""
 				using System;
 
-				ref struct TransientCFObject {
-					public void Dispose () { }
+				namespace ObjCRuntime {
+					ref struct TransientCFObject {
+						public void Dispose () { }
+					}
 				}
 
 				class Test
 				{
 					void Method ()
 					{
-						using var obj = new TransientCFObject ();
+						using var obj = new ObjCRuntime.TransientCFObject ();
 					}
 				}
 				"""];
@@ -144,6 +156,24 @@ public class TransientDisposableAnalyzerTests : BaseGeneratorWithAnalyzerTestCla
 					void Method ()
 					{
 						var s = new SomeOtherStruct ();
+					}
+				}
+				"""];
+
+			// User-defined TransientString outside ObjCRuntime namespace should not trigger
+			yield return [
+				"""
+				using System;
+
+				struct TransientString : IDisposable {
+					public void Dispose () { }
+				}
+
+				class Test
+				{
+					void Method ()
+					{
+						var s = new TransientString ();
 					}
 				}
 				"""];

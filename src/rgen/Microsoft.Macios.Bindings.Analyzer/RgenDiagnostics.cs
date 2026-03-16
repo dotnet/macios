@@ -634,7 +634,7 @@ public static class RgenDiagnostics {
 
 	/// <summary>
 	/// Diagnostic descriptor for when a transient disposable type (TransientString, TransientCFString, TransientCFObject)
-	/// is not declared with 'using var'.
+	/// is not declared with the 'using' keyword.
 	/// </summary>
 	internal static readonly DiagnosticDescriptor RBI0042 = new (
 		"RBI0042",

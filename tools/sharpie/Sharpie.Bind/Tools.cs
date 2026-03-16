@@ -33,7 +33,7 @@ public static class Tools {
 			{ "s|sdk=", "Target SDK.", v => binder.Sdk = v },
 			{ "f|framework=", "The input framework to bind. Implies setting the scope (--scope) to the framework, setting the namespace (--namespace) to the name of the framework, and no other sources/headers can be specified. If the framework provides an 'Info.plist' with SDK information (DTSDKName), the '-sdk' option will be implied as well (if not manually specified).", v => binder.SourceFramework = v },
 			{ "header=", "The input header file to bind. This can also be a .framework directory.", v => binder.SourceFile = v },
-			{   "scope=", "Restrict following #include and #import directives declared in header files to within the specified DIR directory.", v => binder.DirectoriesInScope.Add (v) },
+			{   "scope=", "Restrict following #include and #import directives declared in header files to within the specified DIR directory.", v => binder.DirectoriesInScope.Add (Path.GetFullPath (v)) },
 			{ "c|clang", "All arguments after this argument are not processed by Objective Sharpie and are proxied directly to Clang.", v => { } },
 			{ "clang-resource-dir=", "Specify the Clang resource directory.", v => binder.ClangResourceDirectory = v },
 			{ "platform-assembly=", "Specify the platform assembly to use for binding.", v => binder.PlatformAssembly = v },

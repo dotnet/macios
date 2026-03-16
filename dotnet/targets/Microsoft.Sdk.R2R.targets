@@ -86,7 +86,10 @@
 	</PropertyGroup>
 
 
-	<!-- Exclude user assemblies from R2R composite so they run interpreted for debugging -->
+	<!--
+		Exclude user assemblies from R2R composite so they run interpreted for debugging.
+		User assembly is defined as anything not coming from a NuGet package.
+	-->
 	<Target Name="_SelectR2RAssemblies"
 			Condition="'$(FilterReadyToRunAssemblies)' == 'true'"
 			BeforeTargets="ResolveReadyToRunCompilers">
@@ -94,14 +97,9 @@
 			<_ResolvedAssembliesToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And '%(ResolvedFileToPublish.DestinationSubDirectory)' == ''" />
 			<_NonUserAssemblies
 				Include="@(_ResolvedAssembliesToPublish)"
-				Condition="(
-							'%(_ResolvedAssembliesToPublish.NuGetPackageId)' == 'Microsoft.NETCore.App.Ref' Or
-							'%(_ResolvedAssembliesToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)' Or
-							'%(_ResolvedAssembliesToPublish.NuGetPackageId)' == '$(_XamarinNugetPackageId)' Or
-							'%(_ResolvedAssembliesToPublish.NuGetPackageId)' == '$(_XamarinNugetManagedPackageId)'
-						)" />
+				Condition="'%(_ResolvedAssembliesToPublish.NuGetPackageId)' != ''" />
 			<_UserAssemblies Include="@(_ResolvedAssembliesToPublish)" Exclude="@(_NonUserAssemblies)" />
-			<PublishReadyToRunExcludeTest Include="@(_UserAssemblies -> '%(Filename)')" />
+			<PublishReadyToRunExclude Include="@(_UserAssemblies -> '%(Filename)%(Extension)')" />
 		</ItemGroup>
 
 		<!-- Hash the R2R input assemblies so we can detect when the set actually changes -->

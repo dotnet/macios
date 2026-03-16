@@ -207,11 +207,15 @@ public sealed class PlatformTypeMappingMassager : Massager<PlatformTypeMappingMa
 
 	public override void VisitMemberType (MemberType memberType)
 	{
+		// Visit children first so that type arguments (e.g. inside Action<NSData, NSURLResponse>)
+		// are mapped before the parent type is processed.
+		base.VisitMemberType (memberType);
 		VisitType (memberType, memberType.MemberName);
 	}
 
 	public override void VisitSimpleType (SimpleType simpleType)
 	{
+		base.VisitSimpleType (simpleType);
 		VisitType (simpleType, simpleType.Identifier);
 	}
 

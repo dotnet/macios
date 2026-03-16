@@ -104,14 +104,13 @@ steps:
 
   displayName: 'Set VM Vendor'
 
-- task: xamops.azdevex.provisionator-task.provisionator@2
-  displayName: 'Provision Brew components'
-  inputs:
+- template: ../common/provision.yml
+  parameters:
     provisioning_script: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/provision-brew-packages.csx
-    provisioning_extra_args: '-vvvv'
-    github_token: $(Github.Token)
-  timeoutInMinutes: 30
-  enabled: false
+    displayName: 'Provision Brew components'
+    provisionatorChannel: $(PROVISIONATOR_CHANNEL)
+    timeoutInMinutes: 30
+    enabled: false
 
 - bash: |
     sudo rm -Rf $(Build.SourcesDirectory)/package

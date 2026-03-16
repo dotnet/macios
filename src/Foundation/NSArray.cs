@@ -675,6 +675,17 @@ namespace Foundation {
 			return ArrayFromHandle<T> (handle, createObject, NSNullBehavior.Drop, releaseHandle)!;
 		}
 
+		/// <summary>Returns a strongly-typed C# array from a handle to an NSArray, dropping null elements.</summary>
+		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
+		/// <param name="nsNullElementBehavior">How to handle null and NSNull elements in the native array.</param>
+		/// <param name="releaseHandle">Whether the native NSArray instance should be released before returning or not.</param>
+		/// <returns>A C# array with the values (excluding null elements). Returns <see langword="null" /> if the handle is <see cref="NativeHandle.Zero" />.</returns>
+		internal static T []? ArrayFromHandleDropNullElements<T> (NativeHandle handle, NSNullBehavior nsNullElementBehavior, bool releaseHandle = false) where T : class, INativeObject
+		{
+			return ArrayFromHandle<T> (handle, (h) => Runtime.GetINativeObject<T> (h, false)!, nsNullElementBehavior, releaseHandle)!;
+		}
+
 		/// <summary>Returns a strongly-typed C# array from a handle to an NSArray, dropping null elements and guaranteeing a non-null return value.</summary>
 		/// <typeparam name="T">Parameter type, determines the kind of array returned.</typeparam>
 		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
@@ -722,55 +733,80 @@ namespace Foundation {
 			return rv!;
 		}
 
-#nullable disable
-
-		static public T [] EnumsFromHandle<T> (NativeHandle handle) where T : struct, IConvertible
+		/// <summary>Returns a C# array of enum values from a handle to an NSArray of NSNumber elements, dropping any null or NSNull elements.</summary>
+		/// <typeparam name="T">The enum type to convert each NSNumber element to.</typeparam>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
+		/// <returns>A C# array of enum values (excluding null elements), or <see langword="null" /> if the handle is <see cref="NativeHandle.Zero" />.</returns>
+#if XAMCORE_5_0
+		public static T []? EnumsFromHandle<T> (NativeHandle handle) where T : System.Enum
+#else
+		public static T []? EnumsFromHandle<T> (NativeHandle handle) where T : struct, IConvertible
+#endif
 		{
-			if (handle == NativeHandle.Zero)
-				return null;
+#if !XAMCORE_5_0
 			if (!typeof (T).IsEnum)
 				throw new ArgumentException ("T must be an enum");
+#endif
 
-			var c = GetCount (handle);
-			T [] ret = new T [c];
-
-			for (uint i = 0; i < c; i++) {
-				ret [i] = (T) Convert.ChangeType (UnsafeGetItem<NSNumber> (handle, i).LongValue, typeof (T));
-			}
-			return ret;
+			return ArrayFromHandleDropNullElements<T> (handle, (element) => (T) Enum.ToObject (typeof (T), Runtime.GetNSObject<NSNumber> (element)?.LongValue ?? 0));
 		}
 
-		/// <typeparam name="T">Parameter type, determines the kind of
-		/// 	array returned, limited to NSObject and subclasses of it.</typeparam>
-		///         <param name="weakArray">Handle to an weakly typed NSArray.</param>
-		///         <summary>Returns a strongly-typed C# array of the parametrized type from a weakly typed NSArray.</summary>
-		///         <returns>An C# array with the values.</returns>
-		///         <remarks>
-		///           <para>Use this method to get a set of NSObject arrays from an NSArray.</para>
-		///           <example>
-		///             <code lang="c#"><![CDATA[
+		/// <summary>Returns a C# array of enum values from a handle to an NSArray of NSNumber elements, dropping null elements and guaranteeing a non-null return value.</summary>
+		/// <typeparam name="T">The enum type to convert each NSNumber element to.</typeparam>
+		/// <param name="handle">Pointer (handle) to the unmanaged object.</param>
+		/// <returns>A C# array of enum values (excluding null elements). Returns an empty array if the handle is <see cref="NativeHandle.Zero" />.</returns>
+		internal static T [] NonNullEnumsFromHandle<T> (NativeHandle handle) where T : System.Enum
+		{
+			return NonNullArrayFromHandleDropNullElements<T> (
+				handle,
+				(element) => (T) Enum.ToObject (typeof (T), Runtime.GetNSObject<NSNumber> (element)?.LongValue ?? 0));
+		}
+
+		/// <summary>Creates a strongly-typed C# array from a weakly typed <see cref="NSArray" />.</summary>
+		/// <typeparam name="T">The element type for the returned array, limited to <see cref="NSObject" /> and subclasses.</typeparam>
+		/// <param name="weakArray">A weakly typed <see cref="NSArray" /> to convert, or <see langword="null" />.</param>
+		/// <returns>
+		///   A C# array of <typeparamref name="T" /> elements, or <see langword="null" /> if
+		///   <paramref name="weakArray" /> is <see langword="null" /> or a conversion error occurs.
+		///   Elements that are <see cref="NSNull" /> or not compatible with <typeparamref name="T" /> are excluded.
+		/// </returns>
+		/// <remarks>
+		///   <example>
+		///     <code lang="c#"><![CDATA[
 		/// NSArray someArray = ...;
 		///
-		/// NSString [] values = NSArray.FromArray<CGImage> (someArray);
+		/// var values = NSArray.FromArray<NSString> (someArray);
 		/// ]]></code>
-		///           </example>
-		///         </remarks>
-		static public T [] FromArray<T> (NSArray weakArray) where T : NSObject
+		///   </example>
+		/// </remarks>
+		public static T []? FromArray<T> (NSArray? weakArray) where T : NSObject
 		{
-			if (weakArray is null || weakArray.Handle == NativeHandle.Zero)
-				return null;
 			try {
-				nuint n = weakArray.Count;
-				T [] ret = new T [n];
-				for (nuint i = 0; i < n; i++) {
-					ret [i] = Runtime.GetNSObject<T> (weakArray.ValueAt (i));
-				}
-				return ret;
+				var rv = ArrayFromHandleDropNullElements<T> (weakArray.GetHandle (), NSNullBehavior.DropIfIncompatible);
+				GC.KeepAlive (weakArray);
+				return rv;
 			} catch {
 				return null;
 			}
 		}
 
+		/// <summary>
+		///   Creates a strongly-typed C# array from a weakly typed <see cref="NSArray" />,
+		///   dropping null and <see cref="NSNull" /> elements and guaranteeing a non-null return value.
+		/// </summary>
+		/// <typeparam name="T">The element type for the returned array, limited to <see cref="NSObject" /> and subclasses.</typeparam>
+		/// <param name="weakArray">A weakly typed <see cref="NSArray" /> to convert, or <see langword="null" />.</param>
+		/// <returns>
+		///   A C# array of <typeparamref name="T" /> elements (excluding null and <see cref="NSNull" /> elements).
+		///   Returns an empty array if <paramref name="weakArray" /> is <see langword="null" /> or empty.
+		/// </returns>
+		internal static T [] ToNonNullArrayDropNullElements<T> (NSArray? weakArray) where T : NSObject
+		{
+			var rv = NSArray.NonNullArrayFromHandleDropNullElements<T> (weakArray.GetHandle ());
+			GC.KeepAlive (weakArray);
+			return rv;
+		}
+#nullable disable
 		/// <typeparam name="T">Parameter type, determines the kind of
 		/// 	array returned, can be either an NSObject, or other
 		/// 	CoreGraphics data types.</typeparam>

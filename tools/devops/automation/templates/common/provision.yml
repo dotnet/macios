@@ -1,0 +1,116 @@
+# yamllint disable rule:line-length
+# Template to run provisionator via the bootstrap script with BosStorageMirror SAS token auth.
+# This replaces the xamops.azdevex.provisionator-task.provisionator@3 task to avoid
+# dl.internalx.com timeout issues under concurrent load.
+
+parameters:
+  - name: provisioning_script
+    type: string
+
+  - name: displayName
+    type: string
+    default: 'Provisionator'
+
+  - name: provisionatorChannel
+    type: string
+    default: 'latest'
+
+  - name: provisioning_extra_args
+    type: string
+    default: '-vvvv'
+
+  - name: timeoutInMinutes
+    type: number
+    default: 250
+
+  - name: retryCount
+    type: number
+    default: 0
+
+  - name: enabled
+    type: boolean
+    default: true
+
+steps:
+  - task: AzureCLI@2
+    displayName: 'Generate BosStorageMirror SAS tokens'
+    condition: and(succeeded(), ${{ parameters.enabled }})
+    inputs:
+      azureSubscription: 'Xamarin - RelEng (BosStorageMirror-Contributor-MI)'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      failOnStandardError: true
+      inlineScript: |
+        set -euo pipefail
+
+        storage_account="bosstoragemirror"
+
+        # macOS/BSD date syntax for expiry calculation
+        start_time="$(date -u '+%Y-%m-%dT%H:%MZ')"
+        prov_expiry="$(date -u -v+20M '+%Y-%m-%dT%H:%MZ')"
+        files_expiry="$(date -u -v+3H '+%Y-%m-%dT%H:%MZ')"
+
+        echo "Generating provisionator SAS token (expires $prov_expiry)..."
+        sas_provisionator="$(az storage container generate-sas \
+          --account-name "$storage_account" \
+          --name provisionator \
+          --permissions r \
+          --start "$start_time" \
+          --expiry "$prov_expiry" \
+          --https-only \
+          --as-user \
+          --auth-mode login \
+          -o tsv)"
+
+        if [[ -z "$sas_provisionator" || ${#sas_provisionator} -le 16 ]]; then
+          echo "ERROR: Failed to generate SAS token for BosStorageMirror provisionator container"
+          exit 1
+        fi
+
+        echo "Generating internal-files SAS token (expires $files_expiry)..."
+        sas_internal_files="$(az storage container generate-sas \
+          --account-name "$storage_account" \
+          --name internal-files \
+          --permissions r \
+          --start "$start_time" \
+          --expiry "$files_expiry" \
+          --https-only \
+          --as-user \
+          --auth-mode login \
+          -o tsv)"
+
+        if [[ -z "$sas_internal_files" || ${#sas_internal_files} -le 16 ]]; then
+          echo "ERROR: Failed to generate SAS token for BosStorageMirror internal-files container"
+          exit 1
+        fi
+
+        prov_hint="${sas_provisionator:0:8}...${sas_provisionator: -8}"
+        files_hint="${sas_internal_files:0:8}...${sas_internal_files: -8}"
+
+        echo "sasTokenProvisionator [hint]: $prov_hint"
+        echo "sasToken [hint]: $files_hint"
+
+        echo "##vso[task.setvariable variable=Provisionator.SASToken;issecret=true]$sas_provisionator"
+        echo "##vso[task.setvariable variable=Provisionator.SASTokenHint]$prov_hint"
+        echo "##vso[task.setvariable variable=BosStorageMirror.SASToken;issecret=true]$sas_internal_files"
+        echo "##vso[task.setvariable variable=BosStorageMirror.SASTokenHint]$files_hint"
+
+  - bash: |
+      set -x
+      set -e
+
+      BOOTSTRAP_SCRIPT="$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/provisionator-bootstrap.sh"
+      chmod +x "$BOOTSTRAP_SCRIPT"
+
+      echo "Provisionator channel: ${PROVISIONATOR_CHANNEL}"
+      echo "Provisioning script: ${{ parameters.provisioning_script }}"
+
+      "$BOOTSTRAP_SCRIPT" ${{ parameters.provisioning_script }} ${{ parameters.provisioning_extra_args }} || exit 2
+    displayName: '${{ parameters.displayName }}'
+    condition: and(succeeded(), ${{ parameters.enabled }})
+    env:
+      PROVISIONATOR_CHANNEL: ${{ parameters.provisionatorChannel }}
+      AUTH_TOKEN_PROVISIONATOR: $(Provisionator.SASToken)
+      AUTH_TOKEN_BOSSTORAGEMIRROR: $(BosStorageMirror.SASToken)
+    timeoutInMinutes: ${{ parameters.timeoutInMinutes }}
+    retryCountOnTaskFailure: ${{ parameters.retryCount }}

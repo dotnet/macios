@@ -94,7 +94,7 @@ namespace CarPlay {
 		Lists = 1uL << 1,
 	}
 
-	[NoTV, NoMac, iOS (13, 0)]
+	[NoTV, NoMac]
 	[Flags]
 	[Native]
 	enum CPContentStyle : ulong {
@@ -505,7 +505,6 @@ namespace CarPlay {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		[iOS (13, 0)]
 		[Export ("prefersDarkUserInterfaceStyle")]
 		bool PrefersDarkUserInterfaceStyle { get; set; }
 
@@ -984,7 +983,6 @@ namespace CarPlay {
 		[Export ("cardBackgroundColor", ArgumentSemantic.Strong)]
 		UIColor CardBackgroundColor { get; set; }
 
-		[iOS (13, 0)]
 		[NullAllowed, Export ("symbolImage", ArgumentSemantic.Strong)]
 		UIImage SymbolImage { get; set; }
 
@@ -1428,7 +1426,6 @@ namespace CarPlay {
 		[Export ("initWithTitleVariants:subtitleVariants:imageSet:primaryAction:secondaryAction:duration:")]
 		NativeHandle Constructor (string [] titleVariants, [NullAllowed] string [] subtitleVariants, [NullAllowed] CPImageSet imageSet, CPAlertAction primaryAction, [NullAllowed] CPAlertAction secondaryAction, double duration);
 
-		[iOS (13, 0)]
 		[Export ("initWithTitleVariants:subtitleVariants:image:primaryAction:secondaryAction:duration:")]
 		NativeHandle Constructor (string [] titleVariants, [NullAllowed] string [] subtitleVariants, [NullAllowed] UIImage image, CPAlertAction primaryAction, [NullAllowed] CPAlertAction secondaryAction, double duration);
 
@@ -1444,7 +1441,6 @@ namespace CarPlay {
 		[NullAllowed, Export ("imageSet", ArgumentSemantic.Copy)]
 		CPImageSet ImageSet { get; }
 
-		[iOS (13, 0)]
 		[NullAllowed, Export ("image", ArgumentSemantic.Copy)]
 		UIImage Image { get; }
 
@@ -1580,7 +1576,6 @@ namespace CarPlay {
 		[Export ("limitedUserInterfaces")]
 		CPLimitableUserInterface LimitedUserInterfaces { get; }
 
-		[iOS (13, 0)]
 		[Export ("contentStyle")]
 		CPContentStyle ContentStyle { get; }
 
@@ -1614,7 +1609,6 @@ namespace CarPlay {
 		[Export ("sessionConfiguration:limitedUserInterfacesChanged:")]
 		void LimitedUserInterfacesChanged (CPSessionConfiguration sessionConfiguration, CPLimitableUserInterface limitedUserInterfaces);
 
-		[iOS (13, 0)]
 		[Export ("sessionConfiguration:contentStyleChanged:")]
 		void ContentStyleChanged (CPSessionConfiguration sessionConfiguration, CPContentStyle contentStyle);
 	}
@@ -1755,7 +1749,7 @@ namespace CarPlay {
 
 	interface ICPTemplateApplicationSceneDelegate { }
 
-	[NoTV, NoMac, iOS (13, 0)]
+	[NoTV, NoMac]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface CPTemplateApplicationSceneDelegate : UISceneDelegate {
@@ -1784,7 +1778,7 @@ namespace CarPlay {
 		void ContentStyleDidChange (UIUserInterfaceStyle contentStyle);
 	}
 
-	[NoTV, NoMac, iOS (13, 0)]
+	[NoTV, NoMac]
 	[BaseType (typeof (UIScene))]
 	interface CPTemplateApplicationScene {
 		[Export ("initWithSession:connectionOptions:")]
@@ -1825,7 +1819,6 @@ namespace CarPlay {
 		[Export ("mapButtonSafeAreaLayoutGuide")]
 		UILayoutGuide MapButtonSafeAreaLayoutGuide { get; }
 
-		[iOS (13, 0)]
 		[NullAllowed, Export ("templateApplicationScene", ArgumentSemantic.Weak)]
 		CPTemplateApplicationScene TemplateApplicationScene { get; set; }
 	}

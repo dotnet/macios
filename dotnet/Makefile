@@ -36,6 +36,7 @@ $(1)_NUGET_TARGETS = \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.Sdk.Desktop.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.Sdk.Eol.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.Sdk.Mobile.targets \
+	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.Sdk.R2R.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Xamarin.Shared.Sdk.DefaultItems.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Xamarin.Shared.Sdk.Publish.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Xamarin.Shared.Sdk.TargetFrameworkInference.props \

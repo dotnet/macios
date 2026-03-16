@@ -70,16 +70,16 @@ namespace Network {
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern void nw_ip_options_set_calculate_receive_time (IntPtr options, byte calculateReceiveTime);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		internal static extern void nw_ip_options_set_local_address_preference (IntPtr options, NWIPLocalAddressPreference preference);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public NWIPLocalAddressPreference IPLocalAddressPreference {
 			set => nw_ip_options_set_local_address_preference (GetCheckedHandle (), value);

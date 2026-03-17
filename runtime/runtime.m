@@ -897,7 +897,7 @@ is_class_finalization_aware (MonoClass *cls)
 {
 	gboolean rv = false;
 
-	MonoClass *nsobject_class = xamarin_get_nsobject_class ();
+	MonoClass *nsobject_class = xamarin_get_nsobject_class (true);
 	if (nsobject_class)
 		rv = cls == nsobject_class || mono_class_is_assignable_from (nsobject_class, cls);
 

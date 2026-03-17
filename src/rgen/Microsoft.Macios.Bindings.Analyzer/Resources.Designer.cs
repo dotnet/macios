@@ -1190,5 +1190,32 @@ namespace Microsoft.Macios.Bindings.Analyzer {
                 return ResourceManager.GetString("RBI0041Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transient types (TransientString, TransientCFString, TransientCFObject) allocate native memory and must be disposed. Use the &apos;using&apos; keyword to ensure proper cleanup..
+        /// </summary>
+        internal static string RBI0042Description {
+            get {
+                return ResourceManager.GetString("RBI0042Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; of type &apos;{1}&apos; must be declared with the &apos;using&apos; keyword to ensure proper disposal of native resources.
+        /// </summary>
+        internal static string RBI0042MessageFormat {
+            get {
+                return ResourceManager.GetString("RBI0042MessageFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transient disposable type not declared with &apos;using&apos;.
+        /// </summary>
+        internal static string RBI0042Title {
+            get {
+                return ResourceManager.GetString("RBI0042Title", resourceCulture);
+            }
+        }
     }
 }

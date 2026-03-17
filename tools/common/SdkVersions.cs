@@ -28,7 +28,7 @@ namespace Xamarin {
 		public const string MiniOSSimulator = "16.0";
 		public const string MinTVOSSimulator = "16.0";
 
-		public const string MaxiOSSimulator = "26.2";
+		public const string MaxiOSSimulator = "26.3";
 		public const string MaxTVOSSimulator = "26.2";
 
 		public const string MaxiOSDeploymentTarget = "26.2";

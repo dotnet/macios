@@ -75,7 +75,7 @@ public sealed class PlatformTypeMappingMassager : Massager<PlatformTypeMappingMa
 			nativeName ??= etName;
 
 			var entry = (etNamespace + "." + etName, etNamespace, etName);
-			if (typeMap.TryGetValue (nativeName, out var existingEntry)) {
+			if (typeMap.ContainsKey (nativeName)) {
 				// When two types map to the same native name, prefer the
 				// standard protocol interface (named "I" + nativeName, e.g.
 				// INSCopying for "NSCopying") over a [Model] class or a

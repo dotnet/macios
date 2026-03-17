@@ -87,6 +87,24 @@
 
 
 	<!--
+		Force full trimming on assemblies inR2R and disable trimming on user assemblies.
+	-->
+	<Target Name="_SetR2RAssemblyTrimMode"
+			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And '$(PublishReadyToRun)' == 'true' And '$(_LinkMode)' == 'SdkOnly'"
+			AfterTargets="PrepareForILLink"
+			BeforeTargets="_RunILLink">
+		<ItemGroup>
+			<ManagedAssemblyToLink Condition="'%(ManagedAssemblyToLink.NuGetPackageId)' != ''">
+				<TrimMode>link</TrimMode>
+				<IsTrimmable>true</IsTrimmable>
+			</ManagedAssemblyToLink>
+			<ManagedAssemblyToLink Condition="'%(ManagedAssemblyToLink.NuGetPackageId)' == ''">
+				<TrimMode>copy</TrimMode>
+			</ManagedAssemblyToLink>
+		</ItemGroup>
+	</Target>
+
+	<!--
 		Exclude user assemblies from R2R composite so they run interpreted for debugging.
 		User assembly is defined as anything not coming from a NuGet package.
 	-->

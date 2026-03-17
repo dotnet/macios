@@ -10,7 +10,7 @@
 using CoreFoundation;
 
 namespace BackgroundAssets {
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native]
 	public enum BADownloadState : long {
 		Failed = -1,
@@ -20,7 +20,7 @@ namespace BackgroundAssets {
 		Finished,
 	}
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[Native]
 	public enum BAContentRequest : long {
 		Install = 1,
@@ -28,7 +28,7 @@ namespace BackgroundAssets {
 		Periodic,
 	}
 
-	[TV (18, 4), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (18, 4), iOS (17, 0), MacCatalyst (17, 0)]
 	[ErrorDomain ("BAErrorDomain")]
 	[Native]
 	public enum BAErrorCode : long {
@@ -72,7 +72,7 @@ namespace BackgroundAssets {
 		FileNotFound,
 	}
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BADownload : NSCoding, NSSecureCoding, NSCopying {
@@ -88,33 +88,33 @@ namespace BackgroundAssets {
 		[Export ("priority")]
 		nint Priority { get; }
 
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("isEssential")]
 		bool IsEssential { get; }
 
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[return: Release]
 		[Export ("copyAsNonEssential")]
 		BADownload CopyAsNonEssential ();
 	}
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BAAppExtensionInfo : NSSecureCoding {
 
-		[Mac (13, 0), iOS (16, 1), MacCatalyst (16, 1)]
+		[iOS (16, 1), MacCatalyst (16, 1)]
 		[NullAllowed]
 		[Export ("restrictedDownloadSizeRemaining", ArgumentSemantic.Strong)]
 		NSNumber RestrictedDownloadSizeRemaining { get; }
 
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[NullAllowed]
 		[Export ("restrictedEssentialDownloadSizeRemaining", ArgumentSemantic.Strong)]
 		NSNumber RestrictedEssentialDownloadSizeRemaining { get; }
 	}
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[Protocol]
 	interface BADownloaderExtension {
 
@@ -140,7 +140,7 @@ namespace BackgroundAssets {
 
 	interface IBADownloadManagerDelegate { }
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[Protocol]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -164,7 +164,7 @@ namespace BackgroundAssets {
 		void Finished (BADownload download, NSUrl fileUrl);
 	}
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BADownloadManager {
@@ -179,7 +179,7 @@ namespace BackgroundAssets {
 		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
 		NSObject WeakDelegate { get; set; }
 
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("fetchCurrentDownloads:")]
 		[return: NullAllowed]
 		BADownload [] FetchCurrentDownloads ([NullAllowed] out NSError error);
@@ -205,7 +205,7 @@ namespace BackgroundAssets {
 		void PerformWithExclusiveControlBeforeDate (NSDate date, Action<bool, NSError> performHandler);
 	}
 
-	[TV (18, 4), Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[TV (18, 4), iOS (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (BADownload), Name = "BAURLDownload")]
 	[DisableDefaultCtor]
 	interface BAUrlDownload {
@@ -233,11 +233,11 @@ namespace BackgroundAssets {
 		[Export ("initWithIdentifier:request:applicationGroupIdentifier:priority:")]
 		NativeHandle Constructor (string identifier, NSUrlRequest request, string applicationGroupIdentifier, nint priority);
 
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("initWithIdentifier:request:fileSize:applicationGroupIdentifier:")]
 		NativeHandle Constructor (string identifier, NSUrlRequest request, nuint fileSize, string applicationGroupIdentifier);
 
-		[Mac (13, 3), iOS (16, 4), MacCatalyst (16, 4)]
+		[iOS (16, 4), MacCatalyst (16, 4)]
 		[Export ("initWithIdentifier:request:essential:fileSize:applicationGroupIdentifier:priority:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (string identifier, NSUrlRequest request, bool essential, nuint fileSize, string applicationGroupIdentifier, nint priority);

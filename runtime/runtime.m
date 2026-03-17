@@ -11,6 +11,8 @@
 #include <sys/stat.h>
 #include <dlfcn.h>
 #include <mach/mach.h>
+#include <mach-o/dyld.h>
+#include <mach-o/loader.h>
 
 #include "product.h"
 #include "shared.h"
@@ -22,6 +24,7 @@
 #include "xamarin/monovm-bridge.h"
 #else
 #include "xamarin/coreclr-bridge.h"
+#include "host_runtime_contract.h"
 #endif
 
 #if defined (DEBUG)
@@ -77,6 +80,7 @@ const char *xamarin_runtime_configuration_name = NULL;
 
 enum XamarinNativeLinkMode xamarin_libmono_native_link_mode = XamarinNativeLinkModeStaticObject;
 const char **xamarin_runtime_libraries = NULL;
+void *xamarin_rtr_header = NULL;
 
 /* Callbacks */
 
@@ -2357,10 +2361,76 @@ xamarin_compute_native_dll_search_directories ()
 	return rv;
 }
 
+#if defined (CORECLR_RUNTIME)
+size_t
+xamarin_get_dyld_image_size (void* base_address)
+{
+	if (base_address == NULL)
+		return 0;
+
+	const struct mach_header_64* header = (const struct mach_header_64 *) base_address;
+
+	// Only support 64-bit Mach-O images.
+	if (header->magic != MH_MAGIC_64 && header->magic != MH_CIGAM_64) {
+		// Not a 64-bit Mach-O image. Return 0 or handle as appropriate.
+		return 0;
+	}
+	const struct load_command* cmd = (const struct load_command*) ((const char *) header + sizeof (struct mach_header_64));
+
+	size_t image_size = 0;
+	for (uint32_t j = 0; j < header->ncmds; ++j) {
+		if (cmd->cmd == LC_SEGMENT_64) {
+			const struct segment_command_64* seg = (const struct segment_command_64 *) cmd;
+			size_t end_addr = (size_t) (seg->vmaddr + seg->vmsize);
+			if (end_addr > image_size)
+				image_size = end_addr;
+		}
+
+		cmd = (const struct load_command *) ((const char *) cmd + cmd->cmdsize);
+	}
+
+	return image_size;
+}
+
+bool
+xamarin_get_native_code_data (const struct host_runtime_contract_native_code_context* context, struct host_runtime_contract_native_code_data* data)
+{
+	if (!context || !data || !context->assembly_path || !context->owner_composite_name)
+		return false;
+
+	void* r2r_header = xamarin_rtr_header;
+	if (r2r_header == NULL)
+		xamarin_assertion_message ("Failed to find the RTR_HEADER symbol.");
+
+	Dl_info info;
+	if (dladdr (r2r_header, &info) == 0)
+		xamarin_assertion_message ("Failed to get dladdr info for the RTR_HEADER symbol.");
+
+	data->size = sizeof (struct host_runtime_contract_native_code_data);
+	data->r2r_header_ptr = r2r_header;
+	data->image_size = xamarin_get_dyld_image_size (info.dli_fbase);
+	data->image_base = info.dli_fbase;
+
+	return true;
+}
+#endif // defined (CORECLR_RUNTIME)
+
 void
 xamarin_vm_initialize ()
 {
+#if defined (CORECLR_RUNTIME)
+	struct host_runtime_contract host_contract = {
+		.size = sizeof (struct host_runtime_contract),
+		.pinvoke_override = &xamarin_pinvoke_override,
+		.get_native_code_data = &xamarin_get_native_code_data
+	};
+
+	char contract_str [19]; // 0x + 16 hex digits + '\0'
+	snprintf (contract_str, sizeof (contract_str), "0x%zx", (size_t) (&host_contract));
+#else
 	char *pinvokeOverride = xamarin_strdup_printf ("%p", &xamarin_pinvoke_override);
+#endif
+
 	char *trusted_platform_assemblies = xamarin_compute_trusted_platform_assemblies ();
 	char *native_dll_search_directories = xamarin_compute_native_dll_search_directories ();
 	const char *startupHooks = getenv ("DOTNET_STARTUP_HOOKS");
@@ -2370,7 +2440,11 @@ xamarin_vm_initialize ()
 	const char *propertyKeys[] = {
 		"APP_CONTEXT_BASE_DIRECTORY", // path to where the managed assemblies are (usually at least - RID-specific assemblies will be in subfolders)
 		"APP_PATHS",
+#if defined (CORECLR_RUNTIME)
+		"HOST_RUNTIME_CONTRACT",
+#else
 		"PINVOKE_OVERRIDE",
+#endif
 		"TRUSTED_PLATFORM_ASSEMBLIES",
 		"NATIVE_DLL_SEARCH_DIRECTORIES",
 		"RUNTIME_IDENTIFIER",
@@ -2379,7 +2453,11 @@ xamarin_vm_initialize ()
 	const char *propertyValues[] = {
 		xamarin_get_bundle_path (),
 		xamarin_get_bundle_path (),
+#if defined (CORECLR_RUNTIME)
+		contract_str,
+#else
 		pinvokeOverride,
+#endif
 		trusted_platform_assemblies,
 		native_dll_search_directories,
 		RUNTIMEIDENTIFIER,
@@ -2393,7 +2471,9 @@ xamarin_vm_initialize ()
 
 	bool rv = xamarin_bridge_vm_initialize (propertyCount, propertyKeys, propertyValues);
 
+#if !defined (CORECLR_RUNTIME)
 	xamarin_free (pinvokeOverride);
+#endif
 	xamarin_free (trusted_platform_assemblies);
 	xamarin_free (native_dll_search_directories);
 
@@ -2429,7 +2509,7 @@ xamarin_is_native_library (const char *libraryName)
 	return rv;
 }
 
-void*
+const void*
 xamarin_pinvoke_override (const char *libraryName, const char *entrypointName)
 {
 

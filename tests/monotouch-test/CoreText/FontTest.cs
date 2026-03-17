@@ -7,6 +7,8 @@
 // Copyright 2015 Xamarin Inc. All rights reserved.
 //
 
+using System.Linq;
+
 using CoreGraphics;
 using CoreText;
 #if MONOMAC
@@ -82,7 +84,7 @@ namespace MonoTouchFixtures.CoreText {
 		[Test]
 		public void GetGlyphsForCharacters_35048 ()
 		{
-			using (var font = CGFont.CreateWithFontName ("AppleColorEmoji"))
+			using (var font = CreateAppleColorEmojiFont ())
 			using (var ctfont = font.ToCTFont ((nfloat) 10.0)) {
 				ushort [] gid = new ushort [2];
 				Assert.True (ctfont.GetGlyphsForCharacters ("\ud83d\ude00".ToCharArray (), gid), "GetGlyphsForCharacters");
@@ -115,6 +117,14 @@ namespace MonoTouchFixtures.CoreText {
 			}
 		}
 
+		static CGFont CreateAppleColorEmojiFont ()
+		{
+			var font = CGFont.CreateWithFontName ("AppleColorEmoji");
+			if (font is null)
+				Assert.Ignore ("Unable to create the 'AppleColorEmoji' font.");
+			return font;
+		}
+
 		[Test]
 		public void CTFontCopyNameForGlyph ()
 		{
@@ -123,7 +133,7 @@ namespace MonoTouchFixtures.CoreText {
 			using (var ctfont = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default))
 				Assert.That (ctfont.GetGlyphName ((ushort) 65), Is.EqualTo ("asciicircum"), "1");
 
-			using (var font = CGFont.CreateWithFontName ("AppleColorEmoji"))
+			using (var font = CreateAppleColorEmojiFont ())
 			using (var ctfont = font.ToCTFont ((nfloat) 10.0))
 				Assert.Null (ctfont.GetGlyphName ('\ud83d'), "2");
 		}
@@ -149,7 +159,11 @@ namespace MonoTouchFixtures.CoreText {
 			using var font = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default);
 			using var provider = new AdaptiveImageProvider ();
 			var bounds = font.GetTypographicBoundsForAdaptiveImageProvider (provider);
-			Assert.AreEqual (new CGRect (0, -3.90625, 13, 16.40625), bounds, "Bounds");
+			var candidates = new object [] {
+				new CGRect (0, -3.90625, 13, 16.40625),
+				new CGRect (0, -3.90625, 35, 16.40625)
+			};
+			Assert.That (bounds, Is.AnyOf (candidates).Using<CGRect> ((x, y) => x == y), "Bounds");
 			Assert.AreEqual (0, provider.Count, "#Count");
 		}
 

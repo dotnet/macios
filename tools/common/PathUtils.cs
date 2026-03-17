@@ -422,5 +422,25 @@ namespace Xamarin.Utils {
 				}
 			}
 		}
+
+		public static void CreateDirectoryForFile (string? file)
+		{
+#if NET
+			if (string.IsNullOrEmpty (file))
+#else
+			if (string.IsNullOrEmpty (file) || file is null)
+#endif
+				return;
+
+			var dir = Path.GetDirectoryName (file);
+#if NET
+			if (string.IsNullOrEmpty (dir))
+#else
+			if (string.IsNullOrEmpty (dir) || dir is null)
+#endif
+				return;
+
+			Directory.CreateDirectory (dir);
+		}
 	}
 }

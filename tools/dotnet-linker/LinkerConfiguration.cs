@@ -32,6 +32,7 @@ namespace Xamarin.Linker {
 		public bool HybridGlobalization { get; private set; }
 		public InlineDlfcnMethodsMode InlineDlfcnMethods { get; set; }
 		public bool InlineDlfcnMethodsEnabled => InlineDlfcnMethods != InlineDlfcnMethodsMode.Disabled;
+		public InlineClassGetHandleMode InlineClassGetHandle { get; set; }
 		// Per-assembly field symbols collected by InlineDlfcnMethodsStep, keyed by assembly name.
 		public Dictionary<string, HashSet<string>> InlinedDlfcnFields { get; } = new Dictionary<string, HashSet<string>> ();
 		// All [Field] symbol names collected by ProcessExportedFields, used in compatibility mode.
@@ -45,6 +46,7 @@ namespace Xamarin.Linker {
 		public string RelativeAppBundlePath { get; private set; } = string.Empty;
 		public Version? SdkVersion { get; private set; }
 		public string SdkRootDirectory { get; private set; } = string.Empty;
+		public string TypeMapFilePath { get; set; } = string.Empty;
 		public int Verbosity => Driver.Verbosity;
 		public string XamarinNativeLibraryDirectory { get; private set; } = string.Empty;
 
@@ -210,11 +212,17 @@ namespace Xamarin.Linker {
 				case "FrameworkAssembly":
 					FrameworkAssemblies.Add (value);
 					break;
+				case "InlineClassGetHandle":
+					if (Enum.TryParse<InlineClassGetHandleMode> (value, true, out var inlineClassGetHandleMode))
+						InlineClassGetHandle = inlineClassGetHandleMode;
+					else if (string.IsNullOrEmpty (value))
+						InlineClassGetHandle = InlineClassGetHandleMode.Disabled;
+					else
+						throw new InvalidOperationException ($"Unknown InlineClassGetHandle value: {value}");
+					break;
 				case "InlineDlfcnMethods":
 					if (Enum.TryParse<InlineDlfcnMethodsMode> (value, true, out var inlineDlfcnMode))
 						InlineDlfcnMethods = inlineDlfcnMode;
-					else if (string.Equals (value, "compatibility", StringComparison.OrdinalIgnoreCase))
-						InlineDlfcnMethods = InlineDlfcnMethodsMode.Compat;
 					else if (string.IsNullOrEmpty (value))
 						InlineDlfcnMethods = InlineDlfcnMethodsMode.Disabled;
 					else
@@ -376,6 +384,9 @@ namespace Xamarin.Linker {
 					break;
 				case "TypeMapAssemblyName":
 					Application.TypeMapAssemblyName = value;
+					break;
+				case "TypeMapFilePath":
+					TypeMapFilePath = value;
 					break;
 				case "TypeMapOutputDirectory":
 					Application.TypeMapOutputDirectory = value;
@@ -567,6 +578,7 @@ namespace Xamarin.Linker {
 				Console.WriteLine ($"    SdkRootDirectory: {SdkRootDirectory}");
 				Console.WriteLine ($"    SdkVersion: {SdkVersion}");
 				Console.WriteLine ($"    TypeMapAssemblyName: {Application.TypeMapAssemblyName}");
+				Console.WriteLine ($"    TypeMapFilePath: {TypeMapFilePath}");
 				Console.WriteLine ($"    TypeMapOutputDirectory: {Application.TypeMapOutputDirectory}");
 				Console.WriteLine ($"    UseInterpreter: {Application.UseInterpreter}");
 				Console.WriteLine ($"    UseLlvm: {Application.IsLLVM}");
@@ -665,4 +677,12 @@ public enum InlineDlfcnMethodsMode {
 	Disabled,
 	Strict,
 	Compat,
+	Compatibility = Compat,
+}
+
+public enum InlineClassGetHandleMode {
+	Disabled,
+	Strict,
+	Compat,
+	Compatibility = Compat,
 }

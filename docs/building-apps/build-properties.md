@@ -559,6 +559,42 @@ See also:
 * The [AlternateAppIcon](build-items.md#alternateappicon) item group.
 * The [AppIcon](#appicon) property.
 
+## InlineClassGetHandle
+
+Controls whether the build system replaces runtime calls to `Class.GetHandle` /
+`Class.GetHandleIntrinsic` with direct native references to Objective-C classes
+at build time.
+
+See [docs/code/class-handles.md](../code/class-handles.md) for an overview.
+
+The valid options are:
+
+* `compatibility`: Inlines `Class.GetHandle` calls only for types whose declaring
+  type matches the requested Objective-C class name.
+* `strict`: Inlines all `Class.GetHandle` calls unconditionally. Requires using
+  the static registrar (not the dynamic registrar).
+* (empty): Disables inlining of `Class.GetHandle` calls.
+
+Default value:
+* .NET 11+: `strict` when using NativeAOT (`PublishAot=true`), `compatibility` otherwise.
+* .NET 10 and earlier: not set (disabled).
+
+Example:
+
+```xml
+<PropertyGroup>
+    <InlineClassGetHandle>compatibility</InlineClassGetHandle>
+</PropertyGroup>
+```
+
+Custom behavior for specific Objective-C classes can be set using the [ReferenceNativeSymbol](build-items.md#referencenativesymbols) item group:
+
+```xml
+<ItemGroup>
+    <ReferenceNativeSymbol SymbolMode="Ignore" SymbolType="ObjectiveCClass" Include="SomeClassName" />
+</ItemGroup>
+```
+
 ## InlineDlfcnMethods
 
 Controls whether the build system replaces runtime calls to `ObjCRuntime.Dlfcn` methods with direct native symbol lookups at build time, eliminating the overhead of `dlsym` at runtime.

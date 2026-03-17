@@ -1150,6 +1150,33 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";RBI0042Description" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Transient types (TransientString, TransientCFString, TransientCFObject) allocate native memory and must be disposed. Use the 'using' keyword to ensure proper cleanup.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[一時型 (TransientString、TransientCFString、TransientCFObject) はネイティブ メモリを割り当てるため、解放する必要があります。'using' キーワードを使用して適切にクリーンアップしてください。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0042MessageFormat" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Variable '{0}' of type '{1}' must be declared with the 'using' keyword to ensure proper disposal of native resources]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[型 '{1}' の変数 '{0}' を 'using' キーワードで宣言して、ネイティブ リソースが適切に解放されるようにする必要があります]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";RBI0042Title" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Transient disposable type not declared with 'using']]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[一時的な破棄可能型が 'using' で宣言されていません]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
     </Item>
   </Item>
 </LCX>

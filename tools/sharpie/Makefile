@@ -8,7 +8,6 @@ SHARPIE_VERSION=$(XCODE_VERSION).$(SHARPIE_VERSION_BUILD).$(XCODE_BUMP_COMMIT_DI
 
 # Sharpie.Bind.csproj.inc contains the $(Sharpie.Bind_dependencies) variable used to determine if Sharpie.Bind needs to be rebuilt or not.
 Sharpie.Bind/Sharpie.Bind.csproj.inc: export BUILD_VERBOSITY=$(MSBUILD_VERBOSITY)
-Sharpie.Bind/Sharpie.Bind.csproj.inc: export DOTNET:=$(DOTNET)
 -include Sharpie.Bind/Sharpie.Bind.csproj.inc
 
 SHARPIE_BIND_TOOL_DEBUG=Sharpie.Bind.Tool/bin/Debug/osx-arm64/Sharpie.Bind.Tool

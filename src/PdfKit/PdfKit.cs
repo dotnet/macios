@@ -28,6 +28,7 @@ namespace PdfKit {
 			}
 			set {
 				using var arr = NSArray.FromNSObjects ((v) => NSValue.FromCGPoint (v), value);
+				WeakQuadrilateralPoints = arr;
 			}
 		}
 	}

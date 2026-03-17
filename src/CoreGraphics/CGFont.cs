@@ -48,10 +48,10 @@ namespace CoreGraphics {
 		{
 		}
 
-		static CGFont Create (IntPtr handle)
+		static CGFont? Create (IntPtr handle)
 		{
 			if (handle == IntPtr.Zero)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (handle));
+				return null;
 			return new CGFont (handle, true);
 		}
 
@@ -74,29 +74,27 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGFontRef */ IntPtr CGFontCreateWithDataProvider (/* CGDataProviderRef __nullable */ IntPtr provider);
 
+		/// <summary>Creates a font from a data provider.</summary>
 		/// <param name="provider">Data provider that wraps the font.</param>
-		///         <summary>Creates a font from a data provider.</summary>
-		///         <returns>The constructed font.</returns>
-		///         <remarks>
-		///           <para>
-		/// 	    You can use this method to create CGFonts from an
-		/// 	    in-memory representation of the font (for example, to
-		/// 	    embed binary fonts into your application to prevent easy
-		/// 	    copying of licensed fonts, or when you fetch the font from
-		/// 	    a streaming source and do not want to store it on disk).
-		///
-		/// 	  </para>
-		///           <example>
-		///             <code lang="csharp lang-csharp"><![CDATA[
-		/// // 
+		/// <returns>The constructed font, or <see langword="null" /> in case of failure.</returns>
+		/// <remarks>
+		///   <para>
+		///     You can use this method to create <see cref="CGFont" /> instances from an
+		///     in-memory representation of the font (for example, to
+		///     embed binary fonts into your application to prevent easy
+		///     copying of licensed fonts, or when you fetch the font from
+		///     a streaming source and do not want to store it on disk).
+		///   </para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
+		/// //
 		/// // Load font into byte array from a file.
 		/// //
-		/// byte [] myBuffer = File.ReadAllBytes ("demo.ttf"); 
-		/// CGFont font = CGFont.CreateFromProvider (new CGDataProvider (myBuffer, 0, myBuffer.Count));
-		///
+		/// var myBuffer = File.ReadAllBytes ("demo.ttf");
+		/// var font = CGFont.CreateFromProvider (new CGDataProvider (myBuffer, 0, myBuffer.Count));
 		/// ]]></code>
-		///           </example>
-		///         </remarks>
+		///   </example>
+		/// </remarks>
 		public static CGFont? CreateFromProvider (CGDataProvider provider)
 		{
 			// the API accept a `nil` argument but returns `nil`, we take a shortcut (no native call)
@@ -111,22 +109,24 @@ namespace CoreGraphics {
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		extern static /* CGFontRef */ IntPtr CGFontCreateWithFontName (/* CFStringRef __nullable */ IntPtr name);
 
-		/// <param name="name">To be added.</param>
-		///         <summary>Creates a new CGFont representing the specified PostScript or full name.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates a new <see cref="CGFont" /> representing the specified PostScript or full name.</summary>
+		/// <param name="name">The PostScript or full name of the font.</param>
+		/// <returns>The new <see cref="CGFont" />, or <see langword="null" /> if <paramref name="name" /> is <see langword="null" /> or no matching font is found.</returns>
+		/// <remarks>
+		///   <para>
+		///     This method looks up a font by its PostScript name or full
+		///     name. If no font matching <paramref name="name" /> is found,
+		///     the method returns <see langword="null" />.
+		///   </para>
+		/// </remarks>
 		public static CGFont? CreateWithFontName (string name)
 		{
 			// the API accept a `nil` argument but returns `nil`, we take a shortcut (no native call)
 			// and have a unit tests to make sure this behavior does not change over time
 			if (name is null)
 				return null;
-			var nameHandle = CFString.CreateNative (name);
-			try {
-				return Create (CGFontCreateWithFontName (nameHandle));
-			} finally {
-				CFString.ReleaseNative (nameHandle);
-			}
+			var nameHandle = new TransientCFString (name);
+			return Create (CGFontCreateWithFontName (nameHandle));
 		}
 
 		//[DllImport (Constants.CoreGraphicsLibrary)]

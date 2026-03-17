@@ -431,6 +431,37 @@ namespace MonoTouchFixtures.Foundation {
 			}
 		}
 
+		[Test]
+		public void EnumsFromHandle_ReturnsNullForZeroHandle ()
+		{
+			var result = NSArray.EnumsFromHandle<NSComparisonResult> (NativeHandle.Zero);
+			Assert.IsNull (result, "null for zero handle");
+		}
+
+		[Test]
+		public void EnumsFromHandle_Roundtrip ()
+		{
+			var expected = new [] {
+				NSComparisonResult.Ascending,
+				NSComparisonResult.Same,
+				NSComparisonResult.Descending,
+			};
+			using var n0 = NSNumber.FromNInt ((nint) (long) expected [0]);
+			using var n1 = NSNumber.FromNInt ((nint) (long) expected [1]);
+			using var n2 = NSNumber.FromNInt ((nint) (long) expected [2]);
+			using var array = NSArray.FromNSObjects (n0, n1, n2);
+			var actual = NSArray.EnumsFromHandle<NSComparisonResult> (array.Handle);
+			Assert.IsNotNull (actual, "not null");
+			Assert.That (actual!.Length, Is.EqualTo (3), "Length");
+			Assert.That (actual, Is.EqualTo (expected), "values");
+		}
+
+		[Test]
+		public void EnumsFromHandle_ThrowsForNonEnum ()
+		{
+			Assert.Throws<ArgumentException> (() => NSArray.EnumsFromHandle<int> (NativeHandle.Zero), "non-enum should throw");
+		}
+
 #if false // https://github.com/dotnet/macios/issues/15577
 		[Test]
 		public void GetDifferenceFromArrayTest ()

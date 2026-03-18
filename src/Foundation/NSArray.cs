@@ -953,7 +953,7 @@ namespace Foundation {
 		public static NSObject [] []? FromArrayOfArray (NSArray? weakArray)
 		{
 			try {
-				var rv = ArrayFromHandleDropNullElements<NSObject[]> (
+				var rv = ArrayFromHandleDropNullElements<NSObject []> (
 					weakArray.GetHandle (),
 					(v) => NonNullArrayFromHandleDropNullElements<NSObject> (v),
 					NSNullBehavior.DropIfIncompatible);

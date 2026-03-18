@@ -205,7 +205,6 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var calledOnLockPointer = false;
 			var calledOnUnlockPointer = false;
 			var calledOnReleaseInfo = false;
-			const int renderingBufferProviderSize = 512;
 
 			var calledOnResolve = false;
 			var calledOnAllocate = false;
@@ -225,10 +224,11 @@ namespace MonoTouchFixtures.CoreGraphics {
 					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
 						// TestRuntime.NSLog ($"CreateAdaptive () OnAllocate#3 info={info} parameters={parameters}");
 						calledOnAllocate = true;
+						var renderingBufferProviderSize = checked(parameters.AlignedBytesPerRow * parameters.Height);
 						var renderingBufferProvider = CGRenderingBufferProvider.Create (IntPtr.Zero, renderingBufferProviderSize,
 							lockPointer: (info) => {
 								calledOnLockPointer = true;
-								var rv = Marshal.AllocHGlobal (renderingBufferProviderSize);
+								var rv = Marshal.AllocHGlobal (checked((nint) renderingBufferProviderSize));
 								// TestRuntime.NSLog ($"CreateAdaptive3 () OnLockPointer#3 (0x{info:x}) => 0x{rv:x}");
 								return rv;
 							},
@@ -280,7 +280,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var calledOnLockPointer = false;
 			var calledOnUnlockPointer = false;
 			var calledOnReleaseInfo = false;
-			const int renderingBufferProviderSize = 512;
+			// Must be large enough to hold the bitmap data for a 256x256 adaptive context.
+			// Float16 RGBA = 8 bytes/pixel, so 256 * 8 = 2048 bytes/row, * 256 rows = 524,288 bytes minimum.
+			const int renderingBufferProviderSize = 1024 * 1024;
 
 			using (var pool = new NSAutoreleasePool ()) {
 				using (var renderingBufferProvider = CGRenderingBufferProvider.Create (IntPtr.Zero, renderingBufferProviderSize,

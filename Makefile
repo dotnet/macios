@@ -32,6 +32,8 @@ world: check-system
 	@$(MAKE) reset-versions
 	@$(MAKE) all -j8
 	@$(MAKE) install -j8
+	@echo "Build is done, the following workloads were built:"
+	@$(DOTNET) workload list
 
 .PHONY: check-system
 check-system:
@@ -67,9 +69,6 @@ install-hook::
 		echo "Error: global.json has changed: please commit the changes."; \
 		exit 1; \
 	fi
-
-all-hook install-hook::
-	$(Q) $(MAKE) -C dotnet shutdown-build-server
 
 dotnet-install-system:
 	$(Q) $(MAKE) -C dotnet install-system

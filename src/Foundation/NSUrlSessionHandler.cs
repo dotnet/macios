@@ -978,17 +978,8 @@ namespace Foundation {
 					// - SocketsHttpHandler:    https://github.com/dotnet/runtime/blob/b2974279efd059efaa17f359ed4b266b1c705721/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/DecompressionHandler.cs#L122-L123
 					// - AndroidMessageHandler: https://github.com/dotnet/android/pull/7785
 					// Ref: https://github.com/dotnet/macios/issues/23958
-					var contentWasDecompressed = false;
-					foreach (var v in urlResponse.AllHeaderFields) {
-						var key = v.Key?.ToString ();
-						var value = v.Value?.ToString ();
-						if (key is not null && value is not null
-							&& string.Equals (key, ContentEncodingHeaderName, StringComparison.OrdinalIgnoreCase)
-							&& IsCompressedEncoding (value)) {
-							contentWasDecompressed = true;
-							break;
-						}
-					}
+					string? contentEncodingValue = null;
+					string? contentLengthValue = null;
 
 					foreach (var v in urlResponse.AllHeaderFields) {
 						var key = v.Key?.ToString ();
@@ -999,15 +990,29 @@ namespace Foundation {
 						// NSUrlSession tries to be smart with cookies, we will not use the raw value but the ones provided by the cookie storage
 						if (key == SetCookie) continue;
 
-						if (contentWasDecompressed) {
-							if (string.Equals (key, ContentLengthHeaderName, StringComparison.OrdinalIgnoreCase))
-								continue;
-							if (string.Equals (key, ContentEncodingHeaderName, StringComparison.OrdinalIgnoreCase))
-								continue;
+						if (string.Equals (key, ContentEncodingHeaderName, StringComparison.OrdinalIgnoreCase)) {
+							contentEncodingValue = value;
+							continue;
+						}
+						if (string.Equals (key, ContentLengthHeaderName, StringComparison.OrdinalIgnoreCase)) {
+							contentLengthValue = value;
+							continue;
 						}
 
 						httpResponse.Headers.TryAddWithoutValidation (key, value);
 						httpResponse.Content.Headers.TryAddWithoutValidation (key, value);
+					}
+
+					var contentWasDecompressed = contentEncodingValue is not null && IsCompressedEncoding (contentEncodingValue);
+					if (!contentWasDecompressed) {
+						if (contentEncodingValue is not null) {
+							httpResponse.Headers.TryAddWithoutValidation (ContentEncodingHeaderName, contentEncodingValue);
+							httpResponse.Content.Headers.TryAddWithoutValidation (ContentEncodingHeaderName, contentEncodingValue);
+						}
+						if (contentLengthValue is not null) {
+							httpResponse.Headers.TryAddWithoutValidation (ContentLengthHeaderName, contentLengthValue);
+							httpResponse.Content.Headers.TryAddWithoutValidation (ContentLengthHeaderName, contentLengthValue);
+						}
 					}
 
 					// it might be confusing that we are not using the managed CookieStore here, this is ONLY for those cookies that have been retrieved from

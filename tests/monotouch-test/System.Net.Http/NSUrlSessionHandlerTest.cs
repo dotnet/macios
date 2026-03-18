@@ -25,7 +25,9 @@ namespace MonoTests.System.Net.Http {
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				using var handler = new NSUrlSessionHandler ();
 				using var client = new HttpClient (handler);
-				var response = await client.GetAsync ($"{NetworkResources.Httpbin.Url}/gzip");
+				// Use ResponseHeadersRead so that the response content is not buffered,
+				// which would cause HttpContent to compute Content-Length from the buffer.
+				var response = await client.GetAsync ($"{NetworkResources.Httpbin.Url}/gzip", HttpCompletionOption.ResponseHeadersRead);
 
 				if (!response.IsSuccessStatusCode) {
 					Assert.Inconclusive ($"Request failed with status {response.StatusCode}");

@@ -871,6 +871,15 @@ namespace Foundation {
 			}
 		}
 
+		static bool HasCompressedEncoding (string headerValue)
+		{
+			foreach (var encoding in headerValue.Split (',')) {
+				if (IsCompressedEncoding (encoding.Trim ()))
+					return true;
+			}
+			return false;
+		}
+
 		static bool IsCompressedEncoding (string encoding)
 		{
 			return string.Equals (encoding, "gzip", StringComparison.OrdinalIgnoreCase)
@@ -1003,7 +1012,7 @@ namespace Foundation {
 						httpResponse.Content.Headers.TryAddWithoutValidation (key, value);
 					}
 
-					var contentWasDecompressed = contentEncodingValue is not null && IsCompressedEncoding (contentEncodingValue);
+					var contentWasDecompressed = contentEncodingValue is not null && HasCompressedEncoding (contentEncodingValue);
 					if (!contentWasDecompressed) {
 						if (contentEncodingValue is not null) {
 							httpResponse.Headers.TryAddWithoutValidation (ContentEncodingHeaderName, contentEncodingValue);

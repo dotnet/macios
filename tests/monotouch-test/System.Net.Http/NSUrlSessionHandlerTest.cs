@@ -25,9 +25,12 @@ namespace MonoTests.System.Net.Http {
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				using var handler = new NSUrlSessionHandler ();
 				using var client = new HttpClient (handler);
+				// Explicitly request gzip to ensure the server compresses the response.
+				using var request = new HttpRequestMessage (HttpMethod.Get, $"{NetworkResources.Httpbin.Url}/gzip");
+				request.Headers.TryAddWithoutValidation ("Accept-Encoding", "gzip");
 				// Use ResponseHeadersRead so that the response content is not buffered,
 				// which would cause HttpContent to compute Content-Length from the buffer.
-				var response = await client.GetAsync ($"{NetworkResources.Httpbin.Url}/gzip", HttpCompletionOption.ResponseHeadersRead);
+				var response = await client.SendAsync (request, HttpCompletionOption.ResponseHeadersRead);
 
 				if (!response.IsSuccessStatusCode) {
 					Assert.Inconclusive ($"Request failed with status {response.StatusCode}");
@@ -54,21 +57,26 @@ namespace MonoTests.System.Net.Http {
 		[Test]
 		public void NonCompressedResponseHasContentLength ()
 		{
+			bool noContentEncoding = false;
 			long? contentLength = null;
 			string body = "";
 
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				using var handler = new NSUrlSessionHandler ();
 				using var client = new HttpClient (handler);
+				// Request identity encoding to ensure no compression is applied.
+				using var request = new HttpRequestMessage (HttpMethod.Get, $"{NetworkResources.Httpbin.Url}/html");
+				request.Headers.TryAddWithoutValidation ("Accept-Encoding", "identity");
 				// Use ResponseHeadersRead so that the response content is not buffered,
 				// which would cause HttpContent to compute Content-Length from the buffer.
-				var response = await client.GetAsync ($"{NetworkResources.Httpbin.Url}/html", HttpCompletionOption.ResponseHeadersRead);
+				var response = await client.SendAsync (request, HttpCompletionOption.ResponseHeadersRead);
 
 				if (!response.IsSuccessStatusCode) {
 					Assert.Inconclusive ($"Request failed with status {response.StatusCode}");
 					return;
 				}
 
+				noContentEncoding = response.Content.Headers.ContentEncoding.Count == 0;
 				contentLength = response.Content.Headers.ContentLength;
 				body = await response.Content.ReadAsStringAsync ();
 			}, out var ex);
@@ -79,6 +87,7 @@ namespace MonoTests.System.Net.Http {
 			}
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
 			Assert.IsNull (ex, $"Exception: {ex}");
+			Assert.IsTrue (noContentEncoding, "Content-Encoding should not be present for non-compressed content");
 			Assert.IsNotNull (contentLength, "Content-Length header should be present for non-compressed content");
 			Assert.IsTrue (contentLength > 0, "Content-Length should be greater than zero");
 			Assert.IsTrue (body.Length > 0, "Response body should not be empty");

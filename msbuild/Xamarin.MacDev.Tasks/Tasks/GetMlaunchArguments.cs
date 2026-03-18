@@ -67,12 +67,10 @@ namespace Xamarin.MacDev.Tasks {
 			// Which product family are we looking for?
 			string [] productFamilies;
 			switch (DeviceType) {
-			case IPhoneDeviceType.IPhone:
-				productFamilies = ["iPhone"];
-				break;
 			case IPhoneDeviceType.IPad:
 				productFamilies = ["iPad"];
 				break;
+			case IPhoneDeviceType.IPhone: // if we're looking for an iPhone, an iPad also works
 			case IPhoneDeviceType.IPhoneAndIPad:
 				productFamilies = ["iPhone", "iPad"];
 				break;

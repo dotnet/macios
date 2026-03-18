@@ -112,6 +112,8 @@ namespace Foundation {
 	public partial class NSUrlSessionHandler : HttpMessageHandler {
 		private const string SetCookie = "Set-Cookie";
 		private const string Cookie = "Cookie";
+		private const string ContentEncodingHeaderName = "Content-Encoding";
+		private const string ContentLengthHeaderName = "Content-Length";
 		private CookieContainer? cookieContainer;
 		readonly Dictionary<string, string> headerSeparators = new Dictionary<string, string> {
 			["User-Agent"] = " ",
@@ -869,6 +871,38 @@ namespace Foundation {
 			}
 		}
 
+		// NSURLSession automatically decompresses content for all supported encodings
+		// (gzip, deflate, br, zstd, etc.), and there's no way to turn it off.
+		// When that happens, the Content-Encoding and Content-Length headers in the
+		// response still refer to the compressed content, so we need to remove them
+		// to match the behavior of other HTTP handlers:
+		// - SocketsHttpHandler:    https://github.com/dotnet/runtime/blob/b2974279efd059efaa17f359ed4b266b1c705721/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/DecompressionHandler.cs#L122-L123
+		// - AndroidMessageHandler: https://github.com/dotnet/android/pull/7785
+		// Ref: https://github.com/dotnet/macios/issues/23958
+		static bool IsCompressedContentEncoding (string encoding)
+		{
+			return string.Equals (encoding, "gzip", StringComparison.OrdinalIgnoreCase)
+				|| string.Equals (encoding, "deflate", StringComparison.OrdinalIgnoreCase)
+				|| string.Equals (encoding, "br", StringComparison.OrdinalIgnoreCase)
+				|| string.Equals (encoding, "compress", StringComparison.OrdinalIgnoreCase)
+				|| string.Equals (encoding, "zstd", StringComparison.OrdinalIgnoreCase);
+		}
+
+		static void RemoveDecompressionHeaders (HttpResponseMessage response)
+		{
+			var contentEncodings = response.Content.Headers.ContentEncoding;
+			if (contentEncodings.Count == 0)
+				return;
+
+			foreach (var encoding in contentEncodings) {
+				if (IsCompressedContentEncoding (encoding)) {
+					contentEncodings.Clear ();
+					response.Content.Headers.Remove (ContentLengthHeaderName);
+					return;
+				}
+			}
+		}
+
 		partial class NSUrlSessionHandlerDelegate : NSUrlSessionDataDelegate {
 			readonly NSUrlSessionHandler sessionHandler;
 
@@ -971,6 +1005,8 @@ namespace Foundation {
 						httpResponse.Headers.TryAddWithoutValidation (key, value);
 						httpResponse.Content.Headers.TryAddWithoutValidation (key, value);
 					}
+
+					RemoveDecompressionHeaders (httpResponse);
 
 					// it might be confusing that we are not using the managed CookieStore here, this is ONLY for those cookies that have been retrieved from
 					// the server via a Set-Cookie header, the managed container does not know a thing about this and apple is storing them in the native

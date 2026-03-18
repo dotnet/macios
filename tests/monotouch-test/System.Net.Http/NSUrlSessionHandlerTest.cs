@@ -14,6 +14,40 @@ namespace MonoTests.System.Net.Http {
 	[Preserve (AllMembers = true)]
 	public class NSUrlSessionHandlerTest {
 
+		// https://github.com/dotnet/macios/issues/23958
+		[Test]
+		public void DecompressedResponseDoesNotHaveContentEncodingOrContentLength ()
+		{
+			bool noContentEncoding = false;
+			bool noContentLength = false;
+			string body = "";
+
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				using var handler = new NSUrlSessionHandler ();
+				using var client = new HttpClient (handler);
+				var response = await client.GetAsync ($"{NetworkResources.Httpbin.Url}/gzip");
+
+				if (!response.IsSuccessStatusCode) {
+					Assert.Inconclusive ($"Request failed with status {response.StatusCode}");
+					return;
+				}
+
+				noContentEncoding = response.Content.Headers.ContentEncoding.Count == 0;
+				noContentLength = response.Content.Headers.ContentLength is null;
+				body = await response.Content.ReadAsStringAsync ();
+			}, out var ex);
+
+			if (!done) {
+				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
+				Assert.Inconclusive ("Request timed out.");
+			}
+			TestRuntime.IgnoreInCIIfBadNetwork (ex);
+			Assert.IsNull (ex, $"Exception: {ex}");
+			Assert.IsTrue (noContentEncoding, "Content-Encoding header should be removed for decompressed content");
+			Assert.IsTrue (noContentLength, "Content-Length header should be removed for decompressed content");
+			Assert.IsTrue (body.Contains ("\"gzipped\"", StringComparison.OrdinalIgnoreCase), "Response body should contain decompressed gzip data");
+		}
+
 		// https://github.com/dotnet/macios/issues/24376
 		[Test]
 		public void DisposeAndRecreateBackgroundSessionHandler ()

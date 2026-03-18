@@ -280,70 +280,69 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var calledOnLockPointer = false;
 			var calledOnUnlockPointer = false;
 			var calledOnReleaseInfo = false;
-			// Must be large enough to hold the bitmap data for a 256x256 adaptive context.
-			// Float16 RGBA = 8 bytes/pixel, so 256 * 8 = 2048 bytes/row, * 256 rows = 524,288 bytes minimum.
-			const int renderingBufferProviderSize = 1024 * 1024;
+			CGRenderingBufferProvider? externalBufferProvider = null;
 
 			using (var pool = new NSAutoreleasePool ()) {
-				using (var renderingBufferProvider = CGRenderingBufferProvider.Create (IntPtr.Zero, renderingBufferProviderSize,
-					lockPointer: (info) => {
-						calledOnLockPointer = true;
-						var rv = Marshal.AllocHGlobal (renderingBufferProviderSize);
-						// TestRuntime.NSLog ($"CreateAdaptive () OnLockPointer#4 (0x{info:x}) => 0x{rv:x}");
-						return rv;
+				var calledOnResolve = false;
+				var calledOnAllocate = false;
+				var calledOnFree = false;
+				var calledOnError = false;
+				var options = new CGAdaptiveOptions () {
+					MaximumBitDepth = CGComponent.Float16Bit,
+				};
+
+				using (var context = CGBitmapContext.Create (width, height, options,
+					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
+						// TestRuntime.NSLog ($"CreateAdaptive () OnResolve#4 info={info} parameters={parameters}");
+						calledOnResolve = true;
+						return true;
 					},
-					unlockPointer: (info, pointer) => {
-						// TestRuntime.NSLog ($"CreateAdaptive () OnUnlockPointer#4 (0x{info:x}, 0x{pointer:x})");
-						calledOnUnlockPointer = true;
-						Marshal.FreeHGlobal (pointer);
+					(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
+						// TestRuntime.NSLog ($"CreateAdaptive () OnAllocate#4 info={info} parameters={parameters}");
+						calledOnAllocate = true;
+						var renderingBufferProviderSize = checked(parameters.AlignedBytesPerRow * parameters.Height);
+						externalBufferProvider = CGRenderingBufferProvider.Create (IntPtr.Zero, renderingBufferProviderSize,
+							lockPointer: (info) => {
+								calledOnLockPointer = true;
+								var rv = Marshal.AllocHGlobal (checked((nint) renderingBufferProviderSize));
+								// TestRuntime.NSLog ($"CreateAdaptive () OnLockPointer#4 (0x{info:x}) => 0x{rv:x}");
+								return rv;
+							},
+							unlockPointer: (info, pointer) => {
+								// TestRuntime.NSLog ($"CreateAdaptive () OnUnlockPointer#4 (0x{info:x}, 0x{pointer:x})");
+								calledOnUnlockPointer = true;
+								Marshal.FreeHGlobal (pointer);
+							},
+							releaseInfo: (info) => {
+								// TestRuntime.NSLog ($"CreateAdaptive () OnReleaseInfo#4 (0x{info:x})");
+								calledOnReleaseInfo = true;
+							}
+						);
+						return externalBufferProvider;
 					},
-					releaseInfo: (info) => {
-						// TestRuntime.NSLog ($"CreateAdaptive () OnReleaseInfo#4 (0x{info:x})");
-						calledOnReleaseInfo = true;
-					}
-				)) {
-					Assert.That (renderingBufferProvider, Is.Not.Null, "RenderingBufferProvider");
+					(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+						// TestRuntime.NSLog ($"CreateAdaptive () OnFree#4 renderingBufferProvider={renderingBufferProvider} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
+						calledOnFree = true;
+					},
+					(NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
+						// TestRuntime.NSLog ($"CreateAdaptive () OnError#4 error={error} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
+						calledOnError = true;
+					})) {
 
-					var calledOnResolve = false;
-					var calledOnAllocate = false;
-					var calledOnFree = false;
-					var calledOnError = false;
-					var options = new CGAdaptiveOptions () {
-						MaximumBitDepth = CGComponent.Float16Bit,
-					};
+					Assert.NotNull (context, "Context#4");
 
-					using (var context = CGBitmapContext.Create (width, height, options,
-						(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
-							// TestRuntime.NSLog ($"CreateAdaptive () OnResolve#4 info={info} parameters={parameters}");
-							calledOnResolve = true;
-							return true;
-						},
-						(ref CGContentInfo info, ref CGBitmapParameters parameters) => {
-							// TestRuntime.NSLog ($"CreateAdaptive () OnAllocate#4 info={info} parameters={parameters}");
-							calledOnAllocate = true;
-							return renderingBufferProvider;
-						},
-						(CGRenderingBufferProvider renderingBufferProvider, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
-							// TestRuntime.NSLog ($"CreateAdaptive () OnFree#4 renderingBufferProvider={renderingBufferProvider} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
-							calledOnFree = true;
-						},
-						(NSError error, ref CGContentInfo contentInfo, ref CGBitmapParameters bitmapParameters) => {
-							// TestRuntime.NSLog ($"CreateAdaptive () OnError#4 error={error} contentInfo={contentInfo} bitmapParameters={bitmapParameters}");
-							calledOnError = true;
-						})) {
-
-						Assert.NotNull (context, "Context#4");
-
-						using var img = context.ToImage ();
-						Assert.NotNull (img, "ToImage");
-					}
-
-					Assert.That (calledOnResolve, Is.True, "calledOnResolve#4");
-					Assert.That (calledOnAllocate, Is.True, "calledOnAllocate#4");
-					Assert.That (calledOnFree, Is.True, "calledOnFree#4");
-					Assert.That (calledOnError, Is.False, "calledOnError#4");
+					using var img = context.ToImage ();
+					Assert.NotNull (img, "ToImage");
 				}
+
+				Assert.That (calledOnResolve, Is.True, "calledOnResolve#4");
+				Assert.That (calledOnAllocate, Is.True, "calledOnAllocate#4");
+				Assert.That (calledOnFree, Is.True, "calledOnFree#4");
+				Assert.That (calledOnError, Is.False, "calledOnError#4");
 			}
+
+			// Explicitly dispose the buffer provider to verify releaseInfo is called.
+			externalBufferProvider?.Dispose ();
 
 			Assert.That (calledOnLockPointer, Is.True, "calledOnLockPointer#4");
 			Assert.That (calledOnUnlockPointer, Is.True, "calledOnUnlockPointer#4");

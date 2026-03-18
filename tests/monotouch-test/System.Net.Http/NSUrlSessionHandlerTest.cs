@@ -50,6 +50,40 @@ namespace MonoTests.System.Net.Http {
 			Assert.IsTrue (body.Contains ("\"gzipped\"", StringComparison.OrdinalIgnoreCase), "Response body should contain decompressed gzip data");
 		}
 
+		// https://github.com/dotnet/macios/issues/23958
+		[Test]
+		public void NonCompressedResponseHasContentLength ()
+		{
+			long? contentLength = null;
+			string body = "";
+
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				using var handler = new NSUrlSessionHandler ();
+				using var client = new HttpClient (handler);
+				// Use ResponseHeadersRead so that the response content is not buffered,
+				// which would cause HttpContent to compute Content-Length from the buffer.
+				var response = await client.GetAsync ($"{NetworkResources.Httpbin.Url}/html", HttpCompletionOption.ResponseHeadersRead);
+
+				if (!response.IsSuccessStatusCode) {
+					Assert.Inconclusive ($"Request failed with status {response.StatusCode}");
+					return;
+				}
+
+				contentLength = response.Content.Headers.ContentLength;
+				body = await response.Content.ReadAsStringAsync ();
+			}, out var ex);
+
+			if (!done) {
+				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
+				Assert.Inconclusive ("Request timed out.");
+			}
+			TestRuntime.IgnoreInCIIfBadNetwork (ex);
+			Assert.IsNull (ex, $"Exception: {ex}");
+			Assert.IsNotNull (contentLength, "Content-Length header should be present for non-compressed content");
+			Assert.IsTrue (contentLength > 0, "Content-Length should be greater than zero");
+			Assert.IsTrue (body.Length > 0, "Response body should not be empty");
+		}
+
 		// https://github.com/dotnet/macios/issues/24376
 		[Test]
 		public void DisposeAndRecreateBackgroundSessionHandler ()

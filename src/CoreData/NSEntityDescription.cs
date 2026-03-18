@@ -15,7 +15,7 @@ namespace CoreData {
 		/// <summary>Gets or sets the uniqueness constraints for this entity.</summary>
 		/// <value>
 		///   A jagged array where each element is an array of <see cref="NSObject" /> properties
-		///   that together form a uniqueness constraint, or <see langword="null" />.
+		///   that together form a uniqueness constraint. The returned array is never <see langword="null" />; it will be an empty array if no uniqueness constraints are configured.
 		/// </value>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]

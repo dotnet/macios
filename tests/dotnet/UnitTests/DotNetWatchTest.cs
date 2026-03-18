@@ -70,7 +70,7 @@ namespace Xamarin.Tests {
 				if (line.Contains ("Variable has not changed")) {
 					if (appStarted.TrySetResult (true))
 						debugLog.WriteLine ("Got 'Variable has not changed'");
-				} 
+				}
 				if (line.Contains ("Variable has changed")) {
 					if (variableChanged.TrySetResult (true))
 						debugLog.WriteLine ("Got 'Variable has changed'");

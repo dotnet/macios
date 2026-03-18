@@ -9,6 +9,7 @@
 
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.CompileNativeCode" AssemblyFile="$(_XamarinTaskAssembly)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.FindAotCompiler" AssemblyFile="$(_XamarinTaskAssembly)" />
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.GenerateReferencesTask" AssemblyFile="$(_XamarinTaskAssembly)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.GetFullPaths" AssemblyFile="$(_XamarinTaskAssembly)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.InstallNameTool" AssemblyFile="$(_XamarinTaskAssembly)" />
 	<UsingTask TaskName="Xamarin.MacDev.Tasks.LinkNativeCode" AssemblyFile="$(_XamarinTaskAssembly)" />
@@ -261,6 +262,7 @@
 			_ComputeStripAssemblyIL;
 			_StripAssemblyIL;
 			_LoadLinkerOutput;
+			_GenerateReferences;
 			_CompileNativeExecutable;
 			_LinkNativeExecutable;
 			_ComputePublishLocation;
@@ -774,7 +776,7 @@
 			-->
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.RegistrarStep" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GenerateMainStep" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GenerateReferencesStep" />
+			<!-- GenerateReferencesStep has been migrated to a standalone MSBuild task (_GenerateReferences target) -->
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.GatherFrameworksStep" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ComputeNativeBuildFlagsStep" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Type="Xamarin.Linker.ComputeAOTArguments" />
@@ -1055,8 +1057,7 @@
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_MainLinkerFlags.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_BindingLibraryFrameworks.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_RegistrarFile.items" />
-			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_ReferencesFile.items" />
-			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/ReferenceNativeSymbol.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_RequiredNativeReference.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_AssembliesToAOT.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_FrameworkToPublish.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_DynamicLibraryToPublish.items" />
@@ -1079,12 +1080,29 @@
 			<_MainLinkerFlags Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_MainLinkerFlags.items'" />
 			<_BindingLibraryFrameworks Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_BindingLibraryFrameworks.items'" />
 			<_RegistrarFile Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_RegistrarFile.items'" />
-			<_ReferencesFile Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_ReferencesFile.items'" />
-			<_ProcessedReferenceNativeSymbol Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == 'ReferenceNativeSymbol.items'" />
+			<_RequiredNativeReference Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_RequiredNativeReference.items'" />
 			<_AssembliesToAOT Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_AssembliesToAOT.items'" />
 			<_FrameworkToPublish Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_FrameworkToPublish.items'" />
 			<_DynamicLibraryToPublish Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_DynamicLibraryToPublish.items'" />
 		</ItemGroup>
+	</Target>
+
+	<!--
+		Generate native symbol references.
+		This target replaces the GenerateReferencesStep ILLink step.
+		It processes the _RequiredNativeReference items collected during linking
+		and produces either _ReferencesFile (Code mode) or _ProcessedReferenceNativeSymbol (Linker mode) items.
+	-->
+	<Target Name="_GenerateReferences" DependsOnTargets="_LoadLinkerOutput" Condition="'$(IsMacEnabled)' == 'true'">
+		<GenerateReferencesTask
+			SessionId="$(BuildSessionId)"
+			RequiredSymbols="@(_RequiredNativeReference)"
+			SymbolMode="Linker"
+			CacheDirectory="$(_LinkerCacheDirectory)"
+		>
+			<Output TaskParameter="ReferencesFile" ItemName="_ReferencesFile" />
+			<Output TaskParameter="NativeSymbols" ItemName="_ProcessedReferenceNativeSymbol" />
+		</GenerateReferencesTask>
 	</Target>
 
 	<!-- Native code -->

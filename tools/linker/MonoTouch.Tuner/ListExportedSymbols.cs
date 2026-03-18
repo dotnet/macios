@@ -42,6 +42,18 @@ namespace Xamarin.Linker.Steps {
 				// be started if the linker was not executed due to re-using cached results.
 				state.End ();
 			}
+
+			// Write the collected symbols as MSBuild items so they can be consumed
+			// by the GenerateReferences MSBuild task after the linker completes.
+			var items = new List<MSBuildItem> ();
+			foreach (var symbol in DerivedLinkContext.RequiredSymbols) {
+				var item = new MSBuildItem (symbol.Prefix + symbol.Name);
+				item.Metadata ["SymbolType"] = symbol.Type.ToString ();
+				item.Metadata ["SymbolMode"] = symbol.Mode.ToString ();
+				items.Add (item);
+			}
+			Configuration.WriteOutputForMSBuild ("_RequiredNativeReference", items);
+
 			base.EndProcess ();
 		}
 

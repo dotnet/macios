@@ -1295,19 +1295,23 @@ namespace Xamarin.Linker {
 		/// Preserve a type conditionally on another type (if that other type is marked)
 		/// </summary>
 		/// <remarks>
-		/// Unfortunately a DynamicDependency attribute can't point to a type, only a member within a type.
-		/// So we add a placeholder member within the target type, and point the DynamicDependency attribute to that member.
+		///   <para>
+		///     Unfortunately a DynamicDependency attribute can't point to a type, only a member within a type.
+		///     So we add a placeholder member within the target type, and point the DynamicDependency attribute to that member.
+		///   </para>
+		///   <para>The caller is responsible for making sure the current assenbly is saved if there were any changes.</para>
 		/// </remarks>
 		/// <param name="onType">The type on which to add the dynamic dependency attribute.</param>
 		/// <param name="forType">The type that is the target of the dynamic dependency.</param>
+		/// <returns>Whether the current assembly was modified or not.</returns>
 		public bool AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, TypeDefinition forType)
 		{
-			var placerholderName = "__linker_preserve__";
+			var placeholderName = "__linker_preserve__";
 			FieldDefinition? placeholderMember = null;
 			if (forType.HasFields)
-				placeholderMember = forType.Fields.FirstOrDefault (f => f.Name == placerholderName && f.IsStatic);
+				placeholderMember = forType.Fields.FirstOrDefault (f => f.Name == placeholderName && f.IsStatic);
 			if (placeholderMember is null) {
-				placeholderMember = new FieldDefinition (placerholderName, FieldAttributes.Private | FieldAttributes.Static, System_Int32);
+				placeholderMember = new FieldDefinition (placeholderName, FieldAttributes.Private | FieldAttributes.Static, System_Int32);
 				forType.Fields.Add (placeholderMember);
 			}
 			return AddDynamicDependencyAttributeToStaticConstructor (onType, placeholderMember);
@@ -1368,33 +1372,33 @@ namespace Xamarin.Linker {
 					if (ca.Properties.Count != attribute.Properties.Count)
 						continue;
 
-					var all_match = true;
+					var allMatch = true;
 					for (int i = 0; i < ca.ConstructorArguments.Count; i++) {
-						var ca_arg = ca.ConstructorArguments [i];
-						var attr_arg = attribute.ConstructorArguments [i];
-						if (!object.Equals (ca_arg.Value, attr_arg.Value)) {
-							all_match = false;
+						var caArg = ca.ConstructorArguments [i];
+						var attrArg = attribute.ConstructorArguments [i];
+						if (!object.Equals (caArg.Value, attrArg.Value)) {
+							allMatch = false;
 							break;
 						}
 					}
-					if (!all_match)
+					if (!allMatch)
 						continue;
 
 					for (int i = 0; i < ca.Properties.Count; i++) {
-						var ca_prop = ca.Properties [i];
-						var attr_prop = attribute.Properties [i];
+						var caProp = ca.Properties [i];
+						var attrProp = attribute.Properties [i];
 
-						if (ca_prop.Name != attr_prop.Name) {
-							all_match = false;
+						if (caProp.Name != attrProp.Name) {
+							allMatch = false;
 							break;
 						}
 
-						if (!object.Equals (ca_prop.Argument.Value, attr_prop.Argument.Value)) {
-							all_match = false;
+						if (!object.Equals (caProp.Argument.Value, attrProp.Argument.Value)) {
+							allMatch = false;
 							break;
 						}
 					}
-					if (!all_match)
+					if (!allMatch)
 						continue;
 
 					// attribute already present

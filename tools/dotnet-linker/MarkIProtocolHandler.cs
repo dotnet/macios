@@ -1,91 +1,44 @@
 using System;
-using System.Linq;
 
 using Mono.Cecil;
 using Mono.Linker;
 using Mono.Linker.Steps;
 
-using Xamarin.Tuner;
-
 #nullable enable
 
 namespace Xamarin.Linker {
-	public class MarkIProtocolHandler : BaseStep {
-		public LinkerConfiguration Configuration {
-			get {
-				return LinkerConfiguration.GetInstance (Context);
-			}
-		}
+	public class MarkIProtocolHandler : ConfigurationAwareMarkHandler {
 
-		public DerivedLinkContext DerivedLinkContext {
-			get {
-				return Configuration.DerivedLinkContext;
-			}
-		}
+		protected override string Name { get; } = "IProtocol Marker";
+		protected override int ErrorCode { get; } = 2420;
 
-		AppBundleRewriter abr => Configuration.AppBundleRewriter;
-
-		protected override void ProcessAssembly (AssemblyDefinition assembly)
+		public override void Initialize (LinkContext context, MarkContext markContext)
 		{
-			base.ProcessAssembly (assembly);
+			base.Initialize (context);
 
-			if (DerivedLinkContext.App.Registrar != Bundler.RegistrarMode.Dynamic)
-				return;
-
-			if (Annotations.GetAction (assembly) != AssemblyAction.Link)
-				return;
-
-			if (!assembly.MainModule.HasTypes)
-				return;
-
-			if (!assembly.MainModule.HasAssemblyReferences)
-				return;
-
-			// In fact, unless an assembly is or references our platform assembly, then it won't have anything we need to register
-			if (!Configuration.Profile.IsOrReferencesProductAssembly (assembly))
-				return;
-
-			abr.SetCurrentAssembly (assembly);
-			var modified = false;
-			foreach (var type in assembly.MainModule.Types)
-				modified |= ProcessType (type);
-			if (modified)
-				abr.SaveCurrentAssembly ();
-			abr.ClearCurrentAssembly ();
+			if (LinkContext.App.Registrar == Bundler.RegistrarMode.Dynamic) {
+				markContext.RegisterMarkTypeAction (ProcessType);
+			}
 		}
 
-		bool ProcessType (TypeDefinition type)
+		protected override void Process (TypeDefinition type)
 		{
-			var modified = false;
-
-			if (type.HasNestedTypes) {
-				foreach (var nested in type.NestedTypes)
-					modified |= ProcessType (nested);
-			}
-
 			if (!type.HasInterfaces)
-				return modified;
+				return;
 
-			if (!type.IsNSObject (DerivedLinkContext))
-				return modified;
-
-			// If we're using the dynamic registrar, we need to mark interfaces that represent protocols
-			// even if it doesn't look like the interfaces are used, since we need them at runtime.
-
-			var hasProtocols = false;
 			foreach (var iface in type.Interfaces) {
 				var resolvedInterfaceType = iface.InterfaceType.Resolve ();
-				hasProtocols = resolvedInterfaceType.HasCustomAttribute (DerivedLinkContext, Namespaces.Foundation, "ProtocolAttribute");
-				if (hasProtocols)
-					break;
+				// If we're using the dynamic registrar, we need to mark interfaces that represent protocols
+				// even if it doesn't look like the interfaces are used, since we need them at runtime.
+				var isProtocol = type.IsNSObject (LinkContext) && resolvedInterfaceType.HasCustomAttribute (LinkContext, Namespaces.Foundation, "ProtocolAttribute");
+				if (isProtocol) {
+					// Mark only if not already marked.
+					// otherwise we might enqueue something everytime and never get an empty queue
+					if (!LinkContext.Annotations.IsMarked (resolvedInterfaceType)) {
+						LinkContext.Annotations.Mark (resolvedInterfaceType);
+					}
+				}
 			}
-
-			if (!hasProtocols)
-				return modified;
-
-			var attrib = abr.CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.Interfaces, type);
-			modified |= abr.AddAttributeToStaticConstructor (type, attrib);
-			return modified;
 		}
 	}
 }

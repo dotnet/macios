@@ -550,6 +550,7 @@
 			<_UseDynamicDependenciesForProtocolPreservation Condition="'$(_UseDynamicDependenciesForProtocolPreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForProtocolPreservation>
 			<_UseDynamicDependenciesForSmartEnumPreservation Condition="'$(_UseDynamicDependenciesForSmartEnumPreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForSmartEnumPreservation>
 			<_UseDynamicDependenciesForBlockCodePreservation Condition="'$(_UseDynamicDependenciesForBlockCodePreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForBlockCodePreservation>
+			<_UseDynamicDependenciesForGeneratedCodeOptimizations Condition="'$(_UseDynamicDependenciesForGeneratedCodeOptimizations)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForGeneratedCodeOptimizations>
 		</PropertyGroup>
 
 		<PropertyGroup>
@@ -754,6 +755,7 @@
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.PreserveProtocolsStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForProtocolPreservation)' == 'true'" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.PreserveSmartEnumConversionsStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForSmartEnumPreservation)' == 'true'" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.PreserveBlockCodeStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForBlockCodePreservation)' == 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.OptimizeGeneratedCodeStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForGeneratedCodeOptimizations)' == 'true'" />
 			<!-- The final decision to remove/keep the dynamic registrar must be done before the linking step -->
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="MonoTouch.Tuner.RegistrarRemovalTrackingStep" />
 			<!-- TODO: these steps should probably run after mark. -->
@@ -764,7 +766,7 @@
 				IMarkHandlers which run during Mark
 			-->
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForBlockCodePreservation)' != 'true'" Type="Xamarin.Linker.Steps.PreserveBlockCodeHandler" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true'" Type="Xamarin.Linker.OptimizeGeneratedCodeHandler" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForGeneratedCodeOptimizations)' != 'true'" Type="Xamarin.Linker.OptimizeGeneratedCodeHandler" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true'" Type="Xamarin.Linker.BackingFieldDelayHandler" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForProtocolPreservation)' != 'true'" Type="Xamarin.Linker.MarkIProtocolHandler" />
 			<!-- MarkDispatcher substeps will run for all marked assemblies. -->

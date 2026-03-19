@@ -12462,6 +12462,7 @@ System.Private.CoreLib.dll:System.Reflection.RtFieldInfo.System.IRuntimeFieldInf
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly System.Reflection.Emit.RuntimeAssemblyBuilder::InternalAssembly()
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly System.Reflection.RuntimeModule::m_runtimeAssembly
+System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::_currAssembly
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly..ctor()
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetCodeBase>g____PInvoke|14_0(System.Runtime.CompilerServices.QCallAssembly, System.Runtime.CompilerServices.StringHandleOnStack)
 System.Private.CoreLib.dll:System.Reflection.RuntimeAssembly.<GetManifestModule>g__GetManifestModuleWorker|93_0(System.Reflection.RuntimeAssembly)
@@ -13238,6 +13239,8 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.CollectionBuilderAttr
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.CollectionBuilderAttribute..ctor(System.Type, System.String)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.CompExactlyDependsOnAttribute
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.CompExactlyDependsOnAttribute..ctor(System.Type)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.CompHasFallbackAttribute
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.CompHasFallbackAttribute..ctor()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.CompilationRelaxationsAttribute
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.CompilationRelaxationsAttribute..ctor(System.Int32)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.CompilerGeneratedAttribute
@@ -13904,6 +13907,7 @@ System.Private.CoreLib.dll:System.Runtime.ExceptionIDs System.Runtime.ExceptionI
 System.Private.CoreLib.dll:System.Runtime.ExceptionIDs System.Runtime.ExceptionIDs::Overflow
 System.Private.CoreLib.dll:System.Runtime.ExceptionIDs System.Runtime.ExceptionIDs::PrivilegedInstruction
 System.Private.CoreLib.dll:System.Runtime.ExceptionServices.ExceptionDispatchInfo
+System.Private.CoreLib.dll:System.Runtime.ExceptionServices.ExceptionDispatchInfo System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::_creationException
 System.Private.CoreLib.dll:System.Runtime.ExceptionServices.ExceptionDispatchInfo System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1::_error
 System.Private.CoreLib.dll:System.Runtime.ExceptionServices.ExceptionDispatchInfo System.Threading.Tasks.TaskExceptionHolder::m_cancellationException
 System.Private.CoreLib.dll:System.Runtime.ExceptionServices.ExceptionDispatchInfo..ctor(System.Exception)
@@ -14492,6 +14496,13 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.Swift.SwiftError
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Swift.SwiftIndirectResult
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Swift.SwiftSelf
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Swift.SwiftSelf`1
+System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary
+System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext
+System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyExternalTypeDictionary
+System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyExternalTypeDictionary System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::_externalTypeMap
+System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary
+System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyProxyTypeDictionary System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::_proxyTypeMap
+System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyTypeLoadDictionary`1
 System.Private.CoreLib.dll:System.Runtime.InteropServices.UnmanagedCallConvAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.UnmanagedCallConvAttribute..ctor()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute
@@ -15345,6 +15356,7 @@ System.Private.CoreLib.dll:System.RuntimeType System.Reflection.RuntimePropertyI
 System.Private.CoreLib.dll:System.RuntimeType System.Reflection.RuntimePropertyInfo::ReflectedTypeInternal()
 System.Private.CoreLib.dll:System.RuntimeType System.Runtime.CompilerServices.MethodTableAuxiliaryData::ExposedClassObject()
 System.Private.CoreLib.dll:System.RuntimeType System.Runtime.CompilerServices.TypeDesc::ExposedClassObject()
+System.Private.CoreLib.dll:System.RuntimeType System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext::_groupType
 System.Private.CoreLib.dll:System.RuntimeType System.RuntimeType::ObjectType
 System.Private.CoreLib.dll:System.RuntimeType System.RuntimeType::StringType
 System.Private.CoreLib.dll:System.RuntimeType System.RuntimeType::ValueType

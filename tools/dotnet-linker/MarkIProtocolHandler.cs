@@ -22,7 +22,7 @@ namespace Xamarin.Linker {
 				return Configuration.DerivedLinkContext;
 			}
 		}
-		
+
 		AppBundleRewriter abr => Configuration.AppBundleRewriter;
 
 		protected override void ProcessAssembly (AssemblyDefinition assembly)
@@ -71,7 +71,7 @@ namespace Xamarin.Linker {
 
 			// If we're using the dynamic registrar, we need to mark interfaces that represent protocols
 			// even if it doesn't look like the interfaces are used, since we need them at runtime.
-			
+
 			var hasProtocols = false;
 			foreach (var iface in type.Interfaces) {
 				var resolvedInterfaceType = iface.InterfaceType.Resolve ();

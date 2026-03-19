@@ -38,8 +38,7 @@ namespace Xharness.Jenkins {
 			var x64_sim_runtime_identifier = string.Empty;
 			var supports_mono = test.Platform != TestPlatform.Mac;
 			var supports_coreclr = true;
-			var coreclr_works = Harness.CanRunArm64 || test.Platform == TestPlatform.Mac; // ignore tests on x64 until https://github.com/dotnet/runtime/issues/122563
-			var ignore_coreclr = coreclr_works ? ignore : true;
+			var ignore_coreclr = ignore;
 
 			switch (test.Platform) {
 			case TestPlatform.Mac:

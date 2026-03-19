@@ -58,17 +58,6 @@ parameters:
 
 stages:
 
-  - template: ./build/linux-build-verification.yml
-    parameters:
-      isPR: ${{ parameters.isPR }}
-      repositoryAlias: ${{ parameters.repositoryAlias }}
-      commit: ${{ parameters.commit }}
-      stageDisplayNamePrefix: ${{ parameters.stageDisplayNamePrefix }}
-      pool:
-        name: AzurePipelines-EO
-        os: linux
-        image: 1ESPT-Ubuntu22.04
-
   - stage: configure_build
     displayName: '${{ parameters.stageDisplayNamePrefix }}Configure'
     dependsOn: ${{ parameters.dependsOn }}

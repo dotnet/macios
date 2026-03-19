@@ -282,6 +282,9 @@ AVFOUNDATION_SOURCES = \
 
 # AVKit
 
+AVKIT_CORE_SOURCES = \
+	AVKit/AVLegibleMediaOptionsMenuState.cs \
+
 AVKIT_API_SOURCES = \
 	AVKit/Enums.cs \
 

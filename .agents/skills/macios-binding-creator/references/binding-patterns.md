@@ -239,10 +239,12 @@ delegate void LoadCompletionHandler ([NullAllowed] NSData data, [NullAllowed] NS
 [Async]
 void LoadData (LoadCompletionHandler completion);
 
-// Custom result type — generates Task<FetchResult> FetchValuesAsync ()
+// Custom result type — generates Task<FetchResult> FetchValuesAsync () 
+delegate void FetchValuesCompletionHandler (string value, nint count, [NullAllowed] NSError error);
+
 [Export ("fetchMultipleValues:")]
 [Async (ResultTypeName = "FetchResult")]
-void FetchValues (Action<string, nint, NSError> completion);
+void FetchValues (FetchValuesCompletionHandler completion);
 ```
 
 > ⚠️ Always prefer the delegate pattern over blocks for async. Use `[Async]` to generate `Task`-based wrappers.
@@ -267,11 +269,14 @@ For C functions and structs, create manual bindings in `src/FrameworkName/`:
 [DllImport (Constants.CoreGraphicsLibrary)]
 public static extern void CGContextFillRect (IntPtr context, CGRect rect);
 
-// C Struct
+// C Struct — prefer private fields + public properties for easier layout fixes later
 [StructLayout (LayoutKind.Sequential)]
 public struct MyStruct {
-    public nfloat X;
-    public nfloat Y;
+    nfloat x;
+    nfloat y;
+
+    public nfloat X { get => x; set => x = value; }
+    public nfloat Y { get => y; set => y = value; }
 }
 
 // Global constant
@@ -339,9 +344,9 @@ NSUrlSessionDownloadTask CreateDownloadTask ();
 ## Error Handling
 
 ```csharp
-// Methods that take NSError**
+// Methods that take NSError** and always add [NullAllowed] to the error parameter
 [Export ("doSomething:")]
-bool DoSomething (out NSError error);
+bool DoSomething ([NullAllowed] out NSError error);
 ```
 
 ## Per-Member Platform Attributes
@@ -391,7 +396,7 @@ All `[Verify]` attributes must be resolved before submitting a PR.
 
 - **Null handling**: Always use `[NullAllowed]` where Apple's docs indicate nullability. Default assumption is non-null.
 - **Threading**: UI APIs require main thread. Use `[ThreadSafe]` for thread-safe APIs.
-- **Naming**: Follow .NET PascalCase for methods/properties. Remove redundant ObjC prefixes (`NSString name` → `string Name`).
+- **Naming**: Follow .NET PascalCase for methods/properties. Remove redundant ObjC prefixes (`NSString name` → `string Name`). Acronyms shouldn't be all uppercase (SIMD → Simd, ID → Id when it means "identifier", URL → Url). Methods should be verbs, properties should be nouns.
 - **Selectors**: Must match exactly — a single typo causes runtime crashes.
 - **Protocol conformance**: All `[Abstract]` methods in a protocol are required.
 - **nint/nuint**: Use `nint`/`nuint` for Objective-C `NSInteger`/`NSUInteger`.

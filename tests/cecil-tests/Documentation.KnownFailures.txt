@@ -9824,6 +9824,7 @@ M:BackgroundAssets.BAAssetPackManager.CheckForUpdates(BackgroundAssets.BAAssetPa
 M:BackgroundAssets.BAAssetPackManager.CheckForUpdatesAsync
 M:BackgroundAssets.BAAssetPackManager.Dispose(System.Boolean)
 M:BackgroundAssets.BAAssetPackManager.EnsureLocalAvailability(BackgroundAssets.BAAssetPack,BackgroundAssets.BAAssetPackManagerEnsureLocalAvailabilityCompletionHandler)
+M:BackgroundAssets.BAAssetPackManager.EnsureLocalAvailabilityAsync(BackgroundAssets.BAAssetPack,System.Boolean)
 M:BackgroundAssets.BAAssetPackManager.EnsureLocalAvailabilityAsync(BackgroundAssets.BAAssetPack)
 M:BackgroundAssets.BAAssetPackManager.GetAllAssetPacks(BackgroundAssets.BAAssetPackManagerGetAllAssetPacksCompletionHandler)
 M:BackgroundAssets.BAAssetPackManager.GetAllAssetPacksAsync
@@ -9831,6 +9832,8 @@ M:BackgroundAssets.BAAssetPackManager.GetAssetPack(System.String,BackgroundAsset
 M:BackgroundAssets.BAAssetPackManager.GetAssetPackAsync(System.String)
 M:BackgroundAssets.BAAssetPackManager.GetContents(System.String,System.String,Foundation.NSDataReadingOptions,Foundation.NSError@)
 M:BackgroundAssets.BAAssetPackManager.GetFileDescriptor(System.String,System.String,Foundation.NSError@)
+M:BackgroundAssets.BAAssetPackManager.GetLocalStatusAsync(System.String)
+M:BackgroundAssets.BAAssetPackManager.GetRelativeStatusAsync(BackgroundAssets.BAAssetPack)
 M:BackgroundAssets.BAAssetPackManager.GetStatus(System.String,BackgroundAssets.BAAssetPackManagerGetStatusCompletionHandler)
 M:BackgroundAssets.BAAssetPackManager.GetStatusAsync(System.String)
 M:BackgroundAssets.BAAssetPackManager.GetUrl(System.String,Foundation.NSError@)

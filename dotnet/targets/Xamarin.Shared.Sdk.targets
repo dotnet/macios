@@ -2030,7 +2030,7 @@
 
 	<Target Name="_ComputePublishLocation"
 		DependsOnTargets="$(_ComputePublishLocationDependsOn)"
-		Condition="'$(_CanOutputAppBundle)' == 'true'"
+		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(RuntimeIdentifiers)' == ''"
 		>
 		<PropertyGroup>
 			<_AssemblyPublishDir Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS'">$(_RelativeAppBundlePath)\</_AssemblyPublishDir>

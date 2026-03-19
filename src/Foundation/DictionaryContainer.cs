@@ -215,7 +215,7 @@ namespace Foundation {
 			if (!TryGetNativeValue (key, out var value))
 				return null;
 
-			return NSArray.ArrayFromHandleFunc<T> (value, creator);
+			return NSArray.ArrayFromHandleDropNullElements<T> (value, (v) => creator (v), NSNullBehavior.DropIfIncompatible);
 		}
 
 		/// <summary>Retrieves the <see cref="DictionaryContainer" /> array associeted with <paramref name="key" />.</summary>
@@ -226,7 +226,7 @@ namespace Foundation {
 			if (!TryGetNativeValue (key, out var value))
 				return null;
 
-			return NSArray.ArrayFromHandleFunc<T> (value, (handle) => Create<T> (handle)!);
+			return NSArray.ArrayFromHandleDropNullElements<T> (value, (handle) => Create<T> (handle)!, NSNullBehavior.DropIfIncompatible);
 		}
 
 		/// <summary>Returns the nullable <see cref="byte" /> associated with the specified <paramref name="key" />.</summary>

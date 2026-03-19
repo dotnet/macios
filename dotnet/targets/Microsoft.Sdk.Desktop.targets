@@ -3,7 +3,37 @@
 	<Target
 		Name="_PrepareRunDesktop"
 		BeforeTargets="ComputeRunArguments"
+		DependsOnTargets="_ValidateHotReloadConfiguration"
 		Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">
+
+		<!--
+			If we're running under 'dotnet watch', change a few defaults to:
+			* Open in a new instance: enabled
+			* Wait for exit: enabled
+			* stdout/stderr: send to the current terminal
+		-->
+		<ItemGroup>
+			<_DotNetWatchVariable Include="@(RuntimeEnvironmentVariable)" Condition="'%(Identity)' == 'DOTNET_WATCH' And '%(Value)' == '1'" />
+		</ItemGroup>
+		<PropertyGroup Condition="'$(RunWithOpen)' != 'false' And '@(_DotNetWatchVariable->Count())' == '1'">
+			<_IsDotNetWatch>true</_IsDotNetWatch>
+			<OpenNewInstance Condition="'$(OpenNewInstance)' == ''">true</OpenNewInstance>
+			<OpenWaitForExit Condition="'$(OpenWaitForExit)' == ''">true</OpenWaitForExit>
+		</PropertyGroup>
+		<Exec
+			Command="tty"
+			Condition="'$(StandardOutputPath)' == '' Or '$(StandardErrorPath)' == ''"
+			ConsoleToMSBuild="true"
+			IgnoreStandardErrorWarningFormat="true"
+			IgnoreExitCode="true"
+			>
+			<Output TaskParameter="ConsoleOutput" ItemName="_TtyOutput" />
+		</Exec>
+		<PropertyGroup Condition="'$(_IsDotNetWatch)' == 'true'">
+			<_TtyPath>@(_TtyOutput)</_TtyPath>
+			<StandardOutputPath Condition="'$(StandardOutputPath)' == '' And Exists('$(_TtyPath)')">$(_TtyPath)</StandardOutputPath>
+			<StandardErrorPath Condition="'$(StandardErrorPath)' == '' And Exists('$(_TtyPath)')">$(_TtyPath)</StandardErrorPath>
+		</PropertyGroup>
 
 		<PropertyGroup Condition="'$(RunWithOpen)' != 'false'">
 			<_OpenArguments Condition="'$(XamarinDebugMode)' != ''">$(_OpenArguments) --env __XAMARIN_DEBUG_MODE__=$(XamarinDebugMode)</_OpenArguments>

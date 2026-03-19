@@ -89,7 +89,7 @@ namespace ObjCRuntime {
 
 		internal static IntPtr objc_getProtocol (string? name)
 		{
-			var namePtr = new TransientString (name);
+			using var namePtr = new TransientString (name);
 			return objc_getProtocol (namePtr);
 		}
 

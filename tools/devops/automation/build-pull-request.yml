@@ -15,7 +15,7 @@ parameters:
 - name: macOSName # comes from the build agent demand named macOS.Name
   displayName: Name of the version of macOS to use
   type: string
-  default: 'Sequoia'
+  default: 'Tahoe'
 
 - name: runGovernanceTests
   displayName: Run Governance Checks
@@ -60,6 +60,7 @@ trigger:
     - refs/heads/locfiles/*
     - refs/heads/copilot/*
     - refs/heads/dependabot/*
+    - refs/heads/merge/*
 
 pr:
   autoCancel: true

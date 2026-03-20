@@ -40,13 +40,7 @@ if test -z "$FRAGMENT_PATH"; then
 	FRAGMENT_PATH=$PROJECT_FILE.inc
 fi
 
-if test -z "$BUILD_EXECUTABLE"; then
-	if test -z "$DOTNET"; then
-		echo "The DOTNET environment variable isn't set to the location of the 'dotnet' executable"
-		exit 1
-	fi
-	BUILD_EXECUTABLE="$DOTNET build"
-fi
+BUILD_EXECUTABLE="dotnet build"
 
 if test -z "$BUILD_VERBOSITY"; then
 	BUILD_VERBOSITY=/verbosity:diag

@@ -241,11 +241,6 @@ namespace Network {
 			}
 		}
 
-		internal NWEndpoint []? FromNSArrayHandle (IntPtr handle)
-		{
-			return NSArray.ArrayFromHandle<NWEndpoint> (handle);
-		}
-
 		/// <summary>Returns an autoreleased NSArray handle.</summary>
 		internal IntPtr ToNSArrayHandle (NWEndpoint [] array)
 		{

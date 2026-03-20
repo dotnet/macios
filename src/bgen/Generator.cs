@@ -1620,6 +1620,10 @@ public partial class Generator : IMemberGatherer {
 				}
 				print ("}");
 			} else {
+				print ("if (del is null)");
+				indent++;
+				print ("return default;");
+				indent--;
 				if (ti.Convert.Length > 0)
 					print (ti.Convert);
 				print ("var retval = del ({1});", ti.DelegateReturnType, ti.Invoke);
@@ -1677,7 +1681,7 @@ public partial class Generator : IMemberGatherer {
 			print ("public unsafe static {0}? Create (IntPtr block)\n{{", ti.UserDelegate); indent++;
 			print ("if (block == IntPtr.Zero)"); indent++;
 			print ("return null;"); indent--;
-			print ($"var del = ({ti.UserDelegate}) GetExistingManagedDelegate (block);");
+			print ($"var del = ({ti.UserDelegate}?) GetExistingManagedDelegate (block);");
 			print ($"return del ?? new {ti.NativeInvokerName} ((BlockLiteral *) block).Invoke;");
 			indent--; print ("}");
 			print ("");
@@ -4064,7 +4068,7 @@ public partial class Generator : IMemberGatherer {
 					print ("return src is null ? null! : new {0}(src);", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType));
 				} else {
 					if (TypeManager.IsArrayOfWrappedType (pi.PropertyType))
-						print ("return NSArray.FromArray<{0}>({1} as NSArray);", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType.GetElementType ()), wrap);
+						print ("return NSArray.FromArray<{0}>({1} as NSArray){2};", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType.GetElementType ()), wrap, nullable ? "" : "!");
 					else if (pi.PropertyType.IsValueType)
 						print ("return ({0}) ({1});", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType), wrap);
 					else

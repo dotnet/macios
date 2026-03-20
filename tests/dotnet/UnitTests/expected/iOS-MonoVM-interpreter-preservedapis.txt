@@ -794,6 +794,7 @@ Microsoft.iOS.dll:ObjCRuntime.Selector.sel_isMapped(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Selector.sel_registerName(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Stret
 Microsoft.iOS.dll:ObjCRuntime.Stret.AlignAndAdd(System.Type, System.Int32, System.Int32, System.Int32&)
+Microsoft.iOS.dll:ObjCRuntime.Stret.GetTypeName(System.Type)
 Microsoft.iOS.dll:ObjCRuntime.Stret.GetValueTypeSize(System.Type, System.Collections.Generic.List`1<System.Type>, System.Object)
 Microsoft.iOS.dll:ObjCRuntime.Stret.GetValueTypeSize(System.Type, System.Type, System.Collections.Generic.List`1<System.Type>, System.Int32&, System.Int32&, System.Object)
 Microsoft.iOS.dll:ObjCRuntime.Stret.IsBuiltInType(System.Type, out System.Int32&)

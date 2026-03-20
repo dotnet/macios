@@ -51,7 +51,7 @@ namespace Foundation {
 
 		/// <summary>Initializes a new instance of the <see cref="NSOrderedSet" /> class from an array of strings.</summary>
 		/// <param name="strings">An array of strings to include in the set.</param>
-		public NSOrderedSet (params string [] strings) : this (NSArray.FromStrings (strings))
+		public NSOrderedSet (params string? [] strings) : this (NSArray.FromStrings (strings))
 		{
 		}
 
@@ -70,7 +70,7 @@ namespace Foundation {
 		public T [] ToArray<T> () where T : class, INativeObject
 		{
 			IntPtr nsarr = _ToArray ();
-			return NSArray.ArrayFromHandle<T> (nsarr);
+			return NSArray.NonNullArrayFromHandleDropNullElements<T> (nsarr, nsNullElementBehavior: NSNullBehavior.DropIfIncompatible);
 		}
 
 		/// <summary>Creates a new <see cref="NSOrderedSet" /> from an array of strongly typed values.</summary>
@@ -243,7 +243,7 @@ namespace Foundation {
 
 		/// <summary>Initializes a new instance of the <see cref="NSMutableOrderedSet" /> class from an array of strings.</summary>
 		/// <param name="strings">An array of strings to include in the set.</param>
-		public NSMutableOrderedSet (params string [] strings) : this (NSArray.FromStrings (strings))
+		public NSMutableOrderedSet (params string? [] strings) : this (NSArray.FromStrings (strings))
 		{
 		}
 

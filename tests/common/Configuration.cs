@@ -683,7 +683,7 @@ namespace Xamarin.Tests {
 
 		public static Dictionary<string, string> GetBuildEnvironment (ApplePlatform platform)
 		{
-			Dictionary<string, string> environment = new Dictionary<string, string> ();
+			var environment = new Dictionary<string, string> ();
 			SetBuildVariables (platform, ref environment);
 			return environment;
 		}

@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Clang;
-using Clang.Ast;
-using Mono.Cecil;
+using Sharpie.Bind;
 
 namespace Extrospection {
 	public static class AttributeHelpers {
@@ -98,9 +93,9 @@ namespace Extrospection {
 
 		public static bool FindObjcDeprecated (IEnumerable<Attr> attrs, out VersionTuple version)
 		{
-			AvailabilityAttr attr = attrs.OfType<AvailabilityAttr> ().FirstOrDefault (x => !x.Deprecated.IsEmpty && x.Platform.Name == Helpers.ClangPlatformName);
+			var attr = attrs.GetAvailabilityAttributes ().FirstOrDefault (x => x.AvailabilityAttributeDeprecated.HasValue && !x.AvailabilityAttributeDeprecated.Value.IsEmpty && x.AvailabilityAttributePlatformIdentifierName == Helpers.ClangPlatformName);
 			if (attr is not null) {
-				version = attr.Deprecated;
+				version = attr.AvailabilityAttributeDeprecated.Value;
 				return true;
 			} else {
 				version = VersionTuple.Empty;
@@ -122,30 +117,20 @@ namespace Extrospection {
 				}
 			}
 
-			// This allows us to accept [Deprecated (iOS)] for tv, which many of our bindings currently have
-			// If we want to force separate tv attributes remove GetRelatedPlatforms and just check Helpers.Platform
-			if (Helpers.IsDotNet) {
-				foreach (var attribute in item.CustomAttributes) {
-					if (AttributeHelpers.HasObsolete (attribute, Helpers.Platform))
-						return true;
+			foreach (var attribute in item.CustomAttributes) {
+				if (AttributeHelpers.HasObsolete (attribute, Helpers.Platform))
+					return true;
 
-					// Consider 'HasObsoletedOSPlatform' (Deprecated) and 'UnsupportedOSPlatform' (Obsoleted/Unavailable)
-					if (AttributeHelpers.HasObsoletedOSPlatform (attribute, Helpers.Platform) ||
-						AttributeHelpers.HasUnsupportedOSPlatform (attribute, Helpers.Platform))
-						return true;
+				// Consider 'HasObsoletedOSPlatform' (Deprecated) and 'UnsupportedOSPlatform' (Obsoleted/Unavailable)
+				if (AttributeHelpers.HasObsoletedOSPlatform (attribute, Helpers.Platform) ||
+					AttributeHelpers.HasUnsupportedOSPlatform (attribute, Helpers.Platform))
+					return true;
 
-					// The only related platforms for .NET is iOS for Mac Catalyst
-					if (Helpers.Platform == Platforms.MacCatalyst &&
-							(AttributeHelpers.HasObsoletedOSPlatform (attribute, Platforms.iOS) ||
-							 AttributeHelpers.HasUnsupportedOSPlatform (attribute, Platforms.iOS)))
-						return true;
-				}
-			} else {
-				Platforms [] platforms = GetRelatedPlatforms ();
-				foreach (var attribute in item.CustomAttributes) {
-					if (platforms.Any (x => AttributeHelpers.HasDeprecated (attribute, x)) || platforms.Any (x => AttributeHelpers.HasObsoleted (attribute, x)))
-						return true;
-				}
+				// The only related platforms for .NET is iOS for Mac Catalyst
+				if (Helpers.Platform == Platforms.MacCatalyst &&
+						(AttributeHelpers.HasObsoletedOSPlatform (attribute, Platforms.iOS) ||
+							AttributeHelpers.HasUnsupportedOSPlatform (attribute, Platforms.iOS)))
+					return true;
 			}
 			return false;
 		}
@@ -161,23 +146,6 @@ namespace Extrospection {
 			}
 
 			return false;
-		}
-
-		static Platforms [] GetRelatedPlatforms ()
-		{
-			// TV also implictly accept iOS
-			switch (Helpers.Platform) {
-			case Platforms.macOS:
-				return new Platforms [] { Platforms.macOS };
-			case Platforms.iOS:
-				return new Platforms [] { Platforms.iOS };
-			case Platforms.tvOS:
-				return new Platforms [] { Platforms.iOS, Platforms.tvOS };
-			case Platforms.MacCatalyst:
-				return new Platforms [] { Platforms.iOS, Platforms.MacCatalyst };
-			default:
-				throw new InvalidOperationException ($"Unknown {Helpers.Platform} in GetPlatforms");
-			}
 		}
 
 		public static bool HasAnyAdvice (ICustomAttributeProvider item)

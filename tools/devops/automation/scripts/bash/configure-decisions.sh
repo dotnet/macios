@@ -42,6 +42,9 @@ elif [[ "${LABELS_RUN_WINDOWS_TESTS:-}" == "True" ]]; then
 elif [[ "${LABELS_SKIP_ALL_TESTS:-}" == "True" ]]; then
 	# All tests have been skipped
 	RUN_WINDOWS_TESTS=false
+elif [[ "${CONFIGURE_PLATFORMS_DOTNET_PLATFORMS:-}" == "" ]]; then
+	# No platforms enabled, don't run windows tests
+	RUN_WINDOWS_TESTS=false
 else
 	# Otherwise run windows tests (we want to run windows tests if any platform is enabled)
 	RUN_WINDOWS_TESTS=true

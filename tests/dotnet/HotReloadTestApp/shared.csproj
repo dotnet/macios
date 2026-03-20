@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+
+		<ApplicationTitle>HotReloadTestApp</ApplicationTitle>
+		<ApplicationId>com.xamarin.hotreloadtestapp</ApplicationId>
+		<UseInterpreter>true</UseInterpreter> <!-- 'dotnet watch' only works when there's an interpreter -->
+		<MtouchLink>None</MtouchLink> <!-- and the trimmer can't be enabled, otherwise the assemblies 'dotnet watch' tries to load might reference APIs that have been trimmed away -->
+
+		<ExcludeNUnitLiteReference>true</ExcludeNUnitLiteReference>
+		<ExcludeTouchUnitReference>true</ExcludeTouchUnitReference>
+	</PropertyGroup>
+
+	<Import Project="../../common/shared-dotnet.csproj" />
+
+	<ItemGroup>
+		<Compile Include="../*.cs" />
+		<Compile Include="$(AdditionalFile)" Condition="'$(AdditionalFile)' != ''" />
+	</ItemGroup>
+</Project>

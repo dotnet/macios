@@ -14,20 +14,17 @@
 //			just be undocumented (or not in the headers)
 //
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Mono.Cecil;
-
-using Clang.Ast;
-
 namespace Extrospection {
 
 	public class FieldCheck : BaseVisitor {
 
 		Dictionary<string, MemberReference> fields = new Dictionary<string, MemberReference> ();
 		HashSet<string> matchedFields = new ();
+
+		public FieldCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
 
 		public override void VisitManagedType (TypeDefinition type)
 		{
@@ -94,7 +91,7 @@ namespace Extrospection {
 			}
 		}
 
-		public override void End ()
+		public override void EndVisit ()
 		{
 			// at this stage anything else we have is not something we could find in Apple's headers
 			foreach (var key in fields.Keys.Except (matchedFields)) {

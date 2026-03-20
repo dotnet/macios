@@ -134,7 +134,7 @@ namespace VideoToolbox {
 		{
 			var del = BlockLiteral.GetTarget<VTRawProcessingParameterChangeHandler> (block);
 			if (del is not null) {
-				var newParams = NSArray.ArrayFromHandle<NSObject> (newParameters);
+				var newParams = NSArray.ArrayFromHandleDropNullElements<NSObject> (newParameters);
 				del (newParams);
 			}
 		}
@@ -197,11 +197,8 @@ namespace VideoToolbox {
 			unsafe {
 				status = VTRAWProcessingSessionCopyProcessingParameters (GetCheckedHandle (), &handle);
 			}
-			if (status == VTStatus.Ok && handle != IntPtr.Zero) {
-				var rv = NSArray.ArrayFromHandle<NSDictionary> (handle)!;
-				NSObject.DangerousRelease (handle); // owns: true
-				return rv;
-			}
+			if (status == VTStatus.Ok)
+				return NSArray.ArrayFromHandleDropNullElements<NSDictionary> (handle, releaseHandle: true);
 			return null;
 		}
 

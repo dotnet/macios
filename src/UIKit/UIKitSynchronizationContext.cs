@@ -9,8 +9,7 @@
 
 using System.Threading;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 
@@ -20,12 +19,12 @@ namespace UIKit {
 			return new UIKitSynchronizationContext ();
 		}
 
-		public override void Post (SendOrPostCallback d, object state)
+		public override void Post (SendOrPostCallback d, object? state)
 		{
 			NSRunLoop.Main.BeginInvokeOnMainThread (d, state);
 		}
 
-		public override void Send (SendOrPostCallback d, object state)
+		public override void Send (SendOrPostCallback d, object? state)
 		{
 			NSRunLoop.Main.InvokeOnMainThread (d, state);
 		}

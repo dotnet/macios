@@ -135,7 +135,15 @@ Microsoft.$1.Sdk/targets/Microsoft.$1.Sdk.Versions.props: targets/Microsoft.$1.S
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call VersionsTemplate,$(platform),$(shell echo $(platform) | tr a-z A-Z),$(DOTNET_$(shell echo $(platform) | tr a-z A-Z)_RUNTIME_IDENTIFIERS),$(shell echo $(DOTNET_$(shell echo $(platform) | tr a-z A-Z)_RUNTIME_IDENTIFIERS) | tr ' ' ';'),$(DOTNET_$(shell echo $(platform) | tr a-z A-Z)_RUNTIME_IDENTIFIERS_NO_ARCH))))
 
+# When building only sharpie, generate iOS version props so setup-publish-bar-manifest works for DARC
+ifdef ONLY_SHARPIE
+$(eval $(call VersionsTemplate,iOS,IOS,,,ios))
+endif
+
 version-props: $(foreach platform,$(DOTNET_PLATFORMS),targets/Microsoft.$(platform).Sdk.Versions.props)
+ifdef ONLY_SHARPIE
+version-props: targets/Microsoft.iOS.Sdk.Versions.props
+endif
 
 setup-publish-bar-manifest: version-props
 	echo \#\#vso[task.setvariable variable=PrereleaseIdentifier]$(NUGET_PRERELEASE_IDENTIFIER)
@@ -328,6 +336,8 @@ WORKLOAD_TARGETS += \
 	$(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)/microsoft.net.sdk.$3 \
 	$(DOTNET_PACKS_PATH)/$($(1)_NUGET_SDK_NAME)/$2 \
 	$(DOTNET_PACKS_PATH)/$($(1)_NUGET_REF_NAME)/$2
+
+INSTALLED_SDK_MANIFESTS += $(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)/microsoft.net.sdk.$3
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallWorkload,$(platform),$($(platform)_NUGET_VERSION_NO_METADATA),$(shell echo $(platform) | tr A-Z a-z))))
 
@@ -463,7 +473,9 @@ NUGET_SOURCES:=$(shell grep https://pkgs.dev.azure.com $(TOP)/NuGet.config | sed
 		$(foreach platform,$(DOTNET_PLATFORMS),$(shell echo $(platform) | tr A-Z a-z))
 	$(Q) touch $@
 
+ifndef ONLY_SHARPIE
 TARGETS += .stamp-install-workloads
+endif
 
 TARGETS += $(WORKLOAD_TARGETS) $(WINDOWS_PACKAGE_TARGETS)
 
@@ -520,27 +532,7 @@ clean-local::
 	$(Q) rm -Rf $(DOTNET_NUPKG_DIR)
 	$(Q) git clean -xfdq
 
-.stamp-workaround-for-maccore-issue-2427: $(TOP)/eng/Versions.props $(LOCAL_WORKLOAD_TARGETS)
+.stamp-workaround-for-maccore-issue-2427: $(TOP)/eng/Versions.props $(LOCAL_WORKLOAD_TARGETS) $(INSTALLED_SDK_MANIFESTS)
 	$(Q) $(DOTNET) restore package/workaround-for-maccore-issue-2427/restore.csproj /bl:package/workaround-for-maccore-issue-2427/restore.binlog $(MSBUILD_VERBOSITY)
 	$(Q) touch $@
 
-# We need to shut down the builder server, because:
-#   We're using parallel make, and parallel make will start a jobserver, managed by file descriptors, where these file descriptors must be closed in all subprocesses for make to realize it's done.
-#   'dotnet pack' might have started a build server
-#   The build server does not close any file descriptors it may have inherited when daemonizing itself.
-#   Thus the build server (which will still be alive after we're done building here) might have a file descriptor open which make is waiting for.
-#   The proper fix is to fix the build server to close its file descriptors.
-#   The intermediate working is to shut down the build server instead. An alternative solution would be to pass /p:UseSharedCompilation=false to 'dotnet pack' to disable the usage of the build server.
-#
-# The 'shutdown-build-server' is executed in a sub-make (and not as a dependency to the all-hook target),
-# to make sure it's executed after everything else is built in this file.
-all-hook::
-	$(Q) $(MAKE) shutdown-build-server
-
-shutdown-build-server:
-	$(Q) echo "Shutting down build servers:"
-	$(Q) $(DOTNET) build-server shutdown | sed 's/^/    /' || true
-	$(Q) echo "Listing .NET processes still alive:"
-	$(Q) pgrep -lf "^$(DOTNET)" | sed 's/^/    /' || true
-	$(Q) echo "Killing the above mentioned processes."
-	$(Q) pkill -9 -f "^$(DOTNET)" | sed 's/^/    /' || true

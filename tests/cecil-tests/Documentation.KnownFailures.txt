@@ -7421,8 +7421,6 @@ F:UIKit.UIPencilInteractionPhase.Ended
 F:UIKit.UIPencilPreferredAction.RunSystemShortcut
 F:UIKit.UIPencilPreferredAction.ShowContextualPalette
 F:UIKit.UIPencilPreferredAction.ShowInkAttributes
-F:UIKit.UIPointerAccessoryPosition.Angle
-F:UIKit.UIPointerAccessoryPosition.Offset
 F:UIKit.UIPointerEffectTintMode.None
 F:UIKit.UIPointerEffectTintMode.Overlay
 F:UIKit.UIPointerEffectTintMode.Underlay
@@ -10422,8 +10420,6 @@ M:CoreFoundation.CFArray.ArrayFromHandle``1(ObjCRuntime.NativeHandle)
 M:CoreFoundation.CFArray.ArrayFromHandleFunc``1(ObjCRuntime.NativeHandle,System.Func{ObjCRuntime.NativeHandle,``0},System.Boolean)
 M:CoreFoundation.CFArray.ArrayFromHandleFunc``1(ObjCRuntime.NativeHandle,System.Func{ObjCRuntime.NativeHandle,``0})
 M:CoreFoundation.CFArray.Create(ObjCRuntime.INativeObject[])
-M:CoreFoundation.CFArray.Create(System.String[])
-M:CoreFoundation.CFArray.FromStrings(System.String[])
 M:CoreFoundation.CFArray.GetValue(System.IntPtr)
 M:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle,System.Boolean)
 M:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle)
@@ -11804,9 +11800,6 @@ M:Foundation.INSUrlSessionTaskDelegate.NeedNewBodyStream(Foundation.NSUrlSession
 M:Foundation.INSUrlSessionWebSocketDelegate.DidClose(Foundation.NSUrlSession,Foundation.NSUrlSessionWebSocketTask,Foundation.NSUrlSessionWebSocketCloseCode,Foundation.NSData)
 M:Foundation.INSUrlSessionWebSocketDelegate.DidOpen(Foundation.NSUrlSession,Foundation.NSUrlSessionWebSocketTask,System.String)
 M:Foundation.INSXpcListenerDelegate.ShouldAcceptConnection(Foundation.NSXpcListener,Foundation.NSXpcConnection)
-M:Foundation.NSArray.ArrayFromHandle``1(ObjCRuntime.NativeHandle,System.Converter{ObjCRuntime.NativeHandle,``0},System.Boolean)
-M:Foundation.NSArray.EnumsFromHandle``1(ObjCRuntime.NativeHandle)
-M:Foundation.NSArray.FromStrings(System.Collections.Generic.IReadOnlyList{System.String})
 M:Foundation.NSArray.ToArray
 M:Foundation.NSArray.ToArray``1
 M:Foundation.NSArray`1.ToArray
@@ -15219,7 +15212,6 @@ M:ObjCRuntime.AssemblyRegistrationEventArgs.#ctor
 M:ObjCRuntime.BaseWrapper.#ctor(ObjCRuntime.NativeHandle,System.Boolean)
 M:ObjCRuntime.BaseWrapper.Release
 M:ObjCRuntime.BaseWrapper.Retain
-M:ObjCRuntime.BlockLiteral.Dispose
 M:ObjCRuntime.Class.#ctor(ObjCRuntime.NativeHandle)
 M:ObjCRuntime.Class.Equals(ObjCRuntime.Class)
 M:ObjCRuntime.Class.Equals(System.Object)
@@ -15328,9 +15320,7 @@ M:ObjCRuntime.ThrowHelper.ThrowArgumentNullException(System.String)
 M:ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException(System.String,System.Object,System.String)
 M:ObjCRuntime.ThrowHelper.ThrowArgumentOutOfRangeException(System.String,System.String)
 M:ObjCRuntime.ThrowHelper.ThrowObjectDisposedException(System.Object)
-M:ObjCRuntime.TrampolineBlockBase.#ctor(ObjCRuntime.BlockLiteral*)
 M:ObjCRuntime.TrampolineBlockBase.Finalize
-M:ObjCRuntime.TrampolineBlockBase.GetExistingManagedDelegate(System.IntPtr)
 M:ObjCRuntime.TransientAttribute.#ctor
 M:OpenGL.CGLContext.Release
 M:OpenGL.CGLContext.Retain
@@ -17109,9 +17099,6 @@ M:UIKit.UIDocViewController.OpenDocumentAsync
 M:UIKit.UIDragInteraction.Dispose(System.Boolean)
 M:UIKit.UIDropInteraction.Dispose(System.Boolean)
 M:UIKit.UIDynamicAnimator.Dispose(System.Boolean)
-M:UIKit.UIEdgeInsets.#ctor(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
-M:UIKit.UIEdgeInsets.op_Equality(UIKit.UIEdgeInsets,UIKit.UIEdgeInsets)
-M:UIKit.UIEdgeInsets.op_Inequality(UIKit.UIEdgeInsets,UIKit.UIEdgeInsets)
 M:UIKit.UIEditMenuInteraction.Dispose(System.Boolean)
 M:UIKit.UIEditMenuInteractionDelegate_Extensions.GetMenu(UIKit.IUIEditMenuInteractionDelegate,UIKit.UIEditMenuInteraction,UIKit.UIEditMenuConfiguration,UIKit.UIMenuElement[])
 M:UIKit.UIEditMenuInteractionDelegate_Extensions.GetTargetRect(UIKit.IUIEditMenuInteractionDelegate,UIKit.UIEditMenuInteraction,UIKit.UIEditMenuConfiguration)
@@ -17123,7 +17110,6 @@ M:UIKit.UIFeedbackGenerator.Dispose(System.Boolean)
 M:UIKit.UIFindInteraction.Dispose(System.Boolean)
 M:UIKit.UIFindInteractionDelegate_Extensions.DidBeginFindSession(UIKit.IUIFindInteractionDelegate,UIKit.UIFindInteraction,UIKit.UIFindSession)
 M:UIKit.UIFindInteractionDelegate_Extensions.DidEndFindSession(UIKit.IUIFindInteractionDelegate,UIKit.UIFindInteraction,UIKit.UIFindSession)
-M:UIKit.UIFloatRange.#ctor(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
 M:UIKit.UIFocusDebugger.CheckFocusGroupTree(UIKit.IUIFocusEnvironment)
 M:UIKit.UIFocusEnvironment_Extensions.GetFocusGroupIdentifier(UIKit.IUIFocusEnvironment)
 M:UIKit.UIFocusEnvironment_Extensions.GetSoundIdentifier(UIKit.IUIFocusEnvironment,UIKit.UIFocusUpdateContext)
@@ -17135,18 +17121,12 @@ M:UIKit.UIFocusItem_Extensions.GetFocusItemDeferralMode(UIKit.IUIFocusItem)
 M:UIKit.UIFocusItem_Extensions.GetIsTransparentFocusItem(UIKit.IUIFocusItem)
 M:UIKit.UIFocusSystem.Dispose(System.Boolean)
 M:UIKit.UIFocusUpdateContext.Dispose(System.Boolean)
-M:UIKit.UIFont.GetMonospacedSystemFont(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
-M:UIKit.UIFont.GetMonospacedSystemFont(System.Runtime.InteropServices.NFloat,UIKit.UIFontWeight)
-M:UIKit.UIFont.SystemFontOfSize(System.Runtime.InteropServices.NFloat,UIKit.UIFontWeight,UIKit.UIFontWidth)
 M:UIKit.UIFontDescriptor.CreateWithDesign(UIKit.UIFontDescriptorSystemDesign)
 M:UIKit.UIFontPickerViewController.Dispose(System.Boolean)
 M:UIKit.UIFontPickerViewControllerDelegate_Extensions.DidCancel(UIKit.IUIFontPickerViewControllerDelegate,UIKit.UIFontPickerViewController)
 M:UIKit.UIFontPickerViewControllerDelegate_Extensions.DidPickFont(UIKit.IUIFontPickerViewControllerDelegate,UIKit.UIFontPickerViewController)
-M:UIKit.UIFontWeightExtensions.GetWeight(UIKit.UIFontWeight)
 M:UIKit.UIGestureRecognizer.Dispose(System.Boolean)
 M:UIKit.UIGestureRecognizerDelegate_Extensions.ShouldReceiveEvent(UIKit.IUIGestureRecognizerDelegate,UIKit.UIGestureRecognizer,UIKit.UIEvent)
-M:UIKit.UIGraphics.BeginImageContextWithOptions(CoreGraphics.CGSize,System.Boolean,System.Runtime.InteropServices.NFloat)
-M:UIKit.UIGraphics.EndPDFContext
 M:UIKit.UIHoverGestureRecognizer.#ctor(System.Action)
 M:UIKit.UIHoverGestureRecognizer.#ctor(System.Action{UIKit.UIHoverGestureRecognizer})
 M:UIKit.UIImage.AccessibilityActivate
@@ -17190,9 +17170,6 @@ M:UIKit.UINavigationItem.Dispose(System.Boolean)
 M:UIKit.UINavigationItemRenameDelegate_Extensions.ShouldBeginRenaming(UIKit.IUINavigationItemRenameDelegate,UIKit.UINavigationItem)
 M:UIKit.UINavigationItemRenameDelegate_Extensions.ShouldEndRenaming(UIKit.IUINavigationItemRenameDelegate,UIKit.UINavigationItem,System.String)
 M:UIKit.UINavigationItemRenameDelegate_Extensions.WillBeginRenaming(UIKit.IUINavigationItemRenameDelegate,UIKit.UINavigationItem,System.String,Foundation.NSRange)
-M:UIKit.UIOffset.#ctor(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
-M:UIKit.UIOffset.op_Equality(UIKit.UIOffset,UIKit.UIOffset)
-M:UIKit.UIOffset.op_Inequality(UIKit.UIOffset,UIKit.UIOffset)
 M:UIKit.UIPageControl.UIPageControlAppearance.#ctor(System.IntPtr)
 M:UIKit.UIPageControlProgress.Dispose(System.Boolean)
 M:UIKit.UIPageControlProgressDelegate_Extensions.GetInitialProgressForPage(UIKit.IUIPageControlProgressDelegate,UIKit.UIPageControlProgress,System.IntPtr)
@@ -17218,7 +17195,6 @@ M:UIKit.UIPickerView.Dispose(System.Boolean)
 M:UIKit.UIPickerView.UIPickerViewAppearance.#ctor(System.IntPtr)
 M:UIKit.UIPickerViewAccessibilityDelegate_Extensions.GetAccessibilityAttributedUserInputLabels(UIKit.IUIPickerViewAccessibilityDelegate,UIKit.UIPickerView,System.IntPtr)
 M:UIKit.UIPickerViewAccessibilityDelegate_Extensions.GetAccessibilityUserInputLabels(UIKit.IUIPickerViewAccessibilityDelegate,UIKit.UIPickerView,System.IntPtr)
-M:UIKit.UIPointerAccessoryPosition.#ctor(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
 M:UIKit.UIPointerInteraction.Dispose(System.Boolean)
 M:UIKit.UIPointerInteractionDelegate_Extensions.GetRegionForRequest(UIKit.IUIPointerInteractionDelegate,UIKit.UIPointerInteraction,UIKit.UIPointerRegionRequest,UIKit.UIPointerRegion)
 M:UIKit.UIPointerInteractionDelegate_Extensions.GetStyleForRegion(UIKit.IUIPointerInteractionDelegate,UIKit.UIPointerInteraction,UIKit.UIPointerRegion)
@@ -17618,7 +17594,6 @@ M:UIKit.UITraitChangeObservable_Extensions.RegisterForTraitChanges(UIKit.IUITrai
 M:UIKit.UITraitChangeObservable_Extensions.RegisterForTraitChanges(UIKit.IUITraitChangeObservable,ObjCRuntime.Class[],ObjCRuntime.Selector)
 M:UIKit.UITraitChangeObservable_Extensions.RegisterForTraitChanges(UIKit.IUITraitChangeObservable,ObjCRuntime.Class[],System.Action{UIKit.IUITraitEnvironment,UIKit.UITraitCollection})
 M:UIKit.UITraitCollection.GetChangedTraits2(UIKit.UITraitCollection)
-M:UIKit.UIVibrancyEffect.CreateWidgetEffectForNotificationCenter(UIKit.UIVibrancyEffectStyle)
 M:UIKit.UIVideoEditorController.add_Failed(System.EventHandler{Foundation.NSErrorEventArgs})
 M:UIKit.UIVideoEditorController.add_Saved(System.EventHandler{UIKit.UIPathEventArgs})
 M:UIKit.UIVideoEditorController.add_UserCancelled(System.EventHandler)
@@ -21021,7 +20996,6 @@ P:Foundation.INSObjectProtocol.DebugDescription
 P:Foundation.INSProgressReporting.Progress
 P:Foundation.NSArchiveReplaceEventArgs.NewObject
 P:Foundation.NSArchiveReplaceEventArgs.OldObject
-P:Foundation.NSArray`1.Item(System.IntPtr)
 P:Foundation.NSAttributedStringDocumentAttributes.Appearance
 P:Foundation.NSAttributedStringDocumentAttributes.Author
 P:Foundation.NSAttributedStringDocumentAttributes.BottomMargin
@@ -21062,7 +21036,6 @@ P:Foundation.NSFileManager.TemporaryDirectory
 P:Foundation.NSFileManager.UserName
 P:Foundation.NSMetadataItem.UbiquitousItemDownloadingStatus
 P:Foundation.NSMorphology.Unspecified
-P:Foundation.NSMutableArray`1.Item(System.UIntPtr)
 P:Foundation.NSMutableData.Item(System.IntPtr)
 P:Foundation.NSNetDomainEventArgs.Domain
 P:Foundation.NSNetDomainEventArgs.MoreComing
@@ -21087,7 +21060,6 @@ P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangedKeys
 P:Foundation.NSUbiquitousKeyValueStoreChangeEventArgs.ChangeReason
 P:Foundation.NSUndoManagerCloseUndoGroupEventArgs.Discardable
 P:Foundation.NSUrlAuthenticationChallenge.SenderObject
-P:Foundation.NSUrlSessionConfiguration.ProxyConfigurations
 P:Foundation.NSUrlSessionConfiguration.SessionType
 P:Foundation.NSUrlSessionConfiguration.StrongConnectionProxyDictionary
 P:Foundation.NSUrlSessionHandler.AllowsCellularAccess
@@ -22981,7 +22953,6 @@ P:ObjCRuntime.ObjCException.Message
 P:ObjCRuntime.ObjCException.Name
 P:ObjCRuntime.ObjCException.NSException
 P:ObjCRuntime.ObjCException.Reason
-P:ObjCRuntime.TrampolineBlockBase.BlockPointer
 P:OSLog.IOSLogEntryFromProcess.ActivityIdentifier
 P:OSLog.IOSLogEntryFromProcess.Process
 P:OSLog.IOSLogEntryFromProcess.ProcessIdentifier
@@ -23215,8 +23186,6 @@ P:PassKit.PKVehicleConnectionSession.Delegate
 P:PassKit.PKVehicleConnectionSession.WeakDelegate
 P:PdfKit.IPdfViewDelegate.ParentViewController
 P:PdfKit.PdfAnnotation.ActivatableTextField
-P:PdfKit.PdfAnnotationMarkup.QuadrilateralPoints
-P:PdfKit.PdfBorder.DashPattern
 P:PdfKit.PdfDocument.AccessPermissions
 P:PdfKit.PdfDocument.GetClassForAnnotationClass
 P:PdfKit.PdfDocumentWriteOptions.AccessPermissions
@@ -24185,14 +24154,6 @@ P:UIKit.UIPageViewFinishedAnimationEventArgs.PreviousViewControllers
 P:UIKit.UIPasteboardChangeEventArgs.TypesAdded
 P:UIKit.UIPasteboardChangeEventArgs.TypesRemoved
 P:UIKit.UIPathEventArgs.Path
-P:UIKit.UIPointerAccessoryPosition.Bottom
-P:UIKit.UIPointerAccessoryPosition.BottomLeft
-P:UIKit.UIPointerAccessoryPosition.BottomRight
-P:UIKit.UIPointerAccessoryPosition.Left
-P:UIKit.UIPointerAccessoryPosition.Right
-P:UIKit.UIPointerAccessoryPosition.Top
-P:UIKit.UIPointerAccessoryPosition.TopLeft
-P:UIKit.UIPointerAccessoryPosition.TopRight
 P:UIKit.UIPointerInteraction.Enabled
 P:UIKit.UIPointerLockState.Locked
 P:UIKit.UIPointerLockStateDidChangeEventArgs.Scene
@@ -28585,7 +28546,6 @@ T:UIKit.UIFocusItemDeferralMode
 T:UIKit.UIFocusSoundIdentifier
 T:UIKit.UIFontDescriptorSystemDesign
 T:UIKit.UIFontWeightConstants
-T:UIKit.UIFontWeightExtensions
 T:UIKit.UIFontWidth
 T:UIKit.UIGestureProbe
 T:UIKit.UIGesturesEvent
@@ -28640,7 +28600,6 @@ T:UIKit.UIPasteboardOptionKeys
 T:UIKit.UIPasteControlDisplayMode
 T:UIKit.UIPencilInteractionPhase
 T:UIKit.UIPencilPreferredAction
-T:UIKit.UIPointerAccessoryPosition
 T:UIKit.UIPointerEffectTintMode
 T:UIKit.UIPopoverControllerCondition
 T:UIKit.UIPreviewHandler

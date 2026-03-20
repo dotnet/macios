@@ -169,7 +169,6 @@ namespace Xamarin.MMP.Tests {
 		{
 			StringBuilder output = new StringBuilder ();
 			environment ??= new Dictionary<string, string> ();
-			environment ["MONO_PATH"] = null;
 			environment ["DYLD_FALLBACK_LIBRARY_PATH"] = null;
 			int compileResult = ExecutionHelper.Execute (exe, args, environmentVariables: environment, stdout: output, stderr: output);
 			if (!shouldFail && compileResult != 0) {

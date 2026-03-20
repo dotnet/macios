@@ -870,6 +870,7 @@ FOUNDATION_SOURCES = \
 	Foundation/NSNetService.cs \
 	Foundation/NSNotificationCenter.cs \
 	Foundation/NSNull.cs \
+	Foundation/NSNullBehavior.cs \
 	Foundation/NSOrderedSet.cs \
 	Foundation/NSOrderedSet_1.cs \
 	Foundation/NSOutputStream.cs \
@@ -1749,7 +1750,6 @@ UIKIT_SOURCES = \
 	UIKit/UITraitChangeObservable.cs \
 	UIKit/UITraitOverrides.cs \
 	UIKit/UITraitCollection.cs \
-	UIKit/UIToolbar.cs \
 	UIKit/UIVibrancyEffect.cs \
 	UIKit/UIVideo.cs \
 	UIKit/UIView.cs \

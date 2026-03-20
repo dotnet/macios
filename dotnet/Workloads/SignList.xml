@@ -130,6 +130,8 @@
     <!-- Sign dylibs -->
     <MacDeveloperSign Include="MonoBundle\*.dylib" />
     <MacDeveloperSign Include="native\*.dylib" />
+    <MacDeveloperSign Include="libclang.dylib" />
+    <MacDeveloperSign Include="libClangSharp.dylib" />
   </ItemGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)SignList.targets" />

@@ -94,11 +94,11 @@ NSString ScheduleRequestedNotification { get; }
 
 > ❌ **NEVER** use `string.Empty` — use `""`. Never use `Array.Empty<T>()` — use `[]`.
 
-> ❌ **NEVER** use `bool` as a backing field in a struct. Use `byte` backing field with `bool` property accessor to keep the struct blittable. See [references/binding-patterns.md](references/binding-patterns.md) for the correct pattern.
+> ❌ **NEVER** use non-blittable types (`bool`, `char`) as backing fields in structs. Use `byte` (for `bool`) and `ushort`/`short` (for `char`) with property accessors. See [references/binding-patterns.md](references/binding-patterns.md) for the correct pattern.
 
-> ❌ **NEVER** use `XAMCORE_5_0` for new types. `XAMCORE_5_0` is only for fixing breaking API changes on existing types that shipped in prior releases.
+> ❌ **NEVER** use `XAMCORE_5_0` for new code. `XAMCORE_5_0` is only for fixing breaking API changes on existing types that shipped in prior releases.
 
-> ❌ **NEVER** use `#pragma warning disable 0169` for struct fields. Instead, wrap all struct members inside `#if !COREBUILD`.
+> ❌ **NEVER** use `#pragma warning disable 0169` for struct fields. Instead, wrap public methods and properties inside `#if !COREBUILD` (but NOT fields — bgen needs to know the struct size).
 
 > ⚠️ Place a space before parentheses and brackets: `Foo ()`, `Bar (1, 2)`, `myarray [0]`.
 

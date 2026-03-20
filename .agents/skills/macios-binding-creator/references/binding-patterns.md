@@ -294,9 +294,9 @@ public static NSString MyConstant { get; }
 
 ### Struct Binding Rules
 
-- **NEVER use `bool` as a backing field.** Use `byte` with a `bool` property accessor. This keeps the struct blittable and avoids `[MarshalAs(UnmanagedType.I1)]` which adds cecil test known failures.
-- **Wrap all public members in `#if !COREBUILD`** — never use `#pragma warning disable 0169`.
-- **NEVER use `XAMCORE_5_0`** for new structs. `XAMCORE_5_0` is only for fixing breaking API changes on existing types.
+- **Only use blittable types as backing fields in structs.** `bool` and `char` aren't blittable — use `byte` and `ushort`/`short` instead. This avoids `[MarshalAs]` and cecil test known failures.
+- **Wrap all public methods and properties in `#if !COREBUILD`** — never use `#pragma warning disable 0169`. Do NOT wrap fields, because bgen may do different things depending on the size of a struct, so it needs to know the final size.
+- **NEVER use `XAMCORE_5_0` for new code.** `XAMCORE_5_0` is only for fixing breaking API changes on existing types that shipped in prior releases.
 - If a struct member is platform-specific, use `#if !TVOS` (or similar) to exclude it.
 
 ### Platform Exclusion for Manual Types
@@ -305,10 +305,10 @@ When a manual type (struct, helper class) is not available on tvOS:
 
 ```csharp
 // In src/FrameworkName/MyStruct.cs:
+#if !TVOS
 [UnsupportedOSPlatform ("tvos")]
 [StructLayout (LayoutKind.Sequential)]
 public struct MyStruct {
-#if !TVOS
 	byte enabled;
 
 #if !COREBUILD
@@ -317,8 +317,8 @@ public struct MyStruct {
 		set => enabled = value ? (byte) 1 : (byte) 0;
 	}
 #endif // !COREBUILD
-#endif // !TVOS
 }
+#endif // !TVOS
 
 // In src/frameworkname.cs (at the top of the file):
 #if TVOS
@@ -439,14 +439,14 @@ All `[Verify]` attributes must be resolved before submitting a PR.
 ## Common Pitfalls
 
 - **Null handling**: Always use `[NullAllowed]` where Apple's docs indicate nullability. Default assumption is non-null. However, if a `[DesignatedInitializer]` constructor crashes (segfault) when passed null, **remove `[NullAllowed]`** — the native API genuinely doesn't accept null, and removing it is better than adding introspection test exclusions.
-- **Struct bool fields**: Never use `bool` as a backing field. Use `byte` + `bool` property to keep structs blittable. Avoid `[MarshalAs(UnmanagedType.I1)]`.
+- **Struct backing fields**: Only use blittable types. `bool` and `char` aren't blittable — use `byte` and `ushort`/`short` instead, with typed property accessors.
 - **Threading**: UI APIs require main thread. Use `[ThreadSafe]` for thread-safe APIs.
 - **Naming**: Follow .NET PascalCase for methods/properties. Remove redundant ObjC prefixes (`NSString name` → `string Name`). Acronyms shouldn't be all uppercase (SIMD → Simd, ID → Id when it means "identifier", URL → Url). Methods should be verbs, properties should be nouns. Don't blindly translate ObjC selector names — use .NET-appropriate verb names (e.g., `BuildMenu` not `MenuWithContents`).
 - **Selectors**: Must match exactly — a single typo causes runtime crashes.
 - **Protocol conformance**: All `[Abstract]` methods in a protocol are required.
 - **nint/nuint**: Use `nint`/`nuint` for Objective-C `NSInteger`/`NSUInteger`.
-- **XAMCORE_5_0**: Only for fixing breaking changes on existing shipped types. Never use for new types.
-- **Struct members**: Always wrap in `#if !COREBUILD`, never use `#pragma warning disable 0169`.
+- **XAMCORE_5_0**: Only for fixing breaking changes on existing shipped types. Never use for new code.
+- **Struct members**: Wrap public methods and properties in `#if !COREBUILD`, but NOT fields (bgen needs struct size). Never use `#pragma warning disable 0169`.
 
 ## Code Style Reminders
 

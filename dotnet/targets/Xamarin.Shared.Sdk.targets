@@ -475,7 +475,7 @@
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_ComputeMonoComponents" Condition="'$(UseMonoRuntime)' == 'true' And '$(_LibMonoLinkMode)' == 'static' And '$(RuntimeIdentifiers)' == ''" DependsOnTargets="_ConfigureMonoComponents;_MonoSelectRuntimeComponents">
+	<Target Name="_ComputeMonoComponents" Condition="'$(UseMonoRuntime)' == 'true' And '$(_LibMonoLinkMode)' == 'static'" DependsOnTargets="_ConfigureMonoComponents;_MonoSelectRuntimeComponents">
 		<!-- We only include any mono components when linking with mono statically. The components are already included in the dynamic versions of Mono (both the dylib and the framework) -->
 		<ItemGroup Condition="'$(_LibMonoLinkMode)' == 'static'">
 			<!-- Remove files mono told us not to link with -->
@@ -2030,7 +2030,7 @@
 
 	<Target Name="_ComputePublishLocation"
 		DependsOnTargets="$(_ComputePublishLocationDependsOn)"
-		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(RuntimeIdentifiers)' == ''"
+		Condition="'$(_CanOutputAppBundle)' == 'true'"
 		>
 		<PropertyGroup>
 			<_AssemblyPublishDir Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS'">$(_RelativeAppBundlePath)\</_AssemblyPublishDir>
@@ -2623,7 +2623,7 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 	<!-- Import existing targets -->
 
 	<!-- Make sure post-processing only includes dynamic frameworks that will actually be in the app bundle. Ref: https://github.com/dotnet/macios/issues/24840 -->
-	<PropertyGroup>
+	<PropertyGroup Condition="'$(RuntimeIdentifiers)' == ''">
 		<_CollectItemsForPostProcessingDependsOn>
 			_ComputeFrameworkFilesToPublish;
 			$(_CollectItemsForPostProcessingDependsOn);

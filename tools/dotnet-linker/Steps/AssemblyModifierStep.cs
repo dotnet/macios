@@ -14,8 +14,7 @@ using Xamarin.Linker;
 
 namespace Xamarin.Linker.Steps;
 
-public abstract class AssemblyModifierStep : ConfigurationAwareStep
-{
+public abstract class AssemblyModifierStep : ConfigurationAwareStep {
 	private protected AppBundleRewriter abr => Configuration.AppBundleRewriter;
 
 	protected override void TryProcessAssembly (AssemblyDefinition assembly)

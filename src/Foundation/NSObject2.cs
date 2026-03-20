@@ -263,6 +263,7 @@ namespace Foundation {
 		// Must be kept in sync with the same enum in trampolines.h
 		enum XamarinGCHandleFlags : uint {
 			None = 0,
+			// unused = 1
 			HasManagedRef = 2,
 			InitialSet = 4,
 		}

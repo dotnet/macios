@@ -63,21 +63,18 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			fetchThread.Start ();
 
 			// Let the threads race for a few seconds.
-			Thread.Sleep (3000);
+			Thread.Sleep (TimeSpan.FromSeconds (3));
 
 			done.Set ();
 
 			// If there's a hang, the bug is there.
 			if (!switchThread.Join (TimeSpan.FromSeconds (30)))
-				abort ();
+				Assert.Fail ("Switch thread is hung.");
 			if (!fetchThread.Join (TimeSpan.FromSeconds (30)))
-				abort ();
+				Assert.Fail ("Fetch thread is hung.");
 
 			Assert.IsNull (switchException, $"Switch thread failed: {switchException}");
 			Assert.IsNull (fetchException, $"Fetch thread failed: {fetchException}");
 		}
-
-		[DllImport (Constants.libcLibrary)]
-		static extern void abort ();
 	}
 }

@@ -631,4 +631,20 @@ public static class RgenDiagnostics {
 		description: new LocalizableResourceString (nameof (Resources.RBI0041Description), Resources.ResourceManager,
 			typeof (Resources))
 	);
+
+	/// <summary>
+	/// Diagnostic descriptor for when a transient disposable type (TransientString, TransientCFString, TransientCFObject)
+	/// is not declared with the 'using' keyword.
+	/// </summary>
+	internal static readonly DiagnosticDescriptor RBI0042 = new (
+		"RBI0042",
+		new LocalizableResourceString (nameof (Resources.RBI0042Title), Resources.ResourceManager, typeof (Resources)),
+		new LocalizableResourceString (nameof (Resources.RBI0042MessageFormat), Resources.ResourceManager,
+			typeof (Resources)),
+		"Usage",
+		DiagnosticSeverity.Error,
+		isEnabledByDefault: true,
+		description: new LocalizableResourceString (nameof (Resources.RBI0042Description), Resources.ResourceManager,
+			typeof (Resources))
+	);
 }

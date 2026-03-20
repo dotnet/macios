@@ -23,6 +23,7 @@
 //
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Foundation {
 	[SupportedOSPlatform ("ios")]
@@ -193,7 +194,13 @@ namespace Foundation {
 
 		// Additional implementations.
 
-		public TValue this [nuint index] {
+		/// <summary>Gets or sets the element at the specified index.</summary>
+		/// <param name="index">The zero-based index of the element to get or set.</param>
+		/// <value>The element at <paramref name="index" />, or <see langword="null" /> when getting if the element cannot be converted to <typeparamref name="TValue" />. Setting a <see langword="null" /> value is not allowed.</value>
+		/// <exception cref="ArgumentNullException"><paramref name="value" /> is <see langword="null" />.</exception>
+		/// <exception cref="ArgumentOutOfRangeException"><paramref name="index" /> is greater than or equal to the array's count.</exception>
+		[DisallowNull] // don't allow setting null values
+		public TValue? this [nuint index] {
 			get {
 				ValidateIndex (index);
 				return GetItem<TValue> (index);

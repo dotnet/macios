@@ -1,7 +1,0 @@
-# headers say yes, but introspection says no, so keep this selector out of Mac Catalyst for now
-!missing-selector! CTCellularPlanProvisioning::addPlanWithRequest:properties:completionHandler: not bound
-!missing-selector! CTCellularPlanLifecycleProperties::expirationDate not bound
-!missing-selector! CTCellularPlanLifecycleProperties::setExpirationDate: not bound
-!missing-selector! CTCellularPlanProperties::lifecycleProperties not bound
-!missing-selector! CTCellularPlanProperties::setLifecycleProperties: not bound
-!missing-type! CTCellularPlanLifecycleProperties not bound

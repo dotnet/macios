@@ -330,12 +330,16 @@ CALLKIT_SOURCES = \
 
 CARPLAY_API_SOURCES = \
 	CarPlay/CPEnums.cs \
+	CarPlay/CPLocationCoordinate3D.cs \
 
 CARPLAY_SOURCES = \
 	CarPlay/CPCompat.cs \
-	CarPlay/CPNavigationAlert.cs \
-	CarPlay/CPNowPlayingSportsClock.cs \
+	CarPlay/CPLocationCoordinate3D.cs \
 	CarPlay/CPMessageListItem.cs \
+	CarPlay/CPNavigationAlert.cs \
+	CarPlay/CPNavigationWaypoint.cs \
+	CarPlay/CPNowPlayingSportsClock.cs \
+	CarPlay/CPRouteSegment.cs \
 
 # ClassKit
 

@@ -1284,7 +1284,7 @@ namespace Xamarin.Linker {
 		/// Preserve a field conditionally on another type
 		/// </summary>
 		/// <param name="onType">The type on which to add the dynamic dependency attribute.</param>
-		/// <param name="forType">The type that is the target of the dynamic dependency.</param>
+		/// <param name="forField">The field that is the target of the dynamic dependency.</param>
 		public bool AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, FieldDefinition forField)
 		{
 			var attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forField), forField.DeclaringType, forField.Module.Assembly);

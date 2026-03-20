@@ -4,6 +4,7 @@ using Mono.Cecil;
 using Mono.Linker;
 using Mono.Linker.Steps;
 
+using Xamarin.Linker.Steps;
 using Xamarin.Tuner;
 
 #nullable enable
@@ -29,51 +30,32 @@ namespace Xamarin.Linker {
 	// most optimized build configuration (nor the default release configuration on any platform), this should
 	// hopefully not be a big issue).
 	//
-	public class PreserveProtocolsStep : BaseStep {
-		AppBundleRewriter abr => Configuration.AppBundleRewriter;
-
-		public LinkerConfiguration Configuration {
-			get {
-				return LinkerConfiguration.GetInstance (Context);
-			}
-		}
-
-		public DerivedLinkContext DerivedLinkContext {
-			get {
-				return Configuration.DerivedLinkContext;
-			}
-		}
-
-		protected override void ProcessAssembly (AssemblyDefinition assembly)
+	public class PreserveProtocolsStep : AssemblyModifierStep {
+		protected override string Name { get; } = "Preserve Block Code";
+		protected override int ErrorCode { get; } = 2240;
+		
+		protected override bool IsActiveFor (AssemblyDefinition assembly)
 		{
-			base.ProcessAssembly (assembly);
-
 			if (DerivedLinkContext.App.Registrar != Bundler.RegistrarMode.Dynamic)
-				return;
+				return false;
 
 			if (Annotations.GetAction (assembly) != AssemblyAction.Link)
-				return;
+				return false;
 
 			if (!assembly.MainModule.HasTypes)
-				return;
+				return false;
 
 			if (!assembly.MainModule.HasAssemblyReferences)
-				return;
+				return false;
 
 			// In fact, unless an assembly is or references our platform assembly, then it won't have anything we need to register
 			if (!Configuration.Profile.IsOrReferencesProductAssembly (assembly))
-				return;
+				return false;
 
-			abr.SetCurrentAssembly (assembly);
-			var modified = false;
-			foreach (var type in assembly.MainModule.Types)
-				modified |= ProcessType (type);
-			if (modified)
-				abr.SaveCurrentAssembly ();
-			abr.ClearCurrentAssembly ();
+			return true;
 		}
 
-		bool ProcessType (TypeDefinition type)
+		protected override bool ProcessType (TypeDefinition type)
 		{
 			var modified = false;
 

@@ -700,6 +700,10 @@ namespace Xamarin.Tests {
 
 			var backPngInBundle = Path.Combine (resourcesDirectory, "AppIcon.icon", "Assets", "back.png");
 			Assert.That (backPngInBundle, Does.Not.Exist, "back.png should not be in the app bundle as a raw BundleResource");
+
+			// Verify that the compiled asset catalog exists in the app bundle
+			var assetsCar = Path.Combine (resourcesDirectory, "Assets.car");
+			Assert.That (assetsCar, Does.Exist, "Assets.car");
 		}
 	}
 }

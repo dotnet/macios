@@ -668,10 +668,8 @@ namespace Xamarin.MacDev.Tasks {
 			// actool may fail on the placeholder .icon content, but the validation phase should pass
 			actool.Execute ();
 
-			// Verify that no error was logged about the icon not being found
-			var errorMessages = Engine.Logger.ErrorEvents.Select (e => e.Message).ToList ();
-			Assert.IsFalse (errorMessages.Any (m => m.Contains ("Can't find the AppIcon")),
-				"Should not report that AppIcon is not found among image resources");
+			// Verify that no icon validation errors were logged
+			AssertNoIconValidationErrors ();
 		}
 
 		[Test]
@@ -706,9 +704,8 @@ namespace Xamarin.MacDev.Tasks {
 			// actool may fail on the placeholder .icon content, but the validation phase should pass
 			actool.Execute ();
 
-			var errorMessages = Engine.Logger.ErrorEvents.Select (e => e.Message).ToList ();
-			Assert.IsFalse (errorMessages.Any (m => m.Contains ("Can't find the AppIcon")),
-				"Should not report that AppIcon is not found among image resources");
+			// Verify that no icon validation errors were logged
+			AssertNoIconValidationErrors ();
 		}
 
 		[Test]
@@ -756,11 +753,8 @@ namespace Xamarin.MacDev.Tasks {
 			// actool may fail on the placeholder .icon content, but the validation phase should pass
 			actool.Execute ();
 
-			var errorMessages = Engine.Logger.ErrorEvents.Select (e => e.Message).ToList ();
-			Assert.IsFalse (errorMessages.Any (m => m.Contains ("Can't find the AlternateAppIcon")),
-				"Should not report that AlternateIcon is not found among image resources");
-			Assert.IsFalse (errorMessages.Any (m => m.Contains ("Can't find the AppIcon")),
-				"Should not report that AppIcon is not found among image resources");
+			// Verify that no icon validation errors were logged
+			AssertNoIconValidationErrors ();
 		}
 
 		[Test]
@@ -835,9 +829,21 @@ namespace Xamarin.MacDev.Tasks {
 			// actool may fail on the placeholder .icon content, but the validation phase should pass
 			actool.Execute ();
 
+			// Verify that no icon validation errors were logged
+			AssertNoIconValidationErrors ();
+		}
+
+		void AssertNoIconValidationErrors ()
+		{
 			var errorMessages = Engine.Logger.ErrorEvents.Select (e => e.Message).ToList ();
-			Assert.IsFalse (errorMessages.Any (m => m.Contains ("Can't find the AppIcon")),
-				"Should not report that AppIcon is not found when mixing .xcassets and .icon");
+			Assert.That (errorMessages, Has.None.Contain ("Can't find the AppIcon"),
+				"Should not report that AppIcon is not found among image resources");
+			Assert.That (errorMessages, Has.None.Contain ("Can't find the AlternateAppIcon"),
+				"Should not report that AlternateAppIcon is not found among image resources");
+			Assert.That (errorMessages, Has.None.Contain ("is specified as both 'AppIcon' and 'AlternateAppIcon'"),
+				"Should not report icon conflict between AppIcon and AlternateAppIcon");
+			Assert.That (errorMessages, Has.None.Contain ("Can't specify both 'XSAppIconAssets'"),
+				"Should not report XSAppIconAssets conflict");
 		}
 	}
 }

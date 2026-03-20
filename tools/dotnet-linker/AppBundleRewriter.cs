@@ -1285,6 +1285,7 @@ namespace Xamarin.Linker {
 		/// </summary>
 		/// <param name="onType">The type on which to add the dynamic dependency attribute.</param>
 		/// <param name="forField">The field that is the target of the dynamic dependency.</param>
+		/// <returns>Whether an attribute was added or not.</returns>
 		public bool AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, FieldDefinition forField)
 		{
 			var attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forField), forField.DeclaringType, forField.Module.Assembly);
@@ -1303,7 +1304,7 @@ namespace Xamarin.Linker {
 		/// </remarks>
 		/// <param name="onType">The type on which to add the dynamic dependency attribute.</param>
 		/// <param name="forType">The type that is the target of the dynamic dependency.</param>
-		/// <returns>Whether the current assembly was modified or not.</returns>
+		/// <returns>Whether an attribute was added or not.</returns>
 		public bool AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, TypeDefinition forType)
 		{
 			var placeholderName = "__linker_preserve__";
@@ -1354,6 +1355,7 @@ namespace Xamarin.Linker {
 		/// </summary>
 		/// <param name="provider">The provider to which the attribute should be added.</param>
 		/// <param name="attribute">The attribute to add.</param>
+		/// <returns>Whether the attribute was added or not.</returns>
 		bool AddAttributeOnlyOnce (ICustomAttributeProvider provider, CustomAttribute attribute)
 		{
 			if (provider.HasCustomAttributes) {

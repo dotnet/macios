@@ -33,7 +33,7 @@ namespace Xamarin.Linker {
 	public class PreserveProtocolsStep : AssemblyModifierStep {
 		protected override string Name { get; } = "Preserve Block Code";
 		protected override int ErrorCode { get; } = 2240;
-		
+
 		protected override bool IsActiveFor (AssemblyDefinition assembly)
 		{
 			if (DerivedLinkContext.App.Registrar != Bundler.RegistrarMode.Dynamic)
@@ -45,10 +45,7 @@ namespace Xamarin.Linker {
 			if (!assembly.MainModule.HasTypes)
 				return false;
 
-			if (!assembly.MainModule.HasAssemblyReferences)
-				return false;
-
-			// In fact, unless an assembly is or references our platform assembly, then it won't have anything we need to register
+			// Unless an assembly is or references our platform assembly, then it won't have anything we need to register
 			if (!Configuration.Profile.IsOrReferencesProductAssembly (assembly))
 				return false;
 
@@ -58,11 +55,6 @@ namespace Xamarin.Linker {
 		protected override bool ProcessType (TypeDefinition type)
 		{
 			var modified = false;
-
-			if (type.HasNestedTypes) {
-				foreach (var nested in type.NestedTypes)
-					modified |= ProcessType (nested);
-			}
 
 			if (!type.HasInterfaces)
 				return modified;

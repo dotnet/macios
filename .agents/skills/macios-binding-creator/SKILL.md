@@ -94,9 +94,33 @@ NSString ScheduleRequestedNotification { get; }
 
 > ❌ **NEVER** use `string.Empty` — use `""`. Never use `Array.Empty<T>()` — use `[]`.
 
+> ❌ **NEVER** use `bool` as a backing field in a struct. Use `byte` backing field with `bool` property accessor to keep the struct blittable. See [references/binding-patterns.md](references/binding-patterns.md) for the correct pattern.
+
+> ❌ **NEVER** use `XAMCORE_5_0` for new types. `XAMCORE_5_0` is only for fixing breaking API changes on existing types that shipped in prior releases.
+
+> ❌ **NEVER** use `#pragma warning disable 0169` for struct fields. Instead, wrap all struct members inside `#if !COREBUILD`.
+
 > ⚠️ Place a space before parentheses and brackets: `Foo ()`, `Bar (1, 2)`, `myarray [0]`.
 
+> ⚠️ Method names should follow .NET naming conventions — use verb-based names, not direct Objective-C selector translations (e.g., `BuildMenu` not `MenuWithContents`).
+
 > ⚠️ For in depth binding patterns and conventions See [references/binding-patterns.md](references/binding-patterns.md)
+
+### Step 4b: Platform Exclusion Patterns for Manual Types
+
+When a manually coded type (struct, extension, etc.) is not available on a specific platform (e.g., tvOS), you must handle compilation on that platform:
+
+1. In the manual code file (`src/FrameworkName/MyStruct.cs`), wrap the struct body with `#if !TVOS`
+2. Add `[UnsupportedOSPlatform ("tvos")]` on the struct
+3. In the API definition file (`src/frameworkname.cs`), add a type alias at the top so compilation succeeds:
+
+```csharp
+#if TVOS
+using MyStruct = Foundation.NSObject;
+#endif
+```
+
+The `[NoTV]` attribute on the API definition interface ensures the type won't appear in the final tvOS assembly, while the alias prevents compilation errors from method signatures that reference the struct.
 
 ### Step 5: Build
 
@@ -105,6 +129,8 @@ make -C src build
 ```
 
 Fix any compilation errors before proceeding. Builds can take up to 60 minutes — do not timeout early.
+
+> ⚠️ **Stale build artifacts**: If you encounter unexpected test failures (false "pre-existing" failures, segfaults in unrelated types), run a full `make all && make install` to clear stale `_build/` artifacts before re-testing.
 
 ### Step 6: Validate with Tests
 
@@ -132,26 +158,49 @@ make -C tests/cecil-tests run-tests
 **IMPORTANT:** Clean shared obj directories before each platform to avoid NETSDK1005 errors:
 
 ```bash
-# iOS
+# iOS — build, then run via mlaunch directly for reliable output capture
 rm -rf tests/common/Touch.Unit/Touch.Client/dotnet/obj tests/common/MonoTouch.Dialog/obj
-make -C tests/introspection/dotnet clean-ios build-ios run-ios
+make -C tests/introspection/dotnet/iOS clean
+make -C tests/introspection/dotnet build-ios
+# Get the app path and run via mlaunch directly:
+APP_PATH=$(make -C tests/introspection/dotnet/iOS print-executable | sed 's|/introspection$||')
+SIMCTL_CHILD_NUNIT_AUTOSTART=true \
+SIMCTL_CHILD_NUNIT_AUTOEXIT=true \
+$DOTNET_DESTDIR/Microsoft.iOS.Sdk/tools/bin/mlaunch \
+  --launchsim "$APP_PATH" \
+  --device :v2:runtime=com.apple.CoreSimulator.SimRuntime.iOS-26-4,devicetype=com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro \
+  --wait-for-exit:true --
 
-# tvOS
+# tvOS — same approach as iOS
 rm -rf tests/common/Touch.Unit/Touch.Client/dotnet/obj tests/common/MonoTouch.Dialog/obj
-make -C tests/introspection/dotnet clean-tvos build-tvos run-tvos
+make -C tests/introspection/dotnet/tvOS clean
+make -C tests/introspection/dotnet build-tvos
+APP_PATH=$(make -C tests/introspection/dotnet/tvOS print-executable | sed 's|/introspection$||')
+SIMCTL_CHILD_NUNIT_AUTOSTART=true \
+SIMCTL_CHILD_NUNIT_AUTOEXIT=true \
+$DOTNET_DESTDIR/Microsoft.tvOS.Sdk/tools/bin/mlaunch \
+  --launchsim "$APP_PATH" \
+  --device :v2:runtime=com.apple.CoreSimulator.SimRuntime.tvOS-26-4,devicetype=com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K \
+  --wait-for-exit:true --
 
 # macOS (use run-bare for direct execution with captured output)
 rm -rf tests/common/Touch.Unit/Touch.Client/dotnet/obj tests/common/MonoTouch.Dialog/obj
-make -C tests/introspection/dotnet clean-macOS build-macOS run-bare-macOS
+make -C tests/introspection/dotnet/macOS clean build
+make -C tests/introspection/dotnet/macOS run-bare
 
 # MacCatalyst (use run-bare for direct execution with captured output)
 rm -rf tests/common/Touch.Unit/Touch.Client/dotnet/obj tests/common/MonoTouch.Dialog/obj
-make -C tests/introspection/dotnet clean-MacCatalyst build-MacCatalyst run-bare-MacCatalyst
+make -C tests/introspection/dotnet/MacCatalyst clean build
+make -C tests/introspection/dotnet/MacCatalyst run-bare
 ```
 
-> ⚠️ **macOS/MacCatalyst:** Use `make run-bare` (not `make run`) — `make run` launches the app without waiting or capturing stdout. `run-bare` runs the executable directly to capture test output.
+> ⚠️ **iOS/tvOS output capture:** `make run-ios`/`run-tvos` uses `dotnet build -t:Run` which does NOT reliably capture the app's stdout. The `com.apple.gamed` stderr message causes MSBuild to report failure (exit code -1) even when tests pass, and NUnit results are lost. Use **mlaunch directly** as shown above to capture test output reliably.
 
-> ⚠️ **iOS/tvOS:** Use `make run` (not `make run-bare`) — these require simulator infrastructure that `run-bare` doesn't provide.
+> ⚠️ **mlaunch device strings:** Use `xcrun simctl list runtimes` and `xcrun simctl list devicetypes` to find the correct runtime and device type identifiers for your Xcode version. The `--device` format is `:v2:runtime=<runtime-id>,devicetype=<devicetype-id>`.
+
+> ⚠️ **`clean` and `run-bare` must be run from the platform subdirectory** (e.g., `tests/introspection/dotnet/macOS/`), not from the parent `dotnet/` directory. The parent only has `build-%` and `run-%` pattern rules — there are no `clean-%` or `run-bare-%` targets.
+
+> ⚠️ **macOS/MacCatalyst:** Use `run-bare` (not `run`) — `run` launches the app without waiting or capturing stdout. `run-bare` runs the executable directly to capture test output.
 
 Look for this pattern in test output to confirm results:
 ```
@@ -164,6 +213,8 @@ If introspection tests fail for newly bound types:
 - Check if the type crashes on simulator (common for hardware-dependent APIs)
 - Add exclusions in the platform-specific `ApiCtorInitTest.cs` files if needed
 - Types that crash on init, dispose, or toString need specific exclusion entries
+- **NEVER skip an entire namespace** — always add exclusions for specific types only
+- **If a `[DesignatedInitializer]` constructor crashes (segfault) when passed null**, the correct fix is to **remove `[NullAllowed]` from that parameter** rather than adding introspection test exclusions. The null is genuinely not allowed by the native API.
 
 If xtro still shows unresolved entries:
 - Some APIs may be platform-specific (only available on device, not simulator)

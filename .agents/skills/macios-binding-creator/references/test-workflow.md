@@ -54,12 +54,35 @@ rm -rf tests/common/Touch.Unit/Touch.Client/dotnet/obj tests/common/MonoTouch.Di
 
 ### Platform-Specific Commands
 
-| Platform | Build | Run | Notes |
-|----------|-------|-----|-------|
-| iOS | `make -C tests/introspection/dotnet build-ios` | `make run-ios` | Simulator, captures output |
-| tvOS | `make -C tests/introspection/dotnet build-tvos` | `make run-tvos` | Simulator, captures output |
-| macOS | `make -C tests/introspection/dotnet build-macOS` | `make run-bare-macOS` | Direct execution |
-| MacCatalyst | `make -C tests/introspection/dotnet build-MacCatalyst` | `make run-bare-MacCatalyst` | Direct execution |
+**Important:** `clean` and `run-bare` must be run from the **platform subdirectory** (e.g., `tests/introspection/dotnet/macOS/`). The parent `dotnet/` directory only has `build-%` and `run-%` pattern rules.
+
+| Platform | Clean | Build | Run |
+|----------|-------|-------|-----|
+| iOS | `make -C .../dotnet/iOS clean` | `make -C .../dotnet build-ios` | mlaunch directly (see below) |
+| tvOS | `make -C .../dotnet/tvOS clean` | `make -C .../dotnet build-tvos` | mlaunch directly (see below) |
+| macOS | `make -C .../dotnet/macOS clean` | `make -C .../dotnet/macOS build` | `make -C .../dotnet/macOS run-bare` |
+| MacCatalyst | `make -C .../dotnet/MacCatalyst clean` | `make -C .../dotnet/MacCatalyst build` | `make -C .../dotnet/MacCatalyst run-bare` |
+
+### Running iOS/tvOS via mlaunch
+
+`make run-ios`/`run-tvos` uses `dotnet build -t:Run`, which does **NOT reliably capture** the app's stdout. The `com.apple.gamed` stderr message causes MSBuild to report failure (exit code -1) even when mlaunch returns 0, and NUnit test results are lost.
+
+Instead, build first with `make build-ios`/`build-tvos`, then run mlaunch directly:
+
+```bash
+# Get the app path
+APP_PATH=$(make -C tests/introspection/dotnet/iOS print-executable | sed 's|/introspection$||')
+
+# Run via mlaunch with output capture
+SIMCTL_CHILD_NUNIT_AUTOSTART=true \
+SIMCTL_CHILD_NUNIT_AUTOEXIT=true \
+$DOTNET_DESTDIR/Microsoft.iOS.Sdk/tools/bin/mlaunch \
+  --launchsim "$APP_PATH" \
+  --device :v2:runtime=com.apple.CoreSimulator.SimRuntime.iOS-26-4,devicetype=com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro \
+  --wait-for-exit:true --
+```
+
+Use `xcrun simctl list runtimes` and `xcrun simctl list devicetypes` to find the correct identifiers for your Xcode version.
 
 ### Why run-bare for Desktop Platforms
 
@@ -69,7 +92,11 @@ rm -rf tests/common/Touch.Unit/Touch.Client/dotnet/obj tests/common/MonoTouch.Di
 
 ### Why NOT run-bare for Mobile Platforms
 
-iOS and tvOS tests require simulator infrastructure (mlaunch, boot simulator, install app, etc.) that `run-bare` doesn't provide. Always use `make run-ios` / `make run-tvos` for these.
+iOS and tvOS tests require simulator infrastructure (boot simulator, install app, etc.) that `run-bare` doesn't provide. Use **mlaunch directly** to launch the app in the simulator with output capture.
+
+**Why not `make run-ios`/`run-tvos`?** These use `dotnet build -t:Run` which wraps mlaunch through MSBuild. The `com.apple.gamed` stderr noise from the simulator causes MSBuild to treat the run as failed (exit code -1), even though mlaunch returns 0 and the tests pass. The NUnit results are also not reliably captured to stdout through the MSBuild layer.
+
+Running mlaunch directly with `SIMCTL_CHILD_NUNIT_AUTOSTART=true` and `SIMCTL_CHILD_NUNIT_AUTOEXIT=true` bypasses MSBuild's error detection and captures the simulator app's stdout (including NUnit results) directly to the terminal.
 
 ## Reading Test Results
 
@@ -97,8 +124,27 @@ Exclusion mechanisms:
 
 ### Simulator Infrastructure Errors
 
-`com.apple.gamed` connection errors are a known simulator environment issue. If mlaunch returns exit code 0 and you see the NUnit results pattern, the tests passed despite the error.
+`com.apple.gamed` connection errors are a known simulator environment issue. When running via mlaunch directly, these appear as stderr noise but don't affect the test results. When running via `make run-ios`/`run-tvos` (`dotnet build -t:Run`), these stderr messages cause MSBuild to report failure (exit code -1) even though tests pass — this is why running mlaunch directly is preferred.
 
 ## Build Timeouts
 
 Builds can take up to 60 minutes. Do not set short timeouts on make/build commands.
+
+## Stale Build Artifacts
+
+If you encounter unexpected failures — types crashing in unrelated frameworks, false "pre-existing" failures, protocol conformance mismatches that shouldn't exist — the most likely cause is **stale `_build/` artifacts**.
+
+**Fix:** Run a full `make all && make install` before re-testing. This rebuilds everything cleanly and installs fresh assemblies.
+
+**Warning signs of stale artifacts:**
+- Introspection tests report failures not seen on a clean checkout
+- Types crash in `-[description]` or `-[dealloc]` in frameworks you didn't modify
+- Cecil tests report unexpected known-failure mismatches
+
+## Introspection Exclusion Rules
+
+When adding exclusions for types that crash on simulator:
+
+- **NEVER skip an entire namespace.** Always add exclusions for specific types only.
+- **Prefer fixing the binding over adding test exclusions.** For example, if a `[DesignatedInitializer]` constructor crashes when passed null, remove `[NullAllowed]` from the parameter rather than excluding the type from introspection tests.
+- Only add exclusions for genuine simulator/beta SDK bugs that can't be fixed in managed code.

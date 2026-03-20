@@ -269,20 +269,64 @@ For C functions and structs, create manual bindings in `src/FrameworkName/`:
 [DllImport (Constants.CoreGraphicsLibrary)]
 public static extern void CGContextFillRect (IntPtr context, CGRect rect);
 
-// C Struct — prefer private fields + public properties for easier layout fixes later
+// C Struct — use byte backing fields for bools to keep struct blittable
 [StructLayout (LayoutKind.Sequential)]
 public struct MyStruct {
-    nfloat x;
-    nfloat y;
+	byte enabled;
+	nfloat x;
+	nfloat y;
 
-    public nfloat X { get => x; set => x = value; }
-    public nfloat Y { get => y; set => y = value; }
+#if !COREBUILD
+	public bool Enabled {
+		get => enabled != 0;
+		set => enabled = value ? (byte) 1 : (byte) 0;
+	}
+
+	public nfloat X { get => x; set => x = value; }
+	public nfloat Y { get => y; set => y = value; }
+#endif
 }
 
 // Global constant
 [Field ("kMyConstant", "MyFramework")]
 public static NSString MyConstant { get; }
 ```
+
+### Struct Binding Rules
+
+- **NEVER use `bool` as a backing field.** Use `byte` with a `bool` property accessor. This keeps the struct blittable and avoids `[MarshalAs(UnmanagedType.I1)]` which adds cecil test known failures.
+- **Wrap all public members in `#if !COREBUILD`** — never use `#pragma warning disable 0169`.
+- **NEVER use `XAMCORE_5_0`** for new structs. `XAMCORE_5_0` is only for fixing breaking API changes on existing types.
+- If a struct member is platform-specific, use `#if !TVOS` (or similar) to exclude it.
+
+### Platform Exclusion for Manual Types
+
+When a manual type (struct, helper class) is not available on tvOS:
+
+```csharp
+// In src/FrameworkName/MyStruct.cs:
+[UnsupportedOSPlatform ("tvos")]
+[StructLayout (LayoutKind.Sequential)]
+public struct MyStruct {
+#if !TVOS
+	byte enabled;
+
+#if !COREBUILD
+	public bool Enabled {
+		get => enabled != 0;
+		set => enabled = value ? (byte) 1 : (byte) 0;
+	}
+#endif // !COREBUILD
+#endif // !TVOS
+}
+
+// In src/frameworkname.cs (at the top of the file):
+#if TVOS
+using MyStruct = Foundation.NSObject;
+#endif
+```
+
+The type alias lets tvOS compilation succeed. The `[NoTV]` attribute on the API definition interface ensures the type won't appear in the final tvOS assembly.
 
 ## Strongly-Typed Dictionaries
 
@@ -394,12 +438,15 @@ All `[Verify]` attributes must be resolved before submitting a PR.
 
 ## Common Pitfalls
 
-- **Null handling**: Always use `[NullAllowed]` where Apple's docs indicate nullability. Default assumption is non-null.
+- **Null handling**: Always use `[NullAllowed]` where Apple's docs indicate nullability. Default assumption is non-null. However, if a `[DesignatedInitializer]` constructor crashes (segfault) when passed null, **remove `[NullAllowed]`** — the native API genuinely doesn't accept null, and removing it is better than adding introspection test exclusions.
+- **Struct bool fields**: Never use `bool` as a backing field. Use `byte` + `bool` property to keep structs blittable. Avoid `[MarshalAs(UnmanagedType.I1)]`.
 - **Threading**: UI APIs require main thread. Use `[ThreadSafe]` for thread-safe APIs.
-- **Naming**: Follow .NET PascalCase for methods/properties. Remove redundant ObjC prefixes (`NSString name` → `string Name`). Acronyms shouldn't be all uppercase (SIMD → Simd, ID → Id when it means "identifier", URL → Url). Methods should be verbs, properties should be nouns.
+- **Naming**: Follow .NET PascalCase for methods/properties. Remove redundant ObjC prefixes (`NSString name` → `string Name`). Acronyms shouldn't be all uppercase (SIMD → Simd, ID → Id when it means "identifier", URL → Url). Methods should be verbs, properties should be nouns. Don't blindly translate ObjC selector names — use .NET-appropriate verb names (e.g., `BuildMenu` not `MenuWithContents`).
 - **Selectors**: Must match exactly — a single typo causes runtime crashes.
 - **Protocol conformance**: All `[Abstract]` methods in a protocol are required.
 - **nint/nuint**: Use `nint`/`nuint` for Objective-C `NSInteger`/`NSUInteger`.
+- **XAMCORE_5_0**: Only for fixing breaking changes on existing shipped types. Never use for new types.
+- **Struct members**: Always wrap in `#if !COREBUILD`, never use `#pragma warning disable 0169`.
 
 ## Code Style Reminders
 

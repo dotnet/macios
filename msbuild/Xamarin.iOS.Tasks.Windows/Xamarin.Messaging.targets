@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build"	xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.GenerateBuildSessionId" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.SayHello" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.CopyFileFromBuildServer" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.CopyFilesToBuildServer" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.CopyLongPaths" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.VerifyBuildSignature" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.SayGoodbye" AssemblyFile="$(_TaskAssemblyName)" />
+
+	<PropertyGroup>
+		<IsRemoteBuild Condition="'$(IsRemoteBuild)' == ''">true</IsRemoteBuild>
+		<ShouldDisconnect Condition="'$(ShouldDisconnect)' == ''">true</ShouldDisconnect>
+		<IsRebuild>false</IsRebuild>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<RebuildDependsOn>
+			_SetIsRebuild;
+			_SetShouldDisconnect;
+			_GenerateBuildSessionId;
+			_SayHello;
+			$(RebuildDependsOn);
+			_SayGoodbye;
+		</RebuildDependsOn>
+		<!-- If the Clean executes as part of a Rebuild, the _GenerateBuildSessionId and _SayHello will not run because they've already run -->
+		<CleanDependsOn>
+			_GenerateBuildSessionId;
+			_SayHello;
+			$(CleanDependsOn);
+			_DisconnectAfterClean;
+		</CleanDependsOn>
+		<!-- If the Build executes as part of a Rebuild, the _GenerateBuildSessionId and _SayHello will not run because they've already run -->
+		<BuildDependsOn>
+			_GenerateBuildSessionId;
+			_SayHello;
+			_VerifyBuildSignature;
+			AfterConnect;
+			$(BuildDependsOn);
+			BeforeDisconnect;
+			_DisconnectAfterBuild;
+		</BuildDependsOn>
+		<BuildSignatureDirectory Condition="'$(BuildSignatureDirectory)' == ''">$(IntermediateOutputPath)build-signature\</BuildSignatureDirectory>
+		<BuildSignatureDirectory Condition="!HasTrailingSlash('$(BuildSignatureDirectory)')">$(BuildSignatureDirectory)\</BuildSignatureDirectory>
+		<BuildSignatureFile>$(BuildSignatureDirectory)signature</BuildSignatureFile>
+		<!-- By default, we don't want to warn about offline builds for class libraries, which typically don't require a connection -->
+		<WarnOfflineBuild Condition="'$(WarnOfflineBuild)' == '' and '$(OutputType)' == 'Library' and '$(XamarinOutputType)' != 'Binding'">false</WarnOfflineBuild>
+		<WarnOfflineBuild Condition="'$(WarnOfflineBuild)' == ''">true</WarnOfflineBuild>
+		<NoWarn Condition="'$(WarnOfflineBuild)' == 'false'">$(NoWarn);VSX1000</NoWarn>
+	</PropertyGroup>
+
+	<!-- AfterConnect: Redefine this target in your project in order to run tasks just after the XMA connection is performed -->
+	<Target Name="AfterConnect" Condition="'$(IsRemoteBuild)' == 'true'" />
+
+	<!-- BeforeDisconnect: Redefine this target in your project in order to run tasks just before the XMA disconnection happens -->
+	<Target Name="BeforeDisconnect" Condition="'$(IsRemoteBuild)' == 'true'" />
+
+	<Target Name="_SetShouldDisconnect">
+		<PropertyGroup>
+			<ShouldDisconnect>false</ShouldDisconnect>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="_SetIsRebuild">
+		<PropertyGroup>
+			<IsRebuild>true</IsRebuild>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="_DisconnectAfterClean" Condition="'$(ShouldDisconnect)' == 'true' Or ('$(ShouldDisconnect)' == 'if-connection-established' And '$(_DidEstablishConnection)' == 'true')" DependsOnTargets="_SayGoodbye" />
+
+	<Target Name="_DisconnectAfterBuild" Condition="'$(ShouldDisconnect)' == 'true' Or ('$(ShouldDisconnect)' == 'if-connection-established' And '$(_DidEstablishConnection)' == 'true')" DependsOnTargets="_SayGoodbye" />
+
+	<Target Name="_GenerateBuildSessionId" Condition="'$(IsRemoteBuild)' == 'true'">
+		<GenerateBuildSessionId MessagingVersion="$(MessagingVersion)" 
+			TargetFramework="$(TargetFramework)" 
+			ProjectFullPath="$(MSBuildProjectFullPath)" 
+			ProjectName="$(MSBuildProjectName)"
+			VisualStudioProcessId="$(VisualStudioProcessId)">
+			<Output TaskParameter="BuildSessionId" PropertyName="BuildSessionId" />
+			<Output TaskParameter="BuildAppName" PropertyName="BuildAppName" />
+		</GenerateBuildSessionId>
+	</Target>
+
+	<Target Name="_SayHello" Condition="'$(IsRemoteBuild)' == 'true'" DependsOnTargets="_GenerateBuildSessionId">
+		<PropertyGroup>
+			<!-- Explicitly using defauly SSH port if not specified -->
+			<ServerSshPort Condition="'$(ServerSshPort)' == ''">22</ServerSshPort>
+			<!-- Maintaining backwards compatibility if using the deprecated ServerPort property -->
+			<ServerTcpPort Condition="'$(ServerPort)' != ''">$(ServerPort)</ServerTcpPort>
+			<GenerateCache Condition=" '$(GenerateCache)' == '' And '$(BuildingInsideVisualStudio)' == 'true' ">true</GenerateCache>
+			<GenerateCache Condition=" '$(GenerateCache)' == '' And '$(BuildingInsideVisualStudio)' != 'true' ">false</GenerateCache>
+			<ContinueOnDisconnected Condition="'$(ContinueOnDisconnected)' == ''">true</ContinueOnDisconnected>
+		</PropertyGroup>
+
+		<Warning Condition="'$(ServerPort)' != ''" Text="The 'ServerPort' property has been deprecated. Please consider using 'ServerSshPort' or 'ServerTcpPort' instead." />
+
+		<Message Importance="high" Condition="'$(ServerAddress)' != ''" Text="Executing SayHello Task to establish a connection to a Remote Server. 
+			Properties: 
+				SessionId=$(BuildSessionId), 
+				Addresss=$(ServerAddress), 
+				SshPort=$(ServerSshPort), 
+				TcpPort=$(ServerTcpPort), 
+				User=$(ServerUser), 
+				AppName=$(BuildAppName),
+				VisualStudioProcessId=$(VisualStudioProcessId),
+				DotNetRuntimePath=$(DotNetRuntimePath),
+				DotNetSdkPath=$(_DotNetRootRemoteDirectory),
+				ContinueOnDisconnected=$(ContinueOnDisconnected)" />
+
+		<SayHello Condition="'$(ServerAddress)' != ''" 
+				  SessionId="$(BuildSessionId)"
+				  LocalBasePath="$(LocalBasePath)"
+				  LocalSettingsPath="$(LocalSettingsPath)"
+				  BasePath="$(BasePath)"
+				  BuildsPath="$(BuildsPath)"
+				  LogsPath="$(LogsPath)"
+				  IntermediateDir="$(IntermediateOutputPath)build_package\"
+				  DotNetRuntimePath="$(DotNetRuntimePath)"
+				  DotNetSdkPath="$(_DotNetRootRemoteDirectory)"
+				  ServerAddress="$(ServerAddress)"
+				  ServerSshPort="$(ServerSshPort)"
+				  ServerTcpPort="$(ServerTcpPort)"
+				  ServerUser="$(ServerUser)"
+				  ServerPassword="$(ServerPassword)"
+				  SSHKey="$(SSHKey)"
+				  SSHPassPhrase="$(SSHPassPhrase)"
+				  AppName="$(BuildAppName)"
+				  GenerateCache="$(GenerateCache)"
+				  ProjectDirectory="$(MSBuildProjectDirectory)"
+				  ContinueOnDisconnected="$(ContinueOnDisconnected)"
+				  VisualStudioProcessId="$(VisualStudioProcessId)"
+				  NoWarn="$(NoWarn)"
+				  AgentsDirectory="$(MessagingAgentsDirectory)">
+			<Output TaskParameter="DidEstablishConnection" PropertyName="_DidEstablishConnection" />
+			<Output TaskParameter="IsBuildServerAvailable" PropertyName="MtouchTargetsEnabled" />
+			<Output TaskParameter="IsBuildServerAvailable" PropertyName="IsMacEnabled" />
+			<Output TaskParameter="MacBuildPath" PropertyName="MacBuildPath" />
+		</SayHello>
+	</Target>
+
+	<!-- We don't want to execute _VerifyBuildSignature on Rebuild since the Rebuild implies a Clean before Build -->
+	<!-- so we don't need to Clean again if the signature does not exist -->
+	<!-- Also, if there is no Mac available and the signature file does not exist, we ignore this check because offline builds never produce a signature file and this would end up always rebuilding the project -->
+	<Target Name="_VerifyBuildSignature" Condition="'$(IsRemoteBuild)' == 'true'  And '$(IsRebuild)' != 'true' And ('$(IsMacEnabled)' == 'true' Or ('$(IsMacEnabled)' != 'true' And Exists('$(BuildSignatureFile)')))">
+		<VerifyBuildSignature SessionId="$(BuildSessionId)" SignatureDirectory="$(BuildSignatureDirectory)">
+			<Output TaskParameter="IsValidSignature" PropertyName="IsValidSignature" />
+		</VerifyBuildSignature>
+		<MSBuild Condition="'$(IsValidSignature)' != 'true'" Projects="$(MSBuildProjectFile)" Targets="Clean" Properties="Configuration=$(Configuration); Platform=$(Platform); ShouldDisconnect=if-connection-established; BuildProjectReferences=false"></MSBuild>
+	</Target>
+
+	<Target Name="_SayGoodbye" Condition="'$(IsRemoteBuild)' == 'true'">
+		<SayGoodbye Condition="'$(IsMacEnabled)' == 'true'" SessionId="$(BuildSessionId)" SignatureFile="$(BuildSignatureFile)" />
+		<ItemGroup>
+			<FileWrites Include="$(BuildSignatureFile)" />
+		</ItemGroup>
+	</Target>
+
+	<PropertyGroup>
+		<MessagingBuildTargetsImported>True</MessagingBuildTargetsImported>
+	</PropertyGroup>
+</Project>

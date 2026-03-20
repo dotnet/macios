@@ -337,6 +337,43 @@ namespace Xamarin.Tests {
 			AssertExpectedDSyms (platform, appPath);
 		}
 
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void StaticFrameworksNotInPostProcessing (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			// https://github.com/dotnet/macios/issues/24840
+			// This test does a Release build, which enables dsymutil/strip post-processing.
+			// Without the fix, the build would fail because dsymutil would try to process a
+			// static framework that is not present in the app bundle.
+			var project = "StaticFrameworkFilterApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers, platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = configuration;
+			// macOS and Mac Catalyst default to NoDSymUtil=true (dSYMs only generated when archiving),
+			// so explicitly disable it to test dSYM generation.
+			properties ["NoDSymUtil"] = "false";
+
+			var result = DotNet.AssertBuild (project_path, properties);
+			var postProcessingItems = GetPostProcessingItems (result.BinLogPath);
+
+			// The dynamic framework (XTest) should be in the post-processing items
+			var dynamicFrameworkItems = postProcessingItems.Where (i => i.ItemSpec.Contains ("XTest.framework/XTest")).ToList ();
+			Assert.That (dynamicFrameworkItems.Count, Is.EqualTo (1), $"Expected 1 XTest framework post-processing item, got {dynamicFrameworkItems.Count}. All items:\n\t{string.Join ("\n\t", postProcessingItems.Select (i => i.ItemSpec))}");
+
+			// The static framework (XStaticArTest) should NOT be in the post-processing items,
+			// because it's a static library and won't be in the app bundle.
+			var staticFrameworkItems = postProcessingItems.Where (i => i.ItemSpec.Contains ("XStaticArTest")).ToList ();
+			Assert.That (staticFrameworkItems, Is.Empty, $"Static framework XStaticArTest should not be in post-processing items. All items:\n\t{string.Join ("\n\t", postProcessingItems.Select (i => i.ItemSpec))}");
+		}
+
 		static List<ITaskItem> GetPostProcessingItems (string binLogPath)
 		{
 			var items = new Dictionary<string, ITaskItem> ();

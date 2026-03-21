@@ -19,9 +19,6 @@ namespace MonoTouchFixtures.Security {
 		[SetUp]
 		public void SetUp ()
 		{
-			// The API here was introduced to Mac Catalyst later than for the other frameworks, so we have this additional check
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacCatalyst, 14, 0, throwIfOtherPlatform: false);
-
 			domainName = "com.xamarin.monotouch-test";
 			account = "twitter";
 			password = "12345678";
@@ -52,8 +49,6 @@ namespace MonoTouchFixtures.Security {
 		[Timeout (5000)]
 		public void AddSharedWebCredentialNotNullPassword ()
 		{
-			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 8, 0, throwIfOtherPlatform: false);
-
 			Action<NSError> handler = (NSError e) => {
 				// we do nothing, if we did block the test should be interactive because a dialog is shown.
 			};
@@ -66,8 +61,6 @@ namespace MonoTouchFixtures.Security {
 		[Timeout (5000)]
 		public void AddSharedWebCredentialNullPassword ()
 		{
-			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 8, 0, throwIfOtherPlatform: false);
-
 			password = null;
 			Action<NSError> handler = (NSError e) => {
 				// we do nothing, if we did block the test should be interactive because a dialog is shown.
@@ -76,10 +69,32 @@ namespace MonoTouchFixtures.Security {
 		}
 
 		[Test]
+		// We do not want to block for a long period of time if the event is not set.
+		// We are testing the fact that the trampoline works.
+		[Timeout (5000)]
+		public void RequestSharedWebCredentialTest ()
+		{
+			Action<SecSharedCredentialInfo [], NSError> handler = (SecSharedCredentialInfo [] creds, NSError e) => {
+				// we do nothing, if we did block the test should be interactive because a dialog is shown.
+			};
+			SecSharedCredential.RequestSharedWebCredential (domainName, account, handler);
+		}
+
+		[Test]
+		// We do not want to block for a long period of time if the event is not set.
+		// We are testing the fact that the trampoline works.
+		[Timeout (5000)]
+		public void RequestSharedWebCredentialNullDomainAndAccountTest ()
+		{
+			Action<SecSharedCredentialInfo [], NSError> handler = (SecSharedCredentialInfo [] creds, NSError e) => {
+				// we do nothing, if we did block the test should be interactive because a dialog is shown.
+			};
+			SecSharedCredential.RequestSharedWebCredential (null, null, handler);
+		}
+
+		[Test]
 		public void CreateSharedWebCredentialPassword ()
 		{
-			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 8, 0, throwIfOtherPlatform: false);
-
 			var pwd = SecSharedCredential.CreateSharedWebCredentialPassword ();
 			Assert.IsNotNull (pwd);
 		}

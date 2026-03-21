@@ -189,7 +189,6 @@ Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::None
-Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::WeakGCHandle
 Microsoft.iOS.dll:Foundation.NSObjectData
 Microsoft.iOS.dll:Foundation.NSObjectData* Foundation.NSObject::__data_for_mono
 Microsoft.iOS.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::Data()

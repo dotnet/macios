@@ -4,9 +4,11 @@
     <RootNamespace>dotnet_linker</RootNamespace>
     <DefineConstants>$(DefineConstants);BUNDLER</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn> <!-- Missing XML comment for publicly visible type or member: don't care, the APIs aren't for public consumption -->
   </PropertyGroup>
 
   <Import Project="..\..\eng\Versions.props" />

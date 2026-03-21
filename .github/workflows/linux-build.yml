@@ -2,6 +2,7 @@
 name: Linux Build Verification
 on:
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read

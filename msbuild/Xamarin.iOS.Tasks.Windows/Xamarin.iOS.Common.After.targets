@@ -21,7 +21,7 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 	<UsingTask TaskName="Xamarin.iOS.Tasks.Windows.CreateArchiveDirectory" AssemblyFile="$(_TaskAssemblyFileNameWindows)" />
 	<UsingTask TaskName="Xamarin.iOS.Tasks.Windows.ResolveUniversalTypeIdentifiers" AssemblyFile="$(_TaskAssemblyFileNameWindows)" />
 
-	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Messaging.Build.targets" Condition="Exists('$(MSBuildThisFileDirectory)Xamarin.Messaging.Build.targets') And '$(MessagingBuildTargetsImported)' != 'true'" />
+	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Messaging.targets" Condition="'$(MessagingBuildTargetsImported)' != 'true'" />
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.iOS.Windows.After.targets" Condition="Exists('$(MSBuildThisFileDirectory)Xamarin.iOS.Windows.After.targets')" />
 
 	<PropertyGroup>

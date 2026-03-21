@@ -112,6 +112,8 @@ namespace Foundation {
 	public partial class NSUrlSessionHandler : HttpMessageHandler {
 		private const string SetCookie = "Set-Cookie";
 		private const string Cookie = "Cookie";
+		private const string ContentEncodingHeaderName = "Content-Encoding";
+		private const string ContentLengthHeaderName = "Content-Length";
 		private CookieContainer? cookieContainer;
 		readonly Dictionary<string, string> headerSeparators = new Dictionary<string, string> {
 			["User-Agent"] = " ",
@@ -869,6 +871,24 @@ namespace Foundation {
 			}
 		}
 
+		static bool HasCompressedEncoding (string headerValue)
+		{
+			foreach (var encoding in headerValue.Split (',')) {
+				if (IsCompressedEncoding (encoding.Trim ()))
+					return true;
+			}
+			return false;
+		}
+
+		static bool IsCompressedEncoding (string encoding)
+		{
+			return string.Equals (encoding, "gzip", StringComparison.OrdinalIgnoreCase)
+				|| string.Equals (encoding, "deflate", StringComparison.OrdinalIgnoreCase)
+				|| string.Equals (encoding, "br", StringComparison.OrdinalIgnoreCase)
+				|| string.Equals (encoding, "compress", StringComparison.OrdinalIgnoreCase)
+				|| string.Equals (encoding, "zstd", StringComparison.OrdinalIgnoreCase);
+		}
+
 		partial class NSUrlSessionHandlerDelegate : NSUrlSessionDataDelegate {
 			readonly NSUrlSessionHandler sessionHandler;
 
@@ -959,6 +979,17 @@ namespace Foundation {
 					if (wasRedirected)
 						httpResponse.RequestMessage.RequestUri = absoluteUri;
 
+					// NSURLSession automatically decompresses content for all supported
+					// encodings (gzip, deflate, br, zstd, etc.), and there's no way to
+					// turn it off. After decompression, Content-Encoding and Content-Length
+					// are stale (Content-Length refers to compressed size), so we need to
+					// remove them to match the behavior of other HTTP handlers:
+					// - SocketsHttpHandler:    https://github.com/dotnet/runtime/blob/b2974279efd059efaa17f359ed4b266b1c705721/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/DecompressionHandler.cs#L122-L123
+					// - AndroidMessageHandler: https://github.com/dotnet/android/pull/7785
+					// Ref: https://github.com/dotnet/macios/issues/23958
+					string? contentEncodingValue = null;
+					string? contentLengthValue = null;
+
 					foreach (var v in urlResponse.AllHeaderFields) {
 						var key = v.Key?.ToString ();
 						var value = v.Value?.ToString ();
@@ -968,8 +999,29 @@ namespace Foundation {
 						// NSUrlSession tries to be smart with cookies, we will not use the raw value but the ones provided by the cookie storage
 						if (key == SetCookie) continue;
 
+						if (string.Equals (key, ContentEncodingHeaderName, StringComparison.OrdinalIgnoreCase)) {
+							contentEncodingValue = value;
+							continue;
+						}
+						if (string.Equals (key, ContentLengthHeaderName, StringComparison.OrdinalIgnoreCase)) {
+							contentLengthValue = value;
+							continue;
+						}
+
 						httpResponse.Headers.TryAddWithoutValidation (key, value);
 						httpResponse.Content.Headers.TryAddWithoutValidation (key, value);
+					}
+
+					var contentWasDecompressed = contentEncodingValue is not null && HasCompressedEncoding (contentEncodingValue);
+					if (!contentWasDecompressed) {
+						if (contentEncodingValue is not null) {
+							httpResponse.Headers.TryAddWithoutValidation (ContentEncodingHeaderName, contentEncodingValue);
+							httpResponse.Content.Headers.TryAddWithoutValidation (ContentEncodingHeaderName, contentEncodingValue);
+						}
+						if (contentLengthValue is not null) {
+							httpResponse.Headers.TryAddWithoutValidation (ContentLengthHeaderName, contentLengthValue);
+							httpResponse.Content.Headers.TryAddWithoutValidation (ContentLengthHeaderName, contentLengthValue);
+						}
 					}
 
 					// it might be confusing that we are not using the managed CookieStore here, this is ONLY for those cookies that have been retrieved from

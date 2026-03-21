@@ -247,7 +247,7 @@ namespace Xamarin.Utils {
 		/// <param name="code">The code of the message.</param>
 		/// <param name="message">The message text.</param>
 		/// <returns></returns>
-		/// <see cref="https://learn.microsoft.com/visualstudio/msbuild/msbuild-diagnostic-format-for-tasks"/>
+		/// <see href="https://learn.microsoft.com/visualstudio/msbuild/msbuild-diagnostic-format-for-tasks"/>
 		public static string FormatMessage (string? fileName, long? lineNumber, bool isError, string prefix, int code, string message)
 		{
 			var sb = new StringBuilder ();

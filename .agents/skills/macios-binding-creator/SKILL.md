@@ -112,6 +112,8 @@ NSString ScheduleRequestedNotification { get; }
 
 > ❌ **NEVER** use `string.Empty` — use `""`. Never use `Array.Empty<T>()` — use `[]`.
 
+> ❌ **NEVER** forget `#nullable enable` at the top of every new C# file you create.
+
 > ❌ **NEVER** use non-blittable types (`bool`, `char`) as backing fields in structs. Use `byte` (for `bool`) and `ushort`/`short` (for `char`) with property accessors. See [references/binding-patterns.md](references/binding-patterns.md) for the correct pattern.
 
 > ❌ **NEVER** use `XAMCORE_5_0` for new code. `XAMCORE_5_0` is only for fixing breaking API changes on existing types that shipped in prior releases.
@@ -123,6 +125,8 @@ NSString ScheduleRequestedNotification { get; }
 > ⚠️ Method names should follow .NET naming conventions — use verb-based names, not direct Objective-C selector translations (e.g., `BuildMenu` not `MenuWithContents`).
 
 > ⚠️ For in depth binding patterns and conventions See [references/binding-patterns.md](references/binding-patterns.md)
+
+> ⚠️ **Struct array parameters**: When an API takes a C struct pointer + count (e.g., `MyStruct*` + `NSUInteger`), bind the raw pointer as `[Internal]` with `IntPtr`, then create a manual public wrapper using the **factory pattern** with `fixed`. See [references/binding-patterns.md](references/binding-patterns.md) § "Struct Array Parameter Binding".
 
 ### Step 4b: Platform Exclusion Patterns for Manual Types
 
@@ -204,6 +208,8 @@ make -C tests/xtro-sharpie run-maccatalyst
 ```
 
 Verify all `.todo` entries for the bound framework are resolved. If any remain, they need binding or explicit `.ignore` entries with justification.
+
+> ⚠️ **Delete empty `.todo` files** after resolving all entries: `git rm tests/xtro-sharpie/api-annotations-dotnet/{platform}-{Framework}.todo`. Do not leave empty `.todo` files in the repository.
 
 #### 6b. Cecil Tests
 

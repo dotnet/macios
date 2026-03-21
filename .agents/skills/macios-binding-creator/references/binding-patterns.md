@@ -229,6 +229,8 @@ delegate bool ValidationHandler (string input);
 bool Validate (ValidationHandler handler);
 ```
 
+> ❌ **NEVER** use `Action<T>` or `Func<T>` for completion handler parameters. Always define a **named delegate type** (e.g., `delegate void MyHandler (...)`) — this produces better API documentation and IntelliSense.
+
 ## Async/Await Support
 
 ```csharp
@@ -327,6 +329,144 @@ using MyStruct = Foundation.NSObject;
 ```
 
 The type alias lets tvOS compilation succeed. The `[NoTV]` attribute on the API definition interface ensures the type won't appear in the final tvOS assembly.
+
+## Struct Array Parameter Binding
+
+When an Objective-C API takes a C struct pointer + count (e.g., `MyStruct*` + `NSUInteger`), create a manual public wrapper that marshals a managed array to/from the native pointer. This is a common Apple API pattern (MapKit, CarPlay, ARKit, etc.).
+
+### Recognition
+
+You need this pattern when:
+- A constructor or method takes `T*` + `NSUInteger count` (struct array input)
+- A property returns `T*` with a separate `count` property (struct array output)
+- The generated reference binding shows `IntPtr` where you'd expect a struct array
+
+### API Definition (`src/frameworkname.cs`)
+
+Mark struct pointer APIs as `[Internal]` so they're not exposed publicly:
+
+```csharp
+[BaseType (typeof (NSObject))]
+[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
+interface MyClass {
+	// Static factory — [Internal] + IntPtr
+	[Static]
+	[Internal]
+	[Export ("classWithCoordinates:count:")]
+	MyClass _FromCoordinates (IntPtr coords, nint count);
+
+	// Constructor — [Internal] + IntPtr
+	[Internal]
+	[Export ("initWithPoints:count:")]
+	NativeHandle Constructor (IntPtr points, nuint count);
+
+	// Property getter — [Internal] + IntPtr
+	[Internal]
+	[Export ("points")]
+	IntPtr _Points { get; }
+
+	[Export ("pointCount")]
+	nuint PointCount { get; }
+}
+```
+
+### Manual Wrappers (`src/FrameworkName/MyClass.cs`)
+
+> ⚠️ Always use the **factory pattern** (static `Create`/`From` method) instead of a public constructor for struct array parameters. This avoids issues with `fixed` in constructor chains.
+
+#### Factory for Static Methods
+
+When the API definition has a `[Static] [Internal]` method:
+
+```csharp
+#nullable enable
+
+namespace FrameworkName {
+
+	public partial class MyClass {
+
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		public static unsafe MyClass FromCoordinates (MyStruct [] coords)
+		{
+			if (coords is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (coords));
+			if (coords.Length == 0)
+				return _FromCoordinates (IntPtr.Zero, 0);
+
+			fixed (MyStruct* first = coords) {
+				return _FromCoordinates ((IntPtr) first, coords.Length);
+			}
+		}
+	}
+}
+```
+
+Real examples: `src/MapKit/MKPolyline.cs`, `src/MapKit/MKPolygon.cs`
+
+#### Factory for Constructors
+
+When the API definition has an `[Internal]` `Constructor`:
+
+```csharp
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		public static unsafe MyClass Create (MyStruct [] points)
+		{
+			if (points is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
+
+			if (points.Length == 0)
+				return new MyClass (IntPtr.Zero, 0);
+
+			fixed (MyStruct* first = points) {
+				return new MyClass ((IntPtr) first, (nuint) points.Length);
+			}
+		}
+```
+
+If the API definition uses `_InitWith*` methods instead of `Constructor`, use `NSObjectFlag.Empty` + `InitializeHandle`:
+
+```csharp
+		public static unsafe MyClass Create (MyStruct [] points)
+		{
+			// ... null/empty checks ...
+			var instance = new MyClass (NSObjectFlag.Empty);
+			fixed (MyStruct* first = points) {
+				instance.InitializeHandle (
+					instance._InitWithPoints ((IntPtr) first, (nuint) points.Length));
+			}
+			return instance;
+		}
+```
+
+#### Property Getter for Struct Arrays
+
+When the API has an `[Internal]` `IntPtr` property + a count property:
+
+```csharp
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		public unsafe MyStruct [] Points {
+			get {
+				var count = (int) PointCount;
+				if (count == 0)
+					return [];
+
+				var source = (MyStruct*) _Points;
+				var result = new MyStruct [count];
+				for (int i = 0; i < count; i++)
+					result [i] = source [i];
+				return result;
+			}
+		}
+```
+
+Real example: `src/MapKit/MKMultiPoint.cs`
+
+### frameworks.sources
+
+Add the manual file to the framework's `*_SOURCES`. If the file defines types needed by the API definition (like structs), add it to both `*_API_SOURCES` and `*_SOURCES`.
 
 ## Strongly-Typed Dictionaries
 

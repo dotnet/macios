@@ -456,3 +456,128 @@ All `[Verify]` attributes must be resolved before submitting a PR.
 - Use `[]` not `Array.Empty<T> ()`
 - Follow Mono code-formatting style from `.editorconfig`
 - Match existing patterns in the framework's binding file
+
+## Availability on Manual Code
+
+API definition files (`src/frameworkname.cs`) use binding-style attributes:
+
+```csharp
+[iOS (26, 2), TV (26, 2), Mac (26, 2), MacCatalyst (26, 2)]
+[Export ("newProperty")]
+string NewProperty { get; }
+```
+
+Manual code files (`src/FrameworkName/*.cs`) use `[SupportedOSPlatform]` attributes on P/Invokes, properties, and methods:
+
+```csharp
+[SupportedOSPlatform ("ios26.2")]
+[SupportedOSPlatform ("tvos26.2")]
+[SupportedOSPlatform ("macos26.2")]
+[SupportedOSPlatform ("maccatalyst26.2")]
+public CTUIFontType UIFontType {
+	get {
+		return CTFontGetUIFontType (Handle);
+	}
+}
+```
+
+Both styles are required. Omitting availability from P/Invokes or manual properties is a common mistake.
+
+### Determining the Correct Version
+
+Check `tools/common/SdkVersions.cs` for the current SDK versions:
+
+```bash
+grep -E 'public const string (iOS|TVOS|OSX|MacCatalyst) ' tools/common/SdkVersions.cs
+```
+
+Or check `Make.versions`:
+
+```bash
+grep '_NUGET_OS_VERSION=' Make.versions
+```
+
+Use these values for all availability attributes. If the user specifies a different version (e.g., for a beta branch), use that instead.
+
+## Monotouch-Test Patterns
+
+When manually binding C# APIs (P/Invokes, manual properties, struct accessors), add tests in `tests/monotouch-test/{FrameworkName}/`.
+
+### File Structure
+
+```
+tests/monotouch-test/
+├── CoreText/
+│   ├── FontTest.cs
+│   ├── FontDescriptorTest.cs
+│   └── ...
+├── CoreGraphics/
+│   ├── FontTest.cs
+│   ├── ContextTest.cs
+│   └── ...
+```
+
+### Template
+
+```csharp
+using NUnit.Framework;
+using Foundation;
+using CoreText;  // framework under test
+#if MONOMAC
+using AppKit;
+#else
+using UIKit;
+#endif
+
+namespace MonoTouchFixtures.CoreText {  // MonoTouchFixtures.{FrameworkName}
+
+	[TestFixture]
+	[Preserve (AllMembers = true)]
+	public class FontTest {
+
+		[Test]
+		public void UIFontType_SystemFont ()
+		{
+			// Guard: skip test on runtimes older than the API's availability version
+			TestRuntime.AssertXcodeVersion (26, 2);
+
+			using (var font = new CTFont ("Helvetica", 12)) {
+				var fontType = font.UIFontType;
+				Assert.AreEqual (CTUIFontType.System, fontType, "UIFontType");
+			}
+		}
+
+		[Test]
+		public void LanguageAttribute_RoundTrip ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 2);
+
+			var attrs = new CTFontDescriptorAttributes () { Language = "en" };
+			using (var desc = new CTFontDescriptor (attrs)) {
+				// Round-trip test: set a value, read it back
+				var readAttrs = desc.GetAttributes ();
+				Assert.AreEqual ("en", readAttrs.Language, "Language");
+			}
+		}
+	}
+}
+```
+
+### Key Patterns
+
+| Pattern | Usage |
+|---------|-------|
+| `TestRuntime.AssertXcodeVersion (X, Y)` | Skip test if runtime is older than API availability |
+| `TestRuntime.CheckXcodeVersion (X, Y)` | Boolean check for conditional logic within a test |
+| `[Preserve (AllMembers = true)]` | Prevents linker from stripping test methods |
+| `using` statements | Always clean up handle-based objects |
+| Namespace `MonoTouchFixtures.*` | Match framework name (e.g., `MonoTouchFixtures.CoreText`) |
+| Platform-conditional imports | `#if MONOMAC` for AppKit vs UIKit |
+
+### What to Test
+
+- **P/Invoke wrappers**: Call the C# wrapper and verify it returns sensible values
+- **Manual properties**: Set a value, read it back (round-trip test)
+- **Struct accessors**: Create a struct, set properties, verify getters return expected values
+- **Null handling**: Verify null parameters behave correctly (return null, throw `ArgumentNullException`, etc.)
+- **Enum conversions**: Verify known native values map to the correct C# enum values

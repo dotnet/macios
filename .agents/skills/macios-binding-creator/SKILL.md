@@ -68,6 +68,21 @@ Before implementing, understand the native API:
 
 ### Step 4: Implement Bindings
 
+#### Determine the Correct Availability Version
+
+Before writing any bindings, determine the SDK version you're targeting:
+
+```bash
+# Check the current SDK versions
+grep -E 'public const string (iOS|TVOS|OSX|MacCatalyst) ' tools/common/SdkVersions.cs
+# Or from Make.versions
+grep '_NUGET_OS_VERSION=' Make.versions
+```
+
+Use the version from `SdkVersions.cs` (e.g., `26.2`) for all availability attributes. If the user specifies a different version (e.g., binding a beta branch at `26.4`), use that instead. **Ask the user if you're unsure which version to use.**
+
+#### File Locations
+
 Bindings go in these locations:
 - **`src/frameworkname.cs`** — API definitions (interfaces with `[Export]` attributes)
 - **`src/FrameworkName/`** — Manual code (partial classes, enums, P/Invokes, extensions)
@@ -90,7 +105,10 @@ void SetCaptionPreviewProfileId ([NullAllowed] string profileId);
 NSString ScheduleRequestedNotification { get; }
 ```
 
-> ❌ **NEVER** forget platform availability attributes. Every new API must have `[iOS]`, `[Mac]`, `[TV]`, `[MacCatalyst]`, and/or `[No*]` attributes matching the `.todo` file platforms where the API appears.
+> ❌ **NEVER** forget platform availability attributes. Every new API must have `[iOS]`, `[Mac]`, `[TV]`, `[MacCatalyst]`, and/or `[No*]` attributes matching the `.todo` file platforms where the API appears. This includes **all** binding types:
+> - API definition interfaces and members in `src/frameworkname.cs` — use `[iOS (X, Y)]`, `[Mac (X, Y)]`, etc.
+> - P/Invoke wrappers and manual properties in `src/FrameworkName/*.cs` — use `[SupportedOSPlatform ("iosX.Y")]`, `[SupportedOSPlatform ("macos")]`, etc.
+> - Fields, constants, and enum values
 
 > ❌ **NEVER** use `string.Empty` — use `""`. Never use `Array.Empty<T>()` — use `[]`.
 
@@ -129,6 +147,46 @@ make -C src build
 ```
 
 Fix any compilation errors before proceeding. Builds can take up to 60 minutes — do not timeout early.
+
+### Step 5b: Write Monotouch Tests for Manual Bindings
+
+For any manually bound APIs (P/Invokes, manual properties on partial classes, struct accessors), add tests in `tests/monotouch-test/{FrameworkName}/`.
+
+> ⚠️ **Only run monotouch-tests (Step 6d) if you added or modified test files in this step.** If no manual bindings were added (i.e., all APIs were bound via `[Export]` in the API definition file), skip both this step and Step 6d.
+
+```csharp
+using CoreText;  // framework being tested
+using NUnit.Framework;
+
+namespace MonoTouchFixtures.CoreText {  // MonoTouchFixtures.{FrameworkName}
+
+	[TestFixture]
+	[Preserve (AllMembers = true)]
+	public class FontTest {
+
+		[Test]
+		public void UIFontType_SystemFont ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 4);  // match the availability version
+
+			using (var font = new CTFont ("Helvetica", 12)) {
+				var fontType = font.UIFontType;
+				Assert.AreEqual (CTUIFontType.System, fontType);
+			}
+		}
+	}
+}
+```
+
+Key patterns:
+- **Namespace**: `MonoTouchFixtures.{FrameworkName}` (e.g., `MonoTouchFixtures.CoreText`)
+- **Version guards**: Use `TestRuntime.AssertXcodeVersion (major, minor)` matching the API's availability version. This skips the test on older runtimes instead of failing.
+- **Resource cleanup**: Always use `using` statements for handle-based types
+- **Test focus**: Exercise the manual binding — call the P/Invoke wrapper, verify the property returns sensible values, test round-trip behavior for setters
+
+> ⚠️ If adding a new test file, make sure the `.csproj` at `tests/monotouch-test/` picks it up (it typically uses wildcard includes, but verify).
+
+See [references/binding-patterns.md](references/binding-patterns.md) for more monotouch-test patterns.
 
 > ⚠️ **Stale build artifacts**: If you encounter unexpected test failures (false "pre-existing" failures, segfaults in unrelated types), run a full `make all && make install` to clear stale `_build/` artifacts before re-testing.
 
@@ -207,6 +265,14 @@ Look for this pattern in test output to confirm results:
 Tests run: X Passed: X Inconclusive: X Failed: X Ignored: X
 ```
 
+#### 6d. Monotouch Tests (only if you added tests in Step 5b)
+
+Skip this step if no monotouch-test files were added or modified.
+
+```bash
+make -C tests/monotouch-test run
+```
+
 ### Step 7: Handle Test Failures
 
 If introspection tests fail for newly bound types:
@@ -234,7 +300,7 @@ When reporting results, use this structure:
 
 1. **APIs bound** — table of types/members added with their platforms
 2. **Files changed** — list of modified files
-3. **Test results** — per-platform pass/fail for xtro, cecil, and introspection
+3. **Test results** — per-platform pass/fail for xtro, cecil, introspection, and monotouch-tests
 4. **Remaining items** — any `.todo` entries intentionally left unbound, with reasons
 
 ## References

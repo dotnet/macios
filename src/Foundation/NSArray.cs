@@ -1021,7 +1021,7 @@ namespace Foundation {
 		/// <typeparam name="V">The intermediate native object type used to convert each element. Must be a class that implements <see cref="INativeObject" />.</typeparam>
 		/// <param name="createObject">A delegate to convert an instance of <typeparamref name="V" /> to <typeparamref name="T" />.</param>
 		/// <returns>A C# array of <typeparamref name="T" /> elements, excluding any null elements.</returns>
-		internal T []? NonNullToArrayDropNullElements<T, V> (Converter<V, T> createObject) where V : class, INativeObject
+		internal T [] NonNullToArrayDropNullElements<T, V> (Converter<V, T> createObject) where V : class, INativeObject
 		{
 			var rv = NonNullArrayFromHandleDropNullElements<T> (Handle, (handle) => createObject (Runtime.GetINativeObject<V> (handle, false)!));
 			GC.KeepAlive (this);

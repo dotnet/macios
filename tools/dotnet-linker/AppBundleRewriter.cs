@@ -1384,7 +1384,7 @@ namespace Xamarin.Linker {
 			return modified;
 		}
 
-		MethodDefinition GetOrCreateStaticConstructor (TypeDefinition type, out bool modified)
+		public MethodDefinition GetOrCreateStaticConstructor (TypeDefinition type, out bool modified)
 		{
 			modified = false;
 
@@ -1408,7 +1408,7 @@ namespace Xamarin.Linker {
 		/// <param name="provider">The provider to which the attribute should be added.</param>
 		/// <param name="attribute">The attribute to add.</param>
 		/// <returns>Whether the attribute was added or not.</returns>
-		bool AddAttributeOnlyOnce (ICustomAttributeProvider provider, CustomAttribute attribute)
+		public bool AddAttributeOnlyOnce (ICustomAttributeProvider provider, CustomAttribute attribute)
 		{
 			if (provider.HasCustomAttributes) {
 				foreach (var ca in provider.CustomAttributes) {

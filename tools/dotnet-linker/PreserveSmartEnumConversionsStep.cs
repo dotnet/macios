@@ -63,11 +63,6 @@ namespace Xamarin.Linker.Steps {
 		{
 			var modified = false;
 
-			if (type.HasNestedTypes) {
-				foreach (var nested in type.NestedTypes)
-					modified |= ProcessType (nested);
-			}
-
 			if (!type.HasMethods)
 				return modified;
 

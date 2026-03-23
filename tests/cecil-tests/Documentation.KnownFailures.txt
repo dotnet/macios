@@ -4978,6 +4978,8 @@ F:Metal.MTLDataType.ULong2
 F:Metal.MTLDataType.ULong3
 F:Metal.MTLDataType.ULong4
 F:Metal.MTLDataType.VisibleFunctionTable
+F:Metal.MTLDeviceError.None
+F:Metal.MTLDeviceError.NotSupported
 F:Metal.MTLDeviceLocation.BuiltIn
 F:Metal.MTLDeviceLocation.External
 F:Metal.MTLDeviceLocation.Slot
@@ -5150,10 +5152,12 @@ F:Metal.MTLTensorDataType.Float16
 F:Metal.MTLTensorDataType.Float32
 F:Metal.MTLTensorDataType.Int16
 F:Metal.MTLTensorDataType.Int32
+F:Metal.MTLTensorDataType.Int4
 F:Metal.MTLTensorDataType.Int8
 F:Metal.MTLTensorDataType.None
 F:Metal.MTLTensorDataType.UInt16
 F:Metal.MTLTensorDataType.UInt32
+F:Metal.MTLTensorDataType.UInt4
 F:Metal.MTLTensorDataType.UInt8
 F:Metal.MTLTensorError.InternalError
 F:Metal.MTLTensorError.InvalidDescriptor
@@ -24520,6 +24524,7 @@ P:Metal.IMTLDevice.SupportsBCTextureCompression
 P:Metal.IMTLDevice.SupportsDynamicLibraries
 P:Metal.IMTLDevice.SupportsFunctionPointers
 P:Metal.IMTLDevice.SupportsFunctionPointersFromRender
+P:Metal.IMTLDevice.SupportsPlacementSparse
 P:Metal.IMTLDevice.SupportsPrimitiveMotionBlur
 P:Metal.IMTLDevice.SupportsPullModelInterpolation
 P:Metal.IMTLDevice.SupportsQueryTextureLod
@@ -30103,6 +30108,7 @@ T:Metal.MTLCreateRenderPipelineStateCompletionHandler
 T:Metal.MTLCurveBasis
 T:Metal.MTLCurveEndCaps
 T:Metal.MTLCurveType
+T:Metal.MTLDeviceError
 T:Metal.MTLDeviceLocation
 T:Metal.MTLDeviceNotificationHandler
 T:Metal.MTLDispatchType

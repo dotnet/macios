@@ -10,8 +10,6 @@ namespace CarPlay {
 		{
 			if (coordinates is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (coordinates));
-			if (coordinates.Length == 0)
-				return new CPRouteSegment (origin, destination, maneuvers, laneGuidances, currentManeuvers, currentLaneGuidance, tripTravelEstimates, maneuverTravelEstimates, IntPtr.Zero, 0);
 
 			fixed (CPLocationCoordinate3D* first = coordinates) {
 				return new CPRouteSegment (origin, destination, maneuvers, laneGuidances, currentManeuvers, currentLaneGuidance, tripTravelEstimates, maneuverTravelEstimates, (IntPtr) first, (nint) coordinates.Length);
@@ -20,10 +18,10 @@ namespace CarPlay {
 
 		public unsafe CPLocationCoordinate3D [] Coordinates {
 			get {
-				nint n = CoordinatesCount;
-				if (n == 0)
-					return [];
 				var source = (CPLocationCoordinate3D*) _Coordinates;
+				if (source is null)
+					return [];
+				nint n = CoordinatesCount;
 				var result = new CPLocationCoordinate3D [(int) n];
 				for (int i = 0; i < (int) n; i++)
 					result [i] = source [i];

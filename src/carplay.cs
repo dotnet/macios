@@ -1216,7 +1216,7 @@ namespace CarPlay {
 
 		[iOS (26, 4), MacCatalyst (26, 4)]
 		[Export ("mapTemplate:mapTemplateWaypoint:accepted:forSegment:")]
-		void WaypointAccepted (CPMapTemplate mapTemplate, CPNavigationWaypoint waypoint, bool accepted, [NullAllowed] CPRouteSegment segment);
+		void MapTemplateWaypoint (CPMapTemplate mapTemplate, CPNavigationWaypoint waypoint, bool accepted, [NullAllowed] CPRouteSegment segment);
 
 		[iOS (26, 4), MacCatalyst (26, 4)]
 		[Export ("mapTemplate:didReceiveUpdatedRouteSource:")]
@@ -3214,7 +3214,7 @@ namespace CarPlay {
 
 	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
 	[BaseType (typeof (NSObject))]
-	interface CPPlaybackConfiguration : INSCopying, NSSecureCoding {
+	interface CPPlaybackConfiguration : NSCopying, NSSecureCoding {
 		[Export ("initWithPreferredPresentation:playbackAction:elapsedTime:duration:")]
 		NativeHandle Constructor (CPPlaybackPresentation preferredPresentation, CPPlaybackAction playbackAction, CMTime elapsedTime, CMTime duration);
 
@@ -3316,7 +3316,7 @@ namespace CarPlay {
 	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface CPRouteSegment : INSCopying {
+	interface CPRouteSegment : NSCopying {
 		[Internal]
 		[Export ("initWithOrigin:destination:maneuvers:laneGuidances:currentManeuvers:currentLaneGuidance:tripTravelEstimates:maneuverTravelEstimates:coordinates:coordinatesCount:")]
 		[DesignatedInitializer]

@@ -589,6 +589,7 @@ All `[Verify]` attributes must be resolved before submitting a PR.
 - **Protocol conformance**: All `[Abstract]` methods in a protocol are required.
 - **nint/nuint**: Use `nint`/`nuint` for Objective-C `NSInteger`/`NSUInteger`.
 - **XAMCORE_5_0**: Only for fixing breaking changes on existing shipped types. Never use for new code.
+- **Handle access in manual code**: Use `GetCheckedHandle ()` instead of `Handle` when passing the native handle to P/Invokes in manual bindings. `GetCheckedHandle ()` throws `ObjectDisposedException` if the object has been disposed, preventing hard-to-debug native crashes.
 - **Struct members**: Wrap public methods and properties in `#if !COREBUILD`, but NOT fields (bgen needs struct size). Never use `#pragma warning disable 0169`.
 
 ## Code Style Reminders
@@ -619,7 +620,7 @@ Manual code files (`src/FrameworkName/*.cs`) use `[SupportedOSPlatform]` attribu
 [SupportedOSPlatform ("maccatalyst26.2")]
 public CTUIFontType UIFontType {
 	get {
-		return CTFontGetUIFontType (Handle);
+		return CTFontGetUIFontType (GetCheckedHandle ());
 	}
 }
 ```

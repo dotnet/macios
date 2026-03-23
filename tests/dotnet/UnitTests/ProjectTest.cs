@@ -190,6 +190,7 @@ namespace Xamarin.Tests {
 			var ad = AssemblyDefinition.ReadAssembly (asm, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 			var expectedFSharpResources = new List<string> {
 				"FSharpOptimizationCompressedData.fsharplibrary",
+				"FSharpOptimizationCompressedDataB.fsharplibrary",
 				"FSharpSignatureCompressedData.fsharplibrary",
 				"FSharpSignatureCompressedDataB.fsharplibrary",
 			};
@@ -456,7 +457,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64", false)]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true, null, "Release")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64", true, "PublishTrimmed=true;UseInterpreter=true")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true, "UseInterpreter=true")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false)]
 		[Category ("WindowsInclusive")]
 		public void IsNotMacBuild (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties = null, string configuration = "Debug")
@@ -2077,7 +2078,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet9_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 9);
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 9, isFuture: false);
 		}
 
 		[Test]
@@ -2097,9 +2098,19 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
 		public void BuildNet11_0App (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 11, isFuture: true);
-			// In .NET 11
-			// * Copy this test and create a new .NET 12 test
+			BuildSupportedNetVersionApp (platform, runtimeIdentifiers, 11);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
+		public void BuildNet12_0App (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildUnsupportedNetVersionApp (platform, runtimeIdentifiers, 12, isFuture: true);
+			// In .NET 12
+			// * Copy this test and create a new .NET 13 test
 			// * Update this test to call 'BuildSupportedNetVersionApp'
 			// * The SupportedOSPlatformVersion values in the test project might need updating.
 		}
@@ -2151,7 +2162,11 @@ namespace Xamarin.Tests {
 			Assert.That (infoPlistPath, Does.Exist, "Info.plist");
 			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
 			Assert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
-			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+			if (majorNetVersion >= 10) {
+				Assert.AreEqual (project, infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+			} else {
+				Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+			}
 			Assert.AreEqual (netVersion, infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
 			Assert.AreEqual (netVersion, infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
 
@@ -2519,6 +2534,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[Ignore ("https://github.com/dotnet/macios/issues/24558")]
 		public void BuildMyNativeAotAppWithTrimAnalysisWarning (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "MyNativeAotAppWithTrimAnalysisWarning";
@@ -2558,6 +2574,20 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64", "Debug")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64", "Release")]
 		public void PublishAot (ApplePlatform platform, string runtimeIdentifiers, string configuration)
+		{
+			PublishAotImpl (platform, runtimeIdentifiers, configuration);
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
+		[Category ("RemoteWindows")]
+		public void PublishAotOnWindows (ApplePlatform platform, string runtimeIdentifiers, string configuration)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+
+			PublishAotImpl (platform, runtimeIdentifiers, configuration);
+		}
+
+		void PublishAotImpl (ApplePlatform platform, string runtimeIdentifiers, string configuration)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -3433,7 +3463,6 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
-			"/usr/lib/swift/libswiftFoundation.dylib",
 			"/usr/lib/swift/libswiftIOKit.dylib",
 			"/usr/lib/swift/libswiftMetal.dylib",
 			"/usr/lib/swift/libswiftObjectiveC.dylib",
@@ -3620,13 +3649,11 @@ namespace Xamarin.Tests {
 			"/usr/lib/libobjc.A.dylib",
 			"/usr/lib/libSystem.B.dylib",
 			"/usr/lib/libz.1.dylib",
-			"/System/iOSSupport/usr/lib/swift/libswiftUIKit.dylib",
 			"/usr/lib/swift/libswiftCore.dylib",
 			"/usr/lib/swift/libswiftCoreFoundation.dylib",
 			"/usr/lib/swift/libswiftCoreImage.dylib",
 			"/usr/lib/swift/libswiftDarwin.dylib",
 			"/usr/lib/swift/libswiftDispatch.dylib",
-			"/usr/lib/swift/libswiftFoundation.dylib",
 			"/usr/lib/swift/libswiftIOKit.dylib",
 			"/usr/lib/swift/libswiftMetal.dylib",
 			"/usr/lib/swift/libswiftObjectiveC.dylib",

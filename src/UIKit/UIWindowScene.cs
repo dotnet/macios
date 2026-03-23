@@ -12,7 +12,7 @@ namespace UIKit {
 		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, Action<IUITraitEnvironment, UITraitCollection> handler)
 		{
 			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, handler);
@@ -26,7 +26,7 @@ namespace UIKit {
 		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges (Action<IUITraitEnvironment, UITraitCollection> handler, params Type [] traits)
 		{
 			// Add an override with 'params', unfortunately this means reordering the parameters.
@@ -41,7 +41,7 @@ namespace UIKit {
 		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T : IUITraitDefinition
 		{
@@ -57,7 +57,7 @@ namespace UIKit {
 		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T1, T2> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -75,7 +75,7 @@ namespace UIKit {
 		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T1, T2, T3> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -95,7 +95,7 @@ namespace UIKit {
 		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public unsafe IUITraitChangeRegistration RegisterForTraitChanges<T1, T2, T3, T4> (Action<IUITraitEnvironment, UITraitCollection> handler)
 			where T1 : IUITraitDefinition
 			where T2 : IUITraitDefinition
@@ -114,7 +114,7 @@ namespace UIKit {
 		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, NSObject target, Selector action)
 		{
 			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, target, action);
@@ -128,7 +128,7 @@ namespace UIKit {
 		/// <returns>A token that can be used to unregister the callback by calling <see cref="UnregisterForTraitChanges" />.</returns>
 		[SupportedOSPlatform ("tvos17.0")]
 		[SupportedOSPlatform ("ios17.0")]
-		[SupportedOSPlatform ("maccatalyst17.0")]
+		[SupportedOSPlatform ("maccatalyst")]
 		public IUITraitChangeRegistration RegisterForTraitChanges (Type [] traits, Selector action)
 		{
 			return IUITraitChangeObservable._RegisterForTraitChanges (this, traits, action);

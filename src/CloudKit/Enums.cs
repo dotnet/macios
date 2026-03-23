@@ -323,7 +323,7 @@ namespace CloudKit {
 		Administrator = 2,
 	}
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[Native, Flags]
 	public enum CKSharingParticipantAccessOption : ulong {
 		AnyoneWithLink = 1uL << 0,
@@ -331,7 +331,7 @@ namespace CloudKit {
 		Any = AnyoneWithLink | SpecifiedRecipientsOnly,
 	}
 
-	[NoTV, Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0)]
+	[NoTV, iOS (16, 0), MacCatalyst (16, 0)]
 	[Native, Flags]
 	public enum CKSharingParticipantPermissionOption : ulong {
 		ReadOnly = 1uL << 0,
@@ -340,7 +340,7 @@ namespace CloudKit {
 	}
 
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineAccountChangeType : long {
 		SignIn,
@@ -348,14 +348,14 @@ namespace CloudKit {
 		SwitchAccounts,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineSyncReason : long {
 		Scheduled,
 		Manual,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineEventType : long {
 		StateUpdate,
@@ -372,14 +372,14 @@ namespace CloudKit {
 		DidSendChanges,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEnginePendingRecordZoneChangeType : long {
 		SaveRecord,
 		DeleteRecord,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEngineZoneDeletionReason : long {
 		Deleted,
@@ -387,7 +387,7 @@ namespace CloudKit {
 		EncryptedDataReset,
 	}
 
-	[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
+	[TV (17, 0), iOS (17, 0), MacCatalyst (17, 0)]
 	[Native]
 	public enum CKSyncEnginePendingDatabaseChangeType : long {
 		SaveZone,

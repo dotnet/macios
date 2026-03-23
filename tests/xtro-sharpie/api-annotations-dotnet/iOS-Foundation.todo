@@ -1,2 +1,0 @@
-!missing-protocol! NSPredicateValidating not bound
-!missing-selector! NSPredicate::allowEvaluationWithValidator:error: not bound

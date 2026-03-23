@@ -14,8 +14,7 @@ using System.Reflection;
 
 using ProductException = BindingException;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 // Error allocation: the errors are listed (and documented) in $(TOP)/docs/website/generator-errors.md
 
@@ -28,17 +27,17 @@ public class BindingException : Exception {
 		Error = error || ErrorHelper.GetWarningLevel (code) == ErrorHelper.WarningLevel.Error;
 	}
 
-	public BindingException (int code, params object [] args) :
+	public BindingException (int code, params object? [] args) :
 		this (code, false, args)
 	{
 	}
 
-	public BindingException (int code, bool error, params object [] args) :
+	public BindingException (int code, bool error, params object? [] args) :
 		this (code, error, null, args)
 	{
 	}
 
-	public BindingException (int code, bool error, Exception innerException, params object [] args) :
+	public BindingException (int code, bool error, Exception? innerException, params object? [] args) :
 		base (String.Format (GetMessage (code), args), innerException)
 	{
 		Code = code;
@@ -47,14 +46,12 @@ public class BindingException : Exception {
 
 	static string GetMessage (int code)
 	{
-		Type resourceType = Type.GetType ("bgen.Resources");
-		string errorCode = string.Format ("BI{0:0000}", code);
-		PropertyInfo prop = resourceType.GetProperty (errorCode, BindingFlags.NonPublic |
-				BindingFlags.Static |
-				BindingFlags.GetProperty);
-
-		var errorMessage = prop is null ? String.Format (bgen.Resources._default, errorCode) :
-					(String) prop.GetValue (null);
+		var resourceType = Type.GetType ("bgen.Resources");
+		var errorCode = string.Format ("BI{0:0000}", code);
+		var prop = resourceType?.GetProperty (errorCode, BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetProperty);
+		var errorMessage = (string?) prop?.GetValue (null);
+		if (errorMessage is null)
+			errorMessage = string.Format (bgen.Resources._default, errorCode);
 		return errorMessage;
 	}
 
@@ -65,7 +62,6 @@ public class BindingException : Exception {
 	// http://blogs.msdn.com/b/msbuild/archive/2006/11/03/msbuild-visual-studio-aware-error-messages-and-message-formats.aspx
 	public override string ToString ()
 	{
-
 		return String.Format ("{0} BI{1:0000}: {3}: {2}",
 			Error ? "error" : "warning", Code, Message, BindingTouch.ToolName);
 	}
@@ -83,19 +79,19 @@ public static class ErrorHelper {
 	static public int Verbosity { get { return verbosity; } set { verbosity = value; } }
 
 	[ThreadStatic]
-	static Dictionary<int, WarningLevel> warning_levels;
+	static Dictionary<int, WarningLevel>? warning_levels;
 
 	public static ProductException CreateError (int code)
 	{
 		return new ProductException (code, true);
 	}
 
-	public static ProductException CreateError (int code, params object [] args)
+	public static ProductException CreateError (int code, params object? [] args)
 	{
 		return new ProductException (code, true, args);
 	}
 
-	public static ProductException CreateWarning (int code, params object [] args)
+	public static ProductException CreateWarning (int code, params object? [] args)
 	{
 		return new ProductException (code, false, args);
 	}
@@ -105,14 +101,14 @@ public static class ErrorHelper {
 		Show (new ProductException (code, false));
 	}
 
-	public static void Warning (int code, params object [] args)
+	public static void Warning (int code, params object? [] args)
 	{
 		Show (new ProductException (code, false, args));
 	}
 
 	static public void Show (Exception e, bool rethrow_errors = true)
 	{
-		List<Exception> exceptions = new List<Exception> ();
+		var exceptions = new List<Exception> ();
 		bool error = false;
 
 		CollectExceptions (e, exceptions);
@@ -135,7 +131,7 @@ public static class ErrorHelper {
 	static void CollectExceptions (Exception ex, List<Exception> exceptions)
 	{
 #if NET_4_0
-		AggregateException ae = ex as AggregateException;
+		var ae = ex as AggregateException;
 
 		if (ae is not null) {
 			foreach (var ie in ae.InnerExceptions)
@@ -150,7 +146,7 @@ public static class ErrorHelper {
 
 	static bool ShowInternal (Exception e)
 	{
-		BindingException mte = (e as BindingException);
+		var mte = (e as BindingException);
 		bool error = true;
 
 		if (mte is not null) {
@@ -162,7 +158,7 @@ public static class ErrorHelper {
 			Console.Out.WriteLine (mte.ToString ());
 
 			if (Verbosity > 1) {
-				Exception ie = e.InnerException;
+				var ie = e.InnerException;
 				if (ie is not null) {
 					if (Verbosity > 3) {
 						Console.Error.WriteLine ("--- inner exception");

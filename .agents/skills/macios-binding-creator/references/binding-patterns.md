@@ -229,7 +229,7 @@ delegate bool ValidationHandler (string input);
 bool Validate (ValidationHandler handler);
 ```
 
-> ❌ **NEVER** use `Action<T>` or `Func<T>` for completion handler parameters. Always define a **named delegate type** (e.g., `delegate void MyHandler (...)`) — this produces better API documentation and IntelliSense.
+> ❌ **NEVER** use `Action<T>` or `Func<T>` for completion handler parameters. Always define a **named delegate type** (e.g., `delegate void MyHandler (...)`) — this produces better API documentation and IntelliSense. Note: xtro-sharpie may generate `Action`/`Func` delegates; always convert them to named delegates in your binding.
 
 ## Async/Await Support
 
@@ -353,7 +353,7 @@ interface MyClass {
 	[Static]
 	[Internal]
 	[Export ("classWithCoordinates:count:")]
-	MyClass _FromCoordinates (IntPtr coords, nint count);
+	MyClass _Create (IntPtr coords, nint count);
 
 	// Constructor — [Internal] + IntPtr
 	[Internal]
@@ -372,7 +372,9 @@ interface MyClass {
 
 ### Manual Wrappers (`src/FrameworkName/MyClass.cs`)
 
-> ⚠️ Always use the **factory pattern** (static `Create`/`From` method) instead of a public constructor for struct array parameters. This avoids issues with `fixed` in constructor chains.
+> ⚠️ Always use the **factory pattern** (static `Create` method) instead of a public constructor for struct array parameters. This avoids issues with `fixed` in constructor chains.
+>
+> ⚠️ Manual code should also have **XML documentation comments** (`<summary>`, `<param>`, `<returns>`, etc.).
 
 #### Factory for Static Methods
 
@@ -387,15 +389,16 @@ namespace FrameworkName {
 
 		[SupportedOSPlatform ("ios26.4")]
 		[SupportedOSPlatform ("maccatalyst26.4")]
-		public static unsafe MyClass FromCoordinates (MyStruct [] coords)
+		/// <summary>Creates a new <see cref="MyClass" /> from the specified coordinates.</summary>
+		/// <param name="coords">The array of coordinates.</param>
+		/// <returns>A new <see cref="MyClass" /> instance.</returns>
+		public static unsafe MyClass Create (MyStruct [] coords)
 		{
 			if (coords is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (coords));
-			if (coords.Length == 0)
-				return _FromCoordinates (IntPtr.Zero, 0);
 
 			fixed (MyStruct* first = coords) {
-				return _FromCoordinates ((IntPtr) first, coords.Length);
+				return _Create ((IntPtr) first, coords.Length);
 			}
 		}
 	}
@@ -411,13 +414,13 @@ When the API definition has an `[Internal]` `Constructor`:
 ```csharp
 		[SupportedOSPlatform ("ios26.4")]
 		[SupportedOSPlatform ("maccatalyst26.4")]
+		/// <summary>Creates a new <see cref="MyClass" /> from the specified points.</summary>
+		/// <param name="points">The array of points.</param>
+		/// <returns>A new <see cref="MyClass" /> instance.</returns>
 		public static unsafe MyClass Create (MyStruct [] points)
 		{
 			if (points is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
-
-			if (points.Length == 0)
-				return new MyClass (IntPtr.Zero, 0);
 
 			fixed (MyStruct* first = points) {
 				return new MyClass ((IntPtr) first, (nuint) points.Length);
@@ -434,7 +437,7 @@ If the API definition uses `_InitWith*` methods instead of `Constructor`, use `N
 			var instance = new MyClass (NSObjectFlag.Empty);
 			fixed (MyStruct* first = points) {
 				instance.InitializeHandle (
-					instance._InitWithPoints ((IntPtr) first, (nuint) points.Length));
+					instance._InitWithPoints ((IntPtr) first, (nuint) points.Length), "initWithPoints:length:");
 			}
 			return instance;
 		}
@@ -447,13 +450,13 @@ When the API has an `[Internal]` `IntPtr` property + a count property:
 ```csharp
 		[SupportedOSPlatform ("ios26.4")]
 		[SupportedOSPlatform ("maccatalyst26.4")]
+		/// <summary>Gets the array of points.</summary>
 		public unsafe MyStruct [] Points {
 			get {
 				var count = (int) PointCount;
-				if (count == 0)
-					return [];
-
 				var source = (MyStruct*) _Points;
+				if (source == null)
+					return [];
 				var result = new MyStruct [count];
 				for (int i = 0; i < count; i++)
 					result [i] = source [i];

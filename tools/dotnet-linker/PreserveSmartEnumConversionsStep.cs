@@ -147,7 +147,7 @@ namespace Xamarin.Linker.Steps {
 
 				if (cache.TryGetValue (managedEnumType, out var pair)) {
 					// The pair was already marked if it was cached.
-					Preserve (pair, true, conditions);
+					modified |= Preserve (pair, true, conditions);
 					continue;
 				}
 

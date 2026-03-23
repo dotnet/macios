@@ -197,6 +197,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			});
 
 			Assert.That (session.FinishDelayedFrames (), Is.EqualTo (VTStatus.Ok), "FinishDelayedFrames");
+			Assert.That (session.WaitForAsynchronousFrames (), Is.EqualTo (VTStatus.Ok), "WaitForAsynchronousFrames");
 			Assert.That (frameCallbackCounter, Is.GreaterThan (0), "Frame callback counter");
 			Assert.That (failures, Is.Empty, "Failures");
 		}
@@ -234,6 +235,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			});
 
 			Assert.That (session.FinishDelayedFrames (), Is.EqualTo (VTStatus.Ok), "FinishDelayedFrames");
+			Assert.That (session.WaitForAsynchronousFrames (), Is.EqualTo (VTStatus.Ok), "WaitForAsynchronousFrames");
 			Assert.That (frameCallbackCounter, Is.GreaterThan (0), "Frame callback counter 2");
 			Assert.That (failures, Is.Empty, "Failures");
 		}
@@ -284,6 +286,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			});
 
 			Assert.That (session.FinishDelayedFrames (), Is.EqualTo (VTStatus.Ok), "FinishDelayedFrames");
+			Assert.That (session.WaitForAsynchronousFrames (), Is.EqualTo (VTStatus.Ok), "WaitForAsynchronousFrames");
 			Assert.That (frameCallbackCounter, Is.GreaterThan (0), "Frame callback counter 2");
 			Assert.That (failures, Is.Empty, "Failures");
 		}
@@ -319,6 +322,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 				Assert.That (status, Is.EqualTo (VTStatus.Ok), "DecodeFrame");
 			});
 			Assert.That (session.FinishDelayedFrames (), Is.EqualTo (VTStatus.Ok), "FinishDelayedFrames");
+			Assert.That (session.WaitForAsynchronousFrames (), Is.EqualTo (VTStatus.Ok), "WaitForAsynchronousFrames");
 
 			Assert.That (frameCallbackCounter, Is.EqualTo (0), "Frame callback counter 3");
 			Assert.That (inlineCallback, Is.GreaterThan (0), "Frame callback counter 4");

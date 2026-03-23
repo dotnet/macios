@@ -102,7 +102,7 @@ parameters:
       statusContext: 'arm64 - Mac Tahoe (26)',
       demands: [
         "Agent.OS -equals Darwin",
-        "Agent.OSVersion -equals 26.0",
+        "macOS.Name -equals Tahoe",
         "macOS.Architecture -equals arm64",
         "Agent.HasDevices -equals False",
         "Agent.IsPaired -equals False"
@@ -122,6 +122,13 @@ parameters:
   default: ''
 
 stages:
+
+- template: ./build/linux-build-verification.yml
+  parameters:
+    isPR: ${{ parameters.isPR }}
+    repositoryAlias: ${{ parameters.repositoryAlias }}
+    commit: ${{ parameters.commit }}
+    stageDisplayNamePrefix: ${{ parameters.stageDisplayNamePrefix }}
 
 - stage: configure_build
   displayName: '${{ parameters.stageDisplayNamePrefix }}Configure'

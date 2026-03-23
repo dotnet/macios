@@ -64,9 +64,10 @@ namespace Xamarin.Tests {
 			return Execute ("build", project, properties, true, target: target, timeout: timeout);
 		}
 
-		public static ExecutionResult AssertRun (string project, Dictionary<string, string>? properties = null, TimeSpan? timeout = null)
+		public static ExecutionResult AssertRun (string project, Dictionary<string, string>? properties = null, TimeSpan? timeout = null, Dictionary<string, string>? environmentVariables = null)
 		{
-			return Execute ("run", project, properties, true, timeout: timeout);
+			var extraArguments = environmentVariables?.SelectMany (kvp => new string [] { "-e", $"{kvp.Key}={kvp.Value}" })?.ToArray () ?? [];
+			return Execute ("run", project, properties, true, timeout: timeout, extraArguments: extraArguments);
 		}
 
 		public static ExecutionResult AssertBuildFailure (string project, Dictionary<string, string>? properties = null)
@@ -208,7 +209,7 @@ namespace Xamarin.Tests {
 			return new ExecutionResult (output, output, rv.ExitCode);
 		}
 
-		public static ExecutionResult Execute (string verb, string project, Dictionary<string, string>? properties, bool assert_success = true, string? target = null, bool? msbuildParallelism = null, TimeSpan? timeout = null)
+		public static ExecutionResult Execute (string verb, string project, Dictionary<string, string>? properties, bool assert_success = true, string? target = null, bool? msbuildParallelism = null, TimeSpan? timeout = null, params string [] extraArguments)
 		{
 			if (!File.Exists (project))
 				throw new FileNotFoundException ($"The project file '{project}' does not exist.");
@@ -301,6 +302,7 @@ namespace Xamarin.Tests {
 						args.Add ("-maxcpucount:1");
 					}
 				}
+				args.AddRange (extraArguments);
 
 				var env = new Dictionary<string, string?> ();
 				env ["MSBuildSDKsPath"] = null;

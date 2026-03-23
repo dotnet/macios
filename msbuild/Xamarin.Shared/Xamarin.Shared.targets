@@ -18,97 +18,91 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-	<PropertyGroup Condition="'$(_TaskAssemblyName)' == ''">
-		<_TaskAssemblyFileName>Xamarin.MacDev.Tasks.dll</_TaskAssemblyFileName>
-		<_TaskAssemblyFileNameWindows>Xamarin.iOS.Tasks.Windows.dll</_TaskAssemblyFileNameWindows>
-		<_TaskAssemblyName>$(MSBuildThisFileDirectory)\$(_TaskAssemblyFileName)</_TaskAssemblyName>
-	</PropertyGroup>
-
 	<!-- Tasks that override built-in tasks to support remoting from VS/Windows -->
-	<UsingTask TaskName="Microsoft.Build.Tasks.Copy" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Microsoft.Build.Tasks.Delete" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Microsoft.Build.Tasks.Exec" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Microsoft.Build.Tasks.MakeDir" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Microsoft.Build.Tasks.Move" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Microsoft.Build.Tasks.RemoveDir" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Microsoft.Build.Tasks.Touch" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Microsoft.Build.Tasks.WriteLinesToFile" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Microsoft.Build.Tasks.Copy" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Microsoft.Build.Tasks.Delete" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Microsoft.Build.Tasks.Exec" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Microsoft.Build.Tasks.MakeDir" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Microsoft.Build.Tasks.Move" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Microsoft.Build.Tasks.RemoveDir" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Microsoft.Build.Tasks.Touch" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Microsoft.Build.Tasks.WriteLinesToFile" AssemblyFile="$(_TaskAssemblyName)" />
 
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ACTool" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ALToolUpload" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ALToolValidate" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.AOTCompile" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Archive" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.BGen" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Codesign" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CollectAssetPacks" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CollectBundleResources" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CollectITunesArtwork" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CollectITunesSourceFiles" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CollectPackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CompileAppManifest" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CompileEntitlements" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CompileITunesMetadata" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CompileProductDefinition" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CompileSceneKitAssets" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeBundleLocation" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeBundleResourceOutputPaths" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeCodesignItems" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeHashForItems" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeRemoteGeneratorProperties" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CoreMLCompiler" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CreateAssetPack" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CreateAssetPackManifest" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CreateBindingResourcePackage" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CreateDebugConfiguration" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CreateDebugSettings" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CreateEmbeddedResources" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CreateInstallerPackage" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CreatePkgInfo" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.DetectDebugNetworkConfiguration" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.DetectSdkLocations" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.DetectSigningIdentity" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Ditto" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.DSymUtil" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.EmbedProvisionProfile" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.FilterStaticFrameworks" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.FindItemWithLogicalName" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.FindWatchOS2AppBundle" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.GenerateBundleName" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.GetAvailableDevices" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.GetDirectories" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.GetFiles" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.GetFileSystemEntries" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.GetFullPath" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.GetMlaunchArguments" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.GetPropertyListValue" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.IBTool" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Metal" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.MetalLib" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.OptimizeImage" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.OptimizePropertyList" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.PackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ParseBundlerArguments" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ParseDeviceSpecificBuildInformation" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.PrepareNativeReferences" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.PrepareResourceRules" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.PropertyListEditor" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ReadAppManifest" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ReadItemsFromFile" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ResolveNativeReferences" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ResolveUniversalTypeIdentifiers" AssemblyFile="Xamarin.MacDev.Tasks.dll" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ScnTool" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.SmartCopy" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.SpotlightIndexer" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.SymbolStrip" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.TextureAtlas" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.UnpackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Unzip" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ValidateAppBundleTask" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.WriteAppManifest" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.WriteAssetPackManifest" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.WriteItemsToFile" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Zip" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ACTool" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ALToolUpload" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ALToolValidate" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.AOTCompile" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Archive" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.BGen" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Codesign" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectAssetPacks" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectBundleResources" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectITunesArtwork" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectITunesSourceFiles" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CollectPackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CompileAppManifest" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CompileEntitlements" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CompileITunesMetadata" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CompileProductDefinition" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CompileSceneKitAssets" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeBundleLocation" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeBundleResourceOutputPaths" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeCodesignItems" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeHashForItems" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeRemoteGeneratorProperties" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CoreMLCompiler" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateAssetPack" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateAssetPackManifest" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateBindingResourcePackage" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateDebugConfiguration" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateDebugSettings" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateEmbeddedResources" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreateInstallerPackage" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CreatePkgInfo" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectDebugNetworkConfiguration" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectSdkLocations" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DetectSigningIdentity" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Ditto" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.DSymUtil" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.EmbedProvisionProfile" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FilterStaticFrameworks" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FindItemWithLogicalName" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.FindWatchOS2AppBundle" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GenerateBundleName" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetAvailableDevices" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetDirectories" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetFiles" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetFileSystemEntries" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetFullPath" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetMlaunchArguments" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GetPropertyListValue" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.IBTool" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Metal" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.MetalLib" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.OptimizeImage" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.OptimizePropertyList" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ParseBundlerArguments" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ParseDeviceSpecificBuildInformation" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PrepareNativeReferences" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PrepareResourceRules" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.PropertyListEditor" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ReadAppManifest" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ReadItemsFromFile" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ResolveNativeReferences" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ResolveUniversalTypeIdentifiers" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ScnTool" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SmartCopy" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SpotlightIndexer" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.SymbolStrip" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.TextureAtlas" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.UnpackLibraryResources" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Unzip" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ValidateAppBundleTask" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.WriteAppManifest" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.WriteAssetPackManifest" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.WriteItemsToFile" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Zip" AssemblyFile="$(_TaskAssemblyName)" />
 
 	<Import Project="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).Before.targets"
 			Condition="Exists('$(MSBuildThisFileDirectory)$(MSBuildThisFileName).Before.targets')"/>
@@ -1308,6 +1302,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<!-- scntool output caches -->
 			<_SceneKitCache>$(DeviceSpecificIntermediateOutputPath)copySceneKitAssets\_BundleResourceWithLogicalName.items</_SceneKitCache>
 
+			<!-- metal output caches -->
+			<_SmeltedMetalCache>$(DeviceSpecificIntermediateOutputPath)metal\_SmeltedMetal.items</_SmeltedMetalCache>
+
 			<!-- TextureAtlas output caches -->
 			<_TextureAtlasCache>$(DeviceSpecificIntermediateOutputPath)atlas\_BundleResourceWithLogicalName.items</_TextureAtlasCache>
 
@@ -1584,10 +1581,28 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			_ComputeTargetFrameworkMoniker;
 			_ReadAppManifest;
 			_SetResourceMetadata;
+			_BeforeSmeltMetal;
+			_ReadSmeltedMetal;
 		</_SmeltMetalDependsOn>
 	</PropertyGroup>
 
-	<Target Name="_SmeltMetal" Condition="'$(_CanOutputAppBundle)' == 'true' And '@(Metal)' != ''" DependsOnTargets="$(_SmeltMetalDependsOn)">
+	<Target Name="_BeforeSmeltMetal" Condition="'$(_CanOutputAppBundle)' == 'true' And '@(Metal)' != ''"
+		Inputs="@(Metal)"
+		Outputs="$(_SmeltedMetalCache)">
+		<!-- If any Metal file is newer than the cached items list, delete the cache so that the _SmeltMetal target runs again -->
+		<Delete Files="$(_SmeltedMetalCache)" />
+	</Target>
+
+	<Target Name="_ReadSmeltedMetal" Condition="'$(_CanOutputAppBundle)' == 'true' And '@(Metal)' != ''" DependsOnTargets="_BeforeSmeltMetal">
+		<!-- If _BeforeSmeltMetal did not delete the cache, read the cached _SmeltedMetal items -->
+		<ReadItemsFromFile File="$(_SmeltedMetalCache)" Condition="Exists('$(_SmeltedMetalCache)')">
+			<Output TaskParameter="Items" ItemName="_SmeltedMetal" />
+		</ReadItemsFromFile>
+	</Target>
+
+	<Target Name="_SmeltMetal" Condition="'$(_CanOutputAppBundle)' == 'true' And '@(Metal)' != ''" DependsOnTargets="$(_SmeltMetalDependsOn)"
+		Inputs="@(Metal)"
+		Outputs="$(_SmeltedMetalCache)">
 		<Metal
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true' and '%(Metal.Identity)' != ''"
@@ -1604,6 +1619,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			SourceFile="@(Metal)">
 			<Output TaskParameter="OutputFile" ItemName="_SmeltedMetal" />
 		</Metal>
+
+		<WriteItemsToFile Items="@(_SmeltedMetal)" ItemName="_SmeltedMetal" File="$(_SmeltedMetalCache)" Overwrite="true" IncludeMetadata="true" />
+		<ItemGroup>
+			<FileWrites Include="$(_SmeltedMetalCache)" />
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_TemperMetal" Condition="'$(_CanOutputAppBundle)' == 'true' And '@(_SmeltedMetal)' != ''" DependsOnTargets="_GenerateBundleName"
@@ -2923,7 +2943,9 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<ItemGroup>
 			<!-- add frameworks, with the path relative to the app bundle -->
-			<_PostProcessingItem Include="@(_ResolvedNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')" Condition="'%(Kind)' == 'Framework'">
+			<!-- Use _FilteredFrameworkToPublish (from the _ComputeFrameworkFilesToPublish target) to only include dynamic frameworks
+			     that will actually be present in the app bundle. Ref: https://github.com/dotnet/macios/issues/24840 -->
+			<_PostProcessingItem Include="@(_FilteredFrameworkToPublish->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
@@ -2932,7 +2954,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
 			</_PostProcessingItem>
 			<!-- add dylibs, with the path relative to the app bundle -->
-			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'%(Kind)' == 'Dynamic'">
+			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic'">
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
@@ -2941,7 +2963,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<DSymName>%(Filename).dSYM</DSymName>
 			</_PostProcessingItem>
 			<_PostProcessingItem Include="$([System.IO.Path]::GetFileName('$(AppBundleDir)'))/$(_NativeExecutableRelativePath)" Condition="'$(IsWatchApp)' != 'true'">
-				<SymbolFile>$(_SymbolsListFullPath)</SymbolFile>
+				<SymbolFile Condition="'$(_ExportSymbolsExplicitly)' == 'true'">$(_SymbolsListFullPath)</SymbolFile>
 				<DSymName>$(_AppBundleName)$(AppBundleExtension).dSYM</DSymName>
 				<IsXPCService>$(IsXpcService)</IsXPCService>
 				<IsAppExtension>$(IsAppExtension)</IsAppExtension>

@@ -203,13 +203,11 @@ steps:
   condition: ${{ parameters.clearProvisionatorCache }}
 
 # Use the provisionator to install the test dependencies. Those have been generated in the 'Generate Provisionator csx file' step.
-- task: xamops.azdevex.provisionator-task.provisionator@2
-  displayName: 'Provisionator dependencies'
-  inputs:
+- template: ../common/provision.yml
+  parameters:
     provisioning_script: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/build-provisioning.csx
-    provisioning_extra_args: '-vvvv'
-    github_token: ${{ parameters.gitHubToken }}
-  timeoutInMinutes: 250
+    displayName: 'Provisionator dependencies'
+    provisionatorChannel: $(PROVISIONATOR_CHANNEL)
 
 - bash: |
     set -x

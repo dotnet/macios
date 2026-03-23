@@ -198,7 +198,7 @@ namespace AppKit {
 
 			var handle = NSAccessibilityUnignoredChildren (originalChildren.Handle);
 			GC.KeepAlive (originalChildren);
-			return NSArray.ArrayFromHandle<NSObject> (handle);
+			return NSArray.ArrayFromHandleDropNullElements<NSObject> (handle);
 		}
 
 		[DllImport (Constants.AppKitLibrary)]
@@ -215,7 +215,7 @@ namespace AppKit {
 
 			var handle = NSAccessibilityUnignoredChildrenForOnlyChild (originalChild.Handle);
 			GC.KeepAlive (originalChild);
-			return NSArray.ArrayFromHandle<NSObject> (handle);
+			return NSArray.ArrayFromHandleDropNullElements<NSObject> (handle);
 		}
 
 		[DllImport (Constants.AppKitLibrary)]

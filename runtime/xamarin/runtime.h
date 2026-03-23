@@ -279,7 +279,7 @@ MonoType *		xamarin_get_nsnumber_type ();
 MonoType *		xamarin_get_nsvalue_type ();
 MonoClass *		xamarin_get_inativeobject_class ();
 MonoClass *		xamarin_get_nativehandle_class ();
-MonoClass *		xamarin_get_nsobject_class ();
+MonoClass *		xamarin_get_nsobject_class (bool allowAbsence);
 MonoClass *		xamarin_get_nsstring_class ();
 MonoClass *		xamarin_get_runtime_class ();
 

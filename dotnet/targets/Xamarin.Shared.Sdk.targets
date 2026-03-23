@@ -551,6 +551,8 @@
 			<_UseDynamicDependenciesForSmartEnumPreservation Condition="'$(_UseDynamicDependenciesForSmartEnumPreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForSmartEnumPreservation>
 			<_UseDynamicDependenciesForBlockCodePreservation Condition="'$(_UseDynamicDependenciesForBlockCodePreservation)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForBlockCodePreservation>
 			<_UseDynamicDependenciesForGeneratedCodeOptimizations Condition="'$(_UseDynamicDependenciesForGeneratedCodeOptimizations)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseDynamicDependenciesForGeneratedCodeOptimizations>
+			<_UseLinkDescriptionForApplyPreserveAttribute Condition="'$(_UseLinkDescriptionForApplyPreserveAttribute)' == '' And '$(_XamarinRuntime)' == 'NativeAOT'">true</_UseLinkDescriptionForApplyPreserveAttribute>
+			<_UseLinkDescriptionForApplyPreserveAttribute Condition="'$(_UseLinkDescriptionForApplyPreserveAttribute)' == ''">$(_UseDynamicDependenciesInsteadOfMarking)</_UseLinkDescriptionForApplyPreserveAttribute>
 		</PropertyGroup>
 
 		<PropertyGroup>
@@ -756,6 +758,7 @@
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.PreserveSmartEnumConversionsStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForSmartEnumPreservation)' == 'true'" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.PreserveBlockCodeStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForBlockCodePreservation)' == 'true'" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.OptimizeGeneratedCodeStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseDynamicDependenciesForGeneratedCodeOptimizations)' == 'true'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.ApplyPreserveAttributeStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true' And '$(_UseLinkDescriptionForApplyPreserveAttribute)' == 'true'" />
 			<!-- The final decision to remove/keep the dynamic registrar must be done before the linking step -->
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="MonoTouch.Tuner.RegistrarRemovalTrackingStep" />
 			<!-- TODO: these steps should probably run after mark. -->
@@ -1084,6 +1087,7 @@
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_AssembliesToAOT.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_FrameworkToPublish.items" />
 			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/_DynamicLibraryToPublish.items" />
+			<_LinkerItemFiles Include="$(_LinkerItemsDirectory)/TrimmerRootDescriptor.items" />
 		</ItemGroup>
 
 		<ItemGroup>
@@ -1108,7 +1112,17 @@
 			<_AssembliesToAOT Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_AssembliesToAOT.items'" />
 			<_FrameworkToPublish Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_FrameworkToPublish.items'" />
 			<_DynamicLibraryToPublish Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == '_DynamicLibraryToPublish.items'" />
+			<_TrimmerRootDescriptorFromCustomLinkerSteps Include="@(_AllLinkerItems)" Condition="'%(_AllLinkerItems.SourceFile)' == 'TrimmerRootDescriptor.items'" />
+
+			<TrimmerRootDescriptor Include="@(_TrimmerRootDescriptorFromCustomLinkerSteps)" />
 		</ItemGroup>
+		<PropertyGroup Condition="'$(RunILLink)' == 'true' And '$(_UseNativeAot)' == 'true' And @(_TrimmerRootDescriptorFromCustomLinkerSteps->Count()) &gt; 0">
+			<!-- When the custom linker steps produce xml root descriptors, those xml root descriptors may refer to types and members that are removed
+			     during linking (for members that are conditionally preserved). If we then pass those xml root descriptors to ilc, ilc will show
+			     a IL2008 warning about those members that have been trimmed away. So ignore any IL2008 warnings when we add trimmer root descriptors
+			     from a custom linker step. This will become unnecessary when we stop using custom linker steps. -->
+			<NoWarn>$(NoWarn);IL2008</NoWarn> <!-- Could not resolve type '...' -->
+		</PropertyGroup>
 	</Target>
 
 	<!-- Native code -->

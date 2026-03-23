@@ -48,6 +48,8 @@ namespace Xamarin.Tuner {
 		// so we need a second dictionary
 		Dictionary<TypeDefinition, LinkedAwayTypeReference> LinkedAwayTypeMap = new Dictionary<TypeDefinition, LinkedAwayTypeReference> ();
 
+		public bool DidRunApplyPreserveAttributeStep { get; set; }
+
 		public DerivedLinkContext (LinkerConfiguration configuration, Application app)
 #if !LEGACY_TOOLS
 			: base (configuration)

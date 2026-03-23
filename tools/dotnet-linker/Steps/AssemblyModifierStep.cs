@@ -17,17 +17,23 @@ namespace Xamarin.Linker.Steps;
 public abstract class AssemblyModifierStep : ConfigurationAwareStep {
 	private protected AppBundleRewriter abr => Configuration.AppBundleRewriter;
 
-	protected override void TryProcessAssembly (AssemblyDefinition assembly)
+	protected sealed override void TryProcessAssembly (AssemblyDefinition assembly)
 	{
 		var modified = false;
 
 		abr.SetCurrentAssembly (assembly);
-		foreach (var type in assembly.MainModule.Types)
-			modified |= ProcessTypeImpl (type);
-
+		modified |= ModifyAssembly (assembly);
 		if (modified)
 			abr.SaveCurrentAssembly ();
 		abr.ClearCurrentAssembly ();
+	}
+
+	protected virtual bool ModifyAssembly (AssemblyDefinition assembly)
+	{
+		var modified = false;
+		foreach (var type in assembly.MainModule.Types)
+			modified |= ProcessTypeImpl (type);
+		return modified;
 	}
 
 	protected virtual bool ProcessType (TypeDefinition type)

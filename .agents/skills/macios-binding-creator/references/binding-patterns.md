@@ -195,6 +195,42 @@ interface MyDelegate {
 }
 ```
 
+> ❌ **New protocols** must set `BackwardsCompatibleCodeGeneration = false`. The cecil test `MustSetBackwardsCompatibleCodeGenerationToFalse` enforces this. Do NOT add it to existing protocols unless you're intentionally changing their code generation.
+
+```csharp
+// New protocol — must have BackwardsCompatibleCodeGeneration = false
+[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+[BaseType (typeof (NSObject))]
+[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
+interface MyNewDelegate {
+    [Abstract]
+    [Export ("didFinish:")]
+    void DidFinish (MyClass sender);
+}
+```
+
+### Adding Protocol Conformance to Existing Types
+
+When a `.todo` entry says `!missing-protocol-conformance!`, add the protocol to the existing type's interface declaration. Use the **plain protocol name** (no `I` prefix) in the conformance list:
+
+```csharp
+// Before: MPNowPlayingSession without protocol conformance
+[BaseType (typeof (NSObject))]
+interface MPNowPlayingSession {
+    // existing members...
+}
+
+// After: Add protocol conformance
+[BaseType (typeof (NSObject))]
+interface MPNowPlayingSession : MyPlayableItem {  // <-- plain name, NO I prefix
+    // existing members unchanged
+}
+```
+
+> ❌ **NEVER** use the `I`-prefixed name in protocol definitions or protocol conformance declarations. The `I` prefix is ONLY used when referencing a protocol as a **type** in method parameters, return types, and properties (e.g., `INSCopying Identifier { get; }`, `void Foo (INSCoding item)`). Protocol definitions use plain names (`[Protocol, Model] interface MyDelegate`), and protocol conformance uses plain names (`interface MyClass : MyProtocol`).
+
+> ⚠️ **Don't redeclare protocol-inherited properties.** When a type conforms to a protocol, it inherits the protocol's properties. If the type already has those properties bound (e.g., `title`, `artist`), do NOT redeclare them or you'll get CS0108 (member hides inherited member) warnings. Remove the duplicates from the conforming type.
+
 ### Weak Delegate Pattern
 
 Always use this pattern for delegate properties:
@@ -663,7 +699,10 @@ tests/monotouch-test/
 
 ### Template
 
+> ⚠️ **Framework availability guards:** If the framework is not available on all platforms (e.g., CarPlay is iOS-only), wrap the entire test file in `#if HAS_FRAMEWORKNAME` (e.g., `#if HAS_CARPLAY`). The build system defines these symbols based on which frameworks are available for each platform. Check the framework's existing test files for the correct symbol name.
+
 ```csharp
+#if HAS_CORETEXT  // only needed if framework isn't on all platforms
 using NUnit.Framework;
 using Foundation;
 using CoreText;  // framework under test
@@ -705,6 +744,7 @@ namespace MonoTouchFixtures.CoreText {  // MonoTouchFixtures.{FrameworkName}
 		}
 	}
 }
+#endif // HAS_CORETEXT — only needed if framework isn't on all platforms
 ```
 
 ### Key Patterns

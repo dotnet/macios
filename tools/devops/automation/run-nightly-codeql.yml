@@ -21,7 +21,7 @@ resources:
   - repository: yaml-templates
     type: git
     name: xamarin.yaml-templates
-    ref: refs/heads/main
+    ref: refs/heads/release-test
 
 variables:
 - template: /tools/devops/automation/templates/variables/common.yml

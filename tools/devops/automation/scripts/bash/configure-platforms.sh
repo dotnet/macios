@@ -40,7 +40,10 @@ MACCATALYST_NUGET_OS_VERSION=$(cat "$FILE")
 make -C "$BUILD_SOURCESDIRECTORY/$BUILD_REPOSITORY_TITLE/tools/devops" print-variable-value-to-file FILE="$FILE" VARIABLE=XCODE_VERSION
 XCODE_VERSION=$(cat "$FILE")
 
-make -C "$BUILD_SOURCESDIRECTORY/$BUILD_REPOSITORY_TITLE/tools/devops" print-variable-value-to-file FILE="$FILE" VARIABLE=XCODE_IS_STABLE
+# On Linux (where this step runs), Make.config checks XCODE_CHANNEL to determine XCODE_IS_STABLE.
+# Azure DevOps maps the pipeline variable xcodeChannel to XCODECHANNEL (no underscore),
+# so pass it explicitly to make.
+make -C "$BUILD_SOURCESDIRECTORY/$BUILD_REPOSITORY_TITLE/tools/devops" print-variable-value-to-file FILE="$FILE" VARIABLE=XCODE_IS_STABLE XCODE_CHANNEL="${XCODE_CHANNEL:-$XCODECHANNEL}"
 XCODE_IS_STABLE=$(cat "$FILE")
 
 # print it out, so turn off echoing since that confuses Azure DevOps

@@ -2999,7 +2999,7 @@ namespace CoreText {
 		[SupportedOSPlatform ("macos26.4")]
 		[SupportedOSPlatform ("tvos26.4")]
 		public CTFontUIFontType UIFontType {
-			get { return CTFontGetUIFontType (Handle); }
+			get { return CTFontGetUIFontType (GetCheckedHandle ()); }
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]

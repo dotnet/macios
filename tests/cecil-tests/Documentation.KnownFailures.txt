@@ -11613,6 +11613,7 @@ M:CoreWlan.CWKeychain.TrySetWiFiPassword(CoreWlan.CWKeychainDomain,Foundation.NS
 M:CoreWlan.CWKeychain.TrySetWiFiPassword(CoreWlan.CWKeychainDomain,Foundation.NSData,System.String,System.Int32@)
 M:CoreWlan.CWKeychain.TrySetWiFiPassword(CoreWlan.CWKeychainDomain,Foundation.NSData,System.String)
 M:CoreWlan.CWWiFiClient.Dispose(System.Boolean)
+M:CoreWlan.CWWiFiClient.GetInterfaceNames
 M:CryptoTokenKit.ITKSmartCardTokenDriverDelegate.CreateToken(CryptoTokenKit.TKSmartCardTokenDriver,CryptoTokenKit.TKSmartCard,Foundation.NSData,Foundation.NSError@)
 M:CryptoTokenKit.ITKSmartCardUserInteractionDelegate.CharacterEntered(CryptoTokenKit.TKSmartCardUserInteraction)
 M:CryptoTokenKit.ITKSmartCardUserInteractionDelegate.CorrectionKeyPressed(CryptoTokenKit.TKSmartCardUserInteraction)

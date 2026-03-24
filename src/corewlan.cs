@@ -553,10 +553,15 @@ namespace CoreWlan {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
+		[Deprecated (PlatformName.MacOSX, 13, 0, message: "Use the 'GetInterfaceNames' instance method instead.")]
 		[NullAllowed]
 		[Export ("interfaceNames")]
 		[Static]
 		string [] InterfaceNames { get; }
+
+		[return: NullAllowed]
+		[Export ("interfaceNames")]
+		string [] GetInterfaceNames ();
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

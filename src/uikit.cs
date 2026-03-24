@@ -10115,6 +10115,10 @@ namespace UIKit {
 		[NoTV, iOS (18, 4), NoMacCatalyst]
 		[Export ("insertInputSuggestion:")]
 		void InsertInputSuggestion (UIInputSuggestion inputSuggestion);
+
+		[TV (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("unobscuredContentRect")]
+		CGRect UnobscuredContentRect { get; }
 	}
 
 	/// <summary>A manager for bar button items.</summary>

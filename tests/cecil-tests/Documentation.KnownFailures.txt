@@ -18968,6 +18968,7 @@ M:UIKit.UITextInput_Extensions.GetCaretTransform(UIKit.IUITextInput,UIKit.UIText
 M:UIKit.UITextInput_Extensions.GetEditable(UIKit.IUITextInput)
 M:UIKit.UITextInput_Extensions.GetEditMenu(UIKit.IUITextInput,UIKit.UITextRange,UIKit.UIMenuElement[])
 M:UIKit.UITextInput_Extensions.GetSupportsAdaptiveImageGlyph(UIKit.IUITextInput)
+M:UIKit.UITextInput_Extensions.GetUnobscuredContentRect(UIKit.IUITextInput)
 M:UIKit.UITextInput_Extensions.InsertAdaptiveImageGlyph(UIKit.IUITextInput,UIKit.NSAdaptiveImageGlyph,UIKit.UITextRange)
 M:UIKit.UITextInput_Extensions.InsertAttributedText(UIKit.IUITextInput,Foundation.NSAttributedString)
 M:UIKit.UITextInput_Extensions.InsertInputSuggestion(UIKit.IUITextInput,UIKit.UIInputSuggestion)
@@ -26718,6 +26719,7 @@ P:UIKit.IUISheetPresentationControllerDetentResolutionContext.MaximumDetentValue
 P:UIKit.IUITextCursorView.Blinking
 P:UIKit.IUITextInput.Editable
 P:UIKit.IUITextInput.SupportsAdaptiveImageGlyph
+P:UIKit.IUITextInput.UnobscuredContentRect
 P:UIKit.IUITextInputTraits.AllowedWritingToolsResultOptions
 P:UIKit.IUITextInputTraits.AllowsNumberPadPopover
 P:UIKit.IUITextInputTraits.ConversationContext

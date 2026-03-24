@@ -137,6 +137,9 @@ public class OnDiskTests {
 				binder.Massagers.Add ((massagerName.TrimStart ('+', '-'), enable));
 				i++;
 				break;
+			case "-custom-delegates":
+				binder.UseCustomDelegates = true;
+				break;
 			default:
 				clangArguments.Add (bindArgs [i]);
 				break;

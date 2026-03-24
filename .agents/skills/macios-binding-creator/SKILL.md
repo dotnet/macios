@@ -192,7 +192,7 @@ Key patterns:
 
 See [references/binding-patterns.md](references/binding-patterns.md) for more monotouch-test patterns.
 
-> ⚠️ **Stale build artifacts**: If you encounter unexpected test failures (false "pre-existing" failures, segfaults in unrelated types), run a full `make all && make install` to clear stale `_build/` artifacts before re-testing.
+> ⚠️ **Stale build artifacts**: If you encounter unexpected test failures (SIGABRT, segfaults in unrelated types, false "pre-existing" failures), **always run `make world` FIRST** before investigating. Never conclude a failure is "pre-existing" without rebuilding — stale `_build/` artifacts are the #1 cause of spurious introspection crashes after binding changes.
 
 ### Step 6: Validate with Tests
 

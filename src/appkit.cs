@@ -13711,7 +13711,7 @@ namespace AppKit {
 		void DetectValues (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectValuesHandler completionHandler);
 
 		[Mac (15, 4)]
-		[Wrap ("DetectValues (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), new NSPasteboardDetectValuesHandler ((detectedValues, error) => completionHandler (detectedValues?.ToDictionary<NSPasteboardDetectionPattern, DataDetection.DDMatch[]> ((k, v) => (NSPasteboardDetectionPatternExtensions.GetValue (k), ((NSArray) v).ToArray<DataDetection.DDMatch> ())), error)))")]
+		[Wrap ("DetectValues (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), new NSPasteboardDetectValuesHandler ((detectedValues, error) => completionHandler (detectedValues?.ToDictionary<NSPasteboardDetectionPattern, DataDetection.DDMatch[]> ((k, v) => (NSPasteboardDetectionPatternExtensions.GetValue (k), ((NSArray) v).NonNullToArrayDropNullElements<DataDetection.DDMatch> ())), error)))")]
 		void DetectValues (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectValuesCompletionHandler completionHandler);
 
 		[Mac (15, 4)]
@@ -13943,7 +13943,7 @@ namespace AppKit {
 		void DetectValues (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectValuesHandler completionHandler);
 
 		[Mac (15, 4)]
-		[Wrap ("DetectValues (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), new NSPasteboardDetectValuesHandler ((detectedValues, error) => completionHandler (detectedValues?.ToDictionary<NSPasteboardDetectionPattern, DataDetection.DDMatch[]> ((k, v) => (NSPasteboardDetectionPatternExtensions.GetValue (k), ((NSArray) v).ToArray<DataDetection.DDMatch> ())), error)))")]
+		[Wrap ("DetectValues (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), new NSPasteboardDetectValuesHandler ((detectedValues, error) => completionHandler (detectedValues?.ToDictionary<NSPasteboardDetectionPattern, DataDetection.DDMatch[]> ((k, v) => (NSPasteboardDetectionPatternExtensions.GetValue (k), ((NSArray) v).NonNullToArrayDropNullElements<DataDetection.DDMatch> ())), error)))")]
 		void DetectValues (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectValuesCompletionHandler completionHandler);
 
 		[Mac (15, 4)]

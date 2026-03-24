@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using Foundation;
 using ObjCRuntime;
@@ -7,7 +8,64 @@ static class CFunctions {
 	[DllImport ("__Internal")]
 	[Verify (PlatformInvoke)]
 	static extern unsafe void Func ([NullAllowed] sbyte* str);
+
+	// extern NSObject * _Nullable NullableReturnObject ();
+	[DllImport ("__Internal")]
+	[Verify (PlatformInvoke)]
+	[return: NullAllowed]
+	static extern NSObject NullableReturnObject ();
+
+	// extern NSString * _Nullable NullableReturnString (int code);
+	[DllImport ("__Internal")]
+	[Verify (PlatformInvoke)]
+	[return: NullAllowed]
+	static extern NSString NullableReturnString (int code);
+
+	// extern void FuncWithNullableObject (NSObject * _Nullable obj);
+	[DllImport ("__Internal")]
+	[Verify (PlatformInvoke)]
+	static extern void FuncWithNullableObject ([NullAllowed] NSObject obj);
+
+	// extern void FuncWithNullableString (NSString * _Nullable str);
+	[DllImport ("__Internal")]
+	[Verify (PlatformInvoke)]
+	static extern void FuncWithNullableString ([NullAllowed] NSString str);
+
+	// extern void FuncWithMixedNullability (NSObject * _Nonnull required, NSObject * _Nullable optional);
+	[DllImport ("__Internal")]
+	[Verify (PlatformInvoke)]
+	static extern void FuncWithMixedNullability (NSObject required, [NullAllowed] NSObject optional);
+
+	// extern NSObject * _Nullable FuncNullableInAndOut (NSString * _Nullable input);
+	[DllImport ("__Internal")]
+	[Verify (PlatformInvoke)]
+	[return: NullAllowed]
+	static extern NSObject FuncNullableInAndOut ([NullAllowed] NSString input);
+
+	// extern void FuncWithNullableBlock (void (^ _Nullable)(void) block);
+	[DllImport ("__Internal")]
+	[Verify (PlatformInvoke)]
+	static extern void FuncWithNullableBlock ([NullAllowed] Action block);
+
+	// extern void FuncWithNullableBlockParam (void (^ _Nullable)(NSObject * _Nullable) block);
+	[DllImport ("__Internal")]
+	[Verify (PlatformInvoke)]
+	static extern void FuncWithNullableBlockParam ([NullAllowed] Action<NSObject> block);
+
+	// extern void FuncWithNonnullBlock (void (^ _Nonnull)(void) block);
+	[DllImport ("__Internal")]
+	[Verify (PlatformInvoke)]
+	static extern void FuncWithNonnullBlock (Action block);
+
+	// extern SimpleBlock _Nullable FuncReturningNullableBlock ();
+	[DllImport ("__Internal")]
+	[Verify (PlatformInvoke)]
+	[return: NullAllowed]
+	static extern SimpleBlock FuncReturningNullableBlock ();
 }
+
+// typedef void (^SimpleBlock)();
+delegate void SimpleBlock ();
 
 // @interface Foo
 interface Foo {

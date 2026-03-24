@@ -1,3 +1,0 @@
-!missing-enum! WKSecurityRestrictionMode not bound
-!missing-selector! WKWebpagePreferences::securityRestrictionMode not bound
-!missing-selector! WKWebpagePreferences::setSecurityRestrictionMode: not bound

@@ -6950,6 +6950,10 @@ namespace WebKit {
 		[Mac (15, 2), iOS (18, 2), MacCatalyst (18, 2)]
 		[Export ("preferredHTTPSNavigationPolicy", ArgumentSemantic.Assign)]
 		WKWebpagePreferencesUpgradeToHttpsPolicy PreferredHttpsNavigationPolicy { get; set; }
+
+		[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("securityRestrictionMode", ArgumentSemantic.Assign)]
+		WKSecurityRestrictionMode SecurityRestrictionMode { get; set; }
 	}
 
 	[NoMac]
@@ -7138,6 +7142,18 @@ namespace WebKit {
 		AutomaticFallbackToHttp,
 		UserMediatedFallbackToHttp,
 		ErrorOnFailure,
+	}
+
+	/// <summary>Security restriction modes for WebView content.</summary>
+	[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+	[Native]
+	public enum WKSecurityRestrictionMode : long {
+		/// <summary>No additional security restrictions beyond WebKit defaults.</summary>
+		None,
+		/// <summary>Enhanced security protections optimized for maintaining web compatibility. Disables JIT compilation and enables increased MTE adoption.</summary>
+		MaximizeCompatibility,
+		/// <summary>Maximum security restrictions including feature disablement. Applied automatically by the system in Lockdown Mode.</summary>
+		Lockdown,
 	}
 
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]

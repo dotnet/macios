@@ -559,6 +559,7 @@ namespace CoreWlan {
 		[Static]
 		string [] InterfaceNames { get; }
 
+		[Mac (13, 0)]
 		[return: NullAllowed]
 		[Export ("interfaceNames")]
 		string [] GetInterfaceNames ();

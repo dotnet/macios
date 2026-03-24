@@ -1,3 +1,0 @@
-!missing-enum! FSMountOptions not bound
-!missing-protocol-member! FSVolumeOperations::requestedMountOptions not found
-!missing-protocol-member! FSVolumeOperations::setRequestedMountOptions: not found

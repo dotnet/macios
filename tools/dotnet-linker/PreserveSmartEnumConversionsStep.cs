@@ -103,7 +103,7 @@ namespace Xamarin.Linker.Steps {
 
 		public DerivedLinkContext LinkContext { get; private set; }
 
-		public Func<Tuple<MethodDefinition, MethodDefinition>, bool, MethodDefinition? [], bool> preserve { get; set; }
+		Func<Tuple<MethodDefinition, MethodDefinition>, bool, MethodDefinition? [], bool> preserve { get; set; }
 
 		public PreserveSmartEnumConversion (DerivedLinkContext linkContext, Func<Tuple<MethodDefinition, MethodDefinition>, bool, MethodDefinition? [], bool> preserve)
 		{

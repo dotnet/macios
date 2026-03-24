@@ -1,3 +1,0 @@
-!missing-protocol-member! PKPushRegistryDelegate::pushRegistry:didReceiveIncomingVoIPPushWithPayload:metadata:withCompletionHandler: not found
-!missing-selector! PKVoIPPushMetadata::mustReport not bound
-!missing-type! PKVoIPPushMetadata not bound

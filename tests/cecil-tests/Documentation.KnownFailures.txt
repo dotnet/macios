@@ -4978,6 +4978,8 @@ F:Metal.MTLDataType.ULong2
 F:Metal.MTLDataType.ULong3
 F:Metal.MTLDataType.ULong4
 F:Metal.MTLDataType.VisibleFunctionTable
+F:Metal.MTLDeviceError.None
+F:Metal.MTLDeviceError.NotSupported
 F:Metal.MTLDeviceLocation.BuiltIn
 F:Metal.MTLDeviceLocation.External
 F:Metal.MTLDeviceLocation.Slot
@@ -5150,10 +5152,12 @@ F:Metal.MTLTensorDataType.Float16
 F:Metal.MTLTensorDataType.Float32
 F:Metal.MTLTensorDataType.Int16
 F:Metal.MTLTensorDataType.Int32
+F:Metal.MTLTensorDataType.Int4
 F:Metal.MTLTensorDataType.Int8
 F:Metal.MTLTensorDataType.None
 F:Metal.MTLTensorDataType.UInt16
 F:Metal.MTLTensorDataType.UInt32
+F:Metal.MTLTensorDataType.UInt4
 F:Metal.MTLTensorDataType.UInt8
 F:Metal.MTLTensorError.InternalError
 F:Metal.MTLTensorError.InvalidDescriptor
@@ -5217,6 +5221,7 @@ F:MetalPerformanceShaders.MPSCustomKernelIndex.UserDataIndex
 F:MetalPerformanceShaders.MPSDataType.AlternateEncodingBit
 F:MetalPerformanceShaders.MPSDataType.BFloat16
 F:MetalPerformanceShaders.MPSDataType.Bool
+F:MetalPerformanceShaders.MPSDataType.ComplexBFloat16
 F:MetalPerformanceShaders.MPSDataType.ComplexBit
 F:MetalPerformanceShaders.MPSDataType.ComplexFloat16
 F:MetalPerformanceShaders.MPSDataType.ComplexFloat32
@@ -10101,9 +10106,9 @@ M:CarPlay.CPMapTemplateDelegate_Extensions.DidReceiveRequestForDestination(CarPl
 M:CarPlay.CPMapTemplateDelegate_Extensions.DidReceiveUpdatedRouteSource(CarPlay.ICPMapTemplateDelegate,CarPlay.CPMapTemplate,CarPlay.CPRouteSource)
 M:CarPlay.CPMapTemplateDelegate_Extensions.DidRequestToInsertWaypoint(CarPlay.ICPMapTemplateDelegate,CarPlay.CPMapTemplate,CarPlay.CPNavigationWaypoint,CarPlay.CPRouteSegment,CarPlay.CPMapTemplateDidRequestToInsertWaypointHandler)
 M:CarPlay.CPMapTemplateDelegate_Extensions.DidShareDestination(CarPlay.ICPMapTemplateDelegate,CarPlay.CPMapTemplate,CarPlay.CPTrip)
+M:CarPlay.CPMapTemplateDelegate_Extensions.MapTemplateWaypoint(CarPlay.ICPMapTemplateDelegate,CarPlay.CPMapTemplate,CarPlay.CPNavigationWaypoint,System.Boolean,CarPlay.CPRouteSegment)
 M:CarPlay.CPMapTemplateDelegate_Extensions.ShouldProvideNavigationMetadata(CarPlay.ICPMapTemplateDelegate,CarPlay.CPMapTemplate)
 M:CarPlay.CPMapTemplateDelegate_Extensions.ShouldProvideRouteSharing(CarPlay.ICPMapTemplateDelegate,CarPlay.CPMapTemplate)
-M:CarPlay.CPMapTemplateDelegate_Extensions.MapTemplateWaypoint(CarPlay.ICPMapTemplateDelegate,CarPlay.CPMapTemplate,CarPlay.CPNavigationWaypoint,System.Boolean,CarPlay.CPRouteSegment)
 M:CarPlay.CPMapTemplateDelegate_Extensions.WillShareDestination(CarPlay.ICPMapTemplateDelegate,CarPlay.CPMapTemplate,CarPlay.CPTrip)
 M:CarPlay.CPMessageListItem.#ctor(System.String,System.String,CarPlay.CPMessageListItemLeadingConfiguration,CarPlay.CPMessageListItemTrailingConfiguration,System.String,System.String,CarPlay.CPMessageListItemType)
 M:CarPlay.CPMessageListItem.#ctor(System.String,System.String,CarPlay.CPMessageListItemLeadingConfiguration,CarPlay.CPMessageListItemTrailingConfiguration,System.String,System.String)
@@ -10189,9 +10194,9 @@ M:CarPlay.ICPMapTemplateDelegate.DidReceiveRequestForDestination(CarPlay.CPMapTe
 M:CarPlay.ICPMapTemplateDelegate.DidReceiveUpdatedRouteSource(CarPlay.CPMapTemplate,CarPlay.CPRouteSource)
 M:CarPlay.ICPMapTemplateDelegate.DidRequestToInsertWaypoint(CarPlay.CPMapTemplate,CarPlay.CPNavigationWaypoint,CarPlay.CPRouteSegment,CarPlay.CPMapTemplateDidRequestToInsertWaypointHandler)
 M:CarPlay.ICPMapTemplateDelegate.DidShareDestination(CarPlay.CPMapTemplate,CarPlay.CPTrip)
+M:CarPlay.ICPMapTemplateDelegate.MapTemplateWaypoint(CarPlay.CPMapTemplate,CarPlay.CPNavigationWaypoint,System.Boolean,CarPlay.CPRouteSegment)
 M:CarPlay.ICPMapTemplateDelegate.ShouldProvideNavigationMetadata(CarPlay.CPMapTemplate)
 M:CarPlay.ICPMapTemplateDelegate.ShouldProvideRouteSharing(CarPlay.CPMapTemplate)
-M:CarPlay.ICPMapTemplateDelegate.MapTemplateWaypoint(CarPlay.CPMapTemplate,CarPlay.CPNavigationWaypoint,System.Boolean,CarPlay.CPRouteSegment)
 M:CarPlay.ICPMapTemplateDelegate.WillShareDestination(CarPlay.CPMapTemplate,CarPlay.CPTrip)
 M:CarPlay.ICPNowPlayingTemplateObserver.AlbumArtistButtonTapped(CarPlay.CPNowPlayingTemplate)
 M:CarPlay.ICPNowPlayingTemplateObserver.UpNextButtonTapped(CarPlay.CPNowPlayingTemplate)
@@ -24520,6 +24525,7 @@ P:Metal.IMTLDevice.SupportsBCTextureCompression
 P:Metal.IMTLDevice.SupportsDynamicLibraries
 P:Metal.IMTLDevice.SupportsFunctionPointers
 P:Metal.IMTLDevice.SupportsFunctionPointersFromRender
+P:Metal.IMTLDevice.SupportsPlacementSparse
 P:Metal.IMTLDevice.SupportsPrimitiveMotionBlur
 P:Metal.IMTLDevice.SupportsPullModelInterpolation
 P:Metal.IMTLDevice.SupportsQueryTextureLod
@@ -30103,6 +30109,7 @@ T:Metal.MTLCreateRenderPipelineStateCompletionHandler
 T:Metal.MTLCurveBasis
 T:Metal.MTLCurveEndCaps
 T:Metal.MTLCurveType
+T:Metal.MTLDeviceError
 T:Metal.MTLDeviceLocation
 T:Metal.MTLDeviceNotificationHandler
 T:Metal.MTLDispatchType

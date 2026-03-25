@@ -19,16 +19,16 @@ This file should be imported by eng/Versions.props
     <!-- dotnet-macios dependencies -->
     <MicrosoftiOSSdknet100_260PackageVersion>26.0.11017</MicrosoftiOSSdknet100_260PackageVersion>
     <MicrosoftiOSSdknet90_185PackageVersion>18.5.9227</MicrosoftiOSSdknet90_185PackageVersion>
-    <MicrosoftiOSSdknet90_262PackageVersion>26.2.9006</MicrosoftiOSSdknet90_262PackageVersion>
+    <MicrosoftiOSSdknet90_262PackageVersion>26.2.9008</MicrosoftiOSSdknet90_262PackageVersion>
     <MicrosoftMacCatalystSdknet100_260PackageVersion>26.0.11017</MicrosoftMacCatalystSdknet100_260PackageVersion>
     <MicrosoftMacCatalystSdknet90_185PackageVersion>18.5.9227</MicrosoftMacCatalystSdknet90_185PackageVersion>
-    <MicrosoftMacCatalystSdknet90_262PackageVersion>26.2.9006</MicrosoftMacCatalystSdknet90_262PackageVersion>
+    <MicrosoftMacCatalystSdknet90_262PackageVersion>26.2.9008</MicrosoftMacCatalystSdknet90_262PackageVersion>
     <MicrosoftmacOSSdknet100_260PackageVersion>26.0.11017</MicrosoftmacOSSdknet100_260PackageVersion>
     <MicrosoftmacOSSdknet90_155PackageVersion>15.5.9227</MicrosoftmacOSSdknet90_155PackageVersion>
-    <MicrosoftmacOSSdknet90_262PackageVersion>26.2.9006</MicrosoftmacOSSdknet90_262PackageVersion>
+    <MicrosoftmacOSSdknet90_262PackageVersion>26.2.9008</MicrosoftmacOSSdknet90_262PackageVersion>
     <MicrosofttvOSSdknet100_260PackageVersion>26.0.11017</MicrosofttvOSSdknet100_260PackageVersion>
     <MicrosofttvOSSdknet90_185PackageVersion>18.5.9227</MicrosofttvOSSdknet90_185PackageVersion>
-    <MicrosofttvOSSdknet90_262PackageVersion>26.2.9006</MicrosofttvOSSdknet90_262PackageVersion>
+    <MicrosofttvOSSdknet90_262PackageVersion>26.2.9008</MicrosofttvOSSdknet90_262PackageVersion>
     <!-- dotnet-xharness dependencies -->
     <MicrosoftDotNetXHarnessiOSSharedPackageVersion>11.0.0-prerelease.26169.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
     <!-- xamarin-xamarin-macios dependencies -->

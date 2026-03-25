@@ -80,8 +80,8 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 #if __TVOS__ && !XAMCORE_5_0
 			if (Runtime.Arch == Arch.SIMULATOR) {
-				rv.AddRange (Enum.GetValues<global::BrowserEngineKit.BEAccessibilityTrait> ().Select (v => (typeof (global::BrowserEngineKit.BEAccessibilityTrait), (int) v))); // BrowserEngineKit isn't available in the simulator
-				rv.AddRange (Enum.GetValues<global::BrowserEngineKit.BEAccessibilityNotification> ().Select (v => (typeof (global::BrowserEngineKit.BEAccessibilityNotification), (int) v))); // BrowserEngineKit isn't available in the simulator
+				rv.AddRange (Enum.GetValues<global::BrowserEngineKit.BEAccessibilityTrait> ().Select (v => (typeof (global::BrowserEngineKit.BEAccessibilityTrait), (object) (int) v))); // BrowserEngineKit isn't available in the simulator
+				rv.AddRange (Enum.GetValues<global::BrowserEngineKit.BEAccessibilityNotification> ().Select (v => (typeof (global::BrowserEngineKit.BEAccessibilityNotification), (object) (int) v))); // BrowserEngineKit isn't available in the simulator
 			}
 #endif // __TVOS__ && !XAMCORE_5_0
 

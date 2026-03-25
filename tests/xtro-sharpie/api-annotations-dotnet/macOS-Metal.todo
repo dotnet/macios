@@ -1,1 +1,6 @@
 !missing-selector! MTLFunctionReflection::userAnnotation not bound
+!missing-enum! MTLDeviceError not bound
+!missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeInt4 = 143 not bound
+!missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeUInt4 = 144 not bound
+!missing-field! MTLDeviceErrorDomain not bound
+!missing-protocol-member! MTLDevice::supportsPlacementSparse not found

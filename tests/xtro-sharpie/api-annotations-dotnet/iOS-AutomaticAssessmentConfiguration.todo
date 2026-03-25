@@ -2,3 +2,5 @@
 !missing-selector! AEAssessmentConfiguration::allowsAccessibilityReader not bound
 !missing-selector! AEAssessmentConfiguration::setAllowsAccessibilityLiveCaptions: not bound
 !missing-selector! AEAssessmentConfiguration::setAllowsAccessibilityReader: not bound
+!missing-selector! AEAssessmentConfiguration::allowsEmojiKeyboard not bound
+!missing-selector! AEAssessmentConfiguration::setAllowsEmojiKeyboard: not bound

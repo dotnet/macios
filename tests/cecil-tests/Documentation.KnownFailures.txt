@@ -29168,6 +29168,7 @@ T:CoreWlan.CWPhyMode
 T:CoreWlan.CWSecurity
 T:CoreWlan.CWStatus
 T:CoreWlan.CWWiFiClient
+T:CryptoTokenKit.TKCreateNfcSlotCallback
 T:CryptoTokenKit.TKErrorCode
 T:CryptoTokenKit.TKGetSlotCallback
 T:CryptoTokenKit.TKSmartCardExecuteCallback

@@ -36,7 +36,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 					foreach (var enumValue in Enum.GetValuesAsUnderlyingType (type)) {
 						var obj = getConstant.Invoke (null, new object [] { enumValue });
 
-						if (valuesToSkip.Remove ((type, (int) enumValue)))
+						if (valuesToSkip.Remove ((type, enumValue)))
 							continue;
 
 						if (obj is not null) {
@@ -52,9 +52,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			});
 		}
 
-		(Type EnumType, int UnderlyingValue) [] GetSkippedEnumValues ()
+		(Type EnumType, object UnderlyingValue) [] GetSkippedEnumValues ()
 		{
-			var rv = new List<(Type EnumType, int UnderlyingValue)> () {
+			var rv = new List<(Type EnumType, object UnderlyingValue)> () {
 #if !XAMCORE_5_0
 				(typeof (global::AVFoundation.AVCaptureDeviceType), (int) global::AVFoundation.AVCaptureDeviceType.BuiltInDualCamera),
 #if __MACOS__

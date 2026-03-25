@@ -57,31 +57,31 @@ public static class ReflectionExtensions {
 	}
 
 	public static bool TryIsByRef (this Type type, [NotNullWhen (true)] out Type? elementType)
-    {
+	{
 		elementType = null;
 		if (!type.IsByRef)
 			return false;
 		elementType = type.GetElementType ()!;
 		return true;
-    }
+	}
 
 	public static bool TryIsPointer (this Type type, [NotNullWhen (true)] out Type? elementType)
-    {
+	{
 		elementType = null;
 		if (!type.IsPointer)
 			return false;
 		elementType = type.GetElementType ()!;
 		return true;
-    }
+	}
 
 	public static bool TryIsArray (this Type type, [NotNullWhen (true)] out Type? elementType)
-    {
+	{
 		elementType = null;
 		if (!type.IsArray)
 			return false;
 		elementType = type.GetElementType ()!;
 		return true;
-    }
+	}
 
 	public static BaseTypeAttribute? GetBaseTypeAttribute (Type type, Generator generator)
 	{

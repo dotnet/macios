@@ -399,7 +399,7 @@ public partial class Generator : IMemberGatherer {
 
 		if (pi is null) {
 			if (minfo is null)
-				throw new ArgumentException ("Either minfo or pi must be non-null", nameof(minfo)); // FIXME: better error
+				throw new ArgumentException ("Either minfo or pi must be non-null", nameof (minfo)); // FIXME: better error
 			attrib = GetOneBindAsAttribute (minfo.mi);
 			var property = minfo.mi as PropertyInfo;
 			var method = minfo.mi as MethodInfo;
@@ -408,7 +408,7 @@ public partial class Generator : IMemberGatherer {
 			attrib = GetOneBindAsAttribute (pi);
 			originalType = pi.ParameterType;
 		}
-	
+
 		if (originalType.IsByRef)
 			throw new BindingException (1080, true, originalType.Name.Replace ("&", string.Empty));
 
@@ -4392,7 +4392,7 @@ public partial class Generator : IMemberGatherer {
 				throw new BindingException (1062, true, original_minfo.type.Name, mi.Name);
 			}
 		}
-	
+
 		foreach (var param in minfo.AsyncCompletionParams) {
 			if (param.ParameterType.IsByRef) {
 				throw new BindingException (1062, true, original_minfo.type.Name, mi.Name);
@@ -7577,9 +7577,9 @@ public partial class Generator : IMemberGatherer {
 	}
 
 	bool HasParentWithSameNamedDelegate (BaseTypeAttribute bta, string delegateName)
-    {
-        return HasParentWithSameNamedDelegate (bta, delegateName, out _);
-    }
+	{
+		return HasParentWithSameNamedDelegate (bta, delegateName, out _);
+	}
 
 	bool HasParentWithSameNamedDelegate (BaseTypeAttribute bta, string delegateName, [NotNullWhen (true)] out Type? parentType)
 	{

@@ -42,7 +42,6 @@
     <Skip Include="Microsoft.Win32.SystemEvents.dll" />
     <Skip Include="MonoTargetsTasks.dll" />
     <Skip Include="MQTTnet.dll" />
-    <Skip Include="Renci.SshNet.dll" />
     <Skip Include="System.CodeDom.dll" />
     <Skip Include="System.ComponentModel.Composition.dll" />
     <Skip Include="System.Configuration.ConfigurationManager.dll" />
@@ -58,6 +57,7 @@
 
   <ItemGroup>
     <ThirdParty Include="BouncyCastle.Crypto.dll" />
+    <ThirdParty Include="Renci.SshNet.dll" />
     <!-- Build.zip -->
     <ThirdParty Include="Mono.Cecil*.dll" />
 

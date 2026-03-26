@@ -427,6 +427,7 @@ namespace ImageCaptureCore {
 		/// <summary>Generates a fingerprint for the file at the specified URL.</summary>
 		/// <param name="url">The URL of the file for which to generate a fingerprint.</param>
 		/// <returns>The fingerprint string, or <see langword="null" /> if the fingerprint could not be generated.</returns>
+		[Mac (15, 0)]
 		[Static]
 		[Export ("fingerprintForFileAtURL:")]
 		[return: NullAllowed]

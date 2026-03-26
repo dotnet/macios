@@ -607,6 +607,14 @@ COREMEDIA_SOURCES = \
 	CoreMedia/CMMemoryPool.cs \
 	CoreMedia/NSValue.cs \
 
+# CoreMediaIO
+
+COREMEDIAIO_API_SOURCES = \
+	CoreMediaIO/Enums.cs \
+
+COREMEDIAIO_SOURCES = \
+	CoreMediaIO/CMIOInterop.cs \
+
 # CoreMidi
 
 COREMIDI_CORE_SOURCES = \
@@ -2019,6 +2027,7 @@ MACOS_FRAMEWORKS =          \
 	CoreHaptics             \
 	CoreImage               \
 	CoreLocation            \
+	CoreMediaIO             \
 	CoreMotion		\
 	CoreServices            \
 	CoreSpotlight           \
@@ -2322,6 +2331,7 @@ MACCATALYST_FRAMEWORKS = \
 	CoreImage \
 	CoreLocation \
 	CoreLocationUI \
+	CoreMediaIO \
 	CoreMotion \
 	CoreNFC \
 	CoreSpotlight \

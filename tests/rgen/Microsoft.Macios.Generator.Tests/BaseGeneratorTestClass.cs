@@ -70,7 +70,7 @@ public class BaseGeneratorTestClass {
 	protected CompilationResult CreateCompilation (ApplePlatform platform, [CallerMemberName] string name = "", params string [] sources)
 	{
 		// get the dotnet bcl and fully load it for the test.
-		var references = Directory.GetFiles (Configuration.DotNetBclDir, "*.dll")
+		var references = Directory.GetFiles (Configuration.DotNetBclDir!, "*.dll")
 			.Select (assembly => MetadataReference.CreateFromFile (assembly)).ToList ();
 		// get the dll for the current platform
 		var targetFramework = TargetFramework.GetTargetFramework (platform);

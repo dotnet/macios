@@ -22,8 +22,7 @@
 using System.IO;
 using System.Reflection;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -53,7 +52,7 @@ namespace Introspection {
 		/// <param name="property">Property to be tested</param>
 		protected virtual bool Skip (PropertyInfo property)
 		{
-			switch (property.DeclaringType.Name) {
+			switch (property.DeclaringType!.Name) {
 			case "AVPlayerInterstitialEventObserver":
 				switch (property.Name) { // deprecated
 				case "CurrentEventDidChangeNotification":
@@ -113,7 +112,7 @@ namespace Introspection {
 		bool CheckAgainstNull (PropertyInfo p, out string name)
 		{
 			name = String.Empty;
-			var g = p.GetGetMethod (true);
+			var g = p.GetGetMethod (true)!;
 			if (!g.IsStatic)
 				return true;
 
@@ -125,16 +124,16 @@ namespace Introspection {
 				// or something not available in the executing version of iOS
 				bool result = g.Invoke (null, null) is not null;
 				if (!result)
-					name = p.DeclaringType.FullName + "." + p.Name;
+					name = p.DeclaringType!.FullName + "." + p.Name;
 				return result;
 			} catch (Exception e) {
 				Console.WriteLine ("[FAIL] Exception on '{0}' : {1}", p, e);
-				name = p.DeclaringType.FullName + "." + p.Name;
+				name = p.DeclaringType!.FullName + "." + p.Name;
 				return false;
 			}
 		}
 
-		static List<PropertyInfo> properties;
+		static List<PropertyInfo>? properties;
 
 		IEnumerable<PropertyInfo> AllProperties ()
 		{
@@ -179,10 +178,10 @@ namespace Introspection {
 				if (!name.EndsWith ("Notification", StringComparison.Ordinal))
 					continue;
 
-				if (SkipNotification (p.DeclaringType, name))
+				if (SkipNotification (p.DeclaringType!, name))
 					continue;
 
-				var nested = p.DeclaringType.GetNestedTypes ();
+				var nested = p.DeclaringType!.GetNestedTypes ();
 				if (nested.Length == 0) {
 					ReportError (name);
 					failed_fields.Add (name);
@@ -250,10 +249,10 @@ namespace Introspection {
 					continue;
 
 				string name = f.SymbolName;
-				if (Skip (name, f.LibraryName))
+				if (Skip (name, f.LibraryName!))
 					continue;
 
-				string path = FindLibrary (f.LibraryName);
+				string path = FindLibrary (f.LibraryName!);
 				IntPtr lib = Dlfcn.dlopen (path, 0);
 				if (lib == IntPtr.Zero) {
 					ReportError ("Could not open the library '{0}' to find the field '{1}': {2}", path, name, Dlfcn.dlerror ());

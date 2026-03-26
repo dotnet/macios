@@ -13,8 +13,7 @@ using UIKit;
 using WatchConnectivity;
 #endif
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -128,7 +127,7 @@ namespace Introspection {
 			if (value)
 				return true;
 
-			var declaredType = method.DeclaringType;
+			var declaredType = method.DeclaringType!;
 
 			switch (declaredType.Name) {
 #if __MACCATALYST__

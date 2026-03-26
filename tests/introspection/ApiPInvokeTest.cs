@@ -13,8 +13,7 @@ using System.Linq;
 using System.Reflection;
 using Xamarin.Tests;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 	[Preserve (AllMembers = true)]
@@ -96,12 +95,12 @@ namespace Introspection {
 			// `ref` is fine but it can hide the droids we're looking for
 			var pt = pi.ParameterType;
 			if (pt.IsByRef)
-				pt = pt.GetElementType ();
+				pt = pt.GetElementType ()!;
 			// we don't want generics in p/invokes except for delegates like Func<> and Action<> which we know how to deal with
 			// ref: https://bugzilla.xamarin.com/show_bug.cgi?id=42699
 			if (pt.IsGenericType && !pt.IsSubclassOf (typeof (Delegate))) {
 				AddErrorLine ("[FAIL] {0}.{1} has a generic parameter in its signature: {2} {3}",
-					mi.DeclaringType.FullName, mi.Name, pt, pi.Name);
+					mi.DeclaringType?.FullName, mi.Name, pt, pi.Name);
 				result = false;
 			}
 			result &= CheckForEnumParameter (mi, pi);
@@ -112,7 +111,7 @@ namespace Introspection {
 		{
 			if (pi.ParameterType.IsEnum && pi.ParameterType.GetCustomAttribute<NativeAttribute> () is not null) {
 				AddErrorLine ("[FAIL] {0}.{1} has a [Native] enum parameter in its signature: {2} {3}",
-					mi.DeclaringType.FullName, mi.Name, pi.ParameterType, pi.Name);
+					mi.DeclaringType?.FullName, mi.Name, pi.ParameterType, pi.Name);
 				return false;
 			}
 
@@ -131,7 +130,7 @@ namespace Introspection {
 			return false;
 		}
 
-		protected virtual bool SkipLibrary (string libraryName)
+		protected virtual bool SkipLibrary (string? libraryName)
 		{
 			return false;
 		}
@@ -147,9 +146,9 @@ namespace Introspection {
 				if (LogProgress)
 					Console.WriteLine ("{0}. {1}", c++, mi);
 
-				var dllimport = mi.GetCustomAttribute<DllImportAttribute> ();
+				var dllimport = mi.GetCustomAttribute<DllImportAttribute> ()!;
 
-				string libname = dllimport.Value;
+				var libname = dllimport.Value;
 				switch (libname) {
 				case "__Internal":
 					continue;
@@ -163,7 +162,7 @@ namespace Introspection {
 				if (SkipLibrary (libname))
 					continue;
 
-				string path = FindLibrary (libname, requiresFullPath: true);
+				var path = FindLibrary (libname!, requiresFullPath: true);
 
 				string name = dllimport.EntryPoint ?? mi.Name;
 				if (Skip (name))
@@ -206,9 +205,9 @@ namespace Introspection {
 					if ((m.Attributes & MethodAttributes.PinvokeImpl) == 0)
 						continue;
 
-					var dllimport = m.GetCustomAttribute<DllImportAttribute> ();
+					var dllimport = m.GetCustomAttribute<DllImportAttribute> ()!;
 
-					string name = dllimport.EntryPoint ?? m.Name;
+					var name = dllimport.EntryPoint ?? m.Name;
 					switch (name) {
 					// known not to be present in ARM64
 					case "objc_msgSend_stret":
@@ -217,7 +216,7 @@ namespace Introspection {
 						continue;
 					}
 
-					string path = dllimport.Value;
+					string? path = dllimport.Value;
 					switch (path) {
 					case "__Internal":
 						// load from executable
@@ -268,7 +267,7 @@ namespace Introspection {
 						if (found != 0) {
 							// Resolve symlinks in both cases
 							var dllImportPath = ResolveLibrarySymlinks (path);
-							var foundLibrary = ResolveLibrarySymlinks (Marshal.PtrToStringAuto (info.dli_fname));
+							var foundLibrary = ResolveLibrarySymlinks (Marshal.PtrToStringAuto (info.dli_fname)!);
 							if (Skip (name, ref dllImportPath, ref foundLibrary)) {
 								// Skipped
 							} else if (foundLibrary != dllImportPath) {

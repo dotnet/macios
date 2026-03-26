@@ -27,14 +27,13 @@ using System.Text;
 using ARKit;
 #endif
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
 	public abstract class ApiCtorInitTest : ApiBaseTest {
 
-		string instance_type_name;
+		string? instance_type_name;
 
 		/// <summary>
 		/// Gets or sets a value indicating whether this test fixture will log untested types.
@@ -354,7 +353,7 @@ namespace Introspection {
 				if (Skip (t))
 					continue;
 
-				var ctor = t.GetConstructor (Type.EmptyTypes);
+				var ctor = t.GetConstructor (Type.EmptyTypes)!;
 				if (SkipDueToAttribute (ctor))
 					continue;
 
@@ -372,23 +371,23 @@ namespace Introspection {
 				if (LogProgress)
 					Console.WriteLine ("{0}. {1}", n, instance_type_name);
 
-				NSObject obj = null;
+				NSObject? obj = null;
 				try {
-					obj = ctor.Invoke (null) as NSObject;
+					obj = (NSObject) ctor.Invoke (null);
 					CheckHandle (obj);
 					CheckToString (obj);
 					CheckIsDirectBinding (obj);
 					CheckNSObjectProtocol (obj);
 					Dispose (obj, t);
-				} catch (Exception e) {
+				} catch (Exception? e) {
 					// Objective-C exception thrown
 					if (!ContinueOnFailure)
 						throw;
 
-					TargetInvocationException tie = (e as TargetInvocationException);
+					var tie = (e as TargetInvocationException);
 					if (tie is not null)
 						e = tie.InnerException;
-					ReportError ("Default constructor not allowed for {0} : {1}", instance_type_name, e.Message);
+					ReportError ("Default constructor not allowed for {0} : {1}", instance_type_name, e?.Message);
 				}
 				n++;
 			}
@@ -429,7 +428,7 @@ namespace Introspection {
 				if (designated > 0)
 					continue;
 
-				var base_class = t.BaseType;
+				var base_class = t.BaseType!;
 				// NSObject ctor requirements are handled by the generator
 				if (base_class == NSObjectType)
 					continue;
@@ -440,7 +439,7 @@ namespace Introspection {
 
 					// check if this ctor (from base type) is exposed in the current (subclass) type
 					if (!Match (ctor, t))
-						ReportError ("{0} should re-expose {1}::{2}", t, base_class.Name, ctor.ToString ().Replace ("Void ", String.Empty));
+						ReportError ("{0} should re-expose {1}::{2}", t, base_class?.Name, ctor?.ToString ()?.Replace ("Void ", String.Empty));
 					n++;
 				}
 			}
@@ -684,7 +683,7 @@ namespace Introspection {
 				if (SkipCheckShouldNotExposeDefaultCtor (t))
 					continue;
 
-				var ctor = t.GetConstructor (Type.EmptyTypes);
+				var ctor = t.GetConstructor (Type.EmptyTypes)!;
 				if (SkipDueToAttribute (ctor))
 					continue;
 
@@ -697,7 +696,7 @@ namespace Introspection {
 				if (LogProgress)
 					Console.WriteLine ($"{n}: {t.FullName}");
 
-				var parentType = t.BaseType;
+				var parentType = t.BaseType!;
 				var parentCtor = parentType.GetConstructor (BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
 
 				if (parentCtor is null) {
@@ -707,7 +706,7 @@ namespace Introspection {
 					if (genObjCTestCode) {
 						var export = t.GetCustomAttribute<RegisterAttribute> ();
 						var typeName = export?.Name ?? t.Name;
-						objCCode.AppendLine ($"{typeName}* test{n} = [[{typeName} alloc] init];");
+						objCCode!.AppendLine ($"{typeName}* test{n} = [[{typeName} alloc] init];");
 					}
 				}
 				n++;

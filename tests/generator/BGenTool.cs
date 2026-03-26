@@ -95,7 +95,7 @@ namespace Xamarin.Tests {
 				targetFramework = GetTargetFramework (Profile);
 
 			if (CompileCommand is null) {
-				if (!StringUtils.TryParseArguments (Configuration.DotNetCscCommand, out var args, out var ex))
+				if (!StringUtils.TryParseArguments (Configuration.DotNetCscCommand!, out var args, out var ex))
 					throw new InvalidOperationException ($"Unable to parse the .NET csc command '{Configuration.DotNetCscCommand}': {ex.Message}");
 
 				CompileCommand = new List<string> (args);
@@ -145,7 +145,7 @@ namespace Xamarin.Tests {
 				if (tf is null) {
 					// do nothing
 				} else {
-					References.AddRange (Directory.GetFiles (Configuration.DotNetBclDir, "*.dll"));
+					References.AddRange (Directory.GetFiles (Configuration.DotNetBclDir!, "*.dll"));
 				}
 			}
 

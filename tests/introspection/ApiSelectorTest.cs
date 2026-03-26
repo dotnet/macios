@@ -21,8 +21,7 @@
 
 using System.Reflection;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -1342,7 +1341,7 @@ namespace Introspection {
 			return false;
 		}
 
-		static bool IsMethodImplemented (Type iface, Type type, MethodBase method, bool isExtensionMethod)
+		static bool IsMethodImplemented (Type iface, Type? type, MethodBase method, bool isExtensionMethod)
 		{
 			if (type is null)
 				return false;
@@ -1417,11 +1416,11 @@ namespace Introspection {
 				return;
 
 			foreach (object ca in m.GetCustomAttributes (true)) {
-				ExportAttribute export = (ca as ExportAttribute);
+				var export = ca as ExportAttribute;
 				if (export is null)
 					continue;
 
-				string name = export.Selector;
+				string name = export.Selector!;
 				if (Skip (t, name))
 					continue;
 
@@ -1443,7 +1442,7 @@ namespace Introspection {
 				return false;
 			}
 
-			cls = (NativeHandle) fi.GetValue (null);
+			cls = (NativeHandle) fi.GetValue (null)!;
 			return true;
 		}
 
@@ -1484,11 +1483,11 @@ namespace Introspection {
 				return;
 
 			foreach (object ca in m.GetCustomAttributes (true)) {
-				ExportAttribute export = (ca as ExportAttribute);
+				var export = ca as ExportAttribute;
 				if (export is null)
 					continue;
 
-				string name = export.Selector;
+				string name = export.Selector!;
 				if (Skip (t, name))
 					continue;
 
@@ -1569,13 +1568,13 @@ namespace Introspection {
 
 					foreach (object ca in m.GetCustomAttributes (true)) {
 						if (ca is ExportAttribute) {
-							string name = (ca as ExportAttribute).Selector;
+							var name = (ca as ExportAttribute)!.Selector!;
 
 							if (Skip (t, name))
 								continue;
 
 							bool result = bool_objc_msgSend_IntPtr (class_ptr, responds_handle, Selector.GetHandle (name));
-							bool response = CheckStaticResponse (result, t, m.DeclaringType, m, ref name);
+							bool response = CheckStaticResponse (result, t, m.DeclaringType!, m, ref name);
 							if (!response)
 								ReportError (name);
 							n++;

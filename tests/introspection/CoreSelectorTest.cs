@@ -9,8 +9,7 @@
 
 using System.Reflection;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -21,7 +20,7 @@ namespace Introspection {
 			if (value)
 				return true;
 
-			var declaredType = method.DeclaringType;
+			var declaredType = method.DeclaringType!;
 
 			switch (declaredType.Name) {
 			case "NSUrlSessionTaskMetrics":
@@ -122,9 +121,9 @@ namespace Introspection {
 				case "MTLVertexAttributeDescriptor":
 				case "MTLVertexBufferLayoutDescriptor":
 				case "MTLVertexDescriptor":
-					var ctor = type.GetConstructor (Type.EmptyTypes);
+					var ctor = type.GetConstructor (Type.EmptyTypes)!;
 					using (var obj = ctor.Invoke (null) as NSObject) {
-						cls = IntPtr_objc_msgSend (obj.Handle, Selector.GetHandle ("class"));
+						cls = IntPtr_objc_msgSend (obj!.Handle, Selector.GetHandle ("class"));
 						return true;
 					}
 				}

@@ -10,8 +10,7 @@
 using System.Reflection;
 using UIKit;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -33,7 +32,7 @@ namespace Introspection {
 
 		protected override bool Skip (PropertyInfo p)
 		{
-			switch (p.DeclaringType.Namespace) {
+			switch (p.DeclaringType!.Namespace) {
 			case "CoreAudioKit":
 			case "MonoTouch.CoreAudioKit":
 			case "Metal":

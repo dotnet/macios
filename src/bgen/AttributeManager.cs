@@ -536,7 +536,7 @@ public class AttributeManager {
 		return false;
 	}
 
-	public T? GetCustomAttribute<T> (ICustomAttributeProvider? provider) where T : System.Attribute
+	public virtual T? GetCustomAttribute<T> (ICustomAttributeProvider? provider) where T : System.Attribute
 	{
 		if (provider is null)
 			return null;

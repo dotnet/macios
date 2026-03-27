@@ -766,6 +766,36 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
+		[Test]
+		public void TestNSUrlSessionHandlerDetectMissingClientCertificateOptOut ()
+		{
+			AppContext.TryGetSwitch ("Foundation.NSUrlSessionHandler.NoMissingCertificateHandling", out var originalValue);
+			NWListener? listener = null;
+			try {
+				AppContext.SetSwitch ("Foundation.NSUrlSessionHandler.NoMissingCertificateHandling", true);
+				listener = CreateNWTlsListener (requireClientCert: true);
+				var port = listener.Port;
+
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					using var handler = new NSUrlSessionHandler ();
+					handler.TrustOverrideForUrl = (sender, url, trust) => true;
+					using var client = new HttpClient (handler);
+					await client.GetAsync ($"https://localhost:{port}/");
+				}, out var ex);
+				Assert.IsTrue (done, "Request to localhost timed out.");
+				// With the opt-out switch enabled, the new specific exception is not thrown.
+				// Instead we get a generic connection error (no WebException/AuthenticationException chain).
+				Assert.IsNotNull (ex, "Exception was expected.");
+				Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
+				if (ex!.InnerException is WebException we)
+					Assert.That (we.Status, Is.Not.EqualTo (WebExceptionStatus.SecureChannelFailure), "Should not be SecureChannelFailure");
+			} finally {
+				AppContext.SetSwitch ("Foundation.NSUrlSessionHandler.NoMissingCertificateHandling", originalValue);
+				listener?.Cancel ();
+				listener?.Dispose ();
+			}
+		}
+
 		static NWListener CreateNWTlsListener (bool requireClientCert)
 		{
 			using var serverCert = CreateSelfSignedServerCertificate ();

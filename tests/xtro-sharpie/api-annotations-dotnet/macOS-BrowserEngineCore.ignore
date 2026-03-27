@@ -1,7 +1,7 @@
+# Low-level C P/Invoke functions for JIT memory management.
+# These use hidden visibility or always_inline and are not suitable for .NET consumption.
 !missing-pinvoke! be_memory_inline_jit_restrict_rwx_to_rw_with_witness is not bound
 !missing-pinvoke! be_memory_inline_jit_restrict_rwx_to_rw_with_witness_impl is not bound
 !missing-pinvoke! be_memory_inline_jit_restrict_rwx_to_rx_with_witness is not bound
 !missing-pinvoke! be_memory_inline_jit_restrict_rwx_to_rx_with_witness_impl is not bound
 !missing-pinvoke! be_memory_inline_jit_restrict_with_witness_supported is not bound
-!missing-pinvoke! be_kevent is not bound
-!missing-pinvoke! be_kevent64 is not bound

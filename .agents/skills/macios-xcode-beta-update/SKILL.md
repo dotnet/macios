@@ -96,14 +96,43 @@ Capture resulting `tests/xtro-sharpie/api-annotations-dotnet/*.todo` and `*.igno
 
 ## Introspection workflow (all platforms)
 
-Use explicit prebuild + run to avoid mobile run target issues:
+Use explicit prebuild + run to avoid mobile run target issues.
+
+**IMPORTANT: Run platforms sequentially, not in parallel.** The shared `obj/` directories
+(`tests/common/Touch.Unit/Touch.Client/dotnet/obj` and `tests/common/MonoTouch.Dialog/obj`)
+cause NETSDK1005 errors when concurrent restores overwrite `project.assets.json` with
+different platform TFMs. Clean shared obj dirs before each platform build:
 
 ```bash
+rm -rf tests/common/Touch.Unit/Touch.Client/dotnet/obj tests/common/MonoTouch.Dialog/obj
 make -C tests/introspection/dotnet build-ios run-ios
+
+rm -rf tests/common/Touch.Unit/Touch.Client/dotnet/obj tests/common/MonoTouch.Dialog/obj
 make -C tests/introspection/dotnet build-tvos run-tvos
+
+rm -rf tests/common/Touch.Unit/Touch.Client/dotnet/obj tests/common/MonoTouch.Dialog/obj
 make -C tests/introspection/dotnet build-macOS run-macOS
+
+rm -rf tests/common/Touch.Unit/Touch.Client/dotnet/obj tests/common/MonoTouch.Dialog/obj
 make -C tests/introspection/dotnet build-MacCatalyst run-MacCatalyst
 ```
+
+**Desktop test output:** For macOS and Mac Catalyst, `make run-macOS`/`run-MacCatalyst` uses
+`dotnet build -t:Run` which launches the app without waiting or capturing stdout. The make
+command exits immediately with success even while tests are still running. To get actual test
+results, run the executable directly after building:
+
+```bash
+# Build first
+make -C tests/introspection/dotnet build-macOS
+# Then run directly to capture output
+NUNIT_AUTOSTART=true NUNIT_AUTOEXIT=true \
+  tests/introspection/dotnet/macOS/bin/Debug/net10.0-macos/osx-arm64/introspection.app/Contents/MacOS/introspection
+```
+
+Same pattern for Mac Catalyst (replace `macOS` → `MacCatalyst`, `net10.0-macos` → `net10.0-maccatalyst`, `osx-arm64` → `maccatalyst-arm64`).
+
+iOS and tvOS simulator tests capture output correctly via `make run-ios`/`run-tvos`.
 
 These runs can take a long time; wait for completion and summarize outcomes per platform.
 

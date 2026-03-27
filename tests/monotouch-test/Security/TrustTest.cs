@@ -327,8 +327,13 @@ namespace MonoTouchFixtures.Security {
 			trust.SetVerifyDate (new DateTime (2025, 10, 1, 0, 0, 0, DateTimeKind.Utc));
 
 			SecTrustResult trust_result = SecTrustResult.Unspecified;
+			var allow_recoverable_trust_failure = TestRuntime.CheckSystemVersion (TestRuntime.CurrentPlatform, 26, 4);
 			var result = Evaluate (trust, out var trustError, true);
-			Assert.That (result, Is.EqualTo (trust_result), $"Evaluate: {trustError}");
+			if (allow_recoverable_trust_failure) {
+				Assert.That (result, Is.EqualTo (SecTrustResult.Unspecified).Or.EqualTo (SecTrustResult.RecoverableTrustFailure), $"Evaluate: {trustError}");
+			} else {
+				Assert.That (result, Is.EqualTo (trust_result), $"Evaluate: {trustError}");
+			}
 
 			// Evalute must be called prior to Count (Apple documentation)
 			Assert.That (trust.Count, Is.EqualTo (3), "Count");
@@ -347,7 +352,7 @@ namespace MonoTouchFixtures.Security {
 				Assert.That (sc3.SubjectSummary, Is.EqualTo ("GTS Root R1"), "SubjectSummary(sc3)");
 			}
 
-			Assert.That (trust.GetTrustResult (), Is.EqualTo (trust_result), "GetTrustResult");
+			Assert.That (trust.GetTrustResult (), Is.EqualTo (result), "GetTrustResult");
 
 			trust.SetAnchorCertificates (certs);
 			Assert.That (trust.GetCustomAnchorCertificates ().Length, Is.EqualTo (certs.Count), "GetCustomAnchorCertificates");
@@ -355,8 +360,17 @@ namespace MonoTouchFixtures.Security {
 			// since we modified the `trust` instance it's result was invalidated (marked as unspecified on iOS 11)
 			Assert.That (trust.GetTrustResult (), Is.EqualTo (SecTrustResult.Unspecified), "GetTrustResult-2");
 
-			Assert.True (trust.Evaluate (out var error), $"Evaluate: {error}");
-			Assert.Null (error, "error");
+			if (result == SecTrustResult.Unspecified) {
+				Assert.True (trust.Evaluate (out var error), $"Evaluate: {error}");
+				Assert.Null (error, "error");
+			} else if (result == SecTrustResult.RecoverableTrustFailure) {
+				if (trust.Evaluate (out var error))
+					Assert.Null (error, "error");
+				else
+					Assert.NotNull (error, "error");
+			} else {
+				Assert.Fail ($"Unexpected trust result: {result}");
+			}
 		}
 
 		[Test]

@@ -160,6 +160,10 @@ namespace MetalKit {
 		[Mac (26, 0), iOS (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Export ("currentMTL4RenderPassDescriptor"), NullAllowed]
 		MTL4RenderPassDescriptor CurrentMtl4RenderPassDescriptor { get; }
+
+		[Mac (26, 4), iOS (26, 4), TV (26, 4), MacCatalyst (26, 4)]
+		[Export ("residencySet")]
+		IMTLResidencySet ResidencySet { get; }
 	}
 
 	interface IMTKViewDelegate { }

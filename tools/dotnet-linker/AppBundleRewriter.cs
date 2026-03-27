@@ -10,6 +10,7 @@ using Mono.Tuner;
 
 using Xamarin.Bundler;
 using Xamarin.Linker;
+using Xamarin.Utils;
 
 #nullable enable
 
@@ -1247,16 +1248,18 @@ namespace Xamarin.Linker {
 
 		public CustomAttribute CreateDynamicDependencyAttribute (string memberSignature, TypeDefinition type)
 		{
-			if (type.HasGenericParameters) {
-				var typeName = Xamarin.Utils.DocumentationComments.GetSignature (type);
-				var assemblyName = type.Module.Assembly.Name.Name;
-				return CreateDynamicDependencyAttribute (memberSignature, typeName, assemblyName);
-			}
+			if (type.HasGenericParameters)
+				return CreateDynamicDependencyAttribute (memberSignature, type, type.Module.Assembly);
 
 			var attribute = new CustomAttribute (DynamicDependencyAttribute_ctor__String_Type);
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, memberSignature));
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Type, type));
 			return attribute;
+		}
+
+		public CustomAttribute CreateDynamicDependencyAttribute (string memberSignature, TypeDefinition type, AssemblyDefinition assembly)
+		{
+			return CreateDynamicDependencyAttribute (memberSignature, DocumentationComments.GetSignature (type), assembly.Name.Name);
 		}
 
 		public CustomAttribute CreateDynamicDependencyAttribute (string memberSignature, string typeName, string assemblyName)
@@ -1275,6 +1278,137 @@ namespace Xamarin.Linker {
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Diagnostics_CodeAnalysis_DynamicallyAccessedMemberTypes, (int) memberTypes));
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Type, type));
 			return attribute;
+		}
+
+		/// <summary>
+		/// Preserve a field conditionally on another type
+		/// </summary>
+		/// <param name="onType">The type on which to add the dynamic dependency attribute.</param>
+		/// <param name="forField">The field that is the target of the dynamic dependency.</param>
+		/// <returns>Whether an attribute was added or not.</returns>
+		public bool AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, FieldDefinition forField)
+		{
+			var attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forField), forField.DeclaringType, forField.Module.Assembly);
+			return AddAttributeToStaticConstructor (onType, attrib);
+		}
+
+		/// <summary>
+		/// Preserve a type conditionally on another type (if that other type is marked)
+		/// </summary>
+		/// <remarks>
+		///   <para>
+		///     Unfortunately a DynamicDependency attribute can't point to a type, only a member within a type.
+		///     So we add a placeholder member within the target type, and point the DynamicDependency attribute to that member.
+		///   </para>
+		///   <para>The caller is responsible for making sure the current assenbly is saved if there were any changes.</para>
+		/// </remarks>
+		/// <param name="onType">The type on which to add the dynamic dependency attribute.</param>
+		/// <param name="forType">The type that is the target of the dynamic dependency.</param>
+		/// <returns>Whether an attribute was added or not.</returns>
+		public bool AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, TypeDefinition forType)
+		{
+			var placeholderName = "__linker_preserve__";
+			FieldDefinition? placeholderMember = null;
+			if (forType.HasFields)
+				placeholderMember = forType.Fields.FirstOrDefault (f => f.Name == placeholderName && f.IsStatic);
+			if (placeholderMember is null) {
+				placeholderMember = new FieldDefinition (placeholderName, FieldAttributes.Private | FieldAttributes.Static, System_Int32);
+				forType.Fields.Add (placeholderMember);
+			}
+			return AddDynamicDependencyAttributeToStaticConstructor (onType, placeholderMember);
+		}
+
+		public bool AddAttributeToStaticConstructor (TypeDefinition onType, CustomAttribute attribute)
+		{
+			var cctor = GetOrCreateStaticConstructor (onType, out var modified);
+			modified |= AddAttributeOnlyOnce (cctor, attribute);
+
+			// Remove the BeforeFieldInit attribute from the type, otherwise the linker may trim away the static constructor, and taking our attributes with it.
+			if (onType.Attributes.HasFlag (TypeAttributes.BeforeFieldInit)) {
+				onType.Attributes &= ~TypeAttributes.BeforeFieldInit;
+				modified = true;
+			}
+
+			return modified;
+		}
+
+		MethodDefinition GetOrCreateStaticConstructor (TypeDefinition type, out bool modified)
+		{
+			modified = false;
+
+			var staticCtor = type.GetTypeConstructor ();
+			if (staticCtor is null) {
+				staticCtor = type.AddMethod (".cctor", MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.RTSpecialName | MethodAttributes.SpecialName | MethodAttributes.Static, System_Void);
+				staticCtor.CreateBody (out var il);
+				il.Emit (OpCodes.Ret);
+
+				modified = true;
+			}
+
+			return staticCtor;
+		}
+
+		/// <summary>
+		/// Add the given attribute to the provider, but only if an attribute with the same constructor and the same arguments isn't already present.
+		/// This is needed because we may add the same dynamic dependency attribute multiple times (for example if multiple methods call the same method that needs to be preserved),
+		/// and we don't want to end up with multiple copies of the same attribute, which would cause warnings in the linker.
+		/// </summary>
+		/// <param name="provider">The provider to which the attribute should be added.</param>
+		/// <param name="attribute">The attribute to add.</param>
+		/// <returns>Whether the attribute was added or not.</returns>
+		bool AddAttributeOnlyOnce (ICustomAttributeProvider provider, CustomAttribute attribute)
+		{
+			if (provider.HasCustomAttributes) {
+				foreach (var ca in provider.CustomAttributes) {
+					if (ca.Constructor == attribute.Constructor) {
+						// ok so far
+					} else if (ca.Constructor.DeclaringType.FullName != attribute.Constructor.DeclaringType.FullName) {
+						continue;
+					} else if (ca.Constructor.FullName != attribute.Constructor.FullName) {
+						continue;
+					}
+
+					if (ca.ConstructorArguments.Count != attribute.ConstructorArguments.Count)
+						continue;
+
+					if (ca.Properties.Count != attribute.Properties.Count)
+						continue;
+
+					var allMatch = true;
+					for (int i = 0; i < ca.ConstructorArguments.Count; i++) {
+						var caArg = ca.ConstructorArguments [i];
+						var attrArg = attribute.ConstructorArguments [i];
+						if (!object.Equals (caArg.Value, attrArg.Value)) {
+							allMatch = false;
+							break;
+						}
+					}
+					if (!allMatch)
+						continue;
+
+					for (int i = 0; i < ca.Properties.Count; i++) {
+						var caProp = ca.Properties [i];
+						var attrProp = attribute.Properties [i];
+
+						if (caProp.Name != attrProp.Name) {
+							allMatch = false;
+							break;
+						}
+
+						if (!object.Equals (caProp.Argument.Value, attrProp.Argument.Value)) {
+							allMatch = false;
+							break;
+						}
+					}
+					if (!allMatch)
+						continue;
+
+					// attribute already present
+					return false;
+				}
+			}
+			provider.CustomAttributes.Add (attribute);
+			return true;
 		}
 	}
 }

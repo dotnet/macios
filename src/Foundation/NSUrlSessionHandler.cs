@@ -1216,8 +1216,8 @@ namespace Foundation {
 									new AuthenticationException ("Error: Certificate Required"),
 								WebExceptionStatus.SecureChannelFailure, null));
 						}
-						// We will still continue with a null credential, since some services uses optional client certificates and this will still let it succeed
-						completionHandler (NSUrlSessionAuthChallengeDisposition.PerformDefaultHandling, null!);
+						// We will still continue with a null credential, since some services use optional client certificates and this will still let it succeed
+						completionHandler (NSUrlSessionAuthChallengeDisposition.PerformDefaultHandling, challenge.ProposedCredential);
 						return;
 					}
 				}

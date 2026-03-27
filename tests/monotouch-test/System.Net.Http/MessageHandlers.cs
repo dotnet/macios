@@ -801,7 +801,8 @@ namespace MonoTests.System.Net.Http {
 			using var serverCert = CreateSelfSignedServerCertificate ();
 			using var secIdentity = SecIdentity.Import (serverCert);
 			using var secIdentity2 = new SecIdentity2 (secIdentity);
-			var readyEvent = new ManualResetEventSlim (false);
+			using var readyEvent = new ManualResetEventSlim (false);
+			NWError? listenerError = null;
 
 			var parameters = NWParameters.CreateSecureTcp (
 				configureTls: tlsOptions => {
@@ -819,9 +820,9 @@ namespace MonoTests.System.Net.Http {
 			listener.SetQueue (CoreFoundation.DispatchQueue.DefaultGlobalQueue);
 
 			listener.SetStateChangedHandler ((state, error) => {
-				if (state == NWListenerState.Ready)
-					readyEvent.Set ();
 				if (state == NWListenerState.Failed)
+					listenerError = error;
+				if (state == NWListenerState.Ready || state == NWListenerState.Failed)
 					readyEvent.Set ();
 			});
 
@@ -845,6 +846,9 @@ namespace MonoTests.System.Net.Http {
 
 			if (!readyEvent.Wait (TimeSpan.FromSeconds (10)))
 				throw new TimeoutException ("NWListener did not become ready in time.");
+
+			if (listenerError is not null)
+				throw new InvalidOperationException ($"NWListener failed to start: {listenerError}");
 
 			return listener;
 		}

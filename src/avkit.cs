@@ -31,6 +31,7 @@ using UIView = AppKit.NSView;
 using UIViewController = Foundation.NSObject;
 using UIWindow = Foundation.NSObject;
 using UIAction = Foundation.NSObject;
+using UIMenu = Foundation.NSObject;
 using UIMenuElement = Foundation.NSObject;
 #endif // !MONOMAC
 
@@ -38,6 +39,7 @@ using UIMenuElement = Foundation.NSObject;
 using AVCustomRoutingController = Foundation.NSObject;
 using AVCustomRoutingEvent = Foundation.NSObject;
 using AVCustomRoutingActionItem = Foundation.NSObject;
+using AVLegibleMediaOptionsMenuState = Foundation.NSObject;
 #else
 using AVRouting;
 #endif
@@ -1387,5 +1389,47 @@ namespace AVKit {
 		Standard = 1,
 		ConstrainedHigh = 2,
 		High = 3,
+	}
+
+	interface IAVLegibleMediaOptionsMenuControllerDelegate { }
+
+	[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface AVLegibleMediaOptionsMenuController {
+		[Export ("initWithPlayer:")]
+		[DesignatedInitializer]
+		NativeHandle Constructor (AVPlayer player);
+
+		[Export ("menuWithContents:")]
+		[return: NullAllowed]
+		UIMenu BuildMenu (AVLegibleMediaOptionsMenuContents contents);
+
+		[Export ("player", ArgumentSemantic.Assign)]
+		AVPlayer Player { get; set; }
+
+		[Wrap ("WeakDelegate")]
+		[NullAllowed]
+		IAVLegibleMediaOptionsMenuControllerDelegate Delegate { get; set; }
+
+		[NullAllowed, Export ("delegate", ArgumentSemantic.Weak)]
+		NSObject WeakDelegate { get; set; }
+
+		[Export ("menuState")]
+		AVLegibleMediaOptionsMenuState MenuState { get; }
+	}
+
+	[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface AVLegibleMediaOptionsMenuControllerDelegate {
+		[Export ("legibleMenuController:didChangeMenuState:")]
+		void DidChangeMenuState (AVLegibleMediaOptionsMenuController menuController, AVLegibleMediaOptionsMenuState state);
+
+		[Export ("legibleMenuController:didRequestCaptionPreviewForProfileID:")]
+		void DidRequestCaptionPreviewForProfileId (AVLegibleMediaOptionsMenuController menuController, string profileId);
+
+		[Export ("legibleMenuControllerDidRequestStoppingSubtitleCaptionPreview:")]
+		void DidRequestStoppingSubtitleCaptionPreview (AVLegibleMediaOptionsMenuController menuController);
 	}
 }

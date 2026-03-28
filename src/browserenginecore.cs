@@ -6,7 +6,7 @@ using Foundation;
 using ObjCRuntime;
 
 namespace BrowserEngineCore {
-	[NoMacCatalyst, NoTV, NoMac, iOS (26, 0)]
+	[MacCatalyst (26, 4), NoTV, NoMac, iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface BEAudioSession {

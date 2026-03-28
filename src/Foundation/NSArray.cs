@@ -29,8 +29,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using CoreFoundation;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 
@@ -39,8 +38,6 @@ namespace Foundation {
 #endif
 
 	public partial class NSArray : IEnumerable<NSObject> {
-
-#nullable enable
 		/// <summary>Creates an NSArray from a C# array of NSObjects.</summary>
 		/// <param name="items">Strongly typed array of NSObjects. Null elements are stored as <see cref="NSNull.Null"/>. If the array itself is null, an empty <see cref="NSArray"/> is returned.</param>
 		/// <returns>A new <see cref="NSArray"/> containing the specified objects.</returns>
@@ -1008,17 +1005,42 @@ namespace Foundation {
 			GC.KeepAlive (this);
 			return rv;
 		}
-#nullable disable
 
-		public TKey [] ToArray<TKey> () where TKey : class, INativeObject
+		/// <summary>Converts this <see cref="NSArray" /> to a strongly-typed C# array, dropping null and incompatible elements.</summary>
+		/// <typeparam name="T">The element type for the returned array. Must be a class that implements <see cref="INativeObject" />.</typeparam>
+		/// <returns>A C# array of <typeparamref name="T" /> elements, excluding any null or incompatible elements.</returns>
+		internal T [] NonNullToArrayDropNullElements<T> () where T : class, INativeObject
 		{
-			var rv = new TKey [GetCount (Handle)];
-			for (var i = 0; i < rv.Length; i++)
-				rv [i] = GetItem<TKey> ((nuint) i);
+			var rv = NonNullArrayFromHandleDropNullElements<T> (Handle);
+			GC.KeepAlive (this);
 			return rv;
 		}
 
-		public NSObject [] ToArray ()
+		/// <summary>Converts this <see cref="NSArray" /> to a C# array by first resolving each element to <typeparamref name="V" />, then converting to <typeparamref name="T" />, dropping null elements.</summary>
+		/// <typeparam name="T">The target element type for the returned array.</typeparam>
+		/// <typeparam name="V">The intermediate native object type used to convert each element. Must be a class that implements <see cref="INativeObject" />.</typeparam>
+		/// <param name="createObject">A delegate to convert an instance of <typeparamref name="V" /> to <typeparamref name="T" />.</param>
+		/// <returns>A C# array of <typeparamref name="T" /> elements, excluding any null elements.</returns>
+		internal T [] NonNullToArrayDropNullElements<T, V> (Converter<V, T> createObject) where V : class, INativeObject
+		{
+			var rv = NonNullArrayFromHandleDropNullElements<T> (Handle, (handle) => createObject (Runtime.GetINativeObject<V> (handle, false)!));
+			GC.KeepAlive (this);
+			return rv;
+		}
+
+		/// <summary>Converts this <see cref="NSArray" /> to a strongly-typed C# array, where <see cref="NSNull" /> elements are converted to <see langword="null" />.</summary>
+		/// <typeparam name="TKey">The element type for the returned array. Must be a class that implements <see cref="INativeObject" />.</typeparam>
+		/// <returns>A C# array of <typeparamref name="TKey" /> elements. Elements that are <see cref="NSNull" /> in the source array are represented as <see langword="null" />.</returns>
+		public TKey? [] ToArray<TKey> () where TKey : class, INativeObject
+		{
+			var rv = NonNullArrayFromHandle<TKey> (Handle, NSNullBehavior.ConvertToNull);
+			GC.KeepAlive (this);
+			return rv;
+		}
+
+		/// <summary>Converts this <see cref="NSArray" /> to a C# array of <see cref="NSObject" />, where <see cref="NSNull" /> elements are converted to <see langword="null" />.</summary>
+		/// <returns>A C# array of <see cref="NSObject" /> elements. Elements that are <see cref="NSNull" /> in the source array are represented as <see langword="null" />.</returns>
+		public NSObject? [] ToArray ()
 		{
 			return ToArray<NSObject> ();
 		}

@@ -118,7 +118,9 @@ namespace Foundation {
 			}
 		}
 
-		public new TKey [] ToArray ()
+		/// <summary>Converts this <see cref="NSArray{TKey}" /> to a strongly-typed C# array, where <see cref="NSNull" /> elements are converted to <see langword="null" />.</summary>
+		/// <returns>A C# array of <typeparamref name="TKey" /> elements. Elements that are <see cref="NSNull" /> in the source array are represented as <see langword="null" />.</returns>
+		public new TKey? [] ToArray ()
 		{
 			return base.ToArray<TKey> ();
 		}

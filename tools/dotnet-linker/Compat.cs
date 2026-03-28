@@ -145,6 +145,23 @@ namespace Xamarin.Linker {
 			return assembly.Name.Name == Configuration.PlatformAssembly;
 		}
 
+		public bool ReferencesProductAssembly (AssemblyDefinition assembly)
+		{
+			if (!assembly.MainModule.HasAssemblyReferences)
+				return false;
+
+			foreach (var reference in assembly.MainModule.AssemblyReferences) {
+				if (reference.Name == Configuration.PlatformAssembly)
+					return true;
+			}
+			return false;
+		}
+
+		public bool IsOrReferencesProductAssembly (AssemblyDefinition assembly)
+		{
+			return IsProductAssembly (assembly) || ReferencesProductAssembly (assembly);
+		}
+
 		public bool IsSdkAssembly (AssemblyDefinition assembly)
 		{
 			return Configuration.FrameworkAssemblies.Contains (Assembly.GetIdentity (assembly));

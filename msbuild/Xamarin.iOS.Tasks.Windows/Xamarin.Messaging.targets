@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build"	xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.GenerateBuildSessionId" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.SayHello" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.CopyFileFromBuildServer" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.CopyFilesToBuildServer" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.CopyLongPaths" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.VerifyBuildSignature" AssemblyFile="$(_TaskAssemblyName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.Messaging.SayGoodbye" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.GenerateBuildSessionId" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.SayHello" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.CopyFileFromBuildServer" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.CopyFilesToBuildServer" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.CopyLongPaths" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.VerifyBuildSignature" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.Messaging.SayGoodbye" AssemblyFile="$(_TaskAssemblyName)" />
 
 	<PropertyGroup>
 		<IsRemoteBuild Condition="'$(IsRemoteBuild)' == ''">true</IsRemoteBuild>
@@ -73,7 +73,7 @@
 
 	<Target Name="_GenerateBuildSessionId" Condition="'$(IsRemoteBuild)' == 'true'">
 		<GenerateBuildSessionId MessagingVersion="$(MessagingVersion)" 
-			TargetFramework="$(TargetFramework)" 
+			TargetFramework="$(TargetFramework)"
 			ProjectFullPath="$(MSBuildProjectFullPath)" 
 			ProjectName="$(MSBuildProjectName)"
 			VisualStudioProcessId="$(VisualStudioProcessId)">

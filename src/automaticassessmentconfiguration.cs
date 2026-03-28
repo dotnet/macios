@@ -127,6 +127,12 @@ namespace AutomaticAssessmentConfiguration {
 		[NoiOS, MacCatalyst (26, 1), Mac (26, 1)]
 		[Export ("allowsScreenshots")]
 		bool AllowsScreenshots { get; set; }
+
+		/// <summary>Gets or sets a value that determines whether the emoji keyboard is allowed during an assessment session.</summary>
+		[NoMac, iOS (26, 4)]
+		[NoMacCatalyst]
+		[Export ("allowsEmojiKeyboard")]
+		bool AllowsEmojiKeyboard { get; set; }
 	}
 
 	[iOS (13, 4)]

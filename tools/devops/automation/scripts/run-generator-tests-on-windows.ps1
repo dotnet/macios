@@ -16,6 +16,12 @@ $Env:DOTNET = "$Env:BUILD_SOURCESDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tests\dot
 $Env:DOTNET_DIR = "$Env:BUILD_SOURCESDIRECTORY\$Env:BUILD_REPOSITORY_TITLE\tests\dotnet\Windows\bin\dotnet\"
 $Env:TESTS_USE_SYSTEM = "1"
 
+# Set Xcode version info so BGen tests can determine preview API diagnostic suppression
+$Env:XCODE_VERSION = $Env:CONFIGURATION_XCODE_VERSION
+$Env:XCODE_IS_STABLE = $Env:CONFIGURATION_XCODE_IS_STABLE
+Write-Host "XCODE_VERSION = $Env:XCODE_VERSION"
+Write-Host "XCODE_IS_STABLE = $Env:XCODE_IS_STABLE"
+
 # Compute the <platform>_NUGET_VERSION_NO_METADATA variables and set them in the environment
 $configurationDotNetPlatforms = $Env:CONFIGURATION_DOTNET_PLATFORMS
 $dotnetPlatforms = $configurationDotNetPlatforms.Split(' ', [StringSplitOptions]::RemoveEmptyEntries)

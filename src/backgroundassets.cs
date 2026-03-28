@@ -302,6 +302,9 @@ namespace BackgroundAssets {
 	delegate void BAAssetPackManagerGetAllAssetPacksCompletionHandler ([NullAllowed] NSSet<BAAssetPack> assetPacks, [NullAllowed] NSError error);
 	delegate void BAAssetPackManagerGetAssetPackCompletionHandler ([NullAllowed] BAAssetPack assetPack, [NullAllowed] NSError error);
 	delegate void BAAssetPackManagerGetStatusCompletionHandler ([NullAllowed] BAAssetPackStatus status, [NullAllowed] NSError error);
+	/// <summary>Completion handler invoked with the local status of an asset pack.</summary>
+	/// <param name="status">The <see cref="BAAssetPackStatus" /> of the asset pack on the local device.</param>
+	delegate void BAAssetPackManagerGetLocalStatusCompletionHandler (BAAssetPackStatus status);
 	delegate void BAAssetPackManagerEnsureLocalAvailabilityCompletionHandler ([NullAllowed] NSError error);
 	delegate void BAAssetPackManagerCheckForUpdatesCompletionHandler ([NullAllowed] NSSet<NSString> updatingIdentifiers, [NullAllowed] NSSet<NSString> removedIdentifiers, [NullAllowed] NSError error);
 	delegate void BAAssetPackManagerRemoveAssetPackCompletionHandler ([NullAllowed] NSError error);
@@ -329,6 +332,10 @@ namespace BackgroundAssets {
 		[Async]
 		void GetAssetPack (string assetPackIdentifier, BAAssetPackManagerGetAssetPackCompletionHandler completionHandler);
 
+		[Deprecated (PlatformName.iOS, 26, 4, message: "Use 'GetRelativeStatus' or 'GetLocalStatus' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 4, message: "Use 'GetRelativeStatus' or 'GetLocalStatus' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 4, message: "Use 'GetRelativeStatus' or 'GetLocalStatus' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 4, message: "Use 'GetRelativeStatus' or 'GetLocalStatus' instead.")]
 		[Export ("getStatusOfAssetPackWithIdentifier:completionHandler:")]
 		[Async]
 		void GetStatus (string assetPackIdentifier, BAAssetPackManagerGetStatusCompletionHandler completionHandler);
@@ -355,6 +362,38 @@ namespace BackgroundAssets {
 		[Export ("removeAssetPackWithIdentifier:completionHandler:")]
 		[Async]
 		void RemoveAssetPack (string assetPackIdentifier, [NullAllowed] BAAssetPackManagerRemoveAssetPackCompletionHandler completionHandler);
+
+		/// <summary>Gets the status of an asset pack relative to the server.</summary>
+		/// <param name="assetPack">The <see cref="BAAssetPack" /> to query.</param>
+		/// <param name="completionHandler">A completion handler called with the <see cref="BAAssetPackStatus" /> and an optional error.</param>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("getStatusRelativeToAssetPack:completionHandler:")]
+		[Async]
+		void GetRelativeStatus (BAAssetPack assetPack, BAAssetPackManagerGetStatusCompletionHandler completionHandler);
+
+		/// <summary>Gets the local status of an asset pack.</summary>
+		/// <param name="assetPackIdentifier">The identifier of the asset pack to query.</param>
+		/// <param name="completionHandler">A completion handler called with the <see cref="BAAssetPackStatus" /> of the asset pack on the local device.</param>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("getLocalStatusOfAssetPackWithIdentifier:completionHandler:")]
+		[Async]
+		void GetLocalStatus (string assetPackIdentifier, BAAssetPackManagerGetLocalStatusCompletionHandler completionHandler);
+
+		/// <summary>Synchronously checks whether an asset pack is available on the local device.</summary>
+		/// <param name="assetPackIdentifier">The identifier of the asset pack to check.</param>
+		/// <returns><see langword="true" /> if the asset pack is available locally; otherwise, <see langword="false" />.</returns>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("assetPackIsAvailableLocallyWithIdentifier:")]
+		bool IsAssetPackAvailableLocally (string assetPackIdentifier);
+
+		/// <summary>Ensures that an asset pack is available locally, optionally requiring the latest version.</summary>
+		/// <param name="assetPack">The <see cref="BAAssetPack" /> to make available.</param>
+		/// <param name="requireLatestVersion">If <see langword="true" />, checks for updates before making the asset pack available.</param>
+		/// <param name="completionHandler">A completion handler called with an optional error when the operation completes.</param>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("ensureLocalAvailabilityOfAssetPack:requireLatestVersion:completionHandler:")]
+		[Async]
+		void EnsureLocalAvailability (BAAssetPack assetPack, bool requireLatestVersion, BAAssetPackManagerEnsureLocalAvailabilityCompletionHandler completionHandler);
 	}
 
 	[TV (26, 0), iOS (26, 0), MacCatalyst (26, 0), Mac (26, 0)]

@@ -65,4 +65,20 @@ namespace AVKit {
 		ActiveHighlighted,
 	}
 
+	[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+	[Native]
+	public enum AVLegibleMediaOptionsMenuStateChangeReason : long {
+		None = 0,
+		LanguageMismatch,
+	}
+
+	[Flags]
+	[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+	[Native]
+	public enum AVLegibleMediaOptionsMenuContents : long {
+		Legible = 1L << 0,
+		CaptionAppearance = 1L << 1,
+		All = Legible | CaptionAppearance,
+	}
+
 }

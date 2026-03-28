@@ -54,22 +54,19 @@ namespace VideoToolbox {
 			return ret;
 		}
 
-#if MONOMAC
-
 		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("tvos26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
 		[DllImport (Constants.VideoToolboxLibrary)]
 		static extern void VTRegisterSupplementalVideoDecoderIfAvailable (uint codecType);
 
 		[SupportedOSPlatform ("macos")]
-		[UnsupportedOSPlatform ("maccatalyst")]
-		[UnsupportedOSPlatform ("tvos")]
-		[UnsupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("tvos26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
 		public static void RegisterSupplementalVideoDecoder (CMVideoCodecType codecType)
 			=> VTRegisterSupplementalVideoDecoderIfAvailable ((uint) codecType);
-#endif
 
 #if __MACOS__
 		[UnsupportedOSPlatform ("ios")]

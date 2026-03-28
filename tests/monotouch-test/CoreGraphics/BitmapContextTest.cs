@@ -133,7 +133,6 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var calledOnLockPointer = false;
 			var calledOnUnlockPointer = false;
 			var calledOnReleaseInfo = false;
-
 			var calledOnResolve = false;
 			var calledOnAllocate = false;
 			var calledOnFree = false;

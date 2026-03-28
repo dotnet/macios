@@ -195,6 +195,42 @@ interface MyDelegate {
 }
 ```
 
+> ❌ **New protocols** must set `BackwardsCompatibleCodeGeneration = false`. The cecil test `MustSetBackwardsCompatibleCodeGenerationToFalse` enforces this. Do NOT add it to existing protocols unless you're intentionally changing their code generation.
+
+```csharp
+// New protocol — must have BackwardsCompatibleCodeGeneration = false
+[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+[BaseType (typeof (NSObject))]
+[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
+interface MyNewDelegate {
+    [Abstract]
+    [Export ("didFinish:")]
+    void DidFinish (MyClass sender);
+}
+```
+
+### Adding Protocol Conformance to Existing Types
+
+When a `.todo` entry says `!missing-protocol-conformance!`, add the protocol to the existing type's interface declaration. Use the **plain protocol name** (no `I` prefix) in the conformance list:
+
+```csharp
+// Before: MPNowPlayingSession without protocol conformance
+[BaseType (typeof (NSObject))]
+interface MPNowPlayingSession {
+    // existing members...
+}
+
+// After: Add protocol conformance
+[BaseType (typeof (NSObject))]
+interface MPNowPlayingSession : MyPlayableItem {  // <-- plain name, NO I prefix
+    // existing members unchanged
+}
+```
+
+> ❌ **NEVER** use the `I`-prefixed name in protocol definitions or protocol conformance declarations. The `I` prefix is ONLY used when referencing a protocol as a **type** in method parameters, return types, and properties (e.g., `INSCopying Identifier { get; }`, `void Foo (INSCoding item)`). Protocol definitions use plain names (`[Protocol, Model] interface MyDelegate`), and protocol conformance uses plain names (`interface MyClass : MyProtocol`).
+
+> ⚠️ **Don't redeclare protocol-inherited properties.** When a type conforms to a protocol, it inherits the protocol's properties. If the type already has those properties bound (e.g., `title`, `artist`), do NOT redeclare them or you'll get CS0108 (member hides inherited member) warnings. Remove the duplicates from the conforming type.
+
 ### Weak Delegate Pattern
 
 Always use this pattern for delegate properties:
@@ -228,6 +264,8 @@ delegate bool ValidationHandler (string input);
 [Export ("validateWithHandler:")]
 bool Validate (ValidationHandler handler);
 ```
+
+> ❌ **NEVER** use `Action<T>` or `Func<T>` for completion handler parameters. Always define a **named delegate type** (e.g., `delegate void MyHandler (...)`) — this produces better API documentation and IntelliSense. Note: xtro-sharpie may generate `Action`/`Func` delegates; always convert them to named delegates in your binding.
 
 ## Async/Await Support
 
@@ -327,6 +365,147 @@ using MyStruct = Foundation.NSObject;
 ```
 
 The type alias lets tvOS compilation succeed. The `[NoTV]` attribute on the API definition interface ensures the type won't appear in the final tvOS assembly.
+
+## Struct Array Parameter Binding
+
+When an Objective-C API takes a C struct pointer + count (e.g., `MyStruct*` + `NSUInteger`), create a manual public wrapper that marshals a managed array to/from the native pointer. This is a common Apple API pattern (MapKit, CarPlay, ARKit, etc.).
+
+### Recognition
+
+You need this pattern when:
+- A constructor or method takes `T*` + `NSUInteger count` (struct array input)
+- A property returns `T*` with a separate `count` property (struct array output)
+- The generated reference binding shows `IntPtr` where you'd expect a struct array
+
+### API Definition (`src/frameworkname.cs`)
+
+Mark struct pointer APIs as `[Internal]` so they're not exposed publicly:
+
+```csharp
+[BaseType (typeof (NSObject))]
+[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
+interface MyClass {
+	// Static factory — [Internal] + IntPtr
+	[Static]
+	[Internal]
+	[Export ("classWithCoordinates:count:")]
+	MyClass _Create (IntPtr coords, nint count);
+
+	// Constructor — [Internal] + IntPtr
+	[Internal]
+	[Export ("initWithPoints:count:")]
+	NativeHandle Constructor (IntPtr points, nuint count);
+
+	// Property getter — [Internal] + IntPtr
+	[Internal]
+	[Export ("points")]
+	IntPtr _Points { get; }
+
+	[Export ("pointCount")]
+	nuint PointCount { get; }
+}
+```
+
+### Manual Wrappers (`src/FrameworkName/MyClass.cs`)
+
+> ⚠️ Always use the **factory pattern** (static `Create` method) instead of a public constructor for struct array parameters. This avoids issues with `fixed` in constructor chains.
+>
+> ⚠️ Manual code should also have **XML documentation comments** (`<summary>`, `<param>`, `<returns>`, etc.).
+
+#### Factory for Static Methods
+
+When the API definition has a `[Static] [Internal]` method:
+
+```csharp
+#nullable enable
+
+namespace FrameworkName {
+
+	public partial class MyClass {
+
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		/// <summary>Creates a new <see cref="MyClass" /> from the specified coordinates.</summary>
+		/// <param name="coords">The array of coordinates.</param>
+		/// <returns>A new <see cref="MyClass" /> instance.</returns>
+		public static unsafe MyClass Create (MyStruct [] coords)
+		{
+			if (coords is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (coords));
+
+			fixed (MyStruct* first = coords) {
+				return _Create ((IntPtr) first, coords.Length);
+			}
+		}
+	}
+}
+```
+
+Real examples: `src/MapKit/MKPolyline.cs`, `src/MapKit/MKPolygon.cs`
+
+#### Factory for Constructors
+
+When the API definition has an `[Internal]` `Constructor`:
+
+```csharp
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		/// <summary>Creates a new <see cref="MyClass" /> from the specified points.</summary>
+		/// <param name="points">The array of points.</param>
+		/// <returns>A new <see cref="MyClass" /> instance.</returns>
+		public static unsafe MyClass Create (MyStruct [] points)
+		{
+			if (points is null)
+				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (points));
+
+			fixed (MyStruct* first = points) {
+				return new MyClass ((IntPtr) first, (nuint) points.Length);
+			}
+		}
+```
+
+If the API definition uses `_InitWith*` methods instead of `Constructor`, use `NSObjectFlag.Empty` + `InitializeHandle`:
+
+```csharp
+		public static unsafe MyClass Create (MyStruct [] points)
+		{
+			// ... null/empty checks ...
+			var instance = new MyClass (NSObjectFlag.Empty);
+			fixed (MyStruct* first = points) {
+				instance.InitializeHandle (
+					instance._InitWithPoints ((IntPtr) first, (nuint) points.Length), "initWithPoints:length:");
+			}
+			return instance;
+		}
+```
+
+#### Property Getter for Struct Arrays
+
+When the API has an `[Internal]` `IntPtr` property + a count property:
+
+```csharp
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		/// <summary>Gets the array of points.</summary>
+		public unsafe MyStruct [] Points {
+			get {
+				var count = (int) PointCount;
+				var source = (MyStruct*) _Points;
+				if (source == null)
+					return [];
+				var result = new MyStruct [count];
+				for (int i = 0; i < count; i++)
+					result [i] = source [i];
+				return result;
+			}
+		}
+```
+
+Real example: `src/MapKit/MKMultiPoint.cs`
+
+### frameworks.sources
+
+Add the manual file to the framework's `*_SOURCES`. If the file defines types needed by the API definition (like structs), add it to both `*_API_SOURCES` and `*_SOURCES`.
 
 ## Strongly-Typed Dictionaries
 
@@ -446,6 +625,7 @@ All `[Verify]` attributes must be resolved before submitting a PR.
 - **Protocol conformance**: All `[Abstract]` methods in a protocol are required.
 - **nint/nuint**: Use `nint`/`nuint` for Objective-C `NSInteger`/`NSUInteger`.
 - **XAMCORE_5_0**: Only for fixing breaking changes on existing shipped types. Never use for new code.
+- **Handle access in manual code**: Use `GetCheckedHandle ()` instead of `Handle` when passing the native handle to P/Invokes in manual bindings. `GetCheckedHandle ()` throws `ObjectDisposedException` if the object has been disposed, preventing hard-to-debug native crashes.
 - **Struct members**: Wrap public methods and properties in `#if !COREBUILD`, but NOT fields (bgen needs struct size). Never use `#pragma warning disable 0169`.
 
 ## Code Style Reminders
@@ -456,3 +636,132 @@ All `[Verify]` attributes must be resolved before submitting a PR.
 - Use `[]` not `Array.Empty<T> ()`
 - Follow Mono code-formatting style from `.editorconfig`
 - Match existing patterns in the framework's binding file
+
+## Availability on Manual Code
+
+API definition files (`src/frameworkname.cs`) use binding-style attributes:
+
+```csharp
+[iOS (26, 2), TV (26, 2), Mac (26, 2), MacCatalyst (26, 2)]
+[Export ("newProperty")]
+string NewProperty { get; }
+```
+
+Manual code files (`src/FrameworkName/*.cs`) use `[SupportedOSPlatform]` attributes on P/Invokes, properties, and methods:
+
+```csharp
+[SupportedOSPlatform ("ios26.2")]
+[SupportedOSPlatform ("tvos26.2")]
+[SupportedOSPlatform ("macos26.2")]
+[SupportedOSPlatform ("maccatalyst26.2")]
+public CTUIFontType UIFontType {
+	get {
+		return CTFontGetUIFontType (GetCheckedHandle ());
+	}
+}
+```
+
+Both styles are required. Omitting availability from P/Invokes or manual properties is a common mistake.
+
+### Determining the Correct Version
+
+Check `tools/common/SdkVersions.cs` for the current SDK versions:
+
+```bash
+grep -E 'public const string (iOS|TVOS|OSX|MacCatalyst) ' tools/common/SdkVersions.cs
+```
+
+Or check `Make.versions`:
+
+```bash
+grep '_NUGET_OS_VERSION=' Make.versions
+```
+
+Use these values for all availability attributes. If the user specifies a different version (e.g., for a beta branch), use that instead.
+
+## Monotouch-Test Patterns
+
+When manually binding C# APIs (P/Invokes, manual properties, struct accessors), add tests in `tests/monotouch-test/{FrameworkName}/`.
+
+### File Structure
+
+```
+tests/monotouch-test/
+├── CoreText/
+│   ├── FontTest.cs
+│   ├── FontDescriptorTest.cs
+│   └── ...
+├── CoreGraphics/
+│   ├── FontTest.cs
+│   ├── ContextTest.cs
+│   └── ...
+```
+
+### Template
+
+> ⚠️ **Framework availability guards:** If the framework is not available on all platforms (e.g., CarPlay is iOS-only), wrap the entire test file in `#if HAS_FRAMEWORKNAME` (e.g., `#if HAS_CARPLAY`). The build system defines these symbols based on which frameworks are available for each platform. Check the framework's existing test files for the correct symbol name.
+
+```csharp
+#if HAS_CORETEXT  // only needed if framework isn't on all platforms
+using NUnit.Framework;
+using Foundation;
+using CoreText;  // framework under test
+#if MONOMAC
+using AppKit;
+#else
+using UIKit;
+#endif
+
+namespace MonoTouchFixtures.CoreText {  // MonoTouchFixtures.{FrameworkName}
+
+	[TestFixture]
+	[Preserve (AllMembers = true)]
+	public class FontTest {
+
+		[Test]
+		public void UIFontType_SystemFont ()
+		{
+			// Guard: skip test on runtimes older than the API's availability version
+			TestRuntime.AssertXcodeVersion (26, 2);
+
+			using (var font = new CTFont ("Helvetica", 12)) {
+				var fontType = font.UIFontType;
+				Assert.AreEqual (CTUIFontType.System, fontType, "UIFontType");
+			}
+		}
+
+		[Test]
+		public void LanguageAttribute_RoundTrip ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 2);
+
+			var attrs = new CTFontDescriptorAttributes () { Language = "en" };
+			using (var desc = new CTFontDescriptor (attrs)) {
+				// Round-trip test: set a value, read it back
+				var readAttrs = desc.GetAttributes ();
+				Assert.AreEqual ("en", readAttrs.Language, "Language");
+			}
+		}
+	}
+}
+#endif // HAS_CORETEXT — only needed if framework isn't on all platforms
+```
+
+### Key Patterns
+
+| Pattern | Usage |
+|---------|-------|
+| `TestRuntime.AssertXcodeVersion (X, Y)` | Skip test if runtime is older than API availability |
+| `TestRuntime.CheckXcodeVersion (X, Y)` | Boolean check for conditional logic within a test |
+| `[Preserve (AllMembers = true)]` | Prevents linker from stripping test methods |
+| `using` statements | Always clean up handle-based objects |
+| Namespace `MonoTouchFixtures.*` | Match framework name (e.g., `MonoTouchFixtures.CoreText`) |
+| Platform-conditional imports | `#if MONOMAC` for AppKit vs UIKit |
+
+### What to Test
+
+- **P/Invoke wrappers**: Call the C# wrapper and verify it returns sensible values
+- **Manual properties**: Set a value, read it back (round-trip test)
+- **Struct accessors**: Create a struct, set properties, verify getters return expected values
+- **Null handling**: Verify null parameters behave correctly (return null, throw `ArgumentNullException`, etc.)
+- **Enum conversions**: Verify known native values map to the correct C# enum values

@@ -405,7 +405,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "CoreNFC", "CoreNFC", new Version (11, 0), new Version (15, 0), true }, /* not always present, e.g. iPad w/iOS 12, so must be weak linked; doesn't work in the simulator in Xcode 12 (https://stackoverflow.com/q/63915728/183422), but works in at least Xcode 15 (maybe earlier too) */
 				{ "DeviceCheck", "DeviceCheck", new Version (11, 0), new Version (13, 0) },
 				{ "IdentityLookup", "IdentityLookup", 11 },
-				{ "IOSurface", "IOSurface", new Version (11, 0), NotAvailableInSimulator /* Not available in the simulator (the header is there, but broken) */  },
+				{ "IOSurface", "IOSurface", new Version (11, 0), new Version (26, 0) /* The headers were broken at some point, not sure when they started working again */ },
 				{ "CoreML", "CoreML", 11 },
 				{ "Vision", "Vision", 11 },
 				{ "FileProvider", "FileProvider", 11 },
@@ -554,7 +554,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 					{ "DeviceCheck", "DeviceCheck", new Version (11, 0), new Version (13, 0) },
 					{ "CoreML", "CoreML", 11 },
-					{ "IOSurface", "IOSurface", new Version (11, 0), NotAvailableInSimulator /* Not available in the simulator (the header is there, but broken) */  },
+					{ "IOSurface", "IOSurface", new Version (11, 0), new Version (26, 0) /* The headers were broken at some point, not sure when they started working again */ },
 					{ "Vision", "Vision", 11 },
 
 					{ "CoreServices", "MobileCoreServices", 12 },

@@ -12,8 +12,8 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 ***********************************************************************************************
 -->
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.CalculateAssembliesReport" AssemblyFile="$(CoreiOSSdkDirectory)$(_TaskAssemblyFileName)" />
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.AnalyzeFileChanges" AssemblyFile="$(CoreiOSSdkDirectory)$(_TaskAssemblyFileName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.CalculateAssembliesReport" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.AnalyzeFileChanges" AssemblyFile="$(_TaskAssemblyName)" />
 	
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Messaging.targets" Condition="'$(MessagingBuildTargetsImported)' != 'true'" />
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Messaging.Apple.targets" Condition="Exists('$(MSBuildThisFileDirectory)Xamarin.Messaging.Apple.targets') And '$(MessagingAppleTargetsImported)' != 'true'" />

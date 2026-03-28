@@ -2582,6 +2582,18 @@ namespace Metal {
 		UInt16 = (long) MTLDataType.UShort,
 		Int32 = (long) MTLDataType.Int,
 		UInt32 = (long) MTLDataType.UInt,
+		[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
+		Int4 = 143,
+		[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
+		UInt4 = 144,
+	}
+
+	[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
+	[Native]
+	[ErrorDomain ("MTLDeviceErrorDomain")]
+	public enum MTLDeviceError : long {
+		None = 0,
+		NotSupported = 1,
 	}
 
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]

@@ -1641,6 +1641,11 @@ namespace AuthenticationServices {
 		[Mac (14, 5), iOS (17, 5), MacCatalyst (17, 5)]
 		[NullAllowed, Export ("appID")]
 		string AppId { get; set; }
+
+		/// <summary>Gets or sets the PRF (Pseudo-Random Function) extension input for the security key credential assertion request.</summary>
+		[Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("prf"), NullAllowed]
+		ASAuthorizationPublicKeyCredentialPrfAssertionInput Prf { get; set; }
 	}
 
 	interface IASAuthorizationPublicKeyCredentialAssertionRequest { }
@@ -1838,6 +1843,11 @@ namespace AuthenticationServices {
 		[Export ("residentKeyPreference")]
 		[BindAs (typeof (ASAuthorizationPublicKeyCredentialResidentKeyPreference))]
 		NSString ResidentKeyPreference { get; set; }
+
+		/// <summary>Gets or sets the PRF (Pseudo-Random Function) extension input for the security key credential registration request.</summary>
+		[Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("prf"), NullAllowed]
+		ASAuthorizationPublicKeyCredentialPrfRegistrationInput Prf { get; set; }
 	}
 
 	[TV (15, 0), NoiOS, NoMac, NoMacCatalyst]
@@ -1908,6 +1918,11 @@ namespace AuthenticationServices {
 		[Mac (14, 5), iOS (17, 5), MacCatalyst (17, 5)]
 		[Export ("appID")]
 		bool AppId { get; }
+
+		/// <summary>Gets the PRF (Pseudo-Random Function) extension output from the security key credential assertion.</summary>
+		[Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("prf"), NullAllowed]
+		ASAuthorizationPublicKeyCredentialPrfAssertionOutput Prf { get; }
 	}
 
 	[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
@@ -1919,6 +1934,11 @@ namespace AuthenticationServices {
 		[Export ("transports", ArgumentSemantic.Assign)]
 		[BindAs (typeof (ASAuthorizationSecurityKeyPublicKeyCredentialDescriptorTransport []))]
 		NSString [] Transports { get; }
+
+		/// <summary>Gets the PRF (Pseudo-Random Function) extension output from the security key credential registration.</summary>
+		[Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("prf"), NullAllowed]
+		ASAuthorizationPublicKeyCredentialPrfRegistrationOutput Prf { get; }
 	}
 
 	[TV (16, 0), iOS (15, 0), MacCatalyst (15, 0)]

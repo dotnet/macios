@@ -4,7 +4,7 @@
 #nullable enable
 
 namespace ObjCRuntime {
-	/// <summary>This attributes tells the runtime which Objective-C framework a given type belongs to.</summary>
+	/// <summary>This attribute tells the runtime which Objective-C framework a given type belongs to.</summary>
 	/// <remarks>This is used to determine which Objective-C frameworks to link with during the build.</remarks>
 	[AttributeUsage (AttributeTargets.Class | AttributeTargets.Interface)]
 	public sealed class ObjectiveCFrameworkAttribute : Attribute {

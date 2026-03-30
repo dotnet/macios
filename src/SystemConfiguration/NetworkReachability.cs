@@ -377,7 +377,9 @@ namespace SystemConfiguration {
 
 			IntPtr handle;
 			if (localAddress is null) {
-				var remote = new sockaddr_in (remoteAddress!);
+				if (remoteAddress is null)
+					throw new ArgumentException ("At least one address is required");
+				var remote = new sockaddr_in (remoteAddress);
 
 				unsafe {
 					handle = SCNetworkReachabilityCreateWithAddressPair (IntPtr.Zero, IntPtr.Zero, &remote);

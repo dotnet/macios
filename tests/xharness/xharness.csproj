@@ -6,7 +6,6 @@
     <RootNamespace>Xharness</RootNamespace>
     <AssemblyName>xharness</AssemblyName>
     <LangVersion>latest</LangVersion>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 

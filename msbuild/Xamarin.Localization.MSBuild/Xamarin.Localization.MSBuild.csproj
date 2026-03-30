@@ -5,7 +5,6 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../product.snk</AssemblyOriginatorKeyFile>
     <LangVersion>latest</LangVersion>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup>

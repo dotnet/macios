@@ -18,7 +18,6 @@
 
     <!-- We're warning-free, so let's make sure we stay that way -->
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
 
     <DefineConstants>$(DefineConstants);BINDINGS_TEST</DefineConstants>
   </PropertyGroup>

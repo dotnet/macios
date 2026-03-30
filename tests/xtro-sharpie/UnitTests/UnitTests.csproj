@@ -3,7 +3,6 @@
 		<TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
 		<IsPackable>false</IsPackable>
 		<DefineConstants>$(DefineConstants);NET;TESTS</DefineConstants>
-		<WarningsAsErrors>Nullable</WarningsAsErrors>
 	</PropertyGroup>
 
 	<ItemGroup>

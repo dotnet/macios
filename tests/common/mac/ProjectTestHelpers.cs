@@ -171,7 +171,9 @@ namespace Xamarin.MMP.Tests {
 		{
 			StringBuilder output = new StringBuilder ();
 			environment ??= new Dictionary<string, string> ();
-			environment ["DYLD_FALLBACK_LIBRARY_PATH"] = null!;
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type - null unsets the env var
+			environment ["DYLD_FALLBACK_LIBRARY_PATH"] = null;
+#pragma warning restore CS8625
 			int compileResult = ExecutionHelper.Execute (exe, args, environmentVariables: environment, stdout: output, stderr: output);
 			if (!shouldFail && compileResult != 0) {
 				Console.WriteLine ($"Execution of the following command failed (exit code: {compileResult}):");

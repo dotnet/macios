@@ -102,7 +102,7 @@ namespace Xamarin.Tests {
 
 		public ApplePlatform ApplePlatform {
 			get {
-				return new TargetFramework (TargetFrameworkIdentifier, null!).Platform;
+				return new TargetFramework (TargetFrameworkIdentifier, new Version ()).Platform;
 			}
 		}
 

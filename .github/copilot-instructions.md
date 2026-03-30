@@ -10,7 +10,7 @@ Ignore comments from the user 'vs-mobiletools-engineering-service2' when process
 
 ## Pull request review instructions
 
-- Don't report about C# code you don't think will compile.
+- Don't report potential C# compilation errors (the compiler will report those).
 
 ## Repository Overview
 

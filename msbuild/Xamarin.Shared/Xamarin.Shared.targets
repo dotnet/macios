@@ -3045,6 +3045,36 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_PostProcessAppBundle" DependsOnTargets="$(_PostProcessAppBundleDependsOn)" />
 
+	<Target Name="_CopyDebuggerAssetsToOutput"
+		Condition="'$(_CanOutputAppBundle)' == 'true' and '$(DebuggerSupport)' == 'true' and '$(_XamarinRuntime)' == 'CoreCLR'"
+		DependsOnTargets="_GenerateBundleName;_ComputeVariables">
+		<PropertyGroup>
+			<_DebuggerAssetsDir>$([MSBuild]::NormalizeDirectory('$(DeviceSpecificOutputPath)', 'debugger-assets'))</_DebuggerAssetsDir>
+			<_CoreCLRRuntimePackPath>%(_MonoFrameworkReference.RuntimePackPath)</_CoreCLRRuntimePackPath>
+		</PropertyGroup>
+		<MakeDir Directories="$(_DebuggerAssetsDir)" />
+		<ItemGroup>
+			<_FinalAppBundleAssembly Include="@(_UserAssemblies -> '$(_AppBundlePath)$(_AppContentsRelativePath)%(Filename).dll')" />
+			<_FinalAppBundleAssembly Include="@(_UserAssemblies -> '$(_AppBundlePath)$(_AppContentsRelativePath)%(Filename).pdb')" />
+			<_FinalAppBundleAssembly Remove="@(_FinalAppBundleAssembly)" Condition="!Exists('%(Identity)')" />
+
+			<_HostDebugComponent Include="$(_CoreCLRRuntimePackPath)/tools/osx-*/libmscordaccore.dylib" />
+			<_HostDebugComponent Include="$(_CoreCLRRuntimePackPath)/tools/osx-*/libmscordbi.dylib" />
+		</ItemGroup>
+		<Copy
+			SourceFiles="@(_FinalAppBundleAssembly)"
+			DestinationFolder="$(_DebuggerAssetsDir)"
+			SkipUnchangedFiles="true"
+			Condition="'@(_FinalAppBundleAssembly)' != ''"
+		/>
+		<Copy
+			SourceFiles="@(_HostDebugComponent)"
+			DestinationFolder="$(_DebuggerAssetsDir)"
+			SkipUnchangedFiles="true"
+			Condition="'@(_HostDebugComponent)' != ''"
+		/>
+	</Target>
+
 	<Target Name="_PreparePostProcessing" DependsOnTargets="_CollectItemsForPostProcessing">
 		<ItemGroup>
 			<_PostProcessingItem>

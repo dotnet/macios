@@ -268,6 +268,7 @@
 			_CopyDirectoriesToBundle;
 			_CopyAppExtensionsToBundle;
 			_PostProcessAppBundle;
+			_CopyDebuggerAssetsToOutput;
 		</CreateAppBundleDependsOn>
 
 		<!-- not inner build for multi-rid build (single-rid build or outer build for multi-rid build) -->
@@ -283,6 +284,7 @@
 			$(CreateAppBundleDependsOn);
 			_CreateMergedAppBundle;
 			_PostProcessAppBundle;
+			_CopyDebuggerAssetsToOutput;
 		</CreateAppBundleDependsOn>
 	</PropertyGroup>
 

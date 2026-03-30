@@ -167,13 +167,11 @@ namespace Xamarin.MMP.Tests {
 			return RunAndAssert (exe, args, "Command: " + exe);
 		}
 
-		public static string RunAndAssert (string exe, IList<string> args, string stepName, bool shouldFail = false, Func<string>? getAdditionalFailInfo = null, Dictionary<string, string>? environment = null)
+		public static string RunAndAssert (string exe, IList<string> args, string stepName, bool shouldFail = false, Func<string>? getAdditionalFailInfo = null, Dictionary<string, string?>? environment = null)
 		{
 			StringBuilder output = new StringBuilder ();
-			environment ??= new Dictionary<string, string> ();
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type - null unsets the env var
+			environment ??= new Dictionary<string, string?> ();
 			environment ["DYLD_FALLBACK_LIBRARY_PATH"] = null;
-#pragma warning restore CS8625
 			int compileResult = ExecutionHelper.Execute (exe, args, environmentVariables: environment, stdout: output, stderr: output);
 			if (!shouldFail && compileResult != 0) {
 				Console.WriteLine ($"Execution of the following command failed (exit code: {compileResult}):");
@@ -196,7 +194,7 @@ namespace Xamarin.MMP.Tests {
 			RunAndAssert ("Legacy projects not supported anymore", new [] { "--", csprojTarget, "/t:clean" }, "Clean", environment: Configuration.GetBuildEnvironment (ApplePlatform.MacOSX));
 		}
 
-		public static BuildResult BuildProject (string csprojTarget, bool shouldFail = false, bool release = false, Dictionary<string, string>? environment = null, IList<string>? extraArgs = null)
+		public static BuildResult BuildProject (string csprojTarget, bool shouldFail = false, bool release = false, Dictionary<string, string?>? environment = null, IList<string>? extraArgs = null)
 		{
 			Configuration.SetBuildVariables (ApplePlatform.MacOSX, ref environment);
 
@@ -367,7 +365,7 @@ namespace Xamarin.MMP.Tests {
 			return GenerateEXEProject (config);
 		}
 
-		public static BuildResult GenerateAndBuildUnifiedExecutable (UnifiedTestConfig config, bool shouldFail = false, Dictionary<string, string>? environment = null)
+		public static BuildResult GenerateAndBuildUnifiedExecutable (UnifiedTestConfig config, bool shouldFail = false, Dictionary<string, string?>? environment = null)
 		{
 			string csprojTarget = GenerateUnifiedExecutableProject (config);
 			return BuildProject (csprojTarget, shouldFail: shouldFail, release: config.Release, environment: environment);
@@ -378,7 +376,7 @@ namespace Xamarin.MMP.Tests {
 			return RunEXEAndVerifyGUID (config.TmpDir, config.guid, config.ExecutablePath);
 		}
 
-		public static OutputText TestUnifiedExecutable (UnifiedTestConfig config, bool shouldFail = false, Dictionary<string, string>? environment = null)
+		public static OutputText TestUnifiedExecutable (UnifiedTestConfig config, bool shouldFail = false, Dictionary<string, string?>? environment = null)
 		{
 			AddGUIDTestCode (config);
 

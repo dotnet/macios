@@ -9,7 +9,6 @@
     <!-- warning CA1422: This call site is reachable on: '...'. '...' is obsoleted on: '...'. -->
     <NoWarn>$(NoWarn);CA1422</NoWarn>
 
-    <Nullable>enable</Nullable>
     <WarningsAsErrors>Nullable</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>

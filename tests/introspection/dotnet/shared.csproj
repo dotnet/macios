@@ -16,8 +16,6 @@
 
     <DefineConstants Condition="'$(Configuration)' == 'Debug'">$(DefineConstants);DEBUG</DefineConstants>
 
-    <Nullable>enable</Nullable>
-
     <!-- warnings IL2026;IL2057;IL2059;IL2070;IL2075;IL2096: trimmability warnings. The introspection tests aren't trimmable (we set MtouchLink=None), so just ignore these -->
     <NoWarn>$(NoWarn);IL2026;IL2057;IL2059;IL2070;IL2075;IL2096</NoWarn>
 

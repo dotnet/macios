@@ -6,7 +6,6 @@
 
     <IsPackable>false</IsPackable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <Nullable>enable</Nullable>
     <DefaultItemExcludesInProjectFolder>$(DefaultItemExcludesInProjectFolder);tests/**</DefaultItemExcludesInProjectFolder>
   </PropertyGroup>
 

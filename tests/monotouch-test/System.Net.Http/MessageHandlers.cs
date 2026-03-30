@@ -798,8 +798,8 @@ namespace MonoTests.System.Net.Http {
 
 		static NWListener CreateNWTlsListener (bool requireClientCert)
 		{
-			using var serverCert = CreateSelfSignedServerCertificate ();
-			using var secIdentity = SecIdentity.Import (serverCert);
+			var (pfxData, pfxPassword) = CreateSelfSignedServerCertificatePfx ();
+			using var secIdentity = SecIdentity.Import (pfxData, pfxPassword);
 			using var secIdentity2 = new SecIdentity2 (secIdentity);
 			using var readyEvent = new ManualResetEventSlim (false);
 			NWError? listenerError = null;
@@ -853,7 +853,7 @@ namespace MonoTests.System.Net.Http {
 			return listener;
 		}
 
-		static X509Certificate2 CreateSelfSignedServerCertificate ()
+		static (byte [] Data, string Password) CreateSelfSignedServerCertificatePfx ()
 		{
 			using var rsa = RSA.Create (2048);
 			var certRequest = new CertificateRequest (
@@ -863,7 +863,8 @@ namespace MonoTests.System.Net.Http {
 			sanBuilder.AddDnsName ("localhost");
 			certRequest.CertificateExtensions.Add (sanBuilder.Build ());
 			var cert = certRequest.CreateSelfSigned (DateTimeOffset.UtcNow.AddDays (-1), DateTimeOffset.UtcNow.AddYears (1));
-			return X509CertificateLoader.LoadPkcs12 (cert.Export (X509ContentType.Pfx), null);
+			var password = Guid.NewGuid ().ToString ();
+			return (cert.Export (X509ContentType.Pfx, password), password);
 		}
 
 		[Test]

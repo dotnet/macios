@@ -370,14 +370,14 @@ namespace SystemConfiguration {
 		[ObsoletedOSPlatform ("maccatalyst17.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
 		[ObsoletedOSPlatform ("tvos17.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
 		[ObsoletedOSPlatform ("macos14.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
-		static IntPtr Create (IPAddress localAddress, IPAddress remoteAddress)
+		static IntPtr Create (IPAddress? localAddress, IPAddress? remoteAddress)
 		{
 			if (localAddress is null && remoteAddress is null)
 				throw new ArgumentException ("At least one address is required");
 
 			IntPtr handle;
 			if (localAddress is null) {
-				var remote = new sockaddr_in (remoteAddress);
+				var remote = new sockaddr_in (remoteAddress!);
 
 				unsafe {
 					handle = SCNetworkReachabilityCreateWithAddressPair (IntPtr.Zero, IntPtr.Zero, &remote);
@@ -411,7 +411,7 @@ namespace SystemConfiguration {
 		[ObsoletedOSPlatform ("maccatalyst17.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
 		[ObsoletedOSPlatform ("tvos17.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
 		[ObsoletedOSPlatform ("macos14.4", "Use 'NSUrlSession' or 'NWConnection' instead.")]
-		public NetworkReachability (IPAddress localAddress, IPAddress remoteAddress)
+		public NetworkReachability (IPAddress? localAddress, IPAddress? remoteAddress)
 			: base (Create (localAddress, remoteAddress), true)
 		{
 		}

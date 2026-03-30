@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mono.Tuner;
 
 #if LEGACY_TOOLS || BUNDLER
 using Mono.Cecil;
+using Mono.Tuner;
 
 using Xamarin.Bundler;
 using Registrar;
@@ -708,7 +708,7 @@ public class Frameworks : Dictionary<string, Framework> {
 		if (td.HasCustomAttributes) {
 			var any = false;
 			foreach (var attrib in td.CustomAttributes) {
-				if (!ca.AttributeType.Is ("ObjCRuntime", "ObjectiveCFrameworkAttribute")
+				if (!attrib.AttributeType.Is ("ObjCRuntime", "ObjectiveCFrameworkAttribute"))
 					continue;
 				if (attrib.ConstructorArguments.Count != 1)
 					continue;

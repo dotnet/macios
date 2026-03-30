@@ -18,8 +18,7 @@ using UIKit;
 
 using Xamarin.Bundler;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Registrar {
 	// Somewhere to put shared code between the old and the new dynamic registrars.
@@ -33,13 +32,13 @@ namespace Registrar {
 		// IL2062: Value passed to parameter 'interfaceType' of method 'System.Type.GetInterfaceMap(Type)' can not be statically determined and may not meet 'DynamicallyAccessedMembersAttribute' requirements.
 		[UnconditionalSuppressMessage ("", "IL2062", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		public static Dictionary<MethodBase, List<MethodBase>> PrepareInterfaceMethodMapping (Type type)
+		public static Dictionary<MethodBase, List<MethodBase>>? PrepareInterfaceMethodMapping (Type type)
 		{
 			// Note that the code in this method shouldn't be called when using any static registrar, so throw an exception in that case.
 			if (!Runtime.DynamicRegistrationSupported)
 				throw ErrorHelper.CreateError (8026, "The 'DynamicRegistrar' class is not supported when the dynamic registrar has been linked away.");
 
-			Dictionary<MethodBase, List<MethodBase>> rv = null;
+			Dictionary<MethodBase, List<MethodBase>>? rv = null;
 			var ifaces = type.FindInterfaces ((v, o) => {
 				var attribs = v.GetCustomAttributes (typeof (ProtocolAttribute), true);
 				return attribs is not null && attribs.Length > 0;
@@ -54,7 +53,7 @@ namespace Registrar {
 					if (SharedDynamic.GetOneAttribute<ExportAttribute> (ifaceMethod) is null)
 						continue;
 
-					List<MethodBase> list;
+					List<MethodBase>? list;
 					if (rv is null) {
 						rv = new Dictionary<MethodBase, List<MethodBase>> ();
 						rv [impl] = list = new List<MethodBase> ();
@@ -68,7 +67,7 @@ namespace Registrar {
 			return rv;
 		}
 
-		public static T GetOneAttribute<T> (ICustomAttributeProvider provider) where T : Attribute
+		public static T? GetOneAttribute<T> (ICustomAttributeProvider provider) where T : Attribute
 		{
 			var attribs = provider.GetCustomAttributes (typeof (T), false);
 			if (attribs.Length == 0)
@@ -88,21 +87,21 @@ namespace Registrar {
 
 	class DynamicRegistrar : Registrar {
 		Dictionary<IntPtr, ObjCType> type_map;
-		Dictionary<string, object> registered_assemblies; // Use Dictionary instead of HashSet to avoid pulling in System.Core.dll.
+		Dictionary<string, object?>? registered_assemblies; // Use Dictionary instead of HashSet to avoid pulling in System.Core.dll.
 
 		// custom_type_map can be accessed from multiple threads, and at the
 		// same time mutated by the registrar, so any accesses needs to be locked
 		// so that it's not queried and mutated at the same time from multiple threads.
 		// Note that the registrar is already making sure it's not _mutated_ from
 		// multiple threads at the same time.
-		Dictionary<Type, object> custom_type_map; // Use Dictionary instead of HashSet to avoid pulling in System.Core.dll.
+		Dictionary<Type, object?> custom_type_map; // Use Dictionary instead of HashSet to avoid pulling in System.Core.dll.
 
 		protected object lock_obj = new object ();
 
 		public DynamicRegistrar ()
 		{
 			type_map = new Dictionary<IntPtr, ObjCType> (Runtime.IntPtrEqualityComparer);
-			custom_type_map = new Dictionary<Type, object> (Runtime.TypeEqualityComparer);
+			custom_type_map = new Dictionary<Type, object?> (Runtime.TypeEqualityComparer);
 		}
 
 		protected override bool SkipRegisterAssembly (Assembly assembly)
@@ -113,7 +112,7 @@ namespace Registrar {
 		public void SetAssemblyRegistered (string assembly)
 		{
 			if (registered_assemblies is null)
-				registered_assemblies = new Dictionary<string, object> ();
+				registered_assemblies = new Dictionary<string, object?> ();
 			registered_assemblies.Add (assembly, null);
 		}
 
@@ -171,14 +170,14 @@ namespace Registrar {
 				throw new ArgumentException (string.Format ("Cannot register methods on '{0}'; it does not inherit from NSObject.", type.FullName));
 
 			if (!minfo.IsStatic && type != minfo.DeclaringType)
-				throw new ArgumentException (string.Format ("Cannot register the instance method '{0}' on the type '{1}'. The type to connect to ('{2}') must match the method's type ('{1}').", minfo.Name, type.FullName, minfo.DeclaringType.FullName));
+				throw new ArgumentException (string.Format ("Cannot register the instance method '{0}' on the type '{1}'. The type to connect to ('{2}') must match the method's type ('{1}').", minfo.Name, type.FullName, minfo.DeclaringType?.FullName));
 
-			List<Exception> exceptions = null;
+			List<Exception>? exceptions = null;
 			var objcType = RegisterType (type, ref exceptions);
-			var method = new ObjCMethod (this, objcType, minfo);
+			var method = new ObjCMethod (this, objcType!, minfo);
 			if (method.SetExportAttribute (ea, ref exceptions)) {
 				if (exceptions is null) {
-					objcType.Add (method, ref exceptions);
+					objcType!.Add (method, ref exceptions);
 					if (exceptions is null)
 						RegisterMethod (method);
 				}
@@ -211,7 +210,7 @@ namespace Registrar {
 		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties', 'DynamicallyAccessedMemberTypes.NonPublicProperties' in call to 'System.Type.GetProperty(String, BindingFlags)'. The parameter 'type' of method 'Registrar.DynamicRegistrar.FindProperty(Type, String)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		protected override PropertyInfo FindProperty (Type type, string name)
+		protected override PropertyInfo? FindProperty (Type type, string name)
 		{
 			// Note that the code in this method shouldn't be called when using any static registrar, so throw an exception in that case.
 			if (!Runtime.DynamicRegistrationSupported)
@@ -225,7 +224,7 @@ namespace Registrar {
 		// IL2026: Using member 'System.Reflection.Assembly.GetTypes()' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Types might be removed.
 		[UnconditionalSuppressMessage ("", "IL2026", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		public override Type FindType (Type relative, string @namespace, string name)
+		public override Type? FindType (Type relative, string? @namespace, string name)
 		{
 			// Note that the code in this method shouldn't be called when using any static registrar, so throw an exception in that case.
 			if (!Runtime.DynamicRegistrationSupported)
@@ -300,12 +299,12 @@ namespace Registrar {
 			return assembly.GetTypes ();
 		}
 
-		public override BindAsAttribute GetBindAsAttribute (PropertyInfo property)
+		public override BindAsAttribute? GetBindAsAttribute (PropertyInfo? property)
 		{
 			return property?.GetCustomAttribute<BindAsAttribute> (false);
 		}
 
-		public override BindAsAttribute GetBindAsAttribute (MethodBase method, int parameter_index)
+		public override BindAsAttribute? GetBindAsAttribute (MethodBase method, int parameter_index)
 		{
 			ICustomAttributeProvider provider;
 
@@ -325,14 +324,14 @@ namespace Registrar {
 				if (parameter_index == -1) {
 					throw ErrorHelper.CreateError (99, $"Internal error: can't get the BindAs attribute for the return value of a constructor ({GetDescriptiveMethodName (method)}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).");
 				} else {
-					provider = cinfo.GetParameters () [parameter_index];
+					provider = cinfo?.GetParameters ()! [parameter_index]!;
 				}
 			}
 
 			return SharedDynamic.GetOneAttribute<BindAsAttribute> (provider);
 		}
 
-		public override Type GetNullableType (Type type)
+		public override Type? GetNullableType (Type type)
 		{
 			if (!type.IsGenericType)
 				return null;
@@ -341,40 +340,40 @@ namespace Registrar {
 			return type.GetGenericArguments () [0];
 		}
 
-		protected override ConnectAttribute GetConnectAttribute (PropertyInfo property)
+		protected override ConnectAttribute? GetConnectAttribute (PropertyInfo property)
 		{
 			return SharedDynamic.GetOneAttribute<ConnectAttribute> (property);
 		}
 
-		public override ExportAttribute GetExportAttribute (MethodBase method)
+		public override ExportAttribute? GetExportAttribute (MethodBase method)
 		{
-			MethodInfo minfo = method as MethodInfo;
+			var minfo = method as MethodInfo;
 			if (minfo is not null)
 				return SharedDynamic.GetOneAttribute<ExportAttribute> (minfo.GetBaseDefinition ());
 
-			ConstructorInfo cinfo = method as ConstructorInfo;
+			var cinfo = method as ConstructorInfo;
 			if (cinfo is not null)
 				return SharedDynamic.GetOneAttribute<ExportAttribute> (cinfo);
 
 			return null;
 		}
 
-		protected override Dictionary<MethodBase, List<MethodBase>> PrepareMethodMapping (Type type)
+		protected override Dictionary<MethodBase, List<MethodBase>>? PrepareMethodMapping (Type type)
 		{
 			return SharedDynamic.PrepareInterfaceMethodMapping (type);
 		}
 
-		protected override ExportAttribute GetExportAttribute (PropertyInfo property)
+		protected override ExportAttribute? GetExportAttribute (PropertyInfo property)
 		{
 			return SharedDynamic.GetOneAttribute<ExportAttribute> (GetBasePropertyInTypeHierarchy (property) ?? property);
 		}
 
-		public override RegisterAttribute GetRegisterAttribute (Type type)
+		public override RegisterAttribute? GetRegisterAttribute (Type type)
 		{
 			return SharedDynamic.GetOneAttribute<RegisterAttribute> (type);
 		}
 
-		public override ProtocolAttribute GetProtocolAttribute (Type type)
+		public override ProtocolAttribute? GetProtocolAttribute (Type type)
 		{
 			return SharedDynamic.GetOneAttribute<ProtocolAttribute> (type);
 		}
@@ -422,15 +421,15 @@ namespace Registrar {
 			return type.MakeByRefType ();
 		}
 
-		public override CategoryAttribute GetCategoryAttribute (Type type)
+		public override CategoryAttribute? GetCategoryAttribute (Type type)
 		{
 			return SharedDynamic.GetOneAttribute<CategoryAttribute> (type);
 		}
 
-		protected override Type GetProtocolAttributeWrapperType (Type type)
+		protected override Type? GetProtocolAttributeWrapperType (Type type)
 		{
 			var attr = SharedDynamic.GetOneAttribute<ProtocolAttribute> (type);
-			return attr is null ? null : attr.WrapperType;
+			return attr?.WrapperType;
 		}
 
 		protected override IList<AdoptsAttribute> GetAdoptsAttributes (Type type)
@@ -440,12 +439,12 @@ namespace Registrar {
 
 		protected override string GetAssemblyName (Assembly assembly)
 		{
-			return assembly.GetName ().Name;
+			return assembly.GetName ().Name!;
 		}
 
-		protected override Type GetBaseType (Type type)
+		protected override Type? GetBaseType (Type? type)
 		{
-			return type.BaseType;
+			return type?.BaseType;
 		}
 
 		protected override MethodBase GetBaseMethod (MethodBase method)
@@ -453,7 +452,7 @@ namespace Registrar {
 			return ((MethodInfo) method).GetBaseDefinition ();
 		}
 
-		public override Type GetElementType (Type type)
+		public override Type? GetElementType (Type type)
 		{
 			return type.GetElementType ();
 		}
@@ -461,6 +460,17 @@ namespace Registrar {
 		protected override Type GetEnumUnderlyingType (Type type)
 		{
 			return Enum.GetUnderlyingType (type);
+		}
+
+		protected override bool TryGetEnumUnderlyingType ([NotNullWhen (true)] Type? tr, [NotNullWhen (true)] out Type? underlyingType)
+		{
+			underlyingType = null;
+
+			if (tr?.IsEnum != true)
+				return false;
+
+			underlyingType = Enum.GetUnderlyingType (tr);
+			return true;
 		}
 
 		protected override string GetFieldName (FieldInfo field)
@@ -488,12 +498,12 @@ namespace Registrar {
 			return field.FieldType;
 		}
 
-		protected override MethodBase GetGetMethod (PropertyInfo property)
+		protected override MethodBase? GetGetMethod (PropertyInfo property)
 		{
 			return property.GetGetMethod (true);
 		}
 
-		protected override MethodBase GetSetMethod (PropertyInfo property)
+		protected override MethodBase? GetSetMethod (PropertyInfo property)
 		{
 			return property.GetSetMethod (true);
 		}
@@ -503,7 +513,7 @@ namespace Registrar {
 			return method.Name;
 		}
 
-		protected override void GetNamespaceAndName (Type type, out string @namespace, out string name)
+		protected override void GetNamespaceAndName (Type type, out string? @namespace, out string name)
 		{
 			@namespace = type.Namespace;
 			name = type.Name;
@@ -520,9 +530,11 @@ namespace Registrar {
 			return types;
 		}
 
-		protected override string GetParameterName (MethodBase method, int parameter_index)
+		protected override string GetParameterName (MethodBase? method, int parameter_index)
 		{
-			return method.GetParameters () [parameter_index].Name;
+			if (method is null)
+				return "";
+			return method.GetParameters () [parameter_index].Name!;
 		}
 
 		protected override string GetPropertyName (PropertyInfo property)
@@ -544,9 +556,9 @@ namespace Registrar {
 			throw ErrorHelper.CreateError (0, "Cannot get the return type of a {0}", method.GetType ().Name);
 		}
 
-		protected override string GetTypeFullName (Type type)
+		protected override string? GetTypeFullName (Type? type)
 		{
-			return type.FullName;
+			return type?.FullName;
 		}
 
 		// Note that the code in this method shouldn't be called when using any static registrar, so throw an exception in that case.
@@ -554,7 +566,7 @@ namespace Registrar {
 		// IL2055: Call to 'System.Type.MakeGenericType(Type[])' can not be statically analyzed. It's not possible to guarantee the availability of requirements of the generic type.
 		[UnconditionalSuppressMessage ("", "IL2055", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		public override bool VerifyIsConstrainedToNSObject (Type type, out Type constrained_type)
+		public override bool VerifyIsConstrainedToNSObject (Type type, out Type? constrained_type)
 		{
 			// Note that the code in this method shouldn't be called when using any static registrar, so throw an exception in that case.
 			if (!Runtime.DynamicRegistrationSupported)
@@ -587,9 +599,8 @@ namespace Registrar {
 				var args = type.GetGenericArguments ();
 				var constrs = new Type [args.Length];
 				for (int i = 0; i < args.Length; i++) {
-					Type constr;
-					rv &= VerifyIsConstrainedToNSObject (args [i], out constr);
-					constrs [i] = constr;
+					rv &= VerifyIsConstrainedToNSObject (args [i], out var constr);
+					constrs [i] = constr!;
 				}
 				constrained_type = type.MakeGenericType (constrs);
 				return rv;
@@ -598,7 +609,7 @@ namespace Registrar {
 			return true;
 		}
 
-		protected override Exception CreateExceptionImpl (int code, bool error, Exception innerException, MethodBase method, string message, params object [] args)
+		protected override Exception CreateExceptionImpl (int code, bool error, Exception? innerException, MethodBase? method, string message, params object? [] args)
 		{
 			// There doesn't seem to be a way to find the source code location
 			// for the method using System.Reflection.
@@ -607,7 +618,7 @@ namespace Registrar {
 			return ErrorHelper.CreateWarning (code, innerException, message, args);
 		}
 
-		protected override Exception CreateExceptionImpl (int code, bool error, Exception innerException, Type type, string message, params object [] args)
+		protected override Exception CreateExceptionImpl (int code, bool error, Exception? innerException, Type? type, string message, params object? [] args)
 		{
 			// There doesn't seem to be a way to find the source code location
 			// for the method using System.Reflection.
@@ -618,7 +629,7 @@ namespace Registrar {
 
 		protected override string GetAssemblyQualifiedName (Type type)
 		{
-			return type.AssemblyQualifiedName;
+			return type.AssemblyQualifiedName!;
 		}
 
 		public override bool HasReleaseAttribute (MethodBase method)
@@ -631,7 +642,7 @@ namespace Registrar {
 
 		// IL2025: Attribute 'System.Runtime.CompilerServices.ExtensionAttribute' is being referenced in code but the trimmer was instructed to remove all instances of this attribute. If the attribute instances are necessary make sure to either remove the trimmer attribute XML portion which removes the attribute instances, or override the removal by using the trimmer XML descriptor to keep the attribute type (which in turn keeps all of its instances).
 		[UnconditionalSuppressMessage ("", "IL2045", Justification = "The Extension attribute is manually preserved.")]
-		public static bool HasThisAttributeImpl (MethodBase method)
+		public static bool HasThisAttributeImpl (MethodBase? method)
 		{
 			var mi = method as MethodInfo;
 			if (mi is null)
@@ -774,7 +785,7 @@ namespace Registrar {
 			return type.GetInterfaces ();
 		}
 
-		protected override bool TryGetAttribute (Type type, string attributeNamespace, string attributeType, out object attribute)
+		protected override bool TryGetAttribute (Type type, string attributeNamespace, string attributeType, [NotNullWhen (true)] out object? attribute)
 		{
 			var attribs = type.GetCustomAttributes (false);
 
@@ -862,9 +873,9 @@ namespace Registrar {
 					Protocol.protocol_addProperty (protocol, property.Selector, props, count, !property.IsOptional, !property.IsStatic);
 					// The properties need to be added as methods as well.
 					var propertyType = ToSignature (property.PropertyType, property, false);
-					Protocol.protocol_addMethodDescription (protocol, Selector.GetHandle (property.GetterSelector), propertyType + "@:", !property.IsOptional, !property.IsStatic);
+					Protocol.protocol_addMethodDescription (protocol, Selector.GetHandle (property.GetterSelector!), propertyType + "@:", !property.IsOptional, !property.IsStatic);
 					if (!property.IsReadOnly)
-						Protocol.protocol_addMethodDescription (protocol, Selector.GetHandle (property.SetterSelector), "v@:" + propertyType, !property.IsOptional, !property.IsStatic);
+						Protocol.protocol_addMethodDescription (protocol, Selector.GetHandle (property.SetterSelector!), "v@:" + propertyType, !property.IsOptional, !property.IsStatic);
 				}
 			}
 
@@ -880,7 +891,7 @@ namespace Registrar {
 			Trace ("   [DYNAMIC PROTOCOL] Registered the protocol {0} for {1}", type.ProtocolName, type.Type.FullName);
 		}
 
-		protected override void OnRegisterCategory (ObjCType type, ref List<Exception> exceptions)
+		protected override void OnRegisterCategory (ObjCType type, [NotNullIfNotNull (nameof (exceptions))] ref List<Exception>? exceptions)
 		{
 			if (type.Methods is not null) {
 				foreach (var method in type.Methods) {
@@ -928,7 +939,7 @@ namespace Registrar {
 			if (type.IsFakeProtocol)
 				return;
 
-			var super = type.SuperType;
+			var super = type.SuperType!;
 
 			type.Handle = Class.objc_allocateClassPair (super.Handle, type.ExportedName, IntPtr.Zero);
 
@@ -942,7 +953,7 @@ namespace Registrar {
 
 			if (type.Fields is not null) {
 				foreach (var field in type.Fields.Values)
-					Class.class_addIvar (type.Handle, field.Name, new IntPtr (field.Size), field.Alignment, field.FieldType);
+					Class.class_addIvar (type.Handle, field.Name!, new IntPtr (field.Size), field.Alignment, field.FieldType);
 			}
 
 			if (type.Methods is not null) {
@@ -980,9 +991,9 @@ namespace Registrar {
 				mthis = IntPtr.Zero;
 			} else {
 				try {
-					var nsobj = Runtime.GetNSObject (obj, Runtime.MissingCtorResolution.ThrowConstructor1NotFound, true);
+					var nsobj = Runtime.GetNSObject (obj, Runtime.MissingCtorResolution.ThrowConstructor1NotFound, true)!;
 					mthis = Runtime.AllocGCHandle (nsobj);
-					if (res.Method.ContainsGenericParameters) {
+					if (res.Method!.ContainsGenericParameters) {
 						res.WriteUnmanagedDescription (desc, Runtime.FindClosedMethod (nsobj.GetType (), res.Method));
 						return;
 					}
@@ -1013,10 +1024,10 @@ namespace Registrar {
 			if (objcType is null)
 				throw ErrorHelper.CreateError (4142, "Failed to register the type '{0}'", type.FullName);
 
-			ObjCMember member = null;
+			ObjCMember? member = null;
 
 			if (type.BaseType != typeof (object) && !objcType.TryGetMember (selector, is_static, out member))
-				return GetMethodNoThrow (original_type, type.BaseType, selector, is_static);
+				return GetMethodNoThrow (original_type, type.BaseType!, selector, is_static);
 
 			var method = member as ObjCMethod;
 
@@ -1026,9 +1037,8 @@ namespace Registrar {
 			return method;
 		}
 
-		public Type Lookup (IntPtr @class, bool throw_on_error)
+		public Type? Lookup (IntPtr @class, bool throw_on_error)
 		{
-			ObjCType type;
 			IntPtr original_class = @class;
 			bool lockTaken = false;
 
@@ -1036,7 +1046,7 @@ namespace Registrar {
 				LockRegistrar (ref lockTaken);
 
 				do {
-					if (type_map.TryGetValue (@class, out type))
+					if (type_map.TryGetValue (@class, out var type))
 						return type.Type;
 
 					bool is_custom_type;
@@ -1143,9 +1153,9 @@ namespace Registrar {
 		static MethodInfo GetPropertyMethod (PropertyInfo property)
 		{
 			if (property.CanRead)
-				return property.GetGetMethod (true);
+				return property.GetGetMethod (true)!;
 
-			return property.GetSetMethod (true);
+			return property.GetSetMethod (true)!;
 		}
 
 		static bool IsStaticProperty (PropertyInfo property)
@@ -1158,12 +1168,12 @@ namespace Registrar {
 			return GetPropertyMethod (property).IsVirtual;
 		}
 
-		static PropertyInfo GetBasePropertyInTypeHierarchy (PropertyInfo property)
+		static PropertyInfo? GetBasePropertyInTypeHierarchy (PropertyInfo property)
 		{
 			if (IsStaticProperty (property) || !IsVirtualProperty (property))
 				return property;
 
-			var @base = property.DeclaringType.BaseType;
+			var @base = property.DeclaringType?.BaseType;
 			while (@base is not null) {
 				var base_property = TryMatchProperty (@base, property);
 				if (base_property is not null)
@@ -1180,7 +1190,7 @@ namespace Registrar {
 		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties', 'DynamicallyAccessedMemberTypes.NonPublicProperties' in call to 'System.Type.GetProperties(BindingFlags)'. The parameter 'type' of method 'Registrar.DynamicRegistrar.TryMatchProperty(Type, PropertyInfo)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
-		static PropertyInfo TryMatchProperty (Type type, PropertyInfo property)
+		static PropertyInfo? TryMatchProperty (Type type, PropertyInfo property)
 		{
 			// Note that the code in this method shouldn't be called when using any static registrar, so throw an exception in that case.
 			if (!Runtime.DynamicRegistrationSupported)
@@ -1219,8 +1229,14 @@ namespace Registrar {
 			return true;
 		}
 
-		static bool MethodMatch (MethodInfo candidate, MethodInfo method)
+		static bool MethodMatch (MethodInfo? candidate, MethodInfo? method)
 		{
+			if (candidate is null && method is null)
+				return true;
+
+			if (candidate is null || method is null)
+				return false;
+
 			if (!candidate.IsVirtual)
 				return false;
 
@@ -1249,7 +1265,7 @@ namespace Registrar {
 
 		public IntPtr Register (Type type)
 		{
-			List<Exception> exceptions = null;
+			List<Exception>? exceptions = null;
 			var objctype = RegisterType (type, ref exceptions);
 			if (exceptions is not null && exceptions.Count > 0)
 				throw new AggregateException (exceptions);

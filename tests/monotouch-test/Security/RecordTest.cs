@@ -310,29 +310,38 @@ namespace MonoTouchFixtures.Security {
 		{
 			var testUsername = "testusername";
 
-			//TEST 1: Save a keychain value
-			var test1 = SaveUserPassword (testUsername, "testValue1", out var queryCode, out var addCode, out var updateCode);
-			Assert.IsTrue (test1, $"Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
+			// Clean up any stale keychain entries from previous test runs to avoid
+			// the keychain returning ItemNotFound on query but DuplicateItem on add.
+			ForceRemoveUserPassword (testUsername);
 
-			//TEST 2: Get the saved keychain value
-			var test2 = GetUserPassword (testUsername);
-			Assert.IsTrue (StringUtil.StringsEqual (test2, "testValue1", false));
+			try {
+				//TEST 1: Save a keychain value
+				var test1 = SaveUserPassword (testUsername, "testValue1", out var queryCode, out var addCode, out var updateCode);
+				Assert.IsTrue (test1, $"Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
 
-			//TEST 3: Update the keychain value
-			var test3 = SaveUserPassword (testUsername, "testValue2", out queryCode, out addCode, out updateCode);
-			Assert.IsTrue (test3, "Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
+				//TEST 2: Get the saved keychain value
+				var test2 = GetUserPassword (testUsername);
+				Assert.IsTrue (StringUtil.StringsEqual (test2, "testValue1", false));
 
-			//TEST 4: Get the updated keychain value
-			var test4 = GetUserPassword (testUsername);
-			Assert.IsTrue (StringUtil.StringsEqual (test4, "testValue2", false));
+				//TEST 3: Update the keychain value
+				var test3 = SaveUserPassword (testUsername, "testValue2", out queryCode, out addCode, out updateCode);
+				Assert.IsTrue (test3, $"Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
 
-			//TEST 5: Clear the keychain values
-			var test5 = ClearUserPassword (testUsername);
-			Assert.IsTrue (test5, "Password could not be cleared from keychain");
+				//TEST 4: Get the updated keychain value
+				var test4 = GetUserPassword (testUsername);
+				Assert.IsTrue (StringUtil.StringsEqual (test4, "testValue2", false));
 
-			//TEST 6: Verify no keychain value
-			var test6 = GetUserPassword (testUsername);
-			Assert.IsNull (test6, "No password should exist here");
+				//TEST 5: Clear the keychain values
+				var test5 = ClearUserPassword (testUsername);
+				Assert.IsTrue (test5, "Password could not be cleared from keychain");
+
+				//TEST 6: Verify no keychain value
+				var test6 = GetUserPassword (testUsername);
+				Assert.IsNull (test6, "No password should exist here");
+			} finally {
+				// Always clean up to avoid leaving stale entries for subsequent runs
+				ForceRemoveUserPassword (testUsername);
+			}
 		}
 
 		public static string GetUserPassword (string username)
@@ -367,6 +376,13 @@ namespace MonoTouchFixtures.Security {
 				);
 				addCode = SecKeyChain.Add (record);
 				success = (addCode == SecStatusCode.Success);
+				// Handle inconsistent keychain state: query returned ItemNotFound
+				// but add returned DuplicateItem. Force-remove and retry.
+				if (addCode == SecStatusCode.DuplicateItem) {
+					SecKeyChain.Remove (searchRecord);
+					addCode = SecKeyChain.Add (record);
+					success = (addCode == SecStatusCode.Success);
+				}
 			}
 			if (queryCode == SecStatusCode.Success && record is not null) {
 				record.ValueData = NSData.FromString (password);
@@ -374,6 +390,15 @@ namespace MonoTouchFixtures.Security {
 				success = (updateCode == SecStatusCode.Success);
 			}
 			return success;
+		}
+
+		public static void ForceRemoveUserPassword (string username)
+		{
+			var searchRecord = CreateSecRecord (SecKind.InternetPassword,
+				server: "Test1",
+				account: username.ToLower ()
+			);
+			SecKeyChain.Remove (searchRecord);
 		}
 
 		public static bool ClearUserPassword (string username)

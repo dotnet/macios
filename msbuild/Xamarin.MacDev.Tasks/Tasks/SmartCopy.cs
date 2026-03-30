@@ -59,7 +59,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		void CopyFile (string source, string target, string targetItemSpec)
 		{
-			var dirName = Path.GetDirectoryName (target);
+			var dirName = Path.GetDirectoryName (target)!;
 
 			EnsureDirectoryExists (dirName);
 
@@ -99,7 +99,7 @@ namespace Xamarin.MacDev.Tasks {
 					for (int i = 0; i < SourceFiles.Length; i++) {
 						var target = DestinationFiles [i].GetMetadata ("FullPath");
 						var source = SourceFiles [i].GetMetadata ("FullPath");
-						var targetDir = Path.GetDirectoryName (target);
+						var targetDir = Path.GetDirectoryName (target)!;
 
 						EnsureDirectoryExists (targetDir);
 
@@ -170,10 +170,10 @@ namespace Xamarin.MacDev.Tasks {
 			public uint st_uid;
 			public uint st_gid;
 			public uint st_rdev;
-			public timespec st_atimespec;
-			public timespec st_mtimespec;
-			public timespec st_ctimespec;
-			public timespec st_birthtimespec;
+			public Timespec st_atimespec;
+			public Timespec st_mtimespec;
+			public Timespec st_ctimespec;
+			public Timespec st_birthtimespec;
 			public ulong st_size;
 			public ulong st_blocks;
 			public uint st_blksize;
@@ -184,7 +184,7 @@ namespace Xamarin.MacDev.Tasks {
 			public ulong st_qspare_2;
 		}
 
-		struct timespec {
+		struct Timespec {
 			public IntPtr tv_sec;
 			public IntPtr tv_nsec;
 		}

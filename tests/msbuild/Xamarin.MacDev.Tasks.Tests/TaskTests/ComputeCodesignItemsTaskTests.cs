@@ -344,7 +344,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.GenerateDSymItems = generateDSymItems.ToArray ();
 				task.NativeStripItems = nativeStripItems.ToArray ();
 				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
-				Assert.IsTrue (task.Execute (), "Execute");
+				ExecuteTask (task);
 				Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "Warning Count");
 
 				VerifyCodesigningResults (infos, task.OutputCodesignItems, platform);
@@ -412,7 +412,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.CodesignBundle = codesignBundle.ToArray ();
 				task.CodesignStampPath = "codesign-stamp-path/";
 				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
-				Assert.IsTrue (task.Execute (), "Execute");
+				ExecuteTask (task);
 				Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "Warning Count");
 
 				VerifyCodesigningResults (infos, task.OutputCodesignItems, platform);
@@ -493,7 +493,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.CodesignBundle = codesignBundle.ToArray ();
 				task.CodesignStampPath = "codesign-stamp-path/";
 				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
-				Assert.IsTrue (task.Execute (), "Execute");
+				ExecuteTask (task);
 				Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "Warning Count");
 
 				VerifyCodesigningResults (infos, task.OutputCodesignItems, platform);
@@ -556,7 +556,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.CodesignItems = codesignItems.ToArray ();
 				task.CodesignStampPath = "codesign-stamp-path/";
 				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
-				Assert.IsTrue (task.Execute (), "Execute");
+				ExecuteTask (task);
 				Assert.AreEqual (0, Engine.Logger.WarningsEvents.Count, "Warning Count");
 
 				VerifyCodesigningResults (infos, task.OutputCodesignItems, platform);
@@ -630,7 +630,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.CodesignItems = codesignItems.ToArray ();
 				task.CodesignStampPath = "codesign-stamp-path/";
 				task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
-				Assert.IsTrue (task.Execute (), "Execute");
+				ExecuteTask (task);
 				Assert.AreEqual (3, Engine.Logger.WarningsEvents.Count, "Warning Count");
 				Assert.AreEqual ("Code signing has been requested multiple times for 'Bundle.app/Contents/MonoBundle/createdump', with different metadata. The metadata 'OnlyIn1=true' has been set for one item, but not the other.", Engine.Logger.WarningsEvents [0].Message, "Message #0");
 				Assert.AreEqual ("Code signing has been requested multiple times for 'Bundle.app/Contents/MonoBundle/createdump', with different metadata. The metadata 'InOneAndTwoWithDifferentValues' has different values for each item (once it's '1', another time it's '2').", Engine.Logger.WarningsEvents [1].Message, "Message #1");

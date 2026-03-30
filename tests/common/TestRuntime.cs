@@ -471,6 +471,7 @@ partial class TestRuntime {
 				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
 #endif
 			case 2:
+			case 3: // Xcode 26.3 has the same SDK as 26.2, so we treat them the same here
 #if __TVOS__
 				return ChecktvOSSystemVersion (26, 2);
 #elif __IOS__
@@ -480,13 +481,13 @@ partial class TestRuntime {
 #else
 				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
 #endif
-			case 3:
+			case 4:
 #if __TVOS__
-				return ChecktvOSSystemVersion (26, 3);
+				return ChecktvOSSystemVersion (26, 4);
 #elif __IOS__
-				return CheckiOSSystemVersion (26, 3);
+				return CheckiOSSystemVersion (26, 4);
 #elif MONOMAC
-				return CheckMacSystemVersion (26, 3);
+				return CheckMacSystemVersion (26, 4);
 #else
 				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
 #endif

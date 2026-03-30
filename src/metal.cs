@@ -2085,6 +2085,11 @@ namespace Metal {
 		[return: NullAllowed]
 		[return: Release]
 		IMTLFunctionHandle CreateFunctionHandle (IMTL4BinaryFunction function);
+
+		[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
+		[Abstract]
+		[Export ("supportsPlacementSparse")]
+		bool SupportsPlacementSparse { get; }
 	}
 
 	interface IMTLDrawable { }

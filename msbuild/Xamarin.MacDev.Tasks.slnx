@@ -1,0 +1,39 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Debug-net461" />
+    <BuildType Name="Debug-netstandard2.0" />
+    <BuildType Name="Release" />
+  </Configurations>
+  <Folder Name="/Messaging/">
+    <Project Path="Messaging/Xamarin.Messaging.Build/Xamarin.Messaging.Build.csproj">
+      <BuildType Solution="Debug-net461|*" Project="Debug" />
+      <BuildType Solution="Debug-netstandard2.0|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="../tests/msbuild/Xamarin.MacDev.Tasks.Tests/Xamarin.MacDev.Tasks.Tests.csproj">
+      <BuildType Solution="Debug-net461|*" Project="Debug-netstandard2.0" />
+    </Project>
+    <Project Path="../tests/msbuild/Xamarin.MacDev.Tests/Xamarin.MacDev.Tests.csproj">
+      <BuildType Solution="Debug-net461|*" Project="Debug" />
+      <BuildType Solution="Debug-netstandard2.0|*" Project="Debug" />
+    </Project>
+  </Folder>
+  <Project Path="../external/Xamarin.MacDev/Xamarin.MacDev/Xamarin.MacDev.csproj">
+    <BuildType Solution="Debug-net461|*" Project="Debug" />
+    <BuildType Solution="Debug-netstandard2.0|*" Project="Debug" />
+  </Project>
+  <Project Path="Xamarin.iOS.Tasks.Windows/Xamarin.iOS.Tasks.Windows.csproj">
+    <BuildType Solution="Debug-net461|*" Project="Debug" />
+    <BuildType Solution="Debug-netstandard2.0|*" Project="Debug" />
+  </Project>
+  <Project Path="Xamarin.Localization.MSBuild/Xamarin.Localization.MSBuild.csproj">
+    <BuildType Solution="Debug-net461|*" Project="Debug" />
+    <BuildType Solution="Debug-netstandard2.0|*" Project="Debug" />
+  </Project>
+  <Project Path="Xamarin.MacDev.Tasks/Xamarin.MacDev.Tasks.csproj">
+    <BuildType Solution="Debug-net461|*" Project="Debug" />
+    <BuildType Solution="Debug-netstandard2.0|*" Project="Debug" />
+  </Project>
+</Solution>

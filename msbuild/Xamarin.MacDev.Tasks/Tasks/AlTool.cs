@@ -27,9 +27,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string FilePath { get; set; } = string.Empty;
 
-		[Required]
-		public string SdkDevPath { get; set; } = string.Empty;
-
 		protected abstract string ALToolAction { get; }
 
 		public override bool Execute ()
@@ -44,8 +41,8 @@ namespace Xamarin.MacDev.Tasks {
 				return false;
 
 			cancellationTokenSource = new CancellationTokenSource ();
-			var rv = ExecuteAsync (Log, executable, args, sdkDevPath: SdkDevPath, cancellationToken: cancellationTokenSource.Token).Result;
-			LogErrorsFromOutput (rv.StandardOutput?.ToString ());
+			var rv = ExecuteAsync (executable, args, cancellationToken: cancellationTokenSource.Token).Result;
+			LogErrorsFromOutput (rv.Output.MergedOutput);
 			return !Log.HasLoggedErrors;
 		}
 

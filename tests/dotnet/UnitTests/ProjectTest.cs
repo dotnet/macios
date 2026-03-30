@@ -3130,6 +3130,8 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftos.dylib",
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftsimd.dylib",
+			"/usr/lib/swift/libswiftSpatial.dylib",
 			"/usr/lib/swift/libswiftUIKit.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
@@ -3257,8 +3259,11 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftos.dylib",
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftsimd.dylib",
+			"/usr/lib/swift/libswiftSpatial.dylib",
 			"/usr/lib/swift/libswiftUIKit.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
+			"/usr/lib/swift/libswiftXPC.dylib",
 		];
 
 		static string [] expectedFrameworks_tvOS_Full = [
@@ -3441,6 +3446,7 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
 			"/usr/lib/swift/libswiftsimd.dylib",
+			"/usr/lib/swift/libswiftSpatial.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
 		];
@@ -3633,6 +3639,8 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftos.dylib",
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftsimd.dylib",
+			"/usr/lib/swift/libswiftSpatial.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
 		];
@@ -3853,9 +3861,11 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		[TestCase (ApplePlatform.MacCatalyst)]
-		[TestCase (ApplePlatform.MacOSX)]
-		public void Run (ApplePlatform platform)
+		[TestCase (ApplePlatform.MacCatalyst, true)]
+		[TestCase (ApplePlatform.MacCatalyst, false)]
+		[TestCase (ApplePlatform.MacOSX, true)]
+		[TestCase (ApplePlatform.MacOSX, false)]
+		public void Run (ApplePlatform platform, bool dotnetRunEnvironmentSupport)
 		{
 			var project = "MyRunApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -3869,6 +3879,7 @@ namespace Xamarin.Tests {
 			var stderr = Path.Combine (tmpdir, "stderr.txt");
 
 			var properties = GetDefaultProperties ();
+			var dotnetRunEnvironment = new Dictionary<string, string> ();
 			properties ["XamarinDebugMode"] = "telegraph";
 			properties ["XamarinDebugHosts"] = "localhost";
 			properties ["XamarinDebugPort"] = "123";
@@ -3876,8 +3887,14 @@ namespace Xamarin.Tests {
 			properties ["StandardErrorPath"] = stderr;
 			properties ["OpenNewInstance"] = "true";
 			properties ["OpenWaitForExit"] = "true";
-			properties ["RunEnvironment"] = $"--env TEST_CASE=1 --env VARIABLE=VALUE --env TEST_FILENAME={tmpfile}";
-			DotNet.AssertRun (project_path, properties);
+			if (dotnetRunEnvironmentSupport) {
+				properties ["RunEnvironment"] = $"--env TEST_CASE=1 --env VARIABLE=VALUE --env TEST_FILENAME={tmpfile}";
+			} else {
+				dotnetRunEnvironment ["TEST_CASE"] = "1";
+				dotnetRunEnvironment ["VARIABLE"] = "VALUE";
+				dotnetRunEnvironment ["TEST_FILENAME"] = tmpfile;
+			}
+			DotNet.AssertRun (project_path, properties, environmentVariables: dotnetRunEnvironment);
 
 			Assert.Multiple (() => {
 				var envContents = File.ReadAllText (tmpfile);

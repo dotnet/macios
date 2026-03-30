@@ -155,7 +155,7 @@ $(foreach rid,$(DOTNET_RUNTIME_IDENTIFIERS),$(eval $(call NativeCompilationTempl
 $(foreach rid,$(DOTNET_RUNTIME_IDENTIFIERS),$(eval $(call NativeCompilationTemplate,$(rid),-dotnet-nativeaot,$(RELEASE_FLAGS) -DCORECLR_RUNTIME -DDOTNET -DNATIVEAOT)))
 $(foreach rid,$(DOTNET_RUNTIME_IDENTIFIERS),$(eval $(call NativeCompilationTemplate,$(rid),-dotnet-nativeaot-debug,$(DEBUG_FLAGS) -DCORECLR_RUNTIME -DDOTNET -DNATIVEAOT)))
 
-%.csproj.inc: %.csproj $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/tools/common/create-makefile-fragment.sh
+%.csproj.inc: %.csproj $(TOP)/Make.config $(TOP)/tools/common/create-makefile-fragment.sh
 	$(Q) $(TOP)/tools/common/create-makefile-fragment.sh $(abspath $<) $(abspath $@)
 
 DIRS = \

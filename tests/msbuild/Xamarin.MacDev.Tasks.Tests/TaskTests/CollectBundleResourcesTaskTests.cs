@@ -29,14 +29,9 @@ namespace Xamarin.MacDev.Tasks {
 				item.SetMetadata ("LocalDefiningProjectFullPath", Path.Combine (tmpdir, "A", "SDK.csproj"));
 				item.SetMetadata ("LocalMSBuildProjectFullPath", Path.Combine (projDir, "Project.csproj"));
 				task.BundleResources = [item];
-				var rv = task.Execute ();
-
-				Assert.That (Engine.Logger.ErrorEvents.Count, Is.EqualTo (0), "Errors");
-
+				ExecuteTask (task);
 				Assert.That (Engine.Logger.WarningsEvents.Count, Is.EqualTo (1), "Warnings");
 				Assert.That (Engine.Logger.WarningsEvents [0].Message, Is.EqualTo ("The path '../B/image.png' would result in a file outside of the app bundle and cannot be used."), "Warning Message");
-
-				Assert.That (rv, Is.True, "Execute");
 			} finally {
 				Environment.CurrentDirectory = currentDirectory;
 			}

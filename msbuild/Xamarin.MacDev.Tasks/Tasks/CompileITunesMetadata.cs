@@ -69,7 +69,7 @@ namespace Xamarin.MacDev.Tasks {
 				metadata.Add ("softwareVersionBundleId", (PString) BundleIdentifier);
 			}
 
-			Directory.CreateDirectory (Path.GetDirectoryName (OutputPath!.ItemSpec));
+			Directory.CreateDirectory (Path.GetDirectoryName (OutputPath!.ItemSpec)!);
 			metadata.Save (OutputPath.ItemSpec, true);
 
 			return !Log.HasLoggedErrors;

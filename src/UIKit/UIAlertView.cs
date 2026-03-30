@@ -20,7 +20,7 @@ namespace UIKit {
 		/// <param name="otherButtons">Titles of any additional buttons.</param>
 		/// <remarks>This constructor is provided to make it possible to fully initialize an alert view when it is created.</remarks>
 		public UIAlertView (string title, string message, IUIAlertViewDelegate del, string cancelButtonTitle, params string [] otherButtons)
-			: this (title, message, del, cancelButtonTitle, otherButtons is null || otherButtons.Length == 0 ? IntPtr.Zero : new NSString (otherButtons [0]).DangerousRetain().DangerousAutorelease().Handle, IntPtr.Zero, IntPtr.Zero)
+			: this (title, message, del, cancelButtonTitle, otherButtons is null || otherButtons.Length == 0 ? IntPtr.Zero : new NSString (otherButtons [0]).DangerousRetain ().DangerousAutorelease ().Handle, IntPtr.Zero, IntPtr.Zero)
 		{
 			if (otherButtons is null)
 				return;

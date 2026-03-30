@@ -309,6 +309,40 @@ the `CollectAppManifestsDependsOn` property:
 </Target>
 ```
 
+## ReferenceNativeSymbol
+
+The item group `ReferenceNativeSymbol` can be used to specify how we should
+handle a given native symbol: either ignore it, or ask the native linker to
+keep it (by passing the symbol as `-u ...` or in a symbol file to the native
+linker).
+
+There are two supported types of metadata:
+
+* `SymbolType`: either `ObjectiveCClass`, `Function` or `Field`. Used to
+  compute the complete native name of a symbol (for instance, the native
+  symbol for the Objective-C class `MyClass` is `_OBJC_CLASS_$_MyClass`,
+  while for a function `MyFunction` it's just `_MyFunction`.
+* `SymbolMode`: either `Ignore` or not set. `Ignore` means to not pass the given
+  symbol to the native linker, the default is to do so.
+
+`SymbolType` is required, while `SymbolMode` isn't.
+
+Example symbol to keep:
+
+```xml
+<ItemGroup>
+    <ReferenceNativeSymbol Include="MyClass" SymbolType="ObjectiveCClass" />
+</ItemGroup>
+```
+
+Example symbol to ignore:
+
+```xml
+<ItemGroup>
+    <ReferenceNativeSymbol Include="MyClass" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
+</ItemGroup>
+```
+
 ### SkipCodesignItems
 
 An item group that specifies files or directories in the app bundle that should not be signed.

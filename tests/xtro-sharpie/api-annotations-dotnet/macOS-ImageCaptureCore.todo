@@ -6,3 +6,10 @@
 !missing-selector! +ICCameraFile::fingerprintForFileAtURL: not bound
 !missing-selector! ICCameraFile::fingerprint not bound
 !missing-selector! ICCameraFile::requestFingerprintWithCompletion: not bound
+
+# updated sharpie results
+!missing-enum-native! ICReturnCodeOffset
+!missing-enum-value! ICReturnCodeOffset native value ICReturnCodeDeviceConnection = -21400 not bound
+!missing-enum-value! ICReturnCodeOffset native value ICReturnCodeDeviceOffset = -21350 not bound
+!missing-enum-value! ICReturnCodeOffset native value ICReturnCodeObjectOffset = -21450 not bound
+!wrong-enum-size! ICReturnCodeOffset managed 4 vs native 8

@@ -5547,7 +5547,7 @@ public partial class Generator : IMemberGatherer {
 	// Not adding the experimental attribute is bad (it would mean that an API
 	// we meant to be experimental ended up being released as stable), so it's
 	// opt-out instead of opt-in.
-	public void PrintAttributes (ICustomAttributeProvider? mi, bool platform = false, bool preserve = false, bool advice = false, bool notImplemented = false, bool bindAs = false, bool requiresSuper = false, Type? inlinedType = null, bool experimental = true, bool obsolete = false)
+	public void PrintAttributes (ICustomAttributeProvider? mi, bool platform = false, bool preserve = false, bool advice = false, bool notImplemented = false, bool bindAs = false, bool requiresSuper = false, Type? inlinedType = null, bool experimental = true, bool obsolete = false, bool objectiveCFramework = false)
 	{
 		if (platform)
 			PrintPlatformAttributes (mi as MemberInfo, inlinedType);
@@ -5565,6 +5565,8 @@ public partial class Generator : IMemberGatherer {
 			PrintExperimentalAttribute (mi);
 		if (obsolete)
 			PrintObsoleteAttributes (mi);
+		if (objectiveCFramework)
+			PrintObjectiveCFrameworkAttribute (mi);
 	}
 
 	public void PrintExperimentalAttribute (ICustomAttributeProvider? mi)
@@ -5573,6 +5575,14 @@ public partial class Generator : IMemberGatherer {
 		if (e is null)
 			return;
 		print ($"[Experimental (\"{e.DiagnosticId}\")]");
+	}
+
+	public void PrintObjectiveCFrameworkAttribute (ICustomAttributeProvider mi)
+	{
+		var attrib = AttributeManager.GetCustomAttribute<ObjectiveCFrameworkAttribute> (mi);
+		if (attrib is null)
+			return;
+		print ($"[ObjectiveCFramework (\"{attrib.Framework}\")]");
 	}
 
 	bool WriteDocumentation (MemberInfo info, Func<XmlNode, XmlNode>? transformNode = null)
@@ -5799,7 +5809,7 @@ public partial class Generator : IMemberGatherer {
 				print ("[Model]");
 			}
 
-			PrintAttributes (type, platform: true, preserve: true, advice: true, obsolete: true);
+			PrintAttributes (type, platform: true, preserve: true, advice: true, obsolete: true, objectiveCFramework: true);
 
 			if (type.IsEnum) {
 				GenerateEnum (type);

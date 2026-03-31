@@ -140,6 +140,8 @@ public class AttributeManager {
 			return typeof (PlatformName);
 		case "ObjCRuntime.RequiresSuperAttribute":
 			return typeof (ObjCRuntime.RequiresSuperAttribute);
+		case "ObjCRuntime.ObjectiveCFrameworkAttribute":
+			return typeof (ObjCRuntime.ObjectiveCFrameworkAttribute);
 		case "UnavailableAttribute":
 			return typeof (UnavailableAttribute);
 		case "OptionalImplementationAttribute":

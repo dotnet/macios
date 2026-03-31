@@ -81,7 +81,7 @@ class AvailabilityBaseAttribute : ICSharpCode.NRefactory.CSharp.Attribute {
 			));
 		}
 
-		if (!version.IsEmpty) {
+		if (!version.IsEmptyVersionTuple) {
 			Arguments.Add (new PrimitiveExpression (version.Major));
 			Arguments.Add (new PrimitiveExpression (version.Minor.GetValueOrDefault ()));
 			if (version.Subminor is not null)
@@ -104,15 +104,15 @@ class AvailabilityBaseAttribute : ICSharpCode.NRefactory.CSharp.Attribute {
 			yield break;
 		}
 
-		if (attr.AvailabilityAttributeIntroduced.HasValue && !attr.AvailabilityAttributeIntroduced.Value.IsEmpty)
+		if (attr.AvailabilityAttributeIntroduced.HasValue && !attr.AvailabilityAttributeIntroduced.Value.IsEmptyVersionTuple)
 			yield return new AvailabilityBaseAttribute (
 				AvailabilityKind.Introduced, platform, attr.AvailabilityAttributeIntroduced ?? default, attr.AvailabilityAttributeMessage);
 
-		if (attr.AvailabilityAttributeDeprecated.HasValue && !attr.AvailabilityAttributeDeprecated.Value.IsEmpty)
+		if (attr.AvailabilityAttributeDeprecated.HasValue && !attr.AvailabilityAttributeDeprecated.Value.IsEmptyVersionTuple)
 			yield return new AvailabilityBaseAttribute (
 				AvailabilityKind.Deprecated, platform, attr.AvailabilityAttributeDeprecated.Value, attr.AvailabilityAttributeMessage);
 
-		if (attr.AvailabilityAttributeObsoleted.HasValue && !attr.AvailabilityAttributeObsoleted.Value.IsEmpty)
+		if (attr.AvailabilityAttributeObsoleted.HasValue && !attr.AvailabilityAttributeObsoleted.Value.IsEmptyVersionTuple)
 			yield return new AvailabilityBaseAttribute (
 				AvailabilityKind.Obsoleted, platform, attr.AvailabilityAttributeObsoleted.Value, attr.AvailabilityAttributeMessage);
 
@@ -170,9 +170,9 @@ class AvailabilityBaseAttribute : ICSharpCode.NRefactory.CSharp.Attribute {
 	{
 		// shorthand attributes are only returned iff there
 		// is one attribute of any kind for the platform
-		var hasIntroduced = attr.AvailabilityAttributeIntroduced.HasValue && !attr.AvailabilityAttributeIntroduced.Value.IsEmpty;
-		var hasDeprecated = attr.AvailabilityAttributeDeprecated.HasValue && !attr.AvailabilityAttributeDeprecated.Value.IsEmpty;
-		var hasObsoleted = attr.AvailabilityAttributeObsoleted.HasValue && !attr.AvailabilityAttributeObsoleted.Value.IsEmpty;
+		var hasIntroduced = attr.AvailabilityAttributeIntroduced.HasValue && !attr.AvailabilityAttributeIntroduced.Value.IsEmptyVersionTuple;
+		var hasDeprecated = attr.AvailabilityAttributeDeprecated.HasValue && !attr.AvailabilityAttributeDeprecated.Value.IsEmptyVersionTuple;
+		var hasObsoleted = attr.AvailabilityAttributeObsoleted.HasValue && !attr.AvailabilityAttributeObsoleted.Value.IsEmptyVersionTuple;
 		var hasUnavailable = attr.AvailabilityAttributeUnavailable;
 
 		if (hasIntroduced && !hasDeprecated && !hasObsoleted && !hasUnavailable)

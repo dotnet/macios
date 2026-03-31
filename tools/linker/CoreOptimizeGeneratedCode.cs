@@ -891,7 +891,7 @@ namespace Xamarin.Linker {
 					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_E1 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named '{3}' was found in the type '{4}'. */, caller, ins.Offset, mr.Name, trampolineMethodName, trampolineContainerType.FullName));
 					return false;
 				} else if (trampolineMethods.Count () > 1) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_E2 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the more than one method named '{3}' was found in the type '{4}'. */, caller, ins.Offset, mr.Name, trampolineMethodName, trampolineContainerType.FullName));
+					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_E2 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named '{3}' was found in the type '{4}'. */, caller, ins.Offset, mr.Name, trampolineMethodName, trampolineContainerType.FullName));
 					return false;
 				}
 				var trampolineMethod = trampolineMethods [0];

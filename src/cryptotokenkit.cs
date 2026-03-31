@@ -550,7 +550,6 @@ namespace CryptoTokenKit {
 			<returns>
 			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous CreateNfcSlot operation.  The value of the TResult parameter is of type System.Action&lt;CryptoTokenKit.TKSmartCardSlotNFCSession,Foundation.NSError&gt;.</para>
 			        </returns>
-			<remarks>To be added.</remarks>
 			""")]
 		[Export ("createNFCSlotWithMessage:completion:")]
 		void CreateNfcSlot ([NullAllowed] string message, TKCreateNfcSlotCallback completion);
@@ -599,7 +598,7 @@ namespace CryptoTokenKit {
 		[iOS (26, 0), Mac (26, 0), TV (26, 0), MacCatalyst (26, 0)]
 		[Export ("getSmartCardWithError:")]
 		[return: NullAllowed]
-		TKSmartCard GetSmartCard (out NSError error);
+		TKSmartCard GetSmartCard ([NullAllowed] out NSError error);
 	}
 
 #if !STABLE_CRYPTOTOKENKIT
@@ -613,7 +612,7 @@ namespace CryptoTokenKit {
 		string SlotName { get; }
 
 		[Export ("updateWithMessage:error:")]
-		bool Update (string message, out NSError error);
+		bool Update (string message, [NullAllowed] out NSError error);
 
 		[Export ("endSession")]
 		void EndSession ();
@@ -634,10 +633,10 @@ namespace CryptoTokenKit {
 		string [] RegisteredSmartCardTokens { get; }
 
 		[Export ("registerSmartCardWithTokenID:promptMessage:error:")]
-		bool RegisterSmartCard (string tokenId, string promptMessage, out NSError error);
+		bool RegisterSmartCard (string tokenId, string promptMessage, [NullAllowed] out NSError error);
 
 		[Export ("unregisterSmartCardWithTokenID:error:")]
-		bool UnregisterSmartCard (string tokenId, out NSError error);
+		bool UnregisterSmartCard (string tokenId, [NullAllowed] out NSError error);
 	}
 
 #if !STABLE_CRYPTOTOKENKIT

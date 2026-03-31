@@ -1888,6 +1888,7 @@ SHARED_CORE_SOURCES = \
 	ObjCRuntime/TransientCFString.cs \
 	ObjCRuntime/TransientString.cs \
 	ObjCRuntime/NFloat.cs \
+	ObjCRuntime/ObjectiveCFrameworkAttribute.cs \
 	ObjCRuntime/ObsoleteConstants.cs \
 	ObjCRuntime/Protocol.cs \
 	ObjCRuntime/Registrar.core.cs \

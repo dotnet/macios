@@ -39,6 +39,7 @@ namespace Xamarin.Linker {
 			if (DerivedLinkContext.App.Registrar != Bundler.RegistrarMode.Dynamic)
 				return false;
 
+			// We only care about assemblies that are being linked.
 			if (Annotations.GetAction (assembly) != AssemblyAction.Link)
 				return false;
 

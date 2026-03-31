@@ -1,2 +1,4 @@
 !missing-protocol! GCPhysicalInputExtents not bound
 !missing-protocol-member! GCLinearInput::physicalExtents not found
+!missing-field! GCInputLeftSideButton not bound
+!missing-field! GCInputRightSideButton not bound

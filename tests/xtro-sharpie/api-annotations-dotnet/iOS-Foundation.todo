@@ -5,3 +5,5 @@
 !missing-selector! NSURLRequest::allowsUltraConstrainedNetworkAccess not bound
 !missing-selector! NSURLSessionConfiguration::allowsUltraConstrainedNetworkAccess not bound
 !missing-selector! NSURLSessionConfiguration::setAllowsUltraConstrainedNetworkAccess: not bound
+!missing-protocol! NSPredicateValidating not bound
+!missing-selector! NSPredicate::allowEvaluationWithValidator:error: not bound

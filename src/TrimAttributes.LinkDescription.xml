@@ -290,4 +290,15 @@
       </attribute>
     </type>
   </assembly>
+  <!-- Suppress the IL2026 warning from System.StartupHookProvider.ProcessStartupHooks when we're the ones enabling StartupHookSupport -->
+  <assembly fullname="System.Private.CoreLib" feature="ObjCRuntime.SuppressStartupHookTrimWarning" featurevalue="true">
+    <type fullname="System.StartupHookProvider">
+      <method name="ProcessStartupHooks">
+        <attribute fullname="System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute">
+          <argument>ILLink</argument>
+          <argument>IL2026</argument>
+        </attribute>
+      </method>
+    </type>
+  </assembly>
 </linker>

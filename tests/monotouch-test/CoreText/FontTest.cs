@@ -167,6 +167,16 @@ namespace MonoTouchFixtures.CoreText {
 			Assert.AreEqual (0, provider.Count, "#Count");
 		}
 
+		[Test]
+		public void GetAttribute ()
+		{
+			using (var font = new CTFont ("HoeflerText-Regular", 10, CTFontOptions.Default)) {
+				using (var name = font.GetAttribute (CTFontDescriptorAttributeKey.Name)) {
+					Assert.NotNull (name, "Name");
+				}
+			}
+		}
+
 		class AdaptiveImageProvider : NSObject, ICTAdaptiveImageProviding {
 			public int Count;
 			public CGImage? GetImage (CGSize proposedSize, nfloat scaleFactor, out CGPoint imageOffset, out CGSize imageSize)
@@ -176,6 +186,33 @@ namespace MonoTouchFixtures.CoreText {
 				Count++;
 				return null;
 			}
+		}
+
+		[Test]
+		public void GetVariationAxes ()
+		{
+			using (var font = new CTFont ("HoeflerText-Regular", 10)) {
+				var axes = font.GetVariationAxes ();
+				Assert.IsNotNull (axes, "axes");
+				// HoeflerText-Regular has no variation axes, so we expect an empty array
+				Assert.That (axes.Length, Is.EqualTo (0), "Length");
+			}
+		}
+
+		[Test]
+		public void UIFontType_SystemFont ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 4);
+			using var font = new CTFont (CTFontUIFontType.System, 12, "en");
+			Assert.That (font.UIFontType, Is.EqualTo (CTFontUIFontType.System), "System");
+		}
+
+		[Test]
+		public void UIFontType_RegularFont ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 4);
+			using var font = new CTFont ("HoeflerText-Regular", 10);
+			Assert.That (font.UIFontType, Is.EqualTo (CTFontUIFontType.None), "None");
 		}
 	}
 }

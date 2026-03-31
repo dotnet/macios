@@ -1,2 +1,6 @@
 # OpenAL
 !missing-pinvoke! alGetBufferiv is not bound
+
+# updated sharpie results
+!missing-pinvoke! glBlendEquationOES is not bound
+!missing-pinvoke! glResolveMultisampleFramebufferAPPLE is not bound

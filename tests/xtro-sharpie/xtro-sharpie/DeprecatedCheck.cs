@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Clang;
-using Clang.Ast;
-using Mono.Cecil;
-
 namespace Extrospection {
 	public class DeprecatedCheck : BaseVisitor {
 		Dictionary<string, VersionTuple> ObjCDeprecatedItems = new Dictionary<string, VersionTuple> ();
@@ -13,6 +6,11 @@ namespace Extrospection {
 
 		List<TypeDefinition> ManagedTypes = new List<TypeDefinition> ();
 		Dictionary<string, MethodDefinition> dllimports = new Dictionary<string, MethodDefinition> ();
+
+		public DeprecatedCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
 
 		public override void VisitManagedMethod (MethodDefinition method)
 		{
@@ -33,7 +31,7 @@ namespace Extrospection {
 			dllimports [info.EntryPoint] = method;
 		}
 
-		public override void End ()
+		public override void EndVisit ()
 		{
 			foreach (var objcEntry in ObjCDeprecatedItems)
 				ProcessObjcEntry (objcEntry.Key, objcEntry.Value);
@@ -140,12 +138,12 @@ namespace Extrospection {
 			ManagedTypes.Add (type);
 		}
 
-		public override void VisitObjCCategoryDecl (ObjCCategoryDecl decl, VisitKind visitKind) => VisitItem (decl, visitKind);
-		public override void VisitObjCInterfaceDecl (ObjCInterfaceDecl decl, VisitKind visitKind) => VisitItem (decl, visitKind);
+		public override void VisitObjCCategoryDecl (ObjCCategoryDecl decl) => VisitItem (decl);
+		public override void VisitObjCInterfaceDecl (ObjCInterfaceDecl decl) => VisitItem (decl);
 
-		void VisitItem (NamedDecl decl, VisitKind visitKind)
+		void VisitItem (NamedDecl decl)
 		{
-			if (visitKind == VisitKind.Enter && AttributeHelpers.FindObjcDeprecated (decl.Attrs, out VersionTuple version)) {
+			if (AttributeHelpers.FindObjcDeprecated (decl.Attrs, out VersionTuple version)) {
 				// `(anonymous)` has a null name
 				var name = decl.Name;
 				if (name is not null)
@@ -153,9 +151,9 @@ namespace Extrospection {
 			}
 		}
 
-		public override void VisitObjCMethodDecl (ObjCMethodDecl decl, VisitKind visitKind)
+		public override void VisitObjCMethodDecl (ObjCMethodDecl decl)
 		{
-			if (visitKind == VisitKind.Enter && AttributeHelpers.FindObjcDeprecated (decl.Attrs, out VersionTuple version)) {
+			if (AttributeHelpers.FindObjcDeprecated (decl.Attrs, out VersionTuple version)) {
 				var qn = decl.QualifiedName;
 				if (decl.IsClassMethod)
 					qn = "+" + qn;
@@ -163,9 +161,9 @@ namespace Extrospection {
 			}
 		}
 
-		public override void VisitFunctionDecl (FunctionDecl decl, VisitKind visitKind)
+		public override void VisitFunctionDecl (FunctionDecl decl)
 		{
-			if (visitKind == VisitKind.Enter && AttributeHelpers.FindObjcDeprecated (decl.Attrs, out VersionTuple version))
+			if (AttributeHelpers.FindObjcDeprecated (decl.Attrs, out VersionTuple version))
 				PlainCDeprecatedFunctions [decl.QualifiedName] = version;
 		}
 	}

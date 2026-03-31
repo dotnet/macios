@@ -26,7 +26,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			foreach (var item in Assemblies) {
 				var outputPath = item.GetMetadata ("OutputPath");
-				Directory.CreateDirectory (Path.GetDirectoryName (outputPath));
+				Directory.CreateDirectory (Path.GetDirectoryName (outputPath)!);
 			}
 
 			var result = base.Execute ();

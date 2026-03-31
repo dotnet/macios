@@ -55,6 +55,7 @@ stages:
 - stage: generate_api_diff
   displayName: 'API diff'
   dependsOn: [ configure_build ]
+  condition: and(succeeded(), ne(dependencies.configure_build.outputs['configure.configure_platforms.DOTNET_PLATFORMS'], ''))
   jobs:
   - template: ./build/api-diff-stage.yml
     parameters:

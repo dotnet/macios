@@ -30,13 +30,21 @@ using Generator = System.Object;
 #if !RGEN
 #endif
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace ObjCRuntime {
 	class Stret {
-		public static bool X86_64NeedStret (Type returnType, Generator generator)
+		/// <summary>Determines whether a return type requires x86_64 stret calling conventions.</summary>
+		/// <param name="returnType">The return type to inspect.</param>
+		/// <param name="generator">The generator context.</param>
+		/// <returns><see langword="true"/> if stret calling conventions are required; otherwise, <see langword="false"/>.</returns>
+		public static bool X86_64NeedStret (Type returnType, Generator? generator)
 		{
+			ArgumentNullException.ThrowIfNull (returnType);
+#if BGENERATOR
+			ArgumentNullException.ThrowIfNull (generator);
+#endif
+
 			Type t = returnType;
 
 			if (!t.IsValueType || t.IsEnum || IsBuiltInType (t))
@@ -48,8 +56,14 @@ namespace ObjCRuntime {
 
 		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicFields', 'DynamicallyAccessedMemberTypes.NonPublicFields' in call to 'System.Type.GetFields(BindingFlags)'. The parameter 'type' of method 'ObjCRuntime.Stret.GetValueTypeSize(Type, List<Type>, Boolean, Object)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "Computing the size of a struct is safe, because the trimmer can't remove fields that would affect the size of a marshallable struct (it could affect marshalling behavior).")]
-		internal static int GetValueTypeSize (Type type, List<Type> fieldTypes, Generator generator)
+		internal static int GetValueTypeSize (Type type, List<Type> fieldTypes, Generator? generator)
 		{
+			ArgumentNullException.ThrowIfNull (type);
+			ArgumentNullException.ThrowIfNull (fieldTypes);
+#if BGENERATOR
+			ArgumentNullException.ThrowIfNull (generator);
+#endif
+
 			int size = 0;
 			int maxElementSize = 1;
 
@@ -59,8 +73,10 @@ namespace ObjCRuntime {
 #if BGENERATOR
 					var fieldOffset = generator.AttributeManager.GetCustomAttribute<FieldOffsetAttribute> (field);
 #else
-					var fieldOffset = (FieldOffsetAttribute) Attribute.GetCustomAttribute (field, typeof (FieldOffsetAttribute));
+					var fieldOffset = (FieldOffsetAttribute?) Attribute.GetCustomAttribute (field, typeof (FieldOffsetAttribute));
 #endif
+					if (fieldOffset is null)
+						throw new Exception ($"Unable to find a FieldOffset attribute on field {GetTypeName (field.DeclaringType)}.{field.Name}");
 					var elementSize = 0;
 					GetValueTypeSize (type, field.FieldType, fieldTypes, ref elementSize, ref maxElementSize, generator);
 					size = Math.Max (size, elementSize + fieldOffset.Value);
@@ -85,11 +101,13 @@ namespace ObjCRuntime {
 
 		static bool IsBuiltInType (Type type)
 		{
+			ArgumentNullException.ThrowIfNull (type);
 			return IsBuiltInType (type, out var _);
 		}
 
 		internal static bool IsBuiltInType (Type type, out int type_size)
 		{
+			ArgumentNullException.ThrowIfNull (type);
 			type_size = 0;
 
 			if (type.IsNested)
@@ -150,8 +168,15 @@ namespace ObjCRuntime {
 
 		// IL2070: 'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicFields', 'DynamicallyAccessedMemberTypes.NonPublicFields' in call to 'System.Type.GetFields(BindingFlags)'. The parameter 'type' of method 'ObjCRuntime.Stret.GetValueTypeSize(Type, Type, List<Type>, Boolean, Int32&, Int32&, Object)' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.
 		[UnconditionalSuppressMessage ("", "IL2070", Justification = "Computing the size of a struct is safe, because the trimmer can't remove fields that would affect the size of a marshallable struct (it could affect marshalling behavior).")]
-		static void GetValueTypeSize (Type original_type, Type type, List<Type> field_types, ref int size, ref int max_element_size, Generator generator)
+		static void GetValueTypeSize (Type original_type, Type type, List<Type> field_types, ref int size, ref int max_element_size, Generator? generator)
 		{
+			ArgumentNullException.ThrowIfNull (original_type);
+			ArgumentNullException.ThrowIfNull (type);
+			ArgumentNullException.ThrowIfNull (field_types);
+#if BGENERATOR
+			ArgumentNullException.ThrowIfNull (generator);
+#endif
+
 			// FIXME:
 			// SIMD types are not handled correctly here (they need 16-bit alignment).
 			// However we don't annotate those types in any way currently, so first we'd need to 
@@ -168,7 +193,7 @@ namespace ObjCRuntime {
 #if BGENERATOR
 				var marshalAs = generator.AttributeManager.GetCustomAttribute<MarshalAsAttribute> (field);
 #else
-				var marshalAs = (MarshalAsAttribute) Attribute.GetCustomAttribute (field, typeof (MarshalAsAttribute));
+				var marshalAs = (MarshalAsAttribute?) Attribute.GetCustomAttribute (field, typeof (MarshalAsAttribute));
 #endif
 				if (marshalAs is null) {
 					GetValueTypeSize (original_type, field.FieldType, field_types, ref size, ref max_element_size, generator);
@@ -179,7 +204,10 @@ namespace ObjCRuntime {
 				switch (marshalAs.Value) {
 				case UnmanagedType.ByValArray:
 					var types = new List<Type> ();
-					GetValueTypeSize (original_type, field.FieldType.GetElementType (), types, ref type_size, ref max_element_size, generator);
+					var elementType = field.FieldType.GetElementType ();
+					if (elementType is null)
+						throw new Exception ($"Unable to find the element type for field {GetTypeName (field.DeclaringType)}.{field.Name}");
+					GetValueTypeSize (original_type, elementType, types, ref type_size, ref max_element_size, generator);
 					multiplier = marshalAs.SizeConst;
 					break;
 				case UnmanagedType.U1:
@@ -201,7 +229,7 @@ namespace ObjCRuntime {
 					type_size = 8;
 					break;
 				default:
-					throw new Exception ($"Unhandled MarshalAs attribute: {marshalAs.Value} on field {field.DeclaringType.FullName}.{field.Name}");
+					throw new Exception ($"Unhandled MarshalAs attribute: {marshalAs.Value} on field {GetTypeName (field.DeclaringType)}.{field.Name}");
 				}
 				field_types.Add (field.FieldType);
 				size = AlignAndAdd (original_type, size, type_size, ref max_element_size);
@@ -209,7 +237,19 @@ namespace ObjCRuntime {
 			}
 		}
 
+		static string GetTypeName (Type? type)
+		{
+			if (type is null)
+				return "<unknown>";
+
+			return type.FullName ?? type.Name ?? "<unknown>";
+		}
+
 #if BGENERATOR
+		/// <summary>Determines whether the specified return type requires stret calling conventions.</summary>
+		/// <param name="returnType">The return type to inspect.</param>
+		/// <param name="generator">The generator context.</param>
+		/// <returns><see langword="true"/> if stret calling conventions are required; otherwise, <see langword="false"/>.</returns>
 		public static bool NeedStret (Type returnType, Generator generator)
 		{
 			return X86_64NeedStret (returnType, generator);

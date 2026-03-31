@@ -94,5 +94,18 @@ namespace MonoTouchFixtures.CoreText {
 			Assert.IsTrue (rv, "Return value");
 			TestRuntime.RunAsync (TimeSpan.FromSeconds (30), tcs.Task);
 		}
+
+		[Test]
+		public void LanguageAttribute ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 4);
+			var fda = new CTFontDescriptorAttributes () {
+				FamilyName = "Courier",
+				Language = "en",
+			};
+			using var fd = new CTFontDescriptor (fda);
+			var attrs = fd.GetAttributes ();
+			Assert.That (attrs.Language, Is.EqualTo ("en"), "Language");
+		}
 	}
 }

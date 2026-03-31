@@ -332,6 +332,7 @@ endef
 $(foreach rid,$(DOTNET_RUNTIME_IDENTIFIERS),$(eval $(call SwiftTest2AddDependency,$(rid))))
 
 # create an xcframework of frameworks
+ifneq ($(XCFRAMEWORK_PLATFORMS),)
 define TestFrameworkXCFramework
 $(1)_XCFRAMEWORKS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_PLATFORMS),.libs/$$(xcframeworkPlatform)/$(1).framework)
 $(1)_XCTARGETS += $$(foreach xcframeworkPlatform,$$(XCFRAMEWORK_PLATFORMS),.libs/$$(xcframeworkPlatform)/$(1).framework.stamp)
@@ -363,7 +364,9 @@ all-local:: .libs/$(1).xcframework
 endef
 $(eval $(call TestLibraryXCFramework,libtest))
 $(eval $(call TestLibraryXCFramework,libtest2))
+endif # XCFRAMEWORK_PLATFORMS
 
+ifneq ($(XCFRAMEWORK_PLATFORMS),)
 define ZippedXcframework
 .libs/$(1).xcframework.zip: .libs/$(1).xcframework
 	$$(Q_ZIP) cd .libs && $(ZIP) -r "$$(notdir $$@)" "$$(notdir $$<)"
@@ -379,6 +382,7 @@ define ZippedXcframeworkPlatformSpecific
 all-local:: .libs/$(3)/$(1).xcframework.zip
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(foreach testFramework,$(TEST_FRAMEWORKS),$(eval $(call ZippedXcframeworkPlatformSpecific,$(testFramework),$(platform),$(shell echo $(platform) | tr 'A-Z' 'a-z')))))
+endif # XCFRAMEWORK_PLATFORMS
 
 include $(TOP)/mk/rules.mk
 

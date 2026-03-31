@@ -3826,6 +3826,23 @@ namespace CoreData {
 		[Static, Export ("setMetadata:forPersistentStoreOfType:URL:options:error:")]
 		bool SetMetadata ([NullAllowed] NSDictionary<NSString, NSObject> metadata, string storeType, NSUrl url, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <summary>Returns a cached managed object model for the persistent store at the specified URL, if one exists.</summary>
+		/// <param name="url">The URL of the persistent store.</param>
+		/// <param name="options">
+		///   <para>Options for accessing the persistent store.</para>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <param name="error">
+		///   <para>On output, contains an error object if an error occurred.</para>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <returns>The cached <see cref="NSManagedObjectModel" /> for the persistent store, or <see langword="null" /> if no cached model exists.</returns>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Static]
+		[Export ("cachedModelForPersistentStoreAtURL:options:error:")]
+		[return: NullAllowed]
+		NSManagedObjectModel GetCachedModel (NSUrl url, [NullAllowed] NSDictionary options, [NullAllowed] out NSError error);
+
 		/// <param name="metadata">
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>

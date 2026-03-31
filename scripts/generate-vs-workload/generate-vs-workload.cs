@@ -62,7 +62,14 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 	writer.WriteLine ($"    <TargetName>{allPlatforms}.{tfm}.{xcodeName}</TargetName>");
 	// Find the iOS version, otherwise use the version of the first platform listed.
 	var iOSPlatform = platforms.Where (v => v.Item1 == "iOS");
-	var manifestBuildVersion = iOSPlatform.Any () ? iOSPlatform.First ().Item2 : platforms.First ().Item2;
+	string manifestBuildVersion;
+	if (iOSPlatform.Any ()) {
+		manifestBuildVersion = iOSPlatform.First ().Item2;
+	} else if (platforms.Any ()) {
+		manifestBuildVersion = platforms.First ().Item2;
+	} else {
+		manifestBuildVersion = "0.0.1"; // happens when building only sharpie
+	}
 	writer.WriteLine ($"    <ManifestBuildVersion>{manifestBuildVersion}</ManifestBuildVersion>");
 	writer.WriteLine ($"    <EnableSideBySideManifests>true</EnableSideBySideManifests>");
 	writer.WriteLine ($"    <UseVisualStudioComponentPrefix>false</UseVisualStudioComponentPrefix>");

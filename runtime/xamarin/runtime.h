@@ -158,7 +158,6 @@ struct AssemblyLocations {
 };
 
 void xamarin_initialize ();
-void xamarin_initialize_embedded (); /* Public API, must not change - this is used by the embeddinator */
 
 void			xamarin_assertion_message (const char *msg, ...) __attribute__((__noreturn__));
 // Gets the bundle path (where the managed executable is). This is *not* the path of the app bundle (.app/.appex).
@@ -256,7 +255,6 @@ void			xamarin_verify_parameter (MonoObject *obj, SEL sel, id self, id arg, unsi
 void			xamarin_check_objc_type (id obj, Class expected_class, SEL sel, id self, int index, MonoMethod *method);
 #endif
 
-void			xamarin_set_gc_pump_enabled (bool value);
 void			xamarin_set_is_managed_static_registrar (bool value);
 
 void			xamarin_process_nsexception (NSException *exc);
@@ -281,7 +279,7 @@ MonoType *		xamarin_get_nsnumber_type ();
 MonoType *		xamarin_get_nsvalue_type ();
 MonoClass *		xamarin_get_inativeobject_class ();
 MonoClass *		xamarin_get_nativehandle_class ();
-MonoClass *		xamarin_get_nsobject_class ();
+MonoClass *		xamarin_get_nsobject_class (bool allowAbsence);
 MonoClass *		xamarin_get_nsstring_class ();
 MonoClass *		xamarin_get_runtime_class ();
 

@@ -35,6 +35,7 @@ ALL_SOURCES:= \
 
 CONFIG      = Debug
 TARGETFRAMEWORK = netstandard2.0
+NETTARGETFRAMEWORK = $(DOTNET_TFM)
 WINDOWSRUNTIMEIDENTIFIER = win
 
 LOCALIZATION_LANGUAGES=cs de es fr it ja ko pl pt-BR ru tr zh-Hans zh-Hant
@@ -48,8 +49,8 @@ LOCALIZATION_ASSEMBLIES = Xamarin.Localization.MSBuild
 IOS_WINDOWS_TARGETS =                                                      \
 	$(wildcard Xamarin.iOS.Tasks.Windows/Xamarin.*.props)       \
 	$(wildcard Xamarin.iOS.Tasks.Windows/Xamarin.*.targets)       \
-	$(wildcard Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/Xamarin.*.props)       \
-	$(wildcard Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(TARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/Xamarin.*.targets)       \
+	$(wildcard Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(NETTARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/Xamarin.*.props)       \
+	$(wildcard Xamarin.iOS.Tasks.Windows/bin/$(CONFIG)/$(NETTARGETFRAMEWORK)/$(WINDOWSRUNTIMEIDENTIFIER)/Xamarin.*.targets)       \
 
 TASK_ASSEMBLIES = Xamarin.MacDev.Tasks $(LOCALIZATION_ASSEMBLIES)
 IOS_WINDOWS_TASK_ASSEMBLIES = Xamarin.iOS.Tasks.Windows
@@ -58,7 +59,6 @@ IOS_WINDOWS_DEPENDENCIES = System.Diagnostics.Tracer System.Formats.Asn1 System.
 PROPS_AND_TARGETS = \
 	$(wildcard Xamarin.Shared/*.props)   \
 	$(wildcard Xamarin.Shared/*.targets) \
-	$(wildcard Xamarin.ObjcBinding.Tasks/*.targets) \
 
 MSBUILD_TASK_ASSEMBLIES += $(TASK_ASSEMBLIES)
 
@@ -66,33 +66,37 @@ MSBUILD_TASK_ASSEMBLIES += $(TASK_ASSEMBLIES)
 ## .NET targets ##
 ##
 
-DOTNET_SHARED_FILES = \
-	$(PROPS_AND_TARGETS) \
+DOTNET_SHARED_ASSEMBLIES = \
 	$(foreach dll,$(MSBUILD_TASK_ASSEMBLIES),$(dll).dll $(dll).pdb)
 
 define InstallFiles
 
 DOTNET_TARGETS += \
-	$(foreach target,$(DOTNET_SHARED_FILES),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(notdir $(target))) \
-	$(foreach dll,$(TRANSLATED_ASSEMBLIES),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(dll).resources.dll) \
+	$(foreach target,$(PROPS_AND_TARGETS),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(notdir $(target))) \
+	$(foreach target,$(DOTNET_SHARED_ASSEMBLIES),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(TARGETFRAMEWORK)/$(notdir $(target))) \
+	$(foreach dll,$(TRANSLATED_ASSEMBLIES),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(TARGETFRAMEWORK)/$(dll).resources.dll) \
+	.copy-stamp-$(1) \
 
 DOTNET_DIRECTORIES_$(1) += \
 	$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild \
-	$(foreach locale,$(LOCALIZATION_LANGUAGES),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(locale)) \
+	$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(TARGETFRAMEWORK) \
+	$(foreach locale,$(LOCALIZATION_LANGUAGES),$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(TARGETFRAMEWORK)/$(locale)) \
 
 DOTNET_DIRECTORIES += $$(DOTNET_DIRECTORIES_$(1))
 
 $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/%: Xamarin.Shared/% | $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild
 	$$(Q) install -m 644 $$< $$@
 
-$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/%: Xamarin.MacDev.Tasks/bin/$(CONFIG)/$(TARGETFRAMEWORK)/% | $$(DOTNET_DIRECTORIES_$(1))
+$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(TARGETFRAMEWORK)/%: Xamarin.MacDev.Tasks/bin/$(CONFIG)/$(TARGETFRAMEWORK)/% | $$(DOTNET_DIRECTORIES_$(1))
 	$$(Q) install -m 644 $$< $$@
 
-$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/%: Xamarin.Localization.MSBuild/bin/$(CONFIG)/$(TARGETFRAMEWORK)/% | $$(DOTNET_DIRECTORIES_$(1))
+$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(TARGETFRAMEWORK)/%: Xamarin.Localization.MSBuild/bin/$(CONFIG)/$(TARGETFRAMEWORK)/% | $$(DOTNET_DIRECTORIES_$(1))
 	$$(Q) install -m 644 $$< $$@
 
-$(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/%: Xamarin.ObjcBinding.Tasks/% | $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild
-	$$(Q) install -m 644 $$< $$@
+.copy-stamp-$(1): $$(wildcard Xamarin.MacDev.Tasks/bin/$(CONFIG)/$(NETTARGETFRAMEWORK)/*) $$(wildcard Xamarin.MacDev.Tasks/bin/$(CONFIG)/$(NETTARGETFRAMEWORK)/*/*) .build-stamp | $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild
+	$$(Q) rm -rf $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(NETTARGETFRAMEWORK)/
+	$$(Q) $(CP) -r Xamarin.MacDev.Tasks/bin/$(CONFIG)/$(NETTARGETFRAMEWORK) $(DOTNET_DESTDIR)/$($(2)_NUGET_SDK_NAME)/tools/msbuild/$(NETTARGETFRAMEWORK)
+	$$(Q) touch $$@
 endef
 
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallFiles,$(platform),$(shell echo $(platform) | tr 'a-z' 'A-Z'))))
@@ -115,19 +119,23 @@ DOTNET_IOS_WINDOWS_FILES += Messaging/Xamarin.Messaging.Build/obj/$(CONFIG)/Buil
 
 .dotnet-windows: .build-stamp .copy-windows-files
 
+ifndef IS_LINUX
 all-local:: .dotnet-windows
 dotnet:: .dotnet-windows
+endif
 
 ##
 ## Common targets ##
 ##
 
 # we must install locally during 'make all', because the F# build depends on the msbuild targets/assemblies.
-all-local:: $(MSBUILD_PRODUCTS) .stamp-test-xml
+all-local:: $(MSBUILD_PRODUCTS)
+ifndef IS_LINUX
+all-local:: .stamp-test-xml
+endif
 
 # I haven't found a way to execute ilrepack.exe on .NET (it will probably have to be built for .NET), so run it using Mono.
 
-.build-stamp: export SYSTEM_MONO:=$(SYSTEM_MONO)
 .build-stamp: $(ALL_SOURCES)
 	$(Q) $(DOTNET) build "/bl:$@.binlog" $(XBUILD_VERBOSITY)
 	$(Q) touch $@

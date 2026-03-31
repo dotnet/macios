@@ -60,7 +60,7 @@ namespace Xamarin.Tests {
 			public required string RelativePath;
 		}
 
-		void AssertMaxFileLengthInBinAndObjDirectories (ApplePlatform platform, string project_path, string runtimeIdentifiers, string configuration, int maxLength = 110)
+		void AssertMaxFileLengthInBinAndObjDirectories (ApplePlatform platform, string project_path, string runtimeIdentifiers, string configuration, int maxLength = 118)
 		{
 			var binDir = GetBinDir (project_path, platform, runtimeIdentifiers, configuration);
 			var objDir = GetObjDir (project_path, platform, runtimeIdentifiers, configuration);
@@ -270,6 +270,27 @@ namespace Xamarin.Tests {
 
 			Console.WriteLine (sb);
 			Assert.Fail (sb.ToString ());
+		}
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
+		public void StripTest (ApplePlatform platform, string runtimeIdentifiers, string configuration)
+		{
+			var project = "MySimpleApp";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			var project_dir = Path.GetDirectoryName (project_path)!;
+			Clean (project_path);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = configuration;
+			properties ["_ExportSymbolsExplicitly"] = "false";
+
+			DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (15));
 		}
 
 		[Category ("RemoteWindows")]

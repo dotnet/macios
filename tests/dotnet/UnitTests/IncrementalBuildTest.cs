@@ -205,6 +205,57 @@ class MainClass {
 			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, interpreterEnabled);
 		}
 
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void MetalShadersNotRecompiled (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GenerateProject (platform, name: nameof (MetalShadersNotRecompiled), runtimeIdentifiers: runtimeIdentifiers, out var appPath);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["UseInterpreter"] = "true"; // this makes the test faster
+
+			var projectDir = Path.GetDirectoryName (project_path)!;
+
+			// Add a Main.cs so the project compiles
+			File.WriteAllText (Path.Combine (projectDir, "Main.cs"), @"
+class MainClass {
+	static int Main ()
+	{
+		return 0;
+	}
+}
+");
+
+			// Add a Metal shader file to the project
+			File.WriteAllText (Path.Combine (projectDir, "Shaders.metal"), @"
+#include <metal_stdlib>
+using namespace metal;
+
+kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
+                      texture2d<half, access::write> outTexture [[texture(1)]],
+                      uint2 gid [[thread_position_in_grid]])
+{
+}
+");
+
+			// Build the first time
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_SmeltMetal", "First build");
+			AssertTargetExecuted (allTargets, "_TemperMetal", "First build");
+
+			// Build again without any changes
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+
+			// _SmeltMetal should NOT execute on the second build since nothing changed
+			AssertTargetNotExecuted (allTargets, "_SmeltMetal", "Second build");
+			AssertTargetNotExecuted (allTargets, "_TemperMetal", "Second build");
+		}
+
 		void CodeChangeSkipsTargetsImpl (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
 		{
 			var project = "IncrementalTestApp";

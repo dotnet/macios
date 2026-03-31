@@ -5,52 +5,30 @@ using CoreGraphics;
 
 namespace PdfKit {
 	partial class PdfBorder {
+		/// <summary>Gets or sets the dash pattern for the border.</summary>
+		/// <value>An array of <see cref="nfloat" /> values defining the dash pattern, or <see langword="null" />.</value>
 		public nfloat []? DashPattern {
 			get {
-				var arr = WeakDashPattern;
-				if (arr is null)
-					return null;
-				var rv = new nfloat [arr.Count];
-				for (uint i = 0; i < rv.Length; i++)
-					rv [i] = arr.GetItem<NSNumber> (i).NFloatValue;
-				return rv;
+				return WeakDashPattern?.ToArrayDropNullElements<nfloat, NSNumber> (v => v.NFloatValue);
 			}
 			set {
-				if (value is null) {
-					WeakDashPattern = null;
-				} else {
-					var arr = new NSNumber [value.Length];
-					for (int i = 0; i < arr.Length; i++)
-						arr [i] = new NSNumber (value [i]);
-					WeakDashPattern = NSArray.FromNSObjects (arr);
-				}
+				WeakDashPattern = NSArray.FromNSObjects ((v) => new NSNumber (v), value);
 			}
 		}
 	}
 
 #if !IOS && !__TVOS__
-	/// <summary>To be added.</summary>
-	///     <remarks>To be added.</remarks>
+	/// <summary>Represents a PDF markup annotation such as highlight, underline, or strikethrough.</summary>
 	partial class PdfAnnotationMarkup {
+		/// <summary>Gets or sets the points defining the quadrilateral bounds of the markup annotation.</summary>
+		/// <value>An array of <see cref="CGPoint" /> values representing the quadrilateral vertices, or <see langword="null" />.</value>
 		public CGPoint []? QuadrilateralPoints {
 			get {
-				var arr = WeakQuadrilateralPoints;
-				if (arr is null)
-					return null;
-				var rv = new CGPoint [arr.Count];
-				for (uint i = 0; i < rv.Length; i++)
-					rv [i] = arr.GetItem<NSValue> (i).CGPointValue;
-				return rv;
+				return WeakQuadrilateralPoints?.ToArrayDropNullElements<CGPoint, NSValue> (v => v.CGPointValue);
 			}
 			set {
-				if (value is null) {
-					WeakQuadrilateralPoints = null;
-				} else {
-					var arr = new NSValue [value.Length];
-					for (int i = 0; i < arr.Length; i++)
-						arr [i] = NSValue.FromCGPoint (value [i]);
-					WeakQuadrilateralPoints = NSArray.FromNSObjects (arr);
-				}
+				using var arr = NSArray.FromNSObjects ((v) => NSValue.FromCGPoint (v), value);
+				WeakQuadrilateralPoints = arr;
 			}
 		}
 	}

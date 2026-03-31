@@ -192,6 +192,7 @@ endef
 # 3: runtime identifier
 $(foreach name,$(NAMES),$(foreach platform,$(DOTNET_PLATFORMS),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call FrameworkTemplate,$(name),$(DOTNET_$(rid)_SDK_PLATFORM),$(rid),$(shell echo $(name) | tr '.' '_'))))))
 
+ifneq ($(DOTNET_PLATFORMS),)
 define XCTemplate
 .libs/$(3)/$(1).framework.stamp: $$(foreach rid,$$($(3)_XC_RUNTIMEIDENTIFIERS),.libs/$$(rid)/$(1).framework.stamp) | .libs/$(3)
 	$$(Q) rm -Rf .libs/$(3)/$(1).framework
@@ -229,6 +230,7 @@ $(foreach name,$(NAMES),$(eval $(call XCFrameworkTemplate,$(name))))
 
 zip: $(ZIPPED_TARGETS)
 all-local:: $(ZIPPED_TARGETS)
+endif # DOTNET_PLATFORMS
 
 define PlugInTemplate
 

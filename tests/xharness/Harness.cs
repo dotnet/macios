@@ -396,6 +396,13 @@ namespace Xharness {
 					Filter = "Category!=Windows",
 				},
 				new {
+					Label = TestLabel.Sharpie,
+					ProjectPath = Path.GetFullPath (Path.Combine (HarnessConfiguration.RootDirectory, "sharpie", "Sharpie.Bind.Tests", "Sharpie.Bind.Tests.csproj")),
+					Name = "Sharpie tests",
+					Timeout = (TimeSpan?) TimeSpan.FromMinutes (30),
+					Filter = "",
+				},
+				new {
 					Label = TestLabel.Xtro,
 					ProjectPath = Path.GetFullPath (Path.Combine (HarnessConfiguration.RootDirectory, "xtro-sharpie", "UnitTests", "UnitTests.csproj")),
 					Name = "Xtro",

@@ -6682,6 +6682,10 @@ namespace Foundation {
 		[Export ("null"), Static]
 		[Internal]
 		NSNull _Null { get; }
+
+		[Export ("null"), Static]
+		[Internal]
+		IntPtr _NullHandle { get; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -6952,9 +6956,11 @@ namespace Foundation {
 		[Notification]
 		NSString CurrentLocaleDidChangeNotification { get; }
 
+		[return: NullAllowed]
 		[Export ("objectForKey:"), Internal]
 		NSObject ObjectForKey (NSString key);
 
+		[return: NullAllowed]
 		[Export ("displayNameForKey:value:"), Internal]
 		NSString DisplayNameForKey (NSString key, string value);
 
@@ -12640,6 +12646,7 @@ namespace Foundation {
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
+	[ObjectiveCFramework ("UIKit")]
 	interface NSStringDrawingContext {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -14094,6 +14101,7 @@ namespace Foundation {
 
 		[Export ("bundleWithPath:")]
 		[Static]
+		[return: NullAllowed]
 		NSBundle FromPath (string path);
 
 		[DesignatedInitializer]
@@ -14106,6 +14114,7 @@ namespace Foundation {
 
 		[Export ("bundleWithIdentifier:")]
 		[Static]
+		[return: NullAllowed]
 		NSBundle FromIdentifier (string str);
 
 #if !XAMCORE_5_0
@@ -14150,48 +14159,62 @@ namespace Foundation {
 		string BundlePath { get; }
 
 		[Export ("resourcePath")]
+		[NullAllowed]
 		string ResourcePath { get; }
 
 		[Export ("executablePath")]
+		[NullAllowed]
 		string ExecutablePath { get; }
 
 		[Export ("pathForAuxiliaryExecutable:")]
+		[return: NullAllowed]
 		string PathForAuxiliaryExecutable (string s);
 
 
 		[Export ("privateFrameworksPath")]
+		[NullAllowed]
 		string PrivateFrameworksPath { get; }
 
 		[Export ("sharedFrameworksPath")]
+		[NullAllowed]
 		string SharedFrameworksPath { get; }
 
 		[Export ("sharedSupportPath")]
+		[NullAllowed]
 		string SharedSupportPath { get; }
 
 		[Export ("builtInPlugInsPath")]
+		[NullAllowed]
 		string BuiltinPluginsPath { get; }
 
 		[Export ("bundleIdentifier")]
+		[NullAllowed]
 		string BundleIdentifier { get; }
 
 		[Export ("classNamed:")]
+		[return: NullAllowed]
 		Class ClassNamed (string className);
 
 		[Export ("principalClass")]
+		[NullAllowed]
 		Class PrincipalClass { get; }
 
 		[Export ("pathForResource:ofType:inDirectory:")]
 		[Static]
-		string PathForResourceAbsolute (string name, [NullAllowed] string ofType, string bundleDirectory);
+		[return: NullAllowed]
+		string PathForResourceAbsolute ([NullAllowed] string name, [NullAllowed] string ofType, string bundleDirectory);
 
 		[Export ("pathForResource:ofType:")]
-		string PathForResource (string name, [NullAllowed] string ofType);
+		[return: NullAllowed]
+		string PathForResource ([NullAllowed] string name, [NullAllowed] string ofType);
 
 		[Export ("pathForResource:ofType:inDirectory:")]
-		string PathForResource (string name, [NullAllowed] string ofType, [NullAllowed] string subpath);
+		[return: NullAllowed]
+		string PathForResource ([NullAllowed] string name, [NullAllowed] string ofType, [NullAllowed] string subpath);
 
 		[Export ("pathForResource:ofType:inDirectory:forLocalization:")]
-		string PathForResource (string name, [NullAllowed] string ofType, string subpath, string localizationName);
+		[return: NullAllowed]
+		string PathForResource ([NullAllowed] string name, [NullAllowed] string ofType, [NullAllowed] string subpath, [NullAllowed] string localizationName);
 
 		/// <summary>Get a localized version of the string for the specified key in the specified table.</summary>
 		/// <param name="key">The key to lookup</param>
@@ -14202,12 +14225,15 @@ namespace Foundation {
 		NSString GetLocalizedString ([NullAllowed] NSString key, [NullAllowed] NSString value, [NullAllowed] NSString table);
 
 		[Export ("objectForInfoDictionaryKey:")]
+		[return: NullAllowed]
 		NSObject ObjectForInfoDictionary (string key);
 
 		[Export ("developmentLocalization")]
+		[NullAllowed]
 		string DevelopmentLocalization { get; }
 
 		[Export ("infoDictionary")]
+		[NullAllowed]
 		NSDictionary InfoDictionary { get; }
 
 		// Additions from AppKit
@@ -14245,6 +14271,7 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("pathForImageResource:")]
+		[return: NullAllowed]
 		string PathForImageResource (string resource);
 
 		/// <param name="resource">To be added.</param>
@@ -14255,6 +14282,7 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("pathForSoundResource:")]
+		[return: NullAllowed]
 		string PathForSoundResource (string resource);
 
 		/// <param name="resource">To be added.</param>
@@ -14265,6 +14293,7 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("URLForImageResource:")]
+		[return: NullAllowed]
 		NSUrl GetUrlForImageResource (string resource);
 
 		/// <param name="key">To be added.</param>
@@ -14275,6 +14304,7 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("contextHelpForKey:")]
+		[return: NullAllowed]
 		NSAttributedString GetContextHelp (string key);
 
 		// http://developer.apple.com/library/ios/#documentation/uikit/reference/NSBundle_UIKitAdditions/Introduction/Introduction.html
@@ -14293,36 +14323,45 @@ namespace Foundation {
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		[Export ("loadNibNamed:owner:options:")]
+		[return: NullAllowed]
 		NSArray LoadNib (string nibName, [NullAllowed] NSObject owner, [NullAllowed] NSDictionary options);
 
 		[Export ("bundleURL")]
 		NSUrl BundleUrl { get; }
 
 		[Export ("resourceURL")]
+		[NullAllowed]
 		NSUrl ResourceUrl { get; }
 
 		[Export ("executableURL")]
+		[NullAllowed]
 		NSUrl ExecutableUrl { get; }
 
 		[Export ("URLForAuxiliaryExecutable:")]
+		[return: NullAllowed]
 		NSUrl UrlForAuxiliaryExecutable (string executable);
 
 		[Export ("privateFrameworksURL")]
+		[NullAllowed]
 		NSUrl PrivateFrameworksUrl { get; }
 
 		[Export ("sharedFrameworksURL")]
+		[NullAllowed]
 		NSUrl SharedFrameworksUrl { get; }
 
 		[Export ("sharedSupportURL")]
+		[NullAllowed]
 		NSUrl SharedSupportUrl { get; }
 
 		[Export ("builtInPlugInsURL")]
+		[NullAllowed]
 		NSUrl BuiltInPluginsUrl { get; }
 
 		[Export ("initWithURL:")]
 		NativeHandle Constructor (NSUrl url);
 
 		[Static, Export ("bundleWithURL:")]
+		[return: NullAllowed]
 		NSBundle FromUrl (NSUrl url);
 
 		[Export ("preferredLocalizations")]
@@ -14332,37 +14371,45 @@ namespace Foundation {
 		string [] Localizations { get; }
 
 		[Export ("appStoreReceiptURL")]
+		[NullAllowed]
 		NSUrl AppStoreReceiptUrl { get; }
 
 		[Export ("pathsForResourcesOfType:inDirectory:")]
-		string [] PathsForResources (string fileExtension, [NullAllowed] string subDirectory);
+		string [] PathsForResources ([NullAllowed] string fileExtension, [NullAllowed] string subDirectory);
 
 		[Export ("pathsForResourcesOfType:inDirectory:forLocalization:")]
-		string [] PathsForResources (string fileExtension, [NullAllowed] string subDirectory, [NullAllowed] string localizationName);
+		string [] PathsForResources ([NullAllowed] string fileExtension, [NullAllowed] string subDirectory, [NullAllowed] string localizationName);
 
 		[Static, Export ("pathsForResourcesOfType:inDirectory:")]
-		string [] GetPathsForResources (string fileExtension, string bundlePath);
+		string [] GetPathsForResources ([NullAllowed] string fileExtension, string bundlePath);
 
 		[Static, Export ("URLForResource:withExtension:subdirectory:inBundleWithURL:")]
-		NSUrl GetUrlForResource (string name, string fileExtension, [NullAllowed] string subdirectory, NSUrl bundleURL);
+		[return: NullAllowed]
+		NSUrl GetUrlForResource ([NullAllowed] string name, [NullAllowed] string fileExtension, [NullAllowed] string subdirectory, NSUrl bundleURL);
 
 		[Static, Export ("URLsForResourcesWithExtension:subdirectory:inBundleWithURL:")]
-		NSUrl [] GetUrlsForResourcesWithExtension (string fileExtension, [NullAllowed] string subdirectory, NSUrl bundleURL);
+		[return: NullAllowed]
+		NSUrl [] GetUrlsForResourcesWithExtension ([NullAllowed] string fileExtension, [NullAllowed] string subdirectory, NSUrl bundleURL);
 
 		[Export ("URLForResource:withExtension:")]
-		NSUrl GetUrlForResource (string name, string fileExtension);
+		[return: NullAllowed]
+		NSUrl GetUrlForResource ([NullAllowed] string name, [NullAllowed] string fileExtension);
 
 		[Export ("URLForResource:withExtension:subdirectory:")]
-		NSUrl GetUrlForResource (string name, string fileExtension, [NullAllowed] string subdirectory);
+		[return: NullAllowed]
+		NSUrl GetUrlForResource ([NullAllowed] string name, [NullAllowed] string fileExtension, [NullAllowed] string subdirectory);
 
 		[Export ("URLForResource:withExtension:subdirectory:localization:")]
-		NSUrl GetUrlForResource (string name, string fileExtension, [NullAllowed] string subdirectory, [NullAllowed] string localizationName);
+		[return: NullAllowed]
+		NSUrl GetUrlForResource ([NullAllowed] string name, [NullAllowed] string fileExtension, [NullAllowed] string subdirectory, [NullAllowed] string localizationName);
 
 		[Export ("URLsForResourcesWithExtension:subdirectory:")]
-		NSUrl [] GetUrlsForResourcesWithExtension (string fileExtension, [NullAllowed] string subdirectory);
+		[return: NullAllowed]
+		NSUrl [] GetUrlsForResourcesWithExtension ([NullAllowed] string fileExtension, [NullAllowed] string subdirectory);
 
 		[Export ("URLsForResourcesWithExtension:subdirectory:localization:")]
-		NSUrl [] GetUrlsForResourcesWithExtension (string fileExtension, [NullAllowed] string subdirectory, [NullAllowed] string localizationName);
+		[return: NullAllowed]
+		NSUrl [] GetUrlsForResourcesWithExtension ([NullAllowed] string fileExtension, [NullAllowed] string subdirectory, [NullAllowed] string localizationName);
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -18754,6 +18801,57 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		[Export ("allowEvaluation")]
 		void AllowEvaluation ();
+
+		/// <summary>Validates this predicate using the specified validator and, if valid, allows it to be evaluated.</summary>
+		/// <param name="validator">The <see cref="INSPredicateValidating" /> object used to validate the predicate before allowing evaluation.</param>
+		/// <param name="error">When this method returns <see langword="false" />, contains an <see cref="NSError" /> describing the validation failure; otherwise, <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the predicate passed validation and is now allowed to be evaluated; otherwise, <see langword="false" />.</returns>
+		[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
+		[Export ("allowEvaluationWithValidator:error:")]
+		bool AllowEvaluation (INSPredicateValidating validator, [NullAllowed] out NSError error);
+	}
+
+	/// <summary>Protocol interface that represents the methods declared by the <see cref="NSPredicateValidating" /> protocol.</summary>
+	interface INSPredicateValidating { }
+
+	/// <summary>Provides custom validation logic for <see cref="NSPredicate" /> and <see cref="NSExpression" /> objects before they are evaluated.</summary>
+	/// <remarks>
+	///   <para>Implement this protocol to control which predicates and expressions are considered safe for evaluation. Each visitor method is called during
+	///   validation, allowing the implementation to inspect and approve or reject individual components of a predicate tree.</para>
+	/// </remarks>
+	[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface NSPredicateValidating {
+		/// <summary>Validates whether the specified predicate is allowed to be evaluated.</summary>
+		/// <param name="predicate">The <see cref="NSPredicate" /> to validate.</param>
+		/// <param name="error">When this method returns <see langword="false" />, contains an <see cref="NSError" /> describing why the predicate was rejected; otherwise, <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the predicate is valid and allowed; otherwise, <see langword="false" />.</returns>
+		[Export ("visitPredicate:error:")]
+		bool VisitPredicate (NSPredicate predicate, [NullAllowed] out NSError error);
+
+		/// <summary>Validates whether the specified expression is allowed to be evaluated.</summary>
+		/// <param name="expression">The <see cref="NSExpression" /> to validate.</param>
+		/// <param name="error">When this method returns <see langword="false" />, contains an <see cref="NSError" /> describing why the expression was rejected; otherwise, <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the expression is valid and allowed; otherwise, <see langword="false" />.</returns>
+		[Export ("visitExpression:error:")]
+		bool VisitExpression (NSExpression expression, [NullAllowed] out NSError error);
+
+		/// <summary>Validates whether the specified comparison operator type is allowed to be used in a predicate.</summary>
+		/// <param name="operatorType">The <see cref="NSPredicateOperatorType" /> to validate.</param>
+		/// <param name="error">When this method returns <see langword="false" />, contains an <see cref="NSError" /> describing why the operator type was rejected; otherwise, <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the operator type is valid and allowed; otherwise, <see langword="false" />.</returns>
+		[Export ("visitOperatorType:error:")]
+		bool VisitOperatorType (NSPredicateOperatorType operatorType, [NullAllowed] out NSError error);
+
+		/// <summary>Validates whether the specified key path expression is allowed to be evaluated.</summary>
+		/// <param name="expression">The key path <see cref="NSExpression" /> to validate.</param>
+		/// <param name="scope">The scope component of the key path, or <see langword="null" /> if no scope is specified.</param>
+		/// <param name="key">The key component of the key path, or <see langword="null" /> if no key is specified.</param>
+		/// <param name="error">When this method returns <see langword="false" />, contains an <see cref="NSError" /> describing why the key path expression was rejected; otherwise, <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the key path expression is valid and allowed; otherwise, <see langword="false" />.</returns>
+		[Export ("visitExpressionKeyPath:scope:key:error:")]
+		bool VisitExpressionKeyPath (NSExpression expression, [NullAllowed] string scope, [NullAllowed] string key, [NullAllowed] out NSError error);
 	}
 
 	/// <summary>Defines an extension method for <see cref="Foundation.NSOrderedSet" /> objects allowing them to be filtered via an <see cref="Foundation.NSPredicate" />.</summary>
@@ -19594,6 +19692,7 @@ namespace Foundation {
 		[NoMacCatalyst]
 		[NoTV]
 		[Export ("imageForResource:")]
+		[return: NullAllowed]
 		NSImage ImageForResource (string name);
 	}
 

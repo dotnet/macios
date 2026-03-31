@@ -1,5 +1,7 @@
 #nullable enable
 
+using System.Collections.Generic;
+
 namespace MonoTouchFixtures.CoreFoundation {
 
 	[TestFixture]
@@ -46,6 +48,43 @@ namespace MonoTouchFixtures.CoreFoundation {
 			using var a = CFArray.FromStrings (TestArray);
 			VerifyArray (a);
 			Assert.AreEqual ((nint) 1, CFGetRetainCount (a.Handle), "RC");
+		}
+
+		[Test]
+		public void CreateWithNullItemsTest ()
+		{
+			var handle = CFArray.Create (new string? [] { "a", null, "b" });
+			using var a = Runtime.GetINativeObject<CFArray> (handle, true);
+			Assert.IsNotNull (a, "NotNull");
+			Assert.AreEqual ((nint) 3, a!.Count, "Count");
+			Assert.AreEqual ("a", CFString.FromHandle (a.GetValue (0), false), "0");
+			Assert.AreEqual (NSNull.Null.Handle, a.GetValue (1), "1 - null item is CFNull");
+			Assert.AreEqual ("b", CFString.FromHandle (a.GetValue (2), false), "2");
+			Assert.AreEqual ((nint) 1, CFGetRetainCount (handle), "RC");
+		}
+
+		[Test]
+		public void FromStringsWithNullItemsTest ()
+		{
+			using var a = CFArray.FromStrings (new string? [] { "x", null, "y" });
+			Assert.IsNotNull (a, "NotNull");
+			Assert.AreEqual ((nint) 3, a.Count, "Count");
+			Assert.AreEqual ("x", CFString.FromHandle (a.GetValue (0), false), "0");
+			Assert.AreEqual (NSNull.Null.Handle, a.GetValue (1), "1 - null item is CFNull");
+			Assert.AreEqual ("y", CFString.FromHandle (a.GetValue (2), false), "2");
+		}
+
+		[Test]
+		public void CreateWithIReadOnlyListTest ()
+		{
+			IReadOnlyList<string?> list = new List<string?> { "p", null, "q" };
+			var handle = CFArray.Create (list);
+			using var a = Runtime.GetINativeObject<CFArray> (handle, true);
+			Assert.IsNotNull (a, "NotNull");
+			Assert.AreEqual ((nint) 3, a!.Count, "Count");
+			Assert.AreEqual ("p", CFString.FromHandle (a.GetValue (0), false), "0");
+			Assert.AreEqual (NSNull.Null.Handle, a.GetValue (1), "1 - null item is CFNull");
+			Assert.AreEqual ("q", CFString.FromHandle (a.GetValue (2), false), "2");
 		}
 
 		[Test]

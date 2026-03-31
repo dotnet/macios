@@ -947,47 +947,35 @@ namespace Foundation {
 			return UnsafeGetItem<T> (Handle, index);
 		}
 
-#nullable disable
-		/// <param name="weakArray">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public static NSObject [] [] FromArrayOfArray (NSArray weakArray)
+		/// <summary>Creates a jagged array of <see cref="NSObject" /> arrays from an <see cref="NSArray" /> of <see cref="NSArray" /> objects.</summary>
+		/// <param name="weakArray">An <see cref="NSArray" /> containing nested <see cref="NSArray" /> elements, or <see langword="null" />.</param>
+		/// <returns>A jagged array of <see cref="NSObject" /> arrays, or <see langword="null" /> if <paramref name="weakArray" /> is <see langword="null" /> or a conversion error occurs.</returns>
+		public static NSObject [] []? FromArrayOfArray (NSArray? weakArray)
 		{
-			if (weakArray is null || weakArray.Handle == IntPtr.Zero)
-				return null;
-
 			try {
-				nuint n = weakArray.Count;
-				var ret = new NSObject [n] [];
-				for (nuint i = 0; i < n; i++)
-					ret [i] = NSArray.FromArray<NSObject> (weakArray.GetItem<NSArray> (i));
-				return ret;
+				var rv = ArrayFromHandleDropNullElements<NSObject []> (
+					weakArray.GetHandle (),
+					(v) => NonNullArrayFromHandleDropNullElements<NSObject> (v),
+					NSNullBehavior.DropIfIncompatible);
+				GC.KeepAlive (weakArray);
+				return rv;
 			} catch {
 				return null;
 			}
 		}
 
-		/// <param name="items">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public static NSArray From (NSObject [] [] items)
+		/// <summary>Creates an <see cref="NSArray" /> from a jagged array of <see cref="NSObject" /> arrays.</summary>
+		/// <param name="items">A jagged array of <see cref="NSObject" /> arrays to convert, or <see langword="null" />.</param>
+		/// <returns>An <see cref="NSArray" /> containing nested <see cref="NSArray" /> elements, or <see langword="null" /> if <paramref name="items" /> is <see langword="null" /> or a conversion error occurs.</returns>
+		public static NSArray? From (NSObject [] []? items)
 		{
-			if (items is null)
-				return null;
-
 			try {
-				var ret = new NSMutableArray ((nuint) items.Length);
-				for (int i = 0; i < items.Length; i++)
-					ret.Add (NSArray.FromNSObjects (items [i]));
-				return ret;
+				return FromNSObjects ((item) => NSArray.FromNSObjects (item), items);
 			} catch {
 				return null;
 			}
 		}
 
-#nullable enable
 		/// <summary>Converts this <see cref="NSArray" /> to a strongly-typed C# array, dropping null and incompatible elements.</summary>
 		/// <typeparam name="T">The element type for the returned array. Must be a class that implements <see cref="INativeObject" />.</typeparam>
 		/// <returns>A C# array of <typeparamref name="T" /> elements, excluding any null or incompatible elements.</returns>

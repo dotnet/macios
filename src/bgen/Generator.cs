@@ -5577,7 +5577,7 @@ public partial class Generator : IMemberGatherer {
 		print ($"[Experimental (\"{e.DiagnosticId}\")]");
 	}
 
-	public void PrintObjectiveCFrameworkAttribute (ICustomAttributeProvider mi)
+	public void PrintObjectiveCFrameworkAttribute (ICustomAttributeProvider? mi)
 	{
 		var attrib = AttributeManager.GetCustomAttribute<ObjectiveCFrameworkAttribute> (mi);
 		if (attrib is null)

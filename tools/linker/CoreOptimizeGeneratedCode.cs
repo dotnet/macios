@@ -591,7 +591,8 @@ namespace Xamarin.Linker {
 			return modified;
 		}
 
-		// Returns the number of instructions added (or removed).
+		// Returns the number of instructions added (or removed) in the 'instructionsAddedOrRemoved' parameter.
+		// Returns true if any modifications were done.
 		static bool ProcessCalls (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins, out int instructionsAddedOrRemoved)
 		{
 			var modified = false;

@@ -212,8 +212,10 @@ namespace HomeKit {
 		PartialCommunicationFailure = 104,
 		// iOS 18.4
 		HomeUpgradeRequired = 105,
-		// iOS 26.1
+#if !XAMCORE_5_0
+		// iOS 26.1 - Apple removed this enum value from native headers in Xcode 26.4
 		QuotaExceeded = 106,
+#endif
 	}
 
 

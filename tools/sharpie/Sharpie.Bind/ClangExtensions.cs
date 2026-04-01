@@ -443,5 +443,10 @@ public static class ClangExtensions {
 		public VersionTuple Deprecated => self.AvailabilityAttributeDeprecated ?? default;
 		public VersionTuple Obsoleted => self.AvailabilityAttributeObsoleted ?? default;
 	}
+
+	extension(VersionTuple self) {
+		// An extension property for IsEmpty until we get the actual IsEmpty fix: https://github.com/dotnet/ClangSharp/pull/693
+		public bool IsEmptyVersionTuple => self.Major == 0 && (self.Minor ?? 0) == 0 && (self.Subminor ?? 0) == 0 && (self.Build ?? 0) == 0;
+	}
 }
 

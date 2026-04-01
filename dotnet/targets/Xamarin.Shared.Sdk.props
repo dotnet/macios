@@ -136,7 +136,12 @@
 
 	</PropertyGroup>
 
-	<PropertyGroup>
+	<!-- Set the default RuntimeIdentifier when publishing -->
+	<PropertyGroup Condition="'$(PublishRuntimeIdentifier)' == ''">
+		<!--
+		<PublishRuntimeIdentifier Condition="'$(_PlatformName)' == 'iOS'">ios-arm64</PublishRuntimeIdentifier>
+		<PublishRuntimeIdentifier Condition="'$(_PlatformName)' == 'tvOS'">tvos-arm64</PublishRuntimeIdentifier>
+		-->
 		<!-- Disable the default PublishRuntimeIdentifier behavior: https://github.com/dotnet/sdk/pull/52566 -->
 		<UseDefaultPublishRuntimeIdentifier>false</UseDefaultPublishRuntimeIdentifier>
 	</PropertyGroup>
@@ -216,6 +221,22 @@
 		-->
 		<CustomNativeMain Condition="'$(OutputType)' == 'Exe'">true</CustomNativeMain>
 	</PropertyGroup>
+
+	<!-- ReadyToRun configuration for CoreCLR -->
+	<PropertyGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(_UseNativeAot)' != 'true'">
+		<PublishReadyToRun Condition="'$(PublishReadyToRun)' == ''">true</PublishReadyToRun>
+		<PublishReadyToRunComposite Condition="'$(PublishReadyToRunComposite)' == '' And '$(PublishReadyToRun)' == 'true'">true</PublishReadyToRunComposite>
+		<PublishReadyToRunContainerFormat Condition="'$(PublishReadyToRunContainerFormat)' == '' And '$(PublishReadyToRun)' == 'true'">macho</PublishReadyToRunContainerFormat>
+		<PublishReadyToRunCreateSharedLibrary>false</PublishReadyToRunCreateSharedLibrary>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(PublishReadyToRun)' != 'true'">
+		<_BundlerEnvironmentVariables Include="DOTNET_ReadyToRun" Value="0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(DebugLaunchTime)' == 'true'">
+		<_BundlerEnvironmentVariables Include="DEBUG_LAUNCH_TIME" Value="1" />
+	</ItemGroup>
 
 	<!-- Compute _SdkIsSimulator from the RuntimeIdentifier -->
 	<PropertyGroup>

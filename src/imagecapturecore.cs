@@ -421,6 +421,7 @@ namespace ImageCaptureCore {
 		ICCameraItem [] SidecarFiles { get; }
 
 		/// <summary>Gets the fingerprint generated from the camera file data.</summary>
+		[Mac (13, 0)]
 		[NullAllowed, Export ("fingerprint")]
 		string Fingerprint { get; }
 

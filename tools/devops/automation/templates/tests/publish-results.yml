@@ -47,6 +47,7 @@ stages:
   - configure_build
   - simulator_tests
   - windows_integration
+  - linux_build_verification
   condition: and(succeededOrFailed(), ${{ parameters.condition }})
 
   jobs:

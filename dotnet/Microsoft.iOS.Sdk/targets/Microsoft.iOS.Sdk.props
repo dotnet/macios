@@ -4,7 +4,8 @@
     <_PlatformName>iOS</_PlatformName>
     <_PlatformRidNoArch>ios</_PlatformRidNoArch>
     <!-- Used by Microsoft.iOS.Windows.Sdk -->
-    <CoreiOSSdkDirectory>$(MSBuildThisFileDirectory)..\tools\msbuild\</CoreiOSSdkDirectory>
+    <CoreiOSSdkDirectory Condition="'$(_UseDesktopTaskAssemblies)' != 'true'">$(MSBuildThisFileDirectory)..\tools\msbuild\net$(BundledNETCoreAppTargetFrameworkVersion)\</CoreiOSSdkDirectory>
+    <CoreiOSSdkDirectory Condition="'$(_UseDesktopTaskAssemblies)' == 'true'">$(MSBuildThisFileDirectory)..\tools\msbuild\netstandard2.0\</CoreiOSSdkDirectory>
   </PropertyGroup>
 
   <Import Project="Xamarin.Shared.Sdk.props" Condition="'$(_IsWorkloadEol)' != 'true'" />

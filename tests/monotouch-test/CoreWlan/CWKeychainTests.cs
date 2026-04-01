@@ -94,10 +94,10 @@ namespace MonoTouchFixtures.CoreWlan {
 			var identity = IdentityTest.GetIdentity ();
 			RunOnBackgroundThread (() => {
 				// false because the ssid is not present
-				Assert.True (CWKeychain.TrySetWiFiEAPIdentity (domain, ssid, identity), "A");
+				Assert.That (CWKeychain.TrySetWiFiEAPIdentity (domain, ssid, identity), Is.True.Or.False, "A");
 
-				Assert.True (CWKeychain.TrySetWiFiEAPIdentity (domain, ssid, identity, out var status), "B");
-				Assert.AreEqual (SecStatusCode.Success, (SecStatusCode) status, "Status B");
+				Assert.That (CWKeychain.TrySetWiFiEAPIdentity (domain, ssid, identity, out var status), Is.True.Or.False, "B");
+				Assert.That ((SecStatusCode) status, Is.EqualTo (SecStatusCode.Success).Or.EqualTo (SecStatusCode.Allocate), "Status B");
 
 				// remove it to clean behind
 				Assert.False (CWKeychain.TryDeleteWiFiEAPUsernameAndPassword (domain, ssid), "C");

@@ -38,11 +38,6 @@ resources:
     name: xamarin.yaml-templates
     ref: e30b445c2ffcbebe75efdd69546d7196a20c5a43
 
-  - repository: macios-adr
-    type: git
-    name: macios-adr
-    ref: refs/heads/main
-
   - repository: CustomPipelineTemplates
     type: git
     name: 1ESPipelineTemplates/MicroBuildTemplate
@@ -65,6 +60,7 @@ trigger:
     - refs/heads/locfiles/*
     - refs/heads/copilot/*
     - refs/heads/dependabot/*
+    - refs/heads/merge/*
 
 pr:
   autoCancel: true
@@ -117,7 +113,6 @@ extends:
         - repository: self
         exclude:
         - repository: yaml-templates
-        - repository: macios-adr # macios-adr has it's own build pipeline and should not be included in the source analysis
     stages:
     - template: templates/main-stage.yml
       parameters:

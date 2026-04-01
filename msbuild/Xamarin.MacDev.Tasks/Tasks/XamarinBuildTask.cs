@@ -69,7 +69,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		void AddRestoreConfigFile (List<string> arguments, string dotnetPath)
 		{
-			var dotnetDir = Path.GetDirectoryName (dotnetPath);
+			var dotnetDir = Path.GetDirectoryName (dotnetPath)!;
 			var configFile = Path.Combine (dotnetDir, "NuGet.config");
 
 			if (File.Exists (configFile))
@@ -78,7 +78,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		async Threading.Task ExecuteRestoreAsync (string dotnetPath, string projectPath, string targetName, Dictionary<string, string?> environment)
 		{
-			var projectDirectory = Path.GetDirectoryName (projectPath);
+			var projectDirectory = Path.GetDirectoryName (projectPath)!;
 			var binlog = Path.Combine (projectDirectory, targetName + ".binlog");
 			var arguments = new List<string> ();
 
@@ -101,7 +101,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		async Threading.Task<string> ExecuteBuildAsync (string dotnetPath, string projectPath, string targetName, Dictionary<string, string?> environment)
 		{
-			var projectDirectory = Path.GetDirectoryName (projectPath);
+			var projectDirectory = Path.GetDirectoryName (projectPath)!;
 			var outputFile = Path.Combine (projectDirectory, "Output.txt");
 			var binlog = Path.Combine (projectDirectory, targetName + ".binlog");
 			var arguments = new List<string> ();

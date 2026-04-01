@@ -125,7 +125,7 @@ namespace CoreGraphics {
 			// and have a unit tests to make sure this behavior does not change over time
 			if (name is null)
 				return null;
-			var nameHandle = new TransientCFString (name);
+			using var nameHandle = new TransientCFString (name);
 			return Create (CGFontCreateWithFontName (nameHandle));
 		}
 

@@ -307,6 +307,56 @@ namespace Xamarin.Tests {
 			Assert.That (dSYMDirectory, Does.Exist, "dsym directory");
 		}
 
+		// Assert that the expected dSYMs exist for all binaries in the app bundle, and that no unexpected dSYMs exist.
+		protected void AssertExpectedDSyms (ApplePlatform platform, string appPath)
+		{
+			var appContainerDir = Path.GetDirectoryName (appPath)!;
+			var appBundleName = Path.GetFileName (appPath);
+
+			// Collect expected dSYM names based on the binaries in the app bundle
+			var expectedDSyms = new HashSet<string> ();
+
+			// The app bundle itself should have a dSYM
+			expectedDSyms.Add (appBundleName + ".dSYM");
+
+			// Find frameworks in the app bundle
+			var frameworksDir = Path.Combine (appPath, GetFrameworksRelativePath (platform));
+			if (Directory.Exists (frameworksDir)) {
+				foreach (var frameworkDir in Directory.GetDirectories (frameworksDir, "*.framework")) {
+					var frameworkName = Path.GetFileNameWithoutExtension (frameworkDir);
+					var frameworkBinary = Path.Combine (frameworkDir, frameworkName);
+					if (File.Exists (frameworkBinary))
+						expectedDSyms.Add (frameworkName + ".framework.dSYM");
+				}
+			}
+
+			// Find dylibs in the app bundle
+			var contentsRelativeDir = GetRelativeDylibDirectory (platform);
+			var contentsDir = string.IsNullOrEmpty (contentsRelativeDir) ? appPath : Path.Combine (appPath, contentsRelativeDir);
+			if (Directory.Exists (contentsDir)) {
+				foreach (var dylib in Directory.GetFiles (contentsDir, "*.dylib")) {
+					var fileName = Path.GetFileNameWithoutExtension (dylib);
+					expectedDSyms.Add (fileName + ".dSYM");
+				}
+			}
+
+			// Find actual dSYM directories
+			var actualDSyms = Directory.GetDirectories (appContainerDir, "*.dSYM")
+				.Select (d => Path.GetFileName (d))
+				.ToHashSet ();
+
+			var missingDSyms = expectedDSyms.Except (actualDSyms).OrderBy (v => v).ToList ();
+			var unexpectedDSyms = actualDSyms.Except (expectedDSyms).OrderBy (v => v).ToList ();
+
+			if (missingDSyms.Count > 0)
+				Console.WriteLine ($"    Missing dSYMs:\n        {string.Join ("\n        ", missingDSyms)}");
+			if (unexpectedDSyms.Count > 0)
+				Console.WriteLine ($"    Unexpected dSYMs:\n        {string.Join ("\n        ", unexpectedDSyms)}");
+
+			Assert.That (missingDSyms, Is.Empty, "Missing dSYMs");
+			Assert.That (unexpectedDSyms, Is.Empty, "Unexpected dSYMs");
+		}
+
 		protected static string GetNativeExecutable (ApplePlatform platform, string app_directory)
 		{
 			var executableName = Path.GetFileNameWithoutExtension (app_directory);
@@ -386,7 +436,7 @@ namespace Xamarin.Tests {
 			return ExecuteWithMagicWordAndAssert (executable, environment);
 		}
 
-		protected string ExecuteWithMagicWordAndAssert (string executable, Dictionary<string, string?>? environment = null)
+		protected string ExecuteWithMagicWordAndAssert (string executable, Dictionary<string, string?>? environment = null, int expectedExitCode = 0)
 		{
 			if (Environment.OSVersion.Platform == PlatformID.Win32NT) {
 				Console.WriteLine ($"Not executing '{executable}' because we're on Windows.");
@@ -395,8 +445,8 @@ namespace Xamarin.Tests {
 
 			var rv = Execute (executable, out var output, out string magicWord, environment);
 			var outputString = output.ToString ();
-			if (rv.ExitCode != 0) {
-				var msg = $"'{executable}' exited with exit code {rv.ExitCode} (timed out: {rv.TimedOut} timeout: {rv.Timeout}):" +
+			if (rv.ExitCode != expectedExitCode) {
+				var msg = $"'{executable}' exited with exit code {rv.ExitCode} (expected exit code {expectedExitCode}) (timed out: {rv.TimedOut} timeout: {rv.Timeout}):" +
 							"\t" + outputString.Replace ("\n", "\n\t").TrimEnd (new char [] { '\n', '\t' });
 				Console.WriteLine (msg);
 				Assert.Fail (msg);
@@ -410,7 +460,7 @@ namespace Xamarin.Tests {
 			return outputString;
 		}
 
-		protected Execution Execute (string executable, out StringBuilder output, out string magicWord, Dictionary<string, string?>? environment = null)
+		protected Execution Execute (string executable, out string output, out string magicWord, Dictionary<string, string?>? environment = null)
 		{
 			if (!File.Exists (executable))
 				throw new FileNotFoundException ($"The executable '{executable}' does not exists.");
@@ -425,8 +475,9 @@ namespace Xamarin.Tests {
 					env [kvp.Key] = kvp.Value;
 			}
 
-			output = new StringBuilder ();
-			return Execution.RunWithStringBuildersAsync (executable, Array.Empty<string> (), environment: env, standardOutput: output, standardError: output, timeout: TimeSpan.FromSeconds (30)).Result;
+			var rv = Execution.RunAsync (executable, Array.Empty<string> (), environment: env, timeout: TimeSpan.FromSeconds (30)).Result;
+			output = rv.Output.MergedOutput;
+			return rv;
 		}
 
 		public static StringBuilder AssertExecute (string executable, params string [] arguments)

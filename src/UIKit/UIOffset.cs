@@ -8,39 +8,36 @@
 //  Miguel de Icaza
 //
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 
-	// UIGeometry.h
 	/// <summary>A position offset.</summary>
-	///     <remarks>Represents a position offset. Positive values are to the right and down.</remarks>
+	/// <remarks>Represents a position offset. Positive values are to the right and down.</remarks>
 	public struct UIOffset {
 
 		// API match for UIOffsetZero field/constant
-		/// <summary>A static identity offset of 0,0.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>A static identity offset of (0, 0).</summary>
 		[Field ("UIOffsetZero")] // fake (but helps testing and could also help documentation)
 		public static readonly UIOffset Zero;
 
+		/// <summary>Creates a new <see cref="UIOffset" /> with the specified horizontal and vertical offsets.</summary>
+		/// <param name="horizontal">The horizontal offset.</param>
+		/// <param name="vertical">The vertical offset.</param>
 		public UIOffset (nfloat horizontal, nfloat vertical)
 		{
 			Horizontal = horizontal;
 			Vertical = vertical;
 		}
 		/// <summary>The horizontal offset.</summary>
-		///         <remarks>To be added.</remarks>
 		public /* CGFloat */ nfloat Horizontal;
 		/// <summary>The vertical offset.</summary>
-		///         <remarks>To be added.</remarks>
 		public /* CGFloat */ nfloat Vertical;
 
-		/// <param name="obj">To be added.</param>
-		///         <summary>Whether this has the same value as <paramref name="obj" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public override bool Equals (object obj)
+		/// <summary>Determines whether this <see cref="UIOffset" /> is equal to the specified object.</summary>
+		/// <param name="obj">The object to compare with this instance.</param>
+		/// <returns><see langword="true" /> if <paramref name="obj" /> is a <see cref="UIOffset" /> with the same horizontal and vertical values; otherwise, <see langword="false" />.</returns>
+		public override bool Equals (object? obj)
 		{
 			if (!(obj is UIOffset))
 				return false;
@@ -48,19 +45,26 @@ namespace UIKit {
 			return other.Horizontal == Horizontal && other.Vertical == Vertical;
 		}
 
-		/// <summary>The hash code for this <see cref="UIKit.UIOffset" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Returns a hash code for this <see cref="UIOffset" />.</summary>
+		/// <returns>A hash code for this instance.</returns>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (Horizontal, Vertical);
 		}
 
+		/// <summary>Determines whether two <see cref="UIOffset" /> instances are equal.</summary>
+		/// <param name="left">The first offset to compare.</param>
+		/// <param name="right">The second offset to compare.</param>
+		/// <returns><see langword="true" /> if the two offsets are equal; otherwise, <see langword="false" />.</returns>
 		public static bool operator == (UIOffset left, UIOffset right)
 		{
 			return (left.Horizontal == right.Horizontal) && (left.Vertical == right.Vertical);
 		}
 
+		/// <summary>Determines whether two <see cref="UIOffset" /> instances are not equal.</summary>
+		/// <param name="left">The first offset to compare.</param>
+		/// <param name="right">The second offset to compare.</param>
+		/// <returns><see langword="true" /> if the two offsets are not equal; otherwise, <see langword="false" />.</returns>
 		public static bool operator != (UIOffset left, UIOffset right)
 		{
 			return (left.Horizontal != right.Horizontal) || (left.Vertical != right.Vertical);

@@ -52,7 +52,7 @@ namespace Foundation {
 		/// <summary>Creates a new <see cref="NSSet" /> from an array of strings.</summary>
 		/// <param name="strings">An array of strings.</param>
 		/// <remarks>The C# strings are stored as <see cref="NSString" /> objects in the set.</remarks>
-		public NSSet (params string [] strings) : this (NSArray.FromStrings (strings))
+		public NSSet (params string? [] strings) : this (NSArray.FromStrings (strings))
 		{
 		}
 
@@ -71,7 +71,7 @@ namespace Foundation {
 		public T [] ToArray<T> () where T : class, INativeObject
 		{
 			IntPtr nsarr = _AllObjects ();
-			return NSArray.ArrayFromHandle<T> (nsarr);
+			return NSArray.NonNullArrayFromHandleDropNullElements<T> (nsarr, nsNullElementBehavior: NSNullBehavior.DropIfIncompatible);
 		}
 
 		/// <summary>Creates a new <see cref="NSSet" /> from an array of strongly typed values.</summary>
@@ -168,9 +168,12 @@ namespace Foundation {
 		/// <summary>Determines whether the set contains the specified object.</summary>
 		/// <param name="obj">The object to locate in the set.</param>
 		/// <returns><see langword="true" /> if the set contains the specified object; otherwise, <see langword="false" />.</returns>
-		public bool Contains (object obj)
+		public bool Contains (object? obj)
 		{
-			return Contains (NSObject.FromObject (obj));
+			var nsobj = NSObject.FromObject (obj);
+			if (nsobj is null)
+				return false;
+			return Contains (nsobj);
 		}
 	}
 }

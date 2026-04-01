@@ -176,7 +176,7 @@ namespace Cecil.Tests {
 				TypeCheck (type, selectLambda, typeDict);
 			}
 
-			Assert.AreEqual (0, typeDict.Count (), $"Capitalization Issues Found: {string.Join (Environment.NewLine, typeDict)}");
+			Assert.That (typeDict.Count (), Is.EqualTo (0), $"Capitalization Issues Found: {string.Join (Environment.NewLine, typeDict)}");
 		}
 
 		public void TypeCheck (TypeDefinition type, Func<TypeDefinition, IEnumerable<string>> selectLambda, Dictionary<string, string> typeDict)

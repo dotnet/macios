@@ -2016,12 +2016,14 @@ namespace SceneKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		NSColor ContentColor { get; set; }
 
 		/// <summary>Gets or sets the material property's image.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		NSImage ContentImage { get; set; }
 
 		/// <summary>Gets or sets the material property's animation layer.</summary>
@@ -2029,36 +2031,42 @@ namespace SceneKit {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("Contents")]
+		[NullAllowed]
 		CALayer ContentLayer { get; set; }
 
 		/// <summary>Gets or sets the path to the image that is used for the material property's contents.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		NSString ContentPath { get; set; }
 
 		/// <summary>Gets or sets the URL that specifies the material property's image content.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		NSUrl ContentUrl { get; set; }
 
 		/// <summary>Gets or sets the material property's scene.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		SKScene ContentScene { get; set; }
 
 		/// <summary>Gets or sets the material property's texture.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		SKTexture ContentTexture { get; set; }
 
 		/// <summary>Gets or sets the material property's image cube.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		NSImage [] ContentImageCube { get; set; }
 
 		[MacCatalyst (13, 1)]

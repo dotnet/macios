@@ -441,6 +441,11 @@ namespace MetalPerformanceShadersGraph {
 		[TV (17, 0), Mac (14, 0), iOS (17, 0), MacCatalyst (17, 0)]
 		[Export ("complexTensorWithRealTensor:imaginaryTensor:name:")]
 		MPSGraphTensor ComplexTensor (MPSGraphTensor realTensor, MPSGraphTensor imaginaryTensor, [NullAllowed] string name);
+
+		/// <summary>Creates a planar tensor from a complex tensor, extracting the real and imaginary parts into a planar format.</summary>
+		[TV (26, 3), Mac (26, 3), iOS (26, 3), MacCatalyst (26, 3)]
+		[Export ("planarTensorWithComplexTensor:name:")]
+		MPSGraphTensor PlanarTensor (MPSGraphTensor tensor, [NullAllowed] string name);
 	}
 
 	// @interface MPSGraphConvolution2DOpDescriptor : NSObject <NSCopying>
@@ -2024,6 +2029,11 @@ namespace MetalPerformanceShadersGraph {
 		[iOS (26, 0), TV (26, 0), MacCatalyst (26, 0), Mac (26, 0)]
 		[Export ("reducedPrecisionFastMath")]
 		MPSGraphReducedPrecisionFastMath ReducedPrecisionFastMath { get; set; }
+
+		/// <summary>Converts the graph layout to NHWC (batch, height, width, channels) format.</summary>
+		[iOS (26, 4), TV (26, 4), MacCatalyst (26, 4), Mac (26, 4)]
+		[Export ("convertLayoutToNHWC")]
+		void ConvertLayoutToNhwc ();
 	}
 
 	// @interface MPSGraphDevice : NSObject
@@ -2950,6 +2960,8 @@ namespace MetalPerformanceShadersGraph {
 	enum MPSGraphReducedPrecisionFastMath : ulong {
 		None = 0,
 		AllowFP16Conv2DWinogradTransformIntermediate = 1 << 1,
+		/// <summary>Allows converting operands from FP32 to FP19 format for reduced precision fast math operations.</summary>
+		AllowConvertingOperandsFromFP32ToFP19 = 1 << 2,
 		AllowFP16Intermediates = AllowFP16Conv2DWinogradTransformIntermediate,
 		Default = None,
 	}

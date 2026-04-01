@@ -341,7 +341,7 @@ namespace Xamarin.MacDev.Tasks {
 			// on macOS apps {item.ItemSpec} can be a symlink to `Versions/Current/{item.ItemSpec}`
 			// and `Current` also a symlink to `A`... and `_CodeSignature` will be found there
 			var path = item.ItemSpec;
-			var parent = Path.GetDirectoryName (path);
+			var parent = Path.GetDirectoryName (path)!;
 
 			// so do not don't sign `A.framework/A`, sign `A.framework` which will always sign the *bundle*
 			if ((Path.GetExtension (parent) == ".framework") && (Path.GetFileName (path) == Path.GetFileNameWithoutExtension (parent)))
@@ -362,15 +362,15 @@ namespace Xamarin.MacDev.Tasks {
 			var environment = new Dictionary<string, string?> () {
 				{ "CODESIGN_ALLOCATE", GetCodesignAllocate (item) },
 			};
-			var rv = ExecuteAsync (fileName, arguments, null, environment, mergeOutput: false).Result;
+			var rv = ExecuteAsync (fileName, arguments, environment).Result;
 			var exitCode = rv.ExitCode;
-			var messages = rv.StandardOutput?.ToString () ?? string.Empty;
+			var messages = rv.Output.StandardOutput;
 
 			if (messages.Length > 0)
 				Log.LogMessage (MessageImportance.Normal, "{0}", messages.ToString ());
 
 			if (exitCode != 0) {
-				var errors = rv.StandardError?.ToString () ?? string.Empty;
+				var errors = rv.Output.StandardError;
 				if (errors.Length > 0)
 					Log.LogError (MSBStrings.E0004, item.ItemSpec, errors);
 				else
@@ -464,7 +464,7 @@ namespace Xamarin.MacDev.Tasks {
 			// while also not codesigning directories before files inside them.
 			foreach (var res in resourcesToSign) {
 				var path = res.ItemSpec;
-				var parent = Path.GetDirectoryName (path);
+				var parent = Path.GetDirectoryName (path)!;
 
 				// so do not don't sign `A.framework/A`, sign `A.framework` which will always sign the *bundle*
 				if (Path.GetExtension (parent) == ".framework" && Path.GetFileName (path) == Path.GetFileNameWithoutExtension (parent))

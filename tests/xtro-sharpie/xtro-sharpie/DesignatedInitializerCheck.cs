@@ -11,16 +11,15 @@
 //		when a managed constructor has no business to have an [DesignatedInitializer] attribute
 //
 
-using System;
-using System.Collections.Generic;
-
-using Mono.Cecil;
-
-using Clang.Ast;
+using Sharpie.Bind;
 
 namespace Extrospection {
 
 	public class DesignatedInitializerCheck : BaseVisitor {
+		public DesignatedInitializerCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
 
 		static Dictionary<string, TypeDefinition> types = new Dictionary<string, TypeDefinition> ();
 		static Dictionary<string, MethodDefinition> methods = new Dictionary<string, MethodDefinition> ();
@@ -49,11 +48,8 @@ namespace Extrospection {
 				methods.Add (key, method);
 		}
 
-		public override void VisitObjCMethodDecl (ObjCMethodDecl decl, VisitKind visitKind)
+		public override void VisitObjCMethodDecl (ObjCMethodDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
-				return;
-
 			// don't process methods (or types) that are unavailable for the current platform
 			if (!decl.IsAvailable () || !(decl.DeclContext as Decl).IsAvailable ())
 				return;

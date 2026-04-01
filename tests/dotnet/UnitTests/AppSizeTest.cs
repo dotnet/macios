@@ -66,6 +66,7 @@ namespace Xamarin.Tests {
 				if (supportsAssemblyInspection)
 					AssertAssemblyReport (platform, name, appPath, update, expectedDirectory);
 
+				AssertExpectedDSyms (platform, appPath);
 			});
 		}
 

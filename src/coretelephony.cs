@@ -468,6 +468,15 @@ namespace CoreTelephony {
 	delegate void CTCellularPlanProvisioningAddPlanCompletionHandler (CTCellularPlanProvisioningAddPlanResult result);
 	delegate void CTCellularPlanProvisioningUpdateCellularPlanCompletionHandler ([NullAllowed] NSError error);
 
+	/// <summary>Represents lifecycle properties for a cellular plan.</summary>
+	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
+	[BaseType (typeof (NSObject))]
+	interface CTCellularPlanLifecycleProperties : NSSecureCoding {
+		/// <summary>Gets or sets the expiration date of the cellular plan.</summary>
+		[Export ("expirationDate", ArgumentSemantic.Assign)]
+		NSDateComponents ExpirationDate { get; set; }
+	}
+
 	[NoTV, NoMac, iOS (26, 0), MacCatalyst (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CTCellularPlanProperties : NSSecureCoding {
@@ -479,6 +488,11 @@ namespace CoreTelephony {
 
 		[Export ("supportedRegionCodes", ArgumentSemantic.Assign)]
 		string [] SupportedRegionCodes { get; set; }
+
+		/// <summary>Gets or sets the lifecycle-related properties of the cellular plan.</summary>
+		[iOS (26, 4), MacCatalyst (26, 4)]
+		[NullAllowed, Export ("lifecycleProperties", ArgumentSemantic.Assign)]
+		CTCellularPlanLifecycleProperties LifecycleProperties { get; set; }
 	}
 
 	[iOS (26, 0), MacCatalyst (26, 0), NoTV, NoMac]

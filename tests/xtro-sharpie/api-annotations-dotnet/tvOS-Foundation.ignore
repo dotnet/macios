@@ -6,3 +6,9 @@
 !missing-protocol-conformance! NSXPCConnection should conform to NSXPCProxyCreating
 !missing-selector! NSXPCInterface::interfaceForSelector:argumentIndex:ofReply: not bound
 !missing-selector! NSXPCInterface::setInterface:forSelector:argumentIndex:ofReply: not bound
+
+## Methods taking xpc_type_t / xpc_object_t which are unsuported like the rest of the platforms
+!missing-selector! NSXPCCoder::decodeXPCObjectOfType:forKey: not bound
+!missing-selector! NSXPCCoder::encodeXPCObject:forKey: not bound
+!missing-selector! NSXPCInterface::setXPCType:forSelector:argumentIndex:ofReply: not bound
+!missing-selector! NSXPCInterface::XPCTypeForSelector:argumentIndex:ofReply: not bound

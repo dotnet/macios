@@ -64,9 +64,8 @@ namespace Xamarin.MacDev.Tasks {
 							try {
 								socket.Connect ("8.8.8.8", 53);
 
-								var ipEndPoint = (IPEndPoint) socket.LocalEndPoint;
-
-								ips.Add (ipEndPoint.Address.ToString ());
+								if (socket.LocalEndPoint is IPEndPoint ipEndPoint)
+									ips.Add (ipEndPoint.Address.ToString ());
 							} catch {
 								Log.LogError (7001, null, MSBStrings.E7001);
 								return false;
@@ -75,9 +74,7 @@ namespace Xamarin.MacDev.Tasks {
 					}
 				} else {
 					foreach (var host in hosts) {
-						IPAddress ip;
-
-						if (IPAddress.TryParse (host, out ip))
+						if (IPAddress.TryParse (host, out var ip))
 							ips.Add (ip.ToString ());
 					}
 				}

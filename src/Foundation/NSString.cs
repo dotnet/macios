@@ -264,7 +264,7 @@ namespace Foundation {
 			int argc = args.Length;
 			var nso = new NSObject [argc];
 			for (int i = 0; i < argc; i++)
-				nso [i] = NSObject.FromObject (args [i]);
+				nso [i] = NSObject.FromObject (args [i])!;
 
 			return LocalizedFormat (format, nso);
 		}

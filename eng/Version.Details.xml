@@ -59,22 +59,22 @@
       <Uri>https://github.com/xamarin/xamarin-macios</Uri>
       <Sha>797d30720e5e629d23eb146935da94cb1b61047e</Sha>
     </Dependency>
-    <!-- This is a subscription of the .NET 9/Xcode 26.2 versions of our packages -->
-    <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_26.2" Version="26.2.9008">
+    <!-- This is a subscription of the .NET 9/Xcode 26.4 versions of our packages -->
+    <Dependency Name="Microsoft.MacCatalyst.Sdk.net9.0_26.4" Version="26.4.9010">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>e8fdb2b8d6a93623b2e4d949d3dad090ea3cfff9</Sha>
+      <Sha>86e12faa5f4f9674a663f4f9395dbdb87dccda2e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.macOS.Sdk.net9.0_26.2" Version="26.2.9008">
+    <Dependency Name="Microsoft.macOS.Sdk.net9.0_26.4" Version="26.4.9010">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>e8fdb2b8d6a93623b2e4d949d3dad090ea3cfff9</Sha>
+      <Sha>86e12faa5f4f9674a663f4f9395dbdb87dccda2e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.iOS.Sdk.net9.0_26.2" Version="26.2.9008">
+    <Dependency Name="Microsoft.iOS.Sdk.net9.0_26.4" Version="26.4.9010">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>e8fdb2b8d6a93623b2e4d949d3dad090ea3cfff9</Sha>
+      <Sha>86e12faa5f4f9674a663f4f9395dbdb87dccda2e</Sha>
     </Dependency>
-    <Dependency Name="Microsoft.tvOS.Sdk.net9.0_26.2" Version="26.2.9008">
+    <Dependency Name="Microsoft.tvOS.Sdk.net9.0_26.4" Version="26.4.9010">
       <Uri>https://github.com/dotnet/macios</Uri>
-      <Sha>e8fdb2b8d6a93623b2e4d949d3dad090ea3cfff9</Sha>
+      <Sha>86e12faa5f4f9674a663f4f9395dbdb87dccda2e</Sha>
     </Dependency>
     <!-- This is a subscription of the .NET 10/Xcode 26.0 versions of our packages -->
     <Dependency Name="Microsoft.MacCatalyst.Sdk.net10.0_26.0" Version="26.0.11017">

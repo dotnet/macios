@@ -19,16 +19,16 @@ This file should be imported by eng/Versions.props
     <!-- dotnet-macios dependencies -->
     <MicrosoftiOSSdknet100_260PackageVersion>26.0.11017</MicrosoftiOSSdknet100_260PackageVersion>
     <MicrosoftiOSSdknet90_185PackageVersion>18.5.9227</MicrosoftiOSSdknet90_185PackageVersion>
-    <MicrosoftiOSSdknet90_262PackageVersion>26.2.9008</MicrosoftiOSSdknet90_262PackageVersion>
+    <MicrosoftiOSSdknet90_264PackageVersion>26.4.9010</MicrosoftiOSSdknet90_264PackageVersion>
     <MicrosoftMacCatalystSdknet100_260PackageVersion>26.0.11017</MicrosoftMacCatalystSdknet100_260PackageVersion>
     <MicrosoftMacCatalystSdknet90_185PackageVersion>18.5.9227</MicrosoftMacCatalystSdknet90_185PackageVersion>
-    <MicrosoftMacCatalystSdknet90_262PackageVersion>26.2.9008</MicrosoftMacCatalystSdknet90_262PackageVersion>
+    <MicrosoftMacCatalystSdknet90_264PackageVersion>26.4.9010</MicrosoftMacCatalystSdknet90_264PackageVersion>
     <MicrosoftmacOSSdknet100_260PackageVersion>26.0.11017</MicrosoftmacOSSdknet100_260PackageVersion>
     <MicrosoftmacOSSdknet90_155PackageVersion>15.5.9227</MicrosoftmacOSSdknet90_155PackageVersion>
-    <MicrosoftmacOSSdknet90_262PackageVersion>26.2.9008</MicrosoftmacOSSdknet90_262PackageVersion>
+    <MicrosoftmacOSSdknet90_264PackageVersion>26.4.9010</MicrosoftmacOSSdknet90_264PackageVersion>
     <MicrosofttvOSSdknet100_260PackageVersion>26.0.11017</MicrosofttvOSSdknet100_260PackageVersion>
     <MicrosofttvOSSdknet90_185PackageVersion>18.5.9227</MicrosofttvOSSdknet90_185PackageVersion>
-    <MicrosofttvOSSdknet90_262PackageVersion>26.2.9008</MicrosofttvOSSdknet90_262PackageVersion>
+    <MicrosofttvOSSdknet90_264PackageVersion>26.4.9010</MicrosofttvOSSdknet90_264PackageVersion>
     <!-- dotnet-xharness dependencies -->
     <MicrosoftDotNetXHarnessiOSSharedPackageVersion>11.0.0-prerelease.26180.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
     <!-- xamarin-xamarin-macios dependencies -->
@@ -53,16 +53,16 @@ This file should be imported by eng/Versions.props
     <!-- dotnet-macios dependencies -->
     <MicrosoftiOSSdknet100_260Version>$(MicrosoftiOSSdknet100_260PackageVersion)</MicrosoftiOSSdknet100_260Version>
     <MicrosoftiOSSdknet90_185Version>$(MicrosoftiOSSdknet90_185PackageVersion)</MicrosoftiOSSdknet90_185Version>
-    <MicrosoftiOSSdknet90_262Version>$(MicrosoftiOSSdknet90_262PackageVersion)</MicrosoftiOSSdknet90_262Version>
+    <MicrosoftiOSSdknet90_264Version>$(MicrosoftiOSSdknet90_264PackageVersion)</MicrosoftiOSSdknet90_264Version>
     <MicrosoftMacCatalystSdknet100_260Version>$(MicrosoftMacCatalystSdknet100_260PackageVersion)</MicrosoftMacCatalystSdknet100_260Version>
     <MicrosoftMacCatalystSdknet90_185Version>$(MicrosoftMacCatalystSdknet90_185PackageVersion)</MicrosoftMacCatalystSdknet90_185Version>
-    <MicrosoftMacCatalystSdknet90_262Version>$(MicrosoftMacCatalystSdknet90_262PackageVersion)</MicrosoftMacCatalystSdknet90_262Version>
+    <MicrosoftMacCatalystSdknet90_264Version>$(MicrosoftMacCatalystSdknet90_264PackageVersion)</MicrosoftMacCatalystSdknet90_264Version>
     <MicrosoftmacOSSdknet100_260Version>$(MicrosoftmacOSSdknet100_260PackageVersion)</MicrosoftmacOSSdknet100_260Version>
     <MicrosoftmacOSSdknet90_155Version>$(MicrosoftmacOSSdknet90_155PackageVersion)</MicrosoftmacOSSdknet90_155Version>
-    <MicrosoftmacOSSdknet90_262Version>$(MicrosoftmacOSSdknet90_262PackageVersion)</MicrosoftmacOSSdknet90_262Version>
+    <MicrosoftmacOSSdknet90_264Version>$(MicrosoftmacOSSdknet90_264PackageVersion)</MicrosoftmacOSSdknet90_264Version>
     <MicrosofttvOSSdknet100_260Version>$(MicrosofttvOSSdknet100_260PackageVersion)</MicrosofttvOSSdknet100_260Version>
     <MicrosofttvOSSdknet90_185Version>$(MicrosofttvOSSdknet90_185PackageVersion)</MicrosofttvOSSdknet90_185Version>
-    <MicrosofttvOSSdknet90_262Version>$(MicrosofttvOSSdknet90_262PackageVersion)</MicrosofttvOSSdknet90_262Version>
+    <MicrosofttvOSSdknet90_264Version>$(MicrosofttvOSSdknet90_264PackageVersion)</MicrosofttvOSSdknet90_264Version>
     <!-- dotnet-xharness dependencies -->
     <MicrosoftDotNetXHarnessiOSSharedVersion>$(MicrosoftDotNetXHarnessiOSSharedPackageVersion)</MicrosoftDotNetXHarnessiOSSharedVersion>
     <!-- xamarin-xamarin-macios dependencies -->

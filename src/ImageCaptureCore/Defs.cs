@@ -39,8 +39,12 @@ namespace ImageCaptureCore {
 		Orientation8 = 8,
 	}
 
+#if XAMCORE_5_0
 	[Native]
 	public enum ICReturnCodeOffset : long {
+#else
+	public enum ICReturnCodeOffset {
+#endif
 		Thumbnail = -21000,
 		Metadata = -21050,
 		Download = -21100,

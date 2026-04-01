@@ -34,7 +34,7 @@ namespace ImageCaptureCore {
 	/// <summary>Completion handler for <see cref="ICCameraFile.RequestSecurityScopedUrl" />.</summary>
 	delegate void ICCameraFileRequestSecurityScopedUrlCompletionHandler ([NullAllowed] NSUrl url, [NullAllowed] NSError error);
 	/// <summary>Completion handler for <see cref="ICCameraFile.RequestFingerprint" />.</summary>
-	delegate void ICCameraFileRequestFingerprintCompletionHandler ([NullAllowed] NSString fingerprint, [NullAllowed] NSError error);
+	delegate void ICCameraFileRequestFingerprintCompletionHandler ([NullAllowed] string fingerprint, [NullAllowed] NSError error);
 
 	interface IICDeviceDelegate { }
 

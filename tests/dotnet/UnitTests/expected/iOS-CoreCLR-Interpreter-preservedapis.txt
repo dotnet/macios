@@ -5414,6 +5414,8 @@ System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribut
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute..ctor(System.Boolean)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.NotNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.NotNullAttribute..ctor()
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.RequiresUnsafeAttribute
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.RequiresUnsafeAttribute..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.Contracts.ContractException
 System.Private.CoreLib.dll:System.Diagnostics.Contracts.ContractException..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.Contracts.ContractException..ctor(System.Diagnostics.Contracts.ContractFailureKind, System.String, System.String, System.String, System.Exception)
@@ -8041,6 +8043,7 @@ System.Private.CoreLib.dll:System.Int32 Interop/Range::Length
 System.Private.CoreLib.dll:System.Int32 Interop/Range::Location
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/DirectoryEntry::NameLength
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/FileAdvice::value__
+System.Private.CoreLib.dll:System.Int32 Interop/Sys/FileStatus::HardLinkCount
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/FileStatus::Mode
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/FileStatusFlags::value__
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/LockOperations::value__
@@ -17580,6 +17583,7 @@ System.Private.CoreLib.dll:System.Threading.Condition.AddWaiter(System.Threading
 System.Private.CoreLib.dll:System.Threading.Condition.AssertIsInList(System.Threading.Condition/Waiter)
 System.Private.CoreLib.dll:System.Threading.Condition.AssertIsNotInList(System.Threading.Condition/Waiter)
 System.Private.CoreLib.dll:System.Threading.Condition.GetWaiterForCurrentThread()
+System.Private.CoreLib.dll:System.Threading.Condition.ReleaseWaiterForCurrentThread(System.Threading.Condition/Waiter)
 System.Private.CoreLib.dll:System.Threading.Condition.RemoveWaiter(System.Threading.Condition/Waiter)
 System.Private.CoreLib.dll:System.Threading.Condition.SignalAll()
 System.Private.CoreLib.dll:System.Threading.Condition.SignalOne()

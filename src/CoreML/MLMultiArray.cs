@@ -22,7 +22,7 @@ namespace CoreML {
 		// NSArray<NSNumber> => nint[]
 		internal static nint [] ConvertArray (IntPtr handle)
 		{
-			return NSArray.ArrayFromHandle<nint> (handle, (v) => (nint) Messaging.IntPtr_objc_msgSend (v, Selector.GetHandle ("integerValue")));
+			return NSArray.NonNullArrayFromHandleDropNullElements<nint> (handle, (v) => (nint) Messaging.IntPtr_objc_msgSend (v, Selector.GetHandle ("integerValue")));
 		}
 
 		/// <param name="shape">To be added.</param>

@@ -47,44 +47,6 @@ The default behavior can be overridden by passing `--optimize=[+|-]remove-uithre
 
 [1]: /dotnet/api/UIKit.UIApplication.EnsureUIThread
 
-## Inline IntPtr.Size
-
-Inlines the constant value of `IntPtr.Size` according to the target platform.
-
-This optimization will change the following type of code:
-
-```csharp
-if (IntPtr.Size == 8) {
-    Console.WriteLine ("64-bit platform");
-} else {
-    Console.WriteLine ("32-bit platform");
-}
-```
-
-into the following (when building for a 64-bit platform):
-
-```csharp
-if (8 == 8) {
-    Console.WriteLine ("64-bit platform");
-} else {
-    Console.WriteLine ("32-bit platform");
-}
-```
-
-This optimization requires the linker to be enabled, and is only applied to
-methods with the `[BindingImpl (BindingImplOptions.Optimizable)]` attribute.
-
-By default it's enabled if targeting a single architecture, or for the
-platform assembly (**Xamarin.iOS.dll**, **Xamarin.TVOS.dll**,
-**Xamarin.WatchOS.dll** or **Xamarin.Mac.dll**).
-
-If targeting multiple architectures, this optimization will create different
-assemblies for the 32-bit version and the 64-bit version of the app, and both
-versions will have to be included in the app, effectively increasing the final
-app size instead of decreasing it.
-
-The default behavior can be overridden by passing `--optimize=[+|-]inline-intptr-size` to mtouch/mmp.
-
 ## Inline NSObject.IsDirectBinding
 
 `NSObject.IsDirectBinding` is an instance property that determines whether a
@@ -254,24 +216,12 @@ the binding code for `NFCIso15693ReadMultipleBlocksConfiguration.Range`):
 NSRange ret;
 if (IsDirectBinding) {
     if (Runtime.Arch == Arch.DEVICE) {
-        if (IntPtr.Size == 8) {
-            ret = global::ObjCRuntime.Messaging.NSRange_objc_msgSend (this.Handle, Selector.GetHandle ("range"));
-        } else {
-            global::ObjCRuntime.Messaging.NSRange_objc_msgSend_stret (out ret, this.Handle, Selector.GetHandle ("range"));
-        }
-    } else if (IntPtr.Size == 8) {
         ret = global::ObjCRuntime.Messaging.NSRange_objc_msgSend (this.Handle, Selector.GetHandle ("range"));
     } else {
         ret = global::ObjCRuntime.Messaging.NSRange_objc_msgSend (this.Handle, Selector.GetHandle ("range"));
     }
 } else {
     if (Runtime.Arch == Arch.DEVICE) {
-        if (IntPtr.Size == 8) {
-            ret = global::ObjCRuntime.Messaging.NSRange_objc_msgSendSuper (this.SuperHandle, Selector.GetHandle ("range"));
-        } else {
-            global::ObjCRuntime.Messaging.NSRange_objc_msgSendSuper_stret (out ret, this.SuperHandle, Selector.GetHandle ("range"));
-        }
-    } else if (IntPtr.Size == 8) {
         ret = global::ObjCRuntime.Messaging.NSRange_objc_msgSendSuper (this.SuperHandle, Selector.GetHandle ("range"));
     } else {
         ret = global::ObjCRuntime.Messaging.NSRange_objc_msgSendSuper (this.SuperHandle, Selector.GetHandle ("range"));

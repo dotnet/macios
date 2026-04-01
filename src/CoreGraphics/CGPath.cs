@@ -841,9 +841,7 @@ namespace CoreGraphics {
 		public CGPath [] GetSeparateComponents (bool evenOddFillRule)
 		{
 			var cfArrayRef = CGPathCreateSeparateComponents (Handle, evenOddFillRule.AsByte ());
-			if (cfArrayRef == IntPtr.Zero)
-				return Array.Empty<CGPath> ();
-			return NSArray.ArrayFromHandle<CGPath> (cfArrayRef);
+			return NSArray.NonNullArrayFromHandleDropNullElements<CGPath> (cfArrayRef);
 		}
 
 		[SupportedOSPlatform ("ios16.0")]

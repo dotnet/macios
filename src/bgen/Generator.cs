@@ -1620,6 +1620,10 @@ public partial class Generator : IMemberGatherer {
 				}
 				print ("}");
 			} else {
+				print ("if (del is null)");
+				indent++;
+				print ("return default;");
+				indent--;
 				if (ti.Convert.Length > 0)
 					print (ti.Convert);
 				print ("var retval = del ({1});", ti.DelegateReturnType, ti.Invoke);
@@ -1677,7 +1681,7 @@ public partial class Generator : IMemberGatherer {
 			print ("public unsafe static {0}? Create (IntPtr block)\n{{", ti.UserDelegate); indent++;
 			print ("if (block == IntPtr.Zero)"); indent++;
 			print ("return null;"); indent--;
-			print ($"var del = ({ti.UserDelegate}) GetExistingManagedDelegate (block);");
+			print ($"var del = ({ti.UserDelegate}?) GetExistingManagedDelegate (block);");
 			print ($"return del ?? new {ti.NativeInvokerName} ((BlockLiteral *) block).Invoke;");
 			indent--; print ("}");
 			print ("");
@@ -3329,7 +3333,7 @@ public partial class Generator : IMemberGatherer {
 					disposes.AppendFormat ("\nnsb_{0}?.Dispose ();", propInfo.Name);
 				} else if (etype == TypeCache.System_String) {
 					if (null_allowed_override || AttributeManager.IsNullable (pi)) {
-						convs.AppendFormat ("using var nsa_{0} = {1} is null ? null : NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
+						convs.AppendFormat ("using var nsa_{0} = NSArray.FromNullableStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					} else {
 						convs.AppendFormat ("using var nsa_{0} = NSArray.FromStrings ({1});\n", pi.Name, pi.Name.GetSafeParamName ());
 					}
@@ -3409,7 +3413,7 @@ public partial class Generator : IMemberGatherer {
 						by_ref_init.Insert (0, string.Format ("NSArray {0}ArrayValue = NSArray.FromNSObjects ({0});\n", pi.Name.GetSafeParamName ()));
 						by_ref_init.AppendFormat ("{0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle;\n", pi.Name.GetSafeParamName ());
 					} else if (isArrayOfString) {
-						by_ref_init.Insert (0, string.Format ("NSArray? {0}ArrayValue = {0} is null ? null : NSArray.FromStrings ({0});\n", pi.Name.GetSafeParamName ()));
+						by_ref_init.Insert (0, string.Format ("var {0}ArrayValue = NSArray.FromNullableStrings ({0});\n", pi.Name.GetSafeParamName ()));
 						by_ref_init.AppendFormat ("{0}ArrayValue is null ? NativeHandle.Zero : {0}ArrayValue.Handle;\n", pi.Name.GetSafeParamName ());
 					} else if (isNSObject || isINativeObjectSubclass) {
 						by_ref_init.AppendFormat ("Runtime.RetainAndAutoreleaseNativeObject ({0});\n", pi.Name.GetSafeParamName ());
@@ -4064,7 +4068,7 @@ public partial class Generator : IMemberGatherer {
 					print ("return src is null ? null! : new {0}(src);", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType));
 				} else {
 					if (TypeManager.IsArrayOfWrappedType (pi.PropertyType))
-						print ("return NSArray.FromArray<{0}>({1} as NSArray);", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType.GetElementType ()), wrap);
+						print ("return NSArray.FromArray<{0}>({1} as NSArray){2};", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType.GetElementType ()), wrap, nullable ? "" : "!");
 					else if (pi.PropertyType.IsValueType)
 						print ("return ({0}) ({1});", TypeManager.FormatType (pi.DeclaringType, pi.PropertyType), wrap);
 					else
@@ -5527,7 +5531,7 @@ public partial class Generator : IMemberGatherer {
 	// Not adding the experimental attribute is bad (it would mean that an API
 	// we meant to be experimental ended up being released as stable), so it's
 	// opt-out instead of opt-in.
-	public void PrintAttributes (ICustomAttributeProvider mi, bool platform = false, bool preserve = false, bool advice = false, bool notImplemented = false, bool bindAs = false, bool requiresSuper = false, Type inlinedType = null, bool experimental = true, bool obsolete = false)
+	public void PrintAttributes (ICustomAttributeProvider mi, bool platform = false, bool preserve = false, bool advice = false, bool notImplemented = false, bool bindAs = false, bool requiresSuper = false, Type inlinedType = null, bool experimental = true, bool obsolete = false, bool objectiveCFramework = false)
 	{
 		if (platform)
 			PrintPlatformAttributes (mi as MemberInfo, inlinedType);
@@ -5545,6 +5549,8 @@ public partial class Generator : IMemberGatherer {
 			PrintExperimentalAttribute (mi);
 		if (obsolete)
 			PrintObsoleteAttributes (mi);
+		if (objectiveCFramework)
+			PrintObjectiveCFrameworkAttribute (mi);
 	}
 
 	public void PrintExperimentalAttribute (ICustomAttributeProvider mi)
@@ -5553,6 +5559,14 @@ public partial class Generator : IMemberGatherer {
 		if (e is null)
 			return;
 		print ($"[Experimental (\"{e.DiagnosticId}\")]");
+	}
+
+	public void PrintObjectiveCFrameworkAttribute (ICustomAttributeProvider mi)
+	{
+		var attrib = AttributeManager.GetCustomAttribute<ObjectiveCFrameworkAttribute> (mi);
+		if (attrib is null)
+			return;
+		print ($"[ObjectiveCFramework (\"{attrib.Framework}\")]");
 	}
 
 	bool WriteDocumentation (MemberInfo info, Func<XmlNode, XmlNode>? transformNode = null)
@@ -5779,7 +5793,7 @@ public partial class Generator : IMemberGatherer {
 				print ("[Model]");
 			}
 
-			PrintAttributes (type, platform: true, preserve: true, advice: true, obsolete: true);
+			PrintAttributes (type, platform: true, preserve: true, advice: true, obsolete: true, objectiveCFramework: true);
 
 			if (type.IsEnum) {
 				GenerateEnum (type);

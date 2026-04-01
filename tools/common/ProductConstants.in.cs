@@ -1,19 +1,19 @@
 using System;
 
-#if MTOUCH || MMP || BUNDLER
+#if LEGACY_TOOLS || BUNDLER
 using Xamarin.Bundler;
 using Xamarin.Utils;
 #endif
 
-#if MTOUCH
-using MonoTouch;
-#endif
-
 namespace Xamarin {
-	sealed class ProductConstants {
+	public sealed class ProductConstants {
 		public string Version;
 		public string Revision;
 		public const string Hash = "@PRODUCT_HASH@";
+
+		internal const string XcodeVersion = "@XCODE_VERSION@";
+		internal const string XcodeBumpCommitDistance = "@XCODE_BUMP_COMMIT_DISTANCE@";
+		public const string SharpieVersion = XcodeVersion + ".0." + XcodeBumpCommitDistance;
 
 		ProductConstants (string version, string revision)
 		{

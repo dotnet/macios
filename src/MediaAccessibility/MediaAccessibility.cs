@@ -308,11 +308,13 @@ namespace MediaAccessibility {
 		[DllImport (Constants.MediaAccessibilityLibrary)]
 		static extern void MACaptionAppearanceDidDisplayCaptions (IntPtr /* CFArratRef */ strings);
 
+		/// <summary>Notifies the system that the specified captions were displayed.</summary>
+		/// <param name="strings">The captions that were displayed, or null or an empty array if no captions were displayed.</param>
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-		public static void DidDisplayCaptions (string [] strings)
+		public static void DidDisplayCaptions (string []? strings)
 		{
 			if ((strings is null) || (strings.Length == 0))
 				MACaptionAppearanceDidDisplayCaptions (IntPtr.Zero);
@@ -322,11 +324,13 @@ namespace MediaAccessibility {
 			}
 		}
 
+		/// <summary>Notifies the system that the specified captions were displayed.</summary>
+		/// <param name="strings">The captions that were displayed, or null or an empty array if no captions were displayed.</param>
 		[SupportedOSPlatform ("tvos13.0")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("ios13.0")]
 		[SupportedOSPlatform ("maccatalyst")]
-		public static void DidDisplayCaptions (NSAttributedString [] strings)
+		public static void DidDisplayCaptions (NSAttributedString []? strings)
 		{
 			// CFAttributedString is “toll-free bridged” with its Foundation counterpart, NSAttributedString.
 			// https://developer.apple.com/documentation/corefoundation/cfattributedstring?language=objc

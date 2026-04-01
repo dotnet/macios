@@ -1,7 +1,15 @@
 TOP = ..
-SUBDIRS=test-libraries dotnet
 
 include $(TOP)/Make.config
+
+# Skip test-libraries on Linux (requires native compilation with Xcode/clang)
+ifndef ONLY_SHARPIE
+ifndef IS_LINUX
+SUBDIRS=test-libraries
+endif
+endif
+
+SUBDIRS += dotnet
 include $(TOP)/mk/rules.mk
 
 XHARNESS_EXECUTABLE=xharness/bin/Debug/xharness.dll
@@ -39,7 +47,7 @@ endif
 package-tests:
 	$(MAKE) mac-test-package.zip
 
-test.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Version.Details.xml
+test.config: Makefile $(TOP)/Make.config $(TOP)/eng/Version.Details.xml
 	@rm -f $@
 	@echo "JENKINS_RESULTS_DIRECTORY=$(abspath $(JENKINS_RESULTS_DIRECTORY))" >> $@
 	@echo "XCODE_DEVELOPER_ROOT=$(XCODE_DEVELOPER_ROOT)" >> $@
@@ -54,7 +62,6 @@ test.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Version.De
 	@echo "DOTNET_CSC_COMMAND='$(DOTNET_CSC)'" >> $@
 	@echo "DOTNET_TFM=$(DOTNET_TFM)" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_VERSION_NO_METADATA=$($(platform)_NUGET_VERSION_NO_METADATA)\\n)" | sed 's/^ //' >> $@
-	@echo "SYSTEM_MONO=$(SYSTEM_MONO)" >> $@
 	@echo "DOTNET_DIR=$(DOTNET_DIR)" >> $@
 	@echo "INCLUDE_IOS=$(INCLUDE_IOS)" >> $@
 	@echo "INCLUDE_TVOS=$(INCLUDE_TVOS)" >> $@
@@ -72,7 +79,7 @@ test.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Version.De
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_OS_VERSION=$($(platform)_NUGET_OS_VERSION)\\n)" | sed 's/^ //' >> $@
 	@printf "NUGET_PRERELEASE_IDENTIFIER=$(NUGET_PRERELEASE_IDENTIFIER)\n" >> $@
 
-test-system.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Version.Details.xml
+test-system.config: Makefile $(TOP)/Make.config $(TOP)/eng/Version.Details.xml
 	@rm -f $@
 	@echo "JENKINS_RESULTS_DIRECTORY=$(abspath $(JENKINS_RESULTS_DIRECTORY))" >> $@
 	@echo "DOTNET=$(DOTNET)" >> $@
@@ -85,7 +92,6 @@ test-system.config: Makefile $(TOP)/Make.config $(TOP)/mk/mono.mk $(TOP)/eng/Ver
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),DOTNET_$(rid)_ARCHITECTURES='$(DOTNET_$(rid)_ARCHITECTURES)'\\n))" | sed 's/^ //' >> $@
 	@echo "DOTNET_CSC_COMMAND='$(DOTNET_CSC)'" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_VERSION_NO_METADATA=$($(platform)_NUGET_VERSION_NO_METADATA)\\n)" | sed 's/^ //' >> $@
-	@echo "SYSTEM_MONO=$(SYSTEM_MONO)" >> $@
 	@echo "DOTNET_DIR=$(DOTNET_DIR)" >> $@
 	@echo "INCLUDE_IOS=$(INCLUDE_IOS)" >> $@
 	@echo "INCLUDE_TVOS=$(INCLUDE_TVOS)" >> $@
@@ -143,7 +149,6 @@ $(XHARNESS_EXECUTABLE): MSBUILD_EXE_PATH=
 $(XHARNESS_EXECUTABLE): $(xharness_dependencies) test.config test-system.config $(TOP)/tools/common/SdkVersions.cs
 	$(Q_GEN) $(DOTNET) build "/bl:$@.binlog" $(MSBUILD_VERBOSITY_QUIET) xharness/xharness.csproj
 xharness/xharness.csproj.inc: export BUILD_VERBOSITY=$(DOTNET_BUILD_VERBOSITY)
-xharness/xharness.csproj.inc: export DOTNET:=$(DOTNET)
 xharness/xharness.csproj.inc: export MSBUILD_EXE_PATH=
 
 killall:
@@ -191,12 +196,16 @@ verify-system-vsmac-xcode-match:
 	if [[ "$$SYSTEM_XCODE" != "$$VSMAC_XCODE" ]]; then echo "Error: the system's Xcode ($$SYSTEM_XCODE) does not match the Xcode selected in Visual Studio for Mac ($$VSMAC_XCODE). This will make tests fail in non-trivial ways, so please make sure both match the expected Xcode ($(shell dirname $(shell dirname $(XCODE_DEVELOPER_ROOT))))."; exit 1; fi
 
 package-test-libraries.zip:
+ifndef ONLY_SHARPIE
 	$(Q) $(MAKE) all -C test-libraries
 	$(Q) $(MAKE) all -C test-libraries/custom-type-assembly build-assembly
+endif
 	$(Q_GEN) rm -f "$@" "$@.tmp"
 	$(Q_GEN) cd $(TOP) && zip -9r --symlinks $(abspath $@).tmp ./tests/test-libraries
+ifndef ONLY_SHARPIE
 	$(Q_GEN) cd $(TOP) && find tests -regex 'tests/test-libraries/custom-type-assembly/.libs/.*dll' -exec zip -9r --symlinks $(abspath $@).tmp {} +
 	$(Q_GEN) cd $(TOP) && git ls-files -o -- 'tests/bindings-test/*.generated.cs' | zip -9r --symlinks $(abspath $@).tmp -@
+endif
 	$(Q) mv "$@".tmp "$@"
 
 build-all:

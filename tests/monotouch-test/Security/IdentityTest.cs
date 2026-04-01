@@ -19,12 +19,7 @@ namespace MonoTouchFixtures.Security {
 
 		static public SecIdentity GetIdentity ()
 		{
-			using (var options = NSDictionary.FromObjectAndKey (new NSString ("farscape"), SecImportExport.Passphrase)) {
-				NSDictionary [] array;
-				var rv = SecImportExport.ImportPkcs12 (ImportExportTest.farscape_pfx, options, out array);
-				Assert.That (rv, Is.EqualTo (SecStatusCode.Success), "ImportPkcs12");
-				return Runtime.GetINativeObject<SecIdentity> (array [0].LowlevelObjectForKey (SecImportExport.Identity.Handle), false);
-			}
+			return SecIdentity.Import (ImportExportTest.farscape_pfx, "farscape");
 		}
 
 		[Test]
@@ -70,6 +65,17 @@ namespace MonoTouchFixtures.Security {
 				}), "Access");
 				Assert.That (call, Is.EqualTo (1), "call");
 			}
+		}
+
+		[Test]
+		public void Certificates ()
+		{
+			TestRuntime.AssertXcodeVersion (11, 0);
+			using var i1 = GetIdentity ();
+			using var i2 = new SecIdentity2 (i1, i1.Certificate);
+			var certs = i2.Certificates;
+			Assert.IsNotNull (certs, "Certificates");
+			Assert.That (certs!.Length, Is.GreaterThanOrEqualTo (1), "Certificates/length");
 		}
 	}
 }

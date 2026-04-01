@@ -37,8 +37,7 @@ using CFNetwork;
 using CoreFoundation;
 using CF = CoreFoundation;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace System.Net.Http {
 	/// <summary>To be added.</summary>
@@ -53,10 +52,10 @@ namespace System.Net.Http {
 	[ObsoletedOSPlatform ("tvos", "Use 'NSUrlSessionHandler' instead.")]
 	public class CFNetworkHandler : HttpMessageHandler {
 		class StreamBucket {
-			public TaskCompletionSource<HttpResponseMessage> Response;
-			public HttpRequestMessage Request;
+			public required TaskCompletionSource<HttpResponseMessage> Response;
+			public required HttpRequestMessage Request;
 			public CancellationTokenRegistration CancellationTokenRegistration;
-			public CFContentStream ContentStream;
+			public CFContentStream? ContentStream;
 			public bool StreamCanBeDisposed;
 
 			public void Close ()
@@ -92,7 +91,7 @@ namespace System.Net.Http {
 		bool allowAutoRedirect;
 		bool sentRequest;
 		bool useSystemProxy;
-		CookieContainer cookies;
+		CookieContainer? cookies;
 
 		Dictionary<IntPtr, StreamBucket> streamBuckets;
 
@@ -165,7 +164,8 @@ namespace System.Net.Http {
 
 		CFHTTPMessage CreateWebRequestAsync (HttpRequestMessage request)
 		{
-			var req = CFHTTPMessage.CreateRequest (request.RequestUri, request.Method.Method, request.Version);
+			var requestUri = request.RequestUri ?? throw new InvalidOperationException ("The request URI must not be null.");
+			var req = CFHTTPMessage.CreateRequest (requestUri, request.Method.Method, request.Version);
 
 			// TODO:
 			/*
@@ -186,7 +186,7 @@ namespace System.Net.Http {
 						}
 			*/
 			if (cookies is not null) {
-				string cookieHeader = cookies.GetCookieHeader (request.RequestUri);
+				string cookieHeader = cookies.GetCookieHeader (requestUri);
 				if (cookieHeader != "")
 					req.SetHeaderFieldValue ("Cookie", cookieHeader);
 			}
@@ -234,7 +234,7 @@ namespace System.Net.Http {
 
 			if (useSystemProxy) {
 				var proxies = CF.CFNetwork.GetSystemProxySettings ();
-				if (proxies.HTTPEnable) {
+				if (proxies is not null && proxies.HTTPEnable) {
 					stream.SetProxy (proxies);
 				}
 			}
@@ -268,8 +268,7 @@ namespace System.Net.Http {
 			stream.Open ();
 
 			bucket.CancellationTokenRegistration = cancellationToken.Register (() => {
-				StreamBucket bucket2;
-				if (!streamBuckets.TryGetValue (stream.Handle, out bucket2))
+				if (!streamBuckets.TryGetValue (stream.Handle, out var bucket2))
 					return;
 
 				bucket2.Response.TrySetCanceled ();
@@ -305,21 +304,27 @@ namespace System.Net.Http {
 				status == HttpStatusCode.RedirectKeepVerb; // 307
 		}
 
-		void HandleErrorEvent (object sender, CFStream.StreamEventArgs e)
+		void HandleErrorEvent (object? sender, CFStream.StreamEventArgs e)
 		{
+			if (sender is null)
+				return;
 			var stream = (CFHTTPStream) sender;
 
-			StreamBucket bucket;
-			if (!streamBuckets.TryGetValue (stream.Handle, out bucket))
+			if (!streamBuckets.TryGetValue (stream.Handle, out var bucket))
 				return;
 
 			var ex = stream.GetError ();
-			bucket.Response.TrySetException (new HttpRequestException (ex.FailureReason, ex));
+			if (ex is not null)
+				bucket.Response.TrySetException (new HttpRequestException (ex.FailureReason, ex));
+			else
+				bucket.Response.TrySetException (new HttpRequestException ("Unknown error"));
 			CloseStream (stream);
 		}
 
-		void HandleClosedEvent (object sender, CFStream.StreamEventArgs e)
+		void HandleClosedEvent (object? sender, CFStream.StreamEventArgs e)
 		{
+			if (sender is null)
+				return;
 			var stream = (CFHTTPStream) sender;
 			// might not have been called (e.g. no data) but initialize critical data
 			HandleHasBytesAvailableEvent (sender, e);
@@ -339,20 +344,24 @@ namespace System.Net.Http {
 			stream.Close ();
 		}
 
-		void HandleHasBytesAvailableEvent (object sender, CFStream.StreamEventArgs e)
+		void HandleHasBytesAvailableEvent (object? sender, CFStream.StreamEventArgs e)
 		{
+			if (sender is null)
+				return;
 			var stream = (CFHTTPStream) sender;
 
-			StreamBucket bucket;
-			if (!streamBuckets.TryGetValue (stream.Handle, out bucket))
+			if (!streamBuckets.TryGetValue (stream.Handle, out var bucket))
 				return;
 
 			if (bucket.Response.Task.IsCompleted) {
-				bucket.ContentStream.ReadStreamData ();
+				bucket.ContentStream?.ReadStreamData ();
 				return;
 			}
 
 			var header = stream.GetResponseHeader ();
+
+			if (header is null)
+				throw new InvalidOperationException ("Failed to get response header.");
 
 			// Is this possible?
 			if (!header.IsHeaderComplete)
@@ -372,14 +381,16 @@ namespace System.Net.Http {
 						continue;
 
 					var key = entry.Key.ToString ();
-					var value = entry.Value is null ? string.Empty : entry.Value.ToString ();
+					if (key is null)
+						continue;
+					var value = entry.Value is null ? string.Empty : entry.Value.ToString () ?? string.Empty;
 					HttpHeaders item_headers;
 					if (IsContentHeader (key)) {
 						item_headers = response_msg.Content.Headers;
 					} else {
 						item_headers = response_msg.Headers;
 
-						if (cookies is not null && (key == "Set-Cookie" || key == "Set-Cookie2"))
+						if (cookies is not null && (key == "Set-Cookie" || key == "Set-Cookie2") && bucket.Request.RequestUri is not null)
 							AddCookie (value, bucket.Request.RequestUri, key);
 					}
 
@@ -391,14 +402,14 @@ namespace System.Net.Http {
 			if (!bucket.Response.Task.IsCanceled) {
 				bucket.Response.TrySetResult (response_msg);
 
-				bucket.ContentStream.ReadStreamData ();
+				bucket.ContentStream?.ReadStreamData ();
 			}
 		}
 
 		void AddCookie (string value, Uri uri, string header)
 		{
 			try {
-				cookies.SetCookies (uri, value);
+				cookies?.SetCookies (uri, value);
 			} catch {
 			}
 		}

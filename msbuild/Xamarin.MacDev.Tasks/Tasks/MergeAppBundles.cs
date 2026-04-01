@@ -46,9 +46,6 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string OutputAppBundle { get; set; } = "";
 
-		[Required]
-		public string SdkDevPath { get; set; } = "";
-
 		#endregion
 
 		enum FileType {
@@ -112,7 +109,7 @@ namespace Xamarin.MacDev.Tasks {
 						return false;
 
 					// if the name of the immediate subdirectory isn't a valid culture, then it's not a dependent assembly of ours
-					var immediateSubDir = Path.GetFileName (Path.GetDirectoryName (v.RelativePath));
+					var immediateSubDir = Path.GetFileName (Path.GetDirectoryName (v.RelativePath)!);
 					var cultureInfo = CultureInfo.GetCultureInfo (immediateSubDir);
 					if (cultureInfo is null)
 						return false;
@@ -207,7 +204,7 @@ namespace Xamarin.MacDev.Tasks {
 				if (Type == FileType.Directory) {
 					Directory.CreateDirectory (outputFile);
 				} else if (Type == FileType.Symlink) {
-					Directory.CreateDirectory (Path.GetDirectoryName (outputFile));
+					Directory.CreateDirectory (Path.GetDirectoryName (outputFile)!);
 					var symlinkTarget = PathUtils.GetSymlinkTarget (FullPath);
 					if (File.Exists (outputFile) && PathUtils.IsSymlink (outputFile) && PathUtils.GetSymlinkTarget (outputFile) == symlinkTarget) {
 						File.SetLastWriteTimeUtc (outputFile, DateTime.UtcNow); // update the timestamp, because the file the symlink points to might have changed.
@@ -217,7 +214,7 @@ namespace Xamarin.MacDev.Tasks {
 						PathUtils.Symlink (symlinkTarget, outputFile);
 					}
 				} else {
-					Directory.CreateDirectory (Path.GetDirectoryName (outputFile));
+					Directory.CreateDirectory (Path.GetDirectoryName (outputFile)!);
 					if (!FileCopier.IsUptodate (FullPath, outputFile, Task.FileCopierReportErrorCallback, Task.FileCopierLogCallback))
 						File.Copy (FullPath, outputFile, true);
 				}
@@ -441,7 +438,7 @@ namespace Xamarin.MacDev.Tasks {
 			arguments.Add ("-output");
 			arguments.Add (output);
 			arguments.AddRange (sourceFiles);
-			ExecuteAsync ("lipo", arguments, sdkDevPath: SdkDevPath).Wait ();
+			ExecuteAsync ("lipo", arguments).Wait ();
 		}
 
 		FileType GetFileType (string path)

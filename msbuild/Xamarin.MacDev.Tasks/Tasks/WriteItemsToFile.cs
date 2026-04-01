@@ -54,7 +54,7 @@ namespace Xamarin.MacDev.Tasks {
 				System.IO.File.Delete (file);
 
 			if (!Directory.Exists (Path.GetDirectoryName (file)))
-				Directory.CreateDirectory (Path.GetDirectoryName (file));
+				Directory.CreateDirectory (Path.GetDirectoryName (file)!);
 
 			document.Save (file);
 		}
@@ -73,7 +73,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				return metadata.Keys
 					.OfType<object> ()
-					.Select (key => new XElement (XmlNs + key.ToString (), metadata [key].ToString ()));
+					.Select (key => new XElement (XmlNs + (key.ToString () ?? ""), metadata [key]?.ToString ()));
 			}
 
 			return Enumerable.Empty<XElement> ();

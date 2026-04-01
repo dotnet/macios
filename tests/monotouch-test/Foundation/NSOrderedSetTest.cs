@@ -167,5 +167,50 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.IsFalse (oSet.Equals (oSet2), "NSOrderedSetTest Equals must be false");
 			}
 		}
+
+		[Test]
+		public void Ctor_WithNull ()
+		{
+			var str1 = (NSString) "1";
+			NSObject? nullObj = null;
+			using (var set = new NSOrderedSet (str1, nullObj)) {
+				Assert.AreEqual (2, (int) set.Count, "Count should include null");
+				Assert.AreEqual (str1, set [0], "First item");
+				Assert.IsInstanceOf<NSNull> (set [1], "Second item should be NSNull");
+			}
+		}
+
+		[Test]
+		public void Ctor_NullArray ()
+		{
+			NSObject []? objs = null;
+			using (var set = new NSOrderedSet (objs)) {
+				Assert.AreEqual (0, (int) set.Count, "Null array should create empty set");
+			}
+		}
+
+		[Test]
+		public void MakeNSOrderedSet_WithNull ()
+		{
+			var str1 = (NSString) "1";
+			var str2 = (NSString) "2";
+			var values = new NSString? [] { str1, null, str2 };
+			using (var set = NSOrderedSet.MakeNSOrderedSet (values)) {
+				Assert.AreEqual (3, (int) set.Count, "Count should include null");
+				Assert.AreEqual (str1, set [0], "First item");
+				Assert.IsInstanceOf<NSNull> (set [1], "Second item should be NSNull");
+				Assert.AreEqual (str2, set [2], "Third item");
+			}
+		}
+
+		[Test]
+		public void MakeNSOrderedSet_NullArray ()
+		{
+			NSString []? values = null;
+			using (var set = NSOrderedSet.MakeNSOrderedSet (values)) {
+				Assert.IsNotNull (set, "Should create a set");
+				Assert.AreEqual (0, (int) set.Count, "Null array should create empty set");
+			}
+		}
 	}
 }

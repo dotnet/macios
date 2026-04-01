@@ -4,7 +4,6 @@
 
 # bgen.csproj.inc contains the generator_dependencies variable used to determine if the generator needs to be rebuilt or not.
 $(DOTNET_BUILD_DIR)/bgen.csproj.inc: export BUILD_VERBOSITY=$(DOTNET_BUILD_VERBOSITY)
-$(DOTNET_BUILD_DIR)/bgen.csproj.inc: export DOTNET:=$(DOTNET)
 $(DOTNET_BUILD_DIR)/bgen.csproj.inc: bgen/bgen.csproj.inc
 	$(Q) $(CP) $< $@
 
@@ -71,6 +70,6 @@ $(RSP_DIR)/dotnet/%-defines-dotnet.rsp: frameworks.sources Makefile.generator $(
 	$(Q) $(GENERATE_DEFINES_EXEC) $@.tmp '$(filter-out $(DOTNET_REMOVED_$(shell echo $* | tr a-z A-Z)_FRAMEWORKS),$($(shell echo $* | tr a-z A-Z)_FRAMEWORKS))'
 	$(Q) mv $@.tmp $@
 
-$(DOTNET_BUILD_DIR)/Xamarin.Apple.BindingAttributes.dll: bgen/Attributes.cs bgen/PlatformName.cs bgen/DotnetGlobals.cs Makefile.generator | $(DOTNET_BUILD_DIR)
-	$(Q_DOTNET_BUILD) $(DOTNET_CSC) $(DOTNET_FLAGS) -d:BINDING_ATTRIBUTES_DLL -out:$@ bgen/Attributes.cs bgen/PlatformName.cs bgen/DotnetGlobals.cs
+$(DOTNET_BUILD_DIR)/Xamarin.Apple.BindingAttributes.dll: bgen/Attributes.cs bgen/PlatformName.cs bgen/DotNetGlobals.cs Makefile.generator | $(DOTNET_BUILD_DIR)
+	$(Q_DOTNET_BUILD) $(DOTNET_CSC) $(DOTNET_FLAGS) -d:BINDING_ATTRIBUTES_DLL -out:$@ bgen/Attributes.cs bgen/PlatformName.cs bgen/DotNetGlobals.cs
 

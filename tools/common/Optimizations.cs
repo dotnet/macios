@@ -5,6 +5,8 @@ using System.Text;
 
 using Xamarin.Utils;
 
+#nullable enable
+
 namespace Xamarin.Bundler {
 	public class Optimizations {
 		static string [] opt_names =
@@ -12,7 +14,7 @@ namespace Xamarin.Bundler {
 			"remove-uithread-checks",
 			"dead-code-elimination",
 			"inline-isdirectbinding",
-			"inline-intptr-size",
+			"inline-intptr-size", // this optimization has been removed, but leave it here so that we won't break customers trying to enable/disable it
 			"inline-runtime-arch",
 			"blockliteral-setupblock",
 			"register-protocols",
@@ -33,7 +35,7 @@ namespace Xamarin.Bundler {
 			/* Opt.RemoveUIThreadChecks               */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.DeadCodeElimination                */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.InlineIsDirectBinding              */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
-			/* Opt.InlineIntPtrSize                   */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
+			/* Opt.InlineIntPtrSize                   */ new ApplePlatform [] {                                                                                        },
 			/* Opt.InlineRuntimeArch                  */ new ApplePlatform [] { ApplePlatform.iOS,                       ApplePlatform.TVOS                            },
 			/* Opt.BlockLiteralSetupBlock             */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.RegisterProtocols                  */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
@@ -165,7 +167,8 @@ namespace Xamarin.Bundler {
 			messages = new List<ProductException> ();
 			// warn if the user asked to optimize something when the optimization can't be applied
 			for (int i = 0; i < values.Length; i++) {
-				if (!values [i].HasValue)
+				var value = values [i];
+				if (value is null)
 					continue;
 
 				// The remove-dynamic-registrar optimization is required when using NativeAOT
@@ -194,7 +197,7 @@ namespace Xamarin.Bundler {
 				switch ((Opt) i) {
 				case Opt.StaticBlockToDelegateLookup:
 					if (app.Registrar != RegistrarMode.Static && app.Registrar != RegistrarMode.ManagedStatic) {
-						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003, (values [i].Value ? "" : "-"), opt_names [i]));
+						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003, (value.Value ? "" : "-"), opt_names [i]));
 						values [i] = false;
 						continue;
 					}
@@ -205,14 +208,14 @@ namespace Xamarin.Bundler {
 				case Opt.RemoveDynamicRegistrar:
 				case Opt.RedirectClassHandles:
 					if (app.Registrar != RegistrarMode.Static && app.Registrar != RegistrarMode.ManagedStatic) {
-						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003, (values [i].Value ? "" : "-"), opt_names [i]));
+						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003, (value.Value ? "" : "-"), opt_names [i]));
 						values [i] = false;
 						continue;
 					}
 					goto default; // also requires the linker
 				default:
 					if (!app.AreAnyAssembliesTrimmed) {
-						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003_B, (values [i].Value ? "" : "-"), opt_names [i]));
+						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003_B, (value.Value ? "" : "-"), opt_names [i]));
 						values [i] = false;
 					}
 					break;
@@ -286,17 +289,12 @@ namespace Xamarin.Bundler {
 					// Both the linker and the static registrar are also required
 					RemoveDynamicRegistrar = false;
 				} else {
-					if (app.Platform != ApplePlatform.MacOSX) {
-						// we can't predict is unknown (at build time) code will require registration (at runtime)
-						if (app.UseInterpreter) {
-							RemoveDynamicRegistrar = false;
-						}
-						// We don't have enough information yet to determine if we can remove the dynamic
-						// registrar or not, so let the value stay unset until we do know (when running the linker).
-					} else {
-						// By default disabled for XM apps
+					// we can't predict is unknown (at build time) code will require registration (at runtime)
+					if (app.UseInterpreter) {
 						RemoveDynamicRegistrar = false;
 					}
+					// We don't have enough information yet to determine if we can remove the dynamic
+					// registrar or not, so let the value stay unset until we do know (when running the linker).
 				}
 			}
 
@@ -385,11 +383,12 @@ namespace Xamarin.Bundler {
 		{
 			var sb = new StringBuilder ();
 			for (var i = 0; i < values.Length; i++) {
-				if (values [i] is null)
+				var value = values [i];
+				if (value is null)
 					continue;
 				if (sb.Length > 0)
 					sb.Append (' ');
-				sb.Append (values [i].Value ? "+" : "-");
+				sb.Append (value.Value ? "+" : "-");
 				sb.Append (opt_names [i]);
 			}
 			if (sb.Length == 0)

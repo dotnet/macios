@@ -1,14 +1,10 @@
 using System;
 
-#if MTOUCH || MMP || BUNDLER
+#if LEGACY_TOOLS || BUNDLER
 using Xamarin.Bundler;
 #endif
 
 using Xamarin.Utils;
-
-#if MTOUCH
-using MonoTouch;
-#endif
 
 #nullable enable
 
@@ -69,7 +65,7 @@ namespace Xamarin {
 
 		public static Version XcodeVersion { get { return new Version (Xcode); } }
 
-#if MTOUCH || MMP || BUNDLER
+#if LEGACY_TOOLS || BUNDLER
 		public static Version GetVersion (Application app)
 		{
 			switch (app.Platform) {

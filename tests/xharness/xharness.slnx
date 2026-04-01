@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="xharness.csproj" />
+  <Project Path="Xharness.Tests/Xharness.Tests.csproj" />
+</Solution>

@@ -3225,7 +3225,10 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftXPC.dylib",
 		];
 
-		static string [] expectedFrameworks_iOS_None_Mono = [.. expectedFrameworks_iOS_None, "/System/Library/Frameworks/CryptoKit.framework/CryptoKit"];
+		static string [] expectedFrameworks_iOS_None_Mono = [
+			.. expectedFrameworks_iOS_None,
+			"/System/Library/Frameworks/CryptoKit.framework/CryptoKit",
+		];
 
 		static string [] expectedFrameworks_iOS_Full = [
 			"/System/Library/Frameworks/CFNetwork.framework/CFNetwork",
@@ -3354,7 +3357,10 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 		];
 
-		static string [] expectedFrameworks_tvOS_None_Mono = [.. expectedFrameworks_tvOS_None, "/System/Library/Frameworks/CryptoKit.framework/CryptoKit"];
+		static string [] expectedFrameworks_tvOS_None_Mono = [
+			.. expectedFrameworks_tvOS_None,
+			"/System/Library/Frameworks/CryptoKit.framework/CryptoKit",
+		];
 
 		static string [] expectedFrameworks_tvOS_Full = [
 			"/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation",
@@ -3730,7 +3736,10 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftXPC.dylib",
 		];
 
-		static string [] expectedFrameworks_MacCatalyst_None_Mono = [.. expectedFrameworks_MacCatalyst_None, "/System/Library/Frameworks/CryptoKit.framework/Versions/A/CryptoKit"];
+		static string [] expectedFrameworks_MacCatalyst_None_Mono = [
+			.. expectedFrameworks_MacCatalyst_None,
+			"/System/Library/Frameworks/CryptoKit.framework/Versions/A/CryptoKit",
+		];
 
 		static string [] expectedFrameworks_MacCatalyst_Full = [
 			"/System/iOSSupport/System/Library/Frameworks/UIKit.framework/Versions/A/UIKit",
@@ -3754,12 +3763,30 @@ namespace Xamarin.Tests {
 
 		static string [] expectedFrameworks_MacCatalyst_Full_Mono = expectedFrameworks_MacCatalyst_Full;
 
-		static string [] expectedFrameworks_iOS_None_CoreCLR = [.. coreclrFrameworks_iOS, .. expectedFrameworks_iOS_None];
-		static string [] expectedFrameworks_iOS_Full_CoreCLR = [.. coreclrFrameworks_iOS, .. expectedFrameworks_iOS_Full];
-		static string [] expectedFrameworks_tvOS_None_CoreCLR = [.. coreclrFrameworks_tvOS, .. expectedFrameworks_tvOS_None];
-		static string [] expectedFrameworks_tvOS_Full_CoreCLR = [.. coreclrFrameworks_tvOS, .. expectedFrameworks_tvOS_Full];
-		static string [] expectedFrameworks_MacCatalyst_None_CoreCLR = [.. coreclrFrameworks_MacCatalyst, .. expectedFrameworks_MacCatalyst_None];
-		static string [] expectedFrameworks_MacCatalyst_Full_CoreCLR = [.. coreclrFrameworks_MacCatalyst, .. expectedFrameworks_MacCatalyst_Full];
+		static string [] expectedFrameworks_iOS_None_CoreCLR = [
+			.. coreclrFrameworks_iOS,
+			.. expectedFrameworks_iOS_None,
+		];
+		static string [] expectedFrameworks_iOS_Full_CoreCLR = [
+			.. coreclrFrameworks_iOS,
+			.. expectedFrameworks_iOS_Full,
+		];
+		static string [] expectedFrameworks_tvOS_None_CoreCLR = [
+			.. coreclrFrameworks_tvOS,
+			.. expectedFrameworks_tvOS_None,
+		];
+		static string [] expectedFrameworks_tvOS_Full_CoreCLR = [
+			.. coreclrFrameworks_tvOS,
+			.. expectedFrameworks_tvOS_Full,
+		];
+		static string [] expectedFrameworks_MacCatalyst_None_CoreCLR = [
+			.. coreclrFrameworks_MacCatalyst,
+			.. expectedFrameworks_MacCatalyst_None,
+		];
+		static string [] expectedFrameworks_MacCatalyst_Full_CoreCLR = [
+			.. coreclrFrameworks_MacCatalyst,
+			.. expectedFrameworks_MacCatalyst_Full,
+		];
 
 		static IEnumerable<TestCaseData> GetLinkedWithNativeLibrariesTestCases_Mono ()
 		{

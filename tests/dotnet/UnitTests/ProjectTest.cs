@@ -2255,15 +2255,19 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (project_path, properties);
 		}
 
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void CustomizedCodeSigning (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", true)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
+		public void CustomizedCodeSigning (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime)
 		{
 			var project = "CustomizedCodeSigning";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true": "true";
 
 			Clean (project_path);
 			DotNet.AssertBuild (project_path, properties);

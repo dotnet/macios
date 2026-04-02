@@ -61,18 +61,10 @@ namespace Xamarin.Linker.Steps {
 
 		protected override bool ProcessType (TypeDefinition type)
 		{
-			var modified = false;
-
-			if (!type.HasMethods)
-				return modified;
-
-			foreach (var method in type.Methods)
-				modified |= ProcessMethod (method);
-
-			return modified;
+			return base.ProcessMethods (type);
 		}
 
-		bool ProcessMethod (MethodDefinition method)
+		protected override bool ProcessMethod (MethodDefinition method)
 		{
 			static bool IsPropertyMethod (MethodDefinition method)
 			{

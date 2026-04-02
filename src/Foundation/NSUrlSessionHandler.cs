@@ -987,6 +987,9 @@ namespace Foundation {
 					// - SocketsHttpHandler:    https://github.com/dotnet/runtime/blob/b2974279efd059efaa17f359ed4b266b1c705721/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/DecompressionHandler.cs#L122-L123
 					// - AndroidMessageHandler: https://github.com/dotnet/android/pull/7785
 					// Ref: https://github.com/dotnet/macios/issues/23958
+					// This behavior can be opted out of by setting the
+					// Foundation.NSUrlSessionHandler.KeepHeadersAfterDecompression switch.
+					var keepHeaders = AppContext.TryGetSwitch ("Foundation.NSUrlSessionHandler.KeepHeadersAfterDecompression", out var keepHeadersEnabled) && keepHeadersEnabled;
 					string? contentEncodingValue = null;
 					string? contentLengthValue = null;
 
@@ -999,11 +1002,11 @@ namespace Foundation {
 						// NSUrlSession tries to be smart with cookies, we will not use the raw value but the ones provided by the cookie storage
 						if (key == SetCookie) continue;
 
-						if (string.Equals (key, ContentEncodingHeaderName, StringComparison.OrdinalIgnoreCase)) {
+						if (!keepHeaders && string.Equals (key, ContentEncodingHeaderName, StringComparison.OrdinalIgnoreCase)) {
 							contentEncodingValue = value;
 							continue;
 						}
-						if (string.Equals (key, ContentLengthHeaderName, StringComparison.OrdinalIgnoreCase)) {
+						if (!keepHeaders && string.Equals (key, ContentLengthHeaderName, StringComparison.OrdinalIgnoreCase)) {
 							contentLengthValue = value;
 							continue;
 						}

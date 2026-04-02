@@ -9,8 +9,7 @@ using Xamarin.Messaging.Build.Contracts;
 using Xamarin.Messaging.Build.Properties;
 using Xamarin.Messaging.Build.Serialization;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.Messaging.Build {
 	internal class TaskRunner : ITaskRunner {
@@ -39,7 +38,7 @@ namespace Xamarin.Messaging.Build {
 				throw new ArgumentException (string.Format (Resources.TaskRunner_Execute_Error, taskName), nameof (taskName));
 			}
 
-			var task = serializer.Deserialize (inputs, taskType) as Task;
+			var task = (Task) serializer.Deserialize (inputs, taskType);
 			var buildEngine = new BuildEngine ();
 
 			task.BuildEngine = buildEngine;
@@ -64,7 +63,7 @@ namespace Xamarin.Messaging.Build {
 			} else {
 				//In case the XMA dotnet has not been installed yet, we use the default dotnet installation
 				xmaDotNetPath = GetDefaultDotNetPath ();
-				xmaDotNetRootPath = Path.GetDirectoryName (xmaDotNetPath);
+				xmaDotNetRootPath = Path.GetDirectoryName (xmaDotNetPath)!;
 			}
 
 			//We want to define a custom home for dotnet only if it's the Pair To Mac SDK installation

@@ -35,6 +35,7 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 	public bool? EnableModules { get; set; }
 	public bool SplitDocuments { get; set; } = true;
 	public bool DeepSplit { get; set; }
+	public bool UseCustomDelegates { get; set; }
 
 	public string ApiDefinitionName { get; set; } = "ApiDefinition.cs";
 	public string StructsAndEnumsName { get; set; } = "StructsAndEnums.cs";
@@ -252,6 +253,10 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 
 		if (DeepSplit) {
 			args.Add ("--deepsplit");
+		}
+
+		if (UseCustomDelegates) {
+			args.Add ("--custom-delegates");
 		}
 
 		if (EnableModules.HasValue) {

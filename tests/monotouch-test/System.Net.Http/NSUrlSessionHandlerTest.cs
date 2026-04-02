@@ -93,6 +93,47 @@ namespace MonoTests.System.Net.Http {
 			Assert.IsTrue (body.Length > 0, "Response body should not be empty");
 		}
 
+		// https://github.com/dotnet/macios/issues/23958
+		[Test]
+		public void KeepHeadersAfterDecompressionSwitch ()
+		{
+			bool hasContentEncoding = false;
+			bool hasContentLength = false;
+			string body = "";
+
+			AppContext.SetSwitch ("Foundation.NSUrlSessionHandler.KeepHeadersAfterDecompression", true);
+			try {
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					using var handler = new NSUrlSessionHandler ();
+					using var client = new HttpClient (handler);
+					using var request = new HttpRequestMessage (HttpMethod.Get, $"{NetworkResources.Httpbin.Url}/gzip");
+					request.Headers.TryAddWithoutValidation ("Accept-Encoding", "gzip");
+					var response = await client.SendAsync (request, HttpCompletionOption.ResponseHeadersRead);
+
+					if (!response.IsSuccessStatusCode) {
+						Assert.Inconclusive ($"Request failed with status {response.StatusCode}");
+						return;
+					}
+
+					hasContentEncoding = response.Content.Headers.ContentEncoding.Count > 0;
+					hasContentLength = response.Content.Headers.ContentLength is not null;
+					body = await response.Content.ReadAsStringAsync ();
+				}, out var ex);
+
+				if (!done) {
+					TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
+					Assert.Inconclusive ("Request timed out.");
+				}
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
+				Assert.IsNull (ex, $"Exception: {ex}");
+				Assert.IsTrue (hasContentEncoding, "Content-Encoding header should be preserved when KeepHeadersAfterDecompression is enabled");
+				Assert.IsTrue (hasContentLength, "Content-Length header should be preserved when KeepHeadersAfterDecompression is enabled");
+				Assert.IsTrue (body.Contains ("\"gzipped\"", StringComparison.OrdinalIgnoreCase), "Response body should contain decompressed gzip data");
+			} finally {
+				AppContext.SetSwitch ("Foundation.NSUrlSessionHandler.KeepHeadersAfterDecompression", false);
+			}
+		}
+
 		// https://github.com/dotnet/macios/issues/24376
 		[Test]
 		public void DisposeAndRecreateBackgroundSessionHandler ()

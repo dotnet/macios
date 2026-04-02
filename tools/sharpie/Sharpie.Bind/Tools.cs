@@ -45,6 +45,7 @@ public static class Tools {
 			{ "m|massage=", "Register (+ prefix) or exclude (- prefix) a massager by name.", v => binder.AddMassager (v) },
 			{ "nosplit", "Do not split the generated binding into multiple files.", v => binder.SplitDocuments = false },
 			{ "deepsplit", "Split the generated binding into one file per source header.", v => binder.DeepSplit = true },
+			{ "custom-delegates", "Generate custom named delegates instead of Func<>/Action<>.", v => binder.UseCustomDelegates = true },
 		};
 
 		os.EndOfParsingArguments.Clear ();
@@ -114,6 +115,7 @@ public static class Tools {
 			{ "clang-resource-dir=", "Specify the Clang resource directory.", v => binder.ClangResourceDirectory = v },
 			{ "platform-assembly=", "Specify the platform assembly to use for binding.", v => binder.PlatformAssembly = v },
 			{ "nosplit", "Do not split the generated binding into multiple files.", v => binder.SplitDocuments = false },
+			{ "custom-delegates", "Generate custom named delegates instead of Func<>/Action<>.", v => binder.UseCustomDelegates = true },
 		};
 
 		os.EndOfParsingArguments.Clear ();

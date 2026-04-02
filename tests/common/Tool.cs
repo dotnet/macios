@@ -6,15 +6,17 @@ using System.Text.RegularExpressions;
 
 using Xamarin.Utils;
 
+#nullable enable
+
 namespace Xamarin.Tests {
 	class ToolMessage {
 		public bool IsError;
 		public bool IsWarning { get { return !IsError; } }
-		public string? Prefix;
+		public string Prefix = "";
 		public int Number;
 		public string PrefixedNumber { get { return Prefix + Number.ToString (); } }
-		public required string Message;
-		public string? FileName;
+		public string Message = "";
+		public string FileName = "";
 		public int LineNumber;
 
 		public override string ToString ()
@@ -159,7 +161,7 @@ namespace Xamarin.Tests {
 			return line;
 		}
 
-		public static List<ToolMessage> ParseMessages (string [] lines, string messageToolName)
+		public static List<ToolMessage> ParseMessages (string [] lines, string? messageToolName)
 		{
 			var messages = new List<ToolMessage> ();
 			ParseMessages (messages, lines, messageToolName);
@@ -267,7 +269,7 @@ namespace Xamarin.Tests {
 				};
 
 				if (TrySplitCode (buildLogEvent.Code, out var prefix, out var number)) {
-					msg.Prefix = prefix;
+					msg.Prefix = prefix ?? "";
 					msg.Number = number;
 				}
 

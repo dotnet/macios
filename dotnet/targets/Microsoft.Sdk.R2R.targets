@@ -300,7 +300,7 @@
 	</Target>
 
 	<Target Name="_CreateR2RFramework"
-			Condition="'$(CreateR2RFramework)' == 'true'"
+			Condition="'$(CreateR2RFramework)' == 'true' And '$(IsMacEnabled)' != 'false'"
 			DependsOnTargets="$(_CreateR2RFrameworkDependsOn)"
 			AfterTargets="CreateReadyToRunImages"
 	/>
@@ -393,7 +393,7 @@
 	</Target>
 
 	<Target Name="_CreateR2RDylib"
-			Condition="'$(CreateR2RDylib)' == 'true'"
+			Condition="'$(CreateR2RDylib)' == 'true' And '$(IsMacEnabled)' != 'false'"
 			DependsOnTargets="$(_CreateR2RDylibDependsOn)"
 			AfterTargets="CreateReadyToRunImages"
 	/>

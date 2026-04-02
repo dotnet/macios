@@ -460,7 +460,23 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "ios-arm64", true, "UseInterpreter=true")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false)]
 		[Category ("WindowsInclusive")]
-		public void IsNotMacBuild (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties = null, string configuration = "Debug")
+		public void IsNotMacBuild_Mono (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties = null, string configuration = "Debug")
+		{
+			IsNotMacBuild (platform, runtimeIdentifiers, isDeviceBuild, extraProperties, configuration, useMonoRuntime: true);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-x64", false)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true, null, "Release")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64", false)]
+		[Category ("WindowsInclusive")]
+		public void IsNotMacBuild_CoreCLR (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties = null, string configuration = "Debug")
+		{
+			IsNotMacBuild (platform, runtimeIdentifiers, isDeviceBuild, extraProperties, configuration, useMonoRuntime: false);
+		}
+
+		void IsNotMacBuild (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties, string configuration, bool useMonoRuntime)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -470,6 +486,7 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["IsMacEnabled"] = "false";
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 			if (!string.IsNullOrEmpty (configuration))
 				properties ["Configuration"] = configuration;
 			if (extraProperties is not null) {

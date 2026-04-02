@@ -35,7 +35,7 @@ namespace GeneratorTests {
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
 			bgen.Defines = BGenTool.GetDefaultDefines (profile);
-			bgen.ApiDefinitions.Add (Path.Combine (Configuration.SourceRoot, "tests", "generator", "bi1036.cs"));
+			bgen.ApiDefinitions.Add (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bi1036.cs"));
 			bgen.CreateTemporaryBinding ();
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1036, "The last parameter in the method 'NS.Foo.Method' must be a delegate (it's 'System.String').");
@@ -49,7 +49,7 @@ namespace GeneratorTests {
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
 			bgen.Defines = BGenTool.GetDefaultDefines (profile);
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "protocol-duplicate-abstract-error.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "protocol-duplicate-abstract-error.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1037, "The selector Identifier on type Derived is found multiple times with both read only and write only versions, with no read/write version.");
 		}
@@ -62,7 +62,7 @@ namespace GeneratorTests {
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
 			bgen.Defines = BGenTool.GetDefaultDefines (profile);
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "protocol-duplicate-method-diff-return.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "protocol-duplicate-method-diff-return.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1038, "The selector DoIt on type Derived is found multiple times with different return types.");
 		}
@@ -75,7 +75,7 @@ namespace GeneratorTests {
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
 			bgen.Defines = BGenTool.GetDefaultDefines (profile);
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "protocol-duplicate-method-diff-length.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "protocol-duplicate-method-diff-length.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1039, "The selector doit:itwith:more: on type Derived is found multiple times with different argument length 3 : 4.");
 		}
@@ -88,7 +88,7 @@ namespace GeneratorTests {
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
 			bgen.Defines = BGenTool.GetDefaultDefines (profile);
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "protocol-duplicate-method-diff-out.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "protocol-duplicate-method-diff-out.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1040, "The selector doit:withmore on type Derived is found multiple times with different argument out states on argument 1.");
 		}
@@ -101,7 +101,7 @@ namespace GeneratorTests {
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
 			bgen.Defines = BGenTool.GetDefaultDefines (profile);
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "protocol-duplicate-method-diff-type.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "protocol-duplicate-method-diff-type.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertErrorPattern (1041, "The selector doit:with:more: on type Derived is found multiple times with different argument types on argument 2 - System.Int32 : .*Foundation.NSObject.");
 		}
@@ -141,7 +141,7 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "bindas1048error.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bindas1048error.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1048, "Unsupported type String decorated with [BindAs]");
 		}
@@ -153,7 +153,7 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "bindas1049error.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bindas1049error.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1049, "Could not unbox type String from NSNumber container used on member BindAs1049ErrorTests.MyFooClass.StringMethod decorated with [BindAs].");
 		}
@@ -165,7 +165,7 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "ghissue6863_property.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "ghissue6863_property.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1071, "The BindAs type for the member \"GH6863_property.MyFooClass.StringProp\" must be an array when the member's type is an array.");
 		}
@@ -178,7 +178,7 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "ghissue6863_method.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "ghissue6863_method.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1072, "The BindAs type for the parameter \"id_test\" in the method \"GH6863_method.MyFooClass.StringMethod\" must be an array when the parameter's type is an array.");
 		}
@@ -191,7 +191,7 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "bindas1050modelerror.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bindas1050modelerror.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1050, "[BindAs] cannot be used inside Protocol or Model types. Type: MyFooClass");
 		}
@@ -203,7 +203,7 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "bindas1050protocolerror.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bindas1050protocolerror.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1050, "[BindAs] cannot be used inside Protocol or Model types. Type: MyFooClass");
 		}
@@ -215,7 +215,7 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "bi1059.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bi1059.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1084, "Found 2 Foundation.PreserveAttribute attributes on the type BI1059. At most one was expected.");
 		}
@@ -227,7 +227,7 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "bug42855.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bug42855.cs")));
 			bgen.AssertExecute ("build");
 			bgen.AssertWarning (1060, "The Bug42855Tests.MyFooClass protocol is decorated with [Model], but not [BaseType]. Please verify that [Model] is relevant for this protocol; if so, add [BaseType] as well, otherwise remove [Model].");
 		}
@@ -239,7 +239,7 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "bi1077.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bi1077.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1077, "Async method System.Void A(BI1077.ADelegate) with more than one result parameter in the callback by neither ResultTypeName or ResultType");
 			bgen.AssertError (1077, "Async method System.Void B(BI1077.BDelegate) with more than one result parameter in the callback by neither ResultTypeName or ResultType");
@@ -309,7 +309,7 @@ namespace Bug52570Tests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "bug52570classinternal.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bug52570classinternal.cs")));
 			bgen.AssertExecute ("build");
 			bgen.AssertNoWarnings ();
 		}
@@ -321,7 +321,7 @@ namespace Bug52570Tests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "bug52570methodinternal.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bug52570methodinternal.cs")));
 			bgen.AssertExecute ("build");
 			bgen.AssertNoWarnings ();
 		}
@@ -809,7 +809,7 @@ namespace BI1066Errors
 			BGenTool bgen = new BGenTool {
 				Profile = profile,
 			};
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "tests", "diamond-protocol-errors.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "diamond-protocol-errors.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1067, "The type 'DiamondProtocol.A.C' is trying to inline the property 'P1' from the protocols 'DiamondProtocol.A.P1' and 'DiamondProtocol.A.P2', but the inlined properties don't share the same accessors ('DiamondProtocol.A.P1 P1' is read-only, while '$DiamondProtocol.A.P2 P1' is write-only).");
 			bgen.AssertWarning (1068, "The type 'DiamondProtocol.D.C' is trying to inline the property 'P1' from the protocols 'DiamondProtocol.D.P1' and 'DiamondProtocol.D.P2', and the inlined properties use different selectors (P1.P1 uses 'pA', and P2.P1 uses 'pB'.");
@@ -832,7 +832,7 @@ namespace BI1066Errors
 				bgen.Profile = profile;
 				bgen.Defines = BGenTool.GetDefaultDefines (profile);
 				bgen.WarnAsError = string.Empty;
-				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "warnaserror.cs")));
+				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "warnaserror.cs")));
 				bgen.AssertExecuteError ("build");
 				bgen.AssertError (1117, message);
 			}
@@ -842,7 +842,7 @@ namespace BI1066Errors
 				var bgen = new BGenTool ();
 				bgen.Profile = profile;
 				bgen.Defines = BGenTool.GetDefaultDefines (profile);
-				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "warnaserror.cs")));
+				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "warnaserror.cs")));
 				bgen.AssertExecute ("build");
 				bgen.AssertWarning (1117, message);
 			}
@@ -853,7 +853,7 @@ namespace BI1066Errors
 				bgen.Profile = profile;
 				bgen.Defines = BGenTool.GetDefaultDefines (profile);
 				bgen.WarnAsError = "1116";
-				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "warnaserror.cs")));
+				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "warnaserror.cs")));
 				bgen.AssertExecute ("build");
 				bgen.AssertWarning (1117, message);
 			}
@@ -864,7 +864,7 @@ namespace BI1066Errors
 				bgen.Profile = profile;
 				bgen.Defines = BGenTool.GetDefaultDefines (profile);
 				bgen.WarnAsError = "1117";
-				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "warnaserror.cs")));
+				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "warnaserror.cs")));
 				bgen.AssertExecuteError ("build");
 				bgen.AssertError (1117, message);
 			}
@@ -886,7 +886,7 @@ namespace BI1066Errors
 				bgen.Profile = profile;
 				bgen.Defines = BGenTool.GetDefaultDefines (profile);
 				bgen.NoWarn = string.Empty;
-				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "nowarn.cs")));
+				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "nowarn.cs")));
 				bgen.AssertExecute ("build");
 				bgen.AssertNoWarnings ();
 			}
@@ -896,7 +896,7 @@ namespace BI1066Errors
 				var bgen = new BGenTool ();
 				bgen.Profile = profile;
 				bgen.Defines = BGenTool.GetDefaultDefines (profile);
-				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "nowarn.cs")));
+				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "nowarn.cs")));
 				bgen.AssertExecute ("build");
 				bgen.AssertWarning (1117, message);
 			}
@@ -907,7 +907,7 @@ namespace BI1066Errors
 				bgen.Profile = profile;
 				bgen.Defines = BGenTool.GetDefaultDefines (profile);
 				bgen.NoWarn = "1116";
-				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "nowarn.cs")));
+				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "nowarn.cs")));
 				bgen.AssertExecute ("build");
 				bgen.AssertWarning (1117, message);
 			}
@@ -918,7 +918,7 @@ namespace BI1066Errors
 				bgen.Profile = profile;
 				bgen.Defines = BGenTool.GetDefaultDefines (profile);
 				bgen.NoWarn = "1117";
-				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "nowarn.cs")));
+				bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "nowarn.cs")));
 				bgen.AssertExecute ("build");
 				bgen.AssertNoWarnings ();
 			}
@@ -933,7 +933,7 @@ namespace BI1066Errors
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
 			bgen.Defines = BGenTool.GetDefaultDefines (profile);
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "missing-export-property.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "missing-export-property.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1018, "No [Export] attribute on property Test.NSTextInputClient.SelectedRange");
 		}
@@ -947,7 +947,7 @@ namespace BI1066Errors
 			bgen.Profile = profile;
 			bgen.ProcessEnums = true;
 			bgen.Defines = BGenTool.GetDefaultDefines (profile);
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "tests", "errordomain-nolibraryname.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "errordomain-nolibraryname.cs")));
 			bgen.AssertExecuteError ("build");
 			bgen.AssertError (1087, "Missing value for the 'LibraryName' property for the '[ErrorDomain]' attribute for ErrorDomainNS.EWithDomain (e.g. '[ErrorDomain (\"MyDomain\", LibraryName = \"__Internal\")]')");
 		}
@@ -962,7 +962,7 @@ namespace BI1066Errors
 			bgen.Profile = profile;
 			bgen.ProcessEnums = true;
 			bgen.Defines = BGenTool.GetDefaultDefines (profile);
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "tests", "strongdictionary-errors.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "strongdictionary-errors.cs")));
 			bgen.AssertExecuteError ("build");
 
 			var errorMessages = new string []

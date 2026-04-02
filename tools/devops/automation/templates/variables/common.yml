@@ -71,4 +71,4 @@ variables:
   value: 15.6
 
 - name: xcodeChannel
-  value: Stable
+  value: Beta

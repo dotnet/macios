@@ -2267,7 +2267,7 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
 
-			properties ["UseMonoRuntime"] = useMonoRuntime ? "true": "true";
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 
 			Clean (project_path);
 			DotNet.AssertBuild (project_path, properties);
@@ -2307,7 +2307,9 @@ namespace Xamarin.Tests {
 			appBundleContents.ExceptWith (directoriesThatMustExist);
 
 			// And that there are no other signed apps
-			var signatures = appBundleContents.Where (v => v.EndsWith ("_CodeSignature", StringComparison.Ordinal));
+			var signatures = appBundleContents
+				.Where (v => v.EndsWith ("_CodeSignature", StringComparison.Ordinal))
+				.Where (v => useMonoRuntime || !v.Contains (".framework/")); // CoreCLR runtime frameworks are signed - that's expected
 			Assert.That (signatures, Is.Empty, "No other signed app bundles");
 
 			// Assert that some dylibs are signed
@@ -2325,6 +2327,7 @@ namespace Xamarin.Tests {
 			// And that there are unsigned dylibs, but not the system ones
 			var remainingDylibs = appBundleContents
 				.Where (v => Path.GetExtension (v) == ".dylib")
+				.Where (v => useMonoRuntime || string.IsNullOrEmpty (dylibDir) || Path.GetDirectoryName (v) != dylibDir) // CoreCLR native runtime dylibs are signed - ignore them here
 				.ToArray ();
 			foreach (var unsignedDylib in remainingDylibs) {
 				var path = Path.Combine (appPath, unsignedDylib);

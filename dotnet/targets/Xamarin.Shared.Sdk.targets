@@ -2647,7 +2647,7 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 			_CollectR2RFrameworksForPostProcessing;
 		</_CollectItemsForPostProcessingDependsOn>
 	</PropertyGroup>
-	<Target Name="_CollectR2RFrameworksForPostProcessing" DependsOnTargets="_ComputeFrameworksToCreate">
+	<Target Name="_CollectR2RFrameworksForPostProcessing" DependsOnTargets="_ComputeFrameworksToCreate;_PrepareR2RModules">
 		<ItemGroup>
 			<!-- Add CoreCLR runtime -->
 			<_PostProcessingItem
@@ -2655,11 +2655,11 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 				<Kind>Framework</Kind>
 				<DSymName>%(Filename).framework.dSYM</DSymName>
 			</_PostProcessingItem>
-			<!-- Add R2R composite -->
+			<!-- Add per-module R2R frameworks -->
 			<_PostProcessingItem
-				Include="$([System.IO.Path]::GetFileName('$(AppBundleDir)'))/$(_AppFrameworksRelativePath)$(_R2RFrameworkName).framework/$(_R2RFrameworkName)" Condition="'$(CreateR2RFramework)' == 'true'">
+				Include="@(_R2RModule->'$([System.IO.Path]::GetFileName($(AppBundleDir)))/$(_AppFrameworksRelativePath)%(FrameworkName).framework/%(FrameworkName)')" Condition="'$(CreateR2RFramework)' == 'true'">
 				<Kind>Framework</Kind>
-				<DSymName>$(_R2RFrameworkName).framework.dSYM</DSymName>
+				<DSymName>%(FrameworkName).framework.dSYM</DSymName>
 			</_PostProcessingItem>
 		</ItemGroup>
 	</Target>

@@ -81,6 +81,8 @@ const char *xamarin_runtime_configuration_name = NULL;
 enum XamarinNativeLinkMode xamarin_libmono_native_link_mode = XamarinNativeLinkModeStaticObject;
 const char **xamarin_runtime_libraries = NULL;
 void *xamarin_rtr_header = NULL;
+struct xamarin_r2r_module *xamarin_r2r_modules = NULL;
+int xamarin_r2r_module_count = 0;
 
 /* Callbacks */
 
@@ -2439,9 +2441,25 @@ xamarin_get_native_code_data (const struct host_runtime_contract_native_code_con
 	if (!context || !data || !context->assembly_path || !context->owner_composite_name)
 		return false;
 
-	void* r2r_header = xamarin_rtr_header;
+	void* r2r_header = NULL;
+
+	// Multi-module: look up by owner_composite_name
+	if (xamarin_r2r_modules != NULL && xamarin_r2r_module_count > 0) {
+		for (int i = 0; i < xamarin_r2r_module_count; i++) {
+			if (strcmp (xamarin_r2r_modules [i].name, context->owner_composite_name) == 0) {
+				r2r_header = xamarin_r2r_modules [i].header;
+				break;
+			}
+		}
+		if (r2r_header == NULL)
+			return false;
+	} else {
+		// Single-module fallback for backward compatibility
+		r2r_header = xamarin_rtr_header;
+	}
+
 	if (r2r_header == NULL)
-		xamarin_assertion_message ("Failed to find the RTR_HEADER symbol.");
+		return false;
 
 	Dl_info info;
 	if (dladdr (r2r_header, &info) == 0)

@@ -2910,7 +2910,7 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["MtouchInterpreter"] = $"\"{mtouchInterpreter}\"";
-
+			properties ["UseMonoRuntime"] = "true"; // this test only apples when using Mono
 			DotNet.AssertBuild (project_path, properties);
 
 			var objDir = GetObjDir (project_path, platform, runtimeIdentifiers);
@@ -2934,6 +2934,7 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["MtouchInterpreter"] = $"\"{mtouchInterpreter}\"";
+			properties ["UseMonoRuntime"] = "true"; // this test only apples when using Mono
 
 			DotNet.AssertBuild (project_path, properties);
 
@@ -2955,6 +2956,7 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["MtouchInterpreter"] = $"\"{mtouchInterpreter}\"";
+			properties ["UseMonoRuntime"] = "true"; // this test only apples when using Mono
 
 			DotNet.AssertBuild (project_path, properties);
 

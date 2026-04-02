@@ -14,6 +14,11 @@
 			<_ReadyToRunFilesToPublish Remove="@(_ReadyToRunFilesToPublish)" />
 			<_ReadyToRunFilesToPublish Include="@(_ReadyToRunFilesToPublishFixed)" />
 		</ItemGroup>
+		<ItemGroup Condition="'$(PublishReadyToRunComposite)' != 'true'">
+			<_ReadyToRunCompileListFixed Include="@(_ReadyToRunCompileList)" OutputR2RImage="$(_ReadyToRunOutputPath)/%(Filename)%(Extension)" />
+			<_ReadyToRunCompileList Remove="@(_ReadyToRunCompileList)" />
+			<_ReadyToRunCompileList Include="@(_ReadyToRunCompileListFixed)" />
+		</ItemGroup>
 	</Target>
 
 	<!--
@@ -78,7 +83,7 @@
 	</Target>
 
 	<!-- Set some default properties -->
-	<PropertyGroup Condition="'$(PublishReadyToRun)' == 'true' And '$(UseMonoRuntime)' == 'false' And '$(_UseNativeAot)' != 'true'">
+	<PropertyGroup Condition="'$(PublishReadyToRun)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho' And '$(UseMonoRuntime)' == 'false' And '$(_UseNativeAot)' != 'true'">
 		<CreateR2RFramework Condition="'$(CreateR2RFramework)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">true</CreateR2RFramework>
 		<CreateR2RDylib Condition="'$(CreateR2RDylib)' == '' And '$(CreateR2RFramework)' != 'true'">true</CreateR2RDylib>
 

@@ -278,6 +278,9 @@ namespace Xamarin.Linker {
 						Application.PublishReadyToRun = publishReadyToRun;
 					}
 					break;
+				case "PublishReadyToRunContainerFormat":
+					Application.PublishReadyToRunContainerFormat = value;
+					break;
 				case "ReferenceNativeSymbol": {
 					(string symbolType, string symbolMode, string symbol) = SplitString3 (value, ':');
 					var mode = SymbolMode.Default;

@@ -265,7 +265,7 @@ namespace Xamarin.Tests {
 					IsError = buildLogEvent.Type == BuildLogEventType.Error,
 					Message = buildLogEvent.Message ?? "",
 					LineNumber = buildLogEvent.LineNumber,
-					FileName = buildLogEvent.File
+					FileName = buildLogEvent.File ?? ""
 				};
 
 				if (TrySplitCode (buildLogEvent.Code, out var prefix, out var number)) {

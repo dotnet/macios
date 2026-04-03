@@ -2660,8 +2660,7 @@ global using nfloat = global::System.Runtime.InteropServices.NFloat%3B
 			<_PostProcessingItem
 				Include="@(_R2RModule->'$([System.IO.Path]::GetFileName($(AppBundleDir)))/$(_AppFrameworksRelativePath)%(FrameworkName).framework/%(FrameworkName)')" Condition="'$(CreateR2RFramework)' == 'true'">
 				<Kind>Framework</Kind>
-				<FrameworkName>%(FrameworkName)</FrameworkName>
-				<DSymName>%(FrameworkName).framework.dSYM</DSymName>
+				<DSymName>%(_R2RModule.FrameworkName).framework.dSYM</DSymName>
 			</_PostProcessingItem>
 		</ItemGroup>
 	</Target>

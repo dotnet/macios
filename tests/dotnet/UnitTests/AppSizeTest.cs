@@ -28,6 +28,18 @@ namespace Xamarin.Tests {
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, new Dictionary<string, string> () { { "PublishAot", "true" }, { "_IsPublishing", "true" } });
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void CoreCLR_Interpreter (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", true, new Dictionary<string, string> () { { "UseMonoRuntime", "false" }, { "PublishReadyToRun", "false" } });
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void CoreCLR_R2R (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-R2R", true, new Dictionary<string, string> () { { "UseMonoRuntime", "false" }, { "PublishReadyToRun", "true" } });
+		}
+
 		// This test will build the SizeTestApp, and capture the resulting app size.
 		// The app size is stored in a file on disk, so we can make sure app size doesn't change (or at least we notice it and we can update the known state).
 		// There's a tolerance in the test for minor app size variances, so if this test fails, the current change might not mean there's a big change,
@@ -122,11 +134,11 @@ namespace Xamarin.Tests {
 			var allKeys = expectedLines.Keys.Union (actualLines.Keys).OrderBy (v => v);
 			foreach (var key in allKeys) {
 				if (!expectedLines.TryGetValue (key, out var expectedLine)) {
-					Console.WriteLine ($"        File '{key}' was removed from app bundle: {actualLines [key]}");
-					Assert.Fail ($"The file '{key}' was removed from the app bundle.");
-				} else if (!actualLines.TryGetValue (key, out var actualLine)) {
-					Console.WriteLine ($"        File '{key}' was added to app bundle: {expectedLine}");
+					Console.WriteLine ($"        File '{key}' was added to app bundle: {actualLines [key]}");
 					Assert.Fail ($"The file '{key}' was added to the app bundle.");
+				} else if (!actualLines.TryGetValue (key, out var actualLine)) {
+					Console.WriteLine ($"        File '{key}' was removed from app bundle: {expectedLine}");
+					Assert.Fail ($"The file '{key}' was removed from the app bundle.");
 				} else if (expectedLine != actualLine) {
 					Console.WriteLine ($"        File '{key}' changed in app bundle:");
 					Console.WriteLine ($"            -{expectedLine}");
@@ -154,7 +166,7 @@ namespace Xamarin.Tests {
 			}
 			preservedAPIs.Sort ();
 			var expectedFile = Path.Combine (expectedDirectory, $"{name}-preservedapis.txt");
-			var expectedAPIs = File.ReadAllLines (expectedFile);
+			var expectedAPIs = File.Exists (expectedFile) ? File.ReadAllLines (expectedFile) : [];
 			var addedAPIs = preservedAPIs.Except (expectedAPIs).ToList ();
 			var removedAPIs = expectedAPIs.Except (preservedAPIs).ToList ();
 

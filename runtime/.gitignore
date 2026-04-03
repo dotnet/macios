@@ -12,3 +12,4 @@ bindings-generated.m
 *.dylib
 *.o
 coreclrhost.h
+host_runtime_contract.h

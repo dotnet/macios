@@ -1024,10 +1024,8 @@ namespace Foundation {
 		SkipsPackageDescendants = 1 << 1,
 		/// <summary>To be added.</summary>
 		SkipsHiddenFiles = 1 << 2,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		IncludesDirectoriesPostOrder = 1 << 3,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		ProducesRelativePathUrls = 1 << 4,
 	}
@@ -1373,10 +1371,8 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		SortedKeys = (1 << 1),
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		FragmentsAllowed = (1 << 2),
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		WithoutEscapingSlashes = (1 << 3),
 	}
@@ -1682,10 +1678,8 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		[MacCatalyst (13, 1)]
 		ResponsiveData = 6,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		AVStreaming = 8,
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		ResponsiveAV = 9,
 		/// <summary>To be added.</summary>

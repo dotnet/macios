@@ -2962,6 +2962,15 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
 				<DSymName>%(Filename).dSYM</DSymName>
 			</_PostProcessingItem>
+			<!-- In outer multi-RID builds the merged app bundle already contains the universal dylibs,
+			     but the RID-specific native references are no longer available as items. Scan the merged
+			     app bundle so that dsymutil/strip still runs for those dylibs. -->
+			<_MergedAppBundleDylib Include="$(AppBundleDir)/$(_AppContentsRelativePathForPostProcessing)*.dylib" Condition="'$(RuntimeIdentifiers)' != ''" />
+			<_PostProcessingItem Include="@(_MergedAppBundleDylib -> '$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'$(RuntimeIdentifiers)' != ''">
+				<ItemSourcePath>$(_AppContainerDir)%(_PostProcessingItem.Identity)</ItemSourcePath>
+				<dSYMSourcePath>$(_AppContainerDir)%(_PostProcessingItem.Identity).dSYM</dSYMSourcePath>
+				<DSymName>%(Filename).dSYM</DSymName>
+			</_PostProcessingItem>
 			<_PostProcessingItem Include="$([System.IO.Path]::GetFileName('$(AppBundleDir)'))/$(_NativeExecutableRelativePath)" Condition="'$(IsWatchApp)' != 'true'">
 				<SymbolFile Condition="'$(_ExportSymbolsExplicitly)' == 'true'">$(_SymbolsListFullPath)</SymbolFile>
 				<DSymName>$(_AppBundleName)$(AppBundleExtension).dSYM</DSymName>

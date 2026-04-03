@@ -149,27 +149,34 @@
 		</_CreateR2RFrameworkDependsOn>
 	</PropertyGroup>
 
-	<!-- Prepare properties and item groups for r2r framework creation -->
+	<!-- Properties for R2R framework creation.
+		Declared outside any target so they are available at evaluation time,
+		including in multi-RID outer builds where _PrepareR2RFrameworkCreation
+		may not have run yet (e.g. _CollectR2RFrameworksForPostProcessing). -->
+	<PropertyGroup>
+		<_DesktopFramework Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">true</_DesktopFramework>
+		<_DesktopFramework Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">false</_DesktopFramework>
+
+		<_R2RFrameworkBinaryInfix Condition="'$(_DesktopFramework)' == 'true'">/Versions/A</_R2RFrameworkBinaryInfix>
+		<_R2RFrameworkResourcesInfix Condition="'$(_DesktopFramework)' == 'true'">/Versions/A/Resources</_R2RFrameworkResourcesInfix>
+
+		<_R2RFrameworkIntermediateOutputPath Condition="'$(_R2RFrameworkIntermediateOutputPath)' == ''">$(DeviceSpecificIntermediateOutputPath)r2rframework/</_R2RFrameworkIntermediateOutputPath>
+		<_R2RFrameworkName Condition="'$(_R2RFrameworkName)' == ''">$(AssemblyName)</_R2RFrameworkName>
+		<_R2RFrameworkPath Condition="'$(_R2RFrameworkPath)' == ''">$(_R2RFrameworkIntermediateOutputPath)$(_R2RFrameworkName).framework</_R2RFrameworkPath>
+		<_R2RFrameworkOutput Condition="'$(_R2RFrameworkOutput)' == ''">$(_R2RFrameworkPath)$(_R2RFrameworkBinaryInfix)/$(_R2RFrameworkName)</_R2RFrameworkOutput>
+
+		<_R2RFrameworkStructureStampFile>$(_R2RFrameworkIntermediateOutputPath)$(_R2RFrameworkName)-structure.stamp</_R2RFrameworkStructureStampFile>
+
+		<_R2RFrameworkInfoPlistPath>$(_R2RFrameworkPath)$(_R2RFrameworkResourcesInfix)/Info.plist</_R2RFrameworkInfoPlistPath>
+
+		<_R2RFrameworkCachePath>$(_R2RFrameworkIntermediateOutputPath)cache.txt</_R2RFrameworkCachePath>
+		<_R2RFrameworkCachePath2>$(_R2RFrameworkCachePath).uptodate</_R2RFrameworkCachePath2>
+	</PropertyGroup>
+
+	<!-- Prepare item groups for r2r framework creation -->
 	<Target Name="_PrepareR2RFrameworkCreation"
 			DependsOnTargets="CreateReadyToRunImages"
 			>
-		<PropertyGroup>
-			<_DesktopFramework Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">true</_DesktopFramework>
-			<_DesktopFramework Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">false</_DesktopFramework>
-
-			<_R2RFrameworkBinaryInfix Condition="'$(_DesktopFramework)' == 'true'">/Versions/A</_R2RFrameworkBinaryInfix>
-			<_R2RFrameworkResourcesInfix Condition="'$(_DesktopFramework)' == 'true'">/Versions/A/Resources</_R2RFrameworkResourcesInfix>
-
-			<_R2RFrameworkIntermediateOutputPath Condition="'$(_R2RFrameworkIntermediateOutputPath)' == ''">$(DeviceSpecificIntermediateOutputPath)r2rframework/</_R2RFrameworkIntermediateOutputPath>
-			<_R2RFrameworkName Condition="'$(_R2RFrameworkName)' == ''">$(AssemblyName)</_R2RFrameworkName>
-			<_R2RFrameworkPath Condition="'$(_R2RFrameworkPath)' == ''">$(_R2RFrameworkIntermediateOutputPath)$(_R2RFrameworkName).framework</_R2RFrameworkPath>
-			<_R2RFrameworkOutput Condition="'$(_R2RFrameworkOutput)' == ''">$(_R2RFrameworkPath)$(_R2RFrameworkBinaryInfix)/$(_R2RFrameworkName)</_R2RFrameworkOutput>
-
-			<_R2RFrameworkStructureStampFile>$(_R2RFrameworkIntermediateOutputPath)$(_R2RFrameworkName)-structure.stamp</_R2RFrameworkStructureStampFile>
-
-			<_R2RFrameworkInfoPlistPath>$(_R2RFrameworkPath)$(_R2RFrameworkResourcesInfix)/Info.plist</_R2RFrameworkInfoPlistPath>
-		</PropertyGroup>
-
 		<ItemGroup>
 			<_R2RFrameworkDirectories Include="$(_R2RFrameworkPath)" />
 
@@ -190,10 +197,6 @@
 		</ItemGroup>
 
 		<!-- write a hash of all the relevant input so that we can force a re-link if necessary -->
-		<PropertyGroup>
-			<_R2RFrameworkCachePath>$(_R2RFrameworkIntermediateOutputPath)cache.txt</_R2RFrameworkCachePath>
-			<_R2RFrameworkCachePath2>$(_R2RFrameworkCachePath).uptodate</_R2RFrameworkCachePath2>
-		</PropertyGroup>
 		<ItemGroup>
 			<_R2RFrameworkCache Include="@(_R2RFrameworkInputs)" />
 			<_R2RFrameworkCache Include="@(_R2RFrameworkLinkerFlags)" />

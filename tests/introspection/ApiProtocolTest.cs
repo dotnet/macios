@@ -562,6 +562,9 @@ namespace Introspection {
 				case "ASDiscoveredAccessory":
 				case "ASDiscoveredDisplayItem":
 					return true;
+				// Xcode 26.4 Conformance not in headers
+				case "CNFetchRequest":
+					return true;
 				}
 				break;
 			case "NSSecureCoding":
@@ -799,6 +802,9 @@ namespace Introspection {
 				// Xcode 26.1 Conformance not in headers
 				case "ASDiscoveredAccessory":
 				case "ASDiscoveredDisplayItem":
+					return true;
+				// Xcode 26.4 Conformance not in headers
+				case "CNFetchRequest":
 					return true;
 				}
 				break;

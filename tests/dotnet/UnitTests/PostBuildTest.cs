@@ -51,7 +51,20 @@ namespace Xamarin.Tests {
 		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
-		public void BuildIpaTest (ApplePlatform platform, string runtimeIdentifiers)
+		public void BuildIpaTest_Mono (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildIpaTestImpl (platform, runtimeIdentifiers, useMonoRuntime: true);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void BuildIpaTest_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			BuildIpaTestImpl (platform, runtimeIdentifiers, useMonoRuntime: false);
+		}
+
+		void BuildIpaTestImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime)
 		{
 			var project = "MySimpleApp";
 			var configuration = "Release";
@@ -63,13 +76,16 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["BuildIpa"] = "true";
 			properties ["Configuration"] = configuration;
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 
 			DotNet.AssertBuild (project_path, properties);
 
 			var pkgPath = Path.Combine (appPath, "..", $"{project}.ipa");
 			Assert.That (pkgPath, Does.Exist, "pkg creation");
 
-			AssertBundleAssembliesStripStatus (appPath, true);
+			// With MonoVM, AOT compiles method bodies to native code and IL gets stripped.
+			// With CoreCLR (R2R), assemblies retain their IL bodies.
+			AssertBundleAssembliesStripStatus (appPath, useMonoRuntime);
 			AssertDSymDirectory (appPath);
 		}
 

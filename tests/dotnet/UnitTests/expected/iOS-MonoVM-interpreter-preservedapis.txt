@@ -6442,6 +6442,7 @@ System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.DefaultI
 System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.FixedBufferAttribute::<Length>k__BackingField
 System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.InlineArrayAttribute::<Length>k__BackingField
 System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.MethodImplOptions::value__
+System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute::<Priority>k__BackingField
 System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.RefSafetyRulesAttribute::<Version>k__BackingField
 System.Private.CoreLib.dll:System.Int32 System.Runtime.CompilerServices.UnsafeAccessorKind::value__
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.CallingConvention::value__
@@ -10611,6 +10612,8 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.NullablePublicOnlyAtt
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ObjectHandleOnStack
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ObjectHandleOnStack..ctor(System.Object*)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ObjectHandleOnStack.Create`1(T&)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.OverloadResolutionPriorityAttribute..ctor(System.Int32)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ParamCollectionAttribute
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ParamCollectionAttribute..ctor()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.QCallAssembly

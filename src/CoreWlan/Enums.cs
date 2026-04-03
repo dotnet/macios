@@ -95,6 +95,9 @@ namespace CoreWlan {
 		/// <summary>To be added.</summary>
 		AC = 5,
 		AX = 6,
+		/// <summary>802.11be (Wi-Fi 7).</summary>
+		[Mac (26, 4)]
+		BE = 7,
 	}
 
 	[NoMacCatalyst]

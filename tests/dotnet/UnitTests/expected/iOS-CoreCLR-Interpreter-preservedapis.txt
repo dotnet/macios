@@ -5413,6 +5413,8 @@ System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribut
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute..ctor(System.Boolean)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.NotNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.NotNullAttribute..ctor()
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.RequiresUnsafeAttribute
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.RequiresUnsafeAttribute..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.Contracts.ContractException
 System.Private.CoreLib.dll:System.Diagnostics.Contracts.ContractException..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.Contracts.ContractException..ctor(System.Diagnostics.Contracts.ContractFailureKind, System.String, System.String, System.String, System.Exception)
@@ -5892,9 +5894,10 @@ System.Private.CoreLib.dll:System.Exception..ctor()
 System.Private.CoreLib.dll:System.Exception..ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
 System.Private.CoreLib.dll:System.Exception..ctor(System.String, System.Exception)
 System.Private.CoreLib.dll:System.Exception..ctor(System.String)
-System.Private.CoreLib.dll:System.Exception.<ToString>g__Write|61_0(System.String, System.Span`1<System.Char>&)
+System.Private.CoreLib.dll:System.Exception.<ToString>g__Write|63_0(System.String, System.Span`1<System.Char>&)
 System.Private.CoreLib.dll:System.Exception.CanSetRemoteStackTrace()
 System.Private.CoreLib.dll:System.Exception.CaptureDispatchState()
+System.Private.CoreLib.dll:System.Exception.CreateArgumentException(System.Exception/ArgumentExceptionKind, System.Char*, System.Char*, System.Object*, System.Exception*)
 System.Private.CoreLib.dll:System.Exception.CreateRuntimeWrappedException(System.Object*, System.Object*, System.Exception*)
 System.Private.CoreLib.dll:System.Exception.CreateTargetInvocationException(System.Exception*, System.Object*, System.Exception*)
 System.Private.CoreLib.dll:System.Exception.CreateTypeInitializationException(System.Char*, System.Exception*, System.Object*, System.Exception*)
@@ -5925,6 +5928,10 @@ System.Private.CoreLib.dll:System.Exception.ToString()
 System.Private.CoreLib.dll:System.Exception[] System.AggregateException::_innerExceptions
 System.Private.CoreLib.dll:System.Exception[] System.Reflection.ReflectionTypeLoadException::<LoaderExceptions>k__BackingField
 System.Private.CoreLib.dll:System.Exception[] System.Reflection.ReflectionTypeLoadException::LoaderExceptions()
+System.Private.CoreLib.dll:System.Exception/ArgumentExceptionKind
+System.Private.CoreLib.dll:System.Exception/ArgumentExceptionKind System.Exception/ArgumentExceptionKind::Argument
+System.Private.CoreLib.dll:System.Exception/ArgumentExceptionKind System.Exception/ArgumentExceptionKind::ArgumentNull
+System.Private.CoreLib.dll:System.Exception/ArgumentExceptionKind System.Exception/ArgumentExceptionKind::ArgumentOutOfRange
 System.Private.CoreLib.dll:System.Exception/DispatchState
 System.Private.CoreLib.dll:System.Exception/DispatchState System.Runtime.ExceptionServices.ExceptionDispatchInfo::_dispatchState
 System.Private.CoreLib.dll:System.Exception/DispatchState..ctor(System.Object, System.String, System.UIntPtr, System.Byte[])
@@ -7195,6 +7202,7 @@ System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalizatio
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::BinaryNumber
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::Currency
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::Float
+System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::HexFloat
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::HexNumber
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::Integer
 System.Private.CoreLib.dll:System.Globalization.NumberStyles System.Globalization.NumberStyles::None
@@ -7711,6 +7719,7 @@ System.Private.CoreLib.dll:System.HexConverter.get_CharToHexLookup()
 System.Private.CoreLib.dll:System.HexConverter.IsHexChar(System.Int32)
 System.Private.CoreLib.dll:System.HexConverter.ToCharLower(System.Int32)
 System.Private.CoreLib.dll:System.HexConverter.ToCharsBuffer(System.Byte, System.Span`1<System.Char>, System.Int32, System.HexConverter/Casing)
+System.Private.CoreLib.dll:System.HexConverter.ToCharUpper(System.Int32)
 System.Private.CoreLib.dll:System.HexConverter.TryDecodeFrom_Vector128`1(System.ReadOnlySpan`1<TChar>, System.Span`1<System.Byte>, out System.Int32&)
 System.Private.CoreLib.dll:System.HexConverter.TryDecodeFromUtf16_Scalar(System.ReadOnlySpan`1<System.Char>, System.Span`1<System.Byte>, out System.Int32&)
 System.Private.CoreLib.dll:System.HexConverter.TryDecodeFromUtf16(System.ReadOnlySpan`1<System.Char>, System.Span`1<System.Byte>, out System.Int32&)
@@ -8040,6 +8049,7 @@ System.Private.CoreLib.dll:System.Int32 Interop/Range::Length
 System.Private.CoreLib.dll:System.Int32 Interop/Range::Location
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/DirectoryEntry::NameLength
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/FileAdvice::value__
+System.Private.CoreLib.dll:System.Int32 Interop/Sys/FileStatus::HardLinkCount
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/FileStatus::Mode
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/FileStatusFlags::value__
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/LockOperations::value__
@@ -8223,6 +8233,7 @@ System.Private.CoreLib.dll:System.Int32 System.Exception::_HResult
 System.Private.CoreLib.dll:System.Int32 System.Exception::_xcode
 System.Private.CoreLib.dll:System.Int32 System.Exception::EXCEPTION_COMPLUS
 System.Private.CoreLib.dll:System.Int32 System.Exception::HResult()
+System.Private.CoreLib.dll:System.Int32 System.Exception/ArgumentExceptionKind::value__
 System.Private.CoreLib.dll:System.Int32 System.Exception/ExceptionMessageKind::value__
 System.Private.CoreLib.dll:System.Int32 System.ExceptionArgument::value__
 System.Private.CoreLib.dll:System.Int32 System.ExceptionResource::value__
@@ -8393,6 +8404,7 @@ System.Private.CoreLib.dll:System.Int32 System.IO.EnumerationOptions::MaxRecursi
 System.Private.CoreLib.dll:System.Int32 System.IO.FileAccess::value__
 System.Private.CoreLib.dll:System.Int32 System.IO.FileAttributes::value__
 System.Private.CoreLib.dll:System.Int32 System.IO.FileHandleType::value__
+System.Private.CoreLib.dll:System.Int32 System.IO.FileLoadException/FileLoadExceptionKind::value__
 System.Private.CoreLib.dll:System.Int32 System.IO.FileMode::value__
 System.Private.CoreLib.dll:System.Int32 System.IO.FileOptions::value__
 System.Private.CoreLib.dll:System.Int32 System.IO.FileShare::value__
@@ -9511,6 +9523,7 @@ System.Private.CoreLib.dll:System.IO.FileLoadException..ctor(System.String, Syst
 System.Private.CoreLib.dll:System.IO.FileLoadException..ctor(System.String, System.String, System.Exception)
 System.Private.CoreLib.dll:System.IO.FileLoadException..ctor(System.String, System.String)
 System.Private.CoreLib.dll:System.IO.FileLoadException..ctor(System.String)
+System.Private.CoreLib.dll:System.IO.FileLoadException.Create(System.IO.FileLoadException/FileLoadExceptionKind, System.Char*, System.Int32, System.Object*, System.Exception*)
 System.Private.CoreLib.dll:System.IO.FileLoadException.FormatFileLoadExceptionMessage(System.String, System.Int32)
 System.Private.CoreLib.dll:System.IO.FileLoadException.get_FileName()
 System.Private.CoreLib.dll:System.IO.FileLoadException.get_FusionLog()
@@ -9518,6 +9531,11 @@ System.Private.CoreLib.dll:System.IO.FileLoadException.get_Message()
 System.Private.CoreLib.dll:System.IO.FileLoadException.GetFileLoadExceptionMessage(System.Int32, System.Runtime.CompilerServices.StringHandleOnStack)
 System.Private.CoreLib.dll:System.IO.FileLoadException.GetMessageForHR(System.Int32, System.Runtime.CompilerServices.StringHandleOnStack)
 System.Private.CoreLib.dll:System.IO.FileLoadException.ToString()
+System.Private.CoreLib.dll:System.IO.FileLoadException/FileLoadExceptionKind
+System.Private.CoreLib.dll:System.IO.FileLoadException/FileLoadExceptionKind System.IO.FileLoadException/FileLoadExceptionKind::BadImageFormat
+System.Private.CoreLib.dll:System.IO.FileLoadException/FileLoadExceptionKind System.IO.FileLoadException/FileLoadExceptionKind::FileLoad
+System.Private.CoreLib.dll:System.IO.FileLoadException/FileLoadExceptionKind System.IO.FileLoadException/FileLoadExceptionKind::FileNotFound
+System.Private.CoreLib.dll:System.IO.FileLoadException/FileLoadExceptionKind System.IO.FileLoadException/FileLoadExceptionKind::OutOfMemory
 System.Private.CoreLib.dll:System.IO.FileMode
 System.Private.CoreLib.dll:System.IO.FileMode System.IO.FileMode::Append
 System.Private.CoreLib.dll:System.IO.FileMode System.IO.FileMode::Create
@@ -10298,22 +10316,22 @@ System.Private.CoreLib.dll:System.NullReferenceException..ctor(System.String, Sy
 System.Private.CoreLib.dll:System.NullReferenceException..ctor(System.String)
 System.Private.CoreLib.dll:System.Number
 System.Private.CoreLib.dll:System.Number..cctor()
-System.Private.CoreLib.dll:System.Number.<AppendUnknownChar>g__AppendNonAsciiBytes|156_0`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
-System.Private.CoreLib.dll:System.Number.<FormatInt128>g__FormatInt128Slow|29_0(System.Int128, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatInt32>g__FormatInt32Slow|21_0(System.Int32, System.Int32, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatInt64>g__FormatInt64Slow|25_0(System.Int64, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatUInt128>g__FormatUInt128Slow|31_0(System.UInt128, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatUInt32>g__FormatUInt32Slow|23_0(System.UInt32, System.String, System.IFormatProvider)
-System.Private.CoreLib.dll:System.Number.<FormatUInt64>g__FormatUInt64Slow|27_0(System.UInt64, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<AppendUnknownChar>g__AppendNonAsciiBytes|158_0`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
+System.Private.CoreLib.dll:System.Number.<FormatInt128>g__FormatInt128Slow|30_0(System.Int128, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatInt32>g__FormatInt32Slow|22_0(System.Int32, System.Int32, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatInt64>g__FormatInt64Slow|26_0(System.Int64, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatUInt128>g__FormatUInt128Slow|32_0(System.UInt128, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatUInt32>g__FormatUInt32Slow|24_0(System.UInt32, System.String, System.IFormatProvider)
+System.Private.CoreLib.dll:System.Number.<FormatUInt64>g__FormatUInt64Slow|28_0(System.UInt64, System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Number.<GetFloatingPointMaxDigitsAndPrecision>g__Slow|15_0(System.Char, System.Int32&, System.Globalization.NumberFormatInfo, out System.Boolean&)
-System.Private.CoreLib.dll:System.Number.<RoundNumber>g__ShouldRoundUp|162_0(System.Byte*, System.Int32, System.Number/NumberBufferKind, System.Boolean)
-System.Private.CoreLib.dll:System.Number.<TryFormatInt128>g__TryFormatInt128Slow|30_0`1(System.Int128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatInt32>g__TryFormatInt32Slow|22_0`1(System.Int32, System.Int32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatInt64>g__TryFormatInt64Slow|26_0`1(System.Int64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatUInt128>g__TryFormatUInt128Slow|32_0`1(System.UInt128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatUInt32>g__TryFormatUInt32Slow|24_0`1(System.UInt32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<TryFormatUInt64>g__TryFormatUInt64Slow|28_0`1(System.UInt64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
-System.Private.CoreLib.dll:System.Number.<UInt32ToDecStrForKnownSmallNumber>g__CreateAndCacheString|50_0(System.UInt32)
+System.Private.CoreLib.dll:System.Number.<RoundNumber>g__ShouldRoundUp|164_0(System.Byte*, System.Int32, System.Number/NumberBufferKind, System.Boolean)
+System.Private.CoreLib.dll:System.Number.<TryFormatInt128>g__TryFormatInt128Slow|31_0`1(System.Int128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatInt32>g__TryFormatInt32Slow|23_0`1(System.Int32, System.Int32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatInt64>g__TryFormatInt64Slow|27_0`1(System.Int64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatUInt128>g__TryFormatUInt128Slow|33_0`1(System.UInt128, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatUInt32>g__TryFormatUInt32Slow|25_0`1(System.UInt32, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<TryFormatUInt64>g__TryFormatUInt64Slow|29_0`1(System.UInt64, System.ReadOnlySpan`1<System.Char>, System.IFormatProvider, System.Span`1<TChar>, out System.Int32&)
+System.Private.CoreLib.dll:System.Number.<UInt32ToDecStrForKnownSmallNumber>g__CreateAndCacheString|51_0(System.UInt32)
 System.Private.CoreLib.dll:System.Number.AccumulateDecimalDigitsIntoBigInteger(System.Number/NumberBuffer&, System.UInt32, System.UInt32, out System.Number/BigInteger&)
 System.Private.CoreLib.dll:System.Number.AppendUnknownChar`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Char)
 System.Private.CoreLib.dll:System.Number.AssembleFloatingPointBits`1(System.UInt64, System.Int32, System.Boolean)
@@ -10335,6 +10353,7 @@ System.Private.CoreLib.dll:System.Number.FormatExponent`1(System.Collections.Gen
 System.Private.CoreLib.dll:System.Number.FormatFixed`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Number/NumberBuffer&, System.Int32, System.Int32[], System.ReadOnlySpan`1<TChar>, System.ReadOnlySpan`1<TChar>)
 System.Private.CoreLib.dll:System.Number.FormatFloat`1(TNumber, System.String, System.Globalization.NumberFormatInfo)
 System.Private.CoreLib.dll:System.Number.FormatFloat`2(System.Collections.Generic.ValueListBuilder`1<TChar>&, TNumber, System.ReadOnlySpan`1<System.Char>, System.Globalization.NumberFormatInfo)
+System.Private.CoreLib.dll:System.Number.FormatFloatingPointAsHex`2(System.Collections.Generic.ValueListBuilder`1<TChar>&, TNumber, System.Char, System.Int32, System.Globalization.NumberFormatInfo)
 System.Private.CoreLib.dll:System.Number.FormatGeneral`1(System.Collections.Generic.ValueListBuilder`1<TChar>&, System.Number/NumberBuffer&, System.Int32, System.Globalization.NumberFormatInfo, System.Char, System.Boolean)
 System.Private.CoreLib.dll:System.Number.FormatInt128(System.Int128, System.String, System.IFormatProvider)
 System.Private.CoreLib.dll:System.Number.FormatInt32(System.Int32, System.Int32, System.String, System.IFormatProvider)
@@ -10422,6 +10441,7 @@ System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerNumber`2(System.Re
 System.Private.CoreLib.dll:System.Number.TryParseBinaryIntegerStyle`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TInteger&)
 System.Private.CoreLib.dll:System.Number.TryParseDecimal`1(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out System.Decimal&)
 System.Private.CoreLib.dll:System.Number.TryParseFloat`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TFloat&)
+System.Private.CoreLib.dll:System.Number.TryParseHexFloatingPoint`2(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Globalization.NumberFormatInfo, out TFloat&)
 System.Private.CoreLib.dll:System.Number.TryParseNumber`1(TChar*&, TChar*, System.Globalization.NumberStyles, System.Number/NumberBuffer&, System.Globalization.NumberFormatInfo)
 System.Private.CoreLib.dll:System.Number.TryStringToNumber`1(System.ReadOnlySpan`1<TChar>, System.Globalization.NumberStyles, System.Number/NumberBuffer&, System.Globalization.NumberFormatInfo)
 System.Private.CoreLib.dll:System.Number.TryUInt128ToBinaryStr`1(System.Int128, System.Int32, System.Span`1<TChar>, out System.Int32&)
@@ -14092,10 +14112,8 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.DynamicInterfaceCastab
 System.Private.CoreLib.dll:System.Runtime.InteropServices.DynamicInterfaceCastableHelpers.IsInterfaceImplemented(System.Runtime.InteropServices.IDynamicInterfaceCastable*, System.RuntimeType*, System.Boolean, System.Boolean*, System.Exception*)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.DynamicInterfaceCastableImplementationAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.ExternalException
-System.Private.CoreLib.dll:System.Runtime.InteropServices.ExternalException..ctor()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.ExternalException..ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.ExternalException..ctor(System.String, System.Exception)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.ExternalException..ctor(System.String, System.Int32)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.ExternalException..ctor(System.String)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.ExternalException.ToString()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.FieldOffsetAttribute
@@ -14168,11 +14186,6 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.IDynamicInterfaceCasta
 System.Private.CoreLib.dll:System.Runtime.InteropServices.IDynamicInterfaceCastable.IsInterfaceImplemented(System.RuntimeTypeHandle, System.Boolean)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.InAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.InAttribute..ctor()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.InvalidOleVariantTypeException
-System.Private.CoreLib.dll:System.Runtime.InteropServices.InvalidOleVariantTypeException..ctor()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.InvalidOleVariantTypeException..ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.InvalidOleVariantTypeException..ctor(System.String, System.Exception)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.InvalidOleVariantTypeException..ctor(System.String)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal..cctor()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal.<SizeOfHelper>g____PInvoke|1_0(System.Runtime.CompilerServices.QCallTypeHandle, System.Int32)
@@ -14499,17 +14512,8 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.SafeHandle.get_IsInval
 System.Private.CoreLib.dll:System.Runtime.InteropServices.SafeHandle.InternalRelease(System.Boolean)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.SafeHandle.ReleaseHandle()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.SafeHandle.SetHandle(System.IntPtr)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.SEHException
-System.Private.CoreLib.dll:System.Runtime.InteropServices.SEHException..ctor()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.SEHException..ctor(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.SEHException..ctor(System.String, System.Exception)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.SEHException..ctor(System.String)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.SuppressGCTransitionAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.SuppressGCTransitionAttribute..ctor()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.Swift.SwiftError
-System.Private.CoreLib.dll:System.Runtime.InteropServices.Swift.SwiftIndirectResult
-System.Private.CoreLib.dll:System.Runtime.InteropServices.Swift.SwiftSelf
-System.Private.CoreLib.dll:System.Runtime.InteropServices.Swift.SwiftSelf`1
 System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary
 System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/CallbackContext
 System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapLazyDictionary/LazyExternalTypeDictionary
@@ -17579,6 +17583,7 @@ System.Private.CoreLib.dll:System.Threading.Condition.AddWaiter(System.Threading
 System.Private.CoreLib.dll:System.Threading.Condition.AssertIsInList(System.Threading.Condition/Waiter)
 System.Private.CoreLib.dll:System.Threading.Condition.AssertIsNotInList(System.Threading.Condition/Waiter)
 System.Private.CoreLib.dll:System.Threading.Condition.GetWaiterForCurrentThread()
+System.Private.CoreLib.dll:System.Threading.Condition.ReleaseWaiterForCurrentThread(System.Threading.Condition/Waiter)
 System.Private.CoreLib.dll:System.Threading.Condition.RemoveWaiter(System.Threading.Condition/Waiter)
 System.Private.CoreLib.dll:System.Threading.Condition.SignalAll()
 System.Private.CoreLib.dll:System.Threading.Condition.SignalOne()
@@ -19823,6 +19828,7 @@ System.Private.CoreLib.dll:System.TypeLoadException..ctor(System.String, System.
 System.Private.CoreLib.dll:System.TypeLoadException..ctor(System.String, System.String, System.String, System.Int32)
 System.Private.CoreLib.dll:System.TypeLoadException..ctor(System.String, System.String)
 System.Private.CoreLib.dll:System.TypeLoadException..ctor(System.String)
+System.Private.CoreLib.dll:System.TypeLoadException.Create(System.Char*, System.Char*, System.Char*, System.Int32, System.Object*, System.Exception*)
 System.Private.CoreLib.dll:System.TypeLoadException.get_Message()
 System.Private.CoreLib.dll:System.TypeLoadException.GetTypeLoadExceptionMessage(System.Int32, System.Runtime.CompilerServices.StringHandleOnStack)
 System.Private.CoreLib.dll:System.TypeLoadException.SetMessageField()
@@ -20554,9 +20560,6 @@ System.Private.CoreLib.dll:System.Void* System.Runtime.CompilerServices.StringHa
 System.Private.CoreLib.dll:System.Void* System.Runtime.CompilerServices.TypeHandle::m_asTAddr
 System.Private.CoreLib.dll:System.Void* System.Runtime.EH/ExInfo::_pPrevExInfo
 System.Private.CoreLib.dll:System.Void* System.Runtime.EH/RhEHClause::_pTargetType
-System.Private.CoreLib.dll:System.Void* System.Runtime.InteropServices.Swift.SwiftError::<Value>k__BackingField
-System.Private.CoreLib.dll:System.Void* System.Runtime.InteropServices.Swift.SwiftIndirectResult::<Value>k__BackingField
-System.Private.CoreLib.dll:System.Void* System.Runtime.InteropServices.Swift.SwiftSelf::<Value>k__BackingField
 System.Private.CoreLib.dll:System.Void* System.Runtime.StackFrameIterator::RegisterSet()
 System.Private.CoreLib.dll:System.Void* System.RuntimeType/ActivatorCache::_allocatorFirstArg
 System.Private.CoreLib.dll:System.Void* System.RuntimeType/BoxCache::_allocatorFirstArg
@@ -20603,7 +20606,6 @@ System.Private.CoreLib.dll:T System.Runtime.CompilerServices.StrongBox`1::Value
 System.Private.CoreLib.dll:T System.Runtime.InteropServices.GCHandle`1::Target()
 System.Private.CoreLib.dll:T System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedIn::_handle
 System.Private.CoreLib.dll:T System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedOut::_newHandle
-System.Private.CoreLib.dll:T System.Runtime.InteropServices.Swift.SwiftSelf`1::<Value>k__BackingField
 System.Private.CoreLib.dll:T System.Runtime.Intrinsics.Scalar`1::AllBitsSet()
 System.Private.CoreLib.dll:T System.RuntimeType/ListBuilder`1::_item
 System.Private.CoreLib.dll:T System.RuntimeType/ListBuilder`1::Item(System.Int32)

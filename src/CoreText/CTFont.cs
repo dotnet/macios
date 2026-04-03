@@ -2990,6 +2990,19 @@ namespace CoreText {
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
+		static extern CTFontUIFontType CTFontGetUIFontType (IntPtr font);
+
+		/// <summary>Gets the UI font type of the font.</summary>
+		/// <value>The UI font type, or <see cref="CTFontUIFontType.None" /> if the font is not a UI font.</value>
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		[SupportedOSPlatform ("macos26.4")]
+		[SupportedOSPlatform ("tvos26.4")]
+		public CTFontUIFontType UIFontType {
+			get { return CTFontGetUIFontType (GetCheckedHandle ()); }
+		}
+
+		[DllImport (Constants.CoreTextLibrary)]
 		static extern IntPtr CTFontCopyTraits (IntPtr font);
 		/// <summary>To be added.</summary>
 		///         <returns>To be added.</returns>

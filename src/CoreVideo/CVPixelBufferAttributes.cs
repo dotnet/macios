@@ -88,7 +88,7 @@ namespace CoreVideo {
 				} else if (obj is NSNumber number) {
 					return new CVPixelFormatType [] { (CVPixelFormatType) number.UInt32Value };
 				} else if (obj is NSArray array) {
-					return Array.ConvertAll (array.ToArray (), (v) => (CVPixelFormatType) ((NSNumber) v).UInt32Value);
+					return Array.ConvertAll<NSObject?, CVPixelFormatType> (array.ToArray (), (v) => (CVPixelFormatType) (((NSNumber?) v)?.UInt32Value ?? default));
 				} else {
 					throw new InvalidOperationException ($"Unable to convert object of type {obj.GetType ()} into an array of CVPixelFormatType.");
 				}

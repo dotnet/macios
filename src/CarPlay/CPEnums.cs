@@ -31,4 +31,51 @@ namespace CarPlay {
 		RoundedRect = 0,
 		Circle = 1,
 	}
+
+	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
+	[Native]
+	public enum CPRerouteReason : long {
+		Unknown = 0,
+		MissedTurn,
+		Offline,
+		AlternateRoute,
+		WaypointModified,
+		Mandated,
+	}
+
+	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
+	[Native]
+	public enum CPRouteSource : ulong {
+		Inactive = 0,
+		IOSUnchanged = 1,
+		IOSRouteModified = 2,
+		IOSRouteDestinationsModified = 3,
+		IOSDestinationsOnly = 4,
+		Vehicle = 5,
+	}
+
+	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
+	[Native]
+	public enum CPImageOverlayAlignment : long {
+		Leading,
+		Center,
+		Trailing,
+	}
+
+	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
+	[Native]
+	public enum CPPlaybackPresentation : long {
+		None = 0,
+		Audio,
+		Video,
+	}
+
+	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
+	[Native]
+	public enum CPPlaybackAction : long {
+		None = 0,
+		Play,
+		Pause,
+		Replay,
+	}
 }

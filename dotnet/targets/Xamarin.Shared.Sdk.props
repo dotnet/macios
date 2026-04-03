@@ -228,6 +228,10 @@
 		<PublishReadyToRunComposite Condition="'$(PublishReadyToRunComposite)' == '' And '$(PublishReadyToRun)' == 'true'">true</PublishReadyToRunComposite>
 		<PublishReadyToRunContainerFormat Condition="'$(PublishReadyToRunContainerFormat)' == '' And '$(PublishReadyToRun)' == 'true'">macho</PublishReadyToRunContainerFormat>
 		<PublishReadyToRunCreateSharedLibrary>false</PublishReadyToRunCreateSharedLibrary>
+
+		<!-- We have to set the following two variables until https://github.com/dotnet/runtime/pull/124604 flows to us -->
+		<PublishReadyToRunStripDebugInfo>false</PublishReadyToRunStripDebugInfo>
+		<PublishReadyToRunStripInliningInfo>false</PublishReadyToRunStripInliningInfo>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(PublishReadyToRun)' != 'true'">

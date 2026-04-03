@@ -198,5 +198,21 @@ namespace MonoTouchFixtures.CoreText {
 				Assert.That (axes.Length, Is.EqualTo (0), "Length");
 			}
 		}
+
+		[Test]
+		public void UIFontType_SystemFont ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 4);
+			using var font = new CTFont (CTFontUIFontType.System, 12, "en");
+			Assert.That (font.UIFontType, Is.EqualTo (CTFontUIFontType.System), "System");
+		}
+
+		[Test]
+		public void UIFontType_RegularFont ()
+		{
+			TestRuntime.AssertXcodeVersion (26, 4);
+			using var font = new CTFont ("HoeflerText-Regular", 10);
+			Assert.That (font.UIFontType, Is.EqualTo (CTFontUIFontType.None), "None");
+		}
 	}
 }

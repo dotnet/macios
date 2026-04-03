@@ -100,6 +100,7 @@ namespace Xamarin.Tests {
 
 			var project_path = GenerateProject (platform, name: nameof (NativeLink), runtimeIdentifiers: runtimeIdentifiers, out var appPath);
 			var properties = new Dictionary<string, string> (verbosity);
+			properties ["UseMonoRuntime"] = "true"; // this test is only applicable to Mono.
 			SetRuntimeIdentifiers (properties, runtimeIdentifiers);
 
 			var mainContents = @"
@@ -190,19 +191,37 @@ class MainClass {
 		[Test]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
-		public void CodeChangeSkipsTargets (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
+		public void CodeChangeSkipsTargets_Mono (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
 		{
-			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, interpreterEnabled);
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, useMonoRuntime: true, interpreterEnabled: interpreterEnabled);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		public void CodeChangeSkipsTargets_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			// With CoreCLR, C# changes don't affect native linking (R2R output is a separate
+			// framework, not an input to _LinkNativeExecutable), so the target is always skipped.
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, useMonoRuntime: false, interpreterEnabled: false);
 		}
 
 		[Test]
 		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", true)]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64", false)]
-		public void CodeChangeSkipsTargetsOnRemoteWindows (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
+		public void CodeChangeSkipsTargetsOnRemoteWindows_Mono (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
 		{
 			Configuration.IgnoreIfNotOnWindows ();
-			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, interpreterEnabled);
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, useMonoRuntime: true, interpreterEnabled: interpreterEnabled);
+		}
+
+		[Test]
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		public void CodeChangeSkipsTargetsOnRemoteWindows_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+			CodeChangeSkipsTargetsImpl (platform, runtimeIdentifiers, useMonoRuntime: false, interpreterEnabled: false);
 		}
 
 		[Test]
@@ -256,7 +275,7 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 			AssertTargetNotExecuted (allTargets, "_TemperMetal", "Second build");
 		}
 
-		void CodeChangeSkipsTargetsImpl (ApplePlatform platform, string runtimeIdentifiers, bool interpreterEnabled)
+		void CodeChangeSkipsTargetsImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime, bool interpreterEnabled)
 		{
 			var project = "IncrementalTestApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -266,6 +285,7 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 			properties ["UseInterpreter"] = interpreterEnabled.ToString ();
 			properties ["MtouchLink"] = "None";
 
@@ -288,9 +308,12 @@ kernel void myKernel (texture2d<half, access::read> inTexture [[texture(0)]],
 			// Verify these targets did NOT execute on incremental build after C# change
 			AssertTargetNotExecuted (allTargets, "_CreatePkgInfo", "B");
 			AssertTargetNotExecuted (allTargets, "_CompileNativeExecutable", "B");
-			if (interpreterEnabled) {
+			if (interpreterEnabled || !useMonoRuntime) {
+				// With interpreter enabled, or with CoreCLR (where C# changes don't affect
+				// native linking), _LinkNativeExecutable should be skipped.
 				AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "B");
 			} else {
+				// Without interpreter on MonoVM: AOT output changes, forcing a native re-link.
 				AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "B");
 			}
 		}

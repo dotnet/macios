@@ -25,6 +25,10 @@ namespace Xamarin.MacDev.Tasks {
 
 			foreach (var module in R2RModules) {
 				var symbolName = module.GetMetadata ("SymbolName");
+				if (string.IsNullOrEmpty (symbolName)) {
+					Log.LogError ("Missing '{0}' metadata on item '{1}'.", "SymbolName", module.ItemSpec);
+					continue;
+				}
 				sb.AppendLine ($"extern void* {symbolName};");
 			}
 
@@ -34,7 +38,14 @@ namespace Xamarin.MacDev.Tasks {
 			foreach (var module in R2RModules) {
 				var moduleName = module.GetMetadata ("ModuleName");
 				var symbolName = module.GetMetadata ("SymbolName");
-				sb.AppendLine ($"\t{{ \"{moduleName}\", &{symbolName} }},");
+				if (string.IsNullOrEmpty (moduleName)) {
+					Log.LogError ("Missing '{0}' metadata on item '{1}'.", "ModuleName", module.ItemSpec);
+					continue;
+				}
+				if (string.IsNullOrEmpty (symbolName))
+					continue; // already reported above
+				var escapedModuleName = moduleName.Replace ("\\", "\\\\").Replace ("\"", "\\\"");
+				sb.AppendLine ($"\t{{ \"{escapedModuleName}\", &{symbolName} }},");
 			}
 
 			sb.AppendLine ("};");
@@ -46,6 +57,9 @@ namespace Xamarin.MacDev.Tasks {
 			sb.AppendLine ("\txamarin_r2r_modules = r2r_module_entries;");
 			sb.AppendLine ("\txamarin_r2r_module_count = sizeof (r2r_module_entries) / sizeof (r2r_module_entries [0]);");
 			sb.AppendLine ("}");
+
+			if (Log.HasLoggedErrors)
+				return false;
 
 			var content = sb.ToString ();
 			var outputDir = Path.GetDirectoryName (OutputFile);

@@ -147,6 +147,7 @@
 		<_CreateR2RFrameworkDependsOn>
 			_CollectR2RObjectFilesForLinking;
 			_PrepareR2RModules;
+			_RegisterR2RNativeReferences;
 			_CreateR2RModuleFrameworks;
 			_GenerateR2RModuleRegistration;
 		</_CreateR2RFrameworkDependsOn>
@@ -195,10 +196,23 @@
 		</ItemGroup>
 	</Target>
 
+	<!-- Register native references for all R2R modules - runs unconditionally so downstream targets always see them -->
+	<Target Name="_RegisterR2RNativeReferences"
+			DependsOnTargets="_PrepareR2RModules"
+			>
+		<ItemGroup Condition="'$(CreateR2RFramework)' == 'true'">
+			<_FrameworkNativeReference Include="@(_R2RModule->'%(FrameworkPath)/%(FrameworkName)')" Kind="Framework" />
+		</ItemGroup>
+		<ItemGroup Condition="'$(CreateR2RDylib)' == 'true'">
+			<_FileNativeReference Include="@(_R2RModule->'%(DylibOutput)')" Kind="Dynamic" />
+		</ItemGroup>
+	</Target>
+
 	<!-- Create frameworks for each R2R module (iOS/tvOS) -->
 	<Target Name="_CreateR2RModuleFrameworks"
 			Condition="'$(CreateR2RFramework)' == 'true'"
-			Outputs="%(_R2RModule.Identity)"
+			Inputs="%(_R2RModule.ObjectFile)"
+			Outputs="%(_R2RModule.FrameworkOutput)"
 			>
 
 		<!-- Create framework directory structure -->
@@ -270,11 +284,6 @@
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		/>
 
-		<!-- Register this framework so the main executable links against it -->
-		<ItemGroup>
-			<_FrameworkNativeReference Include="%(_R2RModule.FrameworkPath)/%(_R2RModule.FrameworkName)" Kind="Framework" />
-		</ItemGroup>
-
 		<ItemGroup>
 			<FileWrites Include="%(_R2RModule.InfoPlistPath)" />
 			<FileWrites Include="%(_R2RModule.FrameworkOutput)" />
@@ -284,7 +293,8 @@
 	<!-- Create dylibs for each R2R module (macOS/Mac Catalyst) -->
 	<Target Name="_CreateR2RModuleDylibs"
 			Condition="'$(CreateR2RDylib)' == 'true'"
-			Outputs="%(_R2RModule.Identity)"
+			Inputs="%(_R2RModule.ObjectFile)"
+			Outputs="%(_R2RModule.DylibOutput)"
 			>
 
 		<MakeDir
@@ -315,11 +325,6 @@
 			TargetArchitectures="$(TargetArchitectures)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 		/>
-
-		<!-- Register this dylib so the main executable links against it -->
-		<ItemGroup>
-			<_FileNativeReference Include="%(_R2RModule.DylibOutput)" Kind="Dynamic" />
-		</ItemGroup>
 
 		<ItemGroup>
 			<FileWrites Include="%(_R2RModule.DylibOutput)" />
@@ -358,6 +363,7 @@
 		<_CreateR2RDylibDependsOn>
 			_CollectR2RObjectFilesForLinking;
 			_PrepareR2RModules;
+			_RegisterR2RNativeReferences;
 			_CreateR2RModuleDylibs;
 			_GenerateR2RModuleRegistration;
 		</_CreateR2RDylibDependsOn>

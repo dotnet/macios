@@ -9,7 +9,7 @@ namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
 	public class GetPropertyListValueTaskTests : TestBase {
 
-		void TestExecuteTask (string property, string expected)
+		void TestExecuteTask (string property, string? expected)
 		{
 			var path = Path.Combine (Path.GetDirectoryName (GetType ().Assembly.Location)!, "Resources", "PropertyList.plist");
 			var task = CreateTask<GetPropertyListValue> ();

@@ -93,9 +93,9 @@ namespace Xamarin.MacDev.Tasks {
 			ExecuteTask (actool);
 
 			Assert.IsNotNull (actool.PartialAppManifest, "PartialAppManifest");
-			var appIconsManifestPath = actool.PartialAppManifest.ItemSpec!;
+			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
 			var appIconsManifest = PDictionary.FromFile (appIconsManifestPath)!;
-			Assert.AreEqual (0, appIconsManifest.Count, $"Partial plist contents: {actool.PartialAppManifest.ItemSpec}");
+			Assert.AreEqual (0, appIconsManifest.Count, $"Partial plist contents: {actool.PartialAppManifest?.ItemSpec}");
 			var expectedXml =
 				"""
 				<?xml version="1.0" encoding="UTF-8"?>
@@ -122,7 +122,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			Assert.IsNotNull (actool.PartialAppManifest, "PartialAppManifest");
 
-			var appIconsManifestPath = actool.PartialAppManifest.ItemSpec!;
+			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
 			string expectedXml;
 			if (platform == ApplePlatform.TVOS) {
 				expectedXml =
@@ -295,7 +295,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			Assert.IsNotNull (actool.PartialAppManifest, "PartialAppManifest");
 
-			var appIconsManifestPath = actool.PartialAppManifest.ItemSpec!;
+			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
 			string expectedXml;
 			if (platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst) {
 				expectedXml =
@@ -392,7 +392,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			Assert.IsNotNull (actool.PartialAppManifest, "PartialAppManifest");
 
-			var appIconsManifestPath = actool.PartialAppManifest.ItemSpec!;
+			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
 			string expectedXml;
 			if (platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst) {
 				expectedXml =
@@ -547,7 +547,7 @@ namespace Xamarin.MacDev.Tasks {
 				throw new NotImplementedException (platform.ToString ());
 			}
 
-			var appIconsManifestPath = actool.PartialAppManifest.ItemSpec!;
+			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
 			PListAsserts.AreStringsEqual (expectedXml, File.ReadAllText (appIconsManifestPath), "Partial plist contents");
 		}
 

@@ -15,8 +15,8 @@ namespace GeneratorTests {
 			var attr = callback (platform, major, minor, message) as T;
 			Assert.IsNotNull (attr, $"{typeName} attribute type");
 			Assert.AreEqual (platform, attr.Platform, $"{typeName} Platform");
-			Assert.AreEqual (major, attr.Version.Major, $"{typeName} Major");
-			Assert.AreEqual (minor, attr.Version.Minor, $"{typeName} Minor");
+			Assert.AreEqual (major, attr.Version!.Major, $"{typeName} Major");
+			Assert.AreEqual (minor, attr.Version!.Minor, $"{typeName} Minor");
 			Assert.AreEqual (message, attr.Message);
 		}
 

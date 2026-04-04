@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 #if LEGACY_TOOLS || BUNDLER
 using Mono.Cecil;
+using Mono.Tuner;
 
 using Xamarin.Bundler;
 using Registrar;
@@ -701,6 +703,28 @@ public class Frameworks : Dictionary<string, Framework> {
 	}
 
 #if LEGACY_TOOLS || BUNDLER
+	public static IEnumerable<string> GetFrameworks (TypeDefinition td)
+	{
+		if (td.HasCustomAttributes) {
+			var any = false;
+			foreach (var attrib in td.CustomAttributes) {
+				if (!attrib.AttributeType.Is ("ObjCRuntime", "ObjectiveCFrameworkAttribute"))
+					continue;
+				if (attrib.ConstructorArguments.Count != 1)
+					continue;
+				var arg = attrib.ConstructorArguments [0];
+				if (arg.Value is not string stringArgument)
+					continue;
+				yield return stringArgument;
+				any = true;
+			}
+			if (any)
+				yield break;
+		}
+
+		yield return td.Namespace;
+	}
+
 	static void Gather (Application app, AssemblyDefinition product_assembly, HashSet<string> frameworks, HashSet<string> weak_frameworks, Func<Framework, bool> include_framework)
 	{
 		var namespaces = new HashSet<string> ();
@@ -708,12 +732,8 @@ public class Frameworks : Dictionary<string, Framework> {
 		// Collect all the namespaces.
 		foreach (var md in product_assembly.Modules) {
 			foreach (var td in md.Types) {
-#if !XAMCORE_5_0
-				// AVCustomRoutingControllerDelegate was incorrectly placed in AVKit
-				if (td.Namespace == "AVKit" && td.Name == "AVCustomRoutingControllerDelegate")
-					namespaces.Add ("AVRouting");
-#endif
-				namespaces.Add (td.Namespace);
+				foreach (var fw in GetFrameworks (td))
+					namespaces.Add (fw);
 			}
 		}
 

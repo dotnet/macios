@@ -2,8 +2,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 //
 // All the attributes in this file are compiled into two binaries:
@@ -108,7 +107,7 @@ public class RetainAttribute : Attribute {
 	{
 		WrapName = wrap;
 	}
-	public string WrapName { get; set; }
+	public string? WrapName { get; set; }
 }
 
 [AttributeUsage (AttributeTargets.ReturnValue, AllowMultiple = false)]
@@ -131,9 +130,9 @@ public class BaseTypeAttribute : Attribute {
 		BaseType = t;
 	}
 	public Type BaseType { get; set; }
-	public string Name { get; set; }
-	public Type [] Events { get; set; }
-	public string [] Delegates { get; set; }
+	public string? Name { get; set; }
+	public Type []? Events { get; set; }
+	public string []? Delegates { get; set; }
 	public bool Singleton { get; set; }
 
 	// If set, the code will keep a reference in the EnsureXXX method for
@@ -142,7 +141,7 @@ public class BaseTypeAttribute : Attribute {
 	// is not really designed as a workaround for systems that create
 	// too many objects, but two cases in particular that users keep
 	// trampling on: UIAlertView and UIActionSheet
-	public string KeepRefUntil { get; set; }
+	public string? KeepRefUntil { get; set; }
 
 	public bool IsStubClass { get; set; }
 }
@@ -397,8 +396,8 @@ public class NotificationAttribute : Attribute {
 	public NotificationAttribute (string notificationCenter) { NotificationCenter = notificationCenter; }
 	public NotificationAttribute () { }
 
-	public Type Type { get; set; }
-	public string NotificationCenter { get; set; }
+	public Type? Type { get; set; }
+	public string? NotificationCenter { get; set; }
 }
 
 //
@@ -432,7 +431,7 @@ public class EventArgsAttribute : Attribute {
 	public string ArgName { get; set; }
 	public bool SkipGeneration { get; set; }
 	public bool FullName { get; set; }
-	public string XmlDocs { get; set; }
+	public string? XmlDocs { get; set; }
 }
 
 //
@@ -491,11 +490,11 @@ public class EventNameAttribute : Attribute {
 }
 
 public class DefaultValueAttribute : Attribute {
-	public DefaultValueAttribute (object o)
+	public DefaultValueAttribute (object? o)
 	{
 		Default = o;
 	}
-	public object Default { get; set; }
+	public object? Default { get; set; }
 }
 
 public class DefaultValueFromArgumentAttribute : Attribute {
@@ -557,9 +556,9 @@ public class DisableZeroCopyAttribute : Attribute {
 //
 [AttributeUsage (AttributeTargets.Method)]
 public class MarshalDirectiveAttribute : Attribute {
-	public string NativePrefix { get; set; }
-	public string NativeSuffix { get; set; }
-	public string Library { get; set; }
+	public string? NativePrefix { get; set; }
+	public string? NativeSuffix { get; set; }
+	public string? Library { get; set; }
 }
 
 //
@@ -720,12 +719,12 @@ public class AsyncAttribute : Attribute {
 		MethodName = methodName;
 	}
 
-	public Type ResultType { get; set; }
-	public string MethodName { get; set; }
-	public string ResultTypeName { get; set; }
-	public string PostNonResultSnippet { get; set; }
-	public string XmlDocs { get; set; }
-	public string XmlDocsWithOutParameter { get; set; }
+	public Type? ResultType { get; set; }
+	public string? MethodName { get; set; }
+	public string? ResultTypeName { get; set; }
+	public string? PostNonResultSnippet { get; set; }
+	public string? XmlDocs { get; set; }
+	public string? XmlDocsWithOutParameter { get; set; }
 }
 
 //
@@ -773,8 +772,8 @@ public class StrongDictionaryAttribute : Attribute {
 		TypeWithKeys = typeWithKeys;
 		Suffix = "Key";
 	}
-	public string TypeWithKeys;
-	public string Suffix;
+	public string? TypeWithKeys;
+	public string? Suffix;
 }
 
 //
@@ -846,7 +845,7 @@ public class ErrorDomainAttribute : Attribute {
 	}
 
 	public string ErrorDomain { get; set; }
-	public string LibraryName { get; set; }
+	public string? LibraryName { get; set; }
 }
 
 [AttributeUsage (AttributeTargets.Field)]
@@ -857,7 +856,6 @@ public class DefaultEnumValueAttribute : Attribute {
 	}
 }
 
-#nullable enable
 /// <summary>This attribute is used to specify the type of the backing field for strongly typed enums.</summary>
 [AttributeUsage (AttributeTargets.Enum)]
 public class BackingFieldTypeAttribute : Attribute {
@@ -873,7 +871,6 @@ public class BackingFieldTypeAttribute : Attribute {
 	public string? GetConstantMethodName { get; set; }
 #endif
 }
-#nullable disable
 
 //
 // This prevents the generator from generating the managed proxy to
@@ -932,14 +929,14 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 
 	/// <summary>The version when the API was introduced, deprecated, obsoleted or became unavailable.</summary>
 	/// <value>The version when the API was introduced, deprecated, obsoleted or became unavailable.</value>
-	public Version Version { get; private set; }
+	public Version? Version { get; private set; }
 
 	/// <summary>Additional information related to the availability information.</summary>
 	/// <value>Additional information related to the availability information.</value>
 	/// <remarks>
 	///     <para>This is typically used to recommend other API when something is deprecated or obsoleted.</para>
 	/// </remarks>
-	public string Message { get; private set; }
+	public string? Message { get; private set; }
 
 	internal AvailabilityBaseAttribute ()
 	{
@@ -948,33 +945,13 @@ public abstract class AvailabilityBaseAttribute : Attribute {
 	internal AvailabilityBaseAttribute (
 		AvailabilityKind availabilityKind,
 		PlatformName platform,
-		Version version,
-		string message)
+		Version? version,
+		string? message)
 	{
 		AvailabilityKind = availabilityKind;
 		Platform = platform;
 		Version = version;
 		Message = message;
-	}
-
-	void GeneratePlatformDefine (StringBuilder builder)
-	{
-		switch (Platform) {
-		case PlatformName.iOS:
-			builder.AppendLine ("#if __IOS__");
-			break;
-		case PlatformName.TvOS:
-			builder.AppendLine ("#if __TVOS__");
-			break;
-		case PlatformName.MacOSX:
-			builder.AppendLine ("#if __MACOS__");
-			break;
-		case PlatformName.MacCatalyst:
-			builder.AppendLine ("#if __MACCATALYST__ && !__IOS__");
-			break;
-		default:
-			throw new NotSupportedException ($"Unknown platform: {Platform}");
-		}
 	}
 
 	void GenerateUnsupported (StringBuilder builder)
@@ -1066,7 +1043,7 @@ public class IntroducedAttribute : AvailabilityBaseAttribute {
 	/// <summary>Initializes a new availability attribute specifying that the API exists on the specified platform.</summary>
 	/// <param name="platform">The platform this availability attribute applies to.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public IntroducedAttribute (PlatformName platform, string message = null)
+	public IntroducedAttribute (PlatformName platform, string? message = null)
 		: base (AvailabilityKind.Introduced, platform, null, message)
 	{
 	}
@@ -1076,7 +1053,7 @@ public class IntroducedAttribute : AvailabilityBaseAttribute {
 	/// <param name="majorVersion">The major version.</param>
 	/// <param name="minorVersion">The minor version.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public IntroducedAttribute (PlatformName platform, int majorVersion, int minorVersion, string message = null)
+	public IntroducedAttribute (PlatformName platform, int majorVersion, int minorVersion, string? message = null)
 		: base (AvailabilityKind.Introduced, platform, new Version (majorVersion, minorVersion), message)
 	{
 	}
@@ -1087,7 +1064,7 @@ public class IntroducedAttribute : AvailabilityBaseAttribute {
 	/// <param name="minorVersion">The minor version.</param>
 	/// <param name="subminorVersion">The subminor version.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public IntroducedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string message = null)
+	public IntroducedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string? message = null)
 		: base (AvailabilityKind.Introduced, platform, new Version (majorVersion, minorVersion, subminorVersion), message)
 	{
 	}
@@ -1098,7 +1075,7 @@ public sealed class DeprecatedAttribute : AvailabilityBaseAttribute {
 	/// <summary>Initializes a new availability attribute specifying that an API is deprecated on the specified platform.</summary>
 	/// <param name="platform">The platform this availability attribute applies to.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public DeprecatedAttribute (PlatformName platform, string message = null)
+	public DeprecatedAttribute (PlatformName platform, string? message = null)
 		: base (AvailabilityKind.Deprecated, platform, null, message)
 	{
 	}
@@ -1108,7 +1085,7 @@ public sealed class DeprecatedAttribute : AvailabilityBaseAttribute {
 	/// <param name="majorVersion">The major version.</param>
 	/// <param name="minorVersion">The minor version.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public DeprecatedAttribute (PlatformName platform, int majorVersion, int minorVersion, string message = null)
+	public DeprecatedAttribute (PlatformName platform, int majorVersion, int minorVersion, string? message = null)
 		: base (AvailabilityKind.Deprecated, platform, new Version (majorVersion, minorVersion), message)
 	{
 	}
@@ -1119,7 +1096,7 @@ public sealed class DeprecatedAttribute : AvailabilityBaseAttribute {
 	/// <param name="minorVersion">The minor version.</param>
 	/// <param name="subminorVersion">The subminor version.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public DeprecatedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string message = null)
+	public DeprecatedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string? message = null)
 		: base (AvailabilityKind.Deprecated, platform, new Version (majorVersion, minorVersion, subminorVersion), message)
 	{
 	}
@@ -1130,7 +1107,7 @@ public sealed class ObsoletedAttribute : AvailabilityBaseAttribute {
 	/// <summary>Initializes a new availability attribute specifying that an API is obsolete on the specified platform.</summary>
 	/// <param name="platform">The platform this availability attribute applies to.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public ObsoletedAttribute (PlatformName platform, string message = null)
+	public ObsoletedAttribute (PlatformName platform, string? message = null)
 		: base (AvailabilityKind.Obsoleted, platform, null, message)
 	{
 	}
@@ -1140,7 +1117,7 @@ public sealed class ObsoletedAttribute : AvailabilityBaseAttribute {
 	/// <param name="majorVersion">The major version.</param>
 	/// <param name="minorVersion">The minor version.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public ObsoletedAttribute (PlatformName platform, int majorVersion, int minorVersion, string message = null)
+	public ObsoletedAttribute (PlatformName platform, int majorVersion, int minorVersion, string? message = null)
 		: base (AvailabilityKind.Obsoleted, platform, new Version (majorVersion, minorVersion), message)
 	{
 	}
@@ -1151,7 +1128,7 @@ public sealed class ObsoletedAttribute : AvailabilityBaseAttribute {
 	/// <param name="minorVersion">The minor version.</param>
 	/// <param name="subminorVersion">The subminor version.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public ObsoletedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string message = null)
+	public ObsoletedAttribute (PlatformName platform, int majorVersion, int minorVersion, int subminorVersion, string? message = null)
 		: base (AvailabilityKind.Obsoleted, platform, new Version (majorVersion, minorVersion, subminorVersion), message)
 	{
 	}
@@ -1162,7 +1139,7 @@ public class UnavailableAttribute : AvailabilityBaseAttribute {
 	/// <summary>Initializes a new availability attribute specifying that an API no longer exists on the specified platform.</summary>
 	/// <param name="platform">The platform this availability attribute applies to.</param>
 	/// <param name="message">Additional information related to the availability information.</param>
-	public UnavailableAttribute (PlatformName platform, string message = null)
+	public UnavailableAttribute (PlatformName platform, string? message = null)
 		: base (AvailabilityKind.Unavailable, platform, null, message)
 	{
 	}

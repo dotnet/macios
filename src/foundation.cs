@@ -12646,6 +12646,7 @@ namespace Foundation {
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
+	[ObjectiveCFramework ("UIKit")]
 	interface NSStringDrawingContext {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

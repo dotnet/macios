@@ -93,7 +93,7 @@ namespace Extrospection {
 
 		public static bool FindObjcDeprecated (IEnumerable<Attr> attrs, out VersionTuple version)
 		{
-			var attr = attrs.GetAvailabilityAttributes ().FirstOrDefault (x => x.AvailabilityAttributeDeprecated.HasValue && !x.AvailabilityAttributeDeprecated.Value.IsEmpty && x.AvailabilityAttributePlatformIdentifierName == Helpers.ClangPlatformName);
+			var attr = attrs.GetAvailabilityAttributes ().FirstOrDefault (x => x.AvailabilityAttributeDeprecated.HasValue && !x.AvailabilityAttributeDeprecated.Value.IsEmptyVersionTuple && x.AvailabilityAttributePlatformIdentifierName == Helpers.ClangPlatformName);
 			if (attr is not null) {
 				version = attr.AvailabilityAttributeDeprecated.Value;
 				return true;

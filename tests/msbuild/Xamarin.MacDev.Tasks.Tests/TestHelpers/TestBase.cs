@@ -9,7 +9,7 @@ using Xamarin.Tests;
 
 namespace Xamarin.MacDev.Tasks {
 	public abstract class TestBase {
-		TestEngine engine;
+		TestEngine? engine;
 		public TestEngine Engine {
 			get {
 				if (engine is null)
@@ -18,7 +18,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		ProjectPaths paths;
+		ProjectPaths? paths;
 		ProjectPaths MonoTouchProject {
 			get {
 				if (paths is null) {
@@ -87,8 +87,8 @@ namespace Xamarin.MacDev.Tasks {
 	}
 
 	class ProjectPaths {
-		public string ProjectPath { get; set; }
-		public string ProjectObjPath { get; set; }
-		public string AppBundlePath { get; set; }
+		public string ProjectPath { get; set; } = null!;
+		public string ProjectObjPath { get; set; } = null!;
+		public string AppBundlePath { get; set; } = null!;
 	}
 }

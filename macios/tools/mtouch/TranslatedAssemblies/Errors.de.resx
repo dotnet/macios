@@ -789,8 +789,11 @@
   <data name="MM2106_D" xml:space="preserve">
 		<value>Could not optimize the call to BlockLiteral.SetupBlock in {0} at offset {1}: {2}.</value>
 	</data>
-  <data name="MX2106_E" xml:space="preserve">
-		<value>Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the more than one method named '{3}' was found in the type '{4}.</value>
+  <data name="MX2106_E1" xml:space="preserve">
+		<value>Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named '{3}' was found in the type '{4}'.</value>
+	</data>
+  <data name="MX2106_E2" xml:space="preserve">
+		<value>Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named '{3}' was found in the type '{4}'.</value>
 	</data>
   <data name="MX2106_F" xml:space="preserve">
 		<value>Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the method '{3}' must have at least one parameter.</value>

@@ -4417,11 +4417,20 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";MX2106_E" ItemType="0;.resx" PsrId="211" Leaf="true">
+      <Item ItemId=";MX2106_E1" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the more than one method named '{3}' was found in the type '{4}.]]></Val>
+          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named '{3}' was found in the type '{4}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Impossible d’optimiser l’appel à BlockLiteral.{2} dans {0} au décalage {1}, car plusieurs méthodes nommées « {3} » ont été trouvées dans le type « {4} ».]]></Val>
+            <Val><![CDATA[Impossible d’optimiser l’appel à BlockLiteral.{2} dans {0} au {1} de décalage, car aucune méthode nommée '{3}' n’a été trouvée dans le type '{4}'.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2106_E2" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named '{3}' was found in the type '{4}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Impossible d’optimiser l’appel à BlockLiteral.{2} dans {0} au {1} de décalage, car plusieurs méthodes nommées «{3}» ont été trouvées dans le type «{4}».]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

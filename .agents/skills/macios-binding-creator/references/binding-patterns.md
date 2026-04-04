@@ -267,6 +267,8 @@ bool Validate (ValidationHandler handler);
 
 > ❌ **NEVER** use `Action<T>` or `Func<T>` for completion handler parameters. Always define a **named delegate type** (e.g., `delegate void MyHandler (...)`) — this produces better API documentation and IntelliSense. Note: xtro-sharpie may generate `Action`/`Func` delegates; always convert them to named delegates in your binding.
 
+> ⚠️ **Use `string`, not `NSString`**, for string parameters in delegates, methods, and properties. The binding generator marshals between `string` and `NSString` automatically. Use `NSString` only when the parameter is specifically a dictionary key, a strong-typed constant, or part of an `NSDictionary<NSString, ...>` signature.
+
 ## Async/Await Support
 
 ```csharp
@@ -566,11 +568,23 @@ NSUrlSessionDownloadTask CreateDownloadTask ();
 
 ## Error Handling
 
+Methods that take `NSError**` (bound as `out NSError`) **must always** have `[NullAllowed]` on the error parameter. The error output is `null` on success and only populated on failure — the Objective-C runtime does not guarantee a non-null error, so `[NullAllowed]` is required.
+
 ```csharp
-// Methods that take NSError** and always add [NullAllowed] to the error parameter
-[Export ("doSomething:")]
+// ✅ Correct — [NullAllowed] on the error parameter
+[Export ("doSomethingWithError:")]
 bool DoSomething ([NullAllowed] out NSError error);
+
+[Export ("getSmartCardWithError:")]
+[return: NullAllowed]
+TKSmartCard GetSmartCard ([NullAllowed] out NSError error);
+
+// ❌ Wrong — missing [NullAllowed]
+[Export ("doSomethingWithError:")]
+bool DoSomething (out NSError error);
 ```
+
+> ❌ **NEVER** omit `[NullAllowed]` from `out NSError error` parameters. This is a consistent pattern across the entire codebase — every `out NSError` parameter uses `[NullAllowed]`.
 
 ## Per-Member Platform Attributes
 
@@ -624,9 +638,53 @@ All `[Verify]` attributes must be resolved before submitting a PR.
 - **Selectors**: Must match exactly — a single typo causes runtime crashes.
 - **Protocol conformance**: All `[Abstract]` methods in a protocol are required.
 - **nint/nuint**: Use `nint`/`nuint` for Objective-C `NSInteger`/`NSUInteger`.
-- **XAMCORE_5_0**: Only for fixing breaking changes on existing shipped types. Never use for new code.
+- **XAMCORE_5_0**: Only for fixing breaking changes on existing shipped types. Never use for new code. See "XAMCORE_5_0 Pattern for Existing Types" below.
 - **Handle access in manual code**: Use `GetCheckedHandle ()` instead of `Handle` when passing the native handle to P/Invokes in manual bindings. `GetCheckedHandle ()` throws `ObjectDisposedException` if the object has been disposed, preventing hard-to-debug native crashes.
 - **Struct members**: Wrap public methods and properties in `#if !COREBUILD`, but NOT fields (bgen needs struct size). Never use `#pragma warning disable 0169`.
+- **String types**: Use `string` (not `NSString`) for string parameters in methods, properties, and delegates. The binding generator handles marshaling automatically. Only use `NSString` for dictionary keys or strong-typed constants.
+
+## XAMCORE_5_0 Pattern for Existing Types
+
+When xtro reports a mismatch on an **existing** type that has already shipped (e.g., enum size wrong, missing `[Native]`, property type mismatch), **do not fix it directly** — that would be a binary-breaking change. Instead, use `#if XAMCORE_5_0` guards to queue the fix for the future while preserving current compatibility.
+
+### Enum backing type fix
+
+When xtro reports an enum should be `[Native]` (`: long`) but it already shipped without it:
+
+```csharp
+// In src/FrameworkName/Defs.cs or the enum file:
+#if XAMCORE_5_0
+	[Native]
+	public enum ICReturnCodeOffset : long {
+#else
+	public enum ICReturnCodeOffset {
+#endif
+		DeviceNotFound = 0x9E00,
+		DeviceNotOpen = 0x9E01,
+		// ... values ...
+	}
+```
+
+Then add a `.ignore` entry for the xtro mismatch:
+
+```
+# ICReturnCodeOffset is not [Native] for binary compatibility; fixed in XAMCORE_5_0
+!wrong-enum-size! ICReturnCodeOffset managed 4 vs native 8
+```
+
+### Property/method type fix
+
+```csharp
+#if XAMCORE_5_0
+	[Export ("name")]
+	string Name { get; set; }  // correct type
+#else
+	[Export ("name")]
+	NSString Name { get; set; }  // legacy type for binary compatibility
+#endif
+```
+
+> ❌ **NEVER** apply a breaking change to an existing shipped type without `XAMCORE_5_0` guards. If you're unsure whether a type has shipped, check `git log` for the file — if the type existed before the current Xcode release cycle, it has shipped.
 
 ## Code Style Reminders
 

@@ -4417,9 +4417,18 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";MX2106_E" ItemType="0;.resx" PsrId="211" Leaf="true">
+      <Item ItemId=";MX2106_E1" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the more than one method named '{3}' was found in the type '{4}.]]></Val>
+          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named '{3}' was found in the type '{4}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nie można zoptymalizować wywołania metody BlockLiteral.{2} w {0} przy przesunięciu {1}, ponieważ nie znaleziono metody o nazwie „{3}” w typie „{4}”.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2106_E2" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named '{3}' was found in the type '{4}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Nie można zoptymalizować wywołania wyrażenia BlockLiteral.{2} w {0} przy przesunięciu {1}, ponieważ w typie „{4}” znaleziono więcej niż jedną metodę o nazwie „{3}”.]]></Val>
           </Tgt>

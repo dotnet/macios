@@ -1253,29 +1253,29 @@ System.Private.CoreLib.dll:Interop/Range
 System.Private.CoreLib.dll:Interop/Sys
 System.Private.CoreLib.dll:Interop/Sys..cctor()
 System.Private.CoreLib.dll:Interop/Sys.<Close>g____PInvoke|11_0(System.IntPtr)
-System.Private.CoreLib.dll:Interop/Sys.<CloseDir>g____PInvoke|111_0(System.IntPtr)
+System.Private.CoreLib.dll:Interop/Sys.<CloseDir>g____PInvoke|113_0(System.IntPtr)
 System.Private.CoreLib.dll:Interop/Sys.<FAllocate>g____PInvoke|100_0(System.IntPtr, System.Int64, System.Int64)
 System.Private.CoreLib.dll:Interop/Sys.<FileSystemSupportsLocking>g____PInvoke|22_0(System.IntPtr, Interop/Sys/LockOperations, System.Int32)
 System.Private.CoreLib.dll:Interop/Sys.<FLock>g____PInvoke|24_0(System.IntPtr, Interop/Sys/LockOperations)
 System.Private.CoreLib.dll:Interop/Sys.<FLock>g____PInvoke|25_0(System.IntPtr, Interop/Sys/LockOperations)
-System.Private.CoreLib.dll:Interop/Sys.<FStat>g____PInvoke|120_0(System.IntPtr, Interop/Sys/FileStatus*)
+System.Private.CoreLib.dll:Interop/Sys.<FStat>g____PInvoke|122_0(System.IntPtr, Interop/Sys/FileStatus*)
 System.Private.CoreLib.dll:Interop/Sys.<FTruncate>g____PInvoke|27_0(System.IntPtr, System.Int64)
 System.Private.CoreLib.dll:Interop/Sys.<GetCwd>g____PInvoke|34_0(System.Byte*, System.Int32)
 System.Private.CoreLib.dll:Interop/Sys.<GetDefaultTimeZone>g____PInvoke|37_0()
 System.Private.CoreLib.dll:Interop/Sys.<GetEnv>g____PInvoke|38_0(System.Byte*)
-System.Private.CoreLib.dll:Interop/Sys.<GetGroups>g____PInvoke|142_0(System.Int32, System.UInt32*)
+System.Private.CoreLib.dll:Interop/Sys.<GetGroups>g____PInvoke|144_0(System.Int32, System.UInt32*)
 System.Private.CoreLib.dll:Interop/Sys.<LSeek>g____PInvoke|74_0(System.IntPtr, System.Int64, Interop/Sys/SeekWhence)
-System.Private.CoreLib.dll:Interop/Sys.<LStat>g____PInvoke|124_0(System.Byte*, Interop/Sys/FileStatus*)
+System.Private.CoreLib.dll:Interop/Sys.<LStat>g____PInvoke|126_0(System.Byte*, Interop/Sys/FileStatus*)
 System.Private.CoreLib.dll:Interop/Sys.<Open>g____PInvoke|94_0(System.Byte*, Interop/Sys/OpenFlags, System.Int32)
-System.Private.CoreLib.dll:Interop/Sys.<OpenDir>g____PInvoke|109_0(System.Byte*)
+System.Private.CoreLib.dll:Interop/Sys.<OpenDir>g____PInvoke|111_0(System.Byte*)
 System.Private.CoreLib.dll:Interop/Sys.<PosixFAdvise>g____PInvoke|99_0(System.IntPtr, System.Int64, System.Int64, Interop/Sys/FileAdvice)
 System.Private.CoreLib.dll:Interop/Sys.<PRead>g____PInvoke|101_0(System.IntPtr, System.Byte*, System.Int32, System.Int64)
-System.Private.CoreLib.dll:Interop/Sys.<Read>g____PInvoke|105_0(System.IntPtr, System.Byte*, System.Int32)
-System.Private.CoreLib.dll:Interop/Sys.<ReadFromNonblocking>g____PInvoke|106_0(System.IntPtr, System.Byte*, System.Int32)
-System.Private.CoreLib.dll:Interop/Sys.<ReadLink>g____PInvoke|112_0(System.Byte*, System.Byte*, System.Int32)
-System.Private.CoreLib.dll:Interop/Sys.<Stat>g____PInvoke|121_0(System.Byte*, Interop/Sys/FileStatus*)
+System.Private.CoreLib.dll:Interop/Sys.<Read>g____PInvoke|106_0(System.IntPtr, System.Byte*, System.Int32)
+System.Private.CoreLib.dll:Interop/Sys.<ReadFromNonblocking>g____PInvoke|107_0(System.IntPtr, System.Byte*, System.Int32)
+System.Private.CoreLib.dll:Interop/Sys.<ReadLink>g____PInvoke|114_0(System.Byte*, System.Byte*, System.Int32)
 System.Private.CoreLib.dll:Interop/Sys.<Stat>g____PInvoke|123_0(System.Byte*, Interop/Sys/FileStatus*)
-System.Private.CoreLib.dll:Interop/Sys.<Unlink>g____PInvoke|132_0(System.Byte*)
+System.Private.CoreLib.dll:Interop/Sys.<Stat>g____PInvoke|125_0(System.Byte*, Interop/Sys/FileStatus*)
+System.Private.CoreLib.dll:Interop/Sys.<Unlink>g____PInvoke|134_0(System.Byte*)
 System.Private.CoreLib.dll:Interop/Sys.Calloc(System.UIntPtr, System.UIntPtr)
 System.Private.CoreLib.dll:Interop/Sys.CanGetHiddenFlag()
 System.Private.CoreLib.dll:Interop/Sys.Close(System.IntPtr)
@@ -1903,7 +1903,6 @@ System.Private.CoreLib.dll:System.Boolean System.Threading.ProcessorIdCache::s_i
 System.Private.CoreLib.dll:System.Boolean System.Threading.Thread::_mayNeedResetForThreadPool
 System.Private.CoreLib.dll:System.Boolean System.Threading.Thread::external_eventloop
 System.Private.CoreLib.dll:System.Boolean System.Threading.Thread::threadpool_thread
-System.Private.CoreLib.dll:System.Boolean System.Threading.ThreadPoolBoundHandle::_isDisposed
 System.Private.CoreLib.dll:System.Boolean System.TimeZoneInfo::_supportsDaylightSavingTime
 System.Private.CoreLib.dll:System.Boolean System.TimeZoneInfo::<HasIanaId>k__BackingField
 System.Private.CoreLib.dll:System.Boolean System.TimeZoneInfo::<Invariant>k__BackingField
@@ -1946,6 +1945,7 @@ System.Private.CoreLib.dll:System.Boolean System.UInt128::System.IBinaryIntegerP
 System.Private.CoreLib.dll:System.Boolean System.UInt16::System.IBinaryIntegerParseAndFormatInfo<System.UInt16>.IsSigned()
 System.Private.CoreLib.dll:System.Boolean System.UInt32::System.IBinaryIntegerParseAndFormatInfo<System.UInt32>.IsSigned()
 System.Private.CoreLib.dll:System.Boolean System.UInt64::System.IBinaryIntegerParseAndFormatInfo<System.UInt64>.IsSigned()
+System.Private.CoreLib.dll:System.Boolean..cctor()
 System.Private.CoreLib.dll:System.Boolean.<TryParse>g__TryParseUncommon|20_0(System.ReadOnlySpan`1<System.Char>, out System.Boolean&)
 System.Private.CoreLib.dll:System.Boolean.CompareTo(System.Boolean)
 System.Private.CoreLib.dll:System.Boolean.CompareTo(System.Object)
@@ -3217,6 +3217,8 @@ System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribut
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute..ctor(System.Boolean)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.NotNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.NotNullAttribute..ctor()
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.RequiresUnsafeAttribute
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.RequiresUnsafeAttribute..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.DebuggableAttribute
 System.Private.CoreLib.dll:System.Diagnostics.DebuggableAttribute..ctor(System.Diagnostics.DebuggableAttribute/DebuggingModes)
 System.Private.CoreLib.dll:System.Diagnostics.DebuggableAttribute/DebuggingModes
@@ -5172,6 +5174,7 @@ System.Private.CoreLib.dll:System.Int32 Interop/Range::Length
 System.Private.CoreLib.dll:System.Int32 Interop/Range::Location
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/DirectoryEntry::NameLength
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/FileAdvice::value__
+System.Private.CoreLib.dll:System.Int32 Interop/Sys/FileStatus::HardLinkCount
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/FileStatus::Mode
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/FileStatusFlags::value__
 System.Private.CoreLib.dll:System.Int32 Interop/Sys/LockOperations::value__
@@ -6285,6 +6288,7 @@ System.Private.CoreLib.dll:System.IO.RandomAccess
 System.Private.CoreLib.dll:System.IO.RandomAccess.GetLength(Microsoft.Win32.SafeHandles.SafeFileHandle)
 System.Private.CoreLib.dll:System.IO.RandomAccess.Read(Microsoft.Win32.SafeHandles.SafeFileHandle, System.Span`1<System.Byte>, System.Int64)
 System.Private.CoreLib.dll:System.IO.RandomAccess.ReadAtOffset(Microsoft.Win32.SafeHandles.SafeFileHandle, System.Span`1<System.Byte>, System.Int64)
+System.Private.CoreLib.dll:System.IO.RandomAccess.ShouldFallBackToNonOffsetSyscall(Interop/ErrorInfo)
 System.Private.CoreLib.dll:System.IO.RandomAccess.ValidateInput(Microsoft.Win32.SafeHandles.SafeFileHandle, System.Int64, System.Boolean)
 System.Private.CoreLib.dll:System.IO.SearchOption
 System.Private.CoreLib.dll:System.IO.SearchOption System.IO.SearchOption::AllDirectories
@@ -6330,10 +6334,10 @@ System.Private.CoreLib.dll:System.LocalAppContextSwitches.get_ForceEmitInvoke()
 System.Private.CoreLib.dll:System.LocalAppContextSwitches.get_ForceInterpretedInvoke()
 System.Private.CoreLib.dll:System.LocalAppContextSwitches.get_FormatJapaneseFirstYearAsANumber()
 System.Private.CoreLib.dll:System.LocalAppContextSwitches.get_ShowILOffsets()
-System.Private.CoreLib.dll:System.LocalAppContextSwitches.GetCachedSwitchValue(System.String, System.Int32&)
-System.Private.CoreLib.dll:System.LocalAppContextSwitches.GetCachedSwitchValueInternal(System.String, System.Int32&)
+System.Private.CoreLib.dll:System.LocalAppContextSwitches.GetCachedSwitchValue(System.String, System.Int32&, System.Boolean)
+System.Private.CoreLib.dll:System.LocalAppContextSwitches.GetCachedSwitchValueInternal(System.String, System.String, System.Int32&, System.Boolean)
 System.Private.CoreLib.dll:System.LocalAppContextSwitches.GetDefaultShowILOffsetSetting()
-System.Private.CoreLib.dll:System.LocalAppContextSwitches.GetSwitchDefaultValue(System.String)
+System.Private.CoreLib.dll:System.LocalAppContextSwitches.TryGetBooleanEnvironmentVariable(System.String, out System.Boolean&)
 System.Private.CoreLib.dll:System.MarshalByRefObject
 System.Private.CoreLib.dll:System.MarshalByRefObject..ctor()
 System.Private.CoreLib.dll:System.Marvin
@@ -8695,7 +8699,6 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.OutAttribute..ctor()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.PreserveSigAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.PreserveSigAttribute..ctor()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.SafeHandle
-System.Private.CoreLib.dll:System.Runtime.InteropServices.SafeHandle System.Threading.ThreadPoolBoundHandle::_handle
 System.Private.CoreLib.dll:System.Runtime.InteropServices.SafeHandle..ctor(System.IntPtr, System.Boolean)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.SafeHandle.DangerousAddRef()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.SafeHandle.DangerousAddRef(System.Boolean&)
@@ -9841,6 +9844,8 @@ System.Private.CoreLib.dll:System.String System.ArgumentOutOfRangeException::Mes
 System.Private.CoreLib.dll:System.String System.BadImageFormatException::_fileName
 System.Private.CoreLib.dll:System.String System.BadImageFormatException::_fusionLog
 System.Private.CoreLib.dll:System.String System.BadImageFormatException::Message()
+System.Private.CoreLib.dll:System.String System.Boolean::FalseString
+System.Private.CoreLib.dll:System.String System.Boolean::TrueString
 System.Private.CoreLib.dll:System.String System.Byte::System.IBinaryIntegerParseAndFormatInfo<System.Byte>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.Char::System.IBinaryIntegerParseAndFormatInfo<System.Char>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.CharEnumerator::_str
@@ -10949,10 +10954,6 @@ System.Private.CoreLib.dll:System.Threading.ThreadAbortException
 System.Private.CoreLib.dll:System.Threading.ThreadAbortException..ctor()
 System.Private.CoreLib.dll:System.Threading.ThreadInterruptedException
 System.Private.CoreLib.dll:System.Threading.ThreadInterruptedException..ctor()
-System.Private.CoreLib.dll:System.Threading.ThreadPoolBoundHandle
-System.Private.CoreLib.dll:System.Threading.ThreadPoolBoundHandle..ctor(System.Runtime.InteropServices.SafeHandle)
-System.Private.CoreLib.dll:System.Threading.ThreadPoolBoundHandle.Dispose()
-System.Private.CoreLib.dll:System.Threading.ThreadPoolBoundHandle.DisposePortableCore()
 System.Private.CoreLib.dll:System.Threading.ThreadState
 System.Private.CoreLib.dll:System.Threading.ThreadState System.Threading.Thread::state
 System.Private.CoreLib.dll:System.Threading.ThreadState System.Threading.ThreadState::Aborted

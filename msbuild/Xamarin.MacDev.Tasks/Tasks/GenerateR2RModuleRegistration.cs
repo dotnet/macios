@@ -1,12 +1,17 @@
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 using System.Text;
 
 using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
+
+using Xamarin.Messaging.Build.Client;
 
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
-	public class GenerateR2RModuleRegistration : XamarinTask {
+	public class GenerateR2RModuleRegistration : XamarinTask, ITaskCallback {
 
 		#region Inputs
 		[Required]
@@ -18,6 +23,9 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
+			if (ShouldExecuteRemotely ())
+				return ExecuteRemotely ();
+
 			var sb = new StringBuilder ();
 
 			sb.AppendLine ("#include \"xamarin/xamarin.h\"");
@@ -71,5 +79,11 @@ namespace Xamarin.MacDev.Tasks {
 
 			return !Log.HasLoggedErrors;
 		}
+
+		public bool ShouldCopyToBuildServer (ITaskItem item) => false;
+
+		public bool ShouldCreateOutputFile (ITaskItem item) => true;
+
+		public IEnumerable<ITaskItem> GetAdditionalItemsToBeCopied () => Enumerable.Empty<ITaskItem> ();
 	}
 }

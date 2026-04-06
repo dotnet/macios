@@ -73,6 +73,9 @@ namespace StoreKit {
 		UnsupportedPlatform = 19,
 		// iOS 14.5
 		OverlayPresentedInBackgroundScene = 20,
+		// Xcode 26.5
+		/// <summary>Indicates that the payment method binding configuration is required.</summary>
+		PaymentMethodBindingConfigurationRequired = 21,
 	}
 
 	// typedef NSInteger SKDownloadState;

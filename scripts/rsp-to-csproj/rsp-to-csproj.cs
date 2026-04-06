@@ -221,7 +221,7 @@ sb.AppendLine ($"    <ItemGroup>");
 foreach (var item in items) {
 	string link = "";
 	if (item.Include.StartsWith (workingDirectory))
-		link = $" Link=\"{item.Include [(workingDirectory.Length+1)..]}\"";
+		link = $" Link=\"{item.Include [(workingDirectory.Length + 1)..]}\"";
 	sb.AppendLine ($"        <{item.Name} Include=\"{item.Include}\"{link} />");
 }
 sb.AppendLine ($"    </ItemGroup>");

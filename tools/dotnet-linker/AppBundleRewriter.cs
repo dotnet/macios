@@ -125,7 +125,7 @@ namespace Xamarin.Linker {
 				method_map.Add (key, tuple);
 
 				// Make the method public so that we can call it.
-				if (!md.IsPublic) {
+				if (!md.IsPublic && md.DeclaringType.Module.Assembly.FullName != CorlibAssembly.FullName) {
 					md.IsPublic = true;
 					SaveAssembly (md.Module.Assembly);
 				}

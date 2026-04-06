@@ -114,8 +114,7 @@ namespace MonoTouchFixtures.Foundation {
 						listenThreadCompleted = listenThread.Join (TimeSpan.FromSeconds (5));
 						Assert.That (listenThreadCompleted, Is.True, "Listener thread");
 					} finally {
-						if (listenThreadCompleted)
-							listener.Stop ();
+						listener.Stop ();
 						read?.Close ();
 						write?.Close ();
 					}
@@ -133,7 +132,16 @@ namespace MonoTouchFixtures.Foundation {
 		void DebugListener (object data)
 		{
 			var listener = data as TcpListener;
-			var client = listener.AcceptTcpClient ();
+			TcpClient client;
+			try {
+				client = listener.AcceptTcpClient ();
+			} catch (ObjectDisposedException) {
+				return;
+			} catch (SocketException) {
+				return;
+			} catch (InvalidOperationException) {
+				return;
+			}
 			var stream = client.GetStream ();
 
 			byte [] buffer = new byte [512];

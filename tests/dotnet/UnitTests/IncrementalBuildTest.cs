@@ -153,6 +153,8 @@ class MainClass {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
+			properties ["UseMonoRuntime"] = "true"; // only applicable when using MonoVM.
+
 			// Build with the interpreter disabled
 			properties ["UseInterpreter"] = "false";
 			DotNet.AssertBuild (project_path, properties);

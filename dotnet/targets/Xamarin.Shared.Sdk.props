@@ -89,6 +89,7 @@
 
 		<!-- Tell .NET to skip sanity checks that trigger too eagerly for builds with multiple RuntimeIdentifiers -->
 		<AllowPublishAotWithoutRuntimeIdentifier Condition="'$(AllowPublishAotWithoutRuntimeIdentifier)' == '' And '$(_UseNativeAot)' == 'true'">true</AllowPublishAotWithoutRuntimeIdentifier>
+		<AllowReadyToRunWithoutRuntimeIdentifier Condition="'$(AllowReadyToRunWithoutRuntimeIdentifier)' == '' And '$(RuntimeIdentifiers)' != '' And '$(RuntimeIdentifier)' == ''">true</AllowReadyToRunWithoutRuntimeIdentifier>
 		<AllowSelfContainedWithoutRuntimeIdentifier Condition="'$(AllowSelfContainedWithoutRuntimeIdentifier)' == ''">true</AllowSelfContainedWithoutRuntimeIdentifier>
 
 		<!--

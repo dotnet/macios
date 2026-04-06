@@ -163,9 +163,23 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
+		public void PublishTest_Mono (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			PublishTestImpl (platform, runtimeIdentifiers, useMonoRuntime: true);
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
-		public void PublishTest (ApplePlatform platform, string runtimeIdentifiers)
+		public void PublishTest_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			PublishTestImpl (platform, runtimeIdentifiers, useMonoRuntime: false);
+		}
+
+		void PublishTestImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -194,6 +208,7 @@ namespace Xamarin.Tests {
 			var pkgPath = Path.Combine (tmpdir, $"MyPackage.{packageExtension}");
 
 			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 			properties [pathVariable] = pkgPath;
 
 			DotNet.AssertPublish (project_path, properties);

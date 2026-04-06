@@ -31,6 +31,11 @@ using CoreAnimation;
 
 namespace ImageCaptureCore {
 
+	/// <summary>Completion handler for <see cref="ICCameraFile.RequestSecurityScopedUrl" />.</summary>
+	delegate void ICCameraFileRequestSecurityScopedUrlCompletionHandler ([NullAllowed] NSUrl url, [NullAllowed] NSError error);
+	/// <summary>Completion handler for <see cref="ICCameraFile.RequestFingerprint" />.</summary>
+	delegate void ICCameraFileRequestFingerprintCompletionHandler ([NullAllowed] string fingerprint, [NullAllowed] NSError error);
+
 	interface IICDeviceDelegate { }
 
 	[Static]
@@ -414,6 +419,35 @@ namespace ImageCaptureCore {
 
 		[NullAllowed, Export ("sidecarFiles")]
 		ICCameraItem [] SidecarFiles { get; }
+
+		/// <summary>Gets the fingerprint generated from the camera file data.</summary>
+		[Mac (13, 0)]
+		[NullAllowed, Export ("fingerprint")]
+		string Fingerprint { get; }
+
+		/// <summary>Generates a fingerprint for the file at the specified URL.</summary>
+		/// <param name="url">The URL of the file for which to generate a fingerprint.</param>
+		/// <returns>The fingerprint string, or <see langword="null" /> if the fingerprint could not be generated.</returns>
+		[Mac (15, 0)]
+		[Static]
+		[Export ("fingerprintForFileAtURL:")]
+		[return: NullAllowed]
+		string GetFingerprint (NSUrl url);
+
+		/// <summary>Requests a security-scoped URL for a media file on a mass storage volume.</summary>
+		/// <param name="completion">A callback invoked with the security-scoped URL and any error that occurred.</param>
+		/// <remarks>The returned <see cref="NSUrl" /> requires the use of <c>StartAccessingSecurityScopedResource</c> and <c>StopAccessingSecurityScopedResource</c> for access.</remarks>
+		[Mac (14, 0)]
+		[Export ("requestSecurityScopedURLWithCompletion:")]
+		[Async]
+		void RequestSecurityScopedUrl (ICCameraFileRequestSecurityScopedUrlCompletionHandler completion);
+
+		/// <summary>Requests a fingerprint to be generated for the camera file.</summary>
+		/// <param name="completion">A callback invoked with the generated fingerprint string and any error that occurred.</param>
+		[Mac (15, 0)]
+		[Export ("requestFingerprintWithCompletion:")]
+		[Async]
+		void RequestFingerprint (ICCameraFileRequestFingerprintCompletionHandler completion);
 	}
 
 	[Protocol, Model]
@@ -532,9 +566,11 @@ namespace ImageCaptureCore {
 		[Export ("requestSyncClock")]
 		void RequestSyncClock ();
 
+		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Third party cameras that support the standard take picture command will have the capability enabled by default. This call will have no effect.")]
 		[Export ("requestEnableTethering")]
 		void RequestEnableTethering ();
 
+		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Third party cameras that support the standard take picture command will have the capability enabled by default. This call will have no effect.")]
 		[Export ("requestDisableTethering")]
 		void RequestDisableTethering ();
 
@@ -553,6 +589,7 @@ namespace ImageCaptureCore {
 		[Export ("cancelDownload")]
 		void CancelDownload ();
 
+		[Deprecated (PlatformName.MacOSX, 14, 0, message: "Sandbox restrictions prohibit writing directly to device hardware.")]
 		[Export ("requestUploadFile:options:uploadDelegate:didUploadSelector:contextInfo:")]
 		void RequestUploadFile (NSUrl fileUrl, NSDictionary<NSString, NSObject> options, NSObject uploadDelegate, Selector didUploadSelector, [NullAllowed] IntPtr contextInfo);
 

@@ -56,7 +56,7 @@ namespace CoreFoundation {
 			Cocoa = Dlfcn.GetStringConstant (handle, "kCFErrorDomainCocoa");
 			Mach = Dlfcn.GetStringConstant (handle, "kCFErrorDomainMach");
 			OSStatus = Dlfcn.GetStringConstant (handle, "kCFErrorDomainOSStatus");
-			Posix = Dlfcn.GetStringConstant (handle, "kCFErrorDomainPosix");
+			Posix = Dlfcn.GetStringConstant (handle, "kCFErrorDomainPOSIX");
 		}
 	}
 

@@ -35,6 +35,11 @@ public abstract class AssemblyModifierStep : ConfigurationAwareStep {
 		return false;
 	}
 
+	protected virtual bool ProcessMethod (MethodDefinition method)
+	{
+		return false;
+	}
+
 	bool ProcessTypeImpl (TypeDefinition type)
 	{
 		var modified = ProcessType (type);
@@ -42,6 +47,17 @@ public abstract class AssemblyModifierStep : ConfigurationAwareStep {
 			foreach (var nested in type.NestedTypes)
 				modified |= ProcessTypeImpl (nested);
 		}
+		return modified;
+	}
+
+	protected bool ProcessMethods (TypeDefinition type)
+	{
+		if (!type.HasMethods)
+			return false;
+
+		var modified = false;
+		foreach (var method in type.Methods)
+			modified |= ProcessMethod (method);
 		return modified;
 	}
 }

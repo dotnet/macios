@@ -19,7 +19,7 @@ public class Nomenclator {
 
 	public string GetDelegateName (MethodInfo mi)
 	{
-		Attribute a = attributeManager.GetCustomAttribute<DelegateNameAttribute> (mi);
+		Attribute? a = attributeManager.GetCustomAttribute<DelegateNameAttribute> (mi);
 		if (a is not null)
 			return ((DelegateNameAttribute) a).Name;
 

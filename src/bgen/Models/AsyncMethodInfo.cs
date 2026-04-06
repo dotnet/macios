@@ -13,7 +13,7 @@ class AsyncMethodInfo : MemberInformation {
 	public bool IsSingleArgAsync { get; }
 	public MethodInfo MethodInfo { get; }
 
-	public AsyncMethodInfo (Generator generator, IMemberGatherer gather, Type type, MethodInfo mi, Type categoryExtensionType, bool isExtensionMethod)
+	public AsyncMethodInfo (Generator generator, IMemberGatherer gather, Type type, MethodInfo mi, Type? categoryExtensionType, bool isExtensionMethod)
 		: base (generator, gather, mi, type, categoryExtensionType, false, isExtensionMethod)
 	{
 		this.MethodInfo = mi;

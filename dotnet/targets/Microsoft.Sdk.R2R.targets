@@ -322,7 +322,7 @@
 			DependsOnTargets="CreateReadyToRunImages"
 			>
 		<PropertyGroup>
-			<_R2RDylibIntermediateOutputPath Condition="'$(_R2RFrameworkIntermediateOutputPath)' == ''">$(DeviceSpecificIntermediateOutputPath)r2rdylib/</_R2RDylibIntermediateOutputPath>
+			<_R2RDylibIntermediateOutputPath Condition="'$(_R2RDylibIntermediateOutputPath)' == ''">$(DeviceSpecificIntermediateOutputPath)r2rdylib/</_R2RDylibIntermediateOutputPath>
 			<_R2RDylibName Condition="'$(_R2RDylibName)' == ''">$(AssemblyName)</_R2RDylibName>
 			<_R2RDylibPath Condition="'$(_R2RDylibPath)' == ''">$(_R2RDylibIntermediateOutputPath)</_R2RDylibPath>
 			<_R2RDylibOutput Condition="'$(_R2RDylibOutput)' == ''">$(_R2RDylibPath)$(_R2RDylibName).r2r.dylib</_R2RDylibOutput>

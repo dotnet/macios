@@ -1906,7 +1906,7 @@ namespace CoreMidi {
 			}
 		}
 
-		// kMIDIDriverPropertyUsesSerial doesn't exist on Mac Catalyst, but was accidentally exposed.
+		// kMIDIDriverPropertyUsesSerial doesn't exist on iOS or Mac Catalyst, but was accidentally exposed.
 #if __MACOS__ || ((__MACCATALYST__ || __IOS__) && !XAMCORE_5_0)
 		/// <summary>A value indicating whether the driver uses serial ports.</summary>
 #if __MACCATALYST__ || __IOS__
@@ -1931,7 +1931,7 @@ namespace CoreMidi {
 #endif
 			}
 		}
-#endif // __MACOS__ || (__MACCATALYST__ && !XAMCORE_5_0)
+#endif // __MACOS__ || ((__MACCATALYST__ || __IOS__) && !XAMCORE_5_0)
 
 #if !XAMCORE_5_0 || __MACOS__
 		/// <summary>To be added.</summary>

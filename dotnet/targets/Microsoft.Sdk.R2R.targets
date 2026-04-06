@@ -174,24 +174,26 @@
 		     We derive the module name from the _ReadyToRunObjectFilesToLink filename. -->
 		<ItemGroup>
 			<_R2RModule Include="@(_ReadyToRunObjectFilesToLink)">
-				<!-- Strip the .r2r.dylib suffix to get the module name -->
-				<ModuleName>$([System.Text.RegularExpressions.Regex]::Replace ('%(Filename)', '\.r2r$', ''))</ModuleName>
+				<!-- Use the full dylib filename (e.g. "introspection.r2r.dylib") as the module name -->
+				<ModuleName>%(Filename)%(Extension)</ModuleName>
+				<!-- Derive a short name (without .r2r.dylib) for framework/dylib naming -->
+				<ShortName>$([System.Text.RegularExpressions.Regex]::Replace ('%(Filename)', '\.r2r$', ''))</ShortName>
 				<!-- Sanitize for C symbol: replace non-identifier chars with _ -->
-				<SanitizedName>$([System.Text.RegularExpressions.Regex]::Replace ($([System.Text.RegularExpressions.Regex]::Replace ('%(Filename)', '\.r2r$', '')), '[^a-zA-Z0-9_]', '_'))</SanitizedName>
+				<SanitizedName>$([System.Text.RegularExpressions.Regex]::Replace ('%(Filename)%(Extension)', '[^a-zA-Z0-9_]', '_'))</SanitizedName>
 			</_R2RModule>
 			<_R2RModule Update="@(_R2RModule)">
 				<SymbolName>RTR_HEADER_%(SanitizedName)</SymbolName>
 				<ObjectFile>%(NativeLinkerInputPath)</ObjectFile>
-				<FrameworkName>%(ModuleName).r2r</FrameworkName>
-				<FrameworkPath>$(_R2RModuleIntermediateOutputPath)%(ModuleName).r2r.framework</FrameworkPath>
-				<FrameworkOutput>$(_R2RModuleIntermediateOutputPath)%(ModuleName).r2r.framework$(_R2RFrameworkBinaryInfix)/%(ModuleName).r2r</FrameworkOutput>
-				<InfoPlistPath>$(_R2RModuleIntermediateOutputPath)%(ModuleName).r2r.framework$(_R2RFrameworkResourcesInfix)/Info.plist</InfoPlistPath>
-				<StructureStampFile>$(_R2RModuleIntermediateOutputPath)%(ModuleName).r2r-structure.stamp</StructureStampFile>
-				<CachePath>$(_R2RModuleIntermediateOutputPath)%(ModuleName).r2r-cache.txt</CachePath>
-				<CachePath2>$(_R2RModuleIntermediateOutputPath)%(ModuleName).r2r-cache.txt.uptodate</CachePath2>
-				<DylibOutput>$(_R2RModuleIntermediateOutputPath)%(ModuleName).r2r.dylib</DylibOutput>
-				<DylibCachePath>$(_R2RModuleIntermediateOutputPath)%(ModuleName).r2r-dylib-cache.txt</DylibCachePath>
-				<DylibCachePath2>$(_R2RModuleIntermediateOutputPath)%(ModuleName).r2r-dylib-cache.txt.uptodate</DylibCachePath2>
+				<FrameworkName>%(ShortName).r2r</FrameworkName>
+				<FrameworkPath>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r.framework</FrameworkPath>
+				<FrameworkOutput>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r.framework$(_R2RFrameworkBinaryInfix)/%(ShortName).r2r</FrameworkOutput>
+				<InfoPlistPath>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r.framework$(_R2RFrameworkResourcesInfix)/Info.plist</InfoPlistPath>
+				<StructureStampFile>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r-structure.stamp</StructureStampFile>
+				<CachePath>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r-cache.txt</CachePath>
+				<CachePath2>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r-cache.txt.uptodate</CachePath2>
+				<DylibOutput>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r.dylib</DylibOutput>
+				<DylibCachePath>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r-dylib-cache.txt</DylibCachePath>
+				<DylibCachePath2>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r-dylib-cache.txt.uptodate</DylibCachePath2>
 			</_R2RModule>
 		</ItemGroup>
 	</Target>
@@ -238,7 +240,7 @@
 		<CompileAppManifest
 			SessionId="$(BuildSessionId)"
 			AppBundleName="%(_R2RModule.FrameworkName)"
-			ApplicationId="$(_BundleIdentifier).r2r.%(_R2RModule.ModuleName)"
+			ApplicationId="$(_BundleIdentifier).r2r.%(_R2RModule.ShortName)"
 			BundleExecutable="%(_R2RModule.FrameworkName)"
 			CompiledAppManifest="%(_R2RModule.InfoPlistPath)"
 			DefaultSdkVersion="$(_SdkVersion)"
@@ -309,7 +311,7 @@
 			<_CurrentR2RDylibLinkerFlags Include="-Wl,-dead_strip" />
 			<_CurrentR2RDylibLinkerFlags Include="-Wl,-alias,_RTR_HEADER,_%(_R2RModule.SymbolName)" />
 			<_CurrentR2RDylibLinkerFlags Include="-Wl,-unexported_symbol,_RTR_HEADER" />
-			<_CurrentR2RDylibLinkerFlags Include="-Wl,-install_name,@rpath/%(_R2RModule.ModuleName).r2r.dylib" />
+			<_CurrentR2RDylibLinkerFlags Include="-Wl,-install_name,@rpath/%(_R2RModule.ModuleName)" />
 		</ItemGroup>
 
 		<LinkNativeCode

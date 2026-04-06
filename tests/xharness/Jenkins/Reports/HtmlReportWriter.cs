@@ -11,6 +11,7 @@ using Microsoft.DotNet.XHarness.iOS.Shared;
 using Microsoft.DotNet.XHarness.iOS.Shared.Hardware;
 using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
 using Microsoft.DotNet.XHarness.iOS.Shared.Utilities;
+using Xamarin.Utils;
 using Xharness.Jenkins.TestTasks;
 
 #nullable enable
@@ -427,7 +428,9 @@ namespace Xharness.Jenkins.Reports {
 							var query = logs.
 								OfType<IFileBackedLog> ().
 								OrderBy (v => v.Description).
-								ThenBy (v => v.FullPath);
+								ThenBy (v => v.FullPath).
+								ToList ();
+							var hasStructuredTestResults = query.Any (v => (v.Description == LogType.NUnitResult.ToString () || v.Description == LogType.XmlLog.ToString () || v.Description == LogType.TrxLog.ToString ()) && File.Exists (v.FullPath) && new FileInfo (v.FullPath).Length > 0);
 							var hasListedErrors = false;
 							foreach (var fileLog in query) {
 								var log = fileLog;
@@ -497,7 +500,7 @@ namespace Xharness.Jenkins.Reports {
 												fails = data_tuple.Item2;
 											}
 										}
-										if (!hasListedErrors && fails.Count > 0) {
+										if (!hasStructuredTestResults && !hasListedErrors && fails.Count > 0) {
 											writer.WriteLine ("<div style='padding-left: 15px;'>");
 											foreach (var fail in fails)
 												writer.WriteLine ("{0} <br />", fail.AsHtml ());
@@ -548,7 +551,9 @@ namespace Xharness.Jenkins.Reports {
 								} else if (log.Description == LogType.NUnitResult.ToString () || log.Description == LogType.XmlLog.ToString ()) {
 									try {
 										if (!hasListedErrors && File.Exists (fileLog.FullPath) && new FileInfo (fileLog.FullPath).Length > 0) {
-											if (resultParser.IsValidXml (fileLog.FullPath, out var jargon)) {
+											if (TryWriteStructuredTestReport (writer, fileLog.FullPath, log.Description)) {
+												hasListedErrors = true;
+											} else if (resultParser.IsValidXml (fileLog.FullPath, out var jargon)) {
 												resultParser.GenerateTestReport (writer, fileLog.FullPath, jargon);
 												hasListedErrors = true;
 											}
@@ -558,7 +563,9 @@ namespace Xharness.Jenkins.Reports {
 									}
 								} else if (log.Description == LogType.TrxLog.ToString ()) {
 									try {
-										if (!hasListedErrors && resultParser.IsValidXml (fileLog.FullPath, out var jargon)) {
+										if (!hasListedErrors && TryWriteStructuredTestReport (writer, fileLog.FullPath, log.Description)) {
+											hasListedErrors = true;
+										} else if (!hasListedErrors && resultParser.IsValidXml (fileLog.FullPath, out var jargon)) {
 											resultParser.GenerateTestReport (writer, fileLog.FullPath, jargon);
 											hasListedErrors = true;
 										}
@@ -643,6 +650,38 @@ namespace Xharness.Jenkins.Reports {
 			if (provider.TryGetContentType (value, out var contentType))
 				return contentType;
 			return "application/octet-stream";
+		}
+
+		internal static bool TryWriteStructuredTestReport (StreamWriter writer, string filePath, string logDescription)
+		{
+			IList<TrxParser.TrxTestResult>? failedTests;
+			bool parsed;
+
+			if (logDescription == LogType.TrxLog.ToString ()) {
+				parsed = TrxParser.TryParseTrxFile (filePath, out failedTests, out _, out _, out _);
+			} else if (logDescription == LogType.NUnitResult.ToString () || logDescription == LogType.XmlLog.ToString ()) {
+				parsed = TrxParser.TryParseNUnitXmlFile (filePath, out failedTests, out _, out _, out _);
+			} else {
+				return false;
+			}
+
+			if (!parsed || failedTests?.Count is not > 0)
+				return false;
+
+			writer.WriteLine ("<div style='padding-left: 15px;'>");
+			writer.WriteLine ("<ul>");
+			foreach (var failedTest in failedTests) {
+				writer.WriteLine ("<li>");
+				if (string.IsNullOrEmpty (failedTest.Message)) {
+					writer.WriteLine ("{0}<br />", failedTest.Name.AsHtml ());
+				} else {
+					writer.WriteLine ("{0}: {1}<br />", failedTest.Name.AsHtml (), failedTest.Message.AsHtml ());
+				}
+				writer.WriteLine ("</li>");
+			}
+			writer.WriteLine ("</ul>");
+			writer.WriteLine ("</div>");
+			return true;
 		}
 
 		static string LinkEncode (string path)

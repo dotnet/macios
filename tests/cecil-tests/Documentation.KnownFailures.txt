@@ -6054,8 +6054,6 @@ F:Photos.PHAssetResourceType.AdjustmentBasePairedVideo
 F:Photos.PHAssetResourceType.AdjustmentBaseVideo
 F:Photos.PHAssetResourceType.FullSizePairedVideo
 F:Photos.PHAssetResourceType.PhotoProxy
-F:Photos.PHAssetResourceUploadJobAction.Acknowledge
-F:Photos.PHAssetResourceUploadJobAction.Retry
 F:Photos.PHAssetResourceUploadJobState.Failed
 F:Photos.PHAssetResourceUploadJobState.Pending
 F:Photos.PHAssetResourceUploadJobState.Registered

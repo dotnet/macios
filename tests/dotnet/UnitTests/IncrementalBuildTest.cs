@@ -7,7 +7,20 @@ namespace Xamarin.Tests {
 		[Test]
 		// this test is fairly slow, so execute on one arch only
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
-		public void Link (ApplePlatform platform, string runtimeIdentifiers)
+		public void Link_Mono (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			LinkImpl (platform, runtimeIdentifiers, useMonoRuntime: true);
+		}
+
+		[Test]
+		// this test is fairly slow, so execute on one arch only
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void Link_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			LinkImpl (platform, runtimeIdentifiers, useMonoRuntime: false);
+		}
+
+		void LinkImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime)
 		{
 			var project = "IncrementalTestApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -17,10 +30,13 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 
-			properties ["UseInterpreter"] = "true"; // this makes the test faster
+			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
+			properties ["UseInterpreter"] = "true"; // this makes the test faster on MonoVM and is ignored by CoreCLR
 
 			// Build the first time
-			DotNet.AssertBuild (project_path, properties);
+			var rv = DotNet.AssertBuild (project_path, properties);
+			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "A");
 
 			// Make sure it runs successfully (if on desktop)
 			var appExecutable = GetNativeExecutable (platform, appPath);
@@ -36,7 +52,9 @@ namespace Xamarin.Tests {
 
 			// Build again, adding a package with frameworks
 			properties ["IncludeFwInRuntimesNativeDirectory"] = "true";
-			DotNet.AssertBuild (project_path, properties);
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "B");
 
 			// Executing should work just fine
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
@@ -53,7 +71,15 @@ namespace Xamarin.Tests {
 			appExecutableTimestamp = File.GetLastWriteTimeUtc (appExecutable);
 
 			// Build again, not doing anything
-			DotNet.AssertBuild (project_path, properties);
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			if (useMonoRuntime) {
+				AssertTargetNotExecuted (allTargets, "_LinkNativeExecutable", "C");
+			} else {
+				// With CoreCLR, the app executable is re-linked because the generated R2R
+				// framework participates in the native link inputs and is refreshed each build.
+				AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "C");
+			}
 
 			// Executing should work just fine
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
@@ -63,12 +89,18 @@ namespace Xamarin.Tests {
 			Assert.That (lc_load_dylib, Does.Contain ("@rpath/FrameworksInRuntimesNativeDirectory1.framework/FrameworksInRuntimesNativeDirectory1"), "C: Should link with @rpath/FrameworksInRuntimesNativeDirectory1.framework/FrameworksInRuntimesNativeDirectory1");
 			Assert.That (lc_load_dylib, Does.Contain ("@rpath/FrameworksInRuntimesNativeDirectory2.framework/FrameworksInRuntimesNativeDirectory2"), "C: Should link with @rpath/FrameworksInRuntimesNativeDirectory2.framework/FrameworksInRuntimesNativeDirectory2");
 
-			// The main executable must not be modified
-			Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.EqualTo (appExecutableTimestamp), "Modified C");
+			if (useMonoRuntime) {
+				Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.EqualTo (appExecutableTimestamp), "Modified C");
+			} else {
+				Assert.That (File.GetLastWriteTimeUtc (appExecutable), Is.GreaterThan (appExecutableTimestamp), "Modified C");
+				appExecutableTimestamp = File.GetLastWriteTimeUtc (appExecutable);
+			}
 
 			// Build yet again, now removing the package
 			properties.Remove ("IncludeFwInRuntimesNativeDirectory");
-			DotNet.AssertBuild (project_path, properties);
+			rv = DotNet.AssertBuild (project_path, properties);
+			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
+			AssertTargetExecuted (allTargets, "_LinkNativeExecutable", "D");
 
 			// Executing should work just fine
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);

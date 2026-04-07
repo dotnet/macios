@@ -3685,11 +3685,7 @@ namespace PdfKit {
 	[NoTV]
 	[NoMacCatalyst]
 	interface PdfViewAnnotationHitEventArgs {
-		/// <summary>Gets the annotation that was hit.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("PDFAnnotationHit")]
-		PdfAnnotation AnnotationHit { get; }
+		// The 'AnnotationHit' property has manual bindings.
 	}
 
 	interface IPdfViewDelegate { }

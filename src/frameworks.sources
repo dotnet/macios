@@ -1444,6 +1444,7 @@ PDFKIT_API_SOURCES = \
 PDFKIT_SOURCES = \
 	PdfKit/PdfAnnotation.cs \
 	PdfKit/PdfKit.cs \
+	PdfKit/PdfViewAnnotationHitEventArgs.cs \
 
 # Phase
 

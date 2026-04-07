@@ -35,10 +35,29 @@
     <Skip Include="Build\System.Text.Json.dll" />
     <Skip Include="Build\System.Threading.Tasks.Dataflow.dll" />
     <Skip Include="Build\System.Threading.Tasks.Extensions.dll" />
+    <!-- net10.0 msbuild tools content -->
+    <Skip Include="AssemblyStripper.dll" />
+    <Skip Include="BouncyCastle.Cryptography.dll" />
+    <Skip Include="ILLink.Tasks.dll" />
+    <Skip Include="Microsoft.Win32.SystemEvents.dll" />
+    <Skip Include="MonoTargetsTasks.dll" />
+    <Skip Include="MQTTnet.dll" />
+    <Skip Include="System.CodeDom.dll" />
+    <Skip Include="System.ComponentModel.Composition.dll" />
+    <Skip Include="System.Configuration.ConfigurationManager.dll" />
+    <Skip Include="System.Diagnostics.EventLog.dll" />
+    <Skip Include="System.Diagnostics.EventLog.Messages.dll" />
+    <Skip Include="System.Drawing.Common.dll" />
+    <Skip Include="System.Reactive.dll" />
+    <Skip Include="System.Resources.Extensions.dll" />
+    <Skip Include="System.Security.Cryptography.Pkcs.dll" />
+    <Skip Include="System.Security.Cryptography.ProtectedData.dll" />
+    <Skip Include="System.Security.Cryptography.Xml.dll" />
   </ItemGroup>
 
   <ItemGroup>
     <ThirdParty Include="BouncyCastle.Crypto.dll" />
+    <ThirdParty Include="Renci.SshNet.dll" />
     <!-- Build.zip -->
     <ThirdParty Include="Mono.Cecil*.dll" />
 

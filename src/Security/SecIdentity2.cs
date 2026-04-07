@@ -78,14 +78,10 @@ namespace Security {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public SecCertificate [] Certificates {
+		public SecCertificate []? Certificates {
 			get {
 				var certArray = sec_identity_copy_certificates_ref (GetCheckedHandle ());
-				try {
-					return NSArray.ArrayFromHandle<SecCertificate> (certArray);
-				} finally {
-					CFObject.CFRelease (certArray);
-				}
+				return NSArray.ArrayFromHandleDropNullElements<SecCertificate> (certArray, releaseHandle: true);
 			}
 		}
 

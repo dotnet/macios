@@ -1,8 +1,6 @@
 # deprecated pinvokes and not binded.
 !missing-pinvoke! MIDIDriverEnableMonitoring is not bound
 
-!missing-field! kMIDIDriverPropertyUsesSerial not bound
-
 # no known use
 !missing-pinvoke! MIDIEndpointGetRefCons is not bound
 !missing-pinvoke! MIDIEndpointSetRefCons is not bound

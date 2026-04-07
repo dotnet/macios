@@ -88,7 +88,7 @@ namespace Introspection {
 			int n = 0;
 			string qname = CIFilterType.AssemblyQualifiedName;
 			// that will give us only the list of filters supported by the executing version of iOS
-			foreach (var filter_name in CIFilter.FilterNamesInCategories (null)) {
+			foreach (var filter_name in CIFilter.FilterNamesInCategories ()) {
 				if (Skip (filter_name))
 					continue;
 				string type_name = qname.Replace ("CIFilter", filter_name);
@@ -108,7 +108,7 @@ namespace Introspection {
 		{
 			Errors = 0;
 			ContinueOnFailure = true;
-			List<string> filters = new List<string> (CIFilter.FilterNamesInCategories (null));
+			var filters = new List<string> (CIFilter.FilterNamesInCategories ());
 			var superFilters = new List<string> ();
 			var nspace = CIFilterType.Namespace;
 			var types = CIFilterType.Assembly.GetTypes ();

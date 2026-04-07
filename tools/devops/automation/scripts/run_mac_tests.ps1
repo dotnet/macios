@@ -34,12 +34,26 @@ Write-Host "Found tests"
 $testsPath = "$SourcesDirectory/artifacts/mac-test-package/tests"
 Write-Host "Tests path is $testsPath"
 
+# Pre-flight check: verify dotnet is available
+$dotnetPath = Get-Command dotnet -ErrorAction SilentlyContinue
+if ($dotnetPath) {
+  Write-Host "dotnet found at: $($dotnetPath.Source)"
+  Write-Host "dotnet version: $(dotnet --version)"
+} else {
+  Write-Host "##vso[task.logissue type=error]dotnet is not on the PATH. All tests will fail."
+  Write-Host "PATH: $Env:PATH"
+}
+
 # print enviroment
 dir env:
 
 [System.Collections.Generic.List[string]]$failures = @()
 # Track [FAIL] lines per test suite for the GitHub comment
 $failLinesByTest = @{}
+# Track exit codes per test
+$exitCodeByTest = @{}
+# Track last stderr lines per test (for context when no [FAIL] lines)
+$stderrTailByTest = @{}
 
 # Claim that the tests timed out before we start
 Set-Content -Path "$GithubFailureCommentFile" -Value "Tests timed out"
@@ -71,6 +85,23 @@ foreach ($t in $macTest) {
   } else {
     Write-Host "$t failed with error $($proc.ExitCode)"
     $failures.Add($t)
+    $exitCodeByTest[$t] = $proc.ExitCode
+    # Capture last stderr lines for TestSummary context
+    if (Test-Path -Path $stderrFile) {
+      $stderrTailByTest[$t] = @(Get-Content -Path $stderrFile -Tail 10 -ErrorAction SilentlyContinue | Where-Object { $_ })
+    }
+    # Log stderr/stdout tail to the CI console so the failure is diagnosable
+    foreach ($logFile in @($stderrFile, $stdoutFile)) {
+      if (Test-Path -Path $logFile) {
+        $logContent = Get-Content -Path $logFile -Tail 50 -ErrorAction SilentlyContinue
+        if ($logContent) {
+          $logLabel = if ($logFile -eq $stderrFile) { "stderr" } else { "stdout" }
+          Write-Host "--- last lines of $t $logLabel ---"
+          $logContent | ForEach-Object { Write-Host $_ }
+          Write-Host "--- end of $t $logLabel ---"
+        }
+      }
+    }
   }
 
   # Extract [FAIL] lines from stdout/stderr
@@ -127,7 +158,8 @@ if ($TestSummaryPath -ne "") {
     $sb.AppendLine("## Failed tests")
     $sb.AppendLine("")
     foreach ($test in $failures) {
-      $sb.AppendLine("* ${test}: Failed")
+      $exitCode = $exitCodeByTest[$test]
+      $sb.AppendLine("* ${test}: Failed (exit code $exitCode)")
       # Show first 3 [FAIL] lines from the test output
       $testFailLines = $failLinesByTest[$test]
       if ($testFailLines -and $testFailLines.Count -gt 0) {
@@ -137,6 +169,17 @@ if ($TestSummaryPath -ne "") {
         }
         if ($testFailLines.Count -gt 3) {
           $sb.AppendLine("    * ... and $($testFailLines.Count - 3) more failures")
+        }
+      } else {
+        # No [FAIL] lines — show stderr tail for context (e.g. build errors, missing tools)
+        $stderrTail = $stderrTailByTest[$test]
+        if ($stderrTail -and $stderrTail.Count -gt 0) {
+          $sb.AppendLine("    * No test failure details available. stderr output:")
+          foreach ($line in $stderrTail) {
+            $sb.AppendLine("        * ``$line``")
+          }
+        } else {
+          $sb.AppendLine("    * No test failure details available.")
         }
       }
     }

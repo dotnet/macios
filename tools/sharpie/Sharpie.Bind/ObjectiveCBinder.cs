@@ -34,6 +34,8 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 	public List<string> ClangArguments = new List<string> ();
 	public bool? EnableModules { get; set; }
 	public bool SplitDocuments { get; set; } = true;
+	public bool DeepSplit { get; set; }
+	public bool UseCustomDelegates { get; set; }
 
 	public string ApiDefinitionName { get; set; } = "ApiDefinition.cs";
 	public string StructsAndEnumsName { get; set; } = "StructsAndEnums.cs";
@@ -154,7 +156,12 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 		if (string.IsNullOrEmpty (fn))
 			return true;
 		foreach (var dir in DirectoriesInScope) {
-			if (fn.StartsWith (dir, StringComparison.Ordinal))
+			// Ensure the scope directory ends with a directory separator so that
+			// a scope of "/foo/bar" doesn't falsely match "/foo/barbaz/header.h".
+			var normalizedDir = dir.EndsWith (Path.DirectorySeparatorChar) || dir.EndsWith (Path.AltDirectorySeparatorChar)
+				? dir
+				: dir + Path.DirectorySeparatorChar;
+			if (fn.StartsWith (normalizedDir, StringComparison.Ordinal))
 				return true;
 		}
 
@@ -242,6 +249,14 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 
 		if (!SplitDocuments) {
 			args.Add ("--nosplit");
+		}
+
+		if (DeepSplit) {
+			args.Add ("--deepsplit");
+		}
+
+		if (UseCustomDelegates) {
+			args.Add ("--custom-delegates");
 		}
 
 		if (EnableModules.HasValue) {
@@ -463,7 +478,9 @@ public abstract partial class ObjectiveCBinder : IDisposable {
 			var massagerNs = new NamespaceMassager (this, Namespace);
 			massager.RegisterMassager (massagerNs);
 		}
-		if (SplitDocuments)
+		if (DeepSplit)
+			massager.RegisterMassager (new DeepSplitMassager (this));
+		else if (SplitDocuments)
 			massager.RegisterMassager (new SyntaxTreeSplitterMassager (this));
 		foreach (var m in Massagers) {
 			if (m.Enable) {

@@ -5,15 +5,17 @@ using System.Text.RegularExpressions;
 
 using Xamarin.Utils;
 
+#nullable enable
+
 namespace Xamarin.Tests {
 	class ToolMessage {
 		public bool IsError;
 		public bool IsWarning { get { return !IsError; } }
-		public string Prefix;
+		public string Prefix = "";
 		public int Number;
 		public string PrefixedNumber { get { return Prefix + Number.ToString (); } }
-		public string Message;
-		public string FileName;
+		public string Message = "";
+		public string FileName = "";
 		public int LineNumber;
 
 		public override string ToString ()
@@ -72,14 +74,14 @@ namespace Xamarin.Tests {
 	abstract class Tool {
 		StringBuilder output = new StringBuilder ();
 
-		List<string> output_lines;
+		List<string>? output_lines;
 
 		List<ToolMessage> messages = new List<ToolMessage> ();
 
-		public Dictionary<string, string> EnvironmentVariables { get; set; }
+		public Dictionary<string, string>? EnvironmentVariables { get; set; }
 		public TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds (60);
 #pragma warning disable 0649 // Field 'X' is never assigned to, and will always have its default value Y
-		public string WorkingDirectory;
+		public string? WorkingDirectory;
 #pragma warning restore 0649
 
 		public IEnumerable<ToolMessage> Messages { get { return messages; } }
@@ -158,14 +160,14 @@ namespace Xamarin.Tests {
 			return line;
 		}
 
-		public static List<ToolMessage> ParseMessages (string [] lines, string messageToolName)
+		public static List<ToolMessage> ParseMessages (string [] lines, string? messageToolName)
 		{
 			var messages = new List<ToolMessage> ();
 			ParseMessages (messages, lines, messageToolName);
 			return messages;
 		}
 
-		public static void ParseMessages (List<ToolMessage> messages, string [] lines, string messageToolName)
+		public static void ParseMessages (List<ToolMessage> messages, string [] lines, string? messageToolName)
 		{
 			foreach (var l in lines) {
 				var line = l;
@@ -229,7 +231,7 @@ namespace Xamarin.Tests {
 			ParseMessages (messages, output.ToString ().Split ('\n', '\r'), MessageToolName);
 		}
 
-		static bool TrySplitCode (string code, out string prefix, out int number)
+		static bool TrySplitCode (string? code, out string? prefix, out int number)
 		{
 			prefix = null;
 			number = -1;
@@ -259,14 +261,14 @@ namespace Xamarin.Tests {
 				var msg = new ToolMessage ();
 
 				if (TrySplitCode (buildLogEvent.Code, out var prefix, out var number)) {
-					msg.Prefix = prefix;
+					msg.Prefix = prefix ?? "";
 					msg.Number = number;
 				}
 
 				msg.IsError = buildLogEvent.Type == BuildLogEventType.Error;
-				msg.Message = buildLogEvent.Message;
+				msg.Message = buildLogEvent.Message ?? "";
 				msg.LineNumber = buildLogEvent.LineNumber;
-				msg.FileName = buildLogEvent.File;
+				msg.FileName = buildLogEvent.File ?? "";
 
 				messages.Add (msg);
 			}
@@ -325,12 +327,12 @@ namespace Xamarin.Tests {
 			Assert.AreEqual (count, ErrorCount, message);
 		}
 
-		public void AssertErrorPattern (int number, string messagePattern, string filename = null, int? linenumber = null, bool custom_pattern_syntax = false)
+		public void AssertErrorPattern (int number, string messagePattern, string? filename = null, int? linenumber = null, bool custom_pattern_syntax = false)
 		{
 			AssertErrorPattern (MessagePrefix, number, messagePattern, filename, linenumber, custom_pattern_syntax);
 		}
 
-		public void AssertErrorPattern (string prefix, int number, string messagePattern, string filename = null, int? linenumber = null, bool custom_pattern_syntax = false)
+		public void AssertErrorPattern (string prefix, int number, string messagePattern, string? filename = null, int? linenumber = null, bool custom_pattern_syntax = false)
 		{
 			if (!messages.Any ((msg) => msg.Prefix == prefix && msg.Number == number))
 				Assert.Fail (string.Format ("The error '{0}{1:0000}' was not found in the output.", prefix, number));
@@ -346,12 +348,12 @@ namespace Xamarin.Tests {
 			AssertFilename (prefix, number, messagePattern, matches, filename, linenumber);
 		}
 
-		public void AssertError (int number, string message, string filename = null, int? linenumber = null)
+		public void AssertError (int number, string message, string? filename = null, int? linenumber = null)
 		{
 			AssertError (MessagePrefix, number, message, filename, linenumber);
 		}
 
-		public void AssertError (string prefix, int number, string message, string filename = null, int? linenumber = null)
+		public void AssertError (string prefix, int number, string message, string? filename = null, int? linenumber = null)
 		{
 			if (!messages.Any ((msg) => msg.Prefix == prefix && msg.Number == number))
 				Assert.Fail (string.Format ("The error '{0}{1:0000}' was not found in the output.\nFound {2}i:\n", prefix, number, string.Join ("\n", messages)));
@@ -367,12 +369,12 @@ namespace Xamarin.Tests {
 			AssertFilename (prefix, number, message, matches, filename, linenumber);
 		}
 
-		void AssertFilename (string prefix, int number, string message, IEnumerable<ToolMessage> matches, string filename, int? linenumber)
+		void AssertFilename (string prefix, int number, string message, IEnumerable<ToolMessage> matches, string? filename, int? linenumber)
 		{
 			AssertFilename (messages, prefix, number, message, matches, filename, linenumber);
 		}
 
-		static void AssertFilename (IList<ToolMessage> messages, string prefix, int number, string message, IEnumerable<ToolMessage> matches, string filename, int? linenumber)
+		static void AssertFilename (IList<ToolMessage> messages, string prefix, int number, string message, IEnumerable<ToolMessage> matches, string? filename, int? linenumber)
 		{
 			if (filename is not null) {
 				var hasDirectory = filename.IndexOf (Path.DirectorySeparatorChar) > -1;
@@ -420,17 +422,17 @@ namespace Xamarin.Tests {
 			Assert.Fail (string.Format ("The warning '{0}{1:0000}: {2}' was not found in the output:\n{3}", prefix, number, messagePattern, string.Join ("\n", details.ToArray ())));
 		}
 
-		public void AssertWarning (int number, string message, string filename = null, int? linenumber = null)
+		public void AssertWarning (int number, string message, string? filename = null, int? linenumber = null)
 		{
 			AssertWarning (MessagePrefix, number, message, filename, linenumber);
 		}
 
-		public void AssertWarning (string prefix, int number, string message, string filename = null, int? linenumber = null)
+		public void AssertWarning (string prefix, int number, string message, string? filename = null, int? linenumber = null)
 		{
 			AssertWarning (messages, prefix, number, message, filename, linenumber);
 		}
 
-		public static void AssertWarning (IList<ToolMessage> messages, string prefix, int number, string message, string filename = null, int? linenumber = null)
+		public static void AssertWarning (IList<ToolMessage> messages, string prefix, int number, string message, string? filename = null, int? linenumber = null)
 		{
 			if (!messages.Any ((msg) => msg.Prefix == prefix && msg.Number == number))
 				Assert.Fail (string.Format ("The warning '{0}{1:0000}' was not found in the output.", prefix, number));
@@ -493,6 +495,6 @@ namespace Xamarin.Tests {
 
 		protected abstract string ToolPath { get; }
 		protected abstract string MessagePrefix { get; }
-		protected virtual string MessageToolName { get { return null; } }
+		protected virtual string? MessageToolName { get { return null; } }
 	}
 }

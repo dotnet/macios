@@ -219,11 +219,8 @@ namespace AddressBook {
 		public IEnumerator<ABRecord> GetEnumerator ()
 		{
 			var cfArrayRef = ABGroupCopyArrayOfAllMembers (Handle);
-			IEnumerable<ABRecord>? e = null;
-			if (cfArrayRef == IntPtr.Zero)
-				e = new ABRecord [0];
-			else
-				e = NSArray.ArrayFromHandle (cfArrayRef, h => ABRecord.FromHandle (h, AddressBook), releaseHandle: true);
+			IEnumerable<ABRecord> e;
+			e = NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, h => ABRecord.FromHandle (h, AddressBook), releaseHandle: true);
 			return e.GetEnumerator ();
 		}
 
@@ -248,9 +245,7 @@ namespace AddressBook {
 		public ABRecord [] GetMembers (ABPersonSortBy sortOrdering)
 		{
 			var cfArrayRef = ABGroupCopyArrayOfAllMembersWithSortOrdering (Handle, sortOrdering);
-			if (cfArrayRef == IntPtr.Zero)
-				return new ABRecord [0];
-			return NSArray.ArrayFromHandle (cfArrayRef, h => ABRecord.FromHandle (h, AddressBook), releaseHandle: true);
+			return NSArray.NonNullArrayFromHandleDropNullElements (cfArrayRef, h => ABRecord.FromHandle (h, AddressBook), releaseHandle: true);
 		}
 
 		[DllImport (Constants.AddressBookLibrary)]

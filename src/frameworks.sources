@@ -282,6 +282,9 @@ AVFOUNDATION_SOURCES = \
 
 # AVKit
 
+AVKIT_CORE_SOURCES = \
+	AVKit/AVLegibleMediaOptionsMenuState.cs \
+
 AVKIT_API_SOURCES = \
 	AVKit/Enums.cs \
 
@@ -327,12 +330,16 @@ CALLKIT_SOURCES = \
 
 CARPLAY_API_SOURCES = \
 	CarPlay/CPEnums.cs \
+	CarPlay/CPLocationCoordinate3D.cs \
 
 CARPLAY_SOURCES = \
 	CarPlay/CPCompat.cs \
-	CarPlay/CPNavigationAlert.cs \
-	CarPlay/CPNowPlayingSportsClock.cs \
+	CarPlay/CPLocationCoordinate3D.cs \
 	CarPlay/CPMessageListItem.cs \
+	CarPlay/CPNavigationAlert.cs \
+	CarPlay/CPNavigationWaypoint.cs \
+	CarPlay/CPNowPlayingSportsClock.cs \
+	CarPlay/CPRouteSegment.cs \
 
 # ClassKit
 
@@ -870,6 +877,7 @@ FOUNDATION_SOURCES = \
 	Foundation/NSNetService.cs \
 	Foundation/NSNotificationCenter.cs \
 	Foundation/NSNull.cs \
+	Foundation/NSNullBehavior.cs \
 	Foundation/NSOrderedSet.cs \
 	Foundation/NSOrderedSet_1.cs \
 	Foundation/NSOutputStream.cs \
@@ -1436,6 +1444,7 @@ PDFKIT_API_SOURCES = \
 PDFKIT_SOURCES = \
 	PdfKit/PdfAnnotation.cs \
 	PdfKit/PdfKit.cs \
+	PdfKit/PdfViewAnnotationHitEventArgs.cs \
 
 # Phase
 
@@ -1880,6 +1889,7 @@ SHARED_CORE_SOURCES = \
 	ObjCRuntime/TransientCFString.cs \
 	ObjCRuntime/TransientString.cs \
 	ObjCRuntime/NFloat.cs \
+	ObjCRuntime/ObjectiveCFrameworkAttribute.cs \
 	ObjCRuntime/ObsoleteConstants.cs \
 	ObjCRuntime/Protocol.cs \
 	ObjCRuntime/Registrar.core.cs \

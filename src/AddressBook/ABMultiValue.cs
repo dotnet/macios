@@ -319,8 +319,7 @@ namespace AddressBook {
 		///         </remarks>
 		public T [] GetValues ()
 		{
-			return NSArray.ArrayFromHandle (ABMultiValue.CopyArrayOfAllValues (Handle), toManaged, releaseHandle: true)
-				?? Array.Empty<T> ();
+			return NSArray.NonNullArrayFromHandleDropNullElements (ABMultiValue.CopyArrayOfAllValues (Handle), toManaged, releaseHandle: true);
 		}
 
 		/// <summary>

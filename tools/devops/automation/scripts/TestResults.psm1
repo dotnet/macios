@@ -265,6 +265,7 @@ class ParallelTestsResults {
     [string] $Context
     [string] $VSDropsIndex
     [TestResult[]] $Results
+    [string] $LinuxBuildStatus
 
     ParallelTestsResults (
         [TestResult[]] $results,
@@ -304,6 +305,9 @@ class ParallelTestsResults {
 
     [bool] IsSuccess() {
         if (-not [string]::IsNullOrEmpty($this.BuildFailureMessage)) {
+            return $false
+        }
+        if (-not [string]::IsNullOrEmpty($this.LinuxBuildStatus) -and $this.LinuxBuildStatus -ne "Succeeded") {
             return $false
         }
         $failingTests = $this.GetFailingTests()
@@ -490,6 +494,19 @@ class ParallelTestsResults {
             }
         }
 
+        # Add Linux build verification status
+        if (-not [string]::IsNullOrEmpty($this.LinuxBuildStatus)) {
+            $pipelineLink = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_build/results?buildId=$Env:BUILD_BUILDID"
+            $stringBuilder.AppendLine("")
+            $stringBuilder.AppendLine("## Linux Build Verification")
+            $stringBuilder.AppendLine("")
+            if ($this.LinuxBuildStatus -eq "Succeeded") {
+                $stringBuilder.AppendLine(":white_check_mark: [Linux build succeeded]($pipelineLink)")
+            } else {
+                $stringBuilder.AppendLine(":x: [Linux build $($this.LinuxBuildStatus.ToLower())]($pipelineLink)")
+            }
+        }
+
         $stringBuilder.AppendLine()
         $stringBuilder.AppendLine("[comment]: <> (This is a test result report added by Azure DevOps)")
     }
@@ -664,7 +681,21 @@ class ParallelTestsResults {
             }
         }
 
-        return [ParallelTestsResults]::new($testResults, $Context, $VSDropsIndex)
+        $result = [ParallelTestsResults]::new($testResults, $Context, $VSDropsIndex)
+
+        # Extract the Linux build verification status from stage dependencies
+        if ($stageDep.ContainsKey("linux_build_verification")) {
+            $linuxStage = $stageDep["linux_build_verification"]
+            if ($linuxStage.ContainsKey("linux_build")) {
+                $linuxJob = $linuxStage["linux_build"]
+                if ($linuxJob.ContainsKey("result")) {
+                    $result.LinuxBuildStatus = $linuxJob["result"]
+                    Write-Host "Linux build verification status: $($result.LinuxBuildStatus)"
+                }
+            }
+        }
+
+        return $result
     }
 }
 

@@ -911,7 +911,7 @@ namespace AVFoundation {
 		[Field ("AVVideoCleanApertureVerticalOffsetKey")]
 		NSString CleanApertureVerticalOffsetKey { get; }
 
-		[MacCatalyst (17, 0), NoTV, Mac (10, 13), iOS (17, 0)]
+		[MacCatalyst (17, 0), TV (26, 4), Mac (10, 13), iOS (17, 0)]
 		[Field ("AVVideoDecompressionPropertiesKey")]
 		NSString DecompressionPropertiesKey { get; }
 
@@ -15507,6 +15507,16 @@ namespace AVFoundation {
 		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("simulatedAperture")]
 		float SimulatedAperture { get; set; }
+
+		/// <summary>Gets a Boolean value that indicates whether the device supports audio zoom.</summary>
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Export ("audioZoomSupported")]
+		bool AudioZoomSupported { [Bind ("isAudioZoomSupported")] get; }
+
+		/// <summary>Gets or sets a Boolean value that indicates whether audio zoom is enabled, causing the sound field to narrow or expand to match the field of view of the video device's zoom factor.</summary>
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Export ("audioZoomEnabled")]
+		bool AudioZoomEnabled { [Bind ("isAudioZoomEnabled")] get; set; }
 	}
 
 	[NoiOS, NoTV, NoMacCatalyst]
@@ -19136,6 +19146,16 @@ namespace AVFoundation {
 		[Field ("AVPlayerRateDidChangeReasonAppBackgrounded")]
 		AppBackgrounded,
 
+		/// <summary>Indicates that the player automatically switched the playback rate to 1.0 when the playhead reached the live edge during live streaming.</summary>
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Field ("AVPlayerRateDidChangeReasonPlayheadReachedLiveEdge")]
+		PlayheadReachedLiveEdge,
+
+		/// <summary>Indicates that the player automatically switched the playback rate to 1.0 when reverse playback reached the start of the seekable range.</summary>
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Field ("AVPlayerRateDidChangeReasonReversePlaybackReachedStartOfSeekableRange")]
+		ReversePlaybackReachedStartOfSeekableRange,
+
 	}
 
 	[iOS (15, 0), TV (15, 0), MacCatalyst (15, 0)]
@@ -19503,6 +19523,10 @@ namespace AVFoundation {
 		[Static]
 		[Export ("observationEnabled")]
 		bool ObservationEnabled { [Bind ("isObservationEnabled")] get; set; }
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Export ("allowsCaptureOfClearKeyVideo")]
+		bool AllowsCaptureOfClearKeyVideo { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -20132,6 +20156,10 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("effectiveMediaPresentationSettingsForMediaSelectionGroup:")]
 		NSDictionary<AVMediaPresentationSelector, NSObject> GetEffectiveMediaPresentationSettings (AVMediaSelectionGroup mediaSelectionGroup);
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[NullAllowed, Export ("interstitialEventIdentifier")]
+		string InterstitialEventIdentifier { get; }
 	}
 
 	[TV (14, 5), iOS (14, 5)]
@@ -21039,6 +21067,14 @@ namespace AVFoundation {
 		[return: NullAllowed]
 		[return: Release]
 		CVPixelBuffer CopyDisplayedPixelBuffer ();
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Export ("setCaptionPreviewProfileID:position:text:")]
+		void SetCaptionPreviewProfileId (string profileId, CGPoint position, [NullAllowed] string text);
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Export ("stopShowingCaptionPreview")]
+		void StopShowingCaptionPreview ();
 	}
 
 	[MacCatalyst (13, 1)]
@@ -21284,6 +21320,10 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[NullAllowed, Export ("skipControlLocalizedLabelBundleKey")]
 		string SkipControlLocalizedLabelBundleKey { get; set; }
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[NullAllowed, Export ("scheduleIdentifier")]
+		string ScheduleIdentifier { get; }
 	}
 
 	[DisableDefaultCtor]
@@ -21401,6 +21441,23 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[NullAllowed, Export ("currentEventSkipControlLabel")]
 		string CurrentEventSkipControlLabel { get; }
+
+		[Notification]
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Field ("AVPlayerInterstitialEventMonitorScheduleRequestCompletedNotification")]
+		NSString ScheduleRequestCompletedNotification { get; }
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Field ("AVPlayerInterstitialEventMonitorScheduleRequestIdentifierKey")]
+		NSString ScheduleRequestIdentifierKey { get; }
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Field ("AVPlayerInterstitialEventMonitorScheduleRequestResponseKey")]
+		NSString ScheduleRequestResponseKey { get; }
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Field ("AVPlayerInterstitialEventMonitorScheduleRequestErrorKey")]
+		NSString ScheduleRequestErrorKey { get; }
 	}
 
 	[DisableDefaultCtor]
@@ -24221,6 +24278,10 @@ namespace AVFoundation {
 		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
 		[Export ("setInterstitialMediaSelectionCriteria:forMediaCharacteristic:")]
 		void SetInterstitialMediaSelectionCriteria (AVPlayerMediaSelectionCriteria [] criteria, [BindAs (typeof (AVMediaCharacteristics))] NSString mediaCharacteristic);
+
+		[NoTV, MacCatalyst (18, 0), Mac (15, 0), iOS (18, 0)]
+		[Export ("downloadsInterstitialAssets")]
+		bool DownloadsInterstitialAssets { get; set; }
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -24931,6 +24992,11 @@ namespace AVFoundation {
 
 		[Export ("renderInContext:forTime:")]
 		void Render (CGContext ctx, CMTime time);
+
+		[MacCatalyst (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Static]
+		[Export ("captionPreviewForProfileID:extendedLanguageTag:renderSize:")]
+		NSAttributedString GetCaptionPreview (string profileId, [NullAllowed] string extendedLanguageTag, CGSize renderSize);
 	}
 
 	[NoTV, MacCatalyst (15, 0), Mac (12, 0), iOS (18, 0)]

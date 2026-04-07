@@ -58,7 +58,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		List<string>? GetDeviceTypes ()
+		List<string>? GetDeviceTypes (bool onlyExact)
 		{
 			var output = GetSimulatorList ();
 			if (output is null)
@@ -67,8 +67,8 @@ namespace Xamarin.MacDev.Tasks {
 			// Which product family are we looking for?
 			string [] productFamilies;
 			switch (DeviceType) {
-			case IPhoneDeviceType.IPhone:
-				productFamilies = ["iPhone"];
+			case IPhoneDeviceType.IPhone: // if we're looking for an iPhone, an iPad also works
+				productFamilies = onlyExact ? ["iPhone"] : ["iPhone", "iPad"];
 				break;
 			case IPhoneDeviceType.IPad:
 				productFamilies = ["iPad"];
@@ -150,7 +150,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (string.IsNullOrEmpty (output))
 				return rv;
 
-			var deviceTypes = GetDeviceTypes ();
+			var deviceTypes = GetDeviceTypes (false);
 			if (deviceTypes is null)
 				return rv;
 
@@ -242,7 +242,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (SdkIsSimulator && string.IsNullOrEmpty (DeviceName)) {
 				var simruntime = $"com.apple.CoreSimulator.SimRuntime.{PlatformName}-{SdkVersion.Replace ('.', '-')}";
-				var simdevicetypes = GetDeviceTypes ();
+				var simdevicetypes = GetDeviceTypes (true);
 				string simdevicetype;
 
 				if (simdevicetypes?.Count > 0) {
@@ -311,8 +311,16 @@ namespace Xamarin.MacDev.Tasks {
 				sb.Add (StandardErrorPath);
 			}
 
-			foreach (var envvar in EnvironmentVariables)
-				sb.Add ("--setenv=" + envvar.ItemSpec);
+			foreach (var envvar in EnvironmentVariables) {
+				var hasValue = envvar.MetadataNames.Cast<string> ().Contains ("Value");
+				if (hasValue) {
+					var value = envvar.GetMetadata ("Value");
+					sb.Add ("--setenv=" + envvar.ItemSpec + "=" + value);
+
+				} else {
+					sb.Add ("--setenv=" + envvar.ItemSpec);
+				}
+			}
 
 			sb.Add (WaitForExit ? "--wait-for-exit:true" : "--wait-for-exit:false");
 

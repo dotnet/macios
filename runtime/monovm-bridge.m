@@ -170,9 +170,9 @@ xamarin_get_nativehandle_class ()
 }
 
 MonoClass *
-xamarin_get_nsobject_class ()
+xamarin_get_nsobject_class (bool allowAbsence)
 {
-	if (nsobject_class == NULL)
+	if (nsobject_class == NULL && !allowAbsence)
 		xamarin_assertion_message ("Internal consistency error, please file a bug (https://github.com/dotnet/macios/issues/new). Additional data: can't get the %s class because it's been linked away.\n", "NSObject");
 	return nsobject_class;
 }
@@ -225,7 +225,7 @@ xamarin_bridge_free_mono_signature (MonoMethodSignature **psig)
 bool
 xamarin_is_class_nsobject (MonoClass *cls)
 {
-	return mono_class_is_subclass_of (cls, xamarin_get_nsobject_class (), false);
+	return mono_class_is_subclass_of (cls, xamarin_get_nsobject_class (false), false);
 }
 
 bool

@@ -270,6 +270,11 @@ namespace PassKit {
 		[Export ("openPaymentSetup")]
 		void OpenPaymentSetup ();
 
+		/// <summary>Presents the standard interface for the specified merchant to set up credit cards for use with Apple Pay.</summary>
+		[iOS (26, 4), Mac (26, 4), MacCatalyst (26, 4), NoTV]
+		[Export ("openPaymentSetupWithMerchantIdentifier:")]
+		void OpenPaymentSetup (string merchantIdentifier);
+
 		/// <param name="primaryAccountIdentifier">To be added.</param>
 		///         <summary>Whether the app can add a card to Apple Pay for <paramref name="primaryAccountIdentifier" />.</summary>
 		///         <returns>To be added.</returns>
@@ -1152,6 +1157,11 @@ namespace PassKit {
 		[NullAllowed]
 		[Export ("attributionIdentifier")]
 		string AttributionIdentifier { get; set; }
+
+		/// <summary>Gets or sets a value indicating whether this is a delegated request.</summary>
+		[iOS (26, 4), Mac (26, 4), MacCatalyst (26, 4), NoTV]
+		[Export ("isDelegatedRequest")]
+		bool IsDelegatedRequest { get; set; }
 	}
 
 	/// <summary>Enumerates fields for a contact.</summary>
@@ -1995,6 +2005,11 @@ namespace PassKit {
 		[Mac (26, 2), iOS (26, 2), MacCatalyst (26, 2), NoTV]
 		[Field ("PKPaymentNetworkConecs")]
 		NSString Conecs { get; }
+
+		/// <summary>Represents the value associated with the constant PKPaymentNetworkElCorteIngles.</summary>
+		[Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4), NoTV]
+		[Field ("PKPaymentNetworkElCorteIngles")]
+		NSString ElCorteIngles { get; }
 	}
 
 	/// <summary>A button used to activate an Apple Pay payment. Available styles and types are defined by <see cref="PassKit.PKPaymentButtonStyle" /> and <see cref="PassKit.PKPaymentButtonType" />.</summary>
@@ -2733,6 +2748,11 @@ namespace PassKit {
 		[Static]
 		[Export ("disbursementCardUnsupportedError")]
 		NSError DisbursementCardUnsupportedError { get; }
+
+		/// <summary>Gets or sets a value indicating whether this is a delegated request.</summary>
+		[iOS (26, 4), Mac (26, 4), MacCatalyst (26, 4), NoTV]
+		[Export ("isDelegatedRequest")]
+		bool IsDelegatedRequest { get; set; }
 	}
 
 	[iOS (13, 4)]
@@ -2827,13 +2847,18 @@ namespace PassKit {
 
 		// headers say but PKAddSecureElementPassConfiguration is not supported for watch
 		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), NoTV]
-		[Export ("manufacturerIdentifier")]
+		[NullAllowed, Export ("manufacturerIdentifier")]
 		string ManufacturerIdentifier { get; set; }
 
 		// headers say but PKAddSecureElementPassConfiguration is not supported for watch
 		[iOS (16, 0), Mac (13, 0), MacCatalyst (16, 0), NoTV]
 		[NullAllowed, Export ("provisioningTemplateIdentifier", ArgumentSemantic.Strong)]
 		string ProvisioningTemplateIdentifier { get; set; }
+
+		/// <summary>Gets or sets the product plan identifier for the car key pass configuration.</summary>
+		[iOS (26, 4), Mac (26, 4), MacCatalyst (26, 4), NoTV]
+		[NullAllowed, Export ("productPlanIdentifier")]
+		string ProductPlanIdentifier { get; set; }
 	}
 
 	interface IPKAddSecureElementPassViewControllerDelegate { }
@@ -3586,6 +3611,30 @@ namespace PassKit {
 		[Static]
 		[Export ("veteranStatusElement")]
 		PKIdentityElement VeteranStatusElement { get; }
+
+		/// <summary>Gets the identity element for DHS temporary lawful status.</summary>
+		[iOS (26, 4), MacCatalyst (26, 4), NoMac, NoTV]
+		[Static]
+		[Export ("dhsTemporaryLawfulStatusElement")]
+		PKIdentityElement DhsTemporaryLawfulStatusElement { get; }
+
+		/// <summary>Gets the identity element for nationality.</summary>
+		[iOS (26, 4), MacCatalyst (26, 4), NoMac, NoTV]
+		[Static]
+		[Export ("nationalityElement")]
+		PKIdentityElement NationalityElement { get; }
+
+		/// <summary>Gets the identity element for place of birth.</summary>
+		[iOS (26, 4), MacCatalyst (26, 4), NoMac, NoTV]
+		[Static]
+		[Export ("placeOfBirthElement")]
+		PKIdentityElement PlaceOfBirthElement { get; }
+
+		/// <summary>Gets the identity element for signature or usual mark.</summary>
+		[iOS (26, 4), MacCatalyst (26, 4), NoMac, NoTV]
+		[Static]
+		[Export ("signatureUsualMarkElement")]
+		PKIdentityElement SignatureUsualMarkElement { get; }
 	}
 
 	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]

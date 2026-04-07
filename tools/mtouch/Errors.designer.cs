@@ -3444,11 +3444,20 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the more than one method named &apos;{3}&apos; was found in the type &apos;{4}..
+        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named &apos;{3}&apos; was found in the type &apos;{4}&apos;..
         /// </summary>
-        public static string MX2106_E {
+        public static string MX2106_E1 {
             get {
-                return ResourceManager.GetString("MX2106_E", resourceCulture);
+                return ResourceManager.GetString("MX2106_E1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named &apos;{3}&apos; was found in the type &apos;{4}&apos;..
+        /// </summary>
+        public static string MX2106_E2 {
+            get {
+                return ResourceManager.GetString("MX2106_E2", resourceCulture);
             }
         }
         

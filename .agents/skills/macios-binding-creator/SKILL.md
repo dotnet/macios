@@ -112,11 +112,15 @@ NSString ScheduleRequestedNotification { get; }
 
 > ❌ **NEVER** use `string.Empty` — use `""`. Never use `Array.Empty<T>()` — use `[]`.
 
+> ❌ **NEVER** add placeholder XML documentation text like `"To be added."` anywhere — not in `<remarks>`, `<summary>`, `<returns>`, `[Async (XmlDocs = ...)]`, or any other XML doc element. Either write meaningful documentation or omit the element entirely.
+
+> ❌ **NEVER** forget `[NullAllowed]` on `out NSError error` parameters. Every method that takes `NSError**` (bound as `out NSError error`) must use `[NullAllowed] out NSError error`. This applies to all error-returning methods — the error output is null on success.
+
 > ❌ **NEVER** forget `#nullable enable` at the top of every new C# file you create.
 
 > ❌ **NEVER** use non-blittable types (`bool`, `char`) as backing fields in structs. Use `byte` (for `bool`) and `ushort`/`short` (for `char`) with property accessors. See [references/binding-patterns.md](references/binding-patterns.md) for the correct pattern.
 
-> ❌ **NEVER** use `XAMCORE_5_0` for new code. `XAMCORE_5_0` is only for fixing breaking API changes on existing types that shipped in prior releases.
+> ❌ **NEVER** use `XAMCORE_5_0` for new code. `XAMCORE_5_0` is only for fixing breaking API changes on existing types that shipped in prior releases. However, when xtro reports a mismatch on an **existing** type (e.g., wrong enum backing type, missing `[Native]`), and fixing it directly would be a breaking change, you **must** use `#if XAMCORE_5_0` guards to preserve binary compatibility while queuing the fix for the future. Add a `.ignore` entry for the xtro mismatch. See [references/binding-patterns.md](references/binding-patterns.md) § "XAMCORE_5_0 Pattern for Existing Types".
 
 > ❌ **NEVER** use `#pragma warning disable 0169` for struct fields. Instead, wrap public methods and properties inside `#if !COREBUILD` (but NOT fields — bgen needs to know the struct size).
 

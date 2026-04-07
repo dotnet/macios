@@ -655,7 +655,6 @@ Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject`1(System.IntPtr, System.B
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject`1(System.IntPtr, System.Boolean, System.Type, System.Boolean, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject`1(System.IntPtr, System.Boolean, System.Type, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject`1(System.IntPtr, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetIsARM64CallingConvention()
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetMethodDeclaringType(ObjCRuntime.Runtime/MonoObject*)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetMethodFromToken(System.UInt32)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetMethodFullName(ObjCRuntime.Runtime/MonoObject*)

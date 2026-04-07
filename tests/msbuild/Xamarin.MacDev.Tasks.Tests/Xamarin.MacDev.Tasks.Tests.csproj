@@ -10,6 +10,7 @@
     <AssemblyOriginatorKeyFile>../../../product.snk</AssemblyOriginatorKeyFile>
     <NoWarn>$(NoWarn);MSB3277</NoWarn> <!-- warning MSB3277: Found conflicts between different versions of "System.Reflection.Metadata" that could not be resolved. -->
     <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <!--

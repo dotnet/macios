@@ -647,7 +647,6 @@ Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject(System.IntPtr, System.Boo
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject`1(System.IntPtr, System.Boolean, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject`1(System.IntPtr, System.Boolean, System.Type, System.Boolean, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject`1(System.IntPtr, System.Boolean, System.Type, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetIsARM64CallingConvention()
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetMethodAndObjectForSelector(System.IntPtr, System.IntPtr, System.SByte, System.IntPtr, System.IntPtr*, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetMethodForSelector(System.IntPtr, System.IntPtr, System.SByte, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.GetMethodFromToken(System.UInt32)

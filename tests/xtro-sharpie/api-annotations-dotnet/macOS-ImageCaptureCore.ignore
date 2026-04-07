@@ -107,6 +107,10 @@
 !unknown-native-enum! ICBrowsedDeviceType bound
 !wrong-enum-size! ICScannerFunctionalUnitState managed 4 vs native 8
 
+## ICReturnCodeOffset - fixing this is a breaking change (changing backing type from int to long)
+!missing-enum-native! ICReturnCodeOffset
+!wrong-enum-size! ICReturnCodeOffset managed 4 vs native 8
+
 ## new @required on existing protocols are breaking changes
 !incorrect-protocol-member! ICCameraDeviceDelegate::cameraDevice:didReceiveThumbnail:forItem:error: is REQUIRED and should be abstract
 !incorrect-protocol-member! ICCameraDeviceDelegate::cameraDevice:didReceiveThumbnailForItem: is OPTIONAL and should NOT be abstract

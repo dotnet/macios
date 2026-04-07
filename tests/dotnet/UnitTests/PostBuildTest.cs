@@ -234,6 +234,23 @@ namespace Xamarin.Tests {
 			Assert.That (pkgPath, Does.Not.Exist, "ipa/pkg creation");
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void DefaultPublishRid (ApplePlatform platform, string expectedRuntimeIdentifier)
+		{
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, expectedRuntimeIdentifier);
+
+			var project_path = GetProjectPath (project, expectedRuntimeIdentifier, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+
+			var properties = GetDefaultProperties ();
+			var rv = DotNet.AssertPublish (project_path, properties);
+			Assert.That (appPath, Does.Exist, "App existence");
+		}
+
 		[Test]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]

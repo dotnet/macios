@@ -58,7 +58,7 @@ namespace UIKit {
 		/// <summary>Returns a vibrancy effect with the specified style for use with the notification center.</summary>
 		/// <param name="vibrancyStyle">The vibrancy effect style to use.</param>
 		/// <returns>A <see cref="UIVibrancyEffect" /> with the specified style for the notification center.</returns>
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("tvos")]
 		static public UIVibrancyEffect CreateWidgetEffectForNotificationCenter (UIVibrancyEffectStyle vibrancyStyle)

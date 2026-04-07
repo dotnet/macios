@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 
+using Microsoft.DotNet.XHarness.Common;
 using Microsoft.DotNet.XHarness.Common.Logging;
 using Microsoft.DotNet.XHarness.iOS.Shared;
 using Microsoft.DotNet.XHarness.iOS.Shared.Hardware;
@@ -430,7 +431,7 @@ namespace Xharness.Jenkins.Reports {
 								OrderBy (v => v.Description).
 								ThenBy (v => v.FullPath).
 								ToList ();
-							var hasStructuredTestResults = query.Any (v => (v.Description == LogType.NUnitResult.ToString () || v.Description == LogType.XmlLog.ToString () || v.Description == LogType.TrxLog.ToString ()) && File.Exists (v.FullPath) && new FileInfo (v.FullPath).Length > 0);
+							var hasStructuredTestResults = query.Any (v => HasStructuredTestReport (v.FullPath, v.Description));
 							var hasListedErrors = false;
 							foreach (var fileLog in query) {
 								var log = fileLog;
@@ -554,8 +555,9 @@ namespace Xharness.Jenkins.Reports {
 											if (TryWriteStructuredTestReport (writer, fileLog.FullPath, log.Description)) {
 												hasListedErrors = true;
 											} else if (resultParser.IsValidXml (fileLog.FullPath, out var jargon)) {
-												resultParser.GenerateTestReport (writer, fileLog.FullPath, jargon);
-												hasListedErrors = true;
+												// Some test runs produce multiple XML files. Keep looking until we actually
+												// render a failure summary, otherwise a wrapper XML can hide the useful one.
+												hasListedErrors = TryWriteGeneratedTestReport (writer, fileLog.FullPath, jargon);
 											}
 										}
 									} catch (Exception ex) {
@@ -566,8 +568,7 @@ namespace Xharness.Jenkins.Reports {
 										if (!hasListedErrors && TryWriteStructuredTestReport (writer, fileLog.FullPath, log.Description)) {
 											hasListedErrors = true;
 										} else if (!hasListedErrors && resultParser.IsValidXml (fileLog.FullPath, out var jargon)) {
-											resultParser.GenerateTestReport (writer, fileLog.FullPath, jargon);
-											hasListedErrors = true;
+											hasListedErrors = TryWriteGeneratedTestReport (writer, fileLog.FullPath, jargon);
 										}
 									} catch (Exception ex) {
 										writer.WriteLine ($"<span style='padding-left: 15px;'>Could not parse {log.Description}: {ex.Message?.AsHtml ()}</span><br />");
@@ -652,7 +653,7 @@ namespace Xharness.Jenkins.Reports {
 			return "application/octet-stream";
 		}
 
-		internal static bool TryWriteStructuredTestReport (StreamWriter writer, string filePath, string logDescription)
+		internal static bool TryWriteStructuredTestReport (StreamWriter writer, string filePath, string? logDescription)
 		{
 			IList<TrxParser.TrxTestResult>? failedTests;
 			bool parsed;
@@ -709,6 +710,40 @@ namespace Xharness.Jenkins.Reports {
 				.Select ((v) => $"<span style='color: {v.GetTestColor ()}'>{v.ExecutionResult.ToString ()}</span>")
 				.ToArray ();
 			return " (" + string.Join ("; ", results) + ")";
+		}
+
+		bool TryWriteGeneratedTestReport (StreamWriter writer, string path, XmlResultJargon jargon)
+		{
+			using var ms = new MemoryStream ();
+			using (var capturedWriter = new StreamWriter (ms, new UTF8Encoding (encoderShouldEmitUTF8Identifier: false), 1024, leaveOpen: true)) {
+				resultParser.GenerateTestReport (capturedWriter, path, jargon);
+			}
+
+			if (ms.Length == 0)
+				return false;
+
+			ms.Position = 0;
+			using var reader = new StreamReader (ms);
+			var report = reader.ReadToEnd ();
+			if (string.IsNullOrWhiteSpace (report))
+				return false;
+
+			writer.Write (report);
+			return true;
+		}
+
+		bool HasStructuredTestReport (string path, string? logDescription)
+		{
+			if ((logDescription != LogType.NUnitResult.ToString () && logDescription != LogType.XmlLog.ToString () && logDescription != LogType.TrxLog.ToString ()) || !File.Exists (path) || new FileInfo (path).Length == 0)
+				return false;
+
+			using var ms = new MemoryStream ();
+			using var writer = new StreamWriter (ms, new UTF8Encoding (encoderShouldEmitUTF8Identifier: false), 1024, leaveOpen: true);
+
+			if (TryWriteStructuredTestReport (writer, path, logDescription))
+				return true;
+
+			return resultParser.IsValidXml (path, out var jargon) && TryWriteGeneratedTestReport (writer, path, jargon);
 		}
 	}
 }

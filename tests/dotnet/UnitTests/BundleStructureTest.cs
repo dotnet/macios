@@ -127,7 +127,9 @@ namespace Xamarin.Tests {
 					// and the app's R2R framework (BundleStructure.framework).
 					if (v!.Contains (".framework")) {
 						var fwIdx = v.IndexOf (".framework", StringComparison.Ordinal);
-						var slashIdx = fwIdx > 0 ? v.LastIndexOf ('/', fwIdx - 1) : -1;
+						// Zip entries from remote Windows builds use '\' separators, while local
+						// macOS bundle checks use '/'. Handle both when extracting the framework name.
+						var slashIdx = fwIdx > 0 ? v.LastIndexOfAny ([Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar], fwIdx - 1) : -1;
 						var frameworkName = v.Substring (slashIdx + 1, fwIdx - slashIdx - 1);
 						if (frameworkName.StartsWith ("lib", StringComparison.Ordinal) || frameworkName == "BundleStructure")
 							return true;

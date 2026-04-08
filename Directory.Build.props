@@ -25,8 +25,8 @@
 
 		<!-- Always enable nullability -->
 		<Nullable>enable</Nullable>
-		<!-- And make any nullability issues show up as errors -->
-		<WarningsAsErrors>Nullable</WarningsAsErrors>
+		<!-- We're warning-free, so let's make sure we stay that way. This includes nullability warnings. -->
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
 	<Import Project="Build.props" Condition="Exists('Build.props')" />
 </Project>

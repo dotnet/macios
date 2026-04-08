@@ -5,7 +5,6 @@
     <RootNamespace>bgen_tests</RootNamespace>
 
     <IsPackable>false</IsPackable>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DefaultItemExcludesInProjectFolder>$(DefaultItemExcludesInProjectFolder);tests/**</DefaultItemExcludesInProjectFolder>
   </PropertyGroup>
 

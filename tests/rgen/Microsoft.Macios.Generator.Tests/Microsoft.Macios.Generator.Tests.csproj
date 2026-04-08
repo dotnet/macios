@@ -3,7 +3,6 @@
     <PropertyGroup>
         <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
         <IsPackable>false</IsPackable>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <NoWarn>NU1608</NoWarn>
         <RootNamespace>Microsoft.Macios.Generator.Tests</RootNamespace>
         <DefineConstants>RGEN</DefineConstants>

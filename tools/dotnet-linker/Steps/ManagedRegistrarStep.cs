@@ -179,8 +179,31 @@ namespace Xamarin.Linker {
 
 			// Figure out if there are any types we need to process
 			var process = false;
+			var isNSObject = IsNSObject (type);
 
-			process |= IsNSObject (type);
+			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface) {
+				if (isNSObject) {
+					var ctorRef = ManagedRegistrarLookupTablesStep.FindNSObjectConstructor (type);
+					if (ctorRef is not null) {
+						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
+
+						// Implement INSObjectFactory._Xamarin_ConstructNSObject
+						ManagedRegistrarLookupTablesStep.ImplementConstructNSObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+						// Implement INativeObject._Xamarin_ConstructINativeObject
+						ManagedRegistrarLookupTablesStep.ImplementConstructINativeObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+					}
+				} else if (type.IsNativeObject ()) {
+					var ctorRef = ManagedRegistrarLookupTablesStep.FindINativeObjectConstructor (type);
+					if (ctorRef is not null) {
+						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
+
+						// Implement INativeObject._Xamarin_ConstructINativeObject
+						ManagedRegistrarLookupTablesStep.ImplementConstructINativeObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+					}
+				}
+			}
+
+			process |= isNSObject;
 			process |= StaticRegistrar.GetCategoryAttribute (type) is not null;
 
 			var registerAttribute = StaticRegistrar.GetRegisterAttribute (type);

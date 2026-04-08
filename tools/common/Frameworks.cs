@@ -619,6 +619,7 @@ public class Frameworks : Dictionary<string, Framework> {
 			var v16_1 = new Version (16, 1);
 			var v18_0 = new Version (18, 0);
 			var v26_0 = new Version (26, 0);
+			var v16_0 = new Version (16, 0);
 			foreach (var f in catalyst_frameworks.Values) {
 				switch (f.Name) {
 				// These frameworks were added to Catalyst after they were added to iOS, so we have to adjust the Versions fields
@@ -640,6 +641,9 @@ public class Frameworks : Dictionary<string, Framework> {
 				case "Cinematic":
 					f.Version = v26_0;
 					break;
+				case "MediaSetup":
+					f.Version = v16_0;
+					break;
 				case "BrowserEngineKit":
 				case "DeviceDiscoveryExtension":
 					f.Version = v18_0;
@@ -648,7 +652,6 @@ public class Frameworks : Dictionary<string, Framework> {
 				case "DeviceDiscoveryUI": // xtro and introspection says it's not in Mac Catalyst, Apple's website says it is. For now, listen to xtro and introspection, until proven otherwise.
 				case "OpenGLES":
 				case "NewsstandKit":
-				case "MediaSetup":
 				case "NotificationCenter":
 				case "GLKit":
 				case "VideoSubscriberAccount":

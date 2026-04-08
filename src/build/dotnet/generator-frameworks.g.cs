@@ -470,6 +470,7 @@ partial class Frameworks {
 		"MapKit",
 		"MediaAccessibility",
 		"MediaPlayer",
+		"MediaSetup",
 		"MediaToolbox",
 		"Messages",
 		"MessageUI",

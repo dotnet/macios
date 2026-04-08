@@ -11,21 +11,53 @@ namespace Xamarin.Tests {
 	public class AppSizeTest : TestBaseClass {
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void MonoVM (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM", true, new Dictionary<string, string> () { { "UseMonoRuntime", "true" } });
+			var dict = new Dictionary<string, string> () {
+				{ "UseMonoRuntime", "true" },
+				{ "NoDSymUtil", "false" },
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM", true, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void MonoVM_Interpreter (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM-interpreter", true, new Dictionary<string, string> () { { "UseInterpreter", "true" }, { "UseMonoRuntime", "true" } });
+			var dict = new Dictionary<string, string> () {
+				{ "UseInterpreter", "true" },
+				{ "UseMonoRuntime", "true" },
+				{ "NoDSymUtil", "false" },
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM-interpreter", true, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
 		public void NativeAOT (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, new Dictionary<string, string> () { { "PublishAot", "true" }, { "_IsPublishing", "true" } });
+			var dict = new Dictionary<string, string> () {
+				{ "PublishAot", "true" },
+				{ "_IsPublishing", "true" },
+				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict);
+		}
+
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
+		public void CoreCLR_Interpreter (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
+		{
+			var dict = new Dictionary<string, string> () {
+				{ "UseMonoRuntime", "false" },
+				{ "PublishReadyToRun", "false" },
+				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]

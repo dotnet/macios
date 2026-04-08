@@ -175,7 +175,8 @@ namespace Xamarin.Tests {
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// Verify that we don't create files with long paths inside bin/obj
-			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration);
+			// CoreCLR adds longer framework names in bin/obj (for example libSystem.Security.Cryptography.Native.Apple.framework).
+			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration, maxLength: isCoreCLR ? 180 : 118);
 
 			// touch AppDelegate.cs, and rebuild should succeed and do the right thing
 			var appDelegatePath = Path.Combine (project_dir, "AppDelegate.cs");

@@ -60,6 +60,18 @@ namespace Xamarin.Tests {
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict);
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void CoreCLR_Interpreter (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", true, new Dictionary<string, string> () { { "UseMonoRuntime", "false" }, { "PublishReadyToRun", "false" } });
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void CoreCLR_R2R (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-R2R", true, new Dictionary<string, string> () { { "UseMonoRuntime", "false" }, { "PublishReadyToRun", "true" } });
+		}
+
 		// This test will build the SizeTestApp, and capture the resulting app size.
 		// The app size is stored in a file on disk, so we can make sure app size doesn't change (or at least we notice it and we can update the known state).
 		// There's a tolerance in the test for minor app size variances, so if this test fails, the current change might not mean there's a big change,

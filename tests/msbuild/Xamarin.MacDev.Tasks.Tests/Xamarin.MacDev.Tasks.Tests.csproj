@@ -9,7 +9,8 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../../product.snk</AssemblyOriginatorKeyFile>
     <NoWarn>$(NoWarn);MSB3277</NoWarn> <!-- warning MSB3277: Found conflicts between different versions of "System.Reflection.Metadata" that could not be resolved. -->
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <NoWarn>$(NoWarn);CS1685</NoWarn> <!-- Ignore the duplicate ImmutableArray<T> warning caused by the ILMerged Xamarin.MacDev.Tasks assembly. -->
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

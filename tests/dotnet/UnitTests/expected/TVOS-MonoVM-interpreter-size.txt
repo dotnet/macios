@@ -1,8 +1,8 @@
-AppBundleSize: 3,614,883 bytes (3,530.2 KB = 3.4 MB)
+AppBundleSize: 3,614,876 bytes (3,530.2 KB = 3.4 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 _CodeSignature/CodeResources: 3,999 bytes (3.9 KB = 0.0 MB)
 archived-expanded-entitlements.xcent: 384 bytes (0.4 KB = 0.0 MB)
-Info.plist: 1,119 bytes (1.1 KB = 0.0 MB)
+Info.plist: 1,112 bytes (1.1 KB = 0.0 MB)
 Microsoft.tvOS.dll: 154,112 bytes (150.5 KB = 0.1 MB)
 PkgInfo: 8 bytes (0.0 KB = 0.0 MB)
 runtimeconfig.bin: 1,405 bytes (1.4 KB = 0.0 MB)

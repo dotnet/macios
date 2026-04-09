@@ -225,7 +225,7 @@ namespace Xamarin.Tests {
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// Verify that we don't create files with long paths inside bin/obj
-			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration);
+			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration, maxLength: maxPathLength);
 		}
 
 		[Category ("RemoteWindows")]

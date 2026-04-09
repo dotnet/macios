@@ -1,3 +1,4 @@
+#if !__MACOS__
 //
 // ARSkeleton3D.cs: Nicer code for ARSkeleton3D
 //
@@ -37,3 +38,5 @@ namespace ARKit {
 		}
 	}
 }
+
+#endif // !__MACOS__

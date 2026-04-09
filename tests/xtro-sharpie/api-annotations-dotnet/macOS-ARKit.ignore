@@ -1,0 +1,47 @@
+#
+# OS_OBJECT_DECL protocols - these are ObjC protocol declarations generated
+# by the OS_OBJECT_DECL macro for the C API types. They are bound as C#
+# classes (not protocols) following the same pattern as Network and Security.
+#
+!missing-protocol! OS_ar_anchor not bound
+!missing-protocol! OS_ar_authorization_result not bound
+!missing-protocol! OS_ar_authorization_results not bound
+!missing-protocol! OS_ar_data_provider not bound
+!missing-protocol! OS_ar_data_providers not bound
+!missing-protocol! OS_ar_device not bound
+!missing-protocol! OS_ar_device_anchor not bound
+!missing-protocol! OS_ar_error not bound
+!missing-protocol! OS_ar_session not bound
+!missing-protocol! OS_ar_strings not bound
+!missing-protocol! OS_ar_trackable_anchor not bound
+!missing-protocol! OS_ar_world_anchor not bound
+!missing-protocol! OS_ar_world_anchors not bound
+!missing-protocol! OS_ar_world_tracking_configuration not bound
+!missing-protocol! OS_ar_world_tracking_provider not bound
+
+#
+# Block-based API variants - we bind the function pointer (_f) variants
+# instead, which are more natural from C#.
+#
+!missing-pinvoke! ar_authorization_results_enumerate_results is not bound
+!missing-pinvoke! ar_data_providers_enumerate_data_providers is not bound
+!missing-pinvoke! ar_session_set_data_provider_state_change_handler is not bound
+
+#
+# Variadic C function - cannot be directly called from C#.
+# Use ar_data_providers_create() + ar_data_providers_add_data_provider() instead.
+#
+!missing-pinvoke! ar_data_providers_create_with_data_providers is not bound
+
+#
+# Manually bound enums and fields - xtro does not detect manual bindings
+# that are not processed by bgen.
+#
+!missing-enum! ar_authorization_status_t not bound
+!missing-enum! ar_authorization_type_t not bound
+!missing-enum! ar_data_provider_state_t not bound
+!missing-enum! ar_device_anchor_query_status_t not bound
+!missing-enum! ar_device_anchor_tracking_state_t not bound
+!missing-enum! ar_session_error_code_t not bound
+!missing-enum! ar_world_tracking_error_code_t not bound
+!missing-field! ar_error_domain not bound

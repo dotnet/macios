@@ -159,6 +159,14 @@ APPKIT_SOURCES = \
 # ARKit
 
 ARKIT_SOURCES = \
+	ARKit/ARObject.cs \
+	ARKit/AREnums.cs \
+	ARKit/ARError_C.cs \
+	ARKit/ARAnchor_C.cs \
+	ARKit/ARAuthorizationResult.cs \
+	ARKit/ARDataProvider.cs \
+	ARKit/ARSession_C.cs \
+	ARKit/ARWorldTracking.cs \
 	ARKit/ARFaceGeometry.cs \
 	ARKit/ARPlaneGeometry.cs \
 	ARKit/ARPointCloud.cs \
@@ -2001,6 +2009,7 @@ MACOS_FRAMEWORKS =          \
 	AdSupport               \
 	AppKit XKit             \
 	AppTrackingTransparency \
+	ARKit                   \
 	AudioToolbox            \
 	AudioUnit               \
 	AutomaticAssessmentConfiguration \

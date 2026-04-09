@@ -1,3 +1,4 @@
+#if !__MACOS__
 //
 // ARFaceGeometry.cs: Nicer code for ARFaceGeometry
 //
@@ -62,3 +63,5 @@ namespace ARKit {
 		}
 	}
 }
+
+#endif // !__MACOS__

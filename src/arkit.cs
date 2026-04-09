@@ -1,3 +1,4 @@
+#if !__MACOS__
 //
 // ARKit bindings
 //
@@ -2745,3 +2746,5 @@ namespace ARKit {
 
 
 }
+
+#endif // !__MACOS__

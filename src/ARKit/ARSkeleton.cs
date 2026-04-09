@@ -1,3 +1,4 @@
+#if !__MACOS__
 using System.ComponentModel;
 
 #nullable enable
@@ -23,3 +24,5 @@ namespace ARKit {
 		}
 	}
 }
+
+#endif // !__MACOS__

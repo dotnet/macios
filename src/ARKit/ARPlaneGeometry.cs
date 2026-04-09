@@ -1,3 +1,4 @@
+#if !__MACOS__
 //
 // ARPlaneGeometry.cs: Nicer code for ARPlaneGeometry
 //
@@ -74,3 +75,5 @@ namespace ARKit {
 		}
 	}
 }
+
+#endif // !__MACOS__

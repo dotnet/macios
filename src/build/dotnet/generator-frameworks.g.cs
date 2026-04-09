@@ -162,6 +162,7 @@ partial class Frameworks {
 		"AdSupport",
 		"AppKit",
 		"AppTrackingTransparency",
+		"ARKit",
 		"AudioToolbox",
 		"AudioUnit",
 		"AuthenticationServices",

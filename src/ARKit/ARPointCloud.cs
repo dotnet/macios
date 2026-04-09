@@ -1,3 +1,4 @@
+#if !__MACOS__
 //
 // ARPointCloud.cs: Nicer code for ARPointCloud
 //
@@ -43,3 +44,5 @@ namespace ARKit {
 		}
 	}
 }
+
+#endif // !__MACOS__

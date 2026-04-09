@@ -236,20 +236,13 @@ namespace Xamarin.MacDev.Tasks {
 
 		string SelectSimulatorDevice ()
 		{
-			if (Devices.Length > 0) {
-				var simulator = Devices.FirstOrDefault (v => string.Equals (v.GetMetadata ("Type"), "Simulator", StringComparison.OrdinalIgnoreCase));
-				if (simulator is not null)
-					return string.IsNullOrEmpty (simulator.GetMetadata ("UDID")) ? simulator.ItemSpec : simulator.GetMetadata ("UDID");
+			var simulator = Devices.FirstOrDefault (v => string.Equals (v.GetMetadata ("Type"), "Simulator", StringComparison.OrdinalIgnoreCase));
+			if (simulator is null) {
+				Log.LogError ("The 'Devices' item group does not contain any simulators.");
+				return string.Empty;
 			}
 
-			return GetSimulatorDevices ()
-				.Where (v => v.IsCompatible && string.IsNullOrEmpty (v.NotApplicableBecause))
-				.OrderByDescending (v => v.RuntimeVersion)
-				.ThenByDescending (v => v.DeviceTypeOrder)
-				.ThenBy (v => v.Name, StringComparer.Ordinal)
-				.ThenBy (v => v.Identifier, StringComparer.Ordinal)
-				.Select (v => v.Identifier)
-				.FirstOrDefault () ?? string.Empty;
+			return string.IsNullOrEmpty (simulator.GetMetadata ("UDID")) ? simulator.ItemSpec : simulator.GetMetadata ("UDID");
 		}
 
 		List<(string Identifier, string Name, string? NotApplicableBecause)> GetDeviceListForSimulator ()
@@ -459,6 +452,11 @@ namespace Xamarin.MacDev.Tasks {
 			if (!string.IsNullOrEmpty (Help)) {
 				ShowHelp ();
 				return !Log.HasLoggedErrors;
+			}
+
+			if (Devices.Length == 0) {
+				Log.LogError ("The 'Devices' item group is empty.");
+				return false;
 			}
 
 			MlaunchArguments = GenerateCommandLineCommands ();

@@ -40,6 +40,23 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (task.MlaunchArguments, Does.Contain ("--device :v2:udid=SIM-2"));
 		}
 
+		[Test]
+		public void ErrorsIfDevicesItemGroupIsEmpty ()
+		{
+			var task = CreateTask<GetMlaunchArguments> ();
+			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (ApplePlatform.iOS).ToString ();
+			task.AppManifestPath = CreateAppManifest (1, 2);
+			task.LaunchApp = "MySimpleApp.app";
+			task.MlaunchPath = "/usr/bin/false";
+			task.SdkIsSimulator = true;
+			task.SdkVersion = "26.2";
+			task.WaitForExit = true;
+
+			ExecuteTask (task, expectedErrorCount: 1);
+
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Does.Contain ("The 'Devices' item group is empty."));
+		}
+
 		static TaskItem [] CreateDevices (params (string Udid, string Name, string Type) [] devices)
 		{
 			return devices.Select (v => {

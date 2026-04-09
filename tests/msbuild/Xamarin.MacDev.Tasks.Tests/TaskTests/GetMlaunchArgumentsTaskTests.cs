@@ -16,28 +16,60 @@ namespace Xamarin.MacDev.Tasks {
 	public class GetMlaunchArgumentsTaskTests : TestBase {
 
 		[Test]
-		public void SimulatorRuntimeSelection ()
+		public void SelectSimulatorDeviceSortsByRuntimeDeviceTypeNameAndUdid ()
 		{
-			AssertSimulatorRuntime (
+			AssertSelectedSimulator (
 				CreateSimulatorXml (
-					("com.apple.CoreSimulator.SimRuntime.iOS-26-2", 1704448),
-					("com.apple.CoreSimulator.SimRuntime.iOS-26-3", 1704705)
+					runtimes: [
+						("com.apple.CoreSimulator.SimRuntime.iOS-26-2", 1704448),
+						("com.apple.CoreSimulator.SimRuntime.iOS-26-3", 1704705),
+					],
+					deviceTypes: [
+						("com.apple.CoreSimulator.SimDeviceType.iPhone-16", "iPhone", 1704448, 4294967295),
+						("com.apple.CoreSimulator.SimDeviceType.iPhone-17", "iPhone", 1704705, 4294967295),
+					],
+					availableDevices: [
+						("UDID-5", "A Older Runtime", "com.apple.CoreSimulator.SimRuntime.iOS-26-2", "com.apple.CoreSimulator.SimDeviceType.iPhone-17"),
+						("UDID-4", "A Older Device Type", "com.apple.CoreSimulator.SimRuntime.iOS-26-3", "com.apple.CoreSimulator.SimDeviceType.iPhone-16"),
+						("UDID-3", "B Name", "com.apple.CoreSimulator.SimRuntime.iOS-26-3", "com.apple.CoreSimulator.SimDeviceType.iPhone-17"),
+						("UDID-2", "A Name", "com.apple.CoreSimulator.SimRuntime.iOS-26-3", "com.apple.CoreSimulator.SimDeviceType.iPhone-17"),
+						("UDID-1", "A Name", "com.apple.CoreSimulator.SimRuntime.iOS-26-3", "com.apple.CoreSimulator.SimDeviceType.iPhone-17"),
+					]
 				),
-				"com.apple.CoreSimulator.SimRuntime.iOS-26-2");
-
-			AssertSimulatorRuntime (
-				CreateSimulatorXml (
-					("com.apple.CoreSimulator.SimRuntime.iOS-26-1", 1704192),
-					("com.apple.CoreSimulator.SimRuntime.iOS-26-3", 1704705)
-				),
-				"com.apple.CoreSimulator.SimRuntime.iOS-26-3");
+				"UDID-1",
+				[1, 2]);
 		}
 
-		void AssertSimulatorRuntime (string simulatorXml, string expectedRuntime)
+		[Test]
+		public void SelectSimulatorDeviceFiltersNonApplicableDevices ()
+		{
+			AssertSelectedSimulator (
+				CreateSimulatorXml (
+					runtimes: [
+						("com.apple.CoreSimulator.SimRuntime.iOS-26-2", 1704448),
+						("com.apple.CoreSimulator.SimRuntime.iOS-26-3", 1704705),
+						("com.apple.CoreSimulator.SimRuntime.tvOS-26-2", 1704448),
+					],
+					deviceTypes: [
+						("com.apple.CoreSimulator.SimDeviceType.iPhone-17", "iPhone", 1704705, 4294967295),
+						("com.apple.CoreSimulator.SimDeviceType.iPad-Pro", "iPad", 1704448, 4294967295),
+						("com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K", "Apple TV", 1704448, 4294967295),
+					],
+					availableDevices: [
+						("UDID-IPHONE", "Newest iPhone", "com.apple.CoreSimulator.SimRuntime.iOS-26-3", "com.apple.CoreSimulator.SimDeviceType.iPhone-17"),
+						("UDID-TV", "Apple TV", "com.apple.CoreSimulator.SimRuntime.tvOS-26-2", "com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K"),
+						("UDID-IPAD", "Newest iPad", "com.apple.CoreSimulator.SimRuntime.iOS-26-2", "com.apple.CoreSimulator.SimDeviceType.iPad-Pro"),
+					]
+				),
+				"UDID-IPAD",
+				[2]);
+		}
+
+		void AssertSelectedSimulator (string simulatorXml, string expectedUdid, int [] deviceFamilies)
 		{
 			var task = CreateTask<GetMlaunchArguments> ();
 			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (ApplePlatform.iOS).ToString ();
-			task.AppManifestPath = CreateAppManifest ();
+			task.AppManifestPath = CreateAppManifest (deviceFamilies);
 			task.LaunchApp = "MySimpleApp.app";
 			task.MlaunchPath = CreateMlaunch (simulatorXml);
 			task.SdkIsSimulator = true;
@@ -46,23 +78,25 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			Assert.That (task.MlaunchArguments, Does.Contain ($"--device :v2:runtime={expectedRuntime},devicetype=com.apple.CoreSimulator.SimDeviceType.iPhone-17"));
+			Assert.That (task.MlaunchArguments, Does.Contain ($"--device :v2:udid={expectedUdid}"));
 		}
 
-		string CreateAppManifest ()
+		string CreateAppManifest (int [] deviceFamilies)
 		{
 			var appManifestPath = Path.Combine (Cache.CreateTemporaryDirectory ("msbuild-tests"), "Info.plist");
-			File.WriteAllText (appManifestPath, @"<?xml version=""1.0"" encoding=""UTF-8""?>
-<!DOCTYPE plist PUBLIC ""-//Apple//DTD PLIST 1.0//EN"" ""http://www.apple.com/DTDs/PropertyList-1.0.dtd"">
-<plist version=""1.0"">
-<dict>
-	<key>UIDeviceFamily</key>
-	<array>
-		<integer>1</integer>
-	</array>
-</dict>
-</plist>
-");
+			var plist = new StringBuilder ();
+			plist.AppendLine (@"<?xml version=""1.0"" encoding=""UTF-8""?>");
+			plist.AppendLine (@"<!DOCTYPE plist PUBLIC ""-//Apple//DTD PLIST 1.0//EN"" ""http://www.apple.com/DTDs/PropertyList-1.0.dtd"">");
+			plist.AppendLine (@"<plist version=""1.0"">");
+			plist.AppendLine ("<dict>");
+			plist.AppendLine ("\t<key>UIDeviceFamily</key>");
+			plist.AppendLine ("\t<array>");
+			foreach (var family in deviceFamilies)
+				plist.AppendLine ($"\t\t<integer>{family}</integer>");
+			plist.AppendLine ("\t</array>");
+			plist.AppendLine ("</dict>");
+			plist.AppendLine ("</plist>");
+			File.WriteAllText (appManifestPath, plist.ToString ());
 			return appManifestPath;
 		}
 
@@ -84,7 +118,10 @@ namespace Xamarin.MacDev.Tasks {
 			return mlaunchPath;
 		}
 
-		string CreateSimulatorXml (params (string Identifier, long Version) [] runtimes)
+		string CreateSimulatorXml (
+			(string Identifier, long Version) [] runtimes,
+			(string Identifier, string ProductFamilyId, long MinRuntimeVersion, long MaxRuntimeVersion) [] deviceTypes,
+			(string Udid, string Name, string Runtime, string DeviceType) [] availableDevices)
 		{
 			var xml = new StringBuilder ();
 			xml.AppendLine ("<MTouch>");
@@ -98,19 +135,23 @@ namespace Xamarin.MacDev.Tasks {
 			}
 			xml.AppendLine ("    </SupportedRuntimes>");
 			xml.AppendLine ("    <SupportedDeviceTypes>");
-			xml.AppendLine ("      <SimDeviceType>");
-			xml.AppendLine ("        <Identifier>com.apple.CoreSimulator.SimDeviceType.iPhone-16</Identifier>");
-			xml.AppendLine ("        <ProductFamilyId>iPhone</ProductFamilyId>");
-			xml.AppendLine ("        <MinRuntimeVersion>1704448</MinRuntimeVersion>");
-			xml.AppendLine ("        <MaxRuntimeVersion>4294967295</MaxRuntimeVersion>");
-			xml.AppendLine ("      </SimDeviceType>");
-			xml.AppendLine ("      <SimDeviceType>");
-			xml.AppendLine ("        <Identifier>com.apple.CoreSimulator.SimDeviceType.iPhone-17</Identifier>");
-			xml.AppendLine ("        <ProductFamilyId>iPhone</ProductFamilyId>");
-			xml.AppendLine ("        <MinRuntimeVersion>1704705</MinRuntimeVersion>");
-			xml.AppendLine ("        <MaxRuntimeVersion>4294967295</MaxRuntimeVersion>");
-			xml.AppendLine ("      </SimDeviceType>");
+			foreach (var deviceType in deviceTypes) {
+				xml.AppendLine ("      <SimDeviceType>");
+				xml.AppendLine ($"        <Identifier>{deviceType.Identifier}</Identifier>");
+				xml.AppendLine ($"        <ProductFamilyId>{deviceType.ProductFamilyId}</ProductFamilyId>");
+				xml.AppendLine ($"        <MinRuntimeVersion>{deviceType.MinRuntimeVersion}</MinRuntimeVersion>");
+				xml.AppendLine ($"        <MaxRuntimeVersion>{deviceType.MaxRuntimeVersion}</MaxRuntimeVersion>");
+				xml.AppendLine ("      </SimDeviceType>");
+			}
 			xml.AppendLine ("    </SupportedDeviceTypes>");
+			xml.AppendLine ("    <AvailableDevices>");
+			foreach (var device in availableDevices) {
+				xml.AppendLine ($"      <SimDevice UDID=\"{device.Udid}\" Name=\"{device.Name}\">");
+				xml.AppendLine ($"        <SimRuntime>{device.Runtime}</SimRuntime>");
+				xml.AppendLine ($"        <SimDeviceType>{device.DeviceType}</SimDeviceType>");
+				xml.AppendLine ("      </SimDevice>");
+			}
+			xml.AppendLine ("    </AvailableDevices>");
 			xml.AppendLine ("  </Simulator>");
 			xml.AppendLine ("</MTouch>");
 			return xml.ToString ();

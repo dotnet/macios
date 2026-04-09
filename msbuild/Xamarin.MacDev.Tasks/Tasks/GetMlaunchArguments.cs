@@ -58,10 +58,19 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		List<string>? GetDeviceTypes (bool onlyExact)
+		sealed class SimulatorDeviceInfo {
+			public string Identifier { get; set; } = string.Empty;
+			public string Name { get; set; } = string.Empty;
+			public long RuntimeVersion { get; set; }
+			public int DeviceTypeOrder { get; set; } = int.MinValue;
+			public bool IsCompatible { get; set; }
+			public string? NotApplicableBecause { get; set; }
+		}
+
+		List<(long Min, long Max, string Identifier)>? GetDeviceTypes ()
 		{
 			var output = GetSimulatorList ();
-			if (output is null)
+			if (string.IsNullOrEmpty (output))
 				return null;
 
 			// Which product family are we looking for?
@@ -100,55 +109,31 @@ namespace Xamarin.MacDev.Tasks {
 					continue;
 				deviceTypes.Add ((minRuntimeVersion, maxRuntimeVersion, identifier));
 			}
-			// Sort by minRuntimeVersion, this is a rudimentary way of sorting so that the last device is at the end.
-			deviceTypes.Sort ((a, b) => a.Min.CompareTo (b.Min));
-			// Return the sorted list
-			return deviceTypes.Select (v => v.Identifier).ToList ();
-		}
 
-		List<(long Version, string Identifier)>? GetSimulatorRuntimes ()
-		{
-			var output = GetSimulatorList ();
-			if (string.IsNullOrEmpty (output))
-				return null;
-
-			var xml = new XmlDocument ();
-			xml.LoadXml (output);
-
-			var runtimePrefix = $"com.apple.CoreSimulator.SimRuntime.{PlatformName}-";
-			var nodes = xml.SelectNodes ("/MTouch/Simulator/SupportedRuntimes/SimRuntime")?.Cast<XmlNode> () ?? Array.Empty<XmlNode> ();
-			var runtimes = new List<(long Version, string Identifier)> ();
-			foreach (var node in nodes) {
-				var identifier = node.SelectSingleNode ("Identifier")?.InnerText ?? string.Empty;
-				if (!identifier.StartsWith (runtimePrefix, StringComparison.Ordinal))
-					continue;
-
-				var versionValue = node.SelectSingleNode ("Version")?.InnerText ?? string.Empty;
-				if (!long.TryParse (versionValue, out var version))
-					version = 0;
-
-				runtimes.Add ((version, identifier));
-			}
-
-			runtimes.Sort ((a, b) => {
-				var rv = a.Version.CompareTo (b.Version);
+			deviceTypes.Sort ((a, b) => {
+				var rv = a.Min.CompareTo (b.Min);
+				if (rv != 0)
+					return rv;
+				rv = a.Max.CompareTo (b.Max);
 				if (rv != 0)
 					return rv;
 				return StringComparer.Ordinal.Compare (a.Identifier, b.Identifier);
 			});
-			return runtimes;
+
+			return deviceTypes;
 		}
 
-		string GetDefaultSimulatorRuntime ()
+		static bool TryGetSimulatorVersion (long versionValue, out Version? version)
 		{
-			var requestedRuntime = $"com.apple.CoreSimulator.SimRuntime.{PlatformName}-{SdkVersion.Replace ('.', '-')}";
-			var simulatorRuntimes = GetSimulatorRuntimes ();
-			if (simulatorRuntimes?.Count > 0) {
-				if (simulatorRuntimes.Any (v => v.Identifier == requestedRuntime))
-					return requestedRuntime;
-				return simulatorRuntimes [simulatorRuntimes.Count - 1].Identifier;
+			if (versionValue <= 0) {
+				version = null;
+				return false;
 			}
-			return requestedRuntime;
+
+			var major = (int) ((versionValue >> 16) & 0xFF);
+			var minor = (int) ((versionValue >> 8) & 0xFF);
+			version = new Version (major, minor);
+			return true;
 		}
 
 		string? simulator_list;
@@ -187,45 +172,88 @@ namespace Xamarin.MacDev.Tasks {
 			return device_list;
 		}
 
-		List<(string Identifier, string Name, string? NotApplicableBecause)> GetDeviceListForSimulator ()
+		List<SimulatorDeviceInfo> GetSimulatorDevices ()
 		{
-			var rv = new List<(string Identifier, string Name, string? NotApplicableBecause)> ();
+			var rv = new List<SimulatorDeviceInfo> ();
 
 			var output = GetSimulatorList ();
 			if (string.IsNullOrEmpty (output))
 				return rv;
 
-			var deviceTypes = GetDeviceTypes (false);
+			var deviceTypes = GetDeviceTypes ();
 			if (deviceTypes is null)
 				return rv;
 
-			// Load mlaunch's output
+			var deviceTypeOrders = deviceTypes
+				.Select ((v, index) => (v.Identifier, Index: index))
+				.ToDictionary (v => v.Identifier, v => v.Index, StringComparer.Ordinal);
+
 			var xml = new XmlDocument ();
 			xml.LoadXml (output);
-			// Get the device types for the product family we're looking for
+
+			var runtimePrefix = $"com.apple.CoreSimulator.SimRuntime.{PlatformName}-";
+			var runtimeVersions = new Dictionary<string, long> (StringComparer.Ordinal);
+			var runtimeNodes = xml.SelectNodes ("/MTouch/Simulator/SupportedRuntimes/SimRuntime")?.Cast<XmlNode> () ?? Array.Empty<XmlNode> ();
+			foreach (var node in runtimeNodes) {
+				var identifier = node.SelectSingleNode ("Identifier")?.InnerText ?? string.Empty;
+				var versionValue = node.SelectSingleNode ("Version")?.InnerText ?? string.Empty;
+				if (long.TryParse (versionValue, out var version))
+					runtimeVersions [identifier] = version;
+			}
+
 			var nodes = xml.SelectNodes ($"/MTouch/Simulator/AvailableDevices/SimDevice")?.Cast<XmlNode> () ?? Array.Empty<XmlNode> ();
 			foreach (var node in nodes) {
-				var simDeviceType = node.SelectSingleNode ("SimDeviceType")?.InnerText ?? string.Empty;
-				if (!deviceTypes.Contains (simDeviceType))
-					continue;
-				var udid = node.Attributes? ["UDID"]?.Value ?? string.Empty;
-				var name = node.Attributes? ["Name"]?.Value ?? string.Empty;
-				string? notApplicableBecause = null;
+				var device = new SimulatorDeviceInfo {
+					Identifier = node.Attributes? ["UDID"]?.Value ?? string.Empty,
+					Name = node.Attributes? ["Name"]?.Value ?? string.Empty,
+				};
 
-				var simRuntime = node.SelectSingleNode ("SimRuntime")?.InnerText;
-				if (!string.IsNullOrEmpty (simRuntime)) {
-					var simRuntimeVersionString = xml.SelectSingleNode ($"/MTouch/Simulator/SupportedRuntimes/SimRuntime[Identifier='{simRuntime}']/Version")?.InnerText;
-					if (int.TryParse (simRuntimeVersionString, out var simRuntimeVersionNumber)) {
-						var simRuntimeVersionMajor = (simRuntimeVersionNumber >> 16) & 0xFF;
-						var simRuntimeVersionMinor = (simRuntimeVersionNumber >> 8) & 0xFF;
-						var simRuntimeVersion = new Version (simRuntimeVersionMajor, simRuntimeVersionMinor);
-						if (Version.TryParse (SupportedOSPlatformVersion, out var supportedOSPlatformVersion) && simRuntimeVersion < supportedOSPlatformVersion)
-							notApplicableBecause = $" [OS version ({simRuntimeVersion}) lower than minimum supported platform version ({SupportedOSPlatformVersion}) for this app]";
-					}
+				var simDeviceType = node.SelectSingleNode ("SimDeviceType")?.InnerText ?? string.Empty;
+				var simRuntime = node.SelectSingleNode ("SimRuntime")?.InnerText ?? string.Empty;
+				runtimeVersions.TryGetValue (simRuntime, out var simRuntimeVersion);
+				device.RuntimeVersion = simRuntimeVersion;
+
+				string? notApplicableBecause = null;
+				if (!simRuntime.StartsWith (runtimePrefix, StringComparison.Ordinal)) {
+					notApplicableBecause = $" [Simulator runtime ({simRuntime}) does not match the requested platform ({PlatformName}) for this app]";
+				} else if (!deviceTypeOrders.TryGetValue (simDeviceType, out var deviceTypeOrder)) {
+					notApplicableBecause = $" [Simulator device type ({simDeviceType}) is not applicable for this app]";
+				} else {
+					device.IsCompatible = true;
+					device.DeviceTypeOrder = deviceTypeOrder;
+					if (Version.TryParse (SupportedOSPlatformVersion, out var supportedOSPlatformVersion) && TryGetSimulatorVersion (simRuntimeVersion, out var simRuntimeVersionValue) && simRuntimeVersionValue is not null && simRuntimeVersionValue < supportedOSPlatformVersion)
+						notApplicableBecause = $" [OS version ({simRuntimeVersionValue}) lower than minimum supported platform version ({SupportedOSPlatformVersion}) for this app]";
 				}
-				rv.Add ((udid, name, notApplicableBecause));
+
+				device.NotApplicableBecause = notApplicableBecause;
+				rv.Add (device);
 			}
+
 			return rv;
+		}
+
+		string SelectSimulatorDevice ()
+		{
+			return GetSimulatorDevices ()
+				.Where (v => v.IsCompatible && string.IsNullOrEmpty (v.NotApplicableBecause))
+				.OrderByDescending (v => v.RuntimeVersion)
+				.ThenByDescending (v => v.DeviceTypeOrder)
+				.ThenBy (v => v.Name, StringComparer.Ordinal)
+				.ThenBy (v => v.Identifier, StringComparer.Ordinal)
+				.Select (v => v.Identifier)
+				.FirstOrDefault () ?? string.Empty;
+		}
+
+		List<(string Identifier, string Name, string? NotApplicableBecause)> GetDeviceListForSimulator ()
+		{
+			return GetSimulatorDevices ()
+				.Where (v => v.IsCompatible)
+				.OrderByDescending (v => v.RuntimeVersion)
+				.ThenByDescending (v => v.DeviceTypeOrder)
+				.ThenBy (v => v.Name, StringComparer.Ordinal)
+				.ThenBy (v => v.Identifier, StringComparer.Ordinal)
+				.Select (v => (v.Identifier, v.Name, v.NotApplicableBecause))
+				.ToList ();
 		}
 
 		List<(string Identifier, string Name, string? NotApplicableBecause)> GetDeviceListForDevice ()
@@ -274,6 +302,8 @@ namespace Xamarin.MacDev.Tasks {
 		protected string GenerateCommandLineCommands ()
 		{
 			var sb = new List<string> ();
+			string? selectedSimulator = null;
+			var deviceName = DeviceName;
 
 			if (!string.IsNullOrEmpty (LaunchApp)) {
 				sb.Add (SdkIsSimulator ? "--launchsim" : "--launchdev");
@@ -285,58 +315,38 @@ namespace Xamarin.MacDev.Tasks {
 				sb.Add (InstallApp);
 			}
 
-			if (SdkIsSimulator && string.IsNullOrEmpty (DeviceName)) {
-				var simruntime = GetDefaultSimulatorRuntime ();
-				var simdevicetypes = GetDeviceTypes (true);
-				string simdevicetype;
-
-				if (simdevicetypes?.Count > 0) {
-					// Use the latest device type we can find. This seems to be what Xcode does by default.
-					simdevicetype = simdevicetypes.Last ();
-				} else {
-					// We couldn't find any device types, so pick one.
-					switch (Platform) {
-					case ApplePlatform.iOS:
-						// Don't try to launch an iPad-only app on an iPhone
-						if (DeviceType == IPhoneDeviceType.IPad) {
-							simdevicetype = "com.apple.CoreSimulator.SimDeviceType.iPad--7th-generation-";
-						} else {
-							simdevicetype = "com.apple.CoreSimulator.SimDeviceType.iPhone-11";
-						}
-						break;
-					case ApplePlatform.TVOS:
-						simdevicetype = "com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-1080p";
-						break;
-					default:
-						throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
-					}
-				}
-				DeviceName = $":v2:runtime={simruntime},devicetype={simdevicetype}";
+			if (SdkIsSimulator && string.IsNullOrEmpty (deviceName)) {
+				selectedSimulator = SelectSimulatorDevice ();
+				deviceName = selectedSimulator;
 			}
 
-			if (!string.IsNullOrEmpty (DeviceName)) {
+			if (!string.IsNullOrEmpty (deviceName)) {
 				if (SdkIsSimulator) {
 					sb.Add ("--device");
 
-					// Figure out whether we got the exact name of a simulator, in which case construct the corresponding argument.
-					string? simulator = null;
-					var deviceList = GetDeviceListForSimulator ();
-					var simulatorsByIdentifier = deviceList.Where (v => v.Identifier == DeviceName).ToArray ();
-					if (simulatorsByIdentifier.Length == 1) {
-						simulator = simulatorsByIdentifier [0].Identifier;
+					if (!string.IsNullOrEmpty (selectedSimulator)) {
+						sb.Add ($":v2:udid={selectedSimulator}");
 					} else {
-						var simulatorsByName = deviceList.Where (v => v.Name == DeviceName).ToArray ();
-						if (simulatorsByName.Length == 1)
-							simulator = simulatorsByName [0].Identifier;
-					}
-					if (!string.IsNullOrEmpty (simulator)) {
-						sb.Add ($":v2:udid={simulator}");
-					} else {
-						sb.Add (DeviceName);
+						// Figure out whether we got the exact name of a simulator, in which case construct the corresponding argument.
+						string? simulator = null;
+						var deviceList = GetDeviceListForSimulator ();
+						var simulatorsByIdentifier = deviceList.Where (v => v.Identifier == deviceName).ToArray ();
+						if (simulatorsByIdentifier.Length == 1) {
+							simulator = simulatorsByIdentifier [0].Identifier;
+						} else {
+							var simulatorsByName = deviceList.Where (v => v.Name == deviceName).ToArray ();
+							if (simulatorsByName.Length == 1)
+								simulator = simulatorsByName [0].Identifier;
+						}
+						if (!string.IsNullOrEmpty (simulator)) {
+							sb.Add ($":v2:udid={simulator}");
+						} else {
+							sb.Add (deviceName);
+						}
 					}
 				} else {
 					sb.Add ("--devname");
-					sb.Add (DeviceName);
+					sb.Add (deviceName);
 				}
 			}
 

@@ -52,9 +52,9 @@ namespace Xamarin.Tests {
 		public static object [] GetMlaunchRunArgumentsTestCases ()
 		{
 			return new object [] {
-				new object [] {ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64", @":v2:runtime=com.apple.CoreSimulator.SimRuntime.iOS-[^,]+,devicetype=com.apple.CoreSimulator.SimDeviceType.iPhone-.*" },
+				new object [] {ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64", @":v2:udid=[A-F0-9-]+" },
 				new object [] {ApplePlatform.iOS, "ios-arm64", "" },
-				new object [] {ApplePlatform.TVOS, "tvossimulator-arm64", @":v2:runtime=com.apple.CoreSimulator.SimRuntime.tvOS-[^,]+,devicetype=com.apple.CoreSimulator.SimDeviceType.Apple-TV-.*" },
+				new object [] {ApplePlatform.TVOS, "tvossimulator-arm64", @":v2:udid=[A-F0-9-]+" },
 			};
 		}
 

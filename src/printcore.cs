@@ -204,51 +204,46 @@ namespace PrintCore {
 	[BaseType (typeof (NSObject))]
 	interface PDEPlugInCallbackProtocol {
 		/// <summary>
-		/// Returns a handle to the current print session.
+		/// Returns the current print session.
 		/// </summary>
-		/// <returns>
-		/// A pointer to the native <c>PMPrintSession</c>. Use
-		/// <c>Runtime.GetINativeObject&lt;PMPrintSession&gt; (ptr, owns: false)</c> to obtain a managed instance.
-		/// </returns>
+		/// <returns>The current <see cref="PMPrintSession" />, or <see langword="null" /> if unavailable.</returns>
 		[Abstract]
 		[Export ("printSession")]
-		IntPtr GetPrintSession ();
+		[return: NullAllowed]
+		PMPrintSession GetPrintSession ();
 
 		/// <summary>
-		/// Returns a handle to the print settings being modified by the dialog.
+		/// Returns the print settings being modified by the dialog.
 		/// </summary>
 		/// <returns>
-		/// A pointer to the native <c>PMPrintSettings</c>, or <see cref="IntPtr.Zero" /> if the dialog
-		/// is not operating on print settings (for example, a page setup dialog). Use
-		/// <c>Runtime.GetINativeObject&lt;PMPrintSettings&gt; (ptr, owns: false)</c> to obtain a managed instance.
+		/// The current <see cref="PMPrintSettings" />, or <see langword="null" /> if the dialog
+		/// is not operating on print settings (for example, a page setup dialog).
 		/// </returns>
 		[Abstract]
 		[Export ("printSettings")]
-		IntPtr GetPrintSettings ();
+		[return: NullAllowed]
+		PMPrintSettings GetPrintSettings ();
 
 		/// <summary>
-		/// Returns a handle to the page format used by the dialog.
+		/// Returns the page format used by the dialog.
 		/// </summary>
 		/// <returns>
-		/// A pointer to the native <c>PMPageFormat</c>, or <see cref="IntPtr.Zero" /> if the dialog is
-		/// operating without a page format. Use
-		/// <c>Runtime.GetINativeObject&lt;PMPageFormat&gt; (ptr, owns: false)</c> to obtain a managed instance.
+		/// The current <see cref="PMPageFormat" />, or <see langword="null" /> if the dialog is
+		/// operating without a page format.
 		/// </returns>
 		[Abstract]
 		[Export ("pageFormat")]
-		IntPtr GetPageFormat ();
+		[return: NullAllowed]
+		PMPageFormat GetPageFormat ();
 
 		/// <summary>
-		/// Returns a handle to the current printer. For a page setup dialog this is the default printer;
+		/// Returns the current printer. For a page setup dialog this is the default printer;
 		/// for a print dialog it is the currently selected printer.
 		/// </summary>
-		/// <returns>
-		/// A pointer to the native <c>PMPrinter</c>. Use
-		/// <c>Runtime.GetINativeObject&lt;PMPrinter&gt; (ptr, owns: false)</c> to obtain a managed instance.
-		/// </returns>
+		/// <returns>The current <see cref="PMPrinter" />.</returns>
 		[Abstract]
 		[Export ("PMPrinter")]
-		IntPtr GetPrinter ();
+		PMPrinter GetPrinter ();
 
 		/// <summary>
 		/// Returns a pointer to the CUPS PPD structure (<c>ppd_file_s</c>) for the current printer.

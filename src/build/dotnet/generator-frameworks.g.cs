@@ -500,6 +500,7 @@ partial class Frameworks {
 		"QuickLookThumbnailing",
 		"ReplayKit",
 		"SafariServices",
+		"SafetyKit",
 		"SceneKit",
 		"ScreenCaptureKit",
 		"ScreenTime",

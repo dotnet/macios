@@ -2380,6 +2380,7 @@ MACCATALYST_FRAMEWORKS = \
 	QuickLookThumbnailing \
 	ReplayKit \
 	SafariServices \
+	SafetyKit \
 	ScreenCaptureKit \
 	ScreenTime \
 	Security \

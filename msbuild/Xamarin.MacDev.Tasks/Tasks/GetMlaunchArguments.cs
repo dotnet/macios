@@ -455,7 +455,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (Devices.Length == 0) {
-				Log.LogError ("The 'Devices' item group is empty.");
+				Log.LogError ("No applicable and available devices found.");
 				return false;
 			}
 

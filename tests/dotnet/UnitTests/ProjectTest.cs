@@ -3604,6 +3604,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/PushKit.framework/Versions/A/PushKit",
 			"/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore",
 			"/System/Library/Frameworks/QuickLookThumbnailing.framework/Versions/A/QuickLookThumbnailing",
+			"/System/Library/Frameworks/SafetyKit.framework/Versions/A/SafetyKit",
 			"/System/Library/Frameworks/Security.framework/Versions/A/Security",
 			"/System/Library/Frameworks/SecurityUI.framework/Versions/A/SecurityUI",
 			"/System/Library/Frameworks/SensitiveContentAnalysis.framework/Versions/A/SensitiveContentAnalysis",

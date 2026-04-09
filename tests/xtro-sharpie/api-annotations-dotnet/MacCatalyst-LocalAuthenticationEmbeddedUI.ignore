@@ -1,2 +1,2 @@
-# Xtro says this does not respond on MacCatalyst
+# Introspection tests says this does not respond on MacCatalyst
 !missing-selector! LARight::authorizeWithLocalizedReason:inPresentationContext:completion: not bound

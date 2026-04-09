@@ -2178,6 +2178,9 @@ namespace Registrar {
 			case "ThreadNetwork":
 				h = "<ThreadNetwork/THClient.h>";
 				break;
+			case "PrintCore":
+				h = "<ApplicationServices/ApplicationServices.h>";
+				break;
 			default:
 				h = string.Format ("<{0}/{0}.h>", ns);
 				break;

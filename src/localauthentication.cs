@@ -321,6 +321,7 @@ namespace LocalAuthentication {
 
 		// From LARight_UI
 		[NoMacCatalyst] // Intro says no no
+		[iOS (17, 0)]
 		[Async]
 		[Export ("authorizeWithLocalizedReason:inPresentationContext:completion:")]
 		void Authorize (string localizedReason, LAPresentationContext presentationContext, LARightAuthorizeCompletionHandler handler);

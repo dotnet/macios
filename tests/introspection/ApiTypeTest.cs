@@ -3,8 +3,7 @@ using System.Runtime.CompilerServices;
 
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -60,7 +59,7 @@ namespace Introspection {
 				try {
 					RuntimeHelpers.RunClassConstructor (t.TypeHandle);
 				} catch (TypeInitializationException e) {
-					issues.Add (t.FullName);
+					issues.Add (t.FullName!);
 					ReportError ($"{t.FullName} .cctor could not execute properly: {e}");
 				}
 			}

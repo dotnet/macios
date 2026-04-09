@@ -186,22 +186,16 @@ namespace Xamarin.MacDev.Tasks {
 				return true;
 			}
 
-			public void CopyTo (string outputDirectory, string? subDirectory = null)
+			public void CopyTo (string outputDirectory, string? subDirectory = null, Entry? dependentOn = null)
 			{
 				string outputFile;
 
 				if (subDirectory is null) {
 					outputFile = Path.Combine (outputDirectory, RelativePath);
 				} else {
-					var monoBundleDirectory = Path.Combine ("Contents", "MonoBundle") + Path.DirectorySeparatorChar;
-					var monoBundleIndex = RelativePath.IndexOf (monoBundleDirectory, StringComparison.Ordinal);
-					if (monoBundleIndex >= 0) {
-						var prefix = RelativePath.Substring (0, monoBundleIndex + monoBundleDirectory.Length);
-						var suffix = RelativePath.Substring (monoBundleIndex + monoBundleDirectory.Length);
-						outputFile = Path.Combine (outputDirectory, prefix, subDirectory, suffix);
-					} else {
-						outputFile = Path.Combine (outputDirectory, subDirectory, RelativePath);
-					}
+					var outputRelativePath = Path.GetDirectoryName (dependentOn?.RelativePath ?? RelativePath) ?? "";
+					var outputRelativeName = RelativePath.Substring (outputRelativePath.Length).TrimStart ('/');
+					outputFile = Path.Combine (outputDirectory, outputRelativePath, subDirectory, outputRelativeName);
 				}
 
 				if (Type == FileType.Directory) {
@@ -224,7 +218,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				if (DependentFiles is not null) {
 					foreach (var file in DependentFiles)
-						file.CopyTo (outputDirectory, subDirectory);
+						file.CopyTo (outputDirectory, subDirectory, this);
 				}
 			}
 		}

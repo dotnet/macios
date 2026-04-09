@@ -349,6 +349,80 @@ public struct MyStruct {
 public static NSString MyConstant { get; }
 ```
 
+### C Callback Handler Binding
+
+When a C API sets a persistent callback handler (e.g., state change handlers, data providers), use the **BlockLiteral trampoline** pattern for Objective-C blocks or **GCHandle** for C function pointer contexts. Follow these patterns from `src/Network/` and `src/CoreFoundation/`.
+
+#### BlockLiteral Trampoline (preferred for ObjC block callbacks)
+
+This is the standard pattern used in Network framework (`NWConnection`, `NWBrowser`, `NWListener`):
+
+```csharp
+[DllImport (Constants.NetworkLibrary)]
+static extern void nw_connection_set_state_changed_handler (
+	IntPtr handle, /* BlockLiteral* */ IntPtr handler);
+
+[UnmanagedCallersOnly]
+static void TrampolineStateChanged (IntPtr block, int state, IntPtr error)
+{
+	var del = BlockLiteral.GetTarget<Action<NWConnectionState, NWError?>> (block);
+	if (del is not null)
+		del (/* marshal args */);
+}
+
+public void SetStateChangedHandler (Action<NWConnectionState, NWError?> handler)
+{
+	if (handler is null) {
+		nw_connection_set_state_changed_handler (GetCheckedHandle (), IntPtr.Zero);
+		return;
+	}
+
+	unsafe {
+		// Must use 'static' lambda or named method for function pointer
+		delegate* unmanaged<IntPtr, int, IntPtr, void> trampoline = &TrampolineStateChanged;
+		using var block = new BlockLiteral (trampoline, handler, typeof (MyClass),
+			nameof (TrampolineStateChanged));
+		nw_connection_set_state_changed_handler (GetCheckedHandle (), (IntPtr) (&block));
+	}
+}
+```
+
+#### GCHandle Context (for C function pointer + void* context)
+
+Used in CoreFoundation (`CFStream.cs`) when the native API takes a function pointer + context:
+
+```csharp
+GCHandle gch;
+
+void EnableEvents ()
+{
+	if (!gch.IsAllocated)
+		gch = GCHandle.Alloc (this);
+
+	var ctx = new CFStreamClientContext {
+		Info = GCHandle.ToIntPtr (gch)
+	};
+	DoSetClient (&NativeCallback, ref ctx);
+}
+
+[UnmanagedCallersOnly]
+static void NativeCallback (IntPtr stream, int eventType, IntPtr info)
+{
+	var instance = GCHandle.FromIntPtr (info).Target as MyClass;
+	instance?.OnCallback (eventType);
+}
+```
+
+#### Key Rules for Callback Handlers
+
+> ❌ **NEVER** access a nullable parameter (e.g., `DispatchQueue? queue`) without null-checking it first. If `handler` is null and `queue` is also null, calling `queue.GetHandle()` throws `NullReferenceException`. Check all nullable parameters before use on every code path.
+
+> ⚠️ **Memory management ordering**: When replacing a stored handler, set the new managed reference **before** freeing the old `GCHandle`. This prevents premature collection if GC runs between the free and the assignment.
+
+> ⚠️ **GC.KeepAlive**: Call `GC.KeepAlive (queue)` or `GC.KeepAlive (handler)` after passing native handles to P/Invokes. This prevents the GC from collecting the managed object while the native call is still using its handle.
+
+Real examples: `src/Network/NWConnection.cs`, `src/Network/NWBrowser.cs`, `src/CoreFoundation/CFStream.cs`, `src/Security/SecTrust.cs`
+
 ### Struct Binding Rules
 
 - **Only use blittable types as backing fields in structs.** `bool` and `char` aren't blittable — use `byte` and `ushort`/`short` instead. This avoids `[MarshalAs]` and cecil test known failures.
@@ -384,6 +458,35 @@ using MyStruct = Foundation.NSObject;
 ```
 
 The type alias lets tvOS compilation succeed. The `[NoTV]` attribute on the API definition interface ensures the type won't appear in the final tvOS assembly.
+
+### Platform-Specific Code Within Shared Files
+
+Use preprocessor directives for platform-conditional code — **not** platform-specific source file lists in `frameworks.sources`:
+
+```csharp
+// macOS-only type or member
+#if MONOMAC
+public class ARCollaborationData : NSObject {
+	// macOS-only implementation
+}
+#endif
+
+// iOS-specific behavior
+#if __IOS__
+	[DllImport (Constants.ARKitLibrary)]
+	static extern void ar_session_run (IntPtr session, IntPtr config);
+#endif
+```
+
+Available preprocessor symbols:
+| Symbol | Platform |
+|--------|----------|
+| `MONOMAC` / `__MACOS__` | macOS |
+| `__IOS__` | iOS |
+| `TVOS` / `__TVOS__` | tvOS |
+| `__MACCATALYST__` | Mac Catalyst |
+
+> ❌ **NEVER** use platform-specific source file entries (e.g., `FRAMEWORKNAME_MACOS_DOTNET_SOURCES`) for conditional compilation. Use `#if` directives instead — they keep the code in shared files and are the established convention across the codebase.
 
 ## Struct Array Parameter Binding
 
@@ -754,7 +857,7 @@ All `[Verify]` attributes must be resolved before submitting a PR.
 - **Null handling**: Always use `[NullAllowed]` where Apple's docs indicate nullability. Default assumption is non-null. However, if a `[DesignatedInitializer]` constructor crashes (segfault) when passed null, **remove `[NullAllowed]`** — the native API genuinely doesn't accept null, and removing it is better than adding introspection test exclusions.
 - **Struct backing fields**: Only use blittable types. `bool` and `char` aren't blittable — use `byte` and `ushort`/`short` instead, with typed property accessors.
 - **Threading**: UI APIs require main thread. Use `[ThreadSafe]` for thread-safe APIs.
-- **Naming**: Follow .NET PascalCase for methods/properties. Remove redundant ObjC prefixes (`NSString name` → `string Name`). Acronyms shouldn't be all uppercase (SIMD → Simd, ID → Id when it means "identifier", URL → Url). Methods should be verbs, properties should be nouns. Don't blindly translate ObjC selector names — use .NET-appropriate verb names (e.g., `BuildMenu` not `MenuWithContents`).
+- **Naming**: Follow .NET PascalCase for methods/properties. Remove redundant ObjC prefixes (`NSString name` → `string Name`). **C# type names preserve the Objective-C class prefix exactly** — `ARSession` stays `ARSession` (not `ArSession`), `AVPlayer` stays `AVPlayer` (not `AvPlayer`), `CGColor` stays `CGColor` (not `CgColor`). When creating new manual types for a framework, match the established prefix (e.g., new ARKit types use `AR*`). The .NET acronym casing rules only apply within property/method names (SIMD → Simd, ID → Id when it means "identifier", URL → Url). Methods should be verbs, properties should be nouns. Don't blindly translate ObjC selector names — use .NET-appropriate verb names (e.g., `BuildMenu` not `MenuWithContents`).
 - **Selectors**: Must match exactly — a single typo causes runtime crashes.
 - **Protocol conformance**: All `[Abstract]` methods in a protocol are required.
 - **nint/nuint**: Use `nint`/`nuint` for Objective-C `NSInteger`/`NSUInteger`.

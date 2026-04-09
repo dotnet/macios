@@ -141,6 +141,8 @@ NSString ScheduleRequestedNotification { get; }
 
 > ⚠️ Method names should follow .NET naming conventions — use verb-based names, not direct Objective-C selector translations (e.g., `BuildMenu` not `MenuWithContents`).
 
+> ❌ **NEVER** change the casing of Objective-C class name prefixes in C# type names. `ARSession` stays `ARSession` (not `ArSession`), `AVPlayer` stays `AVPlayer` (not `AvPlayer`). When creating new manual types, match the framework's established prefix (e.g., all ARKit types use `AR*`, all CoreGraphics types use `CG*`). The .NET acronym rules (SIMD → Simd, URL → Url) only apply within property and method names, NOT to type name prefixes.
+
 > ⚠️ For in depth binding patterns and conventions See [references/binding-patterns.md](references/binding-patterns.md)
 
 > ⚠️ **Struct array parameters**: When an API takes a C struct pointer + count (e.g., `MyStruct*` + `NSUInteger`), bind the raw pointer as `[Internal]` with `IntPtr`, then create a manual public wrapper using the **factory pattern** with `fixed`. See [references/binding-patterns.md](references/binding-patterns.md) § "Struct Array Parameter Binding".
@@ -160,6 +162,14 @@ using MyStruct = Foundation.NSObject;
 ```
 
 The `[NoTV]` attribute on the API definition interface ensures the type won't appear in the final tvOS assembly, while the alias prevents compilation errors from method signatures that reference the struct.
+
+> ❌ **NEVER** use platform-specific source file lists (e.g., `FRAMEWORKNAME_MACOS_DOTNET_SOURCES`) for platform-conditional code. Instead, use preprocessor directives (`#if MONOMAC`, `#if !TVOS`, `#if __IOS__`) within shared source files. Platform-specific source file lists are for the build system, not for conditional compilation of individual types or members.
+
+Available preprocessor symbols for platform checks:
+- `MONOMAC` / `__MACOS__` — macOS
+- `__IOS__` — iOS
+- `TVOS` / `__TVOS__` — tvOS
+- `__MACCATALYST__` — Mac Catalyst
 
 ### Step 5: Build
 

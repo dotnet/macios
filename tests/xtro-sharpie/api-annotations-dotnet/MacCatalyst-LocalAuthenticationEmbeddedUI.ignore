@@ -1,2 +1,2 @@
-## No LocalAuthentication support for Catalyst
+# Xtro says this does not respond on MacCatalyst
 !missing-selector! LARight::authorizeWithLocalizedReason:inPresentationContext:completion: not bound

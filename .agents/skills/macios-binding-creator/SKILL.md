@@ -70,16 +70,26 @@ Before implementing, understand the native API:
 
 #### Determine the Correct Availability Version
 
-Before writing any bindings, determine the SDK version you're targeting:
+Before writing any bindings, determine the correct availability version for each API. The version represents **when Apple introduced the API**, not the current SDK version.
+
+**Primary source of truth: the generated reference bindings** from Step 2. After running `make -C tests/xtro-sharpie gen-all`, search the generated `.cs` files for the API you're binding — they include `[Introduced]` attributes extracted from Apple's SDK headers with the correct per-platform introduction versions. Always use these versions.
 
 ```bash
-# Check the current SDK versions
-grep -E 'public const string (iOS|TVOS|OSX|MacCatalyst) ' tools/common/SdkVersions.cs
-# Or from Make.versions
-grep '_NUGET_OS_VERSION=' Make.versions
+# Find the generated reference binding for a specific API
+grep -r "SomeClassName\|SomeMethodName" tests/xtro-sharpie/api-annotations-dotnet/generated/
 ```
 
-Use the version from `SdkVersions.cs` (e.g., `26.2`) for all availability attributes. If the user specifies a different version (e.g., binding a beta branch at `26.4`), use that instead. **Ask the user if you're unsure which version to use.**
+If the generated reference bindings don't include version information, fall back to these sources:
+1. **Apple SDK headers** — search under `$XCODE_DEVELOPER_ROOT` for `API_AVAILABLE` macros
+2. **Current SDK version from `SdkVersions.cs`** — use this only for **brand-new APIs** introduced in the current Xcode release:
+
+```bash
+grep -E 'public const string (iOS|TVOS|OSX|MacCatalyst) ' tools/common/SdkVersions.cs
+```
+
+> ❌ **NEVER assume the current SDK version is the introduction version for all APIs.** The SDK version (e.g., `26.5`) is only correct for APIs that are genuinely new in this Xcode release. When adding an existing framework to a new platform (e.g., MediaSetup to MacCatalyst), or adding enum members that were introduced in an earlier release, the introduction version will be different — check the generated reference bindings or Apple headers.
+
+If the user specifies a version, use that instead. **Ask the user if you're unsure which version to use.**
 
 #### File Locations
 
@@ -109,6 +119,7 @@ NSString ScheduleRequestedNotification { get; }
 > - API definition interfaces and members in `src/frameworkname.cs` — use `[iOS (X, Y)]`, `[Mac (X, Y)]`, etc.
 > - P/Invoke wrappers and manual properties in `src/FrameworkName/*.cs` — use `[SupportedOSPlatform ("iosX.Y")]`, `[SupportedOSPlatform ("macos")]`, etc.
 > - Fields, constants, and enum values
+> - **Individual enum members** added to an existing enum — each new member needs its own `[iOS (X, Y)]` etc. with the version the **member** was introduced, even if the enum itself has an older version. Check the generated reference bindings for the correct per-member version.
 
 > ❌ **NEVER** use `string.Empty` — use `""`. Never use `Array.Empty<T>()` — use `[]`.
 

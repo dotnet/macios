@@ -158,6 +158,23 @@ public enum SomeEnum : long {
 NSString SelectedOption { get; set; }
 ```
 
+### Adding New Members to Existing Enums
+
+When adding a new value to an existing enum, the new member needs its own availability attribute with the version that **member** was introduced — not the enum's introduction version:
+
+```csharp
+[iOS (18, 0)]
+[NoTV, NoMacCatalyst, NoMac]
+public enum PHAssetResourceUploadJobAction : long {
+    Acknowledge = 0,
+    Retry = 1,
+    [iOS (26, 5)]
+    Process = 3,
+}
+```
+
+Check the generated reference bindings (`make -C tests/xtro-sharpie gen-all`) for the correct per-member introduction version.
+
 ## Notification Fields
 
 ```csharp
@@ -723,19 +740,29 @@ Both styles are required. Omitting availability from P/Invokes or manual propert
 
 ### Determining the Correct Version
 
-Check `tools/common/SdkVersions.cs` for the current SDK versions:
+The availability version represents **when Apple introduced the API**, not the current SDK version. Use these sources in order:
 
-```bash
-grep -E 'public const string (iOS|TVOS|OSX|MacCatalyst) ' tools/common/SdkVersions.cs
-```
+1. **Generated reference bindings** (best source) — after running `make -C tests/xtro-sharpie gen-all`, search for the API in the generated `.cs` files. These include `[Introduced]` attributes extracted from Apple's SDK headers:
+   ```bash
+   grep -r "SomeApiName" tests/xtro-sharpie/api-annotations-dotnet/generated/
+   ```
 
-Or check `Make.versions`:
+2. **Apple SDK headers** — search for `API_AVAILABLE` macros under `$XCODE_DEVELOPER_ROOT`
 
-```bash
-grep '_NUGET_OS_VERSION=' Make.versions
-```
+3. **Current SDK version** (`SdkVersions.cs`) — use only for **brand-new APIs** introduced in the current Xcode release:
+   ```bash
+   grep -E 'public const string (iOS|TVOS|OSX|MacCatalyst) ' tools/common/SdkVersions.cs
+   ```
 
-Use these values for all availability attributes. If the user specifies a different version (e.g., for a beta branch), use that instead.
+If the user specifies a different version (e.g., for a beta branch), use that instead.
+
+### Common Version Mistakes
+
+| Scenario | ❌ Wrong | ✅ Correct |
+|----------|---------|-----------|
+| Framework introduced on a new platform (e.g., MediaSetup → MacCatalyst) | Use current SDK version (26.5) | Research when Apple actually introduced it on that platform (could be 16.0) |
+| New enum member added to existing enum | No per-member attribute, or enum-level version | Per-member attribute with the member's own introduction version |
+| Brand-new API in current Xcode | — | Current SDK version from `SdkVersions.cs` is correct |
 
 ## Monotouch-Test Patterns
 

@@ -23,14 +23,8 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		public void Embedded ()
 		{
 			var manager = new ResourceManager ("monotouchtest.Welcome", typeof (ResourcesTest).Assembly);
-			var englishAustralian = manager.GetString ("String1", new CultureInfo ("en-AU"));
-
 			Assert.AreEqual ("Welcome!", manager.GetString ("String1", new CultureInfo ("en")), "en");
-			if (TestRuntime.IsCoreCLR) {
-				Assert.That (englishAustralian, Is.EqualTo ("G'day!").Or.EqualTo ("Welcome!"), "en-AU");
-			} else {
-				Assert.AreEqual ("G'day!", englishAustralian, "en-AU");
-			}
+			Assert.AreEqual ("G'day!", manager.GetString ("String1", new CultureInfo ("en-AU")), "en-AU");
 			Assert.AreEqual ("Willkommen!", manager.GetString ("String1", new CultureInfo ("de")), "de");
 			Assert.AreEqual ("Willkommen!", manager.GetString ("String1", new CultureInfo ("de-DE")), "de-DE");
 			Assert.AreEqual ("Bienvenido!", manager.GetString ("String1", new CultureInfo ("es")), "es");

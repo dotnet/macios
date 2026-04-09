@@ -193,11 +193,14 @@ namespace Xamarin.MacDev.Tasks {
 				if (subDirectory is null) {
 					outputFile = Path.Combine (outputDirectory, RelativePath);
 				} else {
-					var relativeAppDir = Path.GetDirectoryName (RelativePath);
-					if (string.IsNullOrEmpty (relativeAppDir)) {
-						outputFile = Path.Combine (outputDirectory, subDirectory, RelativePath);
+					var monoBundleDirectory = Path.Combine ("Contents", "MonoBundle") + Path.DirectorySeparatorChar;
+					var monoBundleIndex = RelativePath.IndexOf (monoBundleDirectory, StringComparison.Ordinal);
+					if (monoBundleIndex >= 0) {
+						var prefix = RelativePath.Substring (0, monoBundleIndex + monoBundleDirectory.Length);
+						var suffix = RelativePath.Substring (monoBundleIndex + monoBundleDirectory.Length);
+						outputFile = Path.Combine (outputDirectory, prefix, subDirectory, suffix);
 					} else {
-						outputFile = Path.Combine (outputDirectory, relativeAppDir, subDirectory, Path.GetFileName (RelativePath));
+						outputFile = Path.Combine (outputDirectory, subDirectory, RelativePath);
 					}
 				}
 

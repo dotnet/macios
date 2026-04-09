@@ -74,8 +74,11 @@ public class TypeCache {
 	public Type SCNVector3 { get; }
 	public Type SCNVector4 { get; }
 	public Type SecAccessControl { get; }
+	public Type? AuthorizationEngine { get; }
+	public Type SecCertificate { get; }
 	public Type SecIdentity { get; }
 	public Type SecKey { get; }
+	public Type? SecKeychain { get; }
 	public Type SecTrust { get; }
 	public Type SecProtocolMetadata { get; }
 	public Type SecProtocolOptions { get; }
@@ -235,6 +238,11 @@ public class TypeCache {
 		SCNVector4 = Lookup (platformAssembly, "SceneKit", "SCNVector4");
 		SCNMatrix4 = Lookup (platformAssembly, "SceneKit", "SCNMatrix4");
 		SecAccessControl = Lookup (platformAssembly, "Security", "SecAccessControl");
+		if (frameworks.HaveSecurityInterface) {
+			AuthorizationEngine = ConditionalLookup (platformAssembly, "Security", "AuthorizationEngine");
+			SecKeychain = ConditionalLookup (platformAssembly, "Security", "SecKeychain");
+		}
+		SecCertificate = Lookup (platformAssembly, "Security", "SecCertificate");
 		SecIdentity = Lookup (platformAssembly, "Security", "SecIdentity");
 		SecKey = Lookup (platformAssembly, "Security", "SecKey");
 		SecTrust = Lookup (platformAssembly, "Security", "SecTrust");

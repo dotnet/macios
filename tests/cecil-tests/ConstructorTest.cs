@@ -306,6 +306,7 @@ namespace Cecil.Tests {
 						case "Protocol": // not really refcounted
 						case "AURenderEventEnumerator": // this class shouldn't really be an INativeObject in the first place
 						case "AudioBuffers": // this class shouldn't really be an INativeObject in the first place
+						case "AuthorizationCallbacks": // non-owning wrapper over a borrowed callback struct pointer
 						case "AVAudioChannelLayout": // has a private IntPtr constructor which is a void* in native code (i.e. not a mistake).
 						case "VNVideoProcessorFrameRateCadence": // has a nint (i.e. IntPtr) constructor (framerate) - not a mistake
 						case "NSMutableOrderedSet`1":

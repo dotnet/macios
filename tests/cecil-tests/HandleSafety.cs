@@ -174,6 +174,8 @@ namespace Cecil.Tests {
 			case "CoreGraphics.CGPDFObject": // just a wrapper around a pointer, doesn't free anything in its destructor
 			case "CoreText.CTRunDelegateOperations": // The Handle property is a GCHandle (converted to IntPtr)
 			case "CoreGraphics.CGEvent/TapData": // The Handle property is a GCHandle (converted to IntPtr)
+			case "SecurityInterface.AuthorizationCallbacks": // non-owning wrapper around a borrowed callback struct pointer
+			case "SecurityInterface.AuthorizationRights": // IDisposable wrapper that manages its own unmanaged memory
 				switch (target.Name) {
 				case "get_Handle":
 					return false;

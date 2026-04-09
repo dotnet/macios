@@ -11,8 +11,6 @@
 !missing-enum! __CE_DataType not bound
 !missing-enum! __CE_GeneralNameType not bound
 !missing-enum! _SecureDownloadTrustCallbackResult not bound
-!missing-enum! AuthorizationContextFlags not bound
-!missing-enum! AuthorizationResult not bound
 !missing-enum! CMSCertificateChainMode not bound
 !missing-enum! CMSSignedAttributes not bound
 !missing-enum! CMSSignerStatus not bound
@@ -492,4 +490,3 @@
 !missing-pinvoke! SecCodeValidateFileResource is not bound
 !missing-field! kSecCFErrorResourceRecursive not bound
 !missing-field! kSecCodeInfoStapledNotarizationTicket not bound
-

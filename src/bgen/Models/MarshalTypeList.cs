@@ -71,6 +71,11 @@ public class MarshalTypeList : List<MarshalType> {
 			Add (typeCache.AudioUnit);
 		Add (typeCache.SecIdentity);
 		Add (typeCache.SecIdentity2);
+		if (typeCache.AuthorizationEngine is not null)
+			Add (typeCache.AuthorizationEngine);
+		Add (typeCache.SecCertificate);
+		if (typeCache.SecKeychain is not null)
+			Add (typeCache.SecKeychain);
 		Add (typeCache.SecKey);
 		Add (typeCache.SecTrust);
 		Add (typeCache.SecTrust2);

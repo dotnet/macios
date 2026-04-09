@@ -26,6 +26,7 @@
 
 		<GetMlaunchArguments
 			AppManifestPath="$(_AppBundleManifestPath)"
+			DiscardedDevices="@(DiscardedDevices)"
 			Devices="@(Devices)"
 			Help="true"
 			MlaunchPath="$(MlaunchPath)"
@@ -54,6 +55,7 @@
 		<GetMlaunchArguments
 			SessionId="$(BuildSessionId)"
 			AppManifestPath="$(_AppBundleManifestPath)"
+			DiscardedDevices="@(DiscardedDevices)"
 			Devices="@(Devices)"
 			DeviceName="$(Device)"
 			InstallApp="$(_AppBundlePath)"
@@ -107,6 +109,7 @@
 			AdditionalArguments="@(MlaunchAdditionalArguments)"
 			AppManifestPath="$(_AppBundleManifestPath)"
 			CaptureOutput="$(_MlaunchCaptureOutput)"
+			DiscardedDevices="@(DiscardedDevices)"
 			Devices="@(Devices)"
 			DeviceName="$(Device)"
 			EnvironmentVariables="@(MlaunchEnvironmentVariables)"

@@ -43,6 +43,7 @@ namespace Xamarin.MacDev.Tasks {
 		public string MlaunchPath { get; set; } = string.Empty;
 
 		public ITaskItem [] Devices { get; set; } = Array.Empty<ITaskItem> ();
+		public ITaskItem [] DiscardedDevices { get; set; } = Array.Empty<ITaskItem> ();
 
 		[Output]
 		public string MlaunchArguments { get; set; } = string.Empty;
@@ -238,15 +239,21 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var simulator = Devices.FirstOrDefault (v => string.Equals (v.GetMetadata ("Type"), "Simulator", StringComparison.OrdinalIgnoreCase));
 			if (simulator is null) {
-				Log.LogError ("The 'Devices' item group does not contain any simulators.");
-				return string.Empty;
+				var sb = new StringBuilder ();
+				sb.AppendLine ("The 'Devices' item group does not contain any simulators.");
+				AppendDiscardedDevices (sb, "", "Simulator");
+				Log.LogError (sb.ToString ().TrimEnd ());
+				return "";
 			}
 
-			return string.IsNullOrEmpty (simulator.GetMetadata ("UDID")) ? simulator.ItemSpec : simulator.GetMetadata ("UDID");
+			return GetDeviceIdentifier (simulator);
 		}
 
 		List<(string Identifier, string Name, string? NotApplicableBecause)> GetDeviceListForSimulator ()
 		{
+			if (Devices.Length > 0 || DiscardedDevices.Length > 0)
+				return GetDevicesFromTaskItems ("Simulator", Devices);
+
 			return GetSimulatorDevices ()
 				.Where (v => v.IsCompatible)
 				.OrderByDescending (v => v.RuntimeVersion)
@@ -259,6 +266,9 @@ namespace Xamarin.MacDev.Tasks {
 
 		List<(string Identifier, string Name, string? NotApplicableBecause)> GetDeviceListForDevice ()
 		{
+			if (Devices.Length > 0 || DiscardedDevices.Length > 0)
+				return GetDevicesFromTaskItems ("Device", Devices);
+
 			var rv = new List<(string Identifier, string Name, string? NotApplicableBecause)> ();
 
 			var output = GetDeviceList ();
@@ -298,6 +308,66 @@ namespace Xamarin.MacDev.Tasks {
 				rv.Add ((deviceIdentifier, name, notApplicableBecause));
 			}
 			return rv;
+		}
+
+		static string GetDeviceIdentifier (ITaskItem device)
+		{
+			var udid = device.GetMetadata ("UDID");
+			return string.IsNullOrEmpty (udid) ? device.ItemSpec : udid;
+		}
+
+		static string GetDeviceName (ITaskItem device)
+		{
+			var name = device.GetMetadata ("Name");
+			if (string.IsNullOrEmpty (name))
+				name = device.GetMetadata ("Description");
+			return string.IsNullOrEmpty (name) ? GetDeviceIdentifier (device) : name;
+		}
+
+		static string FormatDevice (ITaskItem device)
+		{
+			var identifier = GetDeviceIdentifier (device);
+			var name = GetDeviceName (device);
+			return name == identifier ? identifier : $"{name} ({identifier})";
+		}
+
+		static List<(string Identifier, string Name, string? NotApplicableBecause)> GetDevicesFromTaskItems (string type, ITaskItem [] items)
+		{
+			return items
+				.Where (v => string.Equals (v.GetMetadata ("Type"), type, StringComparison.OrdinalIgnoreCase))
+				.Select (v => {
+					var reason = v.GetMetadata ("DiscardedReason");
+					return (GetDeviceIdentifier (v), GetDeviceName (v), string.IsNullOrEmpty (reason) ? null : reason);
+				})
+				.ToList ();
+		}
+
+		void AppendDiscardedDevices (StringBuilder sb, string indent, string? type = null)
+		{
+			var discardedDevices = DiscardedDevices
+				.Where (v => type is null || string.Equals (v.GetMetadata ("Type"), type, StringComparison.OrdinalIgnoreCase))
+				.ToArray ();
+
+			if (discardedDevices.Length == 0)
+				return;
+
+			sb.AppendLine ($"{indent}The following devices were discarded:");
+			foreach (var device in discardedDevices) {
+				var reason = device.GetMetadata ("DiscardedReason");
+				if (string.IsNullOrEmpty (reason)) {
+					sb.AppendLine ($"{indent}    {FormatDevice (device)}");
+				} else {
+					sb.AppendLine ($"{indent}    {FormatDevice (device)}: {reason}");
+				}
+			}
+		}
+
+		void LogNoAvailableDevicesError ()
+		{
+			var sb = new StringBuilder ();
+			sb.AppendLine ("No applicable and available devices found.");
+			AppendDiscardedDevices (sb, "");
+			Log.LogError (sb.ToString ().TrimEnd ());
 		}
 
 		protected string GenerateCommandLineCommands ()
@@ -410,6 +480,7 @@ namespace Xamarin.MacDev.Tasks {
 			var devices = GetDeviceListForDevice ();
 			if (devices.Count == 0) {
 				sb.AppendLine ($"        There are no devices connected to this Mac that can be used to run this app.");
+				AppendDiscardedDevices (sb, "        ", "Device");
 			} else {
 				sb.AppendLine ($"        There are {devices.Count} device(s) connected to this Mac that can be used to run this app:");
 				foreach (var d in devices)
@@ -428,6 +499,7 @@ namespace Xamarin.MacDev.Tasks {
 			var simulators = GetDeviceListForSimulator ();
 			if (simulators.Count == 0) {
 				sb.AppendLine ($"        There are no simulators available that can be used to run this app. Please open Xcode, then the menu Window -> Devices and Simulators, select Simulators on the top left, and create a new simulator clicking on the plus sign on the bottom left.");
+				AppendDiscardedDevices (sb, "        ", "Simulator");
 			} else {
 				sb.AppendLine ($"        There are {simulators.Count} simulators(s) on this Mac that can be used to run this app:");
 				foreach (var s in simulators)
@@ -455,7 +527,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (Devices.Length == 0) {
-				Log.LogError ("No applicable and available devices found.");
+				LogNoAvailableDevicesError ();
 				return false;
 			}
 

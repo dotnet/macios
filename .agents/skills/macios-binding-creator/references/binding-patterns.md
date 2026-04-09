@@ -526,6 +526,109 @@ Real example: `src/MapKit/MKMultiPoint.cs`
 
 Add the manual file to the framework's `*_SOURCES`. If the file defines types needed by the API definition (like structs), add it to both `*_API_SOURCES` and `*_SOURCES`.
 
+If the file defines types that bgen needs to resolve (e.g., NativeObject subclasses used as marshal types — see "NativeObject Return Types in Protocol Methods" below), add it to `*_CORE_SOURCES`:
+
+```
+# In src/frameworks.sources:
+PRINTCORE_CORE_SOURCES =                    \
+	PrintCore/Defs.cs                       \
+	PrintCore/PrintCore.cs                  \
+```
+
+`*_CORE_SOURCES` files are compiled into bgen's core assembly, making their types available for type resolution during code generation. Use this when bgen reports `BI1078: Do not know how to make a signature for <Type>`.
+
+## NativeObject Return Types in Protocol Methods
+
+When a protocol method returns an opaque C type (e.g., `PMPrintSession`, `PMPageFormat`) that has a managed `NativeObject` wrapper, bgen doesn't know how to marshal it by default. Bgen only handles `NSObject` subclasses, primitives, and `IntPtr` in protocol return positions.
+
+Types like `CGColor`, `CGImage`, and `CMSampleBuffer` work because they're explicitly registered as **marshal types** in bgen. The default `MarshalType` generates `Runtime.GetINativeObject<T>(ptr, owns)` marshaling — exactly what NativeObject wrappers need.
+
+### Recognition
+
+You need this pattern when:
+- A protocol method returns an opaque C type that has a managed `NativeObject` wrapper
+- bgen reports `BI1078: Do not know how to make a signature for <Type>`
+- You've been using `IntPtr` as the return type but a concrete managed type exists
+
+### Step 1: Add to CORE_SOURCES
+
+The type's manual code file must be in `FRAMEWORKNAME_CORE_SOURCES` in `src/frameworks.sources` so bgen's core assembly can resolve it. See the `frameworks.sources` section above.
+
+### Step 2: Add #if !COREBUILD guards
+
+In the manual code file (e.g., `src/PrintCore/PrintCore.cs`), wrap the class **body** in `#if !COREBUILD` but keep the class shell visible. This is the same pattern used in `src/StoreKit/StoreProductParameters.cs`:
+
+```csharp
+#nullable enable
+
+using System;
+using System.Runtime.InteropServices;
+using ObjCRuntime;
+
+namespace PrintCore {
+
+	public class PMPrintSession : PMPrintCoreBase {
+#if !COREBUILD
+		[Preserve (Conditional = true)]
+		internal PMPrintSession (NativeHandle handle, bool owns)
+			: base (handle, owns)
+		{
+		}
+
+		// ... constructors, properties, methods ...
+#endif // !COREBUILD
+	}
+}
+```
+
+The class shell (name, inheritance) is visible to bgen's core assembly for type resolution. The body (constructors, methods) is excluded from core build since bgen only needs the type identity, not the implementation.
+
+> ⚠️ **Use `#if !COREBUILD`, not separate files.** Don't split the type into a shell file and an implementation file. The `#if !COREBUILD` pattern keeps everything in one file and is the established convention (see `src/StoreKit/StoreProductParameters.cs`, `src/CoreGraphics/CGColor.cs`).
+
+### Step 3: Register in TypeCache
+
+Add a property and lookup entry in `src/bgen/Caches/TypeCache.cs`:
+
+```csharp
+// Add property
+public TypeReference PMPrintSession { get; }
+
+// Add in Lookup method
+case "PMPrintSession":
+	PMPrintSession = type;
+	break;
+```
+
+### Step 4: Register in MarshalTypeList
+
+Add the type to `src/bgen/Models/MarshalTypeList.cs`:
+
+```csharp
+Add (types.PMPrintSession);
+```
+
+The default `MarshalType` constructor generates `Runtime.GetINativeObject<T>(ptr, owns)` marshaling, which is correct for all `NativeObject` subclasses.
+
+### Step 5: Use concrete types in API definition
+
+Now replace `IntPtr` return types with the concrete type in the bgen file:
+
+```csharp
+// Before — IntPtr with XML docs suggesting cast
+[Export ("printSession")]
+IntPtr PrintSession { get; }
+
+// After — concrete type, bgen handles marshaling
+[Export ("printSession")]
+PMPrintSession PrintSession { get; }
+```
+
+### Real Example
+
+In the PrintCore framework, `PMPrintSession`, `PMPrintSettings`, `PMPageFormat`, `PMPrinter`, and `PMPaper` were all registered as marshal types so protocol methods in `PDEPanel`, `PDEPlugIn`, and `PDEPlugInCallbackProtocol` could return them directly instead of `IntPtr`.
+
+> ❌ **NEVER leave protocol methods returning IntPtr when a managed NativeObject wrapper exists.** Always check the `src/FrameworkName/` directory for existing wrapper classes before using `IntPtr`. If a wrapper exists, register it as a bgen marshal type using this pattern.
+
 ## Strongly-Typed Dictionaries
 
 ```csharp
@@ -658,6 +761,7 @@ All `[Verify]` attributes must be resolved before submitting a PR.
 - **XAMCORE_5_0**: Only for fixing breaking changes on existing shipped types. Never use for new code. See "XAMCORE_5_0 Pattern for Existing Types" below.
 - **Handle access in manual code**: Use `GetCheckedHandle ()` instead of `Handle` when passing the native handle to P/Invokes in manual bindings. `GetCheckedHandle ()` throws `ObjectDisposedException` if the object has been disposed, preventing hard-to-debug native crashes.
 - **Struct members**: Wrap public methods and properties in `#if !COREBUILD`, but NOT fields (bgen needs struct size). Never use `#pragma warning disable 0169`.
+- **NativeObject class shells**: When a NativeObject type is in `CORE_SOURCES`, wrap the class body in `#if !COREBUILD` but keep the class declaration visible. See "NativeObject Return Types in Protocol Methods" above.
 - **String types**: Use `string` (not `NSString`) for string parameters in methods, properties, and delegates. The binding generator handles marshaling automatically. Only use `NSString` for dictionary keys or strong-typed constants.
 
 ## XAMCORE_5_0 Pattern for Existing Types

@@ -135,6 +135,8 @@ NSString ScheduleRequestedNotification { get; }
 
 > ❌ **NEVER** use `#pragma warning disable 0169` for struct fields. Instead, wrap public methods and properties inside `#if !COREBUILD` (but NOT fields — bgen needs to know the struct size).
 
+> ⚠️ **Protocol methods returning opaque types**: If a protocol method returns an opaque C type (e.g., `PMPrintSession`) that has a managed `NativeObject` wrapper in `src/FrameworkName/`, do NOT use `IntPtr`. Register the type as a bgen marshal type so bgen can generate proper `Runtime.GetINativeObject<T>()` marshaling. See [references/binding-patterns.md](references/binding-patterns.md) § "NativeObject Return Types in Protocol Methods".
+
 > ⚠️ Place a space before parentheses and brackets: `Foo ()`, `Bar (1, 2)`, `myarray [0]`.
 
 > ⚠️ Method names should follow .NET naming conventions — use verb-based names, not direct Objective-C selector translations (e.g., `BuildMenu` not `MenuWithContents`).

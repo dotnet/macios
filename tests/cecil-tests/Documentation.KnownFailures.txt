@@ -12776,7 +12776,11 @@ M:LocalAuthentication.LAPublicKey.ExportBytesAsync
 M:LocalAuthentication.LAPublicKey.Verify(Foundation.NSData,Foundation.NSData,Security.SecKeyAlgorithm,LocalAuthentication.LAPublicKeyVerifyDataCompletionHandler)
 M:LocalAuthentication.LAPublicKey.VerifyAsync(Foundation.NSData,Foundation.NSData,Security.SecKeyAlgorithm)
 M:LocalAuthentication.LARight.#ctor(LocalAuthentication.LAAuthenticationRequirement)
+M:LocalAuthentication.LARight.Authorize(System.String,AppKit.NSWindow,LocalAuthentication.LARightAuthorizeCompletionHandler)
 M:LocalAuthentication.LARight.Authorize(System.String,LocalAuthentication.LARightAuthorizeCompletionHandler)
+M:LocalAuthentication.LARight.Authorize(System.String,UIKit.UIWindow,LocalAuthentication.LARightAuthorizeCompletionHandler)
+M:LocalAuthentication.LARight.AuthorizeAsync(System.String,AppKit.NSWindow)
+M:LocalAuthentication.LARight.AuthorizeAsync(System.String,UIKit.UIWindow)
 M:LocalAuthentication.LARight.AuthorizeAsync(System.String)
 M:LocalAuthentication.LARight.CheckCanAuthorize(LocalAuthentication.LARightAuthorizeCompletionHandler)
 M:LocalAuthentication.LARight.CheckCanAuthorizeAsync

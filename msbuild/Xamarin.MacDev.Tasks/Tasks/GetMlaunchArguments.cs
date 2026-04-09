@@ -237,7 +237,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		string SelectSimulatorDevice ()
 		{
-			var simulator = Devices.FirstOrDefault (v => string.Equals (v.GetMetadata ("Type"), "Simulator", StringComparison.OrdinalIgnoreCase));
+			var simulator = GetTaskItemsOfType (Devices, "Simulator").FirstOrDefault ();
 			if (simulator is null) {
 				var sb = new StringBuilder ();
 				sb.AppendLine ("The 'Devices' item group does not contain any simulators.");
@@ -331,6 +331,25 @@ namespace Xamarin.MacDev.Tasks {
 			return name == identifier ? identifier : $"{name} ({identifier})";
 		}
 
+		static ITaskItem [] GetTaskItemsOfType (ITaskItem [] items, string type)
+		{
+			return items
+				.Where (v => string.Equals (v.GetMetadata ("Type"), type, StringComparison.OrdinalIgnoreCase))
+				.ToArray ();
+		}
+
+		string GetApplicableDeviceType ()
+		{
+			return SdkIsSimulator ? "Simulator" : "Device";
+		}
+
+		void FilterTaskItemInputs ()
+		{
+			var type = GetApplicableDeviceType ();
+			Devices = GetTaskItemsOfType (Devices, type);
+			DiscardedDevices = GetTaskItemsOfType (DiscardedDevices, type);
+		}
+
 		static List<(string Identifier, string Name, string? NotApplicableBecause)> GetDevicesFromTaskItems (string type, ITaskItem [] items)
 		{
 			return items
@@ -366,7 +385,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var sb = new StringBuilder ();
 			sb.AppendLine ("No applicable and available devices found.");
-			AppendDiscardedDevices (sb, "");
+			AppendDiscardedDevices (sb, "", GetApplicableDeviceType ());
 			Log.LogError (sb.ToString ().TrimEnd ());
 		}
 
@@ -520,6 +539,8 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			if (ShouldExecuteRemotely ())
 				return ExecuteRemotely ();
+
+			FilterTaskItemInputs ();
 
 			if (!string.IsNullOrEmpty (Help)) {
 				ShowHelp ();

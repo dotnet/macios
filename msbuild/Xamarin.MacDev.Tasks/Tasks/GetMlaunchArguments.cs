@@ -106,6 +106,51 @@ namespace Xamarin.MacDev.Tasks {
 			return deviceTypes.Select (v => v.Identifier).ToList ();
 		}
 
+		List<(long Version, string Identifier)>? GetSimulatorRuntimes ()
+		{
+			var output = GetSimulatorList ();
+			if (string.IsNullOrEmpty (output))
+				return null;
+
+			var xml = new XmlDocument ();
+			xml.LoadXml (output);
+
+			var runtimePrefix = $"com.apple.CoreSimulator.SimRuntime.{PlatformName}-";
+			var nodes = xml.SelectNodes ("/MTouch/Simulator/SupportedRuntimes/SimRuntime")?.Cast<XmlNode> () ?? Array.Empty<XmlNode> ();
+			var runtimes = new List<(long Version, string Identifier)> ();
+			foreach (var node in nodes) {
+				var identifier = node.SelectSingleNode ("Identifier")?.InnerText ?? string.Empty;
+				if (!identifier.StartsWith (runtimePrefix, StringComparison.Ordinal))
+					continue;
+
+				var versionValue = node.SelectSingleNode ("Version")?.InnerText ?? string.Empty;
+				if (!long.TryParse (versionValue, out var version))
+					version = 0;
+
+				runtimes.Add ((version, identifier));
+			}
+
+			runtimes.Sort ((a, b) => {
+				var rv = a.Version.CompareTo (b.Version);
+				if (rv != 0)
+					return rv;
+				return StringComparer.Ordinal.Compare (a.Identifier, b.Identifier);
+			});
+			return runtimes;
+		}
+
+		string GetDefaultSimulatorRuntime ()
+		{
+			var requestedRuntime = $"com.apple.CoreSimulator.SimRuntime.{PlatformName}-{SdkVersion.Replace ('.', '-')}";
+			var simulatorRuntimes = GetSimulatorRuntimes ();
+			if (simulatorRuntimes?.Count > 0) {
+				if (simulatorRuntimes.Any (v => v.Identifier == requestedRuntime))
+					return requestedRuntime;
+				return simulatorRuntimes [simulatorRuntimes.Count - 1].Identifier;
+			}
+			return requestedRuntime;
+		}
+
 		string? simulator_list;
 		string? GetSimulatorList ()
 		{
@@ -241,7 +286,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (SdkIsSimulator && string.IsNullOrEmpty (DeviceName)) {
-				var simruntime = $"com.apple.CoreSimulator.SimRuntime.{PlatformName}-{SdkVersion.Replace ('.', '-')}";
+				var simruntime = GetDefaultSimulatorRuntime ();
 				var simdevicetypes = GetDeviceTypes (true);
 				string simdevicetype;
 

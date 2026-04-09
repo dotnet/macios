@@ -225,6 +225,12 @@ steps:
 
 - task: UseDotNet@2
   inputs:
+    version: 10.x
+    installationPath: $(Agent.TempDirectory)/dotnet
+
+- task: UseDotNet@2
+  inputs:
+    packageType: runtime
     version: $(DotNetSdkVersion).x
     installationPath: $(Agent.TempDirectory)/dotnet
 

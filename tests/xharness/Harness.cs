@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -33,14 +34,14 @@ namespace Xharness {
 		public Dictionary<string, string> EnvironmentVariables { get; set; } = new Dictionary<string, string> ();
 		public bool? IncludeSystemPermissionTests { get; set; }
 		public List<TestProject> TestProjects { get; set; } = new List<TestProject> ();
-		public string JenkinsConfiguration { get; set; }
+		public string JenkinsConfiguration { get; set; } = string.Empty;
 		public HashSet<string> Labels { get; set; } = new HashSet<string> ();
 		public string LogDirectory { get; set; } = Environment.CurrentDirectory;
-		public string MarkdownSummaryPath { get; set; }
-		public string PeriodicCommand { get; set; }
-		public string PeriodicCommandArguments { get; set; }
+		public string MarkdownSummaryPath { get; set; } = string.Empty;
+		public string PeriodicCommand { get; set; } = string.Empty;
+		public string PeriodicCommandArguments { get; set; } = string.Empty;
 		public TimeSpan PeriodicCommandInterval { get; set; }
-		public string SdkRoot { get; set; }
+		public string? SdkRoot { get; set; }
 		public TestTarget Target { get; set; }
 		public double TimeoutInMinutes { get; set; } = 15;
 		public bool UseSystemXamarinIOSMac { get; set; }
@@ -48,20 +49,20 @@ namespace Xharness {
 		public XmlResultJargon XmlJargon { get; set; } = XmlResultJargon.NUnitV3;
 
 		// This is the maccore/tests directory.
-		static string root_directory;
+		static string? root_directory;
 		public static string RootDirectory {
 			get {
 				if (root_directory is null) {
-					var testAssemblyDirectory = Path.GetDirectoryName (System.Reflection.Assembly.GetExecutingAssembly ().Location);
+					var testAssemblyDirectory = Path.GetDirectoryName (System.Reflection.Assembly.GetExecutingAssembly ().Location)!;
 					var dir = testAssemblyDirectory;
 					var path = Path.Combine (testAssemblyDirectory, ".git");
 					while (!Directory.Exists (path) && path.Length > 3) {
-						dir = Path.GetDirectoryName (dir);
+						dir = Path.GetDirectoryName (dir)!;
 						path = Path.Combine (dir, ".git");
 					}
 					if (!Directory.Exists (path))
 						throw new Exception ("Could not find the xamarin-macios repo.");
-					path = Path.Combine (Path.GetDirectoryName (path), "tests");
+					path = Path.Combine (Path.GetDirectoryName (path)!, "tests");
 					if (!Directory.Exists (path))
 						throw new Exception ("Could not find the tests directory.");
 					root_directory = Path.GetFullPath (path);
@@ -121,7 +122,7 @@ namespace Xharness {
 		}
 	}
 
-	public class Harness : IHarness {
+	public class Harness {
 		readonly TestTarget target;
 		readonly string buildConfiguration = "Debug";
 		readonly IMlaunchProcessManager processManager;
@@ -130,23 +131,23 @@ namespace Xharness {
 
 		public HarnessAction Action { get; }
 		public int Verbosity { get; }
-		public IFileBackedLog HarnessLog { get; set; }
-		public HashSet<string> Labels { get; }
+		public IFileBackedLog? HarnessLog { get; set; }
+		public HashSet<string> Labels { get; } = new ();
 		public XmlResultJargon XmlJargon { get; }
 		public IResultParser ResultParser { get; }
 		public ITunnelBore TunnelBore { get; }
 		public AppBundleLocator AppBundleLocator { get; }
 
-		string sdkRoot;
+		string? sdkRoot;
 		string SdkRoot {
-			get => sdkRoot;
+			get => sdkRoot!;
 			set {
 				sdkRoot = value;
 				XcodeRoot = FindXcode (sdkRoot);
 			}
 		}
 
-		bool TryGetMlaunchDotnetPath (out string value)
+		bool TryGetMlaunchDotnetPath ([NotNullWhen (true)] out string? value)
 		{
 			value = null;
 
@@ -160,12 +161,12 @@ namespace Xharness {
 			}
 
 			var sdkPlatform = platform.AsString ().ToUpperInvariant ();
-			var sdkName = GetVariable ($"{sdkPlatform}_NUGET_SDK_NAME");
+			var sdkName = GetVariable ($"{sdkPlatform}_NUGET_SDK_NAME") ?? throw new Exception ($"Could not get the SDK name for {sdkPlatform} from the environment variable {sdkPlatform}_NUGET_SDK_NAME");
 			// there is a diff between getting the path for the current platform when running on CI or off CI. The config files in the CI do not 
 			// contain the correct workload version, the reason for this is that the workload is built in a different machine which means that
 			// the Make.config will use the wrong version. The CI set the version in the environment variable {platform}_WORKLOAD_VERSION via a script.
-			var workloadVersion = GetVariable ($"{sdkPlatform}_WORKLOAD_VERSION");
-			var sdkVersion = GetVariable ($"{sdkPlatform}_NUGET_VERSION_NO_METADATA");
+			var workloadVersion = GetVariable ($"{sdkPlatform}_WORKLOAD_VERSION", "");
+			var sdkVersion = GetVariable ($"{sdkPlatform}_NUGET_VERSION_NO_METADATA") ?? throw new Exception ($"Could not get the SDK version for {sdkPlatform} from the environment variable {sdkPlatform}_NUGET_VERSION_NO_METADATA");
 			value = Path.Combine (DOTNET_DIR, "packs", sdkName, string.IsNullOrEmpty (workloadVersion) ? sdkVersion : workloadVersion, "tools", "bin", "mlaunch");
 			return true;
 		}
@@ -184,7 +185,8 @@ namespace Xharness {
 			return !string.IsNullOrEmpty (GetVariable (variable));
 		}
 
-		string GetVariable (string variable, string @default = null)
+		[return: NotNullIfNotNull (nameof (@default))]
+		string? GetVariable (string variable, string? @default = null)
 		{
 			var result = Environment.GetEnvironmentVariable (variable);
 			if (string.IsNullOrEmpty (result))
@@ -212,7 +214,7 @@ namespace Xharness {
 
 		// Run
 
-		public string XcodeRoot { get; private set; }
+		public string? XcodeRoot { get; private set; }
 		public string LogDirectory { get; } = Environment.CurrentDirectory;
 		public double Timeout { get; } = 15; // in minutes
 		public double LaunchTimeout { get; } // in minutes
@@ -268,17 +270,17 @@ namespace Xharness {
 
 			INCLUDE_IOS = IsVariableSet (nameof (INCLUDE_IOS));
 			INCLUDE_TVOS = IsVariableSet (nameof (INCLUDE_TVOS));
-			JENKINS_RESULTS_DIRECTORY = GetVariable (nameof (JENKINS_RESULTS_DIRECTORY));
+			JENKINS_RESULTS_DIRECTORY = GetVariable (nameof (JENKINS_RESULTS_DIRECTORY)) ?? throw new Exception ($"Could not get the Jenkins results directory from the environment variable {nameof (JENKINS_RESULTS_DIRECTORY)}");
 			INCLUDE_MAC = IsVariableSet (nameof (INCLUDE_MAC));
 			INCLUDE_MACCATALYST = IsVariableSet (nameof (INCLUDE_MACCATALYST));
-			DOTNET_DIR = GetVariable (nameof (DOTNET_DIR));
-			DOTNET_TFM = GetVariable (nameof (DOTNET_TFM));
+			DOTNET_DIR = GetVariable (nameof (DOTNET_DIR)) ?? throw new Exception ($"Could not get the .NET directory from the environment variable {nameof (DOTNET_DIR)}");
+			DOTNET_TFM = GetVariable (nameof (DOTNET_TFM)) ?? throw new Exception ($"Could not get the .NET TFM from the environment variable {nameof (DOTNET_TFM)}");
 
 			if (string.IsNullOrEmpty (SdkRoot))
-				SdkRoot = GetVariable ("XCODE_DEVELOPER_ROOT", configuration.SdkRoot);
+				SdkRoot = GetVariable ("XCODE_DEVELOPER_ROOT", configuration.SdkRoot!);
 
 			processManager = new MlaunchProcessManager (XcodeRoot, MlaunchPath);
-			AppBundleLocator = new AppBundleLocator (processManager, () => HarnessLog, "/usr/local/share/dotnet/dotnet", GetVariable ("DOTNET"));
+			AppBundleLocator = new AppBundleLocator (processManager, () => HarnessLog!, "/usr/local/share/dotnet/dotnet", GetVariable ("DOTNET")!);
 			TunnelBore = new TunnelBore (processManager);
 		}
 
@@ -319,7 +321,7 @@ namespace Xharness {
 					return path;
 				}
 
-				path = Path.GetDirectoryName (path);
+				path = Path.GetDirectoryName (path)!;
 			} while (true);
 		}
 
@@ -426,8 +428,8 @@ namespace Xharness {
 
 		void PopulatePlatformSpecificProjects ()
 		{
-			string [] noConfigurations = null;
-			var debugAndRelease = new string [] { "Debug", "Release" };
+			string []? noConfigurations = null;
+			string []? debugAndRelease = new string [] { "Debug", "Release" };
 
 			var projectInfos = new [] {
 				new {
@@ -449,35 +451,35 @@ namespace Xharness {
 					Platforms = TestPlatform.All,
 					ProjectPath = Path.Combine ("linker", "dont link"),
 					IsFSharp = false,
-					Configurations = debugAndRelease,
+					Configurations = (string[]?) debugAndRelease,
 				},
 				new {
 					Label = TestLabel.Linker,
 					Platforms = TestPlatform.All,
 					ProjectPath = Path.Combine ("linker", "link sdk"),
 					IsFSharp = false,
-					Configurations = debugAndRelease,
+					Configurations = (string[]?) debugAndRelease,
 				},
 				new {
 					Label = TestLabel.Linker,
 					Platforms = TestPlatform.All,
 					ProjectPath = Path.Combine ("linker", "link all"),
 					IsFSharp = false,
-					Configurations = debugAndRelease,
+					Configurations = (string[]?) debugAndRelease,
 				},
 				new {
 					Label = TestLabel.Linker,
 					Platforms = TestPlatform.All,
 					ProjectPath = Path.Combine ("linker", "trimmode copy"),
 					IsFSharp = false,
-					Configurations = debugAndRelease,
+					Configurations = (string[]?) debugAndRelease,
 				},
 				new {
 					Label = TestLabel.Linker,
 					Platforms = TestPlatform.All,
 					ProjectPath = Path.Combine ("linker", "trimmode link"),
 					IsFSharp = false,
-					Configurations = debugAndRelease,
+					Configurations = (string[]?) debugAndRelease,
 				},
 				new {
 					Label = TestLabel.Fsharp,
@@ -557,7 +559,7 @@ namespace Xharness {
 				var file = Path.Combine (dir, name);
 				if (File.Exists (file))
 					yield return file;
-				dir = Path.GetDirectoryName (dir);
+				dir = Path.GetDirectoryName (dir)!;
 			}
 		}
 
@@ -677,7 +679,7 @@ namespace Xharness {
 			}
 		}
 
-		public string VSDropsUri {
+		public string? VSDropsUri {
 			get {
 				var uri = Environment.GetEnvironmentVariable ("VSDROPS_URI");
 				return string.IsNullOrEmpty (uri) ? null : uri;
@@ -711,7 +713,7 @@ namespace Xharness {
 		public void Save (StringWriter doc, string path)
 		{
 			if (!File.Exists (path)) {
-				Directory.CreateDirectory (Path.GetDirectoryName (path));
+				Directory.CreateDirectory (Path.GetDirectoryName (path)!);
 				File.WriteAllText (path, doc.ToString ());
 				Log (1, "Created {0}", path);
 			} else {
@@ -740,7 +742,7 @@ namespace Xharness {
 				new TestReporterFactory (processManager),
 				target,
 				this,
-				HarnessLog,
+				HarnessLog!,
 				new Logs (LogDirectory),
 				project.Path,
 				buildConfiguration);

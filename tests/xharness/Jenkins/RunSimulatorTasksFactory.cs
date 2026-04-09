@@ -77,7 +77,7 @@ namespace Xharness.Jenkins {
 					simulators: jenkins.Simulators,
 					buildTask: buildTask,
 					processManager: processManager,
-					candidates: candidates?.Cast<SimulatorDevice> () ?? test.Candidates)).ToList ();
+					candidates: candidates?.Cast<ISimulatorDevice> () ?? test.Candidates)).ToList ();
 
 			if (jenkins.IsServerMode)
 				return testVariations;

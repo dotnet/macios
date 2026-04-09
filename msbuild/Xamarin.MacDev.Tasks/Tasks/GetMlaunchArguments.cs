@@ -42,6 +42,8 @@ namespace Xamarin.MacDev.Tasks {
 		[Required]
 		public string MlaunchPath { get; set; } = string.Empty;
 
+		public ITaskItem [] Devices { get; set; } = Array.Empty<ITaskItem> ();
+
 		[Output]
 		public string MlaunchArguments { get; set; } = string.Empty;
 
@@ -234,6 +236,12 @@ namespace Xamarin.MacDev.Tasks {
 
 		string SelectSimulatorDevice ()
 		{
+			if (Devices.Length > 0) {
+				var simulator = Devices.FirstOrDefault (v => string.Equals (v.GetMetadata ("Type"), "Simulator", StringComparison.OrdinalIgnoreCase));
+				if (simulator is not null)
+					return string.IsNullOrEmpty (simulator.GetMetadata ("UDID")) ? simulator.ItemSpec : simulator.GetMetadata ("UDID");
+			}
+
 			return GetSimulatorDevices ()
 				.Where (v => v.IsCompatible && string.IsNullOrEmpty (v.NotApplicableBecause))
 				.OrderByDescending (v => v.RuntimeVersion)

@@ -3508,6 +3508,7 @@ namespace Xamarin.Tests {
 			"/System/iOSSupport/System/Library/Frameworks/LinkPresentation.framework/Versions/A/LinkPresentation",
 			"/System/iOSSupport/System/Library/Frameworks/MapKit.framework/Versions/A/MapKit",
 			"/System/iOSSupport/System/Library/Frameworks/MediaPlayer.framework/Versions/A/MediaPlayer",
+			"/System/iOSSupport/System/Library/Frameworks/MediaSetup.framework/Versions/A/MediaSetup",
 			"/System/iOSSupport/System/Library/Frameworks/Messages.framework/Versions/A/Messages",
 			"/System/iOSSupport/System/Library/Frameworks/MessageUI.framework/Versions/A/MessageUI",
 			"/System/iOSSupport/System/Library/Frameworks/MetalKit.framework/Versions/A/MetalKit",

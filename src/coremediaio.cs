@@ -676,6 +676,7 @@ namespace CoreMediaIO {
 		[Field ("kCMIOSampleBufferAttachmentKey_MouseAndKeyboardModifiers")]
 		NSString MouseAndKeyboardModifiers { get; }
 
+		[Mac (14, 0), MacCatalyst (17, 0)]
 		[Field ("kCMIOSampleBufferAttachmentKey_PixelBufferOverlaidByStaticImage")]
 		NSString PixelBufferOverlaidByStaticImage { get; }
 

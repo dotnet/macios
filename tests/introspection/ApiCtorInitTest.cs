@@ -731,7 +731,7 @@ namespace Introspection {
 			return SkipDueToAttribute (type);
 		}
 
-#if HAS_ARKIT
+#if HAS_ARKIT && !__MACOS__
 		/// <summary>
 		/// Ensures that all subclasses of a base class that conforms to IARAnchorCopying re-expose its constructor.
 		/// Note: we cannot have constructors in protocols so we have to inline them in every subclass.

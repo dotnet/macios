@@ -7,7 +7,7 @@
 // Copyright 2017 Microsoft. All rights reserved.
 //
 
-#if HAS_ARKIT
+#if HAS_ARKIT && !__MACOS__
 
 using System.Threading.Tasks;
 using ARKit;

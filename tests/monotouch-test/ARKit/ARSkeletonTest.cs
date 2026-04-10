@@ -1,4 +1,4 @@
-#if HAS_ARKIT
+#if HAS_ARKIT && !__MACOS__
 
 using System.Threading.Tasks;
 using ARKit;

@@ -9,7 +9,7 @@ using ObjCRuntime;
 namespace CoreMediaIO {
 
 #if !COREBUILD
-	/// <summary>Provides P/Invoke declarations for CoreMediaIO hardware object, device, and stream C functions.</summary>
+	/// <summary>Provides low-level P/Invoke declarations for CoreMediaIO hardware object, device, stream, and sample buffer C functions.</summary>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst15.4")]
 	[UnsupportedOSPlatform ("ios")]
@@ -22,31 +22,31 @@ namespace CoreMediaIO {
 		public static extern void CMIOObjectShow (uint objectId);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern byte CMIOObjectHasProperty (uint objectId, IntPtr address);
+		public static extern byte CMIOObjectHasProperty (uint objectId, CMIOObjectPropertyAddress* address);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectIsPropertySettable (uint objectId, IntPtr address, byte* isSettable);
+		public static extern int CMIOObjectIsPropertySettable (uint objectId, CMIOObjectPropertyAddress* address, byte* isSettable);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectGetPropertyDataSize (uint objectId, IntPtr address, uint qualifierDataSize, IntPtr qualifierData, uint* dataSize);
+		public static extern int CMIOObjectGetPropertyDataSize (uint objectId, CMIOObjectPropertyAddress* address, uint qualifierDataSize, IntPtr qualifierData, uint* dataSize);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectGetPropertyData (uint objectId, IntPtr address, uint qualifierDataSize, IntPtr qualifierData, uint dataSize, uint* dataUsed, IntPtr data);
+		public static extern int CMIOObjectGetPropertyData (uint objectId, CMIOObjectPropertyAddress* address, uint qualifierDataSize, IntPtr qualifierData, uint dataSize, uint* dataUsed, IntPtr data);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectSetPropertyData (uint objectId, IntPtr address, uint qualifierDataSize, IntPtr qualifierData, uint dataSize, IntPtr data);
+		public static extern int CMIOObjectSetPropertyData (uint objectId, CMIOObjectPropertyAddress* address, uint qualifierDataSize, IntPtr qualifierData, uint dataSize, IntPtr data);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectAddPropertyListener (uint objectId, IntPtr address, IntPtr listener, IntPtr clientData);
+		public static extern int CMIOObjectAddPropertyListener (uint objectId, CMIOObjectPropertyAddress* address, IntPtr listener, IntPtr clientData);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectRemovePropertyListener (uint objectId, IntPtr address, IntPtr listener, IntPtr clientData);
+		public static extern int CMIOObjectRemovePropertyListener (uint objectId, CMIOObjectPropertyAddress* address, IntPtr listener, IntPtr clientData);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectAddPropertyListenerBlock (uint objectId, IntPtr address, IntPtr dispatchQueue, IntPtr listener);
+		public static extern int CMIOObjectAddPropertyListenerBlock (uint objectId, CMIOObjectPropertyAddress* address, IntPtr dispatchQueue, IntPtr listener);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectRemovePropertyListenerBlock (uint objectId, IntPtr address, IntPtr dispatchQueue, IntPtr listener);
+		public static extern int CMIOObjectRemovePropertyListenerBlock (uint objectId, CMIOObjectPropertyAddress* address, IntPtr dispatchQueue, IntPtr listener);
 
 		// CMIOHardwareDevice.h
 
@@ -57,10 +57,10 @@ namespace CoreMediaIO {
 		public static extern int CMIODeviceStopStream (uint deviceId, uint streamId);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIODeviceProcessAVCCommand (uint deviceId, IntPtr ioAvcCommand);
+		public static extern int CMIODeviceProcessAVCCommand (uint deviceId, CMIODeviceAVCCommand* ioAvcCommand);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIODeviceProcessRS422Command (uint deviceId, IntPtr ioRS422Command);
+		public static extern int CMIODeviceProcessRS422Command (uint deviceId, CMIODeviceRS422Command* ioRS422Command);
 
 		// CMIOHardwareStream.h
 
@@ -94,31 +94,31 @@ namespace CoreMediaIO {
 		// CMIOSampleBuffer.h
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOSampleBufferCreate (IntPtr allocator, IntPtr dataBuffer, IntPtr formatDescription, uint numSamples, uint numSampleTimingEntries, IntPtr sampleTimingArray, uint numSampleSizeEntries, IntPtr sampleSizeArray, ulong sequenceNumber, uint discontinuityFlags, IntPtr* sampleBufferOut);
+		internal static extern int CMIOSampleBufferCreate (IntPtr allocator, IntPtr dataBuffer, IntPtr formatDescription, uint numSamples, uint numSampleTimingEntries, CMSampleTimingInfo* sampleTimingArray, uint numSampleSizeEntries, nuint* sampleSizeArray, ulong sequenceNumber, uint discontinuityFlags, IntPtr* sampleBufferOut);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOSampleBufferCreateForImageBuffer (IntPtr allocator, IntPtr imageBuffer, IntPtr formatDescription, IntPtr sampleTiming, ulong sequenceNumber, uint discontinuityFlags, IntPtr* sampleBufferOut);
+		internal static extern int CMIOSampleBufferCreateForImageBuffer (IntPtr allocator, IntPtr imageBuffer, IntPtr formatDescription, CMSampleTimingInfo* sampleTiming, ulong sequenceNumber, uint discontinuityFlags, IntPtr* sampleBufferOut);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOSampleBufferCreateNoDataMarker (IntPtr allocator, uint noDataEvent, IntPtr formatDescription, ulong sequenceNumber, uint discontinuityFlags, IntPtr* sampleBufferOut);
+		internal static extern int CMIOSampleBufferCreateNoDataMarker (IntPtr allocator, uint noDataEvent, IntPtr formatDescription, ulong sequenceNumber, uint discontinuityFlags, IntPtr* sampleBufferOut);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern void CMIOSampleBufferSetSequenceNumber (IntPtr sampleBuffer, ulong sequenceNumber);
+		internal static extern void CMIOSampleBufferSetSequenceNumber (IntPtr allocator, IntPtr sampleBuffer, ulong sequenceNumber);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern ulong CMIOSampleBufferGetSequenceNumber (IntPtr sampleBuffer);
+		internal static extern ulong CMIOSampleBufferGetSequenceNumber (IntPtr sampleBuffer);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern void CMIOSampleBufferSetDiscontinuityFlags (IntPtr sampleBuffer, uint discontinuityFlags);
+		internal static extern void CMIOSampleBufferSetDiscontinuityFlags (IntPtr allocator, IntPtr sampleBuffer, uint discontinuityFlags);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern uint CMIOSampleBufferGetDiscontinuityFlags (IntPtr sampleBuffer);
+		internal static extern uint CMIOSampleBufferGetDiscontinuityFlags (IntPtr sampleBuffer);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOSampleBufferCopyNonRequiredAttachments (IntPtr sourceSampleBuffer, IntPtr destinationSampleBuffer, uint attachmentMode);
+		internal static extern int CMIOSampleBufferCopyNonRequiredAttachments (IntPtr sourceSampleBuffer, IntPtr destinationSampleBuffer, uint attachmentMode);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOSampleBufferCopySampleAttachments (IntPtr sourceSampleBuffer, IntPtr destinationSampleBuffer);
+		internal static extern int CMIOSampleBufferCopySampleAttachments (IntPtr sourceSampleBuffer, IntPtr destinationSampleBuffer);
 	}
 #endif // !COREBUILD
 }

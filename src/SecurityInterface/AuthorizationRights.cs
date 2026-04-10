@@ -13,7 +13,7 @@ namespace SecurityInterface {
 	/// <summary>Represents a single authorization right with a name, optional value, and flags.</summary>
 	[SupportedOSPlatform ("macos")]
 	public readonly struct AuthorizationRight {
-		readonly byte[]? value;
+		readonly byte []? value;
 
 		/// <summary>Gets the name of the authorization right.</summary>
 		public string Name { get; }
@@ -22,22 +22,22 @@ namespace SecurityInterface {
 		public uint Flags { get; }
 
 		/// <summary>Gets a copy of the value data, or <see langword="null" /> if no value is set.</summary>
-		public byte[]? Value => value is null ? null : (byte[]) value.Clone ();
+		public byte []? Value => value is null ? null : (byte []) value.Clone ();
 
 		/// <summary>Creates a new authorization right with the specified name, optional value, and flags.</summary>
 		/// <param name="name">The authorization right name.</param>
 		/// <param name="value">The optional value data.</param>
 		/// <param name="flags">The flags for this right.</param>
-		public AuthorizationRight (string name, byte[]? value = null, uint flags = 0)
+		public AuthorizationRight (string name, byte []? value = null, uint flags = 0)
 		{
 			if (name is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (name));
 			Name = name;
-			this.value = value is null ? null : (byte[]) value.Clone ();
+			this.value = value is null ? null : (byte []) value.Clone ();
 			Flags = flags;
 		}
 
-		internal byte[]? GetRawValue () => value;
+		internal byte []? GetRawValue () => value;
 	}
 
 	[StructLayout (LayoutKind.Sequential)]
@@ -58,18 +58,18 @@ namespace SecurityInterface {
 	[SupportedOSPlatform ("macos")]
 	public unsafe sealed class AuthorizationRights : IDisposable, INativeObject, IReadOnlyList<AuthorizationRight> {
 		NativeHandle handle;
-		readonly AuthorizationRight[] items;
+		readonly AuthorizationRight [] items;
 
 		/// <summary>Creates a new authorization rights set from the specified rights.</summary>
 		/// <param name="items">The authorization rights to include.</param>
-		public AuthorizationRights (params AuthorizationRight[] items)
+		public AuthorizationRights (params AuthorizationRight [] items)
 			: this ((IEnumerable<AuthorizationRight>) items)
 		{
 		}
 
 		/// <summary>Creates a new authorization rights set from the specified right names.</summary>
 		/// <param name="rights">The authorization right names.</param>
-		public AuthorizationRights (params string[] rights)
+		public AuthorizationRights (params string [] rights)
 		{
 			if (rights is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (rights));
@@ -92,7 +92,7 @@ namespace SecurityInterface {
 			AllocateNative ();
 		}
 
-		AuthorizationRights (AuthorizationRight[] items, bool noCopy)
+		AuthorizationRights (AuthorizationRight [] items, bool noCopy)
 		{
 			this.items = items;
 			AllocateNative ();
@@ -132,10 +132,10 @@ namespace SecurityInterface {
 			for (int i = 0; i < native->Count; i++) {
 				var item = native->Items [i];
 				var name = Marshal.PtrToStringUTF8 (item.Name)!;
-				byte[]? value = null;
+				byte []? value = null;
 
 				if (item.ValueLength != 0) {
-					var length = checked ((int) item.ValueLength);
+					var length = checked((int) item.ValueLength);
 					value = new byte [length];
 					Marshal.Copy (item.Value, value, 0, length);
 				}
@@ -180,7 +180,7 @@ namespace SecurityInterface {
 			return ptr;
 		}
 
-		static IntPtr BytesToHGlobal (byte[] value)
+		static IntPtr BytesToHGlobal (byte [] value)
 		{
 			var ptr = Marshal.AllocHGlobal (value.Length);
 			Marshal.Copy (value, 0, ptr, value.Length);

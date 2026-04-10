@@ -100,7 +100,7 @@ namespace SecurityInterface {
 		/// <summary>Gets the version of the callbacks structure.</summary>
 		public uint Version => Native->Version;
 
-		static byte[] ToNullTerminatedUtf8 (string value)
+		static byte [] ToNullTerminatedUtf8 (string value)
 		{
 			var utf8 = Encoding.UTF8.GetBytes (value);
 			var rv = new byte [utf8.Length + 1];
@@ -108,11 +108,11 @@ namespace SecurityInterface {
 			return rv;
 		}
 
-		static byte[]? CopyValue (AuthorizationValueNative* value)
+		static byte []? CopyValue (AuthorizationValueNative* value)
 		{
 			if (value is null || value->Length == 0)
 				return null;
-			var length = checked ((int) value->Length);
+			var length = checked((int) value->Length);
 			var rv = new byte [length];
 			Marshal.Copy ((IntPtr) value->Data, rv, 0, length);
 			return rv;
@@ -155,7 +155,7 @@ namespace SecurityInterface {
 		/// <param name="contextFlags">On return, the flags associated with the context value.</param>
 		/// <param name="value">On return, the context value as a byte array, or <see langword="null" /> if not found.</param>
 		/// <returns>An OSStatus code; 0 on success.</returns>
-		public int GetContextValue (AuthorizationEngine engine, string key, out AuthorizationContextFlags contextFlags, out byte[]? value)
+		public int GetContextValue (AuthorizationEngine engine, string key, out AuthorizationContextFlags contextFlags, out byte []? value)
 		{
 			if (key is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (key));
@@ -176,7 +176,7 @@ namespace SecurityInterface {
 		/// <param name="contextFlags">The flags to associate with the value.</param>
 		/// <param name="value">The value to set.</param>
 		/// <returns>An OSStatus code; 0 on success.</returns>
-		public int SetContextValue (AuthorizationEngine engine, string key, AuthorizationContextFlags contextFlags, byte[] value)
+		public int SetContextValue (AuthorizationEngine engine, string key, AuthorizationContextFlags contextFlags, byte [] value)
 		{
 			if (key is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (key));
@@ -196,7 +196,7 @@ namespace SecurityInterface {
 		/// <param name="key">The hint key name.</param>
 		/// <param name="value">On return, the hint value as a byte array, or <see langword="null" /> if not found.</param>
 		/// <returns>An OSStatus code; 0 on success.</returns>
-		public int GetHintValue (AuthorizationEngine engine, string key, out byte[]? value)
+		public int GetHintValue (AuthorizationEngine engine, string key, out byte []? value)
 		{
 			if (key is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (key));
@@ -214,7 +214,7 @@ namespace SecurityInterface {
 		/// <param name="key">The hint key name.</param>
 		/// <param name="value">The value to set.</param>
 		/// <returns>An OSStatus code; 0 on success.</returns>
-		public int SetHintValue (AuthorizationEngine engine, string key, byte[] value)
+		public int SetHintValue (AuthorizationEngine engine, string key, byte [] value)
 		{
 			if (key is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (key));

@@ -7,12 +7,14 @@ namespace ARKit {
 	public partial class ARSkeleton {
 		[SupportedOSPlatform ("ios14.0")]
 		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		[DllImport (Constants.ARKitLibrary)]
 		static extern IntPtr /* NSString */ ARSkeletonJointNameForRecognizedPointKey (/* NSString */ IntPtr recognizedPointKey);
 
 		[SupportedOSPlatform ("ios14.0")]
 		[UnsupportedOSPlatform ("maccatalyst")]
+		[UnsupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
 		public static NSString? CreateJointName (NSString recognizedPointKey)
 		{

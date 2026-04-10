@@ -231,6 +231,7 @@ namespace ARKit {
 
 	[iOS (13, 0)]
 	[Native]
+	[NoMac]
 	public enum ARCoachingGoal : long {
 		Tracking,
 		HorizontalPlane,
@@ -243,6 +244,7 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[Flags]
 	[Native]
+	[NoMac]
 	public enum ARFrameSemantics : long {
 		None = 0x0,
 		PersonSegmentation = 1 << 0,
@@ -256,6 +258,7 @@ namespace ARKit {
 
 	[iOS (13, 0)]
 	[Native]
+	[NoMac]
 	public enum ARMatteResolution : long {
 		Full = 0,
 		Half = 1,
@@ -263,6 +266,7 @@ namespace ARKit {
 
 	[iOS (13, 0)]
 	[Native]
+	[NoMac]
 	public enum ARRaycastTarget : long {
 		ExistingPlaneGeometry,
 		ExistingPlaneInfinite,
@@ -271,6 +275,7 @@ namespace ARKit {
 
 	[iOS (13, 0)]
 	[Native]
+	[NoMac]
 	public enum ARRaycastTargetAlignment : long {
 		Horizontal,
 		Vertical,
@@ -278,6 +283,7 @@ namespace ARKit {
 	}
 
 	[iOS (13, 0)]
+	[NoMac]
 	public enum ARSegmentationClass : byte {
 		None = 0,
 		Person = 255,
@@ -285,6 +291,7 @@ namespace ARKit {
 
 	[iOS (13, 0)]
 	[Native]
+	[NoMac]
 	public enum ARCollaborationDataPriority : long {
 		Critical,
 		Optional,
@@ -293,6 +300,7 @@ namespace ARKit {
 
 	[iOS (14, 0)]
 	[Native]
+	[NoMac]
 	public enum ARAltitudeSource : long {
 		Unknown,
 		Coarse,
@@ -302,6 +310,7 @@ namespace ARKit {
 
 	[iOS (14, 0)]
 	[Native]
+	[NoMac]
 	public enum ARConfidenceLevel : long {
 		Low,
 		Medium,
@@ -310,6 +319,7 @@ namespace ARKit {
 
 	[iOS (14, 0)]
 	[Native]
+	[NoMac]
 	public enum ARGeoTrackingAccuracy : long {
 		Undetermined,
 		Low,
@@ -319,6 +329,7 @@ namespace ARKit {
 
 	[iOS (14, 0)]
 	[Native]
+	[NoMac]
 	public enum ARGeoTrackingState : long {
 		NotAvailable,
 		Initializing,
@@ -328,6 +339,7 @@ namespace ARKit {
 
 	[iOS (14, 0)]
 	[Native]
+	[NoMac]
 	public enum ARGeoTrackingStateReason : long {
 		None,
 		NotAvailableAtLocation,
@@ -342,6 +354,7 @@ namespace ARKit {
 
 	[iOS (14, 3)]
 	[Native]
+	[NoMac]
 	public enum ARAppClipCodeUrlDecodingState : long {
 		Decoding,
 		Failed,
@@ -643,6 +656,7 @@ namespace ARKit {
 	/// <summary>Geometry representing a plane detected in the real world.</summary>
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARPlaneGeometry : NSSecureCoding {
 		[Export ("vertexCount")]
 		nuint VertexCount { get; }
@@ -675,6 +689,7 @@ namespace ARKit {
 
 	[BaseType (typeof (SCNGeometry))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARSCNPlaneGeometry {
 		[Static]
 		[Export ("planeGeometryWithDevice:")]
@@ -751,6 +766,7 @@ namespace ARKit {
 	/// <summary>Summary information about the video feed used in the AR simulation.</summary>
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARVideoFormat : NSCopying {
 
 		[iOS (13, 0)]
@@ -833,6 +849,7 @@ namespace ARKit {
 		ARRaycastQuery CreateRaycastQuery (CGPoint point, ARRaycastTarget target, ARRaycastTargetAlignment alignment);
 	}
 
+	[NoMac]
 	interface IARSCNViewDelegate { }
 
 	/// <summary>Delegate object for <see cref="ARKit.ARSCNView" /> objects.</summary>
@@ -908,6 +925,7 @@ namespace ARKit {
 		ARHitTestResult [] HitTest (CGPoint point, ARHitTestResultType types);
 	}
 
+	[NoMac]
 	interface IARSKViewDelegate { }
 
 	/// <summary>Delegate object allowing the developer to respond to events relating to a <see cref="ARKit.ARSKView" />.</summary>
@@ -958,6 +976,7 @@ namespace ARKit {
 		void DidRemoveNode (ARSKView view, SKNode node, ARAnchor anchor);
 	}
 
+	[NoMac]
 	delegate void GetGeolocationCallback (CLLocationCoordinate2D coordinate, double altitude, [NullAllowed] NSError error);
 
 	/// <include file="../docs/api/ARKit/ARSession.xml" path="/Documentation/Docs[@DocId='T:ARKit.ARSession']/*" />
@@ -1051,6 +1070,7 @@ namespace ARKit {
 		void CaptureHighResolutionFrame ([NullAllowed] AVCapturePhotoSettings photoSettings, ARSessionCaptureHighResolutionFrame completion);
 	}
 
+	[NoMac]
 	delegate void ARSessionCaptureHighResolutionFrame ([NullAllowed] ARFrame frame, [NullAllowed] NSError error);
 
 	/// <summary>Interface defining methods that respond to events in an <see cref="ARKit.ARSession" />.</summary>
@@ -1108,6 +1128,7 @@ namespace ARKit {
 		void DidChangeGeoTrackingStatus (ARSession session, ARGeoTrackingStatus geoTrackingStatus);
 	}
 
+	[NoMac]
 	interface IARSessionDelegate { }
 
 	/// <summary>Delegate object for the <see cref="ARKit.ARSession" /> object, allowing the developer to respond to events relating to the augmented-reality session.</summary>
@@ -2115,6 +2136,7 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARBody2D {
 
 		[Export ("skeleton")]
@@ -2124,6 +2146,7 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[BaseType (typeof (ARAnchor))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARBodyAnchor : ARTrackable {
 
 		[Export ("initWithAnchor:")]
@@ -2141,6 +2164,7 @@ namespace ARKit {
 
 	[iOS (13, 0)]
 	[BaseType (typeof (UIView))]
+	[NoMac]
 	interface ARCoachingOverlayView {
 
 		// inherited from UIView
@@ -2174,11 +2198,13 @@ namespace ARKit {
 		void SetActive (bool active, bool animated);
 	}
 
+	[NoMac]
 	interface IARCoachingOverlayViewDelegate { }
 
 	[iOS (13, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
+	[NoMac]
 	interface ARCoachingOverlayViewDelegate {
 
 		[Export ("coachingOverlayViewDidRequestSessionReset:")]
@@ -2194,6 +2220,7 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARCollaborationData : NSSecureCoding {
 
 		[Export ("priority")]
@@ -2202,6 +2229,7 @@ namespace ARKit {
 
 	[iOS (13, 0)]
 	[BaseType (typeof (ARConfiguration))]
+	[NoMac]
 	interface ARBodyTrackingConfiguration {
 
 		// From the parent, needed in all subclasses
@@ -2252,6 +2280,7 @@ namespace ARKit {
 
 	[iOS (13, 0)]
 	[BaseType (typeof (ARConfiguration))]
+	[NoMac]
 	interface ARPositionalTrackingConfiguration {
 
 		// From the parent, needed in all subclasses
@@ -2273,6 +2302,7 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARMatteGenerator {
 
 		[DesignatedInitializer]
@@ -2289,6 +2319,7 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARRaycastQuery {
 
 		[Export ("initWithOrigin:direction:allowingTarget:alignment:")]
@@ -2317,6 +2348,7 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARRaycastResult {
 
 		[Export ("worldTransform")]
@@ -2335,10 +2367,12 @@ namespace ARKit {
 		ARAnchor Anchor { get; }
 	}
 
+	[NoMac]
 	interface IARSessionProviding { }
 
 	[iOS (13, 0)]
 	[Protocol]
+	[NoMac]
 	interface ARSessionProviding {
 
 		[Abstract]
@@ -2349,6 +2383,7 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARSkeleton {
 
 		[Export ("definition")]
@@ -2364,6 +2399,7 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[BaseType (typeof (ARSkeleton))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARSkeleton3D {
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -2394,6 +2430,7 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[BaseType (typeof (ARSkeleton))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARSkeleton2D {
 
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -2412,6 +2449,7 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARSkeletonDefinition {
 
 		[Static]
@@ -2473,6 +2511,7 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARTrackedRaycast {
 
 		[Export ("stopTracking")]
@@ -2482,6 +2521,7 @@ namespace ARKit {
 	[iOS (13, 0)]
 	[BaseType (typeof (ARAnchor))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARParticipantAnchor {
 
 		// Inlined from 'ARAnchorCopying' protocol (we can't have constructors in interfaces)
@@ -2504,6 +2544,7 @@ namespace ARKit {
 	[iOS (13, 4)]
 	[BaseType (typeof (ARAnchor))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARMeshAnchor {
 
 		// Inlined from 'ARAnchorCopying' protocol (we can't have constructors in interfaces)
@@ -2520,6 +2561,7 @@ namespace ARKit {
 	[iOS (13, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARGeometrySource : NSSecureCoding {
 
 		[Export ("buffer", ArgumentSemantic.Strong)]
@@ -2551,6 +2593,7 @@ namespace ARKit {
 	[iOS (13, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARGeometryElement : NSSecureCoding {
 
 		[Export ("buffer", ArgumentSemantic.Strong)]
@@ -2585,6 +2628,7 @@ namespace ARKit {
 	[iOS (13, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARMeshGeometry : NSSecureCoding {
 
 		[Export ("vertices", ArgumentSemantic.Strong)]
@@ -2604,6 +2648,7 @@ namespace ARKit {
 	[iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARDepthData {
 		[Export ("depthMap", ArgumentSemantic.Assign)]
 		CVPixelBuffer DepthMap { get; }
@@ -2614,6 +2659,7 @@ namespace ARKit {
 
 	[iOS (14, 0)]
 	[BaseType (typeof (ARAnchor))]
+	[NoMac]
 	interface ARGeoAnchor : ARTrackable {
 		// Inlined from 'ARAnchorCopying' protocol (we can't have constructors in interfaces)
 		[Export ("initWithAnchor:")]
@@ -2643,6 +2689,7 @@ namespace ARKit {
 
 	[iOS (14, 0)]
 	[BaseType (typeof (ARConfiguration))]
+	[NoMac]
 	interface ARGeoTrackingConfiguration {
 		[Static]
 		[Export ("supportedVideoFormats")]
@@ -2701,6 +2748,7 @@ namespace ARKit {
 	[iOS (14, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARGeoTrackingStatus : NSCopying, NSSecureCoding {
 		[Export ("state")]
 		ARGeoTrackingState State { get; }
@@ -2715,6 +2763,7 @@ namespace ARKit {
 	[iOS (14, 3)]
 	[BaseType (typeof (ARAnchor))]
 	[DisableDefaultCtor]
+	[NoMac]
 	interface ARAppClipCodeAnchor : ARTrackable {
 
 		// Inlined from 'ARAnchorCopying' protocol (we can't have constructors in interfaces)
@@ -2733,6 +2782,7 @@ namespace ARKit {
 
 	[iOS (16, 0)]
 	[BaseType (typeof (NSObject))]
+	[NoMac]
 	interface ARPlaneExtent : NSSecureCoding {
 		[Export ("rotationOnYAxis")]
 		float RotationOnYAxis { get; }

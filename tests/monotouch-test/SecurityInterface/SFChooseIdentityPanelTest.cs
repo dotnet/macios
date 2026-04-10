@@ -23,6 +23,8 @@ namespace MonoTouchFixtures.SecurityInterface {
 		[Test]
 		public void Properties ()
 		{
+			// Panel property setters may trigger deferred UI operations on headless CI.
+			TestRuntime.IgnoreInCI ("SFChooseIdentityPanel property setters may trigger UI operations on headless CI.");
 			var panel = SFChooseIdentityPanel.SharedChooseIdentityPanel;
 
 			Assert.DoesNotThrow (() => panel.SetShowsHelp (true), "SetShowsHelp");

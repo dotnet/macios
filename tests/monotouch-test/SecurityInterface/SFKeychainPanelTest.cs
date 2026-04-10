@@ -21,6 +21,8 @@ namespace MonoTouchFixtures.SecurityInterface {
 		[Test]
 		public void SetPassword ()
 		{
+			// SFKeychainSavePanel inherits from NSSavePanel which may require window server access.
+			TestRuntime.IgnoreInCI ("SFKeychainSavePanel operations may trigger UI on headless CI.");
 			var panel = SFKeychainSavePanel.SharedKeychainSavePanel;
 			Assert.DoesNotThrow (() => panel.SetPassword ("test-password"), "SetPassword");
 			Assert.DoesNotThrow (() => panel.SetPassword (null), "SetPassword null");
@@ -29,6 +31,8 @@ namespace MonoTouchFixtures.SecurityInterface {
 		[Test]
 		public void Keychain_BeforeCreation ()
 		{
+			// SFKeychainSavePanel inherits from NSSavePanel which may require window server access.
+			TestRuntime.IgnoreInCI ("SFKeychainSavePanel operations may trigger UI on headless CI.");
 			var panel = SFKeychainSavePanel.SharedKeychainSavePanel;
 			// Keychain is null until a user creates one via the panel
 			var keychain = panel.Keychain;
@@ -38,6 +42,8 @@ namespace MonoTouchFixtures.SecurityInterface {
 		[Test]
 		public void Error_BeforeCreation ()
 		{
+			// SFKeychainSavePanel inherits from NSSavePanel which may require window server access.
+			TestRuntime.IgnoreInCI ("SFKeychainSavePanel operations may trigger UI on headless CI.");
 			var panel = SFKeychainSavePanel.SharedKeychainSavePanel;
 			// Error should be null if no operation has been attempted
 			var error = panel.Error;

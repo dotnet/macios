@@ -23,14 +23,18 @@ namespace MonoTouchFixtures.SecurityInterface {
 		[Test]
 		public void CertificateView ()
 		{
+			// Accessing the panel's CertificateView triggers NSView hierarchy initialization
+			// which causes a CF_IS_OBJC breakpoint trap on headless CI machines, hanging the process.
+			TestRuntime.IgnoreInCI ("SFCertificatePanel.CertificateView triggers view hierarchy init that hangs on headless CI.");
 			var panel = SFCertificatePanel.SharedCertificatePanel;
-			// CertificateView may be null until the panel has been presented
 			var view = panel.CertificateView;
 		}
 
 		[Test]
 		public void Properties ()
 		{
+			// Panel property setters may trigger deferred UI operations on headless CI.
+			TestRuntime.IgnoreInCI ("SFCertificatePanel property setters may trigger UI operations on headless CI.");
 			var panel = SFCertificatePanel.SharedCertificatePanel;
 
 			Assert.DoesNotThrow (() => panel.SetShowsHelp (false), "SetShowsHelp");
@@ -59,6 +63,8 @@ namespace MonoTouchFixtures.SecurityInterface {
 		[Test]
 		public void InformativeText ()
 		{
+			// Panel property setters may trigger deferred UI operations on headless CI.
+			TestRuntime.IgnoreInCI ("SFCertificateTrustPanel property setters may trigger UI operations on headless CI.");
 			var panel = SFCertificateTrustPanel.SharedCertificateTrustPanel;
 			panel.SetInformativeText ("Test informative text");
 			Assert.That (panel.InformativeText, Is.EqualTo ("Test informative text"), "InformativeText round-trip");

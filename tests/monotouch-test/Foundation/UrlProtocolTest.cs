@@ -79,7 +79,10 @@ namespace MonoTouchFixtures.Foundation {
 				}
 			});
 
-			Assert.IsTrue (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), task), "Timed out");
+			// Use the completion-check overload to keep pumping the run loop until
+			// StopLoading has been called. The URL loading system may call StopLoading
+			// after the download task completes, so waiting only for the task is racy.
+			Assert.IsTrue (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), task, () => CustomUrlProtocol.State >= 5), "Timed out");
 			Assert.That (CustomUrlProtocol.State, Is.EqualTo (5), "State");
 			Assert.IsTrue (success, "Success");
 		}

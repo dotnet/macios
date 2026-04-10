@@ -236,7 +236,7 @@ make -C tests/xtro-sharpie run-maccatalyst
 
 Verify all `.todo` entries for the bound framework are resolved. If any remain, they need binding or explicit `.ignore` entries with justification.
 
-> ⚠️ **Delete empty `.todo` files** after resolving all entries: `git rm tests/xtro-sharpie/api-annotations-dotnet/{platform}-{Framework}.todo`. Do not leave empty `.todo` files in the repository.
+> ❌ **ALWAYS delete empty `.todo` files** after resolving all entries: `git rm tests/xtro-sharpie/api-annotations-dotnet/{platform}-{Framework}.todo`. Do not leave empty `.todo` files in the repository — they cause xtro test noise.
 
 #### 6b. Cecil Tests
 
@@ -302,9 +302,25 @@ Tests run: X Passed: X Inconclusive: X Failed: X Ignored: X
 
 Skip this step if no monotouch-test files were added or modified.
 
+Run per-platform, using **exact casing** for platform names:
+
 ```bash
-make -C tests/monotouch-test run
+# iOS
+make -C tests/monotouch-test/dotnet/iOS run
+
+# tvOS
+make -C tests/monotouch-test/dotnet/tvOS run
+
+# macOS (use run-bare for captured output)
+make -C tests/monotouch-test/dotnet/macOS run-bare
+
+# MacCatalyst (use run-bare for captured output)
+make -C tests/monotouch-test/dotnet/MacCatalyst run-bare
 ```
+
+> ⚠️ **Platform casing matters**: Use `iOS`, `tvOS`, `macOS`, `MacCatalyst` exactly — not `ios`, `macos`, etc.
+
+> ⚠️ **Desktop platforms**: Use `run-bare` (not `run`) for macOS and MacCatalyst — same reason as introspection: `run` launches without capturing stdout. `run-bare` is only available for desktop platforms.
 
 ### Step 7: Handle Test Failures
 

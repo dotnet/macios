@@ -1,5 +1,40 @@
 # Training Log: macios-binding-creator
 
+## Session: 2026-04-10 (1) — Mixed API surface frameworks, .todo cleanup, monotouch-test commands
+
+**Trainer:** SkillTrainer | **Skill:** macios-binding-creator | **Trigger:** Deeper analysis of copilot session 62c564f6-99e3-47f5-b523-d206c665b71d (ARKit bindings, turns 12-14 + test workflow)
+
+### Assessment
+
+**Source:** Session 62c564f6 turns 12-14 — User guided agent through architectural cleanup of ARKit's `frameworks.sources` organization. Agent created `ARKIT_C_API_SOURCES` + `MACOS_DOTNET_SOURCES +=` hack; user showed cleaner approach of guarding entire bgen file with `#if !__MACOS__` and adding framework to `MACOS_FRAMEWORKS`. Also turn 11: user had to remind agent to delete empty `.todo` file.
+
+**Issues found (ranked):**
+1. ❌ **Missing: Mixed API surface framework pattern** — When a framework has ObjC APIs on mobile and C APIs on macOS, the agent created split source lists instead of using `#if` guards on the bgen file. This is a key architectural pattern not documented.
+2. ❌ **Wrong: Monotouch-test commands** — Skill said `make -C tests/monotouch-test run` which doesn't work. Correct commands are per-platform from `tests/monotouch-test/dotnet/{Platform}/`. User had to ask about macOS target (turn 3-4) and explicitly request per-platform runs (turns 6, 9).
+3. ⚠️ **Weak: Empty .todo file cleanup** — Agent forgot despite existing ⚠️ guidance. Needs upgrade to ❌ level.
+
+### Cycle 1: Add mixed framework pattern + strengthen .todo cleanup
+
+**Hypothesis:** Documenting the "guard entire bgen file with `#if !__MACOS__`" pattern will prevent agents from creating convoluted split source lists. Upgrading .todo cleanup to ❌ level will make it harder to miss.
+
+**Edits:**
+1. `references/binding-patterns.md` — New "Frameworks with Mixed API Surfaces (ObjC + C)" subsection with 4-step pattern, code examples (frameworks.sources, bgen file guard, manual C API guard), and anti-pattern against split source lists.
+2. `SKILL.md` — Upgraded empty `.todo` file deletion from ⚠️ to ❌ with stronger language.
+3. `SKILL.md` Step 6d — Replaced wrong `make -C tests/monotouch-test run` with per-platform commands (iOS, tvOS, macOS, MacCatalyst) including `run-bare` for desktop platforms and casing warning.
+4. `references/test-workflow.md` — Rewrote Monotouch Tests section with per-platform command table, `run-bare` guidance for desktop, note that mlaunch is NOT needed (unlike introspection), and casing requirements.
+
+**Outcome:** ✅ Changes kept.
+
+### Patterns Learned
+- **Guard the bgen file, not the source list** — When ObjC API definitions won't compile on a platform (UIKit dependencies on macOS), wrap the entire bgen file in `#if !__MACOS__` rather than splitting source lists. This is simpler and more maintainable.
+- **Severity matters for agent compliance** — The ⚠️ level for .todo cleanup wasn't enough; the agent skipped it. ❌ level rules get followed more consistently.
+- **Per-platform monotouch-test commands** — `make -C tests/monotouch-test run` doesn't exist. Must use `tests/monotouch-test/dotnet/{Platform}/` with exact casing. Desktop uses `run-bare`, mobile uses `run` (no mlaunch needed unlike introspection).
+
+### Open Items
+- None.
+
+---
+
 ## Session: 2026-04-09 (3) — Version determination and enum member availability
 
 **Trainer:** SkillTrainer | **Skill:** macios-binding-creator | **Trigger:** User request to enhance skill using copilot session d8792953-287f-485e-aed6-d4a6d46043c8 (SystemConfiguration bindings)

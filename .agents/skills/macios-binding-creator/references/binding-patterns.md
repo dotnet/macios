@@ -488,6 +488,47 @@ Available preprocessor symbols:
 
 > ❌ **NEVER** use platform-specific source file entries (e.g., `FRAMEWORKNAME_MACOS_DOTNET_SOURCES`) for conditional compilation. Use `#if` directives instead — they keep the code in shared files and are the established convention across the codebase.
 
+### Frameworks with Mixed API Surfaces (ObjC + C)
+
+Some frameworks have Objective-C APIs on mobile platforms (iOS, tvOS, MacCatalyst) but C APIs on macOS — for example, ARKit has ObjC classes on iOS but C-level session/object APIs on macOS.
+
+**The pattern:**
+
+1. Add the framework to `MACOS_FRAMEWORKS` in `src/frameworks.sources` — this tells the build system to compile it for macOS
+2. Guard the **entire bgen file** (`src/frameworkname.cs`) with `#if !__MACOS__` / `#endif` — the ObjC API definitions have UIKit/AVFoundation dependencies that won't compile on macOS
+3. Put macOS-specific C API bindings in `src/FrameworkName/*.cs` guarded with `#if MONOMAC` or `#if __MACOS__`
+4. Keep everything in one `FRAMEWORKNAME_SOURCES` list — no split source lists needed
+
+```
+# In src/frameworks.sources — single unified list:
+ARKIT_SOURCES =                 \
+	ARKit/ARObject.cs           \
+	ARKit/ARSession.cs          \
+	ARKit/AREnums.cs            \
+```
+
+```csharp
+// src/arkit.cs — entire file guarded for non-macOS
+#if !__MACOS__
+using System;
+using Foundation;
+using UIKit;
+// ... all ObjC API definitions ...
+#endif // !__MACOS__
+```
+
+```csharp
+// src/ARKit/ARSession.cs — macOS C API manual binding
+#if MONOMAC
+[SupportedOSPlatform ("macos26.5")]
+public class ARSession : ARObject {
+	// C API P/Invokes and wrappers
+}
+#endif // MONOMAC
+```
+
+> ❌ **NEVER** create separate source file lists (e.g., `ARKIT_C_API_SOURCES`) and append them with `MACOS_DOTNET_SOURCES += $(ARKIT_C_API_SOURCES)`. This creates a maintenance burden. Add the framework to `MACOS_FRAMEWORKS` and use `#if` guards instead.
+
 ## Struct Array Parameter Binding
 
 When an Objective-C API takes a C struct pointer + count (e.g., `MyStruct*` + `NSUInteger`), create a manual public wrapper that marshals a managed array to/from the native pointer. This is a common Apple API pattern (MapKit, CarPlay, ARKit, etc.).

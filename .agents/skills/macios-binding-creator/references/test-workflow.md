@@ -151,14 +151,28 @@ When adding exclusions for types that crash on simulator:
 
 ## Monotouch Tests
 
-For manually bound APIs (P/Invokes, manual properties), run the monotouch-test suite:
+For manually bound APIs (P/Invokes, manual properties), run the monotouch-test suite per-platform.
 
-```bash
-# Build and run monotouch-tests (uses simulator)
-make -C tests/monotouch-test run
-```
+**Platform casing matters** — use `iOS`, `tvOS`, `macOS`, `MacCatalyst` exactly.
 
-Or run specific test fixtures:
+### Per-Platform Commands
+
+| Platform | Build | Run |
+|----------|-------|-----|
+| iOS | `make -C .../dotnet/iOS build` | `make -C .../dotnet/iOS run` |
+| tvOS | `make -C .../dotnet/tvOS build` | `make -C .../dotnet/tvOS run` |
+| macOS | `make -C .../dotnet/macOS build` | `make -C .../dotnet/macOS run-bare` |
+| MacCatalyst | `make -C .../dotnet/MacCatalyst build` | `make -C .../dotnet/MacCatalyst run-bare` |
+
+Where `...` = `tests/monotouch-test`.
+
+Alternatively, from the parent directory: `make -C tests/monotouch-test/dotnet run-iOS`, `run-tvOS`, `run-macOS`, `run-MacCatalyst`.
+
+> ⚠️ **Desktop platforms (macOS, MacCatalyst)**: Use `run-bare` for captured test output — same as introspection. `run` launches the app via `dotnet build -t:Run` which doesn't capture stdout.
+
+> ⚠️ **`run-bare` is desktop-only.** iOS and tvOS use the simulator via `dotnet build -t:Run` with `SIMCTL_CHILD_NUNIT_AUTOSTART=true` and `SIMCTL_CHILD_NUNIT_AUTOEXIT=true` environment variables (set automatically by the shared Makefile). No manual mlaunch invocation is needed for monotouch-tests — unlike introspection.
+
+### Running Specific Test Fixtures
 
 ```bash
 # Run via dotnet test with a filter

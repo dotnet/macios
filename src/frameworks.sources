@@ -1452,6 +1452,7 @@ PDFKIT_API_SOURCES = \
 PDFKIT_SOURCES = \
 	PdfKit/PdfAnnotation.cs \
 	PdfKit/PdfKit.cs \
+	PdfKit/PdfViewAnnotationHitEventArgs.cs \
 
 # Phase
 
@@ -1896,6 +1897,7 @@ SHARED_CORE_SOURCES = \
 	ObjCRuntime/TransientCFString.cs \
 	ObjCRuntime/TransientString.cs \
 	ObjCRuntime/NFloat.cs \
+	ObjCRuntime/ObjectiveCFrameworkAttribute.cs \
 	ObjCRuntime/ObsoleteConstants.cs \
 	ObjCRuntime/Protocol.cs \
 	ObjCRuntime/Registrar.core.cs \

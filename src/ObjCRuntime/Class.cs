@@ -136,8 +136,7 @@ namespace ObjCRuntime {
 		///         </remarks>
 		public string? Name {
 			get {
-				var ptr = class_getName (Handle);
-				return Marshal.PtrToStringAuto (ptr);
+				return GetClassName (Handle);
 			}
 		}
 
@@ -290,7 +289,7 @@ namespace ObjCRuntime {
 				return Runtime.Registrar.Lookup (klass, throw_on_error);
 
 			if (throw_on_error)
-				throw ErrorHelper.CreateError (8026, $"Can't lookup the Objective-C class 0x{klass.ToString ("x")} ({Marshal.PtrToStringAuto (class_getName (klass))}) when the dynamic registrar has been linked away.");
+				throw ErrorHelper.CreateError (8026, $"Can't lookup the Objective-C class 0x{klass.ToString ("x")} ({GetClassName (klass)}) when the dynamic registrar has been linked away.");
 
 			return null;
 		}
@@ -355,7 +354,7 @@ namespace ObjCRuntime {
 				var rv = class_map.handle;
 				is_custom_type = (class_map.flags & Runtime.MTTypeFlags.CustomType) == Runtime.MTTypeFlags.CustomType;
 #if LOG_TYPELOAD
-				Runtime.NSLog ($"FindClass ({type.FullName}, {is_custom_type}): 0x{rv.ToString ("x")} = {Marshal.PtrToStringAuto (class_getName (rv))}.");
+				Runtime.NSLog ($"FindClass ({type.FullName}, {is_custom_type}): 0x{rv.ToString ("x")} = {GetClassName (rv)}.");
 #endif
 				return rv;
 			}
@@ -438,14 +437,14 @@ namespace ObjCRuntime {
 			var map = Runtime.options->RegistrationMap;
 
 #if LOG_TYPELOAD
-				Runtime.NSLog ($"FindType (0x{@class:X} = {Marshal.PtrToStringAuto (class_getName (@class))})");
+				Runtime.NSLog ($"FindType (0x{@class:X} = {GetClassName (@class)})");
 #endif
 
 			is_custom_type = false;
 
 			if (map is null) {
 #if LOG_TYPELOAD
-				Runtime.NSLog ($"FindType (0x{@class:X} = {Marshal.PtrToStringAuto (class_getName (@class))}) => found no map.");
+				Runtime.NSLog ($"FindType (0x{@class:X} = {GetClassName (@class)}) => found no map.");
 #endif
 				return null;
 			}
@@ -454,12 +453,12 @@ namespace ObjCRuntime {
 			var mapIndex = FindMapIndex (map->map, 0, map->map_count - 1, @class);
 			if (mapIndex == -1) {
 #if LOG_TYPELOAD
-				Runtime.NSLog ($"FindType (0x{@class:X} = {Marshal.PtrToStringAuto (class_getName (@class))}) => found no type.");
+				Runtime.NSLog ($"FindType (0x{@class:X} = {GetClassName (@class)}) => found no type.");
 #endif
 				return null;
 			}
 #if LOG_TYPELOAD
-			Runtime.NSLog ($"FindType (0x{@class:X} = {Marshal.PtrToStringAuto (class_getName (@class))}) => found index {mapIndex}.");
+			Runtime.NSLog ($"FindType (0x{@class:X} = {GetClassName (@class)}) => found index {mapIndex}.");
 #endif
 
 			is_custom_type = (map->map [mapIndex].flags & Runtime.MTTypeFlags.CustomType) == Runtime.MTTypeFlags.CustomType;
@@ -467,7 +466,7 @@ namespace ObjCRuntime {
 			var type = class_to_type [mapIndex];
 			if (type is not null) {
 #if LOG_TYPELOAD
-				Runtime.NSLog ($"FindType (0x{@class:X} = {Marshal.PtrToStringAuto (class_getName (@class))}) => found type {type.FullName} for map index {mapIndex}.");
+				Runtime.NSLog ($"FindType (0x{@class:X} = {GetClassName (@class)}) => found type {type.FullName} for map index {mapIndex}.");
 #endif
 				return type;
 			}
@@ -477,7 +476,7 @@ namespace ObjCRuntime {
 			type = ResolveTypeTokenReference (type_reference);
 
 #if LOG_TYPELOAD
-			Runtime.NSLog ($"FindType (0x{@class:X} = {Marshal.PtrToStringAuto (class_getName (@class))}) => {type?.FullName}; is custom: {is_custom_type} (token reference: 0x{type_reference:X}).");
+			Runtime.NSLog ($"FindType (0x{@class:X} = {GetClassName (@class)}) => {type?.FullName}; is custom: {is_custom_type} (token reference: 0x{type_reference:X}).");
 #endif
 
 			class_to_type [mapIndex] = type;
@@ -868,6 +867,12 @@ namespace ObjCRuntime {
 
 		[DllImport (Messaging.LIBOBJC_DYLIB)]
 		internal static extern IntPtr class_getName (IntPtr cls);
+
+		static string? GetClassName (IntPtr cls)
+		{
+			var namePtr = class_getName (cls);
+			return Marshal.PtrToStringAuto (namePtr);
+		}
 
 		[DllImport (Messaging.LIBOBJC_DYLIB)]
 		internal static extern IntPtr class_getSuperclass (IntPtr cls);

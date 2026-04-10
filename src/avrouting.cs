@@ -105,6 +105,9 @@ namespace AVKit {
 	[NoTV, NoMac, iOS (16, 0), MacCatalyst (16, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
+#if !XAMCORE_5_0
+	[ObjectiveCFramework ("AVRouting")]
+#endif
 	interface AVCustomRoutingControllerDelegate {
 		[Abstract]
 		[Export ("customRoutingController:handleEvent:completionHandler:")]

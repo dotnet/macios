@@ -8,6 +8,10 @@ This is the main branch targeting .NET 9.
 
 Ignore comments from the user 'vs-mobiletools-engineering-service2' when processing issues and pull requests.
 
+## Pull request review instructions
+
+- Don't report potential C# compilation errors (the compiler will report those).
+
 ## Repository Overview
 
 This repository provides C# bindings and tooling for Apple platforms:

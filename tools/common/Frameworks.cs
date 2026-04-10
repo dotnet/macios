@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 #if LEGACY_TOOLS || BUNDLER
 using Mono.Cecil;
+using Mono.Tuner;
 
 using Xamarin.Bundler;
 using Registrar;
@@ -406,7 +408,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "CoreNFC", "CoreNFC", new Version (11, 0), new Version (15, 0), true }, /* not always present, e.g. iPad w/iOS 12, so must be weak linked; doesn't work in the simulator in Xcode 12 (https://stackoverflow.com/q/63915728/183422), but works in at least Xcode 15 (maybe earlier too) */
 				{ "DeviceCheck", "DeviceCheck", new Version (11, 0), new Version (13, 0) },
 				{ "IdentityLookup", "IdentityLookup", 11 },
-				{ "IOSurface", "IOSurface", new Version (11, 0), NotAvailableInSimulator /* Not available in the simulator (the header is there, but broken) */  },
+				{ "IOSurface", "IOSurface", new Version (11, 0), new Version (26, 0) /* The headers were broken at some point, not sure when they started working again */ },
 				{ "CoreML", "CoreML", 11 },
 				{ "Vision", "Vision", 11 },
 				{ "FileProvider", "FileProvider", 11 },
@@ -555,7 +557,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 					{ "DeviceCheck", "DeviceCheck", new Version (11, 0), new Version (13, 0) },
 					{ "CoreML", "CoreML", 11 },
-					{ "IOSurface", "IOSurface", new Version (11, 0), NotAvailableInSimulator /* Not available in the simulator (the header is there, but broken) */  },
+					{ "IOSurface", "IOSurface", new Version (11, 0), new Version (26, 0) /* The headers were broken at some point, not sure when they started working again */ },
 					{ "Vision", "Vision", 11 },
 
 					{ "CoreServices", "MobileCoreServices", 12 },
@@ -703,6 +705,28 @@ public class Frameworks : Dictionary<string, Framework> {
 	}
 
 #if LEGACY_TOOLS || BUNDLER
+	public static IEnumerable<string> GetFrameworks (TypeDefinition td)
+	{
+		if (td.HasCustomAttributes) {
+			var any = false;
+			foreach (var attrib in td.CustomAttributes) {
+				if (!attrib.AttributeType.Is ("ObjCRuntime", "ObjectiveCFrameworkAttribute"))
+					continue;
+				if (attrib.ConstructorArguments.Count != 1)
+					continue;
+				var arg = attrib.ConstructorArguments [0];
+				if (arg.Value is not string stringArgument)
+					continue;
+				yield return stringArgument;
+				any = true;
+			}
+			if (any)
+				yield break;
+		}
+
+		yield return td.Namespace;
+	}
+
 	static void Gather (Application app, AssemblyDefinition product_assembly, HashSet<string> frameworks, HashSet<string> weak_frameworks, Func<Framework, bool> include_framework)
 	{
 		var namespaces = new HashSet<string> ();
@@ -710,12 +734,8 @@ public class Frameworks : Dictionary<string, Framework> {
 		// Collect all the namespaces.
 		foreach (var md in product_assembly.Modules) {
 			foreach (var td in md.Types) {
-#if !XAMCORE_5_0
-				// AVCustomRoutingControllerDelegate was incorrectly placed in AVKit
-				if (td.Namespace == "AVKit" && td.Name == "AVCustomRoutingControllerDelegate")
-					namespaces.Add ("AVRouting");
-#endif
-				namespaces.Add (td.Namespace);
+				foreach (var fw in GetFrameworks (td))
+					namespaces.Add (fw);
 			}
 		}
 

@@ -3302,6 +3302,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit",
 			"/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices",
 			"/System/Library/Frameworks/AppTrackingTransparency.framework/Versions/A/AppTrackingTransparency",
+			"/System/Library/Frameworks/ARKit.framework/Versions/A/ARKit",
 			"/System/Library/Frameworks/AudioToolbox.framework/Versions/A/AudioToolbox",
 			"/System/Library/Frameworks/AudioUnit.framework/Versions/A/AudioUnit",
 			"/System/Library/Frameworks/AuthenticationServices.framework/Versions/A/AuthenticationServices",

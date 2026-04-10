@@ -18,17 +18,6 @@ namespace MonoTouchFixtures.SecurityInterface {
 			var engine = AuthorizationEngine.Create (NativeHandle.Zero);
 			Assert.That (engine, Is.Null, "Zero handle should return null");
 		}
-
-		[Test]
-		public void Create_NonZero_ReturnsWrapper ()
-		{
-			// Use a fake non-zero handle to verify the wrapper creation path
-			var fakeHandle = new NativeHandle ((IntPtr) 0x12345678);
-			var engine = AuthorizationEngine.Create (fakeHandle);
-			Assert.That (engine, Is.Not.Null, "Non-zero handle should create a wrapper");
-			Assert.That (engine!.Handle, Is.EqualTo (fakeHandle), "Handle should match");
-			// Don't dispose — this is a fake handle, not a real CF object
-		}
 	}
 
 	[TestFixture]

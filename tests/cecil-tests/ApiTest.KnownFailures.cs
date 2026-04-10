@@ -447,6 +447,7 @@ namespace Cecil.Tests {
 			"CoreMedia.CMTaggedBufferGroup..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"CoreMedia.CMTimebase..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"CoreMedia.CMVideoFormatDescription..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
+			"CoreMediaIO.CMIOStreamClock..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"CoreText.CTFont..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"CoreText.CTFontCollection..ctor(ObjCRuntime.NativeHandle, System.Boolean)",
 			"CoreText.CTFontDescriptor..ctor(ObjCRuntime.NativeHandle, System.Boolean)",

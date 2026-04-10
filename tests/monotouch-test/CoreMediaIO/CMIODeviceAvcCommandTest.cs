@@ -1,4 +1,4 @@
-#if __MACOS__ || __MACCATALYST__
+#if HAS_COREMEDIAIO
 #nullable enable
 
 using System;
@@ -10,12 +10,12 @@ namespace MonoTouchFixtures.CoreMediaIO {
 
 	[TestFixture]
 	[Preserve (AllMembers = true)]
-	public class CMIODeviceAVCCommandTest {
+	public class CMIODeviceAvcCommandTest {
 
 		[Test]
 		public void DefaultValues ()
 		{
-			var cmd = new CMIODeviceAVCCommand ();
+			var cmd = new CMIODeviceAvcCommand ();
 			Assert.AreEqual (IntPtr.Zero, cmd.Command, "Command");
 			Assert.AreEqual ((uint) 0, cmd.CommandLength, "CommandLength");
 			Assert.AreEqual (IntPtr.Zero, cmd.Response, "Response");
@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.CoreMediaIO {
 		[Test]
 		public void Properties_RoundTrip ()
 		{
-			var cmd = new CMIODeviceAVCCommand ();
+			var cmd = new CMIODeviceAvcCommand ();
 			cmd.Command = new IntPtr (0x1234);
 			cmd.CommandLength = 16;
 			cmd.Response = new IntPtr (0x5678);
@@ -42,9 +42,9 @@ namespace MonoTouchFixtures.CoreMediaIO {
 		{
 			// Layout with 64-bit alignment:
 			// IntPtr(8) + uint(4) + padding(4) + IntPtr(8) + uint(4) + uint(4) = 32 on 64-bit
-			int expectedSize = Marshal.SizeOf<CMIODeviceAVCCommand> ();
+			int expectedSize = Marshal.SizeOf<CMIODeviceAvcCommand> ();
 			Assert.That (expectedSize, Is.GreaterThan (0), "Size should be positive");
 		}
 	}
 }
-#endif // __MACOS__ || __MACCATALYST__
+#endif // HAS_COREMEDIAIO

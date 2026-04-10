@@ -7,9 +7,9 @@ using ObjCRuntime;
 
 namespace CoreMediaIO {
 
-	/// <summary>Represents an RS-422 serial protocol command to be sent to a CoreMediaIO device.</summary>
+	/// <summary>Represents an Audio Video Control (AVC) command to be sent to a CoreMediaIO device.</summary>
 	/// <remarks>
-	/// <para>RS-422 is a serial communication protocol commonly used for professional video deck control.</para>
+	/// <para>The AVC protocol is used for device control over IEEE 1394 (FireWire) connections.</para>
 	/// <para>The <see cref="Command" /> and <see cref="Response" /> fields point to caller-owned byte buffers.
 	/// These buffers must remain valid for the duration of the native call that uses this struct.</para>
 	/// </remarks>
@@ -17,9 +17,9 @@ namespace CoreMediaIO {
 	[SupportedOSPlatform ("maccatalyst15.4")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("tvos")]
-	[NativeName ("CMIODeviceRS422Command")]
+	[NativeName ("CMIODeviceAVCCommand")]
 	[StructLayout (LayoutKind.Sequential)]
-	public struct CMIODeviceRS422Command {
+	public struct CMIODeviceAvcCommand {
 		IntPtr mCommand;
 		uint mCommandLength;
 		IntPtr mResponse;
@@ -27,7 +27,7 @@ namespace CoreMediaIO {
 		uint mResponseUsed;
 
 #if !COREBUILD
-		/// <summary>Gets or sets a pointer to the buffer containing the RS-422 command bytes to send.</summary>
+		/// <summary>Gets or sets a pointer to the buffer containing the AVC command bytes to send.</summary>
 		public IntPtr Command {
 			get => mCommand;
 			set => mCommand = value;
@@ -39,7 +39,7 @@ namespace CoreMediaIO {
 			set => mCommandLength = value;
 		}
 
-		/// <summary>Gets or sets a pointer to the buffer that will receive the RS-422 response bytes.</summary>
+		/// <summary>Gets or sets a pointer to the buffer that will receive the AVC response bytes.</summary>
 		public IntPtr Response {
 			get => mResponse;
 			set => mResponse = value;

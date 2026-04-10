@@ -9,87 +9,87 @@ using ObjCRuntime;
 namespace CoreMediaIO {
 
 #if !COREBUILD
-	/// <summary>Provides low-level P/Invoke declarations for CoreMediaIO hardware object, device, stream, and sample buffer C functions.</summary>
+	/// <summary>Low-level P/Invoke declarations for CoreMediaIO hardware object, device, stream, and sample buffer C functions.</summary>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst15.4")]
 	[UnsupportedOSPlatform ("ios")]
 	[UnsupportedOSPlatform ("tvos")]
-	public static unsafe class CMIOInterop {
+	internal static unsafe class CMIOInterop {
 
 		// CMIOHardwareObject.h
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern void CMIOObjectShow (uint objectId);
+		internal static extern void CMIOObjectShow (uint objectId);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern byte CMIOObjectHasProperty (uint objectId, CMIOObjectPropertyAddress* address);
+		internal static extern byte CMIOObjectHasProperty (uint objectId, CMIOObjectPropertyAddress* address);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectIsPropertySettable (uint objectId, CMIOObjectPropertyAddress* address, byte* isSettable);
+		internal static extern int CMIOObjectIsPropertySettable (uint objectId, CMIOObjectPropertyAddress* address, byte* isSettable);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectGetPropertyDataSize (uint objectId, CMIOObjectPropertyAddress* address, uint qualifierDataSize, IntPtr qualifierData, uint* dataSize);
+		internal static extern int CMIOObjectGetPropertyDataSize (uint objectId, CMIOObjectPropertyAddress* address, uint qualifierDataSize, IntPtr qualifierData, uint* dataSize);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectGetPropertyData (uint objectId, CMIOObjectPropertyAddress* address, uint qualifierDataSize, IntPtr qualifierData, uint dataSize, uint* dataUsed, IntPtr data);
+		internal static extern int CMIOObjectGetPropertyData (uint objectId, CMIOObjectPropertyAddress* address, uint qualifierDataSize, IntPtr qualifierData, uint dataSize, uint* dataUsed, IntPtr data);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectSetPropertyData (uint objectId, CMIOObjectPropertyAddress* address, uint qualifierDataSize, IntPtr qualifierData, uint dataSize, IntPtr data);
+		internal static extern int CMIOObjectSetPropertyData (uint objectId, CMIOObjectPropertyAddress* address, uint qualifierDataSize, IntPtr qualifierData, uint dataSize, IntPtr data);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectAddPropertyListener (uint objectId, CMIOObjectPropertyAddress* address, IntPtr listener, IntPtr clientData);
+		internal static extern int CMIOObjectAddPropertyListener (uint objectId, CMIOObjectPropertyAddress* address, IntPtr listener, IntPtr clientData);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectRemovePropertyListener (uint objectId, CMIOObjectPropertyAddress* address, IntPtr listener, IntPtr clientData);
+		internal static extern int CMIOObjectRemovePropertyListener (uint objectId, CMIOObjectPropertyAddress* address, IntPtr listener, IntPtr clientData);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectAddPropertyListenerBlock (uint objectId, CMIOObjectPropertyAddress* address, IntPtr dispatchQueue, IntPtr listener);
+		internal static extern int CMIOObjectAddPropertyListenerBlock (uint objectId, CMIOObjectPropertyAddress* address, IntPtr dispatchQueue, IntPtr listener);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOObjectRemovePropertyListenerBlock (uint objectId, CMIOObjectPropertyAddress* address, IntPtr dispatchQueue, IntPtr listener);
+		internal static extern int CMIOObjectRemovePropertyListenerBlock (uint objectId, CMIOObjectPropertyAddress* address, IntPtr dispatchQueue, IntPtr listener);
 
 		// CMIOHardwareDevice.h
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIODeviceStartStream (uint deviceId, uint streamId);
+		internal static extern int CMIODeviceStartStream (uint deviceId, uint streamId);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIODeviceStopStream (uint deviceId, uint streamId);
+		internal static extern int CMIODeviceStopStream (uint deviceId, uint streamId);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIODeviceProcessAVCCommand (uint deviceId, CMIODeviceAVCCommand* ioAvcCommand);
+		internal static extern int CMIODeviceProcessAVCCommand (uint deviceId, CMIODeviceAvcCommand* ioAvcCommand);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIODeviceProcessRS422Command (uint deviceId, CMIODeviceRS422Command* ioRS422Command);
+		internal static extern int CMIODeviceProcessRS422Command (uint deviceId, CMIODeviceRS422Command* ioRS422Command);
 
 		// CMIOHardwareStream.h
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOStreamCopyBufferQueue (uint streamId, IntPtr queueAlteredProc, IntPtr queueAlteredRefCon, IntPtr* queue);
+		internal static extern int CMIOStreamCopyBufferQueue (uint streamId, IntPtr queueAlteredProc, IntPtr queueAlteredRefCon, IntPtr* queue);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOStreamDeckPlay (uint streamId);
+		internal static extern int CMIOStreamDeckPlay (uint streamId);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOStreamDeckStop (uint streamId);
+		internal static extern int CMIOStreamDeckStop (uint streamId);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOStreamDeckJog (uint streamId, int speed);
+		internal static extern int CMIOStreamDeckJog (uint streamId, int speed);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOStreamDeckCueTo (uint streamId, ulong frameNumber, byte playOnCue);
+		internal static extern int CMIOStreamDeckCueTo (uint streamId, ulong frameNumber, byte playOnCue);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOStreamClockCreate (IntPtr allocator, IntPtr clockName, IntPtr sourceIdentifier, CMTime getTimeCallMinimumInterval, uint numberOfEventsForRateSmoothing, uint numberOfAveragesForRateSmoothing, IntPtr* clock);
+		internal static extern int CMIOStreamClockCreate (IntPtr allocator, IntPtr clockName, IntPtr sourceIdentifier, CMTime getTimeCallMinimumInterval, uint numberOfEventsForRateSmoothing, uint numberOfAveragesForRateSmoothing, IntPtr* clock);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOStreamClockPostTimingEvent (CMTime eventTime, ulong hostTime, byte resynchronize, IntPtr clock);
+		internal static extern int CMIOStreamClockPostTimingEvent (CMTime eventTime, ulong hostTime, byte resynchronize, IntPtr clock);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern int CMIOStreamClockInvalidate (IntPtr clock);
+		internal static extern int CMIOStreamClockInvalidate (IntPtr clock);
 
 		[DllImport (Constants.CoreMediaIOLibrary)]
-		public static extern CMTime CMIOStreamClockConvertHostTimeToDeviceTime (ulong hostTime, IntPtr clock);
+		internal static extern CMTime CMIOStreamClockConvertHostTimeToDeviceTime (ulong hostTime, IntPtr clock);
 
 		// CMIOSampleBuffer.h
 

@@ -610,13 +610,13 @@ COREMEDIA_SOURCES = \
 # CoreMediaIO
 
 COREMEDIAIO_API_SOURCES = \
-	CoreMediaIO/CMIODeviceAVCCommand.cs \
+	CoreMediaIO/CMIODeviceAvcCommand.cs \
 	CoreMediaIO/CMIODeviceRS422Command.cs \
 	CoreMediaIO/CMIOObjectPropertyAddress.cs \
 	CoreMediaIO/Enums.cs \
 
 COREMEDIAIO_SOURCES = \
-	CoreMediaIO/CMIODeviceAVCCommand.cs \
+	CoreMediaIO/CMIODeviceAvcCommand.cs \
 	CoreMediaIO/CMIODeviceRS422Command.cs \
 	CoreMediaIO/CMIOInterop.cs \
 	CoreMediaIO/CMIOObject.cs \

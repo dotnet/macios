@@ -1,4 +1,4 @@
-#if __MACOS__ || __MACCATALYST__
+#if HAS_COREMEDIAIO
 #nullable enable
 
 using System;
@@ -85,4 +85,4 @@ namespace MonoTouchFixtures.CoreMediaIO {
 		}
 	}
 }
-#endif // __MACOS__ || __MACCATALYST__
+#endif // HAS_COREMEDIAIO

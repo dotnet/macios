@@ -1,6 +1,7 @@
 #nullable enable
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using CoreFoundation;
@@ -18,7 +19,7 @@ namespace CoreMediaIO {
 	[UnsupportedOSPlatform ("tvos")]
 	public static class CMIOSampleBufferExtensions {
 
-		/// <summary>Creates a <see cref="CMSampleBuffer" /> that can be used in a CoreMediaIO graph.</summary>
+		/// <summary>Attempts to create a <see cref="CMSampleBuffer" /> that can be used in a CoreMediaIO graph.</summary>
 		/// <param name="dataBuffer">The block buffer containing the media data, or <see langword="null" /> for special-use cases.</param>
 		/// <param name="formatDescription">A description of the media data's format.</param>
 		/// <param name="numSamples">The number of samples represented by the buffer.</param>
@@ -26,9 +27,10 @@ namespace CoreMediaIO {
 		/// <param name="sampleSizeArray">An array of sample sizes, or <see langword="null" />.</param>
 		/// <param name="sequenceNumber">The position of this buffer in the stream.</param>
 		/// <param name="discontinuityFlags">Flags indicating any discontinuity in the stream.</param>
+		/// <param name="status">On return, the status code from the native call; 0 indicates success.</param>
 		/// <param name="sampleBuffer">On success, receives the created sample buffer.</param>
-		/// <returns>An <see cref="int" /> status code; 0 indicates success.</returns>
-		public static unsafe int CreateSampleBuffer (
+		/// <returns><see langword="true" /> if the sample buffer was created successfully; otherwise, <see langword="false" />.</returns>
+		public static unsafe bool TryCreateSampleBuffer (
 			CMBlockBuffer? dataBuffer,
 			CMFormatDescription formatDescription,
 			uint numSamples,
@@ -36,11 +38,11 @@ namespace CoreMediaIO {
 			nuint []? sampleSizeArray,
 			ulong sequenceNumber,
 			uint discontinuityFlags,
-			out CMSampleBuffer? sampleBuffer)
+			out int status,
+			[NotNullWhen (true)] out CMSampleBuffer? sampleBuffer)
 		{
 			sampleBuffer = null;
 			IntPtr bufferOut;
-			int status;
 
 			uint timingCount = sampleTimingArray is null ? 0 : (uint) sampleTimingArray.Length;
 			uint sizeCount = sampleSizeArray is null ? 0 : (uint) sampleSizeArray.Length;
@@ -66,27 +68,30 @@ namespace CoreMediaIO {
 			GC.KeepAlive (dataBuffer);
 			GC.KeepAlive (formatDescription);
 
-			if (status == 0 && bufferOut != IntPtr.Zero)
-				sampleBuffer = Runtime.GetINativeObject<CMSampleBuffer> (bufferOut, owns: true)!;
+			if (status != 0 || bufferOut == IntPtr.Zero)
+				return false;
 
-			return status;
+			sampleBuffer = Runtime.GetINativeObject<CMSampleBuffer> (bufferOut, owns: true)!;
+			return true;
 		}
 
-		/// <summary>Creates a <see cref="CMSampleBuffer" /> containing a <see cref="CVImageBuffer" /> for use in a CoreMediaIO graph.</summary>
+		/// <summary>Attempts to create a <see cref="CMSampleBuffer" /> containing a <see cref="CVImageBuffer" /> for use in a CoreMediaIO graph.</summary>
 		/// <param name="imageBuffer">The image buffer containing the media data.</param>
 		/// <param name="formatDescription">A description of the media data's format.</param>
 		/// <param name="sampleTiming">Timing information for the media sample.</param>
 		/// <param name="sequenceNumber">The position of this buffer in the stream.</param>
 		/// <param name="discontinuityFlags">Flags indicating any discontinuity in the stream.</param>
+		/// <param name="status">On return, the status code from the native call; 0 indicates success.</param>
 		/// <param name="sampleBuffer">On success, receives the created sample buffer.</param>
-		/// <returns>An <see cref="int" /> status code; 0 indicates success.</returns>
-		public static unsafe int CreateSampleBufferForImageBuffer (
+		/// <returns><see langword="true" /> if the sample buffer was created successfully; otherwise, <see langword="false" />.</returns>
+		public static unsafe bool TryCreateSampleBufferForImageBuffer (
 			CVImageBuffer imageBuffer,
 			CMFormatDescription formatDescription,
 			CMSampleTimingInfo sampleTiming,
 			ulong sequenceNumber,
 			uint discontinuityFlags,
-			out CMSampleBuffer? sampleBuffer)
+			out int status,
+			[NotNullWhen (true)] out CMSampleBuffer? sampleBuffer)
 		{
 			if (imageBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (imageBuffer));
@@ -96,7 +101,7 @@ namespace CoreMediaIO {
 			sampleBuffer = null;
 			IntPtr bufferOut;
 
-			int status = CMIOInterop.CMIOSampleBufferCreateForImageBuffer (
+			status = CMIOInterop.CMIOSampleBufferCreateForImageBuffer (
 				IntPtr.Zero,
 				imageBuffer.Handle,
 				formatDescription.Handle,
@@ -108,30 +113,33 @@ namespace CoreMediaIO {
 			GC.KeepAlive (imageBuffer);
 			GC.KeepAlive (formatDescription);
 
-			if (status == 0 && bufferOut != IntPtr.Zero)
-				sampleBuffer = Runtime.GetINativeObject<CMSampleBuffer> (bufferOut, owns: true)!;
+			if (status != 0 || bufferOut == IntPtr.Zero)
+				return false;
 
-			return status;
+			sampleBuffer = Runtime.GetINativeObject<CMSampleBuffer> (bufferOut, owns: true)!;
+			return true;
 		}
 
-		/// <summary>Creates a <see cref="CMSampleBuffer" /> with no data that serves as a marker indicating the device has stopped sending data.</summary>
+		/// <summary>Attempts to create a <see cref="CMSampleBuffer" /> with no data that serves as a marker indicating the device has stopped sending data.</summary>
 		/// <param name="noDataEvent">The type of no-data event.</param>
 		/// <param name="formatDescription">A description of the media data's format, or <see langword="null" />.</param>
 		/// <param name="sequenceNumber">The position of this buffer in the stream.</param>
 		/// <param name="discontinuityFlags">Flags indicating any discontinuity in the stream.</param>
+		/// <param name="status">On return, the status code from the native call; 0 indicates success.</param>
 		/// <param name="sampleBuffer">On success, receives the created sample buffer.</param>
-		/// <returns>An <see cref="int" /> status code; 0 indicates success.</returns>
-		public static unsafe int CreateNoDataMarker (
+		/// <returns><see langword="true" /> if the marker was created successfully; otherwise, <see langword="false" />.</returns>
+		public static unsafe bool TryCreateNoDataMarker (
 			uint noDataEvent,
 			CMFormatDescription? formatDescription,
 			ulong sequenceNumber,
 			uint discontinuityFlags,
-			out CMSampleBuffer? sampleBuffer)
+			out int status,
+			[NotNullWhen (true)] out CMSampleBuffer? sampleBuffer)
 		{
 			sampleBuffer = null;
 			IntPtr bufferOut;
 
-			int status = CMIOInterop.CMIOSampleBufferCreateNoDataMarker (
+			status = CMIOInterop.CMIOSampleBufferCreateNoDataMarker (
 				IntPtr.Zero,
 				noDataEvent,
 				formatDescription.GetHandle (),
@@ -141,10 +149,11 @@ namespace CoreMediaIO {
 
 			GC.KeepAlive (formatDescription);
 
-			if (status == 0 && bufferOut != IntPtr.Zero)
-				sampleBuffer = Runtime.GetINativeObject<CMSampleBuffer> (bufferOut, owns: true)!;
+			if (status != 0 || bufferOut == IntPtr.Zero)
+				return false;
 
-			return status;
+			sampleBuffer = Runtime.GetINativeObject<CMSampleBuffer> (bufferOut, owns: true)!;
+			return true;
 		}
 
 		/// <summary>Sets the sequence number on a <see cref="CMSampleBuffer" />.</summary>

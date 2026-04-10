@@ -1,4 +1,4 @@
-#if __MACOS__ || __MACCATALYST__
+#if HAS_COREMEDIAIO
 #nullable enable
 
 using System;
@@ -11,23 +11,17 @@ namespace MonoTouchFixtures.CoreMediaIO {
 	[Preserve (AllMembers = true)]
 	public class CMIOObjectTest {
 
-		// kCMIOObjectSystemObject = 1
-		const uint SystemObject = 1;
-		// 'owne' selector = kCMIOObjectPropertyOwnedObjects
-		const uint OwnedObjectsSelector = 0x6F776E65;
-		// 'glob' scope = kCMIOObjectPropertyScopeGlobal
-		const uint GlobalScope = 0x676C6F62;
-		// Wildcard element
-		const uint WildcardElement = 0xFFFFFFFF;
-
 		[Test]
 		public void HasProperty_SystemObject ()
 		{
 			TestRuntime.AssertXcodeVersion (13, 3);
 
-			// The system object (id=1) always has the 'owne' (owned objects) property
-			var address = new CMIOObjectPropertyAddress (OwnedObjectsSelector, GlobalScope, WildcardElement);
-			bool has = CMIOObject.HasProperty (SystemObject, address);
+			var obj = new CMIOObject (CMIOObject.SystemObjectId);
+			var address = new CMIOObjectPropertyAddress (
+				CMIOObject.OwnedObjectsSelector,
+				CMIOObject.GlobalScope,
+				CMIOObject.ElementWildcard);
+			bool has = obj.HasProperty (address);
 			// We just verify it doesn't crash; the result depends on whether CMIO daemons are running
 			Assert.IsTrue (has || !has, "HasProperty did not crash");
 		}
@@ -37,11 +31,13 @@ namespace MonoTouchFixtures.CoreMediaIO {
 		{
 			TestRuntime.AssertXcodeVersion (13, 3);
 
-			var address = new CMIOObjectPropertyAddress (OwnedObjectsSelector, GlobalScope, WildcardElement);
+			var obj = new CMIOObject (CMIOObject.SystemObjectId);
+			var address = new CMIOObjectPropertyAddress (
+				CMIOObject.OwnedObjectsSelector,
+				CMIOObject.GlobalScope,
+				CMIOObject.ElementWildcard);
 
-			// Check if the system object's owned-objects property is settable
-			int status = CMIOObject.IsPropertySettable (SystemObject, address, out bool isSettable);
-			// On some systems this may fail if CMIO is not available; just verify no crash
+			bool isSettable = obj.IsPropertySettable (address, out int status);
 			if (status == 0)
 				Assert.IsFalse (isSettable, "OwnedObjects should not be settable");
 		}
@@ -51,10 +47,13 @@ namespace MonoTouchFixtures.CoreMediaIO {
 		{
 			TestRuntime.AssertXcodeVersion (13, 3);
 
-			var address = new CMIOObjectPropertyAddress (OwnedObjectsSelector, GlobalScope, WildcardElement);
+			var obj = new CMIOObject (CMIOObject.SystemObjectId);
+			var address = new CMIOObjectPropertyAddress (
+				CMIOObject.OwnedObjectsSelector,
+				CMIOObject.GlobalScope,
+				CMIOObject.ElementWildcard);
 
-			int status = CMIOObject.GetPropertyDataSize (SystemObject, address, out uint dataSize);
-			// Just verify no crash; status depends on system state
+			uint dataSize = obj.GetPropertyDataSize (address, out int status);
 			if (status == 0)
 				Assert.That (dataSize, Is.GreaterThanOrEqualTo (0), "DataSize");
 		}
@@ -64,9 +63,18 @@ namespace MonoTouchFixtures.CoreMediaIO {
 		{
 			TestRuntime.AssertXcodeVersion (13, 3);
 
-			// Just verify CMIOObjectShow doesn't crash
-			Assert.DoesNotThrow (() => CMIOObject.Show (SystemObject), "Show should not throw");
+			var obj = new CMIOObject (CMIOObject.SystemObjectId);
+			Assert.DoesNotThrow (() => obj.Show (), "Show should not throw");
+		}
+
+		[Test]
+		public void Constants_HaveExpectedValues ()
+		{
+			Assert.AreEqual ((uint) 1, CMIOObject.SystemObjectId, "SystemObjectId");
+			Assert.AreNotEqual ((uint) 0, CMIOObject.SelectorWildcard, "SelectorWildcard");
+			Assert.AreNotEqual ((uint) 0, CMIOObject.GlobalScope, "GlobalScope");
+			Assert.AreEqual (0xFFFFFFFF, CMIOObject.ElementWildcard, "ElementWildcard");
 		}
 	}
 }
-#endif // __MACOS__ || __MACCATALYST__
+#endif // HAS_COREMEDIAIO

@@ -4417,9 +4417,18 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";MX2106_E" ItemType="0;.resx" PsrId="211" Leaf="true">
+      <Item ItemId=";MX2106_E1" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the more than one method named '{3}' was found in the type '{4}.]]></Val>
+          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named '{3}' was found in the type '{4}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[因為在類型 '{4}' 中未找到名稱為 '{3}' 的方法，所以無法最佳化在位移 {1} 的 {0} 中對 BlockLiteral.{2} 的呼叫。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2106_E2" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named '{3}' was found in the type '{4}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[因為在類型 '{4}' 中找到一個以上名稱為 '{3}' 的方法，所以無法最佳化在位移 {1} 的 {0} 中對 BlockLiteral.{2} 的呼叫。]]></Val>
           </Tgt>

@@ -466,9 +466,16 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="BundleResourcesWithLogicalNames" ItemName="_BundleResourceWithLogicalName" />
 		</CollectBundleResources>
 
-		<!-- Write out the list of assets we've processed, so that an inner build in a multi-rid build can skip processing them -->
-		<WriteItemsToFile Items="@(BundleResource)" Condition="'$(_SaveProcessedItems)' == 'true'" ItemName="BundleResource" File="$(_ProcessedBundleResourcesPath)" Overwrite="true" IncludeMetadata="false" />
-		<WriteItemsToFile Items="@(Content)" Condition="'$(_SaveProcessedItems)' == 'true'" ItemName="Content" File="$(_ProcessedContentPath)" Overwrite="true" IncludeMetadata="false" />
+		<!-- Write out the list of assets we've processed, so that an inner build in a multi-rid build can skip processing them.
+		     Items with a PublishFolderType are not actually processed by CollectBundleResources (they go to ResolvedFileToPublish instead),
+		     so don't include them in the list of processed items - inner builds need to see them to add them to ResolvedFileToPublish.
+		     Ref: https://github.com/dotnet/macios/issues/25053 -->
+		<ItemGroup Condition="'$(_SaveProcessedItems)' == 'true'">
+			<_BundleResourceToSave Include="@(BundleResource)" Condition="'%(BundleResource.PublishFolderType)' == ''" />
+			<_ContentToSave Include="@(Content)" Condition="'%(Content.PublishFolderType)' == ''" />
+		</ItemGroup>
+		<WriteItemsToFile Items="@(_BundleResourceToSave)" Condition="'$(_SaveProcessedItems)' == 'true'" ItemName="BundleResource" File="$(_ProcessedBundleResourcesPath)" Overwrite="true" IncludeMetadata="false" />
+		<WriteItemsToFile Items="@(_ContentToSave)" Condition="'$(_SaveProcessedItems)' == 'true'" ItemName="Content" File="$(_ProcessedContentPath)" Overwrite="true" IncludeMetadata="false" />
 		<ItemGroup>
 			<FileWrites Include="$(_ProcessedBundleResourcesPath)" />
 			<FileWrites Include="$(_ProcessedContentPath)" />
@@ -2960,6 +2967,15 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
 				<dSYMSourcePath>%(Identity).dSYM</dSYMSourcePath>
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
+				<DSymName>%(Filename).dSYM</DSymName>
+			</_PostProcessingItem>
+			<!-- In outer multi-RID builds the merged app bundle already contains the universal dylibs,
+			     but the RID-specific native references are no longer available as items. Scan the merged
+			     app bundle so that dsymutil/strip still runs for those dylibs. -->
+			<_MergedAppBundleDylib Include="$(AppBundleDir)/$(_AppContentsRelativePathForPostProcessing)*.dylib" Condition="'$(RuntimeIdentifiers)' != ''" />
+			<_PostProcessingItem Include="@(_MergedAppBundleDylib -> '$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'$(RuntimeIdentifiers)' != ''">
+				<ItemSourcePath>$(_AppContainerDir)%(_PostProcessingItem.Identity)</ItemSourcePath>
+				<dSYMSourcePath>$(_AppContainerDir)%(_PostProcessingItem.Identity).dSYM</dSYMSourcePath>
 				<DSymName>%(Filename).dSYM</DSymName>
 			</_PostProcessingItem>
 			<_PostProcessingItem Include="$([System.IO.Path]::GetFileName('$(AppBundleDir)'))/$(_NativeExecutableRelativePath)" Condition="'$(IsWatchApp)' != 'true'">

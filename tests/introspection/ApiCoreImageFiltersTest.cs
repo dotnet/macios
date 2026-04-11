@@ -29,8 +29,7 @@ using CoreImage;
 using UIKit;
 #endif
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -84,18 +83,18 @@ namespace Introspection {
 		public void CheckNativeFilters ()
 		{
 			Errors = 0;
-			List<string> filters = new List<string> ();
+			var filters = new List<string> ();
 			int n = 0;
-			string qname = CIFilterType.AssemblyQualifiedName;
+			var qname = CIFilterType.AssemblyQualifiedName;
 			// that will give us only the list of filters supported by the executing version of iOS
 			foreach (var filter_name in CIFilter.FilterNamesInCategories ()) {
 				if (Skip (filter_name))
 					continue;
-				string type_name = qname.Replace ("CIFilter", filter_name);
+				var type_name = qname!.Replace ("CIFilter", filter_name);
 				if (Type.GetType (type_name, false, true) is null) {
 					filters.Add (filter_name);
 					if (BindingOutput is not null)
-						GenerateBinding (CIFilter.FromName (filter_name), BindingOutput);
+						GenerateBinding (CIFilter.FromName (filter_name)!, BindingOutput);
 				}
 				n++;
 			}
@@ -127,7 +126,7 @@ namespace Introspection {
 				if ((ctor is null) || ctor.IsAbstract)
 					continue;
 
-				NSObject obj = ctor.Invoke (null) as NSObject;
+				var obj = ctor.Invoke (null) as NSObject;
 #if false
 				// check base type - we might have our own base type or different names, so it's debug only (not failure)
 				var super = new Class (obj.Class.SuperClass).Name;
@@ -155,19 +154,18 @@ namespace Introspection {
 
 		static void GenerateBinding (NSObject filter, TextWriter writer)
 		{
-			NSObject value;
 			var f = (CIFilter) filter;
-			var attributes = (filter as CIFilter).Attributes;
+			var attributes = f.Attributes;
 
 			writer.WriteLine ("[CoreImageFilter]");
 			writer.WriteLine ($"/* Attributes for this filter REMOVE-ME:\n\n{attributes}\n\n */");
 			writer.WriteLine ($"/* Input Keys for this filter: {string.Join (", ", f.InputKeys.Select (v => v.ToString ()).OrderBy (v => v))} */");
 			writer.WriteLine ($"/* Output Keys for this filter: {string.Join (", ", f.OutputKeys.Select (v => v.ToString ()).OrderBy (v => v))} */");
 
-			if (!attributes.TryGetValue ((NSString) "CIAttributeFilterAvailable_iOS", out value)) {
+			if (!attributes.TryGetValue ((NSString) "CIAttributeFilterAvailable_iOS", out var value)) {
 				writer.WriteLine ("[NoiOS]");
 			} else {
-				var v = value.ToString ();
+				var v = value.ToString ()!;
 				// in the (quite common) case we get "5" for iOS 5.0
 				if (v.IndexOf ('.') == -1)
 					v += ".0";
@@ -181,7 +179,7 @@ namespace Introspection {
 				writer.WriteLine ("[NoMac]");
 			} else {
 				try {
-					var mac = Version.Parse (value.ToString ());
+					var mac = Version.Parse (value.ToString ()!);
 					// we only document availability for 10.7+
 					if (mac.Minor > 6)
 						writer.WriteLine ("[Mac ({0},{1})]", mac.Major, mac.Minor);
@@ -191,16 +189,16 @@ namespace Introspection {
 				}
 			}
 			writer.WriteLine ("[BaseType (typeof (CIFilter))]");
-			var fname = attributes [(NSString) "CIAttributeFilterName"].ToString ();
+			var fname = attributes [(NSString) "CIAttributeFilterName"]?.ToString ();
 			writer.WriteLine ("interface {0} {{", fname);
 			foreach (var k in attributes.Keys) {
-				var key = k.ToString ();
+				var key = k.ToString ()!;
 				if (key.StartsWith ("CIAttribute", StringComparison.Ordinal))
 					continue;
 
 				writer.WriteLine ();
 				var dict = attributes [k] as NSDictionary;
-				var type = dict [(NSString) "CIAttributeClass"];
+				var type = dict! [(NSString) "CIAttributeClass"];
 				writer.WriteLine ($"\t[CoreImageFilterProperty (\"{key}\")]");
 
 				// by default we drop the "input" prefix, but keep the "output" prefix to avoid confusion, except for 'inputImage'
@@ -393,7 +391,7 @@ namespace Introspection {
 				if ((ctor is null) || ctor.IsAbstract)
 					continue;
 
-				CIFilter f = ctor.Invoke (null) as CIFilter;
+				var f = (CIFilter) ctor.Invoke (null);
 				var attributes = f.Attributes;
 
 				// first check that every property can be mapped to an input key - except if it starts with "Output"
@@ -405,12 +403,12 @@ namespace Introspection {
 					if (SkipDueToAttribute (p))
 						continue;
 
-					var getter = p.GetGetMethod ();
+					var getter = p.GetGetMethod ()!;
 					var ea = getter.GetCustomAttribute<ExportAttribute> (false);
 					// only properties coming (inlined) from protocols have an [Export] attribute
 					if (ea is null)
 						continue;
-					var key = ea.Selector;
+					var key = ea.Selector!;
 					// 'output' is always explicit
 					if (key.StartsWith ("output", StringComparison.Ordinal)) {
 						if (Array.IndexOf (f.OutputKeys, key) < 0) {

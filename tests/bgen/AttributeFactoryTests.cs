@@ -13,11 +13,11 @@ namespace GeneratorTests {
 		{
 			var typeName = typeof (T).Name;
 			var attr = callback (platform, major, minor, message) as T;
-			Assert.IsNotNull (attr, $"{typeName} attribute type");
-			Assert.AreEqual (platform, attr.Platform, $"{typeName} Platform");
-			Assert.AreEqual (major, attr.Version!.Major, $"{typeName} Major");
-			Assert.AreEqual (minor, attr.Version!.Minor, $"{typeName} Minor");
-			Assert.AreEqual (message, attr.Message);
+			Assert.That (attr, Is.Not.Null, $"{typeName} attribute type");
+			Assert.That (attr.Platform, Is.EqualTo (platform), $"{typeName} Platform");
+			Assert.That (attr.Version!.Major, Is.EqualTo (major), $"{typeName} Major");
+			Assert.That (attr.Version!.Minor, Is.EqualTo (minor), $"{typeName} Minor");
+			Assert.That (attr.Message, Is.EqualTo (message));
 		}
 
 		static void AssertAttributeCreationNotVersion<T> (Func<PlatformName, string?, T> callback, PlatformName platform,
@@ -25,9 +25,9 @@ namespace GeneratorTests {
 		{
 			var typeName = typeof (T).Name;
 			var attr = callback (platform, message) as T;
-			Assert.IsNotNull (attr, $"{typeName} attribute type");
-			Assert.AreEqual (platform, attr.Platform, $"{typeName} Platform");
-			Assert.AreEqual (message, attr.Message);
+			Assert.That (attr, Is.Not.Null, $"{typeName} attribute type");
+			Assert.That (attr.Platform, Is.EqualTo (platform), $"{typeName} Platform");
+			Assert.That (attr.Message, Is.EqualTo (message));
 		}
 
 
@@ -58,14 +58,14 @@ namespace GeneratorTests {
 		[TestCase (PlatformName.MacOSX)]
 		[TestCase (PlatformName.TvOS)]
 		public void CreateNoVersionSupportedAttributeTest (PlatformName platform)
-			=> Assert.AreEqual (platform, AttributeFactory.CreateNoVersionSupportedAttribute (platform).Platform);
+			=> Assert.That (AttributeFactory.CreateNoVersionSupportedAttribute (platform).Platform, Is.EqualTo (platform));
 
 		[TestCase (PlatformName.iOS)]
 		[TestCase (PlatformName.MacCatalyst)]
 		[TestCase (PlatformName.MacOSX)]
 		[TestCase (PlatformName.TvOS)]
 		public void CreateUnsupportedAttributeTest (PlatformName platform)
-			=> Assert.AreEqual (platform, AttributeFactory.CreateUnsupportedAttribute (platform).Platform);
+			=> Assert.That (AttributeFactory.CreateUnsupportedAttribute (platform).Platform, Is.EqualTo (platform));
 
 		class CloneCasesNoVersionClass : IEnumerable {
 			public IEnumerator GetEnumerator ()
@@ -90,9 +90,9 @@ namespace GeneratorTests {
 		public void CloneNoVersionTest (AvailabilityBaseAttribute attributeToClone, PlatformName targetPlatform)
 		{
 			var clone = AttributeFactory.CloneFromOtherPlatform (attributeToClone, targetPlatform);
-			Assert.AreEqual (targetPlatform, clone.Platform, "platform");
-			Assert.AreEqual (attributeToClone.Message, clone.Message, "message");
-			Assert.AreEqual (attributeToClone.GetType (), clone.GetType (), "type");
+			Assert.That (clone.Platform, Is.EqualTo (targetPlatform), "platform");
+			Assert.That (clone.Message, Is.EqualTo (attributeToClone.Message), "message");
+			Assert.That (clone.GetType (), Is.EqualTo (attributeToClone.GetType ()), "type");
 		}
 
 		class CloneCasesMinVersionClass : IEnumerable {
@@ -113,13 +113,13 @@ namespace GeneratorTests {
 		public void CloneMinVersion (AvailabilityBaseAttribute attributeToClone, PlatformName targetPlatform)
 		{
 			var clone = AttributeFactory.CloneFromOtherPlatform (attributeToClone, targetPlatform);
-			Assert.AreEqual (targetPlatform, clone.Platform, "platform");
-			Assert.AreEqual (attributeToClone.Message, clone.Message, "message");
-			Assert.AreEqual (attributeToClone.GetType (), clone.GetType (), "type");
+			Assert.That (clone.Platform, Is.EqualTo (targetPlatform), "platform");
+			Assert.That (clone.Message, Is.EqualTo (attributeToClone.Message), "message");
+			Assert.That (clone.GetType (), Is.EqualTo (attributeToClone.GetType ()), "type");
 			if (clone.AvailabilityKind == AvailabilityKind.Introduced) {
-				Assert.Null (clone.Version, "Version");
+				Assert.That (clone.Version, Is.Null, "Version");
 			} else {
-				Assert.AreEqual (Xamarin.SdkVersions.GetMinVersion (targetPlatform.AsApplePlatform ()), clone.Version, "Version");
+				Assert.That (clone.Version, Is.EqualTo (Xamarin.SdkVersions.GetMinVersion (targetPlatform.AsApplePlatform ())), "Version");
 			}
 		}
 
@@ -145,10 +145,10 @@ namespace GeneratorTests {
 		public void CloneBuildVersion (AvailabilityBaseAttribute attributeToClone, PlatformName targetPlatform)
 		{
 			var clone = AttributeFactory.CloneFromOtherPlatform (attributeToClone, targetPlatform);
-			Assert.AreEqual (targetPlatform, clone.Platform, "platform");
-			Assert.AreEqual (attributeToClone.Message, clone.Message, "message");
-			Assert.AreEqual (attributeToClone.GetType (), clone.GetType (), "type");
-			Assert.AreEqual (attributeToClone.Version, clone.Version);
+			Assert.That (clone.Platform, Is.EqualTo (targetPlatform), "platform");
+			Assert.That (clone.Message, Is.EqualTo (attributeToClone.Message), "message");
+			Assert.That (clone.GetType (), Is.EqualTo (attributeToClone.GetType ()), "type");
+			Assert.That (clone.Version, Is.EqualTo (attributeToClone.Version));
 		}
 
 	}

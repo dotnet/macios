@@ -219,7 +219,10 @@ foreach (var prop in properties) {
 sb.AppendLine ($"    </PropertyGroup>");
 sb.AppendLine ($"    <ItemGroup>");
 foreach (var item in items) {
-	sb.AppendLine ($"        <{item.Name} Include=\"{item.Include}\" />");
+	string link = "";
+	if (item.Include.StartsWith (workingDirectory))
+		link = $" Link=\"{item.Include [(workingDirectory.Length + 1)..]}\"";
+	sb.AppendLine ($"        <{item.Name} Include=\"{item.Include}\"{link} />");
 }
 sb.AppendLine ($"    </ItemGroup>");
 sb.AppendLine ($"</Project>");

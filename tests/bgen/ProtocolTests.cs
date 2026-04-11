@@ -10,7 +10,7 @@ namespace GeneratorTests {
 		[TestCase (Profile.iOS)]
 		public void Members (Profile profile)
 		{
-			var bgen = BuildFile (profile, "tests/protocols.cs");
+			var bgen = BuildFile (profile, "protocols.cs");
 
 			var allTypeDefinitions = bgen.ApiAssembly.MainModule.GetTypes ().ToArray ();
 			var allTypes = allTypeDefinitions.Select (v => v.FullName).OrderBy (v => v).ToArray ();

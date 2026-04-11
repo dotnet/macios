@@ -1,8 +1,7 @@
 using System.IO;
 using System.Reflection;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 public class Application {
 	public bool IsSimulatorBuild {
@@ -21,7 +20,7 @@ namespace Introspection {
 		HashSet<string> namespaces = new HashSet<string> ();
 		Application app = new Application ();
 
-		public bool Skip (string @namespace)
+		public bool Skip (string? @namespace)
 		{
 			if (@namespace is null)
 				return true;
@@ -96,7 +95,7 @@ namespace Introspection {
 			foreach (Type t in Assembly.GetTypes ()) {
 				if (!t.IsPublic)
 					continue;
-				var ns = t.Namespace;
+				var ns = t.Namespace!;
 				if (Skip (ns))
 					continue;
 				n++;

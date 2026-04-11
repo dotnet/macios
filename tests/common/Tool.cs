@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -78,7 +79,7 @@ namespace Xamarin.Tests {
 
 		List<ToolMessage> messages = new List<ToolMessage> ();
 
-		public Dictionary<string, string>? EnvironmentVariables { get; set; }
+		public Dictionary<string, string> EnvironmentVariables { get; set; } = new ();
 		public TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds (60);
 #pragma warning disable 0649 // Field 'X' is never assigned to, and will always have its default value Y
 		public string? WorkingDirectory;
@@ -171,7 +172,9 @@ namespace Xamarin.Tests {
 		{
 			foreach (var l in lines) {
 				var line = l;
-				var msg = new ToolMessage ();
+				var msg = new ToolMessage () {
+					Message = string.Empty,
+				};
 				var origin = string.Empty;
 
 				if (IndexOfAny (line, out var idxError, out var endError, ": error ", ":  error ")) {
@@ -231,7 +234,7 @@ namespace Xamarin.Tests {
 			ParseMessages (messages, output.ToString ().Split ('\n', '\r'), MessageToolName);
 		}
 
-		static bool TrySplitCode (string? code, out string? prefix, out int number)
+		static bool TrySplitCode (string? code, [NotNullWhen (true)] out string? prefix, out int number)
 		{
 			prefix = null;
 			number = -1;
@@ -258,17 +261,17 @@ namespace Xamarin.Tests {
 				if (buildLogEvent.Type != BuildLogEventType.Error && buildLogEvent.Type != BuildLogEventType.Warning)
 					continue;
 
-				var msg = new ToolMessage ();
+				var msg = new ToolMessage () {
+					IsError = buildLogEvent.Type == BuildLogEventType.Error,
+					Message = buildLogEvent.Message ?? "",
+					LineNumber = buildLogEvent.LineNumber,
+					FileName = buildLogEvent.File ?? ""
+				};
 
 				if (TrySplitCode (buildLogEvent.Code, out var prefix, out var number)) {
 					msg.Prefix = prefix ?? "";
 					msg.Number = number;
 				}
-
-				msg.IsError = buildLogEvent.Type == BuildLogEventType.Error;
-				msg.Message = buildLogEvent.Message ?? "";
-				msg.LineNumber = buildLogEvent.LineNumber;
-				msg.FileName = buildLogEvent.File ?? "";
 
 				messages.Add (msg);
 			}
@@ -324,7 +327,7 @@ namespace Xamarin.Tests {
 
 		public void AssertErrorCount (int count, string message = "errors")
 		{
-			Assert.AreEqual (count, ErrorCount, message);
+			Assert.That (ErrorCount, Is.EqualTo (count), message);
 		}
 
 		public void AssertErrorPattern (int number, string messagePattern, string? filename = null, int? linenumber = null, bool custom_pattern_syntax = false)
@@ -454,7 +457,7 @@ namespace Xamarin.Tests {
 			if (!warnings.Any ())
 				return;
 
-			Assert.Fail ("No warnings expected, but got:\n{0}\t", string.Join ("\n\t", warnings.Select ((v) => v.Message).ToArray ()));
+			Assert.Fail ($"No warnings expected, but got:\n{string.Join ("\n\t", warnings.Select ((v) => v.Message).ToArray ())}\t");
 		}
 
 		public void AssertNoMessage (int number)
@@ -463,7 +466,7 @@ namespace Xamarin.Tests {
 			if (!msgs.Any ())
 				return;
 
-			Assert.Fail ("No messages with number {0} expected, but got:\n{1}\t", number, string.Join ("\n\t", msgs.Select ((v) => v.Message).ToArray ()));
+			Assert.Fail ($"No messages with number {number} expected, but got:\n{string.Join ("\n\t", msgs.Select ((v) => v.Message).ToArray ())}\t");
 		}
 
 		public bool HasOutput (string line)

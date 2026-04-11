@@ -135,8 +135,8 @@ namespace GeneratorTests {
 		{
 			var fieldInfo = GetField (fieldName, testType);
 			var info = context.Create (fieldInfo);
-			Assert.False (info.IsNullable (), "isNullable");
-			Assert.AreEqual (expectedType, info.Type);
+			Assert.That (info.IsNullable (), Is.False, "isNullable");
+			Assert.That (info.Type, Is.EqualTo (expectedType));
 		}
 
 		[TestCase ("NullableValueTypeField", typeof (Nullable<int>))]
@@ -145,8 +145,8 @@ namespace GeneratorTests {
 		{
 			var fieldInfo = GetField (fieldName, testType);
 			var info = context.Create (fieldInfo);
-			Assert.True (info.IsNullable (), "isNullable");
-			Assert.AreEqual (expectedType, info.Type);
+			Assert.That (info.IsNullable (), Is.True, "isNullable");
+			Assert.That (info.Type, Is.EqualTo (expectedType));
 		}
 
 		[TestCase ("NotNullableValueTypeProperty", typeof (int))]
@@ -155,8 +155,8 @@ namespace GeneratorTests {
 		{
 			var propertyInfo = GetProperty (propertyName, testType);
 			var info = context.Create (propertyInfo);
-			Assert.False (info.IsNullable (), "isNullable");
-			Assert.AreEqual (expectedType, info.Type);
+			Assert.That (info.IsNullable (), Is.False, "isNullable");
+			Assert.That (info.Type, Is.EqualTo (expectedType));
 		}
 
 		// public int? this [int i] {
@@ -168,14 +168,14 @@ namespace GeneratorTests {
 		public void IndexersTests (Type indexersTypes, Type resultType, bool isNullable, Type indexParameter, bool isIndexParameterNull)
 		{
 			var propertyInfo = GetIndexer (testType, indexersTypes);
-			Assert.NotNull (propertyInfo, "propertyInto is not null");
+			Assert.That (propertyInfo, Is.Not.Null, "propertyInto is not null");
 			var info = context.Create (propertyInfo.GetMethod!.ReturnParameter!);
-			Assert.AreEqual (isNullable, info.IsNullable (), "info.IsNullable");
-			Assert.AreEqual (resultType, info.Type, "info.Type");
+			Assert.That (info.IsNullable (), Is.EqualTo (isNullable), "info.IsNullable");
+			Assert.That (info.Type, Is.EqualTo (resultType), "info.Type");
 			var parameters = propertyInfo.SetMethod!.GetParameters ();
 			var paramInfo = context.Create (parameters [0]);
-			Assert.AreEqual (isIndexParameterNull, paramInfo.IsNullable (), "paramInfo.IsNullable");
-			Assert.AreEqual (indexParameter, paramInfo.Type, "paramInfo.Type");
+			Assert.That (paramInfo.IsNullable (), Is.EqualTo (isIndexParameterNull), "paramInfo.IsNullable");
+			Assert.That (paramInfo.Type, Is.EqualTo (indexParameter), "paramInfo.Type");
 		}
 
 		[TestCase ("NullableValueTypeProperty", typeof (Nullable<int>))]
@@ -184,8 +184,8 @@ namespace GeneratorTests {
 		{
 			var propertyInfo = GetProperty (propertyName, testType);
 			var info = context.Create (propertyInfo);
-			Assert.True (info.IsNullable (), "isNullable");
-			Assert.AreEqual (expectedType, info.Type);
+			Assert.That (info.IsNullable (), Is.True, "isNullable");
+			Assert.That (info.Type, Is.EqualTo (expectedType));
 		}
 
 		[TestCase ("NotNullableValueTypeParameter", typeof (int))]
@@ -195,8 +195,8 @@ namespace GeneratorTests {
 			var memberInfo = GetMethod (methodName, testType);
 			var paramInfo = memberInfo.GetParameters () [0];
 			var info = context.Create (paramInfo);
-			Assert.False (info.IsNullable (), "isNullable");
-			Assert.AreEqual (expectedType, info.Type);
+			Assert.That (info.IsNullable (), Is.False, "isNullable");
+			Assert.That (info.Type, Is.EqualTo (expectedType));
 		}
 
 		[TestCase ("NotNullableOutValueTypeParameter", typeof (int))]
@@ -208,8 +208,8 @@ namespace GeneratorTests {
 			var memberInfo = GetMethod (methodName, testType);
 			var paramInfo = memberInfo.GetParameters () [0];
 			var info = context.Create (paramInfo);
-			Assert.False (info.IsNullable (), "isNullable");
-			Assert.AreEqual (expectedType.MakeByRefType (), info.Type);
+			Assert.That (info.IsNullable (), Is.False, "isNullable");
+			Assert.That (info.Type, Is.EqualTo (expectedType.MakeByRefType ()));
 		}
 
 		[TestCase ("NullableValueTypeParameter", typeof (Nullable<int>))]
@@ -219,8 +219,8 @@ namespace GeneratorTests {
 			var memberInfo = GetMethod (methdName, testType);
 			var paramInfo = memberInfo.GetParameters () [0];
 			var info = context.Create (paramInfo);
-			Assert.True (info.IsNullable (), "isNullable");
-			Assert.AreEqual (expectedType, info.Type);
+			Assert.That (info.IsNullable (), Is.True, "isNullable");
+			Assert.That (info.Type, Is.EqualTo (expectedType));
 		}
 
 		[TestCase ("NullableOutValueTypeParameter", typeof (Nullable<int>))]
@@ -232,8 +232,8 @@ namespace GeneratorTests {
 			var memberInfo = GetMethod (methdName, testType);
 			var paramInfo = memberInfo.GetParameters () [0];
 			var info = context.Create (paramInfo);
-			Assert.True (info.IsNullable (), "isNullable");
-			Assert.AreEqual (expectedType.MakeByRefType (), info.Type);
+			Assert.That (info.IsNullable (), Is.True, "isNullable");
+			Assert.That (info.Type, Is.EqualTo (expectedType.MakeByRefType ()));
 		}
 
 		[TestCase ("NotNullableValueTypeReturn", typeof (int))]
@@ -242,8 +242,8 @@ namespace GeneratorTests {
 		{
 			var memberInfo = GetMethod (methodName, testType);
 			var info = context.Create (memberInfo.ReturnParameter!);
-			Assert.IsFalse (info.IsNullable (), "isNullable");
-			Assert.AreEqual (expectedType, info.Type);
+			Assert.That (info.IsNullable (), Is.False, "isNullable");
+			Assert.That (info.Type, Is.EqualTo (expectedType));
 		}
 
 		[TestCase ("NullableValueTypeReturn", typeof (Nullable<int>))]
@@ -252,8 +252,8 @@ namespace GeneratorTests {
 		{
 			var memberInfo = GetMethod (methodName, testType);
 			var info = context.Create (memberInfo.ReturnParameter!);
-			Assert.IsTrue (info.IsNullable (), "isNullable");
-			Assert.AreEqual (expectedType, info.Type);
+			Assert.That (info.IsNullable (), Is.True, "isNullable");
+			Assert.That (info.Type, Is.EqualTo (expectedType));
 		}
 
 		[TestCase ("NotNullableValueTypeArray", typeof (int []), false, typeof (int), false)]
@@ -266,9 +266,9 @@ namespace GeneratorTests {
 		{
 			var memberInfo = GetMethod (methodName, testType);
 			var info = context.Create (memberInfo.ReturnParameter!);
-			Assert.AreEqual (arrayIsNullable, info.IsNullable (), "info.IsNullable");
-			Assert.AreEqual (expectedElementType, info.ElementType!.Type, "info.ElementType.Type");
-			Assert.AreEqual (elementTypeIsNullable, info.ElementType.IsNullable (), "info.ElementTyps.IsNullable");
+			Assert.That (info.IsNullable (), Is.EqualTo (arrayIsNullable), "info.IsNullable");
+			Assert.That (info.ElementType!.Type, Is.EqualTo (expectedElementType), "info.ElementType.Type");
+			Assert.That (info.ElementType.IsNullable (), Is.EqualTo (elementTypeIsNullable), "info.ElementTyps.IsNullable");
 		}
 
 		[TestCase ("NotNullableNestedArrayNotNullableValueType", typeof (int [] []), false, false, typeof (int), false)]
@@ -284,10 +284,10 @@ namespace GeneratorTests {
 		{
 			var memberInfo = GetMethod (methodName, testType);
 			var info = context.Create (memberInfo.ReturnParameter!);
-			Assert.AreEqual (isArrayNullable, info.IsNullable (), "isArrayNullable");
-			Assert.AreEqual (isNestedArrayNullable, info.ElementType!.IsNullable (), "isNestedArrayNullable");
-			Assert.AreEqual (nestedArrayType, info.ElementType!.ElementType!.Type, "nestedArrayType");
-			Assert.AreEqual (isNestedArrayElementNullable, info.ElementType.ElementType.IsNullable (), "isNestedArrayElementNullable");
+			Assert.That (info.IsNullable (), Is.EqualTo (isArrayNullable), "isArrayNullable");
+			Assert.That (info.ElementType!.IsNullable (), Is.EqualTo (isNestedArrayNullable), "isNestedArrayNullable");
+			Assert.That (info.ElementType!.ElementType!.Type, Is.EqualTo (nestedArrayType), "nestedArrayType");
+			Assert.That (info.ElementType.ElementType.IsNullable (), Is.EqualTo (isNestedArrayElementNullable), "isNestedArrayElementNullable");
 		}
 
 		[TestCase ("NotNullableValueTypeList", typeof (List<int>), false, typeof (int), false)]
@@ -301,10 +301,10 @@ namespace GeneratorTests {
 		{
 			var memberInfo = GetMethod (methodName, testType);
 			var info = context.Create (memberInfo.ReturnParameter!);
-			Assert.AreEqual (expectedType, info.Type, "info.Type");
-			Assert.AreEqual (isGenericTypeNullable, info.IsNullable (), "info.IsNullable");
-			Assert.AreEqual (genericParameterType, info.GenericTypeArguments! [0].Type, "genericParameterType");
-			Assert.AreEqual (isGenericParameterNull, info.GenericTypeArguments [0].IsNullable (), "isGenericParameterNull");
+			Assert.That (info.Type, Is.EqualTo (expectedType), "info.Type");
+			Assert.That (info.IsNullable (), Is.EqualTo (isGenericTypeNullable), "info.IsNullable");
+			Assert.That (info.GenericTypeArguments! [0].Type, Is.EqualTo (genericParameterType), "genericParameterType");
+			Assert.That (info.GenericTypeArguments [0].IsNullable (), Is.EqualTo (isGenericParameterNull), "isGenericParameterNull");
 		}
 
 		[TestCase ("NestedGenericNotNullableValueType", typeof (List<HashSet<int>>), false, typeof (HashSet<int>), false, typeof (int), false)]
@@ -321,12 +321,12 @@ namespace GeneratorTests {
 		{
 			var memberInfo = GetMethod (methodName, testType);
 			var info = context.Create (memberInfo.ReturnParameter!);
-			Assert.AreEqual (expectedType, info.Type, "info.Type");
-			Assert.AreEqual (isGenericNullable, info.IsNullable (), "info.IsNullable");
-			Assert.AreEqual (nestedGenericType, info.GenericTypeArguments! [0].Type, "nestedGenericType");
-			Assert.AreEqual (isNestedGenericNullable, info.GenericTypeArguments [0].IsNullable (), "isNestedGenericNullable");
-			Assert.AreEqual (nestedGenericArgumentType, info.GenericTypeArguments [0].GenericTypeArguments! [0].Type, "nestedGenericArgumentType");
-			Assert.AreEqual (isNullableNestedGenericArgument, info.GenericTypeArguments [0].GenericTypeArguments! [0].IsNullable (), "isNullableNestedGenericArgument");
+			Assert.That (info.Type, Is.EqualTo (expectedType), "info.Type");
+			Assert.That (info.IsNullable (), Is.EqualTo (isGenericNullable), "info.IsNullable");
+			Assert.That (info.GenericTypeArguments! [0].Type, Is.EqualTo (nestedGenericType), "nestedGenericType");
+			Assert.That (info.GenericTypeArguments [0].IsNullable (), Is.EqualTo (isNestedGenericNullable), "isNestedGenericNullable");
+			Assert.That (info.GenericTypeArguments [0].GenericTypeArguments! [0].Type, Is.EqualTo (nestedGenericArgumentType), "nestedGenericArgumentType");
+			Assert.That (info.GenericTypeArguments [0].GenericTypeArguments! [0].IsNullable (), Is.EqualTo (isNullableNestedGenericArgument), "isNullableNestedGenericArgument");
 		}
 
 		[TestCase ("DictionaryStringInt", typeof (Dictionary<string, int>), false, typeof (string), false, typeof (int), false)]
@@ -338,12 +338,12 @@ namespace GeneratorTests {
 		{
 			var memberInfo = GetMethod (methodName, testType);
 			var info = context.Create (memberInfo.ReturnParameter!);
-			Assert.AreEqual (dictionaryType, info.Type, "info.Type");
-			Assert.AreEqual (isDictionaryNullable, info.IsNullable (), "info.IsNullable");
-			Assert.AreEqual (keyType, info.GenericTypeArguments! [0].Type, "keyType");
-			Assert.AreEqual (isKeyNullable, info.GenericTypeArguments [0].IsNullable (), "isKeyNullable");
-			Assert.AreEqual (valueType, info.GenericTypeArguments [1].Type, "valueType");
-			Assert.AreEqual (isValueNullable, info.GenericTypeArguments [1].IsNullable (), "isValueNullable");
+			Assert.That (info.Type, Is.EqualTo (dictionaryType), "info.Type");
+			Assert.That (info.IsNullable (), Is.EqualTo (isDictionaryNullable), "info.IsNullable");
+			Assert.That (info.GenericTypeArguments! [0].Type, Is.EqualTo (keyType), "keyType");
+			Assert.That (info.GenericTypeArguments [0].IsNullable (), Is.EqualTo (isKeyNullable), "isKeyNullable");
+			Assert.That (info.GenericTypeArguments [1].Type, Is.EqualTo (valueType), "valueType");
+			Assert.That (info.GenericTypeArguments [1].IsNullable (), Is.EqualTo (isValueNullable), "isValueNullable");
 		}
 
 		[TestCase ("GenericNotNullConstrain", false)]
@@ -354,7 +354,7 @@ namespace GeneratorTests {
 		{
 			var memberInfo = GetMethod (methodName, testType);
 			var info = context.Create (memberInfo.ReturnParameter!);
-			Assert.AreEqual (returnTypeIsNull, info.IsNullable ());
+			Assert.That (info.IsNullable (), Is.EqualTo (returnTypeIsNull));
 		}
 
 		[TestCase ("GenericNotNullParameterConstrain", false)]
@@ -365,7 +365,7 @@ namespace GeneratorTests {
 		{
 			var memberInfo = GetMethod (methodName, testType);
 			var info = context.Create (memberInfo.GetParameters () [0]);
-			Assert.AreEqual (returnTypeIsNull, info.IsNullable ());
+			Assert.That (info.IsNullable (), Is.EqualTo (returnTypeIsNull));
 		}
 	}
 }

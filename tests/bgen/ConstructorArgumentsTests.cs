@@ -13,9 +13,9 @@ namespace GeneratorTests {
 		{
 			var args = new AttributeFactory.ConstructorArguments (PlatformName.iOS, "test");
 			var values = args.GetCtorValues ();
-			Assert.AreEqual (2, values.Length, "Length");
-			Assert.AreEqual ((byte) PlatformName.iOS, values [0], "Platform");
-			Assert.AreEqual ("test", values [1], "Message");
+			Assert.That (values.Length, Is.EqualTo (2), "Length");
+			Assert.That (values [0], Is.EqualTo ((byte) PlatformName.iOS), "Platform");
+			Assert.That (values [1], Is.EqualTo ("test"), "Message");
 		}
 
 		[Test]
@@ -23,11 +23,11 @@ namespace GeneratorTests {
 		{
 			var args = new AttributeFactory.ConstructorArguments (PlatformName.iOS, 13, 0, "test");
 			var values = args.GetCtorValues ();
-			Assert.AreEqual (4, values.Length, "Length");
-			Assert.AreEqual ((byte) PlatformName.iOS, values [0], "Platform");
-			Assert.AreEqual (13, values [1], "Major");
-			Assert.AreEqual (0, values [2], "Minor");
-			Assert.AreEqual ("test", values [3], "Message");
+			Assert.That (values.Length, Is.EqualTo (4), "Length");
+			Assert.That (values [0], Is.EqualTo ((byte) PlatformName.iOS), "Platform");
+			Assert.That (values [1], Is.EqualTo (13), "Major");
+			Assert.That (values [2], Is.EqualTo (0), "Minor");
+			Assert.That (values [3], Is.EqualTo ("test"), "Message");
 		}
 
 		[Test]
@@ -35,12 +35,12 @@ namespace GeneratorTests {
 		{
 			var args = new AttributeFactory.ConstructorArguments (PlatformName.iOS, 13, 0, 1, "test");
 			var values = args.GetCtorValues ();
-			Assert.AreEqual (5, values.Length, "Length");
-			Assert.AreEqual ((byte) PlatformName.iOS, values [0], "Platform");
-			Assert.AreEqual (13, values [1], "Major");
-			Assert.AreEqual (0, values [2], "Minor");
-			Assert.AreEqual (1, values [3], "Build");
-			Assert.AreEqual ("test", values [4], "Message");
+			Assert.That (values.Length, Is.EqualTo (5), "Length");
+			Assert.That (values [0], Is.EqualTo ((byte) PlatformName.iOS), "Platform");
+			Assert.That (values [1], Is.EqualTo (13), "Major");
+			Assert.That (values [2], Is.EqualTo (0), "Minor");
+			Assert.That (values [3], Is.EqualTo (1), "Build");
+			Assert.That (values [4], Is.EqualTo ("test"), "Message");
 		}
 
 		[Test]
@@ -48,9 +48,9 @@ namespace GeneratorTests {
 		{
 			var args = new AttributeFactory.ConstructorArguments (PlatformName.iOS, "test");
 			var types = args.GetCtorTypes ();
-			Assert.AreEqual (2, types.Length, "Length");
-			Assert.AreEqual (typeof (PlatformName), types [0], "Platform");
-			Assert.AreEqual (typeof (string), types [1], "Message");
+			Assert.That (types.Length, Is.EqualTo (2), "Length");
+			Assert.That (types [0], Is.EqualTo (typeof (PlatformName)), "Platform");
+			Assert.That (types [1], Is.EqualTo (typeof (string)), "Message");
 		}
 
 		[Test]
@@ -58,11 +58,11 @@ namespace GeneratorTests {
 		{
 			var args = new AttributeFactory.ConstructorArguments (PlatformName.iOS, 13, 0, "test");
 			var types = args.GetCtorTypes ();
-			Assert.AreEqual (4, types.Length, "Length");
-			Assert.AreEqual (typeof (PlatformName), types [0], "Platform");
-			Assert.AreEqual (typeof (int), types [1], "Major");
-			Assert.AreEqual (typeof (int), types [2], "Minor");
-			Assert.AreEqual (typeof (string), types [3], "Message");
+			Assert.That (types.Length, Is.EqualTo (4), "Length");
+			Assert.That (types [0], Is.EqualTo (typeof (PlatformName)), "Platform");
+			Assert.That (types [1], Is.EqualTo (typeof (int)), "Major");
+			Assert.That (types [2], Is.EqualTo (typeof (int)), "Minor");
+			Assert.That (types [3], Is.EqualTo (typeof (string)), "Message");
 		}
 
 		[Test]
@@ -70,12 +70,12 @@ namespace GeneratorTests {
 		{
 			var args = new AttributeFactory.ConstructorArguments (PlatformName.iOS, 13, 0, 1, "test");
 			var types = args.GetCtorTypes ();
-			Assert.AreEqual (5, types.Length, "Length");
-			Assert.AreEqual (typeof (PlatformName), types [0], "Platform");
-			Assert.AreEqual (typeof (int), types [1], "Major");
-			Assert.AreEqual (typeof (int), types [2], "Minor");
-			Assert.AreEqual (typeof (int), types [3], "Build");
-			Assert.AreEqual (typeof (string), types [4], "Message");
+			Assert.That (types.Length, Is.EqualTo (5), "Length");
+			Assert.That (types [0], Is.EqualTo (typeof (PlatformName)), "Platform");
+			Assert.That (types [1], Is.EqualTo (typeof (int)), "Major");
+			Assert.That (types [2], Is.EqualTo (typeof (int)), "Minor");
+			Assert.That (types [3], Is.EqualTo (typeof (int)), "Build");
+			Assert.That (types [4], Is.EqualTo (typeof (string)), "Message");
 		}
 
 		class TryGetArgumentsData : IEnumerable {
@@ -103,14 +103,14 @@ namespace GeneratorTests {
 		{
 			var success = AttributeFactory.ConstructorArguments.TryGetCtorArguments (arguments, platformName,
 				out var actualValues, out var actualTypes);
-			Assert.True (success, "success");
-			Assert.AreEqual (expectedValues!.Length, actualValues!.Length, "Values Length");
+			Assert.That (success, Is.True, "success");
+			Assert.That (actualValues!.Length, Is.EqualTo (expectedValues!.Length), "Values Length");
 			for (int index = 0; index < expectedValues.Length; index++) {
-				Assert.AreEqual (expectedValues [index], actualValues [index], $"Values [{index}]");
+				Assert.That (actualValues [index], Is.EqualTo (expectedValues [index]), $"Values [{index}]");
 			}
-			Assert.AreEqual (expectedTypes!.Length, actualTypes!.Length, "Types Length");
+			Assert.That (actualTypes!.Length, Is.EqualTo (expectedTypes!.Length), "Types Length");
 			for (int index = 0; index < expectedTypes.Length; index++) {
-				Assert.AreEqual (expectedTypes [index], actualTypes [index], $"Types [{index}]");
+				Assert.That (actualTypes [index], Is.EqualTo (expectedTypes [index]), $"Types [{index}]");
 			}
 		}
 
@@ -119,9 +119,9 @@ namespace GeneratorTests {
 		{
 			var success = AttributeFactory.ConstructorArguments.TryGetCtorArguments (Array.Empty<object> (), PlatformName.iOS,
 				out var actualValues, out var actualTypes);
-			Assert.False (success, "success");
-			Assert.Null (actualValues, "values");
-			Assert.Null (actualTypes, "type");
+			Assert.That (success, Is.False, "success");
+			Assert.That (actualValues, Is.Null, "values");
+			Assert.That (actualTypes, Is.Null, "type");
 		}
 	}
 }

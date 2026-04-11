@@ -43,7 +43,7 @@ namespace GeneratorTests {
 			TestContext.Out.WriteLine (TestContext.CurrentContext.Test.FullName);
 			foreach (var filename in filenames)
 				TestContext.Out.WriteLine ($"\t{filename}");
-			bgen.CreateTemporaryBinding (filenames.Select ((filename) => File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", filename))).ToArray ());
+			bgen.CreateTemporaryBinding (filenames.Select ((filename) => File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", filename))).ToArray ());
 			bgen.AssertExecute ("build");
 			if (nowarnings)
 				bgen.AssertNoWarnings ();

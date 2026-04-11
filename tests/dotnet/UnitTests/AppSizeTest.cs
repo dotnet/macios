@@ -11,21 +11,53 @@ namespace Xamarin.Tests {
 	public class AppSizeTest : TestBaseClass {
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void MonoVM (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM", true, new Dictionary<string, string> () { { "UseMonoRuntime", "true" } });
+			var dict = new Dictionary<string, string> () {
+				{ "UseMonoRuntime", "true" },
+				{ "NoDSymUtil", "false" },
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM", true, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void MonoVM_Interpreter (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM-interpreter", true, new Dictionary<string, string> () { { "UseInterpreter", "true" }, { "UseMonoRuntime", "true" } });
+			var dict = new Dictionary<string, string> () {
+				{ "UseInterpreter", "true" },
+				{ "UseMonoRuntime", "true" },
+				{ "NoDSymUtil", "false" },
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM-interpreter", true, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
 		public void NativeAOT (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, new Dictionary<string, string> () { { "PublishAot", "true" }, { "_IsPublishing", "true" } });
+			var dict = new Dictionary<string, string> () {
+				{ "PublishAot", "true" },
+				{ "_IsPublishing", "true" },
+				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict);
+		}
+
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
+		public void CoreCLR_Interpreter (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
+		{
+			var dict = new Dictionary<string, string> () {
+				{ "UseMonoRuntime", "false" },
+				{ "PublishReadyToRun", "false" },
+				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict);
 		}
 
 		// This test will build the SizeTestApp, and capture the resulting app size.
@@ -122,11 +154,11 @@ namespace Xamarin.Tests {
 			var allKeys = expectedLines.Keys.Union (actualLines.Keys).OrderBy (v => v);
 			foreach (var key in allKeys) {
 				if (!expectedLines.TryGetValue (key, out var expectedLine)) {
-					Console.WriteLine ($"        File '{key}' was removed from app bundle: {actualLines [key]}");
-					Assert.Fail ($"The file '{key}' was removed from the app bundle.");
-				} else if (!actualLines.TryGetValue (key, out var actualLine)) {
-					Console.WriteLine ($"        File '{key}' was added to app bundle: {expectedLine}");
+					Console.WriteLine ($"        File '{key}' was added to app bundle: {actualLines [key]}");
 					Assert.Fail ($"The file '{key}' was added to the app bundle.");
+				} else if (!actualLines.TryGetValue (key, out var actualLine)) {
+					Console.WriteLine ($"        File '{key}' was removed from app bundle: {expectedLine}");
+					Assert.Fail ($"The file '{key}' was removed from the app bundle.");
 				} else if (expectedLine != actualLine) {
 					Console.WriteLine ($"        File '{key}' changed in app bundle:");
 					Console.WriteLine ($"            -{expectedLine}");
@@ -154,7 +186,7 @@ namespace Xamarin.Tests {
 			}
 			preservedAPIs.Sort ();
 			var expectedFile = Path.Combine (expectedDirectory, $"{name}-preservedapis.txt");
-			var expectedAPIs = File.ReadAllLines (expectedFile);
+			var expectedAPIs = File.Exists (expectedFile) ? File.ReadAllLines (expectedFile) : [];
 			var addedAPIs = preservedAPIs.Except (expectedAPIs).ToList ();
 			var removedAPIs = expectedAPIs.Except (preservedAPIs).ToList ();
 

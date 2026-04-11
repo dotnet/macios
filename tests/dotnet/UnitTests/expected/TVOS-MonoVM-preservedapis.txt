@@ -1,980 +1,980 @@
-Microsoft.iOS.dll:<Module>
-Microsoft.iOS.dll:<Module>..cctor()
-Microsoft.iOS.dll:CoreFoundation.CFArray
-Microsoft.iOS.dll:CoreFoundation.CFArray._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreFoundation.CFArray..cctor()
-Microsoft.iOS.dll:CoreFoundation.CFArray..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreFoundation.CFArray.ArrayFromHandle`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreFoundation.CFArray.ArrayFromHandle`1(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:CoreFoundation.CFArray.ArrayFromHandleFunc`1(ObjCRuntime.NativeHandle, System.Func`2<ObjCRuntime.NativeHandle,T>)
-Microsoft.iOS.dll:CoreFoundation.CFArray.CFArrayGetValues(System.IntPtr, CoreFoundation.CFRange, System.IntPtr)
-Microsoft.iOS.dll:CoreFoundation.CFArray.DefaultConvert`1(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:CoreFoundation.CFArray.get__CFNullHandle()
-Microsoft.iOS.dll:CoreFoundation.CFArray.GetCount(System.IntPtr)
-Microsoft.iOS.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:CoreFoundation.CFArray/<>O
-Microsoft.iOS.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1
-Microsoft.iOS.dll:CoreFoundation.CFObject
-Microsoft.iOS.dll:CoreFoundation.CFObject.CFRelease(System.IntPtr)
-Microsoft.iOS.dll:CoreFoundation.CFObject.CFRetain(System.IntPtr)
-Microsoft.iOS.dll:CoreFoundation.CFRange
-Microsoft.iOS.dll:CoreFoundation.CFRange..ctor(System.Int32, System.Int32)
-Microsoft.iOS.dll:CoreFoundation.CFRange.ToString()
-Microsoft.iOS.dll:CoreFoundation.CFString
-Microsoft.iOS.dll:CoreFoundation.CFString._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreFoundation.CFString..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreFoundation.CFString.CFStringCreateWithCharacters(System.IntPtr, System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:CoreFoundation.CFString.CFStringGetCharacters(System.IntPtr, CoreFoundation.CFRange, System.Char*)
-Microsoft.iOS.dll:CoreFoundation.CFString.CFStringGetCharactersPtr(System.IntPtr)
-Microsoft.iOS.dll:CoreFoundation.CFString.CFStringGetLength(System.IntPtr)
-Microsoft.iOS.dll:CoreFoundation.CFString.CreateNative(System.String)
-Microsoft.iOS.dll:CoreFoundation.CFString.FromHandle(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreFoundation.CFString.FromHandle(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:CoreFoundation.CFString.ReleaseNative(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:CoreFoundation.CFString.ToString()
-Microsoft.iOS.dll:CoreFoundation.NativeObject
-Microsoft.iOS.dll:CoreFoundation.NativeObject..ctor(ObjCRuntime.NativeHandle, System.Boolean, System.Boolean)
-Microsoft.iOS.dll:CoreFoundation.NativeObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:CoreFoundation.NativeObject.Dispose(System.Boolean)
-Microsoft.iOS.dll:CoreFoundation.NativeObject.Release()
-Microsoft.iOS.dll:CoreFoundation.NativeObject.Retain()
-Microsoft.iOS.dll:CoreGraphics.CGRect
-Microsoft.iOS.dll:CoreGraphics.CGRect UIKit.UIScreen::Bounds()
-Microsoft.iOS.dll:CoreGraphics.CGRect UIKit.UIView::Bounds()
-Microsoft.iOS.dll:CoreGraphics.CGRect.Equals(CoreGraphics.CGRect)
-Microsoft.iOS.dll:CoreGraphics.CGRect.Equals(System.Object)
-Microsoft.iOS.dll:CoreGraphics.CGRect.GetHashCode()
-Microsoft.iOS.dll:CoreGraphics.CGRect.NSStringFromCGRect(CoreGraphics.CGRect)
-Microsoft.iOS.dll:CoreGraphics.CGRect.ToString()
-Microsoft.iOS.dll:Foundation.ExportAttribute
-Microsoft.iOS.dll:Foundation.ExportAttribute..ctor(System.String, ObjCRuntime.ArgumentSemantic)
-Microsoft.iOS.dll:Foundation.ExportAttribute..ctor(System.String)
-Microsoft.iOS.dll:Foundation.INSObjectFactory
-Microsoft.iOS.dll:Foundation.INSObjectFactory._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.ModelAttribute
-Microsoft.iOS.dll:Foundation.ModelAttribute..ctor()
-Microsoft.iOS.dll:Foundation.NSAutoreleasePool
-Microsoft.iOS.dll:Foundation.NSAutoreleasePool._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSAutoreleasePool._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSAutoreleasePool..cctor()
-Microsoft.iOS.dll:Foundation.NSAutoreleasePool..ctor()
-Microsoft.iOS.dll:Foundation.NSAutoreleasePool..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSAutoreleasePool.get_ClassHandle()
-Microsoft.iOS.dll:Foundation.NSDictionary
-Microsoft.iOS.dll:Foundation.NSDictionary Foundation.NSDictionary/<GetEnumerator>d__66::<>4__this
-Microsoft.iOS.dll:Foundation.NSDictionary._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSDictionary._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSDictionary..cctor()
-Microsoft.iOS.dll:Foundation.NSDictionary..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSDictionary..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSDictionary.get_ClassHandle()
-Microsoft.iOS.dll:Foundation.NSDictionary.get_Count()
-Microsoft.iOS.dll:Foundation.NSDictionary.get_Keys()
-Microsoft.iOS.dll:Foundation.NSDictionary.GetEnumerator()
-Microsoft.iOS.dll:Foundation.NSDictionary.ObjectForKey(Foundation.NSObject)
-Microsoft.iOS.dll:Foundation.NSDictionary.System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.CopyTo(System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject>[], System.Int32)
-Microsoft.iOS.dll:Foundation.NSDictionary.System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.get_Count()
-Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66
-Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66..ctor(System.Int32)
-Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66.MoveNext()
-Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66.System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.get_Current()
-Microsoft.iOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66.System.IDisposable.Dispose()
-Microsoft.iOS.dll:Foundation.NSException
-Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionEventArgs::<Exception>k__BackingField
-Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionEventArgs::Exception()
-Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.ObjCException::native_exc
-Microsoft.iOS.dll:Foundation.NSException ObjCRuntime.ObjCException::NSException()
-Microsoft.iOS.dll:Foundation.NSException._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSException._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSException..cctor()
-Microsoft.iOS.dll:Foundation.NSException..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSException.get_CallStackSymbols()
-Microsoft.iOS.dll:Foundation.NSException.get_ClassHandle()
-Microsoft.iOS.dll:Foundation.NSException.get_Name()
-Microsoft.iOS.dll:Foundation.NSException.get_Reason()
-Microsoft.iOS.dll:Foundation.NSObject
-Microsoft.iOS.dll:Foundation.NSObject..cctor()
-Microsoft.iOS.dll:Foundation.NSObject..ctor()
-Microsoft.iOS.dll:Foundation.NSObject..ctor(Foundation.NSObjectFlag)
-Microsoft.iOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSObject.AllocateData()
-Microsoft.iOS.dll:Foundation.NSObject.AllocIfNeeded()
-Microsoft.iOS.dll:Foundation.NSObject.ClearHandle()
-Microsoft.iOS.dll:Foundation.NSObject.ConformsToProtocol(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSObject.CreateManagedRef(System.Boolean)
-Microsoft.iOS.dll:Foundation.NSObject.CreateNSObject(System.IntPtr, System.IntPtr, Foundation.NSObject/Flags)
-Microsoft.iOS.dll:Foundation.NSObject.DangerousAutorelease()
-Microsoft.iOS.dll:Foundation.NSObject.DangerousAutorelease(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSObject.DangerousRelease()
-Microsoft.iOS.dll:Foundation.NSObject.DangerousRelease(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSObject.DangerousRetain()
-Microsoft.iOS.dll:Foundation.NSObject.DangerousRetain(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSObject.Dispose()
-Microsoft.iOS.dll:Foundation.NSObject.Dispose(System.Boolean)
-Microsoft.iOS.dll:Foundation.NSObject.Equals(Foundation.NSObject)
-Microsoft.iOS.dll:Foundation.NSObject.Equals(System.Object)
-Microsoft.iOS.dll:Foundation.NSObject.Finalize()
-Microsoft.iOS.dll:Foundation.NSObject.get_ClassHandle()
-Microsoft.iOS.dll:Foundation.NSObject.get_Description()
-Microsoft.iOS.dll:Foundation.NSObject.get_disposed()
-Microsoft.iOS.dll:Foundation.NSObject.get_flags()
-Microsoft.iOS.dll:Foundation.NSObject.get_handle()
-Microsoft.iOS.dll:Foundation.NSObject.get_Handle()
-Microsoft.iOS.dll:Foundation.NSObject.get_InFinalizerQueue()
-Microsoft.iOS.dll:Foundation.NSObject.get_IsDirectBinding()
-Microsoft.iOS.dll:Foundation.NSObject.get_IsRegisteredToggleRef()
-Microsoft.iOS.dll:Foundation.NSObject.get_SuperHandle()
-Microsoft.iOS.dll:Foundation.NSObject.GetData()
-Microsoft.iOS.dll:Foundation.NSObject.GetHashCode()
-Microsoft.iOS.dll:Foundation.NSObject.GetNativeHash()
-Microsoft.iOS.dll:Foundation.NSObject.GetSuper()
-Microsoft.iOS.dll:Foundation.NSObject.Initialize()
-Microsoft.iOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String, System.Boolean)
-Microsoft.iOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String)
-Microsoft.iOS.dll:Foundation.NSObject.InitializeObject(System.Boolean)
-Microsoft.iOS.dll:Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSObject.IsEqual(Foundation.NSObject)
-Microsoft.iOS.dll:Foundation.NSObject.RecreateDataHandle()
-Microsoft.iOS.dll:Foundation.NSObject.ReleaseManagedRef()
-Microsoft.iOS.dll:Foundation.NSObject.set_disposed(System.Boolean)
-Microsoft.iOS.dll:Foundation.NSObject.set_flags(Foundation.NSObject/Flags)
-Microsoft.iOS.dll:Foundation.NSObject.set_handle(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSObject.set_Handle(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:Foundation.NSObject.set_HasManagedRef(System.Boolean)
-Microsoft.iOS.dll:Foundation.NSObject.set_IsDirectBinding(System.Boolean)
-Microsoft.iOS.dll:Foundation.NSObject.ToString()
-Microsoft.iOS.dll:Foundation.NSObject.xamarin_release_managed_ref(System.IntPtr, System.Byte)
-Microsoft.iOS.dll:Foundation.NSObject.xamarin_set_gchandle_with_flags_safe(System.IntPtr, System.IntPtr, Foundation.NSObject/XamarinGCHandleFlags, System.IntPtr)
-Microsoft.iOS.dll:Foundation.NSObject[] Foundation.NSDictionary::Keys()
-Microsoft.iOS.dll:Foundation.NSObject[] Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap1
-Microsoft.iOS.dll:Foundation.NSObject/Flags
-Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject::flags()
-Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::Disposed
-Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::HasManagedRef
-Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::InFinalizerQueue
-Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsCustomType
-Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsDirectBinding
-Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::NativeRef
-Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::RegisteredToggleRef
-Microsoft.iOS.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer..cctor()
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer..ctor()
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3090_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3091_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags
-Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
-Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
-Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::None
-Microsoft.iOS.dll:Foundation.NSObjectData
-Microsoft.iOS.dll:Foundation.NSObjectData* Foundation.NSObject::__data_for_mono
-Microsoft.iOS.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::Data()
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle Foundation.NSObject::data_handle
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle..ctor()
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle..ctor(System.IntPtr)
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle.get_Data()
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle.get_IsInvalid()
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle.Invalidate()
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle.ReleaseHandle()
-Microsoft.iOS.dll:Foundation.NSObjectFlag
-Microsoft.iOS.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
-Microsoft.iOS.dll:Foundation.ProtocolAttribute
-Microsoft.iOS.dll:Foundation.ProtocolAttribute..ctor()
-Microsoft.iOS.dll:Foundation.ProtocolAttribute.get_WrapperType()
-Microsoft.iOS.dll:Foundation.RegisterAttribute
-Microsoft.iOS.dll:Foundation.RegisterAttribute..ctor(System.String, System.Boolean)
-Microsoft.iOS.dll:Foundation.RegisterAttribute..ctor(System.String)
-Microsoft.iOS.dll:Foundation.RegisterAttribute.get_IsWrapper()
-Microsoft.iOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method
-Microsoft.iOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method..ctor()
-Microsoft.iOS.dll:ObjCRuntime.__Registrar__
-Microsoft.iOS.dll:ObjCRuntime.__Registrar__..ctor()
-Microsoft.iOS.dll:ObjCRuntime.__Registrar__.ConstructINativeObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.__Registrar__.ConstructNSObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.__Registrar__.LookupType(System.UInt32)
-Microsoft.iOS.dll:ObjCRuntime.__Registrar__.LookupTypeId(System.RuntimeTypeHandle)
-Microsoft.iOS.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunction(System.String, System.Int32)
-Microsoft.iOS.dll:ObjCRuntime.__Registrar__.RegisterWrapperTypes(System.Collections.Generic.Dictionary`2<System.RuntimeTypeHandle,System.RuntimeTypeHandle>)
-Microsoft.iOS.dll:ObjCRuntime.Arch
-Microsoft.iOS.dll:ObjCRuntime.Arch ObjCRuntime.Arch::DEVICE
-Microsoft.iOS.dll:ObjCRuntime.Arch ObjCRuntime.Arch::SIMULATOR
-Microsoft.iOS.dll:ObjCRuntime.Arch ObjCRuntime.Runtime::Arch
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic Foundation.ExportAttribute::semantic
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Assign
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Copy
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::None
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Retain
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Strong
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::UnsafeUnretained
-Microsoft.iOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Weak
-Microsoft.iOS.dll:ObjCRuntime.BlockCollector
-Microsoft.iOS.dll:ObjCRuntime.BlockCollector..ctor(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.BlockCollector.Add(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.BlockCollector.Finalize()
-Microsoft.iOS.dll:ObjCRuntime.Class
-Microsoft.iOS.dll:ObjCRuntime.Class._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Class..cctor()
-Microsoft.iOS.dll:ObjCRuntime.Class..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Class..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.Class..ctor(System.Type)
-Microsoft.iOS.dll:ObjCRuntime.Class.class_getName(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Class.class_getSuperclass(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Class.CompareTokenReference(System.String, System.Int32, System.Int32, System.UInt32)
-Microsoft.iOS.dll:ObjCRuntime.Class.Equals(ObjCRuntime.Class)
-Microsoft.iOS.dll:ObjCRuntime.Class.Equals(System.Object)
-Microsoft.iOS.dll:ObjCRuntime.Class.FindClass(System.Type, out System.Boolean&)
-Microsoft.iOS.dll:ObjCRuntime.Class.FindMapIndex(ObjCRuntime.Runtime/MTClassMap*, System.Int32, System.Int32, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Class.FindType(ObjCRuntime.NativeHandle, out System.Boolean&)
-Microsoft.iOS.dll:ObjCRuntime.Class.get_Handle()
-Microsoft.iOS.dll:ObjCRuntime.Class.get_Name()
-Microsoft.iOS.dll:ObjCRuntime.Class.GetAssemblyName(System.Reflection.Assembly)
-Microsoft.iOS.dll:ObjCRuntime.Class.GetClassForObject(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Class.GetClassHandle(System.Type, System.Boolean, out System.Boolean&)
-Microsoft.iOS.dll:ObjCRuntime.Class.GetClassName(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Class.GetHandle(System.String)
-Microsoft.iOS.dll:ObjCRuntime.Class.GetHandle(System.Type)
-Microsoft.iOS.dll:ObjCRuntime.Class.GetHashCode()
-Microsoft.iOS.dll:ObjCRuntime.Class.Initialize(ObjCRuntime.Runtime/InitializationOptions*)
-Microsoft.iOS.dll:ObjCRuntime.Class.Lookup(System.IntPtr, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Class.Lookup(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Class.objc_getClass(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Class.objc_getClass(System.String)
-Microsoft.iOS.dll:ObjCRuntime.Class.object_getClass(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Class.ResolveAssembly(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Class.ResolveFullTokenReference(System.UInt32)
-Microsoft.iOS.dll:ObjCRuntime.Class.ResolveMethodTokenReference(System.UInt32)
-Microsoft.iOS.dll:ObjCRuntime.Class.ResolveModule(System.Reflection.Assembly, System.UInt32)
-Microsoft.iOS.dll:ObjCRuntime.Class.ResolveToken(System.Reflection.Assembly, System.Reflection.Module, System.UInt32)
-Microsoft.iOS.dll:ObjCRuntime.Class.ResolveTokenReference(System.UInt32, System.UInt32)
-Microsoft.iOS.dll:ObjCRuntime.Class.ResolveTypeTokenReference(System.UInt32)
-Microsoft.iOS.dll:ObjCRuntime.Class.TryGetClass(System.IntPtr, out System.IntPtr&, out System.String&)
-Microsoft.iOS.dll:ObjCRuntime.Class.TryResolveAssembly(System.IntPtr, out System.Reflection.Assembly&)
-Microsoft.iOS.dll:ObjCRuntime.DisposableObject
-Microsoft.iOS.dll:ObjCRuntime.DisposableObject..ctor(ObjCRuntime.NativeHandle, System.Boolean, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.DisposableObject.Dispose()
-Microsoft.iOS.dll:ObjCRuntime.DisposableObject.Dispose(System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.DisposableObject.Equals(System.Object)
-Microsoft.iOS.dll:ObjCRuntime.DisposableObject.Finalize()
-Microsoft.iOS.dll:ObjCRuntime.DisposableObject.get_Handle()
-Microsoft.iOS.dll:ObjCRuntime.DisposableObject.GetCheckedHandle()
-Microsoft.iOS.dll:ObjCRuntime.DisposableObject.GetHashCode()
-Microsoft.iOS.dll:ObjCRuntime.DisposableObject.InitializeHandle(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn._dlopen(System.IntPtr, ObjCRuntime.Dlfcn/Mode)
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn._dlopen(System.String, ObjCRuntime.Dlfcn/Mode)
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.String)
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn.GetIntPtr(System.IntPtr, System.String)
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn/Mode
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::First
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::Global
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::Lazy
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::Local
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::NoDelete
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::NoLoad
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::None
-Microsoft.iOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::Now
-Microsoft.iOS.dll:ObjCRuntime.ErrorHelper
-Microsoft.iOS.dll:ObjCRuntime.ErrorHelper.CreateError(System.Int32, System.Exception, System.String, System.Object[])
-Microsoft.iOS.dll:ObjCRuntime.ErrorHelper.CreateError(System.Int32, System.String, System.Object[])
-Microsoft.iOS.dll:ObjCRuntime.Extensions
-Microsoft.iOS.dll:ObjCRuntime.Extensions.AsByte(System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar
-Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar ObjCRuntime.RegistrarHelper/MapInfo::Registrar
-Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar.ConstructINativeObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar.ConstructNSObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar.LookupType(System.UInt32)
-Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar.LookupTypeId(System.RuntimeTypeHandle)
-Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar.LookupUnmanagedFunction(System.String, System.Int32)
-Microsoft.iOS.dll:ObjCRuntime.IManagedRegistrar.RegisterWrapperTypes(System.Collections.Generic.Dictionary`2<System.RuntimeTypeHandle,System.RuntimeTypeHandle>)
-Microsoft.iOS.dll:ObjCRuntime.INativeObject
-Microsoft.iOS.dll:ObjCRuntime.INativeObject._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.INativeObject.get_Handle()
-Microsoft.iOS.dll:ObjCRuntime.IntPtrEqualityComparer
-Microsoft.iOS.dll:ObjCRuntime.IntPtrEqualityComparer ObjCRuntime.Runtime::IntPtrEqualityComparer
-Microsoft.iOS.dll:ObjCRuntime.IntPtrEqualityComparer..ctor()
-Microsoft.iOS.dll:ObjCRuntime.IntPtrEqualityComparer.Equals(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.IntPtrEqualityComparer.GetHashCode(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Libraries
-Microsoft.iOS.dll:ObjCRuntime.Libraries/CoreFoundation
-Microsoft.iOS.dll:ObjCRuntime.Libraries/CoreFoundation..cctor()
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionEventArgs
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionEventArgs..ctor(System.Exception, ObjCRuntime.MarshalManagedExceptionMode)
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionEventArgs.get_ExceptionMode()
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionEventArgs.set_Exception(System.Exception)
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionEventArgs.set_ExceptionMode(ObjCRuntime.MarshalManagedExceptionMode)
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionHandler
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionHandler ObjCRuntime.Runtime::MarshalManagedException
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionHandler..ctor(System.Object, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionHandler.Invoke(System.Object, ObjCRuntime.MarshalManagedExceptionEventArgs)
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionMode
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionEventArgs::<ExceptionMode>k__BackingField
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionEventArgs::ExceptionMode()
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionMode::Abort
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionMode::Default
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionMode::Disable
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionMode::ThrowObjectiveCException
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionMode::UnwindNativeCode
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.Runtime::managed_exception_mode
-Microsoft.iOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.Runtime/InitializationOptions::MarshalManagedExceptionMode
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionEventArgs
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionEventArgs..ctor(Foundation.NSException, ObjCRuntime.MarshalObjectiveCExceptionMode)
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionEventArgs.get_ExceptionMode()
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionEventArgs.set_Exception(Foundation.NSException)
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionEventArgs.set_ExceptionMode(ObjCRuntime.MarshalObjectiveCExceptionMode)
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionHandler
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionHandler ObjCRuntime.Runtime::MarshalObjectiveCException
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionHandler..ctor(System.Object, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionHandler.Invoke(System.Object, ObjCRuntime.MarshalObjectiveCExceptionEventArgs)
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionEventArgs::<ExceptionMode>k__BackingField
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionEventArgs::ExceptionMode()
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionMode::Abort
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionMode::Default
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionMode::Disable
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionMode::ThrowManagedException
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionMode::UnwindManagedCode
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.Runtime::objc_exception_mode
-Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.Runtime/InitializationOptions::MarshalObjectiveCExceptionMode
-Microsoft.iOS.dll:ObjCRuntime.Messaging
-Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSend_IntPtr(System.IntPtr, System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_IntPtr(System.IntPtr, System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.CGRect_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend_CGRect(System.IntPtr, System.IntPtr, CoreGraphics.CGRect)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle, System.Byte)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_UIntPtr(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle, System.UIntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.void_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.NativeAttribute
-Microsoft.iOS.dll:ObjCRuntime.NativeAttribute..ctor()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle CoreFoundation.CFArray::CFNullHandle
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSAutoreleasePool::class_ptr
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSAutoreleasePool::ClassHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSDictionary::class_ptr
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSDictionary::ClassHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSException::class_ptr
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSException::ClassHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::class_ptr
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::ClassHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::handle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::Handle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::SuperHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::classHandle
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::handle
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::handle
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::Handle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::handle
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::Handle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.INativeObject::Handle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.NativeHandle::Zero
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Runtime/ClassHandles::unused
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::handle
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::Handle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIApplication::class_ptr
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIApplication::ClassHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIButton::class_ptr
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIButton::ClassHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIControl::class_ptr
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIControl::ClassHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIResponder::class_ptr
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIResponder::ClassHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIScreen::class_ptr
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIScreen::ClassHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIView::class_ptr
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIView::ClassHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIViewController::class_ptr
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIViewController::ClassHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIWindow::class_ptr
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle UIKit.UIWindow::ClassHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle..ctor(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle.Equals(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle.Equals(System.Object)
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle.get_Handle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle.GetHashCode()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Equality(ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Equality(ObjCRuntime.NativeHandle, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Implicit(ObjCRuntime.NativeHandle) => System.IntPtr
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Implicit(System.IntPtr) => ObjCRuntime.NativeHandle
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Inequality(ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Inequality(ObjCRuntime.NativeHandle, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle.ToString()
-Microsoft.iOS.dll:ObjCRuntime.NativeObjectExtensions
-Microsoft.iOS.dll:ObjCRuntime.NativeObjectExtensions.GetHandle(ObjCRuntime.INativeObject)
-Microsoft.iOS.dll:ObjCRuntime.NativeObjectExtensions.GetNonNullHandle(ObjCRuntime.INativeObject, System.String)
-Microsoft.iOS.dll:ObjCRuntime.ObjCException
-Microsoft.iOS.dll:ObjCRuntime.ObjCException..ctor(Foundation.NSException)
-Microsoft.iOS.dll:ObjCRuntime.ObjCException.AppendNativeStackTrace(System.Text.StringBuilder)
-Microsoft.iOS.dll:ObjCRuntime.ObjCException.get_Message()
-Microsoft.iOS.dll:ObjCRuntime.ObjCException.get_Name()
-Microsoft.iOS.dll:ObjCRuntime.ObjCException.get_NSException()
-Microsoft.iOS.dll:ObjCRuntime.ObjCException.get_Reason()
-Microsoft.iOS.dll:ObjCRuntime.ObjCException.ToString()
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.ConstructINativeObject`1(System.Type, ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.ConstructNSObject`1(System.Type, ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.FindProtocolWrapperType(System.Type)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.Reflection.Assembly)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.String)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.Initialize()
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupRegisteredType(System.Reflection.Assembly, System.UInt32)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupRegisteredTypeId(System.Type)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunction(System.IntPtr, System.String, System.Int32)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunctionInAssembly(System.IntPtr, System.String, System.Int32)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.Register(ObjCRuntime.IManagedRegistrar)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.TryGetMapEntry(System.String, out ObjCRuntime.RegistrarHelper/MapInfo&)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper/MapInfo
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManagedRegistrar)
-Microsoft.iOS.dll:ObjCRuntime.Runtime
-Microsoft.iOS.dll:ObjCRuntime.Runtime..cctor()
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|287_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|286_0`1(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.attempt_retain_nsobject(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.AttemptRetainNSObject(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.CannotCreateManagedInstanceOfGenericType(System.IntPtr, System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.ConstructINativeObject`1(System.IntPtr, System.Boolean, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.ConstructNSObject(System.IntPtr, System.IntPtr, ObjCRuntime.Runtime/MissingCtorResolution)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.ConstructNSObject`1(System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.ConstructNSObject`1(System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.create_block_proxy(System.IntPtr, System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.create_ns_exception(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.create_nsobject(System.IntPtr, System.IntPtr, Foundation.NSObject/Flags, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.create_product_exception_for_error(System.Int32, System.IntPtr, System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.create_runtime_exception(System.Int32, System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.CreateBlockProxy(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.CreateBlockProxy(System.Reflection.MethodInfo, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.CreateNSException(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.CreateNSObject(System.IntPtr, System.IntPtr, Foundation.NSObject/Flags)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.CreateProductException(System.Int32, System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.CreateRuntimeException(System.Int32, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.dispose(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.Dispose(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.FindProtocolWrapperType(System.Type)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.gc_collect(System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GCCollect()
-Microsoft.iOS.dll:ObjCRuntime.Runtime.get_class(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.get_exception_message(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.get_handle_for_inativeobject(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.get_inative_object_dynamic(System.IntPtr, System.SByte, System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.get_inative_object_static(System.IntPtr, System.SByte, System.UInt32, System.UInt32, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.get_method_from_token(System.UInt32, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.get_nsobject_with_type(System.IntPtr, System.IntPtr, System.Int32*, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.get_object_type_fullname(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.get_selector(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetClass(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetExceptionMessage(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetGCHandleTarget(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetHandleForINativeObject(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject_Dynamic(System.IntPtr, System.SByte, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject_Static(System.IntPtr, System.SByte, System.UInt32, System.UInt32)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject(System.IntPtr, System.Boolean, System.Type, System.Type, System.IntPtr, System.RuntimeMethodHandle)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject(System.IntPtr, System.Boolean, System.Type, System.Type)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject`1(System.IntPtr, System.Boolean, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject`1(System.IntPtr, System.Boolean, System.Type, System.Boolean, System.IntPtr, System.RuntimeMethodHandle)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetINativeObject`1(System.IntPtr, System.Boolean, System.Type, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetMethodFromToken(System.UInt32)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr, ObjCRuntime.Runtime/MissingCtorResolution, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr, System.Boolean, ObjCRuntime.Runtime/MissingCtorResolution, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.Boolean, System.Boolean, out System.Boolean&)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr, System.IntPtr, System.RuntimeMethodHandle, System.Boolean, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr, System.IntPtr, System.RuntimeMethodHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetNSObjectWithType(System.IntPtr, System.IntPtr, System.Int32*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetObjectTypeFullName(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.GetSelector(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.has_nsobject(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.HasNSObject(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.Initialize(ObjCRuntime.Runtime/InitializationOptions*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.InitializePlatform(ObjCRuntime.Runtime/InitializationOptions*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.invoke_conforms_to_protocol(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.InvokeConformsToProtocol(System.IntPtr, System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.lookup_managed_type_name(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.lookup_unmanaged_function(System.IntPtr, System.IntPtr, System.Int32, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.LookupINativeObjectImplementation(System.IntPtr, System.Type, System.Type, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.LookupManagedTypeName(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.LookupUnmanagedFunction(System.IntPtr, System.IntPtr, System.Int32)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.MissingCtor(System.IntPtr, System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.NativeObjectHasDied(System.IntPtr, Foundation.NSObject)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.NSLog(System.String)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.on_marshal_managed_exception(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.on_marshal_objectivec_exception(System.IntPtr, System.SByte, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.OnMarshalManagedException(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.OnMarshalObjectiveCException(System.IntPtr, System.SByte)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.print_all_exceptions_wrapper(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.PrintAllExceptions(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.PrintException(System.Exception, System.Boolean, System.Text.StringBuilder)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.reflection_type_get_full_name(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.RegisterDelegates(ObjCRuntime.Runtime/InitializationOptions*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.RegisterNSObject(Foundation.NSObject, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.ReleaseBlockOnMainThread(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.ReleaseBlockWhenDelegateIsCollected(System.IntPtr, System.Delegate)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.retain_nativeobject(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.RetainNativeObject(ObjCRuntime.INativeObject)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.RetainNativeObject(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.RetainNSObject(Foundation.NSObject)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.rethrow_managed_exception(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.RethrowManagedException(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.SafeInitialize(ObjCRuntime.Runtime/InitializationOptions*, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.SlowIsUserType(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.StringEquals(System.IntPtr, System.String)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.throw_ns_exception(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.ThrowException(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.ThrowNSException(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.try_get_or_construct_nsobject(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.TryGetIsUserType(System.IntPtr, out System.Boolean&, out System.String&)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.TryGetNSObject(System.IntPtr, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.TryGetOrConstructNSObjectWrapped(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.TryReleaseINativeObject(ObjCRuntime.INativeObject)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.TypeGetFullName(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.unregister_nsobject(System.IntPtr, System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.UnregisterNSObject(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.UnregisterNSObject(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.unwrap_ns_exception(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.UnwrapNSException(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.write(System.Int32, System.Byte[], System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.xamarin_is_user_type(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.xamarin_log(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime/ClassHandles
-Microsoft.iOS.dll:ObjCRuntime.Runtime/ClassHandles.InitializeClassHandles(System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime/ClassHandles.SetHandle(System.Int32, ObjCRuntime.NativeHandle*, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime/Delegates
-Microsoft.iOS.dll:ObjCRuntime.Runtime/Delegates* ObjCRuntime.Runtime/InitializationOptions::Delegates
-Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags
-Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsCoreCLR
-Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsManagedStaticRegistrar
-Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsNativeAOT
-Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsPartialStaticRegistrar
-Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsSimulator
-Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationOptions::Flags
-Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationOptions
-Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationOptions* ObjCRuntime.Runtime::options
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MissingCtorResolution
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MissingCtorResolution ObjCRuntime.Runtime/MissingCtorResolution::Ignore
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MissingCtorResolution ObjCRuntime.Runtime/MissingCtorResolution::ThrowConstructor1NotFound
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MissingCtorResolution ObjCRuntime.Runtime/MissingCtorResolution::ThrowConstructor2NotFound
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTAssembly
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTAssembly* ObjCRuntime.Runtime/MTRegistrationMap::assemblies
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTClassMap
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTClassMap* ObjCRuntime.Runtime/MTRegistrationMap::map
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTFullTokenReference
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTFullTokenReference* ObjCRuntime.Runtime/MTRegistrationMap::full_token_references
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTManagedClassMap
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTManagedClassMap* ObjCRuntime.Runtime/MTRegistrationMap::skipped_map
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTProtocolMap
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTProtocolMap ObjCRuntime.Runtime/MTRegistrationMap::protocol_map
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTProtocolWrapperMap
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTProtocolWrapperMap* ObjCRuntime.Runtime/MTRegistrationMap::protocol_wrapper_map
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTRegistrationMap
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTRegistrationMap* ObjCRuntime.Runtime/InitializationOptions::RegistrationMap
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTTypeFlags
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTTypeFlags ObjCRuntime.Runtime/MTClassMap::flags
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTTypeFlags ObjCRuntime.Runtime/MTTypeFlags::CustomType
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTTypeFlags ObjCRuntime.Runtime/MTTypeFlags::None
-Microsoft.iOS.dll:ObjCRuntime.Runtime/MTTypeFlags ObjCRuntime.Runtime/MTTypeFlags::UserType
-Microsoft.iOS.dll:ObjCRuntime.Runtime/Trampolines
-Microsoft.iOS.dll:ObjCRuntime.Runtime/Trampolines* ObjCRuntime.Runtime/InitializationOptions::Trampolines
-Microsoft.iOS.dll:ObjCRuntime.RuntimeException
-Microsoft.iOS.dll:ObjCRuntime.RuntimeException..ctor(System.Int32, System.Boolean, System.Exception, System.String, System.Object[])
-Microsoft.iOS.dll:ObjCRuntime.RuntimeException.set_Code(System.Int32)
-Microsoft.iOS.dll:ObjCRuntime.RuntimeException.set_Error(System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer
-Microsoft.iOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer ObjCRuntime.RegistrarHelper::RuntimeTypeHandleEqualityComparer
-Microsoft.iOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer..ctor()
-Microsoft.iOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer.Equals(System.RuntimeTypeHandle, System.RuntimeTypeHandle)
-Microsoft.iOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer.GetHashCode(System.RuntimeTypeHandle)
-Microsoft.iOS.dll:ObjCRuntime.Selector
-Microsoft.iOS.dll:ObjCRuntime.Selector._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Selector..ctor(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Selector..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.Selector.Equals(ObjCRuntime.Selector)
-Microsoft.iOS.dll:ObjCRuntime.Selector.Equals(System.Object)
-Microsoft.iOS.dll:ObjCRuntime.Selector.get_Handle()
-Microsoft.iOS.dll:ObjCRuntime.Selector.GetHandle(System.String)
-Microsoft.iOS.dll:ObjCRuntime.Selector.GetHashCode()
-Microsoft.iOS.dll:ObjCRuntime.Selector.GetName(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Selector.sel_getName(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Selector.sel_isMapped(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Selector.sel_registerName(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.StringEqualityComparer
-Microsoft.iOS.dll:ObjCRuntime.StringEqualityComparer ObjCRuntime.RegistrarHelper::StringEqualityComparer
-Microsoft.iOS.dll:ObjCRuntime.StringEqualityComparer..ctor()
-Microsoft.iOS.dll:ObjCRuntime.StringEqualityComparer.Equals(System.String, System.String)
-Microsoft.iOS.dll:ObjCRuntime.StringEqualityComparer.GetHashCode(System.String)
-Microsoft.iOS.dll:ObjCRuntime.ThrowHelper
-Microsoft.iOS.dll:ObjCRuntime.ThrowHelper.ThrowArgumentException(System.String, System.String)
-Microsoft.iOS.dll:ObjCRuntime.ThrowHelper.ThrowArgumentNullException(System.String)
-Microsoft.iOS.dll:ObjCRuntime.ThrowHelper.ThrowObjectDisposedException(System.Object)
-Microsoft.iOS.dll:ObjCRuntime.TransientCFString
-Microsoft.iOS.dll:ObjCRuntime.TransientCFString..ctor(System.String)
-Microsoft.iOS.dll:ObjCRuntime.TransientCFString.Dispose()
-Microsoft.iOS.dll:ObjCRuntime.TransientCFString.op_Implicit(ObjCRuntime.TransientCFString) => System.IntPtr
-Microsoft.iOS.dll:ObjCRuntime.TransientString
-Microsoft.iOS.dll:ObjCRuntime.TransientString..ctor(System.String, ObjCRuntime.TransientString/Encoding)
-Microsoft.iOS.dll:ObjCRuntime.TransientString.AllocStringArray(System.String[], ObjCRuntime.TransientString/Encoding)
-Microsoft.iOS.dll:ObjCRuntime.TransientString.Dispose()
-Microsoft.iOS.dll:ObjCRuntime.TransientString.FreeStringArray(System.IntPtr, System.Int32)
-Microsoft.iOS.dll:ObjCRuntime.TransientString.op_Implicit(ObjCRuntime.TransientString) => System.IntPtr
-Microsoft.iOS.dll:ObjCRuntime.TransientString/Encoding
-Microsoft.iOS.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::Ansi
-Microsoft.iOS.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::Auto
-Microsoft.iOS.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::BStr
-Microsoft.iOS.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::Unicode
-Microsoft.iOS.dll:ObjCRuntime.TypeEqualityComparer
-Microsoft.iOS.dll:ObjCRuntime.TypeEqualityComparer ObjCRuntime.Runtime::TypeEqualityComparer
-Microsoft.iOS.dll:ObjCRuntime.TypeEqualityComparer..ctor()
-Microsoft.iOS.dll:ObjCRuntime.TypeEqualityComparer.Equals(System.Type, System.Type)
-Microsoft.iOS.dll:ObjCRuntime.TypeEqualityComparer.GetHashCode(System.Type)
-Microsoft.iOS.dll:ObjCRuntime.UInt64EqualityComparer
-Microsoft.iOS.dll:ObjCRuntime.UInt64EqualityComparer ObjCRuntime.Runtime::UInt64EqualityComparer
-Microsoft.iOS.dll:ObjCRuntime.UInt64EqualityComparer..ctor()
-Microsoft.iOS.dll:ObjCRuntime.UInt64EqualityComparer.Equals(System.UInt64, System.UInt64)
-Microsoft.iOS.dll:ObjCRuntime.UInt64EqualityComparer.GetHashCode(System.UInt64)
-Microsoft.iOS.dll:System.Boolean Foundation.NSObject::disposed()
-Microsoft.iOS.dll:System.Boolean Foundation.NSObject::HasManagedRef()
-Microsoft.iOS.dll:System.Boolean Foundation.NSObject::InFinalizerQueue()
-Microsoft.iOS.dll:System.Boolean Foundation.NSObject::IsDirectBinding()
-Microsoft.iOS.dll:System.Boolean Foundation.NSObject::IsRegisteredToggleRef()
-Microsoft.iOS.dll:System.Boolean Foundation.NSObject/NSObject_Disposer::draining
-Microsoft.iOS.dll:System.Boolean Foundation.NSObjectDataHandle::invalidated
-Microsoft.iOS.dll:System.Boolean Foundation.NSObjectDataHandle::IsInvalid()
-Microsoft.iOS.dll:System.Boolean Foundation.ProtocolAttribute::<BackwardsCompatibleCodeGeneration>k__BackingField
-Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::is_wrapper
-Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::IsWrapper()
-Microsoft.iOS.dll:System.Boolean ObjCRuntime.Class::ThrowOnInitFailure
-Microsoft.iOS.dll:System.Boolean ObjCRuntime.DisposableObject::owns
-Microsoft.iOS.dll:System.Boolean ObjCRuntime.RegistrarHelper/MapInfo::RegisteredWrapperTypes
-Microsoft.iOS.dll:System.Boolean ObjCRuntime.Runtime::initialized
-Microsoft.iOS.dll:System.Boolean ObjCRuntime.Runtime::IsARM64CallingConvention
-Microsoft.iOS.dll:System.Boolean ObjCRuntime.RuntimeException::<Error>k__BackingField
-Microsoft.iOS.dll:System.Boolean ObjCRuntime.RuntimeException::Error()
-Microsoft.iOS.dll:System.Boolean UIKit.UIApplication::CheckForEventAndDelegateMismatches
-Microsoft.iOS.dll:System.Boolean UIKit.UIApplication::CheckForIllegalCrossThreadCalls
-Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.IntPtr,System.Boolean> ObjCRuntime.Runtime::usertype_cache
-Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.IntPtr,System.Runtime.InteropServices.GCHandle> ObjCRuntime.Runtime::object_map
-Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.RuntimeTypeHandle,System.RuntimeTypeHandle> ObjCRuntime.RegistrarHelper::wrapper_types
-Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.String,ObjCRuntime.RegistrarHelper/MapInfo> ObjCRuntime.RegistrarHelper::assembly_map
-Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.IntPtr> ObjCRuntime.Class::type_to_class
-Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_bool_ctor_cache
-Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_ctor_cache
-Microsoft.iOS.dll:System.Collections.Generic.Dictionary`2<System.UInt64,System.Reflection.MemberInfo> ObjCRuntime.Class::token_to_member
-Microsoft.iOS.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::<>2__current
-Microsoft.iOS.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Current()
-Microsoft.iOS.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::drainList1
-Microsoft.iOS.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::drainList2
-Microsoft.iOS.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::handles
-Microsoft.iOS.dll:System.Collections.Generic.List`1<System.Object> ObjCRuntime.Runtime::delegates
-Microsoft.iOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::<Exception>k__BackingField
-Microsoft.iOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::Exception()
-Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,System.String> CoreFoundation.CFArray/<>O::<0>__FromHandle
-Microsoft.iOS.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1::<0>__DefaultConvert
-Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary::System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Count()
-Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>1__state
-Microsoft.iOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap2
-Microsoft.iOS.dll:System.Int32 Foundation.NSObjectFlag::value__
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.Arch::value__
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.ArgumentSemantic::value__
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.BlockCollector::count
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.Dlfcn/Mode::value__
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.MarshalManagedExceptionMode::value__
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.MarshalObjectiveCExceptionMode::value__
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.Runtime/InitializationFlags::value__
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.Runtime/InitializationOptions::Size
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.Runtime/MissingCtorResolution::value__
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::assembly_count
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::full_token_reference_count
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::map_count
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::protocol_count
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::protocol_wrapper_count
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::skipped_map_count
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.RuntimeException::<Code>k__BackingField
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.RuntimeException::Code()
-Microsoft.iOS.dll:System.Int32 ObjCRuntime.TransientString/Encoding::value__
-Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFArray::_CFNullHandle()
-Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFRange::len
-Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFRange::loc
-Microsoft.iOS.dll:System.IntPtr Foundation.NSObject/NSObject_Disposer::class_ptr
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.BlockCollector::block
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Libraries/CoreFoundation::Handle
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.NativeHandle::handle
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.NativeHandle::Handle()
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime::NSObjectClass
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::array_get
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::array_setref
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::attempt_retain_nsobject
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_box
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_class_get_name
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_class_get_namespace
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_create_array
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_create_exception
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_create_gchandle
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_free_gchandle
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_array_length
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_assembly_location
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_assembly_name
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_element_class
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_enum_basetype
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_method_declaring_type
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_method_full_name
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_monoobject
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_nullable_element_type
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_is_byref
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_is_class_of_type
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_is_delegate
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_is_enum
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_is_nullable
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_is_valuetype
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_isinstance
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_lookup_class
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_method_get_signature
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_mono_hash_table_create
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_mono_hash_table_insert
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_mono_hash_table_lookup
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_new_string
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_object_get_type
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_raise_appdomain_unhandled_exception_event
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_runtime_invoke_method
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_set_array_struct_value
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_set_pending_exception
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_sizeof
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_string_to_utf8
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_type_to_class
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::convert_nsstring_to_smart_enum
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::convert_smart_enum_to_nsstring
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::create_block_proxy
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::create_delegate_proxy
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::create_ns_exception
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::create_nsobject
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::create_product_exception_for_error
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::create_runtime_exception
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::dispose
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::find_assembly
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::gc_collect
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_block_wrapper_creator
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_class
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_exception_message
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_flags_for_nsobject
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_generic_method_from_token
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_handle_for_inativeobject
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_inative_object_dynamic
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_inative_object_static
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_method_and_object_for_selector
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_method_for_selector
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_method_from_token
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_nsobject_with_type
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_object_type_fullname
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_selector
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::has_nsobject
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::invoke_conforms_to_protocol
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::is_parameter_out
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::is_parameter_transient
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::lookup_managed_type_name
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::lookup_unmanaged_function
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::on_marshal_managed_exception
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::on_marshal_objectivec_exception
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::print_all_exceptions_wrapper
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::reflection_type_get_full_name
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::register_assembly
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::register_entry_assembly
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::retain_nativeobject
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::rethrow_managed_exception
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::set_flags_for_nsobject
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::throw_ns_exception
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::try_get_or_construct_nsobject
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::unregister_nsobject
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::unwrap_ns_exception
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::AssemblyLocations
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::reference_tracking_begin_end_callback
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::reference_tracking_is_referenced_callback
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::reference_tracking_tracked_object_entered_finalization
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::unhandled_exception_handler
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::xamarin_objc_msgsend
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::xamarin_objc_msgsend_stret
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::xamarin_objc_msgsend_super
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::xamarin_objc_msgsend_super_stret
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/MTAssembly::mvid
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/MTAssembly::name
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/MTClassMap::handle
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/MTRegistrationMap::product_hash
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::ctor_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::fpret_double_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::fpret_single_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::get_gchandle_flags_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::get_gchandle_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::get_nsobject_data_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::long_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::release_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::retain_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::retainWeakReference_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::set_gchandle_flags_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::set_gchandle_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::static_fpret_double_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::static_fpret_single_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::static_long_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::static_stret_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::static_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::stret_tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::tramp
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.TransientCFString::ptr
-Microsoft.iOS.dll:System.IntPtr ObjCRuntime.TransientString::ptr
-Microsoft.iOS.dll:System.IntPtr* ObjCRuntime.Runtime/MTProtocolMap::protocols
-Microsoft.iOS.dll:System.IntPtr* ObjCRuntime.Runtime/MTRegistrationMap::classHandles
-Microsoft.iOS.dll:System.Object Foundation.NSObject/NSObject_Disposer::lock_obj
-Microsoft.iOS.dll:System.Object ObjCRuntime.Runtime::lock_obj
-Microsoft.iOS.dll:System.Reflection.Assembly Foundation.NSObject::PlatformAssembly
-Microsoft.iOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Delegate,ObjCRuntime.BlockCollector> ObjCRuntime.Runtime::block_lifetime_table
-Microsoft.iOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Reflection.Assembly,System.String> ObjCRuntime.Class::assembly_to_name
-Microsoft.iOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::height
-Microsoft.iOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::width
-Microsoft.iOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::x
-Microsoft.iOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::y
-Microsoft.iOS.dll:System.String CoreFoundation.CFString::str
-Microsoft.iOS.dll:System.String Foundation.ExportAttribute::selector
-Microsoft.iOS.dll:System.String Foundation.NSException::Name()
-Microsoft.iOS.dll:System.String Foundation.NSException::Reason()
-Microsoft.iOS.dll:System.String Foundation.NSObject::Description()
-Microsoft.iOS.dll:System.String Foundation.RegisterAttribute::name
-Microsoft.iOS.dll:System.String ObjCRuntime.Class::Name()
-Microsoft.iOS.dll:System.String ObjCRuntime.ObjCException::Message()
-Microsoft.iOS.dll:System.String ObjCRuntime.ObjCException::Name()
-Microsoft.iOS.dll:System.String ObjCRuntime.ObjCException::Reason()
-Microsoft.iOS.dll:System.String[] Foundation.NSException::CallStackSymbols()
-Microsoft.iOS.dll:System.Threading.Thread UIKit.UIApplication::mainThread
-Microsoft.iOS.dll:System.Type Foundation.ProtocolAttribute::<WrapperType>k__BackingField
-Microsoft.iOS.dll:System.Type Foundation.ProtocolAttribute::WrapperType()
-Microsoft.iOS.dll:System.Type[] ObjCRuntime.Class::class_to_type
-Microsoft.iOS.dll:System.UInt32 Foundation.NSObject/Flags::value__
-Microsoft.iOS.dll:System.UInt32 Foundation.NSObject/XamarinGCHandleFlags::value__
-Microsoft.iOS.dll:System.UInt32 ObjCRuntime.Runtime/MTClassMap::type_reference
-Microsoft.iOS.dll:System.UInt32 ObjCRuntime.Runtime/MTFullTokenReference::assembly_index
-Microsoft.iOS.dll:System.UInt32 ObjCRuntime.Runtime/MTFullTokenReference::module_token
-Microsoft.iOS.dll:System.UInt32 ObjCRuntime.Runtime/MTFullTokenReference::token
-Microsoft.iOS.dll:System.UInt32 ObjCRuntime.Runtime/MTManagedClassMap::actual_reference
-Microsoft.iOS.dll:System.UInt32 ObjCRuntime.Runtime/MTManagedClassMap::skipped_reference
-Microsoft.iOS.dll:System.UInt32 ObjCRuntime.Runtime/MTProtocolWrapperMap::protocol_token
-Microsoft.iOS.dll:System.UInt32 ObjCRuntime.Runtime/MTProtocolWrapperMap::wrapper_token
-Microsoft.iOS.dll:System.UInt32 ObjCRuntime.Runtime/MTTypeFlags::value__
-Microsoft.iOS.dll:System.UInt32* ObjCRuntime.Runtime/MTProtocolMap::protocol_tokens
-Microsoft.iOS.dll:System.UInt64 UIKit.UIControlState::value__
-Microsoft.iOS.dll:System.UIntPtr Foundation.NSDictionary::Count()
-Microsoft.iOS.dll:UIKit.UIApplication
-Microsoft.iOS.dll:UIKit.UIApplication._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIApplication._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIApplication..cctor()
-Microsoft.iOS.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIApplication.Dispose(System.Boolean)
-Microsoft.iOS.dll:UIKit.UIApplication.get_ClassHandle()
-Microsoft.iOS.dll:UIKit.UIApplication.Initialize()
-Microsoft.iOS.dll:UIKit.UIApplication.Main(System.String[], System.Type, System.Type)
-Microsoft.iOS.dll:UIKit.UIApplication.UIApplicationMain(System.Int32, System.String[], System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:UIKit.UIApplication.xamarin_UIApplicationMain(System.Int32, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor()
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
-Microsoft.iOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_595_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.iOS.dll:UIKit.UIButton
-Microsoft.iOS.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIButton._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIButton..cctor()
-Microsoft.iOS.dll:UIKit.UIButton..ctor(CoreGraphics.CGRect)
-Microsoft.iOS.dll:UIKit.UIButton..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIButton.get_ClassHandle()
-Microsoft.iOS.dll:UIKit.UIButton.SetTitle(System.String, UIKit.UIControlState)
-Microsoft.iOS.dll:UIKit.UIControl
-Microsoft.iOS.dll:UIKit.UIControl._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIControl._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIControl..cctor()
-Microsoft.iOS.dll:UIKit.UIControl..ctor(Foundation.NSObjectFlag)
-Microsoft.iOS.dll:UIKit.UIControl..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIControl.get_ClassHandle()
-Microsoft.iOS.dll:UIKit.UIControlState
-Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Application
-Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Disabled
-Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Focused
-Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Highlighted
-Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Normal
-Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Reserved
-Microsoft.iOS.dll:UIKit.UIControlState UIKit.UIControlState::Selected
-Microsoft.iOS.dll:UIKit.UIKitSynchronizationContext
-Microsoft.iOS.dll:UIKit.UIKitSynchronizationContext..ctor()
-Microsoft.iOS.dll:UIKit.UIResponder
-Microsoft.iOS.dll:UIKit.UIResponder._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIResponder._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIResponder..cctor()
-Microsoft.iOS.dll:UIKit.UIResponder..ctor(Foundation.NSObjectFlag)
-Microsoft.iOS.dll:UIKit.UIResponder..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIResponder.get_ClassHandle()
-Microsoft.iOS.dll:UIKit.UIScreen
-Microsoft.iOS.dll:UIKit.UIScreen UIKit.UIScreen::MainScreen()
-Microsoft.iOS.dll:UIKit.UIScreen._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIScreen._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIScreen..cctor()
-Microsoft.iOS.dll:UIKit.UIScreen..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIScreen.Dispose(System.Boolean)
-Microsoft.iOS.dll:UIKit.UIScreen.get_Bounds()
-Microsoft.iOS.dll:UIKit.UIScreen.get_ClassHandle()
-Microsoft.iOS.dll:UIKit.UIScreen.get_MainScreen()
-Microsoft.iOS.dll:UIKit.UIView
-Microsoft.iOS.dll:UIKit.UIView UIKit.UIViewController::View()
-Microsoft.iOS.dll:UIKit.UIView._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIView._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIView..cctor()
-Microsoft.iOS.dll:UIKit.UIView..ctor(Foundation.NSObjectFlag)
-Microsoft.iOS.dll:UIKit.UIView..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIView.AddSubview(UIKit.UIView)
-Microsoft.iOS.dll:UIKit.UIView.Dispose(System.Boolean)
-Microsoft.iOS.dll:UIKit.UIView.get_Bounds()
-Microsoft.iOS.dll:UIKit.UIView.get_ClassHandle()
-Microsoft.iOS.dll:UIKit.UIViewController
-Microsoft.iOS.dll:UIKit.UIViewController UIKit.UIWindow::RootViewController()
-Microsoft.iOS.dll:UIKit.UIViewController._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIViewController._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIViewController..cctor()
-Microsoft.iOS.dll:UIKit.UIViewController..ctor()
-Microsoft.iOS.dll:UIKit.UIViewController..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIViewController.Add(UIKit.UIView)
-Microsoft.iOS.dll:UIKit.UIViewController.Dispose(System.Boolean)
-Microsoft.iOS.dll:UIKit.UIViewController.get_ClassHandle()
-Microsoft.iOS.dll:UIKit.UIViewController.get_View()
-Microsoft.iOS.dll:UIKit.UIWindow
-Microsoft.iOS.dll:UIKit.UIWindow._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:UIKit.UIWindow._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIWindow..cctor()
-Microsoft.iOS.dll:UIKit.UIWindow..ctor(CoreGraphics.CGRect)
-Microsoft.iOS.dll:UIKit.UIWindow..ctor(ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:UIKit.UIWindow.Dispose(System.Boolean)
-Microsoft.iOS.dll:UIKit.UIWindow.get_ClassHandle()
-Microsoft.iOS.dll:UIKit.UIWindow.MakeKeyAndVisible()
-Microsoft.iOS.dll:UIKit.UIWindow.set_RootViewController(UIKit.UIViewController)
+Microsoft.tvOS.dll:<Module>
+Microsoft.tvOS.dll:<Module>..cctor()
+Microsoft.tvOS.dll:CoreFoundation.CFArray
+Microsoft.tvOS.dll:CoreFoundation.CFArray._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:CoreFoundation.CFArray..cctor()
+Microsoft.tvOS.dll:CoreFoundation.CFArray..ctor(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:CoreFoundation.CFArray.ArrayFromHandle`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:CoreFoundation.CFArray.ArrayFromHandle`1(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:CoreFoundation.CFArray.ArrayFromHandleFunc`1(ObjCRuntime.NativeHandle, System.Func`2<ObjCRuntime.NativeHandle,T>)
+Microsoft.tvOS.dll:CoreFoundation.CFArray.CFArrayGetValues(System.IntPtr, CoreFoundation.CFRange, System.IntPtr)
+Microsoft.tvOS.dll:CoreFoundation.CFArray.DefaultConvert`1(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:CoreFoundation.CFArray.get__CFNullHandle()
+Microsoft.tvOS.dll:CoreFoundation.CFArray.GetCount(System.IntPtr)
+Microsoft.tvOS.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:CoreFoundation.CFArray.StringArrayFromHandle(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:CoreFoundation.CFArray/<>O
+Microsoft.tvOS.dll:CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1
+Microsoft.tvOS.dll:CoreFoundation.CFObject
+Microsoft.tvOS.dll:CoreFoundation.CFObject.CFRelease(System.IntPtr)
+Microsoft.tvOS.dll:CoreFoundation.CFObject.CFRetain(System.IntPtr)
+Microsoft.tvOS.dll:CoreFoundation.CFRange
+Microsoft.tvOS.dll:CoreFoundation.CFRange..ctor(System.Int32, System.Int32)
+Microsoft.tvOS.dll:CoreFoundation.CFRange.ToString()
+Microsoft.tvOS.dll:CoreFoundation.CFString
+Microsoft.tvOS.dll:CoreFoundation.CFString._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:CoreFoundation.CFString..ctor(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:CoreFoundation.CFString.CFStringCreateWithCharacters(System.IntPtr, System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:CoreFoundation.CFString.CFStringGetCharacters(System.IntPtr, CoreFoundation.CFRange, System.Char*)
+Microsoft.tvOS.dll:CoreFoundation.CFString.CFStringGetCharactersPtr(System.IntPtr)
+Microsoft.tvOS.dll:CoreFoundation.CFString.CFStringGetLength(System.IntPtr)
+Microsoft.tvOS.dll:CoreFoundation.CFString.CreateNative(System.String)
+Microsoft.tvOS.dll:CoreFoundation.CFString.FromHandle(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:CoreFoundation.CFString.FromHandle(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:CoreFoundation.CFString.ReleaseNative(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:CoreFoundation.CFString.ToString()
+Microsoft.tvOS.dll:CoreFoundation.NativeObject
+Microsoft.tvOS.dll:CoreFoundation.NativeObject..ctor(ObjCRuntime.NativeHandle, System.Boolean, System.Boolean)
+Microsoft.tvOS.dll:CoreFoundation.NativeObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:CoreFoundation.NativeObject.Dispose(System.Boolean)
+Microsoft.tvOS.dll:CoreFoundation.NativeObject.Release()
+Microsoft.tvOS.dll:CoreFoundation.NativeObject.Retain()
+Microsoft.tvOS.dll:CoreGraphics.CGRect
+Microsoft.tvOS.dll:CoreGraphics.CGRect UIKit.UIScreen::Bounds()
+Microsoft.tvOS.dll:CoreGraphics.CGRect UIKit.UIView::Bounds()
+Microsoft.tvOS.dll:CoreGraphics.CGRect.Equals(CoreGraphics.CGRect)
+Microsoft.tvOS.dll:CoreGraphics.CGRect.Equals(System.Object)
+Microsoft.tvOS.dll:CoreGraphics.CGRect.GetHashCode()
+Microsoft.tvOS.dll:CoreGraphics.CGRect.NSStringFromCGRect(CoreGraphics.CGRect)
+Microsoft.tvOS.dll:CoreGraphics.CGRect.ToString()
+Microsoft.tvOS.dll:Foundation.ExportAttribute
+Microsoft.tvOS.dll:Foundation.ExportAttribute..ctor(System.String, ObjCRuntime.ArgumentSemantic)
+Microsoft.tvOS.dll:Foundation.ExportAttribute..ctor(System.String)
+Microsoft.tvOS.dll:Foundation.INSObjectFactory
+Microsoft.tvOS.dll:Foundation.INSObjectFactory._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.ModelAttribute
+Microsoft.tvOS.dll:Foundation.ModelAttribute..ctor()
+Microsoft.tvOS.dll:Foundation.NSAutoreleasePool
+Microsoft.tvOS.dll:Foundation.NSAutoreleasePool._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSAutoreleasePool._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSAutoreleasePool..cctor()
+Microsoft.tvOS.dll:Foundation.NSAutoreleasePool..ctor()
+Microsoft.tvOS.dll:Foundation.NSAutoreleasePool..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSAutoreleasePool.get_ClassHandle()
+Microsoft.tvOS.dll:Foundation.NSDictionary
+Microsoft.tvOS.dll:Foundation.NSDictionary Foundation.NSDictionary/<GetEnumerator>d__66::<>4__this
+Microsoft.tvOS.dll:Foundation.NSDictionary._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSDictionary._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSDictionary..cctor()
+Microsoft.tvOS.dll:Foundation.NSDictionary..ctor(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSDictionary..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSDictionary.get_ClassHandle()
+Microsoft.tvOS.dll:Foundation.NSDictionary.get_Count()
+Microsoft.tvOS.dll:Foundation.NSDictionary.get_Keys()
+Microsoft.tvOS.dll:Foundation.NSDictionary.GetEnumerator()
+Microsoft.tvOS.dll:Foundation.NSDictionary.ObjectForKey(Foundation.NSObject)
+Microsoft.tvOS.dll:Foundation.NSDictionary.System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.CopyTo(System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject>[], System.Int32)
+Microsoft.tvOS.dll:Foundation.NSDictionary.System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.get_Count()
+Microsoft.tvOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66
+Microsoft.tvOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66..ctor(System.Int32)
+Microsoft.tvOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66.MoveNext()
+Microsoft.tvOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66.System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.get_Current()
+Microsoft.tvOS.dll:Foundation.NSDictionary/<GetEnumerator>d__66.System.IDisposable.Dispose()
+Microsoft.tvOS.dll:Foundation.NSException
+Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionEventArgs::<Exception>k__BackingField
+Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.MarshalObjectiveCExceptionEventArgs::Exception()
+Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.ObjCException::native_exc
+Microsoft.tvOS.dll:Foundation.NSException ObjCRuntime.ObjCException::NSException()
+Microsoft.tvOS.dll:Foundation.NSException._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSException._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSException..cctor()
+Microsoft.tvOS.dll:Foundation.NSException..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSException.get_CallStackSymbols()
+Microsoft.tvOS.dll:Foundation.NSException.get_ClassHandle()
+Microsoft.tvOS.dll:Foundation.NSException.get_Name()
+Microsoft.tvOS.dll:Foundation.NSException.get_Reason()
+Microsoft.tvOS.dll:Foundation.NSObject
+Microsoft.tvOS.dll:Foundation.NSObject..cctor()
+Microsoft.tvOS.dll:Foundation.NSObject..ctor()
+Microsoft.tvOS.dll:Foundation.NSObject..ctor(Foundation.NSObjectFlag)
+Microsoft.tvOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSObject.AllocateData()
+Microsoft.tvOS.dll:Foundation.NSObject.AllocIfNeeded()
+Microsoft.tvOS.dll:Foundation.NSObject.ClearHandle()
+Microsoft.tvOS.dll:Foundation.NSObject.ConformsToProtocol(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSObject.CreateManagedRef(System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSObject.CreateNSObject(System.IntPtr, System.IntPtr, Foundation.NSObject/Flags)
+Microsoft.tvOS.dll:Foundation.NSObject.DangerousAutorelease()
+Microsoft.tvOS.dll:Foundation.NSObject.DangerousAutorelease(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSObject.DangerousRelease()
+Microsoft.tvOS.dll:Foundation.NSObject.DangerousRelease(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSObject.DangerousRetain()
+Microsoft.tvOS.dll:Foundation.NSObject.DangerousRetain(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSObject.Dispose()
+Microsoft.tvOS.dll:Foundation.NSObject.Dispose(System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSObject.Equals(Foundation.NSObject)
+Microsoft.tvOS.dll:Foundation.NSObject.Equals(System.Object)
+Microsoft.tvOS.dll:Foundation.NSObject.Finalize()
+Microsoft.tvOS.dll:Foundation.NSObject.get_ClassHandle()
+Microsoft.tvOS.dll:Foundation.NSObject.get_Description()
+Microsoft.tvOS.dll:Foundation.NSObject.get_disposed()
+Microsoft.tvOS.dll:Foundation.NSObject.get_flags()
+Microsoft.tvOS.dll:Foundation.NSObject.get_handle()
+Microsoft.tvOS.dll:Foundation.NSObject.get_Handle()
+Microsoft.tvOS.dll:Foundation.NSObject.get_InFinalizerQueue()
+Microsoft.tvOS.dll:Foundation.NSObject.get_IsDirectBinding()
+Microsoft.tvOS.dll:Foundation.NSObject.get_IsRegisteredToggleRef()
+Microsoft.tvOS.dll:Foundation.NSObject.get_SuperHandle()
+Microsoft.tvOS.dll:Foundation.NSObject.GetData()
+Microsoft.tvOS.dll:Foundation.NSObject.GetHashCode()
+Microsoft.tvOS.dll:Foundation.NSObject.GetNativeHash()
+Microsoft.tvOS.dll:Foundation.NSObject.GetSuper()
+Microsoft.tvOS.dll:Foundation.NSObject.Initialize()
+Microsoft.tvOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String, System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String)
+Microsoft.tvOS.dll:Foundation.NSObject.InitializeObject(System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSObject.IsEqual(Foundation.NSObject)
+Microsoft.tvOS.dll:Foundation.NSObject.RecreateDataHandle()
+Microsoft.tvOS.dll:Foundation.NSObject.ReleaseManagedRef()
+Microsoft.tvOS.dll:Foundation.NSObject.set_disposed(System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSObject.set_flags(Foundation.NSObject/Flags)
+Microsoft.tvOS.dll:Foundation.NSObject.set_handle(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSObject.set_Handle(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:Foundation.NSObject.set_HasManagedRef(System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSObject.set_IsDirectBinding(System.Boolean)
+Microsoft.tvOS.dll:Foundation.NSObject.ToString()
+Microsoft.tvOS.dll:Foundation.NSObject.xamarin_release_managed_ref(System.IntPtr, System.Byte)
+Microsoft.tvOS.dll:Foundation.NSObject.xamarin_set_gchandle_with_flags_safe(System.IntPtr, System.IntPtr, Foundation.NSObject/XamarinGCHandleFlags, System.IntPtr)
+Microsoft.tvOS.dll:Foundation.NSObject[] Foundation.NSDictionary::Keys()
+Microsoft.tvOS.dll:Foundation.NSObject[] Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap1
+Microsoft.tvOS.dll:Foundation.NSObject/Flags
+Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject::flags()
+Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::Disposed
+Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::HasManagedRef
+Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::InFinalizerQueue
+Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsCustomType
+Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::IsDirectBinding
+Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::NativeRef
+Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObject/Flags::RegisteredToggleRef
+Microsoft.tvOS.dll:Foundation.NSObject/Flags Foundation.NSObjectData::flags
+Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer
+Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer..cctor()
+Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer..ctor()
+Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
+Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.NSObject)
+Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
+Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
+Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
+Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_2670_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_2671_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags
+Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
+Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
+Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::None
+Microsoft.tvOS.dll:Foundation.NSObjectData
+Microsoft.tvOS.dll:Foundation.NSObjectData* Foundation.NSObject::__data_for_mono
+Microsoft.tvOS.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::Data()
+Microsoft.tvOS.dll:Foundation.NSObjectDataHandle
+Microsoft.tvOS.dll:Foundation.NSObjectDataHandle Foundation.NSObject::data_handle
+Microsoft.tvOS.dll:Foundation.NSObjectDataHandle..ctor()
+Microsoft.tvOS.dll:Foundation.NSObjectDataHandle..ctor(System.IntPtr)
+Microsoft.tvOS.dll:Foundation.NSObjectDataHandle.get_Data()
+Microsoft.tvOS.dll:Foundation.NSObjectDataHandle.get_IsInvalid()
+Microsoft.tvOS.dll:Foundation.NSObjectDataHandle.Invalidate()
+Microsoft.tvOS.dll:Foundation.NSObjectDataHandle.ReleaseHandle()
+Microsoft.tvOS.dll:Foundation.NSObjectFlag
+Microsoft.tvOS.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
+Microsoft.tvOS.dll:Foundation.ProtocolAttribute
+Microsoft.tvOS.dll:Foundation.ProtocolAttribute..ctor()
+Microsoft.tvOS.dll:Foundation.ProtocolAttribute.get_WrapperType()
+Microsoft.tvOS.dll:Foundation.RegisterAttribute
+Microsoft.tvOS.dll:Foundation.RegisterAttribute..ctor(System.String, System.Boolean)
+Microsoft.tvOS.dll:Foundation.RegisterAttribute..ctor(System.String)
+Microsoft.tvOS.dll:Foundation.RegisterAttribute.get_IsWrapper()
+Microsoft.tvOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method
+Microsoft.tvOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method..ctor()
+Microsoft.tvOS.dll:ObjCRuntime.__Registrar__
+Microsoft.tvOS.dll:ObjCRuntime.__Registrar__..ctor()
+Microsoft.tvOS.dll:ObjCRuntime.__Registrar__.ConstructINativeObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.__Registrar__.ConstructNSObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.__Registrar__.LookupType(System.UInt32)
+Microsoft.tvOS.dll:ObjCRuntime.__Registrar__.LookupTypeId(System.RuntimeTypeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.__Registrar__.LookupUnmanagedFunction(System.String, System.Int32)
+Microsoft.tvOS.dll:ObjCRuntime.__Registrar__.RegisterWrapperTypes(System.Collections.Generic.Dictionary`2<System.RuntimeTypeHandle,System.RuntimeTypeHandle>)
+Microsoft.tvOS.dll:ObjCRuntime.Arch
+Microsoft.tvOS.dll:ObjCRuntime.Arch ObjCRuntime.Arch::DEVICE
+Microsoft.tvOS.dll:ObjCRuntime.Arch ObjCRuntime.Arch::SIMULATOR
+Microsoft.tvOS.dll:ObjCRuntime.Arch ObjCRuntime.Runtime::Arch
+Microsoft.tvOS.dll:ObjCRuntime.ArgumentSemantic
+Microsoft.tvOS.dll:ObjCRuntime.ArgumentSemantic Foundation.ExportAttribute::semantic
+Microsoft.tvOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Assign
+Microsoft.tvOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Copy
+Microsoft.tvOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::None
+Microsoft.tvOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Retain
+Microsoft.tvOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Strong
+Microsoft.tvOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::UnsafeUnretained
+Microsoft.tvOS.dll:ObjCRuntime.ArgumentSemantic ObjCRuntime.ArgumentSemantic::Weak
+Microsoft.tvOS.dll:ObjCRuntime.BlockCollector
+Microsoft.tvOS.dll:ObjCRuntime.BlockCollector..ctor(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.BlockCollector.Add(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.BlockCollector.Finalize()
+Microsoft.tvOS.dll:ObjCRuntime.Class
+Microsoft.tvOS.dll:ObjCRuntime.Class._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Class..cctor()
+Microsoft.tvOS.dll:ObjCRuntime.Class..ctor(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Class..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Class..ctor(System.Type)
+Microsoft.tvOS.dll:ObjCRuntime.Class.class_getName(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Class.class_getSuperclass(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Class.CompareTokenReference(System.String, System.Int32, System.Int32, System.UInt32)
+Microsoft.tvOS.dll:ObjCRuntime.Class.Equals(ObjCRuntime.Class)
+Microsoft.tvOS.dll:ObjCRuntime.Class.Equals(System.Object)
+Microsoft.tvOS.dll:ObjCRuntime.Class.FindClass(System.Type, out System.Boolean&)
+Microsoft.tvOS.dll:ObjCRuntime.Class.FindMapIndex(ObjCRuntime.Runtime/MTClassMap*, System.Int32, System.Int32, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Class.FindType(ObjCRuntime.NativeHandle, out System.Boolean&)
+Microsoft.tvOS.dll:ObjCRuntime.Class.get_Handle()
+Microsoft.tvOS.dll:ObjCRuntime.Class.get_Name()
+Microsoft.tvOS.dll:ObjCRuntime.Class.GetAssemblyName(System.Reflection.Assembly)
+Microsoft.tvOS.dll:ObjCRuntime.Class.GetClassForObject(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Class.GetClassHandle(System.Type, System.Boolean, out System.Boolean&)
+Microsoft.tvOS.dll:ObjCRuntime.Class.GetClassName(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Class.GetHandle(System.String)
+Microsoft.tvOS.dll:ObjCRuntime.Class.GetHandle(System.Type)
+Microsoft.tvOS.dll:ObjCRuntime.Class.GetHashCode()
+Microsoft.tvOS.dll:ObjCRuntime.Class.Initialize(ObjCRuntime.Runtime/InitializationOptions*)
+Microsoft.tvOS.dll:ObjCRuntime.Class.Lookup(System.IntPtr, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Class.Lookup(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Class.objc_getClass(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Class.objc_getClass(System.String)
+Microsoft.tvOS.dll:ObjCRuntime.Class.object_getClass(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Class.ResolveAssembly(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Class.ResolveFullTokenReference(System.UInt32)
+Microsoft.tvOS.dll:ObjCRuntime.Class.ResolveMethodTokenReference(System.UInt32)
+Microsoft.tvOS.dll:ObjCRuntime.Class.ResolveModule(System.Reflection.Assembly, System.UInt32)
+Microsoft.tvOS.dll:ObjCRuntime.Class.ResolveToken(System.Reflection.Assembly, System.Reflection.Module, System.UInt32)
+Microsoft.tvOS.dll:ObjCRuntime.Class.ResolveTokenReference(System.UInt32, System.UInt32)
+Microsoft.tvOS.dll:ObjCRuntime.Class.ResolveTypeTokenReference(System.UInt32)
+Microsoft.tvOS.dll:ObjCRuntime.Class.TryGetClass(System.IntPtr, out System.IntPtr&, out System.String&)
+Microsoft.tvOS.dll:ObjCRuntime.Class.TryResolveAssembly(System.IntPtr, out System.Reflection.Assembly&)
+Microsoft.tvOS.dll:ObjCRuntime.DisposableObject
+Microsoft.tvOS.dll:ObjCRuntime.DisposableObject..ctor(ObjCRuntime.NativeHandle, System.Boolean, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.DisposableObject.Dispose()
+Microsoft.tvOS.dll:ObjCRuntime.DisposableObject.Dispose(System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.DisposableObject.Equals(System.Object)
+Microsoft.tvOS.dll:ObjCRuntime.DisposableObject.Finalize()
+Microsoft.tvOS.dll:ObjCRuntime.DisposableObject.get_Handle()
+Microsoft.tvOS.dll:ObjCRuntime.DisposableObject.GetCheckedHandle()
+Microsoft.tvOS.dll:ObjCRuntime.DisposableObject.GetHashCode()
+Microsoft.tvOS.dll:ObjCRuntime.DisposableObject.InitializeHandle(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn._dlopen(System.IntPtr, ObjCRuntime.Dlfcn/Mode)
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn._dlopen(System.String, ObjCRuntime.Dlfcn/Mode)
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn.dlsym(System.IntPtr, System.String)
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn.GetIntPtr(System.IntPtr, System.String)
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn/Mode
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::First
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::Global
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::Lazy
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::Local
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::NoDelete
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::NoLoad
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::None
+Microsoft.tvOS.dll:ObjCRuntime.Dlfcn/Mode ObjCRuntime.Dlfcn/Mode::Now
+Microsoft.tvOS.dll:ObjCRuntime.ErrorHelper
+Microsoft.tvOS.dll:ObjCRuntime.ErrorHelper.CreateError(System.Int32, System.Exception, System.String, System.Object[])
+Microsoft.tvOS.dll:ObjCRuntime.ErrorHelper.CreateError(System.Int32, System.String, System.Object[])
+Microsoft.tvOS.dll:ObjCRuntime.Extensions
+Microsoft.tvOS.dll:ObjCRuntime.Extensions.AsByte(System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.IManagedRegistrar
+Microsoft.tvOS.dll:ObjCRuntime.IManagedRegistrar ObjCRuntime.RegistrarHelper/MapInfo::Registrar
+Microsoft.tvOS.dll:ObjCRuntime.IManagedRegistrar.ConstructINativeObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.IManagedRegistrar.ConstructNSObject(System.RuntimeTypeHandle, ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.IManagedRegistrar.LookupType(System.UInt32)
+Microsoft.tvOS.dll:ObjCRuntime.IManagedRegistrar.LookupTypeId(System.RuntimeTypeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.IManagedRegistrar.LookupUnmanagedFunction(System.String, System.Int32)
+Microsoft.tvOS.dll:ObjCRuntime.IManagedRegistrar.RegisterWrapperTypes(System.Collections.Generic.Dictionary`2<System.RuntimeTypeHandle,System.RuntimeTypeHandle>)
+Microsoft.tvOS.dll:ObjCRuntime.INativeObject
+Microsoft.tvOS.dll:ObjCRuntime.INativeObject._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.INativeObject.get_Handle()
+Microsoft.tvOS.dll:ObjCRuntime.IntPtrEqualityComparer
+Microsoft.tvOS.dll:ObjCRuntime.IntPtrEqualityComparer ObjCRuntime.Runtime::IntPtrEqualityComparer
+Microsoft.tvOS.dll:ObjCRuntime.IntPtrEqualityComparer..ctor()
+Microsoft.tvOS.dll:ObjCRuntime.IntPtrEqualityComparer.Equals(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.IntPtrEqualityComparer.GetHashCode(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Libraries
+Microsoft.tvOS.dll:ObjCRuntime.Libraries/CoreFoundation
+Microsoft.tvOS.dll:ObjCRuntime.Libraries/CoreFoundation..cctor()
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionEventArgs
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionEventArgs..ctor(System.Exception, ObjCRuntime.MarshalManagedExceptionMode)
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionEventArgs.get_ExceptionMode()
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionEventArgs.set_Exception(System.Exception)
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionEventArgs.set_ExceptionMode(ObjCRuntime.MarshalManagedExceptionMode)
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionHandler
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionHandler ObjCRuntime.Runtime::MarshalManagedException
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionHandler..ctor(System.Object, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionHandler.Invoke(System.Object, ObjCRuntime.MarshalManagedExceptionEventArgs)
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionMode
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionEventArgs::<ExceptionMode>k__BackingField
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionEventArgs::ExceptionMode()
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionMode::Abort
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionMode::Default
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionMode::Disable
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionMode::ThrowObjectiveCException
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.MarshalManagedExceptionMode::UnwindNativeCode
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.Runtime::managed_exception_mode
+Microsoft.tvOS.dll:ObjCRuntime.MarshalManagedExceptionMode ObjCRuntime.Runtime/InitializationOptions::MarshalManagedExceptionMode
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionEventArgs
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionEventArgs..ctor(Foundation.NSException, ObjCRuntime.MarshalObjectiveCExceptionMode)
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionEventArgs.get_ExceptionMode()
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionEventArgs.set_Exception(Foundation.NSException)
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionEventArgs.set_ExceptionMode(ObjCRuntime.MarshalObjectiveCExceptionMode)
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionHandler
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionHandler ObjCRuntime.Runtime::MarshalObjectiveCException
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionHandler..ctor(System.Object, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionHandler.Invoke(System.Object, ObjCRuntime.MarshalObjectiveCExceptionEventArgs)
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionEventArgs::<ExceptionMode>k__BackingField
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionEventArgs::ExceptionMode()
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionMode::Abort
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionMode::Default
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionMode::Disable
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionMode::ThrowManagedException
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.MarshalObjectiveCExceptionMode::UnwindManagedCode
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.Runtime::objc_exception_mode
+Microsoft.tvOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.Runtime/InitializationOptions::MarshalObjectiveCExceptionMode
+Microsoft.tvOS.dll:ObjCRuntime.Messaging
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.bool_objc_msgSend_IntPtr(System.IntPtr, System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.bool_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_IntPtr(System.IntPtr, System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.CGRect_objc_msgSend(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSend(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend_CGRect(System.IntPtr, System.IntPtr, CoreGraphics.CGRect)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSend(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle, System.Byte)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_UIntPtr(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle, System.UIntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Messaging.void_objc_msgSend(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.NativeAttribute
+Microsoft.tvOS.dll:ObjCRuntime.NativeAttribute..ctor()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle CoreFoundation.CFArray::CFNullHandle
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSAutoreleasePool::class_ptr
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSAutoreleasePool::ClassHandle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSDictionary::class_ptr
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSDictionary::ClassHandle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSException::class_ptr
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSException::ClassHandle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::class_ptr
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::ClassHandle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::handle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::Handle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::SuperHandle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::classHandle
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::handle
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::handle
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::Handle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::handle
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::Handle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.INativeObject::Handle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.NativeHandle::Zero
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Runtime/ClassHandles::unused
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::handle
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::Handle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIApplication::class_ptr
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIApplication::ClassHandle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIButton::class_ptr
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIButton::ClassHandle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIControl::class_ptr
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIControl::ClassHandle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIResponder::class_ptr
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIResponder::ClassHandle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIScreen::class_ptr
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIScreen::ClassHandle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIView::class_ptr
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIView::ClassHandle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIViewController::class_ptr
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIViewController::ClassHandle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIWindow::class_ptr
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle UIKit.UIWindow::ClassHandle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle..ctor(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.Equals(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.Equals(System.Object)
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.get_Handle()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.GetHashCode()
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Equality(ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Equality(ObjCRuntime.NativeHandle, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Implicit(ObjCRuntime.NativeHandle) => System.IntPtr
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Implicit(System.IntPtr) => ObjCRuntime.NativeHandle
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Inequality(ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Inequality(ObjCRuntime.NativeHandle, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.ToString()
+Microsoft.tvOS.dll:ObjCRuntime.NativeObjectExtensions
+Microsoft.tvOS.dll:ObjCRuntime.NativeObjectExtensions.GetHandle(ObjCRuntime.INativeObject)
+Microsoft.tvOS.dll:ObjCRuntime.NativeObjectExtensions.GetNonNullHandle(ObjCRuntime.INativeObject, System.String)
+Microsoft.tvOS.dll:ObjCRuntime.ObjCException
+Microsoft.tvOS.dll:ObjCRuntime.ObjCException..ctor(Foundation.NSException)
+Microsoft.tvOS.dll:ObjCRuntime.ObjCException.AppendNativeStackTrace(System.Text.StringBuilder)
+Microsoft.tvOS.dll:ObjCRuntime.ObjCException.get_Message()
+Microsoft.tvOS.dll:ObjCRuntime.ObjCException.get_Name()
+Microsoft.tvOS.dll:ObjCRuntime.ObjCException.get_NSException()
+Microsoft.tvOS.dll:ObjCRuntime.ObjCException.get_Reason()
+Microsoft.tvOS.dll:ObjCRuntime.ObjCException.ToString()
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.ConstructINativeObject`1(System.Type, ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.ConstructNSObject`1(System.Type, ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.FindProtocolWrapperType(System.Type)
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.Reflection.Assembly)
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.String)
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.Initialize()
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.LookupRegisteredType(System.Reflection.Assembly, System.UInt32)
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.LookupRegisteredTypeId(System.Type)
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunction(System.IntPtr, System.String, System.Int32)
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunctionInAssembly(System.IntPtr, System.String, System.Int32)
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.Register(ObjCRuntime.IManagedRegistrar)
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper.TryGetMapEntry(System.String, out ObjCRuntime.RegistrarHelper/MapInfo&)
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper/MapInfo
+Microsoft.tvOS.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManagedRegistrar)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime
+Microsoft.tvOS.dll:ObjCRuntime.Runtime..cctor()
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|287_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|286_0`1(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.attempt_retain_nsobject(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.AttemptRetainNSObject(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.CannotCreateManagedInstanceOfGenericType(System.IntPtr, System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.ConstructINativeObject`1(System.IntPtr, System.Boolean, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.ConstructNSObject(System.IntPtr, System.IntPtr, ObjCRuntime.Runtime/MissingCtorResolution)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.ConstructNSObject`1(System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.ConstructNSObject`1(System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.create_block_proxy(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.create_ns_exception(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.create_nsobject(System.IntPtr, System.IntPtr, Foundation.NSObject/Flags, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.create_product_exception_for_error(System.Int32, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.create_runtime_exception(System.Int32, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.CreateBlockProxy(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.CreateBlockProxy(System.Reflection.MethodInfo, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.CreateNSException(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.CreateNSObject(System.IntPtr, System.IntPtr, Foundation.NSObject/Flags)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.CreateProductException(System.Int32, System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.CreateRuntimeException(System.Int32, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.dispose(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.Dispose(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.FindProtocolWrapperType(System.Type)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.gc_collect(System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GCCollect()
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.get_class(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.get_exception_message(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.get_handle_for_inativeobject(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.get_inative_object_dynamic(System.IntPtr, System.SByte, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.get_inative_object_static(System.IntPtr, System.SByte, System.UInt32, System.UInt32, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.get_method_from_token(System.UInt32, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.get_nsobject_with_type(System.IntPtr, System.IntPtr, System.Int32*, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.get_object_type_fullname(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.get_selector(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetClass(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetExceptionMessage(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetGCHandleTarget(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetHandleForINativeObject(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetINativeObject_Dynamic(System.IntPtr, System.SByte, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetINativeObject_Static(System.IntPtr, System.SByte, System.UInt32, System.UInt32)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetINativeObject(System.IntPtr, System.Boolean, System.Type, System.Type, System.IntPtr, System.RuntimeMethodHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetINativeObject(System.IntPtr, System.Boolean, System.Type, System.Type)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetINativeObject`1(System.IntPtr, System.Boolean, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetINativeObject`1(System.IntPtr, System.Boolean, System.Type, System.Boolean, System.IntPtr, System.RuntimeMethodHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetINativeObject`1(System.IntPtr, System.Boolean, System.Type, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetMethodFromToken(System.UInt32)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetNSObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr, ObjCRuntime.Runtime/MissingCtorResolution, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr, System.Boolean, ObjCRuntime.Runtime/MissingCtorResolution, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.Boolean, System.Boolean, out System.Boolean&)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetNSObject(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr, System.IntPtr, System.RuntimeMethodHandle, System.Boolean, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr, System.IntPtr, System.RuntimeMethodHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetNSObject`1(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetNSObjectWithType(System.IntPtr, System.IntPtr, System.Int32*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetObjectTypeFullName(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.GetSelector(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.has_nsobject(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.HasNSObject(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.Initialize(ObjCRuntime.Runtime/InitializationOptions*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.InitializePlatform(ObjCRuntime.Runtime/InitializationOptions*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.invoke_conforms_to_protocol(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.InvokeConformsToProtocol(System.IntPtr, System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.lookup_managed_type_name(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.lookup_unmanaged_function(System.IntPtr, System.IntPtr, System.Int32, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.LookupINativeObjectImplementation(System.IntPtr, System.Type, System.Type, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.LookupManagedTypeName(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.LookupUnmanagedFunction(System.IntPtr, System.IntPtr, System.Int32)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.MissingCtor(System.IntPtr, System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.NativeObjectHasDied(System.IntPtr, Foundation.NSObject)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.NSLog(System.String)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.on_marshal_managed_exception(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.on_marshal_objectivec_exception(System.IntPtr, System.SByte, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.OnMarshalManagedException(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.OnMarshalObjectiveCException(System.IntPtr, System.SByte)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.print_all_exceptions_wrapper(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.PrintAllExceptions(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.PrintException(System.Exception, System.Boolean, System.Text.StringBuilder)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.reflection_type_get_full_name(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.RegisterDelegates(ObjCRuntime.Runtime/InitializationOptions*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.RegisterNSObject(Foundation.NSObject, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.ReleaseBlockOnMainThread(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.ReleaseBlockWhenDelegateIsCollected(System.IntPtr, System.Delegate)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.retain_nativeobject(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.RetainNativeObject(ObjCRuntime.INativeObject)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.RetainNativeObject(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.RetainNSObject(Foundation.NSObject)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.rethrow_managed_exception(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.RethrowManagedException(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.SafeInitialize(ObjCRuntime.Runtime/InitializationOptions*, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.SlowIsUserType(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.StringEquals(System.IntPtr, System.String)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.throw_ns_exception(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.ThrowException(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.ThrowNSException(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.try_get_or_construct_nsobject(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.TryGetIsUserType(System.IntPtr, out System.Boolean&, out System.String&)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.TryGetNSObject(System.IntPtr, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.TryGetOrConstructNSObjectWrapped(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.TryReleaseINativeObject(ObjCRuntime.INativeObject)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.TypeGetFullName(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.unregister_nsobject(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.UnregisterNSObject(System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.UnregisterNSObject(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.unwrap_ns_exception(System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.UnwrapNSException(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.write(System.Int32, System.Byte[], System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.xamarin_is_user_type(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime.xamarin_log(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/ClassHandles
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/ClassHandles.InitializeClassHandles(System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/ClassHandles.SetHandle(System.Int32, ObjCRuntime.NativeHandle*, System.IntPtr*)
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/Delegates
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/Delegates* ObjCRuntime.Runtime/InitializationOptions::Delegates
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationFlags
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsCoreCLR
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsManagedStaticRegistrar
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsNativeAOT
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsPartialStaticRegistrar
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsSimulator
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationOptions::Flags
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationOptions
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/InitializationOptions* ObjCRuntime.Runtime::options
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MissingCtorResolution
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MissingCtorResolution ObjCRuntime.Runtime/MissingCtorResolution::Ignore
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MissingCtorResolution ObjCRuntime.Runtime/MissingCtorResolution::ThrowConstructor1NotFound
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MissingCtorResolution ObjCRuntime.Runtime/MissingCtorResolution::ThrowConstructor2NotFound
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTAssembly
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTAssembly* ObjCRuntime.Runtime/MTRegistrationMap::assemblies
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTClassMap
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTClassMap* ObjCRuntime.Runtime/MTRegistrationMap::map
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTFullTokenReference
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTFullTokenReference* ObjCRuntime.Runtime/MTRegistrationMap::full_token_references
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTManagedClassMap
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTManagedClassMap* ObjCRuntime.Runtime/MTRegistrationMap::skipped_map
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTProtocolMap
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTProtocolMap ObjCRuntime.Runtime/MTRegistrationMap::protocol_map
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTProtocolWrapperMap
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTProtocolWrapperMap* ObjCRuntime.Runtime/MTRegistrationMap::protocol_wrapper_map
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTRegistrationMap
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTRegistrationMap* ObjCRuntime.Runtime/InitializationOptions::RegistrationMap
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTTypeFlags
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTTypeFlags ObjCRuntime.Runtime/MTClassMap::flags
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTTypeFlags ObjCRuntime.Runtime/MTTypeFlags::CustomType
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTTypeFlags ObjCRuntime.Runtime/MTTypeFlags::None
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/MTTypeFlags ObjCRuntime.Runtime/MTTypeFlags::UserType
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/Trampolines
+Microsoft.tvOS.dll:ObjCRuntime.Runtime/Trampolines* ObjCRuntime.Runtime/InitializationOptions::Trampolines
+Microsoft.tvOS.dll:ObjCRuntime.RuntimeException
+Microsoft.tvOS.dll:ObjCRuntime.RuntimeException..ctor(System.Int32, System.Boolean, System.Exception, System.String, System.Object[])
+Microsoft.tvOS.dll:ObjCRuntime.RuntimeException.set_Code(System.Int32)
+Microsoft.tvOS.dll:ObjCRuntime.RuntimeException.set_Error(System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer
+Microsoft.tvOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer ObjCRuntime.RegistrarHelper::RuntimeTypeHandleEqualityComparer
+Microsoft.tvOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer..ctor()
+Microsoft.tvOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer.Equals(System.RuntimeTypeHandle, System.RuntimeTypeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer.GetHashCode(System.RuntimeTypeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Selector
+Microsoft.tvOS.dll:ObjCRuntime.Selector._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Selector..ctor(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Selector..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:ObjCRuntime.Selector.Equals(ObjCRuntime.Selector)
+Microsoft.tvOS.dll:ObjCRuntime.Selector.Equals(System.Object)
+Microsoft.tvOS.dll:ObjCRuntime.Selector.get_Handle()
+Microsoft.tvOS.dll:ObjCRuntime.Selector.GetHandle(System.String)
+Microsoft.tvOS.dll:ObjCRuntime.Selector.GetHashCode()
+Microsoft.tvOS.dll:ObjCRuntime.Selector.GetName(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Selector.sel_getName(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Selector.sel_isMapped(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.Selector.sel_registerName(System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.StringEqualityComparer
+Microsoft.tvOS.dll:ObjCRuntime.StringEqualityComparer ObjCRuntime.RegistrarHelper::StringEqualityComparer
+Microsoft.tvOS.dll:ObjCRuntime.StringEqualityComparer..ctor()
+Microsoft.tvOS.dll:ObjCRuntime.StringEqualityComparer.Equals(System.String, System.String)
+Microsoft.tvOS.dll:ObjCRuntime.StringEqualityComparer.GetHashCode(System.String)
+Microsoft.tvOS.dll:ObjCRuntime.ThrowHelper
+Microsoft.tvOS.dll:ObjCRuntime.ThrowHelper.ThrowArgumentException(System.String, System.String)
+Microsoft.tvOS.dll:ObjCRuntime.ThrowHelper.ThrowArgumentNullException(System.String)
+Microsoft.tvOS.dll:ObjCRuntime.ThrowHelper.ThrowObjectDisposedException(System.Object)
+Microsoft.tvOS.dll:ObjCRuntime.TransientCFString
+Microsoft.tvOS.dll:ObjCRuntime.TransientCFString..ctor(System.String)
+Microsoft.tvOS.dll:ObjCRuntime.TransientCFString.Dispose()
+Microsoft.tvOS.dll:ObjCRuntime.TransientCFString.op_Implicit(ObjCRuntime.TransientCFString) => System.IntPtr
+Microsoft.tvOS.dll:ObjCRuntime.TransientString
+Microsoft.tvOS.dll:ObjCRuntime.TransientString..ctor(System.String, ObjCRuntime.TransientString/Encoding)
+Microsoft.tvOS.dll:ObjCRuntime.TransientString.AllocStringArray(System.String[], ObjCRuntime.TransientString/Encoding)
+Microsoft.tvOS.dll:ObjCRuntime.TransientString.Dispose()
+Microsoft.tvOS.dll:ObjCRuntime.TransientString.FreeStringArray(System.IntPtr, System.Int32)
+Microsoft.tvOS.dll:ObjCRuntime.TransientString.op_Implicit(ObjCRuntime.TransientString) => System.IntPtr
+Microsoft.tvOS.dll:ObjCRuntime.TransientString/Encoding
+Microsoft.tvOS.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::Ansi
+Microsoft.tvOS.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::Auto
+Microsoft.tvOS.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::BStr
+Microsoft.tvOS.dll:ObjCRuntime.TransientString/Encoding ObjCRuntime.TransientString/Encoding::Unicode
+Microsoft.tvOS.dll:ObjCRuntime.TypeEqualityComparer
+Microsoft.tvOS.dll:ObjCRuntime.TypeEqualityComparer ObjCRuntime.Runtime::TypeEqualityComparer
+Microsoft.tvOS.dll:ObjCRuntime.TypeEqualityComparer..ctor()
+Microsoft.tvOS.dll:ObjCRuntime.TypeEqualityComparer.Equals(System.Type, System.Type)
+Microsoft.tvOS.dll:ObjCRuntime.TypeEqualityComparer.GetHashCode(System.Type)
+Microsoft.tvOS.dll:ObjCRuntime.UInt64EqualityComparer
+Microsoft.tvOS.dll:ObjCRuntime.UInt64EqualityComparer ObjCRuntime.Runtime::UInt64EqualityComparer
+Microsoft.tvOS.dll:ObjCRuntime.UInt64EqualityComparer..ctor()
+Microsoft.tvOS.dll:ObjCRuntime.UInt64EqualityComparer.Equals(System.UInt64, System.UInt64)
+Microsoft.tvOS.dll:ObjCRuntime.UInt64EqualityComparer.GetHashCode(System.UInt64)
+Microsoft.tvOS.dll:System.Boolean Foundation.NSObject::disposed()
+Microsoft.tvOS.dll:System.Boolean Foundation.NSObject::HasManagedRef()
+Microsoft.tvOS.dll:System.Boolean Foundation.NSObject::InFinalizerQueue()
+Microsoft.tvOS.dll:System.Boolean Foundation.NSObject::IsDirectBinding()
+Microsoft.tvOS.dll:System.Boolean Foundation.NSObject::IsRegisteredToggleRef()
+Microsoft.tvOS.dll:System.Boolean Foundation.NSObject/NSObject_Disposer::draining
+Microsoft.tvOS.dll:System.Boolean Foundation.NSObjectDataHandle::invalidated
+Microsoft.tvOS.dll:System.Boolean Foundation.NSObjectDataHandle::IsInvalid()
+Microsoft.tvOS.dll:System.Boolean Foundation.ProtocolAttribute::<BackwardsCompatibleCodeGeneration>k__BackingField
+Microsoft.tvOS.dll:System.Boolean Foundation.RegisterAttribute::is_wrapper
+Microsoft.tvOS.dll:System.Boolean Foundation.RegisterAttribute::IsWrapper()
+Microsoft.tvOS.dll:System.Boolean ObjCRuntime.Class::ThrowOnInitFailure
+Microsoft.tvOS.dll:System.Boolean ObjCRuntime.DisposableObject::owns
+Microsoft.tvOS.dll:System.Boolean ObjCRuntime.RegistrarHelper/MapInfo::RegisteredWrapperTypes
+Microsoft.tvOS.dll:System.Boolean ObjCRuntime.Runtime::initialized
+Microsoft.tvOS.dll:System.Boolean ObjCRuntime.Runtime::IsARM64CallingConvention
+Microsoft.tvOS.dll:System.Boolean ObjCRuntime.RuntimeException::<Error>k__BackingField
+Microsoft.tvOS.dll:System.Boolean ObjCRuntime.RuntimeException::Error()
+Microsoft.tvOS.dll:System.Boolean UIKit.UIApplication::CheckForEventAndDelegateMismatches
+Microsoft.tvOS.dll:System.Boolean UIKit.UIApplication::CheckForIllegalCrossThreadCalls
+Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.IntPtr,System.Boolean> ObjCRuntime.Runtime::usertype_cache
+Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.IntPtr,System.Runtime.InteropServices.GCHandle> ObjCRuntime.Runtime::object_map
+Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.RuntimeTypeHandle,System.RuntimeTypeHandle> ObjCRuntime.RegistrarHelper::wrapper_types
+Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.String,ObjCRuntime.RegistrarHelper/MapInfo> ObjCRuntime.RegistrarHelper::assembly_map
+Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.IntPtr> ObjCRuntime.Class::type_to_class
+Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_bool_ctor_cache
+Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_ctor_cache
+Microsoft.tvOS.dll:System.Collections.Generic.Dictionary`2<System.UInt64,System.Reflection.MemberInfo> ObjCRuntime.Class::token_to_member
+Microsoft.tvOS.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::<>2__current
+Microsoft.tvOS.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Current()
+Microsoft.tvOS.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::drainList1
+Microsoft.tvOS.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::drainList2
+Microsoft.tvOS.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::handles
+Microsoft.tvOS.dll:System.Collections.Generic.List`1<System.Object> ObjCRuntime.Runtime::delegates
+Microsoft.tvOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::<Exception>k__BackingField
+Microsoft.tvOS.dll:System.Exception ObjCRuntime.MarshalManagedExceptionEventArgs::Exception()
+Microsoft.tvOS.dll:System.Func`2<ObjCRuntime.NativeHandle,System.String> CoreFoundation.CFArray/<>O::<0>__FromHandle
+Microsoft.tvOS.dll:System.Func`2<ObjCRuntime.NativeHandle,T> CoreFoundation.CFArray/<ArrayFromHandle>O__25_0`1::<0>__DefaultConvert
+Microsoft.tvOS.dll:System.Int32 Foundation.NSDictionary::System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Count()
+Microsoft.tvOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>1__state
+Microsoft.tvOS.dll:System.Int32 Foundation.NSDictionary/<GetEnumerator>d__66::<>7__wrap2
+Microsoft.tvOS.dll:System.Int32 Foundation.NSObjectFlag::value__
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.Arch::value__
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.ArgumentSemantic::value__
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.BlockCollector::count
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.Dlfcn/Mode::value__
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.MarshalManagedExceptionMode::value__
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.MarshalObjectiveCExceptionMode::value__
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.Runtime/InitializationFlags::value__
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.Runtime/InitializationOptions::Size
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.Runtime/MissingCtorResolution::value__
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::assembly_count
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::full_token_reference_count
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::map_count
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::protocol_count
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::protocol_wrapper_count
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.Runtime/MTRegistrationMap::skipped_map_count
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.RuntimeException::<Code>k__BackingField
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.RuntimeException::Code()
+Microsoft.tvOS.dll:System.Int32 ObjCRuntime.TransientString/Encoding::value__
+Microsoft.tvOS.dll:System.IntPtr CoreFoundation.CFArray::_CFNullHandle()
+Microsoft.tvOS.dll:System.IntPtr CoreFoundation.CFRange::len
+Microsoft.tvOS.dll:System.IntPtr CoreFoundation.CFRange::loc
+Microsoft.tvOS.dll:System.IntPtr Foundation.NSObject/NSObject_Disposer::class_ptr
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.BlockCollector::block
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Libraries/CoreFoundation::Handle
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.NativeHandle::handle
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.NativeHandle::Handle()
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime::NSObjectClass
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::array_get
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::array_setref
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::attempt_retain_nsobject
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_box
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_class_get_name
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_class_get_namespace
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_create_array
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_create_exception
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_create_gchandle
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_free_gchandle
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_array_length
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_assembly_location
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_assembly_name
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_element_class
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_enum_basetype
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_method_declaring_type
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_method_full_name
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_monoobject
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_get_nullable_element_type
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_is_byref
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_is_class_of_type
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_is_delegate
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_is_enum
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_is_nullable
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_is_valuetype
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_isinstance
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_lookup_class
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_method_get_signature
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_mono_hash_table_create
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_mono_hash_table_insert
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_mono_hash_table_lookup
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_new_string
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_object_get_type
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_raise_appdomain_unhandled_exception_event
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_runtime_invoke_method
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_set_array_struct_value
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_set_pending_exception
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_sizeof
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_string_to_utf8
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::bridge_type_to_class
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::convert_nsstring_to_smart_enum
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::convert_smart_enum_to_nsstring
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::create_block_proxy
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::create_delegate_proxy
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::create_ns_exception
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::create_nsobject
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::create_product_exception_for_error
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::create_runtime_exception
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::dispose
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::find_assembly
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::gc_collect
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_block_wrapper_creator
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_class
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_exception_message
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_flags_for_nsobject
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_generic_method_from_token
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_handle_for_inativeobject
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_inative_object_dynamic
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_inative_object_static
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_method_and_object_for_selector
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_method_for_selector
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_method_from_token
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_nsobject_with_type
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_object_type_fullname
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::get_selector
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::has_nsobject
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::invoke_conforms_to_protocol
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::is_parameter_out
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::is_parameter_transient
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::lookup_managed_type_name
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::lookup_unmanaged_function
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::on_marshal_managed_exception
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::on_marshal_objectivec_exception
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::print_all_exceptions_wrapper
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::reflection_type_get_full_name
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::register_assembly
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::register_entry_assembly
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::retain_nativeobject
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::rethrow_managed_exception
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::set_flags_for_nsobject
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::throw_ns_exception
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::try_get_or_construct_nsobject
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::unregister_nsobject
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Delegates::unwrap_ns_exception
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::AssemblyLocations
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::reference_tracking_begin_end_callback
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::reference_tracking_is_referenced_callback
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::reference_tracking_tracked_object_entered_finalization
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::unhandled_exception_handler
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::xamarin_objc_msgsend
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::xamarin_objc_msgsend_stret
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::xamarin_objc_msgsend_super
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/InitializationOptions::xamarin_objc_msgsend_super_stret
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/MTAssembly::mvid
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/MTAssembly::name
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/MTClassMap::handle
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/MTRegistrationMap::product_hash
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::ctor_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::fpret_double_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::fpret_single_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::get_gchandle_flags_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::get_gchandle_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::get_nsobject_data_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::long_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::release_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::retain_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::retainWeakReference_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::set_gchandle_flags_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::set_gchandle_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::static_fpret_double_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::static_fpret_single_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::static_long_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::static_stret_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::static_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::stret_tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Runtime/Trampolines::tramp
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.TransientCFString::ptr
+Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.TransientString::ptr
+Microsoft.tvOS.dll:System.IntPtr* ObjCRuntime.Runtime/MTProtocolMap::protocols
+Microsoft.tvOS.dll:System.IntPtr* ObjCRuntime.Runtime/MTRegistrationMap::classHandles
+Microsoft.tvOS.dll:System.Object Foundation.NSObject/NSObject_Disposer::lock_obj
+Microsoft.tvOS.dll:System.Object ObjCRuntime.Runtime::lock_obj
+Microsoft.tvOS.dll:System.Reflection.Assembly Foundation.NSObject::PlatformAssembly
+Microsoft.tvOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Delegate,ObjCRuntime.BlockCollector> ObjCRuntime.Runtime::block_lifetime_table
+Microsoft.tvOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Reflection.Assembly,System.String> ObjCRuntime.Class::assembly_to_name
+Microsoft.tvOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::height
+Microsoft.tvOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::width
+Microsoft.tvOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::x
+Microsoft.tvOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::y
+Microsoft.tvOS.dll:System.String CoreFoundation.CFString::str
+Microsoft.tvOS.dll:System.String Foundation.ExportAttribute::selector
+Microsoft.tvOS.dll:System.String Foundation.NSException::Name()
+Microsoft.tvOS.dll:System.String Foundation.NSException::Reason()
+Microsoft.tvOS.dll:System.String Foundation.NSObject::Description()
+Microsoft.tvOS.dll:System.String Foundation.RegisterAttribute::name
+Microsoft.tvOS.dll:System.String ObjCRuntime.Class::Name()
+Microsoft.tvOS.dll:System.String ObjCRuntime.ObjCException::Message()
+Microsoft.tvOS.dll:System.String ObjCRuntime.ObjCException::Name()
+Microsoft.tvOS.dll:System.String ObjCRuntime.ObjCException::Reason()
+Microsoft.tvOS.dll:System.String[] Foundation.NSException::CallStackSymbols()
+Microsoft.tvOS.dll:System.Threading.Thread UIKit.UIApplication::mainThread
+Microsoft.tvOS.dll:System.Type Foundation.ProtocolAttribute::<WrapperType>k__BackingField
+Microsoft.tvOS.dll:System.Type Foundation.ProtocolAttribute::WrapperType()
+Microsoft.tvOS.dll:System.Type[] ObjCRuntime.Class::class_to_type
+Microsoft.tvOS.dll:System.UInt32 Foundation.NSObject/Flags::value__
+Microsoft.tvOS.dll:System.UInt32 Foundation.NSObject/XamarinGCHandleFlags::value__
+Microsoft.tvOS.dll:System.UInt32 ObjCRuntime.Runtime/MTClassMap::type_reference
+Microsoft.tvOS.dll:System.UInt32 ObjCRuntime.Runtime/MTFullTokenReference::assembly_index
+Microsoft.tvOS.dll:System.UInt32 ObjCRuntime.Runtime/MTFullTokenReference::module_token
+Microsoft.tvOS.dll:System.UInt32 ObjCRuntime.Runtime/MTFullTokenReference::token
+Microsoft.tvOS.dll:System.UInt32 ObjCRuntime.Runtime/MTManagedClassMap::actual_reference
+Microsoft.tvOS.dll:System.UInt32 ObjCRuntime.Runtime/MTManagedClassMap::skipped_reference
+Microsoft.tvOS.dll:System.UInt32 ObjCRuntime.Runtime/MTProtocolWrapperMap::protocol_token
+Microsoft.tvOS.dll:System.UInt32 ObjCRuntime.Runtime/MTProtocolWrapperMap::wrapper_token
+Microsoft.tvOS.dll:System.UInt32 ObjCRuntime.Runtime/MTTypeFlags::value__
+Microsoft.tvOS.dll:System.UInt32* ObjCRuntime.Runtime/MTProtocolMap::protocol_tokens
+Microsoft.tvOS.dll:System.UInt64 UIKit.UIControlState::value__
+Microsoft.tvOS.dll:System.UIntPtr Foundation.NSDictionary::Count()
+Microsoft.tvOS.dll:UIKit.UIApplication
+Microsoft.tvOS.dll:UIKit.UIApplication._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIApplication._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIApplication..cctor()
+Microsoft.tvOS.dll:UIKit.UIApplication..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIApplication.Dispose(System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIApplication.get_ClassHandle()
+Microsoft.tvOS.dll:UIKit.UIApplication.Initialize()
+Microsoft.tvOS.dll:UIKit.UIApplication.Main(System.String[], System.Type, System.Type)
+Microsoft.tvOS.dll:UIKit.UIApplication.UIApplicationMain(System.Int32, System.String[], System.IntPtr, System.IntPtr)
+Microsoft.tvOS.dll:UIKit.UIApplication.xamarin_UIApplicationMain(System.Int32, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:UIKit.UIApplicationDelegate
+Microsoft.tvOS.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIApplicationDelegate..ctor()
+Microsoft.tvOS.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
+Microsoft.tvOS.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
+Microsoft.tvOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
+Microsoft.tvOS.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_361_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.tvOS.dll:UIKit.UIButton
+Microsoft.tvOS.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIButton._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIButton..cctor()
+Microsoft.tvOS.dll:UIKit.UIButton..ctor(CoreGraphics.CGRect)
+Microsoft.tvOS.dll:UIKit.UIButton..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIButton.get_ClassHandle()
+Microsoft.tvOS.dll:UIKit.UIButton.SetTitle(System.String, UIKit.UIControlState)
+Microsoft.tvOS.dll:UIKit.UIControl
+Microsoft.tvOS.dll:UIKit.UIControl._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIControl._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIControl..cctor()
+Microsoft.tvOS.dll:UIKit.UIControl..ctor(Foundation.NSObjectFlag)
+Microsoft.tvOS.dll:UIKit.UIControl..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIControl.get_ClassHandle()
+Microsoft.tvOS.dll:UIKit.UIControlState
+Microsoft.tvOS.dll:UIKit.UIControlState UIKit.UIControlState::Application
+Microsoft.tvOS.dll:UIKit.UIControlState UIKit.UIControlState::Disabled
+Microsoft.tvOS.dll:UIKit.UIControlState UIKit.UIControlState::Focused
+Microsoft.tvOS.dll:UIKit.UIControlState UIKit.UIControlState::Highlighted
+Microsoft.tvOS.dll:UIKit.UIControlState UIKit.UIControlState::Normal
+Microsoft.tvOS.dll:UIKit.UIControlState UIKit.UIControlState::Reserved
+Microsoft.tvOS.dll:UIKit.UIControlState UIKit.UIControlState::Selected
+Microsoft.tvOS.dll:UIKit.UIKitSynchronizationContext
+Microsoft.tvOS.dll:UIKit.UIKitSynchronizationContext..ctor()
+Microsoft.tvOS.dll:UIKit.UIResponder
+Microsoft.tvOS.dll:UIKit.UIResponder._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIResponder._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIResponder..cctor()
+Microsoft.tvOS.dll:UIKit.UIResponder..ctor(Foundation.NSObjectFlag)
+Microsoft.tvOS.dll:UIKit.UIResponder..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIResponder.get_ClassHandle()
+Microsoft.tvOS.dll:UIKit.UIScreen
+Microsoft.tvOS.dll:UIKit.UIScreen UIKit.UIScreen::MainScreen()
+Microsoft.tvOS.dll:UIKit.UIScreen._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIScreen._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIScreen..cctor()
+Microsoft.tvOS.dll:UIKit.UIScreen..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIScreen.Dispose(System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIScreen.get_Bounds()
+Microsoft.tvOS.dll:UIKit.UIScreen.get_ClassHandle()
+Microsoft.tvOS.dll:UIKit.UIScreen.get_MainScreen()
+Microsoft.tvOS.dll:UIKit.UIView
+Microsoft.tvOS.dll:UIKit.UIView UIKit.UIViewController::View()
+Microsoft.tvOS.dll:UIKit.UIView._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIView._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIView..cctor()
+Microsoft.tvOS.dll:UIKit.UIView..ctor(Foundation.NSObjectFlag)
+Microsoft.tvOS.dll:UIKit.UIView..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIView.AddSubview(UIKit.UIView)
+Microsoft.tvOS.dll:UIKit.UIView.Dispose(System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIView.get_Bounds()
+Microsoft.tvOS.dll:UIKit.UIView.get_ClassHandle()
+Microsoft.tvOS.dll:UIKit.UIViewController
+Microsoft.tvOS.dll:UIKit.UIViewController UIKit.UIWindow::RootViewController()
+Microsoft.tvOS.dll:UIKit.UIViewController._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIViewController._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIViewController..cctor()
+Microsoft.tvOS.dll:UIKit.UIViewController..ctor()
+Microsoft.tvOS.dll:UIKit.UIViewController..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIViewController.Add(UIKit.UIView)
+Microsoft.tvOS.dll:UIKit.UIViewController.Dispose(System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIViewController.get_ClassHandle()
+Microsoft.tvOS.dll:UIKit.UIViewController.get_View()
+Microsoft.tvOS.dll:UIKit.UIWindow
+Microsoft.tvOS.dll:UIKit.UIWindow._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIWindow._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIWindow..cctor()
+Microsoft.tvOS.dll:UIKit.UIWindow..ctor(CoreGraphics.CGRect)
+Microsoft.tvOS.dll:UIKit.UIWindow..ctor(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIWindow.Dispose(System.Boolean)
+Microsoft.tvOS.dll:UIKit.UIWindow.get_ClassHandle()
+Microsoft.tvOS.dll:UIKit.UIWindow.MakeKeyAndVisible()
+Microsoft.tvOS.dll:UIKit.UIWindow.set_RootViewController(UIKit.UIViewController)
 SizeTestApp.dll:<Module>
 SizeTestApp.dll:<Module>..cctor()
 SizeTestApp.dll:MySimpleApp.AppDelegate

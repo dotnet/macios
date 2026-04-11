@@ -31,9 +31,9 @@ namespace GeneratorTests {
 		}
 
 		Type testType = typeof (object);
-		Mock<TypeCache> typeCache;
-		Mock<AttributeManager> attributeManager;
-		Nomenclator nomenclator;
+		Mock<TypeCache>? typeCache;
+		Mock<AttributeManager>? attributeManager;
+		Nomenclator? nomenclator;
 
 		[SetUp]
 		public void SetUp ()
@@ -51,10 +51,10 @@ namespace GeneratorTests {
 		{
 			var method = GetMethod (methodName, testType);
 			var attr = new DelegateNameAttribute ("NSAnimationProgress");
-			attributeManager.Setup (am => am.GetCustomAttribute<DelegateNameAttribute> (method))
+			attributeManager!.Setup (am => am.GetCustomAttribute<DelegateNameAttribute> (method))
 				.Returns (attr);
 
-			Assert.AreEqual ("NSAnimationProgress", nomenclator.GetDelegateName (method));
+			Assert.That (nomenclator!.GetDelegateName (method), Is.EqualTo ("NSAnimationProgress"));
 			attributeManager.Verify ();
 		}
 
@@ -63,11 +63,11 @@ namespace GeneratorTests {
 		{
 			var method = GetMethod (methodName, testType);
 			var attr = new EventArgsAttribute ("NSAnimation");
-			attributeManager.Setup (am => am.GetCustomAttribute<DelegateNameAttribute> (method))
-				.Returns ((DelegateNameAttribute) null);
+			attributeManager!.Setup (am => am.GetCustomAttribute<DelegateNameAttribute> (method))
+				.Returns ((DelegateNameAttribute?) null);
 			attributeManager.Setup (am => am.GetCustomAttribute<EventArgsAttribute> (method))
 				.Returns (attr);
-			Assert.AreEqual ("NSAnimation", nomenclator.GetDelegateName (method));
+			Assert.That (nomenclator!.GetDelegateName (method), Is.EqualTo ("NSAnimation"));
 			attributeManager.Verify ();
 		}
 
@@ -75,11 +75,11 @@ namespace GeneratorTests {
 		public void GetDelegateNameEventThrows ()
 		{
 			var method = GetMethod ("DidAccelerate", testType);
-			attributeManager.Setup (am => am.GetCustomAttribute<DelegateNameAttribute> (method))
-				.Returns ((DelegateNameAttribute) null);
+			attributeManager!.Setup (am => am.GetCustomAttribute<DelegateNameAttribute> (method))
+				.Returns ((DelegateNameAttribute?) null);
 			attributeManager.Setup (am => am.GetCustomAttribute<EventArgsAttribute> (method))
-				.Returns ((EventArgsAttribute) null);
-			Assert.Throws<BindingException> (() => nomenclator.GetDelegateName (method));
+				.Returns ((EventArgsAttribute?) null);
+			Assert.Throws<BindingException> (() => nomenclator!.GetDelegateName (method));
 			attributeManager.Verify ();
 		}
 
@@ -87,9 +87,9 @@ namespace GeneratorTests {
 		public void GetEventNameNoAttribute ()
 		{
 			var method = GetMethod ("DidAccelerate", testType);
-			attributeManager.Setup (am => am.GetCustomAttribute<EventNameAttribute> (method))
-				.Returns ((EventNameAttribute) null);
-			Assert.AreEqual ("DidAccelerate", nomenclator.GetEventName (method));
+			attributeManager!.Setup (am => am.GetCustomAttribute<EventNameAttribute> (method))
+				.Returns ((EventNameAttribute?) null);
+			Assert.That (nomenclator!.GetEventName (method), Is.EqualTo ("DidAccelerate"));
 			attributeManager.Verify ();
 		}
 
@@ -99,9 +99,9 @@ namespace GeneratorTests {
 			var method = GetMethod ("DidAccelerate", testType);
 			string eventName = "DidAccelerateEventRaised";
 			var attr = new EventNameAttribute (eventName);
-			attributeManager.Setup (am => am.GetCustomAttribute<EventNameAttribute> (method))
+			attributeManager!.Setup (am => am.GetCustomAttribute<EventNameAttribute> (method))
 				.Returns (attr);
-			Assert.AreEqual (eventName, nomenclator.GetEventName (method));
+			Assert.That (nomenclator!.GetEventName (method), Is.EqualTo (eventName));
 			attributeManager.Verify ();
 		}
 
@@ -110,9 +110,9 @@ namespace GeneratorTests {
 		{
 			var method = GetMethod ("DidAccelerate", testType);
 			var attr = new DelegateApiNameAttribute ("TestFramework");
-			attributeManager.Setup (am => am.GetCustomAttribute<DelegateApiNameAttribute> (method))
+			attributeManager!.Setup (am => am.GetCustomAttribute<DelegateApiNameAttribute> (method))
 				.Returns (attr);
-			Assert.AreEqual ("TestFramework", nomenclator.GetDelegateApiName (method));
+			Assert.That (nomenclator!.GetDelegateApiName (method), Is.EqualTo ("TestFramework"));
 			attributeManager.Verify ();
 		}
 
@@ -120,9 +120,9 @@ namespace GeneratorTests {
 		public void GetDelegateApiNameMissingAttr ()
 		{
 			var method = GetMethod ("DidAccelerate", testType);
-			attributeManager.Setup (am => am.GetCustomAttribute<DelegateApiNameAttribute> (method))
-				.Returns ((DelegateApiNameAttribute) null);
-			Assert.AreEqual ("DidAccelerate", nomenclator.GetDelegateApiName (method));
+			attributeManager!.Setup (am => am.GetCustomAttribute<DelegateApiNameAttribute> (method))
+				.Returns ((DelegateApiNameAttribute?) null);
+			Assert.That (nomenclator!.GetDelegateApiName (method), Is.EqualTo ("DidAccelerate"));
 			attributeManager.Verify ();
 		}
 
@@ -130,9 +130,9 @@ namespace GeneratorTests {
 		public void GetDelegateApiNameDuplicate ()
 		{
 			var method = GetMethod ("DidAccelerate", testType);
-			attributeManager.Setup (am => am.GetCustomAttribute<DelegateApiNameAttribute> (method))
-				.Returns ((DelegateApiNameAttribute) null);
-			Assert.AreEqual ("DidAccelerate", nomenclator.GetDelegateApiName (method));
+			attributeManager!.Setup (am => am.GetCustomAttribute<DelegateApiNameAttribute> (method))
+				.Returns ((DelegateApiNameAttribute?) null);
+			Assert.That (nomenclator!.GetDelegateApiName (method), Is.EqualTo ("DidAccelerate"));
 			Assert.Throws<BindingException> (() => nomenclator.GetDelegateApiName (method));
 			attributeManager.Verify ();
 		}
@@ -141,16 +141,16 @@ namespace GeneratorTests {
 		public void GetEventArgNameSingleParamTest ()
 		{
 			var method = GetMethod ("DidAccelerateSingle", testType);
-			Assert.AreEqual ("EventArgs", nomenclator.GetEventArgName (method));
+			Assert.That (nomenclator!.GetEventArgName (method), Is.EqualTo ("EventArgs"));
 		}
 
 		[Test]
 		public void GetEventArgsNameSeveralParamsNoAttr ()
 		{
 			var method = GetMethod ("DidAccelerate", testType);
-			attributeManager.Setup (am => am.GetCustomAttribute<EventArgsAttribute> (method))
-				.Returns ((EventArgsAttribute) null);
-			Assert.Throws<BindingException> (() => nomenclator.GetEventArgName (method));
+			attributeManager!.Setup (am => am.GetCustomAttribute<EventArgsAttribute> (method))
+				.Returns ((EventArgsAttribute?) null);
+			Assert.Throws<BindingException> (() => nomenclator!.GetEventArgName (method));
 			attributeManager.Verify ();
 		}
 
@@ -159,9 +159,9 @@ namespace GeneratorTests {
 		{
 			var method = GetMethod ("DidAccelerateSeveral", testType);
 			var attr = new EventArgsAttribute ("ThisIsATestEventArgs");
-			attributeManager.Setup (am => am.GetCustomAttribute<EventArgsAttribute> (method))
+			attributeManager!.Setup (am => am.GetCustomAttribute<EventArgsAttribute> (method))
 				.Returns (attr);
-			Assert.Throws<BindingException> (() => nomenclator.GetEventArgName (method));
+			Assert.Throws<BindingException> (() => nomenclator!.GetEventArgName (method));
 			attributeManager.Verify ();
 		}
 
@@ -170,11 +170,11 @@ namespace GeneratorTests {
 		{
 			var method = GetMethod ("DidAccelerateSeveral", testType);
 			var attr = new EventArgsAttribute ("ThisIsATest", true);
-			attributeManager.Setup (am => am.GetCustomAttribute<EventArgsAttribute> (method))
+			attributeManager!.Setup (am => am.GetCustomAttribute<EventArgsAttribute> (method))
 				.Returns (attr);
-			var name = nomenclator.GetEventArgName (method);
-			Assert.AreEqual ("ThisIsATestEventArgs", name, "name");
-			Assert.True (nomenclator.WasEventArgGenerated (name), "was generated");
+			var name = nomenclator!.GetEventArgName (method);
+			Assert.That (name, Is.EqualTo ("ThisIsATestEventArgs"), "name");
+			Assert.That (nomenclator.WasEventArgGenerated (name), Is.True, "was generated");
 		}
 
 		[Test]
@@ -182,41 +182,41 @@ namespace GeneratorTests {
 		{
 			var method = GetMethod ("DidAccelerateSeveral", testType);
 			var attr = new EventArgsAttribute ("ThisIsATest", false, true);
-			attributeManager.Setup (am => am.GetCustomAttribute<EventArgsAttribute> (method))
+			attributeManager!.Setup (am => am.GetCustomAttribute<EventArgsAttribute> (method))
 				.Returns (attr);
-			var name = nomenclator.GetEventArgName (method);
-			Assert.AreEqual ("ThisIsATest", name, "name");
-			Assert.False (nomenclator.WasEventArgGenerated (name), "was generated");
+			var name = nomenclator!.GetEventArgName (method);
+			Assert.That (name, Is.EqualTo ("ThisIsATest"), "name");
+			Assert.That (nomenclator.WasEventArgGenerated (name), Is.False, "was generated");
 		}
 
 		[Test]
 		public void GetTrampolineNameNotGeneric ()
-			=> Assert.AreEqual ("NSAnimationDelegate", nomenclator.GetTrampolineName (testType));
+			=> Assert.That (nomenclator!.GetTrampolineName (testType), Is.EqualTo ("NSAnimationDelegate"));
 
 		[Test]
 		public void GetTrampolineNameGeneric ()
 		{
-			var name1 = nomenclator.GetTrampolineName (typeof (GenericTrampoline<string>));
-			var name2 = nomenclator.GetTrampolineName (typeof (GenericTrampoline<object>));
-			Assert.AreEqual ("GenericTrampolineArity1V0", name1, "name1");
-			Assert.AreEqual ("GenericTrampolineArity1V1", name2, "name2");
-			Assert.AreNotEqual (name1, name2, "equal");
+			var name1 = nomenclator!.GetTrampolineName (typeof (GenericTrampoline<string>));
+			var name2 = nomenclator!.GetTrampolineName (typeof (GenericTrampoline<object>));
+			Assert.That (name1, Is.EqualTo ("GenericTrampolineArity1V0"), "name1");
+			Assert.That (name2, Is.EqualTo ("GenericTrampolineArity1V1"), "name2");
+			Assert.That (name2, Is.Not.EqualTo (name1), "equal");
 		}
 
 		[Test]
 		public void GetGeneratedTypeNameType ()
 		{
-			attributeManager.Setup (am => am.GetCustomAttributes<BindAttribute> (It.IsAny<Type> ()))
+			attributeManager!.Setup (am => am.GetCustomAttributes<BindAttribute> (It.IsAny<Type> ()))
 				.Returns (Array.Empty<BindAttribute> ());
-			Assert.AreEqual ("NSAnimationDelegate", nomenclator.GetGeneratedTypeName (typeof (NSAnimationDelegate)));
+			Assert.That (nomenclator!.GetGeneratedTypeName (typeof (NSAnimationDelegate)), Is.EqualTo ("NSAnimationDelegate"));
 		}
 
 		[Test]
 		public void GetGeneratedTypeNameGenericType ()
 		{
-			attributeManager.Setup (am => am.GetCustomAttributes<BindAttribute> (It.IsAny<Type> ()))
+			attributeManager!.Setup (am => am.GetCustomAttributes<BindAttribute> (It.IsAny<Type> ()))
 				.Returns (Array.Empty<BindAttribute> ());
-			Assert.AreEqual ("GenericTrampoline", nomenclator.GetGeneratedTypeName (typeof (GenericTrampoline<string>).GetGenericTypeDefinition ()));
+			Assert.That (nomenclator!.GetGeneratedTypeName (typeof (GenericTrampoline<string>).GetGenericTypeDefinition ()), Is.EqualTo ("GenericTrampoline"));
 		}
 
 		[Test]
@@ -224,9 +224,9 @@ namespace GeneratorTests {
 		{
 			var selectorName = "selectorName";
 			var attr = new BindAttribute (selectorName);
-			attributeManager.Setup (am => am.GetCustomAttributes<BindAttribute> (It.IsAny<Type> ()))
+			attributeManager!.Setup (am => am.GetCustomAttributes<BindAttribute> (It.IsAny<Type> ()))
 				.Returns (new [] { attr });
-			Assert.AreEqual (selectorName, nomenclator.GetGeneratedTypeName (typeof (NSAnimationDelegate)));
+			Assert.That (nomenclator!.GetGeneratedTypeName (typeof (NSAnimationDelegate)), Is.EqualTo (selectorName));
 		}
 	}
 }

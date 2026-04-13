@@ -540,13 +540,12 @@ namespace Xamarin.MacDev.Tasks {
 			if (ShouldExecuteRemotely ())
 				return ExecuteRemotely ();
 
-			FilterTaskItemInputs ();
-
 			if (!string.IsNullOrEmpty (Help)) {
 				ShowHelp ();
 				return !Log.HasLoggedErrors;
 			}
 
+			FilterTaskItemInputs ();
 			if (Devices.Length == 0) {
 				LogNoAvailableDevicesError ();
 				return false;

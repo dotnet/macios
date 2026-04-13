@@ -80,7 +80,7 @@ namespace Xamarin.MacDev.Tasks {
 			string [] productFamilies;
 			switch (DeviceType) {
 			case IPhoneDeviceType.IPhone: // if we're looking for an iPhone, an iPad also works
-				productFamilies = onlyExact ? ["iPhone"] : ["iPhone", "iPad"];
+				productFamilies = ["iPhone", "iPad"];
 				break;
 			case IPhoneDeviceType.IPad:
 				productFamilies = ["iPad"];

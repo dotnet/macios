@@ -323,6 +323,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetAssemblyName(System.Reflection.As
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetClassCount()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetClassForObject(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetClassHandle(System.Type, System.Boolean, out System.Boolean&)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetClassName(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetHandle(System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetHandle(System.Type)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetHashCode()

@@ -148,3 +148,21 @@ When adding exclusions for types that crash on simulator:
 - **NEVER skip an entire namespace.** Always add exclusions for specific types only.
 - **Prefer fixing the binding over adding test exclusions.** For example, if a `[DesignatedInitializer]` constructor crashes when passed null, remove `[NullAllowed]` from the parameter rather than excluding the type from introspection tests.
 - Only add exclusions for genuine simulator/beta SDK bugs that can't be fixed in managed code.
+
+## Monotouch Tests
+
+For manually bound APIs (P/Invokes, manual properties), run the monotouch-test suite:
+
+```bash
+# Build and run monotouch-tests (uses simulator)
+make -C tests/monotouch-test run
+```
+
+Or run specific test fixtures:
+
+```bash
+# Run via dotnet test with a filter
+dotnet test tests/monotouch-test/ --filter "FullyQualifiedName~MonoTouchFixtures.CoreText.FontTest"
+```
+
+Test files are in `tests/monotouch-test/{FrameworkName}/`. See [binding-patterns.md](binding-patterns.md) for the test file template and conventions.

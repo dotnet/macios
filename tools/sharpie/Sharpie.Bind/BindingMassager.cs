@@ -18,6 +18,7 @@ public sealed class BindingMassager {
 	}
 
 	static readonly List<Type> defaultMassagers = new List<Type> {
+		typeof (CustomDelegateMassager),
 		typeof (DefaultConstructorMassager),
 		typeof (DelegateMassager),
 		typeof (MethodToPropertyMassager),
@@ -80,6 +81,8 @@ public sealed class BindingMassager {
 			name = name.Substring (ns.Length + 1);
 
 		switch (name) {
+		case nameof (CustomDelegateMassager):
+			return new CustomDelegateMassager (binder);
 		case nameof (DefaultConstructorMassager):
 			return new DefaultConstructorMassager (binder);
 		case nameof (DelegateMassager):

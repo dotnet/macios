@@ -33,6 +33,12 @@ namespace Accessibility {
 		[SupportedOSPlatform ("macos26.0")]
 		[SupportedOSPlatform ("tvos26.0")]
 		DwellControl,
+		/// <summary>Jump to the caption styles setting.</summary>
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		[SupportedOSPlatform ("macos26.4")]
+		[SupportedOSPlatform ("tvos26.4")]
+		CaptionStyles,
 	}
 
 	public static partial class AXSettings {
@@ -100,6 +106,43 @@ namespace Accessibility {
 		public static bool ShowBordersEnabled ()
 		{
 			return AXShowBordersEnabled () != 0;
+		}
+
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		[SupportedOSPlatform ("macos26.4")]
+		[SupportedOSPlatform ("tvos26.4")]
+		[DllImport (Constants.AccessibilityLibrary)]
+		static extern byte AXReduceHighlightingEffectsEnabled ();
+
+		/// <summary>Returns whether the system preference for reduce highlighting effects is enabled.</summary>
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		[SupportedOSPlatform ("macos26.4")]
+		[SupportedOSPlatform ("tvos26.4")]
+		public static bool IsReduceHighlightingEffectsEnabled {
+			get {
+				return AXReduceHighlightingEffectsEnabled () != 0;
+			}
+		}
+
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		[SupportedOSPlatform ("macos26.4")]
+		[SupportedOSPlatform ("tvos26.4")]
+		[DllImport (Constants.AccessibilityLibrary)]
+		static extern byte AXOpenSettingsFeatureIsSupported (nint /* AXSettingsFeature */ feature);
+
+		/// <summary>Returns whether the specified settings feature is supported on this device.</summary>
+		/// <param name="feature">The settings feature to check.</param>
+		/// <returns><see langword="true" /> if the feature is supported; otherwise, <see langword="false" />.</returns>
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		[SupportedOSPlatform ("macos26.4")]
+		[SupportedOSPlatform ("tvos26.4")]
+		public static bool OpenSettingsFeatureIsSupported (AXSettingsFeature feature)
+		{
+			return AXOpenSettingsFeatureIsSupported ((nint) (long) feature) != 0;
 		}
 	}
 }

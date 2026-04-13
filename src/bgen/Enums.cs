@@ -6,8 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 public partial class Generator {
 
@@ -41,7 +40,6 @@ public partial class Generator {
 			print ("[NativeName (\"{0}\")]", oa.NativeName);
 	}
 
-#nullable enable
 	bool IsEnumBackedByNativeType (Type type, [NotNullWhen (true)] out Type? backingFieldType)
 	{
 		backingFieldType = null;
@@ -94,7 +92,6 @@ public partial class Generator {
 
 		return false;
 	}
-#nullable disable
 
 	// caller already:
 	//	- setup the header and namespace
@@ -139,8 +136,8 @@ public partial class Generator {
 
 		var unique_constants = new HashSet<string> ();
 		var fields = new Dictionary<FieldInfo, FieldAttribute> ();
-		Tuple<FieldInfo, FieldAttribute> null_field = null;
-		Tuple<FieldInfo, FieldAttribute> default_symbol = null;
+		Tuple<FieldInfo, FieldAttribute>? null_field = null;
+		Tuple<FieldInfo, FieldAttribute>? default_symbol = null;
 		var underlying_type = GetCSharpTypeName (type.GetEnumUnderlyingType ());
 		var is_internal = AttributeManager.HasAttribute<InternalAttribute> (type);
 		var backingFieldTypeAttribute = AttributeManager.GetCustomAttribute<BackingFieldTypeAttribute> (type);
@@ -262,7 +259,9 @@ public partial class Generator {
 				var fa = kvp.Value;
 				// the attributes (availability and field) are important for our tests
 				PrintPlatformAttributes (f);
-				libraries.TryGetValue (library_name, out var libPath);
+				string? libPath = null;
+				if (library_name is not null)
+					libraries.TryGetValue (library_name, out libPath);
 				var libname = fa.LibraryName?.Replace ("+", string.Empty);
 				// We need to check for special cases inside FieldAttributes
 				// fa.LibraryName could contain a different framework i.e UITrackingRunLoopMode (UIKit) inside NSRunLoopMode enum (Foundation).
@@ -349,7 +348,7 @@ public partial class Generator {
 				if (!nullable)
 					print ("throw new ArgumentNullException (nameof (constant));");
 				else
-					print ("return {0}.{1};", type.Name, null_field.Item1.Name);
+					print ("return {0}.{1};", type.Name, null_field!.Item1.Name);
 				indent--;
 			}
 			foreach (var kvp in fields) {

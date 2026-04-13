@@ -19,7 +19,6 @@ public class SdkDbTest {
 			};
 
 			var macOSExclude = new string [] {
-				"AccessorySetupKit", // not available on macOS
 				"DriverKit", // must be compiled as C++?
 				"Tk", // depends on X11 headers, which don't exist anymore
 			};

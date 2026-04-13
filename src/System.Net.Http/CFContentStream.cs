@@ -35,22 +35,21 @@ using System.Runtime.ExceptionServices;
 using CFNetwork;
 using CoreFoundation;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace System.Net.Http {
 	class BufferData {
-		public byte [] Buffer;
+		public required byte [] Buffer;
 		public int Length;
 	}
 
 	class CFContentStream : HttpContent {
 		readonly CFHTTPStream http_stream;
-		BufferData data;
+		BufferData? data;
 		Mutex data_mutex;
 		AutoResetEvent data_event;
 		AutoResetEvent data_read_event;
-		ExceptionDispatchInfo http_exception;
+		ExceptionDispatchInfo? http_exception;
 
 		// The requirements are:
 		// * We must read at least one byte from the stream every time
@@ -83,13 +82,18 @@ namespace System.Net.Http {
 			data_mutex = new Mutex ();
 		}
 
-		void HandleErrorEvent (object sender, CFStream.StreamEventArgs e)
+		void HandleErrorEvent (object? sender, CFStream.StreamEventArgs e)
 		{
+			if (sender is null)
+				return;
 			var gotMutex = data_mutex.WaitOne ();
 			if (gotMutex) {
 				var stream = (CFHTTPStream) sender;
-				if (e.EventType == CFStreamEventType.ErrorOccurred)
-					Volatile.Write (ref http_exception, ExceptionDispatchInfo.Capture (stream.GetError ()));
+				if (e.EventType == CFStreamEventType.ErrorOccurred) {
+					var error = stream.GetError ();
+					if (error is not null)
+						Volatile.Write (ref http_exception, ExceptionDispatchInfo.Capture (error));
+				}
 				data_mutex.ReleaseMutex ();
 			}
 		}
@@ -99,7 +103,8 @@ namespace System.Net.Http {
 			data_read_event.WaitOne (); // make sure there's no pending data.
 
 			data_mutex.WaitOne ();
-			data.Length = (int) http_stream.Read (data.Buffer, 0, data.Buffer.Length);
+			if (data is not null)
+				data.Length = (int) http_stream.Read (data.Buffer, 0, data.Buffer.Length);
 			data_mutex.ReleaseMutex ();
 
 			data_event.Set ();
@@ -117,7 +122,7 @@ namespace System.Net.Http {
 			data_event.Set ();
 		}
 
-		protected override async Task SerializeToStreamAsync (Stream stream, TransportContext context)
+		protected override async Task SerializeToStreamAsync (Stream stream, TransportContext? context)
 		{
 			while (data_event.WaitOne ()) {
 				data_mutex.WaitOne ();

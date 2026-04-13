@@ -329,6 +329,16 @@ namespace CoreText {
 			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.Languages!, value); }
 		}
 
+		/// <summary>The language of the font descriptor.</summary>
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		[SupportedOSPlatform ("macos26.4")]
+		[SupportedOSPlatform ("tvos26.4")]
+		public string? Language {
+			get { return Adapter.GetStringValue (Dictionary, CTFontDescriptorAttributeKey.Language); }
+			set { Adapter.SetValue (Dictionary, CTFontDescriptorAttributeKey.Language!, value); }
+		}
+
 		// float represented as a CFNumber
 		/// <summary>The Baseline Adjustment.</summary>
 		///         <value>

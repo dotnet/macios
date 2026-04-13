@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// RUN: -x objective-c
+// RUN custom_delegates: -x objective-c -custom-delegates
+
 typedef void (^Action)();
 typedef int (^Anon_Func_Long_Int)(long long);
 typedef int (^Named_Func_Long_Int)(long long longArg);

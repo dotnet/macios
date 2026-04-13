@@ -895,6 +895,12 @@ namespace FSKit {
 		[Mac (26, 0)]
 		[Export ("enableOpenUnlinkEmulation")]
 		bool EnableOpenUnlinkEmulation { get; set; }
+
+		/// <summary>Gets or sets the mount options that the file system requests from FSKit.</summary>
+		/// <remarks>FSKit reads this value after the volume replies to the <see cref="Mount" /> call. Changing the returned value during the runtime of the volume has no effect.</remarks>
+		[Mac (26, 0)]
+		[Export ("requestedMountOptions", ArgumentSemantic.Assign)]
+		FSMountOptions RequestedMountOptions { get; set; }
 	}
 
 #if !STABLE_FSKIT
@@ -1244,6 +1250,18 @@ namespace FSKit {
 		Wait = 1,
 		NoWait = 2,
 		DWait = 4,
+	}
+
+	/// <summary>Mount options to be requested from FSKit using the <see cref="IFSVolumeOperations.RequestedMountOptions" /> property.</summary>
+#if !STABLE_FSKIT
+	[Experimental ("APL0002")]
+#endif
+	[Mac (26, 0)]
+	[Flags]
+	[Native]
+	public enum FSMountOptions : ulong {
+		/// <summary>An option to request a read-only mount.</summary>
+		ReadOnly = 1uL << 0,
 	}
 
 #if !STABLE_FSKIT

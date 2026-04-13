@@ -367,6 +367,11 @@ namespace Accessibility {
 		[Notification]
 		[Field ("AXShowBordersEnabledStatusDidChangeNotification")]
 		NSString ShowBordersEnabledStatusDidChangeNotification { get; }
+
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Notification]
+		[Field ("AXReduceHighlightingEffectsEnabledDidChangeNotification")]
+		NSString ReduceHighlightingEffectsEnabledDidChangeNotification { get; }
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]

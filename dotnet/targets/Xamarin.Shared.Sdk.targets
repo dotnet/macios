@@ -673,6 +673,7 @@
 				Platform=$(_PlatformName)
 				PlatformAssembly=$(_PlatformAssemblyName).dll
 				PublishReadyToRun=$(PublishReadyToRun)
+				PublishReadyToRunContainerFormat=$(PublishReadyToRunContainerFormat)
 				RelativeAppBundlePath=$(_RelativeAppBundlePath)
 				Registrar=$(Registrar)
 				@(ReferenceNativeSymbol -> 'ReferenceNativeSymbol=%(SymbolType):%(SymbolMode):%(Identity)')

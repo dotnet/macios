@@ -9,8 +9,7 @@
 
 using System.Reflection;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -23,7 +22,7 @@ namespace Introspection {
 
 			var declaredType = method.DeclaringType;
 
-			switch (declaredType.Name) {
+			switch (declaredType?.Name) {
 			case "NSUrlSessionTaskMetrics":
 			case "NSUrlSessionTaskTransactionMetrics":
 				// does not respond but the properties works (see monotouch-test for a partial list)
@@ -47,7 +46,7 @@ namespace Introspection {
 			case "objectDidEndEditing:":
 			case "commitEditing":
 			case "commitEditingWithDelegate:didCommitSelector:contextInfo:":
-				if (declaredType.Name == "NSObject")
+				if (declaredType?.Name == "NSObject")
 					return true;
 				break;
 			// internal stuff that must be used
@@ -58,25 +57,25 @@ namespace Introspection {
 			case "initWithFileAtPath:":
 			case "initWithData:":
 			case "initWithURL:":
-				if (declaredType.Name == "NSInputStream")
+				if (declaredType?.Name == "NSInputStream")
 					return true;
 				break;
 			// init* works (see monotouchtest.app) but does not respond when queried
 			case "initToMemory":
 			case "initToFileAtPath:append:":
-				if (declaredType.Name == "NSOutputStream")
+				if (declaredType?.Name == "NSOutputStream")
 					return true;
 				break;
 			// init* works (see monotouchtest.app) but does not respond when queried
 			case "initWithFileDescriptor:":
 			case "initWithFileDescriptor:closeOnDealloc:":
-				if (declaredType.Name == "NSFileHandle")
+				if (declaredType?.Name == "NSFileHandle")
 					return true;
 				break;
 			case "initWithString:":
 			case "initWithString:attributes:":
 			case "initWithAttributedString:":
-				if (declaredType.Name == "NSAttributedString" || declaredType.Name == "NSMutableAttributedString")
+				if (declaredType?.Name == "NSAttributedString" || declaredType?.Name == "NSMutableAttributedString")
 					return true;
 				break;
 			}
@@ -122,8 +121,8 @@ namespace Introspection {
 				case "MTLVertexAttributeDescriptor":
 				case "MTLVertexBufferLayoutDescriptor":
 				case "MTLVertexDescriptor":
-					var ctor = type.GetConstructor (Type.EmptyTypes);
-					using (var obj = ctor.Invoke (null) as NSObject) {
+					var ctor = type.GetConstructor (Type.EmptyTypes)!;
+					using (var obj = (NSObject) ctor.Invoke (null)) {
 						cls = IntPtr_objc_msgSend (obj.Handle, Selector.GetHandle ("class"));
 						return true;
 					}

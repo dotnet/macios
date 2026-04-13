@@ -142,7 +142,7 @@ namespace Introspection {
 			}
 		}
 
-		protected override bool Skip (string constantName, string libraryName)
+		protected override bool Skip (string constantName, string? libraryName)
 		{
 			switch (constantName) {
 			case "CBUUIDValidRangeString":

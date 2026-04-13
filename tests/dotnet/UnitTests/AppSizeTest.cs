@@ -49,6 +49,9 @@ namespace Xamarin.Tests {
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict);
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
 		public void CoreCLR_Interpreter (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
 		{
@@ -60,16 +63,18 @@ namespace Xamarin.Tests {
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict);
 		}
 
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void CoreCLR_Interpreter (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
+		public void CoreCLR_R2R (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", true, new Dictionary<string, string> () { { "UseMonoRuntime", "false" }, { "PublishReadyToRun", "false" } });
-		}
-
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void CoreCLR_R2R (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-R2R", true, new Dictionary<string, string> () { { "UseMonoRuntime", "false" }, { "PublishReadyToRun", "true" } });
+			var dict = new Dictionary<string, string> () {
+				{ "UseMonoRuntime", "false" },
+				{ "PublishReadyToRun", "true" },
+				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-R2R", isTrimmed, dict);
 		}
 
 		// This test will build the SizeTestApp, and capture the resulting app size.

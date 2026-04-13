@@ -89,8 +89,8 @@ namespace Xamarin.MacDev.Tasks {
 
 			Assert.That (Engine.Logger.WarningsEvents [0].Message, Does.Contain ("The following devices were discarded:"));
 			Assert.That (Engine.Logger.WarningsEvents [0].Message, Does.Contain ("Unsupported Simulator (SIM-1): Device is not an iPad, but the app only supports iPads"));
-			Assert.That (Engine.Logger.WarningsEvents [0].Message, Does.Not.Contain ("Connected iPhone"));
-			Assert.That (Engine.Logger.WarningsEvents [0].Message, Does.Not.Contain ("Old Phone"));
+			Assert.That (Engine.Logger.WarningsEvents [0].Message, Does.Contain ("Connected iPhone"));
+			Assert.That (Engine.Logger.WarningsEvents [0].Message, Does.Contain ("Old Phone (DEVICE-1): Device OS version '17.0' is lower than the app's minimum OS version '18.0'"));
 		}
 
 		static TaskItem [] CreateDevices (params (string Udid, string Name, string Type) [] devices)

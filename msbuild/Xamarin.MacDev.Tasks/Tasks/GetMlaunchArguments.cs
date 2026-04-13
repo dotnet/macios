@@ -499,7 +499,6 @@ namespace Xamarin.MacDev.Tasks {
 			var devices = GetDeviceListForDevice ();
 			if (devices.Count == 0) {
 				sb.AppendLine ($"        There are no devices connected to this Mac that can be used to run this app.");
-				AppendDiscardedDevices (sb, "        ", "Device");
 			} else {
 				sb.AppendLine ($"        There are {devices.Count} device(s) connected to this Mac that can be used to run this app:");
 				foreach (var d in devices)
@@ -510,6 +509,7 @@ namespace Xamarin.MacDev.Tasks {
 				var sampleDevice = firstDevice.Name == StringUtils.Quote (firstDevice.Name) ? firstDevice.Name : firstDevice.Identifier;
 				sb.AppendLine ($"        dotnet run -f {f} -r {rid} -p:DeviceName={sampleDevice}");
 			}
+			AppendDiscardedDevices (sb, "        ", "Device");
 
 			sb.AppendLine ($"");
 			sb.AppendLine ($"To run in a simulator:");
@@ -518,7 +518,6 @@ namespace Xamarin.MacDev.Tasks {
 			var simulators = GetDeviceListForSimulator ();
 			if (simulators.Count == 0) {
 				sb.AppendLine ($"        There are no simulators available that can be used to run this app. Please open Xcode, then the menu Window -> Devices and Simulators, select Simulators on the top left, and create a new simulator clicking on the plus sign on the bottom left.");
-				AppendDiscardedDevices (sb, "        ", "Simulator");
 			} else {
 				sb.AppendLine ($"        There are {simulators.Count} simulators(s) on this Mac that can be used to run this app:");
 				foreach (var s in simulators)
@@ -529,6 +528,7 @@ namespace Xamarin.MacDev.Tasks {
 				var sampleDevice = firstSim.Name == StringUtils.Quote (firstSim.Name) ? firstSim.Name : firstSim.Identifier;
 				sb.AppendLine ($"        dotnet run -f {f} -p:DeviceName={sampleDevice}");
 			}
+			AppendDiscardedDevices (sb, "        ", "Simulator");
 			sb.AppendLine ();
 
 			// Sadly the only way to have the help show up in the terminal reliably is to make it a warning

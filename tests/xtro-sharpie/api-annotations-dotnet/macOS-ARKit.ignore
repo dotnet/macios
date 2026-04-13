@@ -34,14 +34,7 @@
 !missing-pinvoke! ar_data_providers_create_with_data_providers is not bound
 
 #
-# Manually bound enums and fields - xtro does not detect manual bindings
+# Manually bound field - xtro does not detect manual bindings
 # that are not processed by bgen.
 #
-!missing-enum! ar_authorization_status_t not bound
-!missing-enum! ar_authorization_type_t not bound
-!missing-enum! ar_data_provider_state_t not bound
-!missing-enum! ar_device_anchor_query_status_t not bound
-!missing-enum! ar_device_anchor_tracking_state_t not bound
-!missing-enum! ar_session_error_code_t not bound
-!missing-enum! ar_world_tracking_error_code_t not bound
 !missing-field! ar_error_domain not bound

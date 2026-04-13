@@ -85,14 +85,12 @@ namespace ARKit {
 		/// <summary>Delegate for handling data provider state changes.</summary>
 		public delegate void DataProviderStateChangeHandler (ARDataProviders dataProviders, ARDataProviderState newState, ARError? error, ARDataProvider? failedDataProvider);
 
-		DataProviderStateChangeHandler? _stateChangeHandler;
 		GCHandle _stateChangeGCHandle;
 
 		/// <summary>Sets a handler for responding to data provider state changes.</summary>
 		public void SetDataProviderStateChangeHandler (DispatchQueue? queue, DataProviderStateChangeHandler? handler)
 		{
 			var oldGCHandle = _stateChangeGCHandle;
-			_stateChangeHandler = handler;
 
 			if (handler is null) {
 				_stateChangeGCHandle = default;
@@ -136,9 +134,9 @@ namespace ARKit {
 
 		protected override void Dispose (bool disposing)
 		{
+			base.Dispose (disposing);
 			if (_stateChangeGCHandle.IsAllocated)
 				_stateChangeGCHandle.Free ();
-			base.Dispose (disposing);
 		}
 	}
 }

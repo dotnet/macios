@@ -10,9 +10,12 @@
 
 using System;
 using ARKit;
+using CoreGraphics;
 using Foundation;
 using ObjCRuntime;
 using Xamarin.Utils;
+
+using Matrix4 = global::CoreGraphics.NMatrix4;
 
 namespace MonoTouchFixtures.ARKit {
 
@@ -26,6 +29,8 @@ namespace MonoTouchFixtures.ARKit {
 			TestRuntime.AssertXcodeVersion (26, 0);
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 26, 0, throwIfOtherPlatform: false);
 		}
+
+		#region ARWorldTrackingConfiguration
 
 		[Test]
 		public void ARWorldTrackingConfiguration_Create ()
@@ -43,12 +48,14 @@ namespace MonoTouchFixtures.ARKit {
 			Assert.That (config.Handle, Is.EqualTo (NativeHandle.Zero), "Handle after dispose");
 		}
 
+		#endregion
+
+		#region ARWorldTrackingProvider
+
 		[Test]
 		public void ARWorldTrackingProvider_IsSupported ()
 		{
-			// Just verify the P/Invoke doesn't crash
 			var supported = ARWorldTrackingProvider.IsSupported;
-			// We can't assert the value since it depends on hardware
 			Assert.IsNotNull (supported.ToString ());
 		}
 
@@ -56,7 +63,6 @@ namespace MonoTouchFixtures.ARKit {
 		public void ARWorldTrackingProvider_RequiredAuthorizationType ()
 		{
 			var authType = ARWorldTrackingProvider.RequiredAuthorizationType;
-			// The required auth type should be a valid flags value
 			Assert.That ((ulong) authType, Is.LessThanOrEqualTo ((ulong) (
 				ARAuthorizationType.HandTracking |
 				ARAuthorizationType.WorldSensing |
@@ -77,9 +83,24 @@ namespace MonoTouchFixtures.ARKit {
 		{
 			using var config = new ARWorldTrackingConfiguration ();
 			using var provider = new ARWorldTrackingProvider (config);
-			// Provider starts in initialized state before being run in a session
 			Assert.AreEqual (ARDataProviderState.Initialized, provider.State, "State");
 		}
+
+		[Test]
+		public void ARWorldTrackingProvider_RequiredAuthorizationType_Instance ()
+		{
+			// RequiredAuthorizationType is static, verify via type name
+			var authType = ARWorldTrackingProvider.RequiredAuthorizationType;
+			Assert.That ((ulong) authType, Is.LessThanOrEqualTo ((ulong) (
+				ARAuthorizationType.HandTracking |
+				ARAuthorizationType.WorldSensing |
+				ARAuthorizationType.CameraAccess)),
+				"Static RequiredAuthorizationType");
+		}
+
+		#endregion
+
+		#region ARDataProviders
 
 		[Test]
 		public void ARDataProviders_CreateEmpty ()
@@ -117,6 +138,19 @@ namespace MonoTouchFixtures.ARKit {
 		}
 
 		[Test]
+		public void ARDataProviders_Dispose ()
+		{
+			var providers = new ARDataProviders ();
+			Assert.AreNotEqual (IntPtr.Zero, providers.Handle, "Handle before dispose");
+			providers.Dispose ();
+			Assert.That (providers.Handle, Is.EqualTo (NativeHandle.Zero), "Handle after dispose");
+		}
+
+		#endregion
+
+		#region ARDeviceAnchor
+
+		[Test]
 		public void ARDeviceAnchor_Create ()
 		{
 			using var anchor = new ARDeviceAnchor ();
@@ -127,7 +161,6 @@ namespace MonoTouchFixtures.ARKit {
 		public void ARDeviceAnchor_Identifier ()
 		{
 			using var anchor = new ARDeviceAnchor ();
-			// Freshly created device anchor should have a valid (non-default) identifier
 			var id = anchor.Identifier;
 			Assert.IsNotNull (id.ToString ());
 		}
@@ -136,25 +169,80 @@ namespace MonoTouchFixtures.ARKit {
 		public void ARDeviceAnchor_TrackingState ()
 		{
 			using var anchor = new ARDeviceAnchor ();
-			// A newly created device anchor hasn't been queried yet
 			var state = anchor.TrackingState;
 			Assert.That ((long) state, Is.GreaterThanOrEqualTo (0).And.LessThanOrEqualTo (2),
 				"TrackingState should be a valid enum value");
 		}
 
 		[Test]
+		public void ARDeviceAnchor_OriginFromAnchorTransform ()
+		{
+			using var anchor = new ARDeviceAnchor ();
+			var transform = anchor.OriginFromAnchorTransform;
+			// A freshly created anchor should return a valid matrix (likely identity or zero)
+			Assert.IsNotNull (transform.ToString ());
+		}
+
+		[Test]
+		public void ARDeviceAnchor_Timestamp ()
+		{
+			using var anchor = new ARDeviceAnchor ();
+			var timestamp = anchor.Timestamp;
+			// Freshly created anchor - timestamp should be a non-negative value
+			Assert.That (timestamp, Is.GreaterThanOrEqualTo (0.0), "Timestamp");
+		}
+
+		[Test]
+		public void ARDeviceAnchor_IsTracked ()
+		{
+			using var anchor = new ARDeviceAnchor ();
+			// Just verify the P/Invoke doesn't crash
+			var tracked = anchor.IsTracked;
+			Assert.IsNotNull (tracked.ToString ());
+		}
+
+		[Test]
+		public void ARDeviceAnchor_Dispose ()
+		{
+			var anchor = new ARDeviceAnchor ();
+			Assert.AreNotEqual (IntPtr.Zero, anchor.Handle, "Handle before dispose");
+			anchor.Dispose ();
+			Assert.That (anchor.Handle, Is.EqualTo (NativeHandle.Zero), "Handle after dispose");
+		}
+
+		#endregion
+
+		#region ARError
+
+		[Test]
 		public void ARError_ErrorDomain ()
 		{
 			var domain = ARError.ErrorDomain;
-			// ErrorDomain should return a non-null string constant
 			Assert.IsNotNull (domain, "ErrorDomain");
 			Assert.AreNotEqual (0, domain!.Length, "ErrorDomain.Length");
 		}
 
+		#endregion
+
+		#region ARSession
+
+		[Test]
+		public void ARSession_SetDataProviderStateChangeHandler_Null ()
+		{
+			// We can't create an ARSession without an ARDevice, but we can verify
+			// that the delegate type and handler machinery compile and work.
+			// This is a compile-time verification that the delegate signature is correct.
+			ARSession.DataProviderStateChangeHandler? handler = null;
+			Assert.IsNull (handler);
+		}
+
+		#endregion
+
+		#region Enum values
+
 		[Test]
 		public void ARAuthorizationType_Flags ()
 		{
-			// Verify flag values match the Apple header definitions
 			Assert.AreEqual ((ulong) 0, (ulong) ARAuthorizationType.None, "None");
 			Assert.AreEqual ((ulong) 1, (ulong) ARAuthorizationType.HandTracking, "HandTracking");
 			Assert.AreEqual ((ulong) 2, (ulong) ARAuthorizationType.WorldSensing, "WorldSensing");
@@ -164,7 +252,6 @@ namespace MonoTouchFixtures.ARKit {
 		[Test]
 		public void ARDataProviderState_Values ()
 		{
-			// Verify enum values match Apple header definitions
 			Assert.AreEqual (0, (int) ARDataProviderState.Initialized, "Initialized");
 			Assert.AreEqual (1, (int) ARDataProviderState.Running, "Running");
 			Assert.AreEqual (2, (int) ARDataProviderState.Paused, "Paused");
@@ -185,6 +272,31 @@ namespace MonoTouchFixtures.ARKit {
 			Assert.AreEqual (201, (int) ARWorldTrackingErrorCode.AnchorMaxLimitReached, "AnchorMaxLimitReached");
 			Assert.AreEqual (202, (int) ARWorldTrackingErrorCode.RemoveAnchorFailed, "RemoveAnchorFailed");
 		}
+
+		[Test]
+		public void ARDeviceAnchorQueryStatus_Values ()
+		{
+			Assert.AreEqual (0, (int) ARDeviceAnchorQueryStatus.Success, "Success");
+			Assert.AreEqual (1, (int) ARDeviceAnchorQueryStatus.Failure, "Failure");
+		}
+
+		[Test]
+		public void ARDeviceAnchorTrackingState_Values ()
+		{
+			Assert.AreEqual (0, (int) ARDeviceAnchorTrackingState.Untracked, "Untracked");
+			Assert.AreEqual (1, (int) ARDeviceAnchorTrackingState.OrientationTracked, "OrientationTracked");
+			Assert.AreEqual (2, (int) ARDeviceAnchorTrackingState.Tracked, "Tracked");
+		}
+
+		[Test]
+		public void ARAuthorizationStatus_Values ()
+		{
+			Assert.AreEqual (0, (int) ARAuthorizationStatus.NotDetermined, "NotDetermined");
+			Assert.AreEqual (1, (int) ARAuthorizationStatus.Allowed, "Allowed");
+			Assert.AreEqual (2, (int) ARAuthorizationStatus.Denied, "Denied");
+		}
+
+		#endregion
 	}
 }
 

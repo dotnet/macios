@@ -9031,8 +9031,6 @@ M:ARKit.ARCoachingOverlayViewDelegate_Extensions.WillActivate(ARKit.IARCoachingO
 M:ARKit.ARDepthData.Dispose(System.Boolean)
 M:ARKit.ARGeoTrackingConfiguration.CheckAvailabilityAsync
 M:ARKit.ARGeoTrackingConfiguration.CheckAvailabilityAsync(CoreLocation.CLLocationCoordinate2D)
-M:ARKit.ARObject.Release
-M:ARKit.ARObject.Retain
 M:ARKit.ARQuickLookPreviewItem.#ctor(Foundation.NSUrl)
 M:ARKit.ARReferenceImage.ValidateAsync
 M:ARKit.ARSCNView.ARSCNViewAppearance.#ctor(System.IntPtr)

@@ -33,12 +33,14 @@ namespace ARKit {
 		{
 		}
 
+		/// <summary>Retains the native ARKit object by calling ar_retain.</summary>
 		protected internal override void Retain ()
 		{
 			if (Handle != IntPtr.Zero)
 				ar_retain (Handle);
 		}
 
+		/// <summary>Releases the native ARKit object by calling ar_release.</summary>
 		protected internal override void Release ()
 		{
 			if (Handle != IntPtr.Zero)

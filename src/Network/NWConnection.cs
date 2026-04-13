@@ -640,16 +640,16 @@ namespace Network {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		unsafe static extern void nw_connection_access_establishment_report (IntPtr connection, IntPtr queue, BlockLiteral* access_block);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnmanagedCallersOnly]
 		static void TrampolineGetEstablishmentReportHandler (IntPtr block, nw_establishment_report_t report)
@@ -662,9 +662,9 @@ namespace Network {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public void GetEstablishmentReport (DispatchQueue queue, Action<NWEstablishmentReport> handler)

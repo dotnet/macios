@@ -1463,6 +1463,14 @@ namespace GameController {
 		[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 		[Field ("GCInputRightBumper")]
 		NSString /* GCButtonElementName */ RightBumper { get; }
+
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Field ("GCInputLeftSideButton")]
+		NSString /* GCButtonElementName */ LeftSideButton { get; }
+
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Field ("GCInputRightSideButton")]
+		NSString /* GCButtonElementName */ RightSideButton { get; }
 	}
 
 	[TV (14, 0), iOS (14, 0)]
@@ -1579,6 +1587,16 @@ namespace GameController {
 		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 		[Field ("GCInputRightPaddle")]
 		RightPaddle,
+
+		/// <summary>Represents the left side button on a game controller.</summary>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Field ("GCInputLeftSideButton")]
+		LeftSideButton,
+
+		/// <summary>Represents the right side button on a game controller.</summary>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Field ("GCInputRightSideButton")]
+		RightSideButton,
 	}
 
 	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]

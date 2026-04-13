@@ -136,7 +136,7 @@ namespace CoreImage {
 		///         <summary>Returns an array of strings that specifies the filters taht the system provides for the specified <paramref name="categories" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		public static string [] FilterNamesInCategories (params string [] categories)
+		public static string [] FilterNamesInCategories (params string []? categories)
 		{
 			return _FilterNamesInCategories (categories);
 		}

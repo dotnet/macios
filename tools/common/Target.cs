@@ -507,6 +507,33 @@ namespace Xamarin.Bundler {
 
 			return false;
 		}
+
+		bool _set_arm64_calling_convention;
+		bool? _is_arm64_calling_convention;
+		public bool? InlineIsArm64CallingConventionForCurrentAbi {
+			get {
+				if (!_set_arm64_calling_convention) {
+					if (Optimizations.InlineIsARM64CallingConvention == true) {
+						// We can usually inline Runtime.InlineIsARM64CallingConvention if the generated code will execute on a single architecture
+						switch (Abi & Abi.ArchMask) {
+						case Abi.x86_64:
+							_is_arm64_calling_convention = false;
+							break;
+						case Abi.ARM64:
+						case Abi.ARM64e:
+							_is_arm64_calling_convention = true;
+							break;
+						default:
+							LinkContext.Exceptions.Add (Xamarin.Bundler.ErrorHelper.CreateWarning (99, Xamarin.Bundler.Errors.MX0099, $"unknown abi: {Abi}"));
+							break;
+						}
+					}
+					_set_arm64_calling_convention = true;
+				}
+				return _is_arm64_calling_convention;
+			}
+		}
+
 #endif // !LEGACY_TOOLS
 	}
 }

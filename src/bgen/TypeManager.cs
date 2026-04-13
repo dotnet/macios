@@ -200,8 +200,11 @@ public class TypeManager {
 	
 #pragma warning restore format
 
-	public Type? GetUnderlyingNullableType (Type type)
+	public Type? GetUnderlyingNullableType (Type? type)
 	{
+		if (type is null)
+			return null;
+
 		if (!type.IsConstructedGenericType)
 			return null;
 
@@ -249,15 +252,15 @@ public class TypeManager {
 		return formatted ? FormatType (null, t) : t.Name;
 	}
 
-	public string FormatType (Type? usedIn, Type type)
+	public string FormatType (Type? usedIn, Type? type)
 	{
 		return FormatTypeUsedIn (usedIn?.Namespace, type);
 	}
 
-	public string FormatType (Type? usedIn, string @namespace, string name)
+	public string FormatType (Type? usedIn, string? @namespace, string name)
 	{
 		string tname;
-		if ((usedIn is not null && @namespace == usedIn.Namespace) || BindingTouch.NamespaceCache.StandardNamespaces.Contains (@namespace))
+		if ((usedIn is not null && @namespace == usedIn.Namespace) || (@namespace is not null && BindingTouch.NamespaceCache.StandardNamespaces.Contains (@namespace)))
 			tname = name;
 		else
 			tname = "global::" + @namespace + "." + name;
@@ -341,7 +344,7 @@ public class TypeManager {
 		return tname;
 	}
 
-	public string? RenderType (Type t, ICustomAttributeProvider? provider = null)
+	public string RenderType (Type t, ICustomAttributeProvider? provider = null)
 	{
 		var nullable = string.Empty;
 		if (provider is not null && !t.IsValueType && AttributeManager.HasAttribute<NullAllowedAttribute> (provider))
@@ -422,7 +425,7 @@ public class TypeManager {
 
 	// TODO: If we ever have an API with nested properties of the same name more than
 	// 2 deep, we'll need to have this return a list of PropertyInfo and comb through them all.
-	public PropertyInfo? GetParentTypeWithSameNamedProperty (BaseTypeAttribute bta, string propertyName)
+	public PropertyInfo? GetParentTypeWithSameNamedProperty (BaseTypeAttribute? bta, string propertyName)
 	{
 		if (bta is null)
 			return null;

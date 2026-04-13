@@ -50,6 +50,9 @@ namespace Xamarin.Linker {
 		protected sealed override void ProcessAssembly (AssemblyDefinition assembly)
 		{
 			try {
+				if (!IsActiveFor (assembly))
+					return;
+
 				TryProcessAssembly (assembly);
 			} catch (Exception e) {
 				Report (Fail (assembly, e));
@@ -83,6 +86,11 @@ namespace Xamarin.Linker {
 		{
 			exceptions = null;
 			TryEndProcess ();
+		}
+
+		protected virtual bool IsActiveFor (AssemblyDefinition assembly)
+		{
+			return true;
 		}
 
 		// failure overrides, with defaults

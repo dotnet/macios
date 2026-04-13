@@ -17,7 +17,7 @@ public class AssemblySetup {
 		const string msbuild_exe_path = "/Library/Frameworks/Mono.framework/Versions/Current/lib/mono/msbuild/15.0/bin/MSBuild.dll";
 		if (is_in_vsmac) {
 			var env = new Dictionary<string, string> {
-				{ "MD_APPLE_SDK_ROOT", Path.GetDirectoryName (Path.GetDirectoryName (Configuration.xcode_root)) },
+				{ "MD_APPLE_SDK_ROOT", Path.GetDirectoryName (Path.GetDirectoryName (Configuration.xcode_root)) ?? string.Empty },
 				{ "MSBUILD_EXE_PATH", msbuild_exe_path },
 			};
 

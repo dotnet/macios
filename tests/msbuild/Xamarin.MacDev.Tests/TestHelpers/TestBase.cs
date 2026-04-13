@@ -11,7 +11,7 @@ using Xamarin.Utils;
 
 namespace Xamarin.Tests {
 	public abstract class TestBase {
-		public string Platform;
+		public string? Platform;
 		public string Config = "Debug";
 
 		public TestBase ()
@@ -64,23 +64,23 @@ namespace Xamarin.Tests {
 
 		public BuildEngine Engine {
 			get; private set;
-		}
+		} = null!;
 
 		public ProjectPaths LibraryProject {
 			get; private set;
-		}
+		} = null!;
 
 		public ProjectPaths MonoTouchProject {
 			get; protected set;
-		}
+		} = null!;
 
 		public MSBuildProject MonoTouchProjectInstance {
 			get; private set;
-		}
+		} = null!;
 
 		public MSBuildProject LibraryProjectInstance {
 			get; private set;
-		}
+		} = null!;
 
 		public string LibraryProjectBinPath => LibraryProject.ProjectBinPath;
 		public string LibraryProjectObjPath => LibraryProject.ProjectObjPath;
@@ -102,7 +102,7 @@ namespace Xamarin.Tests {
 
 		public ApplePlatform ApplePlatform {
 			get {
-				return new TargetFramework (TargetFrameworkIdentifier, null).Platform;
+				return new TargetFramework (TargetFrameworkIdentifier, new Version ()).Platform;
 			}
 		}
 
@@ -148,9 +148,16 @@ namespace Xamarin.Tests {
 		public void TestPList (string path, string [] keys)
 		{
 			var plist = PDictionary.FromFile (Path.Combine (path, "Info.plist"));
+			if (plist is null) {
+				Assert.Fail ("Could not load Info.plist from {0}", path);
+				return;
+			}
 			foreach (var x in keys) {
 				Assert.IsTrue (plist.ContainsKey (x), "Key {0} is not present in {1} Info.plist", x, path);
-				Assert.IsNotEmpty (((PString) plist [x]).Value, "Key {0} is empty in {1} Info.plist", x, path);
+				if (plist [x] is PString pstring)
+					Assert.IsNotEmpty (pstring.Value, "Key {0} is empty in {1} Info.plist", x, path);
+				else
+					Assert.Fail ("Key {0} is not a PString in {1} Info.plist", x, path);
 			}
 		}
 
@@ -204,7 +211,7 @@ namespace Xamarin.Tests {
 			Thread.Sleep (1000);
 		}
 
-		public void RunTarget (ProjectPaths paths, string target, int expectedErrorCount = 0, Dictionary<string, string> properties = null)
+		public void RunTarget (ProjectPaths paths, string target, int expectedErrorCount = 0, Dictionary<string, string>? properties = null)
 		{
 			var rv = Engine.RunTarget (ApplePlatform, paths.ProjectCSProjPath, target, properties);
 			if (expectedErrorCount != Engine.ErrorEvents.Count) {
@@ -235,7 +242,7 @@ namespace Xamarin.Tests {
 		/// </summary>
 		public bool IsTargetSkipped (string target)
 		{
-			foreach (var line in Engine.Logger.MessageEvents.Select (m => m.Message)) {
+			foreach (var line in Engine.Logger.MessageEvents.Select (m => m.Message).OfType<string> ()) {
 				if (line.Contains ($"Building target \"{target}\" completely")
 					|| line.Contains ($"Done building target \"{target}\""))
 					return false;
@@ -252,10 +259,10 @@ namespace Xamarin.Tests {
 	}
 
 	public class ProjectPaths {
-		public string ProjectPath { get; set; }
-		public string ProjectBinPath { get; set; }
-		public string ProjectObjPath { get; set; }
-		public string ProjectCSProjPath { get; set; }
-		public string AppBundlePath { get; set; }
+		public string ProjectPath { get; set; } = "";
+		public string ProjectBinPath { get; set; } = "";
+		public string ProjectObjPath { get; set; } = "";
+		public string ProjectCSProjPath { get; set; } = "";
+		public string AppBundlePath { get; set; } = "";
 	}
 }

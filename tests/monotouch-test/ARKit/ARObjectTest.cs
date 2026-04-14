@@ -179,8 +179,8 @@ namespace MonoTouchFixtures.ARKit {
 		{
 			using var anchor = new ARDeviceAnchor ();
 			var transform = anchor.OriginFromAnchorTransform;
-			// A freshly created anchor should return a valid matrix (likely identity or zero)
-			Assert.IsNotNull (transform.ToString ());
+			// A freshly created device anchor returns the identity matrix
+			Asserts.AreEqual (Matrix4.Identity, transform, "OriginFromAnchorTransform");
 		}
 
 		[Test]

@@ -59,8 +59,8 @@ namespace MetalPerformanceShaders {
 		public double Depth;
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public struct MPSDimensionSlice {

@@ -1258,7 +1258,6 @@ namespace CoreMotion {
 
 	[iOS (14, 0)]
 	[MacCatalyst (14, 0)]
-	[Mac (13, 0)]
 	[BaseType (typeof (NSObject))]
 	interface CMHeadphoneMotionManager {
 
@@ -1308,7 +1307,6 @@ namespace CoreMotion {
 
 	[iOS (14, 0)]
 	[MacCatalyst (14, 0)]
-	[Mac (13, 0)]
 	[Protocol, Model]
 	[BaseType (typeof (NSObject))]
 	interface CMHeadphoneMotionManagerDelegate {
@@ -1444,7 +1442,7 @@ namespace CoreMotion {
 		NSDate StartDate { get; }
 	}
 
-	[Mac (13, 0), iOS (16, 0), NoMacCatalyst, NoTV]
+	[iOS (16, 0), NoMacCatalyst, NoTV]
 	[Native]
 	public enum CMWaterSubmersionState : long {
 		Unknown = 0,
@@ -1452,7 +1450,7 @@ namespace CoreMotion {
 		Submerged,
 	}
 
-	[Mac (13, 0), iOS (16, 0), NoMacCatalyst, NoTV]
+	[iOS (16, 0), NoMacCatalyst, NoTV]
 	[Native]
 	public enum CMWaterSubmersionDepthState : long {
 		Unknown = 0,
@@ -1603,7 +1601,7 @@ namespace CoreMotion {
 		void StopDeviceMotionUpdates ();
 	}
 
-	[Mac (14, 0), MacCatalyst (13, 1)]
+	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface CMOdometerData : NSSecureCoding, NSCopying {
 		[Export ("startDate", ArgumentSemantic.Strong)]

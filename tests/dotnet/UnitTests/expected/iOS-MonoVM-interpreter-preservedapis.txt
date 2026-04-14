@@ -6914,7 +6914,11 @@ System.Private.CoreLib.dll:System.IO.Directory.EnumerateFiles(System.String, Sys
 System.Private.CoreLib.dll:System.IO.Directory.Exists(System.String)
 System.Private.CoreLib.dll:System.IO.Directory.InternalEnumeratePaths(System.String, System.String, System.IO.SearchTarget, System.IO.EnumerationOptions)
 System.Private.CoreLib.dll:System.IO.DirectoryNotFoundException
+System.Private.CoreLib.dll:System.IO.DirectoryNotFoundException..ctor(System.String, System.String, System.Exception)
+System.Private.CoreLib.dll:System.IO.DirectoryNotFoundException..ctor(System.String, System.String)
 System.Private.CoreLib.dll:System.IO.DirectoryNotFoundException..ctor(System.String)
+System.Private.CoreLib.dll:System.IO.DirectoryNotFoundException.get_DirectoryPath()
+System.Private.CoreLib.dll:System.IO.DirectoryNotFoundException.ToString()
 System.Private.CoreLib.dll:System.IO.EndOfStreamException
 System.Private.CoreLib.dll:System.IO.EndOfStreamException..ctor(System.String)
 System.Private.CoreLib.dll:System.IO.Enumeration.FileSystemEntry
@@ -7146,6 +7150,7 @@ System.Private.CoreLib.dll:System.IO.FileSystem.FileExists(System.ReadOnlySpan`1
 System.Private.CoreLib.dll:System.IO.FileSystem.FileExists(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.IO.IOException
 System.Private.CoreLib.dll:System.IO.IOException..ctor()
+System.Private.CoreLib.dll:System.IO.IOException..ctor(System.String, System.Exception)
 System.Private.CoreLib.dll:System.IO.IOException..ctor(System.String, System.Int32)
 System.Private.CoreLib.dll:System.IO.IOException..ctor(System.String)
 System.Private.CoreLib.dll:System.IO.MatchCasing
@@ -12340,6 +12345,8 @@ System.Private.CoreLib.dll:System.String System.Int128::System.IBinaryIntegerPar
 System.Private.CoreLib.dll:System.String System.Int16::System.IBinaryIntegerParseAndFormatInfo<System.Int16>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.Int32::System.IBinaryIntegerParseAndFormatInfo<System.Int32>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.Int64::System.IBinaryIntegerParseAndFormatInfo<System.Int64>.OverflowMessage()
+System.Private.CoreLib.dll:System.String System.IO.DirectoryNotFoundException::<DirectoryPath>k__BackingField
+System.Private.CoreLib.dll:System.String System.IO.DirectoryNotFoundException::DirectoryPath()
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerable`1::_directory
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerable`1::_expression
 System.Private.CoreLib.dll:System.String System.IO.Enumeration.FileSystemEnumerableFactory/<>c__DisplayClass2_0::expression
@@ -14047,10 +14054,10 @@ System.Private.CoreLib.dll:System.UInt128 System.UInt128::One()
 System.Private.CoreLib.dll:System.UInt128 System.UInt128::System.IBinaryIntegerParseAndFormatInfo<System.UInt128>.MaxValueDiv10()
 System.Private.CoreLib.dll:System.UInt128 System.UInt128::Zero()
 System.Private.CoreLib.dll:System.UInt128..ctor(System.UInt64, System.UInt64)
-System.Private.CoreLib.dll:System.UInt128.<op_Division>g__AddDivisor|110_0(System.Span`1<System.UInt32>, System.ReadOnlySpan`1<System.UInt32>)
-System.Private.CoreLib.dll:System.UInt128.<op_Division>g__DivideGuessTooBig|110_1(System.UInt64, System.UInt64, System.UInt32, System.UInt32, System.UInt32)
-System.Private.CoreLib.dll:System.UInt128.<op_Division>g__DivideSlow|110_2(System.UInt128, System.UInt128)
-System.Private.CoreLib.dll:System.UInt128.<op_Division>g__SubtractDivisor|110_3(System.Span`1<System.UInt32>, System.ReadOnlySpan`1<System.UInt32>, System.UInt64)
+System.Private.CoreLib.dll:System.UInt128.<op_Division>g__AddDivisor|112_0(System.Span`1<System.UInt32>, System.ReadOnlySpan`1<System.UInt32>)
+System.Private.CoreLib.dll:System.UInt128.<op_Division>g__DivideGuessTooBig|112_1(System.UInt64, System.UInt64, System.UInt32, System.UInt32, System.UInt32)
+System.Private.CoreLib.dll:System.UInt128.<op_Division>g__DivideSlow|112_2(System.UInt128, System.UInt128)
+System.Private.CoreLib.dll:System.UInt128.<op_Division>g__SubtractDivisor|112_3(System.Span`1<System.UInt32>, System.ReadOnlySpan`1<System.UInt32>, System.UInt64)
 System.Private.CoreLib.dll:System.UInt128.CompareTo(System.Object)
 System.Private.CoreLib.dll:System.UInt128.CompareTo(System.UInt128)
 System.Private.CoreLib.dll:System.UInt128.CreateTruncating`1(TOther)

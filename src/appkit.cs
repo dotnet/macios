@@ -29337,7 +29337,7 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[Export ("item")]
+		[Export ("NSToolbarItemKey")]
 		NSToolbarItem Item { get; }
 	}
 

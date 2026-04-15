@@ -37,9 +37,7 @@
 		-->
 		<_UseNativeAot Condition="'$(PublishAot)' == 'true' And '$(_IsPublishing)' == 'true'">true</_UseNativeAot>
 
-		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == '' And '$(_PlatformName)' == 'macOS'">false</UseMonoRuntime>
-		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == '' And '$(_UseNativeAot)' == 'true'">false</UseMonoRuntime>
-		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == ''">true</UseMonoRuntime>
+		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == ''">false</UseMonoRuntime>
 
 		<AfterMicrosoftNETSdkTargets>$(AfterMicrosoftNETSdkTargets);$(MSBuildThisFileDirectory)Microsoft.$(_PlatformName).Sdk.targets</AfterMicrosoftNETSdkTargets>
 
@@ -91,6 +89,7 @@
 
 		<!-- Tell .NET to skip sanity checks that trigger too eagerly for builds with multiple RuntimeIdentifiers -->
 		<AllowPublishAotWithoutRuntimeIdentifier Condition="'$(AllowPublishAotWithoutRuntimeIdentifier)' == '' And '$(_UseNativeAot)' == 'true'">true</AllowPublishAotWithoutRuntimeIdentifier>
+		<AllowReadyToRunWithoutRuntimeIdentifier Condition="'$(AllowReadyToRunWithoutRuntimeIdentifier)' == '' And '$(RuntimeIdentifiers)' != '' And '$(RuntimeIdentifier)' == ''">true</AllowReadyToRunWithoutRuntimeIdentifier>
 		<AllowSelfContainedWithoutRuntimeIdentifier Condition="'$(AllowSelfContainedWithoutRuntimeIdentifier)' == ''">true</AllowSelfContainedWithoutRuntimeIdentifier>
 
 		<!--
@@ -136,7 +135,12 @@
 
 	</PropertyGroup>
 
-	<PropertyGroup>
+	<!-- Set the default RuntimeIdentifier when publishing -->
+	<PropertyGroup Condition="'$(PublishRuntimeIdentifier)' == ''">
+		<!--
+		<PublishRuntimeIdentifier Condition="'$(_PlatformName)' == 'iOS'">ios-arm64</PublishRuntimeIdentifier>
+		<PublishRuntimeIdentifier Condition="'$(_PlatformName)' == 'tvOS'">tvos-arm64</PublishRuntimeIdentifier>
+		-->
 		<!-- Disable the default PublishRuntimeIdentifier behavior: https://github.com/dotnet/sdk/pull/52566 -->
 		<UseDefaultPublishRuntimeIdentifier>false</UseDefaultPublishRuntimeIdentifier>
 	</PropertyGroup>
@@ -216,6 +220,26 @@
 		-->
 		<CustomNativeMain Condition="'$(OutputType)' == 'Exe'">true</CustomNativeMain>
 	</PropertyGroup>
+
+	<!-- ReadyToRun configuration for CoreCLR -->
+	<PropertyGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(_UseNativeAot)' != 'true'">
+		<PublishReadyToRun Condition="'$(PublishReadyToRun)' == ''">true</PublishReadyToRun>
+		<PublishReadyToRunComposite Condition="'$(PublishReadyToRunComposite)' == '' And '$(PublishReadyToRun)' == 'true'">true</PublishReadyToRunComposite>
+		<PublishReadyToRunContainerFormat Condition="'$(PublishReadyToRunContainerFormat)' == '' And '$(PublishReadyToRun)' == 'true'">macho</PublishReadyToRunContainerFormat>
+		<PublishReadyToRunCreateSharedLibrary>false</PublishReadyToRunCreateSharedLibrary>
+
+		<!-- We have to set the following two variables until https://github.com/dotnet/runtime/pull/124604 flows to us -->
+		<PublishReadyToRunStripDebugInfo>false</PublishReadyToRunStripDebugInfo>
+		<PublishReadyToRunStripInliningInfo>false</PublishReadyToRunStripInliningInfo>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(PublishReadyToRun)' != 'true'">
+		<_BundlerEnvironmentVariables Include="DOTNET_ReadyToRun" Value="0" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(DebugLaunchTime)' == 'true'">
+		<_BundlerEnvironmentVariables Include="DEBUG_LAUNCH_TIME" Value="1" />
+	</ItemGroup>
 
 	<!-- Compute _SdkIsSimulator from the RuntimeIdentifier -->
 	<PropertyGroup>

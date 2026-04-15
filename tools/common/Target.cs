@@ -344,6 +344,11 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ();
 			sw.WriteLine (assembly_externs);
 
+			if (app.PublishReadyToRun == true && app.PublishReadyToRunContainerFormat == "macho") {
+				sw.WriteLine ("extern void* RTR_HEADER;");
+				sw.WriteLine ();
+			}
+
 			sw.WriteLine ("void xamarin_register_modules_impl ()");
 			sw.WriteLine ("{");
 			sw.WriteLine (assembly_aot_modules);
@@ -367,6 +372,8 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("static const char *xamarin_runtime_libraries_array[] = {");
 			foreach (var lib in app.MonoLibraries)
 				sw.WriteLine ($"\t\"{Path.GetFileNameWithoutExtension (lib)}\",");
+			foreach (var lib in app.DylibsToConvertToFrameworks.Except (app.MonoLibraries))
+				sw.WriteLine ($"\t\"{Path.GetFileNameWithoutExtension (lib)}\", // dylib converted to framework");
 			sw.WriteLine ($"\tNULL");
 			sw.WriteLine ("};");
 
@@ -433,6 +440,8 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("\txamarin_runtime_configuration_name = {0};", string.IsNullOrEmpty (app.RuntimeConfigurationFile) ? "NULL" : $"\"{app.RuntimeConfigurationFile}\"");
 			if (app.Registrar == RegistrarMode.ManagedStatic)
 				sw.WriteLine ("\txamarin_set_is_managed_static_registrar (true);");
+			if (app.PublishReadyToRun == true && app.PublishReadyToRunContainerFormat == "macho")
+				sw.WriteLine ("\txamarin_rtr_header = &RTR_HEADER;");
 			sw.WriteLine ("}");
 			sw.WriteLine ();
 			sw.Write ("int main");

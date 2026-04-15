@@ -11,11 +11,35 @@
 
 #nullable enable
 
+using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using CoreFoundation;
 using ObjCRuntime;
 
+using Matrix4 = global::CoreGraphics.NMatrix4;
+
 namespace ARKit {
+
+	// On ARM64, simd_float4x4 (4 × simd_float4) is an HVA returned in NEON registers v0-v3.
+	// NMatrix4 has 16 individual float fields and is NOT recognized as HVA by .NET, causing
+	// garbage when used as a P/Invoke return type. This struct uses Vector4 fields (128-bit
+	// SIMD type on ARM64) which .NET correctly classifies as HVA.
+	[StructLayout (LayoutKind.Sequential)]
+	internal struct SimdFloat4x4 {
+		public Vector4 Column0;
+		public Vector4 Column1;
+		public Vector4 Column2;
+		public Vector4 Column3;
+
+		public unsafe Matrix4 ToNMatrix4 ()
+		{
+			// Both SimdFloat4x4 and NMatrix4 are 64-byte column-major matrices with
+			// identical memory layout, so we can safely reinterpret the bits.
+			var self = this;
+			return *(Matrix4*) &self;
+		}
+	}
 
 	/// <summary>Base class for ARKit C API object types that use ar_retain/ar_release for lifecycle management.</summary>
 	[SupportedOSPlatform ("macos26.0")]

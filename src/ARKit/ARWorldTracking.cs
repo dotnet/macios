@@ -27,7 +27,7 @@ namespace ARKit {
 		unsafe static extern void ar_device_anchor_get_identifier (IntPtr anchor, byte* out_identifier);
 
 		[DllImport (Constants.ARKitLibrary)]
-		static extern /* simd_float4x4 */ Matrix4 ar_device_anchor_get_origin_from_anchor_transform (IntPtr anchor);
+		static extern /* simd_float4x4 */ SimdFloat4x4 ar_device_anchor_get_origin_from_anchor_transform (IntPtr anchor);
 
 		[DllImport (Constants.ARKitLibrary)]
 		static extern double ar_device_anchor_get_timestamp (IntPtr anchor);
@@ -64,7 +64,8 @@ namespace ARKit {
 		/// <summary>Gets the transform from this device anchor to the origin coordinate system.</summary>
 		public new Matrix4 OriginFromAnchorTransform {
 			get {
-				return ar_device_anchor_get_origin_from_anchor_transform (GetCheckedHandle ());
+				var simd = ar_device_anchor_get_origin_from_anchor_transform (GetCheckedHandle ());
+				return simd.ToNMatrix4 ();
 			}
 		}
 

@@ -21,7 +21,7 @@ namespace ARKit {
 	public class ARAnchor : ARObject {
 
 		[DllImport (Constants.ARKitLibrary)]
-		unsafe static extern /* simd_float4x4 */ Matrix4 ar_anchor_get_origin_from_anchor_transform (IntPtr anchor);
+		static extern /* simd_float4x4 */ SimdFloat4x4 ar_anchor_get_origin_from_anchor_transform (IntPtr anchor);
 
 		[DllImport (Constants.ARKitLibrary)]
 		unsafe static extern void ar_anchor_get_identifier (IntPtr anchor, byte* out_identifier);
@@ -38,7 +38,8 @@ namespace ARKit {
 		/// <summary>Gets the transform from this anchor to the origin coordinate system.</summary>
 		public Matrix4 OriginFromAnchorTransform {
 			get {
-				return ar_anchor_get_origin_from_anchor_transform (GetCheckedHandle ());
+				var simd = ar_anchor_get_origin_from_anchor_transform (GetCheckedHandle ());
+				return simd.ToNMatrix4 ();
 			}
 		}
 

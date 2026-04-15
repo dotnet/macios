@@ -10,7 +10,7 @@ using Xharness.Jenkins.TestTasks;
 
 namespace Xharness.Jenkins {
 
-	class TestVariationsFactory  {
+	class TestVariationsFactory {
 
 		readonly Jenkins jenkins;
 		readonly IProcessManager processManager;

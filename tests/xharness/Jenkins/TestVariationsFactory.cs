@@ -162,7 +162,7 @@ namespace Xharness.Jenkins {
 			foreach (var task in tests.ToArray ()) {
 				foreach (var test_data in GetTestData (task)) {
 					var variation = test_data.Variation;
-					var debug = (test_data.TestVariation ?? "").Split ('|').IndexOf ("Release") == -1;
+					var debug = !(test_data.TestVariation ?? "").Split ('|').Any (v => string.Equals (v, "release", StringComparison.OrdinalIgnoreCase));
 					var configuration = debug ? task.ProjectConfiguration : task.ProjectConfiguration.Replace ("Debug", "Release");
 					var ignored = test_data.Ignored;
 					var known_failure = test_data.KnownFailure;

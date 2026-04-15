@@ -103,7 +103,7 @@ namespace Xharness.Jenkins {
 					yield return new TestData { Variation = "Release (NativeAOT, x64)", TestVariation = "release|nativeaot", Ignored = ignore, RuntimeIdentifier = x64_sim_runtime_identifier };
 					if (supports_interpreter) {
 						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Ignored = ignore };
-						yield return new TestData { Variation = "Release (interpreter)", TestVariation = "interpreter", Ignored = ignore };
+						yield return new TestData { Variation = "Release (interpreter)", TestVariation = "release|interpreter", Ignored = ignore };
 					}
 					break;
 				case "introspection":

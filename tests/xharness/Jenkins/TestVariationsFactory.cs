@@ -96,7 +96,7 @@ namespace Xharness.Jenkins {
 
 					if (mac_supports_arm64) {
 						yield return new TestData { Variation = "Debug (ARM64)", Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_sim_runtime_identifier, };
-						yield return new TestData { Variation = "Release (NativeAOT, ARM64)", TestVariation = "release|nativaot", Ignored = ignore, RuntimeIdentifier = arm64_sim_runtime_identifier };
+						yield return new TestData { Variation = "Release (NativeAOT, ARM64)", TestVariation = "release|nativeaot", Ignored = ignore, RuntimeIdentifier = arm64_sim_runtime_identifier };
 					}
 					yield return new TestData { Variation = "Debug (managed static registrar)", TestVariation = "managed-static-registrar", Ignored = ignore };
 					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "release|managed-static-registrar-all-optimizations-linkall", Ignored = ignore };

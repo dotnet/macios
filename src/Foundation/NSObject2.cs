@@ -1091,6 +1091,14 @@ namespace Foundation {
 			handle = NativeHandle.Zero;
 		}
 
+		// This is weird - a setter only - but it's so that we can remove an object right after creating it using object creation syntax:
+		//     new NSString ("") { RemoveFromObjectMap = true };
+		internal bool RemoveFromObjectMap {
+			set {
+				Runtime.RemoveFromObjectMap (this);
+			}
+		}
+
 		/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSObject.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{

@@ -315,6 +315,7 @@ Microsoft.iOS.dll:ObjCRuntime.Class.FindType(ObjCRuntime.NativeHandle, out Syste
 Microsoft.iOS.dll:ObjCRuntime.Class.FreeStringPtrs(System.IntPtr[])
 Microsoft.iOS.dll:ObjCRuntime.Class.get_Handle()
 Microsoft.iOS.dll:ObjCRuntime.Class.get_Name()
+Microsoft.iOS.dll:ObjCRuntime.Class.get_ValidateObjectPointers()
 Microsoft.iOS.dll:ObjCRuntime.Class.GetAssemblyName(System.Reflection.Assembly)
 Microsoft.iOS.dll:ObjCRuntime.Class.GetClassCount()
 Microsoft.iOS.dll:ObjCRuntime.Class.GetClassForObject(System.IntPtr)
@@ -554,6 +555,7 @@ Microsoft.iOS.dll:ObjCRuntime.ObjCException.get_Reason()
 Microsoft.iOS.dll:ObjCRuntime.ObjCException.ToString()
 Microsoft.iOS.dll:ObjCRuntime.Protocol
 Microsoft.iOS.dll:ObjCRuntime.Protocol._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.iOS.dll:ObjCRuntime.Protocol..cctor()
 Microsoft.iOS.dll:ObjCRuntime.Protocol..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Protocol..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Protocol.get_Handle()
@@ -780,6 +782,7 @@ Microsoft.iOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer.Equals(System.Ru
 Microsoft.iOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer.GetHashCode(System.RuntimeTypeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Selector
 Microsoft.iOS.dll:ObjCRuntime.Selector._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.iOS.dll:ObjCRuntime.Selector..cctor()
 Microsoft.iOS.dll:ObjCRuntime.Selector..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Selector..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Selector.Equals(ObjCRuntime.Selector)
@@ -1217,6 +1220,7 @@ Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::IsStubClass()
 Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::IsWrapper()
 Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::SkipRegistration()
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.Class::ThrowOnInitFailure
+Microsoft.iOS.dll:System.Boolean ObjCRuntime.Class::ValidateObjectPointers()
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.DisposableObject::owns
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.RegistrarHelper/MapInfo::RegisteredWrapperTypes
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.Runtime::initialized
@@ -1585,6 +1589,7 @@ Microsoft.iOS.dll:UIKit.UIApplication.xamarin_UIApplicationMain(System.Int32, Sy
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.iOS.dll:UIKit.UIApplicationDelegate..cctor()
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor()
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
@@ -4103,6 +4108,7 @@ System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.ConstantExpectedAttri
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DisallowNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DisallowNullAttribute..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.String, System.String)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.Type)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute..ctor()
@@ -12158,7 +12164,9 @@ System.Private.CoreLib.dll:System.String System.CharEnumerator::_str
 System.Private.CoreLib.dll:System.String System.DateTime::DateDataField
 System.Private.CoreLib.dll:System.String System.DateTime::TicksField
 System.Private.CoreLib.dll:System.String System.DelegateData::method_name
+System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<AssemblyName>k__BackingField
 System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<MemberSignature>k__BackingField
+System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<TypeName>k__BackingField
 System.Private.CoreLib.dll:System.String System.Diagnostics.MonoStackFrame::fileName
 System.Private.CoreLib.dll:System.String System.Diagnostics.MonoStackFrame::internalMethodName
 System.Private.CoreLib.dll:System.String System.Diagnostics.StackFrame::_fileName

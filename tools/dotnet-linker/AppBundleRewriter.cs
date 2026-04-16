@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -1384,7 +1385,7 @@ namespace Xamarin.Linker {
 			return modified;
 		}
 
-		MethodDefinition GetOrCreateStaticConstructor (TypeDefinition type, out bool modified)
+		public MethodDefinition GetOrCreateStaticConstructor (TypeDefinition type, out bool modified)
 		{
 			modified = false;
 
@@ -1408,7 +1409,7 @@ namespace Xamarin.Linker {
 		/// <param name="provider">The provider to which the attribute should be added.</param>
 		/// <param name="attribute">The attribute to add.</param>
 		/// <returns>Whether the attribute was added or not.</returns>
-		bool AddAttributeOnlyOnce (ICustomAttributeProvider provider, CustomAttribute attribute)
+		public bool AddAttributeOnlyOnce (ICustomAttributeProvider provider, CustomAttribute attribute)
 		{
 			if (provider.HasCustomAttributes) {
 				foreach (var ca in provider.CustomAttributes) {
@@ -1460,7 +1461,18 @@ namespace Xamarin.Linker {
 				}
 			}
 			provider.CustomAttributes.Add (attribute);
+			if (DebugAttributes)
+				Console.WriteLine ($"Added {attribute.RenderAttribute ()} to {provider}");
 			return true;
+		}
+
+		static bool? debug_attributes;
+		static bool DebugAttributes {
+			get {
+				if (!debug_attributes.HasValue)
+					debug_attributes = !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("PRINT_ATTRIBUTES"));
+				return debug_attributes.Value;
+			}
 		}
 	}
 }

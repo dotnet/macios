@@ -5705,7 +5705,7 @@ namespace WebKit {
 		[Field ("WKWebsiteDataTypeLocalStorage", "WebKit")]
 		NSString LocalStorage { get; }
 
-		/// <summary>Gets an NSString that signifies a WebSQL databse.</summary>
+		/// <summary>Gets an NSString that signifies a WebSQL database.</summary>
 		///         <value>The NSString object for "WKWebsiteDataTypeWebSQLDatabases".</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("WKWebsiteDataTypeWebSQLDatabases", "WebKit")]

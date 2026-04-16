@@ -820,7 +820,7 @@ namespace UserNotifications {
 		[NullAllowed, Export ("trigger", ArgumentSemantic.Copy)]
 		UNNotificationTrigger Trigger { get; }
 
-		/// <param name="identifier">An identifer, unique to the application scope.</param>
+		/// <param name="identifier">An identifier, unique to the application scope.</param>
 		///         <param name="content">The content of the notification.</param>
 		///         <param name="trigger">
 		///           <para>The trigger that activates the notification when the trigger's conditions are met.</para>
@@ -862,8 +862,8 @@ namespace UserNotifications {
 		[Export ("notification", ArgumentSemantic.Copy)]
 		UNNotification Notification { get; }
 
-		/// <summary>Gets the action identifer that tells what the user did in response to the notification.</summary>
-		///         <value>The action identifer that tells what the user did in response to the notification.</value>
+		/// <summary>Gets the action identifier that tells what the user did in response to the notification.</summary>
+		///         <value>The action identifier that tells what the user did in response to the notification.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("actionIdentifier")]
 		NSString ActionIdentifier { get; }
@@ -1439,4 +1439,3 @@ namespace UserNotifications {
 		UNNotificationAttributedMessageContext Create (INSendMessageIntent sendMessageIntent, NSAttributedString attributedContent);
 	}
 }
-

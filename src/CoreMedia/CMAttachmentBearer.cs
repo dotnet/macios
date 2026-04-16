@@ -63,7 +63,7 @@ namespace CoreMedia {
 		///         <param name="target">The object on which this method operates.</param>
 		///         <param name="key">The string that identifies the attachment to return.</param>
 		///         <param name="attachmentModeOut">An out parameter that receives a value that tells whether the attachment should propagate or not.</param>
-		///         <summary>Returns the attachment that is identifed by <paramref name="key" /> and writes the attachment propagation mode to <paramref name="attachmentModeOut" />.</summary>
+		///         <summary>Returns the attachment that is identified by <paramref name="key" /> and writes the attachment propagation mode to <paramref name="attachmentModeOut" />.</summary>
 		///         <returns>The specified attachment.</returns>
 		///         <remarks>To be added.</remarks>
 		public static T? GetAttachment<T> (this ICMAttachmentBearer target, string key, out CMAttachmentMode attachmentModeOut) where T : class, INativeObject
@@ -132,7 +132,7 @@ namespace CoreMedia {
 		extern static void CMRemoveAttachment (/* CMAttachmentBearerRef */ IntPtr target, /* CFStringRef */ IntPtr key);
 		/// <param name="target">The object on which this method operates.</param>
 		///         <param name="key">The string that identifies the attachment to remove.</param>
-		///         <summary>Removes the attachment that is identifed by <paramref name="key" />.</summary>
+		///         <summary>Removes the attachment that is identified by <paramref name="key" />.</summary>
 		///         <remarks>To be added.</remarks>
 		public static void RemoveAttachment (this ICMAttachmentBearer target, string key)
 		{

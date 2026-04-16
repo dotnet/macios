@@ -1638,7 +1638,7 @@ namespace ObjCRuntime {
 
 		/// <summary>Remove an object from the object map.</summary>
 		/// <remarks>
-		///   Removing an object from the object map can be necessary for managed wrappers objects that are singletons or not really Objective-C classes, but constant pointers.
+		///   Removing an object from the object map can be necessary for managed wrapper objects that are singletons or not really Objective-C classes, but constant pointers.
 		///   For instance, the constant empty string (@"") is just a singleton pointer which can't be retained/released (retaining/releasing does nothing).
 		///   The problem arises when the managed wrapper for such a native handle is disposed, then subsequently it re-surfaces, and now we end up finding a
 		///   disposed object in the object map.

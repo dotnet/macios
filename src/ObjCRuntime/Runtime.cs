@@ -1657,6 +1657,7 @@ namespace ObjCRuntime {
 					return false;
 
 				object_map.Remove (handle);
+				reference.Free ();
 			}
 
 			return true;

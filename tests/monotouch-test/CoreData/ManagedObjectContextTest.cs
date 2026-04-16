@@ -27,10 +27,11 @@ namespace MonoTouchFixtures.CoreData {
 			Assert.That (moc.RegisteredObjects.Count, Is.EqualTo ((nuint) 0), "RegisteredObjects");
 			Assert.False (moc.RetainsRegisteredObjects, "RetainsRegisteredObjects");
 			Assert.That (moc.StalenessInterval, Is.EqualTo (-1), "StalenessInterval");
-			if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 12, throwIfOtherPlatform: false))
-				Assert.Null (moc.UndoManager, "UndoManager");
-			else
-				Assert.NotNull (moc.UndoManager, "UndoManager");
+#if MONOMAC
+			Assert.Null (moc.UndoManager, "UndoManager");
+#else
+			Assert.NotNull (moc.UndoManager, "UndoManager");
+#endif
 			Assert.That (moc.UpdatedObjects.Count, Is.EqualTo ((nuint) 0), "UpdatedObjects");
 			Assert.That (moc.UserInfo.Count, Is.EqualTo ((nuint) 0), "UserInfo");
 		}

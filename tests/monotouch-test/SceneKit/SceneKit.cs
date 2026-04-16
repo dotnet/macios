@@ -14,9 +14,7 @@ namespace Xamarin.Mac.Tests {
 		[SetUp]
 		public void SetUp ()
 		{
-			Asserts.EnsureYosemite ();
-			if (Asserts.IsAtLeastElCapitan)
-				Asserts.Ensure64Bit ();
+			Asserts.Ensure64Bit ();
 		}
 
 		[Test]

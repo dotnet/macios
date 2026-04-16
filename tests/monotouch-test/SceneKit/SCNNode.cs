@@ -13,8 +13,7 @@ namespace Xamarin.Mac.Tests {
 		public void SetUp ()
 		{
 			Asserts.EnsureMavericks ();
-			if (Asserts.IsAtLeastElCapitan)
-				Asserts.Ensure64Bit ();
+			Asserts.Ensure64Bit ();
 		}
 
 		[Test]
@@ -35,8 +34,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void SCNNode_SetPhysicsBodyTest ()
 		{
-			Asserts.EnsureYosemite ();
-
 			if (IntPtr.Size == 8) {
 				// Create a new empty scene
 				var Scene = new SCNScene ();

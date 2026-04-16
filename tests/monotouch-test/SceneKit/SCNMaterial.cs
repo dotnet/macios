@@ -12,8 +12,7 @@ namespace Xamarin.Mac.Tests {
 		public void SetUp ()
 		{
 			Asserts.EnsureMavericks ();
-			if (Asserts.IsAtLeastElCapitan)
-				Asserts.Ensure64Bit ();
+			Asserts.Ensure64Bit ();
 		}
 
 		[Test]

@@ -8,25 +8,22 @@ namespace Xamarin.Mac.Tests {
 	public static class Asserts {
 		public static bool IsAtLeastYosemite {
 			get {
-				return TestRuntime.CheckXcodeVersion (6, 1);
+				return true;
 			}
 		}
 
 		public static bool IsAtLeastElCapitan {
 			get {
-				return TestRuntime.CheckXcodeVersion (7, 0);
+				return true;
 			}
 		}
 
 		public static void EnsureYosemite ()
 		{
-			if (!IsAtLeastYosemite)
-				Assert.Pass ("This test requires Yosemite. Skipping");
 		}
 
 		public static void EnsureMavericks ()
 		{
-			TestRuntime.AssertXcodeVersion (6, 0);
 		}
 
 		public static void EnsureMountainLion ()

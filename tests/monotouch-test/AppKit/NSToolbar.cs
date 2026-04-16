@@ -28,6 +28,8 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void ItemEventArgs ()
 		{
+			TestRuntime.AssertXcodeVersion (14, 0); // macOS 13.0
+
 			using (var item = new NSToolbarItem ())
 			using (var userInfo = new NSMutableDictionary ()) {
 				userInfo.Add (NSToolbar.NSToolbarItemKey, item);

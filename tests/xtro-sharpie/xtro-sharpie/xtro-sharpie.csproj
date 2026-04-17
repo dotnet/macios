@@ -10,6 +10,10 @@
     <!-- It's also necessary to actually specify it due to https://github.com/dotnet/ClangSharp/issues/118 -->
     <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>Nullable</WarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>

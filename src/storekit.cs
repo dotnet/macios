@@ -802,7 +802,7 @@ namespace StoreKit {
 		[Export ("ProviderToken")]
 		string ProviderToken { get; set; }
 
-		/// <summary>Gets or sets the ad network's cryptograpic signature. Used for attribution.</summary>
+		/// <summary>Gets or sets the ad network's cryptographic signature. Used for attribution.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]

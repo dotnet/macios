@@ -1614,7 +1614,7 @@ namespace CarPlay {
 		/// <param name="searchTemplate">To be added.</param>
 		/// <param name="item">To be added.</param>
 		/// <param name="completionHandler">To be added.</param>
-		/// <summary>Developers must overrride this method to respond to a search selection.</summary>
+		/// <summary>Developers must override this method to respond to a search selection.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("searchTemplate:selectedResult:completionHandler:")]

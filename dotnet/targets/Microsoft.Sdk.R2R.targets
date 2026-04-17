@@ -22,6 +22,18 @@
 		</ItemGroup>
 	</Target>
 
+	<!-- Set per-module R2R header symbol names so each .o file exports a unique symbol directly,
+	     avoiding the need for post-link symbol aliasing. -->
+	<Target Name="_SetR2RHeaderSymbolNames"
+			Condition="'$(PublishReadyToRunComposite)' != 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho'"
+			AfterTargets="_FixR2ROutputPaths">
+		<ItemGroup>
+			<_ReadyToRunCompileList>
+				<R2RHeaderSymbolName>RTR_HEADER_$([System.Text.RegularExpressions.Regex]::Replace ($([System.IO.Path]::GetFileName ('%(_ReadyToRunCompileList.OutputR2RImage)')), '[^a-zA-Z0-9_]', '_'))</R2RHeaderSymbolName>
+			</_ReadyToRunCompileList>
+		</ItemGroup>
+	</Target>
+
 	<!--
 		Compute the instruction set for R2R/NAOT compilation based on the SupportedOSPlatformVersion and RuntimeIdentifier.
 		This target runs early in the build to set PublishReadyToRunCrossgen2ExtraArgs if needed.
@@ -143,8 +155,8 @@
 		The following section creates either a .dylib or a .framework for each
 		ReadyToRun output (which is an object file that must be linked into a dynamic library).
 		Each R2R .o gets its own dylib/framework so that incremental builds only
-		relink the module whose .o changed.  Symbols are aliased to avoid collision
-		(every .o exports RTR_HEADER; we rename to RTR_HEADER_<module>).
+		relink the module whose .o changed.  Each .o exports a unique symbol
+		(RTR_HEADER_<module>) set via R2RHeaderSymbolName during compilation.
 	 -->
 
 	<!-- Create a framework for each R2R module -->
@@ -264,13 +276,11 @@
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			/>
 
-		<!-- Link the .o file into a dylib inside the framework, renaming the R2R_HEADER symbol -->
+		<!-- Link the .o file into a dylib inside the framework -->
 		<ItemGroup>
 			<_CurrentR2RModuleLinkerFlags Remove="@(_CurrentR2RModuleLinkerFlags)" />
 			<_CurrentR2RModuleLinkerFlags Include="-dynamiclib" />
 			<_CurrentR2RModuleLinkerFlags Include="-Wl,-dead_strip" />
-			<_CurrentR2RModuleLinkerFlags Include="-Wl,-alias,_RTR_HEADER,_%(_R2RModule.SymbolName)" />
-			<_CurrentR2RModuleLinkerFlags Include="-Wl,-unexported_symbol,_RTR_HEADER" />
 			<_CurrentR2RModuleLinkerFlags Include="-Wl,-install_name,@rpath/%(_R2RModule.FrameworkName).framework/%(_R2RModule.FrameworkName)" />
 		</ItemGroup>
 
@@ -311,13 +321,11 @@
 			Directories="$(_R2RModuleIntermediateOutputPath)"
 		/>
 
-		<!-- Link the .o file into a dylib, renaming the R2R_HEADER symbol -->
+		<!-- Link the .o file into a dylib -->
 		<ItemGroup>
 			<_CurrentR2RDylibLinkerFlags Remove="@(_CurrentR2RDylibLinkerFlags)" />
 			<_CurrentR2RDylibLinkerFlags Include="-dynamiclib" />
 			<_CurrentR2RDylibLinkerFlags Include="-Wl,-dead_strip" />
-			<_CurrentR2RDylibLinkerFlags Include="-Wl,-alias,_RTR_HEADER,_%(_R2RModule.SymbolName)" />
-			<_CurrentR2RDylibLinkerFlags Include="-Wl,-unexported_symbol,_RTR_HEADER" />
 			<_CurrentR2RDylibLinkerFlags Include="-Wl,-install_name,@rpath/%(_R2RModule.ModuleName)" />
 		</ItemGroup>
 

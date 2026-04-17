@@ -313,7 +313,7 @@ namespace AVFoundation {
 		OperationInterrupted = -11847,
 		/// <summary>Indicates that the media format is not supported by the device.</summary>
 		IncompatibleAsset = -11848,
-		/// <summary>Indicates taht the media data could not be loaded due to missing required data.</summary>
+		/// <summary>Indicates that the media data could not be loaded due to missing required data.</summary>
 		FailedToLoadMediaData = -11849,
 		/// <summary>Indicates that the media server is not correctly configured.</summary>
 		ServerIncorrectlyConfigured = -11850,

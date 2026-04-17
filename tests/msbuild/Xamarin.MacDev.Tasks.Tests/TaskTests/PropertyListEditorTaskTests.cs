@@ -22,9 +22,9 @@ namespace Xamarin.MacDev.Tasks {
 		static void CheckDictionary (PDictionary dict, PDictionary expected)
 		{
 			foreach (var kvp in expected) {
-				PObject value;
-
-				Assert.IsTrue (dict.TryGetValue (kvp.Key, out value), "Expected key '{0}'", kvp.Key);
+				Assert.IsTrue (dict.TryGetValue (kvp.Key, out PObject? value), "Expected key '{0}'", kvp.Key);
+				if (value is null)
+					continue;
 				Assert.AreEqual (kvp.Value.Type, value.Type, "Type-mismatch for '{0}'", kvp.Key);
 
 				CheckValue (value, kvp.Value);
@@ -65,21 +65,21 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		void TestExecuteTask (PDictionary input, PropertyListEditorAction action, string entry, string type, string value, PObject expected)
+		void TestExecuteTask (PDictionary input, PropertyListEditorAction action, string? entry, string? type, string? value, PObject? expected)
 		{
 			var propertyList = Path.Combine (Cache.CreateTemporaryDirectory (), "propertyList.plist");
 			input.Save (propertyList);
 			TestExecuteTask (propertyList, action, entry, type, value, expected);
 		}
 
-		void TestExecuteTask (string propertyList, PropertyListEditorAction action, string entry, string type, string value, PObject expected)
+		void TestExecuteTask (string propertyList, PropertyListEditorAction action, string? entry, string? type, string? value, PObject? expected)
 		{
 			var task = CreateTask<PropertyListEditor> ();
 			task.PropertyList = propertyList;
 			task.Action = action.ToString ();
-			task.Entry = entry;
-			task.Type = type;
-			task.Value = value;
+			task.Entry = entry ?? "";
+			task.Type = type ?? "";
+			task.Value = value ?? "";
 
 			if (expected is null) {
 				ExecuteTask (task, 1);
@@ -88,7 +88,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			var output = PObject.FromFile (task.PropertyList);
+			var output = PObject.FromFile (task.PropertyList) ?? throw new InvalidOperationException ("PObject.FromFile returned null");
 
 			Assert.AreEqual (expected.Type, output.Type, "Task produced the incorrect plist output.");
 
@@ -103,7 +103,7 @@ namespace Xamarin.MacDev.Tasks {
 			var expected = new PDictionary ();
 			var plist = new PDictionary ();
 
-			expected.Add (property, value);
+			expected.Add (property, new PString (value));
 
 			TestExecuteTask (plist, PropertyListEditorAction.Add, ":" + property, "string", value, expected);
 		}
@@ -115,7 +115,7 @@ namespace Xamarin.MacDev.Tasks {
 			const string value = "com.microsoft.add-property";
 			var plist = new PDictionary ();
 
-			plist.Add (property, value);
+			plist.Add (property, new PString (value));
 
 			// Note: Add will fail if the property already exists
 			TestExecuteTask (plist, PropertyListEditorAction.Add, ":" + property, "string", value, null);
@@ -125,7 +125,7 @@ namespace Xamarin.MacDev.Tasks {
 		public void TestAddNestedProperty ()
 		{
 			var plist = new PDictionary ();
-			plist.Add ("CFBundleIdentifier", "com.microsoft.add-nested-property");
+			plist.Add ("CFBundleIdentifier", new PString ("com.microsoft.add-nested-property"));
 
 			var expected = (PDictionary) plist.Clone ();
 			var primary = new PDictionary ();
@@ -145,7 +145,7 @@ namespace Xamarin.MacDev.Tasks {
 			TestExecuteTask (plist, PropertyListEditorAction.Add, ":CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles", "array", null, expected);
 
 			plist = (PDictionary) expected.Clone ();
-			files.Add ("icon0");
+			files.Add (new PString ("icon0"));
 
 			TestExecuteTask (plist, PropertyListEditorAction.Add, ":CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles:", "string", "icon0", expected);
 		}
@@ -158,13 +158,13 @@ namespace Xamarin.MacDev.Tasks {
 			var icons = new PDictionary ();
 			var files = new PArray ();
 
-			plist.Add ("CFBundleIdentifier", "com.microsoft.add-array-value");
+			plist.Add ("CFBundleIdentifier", new PString ("com.microsoft.add-array-value"));
 			plist.Add ("CFBundleIcons", icons);
 			icons.Add ("CFBundlePrimaryIcon", primary);
 			primary.Add ("CFBundleIconFiles", files);
-			files.Add ("icon0");
-			files.Add ("icon1");
-			files.Add ("icon2");
+			files.Add (new PString ("icon0"));
+			files.Add (new PString ("icon1"));
+			files.Add (new PString ("icon2"));
 
 			var expected = (PDictionary) plist.Clone ();
 			files.RemoveAt (0);
@@ -191,8 +191,8 @@ namespace Xamarin.MacDev.Tasks {
 			var expected = new PDictionary ();
 			var plist = new PDictionary ();
 
-			plist.Add (property, "com.microsoft.initial-value");
-			expected.Add (property, value);
+			plist.Add (property, new PString ("com.microsoft.initial-value"));
+			expected.Add (property, new PString (value));
 
 			TestExecuteTask (plist, PropertyListEditorAction.Set, ":" + property, "string", value, expected);
 		}
@@ -201,7 +201,7 @@ namespace Xamarin.MacDev.Tasks {
 		public void TestSetNestedProperty ()
 		{
 			var plist = new PDictionary ();
-			plist.Add ("CFBundleIdentifier", "com.microsoft.set-nested-property");
+			plist.Add ("CFBundleIdentifier", new PString ("com.microsoft.set-nested-property"));
 
 			// Note: Set will fail if the property doesn't already exist
 			TestExecuteTask (plist, PropertyListEditorAction.Set, ":CFBundleIcons:CFBundlePrimaryIcon:UIPrerenderedIcon", "bool", "true", null);
@@ -215,13 +215,13 @@ namespace Xamarin.MacDev.Tasks {
 			var icons = new PDictionary ();
 			var files = new PArray ();
 
-			plist.Add ("CFBundleIdentifier", "com.microsoft.set-array-value");
+			plist.Add ("CFBundleIdentifier", new PString ("com.microsoft.set-array-value"));
 			plist.Add ("CFBundleIcons", icons);
 			icons.Add ("CFBundlePrimaryIcon", primary);
 			primary.Add ("CFBundleIconFiles", files);
-			files.Add ("icon0");
-			files.Add ("icon1");
-			files.Add ("icon2");
+			files.Add (new PString ("icon0"));
+			files.Add (new PString ("icon1"));
+			files.Add (new PString ("icon2"));
 
 			var expected = (PDictionary) plist.Clone ();
 			files [0] = new PString ("icon");
@@ -237,9 +237,9 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var plist = new PDictionary ();
 
-			plist.Add ("CFBundleIdentifier", "com.microsoft.clear");
-			plist.Add ("CFBundleShortVersionString", "1.0");
-			plist.Add ("CFBundleVersion", "1");
+			plist.Add ("CFBundleIdentifier", new PString ("com.microsoft.clear"));
+			plist.Add ("CFBundleShortVersionString", new PString ("1.0"));
+			plist.Add ("CFBundleVersion", new PString ("1"));
 
 			TestExecuteTask (plist, PropertyListEditorAction.Clear, null, null, null, new PDictionary ());
 			TestExecuteTask (plist, PropertyListEditorAction.Clear, null, "dict", null, new PDictionary ());
@@ -256,12 +256,12 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var plist = new PDictionary ();
 
-			plist.Add ("CFBundleIdentifier", "com.microsoft.delete-property");
-			plist.Add ("CFBundleShortVersionString", "1.0");
+			plist.Add ("CFBundleIdentifier", new PString ("com.microsoft.delete-property"));
+			plist.Add ("CFBundleShortVersionString", new PString ("1.0"));
 
 			var expected = (PDictionary) plist.Clone ();
 
-			plist.Add ("CFBundleVersion", "1");
+			plist.Add ("CFBundleVersion", new PString ("1"));
 
 			TestExecuteTask (plist, PropertyListEditorAction.Delete, ":CFBundleVersion", null, null, expected);
 
@@ -276,16 +276,16 @@ namespace Xamarin.MacDev.Tasks {
 			var icons = new PDictionary ();
 			var files = new PArray ();
 
-			plist.Add ("CFBundleIdentifier", "com.microsoft.delete-nested-property");
+			plist.Add ("CFBundleIdentifier", new PString ("com.microsoft.delete-nested-property"));
 			plist.Add ("CFBundleIcons", icons);
 			icons.Add ("CFBundlePrimaryIcon", primary);
 			primary.Add ("CFBundleIconFiles", files);
-			files.Add ("icon0");
-			files.Add ("icon1");
+			files.Add (new PString ("icon0"));
+			files.Add (new PString ("icon1"));
 
 			var expected = (PDictionary) plist.Clone ();
 
-			files.Add ("icon2");
+			files.Add (new PString ("icon2"));
 
 			TestExecuteTask (plist, PropertyListEditorAction.Delete, ":CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles:2", null, null, expected);
 
@@ -306,14 +306,14 @@ namespace Xamarin.MacDev.Tasks {
 			var icons = new PDictionary ();
 			var files = new PArray ();
 
-			expected.Add ("CFBundleIdentifier", "com.microsoft.merge-root");
+			expected.Add ("CFBundleIdentifier", new PString ("com.microsoft.merge-root"));
 			expected.Add ("CFBundleIcons", icons);
 			icons.Add ("CFBundlePrimaryIcon", primary);
 			primary.Add ("UIPrerenderedIcon", new PBoolean (true));
 			primary.Add ("CFBundleIconFiles", files);
-			files.Add ("icon0");
-			files.Add ("icon1");
-			files.Add ("icon2");
+			files.Add (new PString ("icon0"));
+			files.Add (new PString ("icon1"));
+			files.Add (new PString ("icon2"));
 
 			var plist = (PDictionary) expected.Clone ();
 			plist.Remove ("CFBundleIcons");
@@ -334,17 +334,17 @@ namespace Xamarin.MacDev.Tasks {
 			var plist = new PDictionary ();
 			var array0 = new PArray ();
 
-			array0.Add ("item0");
-			array0.Add ("item1");
-			array0.Add ("item2");
-			array0.Add ("item3");
+			array0.Add (new PString ("item0"));
+			array0.Add (new PString ("item1"));
+			array0.Add (new PString ("item2"));
+			array0.Add (new PString ("item3"));
 
-			plist.Add ("CFBundleIdentifier", "com.microsoft.merge-arrays");
+			plist.Add ("CFBundleIdentifier", new PString ("com.microsoft.merge-arrays"));
 			plist.Add ("CFArrayItems", array0);
 
 			var array1 = new PArray ();
-			array1.Add ("item2");
-			array1.Add ("item3");
+			array1.Add (new PString ("item2"));
+			array1.Add (new PString ("item3"));
 
 			var expected = (PDictionary) plist.Clone ();
 			array0.RemoveAt (3);

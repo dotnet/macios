@@ -12,8 +12,7 @@ using System.Linq;
 using Xamarin.Utils;
 using System.Runtime.CompilerServices;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -36,7 +35,7 @@ namespace Introspection {
 			return SkipDueToAttribute (type);
 		}
 
-		Type GetExtendedType (Type extensionType)
+		Type? GetExtendedType (Type extensionType)
 		{
 			var method =
 				(from m in extensionType.GetMethods (BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
@@ -55,10 +54,10 @@ namespace Introspection {
 
 		IntPtr GetClassPtrFromRegister (Type t)
 		{
-			var attribs = t.GetCustomAttributes (typeof (RegisterAttribute), true);
-			if (attribs.Length > 0) {
-				var register = ((RegisterAttribute) attribs [0]);
-				return Class.GetHandle (register.Name);
+			var attribs = t.GetCustomAttributes<RegisterAttribute> (true);
+			if (attribs.Any ()) {
+				var register = attribs.First ();
+				return Class.GetHandle (register.Name ?? "");
 			}
 			return IntPtr.Zero;
 		}
@@ -76,10 +75,10 @@ namespace Introspection {
 				if (Skip (t))
 					continue;
 
-				FieldInfo fi = t.GetField ("class_ptr", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
+				var fi = t.GetField ("class_ptr", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
 				if (fi is null)
 					continue;
-				IntPtr class_ptr = (IntPtr) (NativeHandle) fi.GetValue (null);
+				IntPtr class_ptr = (IntPtr) (NativeHandle) fi.GetValue (null)!;
 				IntPtr register_class_ptr = GetClassPtrFromRegister (t);
 
 				Assert.AreEqual (class_ptr, register_class_ptr, "class_ptr and RegisterAttribute are different: " + t.Name);
@@ -93,10 +92,10 @@ namespace Introspection {
 				if (Skip (t))
 					continue;
 
-				FieldInfo fi = t.GetField ("class_ptr", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
+				var fi = t.GetField ("class_ptr", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
 				if (fi is null)
 					continue;
-				IntPtr class_ptr = (IntPtr) (NativeHandle) fi.GetValue (null);
+				IntPtr class_ptr = (IntPtr) (NativeHandle) fi.GetValue (null)!;
 
 				var extendedType = GetExtendedType (t);
 				IntPtr extended_class_ptr;

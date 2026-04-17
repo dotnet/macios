@@ -74,4 +74,52 @@ public class TrxParser {
 			return false;
 		}
 	}
+
+	public static bool TryParseNUnitXmlFile (string path, [NotNullWhen (true)] out IList<TrxTestResult>? failedTests, [NotNullWhen (true)] out string? outcome, out bool allTestsSucceeded, out Exception? exception)
+	{
+		allTestsSucceeded = false;
+		failedTests = null;
+		outcome = null;
+		exception = null;
+
+		if (!File.Exists (path))
+			return false;
+
+		var rv = new List<TrxTestResult> ();
+		try {
+			var xml = new XmlDocument ();
+			xml.Load (path);
+			outcome = xml.SelectSingleNode ("/*[local-name() = 'test-run' or local-name() = 'test-results']")?.Attributes? ["result"]?.Value;
+			var failedTestsQuery = xml.SelectNodes ("//*[local-name() = 'test-case'][@result = 'Failed' or @result = 'Failure' or @label = 'Error' or (@success = 'False' and @executed = 'True')]")?.Cast<XmlNode> ();
+			if (failedTestsQuery?.Any () == true) {
+				foreach (var node in failedTestsQuery) {
+					var testName = node.Attributes? ["fullname"]?.Value;
+					if (string.IsNullOrEmpty (testName))
+						testName = node.Attributes? ["name"]?.Value ?? "<unknown test name>";
+
+					var testOutcome = node.Attributes? ["label"]?.Value ?? node.Attributes? ["result"]?.Value ?? "<unknown test outcome>";
+					var testMessage = node.SelectSingleNode ("*[local-name() = 'failure']/*[local-name() = 'message'] | *[local-name() = 'reason']/*[local-name() = 'message']")?.InnerText ?? "";
+
+					rv.Add (new TrxTestResult () {
+						Name = testName,
+						Outcome = testOutcome,
+						Message = testMessage,
+					});
+				}
+				allTestsSucceeded = false;
+			} else if (string.Equals (outcome, "Passed", StringComparison.OrdinalIgnoreCase) || string.Equals (outcome, "Success", StringComparison.OrdinalIgnoreCase) || string.Equals (outcome, "Completed", StringComparison.OrdinalIgnoreCase)) {
+				allTestsSucceeded = true;
+			}
+
+			failedTests = rv;
+			if (outcome is null)
+				outcome = rv.Count > 0 ? "Failed" : "Passed";
+			return true;
+		} catch (Exception e) {
+			outcome = "Failed to parse test results";
+			exception = e;
+			allTestsSucceeded = false;
+			return false;
+		}
+	}
 }

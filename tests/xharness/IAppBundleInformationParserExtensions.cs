@@ -11,7 +11,7 @@ namespace Xharness {
 	public static class IAppBundleInformationParserExtensions {
 		// This is a copy of this method: https://github.com/dotnet/xharness/blob/aa434d0c7e6eb46df1ec11b3c63add37d835c4d0/src/Microsoft.DotNet.XHarness.iOS.Shared/AppBundleInformationParser.cs#L43-L103
 		// And then augmented to handle that the path to the Info.plist might have $(RootTestsDirectory) in it.
-		public async static Task<AppBundleInformation> ParseFromProject2 (this IAppBundleInformationParser @this, IAppBundleLocator? _appBundleLocator, string projectFilePath, TestTarget target, string buildConfiguration)
+		public async static Task<AppBundleInformation> ParseFromProject2 (this IAppBundleInformationParser @this, AppBundleLocator? _appBundleLocator, string projectFilePath, TestTarget target, string buildConfiguration)
 		{
 			var csproj = new XmlDocument ();
 			csproj.LoadWithoutNetworkAccess (projectFilePath);

@@ -29,7 +29,13 @@ namespace Xamarin.Tests {
 			DotNet.Execute ("build", project_path, properties, target: "_DetectSdkLocations;_DetectAppManifest;_CompileAppManifest;_WriteAppManifest");
 
 			properties ["MlaunchInstallScript"] = outputPath;
-			var rv = DotNet.Execute ("build", project_path, properties, target: "ComputeMlaunchInstallArguments");
+			var rv = DotNet.Execute ("build", project_path, properties, assert_success: false, target: "ComputeMlaunchInstallArguments");
+
+			if (rv.ExitCode != 0) {
+				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).Select (v => v.Message).OfType<string> ().ToArray ();
+				Assert.That (string.Join ("\n", errors), Does.Contain ("No applicable and available devices found."));
+				return;
+			}
 
 			if (!BinLog.TryFindPropertyValue (rv.BinLogPath, "MlaunchInstallArguments", out var mlaunchInstallArguments))
 				Assert.Fail ("Could not find the property 'MlaunchInstallArguments' in the binlog.");
@@ -52,9 +58,9 @@ namespace Xamarin.Tests {
 		public static object [] GetMlaunchRunArgumentsTestCases ()
 		{
 			return new object [] {
-				new object [] {ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64", $":v2:runtime=com.apple.CoreSimulator.SimRuntime.iOS-{SdkVersions.iOS.Replace('.', '-')},devicetype=com.apple.CoreSimulator.SimDeviceType.iPhone-.*" },
+				new object [] {ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64", @":v2:udid=[A-F0-9-]+" },
 				new object [] {ApplePlatform.iOS, "ios-arm64", "" },
-				new object [] {ApplePlatform.TVOS, "tvossimulator-arm64", $":v2:runtime=com.apple.CoreSimulator.SimRuntime.tvOS-{SdkVersions.TVOS.Replace('.', '-')},devicetype=com.apple.CoreSimulator.SimDeviceType.Apple-TV-.*" },
+				new object [] {ApplePlatform.TVOS, "tvossimulator-arm64", @":v2:udid=[A-F0-9-]+" },
 			};
 		}
 
@@ -75,7 +81,13 @@ namespace Xamarin.Tests {
 			DotNet.Execute ("build", project_path, properties, target: "_DetectSdkLocations;_DetectAppManifest;_CompileAppManifest;_WriteAppManifest");
 
 			properties ["MlaunchRunScript"] = outputPath;
-			var rv = DotNet.Execute ("build", project_path, properties, target: "ComputeMlaunchRunArguments");
+			var rv = DotNet.Execute ("build", project_path, properties, assert_success: false, target: "ComputeMlaunchRunArguments");
+
+			if (rv.ExitCode != 0) {
+				var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).Select (v => v.Message).OfType<string> ().ToArray ();
+				Assert.That (string.Join ("\n", errors), Does.Contain ("No applicable and available devices found."));
+				return;
+			}
 
 			if (!BinLog.TryFindPropertyValue (rv.BinLogPath, "MlaunchRunArguments", out var mlaunchRunArguments))
 				Assert.Fail ("Could not find the property 'MlaunchRunArguments' in the binlog.");

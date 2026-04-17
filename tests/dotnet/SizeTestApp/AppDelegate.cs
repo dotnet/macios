@@ -5,17 +5,21 @@ using Foundation;
 #if HAS_UIKIT
 using UIKit;
 #endif
+#if HAS_APPKIT
+using AppKit;
+#endif
 
 namespace MySimpleApp {
 	public class Program {
 		static int Main (string [] args)
 		{
 #if HAS_UIKIT
-
 			UIApplication.Main (args, null, typeof (AppDelegate));
-#else
+#elif HAS_APPKIT
 			NSApplication.Init ();
 			NSApplication.Main (args);
+#else
+#error This test app has not been implemented for this platform.
 #endif
 			return 0;
 		}
@@ -40,7 +44,11 @@ namespace MySimpleApp {
 			return true;
 		}
 	}
+#elif HAS_APPKIT
+	[Register ("AppDelegate")]
+	public class AppDelegate : NSApplicationDelegate {
+	}
 #else
-#error This test app has not been implemented for AppKit yet.
+#error This test app has not been implemented for this platform.
 #endif
 }

@@ -20,12 +20,14 @@
 
 	<Target
 		Name="ShowRunHelp"
-		DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest">
+		DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices">
 		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
 		<Error Condition="!Exists('$(_AppBundleManifestPath)')" Text="The app must be built before showing how to launch it." />
 
 		<GetMlaunchArguments
 			AppManifestPath="$(_AppBundleManifestPath)"
+			DiscardedDevices="@(DiscardedDevices)"
+			Devices="@(Devices)"
 			Help="true"
 			MlaunchPath="$(MlaunchPath)"
 			SdkDevPath="$(_SdkDevPath)"
@@ -44,7 +46,7 @@
 	</Target>
 	<Target Name="_ShowRunHelpConditioned" Condition="'$(Help)' == 'true'" DependsOnTargets="ShowRunHelp" />
 
-	<Target Name="ComputeMlaunchInstallArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;_ShowRunHelpConditioned;_ComputeMlaunchInstallArguments" />
+	<Target Name="ComputeMlaunchInstallArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices;_ShowRunHelpConditioned;_ComputeMlaunchInstallArguments" />
 	<Target Name="_ComputeMlaunchInstallArguments" Condition="'$(_SdkIsSimulator)' == 'false' And '$(Help)' != 'true'">
 		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
 		<Error Condition="$([MSBuild]::IsOSPlatform('windows'))" Text="It's currently not supported to launch an app from the command line on Windows." />
@@ -53,6 +55,8 @@
 		<GetMlaunchArguments
 			SessionId="$(BuildSessionId)"
 			AppManifestPath="$(_AppBundleManifestPath)"
+			DiscardedDevices="@(DiscardedDevices)"
+			Devices="@(Devices)"
 			DeviceName="$(Device)"
 			InstallApp="$(_AppBundlePath)"
 			MlaunchPath="$(MlaunchPath)"
@@ -77,7 +81,7 @@
 		<Exec SessionId="$(BuildSessionId)" Command="'$(MlaunchPath)' $(MlaunchInstallArguments)" />
 	</Target>
 
-	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;_ShowRunHelpConditioned;_ComputeMlaunchRunArguments" Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'" />
+	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices;_ShowRunHelpConditioned;_ComputeMlaunchRunArguments" Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'" />
 
 	<Target Name="_ComputeMlaunchRunArguments" Condition="'$(Help)' != 'true'">
 		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
@@ -105,6 +109,8 @@
 			AdditionalArguments="@(MlaunchAdditionalArguments)"
 			AppManifestPath="$(_AppBundleManifestPath)"
 			CaptureOutput="$(_MlaunchCaptureOutput)"
+			DiscardedDevices="@(DiscardedDevices)"
+			Devices="@(Devices)"
 			DeviceName="$(Device)"
 			EnvironmentVariables="@(MlaunchEnvironmentVariables)"
 			LaunchApp="$(_AppBundlePath)"

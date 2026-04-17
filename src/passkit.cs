@@ -2125,8 +2125,8 @@ namespace PassKit {
 		bool CanMakePayments { get; }
 
 		/// <param name="supportedNetworks">To be added.</param>
-		///         <summary>Gets a value that tells wether the user can make payments in at least one of the specified <paramref name="supportedNetworks" />.</summary>
-		///         <returns>A value that tells wether the user can make payments in at least one of the specified <paramref name="supportedNetworks" />.</returns>
+		///         <summary>Gets a value that tells whether the user can make payments in at least one of the specified <paramref name="supportedNetworks" />.</summary>
+		///         <returns>A value that tells whether the user can make payments in at least one of the specified <paramref name="supportedNetworks" />.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canMakePaymentsUsingNetworks:")]
@@ -2134,8 +2134,8 @@ namespace PassKit {
 
 		/// <param name="supportedNetworks">To be added.</param>
 		///         <param name="capabilties">To be added.</param>
-		///         <summary>Gets a value that tells wether the user can make payments in at least one of the specified <paramref name="supportedNetworks" /> with the specified <paramref name="capabilties" />.</summary>
-		///         <returns>A value that tells wether the user can make payments in at least one of the specified <paramref name="supportedNetworks" /> with the specified <paramref name="capabilties" />.</returns>
+		///         <summary>Gets a value that tells whether the user can make payments in at least one of the specified <paramref name="supportedNetworks" /> with the specified <paramref name="capabilties" />.</summary>
+		///         <returns>A value that tells whether the user can make payments in at least one of the specified <paramref name="supportedNetworks" /> with the specified <paramref name="capabilties" />.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("canMakePaymentsUsingNetworks:capabilities:")]
@@ -2308,7 +2308,7 @@ namespace PassKit {
 		/// <param name="controller">The controller that owns this delegate.</param>
 		///         <param name="paymentMethod">The payment method that was selected.</param>
 		///         <param name="completion">A handler that takes a list of updated payment summary items.</param>
-		///         <summary>Mehod that is called when the user selects a payment method.</summary>
+		///         <summary>Method that is called when the user selects a payment method.</summary>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
 		[Deprecated (PlatformName.iOS, 11, 0, message: "Use 'DidSelectPaymentMethod' overload with the 'Action<PKPaymentRequestPaymentMethodUpdate>' parameter instead.")]
@@ -2653,14 +2653,14 @@ namespace PassKit {
 	[Static] // not to enum'ify - exposed as NSString inside NSError
 	interface PKPaymentErrorKeys {
 
-		/// <summary>Gets a key that identifes the contact field as the source of the error.</summary>
+		/// <summary>Gets a key that identifies the contact field as the source of the error.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Field ("PKPaymentErrorContactFieldUserInfoKey")]
 		NSString ContactFieldUserInfoKey { get; }
 
-		/// <summary>Gets a key that identifes the postal address field as the source of the error.</summary>
+		/// <summary>Gets a key that identifies the postal address field as the source of the error.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]

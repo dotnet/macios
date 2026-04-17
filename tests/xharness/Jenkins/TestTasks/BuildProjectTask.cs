@@ -2,10 +2,10 @@ using System;
 using Microsoft.DotNet.XHarness.Common.Execution;
 
 namespace Xharness.Jenkins.TestTasks {
-	abstract class BuildProjectTask : BuildToolTask {
-		BuildProject BuildProject => buildToolTask as BuildProject;
+	public abstract class BuildProjectTask : BuildToolTask {
+		BuildProject BuildProject => (BuildProject) buildToolTask;
 
-		public string SolutionPath {
+		public string? SolutionPath {
 			get => BuildProject.SolutionPath;
 			set => BuildProject.SolutionPath = value;
 		}

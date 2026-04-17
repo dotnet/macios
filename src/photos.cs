@@ -564,7 +564,7 @@ namespace Photos {
 	// include the availability attributes to any new member (and don't trust the type-level ones)
 	interface PHChangeRequest { }
 
-	/// <summary>Enumerates differences between snapshots of the objec at the specified indices.</summary>
+	/// <summary>Enumerates differences between snapshots of the object at the specified indices.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void PHChangeDetailEnumerator (nuint fromIndex, nuint toIndex);
 

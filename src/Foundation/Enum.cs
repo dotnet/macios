@@ -1077,7 +1077,7 @@ namespace Foundation {
 		CachesDirectory = 13,
 		/// <summary>Application support directory (Library/Application Support)</summary>
 		ApplicationSupportDirectory = 14,
-		/// <summary>Downloads directory (only avaialble when the domain specified includes the User value)</summary>
+		/// <summary>Downloads directory (only available when the domain specified includes the User value)</summary>
 		DownloadsDirectory = 15,
 		/// <summary>Input methods directory (Library/Input Methods)</summary>
 		InputMethodsDirectory = 16,

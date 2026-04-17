@@ -2,17 +2,13 @@
 	<PropertyGroup>
 		<!-- Disables the transitive restore of packages like Microsoft.AspNetCore.App.Ref, Microsoft.WindowsDesktop.App.Ref -->
 		<DisableTransitiveFrameworkReferenceDownloads>true</DisableTransitiveFrameworkReferenceDownloads>
-		<MonoCecilPackageVersion>0.11.5</MonoCecilPackageVersion>
 		<MSBuildStructuredLoggerPackageVersion>2.2.158</MSBuildStructuredLoggerPackageVersion>
 		<MicrosoftBuildPackageVersion>17.13.26</MicrosoftBuildPackageVersion>
 		<MicrosoftBuildFrameworkPackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildFrameworkPackageVersion>
 		<MicrosoftBuildTasksCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildTasksCorePackageVersion>
 		<MicrosoftBuildUtilitiesCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildUtilitiesCorePackageVersion>
-		<NUnitPackageVersion>4.4.0</NUnitPackageVersion>
 		<NUnitConsoleRunnerPackageVersion>3.22.0</NUnitConsoleRunnerPackageVersion>
-		<NUnit3TestAdapterPackageVersion>6.1.0</NUnit3TestAdapterPackageVersion>
 		<NUnitXmlTestLoggerPackageVersion>3.1.15</NUnitXmlTestLoggerPackageVersion>
-		<MicrosoftNETTestSdkPackageVersion>18.0.1</MicrosoftNETTestSdkPackageVersion>
 		<!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.2 brought by Microsoft.Build package -->
 		<SystemDrawingCommonPackageVersion>4.7.2</SystemDrawingCommonPackageVersion>
 		<!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.1 brought by Microsoft.Build.Tasks.Core package -->
@@ -21,11 +17,11 @@
 		<ClangSharpPackageVersion>21.1.8.3</ClangSharpPackageVersion>
 		<ICSharpCodeNRefactoryPackageVersion>5.5.1</ICSharpCodeNRefactoryPackageVersion>
 		<libclangPackageVersion>21.1.8</libclangPackageVersion>
-		<MicrosoftNETTestSdkPackageVersion>17.14.0</MicrosoftNETTestSdkPackageVersion>
+		<MicrosoftNETTestSdkPackageVersion>18.0.1</MicrosoftNETTestSdkPackageVersion>
 		<MonoCecilPackageVersion>0.11.6</MonoCecilPackageVersion>
-		<NUnit3TestAdapterPackageVersion>5.0.0</NUnit3TestAdapterPackageVersion>
+		<NUnit3TestAdapterPackageVersion>6.1.0</NUnit3TestAdapterPackageVersion>
 		<NUnitAnalyzersPackageVersion>4.7.0</NUnitAnalyzersPackageVersion>
-		<NUnitPackageVersion>4.3.2</NUnitPackageVersion>
+		<NUnitPackageVersion>4.4.0</NUnitPackageVersion>
 	</PropertyGroup>
 	<Import Project="Build.props" Condition="Exists('Build.props')" />
 </Project>

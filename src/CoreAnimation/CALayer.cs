@@ -67,8 +67,8 @@ namespace CoreAnimation {
 			MarkDirty (true);
 		}
 
-		/// <param name="other">The other layer to copy infromation from.</param>
-		///         <summary>This method should be overwritten to provide cloning capabilities for the layer.</summary>
+		/// <param name="other">The other layer to copy information from.</param>
+		///         <summary>This method should be overridden to provide cloning capabilities for the layer.</summary>
 		///         <remarks>You can either override this method and clone the information that you need from the original layer, or perform the copy in your initWithLayer: constructor (see the class description for details and a sample). </remarks>
 		public virtual void Clone (CALayer other)
 		{

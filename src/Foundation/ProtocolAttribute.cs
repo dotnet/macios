@@ -60,7 +60,7 @@ namespace Foundation {
 		///         </remarks>
 		public ProtocolAttribute () { }
 
-		/// <summary>The type of a specific managed type that can be used to wrap an instane of this protocol.</summary>
+		/// <summary>The specific managed type that can be used to wrap an instance of this protocol.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>Objective-C protocols are bound as interfaces in managed code, but sometimes a class is needed (in certain
 		///           scenarios our Objective-C-managed bridge have the pointer to an instance of a native object and we only know that it

@@ -531,7 +531,7 @@ namespace ClassKit {
 
 		[Async (XmlDocs = """
 			<param name="identifierPath">The identifier paths for the contexts to find.</param>
-			<summary>Finds the contexts identifed by a set of identifier paths and returns a task that contains the reults.</summary>
+			<summary>Finds the contexts identified by a set of identifier paths and returns a task that contains the results.</summary>
 			<returns>A task that contains the search results</returns>
 			<remarks>To be added.</remarks>
 			""")]

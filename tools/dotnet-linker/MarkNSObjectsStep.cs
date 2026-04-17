@@ -43,8 +43,15 @@ namespace Xamarin.Linker.Steps {
 
 		public bool PreserveType (TypeDefinition type, bool allMembers)
 		{
+			var moduleConstructor = abr.GetOrCreateStaticConstructor (type.Module.GetModuleType (), out var modified);
 			var attrib = CreateDynamicDependencyAttribute (type, allMembers);
-			return abr.AddAttributeToStaticConstructor (type, attrib);
+			modified |= abr.AddAttributeOnlyOnce (moduleConstructor, attrib);
+			return modified;
+		}
+
+		public bool PreserveType (TypeDefinition onType, TypeDefinition type)
+		{
+			return abr.AddDynamicDependencyAttributeToStaticConstructor (onType, type);
 		}
 
 		// We want to avoid `DynamicallyAccessedMemberTypes.All` because it preserves nested types.

@@ -73,6 +73,11 @@ namespace Xamarin.Linker.Steps {
 			return true;
 		}
 
+		public bool PreserveType (TypeDefinition onType, TypeDefinition type)
+		{
+			return PreserveType (type, allMembers: false);
+		}
+
 		public bool PreserveMethod (TypeDefinition onType, MethodDefinition method)
 		{
 			Annotations.AddPreservedMethod (onType, method);
@@ -82,6 +87,8 @@ namespace Xamarin.Linker.Steps {
 
 	public interface IMarkNSObjects {
 		bool PreserveType (TypeDefinition type, bool allMembers);
+		// Preserve 'type' if 'onType' is marked.
+		bool PreserveType (TypeDefinition onType, TypeDefinition type);
 		// Preserve 'method' if 'onType' is marked.
 		bool PreserveMethod (TypeDefinition onType, MethodDefinition method);
 		AnnotationStore Annotations { get; }
@@ -105,7 +112,7 @@ namespace Xamarin.Linker.Steps {
 				if (type.IsNested) {
 					var parent = type.DeclaringType;
 					while (parent is not null) {
-						marker.PreserveType (parent, allMembers: false);
+						marker.PreserveType (type, parent);
 						parent = parent.DeclaringType;
 					}
 				}

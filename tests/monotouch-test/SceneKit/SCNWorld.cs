@@ -9,13 +9,6 @@ namespace Xamarin.Mac.Tests {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class SCNWorldTests {
-		[SetUp]
-		public void SetUp ()
-		{
-			Asserts.EnsureMavericks ();
-			Asserts.Ensure64Bit ();
-		}
-
 		[Test]
 		public void SCNNode_BackfaceCulling ()
 		{

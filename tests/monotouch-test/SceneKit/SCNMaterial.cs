@@ -8,13 +8,6 @@ namespace Xamarin.Mac.Tests {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class SCNMaterialTests {
-		[SetUp]
-		public void SetUp ()
-		{
-			Asserts.EnsureMavericks ();
-			Asserts.Ensure64Bit ();
-		}
-
 		[Test]
 		public void SCNMaterial_ShaderModifierTest_Weak ()
 		{

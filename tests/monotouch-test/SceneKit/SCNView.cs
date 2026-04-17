@@ -10,12 +10,6 @@ namespace Xamarin.Mac.Tests {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class SCNViewTests {
-		[SetUp]
-		public void SetUp ()
-		{
-			Asserts.Ensure64Bit ();
-		}
-
 		[Test]
 		public void SCNView_TechniqueSetterTest ()
 		{

@@ -1180,7 +1180,7 @@ namespace AudioUnit {
 	/// <summary>Enumerates flag values that describe the state of an audio transport.</summary>
 	[Native]
 	public enum AUHostTransportStateFlags : ulong {
-		/// <summary>Indicates that state change has occured, such as a stop, start, seek, or other change since the host transport state block was last called.</summary>
+		/// <summary>Indicates that a state change has occurred, such as a stop, start, seek, or other change since the host transport state block was last called.</summary>
 		Changed = 1,
 		/// <summary>Indicates that the transport is moving.</summary>
 		Moving = 2,
@@ -1208,7 +1208,7 @@ namespace AudioUnit {
 		LoadedRemotely = 1u << 31,
 	}
 
-	/// <summary>Enumerates audio unit bus input-ouput capabilities.</summary>
+	/// <summary>Enumerates audio unit bus input-output capabilities.</summary>
 	[Native]
 	public enum AUAudioUnitBusType : long {
 		/// <summary>Indicates an input bus.</summary>

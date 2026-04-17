@@ -29334,18 +29334,22 @@ namespace AppKit {
 	}
 
 	partial interface NSToolbarItemEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("item")]
+		/// <summary>Gets the toolbar item associated with the notification.</summary>
+		/// <value>The toolbar item that will be added to or has been removed from the toolbar.</value>
+		/// <remarks>This value is read from the notification's <c>userInfo</c> dictionary using <see cref="NSToolbar.NSToolbarItemKey"/>.</remarks>
+		[Export ("NSToolbarItemKey")]
 		NSToolbarItem Item { get; }
 	}
 
 	partial interface NSToolbar {
+		/// <summary>Notification posted when a toolbar is about to add an item.</summary>
+		/// <remarks>The notification payload can be accessed using <see cref="NSToolbarItemEventArgs"/>.</remarks>
 		[Notification (typeof (NSToolbarItemEventArgs))]
 		[Field ("NSToolbarWillAddItemNotification")]
 		NSString NSToolbarWillAddItemNotification { get; }
 
+		/// <summary>Notification posted after a toolbar removes an item.</summary>
+		/// <remarks>The notification payload can be accessed using <see cref="NSToolbarItemEventArgs"/>.</remarks>
 		[Notification (typeof (NSToolbarItemEventArgs))]
 		[Field ("NSToolbarDidRemoveItemNotification")]
 		NSString NSToolbarDidRemoveItemNotification { get; }

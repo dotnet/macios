@@ -433,7 +433,7 @@ namespace EventKit {
 		NSPredicate ContactPredicate { get; }
 	}
 
-	/// <summary>Represents how the EKRecurrence ends.   Either by number of ocurrences or using a specific date.</summary>
+	/// <summary>Represents how the EKRecurrence ends, either by number of occurrences or by using a specific date.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/EventKit/Reference/EKRecurrenceEndClassRef/index.html">Apple documentation for <c>EKRecurrenceEnd</c></related>
 	[BaseType (typeof (NSObject))]

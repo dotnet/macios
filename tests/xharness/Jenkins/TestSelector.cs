@@ -10,7 +10,7 @@ using Microsoft.DotNet.XHarness.Common.Logging;
 
 namespace Xharness.Jenkins {
 
-	class TestSelection {
+	public class TestSelection {
 		TestLabel selection =
 			TestLabel.None |
 			TestLabel.Msbuild |
@@ -90,7 +90,7 @@ namespace Xharness.Jenkins {
 		readonly IVersionControlSystem vcs;
 
 		ILog? MainLog => jenkins?.MainLog;
-		IHarness Harness => jenkins.Harness;
+		Harness Harness => jenkins.Harness;
 
 		#endregion
 

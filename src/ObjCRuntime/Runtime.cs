@@ -1636,6 +1636,33 @@ namespace ObjCRuntime {
 			return null;
 		}
 
+		/// <summary>Remove an object from the object map.</summary>
+		/// <remarks>
+		///   Removing an object from the object map can be necessary for managed wrapper objects that are singletons or not really Objective-C classes, but constant pointers.
+		///   For instance, the constant empty string (@"") is just a singleton pointer which can't be retained/released (retaining/releasing does nothing).
+		///   The problem arises when the managed wrapper for such a native handle is disposed, then subsequently it re-surfaces, and now we end up finding a
+		///   disposed object in the object map.
+		/// </remarks>
+		internal static bool RemoveFromObjectMap (NSObject obj)
+		{
+			var handle = obj.GetHandle ();
+			if (handle == NativeHandle.Zero)
+				return false;
+
+			lock (lock_obj) {
+				if (!object_map.TryGetValue (handle, out var reference))
+					return false;
+
+				if (!object.ReferenceEquals (reference.Target, obj))
+					return false;
+
+				object_map.Remove (handle);
+				reference.Free ();
+			}
+
+			return true;
+		}
+
 		public static NSObject? GetNSObject (NativeHandle ptr)
 		{
 			return GetNSObject ((IntPtr) ptr, MissingCtorResolution.ThrowConstructor1NotFound);

@@ -4,7 +4,6 @@
     <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../../product.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>

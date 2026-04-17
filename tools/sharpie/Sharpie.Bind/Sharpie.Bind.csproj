@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
     <OutputType>Library</OutputType>
-    <LangVersion>latest</LangVersion>
 
     <!-- https://github.com/dotnet/ClangSharp/issues/118 -->
     <RuntimeIdentifier Condition="'$(RuntimeIdentifier)' == '' AND '$(PackAsTool)' != 'true'">$(NETCoreSdkRuntimeIdentifier)</RuntimeIdentifier>

@@ -5,7 +5,6 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Xharness</RootNamespace>
     <AssemblyName>xharness</AssemblyName>
-    <LangVersion>latest</LangVersion>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 

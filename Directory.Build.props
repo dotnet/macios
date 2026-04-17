@@ -23,6 +23,8 @@
 		<NUnitAnalyzersPackageVersion>4.7.0</NUnitAnalyzersPackageVersion>
 		<NUnitPackageVersion>4.4.0</NUnitPackageVersion>
 
+		<!-- Use the latest C# version by default -->
+		<LangVersion Condition="'$(LangVersion)' == ''">latest</LangVersion>
 		<!-- Always enable nullability -->
 		<Nullable>enable</Nullable>
 		<!-- We're warning-free, so let's make sure we stay that way. This includes nullability warnings. -->

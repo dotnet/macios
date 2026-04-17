@@ -1,8 +1,8 @@
-AppBundleSize: 251,560,324 bytes (245,664.4 KB = 239.9 MB)
+AppBundleSize: 251,560,268 bytes (245,664.3 KB = 239.9 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/_CodeSignature/CodeResources: 70,698 bytes (69.0 KB = 0.1 MB)
-Contents/Info.plist: 758 bytes (0.7 KB = 0.0 MB)
-Contents/MacOS/SizeTestApp: 7,964,368 bytes (7,777.7 KB = 7.6 MB)
+Contents/Info.plist: 750 bytes (0.7 KB = 0.0 MB)
+Contents/MacOS/SizeTestApp: 7,964,320 bytes (7,777.7 KB = 7.6 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.CSharp.dll: 894,728 bytes (873.8 KB = 0.9 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.Extensions.Caching.Abstractions.dll: 66,832 bytes (65.3 KB = 0.1 MB)
 Contents/MonoBundle/.xamarin/osx-arm64/Microsoft.Extensions.Configuration.Abstractions.dll: 38,664 bytes (37.8 KB = 0.0 MB)

@@ -909,6 +909,32 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
+		[TestCase (HttpStatusCode.OK, "mandel", "12345678", "mandel", "12345678")]
+		[TestCase (HttpStatusCode.Unauthorized, "mandel", "12345678", "mandel", "87654321")]
+		[TestCase (HttpStatusCode.Unauthorized, "mandel", "12345678", "", "")]
+		public void SupportsDigestAuthentication (HttpStatusCode expectedStatus, string validUsername, string validPassword, string username, string password)
+		{
+			var handler = new NSUrlSessionHandler () {
+				Credentials = new NetworkCredential (username, password, "")
+			};
+
+			var client = new HttpClient (handler);
+
+			HttpStatusCode httpStatus = HttpStatusCode.NotFound;
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				var result = await client.GetAsync (NetworkResources.Httpbin.GetDigestAuthUrl (validUsername, validPassword));
+				httpStatus = result.StatusCode;
+			}, out var ex);
+
+			if (!done) {
+				Assert.Inconclusive ("Request timedout.");
+			} else {
+				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
+				Assert.IsNull (ex, "Exception not null");
+				Assert.AreEqual (expectedStatus, httpStatus, "Status not ok");
+			}
+		}
+
 		[TestCase]
 		public void GHIssue8344 ()
 		{

@@ -15,6 +15,11 @@
 			<_ReadyToRunFilesToPublish Remove="@(_ReadyToRunFilesToPublish)" />
 			<_ReadyToRunFilesToPublish Include="@(_ReadyToRunFilesToPublishFixed)" />
 		</ItemGroup>
+		<ItemGroup Condition="'$(PublishReadyToRunComposite)' != 'true'">
+			<_ReadyToRunCompileListFixed Include="@(_ReadyToRunCompileList)" OutputR2RImage="$(_ReadyToRunOutputPath)/%(Filename)%(Extension)" />
+			<_ReadyToRunCompileList Remove="@(_ReadyToRunCompileList)" />
+			<_ReadyToRunCompileList Include="@(_ReadyToRunCompileListFixed)" />
+		</ItemGroup>
 	</Target>
 
 	<!--
@@ -79,7 +84,7 @@
 	</Target>
 
 	<!-- Set some default properties -->
-	<PropertyGroup Condition="'$(PublishReadyToRun)' == 'true' And '$(UseMonoRuntime)' == 'false' And '$(_UseNativeAot)' != 'true'">
+	<PropertyGroup Condition="'$(PublishReadyToRun)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho' And '$(UseMonoRuntime)' == 'false' And '$(_UseNativeAot)' != 'true'">
 		<CreateR2RFramework Condition="'$(CreateR2RFramework)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">true</CreateR2RFramework>
 		<CreateR2RDylib Condition="'$(CreateR2RDylib)' == '' And '$(CreateR2RFramework)' != 'true'">true</CreateR2RDylib>
 
@@ -153,21 +158,23 @@
 		</_CreateR2RFrameworkDependsOn>
 	</PropertyGroup>
 
+	<!-- Properties for per-module R2R framework/dylib creation.
+		Declared outside any target so they are available wherever the R2R modules are consumed,
+		including post-processing in multi-RID outer builds. -->
+	<PropertyGroup>
+		<_DesktopFramework Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">true</_DesktopFramework>
+		<_DesktopFramework Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">false</_DesktopFramework>
+
+		<_R2RFrameworkBinaryInfix Condition="'$(_DesktopFramework)' == 'true'">/Versions/A</_R2RFrameworkBinaryInfix>
+		<_R2RFrameworkResourcesInfix Condition="'$(_DesktopFramework)' == 'true'">/Versions/A/Resources</_R2RFrameworkResourcesInfix>
+
+		<_R2RModuleIntermediateOutputPath Condition="'$(_R2RModuleIntermediateOutputPath)' == ''">$(DeviceSpecificIntermediateOutputPath)r2rframework/</_R2RModuleIntermediateOutputPath>
+		<_R2RModuleRegistrationFile>$(_R2RModuleIntermediateOutputPath)r2r_modules.mm</_R2RModuleRegistrationFile>
+	</PropertyGroup>
 	<!-- Compute per-module metadata from the collected R2R object files -->
 	<Target Name="_PrepareR2RModules"
 			DependsOnTargets="CreateReadyToRunImages;_CollectR2RObjectFilesForLinking"
 			>
-		<PropertyGroup>
-			<_DesktopFramework Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">true</_DesktopFramework>
-			<_DesktopFramework Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">false</_DesktopFramework>
-
-			<_R2RFrameworkBinaryInfix Condition="'$(_DesktopFramework)' == 'true'">/Versions/A</_R2RFrameworkBinaryInfix>
-			<_R2RFrameworkResourcesInfix Condition="'$(_DesktopFramework)' == 'true'">/Versions/A/Resources</_R2RFrameworkResourcesInfix>
-
-			<_R2RModuleIntermediateOutputPath Condition="'$(_R2RModuleIntermediateOutputPath)' == ''">$(DeviceSpecificIntermediateOutputPath)r2rframework/</_R2RModuleIntermediateOutputPath>
-			<_R2RModuleRegistrationFile>$(_R2RModuleIntermediateOutputPath)r2r_modules.mm</_R2RModuleRegistrationFile>
-		</PropertyGroup>
-
 		<!-- For each .o file, compute module name, symbol name, and framework paths.
 		     The _ReadyToRunObjectFilesToLink items have the original .r2r.dylib filenames;
 		     _R2RObjectFilesForLinking items point to the actual .o files.
@@ -356,7 +363,7 @@
 	</Target>
 
 	<Target Name="_CreateR2RFramework"
-			Condition="'$(CreateR2RFramework)' == 'true'"
+			Condition="'$(CreateR2RFramework)' == 'true' And '$(IsMacEnabled)' != 'false'"
 			DependsOnTargets="$(_CreateR2RFrameworkDependsOn)"
 			AfterTargets="CreateReadyToRunImages"
 	/>
@@ -373,7 +380,7 @@
 	</PropertyGroup>
 
 	<Target Name="_CreateR2RDylib"
-			Condition="'$(CreateR2RDylib)' == 'true'"
+			Condition="'$(CreateR2RDylib)' == 'true' And '$(IsMacEnabled)' != 'false'"
 			DependsOnTargets="$(_CreateR2RDylibDependsOn)"
 			AfterTargets="CreateReadyToRunImages"
 	/>

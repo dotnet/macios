@@ -176,10 +176,9 @@ namespace Foundation {
 		void RemoveInflightData (NSUrlSessionTask task, bool cancel = true)
 		{
 			lock (inflightRequestsLock) {
-				if (inflightRequests.TryGetValue (task, out var data)) {
+				if (inflightRequests.Remove (task, out var data)) {
 					if (cancel)
 						data.CancellationTokenSource.Cancel ();
-					inflightRequests.Remove (task);
 				}
 			}
 
@@ -194,14 +193,16 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		protected override void Dispose (bool disposing)
 		{
+			var tasks = new List<NSUrlSessionTask> ();
 			lock (inflightRequestsLock) {
-				foreach (var pair in inflightRequests) {
-					pair.Key?.Cancel ();
-					pair.Key?.Dispose ();
-				}
-
+				tasks.AddRange (inflightRequests.Keys);
 				inflightRequests.Clear ();
 			}
+			foreach (var task in tasks) {
+				task.Cancel ();
+				task.Dispose ();
+			}
+
 			session.InvalidateAndCancel ();
 			base.Dispose (disposing);
 		}

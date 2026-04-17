@@ -125,7 +125,7 @@ namespace EventKit {
 		SourceDoesNotAllowCalendarAddDelete,
 		/// <summary>A recurring reminder's due date was missing.</summary>
 		RecurringReminderRequiresDueDate,
-		/// <summary>The soure does not support structured locations.</summary>
+		/// <summary>The source does not support structured locations.</summary>
 		StructuredLocationsNotSupported,
 		/// <summary>Locations are not supported for reminders on the source.</summary>
 		ReminderLocationsNotSupported,

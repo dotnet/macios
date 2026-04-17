@@ -32,10 +32,10 @@ namespace Xharness {
 			AppBundleInformation appInformation,
 			RunMode runMode,
 			XmlResultJargon xmlJargon,
-			string device,
+			string? device,
 			TimeSpan timeout,
-			string additionalLogsDirectory = null,
-			ExceptionLogger exceptionLogger = null,
+			string? additionalLogsDirectory = null,
+			ExceptionLogger? exceptionLogger = null,
 			bool generateHtml = false)
 		{
 			return new TestReporter (

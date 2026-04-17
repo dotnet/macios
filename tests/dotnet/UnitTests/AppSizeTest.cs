@@ -11,33 +11,70 @@ namespace Xamarin.Tests {
 	public class AppSizeTest : TestBaseClass {
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void MonoVM (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM", true, new Dictionary<string, string> () { { "UseMonoRuntime", "true" } });
+			var dict = new Dictionary<string, string> () {
+				{ "UseMonoRuntime", "true" },
+				{ "NoDSymUtil", "false" },
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM", true, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void MonoVM_Interpreter (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM-interpreter", true, new Dictionary<string, string> () { { "UseInterpreter", "true" }, { "UseMonoRuntime", "true" } });
+			var dict = new Dictionary<string, string> () {
+				{ "UseInterpreter", "true" },
+				{ "UseMonoRuntime", "true" },
+				{ "NoDSymUtil", "false" },
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-MonoVM-interpreter", true, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
 		public void NativeAOT (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, new Dictionary<string, string> () { { "PublishAot", "true" }, { "_IsPublishing", "true" } });
+			var dict = new Dictionary<string, string> () {
+				{ "PublishAot", "true" },
+				{ "_IsPublishing", "true" },
+				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict);
 		}
 
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void CoreCLR_Interpreter (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
+		public void CoreCLR_Interpreter (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", true, new Dictionary<string, string> () { { "UseMonoRuntime", "false" }, { "PublishReadyToRun", "false" } });
+			var dict = new Dictionary<string, string> () {
+				{ "UseMonoRuntime", "false" },
+				{ "PublishReadyToRun", "false" },
+				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict);
 		}
 
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void CoreCLR_R2R (ApplePlatform platform, string runtimeIdentifiers)
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
+		public void CoreCLR_R2R (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
 		{
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-R2R", true, new Dictionary<string, string> () { { "UseMonoRuntime", "false" }, { "PublishReadyToRun", "true" } });
+			var dict = new Dictionary<string, string> () {
+				{ "UseMonoRuntime", "false" },
+				{ "PublishReadyToRun", "true" },
+				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-R2R", isTrimmed, dict);
 		}
 
 		// This test will build the SizeTestApp, and capture the resulting app size.
@@ -100,7 +137,9 @@ namespace Xamarin.Tests {
 			var expectedAppBundleSize = 0L;
 			if (File.Exists (expectedSizeReportPath)) {
 				expectedSizeReport = File.ReadAllText (expectedSizeReportPath);
-				expectedAppBundleSize = long.Parse (expectedSizeReport.SplitLines ().First ().Replace ("AppBundleSize: ", "").Replace (",", "").Replace (".", "").RemoveAfterFirstSpace ());
+				if (!long.TryParse (expectedSizeReport.SplitLines ().First ().Replace ("AppBundleSize: ", "").Replace (",", "").Replace (".", "").RemoveAfterFirstSpace (), out expectedAppBundleSize)) {
+					expectedSizeReport = "";
+				}
 			}
 
 			var appSizeDifference = appBundleSize - expectedAppBundleSize;
@@ -135,10 +174,12 @@ namespace Xamarin.Tests {
 			foreach (var key in allKeys) {
 				if (!expectedLines.TryGetValue (key, out var expectedLine)) {
 					Console.WriteLine ($"        File '{key}' was added to app bundle: {actualLines [key]}");
-					Assert.Fail ($"The file '{key}' was added to the app bundle.");
+					if (!updated)
+						Assert.Fail ($"The file '{key}' was added to the app bundle.");
 				} else if (!actualLines.TryGetValue (key, out var actualLine)) {
 					Console.WriteLine ($"        File '{key}' was removed from app bundle: {expectedLine}");
-					Assert.Fail ($"The file '{key}' was removed from the app bundle.");
+					if (!updated)
+						Assert.Fail ($"The file '{key}' was removed from the app bundle.");
 				} else if (expectedLine != actualLine) {
 					Console.WriteLine ($"        File '{key}' changed in app bundle:");
 					Console.WriteLine ($"            -{expectedLine}");

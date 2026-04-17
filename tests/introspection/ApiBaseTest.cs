@@ -32,8 +32,7 @@ using Xamarin.Tests;
 using UIKit;
 #endif
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -43,7 +42,7 @@ namespace Introspection {
 		[DllImport ("/usr/lib/libobjc.dylib", EntryPoint = "objc_msgSend")]
 		protected static extern IntPtr IntPtr_objc_msgSend (IntPtr receiver, IntPtr selector);
 
-		private LatchedEnvironmentVariable continueOnFailure = new LatchedEnvironmentVariable ("API_TEST_CONTINUE_ON_FAILURE");
+		LatchedEnvironmentVariable continueOnFailure = new LatchedEnvironmentVariable ("API_TEST_CONTINUE_ON_FAILURE");
 
 		StringBuilder error_output = new StringBuilder ();
 
@@ -62,7 +61,7 @@ namespace Introspection {
 			Errors++;
 		}
 
-		protected void AddErrorLine (string format, params object [] parameters)
+		protected void AddErrorLine (string format, params object? [] parameters)
 		{
 			AddErrorLine (string.Format (format, parameters));
 		}
@@ -78,8 +77,7 @@ namespace Introspection {
 			set { continueOnFailure.Value = value; }
 		}
 
-
-		private LatchedEnvironmentVariable logProgress = new LatchedEnvironmentVariable ("API_TEST_LOG_PROGRESS");
+		LatchedEnvironmentVariable logProgress = new LatchedEnvironmentVariable ("API_TEST_LOG_PROGRESS");
 
 		/// <summary>
 		/// Gets or sets a value indicating whether this test fixture will log it's progress.
@@ -92,7 +90,7 @@ namespace Introspection {
 			set { logProgress.Value = value; }
 		}
 
-		StringBuilder error_data;
+		StringBuilder? error_data;
 		protected StringBuilder ErrorData {
 			get {
 				return error_data ?? (error_data = new StringBuilder ());
@@ -108,7 +106,7 @@ namespace Introspection {
 		}
 
 		protected int Errors;
-		protected void ReportError (string s, params object [] parameters)
+		protected void ReportError (string s, params object? [] parameters)
 		{
 			if (!ContinueOnFailure)
 				Assert.Fail (s, parameters);
@@ -120,7 +118,7 @@ namespace Introspection {
 			}
 		}
 
-		protected void AssertIfErrors (string s, params object [] parameters)
+		protected void AssertIfErrors (string s, params object? [] parameters)
 		{
 			if (Errors == 0)
 				return;
@@ -140,7 +138,7 @@ namespace Introspection {
 			return false;
 		}
 
-		protected bool SkipDueToInvisibleAndUnsupported (MemberInfo member)
+		protected bool SkipDueToInvisibleAndUnsupported (MemberInfo? member)
 		{
 			if (member is null)
 				return false;
@@ -154,7 +152,7 @@ namespace Introspection {
 			return MemberHasEditorBrowsableNever (member);
 		}
 
-		protected virtual bool SkipDueToAttribute (MemberInfo member)
+		protected virtual bool SkipDueToAttribute (MemberInfo? member)
 		{
 			if (member is null)
 				return false;
@@ -180,7 +178,7 @@ namespace Introspection {
 				return false;
 
 			// FIXME: In the future we could cache this to reduce memory requirements
-			var property = m.DeclaringType
+			var property = m.DeclaringType?
 							.GetProperties (BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
 							.SingleOrDefault (p => p.GetGetMethod (true) == m || p.GetSetMethod (true) == m);
 			return property is not null && SkipDueToAttribute (property);
@@ -234,7 +232,7 @@ namespace Introspection {
 		}
 
 		const string libprefix = "/System/Library/Frameworks";
-		static readonly string simprefix = Environment.GetEnvironmentVariable ("IPHONE_SIMULATOR_ROOT");
+		static readonly string? simprefix = Environment.GetEnvironmentVariable ("IPHONE_SIMULATOR_ROOT");
 
 		protected virtual string FindLibrary (string libname, bool requiresFullPath = false)
 		{
@@ -253,7 +251,7 @@ namespace Introspection {
 				break;
 			case "IOSurface":
 				if (!TestRuntime.CheckXcodeVersion (9, 0))
-					prefix = Path.Combine (Path.GetDirectoryName (prefix), "PrivateFrameworks");
+					prefix = Path.Combine (Path.GetDirectoryName (prefix)!, "PrivateFrameworks");
 				break;
 			case "PdfKit":
 				libname = "PDFKit";
@@ -271,7 +269,7 @@ namespace Introspection {
 				libname = "PHASE";
 				break;
 			default:
-				if (requiresFullPath && (Path.GetDirectoryName (libname).Length == 0))
+				if (requiresFullPath && (Path.GetDirectoryName (libname)?.Length == 0))
 					ReportError ("[FAIL] Library '{0}' is specified without a path", libname);
 				break;
 			}

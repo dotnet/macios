@@ -42,7 +42,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.ITunesArtwork = new TaskItem [] { new TaskItem (Assembly.GetExecutingAssembly ().Location) };
 
 				ExecuteTask (task, 1);
-				bool isTranslated = Engine.Logger.ErrorEvents [0].Message.Contains (errorMessage);
+				bool isTranslated = Engine.Logger.ErrorEvents [0].Message?.Contains (errorMessage) == true;
 				Assert.IsTrue (isTranslated, $"Should contain \"{errorMessage}\", but instead has value: \"{Engine.Logger.ErrorEvents [0].Message}\"");
 			} finally {
 				Thread.CurrentThread.CurrentUICulture = originalUICulture;
@@ -72,8 +72,8 @@ namespace Xamarin.MacDev.Tasks {
 
 			try {
 				Assert.IsFalse (string.IsNullOrEmpty (errorCode), "Error code is null or empty");
-				string englishError = TranslateError ("en-US", errorCode);
-				string newCultureError = TranslateError (culture, errorCode);
+				string? englishError = TranslateError ("en-US", errorCode);
+				string? newCultureError = TranslateError (culture, errorCode);
 
 				Assert.AreNotEqual (englishError, newCultureError, $"\"{errorCode}\" is not translated in {culture}.");
 			} catch (NullReferenceException) {
@@ -84,12 +84,12 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		private string TranslateError (string culture, string errorCode)
+		private string? TranslateError (string culture, string errorCode)
 		{
 			CultureInfo cultureInfo = new CultureInfo (culture);
 			Thread.CurrentThread.CurrentUICulture = cultureInfo;
-			PropertyInfo propertyInfo = typeof (MSBStrings).GetProperty (errorCode);
-			return (string) propertyInfo.GetValue (null, null);
+			PropertyInfo? propertyInfo = typeof (MSBStrings).GetProperty (errorCode);
+			return (string?) propertyInfo?.GetValue (null, null);
 		}
 
 		readonly string [] ignoreList = {
@@ -102,7 +102,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var resxPath = Path.Combine (Configuration.RootPath, "msbuild", "Xamarin.Localization.MSBuild", "MSBStrings.resx");
 			var xml = XDocument.Load (resxPath);
-			var resxNames = xml.Root.Descendants ().Where (n => n.Name == "data").Select (n => n.Attribute ("name").Value);
+			var resxNames = xml.Root?.Descendants ().Where (n => n.Name == "data").Select (n => n.Attribute ("name")?.Value ?? "") ?? Enumerable.Empty<string> ();
 			var resxHashSet = new HashSet<string> (resxNames);
 			var resourceNames = typeof (MSBStrings).GetProperties ().Select (s => s.Name);
 			var resourceHashSet = new HashSet<string> (resourceNames);

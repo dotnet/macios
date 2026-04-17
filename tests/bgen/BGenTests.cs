@@ -104,7 +104,7 @@ namespace GeneratorTests {
 				.Union (allTypes.SelectMany ((type) => type.Properties));
 
 			var preserves = allMembers.Count ((v) => v.HasCustomAttributes && v.CustomAttributes.Any ((ca) => ca.AttributeType.Name == "PreserveAttribute"));
-			Assert.AreEqual (35, preserves, "Preserve attribute count"); // If you modified code that generates PreserveAttributes please update the preserve count
+			Assert.That (preserves, Is.EqualTo (35), "Preserve attribute count"); // If you modified code that generates PreserveAttributes please update the preserve count
 		}
 
 		[Test]
@@ -140,7 +140,7 @@ namespace GeneratorTests {
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
 			bgen.Defines = BGenTool.GetDefaultDefines (bgen.Profile);
-			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "generator", "bug31788.cs")));
+			bgen.CreateTemporaryBinding (File.ReadAllText (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "bug31788.cs")));
 			bgen.AssertExecute ("build");
 			bgen.AssertNoWarnings ();
 
@@ -158,7 +158,7 @@ namespace GeneratorTests {
 		[TestCase (Profile.iOS)]
 		public void NSCopyingNullability (Profile profile)
 		{
-			var bgen = BuildFile (profile, "tests/nscopying-nullability.cs");
+			var bgen = BuildFile (profile, "nscopying-nullability.cs");
 			bgen.AssertNoWarnings ();
 		}
 
@@ -166,7 +166,7 @@ namespace GeneratorTests {
 		[TestCase (Profile.iOS)]
 		public void EditorBrowsable (Profile profile)
 		{
-			var bgen = BuildFile (profile, false, true, "tests/editor-browsable.cs");
+			var bgen = BuildFile (profile, false, true, "editor-browsable.cs");
 			var types = bgen.ApiAssembly.MainModule.Types;
 
 			var hasEditorBrowsableAttribute = new Func<ICustomAttributeProvider, bool> ((ICustomAttributeProvider provider) => {
@@ -174,9 +174,9 @@ namespace GeneratorTests {
 			});
 
 			var strongEnumType = types.Single (v => v.Name == "StrongEnum");
-			Assert.IsTrue (hasEditorBrowsableAttribute (strongEnumType), "StrongEnumType");
+			Assert.That (hasEditorBrowsableAttribute (strongEnumType), Is.True, "StrongEnumType");
 			var objcClassType = types.Single (v => v.Name == "ObjCClass");
-			Assert.IsTrue (hasEditorBrowsableAttribute (objcClassType), "ObjCClass");
+			Assert.That (hasEditorBrowsableAttribute (objcClassType), Is.True, "ObjCClass");
 		}
 
 		static string RenderArgument (CustomAttributeArgument arg)
@@ -294,7 +294,7 @@ namespace GeneratorTests {
 				Console.WriteLine (renderedAttributes);
 			}
 
-			Assert.AreEqual (expectedAttributes, renderedAttributes, "Introduced attributes");
+			Assert.That (renderedAttributes, Is.EqualTo (expectedAttributes), "Introduced attributes");
 		}
 
 		[Test]
@@ -305,8 +305,8 @@ namespace GeneratorTests {
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
 			bgen.Defines = BGenTool.GetDefaultDefines (bgen.Profile);
-			bgen.AddTestApiDefinition ("tests/inativeobjects-in-blocks.cs");
-			bgen.AddExtraSourcesRelativeToGeneratorDirectory ("tests/inativeobjects-in-blocks-sources.cs");
+			bgen.AddTestApiDefinition ("inativeobjects-in-blocks.cs");
+			bgen.AddExtraSourcesRelativeToGeneratorDirectory ("inativeobjects-in-blocks-sources.cs");
 			bgen.CreateTemporaryBinding ();
 			bgen.AssertExecute ("build");
 			bgen.AssertNoWarnings ();
@@ -361,7 +361,7 @@ namespace GeneratorTests {
 				.Union (allTypes.SelectMany ((type) => type.Properties));
 
 			var preserves = allMembers.Sum ((v) => v.CustomAttributes.Count ((ca) => ca.AttributeType.Name == "AdviceAttribute"));
-			Assert.AreEqual (33, preserves, "Advice attribute count"); // If you modified code that generates AdviceAttributes please update the attribute count
+			Assert.That (preserves, Is.EqualTo (33), "Advice attribute count"); // If you modified code that generates AdviceAttributes please update the attribute count
 		}
 
 		[Test]
@@ -389,7 +389,7 @@ namespace GeneratorTests {
 				.Union (allTypes.SelectMany ((type) => type.Properties));
 
 			var attribCount = allMembers.Count ((v) => v.HasCustomAttributes && v.CustomAttributes.Any ((ca) => ca.AttributeType.Name == "ObsoleteAttribute"));
-			Assert.AreEqual (2, attribCount, "attribute count");
+			Assert.That (attribCount, Is.EqualTo (2), "attribute count");
 		}
 
 		[Test]
@@ -402,7 +402,7 @@ namespace GeneratorTests {
 
 			// Count all *Async methods whose first parameter is 'IMyFooProtocol'.
 			var methodCount = allMethods.Count ((v) => v.Name.EndsWith ("Async", StringComparison.Ordinal) && v.Parameters.Count > 0 && v.Parameters [0].ParameterType.Name == "IMyFooProtocol");
-			Assert.AreEqual (10, methodCount, "Async method count");
+			Assert.That (methodCount, Is.EqualTo (10), "Async method count");
 		}
 
 		[Test]
@@ -415,7 +415,7 @@ namespace GeneratorTests {
 
 			// Count all *Async methods whose first parameter is 'IMyFooProtocol'.
 			var methodCount = allMethods.Count ((v) => v.Name.EndsWith ("Async", StringComparison.Ordinal) && v.Parameters.Count > 0 && v.Parameters [0].ParameterType.Name == "IMyFooProtocol");
-			Assert.AreEqual (10, methodCount, "Async method count");
+			Assert.That (methodCount, Is.EqualTo (10), "Async method count");
 		}
 
 		[Test]
@@ -430,7 +430,7 @@ namespace GeneratorTests {
 		[TestCase (Profile.iOS)]
 		public void TypesInMultipleNamespaces (Profile profile)
 		{
-			BuildFile (profile, "tests/types-in-multiple-namespaces.cs");
+			BuildFile (profile, "types-in-multiple-namespaces.cs");
 		}
 
 		[Test]
@@ -516,7 +516,7 @@ namespace GeneratorTests {
 		[TestCase (Profile.iOS)]
 		public void INativeObjectArraysInBlocks (Profile profile)
 		{
-			BuildFile (profile, "tests/inativeobject-arrays-in-blocks.cs");
+			BuildFile (profile, "inativeobject-arrays-in-blocks.cs");
 		}
 
 		[Test]
@@ -527,8 +527,8 @@ namespace GeneratorTests {
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
 			bgen.Defines = BGenTool.GetDefaultDefines (bgen.Profile);
-			bgen.Sources.Add (Path.Combine (Configuration.SourceRoot, "tests", "generator", "classNameCollision-enum.cs"));
-			bgen.ApiDefinitions.Add (Path.Combine (Configuration.SourceRoot, "tests", "generator", "classNameCollision.cs"));
+			bgen.Sources.Add (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "classNameCollision-enum.cs"));
+			bgen.ApiDefinitions.Add (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "classNameCollision.cs"));
 			bgen.CreateTemporaryBinding ();
 			bgen.AssertExecute ("build");
 			bgen.AssertNoWarnings ();
@@ -576,7 +576,7 @@ namespace GeneratorTests {
 				.Union (allTypes.SelectMany ((type) => type.Fields))
 				.Union (allTypes.SelectMany ((type) => type.Properties));
 
-			Assert.AreEqual (2, allMembers.Count ((member) => member.Name == "RequiredMethodAsync"), "Expected 2 RequiredMethodAsync members in generated code. If you modified code that generates RequiredMethodAsync (AsyncAttribute) please update the RequiredMethodAsync count.");
+			Assert.That (allMembers.Count ((member) => member.Name == "RequiredMethodAsync"), Is.EqualTo (2), "Expected 2 RequiredMethodAsync members in generated code. If you modified code that generates RequiredMethodAsync (AsyncAttribute) please update the RequiredMethodAsync count.");
 
 			var attribs = MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig;
 			bgen.AssertMethod ("NoAsyncInternalWrapperTests.MyFooDelegate_Extensions", "RequiredMethodAsync", attribs, "System.Threading.Tasks.Task", "NoAsyncInternalWrapperTests.IMyFooDelegate", "System.Int32");
@@ -644,13 +644,13 @@ namespace GeneratorTests {
 				});
 			});
 
-			Assert.AreEqual (12, getINativeObjectCalls, "Preserve attribute count"); // If you modified code that generates PreserveAttributes please update the preserve count
+			Assert.That (getINativeObjectCalls, Is.EqualTo (12), "Preserve attribute count"); // If you modified code that generates PreserveAttributes please update the preserve count
 		}
 
 		[Test]
 		public void IsDirectBinding ()
 		{
-			var bgen = BuildFile (Profile.iOS, "tests/is-direct-binding.cs");
+			var bgen = BuildFile (Profile.iOS, "is-direct-binding.cs");
 
 			var callsMethod = new Func<MethodDefinition, string, bool> ((method, name) => {
 				return method.Body.Instructions.Any ((ins) => {
@@ -658,7 +658,7 @@ namespace GeneratorTests {
 					case Code.Call:
 					case Code.Calli:
 					case Code.Callvirt:
-						var mr = ins.Operand as MethodReference;
+						var mr = (MethodReference) ins.Operand;
 						return mr.Name == name;
 					default:
 						return false;
@@ -705,7 +705,7 @@ namespace GeneratorTests {
 		{
 			var bgen = BuildFile (Profile.iOS, file);
 			var attrib = bgen.ApiAssembly.MainModule.GetType ("Issue3875", "AProtocol").CustomAttributes.Where ((v) => v.AttributeType.Name == "RegisterAttribute").First ();
-			Assert.AreEqual (modelName, attrib.ConstructorArguments [0].Value, "Custom ObjC name");
+			Assert.That (attrib.ConstructorArguments [0].Value, Is.EqualTo (modelName), "Custom ObjC name");
 		}
 
 		[Test]
@@ -746,13 +746,13 @@ namespace GeneratorTests {
 		[Test]
 		public void RefOutParameters ()
 		{
-			BuildFile (Profile.macOSMobile, true, "tests/ref-out-parameters.cs");
+			BuildFile (Profile.macOSMobile, true, "ref-out-parameters.cs");
 		}
 
 		[Test]
 		public void ReturnRelease ()
 		{
-			BuildFile (Profile.iOS, "tests/return-release.cs");
+			BuildFile (Profile.iOS, "return-release.cs");
 		}
 
 		[Test]
@@ -764,24 +764,24 @@ namespace GeneratorTests {
 		[Test]
 		public void IgnoreUnavailableProtocol ()
 		{
-			var bgen = BuildFile (Profile.iOS, "tests/ignore-unavailable-protocol.cs");
+			var bgen = BuildFile (Profile.iOS, "ignore-unavailable-protocol.cs");
 			var myClass = bgen.ApiAssembly.MainModule.GetType ("NS", "MyClass");
 			var myProtocol = bgen.ApiAssembly.MainModule.GetType ("NS", "IMyProtocol");
 			var myClassInterfaces = myClass.Interfaces.Select (v => v.InterfaceType.Name).ToArray ();
 			Assert.That (myClassInterfaces, Does.Not.Contain ("IMyProtocol"), "IMyProtocol");
-			Assert.IsNull (myProtocol, "MyProtocol null");
+			Assert.That (myProtocol, Is.Null, "MyProtocol null");
 		}
 
 		[Test]
 		public void VSTS970507 ()
 		{
-			BuildFile (Profile.iOS, "tests/vsts-970507.cs");
+			BuildFile (Profile.iOS, "vsts-970507.cs");
 		}
 
 		[Test]
 		public void DiamondProtocol ()
 		{
-			BuildFile (Profile.iOS, "tests/diamond-protocol.cs");
+			BuildFile (Profile.iOS, "diamond-protocol.cs");
 		}
 
 		[Test]
@@ -816,25 +816,25 @@ namespace GeneratorTests {
 		public void DisposeAttributeOptimizable ()
 		{
 			var profile = Profile.iOS;
-			var bgen = BuildFile (profile, "tests/dispose-attribute.cs");
+			var bgen = BuildFile (profile, "dispose-attribute.cs");
 
 			// processing custom attributes (like its properties) will call Resolve so we must be able to find the platform assembly to run this test
-			var resolver = bgen.ApiAssembly.MainModule.AssemblyResolver as BaseAssemblyResolver;
+			var resolver = (BaseAssemblyResolver) bgen.ApiAssembly.MainModule.AssemblyResolver;
 			resolver.AddSearchDirectory (Configuration.GetRefDirectory (profile.AsPlatform ()));
 
 			// [Dispose] is, by default, not optimizable
 			var with_dispose = bgen.ApiAssembly.MainModule.GetType ("NS", "WithDispose").Methods.First ((v) => v.Name == "Dispose");
-			Assert.NotNull (with_dispose, "WithDispose");
+			Assert.That (with_dispose, Is.Not.Null, "WithDispose");
 			Assert.That (IsOptimizable (with_dispose), Is.False, "WithDispose/Optimizable");
 
 			// [Dispose] can opt-in being optimizable
 			var with_dispose_optin = bgen.ApiAssembly.MainModule.GetType ("NS", "WithDisposeOptInOptimizable").Methods.First ((v) => v.Name == "Dispose");
-			Assert.NotNull (with_dispose_optin, "WithDisposeOptInOptimizable");
+			Assert.That (with_dispose_optin, Is.Not.Null, "WithDisposeOptInOptimizable");
 			Assert.That (IsOptimizable (with_dispose_optin), Is.True, "WithDisposeOptInOptimizable/Optimizable");
 
 			// Without a [Dispose] attribute the generated method is optimizable
 			var without_dispose = bgen.ApiAssembly.MainModule.GetType ("NS", "WithoutDispose").Methods.First ((v) => v.Name == "Dispose");
-			Assert.NotNull (without_dispose, "WitoutDispose");
+			Assert.That (without_dispose, Is.Not.Null, "WitoutDispose");
 			Assert.That (IsOptimizable (without_dispose), Is.True, "WitoutDispose/Optimizable");
 		}
 
@@ -842,15 +842,15 @@ namespace GeneratorTests {
 		public void SnippetAttributesOptimizable ()
 		{
 			var profile = Profile.iOS;
-			var bgen = BuildFile (profile, "tests/snippet-attributes.cs");
+			var bgen = BuildFile (profile, "snippet-attributes.cs");
 
 			// processing custom attributes (like its properties) will call Resolve so we must be able to find the platform assembly to run this test
-			var resolver = bgen.ApiAssembly.MainModule.AssemblyResolver as BaseAssemblyResolver;
+			var resolver = (BaseAssemblyResolver) bgen.ApiAssembly.MainModule.AssemblyResolver;
 			resolver.AddSearchDirectory (Configuration.GetRefDirectory (profile.AsPlatform ()));
 
 			// [SnippetAttribute] subclasses are, by default, not optimizable
 			var not_opt = bgen.ApiAssembly.MainModule.GetType ("NS", "NotOptimizable");
-			Assert.NotNull (not_opt, "NotOptimizable");
+			Assert.That (not_opt, Is.Not.Null, "NotOptimizable");
 			var pre_not_opt = not_opt.Methods.First ((v) => v.Name == "Pre");
 			Assert.That (IsOptimizable (pre_not_opt), Is.False, "NotOptimizable/Pre");
 			var prologue_not_opt = not_opt.Methods.First ((v) => v.Name == "Prologue");
@@ -860,7 +860,7 @@ namespace GeneratorTests {
 
 			// [SnippetAttribute] subclasses can opt-in being optimizable
 			var optin_opt = bgen.ApiAssembly.MainModule.GetType ("NS", "OptInOptimizable");
-			Assert.NotNull (optin_opt, "OptInOptimizable");
+			Assert.That (optin_opt, Is.Not.Null, "OptInOptimizable");
 			var pre_optin_opt = optin_opt.Methods.First ((v) => v.Name == "Pre");
 			Assert.That (IsOptimizable (pre_optin_opt), Is.True, "OptInOptimizable/Pre");
 			var prologue_optin_opt = optin_opt.Methods.First ((v) => v.Name == "Prologue");
@@ -870,7 +870,7 @@ namespace GeneratorTests {
 
 			// Without a [SnippetAttribute] subclass attribute the generated method is optimizable
 			var nothing = bgen.ApiAssembly.MainModule.GetType ("NS", "NoSnippet").Methods.First ((v) => v.Name == "Nothing");
-			Assert.NotNull (nothing, "NoSnippet");
+			Assert.That (nothing, Is.Not.Null, "NoSnippet");
 			Assert.That (IsOptimizable (nothing), Is.True, "Nothing/Optimizable");
 		}
 
@@ -883,8 +883,8 @@ namespace GeneratorTests {
 			bgen.Profile = profile;
 			bgen.ProcessEnums = true;
 			bgen.Defines = BGenTool.GetDefaultDefines (bgen.Profile);
-			bgen.Sources = new string [] { Path.Combine (Configuration.SourceRoot, "tests", "generator", "tests", "nativeenum-extensions.cs") }.ToList ();
-			bgen.ApiDefinitions = new string [] { Path.Combine (Configuration.SourceRoot, "tests", "generator", "tests", "nativeenum.cs") }.ToList ();
+			bgen.Sources = new string [] { Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "nativeenum-extensions.cs") }.ToList ();
+			bgen.ApiDefinitions = new string [] { Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "nativeenum.cs") }.ToList ();
 			bgen.CreateTemporaryBinding ();
 			bgen.AssertExecute ("build");
 		}
@@ -892,83 +892,83 @@ namespace GeneratorTests {
 		[Test]
 		public void DelegateWithINativeObjectReturnType ()
 		{
-			var bgen = BuildFile (Profile.iOS, "tests/delegate-with-inativeobject-return-type.cs");
+			var bgen = BuildFile (Profile.iOS, "delegate-with-inativeobject-return-type.cs");
 			bgen.AssertExecute ("build");
 
 			// Assert that the return type from the delegate is IntPtr
 			var type = bgen.ApiAssembly.MainModule.GetType ("ObjCRuntime", "Trampolines").NestedTypes.First (v => v.Name == "DMyHandler");
-			Assert.NotNull (type, "DMyHandler");
+			Assert.That (type, Is.Not.Null, "DMyHandler");
 			var method = type.Methods.First (v => v.Name == "Invoke");
-			Assert.AreEqual ("ObjCRuntime.NativeHandle", method.ReturnType.FullName, "Return type");
+			Assert.That (method.ReturnType.FullName, Is.EqualTo ("ObjCRuntime.NativeHandle"), "Return type");
 		}
 
 		[Test]
 		public void ProtocolBindProperty ()
 		{
-			var bgen = BuildFile (Profile.iOS, "tests/protocol-bind-property.cs");
+			var bgen = BuildFile (Profile.iOS, "protocol-bind-property.cs");
 			bgen.AssertExecute ("build");
 
 			// Assert that the return type from the delegate is IntPtr
 			var type = bgen.ApiAssembly.MainModule.GetType ("NS", "MyProtocol_Extensions");
-			Assert.NotNull (type, "MyProtocol_Extensions");
+			Assert.That (type, Is.Not.Null, "MyProtocol_Extensions");
 
 			var method = type.Methods.First (v => v.Name == "GetOptionalProperty");
 			var ldstr = method.Body.Instructions.Single (v => v.OpCode == OpCodes.Ldstr);
-			Assert.AreEqual ("isOptionalProperty", (string) ldstr.Operand, "isOptionalProperty");
+			Assert.That ((string) ldstr.Operand, Is.EqualTo ("isOptionalProperty"), "isOptionalProperty");
 
 
 			method = type.Methods.First (v => v.Name == "SetOptionalProperty");
 			ldstr = method.Body.Instructions.Single (v => v.OpCode == OpCodes.Ldstr);
-			Assert.AreEqual ("setOptionalProperty:", (string) ldstr.Operand, "setOptionalProperty");
+			Assert.That ((string) ldstr.Operand, Is.EqualTo ("setOptionalProperty:"), "setOptionalProperty");
 
 			type = bgen.ApiAssembly.MainModule.GetType ("NS", "MyProtocolWrapper");
-			Assert.NotNull (type, "MyProtocolWrapper");
+			Assert.That (type, Is.Not.Null, "MyProtocolWrapper");
 
 			method = type.Methods.First (v => v.Name == "get_AbstractProperty");
 			ldstr = method.Body.Instructions.Single (v => v.OpCode == OpCodes.Ldstr);
-			Assert.AreEqual ("isAbstractProperty", (string) ldstr.Operand, "isAbstractProperty");
+			Assert.That ((string) ldstr.Operand, Is.EqualTo ("isAbstractProperty"), "isAbstractProperty");
 
 			method = type.Methods.First (v => v.Name == "set_AbstractProperty");
 			ldstr = method.Body.Instructions.Single (v => v.OpCode == OpCodes.Ldstr);
-			Assert.AreEqual ("setAbstractProperty:", (string) ldstr.Operand, "setAbstractProperty");
+			Assert.That ((string) ldstr.Operand, Is.EqualTo ("setAbstractProperty:"), "setAbstractProperty");
 		}
 
 		[Test]
 		public void AbstractTypeTest ()
 		{
-			var bgen = BuildFile (Profile.iOS, "tests/abstract-type.cs");
+			var bgen = BuildFile (Profile.iOS, "abstract-type.cs");
 			bgen.AssertExecute ("build");
 
 			// Assert that the return type from the delegate is IntPtr
 			var type = bgen.ApiAssembly.MainModule.GetType ("NS", "MyObject");
-			Assert.NotNull (type, "MyObject");
-			Assert.IsFalse (type.IsAbstract, "IsAbstract");
+			Assert.That (type, Is.Not.Null, "MyObject");
+			Assert.That (type.IsAbstract, Is.False, "IsAbstract");
 
 			var method = type.Methods.First (v => v.Name == ".ctor" && !v.HasParameters && !v.IsStatic);
-			Assert.IsTrue (method.IsFamily, "IsProtected ctor");
+			Assert.That (method.IsFamily, Is.True, "IsProtected ctor");
 
 			method = type.Methods.First (v => v.Name == "AbstractMember" && !v.HasParameters && !v.IsStatic);
 			var throwInstruction = method.Body?.Instructions?.FirstOrDefault (v => v.OpCode == OpCodes.Throw);
-			Assert.IsTrue (method.IsPublic, "IsPublic ctor");
-			Assert.IsTrue (method.IsVirtual, "IsVirtual");
-			Assert.IsFalse (method.IsAbstract, "IsAbstract");
-			Assert.IsNotNull (throwInstruction, "Throw");
+			Assert.That (method.IsPublic, Is.True, "IsPublic ctor");
+			Assert.That (method.IsVirtual, Is.True, "IsVirtual");
+			Assert.That (method.IsAbstract, Is.False, "IsAbstract");
+			Assert.That (throwInstruction, Is.Not.Null, "Throw");
 		}
 
 		[Test]
 		[Ignore ("https://github.com/dotnet/roslyn/issues/61525")]
 		public void NativeIntDelegates ()
 		{
-			var bgen = BuildFile (Profile.iOS, "tests/nint-delegates.cs");
+			var bgen = BuildFile (Profile.iOS, "nint-delegates.cs");
 
 			Func<string, bool> verifyDelegate = (typename) => {
 				// Assert that the return type from the delegate is IntPtr
 				var type = bgen.ApiAssembly.MainModule.GetType ("NS", typename);
-				Assert.NotNull (type, typename);
+				Assert.That (type, Is.Not.Null, typename);
 				var method = type.Methods.First (m => m.Name == "Invoke");
-				Assert.IsNotNull (method.MethodReturnType.CustomAttributes.FirstOrDefault (attr => attr.AttributeType.Name == "NativeIntegerAttribute"), "Return type for delegate " + typename);
+				Assert.That (method.MethodReturnType.CustomAttributes.FirstOrDefault (attr => attr.AttributeType.Name == "NativeIntegerAttribute"), Is.Not.Null, "Return type for delegate " + typename);
 				foreach (var p in method.Parameters) {
-					Assert.IsNotNull (p.CustomAttributes.FirstOrDefault (attr => attr.AttributeType.Name == "NativeIntegerAttribute"), $"Parameter {p.Name}'s type for delegate " + typename);
+					Assert.That (p.CustomAttributes.FirstOrDefault (attr => attr.AttributeType.Name == "NativeIntegerAttribute"), Is.Not.Null, $"Parameter {p.Name}'s type for delegate " + typename);
 				}
 
 				return false;
@@ -983,7 +983,7 @@ namespace GeneratorTests {
 		[Test]
 		public void CSharp10Syntax ()
 		{
-			BuildFile (Profile.iOS, "tests/csharp10syntax.cs");
+			BuildFile (Profile.iOS, "csharp10syntax.cs");
 		}
 
 		[Test]
@@ -994,7 +994,7 @@ namespace GeneratorTests {
 
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.AddTestApiDefinition ("tests/attributes-from-inlined-protocols.cs");
+			bgen.AddTestApiDefinition ("attributes-from-inlined-protocols.cs");
 			bgen.CreateTemporaryBinding ();
 			bgen.AssertExecute ("build");
 
@@ -1056,12 +1056,14 @@ namespace GeneratorTests {
 		[Test]
 		public void NFloatType ()
 		{
-			var bgen = BuildFile (Profile.iOS, "tests/nfloat.cs");
+			var bgen = BuildFile (Profile.iOS, "nfloat.cs");
 
 			var messaging = bgen.ApiAssembly.MainModule.Types.FirstOrDefault (v => v.Name == "Messaging");
-			Assert.IsNotNull (messaging, "Messaging");
+			Assert.That (messaging, Is.Not.Null, "Messaging");
+			if (messaging is null)
+				return;
 			var pinvoke = messaging.Methods.FirstOrDefault (v => v.Name == "xamarin_nfloat_objc_msgSend_exception");
-			Assert.IsNotNull (pinvoke, "PInvoke");
+			Assert.That (pinvoke, Is.Not.Null, "PInvoke");
 		}
 
 		[Test]
@@ -1071,7 +1073,7 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.AddTestApiDefinition ("tests/no-availability-for-accessors.cs");
+			bgen.AddTestApiDefinition ("no-availability-for-accessors.cs");
 			bgen.CreateTemporaryBinding ();
 			bgen.AssertExecute ("build");
 
@@ -1108,7 +1110,7 @@ namespace GeneratorTests {
 		[Test]
 		public void GeneratedAttributeOnPropertyAccessors ()
 		{
-			var bgen = BuildFile (Profile.MacCatalyst, "tests/generated-attribute-on-property-accessors.cs");
+			var bgen = BuildFile (Profile.MacCatalyst, "generated-attribute-on-property-accessors.cs");
 
 			var messaging = bgen.ApiAssembly.MainModule.Types.First (v => v.Name == "ISomething");
 			var property = messaging.Properties.First (v => v.Name == "IsLoadedInProcess");
@@ -1120,14 +1122,14 @@ namespace GeneratorTests {
 [UnsupportedOSPlatform(""tvos"")]";
 			expectedPropertyAttributes = expectedPropertyAttributes.Replace ("\r", string.Empty);
 
-			Assert.AreEqual (expectedPropertyAttributes, RenderSupportedOSPlatformAttributes (property), "Property attributes");
-			Assert.AreEqual (string.Empty, RenderSupportedOSPlatformAttributes (getter), "Getter Attributes");
+			Assert.That (RenderSupportedOSPlatformAttributes (property), Is.EqualTo (expectedPropertyAttributes), "Property attributes");
+			Assert.That (RenderSupportedOSPlatformAttributes (getter), Is.EqualTo (string.Empty), "Getter Attributes");
 		}
 
 		[Test]
 		public void GeneratedAttributeOnPropertyAccessors2 ()
 		{
-			var bgen = BuildFile (Profile.MacCatalyst, "tests/generated-attribute-on-property-accessors2.cs");
+			var bgen = BuildFile (Profile.MacCatalyst, "generated-attribute-on-property-accessors2.cs");
 
 			var messaging = bgen.ApiAssembly.MainModule.Types.First (v => v.Name == "ISomething");
 			var property = messaging.Properties.First (v => v.Name == "MicrophoneEnabled");
@@ -1148,16 +1150,16 @@ namespace GeneratorTests {
 			expectedPropertyAttributes = expectedPropertyAttributes.Replace ("\r", string.Empty);
 			expectedSetterAttributes = expectedSetterAttributes.Replace ("\r", string.Empty);
 
-			Assert.AreEqual (expectedPropertyAttributes, RenderSupportedOSPlatformAttributes (property), "Property attributes");
-			Assert.AreEqual (string.Empty, RenderSupportedOSPlatformAttributes (getter), "Getter Attributes");
-			Assert.AreEqual (expectedSetterAttributes, RenderSupportedOSPlatformAttributes (setter), "Setter Attributes");
+			Assert.That (RenderSupportedOSPlatformAttributes (property), Is.EqualTo (expectedPropertyAttributes), "Property attributes");
+			Assert.That (RenderSupportedOSPlatformAttributes (getter), Is.EqualTo (string.Empty), "Getter Attributes");
+			Assert.That (RenderSupportedOSPlatformAttributes (setter), Is.EqualTo (expectedSetterAttributes), "Setter Attributes");
 		}
 
 		[Test]
 		[TestCase (Profile.iOS)]
 		public void NewerAvailabilityInInlinedProtocol (Profile profile)
 		{
-			var bgen = BuildFile (profile, "tests/newer-availability-in-inlined-protocol.cs");
+			var bgen = BuildFile (profile, "newer-availability-in-inlined-protocol.cs");
 
 			var expectedMethods = new [] {
 				new {
@@ -1316,15 +1318,17 @@ namespace GeneratorTests {
 
 				foreach (var expected in expectedMethods) {
 					var type = bgen.ApiAssembly.MainModule.Types.FirstOrDefault (v => v.Name == expected.Type);
-					Assert.IsNotNull (type, $"Type not found: {expected.Type}");
+					Assert.That (type, Is.Not.Null, $"Type not found: {expected.Type}");
 					if (type is null)
 						continue;
-					Assert.AreEqual (expected.MethodCount, type.Methods.Count, $"Unexpected method count for {expected.Type}.\n\tActual methods:\n\t\t{string.Join ("\n\t\t", type.Methods.Select (v => v.FullName))}");
+					Assert.That (type.Methods.Count, Is.EqualTo (expected.MethodCount), $"Unexpected method count for {expected.Type}.\n\tActual methods:\n\t\t{string.Join ("\n\t\t", type.Methods.Select (v => v.FullName))}");
 					if (expected.MethodCount == 0)
 						continue;
 					foreach (var expectedMember in expected.Methods) {
 						var member = type.Methods.SingleOrDefault (v => v.Name == expectedMember.Method);
-						Assert.IsNotNull (member, $"Method not found: {expectedMember.Method} in {type.FullName}");
+						Assert.That (member, Is.Not.Null, $"Method not found: {expectedMember.Method} in {type.FullName}");
+						if (member is null)
+							continue;
 						var renderedAttributes = RenderSupportedOSPlatformAttributes (member);
 						var expectedAttributes = expectedMember.Attributes.Replace ("\r", string.Empty);
 						if (renderedAttributes != expectedAttributes) {
@@ -1342,15 +1346,15 @@ namespace GeneratorTests {
 
 				foreach (var expected in expectedProperties) {
 					var type = bgen.ApiAssembly.MainModule.Types.FirstOrDefault (v => v.Name == expected.Type);
-					Assert.IsNotNull (type, $"Type not found: {expected.Type}");
+					Assert.That (type, Is.Not.Null, $"Type not found: {expected.Type}");
 					if (type is null)
 						continue;
-					Assert.AreEqual (expected.PropertyCount, type.Properties.Count, $"Unexpected property count for {expected.Type}.\n\tActual properties:\n\t\t{string.Join ("\n\t\t", type.Properties.Select (v => v.Name))}");
+					Assert.That (type.Properties.Count, Is.EqualTo (expected.PropertyCount), $"Unexpected property count for {expected.Type}.\n\tActual properties:\n\t\t{string.Join ("\n\t\t", type.Properties.Select (v => v.Name))}");
 					if (expected.PropertyCount == 0)
 						continue;
 					foreach (var expectedMember in expected.Properties) {
 						var member = type.Properties.SingleOrDefault (v => v.Name == expectedMember.Property);
-						Assert.IsNotNull (member, $"Property not found: {expectedMember.Property} in {type.FullName}");
+						Assert.That (member, Is.Not.Null, $"Property not found: {expectedMember.Property} in {type.FullName}");
 						if (member is null)
 							continue;
 						var renderedAttributes = RenderSupportedOSPlatformAttributes (member);
@@ -1376,7 +1380,7 @@ namespace GeneratorTests {
 		[TestCase (Profile.iOS)]
 		public void ErrorDomain (Profile profile)
 		{
-			BuildFile (profile, true, true, "tests/errordomain.cs");
+			BuildFile (profile, true, true, "errordomain.cs");
 		}
 
 		[Test]
@@ -1386,7 +1390,7 @@ namespace GeneratorTests {
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
-			bgen.AddTestApiDefinition ("tests/obsoletedosplatform.cs");
+			bgen.AddTestApiDefinition ("obsoletedosplatform.cs");
 			bgen.CreateTemporaryBinding ();
 			bgen.AssertExecute ("build");
 		}
@@ -1394,7 +1398,7 @@ namespace GeneratorTests {
 		[Test]
 		public void InternalDelegate ()
 		{
-			BuildFile (Profile.iOS, "tests/internal-delegate.cs");
+			BuildFile (Profile.iOS, "internal-delegate.cs");
 		}
 
 		[Test]
@@ -1404,10 +1408,10 @@ namespace GeneratorTests {
 		[TestCase (Profile.tvOS)]
 		public void XmlDocs (Profile profile)
 		{
-			var bgen = BuildFile (profile, false, true, "tests/xmldocs.cs");
+			var bgen = BuildFile (profile, false, true, "xmldocs.cs");
 			Assert.That (bgen.XmlDocumentation, Does.Exist);
 			var contents = File.ReadAllText (bgen.XmlDocumentation);
-			var expectedContentsPath = Path.Combine (Configuration.SourceRoot, "tests", "generator", $"ExpectedXmlDocs.{profile.AsPlatform ().AsString ()}.xml");
+			var expectedContentsPath = Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", $"ExpectedXmlDocs.{profile.AsPlatform ().AsString ()}.xml");
 			if (!File.Exists (expectedContentsPath))
 				File.WriteAllText (expectedContentsPath, string.Empty);
 
@@ -1420,9 +1424,9 @@ namespace GeneratorTests {
 			if (contents != expectedContents) {
 				if (!string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("WRITE_KNOWN_FAILURES"))) {
 					File.WriteAllText (expectedContentsPath, contents);
-					Assert.AreEqual (expectedContents, contents, $"Xml docs: The known failures have been updated in {expectedContentsPath}, so please commit the results. Re-running the test should now succeed.");
+					Assert.That (contents, Is.EqualTo (expectedContents), $"Xml docs: The known failures have been updated in {expectedContentsPath}, so please commit the results. Re-running the test should now succeed.");
 				} else {
-					Assert.AreEqual (expectedContents, contents, $"Xml docs: If this is expected, set the WRITE_KNOWN_FAILURES=1 environment variable, run the test again, and commit the changes to the {expectedContentsPath} file.");
+					Assert.That (contents, Is.EqualTo (expectedContents), $"Xml docs: If this is expected, set the WRITE_KNOWN_FAILURES=1 environment variable, run the test again, and commit the changes to the {expectedContentsPath} file.");
 				}
 			}
 		}
@@ -1434,7 +1438,7 @@ namespace GeneratorTests {
 		[TestCase (Profile.tvOS)]
 		public void PreviewAPIs (Profile profile)
 		{
-			var bgen = BuildFile (profile, false, true, "tests/preview.cs");
+			var bgen = BuildFile (profile, false, true, "preview.cs");
 
 			// Each Experimental attribute in the api definition has its own diagnostic ID (with an incremental number)
 			// Here we collect all diagnostic IDS for all the Experimental attributes in the compiled assembly,
@@ -1455,14 +1459,14 @@ namespace GeneratorTests {
 		[Test]
 		public void DelegateParameterAttributes ()
 		{
-			BuildFile (Profile.iOS, "tests/delegate-parameter-attributes.cs");
+			BuildFile (Profile.iOS, "delegate-parameter-attributes.cs");
 		}
 
 		[Test]
 		public void Issue19612 ()
 		{
 			var profile = Profile.iOS;
-			var filename = Path.Combine (Configuration.SourceRoot, "tests", "generator", "issue19612.cs");
+			var filename = Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", "issue19612.cs");
 
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
 
@@ -1485,7 +1489,7 @@ namespace GeneratorTests {
 			cscArguments.Add ($"/r:{Configuration.GetBaseLibrary (tf)}");
 			BGenTool.AddPreviewNoWarn (cscArguments);
 			var rv = ExecutionHelper.Execute (cscExecutable, cscArguments);
-			Assert.AreEqual (0, rv, "CSC exit code");
+			Assert.That (rv, Is.EqualTo (0), "CSC exit code");
 
 			var bgen = new BGenTool ();
 			bgen.Profile = profile;
@@ -1503,7 +1507,7 @@ namespace GeneratorTests {
 		public void BackingFieldType (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			var bgen = BuildFile (profile, true, true, "tests/backingfieldtype.cs");
+			var bgen = BuildFile (profile, true, true, "backingfieldtype.cs");
 
 			const string nintName = "System.IntPtr";
 			const string nuintName = "System.UIntPtr";
@@ -1521,22 +1525,22 @@ namespace GeneratorTests {
 
 			foreach (var tc in testCases) {
 				var getConstant = bgen.ApiAssembly.MainModule.GetType ("BackingField", $"{tc.BackingFieldType}FieldTypeExtensions").Methods.First ((v) => v.Name == "GetConstant");
-				Assert.AreEqual (tc.NullableType, getConstant.ReturnType.FullName, $"{tc.BackingFieldType}: GetConstant return type");
+				Assert.That (getConstant.ReturnType.FullName, Is.EqualTo (tc.NullableType), $"{tc.BackingFieldType}: GetConstant return type");
 
 				var getValue = bgen.ApiAssembly.MainModule.GetType ("BackingField", $"{tc.BackingFieldType}FieldTypeExtensions").Methods.First ((v) => v.Name == "GetValue");
-				Assert.AreEqual (tc.RenderedBackingFieldType, getValue.Parameters [0].ParameterType.FullName, $"{tc.BackingFieldType}: GetValue parameter type");
+				Assert.That (getValue.Parameters [0].ParameterType.FullName, Is.EqualTo (tc.RenderedBackingFieldType), $"{tc.BackingFieldType}: GetValue parameter type");
 
 				var toEnumArray = bgen.ApiAssembly.MainModule.GetType ("BackingField", $"{tc.BackingFieldType}FieldTypeExtensions").Methods.First ((v) => v.Name == "ToEnumArray");
-				Assert.IsTrue (toEnumArray.ReturnType.IsArray, $"{tc.BackingFieldType} ToEnumArray return type IsArray");
-				Assert.AreEqual ($"{tc.BackingFieldType}FieldType", toEnumArray.ReturnType.GetElementType ().Name, $"{tc.BackingFieldType} ToEnumArray return type");
-				Assert.IsTrue (toEnumArray.Parameters [0].ParameterType.IsArray, $"{tc.BackingFieldType} ToEnumArray parameter type IsArray");
-				Assert.AreEqual (tc.RenderedBackingFieldType, toEnumArray.Parameters [0].ParameterType.GetElementType ().FullName, $"{tc.BackingFieldType} ToEnumArray parameter type");
+				Assert.That (toEnumArray.ReturnType.IsArray, Is.True, $"{tc.BackingFieldType} ToEnumArray return type IsArray");
+				Assert.That (toEnumArray.ReturnType.GetElementType ().Name, Is.EqualTo ($"{tc.BackingFieldType}FieldType"), $"{tc.BackingFieldType} ToEnumArray return type");
+				Assert.That (toEnumArray.Parameters [0].ParameterType.IsArray, Is.True, $"{tc.BackingFieldType} ToEnumArray parameter type IsArray");
+				Assert.That (toEnumArray.Parameters [0].ParameterType.GetElementType ().FullName, Is.EqualTo (tc.RenderedBackingFieldType), $"{tc.BackingFieldType} ToEnumArray parameter type");
 
 				var toConstantArray = bgen.ApiAssembly.MainModule.GetType ("BackingField", $"{tc.BackingFieldType}FieldTypeExtensions").Methods.First ((v) => v.Name == "ToConstantArray");
-				Assert.IsTrue (toConstantArray.ReturnType.IsArray, $"{tc.BackingFieldType} ToConstantArray return type IsArray");
-				Assert.AreEqual (tc.SimplifiedNullableType, toConstantArray.ReturnType.GetElementType ().FullName, $"{tc.BackingFieldType} ToConstantArray return type");
-				Assert.IsTrue (toConstantArray.Parameters [0].ParameterType.IsArray, $"{tc.BackingFieldType} ToConstantArray parameter type IsArray");
-				Assert.AreEqual ($"{tc.BackingFieldType}FieldType", toConstantArray.Parameters [0].ParameterType.GetElementType ().Name, $"{tc.BackingFieldType} ToConstantArray parameter type");
+				Assert.That (toConstantArray.ReturnType.IsArray, Is.True, $"{tc.BackingFieldType} ToConstantArray return type IsArray");
+				Assert.That (toConstantArray.ReturnType.GetElementType ().FullName, Is.EqualTo (tc.SimplifiedNullableType), $"{tc.BackingFieldType} ToConstantArray return type");
+				Assert.That (toConstantArray.Parameters [0].ParameterType.IsArray, Is.True, $"{tc.BackingFieldType} ToConstantArray parameter type IsArray");
+				Assert.That (toConstantArray.Parameters [0].ParameterType.GetElementType ().Name, Is.EqualTo ($"{tc.BackingFieldType}FieldType"), $"{tc.BackingFieldType} ToConstantArray parameter type");
 			}
 		}
 
@@ -1545,7 +1549,7 @@ namespace GeneratorTests {
 		public void UnderlyingFieldType (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			BuildFile (profile, true, true, "tests/underlyingfieldtype.cs");
+			BuildFile (profile, true, true, "underlyingfieldtype.cs");
 		}
 
 		[Test]
@@ -1556,7 +1560,7 @@ namespace GeneratorTests {
 		public void AvailabilityAttributes (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			var bgen = BuildFile (profile, "tests/availability-attributes.cs");
+			var bgen = BuildFile (profile, "availability-attributes.cs");
 			bgen.AssertNoWarnings ();
 		}
 
@@ -1565,7 +1569,7 @@ namespace GeneratorTests {
 		public void DelegatesWithNullableReturnType (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			var bgen = BuildFile (profile, "tests/delegate-nullable-return.cs");
+			var bgen = BuildFile (profile, "delegate-nullable-return.cs");
 			bgen.AssertNoWarnings ();
 
 			var delegateCallback = bgen.ApiAssembly.MainModule.GetType ("NS", "MyCallback").Methods.First ((v) => v.Name == "EndInvoke");
@@ -1577,13 +1581,13 @@ namespace GeneratorTests {
 		public void DelegatesWithPointerTypes (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			var bgen = BuildFile (profile, "tests/delegate-types.cs");
+			var bgen = BuildFile (profile, "delegate-types.cs");
 			bgen.AssertNoWarnings ();
 
 			var delegateCallback = bgen.ApiAssembly.MainModule.GetType ("NS", "MyCallback").Methods.First ((v) => v.Name == "EndInvoke");
-			Assert.IsTrue (delegateCallback.MethodReturnType.ReturnType.IsPointer, "Pointer return type");
+			Assert.That (delegateCallback.MethodReturnType.ReturnType.IsPointer, Is.True, "Pointer return type");
 			foreach (var p in delegateCallback.Parameters.Where (v => v.Name != "result")) {
-				Assert.IsTrue (p.ParameterType.IsPointer, $"Pointer parameter type: {p.Name}");
+				Assert.That (p.ParameterType.IsPointer, Is.True, $"Pointer parameter type: {p.Name}");
 			}
 		}
 
@@ -1592,7 +1596,7 @@ namespace GeneratorTests {
 		public void ProtocolWithBaseTypeButNoModel (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			var bgen = BuildFile (profile, false, "tests/protocol-and-basetype-no-model.cs");
+			var bgen = BuildFile (profile, false, "protocol-and-basetype-no-model.cs");
 			bgen.AssertExecute ("build");
 			bgen.AssertWarning (1123, "The type Protocols.ProtocolWithBaseTypeButNoModel has a [Protocol] and a [BaseType] attribute, but no [Model] attribute. This is likely incorrect; either remove the [BaseType] attribute, or add a [Model] attribute.");
 		}
@@ -1602,7 +1606,7 @@ namespace GeneratorTests {
 		public void DesignatedInitializer (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			var bgen = BuildFile (profile, "tests/designated-initializer-issue-10106.cs");
+			var bgen = BuildFile (profile, "designated-initializer-issue-10106.cs");
 			bgen.AssertNoWarnings ();
 		}
 
@@ -1611,7 +1615,7 @@ namespace GeneratorTests {
 		public void ReleaseAttribute (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			var bgen = BuildFile (profile, "tests/release-attribute.cs");
+			var bgen = BuildFile (profile, "release-attribute.cs");
 			bgen.AssertNoWarnings ();
 
 			var passesOwnsEqualsTrue = new Func<MethodDefinition, bool> ((method) => {
@@ -1640,7 +1644,7 @@ namespace GeneratorTests {
 								.Where (v => v.Name != "get_ClassHandle");
 			Assert.Multiple (() => {
 				foreach (var method in methods)
-					Assert.True (passesOwnsEqualsTrue (method), method.Name);
+					Assert.That (passesOwnsEqualsTrue (method), Is.True, method.Name);
 			});
 		}
 
@@ -1650,7 +1654,7 @@ namespace GeneratorTests {
 		{
 			// https://github.com/dotnet/macios/issues/6889
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			var bgen = BuildFile (profile, "tests/both-protected-and-internal.cs");
+			var bgen = BuildFile (profile, "both-protected-and-internal.cs");
 			bgen.AssertNoWarnings ();
 		}
 	}

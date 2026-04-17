@@ -74,7 +74,7 @@ namespace Network {
 
 			unsafe {
 				delegate* unmanaged<IntPtr, IntPtr, IntPtr, void> trampoline = &TrampolineEnumerateHeadersHandler;
-				using var block = new BlockLiteral (trampoline, handler, typeof (NWWebSocketResponseStatus), nameof (TrampolineEnumerateHeadersHandler));
+				using var block = new BlockLiteral (trampoline, handler, typeof (NWWebSocketResponse), nameof (TrampolineEnumerateHeadersHandler));
 				return nw_ws_response_enumerate_additional_headers (GetCheckedHandle (), &block) != 0;
 			}
 		}

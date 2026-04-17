@@ -83,9 +83,6 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void ConnectToPeer ()
 		{
-			NSInputStream read;
-			NSOutputStream write;
-
 			int port;
 			var listener = FindPort (out port);
 			if (listener is null) {
@@ -93,27 +90,58 @@ namespace MonoTouchFixtures.Foundation {
 				return;
 			}
 
-			var listenThread = new Thread (new ParameterizedThreadStart (DebugListener));
-			listenThread.Start (listener);
-			NSStream.CreatePairWithPeerSocketSignature (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp, new IPEndPoint (IPAddress.Loopback, port), out read, out write);
-			read.Open ();
-			write.Open ();
-			var send = new byte [] { 1, 2, 3, 4, 5 };
-			Assert.AreEqual ((nint) 5, write.Write (send), "Write");
-			var result = new byte [5];
-			Assert.AreEqual ((nint) 5, read.Read (result, 5), "Read");
-			for (int i = 0; i < 5; i++)
-				Assert.AreEqual (send [i] * 10, result [i]);
-			listenThread.Join ();
-			listener.Stop ();
-			read.Close ();
-			write.Close ();
+			Exception ex = null;
+			var thread = new Thread (() => {
+				try {
+					NSInputStream read = null;
+					NSOutputStream write = null;
+
+					var listenThread = new Thread (new ParameterizedThreadStart (DebugListener)) {
+						IsBackground = true,
+					};
+					var listenThreadCompleted = false;
+					try {
+						listenThread.Start (listener);
+						NSStream.CreatePairWithPeerSocketSignature (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp, new IPEndPoint (IPAddress.Loopback, port), out read, out write);
+						read.Open ();
+						write.Open ();
+						var send = new byte [] { 1, 2, 3, 4, 5 };
+						Assert.AreEqual ((nint) 5, write.Write (send), "Write");
+						var result = new byte [5];
+						Assert.AreEqual ((nint) 5, read.Read (result, 5), "Read");
+						for (int i = 0; i < 5; i++)
+							Assert.AreEqual (send [i] * 10, result [i], "Item " + i);
+						listenThreadCompleted = listenThread.Join (TimeSpan.FromSeconds (5));
+						Assert.That (listenThreadCompleted, Is.True, "Listener thread");
+					} finally {
+						listener.Stop ();
+						read?.Close ();
+						write?.Close ();
+					}
+				} catch (Exception e) {
+					ex = e;
+				}
+			}) {
+				IsBackground = true,
+			};
+			thread.Start ();
+			Assert.That (thread.Join (TimeSpan.FromSeconds (10)), Is.True, "Background thread completion");
+			Assert.IsNull (ex, "No exception");
 		}
 
 		void DebugListener (object data)
 		{
 			var listener = data as TcpListener;
-			var client = listener.AcceptTcpClient ();
+			TcpClient client;
+			try {
+				client = listener.AcceptTcpClient ();
+			} catch (ObjectDisposedException) {
+				return;
+			} catch (SocketException) {
+				return;
+			} catch (InvalidOperationException) {
+				return;
+			}
 			var stream = client.GetStream ();
 
 			byte [] buffer = new byte [512];

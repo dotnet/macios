@@ -46,12 +46,11 @@ namespace Xamarin.Tests {
 
 		public BGenTool ()
 		{
-			EnvironmentVariables = new Dictionary<string, string> ();
 		}
 
 		public void AddTestApiDefinition (string filename)
 		{
-			ApiDefinitions.Add (Path.Combine (Configuration.SourceRoot, "tests", "generator", filename));
+			ApiDefinitions.Add (Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", filename));
 		}
 
 		public void AddExtraSourcesRelativeToGeneratorDirectory (string pathRelativeToGeneratorDirectory)
@@ -61,7 +60,7 @@ namespace Xamarin.Tests {
 
 		public string GetFullPathRelativeToGeneratorDirectory (string pathRelativeToGeneratorDirectory)
 		{
-			return Path.Combine (Configuration.SourceRoot, "tests", "generator", pathRelativeToGeneratorDirectory);
+			return Path.Combine (Configuration.SourceRoot, "tests", "bgen", "tests", pathRelativeToGeneratorDirectory);
 		}
 
 		public AssemblyDefinition ApiAssembly {
@@ -221,7 +220,7 @@ namespace Xamarin.Tests {
 
 		public void AssertExecuteError (string message)
 		{
-			Assert.AreNotEqual (0, Execute (), message);
+			Assert.That (Execute (), Is.Not.EqualTo (0), message);
 		}
 
 		int Execute ()
@@ -231,9 +230,11 @@ namespace Xamarin.Tests {
 			if (in_process) {
 				int rv;
 				var previous_environment = new Dictionary<string, string?> ();
-				foreach (var kvp in EnvironmentVariables) {
-					previous_environment [kvp.Key] = Environment.GetEnvironmentVariable (kvp.Key);
-					Environment.SetEnvironmentVariable (kvp.Key, kvp.Value);
+				if (EnvironmentVariables is not null) {
+					foreach (var kvp in EnvironmentVariables) {
+						previous_environment [kvp.Key] = Environment.GetEnvironmentVariable (kvp.Key);
+						Environment.SetEnvironmentVariable (kvp.Key, kvp.Value);
+					}
 				}
 				ThreadStaticTextWriter.ReplaceConsole (Output);
 				try {
@@ -336,7 +337,7 @@ namespace Xamarin.Tests {
 				return;
 			}
 			if (attributes is not null)
-				Assert.AreEqual (attributes.Value, t.Attributes, $"Incorrect attributes for type {fullname}.");
+				Assert.That (t.Attributes, Is.EqualTo (attributes.Value), $"Incorrect attributes for type {fullname}.");
 		}
 
 		public void AssertMethod (string typename, string method, params string [] parameterTypes)
@@ -357,7 +358,7 @@ namespace Xamarin.Tests {
 				return;
 			}
 			if (attributes.HasValue)
-				Assert.AreEqual (attributes.Value, m.Attributes, "Attributes for {0}", m.FullName);
+				Assert.That (m.Attributes, Is.EqualTo (attributes.Value), $"Attributes for {m.FullName}");
 		}
 
 		public void AssertNoMethod (string typename, string method, string? returnType = null, params string [] parameterTypes)

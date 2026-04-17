@@ -37,9 +37,7 @@
 		-->
 		<_UseNativeAot Condition="'$(PublishAot)' == 'true' And '$(_IsPublishing)' == 'true'">true</_UseNativeAot>
 
-		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == '' And '$(_PlatformName)' == 'macOS'">false</UseMonoRuntime>
-		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == '' And '$(_UseNativeAot)' == 'true'">false</UseMonoRuntime>
-		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == ''">true</UseMonoRuntime>
+		<UseMonoRuntime Condition=" '$(UseMonoRuntime)' == ''">false</UseMonoRuntime>
 
 		<AfterMicrosoftNETSdkTargets>$(AfterMicrosoftNETSdkTargets);$(MSBuildThisFileDirectory)Microsoft.$(_PlatformName).Sdk.targets</AfterMicrosoftNETSdkTargets>
 
@@ -91,6 +89,7 @@
 
 		<!-- Tell .NET to skip sanity checks that trigger too eagerly for builds with multiple RuntimeIdentifiers -->
 		<AllowPublishAotWithoutRuntimeIdentifier Condition="'$(AllowPublishAotWithoutRuntimeIdentifier)' == '' And '$(_UseNativeAot)' == 'true'">true</AllowPublishAotWithoutRuntimeIdentifier>
+		<AllowReadyToRunWithoutRuntimeIdentifier Condition="'$(AllowReadyToRunWithoutRuntimeIdentifier)' == '' And '$(RuntimeIdentifiers)' != '' And '$(RuntimeIdentifier)' == ''">true</AllowReadyToRunWithoutRuntimeIdentifier>
 		<AllowSelfContainedWithoutRuntimeIdentifier Condition="'$(AllowSelfContainedWithoutRuntimeIdentifier)' == ''">true</AllowSelfContainedWithoutRuntimeIdentifier>
 
 		<!--

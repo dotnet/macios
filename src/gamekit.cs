@@ -1593,7 +1593,7 @@ namespace GameKit {
 		/// <param name="data">To be added.</param>
 		/// <param name="recipient">To be added.</param>
 		/// <param name="player">To be added.</param>
-		/// <summary>Method that is called when the <paramref name="recipient" /> recieves data from another <paramref name="player" />.</summary>
+		/// <summary>Method that is called when the <paramref name="recipient" /> receives data from another <paramref name="player" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("match:didReceiveData:forRecipient:fromRemotePlayer:"), EventArgs ("GKDataReceivedForRecipient", XmlDocs = """
@@ -2271,7 +2271,7 @@ namespace GameKit {
 		[Async (XmlDocs = """
 			<param name="achievements">To be added.</param>
 			<param name="challenges">To be added.</param>
-			<summary>Asychronously reports the provided achievements and challenges to Game Center.</summary>
+			<summary>Asynchronously reports the provided achievements and challenges to Game Center.</summary>
 			<returns>To be added.</returns>
 			<remarks>To be added.</remarks>
 			""")]

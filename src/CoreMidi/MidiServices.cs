@@ -738,7 +738,7 @@ namespace CoreMidi {
 			}
 		}
 
-		/// <include file="../../docs/api/CoreMidi/MidiClient.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiClient.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			SetupChanged = null;
@@ -1106,7 +1106,7 @@ namespace CoreMidi {
 				gch.Free ();
 		}
 
-		/// <include file="../../docs/api/CoreMidi/MidiPort.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiPort.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			MessageReceived = null;
@@ -2657,7 +2657,7 @@ namespace CoreMidi {
 			}
 		}
 
-		/// <include file="../../docs/api/CoreMidi/MidiEndpoint.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiEndpoint.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			MessageReceived = null;

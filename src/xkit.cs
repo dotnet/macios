@@ -422,7 +422,7 @@ namespace UIKit {
 		/// <summary>Invalidates the layout information and glyphs for the specified <see cref="NSTextContainer" /> and any following.</summary>
 		/// <param name="container">To be added.</param>
 		/// <remarks>
-		///   <para>Application developers will typically not need to call this method unless they have subclassed <see cref="NSTextContainer" /> (for example, creating a <see cref="NSTextContainer" /> subclass that changes shape to accomodate placed graphics).</para>
+		///   <para>Application developers will typically not need to call this method unless they have subclassed <see cref="NSTextContainer" /> (for example, creating a <see cref="NSTextContainer" /> subclass that changes shape to accommodate placed graphics).</para>
 		/// </remarks>
 		[Export ("textContainerChangedGeometry:")]
 		void TextContainerChangedGeometry (NSTextContainer container);

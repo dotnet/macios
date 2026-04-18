@@ -10,11 +10,7 @@ using Xharness.Jenkins.TestTasks;
 
 namespace Xharness.Jenkins {
 
-	interface ITestVariationsFactory {
-		IEnumerable<T> CreateTestVariations<T> (IEnumerable<T> tests, Func<MSBuildTask, T, IEnumerable<IDevice>, T> creator) where T : RunTestTask;
-	}
-
-	class TestVariationsFactory : ITestVariationsFactory {
+	class TestVariationsFactory {
 
 		readonly Jenkins jenkins;
 		readonly IProcessManager processManager;
@@ -30,7 +26,7 @@ namespace Xharness.Jenkins {
 			// This function returns additional test configurations (in addition to the default one) for the specific test
 
 			var supports_interpreter = test.Platform != TestPlatform.Mac;
-			var ignore = test.TestProject.Ignore;
+			var ignore = test.TestProject!.Ignore;
 			var mac_supports_arm64 = Harness.CanRunArm64;
 			var arm64_runtime_identifier = string.Empty;
 			var x64_runtime_identifier = string.Empty;
@@ -73,7 +69,7 @@ namespace Xharness.Jenkins {
 
 			switch (test.ProjectPlatform) {
 			case "iPhone":
-				if (test.ProjectConfiguration.Contains ("Debug"))
+				if (test.ProjectConfiguration?.Contains ("Debug") == true)
 					yield return new TestData { Variation = "Release", Debug = false };
 
 				switch (test.TestName) {
@@ -160,18 +156,18 @@ namespace Xharness.Jenkins {
 			}
 		}
 
-		public IEnumerable<T> CreateTestVariations<T> (IEnumerable<T> tests, Func<MSBuildTask, T, IEnumerable<IDevice>, T> creator) where T : RunTestTask
+		public IEnumerable<T> CreateTestVariations<T> (IEnumerable<T> tests, Func<MSBuildTask, T, IEnumerable<IDevice>?, T> creator) where T : RunTestTask
 		{
 			foreach (var task in tests) {
 				if (string.IsNullOrEmpty (task.Variation))
-					task.Variation = task.ProjectConfiguration.Contains ("Debug") ? "Debug" : "Release";
+					task.Variation = task.ProjectConfiguration?.Contains ("Debug") == true ? "Debug" : "Release";
 			}
 
 			var rv = new List<T> (tests);
 			foreach (var task in tests.ToArray ()) {
 				foreach (var test_data in GetTestData (task)) {
 					var variation = test_data.Variation;
-					var configuration = test_data.Debug ? task.ProjectConfiguration : task.ProjectConfiguration.Replace ("Debug", "Release");
+					var configuration = test_data.Debug ? task.ProjectConfiguration : task.ProjectConfiguration?.Replace ("Debug", "Release");
 					var debug = test_data.Debug;
 					var link_mode = test_data.LinkMode;
 					var ignored = test_data.Ignored;
@@ -187,9 +183,9 @@ namespace Xharness.Jenkins {
 					if (known_failure is not null)
 						ignored = true;
 
-					var clone = task.TestProject.Clone ();
+					var clone = task.TestProject!.Clone ();
 					var clone_task = Task.Run (async () => {
-						await task.BuildTask.InitialTask; // this is the project cloning above
+						await task.BuildTask.InitialTask!; // this is the project cloning above
 						await clone.CreateCopyAsync (jenkins.MainLog, processManager, task, HarnessConfiguration.RootDirectory);
 
 						var isMac = task.Platform.IsMac ();
@@ -230,7 +226,7 @@ namespace Xharness.Jenkins {
 					build.ProjectPlatform = task.ProjectPlatform;
 					build.Platform = task.Platform;
 					build.InitialTask = clone_task;
-					build.TestName = clone.Name;
+					build.TestName = clone.Name ?? "";
 
 					T newVariation = creator (build, task, candidates);
 					newVariation.Variation = variation;

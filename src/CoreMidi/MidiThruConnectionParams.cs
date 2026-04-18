@@ -115,7 +115,7 @@ namespace CoreMidi {
 	[NativeName ("MIDIControlTransform")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiControlTransform {
-		/// <summary>MIDI conrol type.</summary>
+		/// <summary>MIDI control type.</summary>
 		///         <remarks>To be added.</remarks>
 		public MidiTransformControlType ControlType;
 		/// <summary>Resulting control type.</summary>
@@ -131,7 +131,7 @@ namespace CoreMidi {
 		///         <remarks>This is ignored when <see cref="CoreMidi.MidiControlTransform.Transform" /> is set to <see cref="CoreMidi.MidiTransformType.None" /> or <see cref="CoreMidi.MidiTransformType.FilterOut" />.</remarks>
 		public short Param;
 
-		/// <param name="controlType">MIDI conrol type.</param>
+		/// <param name="controlType">MIDI control type.</param>
 		///         <param name="remappedControlType">Resulting control type.</param>
 		///         <param name="controlNumber">Number of the control to be transformed.</param>
 		///         <param name="transform">Transformation type to be applied.</param>

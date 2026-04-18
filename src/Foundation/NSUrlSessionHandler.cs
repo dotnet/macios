@@ -277,9 +277,7 @@ namespace Foundation {
 			task?.Dispose ();
 		}
 
-		/// <param name="disposing">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			lock (inflightRequestsLock) {
@@ -1338,6 +1336,7 @@ namespace Foundation {
 				disposed = onDisposed;
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				var action = Interlocked.Exchange (ref disposed, null);
@@ -1403,6 +1402,7 @@ namespace Foundation {
 				return Task.FromResult (content);
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				if (disposing) {
@@ -1703,6 +1703,7 @@ namespace Foundation {
 				cfRunLoop.RemoveSource (source, nsMode);
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				stream?.Dispose ();

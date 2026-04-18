@@ -332,8 +332,8 @@ namespace MonoTouchFixtures.Security {
 				Assert.IsTrue (StringUtil.StringsEqual (test4, "testValue2", false));
 
 				//TEST 5: Clear the keychain values
-				var test5 = ClearUserPassword (testUsername);
-				Assert.IsTrue (test5, "Password could not be cleared from keychain");
+				var test5 = ClearUserPassword (testUsername, out queryCode, out var removeCode);
+				Assert.IsTrue (test5, $"Password could not be cleared from keychain. queryCode: {queryCode} removeCode: {removeCode}");
 
 				//TEST 6: Verify no keychain value
 				var test6 = GetUserPassword (testUsername);
@@ -401,19 +401,20 @@ namespace MonoTouchFixtures.Security {
 			SecKeyChain.Remove (searchRecord);
 		}
 
-		public static bool ClearUserPassword (string username)
+		public static bool ClearUserPassword (string username, out SecStatusCode queryCode, out SecStatusCode? removeCode)
 		{
 			var success = false;
 			var searchRecord = CreateSecRecord (SecKind.InternetPassword,
 				server: "Test1",
 				account: username.ToLower ()
 			);
-			SecStatusCode queryCode;
 			var record = SecKeyChain.QueryAsRecord (searchRecord, out queryCode);
 
 			if (queryCode == SecStatusCode.Success && record is not null) {
-				var removeCode = SecKeyChain.Remove (searchRecord);
+				removeCode = SecKeyChain.Remove (searchRecord);
 				success = (removeCode == SecStatusCode.Success);
+			} else {
+				removeCode = null;
 			}
 			return success;
 		}

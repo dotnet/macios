@@ -120,7 +120,9 @@ namespace Xamarin.Tests {
 			var expectedAppBundleSize = 0L;
 			if (File.Exists (expectedSizeReportPath)) {
 				expectedSizeReport = File.ReadAllText (expectedSizeReportPath);
-				expectedAppBundleSize = long.Parse (expectedSizeReport.SplitLines ().First ().Replace ("AppBundleSize: ", "").Replace (",", "").Replace (".", "").RemoveAfterFirstSpace ());
+				if (!long.TryParse (expectedSizeReport.SplitLines ().First ().Replace ("AppBundleSize: ", "").Replace (",", "").Replace (".", "").RemoveAfterFirstSpace (), out expectedAppBundleSize)) {
+					expectedSizeReport = "";
+				}
 			}
 
 			var appSizeDifference = appBundleSize - expectedAppBundleSize;
@@ -155,10 +157,12 @@ namespace Xamarin.Tests {
 			foreach (var key in allKeys) {
 				if (!expectedLines.TryGetValue (key, out var expectedLine)) {
 					Console.WriteLine ($"        File '{key}' was added to app bundle: {actualLines [key]}");
-					Assert.Fail ($"The file '{key}' was added to the app bundle.");
+					if (!updated)
+						Assert.Fail ($"The file '{key}' was added to the app bundle.");
 				} else if (!actualLines.TryGetValue (key, out var actualLine)) {
 					Console.WriteLine ($"        File '{key}' was removed from app bundle: {expectedLine}");
-					Assert.Fail ($"The file '{key}' was removed from the app bundle.");
+					if (!updated)
+						Assert.Fail ($"The file '{key}' was removed from the app bundle.");
 				} else if (expectedLine != actualLine) {
 					Console.WriteLine ($"        File '{key}' changed in app bundle:");
 					Console.WriteLine ($"            -{expectedLine}");

@@ -395,7 +395,7 @@ namespace Intents {
 		InvalidUserVocabularyFileLocation = 4000,
 		/// <summary>The extension timed out.</summary>
 		ExtensionLaunchingTimeout = 5000,
-		/// <summary>An error occurred while tryig to start communication with an extension.</summary>
+		/// <summary>An error occurred while trying to start communication with an extension.</summary>
 		ExtensionBringUpFailed = 5001,
 		/// <summary>To be added.</summary>
 		ImageGeneric = 6000,
@@ -797,7 +797,7 @@ namespace Intents {
 		FailurePaymentsCurrencyUnsupported,
 		/// <summary>Developers should use this code to indicate a failure because no bank account is configured.</summary>
 		FailureNoBankAccount,
-		/// <summary>Developers should use this code to indicate a failure because the user is not eligible to either send or recieve funds via money transfer.</summary>
+		/// <summary>Developers should use this code to indicate a failure because the user is not eligible to either send or receive funds via money transfer.</summary>
 		[NoMac]
 		[MacCatalyst (13, 1)]
 		FailureNotEligible,
@@ -1943,7 +1943,7 @@ namespace Intents {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum INMessageType : long {
-		/// <summary>Inidcates unspecified content.</summary>
+		/// <summary>Indicates unspecified content.</summary>
 		Unspecified = 0,
 		/// <summary>Indicates text.</summary>
 		Text,

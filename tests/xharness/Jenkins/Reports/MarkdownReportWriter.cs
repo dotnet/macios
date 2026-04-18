@@ -13,13 +13,13 @@ namespace Xharness.Jenkins.Reports {
 	/// </summary>
 	class MarkdownReportWriter : IReportWriter {
 
-		void WriteFailedTestsDetails (IEnumerable<ITestTask> failedTests, StreamWriter writer)
+		void WriteFailedTestsDetails (IEnumerable<TestTask> failedTests, StreamWriter writer)
 		{
 			writer.WriteLine ("## Failed tests");
 			writer.WriteLine ();
 
 			foreach (var group in failedTests.GroupBy ((v) => v.TestName)) {
-				if (group is IEnumerable<ITestTask> enumerableGroup) {
+				if (group is IEnumerable<TestTask> enumerableGroup) {
 					foreach (var test in enumerableGroup) {
 						writer.Write ($" * {group.Key}");
 						if (!string.IsNullOrEmpty (test.Mode))
@@ -48,7 +48,7 @@ namespace Xharness.Jenkins.Reports {
 
 		}
 
-		public void Write (IList<ITestTask> allTasks, StreamWriter writer)
+		public void Write (IList<TestTask> allTasks, StreamWriter writer)
 		{
 			var failedTests = allTasks.Where ((v) => v.Failed);
 			var deviceNotFound = allTasks.Where ((v) => v.DeviceNotFound);

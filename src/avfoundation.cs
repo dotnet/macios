@@ -1750,7 +1750,7 @@ namespace AVFoundation {
 		[Export ("isEqual:"), Internal]
 		bool IsEqual (NSObject obj);
 
-		/// <summary>Gets a specialized descripter, if required, that is needed to decompress the audio data.</summary>
+		/// <summary>Gets a specialized descriptor, if required, that is needed to decompress the audio data.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -2682,7 +2682,7 @@ namespace AVFoundation {
 		///         <returns>To be added.</returns>
 		///         <remarks>
 		///           <para>This method creates or erases a file for recording.</para>
-		///           <para>The <see cref="AVFoundation.AVAudioRecorder.Record" /> method will call this method if ncessary, but application developers may choose to explicitly call it in order to minimize startup lag.</para>
+		///           <para>The <see cref="AVFoundation.AVAudioRecorder.Record" /> method will call this method if necessary, but application developers may choose to explicitly call it in order to minimize startup lag.</para>
 		///         </remarks>
 		[Export ("prepareToRecord")]
 		bool PrepareToRecord ();
@@ -16145,7 +16145,7 @@ namespace AVFoundation {
 
 	/// <summary>A delegate object that allows the application developer to respond to events in a <see cref="AVFoundation.AVCaptureFileOutput" /> object.</summary>
 	///     <remarks>
-	///       <para>As with many AV Foundation methods, starting, stop, and pause commands are asynchronous and it is only here, in the delegate objet, that one can rely on the state of the underlying capture.</para>
+	///       <para>As with many AV Foundation methods, starting, stop, and pause commands are asynchronous, and it is only here, in the delegate object, that one can rely on the state of the underlying capture.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVCaptureFileOutputRecordingDelegate_Protocol/index.html">Apple documentation for <c>AVCaptureFileOutputRecordingDelegate</c></related>
 	[BaseType (typeof (NSObject))]
@@ -17377,7 +17377,7 @@ namespace AVFoundation {
 		[Export ("automaticallyEnablesStillImageStabilizationWhenAvailable")]
 		bool AutomaticallyEnablesStillImageStabilizationWhenAvailable { get; set; }
 
-		/// <summary>Indicates whether image stabilzation is currently active for the current capture session.</summary>
+		/// <summary>Indicates whether image stabilization is currently active for the current capture session.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]

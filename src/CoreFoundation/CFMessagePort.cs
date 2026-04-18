@@ -161,7 +161,7 @@ namespace CoreFoundation {
 		{
 		}
 
-		/// <include file="../../docs/api/CoreFoundation/CFMessagePort.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFMessagePort.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero) {

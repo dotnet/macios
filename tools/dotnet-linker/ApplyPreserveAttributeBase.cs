@@ -1,167 +1,229 @@
 // This is copied from https://github.com/mono/linker/blob/fa9ccbdaf6907c69ef1bb117906f8f012218d57f/src/tuner/Mono.Tuner/ApplyPreserveAttributeBase.cs
 // and modified to work without a Profile class.
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+
 using System.Linq;
-using System.Text;
 
 using Mono.Linker;
 using Mono.Linker.Steps;
 
 using Mono.Cecil;
-using Mono.Cecil.Cil;
-
-using Xamarin.Bundler;
-using Xamarin.Linker;
-using Xamarin.Utils;
+using Mono.Tuner;
 
 #nullable enable
 
-namespace Mono.Tuner {
+namespace Xamarin.Linker.Steps {
 
-	public abstract class ApplyPreserveAttributeBase : ConfigurationAwareSubStep {
-
-		AppBundleRewriter? abr;
-		Queue<Action> deferredActions = new ();
+	public partial class ApplyPreserveAttribute : ConfigurationAwareSubStep, IApplyPreserveAttribute {
+		ApplyPreserveAttributeImpl impl;
 
 		protected override string Name { get => "Apply Preserve Attribute"; }
 
 		protected override int ErrorCode { get => 2450; }
 
-		// set 'removeAttribute' to true if you want the preserved attribute to be removed from the final assembly
-		protected abstract bool IsPreservedAttribute (ICustomAttributeProvider provider, CustomAttribute attribute, out bool removeAttribute);
-
 		public override SubStepTargets Targets => SubStepTargets.Assembly;
 
-		public override void Initialize (LinkContext context)
+		public ApplyPreserveAttribute ()
 		{
-			base.Initialize (context);
-
-			if (Configuration.Application.XamarinRuntime == XamarinRuntime.NativeAOT)
-				abr = Configuration.AppBundleRewriter;
-		}
-
-		protected override void Process (AssemblyDefinition assembly)
-		{
-			BrowseTypes (assembly.MainModule.Types);
-			ProcessDeferredActions ();
-		}
-
-		void BrowseTypes (IEnumerable<TypeDefinition> types)
-		{
-			foreach (TypeDefinition type in types) {
-				ProcessType (type);
-
-				if (type.HasFields) {
-					foreach (FieldDefinition field in type.Fields)
-						ProcessField (field);
-				}
-
-				if (type.HasMethods) {
-					foreach (MethodDefinition method in type.Methods)
-						ProcessMethod (method);
-				}
-
-				if (type.HasProperties) {
-					foreach (PropertyDefinition property in type.Properties)
-						ProcessProperty (property);
-				}
-
-				if (type.HasEvents) {
-					foreach (EventDefinition @event in type.Events)
-						ProcessEvent (@event);
-				}
-
-				if (type.HasNestedTypes) {
-					BrowseTypes (type.NestedTypes);
-				}
-			}
-		}
-
-		void ProcessDeferredActions ()
-		{
-			while (deferredActions.Count > 0) {
-				var action = deferredActions.Dequeue ();
-				action.Invoke ();
-			}
+			impl = new ApplyPreserveAttributeImpl (this);
 		}
 
 		public override bool IsActiveFor (AssemblyDefinition assembly)
 		{
+			// It's either this step, or ApplyPreserveAttributeStep. If ApplyPreserveAttributeStep already ran, then we shouldn't run this step.
+			if (Configuration.DerivedLinkContext.DidRunApplyPreserveAttributeStep)
+				return false;
+
 			return Annotations.GetAction (assembly) == AssemblyAction.Link;
 		}
 
-		protected override void Process (TypeDefinition type)
+		protected override void Process (AssemblyDefinition assembly)
 		{
-			TryApplyPreserveAttribute (type);
+			impl.Process (assembly);
 		}
 
-		protected override void Process (FieldDefinition field)
+		bool IApplyPreserveAttribute.PreserveUnconditional (IMetadataTokenProvider provider)
 		{
+			if (provider is MethodDefinition method)
+				Annotations.SetAction (method, MethodAction.Parse);
+			Annotations.Mark (provider);
+			return true;
+		}
+
+		bool IApplyPreserveAttribute.PreserveType (TypeDefinition type, bool allMembers)
+		{
+			Annotations.Mark (type);
+			if (allMembers)
+				Annotations.SetPreserve (type, TypePreserve.All);
+			return true;
+		}
+
+		bool IApplyPreserveAttribute.PreserveConditional (TypeDefinition onType, MethodDefinition forMethod)
+		{
+			Annotations.SetAction (forMethod, MethodAction.Parse);
+			Annotations.AddPreservedMethod (onType, forMethod);
+			return true;
+		}
+	}
+
+	public interface IApplyPreserveAttribute {
+		bool PreserveType (TypeDefinition type, bool allMembers);
+		bool PreserveUnconditional (IMetadataTokenProvider provider);
+		bool PreserveConditional (TypeDefinition onType, MethodDefinition forMethod);
+	}
+
+	public class ApplyPreserveAttributeImpl {
+		IApplyPreserveAttribute applyPreserveAttribute;
+
+		public ApplyPreserveAttributeImpl (IApplyPreserveAttribute applyPreserveAttribute)
+		{
+			this.applyPreserveAttribute = applyPreserveAttribute;
+		}
+
+		bool IsPreservedAttribute (ICustomAttributeProvider provider, CustomAttribute attribute)
+		{
+			TypeReference type = attribute.Constructor.DeclaringType;
+			return type.Name == "PreserveAttribute";
+		}
+
+		public bool Process (AssemblyDefinition assembly)
+		{
+			var modified = false;
+			modified |= BrowseTypes (assembly.MainModule.Types);
+			modified |= ProcessAssemblyAttributes (assembly);
+			return modified;
+		}
+
+		bool ProcessAssemblyAttributes (AssemblyDefinition assembly)
+		{
+			if (!assembly.HasCustomAttributes)
+				return false;
+
+			var modified = false;
+			foreach (var attribute in assembly.CustomAttributes) {
+				if (!attribute.Constructor.DeclaringType.Is (Namespaces.Foundation, "PreserveAttribute"))
+					continue;
+
+				if (!attribute.HasConstructorArguments)
+					continue;
+				var tr = (attribute.ConstructorArguments [0].Value as TypeReference);
+				if (tr is null)
+					continue;
+
+				// we do not call `this.ProcessType` since
+				// (a) we're potentially processing a different assembly and `is_active` represent the current one
+				// (b) it will try to fetch the [Preserve] attribute on the type (and it's not there) as `base` would
+				var type = tr.Resolve ();
+
+				modified |= PreserveType (type, attribute);
+			}
+			return modified;
+		}
+
+		bool BrowseTypes (IEnumerable<TypeDefinition> types)
+		{
+			var modified = false;
+			foreach (var type in (new List<TypeDefinition> (types))) {
+				modified |= ProcessType (type);
+
+				if (type.HasFields) {
+					foreach (var field in type.Fields.ToArray ())
+						modified |= ProcessField (field);
+				}
+
+				if (type.HasMethods) {
+					foreach (var method in type.Methods.ToArray ())
+						modified |= ProcessMethod (method);
+				}
+
+				if (type.HasProperties) {
+					foreach (var property in type.Properties.ToArray ())
+						modified |= ProcessProperty (property);
+				}
+
+				if (type.HasEvents) {
+					foreach (var @event in type.Events.ToArray ())
+						modified |= ProcessEvent (@event);
+				}
+
+				if (type.HasNestedTypes) {
+					modified |= BrowseTypes (type.NestedTypes);
+				}
+			}
+			return modified;
+		}
+
+		bool ProcessType (TypeDefinition type)
+		{
+			return TryApplyPreserveAttribute (type);
+		}
+
+		bool ProcessField (FieldDefinition field)
+		{
+			var modified = false;
 			foreach (var attribute in GetPreserveAttributes (field))
-				Mark (field, attribute);
+				modified |= Mark (field, attribute);
+			return modified;
 		}
 
-		protected override void Process (MethodDefinition method)
+		bool ProcessMethod (MethodDefinition method)
 		{
-			MarkMethodIfPreserved (method);
+			return MarkMethodIfPreserved (method);
 		}
 
-		protected override void Process (PropertyDefinition property)
+		bool ProcessProperty (PropertyDefinition property)
 		{
+			var modified = false;
 			foreach (var attribute in GetPreserveAttributes (property)) {
-				MarkMethod (property.GetMethod, attribute);
-				MarkMethod (property.SetMethod, attribute);
+				modified |= MarkMethod (property.GetMethod, attribute);
+				modified |= MarkMethod (property.SetMethod, attribute);
 			}
+			return modified;
 		}
 
-		protected override void Process (EventDefinition @event)
+		bool ProcessEvent (EventDefinition @event)
 		{
+			var modified = false;
 			foreach (var attribute in GetPreserveAttributes (@event)) {
-				MarkMethod (@event.AddMethod, attribute);
-				MarkMethod (@event.InvokeMethod, attribute);
-				MarkMethod (@event.RemoveMethod, attribute);
+				modified |= MarkMethod (@event.AddMethod, attribute);
+				modified |= MarkMethod (@event.InvokeMethod, attribute);
+				modified |= MarkMethod (@event.RemoveMethod, attribute);
 			}
+			return modified;
 		}
 
-		void MarkMethodIfPreserved (MethodDefinition method)
+		bool MarkMethodIfPreserved (MethodDefinition method)
 		{
+			var modified = false;
 			foreach (var attribute in GetPreserveAttributes (method))
-				MarkMethod (method, attribute);
+				modified |= MarkMethod (method, attribute);
+			return modified;
 		}
 
-		void MarkMethod (MethodDefinition? method, CustomAttribute? preserve_attribute)
+		bool MarkMethod (MethodDefinition? method, CustomAttribute? preserve_attribute)
 		{
 			if (method is null)
-				return;
+				return false;
 
-			Mark (method, preserve_attribute);
-			Annotations.SetAction (method, MethodAction.Parse);
+			return Mark (method, preserve_attribute);
 		}
 
-		void Mark (IMetadataTokenProvider provider, CustomAttribute? preserve_attribute)
+		bool Mark (IMetadataTokenProvider provider, CustomAttribute? preserve_attribute)
 		{
-			if (IsConditionalAttribute (preserve_attribute)) {
-				PreserveConditional (provider);
-				return;
-			}
+			if (IsConditionalAttribute (preserve_attribute))
+				return PreserveConditional (provider);
 
-			PreserveUnconditional (provider);
+			return PreserveUnconditional (provider);
 		}
 
-		void PreserveConditional (IMetadataTokenProvider provider)
+		bool PreserveConditional (IMetadataTokenProvider provider)
 		{
 			var method = provider as MethodDefinition;
 			if (method is null) {
 				// workaround to support (uncommon but valid) conditional fields form [Preserve]
-				PreserveUnconditional (provider);
-				return;
+				return PreserveUnconditional (provider);
 			}
 
-			Annotations.AddPreservedMethod (method.DeclaringType, method);
-			AddConditionalDynamicDependencyAttribute (method.DeclaringType, method);
+			return applyPreserveAttribute.PreserveConditional (method.DeclaringType, method);
 		}
 
 		static bool IsConditionalAttribute (CustomAttribute? attribute)
@@ -176,55 +238,39 @@ namespace Mono.Tuner {
 			return false;
 		}
 
-		void PreserveUnconditional (IMetadataTokenProvider provider)
+		bool PreserveUnconditional (IMetadataTokenProvider provider)
 		{
-			Annotations.Mark (provider);
+			var modified = false;
 
-			// We want to add a dynamic dependency attribute to preserve methods and fields
-			// but not to preserve types while we're marking the chain of declaring types.
-			if (provider is not TypeDefinition) {
-				AddDynamicDependencyAttribute (provider);
-			}
+			modified |= applyPreserveAttribute.PreserveUnconditional (provider);
 
 			var member = provider as IMemberDefinition;
 			if (member is null || member.DeclaringType is null)
-				return;
+				return modified;
 
-			Mark (member.DeclaringType, null);
+			modified |= Mark (member.DeclaringType, null);
+
+			return modified;
 		}
 
-		void TryApplyPreserveAttribute (TypeDefinition type)
+		bool TryApplyPreserveAttribute (TypeDefinition type)
 		{
+			var modified = false;
 			foreach (var attribute in GetPreserveAttributes (type)) {
-				PreserveType (type, attribute);
+				modified |= PreserveType (type, attribute);
 			}
+			return modified;
 		}
 
 		List<CustomAttribute> GetPreserveAttributes (ICustomAttributeProvider provider)
 		{
-			List<CustomAttribute> attrs = new List<CustomAttribute> ();
-
 			if (!provider.HasCustomAttributes)
-				return attrs;
+				return new List<CustomAttribute> ();
 
-			var attributes = provider.CustomAttributes;
-
-			for (int i = attributes.Count - 1; i >= 0; i--) {
-				var attribute = attributes [i];
-
-				bool remote_attribute;
-				if (!IsPreservedAttribute (provider, attribute, out remote_attribute))
-					continue;
-
-				attrs.Add (attribute);
-				if (remote_attribute)
-					attributes.RemoveAt (i);
-			}
-
-			return attrs;
+			return provider.CustomAttributes.Where (a => IsPreservedAttribute (provider, a)).ToList ();
 		}
 
-		protected void PreserveType (TypeDefinition type, CustomAttribute preserveAttribute)
+		protected bool PreserveType (TypeDefinition type, CustomAttribute preserveAttribute)
 		{
 			var allMembers = false;
 			if (preserveAttribute.HasFields) {
@@ -233,114 +279,12 @@ namespace Mono.Tuner {
 						allMembers = true;
 			}
 
-			PreserveType (type, allMembers);
+			return PreserveType (type, allMembers);
 		}
 
-		protected void PreserveType (TypeDefinition type, bool allMembers)
+		bool PreserveType (TypeDefinition type, bool allMembers)
 		{
-			Annotations.Mark (type);
-			if (allMembers)
-				Annotations.SetPreserve (type, TypePreserve.All);
-			AddDynamicDependencyAttribute (type, allMembers);
-		}
-
-		MethodDefinition GetOrCreateModuleConstructor (ModuleDefinition @module)
-		{
-			var moduleType = @module.GetModuleType ();
-			return GetOrCreateStaticConstructor (moduleType);
-		}
-
-		// We want to avoid `DynamicallyAccessedMemberTypes.All` because the semantics are different
-		// from `[Preserve (AllMembers = true)]`. Specifically, we don't want to preserve nested types.
-		// `All` would also keep unused private members of base types which `Preserve` also doesn't cover.
-		const DynamicallyAccessedMemberTypes allMemberTypes =
-			DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields
-			| DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties
-			| DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods
-			| DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors
-			| DynamicallyAccessedMemberTypes.PublicEvents | DynamicallyAccessedMemberTypes.NonPublicEvents
-			| DynamicallyAccessedMemberTypes.Interfaces;
-
-		void AddDynamicDependencyAttribute (TypeDefinition type, bool allMembers)
-		{
-			if (abr is null)
-				return;
-
-			abr.ClearCurrentAssembly ();
-			abr.SetCurrentAssembly (type.Module.Assembly);
-
-			var moduleConstructor = GetOrCreateModuleConstructor (type.GetModule ());
-			var members = allMembers
-				? allMemberTypes
-				: DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors;
-
-			// only preserve fields for enums
-			if (type.IsEnum) {
-				members = DynamicallyAccessedMemberTypes.PublicFields;
-			}
-
-			var attrib = abr.CreateDynamicDependencyAttribute (members, type);
-			moduleConstructor.CustomAttributes.Add (attrib);
-
-			abr.ClearCurrentAssembly ();
-		}
-
-		void AddConditionalDynamicDependencyAttribute (TypeDefinition onType, MethodDefinition forMethod)
-		{
-			if (abr is null)
-				return;
-
-			deferredActions.Enqueue (() => AddDynamicDependencyAttributeToStaticConstructor (onType, forMethod));
-		}
-
-		void AddDynamicDependencyAttribute (IMetadataTokenProvider provider)
-		{
-			if (abr is null)
-				return;
-
-			var member = provider as IMemberDefinition;
-			if (member is null)
-				throw ErrorHelper.CreateError (99, $"Unable to add dynamic dependency attribute to {provider.GetType ().FullName}");
-
-			var module = member.GetModule ();
-			abr.ClearCurrentAssembly ();
-			abr.SetCurrentAssembly (module.Assembly);
-
-			var moduleConstructor = GetOrCreateModuleConstructor (module);
-			var signature = DocumentationComments.GetSignature (member);
-			var attrib = abr.CreateDynamicDependencyAttribute (signature, member.DeclaringType);
-			moduleConstructor.CustomAttributes.Add (attrib);
-
-			abr.ClearCurrentAssembly ();
-		}
-
-		void AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, MethodDefinition forMethod)
-		{
-			if (abr is null)
-				return;
-
-			abr.ClearCurrentAssembly ();
-			abr.SetCurrentAssembly (onType.Module.Assembly);
-
-			var cctor = GetOrCreateStaticConstructor (onType);
-			var signature = DocumentationComments.GetSignature (forMethod);
-			var attrib = abr.CreateDynamicDependencyAttribute (signature, onType);
-			cctor.CustomAttributes.Add (attrib);
-			Annotations.AddPreservedMethod (onType, cctor);
-
-			abr.ClearCurrentAssembly ();
-		}
-
-		MethodDefinition GetOrCreateStaticConstructor (TypeDefinition type)
-		{
-			var staticCtor = type.GetTypeConstructor ();
-			if (staticCtor is null) {
-				staticCtor = type.AddMethod (".cctor", MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.RTSpecialName | MethodAttributes.SpecialName | MethodAttributes.Static, abr!.System_Void);
-				staticCtor.CreateBody (out var il);
-				il.Emit (OpCodes.Ret);
-			}
-
-			return staticCtor;
+			return applyPreserveAttribute.PreserveType (type, allMembers);
 		}
 	}
 }

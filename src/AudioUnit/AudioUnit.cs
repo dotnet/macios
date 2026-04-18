@@ -1093,7 +1093,7 @@ namespace AudioUnit {
 		[DllImport (Constants.AudioUnitLibrary)]
 		static extern int AudioComponentInstanceDispose (IntPtr inInstance);
 
-		/// <include file="../../docs/api/AudioUnit/AudioUnit.xml" path="/Documentation/Docs[@DocId='M:AudioUnit.AudioUnit.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns) {
@@ -1625,11 +1625,11 @@ namespace AudioUnit {
 	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AURecordedParameterEvent {
-		/// <summary>The host time at which the change occured.</summary>
+		/// <summary>The host time at which the change occurred.</summary>
 		///         <remarks>To be added.</remarks>
 		public ulong HostTime;
 
-		/// <summary>The numeric identfier of the parameter.</summary>
+		/// <summary>The numeric identifier of the parameter.</summary>
 		///         <remarks>To be added.</remarks>
 		public ulong Address;
 

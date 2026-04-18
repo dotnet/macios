@@ -1354,7 +1354,7 @@ namespace UIKit {
 		NSObject GetAccessibilityElements ();
 
 		/// <param name="elements">To be added.</param>
-		/// <summary>Assigns <paramref name="elements" /> to the contents of the accessibilty container.</summary>
+		/// <summary>Assigns <paramref name="elements" /> to the contents of the accessibility container.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("setAccessibilityElements:")]
@@ -9673,7 +9673,7 @@ namespace UIKit {
 
 	interface IUITextInput : INativeObject { }
 
-	/// <summary>IUITextInput works with the inputting of text and allows the manipulaton of features including autocorrection and many other text input features related to document presentation.</summary>
+	/// <summary>IUITextInput works with the inputting of text and allows the manipulation of features including autocorrection and many other text input features related to document presentation.</summary>
 	/// <remarks>To be added.</remarks>
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -9857,7 +9857,7 @@ namespace UIKit {
 
 		/// <param name="writingDirection">Constant indicating layout direction.</param>
 		/// <param name="range">A UITextRange object indicating the range of a document's text.</param>
-		/// <summary>Sets a base directon for writing in the specified range of text.</summary>
+		/// <summary>Sets a base direction for writing in the specified range of text.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setBaseWritingDirection:forRange:")]
@@ -14321,7 +14321,7 @@ namespace UIKit {
 		void SetIndicatorImage ([NullAllowed] UIImage image, nint page);
 
 		/// <param name="pageCount">To be added.</param>
-		/// <summary>The size this UIPageControl's Bounds needs to be to accomodate the specified number of pages.</summary>
+		/// <summary>The size this UIPageControl's Bounds needs to be to accommodate the specified number of pages.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("sizeForNumberOfPages:")]
@@ -16184,7 +16184,7 @@ namespace UIKit {
 		[Export ("dragging")]
 		bool Dragging { [Bind ("isDragging")] get; }
 
-		/// <summary>If this property returns <see langword="true" />, then scrolling is still occuring in the scroll view but the user is not dragging their finger.</summary>
+		/// <summary>If this property returns <see langword="true" />, then scrolling is still occurring in the scroll view but the user is not dragging their finger.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>
@@ -16739,7 +16739,7 @@ namespace UIKit {
 
 		/// <param name="leftState">To be added.</param>
 		/// <param name="rightState">To be added.</param>
-		/// <summary>The divider image used for the specified combination of left and righ t segment states.</summary>
+		/// <summary>The divider image used for the specified combination of left and right segment states.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("scopeBarButtonDividerImageForLeftSegmentState:rightSegmentState:")]
@@ -17439,7 +17439,7 @@ namespace UIKit {
 		/// <param name="segment">The segment index to return the title for.</param>
 		/// <summary>Allows the title for a particular segment to be retrieved.</summary>
 		/// <returns>The title for a given segment</returns>
-		/// <remarks>Retuns null if a title has not been set.</remarks>
+		/// <remarks>Returns null if a title has not been set.</remarks>
 		[Export ("titleForSegmentAtIndex:")]
 		[return: NullAllowed]
 		string TitleAt (nint segment);
@@ -19943,7 +19943,7 @@ namespace UIKit {
 
 		/// <param name="tableView">The table view containing the row/cell accessory that has been tapped.</param>
 		/// <param name="indexPath">The location of the row in the table view.</param>
-		/// <summary>Indictes that the user has tapped the accessory / disclosure buttom at the specified indexPath.</summary>
+		/// <summary>Indicates that the user has tapped the accessory/disclosure button at the specified indexPath.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("tableView:accessoryButtonTappedForRowWithIndexPath:")]
 		void AccessoryButtonTapped (UITableView tableView, NSIndexPath indexPath);
@@ -24724,7 +24724,7 @@ namespace UIKit {
 		[Field ("UITextContentTypeNewPassword")]
 		NSString NewPassword { get; }
 
-		/// <summary>Indicates a text field that acceps a one-time passcode.</summary>
+		/// <summary>Indicates a text field that accepts a one-time passcode.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -28895,7 +28895,7 @@ namespace UIKit {
 		UIDropSessionProgressIndicatorStyle ProgressIndicatorStyle { get; set; }
 
 		/// <param name="itemProviderReadingClass">The class of objects to load.</param>
-		/// <param name="completion">Handler to run after the objecs are loaded.</param>
+		/// <param name="completion">Handler to run after the objects are loaded.</param>
 		/// <summary>When implemented by the developer, instantiates every object in the drop session that has the type that is specified by the <paramref ame="itemProviderReadingClass" /> parameter.</summary>
 		/// <returns>To be added.</returns>
 		/// <remarks>To be added.</remarks>
@@ -29660,14 +29660,14 @@ namespace UIKit {
 		[Export ("textDraggableView:willAnimateLiftWithAnimator:session:")]
 		void WillAnimateLift (IUITextDraggable textDraggableView, IUIDragAnimating animator, IUIDragSession session);
 
-		/// <param name="textDraggableView">The orginating view.</param>
+		/// <param name="textDraggableView">The originating view.</param>
 		/// <param name="session">The drag session that will begin.</param>
 		/// <summary>Method that is called just before a drag session begins.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("textDraggableView:dragSessionWillBegin:")]
 		void DragSessionWillBegin (IUITextDraggable textDraggableView, IUIDragSession session);
 
-		/// <param name="textDraggableView">The orginating view.</param>
+		/// <param name="textDraggableView">The originating view.</param>
 		/// <param name="session">The drag session that ended.</param>
 		/// <param name="operation">The operation that ended the session.</param>
 		/// <summary>Method that is called when the user cancels or completes the drag session.</summary>
@@ -29962,7 +29962,7 @@ namespace UIKit {
 
 	interface IUISpringLoadedInteractionEffect { }
 
-	/// <summary>Interface for applying state-based visual styles to spring-loaded interations.</summary>
+	/// <summary>Interface for applying state-based visual styles to spring-loaded interactions.</summary>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[Protocol]
@@ -30182,7 +30182,7 @@ namespace UIKit {
 		void SetAttributedStringResult (NSAttributedString @string);
 
 		/// <param name="textAttachment">The new attachment value.</param>
-		/// <summary>Sets the attachement result to the specified attachment.</summary>
+		/// <summary>Sets the attachment result to the specified attachment.</summary>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("setAttachmentResult:")]
@@ -30506,8 +30506,8 @@ namespace UIKit {
 	[NoMac]
 	[Protocol]
 	interface UIFocusItemContainer {
-		/// <summary>Gets the coordinate space implemenation.</summary>
-		/// <value>The coordinate space implemenation.</value>
+		/// <summary>Gets the coordinate space implementation.</summary>
+		/// <value>The coordinate space implementation.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("coordinateSpace")]

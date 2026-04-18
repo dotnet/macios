@@ -152,9 +152,7 @@ namespace System.Net.Http {
 
 		// TODO: Add more properties
 
-		/// <param name="disposing">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			// TODO: CloseStream remaining stream buckets if there are any

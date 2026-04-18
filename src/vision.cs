@@ -1632,7 +1632,7 @@ namespace Vision {
 		VNFaceObservation [] InputFaceObservations { get; set; }
 	}
 
-	/// <summary>Abstract sub-class of <see cref="Vision.VNTargetedImageRequest" /> that attemps to align an image with a reference image.</summary>
+	/// <summary>Abstract subclass of <see cref="Vision.VNTargetedImageRequest" /> that attempts to align an image with a reference image.</summary>
 	[MacCatalyst (13, 1)]
 	[Abstract]
 	[DisableDefaultCtor]

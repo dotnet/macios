@@ -29,7 +29,7 @@ namespace Xharness.Jenkins.Reports {
 		string? previous_test_runs;
 
 		// convenient
-		IHarness Harness => jenkins.Harness;
+		Harness Harness => jenkins.Harness;
 
 		public HtmlReportWriter (Jenkins jenkins, IResourceManager resourceManager, IResultParser resultParser, string? linksPrefix = null, bool embeddedResources = false)
 		{
@@ -82,7 +82,7 @@ namespace Xharness.Jenkins.Reports {
 				writer.WriteLine ("<link rel='stylesheet' href='xharness.css'>");
 			}
 		}
-		public void Write (IList<ITestTask> allTasks, StreamWriter writer)
+		public void Write (IList<TestTask> allTasks, StreamWriter writer)
 		{
 			var id_counter = 0;
 
@@ -343,7 +343,7 @@ namespace Xharness.Jenkins.Reports {
 						state = test.ExecutionResult.ToString ();
 						var log_id = id_counter++;
 						var logs = test.AggregatedLogs.ToList ();
-						string title;
+						string? title;
 						if (multipleModes) {
 							title = test.Variation ?? "Default";
 						} else if (singleTask) {
@@ -690,11 +690,11 @@ namespace Xharness.Jenkins.Reports {
 			return System.Web.HttpUtility.UrlEncode (path).Replace ("%2f", "/").Replace ("+", "%20");
 		}
 
-		string RenderTextStates (IEnumerable<ITestTask> tests)
+		string RenderTextStates (IEnumerable<TestTask> tests)
 		{
 			// Create a collection of all non-ignored tests in the group (unless all tests were ignored).
 			var allIgnored = tests.All ((v) => v.ExecutionResult == TestExecutingResult.Ignored);
-			IEnumerable<ITestTask> relevantGroup;
+			IEnumerable<TestTask> relevantGroup;
 			if (allIgnored) {
 				relevantGroup = tests;
 			} else {

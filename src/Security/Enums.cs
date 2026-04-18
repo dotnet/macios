@@ -847,9 +847,9 @@ namespace Security {
 		Unspecified,
 		/// <summary>Not enough information is available to trust this certificate. If extra information is supplied then it could be trusted (or not).</summary>
 		RecoverableTrustFailure,
-		/// <summary>The certificate could not be trace back to a trusted root.</summary>
+		/// <summary>The certificate could not be traced back to a trusted root.</summary>
 		FatalTrustFailure,
-		/// <summary>An error occured while trying to determine the certificate trust.</summary>
+		/// <summary>An error occurred while trying to determine the certificate trust.</summary>
 		ResultOtherError,
 	}
 

@@ -2891,7 +2891,7 @@ namespace HealthKit {
 		[Field ("HKQuantityTypeIdentifierBodyFatPercentage")]
 		BodyFatPercentage,
 
-		/// <summary>Indicates a height measurment.</summary>
+		/// <summary>Indicates a height measurement.</summary>
 		[Field ("HKQuantityTypeIdentifierHeight")]
 		Height,
 
@@ -3461,7 +3461,7 @@ namespace HealthKit {
 		[Field ("HKCategoryTypeIdentifierSexualActivity")]
 		SexualActivity,
 
-		/// <summary>Indicates a category whose value idicates the user's mindfulness session.</summary>
+		/// <summary>Indicates a category whose value indicates the user's mindfulness session.</summary>
 		[MacCatalyst (13, 1)]
 		[Field ("HKCategoryTypeIdentifierMindfulSession")]
 		MindfulSession,
@@ -4951,7 +4951,7 @@ namespace HealthKit {
 		NativeHandle Constructor ([NullAllowed] NSPredicate predicate, Action<HKActivitySummaryQuery, HKActivitySummary [], NSError> handler);
 	}
 
-	/// <summary>Obect that is used to request permission to read <see cref="HealthKit.HKActivitySummary" /> objects.</summary>
+	/// <summary>Object that is used to request permission to read <see cref="HealthKit.HKActivitySummary" /> objects.</summary>
 	///     <remarks>Developers use the <see cref="HealthKit.HKObjectType.ActivitySummaryType" /> method.</remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/HealthKit/HKActivitySummaryType">Apple documentation for <c>HKActivitySummaryType</c></related>
 	[Mac (13, 0)]
@@ -5162,7 +5162,7 @@ namespace HealthKit {
 
 		[Async (XmlDocs = """
 			<param name="startDate">The date and time the workout starts.</param>
-			<summary>Starts the workout at the sepcified time, begins collecting workout data, and returns a task that contains a success status and any error that occurred.</summary>
+			<summary>Starts the workout at the specified time, begins collecting workout data, and returns a task that contains a success status and any error that occurred.</summary>
 			<returns>A task that contains a success status and any error that occurred.</returns>
 			<remarks>To be added.</remarks>
 			""")]
@@ -5212,8 +5212,8 @@ namespace HealthKit {
 
 		[Async (XmlDocs = """
 			<param name="endDate">The end time of the workout.</param>
-			<summary>Ends the workout and returns a task that contains a success status and any error that occured.</summary>
-			<returns>A task that contains a success status and any error that occured.</returns>
+			<summary>Ends the workout and returns a task that contains a success status and any error that occurred.</summary>
+			<returns>A task that contains a success status and any error that occurred.</returns>
 			<remarks>To be added.</remarks>
 			""")]
 		[Export ("endCollectionWithEndDate:completion:")]

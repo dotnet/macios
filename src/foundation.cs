@@ -136,7 +136,7 @@ namespace Foundation {
 namespace Foundation {
 	/// <param name="obj1">To be added.</param>
 	/// <param name="obj2">To be added.</param>
-	/// <summary>A delegate that defines the comparison function to be used with functins such as <see cref="Foundation.NSArray.Sort(Foundation.NSComparator)" />.</summary>
+	/// <summary>A delegate that defines the comparison function to be used with functions such as <see cref="Foundation.NSArray.Sort(Foundation.NSComparator)" />.</summary>
 	/// <returns>To be added.</returns>
 	/// <remarks>To be added.</remarks>
 	delegate NSComparisonResult NSComparator (NSObject obj1, NSObject obj2);
@@ -2254,7 +2254,7 @@ namespace Foundation {
 		/// <summary>Low-level: decodes the item with the associated key into a memory block,
 		/// 	and returns a pointer to it.</summary>
 		/// <returns>Pointer to the block of memory that contains at least
-		/// 	the number of bytes set on the lenght parameter.</returns>
+		/// 	the number of bytes set on the length parameter.</returns>
 		/// <remarks>
 		///         </remarks>
 		[Export ("decodeBytesForKey:returnedLength:")]
@@ -2264,7 +2264,7 @@ namespace Foundation {
 		/// <summary>Low-level: decodes the next item into a memory block,
 		/// 	and returns a pointer to it.</summary>
 		/// <returns>Pointer to the block of memory that contains at least
-		/// 	the number of bytes set on the lenght parameter.</returns>
+		/// 	the number of bytes set on the length parameter.</returns>
 		/// <remarks>
 		///         </remarks>
 		[Export ("decodeBytesWithReturnedLength:")]
@@ -8025,7 +8025,7 @@ namespace Foundation {
 		/// 	  </para>
 		///           <example>
 		///             <code lang="c#">
-		/// // Retrieve the gloabl NSButtonDelay setting on MacOS:
+		/// // Retrieve the global NSButtonDelay setting on macOS:
 		/// var global = new NSUserDefaults (NSUserDefaults.GlobalDomain);
 		/// Console.WriteLine ("Delay: " + j.FloatForKey ("NSButtonDelay"));
 		/// 	    </code>
@@ -8034,7 +8034,7 @@ namespace Foundation {
 		[Field ("NSGlobalDomain")]
 		NSString GlobalDomain { get; }
 
-		/// <summary>This is they key used to retrieve the domain associated with the command line arguments passed at startup.</summary>
+		/// <summary>This is the key used to retrieve the domain associated with the command line arguments passed at startup.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>
@@ -8051,7 +8051,7 @@ namespace Foundation {
 		/// 	  </para>
 		///           <example>
 		///             <code lang="c#">
-		/// // Retrieve the gloabl NSButtonDelay setting on MacOS:
+		/// // Retrieve the global NSButtonDelay setting on macOS:
 		/// var global = new NSUserDefaults (NSUserDefaults.GlobalDomain);
 		/// Console.WriteLine ("Delay: " + j.FloatForKey ("NSButtonDelay"));
 		/// 	    </code>
@@ -12654,7 +12654,7 @@ namespace Foundation {
 		[Export ("minimumScaleFactor")]
 		nfloat MinimumScaleFactor { get; set; }
 
-		/// <summary>Desired tracking adjustement (minimum space to maintain between characteres) desired to be used during the drawing operation.</summary>
+		/// <summary>Desired tracking adjustment (minimum space to maintain between characters) to be used during the drawing operation.</summary>
 		/// <value>The value is specified in points, typically a value between -0.5f and 0.</value>
 		/// <remarks>Zero means that standard spacing should be used.  Use negative values to adjust the tracking, for example -0.5f allows characters to be closer together by half a point. </remarks>
 		[NoTV]

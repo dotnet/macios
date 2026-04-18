@@ -50,7 +50,7 @@ namespace CoreMedia {
 			return new CMSampleBuffer (handle, owns);
 		}
 
-		/// <include file="../../docs/api/CoreMedia/CMSampleBuffer.xml" path="/Documentation/Docs[@DocId='M:CoreMedia.CMSampleBuffer.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (invalidate.IsAllocated)

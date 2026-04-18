@@ -27,7 +27,7 @@ namespace Xharness {
 		}
 
 		// This must match our $(_PlatformName) variable in our MSBuild logic.
-		public static string ToPlatformName (this TestPlatform platform)
+		public static string? ToPlatformName (this TestPlatform platform)
 		{
 			switch (platform) {
 			case TestPlatform.iOS:

@@ -26,12 +26,4 @@
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
 
-  <!--
-    Workaround: Test platform assemblies fail AOT compilation.
-    Use the interpreter for all assemblies until this is fixed in the SDK.
-  -->
-  <PropertyGroup>
-    <MtouchInterpreter>all</MtouchInterpreter>
-  </PropertyGroup>
-
 </Project>

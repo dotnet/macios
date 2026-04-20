@@ -1,13 +1,12 @@
 parameters:
-  PackageVersion: 11.0.0
-  BuildDropPath: '$(System.DefaultWorkingDirectory)/artifacts'
-  PackageName: '.NET'
-  ManifestDirPath: $(Build.ArtifactStagingDirectory)/sbom
-  IgnoreDirectories: ''
-  sbomContinueOnError: true
-  is1ESPipeline: false
-  # disable publishArtifacts if some other step is publishing the artifacts (like job.yml).
-  publishArtifacts: true
+  PackageVersion: unused
+  BuildDropPath: unused
+  PackageName: unused
+  ManifestDirPath: unused
+  IgnoreDirectories: unused
+  sbomContinueOnError: unused
+  is1ESPipeline: unused
+  publishArtifacts: unused
 
 steps:
 - script: |

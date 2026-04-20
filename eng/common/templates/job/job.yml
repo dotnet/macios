@@ -71,7 +71,7 @@ jobs:
             artifactName: ${{ coalesce(parameters.enablePublishBuildArtifacts.artifactName, '$(Agent.Os)_$(Agent.JobName)_Attempt$(System.JobAttempt)' ) }}
             continueOnError: true
             condition: always()
-            sbomEnabled: false
+            retryCountOnTaskFailure: 10 # for any files being locked
 
     - ${{ if eq(parameters.enableBuildRetry, 'true') }}:
       - template: /eng/common/core-templates/steps/publish-pipeline-artifacts.yml

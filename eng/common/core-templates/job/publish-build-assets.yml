@@ -172,8 +172,8 @@ jobs:
             targetPath: '$(Build.ArtifactStagingDirectory)/MergedManifest.xml'
             artifactName: AssetManifests
             displayName: 'Publish Merged Manifest'
-            retryCountOnTaskFailure: 10 # for any logs being locked
-            sbomEnabled: false # we don't need SBOM for logs
+            retryCountOnTaskFailure: 10 # for any files being locked
+            isProduction: false # just metadata for publishing
 
     - template: /eng/common/core-templates/steps/publish-pipeline-artifacts.yml
       parameters:
@@ -219,4 +219,5 @@ jobs:
       - template: /eng/common/core-templates/steps/publish-logs.yml
         parameters:
           is1ESPipeline: ${{ parameters.is1ESPipeline }}
+          StageLabel: 'BuildAssetRegistry'
           JobLabel: 'Publish_Artifacts_Logs'

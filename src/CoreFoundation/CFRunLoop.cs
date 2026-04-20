@@ -212,7 +212,7 @@ namespace CoreFoundation {
 		///         <remarks>To be added.</remarks>
 		protected abstract void OnPerform ();
 
-		/// <include file="../../docs/api/CoreFoundation/CFRunLoopSourceCustom.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFRunLoopSourceCustom.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (disposing) {

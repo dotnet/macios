@@ -63,6 +63,7 @@ namespace Metal {
 			return new MTLIOCompressionContext (handle, owns: true);
 		}
 
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			// only call the parent if the user did not call FlushAndDestroy

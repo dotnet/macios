@@ -356,16 +356,16 @@ public UIView (CGRect frame) : base (NSObjectFlag.Empty)
     </remarks>
   </Docs>
   <Docs DocId="M:Foundation.NSObject.Dispose(System.Boolean)">
+    <summary>Releases the resources used by this object.</summary>
     <param name="disposing">
-      <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
+      If set to <see langword="true" />, the method is invoked directly and disposes managed and unmanaged resources. If set to <see langword="false" />, the method is called by the garbage collector finalizer and should only release unmanaged resources.
     </param>
-    <summary>Releases the resources used by the NSObject object.</summary>
     <remarks>
-      <para>This Dispose method releases the resources used by the NSObject class.</para>
-      <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
-      <para>Calling the Dispose method when the application is finished using the NSObject ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
-      <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
+      <para>This method releases the resources used by this class.</para>
+      <para>This method is called by both the <see cref="Dispose()" /> method and the object finalizer (<see cref="Finalize()" />). When invoked by the <see cref="Dispose()" /> method, the <paramref name="disposing" /> parameter is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released. When invoked by the object finalizer, on the finalizer thread, the <paramref name="disposing" /> parameter is set to <see langword="false" />.</para>
+      <para>Calling the <see cref="Dispose()" /> method when the application is finished using this instance ensures that all external resources used by this managed object are released as soon as possible. Once developers have invoked the <see cref="Dispose()" /> method, the object is no longer useful and developers should no longer make any calls to it.</para>
     </remarks>
+    <seealso href="https://learn.microsoft.com/dotnet/standard/garbage-collection/implementing-dispose" />
   </Docs>
   <Docs DocId="M:Foundation.NSObject.AddObserver(System.String,Foundation.NSKeyValueObservingOptions,System.Action{Foundation.NSObservedChange})">
     <param name="key">

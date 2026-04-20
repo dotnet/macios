@@ -78,7 +78,7 @@ namespace Foundation {
 			}
 		}
 
-		/// <include file="../../docs/api/Foundation/NSInputStream.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSInputStream.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			context.Release ();

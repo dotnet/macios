@@ -116,9 +116,16 @@ namespace Xamarin.Tests {
 
 		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64", BundleStructureTest.CodeSignature.All, "Debug")]
-		public void BundleStructureWithRemoteMac (ApplePlatform platform, string runtimeIdentifiers, BundleStructureTest.CodeSignature signature, string configuration)
+		public void BundleStructureWithRemoteMac_Mono (ApplePlatform platform, string runtimeIdentifiers, BundleStructureTest.CodeSignature signature, string configuration)
 		{
 			BundleStructureWithRemoteMac (platform, runtimeIdentifiers, signature, configuration, useMonoRuntime: true);
+		}
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", BundleStructureTest.CodeSignature.All, "Debug")]
+		public void BundleStructureWithRemoteMac_CoreCLR (ApplePlatform platform, string runtimeIdentifiers, BundleStructureTest.CodeSignature signature, string configuration)
+		{
+			BundleStructureWithRemoteMac (platform, runtimeIdentifiers, signature, configuration, useMonoRuntime: false);
 		}
 
 		void BundleStructureWithRemoteMac (ApplePlatform platform, string runtimeIdentifiers, BundleStructureTest.CodeSignature signature, string configuration, bool useMonoRuntime)
@@ -271,10 +278,19 @@ namespace Xamarin.Tests {
 		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64;iossimulator-x64")]
-		public void PluralRuntimeIdentifiersWithRemoteMac (ApplePlatform platform, string runtimeIdentifiers)
+		public void PluralRuntimeIdentifiersWithRemoteMac_Mono (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var properties = AddRemoteProperties ();
 			DotNetProjectTest.PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, useMonoRuntime: true, extraProperties: properties);
+		}
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64;iossimulator-x64")]
+		public void PluralRuntimeIdentifiersWithRemoteMac_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var properties = AddRemoteProperties ();
+			DotNetProjectTest.PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, useMonoRuntime: false, extraProperties: properties);
 		}
 
 		[Category ("RemoteWindows")]

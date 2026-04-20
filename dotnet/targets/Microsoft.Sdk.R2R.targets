@@ -40,7 +40,7 @@
 		Set ComputeInstructionSetForReadyToRun to false to opt out of this computation.
 	-->
 	<Target Name="_ComputeInstructionSetForCrossgen2"
-		Condition="'$(PublishReadyToRun)' == 'true' And '$(ComputeInstructionSetForReadyToRun)' != 'false' And '$(RuntimeIdentifiers)' != ''"
+		Condition="'$(PublishReadyToRun)' == 'true' And '$(ComputeInstructionSetForReadyToRun)' != 'false' And '$(RuntimeIdentifiers)' == ''"
 		DependsOnTargets="_DetectSdkLocations"
 		BeforeTargets="ResolveReadyToRunCompilers">
 		<ComputeInstructionSet

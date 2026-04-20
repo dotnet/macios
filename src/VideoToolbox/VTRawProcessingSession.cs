@@ -84,8 +84,7 @@ namespace VideoToolbox {
 			VTRAWProcessingSessionInvalidate (GetCheckedHandle ());
 		}
 
-		/// <summary>Dispose of this instance.</summary>
-		/// <remarks>This will also call <see cref="Invalidate" />.</remarks>
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (disposing)

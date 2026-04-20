@@ -1264,6 +1264,7 @@ namespace Foundation {
 					base.ObserveValue (keyPath, ofObject, change, context);
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				if (disposing) {

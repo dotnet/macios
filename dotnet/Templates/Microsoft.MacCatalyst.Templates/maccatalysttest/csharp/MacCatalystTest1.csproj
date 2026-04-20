@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-maccatalyst</TargetFramework>
+    <RootNamespace Condition="'$(name)' != '$(name{-VALUE-FORMS-}safe_namespace)'">MacCatalystTest1</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+    <EnableMSTestRunner>true</EnableMSTestRunner>
+    <SupportedOSPlatformVersion>minOSVersion</SupportedOSPlatformVersion>
+    <ApplicationId>com.companyname.MacCatalystTest1</ApplicationId>
+    <!-- We provide our own entry point in Main.cs -->
+    <GenerateTestingPlatformEntryPoint>false</GenerateTestingPlatformEntryPoint>
+
+    <!--
+      Enable full trimming in Release mode.
+      To learn more, see: https://learn.microsoft.com/dotnet/core/deploying/trimming/trimming-options#trimming-granularity
+    -->
+    <TrimMode Condition="'$(Configuration)' == 'Release'">full</TrimMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSTest" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+  </ItemGroup>
+
+  <!--
+    Workaround: Test platform assemblies fail AOT compilation.
+    Use the interpreter for all assemblies until this is fixed in the SDK.
+  -->
+  <PropertyGroup>
+    <MtouchInterpreter>all</MtouchInterpreter>
+  </PropertyGroup>
+
+</Project>

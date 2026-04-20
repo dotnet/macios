@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-tvos</TargetFramework>
+    <RootNamespace Condition="'$(name)' != '$(name{-VALUE-FORMS-}safe_namespace)'">tvOSTest1</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>true</ImplicitUsings>
+    <EnableMSTestRunner>true</EnableMSTestRunner>
+    <SupportedOSPlatformVersion>minOSVersion</SupportedOSPlatformVersion>
+    <ApplicationId>com.companyname.tvOSTest1</ApplicationId>
+    <!-- We provide our own entry point in Main.cs -->
+    <GenerateTestingPlatformEntryPoint>false</GenerateTestingPlatformEntryPoint>
+
+    <!--
+      Enable full trimming in Release mode.
+      To learn more, see: https://learn.microsoft.com/dotnet/core/deploying/trimming/trimming-options#trimming-granularity
+    -->
+    <TrimMode Condition="'$(Configuration)' == 'Release'">full</TrimMode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MSTest" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+  </ItemGroup>
+
+  <!--
+    Workaround: Test platform assemblies fail AOT compilation on tvOS.
+    Use the interpreter for all assemblies until this is fixed in the SDK.
+  -->
+  <PropertyGroup>
+    <MtouchInterpreter>all</MtouchInterpreter>
+  </PropertyGroup>
+
+  <!-- After 'dotnet run', collect test results with: dotnet build -t:GetResults -->
+  <Target Name="GetResults">
+    <Exec Command="xcrun simctl get_app_container booted '$(ApplicationId)' data" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_AppDataContainer" />
+    </Exec>
+    <Exec Command="mkdir -p '$(MSBuildProjectDirectory)/TestResults' &amp;&amp; cp -r '$(_AppDataContainer)/Documents/TestResults/.' '$(MSBuildProjectDirectory)/TestResults/'" />
+    <Message Text="Test results copied to $(MSBuildProjectDirectory)/TestResults/" Importance="high" />
+  </Target>
+
+</Project>

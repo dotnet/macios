@@ -19,7 +19,7 @@ class ResultConsumer : IDataConsumer {
 	public string Version => "1.0";
 	public Task<bool> IsEnabledAsync () => Task.FromResult (true);
 
-	public Type[] DataTypesConsumed => [typeof (TestNodeUpdateMessage), typeof (SessionFileArtifact)];
+	public Type [] DataTypesConsumed => [typeof (TestNodeUpdateMessage), typeof (SessionFileArtifact)];
 
 	public Task ConsumeAsync (IDataProducer dataProducer, IData value, CancellationToken cancellationToken)
 	{

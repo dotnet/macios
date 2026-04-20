@@ -30,7 +30,7 @@ class SceneDelegate : UIResponder, IUIWindowSceneDelegate {
 		Window = new UIWindow (windowScene);
 		var vc = new UIViewController ();
 		var view = vc.View;
-		Debug.Assert (view != null, "UIViewController.View should not be null");
+		Debug.Assert (view is not null, "UIViewController.View should not be null");
 		view.BackgroundColor = UIColor.SystemBackground;
 
 		var label = new UILabel {

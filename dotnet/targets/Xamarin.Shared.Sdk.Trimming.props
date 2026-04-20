@@ -46,6 +46,12 @@
 		<!-- If TrimMode is set, then that's the default link mode -->
 		<_DefaultLinkMode>TrimMode</_DefaultLinkMode>
 	</PropertyGroup>
+	<PropertyGroup>
+		<!-- MSTest runner projects need the interpreter because test platform assemblies fail AOT compilation -->
+		<MtouchInterpreter Condition="'$(MtouchInterpreter)' == '' And '$(EnableMSTestRunner)' == 'true'">all</MtouchInterpreter>
+		<!-- MSTest adapter has duplicate publish output files, suppress the error -->
+		<ErrorOnDuplicatePublishOutputFiles Condition="'$(EnableMSTestRunner)' == 'true'">false</ErrorOnDuplicatePublishOutputFiles>
+	</PropertyGroup>
 	<PropertyGroup Condition="'$(TrimMode)' == ''">
 		<!-- Linking is always on for all assemblies when using NativeAOT - this is because we need to modify all assemblies in the linker for them to be compatible with NativeAOT -->
 		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_UseNativeAot)' == 'true'">Full</_DefaultLinkMode>

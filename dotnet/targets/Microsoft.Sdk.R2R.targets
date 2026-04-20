@@ -40,7 +40,7 @@
 		Set ComputeInstructionSetForReadyToRun to false to opt out of this computation.
 	-->
 	<Target Name="_ComputeInstructionSetForCrossgen2"
-		Condition="'$(PublishReadyToRun)' == 'true' And '$(ComputeInstructionSetForReadyToRun)' != 'false'"
+		Condition="'$(PublishReadyToRun)' == 'true' And '$(ComputeInstructionSetForReadyToRun)' != 'false' And '$(RuntimeIdentifiers)' != ''"
 		DependsOnTargets="_DetectSdkLocations"
 		BeforeTargets="ResolveReadyToRunCompilers">
 		<ComputeInstructionSet
@@ -225,7 +225,9 @@
 			<_FrameworkNativeReference Include="@(_R2RModule->'%(FrameworkPath)/%(FrameworkName)')" Kind="Framework" />
 		</ItemGroup>
 		<ItemGroup Condition="'$(CreateR2RDylib)' == 'true'">
-			<_FileNativeReference Include="@(_R2RModule->'%(DylibOutput)')" Kind="Dynamic" />
+			<_FileNativeReference Include="@(_R2RModule->'%(DylibOutput)')" Kind="Dynamic">
+				<RelativePath></RelativePath>
+			</_FileNativeReference>
 		</ItemGroup>
 	</Target>
 
@@ -362,7 +364,9 @@
 
 		<!-- Add the generated file to the native compilation inputs so it gets compiled into the main executable -->
 		<ItemGroup>
-			<_MainFile Include="$(_R2RModuleRegistrationFile)" />
+			<_MainFile Include="$(_R2RModuleRegistrationFile)">
+				<Arch>$(TargetArchitectures.ToLowerInvariant())</Arch>
+			</_MainFile>
 		</ItemGroup>
 
 		<ItemGroup>

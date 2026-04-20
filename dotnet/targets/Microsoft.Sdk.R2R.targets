@@ -69,7 +69,9 @@
 	</Target>
 
 	<!-- Workaround for https://github.com/dotnet/runtime/issues/122985 -->
-	<Target Name="ResolveReadyToRunCompilers" Condition="'$(PublishReadyToRun)' == 'true' And '$(UseMonoRuntime)' != 'true'">
+	<Target
+		Name="ResolveReadyToRunCompilers"
+		Condition="'$(PublishReadyToRun)' == 'true' And '$(UseMonoRuntime)' != 'true' And '$(RuntimeIdentifiers)' == ''">
 		<PropertyGroup>
 			<_Crossgen2Path Condition="'$(Crossgen2Path)' != ''">$(Crossgen2Path)</_Crossgen2Path>
 			<_FlattenedCrossgen2Packs>@(ResolvedCrossgen2Pack->'%(PackageDirectory)')</_FlattenedCrossgen2Packs>
@@ -109,7 +111,7 @@
 		User assembly is defined as anything not coming from a NuGet package.
 	-->
 	<Target Name="_SelectR2RAssemblies"
-			Condition="'$(FilterReadyToRunAssemblies)' == 'true'"
+			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == ''"
 			BeforeTargets="ResolveReadyToRunCompilers">
 		<ItemGroup>
 			<_ResolvedAssembliesToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And '%(ResolvedFileToPublish.DestinationSubDirectory)' == ''" />

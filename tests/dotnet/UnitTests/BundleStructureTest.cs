@@ -294,7 +294,7 @@ namespace Xamarin.Tests {
 			expectedFiles.Add (Path.Combine (resourcesDirectory, "SubDirectory"));
 			expectedFiles.Add (Path.Combine (resourcesDirectory, "SubDirectory", "AutoIncluded2.txt"));
 
-			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "FrameworksInRuntimesNativeDirectory", runtimeIdentifiers, forceSingleRid: !usingCoreCLR || platform == ApplePlatform.MacOSX);
+			expectedFiles.Add (Path.Combine (assemblyDirectory, "FrameworksInRuntimesNativeDirectory.dll"));
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworksInRuntimesNativeDirectory1", isSigned);
 			AddExpectedFrameworkFiles (platform, expectedFiles, "FrameworksInRuntimesNativeDirectory2", isSigned);
 
@@ -326,10 +326,10 @@ namespace Xamarin.Tests {
 			// misc other files not directly related to the test itself
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "BundleStructure", runtimeIdentifiers, addConfig: true, includeDebugFiles: includeDebugFiles);
 			if (platform != ApplePlatform.MacOSX)
-				AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "MonoTouch.Dialog", runtimeIdentifiers, forceSingleRid: (platform == ApplePlatform.MacCatalyst && !isReleaseBuild && !usingCoreCLR), includeDebugFiles: includeDebugFiles);
-			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "nunit.framework", runtimeIdentifiers, forceSingleRid: !usingCoreCLR || platform == ApplePlatform.MacOSX);
-			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "nunitlite", runtimeIdentifiers, forceSingleRid: !usingCoreCLR || platform == ApplePlatform.MacOSX);
-			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "Mono.Options", runtimeIdentifiers, forceSingleRid: !usingCoreCLR || platform == ApplePlatform.MacOSX);
+				AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "MonoTouch.Dialog", runtimeIdentifiers, forceSingleRid: (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
+			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunit.framework.dll"));
+			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunitlite.dll"));
+			expectedFiles.Add (Path.Combine (assemblyDirectory, "Mono.Options.dll"));
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "Touch.Client", runtimeIdentifiers, platform == ApplePlatform.MacOSX || (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, Path.GetFileNameWithoutExtension (Configuration.GetBaseLibraryName (platform)), runtimeIdentifiers, platform == ApplePlatform.MacOSX, includeDebugFiles: includeDebugFiles);
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "runtimeconfig.bin"));

@@ -10,12 +10,6 @@
     <ApplicationId>com.companyname.MacCatalystTest1</ApplicationId>
     <!-- We provide our own entry point in Main.cs -->
     <GenerateTestingPlatformEntryPoint>false</GenerateTestingPlatformEntryPoint>
-
-    <!--
-      Enable full trimming in Release mode.
-      To learn more, see: https://learn.microsoft.com/dotnet/core/deploying/trimming/trimming-options#trimming-granularity
-    -->
-    <TrimMode Condition="'$(Configuration)' == 'Release'">full</TrimMode>
   </PropertyGroup>
 
   <ItemGroup>

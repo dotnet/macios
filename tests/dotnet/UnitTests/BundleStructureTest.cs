@@ -46,7 +46,7 @@ namespace Xamarin.Tests {
 			return allFiles;
 		}
 
-		internal static void CheckAppBundleContents (ApplePlatform platform, string appPath, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, bool? isCoreCLR = null)
+		internal static void CheckAppBundleContents (ApplePlatform platform, string appPath, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, bool isCoreCLR = false)
 		{
 			Console.WriteLine ($"App bundle: {appPath}");
 			Assert.That (appPath, Does.Exist, "App bundle existence");
@@ -54,15 +54,14 @@ namespace Xamarin.Tests {
 			CheckAppBundleContents (platform, allFiles, runtimeIdentifiers, isSigned, isReleaseBuild, appPath, isCoreCLR: isCoreCLR);
 		}
 
-		internal static void CheckZippedAppBundleContents (ApplePlatform platform, string zippedApp, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, bool? isCoreCLR = null)
+		internal static void CheckZippedAppBundleContents (ApplePlatform platform, string zippedApp, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, bool isCoreCLR = false)
 		{
 			var allFiles = ZipHelpers.List (zippedApp);
 			CheckAppBundleContents (platform, allFiles, runtimeIdentifiers, isSigned, isReleaseBuild, null, isCoreCLR: isCoreCLR);
 		}
 
-		internal static void CheckAppBundleContents (ApplePlatform platform, IEnumerable<string> allFiles, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, string? appPath = null, bool? isCoreCLR = null)
+		internal static void CheckAppBundleContents (ApplePlatform platform, IEnumerable<string> allFiles, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, string? appPath = null, bool isCoreCLR = false)
 		{
-			var usingCoreCLR = isCoreCLR ?? platform == ApplePlatform.MacOSX;
 			var includeDebugFiles = !isReleaseBuild;
 
 			// Remove various files we don't care about (for this test) from the list of files in the app bundle.
@@ -79,13 +78,13 @@ namespace Xamarin.Tests {
 				case "libhostpolicy.dylib":
 				case "libmscordaccore.dylib":
 				case "libmscordbi.dylib":
-					return usingCoreCLR;
+					return isCoreCLR;
 				case "libmono-component-debugger.dylib":
 				case "libmono-component-diagnostics_tracing.dylib":
 				case "libmono-component-hot_reload.dylib":
 				case "libmono-component-marshal-ilgen.dylib":
 				case "libmonosgen-2.0.dylib":
-					return !usingCoreCLR;
+					return !isCoreCLR;
 				case "libSystem.Native.dylib":
 				case "libSystem.Net.Security.Native.dylib":
 				case "libSystem.Globalization.Native.dylib":
@@ -115,9 +114,9 @@ namespace Xamarin.Tests {
 					return true;
 
 				if (fn.StartsWith ("libSystem.", StringComparison.Ordinal) && fn.EndsWith (".dylib", StringComparison.Ordinal))
-					return usingCoreCLR;
+					return isCoreCLR;
 
-				if (usingCoreCLR) {
+				if (isCoreCLR) {
 					if (fn.EndsWith (".r2r.dylib", StringComparison.Ordinal))
 						return true;
 

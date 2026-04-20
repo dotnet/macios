@@ -199,8 +199,9 @@
 				<ModuleName>%(Filename)%(Extension)</ModuleName>
 				<!-- Derive a short name (without .r2r.dylib) for framework/dylib naming -->
 				<ShortName>$([System.Text.RegularExpressions.Regex]::Replace ('%(Filename)', '\.r2r$', ''))</ShortName>
-				<!-- Sanitize for C symbol: replace non-identifier chars with _ -->
-				<SanitizedName>$([System.Text.RegularExpressions.Regex]::Replace ('%(Filename).o', '[^a-zA-Z0-9_]', '_'))</SanitizedName>
+				<!-- Sanitize for C symbol: replace non-identifier chars with _.
+				     Must match the symbol derivation in _SetR2RHeaderSymbolNames (from the full dylib filename). -->
+				<SanitizedName>$([System.Text.RegularExpressions.Regex]::Replace ('%(Filename)%(Extension)', '[^a-zA-Z0-9_]', '_'))</SanitizedName>
 			</_R2RModule>
 			<_R2RModule Update="@(_R2RModule)">
 				<SymbolName>RTR_HEADER_%(SanitizedName)</SymbolName>

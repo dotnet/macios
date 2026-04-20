@@ -352,9 +352,7 @@ See [BuildIpa](#buildipa) for iOS and tvOS projects.
 
 ## Device
 
-Specifies which mobile device or emulator to target when using `dotnet run
---device <Device>` or MSBuild targets that interact with devices (such as
-`Run`, `Install`, or `Uninstall`).
+Specifies which mobile device or simulator to target when using `dotnet run --device <Device>` or MSBuild targets that interact with devices (such as `Run`, `Install`, or `Uninstall`).
 
 The value can be anything the command-line tools `simctl` or `devicectl`
 accept for the device name; this is typically either the UDID or the name of

@@ -46,22 +46,23 @@ namespace Xamarin.Tests {
 			return allFiles;
 		}
 
-		internal static void CheckAppBundleContents (ApplePlatform platform, string appPath, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, bool isCoreCLR = false)
+		internal static void CheckAppBundleContents (ApplePlatform platform, string appPath, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild)
 		{
 			Console.WriteLine ($"App bundle: {appPath}");
 			Assert.That (appPath, Does.Exist, "App bundle existence");
 			var allFiles = Find (appPath);
-			CheckAppBundleContents (platform, allFiles, runtimeIdentifiers, isSigned, isReleaseBuild, appPath, isCoreCLR: isCoreCLR);
+			CheckAppBundleContents (platform, allFiles, runtimeIdentifiers, isSigned, isReleaseBuild, appPath);
 		}
 
-		internal static void CheckZippedAppBundleContents (ApplePlatform platform, string zippedApp, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, bool isCoreCLR = false)
+		internal static void CheckZippedAppBundleContents (ApplePlatform platform, string zippedApp, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild)
 		{
 			var allFiles = ZipHelpers.List (zippedApp);
-			CheckAppBundleContents (platform, allFiles, runtimeIdentifiers, isSigned, isReleaseBuild, null, isCoreCLR: isCoreCLR);
+			CheckAppBundleContents (platform, allFiles, runtimeIdentifiers, isSigned, isReleaseBuild, null);
 		}
 
-		internal static void CheckAppBundleContents (ApplePlatform platform, IEnumerable<string> allFiles, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, string? appPath = null, bool isCoreCLR = false)
+		internal static void CheckAppBundleContents (ApplePlatform platform, IEnumerable<string> allFiles, string [] runtimeIdentifiers, CodeSignature isSigned, bool isReleaseBuild, string? appPath = null)
 		{
+			var isCoreCLR = platform == ApplePlatform.MacOSX;
 			var includeDebugFiles = !isReleaseBuild;
 
 			// Remove various files we don't care about (for this test) from the list of files in the app bundle.
@@ -78,13 +79,13 @@ namespace Xamarin.Tests {
 				case "libhostpolicy.dylib":
 				case "libmscordaccore.dylib":
 				case "libmscordbi.dylib":
-					return isCoreCLR;
+					return platform == ApplePlatform.MacOSX;
 				case "libmono-component-debugger.dylib":
 				case "libmono-component-diagnostics_tracing.dylib":
 				case "libmono-component-hot_reload.dylib":
 				case "libmono-component-marshal-ilgen.dylib":
 				case "libmonosgen-2.0.dylib":
-					return !isCoreCLR;
+					return platform != ApplePlatform.MacOSX;
 				case "libSystem.Native.dylib":
 				case "libSystem.Net.Security.Native.dylib":
 				case "libSystem.Globalization.Native.dylib":
@@ -95,8 +96,6 @@ namespace Xamarin.Tests {
 				case "netstandard.dll":
 				case "libxamarin-dotnet-debug.dylib":
 				case "libxamarin-dotnet.dylib":
-				case "libxamarin-dotnet-coreclr-debug.dylib":
-				case "libxamarin-dotnet-coreclr.dylib":
 					return true;
 
 				case "embedded.mobileprovision":
@@ -114,22 +113,7 @@ namespace Xamarin.Tests {
 					return true;
 
 				if (fn.StartsWith ("libSystem.", StringComparison.Ordinal) && fn.EndsWith (".dylib", StringComparison.Ordinal))
-					return isCoreCLR;
-
-				if (isCoreCLR) {
-					if (fn.EndsWith (".r2r.dylib", StringComparison.Ordinal))
-						return true;
-
-					if (v!.Contains (".framework")) {
-						// Zip entries from remote Windows builds use '\' separators, while local
-						// macOS bundle checks use '/'. Handle both when extracting the framework name.
-						var fwIdx = v.IndexOf (".framework", StringComparison.Ordinal);
-						var slashIdx = fwIdx > 0 ? v.LastIndexOfAny ([Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar], fwIdx - 1) : -1;
-						var frameworkName = v.Substring (slashIdx + 1, fwIdx - slashIdx - 1);
-						if (frameworkName.StartsWith ("lib", StringComparison.Ordinal) || frameworkName == "BundleStructure")
-							return true;
-					}
-				}
+					return platform == ApplePlatform.MacOSX;
 
 				return false;
 			};

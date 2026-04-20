@@ -333,7 +333,7 @@ namespace NetworkExtension {
 		IdleTimeout = 8,
 		/// <summary>The network configuration was disabled.</summary>
 		ConfigurationDisabled = 9,
-		/// <summary>The netowrk configuration was removed.</summary>
+		/// <summary>The network configuration was removed.</summary>
 		ConfigurationRemoved = 10,
 		/// <summary>The configuration was superseded by another.</summary>
 		Superseded = 11,

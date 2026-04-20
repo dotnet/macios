@@ -259,7 +259,7 @@ namespace AudioToolbox {
 		HeadsetMic,
 		/// <summary>Bluetooth based microphone</summary>
 		BluetoothHFP,
-		/// <summary>Microphone connected through USB (connected either throught the Lightning or 30-pin ports).</summary>
+		/// <summary>Microphone connected through USB (connected either through the Lightning or 30-pin ports).</summary>
 		USBAudio,
 	}
 

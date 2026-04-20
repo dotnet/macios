@@ -39,12 +39,12 @@ namespace Xharness {
 		readonly RunMode runMode;
 		readonly XmlResultJargon xmlJargon;
 		readonly IMlaunchProcessManager processManager;
-		readonly string deviceName;
+		readonly string? deviceName;
 		readonly TimeSpan timeout;
 		readonly Stopwatch timeoutWatch;
-		readonly string additionalLogsDirectory;
+		readonly string? additionalLogsDirectory;
 		readonly CancellationTokenSource cancellationTokenSource = new ();
-		readonly ExceptionLogger exceptionLogger;
+		readonly ExceptionLogger? exceptionLogger;
 		readonly bool generateHtml;
 
 		bool waitedForExit = true;
@@ -73,10 +73,10 @@ namespace Xharness {
 			AppBundleInformation appInformation,
 			RunMode runMode,
 			XmlResultJargon xmlJargon,
-			string device,
+			string? device,
 			TimeSpan timeout,
-			string additionalLogsDirectory = null,
-			ExceptionLogger exceptionLogger = null,
+			string? additionalLogsDirectory = null,
+			ExceptionLogger? exceptionLogger = null,
 			bool generateHtml = false)
 		{
 			this.processManager = processManager ?? throw new ArgumentNullException (nameof (processManager));
@@ -113,7 +113,7 @@ namespace Xharness {
 				if (!listener.ConnectedTask.IsCompletedSuccessfully || !listener.ConnectedTask.Result)
 					launchFailure = true;
 			} else {
-				string line;
+				string? line;
 				while ((line = await reader.ReadLineAsync ()) is not null) {
 					if (line.StartsWith ("Application launched. PID = ", StringComparison.Ordinal)) {
 						var pidstr = line.Substring ("Application launched. PID = ".Length);
@@ -136,7 +136,7 @@ namespace Xharness {
 		{
 			int pid = -1;
 			using var logReader = mainLog.GetReader ();
-			string line;
+			string? line;
 			while ((line = await logReader.ReadLineAsync ()) is not null) {
 				const string str = "was launched with pid '";
 				var idx = line.IndexOf (str, StringComparison.Ordinal);
@@ -152,7 +152,7 @@ namespace Xharness {
 			return pid;
 		}
 
-		void GetCrashReason (int pid, IReadableLog crashLog, out string crashReason)
+		void GetCrashReason (int pid, IReadableLog crashLog, out string? crashReason)
 		{
 			crashReason = null;
 			using var crashReader = crashLog.GetReader ();
@@ -161,7 +161,7 @@ namespace Xharness {
 			var reader = JsonReaderWriterFactory.CreateJsonReader (Encoding.UTF8.GetBytes (text), new XmlDictionaryReaderQuotas ());
 			var doc = new XmlDocument ();
 			doc.Load (reader);
-			foreach (XmlNode node in doc.SelectNodes ($"/root/processes/item[pid = '" + pid + "']")) {
+			foreach (XmlNode node in doc.SelectNodes ($"/root/processes/item[pid = '" + pid + "']")!) {
 				Console.WriteLine (node?.InnerXml);
 				Console.WriteLine (node?.SelectSingleNode ("reason")?.InnerText);
 				crashReason = node?.SelectSingleNode ("reason")?.InnerText;
@@ -171,7 +171,7 @@ namespace Xharness {
 		async Task<bool> TcpConnectionFailed ()
 		{
 			using var reader = new StreamReader (mainLog.FullPath);
-			string line;
+			string? line;
 			while ((line = await reader.ReadLineAsync ()) is not null) {
 				if (line.Contains ("Couldn't establish a TCP connection with any of the hostnames"))
 					return true;
@@ -257,12 +257,12 @@ namespace Xharness {
 			await CollectResult (runResult);
 		}
 
-		async Task<(string ResultLine, bool Failed)> GetResultLine (string logPath)
+		async Task<(string? ResultLine, bool Failed)> GetResultLine (string logPath)
 		{
-			string resultLine = null;
+			string? resultLine = null;
 			bool failed = false;
 			using var reader = new StreamReader (logPath);
-			string line;
+			string? line;
 			while ((line = await reader.ReadLineAsync ()) is not null) {
 				if (line.Contains ("Tests run:")) {
 					Console.WriteLine (line);
@@ -276,9 +276,9 @@ namespace Xharness {
 			return (ResultLine: resultLine, Failed: failed);
 		}
 
-		async Task<(string resultLine, bool failed, bool crashed)> ParseResultFile (AppBundleInformation appInfo, string testLogPath, bool timedOut)
+		async Task<(string? resultLine, bool failed, bool crashed)> ParseResultFile (AppBundleInformation appInfo, string testLogPath, bool timedOut)
 		{
-			(string resultLine, bool failed, bool crashed) parseResult = (null, false, false);
+			(string? resultLine, bool failed, bool crashed) parseResult = (null, false, false);
 			if (!File.Exists (testLogPath)) {
 				parseResult.crashed = true;
 				return parseResult;
@@ -286,7 +286,7 @@ namespace Xharness {
 
 			var path = Path.ChangeExtension (testLogPath, "xml");
 			if (path == testLogPath)
-				path = Path.Combine (Path.GetDirectoryName (path), Path.GetFileNameWithoutExtension (path) + "-clean.xml");
+				path = Path.Combine (Path.GetDirectoryName (path)!, Path.GetFileNameWithoutExtension (path) + "-clean.xml");
 
 			resultParser.CleanXml (testLogPath, path);
 
@@ -310,7 +310,7 @@ namespace Xharness {
 						var humanReadableLog = logs.CreateFile (Path.GetFileNameWithoutExtension (testLogPath) + ".log", LogType.NUnitResult);
 						(parseResult.resultLine, parseResult.failed) = resultParser.ParseResults (path, xmlType, humanReadableLog);
 					} else {
-						(parseResult.resultLine, parseResult.failed) = resultParser.ParseResults (path, xmlType, (StreamWriter) null);
+						(parseResult.resultLine, parseResult.failed) = resultParser.ParseResults (path, xmlType, (StreamWriter?) null);
 					}
 
 					logs.AddFile (path, LogType.XmlLog.ToString ());
@@ -320,7 +320,7 @@ namespace Xharness {
 					mainLog.WriteLine ("File data is:");
 					mainLog.WriteLine (new string ('#', 10));
 					using (var stream = new StreamReader (path)) {
-						string line;
+						string? line;
 						while ((line = await stream.ReadLineAsync ()) is not null)
 							mainLog.WriteLine (line);
 					}
@@ -368,7 +368,7 @@ namespace Xharness {
 			}
 		}
 
-		async Task GenerateXmlFailures (string failure, bool crashed, string crashReason)
+		async Task GenerateXmlFailures (string failure, bool crashed, string? crashReason)
 		{
 			if (!ResultsUseXml)
 				return;
@@ -426,9 +426,9 @@ namespace Xharness {
 			}
 		}
 
-		public async Task<(TestExecutingResult ExecutingResult, string ResultMessage)> ParseResult ()
+		public async Task<(TestExecutingResult ExecutingResult, string? ResultMessage)> ParseResult ()
 		{
-			(TestExecutingResult ExecutingResult, string ResultMessage) result = (TestExecutingResult.Finished, null);
+			(TestExecutingResult ExecutingResult, string? ResultMessage) result = (TestExecutingResult.Finished, null);
 			var crashed = false;
 			if (File.Exists (listener.TestLog.FullPath)) {
 				WrenchLog.WriteLine ("AddFile: {0}", listener.TestLog.FullPath);
@@ -481,7 +481,7 @@ namespace Xharness {
 
 			if (!Success.Value) {
 				int pid = -1;
-				string crashReason = null;
+				string? crashReason = null;
 				foreach (var crashLog in crashLogs) {
 					try {
 						logs.Add (crashLog);

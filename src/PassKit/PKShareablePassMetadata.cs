@@ -18,9 +18,9 @@ namespace PassKit {
 			Configuration = 1,
 		}
 
-		/// <summary>Create a new <see cref="PKShareablePassMetadata" /> instance.</summary>
+		/// <summary>Creates a new <see cref="PKShareablePassMetadata" /> instance.</summary>
 		/// <param name="credentialIdentifier">The credential identifier for the new <see cref="PKShareablePassMetadata" /> instance.</param>
-		/// <param name="sharingInstanceIdentifier">The sharing instance identifer for the new <see cref="PKShareablePassMetadata" /> instance.</param>
+		/// <param name="sharingInstanceIdentifier">The sharing instance identifier for the new <see cref="PKShareablePassMetadata" /> instance.</param>
 		/// <param name="templateIdentifier">The card template identifier for the new <see cref="PKShareablePassMetadata" /> instance.</param>
 		/// <param name="preview">The preview for the new <see cref="PKShareablePassMetadata" /> instance.</param>
 		[SupportedOSPlatform ("ios16.0")]
@@ -32,9 +32,9 @@ namespace PassKit {
 		{
 		}
 
-		/// <summary>Create a new <see cref="PKShareablePassMetadata" /> instance.</summary>
+		/// <summary>Creates a new <see cref="PKShareablePassMetadata" /> instance.</summary>
 		/// <param name="credentialIdentifier">The credential identifier for the new <see cref="PKShareablePassMetadata" /> instance.</param>
-		/// <param name="sharingInstanceIdentifier">The sharing instance identifer for the new <see cref="PKShareablePassMetadata" /> instance.</param>
+		/// <param name="sharingInstanceIdentifier">The sharing instance identifier for the new <see cref="PKShareablePassMetadata" /> instance.</param>
 		/// <param name="templateIdentifier">The template identifier for the new <see cref="PKShareablePassMetadata" /> instance.</param>
 		/// <param name="preview">The preview for the new <see cref="PKShareablePassMetadata" /> instance.</param>
 		/// <param name="cardType">Specifies whether the <paramref name="templateIdentifier" /> parameter specifies a card template identifier or a card configuration identifier.</param>

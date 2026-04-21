@@ -2,7 +2,7 @@
 
 Distilled from past code reviews by senior maintainers of dotnet/macios
 (Sebastien Pouliot, Rolf Bjarne Kvinge, Chris Hamons, Manuel de la Peña, Alex Soto),
-the conventions in [copilot-instructions.md](../../../.github/copilot-instructions.md),
+the conventions in [copilot-instructions.md](../../../copilot-instructions.md),
 and the repository's `.editorconfig`.
 
 ---
@@ -15,14 +15,14 @@ ship to every .NET Apple developer.
 
 | Check | What to look for |
 |-------|-----------------|
-| **Correct `[Export]` selectors** | The Objective-C selector in `[Export ("...")]` must exactly match Apple's header. A wrong selector causes a runtime `MissingMethodException`. Verify against Apple's documentation or headers. |
+| **Correct `[Export]` selectors** | The Objective-C selector in `[Export ("...")]` must exactly match Apple's header. A wrong selector causes a 'Selector not found' Objective-C exception at runtime. Verify against Apple's documentation or headers. |
 | **`[NullAllowed]` on nullable parameters** | If an Objective-C parameter accepts `nil`, the C# binding must have `[NullAllowed]`. Missing it causes unnecessary `ArgumentNullException`s. Conversely, don't add `[NullAllowed]` if Apple's docs say the parameter must not be nil. Use `[return: NullAllowed]` on return values that can be nil. |
 | **Method naming conventions** | C# method names must follow .NET naming guidelines. Methods need a verb: `CreateWatt()` not `Watt()` for factory methods. Properties don't need a verb. In Objective-C there was no distinction between a no-arg method and a read-only property — bind as a property when it represents state, as a method when it performs computation or has side effects. |
 | **Delegate/protocol naming** | In protocols of the `*Delegate` kind, use the second parameter for the method name: `DidBeginActivity (HKLiveWorkoutBuilder workoutBuilder, ...)` not `DidBeginActivity (HKWorkoutActivity activity, ...)`. The first parameter is typically the sender. |
 | **Use interface types for protocol parameters** | When an Objective-C method takes a protocol type, use the `I`-prefixed interface (e.g., `ICPListTemplateItem[]`) not the concrete class (`CPListItem[]`). This matches Apple's intent and avoids unnecessarily restricting the API. |
 | **Properties vs methods** | Objective-C `+unitMethod` that returns a singleton or constant should be bound as a static read-only property (`HKUnit Diopter { get; }`) not a method. Factory methods that take parameters (`+unitWithPrefix:`) should be methods (`CreateWatt (HKMetricPrefix prefix)`). Follow the existing pattern in the same type. |
 | **Alphabetical ordering** | Lists of framework entries, enum values, and similar declarations should be alphabetically sorted. |
-| **Use custom delegates over `Action<>` for complex callbacks** | When a callback has more than 2-3 parameters, or when parameter meaning is unclear (e.g., `Action<bool, NSError>`), define a named delegate type instead. This improves API discoverability and documentation. |
+| **Use custom delegates over `Action<>` for complex callbacks** | When a callback has more than 2-3 parameters, when parameter meaning is unclear (e.g., `Action<bool, NSError>`), or when any parameter or the return type is nullable, define a named delegate type instead. This improves API discoverability and allows proper nullability annotations. |
 | **Platform availability attributes** | Every new type and member must have correct platform attributes (`[iOS (version)]`, `[Mac (version)]`, `[TV (version)]`, `[MacCatalyst (version)]`, `[NoiOS]`, `[NoMac]`, `[NoTV]`, `[NoMacCatalyst]`). Removing an attribute makes the API available from the earliest supported version, which is almost certainly wrong. |
 | **Don't restrict beyond Apple's documentation** | If Apple documents an API as available on a platform, don't add `[No*]` attributes without good reason. Check headers and documentation carefully. |
 | **`[Sealed]` for duplicate selectors** | When two properties share the same Objective-C selector (e.g., during deprecation transitions), use `[Sealed]` on the old one to avoid a compile error. |
@@ -81,22 +81,16 @@ Build tasks ship to customers. Getting them wrong causes broken builds.
 
 ## 6. Formatting & Style
 
-This project uses Mono style with tabs. Formatting violations create noisy diffs
-and merge conflicts. **Minimize diff size above all else.**
+C# code formatting is handled automatically and should **not** be reviewed for
+formatting issues — doing so just adds noise. Review formatting only for
+non-C# text files (XML, shell scripts, YAML, etc.).
 
 | Check | What to look for |
 |-------|-----------------|
-| **Tabs, not spaces** | C# indentation uses tabs (width 4 in `.editorconfig`). |
-| **Space before `(` and `[`** | Method calls: `Foo ()`, `Bar (1, 2)`. Array access: `array [0]`. This is Mono style — omitting the space is wrong here. |
-| **`""` not `string.Empty`** | Use `""` for empty strings. Use `[]` not `Array.Empty<T>()` for empty arrays. |
-| **Same-line braces for `catch`/`else`/`finally`** | Use `} catch {`, `} else {`, `} finally {` on the same line (K&R style). Opening braces for methods and anonymous methods go on a new line. |
-| **`switch` indentation** | `case` labels are NOT indented within the `switch` block (per `csharp_indent_switch_labels = false`). |
-| **Preserve existing formatting** | When modifying existing files, leave existing formatting, spacing, and comments as-is. Don't reformat code you didn't write. The mission is to make diffs as small as possible. |
-| **No `#region`/`#endregion`** | Region directives hide code and make reviews harder. |
-| **Max line width ~120 characters** | Don't merge two lines into a single 160-character monster. Keep lines readable. |
-| **`var` only when type is apparent** | Use `var` when the type is obvious from the right side (e.g., `var list = new List<string> ()`). Use explicit types for method returns, casts, and numeric types. |
-| **Accessibility modifiers** | Omit accessibility modifiers when they are the default (`dotnet_style_require_accessibility_modifiers = omit_if_default`). |
-| **`using` directives outside namespace** | `using` directives go outside the namespace block. |
+| **Don't review C# formatting** | C# code is automatically formatted. Do not comment on C# whitespace, brace placement, indentation, or spacing issues. |
+| **XML/MSBuild indentation** | `.csproj` files use 2 spaces; `.props`/`.targets` files use tabs (per `.editorconfig`). |
+| **Shell scripts** | Should be properly indented and follow existing style in the file. |
+| **Max line width ~120 characters** | Applies to non-C# files. Don't merge two lines into a single 160-character monster. |
 
 ---
 
@@ -201,7 +195,7 @@ and merge conflicts. **Minimize diff size above all else.**
 | **Remove stale comments** | If the code changed, update the comment. Wrong comments are worse than no comments. |
 | **Track TODOs as issues** | A `// TODO` hidden in code will be forgotten. File an issue and reference it. |
 | **`#else`/`#endif` comments** | Annotate `#else` and `#endif` with the original expression when preprocessor blocks are long. |
-| **TryCreate pattern** | `TryCreate` methods conventionally return a status code and use an `out` object parameter, not `bool` + out status. |
+| **TryCreate pattern** | `TryCreate` methods conventionally return a `bool` + an `out` object/result parameter, and sometimes also an `out` status parameter. |
 | **Factory method names** | If `CreateFoo()` sometimes returns an existing instance, rename to `GetOrCreateFoo()`. |
 | **Apple feedback tracking** | File a mirror issue for any Apple feedback filed, since others cannot see Apple feedback directly. |
 
@@ -236,7 +230,7 @@ These are patterns that AI-generated code consistently gets wrong in this repo:
 | **Over-engineering** | HttpClient injection "for testability", speculative helpers, unused overloads. If no caller needs it today, remove it. |
 | **Swallowed errors** | AI catch blocks love to eat exceptions silently. Check EVERY catch block. |
 | **Null-forgiving operator** | AI sprinkles `!` everywhere. This is banned in this repo. |
-| **Wrong formatting** | AI generates standard C# formatting (no space before parens). This repo requires Mono style: `Foo ()`, `array [0]`. |
+| **Wrong formatting** | AI generates standard C# formatting (no space before parens). This repo uses Mono style with automatic formatting — but AI-generated code in non-C# files (XML, YAML, shell) may have wrong indentation or style. |
 | **`string.Empty` and `Array.Empty<T>()`** | AI defaults to these. Use `""` and `[]` instead. |
 | **Sloppy structure** | Multiple types in one file, `#region` directives, classes where records would do. New helpers marked `public` when `internal` suffices. |
 | **Docs describe intent not reality** | AI doc comments often describe what the code *should* do, not what it *actually* does. |

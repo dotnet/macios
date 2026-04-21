@@ -54,6 +54,10 @@
 		<!-- Apple platforms provide their own entry point (UIApplication.Main, NSApplication.Main, etc.) -->
 		<GenerateTestingPlatformEntryPoint Condition="'$(GenerateTestingPlatformEntryPoint)' == ''">false</GenerateTestingPlatformEntryPoint>
 	</PropertyGroup>
+	<ItemGroup Condition="'$(EnableMSTestRunner)' == 'true'">
+		<!-- Disable ANSI escape codes in MSTest output, as they appear as garbled text in simulator/device logs -->
+		<RuntimeEnvironmentVariable Include="NO_COLOR" Value="1" />
+	</ItemGroup>
 	<PropertyGroup Condition="'$(TrimMode)' == ''">
 		<!-- Linking is always on for all assemblies when using NativeAOT - this is because we need to modify all assemblies in the linker for them to be compatible with NativeAOT -->
 		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_UseNativeAot)' == 'true'">Full</_DefaultLinkMode>

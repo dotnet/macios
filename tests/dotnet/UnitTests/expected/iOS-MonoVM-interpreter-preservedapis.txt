@@ -316,7 +316,6 @@ Microsoft.iOS.dll:ObjCRuntime.Class.FindType(ObjCRuntime.NativeHandle, out Syste
 Microsoft.iOS.dll:ObjCRuntime.Class.FreeStringPtrs(System.IntPtr[])
 Microsoft.iOS.dll:ObjCRuntime.Class.get_Handle()
 Microsoft.iOS.dll:ObjCRuntime.Class.get_Name()
-Microsoft.iOS.dll:ObjCRuntime.Class.get_ValidateObjectPointers()
 Microsoft.iOS.dll:ObjCRuntime.Class.GetAssemblyName(System.Reflection.Assembly)
 Microsoft.iOS.dll:ObjCRuntime.Class.GetClassCount()
 Microsoft.iOS.dll:ObjCRuntime.Class.GetClassForObject(System.IntPtr)
@@ -1223,7 +1222,6 @@ Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::IsStubClass()
 Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::IsWrapper()
 Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::SkipRegistration()
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.Class::ThrowOnInitFailure
-Microsoft.iOS.dll:System.Boolean ObjCRuntime.Class::ValidateObjectPointers()
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.DisposableObject::owns
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.RegistrarHelper/MapInfo::RegisteredWrapperTypes
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.Runtime::initialized

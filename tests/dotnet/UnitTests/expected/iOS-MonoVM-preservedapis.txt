@@ -236,7 +236,6 @@ Microsoft.iOS.dll:ObjCRuntime.Class.FindMapIndex(ObjCRuntime.Runtime/MTClassMap*
 Microsoft.iOS.dll:ObjCRuntime.Class.FindType(ObjCRuntime.NativeHandle, out System.Boolean&)
 Microsoft.iOS.dll:ObjCRuntime.Class.get_Handle()
 Microsoft.iOS.dll:ObjCRuntime.Class.get_Name()
-Microsoft.iOS.dll:ObjCRuntime.Class.get_ValidateObjectPointers()
 Microsoft.iOS.dll:ObjCRuntime.Class.GetAssemblyName(System.Reflection.Assembly)
 Microsoft.iOS.dll:ObjCRuntime.Class.GetClassForObject(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Class.GetClassHandle(System.Type, System.Boolean, out System.Boolean&)
@@ -668,7 +667,6 @@ Microsoft.iOS.dll:System.Boolean Foundation.ProtocolAttribute::<BackwardsCompati
 Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::is_wrapper
 Microsoft.iOS.dll:System.Boolean Foundation.RegisterAttribute::IsWrapper()
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.Class::ThrowOnInitFailure
-Microsoft.iOS.dll:System.Boolean ObjCRuntime.Class::ValidateObjectPointers()
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.DisposableObject::owns
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.RegistrarHelper/MapInfo::RegisteredWrapperTypes
 Microsoft.iOS.dll:System.Boolean ObjCRuntime.Runtime::initialized

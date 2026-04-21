@@ -236,7 +236,6 @@ Microsoft.tvOS.dll:ObjCRuntime.Class.FindMapIndex(ObjCRuntime.Runtime/MTClassMap
 Microsoft.tvOS.dll:ObjCRuntime.Class.FindType(ObjCRuntime.NativeHandle, out System.Boolean&)
 Microsoft.tvOS.dll:ObjCRuntime.Class.get_Handle()
 Microsoft.tvOS.dll:ObjCRuntime.Class.get_Name()
-Microsoft.tvOS.dll:ObjCRuntime.Class.get_ValidateObjectPointers()
 Microsoft.tvOS.dll:ObjCRuntime.Class.GetAssemblyName(System.Reflection.Assembly)
 Microsoft.tvOS.dll:ObjCRuntime.Class.GetClassForObject(System.IntPtr)
 Microsoft.tvOS.dll:ObjCRuntime.Class.GetClassHandle(System.Type, System.Boolean, out System.Boolean&)
@@ -668,7 +667,6 @@ Microsoft.tvOS.dll:System.Boolean Foundation.ProtocolAttribute::<BackwardsCompat
 Microsoft.tvOS.dll:System.Boolean Foundation.RegisterAttribute::is_wrapper
 Microsoft.tvOS.dll:System.Boolean Foundation.RegisterAttribute::IsWrapper()
 Microsoft.tvOS.dll:System.Boolean ObjCRuntime.Class::ThrowOnInitFailure
-Microsoft.tvOS.dll:System.Boolean ObjCRuntime.Class::ValidateObjectPointers()
 Microsoft.tvOS.dll:System.Boolean ObjCRuntime.DisposableObject::owns
 Microsoft.tvOS.dll:System.Boolean ObjCRuntime.RegistrarHelper/MapInfo::RegisteredWrapperTypes
 Microsoft.tvOS.dll:System.Boolean ObjCRuntime.Runtime::initialized

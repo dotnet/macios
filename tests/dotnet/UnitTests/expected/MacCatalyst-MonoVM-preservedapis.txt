@@ -240,7 +240,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Class.FindMapIndex(ObjCRuntime.Runtime/MTC
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.FindType(ObjCRuntime.NativeHandle, out System.Boolean&)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.get_Handle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.get_Name()
-Microsoft.MacCatalyst.dll:ObjCRuntime.Class.get_ValidateObjectPointers()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetAssemblyName(System.Reflection.Assembly)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetClassForObject(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetClassHandle(System.Type, System.Boolean, out System.Boolean&)
@@ -673,7 +672,6 @@ Microsoft.MacCatalyst.dll:System.Boolean Foundation.ProtocolAttribute::<Backward
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.RegisterAttribute::is_wrapper
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.RegisterAttribute::IsWrapper()
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.Class::ThrowOnInitFailure
-Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.Class::ValidateObjectPointers()
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.DisposableObject::owns
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.RegistrarHelper/MapInfo::RegisteredWrapperTypes
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.Runtime::initialized

@@ -320,7 +320,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Class.FindType(ObjCRuntime.NativeHandle, o
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.FreeStringPtrs(System.IntPtr[])
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.get_Handle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.get_Name()
-Microsoft.MacCatalyst.dll:ObjCRuntime.Class.get_ValidateObjectPointers()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetAssemblyName(System.Reflection.Assembly)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetClassCount()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Class.GetClassForObject(System.IntPtr)
@@ -1231,7 +1230,6 @@ Microsoft.MacCatalyst.dll:System.Boolean Foundation.RegisterAttribute::IsStubCla
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.RegisterAttribute::IsWrapper()
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.RegisterAttribute::SkipRegistration()
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.Class::ThrowOnInitFailure
-Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.Class::ValidateObjectPointers()
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.DisposableObject::owns
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.RegistrarHelper/MapInfo::RegisteredWrapperTypes
 Microsoft.MacCatalyst.dll:System.Boolean ObjCRuntime.Runtime::initialized

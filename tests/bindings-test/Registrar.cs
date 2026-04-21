@@ -44,9 +44,9 @@ namespace XamarinTests.ObjCRuntime {
 				if (__registrar__ is not null)
 					return Registrars.ManagedStatic;
 				var types = new Type [] { typeof (NativeHandle), typeof (bool).MakeByRefType () };
-				var find_type = typeof (Class).GetMethod ("FindType", BindingFlags.Static | BindingFlags.NonPublic, null, types, null);
+				var find_type = typeof (Class).GetMethod ("FindType", BindingFlags.Static | BindingFlags.NonPublic, null, types, null)!;
 				var type_to_find = typeof (RegistrationTestClass);
-				var type = (Type) find_type.Invoke (null, new object [] { Class.GetHandle (type_to_find), false });
+				var type = (Type) find_type.Invoke (null!, new object? [] { Class.GetHandle (type_to_find), false })!;
 				var is_static = type_to_find == type;
 				if (is_static) {
 					return Registrars.Static;

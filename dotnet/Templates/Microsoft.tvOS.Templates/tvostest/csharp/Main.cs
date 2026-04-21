@@ -21,7 +21,7 @@ class AppDelegate : UIApplicationDelegate {
 			Text = "Running tests...\n",
 			TextAlignment = UITextAlignment.Left,
 			Lines = 0,
-			Font = UIFont.GetMonospacedSystemFont (24, UIFontWeight.Regular),
+			Font = UIFont.GetMonospacedSystemFont (24, UIFontWeight.Regular)!,
 			TextColor = UIColor.White,
 			TranslatesAutoresizingMaskIntoConstraints = false,
 		};

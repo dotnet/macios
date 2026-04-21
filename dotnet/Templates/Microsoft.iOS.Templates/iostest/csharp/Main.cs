@@ -37,7 +37,7 @@ class SceneDelegate : UIResponder, IUIWindowSceneDelegate {
 			Text = "Running tests...\n",
 			TextAlignment = UITextAlignment.Left,
 			Lines = 0,
-			Font = UIFont.GetMonospacedSystemFont (12, UIFontWeight.Regular),
+			Font = UIFont.GetMonospacedSystemFont (12, UIFontWeight.Regular)!,
 			TextColor = UIColor.Label,
 			TranslatesAutoresizingMaskIntoConstraints = false,
 		};

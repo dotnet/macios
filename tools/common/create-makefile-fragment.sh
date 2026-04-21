@@ -42,6 +42,11 @@ fi
 
 BUILD_EXECUTABLE="dotnet build"
 
+if ! dotnet --version >& /dev/null; then
+	# if we don't have a working .NET version, then we can't do anything here.
+	exit 0
+fi
+
 if test -z "$BUILD_VERBOSITY"; then
 	BUILD_VERBOSITY=/verbosity:diag
 fi
@@ -51,10 +56,14 @@ fi
 # ProjectFile variable) and writes all the project references (recursively) to
 # a file (the ReferenceListPath variable).
 (
-cp ProjectInspector.csproj "$PROJECT_DIR"
-cd "$PROJECT_DIR"
-$BUILD_EXECUTABLE ProjectInspector.csproj "/t:WriteProjectReferences" "/p:ProjectFile=$PROJECT_FILE" "/p:ReferenceListPath=$REFERENCES_PATH" $BUILD_VERBOSITY /nologo
-rm -f ProjectInspector.csproj
+	function upon_exit ()
+	{
+		rm -f "$PROJECT_DIR/ProjectInspector.csproj"
+	}
+	trap upon_exit EXIT
+	cp ProjectInspector.csproj "$PROJECT_DIR"
+	cd "$PROJECT_DIR"
+	$BUILD_EXECUTABLE ProjectInspector.csproj "/t:WriteProjectReferences" "/p:ProjectFile=$PROJECT_FILE" "/p:ReferenceListPath=$REFERENCES_PATH" $BUILD_VERBOSITY /nologo
 )
 
 # Now we have a list of all the project referenced by the input project. The

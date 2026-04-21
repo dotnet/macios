@@ -233,7 +233,7 @@ namespace GameKit {
 			}
 		}
 
-		/// <include file="../../docs/api/GameKit/GKPeerPickerController.xml" path="/Documentation/Docs[@DocId='M:GameKit.GKPeerPickerController.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			throw new PlatformNotSupportedException (Constants.TypeUnavailable);

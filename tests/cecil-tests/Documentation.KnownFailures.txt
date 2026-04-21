@@ -15023,7 +15023,6 @@ M:Metal.MTLIOCompressionContext.AppendData(Foundation.NSData)
 M:Metal.MTLIOCompressionContext.AppendData(System.Byte[])
 M:Metal.MTLIOCompressionContext.AppendData(System.ReadOnlySpan{System.Byte})
 M:Metal.MTLIOCompressionContext.Create(System.String,Metal.MTLIOCompressionMethod,System.Int64)
-M:Metal.MTLIOCompressionContext.Dispose(System.Boolean)
 M:Metal.MTLIOCompressionContext.FlushAndDestroy
 M:Metal.MTLLibrary_Extensions.CreateFunctionAsync(Metal.IMTLLibrary,System.String,Metal.MTLFunctionConstantValues)
 M:Metal.MTLLibrary_Extensions.CreateIntersectionFunction(Metal.IMTLLibrary,Metal.MTLIntersectionFunctionDescriptor,Foundation.NSError@)
@@ -17481,7 +17480,6 @@ M:SearchKit.SKSummary.GetParagraphSummaryInfo(System.IntPtr,System.IntPtr[],Syst
 M:SearchKit.SKSummary.GetSentence(System.IntPtr)
 M:SearchKit.SKSummary.GetSentenceSummary(System.IntPtr)
 M:SearchKit.SKSummary.GetSentenceSummaryInfo(System.Int32,System.IntPtr[],System.IntPtr[],System.IntPtr[])
-M:Security.Authorization.Dispose(System.Boolean)
 M:Security.AuthorizationEnvironment.#ctor
 M:Security.AuthorizationParameters.#ctor
 M:Security.SecIdentity2.AccessCertificates(System.Action{Security.SecCertificate2})
@@ -17738,7 +17736,6 @@ M:StoreKit.SKStoreProductViewController.LoadProduct(StoreKit.StoreProductParamet
 M:StoreKit.SKStoreProductViewController.LoadProductAsync(Foundation.NSDictionary,StoreKit.SKAdImpression)
 M:StoreKit.SKStoreProductViewController.LoadProductAsync(StoreKit.StoreProductParameters,StoreKit.SKAdImpression)
 M:StoreKit.SKStoreProductViewController.remove_Finished(System.EventHandler)
-M:SystemConfiguration.NetworkReachability.Dispose(System.Boolean)
 M:ThreadNetwork.THClient.CheckPreferredNetworkAsync(Foundation.NSData)
 M:ThreadNetwork.THClient.DeleteCredentialsForBorderAgentAsync(Foundation.NSData)
 M:ThreadNetwork.THClient.IsPreferredNetworkAvailableAsync
@@ -19131,8 +19128,6 @@ M:VideoSubscriberAccount.VSUserAccountManager.UpdateUserAccountAsync(VideoSubscr
 M:VideoToolbox.IVTFrameProcessorConfiguration.GetMaximumDimensions``1
 M:VideoToolbox.IVTFrameProcessorConfiguration.GetMinimumDimensions``1
 M:VideoToolbox.IVTFrameProcessorConfiguration.GetProcessorSupported``1
-M:VideoToolbox.VTCompressionSession.Dispose(System.Boolean)
-M:VideoToolbox.VTDecompressionSession.Dispose(System.Boolean)
 M:VideoToolbox.VTFrameProcessor.EndSession
 M:VideoToolbox.VTFrameProcessor.Process(Metal.IMTLCommandBuffer,VideoToolbox.IVTFrameProcessorParameters)
 M:VideoToolbox.VTFrameProcessor.Process(VideoToolbox.IVTFrameProcessorParameters,Foundation.NSError@)
@@ -19151,18 +19146,15 @@ M:VideoToolbox.VTLowLatencySuperResolutionScalerConfiguration.GetSupportedScaleF
 M:VideoToolbox.VTLowLatencySuperResolutionScalerParameters.#ctor(VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame)
 M:VideoToolbox.VTMotionBlurConfiguration.#ctor(System.IntPtr,System.IntPtr,System.Boolean,VideoToolbox.VTMotionBlurConfigurationQualityPrioritization,VideoToolbox.VTMotionBlurConfigurationRevision)
 M:VideoToolbox.VTMotionBlurParameters.#ctor(VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorOpticalFlow,VideoToolbox.VTFrameProcessorOpticalFlow,System.IntPtr,VideoToolbox.VTMotionBlurParametersSubmissionMode,VideoToolbox.VTFrameProcessorFrame)
-M:VideoToolbox.VTMotionEstimationSession.Dispose(System.Boolean)
 M:VideoToolbox.VTOpticalFlowConfiguration.#ctor(System.IntPtr,System.IntPtr,VideoToolbox.VTOpticalFlowConfigurationQualityPrioritization,VideoToolbox.VTOpticalFlowConfigurationRevision)
 M:VideoToolbox.VTOpticalFlowParameters.#ctor(VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTFrameProcessorFrame,VideoToolbox.VTOpticalFlowParametersSubmissionMode,VideoToolbox.VTFrameProcessorOpticalFlow)
 M:VideoToolbox.VTPixelRotationSession.Create
 M:VideoToolbox.VTPixelRotationSession.Create(CoreFoundation.CFAllocator)
-M:VideoToolbox.VTPixelRotationSession.Dispose(System.Boolean)
 M:VideoToolbox.VTPixelRotationSession.GetTypeID
 M:VideoToolbox.VTPixelRotationSession.RotateImage(CoreVideo.CVPixelBuffer,CoreVideo.CVPixelBuffer)
 M:VideoToolbox.VTPixelRotationSession.SetRotationProperties(VideoToolbox.VTPixelRotationProperties)
 M:VideoToolbox.VTPixelTransferSession.Create
 M:VideoToolbox.VTPixelTransferSession.Create(CoreFoundation.CFAllocator)
-M:VideoToolbox.VTPixelTransferSession.Dispose(System.Boolean)
 M:VideoToolbox.VTPixelTransferSession.GetTypeID
 M:VideoToolbox.VTPixelTransferSession.SetTransferProperties(VideoToolbox.VTPixelTransferProperties)
 M:VideoToolbox.VTPixelTransferSession.TransferImage(CoreVideo.CVPixelBuffer,CoreVideo.CVPixelBuffer)

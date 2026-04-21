@@ -160,6 +160,7 @@ namespace Foundation {
 				this.source = source;
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				source = null;

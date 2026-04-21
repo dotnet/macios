@@ -168,6 +168,7 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject.set_handle(ObjCRuntime.NativeHandl
 Microsoft.MacCatalyst.dll:Foundation.NSObject.set_Handle(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.set_HasManagedRef(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.set_IsDirectBinding(System.Boolean)
+Microsoft.MacCatalyst.dll:Foundation.NSObject.set_RemoveFromObjectMap(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.ToString()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.xamarin_release_managed_ref(System.IntPtr, System.Byte)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.xamarin_set_gchandle_with_flags_safe(System.IntPtr, System.IntPtr, Foundation.NSObject/XamarinGCHandleFlags, System.IntPtr)
@@ -706,6 +707,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterEntryAssembly(System.Refle
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RegisterNSObject(Foundation.NSObject, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ReleaseBlockOnMainThread(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ReleaseBlockWhenDelegateIsCollected(System.IntPtr, System.Delegate)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RemoveFromObjectMap(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.retain_nativeobject(System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RetainNativeObject(ObjCRuntime.INativeObject)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.RetainNativeObject(System.IntPtr)
@@ -1208,6 +1210,7 @@ Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObject::HasManagedRef()
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObject::InFinalizerQueue()
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObject::IsDirectBinding()
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObject::IsRegisteredToggleRef()
+Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObject::RemoveFromObjectMap()
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObject/NSObject_Disposer::draining
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObjectDataHandle::invalidated
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObjectDataHandle::IsInvalid()

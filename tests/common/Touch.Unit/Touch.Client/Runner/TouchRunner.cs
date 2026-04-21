@@ -594,7 +594,7 @@ namespace MonoTouch.NUnit.UI {
 					if (key is not null) {
 						var name = key.ToString ();
 						if (name is not null)
-						dict [name] = settings [key];
+							dict [name] = settings [key];
 					}
 				}
 			}

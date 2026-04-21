@@ -34,7 +34,7 @@ class ResultConsumer : IDataConsumer {
 			string? outcome = state switch {
 				PassedTestNodeStateProperty => "passed",
 				FailedTestNodeStateProperty or ErrorTestNodeStateProperty
-					or TimeoutTestNodeStateProperty or CancelledTestNodeStateProperty => "failed",
+					or TimeoutTestNodeStateProperty => "failed",
 				SkippedTestNodeStateProperty => "skipped",
 				_ => null
 			};

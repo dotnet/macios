@@ -8,8 +8,6 @@
     <EnableMSTestRunner>true</EnableMSTestRunner>
     <SupportedOSPlatformVersion>minOSVersion</SupportedOSPlatformVersion>
     <ApplicationId>com.companyname.macOSTest1</ApplicationId>
-    <!-- We provide our own entry point in Main.cs -->
-    <GenerateTestingPlatformEntryPoint>false</GenerateTestingPlatformEntryPoint>
   </PropertyGroup>
 
   <ItemGroup>

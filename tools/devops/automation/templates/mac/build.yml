@@ -212,6 +212,7 @@ steps:
 # Upload to VSDrops so that the Html Report link in the GitHub comment works.
 - task: artifactDropTask@1
   displayName: 'Publish to Artifact Services Drop'
+  name: publishVSDrops
   inputs:
     dropServiceURI: 'https://devdiv.artifacts.visualstudio.com/DefaultCollection'
     dropMetadataContainerName: '${{ parameters.uploadPrefix }}DropMetadata-${{ parameters.stageName }}${{ parameters.label }}-$(System.JobAttempt)'
@@ -222,6 +223,13 @@ steps:
   timeoutInMinutes: 30
   continueOnError: true
   condition: succeededOrFailed()
+
+- bash: |
+    echo "##vso[task.setvariable variable=VSDROPS_PUBLISHED;isOutput=true]Failed"
+  name: setVSDropsPublishResult
+  displayName: 'Set VSDrops publish result'
+  continueOnError: true
+  condition: and(succeededOrFailed(), ne(steps.publishVSDrops.outcome, 'Succeeded'))
 
 # Archive files for the Html Report so that the report can be easily uploaded as artifacts of the build.
 - task: ArchiveFiles@1

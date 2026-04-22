@@ -76,7 +76,7 @@ namespace StoreKit {
 				if (!value.HasValue)
 					return null;
 
-				return checked ((int) value.Value);
+				return checked((int) value.Value);
 			}
 		}
 #endif

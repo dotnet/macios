@@ -69,14 +69,10 @@ namespace StoreKit {
 		[Obsolete ("Use 'ITunesItemIdentifierLong' instead.")]
 		public int? ITunesItemIdentifier {
 			set {
-				ITunesItemIdentifierLong = value;
+				SetNumberValue (SKStoreProductParameterKey.ITunesItemIdentifier, value);
 			}
 			get {
-				var value = ITunesItemIdentifierLong;
-				if (!value.HasValue)
-					return null;
-
-				return checked((int) value.Value);
+				return GetInt32Value (SKStoreProductParameterKey.ITunesItemIdentifier);
 			}
 		}
 #endif

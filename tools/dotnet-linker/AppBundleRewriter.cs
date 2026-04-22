@@ -504,7 +504,7 @@ namespace Xamarin.Linker {
 
 		public MethodReference System_Console__WriteLine_String_Object {
 			get {
-				return GetMethodReference (CorlibAssembly, System_Console, "WriteLine", (v) =>
+				return GetMethodReference (SystemConsoleAssembly, System_Console, "WriteLine", (v) =>
 					v.IsStatic
 					&& v.HasParameters
 					&& v.Parameters.Count == 2

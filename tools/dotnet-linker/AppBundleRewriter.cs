@@ -1258,6 +1258,14 @@ namespace Xamarin.Linker {
 			field_map.Clear ();
 		}
 
+		CustomAttribute CreateAttribute (MethodReference constructor)
+		{
+			// For some reason the trimmer doesn't mark attribute constructors
+			// This is probably only needed when running as a custom linker step.
+			configuration.Context.Annotations.Mark (constructor.Resolve ());
+			return new CustomAttribute (constructor);
+		}
+
 		// We only need to add dependency attributes if the target dependency is in a trimmed assembly,
 		// otherwise the target dependency won't be trimmed away.
 		bool IsAssemblyTrimmed (IMemberDefinition member)
@@ -1273,7 +1281,7 @@ namespace Xamarin.Linker {
 				return false;
 
 			if (addToMethod.DeclaringType == dependsOn.DeclaringType) {
-				var attribute = new CustomAttribute (DynamicDependencyAttribute_ctor__String);
+				var attribute = CreateAttribute (DynamicDependencyAttribute_ctor__String);
 				attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, DocumentationComments.GetSignature (dependsOn)));
 				return AddAttributeOnlyOnce (addToMethod, attribute);
 			} else if (addToMethod.DeclaringType.Module == dependsOn.DeclaringType.Module) {
@@ -1290,7 +1298,7 @@ namespace Xamarin.Linker {
 			if (type.HasGenericParameters)
 				return CreateDynamicDependencyAttribute (memberSignature, type, type.Module.Assembly);
 
-			var attribute = new CustomAttribute (DynamicDependencyAttribute_ctor__String_Type);
+			var attribute = CreateAttribute (DynamicDependencyAttribute_ctor__String_Type);
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, memberSignature));
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Type, type));
 			return attribute;
@@ -1303,7 +1311,7 @@ namespace Xamarin.Linker {
 
 		public CustomAttribute CreateDynamicDependencyAttribute (string memberSignature, string typeName, string assemblyName)
 		{
-			var attribute = new CustomAttribute (DynamicDependencyAttribute_ctor__String_String_String);
+			var attribute = CreateAttribute (DynamicDependencyAttribute_ctor__String_String_String);
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, memberSignature));
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, typeName));
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, assemblyName));
@@ -1312,7 +1320,7 @@ namespace Xamarin.Linker {
 
 		public CustomAttribute CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes memberTypes, TypeDefinition type)
 		{
-			var attribute = new CustomAttribute (DynamicDependencyAttribute_ctor__DynamicallyAccessedMemberTypes_Type);
+			var attribute = CreateAttribute (DynamicDependencyAttribute_ctor__DynamicallyAccessedMemberTypes_Type);
 			// typed as 'int' because that's how the linker expects it: https://github.com/dotnet/runtime/blob/3c5ad6c677b4a3d12bc6a776d654558cca2c36a9/src/tools/illink/src/linker/Linker/DynamicDependency.cs#L97
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Diagnostics_CodeAnalysis_DynamicallyAccessedMemberTypes, (int) memberTypes));
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Type, type));

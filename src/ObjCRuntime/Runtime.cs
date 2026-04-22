@@ -311,7 +311,8 @@ namespace ObjCRuntime {
 				try {
 					Runtime.NSLog ($"Failed to initialize the runtime: {e}");
 				} catch {
-					// ignore any exceptions here
+					// Ignore any exceptions here, we do absolutely not want to leak exceptions to native code (which will crash the process),
+					// and if the call to Runtime.NSLog went wrong, then something is seriously wrong, so it's likely nothing is safe to do.
 				}
 			}
 		}

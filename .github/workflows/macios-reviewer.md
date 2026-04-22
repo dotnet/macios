@@ -3,6 +3,7 @@ on:
   slash_command:
     name: review
     events: [pull_request_comment]
+  roles: [admin, maintainer, write]
 permissions:
   contents: read
   pull-requests: read

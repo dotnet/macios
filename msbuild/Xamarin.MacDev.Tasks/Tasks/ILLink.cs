@@ -35,12 +35,43 @@ namespace Xamarin.MacDev.Tasks {
 		// if the linked output should be copied to windows (as opposed to only creating empty output files)
 		public bool CopyToWindows { get; set; }
 
+		ITaskItem []? linkerCacheItemsToCopyToWindows;
+		ITaskItem [] LinkerCacheItemsToCopyToWindows {
+			get {
+				if (!CopyToWindows)
+					return [];
+
+				// We might get called before LinkerCacheItems has been populated, in which case we don't want to cache any results.
+				if (LinkerCacheItems.Length == 0)
+					return [];
+
+				if (linkerCacheItemsToCopyToWindows is null) {
+					linkerCacheItemsToCopyToWindows = LinkerCacheItems.Where (item => {
+						var extension = item.GetMetadata ("Extension");
+						switch (extension.ToLowerInvariant ()) {
+						case ".h":
+						case ".m":
+						case ".mm":
+							return false; // we don't need any native code on Windows.
+						default:
+							return true; // copy the rest of the files to Windows
+						}
+					}).ToArray ();
+				}
+				return linkerCacheItemsToCopyToWindows;
+			}
+		}
+
 		public override bool Execute ()
 		{
 			if (this.ShouldExecuteRemotely (SessionId)) {
 				if (XamarinTask.ExecuteRemotely (this, out var taskRunner)) {
-					if (CopyToWindows)
-						XamarinTask.CopyFilesToWindowsAsync (this, taskRunner, LinkedItems).Wait ();
+					if (CopyToWindows) {
+						var filesToCopy = new List<ITaskItem> ();
+						filesToCopy.AddRange (LinkedItems);
+						filesToCopy.AddRange (LinkerCacheItemsToCopyToWindows);
+						XamarinTask.CopyFilesToWindowsAsync (this, taskRunner, filesToCopy).Wait ();
+					}
 					return true;
 				}
 
@@ -96,9 +127,16 @@ namespace Xamarin.MacDev.Tasks {
 
 		public bool ShouldCreateOutputFile (ITaskItem item)
 		{
-			if (CopyToWindows && Array.IndexOf (LinkedItems, item) >= 0) {
-				Log.LogMessage (MessageImportance.Low, "Not creating output file '{0}' because the entire file will be copied to Windows", item.ItemSpec);
-				return false;
+			if (CopyToWindows) {
+				if (Array.IndexOf (LinkedItems, item) >= 0) {
+					Log.LogMessage (MessageImportance.Low, "Not creating output file '{0}' because the entire file will be copied to Windows", item.ItemSpec);
+					return false;
+				}
+				Log.LogMessage (MessageImportance.Low, $"Checking LinkerCacheItemsToCopyToWindows with {LinkerCacheItemsToCopyToWindows.Length} items for {item.ItemSpec}");
+				if (Array.IndexOf (LinkerCacheItemsToCopyToWindows, item) >= 0) {
+					Log.LogMessage (MessageImportance.Low, "Not creating output file '{0}' because the entire file will be copied to Windows (because it's not native code)", item.ItemSpec);
+					return false;
+				}
 			}
 
 			var modifiedMetadata = item.GetMetadata ("Modified");

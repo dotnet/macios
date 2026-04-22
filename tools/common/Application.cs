@@ -132,6 +132,10 @@ namespace Xamarin.Bundler {
 		}
 		public bool EnableSGenConc;
 
+		public bool IsAnyStaticRegistrar {
+			get => Registrar == RegistrarMode.Static || Registrar == RegistrarMode.ManagedStatic || Registrar == RegistrarMode.TrimmableStatic;
+		}
+
 		public Dictionary<string, (string Value, bool Overwrite)> EnvironmentVariables = new Dictionary<string, (string Value, bool Overwrite)> ();
 
 		public MarshalObjectiveCExceptionMode MarshalObjectiveCExceptions;

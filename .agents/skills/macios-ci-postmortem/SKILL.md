@@ -41,7 +41,6 @@ az pipelines build list \
   --reason pullRequest \
   --result failed \
   --top 200 \
-  --query-order finishTimeDescending \
   -o json > /tmp/postmortem_builds.json
 ```
 
@@ -54,7 +53,6 @@ az pipelines build list \
   --reason pullRequest \
   --result partiallySucceeded \
   --top 200 \
-  --query-order finishTimeDescending \
   -o json > /tmp/postmortem_builds_partial.json
 ```
 
@@ -172,9 +170,9 @@ for r in data.get('records', []):
         })
 ```
 
-### Step 2.3: Download and parse TestSummary artifacts
+### Step 2.3: Download TestSummary artifacts (fast triage)
 
-For each failed job, download the TestSummary artifact:
+TestSummary artifacts are small and quick to download. Use them first to identify which jobs failed:
 
 ```bash
 artifact="TestSummary-simulator_tests<jobname>-1"
@@ -186,9 +184,78 @@ az pipelines runs artifact download \
   --org https://devdiv.visualstudio.com --project DevDiv
 ```
 
-Parse the TestSummary.md for individual failures and insert into the SQL database.
+Parse the TestSummary.md to determine which jobs have test failures. This is the first-pass filter.
 
-### Step 2.4: For infrastructure/setup failures without TestSummary
+### Step 2.4: Download HtmlReport artifacts (deep analysis)
+
+**This is the critical step.** Each test run produces an HtmlReport artifact containing:
+- `tests/index.html` — Main report with all test configurations, pass/fail, inline failure details
+- `tests/<suite>/<num>/test-<platform>-<timestamp>.xml` — NUnit XML with individual test-case results
+- `tests/<suite>/<num>/results-<timestamp>.xml` — NUnit results for dotnettests
+
+**Only download HtmlReport zips for jobs that failed** (use TestSummary for triage first):
+
+```bash
+artifact="HtmlReport-simulator_tests<jobname>-1"
+az pipelines runs artifact download \
+  --artifact-name "$artifact" \
+  --path "/tmp/postmortem_deep/" \
+  --run-id <buildId> \
+  --org https://devdiv.visualstudio.com --project DevDiv
+```
+
+**Warning:** HtmlReport zips are 60-140MB each. Downloading all of them is slow (1-2 min per artifact). Only download for jobs where TestSummary shows failures.
+
+### Step 2.5: Parse NUnit XML for individual test failures
+
+Extract individual test failures from the NUnit XML files inside the HtmlReport zips:
+
+```python
+import zipfile, xml.etree.ElementTree as ET, html
+
+def extract_failures_from_nunit_xml(xml_content):
+    """Parse NUnit XML to extract individual failing test cases."""
+    root = ET.fromstring(xml_content)
+    failures = []
+    for tc in root.iter('test-case'):
+        if tc.get('result') == 'Failed':
+            name = tc.get('fullname', 'Unknown')
+            msg_el = tc.find('.//failure/message')
+            stack_el = tc.find('.//failure/stack-trace')
+            failures.append({
+                'test': name,
+                'message': msg_el.text if msg_el is not None else '',
+                'stack': stack_el.text[:500] if stack_el is not None else '',
+            })
+    return failures
+
+# Process a zip file
+with zipfile.ZipFile('/tmp/postmortem_deep/html_BUILDID_JOB.zip') as zf:
+    for name in zf.namelist():
+        if name.endswith('.xml') and 'test-' in name and '-clean' not in name:
+            xml_content = zf.read(name).decode('utf-8', errors='replace')
+            failures = extract_failures_from_nunit_xml(xml_content)
+```
+
+**Important**: Skip files ending in `-clean.xml` (these are filtered versions). The root XML tag is `TouchUnitTestRun` (not standard NUnit format, but `test-case` elements follow standard structure).
+
+For **dotnettests**, individual test failures are listed inline in `<li>` tags in the HTML (not in separate XML). Parse these from `tests/index.html`:
+
+```python
+import re
+# Pattern for inline test failures in dotnettests HTML
+failures_in_html = re.findall(r'<li[^>]*>([^<]*(?:Failed|Error)[^<]*)</li>', html_content)
+```
+
+### Step 2.6: Handle crashes and build failures
+
+When a test runner crashes (exit code 134, etc.) or a build fails before tests run, there will be **no NUnit XML results**. These appear in the HTML as:
+- `Test run crashed (exit code: NNN)` 
+- `BuildFailure`
+
+Capture these from the HTML and record them as separate failure types (CRASH, BUILD_FAILURE).
+
+### Step 2.7: For infrastructure/setup failures without TestSummary
 
 Check the timeline for failed tasks in setup/provisioning stages. Extract error info from task log lines:
 
@@ -204,19 +271,21 @@ Search for infrastructure-related errors:
 - Network/timeout errors
 - Xcode installation issues
 
-### Step 2.5: Normalize failure signatures
+### Step 2.8: Normalize failure signatures
 
-Create a normalized signature for deduplication:
+Create a normalized signature for deduplication. **Important:** HTML entities in test names (e.g., `&quot;` vs `"`) must be normalized to avoid duplicate entries:
 
 ```python
+import html as html_lib
+
 def normalize_signature(failure_type, test_fullname, error_msg, platform):
     """Create a stable key for grouping the same logical failure."""
+    # Normalize HTML entities
     if test_fullname:
-        # For test failures, the test name + platform is the key
+        test_fullname = html_lib.unescape(test_fullname)
         return f"{failure_type}|{platform}|{test_fullname}"
     elif error_msg:
-        # For build/infra failures, normalize the error message
-        # Strip file paths, line numbers, timestamps
+        error_msg = html_lib.unescape(error_msg)
         import re
         normalized = re.sub(r'/[^\s:]+/', '.../', error_msg)
         normalized = re.sub(r'line \d+', 'line N', normalized)

@@ -212,7 +212,8 @@ namespace Xamarin.Linker {
 
 				var typeMapAssemblyName = new AssemblyNameDefinition ("_" + assembly.Name.Name + ".TypeMap", new Version (1, 0, 0, 0));
 				var typeMapAssembly = AssemblyDefinition.CreateAssembly (typeMapAssemblyName, typeMapAssemblyName.Name, assemblyParameters);
-				Annotations.SetAction (typeMapAssembly, AssemblyAction.Link);
+				var existingAction = Annotations.GetAction (assembly);
+				Annotations.SetAction (typeMapAssembly, existingAction);
 				addedAssemblies.Add (typeMapAssembly);
 
 				var accessesAssemblies = new HashSet<AssemblyDefinition> ();
@@ -571,7 +572,8 @@ namespace Xamarin.Linker {
 				var fn = Path.Combine (App.TypeMapOutputDirectory, asm.Name.Name + ".dll");
 				var asmDef = (AssemblyDefinition) getAssembly.Invoke (resolver, [fn])!;
 				cacheAssembly.Invoke (resolver, [asmDef]);
-				Annotations.SetAction (asmDef, AssemblyAction.Link);
+				var action = Annotations.GetAction (asm);
+				Annotations.SetAction (asmDef, action);
 
 				var linkedPath = Path.Combine (Configuration.IntermediateLinkDir, asm.Name.Name + ".dll");
 				managedAssemblyToLinkItems.Add (new MSBuildItem (linkedPath, new Dictionary<string, string> {

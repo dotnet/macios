@@ -313,7 +313,7 @@ For each classified failure, search for an existing GitHub issue:
 # Search by test name or error signature in issue title
 gh issue list --repo dotnet/macios --state open \
   --search "<test_fullname or key error phrase>" \
-  --label "bug" --json number,title,labels,url
+  --label "ci-postmortem" --json number,title,labels,url
 ```
 
 Also search closed issues (may need reopening):
@@ -321,7 +321,7 @@ Also search closed issues (may need reopening):
 ```bash
 gh issue list --repo dotnet/macios --state closed \
   --search "<test_fullname or key error phrase>" \
-  --label "bug" --json number,title,labels,url
+  --label "ci-postmortem" --json number,title,labels,url
 ```
 
 ### Step 4.2: Propose actions to the user
@@ -365,7 +365,7 @@ Proceed with these actions? [Confirm / Edit / Skip]
 ```bash
 gh issue create --repo dotnet/macios \
   --title "[CI] Flaky: <test_fullname> on <platform>" \
-  --label "bug,CI,flaky-test" \
+  --label "bug,CI,ci-postmortem,flaky-test" \
   --body "$(cat <<'EOF'
 ## Flaky Test Report (automated)
 
@@ -401,7 +401,7 @@ EOF
 )"
 ```
 
-Use the label `flaky-test` for flaky tests, `infrastructure` for infra issues, and `CI` for all.
+All issues **must** have the `ci-postmortem` label. Additionally use `flaky-test` for flaky tests and `infrastructure` for infra issues.
 
 #### Comment on existing issue
 

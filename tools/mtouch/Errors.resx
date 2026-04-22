@@ -1916,6 +1916,6 @@
 	</data>
 
 	<data name="MX8062" xml:space="preserve">
-		<value>Type '{0}' is expected to have an ProtocolProxyAttribute. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).</value>
+		<value>Type '{0}' is expected to have a ProtocolProxyAttribute. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).</value>
 	</data>
 </root>

@@ -262,7 +262,7 @@ static class TypeMaps {
 #endif
 			proxyAttribute = protocolProxyType.GetCustomAttribute<ProtocolProxyAttribute> ();
 			if (proxyAttribute is null)
-				throw ErrorHelper.CreateError (8062, Errors.MX8062 /* Type '{0}' is expected to have an ProtocolProxyAttribute. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new). */, protocolProxyType.FullName);
+				throw ErrorHelper.CreateError (8062, Errors.MX8062 /* Type '{0}' is expected to have a ProtocolProxyAttribute. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new). */, protocolProxyType.FullName);
 			return proxyAttribute is not null;
 		}
 

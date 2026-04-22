@@ -3895,7 +3895,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type &apos;{0}&apos; is expected to have an ProtocolProxyAttribute. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
+        ///   Looks up a localized string similar to Type &apos;{0}&apos; is expected to have a ProtocolProxyAttribute. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
         /// </summary>
         public static string MX8062 {
             get {

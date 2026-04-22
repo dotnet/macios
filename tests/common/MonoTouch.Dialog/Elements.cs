@@ -552,6 +552,16 @@ namespace MonoTouch.Dialog {
 	public partial class StyledStringElement : StringElement, IColorizeBackground {
 		static NSString [] skey = { new NSString (".1"), new NSString (".2"), new NSString (".3"), new NSString (".4") };
 
+		internal static UIFont GetBoldFont (nfloat size)
+		{
+			return UIFont.BoldSystemFontOfSize (size) ?? throw new InvalidOperationException ("Unable to create a bold system font.");
+		}
+
+		internal static UIFont GetSystemFont (nfloat size)
+		{
+			return UIFont.SystemFontOfSize (size) ?? throw new InvalidOperationException ("Unable to create a system font.");
+		}
+
 		public StyledStringElement (string caption) : base (caption) { }
 		public StyledStringElement (string caption, NSAction tapped) : base (caption, tapped) { }
 		public StyledStringElement (string caption, string value) : base (caption, value)
@@ -629,7 +639,7 @@ namespace MonoTouch.Dialog {
 			tl.Text = Caption;
 			tl.TextAlignment = Alignment;
 			tl.TextColor = TextColor ?? UIColor.Black;
-			tl.Font = Font ?? UIFont.BoldSystemFontOfSize (17);
+			tl.Font = Font ?? GetBoldFont (17);
 			tl.LineBreakMode = LineBreakMode;
 			tl.Lines = Lines;
 
@@ -647,7 +657,7 @@ namespace MonoTouch.Dialog {
 			if (cell.DetailTextLabel is not null) {
 				cell.DetailTextLabel.Lines = Lines;
 				cell.DetailTextLabel.LineBreakMode = LineBreakMode;
-				cell.DetailTextLabel.Font = SubtitleFont ?? UIFont.SystemFontOfSize (14);
+				cell.DetailTextLabel.Font = SubtitleFont ?? GetSystemFont (14);
 				cell.DetailTextLabel.TextColor = (extraInfo is null || extraInfo.DetailColor is null) ? UIColor.Gray : extraInfo.DetailColor;
 			}
 		}
@@ -773,11 +783,11 @@ namespace MonoTouch.Dialog {
 			if (String.IsNullOrEmpty (c))
 				c = " ";
 
-			var captionFont = Font ?? UIFont.BoldSystemFontOfSize (17);
+			var captionFont = Font ?? StyledStringElement.GetBoldFont (17);
 			var height = c.StringSize (captionFont, maxSize, LineBreakMode).Height;
 
 			if (!String.IsNullOrEmpty (v)) {
-				var subtitleFont = SubtitleFont ?? UIFont.SystemFontOfSize (14);
+				var subtitleFont = SubtitleFont ?? StyledStringElement.GetSystemFont (14);
 				if (this.style == UITableViewCellStyle.Subtitle) {
 					height += v.StringSize (subtitleFont, maxSize, LineBreakMode).Height;
 				} else {
@@ -836,7 +846,7 @@ namespace MonoTouch.Dialog {
 		{
 			float margin = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone ? 40f : 110f;
 			CGSize size = new CGSize (tableView.Bounds.Width - margin, float.MaxValue);
-			UIFont font = UIFont.BoldSystemFontOfSize (17);
+			var font = StyledStringElement.GetBoldFont (17);
 			string? c = Caption;
 			// ensure the (single-line) Value will be rendered inside the cell
 			if (String.IsNullOrEmpty (c) && !String.IsNullOrEmpty (Value))
@@ -993,7 +1003,7 @@ namespace MonoTouch.Dialog {
 		bool isPassword, becomeResponder;
 		UITextField? entry;
 		string? placeholder;
-		static UIFont font = UIFont.BoldSystemFontOfSize (17);
+		static UIFont font = StyledStringElement.GetBoldFont (17);
 
 		public event EventHandler? Changed;
 		public event Func<bool>? ShouldReturn;

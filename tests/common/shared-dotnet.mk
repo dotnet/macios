@@ -71,6 +71,10 @@ ifeq ($(TEST_TFM),)
 TEST_TFM=$(DOTNET_TFM)
 endif
 
+ifeq ($(findstring |release|,|$(TEST_VARIATION)|),|release|)
+CONFIG=Release
+endif
+
 ifeq ($(CONFIG),)
 CONFIG=Debug
 else

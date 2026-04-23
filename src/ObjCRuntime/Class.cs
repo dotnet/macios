@@ -886,17 +886,10 @@ namespace ObjCRuntime {
 		[DllImport ("__Internal")]
 		static extern void xamarin_free (IntPtr ptr);
 
-		// This option is turned on by setting _ValidateObjectPointers property to true in the project file.
-		static bool validate_object_pointers;
-		static bool ValidateObjectPointers {
-			get => validate_object_pointers;
-			set => validate_object_pointers = value;
-		}
-
 		internal unsafe static bool TryGetClass (IntPtr obj, out IntPtr cls, [NotNullWhen (false)] out string? error_message)
 		{
 			error_message = null;
-			if (ValidateObjectPointers && obj != IntPtr.Zero) {
+			if (Runtime.ValidateObjectPointers && obj != IntPtr.Zero) {
 				IntPtr error_str;
 				var rv = xamarin_is_object_valid (obj, &error_str);
 				if (rv == 0) {

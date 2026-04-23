@@ -50,6 +50,7 @@ namespace Xamarin.Tuner {
 
 		public bool DidRunApplyPreserveAttributeStep { get; set; }
 		public bool DidRunMarkForStaticRegistrarStep { get; set; }
+		public bool DidRunMarkNSObjectsStep { get; set; }
 
 		public DerivedLinkContext (LinkerConfiguration configuration, Application app)
 #if !LEGACY_TOOLS

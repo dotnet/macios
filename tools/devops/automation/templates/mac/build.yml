@@ -210,6 +210,12 @@ steps:
   condition: succeededOrFailed()
 
 # Upload to VSDrops so that the Html Report link in the GitHub comment works.
+- bash: |
+    echo "##vso[task.setvariable variable=JOB_STATUS_BEFORE_VSDROPS]$AGENT_JOBSTATUS"
+  displayName: 'Capture job status before VSDrops publish'
+  condition: succeededOrFailed()
+  continueOnError: true
+
 - task: artifactDropTask@1
   displayName: 'Publish to Artifact Services Drop'
   name: publishVSDrops
@@ -225,11 +231,14 @@ steps:
   condition: succeededOrFailed()
 
 - bash: |
-    echo "##vso[task.setvariable variable=VSDROPS_PUBLISHED;isOutput=true]Failed"
+    if [ "$JOB_STATUS_BEFORE_VSDROPS" != "$AGENT_JOBSTATUS" ]; then
+      echo "VSDrops publish changed job status from '$JOB_STATUS_BEFORE_VSDROPS' to '$AGENT_JOBSTATUS'"
+      echo "##vso[task.setvariable variable=VSDROPS_PUBLISHED;isOutput=true]Failed"
+    fi
   name: setVSDropsPublishResult
   displayName: 'Set VSDrops publish result'
   continueOnError: true
-  condition: and(succeededOrFailed(), ne(steps.publishVSDrops.outcome, 'Succeeded'))
+  condition: succeededOrFailed()
 
 # Archive files for the Html Report so that the report can be easily uploaded as artifacts of the build.
 - task: ArchiveFiles@1

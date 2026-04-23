@@ -964,7 +964,7 @@ Default:
 A boolean property that specifies whether native libraries in binding projects should be embedded
 in the managed assembly, or put into a `.resources` directory next to the managed assembly.
 
-The default value is `true` (which means native libraries will _not_ be embeddded in the managed assembly).
+The default value is `true` (which means native libraries will _not_ be embedded in the managed assembly).
 
 > [!NOTE]
 > Xcframeworks won't work correctly if embedded inside the managed assembly (if this property is not `true`).

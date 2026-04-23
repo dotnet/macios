@@ -200,7 +200,7 @@ namespace ObjCRuntime {
 			if (rv != IntPtr.Zero)
 				return rv;
 
-			if (!string.IsNullOrEmpty (objcClassName)) {
+			if (Runtime.IsTrimmableStaticRegistrar && !string.IsNullOrEmpty (objcClassName)) {
 				rv = LookupUnmanagedFunctionInType (objcClassName, symbol);
 			}
 

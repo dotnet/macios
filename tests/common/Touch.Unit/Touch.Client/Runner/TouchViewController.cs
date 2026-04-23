@@ -256,15 +256,17 @@ namespace MonoTouch.NUnit.UI {
 			float size = 20f;
 			UIGraphics.BeginImageContextWithOptions (new CGSize (size, size), false, 0);
 			using (var c = UIGraphics.GetCurrentContext ()) {
-				c.SetFillColor (1.0f, 1.0f, 1.0f, 1.0f);
-				c.SetStrokeColor (1.0f, 1.0f, 1.0f, 1.0f);
-				c.TranslateCTM (3f, size - 3f);
-				c.ScaleCTM (size / 1000, -size / 1000);
-				render (c);
+				if (c is not null) {
+					c.SetFillColor (1.0f, 1.0f, 1.0f, 1.0f);
+					c.SetStrokeColor (1.0f, 1.0f, 1.0f, 1.0f);
+					c.TranslateCTM (3f, size - 3f);
+					c.ScaleCTM (size / 1000, -size / 1000);
+					render (c);
+				}
 			}
-			UIImage img = UIGraphics.GetImageFromCurrentImageContext ();
+			var img = UIGraphics.GetImageFromCurrentImageContext ();
 			UIGraphics.EndImageContext ();
-			return img;
+			return img ?? new UIImage ();
 		}
 
 		#region generated code

@@ -425,8 +425,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle.ToString()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeObjectExtensions
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeObjectExtensions.GetHandle(ObjCRuntime.INativeObject)
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeObjectExtensions.GetNonNullHandle(ObjCRuntime.INativeObject, System.String)
-Microsoft.MacCatalyst.dll:ObjCRuntime.NSObjectProxyAttribute
-Microsoft.MacCatalyst.dll:ObjCRuntime.NSObjectProxyAttribute.LookupUnmanagedFunction(System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCException
 Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCException..ctor(Foundation.NSException)
 Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCException.AppendNativeStackTrace(System.Text.StringBuilder)
@@ -435,7 +433,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCException.get_Name()
 Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCException.get_NSException()
 Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCException.get_Reason()
 Microsoft.MacCatalyst.dll:ObjCRuntime.ObjCException.ToString()
-Microsoft.MacCatalyst.dll:ObjCRuntime.ProtocolProxyAttribute
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.ConstructINativeObject`1(System.Type, ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.ConstructNSObject`1(System.Type, ObjCRuntime.NativeHandle)
@@ -448,7 +445,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.LookupRegisteredType(Syste
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.LookupRegisteredTypeId(System.Type)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunction(System.IntPtr, System.String, System.Int32, System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunctionInAssembly(System.IntPtr, System.String, System.Int32)
-Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunctionInType(System.String, System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.Register(ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.TryGetMapEntry(System.String, out ObjCRuntime.RegistrarHelper/MapInfo&)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper/MapInfo
@@ -630,7 +626,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Selector.GetName(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Selector.sel_getName(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Selector.sel_isMapped(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Selector.sel_registerName(System.IntPtr)
-Microsoft.MacCatalyst.dll:ObjCRuntime.SkippedObjectiveCTypeUniverse
 Microsoft.MacCatalyst.dll:ObjCRuntime.StringEqualityComparer
 Microsoft.MacCatalyst.dll:ObjCRuntime.StringEqualityComparer ObjCRuntime.RegistrarHelper::StringEqualityComparer
 Microsoft.MacCatalyst.dll:ObjCRuntime.StringEqualityComparer..ctor()
@@ -660,13 +655,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.TypeEqualityComparer ObjCRuntime.Runtime::
 Microsoft.MacCatalyst.dll:ObjCRuntime.TypeEqualityComparer..ctor()
 Microsoft.MacCatalyst.dll:ObjCRuntime.TypeEqualityComparer.Equals(System.Type, System.Type)
 Microsoft.MacCatalyst.dll:ObjCRuntime.TypeEqualityComparer.GetHashCode(System.Type)
-Microsoft.MacCatalyst.dll:ObjCRuntime.TypeMaps
-Microsoft.MacCatalyst.dll:ObjCRuntime.TypeMaps..cctor()
-Microsoft.MacCatalyst.dll:ObjCRuntime.TypeMaps.get_NSObjectProxyTypes()
-Microsoft.MacCatalyst.dll:ObjCRuntime.TypeMaps.get_NSObjectTypes()
-Microsoft.MacCatalyst.dll:ObjCRuntime.TypeMaps.Initialize()
-Microsoft.MacCatalyst.dll:ObjCRuntime.TypeMaps.TryGetNSObjectProxyAttribute(System.String, out ObjCRuntime.NSObjectProxyAttribute&, out System.Type&)
-Microsoft.MacCatalyst.dll:ObjCRuntime.TypeMaps.TryGetNSObjectProxyAttribute(System.Type, out ObjCRuntime.NSObjectProxyAttribute&)
 Microsoft.MacCatalyst.dll:ObjCRuntime.UInt64EqualityComparer
 Microsoft.MacCatalyst.dll:ObjCRuntime.UInt64EqualityComparer ObjCRuntime.Runtime::UInt64EqualityComparer
 Microsoft.MacCatalyst.dll:ObjCRuntime.UInt64EqualityComparer..ctor()
@@ -702,14 +690,6 @@ Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,Sy
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_bool_ctor_cache
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.Type,System.Reflection.ConstructorInfo> ObjCRuntime.Runtime::intptr_ctor_cache
 Microsoft.MacCatalyst.dll:System.Collections.Generic.Dictionary`2<System.UInt64,System.Reflection.MemberInfo> ObjCRuntime.Class::token_to_member
-Microsoft.MacCatalyst.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.String,System.Type> ObjCRuntime.TypeMaps::nsobject_types
-Microsoft.MacCatalyst.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.String,System.Type> ObjCRuntime.TypeMaps::NSObjectTypes()
-Microsoft.MacCatalyst.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.Type,System.Type> ObjCRuntime.TypeMaps::inativeobject_proxy_types
-Microsoft.MacCatalyst.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.Type,System.Type> ObjCRuntime.TypeMaps::nsobject_proxy_types
-Microsoft.MacCatalyst.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.Type,System.Type> ObjCRuntime.TypeMaps::NSObjectProxyTypes()
-Microsoft.MacCatalyst.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.Type,System.Type> ObjCRuntime.TypeMaps::protocol_proxy_types
-Microsoft.MacCatalyst.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.Type,System.Type> ObjCRuntime.TypeMaps::protocol_wrapper_types
-Microsoft.MacCatalyst.dll:System.Collections.Generic.IReadOnlyDictionary`2<System.Type,System.Type> ObjCRuntime.TypeMaps::skipped_proxy_types
 Microsoft.MacCatalyst.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::<>2__current
 Microsoft.MacCatalyst.dll:System.Collections.Generic.KeyValuePair`2<Foundation.NSObject,Foundation.NSObject> Foundation.NSDictionary/<GetEnumerator>d__66::System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<Foundation.NSObject,Foundation.NSObject>>.Current()
 Microsoft.MacCatalyst.dll:System.Collections.Generic.List`1<Foundation.NSObject> Foundation.NSObject/NSObject_Disposer::drainList1
@@ -874,7 +854,6 @@ Microsoft.MacCatalyst.dll:System.Nullable`1<System.Boolean> ObjCRuntime.Class::v
 Microsoft.MacCatalyst.dll:System.Object Foundation.NSObject/NSObject_Disposer::lock_obj
 Microsoft.MacCatalyst.dll:System.Object ObjCRuntime.Class::verification_lock
 Microsoft.MacCatalyst.dll:System.Object ObjCRuntime.Runtime::lock_obj
-Microsoft.MacCatalyst.dll:System.Object ObjCRuntime.TypeMaps::lock_obj
 Microsoft.MacCatalyst.dll:System.Reflection.Assembly Foundation.NSObject::PlatformAssembly
 Microsoft.MacCatalyst.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Delegate,ObjCRuntime.BlockCollector> ObjCRuntime.Runtime::block_lifetime_table
 Microsoft.MacCatalyst.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Reflection.Assembly,System.String> ObjCRuntime.Class::assembly_to_name
@@ -1751,9 +1730,6 @@ System.Private.CoreLib.dll:System.Attribute
 System.Private.CoreLib.dll:System.Attribute..ctor()
 System.Private.CoreLib.dll:System.Attribute.AreFieldValuesEqual(System.Object, System.Object)
 System.Private.CoreLib.dll:System.Attribute.Equals(System.Object)
-System.Private.CoreLib.dll:System.Attribute.GetAttr(System.Reflection.ICustomAttributeProvider, System.Type, System.Boolean)
-System.Private.CoreLib.dll:System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo, System.Type, System.Boolean)
-System.Private.CoreLib.dll:System.Attribute.GetCustomAttribute(System.Reflection.MemberInfo, System.Type)
 System.Private.CoreLib.dll:System.Attribute.GetCustomAttributes(System.Reflection.MemberInfo, System.Type, System.Boolean)
 System.Private.CoreLib.dll:System.Attribute.GetHashCode()
 System.Private.CoreLib.dll:System.AttributeTargets
@@ -2767,8 +2743,6 @@ System.Private.CoreLib.dll:System.Collections.Generic.InsertionBehavior
 System.Private.CoreLib.dll:System.Collections.Generic.InsertionBehavior System.Collections.Generic.InsertionBehavior::None
 System.Private.CoreLib.dll:System.Collections.Generic.InsertionBehavior System.Collections.Generic.InsertionBehavior::OverwriteExisting
 System.Private.CoreLib.dll:System.Collections.Generic.InsertionBehavior System.Collections.Generic.InsertionBehavior::ThrowOnExisting
-System.Private.CoreLib.dll:System.Collections.Generic.IReadOnlyDictionary`2
-System.Private.CoreLib.dll:System.Collections.Generic.IReadOnlyDictionary`2.TryGetValue(TKey, out TValue&)
 System.Private.CoreLib.dll:System.Collections.Generic.KeyValuePair
 System.Private.CoreLib.dll:System.Collections.Generic.KeyValuePair.PairToString(System.Object, System.Object)
 System.Private.CoreLib.dll:System.Collections.Generic.KeyValuePair`2
@@ -7411,11 +7385,6 @@ System.Private.CoreLib.dll:System.Reflection.CustomAttributeData.get_Constructor
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeData.get_NamedArguments()
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeData.GetCustomAttributes(System.Reflection.ParameterInfo)
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeData.ToString()
-System.Private.CoreLib.dll:System.Reflection.CustomAttributeExtensions
-System.Private.CoreLib.dll:System.Reflection.CustomAttributeExtensions.GetCustomAttribute(System.Reflection.MemberInfo, System.Type, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.CustomAttributeExtensions.GetCustomAttribute(System.Reflection.MemberInfo, System.Type)
-System.Private.CoreLib.dll:System.Reflection.CustomAttributeExtensions.GetCustomAttribute`1(System.Reflection.MemberInfo, System.Boolean)
-System.Private.CoreLib.dll:System.Reflection.CustomAttributeExtensions.GetCustomAttribute`1(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeFormatException
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeFormatException..ctor(System.String, System.Exception)
 System.Private.CoreLib.dll:System.Reflection.CustomAttributeFormatException..ctor(System.String)
@@ -8836,9 +8805,6 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.SafeHandle.ReleaseHand
 System.Private.CoreLib.dll:System.Runtime.InteropServices.SafeHandle.SetHandle(System.IntPtr)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.SuppressGCTransitionAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.SuppressGCTransitionAttribute..ctor()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapping
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapping.GetOrCreateExternalTypeMapping`1()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.TypeMapping.GetOrCreateProxyTypeMapping`1()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute..ctor()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.UnmanagedType
@@ -11136,7 +11102,6 @@ System.Private.CoreLib.dll:System.ThreeObjects..ctor(System.Object, System.Objec
 System.Private.CoreLib.dll:System.ThrowHelper
 System.Private.CoreLib.dll:System.ThrowHelper.CreateEndOfFileException()
 System.Private.CoreLib.dll:System.ThrowHelper.GetAddingDuplicateWithKeyArgumentException(System.Object)
-System.Private.CoreLib.dll:System.ThrowHelper.GetAmbiguousMatchException(System.Attribute)
 System.Private.CoreLib.dll:System.ThrowHelper.GetAmbiguousMatchException(System.Reflection.MemberInfo)
 System.Private.CoreLib.dll:System.ThrowHelper.GetArgumentException(System.ExceptionResource, System.ExceptionArgument)
 System.Private.CoreLib.dll:System.ThrowHelper.GetArgumentException(System.ExceptionResource)

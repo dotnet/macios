@@ -195,7 +195,7 @@
 	</PropertyGroup>
 	<!-- Compute per-module metadata from the collected R2R object files -->
 	<Target Name="_PrepareR2RModules"
-			DependsOnTargets="CreateReadyToRunImages;_CollectR2RObjectFilesForLinking"
+			DependsOnTargets="_CollectR2RObjectFilesForLinking"
 			>
 		<!-- For each .o file, compute module name, symbol name, and framework paths.
 		     The _ReadyToRunObjectFilesToLink items have the original .r2r.dylib filenames;

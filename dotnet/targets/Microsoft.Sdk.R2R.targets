@@ -176,7 +176,7 @@
 			_PrepareR2RModules;
 			_RegisterR2RNativeReferences;
 			_CreateR2RModuleFrameworks;
-			_GenerateR2RModuleRegistration;
+			_AddR2RModuleRegistrationToMainFile;
 		</_CreateR2RFrameworkDependsOn>
 	</PropertyGroup>
 
@@ -218,12 +218,7 @@
 				<FrameworkPath>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r.framework</FrameworkPath>
 				<FrameworkOutput>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r.framework$(_R2RFrameworkBinaryInfix)/%(ShortName).r2r</FrameworkOutput>
 				<InfoPlistPath>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r.framework$(_R2RFrameworkResourcesInfix)/Info.plist</InfoPlistPath>
-				<StructureStampFile>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r-structure.stamp</StructureStampFile>
-				<CachePath>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r-cache.txt</CachePath>
-				<CachePath2>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r-cache.txt.uptodate</CachePath2>
 				<DylibOutput>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r.dylib</DylibOutput>
-				<DylibCachePath>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r-dylib-cache.txt</DylibCachePath>
-				<DylibCachePath2>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r-dylib-cache.txt.uptodate</DylibCachePath2>
 			</_R2RModule>
 		</ItemGroup>
 	</Target>
@@ -365,6 +360,8 @@
 	<Target Name="_GenerateR2RModuleRegistration"
 			DependsOnTargets="_PrepareR2RModules"
 			Condition="@(_R2RModule->Count()) &gt; 0"
+			Inputs="@(_R2RModule->'%(ObjectFile)')"
+			Outputs="$(_R2RModuleRegistrationFile)"
 			>
 
 		<GenerateR2RModuleRegistration
@@ -373,15 +370,22 @@
 			OutputFile="$(_R2RModuleRegistrationFile)"
 		/>
 
-		<!-- Add the generated file to the native compilation inputs so it gets compiled into the main executable -->
-		<ItemGroup>
-			<_MainFile Include="$(_R2RModuleRegistrationFile)">
-				<Arch>$(TargetArchitectures.ToLowerInvariant())</Arch>
-			</_MainFile>
-		</ItemGroup>
-
 		<ItemGroup>
 			<FileWrites Include="$(_R2RModuleRegistrationFile)" />
+		</ItemGroup>
+	</Target>
+
+	<!-- Always add the R2R module registration file to _MainFile if it exists, even when
+	     _GenerateR2RModuleRegistration is skipped due to incrementality.
+	     This must be a separate target so that _MainFile is populated on every build. -->
+	<Target Name="_AddR2RModuleRegistrationToMainFile"
+			DependsOnTargets="_GenerateR2RModuleRegistration"
+			Condition="@(_R2RModule->Count()) &gt; 0"
+			>
+		<ItemGroup>
+			<_MainFile Include="$(_R2RModuleRegistrationFile)" Condition="Exists('$(_R2RModuleRegistrationFile)')">
+				<Arch>$(TargetArchitectures.ToLowerInvariant())</Arch>
+			</_MainFile>
 		</ItemGroup>
 	</Target>
 
@@ -398,7 +402,7 @@
 			_PrepareR2RModules;
 			_RegisterR2RNativeReferences;
 			_CreateR2RModuleDylibs;
-			_GenerateR2RModuleRegistration;
+			_AddR2RModuleRegistrationToMainFile;
 		</_CreateR2RDylibDependsOn>
 	</PropertyGroup>
 

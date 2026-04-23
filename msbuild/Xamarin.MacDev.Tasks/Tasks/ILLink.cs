@@ -132,7 +132,7 @@ namespace Xamarin.MacDev.Tasks {
 					Log.LogMessage (MessageImportance.Low, "Not creating output file '{0}' because the entire file will be copied to Windows", item.ItemSpec);
 					return false;
 				}
-				Log.LogMessage (MessageImportance.Low, $"Checking LinkerCacheItemsToCopyToWindows with {LinkerCacheItemsToCopyToWindows.Length} items for {item.ItemSpec}");
+
 				if (Array.IndexOf (LinkerCacheItemsToCopyToWindows, item) >= 0) {
 					Log.LogMessage (MessageImportance.Low, "Not creating output file '{0}' because the entire file will be copied to Windows (because it's not native code)", item.ItemSpec);
 					return false;

@@ -72,8 +72,12 @@ function Test-GitIsAncestor {
         $Branch
     )
 
-    & git merge-base --is-ancestor $Commit $Branch 2>$null
-    return $LASTEXITCODE -eq 0
+    & git merge-base --is-ancestor -- $Commit $Branch 2>$null
+    switch ($LASTEXITCODE) {
+        0 { return $true }
+        1 { return $false }
+        default { throw [System.InvalidOperationException]::new("Failed to determine whether '$Commit' is an ancestor of '$Branch'.") }
+    }
 }
 
 class GitHubStatus {

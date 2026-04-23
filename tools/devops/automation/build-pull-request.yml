@@ -53,6 +53,8 @@ variables:
 - name: Packaging.EnableSBOMSigning
   value: false
 
+trigger: none
+
 pr:
   autoCancel: true
   branches:

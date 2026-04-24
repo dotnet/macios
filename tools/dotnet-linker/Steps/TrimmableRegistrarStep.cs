@@ -360,6 +360,7 @@ namespace Xamarin.Linker {
 						il.Append (il.Create (OpCodes.Stind_I1));
 						il.Append (il.Create (OpCodes.Ldstr, objcClassName));
 						il.Append (il.Create (OpCodes.Call, abr.Class_GetHandle__System_String));
+						il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_IntPtr));
 						il.Append (il.Create (OpCodes.Ret));
 
 						/*

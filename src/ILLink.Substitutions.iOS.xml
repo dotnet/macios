@@ -17,7 +17,7 @@
       <method signature="System.Boolean get_UseNSUrlSessionHandler()" body="stub" feature="System.Net.Http.NativeHandler.UseNSUrlSessionHandler" featurevalue="false" value="false" />
       <method signature="System.Boolean get_UseNSUrlSessionHandler()" body="stub" feature="System.Net.Http.NativeHandler.UseNSUrlSessionHandler" featurevalue="true" value="true" />
     </type>
-    <type fullname="ObjCRuntime.Class">
+    <type fullname="ObjCRuntime.Runtime">
       <method signature="System.Boolean get_ValidateObjectPointers()" body="stub" feature="ObjCRuntime.Class.ValidateObjectPointers" featurevalue="false" value="false" />
       <method signature="System.Boolean get_ValidateObjectPointers()" body="stub" feature="ObjCRuntime.Class.ValidateObjectPointers" featurevalue="true" value="true" />
     </type>

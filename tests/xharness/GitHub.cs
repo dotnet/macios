@@ -31,10 +31,10 @@ namespace Xharness {
 
 		const string PullsApiUrl = "https://api.github.com/repos/dotnet/macios/pulls";
 
-		readonly IHarness harness;
+		readonly Harness harness;
 		readonly IProcessManager processManager;
 
-		public GitHub (IHarness harness, IProcessManager processManager)
+		public GitHub (Harness harness, IProcessManager processManager)
 		{
 			if (harness is null)
 				throw new ArgumentNullException (nameof (harness));
@@ -196,7 +196,7 @@ namespace Xharness {
 				var output = new MemoryLog () {
 					Timestamp = false // ensure we do not add the timestap or the logic for the file check will be hard and having it adds no value
 				};
-				var rv = processManager.RunAsync (git, harness.HarnessLog, stdoutLog: output, stderrLog: output).Result;
+				var rv = processManager.RunAsync (git, harness.HarnessLog!, stdoutLog: output, stderrLog: output).Result;
 				if (rv.Succeeded)
 					return output.ToString ().Split (new char [] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 

@@ -340,15 +340,15 @@ namespace Security {
 		/// <summary>To be added.</summary>
 		Invalid = -1,
 
-		/// <summary>Public part of a symetric key.</summary>
+		/// <summary>Public part of a symmetric key.</summary>
 		[Field ("kSecAttrKeyClassPublic")]
 		Public = 0,
 
-		/// <summary>Private part of an asymetric key.</summary>
+		/// <summary>Private part of an asymmetric key.</summary>
 		[Field ("kSecAttrKeyClassPrivate")]
 		Private = 1,
 
-		/// <summary>A symetric key.</summary>
+		/// <summary>A symmetric key.</summary>
 		[Field ("kSecAttrKeyClassSymmetric")]
 		Symmetric = 2,
 	}

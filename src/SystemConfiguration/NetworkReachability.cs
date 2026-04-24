@@ -687,6 +687,7 @@ namespace SystemConfiguration {
 			return result;
 		}
 
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (gch.IsAllocated)

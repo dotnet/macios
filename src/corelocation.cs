@@ -402,7 +402,7 @@ namespace CoreLocation {
 		[Export ("locationServicesEnabled"), Static]
 		bool LocationServicesEnabled { get; }
 
-		/// <summary>The minimum change in heading, in degreees, necessary to generate a location update.</summary>
+		/// <summary>The minimum change in heading, in degrees, necessary to generate a location update.</summary>
 		///         <value>The default value is 1 (degree).</value>
 		///         <remarks>To be added.</remarks>
 		[NoTV]
@@ -1180,7 +1180,7 @@ namespace CoreLocation {
 		[NullAllowed, Export ("ISOcountryCode")]
 		string IsoCountryCode { get; }
 
-		/// <summary>An array of relevant areas of interest (large parks, miltary bases, attractions, etc).</summary>
+		/// <summary>An array of relevant areas of interest (large parks, military bases, attractions, etc).</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NullAllowed, Export ("areasOfInterest")]
@@ -1556,7 +1556,7 @@ namespace CoreLocation {
 			""")]
 		void GeocodeAddress (NSDictionary addressDictionary, CLGeocodeCompletionHandler completionHandler);
 
-		/// <param name="addressString">Adress that you want to submit.</param>
+		/// <param name="addressString">Address that you want to submit.</param>
 		///         <param name="completionHandler">Method to invoke when the request completes.</param>
 		///         <summary>Request a latitude/longitude location from a human readable address.</summary>
 		///         <remarks>
@@ -1590,7 +1590,7 @@ namespace CoreLocation {
 			""")]
 		void GeocodeAddress (string addressString, CLGeocodeCompletionHandler completionHandler);
 
-		/// <param name="addressString">Adress that you want to submit.</param>
+		/// <param name="addressString">Address that you want to submit.</param>
 		///         <param name="region">Region to limit the lookup for.</param>
 		///         <param name="completionHandler">Method to invoke when the request completes.</param>
 		///         <summary>Request a latitude/longitude location from a human readable address and region.</summary>

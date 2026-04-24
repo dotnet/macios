@@ -76,7 +76,7 @@ namespace CoreGraphics {
 			CGPDFScannerRelease (GetCheckedHandle ());
 		}
 
-		/// <include file="../../docs/api/CoreGraphics/CGPDFScanner.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGPDFScanner.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (gch.IsAllocated)

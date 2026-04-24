@@ -351,7 +351,10 @@ GROUP BY error_signature
 ORDER BY occurrences DESC;
 ```
 
-### Step 3.4: Exclude PR-specific failures
+### Step 3.4: Exclude known-noisy and PR-specific failures
+
+**Always exclude these tests** — they are expected to fail across many PRs and are not actionable:
+- `Xamarin.Tests.AppSizeTest.*` — sensitive to any API change, expected cross-PR failures
 
 A failure is PR-specific if:
 - It appears in only 1 PR
@@ -359,6 +362,10 @@ A failure is PR-specific if:
 - It is consistent (never passes on rerun)
 
 These should be **excluded** from issue filing — they are the PR author's problem.
+
+### Step 3.5: File one issue per test
+
+**Always create separate issues for separate unit tests.** It is easier to merge issues than to split them up. Do not group multiple unrelated test failures into a single issue.
 
 ### Step 3.5: Produce classification summary
 

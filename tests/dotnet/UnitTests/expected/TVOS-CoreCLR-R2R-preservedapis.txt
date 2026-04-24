@@ -857,6 +857,7 @@ Microsoft.tvOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer.Equals(System.R
 Microsoft.tvOS.dll:ObjCRuntime.RuntimeTypeHandleEqualityComparer.GetHashCode(System.RuntimeTypeHandle)
 Microsoft.tvOS.dll:ObjCRuntime.Selector
 Microsoft.tvOS.dll:ObjCRuntime.Selector._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.tvOS.dll:ObjCRuntime.Selector..cctor()
 Microsoft.tvOS.dll:ObjCRuntime.Selector..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:ObjCRuntime.Selector..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:ObjCRuntime.Selector.Equals(ObjCRuntime.Selector)
@@ -1164,6 +1165,7 @@ Microsoft.tvOS.dll:UIKit.UIApplication.xamarin_UIApplicationMain(System.Int32, S
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)
+Microsoft.tvOS.dll:UIKit.UIApplicationDelegate..cctor()
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate..ctor()
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
@@ -5413,7 +5415,41 @@ System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.ConstantExpectedAttri
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.ConstantExpectedAttribute.set_Max(System.Object)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DisallowNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DisallowNullAttribute..ctor()
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::All
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::AllConstructors
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::AllEvents
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::AllFields
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::AllMethods
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::AllNestedTypes
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::AllProperties
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::Interfaces
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::None
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicConstructors
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicConstructorsWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicEvents
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicEventsWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicFields
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicFieldsWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicMethods
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicMethodsWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicNestedTypes
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicNestedTypesWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicProperties
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::NonPublicPropertiesWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicConstructors
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicConstructorsWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicEvents
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicFields
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicMethods
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicNestedTypes
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicNestedTypesWithInherited
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicParameterlessConstructor
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::PublicProperties
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<MemberTypes>k__BackingField
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes, System.Type)
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.String, System.String)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute..ctor(System.String, System.Type)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullAttribute..ctor()
@@ -6170,7 +6206,6 @@ System.Private.CoreLib.dll:System.Func`2<System.Object,System.Int32> System.IO.S
 System.Private.CoreLib.dll:System.Func`2<System.Object,System.Int32> System.IO.Stream/<>c::<>9__53_0
 System.Private.CoreLib.dll:System.Func`2<System.Object,System.Threading.Condition> System.Threading.Monitor::s_createCondition
 System.Private.CoreLib.dll:System.Func`2<System.Reflection.AssemblyName,System.Reflection.Assembly> System.Reflection.TypeNameResolver::_assemblyResolver
-System.Private.CoreLib.dll:System.Func`2<System.Type,System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods> System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods/<>O::<0>__CreateMarshalMethods
 System.Private.CoreLib.dll:System.Func`2<System.Type,System.StubHelpers.StubHelpers/StructureMarshalInfo> System.StubHelpers.StubHelpers/<>c::<>9__28_0
 System.Private.CoreLib.dll:System.Func`3
 System.Private.CoreLib.dll:System.Func`3..ctor(System.Object, System.IntPtr)
@@ -8202,6 +8237,7 @@ System.Private.CoreLib.dll:System.Int32 System.DefaultBinder/BinderState::_origi
 System.Private.CoreLib.dll:System.Int32 System.DefaultBinder/Primitives::value__
 System.Private.CoreLib.dll:System.Int32 System.Delegate/InvocationListEnumerator`1::_index
 System.Private.CoreLib.dll:System.Int32 System.DelegateBindingFlags::value__
+System.Private.CoreLib.dll:System.Int32 System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes::value__
 System.Private.CoreLib.dll:System.Int32 System.Diagnostics.Contracts.ContractFailureKind::value__
 System.Private.CoreLib.dll:System.Int32 System.Diagnostics.DebuggableAttribute/DebuggingModes::value__
 System.Private.CoreLib.dll:System.Int32 System.Diagnostics.StackFrame::_columnNumber
@@ -8622,6 +8658,7 @@ System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.GCHandleS
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.GCHandleType::value__
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.Marshal::SystemDefaultCharSize
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.Marshal::SystemMaxDBCSCharSize
+System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods::_nativeSize
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.MarshalAsAttribute::IidParameterIndex
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.MarshalAsAttribute::SizeConst
 System.Private.CoreLib.dll:System.Int32 System.Runtime.InteropServices.Marshalling.ComVariant/Blob::_size
@@ -13305,7 +13342,6 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.ConditionalWeakTable`
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Reflection.Assembly,System.Runtime.InteropServices.DllImportResolver> System.Runtime.InteropServices.NativeLibrary::s_nativeDllResolveMap
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.String,System.StubHelpers.BSTRMarshaler/TrailByte> System.StubHelpers.BSTRMarshaler::s_trailByteTable
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Threading.Tasks.TaskScheduler,System.Object> System.Threading.Tasks.TaskScheduler::s_activeTaskSchedulers
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Type,System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods> System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods::s_marshalerCache
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Type,System.StubHelpers.StubHelpers/StructureMarshalInfo> System.StubHelpers.StubHelpers::s_structureMarshalInfoCache
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<TKey,TValue> System.Runtime.CompilerServices.ConditionalWeakTable`2/Container::_parent
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<TKey,TValue> System.Runtime.CompilerServices.ConditionalWeakTable`2/Enumerator::_table
@@ -14190,17 +14226,18 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal.WriteInt64(Sys
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal.WriteIntPtr(System.IntPtr, System.Int32, System.IntPtr)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal.WriteIntPtr(System.IntPtr, System.IntPtr)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods
-System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods..cctor()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods..ctor(System.Type)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.<GetMarshalMethodsForType>g__CreateMarshalMethods|20_0(System.Type)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.ConvertToManaged(System.Object, System.Byte*, System.StubHelpers.CleanupWorkListElement&)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.ConvertToUnmanaged(System.Object, System.Byte*, System.Int32, System.StubHelpers.CleanupWorkListElement&)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.Free(System.Object, System.Byte*, System.Int32, System.StubHelpers.CleanupWorkListElement&)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods System.RuntimeType/CompositeCacheEntry::_marshalerMethods
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods..ctor(System.Type, System.Int32)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.ConvertToManaged(System.Object, System.Byte*)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.ConvertToUnmanaged(System.Object, System.Byte*, System.StubHelpers.CleanupWorkListElement&)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.Create(System.RuntimeType)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.Free(System.Byte*)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.get_ConvertToManagedMethod()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.get_ConvertToUnmanagedMethod()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.get_FreeMethod()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.GetMarshalMethodsForType(System.Type)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods/<>O
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.GetMarshalMethodsForType(System.RuntimeType)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.GetStorageRef(System.RuntimeType/CompositeCacheEntry)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods.InitializeCompositeCache(System.RuntimeType/CompositeCacheEntry)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods/ConvertToManagedDelegate
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods/ConvertToManagedDelegate System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods::_convertToManaged
 System.Private.CoreLib.dll:System.Runtime.InteropServices.Marshal/LayoutTypeMarshalerMethods/ConvertToManagedDelegate..ctor(System.Object, System.IntPtr)
@@ -16160,7 +16197,9 @@ System.Private.CoreLib.dll:System.String System.Boolean::TrueString
 System.Private.CoreLib.dll:System.String System.Byte::System.IBinaryIntegerParseAndFormatInfo<System.Byte>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.Char::System.IBinaryIntegerParseAndFormatInfo<System.Char>.OverflowMessage()
 System.Private.CoreLib.dll:System.String System.CharEnumerator::_str
+System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<AssemblyName>k__BackingField
 System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<MemberSignature>k__BackingField
+System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<TypeName>k__BackingField
 System.Private.CoreLib.dll:System.String System.Diagnostics.Contracts.ContractException::_condition
 System.Private.CoreLib.dll:System.String System.Diagnostics.Contracts.ContractException::_userMessage
 System.Private.CoreLib.dll:System.String System.Diagnostics.StackFrame::_fileName

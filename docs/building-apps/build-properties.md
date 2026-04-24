@@ -352,9 +352,7 @@ See [BuildIpa](#buildipa) for iOS and tvOS projects.
 
 ## Device
 
-Specifies which mobile device or emulator to target when using `dotnet run
---device <Device>` or MSBuild targets that interact with devices (such as
-`Run`, `Install`, or `Uninstall`).
+Specifies which mobile device or simulator to target when using `dotnet run --device <Device>` or MSBuild targets that interact with devices (such as `Run`, `Install`, or `Uninstall`).
 
 The value can be anything the command-line tools `simctl` or `devicectl`
 accept for the device name; this is typically either the UDID or the name of
@@ -966,7 +964,7 @@ Default:
 A boolean property that specifies whether native libraries in binding projects should be embedded
 in the managed assembly, or put into a `.resources` directory next to the managed assembly.
 
-The default value is `true` (which means native libraries will _not_ be embeddded in the managed assembly).
+The default value is `true` (which means native libraries will _not_ be embedded in the managed assembly).
 
 > [!NOTE]
 > Xcframeworks won't work correctly if embedded inside the managed assembly (if this property is not `true`).

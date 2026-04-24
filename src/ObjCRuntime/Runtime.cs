@@ -2715,6 +2715,13 @@ namespace ObjCRuntime {
 		{
 			return RegistrarHelper.LookupUnmanagedFunction (assembly, Marshal.PtrToStringAuto (symbol), id);
 		}
+
+		// This option is turned on by setting _ValidateObjectPointers property to true in the project file.
+		static bool validate_object_pointers;
+		internal static bool ValidateObjectPointers {
+			get => validate_object_pointers;
+			set => validate_object_pointers = value;
+		}
 	}
 
 

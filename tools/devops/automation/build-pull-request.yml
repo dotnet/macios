@@ -48,19 +48,7 @@ variables:
 - name: Packaging.EnableSBOMSigning
   value: false
 
-
-# only allow triggers from specific branches
-trigger:
-  branches:
-    include:
-    - refs/heads/dev/*
-    - refs/heads/darc-*
-    - refs/heads/backport-pr-*
-    - refs/heads/lego/*
-    - refs/heads/locfiles/*
-    - refs/heads/copilot/*
-    - refs/heads/dependabot/*
-    - refs/heads/merge/*
+trigger: none
 
 pr:
   autoCancel: true

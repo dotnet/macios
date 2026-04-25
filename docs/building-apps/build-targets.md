@@ -47,8 +47,8 @@ Added in .NET 11.
 ## Run
 
 Builds the source code within a project and all dependencies, and then deploys and runs it
-on a default simulator/device. A specific deployment target can be set by using the `$(Device)` property. 
+on a default simulator/device. A specific deployment target can be set by using the `$(Device)` property.
 
 ```dotnetcli
-dotnet build -t:Run project.csproj -p:Device=$(MY_DEVICE_UDID)
+dotnet build -t:Run project.csproj -p:Device=<udid>
 ```

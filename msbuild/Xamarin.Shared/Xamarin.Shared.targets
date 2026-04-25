@@ -2952,7 +2952,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<!-- add frameworks, with the path relative to the app bundle -->
 			<!-- Use _FilteredFrameworkToPublish (from the _ComputeFrameworkFilesToPublish target) to only include dynamic frameworks
 			     that will actually be present in the app bundle. Ref: https://github.com/dotnet/macios/issues/24840 -->
-			<_PostProcessingItem Include="@(_FilteredFrameworkToPublish->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
+			<!-- The condition is necessary due to https://github.com/dotnet/msbuild/issues/4056 -->
+			<_PostProcessingItem Condition="@(_FilteredFrameworkToPublish->Count()) &gt; 0" Include="@(_FilteredFrameworkToPublish->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->

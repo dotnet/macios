@@ -24,8 +24,6 @@ using CoreGraphics;
 using Foundation;
 using CoreAnimation;
 using ObjCRuntime;
-using MonoTouch.Dialog.Utilities;
-
 using NSAction = global::System.Action;
 
 namespace MonoTouch.Dialog {
@@ -41,12 +39,12 @@ namespace MonoTouch.Dialog {
 		/// other object this points to a Section and it is null
 		/// for the root RootElement.
 		/// </remarks>
-		public Element Parent;
+		public Element? Parent;
 
 		/// <summary>
 		///  The caption to display for this given element
 		/// </summary>
-		public string Caption;
+		public string? Caption;
 
 		/// <summary>
 		///  Initializes the element with the given caption.
@@ -54,7 +52,7 @@ namespace MonoTouch.Dialog {
 		/// <param name="caption">
 		/// The caption.
 		/// </param>
-		public Element (string caption)
+		public Element (string? caption)
 		{
 			this.Caption = caption;
 		}
@@ -152,7 +150,7 @@ namespace MonoTouch.Dialog {
 		/// <summary>
 		/// If the cell is attached will return the immediate RootElement
 		/// </summary>
-		public RootElement GetImmediateRootElement ()
+		public RootElement? GetImmediateRootElement ()
 		{
 			var section = Parent as Section;
 			if (section is null)
@@ -165,7 +163,7 @@ namespace MonoTouch.Dialog {
 		/// <summary>
 		/// Returns the UITableView associated with this element, or null if this cell is not currently attached to a UITableView
 		/// </summary>
-		public UITableView GetContainerTableView ()
+		public UITableView? GetContainerTableView ()
 		{
 			var root = GetImmediateRootElement ();
 			if (root is null)
@@ -176,7 +174,7 @@ namespace MonoTouch.Dialog {
 		/// <summary>
 		/// Returns the currently active UITableViewCell for this element, or null if the element is not currently visible
 		/// </summary>
-		public UITableViewCell GetActiveCell ()
+		public UITableViewCell? GetActiveCell ()
 		{
 			var tv = GetContainerTableView ();
 			if (tv is null)
@@ -192,7 +190,7 @@ namespace MonoTouch.Dialog {
 		///  it does not work for a toplevel RootElement or a Section of if the Element has
 		///  not been attached yet.
 		/// </summary>
-		public NSIndexPath IndexPath {
+		public NSIndexPath? IndexPath {
 			get {
 				var section = Parent as Section;
 				if (section is null)
@@ -242,7 +240,7 @@ namespace MonoTouch.Dialog {
 					ValueChanged (this, EventArgs.Empty);
 			}
 		}
-		public event EventHandler ValueChanged;
+		public event EventHandler? ValueChanged;
 
 		public BoolElement (string caption, bool value) : base (caption)
 		{
@@ -261,7 +259,7 @@ namespace MonoTouch.Dialog {
 	public partial class BooleanElement : BoolElement {
 		static NSString bkey = new NSString ("BooleanElement");
 #if !__TVOS__
-		UISwitch sw;
+		UISwitch? sw;
 #endif // !__TVOS__
 
 		public BooleanElement (string caption, bool value) : base (caption, value)
@@ -318,7 +316,8 @@ namespace MonoTouch.Dialog {
 		{
 			Value = !Value;
 			var cell = tableView.CellAt (path);
-			ConfigCell (cell);
+			if (cell is not null)
+				ConfigCell (cell);
 			base.Selected (dvc, tableView, path);
 		}
 #endif // !__TVOS__
@@ -352,233 +351,14 @@ namespace MonoTouch.Dialog {
 	}
 
 	/// <summary>
-	///  This class is used to render a string + a state in the form
-	/// of an image.  
-	/// </summary>
-	/// <remarks>
-	/// It is abstract to avoid making this element
-	/// keep two pointers for the state images, saving 8 bytes per
-	/// slot.   The more derived class "BooleanImageElement" shows
-	/// one way to implement this by keeping two pointers, a better
-	/// implementation would return pointers to images that were 
-	/// preloaded and are static.
-	/// 
-	/// A subclass only needs to implement the GetImage method.
-	/// </remarks>
-	public abstract partial class BaseBooleanImageElement : BoolElement {
-		static NSString key = new NSString ("BooleanImageElement");
-
-		public class TextWithImageCellView : UITableViewCell {
-			const int fontSize = 17;
-			static UIFont font = UIFont.BoldSystemFontOfSize (fontSize);
-			BaseBooleanImageElement parent;
-			UILabel label;
-			UIButton button;
-			const int ImageSpace = 32;
-			const int Padding = 8;
-
-			public TextWithImageCellView (BaseBooleanImageElement parent_) : base (UITableViewCellStyle.Value1, parent_.CellKey)
-			{
-				parent = parent_;
-				label = new UILabel () {
-					TextAlignment = UITextAlignment.Left,
-					Text = parent.Caption,
-					Font = font,
-					BackgroundColor = UIColor.Clear
-				};
-				button = UIButton.FromType (UIButtonType.Custom);
-				button.TouchDown += delegate
-				{
-					parent.Value = !parent.Value;
-					UpdateImage ();
-					if (parent.Tapped is not null)
-						parent.Tapped ();
-				};
-				ContentView.Add (label);
-				ContentView.Add (button);
-				UpdateImage ();
-			}
-
-			void UpdateImage ()
-			{
-				button.SetImage (parent.GetImage (), UIControlState.Normal);
-			}
-
-			public override void LayoutSubviews ()
-			{
-				base.LayoutSubviews ();
-				var full = ContentView.Bounds;
-				var frame = full;
-				frame.Height = 22;
-				frame.X = Padding;
-				frame.Y = (full.Height - frame.Height) / 2;
-				frame.Width -= ImageSpace + Padding;
-				label.Frame = frame;
-
-				button.Frame = new CGRect (full.Width - ImageSpace, -3, ImageSpace, 48);
-			}
-
-			public void UpdateFrom (BaseBooleanImageElement newParent)
-			{
-				parent = newParent;
-				UpdateImage ();
-				label.Text = parent.Caption;
-				SetNeedsDisplay ();
-			}
-		}
-
-		public BaseBooleanImageElement (string caption, bool value)
-			: base (caption, value)
-		{
-		}
-
-		public event NSAction Tapped;
-
-		protected abstract UIImage GetImage ();
-
-		protected override NSString CellKey {
-			get {
-				return key;
-			}
-		}
-		public override UITableViewCell GetCell (UITableView tv)
-		{
-			var cell = tv.DequeueReusableCell (CellKey) as TextWithImageCellView;
-			if (cell is null)
-				cell = new TextWithImageCellView (this);
-			else
-				cell.UpdateFrom (this);
-			return cell;
-		}
-	}
-
-	public partial class BooleanImageElement : BaseBooleanImageElement {
-		UIImage onImage, offImage;
-
-		public BooleanImageElement (string caption, bool value, UIImage onImage, UIImage offImage) : base (caption, value)
-		{
-			this.onImage = onImage;
-			this.offImage = offImage;
-		}
-
-		protected override UIImage GetImage ()
-		{
-			if (Value)
-				return onImage;
-			else
-				return offImage;
-		}
-
-		protected override void Dispose (bool disposing)
-		{
-			base.Dispose (disposing);
-			onImage = offImage = null;
-		}
-	}
-
-	/// <summary>
-	///  Used to display a slider on the screen.
-	/// </summary>
-	public partial class FloatElement : Element {
-		public bool ShowCaption;
-		public float Value;
-		public float MinValue, MaxValue;
-		static NSString skey = new NSString ("FloatElement");
-		//UIImage Left, Right;
-#if !__TVOS__
-		// There is no UISlider in tvOS, so make this read-only for now.
-		UISlider slider;
-#endif // !__TVOS__
-
-		public FloatElement (float value) : this (null, null, value)
-		{
-		}
-
-		public FloatElement (UIImage left, UIImage right, float value) : base (null)
-		{
-			//Left = left;
-			//Right = right;
-			MinValue = 0;
-			MaxValue = 1;
-			Value = value;
-		}
-
-		protected override NSString CellKey {
-			get {
-				return skey;
-			}
-		}
-		public override UITableViewCell GetCell (UITableView tv)
-		{
-			var cell = tv.DequeueReusableCell (CellKey);
-			if (cell is null) {
-				cell = new UITableViewCell (UITableViewCellStyle.Default, CellKey);
-				cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-			} else
-				RemoveTag (cell, 1);
-
-#if __TVOS__
-			if (Caption is not null && ShowCaption)
-				cell.TextLabel.Text = Caption;
-
-			cell.DetailTextLabel.Text = string.Format ("[{0}...{2}]: {1}]", MinValue, Value, MaxValue);
-#else
-			CGSize captionSize = new CGSize (0, 0);
-			if (Caption is not null && ShowCaption) {
-				cell.TextLabel.Text = Caption;
-				captionSize = Caption.StringSize (UIFont.FromName (cell.TextLabel.Font.Name, UIFont.LabelFontSize));
-				captionSize.Width += 10; // Spacing
-			}
-			if (slider is null) {
-				slider = new UISlider (new CGRect (10f + captionSize.Width, UIDevice.CurrentDevice.CheckSystemVersion (7, 0) ? 18f : 12f, cell.ContentView.Bounds.Width - 20 - captionSize.Width, 7f)) {
-					BackgroundColor = UIColor.Clear,
-					MinValue = this.MinValue,
-					MaxValue = this.MaxValue,
-					Continuous = true,
-					Value = this.Value,
-					Tag = 1,
-					AutoresizingMask = UIViewAutoresizing.FlexibleWidth
-				};
-				slider.ValueChanged += delegate
-				{
-					Value = slider.Value;
-				};
-			} else {
-				slider.Value = Value;
-			}
-
-			cell.ContentView.AddSubview (slider);
-#endif // __TVOS__
-			return cell;
-		}
-
-		public override string Summary ()
-		{
-			return Value.ToString ();
-		}
-
-		protected override void Dispose (bool disposing)
-		{
-			if (disposing) {
-#if !__TVOS__
-				if (slider is not null) {
-					slider.Dispose ();
-					slider = null;
-				}
-#endif // !__TVOS__
-			}
-		}
-	}
-
-	/// <summary>
 	///  Used to display a cell that will launch a web browser when selected.
 	/// </summary>
 	public partial class HtmlElement : Element {
-		NSUrl nsUrl;
+		NSUrl? nsUrl;
 		static NSString hkey = new NSString ("HtmlElement");
 #if !__TVOS__ && !__MACCATALYST__
 		// There is no UIWebView in tvOS, so we can't launch anything.
-		UIWebView web;
+		UIWebView? web;
 #endif // !__TVOS__ && !__MACCATALYST__
 
 		public HtmlElement (string caption, string url) : base (caption)
@@ -598,7 +378,7 @@ namespace MonoTouch.Dialog {
 		}
 		public string Url {
 			get {
-				return nsUrl.ToString ();
+				return nsUrl?.ToString () ?? "";
 			}
 			set {
 				nsUrl = new NSUrl (value);
@@ -690,11 +470,15 @@ namespace MonoTouch.Dialog {
 			};
 			vc.NavigationItem.Title = Caption;
 
-			vc.View.AutosizesSubviews = true;
-			vc.View.AddSubview (web);
+			var view = vc.View;
+			if (view is not null) {
+				view.AutosizesSubviews = true;
+				view.AddSubview (web);
+			}
 
 			dvc.ActivateController (vc);
-			web.LoadRequest (NSUrlRequest.FromUrl (nsUrl));
+			if (nsUrl is not null)
+				web.LoadRequest (NSUrlRequest.FromUrl (nsUrl));
 		}
 #endif // !__TVOS__ && !__MACCATALYST__
 	}
@@ -707,21 +491,21 @@ namespace MonoTouch.Dialog {
 		static NSString skey = new NSString ("StringElement");
 		static NSString skeyvalue = new NSString ("StringElementValue");
 		public UITextAlignment Alignment = UITextAlignment.Left;
-		public string Value;
+		public string? Value;
 
-		public StringElement (string caption) : base (caption) { }
+		public StringElement (string? caption) : base (caption) { }
 
-		public StringElement (string caption, string value) : base (caption)
+		public StringElement (string? caption, string? value) : base (caption)
 		{
 			this.Value = value;
 		}
 
-		public StringElement (string caption, NSAction tapped) : base (caption)
+		public StringElement (string? caption, NSAction tapped) : base (caption)
 		{
 			Tapped += tapped;
 		}
 
-		public event NSAction Tapped;
+		public event NSAction? Tapped;
 
 		public override UITableViewCell GetCell (UITableView tv)
 		{
@@ -744,7 +528,7 @@ namespace MonoTouch.Dialog {
 
 		public override string Summary ()
 		{
-			return Caption;
+			return Caption ?? "";
 		}
 
 		public override void Selected (DialogViewController dvc, UITableView tableView, NSIndexPath indexPath)
@@ -768,6 +552,16 @@ namespace MonoTouch.Dialog {
 	public partial class StyledStringElement : StringElement, IColorizeBackground {
 		static NSString [] skey = { new NSString (".1"), new NSString (".2"), new NSString (".3"), new NSString (".4") };
 
+		internal static UIFont GetBoldFont (nfloat size)
+		{
+			return UIFont.BoldSystemFontOfSize (size) ?? throw new InvalidOperationException ("Unable to create a bold system font.");
+		}
+
+		internal static UIFont GetSystemFont (nfloat size)
+		{
+			return UIFont.SystemFontOfSize (size) ?? throw new InvalidOperationException ("Unable to create a system font.");
+		}
+
 		public StyledStringElement (string caption) : base (caption) { }
 		public StyledStringElement (string caption, NSAction tapped) : base (caption, tapped) { }
 		public StyledStringElement (string caption, string value) : base (caption, value)
@@ -780,20 +574,20 @@ namespace MonoTouch.Dialog {
 		}
 
 		protected UITableViewCellStyle style;
-		public event NSAction AccessoryTapped;
-		public UIFont Font;
-		public UIFont SubtitleFont;
-		public UIColor TextColor;
+		public event NSAction? AccessoryTapped;
+		public UIFont? Font;
+		public UIFont? SubtitleFont;
+		public UIColor? TextColor;
 		public UILineBreakMode LineBreakMode = UILineBreakMode.WordWrap;
 		public int Lines = 0;
 		public UITableViewCellAccessory Accessory = UITableViewCellAccessory.None;
 
 		// To keep the size down for a StyleStringElement, we put all the image information
 		// on a separate structure, and create this on demand.
-		ExtraInfo extraInfo;
+		ExtraInfo? extraInfo;
 
 		class ExtraInfo {
-			public UIColor BackgroundColor, DetailColor;
+			public UIColor? BackgroundColor, DetailColor;
 		}
 
 		ExtraInfo OnImageInfo ()
@@ -803,7 +597,7 @@ namespace MonoTouch.Dialog {
 			return extraInfo;
 		}
 
-		public UIColor BackgroundColor {
+		public UIColor? BackgroundColor {
 			get {
 				return extraInfo is null ? null : extraInfo.BackgroundColor;
 			}
@@ -812,7 +606,7 @@ namespace MonoTouch.Dialog {
 			}
 		}
 
-		public UIColor DetailColor {
+		public UIColor? DetailColor {
 			get {
 				return extraInfo is null ? null : extraInfo.DetailColor;
 			}
@@ -845,7 +639,7 @@ namespace MonoTouch.Dialog {
 			tl.Text = Caption;
 			tl.TextAlignment = Alignment;
 			tl.TextColor = TextColor ?? UIColor.Black;
-			tl.Font = Font ?? UIFont.BoldSystemFontOfSize (17);
+			tl.Font = Font ?? GetBoldFont (17);
 			tl.LineBreakMode = LineBreakMode;
 			tl.Lines = Lines;
 
@@ -863,7 +657,7 @@ namespace MonoTouch.Dialog {
 			if (cell.DetailTextLabel is not null) {
 				cell.DetailTextLabel.Lines = Lines;
 				cell.DetailTextLabel.LineBreakMode = LineBreakMode;
-				cell.DetailTextLabel.Font = SubtitleFont ?? UIFont.SystemFontOfSize (14);
+				cell.DetailTextLabel.Font = SubtitleFont ?? GetSystemFont (14);
 				cell.DetailTextLabel.TextColor = (extraInfo is null || extraInfo.DetailColor is null) ? UIColor.Gray : extraInfo.DetailColor;
 			}
 		}
@@ -890,7 +684,7 @@ namespace MonoTouch.Dialog {
 
 		internal void AccessoryTap ()
 		{
-			NSAction tapped = AccessoryTapped;
+			var tapped = AccessoryTapped;
 			if (tapped is not null)
 				tapped ();
 		}
@@ -983,17 +777,17 @@ namespace MonoTouch.Dialog {
 			if (this.Accessory != UITableViewCellAccessory.None)
 				maxSize.Width -= 20;
 
-			string c = Caption;
-			string v = Value;
+			string? c = Caption;
+			string? v = Value;
 			// ensure the (multi-line) Value will be rendered inside the cell when no Caption is present
 			if (String.IsNullOrEmpty (c))
 				c = " ";
 
-			var captionFont = Font ?? UIFont.BoldSystemFontOfSize (17);
+			var captionFont = Font ?? StyledStringElement.GetBoldFont (17);
 			var height = c.StringSize (captionFont, maxSize, LineBreakMode).Height;
 
 			if (!String.IsNullOrEmpty (v)) {
-				var subtitleFont = SubtitleFont ?? UIFont.SystemFontOfSize (14);
+				var subtitleFont = SubtitleFont ?? StyledStringElement.GetSystemFont (14);
 				if (this.style == UITableViewCellStyle.Subtitle) {
 					height += v.StringSize (subtitleFont, maxSize, LineBreakMode).Height;
 				} else {
@@ -1052,97 +846,13 @@ namespace MonoTouch.Dialog {
 		{
 			float margin = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Phone ? 40f : 110f;
 			CGSize size = new CGSize (tableView.Bounds.Width - margin, float.MaxValue);
-			UIFont font = UIFont.BoldSystemFontOfSize (17);
-			string c = Caption;
+			var font = StyledStringElement.GetBoldFont (17);
+			string? c = Caption;
 			// ensure the (single-line) Value will be rendered inside the cell
 			if (String.IsNullOrEmpty (c) && !String.IsNullOrEmpty (Value))
 				c = " ";
-			return c.StringSize (font, size, UILineBreakMode.WordWrap).Height + 10;
+			return (c ?? "").StringSize (font, size, UILineBreakMode.WordWrap).Height + 10;
 		}
-	}
-
-	public partial class RadioElement : StringElement {
-		public string Group;
-		internal int RadioIdx;
-
-		public RadioElement (string caption, string group) : base (caption)
-		{
-			Group = group;
-		}
-
-		public RadioElement (string caption) : base (caption)
-		{
-		}
-
-		public override UITableViewCell GetCell (UITableView tv)
-		{
-			var cell = base.GetCell (tv);
-			var root = (RootElement) Parent.Parent;
-
-			if (!(root.group is RadioGroup))
-				throw new Exception ("The RootElement's Group is null or is not a RadioGroup");
-
-			bool selected = RadioIdx == ((RadioGroup) (root.group)).Selected;
-			cell.Accessory = selected ? UITableViewCellAccessory.Checkmark : UITableViewCellAccessory.None;
-
-			return cell;
-		}
-
-		public override void Selected (DialogViewController dvc, UITableView tableView, NSIndexPath indexPath)
-		{
-			RootElement root = (RootElement) Parent.Parent;
-			if (RadioIdx != root.RadioSelected) {
-				UITableViewCell cell;
-				var selectedIndex = root.PathForRadio (root.RadioSelected);
-				if (selectedIndex is not null) {
-					cell = tableView.CellAt (selectedIndex);
-					if (cell is not null)
-						cell.Accessory = UITableViewCellAccessory.None;
-				}
-				cell = tableView.CellAt (indexPath);
-				if (cell is not null)
-					cell.Accessory = UITableViewCellAccessory.Checkmark;
-				root.RadioSelected = RadioIdx;
-			}
-
-			base.Selected (dvc, tableView, indexPath);
-		}
-	}
-
-	public partial class CheckboxElement : StringElement {
-		public new bool Value;
-		public string Group;
-
-		public CheckboxElement (string caption) : base (caption) { }
-		public CheckboxElement (string caption, bool value) : base (caption)
-		{
-			Value = value;
-		}
-
-		public CheckboxElement (string caption, bool value, string group) : this (caption, value)
-		{
-			Group = group;
-		}
-
-		UITableViewCell ConfigCell (UITableViewCell cell)
-		{
-			cell.Accessory = Value ? UITableViewCellAccessory.Checkmark : UITableViewCellAccessory.None;
-			return cell;
-		}
-
-		public override UITableViewCell GetCell (UITableView tv)
-		{
-			return ConfigCell (base.GetCell (tv));
-		}
-
-		public override void Selected (DialogViewController dvc, UITableView tableView, NSIndexPath path)
-		{
-			Value = !Value;
-			var cell = tableView.CellAt (path);
-			ConfigCell (cell);
-			base.Selected (dvc, tableView, path);
-		}
-
 	}
 
 	/// <summary>
@@ -1157,7 +867,7 @@ namespace MonoTouch.Dialog {
 		/// <summary>
 		///   The value of the EntryElement
 		/// </summary>
-		public string Value {
+		public string? Value {
 			get {
 				if (entry is null)
 					return val;
@@ -1176,7 +886,7 @@ namespace MonoTouch.Dialog {
 					entry.Text = value;
 			}
 		}
-		protected string val;
+		protected string? val;
 
 		/// <summary>
 		/// The key used for reusable UITableViewCells.
@@ -1291,14 +1001,14 @@ namespace MonoTouch.Dialog {
 		UITextAutocorrectionType autocorrectionType = UITextAutocorrectionType.Default;
 		UITextFieldViewMode clearButtonMode = UITextFieldViewMode.Never;
 		bool isPassword, becomeResponder;
-		UITextField entry;
-		string placeholder;
-		static UIFont font = UIFont.BoldSystemFontOfSize (17);
+		UITextField? entry;
+		string? placeholder;
+		static UIFont font = StyledStringElement.GetBoldFont (17);
 
-		public event EventHandler Changed;
-		public event Func<bool> ShouldReturn;
-		public EventHandler EntryStarted { get; set; }
-		public EventHandler EntryEnded { get; set; }
+		public event EventHandler? Changed;
+		public event Func<bool>? ShouldReturn;
+		public EventHandler? EntryStarted { get; set; }
+		public EventHandler? EntryEnded { get; set; }
 		/// <summary>
 		/// Constructs an EntryElement with the given caption, placeholder and initial value.
 		/// </summary>
@@ -1311,7 +1021,7 @@ namespace MonoTouch.Dialog {
 		/// <param name="value">
 		/// Initial value.
 		/// </param>
-		public EntryElement (string caption, string placeholder, string value) : base (caption)
+		public EntryElement (string caption, string? placeholder, string? value) : base (caption)
 		{
 			Value = value;
 			this.placeholder = placeholder;
@@ -1332,7 +1042,7 @@ namespace MonoTouch.Dialog {
 		/// <param name="isPassword">
 		/// True if this should be used to enter a password.
 		/// </param>
-		public EntryElement (string caption, string placeholder, string value, bool isPassword) : base (caption)
+		public EntryElement (string caption, string? placeholder, string? value, bool isPassword) : base (caption)
 		{
 			Value = value;
 			this.isPassword = isPassword;
@@ -1341,7 +1051,7 @@ namespace MonoTouch.Dialog {
 
 		public override string Summary ()
 		{
-			return Value;
+			return Value ?? "";
 		}
 
 		// 
@@ -1353,7 +1063,15 @@ namespace MonoTouch.Dialog {
 			nfloat maxHeight = font.LineHeight;
 
 			// Determine if we should calculate accross all sections or just the current section.
-			var sections = AlignEntryWithAllSections ? (Parent.Parent as RootElement).Sections : (new [] { Parent as Section }).AsEnumerable ();
+			IEnumerable<Section> sections;
+			if (AlignEntryWithAllSections) {
+				var root = Parent?.Parent as RootElement;
+				sections = root is not null ? root.Sections : Enumerable.Empty<Section> ();
+			} else if (Parent is Section section) {
+				sections = new [] { section };
+			} else {
+				sections = Enumerable.Empty<Section> ();
+			}
 
 			foreach (Section s in sections) {
 
@@ -1397,7 +1115,7 @@ namespace MonoTouch.Dialog {
 			}
 		}
 
-		UITableViewCell cell;
+		UITableViewCell? cell;
 		public override UITableViewCell GetCell (UITableView tv)
 		{
 			if (cell is null) {
@@ -1439,7 +1157,7 @@ namespace MonoTouch.Dialog {
 				{
 					FetchValue ();
 					if (EntryEnded is not null) {
-						EntryEnded (this, null);
+						EntryEnded (this, EventArgs.Empty);
 					}
 				};
 				entry.ShouldReturn += delegate
@@ -1448,8 +1166,8 @@ namespace MonoTouch.Dialog {
 					if (ShouldReturn is not null)
 						return ShouldReturn ();
 
-					RootElement root = GetImmediateRootElement ();
-					EntryElement focus = null;
+					RootElement? root = GetImmediateRootElement ();
+					EntryElement? focus = null;
 
 					if (root is null)
 						return true;
@@ -1469,34 +1187,37 @@ namespace MonoTouch.Dialog {
 					}
 
 					if (focus != this)
-						focus.BecomeFirstResponder (true);
+						focus?.BecomeFirstResponder (true);
 					else
-						focus.ResignFirstResponder (true);
+						focus?.ResignFirstResponder (true);
 
 					return true;
 				};
 				entry.Started += delegate
 				{
-					EntryElement self = null;
+					EntryElement? self = null;
 
 					if (EntryStarted is not null) {
-						EntryStarted (this, null);
+						EntryStarted (this, EventArgs.Empty);
 					}
 
-					if (!returnKeyType.HasValue) {
+					if (!returnKeyType.HasValue && Parent is Section parentSection) {
 						var returnType = UIReturnKeyType.Default;
 
-						foreach (var e in (Parent as Section).Elements) {
+						foreach (var e in parentSection.Elements) {
 							if (e == this)
 								self = this;
 							else if (self is not null && e is EntryElement)
 								returnType = UIReturnKeyType.Next;
 						}
 						entry.ReturnKeyType = returnType;
-					} else
+					} else if (returnKeyType.HasValue) {
 						entry.ReturnKeyType = returnKeyType.Value;
+					}
 
-					tv.ScrollToRow (IndexPath, UITableViewScrollPosition.Middle, true);
+					var path = IndexPath;
+					if (path is not null)
+						tv.ScrollToRow (path, UITableViewScrollPosition.Middle, true);
 				};
 				cell.ContentView.AddSubview (entry);
 			}
@@ -1565,7 +1286,9 @@ namespace MonoTouch.Dialog {
 			var tv = GetContainerTableView ();
 			if (tv is null)
 				return;
-			tv.ScrollToRow (IndexPath, UITableViewScrollPosition.Middle, animated);
+			var path = IndexPath;
+			if (path is not null)
+				tv.ScrollToRow (path, UITableViewScrollPosition.Middle, animated);
 			if (entry is not null) {
 				entry.BecomeFirstResponder ();
 				becomeResponder = false;
@@ -1578,307 +1301,11 @@ namespace MonoTouch.Dialog {
 			var tv = GetContainerTableView ();
 			if (tv is null)
 				return;
-			tv.ScrollToRow (IndexPath, UITableViewScrollPosition.Middle, animated);
+			var path = IndexPath;
+			if (path is not null)
+				tv.ScrollToRow (path, UITableViewScrollPosition.Middle, animated);
 			if (entry is not null)
 				entry.ResignFirstResponder ();
-		}
-	}
-
-	public partial class DateTimeElement : StringElement {
-		public DateTime DateValue;
-		// There's no UIDatePicker for tvOS, so this is a read-only element for now
-#if !__TVOS__
-		public UIDatePicker datePicker;
-#endif
-		public int MinuteInterval = 1;
-#pragma warning disable 67 // The event 'X' is never used
-		public event Action<DateTimeElement> DateSelected;
-#pragma warning restore 67
-		public UIColor BackgroundColor = (UIDevice.CurrentDevice.CheckSystemVersion (7, 0)) ? UIColor.White : UIColor.Black;
-
-		protected internal NSDateFormatter fmt = new NSDateFormatter () {
-			DateStyle = NSDateFormatterStyle.Short
-		};
-
-		public DateTimeElement (string caption, DateTime date) : base (caption)
-		{
-			DateValue = date;
-			Value = FormatDate (date);
-		}
-
-		public override UITableViewCell GetCell (UITableView tv)
-		{
-			Value = FormatDate (DateValue);
-			var cell = base.GetCell (tv);
-			cell.Accessory = UITableViewCellAccessory.DisclosureIndicator;
-			cell.SelectionStyle = UITableViewCellSelectionStyle.Blue;
-			return cell;
-		}
-
-		protected override void Dispose (bool disposing)
-		{
-			base.Dispose (disposing);
-			if (disposing) {
-				if (fmt is not null) {
-					fmt.Dispose ();
-					fmt = null;
-				}
-#if !__TVOS__
-				if (datePicker is not null) {
-					datePicker.Dispose ();
-					datePicker = null;
-				}
-#endif // !__TVOS__
-			}
-		}
-
-		protected DateTime GetDateWithKind (DateTime dt)
-		{
-			if (dt.Kind == DateTimeKind.Unspecified)
-				return DateTime.SpecifyKind (dt, DateTimeKind.Local);
-
-			return dt;
-		}
-
-		public virtual string FormatDate (DateTime dt)
-		{
-			dt = GetDateWithKind (dt);
-			return fmt.ToString ((NSDate) dt) + " " + dt.ToLocalTime ().ToShortTimeString ();
-		}
-
-#if !__TVOS__
-		public virtual UIDatePicker CreatePicker ()
-		{
-			var picker = new UIDatePicker (CGRect.Empty) {
-				AutoresizingMask = UIViewAutoresizing.FlexibleMargins,
-				Mode = UIDatePickerMode.DateAndTime,
-				Date = (NSDate) GetDateWithKind (DateValue),
-				MinuteInterval = MinuteInterval
-			};
-			return picker;
-		}
-
-		class MyViewController : UIViewController {
-			DateTimeElement container;
-
-			public MyViewController (DateTimeElement container)
-			{
-				this.container = container;
-			}
-
-			public override void ViewWillDisappear (bool animated)
-			{
-				base.ViewWillDisappear (animated);
-				container.DateValue = (DateTime) container.datePicker.Date;
-				if (container.DateSelected is not null)
-					container.DateSelected (container);
-			}
-
-			public override void DidRotate (UIInterfaceOrientation fromInterfaceOrientation)
-			{
-				base.DidRotate (fromInterfaceOrientation);
-				container.datePicker.Center = this.View.Center;
-			}
-
-			public bool Autorotate { get; set; }
-
-			public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
-			{
-				return Autorotate;
-			}
-		}
-
-		public override void Selected (DialogViewController dvc, UITableView tableView, NSIndexPath path)
-		{
-			var vc = new MyViewController (this) {
-				Autorotate = dvc.Autorotate
-			};
-			datePicker = CreatePicker ();
-
-			vc.View.BackgroundColor = BackgroundColor;
-			vc.View.AddSubview (datePicker);
-			dvc.ActivateController (vc);
-
-			datePicker.Center = vc.View.Center;
-		}
-#endif // !__TVOS__                                                                                                                     
-	}
-
-	public partial class DateElement : DateTimeElement {
-		public DateElement (string caption, DateTime date) : base (caption, date)
-		{
-			fmt.DateStyle = NSDateFormatterStyle.Medium;
-		}
-
-		public override string FormatDate (DateTime dt)
-		{
-			return fmt.ToString ((NSDate) GetDateWithKind (dt));
-		}
-
-#if !__TVOS__
-		public override UIDatePicker CreatePicker ()
-		{
-			var picker = base.CreatePicker ();
-			picker.Mode = UIDatePickerMode.Date;
-			return picker;
-		}
-#endif // !__TVOS__
-	}
-
-	public partial class TimeElement : DateTimeElement {
-		public TimeElement (string caption, DateTime date) : base (caption, date)
-		{
-		}
-
-		public override string FormatDate (DateTime dt)
-		{
-			return GetDateWithKind (dt).ToLocalTime ().ToShortTimeString ();
-		}
-
-#if !__TVOS__
-		public override UIDatePicker CreatePicker ()
-		{
-			var picker = base.CreatePicker ();
-			picker.Mode = UIDatePickerMode.Time;
-			picker.MinuteInterval = MinuteInterval;
-			return picker;
-		}
-#endif // !__TVOS__
-	}
-
-	/// <summary>
-	///   This element can be used to insert an arbitrary UIView
-	/// </summary>
-	/// <remarks>
-	///   There is no cell reuse here as we have a 1:1 mapping
-	///   in this case from the UIViewElement to the cell that
-	///   holds our view.
-	/// </remarks>
-	public partial class UIViewElement : Element, IElementSizing {
-		static int count;
-		public UIView ContainerView;
-		NSString key;
-		protected UIView View;
-		public CellFlags Flags;
-		UIEdgeInsets insets;
-
-		public UIEdgeInsets Insets {
-			get {
-				return insets;
-			}
-			set {
-				var viewFrame = View.Frame;
-				var dx = value.Left - insets.Left;
-				var dy = value.Top - insets.Top;
-				var ow = insets.Left + insets.Right;
-				var oh = insets.Top + insets.Bottom;
-				var w = value.Left + value.Right;
-				var h = value.Top + value.Bottom;
-
-				ContainerView.Frame = new CGRect (0, 0, ContainerView.Frame.Width + w - ow, ContainerView.Frame.Height + h - oh);
-				viewFrame.X += dx;
-				viewFrame.Y += dy;
-				View.Frame = viewFrame;
-
-				insets = value;
-
-				// Height changed, notify UITableView
-				if (dy != 0 || h != oh)
-					GetContainerTableView ().ReloadData ();
-
-			}
-		}
-
-		[Flags]
-		public enum CellFlags {
-			Transparent = 1,
-			DisableSelection = 2
-		}
-
-
-		/// <summary>
-		///   Constructor
-		/// </summary>
-		/// <param name="caption">
-		/// The caption, only used for RootElements that might want to summarize results
-		/// </param>
-		/// <param name="view">
-		/// The view to display
-		/// </param>
-		/// <param name="transparent">
-		/// If this is set, then the view is responsible for painting the entire area,
-		/// otherwise the default cell paint code will be used.
-		/// </param>
-		public UIViewElement (string caption, UIView view, bool transparent, UIEdgeInsets insets) : base (caption)
-		{
-			this.insets = insets;
-			var oframe = view.Frame;
-			var frame = oframe;
-			frame.Width += insets.Left + insets.Right;
-			frame.Height += insets.Top + insets.Bottom;
-
-			ContainerView = new UIView (frame);
-			if ((Flags & CellFlags.Transparent) != 0)
-				ContainerView.BackgroundColor = UIColor.Clear;
-
-			if (insets.Left != 0 || insets.Top != 0)
-				view.Frame = new CGRect (insets.Left + frame.X, insets.Top + frame.Y, frame.Width, frame.Height);
-
-			ContainerView.AddSubview (view);
-			this.View = view;
-			this.Flags = transparent ? CellFlags.Transparent : 0;
-			key = new NSString ("UIViewElement" + count++);
-		}
-
-		public UIViewElement (string caption, UIView view, bool transparent) : this (caption, view, transparent, UIEdgeInsets.Zero)
-		{
-		}
-
-		protected override NSString CellKey {
-			get {
-				return key;
-			}
-		}
-		public override UITableViewCell GetCell (UITableView tv)
-		{
-			var cell = tv.DequeueReusableCell (CellKey);
-			if (cell is null) {
-				cell = new UITableViewCell (UITableViewCellStyle.Default, CellKey);
-				if ((Flags & CellFlags.Transparent) != 0) {
-					cell.BackgroundColor = UIColor.Clear;
-
-					// 
-					// This trick is necessary to keep the background clear, otherwise
-					// it gets painted as black
-					//
-					cell.BackgroundView = new UIView (CGRect.Empty) {
-						BackgroundColor = UIColor.Clear
-					};
-				}
-				if ((Flags & CellFlags.DisableSelection) != 0)
-					cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-
-				if (Caption is not null)
-					cell.TextLabel.Text = Caption;
-				cell.ContentView.AddSubview (ContainerView);
-			}
-			return cell;
-		}
-
-		public nfloat GetHeight (UITableView tableView, NSIndexPath indexPath)
-		{
-			return ContainerView.Bounds.Height + 1;
-		}
-
-		protected override void Dispose (bool disposing)
-		{
-			base.Dispose (disposing);
-			if (disposing) {
-				if (View is not null) {
-					View.Dispose ();
-					View = null;
-				}
-			}
 		}
 	}
 
@@ -1898,7 +1325,7 @@ namespace MonoTouch.Dialog {
 	/// this uses the same storage, so you can only show one or the other.
 	/// </remarks>
 	public class Section : Element, IEnumerable {
-		object header, footer;
+		object? header, footer;
 		public List<Element> Elements = new List<Element> ();
 
 		// X corresponds to the alignment, Y to the height of the password
@@ -1915,7 +1342,7 @@ namespace MonoTouch.Dialog {
 		/// <param name="caption">
 		/// The header to display
 		/// </param>
-		public Section (string caption) : base (caption)
+		public Section (string? caption) : base (caption)
 		{
 		}
 
@@ -1928,7 +1355,7 @@ namespace MonoTouch.Dialog {
 		/// <param name="footer">
 		/// The footer to display.
 		/// </param>
-		public Section (string caption, string footer) : base (caption)
+		public Section (string? caption, string? footer) : base (caption)
 		{
 			Footer = footer;
 		}
@@ -1947,7 +1374,7 @@ namespace MonoTouch.Dialog {
 		/// <summary>
 		///    The section header, as a string
 		/// </summary>
-		public string Header {
+		public string? Header {
 			get {
 				return header as string;
 			}
@@ -1959,7 +1386,7 @@ namespace MonoTouch.Dialog {
 		/// <summary>
 		/// The section footer, as a string.
 		/// </summary>
-		public string Footer {
+		public string? Footer {
 			get {
 				return footer as string;
 			}
@@ -1972,7 +1399,7 @@ namespace MonoTouch.Dialog {
 		/// <summary>
 		/// The section's header view.  
 		/// </summary>
-		public UIView HeaderView {
+		public UIView? HeaderView {
 			get {
 				return header as UIView;
 			}
@@ -1984,7 +1411,7 @@ namespace MonoTouch.Dialog {
 		/// <summary>
 		/// The section's footer view.
 		/// </summary>
-		public UIView FooterView {
+		public UIView? FooterView {
 			get {
 				return footer as UIView;
 			}
@@ -2049,29 +1476,6 @@ namespace MonoTouch.Dialog {
 		}
 
 		/// <summary>
-		/// Use to add a UIView to a section, it makes the section opaque, to
-		/// get a transparent one, you must manually call UIViewElement
-		public void Add (UIView view)
-		{
-			if (view is null)
-				return;
-			Add (new UIViewElement (null, view, false));
-		}
-
-		/// <summary>
-		///   Adds the UIViews to the section.
-		/// </summary>
-		/// <param name="views">
-		/// An enumarable list that can be produced by something like:
-		///    from x in ... select (UIView) new UIFoo ();
-		/// </param>
-		public void Add (IEnumerable<UIView> views)
-		{
-			foreach (var v in views)
-				Add (v);
-		}
-
-		/// <summary>
 		/// Inserts a series of elements into the Section using the specified animation
 		/// </summary>
 		/// <param name="idx">
@@ -2094,7 +1498,7 @@ namespace MonoTouch.Dialog {
 				e.Parent = this;
 			}
 			var root = Parent as RootElement;
-			if (Parent is not null && root.TableView is not null) {
+			if (root is not null && root.TableView is not null) {
 				if (anim == UITableViewRowAnimation.None)
 					root.TableView.ReloadData ();
 				else
@@ -2271,7 +1675,6 @@ namespace MonoTouch.Dialog {
 			if (disposing) {
 				Parent = null;
 				Clear ();
-				Elements = null;
 			}
 			base.Dispose (disposing);
 		}
@@ -2290,30 +1693,10 @@ namespace MonoTouch.Dialog {
 	/// render a summary (Checkbox count or selected radio group).
 	/// </summary>
 	public class Group {
-		public string Key;
-		public Group (string key)
+		public string? Key;
+		public Group (string? key)
 		{
 			Key = key;
-		}
-	}
-	/// <summary>
-	/// Captures the information about mutually exclusive elements in a RootElement
-	/// </summary>
-	public class RadioGroup : Group {
-		int selected;
-		public virtual int Selected {
-			get { return selected; }
-			set { selected = value; }
-		}
-
-		public RadioGroup (string key, int selected) : base (key)
-		{
-			this.selected = selected;
-		}
-
-		public RadioGroup (int selected) : base (null)
-		{
-			this.selected = selected;
 		}
 	}
 
@@ -2346,10 +1729,10 @@ namespace MonoTouch.Dialog {
 		static NSString rkey1 = new NSString ("RootElement1");
 		static NSString rkey2 = new NSString ("RootElement2");
 		int summarySection, summaryElement;
-		internal Group group;
+		internal Group? group;
 		public bool UnevenRows;
-		public Func<RootElement, UIViewController> createOnSelected;
-		public UITableView TableView;
+		public Func<RootElement, UIViewController>? createOnSelected;
+		public UITableView? TableView;
 
 		// This is used to indicate that we need the DVC to dispatch calls to
 		// WillDisplayCell so we can prepare the color of the cell before 
@@ -2418,31 +1801,6 @@ namespace MonoTouch.Dialog {
 
 		internal List<Section> Sections = new List<Section> ();
 
-		internal NSIndexPath PathForRadio (int idx)
-		{
-			RadioGroup radio = group as RadioGroup;
-			if (radio is null)
-				return null;
-
-			uint current = 0, section = 0;
-			foreach (Section s in Sections) {
-				uint row = 0;
-
-				foreach (Element e in s.Elements) {
-					if (!(e is RadioElement))
-						continue;
-
-					if (current == idx) {
-						return NSIndexPath.Create (section, row);
-					}
-					row++;
-					current++;
-				}
-				section++;
-			}
-			return null;
-		}
-
 		public int Count {
 			get {
 				return Sections.Count;
@@ -2468,12 +1826,8 @@ namespace MonoTouch.Dialog {
 
 		public void Prepare ()
 		{
-			int current = 0;
 			foreach (Section s in Sections) {
 				foreach (Element e in s.Elements) {
-					var re = e as RadioElement;
-					if (re is not null)
-						re.RadioIdx = current++;
 					if (UnevenRows == false && e is IElementSizing)
 						UnevenRows = true;
 					if (NeedColorUpdate == false && e is IColorizeBackground)
@@ -2646,7 +2000,6 @@ namespace MonoTouch.Dialog {
 
 				TableView = null;
 				Clear ();
-				Sections = null;
 			}
 		}
 
@@ -2668,23 +2021,6 @@ namespace MonoTouch.Dialog {
 				yield return s;
 		}
 
-		/// <summary>
-		/// The currently selected Radio item in the whole Root.
-		/// </summary>
-		public int RadioSelected {
-			get {
-				var radio = group as RadioGroup;
-				if (radio is not null)
-					return radio.Selected;
-				return -1;
-			}
-			set {
-				var radio = group as RadioGroup;
-				if (radio is not null)
-					radio.Selected = value;
-			}
-		}
-
 		public override UITableViewCell GetCell (UITableView tv)
 		{
 			NSString key = summarySection == -1 ? rkey1 : rkey2;
@@ -2697,34 +2033,11 @@ namespace MonoTouch.Dialog {
 			}
 
 			cell.TextLabel.Text = Caption;
-			var radio = group as RadioGroup;
-			if (radio is not null) {
-				int selected = radio.Selected;
-				int current = 0;
-
-				foreach (var s in Sections) {
-					foreach (var e in s.Elements) {
-						if (!(e is RadioElement))
-							continue;
-
-						if (current == selected) {
-							cell.DetailTextLabel.Text = e.Summary ();
-							goto le;
-						}
-						current++;
-					}
-				}
-			} else if (group is not null) {
+			if (group is not null) {
 				int count = 0;
 
 				foreach (var s in Sections) {
 					foreach (var e in s.Elements) {
-						var ce = e as CheckboxElement;
-						if (ce is not null) {
-							if (ce.Value)
-								count++;
-							continue;
-						}
 						var be = e as BoolElement;
 						if (be is not null) {
 							if (be.Value)
@@ -2739,7 +2052,6 @@ namespace MonoTouch.Dialog {
 				if (summaryElement < s.Elements.Count && cell.DetailTextLabel is not null)
 					cell.DetailTextLabel.Text = s.Elements [summaryElement].Summary ();
 			}
-		le:
 			cell.Accessory = UITableViewCellAccessory.DisclosureIndicator;
 
 			return cell;
@@ -2784,6 +2096,8 @@ namespace MonoTouch.Dialog {
 			int idx = 0;
 			foreach (var sect in Sections) {
 				if (sect == section) {
+					if (TableView is null)
+						return;
 					TableView.ReloadSections (new NSIndexSet ((uint) idx), animation);
 					return;
 				}
@@ -2802,7 +2116,7 @@ namespace MonoTouch.Dialog {
 			if (root is null)
 				throw new ArgumentException ("Element is not attached to this root");
 			var path = element.IndexPath;
-			if (path is null)
+			if (path is null || TableView is null)
 				return;
 			TableView.ReloadRows (new NSIndexPath [] { path }, animation);
 		}

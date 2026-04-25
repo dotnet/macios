@@ -353,6 +353,7 @@ steps:
     sourcePath: '$(BUILD_REPOSITORY_TITLE)/jenkins-results'
     detailedLog: true
     usePat: true
+  timeoutInMinutes: 30
   continueOnError: true
   condition: succeededOrFailed()
 

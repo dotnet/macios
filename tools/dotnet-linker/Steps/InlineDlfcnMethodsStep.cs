@@ -54,19 +54,59 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		return modified;
 	}
 
+	TypeDefinition GetDlfcnType (MethodDefinition callingMethod)
+	{
+		// Check if there's a [Field] attribute with a second string argument (the library/namespace).
+		// The [Field] attribute can be on the method itself, or on the property the method is a getter/setter for.
+		var libraryName = callingMethod.HasCustomAttributes ? GetFieldAttributeLibraryName (callingMethod.CustomAttributes) : null;
+		if (libraryName is null && callingMethod.DeclaringType.HasProperties) {
+			foreach (var property in callingMethod.DeclaringType.Properties) {
+				if (property.GetMethod == callingMethod || property.SetMethod == callingMethod) {
+					libraryName = GetFieldAttributeLibraryName (property.CustomAttributes);
+					break;
+				}
+			}
+		}
+
+		if (libraryName is not null)
+			return GetDlfcnType (callingMethod.Module, callingMethod.DeclaringType.Namespace, libraryName);
+
+		return GetDlfcnType (callingMethod.Module, callingMethod.DeclaringType.Namespace);
+	}
+
+	static string? GetFieldAttributeLibraryName (IList<CustomAttribute>? attributes)
+	{
+		if (attributes is null || attributes.Count == 0)
+			return null;
+
+		foreach (var attrib in attributes) {
+			if (attrib.AttributeType.Name != "FieldAttribute")
+				continue;
+			if (attrib.ConstructorArguments.Count == 2 &&
+				attrib.ConstructorArguments [1].Type.Name == "String" &&
+				attrib.ConstructorArguments [1].Value is string libraryName &&
+				!string.IsNullOrEmpty (libraryName)) {
+				return libraryName;
+			}
+		}
+
+		return null;
+	}
+
 	// It's important to use a type in the same namespace as the calling code, so that
 	// we correctly compute which frameworks to link with.
-	TypeDefinition GetDlfcnType (ModuleDefinition module, string @namespace)
+	TypeDefinition GetDlfcnType (ModuleDefinition module, string @namespace, string? fieldLibraryName = null)
 	{
-		var ns = string.IsNullOrEmpty (current_framework) ? @namespace : current_framework;
+		var frameworkOverride = !string.IsNullOrEmpty (fieldLibraryName) ? fieldLibraryName : current_framework;
+		var ns = string.IsNullOrEmpty (frameworkOverride) ? @namespace : frameworkOverride;
 		var dlfcn = module.Types.FirstOrDefault (t => t.Namespace == ns && t.Name == "Dlfcn");
 		if (dlfcn is null) {
 			dlfcn = new TypeDefinition (ns, "Dlfcn", TypeAttributes.NotPublic | TypeAttributes.Sealed, module.TypeSystem.Object);
 			module.Types.Add (dlfcn);
 
-			if (!string.IsNullOrEmpty (current_framework)) {
+			if (!string.IsNullOrEmpty (frameworkOverride)) {
 				var attrib = new CustomAttribute (abr.ObjectiveCFrameworkAttribute_ctor_String);
-				attrib.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, current_framework));
+				attrib.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, frameworkOverride));
 				dlfcn.CustomAttributes.Add (attrib);
 			}
 		}
@@ -84,7 +124,7 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 
 	MethodDefinition GetOrCreatePInvokeMethod (MethodDefinition callingMethod, string symbolName)
 	{
-		var dlfcn = GetDlfcnType (callingMethod.Module, callingMethod.DeclaringType.Namespace);
+		var dlfcn = GetDlfcnType (callingMethod);
 		var methodName = $"xamarin_Dlfcn_{symbolName}_Native";
 		var nativeMethod = methodName;
 		var rv = dlfcn.Methods.FirstOrDefault (m => m.Name == methodName);
@@ -113,7 +153,7 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 
 	MethodDefinition GetOrCreateGetSymbolMethod (MethodDefinition callingMethod, string symbolName)
 	{
-		var dlfcn = GetDlfcnType (callingMethod.Module, callingMethod.DeclaringType.Namespace);
+		var dlfcn = GetDlfcnType (callingMethod);
 		var methodName = $"Get__{symbolName}";
 		var symbolMethod = dlfcn.Methods.FirstOrDefault (m => m.Name == methodName);
 		if (symbolMethod is not null)
@@ -173,7 +213,7 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 
 	MethodDefinition GetOrCreateGetNativeFieldMethod (MethodDefinition callingMethod, TypeReference fieldType, string symbolName)
 	{
-		var dlfcn = GetDlfcnType (callingMethod.Module, callingMethod.DeclaringType.Namespace);
+		var dlfcn = GetDlfcnType (callingMethod);
 		var methodName = $"Get__{symbolName}_{fieldType.Name}";
 		var rv = dlfcn.Methods.FirstOrDefault (m => m.Name == methodName);
 		if (rv is not null)
@@ -320,7 +360,7 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 
 	MethodDefinition GetOrCreateSetNativeFieldMethod (MethodDefinition callingMethod, TypeReference fieldType, string symbolName)
 	{
-		var dlfcn = GetDlfcnType (callingMethod.Module, callingMethod.DeclaringType.Namespace);
+		var dlfcn = GetDlfcnType (callingMethod);
 		var methodName = $"Set__{symbolName}_{fieldType.Name}";
 		var rv = dlfcn.Methods.FirstOrDefault (m => m.Name == methodName);
 		if (rv is not null)
@@ -421,7 +461,7 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 
 	MethodDefinition GetOrCreateSetNativeStringMethod (MethodDefinition callingMethod, string symbolName)
 	{
-		var dlfcn = GetDlfcnType (callingMethod.Module, callingMethod.DeclaringType.Namespace);
+		var dlfcn = GetDlfcnType (callingMethod);
 		var methodName = $"Set__{symbolName}_String";
 		var rv = dlfcn.Methods.FirstOrDefault (m => m.Name == methodName);
 		if (rv is not null)

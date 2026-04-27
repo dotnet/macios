@@ -159,12 +159,6 @@ namespace Introspection {
 			// kCLErrorUserInfoAlternateRegionKey also returns null on iOS
 			case "kCLErrorUserInfoAlternateRegionKey":
 				return true;
-			case "QCCompositionInputRSSArticleDurationKey":
-			case "QCCompositionInputRSSFeedURLKey":
-			case "QCCompositionProtocolRSSVisualizer":
-				if (Mac.CheckSystemVersion (10, 14))
-					return true;
-				goto default;
 			default:
 				return base.Skip (constantName, libraryName);
 			}

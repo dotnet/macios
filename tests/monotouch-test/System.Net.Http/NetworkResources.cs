@@ -102,6 +102,7 @@ namespace MonoTests.System.Net.Http {
 			public static string GetStatusCodeUrl (HttpStatusCode status) => $"{HttpUrl}/status/{(int) status}";
 			public static string GetSetCookieUrl (string cookie, string value) => $"{Url}/cookies/set?{cookie}={value}";
 			public static string GetBasicAuthUrl (string username, string password) => $"{Url}/basic-auth/{username}/{password}";
+			public static string GetDigestAuthUrl (string username, string password) => $"{Url}/digest-auth/auth/{username}/{password}";
 
 		}
 	}

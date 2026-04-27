@@ -61,9 +61,7 @@ namespace Darwin {
 			NoRemote,
 		}
 
-		/// <param name="disposing">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns)
@@ -310,9 +308,7 @@ namespace Darwin {
 		[DllImport (Constants.SystemLibrary)]
 		extern static void asl_free (IntPtr handle);
 
-		/// <param name="disposing">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns)

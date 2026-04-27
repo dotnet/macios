@@ -8,7 +8,7 @@ namespace CloudKit {
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CKAccountStatus : long {
-		/// <summary>An error occured when the application tried to determine if the user's account is available.</summary>
+		/// <summary>An error occurred when the application tried to determine if the user's account is available.</summary>
 		CouldNotDetermine = 0,
 		/// <summary>The user's account is available.</summary>
 		Available = 1,
@@ -37,7 +37,7 @@ namespace CloudKit {
 	public enum CKApplicationPermissionStatus : long {
 		/// <summary>The application has not yet requested the permission.</summary>
 		InitialState = 0,
-		/// <summary>An error occured while attempting to obtain the permission.</summary>
+		/// <summary>An error occurred while attempting to obtain the permission.</summary>
 		CouldNotComplete = 1,
 		/// <summary>The user denied the permission request.</summary>
 		Denied = 2,

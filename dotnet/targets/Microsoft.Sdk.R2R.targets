@@ -468,6 +468,8 @@
 			<_ComputeFrameworksToCreateAppManifestInputs Include="$(SupportedOSPlatformVersion)" />
 			<_ComputeFrameworksToCreateAppManifestInputs Include="$(TargetArchitectures)" />
 			<_ComputeFrameworksToCreateAppManifestInputs Include="$(_ComputedTargetFrameworkMoniker)" />
+			<!-- The bundle identifier is used to compute the framework's CFBundleIdentifier -->
+			<_ComputeFrameworksToCreateAppManifestInputs Include="$(_BundleIdentifier)" />
 		</ItemGroup>
 
 		<Hash
@@ -485,7 +487,7 @@
 
 	<Target
 		Name="_CreateInfoPlistForFrameworks"
-		Inputs="@(_CreatedFrameworksFromDylibs->'%(OriginatingDylib)');$(_ComputeFrameworksToCreateAppManifestHashedInputs)"
+		Inputs="@(_CreatedFrameworksFromDylibs->'%(OriginatingDylib)');$(_ComputeFrameworksToCreateAppManifestHashedInputsPath)"
 		Outputs="@(_CreatedFrameworksFromDylibs->'%(AppManifestPath)')"
 		>
 

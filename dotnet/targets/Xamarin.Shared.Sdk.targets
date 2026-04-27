@@ -1022,6 +1022,9 @@
 				<SourceDirectory>%(_DirectoriesToPublish.SourceDirectory)</SourceDirectory>
 				<TargetDirectory>%(_DirectoriesToPublish.TargetDirectory)</TargetDirectory>
 			</_StampFilesToDelete>
+
+			<!-- Also collect Info.plist files from converted dylib frameworks as additional inputs for the copy target -->
+			<_DirectoriesToPublishInfoPlist Include="@(_DirectoriesToPublish->'%(AppManifestPath)')" Condition="'%(_DirectoriesToPublish.AppManifestPath)' != ''" />
 		</ItemGroup>
 
 		<Delete
@@ -1032,7 +1035,7 @@
 
 	<Target Name="_CopyDirectoriesToBundle"
 		DependsOnTargets="_CollectDecompressedPlugins;_ComputeFrameworkFilesToPublish;_CollectDecompressedXpcServices;_CreateStampLocationForCopyDirectoriesToBundle"
-		Inputs="@(_DirectoriesToPublish)"
+		Inputs="@(_DirectoriesToPublish);@(_DirectoriesToPublishInfoPlist)"
 		Outputs="@(_DirectoriesToPublish -> '%(StampLocation)')"
 		>
 

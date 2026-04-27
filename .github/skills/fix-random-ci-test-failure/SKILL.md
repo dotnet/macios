@@ -97,7 +97,7 @@ If you cannot determine the root cause with available information:
 
 - Branch naming: `dev/rolf/fix-{test-name}` or similar
 - Commit message should explain all root causes addressed
-- Reference the GitHub issue with `Fixes #NNNN`
+- Reference the GitHub issue with `Fixes #NNNN` if the change actually fixes the problem, or `Ref #NNNN` if it only adds logging/diagnostics
 - Add the `copilot` label to the PR
 
 ## Key Patterns in This Repo

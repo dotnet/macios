@@ -2380,7 +2380,7 @@ namespace CoreSpotlight {
 		[NullAllowed, Export ("containerDisplayName")]
 		string ContainerDisplayName { get; set; }
 
-		/// <summary>Gets or sets the identifer of the item's container.</summary>
+		/// <summary>Gets or sets the identifier of the item's container.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>

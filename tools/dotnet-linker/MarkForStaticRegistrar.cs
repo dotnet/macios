@@ -23,6 +23,10 @@ namespace Mono.Linker.Steps {
 
 		public override bool IsActiveFor (AssemblyDefinition assembly)
 		{
+			// It's either this step, or MarkForStaticRegistrarStep. If MarkForStaticRegistrarStep already ran, then we shouldn't run this step.
+			if (Configuration.DerivedLinkContext.DidRunMarkForStaticRegistrarStep)
+				return false;
+
 			if (Configuration.Application.Optimizations.OptimizeBlockLiteralSetupBlock != true)
 				return false;
 

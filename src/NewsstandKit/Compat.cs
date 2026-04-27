@@ -75,7 +75,7 @@ namespace NewsstandKit {
 			}
 		}
 
-		/// <include file="../../docs/api/NewsstandKit/NKAssetDownload.xml" path="/Documentation/Docs[@DocId='M:NewsstandKit.NKAssetDownload.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			throw new InvalidOperationException (Constants.NewsstandKitRemoved);

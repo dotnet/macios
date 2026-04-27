@@ -351,6 +351,11 @@ namespace Xamarin.Linker {
 					proxyInterface = new TypeDefinition ("ObjCRuntime", proxyInterfaceName, TypeAttributes.NotPublic | TypeAttributes.Interface | TypeAttributes.Abstract);
 					method.DeclaringType.Interfaces.Add (new InterfaceImplementation (proxyInterface));
 					proxyInterfaces.Add (proxyInterface);
+
+					// The trimmer may just remove the interface implementation, because it thinks it's not used - which it technically
+					// isn't, because the consuming code is generated in the ManagedRegistrarLookupTables step, which happens after trimming.
+					var attrib = abr.CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.Interfaces, method.DeclaringType);
+					abr.AddAttributeToStaticConstructor (method.DeclaringType, attrib);
 				}
 
 				var methodName = $"{proxyInterfaceName}_{method.Name}";
@@ -364,6 +369,9 @@ namespace Xamarin.Linker {
 				// and also to the proxy interface 
 				callback.ReturnType = implementationMethod.ReturnType;
 				interfaceMethod.ReturnType = implementationMethod.ReturnType;
+
+				// make the interface method depend on the implementation method, so that the trimmer doesn't remove the implementation method
+				abr.AddDynamicDependencyAttribute (interfaceMethod, implementationMethod);
 
 				foreach (var parameter in implementationMethod.Parameters) {
 					callback.AddParameter (parameter.Name, parameter.ParameterType);

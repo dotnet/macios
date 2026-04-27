@@ -201,6 +201,7 @@ namespace Security {
 			return retval;
 		}
 
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			Dispose (0, disposing);

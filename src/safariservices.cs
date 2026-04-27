@@ -68,7 +68,7 @@ namespace SafariServices {
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		///         <summary>Relaods the specified content blocker and runs a completion handler when the operation completes.</summary>
+		///         <summary>Reloads the specified content blocker and runs a completion handler when the operation completes.</summary>
 		///         <remarks>To be added.</remarks>
 		[Async (XmlDocs = """
 			<param name="identifier">To be added.</param>

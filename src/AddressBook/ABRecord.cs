@@ -128,7 +128,7 @@ namespace AddressBook {
 			return rec;
 		}
 
-		/// <include file="../../docs/api/AddressBook/ABRecord.xml" path="/Documentation/Docs[@DocId='M:AddressBook.ABRecord.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			AddressBook = null;

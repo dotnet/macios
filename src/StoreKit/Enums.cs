@@ -132,7 +132,7 @@ namespace StoreKit {
 		AddToCloudMusicLibrary = 1 << 8,
 	}
 
-	/// <summary>Enumerates visiblity settings for a promoted product.</summary>
+	/// <summary>Enumerates visibility settings for a promoted product.</summary>
 	[Deprecated (PlatformName.iOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]

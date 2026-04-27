@@ -502,7 +502,7 @@ namespace CoreGraphics {
 			GC.KeepAlive (pageTagStructureTreeDictionary);
 		}
 
-		/// <include file="../../docs/api/CoreGraphics/CGContextPDF.xml" path="/Documentation/Docs[@DocId='M:CoreGraphics.CGContextPDF.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (disposing)

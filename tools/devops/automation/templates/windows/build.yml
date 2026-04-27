@@ -357,6 +357,22 @@ steps:
   continueOnError: true
   condition: succeededOrFailed()
 
+# Remove empty directories before archiving.
+- pwsh: |
+    $root = "$(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/jenkins-results"
+    if (Test-Path $root) {
+      Get-ChildItem $root -Recurse -Force -Directory |
+        Sort-Object -Property FullName -Descending |
+        Where-Object { ($_ | Get-ChildItem -Force | Select-Object -First 1).Count -eq 0 } |
+        ForEach-Object {
+          Write-Host "Removing empty directory: $($_.FullName)"
+          Remove-Item -Force $_
+        }
+    }
+  displayName: 'Remove empty directories from HtmlReport'
+  continueOnError: true
+  condition: succeededOrFailed()
+
 # Archive files for the Html Report so that the report can be easily uploaded as artifacts of the build.
 - task: ArchiveFiles@1
   displayName: 'Archive HtmlReport'

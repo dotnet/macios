@@ -223,6 +223,14 @@ steps:
   continueOnError: true
   condition: succeededOrFailed()
 
+# Remove empty directories before archiving.
+- bash: |
+    set -x
+    find "$(BUILD_REPOSITORY_TITLE)/jenkins-results" -type d -empty -delete || true
+  displayName: 'Remove empty directories from HtmlReport'
+  continueOnError: true
+  condition: succeededOrFailed()
+
 # Archive files for the Html Report so that the report can be easily uploaded as artifacts of the build.
 - task: ArchiveFiles@1
   displayName: 'Archive HtmlReport'

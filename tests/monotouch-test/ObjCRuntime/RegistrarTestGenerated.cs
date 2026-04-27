@@ -5,6 +5,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	public partial class RegistrarTestGenerated {
 		void AssertIfIgnored ([CallerMemberName] string testCase = null)
 		{
+			if (TestRuntime.IsCoreCLR)
+				return;
+
 			switch (testCase) {
 #if __MACCATALYST__ || __IOS__ || __TVOS__
 			case "NSNumberBindAs_Boolean_Array_Overrides":

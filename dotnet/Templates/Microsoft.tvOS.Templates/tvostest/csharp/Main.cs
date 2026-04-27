@@ -12,34 +12,14 @@ UIApplication.Main (args, null, typeof (AppDelegate));
 
 [Register ("AppDelegate")]
 class AppDelegate : UIApplicationDelegate {
-	public override UIWindow? Window { get; set; }
+	public override UIWindow? Window {
+		get;
+		set;
+	}
 
 	public override bool FinishedLaunching (UIApplication application, NSDictionary? launchOptions)
 	{
-		Window = new UIWindow (UIScreen.MainScreen.Bounds);
-		var vc = new UIViewController ();
-		var view = vc.View!;
-		view.BackgroundColor = UIColor.Black;
-
-		var label = new UILabel {
-			Text = "Running tests...\n",
-			TextAlignment = UITextAlignment.Left,
-			Lines = 0,
-			Font = UIFont.GetMonospacedSystemFont (24, UIFontWeight.Regular)!,
-			TextColor = UIColor.White,
-			TranslatesAutoresizingMaskIntoConstraints = false,
-		};
-		view.AddSubview (label);
-		label.TopAnchor.ConstraintEqualTo (view.SafeAreaLayoutGuide.TopAnchor, 40).Active = true;
-		label.LeadingAnchor.ConstraintEqualTo (view.SafeAreaLayoutGuide.LeadingAnchor, 40).Active = true;
-		label.TrailingAnchor.ConstraintLessThanOrEqualTo (view.SafeAreaLayoutGuide.TrailingAnchor, -40).Active = true;
-
-		Window.RootViewController = vc;
-		Window.MakeKeyAndVisible ();
-
 		var consumer = new ResultConsumer ();
-		consumer.StatusChanged += line =>
-			vc.InvokeOnMainThread (() => label.Text += line + "\n");
 
 		Task.Run (async () => {
 			try {
@@ -73,7 +53,6 @@ class AppDelegate : UIApplicationDelegate {
 		public int Failed => _failed;
 		public int Skipped => _skipped;
 		public string? TrxReportPath;
-		public event Action<string>? StatusChanged;
 
 		public string Uid => nameof (ResultConsumer);
 		public string DisplayName => nameof (ResultConsumer);
@@ -90,7 +69,6 @@ class AppDelegate : UIApplicationDelegate {
 
 				Console.WriteLine ($"Results: passed={Passed}, failed={Failed}, skipped={Skipped}");
 				Console.WriteLine ($"TRX report: {TrxReportPath}");
-				StatusChanged?.Invoke ($"\n✅ {Passed} passed  ❌ {Failed} failed  ⏭️ {Skipped} skipped");
 			} else if (value is TestNodeUpdateMessage { TestNode: var node }) {
 				var state = node.Properties.SingleOrDefault<TestNodeStateProperty> ();
 				string? outcome = state switch {
@@ -108,9 +86,6 @@ class AppDelegate : UIApplicationDelegate {
 				var id = node.Properties.SingleOrDefault<TestMethodIdentifierProperty> ();
 				var testName = id is not null ? $"{id.Namespace}.{id.TypeName}.{id.MethodName}" : node.DisplayName;
 				Console.WriteLine ($"[{outcome.ToUpperInvariant ()}] {testName}");
-
-				var icon = outcome switch { "passed" => "✅", "failed" => "❌", _ => "⏭️" };
-				StatusChanged?.Invoke ($"{icon} {testName}");
 			}
 			return Task.CompletedTask;
 		}

@@ -96,16 +96,20 @@ namespace Xamarin.Tests {
 			// Read the main app's bundle identifier
 			var appInfoPlistPath = Path.Combine (appPath, "Info.plist");
 			Assert.That (appInfoPlistPath, Does.Exist, "App Info.plist should exist");
-			var appPlist = PDictionary.FromFile (appInfoPlistPath)!;
-			var bundleIdentifier = appPlist.GetString ("CFBundleIdentifier")!.Value;
+			var appPlist = PDictionary.FromFile (appInfoPlistPath);
+			Assert.That (appPlist, Is.Not.Null, $"Failed to parse Info.plist at '{appInfoPlistPath}'");
+			var bundleIdentifierValue = appPlist!.GetString ("CFBundleIdentifier");
+			Assert.That (bundleIdentifierValue, Is.Not.Null, $"CFBundleIdentifier should exist in '{appInfoPlistPath}'");
+			var bundleIdentifier = bundleIdentifierValue!.Value;
 
 			foreach (var fwDir in frameworkDirs) {
 				var fwName = Path.GetFileNameWithoutExtension (fwDir);
 				var infoPlistPath = Path.Combine (fwDir, "Info.plist");
 				Assert.That (infoPlistPath, Does.Exist, $"Info.plist should exist in {fwName}.framework");
 
-				var plist = PDictionary.FromFile (infoPlistPath)!;
-				var fwBundleId = plist.GetString ("CFBundleIdentifier")?.Value;
+				var plist = PDictionary.FromFile (infoPlistPath);
+				Assert.That (plist, Is.Not.Null, $"Failed to parse Info.plist at '{infoPlistPath}'");
+				var fwBundleId = plist!.GetString ("CFBundleIdentifier")?.Value;
 				Assert.That (fwBundleId, Does.StartWith (bundleIdentifier + "."), $"CFBundleIdentifier for {fwName}.framework should start with the app bundle identifier");
 
 				var bundleExe = plist.GetString ("CFBundleExecutable")?.Value;
@@ -123,6 +127,7 @@ namespace Xamarin.Tests {
 				if (Directory.Exists (codeSignatureDir)) {
 					var exitCode = ExecutionHelper.Execute ("/usr/bin/codesign", new string [] { "-dvvv", fwDir }, out var codesignOutput);
 					var output = codesignOutput.ToString ();
+					Assert.That (exitCode, Is.EqualTo (0), $"codesign failed for framework {fwName}. Codesign output:\n{output}");
 					Assert.That (output, Does.Contain ("Format=bundle with Mach-O"), $"Framework {fwName} should be signed as a bundle, not a bare Mach-O. Codesign output:\n{output}");
 					Assert.That (output, Does.Contain ($"Identifier={fwBundleId}"), $"Framework {fwName} codesign identifier should match its Info.plist CFBundleIdentifier. Codesign output:\n{output}");
 				}

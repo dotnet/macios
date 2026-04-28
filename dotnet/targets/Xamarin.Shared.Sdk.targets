@@ -1023,8 +1023,8 @@
 				<TargetDirectory>%(_DirectoriesToPublish.TargetDirectory)</TargetDirectory>
 			</_StampFilesToDelete>
 
-			<!-- Also collect Info.plist files from converted dylib frameworks as additional inputs for the copy target -->
-			<_DirectoriesToPublishInfoPlist Include="@(_DirectoriesToPublish->'%(AppManifestPath)')" Condition="'%(_DirectoriesToPublish.AppManifestPath)' != ''" />
+			<!-- Also collect Info.plist files from framework directories as additional inputs for the copy target -->
+			<_DirectoriesToPublishInfoPlist Include="@(_DirectoriesToPublish->'%(SourceDirectory)/Info.plist')" Condition="Exists('%(_DirectoriesToPublish.SourceDirectory)/Info.plist')" />
 		</ItemGroup>
 
 		<Delete

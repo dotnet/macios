@@ -7,14 +7,6 @@ namespace Xamarin.Mac.Tests {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class SCNSceneTests {
-		[SetUp]
-		public void SetUp ()
-		{
-			Asserts.EnsureYosemite ();
-			if (Asserts.IsAtLeastElCapitan)
-				Asserts.Ensure64Bit ();
-		}
-
 		[Test]
 		public void SCNSceneLoadingOptions_AnimationImportPolicyTest ()
 		{

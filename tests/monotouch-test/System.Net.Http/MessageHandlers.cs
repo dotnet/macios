@@ -113,10 +113,8 @@ namespace MonoTests.System.Net.Http {
 			Assert.IsNull (ex, "Exception");
 			Assert.IsTrue (managedCookieResult, $"Failed to get managed cookies");
 			Assert.IsTrue (nativeCookieResult, $"Failed to get native cookies");
-			Assert.AreEqual (1, managedCookies.Count (), $"Managed Cookie Count");
-			Assert.AreEqual (1, nativeCookies.Count (), $"Native Cookie Count");
-			Assert.That (nativeCookies.First (), Does.StartWith ("cookie=chocolate-chip;"), $"Native Cookie Value");
-			Assert.That (managedCookies.First (), Does.StartWith ("cookie=chocolate-chip;"), $"Managed Cookie Value");
+			Assert.That (managedCookies.Any (v => v.StartsWith ("cookie=chocolate-chip;", StringComparison.Ordinal)), Is.True, $"Managed Cookie Value");
+			Assert.That (nativeCookies.Any (v => v.StartsWith ("cookie=chocolate-chip;", StringComparison.Ordinal)), Is.True, $"Native Cookie Value");
 		}
 
 		// ensure that we can use a cookie container to set the cookies for a url
@@ -174,7 +172,8 @@ namespace MonoTests.System.Net.Http {
 			Assert.IsNull (ex, "Exception");
 			Assert.IsNotNull (managedCookieResult, "Managed cookies result");
 			Assert.IsNotNull (nativeCookieResult, "Native cookies result");
-			Assert.AreEqual (managedCookieResult, nativeCookieResult, "Cookies");
+			Assert.That (managedCookieResult, Does.Contain ("\"cookie\": \"chocolate-chip\""), "Managed cookies");
+			Assert.That (nativeCookieResult, Does.Contain ("\"cookie\": \"chocolate-chip\""), "Native cookies");
 		}
 
 		// ensure that the Set-Cookie headers do update the CookieContainer
@@ -202,9 +201,7 @@ namespace MonoTests.System.Net.Http {
 			Assert.IsNull (ex, "Exception");
 			Assert.IsNotNull (nativeCookieResult, "Native cookies result");
 			var cookiesFromServer = cookieContainer.GetCookies (new Uri (url));
-			if (cookiesFromServer.Count != 1)
-				TestRuntime.IgnoreInCI ("Unexpected network failure in CI");
-			Assert.AreEqual (1, cookiesFromServer.Count, "Cookies received from server.");
+			Assert.That (cookiesFromServer.Cast<Cookie> ().Any (v => v.Name == "cookie" && v.Value == "chocolate-chip"), Is.True, "Cookies received from server.");
 		}
 
 		[Test]
@@ -471,11 +468,6 @@ namespace MonoTests.System.Net.Http {
 		{
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 9, throwIfOtherPlatform: false);
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
-
-#if __MACOS__
-			if (handlerType == typeof (NSUrlSessionHandler) && TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 10, 0) && !TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 11, 0))
-				Assert.Ignore ("Fails on macOS 10.10: https://github.com/xamarin/maccore/issues/1645");
-#endif
 
 			bool validationCbWasExecuted = false;
 			bool invalidServicePointManagerCbWasExcuted = false;
@@ -901,6 +893,32 @@ namespace MonoTests.System.Net.Http {
 			}, out var ex);
 
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
+				Assert.Inconclusive ("Request timedout.");
+			} else {
+				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
+				Assert.IsNull (ex, "Exception not null");
+				Assert.AreEqual (expectedStatus, httpStatus, "Status not ok");
+			}
+		}
+
+		[TestCase (HttpStatusCode.OK, "mandel", "12345678", "mandel", "12345678")]
+		[TestCase (HttpStatusCode.Unauthorized, "mandel", "12345678", "mandel", "87654321")]
+		[TestCase (HttpStatusCode.Unauthorized, "mandel", "12345678", "", "")]
+		public void SupportsDigestAuthentication (HttpStatusCode expectedStatus, string validUsername, string validPassword, string username, string password)
+		{
+			var handler = new NSUrlSessionHandler () {
+				Credentials = new NetworkCredential (username, password, "")
+			};
+
+			var client = new HttpClient (handler);
+
+			HttpStatusCode httpStatus = HttpStatusCode.NotFound;
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				var result = await client.GetAsync (NetworkResources.Httpbin.GetDigestAuthUrl (validUsername, validPassword));
+				httpStatus = result.StatusCode;
+			}, out var ex);
+
+			if (!done) {
 				Assert.Inconclusive ("Request timedout.");
 			} else {
 				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);

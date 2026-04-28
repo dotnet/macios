@@ -40,12 +40,7 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.False (creds.HasPassword, "HasPassword");
 				Assert.Null (creds.SecIdentity, "SecIdentity");
 				Assert.Null (creds.Password, "Password");
-				var expectedPersistence = NSUrlCredentialPersistence.ForSession;
-#if __MACOS__
-				if (!TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 8))
-					expectedPersistence = (NSUrlCredentialPersistence) uint.MaxValue;
-#endif
-				Assert.That (creds.Persistence, Is.EqualTo (expectedPersistence), "Persistence");
+				Assert.That (creds.Persistence, Is.EqualTo (NSUrlCredentialPersistence.ForSession), "Persistence");
 				Assert.Null (creds.User, "User");
 			}
 		}
@@ -59,12 +54,7 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.False (creds.HasPassword, "HasPassword");
 				Assert.Null (creds.SecIdentity, "SecIdentity");
 				Assert.Null (creds.Password, "Password");
-				var expectedPersistence = NSUrlCredentialPersistence.ForSession;
-#if __MACOS__
-				if (!TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 8))
-					expectedPersistence = (NSUrlCredentialPersistence) uint.MaxValue;
-#endif
-				Assert.That (creds.Persistence, Is.EqualTo (expectedPersistence), "Persistence");
+				Assert.That (creds.Persistence, Is.EqualTo (NSUrlCredentialPersistence.ForSession), "Persistence");
 				Assert.Null (creds.User, "User");
 			}
 		}

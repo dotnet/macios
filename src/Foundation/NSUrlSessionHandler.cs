@@ -176,10 +176,9 @@ namespace Foundation {
 		void RemoveInflightData (NSUrlSessionTask task, bool cancel = true)
 		{
 			lock (inflightRequestsLock) {
-				if (inflightRequests.TryGetValue (task, out var data)) {
+				if (inflightRequests.Remove (task, out var data)) {
 					if (cancel)
 						data.CancellationTokenSource.Cancel ();
-					inflightRequests.Remove (task);
 				}
 			}
 
@@ -192,14 +191,16 @@ namespace Foundation {
 		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
+			var tasks = new List<NSUrlSessionTask> ();
 			lock (inflightRequestsLock) {
-				foreach (var pair in inflightRequests) {
-					pair.Key?.Cancel ();
-					pair.Key?.Dispose ();
-				}
-
+				tasks.AddRange (inflightRequests.Keys);
 				inflightRequests.Clear ();
 			}
+			foreach (var task in tasks) {
+				task.Cancel ();
+				task.Dispose ();
+			}
+
 			session.InvalidateAndCancel ();
 			base.Dispose (disposing);
 		}
@@ -1172,9 +1173,10 @@ namespace Foundation {
 					authenticationType = "NTLM";
 				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTTPBasic) {
 					authenticationType = "basic";
+				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTTPDigest) {
+					authenticationType = "digest";
 				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodNegotiate ||
-					protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTMLForm ||
-					protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTTPDigest) {
+					protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTMLForm) {
 					// Want to reject this authentication type to allow the next authentication method in the request to
 					// be used.
 					authenticationType = RejectProtectionSpaceAuthType;

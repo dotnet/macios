@@ -17,8 +17,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSToolbarShouldChangeAllowsExtensionItems ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var allows = toolbar.AllowsExtensionItems;
 			toolbar.AllowsExtensionItems = !allows;
 

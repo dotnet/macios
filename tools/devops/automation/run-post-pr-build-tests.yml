@@ -22,15 +22,8 @@ pr:
       - tools/mtouch/README.md
       - msbuild/Xamarin.Localization.MSBuild/README.md
 
-# we need to keep the pipeline resource declaration (without a trigger)
-# because templates/common/load_configuration.yml uses 'download: macios'
-# to fetch the build-configuration artifact.
-resources:
-  pipelines:
-    - pipeline: macios
-      source: \Xamarin\Mac-iOS\pr pipelines\xamarin-macios-pr
-
 extends:
   template: templates/pipelines/run-tests-pipeline.yml
   parameters:
     isPR: true
+    buildPackages: true

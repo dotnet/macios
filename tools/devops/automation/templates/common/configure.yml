@@ -242,7 +242,7 @@ steps:
       -EnabledPlatforms "$Env:CONFIGURE_PLATFORMS_DOTNET_PLATFORMS" `
       -TestsLabels "${{ parameters.testsLabels }}" `
       -StatusContext "${{ parameters.statusContext }}" `
-      -StageFilter "simulator_tests" `
+      -StageFilter "simulator_tests"
     $simulatorTestMatrix = $simulatorTestMatrix | ConvertFrom-Json | ConvertTo-Json -Compress
     Write-Host "##vso[task.setvariable variable=SIMULATOR_TEST_MATRIX;isOutput=true]$simulatorTestMatrix"
   name: test_matrix

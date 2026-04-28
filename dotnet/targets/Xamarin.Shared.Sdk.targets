@@ -1402,10 +1402,13 @@
 
 	<!-- https://github.com/dotnet/macios/issues/19037 -->
 	<!-- The trimmer will set the RootMode for the current assembly to 'EntryPoint', but that doesn't work for app extension projects, because those are library projects that don't have entry points.
-		 So here we set RootMode=Library for these cases. -->
+		 So here we set RootMode=Library for these cases.
+		 Also, since app extensions have OutputType=Library, the trimmer won't add the current assembly to TrimmerRootAssembly at all (it's conditioned on OutputType != Library).
+		 So we also need to add the current assembly as a root assembly if it hasn't been added already. -->
 	<Target Name="_FixRootAssemblyForAppExtensions" AfterTargets="PrepareForILLink" Condition="'$(IsAppExtension)' == 'true'">
 		<ItemGroup>
 			<TrimmerRootAssembly Update="@(TrimmerRootAssembly)" Condition=" '%(TrimmerRootAssembly.RootMode)' == 'EntryPoint' " RootMode="Library" />
+			<TrimmerRootAssembly Include="@(IntermediateAssembly->'%(Filename)')" RootMode="Library" Condition="'@(TrimmerRootAssembly)' == ''" />
 		</ItemGroup>
 	</Target>
 

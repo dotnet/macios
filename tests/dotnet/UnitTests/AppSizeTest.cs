@@ -60,6 +60,33 @@ namespace Xamarin.Tests {
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict);
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
+		public void NativeAOT_TrimmableStatic (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var dict = new Dictionary<string, string> () {
+				{ "PublishAot", "true" },
+				{ "_IsPublishing", "true" },
+				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+				{ "Registrar", "trimmable-static" },
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT-TrimmableStatic", false, dict);
+		}
+
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
+		public void CoreCLR_Interpreter_TrimmableStatic (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
+		{
+			var dict = new Dictionary<string, string> () {
+				{ "UseMonoRuntime", "false" },
+				{ "PublishReadyToRun", "false" },
+				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+				{ "Registrar", "trimmable-static" },
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter-TrimmableStatic", isTrimmed, dict);
+		}
+
 		// This test will build the SizeTestApp, and capture the resulting app size.
 		// The app size is stored in a file on disk, so we can make sure app size doesn't change (or at least we notice it and we can update the known state).
 		// There's a tolerance in the test for minor app size variances, so if this test fails, the current change might not mean there's a big change,
@@ -218,35 +245,6 @@ namespace Xamarin.Tests {
 		static string FormatBytes (long bytes, bool alwaysShowSign = false)
 		{
 			return $"{(alwaysShowSign && bytes > 0 ? "+" : "")}{bytes:N0} bytes ({bytes / 1024.0:N1} KB = {bytes / (1024.0 * 1024.0):N1} MB)";
-		}
-
-		// TODO: move these tests up with the other tests for the final merge.
-
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64")]
-		public void NativeAOT_TrimmableStatic (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			var dict = new Dictionary<string, string> () {
-				{ "PublishAot", "true" },
-				{ "_IsPublishing", "true" },
-				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
-				{ "Registrar", "trimmable-static" },
-			};
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT-TrimmableStatic", false, dict);
-		}
-
-		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
-		public void CoreCLR_Interpreter_TrimmableStatic (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
-		{
-			var dict = new Dictionary<string, string> () {
-				{ "UseMonoRuntime", "false" },
-				{ "PublishReadyToRun", "false" },
-				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
-				{ "Registrar", "trimmable-static" },
-			};
-			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter-TrimmableStatic", isTrimmed, dict);
 		}
 	}
 

@@ -2815,6 +2815,8 @@ System.Private.CoreLib.dll:System.BitConverter.Int32BitsToSingle(System.Int32)
 System.Private.CoreLib.dll:System.BitConverter.Int64BitsToDouble(System.Int64)
 System.Private.CoreLib.dll:System.BitConverter.SingleToInt32Bits(System.Single)
 System.Private.CoreLib.dll:System.BitConverter.SingleToUInt32Bits(System.Single)
+System.Private.CoreLib.dll:System.BitConverter.ToInt32(System.ReadOnlySpan`1<System.Byte>)
+System.Private.CoreLib.dll:System.BitConverter.ToUInt32(System.ReadOnlySpan`1<System.Byte>)
 System.Private.CoreLib.dll:System.BitConverter.UInt16BitsToHalf(System.UInt16)
 System.Private.CoreLib.dll:System.BitConverter.UInt32BitsToSingle(System.UInt32)
 System.Private.CoreLib.dll:System.BitConverter.UInt64BitsToDouble(System.UInt64)
@@ -13216,11 +13218,11 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.CaptureC
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.CaptureExecutionContext()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.CompletedTask(System.Threading.Tasks.Task)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.CompletedTaskResult`1(System.Threading.Tasks.Task`1<T>)
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinalizeRuntimeAsyncTask`1(System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1<T>)
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinalizeTaskReturningThunk()
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinalizeTaskReturningThunk`1()
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinalizeValueTaskReturningThunk()
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinalizeValueTaskReturningThunk`1()
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinalizeRuntimeAsyncTask`1(System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState&, System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1<T>)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinalizeTaskReturningThunk(System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState&)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinalizeTaskReturningThunk`1(System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState&)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinalizeValueTaskReturningThunk(System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState&)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinalizeValueTaskReturningThunk`1(System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState&)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.RestoreContexts(System.Boolean, System.Threading.ExecutionContext, System.Threading.SynchronizationContext)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.RestoreContextsOnSuspension(System.Boolean, System.Threading.ExecutionContext, System.Threading.SynchronizationContext)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.RestoreExecutionContext(System.Threading.ExecutionContext)
@@ -13235,6 +13237,13 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.ValueTas
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState System.Runtime.CompilerServices.AsyncHelpers::t_runtimeAsyncAwaitState
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState.CaptureContexts()
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState.Pop()
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState.Push(System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState*)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState.Pop(System.Threading.Thread)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState.Push(System.Threading.Thread)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState* System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState::StackState
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState* System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState::Next
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1..cctor()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1..ctor()
@@ -13242,7 +13251,7 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeA
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1.ExecuteFromThreadPool(System.Threading.Thread)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1.GetContinuationAction()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1.GetResultStorage()
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1.HandleSuspended()
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1.HandleSuspended(System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState&)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1.MoveContinuationState()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1.QueueContinuationFollowUpActionIfNecessary(System.Runtime.CompilerServices.Continuation)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncTask`1.SetContinuationState(System.Runtime.CompilerServices.Continuation)
@@ -13506,9 +13515,6 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.DynamicStaticsInfo Sy
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.DynamicStaticsInfo.MaskStaticsPointer(System.Byte&)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.EntryInfo
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.EntryInfo System.Runtime.CompilerServices.GenericCache`2/Entry::_info
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.ExecutionAndSyncBlockStore
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.ExecutionAndSyncBlockStore.Pop()
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.ExecutionAndSyncBlockStore.Push()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ExtensionAttribute
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ExtensionAttribute..ctor()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.GenericCache`2
@@ -13547,7 +13553,7 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.IAsyncStateMachineBox
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.IAsyncStateMachineBox.MoveNext()
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.IConfiguredTaskAwaiter
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ICriticalNotifyCompletion
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.ICriticalNotifyCompletion System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState::CriticalNotifier
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.ICriticalNotifyCompletion System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState::CriticalNotifier
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.ICriticalNotifyCompletion.UnsafeOnCompleted(System.Action)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.InitHelpers
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.InitHelpers.CallClassConstructor(System.Void*, System.Void*, System.Exception*)
@@ -13564,7 +13570,7 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.InlineArray8`1<System
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.InlineArrayAttribute
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.InlineArrayAttribute..ctor(System.Int32)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.INotifyCompletion
-System.Private.CoreLib.dll:System.Runtime.CompilerServices.INotifyCompletion System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState::Notifier
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.INotifyCompletion System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState::Notifier
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.INotifyCompletion.OnCompleted(System.Action)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.InternalsVisibleToAttribute
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.InternalsVisibleToAttribute..ctor(System.String)
@@ -17754,8 +17760,8 @@ System.Private.CoreLib.dll:System.Threading.EventWaitHandle.ValidateMode(System.
 System.Private.CoreLib.dll:System.Threading.ExecutionContext
 System.Private.CoreLib.dll:System.Threading.ExecutionContext Microsoft.Win32.SafeHandles.SafeFileHandle/ThreadPoolValueTaskSource::_context
 System.Private.CoreLib.dll:System.Threading.ExecutionContext System.IO.Stream/ReadWriteTask::_context
-System.Private.CoreLib.dll:System.Threading.ExecutionContext System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState::ExecutionContext
-System.Private.CoreLib.dll:System.Threading.ExecutionContext System.Runtime.CompilerServices.ExecutionAndSyncBlockStore::_previousExecutionCtx
+System.Private.CoreLib.dll:System.Threading.ExecutionContext System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState::LeafExecutionContext
+System.Private.CoreLib.dll:System.Threading.ExecutionContext System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState::RootExecutionContext
 System.Private.CoreLib.dll:System.Threading.ExecutionContext System.Threading.CancellationTokenSource/CallbackNode::ExecutionContext
 System.Private.CoreLib.dll:System.Threading.ExecutionContext System.Threading.ExecutionContext::Default
 System.Private.CoreLib.dll:System.Threading.ExecutionContext System.Threading.ExecutionContext::DefaultFlowSuppressed
@@ -18285,8 +18291,8 @@ System.Private.CoreLib.dll:System.Threading.StackCrawlMark System.Threading.Stac
 System.Private.CoreLib.dll:System.Threading.StackCrawlMark System.Threading.StackCrawlMark::LookForMyCallersCaller
 System.Private.CoreLib.dll:System.Threading.StackCrawlMark System.Threading.StackCrawlMark::LookForThread
 System.Private.CoreLib.dll:System.Threading.SynchronizationContext
-System.Private.CoreLib.dll:System.Threading.SynchronizationContext System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState::SynchronizationContext
-System.Private.CoreLib.dll:System.Threading.SynchronizationContext System.Runtime.CompilerServices.ExecutionAndSyncBlockStore::_previousSyncCtx
+System.Private.CoreLib.dll:System.Threading.SynchronizationContext System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState::LeafSynchronizationContext
+System.Private.CoreLib.dll:System.Threading.SynchronizationContext System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState::RootSynchronizationContext
 System.Private.CoreLib.dll:System.Threading.SynchronizationContext System.Threading.CancellationTokenSource/CallbackNode::SynchronizationContext
 System.Private.CoreLib.dll:System.Threading.SynchronizationContext System.Threading.SynchronizationContext::Current()
 System.Private.CoreLib.dll:System.Threading.SynchronizationContext System.Threading.Tasks.SynchronizationContextAwaitTaskContinuation::m_syncContext
@@ -18419,7 +18425,7 @@ System.Private.CoreLib.dll:System.Threading.Tasks.SynchronizationContextAwaitTas
 System.Private.CoreLib.dll:System.Threading.Tasks.Task
 System.Private.CoreLib.dll:System.Threading.Tasks.Task modreq(System.Runtime.CompilerServices.IsVolatile) System.Threading.Tasks.ValueTask::s_canceledTask
 System.Private.CoreLib.dll:System.Threading.Tasks.Task System.Runtime.CompilerServices.AsyncDispatcherInfo::CurrentTask
-System.Private.CoreLib.dll:System.Threading.Tasks.Task System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState::TaskNotifier
+System.Private.CoreLib.dll:System.Threading.Tasks.Task System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState::TaskNotifier
 System.Private.CoreLib.dll:System.Threading.Tasks.Task System.Runtime.CompilerServices.ConfiguredTaskAwaitable/ConfiguredTaskAwaiter::m_task
 System.Private.CoreLib.dll:System.Threading.Tasks.Task System.Runtime.CompilerServices.TaskAwaiter::m_task
 System.Private.CoreLib.dll:System.Threading.Tasks.Task System.Threading.Tasks.CompletionActionInvoker::m_completingTask
@@ -18821,14 +18827,14 @@ System.Private.CoreLib.dll:System.Threading.Tasks.ValueTask`1<TResult> System.Ru
 System.Private.CoreLib.dll:System.Threading.Tasks.ValueTask`1<TResult> System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable`1::_value
 System.Private.CoreLib.dll:System.Threading.Tasks.ValueTask`1<TResult> System.Runtime.CompilerServices.ConfiguredValueTaskAwaitable`1/ConfiguredValueTaskAwaiter::_value
 System.Private.CoreLib.dll:System.Threading.Tasks.ValueTaskSourceNotifier
-System.Private.CoreLib.dll:System.Threading.Tasks.ValueTaskSourceNotifier System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState::ValueTaskSourceNotifier
+System.Private.CoreLib.dll:System.Threading.Tasks.ValueTaskSourceNotifier System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncStackState::ValueTaskSourceNotifier
 System.Private.CoreLib.dll:System.Threading.Tasks.ValueTaskSourceNotifier System.Threading.Tasks.ValueTaskSourceNotifier::t_instance
 System.Private.CoreLib.dll:System.Threading.Tasks.ValueTaskSourceNotifier..ctor(System.Object, method System.Void *(System.Object,System.Action`1<System.Object>,System.Object,System.Int16,System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags), System.Int16)
 System.Private.CoreLib.dll:System.Threading.Tasks.ValueTaskSourceNotifier.GetInstance(System.Object, method System.Void *(System.Object,System.Action`1<System.Object>,System.Object,System.Int16,System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags), System.Int16)
 System.Private.CoreLib.dll:System.Threading.Tasks.ValueTaskSourceNotifier.OnCompleted(System.Action`1<System.Object>, System.Object, System.Threading.Tasks.Sources.ValueTaskSourceOnCompletedFlags)
 System.Private.CoreLib.dll:System.Threading.Tasks.VoidTaskResult
 System.Private.CoreLib.dll:System.Threading.Thread
-System.Private.CoreLib.dll:System.Threading.Thread System.Runtime.CompilerServices.ExecutionAndSyncBlockStore::_thread
+System.Private.CoreLib.dll:System.Threading.Thread System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState::CurrentThread
 System.Private.CoreLib.dll:System.Threading.Thread System.Threading.AsyncFlowControl::_thread
 System.Private.CoreLib.dll:System.Threading.Thread System.Threading.Thread::CurrentThread()
 System.Private.CoreLib.dll:System.Threading.Thread System.Threading.Thread::CurrentThreadAssumedInitialized()
@@ -21507,7 +21513,6 @@ System.Reflection.Metadata.dll:System.Reflection.Internal.PooledStringBuilder/<>
 System.Reflection.Metadata.dll:System.Reflection.Internal.StreamExtensions
 System.Reflection.Metadata.dll:System.Reflection.Internal.StreamExtensions.GetAndValidateSize(System.IO.Stream, System.Int32, System.String)
 System.Reflection.Metadata.dll:System.Reflection.Internal.StreamExtensions.ReadExactly(System.IO.Stream, System.Byte*, System.Int32)
-System.Reflection.Metadata.dll:System.Reflection.Internal.StreamExtensions.TryReadAll(System.IO.Stream, System.Span`1<System.Byte>)
 System.Reflection.Metadata.dll:System.Reflection.Internal.StreamMemoryBlockProvider
 System.Reflection.Metadata.dll:System.Reflection.Internal.StreamMemoryBlockProvider..ctor(System.IO.Stream, System.Int64, System.Int32, System.Boolean)
 System.Reflection.Metadata.dll:System.Reflection.Internal.StreamMemoryBlockProvider.CreateMemoryMappedFileBlock(System.Int64, System.Int32)

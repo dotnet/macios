@@ -4,53 +4,53 @@ Do not edit it manually, as it will get overwritten by automation.
 This file should be imported by eng/Versions.props
 -->
 <Project>
-  <PropertyGroup>
-    <!-- dotnet-dotnet dependencies -->
-    <MicrosoftDotNetArcadeSdkPackageVersion>11.0.0-beta.26227.104</MicrosoftDotNetArcadeSdkPackageVersion>
-    <MicrosoftDotNetBuildTasksFeedPackageVersion>11.0.0-beta.26227.104</MicrosoftDotNetBuildTasksFeedPackageVersion>
-    <MicrosoftDotNetCecilPackageVersion>0.11.5-preview.26227.104</MicrosoftDotNetCecilPackageVersion>
-    <MicrosoftDotNetSharedFrameworkSdkPackageVersion>11.0.0-beta.26227.104</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
-    <MicrosoftNETILLinkPackageVersion>11.0.0-preview.5.26227.104</MicrosoftNETILLinkPackageVersion>
-    <MicrosoftNETILLinkTasksPackageVersion>11.0.0-preview.5.26227.104</MicrosoftNETILLinkTasksPackageVersion>
-    <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>11.0.0-preview.5.26227.104</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
-    <MicrosoftNETSdkPackageVersion>11.0.100-preview.5.26227.104</MicrosoftNETSdkPackageVersion>
-    <MicrosoftNETCoreAppRefPackageVersion>11.0.0-preview.5.26227.104</MicrosoftNETCoreAppRefPackageVersion>
-    <MicrosoftTemplateEngineAuthoringTasksPackageVersion>11.0.100-preview.5.26227.104</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
-    <!-- dotnet-macios dependencies -->
-    <MicrosoftiOSSdknet100_260PackageVersion>26.0.11017</MicrosoftiOSSdknet100_260PackageVersion>
-    <MicrosoftiOSSdknet100_264PackageVersion>26.4.10255</MicrosoftiOSSdknet100_264PackageVersion>
-    <MicrosoftMacCatalystSdknet100_260PackageVersion>26.0.11017</MicrosoftMacCatalystSdknet100_260PackageVersion>
-    <MicrosoftMacCatalystSdknet100_264PackageVersion>26.4.10255</MicrosoftMacCatalystSdknet100_264PackageVersion>
-    <MicrosoftmacOSSdknet100_260PackageVersion>26.0.11017</MicrosoftmacOSSdknet100_260PackageVersion>
-    <MicrosoftmacOSSdknet100_264PackageVersion>26.4.10255</MicrosoftmacOSSdknet100_264PackageVersion>
-    <MicrosofttvOSSdknet100_260PackageVersion>26.0.11017</MicrosofttvOSSdknet100_260PackageVersion>
-    <MicrosofttvOSSdknet100_264PackageVersion>26.4.10255</MicrosofttvOSSdknet100_264PackageVersion>
-    <!-- dotnet-xharness dependencies -->
-    <MicrosoftDotNetXHarnessiOSSharedPackageVersion>11.0.0-prerelease.26217.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
-  </PropertyGroup>
-  <!--Property group for alternate package version names-->
-  <PropertyGroup>
-    <!-- dotnet-dotnet dependencies -->
-    <MicrosoftDotNetArcadeSdkVersion>$(MicrosoftDotNetArcadeSdkPackageVersion)</MicrosoftDotNetArcadeSdkVersion>
-    <MicrosoftDotNetBuildTasksFeedVersion>$(MicrosoftDotNetBuildTasksFeedPackageVersion)</MicrosoftDotNetBuildTasksFeedVersion>
-    <MicrosoftDotNetCecilVersion>$(MicrosoftDotNetCecilPackageVersion)</MicrosoftDotNetCecilVersion>
-    <MicrosoftDotNetSharedFrameworkSdkVersion>$(MicrosoftDotNetSharedFrameworkSdkPackageVersion)</MicrosoftDotNetSharedFrameworkSdkVersion>
-    <MicrosoftNETILLinkVersion>$(MicrosoftNETILLinkPackageVersion)</MicrosoftNETILLinkVersion>
-    <MicrosoftNETILLinkTasksVersion>$(MicrosoftNETILLinkTasksPackageVersion)</MicrosoftNETILLinkTasksVersion>
-    <MicrosoftNETRuntimeMonoTargetsSdkVersion>$(MicrosoftNETRuntimeMonoTargetsSdkPackageVersion)</MicrosoftNETRuntimeMonoTargetsSdkVersion>
-    <MicrosoftNETSdkVersion>$(MicrosoftNETSdkPackageVersion)</MicrosoftNETSdkVersion>
-    <MicrosoftNETCoreAppRefVersion>$(MicrosoftNETCoreAppRefPackageVersion)</MicrosoftNETCoreAppRefVersion>
-    <MicrosoftTemplateEngineAuthoringTasksVersion>$(MicrosoftTemplateEngineAuthoringTasksPackageVersion)</MicrosoftTemplateEngineAuthoringTasksVersion>
-    <!-- dotnet-macios dependencies -->
-    <MicrosoftiOSSdknet100_260Version>$(MicrosoftiOSSdknet100_260PackageVersion)</MicrosoftiOSSdknet100_260Version>
-    <MicrosoftiOSSdknet100_264Version>$(MicrosoftiOSSdknet100_264PackageVersion)</MicrosoftiOSSdknet100_264Version>
-    <MicrosoftMacCatalystSdknet100_260Version>$(MicrosoftMacCatalystSdknet100_260PackageVersion)</MicrosoftMacCatalystSdknet100_260Version>
-    <MicrosoftMacCatalystSdknet100_264Version>$(MicrosoftMacCatalystSdknet100_264PackageVersion)</MicrosoftMacCatalystSdknet100_264Version>
-    <MicrosoftmacOSSdknet100_260Version>$(MicrosoftmacOSSdknet100_260PackageVersion)</MicrosoftmacOSSdknet100_260Version>
-    <MicrosoftmacOSSdknet100_264Version>$(MicrosoftmacOSSdknet100_264PackageVersion)</MicrosoftmacOSSdknet100_264Version>
-    <MicrosofttvOSSdknet100_260Version>$(MicrosofttvOSSdknet100_260PackageVersion)</MicrosofttvOSSdknet100_260Version>
-    <MicrosofttvOSSdknet100_264Version>$(MicrosofttvOSSdknet100_264PackageVersion)</MicrosofttvOSSdknet100_264Version>
-    <!-- dotnet-xharness dependencies -->
-    <MicrosoftDotNetXHarnessiOSSharedVersion>$(MicrosoftDotNetXHarnessiOSSharedPackageVersion)</MicrosoftDotNetXHarnessiOSSharedVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<!-- dotnet-dotnet dependencies -->
+		<MicrosoftDotNetArcadeSdkPackageVersion>11.0.0-beta.26227.104</MicrosoftDotNetArcadeSdkPackageVersion>
+		<MicrosoftDotNetBuildTasksFeedPackageVersion>11.0.0-beta.26227.104</MicrosoftDotNetBuildTasksFeedPackageVersion>
+		<MicrosoftDotNetCecilPackageVersion>0.11.5-preview.26227.104</MicrosoftDotNetCecilPackageVersion>
+		<MicrosoftDotNetSharedFrameworkSdkPackageVersion>11.0.0-beta.26227.104</MicrosoftDotNetSharedFrameworkSdkPackageVersion>
+		<MicrosoftNETILLinkPackageVersion>11.0.0-preview.5.26227.104</MicrosoftNETILLinkPackageVersion>
+		<MicrosoftNETILLinkTasksPackageVersion>11.0.0-preview.5.26227.104</MicrosoftNETILLinkTasksPackageVersion>
+		<MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>11.0.0-preview.5.26227.104</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
+		<MicrosoftNETSdkPackageVersion>11.0.100-preview.5.26227.104</MicrosoftNETSdkPackageVersion>
+		<MicrosoftNETCoreAppRefPackageVersion>11.0.0-preview.5.26227.104</MicrosoftNETCoreAppRefPackageVersion>
+		<MicrosoftTemplateEngineAuthoringTasksPackageVersion>11.0.100-preview.5.26227.104</MicrosoftTemplateEngineAuthoringTasksPackageVersion>
+		<!-- dotnet-macios dependencies -->
+		<MicrosoftiOSSdknet100_260PackageVersion>26.0.11017</MicrosoftiOSSdknet100_260PackageVersion>
+		<MicrosoftiOSSdknet100_264PackageVersion>26.4.10259</MicrosoftiOSSdknet100_264PackageVersion>
+		<MicrosoftMacCatalystSdknet100_260PackageVersion>26.0.11017</MicrosoftMacCatalystSdknet100_260PackageVersion>
+		<MicrosoftMacCatalystSdknet100_264PackageVersion>26.4.10259</MicrosoftMacCatalystSdknet100_264PackageVersion>
+		<MicrosoftmacOSSdknet100_260PackageVersion>26.0.11017</MicrosoftmacOSSdknet100_260PackageVersion>
+		<MicrosoftmacOSSdknet100_264PackageVersion>26.4.10259</MicrosoftmacOSSdknet100_264PackageVersion>
+		<MicrosofttvOSSdknet100_260PackageVersion>26.0.11017</MicrosofttvOSSdknet100_260PackageVersion>
+		<MicrosofttvOSSdknet100_264PackageVersion>26.4.10259</MicrosofttvOSSdknet100_264PackageVersion>
+		<!-- dotnet-xharness dependencies -->
+		<MicrosoftDotNetXHarnessiOSSharedPackageVersion>11.0.0-prerelease.26217.1</MicrosoftDotNetXHarnessiOSSharedPackageVersion>
+	</PropertyGroup>
+	<!--Property group for alternate package version names-->
+	<PropertyGroup>
+		<!-- dotnet-dotnet dependencies -->
+		<MicrosoftDotNetArcadeSdkVersion>$(MicrosoftDotNetArcadeSdkPackageVersion)</MicrosoftDotNetArcadeSdkVersion>
+		<MicrosoftDotNetBuildTasksFeedVersion>$(MicrosoftDotNetBuildTasksFeedPackageVersion)</MicrosoftDotNetBuildTasksFeedVersion>
+		<MicrosoftDotNetCecilVersion>$(MicrosoftDotNetCecilPackageVersion)</MicrosoftDotNetCecilVersion>
+		<MicrosoftDotNetSharedFrameworkSdkVersion>$(MicrosoftDotNetSharedFrameworkSdkPackageVersion)</MicrosoftDotNetSharedFrameworkSdkVersion>
+		<MicrosoftNETILLinkVersion>$(MicrosoftNETILLinkPackageVersion)</MicrosoftNETILLinkVersion>
+		<MicrosoftNETILLinkTasksVersion>$(MicrosoftNETILLinkTasksPackageVersion)</MicrosoftNETILLinkTasksVersion>
+		<MicrosoftNETRuntimeMonoTargetsSdkVersion>$(MicrosoftNETRuntimeMonoTargetsSdkPackageVersion)</MicrosoftNETRuntimeMonoTargetsSdkVersion>
+		<MicrosoftNETSdkVersion>$(MicrosoftNETSdkPackageVersion)</MicrosoftNETSdkVersion>
+		<MicrosoftNETCoreAppRefVersion>$(MicrosoftNETCoreAppRefPackageVersion)</MicrosoftNETCoreAppRefVersion>
+		<MicrosoftTemplateEngineAuthoringTasksVersion>$(MicrosoftTemplateEngineAuthoringTasksPackageVersion)</MicrosoftTemplateEngineAuthoringTasksVersion>
+		<!-- dotnet-macios dependencies -->
+		<MicrosoftiOSSdknet100_260Version>$(MicrosoftiOSSdknet100_260PackageVersion)</MicrosoftiOSSdknet100_260Version>
+		<MicrosoftiOSSdknet100_264Version>$(MicrosoftiOSSdknet100_264PackageVersion)</MicrosoftiOSSdknet100_264Version>
+		<MicrosoftMacCatalystSdknet100_260Version>$(MicrosoftMacCatalystSdknet100_260PackageVersion)</MicrosoftMacCatalystSdknet100_260Version>
+		<MicrosoftMacCatalystSdknet100_264Version>$(MicrosoftMacCatalystSdknet100_264PackageVersion)</MicrosoftMacCatalystSdknet100_264Version>
+		<MicrosoftmacOSSdknet100_260Version>$(MicrosoftmacOSSdknet100_260PackageVersion)</MicrosoftmacOSSdknet100_260Version>
+		<MicrosoftmacOSSdknet100_264Version>$(MicrosoftmacOSSdknet100_264PackageVersion)</MicrosoftmacOSSdknet100_264Version>
+		<MicrosofttvOSSdknet100_260Version>$(MicrosofttvOSSdknet100_260PackageVersion)</MicrosofttvOSSdknet100_260Version>
+		<MicrosofttvOSSdknet100_264Version>$(MicrosofttvOSSdknet100_264PackageVersion)</MicrosofttvOSSdknet100_264Version>
+		<!-- dotnet-xharness dependencies -->
+		<MicrosoftDotNetXHarnessiOSSharedVersion>$(MicrosoftDotNetXHarnessiOSSharedPackageVersion)</MicrosoftDotNetXHarnessiOSSharedVersion>
+	</PropertyGroup>
 </Project>

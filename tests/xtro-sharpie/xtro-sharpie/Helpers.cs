@@ -254,7 +254,7 @@ namespace Extrospection {
 			return (self.IsSealed && self.IsAbstract);
 		}
 
-	
+
 		[return: NotNullIfNotNull (nameof (self))]
 		public static string? GetName (this ObjCMethodDecl? self)
 		{
@@ -476,7 +476,7 @@ namespace Extrospection {
 			}
 		}
 
-		public static (T, T) Sort<T> (T o1, T o2) where T: notnull
+		public static (T, T) Sort<T> (T o1, T o2) where T : notnull
 		{
 			if (StringComparer.Ordinal.Compare (o1.ToString (), o2.ToString ()) < 0)
 				return (o2, o1);

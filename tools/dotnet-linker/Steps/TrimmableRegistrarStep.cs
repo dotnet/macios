@@ -166,6 +166,33 @@ namespace Xamarin.Linker {
 
 			var typesByAssembly = App.StaticRegistrar.Types.GroupBy (v => v.Key.Module.Assembly);
 			var skippedTypesByAssembly = App.StaticRegistrar.SkippedTypes.GroupBy (v => v.Skipped.Module.Assembly).ToDictionary (v => v.Key, v => v.ToList ());
+			// Workaround for https://github.com/dotnet/runtime/issues/127504
+			// Tracking issue: https://github.com/dotnet/macios/issues/25275
+			//
+			// Build a set of types that are the "actual" (non-generic) target of skipped type associations.
+			// These are types like NSOrderedSet, NSArray, NSDictionary etc. that have generic variants
+			// (NSOrderedSet<T>, NSArray<T>, NSDictionary<TKey,TValue>) mapping to the same ObjC class.
+			//
+			// These types need unconditional (2-arg) TypeMap entries instead of conditional (3-arg) ones
+			// because of a bug in the linker's TypeMapHandler: when it processes the
+			// TypeMapAssociationAttribute<SkippedObjectiveCTypeUniverse> for these types, it calls
+			// MarkInstantiated directly (bypassing MarkRequirementsForInstantiatedTypes), which poisons
+			// the IsInstantiated flag and prevents ProcessType from ever being called. This means their
+			// conditional TypeMapAttribute entries (which require ProcessType to be promoted from
+			// _unmarkedExternalTypeMapEntries) are silently trimmed by the linker.
+			//
+			// The workaround consists of two parts:
+			//   1. This HashSet identifying the affected types.
+			//   2. The conditional block below (lines starting with 'if (skippedActualTypes.Contains (td))')
+			//      that uses the 2-arg TypeMapAttribute constructor for these types instead of the 3-arg one.
+			//
+			// To remove this workaround once the issue is fixed:
+			//   1. Delete this HashSet and its comment.
+			//   2. Remove the 'if (skippedActualTypes.Contains (td))' branch below, keeping only the 'else' branch.
+			//   3. Verify by running: make build run-bare TEST_VARIATION='release|trimmable-static-registrar-all-optimizations-linkall' \
+			//        RUN_ARGUMENTS="--test MonoTouchFixtures.Foundation.NSOrderedSetTest"
+			//      in tests/monotouch-test/dotnet/MacCatalyst (the MakeNSOrderedSet_WithNull test is a good canary).
+			var skippedActualTypes = new HashSet<TypeDefinition> (App.StaticRegistrar.SkippedTypes.Select (v => v.Actual.Type.Resolve ()));
 
 			var copyAssemblyParametersFrom = abr.PlatformAssembly.MainModule;
 			var assemblyParameters = new ModuleParameters {
@@ -301,13 +328,25 @@ namespace Xamarin.Linker {
 					var isCustomType = App.StaticRegistrar.IsCustomType (objcType);
 
 					if (!objcType.IsProtocol && !objcType.IsCategory) {
-						/*
-						 * [assembly: TypeMap<NSObject> ("Objective-C class name", typeof (...), typeof (...))]
-						 */
-						attribute = abr.CreateAttribute (CreateMethodReference (abr.TypeMapAttribute_1_Constructor_String_Type_Type, abr.Foundation_NSObject));
-						attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, objcClassName));
-						attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_Type, trImported));
-						attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_Type, trImported));
+						if (skippedActualTypes.Contains (td)) {
+							// Workaround for https://github.com/dotnet/runtime/issues/127504
+							// Tracking issue: https://github.com/dotnet/macios/issues/25275
+							// Use the 2-arg (unconditional) TypeMap constructor for types that are
+							// the target of a SkippedObjectiveCTypeUniverse association, because
+							// their conditional (3-arg) entries would be incorrectly trimmed.
+							// See the comment where skippedActualTypes is created for full details.
+							attribute = abr.CreateAttribute (CreateMethodReference (abr.TypeMapAttribute_1_Constructor_String_Type, abr.Foundation_NSObject));
+							attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, objcClassName));
+							attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_Type, trImported));
+						} else {
+							/*
+							 * [assembly: TypeMap<NSObject> ("Objective-C class name", typeof (...), typeof (...))]
+							 */
+							attribute = abr.CreateAttribute (CreateMethodReference (abr.TypeMapAttribute_1_Constructor_String_Type_Type, abr.Foundation_NSObject));
+							attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, objcClassName));
+							attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_Type, trImported));
+							attribute.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_Type, trImported));
+						}
 						typeMapAssembly.CustomAttributes.Add (attribute);
 
 						/*
@@ -430,6 +469,7 @@ namespace Xamarin.Linker {
 						proxyType.CustomAttributes.Add (attribute);
 
 						// We also add the proxy type as an attribute to the type, as a workaround for https://github.com/dotnet/runtime/issues/127004
+						// Tracking issue: https://github.com/dotnet/macios/issues/25276
 						addPostAction (td.Module.Assembly, assembly => {
 							var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
 							td.CustomAttributes.Add (attribute);
@@ -521,6 +561,7 @@ namespace Xamarin.Linker {
 						typeMapAssembly.CustomAttributes.Add (attribute);
 
 						// We also add the proxy type as an attribute to the type, as a workaround for https://github.com/dotnet/runtime/issues/127004
+						// Tracking issue: https://github.com/dotnet/macios/issues/25276
 						addPostAction (td.Module.Assembly, assembly => {
 							var attribute = new CustomAttribute (assembly.MainModule.ImportReference (ctor)); // don't use abr.CreateAttribute here, because the ctor has already been marked
 							td.CustomAttributes.Add (attribute);

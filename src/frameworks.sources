@@ -152,6 +152,17 @@ APPKIT_SOURCES = \
 	AppKit/NSCollectionView.cs \
 	AppKit/NSCollectionViewLayout.cs \
 	AppKit/NSColorPickerTouchBarItem.cs \
+	AppKit/NSControlTextEditingEventArgs.cs \
+	AppKit/NSMenuItemEventArgs.cs \
+	AppKit/NSMenuItemIndexEventArgs.cs \
+	AppKit/NSOutlineViewItemEventArgs.cs \
+	AppKit/NSTextAlternativesSelectedAlternativeStringEventArgs.cs \
+	AppKit/NSTextViewDidChangeSelectionEventArgs.cs \
+	AppKit/NSTextViewWillChangeNotifyingTextViewEventArgs.cs \
+	AppKit/NSTextDidEndEditingEventArgs.cs \
+	AppKit/NSViewColumnMoveEventArgs.cs \
+	AppKit/NSViewColumnResizeEventArgs.cs \
+	AppKit/NSWorkspaceFileOperationEventArgs.cs \
 	AppKit/NSSliderTouchBarItem.cs \
 	AppKit/NSView.cs \
 	AppKit/NSCollectionLayoutAnchor.cs \

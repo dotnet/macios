@@ -344,9 +344,38 @@ ORDER BY pr_count DESC;
 
 If the failure is NOT also identified as flaky (i.e., it doesn't go away on rerun), classify it as a **shared regression**.
 
-### Step 3.3: Identify infrastructure failures
+### Step 3.3: Identify infrastructure failures and bot-specific issues
 
-Look for patterns in failure_type and error messages:
+#### 3.3a: Extract worker/bot info from timelines
+
+The timeline records contain `workerName` for each Job. Extract this to correlate failures with specific bots:
+
+```python
+for record in timeline['records']:
+    if record['type'] == 'Job':
+        worker = record.get('workerName', '')
+        # Windows bots: "VSM-XAM-126" (no dot suffix)
+        # macOS bots: "VSM-XAM-56.Sequoia.arm64", "VSCXSDKs-MINI-042.Tahoe.arm64"
+```
+
+#### 3.3b: Identify bot-specific failures
+
+Group failures by worker and compute failure rates. A bot is problematic if:
+- It has a disproportionate failure rate compared to other bots running the same job type
+- The same error message appears on the same bot across multiple unrelated PRs
+
+```python
+# Example: if VSM-XAM-126 has 8/18 failed jobs (44%) while other bots average 5-10%,
+# that bot has a specific problem worth filing an issue for.
+```
+
+#### 3.3c: Identify infrastructure failure patterns
+
+Also look for cross-bot patterns that affect many PRs:
+- **Timeouts**: jobs that time out on multiple different bots across unrelated PRs
+- **REST API failures**: `Intermittent failure attempting to call the restapis` across many PRs
+- **Path errors**: `Path does not exist` (especially on Windows bots)
+- **Provisioning failures**: `Reserve bot`, `provision` errors
 
 ```sql
 SELECT error_signature, failure_type, raw_message,
@@ -355,9 +384,9 @@ FROM ci_failures
 WHERE failure_type = 'Infrastructure'
    OR raw_message LIKE '%provision%'
    OR raw_message LIKE '%reserve bot%'
-   OR raw_message LIKE '%timeout%waiting%'
-   OR raw_message LIKE '%network%'
-   OR raw_message LIKE '%Could not find simulator%'
+   OR raw_message LIKE '%timeout%'
+   OR raw_message LIKE '%Intermittent failure%'
+   OR raw_message LIKE '%Path does not exist%'
 GROUP BY error_signature
 ORDER BY occurrences DESC;
 ```

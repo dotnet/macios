@@ -1320,7 +1320,10 @@ namespace Xamarin.Linker {
 
 		public MethodReference TypeMapAttribute_1_Constructor_String_Type {
 			get {
-				return GetMethodReference (CorlibAssembly, "System.Runtime.InteropServices.TypeMapAttribute`1", ".ctor", (v) =>
+				GetTypeReference (CorlibAssembly, "System.Runtime.InteropServices.TypeMapAttribute`1", out var td);
+				return GetMethodReference (CorlibAssembly, td, ".ctor",
+						"System.Runtime.InteropServices.TypeMapAttribute`1::.ctor(string,Type)",
+						(v) =>
 						!v.IsStatic
 						&& v.HasParameters
 						&& v.Parameters.Count == 2
@@ -1331,7 +1334,10 @@ namespace Xamarin.Linker {
 
 		public MethodReference TypeMapAttribute_1_Constructor_String_Type_Type {
 			get {
-				return GetMethodReference (CorlibAssembly, "System.Runtime.InteropServices.TypeMapAttribute`1", ".ctor", (v) =>
+				GetTypeReference (CorlibAssembly, "System.Runtime.InteropServices.TypeMapAttribute`1", out var td);
+				return GetMethodReference (CorlibAssembly, td, ".ctor",
+						"System.Runtime.InteropServices.TypeMapAttribute`1::.ctor(string,Type,Type)",
+						(v) =>
 						!v.IsStatic
 						&& v.HasParameters
 						&& v.Parameters.Count == 3

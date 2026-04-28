@@ -159,12 +159,12 @@
 
     <MSBuild
         Targets="Restore"
-        Projects="$(PkgMicrosoft_DotNet_Arcade_Sdk)\tools\SdkTasks\PublishBuildAssets.proj"
+        Projects="$(PkgMicrosoft_DotNet_Arcade_Sdk)\toolset\PublishBuildAssets.proj"
         Properties="Configuration=$(Configuration);RepoRoot=$(_RepositoryPath);VersionPrefix=$(_PackageVersion);NuGetPackageRoot=$(_RepositoryPath)\packages\"
     />
 
     <MSBuild
-        Projects="$(PkgMicrosoft_DotNet_Arcade_Sdk)\tools\SdkTasks\PublishBuildAssets.proj"
+        Projects="$(PkgMicrosoft_DotNet_Arcade_Sdk)\toolset\PublishBuildAssets.proj"
         Properties="Configuration=$(Configuration);RepoRoot=$(_RepositoryPath);VersionPrefix=$(_PackageVersion);ManifestsPath=$(ArtifactsLogDir)AssetManifest;MaestroApiEndpoint=https://maestro.dot.net;NuGetPackageRoot=$(_RepositoryPath)\packages\"
     />
   </Target>

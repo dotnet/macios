@@ -11,14 +11,6 @@ namespace Xamarin.Mac.Tests {
 	[Preserve (AllMembers = true)]
 	public class SceneKitTests // Generic one off tests
 	{
-		[SetUp]
-		public void SetUp ()
-		{
-			Asserts.EnsureYosemite ();
-			if (Asserts.IsAtLeastElCapitan)
-				Asserts.Ensure64Bit ();
-		}
-
 		[Test]
 		public void SCNGeometrySourceSemantic_ColorKeyTest ()
 		{

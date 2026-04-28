@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Threading;
 
 using Xamarin.Bundler;
 
@@ -206,7 +207,7 @@ static class TypeMaps {
 		}
 	}
 
-	static object lock_obj = new object ();
+	static readonly Lock lock_obj = new Lock ();
 
 	[MemberNotNull (nameof (nsobject_types))]
 	[MemberNotNull (nameof (skipped_proxy_types))]

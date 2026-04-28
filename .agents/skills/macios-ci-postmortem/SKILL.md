@@ -188,23 +188,34 @@ Parse the TestSummary.md to determine which jobs have test failures. This is the
 
 ### Step 2.4: Download HtmlReport artifacts (deep analysis)
 
-**This is the critical step.** Each test run produces an HtmlReport artifact containing:
+**This is the most time-consuming step — minimize downloads aggressively.**
+
+Each test run produces an HtmlReport artifact (60-140MB zip) containing:
 - `tests/index.html` — Main report with all test configurations, pass/fail, inline failure details
 - `tests/<suite>/<num>/test-<platform>-<timestamp>.xml` — NUnit XML with individual test-case results
 - `tests/<suite>/<num>/results-<timestamp>.xml` — NUnit results for dotnettests
 
-**Only download HtmlReport zips for jobs that failed** (use TestSummary for triage first):
+**CRITICAL: Only download HtmlReport zips for jobs where TestSummary shows TEST failures (❌ markers).** Do NOT download HtmlReports for:
+- Build failures (no test results exist — the build didn't get far enough to run tests)
+- Infrastructure failures (bot provisioning, timeout, etc.)
+- Jobs where TestSummary shows all tests passed (the job may have failed for other reasons)
 
+To find exact artifact names, first list artifacts for the build:
 ```bash
-artifact="HtmlReport-simulator_tests<jobname>-1"
+az pipelines runs artifact list --run-id <buildId> \
+  --org https://devdiv.visualstudio.com --project DevDiv -o json
+```
+
+Then download only matching HtmlReport artifacts for jobs with test failures:
+```bash
 az pipelines runs artifact download \
-  --artifact-name "$artifact" \
+  --artifact-name "HtmlReport-<exact-name>-1" \
   --path "/tmp/postmortem_deep/" \
   --run-id <buildId> \
   --org https://devdiv.visualstudio.com --project DevDiv
 ```
 
-**Warning:** HtmlReport zips are 60-140MB each. Downloading all of them is slow (1-2 min per artifact). Only download for jobs where TestSummary shows failures.
+**Performance note:** Each download takes 1-3 minutes (sequential, no parallelism in az CLI). Downloading 500 artifacts takes ~2 hours. By filtering with TestSummary first, you can typically reduce this to 50-100 artifacts.
 
 ### Step 2.5: Parse NUnit XML for individual test failures
 

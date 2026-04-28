@@ -2747,18 +2747,23 @@ System.Private.CoreLib.dll:System.Buffer.BulkMoveWithWriteBarrier(System.Byte&, 
 System.Private.CoreLib.dll:System.Buffer.Memmove`1(T&, T&, System.UIntPtr)
 System.Private.CoreLib.dll:System.Buffers.Any1SearchValues`2
 System.Private.CoreLib.dll:System.Buffers.Any1SearchValues`2..ctor(System.ReadOnlySpan`1<TImpl>)
+System.Private.CoreLib.dll:System.Buffers.Any1SearchValues`2.IndexOfAny(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.Any1SearchValues`2.IndexOfAnyExcept(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.Any2SearchValues`2
 System.Private.CoreLib.dll:System.Buffers.Any2SearchValues`2..ctor(System.ReadOnlySpan`1<TImpl>)
+System.Private.CoreLib.dll:System.Buffers.Any2SearchValues`2.IndexOfAny(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.Any2SearchValues`2.IndexOfAnyExcept(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.Any3SearchValues`2
 System.Private.CoreLib.dll:System.Buffers.Any3SearchValues`2..ctor(System.ReadOnlySpan`1<TImpl>)
+System.Private.CoreLib.dll:System.Buffers.Any3SearchValues`2.IndexOfAny(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.Any3SearchValues`2.IndexOfAnyExcept(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.Any4SearchValues`2
 System.Private.CoreLib.dll:System.Buffers.Any4SearchValues`2..ctor(System.ReadOnlySpan`1<TImpl>)
+System.Private.CoreLib.dll:System.Buffers.Any4SearchValues`2.IndexOfAny(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.Any4SearchValues`2.IndexOfAnyExcept(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.Any5SearchValues`2
 System.Private.CoreLib.dll:System.Buffers.Any5SearchValues`2..ctor(System.ReadOnlySpan`1<TImpl>)
+System.Private.CoreLib.dll:System.Buffers.Any5SearchValues`2.IndexOfAny(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.Any5SearchValues`2.IndexOfAnyExcept(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.ArrayPool`1
 System.Private.CoreLib.dll:System.Buffers.ArrayPool`1..cctor()
@@ -2775,6 +2780,7 @@ System.Private.CoreLib.dll:System.Buffers.ArrayPoolEventSource..ctor()
 System.Private.CoreLib.dll:System.Buffers.AsciiCharSearchValues`2
 System.Private.CoreLib.dll:System.Buffers.AsciiCharSearchValues`2..ctor(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Buffers.AsciiCharSearchValues`2.ContainsAnyExcept(System.ReadOnlySpan`1<System.Char>)
+System.Private.CoreLib.dll:System.Buffers.AsciiCharSearchValues`2.IndexOfAny(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Buffers.AsciiCharSearchValues`2.IndexOfAnyExcept(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Buffers.Binary.BinaryPrimitives
 System.Private.CoreLib.dll:System.Buffers.Binary.BinaryPrimitives.ReadInt32BigEndian(System.ReadOnlySpan`1<System.Byte>)
@@ -2792,6 +2798,7 @@ System.Private.CoreLib.dll:System.Buffers.Binary.BinaryPrimitives.WriteUInt64Big
 System.Private.CoreLib.dll:System.Buffers.BitmapCharSearchValues
 System.Private.CoreLib.dll:System.Buffers.BitmapCharSearchValues..ctor(System.ReadOnlySpan`1<System.Char>, System.Int32)
 System.Private.CoreLib.dll:System.Buffers.BitmapCharSearchValues.Contains(System.UInt32[], System.Int32)
+System.Private.CoreLib.dll:System.Buffers.BitmapCharSearchValues.IndexOfAny(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Buffers.BitmapCharSearchValues.IndexOfAny`1(System.Char&, System.Int32)
 System.Private.CoreLib.dll:System.Buffers.BitmapCharSearchValues.IndexOfAnyExcept(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Buffers.BitVector256
@@ -2803,6 +2810,7 @@ System.Private.CoreLib.dll:System.Buffers.BitVector256.CreateInverse()
 System.Private.CoreLib.dll:System.Buffers.BitVector256.Set(System.Int32)
 System.Private.CoreLib.dll:System.Buffers.EmptySearchValues`1
 System.Private.CoreLib.dll:System.Buffers.EmptySearchValues`1..ctor()
+System.Private.CoreLib.dll:System.Buffers.EmptySearchValues`1.IndexOfAny(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.EmptySearchValues`1.IndexOfAnyExcept(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher.CanUseUniqueLowNibbleSearch`1(System.ReadOnlySpan`1<T>, System.Int32)
@@ -2832,7 +2840,7 @@ System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/ContainsAnyRes
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/Default
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/Default.PackSources(System.Runtime.Intrinsics.Vector128`1<System.UInt16>, System.Runtime.Intrinsics.Vector128`1<System.UInt16>)
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/DontNegate
-System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/DontNegate.ExtractMask(System.Runtime.Intrinsics.Vector128`1<System.Byte>)
+System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/DontNegate.IndexOfFirstMatch(System.Runtime.Intrinsics.Vector128`1<System.Byte>)
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/DontNegate.NegateIfNeeded(System.Boolean)
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/DontNegate.NegateIfNeeded(System.Runtime.Intrinsics.Vector128`1<System.Byte>)
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/IndexOfAnyResultMapper`1
@@ -2841,7 +2849,7 @@ System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/IndexOfAnyResu
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/IndexOfAnyResultMapper`1.get_NotFound()
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/IndexOfAnyResultMapper`1.ScalarResult(T&, T&)
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/INegator
-System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/INegator.ExtractMask(System.Runtime.Intrinsics.Vector128`1<System.Byte>)
+System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/INegator.IndexOfFirstMatch(System.Runtime.Intrinsics.Vector128`1<System.Byte>)
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/INegator.NegateIfNeeded(System.Boolean)
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/INegator.NegateIfNeeded(System.Runtime.Intrinsics.Vector128`1<System.Byte>)
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/IOptimizations
@@ -2852,7 +2860,7 @@ System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/IResultMapper`
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/IResultMapper`2.get_NotFound()
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/IResultMapper`2.ScalarResult(T&, T&)
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/Negate
-System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/Negate.ExtractMask(System.Runtime.Intrinsics.Vector128`1<System.Byte>)
+System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/Negate.IndexOfFirstMatch(System.Runtime.Intrinsics.Vector128`1<System.Byte>)
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/Negate.NegateIfNeeded(System.Boolean)
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/Negate.NegateIfNeeded(System.Runtime.Intrinsics.Vector128`1<System.Byte>)
 System.Private.CoreLib.dll:System.Buffers.IndexOfAnyAsciiSearcher/Ssse3AndWasmHandleZeroInNeedle
@@ -2864,6 +2872,7 @@ System.Private.CoreLib.dll:System.Buffers.OperationStatus System.Buffers.Operati
 System.Private.CoreLib.dll:System.Buffers.OperationStatus System.Buffers.OperationStatus::NeedMoreData
 System.Private.CoreLib.dll:System.Buffers.ProbabilisticCharSearchValues
 System.Private.CoreLib.dll:System.Buffers.ProbabilisticCharSearchValues..ctor(System.ReadOnlySpan`1<System.Char>, System.Int32)
+System.Private.CoreLib.dll:System.Buffers.ProbabilisticCharSearchValues.IndexOfAny(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Buffers.ProbabilisticCharSearchValues.IndexOfAnyExcept(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Buffers.ProbabilisticMap
 System.Private.CoreLib.dll:System.Buffers.ProbabilisticMap System.Buffers.ProbabilisticMapState::Map
@@ -2900,9 +2909,11 @@ System.Private.CoreLib.dll:System.Buffers.ProbabilisticMapState.SlowContains(Sys
 System.Private.CoreLib.dll:System.Buffers.ProbabilisticMapState.SlowProbabilisticContains(System.Char)
 System.Private.CoreLib.dll:System.Buffers.ProbabilisticWithAsciiCharSearchValues`1
 System.Private.CoreLib.dll:System.Buffers.ProbabilisticWithAsciiCharSearchValues`1..ctor(System.ReadOnlySpan`1<System.Char>, System.Int32)
+System.Private.CoreLib.dll:System.Buffers.ProbabilisticWithAsciiCharSearchValues`1.IndexOfAny(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Buffers.ProbabilisticWithAsciiCharSearchValues`1.IndexOfAnyExcept(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Buffers.RangeCharSearchValues`1
 System.Private.CoreLib.dll:System.Buffers.RangeCharSearchValues`1..ctor(System.Char, System.Char)
+System.Private.CoreLib.dll:System.Buffers.RangeCharSearchValues`1.IndexOfAny(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Buffers.RangeCharSearchValues`1.IndexOfAnyExcept(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.Buffers.SearchValues
 System.Private.CoreLib.dll:System.Buffers.SearchValues.<Create>g__ShouldUseProbabilisticMap|1_0(System.Int32, System.Int32)
@@ -2918,8 +2929,11 @@ System.Private.CoreLib.dll:System.Buffers.SearchValues/TrueConst.get_Value()
 System.Private.CoreLib.dll:System.Buffers.SearchValues`1
 System.Private.CoreLib.dll:System.Buffers.SearchValues`1..ctor()
 System.Private.CoreLib.dll:System.Buffers.SearchValues`1.ContainsAnyExcept(System.ReadOnlySpan`1<T>)
+System.Private.CoreLib.dll:System.Buffers.SearchValues`1.IndexOfAny(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.SearchValues`1.IndexOfAnyExcept(System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.Buffers.SearchValues`1<System.Char> System.Globalization.CompareInfo::s_nonSpecialAsciiChars
+System.Private.CoreLib.dll:System.Buffers.SearchValues`1<System.Char> System.String/SearchValuesStorage::NewLineChars
+System.Private.CoreLib.dll:System.Buffers.SearchValues`1<System.Char> System.String/SearchValuesStorage::WhiteSpaceChars
 System.Private.CoreLib.dll:System.Buffers.SharedArrayPool`1
 System.Private.CoreLib.dll:System.Buffers.SharedArrayPool`1..ctor()
 System.Private.CoreLib.dll:System.Buffers.SharedArrayPool`1.CreatePerCorePartitions(System.Int32)
@@ -4057,6 +4071,7 @@ System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.AllowNullAttribute..c
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.ConstantExpectedAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.ConstantExpectedAttribute..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.ConstantExpectedAttribute.set_Max(System.Object)
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.ConstantExpectedAttribute.set_Min(System.Object)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DisallowNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DisallowNullAttribute..ctor()
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes
@@ -6692,6 +6707,7 @@ System.Private.CoreLib.dll:System.Int32.Equals(System.Object)
 System.Private.CoreLib.dll:System.Int32.GetHashCode()
 System.Private.CoreLib.dll:System.Int32.GetTypeCode()
 System.Private.CoreLib.dll:System.Int32.IsNegative(System.Int32)
+System.Private.CoreLib.dll:System.Int32.Log2(System.Int32)
 System.Private.CoreLib.dll:System.Int32.Max(System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Int32.Min(System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.Int32.System.IBinaryIntegerParseAndFormatInfo<System.Int32>.get_IsSigned()
@@ -7431,8 +7447,8 @@ System.Private.CoreLib.dll:System.MemberAccessException
 System.Private.CoreLib.dll:System.MemberAccessException..ctor()
 System.Private.CoreLib.dll:System.MemberAccessException..ctor(System.String)
 System.Private.CoreLib.dll:System.MemoryExtensions
-System.Private.CoreLib.dll:System.MemoryExtensions.<Trim>g__TrimFallback|273_0(System.ReadOnlySpan`1<System.Char>)
-System.Private.CoreLib.dll:System.MemoryExtensions.<TrimUtf8>g__TrimFallback|287_0(System.ReadOnlySpan`1<System.Byte>)
+System.Private.CoreLib.dll:System.MemoryExtensions.<Trim>g__TrimFallback|278_0(System.ReadOnlySpan`1<System.Char>)
+System.Private.CoreLib.dll:System.MemoryExtensions.<TrimUtf8>g__TrimFallback|292_0(System.ReadOnlySpan`1<System.Byte>)
 System.Private.CoreLib.dll:System.MemoryExtensions.AsSpan(System.String, System.Int32, System.Int32)
 System.Private.CoreLib.dll:System.MemoryExtensions.AsSpan(System.String, System.Int32)
 System.Private.CoreLib.dll:System.MemoryExtensions.AsSpan(System.String)
@@ -7461,6 +7477,7 @@ System.Private.CoreLib.dll:System.MemoryExtensions.IndexOfAny`1(System.ReadOnlyS
 System.Private.CoreLib.dll:System.MemoryExtensions.IndexOfAnyExcept`1(System.ReadOnlySpan`1<T>, T)
 System.Private.CoreLib.dll:System.MemoryExtensions.IndexOfAnyExceptInRange`1(System.ReadOnlySpan`1<T>, T, T)
 System.Private.CoreLib.dll:System.MemoryExtensions.IndexOfAnyInRange`1(System.ReadOnlySpan`1<T>, T, T)
+System.Private.CoreLib.dll:System.MemoryExtensions.IndexOfAnyWhiteSpace(System.ReadOnlySpan`1<System.Char>)
 System.Private.CoreLib.dll:System.MemoryExtensions.LastIndexOf`1(System.ReadOnlySpan`1<T>, T)
 System.Private.CoreLib.dll:System.MemoryExtensions.Overlaps`1(System.ReadOnlySpan`1<T>, System.ReadOnlySpan`1<T>)
 System.Private.CoreLib.dll:System.MemoryExtensions.SequenceCompareTo`1(System.ReadOnlySpan`1<T>, System.ReadOnlySpan`1<T>)
@@ -7900,7 +7917,9 @@ System.Private.CoreLib.dll:System.Object System.Collections.Hashtable/Bucket::ke
 System.Private.CoreLib.dll:System.Object System.Collections.Hashtable/Bucket::val
 System.Private.CoreLib.dll:System.Object System.Delegate::_target
 System.Private.CoreLib.dll:System.Object System.Diagnostics.CodeAnalysis.ConstantExpectedAttribute::<Max>k__BackingField
+System.Private.CoreLib.dll:System.Object System.Diagnostics.CodeAnalysis.ConstantExpectedAttribute::<Min>k__BackingField
 System.Private.CoreLib.dll:System.Object System.Diagnostics.CodeAnalysis.ConstantExpectedAttribute::Max()
+System.Private.CoreLib.dll:System.Object System.Diagnostics.CodeAnalysis.ConstantExpectedAttribute::Min()
 System.Private.CoreLib.dll:System.Object System.Exception::_traceIPs
 System.Private.CoreLib.dll:System.Object System.Exception::_unused6
 System.Private.CoreLib.dll:System.Object System.GC::EPHEMERON_TOMBSTONE
@@ -11237,6 +11256,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.ExtractNarrowin
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.get_IsSupported()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.LoadVector128(System.Byte*)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.PopCount(System.Runtime.Intrinsics.Vector64`1<System.Byte>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.ShiftRightLogicalNarrowingLower(System.Runtime.Intrinsics.Vector128`1<System.UInt16>, System.Byte)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.Store(System.Byte*, System.Runtime.Intrinsics.Vector64`1<System.Byte>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd.StoreSelectedScalar(System.UInt32*, System.Runtime.Intrinsics.Vector64`1<System.UInt32>, System.Byte)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Arm.AdvSimd/Arm64
@@ -11304,6 +11324,8 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.SimdVectorExtensions
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.SimdVectorExtensions.Store`2(TVector, T*)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.AddSaturate`1(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.AdvSimdExtractBitMask`1(System.Runtime.Intrinsics.Vector128`1<T>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.AdvSimdFixupBitCount`1(System.Int32)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.AndNot`1(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.As`2(System.Runtime.Intrinsics.Vector128`1<TFrom>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.AsByte`1(System.Runtime.Intrinsics.Vector128`1<T>)
@@ -11350,6 +11372,8 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.GetElementUnsafe`
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.GreaterThan`1(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.GreaterThanAny`1(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.GreaterThanOrEqual`1(System.Runtime.Intrinsics.Vector128`1<T>, System.Runtime.Intrinsics.Vector128`1<T>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.IndexOfFirstMatch`1(System.Runtime.Intrinsics.Vector128`1<T>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.IndexOfLastMatch`1(System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.IsNaN`1(System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.IsNegative`1(System.Runtime.Intrinsics.Vector128`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector128.LastIndexOf`1(System.Runtime.Intrinsics.Vector128`1<T>, T)
@@ -11445,11 +11469,11 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.Create`1(System.R
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.Create`1(T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.Equals`1(System.Runtime.Intrinsics.Vector256`1<T>, System.Runtime.Intrinsics.Vector256`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.EqualsAny`1(System.Runtime.Intrinsics.Vector256`1<T>, System.Runtime.Intrinsics.Vector256`1<T>)
-System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.ExtractMostSignificantBits`1(System.Runtime.Intrinsics.Vector256`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.get_NegativeZero`1()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.GetElementUnsafe`1(System.Runtime.Intrinsics.Vector256`1<T>&, System.Int32)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.GetLower`1(System.Runtime.Intrinsics.Vector256`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.GreaterThanAny`1(System.Runtime.Intrinsics.Vector256`1<T>, System.Runtime.Intrinsics.Vector256`1<T>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.IndexOfLastMatch`1(System.Runtime.Intrinsics.Vector256`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.IsNaN`1(System.Runtime.Intrinsics.Vector256`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.IsNegative`1(System.Runtime.Intrinsics.Vector256`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector256.LastIndexOf`1(System.Runtime.Intrinsics.Vector256`1<T>, T)
@@ -11522,10 +11546,10 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.Create`1(System.R
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.Create`1(T)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.Equals`1(System.Runtime.Intrinsics.Vector512`1<T>, System.Runtime.Intrinsics.Vector512`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.EqualsAny`1(System.Runtime.Intrinsics.Vector512`1<T>, System.Runtime.Intrinsics.Vector512`1<T>)
-System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.ExtractMostSignificantBits`1(System.Runtime.Intrinsics.Vector512`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.get_NegativeZero`1()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.GetElementUnsafe`1(System.Runtime.Intrinsics.Vector512`1<T>&, System.Int32)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.GreaterThanAny`1(System.Runtime.Intrinsics.Vector512`1<T>, System.Runtime.Intrinsics.Vector512`1<T>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.IndexOfLastMatch`1(System.Runtime.Intrinsics.Vector512`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.IsNaN`1(System.Runtime.Intrinsics.Vector512`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.IsNegative`1(System.Runtime.Intrinsics.Vector512`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512.LastIndexOf`1(System.Runtime.Intrinsics.Vector512`1<T>, T)
@@ -11582,12 +11606,15 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512`1.ToString(System
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector512`1<T> System.Runtime.Intrinsics.Vector512`1::Zero()
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AddSaturate`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AdvSimdExtractBitMask`1(System.Runtime.Intrinsics.Vector64`1<T>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AdvSimdFixupBitCount`1(System.Int32)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AndNot`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.As`2(System.Runtime.Intrinsics.Vector64`1<TFrom>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AsByte`1(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AsInt32`1(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AsInt64`1(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AsUInt32`1(System.Runtime.Intrinsics.Vector64`1<T>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.AsUInt64`1(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.ConditionalSelect`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Create(System.Byte, System.Byte, System.Byte, System.Byte, System.Byte, System.Byte, System.Byte, System.Byte)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.Create(System.Int16, System.Int16, System.Int16, System.Int16)
@@ -11605,6 +11632,7 @@ System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.GetElementUnsafe`1
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.GreaterThan`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.GreaterThanAny`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.GreaterThanOrEqual`1(System.Runtime.Intrinsics.Vector64`1<T>, System.Runtime.Intrinsics.Vector64`1<T>)
+System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.IndexOfLastMatch`1(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.IsNaN`1(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.IsNegative`1(System.Runtime.Intrinsics.Vector64`1<T>)
 System.Private.CoreLib.dll:System.Runtime.Intrinsics.Vector64.LastIndexOf`1(System.Runtime.Intrinsics.Vector64`1<T>, T)
@@ -12834,6 +12862,8 @@ System.Private.CoreLib.dll:System.String[] System.Number::s_posCurrencyFormats
 System.Private.CoreLib.dll:System.String[] System.Number::s_posPercentFormats
 System.Private.CoreLib.dll:System.String[] System.Number::s_smallNumberCache
 System.Private.CoreLib.dll:System.String[] System.Reflection.Emit.OpCode::g_nameCache
+System.Private.CoreLib.dll:System.String/SearchValuesStorage
+System.Private.CoreLib.dll:System.String/SearchValuesStorage..cctor()
 System.Private.CoreLib.dll:System.StringComparer
 System.Private.CoreLib.dll:System.StringComparer System.StringComparer::Ordinal()
 System.Private.CoreLib.dll:System.StringComparer System.StringComparer::OrdinalIgnoreCase()
@@ -13610,6 +13640,7 @@ System.Private.CoreLib.dll:System.ThrowHelper.ThrowOverflowException_TimeSpanToo
 System.Private.CoreLib.dll:System.ThrowHelper.ThrowOverflowException()
 System.Private.CoreLib.dll:System.ThrowHelper.ThrowStartIndexArgumentOutOfRange_ArgumentOutOfRange_IndexMustBeLessOrEqual()
 System.Private.CoreLib.dll:System.ThrowHelper.ThrowUnreachableException()
+System.Private.CoreLib.dll:System.ThrowHelper.ThrowValueArgumentOutOfRange_NeedNonNegNumException()
 System.Private.CoreLib.dll:System.TimeSpan
 System.Private.CoreLib.dll:System.TimeSpan System.DateTime::TimeOfDay()
 System.Private.CoreLib.dll:System.TimeSpan System.DateTimeOffset::Offset()
@@ -13754,7 +13785,7 @@ System.Private.CoreLib.dll:System.TimeZoneInfo.TryGetLocalTzFile(out System.Byte
 System.Private.CoreLib.dll:System.TimeZoneInfo.TryGetTransitionsForYear(System.Int32, out System.ValueTuple`2<System.Int32,System.Int32>&)
 System.Private.CoreLib.dll:System.TimeZoneInfo.TryGetUtcOffset(System.DateTime, out System.TimeSpan&)
 System.Private.CoreLib.dll:System.TimeZoneInfo.TryLoadTzFile(System.String, System.Byte[]&, System.String&)
-System.Private.CoreLib.dll:System.TimeZoneInfo.TryLocalToUtc(System.DateTime, out System.DateTime&)
+System.Private.CoreLib.dll:System.TimeZoneInfo.TryLocalToUtc(System.DateTime, out System.Int64&)
 System.Private.CoreLib.dll:System.TimeZoneInfo.TZif_CalculateTransitionOffsetFromBase(System.TimeSpan, System.TimeSpan)
 System.Private.CoreLib.dll:System.TimeZoneInfo.TZif_CreateAdjustmentRuleForPosixFormat(System.String, System.DateTime, System.TimeSpan)
 System.Private.CoreLib.dll:System.TimeZoneInfo.TZif_CreateTransitionTimeFromPosixRule(System.ReadOnlySpan`1<System.Char>, System.ReadOnlySpan`1<System.Char>)
@@ -13778,7 +13809,6 @@ System.Private.CoreLib.dll:System.TimeZoneInfo.TZif_ToInt64(System.Byte[], Syste
 System.Private.CoreLib.dll:System.TimeZoneInfo.TZif_ToUnixTime(System.Byte[], System.Int32, System.TimeZoneInfo/TZVersion)
 System.Private.CoreLib.dll:System.TimeZoneInfo.TZif_UnixTimeToDateTime(System.Int64)
 System.Private.CoreLib.dll:System.TimeZoneInfo.UtcOffsetOutOfRange(System.TimeSpan)
-System.Private.CoreLib.dll:System.TimeZoneInfo.UtcToLocal(System.DateTime, out System.Boolean&)
 System.Private.CoreLib.dll:System.TimeZoneInfo.ValidateTimeZoneInfo(System.String, System.TimeSpan, System.TimeZoneInfo/AdjustmentRule[], out System.Boolean&)
 System.Private.CoreLib.dll:System.TimeZoneInfo/<>c
 System.Private.CoreLib.dll:System.TimeZoneInfo/<>c System.TimeZoneInfo/<>c::<>9

@@ -1517,8 +1517,9 @@ namespace Registrar {
 
 		static T []? ExtractAttributeArray<T> (CustomAttributeArgument argument)
 		{
-			if (argument.Value is not CustomAttributeArgument [] arr)
+			if (argument.Value is null)
 				return null;
+			var arr = (CustomAttributeArgument []) argument.Value;
 			var result = new T [arr.Length];
 			for (int i = 0; i < arr.Length; i++) {
 				result [i] = (T) arr [i].Value;

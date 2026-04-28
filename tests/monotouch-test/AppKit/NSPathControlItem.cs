@@ -5,12 +5,6 @@ using AppKit;
 namespace Xamarin.Mac.Tests {
 	[Preserve (AllMembers = true)]
 	public class NSPathControlItemTests {
-		[SetUp]
-		public void Setup ()
-		{
-			Asserts.EnsureYosemite ();
-		}
-
 		[Test]
 		public void NSPathControlItemShouldSetTitle ()
 		{

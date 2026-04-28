@@ -64,9 +64,6 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void RegistrarTest ()
 		{
-			// Networking seems broken on our macOS 10.9 bot, so skip this test.
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 10, throwIfOtherPlatform: false);
-
 			CustomUrlProtocol.State = 0;
 			var success = false;
 
@@ -120,14 +117,8 @@ namespace MonoTouchFixtures.Foundation {
 			public override void StartLoading ()
 			{
 #if MONOMAC
-				if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 10)) {
-					if (State == 3)
-						State++;
-				} else {
-					// looks like 10.9 is not calling `initWithRequest:cachedResponse:client:`
-					if (State >= 2)
-						State = 4;
-				}
+				if (State == 3)
+					State++;
 #else
 				if (State == 3)
 					State++;

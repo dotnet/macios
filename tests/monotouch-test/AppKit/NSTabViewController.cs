@@ -12,8 +12,6 @@ namespace Xamarin.Mac.Tests {
 		[SetUp]
 		public void SetUp ()
 		{
-			Asserts.EnsureYosemite ();
-
 			controller = new NSTabViewController ();
 		}
 

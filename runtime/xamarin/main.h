@@ -127,7 +127,14 @@ extern bool xamarin_supports_dynamic_registration;
 extern const char *xamarin_runtime_configuration_name;
 extern enum XamarinNativeLinkMode xamarin_libmono_native_link_mode;
 extern const char** xamarin_runtime_libraries;
-extern void *xamarin_rtr_header;
+
+struct xamarin_r2r_module {
+	const char *name;
+	void *header;
+};
+
+extern struct xamarin_r2r_module *xamarin_r2r_modules;
+extern int xamarin_r2r_module_count;
 
 typedef void (*xamarin_setup_callback) ();
 typedef int (*xamarin_extension_main_callback) (int argc, char** argv);

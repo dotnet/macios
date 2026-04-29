@@ -308,6 +308,11 @@ namespace MonoTouchFixtures.Security {
 #endif
 		public void DeskCase_83099_InmutableDictionary ()
 		{
+#if __MACOS__
+			// macOS 11.* hangs on keychain operations in CI
+			if (TestRuntime.CheckXcodeVersion (12, 2) && !TestRuntime.CheckXcodeVersion (13, 0))
+				TestRuntime.IgnoreInCI ("Skip on macOS 11.* because it hangs");
+#endif
 			// Use a unique server name per process to avoid cross-process keychain
 			// conflicts on shared CI agents (the account + server pair is the identity).
 			var testServer = $"Test1-{Environment.ProcessId}";

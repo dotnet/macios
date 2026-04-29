@@ -10,8 +10,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSClipViewConstrainBoundsRect ()
 		{
-			Asserts.EnsureMavericks ();
-
 			var clipView = new NSClipView (new CGRect (0, 0, 50, 50));
 			var rect = clipView.ConstrainBoundsRect (new CGRect (10, 10, 30, 30));
 

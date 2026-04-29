@@ -13711,7 +13711,7 @@ namespace AppKit {
 		void DetectValues (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectValuesHandler completionHandler);
 
 		[Mac (15, 4)]
-		[Wrap ("DetectValues (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), new NSPasteboardDetectValuesHandler ((detectedValues, error) => completionHandler (detectedValues?.ToDictionary<NSPasteboardDetectionPattern, DataDetection.DDMatch[]> ((k, v) => (NSPasteboardDetectionPatternExtensions.GetValue (k), ((NSArray) v).ToArray<DataDetection.DDMatch> ())), error)))")]
+		[Wrap ("DetectValues (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), new NSPasteboardDetectValuesHandler ((detectedValues, error) => completionHandler (detectedValues?.ToDictionary<NSPasteboardDetectionPattern, DataDetection.DDMatch[]> ((k, v) => (NSPasteboardDetectionPatternExtensions.GetValue (k), ((NSArray) v).NonNullToArrayDropNullElements<DataDetection.DDMatch> ())), error)))")]
 		void DetectValues (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectValuesCompletionHandler completionHandler);
 
 		[Mac (15, 4)]
@@ -13943,7 +13943,7 @@ namespace AppKit {
 		void DetectValues (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectValuesHandler completionHandler);
 
 		[Mac (15, 4)]
-		[Wrap ("DetectValues (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), new NSPasteboardDetectValuesHandler ((detectedValues, error) => completionHandler (detectedValues?.ToDictionary<NSPasteboardDetectionPattern, DataDetection.DDMatch[]> ((k, v) => (NSPasteboardDetectionPatternExtensions.GetValue (k), ((NSArray) v).ToArray<DataDetection.DDMatch> ())), error)))")]
+		[Wrap ("DetectValues (NSSet<NSString>.Create (patterns, (v) => NSPasteboardDetectionPatternExtensions.GetConstant (v)!), new NSPasteboardDetectValuesHandler ((detectedValues, error) => completionHandler (detectedValues?.ToDictionary<NSPasteboardDetectionPattern, DataDetection.DDMatch[]> ((k, v) => (NSPasteboardDetectionPatternExtensions.GetValue (k), ((NSArray) v).NonNullToArrayDropNullElements<DataDetection.DDMatch> ())), error)))")]
 		void DetectValues (HashSet<NSPasteboardDetectionPattern> patterns, NSPasteboardDetectValuesCompletionHandler completionHandler);
 
 		[Mac (15, 4)]
@@ -29334,18 +29334,22 @@ namespace AppKit {
 	}
 
 	partial interface NSToolbarItemEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("item")]
+		/// <summary>Gets the toolbar item associated with the notification.</summary>
+		/// <value>The toolbar item that will be added to or has been removed from the toolbar.</value>
+		/// <remarks>This value is read from the notification's <c>userInfo</c> dictionary using <see cref="NSToolbar.NSToolbarItemKey"/>.</remarks>
+		[Export ("NSToolbarItemKey")]
 		NSToolbarItem Item { get; }
 	}
 
 	partial interface NSToolbar {
+		/// <summary>Notification posted when a toolbar is about to add an item.</summary>
+		/// <remarks>The notification payload can be accessed using <see cref="NSToolbarItemEventArgs"/>.</remarks>
 		[Notification (typeof (NSToolbarItemEventArgs))]
 		[Field ("NSToolbarWillAddItemNotification")]
 		NSString NSToolbarWillAddItemNotification { get; }
 
+		/// <summary>Notification posted after a toolbar removes an item.</summary>
+		/// <remarks>The notification payload can be accessed using <see cref="NSToolbarItemEventArgs"/>.</remarks>
 		[Notification (typeof (NSToolbarItemEventArgs))]
 		[Field ("NSToolbarDidRemoveItemNotification")]
 		NSString NSToolbarDidRemoveItemNotification { get; }

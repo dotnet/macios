@@ -35,6 +35,9 @@ namespace Xamarin.Linker.Steps {
 		{
 			// this avoids calling FullName (which allocates a string)
 			var attr_type = attribute.Constructor.DeclaringType;
+			if (attr_type.Name == "PreserveAttribute")
+				return true;
+
 			switch (attr_type.Namespace) {
 			case Namespaces.ObjCRuntime:
 				switch (attr_type.Name) {

@@ -317,12 +317,17 @@ namespace Xamarin.MacDev.Tasks {
 			return CreateItemsForAllFilesRecursively (directories?.Select (v => v.ItemSpec));
 		}
 
-		internal async global::System.Threading.Tasks.Task CopyFilesToWindowsAsync (TaskRunner runner, IEnumerable<ITaskItem> items)
+		internal static async global::System.Threading.Tasks.Task CopyFilesToWindowsAsync (Task task, TaskRunner runner, IEnumerable<ITaskItem> items)
 		{
 			foreach (var item in items) {
-				Log.LogMessage (MessageImportance.Low, $"Copying {item.ItemSpec} from the remote Mac to Windows");
-				await runner.GetFileAsync (this, item.ItemSpec).ConfigureAwait (false);
+				task.Log.LogMessage (MessageImportance.Low, $"Copying {item.ItemSpec} from the remote Mac to Windows");
+				await runner.GetFileAsync (task, item.ItemSpec).ConfigureAwait (false);
 			}
+		}
+
+		internal global::System.Threading.Tasks.Task CopyFilesToWindowsAsync (TaskRunner runner, IEnumerable<ITaskItem> items)
+		{
+			return CopyFilesToWindowsAsync (this, runner, items);
 		}
 
 		/// <summary>

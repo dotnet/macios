@@ -112,6 +112,8 @@ namespace Foundation {
 	public partial class NSUrlSessionHandler : HttpMessageHandler {
 		private const string SetCookie = "Set-Cookie";
 		private const string Cookie = "Cookie";
+		private const string ContentEncodingHeaderName = "Content-Encoding";
+		private const string ContentLengthHeaderName = "Content-Length";
 		private CookieContainer? cookieContainer;
 		readonly Dictionary<string, string> headerSeparators = new Dictionary<string, string> {
 			["User-Agent"] = " ",
@@ -122,10 +124,6 @@ namespace Foundation {
 		readonly Dictionary<NSUrlSessionTask, InflightData> inflightRequests;
 		readonly object inflightRequestsLock = new object ();
 		readonly NSUrlSessionConfiguration.SessionConfigurationType sessionType;
-#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
-		NSObject? notificationToken;  // needed to make sure we do not hang if not using a background session
-		readonly object notificationTokenLock = new object (); // need to make sure that threads do no step on each other with a dispose and a remove  inflight data
-#endif
 		X509ChainPolicy? policy;
 
 		static NSUrlSessionConfiguration CreateConfig ()
@@ -159,88 +157,9 @@ namespace Foundation {
 			allowsCellularAccess = configuration.AllowsCellularAccess;
 			AllowAutoRedirect = true;
 
-#if !NET10_0_OR_GREATER
-#pragma warning disable SYSLIB0014
-			// SYSLIB0014: 'ServicePointManager' is obsolete: 'WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. Settings on ServicePointManager no longer affect SslStream or HttpClient.' (https://aka.ms/dotnet-warnings/SYSLIB0014)
-			// https://github.com/dotnet/macios/issues/20764
-			var sp = ServicePointManager.SecurityProtocol;
-#pragma warning restore SYSLIB0014
-
-			// The analyzer has a bug where SupportedOSPlatformGuard attributes don't work correctly (https://github.com/dotnet/roslyn-analyzers/issues/7665#issuecomment-2898275765), so ignore CA1416/CA1422 here
-			// warning CA1422: This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NSUrlSessionConfiguration.[...]' is obsoleted on: 'ios' 13.0 and later (Use '...' instead.), 'maccatalyst' 13.0 and later (Use '...' instead.), 'macOS/OSX' 10.15 and later (Use '...' instead.).
-			// warning CA1416: This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 10.15 and later, 'tvos' 12.2 and later. 'NSUrlSessionConfiguration.[...]' is only supported on: 'ios' 13.0 and later, 'tvos' 13.0 and later
-#pragma warning disable CA1416
-#pragma warning disable CA1422
-			if (SystemVersion.IsAtLeastXcode11) {
-				if ((sp & SecurityProtocolType.Ssl3) != 0) {
-					// no equivalent
-				} else if ((sp & SecurityProtocolType.Tls) != 0) {
-					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls10;
-				} else if ((sp & SecurityProtocolType.Tls11) != 0) {
-					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls11;
-				} else if ((sp & SecurityProtocolType.Tls12) != 0) {
-					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls12;
-				} else if ((sp & SecurityProtocolType.Tls13) != 0) {
-					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls13;
-				}
-			} else {
-				if ((sp & SecurityProtocolType.Ssl3) != 0)
-					configuration.TLSMinimumSupportedProtocol = SslProtocol.Ssl_3_0;
-				else if ((sp & SecurityProtocolType.Tls) != 0)
-					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_0;
-				else if ((sp & SecurityProtocolType.Tls11) != 0)
-					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_1;
-				else if ((sp & SecurityProtocolType.Tls12) != 0)
-					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_2;
-				else if ((sp & SecurityProtocolType.Tls13) != 0)
-					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_3;
-			}
-#pragma warning restore CA1422
-#pragma warning restore CA1416
-#endif // NET10_0_OR_GREATER
-
 			session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
 			inflightRequests = new Dictionary<NSUrlSessionTask, InflightData> ();
 		}
-
-#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
-
-		void AddNotification ()
-		{
-			lock (notificationTokenLock) {
-				if (!bypassBackgroundCheck && sessionType != NSUrlSessionConfiguration.SessionConfigurationType.Background && notificationToken is null)
-					notificationToken = NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillResignActiveNotification, BackgroundNotificationCb);
-			} // lock
-		}
-
-		void RemoveNotification ()
-		{
-			NSObject? localNotificationToken;
-			lock (notificationTokenLock) {
-				localNotificationToken = notificationToken;
-				notificationToken = null;
-			}
-			if (localNotificationToken is not null)
-				NSNotificationCenter.DefaultCenter.RemoveObserver (localNotificationToken);
-		}
-
-		void BackgroundNotificationCb (NSNotification obj)
-		{
-			// the cancelation task of each of the sources will clean the different resources. Each removal is done
-			// inside a lock, but of course, the .Values collection will not like that because it is modified during the
-			// iteration. We split the operation in two, get all the diff cancelation sources, then try to cancel each of them
-			// which will do the correct lock dance. Note that we could be tempted to do a RemoveAll, that will yield the same
-			// runtime issue, this is dull but safe. 
-			List<TaskCompletionSource<HttpResponseMessage>> sources;
-			lock (inflightRequestsLock) { // just lock when we iterate
-				sources = new List<TaskCompletionSource<HttpResponseMessage>> (inflightRequests.Count);
-				foreach (var r in inflightRequests.Values) {
-					sources.Add (r.CompletionSource);
-				}
-			}
-			sources.ForEach (source => { source.TrySetCanceled (); });
-		}
-#endif
 
 		/// <summary>The maximum amount of content to load into memory when sending content with a request.</summary>
 		/// <value>The maximum size of content to load into memory.</value>
@@ -257,16 +176,10 @@ namespace Foundation {
 		void RemoveInflightData (NSUrlSessionTask task, bool cancel = true)
 		{
 			lock (inflightRequestsLock) {
-				if (inflightRequests.TryGetValue (task, out var data)) {
+				if (inflightRequests.Remove (task, out var data)) {
 					if (cancel)
 						data.CancellationTokenSource.Cancel ();
-					inflightRequests.Remove (task);
 				}
-#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
-				// do we need to be notified? If we have not inflightData, we do not
-				if (inflightRequests.Count == 0)
-					RemoveNotification ();
-#endif
 			}
 
 			if (cancel)
@@ -275,23 +188,19 @@ namespace Foundation {
 			task?.Dispose ();
 		}
 
-		/// <param name="disposing">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
+			var tasks = new List<NSUrlSessionTask> ();
 			lock (inflightRequestsLock) {
-#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
-				// remove the notification if present, method checks against null
-				RemoveNotification ();
-#endif
-				foreach (var pair in inflightRequests) {
-					pair.Key?.Cancel ();
-					pair.Key?.Dispose ();
-				}
-
+				tasks.AddRange (inflightRequests.Keys);
 				inflightRequests.Clear ();
 			}
+			foreach (var task in tasks) {
+				task.Cancel ();
+				task.Dispose ();
+			}
+
 			session.InvalidateAndCancel ();
 			base.Dispose (disposing);
 		}
@@ -364,34 +273,15 @@ namespace Foundation {
 				trustOverrideForUrl = value;
 			}
 		}
-#if !NET8_0 && !NET10_0_OR_GREATER
-		// we do check if a user does a request and the application goes to the background, but
-		// in certain cases the user does that on purpose (BeingBackgroundTask) and wants to be able
-		// to use the network. In those cases, which are few, we want the developer to explicitly 
-		// bypass the check when there are not request in flight 
-		bool bypassBackgroundCheck = true;
-#endif
 
 #if !XAMCORE_5_0
 		[EditorBrowsable (EditorBrowsableState.Never)]
-#if NET8_0 || NET10_0_OR_GREATER
 		[Obsolete ("This property is ignored.")]
-#else
-		[Obsolete ("This property will be ignored in .NET 10+.")]
-#endif
 		public bool BypassBackgroundSessionCheck {
 			get {
-#if NET8_0 || NET10_0_OR_GREATER
 				return true;
-#else
-				return bypassBackgroundCheck;
-#endif
 			}
 			set {
-#if !NET8_0 && !NET10_0_OR_GREATER
-				EnsureModifiability ();
-				bypassBackgroundCheck = value;
-#endif
 			}
 		}
 #endif // !XAMCORE_5_0
@@ -565,10 +455,6 @@ namespace Foundation {
 			var inflightData = new InflightData (request.RequestUri?.AbsoluteUri!, cancellationToken, request);
 
 			lock (inflightRequestsLock) {
-#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
-				// Add the notification whenever needed
-				AddNotification ();
-#endif
 				inflightRequests.Add (dataTask, inflightData);
 			}
 
@@ -869,6 +755,24 @@ namespace Foundation {
 			}
 		}
 
+		static bool HasCompressedEncoding (string headerValue)
+		{
+			foreach (var encoding in headerValue.Split (',')) {
+				if (IsCompressedEncoding (encoding.Trim ()))
+					return true;
+			}
+			return false;
+		}
+
+		static bool IsCompressedEncoding (string encoding)
+		{
+			return string.Equals (encoding, "gzip", StringComparison.OrdinalIgnoreCase)
+				|| string.Equals (encoding, "deflate", StringComparison.OrdinalIgnoreCase)
+				|| string.Equals (encoding, "br", StringComparison.OrdinalIgnoreCase)
+				|| string.Equals (encoding, "compress", StringComparison.OrdinalIgnoreCase)
+				|| string.Equals (encoding, "zstd", StringComparison.OrdinalIgnoreCase);
+		}
+
 		partial class NSUrlSessionHandlerDelegate : NSUrlSessionDataDelegate {
 			readonly NSUrlSessionHandler sessionHandler;
 
@@ -959,6 +863,20 @@ namespace Foundation {
 					if (wasRedirected)
 						httpResponse.RequestMessage.RequestUri = absoluteUri;
 
+					// NSURLSession automatically decompresses content for all supported
+					// encodings (gzip, deflate, br, zstd, etc.), and there's no way to
+					// turn it off. After decompression, Content-Encoding and Content-Length
+					// are stale (Content-Length refers to compressed size), so we need to
+					// remove them to match the behavior of other HTTP handlers:
+					// - SocketsHttpHandler:    https://github.com/dotnet/runtime/blob/b2974279efd059efaa17f359ed4b266b1c705721/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/DecompressionHandler.cs#L122-L123
+					// - AndroidMessageHandler: https://github.com/dotnet/android/pull/7785
+					// Ref: https://github.com/dotnet/macios/issues/23958
+					// This behavior can be opted out of by setting the
+					// Foundation.NSUrlSessionHandler.KeepHeadersAfterDecompression switch.
+					var keepHeaders = AppContext.TryGetSwitch ("Foundation.NSUrlSessionHandler.KeepHeadersAfterDecompression", out var keepHeadersEnabled) && keepHeadersEnabled;
+					string? contentEncodingValue = null;
+					string? contentLengthValue = null;
+
 					foreach (var v in urlResponse.AllHeaderFields) {
 						var key = v.Key?.ToString ();
 						var value = v.Value?.ToString ();
@@ -968,8 +886,29 @@ namespace Foundation {
 						// NSUrlSession tries to be smart with cookies, we will not use the raw value but the ones provided by the cookie storage
 						if (key == SetCookie) continue;
 
+						if (!keepHeaders && string.Equals (key, ContentEncodingHeaderName, StringComparison.OrdinalIgnoreCase)) {
+							contentEncodingValue = value;
+							continue;
+						}
+						if (!keepHeaders && string.Equals (key, ContentLengthHeaderName, StringComparison.OrdinalIgnoreCase)) {
+							contentLengthValue = value;
+							continue;
+						}
+
 						httpResponse.Headers.TryAddWithoutValidation (key, value);
 						httpResponse.Content.Headers.TryAddWithoutValidation (key, value);
+					}
+
+					var contentWasDecompressed = contentEncodingValue is not null && HasCompressedEncoding (contentEncodingValue);
+					if (!contentWasDecompressed) {
+						if (contentEncodingValue is not null) {
+							httpResponse.Headers.TryAddWithoutValidation (ContentEncodingHeaderName, contentEncodingValue);
+							httpResponse.Content.Headers.TryAddWithoutValidation (ContentEncodingHeaderName, contentEncodingValue);
+						}
+						if (contentLengthValue is not null) {
+							httpResponse.Headers.TryAddWithoutValidation (ContentLengthHeaderName, contentLengthValue);
+							httpResponse.Content.Headers.TryAddWithoutValidation (ContentLengthHeaderName, contentLengthValue);
+						}
 					}
 
 					// it might be confusing that we are not using the managed CookieStore here, this is ONLY for those cookies that have been retrieved from
@@ -1151,6 +1090,19 @@ namespace Foundation {
 						var credential = new NSUrlCredential (identity, new SecCertificate [] { cert }, NSUrlCredentialPersistence.ForSession);
 						completionHandler (NSUrlSessionAuthChallengeDisposition.UseCredential, credential);
 						return;
+					} else if (!AppContext.TryGetSwitch ("Foundation.NSUrlSessionHandler.NoMissingCertificateHandling", out bool enabled) || !enabled) {
+						// The server requested a certificate, but we don't have one to provide. Fail the request with a meaningful exception
+						// that allows the developer to identify this, ask the user for a certificate, add it to the ClientCertificates collection
+						// and then re-try the request.
+						lock (inflight.Lock) {
+							inflight.Exception = new HttpRequestException ("An error occurred while sending the request.",
+								new WebException ("Error: Certificate Required",
+									new AuthenticationException ("Error: Certificate Required"),
+								WebExceptionStatus.SecureChannelFailure, null));
+						}
+						// We will still continue with a null credential, since some services use optional client certificates and this will still let it succeed
+						completionHandler (NSUrlSessionAuthChallengeDisposition.PerformDefaultHandling, challenge.ProposedCredential);
+						return;
 					}
 				}
 
@@ -1221,9 +1173,10 @@ namespace Foundation {
 					authenticationType = "NTLM";
 				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTTPBasic) {
 					authenticationType = "basic";
+				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTTPDigest) {
+					authenticationType = "digest";
 				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodNegotiate ||
-					protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTMLForm ||
-					protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTTPDigest) {
+					protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTMLForm) {
 					// Want to reject this authentication type to allow the next authentication method in the request to
 					// be used.
 					authenticationType = RejectProtectionSpaceAuthType;
@@ -1270,6 +1223,7 @@ namespace Foundation {
 				disposed = onDisposed;
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				var action = Interlocked.Exchange (ref disposed, null);
@@ -1335,6 +1289,7 @@ namespace Foundation {
 				return Task.FromResult (content);
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				if (disposing) {
@@ -1635,6 +1590,7 @@ namespace Foundation {
 				cfRunLoop.RemoveSource (source, nsMode);
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				stream?.Dispose ();

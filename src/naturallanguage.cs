@@ -330,8 +330,8 @@ namespace NaturalLanguage {
 
 		/// <param name="characterIndex">A character index for the desired range.</param>
 		/// <param name="unit">The unit, which covers the <paramref name="characterIndex" />, whose range to get.</param>
-		/// <summary>Returns the lexical range of the <paramref name="unit" /> that contains the spcified <paramref name="characterIndex" />.</summary>
-		/// <returns>The lexical range of the <paramref name="unit" /> that contains the spcified <paramref name="characterIndex" />.</returns>
+		/// <summary>Returns the lexical range of the <paramref name="unit" /> that contains the specified <paramref name="characterIndex" />.</summary>
+		/// <returns>The lexical range of the <paramref name="unit" /> that contains the specified <paramref name="characterIndex" />.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("tokenRangeAtIndex:unit:")]
 		NSRange GetTokenRange (nuint characterIndex, NSString unit);

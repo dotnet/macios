@@ -75,6 +75,8 @@ namespace MetalPerformanceShaders {
 		ComplexFloat32 = FloatBit | ComplexBit | 64,
 		[iOS (16, 2), MacCatalyst (16, 2), TV (16, 2)]
 		ComplexFloat16 = FloatBit | ComplexBit | 32,
+		[iOS (26, 4), MacCatalyst (26, 4), TV (26, 4)]
+		ComplexBFloat16 = AlternateEncodingBit | FloatBit | ComplexBit | 32,
 
 		/// <summary>To be added.</summary>
 		SignedBit = 0x20000000,

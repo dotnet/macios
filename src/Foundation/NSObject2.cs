@@ -263,7 +263,7 @@ namespace Foundation {
 		// Must be kept in sync with the same enum in trampolines.h
 		enum XamarinGCHandleFlags : uint {
 			None = 0,
-			WeakGCHandle = 1,
+			// unused = 1
 			HasManagedRef = 2,
 			InitialSet = 4,
 		}
@@ -500,7 +500,7 @@ namespace Foundation {
 				throw new InvalidOperationException ($"Unable to create a managed reference for the pointer {handle} whose managed type is {GetType ().FullName} because it wasn't possible to get the class of the pointer: {error_message}");
 
 			if (isUserType) {
-				var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet | XamarinGCHandleFlags.WeakGCHandle;
+				var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
 				var gchandle = GCHandle.Alloc (this, GCHandleType.WeakTrackResurrection);
 				var h = GCHandle.ToIntPtr (gchandle);
 				byte rv;
@@ -1091,6 +1091,14 @@ namespace Foundation {
 			handle = NativeHandle.Zero;
 		}
 
+		// This is weird - a setter only - but it's so that we can remove an object right after creating it using object creation syntax:
+		//     new NSString ("") { RemoveFromObjectMap = true };
+		internal bool RemoveFromObjectMap {
+			set {
+				Runtime.RemoveFromObjectMap (this);
+			}
+		}
+
 		/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSObject.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
@@ -1256,6 +1264,7 @@ namespace Foundation {
 					base.ObserveValue (keyPath, ofObject, change, context);
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				if (disposing) {

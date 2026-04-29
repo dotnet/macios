@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <ObjcBindingApiDefinition Include="$(BindingsTestDirectory)\ApiDefinition.cs" />
-    <ObjcBindingApiDefinition Include="$(RootTestsDirectory)\generator\tests\ref-out-parameters.cs" />
+    <ObjcBindingApiDefinition Include="$(RootTestsDirectory)\bgen\tests\ref-out-parameters.cs" />
     <ObjcBindingApiDefinition Include="$(BindingsTestDirectory)\ApiDefinition.generated.cs" />
     <ObjcBindingApiDefinition Include="$(BindingsTestDirectory)\ApiProtocol.cs" />
   </ItemGroup>

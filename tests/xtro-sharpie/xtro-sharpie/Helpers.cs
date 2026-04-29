@@ -160,10 +160,10 @@ namespace Extrospection {
 				if (attr.AvailabilityAttributeUnavailable && (availName == platform))
 					return false;
 				// for iOS we won't report missing members that were deprecated before 5.0
-				if (!attr.Deprecated.IsEmpty && availName == "ios" && attr.Deprecated.Major < 5)
+				if (!attr.Deprecated.IsEmptyVersionTuple && availName == "ios" && attr.Deprecated.Major < 5)
 					return false;
 				// can't return true right away as it can be deprecated too
-				if (!attr.Introduced.IsEmpty && (availName == platform))
+				if (!attr.Introduced.IsEmptyVersionTuple && availName == platform)
 					result = true;
 			}
 			return result;
@@ -205,7 +205,7 @@ namespace Extrospection {
 				var availName = attr.AvailabilityAttributePlatformIdentifierName.ToLowerInvariant ();
 				if (availName != platform)
 					continue;
-				if (!attr.Deprecated.IsEmpty)
+				if (!attr.Deprecated.IsEmptyVersionTuple)
 					return true;
 			}
 			// then check for introduced - there may be both, so we must check *all* attributes for deprecation before checking for introduced
@@ -213,7 +213,7 @@ namespace Extrospection {
 				var availName = attr.AvailabilityAttributePlatformIdentifierName.ToLowerInvariant ();
 				if (availName != platform)
 					continue;
-				if (!attr.Introduced.IsEmpty)
+				if (!attr.Introduced.IsEmptyVersionTuple)
 					return false;
 			}
 

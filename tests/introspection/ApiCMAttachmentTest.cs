@@ -21,8 +21,7 @@ using Network;
 
 using GColorConversionInfoTriple = CoreGraphics.CGColorConversionInfoTriple;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -144,7 +143,7 @@ namespace Introspection {
 			return SkipNameSpace (type.Namespace) || Skip (type.Name) || SkipDueToAttribute (type);
 		}
 
-		protected virtual bool SkipNameSpace (string nameSpace)
+		protected virtual bool SkipNameSpace (string? nameSpace)
 		{
 			switch (nameSpace) {
 			case "Network": // none of the classes support it and they require a lot of setup to confirm it
@@ -250,7 +249,7 @@ namespace Introspection {
 			}
 		}
 
-		protected INativeObject GetINativeInstance (Type t)
+		protected INativeObject? GetINativeInstance (Type t)
 		{
 			var ctor = t.GetConstructor (Type.EmptyTypes);
 			if ((ctor is not null) && !ctor.IsAbstract)
@@ -265,7 +264,7 @@ namespace Introspection {
 				return Runtime.GetINativeObject<CFArray> (new NSArray ().Handle, false);
 			case "CFBundle":
 				var bundles = CFBundle.GetAll ();
-				if (bundles.Length > 0)
+				if (bundles?.Length > 0)
 					return bundles [0];
 				else
 					throw new InvalidOperationException (string.Format ("Could not create the new instance for type {0}.", t.Name));
@@ -273,9 +272,7 @@ namespace Introspection {
 				return CFNotificationCenter.Darwin;
 			case "CFReadStream":
 			case "CFStream":
-				CFReadStream readStream;
-				CFWriteStream writeStream;
-				CFStream.CreatePairWithSocketToHost ("www.google.com", 80, out readStream, out writeStream);
+				CFStream.CreatePairWithSocketToHost ("www.google.com", 80, out var readStream, out var writeStream);
 				return readStream;
 			case "CFWriteStream":
 				CFStream.CreatePairWithSocketToHost ("www.google.com", 80, out readStream, out writeStream);
@@ -288,7 +285,7 @@ namespace Introspection {
 				return DispatchData.FromByteBuffer (new byte [] { 1, 2, 3, 4 });
 			case "AudioFile":
 				var path = Path.GetFullPath ("1.caf");
-				var af = AudioFile.Open (CFUrl.FromFile (path), AudioFilePermission.Read, AudioFileType.CAF);
+				var af = AudioFile.Open (CFUrl.FromFile (path)!, AudioFilePermission.Read, AudioFileType.CAF);
 				return af;
 			case "CFHTTPMessage":
 				return CFHTTPMessage.CreateEmpty (false);
@@ -296,7 +293,7 @@ namespace Introspection {
 				return new CFMutableString ("xamarin");
 			case "CGBitmapContext":
 				byte [] data = new byte [400];
-				using (CGColorSpace space = CGColorSpace.CreateDeviceRGB ()) {
+				using (var space = CGColorSpace.CreateDeviceRGB ()) {
 					return new CGBitmapContext (data, 10, 10, 8, 40, space, CGBitmapFlags.PremultipliedLast);
 				}
 			case "CGContextPDF":
@@ -305,13 +302,13 @@ namespace Introspection {
 					return new CGContextPDF (url);
 			case "CGColorConversionInfo":
 				var cci = new GColorConversionInfoTriple () {
-					Space = CGColorSpace.CreateGenericRgb (),
+					Space = CGColorSpace.CreateGenericRgb ()!,
 					Intent = CGColorRenderingIntent.Default,
 					Transform = CGColorConversionInfoTransformType.ApplySpace
 				};
-				return new CGColorConversionInfo ((NSDictionary) null, cci, cci, cci);
+				return new CGColorConversionInfo ((NSDictionary?) null, cci, cci, cci);
 			case "CGDataConsumer":
-				using (NSMutableData destData = new NSMutableData ()) {
+				using (var destData = new NSMutableData ()) {
 					return new CGDataConsumer (destData);
 				}
 			case "CGDataProvider":
@@ -334,7 +331,7 @@ namespace Introspection {
 			case "CMBufferQueue":
 				return CMBufferQueue.CreateUnsorted (2);
 			case "CTFont":
-				CTFontDescriptorAttributes fda = new CTFontDescriptorAttributes () {
+				var fda = new CTFontDescriptorAttributes () {
 					FamilyName = "Courier",
 					StyleName = "Bold",
 					Size = 16.0f
@@ -361,7 +358,7 @@ namespace Introspection {
 						Font = new CTFont ("ArialMT", 24)
 					}));
 				var bPath = UIBezierPath.FromRect (new RectangleF (0, 0, 3, 3));
-				return framesetter.GetFrame (new NSRange (0, 0), bPath.CGPath, null);
+				return framesetter.GetFrame (new NSRange (0, 0), bPath.CGPath!, null);
 			case "CTFramesetter":
 				return new CTFramesetter (new NSAttributedString ("Hello, world",
 					new CTStringAttributes () {
@@ -378,7 +375,7 @@ namespace Introspection {
 					}));
 #if __MACCATALYST__ || __MACOS__
 			case "CGEvent":
-				return new CGEvent ((CGEventSource) null);
+				return new CGEvent ((CGEventSource?) null);
 			case "CGEventSource":
 				return new CGEventSource (CGEventSourceStateID.CombinedSession);
 #endif
@@ -386,7 +383,7 @@ namespace Introspection {
 				var storage = new NSMutableData ();
 				return CGImageDestination.Create (new CGDataConsumer (storage), "public.png", 1);
 			case "CGImageMetadataTag":
-				using (NSString name = new NSString ("tagName"))
+				using (var name = new NSString ("tagName"))
 				using (var value = new NSString ("value"))
 					return new CGImageMetadataTag (CGImageMetadataTagNamespaces.Exif, CGImageMetadataTagPrefixes.Exif, name, CGImageMetadataType.Default, value);
 			case "CGImageSource":
@@ -400,11 +397,10 @@ namespace Introspection {
 				return SecPolicy.CreateSslPolicy (false, null);
 			case "SecIdentity":
 				using (var options = NSDictionary.FromObjectAndKey (new NSString ("farscape"), SecImportExport.Passphrase)) {
-					NSDictionary [] array;
-					var result = SecImportExport.ImportPkcs12 (farscape_pfx, options, out array);
+					var result = SecImportExport.ImportPkcs12 (farscape_pfx, options, out var array);
 					if (result != SecStatusCode.Success)
 						throw new InvalidOperationException (string.Format ("Could not create the new instance for type {0} due to {1}.", t.Name, result));
-					return Runtime.GetINativeObject<SecIdentity> (array [0].LowlevelObjectForKey (SecImportExport.Identity.Handle), false);
+					return Runtime.GetINativeObject<SecIdentity> (array! [0].LowlevelObjectForKey (SecImportExport.Identity.Handle), false);
 				}
 			case "SecTrust":
 				X509Certificate x = X509CertificateLoader.LoadCertificate (mail_google_com);
@@ -417,13 +413,13 @@ namespace Introspection {
 			case "NetworkReachability":
 				return new NetworkReachability (IPAddress.Loopback, null);
 			case "VTHdrPerFrameMetadataGenerationSession":
-				var rv = VTHdrPerFrameMetadataGenerationSession.Create (30, (NSDictionary) null, out var error);
+				var rv = VTHdrPerFrameMetadataGenerationSession.Create (30, (NSDictionary?) null, out var error);
 				if (rv is null)
 					throw new InvalidOperationException ($"Could not create the new instance for type {t.Name}: {error}");
 				return rv;
 			case "VTCompressionSession":
 			case "VTSession":
-				return VTCompressionSession.Create (1024, 768, CMVideoCodecType.H264, (sourceFrame, status, flags, buffer) => { }, null, (CVPixelBufferAttributes) null);
+				return VTCompressionSession.Create (1024, 768, CMVideoCodecType.H264, (sourceFrame, status, flags, buffer) => { }, null, (CVPixelBufferAttributes?) null);
 			case "VTPixelRotationSession":
 				return VTPixelRotationSession.Create ();
 			case "VTPixelTransferSession":
@@ -480,20 +476,17 @@ namespace Introspection {
 					return new SecTrust2 (new SecTrust (x2, policy));
 			case "SecIdentity2":
 				using (var options = NSDictionary.FromObjectAndKey (new NSString ("farscape"), SecImportExport.Passphrase)) {
-					NSDictionary [] array;
-					var result = SecImportExport.ImportPkcs12 (farscape_pfx, options, out array);
+					var result = SecImportExport.ImportPkcs12 (farscape_pfx, options, out var array);
 					if (result != SecStatusCode.Success)
 						throw new InvalidOperationException (string.Format ("Could not create the new instance for type {0} due to {1}.", t.Name, result));
-					return new SecIdentity2 (Runtime.GetINativeObject<SecIdentity> (array [0].LowlevelObjectForKey (SecImportExport.Identity.Handle), false));
+					return new SecIdentity2 (Runtime.GetINativeObject<SecIdentity> (array! [0].LowlevelObjectForKey (SecImportExport.Identity.Handle), false)!);
 				}
 
 			case "SecKey":
-				SecKey private_key;
-				SecKey public_key;
 				using (var record = new SecRecord (SecKind.Key)) {
 					record.KeyType = SecKeyType.RSA;
 					record.KeySizeInBits = 512; // it's not a performance test :)
-					SecKey.GenerateKeyPair (record.ToDictionary (), out public_key, out private_key);
+					SecKey.GenerateKeyPair (record.ToDictionary (), out var public_key, out var private_key);
 					return private_key;
 				}
 			case "SecAccessControl":
@@ -516,21 +509,21 @@ namespace Introspection {
 				CMBlockBufferError bbe;
 				var result = CMBlockBuffer.CreateEmpty (0, CMBlockBufferFlags.AssureMemoryNow, out bbe);
 				if (bbe == CMBlockBufferError.None)
-					return result;
+					return result!;
 				else
 					throw new InvalidOperationException (string.Format ("Could not create the new instance {0}.", bbe.ToString ()));
 			case "CMSampleBuffer":
 				var pixelBuffer = new CVPixelBuffer (20, 10, CVPixelFormatType.CV24RGB);
 
 				CMFormatDescriptionError fde;
-				var desc = CMVideoFormatDescription.CreateForImageBuffer (pixelBuffer, out fde);
+				var desc = CMVideoFormatDescription.CreateForImageBuffer (pixelBuffer, out fde)!;
 
 				var sampleTiming = new CMSampleTimingInfo ();
 
 				CMSampleBufferError sbe;
 				var sb = CMSampleBuffer.CreateForImageBuffer (pixelBuffer, true, desc, sampleTiming, out sbe);
 				if (sbe == CMSampleBufferError.None)
-					return sb;
+					return sb!;
 				else
 					throw new InvalidOperationException (string.Format ("Could not create the new instance {0}.", sbe.ToString ()));
 			default:
@@ -553,16 +546,15 @@ namespace Introspection {
 					var mode = CMAttachmentMode.ShouldNotPropagate;
 					CMAttachmentMode otherMode;
 					obj.SetAttachment ("key", attch, CMAttachmentMode.ShouldNotPropagate);
-					using (var otherAttch = obj.GetAttachment<CFString> ("key", out otherMode)) {
+					using (var otherAttch = obj.GetAttachment<CFString> ("key", out otherMode)!) {
 						obj.RemoveAllAttachments ();
 						Assert.AreEqual (mode, otherMode);
 						Assert.IsNotNull (otherAttch, "For type {0}", t.Name);
 						Assert.AreEqual (attch.ToString (), otherAttch.ToString (), "For type {0}", t.Name);
 					}
 				}
-				if (t is IDisposable) {
-					var disposable = obj as IDisposable;
-					disposable.Dispose ();
+				if (obj is IDisposable disp) {
+					disp.Dispose ();
 				}
 			}
 		}
@@ -584,7 +576,7 @@ namespace Introspection {
 				var n = GetINativeInstance (t);
 				if (n is null)
 					Assert.Fail ("Could not create instance of '{0}'.", t);
-				var obj = new AttachableNativeObject (n);
+				var obj = new AttachableNativeObject (n!);
 				Assert.That (obj.Handle, Is.Not.EqualTo (IntPtr.Zero), t.Name + ".Handle");
 				using (var attch = new CFString ("myAttch")) {
 					CMAttachmentMode otherMode;
@@ -594,9 +586,8 @@ namespace Introspection {
 						Assert.Null (otherAttch, "For type {0}", t.Name);
 					}
 				}
-				if (t is IDisposable) {
-					var disposable = obj as IDisposable;
-					disposable.Dispose ();
+				if (t is IDisposable disp) {
+					disp.Dispose ();
 				}
 			}
 		}

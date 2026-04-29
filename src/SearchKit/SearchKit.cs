@@ -373,9 +373,7 @@ namespace SearchKit {
 			Dispose ();
 		}
 
-		/// <param name="disposing">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != NativeHandle.Zero) {

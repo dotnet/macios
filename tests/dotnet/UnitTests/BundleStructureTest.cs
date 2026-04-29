@@ -131,7 +131,7 @@ namespace Xamarin.Tests {
 						// macOS bundle checks use '/'. Handle both when extracting the framework name.
 						var slashIdx = fwIdx > 0 ? v.LastIndexOfAny ([Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar], fwIdx - 1) : -1;
 						var frameworkName = v.Substring (slashIdx + 1, fwIdx - slashIdx - 1);
-						if (frameworkName.StartsWith ("lib", StringComparison.Ordinal) || frameworkName == "BundleStructure")
+						if (frameworkName.StartsWith ("lib", StringComparison.Ordinal) || frameworkName == "BundleStructure" || frameworkName.EndsWith (".r2r", StringComparison.Ordinal))
 							return true;
 					}
 				}

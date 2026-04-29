@@ -3040,7 +3040,7 @@ namespace Xamarin.Tests {
 			"@rpath/libSystem.Native.framework/libSystem.Native",
 			"@rpath/libSystem.Net.Security.Native.framework/libSystem.Net.Security.Native",
 			"@rpath/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple",
-			"@rpath/MySimpleApp.framework/MySimpleApp",
+			"@rpath/MySimpleApp.r2r.framework/MySimpleApp.r2r",
 		];
 
 		static string [] coreclrFrameworks_tvOS = [
@@ -3051,7 +3051,7 @@ namespace Xamarin.Tests {
 			"@rpath/libSystem.IO.Compression.Native.framework/libSystem.IO.Compression.Native",
 			"@rpath/libSystem.Native.framework/libSystem.Native",
 			"@rpath/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple",
-			"@rpath/MySimpleApp.framework/MySimpleApp",
+			"@rpath/MySimpleApp.r2r.framework/MySimpleApp.r2r",
 		];
 
 		static string [] coreclrFrameworks_MacCatalyst = [

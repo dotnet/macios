@@ -44,12 +44,9 @@
       <MergedAssemblies Include="$(OutputPath)/System.Reflection.Metadata.dll" Condition="'$(MergeSystemAssemblies)' == 'true'" />
       <MergedAssemblies Include="$(OutputPath)/System.Reflection.MetadataLoadContext.dll" Condition="'$(MergeSystemAssemblies)' == 'true'" />
       <MergedAssemblies Include="$(OutputPath)/System.Runtime.CompilerServices.Unsafe.dll" Condition="'$(MergeSystemAssemblies)' == 'true'" />
-      <!-- System.Text.Json and System.Text.Encodings.Web must NOT be ILMerged: internal types from
-           newer STJ versions (9.0+) are incompatible when loaded in a newer runtime (e.g. .NET 10)
-           because the runtime's base types may have new abstract/interface members the merged types
-           don't implement, causing TypeLoadExceptions. These assemblies are available at runtime from
-           the host framework or as side-by-side files in the task output directory. -->
+      <MergedAssemblies Include="$(OutputPath)/System.Text.Json.dll" Condition="'$(MergeSystemAssemblies)' == 'true'" />
       <MergedAssemblies Include="$(OutputPath)/System.Threading.Tasks.Extensions.dll" Condition="'$(MergeSystemAssemblies)' == 'true'" />
+      <MergedAssemblies Include="$(OutputPath)/System.Text.Encodings.Web.dll" Condition="'$(MergeSystemAssemblies)' == 'true'" />
 
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(Extension)' == '.dll' And $([MSBuild]::ValueOrDefault('%(FileName)', '').StartsWith('Mono.Cecil', StringComparison.OrdinalIgnoreCase))" />
       <MergedAssemblies Include="@(ReferencePath)" Condition="'%(Extension)' == '.dll' And $([MSBuild]::ValueOrDefault('%(FileName)', '').StartsWith('Xamarin.Messaging', StringComparison.OrdinalIgnoreCase))" />

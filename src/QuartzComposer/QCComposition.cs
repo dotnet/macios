@@ -14,7 +14,6 @@ namespace QuartzComposer;
 partial class QCComposition {
 #if !XAMCORE_5_0
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Field ("QCCompositionInputRSSArticleDurationKey", "QuartzComposer")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' instead.")]
 	[SupportedOSPlatform ("macos")]
 	[EditorBrowsable (EditorBrowsableState.Never)]
@@ -26,7 +25,6 @@ partial class QCComposition {
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Field ("QCCompositionInputRSSFeedURLKey", "QuartzComposer")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' instead.")]
 	[SupportedOSPlatform ("macos")]
 	[EditorBrowsable (EditorBrowsableState.Never)]
@@ -38,7 +36,6 @@ partial class QCComposition {
 	}
 
 	[BindingImpl (BindingImplOptions.GeneratedCode | BindingImplOptions.Optimizable)]
-	[Field ("QCCompositionProtocolRSSVisualizer", "QuartzComposer")]
 	[ObsoletedOSPlatform ("macos10.14", "Use 'Metal' instead.")]
 	[SupportedOSPlatform ("macos")]
 	[EditorBrowsable (EditorBrowsableState.Never)]

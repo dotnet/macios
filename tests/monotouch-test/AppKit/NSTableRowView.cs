@@ -16,8 +16,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSTableRowViewShouldChangePreviousRowSelected ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var selected = view.PreviousRowSelected;
 			view.PreviousRowSelected = !selected;
 
@@ -27,8 +25,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSTableRowViewShouldChangeNextRowSelected ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var selected = view.NextRowSelected;
 			view.NextRowSelected = !selected;
 

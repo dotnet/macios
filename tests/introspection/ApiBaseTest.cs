@@ -101,7 +101,7 @@ namespace Introspection {
 #if MONOMAC
 			get { return Console.Out; }
 #else
-			get { return AppDelegate.Runner.Writer; }
+			get { return AppDelegate.Runner.Writer!; }
 #endif
 		}
 

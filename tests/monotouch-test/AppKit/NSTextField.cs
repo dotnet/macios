@@ -16,8 +16,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSTextFieldShouldChangePlaceholderString ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var placeholder = textField.PlaceholderString;
 			textField.PlaceholderString = "Test";
 
@@ -27,8 +25,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSTextFieldShouldChangePlaceholderAttributedString ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var placeholder = textField.PlaceholderAttributedString;
 			textField.PlaceholderAttributedString = new NSAttributedString ("Test");
 

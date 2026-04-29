@@ -10,7 +10,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void ImageWithSize ()
 		{
-			Asserts.EnsureMountainLion ();
 			var image = NSImage.ImageWithSize (new CGSize (50, 50), false, rect => {
 				return true;
 			});
@@ -20,8 +19,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSImageCapInsets ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var image = new NSImage ();
 			image.CapInsets = new NSEdgeInsets (5f, 6f, 7f, 8f);
 
@@ -35,8 +32,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSImageResizingModeShouldChange ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var image = new NSImage ();
 			image.ResizingMode = NSImageResizingMode.Stretch;
 			Assert.AreEqual (image.ResizingMode, NSImageResizingMode.Stretch, "NSImageResizingMode - Was not equal to Stretch");

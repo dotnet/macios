@@ -72,7 +72,7 @@ Common flaky test root causes in this repo:
 
 When fixing:
 
-1. **Prefer unique identifiers over shared ones.** Use `Environment.ProcessId`, `Guid.NewGuid()`, or `{bundleId}-{testName}-{pid}` patterns for resource identifiers.
+1. **Prefer unique identifiers over shared ones.** Use `Process.GetCurrentProcess ().Id`, `Guid.NewGuid ()`, or `{bundleId}-{testType}-{pid}` patterns for resource identifiers.
 
 2. **Create minimal query records.** For search/delete operations, don't attach unnecessary attributes (like `LAContext`) that can cause intermittent errors.
 

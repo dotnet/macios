@@ -152,8 +152,8 @@
 		<SdkIsDevice Condition="'$(SdkIsSimulator)' != 'true' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">true</SdkIsDevice>
 
 		<!-- We don't use the 'ComputedPlatform' property anymore, but it seems like there's code out there that depends on it (according to a search on GitHub at least), so define it like we did when we used the property. -->
-		<ComputedPlatform Condition="'$(ComputedPlatform)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' == 'true'">iPhoneSimulator</ComputedPlatform>
-		<ComputedPlatform Condition="'$(ComputedPlatform)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' != 'true'">iPhone</ComputedPlatform>
+		<ComputedPlatform Condition="'$(ComputedPlatform)' == '' And '$(SdkIsSimulator)' == 'true'">iPhoneSimulator</ComputedPlatform>
+		<ComputedPlatform Condition="'$(ComputedPlatform)' == '' And '$(SdkIsDevice)' == 'true'">iPhone</ComputedPlatform>
 	</PropertyGroup>
 
 	<PropertyGroup>

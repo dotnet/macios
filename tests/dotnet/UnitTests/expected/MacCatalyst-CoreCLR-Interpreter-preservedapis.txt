@@ -3231,6 +3231,7 @@ System.Private.CoreLib.dll:System.Boolean System.Threading.CancellationTokenSour
 System.Private.CoreLib.dll:System.Boolean System.Threading.CancellationTokenSource::IsCancellationRequested()
 System.Private.CoreLib.dll:System.Boolean System.Threading.Condition/Waiter::signalled
 System.Private.CoreLib.dll:System.Boolean System.Threading.ExecutionContext::HasChangeNotifications()
+System.Private.CoreLib.dll:System.Boolean System.Threading.ExecutionContext::InstanceIsFlowSuppressed()
 System.Private.CoreLib.dll:System.Boolean System.Threading.ExecutionContext::IsDefault()
 System.Private.CoreLib.dll:System.Boolean System.Threading.ExecutionContext::m_isDefault
 System.Private.CoreLib.dll:System.Boolean System.Threading.ExecutionContext::m_isFlowSuppressed
@@ -13223,6 +13224,8 @@ System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.Finalize
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinalizeTaskReturningThunk`1(System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState&)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinalizeValueTaskReturningThunk(System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState&)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinalizeValueTaskReturningThunk`1(System.Runtime.CompilerServices.AsyncHelpers/RuntimeAsyncAwaitState&)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinishSuspensionNoContinuationContext(System.Threading.ExecutionContext&, System.Boolean, System.Threading.ExecutionContext, System.Threading.SynchronizationContext)
+System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.FinishSuspensionWithContinuationContext(System.Object&, System.Runtime.CompilerServices.ContinuationFlags&, System.Threading.ExecutionContext&, System.Boolean, System.Threading.ExecutionContext, System.Threading.SynchronizationContext)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.RestoreContexts(System.Boolean, System.Threading.ExecutionContext, System.Threading.SynchronizationContext)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.RestoreContextsOnSuspension(System.Boolean, System.Threading.ExecutionContext, System.Threading.SynchronizationContext)
 System.Private.CoreLib.dll:System.Runtime.CompilerServices.AsyncHelpers.RestoreExecutionContext(System.Threading.ExecutionContext)
@@ -17782,6 +17785,7 @@ System.Private.CoreLib.dll:System.Threading.ExecutionContext.CaptureForRestore()
 System.Private.CoreLib.dll:System.Threading.ExecutionContext.CaptureForSuspension(System.Threading.Thread)
 System.Private.CoreLib.dll:System.Threading.ExecutionContext.Dispose()
 System.Private.CoreLib.dll:System.Threading.ExecutionContext.get_HasChangeNotifications()
+System.Private.CoreLib.dll:System.Threading.ExecutionContext.get_InstanceIsFlowSuppressed()
 System.Private.CoreLib.dll:System.Threading.ExecutionContext.get_IsDefault()
 System.Private.CoreLib.dll:System.Threading.ExecutionContext.GetLocalValue(System.Threading.IAsyncLocal)
 System.Private.CoreLib.dll:System.Threading.ExecutionContext.IsFlowSuppressed()

@@ -132,7 +132,7 @@ namespace Extrospection {
 		public void Load (string filename, IEnumerable<string> searchDirectories)
 		{
 			resolver.AddSearchDirectory (searchDirectories.ToArray ());
-			resolver.AddSearchDirectory (Path.GetDirectoryName (filename));
+			resolver.AddSearchDirectory (Path.GetDirectoryName (filename)!);
 			assemblies.Add (resolver.Load (filename));
 		}
 

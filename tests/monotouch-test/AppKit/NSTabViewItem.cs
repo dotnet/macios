@@ -16,8 +16,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSTabViewItemShouldChangeImage ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var image = item.Image;
 			item.Image = new NSImage ();
 
@@ -27,8 +25,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSTabViewItemShouldChangeViewController ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var vc = item.ViewController;
 			item.ViewController = new NSViewController ();
 

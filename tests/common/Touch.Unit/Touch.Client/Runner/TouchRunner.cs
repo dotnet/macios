@@ -94,7 +94,7 @@ namespace MonoTouch.NUnit.UI {
 			set { filter = value; }
 		}
 
-		public HashSet<string> ExcludedCategories { get; set; }
+		public HashSet<string>? ExcludedCategories { get; set; }
 
 		public bool TerminateAfterExecution {
 			get { return TouchOptions.Current.TerminateAfterExecution && !connection_failure; }
@@ -102,7 +102,7 @@ namespace MonoTouch.NUnit.UI {
 		}
 
 		List<Assembly> assemblies = new List<Assembly> ();
-		List<string> fixtures;
+		List<string>? fixtures;
 
 		public void Add (Assembly assembly)
 		{
@@ -188,7 +188,7 @@ namespace MonoTouch.NUnit.UI {
 			}
 		}
 
-		ITest Find (ITest parent, string fullname, List<ITest> hierarchy)
+		ITest? Find (ITest parent, string fullname, List<ITest> hierarchy)
 		{
 			if (parent.FullName == fullname) {
 				hierarchy.Add (parent);
@@ -274,13 +274,13 @@ namespace MonoTouch.NUnit.UI {
 
 		#region writer
 
-		public TestResult Result { get; set; }
+		public TestResult? Result { get; set; }
 
-		public TextWriter Writer { get; set; }
+		public TextWriter? Writer { get; set; }
 
-		Task WriterFinishedTask { get; set; }
+		Task? WriterFinishedTask { get; set; }
 
-		static string SelectHostName (string [] names, int port)
+		static string? SelectHostName (string [] names, int port)
 		{
 			if (names.Length == 0)
 				return null;
@@ -289,7 +289,7 @@ namespace MonoTouch.NUnit.UI {
 				return names [0];
 
 			object lock_obj = new object ();
-			string result = null;
+			string? result = null;
 			int failures = 0;
 
 			using (var evt = new ManualResetEvent (false)) {
@@ -333,17 +333,21 @@ namespace MonoTouch.NUnit.UI {
 				var writers = new List<TextWriter> ();
 				if (options.ShowUseNetworkLogger) {
 					try {
-						string hostname = null;
+						string? hostname = null;
 						WriterFinishedTask = null;
-						TextWriter defaultWriter = null;
+						TextWriter? defaultWriter = null;
 						switch (options.Transport) {
 						case "FILE":
+							if (string.IsNullOrEmpty (options.LogFile))
+								throw new InvalidOperationException ("The FILE transport requires a log file path.");
 							Console.WriteLine ("[{0}] Sending '{1}' results to the file {2}", now, message, options.LogFile);
 							defaultWriter = new StreamWriter (options.LogFile, true, System.Text.Encoding.UTF8) {
 								AutoFlush = true,
 							};
 							break;
 						case "HTTP":
+							if (string.IsNullOrWhiteSpace (options.HostName))
+								throw new InvalidOperationException ("No host name specified.");
 							var hostnames = options.HostName.Split (',');
 							hostname = hostnames [0];
 							if (hostnames.Length > 1)
@@ -361,6 +365,8 @@ namespace MonoTouch.NUnit.UI {
 							Console.WriteLine ("Unknown transport '{0}': switching to default (TCP)", options.Transport);
 							goto case "TCP";
 						case "TCP":
+							if (string.IsNullOrWhiteSpace (options.HostName))
+								throw new InvalidOperationException ("No host name specified.");
 							if (!options.UseTcpTunnel)
 								hostname = SelectHostName (options.HostName.Split (','), options.HostPort);
 							else
@@ -411,18 +417,21 @@ namespace MonoTouch.NUnit.UI {
 				Writer = new MultiplexedTextWriter (writers);
 			}
 
-			if (Writer is null)
-				Writer = Console.Out;
+			var writer = Writer;
+			if (writer is null) {
+				writer = Console.Out;
+				Writer = writer;
+			}
 
-			Writer.WriteLine ("[Runner executing:\t{0}]", message);
-			Writer.WriteLine ("[MonoTouch Version:\t{0}]", Constants.Version);
-			Writer.WriteLine ("[Assembly:\t{0}.dll ({1} bits)]", typeof (NSObject).Assembly.GetName ().Name, IntPtr.Size * 8);
-			Writer.WriteLine ("[GC:\t{0}]", GC.MaxGeneration == 0 ? "Boehm" : "sgen");
-			WriteDeviceInformation (Writer);
-			Writer.WriteLine ("[Device Locale:\t{0}]", NSLocale.CurrentLocale.Identifier);
-			Writer.WriteLine ("[Device Date/Time:\t{0}]", now); // to match earlier C.WL output
+			writer.WriteLine ("[Runner executing:\t{0}]", message);
+			writer.WriteLine ("[MonoTouch Version:\t{0}]", Constants.Version);
+			writer.WriteLine ("[Assembly:\t{0}.dll ({1} bits)]", typeof (NSObject).Assembly.GetName ().Name, IntPtr.Size * 8);
+			writer.WriteLine ("[GC:\t{0}]", GC.MaxGeneration == 0 ? "Boehm" : "sgen");
+			WriteDeviceInformation (writer);
+			writer.WriteLine ("[Device Locale:\t{0}]", NSLocale.CurrentLocale.Identifier);
+			writer.WriteLine ("[Device Date/Time:\t{0}]", now); // to match earlier C.WL output
 
-			Writer.WriteLine ("[Bundle:\t{0}]", NSBundle.MainBundle.BundleIdentifier);
+			writer.WriteLine ("[Bundle:\t{0}]", NSBundle.MainBundle.BundleIdentifier);
 			// FIXME: add data about how the app was compiled (e.g. ARMvX, LLVM, GC and Linker options)
 			PassedCount = 0;
 			IgnoredCount = 0;
@@ -432,7 +441,7 @@ namespace MonoTouch.NUnit.UI {
 		}
 
 		// returns true if test run should still start
-		bool ShowConnectionErrorAlert (string hostname, int port, Exception ex)
+		bool ShowConnectionErrorAlert (string? hostname, int port, Exception ex)
 		{
 #if __TVOS__ || __MACOS__
 			return true;
@@ -446,11 +455,12 @@ namespace MonoTouch.NUnit.UI {
 				return true;
 
 			Console.WriteLine ("Network error: Cannot connect to {0}:{1}: {2}.", hostname, port, ex);
+			var alertDelegate = new UIAlertViewDelegate ();
 			UIAlertView alert = new UIAlertView ("Network Error",
 				String.Format ("Cannot connect to {0}:{1}: {2}. Continue on console ?", hostname, port, ex.Message),
-				(IUIAlertViewDelegate) null, "Cancel", "Continue");
+				alertDelegate, "Cancel", "Continue");
 			int button = -1;
-			alert.Clicked += delegate (object sender, UIButtonEventArgs e)
+			alert.Clicked += delegate (object? sender, UIButtonEventArgs e)
 			{
 				button = (int) e.ButtonIndex;
 			};
@@ -471,13 +481,17 @@ namespace MonoTouch.NUnit.UI {
 
 		public void CloseWriter ()
 		{
+			var writer = Writer;
+			if (writer is null)
+				return;
+
 			int total = PassedCount + InconclusiveCount + FailedCount; // ignored are *not* run
-			Writer.WriteLine ("Tests run: {0} Passed: {1} Inconclusive: {2} Failed: {3} Ignored: {4}", total, PassedCount, InconclusiveCount, FailedCount, IgnoredCount);
+			writer.WriteLine ("Tests run: {0} Passed: {1} Inconclusive: {2} Failed: {3} Ignored: {4}", total, PassedCount, InconclusiveCount, FailedCount, IgnoredCount);
 
 			// In some cases, the close is not correctly implemented and we might get a InvalidOperationException, we try to close and then null the obj for it to be
 			// GC.
 			try {
-				Writer.Close ();
+				writer.Close ();
 			} finally {
 				Writer = null;
 			}
@@ -487,26 +501,30 @@ namespace MonoTouch.NUnit.UI {
 
 		public void TestStarted (ITest test)
 		{
+			var writer = Writer ?? Console.Out;
 			if (test is TestSuite) {
-				Writer.WriteLine ();
+				writer.WriteLine ();
 #if NUNITLITE_NUGET
-				Writer.WriteLine (test.FullName);
+				writer.WriteLine (test.FullName);
 #else
-				Writer.WriteLine (test.Name);
+				writer.WriteLine (test.Name);
 #endif
 			}
 		}
 
 		public virtual void TestFinished (ITestResult r)
 		{
-			TestResult result = r as TestResult;
+			if (r is not TestResult result)
+				return;
+
+			var writer = Writer ?? Console.Out;
 
 			if (result.Test is TestSuite) {
 				if (!result.IsFailure () && !result.IsSuccess () && !result.IsInconclusive () && !result.IsIgnored ())
-					Writer.WriteLine ("\t[INFO] {0}", result.Message);
+					writer.WriteLine ("\t[INFO] {0}", result.Message);
 				var skip = result.Test.Properties ["_SKIPREASON"];
 				if (skip.Count > 0)
-					Writer.WriteLine ("\t[SKIPREASON] {0}", skip [0]);
+					writer.WriteLine ("\t[SKIPREASON] {0}", skip [0]);
 
 #if NUNITLITE_NUGET
 				string name = result.Test.FullName;
@@ -514,46 +532,46 @@ namespace MonoTouch.NUnit.UI {
 				string name = result.Test.Name;
 #endif
 				if (!String.IsNullOrEmpty (name))
-					Writer.WriteLine ("{0} : {1} ms", name, result.GetDuration ().TotalMilliseconds);
+					writer.WriteLine ("{0} : {1} ms", name, result.GetDuration ().TotalMilliseconds);
 			} else {
 				if (result.IsSuccess ()) {
-					Writer.Write ("\t[PASS] ");
+					writer.Write ("\t[PASS] ");
 					PassedCount++;
 				} else if (result.IsIgnored ()) {
-					Writer.Write ("\t[IGNORED] ");
+					writer.Write ("\t[IGNORED] ");
 					IgnoredCount++;
 				} else if (result.IsFailure ()) {
-					Writer.Write ("\t[FAIL] ");
+					writer.Write ("\t[FAIL] ");
 					FailedCount++;
 				} else if (result.IsInconclusive ()) {
-					Writer.Write ("\t[INCONCLUSIVE] ");
+					writer.Write ("\t[INCONCLUSIVE] ");
 					InconclusiveCount++;
 				} else {
-					Writer.Write ("\t[INFO] ");
+					writer.Write ("\t[INFO] ");
 				}
 #if NUNITLITE_NUGET
-				Writer.Write (result.Test.Name);
+				writer.Write (result.Test.Name);
 #else
-				Writer.Write (result.Test.FixtureType.Name);
-				Writer.Write (".");
-				Writer.Write (result.Test.Name);
+				writer.Write (result.Test.FixtureType.Name);
+				writer.Write (".");
+				writer.Write (result.Test.Name);
 #endif
 
-				string message = result.Message;
+				string? message = result.Message;
 				if (!String.IsNullOrEmpty (message)) {
-					Writer.Write (" : {0}", message.Replace ("\r\n", "\\r\\n"));
+					writer.Write (" : {0}", message.Replace ("\r\n", "\\r\\n"));
 				}
-				Writer.WriteLine ();
+				writer.WriteLine ();
 #if NUNITLITE_NUGET
 				if (!string.IsNullOrEmpty (result.Output))
-					Writer.WriteLine (result.Output);
+					writer.WriteLine (result.Output);
 #endif
 
-				string stacktrace = result.StackTrace;
+				string? stacktrace = result.StackTrace;
 				if (!String.IsNullOrEmpty (result.StackTrace)) {
 					string [] lines = stacktrace.Split (new char [] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 					foreach (string line in lines)
-						Writer.WriteLine ("\t\t{0}", line);
+						writer.WriteLine ("\t\t{0}", line);
 				}
 			}
 		}
@@ -564,7 +582,7 @@ namespace MonoTouch.NUnit.UI {
 #endif
 		};
 
-		SettingsDictionary CreateSettings (SettingsDictionary settings)
+		SettingsDictionary CreateSettings (SettingsDictionary? settings)
 		{
 			if (fixtures is null && (settings is null || settings.Count == 0))
 				return default_settings;
@@ -572,8 +590,13 @@ namespace MonoTouch.NUnit.UI {
 			var dict = new Dictionary<string, object> (default_settings);
 
 			if (settings is not null) {
-				foreach (var key in settings.Keys)
-					dict [key?.ToString ()] = settings [key];
+				foreach (var key in settings.Keys) {
+					if (key is not null) {
+						var name = key.ToString ();
+						if (name is not null)
+							dict [name] = settings [key];
+					}
+				}
 			}
 
 			if (fixtures is not null)
@@ -587,27 +610,36 @@ namespace MonoTouch.NUnit.UI {
 		DefaultTestAssemblyBuilder builder = new DefaultTestAssemblyBuilder ();
 		List<NUnitTestAssemblyRunner> runners = new List<NUnitTestAssemblyRunner> ();
 
-		public bool Load (string assemblyName, IDictionary<string, object> settings = null)
+		public bool Load (string assemblyName, IDictionary<string, object>? settings = null)
 		{
+			if (string.IsNullOrEmpty (assemblyName))
+				return false;
 			var runner = new NUnitTestAssemblyRunner (builder);
 			runners.Add (runner);
 			return AddSuite ((TestSuite) runner.Load (assemblyName, CreateSettings (settings)));
 		}
 
-		public bool Load (Assembly assembly, IDictionary<string, object> settings = null)
+		public bool Load (Assembly assembly, IDictionary<string, object>? settings = null)
 		{
-			return Load (assembly.GetName ().Name, settings);
+			var assemblyName = assembly.GetName ().Name;
+			if (string.IsNullOrEmpty (assemblyName))
+				return false;
+			return Load (assemblyName, settings);
 		}
 #else
 		NUnitLiteTestAssemblyBuilder builder = new NUnitLiteTestAssemblyBuilder ();
 
-		public bool Load (string assemblyName, SettingsDictionary settings = null)
+		public bool Load (string assemblyName, SettingsDictionary? settings = null)
 		{
+			if (string.IsNullOrEmpty (assemblyName))
+				return false;
 			return AddSuite (builder.Build (assemblyName, CreateSettings (settings)));
 		}
 
-		public bool Load (Assembly assembly, SettingsDictionary settings = null)
+		public bool Load (Assembly assembly, SettingsDictionary? settings = null)
 		{
+			if (assembly.GetName ().Name is null)
+				return false;
 			return AddSuite (builder.Build (assembly, CreateSettings (settings)));
 		}
 #endif
@@ -643,7 +675,7 @@ namespace MonoTouch.NUnit.UI {
 			// The TestResult we get back from the runner is for the top-most test suite,
 			// which isn't necessarily the test that we ran. So look for the TestResult
 			// for the test we ran.
-			ITestResult find_result (ITestResult tr)
+			ITestResult? find_result (ITestResult tr)
 			{
 				if (tr.Test == test)
 					return tr;
@@ -690,7 +722,7 @@ namespace MonoTouch.NUnit.UI {
 #if NUNITLITE_NUGET
 		public void SendMessage (TestMessage message)
 		{
-			Writer.WriteLine (message.ToString ());
+			(Writer ?? Console.Out).WriteLine (message.ToString ());
 		}
 #endif
 	}
@@ -718,7 +750,11 @@ namespace MonoTouch.NUnit.UI {
 		}
 
 		public UINavigationController NavigationController {
-			get { return (UINavigationController) window.RootViewController; }
+			get {
+				if (window.RootViewController is UINavigationController navigationController)
+					return navigationController;
+				throw new InvalidOperationException ("The root view controller must be a navigation controller.");
+			}
 		}
 
 		protected override void TerminateWithSuccess ()
@@ -826,16 +862,12 @@ namespace MonoTouch.NUnit.UI {
 
 			Section section = new Section (suite.Name);
 			foreach (ITest test in suite.Tests) {
-				TestSuite ts = (test as TestSuite);
-				if (ts is not null) {
+				if (test is TestSuite ts) {
 					section.Add (Setup (ts));
+				} else if (test is TestMethod tc) {
+					section.Add (Setup (tc));
 				} else {
-					TestMethod tc = (test as TestMethod);
-					if (tc is not null) {
-						section.Add (Setup (tc));
-					} else {
-						throw new NotImplementedException (test.GetType ().ToString ());
-					}
+					throw new NotImplementedException (test.GetType ().ToString ());
 				}
 			}
 
@@ -853,7 +885,7 @@ namespace MonoTouch.NUnit.UI {
 			root.Add (options);
 
 			var tvc = new TouchViewController (root);
-			tvc.ViewAppearing += (object sender, EventArgs ea) => {
+			tvc.ViewAppearing += (object? sender, EventArgs ea) => {
 				NotifySelectedTest (suite);
 			};
 			suites_dvc.Add (suite, tvc);
@@ -870,18 +902,16 @@ namespace MonoTouch.NUnit.UI {
 		public override void TestFinished (ITestResult r)
 		{
 			base.TestFinished (r);
+			if (r is not TestResult result)
+				return;
 
 			ExecuteOnMainThread (() => {
-				TestResult result = r as TestResult;
-				TestSuite ts = result.Test as TestSuite;
-				if (ts is not null) {
-					TestSuiteElement tse;
-					if (suite_elements.TryGetValue (ts, out tse))
+				if (result.Test is TestSuite ts) {
+					TestSuiteElement? tse;
+					if (suite_elements.TryGetValue (ts, out tse) && tse is not null)
 						tse.TestFinished (result);
-				} else {
-					TestMethod tc = result.Test as TestMethod;
-					if (tc is not null)
-						case_elements [tc].TestFinished (result);
+				} else if (result.Test is TestMethod tc) {
+					case_elements [tc].TestFinished (result);
 				}
 			});
 		}
@@ -903,7 +933,7 @@ namespace MonoTouch.NUnit.UI {
 			get {
 				IntPtr handle = UIDevice.CurrentDevice.Handle;
 				if (UIDevice.CurrentDevice.RespondsToSelector (new Selector ("uniqueIdentifier")))
-					return CFString.FromHandle (objc_msgSend (handle, Selector.GetHandle ("uniqueIdentifier")));
+					return CFString.FromHandle (objc_msgSend (handle, Selector.GetHandle ("uniqueIdentifier"))) ?? "unknown";
 				return "unknown";
 			}
 		}
@@ -917,7 +947,7 @@ namespace MonoTouch.NUnit.UI {
 
 	// A filter that matches a specific test
 	class MatchTestFilter : TestFilter {
-		public ITest MatchTest;
+		public ITest? MatchTest;
 		public List<TestFilter> AndFilters = new List<TestFilter> ();
 
 #if NUNITLITE_NUGET
@@ -929,6 +959,9 @@ namespace MonoTouch.NUnit.UI {
 
 		public override bool Match (ITest test)
 		{
+			if (MatchTest is null)
+				return false;
+
 			if (AndFilters is not null) {
 				// If any of the And filters returns false, then return false too.
 				if (AndFilters.Any ((v) => !v.Match (test)))
@@ -986,13 +1019,13 @@ namespace MonoTouch.NUnit.UI {
 				writer.Write (value);
 		}
 
-		public override void Write (char [] buffer)
+		public override void Write (char []? buffer)
 		{
 			foreach (var writer in writers)
 				writer.Write (buffer);
 		}
 
-		public override void WriteLine (string value)
+		public override void WriteLine (string? value)
 		{
 			foreach (var writer in writers)
 				writer.WriteLine (value);

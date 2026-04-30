@@ -217,26 +217,10 @@ steps:
   continueOnError: true
   condition: and(ne(variables['VSTS_XML_FILES'], 0), succeededOrFailed())
 
-# Archive files for the Html Report so that the report can be easily uploaded as artifacts of the build.
-- task: ArchiveFiles@1
-  displayName: 'Archive HtmlReport'
-  inputs:
+- template: ../common/archive-html-report.yml
+  parameters:
     rootFolder: '$(BUILD_REPOSITORY_TITLE)/jenkins-results'
-    includeRootFolder: false
-    archiveFile: '$(Build.ArtifactStagingDirectory)/HtmlReport.zip'
-  continueOnError: true
-  condition: succeededOrFailed()
-
-# Create HtmlReport artifact. This serves two purposes:
-# 1. It is the way we are going to share the HtmlReport with the publish_html job that is executed on a Windows machine.
-# 2. Users can download this if they want.
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Artifact: HtmlReport'
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/HtmlReport.zip'
     artifactName: '${{ parameters.uploadPrefix }}HtmlReport-${{ parameters.testPrefix }}-$(System.JobAttempt)'
-  continueOnError: true
-  condition: succeededOrFailed()
 
 # Upload all the binlogs
 # Copy all the binlogs to a separate directory, keeping directory structure.

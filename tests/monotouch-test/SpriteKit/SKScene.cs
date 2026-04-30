@@ -10,12 +10,6 @@ namespace Xamarin.Mac.Tests {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class SKSceneTests {
-		[SetUp]
-		public void SetUp ()
-		{
-			Asserts.EnsureMavericks ();
-		}
-
 		[Test]
 		public void SKScene_InitWithSize ()
 		{

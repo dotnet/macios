@@ -16,8 +16,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSTextViewShouldChangeUsesRolloverButtonForSelection ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var usesRollover = view.UsesRolloverButtonForSelection;
 			view.UsesRolloverButtonForSelection = !usesRollover;
 

@@ -113,7 +113,7 @@ namespace Xamarin.Mac.Tests {
 				return true;
 			case "SCNLayer":
 			case "SCNProgram":
-				if (Asserts.IsAtLeastElCapitan && IntPtr.Size == 4)
+				if (IntPtr.Size == 4)
 					return true;
 				break;
 			case "AVCaptureView":

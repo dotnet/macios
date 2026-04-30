@@ -221,8 +221,8 @@ namespace CoreVideo {
 		[Obsolete ("Use 'CVPixelFormatKeys.ContainsSenselArray' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[SupportedOSPlatform ("ios16.0")]
-		[SupportedOSPlatform ("maccatalyst16.0")]
-		[SupportedOSPlatform ("macos13.0")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("tvos16.0")]
 		public static readonly NSString ContainsSenselArray;
 #endif // !XAMCORE_5_0

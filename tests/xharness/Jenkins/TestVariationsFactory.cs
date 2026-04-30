@@ -32,6 +32,9 @@ namespace Xharness.Jenkins {
 			var x64_runtime_identifier = string.Empty;
 			var arm64_sim_runtime_identifier = string.Empty;
 			var x64_sim_runtime_identifier = string.Empty;
+			var supports_mono = test.Platform != TestPlatform.Mac;
+			var supports_coreclr = true;
+			var ignore_coreclr = ignore;
 
 			switch (test.Platform) {
 			case TestPlatform.Mac:
@@ -56,6 +59,20 @@ namespace Xharness.Jenkins {
 			case "link all":
 				if (test.ProjectConfiguration == "Debug") {
 					yield return new TestData { Variation = "Debug (don't bundle original resources)", TestVariation = "do-not-bundle-original-resources" };
+				}
+				break;
+			case "introspection":
+				if (supports_coreclr && supports_mono) { // we only need specific coreclr test if we *also* support mono (otherwise the default test will be coreclr)
+					yield return new TestData { Variation = "CoreCLR", TestVariation = "coreclr", Ignored = ignore_coreclr };
+				}
+				break;
+			case "monotouch-test":
+				if (supports_coreclr && supports_mono) { // we only need specific coreclr test if we *also* support mono (otherwise the default test will be coreclr)
+					yield return new TestData { Variation = "Debug (CoreCLR)", TestVariation = "debug|coreclr", Ignored = ignore_coreclr };
+					if (mac_supports_arm64)
+						yield return new TestData { Variation = "Release (CoreCLR, ARM64)", TestVariation = "release|coreclr", Ignored = ignore_coreclr, RuntimeIdentifier = arm64_sim_runtime_identifier };
+					yield return new TestData { Variation = "Release (CoreCLR, x64)", TestVariation = "release|coreclr", Ignored = ignore_coreclr, RuntimeIdentifier = x64_sim_runtime_identifier };
+					yield return new TestData { Variation = "Release (CoreCLR, Universal)", TestVariation = "release|coreclr", Ignored = ignore_coreclr };
 				}
 				break;
 			}
@@ -176,7 +193,6 @@ namespace Xharness.Jenkins {
 
 						if (!string.IsNullOrEmpty (runtime_identifer))
 							clone.Xml.SetProperty ("RuntimeIdentifier", runtime_identifer);
-
 						if (!string.IsNullOrEmpty (test_variation)) {
 							clone.Xml.SetProperty ("TestVariation", test_variation);
 							foreach (var pr in clone.ProjectReferences) {

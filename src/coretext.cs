@@ -74,12 +74,10 @@ namespace CoreText {
 		[Field ("kCTFontFeatureSelectorSettingKey")]
 		NSString Setting { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCTFontFeatureSampleTextKey")]
 		NSString SampleText { get; }
 
-		[iOS (13, 0), TV (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCTFontFeatureTooltipTextKey")]
 		NSString TooltipText { get; }
@@ -158,12 +156,12 @@ namespace CoreText {
 		[Field ("kCTFontManagerErrorFontURLsKey")]
 		NSString FontUrlsKey { get; }
 
-		[NoTV, NoMac, iOS (13, 0)]
+		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("kCTFontManagerErrorFontDescriptorsKey")]
 		NSString FontDescriptorsKey { get; }
 
-		[NoTV, NoMac, iOS (13, 0)]
+		[NoTV, NoMac]
 		[MacCatalyst (13, 1)]
 		[Field ("kCTFontManagerErrorFontAssetNameKey")]
 		NSString FontAssetNameKey { get; }
@@ -340,7 +338,7 @@ namespace CoreText {
 		[Field ("kCTFontEnabledAttribute")]
 		NSString Enabled { get; }
 
-		[iOS (13, 0), NoTV, MacCatalyst (13, 1), NoMac]
+		[NoTV, MacCatalyst (13, 1), NoMac]
 		[Field ("kCTFontRegistrationUserInfoAttribute")]
 		NSString RegistrationUserInfo { get; }
 
@@ -630,7 +628,6 @@ namespace CoreText {
 		[Field ("kCTAdaptiveImageProviderAttributeName")]
 		NSString AdaptiveImageProvider { get; }
 
-		[TV (13, 0), iOS (13, 0)]
 		[MacCatalyst (13, 1)]
 		[Field ("kCTTrackingAttributeName")]
 		NSString TrackingAttributeName { get; }

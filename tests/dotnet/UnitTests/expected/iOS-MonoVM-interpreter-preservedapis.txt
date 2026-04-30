@@ -4150,6 +4150,8 @@ System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribut
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.MaybeNullWhenAttribute..ctor(System.Boolean)
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.NotNullAttribute
 System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.NotNullAttribute..ctor()
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute
+System.Private.CoreLib.dll:System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute..ctor(System.String, System.String)
 System.Private.CoreLib.dll:System.Diagnostics.DebuggableAttribute
 System.Private.CoreLib.dll:System.Diagnostics.DebuggableAttribute..ctor(System.Diagnostics.DebuggableAttribute/DebuggingModes)
 System.Private.CoreLib.dll:System.Diagnostics.DebuggableAttribute/DebuggingModes
@@ -12202,6 +12204,8 @@ System.Private.CoreLib.dll:System.String System.DelegateData::method_name
 System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<AssemblyName>k__BackingField
 System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<MemberSignature>k__BackingField
 System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute::<TypeName>k__BackingField
+System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute::<Category>k__BackingField
+System.Private.CoreLib.dll:System.String System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute::<CheckId>k__BackingField
 System.Private.CoreLib.dll:System.String System.Diagnostics.MonoStackFrame::fileName
 System.Private.CoreLib.dll:System.String System.Diagnostics.MonoStackFrame::internalMethodName
 System.Private.CoreLib.dll:System.String System.Diagnostics.StackFrame::_fileName

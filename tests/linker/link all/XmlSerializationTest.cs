@@ -15,7 +15,7 @@ namespace LinkAll.Serialization.Xml {
 
 	[Serializable]
 	[XmlRoot ("rsp", IsNullable = false)]
-	public class XmlResult<T> where T: class {
+	public class XmlResult<T> where T : class {
 		[XmlAttribute ("stat")]
 		public int StatusCode { get; set; }
 
@@ -26,7 +26,7 @@ namespace LinkAll.Serialization.Xml {
 
 	[Serializable]
 	[XmlRoot ("rsp")]
-	public class XmlField<T> where T: class {
+	public class XmlField<T> where T : class {
 		[XmlElement ("photos")]
 		[XmlElement ("photosets")]
 		public T? Result;

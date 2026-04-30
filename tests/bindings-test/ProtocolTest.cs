@@ -509,11 +509,11 @@ namespace Xamarin.BindingTests {
 			public string Name;
 			public string Attributes;
 			public objc_property_attribute [] AttributeList;
-/*
-			public objc_property ()
-			{
-			}
-*/
+			/*
+						public objc_property ()
+						{
+						}
+			*/
 			public objc_property (string name, string attributes, objc_property_attribute [] list)
 			{
 				this.Name = name;

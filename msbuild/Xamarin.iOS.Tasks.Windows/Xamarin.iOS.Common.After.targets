@@ -375,6 +375,8 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 			<TrimmerDefaultAction Condition="'$(TrimmerDefaultAction)' == ''">$(_TrimmerDefaultAction)</TrimmerDefaultAction>
 
 			<_RemoteExtraTrimmerArgs Condition="'$(_ExtraTrimmerArgs)' != ''">$(_ExtraTrimmerArgs.Replace('$(NetCoreRoot)', '$(_DotNetRootRemoteDirectory)'))</_RemoteExtraTrimmerArgs>
+
+			<_CopyLinkerOutputToWindows Condition="'$(UseMonoRuntime)' == 'false'">true</_CopyLinkerOutputToWindows>
 		</PropertyGroup>
 
 		<!-- Include Debug symbols as input so those are copied to the server -->
@@ -387,6 +389,8 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		<Delete SessionId="$(BuildSessionId)" Files="@(_LinkedResolvedFileToPublishCandidate)" />
 		<Xamarin.MacDev.Tasks.ILLink
 				SessionId="$(BuildSessionId)"
+				CopyToWindows="$(_CopyLinkerOutputToWindows)"
+
 				AssemblyPaths="@(ManagedAssemblyToLink)"
 				ReferenceAssemblyPaths="@(ReferencePath)"
 				RootAssemblyNames="@(TrimmerRootAssembly)"

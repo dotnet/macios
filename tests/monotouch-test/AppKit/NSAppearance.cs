@@ -9,8 +9,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSAppearanceShouldLoadAppearanceNamed ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var appearance = NSAppearance.GetAppearance (NSAppearance.NameVibrantDark);
 			Assert.IsNotNull (appearance, "NSAppearanceShouldLoadAppearanceNamed - Failed to initialize appearance VibrantDark");
 			Assert.AreEqual (appearance.Name, NSAppearance.NameVibrantDark.ToString (), "NSAppearanceShouldLoadAppearanceNamed - Appearance initialized with incorrect name.");
@@ -35,8 +33,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSAppearanceShouldChangeCurrentAppearance ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var appearance = NSAppearance.CurrentAppearance;
 
 			NSAppearance.CurrentAppearance = NSAppearance.GetAppearance (NSAppearance.NameVibrantDark);
@@ -47,8 +43,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSAppearanceCustomizationNull ()
 		{
-			Asserts.EnsureYosemite ();
-
 			using (NSButton b = new NSButton ()) {
 				b.Appearance = null;
 			}

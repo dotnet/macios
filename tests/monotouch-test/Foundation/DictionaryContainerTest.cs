@@ -70,6 +70,11 @@ namespace MonoTouchFixtures.Foundation {
 			SetNumberValue (key, value);
 		}
 
+		public void SetNumberValue_ (NSString key, long? value)
+		{
+			SetNumberValue (key, value);
+		}
+
 		public void SetNumberValue_ (NSString key, nuint? value)
 		{
 			SetNumberValue (key, value);
@@ -222,6 +227,25 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.That ((int) dc.Dictionary.Count, Is.EqualTo (1), "1");
 
 			dc.SetNumberValue_ (key, (uint?) null);
+			Assert.That ((int) dc.Dictionary.Count, Is.EqualTo (0), "0");
+		}
+
+		[Test]
+		public void SetNumberValue_Int64 ()
+		{
+			const long value = 2147483648L;
+			var dc = new DictionaryContainerPoker ();
+
+			Assert.Throws<ArgumentNullException> (delegate
+			{
+				dc.SetNumberValue_ (null, value);
+			}, "null key");
+
+			dc.SetNumberValue_ (key, value);
+			Assert.That ((int) dc.Dictionary.Count, Is.EqualTo (1), "1");
+			Assert.That (((NSNumber) dc.Dictionary [key]).Int64Value, Is.EqualTo (value), "value");
+
+			dc.SetNumberValue_ (key, (long?) null);
 			Assert.That ((int) dc.Dictionary.Count, Is.EqualTo (0), "0");
 		}
 

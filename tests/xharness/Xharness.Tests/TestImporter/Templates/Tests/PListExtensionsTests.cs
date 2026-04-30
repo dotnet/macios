@@ -33,7 +33,7 @@ namespace Xharness.Tests.TestImporter.Templates.Tests {
 			var doc = new XmlDocument ();
 			var settings = new XmlReaderSettings () {
 				XmlResolver = null,
-				DtdProcessing = DtdProcessing.Parse,
+				DtdProcessing = DtdProcessing.Ignore,
 			};
 			using var reader = XmlReader.Create (sampleStream, settings);
 			doc.Load (reader);

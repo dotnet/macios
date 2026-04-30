@@ -135,5 +135,60 @@ namespace Xamarin.Tests {
 								});
 			warnings.AssertWarnings (expectedWarnings);
 		}
+
+		[Test]
+		// https://github.com/dotnet/macios/issues/25285
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
+		public void NoIL2026FromManagedRegistrarForRequiresUnreferencedCodeTypes (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MyTrimmedRegistrarApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			// Show all trim analysis warnings
+			properties ["SuppressTrimAnalysisWarnings"] = "false";
+			properties ["TrimmerSingleWarn"] = "false";
+
+			// Use the managed-static registrar (the one that generates the <Module>..cctor()
+			// and trampolines that reference exported members)
+			properties ["Registrar"] = "managed-static";
+
+			// Use Full trim mode to match the issue's reproduction steps (TrimMode=full)
+			var linkMode = "Full";
+			properties ["MtouchLink"] = linkMode;
+			properties ["LinkMode"] = linkMode;
+
+			// Exclude test frameworks to avoid unrelated warnings
+			properties ["ExcludeTouchUnitReference"] = "true";
+			properties ["ExcludeNUnitLiteReference"] = "true";
+
+			// Enable all optimizations, remove dynamic registrar
+			properties ["MtouchExtraArgs"] = "--optimize:remove-dynamic-registrar";
+			properties ["MonoBundlingExtraArgs"] = "--optimize:remove-dynamic-registrar";
+
+			var rv = DotNet.AssertBuild (project_path, properties);
+
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
+								.Where (evt => {
+									if (platform == ApplePlatform.iOS && evt.Message?.Trim () == "Supported iPhone orientations have not been set")
+										return false;
+									return true;
+								});
+
+			// There should be no IL2026 warnings from the managed registrar referencing
+			// types that have [RequiresUnreferencedCode].
+			var il2026Warnings = warnings.Where (w => w.Code == "IL2026").ToArray ();
+			Assert.That (il2026Warnings, Is.Empty,
+				$"Expected no IL2026 warnings from the managed registrar, but got {il2026Warnings.Length}:\n" +
+				string.Join ("\n", il2026Warnings.Select (w => $"  {w.Code}: {w.Message}")));
+		}
 	}
 }

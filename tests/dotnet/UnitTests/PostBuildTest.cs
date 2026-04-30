@@ -64,6 +64,76 @@ namespace Xamarin.Tests {
 			BuildIpaTestImpl (platform, runtimeIdentifiers, useMonoRuntime: false);
 		}
 
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void CoreCLR_ConvertedFrameworks_HaveInfoPlist (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			// Ref: https://github.com/dotnet/macios/issues/25248
+			// Verify that converted CoreCLR dylib frameworks have a valid Info.plist
+			// with the correct CFBundleIdentifier, so that codesign signs them as
+			// framework bundles and uses the plist bundle identifier.
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["BuildIpa"] = "true";
+			properties ["Configuration"] = configuration;
+			properties ["UseMonoRuntime"] = "false";
+
+			DotNet.AssertBuild (project_path, properties);
+
+			var frameworksDir = Path.Combine (appPath, "Frameworks");
+			Assert.That (frameworksDir, Does.Exist, "Frameworks directory should exist for CoreCLR device builds");
+
+			var frameworkDirs = Directory.GetDirectories (frameworksDir, "*.framework");
+			Assert.That (frameworkDirs.Length, Is.GreaterThan (0), "Expected at least one .framework directory");
+
+			// Read the main app's bundle identifier
+			var appInfoPlistPath = Path.Combine (appPath, "Info.plist");
+			Assert.That (appInfoPlistPath, Does.Exist, "App Info.plist should exist");
+			var appPlist = PDictionary.FromFile (appInfoPlistPath);
+			Assert.That (appPlist, Is.Not.Null, $"Failed to parse Info.plist at '{appInfoPlistPath}'");
+			var bundleIdentifierValue = appPlist!.GetString ("CFBundleIdentifier");
+			Assert.That (bundleIdentifierValue, Is.Not.Null, $"CFBundleIdentifier should exist in '{appInfoPlistPath}'");
+			var bundleIdentifier = bundleIdentifierValue!.Value;
+
+			foreach (var fwDir in frameworkDirs) {
+				var fwName = Path.GetFileNameWithoutExtension (fwDir);
+				var infoPlistPath = Path.Combine (fwDir, "Info.plist");
+				Assert.That (infoPlistPath, Does.Exist, $"Info.plist should exist in {fwName}.framework");
+
+				var plist = PDictionary.FromFile (infoPlistPath);
+				Assert.That (plist, Is.Not.Null, $"Failed to parse Info.plist at '{infoPlistPath}'");
+				var fwBundleId = plist!.GetString ("CFBundleIdentifier")?.Value;
+				Assert.That (fwBundleId, Does.StartWith (bundleIdentifier + "."), $"CFBundleIdentifier for {fwName}.framework should start with the app bundle identifier");
+
+				var bundleExe = plist.GetString ("CFBundleExecutable")?.Value;
+				Assert.That (bundleExe, Is.EqualTo (fwName), $"CFBundleExecutable for {fwName}.framework");
+
+				var packageType = plist.GetString ("CFBundlePackageType")?.Value;
+				Assert.That (packageType, Is.EqualTo ("FMWK"), $"CFBundlePackageType for {fwName}.framework");
+
+				// Verify the executable binary actually exists
+				Assert.That (Path.Combine (fwDir, fwName), Does.Exist, $"Executable should exist in {fwName}.framework");
+
+				// If the framework was signed, verify it was signed as a bundle (not a bare Mach-O)
+				// and that the codesign identifier matches the Info.plist CFBundleIdentifier
+				var codeSignatureDir = Path.Combine (fwDir, "_CodeSignature");
+				if (Directory.Exists (codeSignatureDir)) {
+					var exitCode = ExecutionHelper.Execute ("/usr/bin/codesign", new string [] { "-dvvv", fwDir }, out var codesignOutput);
+					var output = codesignOutput.ToString ();
+					Assert.That (exitCode, Is.EqualTo (0), $"codesign failed for framework {fwName}. Codesign output:\n{output}");
+					Assert.That (output, Does.Contain ("Format=bundle with Mach-O"), $"Framework {fwName} should be signed as a bundle, not a bare Mach-O. Codesign output:\n{output}");
+					Assert.That (output, Does.Contain ($"Identifier={fwBundleId}"), $"Framework {fwName} codesign identifier should match its Info.plist CFBundleIdentifier. Codesign output:\n{output}");
+				}
+			}
+		}
+
 		void BuildIpaTestImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime)
 		{
 			var project = "MySimpleApp";

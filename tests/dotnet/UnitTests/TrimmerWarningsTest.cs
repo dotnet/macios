@@ -142,7 +142,7 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
-		public void NoIL2026FromManagedRegistrarForRequiresUnreferencedCodeTypes (ApplePlatform platform, string runtimeIdentifiers)
+		public void NoTrimWarningsFromManagedRegistrarForAnnotatedTypes (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "MyTrimmedRegistrarApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -174,6 +174,11 @@ namespace Xamarin.Tests {
 			properties ["MtouchExtraArgs"] = "--optimize:remove-dynamic-registrar";
 			properties ["MonoBundlingExtraArgs"] = "--optimize:remove-dynamic-registrar";
 
+			// Enable the AOT analyzer to also check for IL3050 ([RequiresDynamicCode])
+			// in addition to the trim analyzer's IL2026 ([RequiresUnreferencedCode])
+			properties ["PublishAot"] = "true";
+			properties ["_IsPublishing"] = "true";
+
 			var rv = DotNet.AssertBuild (project_path, properties);
 
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
@@ -183,12 +188,16 @@ namespace Xamarin.Tests {
 									return true;
 								});
 
-			// There should be no IL2026 warnings from the managed registrar referencing
-			// types that have [RequiresUnreferencedCode].
-			var il2026Warnings = warnings.Where (w => w.Code == "IL2026").ToArray ();
-			Assert.That (il2026Warnings, Is.Empty,
-				$"Expected no IL2026 warnings from the managed registrar, but got {il2026Warnings.Length}:\n" +
-				string.Join ("\n", il2026Warnings.Select (w => $"  {w.Code}: {w.Message}")));
+			// The managed registrar should not produce any trim/AOT analysis warnings when
+			// generating trampolines and lookup tables for types annotated with
+			// [RequiresUnreferencedCode] or [RequiresDynamicCode].
+			// IL2026: referencing members with [RequiresUnreferencedCode]
+			// IL3050: referencing members with [RequiresDynamicCode]
+			var trimWarningCodes = new HashSet<string> { "IL2026", "IL3050" };
+			var trimWarnings = warnings.Where (w => trimWarningCodes.Contains (w.Code ?? "")).ToArray ();
+			Assert.That (trimWarnings, Is.Empty,
+				$"Expected no trim/AOT analysis warnings from the managed registrar, but got {trimWarnings.Length}:\n" +
+				string.Join ("\n", trimWarnings.Select (w => $"  {w.Code}: {w.Message}")));
 		}
 	}
 }

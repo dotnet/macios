@@ -25,7 +25,7 @@ public static class GeneratorExtensions {
 		using (var fs = new FileStream (filename, FileMode.Open, FileAccess.Read)) {
 			var settings = new XmlReaderSettings () {
 				XmlResolver = null,
-				DtdProcessing = DtdProcessing.Prohibit,
+				DtdProcessing = DtdProcessing.Ignore,
 			};
 			using (var reader = XmlReader.Create (fs, settings)) {
 				doc.Load (reader);

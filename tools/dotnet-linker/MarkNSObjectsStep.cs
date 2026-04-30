@@ -46,6 +46,11 @@ namespace Xamarin.Linker.Steps {
 			var moduleConstructor = abr.GetOrCreateStaticConstructor (type.Module.GetModuleType (), out var modified);
 			var attrib = CreateDynamicDependencyAttribute (type, allMembers);
 			modified |= abr.AddAttributeOnlyOnce (moduleConstructor, attrib);
+			// The DynamicDependencyAttribute may reference types with [RequiresUnreferencedCode] or
+			// [RequiresDynamicCode], which would cause IL2026/IL3050 warnings on the module constructor.
+			// Suppress these since the module constructor is generated code that intentionally preserves these types.
+			modified |= abr.AddAttributeOnlyOnce (moduleConstructor, abr.CreateUnconditionalSuppressMessageAttribute ("ILLink", "IL2026"));
+			modified |= abr.AddAttributeOnlyOnce (moduleConstructor, abr.CreateUnconditionalSuppressMessageAttribute ("ILLink", "IL3050"));
 			return modified;
 		}
 

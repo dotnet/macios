@@ -128,6 +128,14 @@ namespace Xamarin.Linker {
 			GenerateConstructNSObject (registrarType);
 			GenerateConstructINativeObject (registrarType);
 
+			// The registrar-generated lookup methods reference types via ldtoken/Newobj that may
+			// have [RequiresUnreferencedCode] or [RequiresDynamicCode]. Suppress IL2026/IL3050 on
+			// all generated methods since these are intentional references.
+			foreach (var method in registrarType.Methods) {
+				abr.AddUnconditionalSuppressMessageAttribute (method, "ILLink", "IL2026");
+				abr.AddUnconditionalSuppressMessageAttribute (method, "ILLink", "IL3050");
+			}
+
 			// Make sure the linker doesn't sweep away anything we just generated.
 			Annotations.Mark (registrarType);
 			foreach (var method in registrarType.Methods)
@@ -160,6 +168,12 @@ namespace Xamarin.Linker {
 
 			il.InsertBefore (lastInstruction, il.Create (OpCodes.Newobj, registrarType.GetDefaultInstanceConstructor ()));
 			il.InsertBefore (lastInstruction, il.Create (OpCodes.Call, abr.RegistrarHelper_Register));
+
+			// The module constructor references registrar-generated types and methods that may
+			// in turn reference types with [RequiresUnreferencedCode] or [RequiresDynamicCode].
+			// Suppress IL2026/IL3050 since this is generated code that intentionally references these members.
+			abr.AddUnconditionalSuppressMessageAttribute (moduleConstructor, "ILLink", "IL2026");
+			abr.AddUnconditionalSuppressMessageAttribute (moduleConstructor, "ILLink", "IL3050");
 
 			Annotations.Mark (moduleConstructor);
 		}

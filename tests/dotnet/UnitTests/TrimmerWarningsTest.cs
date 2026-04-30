@@ -181,23 +181,20 @@ namespace Xamarin.Tests {
 
 			var rv = DotNet.AssertBuild (project_path, properties);
 
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
-								.Where (evt => {
-									if (platform == ApplePlatform.iOS && evt.Message?.Trim () == "Supported iPhone orientations have not been set")
-										return false;
-									return true;
-								});
-
 			// The managed registrar should not produce any trim/AOT analysis warnings when
 			// generating trampolines and lookup tables for types annotated with
-			// [RequiresUnreferencedCode] or [RequiresDynamicCode].
-			// IL2026: referencing members with [RequiresUnreferencedCode]
-			// IL3050: referencing members with [RequiresDynamicCode]
-			var trimWarningCodes = new HashSet<string> { "IL2026", "IL3050" };
-			var trimWarnings = warnings.Where (w => trimWarningCodes.Contains (w.Code ?? "")).ToArray ();
-			Assert.That (trimWarnings, Is.Empty,
-				$"Expected no trim/AOT analysis warnings from the managed registrar, but got {trimWarnings.Length}:\n" +
-				string.Join ("\n", trimWarnings.Select (w => $"  {w.Code}: {w.Message}")));
+			// [RequiresUnreferencedCode] (IL2026) or [RequiresDynamicCode] (IL3050).
+			rv.AssertNoWarnings ((evt) => {
+				if (platform == ApplePlatform.iOS && evt.Message?.Trim () == "Supported iPhone orientations have not been set")
+					return false;
+				// MM2003: --optimize=remove-dynamic-registrar is not applicable to macOS
+				if (evt.Code == "MM2003")
+					return false;
+				// Pre-existing IL3050 in DynamicRegistrar.cs (not related to the managed registrar)
+				if (evt.Code == "IL3050" && evt.File?.Contains ("DynamicRegistrar.cs") == true)
+					return false;
+				return true;
+			});
 		}
 	}
 }

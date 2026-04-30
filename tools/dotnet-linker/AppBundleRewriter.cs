@@ -318,6 +318,12 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public TypeReference System_Diagnostics_CodeAnalysis_UnconditionalSuppressMessageAttribute {
+			get {
+				return GetTypeReference (CorlibAssembly, "System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute", out var _);
+			}
+		}
+
 		public TypeReference System_Reflection_MethodBase {
 			get {
 				return GetTypeReference (CorlibAssembly, "System.Reflection.MethodBase", out var _);
@@ -511,6 +517,18 @@ namespace Xamarin.Linker {
 						".ctor(String,String,String)",
 						isStatic: false,
 						System_String,
+						System_String,
+						System_String);
+			}
+		}
+
+		public MethodReference UnconditionalSuppressMessageAttribute_ctor {
+			get {
+				return GetMethodReference (CorlibAssembly,
+						System_Diagnostics_CodeAnalysis_UnconditionalSuppressMessageAttribute,
+						".ctor",
+						".ctor(String,String)",
+						isStatic: false,
 						System_String,
 						System_String);
 			}
@@ -1325,6 +1343,19 @@ namespace Xamarin.Linker {
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Diagnostics_CodeAnalysis_DynamicallyAccessedMemberTypes, (int) memberTypes));
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Type, type));
 			return attribute;
+		}
+
+		public CustomAttribute CreateUnconditionalSuppressMessageAttribute (string category, string checkId)
+		{
+			var attribute = CreateAttribute (UnconditionalSuppressMessageAttribute_ctor);
+			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, category));
+			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, checkId));
+			return attribute;
+		}
+
+		public void AddUnconditionalSuppressMessageAttribute (MethodDefinition method, string category, string checkId)
+		{
+			method.CustomAttributes.Add (CreateUnconditionalSuppressMessageAttribute (category, checkId));
 		}
 
 		/// <summary>

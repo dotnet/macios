@@ -292,6 +292,12 @@ namespace Xamarin.Linker {
 
 			var callback = callbackType.AddMethod (name, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig, placeholderType);
 			callback.CustomAttributes.Add (CreateUnmanagedCallersAttribute (name));
+			// The registrar generates trampolines that directly call exported members. If those members
+			// (or their declaring type) have [RequiresUnreferencedCode] or [RequiresDynamicCode], the
+			// trimmer/AOT analyzer would emit IL2026/IL3050 warnings for the generated code. Suppress
+			// these warnings since the registrar intentionally references these members.
+			abr.AddUnconditionalSuppressMessageAttribute (callback, "ILLink", "IL2026");
+			abr.AddUnconditionalSuppressMessageAttribute (callback, "ILLink", "IL3050");
 			infos.Add (new TrampolineInfo (callback, method, name));
 
 			// If the target method is marked, then we must mark the trampoline as well.

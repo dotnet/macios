@@ -16,7 +16,7 @@ namespace MonoTouch.NUnit {
 	public class TcpTextWriter : TextWriter {
 
 		private TcpClient client;
-		TcpListener server;
+		TcpListener? server;
 		private StreamWriter writer;
 
 		public TcpTextWriter (string hostName, int port, bool isTunnel = false)
@@ -50,7 +50,7 @@ namespace MonoTouch.NUnit {
 							break;
 					}
 				} else {
-					client = new TcpClient (HostName, port);
+					client = new TcpClient (hostName, port);
 				}
 				writer = new StreamWriter (client.GetStream ());
 			} catch {
@@ -61,7 +61,7 @@ namespace MonoTouch.NUnit {
 			}
 		}
 
-		public string HostName { get; private set; }
+		public string? HostName { get; private set; }
 
 		public int Port { get; private set; }
 
@@ -96,7 +96,7 @@ namespace MonoTouch.NUnit {
 			writer.Write (value);
 		}
 
-		public override void Write (char [] buffer)
+		public override void Write (char []? buffer)
 		{
 			writer.Write (buffer);
 		}
@@ -106,7 +106,7 @@ namespace MonoTouch.NUnit {
 			writer.Write (buffer, index, count);
 		}
 
-		public override void Write (string value)
+		public override void Write (string? value)
 		{
 			writer.Write (value);
 		}

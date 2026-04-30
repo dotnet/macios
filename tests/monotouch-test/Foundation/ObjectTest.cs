@@ -78,10 +78,6 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.IsNotNull (NSObject.FromObject (c), "CGColor");
 			}
 			var hasSecAccessControl = TestRuntime.CheckXcodeVersion (6, 0);
-#if __MACOS__
-			if (!TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 10))
-				hasSecAccessControl = false;
-#endif
 			if (hasSecAccessControl) {
 				using (var sac = new SecAccessControl (SecAccessible.WhenPasscodeSetThisDeviceOnly)) {
 					Assert.IsNotNull (NSObject.FromObject (sac), "SecAccessControl");

@@ -71,11 +71,7 @@ namespace MonoTouchFixtures.MapKit {
 
 				Assert.That (av.PinColor, Is.EqualTo (MKPinAnnotationColor.Red), "PinColor");
 #if MONOMAC
-				if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 12)) {
-					Assert.That (av.PinTintColor, Is.EqualTo (NSColor.SystemRed), "PinTintColor");
-				} else {
-					Assert.Null (av.PinTintColor, "PinTintColor"); // differs from the other init call
-				}
+				Assert.That (av.PinTintColor, Is.EqualTo (NSColor.SystemRed), "PinTintColor");
 #else
 				bool not_null = TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 10, 0);
 				if (not_null)

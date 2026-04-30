@@ -13,8 +13,6 @@ namespace Xamarin.Mac.Tests {
 		[SetUp]
 		public void SetUp ()
 		{
-			Asserts.EnsureMavericks ();
-
 			view = new NSStackView ();
 
 			first = new NSView ();

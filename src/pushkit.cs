@@ -95,6 +95,16 @@ namespace PushKit {
 		NSString FileProvider { get; }
 	}
 
+	/// <summary>An object that contains metadata about a received PushKit VoIP notification.</summary>
+	[NoTV, iOS (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface PKVoIPPushMetadata {
+		/// <summary>Gets a value that indicates whether the app must report a call or live conversation in response to receiving this VoIP notification.</summary>
+		[Export ("mustReport")]
+		bool MustReport { get; }
+	}
+
 	interface IPKPushRegistryDelegate { }
 
 	/// <summary>Completion handler for registering a push operation.</summary>
@@ -135,6 +145,15 @@ namespace PushKit {
 		[MacCatalyst (13, 1)]
 		[Export ("pushRegistry:didReceiveIncomingPushWithPayload:forType:withCompletionHandler:")]
 		void DidReceiveIncomingPush (PKPushRegistry registry, PKPushPayload payload, string type, Action completion);
+
+		/// <summary>Tells the delegate that a VoIP push notification arrived with metadata.</summary>
+		/// <param name="registry">The push registry that received the notification.</param>
+		/// <param name="payload">The push payload for the notification.</param>
+		/// <param name="metadata">The metadata associated with the VoIP push notification.</param>
+		/// <param name="completion">The completion handler to call when you finish processing the notification.</param>
+		[NoTV, iOS (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
+		[Export ("pushRegistry:didReceiveIncomingVoIPPushWithPayload:metadata:withCompletionHandler:")]
+		void DidReceiveIncomingVoIPPush (PKPushRegistry registry, PKPushPayload payload, PKVoIPPushMetadata metadata, Action completion);
 
 		/// <param name="registry">To be added.</param>
 		/// <param name="type">To be added.</param>

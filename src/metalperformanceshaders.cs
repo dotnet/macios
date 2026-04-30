@@ -936,7 +936,7 @@ namespace MetalPerformanceShaders {
 		NativeHandle Constructor (NSCoder aDecoder, IMTLDevice device);
 	}
 
-	/// <summary>Finds the mininum value in a region, offset by a corresponding value in a mask.</summary>
+	/// <summary>Finds the minimum value in a region, offset by a corresponding value in a mask.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/MetalPerformanceShaders/Reference/MPSImageErode_ClassReference/index.html">Apple documentation for <c>MPSImageErode</c></related>
 	[MacCatalyst (13, 1)]
@@ -3450,7 +3450,7 @@ namespace MetalPerformanceShaders {
 		[Export ("rows")]
 		nuint Rows { get; set; }
 
-		/// <summary>Gets the nubmer of columns that are in the matrix.</summary>
+		/// <summary>Gets the number of columns that are in the matrix.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("columns")]
@@ -3555,7 +3555,7 @@ namespace MetalPerformanceShaders {
 		[Export ("rows")]
 		nuint Rows { get; }
 
-		/// <summary>Gets the nubmer of columns that are in the matrix.</summary>
+		/// <summary>Gets the number of columns that are in the matrix.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("columns")]

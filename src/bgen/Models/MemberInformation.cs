@@ -70,7 +70,7 @@ public class MemberInformation {
 		is_abstract = AttributeManager.HasAttribute<AbstractAttribute> (mi) && mi.DeclaringType == type;
 		is_protected = AttributeManager.HasAttribute<ProtectedAttribute> (mi);
 		is_internal = mi.IsInternal (generator);
-		is_override = AttributeManager.HasAttribute<OverrideAttribute> (mi) || !Generator.MemberBelongsToType (mi.DeclaringType, type);
+		is_override = AttributeManager.HasAttribute<OverrideAttribute> (mi) || !Generator.MemberBelongsToType (mi.DeclaringType!, type);
 		is_new = AttributeManager.HasAttribute<NewAttribute> (mi);
 		is_sealed = AttributeManager.HasAttribute<SealedAttribute> (mi);
 		is_static = AttributeManager.IsStatic (mi);
@@ -157,12 +157,12 @@ public class MemberInformation {
 					wrap_method = wrapAtt.MethodName;
 					is_virtual_method = wrapAtt.IsVirtual;
 				} else {
-					BindAttribute ba = (BindAttribute) attr [0];
+					var ba = (BindAttribute) attr [0];
 					this.selector = ba.Selector;
 					is_virtual_method = ba.Virtual;
 				}
 			} else {
-				ExportAttribute ea = (ExportAttribute) attr [0];
+				var ea = (ExportAttribute) attr [0];
 				this.selector = ea.Selector;
 				is_variadic = ea.IsVariadic;
 

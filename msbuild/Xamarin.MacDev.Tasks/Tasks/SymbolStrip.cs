@@ -27,10 +27,16 @@ namespace Xamarin.MacDev.Tasks {
 		public string Kind { get; set; } = string.Empty;
 		#endregion
 
-		bool GetIsFramework (ITaskItem item)
+		bool GetIsFrameworkOrDynamicLibrary (ITaskItem item)
 		{
 			var value = GetNonEmptyStringOrFallback (item, "Kind", Kind);
-			return string.Equals (value, "Framework", StringComparison.OrdinalIgnoreCase);
+			if (string.Equals (value, "Framework", StringComparison.OrdinalIgnoreCase))
+				return true;
+
+			if (string.Equals (value, "Dynamic", StringComparison.OrdinalIgnoreCase) || item.ItemSpec.EndsWith (".dylib", StringComparison.OrdinalIgnoreCase))
+				return true;
+
+			return false;
 		}
 
 		void ExecuteStrip (ITaskItem item)
@@ -45,7 +51,7 @@ namespace Xamarin.MacDev.Tasks {
 				args.Add (symbolFile);
 			}
 
-			if (GetIsFramework (item)) {
+			if (GetIsFrameworkOrDynamicLibrary (item)) {
 				// Only remove debug symbols from frameworks.
 				args.Add ("-S");
 				args.Add ("-x");

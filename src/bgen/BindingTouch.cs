@@ -363,7 +363,7 @@ public class BindingTouch : IDisposable {
 	{
 		try {
 			var g = new Generator (this, api, config.IsPublicMode, config.IsExternal, config.IsDebug) {
-				BaseDir = config.BindingFilesOutputDirectory ?? config.TemporaryFileDirectory,
+				BaseDir = config.BindingFilesOutputDirectory ?? config.TemporaryFileDirectory!,
 				ZeroCopyStrings = config.UseZeroCopy,
 				InlineSelectors = config.InlineSelectors ?? (CurrentPlatform != PlatformName.MacOSX),
 			};

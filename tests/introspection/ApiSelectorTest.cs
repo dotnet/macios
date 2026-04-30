@@ -21,8 +21,7 @@
 
 using System.Reflection;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -1342,7 +1341,7 @@ namespace Introspection {
 			return false;
 		}
 
-		static bool IsMethodImplemented (Type iface, Type type, MethodBase method, bool isExtensionMethod)
+		static bool IsMethodImplemented (Type iface, Type? type, MethodBase method, bool isExtensionMethod)
 		{
 			if (type is null)
 				return false;
@@ -1417,11 +1416,11 @@ namespace Introspection {
 				return;
 
 			foreach (object ca in m.GetCustomAttributes (true)) {
-				ExportAttribute export = (ca as ExportAttribute);
+				var export = (ca as ExportAttribute);
 				if (export is null)
 					continue;
 
-				string name = export.Selector;
+				string name = export.Selector!;
 				if (Skip (t, name))
 					continue;
 
@@ -1443,7 +1442,7 @@ namespace Introspection {
 				return false;
 			}
 
-			cls = (NativeHandle) fi.GetValue (null);
+			cls = (NativeHandle) fi.GetValue (null)!;
 			return true;
 		}
 
@@ -1484,11 +1483,11 @@ namespace Introspection {
 				return;
 
 			foreach (object ca in m.GetCustomAttributes (true)) {
-				ExportAttribute export = (ca as ExportAttribute);
+				var export = (ca as ExportAttribute);
 				if (export is null)
 					continue;
 
-				string name = export.Selector;
+				string name = export.Selector!;
 				if (Skip (t, name))
 					continue;
 
@@ -1532,7 +1531,7 @@ namespace Introspection {
 		}
 
 		// funny, this is how I envisioned the instance version... before hitting run :|
-		protected virtual bool CheckStaticResponse (bool value, Type actualType, Type declaredType, MethodBase method, ref string name)
+		protected virtual bool CheckStaticResponse (bool value, Type actualType, Type? declaredType, MethodBase method, ref string name)
 		{
 			if (value)
 				return true;
@@ -1568,8 +1567,8 @@ namespace Introspection {
 						continue;
 
 					foreach (object ca in m.GetCustomAttributes (true)) {
-						if (ca is ExportAttribute) {
-							string name = (ca as ExportAttribute).Selector;
+						if (ca is ExportAttribute ea) {
+							var name = ea.Selector!;
 
 							if (Skip (t, name))
 								continue;

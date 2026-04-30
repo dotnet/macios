@@ -664,7 +664,7 @@ namespace UIKit {
 	}
 
 	// NSInteger -> UIImagePickerController.h
-	/// <summary>An enumeration of values used to specify the source using by the <see cref="UIKit.UIImagePickerController" />.</summary>
+	/// <summary>An enumeration of values used to specify the source used by the <see cref="UIKit.UIImagePickerController" />.</summary>
 	[Native]
 	[NoTV]
 	[MacCatalyst (13, 1)]
@@ -3054,7 +3054,7 @@ namespace UIKit {
 	///       <para>
 	///         <see cref="UIKit.UIPress" /> objects model not just digital presses but, for instance, trackpads, so a <see cref="UIKit.UIPress" /> may have both location and force data. Additionally, the system may cancel tracking of a button press at any time. This leads to the following state-machine:</para>
 	///       <para>
-	///         <img href="~/xml/UIKit/_images/UIKit.UIPressPhase_States.png" alt="Statechart showing states and transitions occuring during a press" />
+	///         <img href="~/xml/UIKit/_images/UIKit.UIPressPhase_States.png" alt="Statechart showing states and transitions occurring during a press" />
 	///       </para>
 	///     </remarks>
 	[MacCatalyst (13, 1)]
@@ -3722,7 +3722,7 @@ namespace UIKit {
 		NoContentError,
 		/// <summary>Indicates that UIKit does not recognize the image format.</summary>
 		UnknownImageFormatError,
-		/// <summary>Indicates that an internal print error occured.</summary>
+		/// <summary>Indicates that an internal print error occurred.</summary>
 		JobFailedError,
 	}
 

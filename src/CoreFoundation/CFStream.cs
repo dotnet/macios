@@ -789,7 +789,7 @@ namespace CoreFoundation {
 		{
 		}
 
-		/// <include file="../../docs/api/CoreFoundation/CFStream.xml" path="/Documentation/Docs[@DocId='M:CoreFoundation.CFStream.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (disposing) {

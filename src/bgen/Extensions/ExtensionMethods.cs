@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -35,9 +36,61 @@ public static class GeneratorExtensions {
 }
 
 public static class ReflectionExtensions {
+	public static bool TryCanRead (this PropertyInfo property, [NotNullWhen (true)] out MethodInfo? getMethod)
+	{
+		getMethod = null;
+		if (!property.CanRead)
+			return false;
+
+		getMethod = property.GetGetMethod ()!;
+		return true;
+	}
+
+	public static bool TryCanWrite (this PropertyInfo property, [NotNullWhen (true)] out MethodInfo? setMethod)
+	{
+		setMethod = null;
+		if (!property.CanWrite)
+			return false;
+
+		setMethod = property.GetSetMethod ()!;
+		return true;
+	}
+
+	public static bool TryIsByRef (this Type type, [NotNullWhen (true)] out Type? elementType)
+	{
+		elementType = null;
+		if (!type.IsByRef)
+			return false;
+		elementType = type.GetElementType ()!;
+		return true;
+	}
+
+	public static bool TryIsPointer (this Type type, [NotNullWhen (true)] out Type? elementType)
+	{
+		elementType = null;
+		if (!type.IsPointer)
+			return false;
+		elementType = type.GetElementType ()!;
+		return true;
+	}
+
+	public static bool TryIsArray (this Type type, [NotNullWhen (true)] out Type? elementType)
+	{
+		elementType = null;
+		if (!type.IsArray)
+			return false;
+		elementType = type.GetElementType ()!;
+		return true;
+	}
+
 	public static BaseTypeAttribute? GetBaseTypeAttribute (Type type, Generator generator)
 	{
 		return generator.AttributeManager.GetCustomAttribute<BaseTypeAttribute> (type);
+	}
+
+	public static BaseTypeAttribute GetOneBaseTypeAttribute (Type type, Generator generator)
+	{
+		return generator.AttributeManager.GetOneCustomAttribute<BaseTypeAttribute> (type);
 	}
 
 	public static Type GetBaseType (Type type, Generator generator)
@@ -63,7 +116,7 @@ public static class ReflectionExtensions {
 	// use, for example, the availability (iOS (7,0)) and the fact that this
 	// is not available on Mac (NoMac).
 	//
-	public static bool IsUnavailable (this ICustomAttributeProvider provider, Generator generator)
+	public static bool IsUnavailable (this ICustomAttributeProvider? provider, Generator generator)
 	{
 		var attributes = generator.AttributeManager.GetCustomAttributes<AvailabilityBaseAttribute> (provider);
 		var platform = generator.CurrentPlatform;
@@ -97,7 +150,7 @@ public static class ReflectionExtensions {
 
 	public static List<PropertyInfo> GatherProperties (this Type type, BindingFlags flags, Generator generator)
 	{
-		List<PropertyInfo> properties = new List<PropertyInfo> (type.GetProperties (flags));
+		var properties = new List<PropertyInfo> (type.GetProperties (flags));
 
 		if (generator.IsPublicMode)
 			return properties;
@@ -113,7 +166,7 @@ public static class ReflectionExtensions {
 						continue;
 
 					foreach (PropertyInfo exists in properties) {
-						var origea = generator.GetExportAttribute (exists, out _);
+						var origea = generator.GetOneExportAttribute (exists);
 						if (origea.Selector == modelea.Selector)
 							toadd = false;
 					}
@@ -149,7 +202,7 @@ public static class ReflectionExtensions {
 
 	public static List<MethodInfo> GatherMethods (this Type type, BindingFlags flags, Generator generator)
 	{
-		List<MethodInfo> methods = new List<MethodInfo> (type.GetMethods (flags));
+		var methods = new List<MethodInfo> (type.GetMethods (flags));
 
 		if (generator.IsPublicMode)
 			return methods;

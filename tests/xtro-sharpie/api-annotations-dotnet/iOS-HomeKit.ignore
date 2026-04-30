@@ -1,3 +1,6 @@
 # CHIP is not bound yet and will be only when is stable
 !missing-selector! HMAccessorySetupRequest::matterPayload not bound
 !missing-selector! HMAccessorySetupRequest::setMatterPayload: not bound
+
+# Apple removed this enum value from native headers in Xcode 26.4
+!extra-enum-value! Managed value 106 for HMError.QuotaExceeded not found in native headers

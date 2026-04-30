@@ -10,11 +10,7 @@ using Xharness.Jenkins.TestTasks;
 
 namespace Xharness.Jenkins {
 
-	interface ITestVariationsFactory {
-		IEnumerable<T> CreateTestVariations<T> (IEnumerable<T> tests, Func<MSBuildTask, T, IEnumerable<IDevice>, T> creator) where T : RunTestTask;
-	}
-
-	class TestVariationsFactory : ITestVariationsFactory {
+	class TestVariationsFactory {
 
 		readonly Jenkins jenkins;
 		readonly IProcessManager processManager;
@@ -30,7 +26,7 @@ namespace Xharness.Jenkins {
 			// This function returns additional test configurations (in addition to the default one) for the specific test
 
 			var supports_interpreter = test.Platform != TestPlatform.Mac;
-			var ignore = test.TestProject.Ignore;
+			var ignore = test.TestProject!.Ignore;
 			var mac_supports_arm64 = Harness.CanRunArm64;
 			var arm64_runtime_identifier = string.Empty;
 			var x64_runtime_identifier = string.Empty;
@@ -59,37 +55,29 @@ namespace Xharness.Jenkins {
 			switch (test.TestName) {
 			case "link all":
 				if (test.ProjectConfiguration == "Debug") {
-					// in .NET 9 we add a variation to test original resource bundling (which is opt in in .NET 9),
-					// and in .NET 10 we change the variation to test *not* bundling original resources (because it becomes opt out in .NET 10,
-					// so we don't test it by default).
-					if (jenkins.Harness.DotNetVersion.Major <= 9) {
-						yield return new TestData { Variation = "Debug (bundle original resources)", TestVariation = "bundle-original-resources", Debug = true };
-					} else {
-						yield return new TestData { Variation = "Debug (don't bundle original resources)", TestVariation = "do-not-bundle-original-resources", Debug = true };
-					}
+					yield return new TestData { Variation = "Debug (don't bundle original resources)", TestVariation = "do-not-bundle-original-resources" };
 				}
 				break;
 			}
 
 			switch (test.ProjectPlatform) {
 			case "iPhone":
-				if (test.ProjectConfiguration.Contains ("Debug"))
-					yield return new TestData { Variation = "Release", Debug = false };
+				if (test.ProjectConfiguration?.Contains ("Debug") == true)
+					yield return new TestData { Variation = "Release", TestVariation = "release" };
 
 				switch (test.TestName) {
 				case "monotouch-test":
 					ignore = true;
-					yield return new TestData { Variation = "Debug (dynamic registrar)", Registrar = "dynamic", Debug = true, Ignored = ignore };
-					yield return new TestData { Variation = "Release (all optimizations)", TestVariation = "static-registrar-all-optimizations", Debug = false, Ignored = ignore };
-					yield return new TestData { Variation = "Debug (all optimizations)", TestVariation = "static-registrar-all-optimizations", Debug = true, Ignored = ignore };
-					yield return new TestData { Variation = "Debug: SGenConc", Debug = true, EnableSGenConc = true, Ignored = ignore };
+					yield return new TestData { Variation = "Debug (dynamic registrar)", TestVariation = "dynamic-registrar", Ignored = ignore };
+					yield return new TestData { Variation = "Release (all optimizations)", TestVariation = "release|static-registrar-all-optimizations", Ignored = ignore };
+					yield return new TestData { Variation = "Debug (all optimizations)", TestVariation = "static-registrar-all-optimizations", Ignored = ignore };
 					if (supports_interpreter) {
-						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Debug = true, Ignored = ignore };
+						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Ignored = ignore };
 					}
-					yield return new TestData { Variation = "Release (LLVM)", Debug = false, UseLlvm = true, Ignored = ignore };
-					yield return new TestData { Variation = "Debug (managed static registrar)", Registrar = "managed-static", Debug = true, Ignored = ignore };
-					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "managed-static-registrar-all-optimizations-linkall", Debug = false, Ignored = ignore };
-					yield return new TestData { Variation = "Release (NativeAOT)", Debug = false, PublishAot = true, Ignored = ignore, LinkMode = "Full" };
+					yield return new TestData { Variation = "Release (LLVM)", TestVariation = "release|llvm", Ignored = ignore };
+					yield return new TestData { Variation = "Debug (managed static registrar)", TestVariation = "managed-static-registrar", Ignored = ignore };
+					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "release|managed-static-registrar-all-optimizations-linkall", Ignored = ignore };
+					yield return new TestData { Variation = "Release (NativeAOT)", TestVariation = "release|nativeaot", Ignored = ignore };
 					break;
 				}
 				break;
@@ -97,31 +85,30 @@ namespace Xharness.Jenkins {
 				switch (test.TestName) {
 				case "monotouch-test":
 					// The default is to run monotouch-test with the dynamic registrar (in the simulator), so that's already covered
-					yield return new TestData { Variation = "Debug (LinkSdk)", Debug = true, LinkMode = "SdkOnly", Ignored = ignore };
-					yield return new TestData { Variation = "Debug (static registrar)", Registrar = "static", Debug = true, Ignored = ignore };
-					yield return new TestData { Variation = "Release (all optimizations)", TestVariation = "static-registrar-all-optimizations-linkall", Debug = false, Ignored = ignore };
-					yield return new TestData { Variation = "Debug (all optimizations)", TestVariation = "static-registrar-optimizations-except-uithread-checks-linkall", Debug = true, Ignored = ignore ?? !jenkins.TestSelection.IsEnabled (TestLabel.All) };
+					yield return new TestData { Variation = "Debug (LinkSdk)", TestVariation = "linksdk", Ignored = ignore };
+					yield return new TestData { Variation = "Debug (static registrar)", TestVariation = "static-registrar", Ignored = ignore };
+					yield return new TestData { Variation = "Release (all optimizations)", TestVariation = "release|static-registrar-all-optimizations-linkall", Ignored = ignore };
+					yield return new TestData { Variation = "Debug (all optimizations)", TestVariation = "static-registrar-optimizations-except-uithread-checks-linkall", Ignored = ignore ?? !jenkins.TestSelection.IsEnabled (TestLabel.All) };
 
 					if (mac_supports_arm64) {
-						yield return new TestData { Variation = "Debug (ARM64)", Debug = true, Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_sim_runtime_identifier, };
-						yield return new TestData { Variation = "Release (NativeAOT, ARM64)", Debug = false, PublishAot = true, Ignored = ignore, RuntimeIdentifier = arm64_sim_runtime_identifier, LinkMode = "Full" };
+						yield return new TestData { Variation = "Debug (ARM64)", Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_sim_runtime_identifier, };
+						yield return new TestData { Variation = "Release (NativeAOT, ARM64)", TestVariation = "release|nativeaot", Ignored = ignore, RuntimeIdentifier = arm64_sim_runtime_identifier };
 					}
-					yield return new TestData { Variation = "Debug (managed static registrar)", Registrar = "managed-static", Debug = true, Ignored = ignore };
-					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "managed-static-registrar-all-optimizations-linkall", Debug = false, Ignored = ignore };
-					yield return new TestData { Variation = "Release (NativeAOT, x64)", Debug = false, PublishAot = true, Ignored = ignore, RuntimeIdentifier = x64_sim_runtime_identifier, LinkMode = "Full" };
+					yield return new TestData { Variation = "Debug (managed static registrar)", TestVariation = "managed-static-registrar", Ignored = ignore };
+					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "release|managed-static-registrar-all-optimizations-linkall", Ignored = ignore };
+					yield return new TestData { Variation = "Release (NativeAOT, x64)", TestVariation = "release|nativeaot", Ignored = ignore, RuntimeIdentifier = x64_sim_runtime_identifier };
 					if (supports_interpreter) {
-						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Debug = true, Ignored = ignore };
-						yield return new TestData { Variation = "Release (interpreter)", TestVariation = "interpreter", Debug = false, Ignored = ignore, UseLlvm = false };
+						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Ignored = ignore };
+						yield return new TestData { Variation = "Release (interpreter)", TestVariation = "release|interpreter", Ignored = ignore };
 					}
 					break;
 				case "introspection":
 					if (mac_supports_arm64)
-						yield return new TestData { Variation = "Debug (ARM64)", Debug = true, Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_sim_runtime_identifier, };
+						yield return new TestData { Variation = "Debug (ARM64)", Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_sim_runtime_identifier, };
 
 					foreach (var target in test.Platform.GetTestTargetsForSimulator ())
 						yield return new TestData {
 							Variation = $"Debug ({test.Platform.GetSimulatorMinVersion ()})",
-							Debug = true,
 							Candidates = jenkins.Simulators.SelectDevices (target.GetTargetOs (true), jenkins.SimulatorLoadLog, true),
 							Ignored = ignore ?? !jenkins.TestSelection.IsEnabled (PlatformLabel.OldiOSSimulator) || !jenkins.TestSelection.IsEnabled (TestLabel.Introspection),
 						};
@@ -134,23 +121,23 @@ namespace Xharness.Jenkins {
 			case null:
 				switch (test.TestName) {
 				case "monotouch-test":
-					yield return new TestData { Variation = "Debug (ARM64)", Debug = true, Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier, };
-					yield return new TestData { Variation = "Debug (managed static registrar)", Registrar = "managed-static", Debug = true, Ignored = ignore };
-					yield return new TestData { Variation = "Debug (static registrar)", Registrar = "static", Debug = true, Ignored = ignore, };
-					yield return new TestData { Variation = "Debug (static registrar, ARM64)", Registrar = "static", Debug = true, Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier, };
-					yield return new TestData { Variation = "Release (managed static registrar)", Registrar = "managed-static", Debug = false, Ignored = ignore };
-					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "managed-static-registrar-all-optimizations-linkall", Debug = false, Ignored = ignore };
-					yield return new TestData { Variation = "Release (NativeAOT)", Debug = false, PublishAot = true, Ignored = ignore, LinkMode = "Full" };
-					yield return new TestData { Variation = "Release (NativeAOT, ARM64)", Debug = false, PublishAot = true, Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier, LinkMode = "Full" };
-					yield return new TestData { Variation = "Release (NativeAOT, x64)", Debug = false, PublishAot = true, Ignored = ignore, RuntimeIdentifier = x64_runtime_identifier, LinkMode = "Full" };
-					yield return new TestData { Variation = "Release (static registrar)", Registrar = "static", Debug = false, Ignored = ignore };
-					yield return new TestData { Variation = "Release (static registrar, all optimizations)", TestVariation = "static-registrar-all-optimizations-linkall", Debug = false, Ignored = ignore };
+					yield return new TestData { Variation = "Debug (ARM64)", Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier, };
+					yield return new TestData { Variation = "Debug (managed static registrar)", TestVariation = "managed-static-registrar", Ignored = ignore };
+					yield return new TestData { Variation = "Debug (static registrar)", TestVariation = "static-registrar", Ignored = ignore, };
+					yield return new TestData { Variation = "Debug (static registrar, ARM64)", TestVariation = "static-registrar", Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier, };
+					yield return new TestData { Variation = "Release (managed static registrar)", TestVariation = "release|managed-static-registrar", Ignored = ignore };
+					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "release|managed-static-registrar-all-optimizations-linkall", Ignored = ignore };
+					yield return new TestData { Variation = "Release (NativeAOT)", TestVariation = "release|nativeaot", Ignored = ignore };
+					yield return new TestData { Variation = "Release (NativeAOT, ARM64)", TestVariation = "release|nativeaot", Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier };
+					yield return new TestData { Variation = "Release (NativeAOT, x64)", TestVariation = "release|nativeaot", Ignored = ignore, RuntimeIdentifier = x64_runtime_identifier };
+					yield return new TestData { Variation = "Release (static registrar)", TestVariation = "release|static-registrar", Ignored = ignore };
+					yield return new TestData { Variation = "Release (static registrar, all optimizations)", TestVariation = "release|static-registrar-all-optimizations-linkall", Ignored = ignore };
 					if (test.Platform == TestPlatform.MacCatalyst) {
-						yield return new TestData { Variation = "Release (ARM64, LLVM)", Debug = false, UseLlvm = true, Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier };
+						yield return new TestData { Variation = "Release (ARM64, LLVM)", TestVariation = "release|llvm", Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier };
 					}
 					if (supports_interpreter) {
-						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Debug = true, Ignored = ignore };
-						yield return new TestData { Variation = "Release (interpreter)", TestVariation = "interpreter", Debug = false, Ignored = ignore, UseLlvm = false };
+						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Ignored = ignore };
+						yield return new TestData { Variation = "Release (interpreter)", TestVariation = "release|interpreter", Ignored = ignore };
 					}
 					break;
 				}
@@ -160,61 +147,36 @@ namespace Xharness.Jenkins {
 			}
 		}
 
-		public IEnumerable<T> CreateTestVariations<T> (IEnumerable<T> tests, Func<MSBuildTask, T, IEnumerable<IDevice>, T> creator) where T : RunTestTask
+		public IEnumerable<T> CreateTestVariations<T> (IEnumerable<T> tests, Func<MSBuildTask, T, IEnumerable<IDevice>?, T> creator) where T : RunTestTask
 		{
 			foreach (var task in tests) {
 				if (string.IsNullOrEmpty (task.Variation))
-					task.Variation = task.ProjectConfiguration.Contains ("Debug") ? "Debug" : "Release";
+					task.Variation = task.ProjectConfiguration?.Contains ("Debug") == true ? "Debug" : "Release";
 			}
 
 			var rv = new List<T> (tests);
 			foreach (var task in tests.ToArray ()) {
 				foreach (var test_data in GetTestData (task)) {
 					var variation = test_data.Variation;
-					var configuration = test_data.Debug ? task.ProjectConfiguration : task.ProjectConfiguration.Replace ("Debug", "Release");
-					var debug = test_data.Debug;
-					var link_mode = test_data.LinkMode;
+					var debug = !(test_data.TestVariation ?? "").Split ('|').Any (v => string.Equals (v, "release", StringComparison.OrdinalIgnoreCase));
+					var configuration = debug ? task.ProjectConfiguration : task.ProjectConfiguration?.Replace ("Debug", "Release");
 					var ignored = test_data.Ignored;
 					var known_failure = test_data.KnownFailure;
 					var candidates = test_data.Candidates;
-					var use_mono_runtime = test_data.UseMonoRuntime;
 					var runtime_identifer = test_data.RuntimeIdentifier;
-					var use_llvm = test_data.UseLlvm;
-					var registrar = test_data.Registrar;
-					var publishaot = test_data.PublishAot;
 					var test_variation = test_data.TestVariation;
 
 					if (known_failure is not null)
 						ignored = true;
 
-					var clone = task.TestProject.Clone ();
+					var clone = task.TestProject!.Clone ();
 					var clone_task = Task.Run (async () => {
-						await task.BuildTask.InitialTask; // this is the project cloning above
+						await task.BuildTask.InitialTask!; // this is the project cloning above
 						await clone.CreateCopyAsync (jenkins.MainLog, processManager, task, HarnessConfiguration.RootDirectory);
 
-						var isMac = task.Platform.IsMac ();
-
-						if (!string.IsNullOrEmpty (link_mode)) {
-							clone.Xml.SetProperty ("LinkMode", link_mode);
-							clone.Xml.SetProperty ("MtouchLink", link_mode);
-						}
-						if (test_data.EnableSGenConc)
-							clone.Xml.SetProperty ("EnableSGenConc", "true");
-						if (use_llvm)
-							clone.Xml.SetProperty ("MtouchUseLlvm", "true");
-
-						if (!debug && !isMac)
-							clone.Xml.SetProperty ("MtouchUseLlvm", "true");
-						if (use_mono_runtime.HasValue)
-							clone.Xml.SetProperty ("UseMonoRuntime", use_mono_runtime.Value ? "true" : "false");
 						if (!string.IsNullOrEmpty (runtime_identifer))
 							clone.Xml.SetProperty ("RuntimeIdentifier", runtime_identifer);
-						if (!string.IsNullOrEmpty (registrar))
-							clone.Xml.SetProperty ("Registrar", registrar);
-						if (publishaot) {
-							clone.Xml.SetProperty ("PublishAot", "true", last: false);
-							clone.Xml.SetProperty ("_IsPublishing", "true", last: false); // quack like "dotnet publish", otherwise PublishAot=true has no effect.
-						}
+
 						if (!string.IsNullOrEmpty (test_variation)) {
 							clone.Xml.SetProperty ("TestVariation", test_variation);
 							foreach (var pr in clone.ProjectReferences) {
@@ -230,7 +192,7 @@ namespace Xharness.Jenkins {
 					build.ProjectPlatform = task.ProjectPlatform;
 					build.Platform = task.Platform;
 					build.InitialTask = clone_task;
-					build.TestName = clone.Name;
+					build.TestName = clone.Name ?? "";
 
 					T newVariation = creator (build, task, candidates);
 					newVariation.Variation = variation;

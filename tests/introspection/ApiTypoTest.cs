@@ -33,8 +33,7 @@ using UIKit;
 using Xamarin.Tests;
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 	public abstract class ApiTypoTest : ApiBaseTest {
@@ -50,7 +49,7 @@ namespace Introspection {
 
 		public virtual bool Skip (MemberInfo methodName, string typo)
 		{
-			return SkipAllowed (methodName.DeclaringType.Name, methodName.Name, typo);
+			return SkipAllowed (methodName.DeclaringType?.Name, methodName.Name, typo);
 		}
 
 		readonly HashSet<string> allowedRule3 = new HashSet<string> {
@@ -731,7 +730,7 @@ namespace Introspection {
 		// ease maintenance of the list
 		HashSet<string> used = new HashSet<string> ();
 
-		bool SkipAllowed (string typeName, string methodName, string typo)
+		bool SkipAllowed (string? typeName, string? methodName, string typo)
 		{
 			if (allowed.Contains (typo)) {
 				used.Add (typo);
@@ -740,7 +739,7 @@ namespace Introspection {
 			return false;
 		}
 
-		bool IsObsolete (MemberInfo mi)
+		bool IsObsolete (MemberInfo? mi)
 		{
 			if (mi is null)
 				return false;
@@ -859,9 +858,9 @@ namespace Introspection {
 			Assert.AreEqual (0, totalErrors, "Typos!");
 		}
 
-		string GetMessage (object attribute)
+		string? GetMessage (object attribute)
 		{
-			string message = null;
+			string? message = null;
 			if (attribute is AdviceAttribute)
 				message = ((AdviceAttribute) attribute).Message;
 			if (attribute is ObsoleteAttribute)
@@ -876,7 +875,7 @@ namespace Introspection {
 				return;
 
 			foreach (object ca in mi.GetCustomAttributes ()) {
-				string message = GetMessage (ca);
+				string? message = GetMessage (ca);
 				if (message is not null) {
 					var memberAndTypeFormat = mi.Name == typeName ? "Type: {0}" : "Member name: {1}, Type: {0}";
 					var memberAndType = string.Format (memberAndTypeFormat, typeName, mi.Name);
@@ -929,8 +928,7 @@ namespace Introspection {
 		Dictionary<string, string> cached_typoes = new Dictionary<string, string> ();
 		string GetCachedTypo (string txt)
 		{
-			string rv;
-			if (!cached_typoes.TryGetValue (txt, out rv))
+			if (!cached_typoes.TryGetValue (txt, out var rv))
 				cached_typoes [txt] = rv = GetTypo (txt);
 			return rv;
 		}
@@ -964,7 +962,7 @@ namespace Introspection {
 			return clean.ToString ();
 		}
 
-		bool CheckLibrary (string lib)
+		bool CheckLibrary (string? lib)
 		{
 #if MONOMAC
 			// on macOS the file should exist on the specified path

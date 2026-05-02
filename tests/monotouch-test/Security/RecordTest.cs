@@ -308,115 +308,119 @@ namespace MonoTouchFixtures.Security {
 #endif
 		public void DeskCase_83099_InmutableDictionary ()
 		{
+#if __MACOS__
+			// macOS 11.* hangs on keychain operations in CI
+			if (TestRuntime.CheckXcodeVersion (12, 2) && !TestRuntime.CheckXcodeVersion (13, 0))
+				TestRuntime.IgnoreInCI ("Skip on macOS 11.* because it hangs");
+#endif
+			// Use a unique server name per process to avoid cross-process keychain
+			// conflicts on shared CI agents (the account + server pair is the identity).
+			var testServer = $"Test1-{Environment.ProcessId}";
 			var testUsername = "testusername";
 
-			// Clean up any stale keychain entries from previous test runs to avoid
-			// the keychain returning ItemNotFound on query but DuplicateItem on add.
-			ForceRemoveUserPassword (testUsername);
+			// Clean up any stale keychain entries from previous test runs.
+			var cleanupCode = ForceRemoveKeychainEntry (testServer, testUsername);
+			TestContext.Out.WriteLine ($"Initial cleanup: {cleanupCode}");
+			// Also clean up entries from the old hardcoded "Test1" server name.
+			ForceRemoveKeychainEntry ("Test1", testUsername);
 
 			try {
 				//TEST 1: Save a keychain value
-				var test1 = SaveUserPassword (testUsername, "testValue1", out var queryCode, out var addCode, out var updateCode);
+				var test1 = SaveKeychainEntry (testServer, testUsername, "testValue1", out var queryCode, out var addCode, out var updateCode);
 				Assert.IsTrue (test1, $"Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
 
 				//TEST 2: Get the saved keychain value
-				var test2 = GetUserPassword (testUsername);
+				var test2 = GetKeychainEntry (testServer, testUsername);
 				Assert.IsTrue (StringUtil.StringsEqual (test2, "testValue1", false));
 
 				//TEST 3: Update the keychain value
-				var test3 = SaveUserPassword (testUsername, "testValue2", out queryCode, out addCode, out updateCode);
+				var test3 = SaveKeychainEntry (testServer, testUsername, "testValue2", out queryCode, out addCode, out updateCode);
 				Assert.IsTrue (test3, $"Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
 
 				//TEST 4: Get the updated keychain value
-				var test4 = GetUserPassword (testUsername);
+				var test4 = GetKeychainEntry (testServer, testUsername);
 				Assert.IsTrue (StringUtil.StringsEqual (test4, "testValue2", false));
 
 				//TEST 5: Clear the keychain values
-				var test5 = ClearUserPassword (testUsername, out queryCode, out var removeCode);
+				var test5 = ClearKeychainEntry (testServer, testUsername, out queryCode, out var removeCode);
 				Assert.IsTrue (test5, $"Password could not be cleared from keychain. queryCode: {queryCode} removeCode: {removeCode}");
 
 				//TEST 6: Verify no keychain value
-				var test6 = GetUserPassword (testUsername);
+				var test6 = GetKeychainEntry (testServer, testUsername);
 				Assert.IsNull (test6, "No password should exist here");
 			} finally {
 				// Always clean up to avoid leaving stale entries for subsequent runs
-				ForceRemoveUserPassword (testUsername);
+				ForceRemoveKeychainEntry (testServer, testUsername);
 			}
 		}
 
-		public static string GetUserPassword (string username)
+		// Create a minimal SecRecord for keychain queries and deletes (no LAContext).
+		// Using LAContext with InteractionNotAllowed on search records can cause
+		// intermittent InvalidRecord errors on some macOS keychain states.
+		static SecRecord CreateKeychainSearchRecord (string server, string username)
+		{
+			return new SecRecord (SecKind.InternetPassword) {
+				Server = server,
+				Account = username.ToLower (),
+			};
+		}
+
+		public static string GetKeychainEntry (string server, string username)
 		{
 			string password = null;
-			var searchRecord = CreateSecRecord (SecKind.InternetPassword,
-				server: "Test1",
-				account: username.ToLower ()
-			);
-			SecStatusCode code;
-			var record = SecKeyChain.QueryAsRecord (searchRecord, out code);
+			var searchRecord = CreateKeychainSearchRecord (server, username);
+			var record = SecKeyChain.QueryAsRecord (searchRecord, out var code);
 			if (code == SecStatusCode.Success && record is not null)
 				password = NSString.FromData (record.ValueData, NSStringEncoding.UTF8);
 			return password;
 		}
 
-		public static bool SaveUserPassword (string username, string password, out SecStatusCode queryCode, out SecStatusCode addCode, out SecStatusCode updateCode)
+		public static bool SaveKeychainEntry (string server, string username, string password, out SecStatusCode queryCode, out SecStatusCode addCode, out SecStatusCode updateCode)
 		{
-			addCode = (SecStatusCode) (-1); // pick a value that doesn't already exist in SecStatusCode
-			updateCode = (SecStatusCode) (-1); // pick a value that doesn't already exist in SecStatusCode
-			var success = false;
-			var searchRecord = CreateSecRecord (SecKind.InternetPassword,
-				server: "Test1",
-				account: username.ToLower ()
-			);
+			addCode = (SecStatusCode) (-1);
+			updateCode = (SecStatusCode) (-1);
+			var searchRecord = CreateKeychainSearchRecord (server, username);
 			var record = SecKeyChain.QueryAsRecord (searchRecord, out queryCode);
-			if (queryCode == SecStatusCode.ItemNotFound) {
-				record = CreateSecRecord (SecKind.InternetPassword,
-					server: "Test1",
-					account: username.ToLower (),
-					valueData: NSData.FromString (password)
-				);
-				addCode = SecKeyChain.Add (record);
-				success = (addCode == SecStatusCode.Success);
-				// Handle inconsistent keychain state: query returned ItemNotFound
-				// but add returned DuplicateItem. Force-remove and retry.
-				if (addCode == SecStatusCode.DuplicateItem) {
-					SecKeyChain.Remove (searchRecord);
-					addCode = SecKeyChain.Add (record);
-					success = (addCode == SecStatusCode.Success);
-				}
-			}
 			if (queryCode == SecStatusCode.Success && record is not null) {
+				// Record exists, update it.
 				record.ValueData = NSData.FromString (password);
 				updateCode = SecKeyChain.Update (searchRecord, record);
-				success = (updateCode == SecStatusCode.Success);
+				return updateCode == SecStatusCode.Success;
 			}
-			return success;
-		}
-
-		public static void ForceRemoveUserPassword (string username)
-		{
-			var searchRecord = CreateSecRecord (SecKind.InternetPassword,
-				server: "Test1",
-				account: username.ToLower ()
-			);
+			// Record doesn't exist, or query returned an unexpected error
+			// (e.g. InvalidRecord). Force-remove to handle inconsistent keychain
+			// state, then add.
 			SecKeyChain.Remove (searchRecord);
+			record = new SecRecord (SecKind.InternetPassword) {
+				Server = server,
+				Account = username.ToLower (),
+				ValueData = NSData.FromString (password),
+			};
+			addCode = SecKeyChain.Add (record);
+			if (addCode == SecStatusCode.DuplicateItem) {
+				SecKeyChain.Remove (searchRecord);
+				addCode = SecKeyChain.Add (record);
+			}
+			return addCode == SecStatusCode.Success;
 		}
 
-		public static bool ClearUserPassword (string username, out SecStatusCode queryCode, out SecStatusCode? removeCode)
+		public static SecStatusCode ForceRemoveKeychainEntry (string server, string username)
 		{
-			var success = false;
-			var searchRecord = CreateSecRecord (SecKind.InternetPassword,
-				server: "Test1",
-				account: username.ToLower ()
-			);
+			var searchRecord = CreateKeychainSearchRecord (server, username);
+			return SecKeyChain.Remove (searchRecord);
+		}
+
+		public static bool ClearKeychainEntry (string server, string username, out SecStatusCode queryCode, out SecStatusCode? removeCode)
+		{
+			var searchRecord = CreateKeychainSearchRecord (server, username);
 			var record = SecKeyChain.QueryAsRecord (searchRecord, out queryCode);
 
 			if (queryCode == SecStatusCode.Success && record is not null) {
 				removeCode = SecKeyChain.Remove (searchRecord);
-				success = (removeCode == SecStatusCode.Success);
-			} else {
-				removeCode = null;
+				return removeCode == SecStatusCode.Success;
 			}
-			return success;
+			removeCode = null;
+			return false;
 		}
 
 		[Test]

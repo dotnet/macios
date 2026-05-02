@@ -17,7 +17,6 @@ namespace MonoTouchFixtures.SceneKit {
 		public void SetUp ()
 		{
 			TestRuntime.AssertXcodeVersion (6, 0);
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 10, throwIfOtherPlatform: false);
 		}
 
 		[Test]

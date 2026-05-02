@@ -42,15 +42,21 @@ If you are interested in fixing issues and contributing directly to the code bas
 
 ## Downloads
 
-The preferred method for installing Xamarin.iOS and Mac is to use the Visual Studio installers ([Windows](https://docs.microsoft.com/xamarin/ios/get-started/installation/windows/?pivots=windows), [Mac](https://docs.microsoft.com/visualstudio/mac/installation?view=vsmac-2019)).
+Install the .NET workloads for Apple platforms using the .NET CLI:
 
-The team also [strongly recommends](https://docs.microsoft.com/xamarin/ios/troubleshooting/questions/old-version-xcode) using the latest Xamarin SDK and Xcode whenever possible.
+```sh
+dotnet workload install ios macos tvos maccatalyst
+```
 
-However, we provide links to older Xamarin.iOS and Mac packages for macOS downgrades and build machine configuration, see [Downloads](DOWNLOADS.md).
+For more information, see the [.NET workload documentation][workload-docs].
+
+For legacy Xamarin.iOS and Xamarin.Mac downloads (discontinued), see [Downloads](DOWNLOADS.md).
+
+[workload-docs]: https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-workload-install
 
 ## Feedback
 
-- Ask a question on [Stack Overflow](https://stackoverflow.com/questions/tagged/xamarin.ios) or the [Xamarin Forums](https://learn.microsoft.com/en-us/answers/tags/18/xamarin)
+- [File an issue or ask a question](https://github.com/dotnet/macios/issues) on GitHub
 - [Request a new feature](https://github.com/dotnet/macios/wiki/Submitting-Bugs-&-Suggestions#writing-good-bug-reports-and-feature-requests) on GitHub
 - [Vote on existing feature requests](https://github.com/dotnet/macios/wiki/Submitting-Bugs-&-Suggestions#before-submitting-an-issue)
 - [Submit bugs to GitHub Issues](https://github.com/dotnet/macios/wiki/Submitting-Bugs-&-Suggestions)

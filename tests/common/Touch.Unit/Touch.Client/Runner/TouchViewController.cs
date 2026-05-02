@@ -61,7 +61,10 @@ namespace MonoTouch.NUnit.UI {
 
 		UIBarButtonItem FilterButton {
 			get {
-				return NavigationItem.RightBarButtonItems [1];
+				var items = NavigationItem.RightBarButtonItems;
+				if (items is null || items.Length < 2)
+					throw new InvalidOperationException ("The filter button has not been initialized.");
+				return items [1];
 			}
 		}
 
@@ -72,12 +75,12 @@ namespace MonoTouch.NUnit.UI {
 			Success,
 		}
 
-		string OriginalCaption { get; set; }
-		List<Element> Unfiltered { get; set; }
+		string? OriginalCaption { get; set; }
+		List<Element> Unfiltered { get; set; } = new List<Element> ();
 
 		ResultFilter CurrentFilter { get; set; }
 
-		void ChangeFilter (object sender, EventArgs e)
+		void ChangeFilter (object? sender, EventArgs e)
 		{
 			switch (CurrentFilter) {
 			case ResultFilter.All:
@@ -137,7 +140,10 @@ namespace MonoTouch.NUnit.UI {
 
 		UIBarButtonItem SortButton {
 			get {
-				return NavigationItem.RightBarButtonItems [0];
+				var items = NavigationItem.RightBarButtonItems;
+				if (items is null || items.Length == 0)
+					throw new InvalidOperationException ("The sort button has not been initialized.");
+				return items [0];
 			}
 		}
 
@@ -152,7 +158,7 @@ namespace MonoTouch.NUnit.UI {
 		static ElementComparer Ascending = new ElementComparer (SortOrder.Ascending);
 		static ElementComparer Descending = new ElementComparer (SortOrder.Descending);
 
-		void ChangeSort (object sender, EventArgs e)
+		void ChangeSort (object? sender, EventArgs e)
 		{
 			List<Element> list = Root [0].Elements;
 			switch (CurrentSortOrder) {
@@ -178,20 +184,20 @@ namespace MonoTouch.NUnit.UI {
 				order = sortOrder == SortOrder.Descending ? -1 : 1;
 			}
 
-			public int Compare (Element x, Element y)
+			public int Compare (Element? x, Element? y)
 			{
-				return order * x.Caption.CompareTo (y.Caption);
+				return order * string.Compare (x?.Caption, y?.Caption, StringComparison.Ordinal);
 			}
 		}
 
 		// UI
 
-		static UIImage arrow_up;
-		static UIImage arrow_down;
-		static UIImage ok_sign;
-		static UIImage remove_sign;
-		static UIImage question_sign;
-		static UIImage asterisk;
+		static UIImage? arrow_up;
+		static UIImage? arrow_down;
+		static UIImage? ok_sign;
+		static UIImage? remove_sign;
+		static UIImage? question_sign;
+		static UIImage? asterisk;
 
 		static UIImage ArrowUp {
 			get {
@@ -250,15 +256,17 @@ namespace MonoTouch.NUnit.UI {
 			float size = 20f;
 			UIGraphics.BeginImageContextWithOptions (new CGSize (size, size), false, 0);
 			using (var c = UIGraphics.GetCurrentContext ()) {
-				c.SetFillColor (1.0f, 1.0f, 1.0f, 1.0f);
-				c.SetStrokeColor (1.0f, 1.0f, 1.0f, 1.0f);
-				c.TranslateCTM (3f, size - 3f);
-				c.ScaleCTM (size / 1000, -size / 1000);
-				render (c);
+				if (c is not null) {
+					c.SetFillColor (1.0f, 1.0f, 1.0f, 1.0f);
+					c.SetStrokeColor (1.0f, 1.0f, 1.0f, 1.0f);
+					c.TranslateCTM (3f, size - 3f);
+					c.ScaleCTM (size / 1000, -size / 1000);
+					render (c);
+				}
 			}
-			UIImage img = UIGraphics.GetImageFromCurrentImageContext ();
+			var img = UIGraphics.GetImageFromCurrentImageContext ();
 			UIGraphics.EndImageContext ();
-			return img;
+			return img ?? new UIImage ();
 		}
 
 		#region generated code

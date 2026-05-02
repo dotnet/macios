@@ -527,10 +527,10 @@ namespace AudioUnit {
 		[Export ("shouldChangeToFormat:forBus:")]
 		bool ShouldChangeToFormat (AVAudioFormat format, AUAudioUnitBus bus);
 
-		[Notification, Field ("kAudioComponentRegistrationsChangedNotification")]
+		[Notification, Field ("kAudioComponentRegistrationsChangedNotification", "AudioToolbox")]
 		NSString AudioComponentRegistrationsChangedNotification { get; }
 
-		[Notification, Field ("kAudioComponentInstanceInvalidationNotification")]
+		[Notification, Field ("kAudioComponentInstanceInvalidationNotification", "AudioToolbox")]
 		NSString AudioComponentInstanceInvalidationNotification { get; }
 
 		/// <summary>To be added.</summary>

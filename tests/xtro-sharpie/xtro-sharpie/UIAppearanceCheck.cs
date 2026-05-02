@@ -21,7 +21,7 @@ namespace Extrospection {
 		{
 		}
 
-		static MethodDefinition GetMethod (ObjCMethodDecl decl)
+		static MethodDefinition? GetMethod (ObjCMethodDecl decl)
 		{
 			methods.TryGetValue (decl.GetName (), out var md);
 			return md;
@@ -49,7 +49,7 @@ namespace Extrospection {
 		public override void VisitObjCPropertyDecl (ObjCPropertyDecl decl)
 		{
 			// don't process methods (or types) that are unavailable for the current platform
-			if (!decl.IsAvailable () || !(decl.DeclContext as Decl).IsAvailable ())
+			if (!decl.IsAvailable () || !(((Decl) decl.DeclContext!).IsAvailable ()))
 				return;
 
 			// does not look exposed, but part of the dump
@@ -67,7 +67,7 @@ namespace Extrospection {
 		public override void VisitObjCMethodDecl (ObjCMethodDecl decl)
 		{
 			// don't process methods (or types) that are unavailable for the current platform
-			if (!decl.IsAvailable () || !(decl.DeclContext as Decl).IsAvailable ())
+			if (!decl.IsAvailable () || !(((Decl) decl.DeclContext!).IsAvailable ()))
 				return;
 
 			// does not look exposed, but part of the dump

@@ -2,8 +2,8 @@ namespace Extrospection {
 
 	class EnumCheck : BaseVisitor {
 		class ManagedValue {
-			public FieldDefinition Field;
-			public EnumConstantDecl Decl;
+			public required FieldDefinition Field;
+			public EnumConstantDecl? Decl;
 		}
 
 		Dictionary<string, TypeDefinition> enums = new Dictionary<string, TypeDefinition> (StringComparer.InvariantCultureIgnoreCase);

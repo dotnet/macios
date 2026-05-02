@@ -16,8 +16,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSViewControllerShouldAddChildViewController ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var child = new NSViewController ();
 			controller.AddChildViewController (child);
 
@@ -27,8 +25,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSViewControllerShouldRemoveChildViewController ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var child = new NSViewController ();
 			controller.AddChildViewController (child);
 
@@ -42,8 +38,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSViewControllerShouldInsertChildViewController ()
 		{
-			Asserts.EnsureYosemite ();
-
 			controller.AddChildViewController (new NSViewController ());
 			controller.AddChildViewController (new NSViewController ());
 

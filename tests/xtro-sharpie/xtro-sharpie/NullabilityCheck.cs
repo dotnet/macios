@@ -27,13 +27,13 @@ namespace Extrospection {
 		{
 		}
 
-		static TypeDefinition GetType (ObjCInterfaceDecl decl)
+		static TypeDefinition? GetType (ObjCInterfaceDecl decl)
 		{
 			types.TryGetValue (decl.Name, out var td);
 			return td;
 		}
 
-		static MethodDefinition GetMethod (ObjCMethodDecl decl)
+		static MethodDefinition? GetMethod (ObjCMethodDecl decl)
 		{
 			methods.TryGetValue (decl.GetName (), out var md);
 			return md;
@@ -91,7 +91,7 @@ namespace Extrospection {
 					// Type is `System.Byte[]` and value is a `CustomAttributeArgument[]`
 					// each with a `Type` of `System.Byte` and where value is a `byte`
 					case "System.Byte[]":
-						var caa = first.Value as CustomAttributeArgument [];
+						var caa = (CustomAttributeArgument []) first.Value;
 						var length = caa.Length;
 						var values = new Null [length];
 						for (int i = 0; i < length; i++)
@@ -106,11 +106,11 @@ namespace Extrospection {
 		public override void VisitObjCMethodDecl (ObjCMethodDecl decl)
 		{
 			// don't process methods (or types) that are unavailable for the current platform
-			if (!decl.IsAvailable () || !(decl.DeclContext as Decl).IsAvailable ())
+			if (!decl.IsAvailable () || !(((Decl) decl.DeclContext!).IsAvailable ()))
 				return;
 
 			// don't process deprecated methods (or types)
-			if (decl.IsDeprecated () || (decl.DeclContext as Decl).IsDeprecated ())
+			if (decl.IsDeprecated () || (((Decl) decl.DeclContext!).IsDeprecated ()))
 				return;
 
 			var method = GetMethod (decl);
@@ -203,7 +203,7 @@ namespace Extrospection {
 				ICustomAttributeProvider cap;
 				// the managed attributes are on the property, not the special methods
 				if (method.IsGetter) {
-					var property = method.FindProperty ();
+					var property = method.FindProperty ()!;
 					// also `null_resettable` will only show something (natively) on the setter (since it does not return null, but accept it)
 					// in this case we'll trust xtro checking the setter only (if it exists, if not then it can't be `null_resettable`)
 					if (property.SetMethod is not null)

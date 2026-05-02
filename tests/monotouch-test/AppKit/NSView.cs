@@ -18,8 +18,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSViewShouldAddGestureRecognizer ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var length = 0;
 			if (view.GestureRecognizers is not null)
 				length = view.GestureRecognizers.Length;
@@ -31,8 +29,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSViewShouldRemoveGestureRecognizer ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var recognizer = new NSClickGestureRecognizer ();
 			view.AddGestureRecognizer (recognizer);
 
@@ -46,8 +42,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSViewShouldChangeGestureRecognizers ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var recognizers = view.GestureRecognizers;
 			view.GestureRecognizers = new NSGestureRecognizer [] { new NSClickGestureRecognizer (), new NSPanGestureRecognizer () };
 

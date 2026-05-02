@@ -29013,6 +29013,7 @@ T:CoreML.MLModelAsset
 T:CoreML.MLModelAssetGetFunctionNamesCompletionHandler
 T:CoreML.MLModelAssetGetModelDescriptionCompletionHandler
 T:CoreML.MLModelCollection
+T:CoreML.MLModelCollection.Notifications
 T:CoreML.MLModelCollectionEntry
 T:CoreML.MLModelConfiguration
 T:CoreML.MLModelStructure

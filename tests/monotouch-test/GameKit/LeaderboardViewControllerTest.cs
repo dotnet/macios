@@ -29,10 +29,7 @@ namespace MonoTouchFixtures.GameKit {
 		public void DefaultCtor ()
 		{
 #if MONOMAC
-			// fails when executed under BigSur - this has been deprecated for a while (even if it remains working elsewhere)
-			if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 11, 0))
-				Assert.Inconclusive ("'LeaderboardViewControllerTest' the native 'init' method returned nil.");
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 8, throwIfOtherPlatform: false);
+			Assert.Inconclusive ("'LeaderboardViewControllerTest' the native 'init' method returned nil.");
 #endif
 			using (var vc = new GKLeaderboardViewController ()) {
 				Assert.Null (vc.Category, "Category");

@@ -232,7 +232,19 @@ steps:
     $testMatrix = $testMatrix | ConvertFrom-Json | ConvertTo-Json -Compress
     # update the config file so that we do not recalculate the matrix in other pipelines
     Edit-BuildConfiguration -ConfigKey TEST_MATRIX -ConfigValue $testMatrix -ConfigFile $Env:CONFIG_PATH
-    #CONFIG_PATH
+    Write-Host "##vso[task.setvariable variable=TEST_MATRIX;isOutput=true]$testMatrix"
+
+    # also compute the simulator test matrix and set it as output variable so that
+    # dependent stages in post-build test pipelines can consume it
+    $simulatorTestMatrix = Get-TestConfiguration `
+      -TestConfigurations "$Env:TEST_CONFIGURATIONS" `
+      -SupportedPlatforms "$Env:SUPPORTED_PLATFORMS" `
+      -EnabledPlatforms "$Env:CONFIGURE_PLATFORMS_DOTNET_PLATFORMS" `
+      -TestsLabels "${{ parameters.testsLabels }}" `
+      -StatusContext "${{ parameters.statusContext }}" `
+      -StageFilter "simulator_tests"
+    $simulatorTestMatrix = $simulatorTestMatrix | ConvertFrom-Json | ConvertTo-Json -Compress
+    Write-Host "##vso[task.setvariable variable=SIMULATOR_TEST_MATRIX;isOutput=true]$simulatorTestMatrix"
   name: test_matrix
   displayName: 'Create tests strategy matrix'
   env:

@@ -31,6 +31,11 @@ parameters:
     type: boolean
     default: true
 
+  - name: buildPackages
+    displayName: Build packages as part of this pipeline (instead of downloading from a pipeline resource)
+    type: boolean
+    default: false
+
 resources:
   repositories:
     - repository: self
@@ -56,3 +61,4 @@ stages:
       provisionatorChannel: ${{ parameters.provisionatorChannel }}
       runTests: ${{ parameters.runTests }}
       runWindowsIntegration: ${{ parameters.runWindowsIntegration }}
+      buildPackages: ${{ parameters.buildPackages }}

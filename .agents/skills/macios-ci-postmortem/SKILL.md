@@ -374,8 +374,16 @@ Group failures by worker and compute failure rates. A bot is problematic if:
 Also look for cross-bot patterns that affect many PRs:
 - **Timeouts**: jobs that time out on multiple different bots across unrelated PRs
 - **REST API failures**: `Intermittent failure attempting to call the restapis` across many PRs
-- **Path errors**: `Path does not exist` (especially on Windows bots)
 - **Provisioning failures**: `Reserve bot`, `provision` errors
+- **Workload install failures**: `Install dotnet workloads` failing
+
+**IMPORTANT: Distinguish symptoms from root causes.** Some pipeline steps have `continueOnError: true`, which means their errors are logged as warnings but do not cause the job to fail. For example, `Publish Artifact: TestSummary` and `Publish Artifact: HtmlReport` often report `Path does not exist` — but this is because an **earlier step** failed before the tests could run and produce those artifacts. Always trace back to the **first failing task** in the job's timeline to find the actual root cause.
+
+To find the actual root cause in a failed job:
+1. List all Task records under the job sorted by execution order
+2. Find tasks with `result == 'failed'` (not `succeededWithIssues`)
+3. The earliest `failed` task is typically the root cause
+4. Tasks with `succeededWithIssues` that report `Path does not exist` are downstream symptoms
 
 ```sql
 SELECT error_signature, failure_type, raw_message,

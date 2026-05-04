@@ -16,9 +16,8 @@
 name: Inter-branch merge workflow
 
 on:
-  push:
-    branches:
-      - main
+  # allow triggering this action manually
+  workflow_dispatch:
 
   # Run every day at 3:00 AM UTC
   schedule:

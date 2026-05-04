@@ -25,13 +25,13 @@ namespace ShareExtensionTest {
 		{
 			NSExtensionItem outputItem = new NSExtensionItem ();
 			var outputItems = new [] { outputItem };
-			ExtensionContext.CompleteRequest (outputItems, null);
+			ExtensionContext?.CompleteRequest (outputItems, null);
 		}
 
 		partial void Send (Foundation.NSObject sender)
 		{
 			NSError cancelError = NSError.FromDomain (NSError.CocoaErrorDomain, 3072, null);
-			ExtensionContext.CancelRequest (cancelError);
+			ExtensionContext?.CancelRequest (cancelError);
 		}
 	}
 }

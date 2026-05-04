@@ -440,14 +440,35 @@ gh issue list --repo dotnet/macios --state closed \
   --label "ci-postmortem" --json number,title,labels,url
 ```
 
-### Step 4.2: Propose actions to the user
+### Step 4.2: Decide whether to reopen closed issues
+
+When a matching **closed** issue is found, apply these rules to decide whether to reopen it:
+
+1. **Check the close reason.** Read the issue body/comments to determine *why* it was closed:
+   - **Fix merged** — a code change was merged to fix the problem.
+   - **Lack of information** — closed because there wasn't enough data to act on.
+   - **Debug instrumentation merged** — a PR was merged to gather more diagnostic info.
+
+2. **If closed because a fix was merged:**
+   - **Do NOT reopen if the issue was closed less than 2 weeks ago.** The failing builds in the analysis window likely predate the fix. Comment on the closed issue with the analysis results and note why it's not being reopened.
+   - **Do NOT reopen unless the new failing build is from the `main` branch** (or targets `main` via a PR that incorporates the fix commit). Builds from older branches or PRs that branched before the fix don't count.
+   - **After 2 weeks**, if the failure is still appearing in builds that incorporate the fix, reopen the issue.
+
+3. **If closed for lack of information:** reopen if the new analysis provides that missing information.
+
+4. **If closed because debug instrumentation was merged:** reopen if any of the failing builds provide the additional diagnostic data that was being collected.
+
+5. **Always OK to comment** on a closed issue with analysis data, even if not reopening. Include a note explaining why the issue is not being reopened (e.g., "Not reopening — the fix in #NNNN was merged on DATE, and all failing builds predate that fix.").
+
+### Step 4.3: Propose actions to the user
 
 Present a list of proposed actions **before executing any**. Use `ask_user` to get confirmation.
 
 For each failure, propose one of:
 - **Create new issue** — no existing issue found
 - **Comment on existing issue** — matching open issue found, add recent occurrence data
-- **Reopen issue** — matching closed issue found, failure has recurred
+- **Reopen issue** — matching closed issue found, failure confirmed post-fix (see Step 4.2)
+- **Comment on closed issue (no reopen)** — matching closed issue found, but reopen criteria not met
 - **Skip** — user decides this isn't worth tracking
 
 Format the proposal clearly:

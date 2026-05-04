@@ -481,7 +481,7 @@ Proceed with these actions? [Confirm / Edit / Skip]
 ```bash
 gh issue create --repo dotnet/macios \
   --title "[CI] Flaky: <test_fullname> on <platform>" \
-  --label "bug,CI,ci-postmortem,flaky-test" \
+  --label "bug,CI,ci-postmortem,copilot,flaky-test" \
   --body "$(cat <<'EOF'
 ## Flaky Test Report (automated)
 
@@ -517,7 +517,7 @@ EOF
 )"
 ```
 
-All issues **must** have the `ci-postmortem` label. Additionally use `flaky-test` for flaky tests and `infrastructure` for infra issues.
+All issues **must** have the `ci-postmortem` and `copilot` labels. Additionally use `flaky-test` for flaky tests and `infrastructure` for infra issues.
 
 #### Comment on existing issue
 

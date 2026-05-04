@@ -222,6 +222,7 @@ namespace Xamarin.Tests {
 			case "publish":
 			case "restore":
 			case "run":
+			case "test":
 				var args = new List<string> ();
 				args.Add (verb);
 				args.Add (project);

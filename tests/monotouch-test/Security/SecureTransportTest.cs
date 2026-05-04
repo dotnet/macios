@@ -140,9 +140,11 @@ namespace MonoTouchFixtures.Security {
 
 					ssl.Connection = new SslStreamConnection (ns);
 
+					var deadline = DateTime.UtcNow.AddSeconds (30);
 					var result = ssl.Handshake ();
-					while (result == SslStatus.WouldBlock || result == (SslStatus) (-108)) {
-						// we need to ask again - but if we're too fast we'll get -108 (errSecAllocate)
+					while (result == SslStatus.WouldBlock || result == (SslStatus) errSecAllocate) {
+						Assert.That (DateTime.UtcNow, Is.LessThan (deadline), "Handshake/timeout");
+						// we need to ask again - but if we're too fast we'll get errSecAllocate
 						Thread.Sleep (100);
 						// during the above call SessionState is Handshake
 						Assert.That (ssl.SessionState, Is.EqualTo (SslSessionState.Handshake), "Handshake/in progress");
@@ -161,9 +163,12 @@ namespace MonoTouchFixtures.Security {
 					Assert.That (result, Is.EqualTo (SslStatus.Success), "Write");
 
 					data = new byte [1024];
+					deadline = DateTime.UtcNow.AddSeconds (30);
 					result = ssl.Read (data, out processed);
-					while (result == SslStatus.WouldBlock)
+					while (result == SslStatus.WouldBlock) {
+						Assert.That (DateTime.UtcNow, Is.LessThan (deadline), "Read/timeout");
 						result = ssl.Read (data, out processed);
+					}
 					Assert.That (result, Is.EqualTo (SslStatus.Success), "Read");
 
 					string s = Encoding.UTF8.GetString (data, 0, (int) processed);

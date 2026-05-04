@@ -17,7 +17,7 @@ namespace ShareExtensionTest {
 		{
 			base.LoadView ();
 
-			NSExtensionItem item = ExtensionContext.InputItems.First ();
+			NSExtensionItem item = ExtensionContext?.InputItems.First () ?? new NSExtensionItem ();
 			Console.WriteLine ("Attachments {0}", item);
 		}
 

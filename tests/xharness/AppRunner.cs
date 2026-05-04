@@ -432,7 +432,50 @@ namespace Xharness {
 				FailureMessage = "Test app failed to launch.";
 			}
 
+			// Collect diagnostic info when the launch times out to help diagnose the issue
+			if (Result == TestExecutingResult.LaunchTimedOut)
+				await CollectLaunchTimedOutDiagnostics ();
+
 			return testReporter?.Success == true ? 0 : 1;
+		}
+
+		async Task CollectLaunchTimedOutDiagnostics ()
+		{
+			MainLog.WriteLine ("Launch timed out. Collecting diagnostic info...");
+
+			try {
+				var diagnosticLog = Logs.Create ($"launch-timeout-diagnostics-{Harness.Helpers.Timestamp}.log", "Launch timeout diagnostics");
+
+				diagnosticLog.WriteLine ($"Launch timed out for {AppInformation.AppName} ({AppInformation.BundleIdentifier})");
+				diagnosticLog.WriteLine ($"Target: {target}");
+				diagnosticLog.WriteLine ($"Simulator UDID: {simulator?.UDID ?? "N/A"}");
+				diagnosticLog.WriteLine ($"Simulator Name: {simulator?.Name ?? "N/A"}");
+				diagnosticLog.WriteLine ($"Launch timeout: {harness.LaunchTimeout} minutes");
+				diagnosticLog.WriteLine ("");
+
+				// List booted simulators and their state
+				diagnosticLog.WriteLine ("=== Simulator List ===");
+				var simListResult = await processManager.ExecuteXcodeCommandAsync ("simctl", new [] { "list" }, diagnosticLog, TimeSpan.FromMinutes (1));
+				diagnosticLog.WriteLine ($"simctl list exit code: {simListResult.ExitCode}");
+				diagnosticLog.WriteLine ("");
+
+				// Check if the specific simulator is booted
+				if (simulator?.UDID is not null) {
+					diagnosticLog.WriteLine ($"=== Simulator Status for {simulator.UDID} ===");
+					var statusResult = await processManager.ExecuteXcodeCommandAsync ("simctl", new [] { "bootstatus", simulator.UDID }, diagnosticLog, TimeSpan.FromSeconds (10));
+					diagnosticLog.WriteLine ($"bootstatus exit code: {statusResult.ExitCode}");
+					diagnosticLog.WriteLine ("");
+
+					// List installed apps on the simulator
+					diagnosticLog.WriteLine ($"=== Installed Apps on {simulator.UDID} ===");
+					var listAppsResult = await processManager.ExecuteXcodeCommandAsync ("simctl", new [] { "listapps", simulator.UDID }, diagnosticLog, TimeSpan.FromSeconds (30));
+					diagnosticLog.WriteLine ($"listapps exit code: {listAppsResult.ExitCode}");
+				}
+
+				MainLog.WriteLine ($"Launch timeout diagnostics written to {diagnosticLog.FullPath}");
+			} catch (Exception e) {
+				MainLog.WriteLine ($"Failed to collect launch timeout diagnostics: {e.Message}");
+			}
 		}
 
 		static bool IsLaunchFailure (IFileBackedLog log)

@@ -149,7 +149,7 @@ steps:
     fi
 
   displayName: 'Collect diagnostic info from simulators'
-  condition: eq(variables['system.debug'], true)
+  condition: or(eq(variables['system.debug'], true), failed())
   continueOnError: true
   name: collectSimulatorInfo
   timeoutInMinutes: 30
@@ -160,7 +160,7 @@ steps:
   inputs:
     targetPath: $(System.DefaultWorkingDirectory)/diagnostic-sim-output
     artifactName: '${{ parameters.uploadPrefix }}diagnostic-simulator-info-$(Build.BuildId)-$(System.StageAttempt)-$(System.JobAttempt)-${{ parameters.labelWithPlatform }}'
-  condition: and(eq(variables['system.debug'], true), succeededOrFailed())
+  condition: or(eq(variables['system.debug'], true), failed())
   continueOnError: true
 
 # Upload TestSummary as an artifact.

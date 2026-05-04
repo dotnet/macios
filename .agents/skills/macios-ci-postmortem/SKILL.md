@@ -522,9 +522,27 @@ gh issue create --repo dotnet/macios \
 
 ### Error Details
 
+Include the **specific error messages** from the NUnit XML failure messages. If the failure is a build error, include the actual compiler/linker error codes and messages. If different PRs/builds show different error messages for the same test, list them separately — they may be different root causes.
+
 ```
-<error message or assertion failure>
+<Specific error message from NUnit XML failure/message element>
+<Include compiler errors like "error CS8602: ..." or linker errors like "error MT0099: ...">
+<Include assertion failures like "Expected: True But was: False">
 ```
+
+If different builds have different errors for the same test, show each variant:
+
+**Variant A** (builds <list>):
+```
+<error message A>
+```
+
+**Variant B** (builds <list>):
+```
+<error message B>
+```
+
+**Important:** If different PRs show different error messages for the "same" test failure, they are likely **different root causes** and should be investigated separately. Consider splitting into separate issues or noting that the grouping may be incorrect.
 
 ### Classification
 

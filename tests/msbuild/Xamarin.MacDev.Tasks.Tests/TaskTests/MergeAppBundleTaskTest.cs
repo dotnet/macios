@@ -140,6 +140,48 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		public void TestArchitectureSpecificSatelliteAssemblies ()
+		{
+			var assemblyFiles = new string [] {
+				Path.Combine ("Contents", "MonoBundle", "ComplexAssembly.pdb"),
+				Path.Combine ("Contents", "MonoBundle", "ComplexAssembly.dll.config"),
+				Path.Combine ("Contents", "MonoBundle", "de", "ComplexAssembly.resources.dll"),
+				Path.Combine ("Contents", "MonoBundle", "en-AU", "ComplexAssembly.resources.dll"),
+			};
+			var sourceRoot = Cache.CreateTemporaryDirectory ();
+			var sourceA = Path.Combine (sourceRoot, "A");
+			var sourceB = Path.Combine (sourceRoot, "B");
+			Directory.CreateDirectory (sourceA);
+			Directory.CreateDirectory (sourceB);
+
+			foreach (var source in new [] { sourceA, sourceB }) {
+				foreach (var file in assemblyFiles) {
+					var fullPath = Path.Combine (source, file);
+					Directory.CreateDirectory (Path.GetDirectoryName (fullPath)!);
+					File.WriteAllText (fullPath, file);
+				}
+			}
+
+			File.WriteAllText (Path.Combine (sourceA, "Contents", "MonoBundle", "ComplexAssembly.dll"), "A");
+			File.WriteAllText (Path.Combine (sourceB, "Contents", "MonoBundle", "ComplexAssembly.dll"), "B");
+
+			var mainAssembly = Path.Combine ("Contents", "MonoBundle", "ComplexAssembly.dll");
+			var appA = CreateAppBundle (sourceA, mainAssembly, assemblyFiles [0], assemblyFiles [1], assemblyFiles [2], assemblyFiles [3]);
+			var appB = CreateAppBundle (sourceB, mainAssembly, assemblyFiles [0], assemblyFiles [1], assemblyFiles [2], assemblyFiles [3]);
+
+			var outputBundle = Path.Combine (Cache.CreateTemporaryDirectory (), "Merged.app");
+			var task = CreateTask (outputBundle, appA, appB);
+			ExecuteTask (task);
+
+			Assert.That (Path.Combine (outputBundle, "Contents", "MonoBundle", "SubDir1", "ComplexAssembly.dll"), Does.Exist, "SubDir1 assembly");
+			Assert.That (Path.Combine (outputBundle, "Contents", "MonoBundle", "SubDir2", "ComplexAssembly.dll"), Does.Exist, "SubDir2 assembly");
+			Assert.That (Path.Combine (outputBundle, "Contents", "MonoBundle", "SubDir1", "de", "ComplexAssembly.resources.dll"), Does.Exist, "SubDir1 de satellite");
+			Assert.That (Path.Combine (outputBundle, "Contents", "MonoBundle", "SubDir2", "en-AU", "ComplexAssembly.resources.dll"), Does.Exist, "SubDir2 en-AU satellite");
+			Assert.That (Path.Combine (outputBundle, "Contents", "MonoBundle", "de", "SubDir1", "ComplexAssembly.resources.dll"), Does.Not.Exist, "Incorrect de satellite path");
+			Assert.That (Path.Combine (outputBundle, "Contents", "MonoBundle", "en-AU", "SubDir2", "ComplexAssembly.resources.dll"), Does.Not.Exist, "Incorrect en-AU satellite path");
+		}
+
+		[Test]
 		public void TestDifferentOtherFiles ()
 		{
 			var tmpDir = Cache.CreateTemporaryDirectory ();

@@ -49,7 +49,11 @@ namespace LinkAnyTest {
 		{
 			// https://github.com/dotnet/runtime/issues/50290
 			Assert.IsNotNull (AppContext.GetData ("APP_PATHS"), "APP_PATHS");
-			Assert.IsNotNull (AppContext.GetData ("PINVOKE_OVERRIDE"), "PINVOKE_OVERRIDE");
+			if (TestRuntime.IsCoreCLR) {
+				Assert.IsNull (AppContext.GetData ("PINVOKE_OVERRIDE"), "PINVOKE_OVERRIDE (CoreCLR)");
+			} else {
+				Assert.IsNotNull (AppContext.GetData ("PINVOKE_OVERRIDE"), "PINVOKE_OVERRIDE (MonoVM)");
+			}
 		}
 
 		[Test]

@@ -37,12 +37,12 @@ namespace MonoTouch.NUnit {
 		StringBuilder extra_data = new StringBuilder ();
 		XmlMode mode;
 
-		public NUnitOutputTextWriter (BaseTouchRunner runner, TextWriter baseWriter, OutputWriter xmlWriter)
+		public NUnitOutputTextWriter (BaseTouchRunner runner, TextWriter? baseWriter, OutputWriter? xmlWriter)
 			: this (runner, baseWriter, xmlWriter, XmlMode.Default)
 		{
 		}
 
-		public NUnitOutputTextWriter (BaseTouchRunner runner, TextWriter baseWriter, OutputWriter xmlWriter, XmlMode xmlMode)
+		public NUnitOutputTextWriter (BaseTouchRunner runner, TextWriter? baseWriter, OutputWriter? xmlWriter, XmlMode xmlMode)
 		{
 			Runner = runner;
 			BaseWriter = baseWriter ?? Console.Out;
@@ -60,7 +60,7 @@ namespace MonoTouch.NUnit {
 
 		public BaseTouchRunner Runner { get; private set; }
 
-		public OutputWriter XmlOutputWriter { get; private set; }
+		public OutputWriter? XmlOutputWriter { get; private set; }
 
 		public override void Write (char value)
 		{
@@ -70,7 +70,7 @@ namespace MonoTouch.NUnit {
 				extra_data.Append (value);
 		}
 
-		public override void Write (string value)
+		public override void Write (string? value)
 		{
 			if (real_time_reporting)
 				BaseWriter.Write (value);
@@ -81,6 +81,7 @@ namespace MonoTouch.NUnit {
 		public override void Close ()
 		{
 			if (XmlOutputWriter is not null) {
+				var result = Runner.Result;
 				// now we want the XML report to write
 				real_time_reporting = true;
 				// write to a temporary string, because NUnit2XmlOutputWriter.WriteResultFile closes the stream,
@@ -88,7 +89,8 @@ namespace MonoTouch.NUnit {
 				var wrapped = mode == XmlMode.Wrapped;
 
 				if (!wrapped) {
-					XmlOutputWriter.WriteResultFile (Runner.Result, BaseWriter);
+					if (result is not null)
+						XmlOutputWriter.WriteResultFile (result, BaseWriter);
 					if (extra_data.Length > 0) {
 						BaseWriter.Write ("<!--");
 						extra_data.Replace ("--", "- - ");
@@ -100,7 +102,8 @@ namespace MonoTouch.NUnit {
 					BaseWriter.WriteLine ("<NUnitOutput>");
 
 					using (var textWriter = new StringWriter ()) {
-						XmlOutputWriter.WriteResultFile (Runner.Result, textWriter);
+						if (result is not null)
+							XmlOutputWriter.WriteResultFile (result, textWriter);
 						var str = textWriter.ToString ();
 						// Remove any xml declarations, since we're embedding this inside a different xml document.
 						if (str.StartsWith ("<?xml", StringComparison.Ordinal)) {

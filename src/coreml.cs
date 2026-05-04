@@ -1571,10 +1571,6 @@ namespace CoreML {
 		[Async]
 		[Export ("endAccessingModelCollectionWithIdentifier:completionHandler:")]
 		void EndAccessingModelCollection (string identifier, Action<bool, NSError> completionHandler);
-
-		[Notification]
-		[Field ("MLModelCollectionDidChangeNotification")]
-		NSString DidChangeNotification { get; }
 	}
 #endif // !XAMCORE_5_0
 

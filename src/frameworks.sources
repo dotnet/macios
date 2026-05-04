@@ -624,6 +624,7 @@ COREMIDI_SOURCES = \
 COREML_SOURCES = \
 	CoreML/MLDictionaryFeatureProvider.cs \
 	CoreML/MLModel.cs \
+	CoreML/MLModelCollection.cs \
 	CoreML/MLMultiArray.cs \
 	CoreML/MLMultiArrayConstraint.cs \
 

@@ -14,6 +14,7 @@ using SystemConfiguration;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using MonoTests.System.Net.Http;
 
 namespace MonoTouchFixtures.SystemConfiguration {
 
@@ -80,10 +81,10 @@ namespace MonoTouchFixtures.SystemConfiguration {
 		{
 			IPAddress address;
 			try {
-				address = Dns.GetHostAddresses ("apple.com") [0];
+				address = Dns.GetHostAddresses (NetworkResources.AppleHost) [0];
 			} catch (Exception e) {
-				Assert.Ignore ($"DNS resolution for apple.com failed, the test will be ignored: {e.Message}");
-				return;
+				TestRuntime.IgnoreInCIIfBadNetwork (e);
+				throw;
 			}
 
 			using (var nr = new NetworkReachability (IPAddress.Loopback, address)) {

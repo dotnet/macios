@@ -703,6 +703,7 @@ namespace MonoTests.System.Net.Http {
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
 				Assert.Inconclusive ("Request timedout.");
 			} else {
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
 				Assert.IsNull (ex, "Exception wasn't expected.");
 				X509Certificate2 certificate2 = X509CertificateLoader.LoadCertificate (global::System.Convert.FromBase64String (content));
 				Assert.AreEqual (certificate.Thumbprint, certificate2.Thumbprint);

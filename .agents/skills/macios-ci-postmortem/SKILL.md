@@ -513,12 +513,16 @@ gh issue create --repo dotnet/macios \
 
 ### Occurrence Summary
 
-| PR | Build | Commit | Date | Result |
-|----|-------|--------|------|--------|
-| #<pr> | [<buildId>](<url>) | <sha7> | <date> | Failed |
-| #<pr> | [<buildId>](<url>) | <sha7> | <date> | Passed on rerun |
+| PR | Build | Bot | Direct Link |
+|----|-------|-----|-------------|
+| #<pr> | <buildId> | <workerName> | [<job_name> → <task_name>](<deep_link_url>) |
 
 **Total:** Failed in <N> builds across <M> PRs
+
+**Deep links:** Always link to the specific job and step/task, not just the build. Use the AzDO URL format:
+`https://devdiv.visualstudio.com/DevDiv/_build/results?buildId=BUILD_ID&view=logs&j=JOB_RECORD_ID&t=TASK_RECORD_ID`
+
+The `j=` (job) and `t=` (task) parameters are the `id` fields from the timeline records. This takes the reader directly to the failing log rather than requiring them to click through multiple jobs.
 
 ### Error Details
 

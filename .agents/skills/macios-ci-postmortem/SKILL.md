@@ -377,13 +377,17 @@ Also look for cross-bot patterns that affect many PRs:
 - **Provisioning failures**: `Reserve bot`, `provision` errors
 - **Workload install failures**: `Install dotnet workloads` failing
 
-**IMPORTANT: Distinguish symptoms from root causes.** Some pipeline steps have `continueOnError: true`, which means their errors are logged as warnings but do not cause the job to fail. For example, `Publish Artifact: TestSummary` and `Publish Artifact: HtmlReport` often report `Path does not exist` — but this is because an **earlier step** failed before the tests could run and produce those artifacts. Always trace back to the **first failing task** in the job's timeline to find the actual root cause.
+**CRITICAL: Always identify the FIRST failed step as the root cause.** In any failed job, only the first step with `result == 'failed'` (and without `continueOnError: true`) is the root cause. All subsequent failures in the same job are cascading effects and must NOT be reported as separate issues. Common cascading patterns:
+- `Publish Artifact: TestSummary/HtmlReport` → reports `Path does not exist` because tests never ran
+- `Prepare tests results and Html Report` → fails because earlier steps didn't produce results
+- Any step after a failed `Checkout`, `Verify ssh connection`, `Download secrets`, or `Install dotnet workloads`
 
 To find the actual root cause in a failed job:
 1. List all Task records under the job sorted by execution order
-2. Find tasks with `result == 'failed'` (not `succeededWithIssues`)
-3. The earliest `failed` task is typically the root cause
-4. Tasks with `succeededWithIssues` that report `Path does not exist` are downstream symptoms
+2. Find the **first** task with `result == 'failed'`
+3. Verify this task does NOT have `continueOnError: true` — if it does, skip it and check the next failed task
+4. That task is the root cause; all later failures in the same job are cascading
+5. **Never file an issue for a cascading failure** — always file for the root cause step
 
 ```sql
 SELECT error_signature, failure_type, raw_message,

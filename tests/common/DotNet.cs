@@ -289,11 +289,15 @@ namespace Xamarin.Tests {
 				Console.WriteLine ($"Binlog: {binlogPath}");
 
 				// Work around https://github.com/dotnet/msbuild/issues/8845
-				args.Add ("/v:diag");
-				args.Add ("/consoleloggerparameters:Verbosity=Quiet");
-				// vb does not have preview lang, so we force it to latest
-				if (project.EndsWith (".vbproj", StringComparison.OrdinalIgnoreCase))
-					args.Add ("/p:LangVersion=latest");
+				// Skip these for 'dotnet test' because they leak through '-- ' in
+				// RunArguments and get passed to the test runner as app arguments.
+				if (verb != "test") {
+					args.Add ("/v:diag");
+					args.Add ("/consoleloggerparameters:Verbosity=Quiet");
+					// vb does not have preview lang, so we force it to latest
+					if (project.EndsWith (".vbproj", StringComparison.OrdinalIgnoreCase))
+						args.Add ("/p:LangVersion=latest");
+				}
 				// End workaround
 
 				if (msbuildParallelism.HasValue) {

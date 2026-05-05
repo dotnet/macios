@@ -9,7 +9,7 @@
     interface IUIWindowSceneDelegate
 
     [<Export("window")>]
-    member val Window : UIWindow = null with get, set
+    member val Window : UIWindow | null = null with get, set
 
     [<Export("scene:willConnectToSession:options:")>]
     member this.WillConnect(scene: UIScene, session: UISceneSession, connectionOptions: UISceneConnectionOptions) =
@@ -23,15 +23,18 @@
             
             // create a UIViewController with a single UILabel
             let vc = new UIViewController()
-            vc.View.AddSubview(
-                new UILabel(
-                    this.Window.Frame,
-                    BackgroundColor = UIColor.SystemBackground,
-                    TextAlignment = UITextAlignment.Center,
-                    Text = "Hello, iOS!",
-                    AutoresizingMask = UIViewAutoresizing.All
+            match vc.View with
+            | null -> ()
+            | view ->
+                view.AddSubview(
+                    new UILabel(
+                        this.Window.Frame,
+                        BackgroundColor = UIColor.SystemBackground,
+                        TextAlignment = UITextAlignment.Center,
+                        Text = "Hello, iOS!",
+                        AutoresizingMask = UIViewAutoresizing.All
+                    )
                 )
-            )
             this.Window.RootViewController <- vc
 
             // make the window visible

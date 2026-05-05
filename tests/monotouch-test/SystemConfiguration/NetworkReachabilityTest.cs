@@ -81,7 +81,16 @@ namespace MonoTouchFixtures.SystemConfiguration {
 		{
 			IPAddress address;
 			try {
-				address = Dns.GetHostAddresses (NetworkResources.AppleHost) [0];
+				var addresses = Dns.GetHostAddresses (NetworkResources.AppleHost);
+				address = null;
+				foreach (var candidate in addresses) {
+					if (candidate.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
+						address = candidate;
+						break;
+					}
+				}
+				if (address is null)
+					throw new InvalidOperationException ("No IPv4 address found.");
 			} catch (Exception e) {
 				TestRuntime.IgnoreInCIIfBadNetwork (e);
 				throw;

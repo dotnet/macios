@@ -8,8 +8,10 @@ namespace Xamarin.Tests {
 		[Test]
 		[TestCase (ApplePlatform.iOS, "iostest")]
 		[TestCase (ApplePlatform.TVOS, "tvostest")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalysttest")]
-		[TestCase (ApplePlatform.MacOSX, "macostest")]
+		// macOS and Mac Catalyst don't use mlaunch (they use 'open' via Desktop.targets),
+		// so MTP support requires a different approach for these platforms.
+		// [TestCase (ApplePlatform.MacCatalyst, "maccatalysttest")]
+		// [TestCase (ApplePlatform.MacOSX, "macostest")]
 		public void DotNetTest (ApplePlatform platform, string template)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -33,6 +35,14 @@ public sealed class Test1 {{
 ");
 
 			var properties = GetDefaultProperties ();
+
+			// Mobile platforms use mlaunch to run the app in the simulator.
+			// Override MlaunchPath if set via the environment variable.
+			var mlaunchPath = Environment.GetEnvironmentVariable ("MLAUNCH_PATH");
+			if (!string.IsNullOrEmpty (mlaunchPath)) {
+				properties ["MlaunchPath"] = mlaunchPath;
+			}
+
 			DotNet.Execute ("test", proj, properties);
 		}
 	}

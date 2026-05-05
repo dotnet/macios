@@ -55,9 +55,6 @@ namespace ObjCRuntime {
 			static public readonly IntPtr Handle = Dlfcn._dlopen (Constants.OpenGLESLibrary, 0);
 		}
 #endif
-		static public class AudioToolbox {
-			static public readonly IntPtr Handle = Dlfcn._dlopen (Constants.AudioToolboxLibrary, 0);
-		}
 #endif
 	}
 

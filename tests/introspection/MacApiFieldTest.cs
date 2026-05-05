@@ -133,10 +133,6 @@ namespace Introspection {
 			// MonoMac.CoreServices.CFHTTPMessage - document in 10.9 but returns null
 			case "_AuthenticationSchemeOAuth1":
 				return true;
-			case "CBUUIDValidRangeString":
-				if (Mac.CheckSystemVersion (10, 13)) // radar 32858911
-					return true;
-				goto default;
 			default:
 				return base.Skip (p);
 			}
@@ -145,10 +141,6 @@ namespace Introspection {
 		protected override bool Skip (string constantName, string? libraryName)
 		{
 			switch (constantName) {
-			case "CBUUIDValidRangeString":
-				if (Mac.CheckSystemVersion (10, 13)) // radar 32858911
-					return true;
-				goto default;
 			// Only there for API compat
 			case "kSecUseNoAuthenticationUI":
 			case "kSecUseOperationPrompt":
@@ -159,12 +151,6 @@ namespace Introspection {
 			// kCLErrorUserInfoAlternateRegionKey also returns null on iOS
 			case "kCLErrorUserInfoAlternateRegionKey":
 				return true;
-			case "QCCompositionInputRSSArticleDurationKey":
-			case "QCCompositionInputRSSFeedURLKey":
-			case "QCCompositionProtocolRSSVisualizer":
-				if (Mac.CheckSystemVersion (10, 14))
-					return true;
-				goto default;
 			default:
 				return base.Skip (constantName, libraryName);
 			}

@@ -59,11 +59,6 @@
 		</PropertyGroup>
 	</Target>
 
-	<PropertyGroup Condition="'$(ComputedPlatform)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') ">
-		<ComputedPlatform Condition="'$(SdkIsSimulator)' == 'true'">iPhoneSimulator</ComputedPlatform>
-		<ComputedPlatform Condition="'$(ComputedPlatform)' == ''">iPhone</ComputedPlatform>
-	</PropertyGroup>
-
 	<PropertyGroup>
 		<_RuntimeFrameworkVersion>$(BundledNETCorePlatformsPackageVersion)</_RuntimeFrameworkVersion>
 		<_RuntimeFrameworkVersion Condition="'$(CUSTOM_DOTNET_VERSION)' != ''">$(CUSTOM_DOTNET_VERSION)</_RuntimeFrameworkVersion>

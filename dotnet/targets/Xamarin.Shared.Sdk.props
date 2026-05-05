@@ -147,6 +147,13 @@
 		<_SdkIsSimulator Condition="'$(_SdkIsSimulator)' == ''">false</_SdkIsSimulator>
 		<!-- Set a public property that specifies if we're building for the simulator. -->
 		<SdkIsSimulator>$(_SdkIsSimulator)</SdkIsSimulator>
+
+		<!-- SdkIsDevice is true when building for device (which can only happen on iOS and tvOS). -->
+		<SdkIsDevice Condition="'$(SdkIsSimulator)' != 'true' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">true</SdkIsDevice>
+
+		<!-- We don't use the 'ComputedPlatform' property anymore, but it seems like there's code out there that depends on it (according to a search on GitHub at least), so define it like we did when we used the property. -->
+		<ComputedPlatform Condition="'$(ComputedPlatform)' == '' And '$(SdkIsSimulator)' == 'true'">iPhoneSimulator</ComputedPlatform>
+		<ComputedPlatform Condition="'$(ComputedPlatform)' == '' And '$(SdkIsDevice)' == 'true'">iPhone</ComputedPlatform>
 	</PropertyGroup>
 
 	<PropertyGroup>

@@ -8,7 +8,7 @@
 		<ExcludeNUnitLiteReference>true</ExcludeNUnitLiteReference>
 		<ExcludeTouchUnitReference>true</ExcludeTouchUnitReference>
 		<!-- Newtonsoft.Json produces ILLink trim analysis warnings that we can't fix -->
-		<NoWarn>$(NoWarn);IL2026;IL2055;IL2057;IL2060;IL2070;IL2072;IL2075;IL2080</NoWarn>
+		<NoWarn>$(NoWarn);IL2026;IL2045;IL2046;IL2055;IL2057;IL2060;IL2067;IL2070;IL2072;IL2075;IL2077;IL2080;IL2121</NoWarn>
 	</PropertyGroup>
 
 	<Import Project="../../common/shared-dotnet.csproj" />

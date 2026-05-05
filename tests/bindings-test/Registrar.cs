@@ -48,7 +48,7 @@ namespace XamarinTests.ObjCRuntime {
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test accesses internals, and this code seems to work fine with the trimmer enabled.")]
 		public static Registrars CurrentRegistrar {
 			get {
-				var isTrimmableStaticRegistrar = (bool) typeof (Runtime).GetProperty ("IsTrimmableStaticRegistrar", BindingFlags.NonPublic | BindingFlags.Static)!.GetValue (null);
+				var isTrimmableStaticRegistrar = (bool) typeof (Runtime).GetProperty ("IsTrimmableStaticRegistrar", BindingFlags.NonPublic | BindingFlags.Static)!.GetValue (null)!;
 				if (isTrimmableStaticRegistrar)
 					return Registrars.TrimmableStatic;
 

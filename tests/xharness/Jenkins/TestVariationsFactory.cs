@@ -93,8 +93,13 @@ namespace Xharness.Jenkins {
 					}
 					yield return new TestData { Variation = "Release (LLVM)", TestVariation = "release|llvm", Ignored = ignore };
 					yield return new TestData { Variation = "Debug (managed static registrar)", TestVariation = "managed-static-registrar", Ignored = ignore };
+					if (supports_coreclr)
+						yield return new TestData { Variation = "Debug (trimmable static registrar)", TestVariation = "trimmable-static-registrar", Ignored = ignore };
 					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "release|managed-static-registrar-all-optimizations-linkall", Ignored = ignore };
+					if (supports_coreclr)
+						yield return new TestData { Variation = "Release (trimmable static registrar, all optimizations)", TestVariation = "trimmable-static-registrar-all-optimizations-linkall", Ignored = ignore };
 					yield return new TestData { Variation = "Release (NativeAOT)", TestVariation = "release|nativeaot", Ignored = ignore };
+					yield return new TestData { Variation = "Release (trimmable static registrar, NativeAOT)", TestVariation = "trimmable-static-registrar|release|nativeaot", Ignored = ignore };
 					break;
 				}
 				break;
@@ -110,10 +115,16 @@ namespace Xharness.Jenkins {
 					if (mac_supports_arm64) {
 						yield return new TestData { Variation = "Debug (ARM64)", Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_sim_runtime_identifier, };
 						yield return new TestData { Variation = "Release (NativeAOT, ARM64)", TestVariation = "release|nativeaot", Ignored = ignore, RuntimeIdentifier = arm64_sim_runtime_identifier };
+						yield return new TestData { Variation = "Release (trimmable static registrar, NativeAOT, ARM64)", TestVariation = "trimmable-static-registrar|release|nativeaot", Ignored = ignore, RuntimeIdentifier = arm64_sim_runtime_identifier };
 					}
 					yield return new TestData { Variation = "Debug (managed static registrar)", TestVariation = "managed-static-registrar", Ignored = ignore };
+					if (supports_coreclr)
+						yield return new TestData { Variation = "Debug (trimmable static registrar)", TestVariation = "trimmable-static-registrar", Ignored = ignore };
 					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "release|managed-static-registrar-all-optimizations-linkall", Ignored = ignore };
+					if (supports_coreclr)
+						yield return new TestData { Variation = "Release (trimmable static registrar, all optimizations)", TestVariation = "trimmable-static-registrar-all-optimizations-linkall", Ignored = ignore };
 					yield return new TestData { Variation = "Release (NativeAOT, x64)", TestVariation = "release|nativeaot", Ignored = ignore, RuntimeIdentifier = x64_sim_runtime_identifier };
+					yield return new TestData { Variation = "Release (trimmable static registrar, NativeAOT, x64)", TestVariation = "trimmable-static-registrar|release|nativeaot", Ignored = ignore, RuntimeIdentifier = x64_sim_runtime_identifier };
 					if (supports_interpreter) {
 						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Ignored = ignore };
 						yield return new TestData { Variation = "Release (interpreter)", TestVariation = "release|interpreter", Ignored = ignore };
@@ -140,13 +151,22 @@ namespace Xharness.Jenkins {
 				case "monotouch-test":
 					yield return new TestData { Variation = "Debug (ARM64)", Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier, };
 					yield return new TestData { Variation = "Debug (managed static registrar)", TestVariation = "managed-static-registrar", Ignored = ignore };
+					if (supports_coreclr)
+						yield return new TestData { Variation = "Debug (trimmable static registrar)", TestVariation = "trimmable-static-registrar", Ignored = ignore };
 					yield return new TestData { Variation = "Debug (static registrar)", TestVariation = "static-registrar", Ignored = ignore, };
 					yield return new TestData { Variation = "Debug (static registrar, ARM64)", TestVariation = "static-registrar", Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier, };
 					yield return new TestData { Variation = "Release (managed static registrar)", TestVariation = "release|managed-static-registrar", Ignored = ignore };
+					if (supports_coreclr)
+						yield return new TestData { Variation = "Release (trimmable static registrar)", TestVariation = "trimmable-static-registrar", Ignored = ignore };
 					yield return new TestData { Variation = "Release (managed static registrar, all optimizations)", TestVariation = "release|managed-static-registrar-all-optimizations-linkall", Ignored = ignore };
+					if (supports_coreclr)
+						yield return new TestData { Variation = "Release (trimmable static registrar, all optimizations)", TestVariation = "trimmable-static-registrar-all-optimizations-linkall", Ignored = ignore };
 					yield return new TestData { Variation = "Release (NativeAOT)", TestVariation = "release|nativeaot", Ignored = ignore };
 					yield return new TestData { Variation = "Release (NativeAOT, ARM64)", TestVariation = "release|nativeaot", Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier };
 					yield return new TestData { Variation = "Release (NativeAOT, x64)", TestVariation = "release|nativeaot", Ignored = ignore, RuntimeIdentifier = x64_runtime_identifier };
+					yield return new TestData { Variation = "Release (trimmable static registrar, NativeAOT)", TestVariation = "trimmable-static-registrar|nativeaot|release", Ignored = ignore };
+					yield return new TestData { Variation = "Release (trimmable static registrar, NativeAOT, ARM64)", TestVariation = "trimmable-static-registrar|nativeaot|release", Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier };
+					yield return new TestData { Variation = "Release (trimmable static registrar, NativeAOT, x64)", TestVariation = "trimmable-static-registrar|nativeaot|release", Ignored = ignore, RuntimeIdentifier = x64_runtime_identifier };
 					yield return new TestData { Variation = "Release (static registrar)", TestVariation = "release|static-registrar", Ignored = ignore };
 					yield return new TestData { Variation = "Release (static registrar, all optimizations)", TestVariation = "release|static-registrar-all-optimizations-linkall", Ignored = ignore };
 					if (test.Platform == TestPlatform.MacCatalyst) {

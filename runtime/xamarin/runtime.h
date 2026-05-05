@@ -256,6 +256,7 @@ void			xamarin_check_objc_type (id obj, Class expected_class, SEL sel, id self, 
 #endif
 
 void			xamarin_set_is_managed_static_registrar (bool value);
+void			xamarin_set_is_trimmable_static_registrar (bool value);
 
 void			xamarin_process_nsexception (NSException *exc);
 void			xamarin_process_nsexception_using_mode (NSException *ns_exception, bool throwManagedAsDefault, GCHandle *output_exception);
@@ -308,7 +309,7 @@ bool			xamarin_is_user_type (Class cls);
  *     symbol: the symbol to look up. Can be NULL to save space (this value isn't used except in error messages).
  *     id: a numerical id for faster lookup (than doing string comparisons on the symbol name).
  */
-void			xamarin_registrar_dlsym (void **function_pointer, const char *assembly, const char *symbol, int32_t id);
+void			xamarin_registrar_dlsym (void **function_pointer, const char *assembly, const char *symbol, int32_t id, const char* objcClassName);
 
 /*
  * Wrapper GCHandle functions that takes pointer sized handles instead of ints,

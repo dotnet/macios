@@ -5,10 +5,12 @@
 #if __MACOS__
 
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
 using CoreServices;
+using Foundation;
 
 namespace MonoTouchFixtures.CoreServices {
 	using static FSEventStreamCreateFlags;
@@ -17,16 +19,30 @@ namespace MonoTouchFixtures.CoreServices {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public sealed class FSEventStreamTest {
+		[DllImport ("/usr/lib/libSystem.dylib")]
+		static extern IntPtr realpath (string file_name, IntPtr resolved_name);
+
+		static string CreateTemporaryDirectory ()
+		{
+			var tmpDir = Path.Combine (NSFileManager.TemporaryDirectory, Path.GetRandomFileName ());
+			Directory.CreateDirectory (tmpDir);
+			// Resolve symlinks (e.g. /var -> /private/var) because FSEventStream reports resolved paths.
+			var resolvedPtr = realpath (tmpDir, IntPtr.Zero);
+			var resolved = Marshal.PtrToStringUTF8 (resolvedPtr)!;
+			Marshal.FreeHGlobal (resolvedPtr);
+			return resolved;
+		}
+
 		[Test]
 		public void TestPathsBeingWatched ()
 		{
 			FSEventStreamCreateOptions createOptions = new () {
 				Flags = FileEvents | UseExtendedData,
 				PathsToWatch = new [] {
-					Xamarin.Cache.CreateTemporaryDirectory (),
-					Xamarin.Cache.CreateTemporaryDirectory (),
-					Xamarin.Cache.CreateTemporaryDirectory (),
-					Xamarin.Cache.CreateTemporaryDirectory ()
+					CreateTemporaryDirectory (),
+					CreateTemporaryDirectory (),
+					CreateTemporaryDirectory (),
+					CreateTemporaryDirectory ()
 				}
 			};
 
@@ -69,7 +85,7 @@ namespace MonoTouchFixtures.CoreServices {
 		{
 			TestRuntime.IgnoreInCI ("This test fails randomly on the bots, potentially due to (randomly) high CPU usage.");
 			using var monitor = new TestFSMonitor (
-				Xamarin.Cache.CreateTemporaryDirectory (),
+				CreateTemporaryDirectory (),
 				createFlags,
 				maxFilesToCreate: 256);
 			try {

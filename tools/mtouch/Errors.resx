@@ -1108,7 +1108,7 @@
 	</data>
 
 	<data name="MX2256" xml:space="preserve">
-		<value>The field type '{0}' for symbol '{1}' in method '{2}' does not appear to be an NSObject subclass. This may cause a runtime failure</value>
+		<value>The field type '{0}' for symbol '{1}' in method '{2}' is not an NSObject subclass. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
 	</data>
 
 	<data name="MX2257" xml:space="preserve">

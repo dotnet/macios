@@ -149,6 +149,8 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		// The initialized field must use volatile semantics to prevent ARM64 store
 		// reordering: without it, another thread could see Initialized=true before
 		// the Cached value is written, and return a stale IntPtr.Zero.
+		// Note that we don't care if we call the P/Invoke more than once, that's
+		// a safe operation, we just don't want to call it every time.
 		il.Append (il.Create (OpCodes.Volatile));
 		il.Append (il.Create (OpCodes.Ldsfld, initializedField));
 		il.Append (il.Create (OpCodes.Brtrue, loadCachedFieldInstruction));
@@ -304,12 +306,12 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 				il.Append (il.Create (OpCodes.Ldobj, importedFieldType));
 				break;
 			}
-		} else {
-			if (!IsNSObjectSubclass (fieldType))
-				Report (ErrorHelper.CreateWarning (Configuration.Application, 2256 /* The field type '{0}' for symbol '{1}' in method '{2}' does not appear to be an NSObject subclass. This may cause a runtime failure. */, callingMethod, Errors.MX2256, fieldType.FullName, symbolName, FormatMethod (callingMethod)));
+		} else if (IsNSObjectSubclass (fieldType)) {
 			il.Append (il.Create (OpCodes.Ldind_I));
 			var getnsobject = abr.Runtime_GetNSObject_T___System_IntPtr.CreateGenericInstanceMethod (importedFieldType);
 			il.Append (il.Create (OpCodes.Call, getnsobject));
+		} else {
+			Report (ErrorHelper.CreateError (Configuration.Application, 2256 /* The field type '{0}' for symbol '{1}' in method '{2}' is not an NSObject subclass. Please file an issue at https://github.com/dotnet/macios/issues/new */, callingMethod, Errors.MX2256, fieldType.FullName, symbolName, FormatMethod (callingMethod)));
 		}
 		il.Append (il.Create (OpCodes.Ret));
 
@@ -405,12 +407,12 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 				il.Append (il.Create (OpCodes.Stobj, importedFieldType));
 				break;
 			}
-		} else {
-			if (!IsNSObjectSubclass (fieldType))
-				Report (ErrorHelper.CreateWarning (Configuration.Application, 2256 /* The field type '{0}' for symbol '{1}' in method '{2}' does not appear to be an NSObject subclass. This may cause a runtime failure. */, callingMethod, Errors.MX2256, fieldType.FullName, symbolName, FormatMethod (callingMethod)));
+		} else if (IsNSObjectSubclass (fieldType)) {
 			il.Append (il.Create (OpCodes.Call, abr.Runtime_RetainNSObject));
 			il.Append (il.Create (OpCodes.Call, abr.NativeObject_op_Implicit_IntPtr));
 			il.Append (il.Create (OpCodes.Stind_I));
+		} else {
+			Report (ErrorHelper.CreateError (Configuration.Application, 2256 /* The field type '{0}' for symbol '{1}' in method '{2}' is not an NSObject subclass. Please file an issue at https://github.com/dotnet/macios/issues/new */, callingMethod, Errors.MX2256, fieldType.FullName, symbolName, FormatMethod (callingMethod)));
 		}
 		il.Append (il.Create (OpCodes.Ret));
 
@@ -471,30 +473,14 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		return rv;
 	}
 
-	static bool IsValidCIdentifier (string name)
-	{
-		if (name.Length == 0)
-			return false;
-		if (char.IsDigit (name [0]))
-			return false;
-		for (var i = 0; i < name.Length; i++) {
-			var c = name [i];
-			if (c == '_' || char.IsLetterOrDigit (c))
-				continue;
-			return false;
-		}
-		return true;
-	}
-
 	bool InlineSymbol (string symbolName)
 	{
 		// In compatibility mode, only inline symbols from [Field] attributes.
 		if (!strictMode && !Configuration.FieldSymbols.Contains (symbolName))
 			return false;
 
-		// Symbol names that aren't valid C identifiers can't be used in generated code.
-		if (!IsValidCIdentifier (symbolName))
-			return false;
+		// These symbols already come from [Objective-]C code, so they should already be valid identifiers,
+		// which means we don't have to validate them.
 
 		var requiredSymbol = DerivedLinkContext.RequiredSymbols.Find (symbolName);
 		if (requiredSymbol?.Mode == SymbolMode.Ignore)

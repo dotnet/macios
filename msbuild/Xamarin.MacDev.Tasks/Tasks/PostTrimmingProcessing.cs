@@ -111,6 +111,7 @@ namespace Xamarin.MacDev.Tasks {
 			// This is intentional: it allows the native linker to resolve the symbol at link time, which
 			// is the whole point of this optimization (avoiding dlsym at runtime).
 			foreach (var field in survivingSymbols.OrderBy (s => s)) {
+				// Using 'void*' as a stand-in type since we only need the address
 				sb.AppendLine ($"extern void* {field};");
 				sb.AppendLine ($"void* xamarin_Dlfcn_{field}_Native ();");
 				sb.AppendLine ($"void* xamarin_Dlfcn_{field}_Native () {{ return &{field}; }}");

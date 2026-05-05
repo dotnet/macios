@@ -1259,6 +1259,18 @@ Like `SdkIsSimulator`, this property is only set after [imports and
 properties](/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
 have been evaluated.
 
+## SdkIsMobile
+
+This property is a read-only property (setting it will have no effect) that
+specifies whether we're building for a mobile platform (iOS or tvOS).
+
+This property is `true` when the target platform is iOS or tvOS, and is not
+set for macOS or Mac Catalyst builds.
+
+Like `SdkIsSimulator`, this property is only set after [imports and
+properties](/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
+have been evaluated.
+
 ## SdkIsSimulator
 
 This property is a read-only property (setting it will have no effect) that

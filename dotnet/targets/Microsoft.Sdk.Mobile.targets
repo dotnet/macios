@@ -162,7 +162,7 @@
 	-->
 	<Target Name="ComputeAvailableDevices"
 		DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;"
-		Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS'"
+		Condition="'$(SdkIsMobile)' == 'true'"
 		Returns="@(Devices)">
 		<PropertyGroup>
 			<_FilterDevicesToRuntimeIdentifier Condition="'$(_XamarinUsingDefaultRuntimeIdentifier)' != 'true'">$(RuntimeIdentifier)</_FilterDevicesToRuntimeIdentifier>

@@ -2574,7 +2574,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 
 		<PropertyGroup>
-			<CodesignDisallowResourcesSubdirectoryInAppBundle Condition="'$(CodesignDisallowResourcesSubdirectoryInAppBundle)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">true</CodesignDisallowResourcesSubdirectoryInAppBundle>
+			<CodesignDisallowResourcesSubdirectoryInAppBundle Condition="'$(CodesignDisallowResourcesSubdirectoryInAppBundle)' == '' And '$(SdkIsMobile)' == 'true'">true</CodesignDisallowResourcesSubdirectoryInAppBundle>
 			<CodesignDisallowResourcesSubdirectoryInAppBundle Condition="'$(CodesignDisallowResourcesSubdirectoryInAppBundle)' == ''">false</CodesignDisallowResourcesSubdirectoryInAppBundle>
 		</PropertyGroup>
 
@@ -3269,7 +3269,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_AppCodeSignaturePath>$(_AppBundlePath)$(_AppCodeSignatureRelativePath)</_AppCodeSignaturePath>
 
 			<_AppPlugInsRelativeLocation Condition="'$(SdkIsDesktop)' == 'true'">Contents\</_AppPlugInsRelativeLocation>
-			<_AppPlugInsRelativeLocation Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS'"></_AppPlugInsRelativeLocation>
+			<_AppPlugInsRelativeLocation Condition="'$(SdkIsMobile)' == 'true'"></_AppPlugInsRelativeLocation>
 
 			<_AppPlugInsRelativePath>$(_AppPlugInsRelativeLocation)PlugIns\</_AppPlugInsRelativePath>
 			<_AppExtensionRoot>$(_AppBundlePath)$(_AppPlugInsRelativeLocation)</_AppExtensionRoot>

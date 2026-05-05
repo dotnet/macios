@@ -148,8 +148,11 @@
 		<!-- Set a public property that specifies if we're building for the simulator. -->
 		<SdkIsSimulator>$(_SdkIsSimulator)</SdkIsSimulator>
 
+		<!-- SdkIsMobile is true when building for a mobile platform (iOS or tvOS). -->
+		<SdkIsMobile Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS'">true</SdkIsMobile>
+
 		<!-- SdkIsDevice is true when building for device (which can only happen on iOS and tvOS). -->
-		<SdkIsDevice Condition="'$(SdkIsSimulator)' != 'true' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">true</SdkIsDevice>
+		<SdkIsDevice Condition="'$(SdkIsSimulator)' != 'true' And '$(SdkIsMobile)' == 'true'">true</SdkIsDevice>
 
 		<!-- SdkIsDesktop is true when building for macOS or Mac Catalyst. -->
 		<SdkIsDesktop Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">true</SdkIsDesktop>
@@ -202,7 +205,7 @@
 		but the MtouchUseLlvm value is ignored when using the simulator, so it doesn't matter
 		if we set it in all cases.
 	-->
-	<PropertyGroup Condition="'$(MtouchUseLlvm)' == '' And '$(Configuration)' == 'Release' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">
+	<PropertyGroup Condition="'$(MtouchUseLlvm)' == '' And '$(Configuration)' == 'Release' And '$(SdkIsMobile)' == 'true'">
 		<MtouchUseLlvm>true</MtouchUseLlvm>
 	</PropertyGroup>
 

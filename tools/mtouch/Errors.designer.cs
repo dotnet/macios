@@ -3543,7 +3543,7 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The field type &apos;{0}&apos; for symbol &apos;{1}&apos; in method &apos;{2}&apos; does not appear to be an NSObject subclass. This may cause a runtime failure.
+        ///   Looks up a localized string similar to The field type &apos;{0}&apos; for symbol &apos;{1}&apos; in method &apos;{2}&apos; is not an NSObject subclass. Please file an issue at https://github.com/dotnet/macios/issues/new.
         /// </summary>
         public static string MX2256 {
             get {

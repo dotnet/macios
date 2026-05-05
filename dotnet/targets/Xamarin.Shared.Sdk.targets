@@ -1695,7 +1695,7 @@
 
 	<!-- See docs/code/native-symbols.md for an overview of native symbol handling. -->
 	<Target Name="_CollectPostILTrimInformation"
-		Condition="'$(InlineDlfcnMethods)' != '' And '$(_UseNativeAot)' != 'true'"
+		Condition="'$(InlineDlfcnMethods)' != ''"
 		DependsOnTargets="_ComputeTrimmedAssemblies;_ComputePostTrimmingPaths"
 		Inputs="@(_TrimmedAssembly)"
 		Outputs="$(_ILTrimSurvivingNativeSymbolsFile)"

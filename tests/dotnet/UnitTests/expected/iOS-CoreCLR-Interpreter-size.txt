@@ -1,4 +1,4 @@
-AppBundleSize: 9,258,045 bytes (9,041.1 KB = 8.8 MB)
+AppBundleSize: 9,258,557 bytes (9,041.6 KB = 8.8 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 _CodeSignature/CodeResources: 10,847 bytes (10.6 KB = 0.0 MB)
 archived-expanded-entitlements.xcent: 384 bytes (0.4 KB = 0.0 MB)
@@ -21,7 +21,7 @@ Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/_CodeSignature
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/Info.plist: 911 bytes (0.9 KB = 0.0 MB)
 Frameworks/libSystem.Security.Cryptography.Native.Apple.framework/libSystem.Security.Cryptography.Native.Apple: 214,336 bytes (209.3 KB = 0.2 MB)
 Info.plist: 1,169 bytes (1.1 KB = 0.0 MB)
-Microsoft.iOS.dll: 99,328 bytes (97.0 KB = 0.1 MB)
+Microsoft.iOS.dll: 99,840 bytes (97.5 KB = 0.1 MB)
 PkgInfo: 8 bytes (0.0 KB = 0.0 MB)
 runtimeconfig.bin: 1,481 bytes (1.4 KB = 0.0 MB)
 SizeTestApp: 196,000 bytes (191.4 KB = 0.2 MB)

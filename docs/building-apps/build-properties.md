@@ -1103,7 +1103,7 @@ Only applicable to macOS and Mac Catalyst apps.
 
 ## ReferenceNativeSymbol
 
-See [ReferenceNativeSymbol](build-items.md#referencenativesymbols)
+See [ReferenceNativeSymbol](build-items.md#referencenativesymbol)
 
 ## RequireLinkWithAttributeForObjectiveCClassSearch
 

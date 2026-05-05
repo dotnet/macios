@@ -33,7 +33,7 @@ This file should be imported by eng/Versions.props
     <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>9.0.0-rc.2.24462.10</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
     <MicrosoftNETCoreAppRefPackageVersion>9.0.15</MicrosoftNETCoreAppRefPackageVersion>
     <!-- dotnet-sdk dependencies -->
-    <MicrosoftNETSdkPackageVersion>9.0.117-servicing.26221.1</MicrosoftNETSdkPackageVersion>
+    <MicrosoftNETSdkPackageVersion>9.0.117-servicing.26222.5</MicrosoftNETSdkPackageVersion>
     <!-- dotnet-templating dependencies -->
     <MicrosoftTemplateEngineTasksPackageVersion>7.0.100-alpha.1.21601.1</MicrosoftTemplateEngineTasksPackageVersion>
     <!-- dotnet-xharness dependencies -->

@@ -15,7 +15,6 @@ namespace Twitter {
 	delegate void TWRequestHandler ([NullAllowed] NSData responseData, [NullAllowed] NSHttpUrlResponse urlResponse, [NullAllowed] NSError error);
 
 	/// <summary>A Twitter request.</summary>
-	///     
 	[Deprecated (PlatformName.iOS, 6, 0, message: "Use the 'Social' framework.")]
 	[BaseType (typeof (NSObject))]
 	interface TWRequest {
@@ -91,7 +90,6 @@ namespace Twitter {
 	}
 
 	/// <summary>A <see cref="UIKit.UIViewController" /> that manages the user experience of composing a tweet.</summary>
-	///     
 	[Deprecated (PlatformName.iOS, 6, 0, message: "Use the 'Social' framework.")]
 	[BaseType (typeof (UIViewController))]
 	interface TWTweetComposeViewController {

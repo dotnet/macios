@@ -15172,7 +15172,6 @@ namespace UIKit {
 	interface IUIPickerViewDataSource { }
 
 	/// <summary>The model for the UIPickerView.</summary>
-	///     
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]

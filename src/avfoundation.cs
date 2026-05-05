@@ -2839,7 +2839,7 @@ namespace AVFoundation {
 
 	/// <summary>Delegate for the AVAudioRecorder class.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiorecorderdelegate">Apple documentation for <c>AVAudioRecorderDelegate</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiorecorderdelegate">Apple documentation for <c>AVAudioRecorderDelegate</c></related>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -4427,7 +4427,7 @@ namespace AVFoundation {
 
 	/// <summary>Delegate for the AVAudioSession class.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiosessiondelegate">Apple documentation for <c>AVAudioSessionDelegate</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiosessiondelegate">Apple documentation for <c>AVAudioSessionDelegate</c></related>
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 6, 0)]
 	[BaseType (typeof (NSObject))]

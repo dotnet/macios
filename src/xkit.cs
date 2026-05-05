@@ -2914,7 +2914,7 @@ namespace UIKit {
 	/// <summary>An attachment to a <see cref="Foundation.NSAttributedString" />.</summary>
 	///     
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nstextattachment">Apple documentation for <c>NSTextAttachment</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nstextattachment">Apple documentation for <c>NSTextAttachment</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	partial interface NSTextAttachment : NSTextAttachmentContainer, NSSecureCoding, NSTextAttachmentLayout
@@ -3523,7 +3523,7 @@ namespace UIKit {
 
 	/// <summary>Represents a tab location in Text Kit.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nstexttab">Apple documentation for <c>NSTextTab</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nstexttab">Apple documentation for <c>NSTextTab</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSTextTab : NSSecureCoding, NSCopying {

@@ -29,7 +29,7 @@
 			RuntimeIdentifier="$(RuntimeIdentifier)"
 			SdkDevPath="$(_SdkDevPath)"
 			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
-			TargetFrameworkMoniker="$(TargetFramework)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			>
 			<Output TaskParameter="InstructionSet" PropertyName="_ComputedInstructionSet" />
 		</ComputeInstructionSet>

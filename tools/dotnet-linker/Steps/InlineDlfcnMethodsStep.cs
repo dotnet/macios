@@ -105,7 +105,6 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		rv.PInvokeInfo = new PInvokeInfo (PInvokeAttributes.CharSetNotSpec | PInvokeAttributes.CallConvCdecl, nativeMethod, mod);
 
 		dlfcn.Methods.Add (rv);
-		Context.Annotations.Mark (rv);
 
 		AddField (callingMethod.Module.Assembly.Name.Name, symbolName);
 
@@ -133,16 +132,13 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 
 		var initializedField = new FieldDefinition ($"Get__{symbolName}_Initialized", FieldAttributes.Private | FieldAttributes.Static, callingMethod.Module.TypeSystem.Boolean);
 		dlfcn.Fields.Add (initializedField);
-		Context.Annotations.Mark (initializedField);
 
 		var cachedField = new FieldDefinition ($"Get__{symbolName}_Cached", FieldAttributes.Private | FieldAttributes.Static, abr.System_IntPtr);
 		dlfcn.Fields.Add (cachedField);
-		Context.Annotations.Mark (cachedField);
 
 		var intptr = abr.System_IntPtr;
 		symbolMethod = new MethodDefinition (methodName, MethodAttributes.Public | MethodAttributes.Static, intptr);
 		dlfcn.Methods.Add (symbolMethod);
-		Context.Annotations.Mark (symbolMethod);
 
 		var body = symbolMethod.Body;
 		var il = body.GetILProcessor ();
@@ -197,7 +193,6 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		var importedFieldType = callingMethod.Module.ImportReference (fieldType);
 		rv = new MethodDefinition (methodName, MethodAttributes.Public | MethodAttributes.Static, importedFieldType);
 		dlfcn.Methods.Add (rv);
-		Context.Annotations.Mark (rv);
 
 		var body = rv.Body;
 		var il = body.GetILProcessor ();
@@ -349,7 +344,6 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		rv = new MethodDefinition (methodName, MethodAttributes.Public | MethodAttributes.Static, abr.System_Void);
 		rv.Parameters.Add (new ParameterDefinition ("value", ParameterAttributes.None, importedFieldType));
 		dlfcn.Methods.Add (rv);
-		Context.Annotations.Mark (rv);
 
 		var body = rv.Body;
 		var il = body.GetILProcessor ();
@@ -446,7 +440,6 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		rv = new MethodDefinition (methodName, MethodAttributes.Public | MethodAttributes.Static, abr.System_Void);
 		rv.Parameters.Add (new ParameterDefinition ("value", ParameterAttributes.None, abr.System_String));
 		dlfcn.Methods.Add (rv);
-		Context.Annotations.Mark (rv);
 
 		var body = rv.Body;
 		var il = body.GetILProcessor ();

@@ -130,45 +130,55 @@ namespace MonoTouchFixtures.Security {
 		[Test]
 		public void Tls12 ()
 		{
-			var client = new TcpClient ("google.ca", 443);
-			using (NetworkStream ns = client.GetStream ())
-			using (var ssl = new SslContext (SslProtocolSide.Client, SslConnectionType.Stream)) {
+			try {
+				var client = new TcpClient ("google.ca", 443);
+				using (NetworkStream ns = client.GetStream ())
+				using (var ssl = new SslContext (SslProtocolSide.Client, SslConnectionType.Stream)) {
 
-				ssl.MinProtocol = SslProtocol.Tls_1_2;
-				Assert.That (ssl.MinProtocol, Is.EqualTo (SslProtocol.Tls_1_2), "MinProtocol");
+					ssl.MinProtocol = SslProtocol.Tls_1_2;
+					Assert.That (ssl.MinProtocol, Is.EqualTo (SslProtocol.Tls_1_2), "MinProtocol");
 
-				ssl.Connection = new SslStreamConnection (ns);
+					ssl.Connection = new SslStreamConnection (ns);
 
-				var result = ssl.Handshake ();
-				while (result == SslStatus.WouldBlock || result == (SslStatus) (-108)) {
-					// we need to ask again - but if we're too fast we'll get -108 (errSecAllocate)
-					Thread.Sleep (100);
-					// during the above call SessionState is Handshake
-					Assert.That (ssl.SessionState, Is.EqualTo (SslSessionState.Handshake), "Handshake/in progress");
-					result = ssl.Handshake ();
-				}
-				Assert.That (result, Is.EqualTo (SslStatus.Success), "Handshake/done");
+					var deadline = DateTime.UtcNow.AddSeconds (30);
+					var result = ssl.Handshake ();
+					while (result == SslStatus.WouldBlock || result == (SslStatus) errSecAllocate) {
+						Assert.That (DateTime.UtcNow, Is.LessThan (deadline), "Handshake/timeout");
+						// we need to ask again - but if we're too fast we'll get errSecAllocate
+						Thread.Sleep (100);
+						// during the above call SessionState is Handshake
+						Assert.That (ssl.SessionState, Is.EqualTo (SslSessionState.Handshake), "Handshake/in progress");
+						result = ssl.Handshake ();
+					}
+					Assert.That (result, Is.EqualTo (SslStatus.Success), "Handshake/done");
 
-				// FIXME: iOS 8 beta 1 bug ?!? the state is not updated (maybe delayed?) but the code still works
-				//Assert.That (ssl.SessionState, Is.EqualTo (SslSessionState.Connected), "Connected");
-				Assert.That (ssl.NegotiatedProtocol, Is.EqualTo (SslProtocol.Tls_1_2), "NegotiatedProtocol");
+					// FIXME: iOS 8 beta 1 bug ?!? the state is not updated (maybe delayed?) but the code still works
+					//Assert.That (ssl.SessionState, Is.EqualTo (SslSessionState.Connected), "Connected");
+					Assert.That (ssl.NegotiatedProtocol, Is.EqualTo (SslProtocol.Tls_1_2), "NegotiatedProtocol");
 
-				nint processed;
-				var data = Encoding.UTF8.GetBytes ("GET / HTTP/1.0" + Environment.NewLine + Environment.NewLine);
-				result = ssl.Write (data, out processed);
-				Assert.That (processed, Is.EqualTo ((nint) data.Length), "small buffer");
-				Assert.That (result, Is.EqualTo (SslStatus.Success), "Write");
+					nint processed;
+					var data = Encoding.UTF8.GetBytes ("GET / HTTP/1.0" + Environment.NewLine + Environment.NewLine);
+					result = ssl.Write (data, out processed);
+					Assert.That (processed, Is.EqualTo ((nint) data.Length), "small buffer");
+					Assert.That (result, Is.EqualTo (SslStatus.Success), "Write");
 
-				data = new byte [1024];
-				result = ssl.Read (data, out processed);
-				while (result == SslStatus.WouldBlock)
+					data = new byte [1024];
+					deadline = DateTime.UtcNow.AddSeconds (30);
 					result = ssl.Read (data, out processed);
-				Assert.That (result, Is.EqualTo (SslStatus.Success), "Read");
+					while (result == SslStatus.WouldBlock) {
+						Assert.That (DateTime.UtcNow, Is.LessThan (deadline), "Read/timeout");
+						result = ssl.Read (data, out processed);
+					}
+					Assert.That (result, Is.EqualTo (SslStatus.Success), "Read");
 
-				string s = Encoding.UTF8.GetString (data, 0, (int) processed);
-				// The result apparently depends on where you are: I get a 302, the bots get a 200.
-				// Also sometimes it fails with 502 Bad Gateway on the bots
-				Assert.That (s, Does.StartWith ("HTTP/1.0 302 Found").Or.StartWith ("HTTP/1.0 200 OK").Or.StartWith ("HTTP/1.0 502 Bad Gateway"), "response");
+					string s = Encoding.UTF8.GetString (data, 0, (int) processed);
+					// The result apparently depends on where you are: I get a 302, the bots get a 200.
+					// Also sometimes it fails with 502 Bad Gateway on the bots
+					Assert.That (s, Does.StartWith ("HTTP/1.0 302 Found").Or.StartWith ("HTTP/1.0 200 OK").Or.StartWith ("HTTP/1.0 502 Bad Gateway"), "response");
+				}
+			} catch (Exception ex) {
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
+				throw;
 			}
 		}
 	}

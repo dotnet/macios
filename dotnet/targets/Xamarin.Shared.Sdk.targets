@@ -1718,7 +1718,9 @@
 		DependsOnTargets="_CollectPostILTrimInformation;_CollectPostNativeAOTTrimInformation;_ComputeTargetArchitectures;_ComputePostTrimmingPaths"
 		>
 		<ItemGroup>
-			<_SurvivingNativeSymbolsFile Include="$(_ILTrimSurvivingNativeSymbolsFile)" Condition="Exists('$(_ILTrimSurvivingNativeSymbolsFile)')" />
+			<!-- When using NativeAOT, only use the NativeAOT surviving symbols, because NativeAOT's whole-program analysis
+			     is strictly more precise than the IL trimmer's analysis, so using the IL trim results would add false positives. -->
+			<_SurvivingNativeSymbolsFile Include="$(_ILTrimSurvivingNativeSymbolsFile)" Condition="'$(_UseNativeAot)' != 'true' And Exists('$(_ILTrimSurvivingNativeSymbolsFile)')" />
 			<_SurvivingNativeSymbolsFile Include="$(_NativeAOTSurvivingNativeSymbolsFile)" Condition="Exists('$(_NativeAOTSurvivingNativeSymbolsFile)')" />
 		</ItemGroup>
 		<PostTrimmingProcessing

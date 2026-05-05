@@ -156,6 +156,7 @@ Common project structure for Apple platform apps:
 2. Run `make` to rebuild affected components
 3. Test changes using appropriate test suite
 4. Verify on both simulator and device when possible
+5. Check if the documentation in the `docs/` directory needs to be updated to reflect the changes (e.g. new MSBuild properties should be documented in `docs/building-apps/build-properties.md`)
 
 ### Code Style
 

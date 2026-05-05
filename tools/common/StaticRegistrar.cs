@@ -407,14 +407,7 @@ namespace Registrar {
 					} else {
 						iface_methods.Remove (ifaceMethodDef);
 
-						List<MethodDefinition>? list;
-						if (rv is null) {
-							rv = new Dictionary<MethodDefinition, List<MethodDefinition>> ();
-							rv [impl] = list = new List<MethodDefinition> ();
-						} else if (!rv.TryGetValue (impl, out list)) {
-							rv [impl] = list = new List<MethodDefinition> ();
-						}
-						list.Add (ifaceMethodDef);
+						AddMethodMapping (ref rv, impl, ifaceMethodDef);
 					}
 				}
 			}
@@ -428,18 +421,23 @@ namespace Registrar {
 					if (!MethodMatch (impl, ifaceMethod))
 						continue;
 
-					List<MethodDefinition>? list;
-					if (rv is null) {
-						rv = new Dictionary<MethodDefinition, List<MethodDefinition>> ();
-						rv [impl] = list = new List<MethodDefinition> ();
-					} else if (!rv.TryGetValue (impl, out list)) {
-						rv [impl] = list = new List<MethodDefinition> ();
-					}
-					list.Add (ifaceMethod);
+					AddMethodMapping (ref rv, impl, ifaceMethod);
 				}
 			}
 
 			return rv;
+		}
+
+		static void AddMethodMapping (ref Dictionary<MethodDefinition, List<MethodDefinition>>? rv, MethodDefinition impl, MethodDefinition ifaceMethod)
+		{
+			List<MethodDefinition>? list;
+			if (rv is null) {
+				rv = new Dictionary<MethodDefinition, List<MethodDefinition>> ();
+				rv [impl] = list = new List<MethodDefinition> ();
+			} else if (!rv.TryGetValue (impl, out list)) {
+				rv [impl] = list = new List<MethodDefinition> ();
+			}
+			list.Add (ifaceMethod);
 		}
 
 		public static TypeReference GetEnumUnderlyingType (TypeDefinition type)
@@ -1517,6 +1515,18 @@ namespace Registrar {
 			return null;
 		}
 
+		static T []? ExtractAttributeArray<T> (CustomAttributeArgument argument)
+		{
+			if (argument.Value is null)
+				return null;
+			var arr = (CustomAttributeArgument []) argument.Value;
+			var result = new T [arr.Length];
+			for (int i = 0; i < arr.Length; i++) {
+				result [i] = (T) arr [i].Value;
+			}
+			return result;
+		}
+
 		protected override IEnumerable<ProtocolMemberAttribute> GetProtocolMemberAttributes (TypeReference type)
 		{
 			var td = type.Resolve ();
@@ -1551,31 +1561,13 @@ namespace Registrar {
 						rv.ReturnTypeDelegateProxy = (TypeReference) prop.Argument.Value!;
 						break;
 					case "ParameterType":
-						if (prop.Argument.Value is not null) {
-							var arr = (CustomAttributeArgument []) prop.Argument.Value;
-							rv.ParameterType = new TypeReference [arr.Length];
-							for (int i = 0; i < arr.Length; i++) {
-								rv.ParameterType [i] = (TypeReference) arr [i].Value;
-							}
-						}
+						rv.ParameterType = ExtractAttributeArray<TypeReference> (prop.Argument);
 						break;
 					case "ParameterByRef":
-						if (prop.Argument.Value is not null) {
-							var arr = (CustomAttributeArgument []) prop.Argument.Value;
-							rv.ParameterByRef = new bool [arr.Length];
-							for (int i = 0; i < arr.Length; i++) {
-								rv.ParameterByRef [i] = (bool) arr [i].Value;
-							}
-						}
+						rv.ParameterByRef = ExtractAttributeArray<bool> (prop.Argument);
 						break;
 					case "ParameterBlockProxy":
-						if (prop.Argument.Value is not null) {
-							var arr = (CustomAttributeArgument []) prop.Argument.Value;
-							rv.ParameterBlockProxy = new TypeReference [arr.Length];
-							for (int i = 0; i < arr.Length; i++) {
-								rv.ParameterBlockProxy [i] = (TypeReference) arr [i].Value;
-							}
-						}
+						rv.ParameterBlockProxy = ExtractAttributeArray<TypeReference> (prop.Argument);
 						break;
 					case "IsVariadic":
 						rv.IsVariadic = (bool) prop.Argument.Value!;

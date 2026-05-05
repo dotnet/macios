@@ -210,8 +210,15 @@ steps:
   condition: succeededOrFailed()
 
 # Upload to VSDrops so that the Html Report link in the GitHub comment works.
+- bash: |
+    echo "##vso[task.setvariable variable=JOB_STATUS_BEFORE_VSDROPS]$AGENT_JOBSTATUS"
+  displayName: 'Capture job status before VSDrops publish'
+  condition: succeededOrFailed()
+  continueOnError: true
+
 - task: artifactDropTask@1
   displayName: 'Publish to Artifact Services Drop'
+  name: publishVSDrops
   inputs:
     dropServiceURI: 'https://devdiv.artifacts.visualstudio.com/DefaultCollection'
     dropMetadataContainerName: '${{ parameters.uploadPrefix }}DropMetadata-${{ parameters.stageName }}${{ parameters.label }}-$(System.JobAttempt)'
@@ -220,6 +227,19 @@ steps:
     detailedLog: true
     usePat: true
   timeoutInMinutes: 30
+  continueOnError: true
+  condition: succeededOrFailed()
+
+# Azure DevOps doesn't support checking individual step results in step conditions
+# (failed('stepName') only works for jobs/stages). Comparing AGENT_JOBSTATUS before
+# and after the publish step is the best available approach to detect publish failures.
+- bash: |
+    if [ "$JOB_STATUS_BEFORE_VSDROPS" != "$AGENT_JOBSTATUS" ]; then
+      echo "VSDrops publish changed job status from '$JOB_STATUS_BEFORE_VSDROPS' to '$AGENT_JOBSTATUS'"
+      echo "##vso[task.setvariable variable=VSDROPS_PUBLISHED;isOutput=true]Failed"
+    fi
+  name: setVSDropsPublishResult
+  displayName: 'Set VSDrops publish result'
   continueOnError: true
   condition: succeededOrFailed()
 

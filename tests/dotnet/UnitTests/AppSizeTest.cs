@@ -49,6 +49,9 @@ namespace Xamarin.Tests {
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-NativeAOT", false, dict);
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
 		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
 		public void CoreCLR_Interpreter (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
 		{
@@ -58,6 +61,20 @@ namespace Xamarin.Tests {
 				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
 			};
 			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-Interpreter", isTrimmed, dict);
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64", true)]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64", true)]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", true)]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64;osx-x64", false)]
+		public void CoreCLR_R2R (ApplePlatform platform, string runtimeIdentifiers, bool isTrimmed)
+		{
+			var dict = new Dictionary<string, string> () {
+				{ "UseMonoRuntime", "false" },
+				{ "PublishReadyToRun", "true" },
+				{ "NoDSymUtil", "false" }, // off by default for macOS, but we want to test it, so enable it
+			};
+			Run (platform, runtimeIdentifiers, "Release", $"{platform}-CoreCLR-R2R", isTrimmed, dict);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]

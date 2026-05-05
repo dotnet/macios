@@ -242,7 +242,6 @@ namespace CoreBluetooth {
 		High,
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBConnectionEvent : long {
@@ -250,14 +249,13 @@ namespace CoreBluetooth {
 		Connected = 1,
 	}
 
-	[Flags, iOS (13, 0), TV (13, 0), NoMac]
+	[Flags, NoMac]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBCentralManagerFeature : ulong {
 		ExtendedScanAndConnect = 1uL << 0,
 	}
 
-	[iOS (13, 0), TV (13, 0)]
 	[MacCatalyst (13, 1)]
 	[Native]
 	public enum CBManagerAuthorization : long {

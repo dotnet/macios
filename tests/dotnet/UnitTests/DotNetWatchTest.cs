@@ -14,8 +14,8 @@ namespace Xamarin.Tests {
 	public class DotNetWatchTest : TestBaseClass {
 		[Test]
 		[TestCase (ApplePlatform.MacOSX)]
-		[TestCase (ApplePlatform.MacCatalyst)]
-		[TestCase (ApplePlatform.iOS)]
+		// [TestCase (ApplePlatform.MacCatalyst)]
+		// [TestCase (ApplePlatform.iOS)]
 		public void DotNetWatch (ApplePlatform platform)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);

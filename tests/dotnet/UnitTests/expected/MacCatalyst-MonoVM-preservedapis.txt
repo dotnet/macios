@@ -8182,6 +8182,7 @@ System.Private.CoreLib.dll:System.Reflection.SignatureConstructedGenericType.get
 System.Private.CoreLib.dll:System.Reflection.SignatureConstructedGenericType.GetArrayRank()
 System.Private.CoreLib.dll:System.Reflection.SignatureConstructedGenericType.GetGenericArguments()
 System.Private.CoreLib.dll:System.Reflection.SignatureConstructedGenericType.GetGenericTypeDefinition()
+System.Private.CoreLib.dll:System.Reflection.SignatureConstructedGenericType.GetNullableUnderlyingType()
 System.Private.CoreLib.dll:System.Reflection.SignatureConstructedGenericType.HasElementTypeImpl()
 System.Private.CoreLib.dll:System.Reflection.SignatureConstructedGenericType.IsArrayImpl()
 System.Private.CoreLib.dll:System.Reflection.SignatureConstructedGenericType.IsByRefImpl()
@@ -8269,6 +8270,7 @@ System.Private.CoreLib.dll:System.Reflection.SignatureType.GetGenericParameterCo
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetGenericTypeDefinition()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetInterfaces()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetMethods(System.Reflection.BindingFlags)
+System.Private.CoreLib.dll:System.Reflection.SignatureType.GetNullableUnderlyingType()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetPropertyImpl(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Type, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Reflection.SignatureType.GetTypeCodeImpl()
 System.Private.CoreLib.dll:System.Reflection.SignatureType.HasElementTypeImpl()
@@ -9590,6 +9592,7 @@ System.Private.CoreLib.dll:System.RuntimeType.GetMethods(System.Reflection.Bindi
 System.Private.CoreLib.dll:System.RuntimeType.GetMethodsByName_native(System.Runtime.CompilerServices.QCallTypeHandle, System.IntPtr, System.Reflection.BindingFlags, System.RuntimeType/MemberListType)
 System.Private.CoreLib.dll:System.RuntimeType.GetMethodsByName(System.String, System.Reflection.BindingFlags, System.RuntimeType/MemberListType, System.RuntimeType)
 System.Private.CoreLib.dll:System.RuntimeType.GetName(System.Runtime.CompilerServices.QCallTypeHandle, System.Runtime.CompilerServices.ObjectHandleOnStack)
+System.Private.CoreLib.dll:System.RuntimeType.GetNullableUnderlyingType()
 System.Private.CoreLib.dll:System.RuntimeType.GetParentType()
 System.Private.CoreLib.dll:System.RuntimeType.GetParentType(System.Runtime.CompilerServices.QCallTypeHandle, System.Runtime.CompilerServices.ObjectHandleOnStack)
 System.Private.CoreLib.dll:System.RuntimeType.GetPropertiesByName_native(System.Runtime.CompilerServices.QCallTypeHandle, System.IntPtr, System.Reflection.BindingFlags, System.RuntimeType/MemberListType)
@@ -11606,6 +11609,7 @@ System.Private.CoreLib.dll:System.Type.GetGenericTypeDefinition()
 System.Private.CoreLib.dll:System.Type.GetHashCode()
 System.Private.CoreLib.dll:System.Type.GetInterfaces()
 System.Private.CoreLib.dll:System.Type.GetMethods(System.Reflection.BindingFlags)
+System.Private.CoreLib.dll:System.Type.GetNullableUnderlyingType()
 System.Private.CoreLib.dll:System.Type.GetProperty(System.String, System.Reflection.BindingFlags, System.Reflection.Binder, System.Type, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Type.GetProperty(System.String, System.Type, System.Type[], System.Reflection.ParameterModifier[])
 System.Private.CoreLib.dll:System.Type.GetProperty(System.String, System.Type, System.Type[])
@@ -11653,8 +11657,8 @@ System.Private.CoreLib.dll:System.Type/<>c
 System.Private.CoreLib.dll:System.Type/<>c System.Type/<>c::<>9
 System.Private.CoreLib.dll:System.Type/<>c..cctor()
 System.Private.CoreLib.dll:System.Type/<>c..ctor()
-System.Private.CoreLib.dll:System.Type/<>c.<.cctor>b__304_0(System.Reflection.MemberInfo, System.Object)
-System.Private.CoreLib.dll:System.Type/<>c.<.cctor>b__304_1(System.Reflection.MemberInfo, System.Object)
+System.Private.CoreLib.dll:System.Type/<>c.<.cctor>b__305_0(System.Reflection.MemberInfo, System.Object)
+System.Private.CoreLib.dll:System.Type/<>c.<.cctor>b__305_1(System.Reflection.MemberInfo, System.Object)
 System.Private.CoreLib.dll:System.TypeCode
 System.Private.CoreLib.dll:System.TypeCode System.RuntimeType/TypeCache::TypeCode
 System.Private.CoreLib.dll:System.TypeCode System.TypeCode::Boolean

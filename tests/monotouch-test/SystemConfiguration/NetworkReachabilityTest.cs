@@ -14,6 +14,7 @@ using SystemConfiguration;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net.Sockets;
 using MonoTests.System.Net.Http;
 
 namespace MonoTouchFixtures.SystemConfiguration {
@@ -84,7 +85,7 @@ namespace MonoTouchFixtures.SystemConfiguration {
 				var addresses = Dns.GetHostAddresses (NetworkResources.AppleHost);
 				address = null;
 				foreach (var candidate in addresses) {
-					if (candidate.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) {
+					if (candidate.AddressFamily == AddressFamily.InterNetwork) {
 						address = candidate;
 						break;
 					}

@@ -3570,6 +3570,15 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find the trampoline for the category method {0}..
+        /// </summary>
+        public static string MX4191 {
+            get {
+                return ResourceManager.GetString("MX4191", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The native linker failed to execute: {0}. Please file a bug report at https://github.com/dotnet/macios/issues/new
         /// 		.
         /// </summary>
@@ -3873,6 +3882,24 @@ namespace Xamarin.Bundler {
         public static string MX8060 {
             get {
                 return ResourceManager.GetString("MX8060", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to find the managed function with id {0} ({1}, {2}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
+        /// </summary>
+        public static string MX8061 {
+            get {
+                return ResourceManager.GetString("MX8061", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type &apos;{0}&apos; is expected to have a ProtocolProxyAttribute. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
+        /// </summary>
+        public static string MX8062 {
+            get {
+                return ResourceManager.GetString("MX8062", resourceCulture);
             }
         }
     }

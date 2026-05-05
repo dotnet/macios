@@ -16,8 +16,9 @@ namespace XamarinTests.ObjCRuntime {
 	public enum Registrars {
 		Static = 1,
 		ManagedStatic = Static | 2,
-		Dynamic = 4,
-		AllStatic = Static | ManagedStatic,
+		TrimmableStatic = Static | 4,
+		Dynamic = 8,
+		AllStatic = Static | ManagedStatic | TrimmableStatic,
 		AllDynamic = Dynamic,
 	}
 
@@ -37,9 +38,20 @@ namespace XamarinTests.ObjCRuntime {
 			}
 		}
 
+		public static bool IsTrimmableStaticRegistrar {
+			get {
+				return CurrentRegistrar.HasFlag (Registrars.TrimmableStatic);
+			}
+		}
+
+
 		[UnconditionalSuppressMessage ("Trimming", "IL2026", Justification = "This test accesses internals, and this code seems to work fine with the trimmer enabled.")]
 		public static Registrars CurrentRegistrar {
 			get {
+				var isTrimmableStaticRegistrar = (bool) typeof (Runtime).GetProperty ("IsTrimmableStaticRegistrar", BindingFlags.NonPublic | BindingFlags.Static)!.GetValue (null);
+				if (isTrimmableStaticRegistrar)
+					return Registrars.TrimmableStatic;
+
 				var __registrar__ = typeof (Class).Assembly.GetType ("ObjCRuntime.__Registrar__");
 				if (__registrar__ is not null)
 					return Registrars.ManagedStatic;

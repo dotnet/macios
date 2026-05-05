@@ -69,6 +69,17 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public AssemblyDefinition EntryAssembly {
+			get {
+				var entryAssemblyName = Path.GetFileNameWithoutExtension (Application.AssemblyName);
+				var entryAssembly = Assemblies.FirstOrDefault (a => a.Name.Name == entryAssemblyName);
+				if (entryAssembly is null)
+					throw new InvalidOperationException ($"The entry assembly '{entryAssemblyName}' was not found among the loaded assemblies.");
+
+				return entryAssembly;
+			}
+		}
+
 		// This dictionary contains information about the trampolines created for each assembly.
 		public AssemblyTrampolineInfos AssemblyTrampolineInfos = new ();
 
@@ -342,6 +353,12 @@ namespace Xamarin.Linker {
 						throw new InvalidOperationException ($"Invalid TargetFramework '{value}' in {linker_file}");
 					Driver.TargetFramework = TargetFramework.Parse (value);
 					break;
+				case "TypeMapAssemblyName":
+					Application.TypeMapAssemblyName = value;
+					break;
+				case "TypeMapOutputDirectory":
+					Application.TypeMapOutputDirectory = value;
+					break;
 				case "UseLlvm":
 					use_llvm = string.Equals ("true", value, StringComparison.OrdinalIgnoreCase);
 					break;
@@ -526,6 +543,8 @@ namespace Xamarin.Linker {
 				Console.WriteLine ($"    SdkDevPath: {Driver.SdkRoot}");
 				Console.WriteLine ($"    SdkRootDirectory: {SdkRootDirectory}");
 				Console.WriteLine ($"    SdkVersion: {SdkVersion}");
+				Console.WriteLine ($"    TypeMapAssemblyName: {Application.TypeMapAssemblyName}");
+				Console.WriteLine ($"    TypeMapOutputDirectory: {Application.TypeMapOutputDirectory}");
 				Console.WriteLine ($"    UseInterpreter: {Application.UseInterpreter}");
 				Console.WriteLine ($"    UseLlvm: {Application.IsLLVM}");
 				Console.WriteLine ($"    Verbosity: {Verbosity}");

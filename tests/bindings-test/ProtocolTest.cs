@@ -23,6 +23,12 @@ namespace Xamarin.BindingTests {
 			}
 		}
 
+		bool IsTrimmableStaticRegistrar {
+			get {
+				return global::XamarinTests.ObjCRuntime.Registrar.IsTrimmableStaticRegistrar;
+			}
+		}
+
 		[Test]
 		public void Constructors ()
 		{

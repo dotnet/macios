@@ -20,26 +20,6 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 	<Import Project="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).Before.targets"
 			Condition="Exists('$(MSBuildThisFileDirectory)$(MSBuildThisFileName).Before.targets')"/>
 
-	<PropertyGroup>
-		<!--
-		     We don't want to use the Platform variable for conditional logic.
-		     Switching to a new property allows us to potentially switch from
-		     device to simulator builds dynamically based on the user's
-		     selection when starting the project. This allows us to eventually
-		     even (optionally) switch back to AnyCPU platform in the IDE,
-		     therefore fixing a key pain point in managing solution
-		     configurations.
-
-		     Additionally, we cannot use $(Platform) in conditions on props,
-		     because VS interprets them as valid platforms for the current
-		     project and makes them available for solution configurations,
-		     which fails miserably for iOS class library projects. By using
-		     another property name, we "opt out" of this "smart" behavior
-		-->
-		<ComputedPlatform Condition="'$(ComputedPlatform)' == ''">$(Platform)</ComputedPlatform>
-		<ComputedPlatform Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst' And '$(ComputedPlatform)' == 'AnyCPU'">iPhone</ComputedPlatform>
-	</PropertyGroup>
-
 	<!-- Sometimes we've used different variable names for the same thing for Xamarin.iOS and Xamarin.Mac projects. Here we try to unify those variables -->
 	<PropertyGroup>
 		<!-- ResourcePrefix -->
@@ -117,10 +97,10 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 		<!-- We can archive: -->
 		<!-- macOS and Mac Catalyst: executable projects which aren't app extensions -->
-		<!-- iOS, tvOS and watchOS: executable projects built for device which aren't app extensions nor watch apps -->
+		<!-- iOS, tvOS and watchOS: executable projects built for device which aren't app extensions -->
 		<_CanArchive>false</_CanArchive>
 		<_CanArchive Condition="('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst') And '$(OutputType)' == 'Exe' And '$(IsAppExtension)' == 'false'">true</_CanArchive>
-		<_CanArchive Condition="('$(_PlatformName)' == 'iOS'  Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'watchOS') And '$(OutputType)' == 'Exe' And '$(ComputedPlatform)' == 'iPhone' And '$(IsAppExtension)' == 'false' And '$(IsWatchApp)' == 'false'">true</_CanArchive>
+		<_CanArchive Condition="'$(OutputType)' == 'Exe' And '$(SdkIsDevice)' == 'true' And '$(IsAppExtension)' == 'false'">true</_CanArchive>
 
 		<!-- Debug -->
 		<!-- Xamarin.Mac: use MmpDebug -->
@@ -144,7 +124,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<NoSymbolStrip Condition="'$(NoSymbolStrip)' == '' And '$(Configuration)' == 'Debug'">true</NoSymbolStrip>
 		<NoSymbolStrip Condition="'$(NoSymbolStrip)' == '' And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst') And '$(_UseNativeAot)' != 'true'">true</NoSymbolStrip>
 		<!-- Disable stripping for simulator builds by default -->
-		<NoSymbolStrip Condition="'$(NoSymbolStrip)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'watchOS') And '$(ComputedPlatform)' != 'iPhone'">true</NoSymbolStrip>
+		<NoSymbolStrip Condition="'$(NoSymbolStrip)' == '' And '$(SdkIsSimulator)' == 'true'">true</NoSymbolStrip>
 		<NoSymbolStrip Condition="'$(NoSymbolStrip)' == ''">false</NoSymbolStrip>
 
 		<!-- NoDSymUtil -->
@@ -153,7 +133,7 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 		<!-- Disable dsymutil on desktop unless archiving -->
 		<NoDSymUtil Condition="'$(NoDSymUtil)' == '' And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst') And '$(ArchiveOnBuild)' != 'true'">true</NoDSymUtil>
 		<!-- Disable dsymutil for simulator builds by default -->
-		<NoDSymUtil Condition="'$(NoDSymUtil)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'watchOS') And '$(ComputedPlatform)' != 'iPhone'">true</NoDSymUtil>
+		<NoDSymUtil Condition="'$(NoDSymUtil)' == '' And '$(SdkIsSimulator)' == 'true'">true</NoDSymUtil>
 		<NoDSymUtil Condition="'$(NoDSymUtil)' == ''">false</NoDSymUtil>
 
 		<!-- DeviceSpecificIntermediateOutputPath -->
@@ -224,6 +204,10 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 		<!-- Set the name of the native executable -->
 		<_NativeExecutableName Condition="'$(_NativeExecutableName)' == ''">$(AssemblyName)</_NativeExecutableName>
+
+		<!-- These properties are only used when using type maps (the trimmable static registrar) -->
+		<_TypeMapAssemblyName Condition="'$(_TypeMapAssemblyName)' == ''">_Microsoft.$(_PlatformName).TypeMaps</_TypeMapAssemblyName>
+		<_TypeMapOutputDirectory Condition="'$(_TypeMapOutputDirectory)' == ''">$(DeviceSpecificIntermediateOutputPath)typemap\</_TypeMapOutputDirectory>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(EnableDiagnostics)' == 'true' And '$(DiagnosticConfiguration)' == ''">

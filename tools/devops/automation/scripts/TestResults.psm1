@@ -61,6 +61,7 @@ class TestResult {
     [string] $TestStage
     [string] $DisplayName
     [bool] $IsMacTest
+    [bool] $VSDropsPublishFailed
     hidden [int] $Passed
     hidden [int] $Failed
     hidden [string[]] $NotTestSummaryLabels = @()
@@ -339,9 +340,13 @@ class ParallelTestsResults {
     }
 
     [string] GetDownloadLinks($testResult) {
-        $dropsIndex = "$($this.VSDropsIndex)/$($testResult.TestStage)$($testResult.Title)-$($testResult.Attempt)/;/tests/vsdrops_index.html"
         $artifactUrl = "$Env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$Env:SYSTEM_TEAMPROJECT/_apis/build/builds/$Env:BUILD_BUILDID/artifacts?artifactName=HtmlReport-$($testResult.TestStage)$($testResult.Title)-$($testResult.Attempt)&api-version=6.0&`$format=zip"
-        $downloadInfo = "[Html Report (VSDrops)]($dropsIndex) [Download]($artifactUrl)"
+        if ($testResult.VSDropsPublishFailed) {
+            $downloadInfo = "(:warning: Html Report Publish failed :warning:) [Download]($artifactUrl)"
+        } else {
+            $dropsIndex = "$($this.VSDropsIndex)/$($testResult.TestStage)$($testResult.Title)-$($testResult.Attempt)/;/tests/vsdrops_index.html"
+            $downloadInfo = "[Html Report (VSDrops)]($dropsIndex) [Download]($artifactUrl)"
+        }
         return $downloadInfo
     }
 
@@ -589,6 +594,7 @@ class ParallelTestsResults {
                         $platformKey = $outputs.Keys | Where-Object { $_.EndsWith(".TESTS_PLATFORM") }
                         $attemptKey = $outputs.Keys | Where-Object { $_.EndsWith(".TESTS_ATTEMPT") }
                         $titleKey = $outputs.Keys | Where-Object { $_.EndsWith(".TESTS_TITLE") }
+                        $vsdropsPublishedKey = $outputs.Keys | Where-Object { $_.EndsWith(".VSDROPS_PUBLISHED") } | Sort-Object | Select-Object -Last 1
                     } else {
                         # matrix job
                         $jobName = $name.Substring(0, $name.IndexOf('.'))
@@ -597,6 +603,7 @@ class ParallelTestsResults {
                         $platformKey = $outputs.Keys | Where-Object { $_.StartsWith($jobName + ".") -and $_.EndsWith(".TESTS_PLATFORM") }
                         $attemptKey = $outputs.Keys | Where-Object { $_.StartsWith($jobName + ".") -and $_.EndsWith(".TESTS_ATTEMPT") }
                         $titleKey = $outputs.Keys | Where-Object { $_.StartsWith($jobName + ".") -and $_.EndsWith(".TESTS_TITLE") }
+                        $vsdropsPublishedKey = $outputs.Keys | Where-Object { $_.StartsWith($jobName + ".") -and $_.EndsWith(".VSDROPS_PUBLISHED") } | Sort-Object | Select-Object -Last 1
                     }
 
                     Write-Host "Keys for Label='$label' and JobName='$jobName' (dotCount=$dotCount): TitleKey='$titleKey'  StatusKey=$statusKey BotKey=$botKey PlatformKey=$platformKey AttemptKey=$attemptKey"
@@ -611,6 +618,7 @@ class ParallelTestsResults {
                     $platform = if ($platformKey -eq $null) { "NotFound" } else { $outputs[$platformKey] }
                     $attempt = if ($attemptKey -eq $null) { -2 } else { [int]$outputs[$attemptKey] }
                     $title = if ($titleKey -eq $null) { "NotFound" } else { $outputs[$titleKey] }
+                    $vsdropsPublished = if ($vsdropsPublishedKey -eq $null) { $null } else { $outputs[$vsdropsPublishedKey] }
                     $testResult = [PSCustomObject]@{
                         Label = $label
                         Title = $title
@@ -619,6 +627,7 @@ class ParallelTestsResults {
                         Platform = $platform
                         Attempt = $attempt
                         TestStage = $testStage
+                        VSDropsPublished = $vsdropsPublished
                     }
                     if ($tests.Contains($label)) {
                         $testInfo = $tests[$label]
@@ -675,6 +684,7 @@ class ParallelTestsResults {
                     }
 
                     $result = [TestResult]::new($testSummaryPath, $status, $testConfig, $testAttempt)
+                    $result.VSDropsPublishFailed = ($testResult.VSDropsPublished -eq "Failed")
                 }
 
                 $testResults += $result

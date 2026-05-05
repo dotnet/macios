@@ -1664,6 +1664,11 @@ partial class TestRuntime {
 				IgnoreInCI ($"Ignored due to network error: {wex}");
 			}
 		}
+
+		var se = FindInner<System.Net.Sockets.SocketException> (ex);
+		if (se is not null && se.SocketErrorCode == System.Net.Sockets.SocketError.TimedOut) {
+			IgnoreInCI ($"Ignored due to socket timeout: {se.Message}");
+		}
 	}
 
 	public static void IgnoreInCIIfForbidden (Exception ex)

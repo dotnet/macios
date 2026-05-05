@@ -191,6 +191,12 @@ namespace Xamarin.Linker.Steps {
 
 				switch (pinfo.Module.Name) {
 				case "__Internal":
+					// Don't add inlined dlfcn P/Invoke wrappers as required symbols: they're
+					// provided by the generated inlined-dlfcn.c/o, and for NativeAOT builds
+					// only the surviving ones will be generated (so force-referencing all of
+					// them would cause linker errors for symbols that NativeAOT trimmed away).
+					if (Configuration.InlineDlfcnMethodsEnabled && pinfo.EntryPoint.StartsWith ("xamarin_Dlfcn_", StringComparison.Ordinal))
+						break;
 					Driver.Log (4, "Adding native reference to {0} in {1} because it's referenced by {2} in {3}.", pinfo.EntryPoint, pinfo.Module.Name, method.FullName, method.Module.Name);
 					DerivedLinkContext.RequiredSymbols.AddFunction (pinfo.EntryPoint).AddMember (method);
 					break;

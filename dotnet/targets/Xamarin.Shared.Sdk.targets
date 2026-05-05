@@ -1695,7 +1695,7 @@
 
 	<!-- See docs/code/native-symbols.md for an overview of native symbol handling. -->
 	<Target Name="_CollectPostILTrimInformation"
-		Condition="'$(InlineDlfcnMethods)' != ''"
+		Condition="'$(InlineDlfcnMethods)' != '' And '$(_UseNativeAot)' != 'true'"
 		DependsOnTargets="_ComputeTrimmedAssemblies;_ComputePostTrimmingPaths"
 		Inputs="@(_TrimmedAssembly)"
 		Outputs="$(_ILTrimSurvivingNativeSymbolsFile)"
@@ -1718,7 +1718,9 @@
 		DependsOnTargets="_CollectPostILTrimInformation;_CollectPostNativeAOTTrimInformation;_ComputeTargetArchitectures;_ComputePostTrimmingPaths"
 		>
 		<ItemGroup>
-			<_SurvivingNativeSymbolsFile Include="$(_ILTrimSurvivingNativeSymbolsFile)" Condition="Exists('$(_ILTrimSurvivingNativeSymbolsFile)')" />
+			<!-- When using NativeAOT, only use the NativeAOT surviving symbols, because NativeAOT's
+			     whole-program analysis is strictly more precise than the IL trimmer's analysis. -->
+			<_SurvivingNativeSymbolsFile Include="$(_ILTrimSurvivingNativeSymbolsFile)" Condition="'$(_UseNativeAot)' != 'true' And Exists('$(_ILTrimSurvivingNativeSymbolsFile)')" />
 			<_SurvivingNativeSymbolsFile Include="$(_NativeAOTSurvivingNativeSymbolsFile)" Condition="Exists('$(_NativeAOTSurvivingNativeSymbolsFile)')" />
 		</ItemGroup>
 		<PostTrimmingProcessing

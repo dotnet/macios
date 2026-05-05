@@ -2028,7 +2028,7 @@ namespace CoreAnimation {
 
 	/// <summary>Delegate class for the CALayer.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreAnimation/CALayerDelegate">Apple documentation for <c>CALayerDelegate</c></related>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/coreanimation/calayerdelegate">Apple documentation for <c>CALayerDelegate</c></related>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #if IOS || TVOS
@@ -2529,7 +2529,7 @@ namespace CoreAnimation {
 
 	/// <summary>A spring animation with stiffness, mass, and damping.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreAnimation/CASpringAnimation">Apple documentation for <c>CASpringAnimation</c></related>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/coreanimation/caspringanimation">Apple documentation for <c>CASpringAnimation</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CABasicAnimation))]
 	interface CASpringAnimation {

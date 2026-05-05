@@ -16,7 +16,6 @@ namespace Twitter {
 
 	/// <summary>A Twitter request.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/twitter/twrequestclassref">Apple documentation for <c>TWRequest</c></related>
 	[Deprecated (PlatformName.iOS, 6, 0, message: "Use the 'Social' framework.")]
 	[BaseType (typeof (NSObject))]
 	interface TWRequest {
@@ -93,7 +92,6 @@ namespace Twitter {
 
 	/// <summary>A <see cref="UIKit.UIViewController" /> that manages the user experience of composing a tweet.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/twitter/twtweetsheetviewcontrollerclassref">Apple documentation for <c>TWTweetComposeViewController</c></related>
 	[Deprecated (PlatformName.iOS, 6, 0, message: "Use the 'Social' framework.")]
 	[BaseType (typeof (UIViewController))]
 	interface TWTweetComposeViewController {

@@ -257,7 +257,7 @@ namespace QuickLook {
 
 	/// <summary>An item that can be previewed with a <see cref="QuickLook.QLPreviewController" />.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/networkinginternet/qlpreviewitem">Apple documentation for <c>QLPreviewItem</c></related>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/quicklook/qlpreviewitem">Apple documentation for <c>QLPreviewItem</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]

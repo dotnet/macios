@@ -138,7 +138,7 @@ namespace VideoSubscriberAccount {
 
 	interface IVSAccountManagerDelegate { }
 
-	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/videosubscriberaccount/vsaccountmanagerDelegate">Apple documentation for <c>VSAccountManagerDelegate</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/videosubscriberaccount/vsaccountmanagerdelegate">Apple documentation for <c>VSAccountManagerDelegate</c></related>
 	[Protocol, Model]
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
@@ -261,7 +261,7 @@ namespace VideoSubscriberAccount {
 
 	/// <summary>Represents a cancellable request that is still "in flight".</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/videosubscriberaccount/vsaccountmanagerResult">Apple documentation for <c>VSAccountManagerResult</c></related>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/videosubscriberaccount/vsaccountmanagerresult">Apple documentation for <c>VSAccountManagerResult</c></related>
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -328,7 +328,7 @@ namespace VideoSubscriberAccount {
 
 	/// <summary>Specifies information being requested from the subscriber's account.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/videosubscriberaccount/vsaccountmetadataRequest">Apple documentation for <c>VSAccountMetadataRequest</c></related>
+	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/videosubscriberaccount/vsaccountmetadatarequest">Apple documentation for <c>VSAccountMetadataRequest</c></related>
 	[NoMacCatalyst]
 	[BaseType (typeof (NSObject))]
 	interface VSAccountMetadataRequest {

@@ -15173,7 +15173,6 @@ namespace UIKit {
 
 	/// <summary>The model for the UIPickerView.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/uipickerviewmodel">Apple documentation for <c>UIPickerViewModel</c></related>
 	[NoTV]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]

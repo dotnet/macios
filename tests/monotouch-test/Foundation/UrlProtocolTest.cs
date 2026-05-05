@@ -64,6 +64,7 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void RegistrarTest ()
 		{
+			CustomUrlProtocol.State = 0;
 			var success = false;
 
 			var task = Task.Run (async () => {
@@ -76,7 +77,10 @@ namespace MonoTouchFixtures.Foundation {
 				}
 			});
 
-			Assert.IsTrue (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), task), "Timed out");
+			// Use the completion check overload so RunAsync also waits for
+			// StopLoading to fire (State reaches 5) instead of returning as
+			// soon as the download task completes (State may still be 4).
+			Assert.IsTrue (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), task, () => CustomUrlProtocol.State >= 5), "Timed out");
 			Assert.That (CustomUrlProtocol.State, Is.EqualTo (5), "State");
 			Assert.IsTrue (success, "Success");
 		}

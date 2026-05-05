@@ -1234,6 +1234,19 @@ $ dotnet run -p:StandardInputPath=stdin.txt
 
 Note: this can also be accomplished by passing `--stdin ...` using the [OpenArguments](#openarguments) property.
 
+## SdkIsDevice
+
+This property is a read-only property (setting it will have no effect) that
+specifies whether we're building for a device or not.
+
+This property is only `true` when building for an iOS or tvOS device (i.e.,
+when `SdkIsSimulator` is not `true` and the platform is iOS or tvOS). It is
+not set for macOS or Mac Catalyst builds.
+
+Like `SdkIsSimulator`, this property is only set after [imports and
+properties](/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
+have been evaluated.
+
 ## SdkIsSimulator
 
 This property is a read-only property (setting it will have no effect) that

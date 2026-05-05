@@ -1,10 +1,10 @@
-AppBundleSize: 9,364,002 bytes (9,144.5 KB = 8.9 MB)
+AppBundleSize: 9,364,029 bytes (9,144.6 KB = 8.9 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 _CodeSignature/CodeResources: 5,233 bytes (5.1 KB = 0.0 MB)
 aot-instances.aotdata.arm64: 827,592 bytes (808.2 KB = 0.8 MB)
 archived-expanded-entitlements.xcent: 384 bytes (0.4 KB = 0.0 MB)
-Info.plist: 1,152 bytes (1.1 KB = 0.0 MB)
-Microsoft.tvOS.aotdata.arm64: 22,584 bytes (22.1 KB = 0.0 MB)
+Info.plist: 1,123 bytes (1.1 KB = 0.0 MB)
+Microsoft.tvOS.aotdata.arm64: 22,640 bytes (22.1 KB = 0.0 MB)
 Microsoft.tvOS.dll: 49,152 bytes (48.0 KB = 0.0 MB)
 PkgInfo: 8 bytes (0.0 KB = 0.0 MB)
 runtimeconfig.bin: 1,481 bytes (1.4 KB = 0.0 MB)

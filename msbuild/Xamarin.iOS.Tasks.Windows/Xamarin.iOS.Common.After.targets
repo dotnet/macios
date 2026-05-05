@@ -103,7 +103,7 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		<Delete Condition="'$(MtouchTargetsEnabled)' And '$(IsMacEnabled)' == 'true' And Exists('$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName).zip')" SessionId="$(BuildSessionId)" Files="$(DeviceSpecificOutputPath)AppBundle\$(_AppBundleName).zip" />
 	</Target>
 	
-	<Target Name="CopyIpaFromMac" Condition="'$(OutputType)' == 'Exe' And '$(ComputedPlatform)' == 'iPhone' And '$(BuildIpa)' == 'true'">
+	<Target Name="CopyIpaFromMac" Condition="'$(OutputType)' == 'Exe' And '$(SdkIsDevice)' == 'true' And '$(BuildIpa)' == 'true'">
 		<CopyFileFromBuildServer Condition="'$(IsAppDistribution)' == 'True'" SessionId="$(BuildSessionId)" File="$(IpaPackagePath)" TargetFile="$(DistributionPath)" />
 		<CopyFileFromBuildServer Condition="'$(IsAppDistribution)' != 'True'" SessionId="$(BuildSessionId)" File="$(IpaPackagePath)" />
 		<CopyFileFromBuildServer Condition="('$(_DistributionType)' == 'AppStore' Or '$(_DistributionType)' == 'AdHoc') And '$(EmbedOnDemandResources)' == 'false'" SessionId="$(BuildSessionId)" File="$(IpaPackageDir)\OnDemandResources\%(_AssetPack.DirectoryName)" />
@@ -178,7 +178,7 @@ Copyright (C) 2011-2013 Xamarin. All rights reserved.
 		</CopyLongPaths>
 	</Target>
 	
-	<Target Name="CopyDSYMFromMac" DependsOnTargets="_SayHello" Condition="'$(IsMacEnabled)' == 'true' And '$(IsAppExtension)' == 'false' And '$(ComputedPlatform)' == 'iPhone' And '$(CopyDSYM)' == 'true' And ('$(BuildIpa)' == 'true' Or '$(CopyAppBundle)' == 'true')" BeforeTargets="BeforeDisconnect">
+	<Target Name="CopyDSYMFromMac" DependsOnTargets="_SayHello" Condition="'$(IsMacEnabled)' == 'true' And '$(IsAppExtension)' == 'false' And '$(SdkIsDevice)' == 'true' And '$(CopyDSYM)' == 'true' And ('$(BuildIpa)' == 'true' Or '$(CopyAppBundle)' == 'true')" BeforeTargets="BeforeDisconnect">
 		<!--Copy watchOS Dsym folders from Mac-->
 		<MSBuild Projects="@(_WatchAppReferenceWithConfigurationExistent)" Targets="CopyDSYMFromMac" Properties="%(_WatchAppReferenceWithConfigurationExistent.SetConfiguration);      %(_WatchAppReferenceWithConfigurationExistent.SetPlatform);      BuildIpa=true" Condition="'$(IsWatchApp)' == 'false' And '@(_WatchAppReferenceWithConfigurationExistent)' != '' And '$(_BuildReferencedExtensionProjects)' != 'true'"></MSBuild>
 		<!--Look for all *.dsym folders int the output path of the main app -->

@@ -224,6 +224,10 @@ Copyright (C) 2020 Microsoft. All rights reserved.
 
 		<!-- Set the name of the native executable -->
 		<_NativeExecutableName Condition="'$(_NativeExecutableName)' == ''">$(AssemblyName)</_NativeExecutableName>
+
+		<!-- These properties are only used when using type maps (the trimmable static registrar) -->
+		<_TypeMapAssemblyName Condition="'$(_TypeMapAssemblyName)' == ''">_Microsoft.$(_PlatformName).TypeMaps</_TypeMapAssemblyName>
+		<_TypeMapOutputDirectory Condition="'$(_TypeMapOutputDirectory)' == ''">$(DeviceSpecificIntermediateOutputPath)typemap\</_TypeMapOutputDirectory>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(EnableDiagnostics)' == 'true' And '$(DiagnosticConfiguration)' == ''">

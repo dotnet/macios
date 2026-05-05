@@ -152,6 +152,17 @@ APPKIT_SOURCES = \
 	AppKit/NSCollectionView.cs \
 	AppKit/NSCollectionViewLayout.cs \
 	AppKit/NSColorPickerTouchBarItem.cs \
+	AppKit/NSControlTextEditingEventArgs.cs \
+	AppKit/NSMenuItemEventArgs.cs \
+	AppKit/NSMenuItemIndexEventArgs.cs \
+	AppKit/NSOutlineViewItemEventArgs.cs \
+	AppKit/NSTextAlternativesSelectedAlternativeStringEventArgs.cs \
+	AppKit/NSTextViewDidChangeSelectionEventArgs.cs \
+	AppKit/NSTextViewWillChangeNotifyingTextViewEventArgs.cs \
+	AppKit/NSTextDidEndEditingEventArgs.cs \
+	AppKit/NSViewColumnMoveEventArgs.cs \
+	AppKit/NSViewColumnResizeEventArgs.cs \
+	AppKit/NSWorkspaceFileOperationEventArgs.cs \
 	AppKit/NSSliderTouchBarItem.cs \
 	AppKit/NSView.cs \
 	AppKit/NSCollectionLayoutAnchor.cs \
@@ -624,6 +635,7 @@ COREMIDI_SOURCES = \
 COREML_SOURCES = \
 	CoreML/MLDictionaryFeatureProvider.cs \
 	CoreML/MLModel.cs \
+	CoreML/MLModelCollection.cs \
 	CoreML/MLMultiArray.cs \
 	CoreML/MLMultiArrayConstraint.cs \
 
@@ -1478,6 +1490,11 @@ PRINTCORE_SOURCES = \
 PUSHTOTALK_SOURCES = \
 	PushToTalk/Compat.cs \
 
+# QuartzComposer
+
+QUARTZCOMPOSER_SOURCES = \
+	QuartzComposer/QCComposition.cs \
+
 # QuickLook
 
 QUICKLOOK_SOURCES = \
@@ -1952,6 +1969,7 @@ SHARED_SOURCES = \
 	ObjCRuntime/TrampolineBlockBase.cs \
 	ObjCRuntime/TransientAttribute.cs \
 	ObjCRuntime/TypeConverter.cs \
+	ObjCRuntime/TypeMaps.cs \
 	ObjCRuntime/UserDelegateTypeAttribute.cs \
 	System.Net.Http/CFContentStream.cs \
 	System.Net.Http/CFNetworkHandler.cs \

@@ -92,11 +92,11 @@ namespace Extrospection {
 				return;
 
 			// don't process methods (or types) that are unavailable for the current platform
-			if (!decl.IsAvailable () || !(decl.DeclContext as Decl).IsAvailable ())
+			if (!decl.IsAvailable () || !((Decl) decl.DeclContext!).IsAvailable ())
 				return;
 
 			// don't process deprecated methods (or types)
-			if (decl.IsDeprecated () || (decl.DeclContext as Decl).IsDeprecated ())
+			if (decl.IsDeprecated () || ((Decl) decl.DeclContext!).IsDeprecated ())
 				return;
 
 			var framework = Helpers.GetFramework (decl);

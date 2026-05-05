@@ -438,7 +438,7 @@ Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.String)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.Initialize()
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupRegisteredType(System.Reflection.Assembly, System.UInt32)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupRegisteredTypeId(System.Type)
-Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunction(System.IntPtr, System.String, System.Int32)
+Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunction(System.IntPtr, System.String, System.Int32, System.String)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunctionInAssembly(System.IntPtr, System.String, System.Int32)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.Register(ObjCRuntime.IManagedRegistrar)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.TryGetMapEntry(System.String, out ObjCRuntime.RegistrarHelper/MapInfo&)
@@ -446,15 +446,15 @@ Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper/MapInfo
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManagedRegistrar)
 Microsoft.iOS.dll:ObjCRuntime.Runtime
 Microsoft.iOS.dll:ObjCRuntime.Runtime..cctor()
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|287_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|286_0`1(ObjCRuntime.NativeHandle)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|289_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|288_0`1(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.attempt_retain_nsobject(System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AttemptRetainNSObject(System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.CannotCreateManagedInstanceOfGenericType(System.IntPtr, System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.ConstructINativeObject`1(System.IntPtr, System.Boolean, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.ConstructINativeObject`1(System.IntPtr, System.Boolean, System.Type, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.ConstructNSObject(System.IntPtr, System.IntPtr, ObjCRuntime.Runtime/MissingCtorResolution)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.ConstructNSObject`1(System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.ConstructNSObject`1(System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution)
@@ -514,10 +514,10 @@ Microsoft.iOS.dll:ObjCRuntime.Runtime.InitializePlatform(ObjCRuntime.Runtime/Ini
 Microsoft.iOS.dll:ObjCRuntime.Runtime.invoke_conforms_to_protocol(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.InvokeConformsToProtocol(System.IntPtr, System.IntPtr, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.lookup_managed_type_name(System.IntPtr, System.IntPtr*)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.lookup_unmanaged_function(System.IntPtr, System.IntPtr, System.Int32, System.IntPtr*)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.lookup_unmanaged_function(System.IntPtr, System.IntPtr, System.Int32, System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.LookupINativeObjectImplementation(System.IntPtr, System.Type, System.Type, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.LookupManagedTypeName(System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.LookupUnmanagedFunction(System.IntPtr, System.IntPtr, System.Int32)
+Microsoft.iOS.dll:ObjCRuntime.Runtime.LookupUnmanagedFunction(System.IntPtr, System.IntPtr, System.Int32, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.MissingCtor(System.IntPtr, System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.NativeObjectHasDied(System.IntPtr, Foundation.NSObject)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.NSLog(System.String)
@@ -570,6 +570,7 @@ Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/In
 Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsNativeAOT
 Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsPartialStaticRegistrar
 Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsSimulator
+Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsTrimmableStaticRegistrar
 Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationOptions::Flags
 Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationOptions
 Microsoft.iOS.dll:ObjCRuntime.Runtime/InitializationOptions* ObjCRuntime.Runtime::options

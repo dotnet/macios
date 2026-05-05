@@ -38,7 +38,7 @@ namespace MonoTouch.NUnit.UI {
 		static internal UIColor Orange = UIDevice.CurrentDevice.CheckSystemVersion (13, 0) ? UIColor.SystemOrange : UIColor.Orange;
 		static internal UIColor Red = UIDevice.CurrentDevice.CheckSystemVersion (13, 0) ? UIColor.SystemRed : UIColor.Red;
 
-		private TestResult result;
+		private TestResult? result;
 
 		public TestElement (ITest test, TouchRunner runner)
 			: base ("?", "?", UITableViewCellStyle.Subtitle)
@@ -58,7 +58,13 @@ namespace MonoTouch.NUnit.UI {
 		protected TouchRunner Runner { get; private set; }
 
 		public TestResult Result {
-			get { return result ?? new TestCaseResult (Test as TestMethod); }
+			get {
+				if (result is not null)
+					return result;
+				if (Test is TestMethod testMethod)
+					return new TestCaseResult (testMethod);
+				return new TestSuiteResult ((TestSuite) Test);
+			}
 			set { result = value; }
 		}
 

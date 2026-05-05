@@ -16,8 +16,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSTableColumnShouldChangeTitle ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var title = column.Title;
 			column.Title = "Test";
 

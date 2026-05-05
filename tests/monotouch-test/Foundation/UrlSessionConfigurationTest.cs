@@ -25,7 +25,6 @@ namespace MonoTouchFixtures.Foundation {
 		public void BackgroundSessionConfiguration ()
 		{
 			TestRuntime.AssertXcodeVersion (5, 0);
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 9, throwIfOtherPlatform: false);
 
 			// https://trello.com/c/F6cyUBFU/70-simple-background-transfer-bo-pang-block-by-an-system-invalidcastexception-in-nsurlsessionconfiguration-backgroundsessionconfigu
 			using (var session = NSUrlSessionConfiguration.BackgroundSessionConfiguration ("id")) {
@@ -37,7 +36,6 @@ namespace MonoTouchFixtures.Foundation {
 		public void Default_Properties ()
 		{
 			TestRuntime.AssertXcodeVersion (5, 0);
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 9, throwIfOtherPlatform: false);
 
 			var config = NSUrlSessionConfiguration.DefaultSessionConfiguration;
 
@@ -84,7 +82,7 @@ namespace MonoTouchFixtures.Foundation {
 
 			var hasSharedContainerIdentifier = true;
 #if __MACOS__
-			hasSharedContainerIdentifier = TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 10);
+			hasSharedContainerIdentifier = true;
 #else
 			hasSharedContainerIdentifier = TestRuntime.CheckXcodeVersion (6, 0);
 #endif
@@ -114,7 +112,7 @@ namespace MonoTouchFixtures.Foundation {
 
 			var hasProtocolClasses = true;
 #if __MACOS__
-			hasProtocolClasses = TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 10);
+			hasProtocolClasses = true;
 #else
 			hasProtocolClasses = TestRuntime.CheckXcodeVersion (6, 0);
 #endif

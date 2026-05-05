@@ -546,15 +546,15 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.GetMapEntry(System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.Initialize()
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.LookupRegisteredType(System.Reflection.Assembly, System.UInt32)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.LookupRegisteredTypeId(System.Type)
-Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunction(System.IntPtr, System.String, System.Int32)
+Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunction(System.IntPtr, System.String, System.Int32, System.String)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.LookupUnmanagedFunctionInAssembly(System.IntPtr, System.String, System.Int32)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.Register(ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper.TryGetMapEntry(System.String, out ObjCRuntime.RegistrarHelper/MapInfo&)
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper/MapInfo
 Microsoft.MacCatalyst.dll:ObjCRuntime.RegistrarHelper/MapInfo..ctor(ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|287_0`1(ObjCRuntime.NativeHandle, System.Boolean)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|286_0`1(ObjCRuntime.NativeHandle)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativeObjectViaFactoryMethod|289_0`1(ObjCRuntime.NativeHandle, System.Boolean)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|288_0`1(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
@@ -604,7 +604,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.bridge_type_to_class(ObjCRuntime.R
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.CannotCreateManagedInstanceOfGenericType(System.IntPtr, System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ClassGetName(ObjCRuntime.Runtime/MonoObject*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ClassGetNamespace(ObjCRuntime.Runtime/MonoObject*)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ConstructINativeObject`1(System.IntPtr, System.Boolean, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ConstructINativeObject`1(System.IntPtr, System.Boolean, System.Type, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ConstructNSObject(System.IntPtr, System.IntPtr, ObjCRuntime.Runtime/MissingCtorResolution)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ConstructNSObject`1(System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.ConstructNSObject`1(System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution)
@@ -706,11 +706,11 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.IsNullable(ObjCRuntime.Runtime/Mon
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.IsNullable(System.Type)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.IsValueType(ObjCRuntime.Runtime/MonoObject*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.lookup_managed_type_name(System.IntPtr, System.IntPtr*)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.lookup_unmanaged_function(System.IntPtr, System.IntPtr, System.Int32, System.IntPtr*)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.lookup_unmanaged_function(System.IntPtr, System.IntPtr, System.Int32, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.LookupINativeObjectImplementation(System.IntPtr, System.Type, System.Type, System.Boolean)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.LookupManagedTypeName(System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.LookupType(ObjCRuntime.Runtime/TypeLookup)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.LookupUnmanagedFunction(System.IntPtr, System.IntPtr, System.Int32)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.LookupUnmanagedFunction(System.IntPtr, System.IntPtr, System.Int32, System.IntPtr)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.MarshalStructure`1(T)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.MissingCtor(System.IntPtr, System.IntPtr, System.Type, ObjCRuntime.Runtime/MissingCtorResolution, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.MonoHashTableInsert(ObjCRuntime.Runtime/MonoObject*, System.IntPtr, ObjCRuntime.Runtime/MonoObject*)
@@ -794,6 +794,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Ru
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsNativeAOT
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsPartialStaticRegistrar
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsSimulator
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationFlags::IsTrimmableStaticRegistrar
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/InitializationFlags ObjCRuntime.Runtime/InitializationOptions::Flags
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/InitializationOptions
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime/InitializationOptions* ObjCRuntime.Runtime::options

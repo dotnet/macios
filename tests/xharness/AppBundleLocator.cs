@@ -31,7 +31,7 @@ namespace Xharness {
 			this.dotnetPath = dotnetPath;
 		}
 
-		public async Task<string> LocateAppBundle (XmlDocument projectFile, string projectFilePath, TestTarget target, string buildConfiguration)
+		public async Task<string?> LocateAppBundle (XmlDocument projectFile, string projectFilePath, TestTarget target, string buildConfiguration)
 		{
 			string platform = string.Empty;
 			if (target != TestTarget.None)
@@ -47,7 +47,7 @@ namespace Xharness {
 
 				return await GetPropertyByMSBuildEvaluationAsync (projectFile, projectFilePath, "OutputPath", "_GenerateBundleName", properties);
 			} else {
-				return projectFile.GetOutputPath (platform, buildConfiguration).Replace ('\\', Path.DirectorySeparatorChar);
+				return projectFile.GetOutputPath (platform, buildConfiguration)?.Replace ('\\', Path.DirectorySeparatorChar);
 			}
 		}
 
@@ -56,7 +56,7 @@ namespace Xharness {
 		// * Will import the project file we're inspecting
 		// * Has a target that will print a given property
 		// and then executing MSBuild on this custom MSBuild file.
-		private async Task<string> GetPropertyByMSBuildEvaluationAsync (XmlDocument csproj, string projectPath, string evaluateProperty, string dependsOnTargets = "", Dictionary<string, string> properties = null)
+		async Task<string> GetPropertyByMSBuildEvaluationAsync (XmlDocument csproj, string projectPath, string evaluateProperty, string dependsOnTargets = "", Dictionary<string, string>? properties = null)
 		{
 			var xml =
 @"<Project DefaultTargets='WriteProperty' xmlns='http://schemas.microsoft.com/developer/msbuild/2003'>
@@ -74,7 +74,7 @@ namespace Xharness {
 </Project>
 ";
 
-			var dir = Path.GetDirectoryName (projectPath);
+			var dir = Path.GetDirectoryName (projectPath)!;
 			var inspector = Path.Combine (dir, "PropertyInspector.csproj");
 			var output = Path.Combine (dir, "PropertyInspector.txt");
 			try {
@@ -94,12 +94,14 @@ namespace Xharness {
 					args.Add ("/p:ProjectFile=" + projectPath);
 					args.Add ("/p:OutputFile=" + output);
 
-					foreach (var prop in properties)
-						args.Add ($"/p:{prop.Key}={prop.Value}");
+					if (properties is not null) {
+						foreach (var prop in properties)
+							args.Add ($"/p:{prop.Key}={prop.Value}");
+					}
 
 					args.Add (inspector);
 
-					var env = new Dictionary<string, string> {
+					var env = new Dictionary<string, string?> {
 						{ "MSBUILD_EXE_PATH", null },
 					};
 
@@ -146,13 +148,13 @@ namespace Xharness {
 			}
 
 			// Find the first global.json up the directory hierarchy (stopping at the root directory)
-			string global_json = null;
+			string? global_json = null;
 			var dir = directory;
 			while (dir.Length > 2) {
 				global_json = Path.Combine (dir, "global.json");
 				if (File.Exists (global_json))
 					break;
-				dir = Path.GetDirectoryName (dir);
+				dir = Path.GetDirectoryName (dir)!;
 			}
 			if (!File.Exists (global_json))
 				throw new Exception ($"Could not find any global.json file in {directory} or above");
@@ -164,7 +166,9 @@ namespace Xharness {
 			var doc = new XmlDocument ();
 			doc.Load (reader);
 
-			var version = doc.SelectSingleNode ("/root/sdk").InnerText;
+			var version = doc.SelectSingleNode ("/root/sdk")?.InnerText;
+			if (version is null)
+				throw new Exception ($"Could not find SDK version in {global_json}");
 			string executable;
 
 			switch (version [0]) {

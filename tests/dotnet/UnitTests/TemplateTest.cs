@@ -218,7 +218,8 @@ namespace Xamarin.Tests {
 			var outputDir = Path.Combine (tmpDir, info.Template);
 			DotNet.AssertNew (outputDir, info.Template, language: language.AsLanguageIdentifier ());
 			var proj = Path.Combine (outputDir, $"{info.Template}.{language.AsFileExtension ()}");
-			var rv = DotNet.AssertBuild (proj);
+			var properties = GetDefaultProperties ();
+			var rv = DotNet.AssertBuild (proj, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
 			Assert.That (warnings, Is.Empty, $"Build warnings:\n\t{string.Join ("\n\t", warnings)}");
 
@@ -232,7 +233,7 @@ namespace Xamarin.Tests {
 				InsertCodeToExitAppAfterLaunch (language, outputDir);
 
 				// Build the sample
-				rv = DotNet.AssertBuild (proj);
+				rv = DotNet.AssertBuild (proj, properties);
 
 				// There should still not be any warnings
 				warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
@@ -277,7 +278,8 @@ namespace Xamarin.Tests {
 				DotNet.AssertNew (outputDir, item.Template, "item_" + item.Template, language: language.AsLanguageIdentifier ());
 
 			var proj = Path.Combine (outputDir, $"{info.Template}.{language.AsFileExtension ()}");
-			var rv = DotNet.AssertBuild (proj);
+			var properties = GetDefaultProperties ();
+			var rv = DotNet.AssertBuild (proj, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
 			Assert.That (warnings, Is.Empty, $"Build warnings:\n\t{string.Join ("\n\t", warnings)}");
 
@@ -290,7 +292,7 @@ namespace Xamarin.Tests {
 				InsertCodeToExitAppAfterLaunch (language, outputDir);
 
 				// Build the sample
-				rv = DotNet.AssertBuild (proj);
+				rv = DotNet.AssertBuild (proj, properties);
 
 				// There should still not be any warnings
 				warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);

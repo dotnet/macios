@@ -44,10 +44,6 @@ namespace Xamarin.Tests {
 		}
 #endif // !XAMMAC_TESTS
 
-		public static void AssertDotNetAvailable ()
-		{
-		}
-
 		public static void AssertLegacyXamarinAvailable ()
 		{
 			Assert.Ignore ("Legacy xamarin build not enabled");
@@ -131,13 +127,5 @@ namespace Xamarin.Tests {
 				return;
 			Assert.Ignore ($"This test is only applicable on {platform}");
 		}
-
-		public static void IgnoreIfNotXamarinEnabled ()
-		{
-			if (EnableXamarin)
-				return;
-			Assert.Ignore ($"This test is only applicable if Xamarin-specific bits are enabled.");
-		}
-
 	}
 }

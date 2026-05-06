@@ -2016,12 +2016,14 @@ namespace SceneKit {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		NSColor ContentColor { get; set; }
 
 		/// <summary>Gets or sets the material property's image.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		NSImage ContentImage { get; set; }
 
 		/// <summary>Gets or sets the material property's animation layer.</summary>
@@ -2029,36 +2031,42 @@ namespace SceneKit {
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Wrap ("Contents")]
+		[NullAllowed]
 		CALayer ContentLayer { get; set; }
 
 		/// <summary>Gets or sets the path to the image that is used for the material property's contents.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		NSString ContentPath { get; set; }
 
 		/// <summary>Gets or sets the URL that specifies the material property's image content.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		NSUrl ContentUrl { get; set; }
 
 		/// <summary>Gets or sets the material property's scene.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		SKScene ContentScene { get; set; }
 
 		/// <summary>Gets or sets the material property's texture.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		SKTexture ContentTexture { get; set; }
 
 		/// <summary>Gets or sets the material property's image cube.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Wrap ("Contents")]
+		[NullAllowed]
 		NSImage [] ContentImageCube { get; set; }
 
 		[MacCatalyst (13, 1)]
@@ -2133,13 +2141,13 @@ namespace SceneKit {
 		///         <remarks>
 		///         </remarks>
 		bool BackFaceCulling { get; set; }
-		/// <summary>Control whether hit-testing uses the node's geometry, or if a bounding-box is used to optmize the hit-testing process speed.</summary>
+		/// <summary>Controls whether hit-testing uses the node's geometry, or whether a bounding box is used to optimize performance.</summary>
 		///         <value>If this value is not specified, the value assumed is false.</value>
 		///         <remarks>
 		/// 	  By default, the hit-testing will use the node's geometry
 		/// 	  information to determine whether there was a hit.  This
 		/// 	  process can be slow, so you can set this property to true to
-		/// 	  constraint the search space to the bounxing box of the
+		/// 	  constrain the search space to the bounding box of the
 		/// 	  target.
 		/// 	</remarks>
 		bool BoundingBoxOnly { get; set; }
@@ -4425,7 +4433,7 @@ namespace SceneKit {
 		/// <summary>Initializes the SCNView with the specified frame.</summary>
 		/// <remarks>
 		///           <para>This constructor is used to programmatically create a new instance of SCNView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
-		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB files; instead, the constructor that takes an NSCoder parameter is invoked.</para>
 		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);

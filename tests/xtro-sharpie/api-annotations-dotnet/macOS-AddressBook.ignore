@@ -345,3 +345,6 @@
 !missing-field! kABHomeLabel not bound
 !missing-field! kABOtherLabel not bound
 !missing-field! kABWorkLabel not bound
+
+# updated sharpie results
+!missing-enum! ABPeoplePickerSelectionBehavior not bound

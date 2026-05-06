@@ -22,23 +22,20 @@
 //
 using CoreFoundation;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 
 	public partial class NSKeyedArchiver {
 
-		/// <param name="name">To be added.</param>
-		///         <param name="kls">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Sets the global class name for a specified class.</summary>
+		/// <param name="name">The class name to use during archiving.</param>
+		/// <param name="kls">The <see cref="ObjCRuntime.Class" /> to associate with the name.</param>
+		/// <remarks>This method associates a class name with a class for all instances of <see cref="NSKeyedArchiver" />. Use <see cref="SetClassName(System.String,ObjCRuntime.Class)" /> to set the class name for a specific archiver instance.</remarks>
 		public static void GlobalSetClassName (string name, Class kls)
 		{
-			if (name is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (name));
-			if (kls is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (kls));
+			ArgumentNullException.ThrowIfNull (name);
+			ArgumentNullException.ThrowIfNull (kls);
 
 			var ptr = CFString.CreateNative (name);
 			ObjCRuntime.Messaging.void_objc_msgSend_IntPtr_IntPtr (class_ptr, Selector.GetHandle ("setClassName:forClass:"), ptr, kls.Handle);
@@ -46,16 +43,15 @@ namespace Foundation {
 			CFString.ReleaseNative (ptr);
 		}
 
-		/// <param name="kls">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public static string GlobalGetClassName (Class kls)
+		/// <summary>Gets the global class name for a specified class.</summary>
+		/// <param name="kls">The <see cref="ObjCRuntime.Class" /> to query.</param>
+		/// <returns>The class name associated with the class, or <see langword="null" /> if no class name has been set.</returns>
+		/// <remarks>This method retrieves the class name associated with a class for all instances of <see cref="NSKeyedArchiver" />. Use <see cref="GetClassName(ObjCRuntime.Class)" /> to get the class name for a specific archiver instance.</remarks>
+		public static string? GlobalGetClassName (Class kls)
 		{
-			if (kls is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (kls));
+			ArgumentNullException.ThrowIfNull (kls);
 
-			string result = CFString.FromHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle ("classNameForClass:"), kls.Handle));
+			string? result = CFString.FromHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (class_ptr, Selector.GetHandle ("classNameForClass:"), kls.Handle));
 			GC.KeepAlive (kls);
 			return result;
 		}

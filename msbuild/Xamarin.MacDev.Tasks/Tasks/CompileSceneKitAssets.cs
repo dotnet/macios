@@ -16,12 +16,12 @@ using Xamarin.Messaging.Build.Client;
 
 namespace Xamarin.MacDev.Tasks {
 	public class CompileSceneKitAssets : XamarinTask, ICancelableTask, IHasProjectDir, IHasResourcePrefix {
-		string? toolExe;
-
 		#region Inputs
 
 		[Required]
 		public string AppBundleName { get; set; } = "";
+
+		public string CopySceneKitAssetsPath { get; set; } = "";
 
 		[Required]
 		public string IntermediateOutputPath { get; set; } = "";
@@ -38,9 +38,6 @@ namespace Xamarin.MacDev.Tasks {
 		public ITaskItem [] SceneKitAssets { get; set; } = Array.Empty<ITaskItem> ();
 
 		[Required]
-		public string SdkDevPath { get; set; } = "";
-
-		[Required]
 		public string SdkPlatform { get; set; } = "";
 
 		[Required]
@@ -48,13 +45,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		[Required]
 		public string SdkVersion { get; set; } = "";
-
-		public string ToolExe {
-			get { return toolExe ?? ToolName; }
-			set { toolExe = value; }
-		}
-
-		public string ToolPath { get; set; } = "";
 
 		#endregion
 
@@ -65,9 +55,7 @@ namespace Xamarin.MacDev.Tasks {
 
 		#endregion
 
-		static string ToolName {
-			get { return "copySceneKitAssets"; }
-		}
+		const string ToolName = "copySceneKitAssets";
 
 		protected virtual string OperatingSystem {
 			get {
@@ -75,27 +63,10 @@ namespace Xamarin.MacDev.Tasks {
 			}
 		}
 
-		string DeveloperRootBinDir {
-			get { return Path.Combine (SdkDevPath, "usr", "bin"); }
-		}
-
-		string GetFullPathToTool ()
-		{
-			if (!string.IsNullOrEmpty (ToolPath))
-				return Path.Combine (ToolPath, ToolExe);
-
-			var path = Path.Combine (DeveloperRootBinDir, ToolExe);
-
-			return File.Exists (path) ? path : ToolExe;
-		}
-
 		Task CopySceneKitAssets (string scnassets, string output, string intermediate)
 		{
 			var environment = new Dictionary<string, string?> ();
 			var args = new List<string> ();
-
-			environment.Add ("PATH", DeveloperRootBinDir);
-			environment.Add ("XCODE_DEVELOPER_USR_PATH", DeveloperRootBinDir);
 
 			args.Add (Path.GetFullPath (scnassets));
 			args.Add ("-o");
@@ -111,14 +82,15 @@ namespace Xamarin.MacDev.Tasks {
 			args.Add ($"--target-build-dir={Path.GetFullPath (intermediate)}");
 			args.Add ($"--resources-folder-path={AppBundleName}");
 
-			return ExecuteAsync (GetFullPathToTool (), args, sdkDevPath: SdkDevPath, environment: environment, showErrorIfFailure: true);
+			var executable = GetExecutable (args, ToolName, CopySceneKitAssetsPath);
+			return ExecuteAsync (executable, args, environment: environment, showErrorIfFailure: true);
 		}
 
 		static bool TryGetScnAssetsPath (string file, out string scnassets)
 		{
 			scnassets = file;
 			while (scnassets.Length > 0 && Path.GetExtension (scnassets).ToLowerInvariant () != ".scnassets")
-				scnassets = Path.GetDirectoryName (scnassets);
+				scnassets = Path.GetDirectoryName (scnassets)!;
 			return scnassets.Length > 0;
 		}
 

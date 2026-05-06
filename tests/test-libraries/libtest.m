@@ -1539,4 +1539,18 @@ static void block_called ()
 }
 @end
 
+@implementation Hitchhiker : NSObject {
+}
+-(void) destroyEarth
+{
+	[self.delegate byeByeDolphins: self];
+	[self.delegate buildIntergalacticHighway: self];
+	[self.delegate hitchhikeWithVogons: self];
+}
+-(void) buildHighway
+{
+	[self.delegate buildIntergalacticHighway: self];
+}
+@end
+
 #include "libtest.decompile.m"

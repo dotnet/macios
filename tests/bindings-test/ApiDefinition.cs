@@ -844,4 +844,34 @@ namespace Bindings.Test {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface ClassWithNoDefaultCtor { }
+
+	interface IHitchhikerDelegate { }
+
+	[BaseType (typeof (NSObject)), Model]
+	[Protocol]
+	interface HitchhikerDelegate {
+		[EventArgs ("")]
+		[Export ("buildIntergalacticHighway:")]
+		void BuildIntergalacticHighway (Hitchhiker sender);
+
+		[EventArgs ("")]
+		[Export ("byeByeDolphins:")]
+		void ByeByeDolphins (Hitchhiker sender);
+
+		[EventArgs ("")]
+		[Export ("hitchhikeWithVogons:")]
+		void HitchhikeWithVogons (Hitchhiker sender);
+	}
+
+	[BaseType (typeof (NSObject), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (HitchhikerDelegate) })]
+	interface Hitchhiker {
+		[Export ("delegate", ArgumentSemantic.Retain)]
+		IHitchhikerDelegate Delegate { get; set; }
+
+		[Export ("destroyEarth")]
+		void DestroyEarth ();
+
+		[Export ("buildHighway")]
+		void BuildHighway ();
+	}
 }

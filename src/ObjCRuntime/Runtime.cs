@@ -6,6 +6,8 @@
 //
 // Copyright 2013 Xamarin Inc.
 
+// #define LOG_TRIMMABLE_TYPEMAP
+
 #nullable enable
 
 using System.Collections.Generic;
@@ -25,16 +27,10 @@ using Registrar;
 using AppKit;
 #endif
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
-#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
-
 namespace ObjCRuntime {
 
-	/// <summary>Provides information about the Xamarin.iOS Runtime.</summary>
-	///     <remarks>
-	///     </remarks>
-	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SysSound/">SysSound</related>
+	/// <summary>Provides information about the runtime.</summary>
+	/// <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/SysSound/">SysSound</related>
 	public partial class Runtime {
 #if !COREBUILD
 #pragma warning disable 8618 // "Non-nullable field '...' must contain a non-null value when exiting constructor. Consider declaring the field as nullable.": we make sure through other means that these will never be null
@@ -170,21 +166,12 @@ namespace ObjCRuntime {
 		internal enum InitializationFlags : int {
 			IsPartialStaticRegistrar = 0x01,
 			IsManagedStaticRegistrar = 0x02,
-			/* unused				= 0x04,*/
+			IsTrimmableStaticRegistrar = 0x04,
 			/* unused				= 0x08,*/
 			IsSimulator = 0x10,
 			IsCoreCLR = 0x20,
 			IsNativeAOT = 0x40,
 		}
-
-#if MONOMAC
-		/* This enum must always match the identical enum in runtime/xamarin/main.h */
-		internal enum LaunchMode : int {
-			App = 0,
-			Extension = 1,
-			Embedded = 2,
-		}
-#endif
 
 		[StructLayout (LayoutKind.Sequential)]
 		internal unsafe struct InitializationOptions {
@@ -195,10 +182,6 @@ namespace ObjCRuntime {
 			public MTRegistrationMap* RegistrationMap;
 			public MarshalObjectiveCExceptionMode MarshalObjectiveCExceptionMode;
 			public MarshalManagedExceptionMode MarshalManagedExceptionMode;
-#if MONOMAC
-			public LaunchMode LaunchMode;
-			public IntPtr EntryAssemblyPath; /* char * */
-#endif
 			IntPtr AssemblyLocations;
 
 			public IntPtr xamarin_objc_msgsend;
@@ -270,12 +253,20 @@ namespace ObjCRuntime {
 			}
 		}
 
+		[BindingImpl (BindingImplOptions.Optimizable)]
+		internal unsafe static bool IsTrimmableStaticRegistrar {
+			get {
+				// The linker may turn calls to this property into a constant
+				return options->Flags.HasFlag (InitializationFlags.IsTrimmableStaticRegistrar);
+			}
+		}
+
 		/// <summary>If dynamic registration is supported.</summary>
-		///         <value>If dynamic registration is supported.</value>
-		///         <remarks>
-		///           <para>At build time the managed linker can in some cases determine whether dynamic registration is required or not, and if not, it can optimize away the code to support dynamic registration (to minimize app size). If support for dynamic registration has been removed by the linker, this property will return false.</para>
-		///         </remarks>
-		///         <related type="article" href="https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/optimizations#remove-the-dynamic-registrar">Build optimizations (removal of the dynamic registrar)</related>
+		/// <value>If dynamic registration is supported.</value>
+		/// <remarks>
+		///   <para>At build time the managed linker can in some cases determine whether dynamic registration is required or not, and if not, it can optimize away the code to support dynamic registration (to minimize app size). If support for dynamic registration has been removed by the linker, this property will return false.</para>
+		/// </remarks>
+		/// <related type="article" href="https://docs.microsoft.com/en-us/xamarin/cross-platform/macios/optimizations#remove-the-dynamic-registrar">Build optimizations (removal of the dynamic registrar)</related>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static bool DynamicRegistrationSupported {
 			get {
@@ -303,8 +294,8 @@ namespace ObjCRuntime {
 		unsafe static int _NSGetExecutablePath (byte [] buf, ref int bufsize)
 		{
 			fixed (byte* bufptr = buf)
-				fixed (int* bufsizePtr = &bufsize)
-					return _NSGetExecutablePath (bufptr, bufsizePtr);
+			fixed (int* bufsizePtr = &bufsize)
+				return _NSGetExecutablePath (bufptr, bufsizePtr);
 		}
 #endif
 
@@ -317,6 +308,12 @@ namespace ObjCRuntime {
 				Initialize (options);
 			} catch (Exception e) {
 				*exception_gchandle = AllocGCHandle (e);
+				try {
+					Runtime.NSLog ($"Failed to initialize the runtime: {e}");
+				} catch {
+					// Ignore any exceptions here, we do absolutely not want to leak exceptions to native code (which will crash the process),
+					// and if the call to Runtime.NSLog went wrong, then something is seriously wrong, so it's likely nothing is safe to do.
+				}
 			}
 		}
 
@@ -355,6 +352,11 @@ namespace ObjCRuntime {
 			intptr_bool_ctor_cache = new Dictionary<Type, ConstructorInfo> (TypeEqualityComparer);
 			block_lifetime_table = new ConditionalWeakTable<Delegate, BlockCollector> ();
 			lock_obj = new object ();
+
+#if NET11_0_OR_GREATER
+			if (IsTrimmableStaticRegistrar)
+				TypeMaps.Initialize ();
+#endif
 
 			NSObjectClass = NSObject.Initialize ();
 
@@ -409,6 +411,8 @@ namespace ObjCRuntime {
 
 			if (MarshalObjectiveCException is not null) {
 				var exception = GetNSObject<NSException> (exception_handle);
+				if (exception is null)
+					return objc_exception_mode;
 				var args = new MarshalObjectiveCExceptionEventArgs (
 					exception,
 					(throwManagedAsDefault != 0) ? MarshalObjectiveCExceptionMode.ThrowManagedException : objc_exception_mode
@@ -423,10 +427,11 @@ namespace ObjCRuntime {
 		static MarshalManagedExceptionMode OnMarshalManagedException (IntPtr exception_handle)
 		{
 			if (MarshalManagedException is not null) {
-				var exception = GCHandle.FromIntPtr (exception_handle).Target as Exception;
-				var args = new MarshalManagedExceptionEventArgs (exception, managed_exception_mode);
-				MarshalManagedException (null, args);
-				return args.ExceptionMode;
+				if (GCHandle.FromIntPtr (exception_handle).Target is Exception exception) {
+					var args = new MarshalManagedExceptionEventArgs (exception, managed_exception_mode);
+					MarshalManagedException (null, args);
+					return args.ExceptionMode;
+				}
 			}
 			return managed_exception_mode;
 		}
@@ -443,8 +448,7 @@ namespace ObjCRuntime {
 		{
 			var value = GetGCHandleTarget (value_handle)!;
 			var smart_type = value.GetType ();
-			MethodBase getConstantMethod, getValueMethod;
-			if (!Registrar.IsSmartEnum (smart_type, out getConstantMethod, out getValueMethod))
+			if (!Registrar.IsSmartEnum (smart_type, out var getConstantMethod, out var getValueMethod))
 				throw ErrorHelper.CreateError (8024, $"Could not find a valid extension type for the smart enum '{smart_type.FullName}'. Please file a bug at https://github.com/dotnet/macios/issues/new.");
 			var rv = (NSString?) ((MethodInfo) getConstantMethod).Invoke (null, new object [] { value });
 			if (rv is null)
@@ -462,8 +466,7 @@ namespace ObjCRuntime {
 		{
 			var smart_type = (Type) GetGCHandleTarget (type)!;
 			var str = GetNSObject<NSString> (value)!;
-			MethodBase getConstantMethod, getValueMethod;
-			if (!Registrar.IsSmartEnum (smart_type, out getConstantMethod, out getValueMethod))
+			if (!Registrar.IsSmartEnum (smart_type, out var getConstantMethod, out var getValueMethod))
 				throw ErrorHelper.CreateError (8024, $"Could not find a valid extension type for the smart enum '{smart_type.FullName}'. Please file a bug at https://github.com/dotnet/macios/issues/new.");
 			var rv = ((MethodInfo) getValueMethod).Invoke (null, new object [] { str });
 			return AllocGCHandle (rv);
@@ -577,16 +580,9 @@ namespace ObjCRuntime {
 			return Marshal.StringToHGlobalAuto (str.ToString ());
 		}
 
-		// IL2026: Using member 'System.Reflection.Assembly.LoadFile(String)' which has 'RequiresUnreferencedCodeAttribute' can break functionality when trimming application code. Types and members the loaded assembly depends on might be removed.
-		[UnconditionalSuppressMessage ("", "IL2026", Justification = "We only want the entry assembly, and then we only want the entry point, which survives trimming.")]
 		static unsafe Assembly? GetEntryAssembly ()
 		{
-			var asm = Assembly.GetEntryAssembly ();
-#if MONOMAC
-			if (asm is null)
-				asm = Assembly.LoadFile (Marshal.PtrToStringAuto (options->EntryAssemblyPath)!);
-#endif
-			return asm;
+			return Assembly.GetEntryAssembly ();
 		}
 
 		// This method will register all assemblies referenced by the entry assembly.
@@ -678,10 +674,10 @@ namespace ObjCRuntime {
 		}
 
 		/// <param name="a">The assembly to process.</param>
-		///         <summary>Registers all of the classes in the specified assembly.</summary>
-		///         <remarks>
-		///           <para>This iterates over all the types that derive from NSObject in the specified assembly and registers them with the runtime.</para>
-		///         </remarks>
+		/// <summary>Registers all of the classes in the specified assembly.</summary>
+		/// <remarks>
+		///   <para>This iterates over all the types that derive from <see cref="NSObject" /> in the specified assembly and registers them with the runtime.</para>
+		/// </remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void RegisterAssembly (Assembly a)
 		{
@@ -1359,6 +1355,42 @@ namespace ObjCRuntime {
 			if (type is null)
 				throw new ArgumentNullException (nameof (type));
 
+			if (Runtime.IsTrimmableStaticRegistrar) {
+				var lookupType = type;
+				if (typeof (T) == type && type.IsGenericType) {
+					var inst = ConstructNSObjectViaFactoryMethod (ptr);
+					if (inst is not null) {
+#if LOG_TRIMMABLE_TYPEMAP
+						Runtime.NSLog ($"ConstructNSObject<{typeof (T).FullName}> (0x{@ptr:X}, {type}) created '{inst.GetType ().FullName}' instance using static interface factory method.");
+#endif
+						return inst;
+					}
+#if LOG_TRIMMABLE_TYPEMAP
+					Runtime.NSLog ($"ConstructNSObject<{typeof (T).FullName}> (0x{@ptr:X}, {type}) failed to create instance using static interface factory method.");
+#endif
+					CannotCreateManagedInstanceOfGenericType (ptr, IntPtr.Zero, type, missingCtorResolution, sel, method_handle);
+					return null;
+				}
+
+				if (TypeMaps.TryGetNSObjectProxyAttribute (lookupType, out var proxyAttribute)) {
+#if LOG_TRIMMABLE_TYPEMAP
+					Runtime.NSLog ($"ConstructNSObject<{typeof (T).FullName}> (0x{@ptr:X}, {type}) found proxy attribute for lookup type '{lookupType.FullName}'");
+#endif
+					var instance = (T?) (object?) proxyAttribute.CreateObject (ptr);
+					if (instance is not null)
+						return instance;
+#if LOG_TRIMMABLE_TYPEMAP
+					Runtime.NSLog ($"ConstructNSObject<{typeof (T).FullName}> (0x{@ptr:X}, {type}) proxy attribute didn't create instance?");
+#endif
+				}
+
+#if LOG_TRIMMABLE_TYPEMAP
+				Runtime.NSLog ($"ConstructNSObject<{typeof (T).FullName}> (0x{@ptr:X}, {type}) did not find type '{lookupType.FullName}' in proxy map");
+#endif
+				MissingCtor (ptr, IntPtr.Zero, type, missingCtorResolution, sel, method_handle);
+				return null;
+			}
+
 			if (Runtime.IsManagedStaticRegistrar) {
 				T? instance = default;
 				var nativeHandle = new NativeHandle (ptr);
@@ -1429,13 +1461,71 @@ namespace ObjCRuntime {
 		}
 
 		// The generic argument T is only used to cast the return value.
-		static T? ConstructINativeObject<T> (IntPtr ptr, bool owns, Type type, MissingCtorResolution missingCtorResolution, IntPtr sel, RuntimeMethodHandle method_handle) where T : INativeObject
+		static T? ConstructINativeObject<T> (IntPtr ptr, bool owns, Type type, Type target_type, MissingCtorResolution missingCtorResolution, IntPtr sel, RuntimeMethodHandle method_handle) where T : INativeObject
 		{
 			if (type is null)
 				throw new ArgumentNullException (nameof (type));
 
 			if (type.IsByRef)
 				type = type.GetElementType ()!;
+
+			if (Runtime.IsTrimmableStaticRegistrar) {
+				if (typeof (T) == type && type.IsGenericType) {
+					var inst = ConstructINativeObjectViaFactoryMethod (ptr, owns);
+					if (inst is not null) {
+#if LOG_TRIMMABLE_TYPEMAP
+						Runtime.NSLog ($"ConstructINativeObject<{typeof (T).FullName}> (0x{@ptr:X}, {owns}, {type}, {target_type}) created '{inst.GetType ().FullName}' instance using static interface factory method.");
+#endif
+						return inst;
+					}
+#if LOG_TRIMMABLE_TYPEMAP
+					Runtime.NSLog ($"ConstructINativeObject<{typeof (T).FullName}> (0x{@ptr:X}, {owns}, {type}, {target_type}) failed to create instance using static interface factory method.");
+#endif
+					CannotCreateManagedInstanceOfGenericType (ptr, IntPtr.Zero, type, missingCtorResolution, sel, method_handle);
+					return default (T);
+				}
+
+				if (TypeMaps.TryCreateInstanceUsingProxyTypeAttribute<T> (type, ptr, owns, out var proxyInstanceA)) {
+#if LOG_TRIMMABLE_TYPEMAP
+					Runtime.NSLog ($"ConstructINativeObject<{typeof (T).FullName}> (0x{@ptr:X}, {owns}, {type}, {target_type}) created instance of type '{proxyInstanceA.GetType ()}' using proxy type attribute for '{type.FullName}'");
+#endif
+					return proxyInstanceA;
+				}
+
+				if (type != target_type) {
+					if (TypeMaps.TryCreateInstanceUsingProxyTypeAttribute<T> (target_type, ptr, owns, out var proxyInstanceB)) {
+#if LOG_TRIMMABLE_TYPEMAP
+						Runtime.NSLog ($"ConstructINativeObject<{typeof (T).FullName}> (0x{@ptr:X}, {owns}, {type}, {target_type}) created instance '{proxyInstanceB.GetType ()}' using proxy type attribute for '{target_type.FullName}' [2]");
+#endif
+						return proxyInstanceB;
+					}
+				}
+
+				if (TypeMaps.TryGetProtocolProxyAttribute (target_type, out var protocolProxyAttribute)) {
+					var rv = protocolProxyAttribute.CreateObject (ptr, owns);
+#if LOG_TRIMMABLE_TYPEMAP
+					Runtime.NSLog ($"ConstructINativeObject<{typeof (T).FullName}> (0x{@ptr:X}, {owns}, {type}, {target_type}) found proxy attribute of type '{protocolProxyAttribute.GetType ()}', and created object of type '{(rv?.GetType ()?.FullName ?? "null")}'");
+#endif
+					return (T?) (object?) rv;
+				}
+
+				if (TypeMaps.INativeObjectProxyTypes.TryGetValue (target_type, out var inativeObjectProxyType)) {
+#if LOG_TRIMMABLE_TYPEMAP
+					Runtime.NSLog ($"ConstructINativeObject<{typeof (T).FullName}> (0x{@ptr:X}, {owns}, {type}, {target_type}) found in INativeObject proxy map");
+#endif
+					var attrib = inativeObjectProxyType.GetCustomAttribute<INativeObjectProxyAttribute> ();
+					if (attrib is null)
+						throw new InvalidOperationException ($"Type '{inativeObjectProxyType.FullName}' is expected to have an INativeObjectProxyAttribute."); // TODO: better exception
+					return (T?) (object?) attrib.CreateObject (ptr, owns);
+				}
+
+#if LOG_TRIMMABLE_TYPEMAP
+				Runtime.NSLog ($"ConstructINativeObject<{typeof (T).FullName}> (0x{@ptr:X}, {owns}, {type}, {target_type}) did not find type '{target_type.FullName}' in any map");
+#endif
+
+				MissingCtor (ptr, IntPtr.Zero, type, missingCtorResolution, sel, method_handle);
+				return default (T);
+			}
 
 			if (Runtime.IsManagedStaticRegistrar) {
 				var nativeHandle = new NativeHandle (ptr);
@@ -1621,12 +1711,8 @@ namespace ObjCRuntime {
 		}
 
 		/// <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
-		///         <summary>Looks up an existing wrapper object for an unmanaged IntPtr.</summary>
-		///         <returns>If a managed wrapper exists for the specified IntPtr, that wrapper is returned, otherwise null.</returns>
-		///         <remarks>
-		///           <para>
-		///           </para>
-		///         </remarks>
+		/// <summary>Looks up an existing wrapper object for an unmanaged <see cref="IntPtr" />.</summary>
+		/// <returns>If a managed wrapper exists for the specified <see cref="IntPtr" />, that wrapper is returned, otherwise null.</returns>
 		public static NSObject? TryGetNSObject (IntPtr ptr)
 		{
 			return TryGetNSObject (ptr, evenInFinalizerQueue: false);
@@ -1665,6 +1751,33 @@ namespace ObjCRuntime {
 			return null;
 		}
 
+		/// <summary>Remove an object from the object map.</summary>
+		/// <remarks>
+		///   Removing an object from the object map can be necessary for managed wrapper objects that are singletons or not really Objective-C classes, but constant pointers.
+		///   For instance, the constant empty string (@"") is just a singleton pointer which can't be retained/released (retaining/releasing does nothing).
+		///   The problem arises when the managed wrapper for such a native handle is disposed, then subsequently it re-surfaces, and now we end up finding a
+		///   disposed object in the object map.
+		/// </remarks>
+		internal static bool RemoveFromObjectMap (NSObject obj)
+		{
+			var handle = obj.GetHandle ();
+			if (handle == NativeHandle.Zero)
+				return false;
+
+			lock (lock_obj) {
+				if (!object_map.TryGetValue (handle, out var reference))
+					return false;
+
+				if (!object.ReferenceEquals (reference.Target, obj))
+					return false;
+
+				object_map.Remove (handle);
+				reference.Free ();
+			}
+
+			return true;
+		}
+
 		public static NSObject? GetNSObject (NativeHandle ptr)
 		{
 			return GetNSObject ((IntPtr) ptr, MissingCtorResolution.ThrowConstructor1NotFound);
@@ -1683,11 +1796,11 @@ namespace ObjCRuntime {
 		}
 
 		/// <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
-		///         <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
-		///         <returns>An instance of a class that derives from Foundation.NSObject.</returns>
-		///         <remarks>
-		///           <para>The runtime create an instance of the most derived class.</para>
-		///         </remarks>
+		/// <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
+		/// <returns>An instance of a class that derives from Foundation.NSObject.</returns>
+		/// <remarks>
+		///   <para>The runtime create an instance of the most derived class.</para>
+		/// </remarks>
 		public static NSObject? GetNSObject (IntPtr ptr)
 		{
 			return GetNSObject (ptr, MissingCtorResolution.ThrowConstructor1NotFound);
@@ -1796,23 +1909,21 @@ namespace ObjCRuntime {
 				obj = ConstructNSObject<NSObject> (ptr, target_type, MissingCtorResolution.ThrowConstructor1NotFound, sel, method_handle);
 				if (obj is T o2)
 					return o2;
-				throw new InvalidCastException ($"Unable to cast object of type '{obj.GetType ().FullName}' to type '{typeof (T).FullName}'.");
+				throw new InvalidCastException ($"Unable to cast object of type '{obj?.GetType ().FullName}' to type '{typeof (T).FullName}'.");
 			}
 
 			return ConstructNSObject<T> (ptr, target_type, MissingCtorResolution.ThrowConstructor1NotFound, sel, method_handle);
 		}
 
 		/// <typeparam name="T">Type to wrap the native object as.</typeparam>
-		///         <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
-		///         <param name="owns">Pass true if the caller has a reference to the native object, and wants to give it to the managed wrapper instance. Otherwise pass false (and the native object will be retained).</param>
-		///         <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
-		///         <returns>An instance of the T class.</returns>
-		///         <remarks>
-		///           <para>Returns an instance of the T class even if the native object is not in the class hierarchy of T (no type checks).</para>
-		///           <para>
-		///           </para>
-		///           <para>This method will fail if there already is a managed wrapper of a different (and incompatible) type for the native object.</para>
-		///         </remarks>
+		/// <param name="ptr">A pointer to an unmanaged NSObject or any class that derives from the Objective-C NSObject class.</param>
+		/// <param name="owns">Pass true if the caller has a reference to the native object, and wants to give it to the managed wrapper instance. Otherwise pass false (and the native object will be retained).</param>
+		/// <summary>Wraps an unmanaged IntPtr into a fully typed NSObject, or returns an existing wrapper object if one already exists.</summary>
+		/// <returns>An instance of the T class.</returns>
+		/// <remarks>
+		///   <para>Returns an instance of the T class even if the native object is not in the class hierarchy of T (no type checks).</para>
+		///   <para>This method will fail if there already is a managed wrapper of a different (and incompatible) type for the native object.</para>
+		/// </remarks>
 		static public T? GetNSObject<T> (IntPtr ptr, bool owns) where T : NSObject
 		{
 			var obj = GetNSObject<T> (ptr);
@@ -1932,12 +2043,12 @@ namespace ObjCRuntime {
 			return implementation!;
 		}
 
-		/// <param name="ptr">To be added.</param>
-		///         <param name="owns">To be added.</param>
-		///         <param name="target_type">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Wraps a native object pointer in a managed object of the specified type.</summary>
+		/// <param name="ptr">A pointer to the native object.</param>
+		/// <param name="owns">Pass <see langword="true"/> if the caller transfers ownership of a native reference to the managed wrapper; otherwise pass <see langword="false"/>.</param>
+		/// <param name="target_type">The managed type the native object should be wrapped as.</param>
+		/// <returns>A managed object implementing <paramref name="target_type"/>, or <see langword="null"/> if <paramref name="ptr"/> is <see cref="IntPtr.Zero"/>.</returns>
+		/// <remarks>This method may return an existing wrapper if one has already been created for the native object.</remarks>
 		public static INativeObject? GetINativeObject (IntPtr ptr, bool owns, Type target_type)
 		{
 			return GetINativeObject (ptr, owns, target_type, null);
@@ -1986,18 +2097,18 @@ namespace ObjCRuntime {
 				return ConstructNSObject<NSObject> (ptr, implementation!, MissingCtorResolution.ThrowConstructor1NotFound, sel, method_handle);
 			}
 
-			return ConstructINativeObject<INativeObject> (ptr, owns, implementation, MissingCtorResolution.ThrowConstructor2NotFound, sel, method_handle);
+			return ConstructINativeObject<INativeObject> (ptr, owns, implementation, target_type, MissingCtorResolution.ThrowConstructor2NotFound, sel, method_handle);
 		}
 
 		// this method is identical in behavior to the non-generic one.
 		/// <typeparam name="T">The type of the object to return. This can also be an interface corresponding to an Objective-C protocol.</typeparam>
-		///         <param name="ptr">A pointer to a native object.</param>
-		///         <param name="owns">Pass true if the caller has a reference to the native object, and wants to give it to the managed wrapper instance. Otherwise pass false (and the native object will be retained).</param>
-		///         <summary>Wraps an native IntPtr with a managed object of the specified type.</summary>
-		///         <returns>An instance of a class implementing the specified type.</returns>
-		///         <remarks>
-		///           <para>Returns an instance of the specified type even if the native object is not in the class hierarchy of type (there are no type checks).</para>
-		///         </remarks>
+		/// <param name="ptr">A pointer to a native object.</param>
+		/// <param name="owns">Pass true if the caller has a reference to the native object, and wants to give it to the managed wrapper instance. Otherwise pass false (and the native object will be retained).</param>
+		/// <summary>Wraps an native IntPtr with a managed object of the specified type.</summary>
+		/// <returns>An instance of a class implementing the specified type.</returns>
+		/// <remarks>
+		///   <para>Returns an instance of the specified type even if the native object is not in the class hierarchy of type (there are no type checks).</para>
+		/// </remarks>
 		public static T? GetINativeObject<T> (IntPtr ptr, bool owns) where T : INativeObject
 		{
 			return GetINativeObject<T> (ptr, false, owns);
@@ -2047,7 +2158,7 @@ namespace ObjCRuntime {
 					// native objects and NSObject instances.
 					throw ErrorHelper.CreateError (8004, $"Cannot create an instance of {implementation.FullName} for the native object 0x{ptr:x} (of type '{Class.class_getName (Class.GetClassForObject (ptr))}'), because another instance already exists for this native object (of type {o.GetType ().FullName}).");
 				}
-				if (!Runtime.IsManagedStaticRegistrar) {
+				if (!Runtime.IsManagedStaticRegistrar && !Runtime.IsTrimmableStaticRegistrar) {
 					// For other registrars other than managed-static the generic parameter of ConstructNSObject is used
 					// only to cast the return value so we can safely pass NSObject here to satisfy the constraints of the
 					// generic parameter.
@@ -2058,10 +2169,10 @@ namespace ObjCRuntime {
 				}
 			}
 
-			return ConstructINativeObject<T> (ptr, owns, implementation, MissingCtorResolution.ThrowConstructor2NotFound, sel, method_handle);
+			return ConstructINativeObject<T> (ptr, owns, implementation, typeof (T), MissingCtorResolution.ThrowConstructor2NotFound, sel, method_handle);
 		}
 
-		static void TryReleaseINativeObject (INativeObject? obj)
+		internal static void TryReleaseINativeObject (INativeObject? obj)
 		{
 			if (obj is null)
 				return;
@@ -2096,6 +2207,9 @@ namespace ObjCRuntime {
 				var rv = RegistrarHelper.FindProtocolWrapperType (type);
 				if (rv is not null)
 					return rv;
+			} else if (IsTrimmableStaticRegistrar) {
+				if (TypeMaps.ProtocolWrapperTypes.TryGetValue (type, out var protocolWrapperType))
+					return protocolWrapperType;
 			} else {
 				unsafe {
 					var map = options->RegistrationMap;
@@ -2124,11 +2238,11 @@ namespace ObjCRuntime {
 		extern static uint xamarin_find_protocol_wrapper_type (uint token_ref);
 
 		/// <param name="protocol">Name of the Objective-C protocol.</param>
-		///         <summary>Returns the handle of the Objective-C protocol descriptor for the given protocol name.</summary>
-		///         <returns>The protocol handle for the given protocol name.</returns>
-		///         <remarks>
-		///           <para>This is the equivalent of the objc_getProtocol function call.</para>
-		///         </remarks>
+		/// <summary>Returns the handle of the Objective-C protocol descriptor for the given protocol name.</summary>
+		/// <returns>The protocol handle for the given protocol name.</returns>
+		/// <remarks>
+		///   <para>This is the equivalent of the objc_getProtocol function call.</para>
+		/// </remarks>
 		public static IntPtr GetProtocol (string protocol)
 		{
 			return Protocol.objc_getProtocol (protocol);
@@ -2136,6 +2250,23 @@ namespace ObjCRuntime {
 
 		internal static IntPtr GetProtocolForType (Type type)
 		{
+			// Check if the trimmable static registrar knows about this protocol
+			if (IsTrimmableStaticRegistrar) {
+				if (TypeMaps.TryGetProtocolProxyAttribute (type, out var attrib)) {
+#if LOG_TRIMMABLE_TYPEMAP
+					NSLog ($"GetProtocolForType ({type.FullName}) found protocol proxy attribute");
+#endif
+					var protocolName = attrib.GetProtocolName ();
+					return Protocol.objc_getProtocol (protocolName);
+				}
+
+#if LOG_TRIMMABLE_TYPEMAP
+				NSLog ($"GetProtocolForType ({type.FullName}) NOT found in protocol proxy map");
+#endif
+
+				return IntPtr.Zero;
+			}
+
 			// Check if the static registrar knows about this protocol
 			unsafe {
 				var map = options->RegistrationMap;
@@ -2206,13 +2337,13 @@ namespace ObjCRuntime {
 		}
 
 		/// <param name="type">Connect to the selector on this type.</param>
-		///         <param name="method">Method that will be called when Objective-C sends a message to the specified selector.</param>
-		///         <param name="selector">Selector to connect to.</param>
-		///         <summary>This call allows the specified method in this method to respond to message invocations on the specified selector.</summary>
-		///         <remarks>
-		///           <para>The method must be declared on an NSObject-derived class.</para>
-		///           <para>Developers can use this method to dynamically reconfigure which methods on a class should respond to which Objective-C selectors.</para>
-		///         </remarks>
+		/// <param name="method">Method that will be called when Objective-C sends a message to the specified selector.</param>
+		/// <param name="selector">Selector to connect to.</param>
+		/// <summary>This call allows the specified method in this method to respond to message invocations on the specified selector.</summary>
+		/// <remarks>
+		///   <para>The method must be declared on an NSObject-derived class.</para>
+		///   <para>Developers can use this method to dynamically reconfigure which methods on a class should respond to which Objective-C selectors.</para>
+		/// </remarks>
 		public static void ConnectMethod (Type type, MethodInfo method, Selector selector)
 		{
 			if (selector is null)
@@ -2222,13 +2353,13 @@ namespace ObjCRuntime {
 		}
 
 		/// <param name="type">Connect to the selector on this type.</param>
-		///         <param name="method">Method that will be called when Objective-C sends a message to the specified selector.</param>
-		///         <param name="export">An export attribute that specifies the selector to connect to.</param>
-		///         <summary>This call allows the specified method in this method to respond to message invocations on the specified selector.</summary>
-		///         <remarks>
-		///           <para>The method must be declared on an NSObject-derived class.</para>
-		///           <para>Developers can use this method to dynamically reconfigure which methods on a class should respond to which Objective-C selectors.</para>
-		///         </remarks>
+		/// <param name="method">Method that will be called when Objective-C sends a message to the specified selector.</param>
+		/// <param name="export">An export attribute that specifies the selector to connect to.</param>
+		/// <summary>This call allows the specified method in this method to respond to message invocations on the specified selector.</summary>
+		/// <remarks>
+		///   <para>The method must be declared on an NSObject-derived class.</para>
+		///   <para>Developers can use this method to dynamically reconfigure which methods on a class should respond to which Objective-C selectors.</para>
+		/// </remarks>
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		public static void ConnectMethod (Type type, MethodInfo method, ExportAttribute export)
 		{
@@ -2248,12 +2379,12 @@ namespace ObjCRuntime {
 		}
 
 		/// <param name="method">Method that will be called when Objective-C sends a message to the specified selector.</param>
-		///         <param name="selector">Selector to connect to.</param>
-		///         <summary>This call allows the specified method in this method to respond to message invocations on the specified selector.</summary>
-		///         <remarks>
-		///           <para>The method must be declared on an NSObject-derived class.</para>
-		///           <para>Developers can use this method to dynamically reconfigure which methods on a class should respond to which Objective-C selectors.</para>
-		///         </remarks>
+		/// <param name="selector">Selector to connect to.</param>
+		/// <summary>This call allows the specified method in this method to respond to message invocations on the specified selector.</summary>
+		/// <remarks>
+		///   <para>The method must be declared on an NSObject-derived class.</para>
+		///   <para>Developers can use this method to dynamically reconfigure which methods on a class should respond to which Objective-C selectors.</para>
+		/// </remarks>
 		public static void ConnectMethod (MethodInfo method, Selector selector)
 		{
 			if (method is null)
@@ -2368,9 +2499,9 @@ namespace ObjCRuntime {
 		{
 			if (obj is null)
 				return NativeHandle.Zero;
-#pragma warning disable RBI0014
-			return RetainAndAutoreleaseHandle (obj.GetHandle ());
-#pragma warning restore RBI0014
+			var rv = RetainAndAutoreleaseHandle (obj.GetHandle ());
+			GC.KeepAlive (obj);
+			return rv;
 		}
 
 		/// <summary>Retain and autorelease the given handle, then return the handle.</summary>
@@ -2547,10 +2678,10 @@ namespace ObjCRuntime {
 		}
 
 		/// <param name="block">The block to release.</param>
-		///         <summary>Calls _Block_release on the specified block on the main thread.</summary>
-		///         <remarks>
-		///           <para>Developers should not call this method, it's called by generated binding code.</para>
-		///         </remarks>
+		/// <summary>Calls _Block_release on the specified block on the main thread.</summary>
+		/// <remarks>
+		///   <para>Developers should not call this method, it's called by generated binding code.</para>
+		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		[DllImport ("__Internal", EntryPoint = "xamarin_release_block_on_main_thread")]
 		public static extern void ReleaseBlockOnMainThread (IntPtr block);
@@ -2599,8 +2730,8 @@ namespace ObjCRuntime {
 		[DllImport (Constants.libSystemLibrary)]
 		static unsafe extern NXArchInfo* NXGetLocalArchInfo ();
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets whether the current process uses ARM64 calling conventions.</summary>
+		/// <remarks>This is initialized during runtime startup.</remarks>
 		public static bool IsARM64CallingConvention;
 
 		[BindingImpl (BindingImplOptions.Optimizable)]
@@ -2640,7 +2771,7 @@ namespace ObjCRuntime {
 					using var dict = NSMutableDictionary.FromFile ("/System/Library/CoreServices/SystemVersion.plist");
 					using var str = (NSString) "iOSSupportVersion";
 					using var obj = dict.ObjectForKey (str);
-					_iOSSupportVersion = obj.ToString ();
+					_iOSSupportVersion = obj?.ToString () ?? "";
 				}
 				return _iOSSupportVersion;
 			}
@@ -2689,9 +2820,9 @@ namespace ObjCRuntime {
 			return (nuint) value;
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the original working directory used when the application process was launched.</summary>
+		/// <value>The original working directory, or <see langword="null"/> if unavailable.</value>
+		/// <remarks>This value is provided by the native runtime and may differ from the current working directory.</remarks>
 		public static string? OriginalWorkingDirectory {
 			get {
 				return Marshal.PtrToStringUTF8 (xamarin_get_original_working_directory_path ());
@@ -2715,9 +2846,16 @@ namespace ObjCRuntime {
 			return rv ? 1 : 0;
 		}
 
-		static IntPtr LookupUnmanagedFunction (IntPtr assembly, IntPtr symbol, int id)
+		static IntPtr LookupUnmanagedFunction (IntPtr assembly, IntPtr symbol, int id, IntPtr objcClassName)
 		{
-			return RegistrarHelper.LookupUnmanagedFunction (assembly, Marshal.PtrToStringAuto (symbol), id);
+			return RegistrarHelper.LookupUnmanagedFunction (assembly, Marshal.PtrToStringAuto (symbol), id, Marshal.PtrToStringAuto (objcClassName));
+		}
+
+		// This option is turned on by setting _ValidateObjectPointers property to true in the project file.
+		static bool validate_object_pointers;
+		internal static bool ValidateObjectPointers {
+			get => validate_object_pointers;
+			set => validate_object_pointers = value;
 		}
 	}
 

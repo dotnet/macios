@@ -52,7 +52,7 @@ namespace CoreImage {
 		Linear,
 	}
 
-	/// <summary>Options to conrol sampler operations for <see cref="CoreImage.CISampler" /> objects.</summary>
+	/// <summary>Options to control sampler operations for <see cref="CoreImage.CISampler" /> objects.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

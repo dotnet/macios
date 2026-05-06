@@ -8,10 +8,8 @@ using Microsoft.Build.Utilities;
 using Microsoft.Build.Tasks;
 using System.Xml.Linq;
 
-using Xamarin.Messaging.Build.Client;
-
 namespace Xamarin.MacDev.Tasks {
-	public class WriteItemsToFile : XamarinTask, ICancelableTask {
+	public class WriteItemsToFile : XamarinTask {
 		static readonly XNamespace XmlNs = XNamespace.Get ("http://schemas.microsoft.com/developer/msbuild/2003");
 
 		static readonly XName ProjectElementName = XmlNs + "Project";
@@ -36,9 +34,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
-			if (ShouldExecuteRemotely ())
-				return ExecuteRemotely ();
-
 			Write (this, File?.ItemSpec, Items, ItemName, Overwrite, IncludeMetadata);
 			return true;
 		}
@@ -59,7 +54,7 @@ namespace Xamarin.MacDev.Tasks {
 				System.IO.File.Delete (file);
 
 			if (!Directory.Exists (Path.GetDirectoryName (file)))
-				Directory.CreateDirectory (Path.GetDirectoryName (file));
+				Directory.CreateDirectory (Path.GetDirectoryName (file)!);
 
 			document.Save (file);
 		}
@@ -78,16 +73,10 @@ namespace Xamarin.MacDev.Tasks {
 
 				return metadata.Keys
 					.OfType<object> ()
-					.Select (key => new XElement (XmlNs + key.ToString (), metadata [key].ToString ()));
+					.Select (key => new XElement (XmlNs + (key.ToString () ?? ""), metadata [key]?.ToString ()));
 			}
 
 			return Enumerable.Empty<XElement> ();
-		}
-
-		public void Cancel ()
-		{
-			if (ShouldExecuteRemotely ())
-				BuildConnection.CancelAsync (BuildEngine4).Wait ();
 		}
 	}
 }

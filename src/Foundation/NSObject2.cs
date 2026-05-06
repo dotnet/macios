@@ -25,9 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading;
-#if !NO_SYSTEM_DRAWING
 using System.Drawing;
-#endif
 using System.Diagnostics;
 
 using System.Runtime.InteropServices.ObjectiveC;
@@ -41,19 +39,69 @@ using CoreAnimation;
 using CoreGraphics;
 #endif
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 
-	/// <include file="../../docs/api/Foundation/NSObjectFlag.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSObjectFlag']/*" />
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
+	/// <summary>
+	/// Sentinel class.
+	/// </summary>
+	/// <remarks>
+	///   <para>
+	///     The sole purpose for the <see cref="NSObjectFlag"/> class is to be used
+	///     as a sentinel in the <see cref="NSObject"/> class hierarchy to ensure that the
+	///     actual object initialization only happens in <see cref="NSObject"/>.
+	///   </para>
+	///   <para>
+	///     When you chain your constructors using <see cref="NSObjectFlag.Empty"/> the
+	///     only thing that will take place is the allocation of the
+	///     object instance; no calls to any of the init: methods in base
+	///     classes will be performed. If your code depends on this for
+	///     initialization, you are responsible for calling the proper
+	///     init method directly. For example:
+	///   </para>
+	///   <example>
+	///     <code lang="csharp lang-csharp"><![CDATA[
+	///     //
+	///     // The NSObjectFlag merely allocates the object and registers the
+	///     // C# class with the Objective-C runtime if necessary, but no actual
+	///     // initXxx method is invoked, that is done later in the constructor
+	///     //
+	///     // This is taken from the binding code for UIView:
+	///     //
+	///     [Export ("initWithFrame:")]
+	///     public UIView (CGRect frame) : base (NSObjectFlag.Empty)
+	///     {
+	///     	// Invoke the init method now.
+	///     	var initWithFrame = new Selector ("initWithFrame:").Handle;
+	///     	if (IsDirectBinding) {
+	///     		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
+	///     	} else {
+	///     		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+	///     	}
+	///     }
+	///     ]]></code>
+	///   </example>
+	///   <para>
+	///     Alternatively, if you need a base class to initialize itself,
+	///     you should call one of the other constructors that take some
+	///     parameters.
+	///   </para>
+	///   <example>
+	///     <code lang="csharp lang-csharp"><![CDATA[
+	///     class MyViw : UIView {
+	///     	[Export ("initWithFrame:")]
+	///     	public MyView (CGRect frame) : base (frame)
+	///     	{
+	///     		// this initialized MyView by calling the UIView constructor
+	///     		// that initializes the object from a CGRect frame.
+	///     	}
+	///     }
+	///     ]]></code>
+	///   </example>
+	/// </remarks>
 	public enum NSObjectFlag {
 		/// <summary>Sentinel instance.</summary>
-		///         <remarks>To be added.</remarks>
 		Empty,
 	}
 
@@ -62,7 +110,7 @@ namespace Foundation {
 		// The method will be implemented via custom linker step if the managed static registrar is used
 		// for NSObject subclasses which have an (NativeHandle) or (IntPtr) constructor.
 		[MethodImpl (MethodImplOptions.NoInlining)]
-		virtual static NSObject _Xamarin_ConstructNSObject (NativeHandle handle) => null;
+		virtual static NSObject? _Xamarin_ConstructNSObject (NativeHandle handle) => null;
 	}
 
 #if !COREBUILD
@@ -77,6 +125,7 @@ namespace Foundation {
 	}
 
 	class NSObjectDataHandle : CriticalHandle {
+		bool invalidated;
 		public NSObjectDataHandle ()
 			: base (IntPtr.Zero)
 		{
@@ -85,18 +134,34 @@ namespace Foundation {
 			}
 		}
 
+		public NSObjectDataHandle (IntPtr handle)
+			: base (handle)
+		{
+		}
+
+		public void Invalidate ()
+		{
+			invalidated = true;
+		}
+
 		public unsafe NSObjectData* Data {
 			get => (NSObjectData*) handle;
 		}
 
 		public override bool IsInvalid {
-			get => handle != IntPtr.Zero;
+			get => handle == IntPtr.Zero;
 		}
 
 		protected override bool ReleaseHandle ()
 		{
-			unsafe {
-				NativeMemory.Free ((void*) handle);
+			if (handle != IntPtr.Zero) {
+				if (invalidated) {
+					// nothing to do here.
+				} else {
+					unsafe {
+						NativeMemory.Free ((void*) handle);
+					}
+				}
 			}
 			handle = IntPtr.Zero;
 			return true;
@@ -107,10 +172,6 @@ namespace Foundation {
 #if !COREBUILD
 	/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSObject']/*" />
 	[ObjectiveCTrackedType]
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
 #endif
 	[StructLayout (LayoutKind.Sequential)]
 	public partial class NSObject : INativeObject
@@ -128,9 +189,10 @@ namespace Foundation {
 		static IntPtr selEncodeWithCoderHandle = Selector.GetHandle (selEncodeWithCoder);
 #endif
 
-		// replace older Mono[Touch|Mac]Assembly field (ease code sharing across platforms)
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Gets the assembly containing the platform-specific Foundation types.
+		/// </summary>
+		/// <value>The assembly containing the platform-specific Foundation types.</value>
 		public static readonly Assembly PlatformAssembly = typeof (NSObject).Assembly;
 
 		// This is exclusively for Mono
@@ -145,18 +207,26 @@ namespace Foundation {
 		// safely from native code without having to make sure the GC doesn't move the memory around. Among
 		// other things, this means it's accessible from threads that has never seen/run managed code without
 		// having to attach those threads to to the managed runtime.
-#nullable enable
 		NSObjectDataHandle? data_handle;
 
 		internal unsafe NSObjectData* GetData ()
 		{
-			return AllocateData ().Data;
+			var rv = AllocateData ().Data;
+
+			if (rv is null) {
+				// Throwing an exception here is better than returning a null pointer, because that will crash the process when the pointer is dereferenced
+				// (and none of the callers can do anything useful with a null pointer anyway).
+				throw new ObjectDisposedException ($"This object (of type {GetType ().Name}) does not have a data pointer anymore, possibly because of a race condition. Please file a bug at https://github.com/dotnet/macios/issues.");
+			}
+
+			return rv;
 		}
 
 		unsafe NSObjectDataHandle AllocateData ()
 		{
-			if (data_handle is not null)
-				return data_handle;
+			var dh = data_handle;
+			if (dh is not null)
+				return dh;
 
 			var data = new NSObjectDataHandle ();
 			var previousValue = Interlocked.CompareExchange (ref data_handle, data, null);
@@ -176,7 +246,6 @@ namespace Foundation {
 			get { return GetData ()->flags; }
 			set { GetData ()->flags = value; }
 		}
-#nullable disable
 
 		// This enum has a native counterpart in runtime.h
 		[Flags]
@@ -194,7 +263,7 @@ namespace Foundation {
 		// Must be kept in sync with the same enum in trampolines.h
 		enum XamarinGCHandleFlags : uint {
 			None = 0,
-			WeakGCHandle = 1,
+			// unused = 1
 			HasManagedRef = 2,
 			InitialSet = 4,
 		}
@@ -220,9 +289,10 @@ namespace Foundation {
 			set { flags = value ? (flags | Flags.RegisteredToggleRef) : (flags & ~Flags.RegisteredToggleRef); }
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Gets or sets a value indicating whether this instance uses direct Objective-C binding.
+		/// </summary>
+		/// <value><see langword="true"/> if this instance uses direct binding; otherwise, <see langword="false"/>.</value>
 		[DebuggerBrowsable (DebuggerBrowsableState.Never)]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		protected internal bool IsDirectBinding {
@@ -280,11 +350,16 @@ namespace Foundation {
 			Dispose (false);
 		}
 
-		/// <summary>Releases the resources used by the NSObject object.</summary>
-		///         <remarks>
-		///           <para>The Dispose method releases the resources used by the NSObject class.</para>
-		///           <para>Calling the Dispose method when the application is finished using the NSObject ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.  For more information on releasing resources see ``Cleaning up Unmananaged Resources'' at https://msdn.microsoft.com/en-us/library/498928w2.aspx</para>
-		///         </remarks>
+		/// <summary>Releases the resources used by the <see cref="NSObject" /> object.</summary>
+		/// <remarks>
+		///   <para>The <see cref="Dispose()" /> method releases the resources used by the <see cref="NSObject" /> class.</para>
+		///   <para>
+		///     Calling the <see cref="Dispose()" /> method when the application is finished using the <see cref="NSObject" /> ensures that all
+		///     external resources used by this managed object are released as soon as possible. Once developers have invoked
+		///     the <see cref="Dispose()" /> method, the object is no longer useful and developers should no longer make any calls to it.
+		///     For more information on releasing resources see <see href="https://msdn.microsoft.com/en-us/library/498928w2.aspx">Cleaning up unmanaged resources</see>.
+		///   </para>
+		/// </remarks>
 		public void Dispose ()
 		{
 			Dispose (true);
@@ -298,13 +373,20 @@ namespace Foundation {
 		[UnconditionalSuppressMessage ("", "IL2072", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		internal static IntPtr CreateNSObject (IntPtr type_gchandle, IntPtr handle, Flags flags)
 		{
+			// This method should never be called when using the trimmable static registrar, so assert that never happens by throwing an exception in that case.
+			if (Runtime.IsTrimmableStaticRegistrar)
+				throw new System.Diagnostics.UnreachableException ();
+
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception if using the managed static registrar (which is required for NativeAOT)
 			if (Runtime.IsManagedStaticRegistrar) {
 				throw new System.Diagnostics.UnreachableException ();
 			}
 
 			// This function is called from native code before any constructors have executed.
-			var type = (Type) Runtime.GetGCHandleTarget (type_gchandle);
+			var type = (Type?) Runtime.GetGCHandleTarget (type_gchandle);
+			if (type is null)
+				return IntPtr.Zero;
+
 			try {
 				var obj = (NSObject) RuntimeHelpers.GetUninitializedObject (type);
 				obj.handle = handle;
@@ -360,13 +442,12 @@ namespace Foundation {
 		-The class is not a custom type - it must wrap a framework class.
 		*/
 		/// <summary>Promotes a regular peer object (IsDirectBinding is true) into a toggleref object.</summary>
-		///         <remarks>
-		/// 	  This turns a regular peer object (one that has
-		/// 	  IsDirectBinding set to true) into a toggleref object.  This
-		/// 	  is necessary when you are storing to a backing field whose
-		/// 	  objc_c semantics is not copy or retain.  This is an internal
-		/// 	  method.
-		/// 	</remarks>
+		/// <remarks>
+		///   This turns a regular peer object (one that has <see cref="IsDirectBinding" /> set to true)
+		///   into a toggleref object. This is necessary when storing managed state (for instance into
+		///   a backing field), so that the managed peer isn't collected by the GC before the native object
+		///   is freed. This is an internal method.
+		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		protected void MarkDirty ()
 		{
@@ -423,7 +504,7 @@ namespace Foundation {
 				throw new InvalidOperationException ($"Unable to create a managed reference for the pointer {handle} whose managed type is {GetType ().FullName} because it wasn't possible to get the class of the pointer: {error_message}");
 
 			if (isUserType) {
-				var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet | XamarinGCHandleFlags.WeakGCHandle;
+				var gchandle_flags = XamarinGCHandleFlags.HasManagedRef | XamarinGCHandleFlags.InitialSet;
 				var gchandle = GCHandle.Alloc (this, GCHandleType.WeakTrackResurrection);
 				var h = GCHandle.ToIntPtr (gchandle);
 				byte rv;
@@ -458,7 +539,7 @@ namespace Foundation {
 		{
 			while (type != typeof (NSObject) && type is not null) {
 				var attrs = type.GetCustomAttributes (typeof (ProtocolAttribute), false);
-				var protocolAttribute = (ProtocolAttribute) (attrs.Length > 0 ? attrs [0] : null);
+				var protocolAttribute = (ProtocolAttribute?) (attrs.Length > 0 ? attrs [0] : null);
 				if (protocolAttribute is not null && !protocolAttribute.IsInformal) {
 					string name;
 
@@ -466,7 +547,7 @@ namespace Foundation {
 						name = protocolAttribute.Name;
 					} else {
 						attrs = type.GetCustomAttributes (typeof (RegisterAttribute), false);
-						var registerAttribute = (RegisterAttribute) (attrs.Length > 0 ? attrs [0] : null);
+						var registerAttribute = (RegisterAttribute?) (attrs.Length > 0 ? attrs [0] : null);
 						if (registerAttribute is not null && !string.IsNullOrEmpty (registerAttribute.Name)) {
 							name = registerAttribute.Name;
 						} else {
@@ -478,7 +559,10 @@ namespace Foundation {
 					if (proto != IntPtr.Zero && proto == protocol)
 						return true;
 				}
-				type = type.BaseType;
+				var baseType = type.BaseType;
+				if (baseType is null)
+					return false;
+				type = baseType;
 			}
 
 			return false;
@@ -534,7 +618,7 @@ namespace Foundation {
 			var classHandle = ClassHandle;
 			lock (Runtime.protocol_cache) {
 				ref var map = ref CollectionsMarshal.GetValueRefOrAddDefault (Runtime.protocol_cache, classHandle, out var exists);
-				if (!exists)
+				if (!exists || map is null)
 					map = new ();
 				ref var result = ref CollectionsMarshal.GetValueRefOrAddDefault (map, protocol, out exists);
 				if (!exists)
@@ -640,15 +724,15 @@ namespace Foundation {
 			return this;
 		}
 
-		/// <summary>Handle used to represent the methods in the base class for this NSObject.</summary>
-		///         <value>An opaque pointer, represents an Objective-C objc_super object pointing to our base class.</value>
-		///         <remarks>
-		/// 	  This property is used to access members of a base class.
-		/// 	  This is typically used when you call any of the Messaging
-		/// 	  methods to invoke methods that were implemented in your base
-		/// 	  class, instead of invoking the implementation in the current
-		/// 	  class.
-		/// 	</remarks>
+		/// <summary>Handle used to represent the methods in the base class for this <see cref="NSObject" />.</summary>
+		/// <value>An opaque pointer, represents an Objective-C objc_super object pointing to our base class.</value>
+		/// <remarks>
+		///   This property is used to access members of a base class.
+		///   This is typically used when you call any of the Messaging
+		///   methods to invoke methods that were implemented in your base
+		///   class, instead of invoking the implementation in the current
+		///   class.
+		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public NativeHandle SuperHandle {
 			get {
@@ -660,8 +744,8 @@ namespace Foundation {
 		}
 
 		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>
-		///         <value>A pointer</value>
-		///         <remarks>This IntPtr is a handle to the underlying unmanaged representation for this object.</remarks>
+		/// <value>A pointer.</value>
+		/// <remarks>This is a handle to the underlying unmanaged representation for this object.</remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public NativeHandle Handle {
 			get { return handle; }
@@ -721,67 +805,72 @@ namespace Foundation {
 			return false;
 		}
 
-		private void InvokeOnMainThread (Selector sel, NSObject obj, bool wait)
+		private void InvokeOnMainThread (Selector sel, NSObject? obj, bool wait)
 		{
 			Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (this.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone), sel.Handle, obj.GetHandle (), wait ? (byte) 1 : (byte) 0);
 			GC.KeepAlive (sel);
 			GC.KeepAlive (obj);
 		}
 
+		/// <summary>Invokes asynchronously the specified code on the main UI thread.</summary>
 		/// <param name="sel">Selector to invoke</param>
-		///         <param name="obj">Object in which the selector is invoked</param>
-		///         <summary>Invokes asynchrously the specified code on the main UI thread.</summary>
-		///         <remarks>
-		///           <para>
-		/// 	    You use this method from a thread to invoke the code in
-		/// 	    the specified object that is exposed with the specified
-		/// 	    selector in the UI thread.  This is required for most
-		/// 	    operations that affect UIKit or AppKit as neither one of
-		/// 	    those APIs is thread safe.
-		/// 	  </para>
-		///           <para>
-		/// 	    The code is executed when the main thread goes back to its
-		/// 	    main loop for processing events.
-		/// 	  </para>
-		///           <para>
-		/// 	    Unlike <see cref="Foundation.NSObject.InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />
-		/// 	    this method merely queues the invocation and returns
-		/// 	    immediately to the caller.
-		/// 	  </para>
-		///         </remarks>
-		public void BeginInvokeOnMainThread (Selector sel, NSObject obj)
+		/// <param name="obj">Object in which the selector is invoked</param>
+		/// <remarks>
+		///   <para>
+		///     You use this method from a thread to invoke the code in
+		///     the specified object that is exposed with the specified
+		///     selector in the UI thread. This is required for most
+		///     operations that affect UIKit or AppKit as neither one of
+		///     those APIs is thread safe.
+		///   </para>
+		///   <para>
+		///     The code is executed when the main thread goes back to its
+		///     main loop for processing events.
+		///   </para>
+		///   <para>
+		///     Unlike <see cref="InvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />
+		///     this method merely queues the invocation and returns
+		///     immediately to the caller.
+		///   </para>
+		/// </remarks>
+		public void BeginInvokeOnMainThread (Selector sel, NSObject? obj)
 		{
 			InvokeOnMainThread (sel, obj, false);
 		}
 
+		/// <summary>Invokes synchronously the specified code on the main UI thread.</summary>
 		/// <param name="sel">Selector to invoke</param>
-		///         <param name="obj">Object in which the selector is invoked</param>
-		///         <summary>Invokes synchrously the specified code on the main UI thread.</summary>
-		///         <remarks>
-		///           <para>
-		/// 	    You use this method from a thread to invoke the code in
-		/// 	    the specified object that is exposed with the specified
-		/// 	    selector in the UI thread.  This is required for most
-		/// 	    operations that affect UIKit or AppKit as neither one of
-		/// 	    those APIs is thread safe.
-		/// 	  </para>
-		///           <para>
-		/// 	    The code is executed when the main thread goes back to its
-		/// 	    main loop for processing events.
-		/// 	  </para>
-		///           <para>
-		/// 	    Unlike <see cref="Foundation.NSObject.BeginInvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />
-		/// 	    this method waits for the main thread to execute the method, and does not return until the code pointed by action has completed.
-		/// 	  </para>
-		///         </remarks>
-		public void InvokeOnMainThread (Selector sel, NSObject obj)
+		/// <param name="obj">Object in which the selector is invoked</param>
+		/// <remarks>
+		///   <para>
+		///     You use this method from a thread to invoke the code in
+		///     the specified object that is exposed with the specified
+		///     selector in the UI thread. This is required for most
+		///     operations that affect UIKit or AppKit as neither one of
+		///     those APIs is thread safe.
+		///   </para>
+		///   <para>
+		///     The code is executed when the main thread goes back to its
+		///     main loop for processing events.
+		///   </para>
+		///   <para>
+		///     Unlike <see cref="BeginInvokeOnMainThread(ObjCRuntime.Selector,Foundation.NSObject)" />
+		///     this method waits for the main thread to execute the method, and does not return until the code pointed by action has completed.
+		///   </para>
+		/// </remarks>
+		public void InvokeOnMainThread (Selector sel, NSObject? obj)
 		{
 			InvokeOnMainThread (sel, obj, true);
 		}
 
-		/// <param name="action">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Invokes the specified action asynchronously on the main UI thread.
+		/// </summary>
+		/// <param name="action">The action to invoke.</param>
+		/// <remarks>
+		/// This method queues the action to be executed when the main thread goes back to its
+		/// main loop for processing events. The method returns immediately to the caller.
+		/// </remarks>
 		public void BeginInvokeOnMainThread (Action action)
 		{
 			var d = new NSAsyncActionDispatcher (action);
@@ -790,7 +879,7 @@ namespace Foundation {
 			GC.KeepAlive (d);
 		}
 
-		internal void BeginInvokeOnMainThread (System.Threading.SendOrPostCallback cb, object state)
+		internal void BeginInvokeOnMainThread (System.Threading.SendOrPostCallback cb, object? state)
 		{
 			var d = new NSAsyncSynchronizationContextDispatcher (cb, state);
 			Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (d.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone),
@@ -798,9 +887,13 @@ namespace Foundation {
 			GC.KeepAlive (d);
 		}
 
-		/// <param name="action">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Invokes the specified action synchronously on the main UI thread.
+		/// </summary>
+		/// <param name="action">The action to invoke.</param>
+		/// <remarks>
+		/// This method waits for the main thread to execute the action, and does not return until the action has completed.
+		/// </remarks>
 		public void InvokeOnMainThread (Action action)
 		{
 			using (var d = new NSActionDispatcher (action)) {
@@ -809,7 +902,7 @@ namespace Foundation {
 			}
 		}
 
-		internal void InvokeOnMainThread (System.Threading.SendOrPostCallback cb, object state)
+		internal void InvokeOnMainThread (System.Threading.SendOrPostCallback cb, object? state)
 		{
 			using (var d = new NSSynchronizationContextDispatcher (cb, state)) {
 				Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool (d.Handle, Selector.GetHandle (Selector.PerformSelectorOnMainThreadWithObjectWaitUntilDone),
@@ -818,13 +911,13 @@ namespace Foundation {
 		}
 
 		/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSObject.FromObject(System.Object)']/*" />
-		public static NSObject FromObject (object obj)
+		public static NSObject? FromObject (object? obj)
 		{
 			if (obj is null)
 				return NSNull.Null;
 			var t = obj.GetType ();
-			if (t == typeof (NSObject) || t.IsSubclassOf (typeof (NSObject)))
-				return (NSObject) obj;
+			if (obj is NSObject nsobj)
+				return nsobj;
 
 			switch (Type.GetTypeCode (t)) {
 			case TypeCode.Boolean:
@@ -856,14 +949,12 @@ namespace Foundation {
 			default:
 				if (t == typeof (NativeHandle))
 					return NSValue.ValueFromPointer ((NativeHandle) obj);
-#if !NO_SYSTEM_DRAWING
 				if (t == typeof (SizeF))
 					return NSValue.FromSizeF ((SizeF) obj);
 				else if (t == typeof (RectangleF))
 					return NSValue.FromRectangleF ((RectangleF) obj);
 				else if (t == typeof (PointF))
 					return NSValue.FromPointF ((PointF) obj);
-#endif
 				if (t == typeof (nint))
 					return NSNumber.FromNInt ((nint) obj);
 				else if (t == typeof (nuint))
@@ -887,9 +978,9 @@ namespace Foundation {
 #endif
 				// last chance for types like CGPath, CGColor... that are not NSObject but are CFObject
 				// see https://bugzilla.xamarin.com/show_bug.cgi?id=8458
-				INativeObject native = (obj as INativeObject);
+				var native = (obj as INativeObject);
 				if (native is not null) {
-					NSObject result = Runtime.GetNSObject (native.Handle);
+					var result = Runtime.GetNSObject (native.Handle);
 					GC.KeepAlive (native);
 					return result;
 				}
@@ -897,10 +988,19 @@ namespace Foundation {
 			}
 		}
 
+		/// <summary>
+		/// Sets the value for the property identified by a given key path to a given value.
+		/// </summary>
+		/// <param name="handle">A handle to the value to set.</param>
+		/// <param name="keyPath">A key path of the form relationship.property (with one or more relationships); for example "department.name" or "department.manager.lastName".</param>
+		/// <remarks>
+		/// This method is useful for setting a value for a property that can be reached by following a key path.
+		/// The key path is a series of property names separated by periods.
+		/// </remarks>
 		public void SetValueForKeyPath (NativeHandle handle, NSString keyPath)
 		{
 			if (keyPath is null)
-				throw new ArgumentNullException ("keyPath");
+				throw new ArgumentNullException (nameof (keyPath));
 			if (IsDirectBinding) {
 				ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, Selector.GetHandle ("setValue:forKeyPath:"), handle, keyPath.Handle);
 				GC.KeepAlive (keyPath);
@@ -914,8 +1014,8 @@ namespace Foundation {
 		// a correct implementation of GetHashCode / Equals. We default to Object.GetHashCode (like classic)
 
 		/// <summary>Generates a hash code for the current instance.</summary>
-		///         <returns>A int containing the hash code for this instance.</returns>
-		///         <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
+		/// <returns>A int containing the hash code for this instance.</returns>
+		/// <remarks>The algorithm used to generate the hash code is unspecified.</remarks>
 		public override int GetHashCode ()
 		{
 			if (!IsDirectBinding)
@@ -924,11 +1024,16 @@ namespace Foundation {
 			return GetNativeHash ().GetHashCode ();
 		}
 
-		/// <param name="obj">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public override bool Equals (object obj)
+		/// <summary>
+		/// Determines whether the specified object is equal to the current <see cref="NSObject"/>.
+		/// </summary>
+		/// <param name="obj">The object to compare with the current object.</param>
+		/// <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
+		/// <remarks>
+		/// For direct bindings, this method uses the Objective-C <c>isEqual:</c> method.
+		/// For non-direct bindings, this method uses reference equality.
+		/// </remarks>
+		public override bool Equals (object? obj)
 		{
 			var o = obj as NSObject;
 			if (o is null)
@@ -944,38 +1049,41 @@ namespace Foundation {
 		}
 
 		// IEquatable<T>
-		/// <param name="obj">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public bool Equals (NSObject obj) => Equals ((object) obj);
+		/// <summary>
+		/// Determines whether the specified <see cref="NSObject"/> is equal to the current <see cref="NSObject"/>.
+		/// </summary>
+		/// <param name="obj">The object to compare with the current object.</param>
+		/// <returns><see langword="true"/> if the specified object is equal to the current object; otherwise, <see langword="false"/>.</returns>
+		/// <remarks>
+		/// For direct bindings, this method uses the Objective-C <c>isEqual:</c> method.
+		/// For non-direct bindings, this method uses reference equality.
+		/// </remarks>
+		public bool Equals (NSObject? obj) => Equals ((object?) obj);
 
 		/// <summary>Returns a string representation of the value of the current instance.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
-		public override string ToString ()
+		public override string? ToString ()
 		{
 			if (disposed)
 				return base.ToString ();
 			return Description ?? base.ToString ();
 		}
 
-		/// <param name="action">To be added.</param>
-		///         <param name="delay">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Invokes the specified action after the specified delay.
+		/// </summary>
+		/// <param name="action">The action to invoke.</param>
+		/// <param name="delay">The delay in seconds.</param>
 		public virtual void Invoke (Action action, double delay)
 		{
 			var d = new NSAsyncActionDispatcher (action);
 			d.PerformSelector (NSDispatcher.Selector, null, delay);
 		}
 
-		/// <param name="action">To be added.</param>
-		///         <param name="delay">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Invokes the specified action after the specified delay.
+		/// </summary>
+		/// <param name="action">The action to invoke.</param>
+		/// <param name="delay">The delay as a <see cref="TimeSpan"/>.</param>
 		public virtual void Invoke (Action action, TimeSpan delay)
 		{
 			var d = new NSAsyncActionDispatcher (action);
@@ -985,6 +1093,14 @@ namespace Foundation {
 		internal void ClearHandle ()
 		{
 			handle = NativeHandle.Zero;
+		}
+
+		// This is weird - a setter only - but it's so that we can remove an object right after creating it using object creation syntax:
+		//     new NSString ("") { RemoveFromObjectMap = true };
+		internal bool RemoveFromObjectMap {
+			set {
+				Runtime.RemoveFromObjectMap (this);
+			}
 		}
 
 		/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSObject.Dispose(System.Boolean)']/*" />
@@ -999,8 +1115,60 @@ namespace Foundation {
 					ReleaseManagedRef ();
 				} else {
 					NSObject_Disposer.Add (this);
+					RecreateDataHandle ();
 				}
 			}
+		}
+
+		void RecreateDataHandle ()
+		{
+			// OK, this code is _weird_.
+			// We need to delay the deletion of the native memory pointed to by data_handle until
+			// after this instance has been collected. A CriticalHandle seems to fit this purpose like a glove, until
+			// you realize that a CriticalHandle is only kept alive until the parent object _becomes finalizable_,
+			// not _is collected_, which is very different - in other words, resurrected objects don't keep CriticalHandles
+			// they contain alive. This is a problem because every single managed NSObject instance is resurrected, and we
+			// need the native memory to stay alive after resurrection.
+			//
+			// So this solution depends on a few bits:
+			// * At this point, this instance may have become finalizable, but the native memory shouldn't have been freed yet.
+			// * The original NSObjectDataHandle (aka CriticalHandle) will be collected in this/upcoming GC cycle, and can't
+			//   be trusted to keep the native memory alive anymore.
+			// * So we just create a new one, pointing to the same native memory, and replace the original NSObjectDataHandle (aka
+			//   CriticalHandle) with it
+			// * This works, because since this instance has become / will become resurrected, it's not finalizable anymore,
+			//   and it will keep the new NSObjectDataHandle instance (and the native memory it points to) alive.
+			// * Now if this instance is deemed finalizable, and then resurrected *again*, bad things will likely happen. This
+			//   is a bit more unlikely though, because we don't re-register the finalizer for execution, so unless somebody
+			//   else does that, it's quite unlikely this instance will become resurrected a second time.
+			var previous_data = data_handle;
+			if (previous_data is null) {
+				var msg = $"This object (of type {GetType ().Name}) does not have an existing data pointer, possibly because of a race condition. Please file a bug at https://github.com/dotnet/macios/issues.";
+#if CONSISTENCY_CHECKS
+				throw new InvalidOperationException (msg);
+#else
+				Runtime.NSLog (msg);
+				return;
+#endif
+			}
+
+			unsafe {
+				data_handle = new NSObjectDataHandle ((IntPtr) previous_data.Data);
+			}
+
+			if (previous_data.IsInvalid) {
+				var msg = $"This object (of type {GetType ().Name}) does not have valid data pointer, possibly because of a race condition. Please file a bug at https://github.com/dotnet/macios/issues.";
+#if CONSISTENCY_CHECKS
+				throw new InvalidOperationException (msg);
+#else
+				Runtime.NSLog (msg);
+				return;
+#endif
+			}
+
+			previous_data.Invalidate ();
+			// Don't dispose previous_data, because another thread might be referencing it, and trying to access its pointer - which is still valid.
+			// The GC will dispose of previous_data when its not accessible anymore.
 		}
 
 		[Register ("__NSObject_Disposer")]
@@ -1076,8 +1244,8 @@ namespace Foundation {
 
 		[Register ("__XamarinObjectObserver")]
 		class Observer : NSObject {
-			WeakReference obj;
-			Action<NSObservedChange> cback;
+			WeakReference? obj;
+			Action<NSObservedChange>? cback;
 			NSString key;
 
 			public Observer (NSObject obj, NSString key, Action<NSObservedChange> observer)
@@ -1095,17 +1263,17 @@ namespace Foundation {
 			public override void ObserveValue (NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr context)
 			{
 				if (keyPath == key && context == Handle)
-					cback (new NSObservedChange (change));
+					cback!.Invoke (new NSObservedChange (change));
 				else
 					base.ObserveValue (keyPath, ofObject, change, context);
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				if (disposing) {
-					NSObject target;
 					if (obj is not null) {
-						target = (NSObject) obj.Target;
+						var target = (NSObject?) obj.Target;
 						if (target is not null)
 							target.RemoveObserver (this, key, Handle);
 					}
@@ -1132,10 +1300,14 @@ namespace Foundation {
 			return o;
 		}
 
-		/// <param name="kls">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Allocates an uninitialized instance of the specified class.
+		/// </summary>
+		/// <param name="kls">The class to allocate.</param>
+		/// <returns>A new uninitialized <see cref="NSObject"/> instance.</returns>
+		/// <remarks>
+		/// This method should typically be followed by a call to an init method to properly initialize the object.
+		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static NSObject Alloc (Class kls)
 		{
@@ -1144,8 +1316,12 @@ namespace Foundation {
 			return new NSObject (h, true);
 		}
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Initializes the object by calling the Objective-C <c>init</c> method.
+		/// </summary>
+		/// <remarks>
+		/// This method should only be called on objects that have been allocated but not yet initialized.
+		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public void Init ()
 		{
@@ -1155,16 +1331,17 @@ namespace Foundation {
 			handle = Messaging.IntPtr_objc_msgSend (handle, Selector.GetHandle ("init"));
 		}
 
-		/// <param name="action">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Invokes the specified action on a background thread.
+		/// </summary>
+		/// <param name="action">The action to invoke.</param>
 		public static void InvokeInBackground (Action action)
 		{
 			// using the parameterized Thread.Start to avoid capturing
 			// the 'action' parameter (it'll needlessly create an extra
 			// object).
 			new System.Threading.Thread ((v) => {
-				((Action) v) ();
+				((Action) v!) ();
 			}) {
 				IsBackground = true,
 			}.Start (action);
@@ -1173,34 +1350,56 @@ namespace Foundation {
 	}
 
 #if !COREBUILD
-	/// <include file="../../docs/api/Foundation/NSObservedChange.xml" path="/Documentation/Docs[@DocId='T:Foundation.NSObservedChange']/*" />
-	[SupportedOSPlatform ("ios")]
-	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos")]
+	/// <summary>
+	/// Changes that occurred to an object being observed by Key-Value-Observing.
+	/// </summary>
+	/// <remarks>
+	/// <para>This class exposes the various components that were changed in a Key-Value-Observed property.</para>
+	/// <para>These are merely accessors to the underlying <see cref="NSDictionary"/> that is provided to the <see cref="NSObject.ObserveValue(NSString, NSObject, NSDictionary, IntPtr)"/> method.</para>
+	/// <para>Instances of this class are provided to your callback methods that you provide to <see cref="NSObject.AddObserver(NSObject, string, NSKeyValueObservingOptions, IntPtr)"/>.</para>
+	/// <para>You can also create these objects if you have a dictionary that contains the keys from a key-value-observing change. For example if you override the <see cref="NSObject.ObserveValue(NSString, NSObject, NSDictionary, IntPtr)"/> method.</para>
+	/// <example>
+	/// <code lang="csharp lang-csharp"><![CDATA[
+	/// class MyObserved : NSObject {
+	///     public override ObserveValue (NSString keyPath, NSObject ofObject, NSDictionary change, IntPtr context)
+	///     {
+	///         var change = new NSObservedChange (change);
+	///         // Now you can access the details about the change with the
+	///         // properties in the `change' variable.
+	///
+	///         if (context == MyObservedContext){
+	///             //...
+	///         }
+	///         base.ObserveValue (keyPath, ofObject, change, context);
+	///     }
+	/// }
+	/// ]]></code>
+	/// </example>
+	/// </remarks>
 	public class NSObservedChange {
 		NSDictionary dict;
-		/// <param name="source">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Initializes a new instance of the <see cref="NSObservedChange"/> class.
+		/// </summary>
+		/// <param name="source">The dictionary containing the change information.</param>
 		public NSObservedChange (NSDictionary source)
 		{
 			dict = source;
 		}
 
 		/// <summary>Records the kind of change that was done to the property.</summary>
-		///         <value>The current state of the changes being reported.</value>
-		///         <remarks>You can use the value of this property to determine which information is available on the other properties of this class.</remarks>
+		/// <value>The current state of the changes being reported.</value>
+		/// <remarks>You can use the value of this property to determine which information is available on the other properties of this class.</remarks>
 		public NSKeyValueChange Change {
 			get {
-				var n = (NSNumber) dict [NSObject.ChangeKindKey];
-				return (NSKeyValueChange) n.Int32Value;
+				var n = (NSNumber?) dict [NSObject.ChangeKindKey];
+				return (NSKeyValueChange) (n?.Int32Value ?? 0);
 			}
 		}
 
 		/// <summary>The new value being set on the observed property.</summary>
 		/// <remarks>For this property to have a value, the options passed to <see cref="Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> method should contain the value <see cref="Foundation.NSKeyValueObservingOptions" />New.</remarks>
-		public NSObject NewValue {
+		public NSObject? NewValue {
 			get {
 				return dict [NSObject.ChangeNewKey];
 			}
@@ -1209,18 +1408,18 @@ namespace Foundation {
 		/// <summary>The previous value on the observed property.</summary>
 		/// <value>The old value.</value>
 		/// <remarks>For this property to have a value, the options passed to <see cref="Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)" /> method should contain the value <see cref="Foundation.NSKeyValueObservingOptions.Old" />.</remarks>
-		public NSObject OldValue {
+		public NSObject? OldValue {
 			get {
 				return dict [NSObject.ChangeOldKey];
 			}
 		}
 
 		/// <summary>The indexes of the objects that were added, removed or changed.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>This value is set if the Change property is one of </remarks>
-		public NSIndexSet Indexes {
+		/// <value>An <see cref="NSIndexSet"/> containing the indexes, or <see langword="null"/> if not applicable.</value>
+		/// <remarks>This value is set if the Change property is either <see cref="NSKeyValueChange.Insertion" />, <see cref="NSKeyValueChange.Removal" /> or <see cref="NSKeyValueChange.Replacement" />.</remarks>
+		public NSIndexSet? Indexes {
 			get {
-				return (NSIndexSet) dict [NSObject.ChangeIndexesKey];
+				return (NSIndexSet?) dict [NSObject.ChangeIndexesKey];
 			}
 		}
 

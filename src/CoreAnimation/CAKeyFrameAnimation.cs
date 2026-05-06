@@ -5,14 +5,9 @@ using CoreGraphics;
 
 namespace CoreAnimation {
 	public partial class CAKeyFrameAnimation {
-		/// <typeparam name="T">Generic type to get teh values as.</typeparam>
-		///         <summary>Returns the elements of the key frame animation as an
-		/// 	array of strongly typed values of NSObject or CoreGraphics objects.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
-		public T [] GetValuesAs<T> () where T : class, INativeObject
+		/// <summary>Returns the elements of the key frame animation as an array of strongly typed values of <see cref="NSObject" /> or CoreGraphics objects.</summary>
+		/// <typeparam name="T">Generic type to get the values as.</typeparam>
+		public T []? GetValuesAs<T> () where T : class, INativeObject
 		{
 			return NSArray.FromArrayNative<T> (_Values);
 		}

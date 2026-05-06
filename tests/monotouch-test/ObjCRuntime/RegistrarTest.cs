@@ -21,6 +21,7 @@ using UIKit;
 using PlatformException = ObjCRuntime.RuntimeException;
 using NativeException = ObjCRuntime.ObjCException;
 using CoreAnimation;
+using CoreBluetooth;
 using CoreGraphics;
 using CoreLocation;
 #if !__TVOS__
@@ -51,6 +52,48 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			get {
 				return RegistrarSharedTest.CurrentRegistrar;
 			}
+		}
+
+		[Test]
+		public void EventTestCustomType ()
+		{
+			var earthDestroyed = 0;
+			using var vogons = new Hitchhiker ();
+			vogons.BuildIntergalacticHighway += (object sender, EventArgs ea) => {
+				earthDestroyed++;
+			};
+			vogons.DestroyEarth ();
+			Assert.That (earthDestroyed, Is.EqualTo (1), "Event raised");
+
+			vogons.BuildHighway ();
+			Assert.That (earthDestroyed, Is.EqualTo (2), "Event raised");
+		}
+
+		[Test]
+		public void EventTestOSType ()
+		{
+			using var mgr = new CBCentralManager (new DispatchQueue ("com.xamarin.tests.ios-plain"));
+			// The bug happens when there's no event listener for 'UpdatedState', which is a required protocol method.
+			// mgr.UpdatedState += (sender, e) => { };
+
+			// attach at least one event handler, to create an instance of the internal class that transforms protocol callbacks into events
+			mgr.DiscoveredPeripheral += (sender, e) => { };
+
+			// mimic what CBCentralManager does, instead of having to spin up the entire Bluetooth stack.
+			Messaging.void_objc_msgSend_IntPtr (mgr.Delegate.Handle, Selector.GetHandle ("centralManagerDidUpdateState:"), IntPtr.Zero);
+		}
+
+		[Test]
+		public void EventTestSdkType ()
+		{
+			var eventRaised = false;
+			using var cache = new NSCache ();
+			cache.WillEvictObject += (object sender, NSObjectEventArgs ea) => {
+				eventRaised = true;
+			};
+			cache.SetObjectForKey (new NSObject (), new NSObject ());
+			cache.RemoveAllObjects ();
+			Assert.That (eventRaised, Is.True, "Event raised");
 		}
 
 		[Test]
@@ -1255,7 +1298,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 		void ThrowsICEIfDebug (TestDelegate code, string message, bool execute_release_mode = true)
 		{
-			if (TestRuntime.IsCoreCLR || global::XamarinTests.ObjCRuntime.Registrar.CurrentRegistrar == Registrars.ManagedStatic) {
+			if (TestRuntime.IsCoreCLR ||
+				global::XamarinTests.ObjCRuntime.Registrar.CurrentRegistrar == Registrars.ManagedStatic ||
+				global::XamarinTests.ObjCRuntime.Registrar.CurrentRegistrar == Registrars.TrimmableStatic) {
 				if (execute_release_mode) {
 					// In CoreCLR will either throw an ArgumentException:
 					//     <System.ArgumentException: Object of type 'Foundation.NSObject' cannot be converted to type 'Foundation.NSSet'.
@@ -5677,13 +5722,13 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 	// These classes implement Metal* protocols, so that the generated registrar code includes the corresponding Metal* headers.
 	// https://github.com/dotnet/macios/issues/4422
-	class MetalKitTypesInTheSimulator : NSObject, MetalKit.IMTKViewDelegate {
-		public void Draw (MetalKit.MTKView view)
+	class MetalKitTypesInTheSimulator : NSObject, global::MetalKit.IMTKViewDelegate {
+		public void Draw (global::MetalKit.MTKView view)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void DrawableSizeWillChange (MetalKit.MTKView view, CGSize size)
+		public void DrawableSizeWillChange (global::MetalKit.MTKView view, CGSize size)
 		{
 			throw new NotImplementedException ();
 		}

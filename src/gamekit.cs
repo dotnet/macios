@@ -1138,6 +1138,10 @@ namespace GameKit {
 		[Export ("presentFriendRequestCreatorFromWindow:error:")]
 		bool PresentFriendRequestCreator ([NullAllowed] NSWindow window, [NullAllowed] out NSError error);
 
+		[Deprecated (PlatformName.iOS, 26, 2, message: "No longer supported.")]
+		[Deprecated (PlatformName.MacOSX, 26, 2, message: "No longer supported.")]
+		[Deprecated (PlatformName.TvOS, 26, 2, message: "No longer supported.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 2, message: "No longer supported.")]
 		[MacCatalyst (13, 1)]
 		[Export ("loadDefaultLeaderboardIdentifierWithCompletionHandler:")]
 		[Async (XmlDocs = """
@@ -1149,6 +1153,10 @@ namespace GameKit {
 			""")]
 		void LoadDefaultLeaderboardIdentifier ([NullAllowed] Action<string, NSError> completionHandler);
 
+		[Deprecated (PlatformName.iOS, 26, 2, message: "No longer supported.")]
+		[Deprecated (PlatformName.MacOSX, 26, 2, message: "No longer supported.")]
+		[Deprecated (PlatformName.TvOS, 26, 2, message: "No longer supported.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 2, message: "No longer supported.")]
 		[MacCatalyst (13, 1)]
 		[Export ("setDefaultLeaderboardIdentifier:completionHandler:")]
 		[Async (XmlDocs = """
@@ -1585,7 +1593,7 @@ namespace GameKit {
 		/// <param name="data">To be added.</param>
 		/// <param name="recipient">To be added.</param>
 		/// <param name="player">To be added.</param>
-		/// <summary>Method that is called when the <paramref name="recipient" /> recieves data from another <paramref name="player" />.</summary>
+		/// <summary>Method that is called when the <paramref name="recipient" /> receives data from another <paramref name="player" />.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("match:didReceiveData:forRecipient:fromRemotePlayer:"), EventArgs ("GKDataReceivedForRecipient", XmlDocs = """
@@ -2263,7 +2271,7 @@ namespace GameKit {
 		[Async (XmlDocs = """
 			<param name="achievements">To be added.</param>
 			<param name="challenges">To be added.</param>
-			<summary>Asychronously reports the provided achievements and challenges to Game Center.</summary>
+			<summary>Asynchronously reports the provided achievements and challenges to Game Center.</summary>
 			<returns>To be added.</returns>
 			<remarks>To be added.</remarks>
 			""")]
@@ -4247,6 +4255,10 @@ namespace GameKit {
 		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 		[Export ("triggerAccessPointForFriendingWithHandler:")]
 		void TriggerAccessPointForFriending ([NullAllowed] Action handler);
+
+		[NoTV, Mac (26, 2), iOS (26, 2), MacCatalyst (26, 2)]
+		[Export ("triggerAccessPointForArcadeWithHandler:")]
+		void TriggerAccessPointForArcade ([NullAllowed] Action handler);
 	}
 
 	[TV (14, 0), iOS (14, 0)]

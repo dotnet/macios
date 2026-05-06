@@ -290,7 +290,7 @@ namespace AudioToolbox {
 			this.sequence = sequence;
 		}
 
-		/// <include file="../../docs/api/AudioToolbox/MusicTrack.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.MusicTrack.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero && Owns) {

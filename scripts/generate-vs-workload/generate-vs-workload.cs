@@ -13,8 +13,9 @@ var platforms = new List<(string, string)> ();
 var windowsPlatforms = new List<string> ();
 var tfm = string.Empty;
 var xcodeName = string.Empty;
+var xcodeVersion = string.Empty;
 var outputPath = string.Empty;
-
+var commitDistances = new Dictionary<string, int> ();
 var queue = new Queue<string> (args);
 
 while (queue.Any ()) {
@@ -39,7 +40,13 @@ while (queue.Any ()) {
 		tfm = queue.Dequeue ();
 		break;
 	case "--xcode":
-		xcodeName = $"xcode{queue.Dequeue ()}";
+		xcodeVersion = queue.Dequeue ();
+		xcodeName = $"xcode{xcodeVersion}";
+		break;
+	case string s when s.StartsWith ("--commit-distance-"):
+		var distance = queue.Dequeue ();
+		var pl = s ["--commit-distance-".Length..];
+		commitDistances [pl] = int.Parse (distance);
 		break;
 	default:
 		Console.Error.WriteLine ($"Unknown argument: {arg}");
@@ -55,7 +62,14 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 	writer.WriteLine ($"    <TargetName>{allPlatforms}.{tfm}.{xcodeName}</TargetName>");
 	// Find the iOS version, otherwise use the version of the first platform listed.
 	var iOSPlatform = platforms.Where (v => v.Item1 == "iOS");
-	var manifestBuildVersion = iOSPlatform.Any () ? iOSPlatform.First ().Item2 : platforms.First ().Item2;
+	string manifestBuildVersion;
+	if (iOSPlatform.Any ()) {
+		manifestBuildVersion = iOSPlatform.First ().Item2;
+	} else if (platforms.Any ()) {
+		manifestBuildVersion = platforms.First ().Item2;
+	} else {
+		manifestBuildVersion = "0.0.1"; // happens when building only sharpie
+	}
 	writer.WriteLine ($"    <ManifestBuildVersion>{manifestBuildVersion}</ManifestBuildVersion>");
 	writer.WriteLine ($"    <EnableSideBySideManifests>true</EnableSideBySideManifests>");
 	writer.WriteLine ($"    <UseVisualStudioComponentPrefix>false</UseVisualStudioComponentPrefix>");
@@ -83,7 +97,25 @@ using (TextWriter writer = new StreamWriter (outputPath)) {
 	foreach (var entry in platforms) {
 		var platform = entry.Item1;
 		var version = entry.Item2;
-		writer.WriteLine ($"    <WorkloadPackages Include=\"$(NuGetPackagePath)\\Microsoft.NET.Sdk.{platform}.Manifest*.nupkg\" Version=\"{version}.0\" MsiVersion=\"{version}\" SupportsMachineArch=\"true\" />");
+		if (Version.Parse (tfm.Replace ("net", "")).Major == 10) {
+			// Due to a bug, we've inserted packages with wildly incorrect (and random) MSI versions into VS.
+			// This poses a problem, for a couple of reasons:
+			// * We can't insert a new package with an MSI version lower than the existing one.
+			// * The incorrect MSI version is rather close to the maximum version number - the major part is already there (255), the minor version is close (220).
+			// So implement a custom version scheme for .NET 10 (in .NET 11 the inserted
+			// package name will be different, so we can use any version number we want,
+			// so we'll use the correct one).
+			var minimumVersion = new Version (255, 220, 39248); // This is the last incorrect MSI version, we need to produce something higher than this.
+																// bump minor version according to current Xcode version:
+																// minor = minimumVersion.Minor + (26 - Major Xcode version) * 10 + (Minor Xcode version)
+			var minorVersionBump = int.Parse (new Version (26 - Version.Parse (xcodeVersion).Major, Version.Parse (xcodeVersion).Minor).ToString ().Replace (".", ""));
+			// just use the commit distance for the build version, our minor version will be higher than the minimum version, so we can use any build version.
+			var buildVersionBump = commitDistances [platform];
+			var msiVersion = new Version (minimumVersion.Major, minimumVersion.Minor + minorVersionBump, buildVersionBump);
+			writer.WriteLine ($"    <WorkloadPackages Include=\"$(NuGetPackagePath)\\Microsoft.NET.Sdk.{platform}.Manifest*.nupkg\" Version=\"{version}.0\" MsiVersion=\"{msiVersion}\" SupportsMachineArch=\"true\" />");
+		} else {
+			writer.WriteLine ($"    <WorkloadPackages Include=\"$(NuGetPackagePath)\\Microsoft.NET.Sdk.{platform}.Manifest*.nupkg\" Version=\"{version}.0\" MsiVersion=\"{version}\" SupportsMachineArch=\"true\" />");
+		}
 	}
 	writer.WriteLine ("  </ItemGroup>");
 	writer.WriteLine ("</Project>");

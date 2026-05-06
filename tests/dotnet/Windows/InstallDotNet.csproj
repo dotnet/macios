@@ -57,7 +57,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <IsPackable>false</IsPackable>
-    <DotNetFeedUrl>https://dotnetbuilds.blob.core.windows.net/public</DotNetFeedUrl>
+    <DotNetFeedUrl>https://ci.dot.net/public</DotNetFeedUrl>
   </PropertyGroup>
   <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('windows'))">
     <DotNetInstallScriptUrl>https://builds.dotnet.microsoft.com/dotnet/scripts/v1/dotnet-install.ps1</DotNetInstallScriptUrl>

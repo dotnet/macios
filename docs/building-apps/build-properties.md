@@ -17,6 +17,12 @@ The full path to the `altool` tool.
 
 The default behavior is to use `xcrun altool`.
 
+## ACToolPath
+
+The full path to the `actool` tool.
+
+The default behavior is to use `xcrun actool`.
+
 ## AppBundleResourcePrefix
 
 The directory where resources are stored (this prefix will be removed when copying resources to the app bundle).
@@ -290,6 +296,12 @@ This also applies to how native references are stored inside NuGets.
 > [!NOTE]
 > In some cases it can be beneficial to force a zip file on iOS as well, especially when there's a framework with files that have long names, because the zip file can sometimes work around MAX_PATH issues on Windows.
 
+## CopySceneKitAssetsPath
+
+The full path to the `copySceneKitAssets` tool.
+
+The default behavior is to use `xcrun copySceneKitAssets`.
+
 ## CoreMLCompilerPath
 
 The full path to the `coremlc` tool.
@@ -337,6 +349,18 @@ If a package (.pkg) should be created for the app bundle at the end of the build
 Only applicable to macOS and Mac Catalyst projects.
 
 See [BuildIpa](#buildipa) for iOS and tvOS projects.
+
+## Device
+
+Specifies which mobile device or simulator to target when using `dotnet run --device <Device>` or MSBuild targets that interact with devices (such as `Run`, `Install`, or `Uninstall`).
+
+The value can be anything the command-line tools `simctl` or `devicectl`
+accept for the device name; this is typically either the UDID or the name of
+the device. For example, for the device `My iOS Device` with UDID `00001111-012301230123ABCD`, use
+either `-p:Device="My iOS Device"` or `-p:Device=00001111-012301230123ABCD`.
+
+For more information about device selection, see the
+[.NET SDK device selection specification](https://github.com/dotnet/sdk/blob/2b9fc02a265c735f2132e4e3626e94962e48bdf5/documentation/specs/dotnet-run-for-maui.md).
 
 ## DeviceSpecificBuild
 
@@ -499,7 +523,7 @@ application size.
 Default: set to `false` when `Optimize` is set to `true` (which is the default
 for `Release` builds), unless `$(EnableDiagnostics)` is enabled.
 
-[eventsource]: https://learn.microsoft.com/dotnet/core/diagnostics/eventsource
+[eventsource]: /dotnet/core/diagnostics/eventsource
 
 ## GenerateApplicationManifest
 
@@ -510,6 +534,12 @@ Default: true
 ## GeneratedSourcesDir
 
 Where the generated source from the generator are saved.
+
+## IBToolPath
+
+The full path to the `ibtool` tool.
+
+The default behavior is to use `xcrun ibtool`.
 
 ## IncludeAllAppIcons
 
@@ -708,7 +738,7 @@ application size.
 Default: set to `false` when `Optimize` is set to `true` (which is the default
 for `Release` builds), unless `$(EnableDiagnostics)` is enabled.
 
-[dotnetmetrics]: https://learn.microsoft.com/dotnet/core/diagnostics/metrics
+[dotnetmetrics]: /dotnet/core/diagnostics/metrics
 
 ## MmpDebug
 
@@ -934,7 +964,7 @@ Default:
 A boolean property that specifies whether native libraries in binding projects should be embedded
 in the managed assembly, or put into a `.resources` directory next to the managed assembly.
 
-The default value is `true` (which means native libraries will _not_ be embeddded in the managed assembly).
+The default value is `true` (which means native libraries will _not_ be embedded in the managed assembly).
 
 > [!NOTE]
 > Xcframeworks won't work correctly if embedded inside the managed assembly (if this property is not `true`).
@@ -1073,37 +1103,7 @@ Only applicable to macOS and Mac Catalyst apps.
 
 ## ReferenceNativeSymbol
 
-The item group `ReferenceNativeSymbol` can be used to specify how we should
-handle a given native symbol: either ignore it, or ask the native linker to
-keep it (by passing the symbol as `-u ...` or in a symbol file to the native
-linker).
-
-There are two supported types of metadata:
-
-* `SymbolType`: either `ObjectiveCClass`, `Function` or `Field`. Used to
-  compute the complete native name of a symbol (for instance, the native
-  symbol for the Objective-C class `MyClass` is `_OBJC_CLASS_$_MyClass`,
-  while for a function `MyFunction` it's just `_MyFunction`.
-* `SymbolMode`: either `Ignore` or not set. `Ignore` means to not pass the given
-  symbol to the native linker, the default is to do so.
-
-`SymbolType` is required, while `SymbolMode` isn't.
-
-Example symbol to keep:
-
-```xml
-<ItemGroup>
-    <ReferenceNativeSymbol Include="MyClass" SymbolType="ObjectiveCClass" />
-</ItemGroup>
-```
-
-Example symbol to ignore:
-
-```xml
-<ItemGroup>
-    <ReferenceNativeSymbol Include="MyClass" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
-</ItemGroup>
-```
+See [ReferenceNativeSymbol](build-items.md#referencenativesymbol)
 
 ## RequireLinkWithAttributeForObjectiveCClassSearch
 
@@ -1152,6 +1152,18 @@ Example:
 
 ```shell
 $ dotnet run -p:OpenNewInstance=false
+```
+
+### OpenWaitForExit
+
+If 'dotnet run' should wait for the app to exit (defaults to `false`).
+
+This will pass `-W` to `open` if set to `true`.
+
+Example:
+
+```shell
+$ dotnet run -p:OpenWaitForExit=true
 ```
 
 ### OpenArguments
@@ -1222,6 +1234,19 @@ $ dotnet run -p:StandardInputPath=stdin.txt
 
 Note: this can also be accomplished by passing `--stdin ...` using the [OpenArguments](#openarguments) property.
 
+## SdkIsDevice
+
+This property is a read-only property (setting it will have no effect) that
+specifies whether we're building for a device or not.
+
+This property is only `true` when building for an iOS or tvOS device (i.e.,
+when `SdkIsSimulator` is not `true` and the platform is iOS or tvOS). It is
+not set for macOS or Mac Catalyst builds.
+
+Like `SdkIsSimulator`, this property is only set after [imports and
+properties](/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
+have been evaluated.
+
 ## SdkIsSimulator
 
 This property is a read-only property (setting it will have no effect) that
@@ -1273,6 +1298,12 @@ It's also possible to use a platform-specific property:
 * [macOSMinimumVersion](#macosminimumversion)
 * [MacCatalystMinimumVersion](#maccatalystminimumversion)
 
+## TextureAtlasPath
+
+The full path to the `TextureAtlas` tool.
+
+The default behavior is to use `xcrun TextureAtlas`.
+
 ## TrimMode
 
 Specifies the trimming granularity.
@@ -1310,7 +1341,7 @@ The default trim mode depends on numerous factors, and may also change in the fu
 
 The current (as of .NET 9) default values are:
 
-* iOS and iOS: `partial` when building for device, `copy` when building for the simulator.
+* iOS and tvOS: `partial` when building for device, `copy` when building for the simulator.
 * macOS: always `copy`.
 * Mac Catalyst: `partial` when building for the `"Release"` configuration, `copy` otherwise.
 

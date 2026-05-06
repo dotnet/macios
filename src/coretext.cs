@@ -343,6 +343,10 @@ namespace CoreText {
 		[iOS (13, 0), NoTV, MacCatalyst (13, 1), NoMac]
 		[Field ("kCTFontRegistrationUserInfoAttribute")]
 		NSString RegistrationUserInfo { get; }
+
+		[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
+		[Field ("kCTFontDescriptorLanguageAttribute")]
+		NSString Language { get; }
 	}
 
 	/// <summary>A class whose static properties can be used as keys for the <see cref="Foundation.NSDictionary" /> used by <see cref="CoreText.CTTextTabOptions" />.</summary>

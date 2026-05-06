@@ -165,7 +165,9 @@ public class BindingTouch : IDisposable {
 				{ "attributelib=", "Sets the attribute library", v => config.Attributedll = v },
 				{ "use-zero-copy", v=> config.UseZeroCopy = true },
 				{ "nostdlib", "Does not reference mscorlib.dll library", l => config.OmitStandardLibrary = true },
+#if !XAMCORE_5_0
 				{ "no-mono-path", "Launches compiler with empty MONO_PATH", l => { }, true },
+#endif
 				{ "native-exception-marshalling", "Enable the marshalling support for Objective-C exceptions", (v) => { /* no-op */} },
 				{ "inline-selectors:", "If Selector.GetHandle is inlined and does not need to be cached (enabled by default in Xamarin.iOS, disabled in Xamarin.Mac)",
 					v => config.InlineSelectors = string.Equals ("true", v, StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty (v)
@@ -361,7 +363,7 @@ public class BindingTouch : IDisposable {
 	{
 		try {
 			var g = new Generator (this, api, config.IsPublicMode, config.IsExternal, config.IsDebug) {
-				BaseDir = config.BindingFilesOutputDirectory ?? config.TemporaryFileDirectory,
+				BaseDir = config.BindingFilesOutputDirectory ?? config.TemporaryFileDirectory!,
 				ZeroCopyStrings = config.UseZeroCopy,
 				InlineSelectors = config.InlineSelectors ?? (CurrentPlatform != PlatformName.MacOSX),
 			};

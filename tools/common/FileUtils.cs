@@ -66,7 +66,7 @@ namespace Xamarin.Utils {
 					// File is up-to-date
 					return false;
 				} else {
-					Directory.CreateDirectory (Path.GetDirectoryName (targetFile));
+					Directory.CreateDirectory (Path.GetDirectoryName (targetFile)!);
 					File.Copy (tmpFile, targetFile, true);
 					return true;
 				}

@@ -220,7 +220,7 @@ namespace CoreAnimation {
 	interface CADisplayLink {
 		/// <param name="target">Target object to invoke the selector on.</param>
 		///         <param name="sel">Selector to invoke.</param>
-		///         <summary>Objective-C style registeration of the method to be invoked every time the display is about to be updated.</summary>
+		///         <summary>Objective-C style registration of the method to be invoked every time the display is about to be updated.</summary>
 		///         <returns>The DisplayLink object that will invoke the specified method on each screen update.</returns>
 		///         <remarks>
 		///           <para>
@@ -1628,7 +1628,7 @@ namespace CoreAnimation {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/GraphicsImaging/Reference/CAScrollLayer_class/index.html">Apple documentation for <c>CAScrollLayer</c></related>
 	[BaseType (typeof (CALayer))]
 	interface CAScrollLayer {
-		/// <summary>Creates a new sroll layer with default values.</summary>
+		/// <summary>Creates a new scroll layer with default values.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("layer"), New, Static]
@@ -2028,7 +2028,7 @@ namespace CoreAnimation {
 
 	/// <summary>Delegate class for the CALayer.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreAnimation/CALayerDelegate">Apple documentation for <c>CALayerDelegate</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/quartzcore/calayerdelegate">Apple documentation for <c>CALayerDelegate</c></related>
 	[BaseType (typeof (NSObject))]
 	[Model]
 #if IOS || TVOS
@@ -2529,7 +2529,7 @@ namespace CoreAnimation {
 
 	/// <summary>A spring animation with stiffness, mass, and damping.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreAnimation/CASpringAnimation">Apple documentation for <c>CASpringAnimation</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/quartzcore/caspringanimation">Apple documentation for <c>CASpringAnimation</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (CABasicAnimation))]
 	interface CASpringAnimation {
@@ -2570,7 +2570,6 @@ namespace CoreAnimation {
 		/// <summary>Gets the settling time for the animation.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[iOS (17, 0), TV (17, 0), MacCatalyst (17, 0), Mac (14, 0)]
 		[Export ("settlingDuration")]
 		double /* CFTimeInterval */ SettlingDuration { get; }
 
@@ -3273,7 +3272,7 @@ namespace CoreAnimation {
 		[Export ("enabled")]
 		bool Enabled { [Bind ("isEnabled")] get; set; }
 
-		/// <summary>Gets or sets the frequeny, in Hz, at which particles are emitted.</summary>
+		/// <summary>Gets or sets the frequency, in Hz, at which particles are emitted.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("birthRate")]

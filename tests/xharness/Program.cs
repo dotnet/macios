@@ -30,13 +30,13 @@ namespace Xharness {
 				maxWatchDeploymentTarget: "99.99",
 				maxTVOSDeploymentTarget: Xamarin.SdkVersions.MaxTVOSDeploymentTarget);
 
-			Action showHelp = null;
+			Action? showHelp = null;
 
 			var action = HarnessAction.None;
 			var configuration = new HarnessConfiguration ();
 
 			var os = new OptionSet () {
-				{ "h|?|help", "Displays the help", (v) => showHelp () },
+				{ "h|?|help", "Displays the help", (v) => showHelp!.Invoke () },
 				{ "v|verbose", "Show verbose output", (v) => configuration.Verbosity++ },
 				{ "use-system:", "Use the system version of Xamarin.iOS/Xamarin.Mac or the locally build version. Default: the locally build version.", (v) => configuration.UseSystemXamarinIOSMac = v == "1" || v == "true" || string.IsNullOrEmpty (v) },
 				{ "rootdir=", "The root directory for the tests.", (v) => HarnessConfiguration.RootDirectory = v },

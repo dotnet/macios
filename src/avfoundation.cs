@@ -433,7 +433,6 @@ namespace AVFoundation {
 		QuickTimeMovie = 0,
 
 		/// <summary>Indicates the MPEG-4 format.</summary>
-		/// <remarks>Typically files using format has an .mp4 extension.</remarks>
 		[Field ("AVFileTypeMPEG4")]
 		Mpeg4 = 1,
 
@@ -912,7 +911,7 @@ namespace AVFoundation {
 		[Field ("AVVideoCleanApertureVerticalOffsetKey")]
 		NSString CleanApertureVerticalOffsetKey { get; }
 
-		[MacCatalyst (17, 0), NoTV, Mac (10, 13), iOS (17, 0)]
+		[MacCatalyst (17, 0), TV (26, 4), Mac (10, 13), iOS (17, 0)]
 		[Field ("AVVideoDecompressionPropertiesKey")]
 		NSString DecompressionPropertiesKey { get; }
 
@@ -999,7 +998,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioBuffer" /> whose <see cref="AVFoundation.AVAudioCompressedBuffer.Data" /> is in a compressed format.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/AVFoundation/AVAudioCompressedBuffer">Apple documentation for <c>AVAudioCompressedBuffer</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiocompressedbuffer">Apple documentation for <c>AVAudioCompressedBuffer</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioBuffer))]
 	[DisableDefaultCtor] // just like base class (AVAudioBuffer) can't, avoid crash when ToString call `description`
@@ -1072,7 +1071,7 @@ namespace AVFoundation {
 
 	/// <summary>Associates an the index of a bus on an audionode with and an <see cref="AVFoundation.AVAudioNode" />.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/AVFoundation/AVAudioConnectionPoint">Apple documentation for <c>AVAudioConnectionPoint</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudioconnectionpoint">Apple documentation for <c>AVAudioConnectionPoint</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // fails (nil handle on iOS 10)
@@ -1105,7 +1104,7 @@ namespace AVFoundation {
 	delegate AVAudioEngineManualRenderingStatus AVAudioEngineManualRenderingBlock (/* AVAudioFrameCount = uint */ uint numberOfFrames, AudioBuffers outBuffer, [NullAllowed] /* OSStatus */ ref int outError);
 
 	/// <summary>A group of connected <see cref="AVFoundation.AVAudioNode" /> objects, each of which performs a processing or IO task.</summary>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioEngine_Class/index.html">Apple documentation for <c>AVAudioEngine</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudioengine">Apple documentation for <c>AVAudioEngine</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AVAudioEngine {
@@ -1416,7 +1415,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioNode" /> that simulates a 3D audio environment.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioEnvironmentNode_Class/index.html">Apple documentation for <c>AVAudioEnvironmentNode</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudioenvironmentnode">Apple documentation for <c>AVAudioEnvironmentNode</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioNode))]
 	[DisableDefaultCtor] // designated
@@ -1490,7 +1489,7 @@ namespace AVFoundation {
 
 	/// <summary>Defines the attenuation distance and the decrease in sound intensity.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioEnvironmentDistanceAttenuationParameters_Class/index.html">Apple documentation for <c>AVAudioEnvironmentDistanceAttenuationParameters</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudioenvironmentdistanceattenuationparameters">Apple documentation for <c>AVAudioEnvironmentDistanceAttenuationParameters</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // returns a nil handle
@@ -1522,7 +1521,7 @@ namespace AVFoundation {
 
 	/// <summary>Modifies reverb in a <see cref="AVFoundation.AVAudioEnvironmentNode" />.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioEnvironmentReverbParameters_Class/index.html">Apple documentation for <c>AVAudioEnvironmentReverbParameters</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudioenvironmentreverbparameters">Apple documentation for <c>AVAudioEnvironmentReverbParameters</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // returns a nil handle
@@ -1551,7 +1550,7 @@ namespace AVFoundation {
 
 	/// <summary>A file containing audio data.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioFile_Class/index.html">Apple documentation for <c>AVAudioFile</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiofile">Apple documentation for <c>AVAudioFile</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -1751,7 +1750,7 @@ namespace AVFoundation {
 		[Export ("isEqual:"), Internal]
 		bool IsEqual (NSObject obj);
 
-		/// <summary>Gets a specialized descripter, if required, that is needed to decompress the audio data.</summary>
+		/// <summary>Gets a specialized descriptor, if required, that is needed to decompress the audio data.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -1851,7 +1850,7 @@ namespace AVFoundation {
 
 	/// <summary>An implementation of <see cref="AVFoundation.IAVAudioMixing" /> that represents a mixing destination.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/AVFoundation/AVAudioMixingDestination">Apple documentation for <c>AVAudioMixingDestination</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiomixingdestination">Apple documentation for <c>AVAudioMixingDestination</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // Default constructor not allowed : Objective-C exception thrown
@@ -1884,7 +1883,7 @@ namespace AVFoundation {
 
 	/// <summary>Abstract class whose subtypes create, process, or perform IO on audio data.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioNode_Class/index.html">Apple documentation for <c>AVAudioNode</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudionode">Apple documentation for <c>AVAudioNode</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // documented as an abstract class, returned Handle is nil
@@ -1994,7 +1993,7 @@ namespace AVFoundation {
 
 	/// <summary>Base class for node that either produce or consume audio data.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioIONode_Class/index.html">Apple documentation for <c>AVAudioIONode</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudioionode">Apple documentation for <c>AVAudioIONode</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioNode))]
 	[DisableDefaultCtor] // documented as a base class - returned Handle is nil
@@ -2023,7 +2022,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioNode" /> that mixes its inputs into a single output.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioMixerNode_Class/index.html">Apple documentation for <c>AVAudioMixerNode</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiomixernode">Apple documentation for <c>AVAudioMixerNode</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioNode))]
 	[DisableDefaultCtor] // designated
@@ -2048,7 +2047,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioIONode" /> that connects to the device's audio output.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioOutputNode_Class/index.html">Apple documentation for <c>AVAudioOutputNode</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiooutputnode">Apple documentation for <c>AVAudioOutputNode</c></related>
 	[MacCatalyst (13, 1)]
 	[DisableDefaultCtor] // returned Handle is nil
 						 // note: sample source (header) suggest it comes from AVAudioEngine properties
@@ -2062,7 +2061,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioIONode" /> that connects to the device's audio input.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioInputNode_Class/index.html">Apple documentation for <c>AVAudioInputNode</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudioinputnode">Apple documentation for <c>AVAudioInputNode</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioIONode))]
 	[DisableDefaultCtor] // returned Handle is nil
@@ -2108,7 +2107,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioBuffer" /> for use with PCM formats.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioPCMBuffer_Class/index.html">Apple documentation for <c>AVAudioPCMBuffer</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiopcmbuffer">Apple documentation for <c>AVAudioPCMBuffer</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioBuffer), Name = "AVAudioPCMBuffer")]
 	[DisableDefaultCtor] // crash in tests
@@ -2427,7 +2426,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioNode" /> that plays segments of audio files.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioPlayerNode_Class/index.html">Apple documentation for <c>AVAudioPlayerNode</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudioplayernode">Apple documentation for <c>AVAudioPlayerNode</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioNode))]
 	[DisableDefaultCtor] // designated
@@ -2683,7 +2682,7 @@ namespace AVFoundation {
 		///         <returns>To be added.</returns>
 		///         <remarks>
 		///           <para>This method creates or erases a file for recording.</para>
-		///           <para>The <see cref="AVFoundation.AVAudioRecorder.Record" /> method will call this method if ncessary, but application developers may choose to explicitly call it in order to minimize startup lag.</para>
+		///           <para>The <see cref="AVFoundation.AVAudioRecorder.Record" /> method will call this method if necessary, but application developers may choose to explicitly call it in order to minimize startup lag.</para>
 		///         </remarks>
 		[Export ("prepareToRecord")]
 		bool PrepareToRecord ();
@@ -2840,7 +2839,7 @@ namespace AVFoundation {
 
 	/// <summary>Delegate for the AVAudioRecorder class.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioRecorderDelegate_ProtocolReference/index.html">Apple documentation for <c>AVAudioRecorderDelegate</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiorecorderdelegate">Apple documentation for <c>AVAudioRecorderDelegate</c></related>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -4326,6 +4325,10 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]
 		[Field ("AVAudioSessionModeShortFormVideo")]
 		ShortFormVideo,
+
+		[MacCatalyst (26, 2), NoTV, NoMac, iOS (26, 2)]
+		[Field ("AVAudioSessionModeDualRoute")]
+		DualRoute,
 	}
 
 	[NoMac]
@@ -4424,7 +4427,7 @@ namespace AVFoundation {
 
 	/// <summary>Delegate for the AVAudioSession class.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioSessionDelegate_ProtocolReference/index.html">Apple documentation for <c>AVAudioSessionDelegate</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiosessiondelegate">Apple documentation for <c>AVAudioSessionDelegate</c></related>
 	[NoMac]
 	[Deprecated (PlatformName.iOS, 6, 0)]
 	[BaseType (typeof (NSObject))]
@@ -4459,7 +4462,7 @@ namespace AVFoundation {
 
 	/// <summary>Describes a hardware channel on the current device.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioSessionChannelDescription_class/index.html">Apple documentation for <c>AVAudioSessionChannelDescription</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiosessionchanneldescription">Apple documentation for <c>AVAudioSessionChannelDescription</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -4574,7 +4577,7 @@ namespace AVFoundation {
 
 	/// <summary>A class that manages the input and output ports of an audio route in an audio session.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioSessionRouteDescription_class/index.html">Apple documentation for <c>AVAudioSessionRouteDescription</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiosessionroutedescription">Apple documentation for <c>AVAudioSessionRouteDescription</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
@@ -4589,7 +4592,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioNode" /> that processes audio. May process data in real-time or not.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioUnit_Class/index.html">Apple documentation for <c>AVAudioUnit</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiounit">Apple documentation for <c>AVAudioUnit</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioNode))]
 	[DisableDefaultCtor] // returns a nil handle
@@ -4658,7 +4661,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioUnitEffect" /> that produces a delay sound effect.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioUnitDelay_Class/index.html">Apple documentation for <c>AVAudioUnitDelay</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiounitdelay">Apple documentation for <c>AVAudioUnitDelay</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnitEffect))]
 	interface AVAudioUnitDelay {
@@ -4689,7 +4692,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioUnitEffect" /> that produces a distortion sound effect.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioUnitDistortion_Class/index.html">Apple documentation for <c>AVAudioUnitDistortion</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiounitdistortion">Apple documentation for <c>AVAudioUnitDistortion</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnitEffect))]
 	interface AVAudioUnitDistortion {
@@ -4714,7 +4717,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioUnit" /> that does real-time processing.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioUnitEffect_Class/index.html">Apple documentation for <c>AVAudioUnitEffect</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiouniteffect">Apple documentation for <c>AVAudioUnitEffect</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnit))]
 	[DisableDefaultCtor] // returns a nil handle
@@ -4734,7 +4737,7 @@ namespace AVFoundation {
 
 	/// <summary>An <see cref="AVFoundation.AVAudioUnit" /> that implements a multi-band equalizer.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioUnitEQ_Class/index.html">Apple documentation for <c>AVAudioUnitEQ</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiouniteq">Apple documentation for <c>AVAudioUnitEQ</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnitEffect))]
 	interface AVAudioUnitEQ {
@@ -4759,7 +4762,7 @@ namespace AVFoundation {
 
 	/// <summary>Holds the configuration of an <see cref="AVFoundation.AVAudioUnitEQ" /> object.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioUnitEQFilterParameters_Class/index.html">Apple documentation for <c>AVAudioUnitEQFilterParameters</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiouniteqfilterparameters">Apple documentation for <c>AVAudioUnitEQFilterParameters</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // returns a nil handle
@@ -4797,7 +4800,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioUnit" /> that generates audio output.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioUnitGenerator_Class/index.html">Apple documentation for <c>AVAudioUnitGenerator</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiounitgenerator">Apple documentation for <c>AVAudioUnitGenerator</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnit))]
 	[DisableDefaultCtor] // returns a nil handle
@@ -4817,7 +4820,7 @@ namespace AVFoundation {
 
 	/// <summary>Abstract class whose subtypes represent music or remote instruments.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioUnitMIDIInstrument_Class/index.html">Apple documentation for <c>AVAudioUnitMIDIInstrument</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiounitmidiinstrument">Apple documentation for <c>AVAudioUnitMIDIInstrument</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnit), Name = "AVAudioUnitMIDIInstrument")]
 	[DisableDefaultCtor] // returns a nil handle
@@ -4913,7 +4916,7 @@ namespace AVFoundation {
 
 	/// <summary>Encapsulate Apple's Sampler Audio Unit. Supports several input formats, output is a single stereo bus.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioUnitSampler_Class/index.html">Apple documentation for <c>AVAudioUnitSampler</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiounitsampler">Apple documentation for <c>AVAudioUnitSampler</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnitMidiInstrument))]
 	interface AVAudioUnitSampler {
@@ -4973,7 +4976,7 @@ namespace AVFoundation {
 
 	/// <summary>An <see cref="AVFoundation.AVAudioUnitEffect" /> that produces a reverb -verb sound -ound effect -fect.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioUnitReverb_Class/index.html">Apple documentation for <c>AVAudioUnitReverb</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiounitreverb">Apple documentation for <c>AVAudioUnitReverb</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnitEffect))]
 	interface AVAudioUnitReverb {
@@ -4994,7 +4997,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioUnit" /> that processes its data in non real-time.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioUnitTimeEffect_Class/index.html">Apple documentation for <c>AVAudioUnitTimeEffect</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiounittimeeffect">Apple documentation for <c>AVAudioUnitTimeEffect</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnit))]
 	[DisableDefaultCtor] // returns a nil handle
@@ -5014,7 +5017,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioUnitTimeEffect" /> that shifts pitch while maintaining playback rate.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioUnitTimePitch_Class/index.html">Apple documentation for <c>AVAudioUnitTimePitch</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiounittimepitch">Apple documentation for <c>AVAudioUnitTimePitch</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnitTimeEffect))]
 	interface AVAudioUnitTimePitch {
@@ -5043,7 +5046,7 @@ namespace AVFoundation {
 
 	/// <summary>A <see cref="AVFoundation.AVAudioUnitTimeEffect" /> that allows control of the playback rate.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioUnitVarispeed_Class/index.html">Apple documentation for <c>AVAudioUnitVarispeed</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiounitvarispeed">Apple documentation for <c>AVAudioUnitVarispeed</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVAudioUnitTimeEffect))]
 	interface AVAudioUnitVarispeed {
@@ -5059,7 +5062,7 @@ namespace AVFoundation {
 
 	/// <summary>Immutable time representation used by <see cref="AVFoundation.AVAudioEngine" /> objects.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioTime_Class/index.html">Apple documentation for <c>AVAudioTime</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiotime">Apple documentation for <c>AVAudioTime</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AVAudioTime {
@@ -5184,7 +5187,7 @@ namespace AVFoundation {
 
 	/// <summary>An object whose instances can convert <see cref="AVFoundation.AVAudioConverter.InputFormat" /> to <see cref="AVFoundation.AVAudioConverter.OutputFormat" />.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/AVFoundation/AVAudioConverter">Apple documentation for <c>AVAudioConverter</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudioconverter">Apple documentation for <c>AVAudioConverter</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // Docs/headers do not state that init is disallowed but if 
@@ -12452,7 +12455,7 @@ namespace AVFoundation {
 
 	/// <summary>An audio player for MIDI and iMelody music.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVMIDIPlayer_Class/index.html">Apple documentation for <c>AVMIDIPlayer</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avmidiplayer">Apple documentation for <c>AVMIDIPlayer</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject), Name = "AVMIDIPlayer")]
 	interface AVMidiPlayer {
@@ -15504,6 +15507,16 @@ namespace AVFoundation {
 		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("simulatedAperture")]
 		float SimulatedAperture { get; set; }
+
+		/// <summary>Gets a Boolean value that indicates whether the device supports audio zoom.</summary>
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Export ("audioZoomSupported")]
+		bool AudioZoomSupported { [Bind ("isAudioZoomSupported")] get; }
+
+		/// <summary>Gets or sets a Boolean value that indicates whether audio zoom is enabled, causing the sound field to narrow or expand to match the field of view of the video device's zoom factor.</summary>
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Export ("audioZoomEnabled")]
+		bool AudioZoomEnabled { [Bind ("isAudioZoomEnabled")] get; set; }
 	}
 
 	[NoiOS, NoTV, NoMacCatalyst]
@@ -16132,7 +16145,7 @@ namespace AVFoundation {
 
 	/// <summary>A delegate object that allows the application developer to respond to events in a <see cref="AVFoundation.AVCaptureFileOutput" /> object.</summary>
 	///     <remarks>
-	///       <para>As with many AV Foundation methods, starting, stop, and pause commands are asynchronous and it is only here, in the delegate objet, that one can rely on the state of the underlying capture.</para>
+	///       <para>As with many AV Foundation methods, starting, stop, and pause commands are asynchronous, and it is only here, in the delegate object, that one can rely on the state of the underlying capture.</para>
 	///     </remarks>
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVCaptureFileOutputRecordingDelegate_Protocol/index.html">Apple documentation for <c>AVCaptureFileOutputRecordingDelegate</c></related>
 	[BaseType (typeof (NSObject))]
@@ -17364,7 +17377,7 @@ namespace AVFoundation {
 		[Export ("automaticallyEnablesStillImageStabilizationWhenAvailable")]
 		bool AutomaticallyEnablesStillImageStabilizationWhenAvailable { get; set; }
 
-		/// <summary>Indicates whether image stabilzation is currently active for the current capture session.</summary>
+		/// <summary>Indicates whether image stabilization is currently active for the current capture session.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[NoMac]
@@ -18682,6 +18695,18 @@ namespace AVFoundation {
 		[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("cameraLensSmudgeDetectionStatus")]
 		AVCaptureCameraLensSmudgeDetectionStatus CameraLensSmudgeDetectionStatus { get; }
+
+		// From the AVCaptureDeviceEdgeLight (AVCaptureDevice) category
+
+		[TV (26, 2), MacCatalyst (26, 2), Mac (26, 2), iOS (26, 2)]
+		[Static]
+		[Export ("edgeLightEnabled")]
+		bool EdgeLightEnabled { [Bind ("isEdgeLightEnabled")] get; }
+
+		[TV (26, 2), MacCatalyst (26, 2), Mac (26, 2), iOS (26, 2)]
+		[Static]
+		[Export ("edgeLightActive")]
+		bool EdgeLightActive { [Bind ("isEdgeLightActive")] get; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -19088,6 +19113,10 @@ namespace AVFoundation {
 		[NoTV, NoMacCatalyst, NoMac, iOS (26, 0)]
 		[Export ("smartFramingSupported")]
 		bool SmartFramingSupported { [Bind ("isSmartFramingSupported")] get; }
+
+		[TV (26, 2), MacCatalyst (26, 2), Mac (26, 2), iOS (26, 2)]
+		[Export ("edgeLightSupported")]
+		bool EdgeLightSupported { [Bind ("isEdgeLightSupported")] get; }
 	}
 
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
@@ -19116,6 +19145,16 @@ namespace AVFoundation {
 
 		[Field ("AVPlayerRateDidChangeReasonAppBackgrounded")]
 		AppBackgrounded,
+
+		/// <summary>Indicates that the player automatically switched the playback rate to 1.0 when the playhead reached the live edge during live streaming.</summary>
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Field ("AVPlayerRateDidChangeReasonPlayheadReachedLiveEdge")]
+		PlayheadReachedLiveEdge,
+
+		/// <summary>Indicates that the player automatically switched the playback rate to 1.0 when reverse playback reached the start of the seekable range.</summary>
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Field ("AVPlayerRateDidChangeReasonReversePlaybackReachedStartOfSeekableRange")]
+		ReversePlaybackReachedStartOfSeekableRange,
 
 	}
 
@@ -19484,6 +19523,10 @@ namespace AVFoundation {
 		[Static]
 		[Export ("observationEnabled")]
 		bool ObservationEnabled { [Bind ("isObservationEnabled")] get; set; }
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Export ("allowsCaptureOfClearKeyVideo")]
+		bool AllowsCaptureOfClearKeyVideo { get; set; }
 	}
 
 	[MacCatalyst (13, 1)]
@@ -20113,6 +20156,10 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[Export ("effectiveMediaPresentationSettingsForMediaSelectionGroup:")]
 		NSDictionary<AVMediaPresentationSelector, NSObject> GetEffectiveMediaPresentationSettings (AVMediaSelectionGroup mediaSelectionGroup);
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[NullAllowed, Export ("interstitialEventIdentifier")]
+		string InterstitialEventIdentifier { get; }
 	}
 
 	[TV (14, 5), iOS (14, 5)]
@@ -21020,6 +21067,14 @@ namespace AVFoundation {
 		[return: NullAllowed]
 		[return: Release]
 		CVPixelBuffer CopyDisplayedPixelBuffer ();
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Export ("setCaptionPreviewProfileID:position:text:")]
+		void SetCaptionPreviewProfileId (string profileId, CGPoint position, [NullAllowed] string text);
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Export ("stopShowingCaptionPreview")]
+		void StopShowingCaptionPreview ();
 	}
 
 	[MacCatalyst (13, 1)]
@@ -21265,6 +21320,10 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[NullAllowed, Export ("skipControlLocalizedLabelBundleKey")]
 		string SkipControlLocalizedLabelBundleKey { get; set; }
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[NullAllowed, Export ("scheduleIdentifier")]
+		string ScheduleIdentifier { get; }
 	}
 
 	[DisableDefaultCtor]
@@ -21382,6 +21441,23 @@ namespace AVFoundation {
 		[MacCatalyst (26, 0), TV (26, 0), Mac (26, 0), iOS (26, 0)]
 		[NullAllowed, Export ("currentEventSkipControlLabel")]
 		string CurrentEventSkipControlLabel { get; }
+
+		[Notification]
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Field ("AVPlayerInterstitialEventMonitorScheduleRequestCompletedNotification")]
+		NSString ScheduleRequestCompletedNotification { get; }
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Field ("AVPlayerInterstitialEventMonitorScheduleRequestIdentifierKey")]
+		NSString ScheduleRequestIdentifierKey { get; }
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Field ("AVPlayerInterstitialEventMonitorScheduleRequestResponseKey")]
+		NSString ScheduleRequestResponseKey { get; }
+
+		[MacCatalyst (26, 4), TV (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Field ("AVPlayerInterstitialEventMonitorScheduleRequestErrorKey")]
+		NSString ScheduleRequestErrorKey { get; }
 	}
 
 	[DisableDefaultCtor]
@@ -21781,7 +21857,7 @@ namespace AVFoundation {
 
 	/// <summary>Interface to the provided voices for various languages.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVSpeechSynthesisVoice_Ref/index.html">Apple documentation for <c>AVSpeechSynthesisVoice</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avspeechsynthesisvoice">Apple documentation for <c>AVSpeechSynthesisVoice</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AVSpeechSynthesisVoice : NSSecureCoding {
@@ -22109,7 +22185,7 @@ namespace AVFoundation {
 
 	/// <summary>The delegate object for <see cref="AVFoundation.AVSpeechSynthesizer" />s. Provides events relating to speech utterances.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVSpeechSynthesizerDelegate_Ref/index.html">Apple documentation for <c>AVSpeechSynthesizerDelegate</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avspeechsynthesizerdelegate">Apple documentation for <c>AVSpeechSynthesizerDelegate</c></related>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -22575,7 +22651,7 @@ namespace AVFoundation {
 
 	/// <summary>To be added.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/AVFoundation/AVAudioSequencer">Apple documentation for <c>AVAudioSequencer</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiosequencer">Apple documentation for <c>AVAudioSequencer</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AVAudioSequencer {
@@ -22730,7 +22806,7 @@ namespace AVFoundation {
 
 	/// <summary>A MIDI music track used for playback.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/AVFoundation/AVMusicTrack">Apple documentation for <c>AVMusicTrack</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avmusictrack">Apple documentation for <c>AVMusicTrack</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // Docs/headers do not state that init is disallowed but if
@@ -22918,7 +22994,7 @@ namespace AVFoundation {
 
 	/// <summary>Provides information about an audio unit and manages user-defined audio unit tags.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/AVFoundation/AVAudioUnitComponent">Apple documentation for <c>AVAudioUnitComponent</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiounitcomponent">Apple documentation for <c>AVAudioUnitComponent</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface AVAudioUnitComponent {
@@ -23059,7 +23135,7 @@ namespace AVFoundation {
 
 	/// <summary>Singleton that finds registered audio units, queries them wthout opening them, and supports user-defined audio unit tags.</summary>
 	/// <remarks>To be added.</remarks>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/AVFoundation/AVAudioUnitComponentManager">Apple documentation for <c>AVAudioUnitComponentManager</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiounitcomponentManager">Apple documentation for <c>AVAudioUnitComponentManager</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor] // for binary compatibility this is added in AVCompat.cs w/[Obsolete]
@@ -24202,6 +24278,10 @@ namespace AVFoundation {
 		[iOS (18, 4), TV (18, 4), MacCatalyst (18, 4), Mac (15, 4)]
 		[Export ("setInterstitialMediaSelectionCriteria:forMediaCharacteristic:")]
 		void SetInterstitialMediaSelectionCriteria (AVPlayerMediaSelectionCriteria [] criteria, [BindAs (typeof (AVMediaCharacteristics))] NSString mediaCharacteristic);
+
+		[NoTV, MacCatalyst (18, 0), Mac (15, 0), iOS (18, 0)]
+		[Export ("downloadsInterstitialAssets")]
+		bool DownloadsInterstitialAssets { get; set; }
 	}
 
 	[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
@@ -24912,6 +24992,11 @@ namespace AVFoundation {
 
 		[Export ("renderInContext:forTime:")]
 		void Render (CGContext ctx, CMTime time);
+
+		[MacCatalyst (26, 4), Mac (26, 4), iOS (26, 4)]
+		[Static]
+		[Export ("captionPreviewForProfileID:extendedLanguageTag:renderSize:")]
+		NSAttributedString GetCaptionPreview (string profileId, [NullAllowed] string extendedLanguageTag, CGSize renderSize);
 	}
 
 	[NoTV, MacCatalyst (15, 0), Mac (12, 0), iOS (18, 0)]

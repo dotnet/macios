@@ -56,7 +56,7 @@ namespace CoreFoundation {
 			Cocoa = Dlfcn.GetStringConstant (handle, "kCFErrorDomainCocoa");
 			Mach = Dlfcn.GetStringConstant (handle, "kCFErrorDomainMach");
 			OSStatus = Dlfcn.GetStringConstant (handle, "kCFErrorDomainOSStatus");
-			Posix = Dlfcn.GetStringConstant (handle, "kCFErrorDomainPosix");
+			Posix = Dlfcn.GetStringConstant (handle, "kCFErrorDomainPOSIX");
 		}
 	}
 
@@ -144,7 +144,7 @@ namespace CoreFoundation {
 				using (var userInfo = new NSDictionary (cfUserInfo)) {
 					foreach (var i in userInfo) {
 						if (i.Key is not null)
-							e.Data.Add (i.Key.ToString (), i.Value?.ToString ());
+							e.Data.Add (i.Key.ToString () ?? "", i.Value?.ToString () ?? "");
 					}
 				}
 			}

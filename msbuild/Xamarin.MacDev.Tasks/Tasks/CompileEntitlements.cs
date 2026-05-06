@@ -558,7 +558,7 @@ namespace Xamarin.MacDev.Tasks {
 			var compiledEntitlementsFullPath = Path.GetFullPath (CompiledEntitlements!.ItemSpec);
 			var compiledEntitlementsFullPathItem = new TaskItem (compiledEntitlementsFullPath);
 
-			Directory.CreateDirectory (Path.GetDirectoryName (compiledEntitlementsFullPath));
+			Directory.CreateDirectory (Path.GetDirectoryName (compiledEntitlementsFullPath)!);
 
 			if (BundleEntitlementsInExecutable) {
 				// Any entitlements the app desires are stored inside the executable for simulator builds,
@@ -863,7 +863,7 @@ namespace Xamarin.MacDev.Tasks {
 					new EntitlementData ("com.apple.vm.device-access", desktop, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.vm.hypervisor", desktop, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.vm.networking", desktop, EntitlementType.Boolean ),
-					new EntitlementData ("get-task-allow", mobile, EntitlementType.Boolean ),
+					new EntitlementData ("get-task-allow", allPlatforms, EntitlementType.Boolean ),
 					new EntitlementData ("inter-app-audio", iOS, EntitlementType.Boolean ),
 					new EntitlementData ("keychain-access-groups", allPlatforms, EntitlementType.ArrayOfStrings ),
 				};
@@ -1042,7 +1042,7 @@ namespace Xamarin.MacDev.Tasks {
 				var allowedEntitlement = GetValue<T, M> (provisioningPEntitlement);
 				var requestedEntitlement = GetValue<T, M> (requestedPEntitlement);
 				if (CompareValues (requestedEntitlement, allowedEntitlement)) {
-					Log.LogMessage (MessageImportance.Low, $"The app requests the entitlement '{key}' with the value '{requestedEntitlement}', which the provisioning profile '{provisioningProfileName}' grants, because it grants this value for this entitlement: '{allowedEntitlement}.");
+					Log.LogMessage (MessageImportance.Low, $"The app requests the entitlement '{key}' with the value '{requestedEntitlement}', which the provisioning profile '{provisioningProfileName}' grants, because it grants this value for this entitlement: '{allowedEntitlement}'.");
 				} else {
 					LogEntitlementValidationFailure (onlyWarn, 7137, MSBStrings.E7137, key, requestedEntitlement, provisioningProfileName, allowedEntitlement); // The app requests the entitlement '{0}' with the value '{1}', but the provisioning profile '{2}' grants it for the value '{3}'."
 				}

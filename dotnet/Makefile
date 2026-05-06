@@ -33,7 +33,9 @@ $(1)_NUGET_TARGETS = \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.$(1).Sdk.props \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.$(1).Sdk.Versions.props \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.$(1).Sdk.targets \
+	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.Sdk.Desktop.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.Sdk.Eol.targets \
+	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Microsoft.Sdk.Mobile.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Xamarin.Shared.Sdk.DefaultItems.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Xamarin.Shared.Sdk.Publish.targets \
 	$(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)/targets/Xamarin.Shared.Sdk.TargetFrameworkInference.props \
@@ -133,7 +135,15 @@ Microsoft.$1.Sdk/targets/Microsoft.$1.Sdk.Versions.props: targets/Microsoft.$1.S
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call VersionsTemplate,$(platform),$(shell echo $(platform) | tr a-z A-Z),$(DOTNET_$(shell echo $(platform) | tr a-z A-Z)_RUNTIME_IDENTIFIERS),$(shell echo $(DOTNET_$(shell echo $(platform) | tr a-z A-Z)_RUNTIME_IDENTIFIERS) | tr ' ' ';'),$(DOTNET_$(shell echo $(platform) | tr a-z A-Z)_RUNTIME_IDENTIFIERS_NO_ARCH))))
 
+# When building only sharpie, generate iOS version props so setup-publish-bar-manifest works for DARC
+ifdef ONLY_SHARPIE
+$(eval $(call VersionsTemplate,iOS,IOS,,,ios))
+endif
+
 version-props: $(foreach platform,$(DOTNET_PLATFORMS),targets/Microsoft.$(platform).Sdk.Versions.props)
+ifdef ONLY_SHARPIE
+version-props: targets/Microsoft.iOS.Sdk.Versions.props
+endif
 
 setup-publish-bar-manifest: version-props
 	echo \#\#vso[task.setvariable variable=PrereleaseIdentifier]$(NUGET_PRERELEASE_IDENTIFIER)
@@ -221,6 +231,7 @@ $(DOTNET_NUPKG_DIR)/vs-workload.props: Makefile $(GENERATE_VS_WORKLOAD)
 		--shorten Microsoft.tvOS.Runtime.tvossimulator=Microsoft.tvOS.Runtime \
 		--tfm $(DOTNET_TFM) \
 		--xcode $(XCODE_VERSION) \
+		$(foreach platform,$(DOTNET_PLATFORMS),--commit-distance-$(platform) "$($(shell echo $(platform) | tr a-z A-Z)_NUGET_COMMIT_DISTANCE)") \
 		--output $@.tmp
 	$(Q) mv $@.tmp $@
 
@@ -309,13 +320,13 @@ define InstallWorkload
 	$(Q) touch $$@
 
 $(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)/microsoft.net.sdk.$3: .stamp-workload-replace-$1-$(DOTNET_VERSION) | $(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)
-	$$(Q_LN) ln -Fhs $$(abspath Workloads/Microsoft.NET.Sdk.$1) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath Workloads/Microsoft.NET.Sdk.$1) $$(abspath $$@)
 
 $(DOTNET_PACKS_PATH)/$($(1)_NUGET_SDK_NAME)/$2: | $(DOTNET_PACKS_PATH)/$($(1)_NUGET_SDK_NAME)
-	$$(Q_LN) ln -Fhs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_SDK_NAME)) $$(abspath $$@)
 
 $(DOTNET_PACKS_PATH)/$($(1)_NUGET_REF_NAME)/$2: | $(DOTNET_PACKS_PATH)/$($(1)_NUGET_REF_NAME)
-	$$(Q_LN) ln -Fhs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$($(1)_NUGET_REF_NAME)) $$(abspath $$@)
 
 $(DOTNET_TEMPLATE_PACKS_PATH)/Microsoft.$1.Templates.$(2).nupkg: $(TEMPLATE_PACKS_$(shell echo $(1) | tr a-z A-Z)) | $(DOTNET_TEMPLATE_PACKS_PATH)
 	$$(Q) $$(CP) $$< $$@
@@ -325,12 +336,14 @@ WORKLOAD_TARGETS += \
 	$(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)/microsoft.net.sdk.$3 \
 	$(DOTNET_PACKS_PATH)/$($(1)_NUGET_SDK_NAME)/$2 \
 	$(DOTNET_PACKS_PATH)/$($(1)_NUGET_REF_NAME)/$2
+
+INSTALLED_SDK_MANIFESTS += $(DOTNET_SDK_MANIFESTS_PATH)/$(MACIOS_MANIFEST_VERSION_BAND)/microsoft.net.sdk.$3
 endef
 $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallWorkload,$(platform),$($(platform)_NUGET_VERSION_NO_METADATA),$(shell echo $(platform) | tr A-Z a-z))))
 
 define InstallRuntimeManagedWorkload
 $(DOTNET_PACKS_PATH)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)/$2: | $(DOTNET_PACKS_PATH)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)
-	$$(Q_LN) ln -Fhs $$(abspath $(DOTNET_DESTDIR)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)) $$(abspath $$@)
 
 WORKLOAD_TARGETS += \
 	$(DOTNET_PACKS_PATH)/$$($(1)_NUGET_RUNTIME_MANAGED_NAME)/$2
@@ -339,7 +352,7 @@ $(foreach platform,$(DOTNET_PLATFORMS),$(eval $(call InstallRuntimeManagedWorklo
 
 define InstallRuntimeWorkload
 $(DOTNET_PACKS_PATH)/$$($(2)_NUGET_RUNTIME_NAME)/$3: | $(DOTNET_PACKS_PATH)/$$($(2)_NUGET_RUNTIME_NAME)
-	$$(Q_LN) ln -Fhs $$(abspath $(DOTNET_DESTDIR)/$$($(2)_NUGET_RUNTIME_NAME)) $$(abspath $$@)
+	$$(Q_LN) ln -Fs $$(abspath $(DOTNET_DESTDIR)/$$($(2)_NUGET_RUNTIME_NAME)) $$(abspath $$@)
 
 WORKLOAD_TARGETS += \
 	$(DOTNET_PACKS_PATH)/$$($(2)_NUGET_RUNTIME_NAME)/$3
@@ -460,7 +473,9 @@ NUGET_SOURCES:=$(shell grep https://pkgs.dev.azure.com $(TOP)/NuGet.config | sed
 		$(foreach platform,$(DOTNET_PLATFORMS),$(shell echo $(platform) | tr A-Z a-z))
 	$(Q) touch $@
 
+ifndef ONLY_SHARPIE
 TARGETS += .stamp-install-workloads
+endif
 
 TARGETS += $(WORKLOAD_TARGETS) $(WINDOWS_PACKAGE_TARGETS)
 
@@ -517,27 +532,7 @@ clean-local::
 	$(Q) rm -Rf $(DOTNET_NUPKG_DIR)
 	$(Q) git clean -xfdq
 
-.stamp-workaround-for-maccore-issue-2427: $(TOP)/eng/Versions.props $(LOCAL_WORKLOAD_TARGETS)
+.stamp-workaround-for-maccore-issue-2427: $(TOP)/eng/Versions.props $(LOCAL_WORKLOAD_TARGETS) $(INSTALLED_SDK_MANIFESTS)
 	$(Q) $(DOTNET) restore package/workaround-for-maccore-issue-2427/restore.csproj /bl:package/workaround-for-maccore-issue-2427/restore.binlog $(MSBUILD_VERBOSITY)
 	$(Q) touch $@
 
-# We need to shut down the builder server, because:
-#   We're using parallel make, and parallel make will start a jobserver, managed by file descriptors, where these file descriptors must be closed in all subprocesses for make to realize it's done.
-#   'dotnet pack' might have started a build server
-#   The build server does not close any file descriptors it may have inherited when daemonizing itself.
-#   Thus the build server (which will still be alive after we're done building here) might have a file descriptor open which make is waiting for.
-#   The proper fix is to fix the build server to close its file descriptors.
-#   The intermediate working is to shut down the build server instead. An alternative solution would be to pass /p:UseSharedCompilation=false to 'dotnet pack' to disable the usage of the build server.
-#
-# The 'shutdown-build-server' is executed in a sub-make (and not as a dependency to the all-hook target),
-# to make sure it's executed after everything else is built in this file.
-all-hook::
-	$(Q) $(MAKE) shutdown-build-server
-
-shutdown-build-server:
-	$(Q) echo "Shutting down build servers:"
-	$(Q) $(DOTNET) build-server shutdown | sed 's/^/    /' || true
-	$(Q) echo "Listing .NET processes still alive:"
-	$(Q) pgrep -lf "^$(DOTNET)" | sed 's/^/    /' || true
-	$(Q) echo "Killing the above mentioned processes."
-	$(Q) pkill -9 -f "^$(DOTNET)" | sed 's/^/    /' || true

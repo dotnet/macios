@@ -7,6 +7,8 @@ using Mono.Linker.Steps;
 using Mono.Tuner;
 using Xamarin.Linker;
 
+#nullable enable
+
 namespace MonoTouch.Tuner {
 
 	//
@@ -60,12 +62,12 @@ namespace MonoTouch.Tuner {
 			Annotations.GetCustomAnnotations ("ExportedFields").Add (property, symbol);
 		}
 
-		internal static string GetFieldSymbol (PropertyDefinition property)
+		internal static string? GetFieldSymbol (PropertyDefinition property)
 		{
 			if (!property.HasCustomAttributes)
 				return null;
 
-			foreach (CustomAttribute attrib in property.CustomAttributes) {
+			foreach (var attrib in property.CustomAttributes) {
 				var declaringType = attrib.Constructor.DeclaringType.Resolve ();
 
 				if (!declaringType.Is (Namespaces.Foundation, "FieldAttribute"))

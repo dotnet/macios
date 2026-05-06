@@ -486,7 +486,7 @@ namespace CoreMedia {
 		///         <remarks>To be added.</remarks>
 		public string? Description {
 			get {
-				return CFString.FromHandle (CMTimeCopyDescription (IntPtr.Zero, this));
+				return CFString.FromHandle (CMTimeCopyDescription (IntPtr.Zero, this), true);
 			}
 		}
 

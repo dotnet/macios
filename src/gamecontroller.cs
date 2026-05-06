@@ -1463,6 +1463,14 @@ namespace GameController {
 		[TV (17, 4), Mac (14, 4), iOS (17, 4), MacCatalyst (17, 4)]
 		[Field ("GCInputRightBumper")]
 		NSString /* GCButtonElementName */ RightBumper { get; }
+
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Field ("GCInputLeftSideButton")]
+		NSString /* GCButtonElementName */ LeftSideButton { get; }
+
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Field ("GCInputRightSideButton")]
+		NSString /* GCButtonElementName */ RightSideButton { get; }
 	}
 
 	[TV (14, 0), iOS (14, 0)]
@@ -1579,6 +1587,16 @@ namespace GameController {
 		[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
 		[Field ("GCInputRightPaddle")]
 		RightPaddle,
+
+		/// <summary>Represents the left side button on a game controller.</summary>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Field ("GCInputLeftSideButton")]
+		LeftSideButton,
+
+		/// <summary>Represents the right side button on a game controller.</summary>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Field ("GCInputRightSideButton")]
+		RightSideButton,
 	}
 
 	[NoiOS, Mac (13, 0), NoTV, MacCatalyst (16, 0)]
@@ -3043,6 +3061,11 @@ namespace GameController {
 		[Abstract]
 		[Export ("sources", ArgumentSemantic.Copy)]
 		NSSet<IGCPhysicalInputSource> Sources { get; }
+
+		[TV (26, 2), Mac (26, 2), iOS (26, 2), MacCatalyst (26, 2)]
+		[Abstract]
+		[NullAllowed, Export ("physicalExtents")]
+		IGCPhysicalInputExtents PhysicalExtents { get; }
 	}
 
 	interface IGCPhysicalInputElement { }
@@ -3367,5 +3390,24 @@ namespace Foundation {
 		[TV (17, 4), Mac (14, 3), iOS (17, 4), MacCatalyst (17, 4)]
 		[Export ("GCPoint2Value")]
 		GCPoint2 GCPoint2Value { get; }
+	}
+
+	interface IGCPhysicalInputExtents { }
+
+	[TV (26, 2), Mac (26, 2), iOS (26, 2), MacCatalyst (26, 2)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false)]
+	interface GCPhysicalInputExtents {
+
+		[Abstract]
+		[Export ("scaledValue")]
+		double ScaledValue { get; }
+
+		[Abstract]
+		[Export ("minimumValue")]
+		double MinimumValue { get; }
+
+		[Abstract]
+		[Export ("maximumValue")]
+		double MaximumValue { get; }
 	}
 }

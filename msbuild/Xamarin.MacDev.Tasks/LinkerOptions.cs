@@ -55,7 +55,7 @@ namespace Xamarin.MacDev.Tasks {
 					var path = item.ItemSpec;
 					// in case the full path to the library is given (msbuild)
 					if (Path.GetExtension (path) != ".framework")
-						path = Path.GetDirectoryName (path);
+						path = Path.GetDirectoryName (path)!;
 					Frameworks.Add (path);
 				} else if (kind == NativeReferenceKind.Dynamic) {
 					var path = item.ItemSpec;

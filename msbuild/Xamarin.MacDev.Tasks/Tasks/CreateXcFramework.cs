@@ -21,8 +21,9 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var args = new List<string> ();
 
-			if (Directory.Exists (XcArchivePath)) {
-				foreach (var frameworkArchive in Directory.EnumerateDirectories (XcArchivePath, "*.xcarchive")) {
+			var fullXcArchivePath = Path.GetFullPath (XcArchivePath);
+			if (Directory.Exists (fullXcArchivePath)) {
+				foreach (var frameworkArchive in Directory.EnumerateDirectories (fullXcArchivePath, "*.xcarchive")) {
 					args.Add ("-archive");
 					args.Add (frameworkArchive);
 					args.Add ("-framework");
@@ -32,7 +33,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (!string.IsNullOrEmpty (OutputPath)) {
 				args.Add ("-output");
-				args.Add (OutputPath);
+				args.Add (Path.GetFullPath (OutputPath));
 			}
 
 			return args;

@@ -96,10 +96,6 @@ namespace Cecil.Tests {
 		{
 			// We join all the APIs from all the platforms, so we can only run this test when all platforms are enabled.
 			Configuration.IgnoreIfAnyIgnoredPlatforms ();
-			Configuration.IgnoreIfNotXamarinEnabled (); // our tooling to inject docs for Apple APIs lives in maccore, so if we don't do that, we'll get a lot of false positives.
-
-			if (!Configuration.EnableAdr)
-				Assert.Ignore ("This test requires ADR");
 
 			// Collect everything
 			var xmlMembers = new HashSet<AssemblyApi> ();
@@ -167,6 +163,35 @@ namespace Cecil.Tests {
 					Assert.Fail ($"Found {unknownFailures.Count} undocumented APIs (not known failures) and {fixedFailures.Count} APIs that were marked as known failures but are now documented. If this is expected, set the WRITE_KNOWN_FAILURES=1 environment variable, run the test again, and commit the modified known failures file.");
 				}
 			}
+		}
+
+		[Test]
+		public void NoRemarksOnEnumFields ()
+		{
+			var xmlEnumFieldsWithRemarks = new Dictionary<string, string> ();
+			foreach (var info in Helper.NetPlatformAssemblyDefinitions) {
+				// create a dictionary lookup of all types in the assembly
+				var allTypes = info.Assembly.EnumerateTypes ().ToDictionary (k => k.FullName.Replace ('/', '.'), v => v);
+				// load the xml documentation, filtering to fields with a <remarks> section
+				var xmlPath = Path.ChangeExtension (info.Path, ".xml");
+				var doc = new XmlDocument ();
+				doc.LoadWithoutNetworkAccess (xmlPath);
+				foreach (XmlNode node in doc.SelectNodes ("/doc/members/member[starts-with(@name,'F:') and ./remarks]")!) {
+					var name = node.Attributes! ["name"]!.Value;
+
+					// extract the type name from the member name, and use it to check if the field's type is an enum
+					var typename = name [2..name.LastIndexOf ('.')];
+					var type = allTypes [typename];
+					if (!type.IsEnum)
+						continue;
+
+					// the field has a <remarks> section, and it's an enum field - record it as a failure
+					var remarks = node.SelectSingleNode ("remarks")?.InnerText ?? "";
+					xmlEnumFieldsWithRemarks [name] = remarks;
+				}
+			}
+
+			Assert.That (xmlEnumFieldsWithRemarks, Is.Empty, "No enum fields with <remarks> documentation.");
 		}
 
 		static HashSet<AssemblyApi> GetDocumentedMembers (string xml)

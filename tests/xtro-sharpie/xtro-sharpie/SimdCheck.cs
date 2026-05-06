@@ -1,11 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Mono.Cecil;
-
-using Clang.Ast;
-
 namespace Extrospection {
 
 	class SimdCheck : BaseVisitor {
@@ -14,8 +6,8 @@ namespace Extrospection {
 
 		// A dictionary of native type -> managed type mapping.
 		class NativeSimdInfo {
-			public string Managed;
-			public string InvalidManaged;
+			public required string Managed;
+			public string? InvalidManaged;
 		}
 
 		static Dictionary<string, NativeSimdInfo> type_mapping = new Dictionary<string, NativeSimdInfo> () {
@@ -93,10 +85,15 @@ namespace Extrospection {
 		}
 
 		class ManagedSimdInfo {
-			public MethodDefinition Method;
+			public required MethodDefinition Method;
 			public bool ContainsInvalidMappingForSimd;
 		}
 		Dictionary<string, ManagedSimdInfo> managed_methods = new Dictionary<string, ManagedSimdInfo> ();
+
+		public SimdCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
 
 		public override void VisitManagedMethod (MethodDefinition method)
 		{
@@ -134,8 +131,7 @@ namespace Extrospection {
 				return;
 			}
 
-			ManagedSimdInfo existing;
-			if (managed_methods.TryGetValue (key, out existing)) {
+			if (managed_methods.TryGetValue (key, out var existing)) {
 				if (very_strict) {
 					var sorted = Helpers.Sort (existing.Method, method);
 					var framework = sorted.Item1.DeclaringType.Namespace;
@@ -172,12 +168,12 @@ namespace Extrospection {
 
 		bool ContainsSimdTypes (ObjCMethodDecl decl, ref string simd_type, ref bool requires_marshal_directive, ref bool only_return_type_is_simd)
 		{
-			if (IsSimdType (decl, decl.ReturnQualType, ref simd_type, ref requires_marshal_directive))
+			if (IsSimdType (decl, decl.ReturnType, ref simd_type, ref requires_marshal_directive))
 				return true;
 
 			var is_simd_type = false;
 			foreach (var param in decl.Parameters) {
-				if (!IsSimdType (decl, param.QualType, ref simd_type, ref requires_marshal_directive))
+				if (!IsSimdType (decl, param.Type, ref simd_type, ref requires_marshal_directive))
 					continue;
 				is_simd_type = true;
 				only_return_type_is_simd = false;
@@ -186,30 +182,30 @@ namespace Extrospection {
 			return is_simd_type;
 		}
 
-		bool IsExtVector (Decl decl, QualType type, ref string simd_type)
+		bool IsExtVector (Decl decl, ClangSharp.Type type, ref string simd_type)
 		{
 			var rv = false;
-			var t = type.CanonicalQualType.Type;
+			var t = type.CanonicalType;
 
 			// Unpoint the type
-			var pointerType = t as Clang.Ast.PointerType;
+			var pointerType = t as ClangSharp.PointerType;
 			if (pointerType is not null)
-				t = pointerType.PointeeQualType.Type;
+				t = pointerType.PointeeType;
 
-			if (t.Kind == TypeKind.ExtVector) {
+			if (t.Kind == CXTypeKind.CXType_ExtVector) {
 				rv = true;
 			} else {
 				var r = (t as RecordType)?.Decl;
 				if (r is not null) {
 					foreach (var f in r.Fields) {
-						var qt = f.QualType.CanonicalQualType.Type;
-						if (qt.Kind == TypeKind.ExtVector) {
+						var qt = f.Type.CanonicalType;
+						if (qt.Kind == CXTypeKind.CXType_ExtVector) {
 							rv = true;
 							break;
 						}
 						var at = qt as ConstantArrayType;
 						if (at is not null) {
-							if (at.ElementType.Type.Kind == TypeKind.ExtVector) {
+							if (at.ElementType.Kind == CXTypeKind.CXType_ExtVector) {
 								rv = true;
 								break;
 							}
@@ -221,7 +217,7 @@ namespace Extrospection {
 			var typeName = type.ToString ();
 
 			if (!rv && typeName.Contains ("simd")) {
-				var framework = Helpers.GetFramework (decl);
+				var framework = Helpers.GetFramework (decl)!;
 				Log.On (framework).Add ($"!unknown-simd-type! Could not detect that {typeName} is a Simd type, but its name contains 'simd'. Something needs fixing in SimdCheck.cs");
 			}
 
@@ -231,7 +227,7 @@ namespace Extrospection {
 			return rv;
 		}
 
-		bool IsSimdType (Decl decl, QualType type, ref string simd_type, ref bool requires_marshal_directive)
+		bool IsSimdType (Decl decl, ClangSharp.Type type, ref string simd_type, ref bool requires_marshal_directive)
 		{
 			var str = Undecorate (type.ToString ());
 
@@ -242,7 +238,7 @@ namespace Extrospection {
 			}
 
 			if (IsExtVector (decl, type, ref simd_type)) {
-				var framework = Helpers.GetFramework (decl);
+				var framework = Helpers.GetFramework (decl)!;
 				Log.On (framework).Add ($"!unknown-simd-type-mapping! The Simd type {simd_type} does not have a mapping to a managed type. Please add one in SimdCheck.cs");
 			}
 
@@ -339,13 +335,10 @@ namespace Extrospection {
 			Log.On (framework).Add ($"!wrong-simd-missing-marshaldirective! {method}: simd type: {simd_type}");
 		}
 
-		public override void VisitObjCMethodDecl (ObjCMethodDecl decl, VisitKind visitKind)
+		public override void VisitObjCMethodDecl (ObjCMethodDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
-				return;
-
 			// don't process methods (or types) that are unavailable for the current platform
-			if (!decl.IsAvailable () || !(decl.DeclContext as Decl).IsAvailable ())
+			if (!decl.IsAvailable () || !((Decl) decl.DeclContext!).IsAvailable ())
 				return;
 
 			var framework = Helpers.GetFramework (decl);
@@ -357,8 +350,7 @@ namespace Extrospection {
 			var only_return_type_is_simd = true;
 			var native_simd = ContainsSimdTypes (decl, ref simd_type, ref requires_marshal_directive, ref only_return_type_is_simd);
 
-			ManagedSimdInfo info;
-			managed_methods.TryGetValue (decl.GetName (), out info);
+			managed_methods.TryGetValue (decl.GetName (), out var info);
 			var method = info?.Method;
 
 			if (!native_simd) {
@@ -382,11 +374,8 @@ namespace Extrospection {
 				if (parentClass is not null)
 					attrs.AddRange (parentClass.Attrs);
 
-				foreach (var attr in attrs) {
-					var av_attr = attr as AvailabilityAttr;
-					if (av_attr is null)
-						continue;
-					if (av_attr.Platform.Name != "ios")
+				foreach (var av_attr in attrs.GetAvailabilityAttributes ()) {
+					if (av_attr.AvailabilityAttributePlatformIdentifierName.ToLowerInvariant () != "ios")
 						continue;
 					if (av_attr.Introduced.Major >= 11) {
 						is_new = true;
@@ -401,7 +390,7 @@ namespace Extrospection {
 				return;
 			}
 
-			if (!info.ContainsInvalidMappingForSimd) {
+			if (!info!.ContainsInvalidMappingForSimd) {
 				// The managed method does not have any types that are incorrect for Simd.
 				if (requires_marshal_directive)
 					CheckMarshalDirective (method, simd_type, only_return_type_is_simd);

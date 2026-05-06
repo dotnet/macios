@@ -95,17 +95,17 @@ namespace Xamarin.Linker {
 		{
 			base.TryProcess ();
 
-			if (App.Registrar != RegistrarMode.ManagedStatic)
+			if (App.Registrar != RegistrarMode.ManagedStatic && App.Registrar != RegistrarMode.TrimmableStatic)
 				return;
 
-			Configuration.Target.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
+			Configuration.Application.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
 		}
 
 		protected override void TryEndProcess (out List<Exception>? exceptions)
 		{
 			base.TryEndProcess ();
 
-			if (App.Registrar != RegistrarMode.ManagedStatic) {
+			if (App.Registrar != RegistrarMode.ManagedStatic && App.Registrar != RegistrarMode.TrimmableStatic) {
 				exceptions = null;
 				return;
 			}
@@ -123,7 +123,7 @@ namespace Xamarin.Linker {
 		{
 			base.TryProcessAssembly (assembly);
 
-			if (App.Registrar != RegistrarMode.ManagedStatic)
+			if (App.Registrar != RegistrarMode.ManagedStatic && App.Registrar != RegistrarMode.TrimmableStatic)
 				return;
 
 			if (Annotations.GetAction (assembly) == AssemblyAction.Delete)
@@ -179,8 +179,31 @@ namespace Xamarin.Linker {
 
 			// Figure out if there are any types we need to process
 			var process = false;
+			var isNSObject = IsNSObject (type);
 
-			process |= IsNSObject (type);
+			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface) {
+				if (isNSObject) {
+					var ctorRef = ManagedRegistrarLookupTablesStep.FindNSObjectConstructor (type);
+					if (ctorRef is not null) {
+						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
+
+						// Implement INSObjectFactory._Xamarin_ConstructNSObject
+						ManagedRegistrarLookupTablesStep.ImplementConstructNSObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+						// Implement INativeObject._Xamarin_ConstructINativeObject
+						ManagedRegistrarLookupTablesStep.ImplementConstructINativeObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+					}
+				} else if (type.IsNativeObject ()) {
+					var ctorRef = ManagedRegistrarLookupTablesStep.FindINativeObjectConstructor (type);
+					if (ctorRef is not null) {
+						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
+
+						// Implement INativeObject._Xamarin_ConstructINativeObject
+						ManagedRegistrarLookupTablesStep.ImplementConstructINativeObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+					}
+				}
+			}
+
+			process |= isNSObject;
 			process |= StaticRegistrar.GetCategoryAttribute (type) is not null;
 
 			var registerAttribute = StaticRegistrar.GetRegisterAttribute (type);
@@ -351,6 +374,11 @@ namespace Xamarin.Linker {
 					proxyInterface = new TypeDefinition ("ObjCRuntime", proxyInterfaceName, TypeAttributes.NotPublic | TypeAttributes.Interface | TypeAttributes.Abstract);
 					method.DeclaringType.Interfaces.Add (new InterfaceImplementation (proxyInterface));
 					proxyInterfaces.Add (proxyInterface);
+
+					// The trimmer may just remove the interface implementation, because it thinks it's not used - which it technically
+					// isn't, because the consuming code is generated in the ManagedRegistrarLookupTables step, which happens after trimming.
+					var attrib = abr.CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.Interfaces, method.DeclaringType);
+					abr.AddAttributeToStaticConstructor (method.DeclaringType, attrib);
 				}
 
 				var methodName = $"{proxyInterfaceName}_{method.Name}";
@@ -364,6 +392,9 @@ namespace Xamarin.Linker {
 				// and also to the proxy interface 
 				callback.ReturnType = implementationMethod.ReturnType;
 				interfaceMethod.ReturnType = implementationMethod.ReturnType;
+
+				// make the interface method depend on the implementation method, so that the trimmer doesn't remove the implementation method
+				abr.AddDynamicDependencyAttribute (interfaceMethod, implementationMethod);
 
 				foreach (var parameter in implementationMethod.Parameters) {
 					callback.AddParameter (parameter.Name, parameter.ParameterType);
@@ -698,6 +729,10 @@ namespace Xamarin.Linker {
 			if (!(parameter == -1 && !method.IsStatic && method.DeclaringType == type)) {
 				var bindAsAttribute = GetBindAsAttribute (method, parameter);
 				if (bindAsAttribute is not null) {
+					if (bindAsAttribute.OriginalType is null) {
+						AddException (ErrorHelper.CreateError (99, "BindAs attribute without OriginalType. Method: {0}", GetMethodSignatureWithSourceCode (method)));
+						return false;
+					}
 					if (toManaged) {
 						GenerateConversionToManaged (method, il, bindAsAttribute.OriginalType, type, "descriptiveMethodName", parameter, out nativeType);
 						return true;
@@ -751,10 +786,14 @@ namespace Xamarin.Linker {
 
 			if (type is ByReferenceType brt) {
 				if (toManaged) {
-					var elementType = brt.ElementType;
+					var elementType = brt.ElementType!;
 					if (elementType is GenericParameter gp) {
 						if (!StaticRegistrar.VerifyIsConstrainedToNSObject (gp, out var constrained)) {
 							AddException (ErrorHelper.CreateError (99, "Incorrectly constrained generic parameter. Method: {0}", GetMethodSignatureWithSourceCode (method)));
+							return false;
+						}
+						if (constrained is null) {
+							AddException (ErrorHelper.CreateError (99, "Incorrectly constrained generic parameter (2). Method: {0}", GetMethodSignatureWithSourceCode (method)));
 							return false;
 						}
 						elementType = constrained;
@@ -858,7 +897,7 @@ namespace Xamarin.Linker {
 					return true;
 				}
 
-				GenericParameter? gp = elementType as GenericParameter;
+				var gp = elementType as GenericParameter;
 				if (gp is not null) {
 					if (!StaticRegistrar.VerifyIsConstrainedToNSObject (gp, out var constrained)) {
 						AddException (ErrorHelper.CreateError (99, "Incorrectly constrained generic parameter. Method: {0}", GetMethodSignatureWithSourceCode (method)));
@@ -888,7 +927,7 @@ namespace Xamarin.Linker {
 					return true;
 				}
 
-				AddException (ErrorHelper.CreateError (99, "Don't know how (3) to convert array element type {1} for array type {0} between managed and native code. Method: {2}", type.FullName, elementType.FullName, GetMethodSignatureWithSourceCode (method)));
+				AddException (ErrorHelper.CreateError (99, "Don't know how (3) to convert array element type {1} for array type {0} between managed and native code. Method: {2}", type.FullName, elementType?.FullName, GetMethodSignatureWithSourceCode (method)));
 				return false;
 			}
 
@@ -1130,9 +1169,7 @@ namespace Xamarin.Linker {
 		CustomAttribute CreateUnmanagedCallersAttribute (string entryPoint)
 		{
 			var unmanagedCallersAttribute = new CustomAttribute (abr.UnmanagedCallersOnlyAttribute_Constructor);
-			// Mono didn't prefix the entry point with an underscore until .NET 8: https://github.com/dotnet/runtime/issues/79491
-			var entryPointPrefix = Driver.TargetFramework.Version.Major < 8 ? "_" : string.Empty;
-			unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPointPrefix + entryPoint)));
+			unmanagedCallersAttribute.Fields.Add (new CustomAttributeNamedArgument ("EntryPoint", new CustomAttributeArgument (abr.System_String, entryPoint)));
 			return unmanagedCallersAttribute;
 		}
 
@@ -1164,6 +1201,8 @@ namespace Xamarin.Linker {
 				underlyingManagedType = StaticRegistrar.GetElementType (managedType);
 			} else if (isManagedNullable) {
 				underlyingManagedType = StaticRegistrar.GetNullableType (managedType);
+				if (underlyingManagedType is null)
+					throw ErrorHelper.CreateError (99, Errors.MX0099, $"can't convert from '{inputType.FullName}' to '{outputType.FullName}' in {descriptiveMethodName}: {managedType.FullName} is not a nullable type");
 			}
 
 			string? func = null;
@@ -1261,6 +1300,8 @@ namespace Xamarin.Linker {
 				underlyingManagedType = StaticRegistrar.GetElementType (managedType);
 			} else if (isManagedNullable) {
 				underlyingManagedType = StaticRegistrar.GetNullableType (managedType);
+				if (underlyingManagedType is null)
+					throw ErrorHelper.CreateError (99, Errors.MX0099, $"can't convert from '{inputType.FullName}' to '{outputType.FullName}' in {descriptiveMethodName}: {managedType.FullName} is not a nullable type");
 			}
 
 			string? func = null;

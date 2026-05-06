@@ -44,8 +44,8 @@ namespace CoreVideo {
 
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static void CVOpenGLESTextureGetCleanTexCoords (
-			/* CVOpenGLESTextureRef __nonnull */ IntPtr image, 
-			/* GLfloat[2] */ IntPtr lowerLeft, /* GLfloat[2] */ IntPtr lowerRight, /* GLfloat[2] */ IntPtr upperRight, 
+			/* CVOpenGLESTextureRef __nonnull */ IntPtr image,
+			/* GLfloat[2] */ IntPtr lowerLeft, /* GLfloat[2] */ IntPtr lowerRight, /* GLfloat[2] */ IntPtr upperRight,
 			/* GLfloat[2] */ IntPtr upperLeft);
 		// note: a GLfloat is 4 bytes even on 64bits iOS
 
@@ -75,7 +75,7 @@ namespace CoreVideo {
 			upperLeft = new float [2];
 
 			unsafe {
-				fixed (float *ll = lowerLeft, lr = lowerRight, ur = upperRight, ul = upperLeft){
+				fixed (float* ll = lowerLeft, lr = lowerRight, ur = upperRight, ul = upperLeft) {
 					CVOpenGLESTextureGetCleanTexCoords (GetCheckedHandle (), (IntPtr) ll, (IntPtr) lr, (IntPtr) ur, (IntPtr) ul);
 				}
 			}

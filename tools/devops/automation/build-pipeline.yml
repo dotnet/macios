@@ -14,7 +14,7 @@ parameters:
   - name: macOSName  # comes from the build agent demand named macOS.Name
     displayName: Name of the version of macOS to use
     type: string
-    default: 'Sequoia'
+    default: 'Tahoe'
 
   - name: runGovernanceTests
     displayName: Run Governance Checks
@@ -45,12 +45,7 @@ resources:
     - repository: yaml-templates
       type: git
       name: xamarin.yaml-templates
-      ref: refs/heads/main
-
-    - repository: macios-adr
-      type: git
-      name: macios-adr
-      ref: refs/heads/main
+      ref: e30b445c2ffcbebe75efdd69546d7196a20c5a43
 
     - repository: CustomPipelineTemplates
       type: git
@@ -79,6 +74,7 @@ trigger:
       - refs/heads/locfiles/*
       - refs/heads/copilot/*
       - refs/heads/dependabot/*
+      - refs/heads/merge/*
 
   paths:
     exclude:
@@ -124,7 +120,6 @@ extends:
           - repository: self
         exclude:
           - repository: yaml-templates
-          - repository: macios-adr  # macios-adr has it's own build pipeline and should not be included in the source analysis
     stages:
       - template: templates/main-stage.yml
         parameters:

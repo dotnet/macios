@@ -63,6 +63,17 @@ namespace MonoTouchFixtures.CoreServices {
 		}
 
 		[Test]
+		public void GetAllHeaderFields ()
+		{
+			using (var m = CFHTTPMessage.CreateRequest (NetworkResources.XamarinUri, "GET", new Version (1, 1))) {
+				m.SetHeaderFieldValue ("X-Test", "value");
+				var headers = m.GetAllHeaderFields ();
+				Assert.NotNull (headers, "headers");
+				Assert.That (headers.Count, Is.GreaterThan ((nuint) 0), "Count");
+			}
+		}
+
+		[Test]
 		public void CreateResponseAuth ()
 		{
 			CFHTTPMessage response = null;

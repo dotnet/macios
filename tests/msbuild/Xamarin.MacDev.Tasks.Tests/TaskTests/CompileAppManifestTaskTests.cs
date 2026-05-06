@@ -18,7 +18,6 @@ namespace Xamarin.MacDev.Tasks {
 				tmpdir = Cache.CreateTemporaryDirectory ();
 
 			var task = CreateTask<CompileAppManifest> ();
-			task.AssemblyName = "AssemblyName";
 			task.AppBundleName = "AppBundleName";
 			task.CompiledAppManifest = new TaskItem (Path.Combine (tmpdir, "TemporaryAppManifest.plist"));
 			task.DefaultSdkVersion = Sdks.GetAppleSdk (platform).GetInstalledSdkVersions (false).First ().ToString ()!;

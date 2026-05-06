@@ -1,17 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
 namespace Extrospection {
 
 	static class Log {
-		static Dictionary<string, List<string>> lists = new Dictionary<string, List<string>> (StringComparer.OrdinalIgnoreCase);
+		static Dictionary<string, List<string>> lists = new (StringComparer.OrdinalIgnoreCase);
 
 		public static IList<string> On (string fx)
 		{
-			List<string> list;
-			if (!lists.TryGetValue (fx, out list)) {
+			if (!lists.TryGetValue (fx, out var list)) {
 				list = new List<string> ();
 				lists.Add (fx, list);
 			}

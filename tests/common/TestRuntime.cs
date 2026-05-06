@@ -460,6 +460,37 @@ partial class TestRuntime {
 #else
 				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
 #endif
+			case 1:
+#if __TVOS__
+				return ChecktvOSSystemVersion (26, 1);
+#elif __IOS__
+				return CheckiOSSystemVersion (26, 1);
+#elif MONOMAC
+				return CheckMacSystemVersion (26, 1);
+#else
+				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
+#endif
+			case 2:
+			case 3: // Xcode 26.3 has the same SDK as 26.2, so we treat them the same here
+#if __TVOS__
+				return ChecktvOSSystemVersion (26, 2);
+#elif __IOS__
+				return CheckiOSSystemVersion (26, 2);
+#elif MONOMAC
+				return CheckMacSystemVersion (26, 2);
+#else
+				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
+#endif
+			case 4:
+#if __TVOS__
+				return ChecktvOSSystemVersion (26, 4);
+#elif __IOS__
+				return CheckiOSSystemVersion (26, 4);
+#elif MONOMAC
+				return CheckMacSystemVersion (26, 4);
+#else
+				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
+#endif
 			default:
 				throw new NotImplementedException ($"Missing version logic for checking for Xcode {major}.{minor}");
 			}
@@ -1582,6 +1613,8 @@ partial class TestRuntime {
 		IgnoreInCIfHttpStatusCodes (ex, HttpStatusCode.BadGateway, HttpStatusCode.GatewayTimeout, HttpStatusCode.ServiceUnavailable);
 		IgnoreInCIIfNetworkConnectionLost (ex);
 		IgnoreInCIIfDnsResolutionFailed (ex);
+		IgnoreInCIIfSshConnectionError (ex);
+		IgnoreInCIIfTimedOut (ex);
 	}
 
 	public static void IgnoreInCIIfBadNetwork (NSError? error)
@@ -1621,6 +1654,21 @@ partial class TestRuntime {
 	public static void IgnoreInCIIfTimedOut (NSError error)
 	{
 		IgnoreNetworkError (error, CFNetworkErrors.TimedOut);
+	}
+
+	public static void IgnoreInCIIfTimedOut (Exception ex)
+	{
+		if (ex is WebException wex) {
+			var msg = wex.Message;
+			if (msg.Contains ("The operation has timed out.")) {
+				IgnoreInCI ($"Ignored due to network error: {wex}");
+			}
+		}
+
+		var se = FindInner<System.Net.Sockets.SocketException> (ex);
+		if (se is not null && se.SocketErrorCode == System.Net.Sockets.SocketError.TimedOut) {
+			IgnoreInCI ($"Ignored due to socket timeout: {se.Message}");
+		}
 	}
 
 	public static void IgnoreInCIIfForbidden (Exception ex)
@@ -1670,6 +1718,14 @@ partial class TestRuntime {
 	{
 		// Error Domain=NSURLErrorDomain Code=-1009 "The Internet connection appears to be offline."
 		IgnoreNetworkError (error, CFNetworkErrors.NotConnectedToInternet);
+	}
+
+	public static void IgnoreInCIIfSshConnectionError (Exception ex)
+	{
+		var msg = ex.Message;
+		if (msg.Contains ("The SSL connection could not be established")) {
+			IgnoreInCI ($"Ignored due to network error: {ex}");
+		}
 	}
 
 	static void IgnoreNetworkError (NSError error, params CFNetworkErrors [] errors)

@@ -4417,9 +4417,18 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";MX2106_E" ItemType="0;.resx" PsrId="211" Leaf="true">
+      <Item ItemId=";MX2106_E1" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the more than one method named '{3}' was found in the type '{4}.]]></Val>
+          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named '{3}' was found in the type '{4}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Der Aufruf von BlockLiteral.{2} in {0} bei Offset {1} konnte nicht optimiert werden, da keine Methode mit dem Namen „{3}“ im Typ „{4}“ gefunden wurde.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2106_E2" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named '{3}' was found in the type '{4}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Der Aufruf von BlockLiteral.{2} in {0} bei Offset {1} konnte nicht optimiert werden, da mehrere Methoden mit dem Namen „{3}“ im Typ „{4}“ gefunden wurden.]]></Val>
           </Tgt>
@@ -4860,6 +4869,15 @@
           <Val><![CDATA[Unable to find a delegate to invoke for the block {0} (delegate type: {1}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Es wurde kein Delegat gefunden, der für den Block {0} aufgerufen werden soll (Delegattyp: {1}).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX8060" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No 'Invoke' method found. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Ungültiger DelegateProxyAttribute-Wert für den Rückgabewert für die Methode {0}.{1}: Keine Invoke-Methode gefunden. Erstellen Sie einen Fehlerbericht mit einem Testfall (https://github.com/dotnet/macios/issues/new).]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

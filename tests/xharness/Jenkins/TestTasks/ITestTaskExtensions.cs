@@ -4,7 +4,7 @@ using System.Linq;
 namespace Xharness.Jenkins.TestTasks {
 	public static class ITestTaskExtensions {
 
-		public static string GetTestColor (this IEnumerable<ITestTask> tests)
+		public static string GetTestColor (this IEnumerable<TestTask> tests)
 		{
 			if (!tests.Any ())
 				return "black";
@@ -14,6 +14,8 @@ namespace Xharness.Jenkins.TestTasks {
 				return first.GetTestColor ();
 			if (tests.Any ((v) => v.Crashed))
 				return "maroon";
+			else if (tests.Any ((v) => v.LaunchFailure))
+				return "coral";
 			else if (tests.Any ((v) => v.TimedOut))
 				return "purple";
 			else if (tests.Any ((v) => v.BuildFailure))
@@ -34,7 +36,7 @@ namespace Xharness.Jenkins.TestTasks {
 				return "black";
 		}
 
-		public static string GetTestColor (this ITestTask test)
+		public static string GetTestColor (this TestTask test)
 		{
 			if (test.NotStarted) {
 				return "black";
@@ -49,6 +51,8 @@ namespace Xharness.Jenkins.TestTasks {
 			} else {
 				if (test.Crashed) {
 					return "maroon";
+				} else if (test.LaunchFailure) {
+					return "coral";
 				} else if (test.HarnessException) {
 					return "orange";
 				} else if (test.TimedOut) {

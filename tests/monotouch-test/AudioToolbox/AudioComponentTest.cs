@@ -73,7 +73,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 				if (component is null)
 					continue;
 				//monotouchtests does not have permissions to deal with the hwd.
-				Assert.Throws<ArgumentNullException> (() => component.ComponentList = null);
+				Assert.Throws<InvalidOperationException> (() => component.ComponentList = null);
 			}
 		}
 

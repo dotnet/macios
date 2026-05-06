@@ -429,7 +429,10 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public FontFeatureGroup FeatureGroup {
 			get {
-				return (FontFeatureGroup) (int) (NSNumber) Dictionary [CTFontFeatureKey.Identifier];
+				var number = (NSNumber?) Dictionary [CTFontFeatureKey.Identifier];
+				if (number is null)
+					return default;
+				return (FontFeatureGroup) (int) number;
 			}
 		}
 
@@ -591,7 +594,10 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		protected int FeatureWeak {
 			get {
-				return (int) (NSNumber) Dictionary [CTFontFeatureSelectorKey.Identifier];
+				var number = (NSNumber?) Dictionary [CTFontFeatureSelectorKey.Identifier];
+				if (number is null)
+					return default;
+				return (int) number;
 			}
 		}
 
@@ -2327,7 +2333,10 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public FontFeatureGroup FeatureGroup {
 			get {
-				return (FontFeatureGroup) (int) (NSNumber) Dictionary [CTFontFeatureKey.Identifier];
+				var number = (NSNumber?) Dictionary [CTFontFeatureKey.Identifier];
+				if (number is null)
+					return default;
+				return (FontFeatureGroup) (int) number;
 			}
 		}
 
@@ -2336,7 +2345,10 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public int FeatureWeak {
 			get {
-				return (int) (NSNumber) Dictionary [CTFontFeatureSelectorKey.Identifier];
+				var number = (NSNumber?) Dictionary [CTFontFeatureSelectorKey.Identifier];
+				if (number is null)
+					return default;
+				return (int) number;
 			}
 		}
 	}
@@ -2375,32 +2387,32 @@ namespace CoreText {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public NSNumber Identifier {
-			get { return (NSNumber) Dictionary [CTFontVariationAxisKey.Identifier]; }
+		public NSNumber? Identifier {
+			get { return (NSNumber?) Dictionary [CTFontVariationAxisKey.Identifier]; }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.Identifier, value); }
 		}
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public NSNumber MinimumValue {
-			get { return (NSNumber) Dictionary [CTFontVariationAxisKey.MinimumValue]; }
+		public NSNumber? MinimumValue {
+			get { return (NSNumber?) Dictionary [CTFontVariationAxisKey.MinimumValue]; }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.MinimumValue, value); }
 		}
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public NSNumber MaximumValue {
-			get { return (NSNumber) Dictionary [CTFontVariationAxisKey.MaximumValue]; }
+		public NSNumber? MaximumValue {
+			get { return (NSNumber?) Dictionary [CTFontVariationAxisKey.MaximumValue]; }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.MaximumValue, value); }
 		}
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public NSNumber DefaultValue {
-			get { return (NSNumber) Dictionary [CTFontVariationAxisKey.DefaultValue]; }
+		public NSNumber? DefaultValue {
+			get { return (NSNumber?) Dictionary [CTFontVariationAxisKey.DefaultValue]; }
 			set { Adapter.SetValue (Dictionary, CTFontVariationAxisKey.DefaultValue, value); }
 		}
 
@@ -2941,7 +2953,7 @@ namespace CoreText {
 		{
 			if (attribute is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (attribute));
-			var result = Runtime.GetNSObject (CTFontCopyAttribute (Handle, attribute.Handle));
+			var result = Runtime.GetNSObject (CTFontCopyAttribute (Handle, attribute.Handle), true);
 			GC.KeepAlive (attribute);
 			return result;
 		}
@@ -2975,6 +2987,19 @@ namespace CoreText {
 		///         <remarks>To be added.</remarks>
 		public CTFontSymbolicTraits SymbolicTraits {
 			get { return CTFontGetSymbolicTraits (Handle); }
+		}
+
+		[DllImport (Constants.CoreTextLibrary)]
+		static extern CTFontUIFontType CTFontGetUIFontType (IntPtr font);
+
+		/// <summary>Gets the UI font type of the font.</summary>
+		/// <value>The UI font type, or <see cref="CTFontUIFontType.None" /> if the font is not a UI font.</value>
+		[SupportedOSPlatform ("ios26.4")]
+		[SupportedOSPlatform ("maccatalyst26.4")]
+		[SupportedOSPlatform ("macos26.4")]
+		[SupportedOSPlatform ("tvos26.4")]
+		public CTFontUIFontType UIFontType {
+			get { return CTFontGetUIFontType (GetCheckedHandle ()); }
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -3463,10 +3488,7 @@ namespace CoreText {
 		public CTFontVariationAxes [] GetVariationAxes ()
 		{
 			var cfArrayRef = CTFontCopyVariationAxes (Handle);
-			if (cfArrayRef == IntPtr.Zero)
-				return Array.Empty<CTFontVariationAxes> ();
-			return NSArray.ArrayFromHandle (cfArrayRef,
-					d => new CTFontVariationAxes (Runtime.GetNSObject<NSDictionary> (d)!), true);
+			return NSArray.NonNullDictionaryArrayFromHandleDropNullElements (cfArrayRef, d => new CTFontVariationAxes (d), true);
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -3495,10 +3517,8 @@ namespace CoreText {
 		public CTFontFeatures [] GetFeatures ()
 		{
 			var cfArrayRef = CTFontCopyFeatures (Handle);
-			if (cfArrayRef == IntPtr.Zero)
-				return Array.Empty<CTFontFeatures> ();
-			return NSArray.ArrayFromHandle (cfArrayRef,
-					d => new CTFontFeatures (Runtime.GetNSObject<NSDictionary> (d)!), true);
+			return NSArray.NonNullDictionaryArrayFromHandleDropNullElements (cfArrayRef,
+					d => new CTFontFeatures (d), true);
 		}
 
 		[DllImport (Constants.CoreTextLibrary)]
@@ -3511,10 +3531,8 @@ namespace CoreText {
 		public CTFontFeatureSettings [] GetFeatureSettings ()
 		{
 			var cfArrayRef = CTFontCopyFeatureSettings (Handle);
-			if (cfArrayRef == IntPtr.Zero)
-				return Array.Empty<CTFontFeatureSettings> ();
-			return NSArray.ArrayFromHandle (cfArrayRef,
-					d => new CTFontFeatureSettings (Runtime.GetNSObject<NSDictionary> (d)!), true);
+			return NSArray.NonNullDictionaryArrayFromHandleDropNullElements (cfArrayRef,
+					d => new CTFontFeatureSettings (d), true);
 		}
 		#endregion
 
@@ -3555,9 +3573,7 @@ namespace CoreText {
 		public CTFontTable [] GetAvailableTables (CTFontTableOptions options)
 		{
 			var cfArrayRef = CTFontCopyAvailableTables (Handle, options);
-			if (cfArrayRef == IntPtr.Zero)
-				return Array.Empty<CTFontTable> ();
-			return NSArray.ArrayFromHandle (cfArrayRef, v => {
+			return NSArray.NonNullArrayFromHandle (cfArrayRef, v => {
 				return (CTFontTable) (uint) (IntPtr) v;
 			}, true);
 		}
@@ -3585,9 +3601,9 @@ namespace CoreText {
 		///         <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		public CTFontDescriptor? []? GetDefaultCascadeList (string [] languages)
+		public CTFontDescriptor? []? GetDefaultCascadeList (string []? languages)
 		{
-			using (var arr = languages is null ? null : NSArray.FromStrings (languages)) {
+			using (var arr = NSArray.FromNullableStrings (languages)) {
 				var h = CTFontCopyDefaultCascadeListForLanguages (Handle, arr.GetHandle ());
 				return CFArray.ArrayFromHandleFunc<CTFontDescriptor> (h,
 					(handle) => new CTFontDescriptor (handle, false), true);

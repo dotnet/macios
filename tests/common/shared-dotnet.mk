@@ -71,6 +71,10 @@ ifeq ($(TEST_TFM),)
 TEST_TFM=$(DOTNET_TFM)
 endif
 
+ifeq ($(findstring |release|,|$(TEST_VARIATION)|),|release|)
+CONFIG=Release
+endif
+
 ifeq ($(CONFIG),)
 CONFIG=Debug
 else
@@ -88,9 +92,17 @@ endif
 
 ifeq ($(RID),)
 ifeq ($(PLATFORM),iOS)
+ifeq ($(shell arch),arm64)
 RID=iossimulator-arm64
+else
+RID=iossimulator-x64
+endif
 else ifeq ($(PLATFORM),tvOS)
+ifeq ($(shell arch),arm64)
 RID=tvossimulator-arm64
+else
+RID=tvossimulator-x64
+endif
 else ifeq ($(PLATFORM),MacCatalyst)
 ifeq ($(CONFIG),Release)
 RID=maccatalyst-x64;maccatalyst-arm64
@@ -129,7 +141,7 @@ export RUNTIMEIDENTIFIER=$(RID)
 endif
 
 ifneq ($(TEST_VARIATION),)
-TEST_VARIATION_ARGUMENT=/p:TestVariation=$(TEST_VARIATION)
+TEST_VARIATION_ARGUMENT='/p:TestVariation=$(TEST_VARIATION)'
 endif
 
 ifeq ($(PLATFORM),iOS)
@@ -166,6 +178,7 @@ reload-and-run:
 	$(Q) $(MAKE) run
 
 build: prepare
+	@echo "Building $(wildcard *.?.csproj)..."
 	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT)
 
 run: export SIMCTL_CHILD_NUNIT_AUTOSTART=true
@@ -178,7 +191,7 @@ run-bare:
 
 # Get the list of applicable simulators, and pick the first in the list.
 # Make sure to have a matching simulator runtime installed, otherwise this won't work.
-run-old: RUN_ARGUMENTS=-p:_DeviceName=$(shell xcrun simctl list devices "$(PLATFORM) $(MIN_$(PLATFORM_UPPERCASE)_SIMULATOR_VERSION)" -j | jq -c '.[][][].udid' | head -1 | sed 's/"//g')
+run-old: RUN_ARGUMENTS=-p:Device=$(shell xcrun simctl list devices "$(PLATFORM) $(MIN_$(PLATFORM_UPPERCASE)_SIMULATOR_VERSION)" -j | jq -c '.[][][].udid' | head -1 | sed 's/"//g')
 run-old: export RUNTIMEIDENTIFIER=
 run-old:
 	$(MAKE) run
@@ -214,7 +227,8 @@ list-variations listvariations show-variations showvariations variations help:
 	$(Q) echo ""
 	$(Q) $(DOTNET) build -getItem:TestVariations | jq '.Items.TestVariations[] | "\(.Identity): \(.Description)"' | sed -e 's/^"/    /' -e 's/"$$//'
 	$(Q) echo ""
-	$(Q) echo "Build and run a specific variation by doing $(shell tput setaf 6)make build TEST_VARIATION=variation$(shell tput sgr0)"
+	$(Q) echo "Build and run a specific variation by doing $(shell tput setaf 6)make build TEST_VARIATION=variation$(shell tput sgr0)."
+	$(Q) echo "It's possible to select multiple variations by separating them with a pipe character: $(shell tput setaf 6)make build TEST_VARIATION='variation1|variation2'$(shell tput sgr0)."
 
 clean:
 	rm -Rf bin obj *.binlog

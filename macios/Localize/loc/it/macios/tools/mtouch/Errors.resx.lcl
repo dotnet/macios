@@ -4417,11 +4417,20 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";MX2106_E" ItemType="0;.resx" PsrId="211" Leaf="true">
+      <Item ItemId=";MX2106_E1" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the more than one method named '{3}' was found in the type '{4}.]]></Val>
+          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named '{3}' was found in the type '{4}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
-            <Val><![CDATA[Non è stato possibile ottimizzare la chiamata a BlockLiteral.{2} in {0} in corrispondenza dell'offset {1} perché nel tipo '{4}' è stato trovato più di un metodo denominato '{3}'.]]></Val>
+            <Val><![CDATA[Non è possibile ottimizzare la chiamata a BlockLiteral.{2} in {0} in corrispondenza dell'offset {1} perché nel tipo '{4}' è stato trovato un metodo denominato '{3}'.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2106_E2" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named '{3}' was found in the type '{4}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Non è possibile ottimizzare la chiamata a BlockLiteral.{2} in {0} in corrispondenza dell'offset {1} perché nel tipo '{4}' è stato trovato più di un metodo denominato '{3}'.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -4860,6 +4869,15 @@
           <Val><![CDATA[Unable to find a delegate to invoke for the block {0} (delegate type: {1}).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[Non è possibile trovare un delegato da richiamare per il blocco {0} (tipo delegato: {1}).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX8060" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No 'Invoke' method found. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[DelegateProxyAttribute non valido per il valore restituito per il metodo {0}.{1}: nessun metodo ''Invoke'' trovato. Caricare un report sui bug con un test case (https://github.com/dotnet/macios/issues/new).]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

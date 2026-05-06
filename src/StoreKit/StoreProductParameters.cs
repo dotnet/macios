@@ -27,6 +27,8 @@
 
 #nullable enable
 
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using CoreFoundation;
 
 namespace StoreKit {
@@ -38,25 +40,51 @@ namespace StoreKit {
 #endif
 	public partial class StoreProductParameters : DictionaryContainer {
 #if !COREBUILD
-		/// <param name="iTunesItemIdentifier">To be added.</param>
-		///         <summary>Creates a new <see cref="StoreKit.StoreProductParameters" /> for the specified ITunes identifier.</summary>
-		///         <remarks>To be added.</remarks>
+#if !XAMCORE_5_0
+		/// <summary>Creates a new <see cref="StoreKit.StoreProductParameters" /> for the specified iTunes identifier.</summary>
+		/// <param name="iTunesItemIdentifier">The 32-bit App Store item identifier to display.</param>
+		/// <remarks>Use <see cref="StoreProductParameters(long)" /> to support identifiers larger than <see cref="int.MaxValue" />.</remarks>
+		[OverloadResolutionPriorityAttribute (-1)]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'StoreProductParameters (long)' instead.")]
 		public StoreProductParameters (int iTunesItemIdentifier)
+			: this ((long) iTunesItemIdentifier)
+		{
+		}
+#endif
+
+		/// <summary>Creates a new <see cref="StoreKit.StoreProductParameters" /> for the specified 64-bit iTunes identifier.</summary>
+		/// <param name="iTunesItemIdentifier">The App Store item identifier to display.</param>
+		public StoreProductParameters (long iTunesItemIdentifier)
 			: this ()
 		{
-			ITunesItemIdentifier = iTunesItemIdentifier;
+			ITunesItemIdentifierLong = iTunesItemIdentifier;
 		}
 
-		// TODO: What is real iTunes Store item identifier length
-		/// <summary>Gets or sets the identifier for the ITunes item being advertised.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+#if !XAMCORE_5_0
+		/// <summary>Gets or sets the legacy 32-bit iTunes item identifier for the App Store product to display.</summary>
+		/// <value>The 32-bit App Store item identifier, or <see langword="null" /> if not set.</value>
+		/// <remarks>Use <see cref="ITunesItemIdentifierLong" /> for current identifiers and values larger than <see cref="int.MaxValue" />.</remarks>
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("Use 'ITunesItemIdentifierLong' instead.")]
 		public int? ITunesItemIdentifier {
 			set {
 				SetNumberValue (SKStoreProductParameterKey.ITunesItemIdentifier, value);
 			}
 			get {
 				return GetInt32Value (SKStoreProductParameterKey.ITunesItemIdentifier);
+			}
+		}
+#endif
+
+		/// <summary>Gets or sets the 64-bit iTunes item identifier for the App Store product to display.</summary>
+		/// <value>The App Store item identifier, or <see langword="null" /> if not set.</value>
+		public long? ITunesItemIdentifierLong {
+			set {
+				SetNumberValue (SKStoreProductParameterKey.ITunesItemIdentifier, value);
+			}
+			get {
+				return GetLongValue (SKStoreProductParameterKey.ITunesItemIdentifier);
 			}
 		}
 

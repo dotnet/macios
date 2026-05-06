@@ -611,7 +611,7 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("matchPath")]
 		string MatchPath { get; set; }
 
-		/// <summary>Gets the siging identifer of the app that the rule matched.</summary>
+		/// <summary>Gets the signing identifier of the app that the rule matched.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("matchSigningIdentifier")]
@@ -2634,7 +2634,7 @@ namespace NetworkExtension {
 		[Export ("diffieHellmanGroup")]
 		NEVpnIke2DiffieHellman DiffieHellmanGroup { get; set; }
 
-		/// <summary>Gets or sets the Security Association's lifetime, in mintues.</summary>
+		/// <summary>Gets or sets the Security Association's lifetime, in minutes.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("lifetimeMinutes")]
@@ -4941,20 +4941,33 @@ namespace NetworkExtension {
 		bool AllowDNSFailover { [Bind ("isDNSFailoverAllowed")] get; set; }
 	}
 
+	/// <summary>Enumerates client errors that can occur with an <see cref="NERelayManager" />.</summary>
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]
 	[ErrorDomain ("NERelayClientErrorDomain")]
 	[Native]
 	enum NERelayManagerClientError : long {
+		/// <summary>No error occurred.</summary>
 		None = 1,
+		/// <summary>DNS resolution failed.</summary>
 		DNSFailed = 2,
+		/// <summary>The relay server is unreachable.</summary>
 		ServerUnreachable = 3,
+		/// <summary>The relay server disconnected.</summary>
 		ServerDisconnected = 4,
+		/// <summary>The client certificate is missing.</summary>
 		CertificateMissing = 5,
+		/// <summary>The client certificate is invalid.</summary>
 		CertificateInvalid = 6,
+		/// <summary>The client certificate has expired.</summary>
 		CertificateExpired = 7,
+		/// <summary>The server certificate is invalid.</summary>
 		ServerCertificateInvalid = 8,
+		/// <summary>The server certificate has expired.</summary>
 		ServerCertificateExpired = 9,
+		/// <summary>An unspecified error occurred.</summary>
 		Other = 10,
+		/// <summary>The Provisioning Domain (PvD) configuration was truncated.</summary>
+		PvDConfigurationTruncated = 11,
 	}
 
 	[TV (18, 0), Mac (15, 0), iOS (18, 0), MacCatalyst (18, 0)]

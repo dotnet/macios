@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<UsingTask TaskName="Xamarin.MacDev.Tasks.ComputeInstructionSet" AssemblyFile="$(_XamarinTaskAssembly)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeInstructionSet" AssemblyFile="$(_TaskAssemblyName)" />
+	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GenerateR2RModuleRegistration" AssemblyFile="$(_TaskAssemblyName)" />
 
 	<!-- Workaround until https://github.com/dotnet/sdk/pull/52480 is merged -->
 	<Target Name="_LinkReadyToRunMachO">
@@ -14,6 +15,23 @@
 			<_ReadyToRunFilesToPublish Remove="@(_ReadyToRunFilesToPublish)" />
 			<_ReadyToRunFilesToPublish Include="@(_ReadyToRunFilesToPublishFixed)" />
 		</ItemGroup>
+		<ItemGroup Condition="'$(PublishReadyToRunComposite)' != 'true'">
+			<_ReadyToRunCompileListFixed Include="@(_ReadyToRunCompileList)" OutputR2RImage="$(_ReadyToRunOutputPath)/%(Filename)%(Extension)" />
+			<_ReadyToRunCompileList Remove="@(_ReadyToRunCompileList)" />
+			<_ReadyToRunCompileList Include="@(_ReadyToRunCompileListFixed)" />
+		</ItemGroup>
+	</Target>
+
+	<!-- Set per-module R2R header symbol names so each .o file exports a unique symbol directly,
+	     avoiding the need for post-link symbol aliasing. -->
+	<Target Name="_SetR2RHeaderSymbolNames"
+			Condition="'$(PublishReadyToRunComposite)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho'"
+			AfterTargets="_FixR2ROutputPaths">
+		<ItemGroup>
+			<_ReadyToRunCompileList>
+				<R2RHeaderSymbolName>RTR_HEADER_$([System.Text.RegularExpressions.Regex]::Replace ($([System.IO.Path]::GetFileName ('%(_ReadyToRunCompileList.OutputR2RImage)')), '[^a-zA-Z0-9_]', '_'))</R2RHeaderSymbolName>
+			</_ReadyToRunCompileList>
+		</ItemGroup>
 	</Target>
 
 	<!--
@@ -22,7 +40,7 @@
 		Set ComputeInstructionSetForReadyToRun to false to opt out of this computation.
 	-->
 	<Target Name="_ComputeInstructionSetForCrossgen2"
-		Condition="'$(PublishReadyToRun)' == 'true' And '$(ComputeInstructionSetForReadyToRun)' != 'false'"
+		Condition="'$(PublishReadyToRun)' == 'true' And '$(ComputeInstructionSetForReadyToRun)' != 'false' And '$(RuntimeIdentifiers)' == ''"
 		DependsOnTargets="_DetectSdkLocations"
 		BeforeTargets="ResolveReadyToRunCompilers">
 		<ComputeInstructionSet
@@ -37,7 +55,7 @@
 		<PropertyGroup Condition="'$(_ComputedInstructionSet)' != ''">
 			<!-- Append the instruction set to the existing PublishReadyToRunCrossgen2ExtraArgs, but only if not already present -->
 			<PublishReadyToRunCrossgen2ExtraArgs Condition="'$(PublishReadyToRunCrossgen2ExtraArgs)' == ''">--instruction-set:$(_ComputedInstructionSet)</PublishReadyToRunCrossgen2ExtraArgs>
-			<PublishReadyToRunCrossgen2ExtraArgs Condition="'$(PublishReadyToRunCrossgen2ExtraArgs)' != '' And !$(PublishReadyToRunCrossgen2ExtraArgs.Contains('--instruction-set'))">$(PublishReadyToRunCrossgen2ExtraArgs) --instruction-set:$(_ComputedInstructionSet)</PublishReadyToRunCrossgen2ExtraArgs>
+			<PublishReadyToRunCrossgen2ExtraArgs Condition="'$(PublishReadyToRunCrossgen2ExtraArgs)' != '' And !$(PublishReadyToRunCrossgen2ExtraArgs.Contains('--instruction-set'))">$(PublishReadyToRunCrossgen2ExtraArgs);--instruction-set:$(_ComputedInstructionSet)</PublishReadyToRunCrossgen2ExtraArgs>
 		</PropertyGroup>
 	</Target>
 
@@ -51,8 +69,13 @@
 	</Target>
 
 	<!-- Workaround for https://github.com/dotnet/runtime/issues/122985 -->
-	<Target Name="ResolveReadyToRunCompilers" Condition="'$(PublishReadyToRun)' == 'true' And '$(UseMonoRuntime)' != 'true'">
-		<PropertyGroup>
+	<Target
+		Name="ResolveReadyToRunCompilers"
+		Condition="'$(PublishReadyToRun)' == 'true' And '$(UseMonoRuntime)' != 'true'">
+		<!-- In the outer multi-RID build (RuntimeIdentifier is empty), we still need to provide a
+		     Crossgen2Tool item so that PrepareForReadyToRunCompilation doesn't NullRef. The actual
+		     crossgen2 work only happens in the inner per-RID builds. -->
+		<PropertyGroup Condition="'$(RuntimeIdentifier)' != ''">
 			<_Crossgen2Path Condition="'$(Crossgen2Path)' != ''">$(Crossgen2Path)</_Crossgen2Path>
 			<_FlattenedCrossgen2Packs>@(ResolvedCrossgen2Pack->'%(PackageDirectory)')</_FlattenedCrossgen2Packs>
 			<_Crossgen2Path Condition="'$(Crossgen2Path)' == '' And !$([MSBuild]::IsOSPlatform('windows'))">$(_FlattenedCrossgen2Packs)/tools/crossgen2</_Crossgen2Path>
@@ -62,23 +85,28 @@
 			<_TargetOS>$(RuntimeIdentifier.Split('-')[0])</_TargetOS>
 		</PropertyGroup>
 
-		<ItemGroup>
+		<ItemGroup Condition="'$(RuntimeIdentifier)' != ''">
 			<Crossgen2Tool Include="$(_Crossgen2Path)"
 			               TargetArch="$(_TargetArch)"
 			               TargetOS="$(_TargetOS)"
 			               PerfmapFormatVersion="$(PublishReadyToRunPerfmapFormatVersion)"/>
 		</ItemGroup>
 
-		<Message Text="Using crossgen2: $(_Crossgen2Path)" Importance="high" />
-		<Message Text="  RuntimeIdentifier: $(RuntimeIdentifier)" Importance="high" />
-		<Message Text="  TargetArch: $(_TargetArch)" Importance="high" />
-		<Message Text="  TargetOS: $(_TargetOS)" Importance="high" />
+		<!-- Provide a placeholder Crossgen2Tool for the outer build so the SDK task doesn't NullRef -->
+		<ItemGroup Condition="'$(RuntimeIdentifier)' == ''">
+			<Crossgen2Tool Include="placeholder" TargetArch="arm64" TargetOS="osx" />
+		</ItemGroup>
 
-		<Error Condition="!Exists('$(_Crossgen2Path)')" Text="The crossgen2 executable '$(_Crossgen2Path)' does not exist." />
+		<Message Condition="'$(RuntimeIdentifier)' != ''" Text="Using crossgen2: $(_Crossgen2Path)" Importance="high" />
+		<Message Condition="'$(RuntimeIdentifier)' != ''" Text="  RuntimeIdentifier: $(RuntimeIdentifier)" Importance="high" />
+		<Message Condition="'$(RuntimeIdentifier)' != ''" Text="  TargetArch: $(_TargetArch)" Importance="high" />
+		<Message Condition="'$(RuntimeIdentifier)' != ''" Text="  TargetOS: $(_TargetOS)" Importance="high" />
+
+		<Error Condition="'$(RuntimeIdentifier)' != '' And !Exists('$(_Crossgen2Path)')" Text="The crossgen2 executable '$(_Crossgen2Path)' does not exist." />
 	</Target>
 
 	<!-- Set some default properties -->
-	<PropertyGroup Condition="'$(PublishReadyToRun)' == 'true' And '$(UseMonoRuntime)' == 'false' And '$(_UseNativeAot)' != 'true'">
+	<PropertyGroup Condition="'$(PublishReadyToRun)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho' And '$(UseMonoRuntime)' == 'false' And '$(_UseNativeAot)' != 'true'">
 		<CreateR2RFramework Condition="'$(CreateR2RFramework)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">true</CreateR2RFramework>
 		<CreateR2RDylib Condition="'$(CreateR2RDylib)' == '' And '$(CreateR2RFramework)' != 'true'">true</CreateR2RDylib>
 
@@ -86,22 +114,20 @@
 	</PropertyGroup>
 
 
-	<!-- Exclude user assemblies from R2R composite so they run interpreted for debugging -->
+	<!--
+		Exclude user assemblies from R2R composite so they run interpreted for debugging.
+		User assembly is defined as anything not coming from a NuGet package.
+	-->
 	<Target Name="_SelectR2RAssemblies"
-			Condition="'$(FilterReadyToRunAssemblies)' == 'true'"
+			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == ''"
 			BeforeTargets="ResolveReadyToRunCompilers">
 		<ItemGroup>
 			<_ResolvedAssembliesToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And '%(ResolvedFileToPublish.DestinationSubDirectory)' == ''" />
 			<_NonUserAssemblies
 				Include="@(_ResolvedAssembliesToPublish)"
-				Condition="(
-							'%(_ResolvedAssembliesToPublish.NuGetPackageId)' == 'Microsoft.NETCore.App.Ref' Or
-							'%(_ResolvedAssembliesToPublish.NuGetPackageId)' == '$(_MonoNugetPackageId)' Or
-							'%(_ResolvedAssembliesToPublish.NuGetPackageId)' == '$(_XamarinNugetPackageId)' Or
-							'%(_ResolvedAssembliesToPublish.NuGetPackageId)' == '$(_XamarinNugetManagedPackageId)'
-						)" />
+				Condition="'%(_ResolvedAssembliesToPublish.NuGetPackageId)' != ''" />
 			<_UserAssemblies Include="@(_ResolvedAssembliesToPublish)" Exclude="@(_NonUserAssemblies)" />
-			<PublishReadyToRunExcludeTest Include="@(_UserAssemblies -> '%(Filename)')" />
+			<PublishReadyToRunExclude Include="@(_UserAssemblies -> '%(Filename)%(Extension)')" />
 		</ItemGroup>
 
 		<!-- Hash the R2R input assemblies so we can detect when the set actually changes -->
@@ -136,107 +162,114 @@
 	</Target>
 
 	<!--
-		The following section is to create either a .dylib or a .framework from the Composite
-		ReadyToRun output (which is an object file, which must be linked into a dynamic library).
+		The following section creates either a .dylib or a .framework for each
+		ReadyToRun output (which is an object file that must be linked into a dynamic library).
+		Each R2R .o gets its own dylib/framework so that incremental builds only
+		relink the module whose .o changed.  Each .o exports a unique symbol
+		(RTR_HEADER_<module>) set via R2RHeaderSymbolName during compilation.
 	 -->
 
-	<!-- Create a framework from the composite R2R output -->
+	<!-- Create a framework for each R2R module -->
 	<PropertyGroup>
 		<_CreateR2RFrameworkDependsOn>
 			_CollectR2RObjectFilesForLinking;
-			_PrepareR2RFrameworkCreation;
-			_CreateR2RFrameworkStructure;
-			_ForceLinkR2RFramework;
-			_LinkR2RFramework;
+			_PrepareR2RModules;
+			_RegisterR2RNativeReferences;
+			_CreateR2RModuleFrameworks;
+			_AddR2RModuleRegistrationToMainFile;
 		</_CreateR2RFrameworkDependsOn>
 	</PropertyGroup>
 
-	<!-- Prepare properties and item groups for r2r framework creation -->
-	<Target Name="_PrepareR2RFrameworkCreation"
-			DependsOnTargets="CreateReadyToRunImages"
+	<!-- Properties for per-module R2R framework/dylib creation.
+		Declared outside any target so they are available wherever the R2R modules are consumed,
+		including post-processing in multi-RID outer builds. -->
+	<PropertyGroup>
+		<_DesktopFramework Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">true</_DesktopFramework>
+		<_DesktopFramework Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">false</_DesktopFramework>
+
+		<_R2RFrameworkBinaryInfix Condition="'$(_DesktopFramework)' == 'true'">/Versions/A</_R2RFrameworkBinaryInfix>
+		<_R2RFrameworkResourcesInfix Condition="'$(_DesktopFramework)' == 'true'">/Versions/A/Resources</_R2RFrameworkResourcesInfix>
+
+		<_R2RModuleIntermediateOutputPath Condition="'$(_R2RModuleIntermediateOutputPath)' == ''">$(DeviceSpecificIntermediateOutputPath)r2rframework/</_R2RModuleIntermediateOutputPath>
+		<_R2RModuleRegistrationFile>$(_R2RModuleIntermediateOutputPath)r2r_modules.mm</_R2RModuleRegistrationFile>
+	</PropertyGroup>
+	<!-- Compute per-module metadata from the collected R2R object files -->
+	<Target Name="_PrepareR2RModules"
+			DependsOnTargets="_CollectR2RObjectFilesForLinking"
 			>
-		<PropertyGroup>
-			<_DesktopFramework Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">true</_DesktopFramework>
-			<_DesktopFramework Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">false</_DesktopFramework>
-
-			<_R2RFrameworkBinaryInfix Condition="'$(_DesktopFramework)' == 'true'">/Versions/A</_R2RFrameworkBinaryInfix>
-			<_R2RFrameworkResourcesInfix Condition="'$(_DesktopFramework)' == 'true'">/Versions/A/Resources</_R2RFrameworkResourcesInfix>
-
-			<_R2RFrameworkIntermediateOutputPath Condition="'$(_R2RFrameworkIntermediateOutputPath)' == ''">$(DeviceSpecificIntermediateOutputPath)r2rframework/</_R2RFrameworkIntermediateOutputPath>
-			<_R2RFrameworkName Condition="'$(_R2RFrameworkName)' == ''">$(AssemblyName)</_R2RFrameworkName>
-			<_R2RFrameworkPath Condition="'$(_R2RFrameworkPath)' == ''">$(_R2RFrameworkIntermediateOutputPath)$(_R2RFrameworkName).framework</_R2RFrameworkPath>
-			<_R2RFrameworkOutput Condition="'$(_R2RFrameworkOutput)' == ''">$(_R2RFrameworkPath)$(_R2RFrameworkBinaryInfix)/$(_R2RFrameworkName)</_R2RFrameworkOutput>
-
-			<_R2RFrameworkStructureStampFile>$(_R2RFrameworkIntermediateOutputPath)$(_R2RFrameworkName)-structure.stamp</_R2RFrameworkStructureStampFile>
-
-			<_R2RFrameworkInfoPlistPath>$(_R2RFrameworkPath)$(_R2RFrameworkResourcesInfix)/Info.plist</_R2RFrameworkInfoPlistPath>
-		</PropertyGroup>
-
+		<!-- For each .o file, compute module name, symbol name, and framework paths.
+		     The _ReadyToRunObjectFilesToLink items have the original .r2r.dylib filenames;
+		     _R2RObjectFilesForLinking items point to the actual .o files.
+		     We derive the module name from the _ReadyToRunObjectFilesToLink filename. -->
 		<ItemGroup>
-			<_R2RFrameworkDirectories Include="$(_R2RFrameworkPath)" />
-
-			<_R2RFrameworkInputs Include="@(_R2RObjectFilesForLinking)" />
-			<_R2RFrameworkLinkerFlags Include="-dynamiclib" />
-			<_R2RFrameworkLinkerFlags Include="-Wl,-dead_strip" />
-			<_R2RFrameworkLinkerFlags Include="-Wl,-install_name,@rpath/$(_R2RFrameworkName).framework/$(_R2RFrameworkName)" />
-
-			<_FrameworkNativeReference Include="$(_R2RFrameworkPath)/$(_R2RFrameworkName)" Kind="Framework" />
-		</ItemGroup>
-
-		<ItemGroup Condition="'$(_DesktopFramework)' == 'true'">
-			<_R2RFrameworkDirectories Include="$(_R2RFrameworkPath)/Versions/A/Resources" />
-
-			<_R2RFrameworkSymlinks Include="$(_R2RFrameworkPath)/Resources" SymlinkTo="Versions/A/Resources" />
-			<_R2RFrameworkSymlinks Include="$(_R2RFrameworkPath)/$(_R2RFrameworkName)" SymlinkTo="Versions/A/$(_R2RFrameworkName)" />
-			<_R2RFrameworkSymlinks Include="$(_R2RFrameworkPath)/Versions/Current" SymlinkTo="A" />
-		</ItemGroup>
-
-		<!-- write a hash of all the relevant input so that we can force a re-link if necessary -->
-		<PropertyGroup>
-			<_R2RFrameworkCachePath>$(_R2RFrameworkIntermediateOutputPath)cache.txt</_R2RFrameworkCachePath>
-			<_R2RFrameworkCachePath2>$(_R2RFrameworkCachePath).uptodate</_R2RFrameworkCachePath2>
-		</PropertyGroup>
-		<ItemGroup>
-			<_R2RFrameworkCache Include="@(_R2RFrameworkInputs)" />
-			<_R2RFrameworkCache Include="@(_R2RFrameworkLinkerFlags)" />
-			<_R2RFrameworkCache Include="$(_R2RFrameworkOutput)" />
-			<_R2RFrameworkCache Include="$(_MinimumOSVersion)" />
-		</ItemGroup>
-
-		<Hash
-			ItemsToHash="@(_R2RFrameworkCache)"
-			IgnoreCase="false">
-			<Output TaskParameter="HashResult" PropertyName="_R2RFrameworkCacheHash" />
-		</Hash>
-
-		<WriteLinesToFile Lines="$(_R2RFrameworkCacheHash)" File="$(_R2RFrameworkCachePath)" Overwrite="true" WriteOnlyWhenDifferent="true" />
-
-		<ItemGroup>
-			<FileWrites Include="$(_R2RFrameworkCachePath)" />
+			<_R2RModule Include="@(_ReadyToRunObjectFilesToLink)">
+				<!-- Use the full dylib filename (e.g. "introspection.r2r.dylib") as the module name -->
+				<ModuleName>%(Filename)%(Extension)</ModuleName>
+				<!-- Derive a short name (without .r2r.dylib) for framework/dylib naming -->
+				<ShortName>$([System.Text.RegularExpressions.Regex]::Replace ('%(Filename)', '\.r2r$', ''))</ShortName>
+				<!-- Sanitize the .o filename for C symbol: replace non-identifier chars with _.
+				     Must match the symbol derivation in _SetR2RHeaderSymbolNames (from OutputR2RImage, the .o file). -->
+				<SanitizedName>$([System.Text.RegularExpressions.Regex]::Replace ($([System.IO.Path]::GetFileName ('%(NativeLinkerInputPath)')), '[^a-zA-Z0-9_]', '_'))</SanitizedName>
+			</_R2RModule>
+			<_R2RModule Update="@(_R2RModule)">
+				<SymbolName>RTR_HEADER_%(SanitizedName)</SymbolName>
+				<ObjectFile>%(NativeLinkerInputPath)</ObjectFile>
+				<FrameworkName>%(ShortName).r2r</FrameworkName>
+				<FrameworkPath>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r.framework</FrameworkPath>
+				<FrameworkOutput>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r.framework$(_R2RFrameworkBinaryInfix)/%(ShortName).r2r</FrameworkOutput>
+				<InfoPlistPath>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r.framework$(_R2RFrameworkResourcesInfix)/Info.plist</InfoPlistPath>
+				<DylibOutput>$(_R2RModuleIntermediateOutputPath)%(ShortName).r2r.dylib</DylibOutput>
+			</_R2RModule>
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_CreateR2RFrameworkStructure"
-			Outputs="$(_R2RFrameworkStructureStampFile)"
+	<!-- Register native references for all R2R modules - runs unconditionally so downstream targets always see them -->
+	<Target Name="_RegisterR2RNativeReferences"
+			DependsOnTargets="_PrepareR2RModules"
+			>
+		<ItemGroup Condition="'$(CreateR2RFramework)' == 'true'">
+			<_FrameworkNativeReference Include="@(_R2RModule->'%(FrameworkPath)/%(FrameworkName)')" Kind="Framework" />
+		</ItemGroup>
+		<ItemGroup Condition="'$(CreateR2RDylib)' == 'true'">
+			<_FileNativeReference Include="@(_R2RModule->'%(DylibOutput)')" Kind="Dynamic">
+				<RelativePath></RelativePath>
+			</_FileNativeReference>
+		</ItemGroup>
+	</Target>
+
+	<!-- Create frameworks for each R2R module (iOS/tvOS) -->
+	<Target Name="_CreateR2RModuleFrameworks"
+			Condition="'$(CreateR2RFramework)' == 'true'"
+			Inputs="%(_R2RModule.ObjectFile)"
+			Outputs="%(_R2RModule.FrameworkOutput)"
 			>
 
+		<!-- Create framework directory structure -->
 		<MakeDir
 			SessionId="$(BuildSessionId)"
-			Directories="@(_R2RFrameworkDirectories)"
+			Directories="%(_R2RModule.FrameworkPath)"
+		/>
+
+		<!-- Desktop framework needs extra directories and symlinks -->
+		<MakeDir
+			SessionId="$(BuildSessionId)"
+			Condition="'$(_DesktopFramework)' == 'true'"
+			Directories="%(_R2RModule.FrameworkPath)/Versions/A/Resources"
 		/>
 
 		<Exec
 			SessionId="$(BuildSessionId)"
-			Command="ln -fs &quot;%(SymlinkTo)&quot; &quot;@(_R2RFrameworkSymlinks)&quot;"
-			Condition="@(_R2RFrameworkSymlinks->Count()) &gt; 0"
+			Command="ln -fs &quot;Versions/A/Resources&quot; &quot;%(_R2RModule.FrameworkPath)/Resources&quot; &amp;&amp; ln -fs &quot;Versions/A/%(_R2RModule.FrameworkName)&quot; &quot;%(_R2RModule.FrameworkPath)/%(_R2RModule.FrameworkName)&quot; &amp;&amp; ln -fs &quot;A&quot; &quot;%(_R2RModule.FrameworkPath)/Versions/Current&quot;"
+			Condition="'$(_DesktopFramework)' == 'true'"
 			/>
 
+		<!-- Generate Info.plist for this module's framework -->
 		<CompileAppManifest
 			SessionId="$(BuildSessionId)"
-			AppBundleName="$(_R2RFrameworkName)"
-			ApplicationId="$(_BundleIdentifier).r2rframework"
-			BundleExecutable="$(_R2RFrameworkName)"
-			CompiledAppManifest="$(_R2RFrameworkInfoPlistPath)"
+			AppBundleName="%(_R2RModule.FrameworkName)"
+			ApplicationId="$(_BundleIdentifier).r2r.%(_R2RModule.ShortName)"
+			BundleExecutable="%(_R2RModule.FrameworkName)"
+			CompiledAppManifest="%(_R2RModule.InfoPlistPath)"
 			DefaultSdkVersion="$(_SdkVersion)"
 			GenerateApplicationManifest="true"
 			IsAppExtension="false"
@@ -251,151 +284,130 @@
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			/>
 
-		<Touch
-			Files="$(_R2RFrameworkStructureStampFile)"
-			AlwaysCreate="True"
-			/>
+		<!-- Link the .o file into a dylib inside the framework -->
+		<ItemGroup>
+			<_CurrentR2RModuleLinkerFlags Remove="@(_CurrentR2RModuleLinkerFlags)" />
+			<_CurrentR2RModuleLinkerFlags Include="-dynamiclib" />
+			<_CurrentR2RModuleLinkerFlags Include="-Wl,-dead_strip" />
+			<_CurrentR2RModuleLinkerFlags Include="-Wl,-install_name,@rpath/%(_R2RModule.FrameworkName).framework/%(_R2RModule.FrameworkName)" />
+		</ItemGroup>
+
+		<MakeDir
+			SessionId="$(BuildSessionId)"
+			Directories="$([System.IO.Path]::GetDirectoryName ('%(_R2RModule.FrameworkOutput)'))"
+		/>
+
+		<LinkNativeCode
+			SessionId="$(BuildSessionId)"
+			ObjectFiles="%(_R2RModule.ObjectFile)"
+			OutputFile="%(_R2RModule.FrameworkOutput)"
+			LinkerFlags="@(_CurrentR2RModuleLinkerFlags)"
+
+			MinimumOSVersion="$(_MinimumOSVersion)"
+			SdkDevPath="$(_SdkDevPath)"
+			SdkIsSimulator="$(_SdkIsSimulator)"
+			SdkRoot="$(_SdkRoot)"
+			TargetArchitectures="$(TargetArchitectures)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		/>
 
 		<ItemGroup>
-			<FileWrites Include="@(_R2RFrameworkSymlinks)" />
-			<FileWrites Include="$(_R2RFrameworkInfoPlistPath)" />
-			<FileWrites Include="$(_R2RFrameworkStructureStampFile)" />
+			<FileWrites Include="%(_R2RModule.InfoPlistPath)" />
+			<FileWrites Include="%(_R2RModule.FrameworkOutput)" />
 		</ItemGroup>
 	</Target>
 
-	<!-- force the r2r framework executable to be re-created by deleting the executable file-->
-	<Target Name="_ForceLinkR2RFramework"
-			Inputs="$(_R2RFrameworkCachePath)"
-			Outputs="$(_R2RFrameworkCachePath2)"
+	<!-- Create dylibs for each R2R module (macOS/Mac Catalyst) -->
+	<Target Name="_CreateR2RModuleDylibs"
+			Condition="'$(CreateR2RDylib)' == 'true'"
+			Inputs="%(_R2RModule.ObjectFile)"
+			Outputs="%(_R2RModule.DylibOutput)"
 			>
-		<Delete Files="$(_R2RFrameworkOutput)" />
-		<Copy SourceFiles="$(_R2RFrameworkCachePath)" DestinationFiles="$(_R2RFrameworkCachePath2)" />
+
+		<MakeDir
+			SessionId="$(BuildSessionId)"
+			Directories="$(_R2RModuleIntermediateOutputPath)"
+		/>
+
+		<!-- Link the .o file into a dylib -->
 		<ItemGroup>
-			<FileWrites Include="$(_R2RFrameworkCachePath2)" />
+			<_CurrentR2RDylibLinkerFlags Remove="@(_CurrentR2RDylibLinkerFlags)" />
+			<_CurrentR2RDylibLinkerFlags Include="-dynamiclib" />
+			<_CurrentR2RDylibLinkerFlags Include="-Wl,-dead_strip" />
+			<_CurrentR2RDylibLinkerFlags Include="-Wl,-install_name,@rpath/%(_R2RModule.ModuleName)" />
+		</ItemGroup>
+
+		<LinkNativeCode
+			SessionId="$(BuildSessionId)"
+			ObjectFiles="%(_R2RModule.ObjectFile)"
+			OutputFile="%(_R2RModule.DylibOutput)"
+			LinkerFlags="@(_CurrentR2RDylibLinkerFlags)"
+
+			MinimumOSVersion="$(_MinimumOSVersion)"
+			SdkDevPath="$(_SdkDevPath)"
+			SdkIsSimulator="$(_SdkIsSimulator)"
+			SdkRoot="$(_SdkRoot)"
+			TargetArchitectures="$(TargetArchitectures)"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		/>
+
+		<ItemGroup>
+			<FileWrites Include="%(_R2RModule.DylibOutput)" />
 		</ItemGroup>
 	</Target>
 
-	<!-- link the object file created by the r2r compiler into a dynamic library we're going to put into the r2r framework -->
-	<Target Name="_LinkR2RFramework"
-			Inputs="@(_R2RFrameworkInputs)"
-			Outputs="$(_R2RFrameworkOutput)"
+	<!-- Generate the R2R module registration file (r2r_modules.mm) -->
+	<Target Name="_GenerateR2RModuleRegistration"
+			DependsOnTargets="_PrepareR2RModules"
+			Condition="@(_R2RModule->Count()) &gt; 0"
+			Inputs="@(_R2RModule->'%(ObjectFile)')"
+			Outputs="$(_R2RModuleRegistrationFile)"
 			>
 
-			<MakeDir
-				SessionId="$(BuildSessionId)"
-				Directories="$(_R2RFrameworkPath)"
-			/>
+		<GenerateR2RModuleRegistration
+			SessionId="$(BuildSessionId)"
+			R2RModules="@(_R2RModule)"
+			OutputFile="$(_R2RModuleRegistrationFile)"
+		/>
 
-			<LinkNativeCode
-				SessionId="$(BuildSessionId)"
-				ObjectFiles="@(_R2RFrameworkInputs)"
-				OutputFile="$(_R2RFrameworkOutput)"
-				LinkerFlags="@(_R2RFrameworkLinkerFlags)"
+		<ItemGroup>
+			<FileWrites Include="$(_R2RModuleRegistrationFile)" />
+		</ItemGroup>
+	</Target>
 
-				MinimumOSVersion="$(_MinimumOSVersion)"
-				SdkDevPath="$(_SdkDevPath)"
-				SdkIsSimulator="$(_SdkIsSimulator)"
-				SdkRoot="$(_SdkRoot)"
-				TargetArchitectures="$(TargetArchitectures)"
-				TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
-			/>
+	<!-- Always add the R2R module registration file to _MainFile if it exists, even when
+	     _GenerateR2RModuleRegistration is skipped due to incrementality.
+	     This must be a separate target so that _MainFile is populated on every build. -->
+	<Target Name="_AddR2RModuleRegistrationToMainFile"
+			DependsOnTargets="_GenerateR2RModuleRegistration"
+			Condition="@(_R2RModule->Count()) &gt; 0"
+			>
+		<ItemGroup>
+			<_MainFile Include="$(_R2RModuleRegistrationFile)" Condition="Exists('$(_R2RModuleRegistrationFile)')">
+				<Arch>$(TargetArchitectures.ToLowerInvariant())</Arch>
+			</_MainFile>
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_CreateR2RFramework"
-			Condition="'$(CreateR2RFramework)' == 'true'"
+			Condition="'$(CreateR2RFramework)' == 'true' And '$(IsMacEnabled)' != 'false'"
 			DependsOnTargets="$(_CreateR2RFrameworkDependsOn)"
 			AfterTargets="CreateReadyToRunImages"
 	/>
 
-	<!-- Create a dylib from the composite R2R output -->
+	<!-- Create dylibs from R2R output (macOS/Mac Catalyst) -->
 	<PropertyGroup>
 		<_CreateR2RDylibDependsOn>
 			_CollectR2RObjectFilesForLinking;
-			_PrepareR2RDylibCreation;
-			_ForceLinkR2RDylib;
-			_LinkR2RDylib;
+			_PrepareR2RModules;
+			_RegisterR2RNativeReferences;
+			_CreateR2RModuleDylibs;
+			_AddR2RModuleRegistrationToMainFile;
 		</_CreateR2RDylibDependsOn>
 	</PropertyGroup>
 
-	<Target Name="_PrepareR2RDylibCreation"
-			DependsOnTargets="CreateReadyToRunImages"
-			>
-		<PropertyGroup>
-			<_R2RDylibIntermediateOutputPath Condition="'$(_R2RFrameworkIntermediateOutputPath)' == ''">$(DeviceSpecificIntermediateOutputPath)r2rdylib/</_R2RDylibIntermediateOutputPath>
-			<_R2RDylibName Condition="'$(_R2RDylibName)' == ''">$(AssemblyName)</_R2RDylibName>
-			<_R2RDylibPath Condition="'$(_R2RDylibPath)' == ''">$(_R2RDylibIntermediateOutputPath)</_R2RDylibPath>
-			<_R2RDylibOutput Condition="'$(_R2RDylibOutput)' == ''">$(_R2RDylibPath)$(_R2RDylibName).r2r.dylib</_R2RDylibOutput>
-		</PropertyGroup>
-
-		<ItemGroup>
-			<_R2RDylibInputs Include="@(_R2RObjectFilesForLinking)" />
-			<_R2RDylibLinkerFlags Include="-dynamiclib" />
-			<_R2RDylibLinkerFlags Include="-Wl,-dead_strip" />
-			<_R2RDylibLinkerFlags Include="-Wl,-install_name,@rpath/$(_R2RDylibName).r2r.dylib" />
-
-			<_FileNativeReference Include="$(_R2RDylibOutput)" Kind="Dynamic" />
-		</ItemGroup>
-
-		<!-- write a hash of all the relevant input so that we can force a re-link if necessary -->
-		<PropertyGroup>
-			<_R2RDylibCachePath>$(_R2RDylibIntermediateOutputPath)cache.txt</_R2RDylibCachePath>
-			<_R2RDylibCachePath2>$(_R2RDylibCachePath).uptodate</_R2RDylibCachePath2>
-		</PropertyGroup>
-		<ItemGroup>
-			<_R2RDylibCache Include="@(_R2RDylibInputs)" />
-			<_R2RDylibCache Include="@(_R2RDylibLinkerFlags)" />
-			<_R2RDylibCache Include="$(_R2RDylibOutput)" />
-			<_R2RDylibCache Include="$(_MinimumOSVersion)" />
-		</ItemGroup>
-
-		<Hash
-			ItemsToHash="@(_R2RDylibCache)"
-			IgnoreCase="false">
-			<Output TaskParameter="HashResult" PropertyName="_R2RDylibCacheHash" />
-		</Hash>
-
-		<WriteLinesToFile Lines="$(_R2RDylibCacheHash)" File="$(_R2RDylibCachePath)" Overwrite="true" WriteOnlyWhenDifferent="true" />
-
-		<ItemGroup>
-			<FileWrites Include="$(_R2RDylibCachePath)" />
-		</ItemGroup>
-	</Target>
-
-	<!-- force the r2r dylib to be re-created by deleting the executable file-->
-	<Target Name="_ForceLinkR2RDylib"
-			Inputs="$(_R2RDylibCachePath)"
-			Outputs="$(_R2RDylibCachePath2)"
-			>
-		<Delete Files="$(_R2RDylibOutput)" />
-		<Copy SourceFiles="$(_R2RDylibCachePath)" DestinationFiles="$(_R2RDylibCachePath2)" />
-		<ItemGroup>
-			<FileWrites Include="$(_R2RDylibCachePath2)" />
-		</ItemGroup>
-	</Target>
-
-	<!-- link the object file created by the r2r compiler into a dynamic library -->
-	<Target Name="_LinkR2RDylib"
-			Inputs="@(_R2RDylibInputs)"
-			Outputs="$(_R2RDylibOutput)"
-			>
-
-			<LinkNativeCode
-				SessionId="$(BuildSessionId)"
-				ObjectFiles="@(_R2RDylibInputs)"
-				OutputFile="$(_R2RDylibOutput)"
-				LinkerFlags="@(_R2RDylibLinkerFlags)"
-
-				MinimumOSVersion="$(_MinimumOSVersion)"
-				SdkDevPath="$(_SdkDevPath)"
-				SdkIsSimulator="$(_SdkIsSimulator)"
-				SdkRoot="$(_SdkRoot)"
-				TargetArchitectures="$(TargetArchitectures)"
-				TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
-			/>
-	</Target>
-
 	<Target Name="_CreateR2RDylib"
-			Condition="'$(CreateR2RDylib)' == 'true'"
+			Condition="'$(CreateR2RDylib)' == 'true' And '$(IsMacEnabled)' != 'false'"
 			DependsOnTargets="$(_CreateR2RDylibDependsOn)"
 			AfterTargets="CreateReadyToRunImages"
 	/>
@@ -462,6 +474,8 @@
 			<_ComputeFrameworksToCreateAppManifestInputs Include="$(SupportedOSPlatformVersion)" />
 			<_ComputeFrameworksToCreateAppManifestInputs Include="$(TargetArchitectures)" />
 			<_ComputeFrameworksToCreateAppManifestInputs Include="$(_ComputedTargetFrameworkMoniker)" />
+			<!-- The bundle identifier is used to compute the framework's CFBundleIdentifier -->
+			<_ComputeFrameworksToCreateAppManifestInputs Include="$(_BundleIdentifier)" />
 		</ItemGroup>
 
 		<Hash
@@ -479,7 +493,7 @@
 
 	<Target
 		Name="_CreateInfoPlistForFrameworks"
-		Inputs="@(_CreatedFrameworksFromDylibs->'%(OriginatingDylib)');$(_ComputeFrameworksToCreateAppManifestHashedInputs)"
+		Inputs="@(_CreatedFrameworksFromDylibs->'%(OriginatingDylib)');$(_ComputeFrameworksToCreateAppManifestHashedInputsPath)"
 		Outputs="@(_CreatedFrameworksFromDylibs->'%(AppManifestPath)')"
 		>
 

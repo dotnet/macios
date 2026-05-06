@@ -4417,9 +4417,18 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
-      <Item ItemId=";MX2106_E" ItemType="0;.resx" PsrId="211" Leaf="true">
+      <Item ItemId=";MX2106_E1" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
-          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the more than one method named '{3}' was found in the type '{4}.]]></Val>
+          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named '{3}' was found in the type '{4}'.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{4}' 형식에 이름이 '{3}'인 메서드가 없어 {1} 오프셋의 {0}에서 BlockLiteral.{2}에 대한 호출을 최적화할 수 없습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2106_E2" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named '{3}' was found in the type '{4}'.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA['{4}' 형식에 이름이 '{3}'인 메서드가 두 개 이상 있어 {1} 오프셋의 {0}에서 BlockLiteral.{2}에 대한 호출을 최적화할 수 없습니다.]]></Val>
           </Tgt>

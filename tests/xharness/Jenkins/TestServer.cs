@@ -45,7 +45,7 @@ namespace Xharness.Jenkins {
 			// Try and find an unused port
 			int attemptsLeft = 50;
 			int port = 51234; // Try this port first, to try to not vary between runs just because.
-			Random r = new Random ((int) DateTime.Now.Ticks);
+			var r = new Random ((int) DateTime.Now.Ticks);
 			do {
 				var newPort = port != 0 ? port : r.Next (49152, 65535); // The suggested range for dynamic ports is 49152-65535 (IANA)
 				server = new HttpListener ();
@@ -68,10 +68,10 @@ namespace Xharness.Jenkins {
 					var context = server.GetContext ();
 					var request = context.Request;
 					var response = context.Response;
-					var arguments = System.Web.HttpUtility.ParseQueryString (request.Url.Query);
+					var arguments = System.Web.HttpUtility.ParseQueryString (request.Url?.Query ?? "");
 					try {
 						var allTasks = jenkins.Tasks.SelectMany ((v) => {
-							var rv = new List<ITestTask> ();
+							var rv = new List<TestTask> ();
 							var runsim = v as AggregatedRunSimulatorTask;
 							if (runsim is not null)
 								rv.AddRange (runsim.Tasks);
@@ -79,9 +79,9 @@ namespace Xharness.Jenkins {
 							return rv;
 						});
 
-						IEnumerable<ITestTask> find_tasks (StreamWriter writer, string ids)
+						IEnumerable<TestTask> find_tasks (StreamWriter writer, string ids)
 						{
-							IEnumerable<ITestTask> tasks;
+							IEnumerable<TestTask> tasks;
 							switch (request.Url.Query) {
 							case "?all":
 								tasks = jenkins.Tasks;
@@ -97,7 +97,7 @@ namespace Xharness.Jenkins {
 								return Array.Empty<AppleTestTask> ();
 							default:
 								var id_inputs = ids.Substring (1).Split (',');
-								var rv = new List<ITestTask> (id_inputs.Length);
+								var rv = new List<TestTask> (id_inputs.Length);
 								foreach (var id_input in id_inputs) {
 									if (int.TryParse (id_input, out var id)) {
 										var task = jenkins.Tasks.FirstOrDefault ((t) => t.ID == id);
@@ -118,9 +118,9 @@ namespace Xharness.Jenkins {
 							return tasks;
 						}
 
-						string serveFile = null;
+						string? serveFile = null;
 						// do not allow requests that are not http or https
-						if (request.Url.Scheme != Uri.UriSchemeHttp && request.Url.Scheme != Uri.UriSchemeHttps) {
+						if (request.Url?.Scheme != Uri.UriSchemeHttp && request.Url?.Scheme != Uri.UriSchemeHttps) {
 							response.StatusCode = 400;
 							response.StatusDescription = "Bad Request";
 							response.OutputStream.Write (System.Text.Encoding.UTF8.GetBytes ("Invalid local path"));
@@ -128,7 +128,7 @@ namespace Xharness.Jenkins {
 						}
 						var localPath = request.Url.LocalPath;
 						var file = Path.GetFileName (localPath);
-						var directoryName = Path.GetDirectoryName (localPath);
+						var directoryName = Path.GetDirectoryName (localPath)!;
 						var jenkinsDirectoryName = $"/{Path.GetFileName (jenkins.LogDirectory)}";
 
 						// for the request to be valid the local path has to be one of the following
@@ -329,7 +329,7 @@ namespace Xharness.Jenkins {
 							}
 
 							if (serveFile is null) {
-								serveFile = Path.Combine (Path.GetDirectoryName (jenkins.LogDirectory), localPath.Substring (1));
+								serveFile = Path.Combine (Path.GetDirectoryName (jenkins.LogDirectory)!, localPath.Substring (1));
 								serveFile = Path.GetFullPath (serveFile);
 								if (!serveFile.StartsWith (Path.GetDirectoryName (Path.GetFullPath (jenkins.LogDirectory)) + Path.DirectorySeparatorChar)) {
 									Console.WriteLine ($"400: {localPath}");

@@ -1,0 +1,26 @@
+{
+  "entries": {
+    "actions/github-script@v9.0.0": {
+      "repo": "actions/github-script",
+      "version": "v9.0.0",
+      "sha": "3a2844b7e9c422d3c10d287c895573f7108da1b3"
+    },
+    "github/gh-aw-actions/setup@v0.71.1": {
+      "repo": "github/gh-aw-actions/setup",
+      "version": "v0.71.1",
+      "sha": "239aec45b78c8799417efdd5bc6d8cc036629ec1"
+    }
+  },
+  "containers": {
+    "ghcr.io/github/gh-aw-mcpg:v0.3.0": {
+      "image": "ghcr.io/github/gh-aw-mcpg:v0.3.0",
+      "digest": "sha256:9c2228324fb1f26f39dc9471612e530ae3efc3156dac05efb2e8d212878d454d",
+      "pinned_image": "ghcr.io/github/gh-aw-mcpg:v0.3.0@sha256:9c2228324fb1f26f39dc9471612e530ae3efc3156dac05efb2e8d212878d454d"
+    },
+    "ghcr.io/github/github-mcp-server:v1.0.2": {
+      "image": "ghcr.io/github/github-mcp-server:v1.0.2",
+      "digest": "sha256:26db03408086a99cf1916348dcc4f9614206658f9082a8060dc7c81ad787f4ba",
+      "pinned_image": "ghcr.io/github/github-mcp-server:v1.0.2@sha256:26db03408086a99cf1916348dcc4f9614206658f9082a8060dc7c81ad787f4ba"
+    }
+  }
+}

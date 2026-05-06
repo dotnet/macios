@@ -18,7 +18,7 @@ namespace CoreData {
 	/// <remarks>To be added.</remarks>
 	[StrongDictionary ("UserInfoKeys")]
 	interface UserInfo {
-		/// <summary>Gets or sets an array that contains the multiple erros that occurred, if multiple errors occurred.</summary>
+		/// <summary>Gets or sets an array that contains the multiple errors that occurred, if multiple errors occurred.</summary>
 		///         <value>An array of <see cref="Foundation.NSError" /> objects that contains the errors that occurred.</value>
 		///         <remarks>To be added.</remarks>
 		NSError [] DetailedErrors { get; set; }
@@ -53,7 +53,7 @@ namespace CoreData {
 	[Static]
 	interface UserInfoKeys {
 		/// <summary>To be added.</summary>
-		///         <value>A key that identifies an array of <see cref="Foundation.NSError" /> objects that contains the errors that occured.</value>
+		///         <value>A key that identifies an array of <see cref="Foundation.NSError" /> objects that contains the errors that occurred.</value>
 		///         <remarks>
 		///           <para>This key corresponds to the <see cref="CoreData.UserInfo.DetailedErrors" /> property.</para>
 		///         </remarks>
@@ -896,7 +896,7 @@ namespace CoreData {
 		[Export ("initWithExpressionType:")]
 		NativeHandle Constructor (NSExpressionType type);
 
-		/// <param name="fetch">The expression from which to create a new fetch request expresssion.</param>
+		/// <param name="fetch">The expression from which to create a new fetch request expression.</param>
 		///         <param name="context">The context in which to create the fetch request expression.</param>
 		///         <param name="countOnly">Whether to create a fetch request expression that counts the matches, rather than returning them.</param>
 		///         <summary>Creates a new <see cref="CoreData.NSFetchRequestExpression" /> from the specified expression and context.</summary>
@@ -1228,7 +1228,7 @@ namespace CoreData {
 		NSIndexPath FromObject (NSObject obj);
 
 		/// <param name="path">To be added.</param>
-		///         <summary>Returns the obect that is located at the specified index <paramref name="path" />.</summary>
+		///         <summary>Returns the object that is located at the specified index <paramref name="path" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("objectAtIndexPath:")]
@@ -1408,7 +1408,7 @@ namespace CoreData {
 		/// <param name="forObjectId">To be added.</param>
 		///         <param name="context">To be added.</param>
 		///         <param name="error">To be added.</param>
-		///         <summary>Returns a <see cref="CoreData.NSIncrementalStoreNode" /> for the persisten external values of the identified object and reports any errors in <paramref name="error" />.</summary>
+		///         <summary>Returns a <see cref="CoreData.NSIncrementalStoreNode" /> for the persistent external values of the identified object and reports any errors in <paramref name="error" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("newValuesForObjectWithID:withContext:error:")]
@@ -1439,7 +1439,7 @@ namespace CoreData {
 
 		/// <param name="array">To be added.</param>
 		///         <param name="error">To be added.</param>
-		///         <summary>Returns an array of permanent identfiers for the provides newly-inserted objects and reports any errors in <paramref name="error" />.</summary>
+		///         <summary>Returns an array of permanent identifiers for the provided newly inserted objects and reports any errors in <paramref name="error" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("obtainPermanentIDsForObjects:error:")]
@@ -1581,7 +1581,7 @@ namespace CoreData {
 		[Export ("entity", ArgumentSemantic.Strong)]
 		NSEntityDescription Entity { get; }
 
-		/// <summary>Gets the object identifer.</summary>
+		/// <summary>Gets the object identifier.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>This value changes when an unsaved object is saved.</remarks>
 		[Export ("objectID", ArgumentSemantic.Strong)]
@@ -2116,7 +2116,7 @@ namespace CoreData {
 
 		/// <param name="objects">To be added.</param>
 		///         <param name="error">To be added.</param>
-		///         <summary>Converts the objec identifiers to permanent identifiers for the provided <paramref name="objects" />. Returns <see langword="true" /> if all of the identifiers were converted.</summary>
+		///         <summary>Converts the object identifiers to permanent identifiers for the provided <paramref name="objects" />. Returns <see langword="true" /> if all of the identifiers were converted.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Export ("obtainPermanentIDsForObjects:error:")]
@@ -2213,7 +2213,7 @@ namespace CoreData {
 		[return: NullAllowed]
 		NSManagedObject GetExistingObject (NSManagedObjectID objectID, out NSError error);
 
-		/// <summary>Gets or sets a Boolean value that controls whether inaccessible faults wil be deleted.</summary>
+		/// <summary>Gets or sets a Boolean value that controls whether inaccessible faults will be deleted.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -2226,7 +2226,7 @@ namespace CoreData {
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		///         <summary>Returns a Boolean value that controls whether inaccessible faults wil be handled.</summary>
+		///         <summary>Returns a Boolean value that controls whether inaccessible faults will be handled.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -2242,7 +2242,7 @@ namespace CoreData {
 		[Export ("mergeChangesFromRemoteContextSave:intoContexts:")]
 		void MergeChangesFromRemoteContextSave (NSDictionary changeNotificationData, NSManagedObjectContext [] contexts);
 
-		/// <summary>Gets the token that identifes the current query generation behavior.</summary>
+		/// <summary>Gets the token that identifies the current query generation behavior.</summary>
 		///         <value>
 		///           <para>(More documentation for this node is coming)</para>
 		///           <para tool="nullallowed">This value can be <see langword="null" />.</para>
@@ -3814,6 +3814,23 @@ namespace CoreData {
 		[Static, Export ("setMetadata:forPersistentStoreOfType:URL:options:error:")]
 		bool SetMetadata ([NullAllowed] NSDictionary<NSString, NSObject> metadata, string storeType, NSUrl url, [NullAllowed] NSDictionary options, out NSError error);
 
+		/// <summary>Returns a cached managed object model for the persistent store at the specified URL, if one exists.</summary>
+		/// <param name="url">The URL of the persistent store.</param>
+		/// <param name="options">
+		///   <para>Options for accessing the persistent store.</para>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <param name="error">
+		///   <para>On output, contains an error object if an error occurred.</para>
+		///   <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
+		/// </param>
+		/// <returns>The cached <see cref="NSManagedObjectModel" /> for the persistent store, or <see langword="null" /> if no cached model exists.</returns>
+		[TV (26, 4), Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Static]
+		[Export ("cachedModelForPersistentStoreAtURL:options:error:")]
+		[return: NullAllowed]
+		NSManagedObjectModel GetCachedModel (NSUrl url, [NullAllowed] NSDictionary options, [NullAllowed] out NSError error);
+
 		/// <param name="metadata">
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
@@ -3839,7 +3856,7 @@ namespace CoreData {
 		[Export ("initWithManagedObjectModel:")]
 		NativeHandle Constructor (NSManagedObjectModel model);
 
-		/// <summary>Gets the managed objec model for the receiver.</summary>
+		/// <summary>Gets the managed object model for the receiver.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("managedObjectModel", ArgumentSemantic.Strong)]
@@ -4429,7 +4446,7 @@ namespace CoreData {
 		NSBatchUpdateRequestResultType ResultType { get; }
 	}
 
-	/// <summary>Class that represents the results of an aysnchronous request that was made of a persistent data store.</summary>
+	/// <summary>Class that represents the results of an asynchronous request that was made of a persistent data store.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <related type="externalDocumentation" href="https://developer.apple.com/reference/CoreData/NSPersistentStoreAsynchronousResult">Apple documentation for <c>NSPersistentStoreAsynchronousResult</c></related>
 	[MacCatalyst (13, 1)]
@@ -5375,4 +5392,3 @@ namespace CoreData {
 		NativeHandle Constructor (NSManagedObjectModelReference currentModel, NSManagedObjectModelReference nextModel);
 	}
 }
-

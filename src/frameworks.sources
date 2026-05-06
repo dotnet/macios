@@ -152,6 +152,17 @@ APPKIT_SOURCES = \
 	AppKit/NSCollectionView.cs \
 	AppKit/NSCollectionViewLayout.cs \
 	AppKit/NSColorPickerTouchBarItem.cs \
+	AppKit/NSControlTextEditingEventArgs.cs \
+	AppKit/NSMenuItemEventArgs.cs \
+	AppKit/NSMenuItemIndexEventArgs.cs \
+	AppKit/NSOutlineViewItemEventArgs.cs \
+	AppKit/NSTextAlternativesSelectedAlternativeStringEventArgs.cs \
+	AppKit/NSTextViewDidChangeSelectionEventArgs.cs \
+	AppKit/NSTextViewWillChangeNotifyingTextViewEventArgs.cs \
+	AppKit/NSTextDidEndEditingEventArgs.cs \
+	AppKit/NSViewColumnMoveEventArgs.cs \
+	AppKit/NSViewColumnResizeEventArgs.cs \
+	AppKit/NSWorkspaceFileOperationEventArgs.cs \
 	AppKit/NSSliderTouchBarItem.cs \
 	AppKit/NSView.cs \
 	AppKit/NSCollectionLayoutAnchor.cs \
@@ -282,6 +293,9 @@ AVFOUNDATION_SOURCES = \
 
 # AVKit
 
+AVKIT_CORE_SOURCES = \
+	AVKit/AVLegibleMediaOptionsMenuState.cs \
+
 AVKIT_API_SOURCES = \
 	AVKit/Enums.cs \
 
@@ -327,12 +341,16 @@ CALLKIT_SOURCES = \
 
 CARPLAY_API_SOURCES = \
 	CarPlay/CPEnums.cs \
+	CarPlay/CPLocationCoordinate3D.cs \
 
 CARPLAY_SOURCES = \
 	CarPlay/CPCompat.cs \
-	CarPlay/CPNavigationAlert.cs \
-	CarPlay/CPNowPlayingSportsClock.cs \
+	CarPlay/CPLocationCoordinate3D.cs \
 	CarPlay/CPMessageListItem.cs \
+	CarPlay/CPNavigationAlert.cs \
+	CarPlay/CPNavigationWaypoint.cs \
+	CarPlay/CPNowPlayingSportsClock.cs \
+	CarPlay/CPRouteSegment.cs \
 
 # ClassKit
 
@@ -617,6 +635,7 @@ COREMIDI_SOURCES = \
 COREML_SOURCES = \
 	CoreML/MLDictionaryFeatureProvider.cs \
 	CoreML/MLModel.cs \
+	CoreML/MLModelCollection.cs \
 	CoreML/MLMultiArray.cs \
 	CoreML/MLMultiArrayConstraint.cs \
 
@@ -870,6 +889,7 @@ FOUNDATION_SOURCES = \
 	Foundation/NSNetService.cs \
 	Foundation/NSNotificationCenter.cs \
 	Foundation/NSNull.cs \
+	Foundation/NSNullBehavior.cs \
 	Foundation/NSOrderedSet.cs \
 	Foundation/NSOrderedSet_1.cs \
 	Foundation/NSOutputStream.cs \
@@ -1436,6 +1456,7 @@ PDFKIT_API_SOURCES = \
 PDFKIT_SOURCES = \
 	PdfKit/PdfAnnotation.cs \
 	PdfKit/PdfKit.cs \
+	PdfKit/PdfViewAnnotationHitEventArgs.cs \
 
 # Phase
 
@@ -1468,6 +1489,11 @@ PRINTCORE_SOURCES = \
 # PushToTalk
 PUSHTOTALK_SOURCES = \
 	PushToTalk/Compat.cs \
+
+# QuartzComposer
+
+QUARTZCOMPOSER_SOURCES = \
+	QuartzComposer/QCComposition.cs \
 
 # QuickLook
 
@@ -1880,6 +1906,7 @@ SHARED_CORE_SOURCES = \
 	ObjCRuntime/TransientCFString.cs \
 	ObjCRuntime/TransientString.cs \
 	ObjCRuntime/NFloat.cs \
+	ObjCRuntime/ObjectiveCFrameworkAttribute.cs \
 	ObjCRuntime/ObsoleteConstants.cs \
 	ObjCRuntime/Protocol.cs \
 	ObjCRuntime/Registrar.core.cs \
@@ -1942,6 +1969,7 @@ SHARED_SOURCES = \
 	ObjCRuntime/TrampolineBlockBase.cs \
 	ObjCRuntime/TransientAttribute.cs \
 	ObjCRuntime/TypeConverter.cs \
+	ObjCRuntime/TypeMaps.cs \
 	ObjCRuntime/UserDelegateTypeAttribute.cs \
 	System.Net.Http/CFContentStream.cs \
 	System.Net.Http/CFNetworkHandler.cs \

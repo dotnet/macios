@@ -218,6 +218,10 @@
 		<Content Include="../ContentH.txt">
 			<PublishFolderType>None</PublishFolderType>
 		</Content>
+		<!-- Content with PublishFolderType=Resource: bundled (https://github.com/dotnet/macios/issues/25053) -->
+		<Content Include="../ContentJ.txt">
+			<PublishFolderType>Resource</PublishFolderType>
+		</Content>
 
 		<!-- EmbeddedResource items -->
 
@@ -287,6 +291,10 @@
 		<!-- BundleResource with just PublishFolderType=None: not bundled -->
 		<BundleResource Include="../BundleResourceH.txt">
 			<PublishFolderType>None</PublishFolderType>
+		</BundleResource>
+		<!-- BundleResource with PublishFolderType=Resource: bundled (https://github.com/dotnet/macios/issues/25053) -->
+		<BundleResource Include="../BundleResourceJ.txt">
+			<PublishFolderType>Resource</PublishFolderType>
 		</BundleResource>
 
 		<None Remove="@(Content)" />

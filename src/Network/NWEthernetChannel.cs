@@ -113,7 +113,7 @@ namespace Network {
 				unsafe {
 					delegate* unmanaged<IntPtr, IntPtr, void> trampoline = &TrampolineSendCompletion;
 					using var block = new BlockLiteral (trampoline, callback, typeof (NWEthernetChannel), nameof (TrampolineSendCompletion));
-					var remoteAddressStr = new TransientString (remoteAddress);
+					using var remoteAddressStr = new TransientString (remoteAddress);
 					nw_ethernet_channel_send (GetCheckedHandle (), dispatchData.GetHandle (), vlanTag, remoteAddressStr, &block);
 				}
 			}

@@ -40,12 +40,11 @@ if test -z "$FRAGMENT_PATH"; then
 	FRAGMENT_PATH=$PROJECT_FILE.inc
 fi
 
-if test -z "$BUILD_EXECUTABLE"; then
-	if test -z "$DOTNET"; then
-		echo "The DOTNET environment variable isn't set to the location of the 'dotnet' executable"
-		exit 1
-	fi
-	BUILD_EXECUTABLE="$DOTNET build"
+BUILD_EXECUTABLE="dotnet build"
+
+if ! dotnet --version >& /dev/null; then
+	# if we don't have a working .NET version, then we can't do anything here.
+	exit 0
 fi
 
 if test -z "$BUILD_VERBOSITY"; then
@@ -57,10 +56,14 @@ fi
 # ProjectFile variable) and writes all the project references (recursively) to
 # a file (the ReferenceListPath variable).
 (
-cp ProjectInspector.csproj "$PROJECT_DIR"
-cd "$PROJECT_DIR"
-$BUILD_EXECUTABLE ProjectInspector.csproj "/t:WriteProjectReferences" "/p:ProjectFile=$PROJECT_FILE" "/p:ReferenceListPath=$REFERENCES_PATH" $BUILD_VERBOSITY /nologo
-rm -f ProjectInspector.csproj
+	function upon_exit ()
+	{
+		rm -f "$PROJECT_DIR/ProjectInspector.csproj"
+	}
+	trap upon_exit EXIT
+	cp ProjectInspector.csproj "$PROJECT_DIR"
+	cd "$PROJECT_DIR"
+	$BUILD_EXECUTABLE ProjectInspector.csproj "/t:WriteProjectReferences" "/p:ProjectFile=$PROJECT_FILE" "/p:ReferenceListPath=$REFERENCES_PATH" $BUILD_VERBOSITY /nologo
 )
 
 # Now we have a list of all the project referenced by the input project. The

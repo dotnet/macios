@@ -126,6 +126,7 @@ IGNORED_MACCATALYST_FRAMEWORKS = \
 COMMON_SHARPIE_ARGUMENTS = \
 	-a arm64 \
 	-modules true \
+	--custom-delegates \
 	--clang-resource-dir $(TOP)/tools/sharpie/clang \
 
 IOS_SHARPIE_ARGUMENTS = \

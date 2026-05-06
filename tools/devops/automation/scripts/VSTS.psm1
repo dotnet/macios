@@ -419,6 +419,14 @@ class BuildConfiguration {
             }
         }
 
+        # export Xcode version info for Windows test environments
+        foreach ($variableName in @("XCODE_VERSION", "XCODE_IS_STABLE")) {
+            $variableValue = $config.$variableName
+            if ($variableValue) {
+                Write-Host "##vso[task.setvariable variable=$variableName;isOutput=true]$variableValue"
+            }
+        }
+
         return $config
     }
 
@@ -502,6 +510,12 @@ class BuildConfiguration {
 
             $variableName = "$($platform.ToUpper())__NUGET_OS_VERSION"
             $variableValue = [Environment]::GetEnvironmentVariable("$variableName")
+            $configuration | Add-Member -NotePropertyName $variableName -NotePropertyValue $variableValue
+        }
+
+        # add Xcode version info so that Windows tests can determine preview API diagnostic suppression
+        foreach ($variableName in @("XCODE_VERSION", "XCODE_IS_STABLE")) {
+            $variableValue = [Environment]::GetEnvironmentVariable("CONFIGURE_PLATFORMS_$variableName")
             $configuration | Add-Member -NotePropertyName $variableName -NotePropertyValue $variableValue
         }
 

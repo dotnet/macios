@@ -9,7 +9,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSControlShouldChangeControlSize ()
 		{
-			Asserts.EnsureYosemite ();
 			var control = new NSButton ();
 			var size = control.ControlSize;
 			control.ControlSize = NSControlSize.Mini;
@@ -21,8 +20,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSControlShouldChangeHighlighted ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var control = new NSButton ();
 			var highlighted = control.Highlighted;
 			control.Highlighted = !highlighted;
@@ -33,8 +30,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSControlShouldChangeLineBreakMode ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var control = new NSButton ();
 			var lineBreak = control.LineBreakMode;
 			control.LineBreakMode = NSLineBreakMode.Clipping;

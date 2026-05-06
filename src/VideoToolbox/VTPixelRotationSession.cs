@@ -32,6 +32,7 @@ namespace VideoToolbox {
 		[DllImport (Constants.VideoToolboxLibrary)]
 		extern static void VTPixelRotationSessionInvalidate (/* VTPixelRotationSessionRef */ IntPtr session);
 
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero)

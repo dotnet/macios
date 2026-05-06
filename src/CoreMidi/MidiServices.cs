@@ -738,7 +738,7 @@ namespace CoreMidi {
 			}
 		}
 
-		/// <include file="../../docs/api/CoreMidi/MidiClient.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiClient.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			SetupChanged = null;
@@ -1106,7 +1106,7 @@ namespace CoreMidi {
 				gch.Free ();
 		}
 
-		/// <include file="../../docs/api/CoreMidi/MidiPort.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiPort.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			MessageReceived = null;
@@ -1906,19 +1906,32 @@ namespace CoreMidi {
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		// kMIDIDriverPropertyUsesSerial doesn't exist on iOS or Mac Catalyst, but was accidentally exposed.
+#if __MACOS__ || ((__MACCATALYST__ || __IOS__) && !XAMCORE_5_0)
+		/// <summary>A value indicating whether the driver uses serial ports.</summary>
+#if __MACCATALYST__ || __IOS__
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Obsolete ("This property only works on macOS.")]
+#endif
+		[UnsupportedOSPlatform ("tvos")]
+		[UnsupportedOSPlatform ("ios")]
+		[UnsupportedOSPlatform ("maccatalyst")]
+		[SupportedOSPlatform ("macos")]
 		public bool UsesSerial {
 			get {
-				var kMIDIDriverPropertyUsesSerial = Dlfcn.GetIntPtr (Libraries.CoreMidi.Handle, "kMIDIDriverPropertyUsesSerial");
-				return GetInt (kMIDIDriverPropertyUsesSerial) != 0;
+#if __MACCATALYST__ || __IOS__
+				return false;
+#else
+				return GetInt (MidiDriverPropertyExtensions.kMIDIDriverPropertyUsesSerial) != 0;
+#endif
 			}
 			set {
-				var kMIDIDriverPropertyUsesSerial = Dlfcn.GetIntPtr (Libraries.CoreMidi.Handle, "kMIDIDriverPropertyUsesSerial");
-				SetInt (kMIDIDriverPropertyUsesSerial, value ? 1 : 0);
+#if !__MACCATALYST__ && !__IOS__
+				SetInt (MidiDriverPropertyExtensions.kMIDIDriverPropertyUsesSerial, value ? 1 : 0);
+#endif
 			}
 		}
+#endif // __MACOS__ || ((__MACCATALYST__ || __IOS__) && !XAMCORE_5_0)
 
 #if !XAMCORE_5_0 || __MACOS__
 		/// <summary>To be added.</summary>
@@ -2644,7 +2657,7 @@ namespace CoreMidi {
 			}
 		}
 
-		/// <include file="../../docs/api/CoreMidi/MidiEndpoint.xml" path="/Documentation/Docs[@DocId='M:CoreMidi.MidiEndpoint.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			MessageReceived = null;

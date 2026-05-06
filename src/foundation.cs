@@ -136,7 +136,7 @@ namespace Foundation {
 namespace Foundation {
 	/// <param name="obj1">To be added.</param>
 	/// <param name="obj2">To be added.</param>
-	/// <summary>A delegate that defines the comparison function to be used with functins such as <see cref="Foundation.NSArray.Sort(Foundation.NSComparator)" />.</summary>
+	/// <summary>A delegate that defines the comparison function to be used with functions such as <see cref="Foundation.NSArray.Sort(Foundation.NSComparator)" />.</summary>
 	/// <returns>To be added.</returns>
 	/// <remarks>To be added.</remarks>
 	delegate NSComparisonResult NSComparator (NSObject obj1, NSObject obj2);
@@ -2235,7 +2235,7 @@ namespace Foundation {
 		/// <summary>Low-level: decodes the item with the associated key into a memory block,
 		/// 	and returns a pointer to it.</summary>
 		/// <returns>Pointer to the block of memory that contains at least
-		/// 	the number of bytes set on the lenght parameter.</returns>
+		/// 	the number of bytes set on the length parameter.</returns>
 		/// <remarks>
 		///         </remarks>
 		[Export ("decodeBytesForKey:returnedLength:")]
@@ -2245,7 +2245,7 @@ namespace Foundation {
 		/// <summary>Low-level: decodes the next item into a memory block,
 		/// 	and returns a pointer to it.</summary>
 		/// <returns>Pointer to the block of memory that contains at least
-		/// 	the number of bytes set on the lenght parameter.</returns>
+		/// 	the number of bytes set on the length parameter.</returns>
 		/// <remarks>
 		///         </remarks>
 		[Export ("decodeBytesWithReturnedLength:")]
@@ -7986,7 +7986,7 @@ namespace Foundation {
 		/// 	  </para>
 		///           <example>
 		///             <code lang="c#">
-		/// // Retrieve the gloabl NSButtonDelay setting on MacOS:
+		/// // Retrieve the global NSButtonDelay setting on macOS:
 		/// var global = new NSUserDefaults (NSUserDefaults.GlobalDomain);
 		/// Console.WriteLine ("Delay: " + j.FloatForKey ("NSButtonDelay"));
 		/// 	    </code>
@@ -7995,7 +7995,7 @@ namespace Foundation {
 		[Field ("NSGlobalDomain")]
 		NSString GlobalDomain { get; }
 
-		/// <summary>This is they key used to retrieve the domain associated with the command line arguments passed at startup.</summary>
+		/// <summary>This is the key used to retrieve the domain associated with the command line arguments passed at startup.</summary>
 		///         <value>
 		///         </value>
 		///         <remarks>
@@ -8012,7 +8012,7 @@ namespace Foundation {
 		/// 	  </para>
 		///           <example>
 		///             <code lang="c#">
-		/// // Retrieve the gloabl NSButtonDelay setting on MacOS:
+		/// // Retrieve the global NSButtonDelay setting on macOS:
 		/// var global = new NSUserDefaults (NSUserDefaults.GlobalDomain);
 		/// Console.WriteLine ("Delay: " + j.FloatForKey ("NSButtonDelay"));
 		/// 	    </code>
@@ -12595,6 +12595,7 @@ namespace Foundation {
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
+	[ObjectiveCFramework ("UIKit")]
 	interface NSStringDrawingContext {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -12602,7 +12603,7 @@ namespace Foundation {
 		[Export ("minimumScaleFactor")]
 		nfloat MinimumScaleFactor { get; set; }
 
-		/// <summary>Desired tracking adjustement (minimum space to maintain between characteres) desired to be used during the drawing operation.</summary>
+		/// <summary>Desired tracking adjustment (minimum space to maintain between characters) to be used during the drawing operation.</summary>
 		/// <value>The value is specified in points, typically a value between -0.5f and 0.</value>
 		/// <remarks>Zero means that standard spacing should be used.  Use negative values to adjust the tracking, for example -0.5f allows characters to be closer together by half a point. </remarks>
 		[NoTV]
@@ -18730,6 +18731,57 @@ namespace Foundation {
 		[MacCatalyst (13, 1)]
 		[Export ("allowEvaluation")]
 		void AllowEvaluation ();
+
+		/// <summary>Validates this predicate using the specified validator and, if valid, allows it to be evaluated.</summary>
+		/// <param name="validator">The <see cref="INSPredicateValidating" /> object used to validate the predicate before allowing evaluation.</param>
+		/// <param name="error">When this method returns <see langword="false" />, contains an <see cref="NSError" /> describing the validation failure; otherwise, <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the predicate passed validation and is now allowed to be evaluated; otherwise, <see langword="false" />.</returns>
+		[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
+		[Export ("allowEvaluationWithValidator:error:")]
+		bool AllowEvaluation (INSPredicateValidating validator, [NullAllowed] out NSError error);
+	}
+
+	/// <summary>Protocol interface that represents the methods declared by the <see cref="NSPredicateValidating" /> protocol.</summary>
+	interface INSPredicateValidating { }
+
+	/// <summary>Provides custom validation logic for <see cref="NSPredicate" /> and <see cref="NSExpression" /> objects before they are evaluated.</summary>
+	/// <remarks>
+	///   <para>Implement this protocol to control which predicates and expressions are considered safe for evaluation. Each visitor method is called during
+	///   validation, allowing the implementation to inspect and approve or reject individual components of a predicate tree.</para>
+	/// </remarks>
+	[iOS (26, 4), TV (26, 4), Mac (26, 4), MacCatalyst (26, 4)]
+	[Protocol (BackwardsCompatibleCodeGeneration = false), Model]
+	[BaseType (typeof (NSObject))]
+	interface NSPredicateValidating {
+		/// <summary>Validates whether the specified predicate is allowed to be evaluated.</summary>
+		/// <param name="predicate">The <see cref="NSPredicate" /> to validate.</param>
+		/// <param name="error">When this method returns <see langword="false" />, contains an <see cref="NSError" /> describing why the predicate was rejected; otherwise, <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the predicate is valid and allowed; otherwise, <see langword="false" />.</returns>
+		[Export ("visitPredicate:error:")]
+		bool VisitPredicate (NSPredicate predicate, [NullAllowed] out NSError error);
+
+		/// <summary>Validates whether the specified expression is allowed to be evaluated.</summary>
+		/// <param name="expression">The <see cref="NSExpression" /> to validate.</param>
+		/// <param name="error">When this method returns <see langword="false" />, contains an <see cref="NSError" /> describing why the expression was rejected; otherwise, <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the expression is valid and allowed; otherwise, <see langword="false" />.</returns>
+		[Export ("visitExpression:error:")]
+		bool VisitExpression (NSExpression expression, [NullAllowed] out NSError error);
+
+		/// <summary>Validates whether the specified comparison operator type is allowed to be used in a predicate.</summary>
+		/// <param name="operatorType">The <see cref="NSPredicateOperatorType" /> to validate.</param>
+		/// <param name="error">When this method returns <see langword="false" />, contains an <see cref="NSError" /> describing why the operator type was rejected; otherwise, <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the operator type is valid and allowed; otherwise, <see langword="false" />.</returns>
+		[Export ("visitOperatorType:error:")]
+		bool VisitOperatorType (NSPredicateOperatorType operatorType, [NullAllowed] out NSError error);
+
+		/// <summary>Validates whether the specified key path expression is allowed to be evaluated.</summary>
+		/// <param name="expression">The key path <see cref="NSExpression" /> to validate.</param>
+		/// <param name="scope">The scope component of the key path, or <see langword="null" /> if no scope is specified.</param>
+		/// <param name="key">The key component of the key path, or <see langword="null" /> if no key is specified.</param>
+		/// <param name="error">When this method returns <see langword="false" />, contains an <see cref="NSError" /> describing why the key path expression was rejected; otherwise, <see langword="null" />.</param>
+		/// <returns><see langword="true" /> if the key path expression is valid and allowed; otherwise, <see langword="false" />.</returns>
+		[Export ("visitExpressionKeyPath:scope:key:error:")]
+		bool VisitExpressionKeyPath (NSExpression expression, [NullAllowed] string scope, [NullAllowed] string key, [NullAllowed] out NSError error);
 	}
 
 	/// <summary>Defines an extension method for <see cref="Foundation.NSOrderedSet" /> objects allowing them to be filtered via an <see cref="Foundation.NSPredicate" />.</summary>

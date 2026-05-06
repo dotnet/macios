@@ -14,7 +14,7 @@ namespace Xamarin.MacDev.Tasks {
 		public override void BundlePackageType ()
 		{
 			Assert.That (CompiledPlist.ContainsKey (ManifestKeys.CFBundlePackageType), "#1");
-			Assert.AreEqual (CompiledPlist.Get<PString> (ManifestKeys.CFBundlePackageType).Value, "XPC!", "#2");
+			Assert.AreEqual (CompiledPlist.Get<PString> (ManifestKeys.CFBundlePackageType)?.Value, "XPC!", "#2");
 		}
 	}
 }

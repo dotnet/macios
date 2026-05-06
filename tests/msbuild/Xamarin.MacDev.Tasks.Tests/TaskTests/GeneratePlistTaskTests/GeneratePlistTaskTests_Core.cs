@@ -22,15 +22,15 @@ namespace Xamarin.MacDev.Tasks {
 
 		protected PDictionary Plist {
 			get; set;
-		}
+		} = null!;
 
 		protected PDictionary CompiledPlist {
 			get; set;
-		}
+		} = null!;
 
 		protected CompileAppManifest Task {
 			get; set;
-		}
+		} = null!;
 
 		protected abstract ApplePlatform Platform { get; }
 
@@ -60,16 +60,16 @@ namespace Xamarin.MacDev.Tasks {
 			ConfigureTask ();
 
 			ExecuteTask (Task);
-			CompiledPlist = PDictionary.FromFile (Task.CompiledAppManifest.ItemSpec);
+			CompiledPlist = PDictionary.FromFile (Task.CompiledAppManifest!.ItemSpec) ?? throw new InvalidOperationException ("Failed to load compiled plist");
 		}
 
 		#region General tests
 		[Test]
 		public void PlistMissing ()
 		{
-			File.Delete (Task.AppManifest.ItemSpec);
+			File.Delete (Task.AppManifest!.ItemSpec);
 			Assert.IsTrue (Task.Execute (), "#1");
-			Assert.That (Task.CompiledAppManifest.ItemSpec, Does.Exist, "#2");
+			Assert.That (Task.CompiledAppManifest!.ItemSpec, Does.Exist, "#2");
 		}
 
 		[Test]
@@ -77,14 +77,14 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			Assert.IsTrue (Task.Execute (), "#1");
 			Assert.IsNotNull (Task.CompiledAppManifest?.ItemSpec, "#2");
-			Assert.IsTrue (File.Exists (Task.CompiledAppManifest.ItemSpec), "#3");
+			Assert.IsTrue (File.Exists (Task.CompiledAppManifest!.ItemSpec), "#3");
 		}
 
 		[Test]
 		public void MissingBundleIdentifier ()
 		{
 			Plist.Remove ("CFBundleIdentifier");
-			Plist.Save (Task.AppManifest.ItemSpec);
+			Plist.Save (Task.AppManifest!.ItemSpec);
 			Assert.IsTrue (Task.Execute (), "#1");
 		}
 
@@ -92,7 +92,7 @@ namespace Xamarin.MacDev.Tasks {
 		public void MissingDisplayName ()
 		{
 			Plist.Remove ("CFBundleDisplayName");
-			Plist.Save (Task.AppManifest.ItemSpec);
+			Plist.Save (Task.AppManifest!.ItemSpec);
 			Assert.IsTrue (Task.Execute (), "#1");
 		}
 
@@ -101,7 +101,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var keyName = "com.microsoft." + Platform.AsString ().ToLowerInvariant ();
 			Assert.That (CompiledPlist.ContainsKey (keyName), "#1");
-			Assert.That (CompiledPlist.Get<PDictionary> (keyName).GetString ("Version").Value, Is.Not.Null.Or.Empty, "#2");
+			Assert.That (CompiledPlist.Get<PDictionary> (keyName)?.GetString ("Version")?.Value, Is.Not.Null.Or.Empty, "#2");
 		}
 		#endregion
 
@@ -110,7 +110,7 @@ namespace Xamarin.MacDev.Tasks {
 		public void BuildMachineOSBuild ()
 		{
 			Assert.That (CompiledPlist.ContainsKey (ManifestKeys.BuildMachineOSBuild), "#1");
-			Assert.That (CompiledPlist.Get<PString> (ManifestKeys.BuildMachineOSBuild).Value, Is.Not.Null.Or.Empty, "#2");
+			Assert.That (CompiledPlist.Get<PString> (ManifestKeys.BuildMachineOSBuild)?.Value, Is.Not.Null.Or.Empty, "#2");
 		}
 
 		[Test]
@@ -123,56 +123,56 @@ namespace Xamarin.MacDev.Tasks {
 		public virtual void BundleExecutable ()
 		{
 			Assert.That (CompiledPlist.ContainsKey (ManifestKeys.CFBundleExecutable), "#1");
-			Assert.AreEqual (CompiledPlist.Get<PString> (ManifestKeys.CFBundleExecutable).Value, assemblyName, "#2");
+			Assert.AreEqual (CompiledPlist.Get<PString> (ManifestKeys.CFBundleExecutable)?.Value, assemblyName, "#2");
 		}
 
 		[Test]
 		public virtual void BundleName ()
 		{
 			Assert.That (CompiledPlist.ContainsKey (ManifestKeys.CFBundleName), "#1");
-			Assert.AreEqual (CompiledPlist.Get<PString> (ManifestKeys.CFBundleName).Value, appBundleName, "#2");
+			Assert.AreEqual (CompiledPlist.Get<PString> (ManifestKeys.CFBundleName)?.Value, appBundleName, "#2");
 		}
 
 		[Test]
 		public virtual void BundleIdentifier ()
 		{
 			Assert.That (CompiledPlist.ContainsKey (ManifestKeys.CFBundleIdentifier), "#1");
-			Assert.AreEqual (CompiledPlist.Get<PString> (ManifestKeys.CFBundleIdentifier).Value, bundleIdentifier, "#2");
+			Assert.AreEqual (CompiledPlist.Get<PString> (ManifestKeys.CFBundleIdentifier)?.Value, bundleIdentifier, "#2");
 		}
 
 		[Test]
 		public virtual void BundleInfoDictionaryVersion ()
 		{
 			Assert.That (CompiledPlist.ContainsKey (ManifestKeys.CFBundleInfoDictionaryVersion), "#1");
-			Assert.That (CompiledPlist.Get<PString> (ManifestKeys.CFBundleInfoDictionaryVersion).Value, Is.Not.Null.Or.Empty, "#2");
+			Assert.That (CompiledPlist.Get<PString> (ManifestKeys.CFBundleInfoDictionaryVersion)?.Value, Is.Not.Null.Or.Empty, "#2");
 		}
 
 		[Test]
 		public virtual void BundlePackageType ()
 		{
 			Assert.That (CompiledPlist.ContainsKey (ManifestKeys.CFBundlePackageType), "#1");
-			Assert.AreEqual (CompiledPlist.Get<PString> (ManifestKeys.CFBundlePackageType).Value, "APPL", "#2");
+			Assert.AreEqual (CompiledPlist.Get<PString> (ManifestKeys.CFBundlePackageType)?.Value, "APPL", "#2");
 		}
 
 		[Test]
 		public virtual void BundleSignature ()
 		{
 			Assert.That (CompiledPlist.ContainsKey (ManifestKeys.CFBundleSignature), "#1");
-			Assert.AreEqual (CompiledPlist.Get<PString> (ManifestKeys.CFBundleSignature).Value, "????", "#2");
+			Assert.AreEqual (CompiledPlist.Get<PString> (ManifestKeys.CFBundleSignature)?.Value, "????", "#2");
 		}
 
 		[Test]
 		public virtual void BundleSupportedPlatforms ()
 		{
 			Assert.That (CompiledPlist.ContainsKey (ManifestKeys.CFBundleSupportedPlatforms), "#1");
-			Assert.That (CompiledPlist.Get<PArray> (ManifestKeys.CFBundleSupportedPlatforms).Any (), "#2");
+			Assert.That (CompiledPlist.Get<PArray> (ManifestKeys.CFBundleSupportedPlatforms)?.Any () == true, "#2");
 		}
 
 		[Test]
 		public virtual void BundleVersion ()
 		{
 			Assert.That (CompiledPlist.ContainsKey (ManifestKeys.CFBundleVersion), "#1");
-			Assert.That (CompiledPlist.Get<PString> (ManifestKeys.CFBundleVersion).Value, Is.Not.Null.Or.Empty, "#2");
+			Assert.That (CompiledPlist.Get<PString> (ManifestKeys.CFBundleVersion)?.Value, Is.Not.Null.Or.Empty, "#2");
 		}
 
 		[Test]
@@ -194,28 +194,28 @@ namespace Xamarin.MacDev.Tasks {
 			Assert.That (CompiledPlist.ContainsKey (dtSDKName), "#5");
 			Assert.That (CompiledPlist.ContainsKey (dtXcode), "#6");
 			Assert.That (CompiledPlist.ContainsKey (dtXcodeBuild), "#7");
-			Assert.That (CompiledPlist.Get<PString> (dtCompiler).Value, Is.Not.Null.Or.Empty, "#8");
-			Assert.That (CompiledPlist.Get<PString> (dtPlatformBuild).Value, Is.Not.Null.Or.Empty, "#9");
-			Assert.That (CompiledPlist.Get<PString> (dtSDKBuild).Value, Is.Not.Null.Or.Empty, "#10");
-			Assert.That (CompiledPlist.Get<PString> (dtPlatformName).Value, Is.Not.Null.Or.Empty, "#11");
-			Assert.That (CompiledPlist.Get<PString> (dtPlatformVersion).Value, Is.Not.Null.Or.Empty, "#12");
-			Assert.That (CompiledPlist.Get<PString> (dtSDKName).Value, Is.Not.Null.Or.Empty, "#13");
-			Assert.That (CompiledPlist.Get<PString> (dtXcode).Value, Is.Not.Null.Or.Empty, "#14");
-			Assert.That (CompiledPlist.Get<PString> (dtXcodeBuild).Value, Is.Not.Null.Or.Empty, "#15");
+			Assert.That (CompiledPlist.Get<PString> (dtCompiler)?.Value, Is.Not.Null.Or.Empty, "#8");
+			Assert.That (CompiledPlist.Get<PString> (dtPlatformBuild)?.Value, Is.Not.Null.Or.Empty, "#9");
+			Assert.That (CompiledPlist.Get<PString> (dtSDKBuild)?.Value, Is.Not.Null.Or.Empty, "#10");
+			Assert.That (CompiledPlist.Get<PString> (dtPlatformName)?.Value, Is.Not.Null.Or.Empty, "#11");
+			Assert.That (CompiledPlist.Get<PString> (dtPlatformVersion)?.Value, Is.Not.Null.Or.Empty, "#12");
+			Assert.That (CompiledPlist.Get<PString> (dtSDKName)?.Value, Is.Not.Null.Or.Empty, "#13");
+			Assert.That (CompiledPlist.Get<PString> (dtXcode)?.Value, Is.Not.Null.Or.Empty, "#14");
+			Assert.That (CompiledPlist.Get<PString> (dtXcodeBuild)?.Value, Is.Not.Null.Or.Empty, "#15");
 		}
 
 		[Test]
 		public virtual void DeviceFamily ()
 		{
 			Assert.That (CompiledPlist.ContainsKey (ManifestKeys.UIDeviceFamily), "#1");
-			Assert.That (CompiledPlist.Get<PArray> (ManifestKeys.UIDeviceFamily).Any (), "#2");
+			Assert.That (CompiledPlist.Get<PArray> (ManifestKeys.UIDeviceFamily)?.Any () == true, "#2");
 		}
 
 		[Test]
 		public virtual void MinimumOSVersion ()
 		{
 			Assert.That (CompiledPlist.ContainsKey (ManifestKeys.MinimumOSVersion), "#1");
-			Assert.That (CompiledPlist.Get<PString> (ManifestKeys.MinimumOSVersion).Value, Is.Not.Null.Or.Empty, "#2");
+			Assert.That (CompiledPlist.Get<PString> (ManifestKeys.MinimumOSVersion)?.Value, Is.Not.Null.Or.Empty, "#2");
 		}
 		#endregion
 	}

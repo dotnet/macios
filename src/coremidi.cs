@@ -885,6 +885,13 @@ namespace CoreMidi {
 	}
 
 	[Internal]
+	[NoTV, NoiOS, NoMacCatalyst]
+	enum MidiDriverProperty {
+		[Field ("kMIDIDriverPropertyUsesSerial")]
+		UsesSerial,
+	}
+
+	[Internal]
 	enum MidiProperty {
 		[NoTV]
 		[Field ("kMIDIPropertyName")]

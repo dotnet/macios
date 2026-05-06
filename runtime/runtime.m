@@ -80,7 +80,8 @@ const char *xamarin_runtime_configuration_name = NULL;
 
 enum XamarinNativeLinkMode xamarin_libmono_native_link_mode = XamarinNativeLinkModeStaticObject;
 const char **xamarin_runtime_libraries = NULL;
-void *xamarin_rtr_header = NULL;
+struct xamarin_r2r_module *xamarin_r2r_modules = NULL;
+int xamarin_r2r_module_count = 0;
 
 /* Callbacks */
 
@@ -93,6 +94,13 @@ xamarin_extension_main_callback xamarin_extension_main = NULL;
 
 static pthread_mutex_t framework_peer_release_lock;
 static MonoGHashTable *xamarin_wrapper_hash;
+
+// Hash table mapping native object pointers (id) to strong GCHandles.
+// Used by the dual-gchandle scheme: the object's gc_handle is always a weak
+// handle used for lookups, while this table holds an optional strong handle
+// that keeps the managed object alive. See xamarin_switch_gchandle.
+static CFMutableDictionaryRef strong_gchandle_hash = NULL;
+static pthread_mutex_t strong_gchandle_hash_lock = PTHREAD_MUTEX_INITIALIZER;
 
 static bool initialize_started = FALSE;
 
@@ -129,7 +137,7 @@ struct Trampolines {
 enum InitializationFlags : int {
 	InitializationFlagsIsPartialStaticRegistrar = 0x01,
 	InitializationFlagsIsManagedStaticRegistrar = 0x02,
-	/* unused									= 0x04,*/
+	InitializationFlagsIsTrimmableStaticRegistrar = 0x04,
 	/* unused									= 0x08,*/
 	InitializationFlagsIsSimulator				= 0x10,
 	InitializationFlagsIsCoreCLR                = 0x20,
@@ -415,16 +423,6 @@ xamarin_get_nullable_type (MonoClass *cls, GCHandle *exception_gchandle)
 -(void) xamarinSetGCHandleFlags: (enum XamarinGCHandleFlags) gchandle_flags;
 -(struct NSObjectData*) xamarinGetNSObjectData;
 @end
-
-static inline GCHandle
-get_gchandle_safe (id self, enum XamarinGCHandleFlags *gchandle_flags)
-{
-	id<XamarinExtendedObject> xself = self;
-	GCHandle rv = [xself xamarinGetGCHandle];
-	if (gchandle_flags)
-		*gchandle_flags = [xself xamarinGetGCHandleFlags];
-	return rv;
-}
 
 static inline bool
 set_gchandle (id self, GCHandle gc_handle, enum XamarinGCHandleFlags flags, struct NSObjectData *data)
@@ -901,7 +899,7 @@ is_class_finalization_aware (MonoClass *cls)
 {
 	gboolean rv = false;
 
-	MonoClass *nsobject_class = xamarin_get_nsobject_class ();
+	MonoClass *nsobject_class = xamarin_get_nsobject_class (true);
 	if (nsobject_class)
 		rv = cls == nsobject_class || mono_class_is_assignable_from (nsobject_class, cls);
 
@@ -1571,26 +1569,69 @@ xamarin_objc_type_size (const char *type)
  */
 //#define DEBUG_REF_COUNTING
 
+// Free the strong gchandle for a given native object.
+static void
+free_strong_gchandle (id self)
+{
+	GCHandle strong_gchandle = INVALID_GCHANDLE;
+	pthread_mutex_lock (&strong_gchandle_hash_lock);
+	if (strong_gchandle_hash != NULL) {
+		const void *value;
+		if (CFDictionaryGetValueIfPresent (strong_gchandle_hash, self, &value)) {
+			strong_gchandle = (GCHandle) value;
+			CFDictionaryRemoveValue (strong_gchandle_hash, self);
+		}
+	}
+	pthread_mutex_unlock (&strong_gchandle_hash_lock);
+	if (strong_gchandle != INVALID_GCHANDLE) {
+#if defined(DEBUG_REF_COUNTING)
+		PRINT ("Cleared strong gchandle %d for %p\n", strong_gchandle, self);
+#endif
+		xamarin_gchandle_free (strong_gchandle);
+	} else {
+#if defined(DEBUG_REF_COUNTING)
+		PRINT ("Did not clear a strong gchandle for %p, because none was found\n", self);
+#endif
+	}
+}
+
+// Creates a strong gchandle for the given managed object and associates it
+// with the native object. If a strong gchandle already exists for this
+// native object, the newly created one is freed and the existing one is kept.
+// Returns true if a new strong gchandle was set, false if one already existed.
+static bool
+create_strong_gchandle (id self, MonoObject *managed_object)
+{
+	GCHandle new_gchandle = xamarin_gchandle_new (managed_object, FALSE);
+
+	GCHandle existing = INVALID_GCHANDLE;
+	pthread_mutex_lock (&strong_gchandle_hash_lock);
+	if (strong_gchandle_hash == NULL)
+		strong_gchandle_hash = CFDictionaryCreateMutable (kCFAllocatorDefault, 0, NULL, NULL);
+	const void *value;
+	if (CFDictionaryGetValueIfPresent (strong_gchandle_hash, self, &value))
+		existing = (GCHandle) value;
+	if (existing == INVALID_GCHANDLE)
+		CFDictionarySetValue (strong_gchandle_hash, self, (const void *) new_gchandle);
+	pthread_mutex_unlock (&strong_gchandle_hash_lock);
+
+	if (existing != INVALID_GCHANDLE) {
+		// Another thread already set a strong gchandle, free ours.
+		xamarin_gchandle_free (new_gchandle);
+		return false;
+	}
+	return true;
+}
+
 void
 xamarin_switch_gchandle (id self, bool to_weak)
 {
-	GCHandle new_gchandle;
 	GCHandle old_gchandle;
-	MonoObject *managed_object;
-	enum XamarinGCHandleFlags flags = XamarinGCHandleFlags_None;
+	MonoObject *managed_object = NULL;
 
-	old_gchandle = get_gchandle_safe (self, &flags);
-	if (old_gchandle) {
-		bool is_weak = (flags & XamarinGCHandleFlags_WeakGCHandle) == XamarinGCHandleFlags_WeakGCHandle;
-		if (to_weak == is_weak) {
-			// we already have the GCHandle we need
-#if defined(DEBUG_REF_COUNTING)
-			PRINT ("Object %p already has a %s GCHandle = %d\n", self, to_weak ? "weak" : "strong", old_gchandle);
-#endif
-			return;
-		}
-	} else {
-		// We don't have a GCHandle. This means there's no managed instance for this 
+	old_gchandle = get_gchandle_without_flags (self);
+	if (!old_gchandle) {
+		// We don't have a GCHandle. This means there's no managed instance for this
 		// native object.
 		// If to_weak is true, then there's obviously nothing to do
 		// (why create a managed object which can immediately be freed by the GC?).
@@ -1604,40 +1645,31 @@ xamarin_switch_gchandle (id self, bool to_weak)
 		return;
 	}
 
-	MONO_THREAD_ATTACH;
-
-	managed_object = xamarin_gchandle_get_target (old_gchandle);
+	// The object's gc_handle is always a weak handle used for lookups. It is
+	// never modified here. A separate strong gchandle (stored in a global hash
+	// table) is created/freed as needed to keep the managed object alive.
+	// Since gc_handle is never modified, there is no race with concurrent
+	// readers (fixing https://github.com/dotnet/macios/issues/24702).
 
 	if (to_weak) {
-		new_gchandle = xamarin_gchandle_new_weakref (managed_object, TRUE);
-		flags = (enum XamarinGCHandleFlags) (flags | XamarinGCHandleFlags_WeakGCHandle);
+		free_strong_gchandle (self);
 	} else {
-		new_gchandle = xamarin_gchandle_new (managed_object, FALSE);
-		flags = (enum XamarinGCHandleFlags) (flags & ~XamarinGCHandleFlags_WeakGCHandle);
-	}
+		MONO_THREAD_ATTACH;
 
-	xamarin_gchandle_free (old_gchandle);
-	
-	if (managed_object) {
-		// It's possible to not have a managed object if:
-		// 1. Objective-C holds a weak reference to the native object (and no other strong references)
-		//    - in which case the original (old) gchandle would be a weak one.
-		// 2. Managed code does not reference the managed object.
-		// 3. The GC ran and collected the managed object, but the main thread has not gotten
-		//    around to release the native object yet.
-		// If all these conditions hold, then the original gchandle will point to
-		// null, because the target would be collected.
-		xamarin_set_nsobject_flags (managed_object, xamarin_get_nsobject_flags (managed_object) | NSObjectFlagsHasManagedRef);
-	}
-	set_gchandle (self, new_gchandle, flags, NULL);
+		managed_object = xamarin_gchandle_get_target (old_gchandle);
+		if (managed_object) {
+			if (create_strong_gchandle (self, managed_object)) {
+				xamarin_set_nsobject_flags (managed_object, xamarin_get_nsobject_flags (managed_object) | NSObjectFlagsHasManagedRef);
+			}
+		}
 
-	MONO_THREAD_DETACH;
-
-	xamarin_mono_object_release (&managed_object);
+		MONO_THREAD_DETACH;
+		xamarin_mono_object_release (&managed_object);
 
 #if defined(DEBUG_REF_COUNTING)
-	PRINT ("Switched object %p to %s GCHandle = %d managed object = %p\n", self, to_weak ? "weak" : "strong", new_gchandle, managed_object);
+		PRINT ("Object %p switched to strong mode\n", self);
 #endif
+	}
 }
 
 void
@@ -1655,6 +1687,9 @@ xamarin_free_gchandle (id self, GCHandle gchandle)
 		PRINT ("\tNo GCHandle for the object %p\n", self);
 #endif
 	}
+
+	// Also free any strong gchandle from the dual-gchandle scheme.
+	free_strong_gchandle (self);
 }
 
 void
@@ -1956,6 +1991,13 @@ xamarin_release_static_dictionaries ()
 	xamarin_mono_object_release (&xamarin_wrapper_hash);
 	pthread_mutex_unlock (&wrapper_hash_lock);
 #endif
+
+	pthread_mutex_lock (&strong_gchandle_hash_lock);
+	if (strong_gchandle_hash != NULL) {
+		CFRelease (strong_gchandle_hash);
+		strong_gchandle_hash = NULL;
+	}
+	pthread_mutex_unlock (&strong_gchandle_hash_lock);
 }
 
 void
@@ -2398,9 +2440,17 @@ xamarin_get_native_code_data (const struct host_runtime_contract_native_code_con
 	if (!context || !data || !context->assembly_path || !context->owner_composite_name)
 		return false;
 
-	void* r2r_header = xamarin_rtr_header;
+	void* r2r_header = NULL;
+
+	for (int i = 0; i < xamarin_r2r_module_count; i++) {
+		if (strcmp (xamarin_r2r_modules [i].name, context->owner_composite_name) == 0) {
+			r2r_header = xamarin_r2r_modules [i].header;
+			break;
+		}
+	}
+
 	if (r2r_header == NULL)
-		xamarin_assertion_message ("Failed to find the RTR_HEADER symbol.");
+		return false;
 
 	Dl_info info;
 	if (dladdr (r2r_header, &info) == 0)
@@ -2592,7 +2642,7 @@ xamarin_vprintf (const char *format, va_list args)
 }
 
 void
-xamarin_registrar_dlsym (void **function_pointer, const char *assembly, const char *symbol, int32_t id)
+xamarin_registrar_dlsym (void **function_pointer, const char *assembly, const char *symbol, int32_t id, const char* objcClassName)
 {
 	if (*function_pointer != NULL)
 		return;
@@ -2602,7 +2652,7 @@ xamarin_registrar_dlsym (void **function_pointer, const char *assembly, const ch
 		return;
 
 	GCHandle exception_gchandle = INVALID_GCHANDLE;
-	*function_pointer = xamarin_lookup_unmanaged_function (assembly, symbol, id, &exception_gchandle);
+	*function_pointer = xamarin_lookup_unmanaged_function (assembly, symbol, id, objcClassName, &exception_gchandle);
 	if (*function_pointer != NULL)
 		return;
 
@@ -3089,6 +3139,16 @@ xamarin_set_is_managed_static_registrar (bool value)
 		options.flags = (InitializationFlags) (options.flags | InitializationFlagsIsManagedStaticRegistrar);
 	} else {
 		options.flags = (InitializationFlags) (options.flags & ~InitializationFlagsIsManagedStaticRegistrar);
+	}
+}
+
+void
+xamarin_set_is_trimmable_static_registrar (bool value)
+{
+	if (value) {
+		options.flags = (InitializationFlags) (options.flags | InitializationFlagsIsTrimmableStaticRegistrar);
+	} else {
+		options.flags = (InitializationFlags) (options.flags & ~InitializationFlagsIsTrimmableStaticRegistrar);
 	}
 }
 

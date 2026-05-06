@@ -65,6 +65,7 @@ namespace Xamarin.Bundler {
 		PartialStatic,
 		Static,
 		ManagedStatic,
+		TrimmableStatic,
 	}
 
 	public partial class Application {
@@ -86,6 +87,7 @@ namespace Xamarin.Bundler {
 		public SymbolMode SymbolMode;
 		public HashSet<string> IgnoredSymbols = new HashSet<string> ();
 		public bool? PublishReadyToRun;
+		public string PublishReadyToRunContainerFormat = "";
 
 		// The AOT arguments are currently not used for macOS, but they could eventually be used there as well (there's no mmp option to set these yet).
 		public List<string> AotArguments = new List<string> ();
@@ -108,6 +110,9 @@ namespace Xamarin.Bundler {
 		public List<string> MonoLibraries = new List<string> ();
 		public List<string> InterpretedAssemblies = new List<string> ();
 
+		public string TypeMapAssemblyName = "";
+		public string TypeMapOutputDirectory = "";
+
 		// Linker config
 #if LEGACY_TOOLS
 		public LinkMode LinkMode = LinkMode.Full;
@@ -129,6 +134,10 @@ namespace Xamarin.Bundler {
 			}
 		}
 		public bool EnableSGenConc;
+
+		public bool IsAnyStaticRegistrar {
+			get => Registrar == RegistrarMode.Static || Registrar == RegistrarMode.ManagedStatic || Registrar == RegistrarMode.TrimmableStatic;
+		}
 
 		public Dictionary<string, (string Value, bool Overwrite)> EnvironmentVariables = new Dictionary<string, (string Value, bool Overwrite)> ();
 
@@ -195,7 +204,7 @@ namespace Xamarin.Bundler {
 				case ApplePlatform.MacCatalyst:
 					return !AreAnyAssembliesTrimmed;
 				case ApplePlatform.MacOSX:
-					return (Registrar == RegistrarMode.Static || Registrar == RegistrarMode.ManagedStatic) && !AreAnyAssembliesTrimmed;
+					return (Registrar == RegistrarMode.Static || Registrar == RegistrarMode.ManagedStatic || Registrar == RegistrarMode.TrimmableStatic) && !AreAnyAssembliesTrimmed;
 				default:
 					throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
 				}
@@ -700,8 +709,11 @@ namespace Xamarin.Bundler {
 			case "managed-static":
 				Registrar = RegistrarMode.ManagedStatic;
 				break;
+			case "trimmable-static":
+				Registrar = RegistrarMode.TrimmableStatic;
+				break;
 			default:
-				throw ErrorHelper.CreateError (20, Errors.MX0020, "--registrar", "managed-static, static, dynamic or default");
+				throw ErrorHelper.CreateError (20, Errors.MX0020, "--registrar", "managed-static, trimmable-static, static, dynamic or default");
 			}
 
 			switch (value) {

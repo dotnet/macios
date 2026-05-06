@@ -1298,7 +1298,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 		void ThrowsICEIfDebug (TestDelegate code, string message, bool execute_release_mode = true)
 		{
-			if (TestRuntime.IsCoreCLR || global::XamarinTests.ObjCRuntime.Registrar.CurrentRegistrar == Registrars.ManagedStatic) {
+			if (TestRuntime.IsCoreCLR ||
+				global::XamarinTests.ObjCRuntime.Registrar.CurrentRegistrar == Registrars.ManagedStatic ||
+				global::XamarinTests.ObjCRuntime.Registrar.CurrentRegistrar == Registrars.TrimmableStatic) {
 				if (execute_release_mode) {
 					// In CoreCLR will either throw an ArgumentException:
 					//     <System.ArgumentException: Object of type 'Foundation.NSObject' cannot be converted to type 'Foundation.NSSet'.
@@ -5720,13 +5722,13 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 	// These classes implement Metal* protocols, so that the generated registrar code includes the corresponding Metal* headers.
 	// https://github.com/dotnet/macios/issues/4422
-	class MetalKitTypesInTheSimulator : NSObject, MetalKit.IMTKViewDelegate {
-		public void Draw (MetalKit.MTKView view)
+	class MetalKitTypesInTheSimulator : NSObject, global::MetalKit.IMTKViewDelegate {
+		public void Draw (global::MetalKit.MTKView view)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void DrawableSizeWillChange (MetalKit.MTKView view, CGSize size)
+		public void DrawableSizeWillChange (global::MetalKit.MTKView view, CGSize size)
 		{
 			throw new NotImplementedException ();
 		}

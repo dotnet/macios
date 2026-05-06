@@ -66,5 +66,16 @@ namespace MonoTouchFixtures.Security {
 				Assert.That (call, Is.EqualTo (1), "call");
 			}
 		}
+
+		[Test]
+		public void Certificates ()
+		{
+			TestRuntime.AssertXcodeVersion (11, 0);
+			using var i1 = GetIdentity ();
+			using var i2 = new SecIdentity2 (i1, i1.Certificate);
+			var certs = i2.Certificates;
+			Assert.IsNotNull (certs, "Certificates");
+			Assert.That (certs!.Length, Is.GreaterThanOrEqualTo (1), "Certificates/length");
+		}
 	}
 }

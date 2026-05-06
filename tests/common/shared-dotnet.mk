@@ -71,6 +71,10 @@ ifeq ($(TEST_TFM),)
 TEST_TFM=$(DOTNET_TFM)
 endif
 
+ifeq ($(findstring |release|,|$(TEST_VARIATION)|),|release|)
+CONFIG=Release
+endif
+
 ifeq ($(CONFIG),)
 CONFIG=Debug
 else
@@ -88,9 +92,17 @@ endif
 
 ifeq ($(RID),)
 ifeq ($(PLATFORM),iOS)
+ifeq ($(shell arch),arm64)
 RID=iossimulator-arm64
+else
+RID=iossimulator-x64
+endif
 else ifeq ($(PLATFORM),tvOS)
+ifeq ($(shell arch),arm64)
 RID=tvossimulator-arm64
+else
+RID=tvossimulator-x64
+endif
 else ifeq ($(PLATFORM),MacCatalyst)
 ifeq ($(CONFIG),Release)
 RID=maccatalyst-x64;maccatalyst-arm64
@@ -166,6 +178,7 @@ reload-and-run:
 	$(Q) $(MAKE) run
 
 build: prepare
+	@echo "Building $(wildcard *.?.csproj)..."
 	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT)
 
 run: export SIMCTL_CHILD_NUNIT_AUTOSTART=true

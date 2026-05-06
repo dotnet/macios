@@ -21,7 +21,7 @@ namespace Xharness.Jenkins.TestTasks {
 		public int QueuedUsers => queue.Count + exclusive_queue.Count;
 		public int MaxConcurrentUsers { get; set; } = 1;
 
-		public Resource (string name, int max_concurrent_users = 1, string description = null)
+		public Resource (string name, int max_concurrent_users = 1, string? description = null)
 		{
 			this.Name = name;
 			this.MaxConcurrentUsers = max_concurrent_users;
@@ -62,13 +62,13 @@ namespace Xharness.Jenkins.TestTasks {
 			lock (queue) {
 				Users--;
 				exclusive = false;
-				if (queue.TryDequeue (out TaskCompletionSource<IAcquiredResource> tcs)) {
+				if (queue.TryDequeue (out var tcs)) {
 					Users++;
-					tcs.SetResult ((IAcquiredResource) tcs.Task.AsyncState);
+					tcs.SetResult ((IAcquiredResource) tcs.Task.AsyncState!);
 				} else if (Users == 0 && exclusive_queue.TryDequeue (out tcs)) {
 					Users++;
 					exclusive = true;
-					tcs.SetResult ((IAcquiredResource) tcs.Task.AsyncState);
+					tcs.SetResult ((IAcquiredResource) tcs.Task.AsyncState!);
 				}
 			}
 		}

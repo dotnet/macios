@@ -123,6 +123,20 @@ namespace Xharness.Jenkins.TestTasks {
 				await testTask.Runner!.RunAsync ();
 			}
 			testTask.ExecutionResult = testTask.Runner.Result;
+			testTask.FailureMessage = testTask.Runner.FailureMessage;
+
+			// Retry once on LaunchTimedOut - this is a transient failure typically caused by
+			// high system load or simulator instability (e.g. sqlite3 crashes). Ref #25299.
+			if (testTask.ExecutionResult == TestExecutingResult.LaunchTimedOut && testTask.Harness.InCI) {
+				mainLog.WriteLine ($"Test launch timed out for {testTask.ProjectFile} on {testTask.Device?.Name} ({testTask.Device?.UDID}). Retrying once...");
+				testTask.Runner = null;
+				using (var resource = await testTask.NotifyBlockingWaitAsync (testTask.AcquireResourceAsync ())) {
+					await SelectSimulatorAsync ();
+					await testTask.Runner!.RunAsync ();
+				}
+				testTask.ExecutionResult = testTask.Runner.Result;
+				testTask.FailureMessage = testTask.Runner.FailureMessage;
+			}
 
 			if (testTask.ExecutionResult == TestExecutingResult.LaunchTimedOut)
 				mainLog.WriteLine ($"Test launch timed out for {testTask.ProjectFile} on {testTask.Device?.Name} ({testTask.Device?.UDID}). See the 'Launch timeout diagnostics' log for more info. Ref: https://github.com/dotnet/macios/issues/25299");

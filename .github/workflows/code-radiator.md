@@ -1,12 +1,11 @@
 ---
 on:
-  schedule:
-    cron: "0 0 * * *"
+  schedule: "0 0 * * *"
   workflow_dispatch:
   roles: [admin, maintainer, write]
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
+  pull-requests: read
 engine:
   id: copilot
   model: claude-sonnet-4.5
@@ -18,8 +17,18 @@ tools:
   github:
     toolsets: [pull_requests, repos]
     min-integrity: none
-  bash:
-    enabled: true
+  bash: true
+safe-outputs:
+  create-pull-request:
+    max: 10
+  add-comment:
+    max: 10
+  merge-pull-request:
+    max: 10
+  push-to-pull-request-branch:
+    max: 10
+  update-pull-request:
+    max: 10
 ---
 
 # Code Radiator

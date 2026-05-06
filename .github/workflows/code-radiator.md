@@ -72,19 +72,36 @@ If a matching PR exists:
 - If it is a **draft**: add a comment saying "⏭️ Skipping merge update: this PR is a draft. Convert to ready when you want automated updates to resume." and **skip** this target.
 - If it is **not a draft**: use its head branch name as the local branch name (to update the existing PR).
 
-#### c. Create the merge branch and merge
+#### c. Update from target branch
+
+If updating an existing PR, first merge the target branch into the PR branch to incorporate any new commits from the target:
 
 ```bash
-# Start from the target branch
-git checkout -B "<local-branch>" "origin/<target>"
+git checkout -B "<local-branch>" "origin/<local-branch>"
+git merge "origin/<target>" --no-edit -m "Merge branch '<target>' into '<local-branch>'"
+```
 
-# Merge main into it
+If creating a new branch, start from the target:
+
+```bash
+git checkout -B "<local-branch>" "origin/<target>"
+```
+
+#### d. Merge main
+
+```bash
 git merge origin/main --no-edit -m "Merge branch 'main' into '<target>'"
 ```
 
-#### d. Resolve merge conflicts
+#### e. Resolve merge conflicts
 
 If there are merge conflicts:
+
+**For files under `tests/dotnet/UnitTests/expected/`:**
+- Do not include these files in the merge commit at all. Remove them from the index:
+  ```bash
+  git rm --cached <conflicting-file>
+  ```
 
 **For `eng/Version.Details.props` or `eng/Version.Details.xml`:**
 - Parse both the `origin/main` and `origin/<target>` versions of the file as XML.

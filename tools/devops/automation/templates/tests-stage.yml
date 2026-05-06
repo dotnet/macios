@@ -121,6 +121,10 @@ parameters:
   type: string
   default: ''
 
+- name: buildPackages
+  type: boolean
+  default: false
+
 stages:
 
 - template: ./build/linux-build-verification.yml
@@ -148,13 +152,69 @@ stages:
       BRANCH_NAME: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
 
     steps:
-    - template: common/load_configuration.yml
-      parameters: 
-        repositoryAlias: ${{ parameters.repositoryAlias }}
-        commit: ${{ parameters.commit }}
-        statusContext: 'VSTS: simulator tests' 
-        uploadArtifacts: true
-        use1ES: false
+    - ${{ if eq(parameters.buildPackages, true) }}:
+      # When building packages in this pipeline, generate configuration from scratch
+      - template: common/configure.yml
+        parameters:
+          repositoryAlias: ${{ parameters.repositoryAlias }}
+          commit: ${{ parameters.commit }}
+          statusContext: 'VSTS: simulator tests'
+          uploadArtifacts: true
+          use1ES: false
+          isPR: ${{ parameters.isPR }}
+    - ${{ else }}:
+      # When using pre-built packages from a pipeline resource, load existing configuration
+      - template: common/load_configuration.yml
+        parameters: 
+          repositoryAlias: ${{ parameters.repositoryAlias }}
+          commit: ${{ parameters.commit }}
+          statusContext: 'VSTS: simulator tests' 
+          uploadArtifacts: true
+          use1ES: false
+
+# When buildPackages is true, build packages as part of this pipeline
+- ${{ if eq(parameters.buildPackages, true) }}:
+  - stage: build_packages
+    displayName: '${{ parameters.stageDisplayNamePrefix }}Build'
+    dependsOn: [configure_build]
+    jobs:
+    - job: build
+      displayName: 'Build packages'
+      timeoutInMinutes: 1000
+      variables:
+        DOTNET_PLATFORMS: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.DOTNET_PLATFORMS'] ]
+        INCLUDE_DOTNET_IOS: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.INCLUDE_DOTNET_IOS'] ]
+        INCLUDE_DOTNET_MACCATALYST: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.INCLUDE_DOTNET_MACCATALYST'] ]
+        INCLUDE_DOTNET_MACOS: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.INCLUDE_DOTNET_MACOS'] ]
+        INCLUDE_DOTNET_TVOS: $[ stageDependencies.configure_build.configure.outputs['configure_platforms.INCLUDE_DOTNET_TVOS'] ]
+        BuildPackage: $[ stageDependencies.configure_build.configure.outputs['labels.build_package'] ]
+        SkipPackages: $[ stageDependencies.configure_build.configure.outputs['labels.skip_packages'] ]
+        SkipNugets: $[ stageDependencies.configure_build.configure.outputs['labels.skip_nugets'] ]
+        SkipSigning: $[ stageDependencies.configure_build.configure.outputs['labels.skip_signing'] ]
+        SkipApiComparison: $[ stageDependencies.configure_build.configure.outputs['labels.skip_api_comparison'] ]
+        PR_ID: $[ stageDependencies.configure_build.configure.outputs['labels.pr_number'] ]
+        BRANCH_NAME: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
+        XHARNESS_LABELS: $[ stageDependencies.configure_build.configure.outputs['labels.xharness_labels'] ]
+        RUN_MAC_TESTS: $[ stageDependencies.configure_build.configure.outputs['decisions.RUN_MAC_TESTS'] ]
+      pool:
+        name: $(PRBuildPool)
+        demands:
+        - Agent.OS -equals Darwin
+        - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
+        - macOS.Name -equals ${{ parameters.macOSName }}
+        - XcodeChannel -equals ${{ parameters.xcodeChannel }}
+      steps:
+      - template: build/build-pkgs.yml
+        parameters:
+          isPR: ${{ parameters.isPR }}
+          repositoryAlias: ${{ parameters.repositoryAlias }}
+          commit: ${{ parameters.commit }}
+          vsdropsPrefix: ${{ variables.vsdropsPrefix }}
+          keyringPass: $(pass--lab--mac--builder--keychain)
+          gitHubToken: $(Github.Token)
+          xqaCertPass: $(xqa--certificates--password)
+          use1ES: false
+          xcodeChannel: ${{ parameters.xcodeChannel }}
 
 # always run simulator tests
 - template: ./tests/stage.yml
@@ -173,7 +233,7 @@ stages:
     gitHubToken: $(Github.Token)
     xqaCertPass: $(xqa--certificates--password)
     condition: ${{ parameters.runTests }}
-    postPipeline: true
+    postPipeline: ${{ not(parameters.buildPackages) }}
 
 - template: ./tests/publish-results.yml
   parameters:
@@ -185,7 +245,7 @@ stages:
     isPR: ${{ parameters.isPR }}
     repositoryAlias: ${{ parameters.repositoryAlias }}
     commit: ${{ parameters.commit }}
-    postPipeline: true
+    postPipeline: ${{ not(parameters.buildPackages) }}
     macTestsConfigurations: ${{ parameters.macTestsConfigurations }}
 
 - ${{ if eq(parameters.runWindowsIntegration, true) }}:
@@ -200,11 +260,14 @@ stages:
       statusContext: 'Windows Integration Tests'
       gitHubToken: $(Github.Token)
       xqaCertPass: $(xqa--certificates--password)
-      postPipeline: true
+      postPipeline: ${{ not(parameters.buildPackages) }}
 
 - stage: build_macos_tests
   displayName: '${{ parameters.stageDisplayNamePrefix }}Build macOS tests'
-  dependsOn: [configure_build]
+  dependsOn:
+  - configure_build
+  - ${{ if eq(parameters.buildPackages, true) }}:
+    - build_packages
   condition: and(succeeded(), ne(dependencies.configure_build.outputs['configure.configure_platforms.DOTNET_PLATFORMS'], ''))
   jobs:
   - template: ./build/build-mac-tests-stage.yml
@@ -234,5 +297,5 @@ stages:
       keyringPass: $(pass--lab--mac--builder--keychain)
       demands: ${{ config.demands }}
       xqaCertPass: $(xqa--certificates--password)
-      postPipeline: true
+      postPipeline: ${{ not(parameters.buildPackages) }}
       label: ${{ config.label }}

@@ -109,6 +109,11 @@ If there are merge conflicts:
 - Use semantic version comparison (split on `.`, `-`, `+` and compare numerically).
 - Write the merged result and `git add` the file.
 
+**For `NuGet.config`:**
+- Include all package source feeds from both the source (main) and target branches.
+- If a feed exists in both with the same key but different URL, keep both (rename the key from main to avoid collision).
+- Write the merged result and `git add` the file.
+
 **For any other conflicting files:**
 - If conflicts remain unresolved, abort the merge for this target and report a warning. Do not create a PR with unresolved conflicts.
 

@@ -453,6 +453,29 @@ namespace Xharness {
 				diagnosticLog.WriteLine ($"Launch timeout: {harness.LaunchTimeout} minutes");
 				diagnosticLog.WriteLine ("");
 
+				// Collect load average (high load is correlated with this issue)
+				diagnosticLog.WriteLine ("=== System Load ===");
+				var uptimeResult = await processManager.ExecuteCommandAsync ("uptime", Array.Empty<string> (), diagnosticLog, TimeSpan.FromSeconds (5));
+				diagnosticLog.WriteLine ($"uptime exit code: {uptimeResult.ExitCode}");
+				diagnosticLog.WriteLine ("");
+
+				// Check for recent crash reports (sqlite3 crashes are correlated with LaunchTimedOut)
+				diagnosticLog.WriteLine ("=== Recent Crash Reports (last 10 minutes) ===");
+				var crashReportsDir = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library/Logs/DiagnosticReports");
+				if (Directory.Exists (crashReportsDir)) {
+					var tenMinutesAgo = DateTime.UtcNow.AddMinutes (-10);
+					var recentCrashes = Directory.GetFiles (crashReportsDir, "*.ips")
+						.Where (f => File.GetCreationTimeUtc (f) > tenMinutesAgo)
+						.OrderByDescending (f => File.GetCreationTimeUtc (f))
+						.ToList ();
+					diagnosticLog.WriteLine ($"Found {recentCrashes.Count} recent crash reports:");
+					foreach (var crash in recentCrashes)
+						diagnosticLog.WriteLine ($"  {File.GetCreationTimeUtc (crash):O} {Path.GetFileName (crash)}");
+				} else {
+					diagnosticLog.WriteLine ($"Crash reports directory not found: {crashReportsDir}");
+				}
+				diagnosticLog.WriteLine ("");
+
 				// List booted simulators and their state
 				diagnosticLog.WriteLine ("=== Simulator List ===");
 				var simListResult = await processManager.ExecuteXcodeCommandAsync ("simctl", new [] { "list" }, diagnosticLog, TimeSpan.FromMinutes (1));

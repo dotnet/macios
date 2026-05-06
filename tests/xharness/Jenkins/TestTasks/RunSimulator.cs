@@ -124,6 +124,9 @@ namespace Xharness.Jenkins.TestTasks {
 			}
 			testTask.ExecutionResult = testTask.Runner.Result;
 
+			if (testTask.ExecutionResult == TestExecutingResult.LaunchTimedOut)
+				mainLog.WriteLine ($"Test launch timed out for {testTask.ProjectFile} on {testTask.Device?.Name} ({testTask.Device?.UDID}). See the 'Launch timeout diagnostics' log for more info. Ref: https://github.com/dotnet/macios/issues/25299");
+
 			testTask.KnownFailure = null;
 			if (errorKnowledgeBase.IsKnownTestIssue (testTask.Runner.MainLog, out var failure)) {
 				testTask.KnownFailure = failure;

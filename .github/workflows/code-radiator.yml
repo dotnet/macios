@@ -1,0 +1,212 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+# Code Radiator: flows code from 'main' into target branches.
+# Target branches: net[0-9]*.0, xcode[0-9]*, xcode[0-9]*.[0-9]*
+# Runs daily at midnight UTC.
+
+name: code-radiator
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  merge-flow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge main into target branches
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          DATE=$(date -u +%Y%m%d)
+          ONE_MONTH_AGO=$(date -u -d "1 month ago" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
+
+          # Find target branches with activity in the last month
+          TARGET_BRANCHES=()
+          for ref in $(git for-each-ref --sort=-committerdate --format='%(refname:short) %(committerdate:iso8601)' refs/remotes/origin/ | while read -r branch date rest; do
+            branch_name="${branch#origin/}"
+            if [[ "$branch_name" =~ ^net[0-9]+\.0$ ]] || [[ "$branch_name" =~ ^xcode[0-9]+$ ]] || [[ "$branch_name" =~ ^xcode[0-9]+\.[0-9]+$ ]]; then
+              # Check if the branch had activity in the last month
+              last_commit_date=$(git log -1 --format=%cI "origin/$branch_name" 2>/dev/null || echo "")
+              if [[ -n "$last_commit_date" && "$last_commit_date" > "$ONE_MONTH_AGO" ]]; then
+                echo "$branch_name"
+              fi
+            fi
+          done); do
+            TARGET_BRANCHES+=("$ref")
+          done
+
+          if [[ ${#TARGET_BRANCHES[@]} -eq 0 ]]; then
+            echo "No active target branches found."
+            exit 0
+          fi
+
+          echo "Target branches: ${TARGET_BRANCHES[*]}"
+
+          for TARGET in "${TARGET_BRANCHES[@]}"; do
+            echo "::group::Processing $TARGET"
+
+            LOCAL_BRANCH="merge/main-to-${TARGET}-${DATE}"
+            PR_TITLE="🤖 Merge 'main' => '${TARGET}'"
+
+            # Check for existing PR
+            EXISTING_PR=$(gh pr list --base "$TARGET" --head "$LOCAL_BRANCH" --json number,isDraft,url --jq '.[0]' 2>/dev/null || echo "")
+            if [[ -z "$EXISTING_PR" ]]; then
+              # Also check for PRs from previous days with same title pattern
+              EXISTING_PR=$(gh pr list --base "$TARGET" --search "in:title \"Merge 'main' => '${TARGET}'\"" --json number,isDraft,headRefName,url --jq '.[0]' 2>/dev/null || echo "")
+            fi
+
+            if [[ -n "$EXISTING_PR" ]]; then
+              IS_DRAFT=$(echo "$EXISTING_PR" | jq -r '.isDraft // false')
+              PR_NUMBER=$(echo "$EXISTING_PR" | jq -r '.number')
+              EXISTING_BRANCH=$(echo "$EXISTING_PR" | jq -r '.headRefName // empty')
+
+              if [[ "$IS_DRAFT" == "true" ]]; then
+                gh pr comment "$PR_NUMBER" --body "⏭️ Skipping merge update: this PR is a draft. Convert to ready when you want automated updates to resume."
+                echo "PR #$PR_NUMBER is a draft, added comment and skipping."
+                echo "::endgroup::"
+                continue
+              fi
+
+              # Update existing PR: use its branch name
+              LOCAL_BRANCH="${EXISTING_BRANCH:-$LOCAL_BRANCH}"
+            fi
+
+            # Create local branch from target, then merge main in
+            git checkout -B "$LOCAL_BRANCH" "origin/$TARGET"
+
+            # Attempt merge of main into this branch
+            if ! git merge origin/main --no-edit -m "Merge branch 'main' into '$TARGET'" 2>/dev/null; then
+              echo "Merge conflicts detected, attempting resolution..."
+
+              # Handle Version.Details conflicts
+              for CONFLICT_FILE in eng/Version.Details.props eng/Version.Details.xml; do
+                if git diff --name-only --diff-filter=U | grep -qx "$CONFLICT_FILE"; then
+                  echo "Resolving $CONFLICT_FILE by choosing highest versions..."
+
+                  # Get both versions and produce merged result
+                  git show "origin/$TARGET:$CONFLICT_FILE" > "/tmp/target_version" 2>/dev/null || true
+                  git show "origin/main:$CONFLICT_FILE" > "/tmp/main_version" 2>/dev/null || true
+
+                  if [[ -f "/tmp/main_version" && -f "/tmp/target_version" ]]; then
+                    # Use a python script to merge by picking highest versions
+                    python3 - "/tmp/main_version" "/tmp/target_version" "$CONFLICT_FILE" << 'PYTHON'
+          import sys
+          import re
+          import xml.etree.ElementTree as ET
+
+          main_file = sys.argv[1]
+          target_file = sys.argv[2]
+          output_file = sys.argv[3]
+
+          def parse_version(v):
+              """Parse version string into comparable tuple."""
+              if not v:
+                  return (0,)
+              parts = re.split(r'[.\-+]', v)
+              result = []
+              for p in parts:
+                  try:
+                      result.append(int(p))
+                  except ValueError:
+                      result.append(0)
+              return tuple(result) if result else (0,)
+
+          try:
+              main_tree = ET.parse(main_file)
+              target_tree = ET.parse(target_file)
+          except ET.ParseError:
+              # If we can't parse, prefer main
+              import shutil
+              shutil.copy(main_file, output_file)
+              sys.exit(0)
+
+          main_root = main_tree.getroot()
+          target_root = target_tree.getroot()
+
+          # Build a map of dependency Name -> Version from main (source)
+          main_versions = {}
+          for dep in main_root.iter('Dependency'):
+              name = dep.get('Name', '')
+              ver_el = dep.find('Version')
+              if name and ver_el is not None and ver_el.text:
+                  main_versions[name] = ver_el.text
+
+          # Use target as base, upgrade versions where main has higher
+          for dep in target_root.iter('Dependency'):
+              name = dep.get('Name', '')
+              ver_el = dep.find('Version')
+              if name and ver_el is not None and ver_el.text:
+                  target_ver = ver_el.text
+                  main_ver = main_versions.get(name, '')
+                  if main_ver and parse_version(main_ver) > parse_version(target_ver):
+                      ver_el.text = main_ver
+
+          # Write result
+          target_tree.write(output_file, xml_declaration=True, encoding='utf-8')
+          PYTHON
+
+                    git add "$CONFLICT_FILE"
+                  fi
+                fi
+              done
+
+              # Check if there are remaining conflicts
+              REMAINING=$(git diff --name-only --diff-filter=U || true)
+              if [[ -n "$REMAINING" ]]; then
+                echo "::warning::Unresolved conflicts in: $REMAINING"
+                git merge --abort || true
+                git checkout origin/main -- . 2>/dev/null || true
+                echo "::endgroup::"
+                continue
+              fi
+
+              git commit --no-edit || true
+            fi
+
+            # Push branch
+            git push origin "$LOCAL_BRANCH" 2>/dev/null || git push origin "$LOCAL_BRANCH" --set-upstream
+
+            if [[ -n "$EXISTING_PR" && "$IS_DRAFT" != "true" ]]; then
+              echo "Updated existing PR #$PR_NUMBER"
+            else
+              # Create new PR
+              PR_URL=$(gh pr create \
+                --base "$TARGET" \
+                --head "$LOCAL_BRANCH" \
+                --title "$PR_TITLE" \
+                --body "Automated merge of \`main\` into \`$TARGET\`.\n\nCreated by the code-radiator workflow." \
+                2>&1) || {
+                echo "::warning::Failed to create PR for $TARGET: $PR_URL"
+                echo "::endgroup::"
+                continue
+              }
+              echo "Created PR: $PR_URL"
+
+              # Enable automerge
+              PR_NUMBER=$(echo "$PR_URL" | grep -oP '\d+$' || true)
+              if [[ -n "$PR_NUMBER" ]]; then
+                gh pr merge "$PR_NUMBER" --auto --merge || echo "::warning::Failed to enable automerge for PR #$PR_NUMBER"
+              fi
+            fi
+
+            echo "::endgroup::"
+          done

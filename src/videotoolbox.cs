@@ -3127,6 +3127,8 @@ namespace VideoToolbox {
 		VTFrameProcessorOpticalFlow DestinationOpticalFlow { get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3275,6 +3277,8 @@ namespace VideoToolbox {
 		VTSuperResolutionScalerParametersSubmissionMode SubmissionMode { get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]

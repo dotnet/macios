@@ -5547,7 +5547,7 @@ public partial class Generator : IMemberGatherer {
 	// Not adding the experimental attribute is bad (it would mean that an API
 	// we meant to be experimental ended up being released as stable), so it's
 	// opt-out instead of opt-in.
-	public void PrintAttributes (ICustomAttributeProvider? mi, bool platform = false, bool preserve = false, bool advice = false, bool notImplemented = false, bool bindAs = false, bool requiresSuper = false, Type? inlinedType = null, bool experimental = true, bool obsolete = false, bool objectiveCFramework = false)
+	public void PrintAttributes (ICustomAttributeProvider? mi, bool platform = false, bool preserve = false, bool advice = false, bool notImplemented = false, bool bindAs = false, bool requiresSuper = false, Type? inlinedType = null, bool experimental = true, bool obsolete = false, bool objectiveCFramework = false, bool simulatorAvailability = true)
 	{
 		if (platform)
 			PrintPlatformAttributes (mi as MemberInfo, inlinedType);
@@ -5567,6 +5567,8 @@ public partial class Generator : IMemberGatherer {
 			PrintObsoleteAttributes (mi);
 		if (objectiveCFramework)
 			PrintObjectiveCFrameworkAttribute (mi);
+		if (simulatorAvailability)
+			PrintSimulatorAvailabilityAttributes (mi);
 	}
 
 	public void PrintExperimentalAttribute (ICustomAttributeProvider? mi)
@@ -5583,6 +5585,77 @@ public partial class Generator : IMemberGatherer {
 		if (attrib is null)
 			return;
 		print ($"[ObjectiveCFramework (\"{attrib.Framework}\")]");
+	}
+
+	public void PrintSimulatorAvailabilityAttributes (ICustomAttributeProvider? provider)
+	{
+		switch (CurrentPlatform) {
+		case PlatformName.MacCatalyst:
+		case PlatformName.MacOSX:
+			return;
+		case PlatformName.iOS:
+		case PlatformName.TvOS:
+			break;
+		default:
+			throw new BindingException (1047, CurrentPlatform);
+		}
+
+		PrintSupportedSimulatorAttribute (provider);
+		PrintUnsupportedSimulatorAttribute (provider);
+	}
+
+	void PrintSupportedSimulatorAttribute (ICustomAttributeProvider? provider)
+	{
+		var attribs = AttributeManager.GetCustomAttributes<SupportedSimulatorAttribute> (provider);
+		if (attribs?.Any () != true)
+			return;
+
+		// Only print the attribute for the current platform, we don't care about other platforms.
+		foreach (var attrib in attribs) {
+			switch (CurrentPlatform) {
+			case PlatformName.MacCatalyst:
+			case PlatformName.MacOSX:
+				break;
+			case PlatformName.iOS:
+				if (!attrib.PlatformName.StartsWith ("ios", StringComparison.OrdinalIgnoreCase))
+					continue;
+				break;
+			case PlatformName.TvOS:
+				if (!attrib.PlatformName.StartsWith ("tvos", StringComparison.OrdinalIgnoreCase))
+					continue;
+				break;
+			default:
+				throw new BindingException (1047, CurrentPlatform);
+			}
+			print ($"[SupportedSimulator (\"{attrib.PlatformName}\")]");
+		}
+	}
+
+	void PrintUnsupportedSimulatorAttribute (ICustomAttributeProvider? provider)
+	{
+		var attribs = AttributeManager.GetCustomAttributes<UnsupportedSimulatorAttribute> (provider);
+		if (attribs?.Any () != true)
+			return;
+
+		// Only print the attribute for the current platform, we don't care about other platforms.
+		foreach (var attrib in attribs) {
+			switch (CurrentPlatform) {
+			case PlatformName.MacCatalyst:
+			case PlatformName.MacOSX:
+				break;
+			case PlatformName.iOS:
+				if (!attrib.PlatformName.StartsWith ("ios", StringComparison.OrdinalIgnoreCase))
+					continue;
+				break;
+			case PlatformName.TvOS:
+				if (!attrib.PlatformName.StartsWith ("tvos", StringComparison.OrdinalIgnoreCase))
+					continue;
+				break;
+			default:
+				throw new BindingException (1047, CurrentPlatform);
+			}
+			print ($"[UnsupportedSimulator (\"{attrib.PlatformName}\")]");
+		}
 	}
 
 	bool WriteDocumentation (MemberInfo info, Func<XmlNode, XmlNode>? transformNode = null)

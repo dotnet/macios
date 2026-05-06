@@ -158,6 +158,7 @@ namespace Introspection {
 				return false;
 
 			return !member.IsAvailableOnHostPlatform () ||
+						  !member.IsAvailableInSimulator () ||
 						  SkipDueToAttribute (member.DeclaringType) ||
 						  SkipDueToAttributeInProperty (member);
 		}

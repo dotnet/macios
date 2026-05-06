@@ -24,24 +24,110 @@ tools:
 
 # Code Radiator
 
-Flow code from `main` into active target branches by creating merge PRs.
+Merge code from `main` into active target branches, creating pull requests for each.
 
-## Instructions
+## Target Branch Patterns
 
-1. Read the detailed workflow from `.github/skills/code-radiator/SKILL.md`.
-2. Follow the skill's workflow to:
-   - Fetch remote refs and identify target branches with recent activity (last 30 days).
-   - For each target branch, merge `main` in and create or update a pull request.
-   - Resolve `eng/Version.Details.props` and `eng/Version.Details.xml` conflicts by picking the highest version for each dependency.
-3. Report a summary of what was done.
+Only consider remote branches matching these patterns:
+- `net[0-9]*.0` (e.g., `net11.0`, `net10.0`)
+- `xcode[0-9]*` (e.g., `xcode26`)
+- `xcode[0-9]*.[0-9]*` (e.g., `xcode26.4`)
 
-## Constraints
+Only process branches that have had commits in the last 30 days.
 
-- Target branches match: `net[0-9]*.0`, `xcode[0-9]*`, or `xcode[0-9]*.[0-9]*`.
-- Only process branches with commits in the last 30 days.
-- Local branch name: `merge/main-to-<target>-<yyyyMMdd>`.
-- PR title: `🤖 Merge 'main' => '<target>'`.
-- If an existing non-draft PR exists for a target, update it (push to its head branch).
-- If an existing draft PR exists, add a comment and skip.
-- Enable automerge (merge strategy) on newly created PRs.
-- Never force push.
+## Workflow
+
+### 1. Identify Target Branches
+
+```bash
+# List remote branches matching target patterns with recent activity
+git fetch origin
+git for-each-ref --sort=-committerdate --format='%(refname:short) %(committerdate:iso8601)' refs/remotes/origin/
+```
+
+Filter to branches matching the patterns above AND having a commit within the last month.
+
+### 2. For Each Target Branch
+
+#### a. Determine the local branch name
+
+The local branch name is: `merge/main-to-<target>-<yyyyMMdd>` (e.g., `merge/main-to-net11.0-20260506`).
+
+#### b. Check for existing pull requests
+
+Search for an open PR with:
+- Base: the target branch
+- Title matching: `🤖 Merge 'main' => '<target>'`
+
+If a matching PR exists:
+- If it is a **draft**: add a comment saying "⏭️ Skipping merge update: this PR is a draft. Convert to ready when you want automated updates to resume." and **skip** this target.
+- If it is **not a draft**: use its head branch name as the local branch name (to update the existing PR).
+
+#### c. Create the merge branch and merge
+
+```bash
+# Start from the target branch
+git checkout -B "<local-branch>" "origin/<target>"
+
+# Merge main into it
+git merge origin/main --no-edit -m "Merge branch 'main' into '<target>'"
+```
+
+#### d. Resolve merge conflicts
+
+If there are merge conflicts:
+
+**For `eng/Version.Details.props` or `eng/Version.Details.xml`:**
+- Parse both the `origin/main` and `origin/<target>` versions of the file as XML.
+- For each `<Dependency>` element present in both files, keep the one with the **higher** `<Version>` value.
+- Use semantic version comparison (split on `.`, `-`, `+` and compare numerically).
+- Write the merged result and `git add` the file.
+
+**For any other conflicting files:**
+- If conflicts remain unresolved, abort the merge for this target and report a warning. Do not create a PR with unresolved conflicts.
+
+#### e. Push and create/update the PR
+
+```bash
+git push origin "<local-branch>"
+```
+
+- If updating an existing PR: the push is sufficient (the PR updates automatically).
+- If creating a new PR:
+  - Title: `🤖 Merge 'main' => '<target>'`
+  - Body: `Automated merge of \`main\` into \`<target>\`.\n\nCreated by the code-radiator workflow.`
+  - Base: the target branch
+  - Head: the local branch
+  - Enable automerge (merge strategy) on the new PR.
+
+### 3. Summary
+
+After processing all branches, report:
+- Which PRs were created (with links)
+- Which PRs were updated
+- Which branches were skipped (draft PRs, no conflicts resolution possible)
+- Which branches had no diff (main already merged)
+
+## Conflict Resolution Details
+
+### Version file merge algorithm
+
+For `eng/Version.Details.props` and `eng/Version.Details.xml`:
+
+1. Parse both XML files.
+2. Build a map of `Dependency[@Name]` → `Version` text from each file.
+3. For each dependency present in either file, select the higher version.
+4. Use the target branch's file as the base structure, updating versions where main has higher values.
+5. Dependencies that exist only in main should be added to the result.
+
+### Version comparison
+
+Split version strings on `.`, `-`, and `+`. Compare each segment numerically. Example:
+- `9.0.0-preview.1.24080.9` vs `9.0.0-preview.2.24101.3` → second is higher.
+
+## Important Notes
+
+- Never force push. Always use regular `git push`.
+- The workflow operates on the current repository checkout.
+- Run `git fetch origin` before starting to ensure up-to-date remote refs.
+- Use `gh` CLI for PR operations (create, comment, list, merge --auto).

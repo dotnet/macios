@@ -23,6 +23,8 @@ safe-outputs:
     max: 10
   add-comment:
     max: 10
+  add-labels:
+    max: 10
   merge-pull-request:
     max: 10
   push-to-pull-request-branch:
@@ -115,7 +117,11 @@ If there are merge conflicts:
 - Write the merged result and `git add` the file.
 
 **For any other conflicting files:**
-- If conflicts remain unresolved, abort the merge for this target and report a warning. Do not create a PR with unresolved conflicts.
+- Do your best to resolve them using context and judgment.
+- If you resolved any "other" conflicts (not covered by the rules above), mark the PR for human review:
+  - Do **not** enable automerge (and disable it if already enabled).
+  - Add the `do-not-merge` label.
+  - Add a comment requesting human review of the conflict resolution, listing which files were manually resolved.
 
 #### e. Push and create/update the PR
 

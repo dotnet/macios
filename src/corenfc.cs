@@ -1055,6 +1055,12 @@ namespace CoreNFC {
 		[Abstract]
 		[Export ("sendCommandAPDU:completionHandler:")]
 		void SendCommand (NFCIso7816Apdu apdu, NFCIso7816SendCompletionHandler completionHandler);
+
+		/// <summary>Gets a value indicating whether the tag supports the PACE (Password Authenticated Connection Establishment) protocol.</summary>
+		[iOS (26, 4), MacCatalyst (26, 4)]
+		[Abstract]
+		[Export ("supportsPACE")]
+		bool SupportsPace { get; }
 	}
 
 	[iOS (13, 0)]
@@ -1147,11 +1153,25 @@ namespace CoreNFC {
 		[Export ("initWithPollingOption:delegate:queue:")]
 		NativeHandle Constructor (NFCPollingOption pollingOption, INFCTagReaderSessionDelegate @delegate, [NullAllowed] DispatchQueue queue);
 
+		/// <summary>Initializes a new <see cref="NFCTagReaderSession" /> with the specified configuration, delegate, and dispatch queue.</summary>
+		/// <param name="configuration">The configuration that specifies which tag types to poll for.</param>
+		/// <param name="delegate">The delegate that handles tag reader session events.</param>
+		/// <param name="queue">The dispatch queue on which delegate callbacks are dispatched.</param>
+		[iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("initWithConfiguration:delegate:queue:")]
+		NativeHandle Constructor (NFCTagReaderSessionConfiguration configuration, INFCTagReaderSessionDelegate @delegate, DispatchQueue queue);
+
 		[NullAllowed, Export ("connectedTag", ArgumentSemantic.Retain)]
 		INFCTag ConnectedTag { get; }
 
 		[Export ("restartPolling")]
 		void RestartPolling ();
+
+		/// <summary>Restarts tag polling using the specified configuration.</summary>
+		/// <param name="configuration">The new configuration that specifies which tag types to poll for.</param>
+		[iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("restartPollingWithConfiguration:")]
+		void RestartPolling (NFCTagReaderSessionConfiguration configuration);
 
 		[Export ("connectToTag:completionHandler:")]
 		[Async]
@@ -1228,6 +1248,31 @@ namespace CoreNFC {
 		[Export ("initWithVASCommandConfigurations:delegate:queue:")]
 		[DesignatedInitializer]
 		NativeHandle Constructor (NFCVasCommandConfiguration [] commandConfigurations, INFCVasReaderSessionDelegate @delegate, [NullAllowed] DispatchQueue queue);
+	}
+
+	/// <summary>Provides configuration options for an <see cref="NFCTagReaderSession" />, specifying which tag types to poll for and what identifiers or system codes to use during tag discovery.</summary>
+	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
+	[BaseType (typeof (NSObject))]
+	interface NFCTagReaderSessionConfiguration {
+
+		/// <summary>Gets or sets the polling options that determine which tag types are polled during an NFC reader session.</summary>
+		[Export ("polling", ArgumentSemantic.Assign)]
+		NFCPollingOption Polling { get; set; }
+
+		/// <summary>Gets or sets the ISO 7816 application identifiers (AIDs) used to select applications during tag discovery.</summary>
+		[Export ("iso7816SelectIdentifiers", ArgumentSemantic.Strong)]
+		string [] Iso7816SelectIdentifiers { get; set; }
+
+		/// <summary>Gets or sets the FeliCa system codes used for polling FeliCa tags.</summary>
+		[Export ("felicaSystemCodes", ArgumentSemantic.Strong)]
+		string [] FelicaSystemCodes { get; set; }
+
+		/// <summary>Initializes a new <see cref="NFCTagReaderSessionConfiguration" /> with the specified polling options, ISO 7816 select identifiers, and FeliCa system codes.</summary>
+		/// <param name="option">The polling options that determine which tag types to poll for.</param>
+		/// <param name="iso7816SelectIdentifiers">The ISO 7816 application identifiers to select during tag discovery.</param>
+		/// <param name="felicaSystemCodes">The FeliCa system codes to use for polling FeliCa tags.</param>
+		[Export ("initWithPollingOption:iso7816SelectIdentifiers:felicaSystemCodes:")]
+		NativeHandle Constructor (NFCPollingOption option, string [] iso7816SelectIdentifiers, string [] felicaSystemCodes);
 	}
 
 	[MacCatalyst (26, 0), NoTV, NoMac, iOS (26, 0)]

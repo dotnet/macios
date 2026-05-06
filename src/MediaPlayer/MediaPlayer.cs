@@ -446,7 +446,7 @@ namespace MediaPlayer {
 		CloudServiceCapabilityMissing,
 		/// <summary>A connection to the network could not be established.</summary>
 		NetworkConnectionFailed,
-		/// <summary>The identifer was not found in the store front.</summary>
+		/// <summary>The identifier was not found in the storefront.</summary>
 		NotFound,
 		/// <summary>The operation was not supported.</summary>
 		NotSupported,

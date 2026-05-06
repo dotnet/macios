@@ -21,17 +21,19 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 
 	public unsafe partial class NSNetService {
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public virtual NSData TxtRecordData {
+		/// <summary>Gets or sets the TXT record data for the network service.</summary>
+		/// <value>The TXT record data, or <see langword="null" /> if no TXT record is set.</value>
+		/// <remarks>
+		/// <para>The TXT record contains additional information about the service in the form of key-value pairs.</para>
+		/// <para>When setting the value, the return value from <see cref="SetTxtRecordData" /> is ignored.</para>
+		/// </remarks>
+		public virtual NSData? TxtRecordData {
 			get { return GetTxtRecordData (); }
 			// ignore boolean return value
 			set { SetTxtRecordData (value); }

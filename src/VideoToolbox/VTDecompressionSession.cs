@@ -29,6 +29,7 @@ namespace VideoToolbox {
 		{
 		}
 
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			if (Handle != IntPtr.Zero)

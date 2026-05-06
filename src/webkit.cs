@@ -5216,7 +5216,16 @@ namespace WebKit {
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/WebKit/Reference/WKFrameInfo_Ref/index.html">Apple documentation for <c>WKFrameInfo</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor] // No public init method and every property is get-only
 	interface WKFrameInfo : NSCopying {
+
+#if !XAMCORE_5_0
+		[Obsoleted (PlatformName.iOS, 26, 2, message: ".ctor is not usable.")]
+		[Obsoleted (PlatformName.MacCatalyst, 26, 2, message: ".ctor is not usable.")]
+		[Obsoleted (PlatformName.MacOSX, 26, 2, message: ".ctor is not usable.")]
+		[Export ("init")]
+		NativeHandle Constructor ();
+#endif
 
 		/// <summary>Gets a value that indicates whether the frame is the main frame or a subframe.</summary>
 		///         <value>To be added.</value>
@@ -5696,7 +5705,7 @@ namespace WebKit {
 		[Field ("WKWebsiteDataTypeLocalStorage", "WebKit")]
 		NSString LocalStorage { get; }
 
-		/// <summary>Gets an NSString that signifies a WebSQL databse.</summary>
+		/// <summary>Gets an NSString that signifies a WebSQL database.</summary>
 		///         <value>The NSString object for "WKWebsiteDataTypeWebSQLDatabases".</value>
 		///         <remarks>To be added.</remarks>
 		[Field ("WKWebsiteDataTypeWebSQLDatabases", "WebKit")]
@@ -6941,6 +6950,10 @@ namespace WebKit {
 		[Mac (15, 2), iOS (18, 2), MacCatalyst (18, 2)]
 		[Export ("preferredHTTPSNavigationPolicy", ArgumentSemantic.Assign)]
 		WKWebpagePreferencesUpgradeToHttpsPolicy PreferredHttpsNavigationPolicy { get; set; }
+
+		[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+		[Export ("securityRestrictionMode", ArgumentSemantic.Assign)]
+		WKSecurityRestrictionMode SecurityRestrictionMode { get; set; }
 	}
 
 	[NoMac]
@@ -7131,6 +7144,18 @@ namespace WebKit {
 		ErrorOnFailure,
 	}
 
+	/// <summary>Security restriction modes for WebView content.</summary>
+	[NoTV, Mac (26, 4), iOS (26, 4), MacCatalyst (26, 4)]
+	[Native]
+	public enum WKSecurityRestrictionMode : long {
+		/// <summary>No additional security restrictions beyond WebKit defaults.</summary>
+		None,
+		/// <summary>Enhanced security protections optimized for maintaining web compatibility. Disables JIT compilation and enables increased MTE adoption.</summary>
+		MaximizeCompatibility,
+		/// <summary>Maximum security restrictions including feature disablement. Applied automatically by the system in Lockdown Mode.</summary>
+		Lockdown,
+	}
+
 	[Mac (15, 4), iOS (18, 4), MacCatalyst (18, 4), NoTV]
 	[Native]
 	[ErrorDomain ("WKWebExtensionErrorDomain")]
@@ -7281,7 +7306,7 @@ namespace WebKit {
 
 		[Export ("menuItems", ArgumentSemantic.Copy)]
 #if IOS || MACCATALYST
-		UIMenuElement[] MenuItems { get; }
+		UIMenuElement [] MenuItems { get; }
 #else
 		NSMenuItem [] MenuItems { get; }
 #endif
@@ -7689,7 +7714,7 @@ namespace WebKit {
 
 		[Export ("menuItemsForTab:")]
 #if IOS || MACCATALYST
-		UIMenuElement[] GetMenuItems (IWKWebExtensionTab tab);
+		UIMenuElement [] GetMenuItems (IWKWebExtensionTab tab);
 #else
 		NSMenuItem [] GetMenuItems (IWKWebExtensionTab tab);
 #endif

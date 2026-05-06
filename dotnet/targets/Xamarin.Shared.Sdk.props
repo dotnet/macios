@@ -15,8 +15,8 @@
 		<_MobilePropsPath>$(_MobilePropsDir)$(MSBuildProjectName).mobile.props</_MobilePropsPath>
 	</PropertyGroup>
 
-	<!-- Imports the .mobile.props file if exists and the build is from VS -->
-	<Import Project="$(_MobilePropsPath)" Condition="Exists('$(_MobilePropsPath)') And '$(BuildingInsideVisualStudio)' == 'true'" />
+	<!-- Imports the .mobile.props file if exists and the build is from VS/VSCode -->
+	<Import Project="$(_MobilePropsPath)" Condition="Exists('$(_MobilePropsPath)') And ('$(BuildingInsideVisualStudio)' == 'true' Or '$(DesignTimeBuild)' == 'true')" />
 	
 	<PropertyGroup>
 		<!-- Set to true when using the Microsoft.<platform>.Sdk NuGet. This is used by pre-existing/shared targets to tweak behavior depending on build system -->
@@ -29,7 +29,6 @@
 		<_XamarinRelativeSdkRootDirectory Condition="'$(_XamarinRelativeSdkRootDirectory)' == ''">$(XamarinRelativeSdkRootDirectory)</_XamarinRelativeSdkRootDirectory>
 		<!-- This is the location of the Microsoft.<platform>.Sdk NuGet on macOS, this value will be overriden from Windows  -->
 		<_XamarinSdkRootDirectoryOnMac>$(_XamarinSdkRootDirectory)</_XamarinSdkRootDirectoryOnMac>
-		<_XamarinTaskAssembly>$(_XamarinSdkRootDirectory)\tools\msbuild\Xamarin.MacDev.Tasks.dll</_XamarinTaskAssembly>
 
 		<!--
 			PublishAot should only take effect when doing 'dotnet publish', not when doing 'dotnet build'. We distinguish these cases using the '_IsPublishing' property,
@@ -137,12 +136,24 @@
 
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<!-- Disable the default PublishRuntimeIdentifier behavior: https://github.com/dotnet/sdk/pull/52566 -->
+		<UseDefaultPublishRuntimeIdentifier>false</UseDefaultPublishRuntimeIdentifier>
+	</PropertyGroup>
+
 	<!-- Now that we know the runtime identifier, we can determine if we're building for a simulator -->
 	<PropertyGroup>
 		<_SdkIsSimulator Condition="$(RuntimeIdentifier.Contains('simulator')) Or $(RuntimeIdentifiers.Contains('simulator'))">true</_SdkIsSimulator>
 		<_SdkIsSimulator Condition="'$(_SdkIsSimulator)' == ''">false</_SdkIsSimulator>
 		<!-- Set a public property that specifies if we're building for the simulator. -->
 		<SdkIsSimulator>$(_SdkIsSimulator)</SdkIsSimulator>
+
+		<!-- SdkIsDevice is true when building for device (which can only happen on iOS and tvOS). -->
+		<SdkIsDevice Condition="'$(SdkIsSimulator)' != 'true' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">true</SdkIsDevice>
+
+		<!-- We don't use the 'ComputedPlatform' property anymore, but it seems like there's code out there that depends on it (according to a search on GitHub at least), so define it like we did when we used the property. -->
+		<ComputedPlatform Condition="'$(ComputedPlatform)' == '' And '$(SdkIsSimulator)' == 'true'">iPhoneSimulator</ComputedPlatform>
+		<ComputedPlatform Condition="'$(ComputedPlatform)' == '' And '$(SdkIsDevice)' == 'true'">iPhone</ComputedPlatform>
 	</PropertyGroup>
 
 	<PropertyGroup>

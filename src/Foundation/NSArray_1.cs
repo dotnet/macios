@@ -79,7 +79,7 @@ namespace Foundation {
 				var item = items [i];
 				// The analyzer cannot deal with arrays, we manually keep alive the whole array below
 #pragma warning disable RBI0014
-				IntPtr h = item is null ? NSNull.Null.Handle : item.Handle;
+				IntPtr h = item is null ? NSNull.NullHandle : item.Handle;
 				Marshal.WriteIntPtr (buf, (int) (i * IntPtr.Size), h);
 #pragma warning restore RBI0014
 			}
@@ -109,13 +109,18 @@ namespace Foundation {
 		}
 		#endregion
 
-		public TKey this [nint idx] {
+		/// <summary>Gets the element at the specified index.</summary>
+		/// <param name="idx">The zero-based index of the element to retrieve.</param>
+		/// <value>The element at <paramref name="idx" />, or <see langword="null" /> if the element cannot be converted to <typeparamref name="TKey" />.</value>
+		public TKey? this [nint idx] {
 			get {
 				return GetItem<TKey> ((nuint) idx);
 			}
 		}
 
-		public new TKey [] ToArray ()
+		/// <summary>Converts this <see cref="NSArray{TKey}" /> to a strongly-typed C# array, where <see cref="NSNull" /> elements are converted to <see langword="null" />.</summary>
+		/// <returns>A C# array of <typeparamref name="TKey" /> elements. Elements that are <see cref="NSNull" /> in the source array are represented as <see langword="null" />.</returns>
+		public new TKey? [] ToArray ()
 		{
 			return base.ToArray<TKey> ();
 		}

@@ -20,7 +20,7 @@ using System.Runtime.CompilerServices;
 namespace AVFoundation {
 	/// <summary>Corresponds to a <see cref="AudioToolbox.AudioChannelLayout " /> channel layout.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVAudioChannelLayout_Class/index.html">Apple documentation for <c>AVAudioChannelLayout</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avaudiochannellayout">Apple documentation for <c>AVAudioChannelLayout</c></related>
 	public partial class AVAudioChannelLayout {
 		static IntPtr CreateLayoutPtr (AudioChannelLayout layout, out IntPtr handleToLayout)
 		{

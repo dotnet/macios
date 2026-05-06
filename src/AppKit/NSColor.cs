@@ -442,7 +442,7 @@ namespace AppKit {
 		/// <summary>To be added.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
-		public override string ToString ()
+		public override string? ToString ()
 		{
 			try {
 				string name = this.ColorSpaceName;

@@ -61,6 +61,9 @@
 		<NoWarn Condition="'$(IncludeCS1416Warnigs)' != 'true'">CA1416;$(NoWarn)</NoWarn>
 
 		<CustomBeforeMicrosoftCommonTargets>$(CustomBeforeMicrosoftCommonTargets);$(MSBuildThisFileDirectory)SupportedOSPlatformVersions.targets</CustomBeforeMicrosoftCommonTargets>
+
+		<!-- We must set 'UseFloatingTargetPlatformVersion=true' for our test projects, to avoid building them with other workloads than the current workload. -->
+		<UseFloatingTargetPlatformVersion Condition="'$(UseFloatingTargetPlatformVersion)' == ''">true</UseFloatingTargetPlatformVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

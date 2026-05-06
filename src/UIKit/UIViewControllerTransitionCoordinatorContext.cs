@@ -6,17 +6,19 @@
 // Copyright 2014 Xamarin
 //
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace UIKit {
 	public static partial class UIViewControllerTransitionCoordinatorContext_Extensions {
-		/// <summary>Gets a view controller that controls a transition.</summary>
+		/// <summary>Gets the view associated with a transition.</summary>
+		/// <param name="This">The transition coordinator context.</param>
+		/// <param name="kind">The kind of transition view to retrieve.</param>
+		/// <returns>The transition <see cref="UIView" />, or <see langword="null" /> if <paramref name="kind" /> is not recognized.</returns>
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[UnsupportedOSPlatform ("macos")]
-		public static UIView GetTransitionViewController (this IUIViewControllerTransitionCoordinatorContext This, UITransitionViewControllerKind kind)
+		public static UIView? GetTransitionViewController (this IUIViewControllerTransitionCoordinatorContext This, UITransitionViewControllerKind kind)
 		{
 			switch (kind) {
 			case UITransitionViewControllerKind.ToView:

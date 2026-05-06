@@ -26,7 +26,7 @@ namespace Xamarin.MacDev.Tasks {
 			var currentDir = Environment.CurrentDirectory;
 			try {
 				Environment.CurrentDirectory = tmpdir;
-				Assert.IsTrue (task.Execute (), "Execute");
+				ExecuteTask (task);
 			} finally {
 				Environment.CurrentDirectory = currentDir;
 			}
@@ -94,9 +94,8 @@ namespace Xamarin.MacDev.Tasks {
 			unzipArguments.Add ("-d");
 			unzipArguments.Add (targetDirectory);
 			unzipArguments.Add (zipArchive);
-			var output = new StringBuilder ();
-			var rv = Execution.RunWithStringBuildersAsync ("unzip", unzipArguments, standardOutput: output, standardError: output).Result;
-			Assert.AreEqual (0, rv.ExitCode, "ExitCode\n" + output.ToString ());
+			var rv = Execution.RunAsync ("unzip", unzipArguments).Result;
+			Assert.AreEqual (0, rv.ExitCode, "ExitCode\n" + rv.Output.MergedOutput);
 		}
 
 		void AssertResourceDirectory (string directory, bool symlinks)

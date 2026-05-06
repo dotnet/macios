@@ -27,6 +27,7 @@ stages:
 - stage: governance_checks
   displayName: '${{ parameters.stageDisplayNamePrefix }}API Scan'
   dependsOn: ${{ parameters.dependsOn }}
+  condition: and(succeeded(), ne(dependencies.configure_build.outputs['configure.configure_platforms.DOTNET_PLATFORMS'], ''))
 
   jobs:
   - job: apiscan

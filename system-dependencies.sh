@@ -4,12 +4,30 @@ set -o pipefail
 
 cd $(dirname $0)
 
+# Detect if we're running on Linux
+if [[ "$(uname -s)" == "Linux" ]]; then
+	IS_LINUX=1
+	# On Linux, ignore all macOS-specific dependencies
+	IGNORE_OSX=1
+	IGNORE_XCODE=1
+	IGNORE_XCODE_COMPONENTS=1
+	IGNORE_VISUAL_STUDIO=1
+	IGNORE_SIMULATORS=1
+	IGNORE_OLD_SIMULATORS=1
+	IGNORE_7Z=1
+	IGNORE_HOMEBREW=1
+	IGNORE_SHELLCHECK=1
+	IGNORE_YAMLLINT=1
+	IGNORE_PYTHON3=1
+else
+	IS_LINUX=
+fi
+
 FAIL=
 PROVISION_DOWNLOAD_DIR=/tmp/x-provisioning
 SUDO=sudo
 VERBOSE=
 
-OPTIONAL_SHARPIE=1
 OPTIONAL_SIMULATORS=1
 OPTIONAL_OLD_SIMULATORS=1
 
@@ -43,11 +61,6 @@ while ! test -z $1; do
 			unset IGNORE_VISUAL_STUDIO
 			shift
 			;;
-		--provision-mono)
-			PROVISION_MONO=1
-			unset IGNORE_MONO
-			shift
-			;;
 		--provision-7z)
 			PROVISION_7Z=1
 			unset IGNORE_7Z
@@ -61,12 +74,6 @@ while ! test -z $1; do
 			# building mono from source requires having python3 installed
 			PROVISION_PYTHON3=1
 			unset IGNORE_PYTHON3
-			shift
-			;;
-		--provision-sharpie)
-			PROVISION_SHARPIE=1
-			unset OPTIONAL_SHARPIE
-			unset IGNORE_SHARPIE
 			shift
 			;;
 		--provision-simulators)
@@ -97,8 +104,6 @@ while ! test -z $1; do
 			shift
 			;;
 		--provision-all)
-			PROVISION_MONO=1
-			unset IGNORE_MONO
 			PROVISION_VS=1
 			unset IGNORE_VISUAL_STUDIO
 			PROVISION_XCODE=1
@@ -107,8 +112,6 @@ while ! test -z $1; do
 			unset IGNORE_7Z
 			PROVISION_HOMEBREW=1
 			unset IGNORE_HOMEBREW
-			PROVISION_SHARPIE=1
-			unset IGNORE_SHARPIE
 			PROVISION_SIMULATORS=1
 			unset IGNORE_SIMULATORS
 			PROVISION_OLD_SIMULATORS=1
@@ -127,12 +130,10 @@ while ! test -z $1; do
 			;;
 		--ignore-all)
 			IGNORE_OSX=1
-			IGNORE_MONO=1
 			IGNORE_VISUAL_STUDIO=1
 			IGNORE_XCODE=1
 			IGNORE_7Z=1
 			IGNORE_HOMEBREW=1
-			IGNORE_SHARPIE=1
 			IGNORE_SIMULATORS=1
 			IGNORE_PYTHON3=1
 			IGNORE_DOTNET=1
@@ -157,10 +158,6 @@ while ! test -z $1; do
 			IGNORE_VISUAL_STUDIO=1
 			shift
 			;;
-		--ignore-mono)
-			IGNORE_MONO=1
-			shift
-			;;
 		--ignore-autotools)
 			# this is an old argument, just ignore it
 			shift
@@ -171,15 +168,6 @@ while ! test -z $1; do
 			;;
 		--ignore-7z)
 			IGNORE_7Z=1
-			shift
-			;;
-		--ignore-sharpie)
-			IGNORE_SHARPIE=1
-			shift
-			;;
-		--enforce-sharpie)
-			unset IGNORE_SHARPIE
-			unset OPTIONAL_SHARPIE
 			shift
 			;;
 		--ignore-simulators)
@@ -291,27 +279,6 @@ function is_at_least_version () {
 		# more version fields in min than actual (1.0 vs 1.0.1 for instance): not OK
 		return 1
 	fi
-}
-
-function install_mono () {
-	local MONO_URL=`grep MIN_MONO_URL= Make.config | sed 's/.*=//'`
-	local MIN_MONO_VERSION=`grep MIN_MONO_VERSION= Make.config | sed 's/.*=//'`
-
-	if test -z $MONO_URL; then
-		fail "No MIN_MONO_URL set in Make.config, cannot provision"
-		return
-	fi
-
-	mkdir -p $PROVISION_DOWNLOAD_DIR
-	log "Downloading Mono $MIN_MONO_VERSION from $MONO_URL to $PROVISION_DOWNLOAD_DIR..."
-	local MONO_NAME=`basename $MONO_URL`
-	local MONO_PKG=$PROVISION_DOWNLOAD_DIR/$MONO_NAME
-	curl -L $MONO_URL > $MONO_PKG
-
-	log "Installing Mono $MIN_MONO_VERSION from $MONO_URL..."
-	$SUDO installer -pkg $MONO_PKG -target /
-
-	rm -f $MONO_PKG
 }
 
 function delete_all_simulator_runtimes ()
@@ -754,12 +721,26 @@ function check_xcode_components ()
 
 	for comp in "${COMPONENTS[@]}"; do
 		componentInfo=$(xcrun xcodebuild -showComponent "$comp")
-		if  [[ "$componentInfo" =~ .*Status:" "installed.* ]]; then
+		local NEEDS_INSTALL=
+		local NEEDS_UPDATE=
+		if [[ "$componentInfo" =~ .*Status:" "installedUpdateAvailable.* ]]; then
+			NEEDS_UPDATE=1
+		elif [[ "$componentInfo" =~ .*Status:" "installed.* ]]; then
+			NEEDS_INSTALL=
+		else
+			NEEDS_INSTALL=1
+		fi
+
+		if test -z "$NEEDS_INSTALL$NEEDS_UPDATE"; then
 			ok "The Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} is installed."
 		elif test -z "$PROVISION_XCODE_COMPONENTS"; then
-			fail "The Xcode component ${COLOR_BLUE}$comp${COLOR_RESET} is not installed. Execute ${COLOR_MAGENTA}xcrun xcodebuild -downloadComponent $comp${COLOR_RESET} or ${COLOR_MAGENTA}./system-dependencies.sh --provision-xcode-components${COLOR_RESET} to install."
+			if test -n "$NEEDS_UPDATE"; then
+				fail "The Xcode component ${COLOR_BLUE}$comp${COLOR_RESET} is installed, but an update is available. Execute ${COLOR_MAGENTA}xcrun xcodebuild -downloadComponent $comp${COLOR_RESET} or ${COLOR_MAGENTA}./system-dependencies.sh --provision-xcode-components${COLOR_RESET} to install."
+			else
+				fail "The Xcode component ${COLOR_BLUE}$comp${COLOR_RESET} is not installed. Execute ${COLOR_MAGENTA}xcrun xcodebuild -downloadComponent $comp${COLOR_RESET} or ${COLOR_MAGENTA}./system-dependencies.sh --provision-xcode-components${COLOR_RESET} to install."
+			fi
 			fail "Alternatively you can ${COLOR_MAGENTA}export IGNORE_XCODE_COMPONENTS=1${COLOR_RED} to skip this check."
-		else
+		elif test -n "$PROVISION_XCODE_COMPONENTS"; then
 			log "Installing the Xcode component ${COLOR_BLUE}$comp${COLOR_CLEAR} by executing ${COLOR_BLUE}xcrun xcodebuild -downloadComponent $comp${COLOR_CLEAR}..."
 			xcrun xcodebuild -downloadComponent "$comp"
 
@@ -769,63 +750,6 @@ function check_xcode_components ()
 
 	log "Clearing xcrun cache..."
 	xcrun -k
-}
-
-function check_mono () {
-	if ! test -z $IGNORE_MONO; then return; fi
-
-	MONO_VERSION_FILE=/Library/Frameworks/Mono.framework/Versions/Current/VERSION
-	if ! /Library/Frameworks/Mono.framework/Commands/mono --version 2>/dev/null >/dev/null; then
-		if ! test -z $PROVISION_MONO; then
-			install_mono
-		else
-			fail "You must install the Mono MDK. Download URL: $MIN_MONO_URL"
-			return
-		fi
-	elif ! test -e $MONO_VERSION_FILE; then
-		if ! test -z $PROVISION_MONO; then
-			install_mono
-		else
-			fail "Could not find Mono's VERSION file, you must install the Mono MDK. Download URL: $MIN_MONO_URL"
-			return
-		fi
-	fi
-
-	MIN_MONO_VERSION=`grep MIN_MONO_VERSION= Make.config | sed 's/.*=//'`
-	MAX_MONO_VERSION=`grep MAX_MONO_VERSION= Make.config | sed 's/.*=//'`
-
-	ACTUAL_MONO_VERSION=`cat $MONO_VERSION_FILE`
-	if ! is_at_least_version $ACTUAL_MONO_VERSION $MIN_MONO_VERSION; then
-		if ! test -z $PROVISION_MONO; then
-			install_mono
-			ACTUAL_MONO_VERSION=`cat $MONO_VERSION_FILE`
-		else
-			MIN_MONO_URL=$(grep ^MIN_MONO_URL= Make.config | sed 's/.*=//')
-			fail "You must have at least Mono $MIN_MONO_VERSION, found $ACTUAL_MONO_VERSION. Download URL: $MIN_MONO_URL"
-			return
-		fi
-	elif [[ "$ACTUAL_MONO_VERSION" == "$MAX_MONO_VERSION" ]]; then
-		: # this is ok
-	elif is_at_least_version $ACTUAL_MONO_VERSION $MAX_MONO_VERSION; then
-		if ! test -z $PROVISION_MONO; then
-			install_mono
-			ACTUAL_MONO_VERSION=`cat $MONO_VERSION_FILE`
-		else
-			fail "Your mono version is too new, max version is $MAX_MONO_VERSION, found $ACTUAL_MONO_VERSION."
-			fail "You may edit Make.config and change MAX_MONO_VERSION to your actual version to continue the"
-			fail "build (unless you're on a release branch). Once the build completes successfully, please"
-			fail "commit the new MAX_MONO_VERSION value."
-			fail "Alternatively you can ${COLOR_MAGENTA}export IGNORE_MONO=1${COLOR_RED} to skip this check."
-			return
-		fi
-	fi
-
-	if ! which mono > /dev/null 2>&1; then
-		fail "Mono is not in PATH. You must add '/Library/Frameworks/Mono.framework/Versions/Current/Commands' to PATH. Current PATH is: $PATH".
-		return
-	fi
-
-	ok "Found Mono $ACTUAL_MONO_VERSION (at least $MIN_MONO_VERSION and not more than $MAX_MONO_VERSION is required)"
 }
 
 function install_shellcheck () {
@@ -924,6 +848,11 @@ function check_osx_version () {
 }
 
 function check_checkout_dir () {
+	# Skip on Linux - this check is macOS-specific
+	if test -n "$IS_LINUX"; then
+		return
+	fi
+	
 	# use apple script to get the possibly translated special folders and check that we are not a subdir
 	for special in documents downloads desktop; do
 		path=$(osascript -e "set result to POSIX path of (path to $special folder as string)")
@@ -977,87 +906,6 @@ IFS='
 		warn "Could not find Homebrew. Homebrew is required to auto-provision some dependencies (p7zip), but not required otherwise."
 	fi
 IFS=$IFS_tmp
-}
-
-function install_objective_sharpie () {
-	local SHARPIE_URL=$(grep MIN_SHARPIE_URL= Make.config | sed 's/.*=//')
-	local MIN_SHARPIE_VERSION=$(grep MIN_SHARPIE_VERSION= Make.config | sed 's/.*=//')
-
-	if test -z "$SHARPIE_URL"; then
-		fail "No MIN_SHARPIE_URL set in Make.config, cannot provision Objective Sharpie"
-		return
-	fi
-
-	mkdir -p "$PROVISION_DOWNLOAD_DIR"
-	log "Downloading Objective Sharpie $MIN_SHARPIE_VERSION from $SHARPIE_URL to $PROVISION_DOWNLOAD_DIR..."
-	local SHARPIE_NAME=$(basename "$SHARPIE_URL")
-	local SHARPIE_PKG=$PROVISION_DOWNLOAD_DIR/$SHARPIE_NAME
-	curl -L "$SHARPIE_URL" > "$SHARPIE_PKG"
-
-	log "Installing Objective-Sharpie $MIN_SHARPIE_VERSION from $SHARPIE_URL..."
-	sudo installer -pkg "$SHARPIE_PKG" -target /
-
-	rm -f "$SHARPIE_PKG"
-}
-
-function check_objective_sharpie () {
-	if ! test -z $IGNORE_SHARPIE; then return; fi
-
-	SHARPIE_URL=$(grep MIN_SHARPIE_URL= Make.config | sed 's/.*=//')
-	MIN_SHARPIE_VERSION=$(grep MIN_SHARPIE_VERSION= Make.config | sed 's/.*=//')
-	MAX_SHARPIE_VERSION=$(grep MAX_SHARPIE_VERSION= Make.config | sed 's/.*=//')
-
-	if ! test -f /Library/Frameworks/ObjectiveSharpie.framework/Versions/Current/Version; then
-		if ! test -z "$PROVISION_SHARPIE"; then
-			install_objective_sharpie
-			ACTUAL_SHARPIE_VERSION=$(cat /Library/Frameworks/ObjectiveSharpie.framework/Versions/Current/Version)
-		else
-			if test -z $OPTIONAL_SHARPIE; then
-				fail "You must install Objective Sharpie, at least $MIN_SHARPIE_VERSION (no Objective Sharpie found). You can download it from $SHARPIE_URL"
-				fail "Alternatively you can ${COLOR_MAGENTA}export IGNORE_SHARPIE=1${COLOR_RED} to skip this check."
-			else
-				warn "You do not have Objective Sharpie installed (should be at least $MIN_SHARPIE_VERSION). You can download it from $SHARPIE_URL"
-			fi
-			return
-		fi
-	else
-		ACTUAL_SHARPIE_VERSION=$(cat /Library/Frameworks/ObjectiveSharpie.framework/Versions/Current/Version)
-		if ! is_at_least_version "$ACTUAL_SHARPIE_VERSION" "$MIN_SHARPIE_VERSION"; then
-			if ! test -z "$PROVISION_SHARPIE"; then
-				install_objective_sharpie
-				ACTUAL_SHARPIE_VERSION=$(cat /Library/Frameworks/ObjectiveSharpie.framework/Versions/Current/Version)
-			else
-				if test -z $OPTIONAL_SHARPIE; then
-					fail "You must have at least Objective Sharpie $MIN_SHARPIE_VERSION, found $ACTUAL_SHARPIE_VERSION. You can download it from $SHARPIE_URL"
-					fail "Alternatively you can ${COLOR_MAGENTA}export IGNORE_SHARPIE=1${COLOR_RED} to skip this check."
-				else
-					warn "You do not have have at least Objective Sharpie $MIN_SHARPIE_VERSION (found $ACTUAL_SHARPIE_VERSION). You can download it from $SHARPIE_URL"
-				fi
-				return
-			fi
-		elif [[ "$ACTUAL_SHARPIE_VERSION" == "$MAX_SHARPIE_VERSION" ]]; then
-			: # this is ok
-		elif is_at_least_version "$ACTUAL_SHARPIE_VERSION" "$MAX_SHARPIE_VERSION"; then
-			if ! test -z "$PROVISION_SHARPIE"; then
-				install_objective_sharpie
-				ACTUAL_SHARPIE_VERSION=$(cat /Library/Frameworks/ObjectiveSharpie.framework/Versions/Current/Version)
-			else
-				if test -z $OPTIONAL_SHARPIE; then
-					fail "Your Objective Sharpie version is too new, max version is $MAX_SHARPIE_VERSION, found $ACTUAL_SHARPIE_VERSION. We recommend you download $SHARPIE_URL"
-					fail "Alternatively you can ${COLOR_MAGENTA}export IGNORE_SHARPIE=1${COLOR_RED} to skip this check."
-				else
-					warn "You do not have have at most Objective Sharpie $MAX_SHARPIE_VERSION (found $ACTUAL_SHARPIE_VERSION). We recommend you download $SHARPIE_URL"
-				fi
-				return
-			fi
-		fi
-	fi
-
-	if test -z $OPTIONAL_SHARPIE; then
-		ok "Found Objective Sharpie $ACTUAL_SHARPIE_VERSION (at least $MIN_SHARPIE_VERSION and not more than $MAX_SHARPIE_VERSION is required)"
-	else
-		ok "Found Objective Sharpie $ACTUAL_SHARPIE_VERSION (at least $MIN_SHARPIE_VERSION and not more than $MAX_SHARPIE_VERSION is recommended)"
-	fi
 }
 
 function check_old_simulators ()
@@ -1116,6 +964,11 @@ function check_old_simulators ()
 
 echo "Checking system..."
 
+if test -n "$IS_LINUX"; then
+	ok "Running on ${COLOR_BLUE}Linux${COLOR_CLEAR} - skipping macOS-specific checks"
+	ok "Only .NET download and managed code builds will be available"
+fi
+
 check_osx_version
 check_checkout_dir
 check_xcode
@@ -1124,9 +977,7 @@ check_homebrew
 check_shellcheck
 check_yamllint
 check_python3
-check_mono
 check_7z
-check_objective_sharpie
 check_old_simulators
 if test -z "$IGNORE_DOTNET"; then
 	if test -f /usr/local/share/dotnet/dotnet; then

@@ -3444,11 +3444,20 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the more than one method named &apos;{3}&apos; was found in the type &apos;{4}..
+        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named &apos;{3}&apos; was found in the type &apos;{4}&apos;..
         /// </summary>
-        public static string MX2106_E {
+        public static string MX2106_E1 {
             get {
-                return ResourceManager.GetString("MX2106_E", resourceCulture);
+                return ResourceManager.GetString("MX2106_E1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named &apos;{3}&apos; was found in the type &apos;{4}&apos;..
+        /// </summary>
+        public static string MX2106_E2 {
+            get {
+                return ResourceManager.GetString("MX2106_E2", resourceCulture);
             }
         }
         
@@ -3557,6 +3566,15 @@ namespace Xamarin.Bundler {
         public static string MX4189 {
             get {
                 return ResourceManager.GetString("MX4189", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not find the trampoline for the category method {0}..
+        /// </summary>
+        public static string MX4191 {
+            get {
+                return ResourceManager.GetString("MX4191", resourceCulture);
             }
         }
         
@@ -3855,6 +3873,33 @@ namespace Xamarin.Bundler {
         public static string MX8059 {
             get {
                 return ResourceManager.GetString("MX8059", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No &apos;Invoke&apos; method found. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
+        /// </summary>
+        public static string MX8060 {
+            get {
+                return ResourceManager.GetString("MX8060", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to find the managed function with id {0} ({1}, {2}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
+        /// </summary>
+        public static string MX8061 {
+            get {
+                return ResourceManager.GetString("MX8061", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type &apos;{0}&apos; is expected to have a ProtocolProxyAttribute. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new)..
+        /// </summary>
+        public static string MX8062 {
+            get {
+                return ResourceManager.GetString("MX8062", resourceCulture);
             }
         }
     }

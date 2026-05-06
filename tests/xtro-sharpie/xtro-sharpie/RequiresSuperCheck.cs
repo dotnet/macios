@@ -8,20 +8,18 @@
 //		when a managed member has no business to have an [RequiresSuper] attribute
 //
 
-using System;
-using System.Collections.Generic;
-
-using Mono.Cecil;
-
-using Clang.Ast;
-
 namespace Extrospection {
 
 	public class RequiresSuperCheck : BaseVisitor {
 
 		static Dictionary<string, MethodDefinition> methods = new Dictionary<string, MethodDefinition> ();
 
-		static MethodDefinition GetMethod (ObjCMethodDecl decl)
+		public RequiresSuperCheck (BindingResult bindingResult)
+			: base (bindingResult)
+		{
+		}
+
+		static MethodDefinition? GetMethod (ObjCMethodDecl decl)
 		{
 			methods.TryGetValue (decl.GetName (), out var md);
 			return md;
@@ -38,25 +36,21 @@ namespace Extrospection {
 				methods.Add (key, method);
 		}
 
-		public override void VisitObjCCategoryDecl (ObjCCategoryDecl decl, VisitKind visitKind)
+		public override void VisitObjCCategoryDecl (ObjCCategoryDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
-				return;
 			foreach (var d in decl.Methods)
 				Visit (d);
 		}
 
-		public override void VisitObjCMethodDecl (ObjCMethodDecl decl, VisitKind visitKind)
+		public override void VisitObjCMethodDecl (ObjCMethodDecl decl)
 		{
-			if (visitKind != VisitKind.Enter)
-				return;
 			Visit (decl);
 		}
 
 		void Visit (ObjCMethodDecl decl)
 		{
 			// don't process methods (or types) that are unavailable for the current platform
-			if (!decl.IsAvailable () || !(decl.DeclContext as Decl).IsAvailable ())
+			if (!decl.IsAvailable () || !((Decl) decl.DeclContext!).IsAvailable ())
 				return;
 
 			var method = GetMethod (decl);
@@ -67,7 +61,7 @@ namespace Extrospection {
 			if (framework is null)
 				return;
 
-			if (!decl.HasAttr<ObjCRequiresSuperAttr> ()) {
+			if (!decl.Attrs.IsObjCRequiresSuperAttr ()) {
 				if (method.RequiresSuper ())
 					Log.On (framework).Add ($"!extra-requires-super! {method.GetName ()} is incorrectly decorated with an [RequiresSuper] attribute");
 			} else if (!method.RequiresSuper ()) {

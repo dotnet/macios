@@ -789,8 +789,11 @@
   <data name="MM2106_D" xml:space="preserve">
 		<value>Could not optimize the call to BlockLiteral.SetupBlock in {0} at offset {1}: {2}.</value>
 	</data>
-  <data name="MX2106_E" xml:space="preserve">
-		<value>Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the more than one method named '{3}' was found in the type '{4}.</value>
+  <data name="MX2106_E1" xml:space="preserve">
+		<value>Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named '{3}' was found in the type '{4}'.</value>
+	</data>
+  <data name="MX2106_E2" xml:space="preserve">
+		<value>Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named '{3}' was found in the type '{4}'.</value>
 	</data>
   <data name="MX2106_F" xml:space="preserve">
 		<value>Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the method '{3}' must have at least one parameter.</value>
@@ -1213,6 +1216,9 @@
   <data name="MT4190" xml:space="preserve">
 		<value>The class '{0}' will not be registered because the {1} framework has been deprecated from the {2} SDK.</value>
 	</data>
+  <data name="MX4191" xml:space="preserve">
+		<value>Could not find the trampoline for the category method {0}.</value>
+	</data>
   <data name="MT5101" xml:space="preserve">
 		<value>Missing '{0}' compiler. Please install Xcode 'Command-Line Tools' component</value>
 	</data>
@@ -1452,5 +1458,14 @@
   <data name="MX8059" xml:space="preserve">
 		<value>Unable to find a delegate to invoke for the block {0} (delegate type: {1}).</value>
 		<comment>{0} - The block address. {1} - The delegate type.</comment>
+	</data>
+  <data name="MX8060" xml:space="preserve">
+		<value>Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No 'Invoke' method found. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).</value>
+	</data>
+  <data name="MX8061" xml:space="preserve">
+		<value>Unable to find the managed function with id {0} ({1}, {2}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).</value>
+	</data>
+  <data name="MX8062" xml:space="preserve">
+		<value>Type '{0}' is expected to have a ProtocolProxyAttribute. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).</value>
 	</data>
 </root>

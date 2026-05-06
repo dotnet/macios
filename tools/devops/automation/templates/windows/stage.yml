@@ -47,6 +47,8 @@ stages:
   displayName: ${{ parameters.displayName }}
   dependsOn:
   - configure_build
+  - ${{ if not(parameters.postPipeline) }}:
+    - build_packages
   condition: and(succeeded(), eq(dependencies.configure_build.outputs['configure.decisions.RUN_WINDOWS_TESTS'], 'true'))
 
   jobs:
@@ -62,7 +64,7 @@ stages:
       - agent.os -equals Darwin
       - SSH.Enabled -equals True
       - macOS.Architecture -equals arm64
-      - macOS.Name -equals Sequoia
+      - macOS.Name -equals Tahoe
 
     steps:
     - template: reserve-mac.yml

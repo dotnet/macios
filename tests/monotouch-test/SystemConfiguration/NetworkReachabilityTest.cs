@@ -14,6 +14,8 @@ using SystemConfiguration;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net.Sockets;
+using MonoTests.System.Net.Http;
 
 namespace MonoTouchFixtures.SystemConfiguration {
 
@@ -78,7 +80,23 @@ namespace MonoTouchFixtures.SystemConfiguration {
 		[Test]
 		public void CtorIPAddressPair ()
 		{
-			var address = Dns.GetHostAddresses ("apple.com") [0];
+			IPAddress address;
+			try {
+				var addresses = Dns.GetHostAddresses (NetworkResources.AppleHost);
+				address = null;
+				foreach (var candidate in addresses) {
+					if (candidate.AddressFamily == AddressFamily.InterNetwork) {
+						address = candidate;
+						break;
+					}
+				}
+				if (address is null)
+					throw new InvalidOperationException ("No IPv4 address found.");
+			} catch (Exception e) {
+				TestRuntime.IgnoreInCIIfBadNetwork (e);
+				throw;
+			}
+
 			using (var nr = new NetworkReachability (IPAddress.Loopback, address)) {
 				NetworkReachabilityFlags flags;
 
@@ -90,8 +108,9 @@ namespace MonoTouchFixtures.SystemConfiguration {
 				NetworkReachabilityFlags flags;
 
 				Assert.IsTrue (nr.TryGetFlags (out flags), "#2");
-				flags &= ~NetworkReachabilityFlags.TransientConnection; // Remove the TransientConnection flag if it's set
-				Assert.That (flags, Is.EqualTo (NetworkReachabilityFlags.Reachable), "#2 Reachable");
+				// Different OS versions report different flags, so just
+				// check that Reachable is set and no unexpected flags appear.
+				CheckRemoteFlags (flags, "2");
 			}
 
 			using (var nr = new NetworkReachability (IPAddress.Loopback, null)) {
@@ -111,6 +130,17 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			// figure out which OS versions have which flags set turned out to
 			// be a never-ending game of whack-a-mole, so just don't assert
 			// that any specific flags are set.
+			Assert.AreEqual (noFlags, otherFlags, $"#{number} No other flags: {flags.ToString ()}");
+		}
+
+		void CheckRemoteFlags (NetworkReachabilityFlags flags, string number)
+		{
+			var noFlags = (NetworkReachabilityFlags) 0;
+			var otherFlags = (flags & ~(NetworkReachabilityFlags.Reachable | NetworkReachabilityFlags.TransientConnection | NetworkReachabilityFlags.ConnectionRequired));
+
+			// Different versions of OSes report different flags, so just
+			// verify Reachable is set and no unexpected flags appear.
+			Assert.That (flags & NetworkReachabilityFlags.Reachable, Is.Not.EqualTo (noFlags), $"#{number} Reachable: {flags.ToString ()}");
 			Assert.AreEqual (noFlags, otherFlags, $"#{number} No other flags: {flags.ToString ()}");
 		}
 

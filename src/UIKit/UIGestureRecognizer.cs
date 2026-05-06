@@ -78,7 +78,7 @@ namespace UIKit {
 		///       unsubscribing this particular action from the recognizer using the <see cref="UIKit.UIGestureRecognizer.RemoveTarget(Foundation.NSObject,ObjCRuntime.Selector)" /> method.
 		///
 		///     </remarks>
-		///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UIKit/__UIGestureRecognizerToken">Apple documentation for <c>__UIGestureRecognizerToken</c></related>
+		/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/uigesturerecognizer">Apple documentation for <c>UIGestureRecognizer</c></related>
 		[Register ("__UIGestureRecognizerToken")]
 		public class Token : NSObject {
 			/// <summary>To be added.</summary>
@@ -107,7 +107,7 @@ namespace UIKit {
 		/// <summary>Subtype of <see cref="UIKit.UIGestureRecognizer.Token" />, which is returned by <see cref="UIKit.UIView.AddGestureRecognizer(UIKit.UIGestureRecognizer)" />.</summary>
 		///     <remarks>To be added.</remarks>
 		///     <altmember cref="UIKit.UIGestureRecognizer.ParametrizedDispatch" />
-		///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UIKit/__UIGestureRecognizerParameterlessToken">Apple documentation for <c>__UIGestureRecognizerParameterlessToken</c></related>
+		/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/uigesturerecognizer">Apple documentation for <c>UIGestureRecognizer</c></related>
 		[Register ("__UIGestureRecognizerParameterlessToken")]
 		public class ParameterlessDispatch : Token {
 			Action action;
@@ -130,7 +130,7 @@ namespace UIKit {
 		/// <summary>Subtype of <see cref="UIKit.UIGestureRecognizer.Token" />.</summary>
 		///     <remarks>To be added.</remarks>
 		///     <altmember cref="UIKit.UIGestureRecognizer.ParameterlessDispatch" />
-		///     <related type="externalDocumentation" href="https://developer.apple.com/reference/UIKit/__UIGestureRecognizerParametrizedToken">Apple documentation for <c>__UIGestureRecognizerParametrizedToken</c></related>
+		/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/uigesturerecognizer">Apple documentation for <c>UIGestureRecognizer</c></related>
 		[Register ("__UIGestureRecognizerParametrizedToken")]
 		public class ParametrizedDispatch : Token {
 			Action<UIGestureRecognizer> action;

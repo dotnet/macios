@@ -64,6 +64,12 @@ namespace Xamarin.Tests {
 			return Execute ("build", project, properties, true, target: target, timeout: timeout);
 		}
 
+		public static ExecutionResult AssertRun (string project, Dictionary<string, string>? properties = null, TimeSpan? timeout = null, Dictionary<string, string>? environmentVariables = null)
+		{
+			var extraArguments = environmentVariables?.SelectMany (kvp => new string [] { "-e", $"{kvp.Key}={kvp.Value}" })?.ToArray () ?? [];
+			return Execute ("run", project, properties, true, timeout: timeout, extraArguments: extraArguments);
+		}
+
 		public static ExecutionResult AssertBuildFailure (string project, Dictionary<string, string>? properties = null)
 		{
 			var rv = Execute ("build", project, properties, false);
@@ -96,8 +102,8 @@ namespace Xamarin.Tests {
 			var env = new Dictionary<string, string?> ();
 			env ["MSBuildSDKsPath"] = null;
 			env ["MSBUILD_EXE_PATH"] = null;
-			var output = new StringBuilder ();
-			var rv = Execution.RunWithStringBuildersAsync (Executable, args, env, output, output, Console.Out, workingDirectory: outputDirectory, timeout: TimeSpan.FromMinutes (10)).Result;
+			var rv = Execution.RunAsync (Executable, args, env, Console.Out, workingDirectory: outputDirectory, timeout: TimeSpan.FromMinutes (10)).Result;
+			var output = rv.Output.MergedOutput;
 			if (rv.ExitCode != 0) {
 				Console.WriteLine ($"'{Executable} {StringUtils.FormatArguments (args)}' failed with exit code {rv.ExitCode}.");
 				Console.WriteLine (output);
@@ -120,13 +126,13 @@ namespace Xamarin.Tests {
 			env ["MSBuildSDKsPath"] = null;
 			env ["MSBUILD_EXE_PATH"] = null;
 
-			var output = new StringBuilder ();
-			var rv = Execution.RunWithStringBuildersAsync (Executable, args, env, output, output, Console.Out, workingDirectory: Configuration.SourceRoot, timeout: TimeSpan.FromMinutes (10)).Result;
+			var rv = Execution.RunAsync (Executable, args, env, Console.Out, workingDirectory: Configuration.SourceRoot, timeout: TimeSpan.FromMinutes (10)).Result;
+			var output = rv.Output.MergedOutput;
 			if (rv.ExitCode != 0) {
 				var msg = new StringBuilder ();
 				msg.AppendLine ($"'dotnet workload install' failed with exit code {rv.ExitCode}");
 				msg.AppendLine ($"Full command: {Executable} {StringUtils.FormatArguments (args)}");
-				msg.AppendLine (output.ToString ());
+				msg.AppendLine (output);
 				Console.WriteLine (msg);
 				Assert.Fail (msg.ToString ());
 			}
@@ -169,14 +175,14 @@ namespace Xamarin.Tests {
 			env ["MSBuildSDKsPath"] = null;
 			env ["MSBUILD_EXE_PATH"] = null;
 
-			var output = new StringBuilder ();
-			var rv = Execution.RunWithStringBuildersAsync (Executable, args, env, output, output, null, workingDirectory: Path.GetDirectoryName (projectPath), timeout: TimeSpan.FromMinutes (2)).Result;
+			var rv = Execution.RunAsync (Executable, args, env, null, workingDirectory: Path.GetDirectoryName (projectPath), timeout: TimeSpan.FromMinutes (2)).Result;
+			var output = rv.Output.MergedOutput;
 
 			if (rv.ExitCode != 0)
 				throw new Exception ($"Failed to get property '{propertyName}' from project '{projectPath}'. Exit code: {rv.ExitCode}. Output: {output}");
 
 			// Extract the property value from the output
-			return output.ToString ().Trim ();
+			return output.Trim ();
 		}
 
 		public static ExecutionResult ExecuteCommand (string exe, params string [] args)
@@ -190,8 +196,8 @@ namespace Xamarin.Tests {
 			env ["MSBuildSDKsPath"] = null;
 			env ["MSBUILD_EXE_PATH"] = null;
 
-			var output = new StringBuilder ();
-			var rv = Execution.RunWithStringBuildersAsync (exe, args, env, output, output, Console.Out, workingDirectory: Configuration.SourceRoot, timeout: TimeSpan.FromMinutes (10)).Result;
+			var rv = Execution.RunAsync (exe, args, env, Console.Out, workingDirectory: Configuration.SourceRoot, timeout: TimeSpan.FromMinutes (10)).Result;
+			var output = rv.Output.MergedOutput;
 			if (rv.ExitCode != 0) {
 				var msg = new StringBuilder ();
 				msg.AppendLine ($"'{exe}' failed with exit code {rv.ExitCode}");
@@ -203,7 +209,7 @@ namespace Xamarin.Tests {
 			return new ExecutionResult (output, output, rv.ExitCode);
 		}
 
-		public static ExecutionResult Execute (string verb, string project, Dictionary<string, string>? properties, bool assert_success = true, string? target = null, bool? msbuildParallelism = null, TimeSpan? timeout = null)
+		public static ExecutionResult Execute (string verb, string project, Dictionary<string, string>? properties, bool assert_success = true, string? target = null, bool? msbuildParallelism = null, TimeSpan? timeout = null, params string [] extraArguments)
 		{
 			if (!File.Exists (project))
 				throw new FileNotFoundException ($"The project file '{project}' does not exist.");
@@ -215,6 +221,7 @@ namespace Xamarin.Tests {
 			case "pack":
 			case "publish":
 			case "restore":
+			case "run":
 				var args = new List<string> ();
 				args.Add (verb);
 				args.Add (project);
@@ -295,17 +302,17 @@ namespace Xamarin.Tests {
 						args.Add ("-maxcpucount:1");
 					}
 				}
+				args.AddRange (extraArguments);
 
 				var env = new Dictionary<string, string?> ();
 				env ["MSBuildSDKsPath"] = null;
 				env ["MSBUILD_EXE_PATH"] = null;
-				var output = new StringBuilder ();
 				timeout ??= TimeSpan.FromMinutes (10);
-				var rv = Execution.RunWithStringBuildersAsync (Executable, args, env, output, output, Console.Out, workingDirectory: Path.GetDirectoryName (project), timeout: timeout).Result;
+				var rv = Execution.RunAsync (Executable, args, env, Console.Out, workingDirectory: Path.GetDirectoryName (project), timeout: timeout).Result;
+				var output = rv.Output.MergedOutput;
 				if (assert_success && rv.ExitCode != 0) {
-					var outputStr = output.ToString ();
 					Console.WriteLine ($"'{Executable} {StringUtils.FormatArguments (args)}' failed with exit code {rv.ExitCode}.");
-					Console.WriteLine (outputStr);
+					Console.WriteLine (output);
 					if (rv.ExitCode != 0) {
 						var msg = new StringBuilder ();
 						if (rv.TimedOut) {
@@ -488,13 +495,13 @@ namespace Xamarin.Tests {
 	}
 
 	public class ExecutionResult {
-		public StringBuilder StandardOutput;
-		public StringBuilder StandardError;
+		public string StandardOutput;
+		public string StandardError;
 		public int ExitCode;
 		public bool TimedOut;
 		public string BinLogPath;
 
-		public ExecutionResult (StringBuilder stdout, StringBuilder stderr, int exitCode)
+		public ExecutionResult (string stdout, string stderr, int exitCode)
 		{
 			StandardOutput = stdout;
 			StandardError = stderr;

@@ -23,11 +23,23 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string TargetFrameworkMoniker { get; set; } = string.Empty;
 
+		public string SdkDevPath { get; set; } = string.Empty;
+
+		public string GetSdkDevPath ()
+		{
+			if (string.IsNullOrEmpty (SdkDevPath)) {
+				Log.LogError (MSBStrings.E7169, /* The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */ GetType ().Name, "SdkDevPath");
+				return "";
+			}
+
+			return SdkDevPath;
+		}
+
 		void VerifyTargetFrameworkMoniker ()
 		{
 			if (!string.IsNullOrEmpty (TargetFrameworkMoniker))
 				return;
-			Log.LogError ($"The task {GetType ().Name} requires TargetFrameworkMoniker to be set.");
+			Log.LogError (MSBStrings.E7169, /* The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */ GetType ().Name, "TargetFrameworkMoniker");
 		}
 
 		public string Product {
@@ -97,18 +109,24 @@ namespace Xamarin.MacDev.Tasks {
 			return PlatformFrameworkHelper.GetSdkPlatform (Platform, isSimulator);
 		}
 
-		protected System.Threading.Tasks.Task<Execution> ExecuteAsync (string fileName, IList<string> arguments, string? sdkDevPath = null, Dictionary<string, string?>? environment = null, bool mergeOutput = true, bool showErrorIfFailure = true, string? workingDirectory = null)
+		internal protected System.Threading.Tasks.Task<Execution> ExecuteAsync (string fileName, IList<string> arguments, Dictionary<string, string?>? environment = null, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
 		{
-			return ExecuteAsync (Log, fileName, arguments, sdkDevPath, environment, mergeOutput, showErrorIfFailure, workingDirectory);
+			return ExecuteAsync (this, fileName, arguments, SdkDevPath, environment, showErrorIfFailure, workingDirectory, cancellationToken);
 		}
 
 		static int executionCounter;
-		internal protected static async System.Threading.Tasks.Task<Execution> ExecuteAsync (TaskLoggingHelper log, string fileName, IList<string> arguments, string? sdkDevPath = null, Dictionary<string, string?>? environment = null, bool mergeOutput = true, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
+		static async System.Threading.Tasks.Task<Execution> ExecuteAsync (Task task, string fileName, IList<string> arguments, string? sdkDevPath = null, Dictionary<string, string?>? environment = null, bool showErrorIfFailure = true, string? workingDirectory = null, CancellationToken? cancellationToken = null)
 		{
+			var log = task.Log;
 			// Create a new dictionary if we're given one, to make sure we don't change the caller's dictionary.
 			var launchEnvironment = environment is null ? new Dictionary<string, string?> () : new Dictionary<string, string?> (environment);
 			if (!string.IsNullOrEmpty (sdkDevPath))
 				launchEnvironment ["DEVELOPER_DIR"] = sdkDevPath;
+
+			if (Environment.OSVersion.Platform == PlatformID.MacOSX && string.IsNullOrEmpty (sdkDevPath)) {
+				log.LogWarning (MSBStrings.E7164 /* The task '{0}' is trying to call an external process, but a path to Xcode has not been provided. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */, task.GetType ().Name);
+				log.LogMessage (MessageImportance.Low, Environment.StackTrace);
+			}
 
 			var currentId = Interlocked.Increment (ref executionCounter);
 			log.LogMessage (MessageImportance.Normal, MSBStrings.M0001, currentId, fileName, StringUtils.FormatArguments (arguments)); // Started external tool execution #{0}: {1} {2}
@@ -123,16 +141,11 @@ namespace Xamarin.MacDev.Tasks {
 					log.LogMessage (MessageImportance.Low, "        {0}={1}", kvp.Key, kvp.Value);
 				}
 			}
-			var rv = await Execution.RunAsync (fileName, arguments, environment: launchEnvironment, mergeOutput: mergeOutput, workingDirectory: workingDirectory, cancellationToken: cancellationToken);
+			var rv = await Execution.RunAsync (fileName, arguments, environment: launchEnvironment, workingDirectory: workingDirectory, cancellationToken: cancellationToken);
 			log.LogMessage (rv.ExitCode == 0 ? MessageImportance.Low : MessageImportance.High, MSBStrings.M0002, currentId, rv.Duration, rv.ExitCode); // Finished external tool execution #{0} in {1} and with exit code {2}.
 
 			// Show the output
-			var output = rv.StandardOutput!.ToString ();
-			if (!mergeOutput) {
-				if (output.Length > 0)
-					output += Environment.NewLine;
-				output += rv.StandardError!.ToString ();
-			}
+			var output = rv.Output.MergedOutput;
 			if (output.Length > 0) {
 				var importance = MessageImportance.Low;
 				if (rv.ExitCode != 0)
@@ -141,7 +154,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 
 			if (showErrorIfFailure && rv.ExitCode != 0) {
-				var stderr = rv.StandardError!.ToString ().Trim ();
+				var stderr = rv.Output.StandardError.Trim ();
 				if (stderr.Length > 1024)
 					stderr = stderr.Substring (0, 1024);
 				if (string.IsNullOrEmpty (stderr)) {
@@ -304,12 +317,17 @@ namespace Xamarin.MacDev.Tasks {
 			return CreateItemsForAllFilesRecursively (directories?.Select (v => v.ItemSpec));
 		}
 
-		internal async global::System.Threading.Tasks.Task CopyFilesToWindowsAsync (TaskRunner runner, IEnumerable<ITaskItem> items)
+		internal static async global::System.Threading.Tasks.Task CopyFilesToWindowsAsync (Task task, TaskRunner runner, IEnumerable<ITaskItem> items)
 		{
 			foreach (var item in items) {
-				Log.LogMessage (MessageImportance.Low, $"Copying {item.ItemSpec} from the remote Mac to Windows");
-				await runner.GetFileAsync (this, item.ItemSpec).ConfigureAwait (false);
+				task.Log.LogMessage (MessageImportance.Low, $"Copying {item.ItemSpec} from the remote Mac to Windows");
+				await runner.GetFileAsync (task, item.ItemSpec).ConfigureAwait (false);
 			}
+		}
+
+		internal global::System.Threading.Tasks.Task CopyFilesToWindowsAsync (TaskRunner runner, IEnumerable<ITaskItem> items)
+		{
+			return CopyFilesToWindowsAsync (this, runner, items);
 		}
 
 		/// <summary>

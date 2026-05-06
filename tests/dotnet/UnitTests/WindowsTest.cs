@@ -60,7 +60,29 @@ namespace Xamarin.Tests {
 			public required string RelativePath;
 		}
 
-		void AssertMaxFileLengthInBinAndObjDirectories (ApplePlatform platform, string project_path, string runtimeIdentifiers, string configuration, int maxLength = 110)
+		static (DateTime TimestampUtc, string Contents) GetFileState (string path, string message)
+		{
+			Assert.That (path, Does.Exist, $"{message}: missing file");
+			return (File.GetLastWriteTimeUtc (path), File.ReadAllText (path));
+		}
+
+		static void AssertFileStateUnchanged ((DateTime TimestampUtc, string Contents) previousState, string path, string message)
+		{
+			Assert.That (path, Does.Exist, $"{message}: missing file");
+
+			var currentTimestamp = File.GetLastWriteTimeUtc (path);
+			var currentContents = File.ReadAllText (path);
+
+			Assert.Multiple (() => {
+				Assert.That (
+					currentTimestamp,
+					Is.EqualTo (previousState.TimestampUtc),
+					$"{message}: timestamp changed for '{path}' (before: {previousState.TimestampUtc:o}; after: {currentTimestamp:o})");
+				Assert.That (currentContents, Is.EqualTo (previousState.Contents), $"{message}: contents changed for '{path}'");
+			});
+		}
+
+		void AssertMaxFileLengthInBinAndObjDirectories (ApplePlatform platform, string project_path, string runtimeIdentifiers, string configuration, int maxLength = 118)
 		{
 			var binDir = GetBinDir (project_path, platform, runtimeIdentifiers, configuration);
 			var objDir = GetObjDir (project_path, platform, runtimeIdentifiers, configuration);
@@ -155,10 +177,27 @@ namespace Xamarin.Tests {
 			var objDir = GetObjDir (project_path, platform, runtimeIdentifiers, configuration);
 			var zippedAppBundlePath = Path.Combine (objDir, "AppBundle.zip");
 			Assert.That (zippedAppBundlePath, Does.Exist, "AppBundle.zip");
+			var appManifestPath = Path.Combine (objDir, "AppManifest.plist");
+			var compileAppManifestInputsPath = Path.Combine (objDir, "_CompileAppManifest.inputs");
+			var sharedDotNetPlistPath = Path.Combine (objDir, "unpack", "bindings-framework-test", "PartialAppManifest", "shared-dotnet.plist");
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
+
+			// These files participate in _CompileAppManifest incrementality, so verify that they stay stable when we only
+			// touch code. If this test flakes again, these assertions should tell us which input changed unexpectedly.
+			var appManifestState = GetFileState (appManifestPath, "Initial build: AppManifest.plist");
+			var compileAppManifestInputsState = GetFileState (compileAppManifestInputsPath, "Initial build: _CompileAppManifest.inputs");
+			var sharedDotNetPlistState = GetFileState (sharedDotNetPlistPath, "Initial build: shared-dotnet.plist");
+
+			Assert.Multiple (() => {
+				Assert.That (
+					appManifestState.TimestampUtc,
+					Is.GreaterThanOrEqualTo (sharedDotNetPlistState.TimestampUtc),
+					$"Initial build: '{appManifestPath}' should not be older than '{sharedDotNetPlistPath}' (AppManifest.plist: {appManifestState.TimestampUtc:o}; shared-dotnet.plist: {sharedDotNetPlistState.TimestampUtc:o})");
+				Assert.That (compileAppManifestInputsState.Contents, Does.Contain ("shared-dotnet.plist"), "Initial build: _CompileAppManifest.inputs should include shared-dotnet.plist");
+			});
 
 			// Verify that we don't create files with long paths inside bin/obj
 			AssertMaxFileLengthInBinAndObjDirectories (platform, project_path, runtimeIdentifiers, configuration);
@@ -174,6 +213,9 @@ namespace Xamarin.Tests {
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 1");
+			AssertFileStateUnchanged (sharedDotNetPlistState, sharedDotNetPlistPath, "Rebuild 1: shared-dotnet.plist");
+			AssertFileStateUnchanged (compileAppManifestInputsState, compileAppManifestInputsPath, "Rebuild 1: _CompileAppManifest.inputs");
+			AssertFileStateUnchanged (appManifestState, appManifestPath, "Rebuild 1: AppManifest.plist");
 			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest Rebuild 1");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
@@ -191,6 +233,9 @@ namespace Xamarin.Tests {
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 2");
+			AssertFileStateUnchanged (sharedDotNetPlistState, sharedDotNetPlistPath, "Rebuild 2: shared-dotnet.plist");
+			AssertFileStateUnchanged (compileAppManifestInputsState, compileAppManifestInputsPath, "Rebuild 2: _CompileAppManifest.inputs");
+			AssertFileStateUnchanged (appManifestState, appManifestPath, "Rebuild 2: AppManifest.plist");
 			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest Rebuild 2");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
@@ -205,6 +250,9 @@ namespace Xamarin.Tests {
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 3");
+			AssertFileStateUnchanged (sharedDotNetPlistState, sharedDotNetPlistPath, "Rebuild 3: shared-dotnet.plist");
+			AssertFileStateUnchanged (compileAppManifestInputsState, compileAppManifestInputsPath, "Rebuild 3: _CompileAppManifest.inputs");
+			AssertFileStateUnchanged (appManifestState, appManifestPath, "Rebuild 3: AppManifest.plist");
 			AssertTargetNotExecuted (allTargets, "_CompileAppManifest", "_CompileAppManifest Rebuild 3");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
@@ -219,6 +267,25 @@ namespace Xamarin.Tests {
 		{
 			var properties = AddRemoteProperties ();
 			DotNetProjectTest.PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, properties);
+		}
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		public void BuildEmbeddedFrameworkInBindingProjectApp (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "EmbeddedFrameworkInBindingProjectApp";
+			var configuration = "Debug";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+
+			DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (15));
 		}
 
 		static void AssertWarningsEqual (IList<string> expected, IList<string> actual, string message)
@@ -251,6 +318,27 @@ namespace Xamarin.Tests {
 
 			Console.WriteLine (sb);
 			Assert.Fail (sb.ToString ());
+		}
+
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "Release")]
+		public void StripTest (ApplePlatform platform, string runtimeIdentifiers, string configuration)
+		{
+			var project = "MySimpleApp";
+
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			var project_dir = Path.GetDirectoryName (project_path)!;
+			Clean (project_path);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["Configuration"] = configuration;
+			properties ["_ExportSymbolsExplicitly"] = "false";
+
+			DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (15));
 		}
 
 		[Category ("RemoteWindows")]

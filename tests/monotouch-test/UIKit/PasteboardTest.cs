@@ -16,6 +16,7 @@ namespace MonoTouchFixtures.UIKit {
 
 		[Test]
 		[Retry (10)]
+		[Ignore ("Fails randomly on the 'b - length' assert, even after retrying 10 times (the clipboard sometimes has just one image for some reason)")]
 		public void ImagesTest ()
 		{
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");

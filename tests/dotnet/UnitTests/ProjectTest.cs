@@ -103,6 +103,7 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, platform: platform);
 			Clean (project_path);
 			var properties = GetDefaultProperties ();
+			properties.Remove ("UseFloatingTargetPlatformVersion"); // This test verifies that we use the correct workload to build library projects, so we can't use a floating TPF version.
 			var result = DotNet.AssertBuild (project_path, properties);
 			Assert.That (result.StandardOutput.ToString (), Does.Not.Contain ("Task \"ILLink\""), "Linker executed unexpectedly.");
 
@@ -2009,22 +2010,6 @@ namespace Xamarin.Tests {
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}
 
-		// This test can be removed in .NET 7
-		[TestCase (ApplePlatform.iOS)]
-		[TestCase (ApplePlatform.TVOS)]
-		[TestCase (ApplePlatform.MacCatalyst)]
-		[TestCase (ApplePlatform.MacOSX)]
-		public void CentralPackageVersionsApp (ApplePlatform platform)
-		{
-			var project = "CentralPackageVersionsApp";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-
-			var project_path = GetProjectPath (project, platform: platform);
-			Clean (project_path);
-			var properties = GetDefaultProperties ();
-			DotNet.AssertBuild (project_path, properties);
-		}
-
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", false)]
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64", true)]
 		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64", true)]
@@ -3142,6 +3127,8 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftos.dylib",
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftsimd.dylib",
+			"/usr/lib/swift/libswiftSpatial.dylib",
 			"/usr/lib/swift/libswiftUIKit.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
@@ -3269,8 +3256,11 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftos.dylib",
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftsimd.dylib",
+			"/usr/lib/swift/libswiftSpatial.dylib",
 			"/usr/lib/swift/libswiftUIKit.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
+			"/usr/lib/swift/libswiftXPC.dylib",
 		];
 
 		static string [] expectedFrameworks_tvOS_Full = [
@@ -3453,6 +3443,7 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
 			"/usr/lib/swift/libswiftsimd.dylib",
+			"/usr/lib/swift/libswiftSpatial.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
 		];
@@ -3645,6 +3636,8 @@ namespace Xamarin.Tests {
 			"/usr/lib/swift/libswiftos.dylib",
 			"/usr/lib/swift/libswiftOSLog.dylib",
 			"/usr/lib/swift/libswiftQuartzCore.dylib",
+			"/usr/lib/swift/libswiftsimd.dylib",
+			"/usr/lib/swift/libswiftSpatial.dylib",
 			"/usr/lib/swift/libswiftUniformTypeIdentifiers.dylib",
 			"/usr/lib/swift/libswiftXPC.dylib",
 		];
@@ -3863,6 +3856,61 @@ namespace Xamarin.Tests {
 			default:
 				throw new InvalidOperationException ();
 			}
+		}
+
+		[TestCase (ApplePlatform.MacCatalyst, true)]
+		[TestCase (ApplePlatform.MacCatalyst, false)]
+		[TestCase (ApplePlatform.MacOSX, true)]
+		[TestCase (ApplePlatform.MacOSX, false)]
+		public void Run (ApplePlatform platform, bool dotnetRunEnvironmentSupport)
+		{
+			var project = "MyRunApp";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+
+			var project_path = GetProjectPath (project, platform: platform);
+			Clean (project_path);
+
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+			var tmpfile = Path.Combine (tmpdir, "file.txt");
+			var stdout = Path.Combine (tmpdir, "stdout.txt");
+			var stderr = Path.Combine (tmpdir, "stderr.txt");
+
+			var properties = GetDefaultProperties ();
+			var dotnetRunEnvironment = new Dictionary<string, string> ();
+			properties ["XamarinDebugMode"] = "telegraph";
+			properties ["XamarinDebugHosts"] = "localhost";
+			properties ["XamarinDebugPort"] = "123";
+			properties ["StandardOutputPath"] = stdout;
+			properties ["StandardErrorPath"] = stderr;
+			properties ["OpenNewInstance"] = "true";
+			properties ["OpenWaitForExit"] = "true";
+			if (dotnetRunEnvironmentSupport) {
+				properties ["RunEnvironment"] = $"--env TEST_CASE=1 --env VARIABLE=VALUE --env TEST_FILENAME={tmpfile}";
+			} else {
+				dotnetRunEnvironment ["TEST_CASE"] = "1";
+				dotnetRunEnvironment ["VARIABLE"] = "VALUE";
+				dotnetRunEnvironment ["TEST_FILENAME"] = tmpfile;
+			}
+			DotNet.AssertRun (project_path, properties, environmentVariables: dotnetRunEnvironment);
+
+			Assert.Multiple (() => {
+				var envContents = File.ReadAllText (tmpfile);
+				var env = File.ReadAllLines (tmpfile).Select (v => (Name: v [0..v.IndexOf ('=')], Value: v [(v.IndexOf ('=') + 1)..])).ToDictionary (v => v.Name, v => v.Value);
+				if (platform == ApplePlatform.MacOSX) {
+					Assert.That (envContents, Does.Contain ("__XAMARIN_DEBUG_"), "Xamarin debug environment variables should not leak to app");
+				} else {
+					Assert.That (envContents, Does.Not.Contain ("__XAMARIN_DEBUG_"), "Xamarin debug environment variables should not leak to app");
+				}
+				Assert.That (env.Keys, Does.Contain ("VARIABLE"), "VARIABLE");
+				Assert.That (env ["VARIABLE"], Is.EqualTo ("VALUE"), "VALUE");
+
+				Assert.That (File.ReadAllText (stdout).Trim (), Is.Empty, "Stdout");
+				var stderrContents = File.ReadAllText (stderr);
+				Assert.That (stderrContents, Does.Contain ("Found debug mode telegraph in environment variables"), "mode");
+				Assert.That (stderrContents, Does.Contain ("Found port 123 in environment variables"), "port");
+				Assert.That (stderrContents, Does.Contain ("Found host localhost in environment variables"), "host");
+				Assert.That (stderrContents, Does.Contain ("IDE Port: 123 Transport: WiFi Connect Timeout: -1"), "summary");
+			});
 		}
 	}
 }

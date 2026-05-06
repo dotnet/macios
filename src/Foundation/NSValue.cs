@@ -23,77 +23,62 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if !NO_SYSTEM_DRAWING
 using System.Drawing;
-#endif
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 	public partial class NSValue : NSObject {
 #if !COREBUILD
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		public string ObjCType {
+		/// <summary>Gets the Objective-C type encoding string for the data contained in the receiver.</summary>
+		/// <value>A C string containing the Objective-C type encoding for the data contained in the receiver.</value>
+		public string? ObjCType {
 			get {
 				return Marshal.PtrToStringAnsi (ObjCTypePtr ());
 			}
 		}
 
-#if !NO_SYSTEM_DRAWING
-		/// <param name="rect">To be added.</param>
-		///         <summary>Creates an NSValue that wraps a RectangleF object.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates an <see cref="NSValue" /> that wraps a <see cref="RectangleF" /> object.</summary>
+		/// <param name="rect">The rectangle to wrap.</param>
+		/// <returns>A new <see cref="NSValue" /> instance containing the specified rectangle.</returns>
 		public static NSValue FromRectangleF (RectangleF rect)
 		{
 			return FromCGRect (rect);
 		}
 
-		/// <param name="size">To be added.</param>
-		///         <summary>Creates an NSValue that wraps a SizeF object.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates an <see cref="NSValue" /> that wraps a <see cref="SizeF" /> object.</summary>
+		/// <param name="size">The size to wrap.</param>
+		/// <returns>A new <see cref="NSValue" /> instance containing the specified size.</returns>
 		public static NSValue FromSizeF (SizeF size)
 		{
 			return FromCGSize (size);
 		}
 
-		/// <param name="point">To be added.</param>
-		///         <summary>Creates an NSValue that wraps a PointF object.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Creates an <see cref="NSValue" /> that wraps a <see cref="PointF" /> object.</summary>
+		/// <param name="point">The point to wrap.</param>
+		/// <returns>A new <see cref="NSValue" /> instance containing the specified point.</returns>
 		public static NSValue FromPointF (PointF point)
 		{
 			return FromCGPoint (point);
 		}
 
-		/// <summary>Returns the RectangleF value wrapped by this NSValue object.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the <see cref="RectangleF" /> value wrapped by this <see cref="NSValue" /> object.</summary>
+		/// <value>The rectangle value.</value>
 		public RectangleF RectangleFValue {
 			get { return (RectangleF) CGRectValue; }
 		}
 
-		/// <summary>Returns the SizeF value wrapped by this NSValue object.</summary>
-		///         <value>
-		///         </value>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>Gets the <see cref="SizeF" /> value wrapped by this <see cref="NSValue" /> object.</summary>
+		/// <value>The size value.</value>
 		public SizeF SizeFValue {
 			get { return (SizeF) CGSizeValue; }
 		}
 
-		/// <summary>Returns the PointF value wrapped by this NSValue object.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Gets the <see cref="PointF" /> value wrapped by this <see cref="NSValue" /> object.</summary>
+		/// <value>The point value.</value>
 		public PointF PointFValue {
 			get { return (PointF) CGPointValue; }
 		}
-#endif
-
 #endif
 	}
 }

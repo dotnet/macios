@@ -14,7 +14,7 @@ parameters:
   - name: macOSName # comes from the build agent demand named macOS.Name
     displayName: Name of the version of macOS to use
     type: string
-    default: 'Sequoia'
+    default: 'Tahoe'
 
   - name: runTests
     displayName: Run Simulator Tests
@@ -31,6 +31,11 @@ parameters:
     type: boolean
     default: true
 
+  - name: buildPackages
+    displayName: Build packages as part of this pipeline (instead of downloading from a pipeline resource)
+    type: boolean
+    default: false
+
 resources:
   repositories:
     - repository: self
@@ -40,12 +45,7 @@ resources:
     - repository: yaml-templates
       type: git
       name: xamarin.yaml-templates
-      ref: refs/heads/main
-      
-    - repository: macios-adr
-      type: git
-      name: macios-adr
-      ref: refs/heads/main
+      ref: e30b445c2ffcbebe75efdd69546d7196a20c5a43
 
 variables:
   - template: ../variables/common.yml
@@ -61,3 +61,4 @@ stages:
       provisionatorChannel: ${{ parameters.provisionatorChannel }}
       runTests: ${{ parameters.runTests }}
       runWindowsIntegration: ${{ parameters.runWindowsIntegration }}
+      buildPackages: ${{ parameters.buildPackages }}

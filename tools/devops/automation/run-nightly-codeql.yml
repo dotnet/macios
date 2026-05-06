@@ -14,18 +14,14 @@ parameters:
 - name: macOSName  # comes from the build agent demand named macOS.Name
   displayName: Name of the version of macOS to use
   type: string
-  default: 'Sequoia'
+  default: 'Tahoe'
 
 resources:
   repositories:
   - repository: yaml-templates
     type: git
     name: xamarin.yaml-templates
-    ref: refs/heads/main
-  - repository: macios-adr
-    type: git
-    name: macios-adr
-    ref: refs/heads/main
+    ref: e30b445c2ffcbebe75efdd69546d7196a20c5a43
 
 variables:
 - template: /tools/devops/automation/templates/variables/common.yml
@@ -63,6 +59,7 @@ stages:
         use1ES: false
         disableCodeQL: false
         xcodeChannel: $(xcodeChannel)
+        statusContext: "Nightly CodeQL"
         buildSteps:
         - bash: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/automation/scripts/bash/build-nugets.sh
           displayName: 'Build Nugets'

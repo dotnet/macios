@@ -313,7 +313,7 @@ namespace AVFoundation {
 		OperationInterrupted = -11847,
 		/// <summary>Indicates that the media format is not supported by the device.</summary>
 		IncompatibleAsset = -11848,
-		/// <summary>Indicates taht the media data could not be loaded due to missing required data.</summary>
+		/// <summary>Indicates that the media data could not be loaded due to missing required data.</summary>
 		FailedToLoadMediaData = -11849,
 		/// <summary>Indicates that the media server is not correctly configured.</summary>
 		ServerIncorrectlyConfigured = -11850,
@@ -609,6 +609,8 @@ namespace AVFoundation {
 		OverrideMutedMicrophoneInterruption = 128,
 		[iOS (26, 0), NoTV, NoMacCatalyst, NoMac]
 		BluetoothHighQualityRecording = 1uL << 19,
+		[iOS (26, 2), NoTV, MacCatalyst (26, 2), NoMac]
+		FarFieldInput = 1uL << 18,
 	}
 
 	/// <summary>An enumeration whose values specify the beginning and ending of an audio interruption.</summary>

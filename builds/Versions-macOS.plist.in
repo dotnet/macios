@@ -26,6 +26,8 @@
 			<string>15.5</string>
 			<string>26.0</string>
 			<string>26.1</string>
+			<string>26.2</string>
+			<string>26.4</string>
 		</array>
 	</dict>
 	<key>SupportedTargetPlatformVersions</key>
@@ -60,6 +62,8 @@
 			<string>15.5</string>
 			<string>26.0</string>
 			<string>26.1</string>
+			<string>26.2</string>
+			<string>26.4</string>
 		</array>
 	</dict>
 	<key>RecommendedXcodeVersion</key>
@@ -92,8 +96,6 @@
 	<key>Optimizations</key>
 	<dict>
 		<!-- The key is the value to be passed to mmp. The string is a very short description. Any IDE UI should also point to the documentation for the optimizations. -->
-		<key>inline-intptr-size</key>
-		<string>Inline IntPtr.Size</string>
 		<key>inline-runtime-arch</key>
 		<string>Inline Runtime.Arch</string>
 		<key>inline-isdirectbinding</key>

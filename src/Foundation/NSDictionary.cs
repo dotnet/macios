@@ -23,23 +23,25 @@
 //
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Foundation {
 
 	public partial class NSDictionary : NSObject, IDictionary, IDictionary<NSObject, NSObject> {
+		/// <summary>
+		/// Creates an <see cref="NSDictionary"/> from a list of <see cref="NSObject"/> keys and <see cref="NSObject"/> values.
+		/// </summary>
 		/// <param name="first">First key.</param>
-		///         <param name="second">First value.</param>
-		///         <param name="args">Remaining pais of keys and values.</param>
-		///         <summary>Creates an NSDictionary from a list of NSObject keys and NSObject values.</summary>
-		///         <remarks>
-		///           <para>
-		/// 	    The list of keys and values are used to create the dictionary.   The number of parameters passed to this function must be even.
-		/// 	  </para>
-		///           <example>
-		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// <param name="second">First value.</param>
+		/// <param name="args">Remaining pairs of keys and values.</param>
+		/// <remarks>
+		/// <para>
+		/// The list of keys and values are used to create the dictionary. The number of parameters passed to this function must be even.
+		/// </para>
+		/// <example>
+		/// <code lang="csharp lang-csharp"><![CDATA[
 		/// var key1 = new NSString ("key1");
 		/// var value1 = new NSNumber ((byte) 1);
 		/// var key2 = new NSString ("key2");
@@ -47,25 +49,27 @@ namespace Foundation {
 		///
 		/// var dict2 = new NSDictionary (key1, value1, key2, value2);
 		/// ]]></code>
-		///           </example>
-		///         </remarks>
-		public NSDictionary (NSObject first, NSObject second, params NSObject [] args) : this (PickOdd (second, args), PickEven (first, args))
+		/// </example>
+		/// </remarks>
+		public NSDictionary (NSObject? first, NSObject? second, params NSObject? [] args) : this (PickOdd (second, args), PickEven (first, args))
 		{
 		}
 
+		/// <summary>
+		/// Creates an <see cref="NSDictionary"/> from a list of keys and values.
+		/// </summary>
 		/// <param name="first">First key.</param>
-		///         <param name="second">First value.</param>
-		///         <param name="args">Remaining pais of keys and values.</param>
-		///         <summary>Creates an NSDictionary from a list of keys and values.</summary>
-		///         <remarks>
-		///           <para>
-		/// 	    Each C# object is boxed as an NSObject by calling <see cref="Foundation.NSObject.FromObject(System.Object)" />.
-		/// 	  </para>
-		///           <para>
-		/// 	    The list of keys and values are used to create the dictionary.   The number of parameters passed to this function must be even.
-		/// 	  </para>
-		///           <example>
-		///             <code lang="csharp lang-csharp"><![CDATA[
+		/// <param name="second">First value.</param>
+		/// <param name="args">Remaining pairs of keys and values.</param>
+		/// <remarks>
+		/// <para>
+		/// Each C# object is boxed as an <see cref="NSObject"/> by calling <see cref="NSObject.FromObject(object)"/>.
+		/// </para>
+		/// <para>
+		/// The list of keys and values are used to create the dictionary. The number of parameters passed to this function must be even.
+		/// </para>
+		/// <example>
+		/// <code lang="csharp lang-csharp"><![CDATA[
 		/// //
 		/// // Using C# objects, strings and ints, produces
 		/// // a dictionary with 2 NSString keys, "key1" and "key2"
@@ -73,8 +77,8 @@ namespace Foundation {
 		/// //
 		/// var dict = new NSDictionary ("key1", 1, "key2", 2);
 		/// ]]></code>
-		///           </example>
-		///         </remarks>
+		/// </example>
+		/// </remarks>
 		public NSDictionary (object first, object second, params object [] args) : this (PickOdd (second, args), PickEven (first, args))
 		{
 		}
@@ -83,21 +87,21 @@ namespace Foundation {
 		{
 		}
 
-		internal static NSArray PickEven (NSObject f, NSObject [] args)
+		internal static NSArray PickEven (NSObject? f, NSObject? [] args)
 		{
 			int al = args.Length;
 			if ((al % 2) != 0)
 				throw new ArgumentException ("The arguments to NSDictionary should be a multiple of two", "args");
-			var ret = new NSObject [1 + al / 2];
+			var ret = new NSObject? [1 + al / 2];
 			ret [0] = f;
 			for (int i = 0, target = 1; i < al; i += 2)
 				ret [target++] = args [i];
 			return NSArray.FromNSObjects (ret);
 		}
 
-		internal static NSArray PickOdd (NSObject f, NSObject [] args)
+		internal static NSArray PickOdd (NSObject? f, NSObject? [] args)
 		{
-			var ret = new NSObject [1 + args.Length / 2];
+			var ret = new NSObject? [1 + args.Length / 2];
 			ret [0] = f;
 			for (int i = 1, target = 1; i < args.Length; i += 2)
 				ret [target++] = args [i];
@@ -125,98 +129,106 @@ namespace Foundation {
 			return NSArray.FromObjects (ret);
 		}
 
-		/// <param name="objects">Array of values for the dictionary.</param>
-		///         <param name="keys">Array of keys for the dictionary.</param>
-		///         <summary>Creates a dictionary from a set of values and keys.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
-		public static NSDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys)
+		// Checks:
+		// * 'objects' and 'keys' for null
+		// * count isn't negative
+		// * count isn't higher than the number of elements in either array
+		// returns false if an empty dictionary can be returned
+		private protected static bool ValidateFromObjectsAndKeys<T, K> (T [] objects, K [] keys, nint count)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
+			ArgumentNullException.ThrowIfNull (objects);
+			ArgumentNullException.ThrowIfNull (keys);
+
+			if (count < 0)
+				throw new ArgumentOutOfRangeException (nameof (count), "Must be non-negative and not greater than the length of either array");
+
+			if (objects.Length < count || keys.Length < count)
+				throw new ArgumentException ("Must be non-negative and not greater than the length of either array", nameof (count));
+
+			return count > 0;
+		}
+
+		// Checks:
+		// * 'objects' and 'keys' for null
+		// * 'objects' and 'keys' have the same number of elements
+		// returns false if an empty dictionary can be returned
+		private protected static bool ValidateFromObjectsAndKeys<T, K> (T [] objects, K [] keys)
+		{
+			ArgumentNullException.ThrowIfNull (objects);
+			ArgumentNullException.ThrowIfNull (keys);
+
 			if (objects.Length != keys.Length)
 				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
 
-			using (var no = NSArray.FromNSObjects (objects))
-			using (var nk = NSArray.FromNSObjects (keys))
-				return FromObjectsAndKeysInternal (no, nk);
+			return objects.Length > 0;
 		}
 
-		/// <param name="objects">Array of values for the dictionary.</param>
-		///         <param name="keys">Array of keys for the dictionary.</param>
-		///         <summary>Creates a dictionary from a set of values and keys.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///           <para>
-		/// 	    The keys and values will first be boxed into
-		/// 	    NSObjects using <see cref="Foundation.NSObject.FromObject(System.Object)" />.
-		/// 	  </para>
-		///         </remarks>
-		public static NSDictionary FromObjectsAndKeys (object [] objects, object [] keys)
+		/// <summary>
+		/// Creates a dictionary from a set of values and keys.
+		/// </summary>
+		/// <param name="objects">Array of values for the dictionary. Null elements are stored as <see cref="NSNull.Null"/>.</param>
+		/// <param name="keys">Array of keys for the dictionary.</param>
+		/// <returns>A new <see cref="NSDictionary"/> containing the specified key-value pairs.</returns>
+		public static NSDictionary FromObjectsAndKeys (NSObject? [] objects, NSObject [] keys)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
+			if (!ValidateFromObjectsAndKeys (objects, keys))
+				return new NSDictionary ();
 
-			using (var no = NSArray.FromObjects (objects))
-			using (var nk = NSArray.FromObjects (keys))
-				return FromObjectsAndKeysInternal (no, nk);
+			return FromObjectsAndKeys (objects, keys, objects.Length);
 		}
 
+		/// <summary>
+		/// Creates a dictionary from a set of values and keys.
+		/// </summary>
 		/// <param name="objects">Array of values for the dictionary.</param>
 		/// <param name="keys">Array of keys for the dictionary.</param>
-		/// <param name="count">Number of items to use in the creation, the number must be less than or equal to the number of elements on the arrays.</param>
-		/// <summary>Creates a dictionary from a set of values and keys.</summary>
-		/// <returns>
-		///         </returns>
+		/// <returns>A new <see cref="NSDictionary"/> containing the specified key-value pairs.</returns>
 		/// <remarks>
-		///         </remarks>
-		public static NSDictionary FromObjectsAndKeys (NSObject [] objects, NSObject [] keys, nint count)
+		/// <para>
+		/// The keys and values will first be boxed into <see cref="NSObject"/>s using <see cref="NSObject.FromObject(object)"/>.
+		/// </para>
+		/// </remarks>
+		public static NSDictionary FromObjectsAndKeys (object [] objects, object [] keys)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-			if (count < 1 || objects.Length < count || keys.Length < count)
-				throw new ArgumentException ("count");
+			if (!ValidateFromObjectsAndKeys (objects, keys))
+				return new NSDictionary ();
+
+			return FromObjectsAndKeys (objects, keys, objects.Length);
+		}
+
+		/// <summary>
+		/// Creates a dictionary from a set of values and keys.
+		/// </summary>
+		/// <param name="objects">Array of values for the dictionary. Null elements are stored as <see cref="NSNull.Null"/>.</param>
+		/// <param name="keys">Array of keys for the dictionary.</param>
+		/// <param name="count">Number of items to use in the creation; the number must be less than or equal to the number of elements in both arrays.</param>
+		/// <returns>A new <see cref="NSDictionary"/> containing the specified key-value pairs.</returns>
+		public static NSDictionary FromObjectsAndKeys (NSObject? [] objects, NSObject [] keys, nint count)
+		{
+			if (!ValidateFromObjectsAndKeys (objects, keys, count))
+				return new NSDictionary ();
 
 			using (var no = NSArray.FromNativeObjects (objects, count))
 			using (var nk = NSArray.FromNativeObjects (keys, count))
 				return FromObjectsAndKeysInternal (no, nk);
 		}
 
+		/// <summary>
+		/// Creates a dictionary from a set of values and keys.
+		/// </summary>
 		/// <param name="objects">Array of values for the dictionary.</param>
 		/// <param name="keys">Array of keys for the dictionary.</param>
-		/// <param name="count">Number of items to use in the creation, the number must be less than or equal to the number of elements on the arrays.</param>
-		/// <summary>Creates a dictionary from a set of values and keys.</summary>
-		/// <returns>
-		///         </returns>
+		/// <param name="count">Number of items to use in the creation; the number must be less than or equal to the number of elements in both arrays.</param>
+		/// <returns>A new <see cref="NSDictionary"/> containing the specified key-value pairs.</returns>
 		/// <remarks>
-		///           <para>
-		/// 	    The keys and values will first be boxed into
-		/// 	    NSObjects using <see cref="Foundation.NSObject.FromObject(System.Object)" />.
-		/// 	  </para>
-		///         </remarks>
+		/// <para>
+		/// The keys and values will first be boxed into <see cref="NSObject"/>s using <see cref="NSObject.FromObject(object)"/>.
+		/// </para>
+		/// </remarks>
 		public static NSDictionary FromObjectsAndKeys (object [] objects, object [] keys, nint count)
 		{
-			if (objects is null)
-				throw new ArgumentNullException (nameof (objects));
-			if (keys is null)
-				throw new ArgumentNullException (nameof (keys));
-			if (objects.Length != keys.Length)
-				throw new ArgumentException (nameof (objects) + " and " + nameof (keys) + " arrays have different sizes");
-			if (count < 1 || objects.Length < count || keys.Length < count)
-				throw new ArgumentException ("count");
+			if (!ValidateFromObjectsAndKeys (objects, keys, count))
+				return new NSDictionary ();
 
 			using (var no = NSArray.FromObjects (count, objects))
 			using (var nk = NSArray.FromObjects (count, keys))
@@ -225,18 +237,18 @@ namespace Foundation {
 
 		internal bool ContainsKeyValuePair (KeyValuePair<NSObject, NSObject> pair)
 		{
-			NSObject value;
-			if (!TryGetValue (pair.Key, out value))
+			if (!TryGetValue (pair.Key, out var value))
 				return false;
 
 			return EqualityComparer<NSObject>.Default.Equals (pair.Value, value);
 		}
 
 		#region ICollection
-		/// <param name="array">To be added.</param>
-		///         <param name="arrayIndex">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Copies the elements of the dictionary to an <see cref="Array"/>, starting at a particular index.
+		/// </summary>
+		/// <param name="array">The one-dimensional <see cref="Array"/> that is the destination of the elements.</param>
+		/// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
 		void ICollection.CopyTo (Array array, int arrayIndex)
 		{
 			if (array is null)
@@ -255,23 +267,26 @@ namespace Foundation {
 				array.SetValue (e.Entry, i++);
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Gets the number of elements contained in the dictionary.
+		/// </summary>
+		/// <value>The number of elements contained in the dictionary.</value>
 		int ICollection.Count {
 			get { return (int) Count; }
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Gets a value indicating whether access to the dictionary is synchronized (thread safe).
+		/// </summary>
+		/// <value>Always returns <see langword="false"/>.</value>
 		bool ICollection.IsSynchronized {
 			get { return false; }
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Gets an object that can be used to synchronize access to the dictionary.
+		/// </summary>
+		/// <value>An object that can be used to synchronize access to the dictionary.</value>
 		object ICollection.SyncRoot {
 			get { return this; }
 		}
@@ -326,88 +341,103 @@ namespace Foundation {
 
 		#region IDictionary
 
-		/// <param name="key">To be added.</param>
-		///         <param name="value">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
-		void IDictionary.Add (object key, object value)
+		/// <summary>
+		/// Adds an element with the provided key and value to the dictionary.
+		/// </summary>
+		/// <param name="key">The key of the element to add.</param>
+		/// <param name="value">The value of the element to add.</param>
+		/// <exception cref="NotSupportedException">Always thrown as the dictionary is read-only.</exception>
+		void IDictionary.Add (object key, object? value)
 		{
 			throw new NotSupportedException ();
 		}
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Removes all elements from the dictionary.
+		/// </summary>
+		/// <exception cref="NotSupportedException">Always thrown as the dictionary is read-only.</exception>
 		void IDictionary.Clear ()
 		{
 			throw new NotSupportedException ();
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Determines whether the dictionary contains an element with the specified key.
+		/// </summary>
+		/// <param name="key">The key to locate in the dictionary.</param>
+		/// <returns><see langword="true"/> if the dictionary contains an element with the key; otherwise, <see langword="false"/>.</returns>
 		bool IDictionary.Contains (object key)
 		{
 			if (key is null)
 				throw new ArgumentNullException (nameof (key));
-			NSObject _key = key as NSObject;
+			var _key = key as NSObject;
 			if (_key is null)
 				return false;
 			return ContainsKey (_key);
 		}
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Returns an <see cref="IDictionaryEnumerator"/> for the dictionary.
+		/// </summary>
+		/// <returns>An <see cref="IDictionaryEnumerator"/> for the dictionary.</returns>
 		IDictionaryEnumerator IDictionary.GetEnumerator ()
 		{
 			return (IDictionaryEnumerator) ((IEnumerable<KeyValuePair<NSObject, NSObject>>) this).GetEnumerator ();
 		}
 
-		/// <param name="key">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Removes the element with the specified key from the dictionary.
+		/// </summary>
+		/// <param name="key">The key of the element to remove.</param>
+		/// <exception cref="NotSupportedException">Always thrown as the dictionary is read-only.</exception>
 		void IDictionary.Remove (object key)
 		{
 			throw new NotSupportedException ();
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Gets a value indicating whether the dictionary has a fixed size.
+		/// </summary>
+		/// <value>Always returns <see langword="true"/>.</value>
 		bool IDictionary.IsFixedSize {
 			get { return true; }
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Gets a value indicating whether the dictionary is read-only.
+		/// </summary>
+		/// <value>Always returns <see langword="true"/>.</value>
 		bool IDictionary.IsReadOnly {
 			get { return true; }
 		}
 
-		object IDictionary.this [object key] {
+		[DisallowNull] // don't allow setting null values
+		object? IDictionary.this [object key] {
 			get {
-				NSObject _key = key as NSObject;
+				var _key = key as NSObject;
 				if (_key is null)
 					return null;
 				return ObjectForKey (_key);
 			}
+#pragma warning disable CS8769 // Nullability of reference types in type of parameter 'value' doesn't match implemented member 'void IDictionary.this[object key].set'
 			set {
+#pragma warning restore CS8769
 				throw new NotSupportedException ();
 			}
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Gets an <see cref="ICollection"/> containing the keys of the dictionary.
+		/// </summary>
+		/// <value>An <see cref="ICollection"/> containing the keys of the dictionary.</value>
 		ICollection IDictionary.Keys {
 			get { return Keys; }
 		}
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Gets an <see cref="ICollection"/> containing the values in the dictionary.
+		/// </summary>
+		/// <value>An <see cref="ICollection"/> containing the values in the dictionary.</value>
 		ICollection IDictionary.Values {
 			get { return Values; }
 		}
@@ -421,12 +451,11 @@ namespace Foundation {
 			throw new NotSupportedException ();
 		}
 
-		/// <param name="key">Key to lookup in the dictionary.</param>
-		///         <summary>Determines whether the specified key exists in the dictionary.</summary>
-		///         <returns>
-		///         </returns>
-		///         <remarks>
-		///         </remarks>
+		/// <summary>
+		/// Determines whether the specified key exists in the dictionary.
+		/// </summary>
+		/// <param name="key">Key to look up in the dictionary.</param>
+		/// <returns><see langword="true"/> if the key exists in the dictionary; otherwise, <see langword="false"/>.</returns>
 		public bool ContainsKey (NSObject key)
 		{
 			return ObjectForKey (key) is not null;
@@ -442,43 +471,51 @@ namespace Foundation {
 			throw new NotSupportedException ();
 		}
 
-		internal bool TryGetValue<T> (INativeObject key, out T value) where T : class, INativeObject
+		internal bool TryGetValue<T> (INativeObject key, [NotNullWhen (true)] out T? value) where T : class, INativeObject
 		{
-			value = null;
 			if (key is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
 
 			var ptr = _ObjectForKey (key.Handle);
 			GC.KeepAlive (key);
-			if (ptr == IntPtr.Zero)
-				return false;
-
 			value = Runtime.GetINativeObject<T> (ptr, false);
-			return true;
-		}
-
-		/// <param name="key">To be added.</param>
-		///         <param name="value">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
-		public bool TryGetValue (NSObject key, out NSObject value)
-		{
-			if (key is null)
-				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (key));
-
-			value = ObjectForKey (key);
 			// NSDictionary can not contain NULLs, if you want a NULL, it exists as an NSNull
 			return value is not null;
 		}
 
-		/// <param name="key">Key to lookup</param>
-		/// <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
-		/// <value>
-		///         </value>
-		/// <remarks>
-		///         </remarks>
-		public virtual NSObject this [NSObject key] {
+		/// <summary>
+		/// Gets the value associated with the specified key.
+		/// </summary>
+		/// <param name="key">The key of the value to get.</param>
+		/// <param name="value">When this method returns, contains the value associated with the specified key, if the key is found; otherwise, <see langword="null"/>.</param>
+		/// <returns><see langword="true"/> if the dictionary contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
+		public bool TryGetValue (NSObject key, [NotNullWhen (true)] out NSObject? value)
+		{
+			return TryGetValue<NSObject> (key, out value);
+		}
+
+		/// <summary>Gets the object associated with the specified key.</summary>
+		/// <param name="key">The key of the object to get.</param>
+		/// <value>The object associated with the specified key.</value>
+		/// <remarks>Returns <see langword="null" /> if the key wasn't found.</remarks>
+		[DisallowNull] // don't allow setting null values
+		public virtual NSObject? this [NSObject key] {
+#pragma warning disable CS8766 // Nullability of reference types in return type of 'NSObject? NSDictionary.this[NSObject key].get' doesn't match implicitly implemented member 'NSObject IDictionary<NSObject, NSObject>.this[NSObject key].get'
+			get {
+#pragma warning restore CS8766
+				return ObjectForKey (key);
+			}
+			set {
+				throw new NotSupportedException ();
+			}
+		}
+
+		/// <summary>Gets the object associated with the specified key.</summary>
+		/// <param name="key">The key of the object to get.</param>
+		/// <value>The object associated with the specified key.</value>
+		/// <remarks>Returns <see langword="null" /> if the key wasn't found.</remarks>
+		[DisallowNull] // don't allow setting null values
+		public virtual NSObject? this [NSString key] {
 			get {
 				return ObjectForKey (key);
 			}
@@ -487,27 +524,13 @@ namespace Foundation {
 			}
 		}
 
-		/// <param name="key">Key to lookup</param>
-		/// <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
-		/// <value>
-		///         </value>
-		/// <remarks>
-		///         </remarks>
-		public virtual NSObject this [NSString key] {
-			get {
-				return ObjectForKey (key);
-			}
-			set {
-				throw new NotSupportedException ();
-			}
-		}
-
-		/// <param name="key">Key to lookup</param>
-		/// <summary>Returns the value associated from a key in the dictionary, or null if the key is not found.</summary>
-		/// <value>
-		///         </value>
-		/// <remarks>The string will be marshalled as an NSString before performing the lookup.</remarks>
-		public virtual NSObject this [string key] {
+		/// <summary>Gets the object associated with the specified key.</summary>
+		/// <param name="key">The key of the object to get.</param>
+		/// <value>The object associated with the specified key.</value>
+		/// <exception cref="ArgumentNullException">Thrown when <paramref name="key"/> is <see langword="null"/>.</exception>
+		/// <remarks>Returns <see langword="null" /> if the key wasn't found.</remarks>
+		[DisallowNull] // don't allow setting null values
+		public virtual NSObject? this [string key] {
 			get {
 				if (key is null)
 					throw new ArgumentNullException ("key");
@@ -533,9 +556,10 @@ namespace Foundation {
 
 		#endregion
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Returns an enumerator that iterates through the dictionary.
+		/// </summary>
+		/// <returns>An enumerator that can be used to iterate through the dictionary.</returns>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			return GetEnumerator ();
@@ -546,19 +570,20 @@ namespace Foundation {
 		public IEnumerator<KeyValuePair<NSObject, NSObject>> GetEnumerator ()
 		{
 			foreach (var key in Keys) {
-				yield return new KeyValuePair<NSObject, NSObject> (key, ObjectForKey (key));
+				yield return new KeyValuePair<NSObject, NSObject> (key, ObjectForKey (key)!);
 			}
 		}
 
-		/// <param name="key">A handle to an NSObject that might be on the dictionary.</param>
-		///         <summary>Low-level key lookup.</summary>
-		///         <returns>Handle to an object, or IntPtr.Zero if the key does not exist in the dictionary.</returns>
-		///         <remarks>
-		/// 	  In some cases, where you might be iterating over a loop, or
-		/// 	  you have not surfaced a bound type, but you have the handle to
-		/// 	  the key, you can use the <see cref="Foundation.NSDictionary.LowlevelObjectForKey(System.IntPtr)" />
-		/// 	  which takes a handle for the key and returns a handle for the returned object. 
-		/// 	</remarks>
+		/// <summary>
+		/// Low-level key lookup.
+		/// </summary>
+		/// <param name="key">A handle to an <see cref="NSObject"/> that might be in the dictionary.</param>
+		/// <returns>Handle to an object, or <see cref="IntPtr.Zero"/> if the key does not exist in the dictionary.</returns>
+		/// <remarks>
+		/// In some cases, where you might be iterating over a loop, or you have not surfaced a bound type,
+		/// but you have the handle to the key, you can use <see cref="LowlevelObjectForKey(IntPtr)"/>
+		/// which takes a handle for the key and returns a handle for the returned object.
+		/// </remarks>
 		public IntPtr LowlevelObjectForKey (IntPtr key)
 		{
 #if MONOMAC
@@ -568,9 +593,10 @@ namespace Foundation {
 #endif
 		}
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>
+		/// Converts the dictionary to an <see cref="NSFileAttributes"/> object.
+		/// </summary>
+		/// <returns>An <see cref="NSFileAttributes"/> object representing the dictionary contents.</returns>
 		public NSFileAttributes ToFileAttributes ()
 		{
 			return NSFileAttributes.FromDictionary (this);

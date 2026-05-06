@@ -365,6 +365,22 @@ typedef void (^outerBlock) (innerBlock callback);
 }
 @end
 
+@class Hitchhiker;
+@protocol HitchhikerDelegate <NSObject>
+@required
+	-(void) byeByeDolphins: (Hitchhiker *) sender;
+@optional
+	-(void) buildIntergalacticHighway: (Hitchhiker *) sender;
+	-(void) hitchhikeWithVogons: (Hitchhiker *) sender;
+@end
+
+@interface Hitchhiker : NSObject {
+}
+@property (retain) id<HitchhikerDelegate> delegate;
+-(void) destroyEarth;
+-(void) buildHighway;
+@end
+
 #pragma clang diagnostic pop
 // NS_ASSUME_NONNULL_END
 

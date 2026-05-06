@@ -82,7 +82,7 @@ namespace Xamarin.MacDev.Tasks {
 							frameworkExecutablePath = GetFrameworkExecutablePath (frameworkExecutablePath, Platform, Log);
 						}
 
-						if (OnlyFilterFrameworks && !Path.GetDirectoryName (frameworkExecutablePath).EndsWith (".framework", StringComparison.OrdinalIgnoreCase)) {
+						if (OnlyFilterFrameworks && !Path.GetDirectoryName (frameworkExecutablePath)!.EndsWith (".framework", StringComparison.OrdinalIgnoreCase)) {
 							Log.LogMessage (MessageImportance.Low, $"Skipped processing {item.ItemSpec} because it's not a framework");
 							continue;
 						}
@@ -120,9 +120,16 @@ namespace Xamarin.MacDev.Tasks {
 			if (FrameworkToPublish is not null) {
 				foreach (var item in FrameworkToPublish) {
 					var fw = item.ItemSpec;
+					var finfo = new FileInfo (fw);
 					// Copy all the files from the framework to the mac (copying only the executable won't work if it's just a symlink to elsewhere)
-					if (File.Exists (fw))
+					if (finfo.Exists) {
+						if (finfo.Length == 0) {
+							// an empty file is most likely an output file from the Mac, so don't overwrite the corresponding file on the Mac with the empty output file from Windows
+							Log.LogMessage (MessageImportance.Low, "Not copying {0} to the Mac, it's an empty file.", fw);
+							continue;
+						}
 						fw = Path.GetDirectoryName (fw);
+					}
 					if (!Directory.Exists (fw))
 						continue;
 					foreach (var file in Directory.EnumerateFiles (fw, "*.*", SearchOption.AllDirectories)) {

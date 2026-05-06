@@ -335,8 +335,7 @@ namespace Xamarin.Linker {
 				}
 
 				var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
-				if (IsTrimmed (ctor))
-					Annotations.Mark (ctor.Resolve ());
+				MarkConstructorIfTrimmed (ctor);
 
 				// We can only add a type to the table if it's not an open type.
 				if (!ManagedRegistrarStep.IsOpenType (type)) {
@@ -358,7 +357,7 @@ namespace Xamarin.Linker {
 				}
 
 				// In addition to the big lookup method, implement the static factory method on the type:
-				ImplementConstructNSObjectFactoryMethod (type, ctor);
+				ImplementConstructNSObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
 			}
 
 			// return default (NSObject);
@@ -393,14 +392,7 @@ namespace Xamarin.Linker {
 					var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 					// we need to preserve the constructor because it might not be used anywhere else
-					if (IsTrimmed (ctor)) {
-						var ctorDefinition = ctor.Resolve ();
-						Annotations.Mark (ctorDefinition);
-						foreach (var instr in ctorDefinition.Body.Instructions) {
-							if (instr.Operand is MethodReference mr)
-								Annotations.Mark (mr.Resolve ());
-						}
-					}
+					MarkConstructorIfTrimmed (ctor);
 
 					if (!ManagedRegistrarStep.IsOpenType (type)) {
 						EnsureVisible (createInstanceMethod, ctor);
@@ -423,7 +415,7 @@ namespace Xamarin.Linker {
 				}
 
 				// In addition to the big lookup method, implement the static factory method on the type:
-				ImplementConstructINativeObjectFactoryMethod (type, ctorRef);
+				ImplementConstructINativeObjectFactoryMethod (abr, DerivedLinkContext, type, ctorRef);
 			}
 
 			// return default (NSObject)
@@ -433,26 +425,52 @@ namespace Xamarin.Linker {
 			body.GenerateILOffsets ();
 		}
 
-		void AddTypeInterfaceImplementation (TypeDefinition type, TypeReference iface)
+		// We need to preserve the constructor because it might not be used anywhere else.
+		// We also need to preserve all method and field references from the constructor body,
+		// because the mark step has already completed and won't transitively mark them.
+		// Ref: https://github.com/dotnet/macios/issues/24663
+		void MarkConstructorIfTrimmed (MethodReference ctor)
+		{
+			if (!IsTrimmed (ctor))
+				return;
+
+			var ctorDefinition = ctor.Resolve ();
+			Annotations.Mark (ctorDefinition);
+			foreach (var instr in ctorDefinition.Body.Instructions) {
+				if (instr.Operand is MethodReference mr)
+					Annotations.Mark (mr.Resolve ());
+				else if (instr.Operand is FieldReference fr)
+					Annotations.Mark (fr.Resolve ());
+			}
+		}
+
+		static void AddTypeInterfaceImplementation (AppBundleRewriter abr, Tuner.DerivedLinkContext context, TypeDefinition type, TypeReference iface)
 		{
 			if (type.HasInterfaces && type.Interfaces.Any (v => v.InterfaceType == iface))
 				return;
 
 			var ifaceImplementation = new InterfaceImplementation (iface);
 			type.Interfaces.Add (ifaceImplementation);
-			Annotations.Mark (ifaceImplementation);
-			Annotations.Mark (ifaceImplementation.InterfaceType);
-			Annotations.Mark (ifaceImplementation.InterfaceType.Resolve ());
+
+			// make sure the trimmer doesn't trim it away if the type is kept
+			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {
+				// TODO: need to investigate why this is needed (https://github.com/dotnet/macios/issues/25232)
+				abr.AddAttributeToStaticConstructor (type, abr.CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.Interfaces, type));
+			} else {
+				context.Annotations.Mark (ifaceImplementation);
+				context.Annotations.Mark (ifaceImplementation.InterfaceType);
+				context.Annotations.Mark (ifaceImplementation.InterfaceType.Resolve ());
+			}
 		}
 
-		void ImplementConstructNSObjectFactoryMethod (TypeDefinition type, MethodReference ctor)
+		internal static void ImplementConstructNSObjectFactoryMethod (AppBundleRewriter abr, Tuner.DerivedLinkContext context, TypeDefinition type, MethodReference ctor)
 		{
 			// skip creating the factory for NSObject itself
 			if (type.Is ("Foundation", "NSObject"))
 				return;
 
 			// Make sure the type implements INSObjectFactory, otherwise we can't override the _Xamarin_ConstructNSObject method from it.
-			AddTypeInterfaceImplementation (type, abr.Foundation_INSObjectFactory);
+			AddTypeInterfaceImplementation (abr, context, type, abr.Foundation_INSObjectFactory);
 
 			var createInstanceMethod = type.AddMethod ("_Xamarin_ConstructNSObject", MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.Foundation_NSObject);
 			var nativeHandleParameter = createInstanceMethod.AddParameter ("nativeHandle", abr.ObjCRuntime_NativeHandle);
@@ -474,22 +492,28 @@ namespace Xamarin.Linker {
 
 			body.GenerateILOffsets ();
 
-			Annotations.Mark (createInstanceMethod);
+			// make sure the trimmer doesn't trim it away if the type is kept
+			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {
+				// TODO: need to investigate why this is needed (https://github.com/dotnet/macios/issues/25232)
+				abr.AddDynamicDependencyAttributeToStaticConstructor (type, createInstanceMethod);
+			} else {
+				context.Annotations.Mark (createInstanceMethod);
+			}
 		}
 
-		void ImplementConstructINativeObjectFactoryMethod (TypeDefinition type, MethodReference? ctor)
+		internal static void ImplementConstructINativeObjectFactoryMethod (AppBundleRewriter abr, Tuner.DerivedLinkContext context, TypeDefinition type, MethodReference? ctor)
 		{
 			// skip creating the factory for NSObject itself
 			if (type.Is ("Foundation", "NSObject"))
 				return;
 
 			// If the type is a subclass of NSObject, we prefer the NSObject "IntPtr" constructor
-			var nsobjectConstructor = type.IsNSObject (DerivedLinkContext) ? FindNSObjectConstructor (type) : null;
+			MethodReference? nsobjectConstructor = type.IsNSObject (context) ? FindNSObjectConstructor (type) : null;
 			if (nsobjectConstructor is null && ctor is null)
 				return;
 
 			// Make sure the type implements INativeObject, otherwise we can't override the _Xamarin_ConstructINativeObject method from it.
-			AddTypeInterfaceImplementation (type, abr.ObjCRuntime_INativeObject);
+			AddTypeInterfaceImplementation (abr, context, type, abr.ObjCRuntime_INativeObject);
 
 			var createInstanceMethod = type.AddMethod ("_Xamarin_ConstructINativeObject", MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.ObjCRuntime_INativeObject);
 			var nativeHandleParameter = createInstanceMethod.AddParameter ("nativeHandle", abr.ObjCRuntime_NativeHandle);
@@ -548,15 +572,21 @@ namespace Xamarin.Linker {
 
 			body.GenerateILOffsets ();
 
-			Annotations.Mark (createInstanceMethod);
+			// make sure the trimmer doesn't trim it away if the type is kept
+			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {
+				// TODO: need to investigate why this is needed (https://github.com/dotnet/macios/issues/25232)
+				abr.AddDynamicDependencyAttributeToStaticConstructor (type, createInstanceMethod);
+			} else {
+				context.Annotations.Mark (createInstanceMethod);
+			}
 		}
 
-		static MethodReference? FindNSObjectConstructor (TypeDefinition type)
+		internal static MethodDefinition? FindNSObjectConstructor (TypeDefinition type)
 		{
 			return FindConstructorWithOneParameter ("ObjCRuntime", "NativeHandle")
 				?? FindConstructorWithOneParameter ("System", "IntPtr");
 
-			MethodReference? FindConstructorWithOneParameter (string ns, string cls)
+			MethodDefinition? FindConstructorWithOneParameter (string ns, string cls)
 				=> type.Methods.SingleOrDefault (method =>
 					method.IsConstructor
 						&& !method.IsStatic
@@ -565,13 +595,12 @@ namespace Xamarin.Linker {
 						&& method.Parameters [0].ParameterType.Is (ns, cls));
 		}
 
-
-		static MethodReference? FindINativeObjectConstructor (TypeDefinition type)
+		internal static MethodDefinition? FindINativeObjectConstructor (TypeDefinition type)
 		{
 			return FindConstructorWithTwoParameters ("ObjCRuntime", "NativeHandle", "System", "Boolean")
 				?? FindConstructorWithTwoParameters ("System", "IntPtr", "System", "Boolean");
 
-			MethodReference? FindConstructorWithTwoParameters (string ns1, string cls1, string ns2, string cls2)
+			MethodDefinition? FindConstructorWithTwoParameters (string ns1, string cls1, string ns2, string cls2)
 				=> type.Methods.SingleOrDefault (method =>
 					method.IsConstructor
 						&& !method.IsStatic

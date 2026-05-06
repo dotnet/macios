@@ -25,8 +25,6 @@ namespace Xamarin.MacDev.Tasks {
 			var sdk = Sdks.GetAppleSdk (platform);
 			var version = AppleSdkVersion.UseDefault.ToString ();
 			var root = sdk.GetSdkPath (version, false);
-			var usr = Path.Combine (sdk.DeveloperRoot, "usr");
-			var bin = Path.Combine (usr, "bin");
 			string sdkPlatform;
 			var uiDeviceFamily = "";
 
@@ -66,8 +64,6 @@ namespace Xamarin.MacDev.Tasks {
 			task.SdkDevPath = Configuration.xcode_root;
 			task.SdkPlatform = sdkPlatform;
 			task.SdkVersion = version.ToString ();
-			task.SdkUsrPath = usr;
-			task.SdkBinPath = bin;
 			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 			task.UIDeviceFamily = uiDeviceFamily;
 			return task;
@@ -97,9 +93,9 @@ namespace Xamarin.MacDev.Tasks {
 			ExecuteTask (actool);
 
 			Assert.IsNotNull (actool.PartialAppManifest, "PartialAppManifest");
-			var appIconsManifestPath = actool.PartialAppManifest.ItemSpec!;
+			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
 			var appIconsManifest = PDictionary.FromFile (appIconsManifestPath)!;
-			Assert.AreEqual (0, appIconsManifest.Count, $"Partial plist contents: {actool.PartialAppManifest.ItemSpec}");
+			Assert.AreEqual (0, appIconsManifest.Count, $"Partial plist contents: {actool.PartialAppManifest?.ItemSpec}");
 			var expectedXml =
 				"""
 				<?xml version="1.0" encoding="UTF-8"?>
@@ -126,7 +122,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			Assert.IsNotNull (actool.PartialAppManifest, "PartialAppManifest");
 
-			var appIconsManifestPath = actool.PartialAppManifest.ItemSpec!;
+			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
 			string expectedXml;
 			if (platform == ApplePlatform.TVOS) {
 				expectedXml =
@@ -299,7 +295,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			Assert.IsNotNull (actool.PartialAppManifest, "PartialAppManifest");
 
-			var appIconsManifestPath = actool.PartialAppManifest.ItemSpec!;
+			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
 			string expectedXml;
 			if (platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst) {
 				expectedXml =
@@ -396,7 +392,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			Assert.IsNotNull (actool.PartialAppManifest, "PartialAppManifest");
 
-			var appIconsManifestPath = actool.PartialAppManifest.ItemSpec!;
+			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
 			string expectedXml;
 			if (platform == ApplePlatform.MacOSX || platform == ApplePlatform.MacCatalyst) {
 				expectedXml =
@@ -551,7 +547,7 @@ namespace Xamarin.MacDev.Tasks {
 				throw new NotImplementedException (platform.ToString ());
 			}
 
-			var appIconsManifestPath = actool.PartialAppManifest.ItemSpec!;
+			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
 			PListAsserts.AreStringsEqual (expectedXml, File.ReadAllText (appIconsManifestPath), "Partial plist contents");
 		}
 

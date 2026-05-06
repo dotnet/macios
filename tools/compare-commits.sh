@@ -290,13 +290,6 @@ if test -z "$USE_EXISTING_BUILD"; then
 
 	cd "$OUTPUT_SRC_DIR"
 
-	echo "    ${BLUE}Getting ADR from existing clone to avoid having to setup auth to get it again...${CLEAR}"
-	FILE="$ROOT_DIR/adr-path.raw"
-	make print-variable-value-to-file VARIABLE=ADR_PATH FILE=$FILE -C "$ROOT_DIR/tools/devops"
-	ADR_PATH=$(cat "$FILE")
-	rm -f "$FILE"
-	cp -cr "$ADR_PATH" .
-
 	echo "    ${BLUE}Cloning macios...${CLEAR}"
 	git clone https://github.com/dotnet/macios --reference "$ROOT_DIR" 2>&1 | sed 's/^/        /'
 	cd macios
@@ -380,7 +373,7 @@ if test -n "$ENABLE_GENERATOR_DIFF"; then
 	echo "    ${BLUE}Computing diff of the generated sources into ${WHITE}$GENERATOR_DIFF_FILE${BLUE}...${CLEAR}"
 	cd "$OUTPUT_TMP_DIR/generator/build"
 	git diff --no-index old new > "$GENERATOR_DIFF_FILE" || true
-	"$ROOT_DIR/tools/diff-to-html" "$GENERATOR_DIFF_FILE" "$GENERATOR_HTML_FILE"
+	dotnet run --project "$ROOT_DIR/scripts/diff-to-html/diff-to-html.csproj" -- "$GENERATOR_DIFF_FILE" "$GENERATOR_HTML_FILE"
 	echo "    ${BLUE}Computed generator diff: ${WHITE}$GENERATOR_HTML_FILE${BLUE}.${CLEAR}"
 	echo ""
 else

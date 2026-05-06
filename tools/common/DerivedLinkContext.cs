@@ -9,6 +9,7 @@ using Registrar;
 using Mono.Tuner;
 using Xamarin.Bundler;
 using Xamarin.Linker;
+using Xamarin.Utils;
 
 #if !LEGACY_TOOLS
 using LinkContext = Xamarin.Bundler.DotNetLinkContext;
@@ -236,6 +237,70 @@ namespace Xamarin.Tuner {
 		}
 
 #if !LEGACY_TOOLS
+		public bool HasAvailabilityAttributesShowingUnavailableInSimulator (ICustomAttributeProvider provider, MethodDefinition? methodForErrorReporting = null)
+		{
+			if (!App.IsSimulatorBuild) {
+				LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateError (99, "HasAvailabilityAttributesShowingUnavailableInSimulator should not be called when not building for the simulator. Please file an issue at https://github.com/dotnet/macios/issues."));
+				return false;
+			}
+
+			if (!provider.HasCustomAttributes)
+				return false; // no attributes to say otherwise, so available
+
+			string platformName;
+
+			switch (App.Platform) {
+			case ApplePlatform.iOS:
+				platformName = "ios";
+				break;
+			case ApplePlatform.TVOS:
+				platformName = "tvos";
+				break;
+			default:
+				LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 99, methodForErrorReporting, "Unexpected platform '{0}'. Please file an issue at https://github.com/dotnet/macios/issues.", App.Platform));
+				return false;
+			}
+
+			foreach (var attrib in provider.CustomAttributes) {
+				if (attrib.AttributeType.Is ("ObjCRuntime", "UnsupportedSimulatorAttribute")) {
+					if (attrib.ConstructorArguments.Count == 1 && attrib.ConstructorArguments [0].Value is string reason) {
+						if (string.Equals (reason, platformName, StringComparison.OrdinalIgnoreCase))
+							return true;
+					} else {
+						LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 2258, methodForErrorReporting, Errors.MX2258, provider.AsString (), attrib.RenderAttribute ()));
+					}
+					continue;
+				}
+
+				if (attrib.AttributeType.Is ("ObjCRuntime", "SupportedSimulatorAttribute")) {
+					if (attrib.ConstructorArguments.Count == 1 && attrib.ConstructorArguments [0].Value is string reason) {
+						if (!reason.StartsWith (platformName, StringComparison.OrdinalIgnoreCase))
+							continue;
+
+						var osVersion = reason.Substring (platformName.Length);
+						if (string.IsNullOrEmpty (osVersion)) {
+							// empty version: always available in the simulator
+							return false;
+						} else if (Version.TryParse (osVersion, out var version)) {
+							var simulatorVersion = App.DeploymentTarget;
+							if (simulatorVersion is null) {
+								LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 99, methodForErrorReporting, "No deployment target available. Please file an issue at https://github.com/dotnet/macios/issues."));
+								continue;
+							}
+							return version > simulatorVersion;
+						} else {
+							LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 2259, methodForErrorReporting, Errors.MX2259, provider.AsString (), attrib.RenderAttribute ()));
+						}
+					} else {
+						LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 2258, methodForErrorReporting, Errors.MX2258, provider.AsString (), attrib.RenderAttribute ()));
+					}
+					continue;
+				}
+			}
+
+			return false;
+		}
+
 		class AttributeStorage : ICustomAttribute {
 			public CustomAttribute Attribute { get; }
 			public TypeReference AttributeType { get; set; }

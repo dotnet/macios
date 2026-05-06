@@ -150,38 +150,12 @@ namespace Introspection {
 			case "ASAccountAuthenticationModificationController":
 				return true; // started failing in Xcode 16.3 beta 1 for unknown reasons (it works in an Xcode project).
 #if __TVOS__
-			case "MTLAccelerationStructureDescriptor":
-			case "MTLAccelerationStructureGeometryDescriptor":
-			case "MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor":
-			case "MTLAccelerationStructureMotionTriangleGeometryDescriptor":
-			case "MTLAccelerationStructurePassDescriptor":
-			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptor":
-			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray":
-			case "MTLAccelerationStructureTriangleGeometryDescriptor":
-			case "MTLMeshRenderPipelineDescriptor":
-			case "MTLMotionKeyframeData":
-			case "MTLRasterizationRateLayerArray":
-			case "MTLRasterizationRateMapDescriptor":
-			case "MTLRasterizationRateSampleArray":
-			case "MTLRenderPipelineFunctionsDescriptor":
-			case "MTLResourceStatePassSampleBufferAttachmentDescriptor":
-			case "MTLResourceStatePassSampleBufferAttachmentDescriptorArray":
-				// The initial tvOS 16.0 simulator doesn't have these classes, but the tvOS 16.1 simulator doess
-				if (TestRuntime.IsSimulator && !TestRuntime.CheckXcodeVersion (14, 1))
-					return true;
-				break;
 			case "CIPersonSegmentation": // removed in Xcode 26?
 			case "CISaliencyMapFilter": // removed in Xcode 26?
 				return TestRuntime.CheckXcodeVersion (26, 0);
 #endif
 			case "PhaseConeDirectivityModelParameters":
 				return !TestRuntime.IsSimulator; // fails on device
-			case "MTLTensorReferenceType":
-			case "MTLFXFrameInterpolatorDescriptor":
-			case "MTLFXTemporalDenoisedScalerDescriptor":
-				if (TestRuntime.IsSimulator)
-					return true;
-				break;
 			}
 
 			switch (type.Namespace) {

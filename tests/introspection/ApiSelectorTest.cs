@@ -46,10 +46,6 @@ namespace Introspection {
 			}
 
 			switch (type.Namespace) {
-			case "SafetyKit":
-				if (TestRuntime.IsSimulator)
-					return !TestRuntime.CheckXcodeVersion (15, 0); // doesn't seem to be available in the iOS simulator until iOS 17+
-				break;
 			case "SensorKit": // SensorKit doesn't exist on iPads
 				if (TestRuntime.IsDevice && TestRuntime.IsiPad)
 					return true;
@@ -210,9 +206,6 @@ namespace Introspection {
 				break;
 #if !MONOMAC
 			case "MTLCaptureManager":
-			case "NEHotspotEapSettings": // Wireless Accessory Configuration is not supported in the simulator.
-			case "NEHotspotConfigurationManager":
-			case "NEHotspotHS20Settings":
 				if (TestRuntime.IsSimulatorOrDesktop)
 					return true;
 				break;
@@ -1303,8 +1296,6 @@ namespace Introspection {
 				}
 				break;
 			}
-
-			// old binding mistake
 			return (selectorName == "initWithCoder:");
 		}
 

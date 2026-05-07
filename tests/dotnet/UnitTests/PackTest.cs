@@ -382,7 +382,7 @@ namespace Xamarin.Tests {
 					"XStaticArTest.xcframework.zip",
 					"XStaticObjectTest.xcframework.zip",
 				};
-				CollectionAssert.AreEqual (innerZipContents.OrderBy (v => v), innerZip.OrderBy (v => v), "Inner zip");
+				Assert.That (innerZip.OrderBy (v => v), Is.EqualTo (innerZipContents.OrderBy (v => v)), "Inner zip");
 				manifest = ZipHelpers.GetInnerString (nupkg, resourcesZip, "manifest");
 			} else {
 				Assert.That (files, Does.Contain ($"lib/{tfm}/{assemblyName}.resources/manifest"), $"manifest");

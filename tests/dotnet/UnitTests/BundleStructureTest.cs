@@ -680,7 +680,7 @@ namespace Xamarin.Tests {
 			var appExecutable = GetNativeExecutable (platform, appPath);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
-			CollectionAssert.AreEqual (expectedWarnings, warningMessages, "Warnings");
+			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// touch AppDelegate.cs, and rebuild should succeed and do the right thing
@@ -692,7 +692,7 @@ namespace Xamarin.Tests {
 			warningMessages = FilterWarnings (warnings);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
-			CollectionAssert.AreEqual (expectedWarnings, warningMessages, "Warnings Rebuild 1");
+			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 1");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// remove the bin directory, and rebuild should succeed and do the right thing
@@ -704,7 +704,7 @@ namespace Xamarin.Tests {
 			warningMessages = FilterWarnings (warnings);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
-			CollectionAssert.AreEqual (expectedWarnings, warningMessages, "Warnings Rebuild 2");
+			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 2");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// a simple rebuild should succeed
@@ -713,7 +713,7 @@ namespace Xamarin.Tests {
 			warningMessages = FilterWarnings (warnings);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
-			CollectionAssert.AreEqual (expectedWarnings, warningMessages, "Warnings Rebuild 3");
+			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 3");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}
 

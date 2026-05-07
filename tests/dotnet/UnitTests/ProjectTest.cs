@@ -1017,7 +1017,7 @@ namespace Xamarin.Tests {
 			} else {
 				expectedResources = new List<string> ();
 			}
-			CollectionAssert.AreEquivalent (expectedResources, actualResources, "Resources");
+			Assert.That (actualResources, Is.EquivalentTo (expectedResources), "Resources");
 
 			var zeroLengthResources = actualAssemblyResources.Where (v => v.ResourceType == ResourceType.Embedded && ((EmbeddedResource) v).GetResourceData ().Length == 0).Select (v => v.Name).ToArray ();
 			Assert.That (zeroLengthResources, Is.Empty, $"0-length resources");
@@ -3751,9 +3751,9 @@ namespace Xamarin.Tests {
 
 			var appExecutable = GetNativeExecutable (platform, appPath);
 			var actualFrameworks = GetLinkedWithFrameworks (appExecutable);
-			CollectionAssert.AreEquivalent (
-				expectedFrameworks.OrderBy (v => v).ToArray (),
+			Assert.That (
 				actualFrameworks.OrderBy (v => v).ToArray (),
+				Is.EquivalentTo (expectedFrameworks.OrderBy (v => v).ToArray ()),
 				"Frameworks");
 		}
 

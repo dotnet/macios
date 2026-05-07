@@ -666,7 +666,7 @@ namespace Xamarin.Tests {
 						expectedAssets.Add (asset);
 				}
 
-				CollectionAssert.AreEquivalent (expectedAssets, foundAssets, "Incorrect assets");
+				Assert.That (foundAssets, Is.EquivalentTo (expectedAssets), "Incorrect assets");
 			} catch {
 				Console.WriteLine ($"Assets.car: {assetsCar}");
 				throw;

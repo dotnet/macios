@@ -78,7 +78,7 @@ namespace Xamarin.Tests {
 				throw new ArgumentOutOfRangeException ($"Unknown platform: {platform}");
 			}
 
-			CollectionAssert.AreEquivalent (expectedAssets, foundAssets, $"Incorrect assets in {assetsCar}");
+			Assert.That (foundAssets, Is.EquivalentTo (expectedAssets), $"Incorrect assets in {assetsCar}");
 
 			var arm64txt = Path.Combine (resourcesDirectory, "arm64.txt");
 			var x64txt = Path.Combine (resourcesDirectory, "x64.txt");

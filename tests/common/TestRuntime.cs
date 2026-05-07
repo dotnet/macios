@@ -210,7 +210,7 @@ partial class TestRuntime {
 		if (CheckXcodeVersion (major, minor, build))
 			return;
 
-		NUnit.Framework.Assert.Ignore ("Requires the platform version shipped with Xcode {0}.{1}", major, minor);
+		NUnit.Framework.Assert.Ignore ($"Requires the platform version shipped with Xcode {major}.{minor}");
 	}
 
 	public static void AssertDevice (string message = "This test only runs on device.")

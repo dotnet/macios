@@ -159,7 +159,7 @@ namespace Xamarin.Tests {
 						failed.Add ($"No minOS version found in {machoFile}.");
 				}
 			}
-			CollectionAssert.IsEmpty (failed, "Failures");
+			Assert.That (failed, Is.Empty, "Failures");
 		}
 	}
 

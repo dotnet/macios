@@ -369,7 +369,31 @@ Group failures by worker and compute failure rates. A bot is problematic if:
 # that bot has a specific problem worth filing an issue for.
 ```
 
-#### 3.3c: Identify infrastructure failure patterns
+#### 3.3c: Windows integration stage — identify the macOS bot
+
+The 'Windows integration' stage has three jobs that work together:
+1. **Reserve macOS bot for tests** — reserves a macOS bot and records its name
+2. **Dotnet tests** — runs on a Windows bot, connecting to the reserved macOS bot via ssh
+3. **Re-enable macOS bot for tests** — releases the macOS bot
+
+If **any** job in this stage fails, always extract the macOS bot name from the 'Reserve macOS bot for tests' job's `workerName` and include it in the issue. This is critical because:
+- A 'Verify ssh connection' failure on the Windows bot is really a problem with the **macOS bot** it's trying to reach
+- A 'Download secrets' failure on the macOS bot is specific to that bot
+- Correlating the macOS bot name across issues reveals patterns (e.g., VSM-XAM-13 having persistent problems)
+
+```python
+# For any failure in the Windows integration stage:
+# 1. Find the 'Reserve macOS bot for tests' job in the timeline
+# 2. Extract its workerName — this is the macOS bot
+# 3. Include "macOS bot: <workerName>" in the issue, even if the
+#    failure is in the 'Dotnet tests' job running on a Windows bot
+for record in timeline['records']:
+    if record['type'] == 'Job' and 'Reserve' in record.get('name', '') and 'macOS' in record.get('name', ''):
+        macos_bot = record.get('workerName', 'unknown')
+        break
+```
+
+#### 3.3d: Identify infrastructure failure patterns
 
 Also look for cross-bot patterns that affect many PRs:
 - **Timeouts**: jobs that time out on multiple different bots across unrelated PRs

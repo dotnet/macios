@@ -4,7 +4,7 @@
 		Name="_PrepareRunDesktop"
 		BeforeTargets="ComputeRunArguments"
 		DependsOnTargets="_ValidateHotReloadConfiguration"
-		Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">
+		Condition="'$(SdkIsDesktop)' == 'true'">
 
 		<!--
 			If we're running under 'dotnet watch', change a few defaults to:

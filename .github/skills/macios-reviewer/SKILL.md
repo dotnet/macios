@@ -97,6 +97,13 @@ Post your findings directly:
 
 If no issues found **and CI is green**, submit with at most one or two 💡 suggestions and a positive summary. Truly trivial PRs (dependency bumps, 1-line typo fixes) may have no inline comments.
 
+**Review event to submit:**
+- If there are ❌ **error** issues → submit as `REQUEST_CHANGES`.
+- If there are no ❌ **error** issues (only warnings/suggestions or clean) → submit as `COMMENT`.
+- **Never submit `APPROVE`.**
+
+This is especially important on re-reviews: if a previous review requested changes and those changes have been addressed, submitting a `COMMENT` review replaces the previous `REQUEST_CHANGES` state, clearing the "changes requested" flag on the PR.
+
 **Copilot-authored PRs:** If the PR author is `Copilot` (the GitHub Copilot coding agent) and the verdict is ⚠️ Needs Changes or ❌ Reject, prefix the review summary with `@copilot ` so the comment automatically triggers Copilot to address the feedback. Do NOT add the prefix for ✅ LGTM verdicts.
 
 ## Comment format

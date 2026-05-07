@@ -3525,6 +3525,42 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unsupported primitive field type &apos;{0}&apos; for symbol &apos;{1}&apos; in method &apos;{2}&apos;. Sub-optimal but functional code will be generated. Please file an issue at https://github.com/dotnet/macios/issues/new.
+        /// </summary>
+        public static string MX2254 {
+            get {
+                return ResourceManager.GetString("MX2254", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown or unsupported Dlfcn pattern: &apos;{0}&apos; in method &apos;{1}&apos;. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new.
+        /// </summary>
+        public static string MX2255 {
+            get {
+                return ResourceManager.GetString("MX2255", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The field type &apos;{0}&apos; for symbol &apos;{1}&apos; in method &apos;{2}&apos; is not an NSObject subclass. Please file an issue at https://github.com/dotnet/macios/issues/new.
+        /// </summary>
+        public static string MX2256 {
+            get {
+                return ResourceManager.GetString("MX2256", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown IL sequence for method with call to Dlfcn.CachePointer: &apos;{0}&apos; in method &apos;{1}&apos;. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new.
+        /// </summary>
+        public static string MX2257 {
+            get {
+                return ResourceManager.GetString("MX2257", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not {0} the assembly &apos;{1}&apos;.
         /// </summary>
         public static string MX3001 {

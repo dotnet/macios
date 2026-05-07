@@ -17,9 +17,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 
 		static public readonly IntPtr Handle = Dlfcn.dlopen (Constants.CoreGraphicsLibrary, 0);
 
-		public static CGRect GetRect (string symbol)
+		public static CGRect GetRect (IntPtr indirect)
 		{
-			var indirect = Dlfcn.dlsym (Handle, symbol);
 			if (indirect == IntPtr.Zero)
 				return CGRect.Empty;
 			unsafe {
@@ -31,7 +30,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		[Test]
 		public void Infinite ()
 		{
-			var r = GetRect ("CGRectInfinite");
+			var r = GetRect (Dlfcn.dlsym (Handle, "CGRectInfinite"));
 			Assert.False (r.IsEmpty, "IsEmpty");
 			Assert.False (r.IsNull (), "IsNull");
 			Assert.True (r.IsInfinite (), "IsInfinite");
@@ -40,7 +39,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		[Test]
 		public void Null ()
 		{
-			var r = GetRect ("CGRectNull");
+			var r = GetRect (Dlfcn.dlsym (Handle, "CGRectNull"));
 			Assert.True (r.IsEmpty, "IsEmpty");
 			Assert.True (r.IsNull (), "IsNull");
 			Assert.False (r.IsInfinite (), "IsInfinite");
@@ -49,7 +48,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		[Test]
 		public void Zero ()
 		{
-			var r = GetRect ("CGRectZero");
+			var r = GetRect (Dlfcn.dlsym (Handle, "CGRectZero"));
 			Assert.True (r.IsEmpty, "IsEmpty");
 			Assert.False (r.IsNull (), "IsNull");
 			Assert.False (r.IsInfinite (), "IsInfinite");

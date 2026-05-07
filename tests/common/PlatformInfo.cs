@@ -134,10 +134,12 @@ namespace Xamarin.Tests {
 
 			// There's a SupportedSimulator attribute for the current platform - check version
 			foreach (var attr in supportedAttrs) {
-				var versionString = attr.PlatformName.Substring (platformPrefix.Length);
-				if (string.IsNullOrEmpty (versionString))
+				var versionString = attr.PlatformName.AsSpan (platformPrefix.Length);
+				if (versionString.IsEmpty)
 					return true; // supported, no version constraint
-				if (Version.TryParse (versionString, out var version) && PlatformInfo.Host.Version >= version)
+				if (!Version.TryParse (versionString, out var version))
+					throw new InvalidOperationException ($"Invalid version string in SupportedSimulator attribute: '{attr.PlatformName}'");
+				if (PlatformInfo.Host.Version >= version)
 					return true;
 			}
 

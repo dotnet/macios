@@ -5589,19 +5589,25 @@ public partial class Generator : IMemberGatherer {
 
 	public void PrintSimulatorAvailabilityAttributes (ICustomAttributeProvider? provider)
 	{
-		switch (CurrentPlatform) {
-		case PlatformName.MacCatalyst:
-		case PlatformName.MacOSX:
+		if (!IsSimulatorAvailabilityRelevantPlatform ())
 			return;
-		case PlatformName.iOS:
-		case PlatformName.TvOS:
-			break;
-		default:
-			throw new BindingException (1047, CurrentPlatform);
-		}
 
 		PrintSupportedSimulatorAttribute (provider);
 		PrintUnsupportedSimulatorAttribute (provider);
+	}
+
+	bool IsSimulatorAvailabilityRelevantPlatform ()
+	{
+		switch (CurrentPlatform) {
+		case PlatformName.MacCatalyst:
+		case PlatformName.MacOSX:
+			return false;
+		case PlatformName.iOS:
+		case PlatformName.TvOS:
+			return true;
+		default:
+			throw new BindingException (1047, CurrentPlatform);
+		}
 	}
 
 	void PrintSupportedSimulatorAttribute (ICustomAttributeProvider? provider)
@@ -5613,9 +5619,6 @@ public partial class Generator : IMemberGatherer {
 		// Only print the attribute for the current platform, we don't care about other platforms.
 		foreach (var attrib in attribs) {
 			switch (CurrentPlatform) {
-			case PlatformName.MacCatalyst:
-			case PlatformName.MacOSX:
-				break;
 			case PlatformName.iOS:
 				if (!attrib.PlatformName.StartsWith ("ios", StringComparison.OrdinalIgnoreCase))
 					continue;
@@ -5640,9 +5643,6 @@ public partial class Generator : IMemberGatherer {
 		// Only print the attribute for the current platform, we don't care about other platforms.
 		foreach (var attrib in attribs) {
 			switch (CurrentPlatform) {
-			case PlatformName.MacCatalyst:
-			case PlatformName.MacOSX:
-				break;
 			case PlatformName.iOS:
 				if (!attrib.PlatformName.StartsWith ("ios", StringComparison.OrdinalIgnoreCase))
 					continue;

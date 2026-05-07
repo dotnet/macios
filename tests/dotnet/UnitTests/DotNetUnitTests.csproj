@@ -4,6 +4,9 @@
 		<IsPackable>false</IsPackable>
 		<DefineConstants>$(DefineConstants);NET;TESTS</DefineConstants>
 	</PropertyGroup>
+	<ItemGroup>
+		<Using Include="NUnit.Framework.Legacy" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="NUnit" Version="$(NUnitPackageVersion)" />

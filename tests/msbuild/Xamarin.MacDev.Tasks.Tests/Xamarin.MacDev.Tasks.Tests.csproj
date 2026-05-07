@@ -10,6 +10,9 @@
     <NoWarn>$(NoWarn);MSB3277</NoWarn> <!-- warning MSB3277: Found conflicts between different versions of "System.Reflection.Metadata" that could not be resolved. -->
     <NoWarn>$(NoWarn);CS1685</NoWarn> <!-- Ignore the duplicate ImmutableArray<T> warning caused by the ILMerged Xamarin.MacDev.Tasks assembly. -->
   </PropertyGroup>
+  <ItemGroup>
+    <Using Include="NUnit.Framework.Legacy" />
+  </ItemGroup>
 
   <!--
 

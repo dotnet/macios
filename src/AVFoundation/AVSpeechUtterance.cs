@@ -31,7 +31,7 @@ namespace AVFoundation {
 	///       </example>
 	///       <para>The <see cref="AVFoundation.AVSpeechUtterance.Rate" /> property specifies the speed with which the utterance is said. The rate does not appear to be processor-dependent and a rate of 1.0f is unnatural.</para>
 	///     </remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/AVFoundation/Reference/AVSpeechUtterance_Ref/index.html">Apple documentation for <c>AVSpeechUtterance</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/avfaudio/avspeechutterance">Apple documentation for <c>AVSpeechUtterance</c></related>
 	public partial class AVSpeechUtterance {
 		/// <summary>Create a new <see cref="AVSpeechUtterance" /> instance for the specified string.</summary>
 		/// <param name="speechString">The text to speak.</param>

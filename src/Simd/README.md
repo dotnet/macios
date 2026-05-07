@@ -153,7 +153,7 @@ Corresponds with the following native types:
 
 ### CoreGraphics.NVector3i
 
-A vector of 3 43-bit ints.
+A vector of 3 32-bit ints.
 
 For memory alignment purposes, this vector has a length of 4 ints, which
 means that the size of this struct is 16 bytes (and not 12 bytes).

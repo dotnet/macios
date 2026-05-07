@@ -422,6 +422,12 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public TypeReference ObjCRuntime_Dlfcn {
+			get {
+				return GetTypeReference (PlatformAssembly, "ObjCRuntime.Dlfcn", out var _);
+			}
+		}
+
 		public TypeReference ObjCRuntime_IManagedRegistrar {
 			get {
 				return GetTypeReference (PlatformAssembly, "ObjCRuntime.IManagedRegistrar", out var _);
@@ -461,6 +467,12 @@ namespace Xamarin.Linker {
 		public TypeReference ObjCRuntime_NSObjectProxyAttribute {
 			get {
 				return GetTypeReference (PlatformAssembly, "ObjCRuntime.NSObjectProxyAttribute", out var _);
+			}
+		}
+
+		public TypeReference ObjCRuntime_ObjectiveCFrameworkAttribute {
+			get {
+				return GetTypeReference (PlatformAssembly, "ObjCRuntime.ObjectiveCFrameworkAttribute", out var _);
 			}
 		}
 
@@ -719,6 +731,17 @@ namespace Xamarin.Linker {
 			get {
 				return GetMethodReference (PlatformAssembly, ObjCRuntime_Class, "GetHandle", (v) =>
 						v.IsStatic
+						&& v.HasParameters
+						&& v.Parameters.Count == 1
+						&& v.Parameters [0].ParameterType.Is ("System", "String")
+						&& !v.HasGenericParameters);
+			}
+		}
+
+		public MethodReference ObjectiveCFrameworkAttribute_ctor_String {
+			get {
+				return GetMethodReference (PlatformAssembly, ObjCRuntime_ObjectiveCFrameworkAttribute, ".ctor", (v) =>
+						v.IsConstructor
 						&& v.HasParameters
 						&& v.Parameters.Count == 1
 						&& v.Parameters [0].ParameterType.Is ("System", "String")

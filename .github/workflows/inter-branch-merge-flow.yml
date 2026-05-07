@@ -19,9 +19,10 @@ on:
   # allow triggering this action manually
   workflow_dispatch:
 
-  # Run every day at 3:00 AM UTC
-  schedule:
-    - cron: '0 3 * * *'
+# Disable for now, trying out an agentic workflow
+#  # Run every day at 3:00 AM UTC
+#  schedule:
+#    - cron: '0 3 * * *'
 
 permissions:
   contents: write

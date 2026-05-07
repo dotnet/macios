@@ -5589,28 +5589,33 @@ public partial class Generator : IMemberGatherer {
 
 	public void PrintSimulatorAvailabilityAttributes (ICustomAttributeProvider? provider)
 	{
-		if (!IsSimulatorAvailabilityRelevantPlatform ())
+		if (!TryGetSimulatorAvailabilityPlatformName (out var platforName))
 			return;
 
-		PrintSupportedSimulatorAttribute (provider);
-		PrintUnsupportedSimulatorAttribute (provider);
+		PrintSupportedSimulatorAttribute (provider, platformName);
+		PrintUnsupportedSimulatorAttribute (provider, platformName);
 	}
 
-	bool IsSimulatorAvailabilityRelevantPlatform ()
+	bool TryGetSimulatorAvailabilityPlatformName ([NotNullWhen (true)] out string? platformName)
 	{
+		platformName = null;
+
 		switch (CurrentPlatform) {
 		case PlatformName.MacCatalyst:
 		case PlatformName.MacOSX:
 			return false;
 		case PlatformName.iOS:
+			platforName = "ios";
+			return true;
 		case PlatformName.TvOS:
+			platforName = "tvos";
 			return true;
 		default:
 			throw new BindingException (1047, CurrentPlatform);
 		}
 	}
 
-	void PrintSupportedSimulatorAttribute (ICustomAttributeProvider? provider)
+	void PrintSupportedSimulatorAttribute (ICustomAttributeProvider? provider, string platformName)
 	{
 		var attribs = AttributeManager.GetCustomAttributes<SupportedSimulatorAttribute> (provider);
 		if (attribs?.Any () != true)
@@ -5618,23 +5623,13 @@ public partial class Generator : IMemberGatherer {
 
 		// Only print the attribute for the current platform, we don't care about other platforms.
 		foreach (var attrib in attribs) {
-			switch (CurrentPlatform) {
-			case PlatformName.iOS:
-				if (!attrib.PlatformName.StartsWith ("ios", StringComparison.OrdinalIgnoreCase))
-					continue;
-				break;
-			case PlatformName.TvOS:
-				if (!attrib.PlatformName.StartsWith ("tvos", StringComparison.OrdinalIgnoreCase))
-					continue;
-				break;
-			default:
-				throw new BindingException (1047, CurrentPlatform);
-			}
+			if (!attrib.PlatformName.StartsWith (platformName, StringComparison.OrdinalIgnoreCase))
+				continue;
 			print ($"[SupportedSimulator (\"{attrib.PlatformName}\")]");
 		}
 	}
 
-	void PrintUnsupportedSimulatorAttribute (ICustomAttributeProvider? provider)
+	void PrintUnsupportedSimulatorAttribute (ICustomAttributeProvider? provider, string platformName)
 	{
 		var attribs = AttributeManager.GetCustomAttributes<UnsupportedSimulatorAttribute> (provider);
 		if (attribs?.Any () != true)
@@ -5642,18 +5637,8 @@ public partial class Generator : IMemberGatherer {
 
 		// Only print the attribute for the current platform, we don't care about other platforms.
 		foreach (var attrib in attribs) {
-			switch (CurrentPlatform) {
-			case PlatformName.iOS:
-				if (!attrib.PlatformName.StartsWith ("ios", StringComparison.OrdinalIgnoreCase))
-					continue;
-				break;
-			case PlatformName.TvOS:
-				if (!attrib.PlatformName.StartsWith ("tvos", StringComparison.OrdinalIgnoreCase))
-					continue;
-				break;
-			default:
-				throw new BindingException (1047, CurrentPlatform);
-			}
+			if (!attrib.PlatformName.StartsWith (platformName, StringComparison.OrdinalIgnoreCase))
+				continue;
 			print ($"[UnsupportedSimulator (\"{attrib.PlatformName}\")]");
 		}
 	}

@@ -5589,7 +5589,7 @@ public partial class Generator : IMemberGatherer {
 
 	public void PrintSimulatorAvailabilityAttributes (ICustomAttributeProvider? provider)
 	{
-		if (!TryGetSimulatorAvailabilityPlatformName (out var platforName))
+		if (!TryGetSimulatorAvailabilityPlatformName (out var platformName))
 			return;
 
 		PrintSupportedSimulatorAttribute (provider, platformName);
@@ -5605,10 +5605,10 @@ public partial class Generator : IMemberGatherer {
 		case PlatformName.MacOSX:
 			return false;
 		case PlatformName.iOS:
-			platforName = "ios";
+			platformName = "ios";
 			return true;
 		case PlatformName.TvOS:
-			platforName = "tvos";
+			platformName = "tvos";
 			return true;
 		default:
 			throw new BindingException (1047, CurrentPlatform);

@@ -11,8 +11,6 @@ namespace Xamarin.Mac.Tests {
 		[SetUp]
 		public void SetUp ()
 		{
-			Asserts.EnsureYosemite ();
-
 			item = new NSSplitViewItem ();
 		}
 

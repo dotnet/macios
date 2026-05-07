@@ -7,18 +7,17 @@ using UIKit;
 using MonoTouch.NUnit.UI;
 using NUnit.Framework.Internal;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 [Register ("AppDelegate")]
 public partial class AppDelegate : UIApplicationDelegate {
 
-	static internal UIWindow MainWindow;
-	public static TouchRunner Runner { get; set; }
+	static internal UIWindow? MainWindow;
+	public static TouchRunner? Runner { get; set; }
 
 	partial void PostFinishedLaunching ();
 
-	public override bool FinishedLaunching (UIApplication application, NSDictionary launchOptions)
+	public override bool FinishedLaunching (UIApplication application, NSDictionary? launchOptions)
 	{
 #if __MACCATALYST__ || __MACOS__
 		TestRuntime.NotifyLaunchCompleted ();
@@ -61,7 +60,7 @@ public partial class AppDelegate : UIApplicationDelegate {
 public partial class SceneDelegate : UIResponder, IUIWindowSceneDelegate {
 
 	[Export ("window")]
-	public UIWindow Window { get; set; }
+	public UIWindow? Window { get; set; }
 
 	[Export ("scene:willConnectToSession:options:")]
 	public void WillConnect (UIScene scene, UISceneSession session, UISceneConnectionOptions connectionOptions)

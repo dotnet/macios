@@ -34,7 +34,6 @@ public class CircleLayout : UICollectionViewLayout {
       <para>
         <see cref="UIKit.UICollectionViewLayoutAttributes" /> implements <see cref="UIKit.IUIDynamicItem" /> and thus can be used with UI Dynamics.</para>
     </remarks>
-    <related type="article" href="https://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Collection_Views">Introduction to Collection Views</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UICollectionViewLayoutAttributes_class/index.html">Apple documentation for <c>UICollectionViewLayoutAttributes</c></related>
   </Docs>
 </Documentation>

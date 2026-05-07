@@ -317,12 +317,17 @@ namespace Xamarin.MacDev.Tasks {
 			return CreateItemsForAllFilesRecursively (directories?.Select (v => v.ItemSpec));
 		}
 
-		internal async global::System.Threading.Tasks.Task CopyFilesToWindowsAsync (TaskRunner runner, IEnumerable<ITaskItem> items)
+		internal static async global::System.Threading.Tasks.Task CopyFilesToWindowsAsync (Task task, TaskRunner runner, IEnumerable<ITaskItem> items)
 		{
 			foreach (var item in items) {
-				Log.LogMessage (MessageImportance.Low, $"Copying {item.ItemSpec} from the remote Mac to Windows");
-				await runner.GetFileAsync (this, item.ItemSpec).ConfigureAwait (false);
+				task.Log.LogMessage (MessageImportance.Low, $"Copying {item.ItemSpec} from the remote Mac to Windows");
+				await runner.GetFileAsync (task, item.ItemSpec).ConfigureAwait (false);
 			}
+		}
+
+		internal global::System.Threading.Tasks.Task CopyFilesToWindowsAsync (TaskRunner runner, IEnumerable<ITaskItem> items)
+		{
+			return CopyFilesToWindowsAsync (this, runner, items);
 		}
 
 		/// <summary>
@@ -347,24 +352,24 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		#region Xamarin.MacDev.ICustomLogger
-		void ICustomLogger.LogError (string message, Exception ex)
+		void ICustomLogger.LogError (string message, Exception? ex)
 		{
 			Log.LogError (message);
 			if (ex is not null)
 				Log.LogErrorFromException (ex);
 		}
 
-		void ICustomLogger.LogWarning (string messageFormat, params object [] args)
+		void ICustomLogger.LogWarning (string messageFormat, params object? [] args)
 		{
 			Log.LogWarning (messageFormat, args);
 		}
 
-		void ICustomLogger.LogInfo (string messageFormat, object [] args)
+		void ICustomLogger.LogInfo (string messageFormat, params object? [] args)
 		{
 			Log.LogMessage (MessageImportance.Normal, messageFormat, args);
 		}
 
-		void ICustomLogger.LogDebug (string messageFormat, params object [] args)
+		void ICustomLogger.LogDebug (string messageFormat, params object? [] args)
 		{
 			Log.LogMessage (MessageImportance.Low, messageFormat, args);
 		}

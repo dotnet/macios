@@ -191,6 +191,13 @@ namespace Xamarin.Linker.Steps {
 
 				switch (pinfo.Module.Name) {
 				case "__Internal":
+					// For NativeAOT builds, don't add inlined dlfcn P/Invoke wrappers as
+					// required symbols: only the surviving ones will have native code generated,
+					// so force-referencing all of them causes linker errors for symbols that
+					// NativeAOT trimmed away. For non-NativeAOT builds, the wrappers are resolved
+					// via dlsym and need the -u flags to be exported from the binary.
+					if (Configuration.InlineDlfcnMethodsEnabled && Configuration.Application.XamarinRuntime == XamarinRuntime.NativeAOT && pinfo.EntryPoint.StartsWith ("xamarin_Dlfcn_", StringComparison.Ordinal))
+						break;
 					Driver.Log (4, "Adding native reference to {0} in {1} because it's referenced by {2} in {3}.", pinfo.EntryPoint, pinfo.Module.Name, method.FullName, method.Module.Name);
 					DerivedLinkContext.RequiredSymbols.AddFunction (pinfo.EntryPoint).AddMember (method);
 					break;
@@ -211,7 +218,7 @@ namespace Xamarin.Linker.Steps {
 				}
 			}
 
-			if (method.IsPropertyMethod ()) {
+			if (method.IsPropertyMethod () && !Configuration.InlineDlfcnMethodsEnabled) {
 				var property = method.GetProperty ();
 				// The Field attribute may have been linked away, but we've stored it in an annotation.
 				if (property is not null && Annotations.GetCustomAnnotations ("ExportedFields").TryGetValue (property, out var symbol) && symbol is string symbolStr) {

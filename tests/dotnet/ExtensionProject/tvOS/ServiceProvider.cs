@@ -13,7 +13,9 @@ namespace MyTVServicesExtension {
 		public TVContentItem [] TopShelfItems {
 			[Export ("topShelfItems")]
 			get {
+#pragma warning disable CA1422
 				return new TVContentItem [] { new TVContentItem (new TVContentIdentifier ("identifier", null)) { Title = "title" } };
+#pragma warning restore CA1422
 			}
 		}
 

@@ -9,8 +9,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSPathControlShouldSetEditable ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var control = new NSPathControl ();
 			var editable = control.Editable;
 			control.Editable = !editable;
@@ -21,8 +19,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSPathControlShouldSetAllowedTypes ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var control = new NSPathControl ();
 			var allowedTypes = control.AllowedTypes;
 			control.AllowedTypes = new [] { (NSString) "exe", (NSString) "jpg" };
@@ -33,8 +29,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSPathControlShouldSetPlaceholderString ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var control = new NSPathControl ();
 			var placeholderString = control.PlaceholderString;
 			control.PlaceholderString = "Test Placeholder";
@@ -45,8 +39,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSPathControlShouldSetPlaceholderAttributedString ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var control = new NSPathControl ();
 			var placeholderAttributedString = control.PlaceholderAttributedString;
 			control.PlaceholderAttributedString = new NSAttributedString ("Test Placeholder");
@@ -57,8 +49,6 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSPathControlShouldSetPathItems ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var control = new NSPathControl ();
 			var pathItems = control.PathItems;
 			control.PathItems = new [] { new NSPathControlItem () };

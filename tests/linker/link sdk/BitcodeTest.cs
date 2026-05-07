@@ -63,7 +63,11 @@ namespace LinkSdk {
 			// This is because we only have an indirect way of making csc produce a fault clause
 			var enumeratorType = GetType ().GetNestedTypes (BindingFlags.NonPublic).First ((v) => v.Name.Contains ($"<{nameof (FaultClause)}>"));
 			var method = enumeratorType.GetMethod ("MoveNext", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+			if (method is null)
+				throw new InvalidOperationException ("MoveNext");
 			var body = method.GetMethodBody ();
+			if (body is null)
+				throw new InvalidOperationException ("MoveNext body");
 			Assert.IsTrue (body.ExceptionHandlingClauses.Any ((v) => v.Flags == ExceptionHandlingClauseOptions.Fault), "Any fault clauses");
 
 			// Then assert that the method can be called successfully.

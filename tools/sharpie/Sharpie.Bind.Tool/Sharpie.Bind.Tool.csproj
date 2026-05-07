@@ -9,7 +9,8 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 
     <!-- packing options -->
-    <!-- there's no x64 version of libClang, so we're only supporting arm64 -->
+    <!-- there's no x64 version of libClang, so only arm64 is fully functional -->
+    <!-- an x64 shim is included that prints a helpful error message -->
     <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>sharpie</ToolCommandName>
@@ -50,4 +51,20 @@
     <None Include="../../../LICENSE" Pack="true" PackagePath="/"/>
     <None Include="../../../NOTICE.txt" Pack="true" PackagePath="/"/>
   </ItemGroup>
+
+  <!-- Include the x64 shim in the nupkg so that x64 users get a helpful error message -->
+  <PropertyGroup>
+    <_X64ShimPublishDir>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'Sharpie.Bind.Tool.Unsupported', 'bin', 'Release', 'osx-x64', 'publish'))</_X64ShimPublishDir>
+  </PropertyGroup>
+
+  <Target Name="_IncludeX64Shim" AfterTargets="PackTool" Condition="'$(PackAsTool)' == 'true'">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="$(_X64ShimPublishDir)/Sharpie.Bind.Tool">
+        <PackagePath>tools/any/osx-x64/</PackagePath>
+      </TfmSpecificPackageFile>
+      <TfmSpecificPackageFile Include="$(MSBuildThisFileDirectory)DotnetToolSettings.osx-x64.xml">
+        <PackagePath>tools/any/osx-x64/DotnetToolSettings.xml</PackagePath>
+      </TfmSpecificPackageFile>
+    </ItemGroup>
+  </Target>
 </Project>

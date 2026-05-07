@@ -530,7 +530,7 @@ namespace Xamarin.Tests {
 			var rv = ExecutionHelper.Execute ("codesign", args, out var codesignOutput, TimeSpan.FromSeconds (15));
 			Assert.AreEqual (0, rv, $"'codesign {string.Join (" ", args)}' failed:\n{codesignOutput}");
 			if (File.Exists (entitlementsPath)) {
-				entitlements = PDictionary.FromFile (entitlementsPath);
+				entitlements = PDictionary.OpenFile (entitlementsPath);
 				return entitlements is not null;
 			}
 			entitlements = null;

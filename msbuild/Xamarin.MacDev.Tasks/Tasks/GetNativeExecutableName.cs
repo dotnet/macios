@@ -33,7 +33,7 @@ namespace Xamarin.MacDev.Tasks {
 			PDictionary plist;
 
 			try {
-				plist = PDictionary.FromFile (AppManifest)!;
+				plist = PDictionary.OpenFile (AppManifest);
 			} catch (Exception ex) {
 				Log.LogError (MSBStrings.E0055, ex.Message);
 				return false;

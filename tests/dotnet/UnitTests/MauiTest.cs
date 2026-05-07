@@ -51,7 +51,7 @@ namespace Xamarin.Tests {
 			var rv = DotNet.AssertBuild (project_path, properties);
 			AssertThatLinkerExecuted (rv);
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.AreEqual ("com.xamarin.mymauiapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
 			Assert.AreEqual ("MyMauiApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
 			Assert.AreEqual ("1", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");

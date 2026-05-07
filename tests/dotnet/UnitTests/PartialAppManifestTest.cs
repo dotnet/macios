@@ -17,7 +17,7 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (project_path, properties);
 
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.AreEqual ("com.xamarin.mypartialappmanifestapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
 			Assert.AreEqual ("MyPartialAppManifestApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
@@ -55,13 +55,13 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (project_path, properties);
 
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.AreEqual ("Here I am", infoPlist.GetString ("LibraryWithResources").Value, "LibraryWithResources 1");
 
 			// build again, nothing should change
 			DotNet.AssertBuild (project_path, properties);
 
-			infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.AreEqual ("Here I am", infoPlist.GetString ("LibraryWithResources").Value, "LibraryWithResources 2");
 		}
 	}

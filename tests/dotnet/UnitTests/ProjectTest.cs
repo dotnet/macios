@@ -25,7 +25,7 @@ namespace Xamarin.Tests {
 			AssertThatLinkerExecuted (result);
 			AssertAppContents (platform, appPath);
 			var infoPlistPath = Path.Combine (appPath, "Info.plist");
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.AreEqual ("com.xamarin.mysingletitle", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
 			Assert.AreEqual ("MySingleTitle", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
@@ -83,7 +83,7 @@ namespace Xamarin.Tests {
 			AssertThatLinkerExecuted (result);
 			AssertAppContents (platform, appPath);
 			var infoPlistPath = Path.Combine (appPath, "Contents", "Info.plist");
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.AreEqual ("com.xamarin.mycatalystapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
 			Assert.AreEqual ("MyCatalystApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
@@ -397,7 +397,7 @@ namespace Xamarin.Tests {
 			AssertThatLinkerExecuted (result);
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
 			Assert.That (infoPlistPath, Does.Exist, "Info.plist");
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
 			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
@@ -428,7 +428,7 @@ namespace Xamarin.Tests {
 			var appPath = Path.Combine (Path.GetDirectoryName (project_path)!, "bin", "Debug", platform.ToFramework (), "monotouchtest.app");
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
 			Assert.That (infoPlistPath, Does.Exist, "Info.plist");
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.AreEqual ("com.xamarin.monotouch-test", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
 			Assert.AreEqual ("MonoTouchTest", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
 		}
@@ -685,7 +685,7 @@ namespace Xamarin.Tests {
 			AssertThatLinkerExecuted (rv);
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
 			Assert.That (infoPlistPath, Does.Exist, "Info.plist");
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
 			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
 			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
@@ -800,7 +800,7 @@ namespace Xamarin.Tests {
 			Assert.That (fontBFile, Does.Exist, "B.otf existence");
 			Assert.That (fontCFile, Does.Exist, "C.ttf existence");
 
-			var plist = PDictionary.FromFile (GetInfoPListPath (platform, appPath))!;
+			var plist = PDictionary.OpenFile (GetInfoPListPath (platform, appPath));
 			switch (platform) {
 			case ApplePlatform.iOS:
 			case ApplePlatform.TVOS:
@@ -2146,7 +2146,7 @@ namespace Xamarin.Tests {
 			AssertThatLinkerExecuted (result);
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
 			Assert.That (infoPlistPath, Does.Exist, "Info.plist");
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
 			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
 			Assert.AreEqual (netVersion, infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
@@ -3741,7 +3741,7 @@ namespace Xamarin.Tests {
 			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
 
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.AreEqual ("com.xamarin.spacedapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
 			Assert.AreEqual ("Spaced App Title", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
 

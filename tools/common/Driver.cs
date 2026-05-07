@@ -317,7 +317,7 @@ namespace Xamarin.Bundler {
 		{
 			if (!File.Exists (name))
 				throw ErrorHelper.CreateError (24, Errors.MT0024, name);
-			return PDictionary.FromFile (name);
+			return PDictionary.OpenFile (name);
 		}
 
 		const string XcodeDefault = "/Applications/Xcode.app";

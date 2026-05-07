@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using Xamarin.Bundler;
@@ -90,6 +91,7 @@ namespace Xamarin {
 			//			/* Constants for the cmd field of all load commands, the type */
 			//#define	LC_SEGMENT	0x1	/* segment of this file to be mapped */
 			//#define	LC_SYMTAB	0x2	/* link-edit stab symbol table info */
+			Symtab = 0x2,
 			//#define	LC_SYMSEG	0x3	/* link-edit gdb symbol table info (obsolete) */
 			//#define	LC_THREAD	0x4	/* thread */
 			//#define	LC_UNIXTHREAD	0x5	/* unix thread (includes a stack) */
@@ -606,8 +608,8 @@ namespace Xamarin {
 					file.Read (reader);
 					object_files.Add (file);
 				}
-				// byte position is always even after each file.
-				if (nextPosition % 1 == 1)
+				// The ar format requires each entry to start at an even byte offset.
+				if (nextPosition % 2 == 1)
 					nextPosition++;
 				reader.BaseStream.Position = nextPosition;
 			}
@@ -641,6 +643,33 @@ namespace Xamarin {
 				}
 			}
 		}
+
+		/// <summary>
+		/// Reads a static library or a Mach-O object file and returns the set of unresolved (undefined external) symbols.
+		/// </summary>
+		public static HashSet<string> GetUnresolvedSymbols (string filename)
+		{
+			var symbols = new HashSet<string> ();
+			using (var fs = File.OpenRead (filename))
+			using (var reader = new BinaryReader (fs)) {
+				if (IsStaticLibrary (reader)) {
+					var lib = new StaticLibrary ();
+					lib.Read (filename, reader, fs.Length);
+					foreach (var obj in lib.ObjectFiles) {
+						foreach (var sym in obj.GetUnresolvedSymbols (reader))
+							symbols.Add (sym);
+					}
+				} else if (MachOFile.IsMachOLibrary (null, reader)) {
+					var obj = new MachOFile (filename);
+					obj.Read (reader);
+					foreach (var sym in obj.GetUnresolvedSymbols (reader))
+						symbols.Add (sym);
+				} else {
+					throw ErrorHelper.CreateError (1601, Errors.MT1601, System.Text.Encoding.ASCII.GetString (reader.ReadBytes (7), 0, 7));
+				}
+			}
+			return symbols;
+		}
 	}
 
 	public class MachOFile {
@@ -657,6 +686,7 @@ namespace Xamarin {
 		uint _reserved;
 
 		bool is64bitheader;
+		long streamBasePosition; // position in the stream where this Mach-O header starts
 
 		public int cputype { get { return is_big_endian ? MachO.ToBigEndian (_cputype) : _cputype; } }
 		public int cpusubtype { get { return is_big_endian ? MachO.ToBigEndian (_cpusubtype) : _cpusubtype; } }
@@ -728,6 +758,8 @@ namespace Xamarin {
 
 		internal void Read (BinaryReader reader)
 		{
+			streamBasePosition = reader.BaseStream.Position;
+
 			/* definitions from: /usr/include/mach-o/loader.h */
 			/*
 			* The 32-bit mach header appears at the very beginning of the object file for
@@ -868,6 +900,16 @@ namespace Xamarin {
 					}
 					lc = buildVer;
 					break;
+				case MachO.LoadCommands.Symtab:
+					var symtabCmd = new SymtabLoadCommand ();
+					symtabCmd.cmd = reader.ReadUInt32 ();
+					symtabCmd.cmdsize = reader.ReadUInt32 ();
+					symtabCmd.symoff = reader.ReadUInt32 ();
+					symtabCmd.nsyms = reader.ReadUInt32 ();
+					symtabCmd.stroff = reader.ReadUInt32 ();
+					symtabCmd.strsize = reader.ReadUInt32 ();
+					lc = symtabCmd;
+					break;
 				default:
 					lc = new LoadCommand ();
 					lc.cmd = reader.ReadUInt32 ();
@@ -892,6 +934,58 @@ namespace Xamarin {
 
 		public bool IsObjectFile {
 			get => filetype == MachO.MH_OBJECT;
+		}
+
+		const byte N_EXT = 0x01;  // external symbol
+		const byte N_TYPE = 0x0e; // mask for type bits
+		const byte N_UNDF = 0x0;  // undefined symbol
+
+		/// <summary>
+		/// Reads unresolved (undefined external) symbols from this Mach-O file.
+		/// The reader must be the same stream used to read this file.
+		/// </summary>
+		public HashSet<string> GetUnresolvedSymbols (BinaryReader reader)
+		{
+			var symbols = new HashSet<string> ();
+			var symtab = load_commands.OfType<SymtabLoadCommand> ().FirstOrDefault ();
+			if (symtab is null || symtab.nsyms == 0)
+				return symbols;
+
+			// Read the string table
+			reader.BaseStream.Position = streamBasePosition + symtab.stroff;
+			var stringTable = reader.ReadBytes ((int) symtab.strsize);
+
+			// Read symbol table entries
+			reader.BaseStream.Position = streamBasePosition + symtab.symoff;
+			var nlistSize = is64bitheader ? 16 : 12;
+			for (uint i = 0; i < symtab.nsyms; i++) {
+				var n_strx = reader.ReadUInt32 ();
+				var n_type = reader.ReadByte ();
+				var n_sect = reader.ReadByte ();
+				var n_desc = reader.ReadInt16 ();
+				if (is64bitheader)
+					reader.ReadUInt64 (); // n_value (8 bytes)
+				else
+					reader.ReadUInt32 (); // n_value (4 bytes)
+
+				// Filter for undefined external symbols (equivalent of nm -u)
+				if ((n_type & N_EXT) == 0)
+					continue;
+				if ((n_type & N_TYPE) != N_UNDF)
+					continue;
+
+				// Read symbol name from string table
+				if (n_strx >= symtab.strsize)
+					continue;
+				var end = (int) n_strx;
+				while (end < stringTable.Length && stringTable [end] != 0)
+					end++;
+				var name = Encoding.UTF8.GetString (stringTable, (int) n_strx, end - (int) n_strx);
+				if (name.Length > 0)
+					symbols.Add (name);
+			}
+
+			return symbols;
 		}
 	}
 
@@ -1147,5 +1241,12 @@ namespace Xamarin {
 		public MachO.Platform Platform {
 			get { return (MachO.Platform) platform; }
 		}
+	}
+
+	public class SymtabLoadCommand : LoadCommand {
+		public uint symoff;  // offset to symbol table entries
+		public uint nsyms;   // number of symbol table entries
+		public uint stroff;  // offset to string table
+		public uint strsize; // size of string table in bytes
 	}
 }

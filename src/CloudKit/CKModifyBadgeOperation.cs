@@ -8,7 +8,6 @@ using System.Diagnostics.CodeAnalysis;
 namespace CloudKit {
 	/// <summary>A <see cref="CloudKit.CKOperation" /> that modifies the badge of the app's icon, either on the current device or all the user's devices.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CloudKit/Reference/CKModifyBadgeOperation_class/index.html">Apple documentation for <c>CKModifyBadgeOperation</c></related>
 	[Register ("CKModifyBadgeOperation", SkipRegistration = true)]
 	[UnsupportedOSPlatform ("ios", "Modifying badge counts is no longer supported.")]
 	[UnsupportedOSPlatform ("macos", "Modifying badge counts is no longer supported.")]

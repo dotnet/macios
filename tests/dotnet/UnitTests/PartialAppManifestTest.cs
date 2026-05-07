@@ -18,11 +18,11 @@ namespace Xamarin.Tests {
 
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
 			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
-			Assert.AreEqual ("com.xamarin.mypartialappmanifestapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
-			Assert.AreEqual ("MyPartialAppManifestApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
-			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
-			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
-			Assert.AreEqual ("SomeValue", infoPlist.GetString ("Something").Value, "Something");
+			ClassicAssert.AreEqual ("com.xamarin.mypartialappmanifestapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
+			ClassicAssert.AreEqual ("MyPartialAppManifestApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+			ClassicAssert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
+			ClassicAssert.AreEqual ("3.14", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
+			ClassicAssert.AreEqual ("SomeValue", infoPlist.GetString ("Something").Value, "Something");
 
 			var partialAppManifestPath = Path.Combine (Path.GetDirectoryName (project_path)!, "..", "Partial.plist");
 			Configuration.Touch (partialAppManifestPath);
@@ -56,13 +56,13 @@ namespace Xamarin.Tests {
 
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
 			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
-			Assert.AreEqual ("Here I am", infoPlist.GetString ("LibraryWithResources").Value, "LibraryWithResources 1");
+			ClassicAssert.AreEqual ("Here I am", infoPlist.GetString ("LibraryWithResources").Value, "LibraryWithResources 1");
 
 			// build again, nothing should change
 			DotNet.AssertBuild (project_path, properties);
 
 			infoPlist = PDictionary.FromFile (infoPlistPath)!;
-			Assert.AreEqual ("Here I am", infoPlist.GetString ("LibraryWithResources").Value, "LibraryWithResources 2");
+			ClassicAssert.AreEqual ("Here I am", infoPlist.GetString ("LibraryWithResources").Value, "LibraryWithResources 2");
 		}
 	}
 }

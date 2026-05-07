@@ -32,7 +32,7 @@ namespace Xamarin.Tests {
 				Assert.That (expectedXcodeFxOutput, Does.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' did not exist.");
 			} else {
 				var resourcesZip = Path.Combine (testDir, "bin", config, platform.ToFramework (), $"{TestName}.resources.zip");
-				Assert.Contains ($"{xcodeProjName}{platform.AsString ()}.xcframework/Info.plist", ZipHelpers.List (resourcesZip),
+				ClassicAssert.Contains ($"{xcodeProjName}{platform.AsString ()}.xcframework/Info.plist", ZipHelpers.List (resourcesZip),
 					$"Expected xcframework output was not found in '{resourcesZip}'.");
 			}
 		}
@@ -66,7 +66,7 @@ namespace Xamarin.Tests {
 			Assert.That (appDir, Does.Exist, $"Expected app dir '{appDir}' did not exist.");
 			var appContent = Directory.GetFiles (appDir, "*", SearchOption.AllDirectories);
 			var expectedAppOutput = Path.Combine (testDir, "bin", projConfig, platform.ToFramework (), rid, $"{TestName}.app", "Frameworks", $"{xcodeProjName}.framework", "Info.plist");
-			Assert.Contains (expectedAppOutput, appContent, $"Expected framework output '{expectedAppOutput}' did not exist.");
+			ClassicAssert.Contains (expectedAppOutput, appContent, $"Expected framework output '{expectedAppOutput}' did not exist.");
 
 		}
 
@@ -189,7 +189,7 @@ public class Binding
 				zipContent = ZipHelpers.ListInnerZip (expectedNupkgOutput, $"lib/{tfm}/{TestName}.resources.zip");
 				expectedFxPath = $"{xcodeProjName}{platform.AsString ()}.xcframework/Info.plist";
 			}
-			Assert.Contains (expectedFxPath, zipContent, $"Expected xcframework output was not found in '{expectedNupkgOutput}'.");
+			ClassicAssert.Contains (expectedFxPath, zipContent, $"Expected xcframework output was not found in '{expectedNupkgOutput}'.");
 		}
 
 		[Test]
@@ -241,7 +241,7 @@ public class Binding
 			AssertTargetExecuted (allTargets, "_BuildXcodeProjects", "Third _BuildXcodeProjects");
 			Assert.That (expectedXcodeFxOutput, Does.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' did not exist.");
 			var outputFxThirdWriteTime = File.GetLastWriteTime (expectedXcodeFxOutput);
-			Assert.IsTrue (outputFxThirdWriteTime > outputFxFirstWriteTime, $"Expected '{outputFxThirdWriteTime}' write time of '{outputFxThirdWriteTime}' to be greater than first write '{outputFxFirstWriteTime}'");
+			ClassicAssert.IsTrue (outputFxThirdWriteTime > outputFxFirstWriteTime, $"Expected '{outputFxThirdWriteTime}' write time of '{outputFxThirdWriteTime}' to be greater than first write '{outputFxFirstWriteTime}'");
 		}
 
 		[Test]

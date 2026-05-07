@@ -656,7 +656,7 @@ namespace Xamarin.Tests {
 
 			try {
 				var doc = AssetsTest.ProcessAssets (assetsCar, AssetsTest.GetFullSdkVersion (platform, runtimeIdentifiers));
-				Assert.IsNotNull (doc, "There was an issue processing the asset binary.");
+				ClassicAssert.IsNotNull (doc, "There was an issue processing the asset binary.");
 
 				var foundAssets = AssetsTest.FindAssets (platform, doc);
 

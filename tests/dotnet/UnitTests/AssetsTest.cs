@@ -55,7 +55,7 @@ namespace Xamarin.Tests {
 			Assert.That (assetsCar, Does.Exist, "Assets.car");
 
 			var doc = ProcessAssets (assetsCar, GetFullSdkVersion (platform, runtimeIdentifiers));
-			Assert.IsNotNull (doc, "There was an issue processing the asset binary.");
+			ClassicAssert.IsNotNull (doc, "There was an issue processing the asset binary.");
 
 			var foundAssets = FindAssets (platform, doc);
 
@@ -82,8 +82,8 @@ namespace Xamarin.Tests {
 
 			var arm64txt = Path.Combine (resourcesDirectory, "arm64.txt");
 			var x64txt = Path.Combine (resourcesDirectory, "x64.txt");
-			Assert.AreEqual (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-arm64")), File.Exists (arm64txt), "arm64.txt");
-			Assert.AreEqual (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-x64")), File.Exists (x64txt), "x64.txt");
+			ClassicAssert.AreEqual (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-arm64")), File.Exists (arm64txt), "arm64.txt");
+			ClassicAssert.AreEqual (runtimeIdentifiers.Split (';').Any (v => v.EndsWith ("-x64")), File.Exists (x64txt), "x64.txt");
 		}
 
 		void ConfigureAssets (string projectPath, string runtimeIdentifiers, string config, bool isStartingWithAssets)
@@ -128,7 +128,7 @@ namespace Xamarin.Tests {
 			var executable = "ln";
 			var arguments = new string [] { "-s", sourceDir, destDir };
 			var rv = Execution.RunAsync (executable, arguments, timeout: TimeSpan.FromSeconds (60)).Result;
-			Assert.AreEqual (0, rv.ExitCode, $"Creating Symlink Error: {rv.Output.MergedOutput}. Unexpected ExitCode");
+			ClassicAssert.AreEqual (0, rv.ExitCode, $"Creating Symlink Error: {rv.Output.MergedOutput}. Unexpected ExitCode");
 		}
 
 		public static string GetFullSdkVersion (ApplePlatform platform, string runtimeIdentifiers)
@@ -161,12 +161,12 @@ namespace Xamarin.Tests {
 			var assets = Directory.EnumerateFiles (xcassetsDir, "*.*", SearchOption.AllDirectories).ToArray ();
 
 			// assets first value is a .DS_Store file that work trigger MSBuild recompile so we want the second value
-			Assert.Greater (assets.Length, 1);
+			ClassicAssert.Greater (assets.Length, 1);
 
 			var executable = "touch";
 			var arguments = new string [] { assets [1] };
 			var rv = Execution.RunAsync (executable, arguments, timeout: TimeSpan.FromSeconds (120)).Result;
-			Assert.AreEqual (0, rv.ExitCode, $"Processing Update Symlink Error: {rv.Output.MergedOutput}. Unexpected ExitCode");
+			ClassicAssert.AreEqual (0, rv.ExitCode, $"Processing Update Symlink Error: {rv.Output.MergedOutput}. Unexpected ExitCode");
 		}
 
 		public static JsonDocument ProcessAssets (string assetsPath, string sdkVersion)
@@ -176,7 +176,7 @@ namespace Xamarin.Tests {
 			var tmpfile = Path.Combine (tmpdir, "Assets.json");
 			var arguments = new string [] { "--sdk", sdkVersion, "assetutil", "--info", assetsPath, "-o", tmpfile };
 			var rv = Execution.RunAsync (executable, arguments, timeout: TimeSpan.FromSeconds (120)).Result;
-			Assert.AreEqual (0, rv.ExitCode, $"Processing Assets Error: {rv.Output.StandardError}. Unexpected ExitCode");
+			ClassicAssert.AreEqual (0, rv.ExitCode, $"Processing Assets Error: {rv.Output.StandardError}. Unexpected ExitCode");
 			var s = File.ReadAllText (tmpfile);
 
 			try {
@@ -212,7 +212,7 @@ namespace Xamarin.Tests {
 				case ApplePlatform.MacCatalyst:
 				case ApplePlatform.iOS:
 				case ApplePlatform.TVOS:
-					Assert.AreEqual ("2", schemaVersion.ToString (), "Verify SchemaVersion");
+					ClassicAssert.AreEqual ("2", schemaVersion.ToString (), "Verify SchemaVersion");
 					break;
 				default:
 					throw new ArgumentOutOfRangeException ($"Unknown platform: {platform}");

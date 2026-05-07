@@ -377,7 +377,7 @@ namespace Xamarin.Tests {
 			using var zip = ZipFile.OpenRead (zippedAppBundlePath);
 			ZipHelpers.DumpZipFile (zip, zippedAppBundlePath);
 			var infoPlistEntry = zip.Entries.SingleOrDefault (v => v.Name == "Info.plist")!;
-			Assert.NotNull (infoPlistEntry, "Info.plist");
+			ClassicAssert.NotNull (infoPlistEntry, "Info.plist");
 
 			// Parse the Info.plist
 			// PDictionary.FromStream requires a seekable stream, but the zip stream isn't seekable, so copy to a
@@ -387,10 +387,10 @@ namespace Xamarin.Tests {
 			plistStream.CopyTo (memoryStream);
 
 			var infoPlist = (PDictionary) PDictionary.FromStream (memoryStream)!;
-			Assert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
-			Assert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
-			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
-			Assert.AreEqual ("3.14", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
+			ClassicAssert.AreEqual ("com.xamarin.mysimpleapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
+			ClassicAssert.AreEqual ("MySimpleApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
+			ClassicAssert.AreEqual ("3.14", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
+			ClassicAssert.AreEqual ("3.14", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
 
 			//Validate that the output assemblies report file with the list of local assemblies, lengths and MVIDs has been created
 			var outputAssembliesReportFileName = "OutputAssembliesReport.txt";
@@ -427,7 +427,7 @@ namespace Xamarin.Tests {
 					Guid mvid = metadataReader.GetGuid (metadataReader.GetModuleDefinition ().Mvid);
 					var fileWasUpdated = fileInfo.Length != localInfo.length || mvid != localInfo.mvid;
 
-					Assert.IsTrue (fileWasUpdated, $"The file '{fileName}' is identical to the one present in the output assemblies report file '{outputAssembliesReportFile}'");
+					ClassicAssert.IsTrue (fileWasUpdated, $"The file '{fileName}' is identical to the one present in the output assemblies report file '{outputAssembliesReportFile}'");
 				}
 			}
 		}

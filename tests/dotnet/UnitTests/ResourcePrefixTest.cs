@@ -17,7 +17,7 @@ namespace Xamarin.Tests {
 			foreach (var platform in platforms) {
 				// Act & Assert
 				var defaultValue = GetResourcePrefix (platform.AsString ().ToLower ());
-				Assert.AreEqual ("Resources", defaultValue, $"Default value for {platform} should be 'Resources'");
+				ClassicAssert.AreEqual ("Resources", defaultValue, $"Default value for {platform} should be 'Resources'");
 			}
 		}
 
@@ -33,7 +33,7 @@ namespace Xamarin.Tests {
 				var value = GetResourcePrefix (platform.AsString ().ToLower (), ("AppBundleResourcePrefix", customPrefix));
 
 				// Assert
-				Assert.AreEqual (customPrefix, value, $"{platform}: AppBundleResourcePrefix should be used");
+				ClassicAssert.AreEqual (customPrefix, value, $"{platform}: AppBundleResourcePrefix should be used");
 			}
 		}
 
@@ -48,27 +48,27 @@ namespace Xamarin.Tests {
 			// iOS and tvOS use IPhoneResourcePrefix
 			if (Configuration.include_ios) {
 				var iOSValue = GetResourcePrefix ("ios", ("IPhoneResourcePrefix", customPrefix));
-				Assert.AreEqual (customPrefix, iOSValue, "iOS should use IPhoneResourcePrefix");
+				ClassicAssert.AreEqual (customPrefix, iOSValue, "iOS should use IPhoneResourcePrefix");
 			}
 
 			if (Configuration.include_tvos) {
 				var tvOSValue = GetResourcePrefix ("tvos", ("IPhoneResourcePrefix", customPrefix));
-				Assert.AreEqual (customPrefix, tvOSValue, "tvOS should use IPhoneResourcePrefix");
+				ClassicAssert.AreEqual (customPrefix, tvOSValue, "tvOS should use IPhoneResourcePrefix");
 			}
 
 			// Mac Catalyst uses IPhoneResourcePrefix
 			if (Configuration.include_maccatalyst) {
 				var macCatalystValue = GetResourcePrefix ("maccatalyst", ("IPhoneResourcePrefix", customPrefix));
-				Assert.AreEqual (customPrefix, macCatalystValue, "Mac Catalyst should use IPhoneResourcePrefix");
+				ClassicAssert.AreEqual (customPrefix, macCatalystValue, "Mac Catalyst should use IPhoneResourcePrefix");
 			}
 
 			// macOS can use either XamMacResourcePrefix or MonoMacResourcePrefix
 			if (Configuration.include_mac) {
 				var macOSXamValue = GetResourcePrefix ("macos", ("XamMacResourcePrefix", customPrefix));
-				Assert.AreEqual (customPrefix, macOSXamValue, "macOS should use XamMacResourcePrefix");
+				ClassicAssert.AreEqual (customPrefix, macOSXamValue, "macOS should use XamMacResourcePrefix");
 
 				var macOSMonoValue = GetResourcePrefix ("macos", ("MonoMacResourcePrefix", customPrefix));
-				Assert.AreEqual (customPrefix, macOSMonoValue, "macOS should use MonoMacResourcePrefix");
+				ClassicAssert.AreEqual (customPrefix, macOSMonoValue, "macOS should use MonoMacResourcePrefix");
 			}
 		}
 
@@ -86,7 +86,7 @@ namespace Xamarin.Tests {
 				var iOSValue = GetResourcePrefix ("ios",
 					("AppBundleResourcePrefix", appBundlePrefix),
 					("IPhoneResourcePrefix", platformPrefix));
-				Assert.AreEqual (appBundlePrefix, iOSValue, "iOS should prioritize AppBundleResourcePrefix over IPhoneResourcePrefix");
+				ClassicAssert.AreEqual (appBundlePrefix, iOSValue, "iOS should prioritize AppBundleResourcePrefix over IPhoneResourcePrefix");
 			}
 
 			// tvOS - AppBundleResourcePrefix should take precedence over IPhoneResourcePrefix
@@ -94,7 +94,7 @@ namespace Xamarin.Tests {
 				var tvOSValue = GetResourcePrefix ("tvos",
 					("AppBundleResourcePrefix", appBundlePrefix),
 					("IPhoneResourcePrefix", platformPrefix));
-				Assert.AreEqual (appBundlePrefix, tvOSValue, "tvOS should prioritize AppBundleResourcePrefix over IPhoneResourcePrefix");
+				ClassicAssert.AreEqual (appBundlePrefix, tvOSValue, "tvOS should prioritize AppBundleResourcePrefix over IPhoneResourcePrefix");
 			}
 
 			// Mac Catalyst - AppBundleResourcePrefix should take precedence over IPhoneResourcePrefix
@@ -102,7 +102,7 @@ namespace Xamarin.Tests {
 				var macCatalystValue = GetResourcePrefix ("maccatalyst",
 					("AppBundleResourcePrefix", appBundlePrefix),
 					("IPhoneResourcePrefix", platformPrefix));
-				Assert.AreEqual (appBundlePrefix, macCatalystValue, "Mac Catalyst should prioritize AppBundleResourcePrefix over IPhoneResourcePrefix");
+				ClassicAssert.AreEqual (appBundlePrefix, macCatalystValue, "Mac Catalyst should prioritize AppBundleResourcePrefix over IPhoneResourcePrefix");
 			}
 
 			// macOS - AppBundleResourcePrefix should take precedence over XamMacResourcePrefix
@@ -110,13 +110,13 @@ namespace Xamarin.Tests {
 				var macOSXamValue = GetResourcePrefix ("macos",
 					("AppBundleResourcePrefix", appBundlePrefix),
 					("XamMacResourcePrefix", platformPrefix));
-				Assert.AreEqual (appBundlePrefix, macOSXamValue, "macOS should prioritize AppBundleResourcePrefix over XamMacResourcePrefix");
+				ClassicAssert.AreEqual (appBundlePrefix, macOSXamValue, "macOS should prioritize AppBundleResourcePrefix over XamMacResourcePrefix");
 
 				// macOS - AppBundleResourcePrefix should take precedence over MonoMacResourcePrefix
 				var macOSMonoValue = GetResourcePrefix ("macos",
 					("AppBundleResourcePrefix", appBundlePrefix),
 					("MonoMacResourcePrefix", platformPrefix));
-				Assert.AreEqual (appBundlePrefix, macOSMonoValue, "macOS should prioritize AppBundleResourcePrefix over MonoMacResourcePrefix");
+				ClassicAssert.AreEqual (appBundlePrefix, macOSMonoValue, "macOS should prioritize AppBundleResourcePrefix over MonoMacResourcePrefix");
 			}
 		}
 

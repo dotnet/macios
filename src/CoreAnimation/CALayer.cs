@@ -54,9 +54,11 @@ namespace CoreAnimation {
 				Messaging.IntPtr_objc_msgSend_IntPtr (Handle, Selector.GetHandle (selInitWithLayer), other.Handle);
 				GC.KeepAlive (other);
 			} else {
-				var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
-				Messaging.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle (selInitWithLayer), other.Handle);
-				GC.KeepAlive (this);
+				unsafe {
+					var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);
+					Messaging.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle (selInitWithLayer), other.Handle);
+					GC.KeepAlive (this);
+				}
 				Clone (other);
 			}
 			MarkDirtyIfDerived ();

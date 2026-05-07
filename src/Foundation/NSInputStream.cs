@@ -74,7 +74,7 @@ namespace Foundation {
 			if (IsDirectBinding) {
 				return objc_msgSend (this.Handle, Selector.GetHandle (selReadMaxLength), buffer, len);
 			} else {
-				var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+				var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);
 				var __result__ = objc_msgSendSuper (&__objc_super__, Selector.GetHandle (selReadMaxLength), buffer, len);
 				GC.KeepAlive (this);
 				return __result__;

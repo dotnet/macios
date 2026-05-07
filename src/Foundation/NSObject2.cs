@@ -77,7 +77,8 @@ namespace Foundation {
 	///     	if (IsDirectBinding) {
 	///     		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	///     	} else {
-	///     		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);
+	///     		var __objc_super__ = new ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);
+	///     		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
 	///     	}
 	///     }
 	///     ]]></code>
@@ -598,13 +599,19 @@ namespace Foundation {
 			if (is_wrapper) {
 				does = Messaging.bool_objc_msgSend_IntPtr (this.Handle, selConformsToProtocolHandle, protocol) != 0;
 			} else {
-				does = Messaging.bool_objc_msgSendSuper_IntPtr (this.SuperHandle, selConformsToProtocolHandle, protocol) != 0;
+				unsafe {
+					var __objc_super__ = new ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);
+					does = Messaging.bool_objc_msgSendSuper_IntPtr (&__objc_super__, selConformsToProtocolHandle, protocol) != 0;
+				}
 			}
 #else
 			if (is_wrapper) {
 				does = Messaging.bool_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle (selConformsToProtocol), protocol) != 0;
 			} else {
-				does = Messaging.bool_objc_msgSendSuper_IntPtr (this.SuperHandle, Selector.GetHandle (selConformsToProtocol), protocol) != 0;
+				unsafe {
+					var __objc_super__ = new ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);
+					does = Messaging.bool_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle (selConformsToProtocol), protocol) != 0;
+				}
 			}
 #endif
 
@@ -1005,8 +1012,12 @@ namespace Foundation {
 				ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle (this.Handle, Selector.GetHandle ("setValue:forKeyPath:"), handle, keyPath.Handle);
 				GC.KeepAlive (keyPath);
 			} else {
-				ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (this.SuperHandle, Selector.GetHandle ("setValue:forKeyPath:"), handle, keyPath.Handle);
-				GC.KeepAlive (keyPath);
+				unsafe {
+					var __objc_super__ = new ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);
+					ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle_NativeHandle (&__objc_super__, Selector.GetHandle ("setValue:forKeyPath:"), handle, keyPath.Handle);
+					GC.KeepAlive (this);
+					GC.KeepAlive (keyPath);
+				}
 			}
 		}
 

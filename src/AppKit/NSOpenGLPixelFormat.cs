@@ -50,7 +50,9 @@ namespace AppKit {
 					if (IsDirectBinding) {
 						InitializeHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (this.Handle, selInitWithAttributes, new IntPtr ((void*) pArray)), "initWithAttributes:");
 					} else {
-						InitializeHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_IntPtr (this.SuperHandle, selInitWithAttributes, new IntPtr ((void*) pArray)), "initWithAttributes:");
+						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+						InitializeHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, selInitWithAttributes, new IntPtr ((void*) pArray)), "initWithAttributes:");
+						GC.KeepAlive (this);
 					}
 				}
 
@@ -73,7 +75,9 @@ namespace AppKit {
 					if (IsDirectBinding) {
 						InitializeHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (this.Handle, selInitWithAttributes, new IntPtr ((void*) pArray)), "initWithAttributes:");
 					} else {
-						InitializeHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_IntPtr (this.SuperHandle, selInitWithAttributes, new IntPtr ((void*) pArray)), "initWithAttributes:");
+						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+						InitializeHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, selInitWithAttributes, new IntPtr ((void*) pArray)), "initWithAttributes:");
+						GC.KeepAlive (this);
 					}
 				}
 

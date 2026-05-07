@@ -16,8 +16,10 @@ namespace GameController {
 				InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("initWithCoder:"), coder.Handle), "initWithCoder:");
 				GC.KeepAlive (coder);
 			} else {
-				InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_IntPtr (this.SuperHandle, Selector.GetHandle ("initWithCoder:"), coder.Handle), "initWithCoder:");
+				var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+				InitializeHandle (global::ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle ("initWithCoder:"), coder.Handle), "initWithCoder:");
 				GC.KeepAlive (coder);
+				GC.KeepAlive (this);
 			}
 		}
 
@@ -33,7 +35,9 @@ namespace GameController {
 			if (IsDirectBinding) {
 				global::ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle (this.Handle, Selector.GetHandle ("encodeWithCoder:"), encoder__handle__);
 			} else {
-				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (this.SuperHandle, Selector.GetHandle ("encodeWithCoder:"), encoder__handle__);
+				var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+				global::ObjCRuntime.Messaging.void_objc_msgSendSuper_NativeHandle (&__objc_super__, Selector.GetHandle ("encodeWithCoder:"), encoder__handle__);
+				GC.KeepAlive (this);
 			}
 			GC.KeepAlive (encoder);
 		}

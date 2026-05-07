@@ -411,6 +411,8 @@
 			Targets="_BuildRidSpecificAppBundle"
 			Properties="
 				AppendRuntimeIdentifierToOutputPath=true;
+				BuildSessionId=$(BuildSessionId);
+				BuildAppName=$(BuildAppName);
 				RuntimeIdentifier=%(_RuntimeIdentifiersAsItems.Identity);
 				_CodesignItemsPath=%(_RuntimeIdentifiersAsItems.RidSpecificCodesignItemsPath);
 				_MtouchSymbolsList=%(_RuntimeIdentifiersAsItems.RidSpecificSymbolsListPath);

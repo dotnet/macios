@@ -101,7 +101,7 @@ namespace Xamarin.BindingTests {
 
 				Assert.That (obj.InvokeNullableCallbackNatively (null), Is.False, "NullableCallback A rv");
 				int nullableResult = -1;
-				Assert.That (obj.InvokeNullableCallbackNatively ((v) => nullableResult = v, Is.True), "NullableCallback B rv");
+				Assert.That (obj.InvokeNullableCallbackNatively ((v) => nullableResult = v), Is.True, "NullableCallback B rv");
 				Assert.That (nullableResult, Is.EqualTo (24), "NullableCallback result");
 			}
 		}

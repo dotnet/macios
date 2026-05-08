@@ -75,7 +75,7 @@ namespace Xamarin.MMP.Tests {
 
 				// XM 4.5 projects were accidently pulling in every assembly in the 4.5 folder. Assert that isn't happening again.
 				string monoBundlePath = Path.Combine (tmpDir, "bin/Debug/XM45Example.app/Contents/MonoBundle/");
-				Assert.That (Directory.GetFiles (monoBundlePath).Any (x => x.Contains ("FSharp.Core.dll"), Is.False), "F# was pulled in?");
+				Assert.That (Directory.GetFiles (monoBundlePath).Any (x => x.Contains ("FSharp.Core.dll")), Is.False, "F# was pulled in?");
 			});
 		}
 
@@ -139,7 +139,7 @@ namespace Xamarin.MMP.Tests {
 					rv.Messages.AssertWarning (5220, "Skipping framework 'QTKit'. It is prohibited (rejected) by the Mac App Store");
 					// We get the MM5220 twice in the output, once from mmp and once from msbuild repeating what mmp said, so we can't assert that there's exactly 1 warning.
 					// Instead assert that we get no warning but MM5220.
-					Assert.That (rv.Messages.Messages.Any ((v) => v.Number != 5220, Is.False), "No warnings except MM5220");
+					Assert.That (rv.Messages.Messages.Any ((v) => v.Number != 5220), Is.False, "No warnings except MM5220");
 				} else {
 					rv.Messages.AssertWarningCount (0);
 				}
@@ -383,7 +383,7 @@ namespace Xamarin.MMP.Tests {
 				TI.BuildProject (testPath);
 				string exePath = Path.Combine (TI.FindSourceDirectory (), @"bin/Debug/ConsoleXMApp.exe");
 				var output = TI.RunAndAssert ("/Library/Frameworks/Mono.framework/Commands/mono64", new [] { exePath }, "RunSideBySizeXamMac");
-				Assert.That (output.Split (Environment.NewLine.ToCharArray ()).Any (x => x.Contains ("True"), Is.True), "Unified_SideBySideXamMac_ConsoleTest run");
+				Assert.That (output.Split (Environment.NewLine.ToCharArray ()).Any (x => x.Contains ("True")), Is.True, "Unified_SideBySideXamMac_ConsoleTest run");
 			});
 		}
 

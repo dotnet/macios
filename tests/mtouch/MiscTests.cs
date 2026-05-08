@@ -262,7 +262,7 @@ namespace Xamarin.Tests {
 				}
 
 			}
-			Assert.That (string.Join ("\n", failed.OrderBy (v => v), Is.Empty), "Libraries referencing banned symbols");
+			Assert.That (string.Join ("\n", failed.OrderBy (v => v)), Is.Empty, "Libraries referencing banned symbols");
 		}
 	}
 }

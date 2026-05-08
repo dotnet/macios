@@ -68,7 +68,7 @@ namespace LinkSdk {
 			var body = method.GetMethodBody ();
 			if (body is null)
 				throw new InvalidOperationException ("MoveNext body");
-			Assert.That (body.ExceptionHandlingClauses.Any ((v) => v.Flags == ExceptionHandlingClauseOptions.Fault, Is.True), "Any fault clauses");
+			Assert.That (body.ExceptionHandlingClauses.Any ((v) => v.Flags == ExceptionHandlingClauseOptions.Fault), Is.True, "Any fault clauses");
 
 			// Then assert that the method can be called successfully.
 			var rv = FaultClause ().ToArray ();

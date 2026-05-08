@@ -138,11 +138,11 @@ namespace LinkSdk {
 			chain.ChainPolicy.CustomTrustStore.Add (rootCert);
 
 			Assert.That (chain.Build (cert), Is.False, "Online");
-			Assert.That (chain.ChainStatus.Any (s => s.Status.HasFlag (X509ChainStatusFlags.RevocationStatusUnknown), Is.True), "Online");
+			Assert.That (chain.ChainStatus.Any (s => s.Status.HasFlag (X509ChainStatusFlags.RevocationStatusUnknown)), Is.True, "Online");
 
 			chain.ChainPolicy.RevocationMode = X509RevocationMode.Offline;
 			Assert.That (chain.Build (cert), Is.False, "Offline");
-			Assert.That (chain.ChainStatus.Any (s => s.Status.HasFlag (X509ChainStatusFlags.RevocationStatusUnknown), Is.True), "Offline");
+			Assert.That (chain.ChainStatus.Any (s => s.Status.HasFlag (X509ChainStatusFlags.RevocationStatusUnknown)), Is.True, "Offline");
 
 			chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
 			Assert.That (chain.Build (cert), Is.True, "NoCheck");

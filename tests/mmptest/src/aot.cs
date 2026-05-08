@@ -132,7 +132,7 @@ namespace Xamarin.MMP.Tests.Unit {
 			Func<string> getErrorDetails = () => $"\n {FormatDebugList (filesStripped)} \nvs\n {FormatDebugList (expectedFiles)}\n{AllCommandsRun}";
 
 			Assert.That (expectedFiles.Count (), Is.EqualTo (filesStripped.Count ()), "Different number of files stripped than expected: " + getErrorDetails ());
-			Assert.That (filesStripped.All (x => expectedFiles.Contains (x), Is.True), "Different files stripped than expected: " + getErrorDetails ());
+			Assert.That (filesStripped.All (x => expectedFiles.Contains (x)), Is.True, "Different files stripped than expected: " + getErrorDetails ());
 		}
 
 		string AllCommandsRun => "\nCommands Run:\n\t" + String.Join ("\n\t", commandsRun.Select (x => $"{x.Item1} {x.Item2}"));
@@ -145,7 +145,7 @@ namespace Xamarin.MMP.Tests.Unit {
 			Func<string> getErrorDetails = () => $"\n {FormatDebugList (filesAOTed)} \nvs\n {FormatDebugList (expectedFiles)}\n{AllCommandsRun}";
 
 			Assert.That (expectedFiles.Count () * GetValidAbis (compilerType).Count (), Is.EqualTo (filesAOTed.Count), "Different number of files AOT than expected: " + getErrorDetails ());
-			Assert.That (filesAOTed.All (x => expectedFiles.Contains (x), Is.True), "Different files AOT than expected: " + getErrorDetails ());
+			Assert.That (filesAOTed.All (x => expectedFiles.Contains (x)), Is.True, "Different files AOT than expected: " + getErrorDetails ());
 		}
 
 		void AssertThrowErrorWithCode (Action action, int code)

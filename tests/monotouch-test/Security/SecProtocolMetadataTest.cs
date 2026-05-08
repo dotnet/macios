@@ -80,7 +80,7 @@ namespace MonoTouchFixtures.Security {
 						Assert.That (s.NegotiatedTlsCipherSuite, Is.Not.EqualTo (0), "NegotiatedTlsCipherSuite");
 						Assert.That (s.ServerName, Is.EqualTo ("www.microsoft.com"), "ServerName");
 						// we don't have a TLS-PSK enabled server to test this
-						Assert.That (s.AccessPreSharedKeys ((psk, pskId) => { }, Is.False), "AccessPreSharedKeys");
+						Assert.That (s.AccessPreSharedKeys ((psk, pskId) => { }), Is.False, "AccessPreSharedKeys");
 					}
 				}
 

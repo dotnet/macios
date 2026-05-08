@@ -58,8 +58,8 @@ namespace MonoTouchFixtures.CoreText {
 
 				var styleTabStops = style.GetTabStops ();
 				Assert.That (styleTabStops.Length, Is.EqualTo (settings.TabStops.Count ()), "TabStops");
-				Assert.That (styleTabStops.Any (t => t.Location == 2 && t.TextAlignment == CTTextAlignment.Justified, Is.True));
-				Assert.That (styleTabStops.Any (t => t.Location == 1 && t.TextAlignment == CTTextAlignment.Natural, Is.True));
+				Assert.That (styleTabStops.Any (t => t.Location == 2 && t.TextAlignment == CTTextAlignment.Justified), Is.True);
+				Assert.That (styleTabStops.Any (t => t.Location == 1 && t.TextAlignment == CTTextAlignment.Natural), Is.True);
 			});
 		}
 	}

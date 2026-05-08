@@ -62,7 +62,7 @@ namespace Xamarin.MMP.Tests {
 
 			string mobileBundlePath = Path.Combine (tmpDir, "bin/Debug/UnifiedExample.app/Contents/MonoBundle/");
 			if (libraryName is not null)
-				Assert.That (Directory.GetFiles (mobileBundlePath).Any (x => x.Contains (libraryName) == !libraryShouldNotBeCopied, Is.True), string.Format ("{0} - Mobile - We did not pull in native lib: {1}", testName, libraryName));
+				Assert.That (Directory.GetFiles (mobileBundlePath).Any (x => x.Contains (libraryName) == !libraryShouldNotBeCopied), Is.True, string.Format ("{0} - Mobile - We did not pull in native lib: {1}", testName, libraryName));
 
 			// XM45
 			test.XM45 = true;
@@ -73,7 +73,7 @@ namespace Xamarin.MMP.Tests {
 
 			string xm45BundlePath = Path.Combine (tmpDir, "bin/Debug/XM45Example.app/Contents/MonoBundle/");
 			if (libraryName is not null)
-				Assert.That (Directory.GetFiles (xm45BundlePath).Any (x => x.Contains (libraryName) == !libraryShouldNotBeCopied, Is.True), string.Format ("{0} - XM45 - We did not pull in native lib: {1}", testName, libraryName));
+				Assert.That (Directory.GetFiles (xm45BundlePath).Any (x => x.Contains (libraryName) == !libraryShouldNotBeCopied), Is.True, string.Format ("{0} - XM45 - We did not pull in native lib: {1}", testName, libraryName));
 		}
 
 		[Test]

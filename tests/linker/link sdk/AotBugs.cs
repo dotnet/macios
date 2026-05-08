@@ -40,14 +40,14 @@ namespace LinkSdk.Aot {
 		public void Aot_3285 ()
 		{
 			// called as an extension method (always worked)
-			Assert.That (GetType ().GetInterfaces (typeof (IExpectException)).Select (interf => interf is not null, Is.False).FirstOrDefault (), "false");
+			Assert.That (GetType ().GetInterfaces (typeof (IExpectException)).Select (interf => interf is not null).FirstOrDefault (), Is.False, "false");
 
 			// workaround for #3285 - similar to previous fix for monotouch/aot
 			// called as a static method (does not change the result - but it was closer to the original test case)
-			Assert.That (AotExtension.GetInterfaces (GetType (), typeof (IAotTest)).Select (interf => interf is not null, Is.True).FirstOrDefault (delegate { return true; }), "delegate");
+			Assert.That (AotExtension.GetInterfaces (GetType (), typeof (IAotTest)).Select (interf => interf is not null).FirstOrDefault (delegate { return true; }), Is.True, "delegate");
 
 			// actual, failing, test case (fixed by inlining code)
-			Assert.That (GetType ().GetInterfaces (typeof (IAotTest)).Select (interf => interf is not null, Is.True).FirstOrDefault (), "FirstOrDefault/true");
+			Assert.That (GetType ().GetInterfaces (typeof (IAotTest)).Select (interf => interf is not null).FirstOrDefault (), Is.True, "FirstOrDefault/true");
 
 			// other similar cases (returning bool with optional predicate delegate)
 			var enumerable = GetType ().GetInterfaces (typeof (IAotTest)).Select (interf => interf is not null);
@@ -226,7 +226,7 @@ namespace LinkSdk.Aot {
 				Environment.SpecialFolder.ApplicationData,
 				Environment.SpecialFolder.CommonApplicationData
 			};
-			Assert.That (array.Any (folder => folder == Environment.SpecialFolder.ApplicationData, Is.True));
+			Assert.That (array.Any (folder => folder == Environment.SpecialFolder.ApplicationData), Is.True);
 			// above throws ExecutionEngineException
 			// Attempting to JIT compile method '(wrapper managed-to-managed) System.Environment/SpecialFolder[]:System.Collections.Generic.IEnumerable`1.GetEnumerator ()' while running with --aot-only.
 		}
@@ -239,7 +239,7 @@ namespace LinkSdk.Aot {
 			List<MidpointRounding> list = new List<MidpointRounding> () {
 				MidpointRounding.AwayFromZero
 			};
-			Assert.That (list.Any (rounding => rounding == MidpointRounding.AwayFromZero, Is.True));
+			Assert.That (list.Any (rounding => rounding == MidpointRounding.AwayFromZero), Is.True);
 		}
 
 		Task<bool> InnerTestB<T> ()

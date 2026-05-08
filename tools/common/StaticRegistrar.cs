@@ -2671,7 +2671,7 @@ namespace Registrar {
 
 		public string GetInitializationMethodName (string? single_assembly)
 		{
-			if (!string.IsNullOrEmpty (single_assembly)) {
+			if (!StringUtils.IsNullOrEmpty (single_assembly)) {
 				return "xamarin_create_classes_" + single_assembly.Replace ('.', '_').Replace ('-', '_');
 			} else {
 				return "xamarin_create_classes";
@@ -2813,7 +2813,7 @@ namespace Registrar {
 			// Select the types that needs to be registered.
 			var allTypes = GetAllTypes (exceptions);
 
-			if (string.IsNullOrEmpty (single_assembly)) {
+			if (StringUtils.IsNullOrEmpty (single_assembly)) {
 				foreach (var assembly in GetAssemblies ())
 					registered_assemblies.Add (new (assembly, GetAssemblyName (assembly)));
 			} else {

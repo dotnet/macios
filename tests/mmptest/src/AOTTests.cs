@@ -16,7 +16,7 @@ namespace Xamarin.MMP.Tests {
 		{
 			foreach (var file in GetOutputDirInfo (tmpDir).EnumerateFiles ()) {
 				bool shouldBeAOT = shouldAOT (file);
-				Assert.That (File.Exists (file.FullName + ".dylib"), Is.EqualTo (shouldBeAOT), "{0} should {1}be AOT.", file.FullName, shouldBeAOT ? "" : "not ");
+				Assert.That (File.Exists (file.FullName + ".dylib"), Is.EqualTo (shouldBeAOT), $"{file.FullName} should {shouldBeAOT ? "" : "not "}be AOT.");
 
 			}
 		}

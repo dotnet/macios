@@ -58,18 +58,18 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (f1) {
 				// the same instance will be returned (from an iOS cache)
-				Assert.That (f1.Handle, Is.EqualTo (f2.Handle), "{0} Handle", api);
+				Assert.That (f1.Handle, Is.EqualTo (f2.Handle), $"{api} Handle");
 				// using means f1 will be disposed and it's handle will be zero'ed
 				// but f2 is the same (managed) instance and _normally_ would become unusable
 				// to fix this we now return a different instance - but we must still match the existing behavior
-				Assert.That (f1 == f2, Is.True, "{0} ==", api);
-				Assert.That (f1.Equals ((object) f2), Is.True, "{0} Equals(object)", api);
+				Assert.That (f1 == f2, Is.True, $"{api} ==");
+				Assert.That (f1.Equals ((object) f2), Is.True, $"{api} Equals(object)");
 				// IEquatable<NSObject> is only in unified - otherwise it would be the same call as above
-				Assert.That (f1.Equals (f2), Is.True, "{0} Equals", api);
+				Assert.That (f1.Equals (f2), Is.True, $"{api} Equals");
 			}
-			Assert.That (f1.Handle, Is.EqualTo (NativeHandle.Zero), "{0} 1", api);
+			Assert.That (f1.Handle, Is.EqualTo (NativeHandle.Zero), $"{api} 1");
 			// without our "fix" that would be the same managed instance (as f1) and the handle would be nil
-			Assert.That (f2.Handle, Is.Not.EqualTo (NativeHandle.Zero), "{0} 2", api);
+			Assert.That (f2.Handle, Is.Not.EqualTo (NativeHandle.Zero), $"{api} 2");
 		}
 
 		[Test]

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Reflection;
 
 namespace Xamarin.MMP.Tests {
@@ -39,7 +40,7 @@ namespace Xamarin.MMP.Tests {
 				foreach (string dep in dependencies) {
 					int typesInBaseLib = GetNumberOfTypesInLibrary (GetBaseAssemblyPath (dep, true));
 					int typesInOutput = GetNumberOfTypesInLibrary (GetOutputBundlePath (tmpDir, dep, true));
-					Assert.AreEqual (typesInBaseLib, typesInOutput, $"We linked a linkskip - {dep} with config ({typesInBaseLib} vs {typesInOutput}:\n {config}");
+					ClassicAssert.AreEqual (typesInBaseLib, typesInOutput, $"We linked a linkskip - {dep} with config ({typesInBaseLib} vs {typesInOutput}:\n {config}");
 				}
 			});
 		}
@@ -54,12 +55,12 @@ namespace Xamarin.MMP.Tests {
 				foreach (string dep in nonPlatformDependencies) {
 					int typesInBaseLib = GetNumberOfTypesInLibrary (GetBaseAssemblyPath (dep, false));
 					int typesInOutput = GetNumberOfTypesInLibrary (GetOutputBundlePath (tmpDir, dep, false));
-					Assert.AreEqual (typesInBaseLib, typesInOutput, $"We linked a linkskip - {dep} with config ({typesInBaseLib} vs {typesInOutput}):\n {PlatformProjectConfig}");
+					ClassicAssert.AreEqual (typesInBaseLib, typesInOutput, $"We linked a linkskip - {dep} with config ({typesInBaseLib} vs {typesInOutput}):\n {PlatformProjectConfig}");
 				}
 
 				int typesInBasePlatform = GetNumberOfTypesInLibrary (GetBaseAssemblyPath ("Xamarin.Mac", false));
 				int typesInOutputPlatform = GetNumberOfTypesInLibrary (GetOutputBundlePath (tmpDir, "Xamarin.Mac", false));
-				Assert.AreNotEqual (typesInBasePlatform, typesInOutputPlatform, $"We linked a linkskip - Xamarin.Mac with config ({typesInBasePlatform} vs {typesInOutputPlatform}):\n {PlatformProjectConfig}");
+				ClassicAssert.AreNotEqual (typesInBasePlatform, typesInOutputPlatform, $"We linked a linkskip - Xamarin.Mac with config ({typesInBasePlatform} vs {typesInOutputPlatform}):\n {PlatformProjectConfig}");
 
 			});
 		}
@@ -113,7 +114,7 @@ namespace Xamarin.MMP.Tests {
 				};
 
 				var buildOutput = TI.TestUnifiedExecutable (test, shouldFail: builds_successfully).BuildResult;
-				Assert.True (buildOutput.HasMessage (2014) == builds_successfully, $"Building with {linker} did not give 2014 status {builds_successfully} as expected.");
+				ClassicAssert.True (buildOutput.HasMessage (2014) == builds_successfully, $"Building with {linker} did not give 2014 status {builds_successfully} as expected.");
 			});
 		}
 
@@ -123,7 +124,7 @@ namespace Xamarin.MMP.Tests {
 			MMPTests.RunMMPTest (tmpDir => {
 				TI.UnifiedTestConfig test = new TI.UnifiedTestConfig (tmpDir) { CSProjConfig = "<MonoBundlingExtraArgs>-v -v --linkplatform</MonoBundlingExtraArgs>" };
 				var testResult = TI.TestUnifiedExecutable (test);
-				Assert.IsTrue (testResult.BuildResult.BuildOutput.Contains ("Selected Linking: 'Platform'"), $"Build Output did not contain expected selected linking line: {testResult}");
+				ClassicAssert.IsTrue (testResult.BuildResult.BuildOutput.Contains ("Selected Linking: 'Platform'"), $"Build Output did not contain expected selected linking line: {testResult}");
 			});
 		}
 

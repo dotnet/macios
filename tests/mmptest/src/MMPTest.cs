@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Reflection;
 
 using Xamarin.Utils;
@@ -75,7 +76,7 @@ namespace Xamarin.MMP.Tests {
 
 				// XM 4.5 projects were accidently pulling in every assembly in the 4.5 folder. Assert that isn't happening again.
 				string monoBundlePath = Path.Combine (tmpDir, "bin/Debug/XM45Example.app/Contents/MonoBundle/");
-				Assert.IsFalse (Directory.GetFiles (monoBundlePath).Any (x => x.Contains ("FSharp.Core.dll")), "F# was pulled in?");
+				ClassicAssert.IsFalse (Directory.GetFiles (monoBundlePath).Any (x => x.Contains ("FSharp.Core.dll")), "F# was pulled in?");
 			});
 		}
 
@@ -139,7 +140,7 @@ namespace Xamarin.MMP.Tests {
 					rv.Messages.AssertWarning (5220, "Skipping framework 'QTKit'. It is prohibited (rejected) by the Mac App Store");
 					// We get the MM5220 twice in the output, once from mmp and once from msbuild repeating what mmp said, so we can't assert that there's exactly 1 warning.
 					// Instead assert that we get no warning but MM5220.
-					Assert.IsFalse (rv.Messages.Messages.Any ((v) => v.Number != 5220), "No warnings except MM5220");
+					ClassicAssert.IsFalse (rv.Messages.Messages.Any ((v) => v.Number != 5220), "No warnings except MM5220");
 				} else {
 					rv.Messages.AssertWarningCount (0);
 				}
@@ -153,12 +154,12 @@ namespace Xamarin.MMP.Tests {
 				TI.UnifiedTestConfig test = new TI.UnifiedTestConfig (tmpDir);
 				// Mobile
 				string output = TI.TestUnifiedExecutable (test).RunOutput;
-				Assert.IsTrue (!output.Contains ("Could not register the assembly"), "Unified_HelloWorld_ShouldHaveNoRegistrarWarnings - Mobile had registrar issues: \n" + output);
+				ClassicAssert.IsTrue (!output.Contains ("Could not register the assembly"), "Unified_HelloWorld_ShouldHaveNoRegistrarWarnings - Mobile had registrar issues: \n" + output);
 
 				// XM45
 				test.XM45 = true;
 				output = TI.TestUnifiedExecutable (test).RunOutput;
-				Assert.IsTrue (!output.Contains ("Could not register the assembly"), "Unified_HelloWorld_ShouldHaveNoRegistrarWarnings - XM45 had registrar issues: \n" + output);
+				ClassicAssert.IsTrue (!output.Contains ("Could not register the assembly"), "Unified_HelloWorld_ShouldHaveNoRegistrarWarnings - XM45 had registrar issues: \n" + output);
 			});
 		}
 
@@ -224,7 +225,7 @@ namespace Xamarin.MMP.Tests {
 		{
 			TI.TestUnifiedExecutable (test, shouldFail: false);
 
-			Assert.IsTrue (File.Exists (Path.Combine (tmpDir, "bin/Debug/XM45Example.app/Contents/MonoBundle/libMonoPosixHelper.dylib")), String.Format ("Does {0}/bin/Debug/XM45Example.app/Contents/MonoBundle/libMonoPosixHelper.dylib to exist?", tmpDir));
+			ClassicAssert.IsTrue (File.Exists (Path.Combine (tmpDir, "bin/Debug/XM45Example.app/Contents/MonoBundle/libMonoPosixHelper.dylib")), String.Format ("Does {0}/bin/Debug/XM45Example.app/Contents/MonoBundle/libMonoPosixHelper.dylib to exist?", tmpDir));
 		}
 
 
@@ -239,13 +240,13 @@ namespace Xamarin.MMP.Tests {
 				// Mobile
 				TI.TestUnifiedExecutable (test);
 
-				Assert.IsFalse (File.Exists (Path.Combine (tmpDir, machineConfigMobileLocation)));
+				ClassicAssert.IsFalse (File.Exists (Path.Combine (tmpDir, machineConfigMobileLocation)));
 
 				// XM45
 				test.XM45 = true;
 				TI.TestUnifiedExecutable (test);
 
-				Assert.IsFalse (File.Exists (Path.Combine (tmpDir, machineConfigXM45Location)));
+				ClassicAssert.IsFalse (File.Exists (Path.Combine (tmpDir, machineConfigXM45Location)));
 			});
 		}
 
@@ -281,11 +282,11 @@ namespace Xamarin.MMP.Tests {
 					CSProjConfig = "<MonoBundlingExtraArgs>--machine-config=\"\"</MonoBundlingExtraArgs>"
 				};
 				TI.TestUnifiedExecutable (test);
-				Assert.IsTrue (File.Exists (Path.Combine (tmpDir, machineConfigMobileLocation)));
+				ClassicAssert.IsTrue (File.Exists (Path.Combine (tmpDir, machineConfigMobileLocation)));
 
 				test.XM45 = true;
 				TI.TestUnifiedExecutable (test);
-				Assert.IsTrue (File.Exists (Path.Combine (tmpDir, machineConfigXM45Location)));
+				ClassicAssert.IsTrue (File.Exists (Path.Combine (tmpDir, machineConfigXM45Location)));
 			});
 		}
 
@@ -304,17 +305,17 @@ namespace Xamarin.MMP.Tests {
 				// Mobile
 				TI.TestUnifiedExecutable (test);
 
-				Assert.IsTrue (File.Exists (Path.Combine (tmpDir, machineConfigMobileLocation)));
+				ClassicAssert.IsTrue (File.Exists (Path.Combine (tmpDir, machineConfigMobileLocation)));
 				string [] text = File.ReadAllLines (Path.Combine (tmpDir, machineConfigMobileLocation));
-				Assert.IsTrue (text.Length == 1 && text [0] == configText);
+				ClassicAssert.IsTrue (text.Length == 1 && text [0] == configText);
 
 				// XM45
 				test.XM45 = true;
 				TI.TestUnifiedExecutable (test);
 
-				Assert.IsTrue (File.Exists (Path.Combine (tmpDir, machineConfigXM45Location)));
+				ClassicAssert.IsTrue (File.Exists (Path.Combine (tmpDir, machineConfigXM45Location)));
 				text = File.ReadAllLines (Path.Combine (tmpDir, machineConfigXM45Location));
-				Assert.IsTrue (text.Length == 1 && text [0] == configText);
+				ClassicAssert.IsTrue (text.Length == 1 && text [0] == configText);
 			});
 		}
 
@@ -335,8 +336,8 @@ namespace Xamarin.MMP.Tests {
 					// If we fail, we'll likely fail with "did not generate an exe" before returning but let's check anyway
 					var secondBuildResult = TI.BuildProject (Path.Combine (tmpDir, TI.GetUnifiedExecutableProjectName (test)));
 					var secondBuildOutput = secondBuildResult.BuildOutput;
-					Assert.IsTrue (!secondBuildOutput.Contains ("Skipping target \"_CompileToNative"), "Did not skip");
-					Assert.IsTrue (secondBuildOutput.Contains ("Building target \"_CompileToNative\" completely"), "Did need to build");
+					ClassicAssert.IsTrue (!secondBuildOutput.Contains ("Skipping target \"_CompileToNative"), "Did not skip");
+					ClassicAssert.IsTrue (secondBuildOutput.Contains ("Building target \"_CompileToNative\" completely"), "Did need to build");
 				}
 			});
 		}
@@ -363,9 +364,9 @@ namespace Xamarin.MMP.Tests {
 				TI.TestUnifiedExecutable (test);
 
 				string libPath = Path.Combine (tmpDir, "bin/Debug/UnifiedExample.app/Contents/MonoBundle/UnifiedLibrary.dll");
-				Assert.True (File.Exists (libPath));
+				ClassicAssert.True (File.Exists (libPath));
 				string monoDisResults = TI.RunAndAssert ("/Library/Frameworks/Mono.framework/Commands/monodis", new [] { "--presources", libPath }, "monodis");
-				Assert.IsFalse (monoDisResults.Contains ("foo.xml"));
+				ClassicAssert.IsFalse (monoDisResults.Contains ("foo.xml"));
 			});
 		}
 
@@ -383,7 +384,7 @@ namespace Xamarin.MMP.Tests {
 				TI.BuildProject (testPath);
 				string exePath = Path.Combine (TI.FindSourceDirectory (), @"bin/Debug/ConsoleXMApp.exe");
 				var output = TI.RunAndAssert ("/Library/Frameworks/Mono.framework/Commands/mono64", new [] { exePath }, "RunSideBySizeXamMac");
-				Assert.IsTrue (output.Split (Environment.NewLine.ToCharArray ()).Any (x => x.Contains ("True")), "Unified_SideBySideXamMac_ConsoleTest run");
+				ClassicAssert.IsTrue (output.Split (Environment.NewLine.ToCharArray ()).Any (x => x.Contains ("True")), "Unified_SideBySideXamMac_ConsoleTest run");
 			});
 		}
 
@@ -395,7 +396,7 @@ namespace Xamarin.MMP.Tests {
 				TI.UnifiedTestConfig test = new TI.UnifiedTestConfig (tmpDir) { XM45 = xm45 };
 				test.Release = true;
 				var testResults = TI.TestUnifiedExecutable (test);
-				Assert.IsFalse (testResults.BuildResult.BuildOutput.Contains ("Xamarin.Mac.registrar"), "Release build should not use partial static registrar");
+				ClassicAssert.IsFalse (testResults.BuildResult.BuildOutput.Contains ("Xamarin.Mac.registrar"), "Release build should not use partial static registrar");
 			});
 		}
 
@@ -408,7 +409,7 @@ namespace Xamarin.MMP.Tests {
 				test.Release = false;
 				test.CSProjConfig = "<DebugSymbols>true</DebugSymbols>";
 				var testResults = TI.TestUnifiedExecutable (test);
-				Assert.IsTrue (testResults.BuildResult.BuildOutput.Contains ("Xamarin.Mac.registrar"), "Debug build should use partial static registrar");
+				ClassicAssert.IsTrue (testResults.BuildResult.BuildOutput.Contains ("Xamarin.Mac.registrar"), "Debug build should use partial static registrar");
 			});
 		}
 
@@ -421,7 +422,7 @@ namespace Xamarin.MMP.Tests {
 				test.Release = false;
 				test.CSProjConfig = "<DebugSymbols>true</DebugSymbols><MonoBundlingExtraArgs>--registrar=dynamic</MonoBundlingExtraArgs><XamMacArch>x86_64</XamMacArch>";
 				var testResult = TI.TestUnifiedExecutable (test);
-				Assert.IsFalse (testResult.BuildResult.BuildOutput.Contains ("Xamarin.Mac.registrar"), "registrar=dynamic build should not use partial static registrar");
+				ClassicAssert.IsFalse (testResult.BuildResult.BuildOutput.Contains ("Xamarin.Mac.registrar"), "registrar=dynamic build should not use partial static registrar");
 			});
 		}
 
@@ -434,7 +435,7 @@ namespace Xamarin.MMP.Tests {
 				test.Release = false;
 				test.CSProjConfig = "<DebugSymbols>true</DebugSymbols><MonoBundlingExtraArgs>--registrar=partial</MonoBundlingExtraArgs><XamMacArch>x86_64</XamMacArch>";
 				var testResults = TI.TestUnifiedExecutable (test);
-				Assert.IsTrue (testResults.BuildResult.BuildOutput.Contains ("Xamarin.Mac.registrar"), "registrar=partial build should use partial static registrar");
+				ClassicAssert.IsTrue (testResults.BuildResult.BuildOutput.Contains ("Xamarin.Mac.registrar"), "registrar=partial build should use partial static registrar");
 			});
 		}
 		//https://testrail.xamarin.com/index.php?/cases/view/234141&group_by=cases:section_id&group_order=asc&group_id=51097
@@ -454,7 +455,7 @@ namespace Xamarin.MMP.Tests {
 			RunMMPTest (tmpDir => {
 				string [] clangParts = GetUnifiedProjectClangInvocation (tmpDir);
 				int objcCount = clangParts.Count (x => x.Contains ("-ObjC"));
-				Assert.AreEqual (1, objcCount, "Found more than one -OjbC");
+				ClassicAssert.AreEqual (1, objcCount, "Found more than one -OjbC");
 			});
 		}
 
@@ -700,15 +701,15 @@ namespace Xamarin.MMP.Tests {
 				string project = TI.GenerateUnifiedExecutableProject (test);
 
 				var buildResult = TI.BuildProject (project);
-				Assert.True (buildResult.BuildOutputLines.Any (executedActool), $"Initial build should run actool");
+				ClassicAssert.True (buildResult.BuildOutputLines.Any (executedActool), $"Initial build should run actool");
 
 				buildResult = TI.BuildProject (project);
-				Assert.False (buildResult.BuildOutputLines.Any (executedActool), $"Second build should not run actool");
+				ClassicAssert.False (buildResult.BuildOutputLines.Any (executedActool), $"Second build should not run actool");
 
 				TI.RunAndAssert ("touch", new [] { Path.Combine (tmpDir, "Assets.xcassets/AppIcon.appiconset/AppIcon-256@2x.png") }, "touch icon");
 
 				buildResult = TI.BuildProject (project);
-				Assert.True (buildResult.BuildOutputLines.Any (executedActool), $"Build after touching icon must run actool");
+				ClassicAssert.True (buildResult.BuildOutputLines.Any (executedActool), $"Build after touching icon must run actool");
 			});
 		}
 
@@ -728,8 +729,8 @@ namespace Xamarin.MMP.Tests {
 
 				var baseOutput = TI.TestUnifiedExecutable (test);
 				string baseCodesign = findCodesign (baseOutput);
-				Assert.False (baseCodesign.Contains ("-o runtime"), "Base codesign");
-				Assert.True (baseCodesign.Contains ("--timestamp=none"), "Base codesign timestamp");
+				ClassicAssert.False (baseCodesign.Contains ("-o runtime"), "Base codesign");
+				ClassicAssert.True (baseCodesign.Contains ("--timestamp=none"), "Base codesign timestamp");
 
 				test.CSProjConfig += "<UseHardenedRuntime>true</UseHardenedRuntime><CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>";
 
@@ -746,8 +747,8 @@ namespace Xamarin.MMP.Tests {
 
 				var hardenedOutput = TI.TestUnifiedExecutable (test);
 				string hardenedCodesign = findCodesign (hardenedOutput);
-				Assert.True (hardenedCodesign.Contains ("-o runtime"), "Hardened codesign");
-				Assert.True (hardenedCodesign.Contains ("--timestamp"), "Hardened codesign timestamp");
+				ClassicAssert.True (hardenedCodesign.Contains ("-o runtime"), "Hardened codesign");
+				ClassicAssert.True (hardenedCodesign.Contains ("--timestamp"), "Hardened codesign timestamp");
 
 			});
 		}

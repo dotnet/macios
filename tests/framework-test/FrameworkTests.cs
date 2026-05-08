@@ -19,10 +19,10 @@ namespace MonoTouchFixtures {
 		[Test]
 		public void CFunction ()
 		{
-			Assert.AreEqual (42, CFunctions.theUltimateAnswer (), "a");
+			ClassicAssert.AreEqual (42, CFunctions.theUltimateAnswer (), "a");
 #if !__MACOS__
-			Assert.AreEqual (42, CFunctions.object_theUltimateAnswer (), "object");
-			Assert.AreEqual (42, CFunctions.ar_theUltimateAnswer (), "ar");
+			ClassicAssert.AreEqual (42, CFunctions.object_theUltimateAnswer (), "object");
+			ClassicAssert.AreEqual (42, CFunctions.ar_theUltimateAnswer (), "ar");
 #endif
 		}
 
@@ -30,7 +30,7 @@ namespace MonoTouchFixtures {
 		public void ObjCClass ()
 		{
 			using (var obj = new FrameworkTest ()) {
-				Assert.AreEqual (42, obj.Func (), "a");
+				ClassicAssert.AreEqual (42, obj.Func (), "a");
 			}
 		}
 	}

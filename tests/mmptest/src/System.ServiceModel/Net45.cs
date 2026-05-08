@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Xamarin.Bundler;
 using System.Text;
 using System.IO;
@@ -50,12 +51,12 @@ namespace MonoTouchFixtures.ServiceModel {
 			TI.BuildProject (testFolder + "/ServiceModel_Test.csproj");
 
 			TI.RunAndAssert (testFolder + "/bin/Debug/ServiceModel_Test.app/Contents/MacOS/ServiceModel_Test", Array.Empty<string> (), "Run");
-			Assert.True (File.Exists (testResults));
+			ClassicAssert.True (File.Exists (testResults));
 
 			using (TextReader reader = File.OpenText (testResults)) {
 				var output = reader.ReadLine ();
 
-				Assert.AreEqual ("Test Passed: System.ServiceModel.CommunicationException: System error.", output);
+				ClassicAssert.AreEqual ("Test Passed: System.ServiceModel.CommunicationException: System error.", output);
 			}
 
 			File.Delete (testResults);

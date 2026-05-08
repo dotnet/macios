@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Xamarin.Utils;
 
 namespace Xamarin.MMP.Tests {
@@ -26,7 +27,7 @@ namespace Xamarin.MMP.Tests {
 				};
 				var buildOutput = TI.TestUnifiedExecutable (test).BuildResult;
 				string standardTFI = xm45 ? ".NETFramework" : "Xamarin.Mac";
-				Assert.True (MatchesTFI (standardTFI, buildOutput), $"Build did not have expected TFI.");
+				ClassicAssert.True (MatchesTFI (standardTFI, buildOutput), $"Build did not have expected TFI.");
 			});
 		}
 
@@ -36,7 +37,7 @@ namespace Xamarin.MMP.Tests {
 			MMPTests.RunMMPTest (tmpDir => {
 				TI.UnifiedTestConfig test = new TI.UnifiedTestConfig (tmpDir) { CSProjConfig = MigrateCSProjTag };
 				var buildOutput = TI.TestUnifiedExecutable (test).BuildResult;
-				Assert.True (MatchesTFI ("Xamarin.Mac", buildOutput), $"Build did not have expected TFI.");
+				ClassicAssert.True (MatchesTFI ("Xamarin.Mac", buildOutput), $"Build did not have expected TFI.");
 			});
 		}
 
@@ -49,7 +50,7 @@ namespace Xamarin.MMP.Tests {
 					CSProjConfig = MigrateCSProjTag
 				};
 				var buildOutput = TI.TestUnifiedExecutable (test).BuildResult;
-				Assert.True (MatchesTFI ("Xamarin.Mac.NET", buildOutput), $"Build did not have expected TFI.");
+				ClassicAssert.True (MatchesTFI ("Xamarin.Mac.NET", buildOutput), $"Build did not have expected TFI.");
 			});
 		}
 	}

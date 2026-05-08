@@ -9,6 +9,7 @@ using Xamarin.Tests;
 using Xamarin.Utils;
 
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Xamarin.Tests {
 	[TestFixture]
@@ -22,7 +23,7 @@ namespace Xamarin.Tests {
 			foreach (var sdk in new string [] { "iphoneos", "iphonesimulator" }) {
 				foreach (var ext in new string [] { "dylib", "a" }) {
 					var fn = Path.Combine (Configuration.MonoTouchRootDirectory, "SDKs", "MonoTouch." + sdk + ".sdk", "lib", "libmonosgen-2.0." + ext);
-					Assert.IsFalse (Contains (fn, contents), "Found \"{0}\" in {1}", str, fn);
+					ClassicAssert.IsFalse (Contains (fn, contents), "Found \"{0}\" in {1}", str, fn);
 				}
 			}
 		}
@@ -66,7 +67,7 @@ namespace Xamarin.Tests {
 				var contents = ASCIIEncoding.ASCII.GetBytes (symbol);
 				var sdk = "iphoneos"; // we don't care about private symbols for simulator builds
 				foreach (var static_lib in Directory.EnumerateFiles (Path.Combine (Configuration.MonoTouchRootDirectory, "SDKs", "MonoTouch." + sdk + ".sdk", "lib"), "*.a")) {
-					Assert.IsFalse (Contains (static_lib, contents), "Found \"{0}\" in {1}", symbol, static_lib);
+					ClassicAssert.IsFalse (Contains (static_lib, contents), "Found \"{0}\" in {1}", symbol, static_lib);
 				}
 			}
 		}
@@ -201,7 +202,7 @@ namespace Xamarin.Tests {
 					failed.AppendLine ($"{path}:\n\t{string.Join ("\n\t", symbols.ToArray ())}");
 			}
 
-			Assert.IsEmpty (failed.ToString (), "Failed libraries");
+			ClassicAssert.IsEmpty (failed.ToString (), "Failed libraries");
 		}
 
 		[TestCase (ApplePlatform.iOS)]
@@ -262,7 +263,7 @@ namespace Xamarin.Tests {
 				}
 
 			}
-			Assert.IsEmpty (string.Join ("\n", failed.OrderBy (v => v)), "Libraries referencing banned symbols");
+			ClassicAssert.IsEmpty (string.Join ("\n", failed.OrderBy (v => v)), "Libraries referencing banned symbols");
 		}
 	}
 }

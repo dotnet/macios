@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Xamarin.Bundler;
 using Xamarin.Utils;
 
@@ -63,7 +64,7 @@ namespace Xamarin.MMP.Tests.Unit {
 		{
 			commandsRun.Add (Tuple.Create<string, IList<string>> (path, args));
 			if (path != AOTCompiler.StripCommand) {
-				Assert.AreEqual (TestRootDir, env ["MONO_PATH"], "MONO_PATH should be set to our expected value");
+				ClassicAssert.AreEqual (TestRootDir, env ["MONO_PATH"], "MONO_PATH should be set to our expected value");
 			}
 			return 0;
 		}
@@ -93,22 +94,22 @@ namespace Xamarin.MMP.Tests.Unit {
 				var argParts = command.Item2;
 				const string aotArg = "--aot=";
 				const string tripleArg = "mtriple=";
-				Assert.IsTrue (argParts [0].StartsWith (aotArg), $"First arg should be {aotArg}");
+				ClassicAssert.IsTrue (argParts [0].StartsWith (aotArg), $"First arg should be {aotArg}");
 				var aotParts = argParts [0].Substring (aotArg.Length).Split (new char [] { ',' });
-				Assert.IsTrue (aotParts [0].StartsWith (tripleArg), $"Aot first argument should be {tripleArg}triple");
+				ClassicAssert.IsTrue (aotParts [0].StartsWith (tripleArg), $"Aot first argument should be {tripleArg}triple");
 				var triple = aotParts [0].Substring (tripleArg.Length);
-				Assert.IsTrue (Enum.TryParse (triple, true, out Abi currAbi), "Triple does not represent a valid abi");
+				ClassicAssert.IsTrue (Enum.TryParse (triple, true, out Abi currAbi), "Triple does not represent a valid abi");
 
-				Assert.IsTrue (command.Item1.EndsWith (GetExpectedMonoCommand (compilerType, currAbi)), "Unexpected command: " + command.Item1);
+				ClassicAssert.IsTrue (command.Item1.EndsWith (GetExpectedMonoCommand (compilerType, currAbi)), "Unexpected command: " + command.Item1);
 				if (kind == AOTKind.Hybrid)
-					Assert.AreEqual (aotParts [1], "hybrid", "Aot arg should contain hybrid");
+					ClassicAssert.AreEqual (aotParts [1], "hybrid", "Aot arg should contain hybrid");
 				else if (aotParts.Length > 1)
-					Assert.AreNotEqual (aotParts [1], "hybrid", "Aot arg should not contain hybrid");
+					ClassicAssert.AreNotEqual (aotParts [1], "hybrid", "Aot arg should not contain hybrid");
 
 				if (isModern)
-					Assert.AreEqual (argParts [1], "--runtime=mobile", "Second arg should be --runtime=mobile");
+					ClassicAssert.AreEqual (argParts [1], "--runtime=mobile", "Second arg should be --runtime=mobile");
 				else
-					Assert.AreNotEqual (argParts [1], "--runtime=mobile", "Second arg should not be --runtime=mobile");
+					ClassicAssert.AreNotEqual (argParts [1], "--runtime=mobile", "Second arg should not be --runtime=mobile");
 
 
 				var fileName = command.Item2 [1];
@@ -131,8 +132,8 @@ namespace Xamarin.MMP.Tests.Unit {
 
 			Func<string> getErrorDetails = () => $"\n {FormatDebugList (filesStripped)} \nvs\n {FormatDebugList (expectedFiles)}\n{AllCommandsRun}";
 
-			Assert.AreEqual (filesStripped.Count (), expectedFiles.Count (), "Different number of files stripped than expected: " + getErrorDetails ());
-			Assert.IsTrue (filesStripped.All (x => expectedFiles.Contains (x)), "Different files stripped than expected: " + getErrorDetails ());
+			ClassicAssert.AreEqual (filesStripped.Count (), expectedFiles.Count (), "Different number of files stripped than expected: " + getErrorDetails ());
+			ClassicAssert.IsTrue (filesStripped.All (x => expectedFiles.Contains (x)), "Different files stripped than expected: " + getErrorDetails ());
 		}
 
 		string AllCommandsRun => "\nCommands Run:\n\t" + String.Join ("\n\t", commandsRun.Select (x => $"{x.Item1} {x.Item2}"));
@@ -144,8 +145,8 @@ namespace Xamarin.MMP.Tests.Unit {
 
 			Func<string> getErrorDetails = () => $"\n {FormatDebugList (filesAOTed)} \nvs\n {FormatDebugList (expectedFiles)}\n{AllCommandsRun}";
 
-			Assert.AreEqual (filesAOTed.Count, expectedFiles.Count () * GetValidAbis (compilerType).Count (), "Different number of files AOT than expected: " + getErrorDetails ());
-			Assert.IsTrue (filesAOTed.All (x => expectedFiles.Contains (x)), "Different files AOT than expected: " + getErrorDetails ());
+			ClassicAssert.AreEqual (filesAOTed.Count, expectedFiles.Count () * GetValidAbis (compilerType).Count (), "Different number of files AOT than expected: " + getErrorDetails ());
+			ClassicAssert.IsTrue (filesAOTed.All (x => expectedFiles.Contains (x)), "Different files AOT than expected: " + getErrorDetails ());
 		}
 
 		void AssertThrowErrorWithCode (Action action, int code)
@@ -153,13 +154,13 @@ namespace Xamarin.MMP.Tests.Unit {
 			try {
 				action ();
 			} catch (ProductException e) {
-				Assert.AreEqual (e.Code, code, $"Got code {e.Code} but expected {code}");
+				ClassicAssert.AreEqual (e.Code, code, $"Got code {e.Code} but expected {code}");
 				return;
 			} catch (AggregateException e) {
-				Assert.AreEqual (e.InnerExceptions.Count, 1, "Got AggregateException but more than one exception");
+				ClassicAssert.AreEqual (e.InnerExceptions.Count, 1, "Got AggregateException but more than one exception");
 				ProductException innerException = e.InnerExceptions [0] as ProductException;
-				Assert.IsNotNull (innerException, "Got AggregateException but inner not ProductException");
-				Assert.AreEqual (innerException.Code, code, $"Got code {innerException.Code} but expected {code}");
+				ClassicAssert.IsNotNull (innerException, "Got AggregateException but inner not ProductException");
+				ClassicAssert.AreEqual (innerException.Code, code, $"Got code {innerException.Code} but expected {code}");
 				return;
 			}
 			Assert.Fail ($"We should have thrown ProductException with code: {code}");
@@ -188,7 +189,7 @@ namespace Xamarin.MMP.Tests.Unit {
 		public void ParsingNone_DoesNoAOT ()
 		{
 			var options = new AOTOptions ("none");
-			Assert.IsFalse (options.IsAOT, "Parsing none should not be IsAOT");
+			ClassicAssert.IsFalse (options.IsAOT, "Parsing none should not be IsAOT");
 			AssertThrowErrorWithCode (() => Compile (options, new TestFileEnumerator (FullAppFileList)), 99);
 		}
 
@@ -196,7 +197,7 @@ namespace Xamarin.MMP.Tests.Unit {
 		public void All_AOTAllFiles ()
 		{
 			var options = new AOTOptions ("all");
-			Assert.IsTrue (options.IsAOT, "Should be IsAOT");
+			ClassicAssert.IsTrue (options.IsAOT, "Should be IsAOT");
 
 			Compile (options, new TestFileEnumerator (FullAppFileList));
 
@@ -208,7 +209,7 @@ namespace Xamarin.MMP.Tests.Unit {
 		public void Core_ParsingJustCoreFiles ()
 		{
 			var options = new AOTOptions ("core");
-			Assert.IsTrue (options.IsAOT, "Should be IsAOT");
+			ClassicAssert.IsTrue (options.IsAOT, "Should be IsAOT");
 
 			Compile (options, new TestFileEnumerator (FullAppFileList));
 
@@ -219,7 +220,7 @@ namespace Xamarin.MMP.Tests.Unit {
 		public void SDK_ParsingJustSDKFiles ()
 		{
 			var options = new AOTOptions ("sdk");
-			Assert.IsTrue (options.IsAOT, "Should be IsAOT");
+			ClassicAssert.IsTrue (options.IsAOT, "Should be IsAOT");
 
 			Compile (options, new TestFileEnumerator (FullAppFileList));
 
@@ -230,7 +231,7 @@ namespace Xamarin.MMP.Tests.Unit {
 		public void ExplicitAssembly_JustAOTExplicitFile ()
 		{
 			var options = new AOTOptions ("+System.dll");
-			Assert.IsTrue (options.IsAOT, "Should be IsAOT");
+			ClassicAssert.IsTrue (options.IsAOT, "Should be IsAOT");
 
 			Compile (options, new TestFileEnumerator (FullAppFileList));
 
@@ -241,7 +242,7 @@ namespace Xamarin.MMP.Tests.Unit {
 		public void CoreWithInclusionAndSubtraction ()
 		{
 			var options = new AOTOptions ("core,+Foo.dll,-Xamarin.Mac.dll");
-			Assert.IsTrue (options.IsAOT, "Should be IsAOT");
+			ClassicAssert.IsTrue (options.IsAOT, "Should be IsAOT");
 
 			string [] testFiles = {
 				"Foo.dll", "Foo Bar.exe", "libMonoPosixHelper.dylib", "mscorlib.dll", "Xamarin.Mac.dll", "System.dll"
@@ -255,7 +256,7 @@ namespace Xamarin.MMP.Tests.Unit {
 		public void CoreWithFullPath_GivesFullPathCommands ()
 		{
 			var options = new AOTOptions ("core,-Xamarin.Mac.dll");
-			Assert.IsTrue (options.IsAOT, "Should be IsAOT");
+			ClassicAssert.IsTrue (options.IsAOT, "Should be IsAOT");
 
 			Compile (options, new TestFileEnumerator (FullAppFileList.Select (x => TestRootDir + x)));
 
@@ -266,7 +267,7 @@ namespace Xamarin.MMP.Tests.Unit {
 		public void ExplicitNegativeFileWithNonExistantFiles_ThrowError ()
 		{
 			var options = new AOTOptions ("core,-NonExistant.dll");
-			Assert.IsTrue (options.IsAOT, "Should be IsAOT");
+			ClassicAssert.IsTrue (options.IsAOT, "Should be IsAOT");
 
 			AssertThrowErrorWithCode (() => Compile (options, new TestFileEnumerator (FullAppFileList)), 3010);
 		}
@@ -275,7 +276,7 @@ namespace Xamarin.MMP.Tests.Unit {
 		public void ExplicitPositiveFileWithNonExistantFiles_ThrowError ()
 		{
 			var options = new AOTOptions ("core,+NonExistant.dll");
-			Assert.IsTrue (options.IsAOT, "Should be IsAOT");
+			ClassicAssert.IsTrue (options.IsAOT, "Should be IsAOT");
 
 			AssertThrowErrorWithCode (() => Compile (options, new TestFileEnumerator (FullAppFileList)), 3009);
 		}
@@ -284,7 +285,7 @@ namespace Xamarin.MMP.Tests.Unit {
 		public void ExplicitNegativeWithNoAssemblies_ShouldNoOp ()
 		{
 			var options = new AOTOptions ("-System.dll");
-			Assert.IsTrue (options.IsAOT, "Should be IsAOT");
+			ClassicAssert.IsTrue (options.IsAOT, "Should be IsAOT");
 
 			Compile (options, new TestFileEnumerator (FullAppFileList));
 			AssertFilesAOTed (new string [] { });
@@ -311,7 +312,7 @@ namespace Xamarin.MMP.Tests.Unit {
 			foreach (var compilerType in new List<AOTCompilerType> () { AOTCompilerType.Bundled64, AOTCompilerType.System64 }) {
 				ClearCommandsRun ();
 				var options = new AOTOptions ("sdk");
-				Assert.IsTrue (options.IsAOT, "Should be IsAOT");
+				ClassicAssert.IsTrue (options.IsAOT, "Should be IsAOT");
 
 				Compile (options, new TestFileEnumerator (FullAppFileList), compilerType);
 
@@ -325,8 +326,8 @@ namespace Xamarin.MMP.Tests.Unit {
 			foreach (var testCase in new string [] { "+|hybrid.dll", "core,+|hybrid.dll,-Xamarin.Mac.dll" }) {
 				ClearCommandsRun ();
 				var options = new AOTOptions (testCase);
-				Assert.IsTrue (options.IsAOT, "Should be IsAOT");
-				Assert.IsFalse (options.IsHybridAOT, "Should not be IsHybridAOT");
+				ClassicAssert.IsTrue (options.IsAOT, "Should be IsAOT");
+				ClassicAssert.IsFalse (options.IsHybridAOT, "Should not be IsHybridAOT");
 
 				Compile (options, new TestFileEnumerator (new string [] { "|hybrid.dll", "Xamarin.Mac.dll" }));
 				AssertFilesAOTed (new string [] { "|hybrid.dll" });
@@ -348,8 +349,8 @@ namespace Xamarin.MMP.Tests.Unit {
 		public void HybridOption_ShouldInvokeHybridCompiler ()
 		{
 			var options = new AOTOptions ("all|hybrid");
-			Assert.IsTrue (options.IsAOT, "Should be IsAOT");
-			Assert.IsTrue (options.IsHybridAOT, "Should be IsHybridAOT");
+			ClassicAssert.IsTrue (options.IsAOT, "Should be IsAOT");
+			ClassicAssert.IsTrue (options.IsHybridAOT, "Should be IsHybridAOT");
 
 			Compile (options, new TestFileEnumerator (FullAppFileList));
 
@@ -403,7 +404,7 @@ namespace Xamarin.MMP.Tests.Unit {
 		public void All_AOTAllFiles_Modern ()
 		{
 			var options = new AOTOptions ("all");
-			Assert.IsTrue (options.IsAOT, "Should be IsAOT");
+			ClassicAssert.IsTrue (options.IsAOT, "Should be IsAOT");
 
 			Compile (options, new TestFileEnumerator (FullAppFileList), isModern: true);
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 using Xamarin.Utils;
 using Xamarin.Tests;
@@ -17,15 +18,15 @@ namespace Xamarin.MMP.Tests {
 			string bindingName = BindingProjectTests.RemoveCSProj (projectName);
 			string bindingLibraryPath = Path.Combine (tmpDir, $"bin/Debug/{bindingName}.dll");
 			string resourceOutput = TI.RunAndAssert ("/Library/Frameworks/Mono.framework/Commands/monodis", new [] { "--presources", bindingLibraryPath }, "monodis");
-			Assert.False (resourceOutput.Contains (resourceName), "Binding project output contained embedded library");
+			ClassicAssert.False (resourceOutput.Contains (resourceName), "Binding project output contained embedded library");
 		}
 
 		static void AssertFileInBundle (string tmpDir, BindingProjectType type, string path, bool assertIsSymLink = false)
 		{
 			string bundlePath = Path.Combine (tmpDir, $"bin/Debug/{(type == BindingProjectType.Modern ? "UnifiedExample" : "XM45Example")}.app/Contents/{path}");
-			Assert.True (File.Exists (bundlePath), $"{path} not in bundle as expected.");
+			ClassicAssert.True (File.Exists (bundlePath), $"{path} not in bundle as expected.");
 			if (assertIsSymLink)
-				Assert.True (File.GetAttributes (bundlePath).HasFlag (FileAttributes.ReparsePoint));
+				ClassicAssert.True (File.GetAttributes (bundlePath).HasFlag (FileAttributes.ReparsePoint));
 		}
 
 		[TestCase (BindingProjectType.Modern, false)]
@@ -92,10 +93,10 @@ namespace Xamarin.MMP.Tests {
 				BindingProjectTests.SetupAndBuildLinkedTestProjects (projects.Item1, projects.Item2, tmpDir, useProjectReference, setupDefaultNativeReference: true);
 
 				// manifest and 2 dylibs
-				Assert.AreEqual (3, Directory.GetFiles (Path.Combine (tmpDir, "bin/Debug/MobileBinding.resources")).Length);
+				ClassicAssert.AreEqual (3, Directory.GetFiles (Path.Combine (tmpDir, "bin/Debug/MobileBinding.resources")).Length);
 
 				// 2 dylibs + libMonoPosixHelper.dylib + libmono-native.dylib
-				Assert.AreEqual (4, Directory.GetFiles (Path.Combine (tmpDir, "bin/Debug/UnifiedExample.app/Contents/MonoBundle")).Where (x => x.EndsWith (".dylib")).Count ());
+				ClassicAssert.AreEqual (4, Directory.GetFiles (Path.Combine (tmpDir, "bin/Debug/UnifiedExample.app/Contents/MonoBundle")).Where (x => x.EndsWith (".dylib")).Count ());
 			});
 		}
 
@@ -152,7 +153,7 @@ namespace Xamarin.MMP.Tests {
 				BindingProjectTests.SetupAndBuildBindingProject (projects.Item1, true);
 
 				TI.CleanUnifiedProject (Path.Combine (tmpDir, projects.Item1.ProjectName));
-				Assert.False (Directory.Exists (Path.Combine (tmpDir, "bin/Debug/MobileBinding.resources")), "Resource bundle was not cleaned up");
+				ClassicAssert.False (Directory.Exists (Path.Combine (tmpDir, "bin/Debug/MobileBinding.resources")), "Resource bundle was not cleaned up");
 			});
 		}
 	}

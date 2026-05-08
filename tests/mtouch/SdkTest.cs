@@ -8,6 +8,7 @@ using System.Text;
 
 using Mono.Cecil;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 using Xamarin.Tests;
 
@@ -157,7 +158,7 @@ namespace Xamarin.Linker {
 					Environment.CurrentDirectory = curdir;
 				}
 			}
-			Assert.IsEmpty (string.Join ("\n", failed), "Failed files");
+			ClassicAssert.IsEmpty (string.Join ("\n", failed), "Failed files");
 		}
 
 		void VerifyNoAdditionalAssemblyReferenceInAttributes (string filename)
@@ -177,7 +178,7 @@ namespace Xamarin.Linker {
 				}
 
 				var post_attributes = pre_attributes.Except (references).ToArray ();
-				Assert.IsEmpty (post_attributes, assembly.Name.Name);
+				ClassicAssert.IsEmpty (post_attributes, assembly.Name.Name);
 			}
 		}
 
@@ -354,18 +355,18 @@ namespace Xamarin.Linker {
 			int expected_exit_code = 0;
 			if (known_llvm_failures.TryGetValue (asm, out var known_failures)) {
 				expected_exit_code = known_failures.Item1;
-				Assert.AreEqual (expected_exit_code, rv, "AOT compilation");
+				ClassicAssert.AreEqual (expected_exit_code, rv, "AOT compilation");
 				if (known_failures.Item2 is not null) {
 					// Check if there are known failures for failures we've fixed
 					var known_inexistent_failures = known_failures.Item2.Where ((v) => !llvm_failed.Contains (v));
-					Assert.IsEmpty (string.Join ("\n", known_inexistent_failures), $"Redundant known failures: should be removed from dictionary for {asm}");
+					ClassicAssert.IsEmpty (string.Join ("\n", known_inexistent_failures), $"Redundant known failures: should be removed from dictionary for {asm}");
 					// Filter the known failures from the failed llvm lines.
 					llvm_failed = llvm_failed.Where ((v) => !known_failures.Item2.Contains (v));
 				}
 			}
 
-			Assert.AreEqual (expected_exit_code, rv, "AOT compilation");
-			Assert.IsEmpty (string.Join ("\n", llvm_failed), "LLVM failed");
+			ClassicAssert.AreEqual (expected_exit_code, rv, "AOT compilation");
+			ClassicAssert.IsEmpty (string.Join ("\n", llvm_failed), "LLVM failed");
 		}
 	}
 }

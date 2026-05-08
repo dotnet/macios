@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Reflection;
 
 using Xamarin.Tests;
@@ -16,7 +17,7 @@ namespace Xamarin.MMP.Tests {
 		{
 			foreach (var file in GetOutputDirInfo (tmpDir).EnumerateFiles ()) {
 				bool shouldBeAOT = shouldAOT (file);
-				Assert.AreEqual (shouldBeAOT, File.Exists (file.FullName + ".dylib"), "{0} should {1}be AOT.", file.FullName, shouldBeAOT ? "" : "not ");
+				ClassicAssert.AreEqual (shouldBeAOT, File.Exists (file.FullName + ".dylib"), "{0} should {1}be AOT.", file.FullName, shouldBeAOT ? "" : "not ");
 
 			}
 		}

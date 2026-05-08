@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Xamarin.MMP.Tests {
 	[TestFixture]
@@ -19,7 +20,7 @@ namespace Xamarin.MMP.Tests {
 				};
 				var output = TI.TestUnifiedExecutable (test).RunOutput;
 
-				Assert.IsTrue (!output.Contains ("Could not register the assembly"), "Could not register the assembly errors found:\n" + output);
+				ClassicAssert.IsTrue (!output.Contains ("Could not register the assembly"), "Could not register the assembly errors found:\n" + output);
 			});
 		}
 

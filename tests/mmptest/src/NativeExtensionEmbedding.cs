@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Xamarin.Tests;
 
 namespace Xamarin.MMP.Tests {
@@ -17,8 +18,8 @@ namespace Xamarin.MMP.Tests {
 				var xcodeProjectFolder = Path.Combine (tmpDir, "NativeExtension");
 				string [] xcodeBuildArgs = new [] { "-configuration", "Debug", "-target", "NativeTodayExtension", "-arch", "x86_64" };
 				var env = new System.Collections.Generic.Dictionary<string, string> { { "DEVELOPER_DIR", Configuration.XcodeLocation } };
-				Assert.AreEqual (0, ExecutionHelper.Execute ("/usr/bin/xcodebuild", xcodeBuildArgs.Concat (new [] { "clean" }).ToArray (), out var _, workingDirectory: xcodeProjectFolder, environment_variables: env, stdout_callback: Console.WriteLine, stderr_callback: Console.Error.WriteLine));
-				Assert.AreEqual (0, ExecutionHelper.Execute ("/usr/bin/xcodebuild", xcodeBuildArgs.Concat (new [] { "build" }).ToArray (), out var _, workingDirectory: xcodeProjectFolder, environment_variables: env, stdout_callback: Console.WriteLine, stderr_callback: Console.Error.WriteLine));
+				ClassicAssert.AreEqual (0, ExecutionHelper.Execute ("/usr/bin/xcodebuild", xcodeBuildArgs.Concat (new [] { "clean" }).ToArray (), out var _, workingDirectory: xcodeProjectFolder, environment_variables: env, stdout_callback: Console.WriteLine, stderr_callback: Console.Error.WriteLine));
+				ClassicAssert.AreEqual (0, ExecutionHelper.Execute ("/usr/bin/xcodebuild", xcodeBuildArgs.Concat (new [] { "build" }).ToArray (), out var _, workingDirectory: xcodeProjectFolder, environment_variables: env, stdout_callback: Console.WriteLine, stderr_callback: Console.Error.WriteLine));
 
 				var items = @"
 <ItemGroup>

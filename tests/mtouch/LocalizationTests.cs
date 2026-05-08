@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Globalization;
 using System.Threading;
 using System.Reflection;
@@ -37,7 +38,7 @@ namespace Xamarin.Tests {
 			try {
 				var englishError = TranslateError ("en-US", errorCode);
 				var newCultureError = TranslateError (culture, errorCode);
-				Assert.AreNotEqual (englishError, newCultureError, $"\"{errorCode}\" is not translated in {culture}.");
+				ClassicAssert.AreNotEqual (englishError, newCultureError, $"\"{errorCode}\" is not translated in {culture}.");
 			} catch (NullReferenceException) {
 				Assert.Fail ($"Error code \"{errorCode}\" was not found");
 			} catch (AssertionException) {
@@ -103,7 +104,7 @@ namespace Xamarin.Tests {
 					Thread.CurrentThread.CurrentCulture = originalCulture;
 				}
 			}
-			Assert.IsEmpty (errorList.ToString (), $"The following errors were not translated:");
+			ClassicAssert.IsEmpty (errorList.ToString (), $"The following errors were not translated:");
 		}
 
 		[Test]
@@ -120,8 +121,8 @@ namespace Xamarin.Tests {
 			var errorsNotInResources = string.Join (" ", resxHashSet.Where (n => !resourceHashSet.Contains (n) && !ignoredProperties.Contains (n)));
 			var errorsNotInResx = string.Join (" ", resourceHashSet.Where (n => !resxHashSet.Contains (n) && !ignoredProperties.Contains (n)));
 
-			Assert.IsEmpty (errorsNotInResources, $"The following error(s) were found in Errors.resx but not through the mtouch resources. Try to recompile the mtouch project and then the test project\n{errorsNotInResources}");
-			Assert.IsEmpty (errorsNotInResx, $"The following error(s) were found in the mtouch resources but not in Errors.resx. Try to recompile the mtouch project and then the test project\n{errorsNotInResx}");
+			ClassicAssert.IsEmpty (errorsNotInResources, $"The following error(s) were found in Errors.resx but not through the mtouch resources. Try to recompile the mtouch project and then the test project\n{errorsNotInResources}");
+			ClassicAssert.IsEmpty (errorsNotInResx, $"The following error(s) were found in the mtouch resources but not in Errors.resx. Try to recompile the mtouch project and then the test project\n{errorsNotInResx}");
 		}
 	}
 }

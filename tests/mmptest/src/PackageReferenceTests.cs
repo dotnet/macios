@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Xamarin.MMP.Tests {
 	[TestFixture]
@@ -48,7 +49,7 @@ namespace Xamarin.MMP.Tests {
 				TI.BuildProject (project);
 
 				var appDir = Path.Combine (tmpDir, "bin", "Debug", full ? "XM45Example.app" : "UnifiedExample.app");
-				Assert.True (File.Exists (Path.Combine (appDir, "Contents", "MonoBundle", "fr", "Humanizer.resources.dll")), "fr");
+				ClassicAssert.True (File.Exists (Path.Combine (appDir, "Contents", "MonoBundle", "fr", "Humanizer.resources.dll")), "fr");
 			});
 		}
 

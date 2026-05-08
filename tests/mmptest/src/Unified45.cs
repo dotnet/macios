@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Xamarin.MMP.Tests;
 using Xamarin.Bundler;
 using System.Text;
@@ -20,12 +21,12 @@ namespace MonoTouchFixtures.Net45 {
 			TI.BuildProject (testFolder + "/Protobuf_Test.csproj");
 
 			TI.RunAndAssert (testFolder + "/bin/Debug/Protobuf_Test.app/Contents/MacOS/Protobuf_Test", Array.Empty<string> (), "Run");
-			Assert.True (File.Exists (testResults));
+			ClassicAssert.True (File.Exists (testResults));
 
 			using (TextReader reader = File.OpenText (testResults)) {
 				var output = reader.ReadLine ();
 
-				Assert.AreEqual ("Test Passed", output);
+				ClassicAssert.AreEqual ("Test Passed", output);
 			}
 
 			File.Delete (testResults);
@@ -52,12 +53,12 @@ namespace MonoTouchFixtures.Net45 {
 			TI.BuildProject (testFolder + "/BasicPCLTest.csproj");
 
 			TI.RunAndAssert (testFolder + "/bin/Debug/BasicPCLTest.app/Contents/MacOS/BasicPCLTest", Array.Empty<string> (), "Run");
-			Assert.True (File.Exists (testResults));
+			ClassicAssert.True (File.Exists (testResults));
 
 			using (TextReader reader = File.OpenText (testResults)) {
 				var output = reader.ReadToEnd ();
 
-				Assert.AreEqual ("{\n  \"MyArray\": [\n    \"Manual text\",\n    \"2000-05-23T00:00:00\"\n  ]\n}\n", output);
+				ClassicAssert.AreEqual ("{\n  \"MyArray\": [\n    \"Manual text\",\n    \"2000-05-23T00:00:00\"\n  ]\n}\n", output);
 			}
 
 			File.Delete (testResults);

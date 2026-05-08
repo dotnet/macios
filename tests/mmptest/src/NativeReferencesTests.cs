@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using System.Reflection;
 
 using Xamarin.Tests;
@@ -56,24 +57,24 @@ namespace Xamarin.MMP.Tests {
 			// Mobile
 			test.XM45 = false;
 			var testResult = TI.TestUnifiedExecutable (test, false);
-			Assert.IsTrue (!buildShouldBeSuccessful || !testResult.BuildResult.HasMessage (2006), string.Format ("{0} - Mobile had MM2006 state {1} not match expected\n{2}", testName, buildShouldBeSuccessful, testResult));
+			ClassicAssert.IsTrue (!buildShouldBeSuccessful || !testResult.BuildResult.HasMessage (2006), string.Format ("{0} - Mobile had MM2006 state {1} not match expected\n{2}", testName, buildShouldBeSuccessful, testResult));
 			if (processBuildOutput is not null)
-				Assert.IsTrue (processBuildOutput (testResult.BuildResult), string.Format ("{0} - Mobile - We did not see our expected item in the build output: {1}", testName, libraryName));
+				ClassicAssert.IsTrue (processBuildOutput (testResult.BuildResult), string.Format ("{0} - Mobile - We did not see our expected item in the build output: {1}", testName, libraryName));
 
 			string mobileBundlePath = Path.Combine (tmpDir, "bin/Debug/UnifiedExample.app/Contents/MonoBundle/");
 			if (libraryName is not null)
-				Assert.IsTrue (Directory.GetFiles (mobileBundlePath).Any (x => x.Contains (libraryName) == !libraryShouldNotBeCopied), string.Format ("{0} - Mobile - We did not pull in native lib: {1}", testName, libraryName));
+				ClassicAssert.IsTrue (Directory.GetFiles (mobileBundlePath).Any (x => x.Contains (libraryName) == !libraryShouldNotBeCopied), string.Format ("{0} - Mobile - We did not pull in native lib: {1}", testName, libraryName));
 
 			// XM45
 			test.XM45 = true;
 			testResult = TI.TestUnifiedExecutable (test, false);
-			Assert.IsTrue (!buildShouldBeSuccessful || !testResult.BuildResult.HasMessage (2006), string.Format ("{0} - XM45 had MM2006 state {1} not match expected\n{2}", testName, buildShouldBeSuccessful, testResult));
+			ClassicAssert.IsTrue (!buildShouldBeSuccessful || !testResult.BuildResult.HasMessage (2006), string.Format ("{0} - XM45 had MM2006 state {1} not match expected\n{2}", testName, buildShouldBeSuccessful, testResult));
 			if (processBuildOutput is not null)
-				Assert.IsTrue (processBuildOutput (testResult.BuildResult), string.Format ("{0} - Mobile - We did not see our expected item in the build output: {1}", testName, libraryName));
+				ClassicAssert.IsTrue (processBuildOutput (testResult.BuildResult), string.Format ("{0} - Mobile - We did not see our expected item in the build output: {1}", testName, libraryName));
 
 			string xm45BundlePath = Path.Combine (tmpDir, "bin/Debug/XM45Example.app/Contents/MonoBundle/");
 			if (libraryName is not null)
-				Assert.IsTrue (Directory.GetFiles (xm45BundlePath).Any (x => x.Contains (libraryName) == !libraryShouldNotBeCopied), string.Format ("{0} - XM45 - We did not pull in native lib: {1}", testName, libraryName));
+				ClassicAssert.IsTrue (Directory.GetFiles (xm45BundlePath).Any (x => x.Contains (libraryName) == !libraryShouldNotBeCopied), string.Format ("{0} - XM45 - We did not pull in native lib: {1}", testName, libraryName));
 		}
 
 		[Test]
@@ -94,11 +95,11 @@ namespace Xamarin.MMP.Tests {
 
 				test.ItemGroup = CreateSingleNativeRef ("/Library/Frameworks/iTunesLibrary.framework", "Framework");
 				NativeReferenceTestCore (tmpDir, test, "Unified_WithNativeReferences_InMainProjectWorks - Framework", null, true);
-				Assert.True (Directory.Exists (Path.Combine (tmpDir, "bin/Debug/UnifiedExample.app/Contents/Frameworks/iTunesLibrary.framework")));
+				ClassicAssert.True (Directory.Exists (Path.Combine (tmpDir, "bin/Debug/UnifiedExample.app/Contents/Frameworks/iTunesLibrary.framework")));
 
 				string binaryPath = Path.Combine (tmpDir, "bin/Debug/UnifiedExample.app/Contents/MacOS/UnifiedExample");
 				string otoolText = TI.RunAndAssert ("/usr/bin/otool", new [] { "-l", binaryPath }, "Unified_WithNativeReferences_InMainProjectWorks - rpath");
-				Assert.True (otoolText.Contains ("path @loader_path/../Frameworks"));
+				ClassicAssert.True (otoolText.Contains ("path @loader_path/../Frameworks"));
 			});
 		}
 
@@ -204,7 +205,7 @@ namespace Xamarin.MMP.Tests {
 				};
 				var log = TI.TestUnifiedExecutable (test);
 				Console.WriteLine (log.BuildResult);
-				Assert.True (File.Exists (Path.Combine (tmpDir, "bin/Debug/XM45Example.app/Contents/MonoBundle/libintl.dylib")));
+				ClassicAssert.True (File.Exists (Path.Combine (tmpDir, "bin/Debug/XM45Example.app/Contents/MonoBundle/libintl.dylib")));
 			});
 		}
 	}

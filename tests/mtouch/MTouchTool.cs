@@ -9,6 +9,7 @@ using Xamarin.Tests;
 using Xamarin.Utils;
 
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Xamarin {
 	public enum MTouchAction {
@@ -153,7 +154,7 @@ namespace Xamarin {
 		public void AssertExecuteFailure (MTouchAction action, string message = null)
 		{
 			Action = action;
-			NUnit.Framework.Assert.AreEqual (1, Execute (), message);
+			NUnit.Framework.Legacy.ClassicAssert.AreEqual (1, Execute (), message);
 		}
 
 		// Assert that none of the files in the app has changed (except 'except' files)
@@ -174,7 +175,7 @@ namespace Xamarin {
 					Console.WriteLine ("{0} not modified ted: {1} <= {2}", file, info.LastWriteTime, timestamp);
 				}
 			}
-			Assert.IsEmpty (failed, message);
+			ClassicAssert.IsEmpty (failed, message);
 		}
 
 		// Assert that all of the files in the app has changed (except 'except' files)
@@ -195,13 +196,13 @@ namespace Xamarin {
 					Console.WriteLine ("{0} modified (as expected): {1} > {2}", file, info.LastWriteTime, timestamp);
 				}
 			}
-			Assert.IsEmpty (failed, message);
+			ClassicAssert.IsEmpty (failed, message);
 		}
 
 		// Asserts that the given files were modified.
 		public void AssertModified (DateTime timestamp, string message, params string [] files)
 		{
-			Assert.IsNotEmpty (files);
+			ClassicAssert.IsNotEmpty (files);
 
 			var failed = new List<string> ();
 			var fs = Directory.EnumerateFiles (AppPath, "*", SearchOption.AllDirectories);
@@ -216,7 +217,7 @@ namespace Xamarin {
 					Console.WriteLine ("{0} modified (as expected): {1} >= {2}", file, info.LastWriteTime, timestamp);
 				}
 			}
-			Assert.IsEmpty (failed, message);
+			ClassicAssert.IsEmpty (failed, message);
 		}
 
 		protected override string GetDefaultAbi ()

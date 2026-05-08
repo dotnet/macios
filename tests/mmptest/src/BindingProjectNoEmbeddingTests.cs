@@ -95,7 +95,7 @@ namespace Xamarin.MMP.Tests {
 				Assert.That (Directory.GetFiles (Path.Combine (tmpDir, "bin/Debug/MobileBinding.resources")).Length, Is.EqualTo (3));
 
 				// 2 dylibs + libMonoPosixHelper.dylib + libmono-native.dylib
-				Assert.That (Directory.GetFiles (Path.Combine (tmpDir, "bin/Debug/UnifiedExample.app/Contents/MonoBundle")).Where (x => x.EndsWith (".dylib"), Is.EqualTo (4)).Count ());
+				Assert.That (Directory.GetFiles (Path.Combine (tmpDir, "bin/Debug/UnifiedExample.app/Contents/MonoBundle")).Where (x => x.EndsWith (".dylib")).Count (), Is.EqualTo (4));
 			});
 		}
 

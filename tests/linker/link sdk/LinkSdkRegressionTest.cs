@@ -1093,7 +1093,7 @@ namespace LinkSdk {
 		public void AsQueryable_Enumerable ()
 		{
 			var list = new List<string> { "hello hello" };
-			Assert.That (list.AsQueryable ().GroupBy (x => x, Is.Not.Null).FirstOrDefault ()?.FirstOrDefault (), "Enumerable");
+			Assert.That (list.AsQueryable ().GroupBy (x => x).FirstOrDefault ()?.FirstOrDefault (), Is.Not.Null, "Enumerable");
 		}
 
 		public class CustomIdentity : IIdentity {

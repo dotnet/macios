@@ -288,7 +288,7 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			using var tagCollection = CMTagCollection.Create (CMTag.MediaTypeVideo, CMTag.MediaTypeAudio, CMTag.PackingTypeNone);
-			Assert.That ((int) tagCollection.GetCount ((v) => v.Category == CMTagCategory.MediaType, Is.EqualTo (2)), "Count");
+			Assert.That ((int) tagCollection.GetCount ((v) => v.Category == CMTagCategory.MediaType), Is.EqualTo (2), "Count");
 		}
 
 		[Test]

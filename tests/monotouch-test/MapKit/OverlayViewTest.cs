@@ -18,7 +18,7 @@ namespace MonoTouchFixtures.MapKit {
 			var frame = new CGRect (10, 10, 100, 100);
 			using (MKOverlayView ov = new MKOverlayView (frame)) {
 				Assert.That (ov.Frame, Is.EqualTo (frame), "Frame");
-				Assert.Null (ov.Overlay, "Overlay");
+				ClassicAssert.Null (ov.Overlay, "Overlay");
 			}
 		}
 	}

@@ -21,8 +21,8 @@
 		<MonoCecilPackageVersion>0.11.6</MonoCecilPackageVersion>
 		<NUnit3TestAdapterPackageVersion>6.1.0</NUnit3TestAdapterPackageVersion>
 		<NUnitAnalyzersPackageVersion>4.7.0</NUnitAnalyzersPackageVersion>
-		<NUnitLitePackageVersion>$(NUnitPackageVersion)</NUnitLitePackageVersion>
 		<NUnitPackageVersion>4.4.0</NUnitPackageVersion>
+		<NUnitLitePackageVersion>$(NUnitPackageVersion)</NUnitLitePackageVersion>
 		<NUnitV2ResultWriterPackageVersion>3.8.0</NUnitV2ResultWriterPackageVersion>
 
 		<!-- Use the latest C# version by default -->

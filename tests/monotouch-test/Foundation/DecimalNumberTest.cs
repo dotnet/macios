@@ -16,7 +16,7 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void One ()
 		{
-			Assert.NotNull (NSDecimalNumber.One, "One");
+			ClassicAssert.NotNull (NSDecimalNumber.One, "One");
 		}
 	}
 }

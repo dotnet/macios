@@ -25,8 +25,8 @@ namespace MonoTouchFixtures.JavascriptCore {
 			using (var c = new JSContext ()) {
 				using (var d = JSValue.From (1.0, c)) {
 					Assert.That (d.ToDouble (), Is.EqualTo (1.0d), "double");
-					Assert.AreSame (d.Context, c, "double.Context");
-					Assert.True (d.IsNumber, "double.IsNumber");
+					ClassicAssert.AreSame (d.Context, c, "double.Context");
+					ClassicAssert.True (d.IsNumber, "double.IsNumber");
 				}
 			}
 		}
@@ -59,15 +59,15 @@ namespace MonoTouchFixtures.JavascriptCore {
 			using (var c = new JSContext ())
 			using (var d = JSValue.From (1.0d, c))
 			using (var f = JSValue.From (1.0f, c)) {
-				Assert.True (d.IsEqualTo (d), "=== self");
-				Assert.True (d.IsEqualTo (f), "=== double/float"); // it's a number now
-				Assert.True (d.IsEqualTo ((NSNumber) 1.0d), "=== NSNumber");
-				Assert.False (d.IsEqualTo ((NSNumber) 2.0d), "=== NSNumber-2");
+				ClassicAssert.True (d.IsEqualTo (d), "=== self");
+				ClassicAssert.True (d.IsEqualTo (f), "=== double/float"); // it's a number now
+				ClassicAssert.True (d.IsEqualTo ((NSNumber) 1.0d), "=== NSNumber");
+				ClassicAssert.False (d.IsEqualTo ((NSNumber) 2.0d), "=== NSNumber-2");
 
-				Assert.True (d.IsEqualWithTypeCoercionTo (d), "== self");
-				Assert.True (d.IsEqualWithTypeCoercionTo (f), "== double/float");
-				Assert.True (d.IsEqualWithTypeCoercionTo ((NSNumber) 1.0d), "== NSNumber");
-				Assert.False (d.IsEqualWithTypeCoercionTo ((NSNumber) 2.0d), "== NSNumber-2");
+				ClassicAssert.True (d.IsEqualWithTypeCoercionTo (d), "== self");
+				ClassicAssert.True (d.IsEqualWithTypeCoercionTo (f), "== double/float");
+				ClassicAssert.True (d.IsEqualWithTypeCoercionTo ((NSNumber) 1.0d), "== NSNumber");
+				ClassicAssert.False (d.IsEqualWithTypeCoercionTo ((NSNumber) 2.0d), "== NSNumber-2");
 			}
 		}
 
@@ -79,11 +79,11 @@ namespace MonoTouchFixtures.JavascriptCore {
 			using (var c = new JSContext ()) {
 				bool called = false;
 				var p = JSValue.CreatePromise (c, (resolve, reject) => {
-					Assert.NotNull (resolve, "resolve");
-					Assert.NotNull (reject, "reject");
+					ClassicAssert.NotNull (resolve, "resolve");
+					ClassicAssert.NotNull (reject, "reject");
 					called = true;
 				});
-				Assert.True (called, "called");
+				ClassicAssert.True (called, "called");
 			}
 
 		}
@@ -97,8 +97,8 @@ namespace MonoTouchFixtures.JavascriptCore {
 			using var array = NSArray.FromStrings ("a", "b");
 			using var value = JSValue.From (array, context);
 			using var arr2 = value.ToArray ();
-			Assert.AreEqual ("a", arr2.GetItem<NSString> (0).ToString (), "a");
-			Assert.AreEqual ("b", arr2.GetItem<NSString> (1).ToString (), "a");
+			ClassicAssert.AreEqual ("a", arr2.GetItem<NSString> (0).ToString (), "a");
+			ClassicAssert.AreEqual ("b", arr2.GetItem<NSString> (1).ToString (), "a");
 		}
 	}
 }

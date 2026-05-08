@@ -83,8 +83,8 @@ namespace MonoTouchFixtures.ARKit {
 			var cloud = new ARPointCloudPoker ();
 
 			var points = cloud.Points;
-			Assert.AreEqual (new VectorFloat3 (1, 2, 3), cloud.Points [0]);
-			Assert.AreEqual (new VectorFloat3 (4, 5, 6), cloud.Points [1]);
+			ClassicAssert.AreEqual (new VectorFloat3 (1, 2, 3), cloud.Points [0]);
+			ClassicAssert.AreEqual (new VectorFloat3 (4, 5, 6), cloud.Points [1]);
 		}
 
 		[Test]
@@ -93,8 +93,8 @@ namespace MonoTouchFixtures.ARKit {
 			var cloud = new ARPointCloudPoker ();
 
 			var points = cloud.Identifiers;
-			Assert.AreEqual (0, cloud.Identifiers [0]);
-			Assert.AreEqual (1, cloud.Identifiers [1]);
+			ClassicAssert.AreEqual (0, cloud.Identifiers [0]);
+			ClassicAssert.AreEqual (1, cloud.Identifiers [1]);
 		}
 	}
 }

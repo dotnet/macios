@@ -24,39 +24,39 @@ namespace MonoTouchFixtures.Network {
 		}
 
 		[Test]
-		public void TypeTest () => Assert.AreEqual (NWEndpointType.Url, endpoint.Type);
+		public void TypeTest () => ClassicAssert.AreEqual (NWEndpointType.Url, endpoint.Type);
 
 		[Test]
-		public void HostNameTest () => Assert.AreEqual ("github.com", endpoint.Hostname);
+		public void HostNameTest () => ClassicAssert.AreEqual ("github.com", endpoint.Hostname);
 
 		[Test]
-		public void PortTest () => Assert.AreEqual ("443", endpoint.Port);
+		public void PortTest () => ClassicAssert.AreEqual ("443", endpoint.Port);
 
 		[Test]
-		public void BonjourServiceNameTest () => Assert.Null (endpoint.BonjourServiceName);
+		public void BonjourServiceNameTest () => ClassicAssert.Null (endpoint.BonjourServiceName);
 
 		[Test]
-		public void BonjourServiceTypeTest () => Assert.Null (endpoint.BonjourServiceType);
+		public void BonjourServiceTypeTest () => ClassicAssert.Null (endpoint.BonjourServiceType);
 
 		[Test]
-		public void BonjourServiceDomainTest () => Assert.Null (endpoint.BonjourServiceDomain);
+		public void BonjourServiceDomainTest () => ClassicAssert.Null (endpoint.BonjourServiceDomain);
 
 		[Test]
-		public void UrlTest () => Assert.AreEqual ("https://github.com", endpoint.Url);
+		public void UrlTest () => ClassicAssert.AreEqual ("https://github.com", endpoint.Url);
 
 		[Test]
 		public void SignatureTest ()
 		{
 			TestRuntime.AssertXcodeVersion (14, 0);
 			var signature = endpoint.Signature;
-			Assert.AreEqual (0, signature.Length);
+			ClassicAssert.AreEqual (0, signature.Length);
 		}
 
 		[Test]
 		public void TxtRecordTest ()
 		{
 			TestRuntime.AssertXcodeVersion (14, 0);
-			Assert.Null (endpoint.TxtRecord);
+			ClassicAssert.Null (endpoint.TxtRecord);
 		}
 	}
 }

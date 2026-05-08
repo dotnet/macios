@@ -18,7 +18,7 @@ namespace Xamarin.Mac.Tests {
 				NSRange range = input.LineRangeForRange (new NSRange (index, 0));
 				index = (int) (range.Location + range.Length);
 			}
-			Assert.AreEqual (4, numberOfLines);
+			ClassicAssert.AreEqual (4, numberOfLines);
 		}
 
 		[Test]
@@ -27,9 +27,9 @@ namespace Xamarin.Mac.Tests {
 			NSString input = new NSString ("Hey\nHow\nYou\nDoing");
 			nuint start, lineEnd, contentsEnd;
 			input.GetLineStart (out start, out lineEnd, out contentsEnd, new NSRange (5, 11));
-			Assert.AreEqual ((nuint) 4, start);
-			Assert.AreEqual ((nuint) 17, lineEnd);
-			Assert.AreEqual ((nuint) 17, contentsEnd);
+			ClassicAssert.AreEqual ((nuint) 4, start);
+			ClassicAssert.AreEqual ((nuint) 17, lineEnd);
+			ClassicAssert.AreEqual ((nuint) 17, contentsEnd);
 		}
 
 		[Test]
@@ -37,8 +37,8 @@ namespace Xamarin.Mac.Tests {
 		{
 			NSString input = new NSString ("Hey\nHow\nYou\nDoing");
 			CGRect rect = input.BoundingRectWithSize (new CGSize (20, 30), NSStringDrawingOptions.UsesLineFragmentOrigin | NSStringDrawingOptions.UsesFontLeading, new NSDictionary ());
-			Assert.IsTrue (rect.Width > 0);
-			Assert.IsTrue (rect.Height > 0);
+			ClassicAssert.IsTrue (rect.Width > 0);
+			ClassicAssert.IsTrue (rect.Height > 0);
 		}
 
 		[Test]
@@ -51,9 +51,9 @@ namespace Xamarin.Mac.Tests {
 
 				Array.Sort (tests);
 
-				Assert.AreSame (a, tests [0], "0");
-				Assert.AreSame (b, tests [1], "1");
-				Assert.AreSame (c, tests [2], "2");
+				ClassicAssert.AreSame (a, tests [0], "0");
+				ClassicAssert.AreSame (b, tests [1], "1");
+				ClassicAssert.AreSame (c, tests [2], "2");
 			}
 		}
 	}
@@ -67,8 +67,8 @@ namespace Xamarin.Mac.Tests {
 			NSFont font = NSFont.FromFontName ("Arial", 40);
 			NSAttributedString str = new NSAttributedString ("Hello World", font);
 			CGRect rect = str.BoundingRectWithSize (new CGSize (20, 30), NSStringDrawingOptions.UsesLineFragmentOrigin | NSStringDrawingOptions.UsesFontLeading);
-			Assert.IsTrue (rect.Width > 0);
-			Assert.IsTrue (rect.Height > 0);
+			ClassicAssert.IsTrue (rect.Width > 0);
+			ClassicAssert.IsTrue (rect.Height > 0);
 		}
 
 		[Test]
@@ -78,10 +78,10 @@ namespace Xamarin.Mac.Tests {
 			var str = new NSAttributedString ("Test string with url: http://www.google.com");
 			var url = str.GetUrl (42, out range);
 
-			Assert.IsNotNull (url);
-			Assert.IsTrue (url.AbsoluteString == "http://www.google.com");
-			Assert.IsTrue (range.Location == 22);
-			Assert.IsTrue (range.Length == 21);
+			ClassicAssert.IsNotNull (url);
+			ClassicAssert.IsTrue (url.AbsoluteString == "http://www.google.com");
+			ClassicAssert.IsTrue (range.Location == 22);
+			ClassicAssert.IsTrue (range.Length == 21);
 		}
 	}
 }

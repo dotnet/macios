@@ -46,7 +46,7 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				objLabel = descriptor.Label;
 			}, "Getter");
-			Assert.AreEqual (newLabel, objLabel, "Label");
+			ClassicAssert.AreEqual (newLabel, objLabel, "Label");
 		}
 
 		[Test]
@@ -60,7 +60,7 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				objMode = descriptor.StorageMode;
 			}, "Getter");
-			Assert.AreEqual (newMode, objMode, "Mode");
+			ClassicAssert.AreEqual (newMode, objMode, "Mode");
 		}
 
 		[Test]
@@ -75,7 +75,7 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				objCount = descriptor.SampleCount;
 			}, "Getter");
-			Assert.AreEqual (newCount, objCount, "Count");
+			ClassicAssert.AreEqual (newCount, objCount, "Count");
 		}
 	}
 }

@@ -102,7 +102,7 @@ namespace Introspection {
 					n++;
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_properties));
+			ClassicAssert.AreEqual (0, Errors, "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_properties));
 		}
 
 		bool CheckArgumentSemantic (MethodInfo meth, [NotNullWhen (true)] out string? error)

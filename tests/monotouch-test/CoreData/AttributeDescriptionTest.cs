@@ -29,7 +29,7 @@ namespace MonoTouchFixtures.CoreData {
 			using (var ad = new NSAttributeDescription ())
 			using (var o = new NSObject ()) {
 				ad.DefaultValue = o;
-				Assert.AreSame (o, ad.DefaultValue, "DefaultValue");
+				ClassicAssert.AreSame (o, ad.DefaultValue, "DefaultValue");
 			}
 		}
 
@@ -37,9 +37,9 @@ namespace MonoTouchFixtures.CoreData {
 		public void GetSetRenamingIdentifier ()
 		{
 			using (var ad = new NSAttributeDescription ()) {
-				Assert.IsNull (ad.RenamingIdentifier, "An unset RenamingIdentifier should be null.");
+				ClassicAssert.IsNull (ad.RenamingIdentifier, "An unset RenamingIdentifier should be null.");
 				ad.RenamingIdentifier = "Foo";
-				Assert.AreEqual ("Foo", ad.RenamingIdentifier,
+				ClassicAssert.AreEqual ("Foo", ad.RenamingIdentifier,
 								 "RenamingIndentifier was not corrently set.");
 			}
 		}

@@ -35,23 +35,23 @@ namespace Xamarin.BindingTests {
 			using var dateNow = (NSDate) DateTime.Now;
 
 			using (var obj = IConstructorProtocol.CreateInstance<TypeProvidingProtocolConstructors> ("Hello world")!) {
-				Assert.AreEqual ("Hello world", obj.StringValue, "A StringValue");
-				Assert.IsNull (obj.DateValue, "A DateValue");
+				ClassicAssert.AreEqual ("Hello world", obj.StringValue, "A StringValue");
+				ClassicAssert.IsNull (obj.DateValue, "A DateValue");
 			}
 
 			using (var obj = IConstructorProtocol.CreateInstance<TypeProvidingProtocolConstructors> (dateNow)!) {
-				Assert.IsNull (obj.StringValue, "B StringValue");
-				Assert.AreEqual (dateNow, obj.DateValue, "B DateValue");
+				ClassicAssert.IsNull (obj.StringValue, "B StringValue");
+				ClassicAssert.AreEqual (dateNow, obj.DateValue, "B DateValue");
 			}
 
 			using (var obj = IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors> ("Hello Subclassed")!) {
-				Assert.AreEqual ("Hello Subclassed", obj.StringValue, "C1 StringValue");
-				Assert.IsNull (obj.DateValue, "C1 DateValue");
+				ClassicAssert.AreEqual ("Hello Subclassed", obj.StringValue, "C1 StringValue");
+				ClassicAssert.IsNull (obj.DateValue, "C1 DateValue");
 			}
 
 			using (var obj = IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors> (dateNow)!) {
-				Assert.IsNull (obj.StringValue, "C2 StringValue");
-				Assert.AreEqual (dateNow, obj.DateValue, "C2 DateValue");
+				ClassicAssert.IsNull (obj.StringValue, "C2 StringValue");
+				ClassicAssert.AreEqual (dateNow, obj.DateValue, "C2 DateValue");
 			}
 
 			if (global::XamarinTests.ObjCRuntime.Registrar.IsDynamicRegistrar) {
@@ -60,8 +60,8 @@ namespace Xamarin.BindingTests {
 				}, "D1 Exception");
 			} else {
 				using (var obj = IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors2> ("Hello Subclassed 2")!) {
-					Assert.AreEqual ("Managed interceptor! Hello Subclassed 2", obj.StringValue, "D1 StringValue");
-					Assert.IsNull (obj.DateValue, "D1 DateValue");
+					ClassicAssert.AreEqual ("Managed interceptor! Hello Subclassed 2", obj.StringValue, "D1 StringValue");
+					ClassicAssert.IsNull (obj.DateValue, "D1 DateValue");
 				}
 			}
 
@@ -71,8 +71,8 @@ namespace Xamarin.BindingTests {
 				}, "D2 Exception");
 			} else {
 				using (var obj = IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors2> (dateNow)!) {
-					Assert.IsNull (obj.StringValue, "D2 StringValue");
-					Assert.AreEqual (dateNow.AddSeconds (42), obj.DateValue, "D2 DateValue");
+					ClassicAssert.IsNull (obj.StringValue, "D2 StringValue");
+					ClassicAssert.AreEqual (dateNow.AddSeconds (42), obj.DateValue, "D2 DateValue");
 				}
 			}
 		}
@@ -107,27 +107,27 @@ namespace Xamarin.BindingTests {
 
 			// the interface must be created
 			var IP1 = bindingAssembly.GetType ("Bindings.Test.Protocol.IP1")!;
-			Assert.IsNotNull (IP1, "IP1");
+			ClassicAssert.IsNotNull (IP1, "IP1");
 			// with a [Protocol] attribute
 			var IP1Attributes = IP1.GetCustomAttributes (typeof (ProtocolAttribute), false);
 			if (HasProtocolAttributes) {
-				Assert.AreEqual (1, IP1Attributes.Length, "[Protocol] IP1");
+				ClassicAssert.AreEqual (1, IP1Attributes.Length, "[Protocol] IP1");
 				var IP1Protocol = (ProtocolAttribute) IP1Attributes [0];
-				Assert.AreEqual ("P1", IP1Protocol.Name, "Name");
+				ClassicAssert.AreEqual ("P1", IP1Protocol.Name, "Name");
 
 				// and a wrapper type
 				var wrapperType = bindingAssembly.GetType ("Bindings.Test.Protocol.P1Wrapper");
-				Assert.IsNotNull (wrapperType, "P1_Wrapper");
-				Assert.AreEqual (wrapperType, IP1Protocol.WrapperType, "WrapperType");
+				ClassicAssert.IsNotNull (wrapperType, "P1_Wrapper");
+				ClassicAssert.AreEqual (wrapperType, IP1Protocol.WrapperType, "WrapperType");
 			} else {
-				Assert.AreEqual (0, IP1Attributes.Length, "[Protocol] IP1");
+				ClassicAssert.AreEqual (0, IP1Attributes.Length, "[Protocol] IP1");
 
 				// and a wrapper type
 				var wrapperType = bindingAssembly.GetType ("Bindings.Test.Protocol.P1Wrapper");
-				Assert.IsNotNull (wrapperType, "P1_Wrapper");
+				ClassicAssert.IsNotNull (wrapperType, "P1_Wrapper");
 			}
 			// but not the model
-			Assert.IsNull (bindingAssembly.GetType ("Bindings.Test.Protocol.P1"), "P1");
+			ClassicAssert.IsNull (bindingAssembly.GetType ("Bindings.Test.Protocol.P1"), "P1");
 		}
 
 		[Test]
@@ -139,32 +139,32 @@ namespace Xamarin.BindingTests {
 
 			// the interface must be created
 			var IP2 = bindingAssembly.GetType ("Bindings.Test.Protocol.IP2")!;
-			Assert.IsNotNull (IP2, "IP2");
+			ClassicAssert.IsNotNull (IP2, "IP2");
 
 			// with a [Protocol] attribute
 			var IP2Attributes = IP2.GetCustomAttributes (typeof (ProtocolAttribute), false);
 			if (HasProtocolAttributes) {
-				Assert.AreEqual (1, IP2Attributes.Length, "[Protocol] IP2");
+				ClassicAssert.AreEqual (1, IP2Attributes.Length, "[Protocol] IP2");
 				var IP2Protocol = (ProtocolAttribute) IP2Attributes [0];
-				Assert.AreEqual ("P2", IP2Protocol.Name, "Name");
+				ClassicAssert.AreEqual ("P2", IP2Protocol.Name, "Name");
 
 				// and a wrapper type
 				var wrapperType = bindingAssembly.GetType ("Bindings.Test.Protocol.P2Wrapper");
-				Assert.IsNotNull (wrapperType, "P2_Wrapper");
-				Assert.AreEqual (wrapperType, IP2Protocol.WrapperType, "WrapperType");
+				ClassicAssert.IsNotNull (wrapperType, "P2_Wrapper");
+				ClassicAssert.AreEqual (wrapperType, IP2Protocol.WrapperType, "WrapperType");
 			} else {
-				Assert.AreEqual (0, IP2Attributes.Length, "[Protocol] IP2");
+				ClassicAssert.AreEqual (0, IP2Attributes.Length, "[Protocol] IP2");
 
 				// and a wrapper type
 				var wrapperType = bindingAssembly.GetType ("Bindings.Test.Protocol.P2Wrapper");
-				Assert.IsNotNull (wrapperType, "P2_Wrapper");
+				ClassicAssert.IsNotNull (wrapperType, "P2_Wrapper");
 			}
 
 			// and a model-like class
 			var model = bindingAssembly.GetType ("Bindings.Test.Protocol.P2")!;
-			Assert.IsNotNull (model, "P2");
+			ClassicAssert.IsNotNull (model, "P2");
 			// but without the [Model] attribute
-			Assert.False (model.IsDefined (typeof (ModelAttribute), false), "model");
+			ClassicAssert.False (model.IsDefined (typeof (ModelAttribute), false), "model");
 		}
 
 		[Test]
@@ -176,32 +176,32 @@ namespace Xamarin.BindingTests {
 
 			// the interface must be created
 			var IP3 = bindingAssembly.GetType ("Bindings.Test.Protocol.IP3")!;
-			Assert.IsNotNull (IP3, "IP3");
+			ClassicAssert.IsNotNull (IP3, "IP3");
 
 			// with a [Protocol] attribute
 			var IP3Attributes = IP3.GetCustomAttributes (typeof (ProtocolAttribute), false);
 			if (HasProtocolAttributes) {
-				Assert.AreEqual (1, IP3Attributes.Length, "[Protocol] IP3");
+				ClassicAssert.AreEqual (1, IP3Attributes.Length, "[Protocol] IP3");
 				var IP3Protocol = (ProtocolAttribute) IP3Attributes [0];
-				Assert.AreEqual ("P3", IP3Protocol.Name, "Name");
+				ClassicAssert.AreEqual ("P3", IP3Protocol.Name, "Name");
 
 				// and a wrapper type
 				var wrapperType = bindingAssembly.GetType ("Bindings.Test.Protocol.P3Wrapper");
-				Assert.IsNotNull (wrapperType, "P3_Wrapper");
-				Assert.AreEqual (wrapperType, IP3Protocol.WrapperType, "WrapperType");
+				ClassicAssert.IsNotNull (wrapperType, "P3_Wrapper");
+				ClassicAssert.AreEqual (wrapperType, IP3Protocol.WrapperType, "WrapperType");
 			} else {
-				Assert.AreEqual (0, IP3Attributes.Length, "[Protocol] IP3");
+				ClassicAssert.AreEqual (0, IP3Attributes.Length, "[Protocol] IP3");
 
 				// and a wrapper type
 				var wrapperType = bindingAssembly.GetType ("Bindings.Test.Protocol.P3Wrapper");
-				Assert.IsNotNull (wrapperType, "P3_Wrapper");
+				ClassicAssert.IsNotNull (wrapperType, "P3_Wrapper");
 			}
 
 			// and a model class
 			var model = bindingAssembly.GetType ("Bindings.Test.Protocol.P3")!;
-			Assert.IsNotNull (model, "P3");
+			ClassicAssert.IsNotNull (model, "P3");
 			// with a [Model] attribute
-			Assert.True (model.IsDefined (typeof (ModelAttribute), false), "model");
+			ClassicAssert.True (model.IsDefined (typeof (ModelAttribute), false), "model");
 		}
 
 		class MembersImplementation : NSObject, Bindings.Test.Protocol.IMemberAttributes {
@@ -230,14 +230,14 @@ namespace Xamarin.BindingTests {
 		public void ProtocolMembers ()
 		{
 			IntPtr protocol = objc_getProtocol ("MemberAttributes");
-			Assert.AreNotEqual (IntPtr.Zero, protocol, "a");
+			ClassicAssert.AreNotEqual (IntPtr.Zero, protocol, "a");
 
 			objc_method_description [] methods;
 
 			// Required instance methods
 			methods = protocol_copyMethodDescriptionList (protocol, true, true);
 			CleanupSignatures (methods);
-			Assert.AreEqual (4, methods.Length, "Required Instance Methods: Count");
+			ClassicAssert.AreEqual (4, methods.Length, "Required Instance Methods: Count");
 			AssertContains (methods, new objc_method_description ("requiredInstanceMethod", "v@:"), "Required Instance Methods: requiredInstanceMethod");
 			AssertContains (methods, new objc_method_description ("requiredInstanceProperty", "@@:"), "Required Instance Methods: requiredInstanceProperty");
 			AssertContains (methods, new objc_method_description ("setRequiredInstanceProperty:", "v@:@"), "Required Instance Methods: setRequiredInstanceProperty");
@@ -246,7 +246,7 @@ namespace Xamarin.BindingTests {
 			// Required static methods
 			methods = protocol_copyMethodDescriptionList (protocol, true, false);
 			CleanupSignatures (methods);
-			Assert.AreEqual (3, methods.Length, "Required Static Methods: Count");
+			ClassicAssert.AreEqual (3, methods.Length, "Required Static Methods: Count");
 			AssertContains (methods, new objc_method_description ("requiredStaticMethod", "v@:"), "Required Static Methods: requiredStaticMethod");
 			AssertContains (methods, new objc_method_description ("setRequiredStaticProperty:", "v@:@"), "Required Static Methods: setRequiredStaticProperty:");
 			AssertContains (methods, new objc_method_description ("requiredStaticProperty", "@@:"), "Required Static Methods: requiredStaticProperty");
@@ -254,7 +254,7 @@ namespace Xamarin.BindingTests {
 			// Optional instance methods
 			methods = protocol_copyMethodDescriptionList (protocol, false, true);
 			CleanupSignatures (methods);
-			Assert.AreEqual (19, methods.Length, "Optional Instance Methods: Count");
+			ClassicAssert.AreEqual (19, methods.Length, "Optional Instance Methods: Count");
 			AssertContains (methods, new objc_method_description ("variadicMethod:", "v@:^v"), "Optional Instance Methods: variadicMethod:");
 			AssertContains (methods, new objc_method_description ("methodWithReturnType", "@@:"), "Optional Instance Methods: methodWithReturnType");
 			AssertContains (methods, new objc_method_description ("methodWithParameter:", "v@:i"), "Optional Instance Methods: methodWithParameter:");
@@ -278,7 +278,7 @@ namespace Xamarin.BindingTests {
 			// Optional static methods
 			methods = protocol_copyMethodDescriptionList (protocol, false, false);
 			CleanupSignatures (methods);
-			Assert.AreEqual (3, methods.Length, "Optional Static Methods: Count");
+			ClassicAssert.AreEqual (3, methods.Length, "Optional Static Methods: Count");
 			AssertContains (methods, new objc_method_description ("optionalStaticMethod", "v@:"), "Optional Static Methods: optionalStaticMethod");
 			AssertContains (methods, new objc_method_description ("optionalStaticProperty", "@@:"), "Optional Static Methods: optionalStaticProperty");
 			AssertContains (methods, new objc_method_description ("setOptionalStaticProperty:", "v@:@"), "Optional Static Methods: setOptionalStaticProperty:");
@@ -290,9 +290,9 @@ namespace Xamarin.BindingTests {
 			// see file objc4-647/runtime/objc-runtime-old.mm in Apple's open source code),
 			// so we need to verify differently for the dynamic registrar.
 			if (XamarinTests.ObjCRuntime.Registrar.IsStaticRegistrar) {
-				Assert.AreEqual (9, properties.Length, "Properties: Count");
+				ClassicAssert.AreEqual (9, properties.Length, "Properties: Count");
 			} else {
-				Assert.AreEqual (2, properties.Length, "Properties: Count");
+				ClassicAssert.AreEqual (2, properties.Length, "Properties: Count");
 			}
 
 			AssertContains (properties, new objc_property ("requiredInstanceProperty", "T@\"NSString\",N", new objc_property_attribute [] {

@@ -32,7 +32,7 @@ namespace MonoTouchFixtures.Metal {
 		public void GetSetPixelFormat ()
 		{
 			descriptor.PixelFormat = MTLPixelFormat.RGBA8Snorm;
-			Assert.AreEqual (MTLPixelFormat.RGBA8Snorm, descriptor.PixelFormat);
+			ClassicAssert.AreEqual (MTLPixelFormat.RGBA8Snorm, descriptor.PixelFormat);
 		}
 	}
 }

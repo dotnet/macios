@@ -84,40 +84,40 @@ namespace MonoTouchFixtures.UIKit {
 			using (var vc = new UIViewController ()) {
 				Assert.Multiple (() => {
 					Assert.That (vc.ChildViewControllers, Is.Empty, "ChildViewControllers");
-					Assert.False (vc.DefinesPresentationContext, "DefinesPresentationContext");
+					ClassicAssert.False (vc.DefinesPresentationContext, "DefinesPresentationContext");
 					Assert.That (vc.DisablesAutomaticKeyboardDismissal, Is.EqualTo (true).Or.EqualTo (false), "DisablesAutomaticKeyboardDismissal");
-					Assert.False (vc.Editing, "Editing");
-					Assert.False (vc.IsBeingDismissed, "IsBeingDismissed");
-					Assert.False (vc.IsBeingPresented, "IsBeingPresented");
-					Assert.False (vc.IsMovingFromParentViewController, "IsMovingFromParentViewController");
-					Assert.False (vc.IsMovingToParentViewController, "IsMovingToParentViewController");
-					Assert.False (vc.IsViewLoaded, "IsViewLoaded");
-					Assert.False (vc.ModalInPopover, "ModalInPopover");
-					Assert.Null (vc.NavigationController, "NavigationController");
-					Assert.NotNull (vc.NibBundle, "NibBundle");
-					Assert.Null (vc.NibName, "NibName");
-					Assert.Null (vc.ParentViewController, "ParentViewController");
-					Assert.Null (vc.PresentedViewController, "PresentedViewController");
-					Assert.Null (vc.PresentingViewController, "PresentingViewController");
-					Assert.False (vc.ProvidesPresentationContextTransitionStyle, "ProvidesPresentationContextTransitionStyle");
+					ClassicAssert.False (vc.Editing, "Editing");
+					ClassicAssert.False (vc.IsBeingDismissed, "IsBeingDismissed");
+					ClassicAssert.False (vc.IsBeingPresented, "IsBeingPresented");
+					ClassicAssert.False (vc.IsMovingFromParentViewController, "IsMovingFromParentViewController");
+					ClassicAssert.False (vc.IsMovingToParentViewController, "IsMovingToParentViewController");
+					ClassicAssert.False (vc.IsViewLoaded, "IsViewLoaded");
+					ClassicAssert.False (vc.ModalInPopover, "ModalInPopover");
+					ClassicAssert.Null (vc.NavigationController, "NavigationController");
+					ClassicAssert.NotNull (vc.NibBundle, "NibBundle");
+					ClassicAssert.Null (vc.NibName, "NibName");
+					ClassicAssert.Null (vc.ParentViewController, "ParentViewController");
+					ClassicAssert.Null (vc.PresentedViewController, "PresentedViewController");
+					ClassicAssert.Null (vc.PresentingViewController, "PresentingViewController");
+					ClassicAssert.False (vc.ProvidesPresentationContextTransitionStyle, "ProvidesPresentationContextTransitionStyle");
 #if !__TVOS__
-					Assert.True (vc.AutomaticallyForwardAppearanceAndRotationMethodsToChildViewControllers, "AutomaticallyForwardAppearanceAndRotationMethodsToChildViewControllers");
-					Assert.False (vc.HidesBottomBarWhenPushed, "HidesBottomBarWhenPushed");
-					Assert.Null (vc.ModalViewController, "ModalViewController");
-					Assert.Null (vc.RotatingFooterView, "RotatingFooterView");
-					Assert.Null (vc.RotatingHeaderView, "RotatingHeaderView");
+					ClassicAssert.True (vc.AutomaticallyForwardAppearanceAndRotationMethodsToChildViewControllers, "AutomaticallyForwardAppearanceAndRotationMethodsToChildViewControllers");
+					ClassicAssert.False (vc.HidesBottomBarWhenPushed, "HidesBottomBarWhenPushed");
+					ClassicAssert.Null (vc.ModalViewController, "ModalViewController");
+					ClassicAssert.Null (vc.RotatingFooterView, "RotatingFooterView");
+					ClassicAssert.Null (vc.RotatingHeaderView, "RotatingHeaderView");
 #if !__MACCATALYST__
-					Assert.Null (vc.SearchDisplayController, "SearchDisplayController");
+					ClassicAssert.Null (vc.SearchDisplayController, "SearchDisplayController");
 #endif
-					Assert.False (vc.WantsFullScreenLayout, "WantsFullScreenLayout");
+					ClassicAssert.False (vc.WantsFullScreenLayout, "WantsFullScreenLayout");
 #endif
-					Assert.Null (vc.SplitViewController, "SplitViewController");
-					Assert.Null (vc.Storyboard, "Storyboard");
-					Assert.Null (vc.TabBarController, "TabBarController");
-					Assert.NotNull (vc.TabBarItem, "TabBarItem");
-					Assert.Null (vc.Title, "Title");
-					Assert.Null (vc.ToolbarItems, "ToolbarItems");
-					Assert.NotNull (vc.View, "View");
+					ClassicAssert.Null (vc.SplitViewController, "SplitViewController");
+					ClassicAssert.Null (vc.Storyboard, "Storyboard");
+					ClassicAssert.Null (vc.TabBarController, "TabBarController");
+					ClassicAssert.NotNull (vc.TabBarItem, "TabBarItem");
+					ClassicAssert.Null (vc.Title, "Title");
+					ClassicAssert.Null (vc.ToolbarItems, "ToolbarItems");
+					ClassicAssert.NotNull (vc.View, "View");
 				});
 			}
 		}
@@ -132,12 +132,12 @@ namespace MonoTouchFixtures.UIKit {
 				vc.ToolbarItems = buttons;
 				Assert.That (vc.ToolbarItems.Length, Is.EqualTo (2), "1");
 				vc.ToolbarItems = null;
-				Assert.Null (vc.ToolbarItems, "2");
+				ClassicAssert.Null (vc.ToolbarItems, "2");
 #if !__TVOS__
 				vc.SetToolbarItems (buttons, true);
 				Assert.That (vc.ToolbarItems.Length, Is.EqualTo (2), "3");
 				vc.SetToolbarItems (null, false);
-				Assert.Null (vc.ToolbarItems, "4");
+				ClassicAssert.Null (vc.ToolbarItems, "4");
 #endif
 			}
 		}
@@ -148,12 +148,12 @@ namespace MonoTouchFixtures.UIKit {
 			using (var vc = new UIViewController ()) {
 				// even if the default is null <quote>The default value of this property is nil.</quote>
 				// we'll never see it as such as it will be loaded (loadView)
-				Assert.NotNull (vc.View, "View-a");
+				ClassicAssert.NotNull (vc.View, "View-a");
 				// OTOH we can set it to null ourself
 				// or the controller can do it if iOS runs out of memory
 				vc.View = null;
 				// but again, accessing it will load the view
-				Assert.NotNull (vc.View, "View-b");
+				ClassicAssert.NotNull (vc.View, "View-b");
 			}
 		}
 

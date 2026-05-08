@@ -26,25 +26,25 @@ namespace MonoTouchFixtures.Metal {
 		[Test]
 		public void GetAccessTest ()
 		{
-			Assert.AreEqual (MTLArgumentAccess.ReadOnly, reference.Access);
+			ClassicAssert.AreEqual (MTLArgumentAccess.ReadOnly, reference.Access);
 		}
 
 		[Test]
 		public void GetIsDepthTextureTest ()
 		{
-			Assert.False (reference.IsDepthTexture);
+			ClassicAssert.False (reference.IsDepthTexture);
 		}
 
 		[Test]
 		public void GetTextureDataType ()
 		{
-			Assert.AreEqual (MTLDataType.None, reference.TextureDataType);
+			ClassicAssert.AreEqual (MTLDataType.None, reference.TextureDataType);
 		}
 
 		[Test]
 		public void GetTextureType ()
 		{
-			Assert.AreEqual (MTLTextureType.k1D, reference.TextureType);
+			ClassicAssert.AreEqual (MTLTextureType.k1D, reference.TextureType);
 		}
 	}
 }

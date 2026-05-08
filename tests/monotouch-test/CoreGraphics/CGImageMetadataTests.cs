@@ -34,8 +34,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 				tags.Add (tag);
 				return true;
 			});
-			Assert.AreEqual (2, keys.Count, "key count mismatch");
-			Assert.AreEqual (2, tags.Count, "tag count mistmatch");
+			ClassicAssert.AreEqual (2, keys.Count, "key count mismatch");
+			ClassicAssert.AreEqual (2, tags.Count, "tag count mistmatch");
 		}
 	}
 }

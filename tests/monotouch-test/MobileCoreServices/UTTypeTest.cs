@@ -18,98 +18,98 @@ namespace MonoTouchFixtures.MobileCoreServices {
 		[Test]
 		public void NSStringConstants ()
 		{
-			Assert.NotNull (UTType.ExportedTypeDeclarationsKey, "ExportedTypeDeclarationsKey");
-			Assert.NotNull (UTType.ImportedTypeDeclarationsKey, "ImportedTypeDeclarationsKey");
-			Assert.NotNull (UTType.IdentifierKey, "IdentifierKey");
-			Assert.NotNull (UTType.TagSpecificationKey, "TagSpecificationKey");
-			Assert.NotNull (UTType.ConformsToKey, "ConformsToKey");
-			Assert.NotNull (UTType.DescriptionKey, "DescriptionKey");
-			Assert.NotNull (UTType.IconFileKey, "IconFileKey");
-			Assert.NotNull (UTType.ReferenceURLKey, "ReferenceURLKey");
-			Assert.NotNull (UTType.VersionKey, "VersionKey");
+			ClassicAssert.NotNull (UTType.ExportedTypeDeclarationsKey, "ExportedTypeDeclarationsKey");
+			ClassicAssert.NotNull (UTType.ImportedTypeDeclarationsKey, "ImportedTypeDeclarationsKey");
+			ClassicAssert.NotNull (UTType.IdentifierKey, "IdentifierKey");
+			ClassicAssert.NotNull (UTType.TagSpecificationKey, "TagSpecificationKey");
+			ClassicAssert.NotNull (UTType.ConformsToKey, "ConformsToKey");
+			ClassicAssert.NotNull (UTType.DescriptionKey, "DescriptionKey");
+			ClassicAssert.NotNull (UTType.IconFileKey, "IconFileKey");
+			ClassicAssert.NotNull (UTType.ReferenceURLKey, "ReferenceURLKey");
+			ClassicAssert.NotNull (UTType.VersionKey, "VersionKey");
 
-			Assert.NotNull (UTType.TagClassFilenameExtension, "TagClassFilenameExtension");
-			Assert.NotNull (UTType.TagClassMIMEType, "TagClassMIMEType");
+			ClassicAssert.NotNull (UTType.TagClassFilenameExtension, "TagClassFilenameExtension");
+			ClassicAssert.NotNull (UTType.TagClassMIMEType, "TagClassMIMEType");
 
-			Assert.NotNull (UTType.Item, "Item");
-			Assert.NotNull (UTType.Content, "Content");
-			Assert.NotNull (UTType.CompositeContent, "CompositeContent");
-			Assert.NotNull (UTType.Application, "Application");
-			Assert.NotNull (UTType.Message, "Message");
-			Assert.NotNull (UTType.Contact, "Contact");
-			Assert.NotNull (UTType.Archive, "Archive");
-			Assert.NotNull (UTType.DiskImage, "DiskImage");
+			ClassicAssert.NotNull (UTType.Item, "Item");
+			ClassicAssert.NotNull (UTType.Content, "Content");
+			ClassicAssert.NotNull (UTType.CompositeContent, "CompositeContent");
+			ClassicAssert.NotNull (UTType.Application, "Application");
+			ClassicAssert.NotNull (UTType.Message, "Message");
+			ClassicAssert.NotNull (UTType.Contact, "Contact");
+			ClassicAssert.NotNull (UTType.Archive, "Archive");
+			ClassicAssert.NotNull (UTType.DiskImage, "DiskImage");
 
-			Assert.NotNull (UTType.Data, "Data");
-			Assert.NotNull (UTType.Directory, "Directory");
-			Assert.NotNull (UTType.Resolvable, "Resolvable");
-			Assert.NotNull (UTType.SymLink, "SymLink");
-			Assert.NotNull (UTType.MountPoint, "MountPoint");
-			Assert.NotNull (UTType.AliasFile, "AliasFile");
-			Assert.NotNull (UTType.AliasRecord, "AliasRecord");
-			Assert.NotNull (UTType.URL, "URL");
-			Assert.NotNull (UTType.FileURL, "FileURL");
+			ClassicAssert.NotNull (UTType.Data, "Data");
+			ClassicAssert.NotNull (UTType.Directory, "Directory");
+			ClassicAssert.NotNull (UTType.Resolvable, "Resolvable");
+			ClassicAssert.NotNull (UTType.SymLink, "SymLink");
+			ClassicAssert.NotNull (UTType.MountPoint, "MountPoint");
+			ClassicAssert.NotNull (UTType.AliasFile, "AliasFile");
+			ClassicAssert.NotNull (UTType.AliasRecord, "AliasRecord");
+			ClassicAssert.NotNull (UTType.URL, "URL");
+			ClassicAssert.NotNull (UTType.FileURL, "FileURL");
 
-			Assert.NotNull (UTType.Text, "Text");
-			Assert.NotNull (UTType.PlainText, "PlainText");
-			Assert.NotNull (UTType.UTF8PlainText, "UTF8PlainText");
-			Assert.NotNull (UTType.UTF16ExternalPlainText, "UTF16ExternalPlainText");
-			Assert.NotNull (UTType.UTF16PlainText, "UTF16PlainText");
-			Assert.NotNull (UTType.RTF, "RTF");
-			Assert.NotNull (UTType.HTML, "HTML");
-			Assert.NotNull (UTType.XML, "XML");
-			Assert.NotNull (UTType.SourceCode, "SourceCode");
-			Assert.NotNull (UTType.CSource, "CSource");
-			Assert.NotNull (UTType.ObjectiveCSource, "ObjectiveCSource");
-			Assert.NotNull (UTType.CPlusPlusSource, "CPlusPlusSource");
-			Assert.NotNull (UTType.ObjectiveCPlusPlusSource, "ObjectiveCPlusPlusSource");
-			Assert.NotNull (UTType.CHeader, "CHeader");
-			Assert.NotNull (UTType.CPlusPlusHeader, "CPlusPlusHeader");
-			Assert.NotNull (UTType.JavaSource, "JavaSource");
+			ClassicAssert.NotNull (UTType.Text, "Text");
+			ClassicAssert.NotNull (UTType.PlainText, "PlainText");
+			ClassicAssert.NotNull (UTType.UTF8PlainText, "UTF8PlainText");
+			ClassicAssert.NotNull (UTType.UTF16ExternalPlainText, "UTF16ExternalPlainText");
+			ClassicAssert.NotNull (UTType.UTF16PlainText, "UTF16PlainText");
+			ClassicAssert.NotNull (UTType.RTF, "RTF");
+			ClassicAssert.NotNull (UTType.HTML, "HTML");
+			ClassicAssert.NotNull (UTType.XML, "XML");
+			ClassicAssert.NotNull (UTType.SourceCode, "SourceCode");
+			ClassicAssert.NotNull (UTType.CSource, "CSource");
+			ClassicAssert.NotNull (UTType.ObjectiveCSource, "ObjectiveCSource");
+			ClassicAssert.NotNull (UTType.CPlusPlusSource, "CPlusPlusSource");
+			ClassicAssert.NotNull (UTType.ObjectiveCPlusPlusSource, "ObjectiveCPlusPlusSource");
+			ClassicAssert.NotNull (UTType.CHeader, "CHeader");
+			ClassicAssert.NotNull (UTType.CPlusPlusHeader, "CPlusPlusHeader");
+			ClassicAssert.NotNull (UTType.JavaSource, "JavaSource");
 
-			Assert.NotNull (UTType.PDF, "PDF");
-			Assert.NotNull (UTType.RTFD, "RTFD");
-			Assert.NotNull (UTType.FlatRTFD, "FlatRTFD");
-			Assert.NotNull (UTType.TXNTextAndMultimediaData, "TXNTextAndMultimediaData");
-			Assert.NotNull (UTType.WebArchive, "WebArchive");
+			ClassicAssert.NotNull (UTType.PDF, "PDF");
+			ClassicAssert.NotNull (UTType.RTFD, "RTFD");
+			ClassicAssert.NotNull (UTType.FlatRTFD, "FlatRTFD");
+			ClassicAssert.NotNull (UTType.TXNTextAndMultimediaData, "TXNTextAndMultimediaData");
+			ClassicAssert.NotNull (UTType.WebArchive, "WebArchive");
 
-			Assert.NotNull (UTType.Image, "Image");
-			Assert.NotNull (UTType.JPEG, "JPEG");
-			Assert.NotNull (UTType.JPEG2000, "JPEG2000");
-			Assert.NotNull (UTType.TIFF, "TIFF");
-			Assert.NotNull (UTType.GIF, "GIF");
-			Assert.NotNull (UTType.PNG, "PNG");
-			Assert.NotNull (UTType.QuickTimeImage, "QuickTimeImage");
-			Assert.NotNull (UTType.AppleICNS, "AppleICNS");
-			Assert.NotNull (UTType.BMP, "BMP");
-			Assert.NotNull (UTType.ICO, "ICO");
+			ClassicAssert.NotNull (UTType.Image, "Image");
+			ClassicAssert.NotNull (UTType.JPEG, "JPEG");
+			ClassicAssert.NotNull (UTType.JPEG2000, "JPEG2000");
+			ClassicAssert.NotNull (UTType.TIFF, "TIFF");
+			ClassicAssert.NotNull (UTType.GIF, "GIF");
+			ClassicAssert.NotNull (UTType.PNG, "PNG");
+			ClassicAssert.NotNull (UTType.QuickTimeImage, "QuickTimeImage");
+			ClassicAssert.NotNull (UTType.AppleICNS, "AppleICNS");
+			ClassicAssert.NotNull (UTType.BMP, "BMP");
+			ClassicAssert.NotNull (UTType.ICO, "ICO");
 
-			Assert.NotNull (UTType.AudiovisualContent, "AudiovisualContent");
-			Assert.NotNull (UTType.Movie, "Movie");
-			Assert.NotNull (UTType.Video, "Video");
-			Assert.NotNull (UTType.Audio, "Audio");
-			Assert.NotNull (UTType.QuickTimeMovie, "QuickTimeMovie");
-			Assert.NotNull (UTType.MPEG, "MPEG");
-			Assert.NotNull (UTType.MPEG4, "MPEG4");
-			Assert.NotNull (UTType.MP3, "MP3");
-			Assert.NotNull (UTType.MPEG4Audio, "MPEG4Audio");
-			Assert.NotNull (UTType.AppleProtectedMPEG4Audio, "AppleProtectedMPEG4Audio");
+			ClassicAssert.NotNull (UTType.AudiovisualContent, "AudiovisualContent");
+			ClassicAssert.NotNull (UTType.Movie, "Movie");
+			ClassicAssert.NotNull (UTType.Video, "Video");
+			ClassicAssert.NotNull (UTType.Audio, "Audio");
+			ClassicAssert.NotNull (UTType.QuickTimeMovie, "QuickTimeMovie");
+			ClassicAssert.NotNull (UTType.MPEG, "MPEG");
+			ClassicAssert.NotNull (UTType.MPEG4, "MPEG4");
+			ClassicAssert.NotNull (UTType.MP3, "MP3");
+			ClassicAssert.NotNull (UTType.MPEG4Audio, "MPEG4Audio");
+			ClassicAssert.NotNull (UTType.AppleProtectedMPEG4Audio, "AppleProtectedMPEG4Audio");
 
-			Assert.NotNull (UTType.Folder, "Folder");
-			Assert.NotNull (UTType.Volume, "Volume");
-			Assert.NotNull (UTType.Package, "Package");
-			Assert.NotNull (UTType.Bundle, "Bundle");
-			Assert.NotNull (UTType.Framework, "Framework");
+			ClassicAssert.NotNull (UTType.Folder, "Folder");
+			ClassicAssert.NotNull (UTType.Volume, "Volume");
+			ClassicAssert.NotNull (UTType.Package, "Package");
+			ClassicAssert.NotNull (UTType.Bundle, "Bundle");
+			ClassicAssert.NotNull (UTType.Framework, "Framework");
 
-			Assert.NotNull (UTType.ApplicationBundle, "ApplicationBundle");
-			Assert.NotNull (UTType.ApplicationFile, "ApplicationFile");
+			ClassicAssert.NotNull (UTType.ApplicationBundle, "ApplicationBundle");
+			ClassicAssert.NotNull (UTType.ApplicationFile, "ApplicationFile");
 
-			Assert.NotNull (UTType.VCard, "VCard");
+			ClassicAssert.NotNull (UTType.VCard, "VCard");
 
-			Assert.NotNull (UTType.InkText, "InkText");
+			ClassicAssert.NotNull (UTType.InkText, "InkText");
 
 			if (TestRuntime.CheckXcodeVersion (7, 0))
-				Assert.NotNull (UTType.SwiftSource, "SwiftSource");
+				ClassicAssert.NotNull (UTType.SwiftSource, "SwiftSource");
 		}
 
 		[Test]
@@ -119,7 +119,7 @@ namespace MonoTouchFixtures.MobileCoreServices {
 			// so just skip this test for the simulator.
 			TestRuntime.AssertIfSimulatorThenARM64 ();
 
-			Assert.NotNull (UTType.GetPreferredTag (UTType.PDF, UTType.TagClassFilenameExtension), "GetPreferredTag");
+			ClassicAssert.NotNull (UTType.GetPreferredTag (UTType.PDF, UTType.TagClassFilenameExtension), "GetPreferredTag");
 		}
 
 		[Test]
@@ -129,7 +129,7 @@ namespace MonoTouchFixtures.MobileCoreServices {
 			// so just skip this test for the simulator.
 			TestRuntime.AssertIfSimulatorThenARM64 ();
 
-			Assert.NotNull (UTType.GetDeclaration (UTType.PDF));
+			ClassicAssert.NotNull (UTType.GetDeclaration (UTType.PDF));
 		}
 
 		[Test]
@@ -139,7 +139,7 @@ namespace MonoTouchFixtures.MobileCoreServices {
 			// so just skip this test for the simulator.
 			TestRuntime.AssertIfSimulatorThenARM64 ();
 
-			Assert.NotNull (UTType.GetDeclaringBundleUrl (UTType.PDF));
+			ClassicAssert.NotNull (UTType.GetDeclaringBundleUrl (UTType.PDF));
 		}
 
 		[Test]
@@ -154,7 +154,7 @@ namespace MonoTouchFixtures.MobileCoreServices {
 			for (int i = 0; i < 100; i++) {
 				foreach (var ext in extensions) {
 					var result = UTType.CreatePreferredIdentifier (UTType.TagClassMIMEType, ext, null);
-					Assert.NotNull (result, ext + i.ToString ());
+					ClassicAssert.NotNull (result, ext + i.ToString ());
 				}
 			}
 		}
@@ -162,10 +162,10 @@ namespace MonoTouchFixtures.MobileCoreServices {
 		[Test]
 		public void Equals ()
 		{
-			Assert.True (UTType.Equals (null, null), "null-null");
-			Assert.False (UTType.Equals (null, UTType.PDF), "null-PDF");
-			Assert.False (UTType.Equals (UTType.PDF, null), "PDF-null");
-			Assert.True (UTType.Equals (UTType.PDF, UTType.PDF), "PDF-PDF");
+			ClassicAssert.True (UTType.Equals (null, null), "null-null");
+			ClassicAssert.False (UTType.Equals (null, UTType.PDF), "null-PDF");
+			ClassicAssert.False (UTType.Equals (UTType.PDF, null), "PDF-null");
+			ClassicAssert.True (UTType.Equals (UTType.PDF, UTType.PDF), "PDF-PDF");
 		}
 
 		[Test]
@@ -174,7 +174,7 @@ namespace MonoTouchFixtures.MobileCoreServices {
 			TestRuntime.AssertIfSimulatorThenARM64 ();
 
 			var result = UTType.CreateAllIdentifiers (UTType.TagClassFilenameExtension, "pdf", null);
-			Assert.NotNull (result, "result");
+			ClassicAssert.NotNull (result, "result");
 			Assert.That (result.Length, Is.GreaterThan (0), "Length");
 		}
 
@@ -184,7 +184,7 @@ namespace MonoTouchFixtures.MobileCoreServices {
 			TestRuntime.AssertIfSimulatorThenARM64 ();
 
 			var result = UTType.CopyAllTags (UTType.PDF, UTType.TagClassFilenameExtension);
-			Assert.NotNull (result, "result");
+			ClassicAssert.NotNull (result, "result");
 			Assert.That (result.Length, Is.GreaterThan (0), "Length");
 		}
 
@@ -194,7 +194,7 @@ namespace MonoTouchFixtures.MobileCoreServices {
 			TestRuntime.AssertIfSimulatorThenARM64 ();
 
 			var result = UTType.GetDescription (UTType.PDF);
-			Assert.NotNull (result, "result");
+			ClassicAssert.NotNull (result, "result");
 			Assert.That (result.Length, Is.GreaterThan (0), "Length");
 		}
 	}

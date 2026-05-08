@@ -20,7 +20,7 @@ namespace MonoTouchFixtures.GameKit {
 		{
 			TestRuntime.AssertXcodeVersion (12, 0);
 			using var controller = new GKGameCenterViewController ("achievementId");
-			Assert.AreEqual (controller.ViewState, GKGameCenterViewControllerState.Achievements, "ViewState");
+			ClassicAssert.AreEqual (controller.ViewState, GKGameCenterViewControllerState.Achievements, "ViewState");
 		}
 
 		[Test]
@@ -28,7 +28,7 @@ namespace MonoTouchFixtures.GameKit {
 		{
 			TestRuntime.AssertXcodeVersion (12, 0);
 			using var controller = new GKGameCenterViewController ("achievementId", GKGameCenterViewControllerInitializationOption.Achievement);
-			Assert.AreEqual (controller.ViewState, GKGameCenterViewControllerState.Achievements, "ViewState");
+			ClassicAssert.AreEqual (controller.ViewState, GKGameCenterViewControllerState.Achievements, "ViewState");
 		}
 
 		[Test]
@@ -36,7 +36,7 @@ namespace MonoTouchFixtures.GameKit {
 		{
 			TestRuntime.AssertXcodeVersion (16, 0);
 			using var controller = new GKGameCenterViewController ("achievementId", GKGameCenterViewControllerInitializationOption.LeaderboardSet);
-			Assert.AreEqual (controller.ViewState, GKGameCenterViewControllerState.Leaderboards, "ViewState");
+			ClassicAssert.AreEqual (controller.ViewState, GKGameCenterViewControllerState.Leaderboards, "ViewState");
 		}
 	}
 }

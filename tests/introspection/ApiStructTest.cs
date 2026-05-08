@@ -44,7 +44,7 @@ namespace Introspection {
 				}
 			}
 
-			Assert.AreEqual (0, totalErrors,
+			ClassicAssert.AreEqual (0, totalErrors,
 				"{0} errors found in {1} structures validated",
 				totalErrors, totalStructs);
 		}

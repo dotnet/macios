@@ -37,7 +37,7 @@ namespace MonoTouchFixtures.AddressBook {
 
 			NSError err;
 			var ab = ABAddressBook.Create (out err);
-			Assert.IsNotNull (ab, "#1");
+			ClassicAssert.IsNotNull (ab, "#1");
 
 			var people = ab.GetPeople ();
 			if (people.Length < 1) {
@@ -60,7 +60,7 @@ namespace MonoTouchFixtures.AddressBook {
 			multi.Value = addr;
 			p.SetAddresses (mutable);
 
-			Assert.IsTrue (ab.HasUnsavedChanges);
+			ClassicAssert.IsTrue (ab.HasUnsavedChanges);
 			ab.Save ();
 		}
 
@@ -69,7 +69,7 @@ namespace MonoTouchFixtures.AddressBook {
 		{
 			TestRuntime.CheckAddressBookPermission ();
 			var name = ABPerson.LocalizedPropertyName (ABPersonProperty.FirstName);
-			Assert.NotNull (name, "name");
+			ClassicAssert.NotNull (name, "name");
 			Assert.That (name.Length, Is.GreaterThan (0), "Length");
 		}
 
@@ -79,7 +79,7 @@ namespace MonoTouchFixtures.AddressBook {
 			TestRuntime.CheckAddressBookPermission ();
 			// Use the underlying integer ID for ABPersonProperty.LastName (1)
 			var name = ABPerson.LocalizedPropertyName (1);
-			Assert.NotNull (name, "name");
+			ClassicAssert.NotNull (name, "name");
 			Assert.That (name.Length, Is.GreaterThan (0), "Length");
 		}
 
@@ -91,7 +91,7 @@ namespace MonoTouchFixtures.AddressBook {
 				person.FirstName = "Test";
 				person.LastName = "Person";
 				var str = person.ToString ();
-				Assert.NotNull (str, "ToString");
+				ClassicAssert.NotNull (str, "ToString");
 			}
 		}
 
@@ -100,9 +100,9 @@ namespace MonoTouchFixtures.AddressBook {
 		{
 			TestRuntime.CheckAddressBookPermission ();
 			using (var person = new ABPerson ()) {
-				Assert.IsFalse (person.HasImage, "HasImage");
-				Assert.IsNull (person.Image, "Image");
-				Assert.IsNull (person.GetImage (ABPersonImageFormat.Thumbnail), "GetImage");
+				ClassicAssert.IsFalse (person.HasImage, "HasImage");
+				ClassicAssert.IsNull (person.Image, "Image");
+				ClassicAssert.IsNull (person.GetImage (ABPersonImageFormat.Thumbnail), "GetImage");
 			}
 		}
 
@@ -113,7 +113,7 @@ namespace MonoTouchFixtures.AddressBook {
 			using (var person = new ABPerson ()) {
 				var linked = person.GetLinkedPeople ();
 				// A new person not in the address book may return null or empty
-				Assert.IsTrue (linked is null || linked.Length >= 0, "GetLinkedPeople");
+				ClassicAssert.IsTrue (linked is null || linked.Length >= 0, "GetLinkedPeople");
 			}
 		}
 
@@ -124,7 +124,7 @@ namespace MonoTouchFixtures.AddressBook {
 			var vcard = "BEGIN:VCARD\nVERSION:3.0\nFN:Test Person\nN:Person;Test;;;\nEND:VCARD\n";
 			using (var data = NSData.FromString (vcard)) {
 				var people = ABPerson.CreateFromVCard (null, data);
-				Assert.NotNull (people, "people");
+				ClassicAssert.NotNull (people, "people");
 				Assert.That (people.Length, Is.GreaterThan (0), "Length");
 			}
 		}
@@ -135,7 +135,7 @@ namespace MonoTouchFixtures.AddressBook {
 			TestRuntime.CheckAddressBookPermission ();
 			using (var person = new ABPerson ()) {
 				person.FirstName = "TestFirst";
-				Assert.AreEqual ("TestFirst", person.FirstName, "FirstName");
+				ClassicAssert.AreEqual ("TestFirst", person.FirstName, "FirstName");
 			}
 		}
 
@@ -150,7 +150,7 @@ namespace MonoTouchFixtures.AddressBook {
 
 				var allPhones = person.GetPhones ();
 				Assert.That (allPhones.Count, Is.GreaterThan (0), "Count");
-				Assert.NotNull (allPhones [0].Label, "Label");
+				ClassicAssert.NotNull (allPhones [0].Label, "Label");
 			}
 		}
 
@@ -166,7 +166,7 @@ namespace MonoTouchFixtures.AddressBook {
 
 				var allPhones = person.GetPhones ();
 				var values = allPhones.GetValues ();
-				Assert.NotNull (values, "values");
+				ClassicAssert.NotNull (values, "values");
 				Assert.That (values.Length, Is.EqualTo (2), "Length");
 			}
 		}

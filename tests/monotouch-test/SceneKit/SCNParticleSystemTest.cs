@@ -29,8 +29,8 @@ namespace MonoTouchFixtures.SceneKit {
 		public void Create ()
 		{
 			using (var ps = SCNParticleSystem.Create ()) {
-				Assert.IsNotNull (ps, "Create should return non-null");
-				Assert.AreNotEqual (IntPtr.Zero, ps.Handle, "Handle should not be zero");
+				ClassicAssert.IsNotNull (ps, "Create should return non-null");
+				ClassicAssert.AreNotEqual (IntPtr.Zero, ps.Handle, "Handle should not be zero");
 			}
 		}
 
@@ -44,7 +44,7 @@ namespace MonoTouchFixtures.SceneKit {
 		public void CreateNamed_InvalidName ()
 		{
 			var ps = SCNParticleSystem.Create ("nonexistent", null);
-			Assert.IsNull (ps, "Create with invalid name should return null");
+			ClassicAssert.IsNull (ps, "Create with invalid name should return null");
 		}
 
 		[Test]
@@ -52,7 +52,7 @@ namespace MonoTouchFixtures.SceneKit {
 		{
 			var ps = SCNParticleSystem.Create ("test", null);
 			// Should not throw, just return null if not found
-			Assert.IsNull (ps, "Create with null directory should return null if not found");
+			ClassicAssert.IsNull (ps, "Create with null directory should return null if not found");
 		}
 
 		[Test]
@@ -63,7 +63,7 @@ namespace MonoTouchFixtures.SceneKit {
 				// PropertyControllers can be null initially
 				// If not null, verify it's a valid object
 				if (controllers is not null) {
-					Assert.IsNotNull (controllers, "PropertyControllers should be non-null or null");
+					ClassicAssert.IsNotNull (controllers, "PropertyControllers should be non-null or null");
 				}
 			}
 		}
@@ -73,7 +73,7 @@ namespace MonoTouchFixtures.SceneKit {
 		{
 			using (var ps = SCNParticleSystem.Create ()) {
 				ps.PropertyControllers = null;
-				Assert.IsNull (ps.PropertyControllers, "PropertyControllers should be null after setting to null");
+				ClassicAssert.IsNull (ps.PropertyControllers, "PropertyControllers should be null after setting to null");
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace MonoTouchFixtures.SceneKit {
 			using (var ps = SCNParticleSystem.Create ()) {
 				var controllers = new SCNPropertyControllers ();
 				ps.PropertyControllers = controllers;
-				Assert.IsNotNull (ps.PropertyControllers, "PropertyControllers should be non-null after setting");
+				ClassicAssert.IsNotNull (ps.PropertyControllers, "PropertyControllers should be non-null after setting");
 			}
 		}
 
@@ -91,231 +91,231 @@ namespace MonoTouchFixtures.SceneKit {
 		public void PropertyControllers_EmptyConstructor ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNotNull (controllers, "Empty constructor should create valid object");
+			ClassicAssert.IsNotNull (controllers, "Empty constructor should create valid object");
 		}
 
 		[Test]
 		public void PropertyControllers_Position ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.Position, "Position should be null initially");
+			ClassicAssert.IsNull (controllers.Position, "Position should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.Position = controller;
-				Assert.IsNotNull (controllers.Position, "Position should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.Position, "Position should be non-null after setting");
 			}
 
 			controllers.Position = null;
-			Assert.IsNull (controllers.Position, "Position should be null after setting to null");
+			ClassicAssert.IsNull (controllers.Position, "Position should be null after setting to null");
 		}
 
 		[Test]
 		public void PropertyControllers_Angle ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.Angle, "Angle should be null initially");
+			ClassicAssert.IsNull (controllers.Angle, "Angle should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.Angle = controller;
-				Assert.IsNotNull (controllers.Angle, "Angle should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.Angle, "Angle should be non-null after setting");
 			}
 
 			controllers.Angle = null;
-			Assert.IsNull (controllers.Angle, "Angle should be null after setting to null");
+			ClassicAssert.IsNull (controllers.Angle, "Angle should be null after setting to null");
 		}
 
 		[Test]
 		public void PropertyControllers_RotationAxis ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.RotationAxis, "RotationAxis should be null initially");
+			ClassicAssert.IsNull (controllers.RotationAxis, "RotationAxis should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.RotationAxis = controller;
-				Assert.IsNotNull (controllers.RotationAxis, "RotationAxis should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.RotationAxis, "RotationAxis should be non-null after setting");
 			}
 
 			controllers.RotationAxis = null;
-			Assert.IsNull (controllers.RotationAxis, "RotationAxis should be null after setting to null");
+			ClassicAssert.IsNull (controllers.RotationAxis, "RotationAxis should be null after setting to null");
 		}
 
 		[Test]
 		public void PropertyControllers_Velocity ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.Velocity, "Velocity should be null initially");
+			ClassicAssert.IsNull (controllers.Velocity, "Velocity should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.Velocity = controller;
-				Assert.IsNotNull (controllers.Velocity, "Velocity should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.Velocity, "Velocity should be non-null after setting");
 			}
 
 			controllers.Velocity = null;
-			Assert.IsNull (controllers.Velocity, "Velocity should be null after setting to null");
+			ClassicAssert.IsNull (controllers.Velocity, "Velocity should be null after setting to null");
 		}
 
 		[Test]
 		public void PropertyControllers_AngularVelocity ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.AngularVelocity, "AngularVelocity should be null initially");
+			ClassicAssert.IsNull (controllers.AngularVelocity, "AngularVelocity should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.AngularVelocity = controller;
-				Assert.IsNotNull (controllers.AngularVelocity, "AngularVelocity should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.AngularVelocity, "AngularVelocity should be non-null after setting");
 			}
 
 			controllers.AngularVelocity = null;
-			Assert.IsNull (controllers.AngularVelocity, "AngularVelocity should be null after setting to null");
+			ClassicAssert.IsNull (controllers.AngularVelocity, "AngularVelocity should be null after setting to null");
 		}
 
 		[Test]
 		public void PropertyControllers_Life ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.Life, "Life should be null initially");
+			ClassicAssert.IsNull (controllers.Life, "Life should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.Life = controller;
-				Assert.IsNotNull (controllers.Life, "Life should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.Life, "Life should be non-null after setting");
 			}
 
 			controllers.Life = null;
-			Assert.IsNull (controllers.Life, "Life should be null after setting to null");
+			ClassicAssert.IsNull (controllers.Life, "Life should be null after setting to null");
 		}
 
 		[Test]
 		public void PropertyControllers_Color ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.Color, "Color should be null initially");
+			ClassicAssert.IsNull (controllers.Color, "Color should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.Color = controller;
-				Assert.IsNotNull (controllers.Color, "Color should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.Color, "Color should be non-null after setting");
 			}
 
 			controllers.Color = null;
-			Assert.IsNull (controllers.Color, "Color should be null after setting to null");
+			ClassicAssert.IsNull (controllers.Color, "Color should be null after setting to null");
 		}
 
 		[Test]
 		public void PropertyControllers_Opacity ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.Opacity, "Opacity should be null initially");
+			ClassicAssert.IsNull (controllers.Opacity, "Opacity should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.Opacity = controller;
-				Assert.IsNotNull (controllers.Opacity, "Opacity should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.Opacity, "Opacity should be non-null after setting");
 			}
 
 			controllers.Opacity = null;
-			Assert.IsNull (controllers.Opacity, "Opacity should be null after setting to null");
+			ClassicAssert.IsNull (controllers.Opacity, "Opacity should be null after setting to null");
 		}
 
 		[Test]
 		public void PropertyControllers_Size ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.Size, "Size should be null initially");
+			ClassicAssert.IsNull (controllers.Size, "Size should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.Size = controller;
-				Assert.IsNotNull (controllers.Size, "Size should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.Size, "Size should be non-null after setting");
 			}
 
 			controllers.Size = null;
-			Assert.IsNull (controllers.Size, "Size should be null after setting to null");
+			ClassicAssert.IsNull (controllers.Size, "Size should be null after setting to null");
 		}
 
 		[Test]
 		public void PropertyControllers_Frame ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.Frame, "Frame should be null initially");
+			ClassicAssert.IsNull (controllers.Frame, "Frame should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.Frame = controller;
-				Assert.IsNotNull (controllers.Frame, "Frame should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.Frame, "Frame should be non-null after setting");
 			}
 
 			controllers.Frame = null;
-			Assert.IsNull (controllers.Frame, "Frame should be null after setting to null");
+			ClassicAssert.IsNull (controllers.Frame, "Frame should be null after setting to null");
 		}
 
 		[Test]
 		public void PropertyControllers_FrameRate ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.FrameRate, "FrameRate should be null initially");
+			ClassicAssert.IsNull (controllers.FrameRate, "FrameRate should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.FrameRate = controller;
-				Assert.IsNotNull (controllers.FrameRate, "FrameRate should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.FrameRate, "FrameRate should be non-null after setting");
 			}
 
 			controllers.FrameRate = null;
-			Assert.IsNull (controllers.FrameRate, "FrameRate should be null after setting to null");
+			ClassicAssert.IsNull (controllers.FrameRate, "FrameRate should be null after setting to null");
 		}
 
 		[Test]
 		public void PropertyControllers_Bounce ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.Bounce, "Bounce should be null initially");
+			ClassicAssert.IsNull (controllers.Bounce, "Bounce should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.Bounce = controller;
-				Assert.IsNotNull (controllers.Bounce, "Bounce should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.Bounce, "Bounce should be non-null after setting");
 			}
 
 			controllers.Bounce = null;
-			Assert.IsNull (controllers.Bounce, "Bounce should be null after setting to null");
+			ClassicAssert.IsNull (controllers.Bounce, "Bounce should be null after setting to null");
 		}
 
 		[Test]
 		public void PropertyControllers_Charge ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.Charge, "Charge should be null initially");
+			ClassicAssert.IsNull (controllers.Charge, "Charge should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.Charge = controller;
-				Assert.IsNotNull (controllers.Charge, "Charge should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.Charge, "Charge should be non-null after setting");
 			}
 
 			controllers.Charge = null;
-			Assert.IsNull (controllers.Charge, "Charge should be null after setting to null");
+			ClassicAssert.IsNull (controllers.Charge, "Charge should be null after setting to null");
 		}
 
 		[Test]
 		public void PropertyControllers_Friction ()
 		{
 			var controllers = new SCNPropertyControllers ();
-			Assert.IsNull (controllers.Friction, "Friction should be null initially");
+			ClassicAssert.IsNull (controllers.Friction, "Friction should be null initially");
 
 			using (var animation = CAAnimation.CreateAnimation ())
 			using (var controller = SCNParticlePropertyController.Create (animation)) {
 				controllers.Friction = controller;
-				Assert.IsNotNull (controllers.Friction, "Friction should be non-null after setting");
+				ClassicAssert.IsNotNull (controllers.Friction, "Friction should be non-null after setting");
 			}
 
 			controllers.Friction = null;
-			Assert.IsNull (controllers.Friction, "Friction should be null after setting to null");
+			ClassicAssert.IsNull (controllers.Friction, "Friction should be null after setting to null");
 		}
 
 		[Test]
@@ -331,9 +331,9 @@ namespace MonoTouchFixtures.SceneKit {
 				controllers.Color = colorController;
 				controllers.Size = sizeController;
 
-				Assert.IsNotNull (controllers.Position, "Position should be set");
-				Assert.IsNotNull (controllers.Color, "Color should be set");
-				Assert.IsNotNull (controllers.Size, "Size should be set");
+				ClassicAssert.IsNotNull (controllers.Position, "Position should be set");
+				ClassicAssert.IsNotNull (controllers.Color, "Color should be set");
+				ClassicAssert.IsNotNull (controllers.Size, "Size should be set");
 			}
 		}
 
@@ -346,13 +346,13 @@ namespace MonoTouchFixtures.SceneKit {
 			using (var controller1 = SCNParticlePropertyController.Create (animation))
 			using (var controller2 = SCNParticlePropertyController.Create (animation)) {
 				controllers.Position = controller1;
-				Assert.IsNotNull (controllers.Position, "Position should be set to first controller");
+				ClassicAssert.IsNotNull (controllers.Position, "Position should be set to first controller");
 
 				controllers.Position = controller2;
-				Assert.IsNotNull (controllers.Position, "Position should be set to second controller");
+				ClassicAssert.IsNotNull (controllers.Position, "Position should be set to second controller");
 
 				controllers.Position = null;
-				Assert.IsNull (controllers.Position, "Position should be null after clearing");
+				ClassicAssert.IsNull (controllers.Position, "Position should be null after clearing");
 			}
 		}
 
@@ -380,13 +380,13 @@ namespace MonoTouchFixtures.SceneKit {
 		{
 			using (var ps = SCNParticleSystem.Create ()) {
 				var keys = ps.GetAnimationKeys ();
-				Assert.IsNotNull (keys, "GetAnimationKeys should return non-null");
-				Assert.AreEqual (0, keys.Length, "Should have no animation keys initially");
+				ClassicAssert.IsNotNull (keys, "GetAnimationKeys should return non-null");
+				ClassicAssert.AreEqual (0, keys.Length, "Should have no animation keys initially");
 
 				using (var animation = CAAnimation.CreateAnimation ()) {
 					ps.AddAnimation (animation, "key1");
 					keys = ps.GetAnimationKeys ();
-					Assert.AreEqual (1, keys.Length, "Should have one animation key");
+					ClassicAssert.AreEqual (1, keys.Length, "Should have one animation key");
 				}
 			}
 		}
@@ -399,11 +399,11 @@ namespace MonoTouchFixtures.SceneKit {
 				ps.AddAnimation (animation, "key1");
 				ps.AddAnimation (animation, "key2");
 				var keys = ps.GetAnimationKeys ();
-				Assert.AreEqual (2, keys.Length, "Should have two animation keys");
+				ClassicAssert.AreEqual (2, keys.Length, "Should have two animation keys");
 
 				ps.RemoveAllAnimations ();
 				keys = ps.GetAnimationKeys ();
-				Assert.AreEqual (0, keys.Length, "Should have no animation keys after removal");
+				ClassicAssert.AreEqual (0, keys.Length, "Should have no animation keys after removal");
 			}
 		}
 
@@ -412,8 +412,8 @@ namespace MonoTouchFixtures.SceneKit {
 		{
 			using (var ps = SCNParticleSystem.Create ())
 			using (var copy = ps.Copy (null)) {
-				Assert.IsNotNull (copy, "Copy should return non-null");
-				Assert.AreNotEqual (ps.Handle, copy.Handle, "Copy should have different handle");
+				ClassicAssert.IsNotNull (copy, "Copy should return non-null");
+				ClassicAssert.AreNotEqual (ps.Handle, copy.Handle, "Copy should have different handle");
 			}
 		}
 
@@ -423,13 +423,13 @@ namespace MonoTouchFixtures.SceneKit {
 			using (var ps = SCNParticleSystem.Create ()) {
 				// Test encoding/decoding
 				var data = NSKeyedArchiver.GetArchivedData (ps, true, out var error);
-				Assert.IsNotNull (data, "Encoding should produce data");
-				Assert.IsNull (error, "Encoding should not produce error");
+				ClassicAssert.IsNotNull (data, "Encoding should produce data");
+				ClassicAssert.IsNull (error, "Encoding should not produce error");
 
 				var decoded = NSKeyedUnarchiver.GetUnarchivedObject (typeof (SCNParticleSystem), data, out error);
-				Assert.IsNotNull (decoded, "Decoding should produce object");
-				Assert.IsNull (error, "Decoding should not produce error");
-				Assert.IsInstanceOf<SCNParticleSystem> (decoded, "Decoded object should be SCNParticleSystem");
+				ClassicAssert.IsNotNull (decoded, "Decoding should produce object");
+				ClassicAssert.IsNull (error, "Decoding should not produce error");
+				ClassicAssert.IsInstanceOf<SCNParticleSystem> (decoded, "Decoded object should be SCNParticleSystem");
 			}
 		}
 
@@ -499,8 +499,8 @@ namespace MonoTouchFixtures.SceneKit {
 					ps.PropertyControllers = controllers;
 
 					var retrieved = ps.PropertyControllers;
-					Assert.IsNotNull (retrieved, "Retrieved PropertyControllers should not be null");
-					Assert.IsNotNull (retrieved.Position, "Retrieved Position controller should not be null");
+					ClassicAssert.IsNotNull (retrieved, "Retrieved PropertyControllers should not be null");
+					ClassicAssert.IsNotNull (retrieved.Position, "Retrieved Position controller should not be null");
 				}
 			}
 		}
@@ -517,20 +517,20 @@ namespace MonoTouchFixtures.SceneKit {
 				controllers.Velocity = controller;
 				controllers.Color = controller;
 
-				Assert.IsNotNull (controllers.Position, "Position should be set");
-				Assert.IsNotNull (controllers.Angle, "Angle should be set");
-				Assert.IsNotNull (controllers.Velocity, "Velocity should be set");
-				Assert.IsNotNull (controllers.Color, "Color should be set");
+				ClassicAssert.IsNotNull (controllers.Position, "Position should be set");
+				ClassicAssert.IsNotNull (controllers.Angle, "Angle should be set");
+				ClassicAssert.IsNotNull (controllers.Velocity, "Velocity should be set");
+				ClassicAssert.IsNotNull (controllers.Color, "Color should be set");
 
 				controllers.Position = null;
 				controllers.Angle = null;
 				controllers.Velocity = null;
 				controllers.Color = null;
 
-				Assert.IsNull (controllers.Position, "Position should be null");
-				Assert.IsNull (controllers.Angle, "Angle should be null");
-				Assert.IsNull (controllers.Velocity, "Velocity should be null");
-				Assert.IsNull (controllers.Color, "Color should be null");
+				ClassicAssert.IsNull (controllers.Position, "Position should be null");
+				ClassicAssert.IsNull (controllers.Angle, "Angle should be null");
+				ClassicAssert.IsNull (controllers.Velocity, "Velocity should be null");
+				ClassicAssert.IsNull (controllers.Color, "Color should be null");
 			}
 		}
 	}

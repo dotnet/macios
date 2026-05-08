@@ -19,20 +19,20 @@ namespace MonoTouchFixtures.CoreGraphics {
 		public void Ctor ()
 		{
 			var transform = new CGAffineTransform ();
-			Assert.AreEqual ((nfloat) 0, transform.A);
-			Assert.AreEqual ((nfloat) 0, transform.B);
-			Assert.AreEqual ((nfloat) 0, transform.C);
-			Assert.AreEqual ((nfloat) 0, transform.D);
-			Assert.AreEqual ((nfloat) 0, transform.Tx);
-			Assert.AreEqual ((nfloat) 0, transform.Ty);
+			ClassicAssert.AreEqual ((nfloat) 0, transform.A);
+			ClassicAssert.AreEqual ((nfloat) 0, transform.B);
+			ClassicAssert.AreEqual ((nfloat) 0, transform.C);
+			ClassicAssert.AreEqual ((nfloat) 0, transform.D);
+			ClassicAssert.AreEqual ((nfloat) 0, transform.Tx);
+			ClassicAssert.AreEqual ((nfloat) 0, transform.Ty);
 
 			transform = new CGAffineTransform (1, 2, 3, 4, 5, 6);
-			Assert.AreEqual ((nfloat) 1, transform.A);
-			Assert.AreEqual ((nfloat) 2, transform.B);
-			Assert.AreEqual ((nfloat) 3, transform.C);
-			Assert.AreEqual ((nfloat) 4, transform.D);
-			Assert.AreEqual ((nfloat) 5, transform.Tx);
-			Assert.AreEqual ((nfloat) 6, transform.Ty);
+			ClassicAssert.AreEqual ((nfloat) 1, transform.A);
+			ClassicAssert.AreEqual ((nfloat) 2, transform.B);
+			ClassicAssert.AreEqual ((nfloat) 3, transform.C);
+			ClassicAssert.AreEqual ((nfloat) 4, transform.D);
+			ClassicAssert.AreEqual ((nfloat) 5, transform.Tx);
+			ClassicAssert.AreEqual ((nfloat) 6, transform.Ty);
 		}
 
 		[Test]
@@ -40,14 +40,14 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			var transform = CGAffineTransform.MakeIdentity ();
 
-			Assert.AreEqual ((nfloat) 1, transform.A, "A");
-			Assert.AreEqual ((nfloat) 0, transform.B, "B");
-			Assert.AreEqual ((nfloat) 0, transform.C, "C");
-			Assert.AreEqual ((nfloat) 1, transform.D, "D");
-			Assert.AreEqual ((nfloat) 0, transform.Tx, "Tx");
-			Assert.AreEqual ((nfloat) 0, transform.Ty, "Ty");
+			ClassicAssert.AreEqual ((nfloat) 1, transform.A, "A");
+			ClassicAssert.AreEqual ((nfloat) 0, transform.B, "B");
+			ClassicAssert.AreEqual ((nfloat) 0, transform.C, "C");
+			ClassicAssert.AreEqual ((nfloat) 1, transform.D, "D");
+			ClassicAssert.AreEqual ((nfloat) 0, transform.Tx, "Tx");
+			ClassicAssert.AreEqual ((nfloat) 0, transform.Ty, "Ty");
 
-			Assert.IsTrue (transform.IsIdentity, "identity");
+			ClassicAssert.IsTrue (transform.IsIdentity, "identity");
 		}
 
 		[Test]
@@ -55,10 +55,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			var transform = CGAffineTransform.MakeRotation ((nfloat) Math.PI);
 
-			Assert.AreEqual ((nfloat) (-1), transform.A, "A");
+			ClassicAssert.AreEqual ((nfloat) (-1), transform.A, "A");
 			Assert.That ((double) 0, Is.EqualTo ((double) transform.B).Within (0.0000001), "B");
 			Assert.That ((double) 0, Is.EqualTo ((double) transform.C).Within (0.0000001), "C");
-			Assert.AreEqual ((nfloat) (-1), transform.D, "D");
+			ClassicAssert.AreEqual ((nfloat) (-1), transform.D, "D");
 			Assert.That ((double) 0, Is.EqualTo ((double) transform.Tx).Within (0.0000001), "Tx");
 			Assert.That ((double) 0, Is.EqualTo ((double) transform.Ty).Within (0.0000001), "Ty");
 		}
@@ -67,12 +67,12 @@ namespace MonoTouchFixtures.CoreGraphics {
 		public void MakeScale ()
 		{
 			var transform = CGAffineTransform.MakeScale (314, 413);
-			Assert.AreEqual ((nfloat) 314, transform.A);
-			Assert.AreEqual ((nfloat) 0, transform.B);
-			Assert.AreEqual ((nfloat) 0, transform.C);
-			Assert.AreEqual ((nfloat) 413, transform.D);
-			Assert.AreEqual ((nfloat) 0, transform.Tx);
-			Assert.AreEqual ((nfloat) 0, transform.Ty);
+			ClassicAssert.AreEqual ((nfloat) 314, transform.A);
+			ClassicAssert.AreEqual ((nfloat) 0, transform.B);
+			ClassicAssert.AreEqual ((nfloat) 0, transform.C);
+			ClassicAssert.AreEqual ((nfloat) 413, transform.D);
+			ClassicAssert.AreEqual ((nfloat) 0, transform.Tx);
+			ClassicAssert.AreEqual ((nfloat) 0, transform.Ty);
 		}
 
 		[Test]
@@ -80,12 +80,12 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			var transform = CGAffineTransform.MakeTranslation (12, 23);
 
-			Assert.AreEqual ((nfloat) 1, transform.A, "A");
-			Assert.AreEqual ((nfloat) 0, transform.B, "B");
-			Assert.AreEqual ((nfloat) 0, transform.C, "C");
-			Assert.AreEqual ((nfloat) 1, transform.D, "D");
-			Assert.AreEqual ((nfloat) 12, transform.Tx, "Tx");
-			Assert.AreEqual ((nfloat) 23, transform.Ty, "Ty");
+			ClassicAssert.AreEqual ((nfloat) 1, transform.A, "A");
+			ClassicAssert.AreEqual ((nfloat) 0, transform.B, "B");
+			ClassicAssert.AreEqual ((nfloat) 0, transform.C, "C");
+			ClassicAssert.AreEqual ((nfloat) 1, transform.D, "D");
+			ClassicAssert.AreEqual ((nfloat) 12, transform.Tx, "Tx");
+			ClassicAssert.AreEqual ((nfloat) 23, transform.Ty, "Ty");
 		}
 
 		[Test]
@@ -95,12 +95,12 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var transform = new CGAffineTransform (9, 8, 7, 6, 5, 4);
 			transform.Multiply (a);
 
-			Assert.AreEqual ((nfloat) 33, transform.A, "A");
-			Assert.AreEqual ((nfloat) 50, transform.B, "B");
-			Assert.AreEqual ((nfloat) 25, transform.C, "C");
-			Assert.AreEqual ((nfloat) 38, transform.D, "D");
-			Assert.AreEqual ((nfloat) 22, transform.Tx, "Tx");
-			Assert.AreEqual ((nfloat) 32, transform.Ty, "Ty");
+			ClassicAssert.AreEqual ((nfloat) 33, transform.A, "A");
+			ClassicAssert.AreEqual ((nfloat) 50, transform.B, "B");
+			ClassicAssert.AreEqual ((nfloat) 25, transform.C, "C");
+			ClassicAssert.AreEqual ((nfloat) 38, transform.D, "D");
+			ClassicAssert.AreEqual ((nfloat) 22, transform.Tx, "Tx");
+			ClassicAssert.AreEqual ((nfloat) 32, transform.Ty, "Ty");
 		}
 
 		[Test]
@@ -110,12 +110,12 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var b = new CGAffineTransform (9, 8, 7, 6, 5, 4);
 			var transform = CGAffineTransform.Multiply (a, b);
 
-			Assert.AreEqual ((nfloat) 23, transform.A, "A");
-			Assert.AreEqual ((nfloat) 20, transform.B, "B");
-			Assert.AreEqual ((nfloat) 55, transform.C, "C");
-			Assert.AreEqual ((nfloat) 48, transform.D, "D");
-			Assert.AreEqual ((nfloat) 92, transform.Tx, "Tx");
-			Assert.AreEqual ((nfloat) 80, transform.Ty, "Ty");
+			ClassicAssert.AreEqual ((nfloat) 23, transform.A, "A");
+			ClassicAssert.AreEqual ((nfloat) 20, transform.B, "B");
+			ClassicAssert.AreEqual ((nfloat) 55, transform.C, "C");
+			ClassicAssert.AreEqual ((nfloat) 48, transform.D, "D");
+			ClassicAssert.AreEqual ((nfloat) 92, transform.Tx, "Tx");
+			ClassicAssert.AreEqual ((nfloat) 80, transform.Ty, "Ty");
 		}
 		[Test]
 		public void Scale ()
@@ -124,23 +124,23 @@ namespace MonoTouchFixtures.CoreGraphics {
 			// t' = t * [ sx 0 0 sy 0 0 ]
 			transform1.Scale (3, 4); // MatrixOrder.Append by default
 
-			Assert.AreEqual ((nfloat) 3, transform1.A);
-			Assert.AreEqual ((nfloat) 0, transform1.B);
-			Assert.AreEqual ((nfloat) 0, transform1.C);
-			Assert.AreEqual ((nfloat) 4, transform1.D);
-			Assert.AreEqual ((nfloat) 3, transform1.Tx);
-			Assert.AreEqual ((nfloat) 8, transform1.Ty);
+			ClassicAssert.AreEqual ((nfloat) 3, transform1.A);
+			ClassicAssert.AreEqual ((nfloat) 0, transform1.B);
+			ClassicAssert.AreEqual ((nfloat) 0, transform1.C);
+			ClassicAssert.AreEqual ((nfloat) 4, transform1.D);
+			ClassicAssert.AreEqual ((nfloat) 3, transform1.Tx);
+			ClassicAssert.AreEqual ((nfloat) 8, transform1.Ty);
 
 			var transform2 = CGAffineTransform.MakeTranslation (1, 2);
 			// t' = [ sx 0 0 sy 0 0 ] * t – Swift equivalent
 			transform2.Scale (3, 4, MatrixOrder.Prepend);
 
-			Assert.AreEqual ((nfloat) 3, transform2.A);
-			Assert.AreEqual ((nfloat) 0, transform2.B);
-			Assert.AreEqual ((nfloat) 0, transform2.C);
-			Assert.AreEqual ((nfloat) 4, transform2.D);
-			Assert.AreEqual ((nfloat) 1, transform2.Tx);
-			Assert.AreEqual ((nfloat) 2, transform2.Ty);
+			ClassicAssert.AreEqual ((nfloat) 3, transform2.A);
+			ClassicAssert.AreEqual ((nfloat) 0, transform2.B);
+			ClassicAssert.AreEqual ((nfloat) 0, transform2.C);
+			ClassicAssert.AreEqual ((nfloat) 4, transform2.D);
+			ClassicAssert.AreEqual ((nfloat) 1, transform2.Tx);
+			ClassicAssert.AreEqual ((nfloat) 2, transform2.Ty);
 		}
 
 		[Test]
@@ -149,12 +149,12 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var transformM = CGAffineTransform.Scale (CGAffineTransform.MakeTranslation (0, 200), 1, -1);
 			var transformN = CGAffineTransformScale (CGAffineTransform.MakeTranslation (0, 200), 1, -1);
 
-			Assert.IsTrue (transformM == transformN, "1");
+			ClassicAssert.IsTrue (transformM == transformN, "1");
 
 			transformM = CGAffineTransform.Scale (CGAffineTransform.MakeTranslation (1, 2), -3, -4);
 			transformN = CGAffineTransformScale (CGAffineTransform.MakeTranslation (1, 2), -3, -4);
 
-			Assert.IsTrue (transformM == transformN, "2");
+			ClassicAssert.IsTrue (transformM == transformN, "2");
 		}
 
 		[DllImport (global::ObjCRuntime.Constants.CoreGraphicsLibrary)]
@@ -166,32 +166,32 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var transform = CGAffineTransform.MakeIdentity ();
 			transform.Translate (1, -1); // MatrixOrder.Append by default
 
-			Assert.AreEqual ((nfloat) 1, transform.A, "A");
-			Assert.AreEqual ((nfloat) 0, transform.B, "B");
-			Assert.AreEqual ((nfloat) 0, transform.C, "C");
-			Assert.AreEqual ((nfloat) 1, transform.D, "D");
-			Assert.AreEqual ((nfloat) 1, transform.Tx, "Tx");
-			Assert.AreEqual ((nfloat) (-1), transform.Ty, "Ty");
+			ClassicAssert.AreEqual ((nfloat) 1, transform.A, "A");
+			ClassicAssert.AreEqual ((nfloat) 0, transform.B, "B");
+			ClassicAssert.AreEqual ((nfloat) 0, transform.C, "C");
+			ClassicAssert.AreEqual ((nfloat) 1, transform.D, "D");
+			ClassicAssert.AreEqual ((nfloat) 1, transform.Tx, "Tx");
+			ClassicAssert.AreEqual ((nfloat) (-1), transform.Ty, "Ty");
 
 			transform = new CGAffineTransform (1, 2, 3, 4, 5, 6);
 			transform.Translate (2, -3);
 
-			Assert.AreEqual ((nfloat) 1, transform.A, "A");
-			Assert.AreEqual ((nfloat) 2, transform.B, "B");
-			Assert.AreEqual ((nfloat) 3, transform.C, "C");
-			Assert.AreEqual ((nfloat) 4, transform.D, "D");
-			Assert.AreEqual ((nfloat) 7, transform.Tx, "Tx");
-			Assert.AreEqual ((nfloat) 3, transform.Ty, "Ty");
+			ClassicAssert.AreEqual ((nfloat) 1, transform.A, "A");
+			ClassicAssert.AreEqual ((nfloat) 2, transform.B, "B");
+			ClassicAssert.AreEqual ((nfloat) 3, transform.C, "C");
+			ClassicAssert.AreEqual ((nfloat) 4, transform.D, "D");
+			ClassicAssert.AreEqual ((nfloat) 7, transform.Tx, "Tx");
+			ClassicAssert.AreEqual ((nfloat) 3, transform.Ty, "Ty");
 
 			transform = new CGAffineTransform (1, 2, 3, 4, 5, 6);
 			transform.Translate (2, -3, MatrixOrder.Prepend);
 
-			Assert.AreEqual ((nfloat) 1, transform.A, "A");
-			Assert.AreEqual ((nfloat) 2, transform.B, "B");
-			Assert.AreEqual ((nfloat) 3, transform.C, "C");
-			Assert.AreEqual ((nfloat) 4, transform.D, "D");
-			Assert.AreEqual ((nfloat) (-2), transform.Tx, "Tx");
-			Assert.AreEqual ((nfloat) (-2), transform.Ty, "Ty");
+			ClassicAssert.AreEqual ((nfloat) 1, transform.A, "A");
+			ClassicAssert.AreEqual ((nfloat) 2, transform.B, "B");
+			ClassicAssert.AreEqual ((nfloat) 3, transform.C, "C");
+			ClassicAssert.AreEqual ((nfloat) 4, transform.D, "D");
+			ClassicAssert.AreEqual ((nfloat) (-2), transform.Tx, "Tx");
+			ClassicAssert.AreEqual ((nfloat) (-2), transform.Ty, "Ty");
 		}
 
 		[Test]
@@ -201,25 +201,25 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var transformM = CGAffineTransform.Translate (origin, 1, -1);
 			var transformN = CGAffineTransformTranslate (origin, 1, -1);
 
-			Assert.AreEqual ((nfloat) 1, transformM.A, "A");
-			Assert.AreEqual ((nfloat) 0, transformM.B, "B");
-			Assert.AreEqual ((nfloat) 0, transformM.C, "C");
-			Assert.AreEqual ((nfloat) 1, transformM.D, "D");
-			Assert.AreEqual ((nfloat) 1, transformM.Tx, "Tx");
-			Assert.AreEqual ((nfloat) (-1), transformM.Ty, "Ty");
-			Assert.IsTrue (transformN == transformM);
+			ClassicAssert.AreEqual ((nfloat) 1, transformM.A, "A");
+			ClassicAssert.AreEqual ((nfloat) 0, transformM.B, "B");
+			ClassicAssert.AreEqual ((nfloat) 0, transformM.C, "C");
+			ClassicAssert.AreEqual ((nfloat) 1, transformM.D, "D");
+			ClassicAssert.AreEqual ((nfloat) 1, transformM.Tx, "Tx");
+			ClassicAssert.AreEqual ((nfloat) (-1), transformM.Ty, "Ty");
+			ClassicAssert.IsTrue (transformN == transformM);
 
 			origin = new CGAffineTransform (1, 2, 3, 4, 5, 6);
 			transformM = CGAffineTransform.Translate (origin, 2, -3);
 			transformN = CGAffineTransformTranslate (origin, 2, -3);
 
-			Assert.AreEqual ((nfloat) 1, transformM.A, "A");
-			Assert.AreEqual ((nfloat) 2, transformM.B, "B");
-			Assert.AreEqual ((nfloat) 3, transformM.C, "C");
-			Assert.AreEqual ((nfloat) 4, transformM.D, "D");
-			Assert.AreEqual ((nfloat) (-2), transformM.Tx, "Tx");
-			Assert.AreEqual ((nfloat) (-2), transformM.Ty, "Ty");
-			Assert.IsTrue (transformN == transformM);
+			ClassicAssert.AreEqual ((nfloat) 1, transformM.A, "A");
+			ClassicAssert.AreEqual ((nfloat) 2, transformM.B, "B");
+			ClassicAssert.AreEqual ((nfloat) 3, transformM.C, "C");
+			ClassicAssert.AreEqual ((nfloat) 4, transformM.D, "D");
+			ClassicAssert.AreEqual ((nfloat) (-2), transformM.Tx, "Tx");
+			ClassicAssert.AreEqual ((nfloat) (-2), transformM.Ty, "Ty");
+			ClassicAssert.IsTrue (transformN == transformM);
 		}
 
 		[DllImport (global::ObjCRuntime.Constants.CoreGraphicsLibrary)]
@@ -276,8 +276,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 		[Test]
 		public void IsIdentity ()
 		{
-			Assert.IsTrue (CGAffineTransform.MakeIdentity ().IsIdentity, "MakeIdentity");
-			Assert.IsFalse (new CGAffineTransform (1, 2, 3, 4, 5, 6).IsIdentity, "123456");
+			ClassicAssert.IsTrue (CGAffineTransform.MakeIdentity ().IsIdentity, "MakeIdentity");
+			ClassicAssert.IsFalse (new CGAffineTransform (1, 2, 3, 4, 5, 6).IsIdentity, "123456");
 		}
 
 		[Test]
@@ -286,8 +286,8 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var transform = new CGAffineTransform (1, 2, 3, 4, 5, 6);
 			var point = transform.TransformPoint (new CGPoint (4, 5));
 
-			Assert.AreEqual ((nfloat) 24, point.X, "X");
-			Assert.AreEqual ((nfloat) 34, point.Y, "Y");
+			ClassicAssert.AreEqual ((nfloat) 24, point.X, "X");
+			ClassicAssert.AreEqual ((nfloat) 34, point.Y, "Y");
 		}
 
 		[Test]
@@ -296,10 +296,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var transform = new CGAffineTransform (1, 2, 3, 4, 5, 6);
 			var rect = transform.TransformRect (new CGRect (4, 5, 6, 7));
 
-			Assert.AreEqual ((nfloat) 24, rect.X, "X");
-			Assert.AreEqual ((nfloat) 34, rect.Y, "Y");
-			Assert.AreEqual ((nfloat) 27, rect.Width, "Width");
-			Assert.AreEqual ((nfloat) 40, rect.Height, "Height");
+			ClassicAssert.AreEqual ((nfloat) 24, rect.X, "X");
+			ClassicAssert.AreEqual ((nfloat) 34, rect.Y, "Y");
+			ClassicAssert.AreEqual ((nfloat) 27, rect.Width, "Width");
+			ClassicAssert.AreEqual ((nfloat) 40, rect.Height, "Height");
 		}
 
 		[Test]
@@ -307,12 +307,12 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			var transform = new CGAffineTransform (1, 2, 3, 4, 5, 6).Invert ();
 
-			Assert.AreEqual ((nfloat) (-2), transform.A, "A");
-			Assert.AreEqual ((nfloat) 1, transform.B, "B");
-			Assert.AreEqual ((nfloat) 1.5, transform.C, "C");
-			Assert.AreEqual ((nfloat) (-0.5), transform.D, "D");
-			Assert.AreEqual ((nfloat) 1.0, transform.Tx, "Tx");
-			Assert.AreEqual ((nfloat) (-2.0), transform.Ty, "Ty");
+			ClassicAssert.AreEqual ((nfloat) (-2), transform.A, "A");
+			ClassicAssert.AreEqual ((nfloat) 1, transform.B, "B");
+			ClassicAssert.AreEqual ((nfloat) 1.5, transform.C, "C");
+			ClassicAssert.AreEqual ((nfloat) (-0.5), transform.D, "D");
+			ClassicAssert.AreEqual ((nfloat) 1.0, transform.Tx, "Tx");
+			ClassicAssert.AreEqual ((nfloat) (-2.0), transform.Ty, "Ty");
 		}
 
 		[Test]
@@ -321,10 +321,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 			TestRuntime.AssertXcodeVersion (14, 0);
 
 			var components = new CGAffineTransform (1, 2, 3, 4, 5, 6).Decompose ();
-			Assert.AreNotEqual (0.0, components.Scale);
-			Assert.AreNotEqual (0.0, components.HorizontalShear);
-			Assert.AreNotEqual (0.0, components.Rotation);
-			Assert.AreNotEqual (new CGVector ((nfloat) 0, (nfloat) 0), components.Translation);
+			ClassicAssert.AreNotEqual (0.0, components.Scale);
+			ClassicAssert.AreNotEqual (0.0, components.HorizontalShear);
+			ClassicAssert.AreNotEqual (0.0, components.Rotation);
+			ClassicAssert.AreNotEqual (new CGVector ((nfloat) 0, (nfloat) 0), components.Translation);
 		}
 
 		[Test]
@@ -339,12 +339,12 @@ namespace MonoTouchFixtures.CoreGraphics {
 				Translation = new CGVector ((nfloat) 5.0, (nfloat) 6.0),
 			};
 			var transform = CGAffineTransform.MakeWithComponents (components);
-			Assert.AreNotEqual (0.0, transform.A);
-			Assert.AreNotEqual (0.0, transform.B);
-			Assert.AreNotEqual (0.0, transform.C);
-			Assert.AreNotEqual (0.0, transform.D);
-			Assert.AreNotEqual (0.0, transform.Tx);
-			Assert.AreNotEqual (0.0, transform.Ty);
+			ClassicAssert.AreNotEqual (0.0, transform.A);
+			ClassicAssert.AreNotEqual (0.0, transform.B);
+			ClassicAssert.AreNotEqual (0.0, transform.C);
+			ClassicAssert.AreNotEqual (0.0, transform.D);
+			ClassicAssert.AreNotEqual (0.0, transform.Tx);
+			ClassicAssert.AreNotEqual (0.0, transform.Ty);
 		}
 
 		[Test]
@@ -354,26 +354,26 @@ namespace MonoTouchFixtures.CoreGraphics {
 			// looks simplistic but that NSValue logic is implemented by "us" on macOS
 			using (var nsv = NSValue.FromCGAffineTransform (transform)) {
 				var tback = nsv.CGAffineTransformValue;
-				Assert.AreEqual ((nfloat) 1, tback.A, "A");
-				Assert.AreEqual ((nfloat) 2, tback.B, "B");
-				Assert.AreEqual ((nfloat) 3, tback.C, "C");
-				Assert.AreEqual ((nfloat) 4, tback.D, "D");
-				Assert.AreEqual ((nfloat) 5, tback.Tx, "Tx");
-				Assert.AreEqual ((nfloat) 6, tback.Ty, "Ty");
+				ClassicAssert.AreEqual ((nfloat) 1, tback.A, "A");
+				ClassicAssert.AreEqual ((nfloat) 2, tback.B, "B");
+				ClassicAssert.AreEqual ((nfloat) 3, tback.C, "C");
+				ClassicAssert.AreEqual ((nfloat) 4, tback.D, "D");
+				ClassicAssert.AreEqual ((nfloat) 5, tback.Tx, "Tx");
+				ClassicAssert.AreEqual ((nfloat) 6, tback.Ty, "Ty");
 			}
 		}
 
 		[Test]
 		public unsafe void SizeOfTest ()
 		{
-			Assert.AreEqual (sizeof (CGAffineTransform), Marshal.SizeOf<CGAffineTransform> ());
+			ClassicAssert.AreEqual (sizeof (CGAffineTransform), Marshal.SizeOf<CGAffineTransform> ());
 		}
 
 		[Test]
 		public void ToStringTest ()
 		{
 			var transform = new CGAffineTransform ((nfloat) 1, (nfloat) 2, (nfloat) 3, (nfloat) 4, (nfloat) 5, (nfloat) 6);
-			Assert.AreEqual ("[1, 2, 3, 4, 5, 6]", transform.ToString (), "ToString");
+			ClassicAssert.AreEqual ("[1, 2, 3, 4, 5, 6]", transform.ToString (), "ToString");
 		}
 	}
 

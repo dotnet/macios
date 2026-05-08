@@ -25,7 +25,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 					Console.WriteLine ("Inside dispatch");
 				});
 
-				Assert.IsTrue (dg.Wait (DispatchTime.Forever));
+				ClassicAssert.IsTrue (dg.Wait (DispatchTime.Forever));
 				dq.Dispose ();
 			}
 		}
@@ -35,9 +35,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			using (var dg = DispatchGroup.Create ()) {
 				dg.Enter ();
-				Assert.IsFalse (dg.Wait (new DispatchTime (1000 * 1000 * 1000)), "#1");
+				ClassicAssert.IsFalse (dg.Wait (new DispatchTime (1000 * 1000 * 1000)), "#1");
 				dg.Leave ();
-				Assert.IsTrue (dg.Wait (DispatchTime.Forever), "#2");
+				ClassicAssert.IsTrue (dg.Wait (DispatchTime.Forever), "#2");
 			}
 		}
 
@@ -53,7 +53,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 				using (var block = new DispatchBlock (callback)) {
 					dg.Notify (DispatchQueue.MainQueue, block);
 					TestRuntime.RunAsync (TimeSpan.FromSeconds (5), () => { }, () => called);
-					Assert.IsTrue (called, "Called");
+					ClassicAssert.IsTrue (called, "Called");
 				}
 			}
 		}
@@ -66,7 +66,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 				var callback = new Action (() => called = true);
 				dg.Notify (DispatchQueue.MainQueue, callback);
 				TestRuntime.RunAsync (TimeSpan.FromSeconds (5), () => { }, () => called);
-				Assert.IsTrue (called, "Called");
+				ClassicAssert.IsTrue (called, "Called");
 			}
 		}
 	}

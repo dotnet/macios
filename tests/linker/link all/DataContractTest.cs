@@ -67,7 +67,7 @@ namespace LinkAll.Serialization.DataContract {
 			var t1 = new TestClass (SomeTypes.Audio | SomeTypes.Image);
 			var st = ToXml (t1);
 			var t2 = FromXml<TestClass> (st);
-			Assert.AreEqual (t2.Types, t1.Types);
+			ClassicAssert.AreEqual (t2.Types, t1.Types);
 		}
 	}
 }

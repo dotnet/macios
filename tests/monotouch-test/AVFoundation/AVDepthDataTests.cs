@@ -27,21 +27,21 @@ namespace MonoTouchFixtures.AVFoundation {
 
 			// xamarinmonkey.heic is the new photo format, also this one includes depth data
 			var imgdata = NSData.FromUrl (NSBundle.MainBundle.GetUrlForResource ("xamarinmonkey", "heic", "CoreImage"));
-			Assert.NotNull (imgdata, "imgdata");
+			ClassicAssert.NotNull (imgdata, "imgdata");
 
 			var imageSource = CGImageSource.FromData (imgdata);
-			Assert.NotNull (imageSource, "imageSource");
+			ClassicAssert.NotNull (imageSource, "imageSource");
 
 			// fetching the image count works around a crash in CopyAuxiliaryDataInfo on macOS 10.15 (https://github.com/xamarin/maccore/issues/1802).
-			Assert.AreNotEqual (0, imageSource.ImageCount, "ImageCount");
+			ClassicAssert.AreNotEqual (0, imageSource.ImageCount, "ImageCount");
 
 			var info = imageSource.CopyAuxiliaryDataInfo (0, CGImageAuxiliaryDataType.Disparity);
-			Assert.NotNull (info, "info");
+			ClassicAssert.NotNull (info, "info");
 
 			NSError err;
 			var depthData = AVDepthData.Create (info, out err);
-			Assert.NotNull (depthData, "depthData");
-			Assert.NotNull (depthData.AvailableDepthDataTypes, "AvailableDepthDataTypes");
+			ClassicAssert.NotNull (depthData, "depthData");
+			ClassicAssert.NotNull (depthData.AvailableDepthDataTypes, "AvailableDepthDataTypes");
 		}
 	}
 }

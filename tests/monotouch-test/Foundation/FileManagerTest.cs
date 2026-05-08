@@ -24,19 +24,19 @@ namespace MonoTouchFixtures.Foundation {
 		// we might believe that Envioment.UserName os the same as NSFileManager.UserName, but it is not. On the simulator for
 		// example, NSFileManager.UserName is an empty string while mono returns 'somebody'
 		[Test]
-		public void GetUserNameTest () => Assert.IsNotNull (NSFileManager.UserName);
+		public void GetUserNameTest () => ClassicAssert.IsNotNull (NSFileManager.UserName);
 
 		[Test]
-		public void GetUserFullNameTest () => Assert.IsNotNull (NSFileManager.FullUserName); // cannot check the value since it depends on the enviroment
+		public void GetUserFullNameTest () => ClassicAssert.IsNotNull (NSFileManager.FullUserName); // cannot check the value since it depends on the enviroment
 
 		[Test]
-		public void GetHomeDirectoryTest () => Assert.IsNotNull (NSFileManager.HomeDirectory); // cannot check the value since it depends on the enviroment
+		public void GetHomeDirectoryTest () => ClassicAssert.IsNotNull (NSFileManager.HomeDirectory); // cannot check the value since it depends on the enviroment
 
 		[Test]
-		public void GetHomeDirectoryForUserTest () => Assert.AreEqual (NSFileManager.HomeDirectory, NSFileManager.GetHomeDirectory (NSFileManager.UserName));
+		public void GetHomeDirectoryForUserTest () => ClassicAssert.AreEqual (NSFileManager.HomeDirectory, NSFileManager.GetHomeDirectory (NSFileManager.UserName));
 
 		[Test]
-		public void TemporaryDirectoryTest () => Assert.IsNotNull (NSFileManager.TemporaryDirectory); // cannot check the value since it depends on the enviroment
+		public void TemporaryDirectoryTest () => ClassicAssert.IsNotNull (NSFileManager.TemporaryDirectory); // cannot check the value since it depends on the enviroment
 
 		[Test]
 		public void GetUrlForUbiquityContainer ()
@@ -85,24 +85,24 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void GetSkipBackupAttribute ()
 		{
-			Assert.False (NSFileManager.GetSkipBackupAttribute (NSBundle.MainBundle.ExecutableUrl.ToString ()), "MainBundle");
+			ClassicAssert.False (NSFileManager.GetSkipBackupAttribute (NSBundle.MainBundle.ExecutableUrl.ToString ()), "MainBundle");
 
 			var paths = NSSearchPath.GetDirectories (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User);
 			var filename = Path.Combine (paths [0], $"DoNotBackupMe-NSFileManager-{Process.GetCurrentProcess ().Id}");
 			try {
 				File.WriteAllText (filename, "not worth a bit");
 
-				Assert.False (NSFileManager.GetSkipBackupAttribute (filename), "DoNotBackupMe-0");
+				ClassicAssert.False (NSFileManager.GetSkipBackupAttribute (filename), "DoNotBackupMe-0");
 
 				NSFileManager.SetSkipBackupAttribute (filename, true);
 
 				NSError error;
-				Assert.True (NSFileManager.GetSkipBackupAttribute (filename, out error), "DoNotBackupMe-1");
-				Assert.Null (error, "error-1");
+				ClassicAssert.True (NSFileManager.GetSkipBackupAttribute (filename, out error), "DoNotBackupMe-1");
+				ClassicAssert.Null (error, "error-1");
 
 				error = NSFileManager.SetSkipBackupAttribute (filename, false);
-				Assert.False (NSFileManager.GetSkipBackupAttribute (filename), "DoNotBackupMe-2");
-				Assert.Null (error, "error-2");
+				ClassicAssert.False (NSFileManager.GetSkipBackupAttribute (filename), "DoNotBackupMe-2");
+				ClassicAssert.Null (error, "error-2");
 			} finally {
 				// otherwise the attribute won't reset even if the file is overwritten
 				File.Delete (filename);
@@ -113,7 +113,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void DefaultManager ()
 		{
 			// ICE on devices ? ref: http://forums.xamarin.com/discussion/6807/system-invalidcastexception-while-trying-to-get-nsfilemanager-defaultmanager
-			Assert.NotNull (NSFileManager.DefaultManager, "DefaultManager");
+			ClassicAssert.NotNull (NSFileManager.DefaultManager, "DefaultManager");
 		}
 
 #if !MONOMAC // DocumentsDirectory and MyDocuments point to different locations on mac

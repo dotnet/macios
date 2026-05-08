@@ -28,8 +28,8 @@ namespace MonoTouchFixtures.VideoToolbox {
 			TestRuntime.AssertXcodeVersion (16, 0);
 
 			using var session = VTHdrPerFrameMetadataGenerationSession.Create (30, (NSDictionary) null, out var vtStatus);
-			Assert.IsNotNull (session, "session");
-			Assert.AreEqual (VTStatus.Ok, vtStatus, "status");
+			ClassicAssert.IsNotNull (session, "session");
+			ClassicAssert.AreEqual (VTStatus.Ok, vtStatus, "status");
 		}
 
 		[Test]
@@ -38,8 +38,8 @@ namespace MonoTouchFixtures.VideoToolbox {
 			TestRuntime.AssertXcodeVersion (16, 0);
 
 			using var session = VTHdrPerFrameMetadataGenerationSession.Create (30, (VTHdrPerFrameMetadataGenerationOptions) null, out var vtStatus);
-			Assert.IsNotNull (session, "session");
-			Assert.AreEqual (VTStatus.Ok, vtStatus, "status");
+			ClassicAssert.IsNotNull (session, "session");
+			ClassicAssert.AreEqual (VTStatus.Ok, vtStatus, "status");
 		}
 
 		[Test]
@@ -51,8 +51,8 @@ namespace MonoTouchFixtures.VideoToolbox {
 			TestRuntime.AssertXcodeVersion (16, 0);
 
 			using var session = VTHdrPerFrameMetadataGenerationSession.Create (30, (VTHdrPerFrameMetadataGenerationOptions) null, out var vtStatus);
-			Assert.IsNotNull (session, "session");
-			Assert.AreEqual (VTStatus.Ok, vtStatus, "status");
+			ClassicAssert.IsNotNull (session, "session");
+			ClassicAssert.AreEqual (VTStatus.Ok, vtStatus, "status");
 			using var pixelBuffer = new CVPixelBuffer (width, height, CVPixelFormatType.CV420YpCbCr8BiPlanarFullRange);
 			vtStatus = session.AttachMetadata (pixelBuffer, false);
 #if __TVOS__ || __IOS__
@@ -60,7 +60,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			// It works on other platforms though, so the API (and the bindings) seem to work fine.
 			Assert.That (vtStatus, Is.EqualTo (VTStatus.Ok).Or.EqualTo (VTStatus.PropertyNotSupported), "status AttachMetadata");
 #else
-			Assert.AreEqual (VTStatus.Ok, vtStatus, "status AttachMetadata");
+			ClassicAssert.AreEqual (VTStatus.Ok, vtStatus, "status AttachMetadata");
 #endif
 		}
 
@@ -69,7 +69,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 		{
 			TestRuntime.AssertXcodeVersion (16, 0);
 
-			Assert.AreNotEqual (0, VTHdrPerFrameMetadataGenerationSession.GetTypeId (), "GetTypeId");
+			ClassicAssert.AreNotEqual (0, VTHdrPerFrameMetadataGenerationSession.GetTypeId (), "GetTypeId");
 		}
 	}
 }

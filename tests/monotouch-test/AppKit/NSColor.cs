@@ -13,9 +13,9 @@ namespace Xamarin.Mac.Tests {
 			NSColor c = NSColor.Blue;
 			nfloat [] components;
 			c.GetComponents (out components);
-			Assert.IsTrue (0f == components [0], "Red");
-			Assert.IsTrue (0f == components [1], "Green");
-			Assert.IsTrue (1f == components [2], "Blue");
+			ClassicAssert.IsTrue (0f == components [0], "Red");
+			ClassicAssert.IsTrue (0f == components [1], "Green");
+			ClassicAssert.IsTrue (1f == components [2], "Blue");
 		}
 
 		[Test]
@@ -24,9 +24,9 @@ namespace Xamarin.Mac.Tests {
 			var c = NSColor.Red;
 			nfloat [] components;
 			c.GetComponents (out components);
-			Assert.AreEqual (c.RedComponent, components [0], "Red");
-			Assert.AreEqual (c.GreenComponent, components [1], "Green");
-			Assert.AreEqual (c.BlueComponent, components [2], "Blue");
+			ClassicAssert.AreEqual (c.RedComponent, components [0], "Red");
+			ClassicAssert.AreEqual (c.GreenComponent, components [1], "Green");
+			ClassicAssert.AreEqual (c.BlueComponent, components [2], "Blue");
 		}
 
 		[Test]
@@ -36,10 +36,10 @@ namespace Xamarin.Mac.Tests {
 			using var color = NSColor.FromColorSpace (NSColorSpace.GenericRGBColorSpace, components);
 
 			color.GetComponents (out var actualComponents);
-			Assert.AreEqual (components [0], actualComponents [0], "Red");
-			Assert.AreEqual (components [1], actualComponents [1], "Green");
-			Assert.AreEqual (components [2], actualComponents [2], "Blue");
-			Assert.AreEqual (components [3], actualComponents [3], "Alpha");
+			ClassicAssert.AreEqual (components [0], actualComponents [0], "Red");
+			ClassicAssert.AreEqual (components [1], actualComponents [1], "Green");
+			ClassicAssert.AreEqual (components [2], actualComponents [2], "Blue");
+			ClassicAssert.AreEqual (components [3], actualComponents [3], "Alpha");
 		}
 	}
 }

@@ -27,9 +27,9 @@ namespace MonoTouchFixtures.UIKit {
 		public void IsAccessibilityCategory ()
 		{
 			var isAccessible = UIContentSizeCategory.AccessibilityMedium.IsAccessibilityCategory ();
-			Assert.IsTrue (isAccessible, "AccessibilityMedium");
+			ClassicAssert.IsTrue (isAccessible, "AccessibilityMedium");
 			isAccessible = UIContentSizeCategory.Medium.IsAccessibilityCategory ();
-			Assert.IsFalse (isAccessible, "Medium");
+			ClassicAssert.IsFalse (isAccessible, "Medium");
 		}
 
 		[Test]
@@ -37,7 +37,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			var small = UIContentSizeCategory.Small;
 			var large = UIContentSizeCategory.Large;
-			Assert.True (UIContentSizeCategoryExtensions.Compare (small, large) == NSComparisonResult.Ascending, "small < large");
+			ClassicAssert.True (UIContentSizeCategoryExtensions.Compare (small, large) == NSComparisonResult.Ascending, "small < large");
 			Assert.Throws<ArgumentException> (() => UIContentSizeCategoryExtensions.Compare ((UIContentSizeCategory) 31415, large));
 			Assert.Throws<ArgumentException> (() => UIContentSizeCategoryExtensions.Compare (small, (UIContentSizeCategory) 271828));
 			Assert.Throws<ArgumentException> (() => ((UIContentSizeCategory) 1234).IsAccessibilityCategory ());
@@ -49,9 +49,9 @@ namespace MonoTouchFixtures.UIKit {
 			var sizeNSString = UIApplication.SharedApplication.PreferredContentSizeCategory;
 			var sizeEnum = UIContentSizeCategoryExtensions.GetValue (sizeNSString);
 			var size = UIApplication.SharedApplication.GetPreferredContentSizeCategory ();
-			Assert.AreEqual (sizeEnum, size, "String");
+			ClassicAssert.AreEqual (sizeEnum, size, "String");
 			var sizeReverse = size.GetConstant ();
-			Assert.AreEqual (sizeNSString, sizeReverse, "NSString");
+			ClassicAssert.AreEqual (sizeNSString, sizeReverse, "NSString");
 		}
 	}
 }

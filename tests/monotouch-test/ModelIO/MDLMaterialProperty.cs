@@ -52,18 +52,18 @@ namespace MonoTouchFixtures.ModelIO {
 			NSUrl url;
 
 			using (var obj = new MDLMaterialProperty ("name", MDLMaterialSemantic.AmbientOcclusion)) {
-				Assert.AreEqual (MDLMaterialSemantic.AmbientOcclusion, obj.Semantic, "1 Semantic");
-				Assert.IsNull (obj.Color, "1 Color");
+				ClassicAssert.AreEqual (MDLMaterialSemantic.AmbientOcclusion, obj.Semantic, "1 Semantic");
+				ClassicAssert.IsNull (obj.Color, "1 Color");
 				Asserts.AreEqual (Vector2.Zero, obj.Float2Value, "1 Float2Value");
 				Asserts.AreEqual (Vector3.Zero, obj.Float3Value, "1 Float3Value");
 				Asserts.AreEqual (Vector4.Zero, obj.Float4Value, "1 Float4Value");
-				Assert.AreEqual (0.0f, obj.FloatValue, "1 FloatValue");
+				ClassicAssert.AreEqual (0.0f, obj.FloatValue, "1 FloatValue");
 				Asserts.AreEqual (Matrix4.Identity, obj.Matrix4x4, "1 Matrix4x4");
-				Assert.AreEqual ("name", obj.Name, "1 Name");
-				Assert.IsNull (obj.StringValue, "1 StringValue");
-				Assert.IsNull (obj.TextureSamplerValue, "1 TextureSamplerValue");
-				Assert.AreEqual (MDLMaterialPropertyType.Float, obj.Type, "1 Type");
-				Assert.IsNull (obj.UrlValue, "1 UrlValue");
+				ClassicAssert.AreEqual ("name", obj.Name, "1 Name");
+				ClassicAssert.IsNull (obj.StringValue, "1 StringValue");
+				ClassicAssert.IsNull (obj.TextureSamplerValue, "1 TextureSamplerValue");
+				ClassicAssert.AreEqual (MDLMaterialPropertyType.Float, obj.Type, "1 Type");
+				ClassicAssert.IsNull (obj.UrlValue, "1 UrlValue");
 
 				V2 = new Vector2 (1, 2);
 				V3 = new Vector3 (3, 4, 5);
@@ -73,10 +73,10 @@ namespace MonoTouchFixtures.ModelIO {
 				url = new NSUrl ("http://xamarin.com");
 
 				obj.Semantic = MDLMaterialSemantic.Anisotropic;
-				Assert.AreEqual (MDLMaterialSemantic.Anisotropic, obj.Semantic, "2 Semantic");
+				ClassicAssert.AreEqual (MDLMaterialSemantic.Anisotropic, obj.Semantic, "2 Semantic");
 
 				obj.Color = UIColor.Blue.CGColor;
-				Assert.AreEqual (UIColor.Blue.CGColor.ToString (), obj.Color.ToString (), "2 Color");
+				ClassicAssert.AreEqual (UIColor.Blue.CGColor.ToString (), obj.Color.ToString (), "2 Color");
 
 				obj.Float2Value = V2;
 				Asserts.AreEqual (V2, obj.Float2Value, "2 Float2Value");
@@ -88,7 +88,7 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (V4, obj.Float4Value, "2 Float4Value");
 
 				obj.FloatValue = 3.14f;
-				Assert.AreEqual (3.14f, obj.FloatValue, "2 FloatValue");
+				ClassicAssert.AreEqual (3.14f, obj.FloatValue, "2 FloatValue");
 
 				obj.Matrix4x4 = M4;
 				// It looks like the Matrix4 setter is ignored, assigning a matrix
@@ -96,28 +96,28 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (Matrix4.Identity, obj.Matrix4x4, "2 Matrix4x4");
 
 				obj.Name = "new name";
-				Assert.AreEqual ("new name", obj.Name, "2 Name");
+				ClassicAssert.AreEqual ("new name", obj.Name, "2 Name");
 
 				obj.StringValue = "string value";
-				Assert.AreEqual ("string value", obj.StringValue, "2 StringValue");
+				ClassicAssert.AreEqual ("string value", obj.StringValue, "2 StringValue");
 
 				obj.TextureSamplerValue = tsv;
-				Assert.AreEqual (tsv.Handle, obj.TextureSamplerValue.Handle, "2 TextureSamplerValue");
+				ClassicAssert.AreEqual (tsv.Handle, obj.TextureSamplerValue.Handle, "2 TextureSamplerValue");
 
-				Assert.AreEqual (MDLMaterialPropertyType.Texture, obj.Type, "2 Type");
+				ClassicAssert.AreEqual (MDLMaterialPropertyType.Texture, obj.Type, "2 Type");
 
 				// Looks like the URLValue can't change after construction
 				obj.UrlValue = url;
 				if (TestRuntime.CheckXcodeVersion (9, 0)) {
-					Assert.AreSame (url, obj.UrlValue, "2 UrlValue");
+					ClassicAssert.AreSame (url, obj.UrlValue, "2 UrlValue");
 				} else {
-					Assert.IsNull (obj.UrlValue, "2 UrlValue");
+					ClassicAssert.IsNull (obj.UrlValue, "2 UrlValue");
 				}
 			}
 
 
 			using (var obj = new MDLMaterialProperty ("name", MDLMaterialSemantic.AmbientOcclusion, url)) {
-				Assert.AreEqual (url.Handle, obj.UrlValue.Handle, "3 UrlValue");
+				ClassicAssert.AreEqual (url.Handle, obj.UrlValue.Handle, "3 UrlValue");
 			}
 
 			using (var obj = new MDLMaterialProperty ("name", MDLMaterialSemantic.AmbientOcclusion, V3)) {
@@ -125,11 +125,11 @@ namespace MonoTouchFixtures.ModelIO {
 			}
 
 			using (var obj = new MDLMaterialProperty ("name", MDLMaterialSemantic.AmbientOcclusion, tsv)) {
-				Assert.AreEqual (tsv.Handle, obj.TextureSamplerValue.Handle, "5 TextureSamplerValue");
+				ClassicAssert.AreEqual (tsv.Handle, obj.TextureSamplerValue.Handle, "5 TextureSamplerValue");
 			}
 
 			using (var obj = new MDLMaterialProperty ("name", MDLMaterialSemantic.AmbientOcclusion, "string value")) {
-				Assert.AreEqual ("string value", obj.StringValue, "6 StringValue");
+				ClassicAssert.AreEqual ("string value", obj.StringValue, "6 StringValue");
 			}
 
 			using (var obj = new MDLMaterialProperty ("name", MDLMaterialSemantic.AmbientOcclusion, M4)) {
@@ -143,7 +143,7 @@ namespace MonoTouchFixtures.ModelIO {
 			}
 
 			using (var obj = new MDLMaterialProperty ("name", MDLMaterialSemantic.AmbientOcclusion, UIColor.Red.CGColor)) {
-				Assert.AreEqual (UIColor.Blue.CGColor.ToString (), obj.Color.ToString (), "9 Color");
+				ClassicAssert.AreEqual (UIColor.Blue.CGColor.ToString (), obj.Color.ToString (), "9 Color");
 			}
 
 			using (var obj = new MDLMaterialProperty ("name", MDLMaterialSemantic.AmbientOcclusion, V2)) {
@@ -151,7 +151,7 @@ namespace MonoTouchFixtures.ModelIO {
 			}
 
 			using (var obj = new MDLMaterialProperty ("name", MDLMaterialSemantic.AmbientOcclusion, 3.1415f)) {
-				Assert.AreEqual (3.1415f, obj.FloatValue, "11 FloatValue");
+				ClassicAssert.AreEqual (3.1415f, obj.FloatValue, "11 FloatValue");
 			}
 		}
 
@@ -160,7 +160,7 @@ namespace MonoTouchFixtures.ModelIO {
 		{
 			TestRuntime.AssertXcodeVersion (8, 0);
 			using (var obj = new MDLMaterialProperty ("name", MDLMaterialSemantic.AmbientOcclusion)) {
-				Assert.IsNotNull (obj.Copy ());
+				ClassicAssert.IsNotNull (obj.Copy ());
 			}
 		}
 	}

@@ -75,14 +75,14 @@ namespace MonoTouchFixtures.Security {
 					Assert.Inconclusive ("Test randomly fails (race condition between addtion/commit/query?");
 
 				Assert.That (code, Is.EqualTo (SecStatusCode.Success), "QueryAsRecord-2");
-				Assert.NotNull (match, "match-2");
+				ClassicAssert.NotNull (match, "match-2");
 
 				code = SecKeyChain.Remove (rec);
 				Assert.That (code, Is.EqualTo (SecStatusCode.Success), "Remove");
 
 				match = SecKeyChain.QueryAsConcreteType (rec, out code);
 				Assert.That (code, Is.EqualTo (SecStatusCode.ItemNotFound), "QueryAsRecord-3");
-				Assert.Null (match, "match-3");
+				ClassicAssert.Null (match, "match-3");
 			}
 		}
 
@@ -160,7 +160,7 @@ namespace MonoTouchFixtures.Security {
 			);
 			var data = SecKeyChain.QueryAsData (queryRec, true, out code);
 			if (code == SecStatusCode.Success && queryRec is not null) {
-				Assert.NotNull (data.Bytes);
+				ClassicAssert.NotNull (data.Bytes);
 			}
 		}
 
@@ -174,7 +174,7 @@ namespace MonoTouchFixtures.Security {
 			);
 			var data = SecKeyChain.QueryAsData (queryRec, true, 1, out code);
 			if (code == SecStatusCode.Success && queryRec is not null) {
-				Assert.NotNull (data [0].Bytes);
+				ClassicAssert.NotNull (data [0].Bytes);
 			}
 		}
 

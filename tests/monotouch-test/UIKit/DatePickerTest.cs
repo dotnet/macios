@@ -16,12 +16,12 @@ namespace MonoTouchFixtures.UIKit {
 		public void Defaults ()
 		{
 			using (UIDatePicker dp = new UIDatePicker ()) {
-				Assert.Null (dp.MinimumDate, "MinimumDate");
-				Assert.Null (dp.MaximumDate, "MaximumDate");
-				Assert.Null (dp.TimeZone, "TimeZone");
+				ClassicAssert.Null (dp.MinimumDate, "MinimumDate");
+				ClassicAssert.Null (dp.MaximumDate, "MaximumDate");
+				ClassicAssert.Null (dp.TimeZone, "TimeZone");
 
-				Assert.NotNull (dp.Calendar, "Calendar");
-				Assert.NotNull (dp.Date, "Date");
+				ClassicAssert.NotNull (dp.Calendar, "Calendar");
+				ClassicAssert.NotNull (dp.Date, "Date");
 			}
 		}
 
@@ -29,7 +29,7 @@ namespace MonoTouchFixtures.UIKit {
 		public void Locale ()
 		{
 			using (UIDatePicker dp = new UIDatePicker ()) {
-				Assert.NotNull (dp.Locale, "Locale");
+				ClassicAssert.NotNull (dp.Locale, "Locale");
 			}
 		}
 		[Test]

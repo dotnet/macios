@@ -69,8 +69,8 @@ namespace MonoTouchFixtures.Foundation {
 			using (var a = new NSNumber (1))
 			using (var b = new NSNumber (1d)) {
 				// Two objects that are equal return hash codes that are equal.
-				Assert.True (a.Equals (b), "Equals(NSNumber)");
-				Assert.True (b.Equals ((object) a), "Equals(Object)");
+				ClassicAssert.True (a.Equals (b), "Equals(NSNumber)");
+				ClassicAssert.True (b.Equals ((object) a), "Equals(Object)");
 				Assert.That (a.GetHashCode (), Is.EqualTo (b.GetHashCode ()), "GetHashCode");
 			}
 		}

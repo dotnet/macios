@@ -80,8 +80,8 @@ namespace MonoTouchFixtures.ARKit {
 			var skeleton = new ARSkeleton3DPoker ();
 
 			var landmarks = skeleton.JointModelTransforms;
-			Assert.AreEqual (Matrix4.Identity, landmarks [0]);
-			Assert.AreEqual (Matrix4.Identity, landmarks [1]);
+			ClassicAssert.AreEqual (Matrix4.Identity, landmarks [0]);
+			ClassicAssert.AreEqual (Matrix4.Identity, landmarks [1]);
 		}
 
 		[Test]
@@ -90,8 +90,8 @@ namespace MonoTouchFixtures.ARKit {
 			var skeleton = new ARSkeleton3DPoker ();
 
 			var landmarks = skeleton.JointLocalTransforms;
-			Assert.AreEqual (Matrix4.Identity, landmarks [0]);
-			Assert.AreEqual (Matrix4.Identity, landmarks [1]);
+			ClassicAssert.AreEqual (Matrix4.Identity, landmarks [0]);
+			ClassicAssert.AreEqual (Matrix4.Identity, landmarks [1]);
 		}
 	}
 }

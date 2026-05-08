@@ -65,8 +65,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesFloatArr [i], floatScalar.GetFloat (i), $"onesFloatArr iter: {i}");
 
 			floatScalar.Reset (Array.Empty<float> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) floatScalar.TimeSampleCount, "floatScalar.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<float> (), floatScalar.GetFloatValues (), "floatScalar Empty");
+			ClassicAssert.AreEqual (0, (int) floatScalar.TimeSampleCount, "floatScalar.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<float> (), floatScalar.GetFloatValues (), "floatScalar Empty");
 
 			// double
 
@@ -88,8 +88,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesDoubleArr [i], doubleScalar.GetFloat (i), $"onesDoubleArr iter: {i}");
 
 			doubleScalar.Reset (Array.Empty<double> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) doubleScalar.TimeSampleCount, "doubleScalar.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<double> (), doubleScalar.GetDoubleValues (), "doubleScalar Empty");
+			ClassicAssert.AreEqual (0, (int) doubleScalar.TimeSampleCount, "doubleScalar.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<double> (), doubleScalar.GetDoubleValues (), "doubleScalar Empty");
 		}
 
 		[Test]
@@ -115,8 +115,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesVector2Arr [i], vector2Values.GetVector2Value (i), $"onesVector2Arr iter: {i}");
 
 			vector2Values.Reset (Array.Empty<Vector2> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) vector2Values.TimeSampleCount, "vector2Values.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<Vector2> (), vector2Values.GetVector2Values (), "vector2Values Empty");
+			ClassicAssert.AreEqual (0, (int) vector2Values.TimeSampleCount, "vector2Values.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<Vector2> (), vector2Values.GetVector2Values (), "vector2Values Empty");
 
 			// Vector2d
 
@@ -138,8 +138,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesVector2dArr [i], vector2dValues.GetVector2dValue (i), $"onesVector2dArr iter: {i}");
 
 			vector2dValues.Reset (Array.Empty<Vector2d> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) vector2dValues.TimeSampleCount, "vector2dValues.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<Vector2d> (), vector2dValues.GetVector2dValues (), "vector2dValues Empty");
+			ClassicAssert.AreEqual (0, (int) vector2dValues.TimeSampleCount, "vector2dValues.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<Vector2d> (), vector2dValues.GetVector2dValues (), "vector2dValues Empty");
 		}
 
 		[Test]
@@ -165,8 +165,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesVector3Arr [i], vector3Values.GetNVector3Value (i), $"onesVector3Arr iter: {i}");
 
 			vector3Values.Reset (Array.Empty<NVector3> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) vector3Values.TimeSampleCount, "vector3Values.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<NVector3> (), vector3Values.GetNVector3Values (), "vector3Values Empty");
+			ClassicAssert.AreEqual (0, (int) vector3Values.TimeSampleCount, "vector3Values.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<NVector3> (), vector3Values.GetNVector3Values (), "vector3Values Empty");
 
 			// Vector3d
 
@@ -188,8 +188,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesVector3dArr [i], vector3dValues.GetNVector3dValue (i), $"onesVector3dArr iter: {i}");
 
 			vector3dValues.Reset (Array.Empty<NVector3d> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) vector3dValues.TimeSampleCount, "vector3dValues.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<NVector3d> (), vector3dValues.GetNVector3dValues (), "vector3dValues Empty");
+			ClassicAssert.AreEqual (0, (int) vector3dValues.TimeSampleCount, "vector3dValues.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<NVector3d> (), vector3dValues.GetNVector3dValues (), "vector3dValues Empty");
 		}
 
 		[Test]
@@ -215,8 +215,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesVector4Arr [i], vector4Values.GetVector4Value (i), $"onesVector4Arr iter: {i}");
 
 			vector4Values.Reset (Array.Empty<Vector4> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) vector4Values.TimeSampleCount, "vector4Values.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<Vector4> (), vector4Values.GetVector4Values (), "vector4Values Empty");
+			ClassicAssert.AreEqual (0, (int) vector4Values.TimeSampleCount, "vector4Values.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<Vector4> (), vector4Values.GetVector4Values (), "vector4Values Empty");
 
 			// Vector4d
 
@@ -238,8 +238,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesVector4dArr [i], vector4dValues.GetVector4dValue (i), $"onesVector4dArr iter: {i}");
 
 			vector4dValues.Reset (Array.Empty<Vector4d> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) vector4dValues.TimeSampleCount, "vector4dValues.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<Vector4d> (), vector4dValues.GetVector4dValues (), "vector4dValues Empty");
+			ClassicAssert.AreEqual (0, (int) vector4dValues.TimeSampleCount, "vector4dValues.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<Vector4d> (), vector4dValues.GetVector4dValues (), "vector4dValues Empty");
 		}
 
 		[Test]
@@ -265,8 +265,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesNMatrix4Arr [i], nMatrix4Values.GetNMatrix4Value (i), $"onesNMatrix4Arr iter: {i}");
 
 			nMatrix4Values.Reset (Array.Empty<NMatrix4> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) nMatrix4Values.TimeSampleCount, "nMatrix4Values.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<NMatrix4> (), nMatrix4Values.GetNMatrix4Values (), "nMatrix4Values Empty");
+			ClassicAssert.AreEqual (0, (int) nMatrix4Values.TimeSampleCount, "nMatrix4Values.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<NMatrix4> (), nMatrix4Values.GetNMatrix4Values (), "nMatrix4Values Empty");
 
 			// NMatrix4d
 
@@ -288,8 +288,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesNMatrix4dArr [i], nMatrix4dValues.GetNMatrix4dValue (i), $"onesNMatrix4dArr iter: {i}");
 
 			nMatrix4dValues.Reset (Array.Empty<NMatrix4d> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) nMatrix4dValues.TimeSampleCount, "nMatrix4dValues.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<NMatrix4d> (), nMatrix4dValues.GetNMatrix4dValues (), "nMatrix4dValues Empty");
+			ClassicAssert.AreEqual (0, (int) nMatrix4dValues.TimeSampleCount, "nMatrix4dValues.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<NMatrix4d> (), nMatrix4dValues.GetNMatrix4dValues (), "nMatrix4dValues Empty");
 		}
 
 		[Test]
@@ -316,8 +316,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesFloatArr [i], floatValues [i], $"onesFloatArr iter: {i}");
 
 			floatArr.Reset (Array.Empty<float> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) floatArr.TimeSampleCount, "floatArr.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<float> (), floatArr.GetFloatValues (), "floatArr Empty");
+			ClassicAssert.AreEqual (0, (int) floatArr.TimeSampleCount, "floatArr.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<float> (), floatArr.GetFloatValues (), "floatArr Empty");
 
 			// Doubles
 
@@ -340,8 +340,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesDoubleArr [i], doubleValues [i], $"onesDoubleArr iter: {i}");
 
 			doubleArr.Reset (Array.Empty<double> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) doubleArr.TimeSampleCount, "doubleArr.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<double> (), doubleArr.GetFloatValues (), "doubleArr Empty");
+			ClassicAssert.AreEqual (0, (int) doubleArr.TimeSampleCount, "doubleArr.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<double> (), doubleArr.GetFloatValues (), "doubleArr Empty");
 		}
 
 		[Test]
@@ -368,8 +368,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesnVector3Arr [i], nVector3Values [i], $"onesnVector3Arr iter: {i}");
 
 			nVector3Arr.Reset (Array.Empty<NVector3> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) nVector3Arr.TimeSampleCount, "nVector3Arr.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<NVector3> (), nVector3Arr.GetNVector3Values (), "nVector3Arr Empty");
+			ClassicAssert.AreEqual (0, (int) nVector3Arr.TimeSampleCount, "nVector3Arr.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<NVector3> (), nVector3Arr.GetNVector3Values (), "nVector3Arr Empty");
 
 			// NVector3d
 
@@ -392,8 +392,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesnVector3dArr [i], nVector3dValues [i], $"onesnVector3dArr iter: {i}");
 
 			nVector3dArr.Reset (Array.Empty<NVector3d> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) nVector3dArr.TimeSampleCount, "nVector3dArr.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<NVector3d> (), nVector3dArr.GetNVector3dValues (), "nVector3dArr Empty");
+			ClassicAssert.AreEqual (0, (int) nVector3dArr.TimeSampleCount, "nVector3dArr.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<NVector3d> (), nVector3dArr.GetNVector3dValues (), "nVector3dArr Empty");
 		}
 
 		[Test]
@@ -420,8 +420,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesQuaternionArr [i], quaternionValues [i], $"onesQuaternionArr iter: {i}");
 
 			quaternionArr.Reset (Array.Empty<Quaternion> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) quaternionArr.TimeSampleCount, "quaternionArr.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<Quaternion> (), quaternionArr.GetQuaternionValues (), "quaternionArr Empty");
+			ClassicAssert.AreEqual (0, (int) quaternionArr.TimeSampleCount, "quaternionArr.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<Quaternion> (), quaternionArr.GetQuaternionValues (), "quaternionArr Empty");
 
 			// Quaterniond
 
@@ -444,8 +444,8 @@ namespace MonoTouchFixtures.ModelIO {
 				Asserts.AreEqual (onesQuaterniondArr [i], quaterniondValues [i], $"onesQuaterniondArr iter: {i}");
 
 			quaterniondArr.Reset (Array.Empty<Quaterniond> (), Array.Empty<double> ());
-			Assert.AreEqual (0, (int) quaterniondArr.TimeSampleCount, "quaterniondArr.TimeSampleCount");
-			Assert.AreEqual (Array.Empty<Quaterniond> (), quaterniondArr.GetQuaterniondValues (), "quaterniondArr Empty");
+			ClassicAssert.AreEqual (0, (int) quaterniondArr.TimeSampleCount, "quaterniondArr.TimeSampleCount");
+			ClassicAssert.AreEqual (Array.Empty<Quaterniond> (), quaterniondArr.GetQuaterniondValues (), "quaterniondArr Empty");
 		}
 
 		[Test]
@@ -504,18 +504,18 @@ namespace MonoTouchFixtures.ModelIO {
 		[Test]
 		public unsafe void OpenTKSizeOfTests ()
 		{
-			Assert.AreEqual (sizeof (Matrix4), Marshal.SizeOf<Matrix4> ());
-			Assert.AreEqual (sizeof (Matrix4d), Marshal.SizeOf<Matrix4d> ());
+			ClassicAssert.AreEqual (sizeof (Matrix4), Marshal.SizeOf<Matrix4> ());
+			ClassicAssert.AreEqual (sizeof (Matrix4d), Marshal.SizeOf<Matrix4d> ());
 
-			Assert.AreEqual (sizeof (Quaternion), Marshal.SizeOf<Quaternion> ());
-			Assert.AreEqual (sizeof (Quaterniond), Marshal.SizeOf<Quaterniond> ());
+			ClassicAssert.AreEqual (sizeof (Quaternion), Marshal.SizeOf<Quaternion> ());
+			ClassicAssert.AreEqual (sizeof (Quaterniond), Marshal.SizeOf<Quaterniond> ());
 
-			Assert.AreEqual (sizeof (Vector2), Marshal.SizeOf<Vector2> ());
-			Assert.AreEqual (sizeof (Vector3), Marshal.SizeOf<Vector3> ());
-			Assert.AreEqual (sizeof (Vector4), Marshal.SizeOf<Vector4> ());
-			Assert.AreEqual (sizeof (Vector2d), Marshal.SizeOf<Vector2d> ());
-			Assert.AreEqual (sizeof (Vector3d), Marshal.SizeOf<Vector3d> ());
-			Assert.AreEqual (sizeof (Vector4d), Marshal.SizeOf<Vector4d> ());
+			ClassicAssert.AreEqual (sizeof (Vector2), Marshal.SizeOf<Vector2> ());
+			ClassicAssert.AreEqual (sizeof (Vector3), Marshal.SizeOf<Vector3> ());
+			ClassicAssert.AreEqual (sizeof (Vector4), Marshal.SizeOf<Vector4> ());
+			ClassicAssert.AreEqual (sizeof (Vector2d), Marshal.SizeOf<Vector2d> ());
+			ClassicAssert.AreEqual (sizeof (Vector3d), Marshal.SizeOf<Vector3d> ());
+			ClassicAssert.AreEqual (sizeof (Vector4d), Marshal.SizeOf<Vector4d> ());
 		}
 
 	}

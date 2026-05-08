@@ -61,17 +61,17 @@ namespace MonoTouchFixtures.CoreGraphics {
 
 			using var context = Create ();
 			if (TestRuntime.CheckXcodeVersion (26, 0)) {
-				Assert.AreEqual (1.0f, context.GetEdrTargetHeadroom (), "a");
-				Assert.IsFalse (context.SetEdrTargetHeadroom (2.0f), "b");
-				Assert.AreEqual (1.0f, context.GetEdrTargetHeadroom (), "c");
-				Assert.IsFalse (context.SetEdrTargetHeadroom (-2.0f), "d");
-				Assert.AreEqual (1.0f, context.GetEdrTargetHeadroom (), "e");
+				ClassicAssert.AreEqual (1.0f, context.GetEdrTargetHeadroom (), "a");
+				ClassicAssert.IsFalse (context.SetEdrTargetHeadroom (2.0f), "b");
+				ClassicAssert.AreEqual (1.0f, context.GetEdrTargetHeadroom (), "c");
+				ClassicAssert.IsFalse (context.SetEdrTargetHeadroom (-2.0f), "d");
+				ClassicAssert.AreEqual (1.0f, context.GetEdrTargetHeadroom (), "e");
 			} else {
-				Assert.AreEqual (0.0f, context.GetEdrTargetHeadroom (), "a");
-				Assert.IsTrue (context.SetEdrTargetHeadroom (2.0f), "b");
-				Assert.AreEqual (2.0f, context.GetEdrTargetHeadroom (), "c");
-				Assert.IsFalse (context.SetEdrTargetHeadroom (-2.0f), "d");
-				Assert.AreEqual (2.0f, context.GetEdrTargetHeadroom (), "e");
+				ClassicAssert.AreEqual (0.0f, context.GetEdrTargetHeadroom (), "a");
+				ClassicAssert.IsTrue (context.SetEdrTargetHeadroom (2.0f), "b");
+				ClassicAssert.AreEqual (2.0f, context.GetEdrTargetHeadroom (), "c");
+				ClassicAssert.IsFalse (context.SetEdrTargetHeadroom (-2.0f), "d");
+				ClassicAssert.AreEqual (2.0f, context.GetEdrTargetHeadroom (), "e");
 			}
 		}
 
@@ -86,15 +86,15 @@ namespace MonoTouchFixtures.CoreGraphics {
 			var mapping = new CGToneMappingOptions () { Use100nitsHlgOotf = true, ExrToneMappingGammaExposure = 3.14f };
 
 			using (var context = Create ()) {
-				Assert.IsFalse (context.DrawImageApplyingToneMapping (new CGRect (0, 0, 10, 10), img, CGToneMapping.IturRecommended, (NSDictionary?) null), "DrawImageApplyingToneMapping A");
+				ClassicAssert.IsFalse (context.DrawImageApplyingToneMapping (new CGRect (0, 0, 10, 10), img, CGToneMapping.IturRecommended, (NSDictionary?) null), "DrawImageApplyingToneMapping A");
 			}
 
 			using (var context = Create ()) {
-				Assert.IsFalse (context.DrawImageApplyingToneMapping (new CGRect (0, 0, 10, 10), img, CGToneMapping.IturRecommended, mapping), "DrawImageApplyingToneMapping B");
+				ClassicAssert.IsFalse (context.DrawImageApplyingToneMapping (new CGRect (0, 0, 10, 10), img, CGToneMapping.IturRecommended, mapping), "DrawImageApplyingToneMapping B");
 			}
 
 			using (var context = Create ()) {
-				Assert.IsFalse (context.DrawImageApplyingToneMapping (new CGRect (0, 0, 10, 10), img, CGToneMapping.IturRecommended, mapping.Dictionary), "DrawImageApplyingToneMapping C");
+				ClassicAssert.IsFalse (context.DrawImageApplyingToneMapping (new CGRect (0, 0, 10, 10), img, CGToneMapping.IturRecommended, mapping.Dictionary), "DrawImageApplyingToneMapping C");
 			}
 
 		}

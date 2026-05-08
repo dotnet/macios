@@ -49,13 +49,13 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		{
 			Assert.DoesNotThrow (() => new Class (typeof (NSObject)), "NSObject");
 			if (Runtime.DynamicRegistrationSupported) {
-				Assert.AreEqual (NativeHandle.Zero, new Class (typeof (string)).Handle, "string");
+				ClassicAssert.AreEqual (NativeHandle.Zero, new Class (typeof (string)).Handle, "string");
 			} else {
 				try {
 					new Class (typeof (string));
 				} catch (Exception e) {
-					Assert.AreEqual (typeof (RuntimeException), e.GetType (), "string exc");
-					Assert.AreEqual ("Can't register the class System.String when the dynamic registrar has been linked away.", e.Message, "exc message");
+					ClassicAssert.AreEqual (typeof (RuntimeException), e.GetType (), "string exc");
+					ClassicAssert.AreEqual ("Can't register the class System.String when the dynamic registrar has been linked away.", e.Message, "exc message");
 				}
 			}
 		}
@@ -63,36 +63,36 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void GetHandle ()
 		{
-			Assert.AreNotEqual (NativeHandle.Zero, Class.GetHandle (typeof (NSObject)), "NSObject");
+			ClassicAssert.AreNotEqual (NativeHandle.Zero, Class.GetHandle (typeof (NSObject)), "NSObject");
 			if (Runtime.DynamicRegistrationSupported) {
-				Assert.AreEqual (NativeHandle.Zero, Class.GetHandle (typeof (string)), "string 1");
+				ClassicAssert.AreEqual (NativeHandle.Zero, Class.GetHandle (typeof (string)), "string 1");
 			} else {
 				try {
 					Class.GetHandle (typeof (string));
 				} catch (Exception e) {
-					Assert.AreEqual (typeof (RuntimeException), e.GetType (), "string exc");
-					Assert.AreEqual ("Can't register the class System.String when the dynamic registrar has been linked away.", e.Message, "exc message");
+					ClassicAssert.AreEqual (typeof (RuntimeException), e.GetType (), "string exc");
+					ClassicAssert.AreEqual ("Can't register the class System.String when the dynamic registrar has been linked away.", e.Message, "exc message");
 				}
 			}
 #pragma warning disable IL3050 // Using member 'System.Type.MakeArrayType()' which has 'RequiresDynamicCodeAttribute' can break functionality when AOT compiling. The code for an array of the specified type might not be available.
-			Assert.AreEqual (NativeHandle.Zero, Class.GetHandle (typeof (NSObject).MakeByRefType ()), "NSObject&");
-			Assert.AreEqual (NativeHandle.Zero, Class.GetHandle (typeof (NSObject).MakeArrayType ()), "NSObject[]");
-			Assert.AreEqual (NativeHandle.Zero, Class.GetHandle (typeof (NSObject).MakePointerType ()), "NSObject*");
+			ClassicAssert.AreEqual (NativeHandle.Zero, Class.GetHandle (typeof (NSObject).MakeByRefType ()), "NSObject&");
+			ClassicAssert.AreEqual (NativeHandle.Zero, Class.GetHandle (typeof (NSObject).MakeArrayType ()), "NSObject[]");
+			ClassicAssert.AreEqual (NativeHandle.Zero, Class.GetHandle (typeof (NSObject).MakePointerType ()), "NSObject*");
 #pragma warning restore IL3050
 		}
 
 		[Test]
 		public void Lookup ()
 		{
-			Assert.AreEqual (typeof (NSObject), Class.Lookup (new Class (typeof (NSObject))), "NSObject");
-			Assert.AreEqual (typeof (NSString), Class.Lookup (new Class (typeof (NSString))), "NSString");
-			Assert.AreNotEqual (typeof (NSObject), Class.Lookup (new Class (typeof (NSString))), "neq");
+			ClassicAssert.AreEqual (typeof (NSObject), Class.Lookup (new Class (typeof (NSObject))), "NSObject");
+			ClassicAssert.AreEqual (typeof (NSString), Class.Lookup (new Class (typeof (NSString))), "NSString");
+			ClassicAssert.AreNotEqual (typeof (NSObject), Class.Lookup (new Class (typeof (NSString))), "neq");
 			try {
 				Class.Lookup (new Class ("NSProxy"));
 			} catch (Exception e) {
-				Assert.AreEqual (typeof (RuntimeException), e.GetType (), "NSProxy exception");
+				ClassicAssert.AreEqual (typeof (RuntimeException), e.GetType (), "NSProxy exception");
 				if (Runtime.DynamicRegistrationSupported) {
-					Assert.AreEqual ("The ObjectiveC class 'NSProxy' could not be registered, it does not seem to derive from any known ObjectiveC class (including NSObject).", e.Message, "NSProxy exception message");
+					ClassicAssert.AreEqual ("The ObjectiveC class 'NSProxy' could not be registered, it does not seem to derive from any known ObjectiveC class (including NSObject).", e.Message, "NSProxy exception message");
 				} else {
 					Assert.That (e.Message, Does.Match ("Can't lookup the Objective-C class 0x.* w"), "NSProxy exception message 2");
 				}
@@ -100,7 +100,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.Throws<ArgumentException> (() => new Class ("InexistentClass"), "inexistent");
 			// Private class which we've obviously not bound, but we've bound a super class.
 			// And yes, NSMutableString is the first public superclass of __NSCFConstantString.
-			Assert.AreEqual (typeof (NSMutableString), Class.Lookup (new Class ("__NSCFConstantString")), "private class");
+			ClassicAssert.AreEqual (typeof (NSMutableString), Class.Lookup (new Class ("__NSCFConstantString")), "private class");
 		}
 
 		[Test]
@@ -187,7 +187,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			startPistol.Set ();
 			stopLine.Wait ();
 
-			Assert.IsNull (ex);
+			ClassicAssert.IsNull (ex);
 		}
 	}
 }

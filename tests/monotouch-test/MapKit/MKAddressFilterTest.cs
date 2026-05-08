@@ -15,10 +15,10 @@ namespace MonoTouchFixtures.MapKit {
 			TestRuntime.AssertXcodeVersion (16, 0);
 
 			using (var filter = new MKAddressFilter (MKAddressFilterOption.Country, MKAddressFilterConstructorOption.Exclude)) {
-				Assert.IsNotNull (filter, "Exclude filter");
+				ClassicAssert.IsNotNull (filter, "Exclude filter");
 			}
 			using (var filter = new MKAddressFilter (MKAddressFilterOption.SubAdministrativeArea, MKAddressFilterConstructorOption.Include)) {
-				Assert.IsNotNull (filter, "Include filter");
+				ClassicAssert.IsNotNull (filter, "Include filter");
 			}
 		}
 	}

@@ -21,7 +21,7 @@ namespace monotouchtest.ARKit {
 		public void UnknownPointTest ()
 		{
 			using (var notKnownPoint = new NSString ("nariz"))
-				Assert.IsNull (ARSkeleton.CreateJointName (notKnownPoint));
+				ClassicAssert.IsNull (ARSkeleton.CreateJointName (notKnownPoint));
 		}
 
 	}

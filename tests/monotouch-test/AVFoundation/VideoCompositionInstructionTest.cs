@@ -25,11 +25,11 @@ namespace MonoTouchFixtures.AVFoundation {
 		public void Defaults ()
 		{
 			using (var i = new AVVideoCompositionInstruction ()) {
-				Assert.Null (i.BackgroundColor, "BackgroundColor");
-				Assert.True (i.EnablePostProcessing, "EnablePostProcessing");
-				Assert.Null (i.LayerInstructions, "LayerInstructions");
-				Assert.True (i.TimeRange.Start.IsInvalid, "TimeRange.Start");
-				Assert.True (i.TimeRange.Duration.IsInvalid, "TimeRange.Duration");
+				ClassicAssert.Null (i.BackgroundColor, "BackgroundColor");
+				ClassicAssert.True (i.EnablePostProcessing, "EnablePostProcessing");
+				ClassicAssert.Null (i.LayerInstructions, "LayerInstructions");
+				ClassicAssert.True (i.TimeRange.Start.IsInvalid, "TimeRange.Start");
+				ClassicAssert.True (i.TimeRange.Duration.IsInvalid, "TimeRange.Duration");
 			}
 		}
 
@@ -39,7 +39,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			TestRuntime.AssertXcodeVersion (5, 0, 1);
 
 			using (var i = new AVVideoCompositionInstruction ()) {
-				Assert.False (i.ContainsTweening, "ContainsTweening");
+				ClassicAssert.False (i.ContainsTweening, "ContainsTweening");
 				Assert.That (i.PassthroughTrackID, Is.EqualTo (0), "PassthroughTrackID");
 				Assert.That (i.RequiredSourceTrackIDs.Length, Is.EqualTo (0), "RequiredSourceTrackIDs");
 			}

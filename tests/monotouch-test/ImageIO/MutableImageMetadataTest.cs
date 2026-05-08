@@ -30,26 +30,26 @@ namespace MonoTouchFixtures.ImageIO {
 			using (var meta = new CGMutableImageMetadata ()) {
 				Console.WriteLine (meta);
 				NSError err;
-				Assert.True (meta.RegisterNamespace (CGImageMetadataTagNamespaces.Exif, CGImageMetadataTagPrefixes.Exif, out err), "RegisterNamespace");
-				Assert.Null (err, "NSError");
+				ClassicAssert.True (meta.RegisterNamespace (CGImageMetadataTagNamespaces.Exif, CGImageMetadataTagPrefixes.Exif, out err), "RegisterNamespace");
+				ClassicAssert.Null (err, "NSError");
 
 				// nothing to see at this stage
 				using (var data = meta.CreateXMPData ()) {
-					Assert.Null (data, "CreateXMPData-1");
+					ClassicAssert.Null (data, "CreateXMPData-1");
 				}
 
 				using (var tag = new CGImageMetadataTag (nspace, prefix, name, CGImageMetadataType.Default, true)) {
-					Assert.True (meta.SetTag (null, path, tag), "SetTag");
+					ClassicAssert.True (meta.SetTag (null, path, tag), "SetTag");
 				}
 
 				// now we're talking
 				using (var data = meta.CreateXMPData ()) {
-					Assert.NotNull (data, "CreateXMPData-2");
+					ClassicAssert.NotNull (data, "CreateXMPData-2");
 				}
 
-				Assert.True (meta.SetValue (null, path, false), "SetValue");
+				ClassicAssert.True (meta.SetValue (null, path, false), "SetValue");
 
-				Assert.True (meta.SetValueMatchingImageProperty (CGImageProperties.ExifDictionary, CGImageProperties.ExifDateTimeOriginal, (NSDate) DateTime.Now), "SetValueMatchingImageProperty");
+				ClassicAssert.True (meta.SetValueMatchingImageProperty (CGImageProperties.ExifDictionary, CGImageProperties.ExifDateTimeOriginal, (NSDate) DateTime.Now), "SetValueMatchingImageProperty");
 			}
 		}
 	}

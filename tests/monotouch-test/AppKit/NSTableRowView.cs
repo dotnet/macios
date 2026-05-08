@@ -19,7 +19,7 @@ namespace Xamarin.Mac.Tests {
 			var selected = view.PreviousRowSelected;
 			view.PreviousRowSelected = !selected;
 
-			Assert.IsFalse (view.PreviousRowSelected == selected, "NSTableRowViewShouldChangePreviousRowSelected - Failed to set the PreviousRowSelected property");
+			ClassicAssert.IsFalse (view.PreviousRowSelected == selected, "NSTableRowViewShouldChangePreviousRowSelected - Failed to set the PreviousRowSelected property");
 		}
 
 		[Test]
@@ -28,7 +28,7 @@ namespace Xamarin.Mac.Tests {
 			var selected = view.NextRowSelected;
 			view.NextRowSelected = !selected;
 
-			Assert.IsFalse (view.NextRowSelected == selected, "NSTableRowViewShouldChangeNextRowSelected - Failed to set the NextRowSelected property");
+			ClassicAssert.IsFalse (view.NextRowSelected == selected, "NSTableRowViewShouldChangeNextRowSelected - Failed to set the NextRowSelected property");
 		}
 	}
 }

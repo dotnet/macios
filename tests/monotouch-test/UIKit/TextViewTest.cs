@@ -28,18 +28,18 @@ namespace MonoTouchFixtures.UIKit {
 			using (UITextView tv = new UITextView ()) {
 				Assert.That (tv.SelectedRange.Length, Is.EqualTo ((nint) 0), "SelectedRange");
 #if XAMCORE_5_0
-				Assert.IsNotNull (tv.TypingAttributes, "default");
+				ClassicAssert.IsNotNull (tv.TypingAttributes, "default");
 				tv.TypingAttributes = new NSDictionary ();
-				Assert.IsNotNull (tv.TypingAttributes, "assigned");
+				ClassicAssert.IsNotNull (tv.TypingAttributes, "assigned");
 #else
-				Assert.IsNull (tv.TypingAttributes, "default");
+				ClassicAssert.IsNull (tv.TypingAttributes, "default");
 				// ^ without a [PreSnippet] attribute this would crash like:
 				// 7   monotouchtest                 	0x00006340 mono_sigill_signal_handler + 64
 				// 8   WebKit                        	0x06b6afa5 -[WebView(WebPrivate) styleAtSelectionStart] + 53
 				// 9   UIKit                         	0x028daa8a -[UIWebDocumentView typingAttributes] + 50
 				// 10  UIKit                         	0x0285de57 -[UITextView typingAttributes] + 42
 				tv.TypingAttributes = new NSDictionary ();
-				// Assert.IsNotNull (tv.TypingAttributes, "assigned");
+				// ClassicAssert.IsNotNull (tv.TypingAttributes, "assigned");
 				// ^ this would still crash
 #endif
 			}
@@ -51,9 +51,9 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (UITextView tv = new UITextView ()) {
 				Assert.That (tv.SelectedRange.Length, Is.EqualTo ((nint) 0), "SelectedRange");
-				Assert.IsNotNull (tv.TypingAttributes2, "default");
+				ClassicAssert.IsNotNull (tv.TypingAttributes2, "default");
 				tv.TypingAttributes = new NSDictionary ();
-				Assert.IsNotNull (tv.TypingAttributes2, "assigned");
+				ClassicAssert.IsNotNull (tv.TypingAttributes2, "assigned");
 			}
 		}
 #endif // !XAMCORE_6_0
@@ -65,7 +65,7 @@ namespace MonoTouchFixtures.UIKit {
 				tv.Text = "Bla bla bla";
 				tv.SelectAll (tv);
 				Assert.That (tv.SelectedRange.Length, Is.Not.EqualTo (0), "SelectedRange");
-				Assert.IsNotNull (tv.TypingAttributes, "TypingAttributes");
+				ClassicAssert.IsNotNull (tv.TypingAttributes, "TypingAttributes");
 			}
 		}
 
@@ -77,21 +77,21 @@ namespace MonoTouchFixtures.UIKit {
 
 			using (UITextView tv = new UITextView ()) {
 				var lm = tv.LayoutManager;
-				Assert.True (lm.AllowsNonContiguousLayout, "AllowsNonContiguousLayout");
+				ClassicAssert.True (lm.AllowsNonContiguousLayout, "AllowsNonContiguousLayout");
 				Assert.That (lm.ExtraLineFragmentRect.IsEmpty, Is.True.Or.False, "ExtraLineFragmentRect");
-				Assert.NotNull (lm.ExtraLineFragmentTextContainer, "ExtraLineFragmentTextContainer");
+				ClassicAssert.NotNull (lm.ExtraLineFragmentTextContainer, "ExtraLineFragmentTextContainer");
 				Assert.That (lm.ExtraLineFragmentUsedRect.IsEmpty, Is.True.Or.False, "ExtraLineFragmentUsedRect");
 				Assert.That (lm.FirstUnlaidCharacterIndex, Is.EqualTo ((nuint) 0), "FirstUnlaidCharacterIndex");
 				Assert.That (lm.FirstUnlaidGlyphIndex, Is.EqualTo ((nuint) 0), "FirstUnlaidGlyphIndex");
-				Assert.False (lm.HasNonContiguousLayout, "HasNonContiguousLayout");
+				ClassicAssert.False (lm.HasNonContiguousLayout, "HasNonContiguousLayout");
 #if !__MACCATALYST__
 				Assert.That (lm.HyphenationFactor, Is.EqualTo ((nfloat) 0), "HyphenationFactor");
 #endif
 				Assert.That (lm.NumberOfGlyphs, Is.EqualTo ((nuint) 0), "NumberOfGlyphs");
-				Assert.False (lm.ShowsControlCharacters, "ShowsControlCharacters");
-				Assert.False (lm.ShowsInvisibleCharacters, "ShowsInvisibleCharacters");
-				Assert.NotNull (lm.TextStorage, "TextStorage");
-				Assert.True (lm.UsesFontLeading, "UsesFontLeading");
+				ClassicAssert.False (lm.ShowsControlCharacters, "ShowsControlCharacters");
+				ClassicAssert.False (lm.ShowsInvisibleCharacters, "ShowsInvisibleCharacters");
+				ClassicAssert.NotNull (lm.TextStorage, "TextStorage");
+				ClassicAssert.True (lm.UsesFontLeading, "UsesFontLeading");
 			}
 		}
 

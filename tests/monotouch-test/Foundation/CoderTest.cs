@@ -38,25 +38,25 @@ namespace MonoTouchFixtures.Foundation {
 				}
 
 				using (var decoder = new NSKeyedUnarchiver (mutableData)) {
-					Assert.IsNotNull (decoder.DecodeObject ("obj"));
+					ClassicAssert.IsNotNull (decoder.DecodeObject ("obj"));
 					var buf = decoder.DecodeBytes ("buffer");
-					Assert.AreEqual (buf.Length, buffer.Length, "buffer.length");
+					ClassicAssert.AreEqual (buf.Length, buffer.Length, "buffer.length");
 					for (int i = 0; i < buf.Length; i++)
-						Assert.AreEqual (buf [i], buffer [i], "buffer [" + i.ToString () + "]");
-					Assert.AreEqual (Int32.MaxValue, decoder.DecodeInt ("int32"));
-					Assert.AreEqual (float.MaxValue, decoder.DecodeFloat ("float"));
-					Assert.AreEqual (true, decoder.DecodeBool ("bool"));
-					Assert.AreEqual (long.MaxValue, decoder.DecodeLong ("long"));
+						ClassicAssert.AreEqual (buf [i], buffer [i], "buffer [" + i.ToString () + "]");
+					ClassicAssert.AreEqual (Int32.MaxValue, decoder.DecodeInt ("int32"));
+					ClassicAssert.AreEqual (float.MaxValue, decoder.DecodeFloat ("float"));
+					ClassicAssert.AreEqual (true, decoder.DecodeBool ("bool"));
+					ClassicAssert.AreEqual (long.MaxValue, decoder.DecodeLong ("long"));
 					buf = decoder.DecodeBytes ("buffer2");
-					Assert.AreEqual (buf.Length, buffer.Length, "buffer2.length");
+					ClassicAssert.AreEqual (buf.Length, buffer.Length, "buffer2.length");
 					for (int i = 0; i < buf.Length; i++)
-						Assert.AreEqual (buf [i], buffer [i], "buffer2 [" + i.ToString () + "]");
-					Assert.AreEqual (nint.MaxValue, decoder.DecodeNInt ("nint"));
+						ClassicAssert.AreEqual (buf [i], buffer [i], "buffer2 [" + i.ToString () + "]");
+					ClassicAssert.AreEqual (nint.MaxValue, decoder.DecodeNInt ("nint"));
 
 					buf = decoder.DecodeBytes ("block");
-					Assert.AreEqual (buf.Length, buffer.Length, "block.length");
+					ClassicAssert.AreEqual (buf.Length, buffer.Length, "block.length");
 					for (int i = 0; i < buf.Length; i++)
-						Assert.AreEqual (buf [i], buffer [i], "block [" + i.ToString () + "]");
+						ClassicAssert.AreEqual (buf [i], buffer [i], "block [" + i.ToString () + "]");
 				}
 			}
 

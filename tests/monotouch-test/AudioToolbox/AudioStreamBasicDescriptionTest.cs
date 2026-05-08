@@ -18,26 +18,26 @@ namespace MonoTouchFixtures.AudioToolbox {
 		public void CreateLinearPCM ()
 		{
 			var pcm = AudioStreamBasicDescription.CreateLinearPCM ();
-			Assert.IsNotNull (pcm.FormatName);
-			Assert.IsFalse (pcm.IsVariableBitrate);
+			ClassicAssert.IsNotNull (pcm.FormatName);
+			ClassicAssert.IsFalse (pcm.IsVariableBitrate);
 		}
 
 		[Test]
 		public void VBR ()
 		{
 			var mp3 = new AudioStreamBasicDescription (AudioFormatType.MPEGLayer3);
-			Assert.IsTrue (mp3.IsVariableBitrate);
+			ClassicAssert.IsTrue (mp3.IsVariableBitrate);
 		}
 
 		[Test]
 		public void GetFormatInfo ()
 		{
 			var asbd = new AudioStreamBasicDescription (AudioFormatType.MPEG4AAC);
-			Assert.AreEqual (AudioFormatError.None, AudioStreamBasicDescription.GetFormatInfo (ref asbd));
+			ClassicAssert.AreEqual (AudioFormatError.None, AudioStreamBasicDescription.GetFormatInfo (ref asbd));
 
-			Assert.IsNotNull (AudioStreamBasicDescription.GetAvailableEncodeChannelLayoutTags (asbd));
-			Assert.IsNotNull (AudioStreamBasicDescription.GetAvailableEncodeNumberChannels (asbd));
-			Assert.IsNotNull (asbd.GetOutputFormatList ());
+			ClassicAssert.IsNotNull (AudioStreamBasicDescription.GetAvailableEncodeChannelLayoutTags (asbd));
+			ClassicAssert.IsNotNull (AudioStreamBasicDescription.GetAvailableEncodeNumberChannels (asbd));
+			ClassicAssert.IsNotNull (asbd.GetOutputFormatList ());
 		}
 	}
 }

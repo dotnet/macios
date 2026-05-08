@@ -30,8 +30,8 @@ namespace MonoTouchFixtures.Foundation {
 			var data = NSData.FromString ("dummy string");
 			if (TestRuntime.CheckXcodeVersion (7, 0)) {
 				// iOS9 does not throw if it cannot get correct data, it simply returns null (much better)
-				Assert.Null (NSKeyedUnarchiver.UnarchiveFile (Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png")), "UnarchiveFile");
-				Assert.Null (NSKeyedUnarchiver.UnarchiveObject (data), "UnarchiveObject");
+				ClassicAssert.Null (NSKeyedUnarchiver.UnarchiveFile (Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png")), "UnarchiveFile");
+				ClassicAssert.Null (NSKeyedUnarchiver.UnarchiveObject (data), "UnarchiveObject");
 			} else {
 				Assert.Throws<PlatformException> (() => NSKeyedUnarchiver.UnarchiveFile (Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png")), "UnarchiveFile");
 				Assert.Throws<PlatformException> (() => NSKeyedUnarchiver.UnarchiveObject (data), "UnarchiveObject");

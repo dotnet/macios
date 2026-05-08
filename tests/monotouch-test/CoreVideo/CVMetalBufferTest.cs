@@ -16,7 +16,7 @@ namespace MonoTouchFixtures.CoreVideo {
 		{
 			TestRuntime.AssertXcodeVersion (16, 0);
 
-			Assert.AreNotEqual (0, CVMetalBuffer.GetTypeId (), "GetTypeId");
+			ClassicAssert.AreNotEqual (0, CVMetalBuffer.GetTypeId (), "GetTypeId");
 		}
 
 #if !MONOMAC
@@ -35,9 +35,9 @@ namespace MonoTouchFixtures.CoreVideo {
 			};
 			using var image = new CVPixelBuffer (320, 320, pft, dict);
 			using var buffer = cache.CreateBufferFromImage (image);
-			Assert.IsNotNull (buffer, "Buffer");
+			ClassicAssert.IsNotNull (buffer, "Buffer");
 			using var metalBuffer = buffer.GetMetalBuffer ();
-			Assert.IsNotNull (metalBuffer, "GetMetalBuffer");
+			ClassicAssert.IsNotNull (metalBuffer, "GetMetalBuffer");
 		}
 #endif // !MONOMAC
 	}

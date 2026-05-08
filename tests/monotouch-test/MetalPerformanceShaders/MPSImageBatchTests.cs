@@ -62,7 +62,7 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 		//	});
 
 		//	Assert.That (idx, Is.EqualTo (5), "idx");
-		//	Assert.IsTrue (hit, "hit");
+		//	ClassicAssert.IsTrue (hit, "hit");
 		//}
 	}
 }

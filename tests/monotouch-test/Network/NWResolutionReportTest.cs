@@ -30,12 +30,12 @@ namespace MonoTouchFixtures.Network {
 				report = r;
 				reportEvent.Set ();
 			});
-			Assert.True (reportEvent.WaitOne (20000), "Timed out fetching establishment reports.");
+			ClassicAssert.True (reportEvent.WaitOne (20000), "Timed out fetching establishment reports.");
 			report.EnumerateResolutionReports ((r) => {
 				resolutionReport = Runtime.GetINativeObject<NWResolutionReport> (r.Handle, false);
 				resolutionEvent.Set ();
 			});
-			Assert.True (resolutionEvent.WaitOne (20000), "Timed out enumerating resolution reports.");
+			ClassicAssert.True (resolutionEvent.WaitOne (20000), "Timed out enumerating resolution reports.");
 		}
 
 		[OneTimeTearDown]

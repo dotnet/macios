@@ -1398,7 +1398,7 @@ namespace Introspection {
 					}
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} protocol selectors validated", Errors, n);
+			ClassicAssert.AreEqual (0, Errors, "{0} errors found in {1} protocol selectors validated", Errors, n);
 		}
 
 		void ProcessProtocolMember (Type t, MethodBase m, ref int n)
@@ -1465,7 +1465,7 @@ namespace Introspection {
 					Process (class_ptr, t, m, ref n);
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} instance selector validated{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			ClassicAssert.AreEqual (0, Errors, "{0} errors found in {1} instance selector validated{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
 		}
 
 		void Process (IntPtr class_ptr, Type t, MethodBase m, ref int n)
@@ -1573,7 +1573,7 @@ namespace Introspection {
 					}
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} static selector validated{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			ClassicAssert.AreEqual (0, Errors, "{0} errors found in {1} static selector validated{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
 		}
 	}
 }

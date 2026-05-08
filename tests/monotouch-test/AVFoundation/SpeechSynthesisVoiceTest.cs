@@ -34,16 +34,16 @@ namespace MonoTouchFixtures.AVFoundation {
 		{
 			// it's not clear that `init` should be called... it works (as it does not crash) but you can't set anything
 			using (var ssv = new AVSpeechSynthesisVoice ()) {
-				Assert.Null (ssv.Language, "Language");
+				ClassicAssert.Null (ssv.Language, "Language");
 			}
 		}
 
 		[Test]
 		public void Static ()
 		{
-			Assert.NotNull (AVSpeechSynthesisVoice.CurrentLanguageCode, "CurrentLanguageCode");
+			ClassicAssert.NotNull (AVSpeechSynthesisVoice.CurrentLanguageCode, "CurrentLanguageCode");
 			foreach (var ssv in AVSpeechSynthesisVoice.GetSpeechVoices ()) {
-				Assert.NotNull (ssv.Language, ssv.Language);
+				ClassicAssert.NotNull (ssv.Language, ssv.Language);
 			}
 		}
 	}

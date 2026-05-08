@@ -26,21 +26,21 @@ namespace MonoTouchFixtures.CloudKit {
 		public void PerRecordProgressSetter ()
 		{
 			op.PerRecordProgress = (record, p) => { Console.WriteLine ("Progress"); };
-			Assert.NotNull (op.PerRecordProgress);
+			ClassicAssert.NotNull (op.PerRecordProgress);
 		}
 
 		[Test]
 		public void PerRecordCompletionSetter ()
 		{
 			op.PerRecordCompletion = (record, e) => { Console.WriteLine ("Notification"); };
-			Assert.NotNull (op.PerRecordCompletion);
+			ClassicAssert.NotNull (op.PerRecordCompletion);
 		}
 
 		[Test]
 		public void TestCompletedSetter ()
 		{
 			op.Completed = (saved, deleted, e) => { Console.WriteLine ("Completed"); };
-			Assert.NotNull (op.Completed);
+			ClassicAssert.NotNull (op.Completed);
 		}
 
 		[Test]

@@ -36,16 +36,16 @@ namespace MonoTouchFixtures.MapKit {
 			// MKAnnotation
 			Assert.That (pg.Coordinate.Longitude, Is.NaN, "Coordinate.Longitude");
 			Assert.That (pg.Coordinate.Latitude, Is.NaN, "Coordinate.Latitude");
-			Assert.Null (pg.Title, "Title");
-			Assert.Null (pg.Subtitle, "Subtitle");
+			ClassicAssert.Null (pg.Title, "Title");
+			ClassicAssert.Null (pg.Subtitle, "Subtitle");
 			// MKOverlay
-			Assert.True (Double.IsPositiveInfinity (pg.BoundingMapRect.Origin.X), "BoundingMapRect.Origin.X");
-			Assert.True (Double.IsPositiveInfinity (pg.BoundingMapRect.Origin.Y), "BoundingMapRect.Origin.Y");
-			Assert.True (Double.IsNegativeInfinity (pg.BoundingMapRect.Size.Height), "BoundingMapRect.Size.Height");
-			Assert.True (Double.IsNegativeInfinity (pg.BoundingMapRect.Size.Width), "BoundingMapRect.Size.Width");
-			Assert.False (pg.Intersects (pg.BoundingMapRect), "Intersect/Self");
+			ClassicAssert.True (Double.IsPositiveInfinity (pg.BoundingMapRect.Origin.X), "BoundingMapRect.Origin.X");
+			ClassicAssert.True (Double.IsPositiveInfinity (pg.BoundingMapRect.Origin.Y), "BoundingMapRect.Origin.Y");
+			ClassicAssert.True (Double.IsNegativeInfinity (pg.BoundingMapRect.Size.Height), "BoundingMapRect.Size.Height");
+			ClassicAssert.True (Double.IsNegativeInfinity (pg.BoundingMapRect.Size.Width), "BoundingMapRect.Size.Width");
+			ClassicAssert.False (pg.Intersects (pg.BoundingMapRect), "Intersect/Self");
 			MKMapRect rect = new MKMapRect (0, 0, 0, 0);
-			Assert.False (pg.Intersects (rect), "Intersect/Empty");
+			ClassicAssert.False (pg.Intersects (rect), "Intersect/Empty");
 
 			ShapeTest.CheckShape (pg);
 		}
@@ -103,7 +103,7 @@ namespace MonoTouchFixtures.MapKit {
 				pg.Coordinate = new CLLocationCoordinate2D (10, 20);
 			}
 			catch (ObjCException mte) {
-				Assert.True (mte.Message.Contains ("unrecognized selector sent to instance"));
+				ClassicAssert.True (mte.Message.Contains ("unrecognized selector sent to instance"));
 			}
 			catch {
 				Assert.Fail ("API could be working/implemented");

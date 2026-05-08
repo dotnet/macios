@@ -19,10 +19,10 @@ namespace MonoTouchFixtures.AudioUnit {
 		{
 			var path = NSBundle.MainBundle.PathForResource ("1", "caf", "AudioToolbox");
 			using (var file = ExtAudioFile.OpenUrl (CFUrl.FromFile (path))) {
-				Assert.IsNotNull (file.AudioFile, "#1");
+				ClassicAssert.IsNotNull (file.AudioFile, "#1");
 
 				ExtAudioFile f2;
-				Assert.AreEqual (ExtAudioFileError.OK, ExtAudioFile.WrapAudioFileID (file.AudioFile.Value, true, out f2));
+				ClassicAssert.AreEqual (ExtAudioFileError.OK, ExtAudioFile.WrapAudioFileID (file.AudioFile.Value, true, out f2));
 			}
 		}
 
@@ -41,8 +41,8 @@ namespace MonoTouchFixtures.AudioUnit {
 			var path = NSBundle.MainBundle.PathForResource ("1", "caf", "AudioToolbox");
 			ExtAudioFileError err;
 			using (var file = ExtAudioFile.OpenUrl (NSUrl.FromFilename (path), out err)) {
-				Assert.IsTrue (err == ExtAudioFileError.OK, "OpenNSUrlTest");
-				Assert.IsNotNull (file.AudioFile, "OpenNSUrlTest");
+				ClassicAssert.IsTrue (err == ExtAudioFileError.OK, "OpenNSUrlTest");
+				ClassicAssert.IsNotNull (file.AudioFile, "OpenNSUrlTest");
 			}
 		}
 
@@ -52,8 +52,8 @@ namespace MonoTouchFixtures.AudioUnit {
 			var path = NSBundle.MainBundle.PathForResource ("1", "caf", "AudioToolbox");
 			ExtAudioFileError err;
 			using (var file = ExtAudioFile.OpenUrl (CFUrl.FromFile (path), out err)) {
-				Assert.IsTrue (err == ExtAudioFileError.OK, "OpenCFUrlTest");
-				Assert.IsNotNull (file.AudioFile, "OpenCFUrlTest");
+				ClassicAssert.IsTrue (err == ExtAudioFileError.OK, "OpenCFUrlTest");
+				ClassicAssert.IsNotNull (file.AudioFile, "OpenCFUrlTest");
 			}
 		}
 	}

@@ -19,7 +19,7 @@ namespace Xamarin.Mac.Tests {
 			var usesRollover = view.UsesRolloverButtonForSelection;
 			view.UsesRolloverButtonForSelection = !usesRollover;
 
-			Assert.IsFalse (view.UsesRolloverButtonForSelection == usesRollover, "NSTextViewShouldChangeUsesRolloverButtonForSelection - Failed to set the UsesRolloverButtonForSelection property");
+			ClassicAssert.IsFalse (view.UsesRolloverButtonForSelection == usesRollover, "NSTextViewShouldChangeUsesRolloverButtonForSelection - Failed to set the UsesRolloverButtonForSelection property");
 		}
 	}
 }

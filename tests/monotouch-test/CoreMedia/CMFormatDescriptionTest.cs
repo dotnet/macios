@@ -25,10 +25,10 @@ namespace MonoTouchFixtures.CoreMedia {
 		{
 			CMFormatDescriptionError fde;
 			using (var fd = CMFormatDescription.Create (CMMediaType.ClosedCaption, (uint) CMClosedCaptionFormatType.CEA608, out fde)) {
-				Assert.AreEqual (CMFormatDescriptionError.None, fde, "#1");
-				Assert.AreEqual ((CMMuxedStreamType) 0, fd.MuxedStreamType, "#2");
-				Assert.AreEqual (CMMediaType.ClosedCaption, fd.MediaType, "#3");
-				Assert.AreEqual (CMClosedCaptionFormatType.CEA608, fd.ClosedCaptionFormatType, "#4");
+				ClassicAssert.AreEqual (CMFormatDescriptionError.None, fde, "#1");
+				ClassicAssert.AreEqual ((CMMuxedStreamType) 0, fd.MuxedStreamType, "#2");
+				ClassicAssert.AreEqual (CMMediaType.ClosedCaption, fd.MediaType, "#3");
+				ClassicAssert.AreEqual (CMClosedCaptionFormatType.CEA608, fd.ClosedCaptionFormatType, "#4");
 			}
 		}
 
@@ -47,12 +47,12 @@ namespace MonoTouchFixtures.CoreMedia {
 			case AVAuthorizationStatus.Denied:
 			case AVAuthorizationStatus.NotDetermined:
 				// We can't test the below, since the some other tests may have initialized whatever we need for the API to work correctly.
-				//				Assert.Null (CMFormatDescription.Create (CMMediaType.Video, (uint) CMVideoCodecType.H264, out fde), "null ({0})", auth);
+				//				ClassicAssert.Null (CMFormatDescription.Create (CMMediaType.Video, (uint) CMVideoCodecType.H264, out fde), "null ({0})", auth);
 				//				Assert.That (fde, Is.EqualTo (CMFormatDescriptionError.InvalidParameter), "CMFormatDescriptionError");
 				break;
 			case AVAuthorizationStatus.Authorized:
 				// We can't test the below, since the some other tests may have initialized whatever we need for the API to work correctly.
-				//				Assert.Null (CMFormatDescription.Create (CMMediaType.Video, (uint) CMVideoCodecType.H264, out fde), "null (authorized)");
+				//				ClassicAssert.Null (CMFormatDescription.Create (CMMediaType.Video, (uint) CMVideoCodecType.H264, out fde), "null (authorized)");
 				//				Assert.That (fde, Is.EqualTo (CMFormatDescriptionError.InvalidParameter), "CMFormatDescriptionError (authorized)");
 
 				using (var captureSession = new AVCaptureSession ()) {
@@ -66,7 +66,7 @@ namespace MonoTouchFixtures.CoreMedia {
 					}
 				}
 
-				Assert.IsNotNull (CMFormatDescription.Create (CMMediaType.Video, (uint) CMVideoCodecType.H264, out fde), "not null (authorized)");
+				ClassicAssert.IsNotNull (CMFormatDescription.Create (CMMediaType.Video, (uint) CMVideoCodecType.H264, out fde), "not null (authorized)");
 				Assert.That (fde, Is.EqualTo (CMFormatDescriptionError.None), "CMFormatDescriptionError #2 (authorized)");
 				break;
 			}
@@ -117,7 +117,7 @@ namespace MonoTouchFixtures.CoreMedia {
 			var desc = CMVideoFormatDescription.FromH264ParameterSets (props, 4, out error);
 			props = null;
 			Assert.That (error == CMFormatDescriptionError.None, "H264ParameterSetsTest");
-			Assert.NotNull (desc, "H264ParameterSetsTest");
+			ClassicAssert.NotNull (desc, "H264ParameterSetsTest");
 			Assert.That (desc.Dimensions.Height == 1080 && desc.Dimensions.Width == 1920, "H264ParameterSetsTest");
 
 			CMFormatDescriptionError err;
@@ -125,14 +125,14 @@ namespace MonoTouchFixtures.CoreMedia {
 			int nalCount;
 			var bytes = desc.GetH264ParameterSet (0, out paramCount, out nalCount, out err);
 			Assert.That (err == CMFormatDescriptionError.None, "H264ParameterSetsTest");
-			Assert.NotNull (bytes, "H264ParameterSetsTest");
-			Assert.True (nalCount == 4 && paramCount == 2);
+			ClassicAssert.NotNull (bytes, "H264ParameterSetsTest");
+			ClassicAssert.True (nalCount == 4 && paramCount == 2);
 			Assert.That (arr0, Is.EqualTo (bytes), "H264ParameterSetsTest roundtrip");
 
 			bytes = desc.GetH264ParameterSet (1, out paramCount, out nalCount, out err);
 			Assert.That (err == CMFormatDescriptionError.None, "H264ParameterSetsTest");
-			Assert.NotNull (bytes, "H264ParameterSetsTest");
-			Assert.True (nalCount == 4 && paramCount == 2);
+			ClassicAssert.NotNull (bytes, "H264ParameterSetsTest");
+			ClassicAssert.True (nalCount == 4 && paramCount == 2);
 			Assert.That (arr1, Is.EqualTo (bytes), "H264ParameterSetsTest roundtrip");
 		}
 
@@ -151,7 +151,7 @@ namespace MonoTouchFixtures.CoreMedia {
 
 			props = null;
 			Assert.That (error == CMFormatDescriptionError.None, "HevcParameterSetsTest 1");
-			Assert.NotNull (desc, "HevcParameterSetsTest 2");
+			ClassicAssert.NotNull (desc, "HevcParameterSetsTest 2");
 			Assert.That (desc.Dimensions.Height == 720 && desc.Dimensions.Width == 1280, "HevcParameterSetsTest 3");
 
 			CMFormatDescriptionError err;
@@ -159,20 +159,20 @@ namespace MonoTouchFixtures.CoreMedia {
 			int nalCount;
 			var bytes = desc.GetHevcParameterSet (0, out paramCount, out nalCount, out err);
 			Assert.That (err == CMFormatDescriptionError.None, "HevcParameterSetsTest arr0 1");
-			Assert.NotNull (bytes, "HevcParameterSetsTest arr0 2");
-			Assert.True (nalCount == 4 && paramCount == 3);
+			ClassicAssert.NotNull (bytes, "HevcParameterSetsTest arr0 2");
+			ClassicAssert.True (nalCount == 4 && paramCount == 3);
 			Assert.That (arr0, Is.EqualTo (bytes), "HevcParameterSetsTest arr0 roundtrip");
 
 			bytes = desc.GetHevcParameterSet (1, out paramCount, out nalCount, out err);
 			Assert.That (err == CMFormatDescriptionError.None, "HevcParameterSetsTest arr1 1");
-			Assert.NotNull (bytes, "HevcParameterSetsTest arr1 2");
-			Assert.True (nalCount == 4 && paramCount == 3);
+			ClassicAssert.NotNull (bytes, "HevcParameterSetsTest arr1 2");
+			ClassicAssert.True (nalCount == 4 && paramCount == 3);
 			Assert.That (arr1, Is.EqualTo (bytes), "HevcParameterSetsTest arr1 roundtrip");
 
 			bytes = desc.GetHevcParameterSet (2, out paramCount, out nalCount, out err);
 			Assert.That (err == CMFormatDescriptionError.None, "HevcParameterSetsTest arr2 1");
-			Assert.NotNull (bytes, "HevcParameterSetsTest arr2 2");
-			Assert.True (nalCount == 4 && paramCount == 3);
+			ClassicAssert.NotNull (bytes, "HevcParameterSetsTest arr2 2");
+			ClassicAssert.True (nalCount == 4 && paramCount == 3);
 			Assert.That (arr2, Is.EqualTo (bytes), "HevcParameterSetsTest arr2 roundtrip");
 		}
 
@@ -180,30 +180,30 @@ namespace MonoTouchFixtures.CoreMedia {
 		public void VideoFormatDescriptionConstructors ()
 		{
 			using (var obj = new CMVideoFormatDescription (CMVideoCodecType.H264, new CMVideoDimensions (960, 540))) {
-				Assert.AreEqual (960, obj.Dimensions.Width, "Width #1");
-				Assert.AreEqual (540, obj.Dimensions.Height, "Height #1");
-				Assert.AreEqual (CMVideoCodecType.H264, obj.VideoCodecType, "VideoCodecType #1");
-				Assert.IsNull (obj.GetExtensions (), "Extensions #1");
+				ClassicAssert.AreEqual (960, obj.Dimensions.Width, "Width #1");
+				ClassicAssert.AreEqual (540, obj.Dimensions.Height, "Height #1");
+				ClassicAssert.AreEqual (CMVideoCodecType.H264, obj.VideoCodecType, "VideoCodecType #1");
+				ClassicAssert.IsNull (obj.GetExtensions (), "Extensions #1");
 			}
 
 			using (var obj = new CMVideoFormatDescription (CMVideoCodecType.H263, new CMVideoDimensions (480, 270), (NSDictionary?) null)) {
-				Assert.AreEqual (480, obj.Dimensions.Width, "Width #2");
-				Assert.AreEqual (270, obj.Dimensions.Height, "Height #2");
-				Assert.AreEqual (CMVideoCodecType.H263, obj.VideoCodecType, "VideoCodecType #2");
-				Assert.IsNull (obj.GetExtensions (), "Extensions #2");
+				ClassicAssert.AreEqual (480, obj.Dimensions.Width, "Width #2");
+				ClassicAssert.AreEqual (270, obj.Dimensions.Height, "Height #2");
+				ClassicAssert.AreEqual (CMVideoCodecType.H263, obj.VideoCodecType, "VideoCodecType #2");
+				ClassicAssert.IsNull (obj.GetExtensions (), "Extensions #2");
 			}
 
 			var extensions = new CMFormatDescriptionExtensions () {
 				BytesPerRow = 24,
 			};
 			using (var obj = new CMVideoFormatDescription (CMVideoCodecType.H263, new CMVideoDimensions (480, 270), extensions)) {
-				Assert.AreEqual (480, obj.Dimensions.Width, "Width #3");
-				Assert.AreEqual (270, obj.Dimensions.Height, "Height #3");
-				Assert.AreEqual (CMVideoCodecType.H263, obj.VideoCodecType, "VideoCodecType #3");
+				ClassicAssert.AreEqual (480, obj.Dimensions.Width, "Width #3");
+				ClassicAssert.AreEqual (270, obj.Dimensions.Height, "Height #3");
+				ClassicAssert.AreEqual (CMVideoCodecType.H263, obj.VideoCodecType, "VideoCodecType #3");
 				var dict = obj.GetExtensions ();
 				var ext = new CMFormatDescriptionExtensions (dict);
-				Assert.IsNotNull (ext, "Extensions #3");
-				Assert.AreEqual (24, ext.BytesPerRow, "Extensions.BytesPerRow #3");
+				ClassicAssert.IsNotNull (ext, "Extensions #3");
+				ClassicAssert.AreEqual (24, ext.BytesPerRow, "Extensions.BytesPerRow #3");
 			}
 		}
 

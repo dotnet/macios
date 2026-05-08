@@ -23,7 +23,7 @@ namespace Xamarin.Mac.Tests {
 				length = view.GestureRecognizers.Length;
 			view.AddGestureRecognizer (new NSGestureRecognizer ());
 
-			Assert.IsTrue (view.GestureRecognizers.Length == length + 1, "NSViewShouldAddGestureRecognizer - Failed to add recognizer, count didn't change.");
+			ClassicAssert.IsTrue (view.GestureRecognizers.Length == length + 1, "NSViewShouldAddGestureRecognizer - Failed to add recognizer, count didn't change.");
 		}
 
 		[Test]
@@ -32,11 +32,11 @@ namespace Xamarin.Mac.Tests {
 			var recognizer = new NSClickGestureRecognizer ();
 			view.AddGestureRecognizer (recognizer);
 
-			Assert.IsTrue (view.GestureRecognizers.Length != 0, "NSViewShouldRemoveGestureRecognizer - Failed to add gesture recognizer");
+			ClassicAssert.IsTrue (view.GestureRecognizers.Length != 0, "NSViewShouldRemoveGestureRecognizer - Failed to add gesture recognizer");
 
 			view.RemoveGestureRecognizer (recognizer);
 
-			Assert.IsTrue (view.GestureRecognizers.Length == 0, "NSViewShouldRemoveGestureRecognizer - Failed to remove gesture recognizer");
+			ClassicAssert.IsTrue (view.GestureRecognizers.Length == 0, "NSViewShouldRemoveGestureRecognizer - Failed to remove gesture recognizer");
 		}
 
 		[Test]
@@ -45,7 +45,7 @@ namespace Xamarin.Mac.Tests {
 			var recognizers = view.GestureRecognizers;
 			view.GestureRecognizers = new NSGestureRecognizer [] { new NSClickGestureRecognizer (), new NSPanGestureRecognizer () };
 
-			Assert.IsFalse (view.GestureRecognizers == recognizers);
+			ClassicAssert.IsFalse (view.GestureRecognizers == recognizers);
 		}
 
 		[Test]
@@ -87,10 +87,10 @@ namespace Xamarin.Mac.Tests {
 
 				Assert.Throws<ArgumentNullException> (() => containerView.SortSubviews (null), "ANE");
 
-				Assert.AreEqual (3, containerView.Subviews.Length, "Presort Length");
-				Assert.AreEqual ("b", ((NSTextView) containerView.Subviews [0]).Value, "Presort Value 0");
-				Assert.AreEqual ("c", ((NSTextView) containerView.Subviews [1]).Value, "Presort Value 1");
-				Assert.AreEqual ("a", ((NSTextView) containerView.Subviews [2]).Value, "Presort Value 2");
+				ClassicAssert.AreEqual (3, containerView.Subviews.Length, "Presort Length");
+				ClassicAssert.AreEqual ("b", ((NSTextView) containerView.Subviews [0]).Value, "Presort Value 0");
+				ClassicAssert.AreEqual ("c", ((NSTextView) containerView.Subviews [1]).Value, "Presort Value 1");
+				ClassicAssert.AreEqual ("a", ((NSTextView) containerView.Subviews [2]).Value, "Presort Value 2");
 
 				containerView.SortSubviews ((x, y) => {
 					var viewX = (NSTextView) x;
@@ -104,10 +104,10 @@ namespace Xamarin.Mac.Tests {
 						return NSComparisonResult.Descending;
 				});
 
-				Assert.AreEqual (3, containerView.Subviews.Length, "Postsort Length");
-				Assert.AreEqual ("a", ((NSTextView) containerView.Subviews [0]).Value, "Postsort Value 0");
-				Assert.AreEqual ("b", ((NSTextView) containerView.Subviews [1]).Value, "Postsort Value 1");
-				Assert.AreEqual ("c", ((NSTextView) containerView.Subviews [2]).Value, "Postsort Value 2");
+				ClassicAssert.AreEqual (3, containerView.Subviews.Length, "Postsort Length");
+				ClassicAssert.AreEqual ("a", ((NSTextView) containerView.Subviews [0]).Value, "Postsort Value 0");
+				ClassicAssert.AreEqual ("b", ((NSTextView) containerView.Subviews [1]).Value, "Postsort Value 1");
+				ClassicAssert.AreEqual ("c", ((NSTextView) containerView.Subviews [2]).Value, "Postsort Value 2");
 
 				try {
 					containerView.SortSubviews ((x, y) => {
@@ -115,8 +115,8 @@ namespace Xamarin.Mac.Tests {
 					});
 					Assert.Fail ("No exception thrown");
 				} catch (Exception e) {
-					Assert.AreEqual ("An exception occurred during sorting.", e.Message, "Exception Message");
-					Assert.AreEqual ("Something went wrong", e.InnerException.Message, "InnerException Message");
+					ClassicAssert.AreEqual ("An exception occurred during sorting.", e.Message, "Exception Message");
+					ClassicAssert.AreEqual ("Something went wrong", e.InnerException.Message, "InnerException Message");
 				}
 			}
 		}

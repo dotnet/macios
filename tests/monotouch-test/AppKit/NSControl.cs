@@ -13,8 +13,8 @@ namespace Xamarin.Mac.Tests {
 			var size = control.ControlSize;
 			control.ControlSize = NSControlSize.Mini;
 
-			Assert.IsFalse (size == control.ControlSize);
-			Assert.IsTrue (control.ControlSize == NSControlSize.Mini);
+			ClassicAssert.IsFalse (size == control.ControlSize);
+			ClassicAssert.IsTrue (control.ControlSize == NSControlSize.Mini);
 		}
 
 		[Test]
@@ -24,7 +24,7 @@ namespace Xamarin.Mac.Tests {
 			var highlighted = control.Highlighted;
 			control.Highlighted = !highlighted;
 
-			Assert.IsFalse (highlighted == control.Highlighted);
+			ClassicAssert.IsFalse (highlighted == control.Highlighted);
 		}
 
 		[Test]
@@ -34,8 +34,8 @@ namespace Xamarin.Mac.Tests {
 			var lineBreak = control.LineBreakMode;
 			control.LineBreakMode = NSLineBreakMode.Clipping;
 
-			Assert.IsTrue (control.LineBreakMode == NSLineBreakMode.Clipping);
-			Assert.IsFalse (lineBreak == control.LineBreakMode);
+			ClassicAssert.IsTrue (control.LineBreakMode == NSLineBreakMode.Clipping);
+			ClassicAssert.IsFalse (lineBreak == control.LineBreakMode);
 		}
 
 		[Test]
@@ -51,8 +51,8 @@ namespace Xamarin.Mac.Tests {
 
 			control.PerformClick (control);
 
-			Assert.IsTrue (firstHitCount == 1, "NSControlShouldAddMultipleActivatedEventHandlers - Did not call first EventHandler");
-			Assert.IsTrue (secondHitCount == 1, "NSControlShouldAddMultipleActivatedEventHandlers - Did not call second EventHandler");
+			ClassicAssert.IsTrue (firstHitCount == 1, "NSControlShouldAddMultipleActivatedEventHandlers - Did not call first EventHandler");
+			ClassicAssert.IsTrue (secondHitCount == 1, "NSControlShouldAddMultipleActivatedEventHandlers - Did not call second EventHandler");
 		}
 
 		[Test]
@@ -71,8 +71,8 @@ namespace Xamarin.Mac.Tests {
 
 			control.PerformClick (control);
 
-			Assert.IsTrue (firstHitCount == 0, "NSControlShouldRemoveAndAddActivatedEventHandlers - Called first EventHandler after it was removed");
-			Assert.IsTrue (secondHitCount == 1, "NSControlShouldRemoveAndAddActivatedEventHandlers - Did not call second EventHandler");
+			ClassicAssert.IsTrue (firstHitCount == 0, "NSControlShouldRemoveAndAddActivatedEventHandlers - Called first EventHandler after it was removed");
+			ClassicAssert.IsTrue (secondHitCount == 1, "NSControlShouldRemoveAndAddActivatedEventHandlers - Did not call second EventHandler");
 		}
 	}
 }

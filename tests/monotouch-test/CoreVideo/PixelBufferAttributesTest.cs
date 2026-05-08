@@ -19,7 +19,7 @@ namespace MonoTouchFixtures.CoreVideo {
 		{
 			var options = new CVPixelBufferAttributes ();
 			Assert.That (options.Dictionary.Count, Is.EqualTo ((nuint) 0), "Count");
-			Assert.Null (options.MemoryAllocator, "MemoryAllocator");
+			ClassicAssert.Null (options.MemoryAllocator, "MemoryAllocator");
 		}
 
 		[Test]

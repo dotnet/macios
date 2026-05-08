@@ -32,13 +32,13 @@ namespace MonoTouchFixtures.SafariServices {
 			using (var http = new NSUrl ("http://www.xamarin.com"))
 			using (var local = new NSUrl (local_file, false))
 			using (var rl = SSReadingList.DefaultReadingList) {
-				Assert.True (rl.Add (http, "title", "preview text", out error), "Add-1");
-				Assert.Null (error, "error-1");
+				ClassicAssert.True (rl.Add (http, "title", "preview text", out error), "Add-1");
+				ClassicAssert.Null (error, "error-1");
 
-				Assert.True (rl.Add (http, null, null, out error), "Add-2");
-				Assert.Null (error, "error-2");
+				ClassicAssert.True (rl.Add (http, null, null, out error), "Add-2");
+				ClassicAssert.Null (error, "error-2");
 
-				Assert.False (rl.Add (local, null, null, out error), "Add-3");
+				ClassicAssert.False (rl.Add (local, null, null, out error), "Add-3");
 				Assert.That (error.Domain, Is.EqualTo ((string) SSReadingListError.UrlSchemeNotAllowed.GetDomain ()), "Domain");
 				Assert.That (error.Code, Is.EqualTo ((nint) (int) SSReadingListError.UrlSchemeNotAllowed), "Code");
 
@@ -59,13 +59,13 @@ namespace MonoTouchFixtures.SafariServices {
 		{
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
 
-			Assert.False (SSReadingList.SupportsUrl (null), "null");
+			ClassicAssert.False (SSReadingList.SupportsUrl (null), "null");
 
 			using (var http = new NSUrl ("http://www.xamarin.com"))
-				Assert.True (SSReadingList.SupportsUrl (http), "http");
+				ClassicAssert.True (SSReadingList.SupportsUrl (http), "http");
 
 			using (var local = new NSUrl (local_file, false))
-				Assert.False (SSReadingList.SupportsUrl (local), "local");
+				ClassicAssert.False (SSReadingList.SupportsUrl (local), "local");
 		}
 	}
 }

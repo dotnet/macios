@@ -25,7 +25,7 @@ namespace MonoTouchFixtures.CoreText {
 				return 0;
 			});
 
-			Assert.IsTrue (sortIsCalled, "GetMatchingFontDescriptors delegate is called");
+			ClassicAssert.IsTrue (sortIsCalled, "GetMatchingFontDescriptors delegate is called");
 
 			// Native crash (can't assert on it) if https://github.com/dotnet/macios/pull/3871 fix not present.
 			descList.First ().GetAttributes ();
@@ -38,12 +38,12 @@ namespace MonoTouchFixtures.CoreText {
 			using (var collection = new CTFontCollection (null)) {
 				var fd1 = collection.GetMatchingFontDescriptors ();
 				var fd2 = collection.GetMatchingFontDescriptors (options: null); // documented to return the same thing as the parameterless if null
-				Assert.NotNull (fd1, "fd1");
-				Assert.NotNull (fd2, "fd2");
-				Assert.AreEqual (fd1.Length, fd2.Length, "equal collections");
+				ClassicAssert.NotNull (fd1, "fd1");
+				ClassicAssert.NotNull (fd2, "fd2");
+				ClassicAssert.AreEqual (fd1.Length, fd2.Length, "equal collections");
 
 				var fd3 = collection.GetMatchingFontDescriptors (new CTFontCollectionOptions { RemoveDuplicates = true });
-				Assert.NotNull (fd3, "fd3");
+				ClassicAssert.NotNull (fd3, "fd3");
 			}
 		}
 	}

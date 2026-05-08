@@ -54,9 +54,9 @@ namespace LinkAll.Layout {
 			Assert.That (fields.Length, Is.EqualTo (1), "Length");
 			Assert.That (fields [0].Name, Is.EqualTo ("used"), "Name");
 
-			Assert.True (t.IsAutoLayout, "IsAutoLayout");
-			Assert.False (t.IsExplicitLayout, "IsExplicitLayout");
-			Assert.False (t.IsLayoutSequential, "IsLayoutSequential");
+			ClassicAssert.True (t.IsAutoLayout, "IsAutoLayout");
+			ClassicAssert.False (t.IsExplicitLayout, "IsExplicitLayout");
+			ClassicAssert.False (t.IsLayoutSequential, "IsLayoutSequential");
 		}
 
 		[Test]
@@ -70,9 +70,9 @@ namespace LinkAll.Layout {
 			Assert.That (fields.Length, Is.EqualTo (1), "Length");
 			Assert.That (fields [0].Name, Is.EqualTo ("used"), "Name");
 
-			Assert.True (t.IsAutoLayout, "IsAutoLayout");
-			Assert.False (t.IsExplicitLayout, "IsExplicitLayout");
-			Assert.False (t.IsLayoutSequential, "IsLayoutSequential");
+			ClassicAssert.True (t.IsAutoLayout, "IsAutoLayout");
+			ClassicAssert.False (t.IsExplicitLayout, "IsExplicitLayout");
+			ClassicAssert.False (t.IsLayoutSequential, "IsLayoutSequential");
 		}
 
 		[Test]
@@ -85,9 +85,9 @@ namespace LinkAll.Layout {
 			var fields = t.GetFields ();
 			Assert.That (fields.Length, Is.EqualTo (2), "Length");
 
-			Assert.False (t.IsAutoLayout, "IsAutoLayout");
-			Assert.False (t.IsExplicitLayout, "IsExplicitLayout");
-			Assert.True (t.IsLayoutSequential, "IsLayoutSequential");
+			ClassicAssert.False (t.IsAutoLayout, "IsAutoLayout");
+			ClassicAssert.False (t.IsExplicitLayout, "IsExplicitLayout");
+			ClassicAssert.True (t.IsLayoutSequential, "IsLayoutSequential");
 		}
 
 		[Test]
@@ -100,9 +100,9 @@ namespace LinkAll.Layout {
 			var fields = t.GetFields ();
 			Assert.That (fields.Length, Is.EqualTo (3), "Length");
 
-			Assert.False (t.IsAutoLayout, "IsAutoLayout");
-			Assert.True (t.IsExplicitLayout, "IsExplicitLayout");
-			Assert.False (t.IsLayoutSequential, "IsLayoutSequential");
+			ClassicAssert.False (t.IsAutoLayout, "IsAutoLayout");
+			ClassicAssert.True (t.IsExplicitLayout, "IsExplicitLayout");
+			ClassicAssert.False (t.IsLayoutSequential, "IsLayoutSequential");
 		}
 	}
 }

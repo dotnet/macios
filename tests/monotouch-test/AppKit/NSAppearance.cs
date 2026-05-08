@@ -10,8 +10,8 @@ namespace Xamarin.Mac.Tests {
 		public void NSAppearanceShouldLoadAppearanceNamed ()
 		{
 			var appearance = NSAppearance.GetAppearance (NSAppearance.NameVibrantDark);
-			Assert.IsNotNull (appearance, "NSAppearanceShouldLoadAppearanceNamed - Failed to initialize appearance VibrantDark");
-			Assert.AreEqual (appearance.Name, NSAppearance.NameVibrantDark.ToString (), "NSAppearanceShouldLoadAppearanceNamed - Appearance initialized with incorrect name.");
+			ClassicAssert.IsNotNull (appearance, "NSAppearanceShouldLoadAppearanceNamed - Failed to initialize appearance VibrantDark");
+			ClassicAssert.AreEqual (appearance.Name, NSAppearance.NameVibrantDark.ToString (), "NSAppearanceShouldLoadAppearanceNamed - Appearance initialized with incorrect name.");
 		}
 
 #if FALSE // Test failing, exception doesn't appear to be thrown during test, throw correctly running in an app.
@@ -26,7 +26,7 @@ namespace Xamarin.Mac.Tests {
 				exceptionHit = true;
 			}
 
-			Assert.IsTrue (exceptionHit, "NSAppearanceConstructorShouldFailWithInvalidName - No exception thrown while initializing appearance with invalid name.");
+			ClassicAssert.IsTrue (exceptionHit, "NSAppearanceConstructorShouldFailWithInvalidName - No exception thrown while initializing appearance with invalid name.");
 		}
 #endif
 
@@ -37,7 +37,7 @@ namespace Xamarin.Mac.Tests {
 
 			NSAppearance.CurrentAppearance = NSAppearance.GetAppearance (NSAppearance.NameVibrantDark);
 
-			Assert.AreNotEqual (appearance, NSAppearance.CurrentAppearance, "NSAppearanceShouldChangeCurrentAppearance - Failed to change appearance.");
+			ClassicAssert.AreNotEqual (appearance, NSAppearance.CurrentAppearance, "NSAppearanceShouldChangeCurrentAppearance - Failed to change appearance.");
 		}
 
 		[Test]

@@ -1857,7 +1857,7 @@ partial class TestRuntime {
 		case InconclusiveException: throw new InconclusiveException (ex.Message, ex);
 		case ResultStateException: throw ex;
 		default:
-			Assert.IsNull (ex, message);
+			ClassicAssert.IsNull (ex, message);
 			break;
 		}
 	}

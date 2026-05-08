@@ -25,10 +25,10 @@ namespace LinkAnyTest {
 				b = obj.ToString ()!;
 			});
 			// test behavior (we did not break anything)
-			Assert.AreEqual ("b", b, "Stop");
+			ClassicAssert.AreEqual ("b", b, "Stop");
 			// test that BlockLiteral is fully preserved
 			int size = Marshal.SizeOf (typeof (BlockLiteral)); // e.g. unused 'reserved' must not be removed
-			Assert.AreEqual (IntPtr.Size == 8 ? 48 : 28, size, "BlockLiteral size");
+			ClassicAssert.AreEqual (IntPtr.Size == 8 ? 48 : 28, size, "BlockLiteral size");
 
 		}
 
@@ -41,15 +41,15 @@ namespace LinkAnyTest {
 		// https://bugzilla.xamarin.com/show_bug.cgi?id=7114
 		public static void Bug7114 ([CallerFilePath] string? filePath = null)
 		{
-			Assert.IsNotNull (filePath, "CallerFilePath");
+			ClassicAssert.IsNotNull (filePath, "CallerFilePath");
 		}
 
 		[Test]
 		public void AppContextGetData ()
 		{
 			// https://github.com/dotnet/runtime/issues/50290
-			Assert.IsNotNull (AppContext.GetData ("APP_PATHS"), "APP_PATHS");
-			Assert.IsNotNull (AppContext.GetData ("PINVOKE_OVERRIDE"), "PINVOKE_OVERRIDE");
+			ClassicAssert.IsNotNull (AppContext.GetData ("APP_PATHS"), "APP_PATHS");
+			ClassicAssert.IsNotNull (AppContext.GetData ("PINVOKE_OVERRIDE"), "PINVOKE_OVERRIDE");
 		}
 
 		[Test]
@@ -68,17 +68,17 @@ namespace LinkAnyTest {
 		public void JsonSerializer_Serialize ()
 		{
 			var a = JsonSerializer.Serialize (42);
-			Assert.AreEqual ("42", a, "serialized 42");
+			ClassicAssert.AreEqual ("42", a, "serialized 42");
 
 			var b = JsonSerializer.Serialize (new int [] { 42, 3, 14, 15 });
-			Assert.AreEqual ("[42,3,14,15]", b, "serialized array");
+			ClassicAssert.AreEqual ("[42,3,14,15]", b, "serialized array");
 		}
 
 		[Test]
 		public void JsonSerializer_Deserialize ()
 		{
 			var a = JsonSerializer.Deserialize<int> ("42");
-			Assert.AreEqual (42, a, "deserialized 42");
+			ClassicAssert.AreEqual (42, a, "deserialized 42");
 
 			var b = JsonSerializer.Deserialize<int []> ("[42,3,14,15]");
 			CollectionAssert.AreEqual (new int [] { 42, 3, 14, 15 }, b, "deserialized array");
@@ -87,7 +87,7 @@ namespace LinkAnyTest {
 		[Test]
 		public void AES ()
 		{
-			Assert.NotNull (Aes.Create (), "AES");
+			ClassicAssert.NotNull (Aes.Create (), "AES");
 		}
 
 		static bool waited;
@@ -122,7 +122,7 @@ namespace LinkAnyTest {
 					string content = await response.Content.ReadAsStringAsync ();
 					waited = true;
 					bool success = !String.IsNullOrEmpty (content);
-					Assert.IsTrue (success, $"received {content.Length} bytes");
+					ClassicAssert.IsTrue (success, $"received {content.Length} bytes");
 				}
 			}
 		}
@@ -138,7 +138,7 @@ namespace LinkAnyTest {
 				if (requestError) {
 					Assert.Inconclusive ($"Test cannot be trusted. Issues performing the request. Status code '{statusCode}'");
 				} else {
-					Assert.IsTrue (waited, "async/await worked");
+					ClassicAssert.IsTrue (waited, "async/await worked");
 				}
 			} finally {
 				SynchronizationContext.SetSynchronizationContext (current_sc);

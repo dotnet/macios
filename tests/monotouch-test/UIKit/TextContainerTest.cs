@@ -24,7 +24,7 @@ namespace MonoTouchFixtures.UIKit {
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
 
 			using (var tc = new NSTextContainer ()) {
-				Assert.Null (tc.LayoutManager, "LayoutManager");
+				ClassicAssert.Null (tc.LayoutManager, "LayoutManager");
 			}
 		}
 	}

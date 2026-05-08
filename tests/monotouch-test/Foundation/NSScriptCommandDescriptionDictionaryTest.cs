@@ -18,10 +18,10 @@ namespace MonoTouchFixtures.Foundation {
 			desc.Add (arg);
 			using (var argKey = new NSString ("Arguments"))
 			using (var nsName = new NSString (arg.Name)) {
-				Assert.IsTrue (desc.Dictionary.ContainsKey (argKey));
+				ClassicAssert.IsTrue (desc.Dictionary.ContainsKey (argKey));
 				var argDict = desc.Dictionary [argKey] as NSDictionary;
-				Assert.IsNotNull (argDict);
-				Assert.IsTrue (argDict.ContainsKey (nsName));
+				ClassicAssert.IsNotNull (argDict);
+				ClassicAssert.IsTrue (argDict.ContainsKey (nsName));
 			}
 		}
 
@@ -34,10 +34,10 @@ namespace MonoTouchFixtures.Foundation {
 			desc.Add (arg);
 			using (var argKey = new NSString ("Arguments"))
 			using (var nsName = new NSString (arg.Name)) {
-				Assert.IsTrue (desc.Dictionary.ContainsKey (argKey));
+				ClassicAssert.IsTrue (desc.Dictionary.ContainsKey (argKey));
 				var argDict = desc.Dictionary [argKey] as NSDictionary;
-				Assert.IsNotNull (argDict);
-				Assert.IsTrue (argDict.ContainsKey (nsName));
+				ClassicAssert.IsNotNull (argDict);
+				ClassicAssert.IsTrue (argDict.ContainsKey (nsName));
 			}
 		}
 
@@ -47,7 +47,7 @@ namespace MonoTouchFixtures.Foundation {
 			var arg = new NSScriptCommandArgumentDescription () { AppleEventCode = "frgt", Type = "text", Name = "Foo" };
 			var desc = new NSScriptCommandDescriptionDictionary ();
 			// no exception should happen
-			Assert.IsFalse (desc.Remove (arg));
+			ClassicAssert.IsFalse (desc.Remove (arg));
 		}
 
 		[Test]
@@ -56,7 +56,7 @@ namespace MonoTouchFixtures.Foundation {
 			var arg = new NSScriptCommandArgumentDescription () { AppleEventCode = "frgt", Type = "text", Name = "Foo" };
 			var desc = new NSScriptCommandDescriptionDictionary () { Arguments = new NSMutableDictionary () };
 			// no exception should happen
-			Assert.IsFalse (desc.Remove (arg));
+			ClassicAssert.IsFalse (desc.Remove (arg));
 		}
 
 		[Test]
@@ -68,18 +68,18 @@ namespace MonoTouchFixtures.Foundation {
 			desc.Add (arg);
 			using (var argKey = new NSString ("Arguments"))
 			using (var nsName = new NSString (arg.Name)) {
-				Assert.IsTrue (desc.Dictionary.ContainsKey (argKey));
+				ClassicAssert.IsTrue (desc.Dictionary.ContainsKey (argKey));
 				var argDict = desc.Dictionary [argKey] as NSDictionary;
-				Assert.IsNotNull (argDict);
-				Assert.IsTrue (argDict.ContainsKey (nsName));
+				ClassicAssert.IsNotNull (argDict);
+				ClassicAssert.IsTrue (argDict.ContainsKey (nsName));
 			}
 			desc.Remove (arg);
 			using (var argKey = new NSString ("Arguments"))
 			using (var nsName = new NSString (arg.Name)) {
-				Assert.IsTrue (desc.Dictionary.ContainsKey (argKey));
+				ClassicAssert.IsTrue (desc.Dictionary.ContainsKey (argKey));
 				var argDict = desc.Dictionary [argKey] as NSDictionary;
-				Assert.IsNotNull (argDict);
-				Assert.IsFalse (argDict.ContainsKey (nsName));
+				ClassicAssert.IsNotNull (argDict);
+				ClassicAssert.IsFalse (argDict.ContainsKey (nsName));
 			}
 		}
 	}

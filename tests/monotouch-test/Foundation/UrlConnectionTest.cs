@@ -50,9 +50,9 @@ namespace MonoTouchFixtures.Foundation {
 					using var request = new NSUrlRequest (url);
 					using var data = NSUrlConnection.SendSynchronousRequest (request, out var response, out var error);
 					TestRuntime.IgnoreInCIIfBadNetwork (error);
-					Assert.IsNull (error, $"Error: {error?.Description}");
-					Assert.IsNotNull (data, "Data");
-					Assert.IsNotNull (response, "Response");
+					ClassicAssert.IsNull (error, $"Error: {error?.Description}");
+					ClassicAssert.IsNotNull (data, "Data");
+					ClassicAssert.IsNotNull (response, "Response");
 					response?.Dispose ();
 					error?.Dispose ();
 				} catch (Exception e) {
@@ -63,7 +63,7 @@ namespace MonoTouchFixtures.Foundation {
 			var timedOut = !thread.Join (TimeSpan.FromSeconds (15));
 			if (timedOut) {
 				TestRuntime.IgnoreInCI ("Timed out");
-				Assert.IsFalse (timedOut, "Timed out");
+				ClassicAssert.IsFalse (timedOut, "Timed out");
 			}
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
 			TestRuntime.AssertNoNonNUnitException (ex, "Exception");

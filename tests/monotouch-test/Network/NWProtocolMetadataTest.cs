@@ -18,10 +18,10 @@ namespace MonoTouchFixtures.Network {
 			using (var m = new NWIPMetadata ()) {
 				Assert.That (m.EcnFlag, Is.EqualTo (NWIPEcnFlag.NonEct), "IPMetadataEcnFlag");
 				Assert.That (m.ReceiveTime, Is.EqualTo (TimeSpan.Zero), "IPMetadataReceiveTime");
-				Assert.True (m.IsIP, "IsIP");
-				Assert.False (m.IsTcp, "IsTcp");
-				Assert.False (m.IsUdp, "IsUdp");
-				Assert.NotNull (m.ProtocolDefinition, "ProtocolDefinition");
+				ClassicAssert.True (m.IsIP, "IsIP");
+				ClassicAssert.False (m.IsTcp, "IsTcp");
+				ClassicAssert.False (m.IsUdp, "IsUdp");
+				ClassicAssert.NotNull (m.ProtocolDefinition, "ProtocolDefinition");
 				Assert.That (m.ServiceClass, Is.EqualTo (NWServiceClass.BestEffort), "ServiceClass");
 			}
 		}
@@ -30,10 +30,10 @@ namespace MonoTouchFixtures.Network {
 		public void Udp ()
 		{
 			using (var m = new NWUdpMetadata ()) {
-				Assert.False (m.IsIP, "IsIP");
-				Assert.False (m.IsTcp, "IsTcp");
-				Assert.True (m.IsUdp, "IsUdp");
-				Assert.NotNull (m.ProtocolDefinition, "ProtocolDefinition");
+				ClassicAssert.False (m.IsIP, "IsIP");
+				ClassicAssert.False (m.IsTcp, "IsTcp");
+				ClassicAssert.True (m.IsUdp, "IsUdp");
+				ClassicAssert.NotNull (m.ProtocolDefinition, "ProtocolDefinition");
 			}
 		}
 
@@ -44,11 +44,11 @@ namespace MonoTouchFixtures.Network {
 			using (var m = new NWIPMetadata ()) {
 				Assert.That (m.EcnFlag, Is.EqualTo (NWIPEcnFlag.NonEct), "IPMetadataEcnFlag");
 				Assert.That (m.ReceiveTime, Is.EqualTo (TimeSpan.Zero), "IPMetadataReceiveTime");
-				Assert.True (m.IsIP, "IsIP");
-				Assert.False (m.IsTcp, "IsTcp");
-				Assert.False (m.IsUdp, "IsUdp");
-				Assert.False (m.IsQuic, "IsQuic");
-				Assert.NotNull (m.ProtocolDefinition, "ProtocolDefinition");
+				ClassicAssert.True (m.IsIP, "IsIP");
+				ClassicAssert.False (m.IsTcp, "IsTcp");
+				ClassicAssert.False (m.IsUdp, "IsUdp");
+				ClassicAssert.False (m.IsQuic, "IsQuic");
+				ClassicAssert.NotNull (m.ProtocolDefinition, "ProtocolDefinition");
 				Assert.That (m.ServiceClass, Is.EqualTo (NWServiceClass.BestEffort), "ServiceClass");
 			}
 		}

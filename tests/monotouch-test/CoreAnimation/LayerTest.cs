@@ -23,11 +23,11 @@ namespace MonoTouchFixtures.CoreAnimation {
 		public void Mask ()
 		{
 			using (CALayer layer = new CALayer ()) {
-				Assert.Null (layer.Mask, "Mask/default");
+				ClassicAssert.Null (layer.Mask, "Mask/default");
 				layer.Mask = new CALayer ();
-				Assert.NotNull (layer.Mask, "Mask/assigned");
+				ClassicAssert.NotNull (layer.Mask, "Mask/assigned");
 				layer.Mask = null;
-				Assert.Null (layer.Mask, "Mask/nullable");
+				ClassicAssert.Null (layer.Mask, "Mask/nullable");
 			}
 		}
 
@@ -36,9 +36,9 @@ namespace MonoTouchFixtures.CoreAnimation {
 		{
 			// bug 2441
 			CAActionTestClass obj = new CAActionTestClass ();
-			Assert.IsNull (obj.ActionForKey ("animation"), "a");
-			Assert.IsNull (obj.Actions, "b");
-			Assert.IsNull (CAActionTestClass.DefaultActionForKey ("animation"), "c");
+			ClassicAssert.IsNull (obj.ActionForKey ("animation"), "a");
+			ClassicAssert.IsNull (obj.Actions, "b");
+			ClassicAssert.IsNull (CAActionTestClass.DefaultActionForKey ("animation"), "c");
 
 			var animationKey = new NSString ("animation");
 			var basicAnimationKey = new NSString ("basicAnimation");
@@ -51,8 +51,8 @@ namespace MonoTouchFixtures.CoreAnimation {
 
 			Assert.That (obj.ActionForKey ("animation") == dict [animationKey], "e");
 			Assert.That (obj.ActionForKey ("basicAnimation") == dict [basicAnimationKey], "f");
-			Assert.IsNull (CAActionTestClass.DefaultActionForKey ("animation"), "g");
-			Assert.IsNull (CALayer.DefaultActionForKey ("animation"), "h");
+			ClassicAssert.IsNull (CAActionTestClass.DefaultActionForKey ("animation"), "g");
+			ClassicAssert.IsNull (CALayer.DefaultActionForKey ("animation"), "h");
 		}
 
 		class CAActionTestClass : CALayer {
@@ -63,8 +63,8 @@ namespace MonoTouchFixtures.CoreAnimation {
 		public void ConvertPoint ()
 		{
 			using (CALayer layer = new CALayer ()) {
-				Assert.True (layer.ConvertPointFromLayer (CGPoint.Empty, null).IsEmpty, "From/Empty/null");
-				Assert.True (layer.ConvertPointToLayer (CGPoint.Empty, null).IsEmpty, "To/Empty/null");
+				ClassicAssert.True (layer.ConvertPointFromLayer (CGPoint.Empty, null).IsEmpty, "From/Empty/null");
+				ClassicAssert.True (layer.ConvertPointToLayer (CGPoint.Empty, null).IsEmpty, "To/Empty/null");
 			}
 		}
 
@@ -72,8 +72,8 @@ namespace MonoTouchFixtures.CoreAnimation {
 		public void ConvertRect ()
 		{
 			using (CALayer layer = new CALayer ()) {
-				Assert.True (layer.ConvertRectFromLayer (CGRect.Empty, null).IsEmpty, "From/Empty/null");
-				Assert.True (layer.ConvertRectToLayer (CGRect.Empty, null).IsEmpty, "To/Empty/null");
+				ClassicAssert.True (layer.ConvertRectFromLayer (CGRect.Empty, null).IsEmpty, "From/Empty/null");
+				ClassicAssert.True (layer.ConvertRectToLayer (CGRect.Empty, null).IsEmpty, "To/Empty/null");
 			}
 		}
 
@@ -91,9 +91,9 @@ namespace MonoTouchFixtures.CoreAnimation {
 		{
 			using (var layer = new CALayer ()) {
 				var animation = new CABasicAnimation ();
-				Assert.IsNull (layer.AnimationForKey ("key"), "#key A");
+				ClassicAssert.IsNull (layer.AnimationForKey ("key"), "#key A");
 				layer.AddAnimation (animation, "key");
-				Assert.IsNotNull (layer.AnimationForKey ("key"), "#key B");
+				ClassicAssert.IsNotNull (layer.AnimationForKey ("key"), "#key B");
 			}
 		}
 
@@ -122,7 +122,7 @@ namespace MonoTouchFixtures.CoreAnimation {
 						GC.Collect ();
 
 						foreach (var slayer in layer.Sublayers.OfType<TextCALayer> ()) {
-							Assert.AreEqual ("42", slayer.Secret);
+							ClassicAssert.AreEqual ("42", slayer.Secret);
 						}
 
 						foreach (var slayer in layer.Sublayers.OfType<TextCALayer> ())
@@ -142,7 +142,7 @@ namespace MonoTouchFixtures.CoreAnimation {
 				NSRunLoop.Main.RunUntil (NSDate.Now.AddSeconds (0.05));
 			}
 
-			Assert.IsNull (ex, "Exceptions");
+			ClassicAssert.IsNull (ex, "Exceptions");
 			Assert.That (TextLayersDisposed, Is.AtLeast (layerCount / 2), "disposed text layers");
 		}
 

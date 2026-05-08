@@ -19,7 +19,7 @@ namespace Xamarin.Mac.Tests {
 			var image = item.Image;
 			item.Image = new NSImage ();
 
-			Assert.IsFalse (item.Image == image, "NSTabViewItemShouldChangeImage - Failed to set the Image property");
+			ClassicAssert.IsFalse (item.Image == image, "NSTabViewItemShouldChangeImage - Failed to set the Image property");
 		}
 
 		[Test]
@@ -28,7 +28,7 @@ namespace Xamarin.Mac.Tests {
 			var vc = item.ViewController;
 			item.ViewController = new NSViewController ();
 
-			Assert.IsFalse (item.ViewController == vc, "NSTabViewItemShouldChangeViewController - Failed to set the ViewController property");
+			ClassicAssert.IsFalse (item.ViewController == vc, "NSTabViewItemShouldChangeViewController - Failed to set the ViewController property");
 		}
 	}
 }

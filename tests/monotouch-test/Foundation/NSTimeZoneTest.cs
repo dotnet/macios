@@ -31,7 +31,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void AbbreviationTest ()
 		{
 			var timezone = NSTimeZone.LocalTimeZone;
-			Assert.NotNull (timezone.Abbreviation ());
+			ClassicAssert.NotNull (timezone.Abbreviation ());
 		}
 
 		[Test]
@@ -47,10 +47,10 @@ namespace MonoTouchFixtures.Foundation {
 				}
 #endif
 				TimeZoneInfo tzi = TimeZoneInfo.FindSystemTimeZoneById (name);
-				Assert.NotNull (tzi.GetUtcOffset (DateTime.Now), name);
+				ClassicAssert.NotNull (tzi.GetUtcOffset (DateTime.Now), name);
 			}
 
-			Assert.NotNull (TimeZoneInfo.Local.GetUtcOffset (DateTime.Now), "Local");
+			ClassicAssert.NotNull (TimeZoneInfo.Local.GetUtcOffset (DateTime.Now), "Local");
 		}
 	}
 }

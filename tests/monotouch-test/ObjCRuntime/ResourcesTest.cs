@@ -24,13 +24,13 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		{
 			var manager = new ResourceManager ("monotouchtest.Welcome", typeof (ResourcesTest).Assembly);
 
-			Assert.AreEqual ("Welcome!", manager.GetString ("String1", new CultureInfo ("en")), "en");
-			Assert.AreEqual ("G'day!", manager.GetString ("String1", new CultureInfo ("en-AU")), "en-AU");
-			Assert.AreEqual ("Willkommen!", manager.GetString ("String1", new CultureInfo ("de")), "de");
-			Assert.AreEqual ("Willkommen!", manager.GetString ("String1", new CultureInfo ("de-DE")), "de-DE");
-			Assert.AreEqual ("Bienvenido!", manager.GetString ("String1", new CultureInfo ("es")), "es");
-			Assert.AreEqual ("Bienvenido!", manager.GetString ("String1", new CultureInfo ("es-AR")), "es-AR");
-			Assert.AreEqual ("Bienvenido!", manager.GetString ("String1", new CultureInfo ("es-ES")), "es-ES");
+			ClassicAssert.AreEqual ("Welcome!", manager.GetString ("String1", new CultureInfo ("en")), "en");
+			ClassicAssert.AreEqual ("G'day!", manager.GetString ("String1", new CultureInfo ("en-AU")), "en-AU");
+			ClassicAssert.AreEqual ("Willkommen!", manager.GetString ("String1", new CultureInfo ("de")), "de");
+			ClassicAssert.AreEqual ("Willkommen!", manager.GetString ("String1", new CultureInfo ("de-DE")), "de-DE");
+			ClassicAssert.AreEqual ("Bienvenido!", manager.GetString ("String1", new CultureInfo ("es")), "es");
+			ClassicAssert.AreEqual ("Bienvenido!", manager.GetString ("String1", new CultureInfo ("es-AR")), "es-AR");
+			ClassicAssert.AreEqual ("Bienvenido!", manager.GetString ("String1", new CultureInfo ("es-ES")), "es-ES");
 		}
 	}
 }

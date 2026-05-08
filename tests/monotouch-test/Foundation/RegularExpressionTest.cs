@@ -21,9 +21,9 @@ namespace MonoTouchFixtures.Foundation {
 
 			var matches = detector.GetMatches (new NSString (text), 0, range);
 
-			Assert.AreEqual ((nint) 10, matches [0].Range.Location, "Range.Location");
-			Assert.AreEqual ((nint) 21, matches [0].Range.Length, "Range.Length");
-			Assert.AreEqual ("https://microsoft.com", matches [0].Url.AbsoluteString, "Url");
+			ClassicAssert.AreEqual ((nint) 10, matches [0].Range.Location, "Range.Location");
+			ClassicAssert.AreEqual ((nint) 21, matches [0].Range.Length, "Range.Length");
+			ClassicAssert.AreEqual ("https://microsoft.com", matches [0].Url.AbsoluteString, "Url");
 		}
 	}
 }

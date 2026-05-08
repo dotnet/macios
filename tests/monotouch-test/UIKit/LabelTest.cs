@@ -25,11 +25,11 @@ namespace MonoTouchFixtures.UIKit {
 		public void HighlightedTextColor ()
 		{
 			UILabel label = new UILabel ();
-			Assert.Null (label.HighlightedTextColor, "HighlightedTextColor/default");
+			ClassicAssert.Null (label.HighlightedTextColor, "HighlightedTextColor/default");
 			label.HighlightedTextColor = UIColor.Blue;
 			Assert.That (label.HighlightedTextColor, Is.EqualTo (UIColor.Blue), "HighlightedTextColor/blue");
 			label.HighlightedTextColor = null;
-			Assert.Null (label.HighlightedTextColor, "HighlightedTextColor/null");
+			ClassicAssert.Null (label.HighlightedTextColor, "HighlightedTextColor/null");
 		}
 	}
 }

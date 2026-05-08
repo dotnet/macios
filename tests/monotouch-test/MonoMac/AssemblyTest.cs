@@ -21,7 +21,7 @@ namespace MonoMacFixtures {
 		[Test]
 		public void PublicKeyToken ()
 		{
-			Assert.AreEqual (pkt, typeof (NSObject).Assembly.GetName ().GetPublicKeyToken (), "GetPublicKeyToken");
+			ClassicAssert.AreEqual (pkt, typeof (NSObject).Assembly.GetName ().GetPublicKeyToken (), "GetPublicKeyToken");
 		}
 	}
 }

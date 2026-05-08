@@ -29,12 +29,12 @@ namespace MonoTouchFixtures.GamePlayKit {
 			};
 			var foo = new NSString ("Foo");
 			using (var octree = new GKOctree<NSString> (box, 1)) {
-				Assert.NotNull (octree, "octree is null");
+				ClassicAssert.NotNull (octree, "octree is null");
 				var node = octree.AddElement (foo, box);
-				Assert.AreEqual (box, node.Box, "boxes are different");
+				ClassicAssert.AreEqual (box, node.Box, "boxes are different");
 				var strs = octree.GetElements (box);
 				Assert.That (strs.Length, Is.GreaterThan (0), "Must have elements");
-				Assert.AreSame (foo, strs [0], "must be the same object");
+				ClassicAssert.AreSame (foo, strs [0], "must be the same object");
 			}
 		}
 	}

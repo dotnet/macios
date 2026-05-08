@@ -13,7 +13,7 @@ namespace Xamarin.Mac.Tests {
 		public void SCNNode_BackfaceCulling ()
 		{
 			if (IntPtr.Size == 8) {
-				Assert.IsNotNull (SCNPhysicsTestKeys.BackfaceCullingKey);
+				ClassicAssert.IsNotNull (SCNPhysicsTestKeys.BackfaceCullingKey);
 			}
 		}
 	}

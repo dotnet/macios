@@ -29,8 +29,8 @@ namespace MonoTouchFixtures.ImageIO {
 		public void FromData_BadITU ()
 		{
 			using (NSMutableData destData = new NSMutableData ()) {
-				Assert.Null (CGImageDestination.Create (destData, BadUti, 1), "FromData-1");
-				Assert.Null (CGImageDestination.Create (destData, BadUti, 1, new CGImageDestinationOptions ()), "FromData-2");
+				ClassicAssert.Null (CGImageDestination.Create (destData, BadUti, 1), "FromData-1");
+				ClassicAssert.Null (CGImageDestination.Create (destData, BadUti, 1, new CGImageDestinationOptions ()), "FromData-2");
 			}
 		}
 
@@ -52,8 +52,8 @@ namespace MonoTouchFixtures.ImageIO {
 		{
 			using (NSMutableData destData = new NSMutableData ())
 			using (var consumer = new CGDataConsumer (destData)) {
-				Assert.Null (CGImageDestination.Create (consumer, BadUti, 1), "Create-1");
-				Assert.Null (CGImageDestination.Create (consumer, BadUti, 1, new CGImageDestinationOptions ()), "Create-2");
+				ClassicAssert.Null (CGImageDestination.Create (consumer, BadUti, 1), "Create-1");
+				ClassicAssert.Null (CGImageDestination.Create (consumer, BadUti, 1, new CGImageDestinationOptions ()), "Create-2");
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace MonoTouchFixtures.ImageIO {
 		public void FromUrl_BadITU ()
 		{
 			using (NSUrl url = NSUrl.FromString ("file://local")) {
-				Assert.Null (CGImageDestination.Create (url, BadUti, 1), "FromUrl-1");
+				ClassicAssert.Null (CGImageDestination.Create (url, BadUti, 1), "FromUrl-1");
 			}
 		}
 
@@ -125,15 +125,15 @@ namespace MonoTouchFixtures.ImageIO {
 			using (var id = CGImageDestination.Create (destData, GoodUti, 1)) {
 				NSError err;
 				// testing that null is allowed (no crash) so the fact that is return false and an error does not matter
-				Assert.False (id.CopyImageSource (source, (NSDictionary) null, out err), "CopyImageSource");
-				Assert.NotNull (err, "NSError");
+				ClassicAssert.False (id.CopyImageSource (source, (NSDictionary) null, out err), "CopyImageSource");
+				ClassicAssert.NotNull (err, "NSError");
 			}
 		}
 
 		[Test]
 		public void TypeIdentifiers ()
 		{
-			Assert.NotNull (CGImageDestination.TypeIdentifiers, "TypeIdentifiers");
+			ClassicAssert.NotNull (CGImageDestination.TypeIdentifiers, "TypeIdentifiers");
 		}
 	}
 }

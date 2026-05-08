@@ -13,7 +13,7 @@ namespace Xamarin.Mac.Tests {
 		public void NSTextFinderConstructor ()
 		{
 			NSTextFinder f = new NSTextFinder ();
-			Assert.IsNotNull (f);
+			ClassicAssert.IsNotNull (f);
 
 			FinderClient client = new FinderClient ();
 			f.Client = client;

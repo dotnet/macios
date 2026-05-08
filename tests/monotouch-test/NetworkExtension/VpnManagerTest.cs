@@ -31,9 +31,9 @@ namespace MonoTouchFixtures.NetworkExtension {
 
 			Assert.That (shared.Connection.Status, Is.EqualTo (NEVpnStatus.Invalid), "Connection");
 #if MONOMAC || __MACCATALYST__
-			Assert.True (shared.Enabled, "Enabled");
+			ClassicAssert.True (shared.Enabled, "Enabled");
 #else
-			Assert.False (shared.Enabled, "Enabled");
+			ClassicAssert.False (shared.Enabled, "Enabled");
 #endif
 #if __IOS__
 			var HasLocalizedDescription = TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 9, 0);
@@ -41,13 +41,13 @@ namespace MonoTouchFixtures.NetworkExtension {
 			var HasLocalizedDescription = true;
 #endif
 			if (HasLocalizedDescription) {
-				Assert.AreEqual ("MonoTouchTest", shared.LocalizedDescription, "LocalizedDescription");
+				ClassicAssert.AreEqual ("MonoTouchTest", shared.LocalizedDescription, "LocalizedDescription");
 			} else {
-				Assert.IsNull (shared.LocalizedDescription, "LocalizedDescription");
+				ClassicAssert.IsNull (shared.LocalizedDescription, "LocalizedDescription");
 			}
-			Assert.False (shared.OnDemandEnabled, "OnDemandEnabled");
-			Assert.Null (shared.OnDemandRules, "OnDemandRules");
-			Assert.Null (shared.Protocol, "Protocol");
+			ClassicAssert.False (shared.OnDemandEnabled, "OnDemandEnabled");
+			ClassicAssert.Null (shared.OnDemandRules, "OnDemandRules");
+			ClassicAssert.Null (shared.Protocol, "Protocol");
 		}
 
 		[Test]

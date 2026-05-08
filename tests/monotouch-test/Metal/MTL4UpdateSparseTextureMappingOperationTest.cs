@@ -18,11 +18,11 @@ namespace MonoTouchFixtures.Metal {
 			var operation = new MTL4UpdateSparseTextureMappingOperation ();
 
 			// Assert
-			Assert.AreEqual (default (MTLSparseTextureMappingMode), operation.Mode);
-			Assert.AreEqual (default (MTLRegion), operation.TextureRegion);
-			Assert.AreEqual (default (nuint), operation.TextureLevel);
-			Assert.AreEqual (default (nuint), operation.TextureSlice);
-			Assert.AreEqual (default (nuint), operation.HeapOffset);
+			ClassicAssert.AreEqual (default (MTLSparseTextureMappingMode), operation.Mode);
+			ClassicAssert.AreEqual (default (MTLRegion), operation.TextureRegion);
+			ClassicAssert.AreEqual (default (nuint), operation.TextureLevel);
+			ClassicAssert.AreEqual (default (nuint), operation.TextureSlice);
+			ClassicAssert.AreEqual (default (nuint), operation.HeapOffset);
 		}
 
 		[Test]
@@ -36,7 +36,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.Mode = expectedMode;
 
 			// Assert
-			Assert.AreEqual (expectedMode, operation.Mode);
+			ClassicAssert.AreEqual (expectedMode, operation.Mode);
 		}
 
 		[Test]
@@ -50,7 +50,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.TextureRegion = expectedRegion;
 
 			// Assert
-			Assert.AreEqual (expectedRegion, operation.TextureRegion);
+			ClassicAssert.AreEqual (expectedRegion, operation.TextureRegion);
 		}
 
 		[Test]
@@ -64,7 +64,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.TextureLevel = expectedLevel;
 
 			// Assert
-			Assert.AreEqual (expectedLevel, operation.TextureLevel);
+			ClassicAssert.AreEqual (expectedLevel, operation.TextureLevel);
 		}
 
 		[Test]
@@ -78,7 +78,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.TextureSlice = expectedSlice;
 
 			// Assert
-			Assert.AreEqual (expectedSlice, operation.TextureSlice);
+			ClassicAssert.AreEqual (expectedSlice, operation.TextureSlice);
 		}
 
 		[Test]
@@ -92,7 +92,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.HeapOffset = expectedOffset;
 
 			// Assert
-			Assert.AreEqual (expectedOffset, operation.HeapOffset);
+			ClassicAssert.AreEqual (expectedOffset, operation.HeapOffset);
 		}
 
 		[Test]
@@ -114,11 +114,11 @@ namespace MonoTouchFixtures.Metal {
 			operation.HeapOffset = expectedOffset;
 
 			// Assert
-			Assert.AreEqual (expectedMode, operation.Mode);
-			Assert.AreEqual (expectedRegion, operation.TextureRegion);
-			Assert.AreEqual (expectedLevel, operation.TextureLevel);
-			Assert.AreEqual (expectedSlice, operation.TextureSlice);
-			Assert.AreEqual (expectedOffset, operation.HeapOffset);
+			ClassicAssert.AreEqual (expectedMode, operation.Mode);
+			ClassicAssert.AreEqual (expectedRegion, operation.TextureRegion);
+			ClassicAssert.AreEqual (expectedLevel, operation.TextureLevel);
+			ClassicAssert.AreEqual (expectedSlice, operation.TextureSlice);
+			ClassicAssert.AreEqual (expectedOffset, operation.HeapOffset);
 		}
 
 		[Test]
@@ -132,7 +132,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.TextureRegion = zeroSizeRegion;
 
 			// Assert
-			Assert.AreEqual (zeroSizeRegion, operation.TextureRegion);
+			ClassicAssert.AreEqual (zeroSizeRegion, operation.TextureRegion);
 		}
 
 		[Test]
@@ -146,8 +146,8 @@ namespace MonoTouchFixtures.Metal {
 			operation.TextureSlice = 0;
 
 			// Assert
-			Assert.AreEqual (0, (int) operation.TextureLevel);
-			Assert.AreEqual (0, (int) operation.TextureSlice);
+			ClassicAssert.AreEqual (0, (int) operation.TextureLevel);
+			ClassicAssert.AreEqual (0, (int) operation.TextureSlice);
 		}
 
 		[Test]
@@ -161,8 +161,8 @@ namespace MonoTouchFixtures.Metal {
 			operation.TextureSlice = nuint.MaxValue;
 
 			// Assert
-			Assert.AreEqual (nuint.MaxValue, operation.TextureLevel);
-			Assert.AreEqual (nuint.MaxValue, operation.TextureSlice);
+			ClassicAssert.AreEqual (nuint.MaxValue, operation.TextureLevel);
+			ClassicAssert.AreEqual (nuint.MaxValue, operation.TextureSlice);
 		}
 
 		[Test]
@@ -175,7 +175,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.HeapOffset = 0;
 
 			// Assert
-			Assert.AreEqual (0, (int) operation.HeapOffset);
+			ClassicAssert.AreEqual (0, (int) operation.HeapOffset);
 		}
 
 		[Test]
@@ -188,7 +188,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.HeapOffset = nuint.MaxValue;
 
 			// Assert
-			Assert.AreEqual (nuint.MaxValue, operation.HeapOffset);
+			ClassicAssert.AreEqual (nuint.MaxValue, operation.HeapOffset);
 		}
 
 		[Test]
@@ -201,7 +201,7 @@ namespace MonoTouchFixtures.Metal {
 			// Act & Assert
 			foreach (var mode in validModes) {
 				operation.Mode = mode;
-				Assert.AreEqual (mode, operation.Mode);
+				ClassicAssert.AreEqual (mode, operation.Mode);
 			}
 		}
 
@@ -226,12 +226,12 @@ namespace MonoTouchFixtures.Metal {
 			operation2.HeapOffset = 2048;
 
 			// Assert
-			Assert.AreEqual (MTLSparseTextureMappingMode.Map, operation1.Mode);
-			Assert.AreEqual (MTLSparseTextureMappingMode.Unmap, operation2.Mode);
-			Assert.AreNotEqual (operation1.TextureRegion, operation2.TextureRegion);
-			Assert.AreNotEqual (operation1.TextureLevel, operation2.TextureLevel);
-			Assert.AreNotEqual (operation1.TextureSlice, operation2.TextureSlice);
-			Assert.AreNotEqual (operation1.HeapOffset, operation2.HeapOffset);
+			ClassicAssert.AreEqual (MTLSparseTextureMappingMode.Map, operation1.Mode);
+			ClassicAssert.AreEqual (MTLSparseTextureMappingMode.Unmap, operation2.Mode);
+			ClassicAssert.AreNotEqual (operation1.TextureRegion, operation2.TextureRegion);
+			ClassicAssert.AreNotEqual (operation1.TextureLevel, operation2.TextureLevel);
+			ClassicAssert.AreNotEqual (operation1.TextureSlice, operation2.TextureSlice);
+			ClassicAssert.AreNotEqual (operation1.HeapOffset, operation2.HeapOffset);
 		}
 
 		[Test]
@@ -245,7 +245,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.TextureRegion = largeRegion;
 
 			// Assert
-			Assert.AreEqual (largeRegion, operation.TextureRegion);
+			ClassicAssert.AreEqual (largeRegion, operation.TextureRegion);
 		}
 	}
 }

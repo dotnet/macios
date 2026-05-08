@@ -24,19 +24,19 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (var stpf = new UISimpleTextPrintFormatter ("Xamarin")) {
 				if (TestRuntime.CheckXcodeVersion (11, 0)) {
-					Assert.NotNull (stpf.Color, "Color");
+					ClassicAssert.NotNull (stpf.Color, "Color");
 					Assert.That (stpf.TextAlignment, Is.EqualTo (UITextAlignment.Natural), "TextAlignment");
 				} else if (TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false)) {
-					Assert.Null (stpf.Color, "Color");
+					ClassicAssert.Null (stpf.Color, "Color");
 					Assert.That (stpf.TextAlignment, Is.EqualTo (UITextAlignment.Natural), "TextAlignment");
 				} else {
 					Assert.That (stpf.Color, Is.EqualTo (UIColor.Black), "Color");
 					Assert.That (stpf.TextAlignment, Is.EqualTo (UITextAlignment.Left), "TextAlignment");
 				}
 				if (TestRuntime.CheckXcodeVersion (14, 0)) {
-					Assert.Null (stpf.Font, "Font");
+					ClassicAssert.Null (stpf.Font, "Font");
 				} else {
-					Assert.NotNull (stpf.Font, "Font");
+					ClassicAssert.NotNull (stpf.Font, "Font");
 				}
 				Assert.That (stpf.Text, Is.EqualTo ("Xamarin"), "Text");
 			}

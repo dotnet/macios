@@ -57,7 +57,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var expression = NSExpression.FromKeyPath ("value"))
 			using (var result = expression.EvaluateWith (null, null) as NSString)
-				Assert.IsNull (result);
+				ClassicAssert.IsNull (result);
 		}
 
 		[Test]
@@ -65,7 +65,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var expression = NSExpression.FromFunction ((o, e, c) => { return new NSString ("Foo"); }, new NSExpression [] { }))
 			using (var result = expression.EvaluateWith (null, null) as NSString)
-				Assert.AreEqual ("Foo", result.ToString ());
+				ClassicAssert.AreEqual ("Foo", result.ToString ());
 		}
 
 		[Test]
@@ -73,7 +73,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var expression = NSExpression.FromFormat ("%f*%f", new NSObject [] { new NSNumber (2.0), new NSNumber (2.0) }))
 			using (var result = expression.EvaluateWith (null, null) as NSNumber)
-				Assert.AreEqual (4.0, result.DoubleValue);
+				ClassicAssert.AreEqual (4.0, result.DoubleValue);
 		}
 
 		[Test]
@@ -81,7 +81,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var expression = NSExpression.FromFormat ("2*2"))
 			using (var result = expression.EvaluateWith (null, null) as NSNumber)
-				Assert.AreEqual (4.0, result.DoubleValue);
+				ClassicAssert.AreEqual (4.0, result.DoubleValue);
 		}
 
 		[Test]
@@ -89,7 +89,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var expression = NSExpression.FromFormat ("2"))
 			using (var result = expression.EvaluateWith (null, null) as NSNumber)
-				Assert.AreEqual (2, result.DoubleValue);
+				ClassicAssert.AreEqual (2, result.DoubleValue);
 		}
 
 		[Test]
@@ -99,7 +99,7 @@ namespace MonoTouchFixtures.Foundation {
 			using (var lower = NSExpression.FromConstant (new NSNumber (0)))
 			using (var upper = NSExpression.FromConstant (new NSNumber (5)))
 			using (var expression = NSExpression.FromAggregate (new NSExpression [] { lower, upper })) {
-				Assert.AreEqual (NSExpressionType.NSAggregate, expression.ExpressionType);
+				ClassicAssert.AreEqual (NSExpressionType.NSAggregate, expression.ExpressionType);
 				TestProperties (expression, availableProperties);
 			}
 		}
@@ -116,7 +116,7 @@ namespace MonoTouchFixtures.Foundation {
 			using (var rupper = NSExpression.FromConstant (new NSNumber (50)))
 			using (var rh = NSExpression.FromAggregate (new NSExpression [] { rlower, rupper }))
 			using (var expression = NSExpression.FromUnionSet (lh, rh)) {
-				Assert.AreEqual (NSExpressionType.UnionSet, expression.ExpressionType);
+				ClassicAssert.AreEqual (NSExpressionType.UnionSet, expression.ExpressionType);
 				TestProperties (expression, availableProperties);
 			}
 		}
@@ -133,7 +133,7 @@ namespace MonoTouchFixtures.Foundation {
 			using (var rupper = NSExpression.FromConstant (new NSNumber (50)))
 			using (var rh = NSExpression.FromAggregate (new NSExpression [] { rlower, rupper }))
 			using (var expression = NSExpression.FromIntersectSet (lh, rh)) {
-				Assert.AreEqual (NSExpressionType.IntersectSet, expression.ExpressionType);
+				ClassicAssert.AreEqual (NSExpressionType.IntersectSet, expression.ExpressionType);
 				TestProperties (expression, availableProperties);
 			}
 		}
@@ -150,7 +150,7 @@ namespace MonoTouchFixtures.Foundation {
 			using (var rupper = NSExpression.FromConstant (new NSNumber (50)))
 			using (var rh = NSExpression.FromAggregate (new NSExpression [] { rlower, rupper }))
 			using (var expression = NSExpression.FromMinusSet (lh, rh)) {
-				Assert.AreEqual (NSExpressionType.MinusSet, expression.ExpressionType);
+				ClassicAssert.AreEqual (NSExpressionType.MinusSet, expression.ExpressionType);
 				TestProperties (expression, availableProperties);
 			}
 		}
@@ -160,7 +160,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var availableProperties = new List<string> { "ConstantValue" };
 			using (var expression = NSExpression.FromFormat ("2")) {
-				Assert.AreEqual (NSExpressionType.ConstantValue, expression.ExpressionType);
+				ClassicAssert.AreEqual (NSExpressionType.ConstantValue, expression.ExpressionType);
 				TestProperties (expression, availableProperties);
 			}
 		}
@@ -170,7 +170,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var availableProperties = new List<string> { "Variable" };
 			using (var expression = NSExpression.FromVariable ("Variable")) {
-				Assert.AreEqual (NSExpressionType.Variable, expression.ExpressionType);
+				ClassicAssert.AreEqual (NSExpressionType.Variable, expression.ExpressionType);
 				TestProperties (expression, availableProperties);
 			}
 		}
@@ -180,7 +180,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var availableProperties = new List<string> { "KeyPath", "Operand", "Arguments" };
 			using (var expression = NSExpression.FromKeyPath ("value")) {
-				Assert.AreEqual (NSExpressionType.KeyPath, expression.ExpressionType);
+				ClassicAssert.AreEqual (NSExpressionType.KeyPath, expression.ExpressionType);
 				TestProperties (expression, availableProperties);
 			}
 		}
@@ -190,7 +190,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var availableProperties = new List<string> { "Function", "Operand", "Arguments" };
 			using (var expression = NSExpression.FromFormat ("2*2")) {
-				Assert.AreEqual (NSExpressionType.Function, expression.ExpressionType);
+				ClassicAssert.AreEqual (NSExpressionType.Function, expression.ExpressionType);
 				TestProperties (expression, availableProperties);
 			}
 		}
@@ -200,7 +200,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var availableProperties = new List<string> { "Block", "Arguments" };
 			using (var expression = NSExpression.FromFunction ((o, e, c) => { return new NSString ("Foo"); }, new NSExpression [] { })) {
-				Assert.AreEqual (NSExpressionType.Block, expression.ExpressionType);
+				ClassicAssert.AreEqual (NSExpressionType.Block, expression.ExpressionType);
 				TestProperties (expression, availableProperties);
 			}
 		}
@@ -212,7 +212,7 @@ namespace MonoTouchFixtures.Foundation {
 			var mySearchKey = new NSString ("James");
 			using (var predicate = NSPredicate.FromFormat ("ANY employees.firstName like 'Matthew'") as NSComparisonPredicate)
 			using (var expression = predicate.LeftExpression.Operand) { // NSExpressionType.EvaluatedObject;
-				Assert.AreEqual (NSExpressionType.EvaluatedObject, expression.ExpressionType);
+				ClassicAssert.AreEqual (NSExpressionType.EvaluatedObject, expression.ExpressionType);
 				TestProperties (expression, availableProperties);
 			}
 		}
@@ -225,7 +225,7 @@ namespace MonoTouchFixtures.Foundation {
 
 			var availableProperties = new List<string> { };
 			using (var expression = NSExpression.FromAnyKey ()) {
-				Assert.AreEqual (NSExpressionType.AnyKey, expression.ExpressionType);
+				ClassicAssert.AreEqual (NSExpressionType.AnyKey, expression.ExpressionType);
 				TestProperties (expression, availableProperties);
 			}
 		}

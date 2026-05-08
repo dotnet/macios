@@ -41,7 +41,7 @@ namespace MonoTouchFixtures.Foundation {
 				};
 				thread.Start ();
 
-				Assert.IsTrue (evt.Wait (TimeSpan.FromSeconds (5)), "Not signalled twice in 5s");
+				ClassicAssert.IsTrue (evt.Wait (TimeSpan.FromSeconds (5)), "Not signalled twice in 5s");
 				thread.Join ();
 			}
 		}
@@ -69,7 +69,7 @@ namespace MonoTouchFixtures.Foundation {
 				};
 				thread.Start ();
 
-				Assert.IsTrue (evt.Wait (TimeSpan.FromSeconds (5)), "Not signalled twice in 5s");
+				ClassicAssert.IsTrue (evt.Wait (TimeSpan.FromSeconds (5)), "Not signalled twice in 5s");
 				thread.Join ();
 			}
 		}
@@ -99,8 +99,8 @@ namespace MonoTouchFixtures.Foundation {
 				};
 				thread.Start ();
 
-				Assert.IsTrue (evt.WaitOne (TimeSpan.FromSeconds (5)), "WaitOne");
-				Assert.IsTrue (result, "result");
+				ClassicAssert.IsTrue (evt.WaitOne (TimeSpan.FromSeconds (5)), "WaitOne");
+				ClassicAssert.IsTrue (result, "result");
 				thread.Join ();
 			}
 		}

@@ -23,8 +23,8 @@ namespace MonoTouchFixtures.AVFoundation {
 			var secondDimension = AVCaptionDimension.Create (val, units);
 
 			var size = AVCaptionSize.Create (firstDimension, secondDimension);
-			Assert.AreEqual (val, size.Width.Value, "Width");
-			Assert.AreEqual (val, size.Height.Value, "Height");
+			ClassicAssert.AreEqual (val, size.Width.Value, "Width");
+			ClassicAssert.AreEqual (val, size.Height.Value, "Height");
 		}
 	}
 }

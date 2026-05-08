@@ -272,377 +272,377 @@ namespace MonoTouchFixtures.Foundation {
 			var wrapped = new WrappedNSDictionary ();
 
 			Assert.Multiple (() => {
-				Assert.IsNull (wrapped.SByteField, "SByteField");
+				ClassicAssert.IsNull (wrapped.SByteField, "SByteField");
 				var valueSByteField = SByte.MaxValue;
 				wrapped.SByteField = valueSByteField;
-				Assert.AreEqual (valueSByteField, wrapped.SByteField, "SByteField - set");
+				ClassicAssert.AreEqual (valueSByteField, wrapped.SByteField, "SByteField - set");
 				wrapped.SByteField = null;
-				Assert.IsNull (wrapped.SByteField, "SByteField - final");
+				ClassicAssert.IsNull (wrapped.SByteField, "SByteField - final");
 
-				Assert.IsNull (wrapped.Int16Field, "Int16Field");
+				ClassicAssert.IsNull (wrapped.Int16Field, "Int16Field");
 				var valueInt16Field = Int16.MaxValue;
 				wrapped.Int16Field = valueInt16Field;
-				Assert.AreEqual (valueInt16Field, wrapped.Int16Field, "Int16Field - set");
+				ClassicAssert.AreEqual (valueInt16Field, wrapped.Int16Field, "Int16Field - set");
 				wrapped.Int16Field = null;
-				Assert.IsNull (wrapped.Int16Field, "Int16Field - final");
+				ClassicAssert.IsNull (wrapped.Int16Field, "Int16Field - final");
 
-				Assert.IsNull (wrapped.Int32Field, "Int32Field");
+				ClassicAssert.IsNull (wrapped.Int32Field, "Int32Field");
 				var valueInt32Field = Int32.MaxValue;
 				wrapped.Int32Field = valueInt32Field;
-				Assert.AreEqual (valueInt32Field, wrapped.Int32Field, "Int32Field - set");
+				ClassicAssert.AreEqual (valueInt32Field, wrapped.Int32Field, "Int32Field - set");
 				wrapped.Int32Field = null;
-				Assert.IsNull (wrapped.Int32Field, "Int32Field - final");
+				ClassicAssert.IsNull (wrapped.Int32Field, "Int32Field - final");
 
-				Assert.IsNull (wrapped.Int64Field, "Int64Field");
+				ClassicAssert.IsNull (wrapped.Int64Field, "Int64Field");
 				var valueInt64Field = Int64.MaxValue;
 				wrapped.Int64Field = valueInt64Field;
-				Assert.AreEqual (valueInt64Field, wrapped.Int64Field, "Int64Field - set");
+				ClassicAssert.AreEqual (valueInt64Field, wrapped.Int64Field, "Int64Field - set");
 				wrapped.Int64Field = null;
-				Assert.IsNull (wrapped.Int64Field, "Int64Field - final");
+				ClassicAssert.IsNull (wrapped.Int64Field, "Int64Field - final");
 
-				Assert.IsNull (wrapped.ByteField, "ByteField");
+				ClassicAssert.IsNull (wrapped.ByteField, "ByteField");
 				var valueByteField = Byte.MaxValue;
 				wrapped.ByteField = valueByteField;
-				Assert.AreEqual (valueByteField, wrapped.ByteField, "ByteField - set");
+				ClassicAssert.AreEqual (valueByteField, wrapped.ByteField, "ByteField - set");
 				wrapped.ByteField = null;
-				Assert.IsNull (wrapped.ByteField, "ByteField - final");
+				ClassicAssert.IsNull (wrapped.ByteField, "ByteField - final");
 
-				Assert.IsNull (wrapped.UInt16Field, "UInt16Field");
+				ClassicAssert.IsNull (wrapped.UInt16Field, "UInt16Field");
 				var valueUInt16Field = UInt16.MaxValue;
 				wrapped.UInt16Field = valueUInt16Field;
-				Assert.AreEqual (valueUInt16Field, wrapped.UInt16Field, "UInt16Field - set");
+				ClassicAssert.AreEqual (valueUInt16Field, wrapped.UInt16Field, "UInt16Field - set");
 				wrapped.UInt16Field = null;
-				Assert.IsNull (wrapped.UInt16Field, "UInt16Field - final");
+				ClassicAssert.IsNull (wrapped.UInt16Field, "UInt16Field - final");
 
-				Assert.IsNull (wrapped.UInt32Field, "UInt32Field");
+				ClassicAssert.IsNull (wrapped.UInt32Field, "UInt32Field");
 				var valueUInt32Field = UInt32.MaxValue;
 				wrapped.UInt32Field = valueUInt32Field;
-				Assert.AreEqual (valueUInt32Field, wrapped.UInt32Field, "UInt32Field - set");
+				ClassicAssert.AreEqual (valueUInt32Field, wrapped.UInt32Field, "UInt32Field - set");
 				wrapped.UInt32Field = null;
-				Assert.IsNull (wrapped.UInt32Field, "UInt32Field - final");
+				ClassicAssert.IsNull (wrapped.UInt32Field, "UInt32Field - final");
 
-				Assert.IsNull (wrapped.UInt64Field, "UInt64Field");
+				ClassicAssert.IsNull (wrapped.UInt64Field, "UInt64Field");
 				var valueUInt64Field = UInt64.MaxValue;
 				wrapped.UInt64Field = valueUInt64Field;
-				Assert.AreEqual (valueUInt64Field, wrapped.UInt64Field, "UInt64Field - set");
+				ClassicAssert.AreEqual (valueUInt64Field, wrapped.UInt64Field, "UInt64Field - set");
 				wrapped.UInt64Field = null;
-				Assert.IsNull (wrapped.UInt64Field, "UInt64Field - final");
+				ClassicAssert.IsNull (wrapped.UInt64Field, "UInt64Field - final");
 
-				Assert.IsNull (wrapped.NIntField, "NIntField");
+				ClassicAssert.IsNull (wrapped.NIntField, "NIntField");
 				var valueNIntField = nint.MaxValue;
 				wrapped.NIntField = valueNIntField;
-				Assert.AreEqual (valueNIntField, wrapped.NIntField, "NIntField - set");
+				ClassicAssert.AreEqual (valueNIntField, wrapped.NIntField, "NIntField - set");
 				wrapped.NIntField = null;
-				Assert.IsNull (wrapped.NIntField, "NIntField - final");
+				ClassicAssert.IsNull (wrapped.NIntField, "NIntField - final");
 
-				Assert.IsNull (wrapped.NUIntField, "NUIntField");
+				ClassicAssert.IsNull (wrapped.NUIntField, "NUIntField");
 				var valueNUIntField = nuint.MaxValue;
 				wrapped.NUIntField = valueNUIntField;
-				Assert.AreEqual (valueNUIntField, wrapped.NUIntField, "NUIntField - set");
+				ClassicAssert.AreEqual (valueNUIntField, wrapped.NUIntField, "NUIntField - set");
 				wrapped.NUIntField = null;
-				Assert.IsNull (wrapped.NUIntField, "NUIntField - final");
+				ClassicAssert.IsNull (wrapped.NUIntField, "NUIntField - final");
 
-				Assert.IsNull (wrapped.SingleField, "SingleField");
+				ClassicAssert.IsNull (wrapped.SingleField, "SingleField");
 				var valueSingleField = Single.MaxValue;
 				wrapped.SingleField = valueSingleField;
-				Assert.AreEqual (valueSingleField, wrapped.SingleField, "SingleField - set");
+				ClassicAssert.AreEqual (valueSingleField, wrapped.SingleField, "SingleField - set");
 				wrapped.SingleField = null;
-				Assert.IsNull (wrapped.SingleField, "SingleField - final");
+				ClassicAssert.IsNull (wrapped.SingleField, "SingleField - final");
 
-				Assert.IsNull (wrapped.DoubleField, "DoubleField");
+				ClassicAssert.IsNull (wrapped.DoubleField, "DoubleField");
 				var valueDoubleField = Double.MaxValue;
 				wrapped.DoubleField = valueDoubleField;
-				Assert.AreEqual (valueDoubleField, wrapped.DoubleField, "DoubleField - set");
+				ClassicAssert.AreEqual (valueDoubleField, wrapped.DoubleField, "DoubleField - set");
 				wrapped.DoubleField = null;
-				Assert.IsNull (wrapped.DoubleField, "DoubleField - final");
+				ClassicAssert.IsNull (wrapped.DoubleField, "DoubleField - final");
 
-				Assert.IsNull (wrapped.NFloatField, "NFloatField");
+				ClassicAssert.IsNull (wrapped.NFloatField, "NFloatField");
 				var valueNFloatField = nfloat.MaxValue;
 				wrapped.NFloatField = valueNFloatField;
-				Assert.AreEqual (valueNFloatField, wrapped.NFloatField, "NFloatField - set");
+				ClassicAssert.AreEqual (valueNFloatField, wrapped.NFloatField, "NFloatField - set");
 				wrapped.NFloatField = null;
-				Assert.IsNull (wrapped.NFloatField, "NFloatField - final");
+				ClassicAssert.IsNull (wrapped.NFloatField, "NFloatField - final");
 
-				Assert.IsNull (wrapped.NSObjectField, "NSObjectField");
+				ClassicAssert.IsNull (wrapped.NSObjectField, "NSObjectField");
 				var valueNSObjectField = (NSString) "NSObjectValue";
 				wrapped.NSObjectField = valueNSObjectField;
-				Assert.AreEqual (valueNSObjectField, wrapped.NSObjectField, "NSObjectField - set");
+				ClassicAssert.AreEqual (valueNSObjectField, wrapped.NSObjectField, "NSObjectField - set");
 				wrapped.NSObjectField = null;
-				Assert.IsNull (wrapped.NSObjectField, "NSObjectField - final");
+				ClassicAssert.IsNull (wrapped.NSObjectField, "NSObjectField - final");
 
-				Assert.IsNull (wrapped.BooleanField, "BooleanField");
+				ClassicAssert.IsNull (wrapped.BooleanField, "BooleanField");
 				var valueBooleanField = true;
 				wrapped.BooleanField = valueBooleanField;
-				Assert.AreEqual (valueBooleanField, wrapped.BooleanField, "BooleanField - set");
+				ClassicAssert.AreEqual (valueBooleanField, wrapped.BooleanField, "BooleanField - set");
 				wrapped.BooleanField = null;
-				Assert.IsNull (wrapped.BooleanField, "BooleanField - final");
+				ClassicAssert.IsNull (wrapped.BooleanField, "BooleanField - final");
 
-				Assert.IsNull (wrapped.NSStringField, "NSStringField");
+				ClassicAssert.IsNull (wrapped.NSStringField, "NSStringField");
 				var valueNSStringField = (NSString) "NSStringValue";
 				wrapped.NSStringField = valueNSStringField;
-				Assert.AreEqual (valueNSStringField, wrapped.NSStringField, "NSStringField - set");
+				ClassicAssert.AreEqual (valueNSStringField, wrapped.NSStringField, "NSStringField - set");
 				wrapped.NSStringField = null;
-				Assert.IsNull (wrapped.NSStringField, "NSStringField - final");
+				ClassicAssert.IsNull (wrapped.NSStringField, "NSStringField - final");
 
-				Assert.IsNull (wrapped.NSDateField, "NSDateField");
+				ClassicAssert.IsNull (wrapped.NSDateField, "NSDateField");
 				var valueNSDateField = (NSDate) new DateTime (2025, 09, 01, 12, 45, 55, 23).ToUniversalTime ();
 				wrapped.NSDateField = valueNSDateField;
-				Assert.AreEqual (valueNSDateField, wrapped.NSDateField, "NSDateField - set");
+				ClassicAssert.AreEqual (valueNSDateField, wrapped.NSDateField, "NSDateField - set");
 				wrapped.NSDateField = null;
-				Assert.IsNull (wrapped.NSDateField, "NSDateField - final");
+				ClassicAssert.IsNull (wrapped.NSDateField, "NSDateField - final");
 
-				Assert.IsNull (wrapped.NSDictionaryField, "NSDictionaryField");
+				ClassicAssert.IsNull (wrapped.NSDictionaryField, "NSDictionaryField");
 				var valueNSDictionaryField = new NSDictionary ();
 				wrapped.NSDictionaryField = valueNSDictionaryField;
-				Assert.AreEqual (valueNSDictionaryField, wrapped.NSDictionaryField, "NSDictionaryField - set");
+				ClassicAssert.AreEqual (valueNSDictionaryField, wrapped.NSDictionaryField, "NSDictionaryField - set");
 				wrapped.NSDictionaryField = null;
-				Assert.IsNull (wrapped.NSDictionaryField, "NSDictionaryField - final");
+				ClassicAssert.IsNull (wrapped.NSDictionaryField, "NSDictionaryField - final");
 
-				Assert.IsNull (wrapped.NSStrongDictionaryField, "NSStrongDictionaryField");
+				ClassicAssert.IsNull (wrapped.NSStrongDictionaryField, "NSStrongDictionaryField");
 				var valueNSStrongDictionaryField = new WrappedNSDictionary ();
 				wrapped.NSStrongDictionaryField = valueNSStrongDictionaryField;
-				Assert.AreEqual (valueNSStrongDictionaryField?.Dictionary?.ToString (), wrapped.NSStrongDictionaryField?.Dictionary?.ToString (), "NSStrongDictionaryField - set");
+				ClassicAssert.AreEqual (valueNSStrongDictionaryField?.Dictionary?.ToString (), wrapped.NSStrongDictionaryField?.Dictionary?.ToString (), "NSStrongDictionaryField - set");
 				wrapped.NSStrongDictionaryField = null;
-				Assert.IsNull (wrapped.NSStrongDictionaryField, "NSStrongDictionaryField - final");
+				ClassicAssert.IsNull (wrapped.NSStrongDictionaryField, "NSStrongDictionaryField - final");
 
-				Assert.IsNull (wrapped.StrongEnumField, "StrongEnumField");
+				ClassicAssert.IsNull (wrapped.StrongEnumField, "StrongEnumField");
 				var valueStrongEnumField = StrongEnum.C;
 				wrapped.StrongEnumField = valueStrongEnumField;
-				Assert.AreEqual (valueStrongEnumField, wrapped.StrongEnumField, "StrongEnumField - set");
+				ClassicAssert.AreEqual (valueStrongEnumField, wrapped.StrongEnumField, "StrongEnumField - set");
 				wrapped.StrongEnumField = null;
-				Assert.IsNull (wrapped.StrongEnumField, "StrongEnumField - final");
+				ClassicAssert.IsNull (wrapped.StrongEnumField, "StrongEnumField - final");
 
-				Assert.IsNull (wrapped.NormalEnumField, "NormalEnumField");
+				ClassicAssert.IsNull (wrapped.NormalEnumField, "NormalEnumField");
 				var valueNormalEnumField = NormalEnum.Z;
 				wrapped.NormalEnumField = valueNormalEnumField;
-				Assert.AreEqual (valueNormalEnumField, wrapped.NormalEnumField, "NormalEnumField - set");
+				ClassicAssert.AreEqual (valueNormalEnumField, wrapped.NormalEnumField, "NormalEnumField - set");
 				wrapped.NormalEnumField = null;
-				Assert.IsNull (wrapped.NormalEnumField, "NormalEnumField - final");
+				ClassicAssert.IsNull (wrapped.NormalEnumField, "NormalEnumField - final");
 
-				Assert.IsNull (wrapped.ArrayOfSByteField, "ArrayOfSByteField");
+				ClassicAssert.IsNull (wrapped.ArrayOfSByteField, "ArrayOfSByteField");
 				var valueArrayOfSByteField = new sbyte [] { 1, 2, 3 };
 				wrapped.ArrayOfSByteField = valueArrayOfSByteField;
-				Assert.AreEqual (valueArrayOfSByteField, wrapped.ArrayOfSByteField, "ArrayOfSByteField - set");
+				ClassicAssert.AreEqual (valueArrayOfSByteField, wrapped.ArrayOfSByteField, "ArrayOfSByteField - set");
 				wrapped.ArrayOfSByteField = null;
-				Assert.IsNull (wrapped.ArrayOfSByteField, "ArrayOfSByteField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfSByteField, "ArrayOfSByteField - final");
 
-				Assert.IsNull (wrapped.ArrayOfInt16Field, "ArrayOfInt16Field");
+				ClassicAssert.IsNull (wrapped.ArrayOfInt16Field, "ArrayOfInt16Field");
 				var valueArrayOfInt16Field = new short [] { 1, 2, 3 };
 				wrapped.ArrayOfInt16Field = valueArrayOfInt16Field;
-				Assert.AreEqual (valueArrayOfInt16Field, wrapped.ArrayOfInt16Field, "ArrayOfInt16Field - set");
+				ClassicAssert.AreEqual (valueArrayOfInt16Field, wrapped.ArrayOfInt16Field, "ArrayOfInt16Field - set");
 				wrapped.ArrayOfInt16Field = null;
-				Assert.IsNull (wrapped.ArrayOfInt16Field, "ArrayOfInt16Field - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfInt16Field, "ArrayOfInt16Field - final");
 
-				Assert.IsNull (wrapped.ArrayOfInt32Field, "ArrayOfInt32Field");
+				ClassicAssert.IsNull (wrapped.ArrayOfInt32Field, "ArrayOfInt32Field");
 				var valueArrayOfInt32Field = new int [] { 1, 2, 3 }; ;
 				wrapped.ArrayOfInt32Field = valueArrayOfInt32Field;
-				Assert.AreEqual (valueArrayOfInt32Field, wrapped.ArrayOfInt32Field, "ArrayOfInt32Field - set");
+				ClassicAssert.AreEqual (valueArrayOfInt32Field, wrapped.ArrayOfInt32Field, "ArrayOfInt32Field - set");
 				wrapped.ArrayOfInt32Field = null;
-				Assert.IsNull (wrapped.ArrayOfInt32Field, "ArrayOfInt32Field - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfInt32Field, "ArrayOfInt32Field - final");
 
-				Assert.IsNull (wrapped.ArrayOfInt64Field, "ArrayOfInt64Field");
+				ClassicAssert.IsNull (wrapped.ArrayOfInt64Field, "ArrayOfInt64Field");
 				var valueArrayOfInt64Field = new long [] { 1, 2, 3 }; ;
 				wrapped.ArrayOfInt64Field = valueArrayOfInt64Field;
-				Assert.AreEqual (valueArrayOfInt64Field, wrapped.ArrayOfInt64Field, "ArrayOfInt64Field - set");
+				ClassicAssert.AreEqual (valueArrayOfInt64Field, wrapped.ArrayOfInt64Field, "ArrayOfInt64Field - set");
 				wrapped.ArrayOfInt64Field = null;
-				Assert.IsNull (wrapped.ArrayOfInt64Field, "ArrayOfInt64Field - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfInt64Field, "ArrayOfInt64Field - final");
 
-				Assert.IsNull (wrapped.ArrayOfByteField, "ArrayOfByteField");
+				ClassicAssert.IsNull (wrapped.ArrayOfByteField, "ArrayOfByteField");
 				var valueArrayOfByteField = new byte [] { 1, 2, 3 }; ;
 				wrapped.ArrayOfByteField = valueArrayOfByteField;
-				Assert.AreEqual (valueArrayOfByteField, wrapped.ArrayOfByteField, "ArrayOfByteField - set");
+				ClassicAssert.AreEqual (valueArrayOfByteField, wrapped.ArrayOfByteField, "ArrayOfByteField - set");
 				wrapped.ArrayOfByteField = null;
-				Assert.IsNull (wrapped.ArrayOfByteField, "ArrayOfByteField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfByteField, "ArrayOfByteField - final");
 
-				Assert.IsNull (wrapped.ArrayOfUInt16Field, "ArrayOfUInt16Field");
+				ClassicAssert.IsNull (wrapped.ArrayOfUInt16Field, "ArrayOfUInt16Field");
 				var valueArrayOfUInt16Field = new ushort [] { 1, 2, 3 }; ;
 				wrapped.ArrayOfUInt16Field = valueArrayOfUInt16Field;
-				Assert.AreEqual (valueArrayOfUInt16Field, wrapped.ArrayOfUInt16Field, "ArrayOfUInt16Field - set");
+				ClassicAssert.AreEqual (valueArrayOfUInt16Field, wrapped.ArrayOfUInt16Field, "ArrayOfUInt16Field - set");
 				wrapped.ArrayOfUInt16Field = null;
-				Assert.IsNull (wrapped.ArrayOfUInt16Field, "ArrayOfUInt16Field - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfUInt16Field, "ArrayOfUInt16Field - final");
 
-				Assert.IsNull (wrapped.ArrayOfUInt32Field, "ArrayOfUInt32Field");
+				ClassicAssert.IsNull (wrapped.ArrayOfUInt32Field, "ArrayOfUInt32Field");
 				var valueArrayOfUInt32Field = new uint [] { 1, 2, 3 }; ;
 				wrapped.ArrayOfUInt32Field = valueArrayOfUInt32Field;
-				Assert.AreEqual (valueArrayOfUInt32Field, wrapped.ArrayOfUInt32Field, "ArrayOfUInt32Field - set");
+				ClassicAssert.AreEqual (valueArrayOfUInt32Field, wrapped.ArrayOfUInt32Field, "ArrayOfUInt32Field - set");
 				wrapped.ArrayOfUInt32Field = null;
-				Assert.IsNull (wrapped.ArrayOfUInt32Field, "ArrayOfUInt32Field - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfUInt32Field, "ArrayOfUInt32Field - final");
 
-				Assert.IsNull (wrapped.ArrayOfUInt64Field, "ArrayOfUInt64Field");
+				ClassicAssert.IsNull (wrapped.ArrayOfUInt64Field, "ArrayOfUInt64Field");
 				var valueArrayOfUInt64Field = new ulong [] { 1, 2, 3 }; ;
 				wrapped.ArrayOfUInt64Field = valueArrayOfUInt64Field;
-				Assert.AreEqual (valueArrayOfUInt64Field, wrapped.ArrayOfUInt64Field, "ArrayOfUInt64Field - set");
+				ClassicAssert.AreEqual (valueArrayOfUInt64Field, wrapped.ArrayOfUInt64Field, "ArrayOfUInt64Field - set");
 				wrapped.ArrayOfUInt64Field = null;
-				Assert.IsNull (wrapped.ArrayOfUInt64Field, "ArrayOfUInt64Field - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfUInt64Field, "ArrayOfUInt64Field - final");
 
-				Assert.IsNull (wrapped.ArrayOfNIntField, "ArrayOfNIntField");
+				ClassicAssert.IsNull (wrapped.ArrayOfNIntField, "ArrayOfNIntField");
 				var valueArrayOfNIntField = new nint [] { 1, 2, 3 }; ;
 				wrapped.ArrayOfNIntField = valueArrayOfNIntField;
-				Assert.AreEqual (valueArrayOfNIntField, wrapped.ArrayOfNIntField, "ArrayOfNIntField - set");
+				ClassicAssert.AreEqual (valueArrayOfNIntField, wrapped.ArrayOfNIntField, "ArrayOfNIntField - set");
 				wrapped.ArrayOfNIntField = null;
-				Assert.IsNull (wrapped.ArrayOfNIntField, "ArrayOfNIntField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfNIntField, "ArrayOfNIntField - final");
 
-				Assert.IsNull (wrapped.ArrayOfNUIntField, "ArrayOfNUIntField");
+				ClassicAssert.IsNull (wrapped.ArrayOfNUIntField, "ArrayOfNUIntField");
 				var valueArrayOfNUIntField = new nuint [] { 1, 2, 3 }; ;
 				wrapped.ArrayOfNUIntField = valueArrayOfNUIntField;
-				Assert.AreEqual (valueArrayOfNUIntField, wrapped.ArrayOfNUIntField, "ArrayOfNUIntField - set");
+				ClassicAssert.AreEqual (valueArrayOfNUIntField, wrapped.ArrayOfNUIntField, "ArrayOfNUIntField - set");
 				wrapped.ArrayOfNUIntField = null;
-				Assert.IsNull (wrapped.ArrayOfNUIntField, "ArrayOfNUIntField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfNUIntField, "ArrayOfNUIntField - final");
 
-				Assert.IsNull (wrapped.ArrayOfSingleField, "ArrayOfSingleField");
+				ClassicAssert.IsNull (wrapped.ArrayOfSingleField, "ArrayOfSingleField");
 				var valueArrayOfSingleField = new float [] { 1, 2, 3 }; ;
 				wrapped.ArrayOfSingleField = valueArrayOfSingleField;
-				Assert.AreEqual (valueArrayOfSingleField, wrapped.ArrayOfSingleField, "ArrayOfSingleField - set");
+				ClassicAssert.AreEqual (valueArrayOfSingleField, wrapped.ArrayOfSingleField, "ArrayOfSingleField - set");
 				wrapped.ArrayOfSingleField = null;
-				Assert.IsNull (wrapped.ArrayOfSingleField, "ArrayOfSingleField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfSingleField, "ArrayOfSingleField - final");
 
-				Assert.IsNull (wrapped.ArrayOfDoubleField, "ArrayOfDoubleField");
+				ClassicAssert.IsNull (wrapped.ArrayOfDoubleField, "ArrayOfDoubleField");
 				var valueArrayOfDoubleField = new double [] { 1, 2, 3 }; ;
 				wrapped.ArrayOfDoubleField = valueArrayOfDoubleField;
-				Assert.AreEqual (valueArrayOfDoubleField, wrapped.ArrayOfDoubleField, "ArrayOfDoubleField - set");
+				ClassicAssert.AreEqual (valueArrayOfDoubleField, wrapped.ArrayOfDoubleField, "ArrayOfDoubleField - set");
 				wrapped.ArrayOfDoubleField = null;
-				Assert.IsNull (wrapped.ArrayOfDoubleField, "ArrayOfDoubleField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfDoubleField, "ArrayOfDoubleField - final");
 
-				Assert.IsNull (wrapped.ArrayOfNFloatField, "ArrayOfNFloatField");
+				ClassicAssert.IsNull (wrapped.ArrayOfNFloatField, "ArrayOfNFloatField");
 				var valueArrayOfNFloatField = new nfloat [] { 1, 2, 3 }; ;
 				wrapped.ArrayOfNFloatField = valueArrayOfNFloatField;
-				Assert.AreEqual (valueArrayOfNFloatField, wrapped.ArrayOfNFloatField, "ArrayOfNFloatField - set");
+				ClassicAssert.AreEqual (valueArrayOfNFloatField, wrapped.ArrayOfNFloatField, "ArrayOfNFloatField - set");
 				wrapped.ArrayOfNFloatField = null;
-				Assert.IsNull (wrapped.ArrayOfNFloatField, "ArrayOfNFloatField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfNFloatField, "ArrayOfNFloatField - final");
 
-				Assert.IsNull (wrapped.ArrayOfNSObjectField, "ArrayOfNSObjectField");
+				ClassicAssert.IsNull (wrapped.ArrayOfNSObjectField, "ArrayOfNSObjectField");
 				var valueArrayOfNSObjectField = new NSObject [] { (NSString) "Array1", NSDate.Now };
 				wrapped.ArrayOfNSObjectField = valueArrayOfNSObjectField;
-				Assert.AreEqual (valueArrayOfNSObjectField, wrapped.ArrayOfNSObjectField, "ArrayOfNSObjectField - set");
+				ClassicAssert.AreEqual (valueArrayOfNSObjectField, wrapped.ArrayOfNSObjectField, "ArrayOfNSObjectField - set");
 				wrapped.ArrayOfNSObjectField = null;
-				Assert.IsNull (wrapped.ArrayOfNSObjectField, "ArrayOfNSObjectField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfNSObjectField, "ArrayOfNSObjectField - final");
 
-				Assert.IsNull (wrapped.ArrayOfBooleanField, "ArrayOfBooleanField");
+				ClassicAssert.IsNull (wrapped.ArrayOfBooleanField, "ArrayOfBooleanField");
 				var valueArrayOfBooleanField = new bool [] { true, false, true };
 				wrapped.ArrayOfBooleanField = valueArrayOfBooleanField;
-				Assert.AreEqual (valueArrayOfBooleanField, wrapped.ArrayOfBooleanField, "ArrayOfBooleanField - set");
+				ClassicAssert.AreEqual (valueArrayOfBooleanField, wrapped.ArrayOfBooleanField, "ArrayOfBooleanField - set");
 				wrapped.ArrayOfBooleanField = null;
-				Assert.IsNull (wrapped.ArrayOfBooleanField, "ArrayOfBooleanField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfBooleanField, "ArrayOfBooleanField - final");
 
-				Assert.IsNull (wrapped.ArrayOfNSStringField, "ArrayOfNSStringField");
+				ClassicAssert.IsNull (wrapped.ArrayOfNSStringField, "ArrayOfNSStringField");
 				var valueArrayOfNSStringField = new NSString [] { (NSString) "a", (NSString) "b", (NSString) "c" };
 				wrapped.ArrayOfNSStringField = valueArrayOfNSStringField;
-				Assert.AreEqual (valueArrayOfNSStringField, wrapped.ArrayOfNSStringField, "ArrayOfNSStringField - set");
+				ClassicAssert.AreEqual (valueArrayOfNSStringField, wrapped.ArrayOfNSStringField, "ArrayOfNSStringField - set");
 				wrapped.ArrayOfNSStringField = null;
-				Assert.IsNull (wrapped.ArrayOfNSStringField, "ArrayOfNSStringField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfNSStringField, "ArrayOfNSStringField - final");
 
-				Assert.IsNull (wrapped.ArrayOfNSDateField, "ArrayOfNSDateField");
+				ClassicAssert.IsNull (wrapped.ArrayOfNSDateField, "ArrayOfNSDateField");
 				var valueArrayOfNSDateField = new NSDate [] { NSDate.Now, NSDate.Now };
 				wrapped.ArrayOfNSDateField = valueArrayOfNSDateField;
-				Assert.AreEqual (valueArrayOfNSDateField, wrapped.ArrayOfNSDateField, "ArrayOfNSDateField - set");
+				ClassicAssert.AreEqual (valueArrayOfNSDateField, wrapped.ArrayOfNSDateField, "ArrayOfNSDateField - set");
 				wrapped.ArrayOfNSDateField = null;
-				Assert.IsNull (wrapped.ArrayOfNSDateField, "ArrayOfNSDateField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfNSDateField, "ArrayOfNSDateField - final");
 
-				Assert.IsNull (wrapped.ArrayOfNSDictionaryField, "ArrayOfNSDictionaryField");
+				ClassicAssert.IsNull (wrapped.ArrayOfNSDictionaryField, "ArrayOfNSDictionaryField");
 				var valueArrayOfNSDictionaryField = new NSDictionary [] { new NSDictionary (), new NSDictionary () };
 				wrapped.ArrayOfNSDictionaryField = valueArrayOfNSDictionaryField;
-				Assert.AreEqual (valueArrayOfNSDictionaryField, wrapped.ArrayOfNSDictionaryField, "ArrayOfNSDictionaryField - set");
+				ClassicAssert.AreEqual (valueArrayOfNSDictionaryField, wrapped.ArrayOfNSDictionaryField, "ArrayOfNSDictionaryField - set");
 				wrapped.ArrayOfNSDictionaryField = null;
-				Assert.IsNull (wrapped.ArrayOfNSDictionaryField, "ArrayOfNSDictionaryField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfNSDictionaryField, "ArrayOfNSDictionaryField - final");
 
-				Assert.IsNull (wrapped.ArrayOfStrongDictionaryField, "ArrayOfStrongDictionaryField");
+				ClassicAssert.IsNull (wrapped.ArrayOfStrongDictionaryField, "ArrayOfStrongDictionaryField");
 				var valueArrayOfStrongDictionaryField = new WrappedNSDictionary [] { new WrappedNSDictionary (), new WrappedNSDictionary () };
 				wrapped.ArrayOfStrongDictionaryField = valueArrayOfStrongDictionaryField;
-				Assert.AreEqual (string.Join (";", valueArrayOfStrongDictionaryField.Select (v => v?.Dictionary?.ToString ())), string.Join (";", wrapped.ArrayOfStrongDictionaryField.Select (v => v?.Dictionary?.ToString ())), "ArrayOfStrongDictionaryField - set");
+				ClassicAssert.AreEqual (string.Join (";", valueArrayOfStrongDictionaryField.Select (v => v?.Dictionary?.ToString ())), string.Join (";", wrapped.ArrayOfStrongDictionaryField.Select (v => v?.Dictionary?.ToString ())), "ArrayOfStrongDictionaryField - set");
 				wrapped.ArrayOfStrongDictionaryField = null;
-				Assert.IsNull (wrapped.ArrayOfStrongDictionaryField, "ArrayOfStrongDictionaryField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfStrongDictionaryField, "ArrayOfStrongDictionaryField - final");
 
-				Assert.IsNull (wrapped.ArrayOfStrongEnumField, "ArrayOfStrongEnumField");
+				ClassicAssert.IsNull (wrapped.ArrayOfStrongEnumField, "ArrayOfStrongEnumField");
 				var valueArrayOfStrongEnumField = new StrongEnum [] { StrongEnum.A, StrongEnum.B };
 				wrapped.ArrayOfStrongEnumField = valueArrayOfStrongEnumField;
-				Assert.AreEqual (valueArrayOfStrongEnumField, wrapped.ArrayOfStrongEnumField, "ArrayOfStrongEnumField - set");
+				ClassicAssert.AreEqual (valueArrayOfStrongEnumField, wrapped.ArrayOfStrongEnumField, "ArrayOfStrongEnumField - set");
 				wrapped.ArrayOfStrongEnumField = null;
-				Assert.IsNull (wrapped.ArrayOfStrongEnumField, "ArrayOfStrongEnumField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfStrongEnumField, "ArrayOfStrongEnumField - final");
 
-				Assert.IsNull (wrapped.ArrayOfNormalEnumField, "ArrayOfNormalEnumField");
+				ClassicAssert.IsNull (wrapped.ArrayOfNormalEnumField, "ArrayOfNormalEnumField");
 				var valueArrayOfNormalEnumField = new NormalEnum [] { NormalEnum.X, NormalEnum.Y };
 				wrapped.ArrayOfNormalEnumField = valueArrayOfNormalEnumField;
-				Assert.AreEqual (valueArrayOfNormalEnumField, wrapped.ArrayOfNormalEnumField, "ArrayOfNormalEnumField - set");
+				ClassicAssert.AreEqual (valueArrayOfNormalEnumField, wrapped.ArrayOfNormalEnumField, "ArrayOfNormalEnumField - set");
 				wrapped.ArrayOfNormalEnumField = null;
-				Assert.IsNull (wrapped.ArrayOfNormalEnumField, "ArrayOfNormalEnumField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfNormalEnumField, "ArrayOfNormalEnumField - final");
 
-				Assert.IsNull (wrapped.StringField, "StringField");
+				ClassicAssert.IsNull (wrapped.StringField, "StringField");
 				var valueStringField = "managed string";
 				wrapped.StringField = valueStringField;
-				Assert.AreEqual (valueStringField, wrapped.StringField, "StringField - set");
+				ClassicAssert.AreEqual (valueStringField, wrapped.StringField, "StringField - set");
 				wrapped.StringField = null;
-				Assert.IsNull (wrapped.StringField, "StringField - final");
+				ClassicAssert.IsNull (wrapped.StringField, "StringField - final");
 
-				Assert.IsNull (wrapped.DateTimeField, "DateTimeField");
+				ClassicAssert.IsNull (wrapped.DateTimeField, "DateTimeField");
 				var valueDateTimeField = new DateTime (2025, 09, 01, 12, 45, 55, 23).ToUniversalTime ();
 				wrapped.DateTimeField = valueDateTimeField;
-				Assert.AreEqual (valueDateTimeField, wrapped.DateTimeField, "DateTimeField - set");
+				ClassicAssert.AreEqual (valueDateTimeField, wrapped.DateTimeField, "DateTimeField - set");
 				wrapped.DateTimeField = null;
-				Assert.IsNull (wrapped.DateTimeField, "DateTimeField - final");
+				ClassicAssert.IsNull (wrapped.DateTimeField, "DateTimeField - final");
 
-				Assert.IsNull (wrapped.GenericNSDictionaryField, "GenericNSDictionaryField");
+				ClassicAssert.IsNull (wrapped.GenericNSDictionaryField, "GenericNSDictionaryField");
 				var valueGenericNSDictionaryField = new NSDictionary<NSString, NSObject> ();
 				wrapped.GenericNSDictionaryField = valueGenericNSDictionaryField;
-				Assert.AreEqual (valueGenericNSDictionaryField, wrapped.GenericNSDictionaryField, "GenericNSDictionaryField - set");
+				ClassicAssert.AreEqual (valueGenericNSDictionaryField, wrapped.GenericNSDictionaryField, "GenericNSDictionaryField - set");
 				wrapped.GenericNSDictionaryField = null;
-				Assert.IsNull (wrapped.GenericNSDictionaryField, "GenericNSDictionaryField - final");
+				ClassicAssert.IsNull (wrapped.GenericNSDictionaryField, "GenericNSDictionaryField - final");
 
-				Assert.IsNull (wrapped.ArrayOfStringField, "ArrayOfStringField");
+				ClassicAssert.IsNull (wrapped.ArrayOfStringField, "ArrayOfStringField");
 				var valueArrayOfStringField = new string [] { "abc", "def", "ghi" };
 				wrapped.ArrayOfStringField = valueArrayOfStringField;
-				Assert.AreEqual (valueArrayOfStringField, wrapped.ArrayOfStringField, "ArrayOfStringField - set");
+				ClassicAssert.AreEqual (valueArrayOfStringField, wrapped.ArrayOfStringField, "ArrayOfStringField - set");
 				wrapped.ArrayOfStringField = null;
-				Assert.IsNull (wrapped.ArrayOfStringField, "ArrayOfStringField - final");
+				ClassicAssert.IsNull (wrapped.ArrayOfStringField, "ArrayOfStringField - final");
 
-				Assert.IsNull (wrapped.NSDataField, "NSDataField");
+				ClassicAssert.IsNull (wrapped.NSDataField, "NSDataField");
 				var valueNSDataField = NSData.FromArray (new byte [] { 1, 2, 3 });
 				wrapped.NSDataField = valueNSDataField;
-				Assert.AreEqual (valueNSDataField, wrapped.NSDataField, "NSDataField - set");
+				ClassicAssert.AreEqual (valueNSDataField, wrapped.NSDataField, "NSDataField - set");
 				wrapped.NSDataField = null;
-				Assert.IsNull (wrapped.NSDataField, "NSDataField - final");
+				ClassicAssert.IsNull (wrapped.NSDataField, "NSDataField - final");
 
-				Assert.IsNull (wrapped.NSDataAsMatrix3Field, "NSDataAsMatrix3Field");
+				ClassicAssert.IsNull (wrapped.NSDataAsMatrix3Field, "NSDataAsMatrix3Field");
 				var valueNSDataAsMatrix3Field = new NMatrix3 (1, 2, 3, 4, 5, 6, 7, 8, 9);
 				wrapped.NSDataAsMatrix3Field = valueNSDataAsMatrix3Field;
-				Assert.AreEqual (valueNSDataAsMatrix3Field, wrapped.NSDataAsMatrix3Field, "NSDataAsMatrix3Field - set");
+				ClassicAssert.AreEqual (valueNSDataAsMatrix3Field, wrapped.NSDataAsMatrix3Field, "NSDataAsMatrix3Field - set");
 				wrapped.NSDataAsMatrix3Field = null;
-				Assert.IsNull (wrapped.NSDataAsMatrix3Field, "NSDataAsMatrix3Field - final");
+				ClassicAssert.IsNull (wrapped.NSDataAsMatrix3Field, "NSDataAsMatrix3Field - final");
 
-				Assert.IsNull (wrapped.CGRectField, "CGRectField");
+				ClassicAssert.IsNull (wrapped.CGRectField, "CGRectField");
 				var valueCGRectField = new CGRect (1, 2, 3, 4);
 				wrapped.CGRectField = valueCGRectField;
-				Assert.AreEqual (valueCGRectField, wrapped.CGRectField, "CGRectField - set");
+				ClassicAssert.AreEqual (valueCGRectField, wrapped.CGRectField, "CGRectField - set");
 				wrapped.CGRectField = null;
-				Assert.IsNull (wrapped.CGRectField, "CGRectField - final");
+				ClassicAssert.IsNull (wrapped.CGRectField, "CGRectField - final");
 
-				Assert.IsNull (wrapped.CGSizeField, "CGSizeField");
+				ClassicAssert.IsNull (wrapped.CGSizeField, "CGSizeField");
 				var valueCGSizeField = new CGSize (5, 6);
 				wrapped.CGSizeField = valueCGSizeField;
-				Assert.AreEqual (valueCGSizeField, wrapped.CGSizeField, "CGSizeField - set");
+				ClassicAssert.AreEqual (valueCGSizeField, wrapped.CGSizeField, "CGSizeField - set");
 				wrapped.CGSizeField = null;
-				Assert.IsNull (wrapped.CGSizeField, "CGSizeField - final");
+				ClassicAssert.IsNull (wrapped.CGSizeField, "CGSizeField - final");
 
-				Assert.IsNull (wrapped.CGPointField, "CGPointField");
+				ClassicAssert.IsNull (wrapped.CGPointField, "CGPointField");
 				var valueCGPointField = new CGPoint (7, 8);
 				wrapped.CGPointField = valueCGPointField;
-				Assert.AreEqual (valueCGPointField, wrapped.CGPointField, "CGPointField - set");
+				ClassicAssert.AreEqual (valueCGPointField, wrapped.CGPointField, "CGPointField - set");
 				wrapped.CGPointField = null;
-				Assert.IsNull (wrapped.CGPointField, "CGPointField - final");
+				ClassicAssert.IsNull (wrapped.CGPointField, "CGPointField - final");
 
-				Assert.IsNull (wrapped.CMTimeField, "CMTimeField");
+				ClassicAssert.IsNull (wrapped.CMTimeField, "CMTimeField");
 				var valueCMTimeField = new CMTime (123, 2);
 				wrapped.CMTimeField = valueCMTimeField;
-				Assert.AreEqual (valueCMTimeField, wrapped.CMTimeField, "CMTimeField - set");
+				ClassicAssert.AreEqual (valueCMTimeField, wrapped.CMTimeField, "CMTimeField - set");
 				wrapped.CMTimeField = null;
-				Assert.IsNull (wrapped.CMTimeField, "CMTimeField - final");
+				ClassicAssert.IsNull (wrapped.CMTimeField, "CMTimeField - final");
 
 #if HAS_UIKIT
-				Assert.IsNull (wrapped.UIEdgeInsetsField, "UIEdgeInsetsField");
+				ClassicAssert.IsNull (wrapped.UIEdgeInsetsField, "UIEdgeInsetsField");
 				var valueUIEdgeInsetsField = new UIEdgeInsets (9, 8, 7, 6);
 				wrapped.UIEdgeInsetsField = valueUIEdgeInsetsField;
-				Assert.AreEqual (valueUIEdgeInsetsField, wrapped.UIEdgeInsetsField, "UIEdgeInsetsField - set");
+				ClassicAssert.AreEqual (valueUIEdgeInsetsField, wrapped.UIEdgeInsetsField, "UIEdgeInsetsField - set");
 				wrapped.UIEdgeInsetsField = null;
-				Assert.IsNull (wrapped.UIEdgeInsetsField, "UIEdgeInsetsField - final");
+				ClassicAssert.IsNull (wrapped.UIEdgeInsetsField, "UIEdgeInsetsField - final");
 #endif // HAS_UIKIT
 			});
 		}
@@ -655,14 +655,14 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.Multiple (() => {
 				var dict = new VTCompressionPropertyCameraCalibration ();
 
-				Assert.IsNull (dict.IntrinsicMatrix, "IntrinsicMatrix");
+				ClassicAssert.IsNull (dict.IntrinsicMatrix, "IntrinsicMatrix");
 
 				var matrix = new NMatrix3 (1, 2, 3, 4, 5, 6, 7, 8, 9);
 				dict.IntrinsicMatrix = matrix;
-				Assert.AreEqual (matrix, dict.IntrinsicMatrix, "IntrinsicMatrix 2");
+				ClassicAssert.AreEqual (matrix, dict.IntrinsicMatrix, "IntrinsicMatrix 2");
 
 				dict.IntrinsicMatrix = null;
-				Assert.IsNull (dict.IntrinsicMatrix, "IntrinsicMatrix 3");
+				ClassicAssert.IsNull (dict.IntrinsicMatrix, "IntrinsicMatrix 3");
 			});
 		}
 
@@ -674,14 +674,14 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.Multiple (() => {
 				var dict = new VTCompressionPropertyCameraCalibration ();
 
-				Assert.IsNull (dict.LensDistortions, "LensDistortions");
+				ClassicAssert.IsNull (dict.LensDistortions, "LensDistortions");
 
 				var array = new float [] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 				dict.LensDistortions = array;
-				Assert.AreEqual (array, dict.LensDistortions, "LensDistortions 2");
+				ClassicAssert.AreEqual (array, dict.LensDistortions, "LensDistortions 2");
 
 				dict.LensDistortions = null;
-				Assert.IsNull (dict.LensDistortions, "LensDistortions 3");
+				ClassicAssert.IsNull (dict.LensDistortions, "LensDistortions 3");
 			});
 		}
 	}

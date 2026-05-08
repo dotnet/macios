@@ -36,7 +36,7 @@ namespace MonoTouchFixtures.UIKit {
 		public void IsKeyWindow_5199 ()
 		{
 			using (UIWindow w = new UIWindow ()) {
-				Assert.False (w.IsKeyWindow, "IsKeyWindow");
+				ClassicAssert.False (w.IsKeyWindow, "IsKeyWindow");
 			}
 		}
 

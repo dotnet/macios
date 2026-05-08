@@ -22,7 +22,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 
 			var ofl = asbd.GetOutputFormatList ();
 
-			Assert.IsNotNull (AudioFormat.GetFirstPlayableFormat (ofl));
+			ClassicAssert.IsNotNull (AudioFormat.GetFirstPlayableFormat (ofl));
 		}
 	}
 }

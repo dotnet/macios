@@ -42,24 +42,24 @@ namespace MonoTouchFixtures.CoreText {
 
 			var style = new CTParagraphStyle (settings);
 			Assert.DoesNotThrow (() => {
-				Assert.AreEqual (settings.TailIndent, (nfloat) style.TailIndent, "TailIndent");
-				Assert.AreEqual (settings.ParagraphSpacingBefore, (nfloat) style.ParagraphSpacingBefore, "ParagraphSpacingBefore");
-				Assert.AreEqual (settings.ParagraphSpacing, (nfloat) style.ParagraphSpacing, "ParagraphSpacing");
-				Assert.AreEqual (settings.LineSpacing, (nfloat) style.LineSpacing, "LineSpacing");
-				Assert.AreEqual (settings.MinimumLineHeight, (nfloat) style.MinimumLineHeight, "MinimumLineHeight");
-				Assert.AreEqual (settings.MaximumLineHeight, (nfloat) style.MaximumLineHeight, "MaximumLineHeight");
-				Assert.AreEqual (settings.LineHeightMultiple, (nfloat) style.LineHeightMultiple, "LineHeightMultiple");
-				Assert.AreEqual (settings.DefaultTabInterval, (nfloat) style.DefaultTabInterval, "DefaultTabInterval");
-				Assert.AreEqual (settings.HeadIndent, (nfloat) style.HeadIndent, "HeadIndent");
-				Assert.AreEqual (settings.FirstLineHeadIndent, (nfloat) style.FirstLineHeadIndent, "FirstLineHeadIndent");
-				Assert.AreEqual (settings.LineBreakMode, style.LineBreakMode, "LineBreakMode");
-				Assert.AreEqual (settings.BaseWritingDirection, style.BaseWritingDirection, "LineBreakMode");
-				Assert.AreEqual (settings.Alignment, style.Alignment, "Alignment");
+				ClassicAssert.AreEqual (settings.TailIndent, (nfloat) style.TailIndent, "TailIndent");
+				ClassicAssert.AreEqual (settings.ParagraphSpacingBefore, (nfloat) style.ParagraphSpacingBefore, "ParagraphSpacingBefore");
+				ClassicAssert.AreEqual (settings.ParagraphSpacing, (nfloat) style.ParagraphSpacing, "ParagraphSpacing");
+				ClassicAssert.AreEqual (settings.LineSpacing, (nfloat) style.LineSpacing, "LineSpacing");
+				ClassicAssert.AreEqual (settings.MinimumLineHeight, (nfloat) style.MinimumLineHeight, "MinimumLineHeight");
+				ClassicAssert.AreEqual (settings.MaximumLineHeight, (nfloat) style.MaximumLineHeight, "MaximumLineHeight");
+				ClassicAssert.AreEqual (settings.LineHeightMultiple, (nfloat) style.LineHeightMultiple, "LineHeightMultiple");
+				ClassicAssert.AreEqual (settings.DefaultTabInterval, (nfloat) style.DefaultTabInterval, "DefaultTabInterval");
+				ClassicAssert.AreEqual (settings.HeadIndent, (nfloat) style.HeadIndent, "HeadIndent");
+				ClassicAssert.AreEqual (settings.FirstLineHeadIndent, (nfloat) style.FirstLineHeadIndent, "FirstLineHeadIndent");
+				ClassicAssert.AreEqual (settings.LineBreakMode, style.LineBreakMode, "LineBreakMode");
+				ClassicAssert.AreEqual (settings.BaseWritingDirection, style.BaseWritingDirection, "LineBreakMode");
+				ClassicAssert.AreEqual (settings.Alignment, style.Alignment, "Alignment");
 
 				var styleTabStops = style.GetTabStops ();
-				Assert.AreEqual (settings.TabStops.Count (), styleTabStops.Length, "TabStops");
-				Assert.True (styleTabStops.Any (t => t.Location == 2 && t.TextAlignment == CTTextAlignment.Justified));
-				Assert.True (styleTabStops.Any (t => t.Location == 1 && t.TextAlignment == CTTextAlignment.Natural));
+				ClassicAssert.AreEqual (settings.TabStops.Count (), styleTabStops.Length, "TabStops");
+				ClassicAssert.True (styleTabStops.Any (t => t.Location == 2 && t.TextAlignment == CTTextAlignment.Justified));
+				ClassicAssert.True (styleTabStops.Any (t => t.Location == 1 && t.TextAlignment == CTTextAlignment.Natural));
 			});
 		}
 	}

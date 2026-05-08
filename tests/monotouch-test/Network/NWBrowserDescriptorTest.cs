@@ -27,25 +27,25 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void TestIncludeTxtRecordProperty ()
 		{
-			Assert.IsFalse (descriptor.IncludeTxtRecord, "Get default value.");
+			ClassicAssert.IsFalse (descriptor.IncludeTxtRecord, "Get default value.");
 			descriptor.IncludeTxtRecord = true;
-			Assert.IsTrue (descriptor.IncludeTxtRecord, "Get new value.");
+			ClassicAssert.IsTrue (descriptor.IncludeTxtRecord, "Get new value.");
 		}
 
 		[Test]
 		public void TestCreateNullDomain ()
 		{
 			using (var newDescriptor = NWBrowserDescriptor.CreateBonjourService (type)) {
-				Assert.AreEqual (type, descriptor.BonjourType, "service type");
-				Assert.IsNull (newDescriptor.BonjourDomain);
+				ClassicAssert.AreEqual (type, descriptor.BonjourType, "service type");
+				ClassicAssert.IsNull (newDescriptor.BonjourDomain);
 			}
 		}
 
 		[Test]
-		public void TestBonjourTypeProperty () => Assert.AreEqual (type, descriptor.BonjourType);
+		public void TestBonjourTypeProperty () => ClassicAssert.AreEqual (type, descriptor.BonjourType);
 
 		[Test]
-		public void TestBonjourDomainProperty () => Assert.AreEqual (domain, descriptor.BonjourDomain);
+		public void TestBonjourDomainProperty () => ClassicAssert.AreEqual (domain, descriptor.BonjourDomain);
 
 		[Test]
 		public void TestApplicationServiceConstructor ()
@@ -57,7 +57,7 @@ namespace MonoTouchFixtures.Network {
 
 			var appName = "myService";
 			using var appServiceDescriptor = NWBrowserDescriptor.CreateApplicationServiceName (appName);
-			Assert.AreEqual (appName, appServiceDescriptor.ApplicationServiceName);
+			ClassicAssert.AreEqual (appName, appServiceDescriptor.ApplicationServiceName);
 		}
 	}
 }

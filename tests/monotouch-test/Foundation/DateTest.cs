@@ -22,18 +22,18 @@ namespace MonoTouchFixtures.Foundation {
 		public void InLimits ()
 		{
 			// .NET can represent this date just fine
-			Assert.AreEqual (new DateTime (4001, 01, 01), (DateTime) NSDate.DistantFuture, "distant future");
+			ClassicAssert.AreEqual (new DateTime (4001, 01, 01), (DateTime) NSDate.DistantFuture, "distant future");
 
-			Assert.AreEqual (DateTime.MinValue, (DateTime) NSDate.DistantPast, "distant past");
-			Assert.AreEqual (DateTime.MinValue.AddSeconds (1), (DateTime) NSDate.FromTimeIntervalSinceReferenceDate (-63114076799), "-63114076799");
-			Assert.AreEqual (DateTime.MinValue, (DateTime) NSDate.FromTimeIntervalSinceReferenceDate (-63114076800), "-63114076800");
+			ClassicAssert.AreEqual (DateTime.MinValue, (DateTime) NSDate.DistantPast, "distant past");
+			ClassicAssert.AreEqual (DateTime.MinValue.AddSeconds (1), (DateTime) NSDate.FromTimeIntervalSinceReferenceDate (-63114076799), "-63114076799");
+			ClassicAssert.AreEqual (DateTime.MinValue, (DateTime) NSDate.FromTimeIntervalSinceReferenceDate (-63114076800), "-63114076800");
 
 			Asserts.AreEqual (DateTime.MaxValue, (DateTime) NSDate.FromTimeIntervalSinceReferenceDate (252423993599.9999), tolerance, "DateTime.MaxValue");
 			Asserts.AreEqual (DateTime.MaxValue, (DateTime) NSDate.FromTimeIntervalSinceReferenceDate (252423993599.9999999), tolerance, "DateTime.MaxValue");
 			Asserts.AreEqual (DateTime.MaxValue, (DateTime) NSDate.FromTimeIntervalSinceReferenceDate (252423993600), tolerance, "DateTime.MaxValue");
 
-			Assert.AreEqual (new DateTime (9999, 12, 31, 23, 59, 58), (DateTime) NSDate.FromTimeIntervalSinceReferenceDate (252423993598), "252423993598");
-			Assert.AreEqual (new DateTime (9999, 12, 31, 23, 59, 59), (DateTime) NSDate.FromTimeIntervalSinceReferenceDate (252423993599), "252423993599");
+			ClassicAssert.AreEqual (new DateTime (9999, 12, 31, 23, 59, 58), (DateTime) NSDate.FromTimeIntervalSinceReferenceDate (252423993598), "252423993598");
+			ClassicAssert.AreEqual (new DateTime (9999, 12, 31, 23, 59, 59), (DateTime) NSDate.FromTimeIntervalSinceReferenceDate (252423993599), "252423993599");
 		}
 
 		static IEnumerable<object []> GetArgumentOutOfRangeExceptionValues ()
@@ -105,13 +105,13 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var date = (DateTime) start;
 			var backAgain = (NSDate) date;
-			Assert.AreEqual (start, backAgain, message);
+			ClassicAssert.AreEqual (start, backAgain, message);
 		}
 
 		[Test]
 		public void DescriptionWithLocale ()
 		{
-			Assert.IsNotNull (NSDate.Now.DescriptionWithLocale (NSLocale.CurrentLocale), "1");
+			ClassicAssert.IsNotNull (NSDate.Now.DescriptionWithLocale (NSLocale.CurrentLocale), "1");
 		}
 
 		[TestCase (1, 1, 1, 1, 1, 1, 1)]

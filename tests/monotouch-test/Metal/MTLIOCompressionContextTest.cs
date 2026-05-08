@@ -18,7 +18,7 @@ namespace MonoTouchFixtures.Metal {
 		public void DefaultChunkSize ()
 		{
 			TestRuntime.AssertNotSimulator (); // metal api not supported on the sim
-			Assert.AreNotEqual (-1, MTLIOCompressionContext.DefaultChunkSize);
+			ClassicAssert.AreNotEqual (-1, MTLIOCompressionContext.DefaultChunkSize);
 		}
 
 		[Test]
@@ -30,7 +30,7 @@ namespace MonoTouchFixtures.Metal {
 				// create and flush, test should simple pass, no need to asserts
 				var compressIO = MTLIOCompressionContext.Create (outputPath, MTLIOCompressionMethod.Lzfse,
 					MTLIOCompressionContext.DefaultChunkSize);
-				Assert.NotNull (compressIO, "Null compress IO");
+				ClassicAssert.NotNull (compressIO, "Null compress IO");
 				// add data
 				var data = Enumerable.Repeat ((byte) 0x20, 20).ToArray ();
 				compressIO!.AppendData (data);

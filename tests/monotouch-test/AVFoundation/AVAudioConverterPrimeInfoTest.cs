@@ -13,8 +13,8 @@ namespace MonoTouchFixtures.AVFoundation {
 
 			var info = new AVAudioConverterPrimeInfo (leading, trailing);
 
-			Assert.AreEqual (leading, info.LeadingFrames, "Wrong LeadingFrames value.");
-			Assert.AreEqual (trailing, info.TrailingFrames, "Wrong TrailingFrames value.");
+			ClassicAssert.AreEqual (leading, info.LeadingFrames, "Wrong LeadingFrames value.");
+			ClassicAssert.AreEqual (trailing, info.TrailingFrames, "Wrong TrailingFrames value.");
 		}
 
 		[Test]
@@ -25,9 +25,9 @@ namespace MonoTouchFixtures.AVFoundation {
 			var info1 = new AVAudioConverterPrimeInfo (leading, trainling);
 			var info2 = new AVAudioConverterPrimeInfo (leading, trainling);
 
-			Assert.True (info1 == info2, "info1 == info2");
-			Assert.True (info1.Equals (info2), "info1.Equals (info2)");
-			Assert.False (info1 != info2, "info1 != info2");
+			ClassicAssert.True (info1 == info2, "info1 == info2");
+			ClassicAssert.True (info1.Equals (info2), "info1.Equals (info2)");
+			ClassicAssert.False (info1 != info2, "info1 != info2");
 		}
 
 		[Test]
@@ -35,9 +35,9 @@ namespace MonoTouchFixtures.AVFoundation {
 		{
 			var info1 = new AVAudioConverterPrimeInfo (2, 30);
 			var info2 = new AVAudioConverterPrimeInfo (info1.LeadingFrames * 2, info1.TrailingFrames * 2);
-			Assert.False (info1 == info2, "info1 == info2");
-			Assert.False (info1.Equals (info2), "info1.Equals (info2)");
-			Assert.True (info1 != info2, "info1 != info2");
+			ClassicAssert.False (info1 == info2, "info1 == info2");
+			ClassicAssert.False (info1.Equals (info2), "info1.Equals (info2)");
+			ClassicAssert.True (info1 != info2, "info1 != info2");
 		}
 
 		[Test]
@@ -45,7 +45,7 @@ namespace MonoTouchFixtures.AVFoundation {
 		{
 			var info = new AVAudioConverterPrimeInfo (2, 20);
 			var str = new NSString ("Foo");
-			Assert.False (info.Equals ((object) str));
+			ClassicAssert.False (info.Equals ((object) str));
 		}
 	}
 }

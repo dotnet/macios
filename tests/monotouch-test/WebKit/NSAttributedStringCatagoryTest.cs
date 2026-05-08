@@ -38,7 +38,7 @@ namespace MonoTouchFixtures.WebKit {
 					completed = true;
 				}
 			}, () => completed);
-			Assert.True (completed, "completed");
+			ClassicAssert.True (completed, "completed");
 		}
 	}
 }

@@ -18,28 +18,28 @@ namespace MonoTouchFixtures.AVFoundation {
 		public void Properties ()
 		{
 			var s = new AVAudioVoiceProcessingOtherAudioDuckingConfiguration ();
-			Assert.IsFalse (s.EnableAdvancedDucking, "EnableAdvancedDucking");
-			Assert.AreEqual ((AVAudioVoiceProcessingOtherAudioDuckingLevel) 0, s.DuckingLevel, "DuckingLevel");
+			ClassicAssert.IsFalse (s.EnableAdvancedDucking, "EnableAdvancedDucking");
+			ClassicAssert.AreEqual ((AVAudioVoiceProcessingOtherAudioDuckingLevel) 0, s.DuckingLevel, "DuckingLevel");
 
 			s.EnableAdvancedDucking = true;
-			Assert.IsTrue (s.EnableAdvancedDucking, "EnableAdvancedDucking 2");
-			Assert.AreEqual ((AVAudioVoiceProcessingOtherAudioDuckingLevel) 0, s.DuckingLevel, "DuckingLevel 2");
+			ClassicAssert.IsTrue (s.EnableAdvancedDucking, "EnableAdvancedDucking 2");
+			ClassicAssert.AreEqual ((AVAudioVoiceProcessingOtherAudioDuckingLevel) 0, s.DuckingLevel, "DuckingLevel 2");
 
 			s.EnableAdvancedDucking = false;
-			Assert.IsFalse (s.EnableAdvancedDucking, "EnableAdvancedDucking 3");
-			Assert.AreEqual ((AVAudioVoiceProcessingOtherAudioDuckingLevel) 0, s.DuckingLevel, "DuckingLevel 3");
+			ClassicAssert.IsFalse (s.EnableAdvancedDucking, "EnableAdvancedDucking 3");
+			ClassicAssert.AreEqual ((AVAudioVoiceProcessingOtherAudioDuckingLevel) 0, s.DuckingLevel, "DuckingLevel 3");
 
 			s.DuckingLevel = AVAudioVoiceProcessingOtherAudioDuckingLevel.Min;
-			Assert.IsFalse (s.EnableAdvancedDucking, "EnableAdvancedDucking 4");
-			Assert.AreEqual (AVAudioVoiceProcessingOtherAudioDuckingLevel.Min, s.DuckingLevel, "DuckingLevel 4");
+			ClassicAssert.IsFalse (s.EnableAdvancedDucking, "EnableAdvancedDucking 4");
+			ClassicAssert.AreEqual (AVAudioVoiceProcessingOtherAudioDuckingLevel.Min, s.DuckingLevel, "DuckingLevel 4");
 
 			s.DuckingLevel = (AVAudioVoiceProcessingOtherAudioDuckingLevel) 314;
-			Assert.IsFalse (s.EnableAdvancedDucking, "EnableAdvancedDucking 5");
-			Assert.AreEqual ((AVAudioVoiceProcessingOtherAudioDuckingLevel) 314, s.DuckingLevel, "DuckingLevel 5");
+			ClassicAssert.IsFalse (s.EnableAdvancedDucking, "EnableAdvancedDucking 5");
+			ClassicAssert.AreEqual ((AVAudioVoiceProcessingOtherAudioDuckingLevel) 314, s.DuckingLevel, "DuckingLevel 5");
 
 			s.DuckingLevel = AVAudioVoiceProcessingOtherAudioDuckingLevel.Default;
-			Assert.IsFalse (s.EnableAdvancedDucking, "EnableAdvancedDucking 6");
-			Assert.AreEqual (AVAudioVoiceProcessingOtherAudioDuckingLevel.Default, s.DuckingLevel, "DuckingLevel 6");
+			ClassicAssert.IsFalse (s.EnableAdvancedDucking, "EnableAdvancedDucking 6");
+			ClassicAssert.AreEqual (AVAudioVoiceProcessingOtherAudioDuckingLevel.Default, s.DuckingLevel, "DuckingLevel 6");
 		}
 	}
 }

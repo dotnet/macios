@@ -19,7 +19,7 @@ namespace MonoTouchFixtures.CoreAnimation {
 		public void CompletionBlock_Null ()
 		{
 			CATransaction.CompletionBlock = null;
-			Assert.Null (CATransaction.CompletionBlock, "CompletionBlock");
+			ClassicAssert.Null (CATransaction.CompletionBlock, "CompletionBlock");
 		}
 
 		[Test]
@@ -28,7 +28,7 @@ namespace MonoTouchFixtures.CoreAnimation {
 			// NULL is not specified in Apple doc
 			// but since it's the default value it makes sense to be able to set it back
 			CATransaction.AnimationTimingFunction = null;
-			Assert.Null (CATransaction.AnimationTimingFunction, "AnimationTimingFunction");
+			ClassicAssert.Null (CATransaction.AnimationTimingFunction, "AnimationTimingFunction");
 		}
 	}
 }

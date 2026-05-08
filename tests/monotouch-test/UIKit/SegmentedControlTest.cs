@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.UIKit {
 		public void BackgroundImage ()
 		{
 			using (UISegmentedControl sc = new UISegmentedControl ()) {
-				Assert.Null (sc.GetBackgroundImage (UIControlState.Application, UIBarMetrics.Default), "Get");
+				ClassicAssert.Null (sc.GetBackgroundImage (UIControlState.Application, UIBarMetrics.Default), "Get");
 				sc.SetBackgroundImage (null, UIControlState.Application, UIBarMetrics.Default);
 			}
 		}
@@ -111,9 +111,9 @@ namespace MonoTouchFixtures.UIKit {
 			using var sc = new UISegmentedControl ("one", "two");
 			sc.SetTitleTextAttributes (new UIStringAttributes () { ForegroundColor = UIColor.Gray }, UIControlState.Selected);
 			var attrib = sc.GetTitleTextAttributes (UIControlState.Selected);
-			Assert.AreEqual (UIColor.Gray, attrib?.ForegroundColor, "ForegroundColor");
-			Assert.IsNotNull (attrib?.Dictionary, "Dictionary");
-			Assert.AreNotEqual (NativeHandle.Zero, attrib.Dictionary.Handle, "Dictionary.Handle");
+			ClassicAssert.AreEqual (UIColor.Gray, attrib?.ForegroundColor, "ForegroundColor");
+			ClassicAssert.IsNotNull (attrib?.Dictionary, "Dictionary");
+			ClassicAssert.AreNotEqual (NativeHandle.Zero, attrib.Dictionary.Handle, "Dictionary.Handle");
 		}
 	}
 }

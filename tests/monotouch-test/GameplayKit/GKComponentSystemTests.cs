@@ -26,25 +26,25 @@ namespace MonoTouchFixtures.GamePlayKit {
 		public void InitWithComponentClassType ()
 		{
 			var componentSystem = new GKComponentSystem<MySubcomponent> ();
-			Assert.NotNull (componentSystem, "GKComponentSystem type ctor must not be null");
-			Assert.AreEqual (typeof (MySubcomponent), componentSystem.ComponentType);
+			ClassicAssert.NotNull (componentSystem, "GKComponentSystem type ctor must not be null");
+			ClassicAssert.AreEqual (typeof (MySubcomponent), componentSystem.ComponentType);
 		}
 
 		[Test]
 		public void IndexerTest ()
 		{
 			var componentSystem = new GKComponentSystem<MySubcomponent> ();
-			Assert.NotNull (componentSystem, "GKComponentSystem type ctor must not be null");
-			Assert.AreEqual (typeof (MySubcomponent), componentSystem.ComponentType);
+			ClassicAssert.NotNull (componentSystem, "GKComponentSystem type ctor must not be null");
+			ClassicAssert.AreEqual (typeof (MySubcomponent), componentSystem.ComponentType);
 
 			componentSystem.AddComponent (new MySubcomponent (0));
 			componentSystem.AddComponent (new MySubcomponent (1));
 			componentSystem.AddComponent (new MySubcomponent (2));
 
-			Assert.IsTrue (componentSystem.Components.Length == 3, "componentSystem.Components must be 3");
+			ClassicAssert.IsTrue (componentSystem.Components.Length == 3, "componentSystem.Components must be 3");
 			var secondComponent = componentSystem [1] as MySubcomponent;
-			Assert.NotNull (secondComponent, "secondComponent must not be null");
-			Assert.IsTrue (secondComponent.Id == 1, "secondComponent.Id must be 1");
+			ClassicAssert.NotNull (secondComponent, "secondComponent must not be null");
+			ClassicAssert.IsTrue (secondComponent.Id == 1, "secondComponent.Id must be 1");
 		}
 	}
 

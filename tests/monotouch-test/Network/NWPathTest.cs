@@ -56,13 +56,13 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void StatusPropertyTest ()
 		{
-			Assert.AreEqual (NWPathStatus.Satisfied, path.Status, $"Unexpected status {path.Status}");
+			ClassicAssert.AreEqual (NWPathStatus.Satisfied, path.Status, $"Unexpected status {path.Status}");
 		}
 
 		[Test]
 		public void IsExpensivePropertyTest ()
 		{
-			Assert.False (path.IsExpensive, "Path was not expected to be expensive."); // To be tested as part of NWProtocolStack
+			ClassicAssert.False (path.IsExpensive, "Path was not expected to be expensive."); // To be tested as part of NWProtocolStack
 		}
 
 		[Test]
@@ -70,17 +70,17 @@ namespace MonoTouchFixtures.Network {
 		{
 #if !MONOMAC && !__MACCATALYST__
 			if (Runtime.Arch != Arch.DEVICE)
-				Assert.False (path.HasIPV4, "By default the interface does not support IPV4 on the simulator");
+				ClassicAssert.False (path.HasIPV4, "By default the interface does not support IPV4 on the simulator");
 			else
 #endif
-				Assert.True (path.HasIPV4, "By default the interface does support IPV4 on the device");
+				ClassicAssert.True (path.HasIPV4, "By default the interface does support IPV4 on the device");
 		}
 
 		[Test]
 		public void HasIPV6PropertyTest ()
 		{
 			Assert.Ignore ("We cannot test the use of IPV6 since it is different per machine configuraton and makes the test flaky.");
-			Assert.False (path.HasIPV6, "By default the interface does not support IPV6"); // To be tested as part of NWProtocolStack
+			ClassicAssert.False (path.HasIPV6, "By default the interface does not support IPV6"); // To be tested as part of NWProtocolStack
 		}
 
 		[Test]
@@ -88,17 +88,17 @@ namespace MonoTouchFixtures.Network {
 		{
 #if !MONOMAC && !__MACCATALYST__
 			if (Runtime.Arch != Arch.DEVICE)
-				Assert.False (path.HasDns, "By default the interface does not support DNS on the simulator");
+				ClassicAssert.False (path.HasDns, "By default the interface does not support DNS on the simulator");
 			else
 #endif
-				Assert.True (path.HasDns, "By default the interface does support DNS on the device");
+				ClassicAssert.True (path.HasDns, "By default the interface does support DNS on the device");
 		}
 
 		[Test]
 		public void UsesInterfaceTypeTest ()
 		{
 			foreach (var i in interfaces) {
-				Assert.True (path.UsesInterfaceType (i.InterfaceType), $"Type {i.InterfaceType} should be in use.");
+				ClassicAssert.True (path.UsesInterfaceType (i.InterfaceType), $"Type {i.InterfaceType} should be in use.");
 			}
 		}
 
@@ -140,7 +140,7 @@ namespace MonoTouchFixtures.Network {
 						e1.Task);
 				if (!rv)
 					Assert.Ignore ("No gateways on this machine?"); // no gateways isn't all that uncommon, so just always ignore in this case.
-				Assert.IsTrue (rv, "Called back");
+				ClassicAssert.IsTrue (rv, "Called back");
 			} finally {
 				monitor.Cancel ();
 				monitor.Dispose ();

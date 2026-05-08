@@ -17,8 +17,8 @@ namespace Xamarin.Mac.Tests {
 				called.Set ();
 			});
 			backgroundThread.Start ();
-			Assert.IsTrue (called.WaitOne (1000), "called");
-			Assert.IsTrue (screensCount > 0, "screens count");
+			ClassicAssert.IsTrue (called.WaitOne (1000), "called");
+			ClassicAssert.IsTrue (screensCount > 0, "screens count");
 		}
 
 		[Test]
@@ -31,8 +31,8 @@ namespace Xamarin.Mac.Tests {
 				called.Set ();
 			});
 			backgroundThread.Start ();
-			Assert.IsTrue (called.WaitOne (1000), "called");
-			Assert.IsNotNull (main, "main screen");
+			ClassicAssert.IsTrue (called.WaitOne (1000), "called");
+			ClassicAssert.IsNotNull (main, "main screen");
 		}
 
 		[Test]
@@ -48,9 +48,9 @@ namespace Xamarin.Mac.Tests {
 				called.Set ();
 			});
 			backgroundThread.Start ();
-			Assert.IsTrue (called.WaitOne (1000), "called");
+			ClassicAssert.IsTrue (called.WaitOne (1000), "called");
 			if (screenCount > 1) {
-				Assert.IsNotNull (deepScreen, "deep screen");
+				ClassicAssert.IsNotNull (deepScreen, "deep screen");
 			} else {
 				Assert.Inconclusive ("Only one screen detected.");
 			}

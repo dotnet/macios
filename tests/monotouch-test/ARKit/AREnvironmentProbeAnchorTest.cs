@@ -33,20 +33,20 @@ namespace MonoTouchFixtures.ARKit {
 		public void MarshallingTest ()
 		{
 			var probeAnchor = new AREnvironmentProbeAnchor (MatrixFloat4x4.Identity, new VectorFloat3 (1, 1, 1));
-			Assert.AreEqual (MatrixFloat4x4.Identity, probeAnchor.Transform, "Transform");
+			ClassicAssert.AreEqual (MatrixFloat4x4.Identity, probeAnchor.Transform, "Transform");
 			// broken since Xcode 12 on simulator (only), fixed in simulator in Xcode 14
 			if ((Runtime.Arch == Arch.DEVICE) || !TestRuntime.CheckXcodeVersion (12, 0) || TestRuntime.CheckXcodeVersion (14, 0))
-				Assert.AreEqual (new VectorFloat3 (1, 1, 1), probeAnchor.Extent, "Extent");
+				ClassicAssert.AreEqual (new VectorFloat3 (1, 1, 1), probeAnchor.Extent, "Extent");
 		}
 
 		[Test]
 		public void MarshallingTest2 ()
 		{
 			var probeAnchorWithName = new AREnvironmentProbeAnchor ("My Anchor", MatrixFloat4x4.Identity, new VectorFloat3 (1, 1, 1));
-			Assert.AreEqual (MatrixFloat4x4.Identity, probeAnchorWithName.Transform, "Transform");
+			ClassicAssert.AreEqual (MatrixFloat4x4.Identity, probeAnchorWithName.Transform, "Transform");
 			// broken since Xcode 12 on simulator (only), fixed in simulator in Xcode 14
 			if ((Runtime.Arch == Arch.DEVICE) || !TestRuntime.CheckXcodeVersion (12, 0) || TestRuntime.CheckXcodeVersion (14, 0))
-				Assert.AreEqual (new VectorFloat3 (1, 1, 1), probeAnchorWithName.Extent, "Extent");
+				ClassicAssert.AreEqual (new VectorFloat3 (1, 1, 1), probeAnchorWithName.Extent, "Extent");
 		}
 	}
 }

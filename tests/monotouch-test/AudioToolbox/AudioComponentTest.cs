@@ -40,7 +40,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 				if (component is null)
 					continue;
 				var l = component.ComponentList;
-				Assert.IsNull (l, "List is not null.");
+				ClassicAssert.IsNull (l, "List is not null.");
 				l = new AudioComponentInfo [] { componentInfo };
 				//monotouchtests does not have permissions to deal with the hwd.
 				Assert.Throws<InvalidOperationException> (() => component.ComponentList = l);
@@ -87,14 +87,14 @@ namespace MonoTouchFixtures.AudioToolbox {
 			var resources = new ResourceUsageInfo ();
 			resources.IOKitUserClient = new string [] { clientId };
 			var userClientList = resources.IOKitUserClient;
-			Assert.IsNotNull (userClientList);
-			Assert.AreEqual (1, userClientList.Length, "List does not have all client ids.");
-			Assert.AreEqual (clientId, userClientList [0], "Client ids are not the same.");
+			ClassicAssert.IsNotNull (userClientList);
+			ClassicAssert.AreEqual (1, userClientList.Length, "List does not have all client ids.");
+			ClassicAssert.AreEqual (clientId, userClientList [0], "Client ids are not the same.");
 
 			// similar test but with null values.
 
 			resources.IOKitUserClient = null;
-			Assert.IsNull (resources.IOKitUserClient, "Value was not set to null.");
+			ClassicAssert.IsNull (resources.IOKitUserClient, "Value was not set to null.");
 		}
 
 		[Test]
@@ -105,14 +105,14 @@ namespace MonoTouchFixtures.AudioToolbox {
 			var resources = new ResourceUsageInfo ();
 			resources.MachLookUpGlobalName = new string [] { serviceName };
 			var serviceNames = resources.MachLookUpGlobalName;
-			Assert.NotNull (serviceNames, "Returned list is null");
-			Assert.AreEqual (1, serviceNames.Length, "List does not have all service names.");
-			Assert.AreEqual (serviceName, serviceNames [0], "Service names are not equal.");
+			ClassicAssert.NotNull (serviceNames, "Returned list is null");
+			ClassicAssert.AreEqual (1, serviceNames.Length, "List does not have all service names.");
+			ClassicAssert.AreEqual (serviceName, serviceNames [0], "Service names are not equal.");
 
 			// similar test but with null values
 
 			resources.MachLookUpGlobalName = null;
-			Assert.IsNull (resources.MachLookUpGlobalName, "Value was no set to null.");
+			ClassicAssert.IsNull (resources.MachLookUpGlobalName, "Value was no set to null.");
 		}
 
 		[Test]
@@ -132,10 +132,10 @@ namespace MonoTouchFixtures.AudioToolbox {
 			componentInfo.Version = 1;
 			componentInfo.ResourceUsage = resources;
 			using var component = AudioComponent.FindComponent (AudioTypeOutput.Generic);
-			Assert.IsNotNull (component);
+			ClassicAssert.IsNotNull (component);
 			// assert the property and break
 			var configInfo = component.GetConfigurationInfo ();
-			Assert.IsNotNull (configInfo);
+			ClassicAssert.IsNotNull (configInfo);
 		}
 
 		[Test]
@@ -163,10 +163,10 @@ namespace MonoTouchFixtures.AudioToolbox {
 					componentInfo.Version = 1;
 					componentInfo.ResourceUsage = resources;
 					using var component = AudioComponent.FindComponent (AudioTypeOutput.Generic);
-					Assert.IsNotNull (component);
+					ClassicAssert.IsNotNull (component);
 					// validate and break
 					var validation = component.Validate (null);
-					Assert.Contains (validation,
+					ClassicAssert.Contains (validation,
 						new List<AudioComponentValidationResult> () { AudioComponentValidationResult.Unknown, AudioComponentValidationResult.Passed }, "validation");
 					tcs.SetResult (true);
 				} catch (Exception e) {
@@ -175,7 +175,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 			});
 			thread.IsBackground = true;
 			thread.Start ();
-			Assert.IsTrue (tcs.Task.Wait (TimeSpan.FromSeconds (20)), "Timed out");
+			ClassicAssert.IsTrue (tcs.Task.Wait (TimeSpan.FromSeconds (20)), "Timed out");
 		}
 
 		[Test]
@@ -200,14 +200,14 @@ namespace MonoTouchFixtures.AudioToolbox {
 			componentInfo.Version = 1;
 			componentInfo.ResourceUsage = resources;
 			using var component = AudioComponent.FindComponent (AudioTypeOutput.Generic);
-			Assert.IsNotNull (component);
+			ClassicAssert.IsNotNull (component);
 
 			var cbEvent = new AutoResetEvent (false);
 			Action<AudioComponentValidationResult, NSDictionary?> cb = (AudioComponentValidationResult _, NSDictionary? _) => {
 				cbEvent.Set ();
 			};
 			component.ValidateAsync (cb);
-			Assert.True (cbEvent.WaitOne (20000), "Cb was not called.");
+			ClassicAssert.True (cbEvent.WaitOne (20000), "Cb was not called.");
 		}
 	}
 }

@@ -34,7 +34,7 @@ namespace MonoTouchFixtures.DeviceDiscoveryExtension {
 			device.NetworkEndpoint = endpoint;
 			var tmpEndpoint = device.NetworkEndpoint;
 
-			Assert.True (endpoint.GetHandle () == tmpEndpoint.GetHandle (), "NetworkEndpoint");
+			ClassicAssert.True (endpoint.GetHandle () == tmpEndpoint.GetHandle (), "NetworkEndpoint");
 		}
 	}
 }

@@ -12,8 +12,8 @@ namespace Xamarin.Mac.Tests {
 		public void NSThread_CallStack_Test ()
 		{
 			string [] stack = NSThread.NativeCallStack;
-			Assert.IsNotNull (stack);
-			Assert.IsTrue (stack.Length > 0);
+			ClassicAssert.IsNotNull (stack);
+			ClassicAssert.IsTrue (stack.Length > 0);
 		}
 	}
 }

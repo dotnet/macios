@@ -26,16 +26,16 @@ namespace MonoTouchFixtures.Simd {
 			var inputSimdR = (VectorFloat3) inputR;
 
 			// matrices are different
-			Assert.AreEqual (inputL == inputR, inputSimdL == inputSimdR, "inequality");
-			Assert.IsFalse (inputL == inputR, "inequality 2 expected");
-			Assert.IsFalse (inputSimdL == inputSimdR, "inequality 2 actual");
+			ClassicAssert.AreEqual (inputL == inputR, inputSimdL == inputSimdR, "inequality");
+			ClassicAssert.IsFalse (inputL == inputR, "inequality 2 expected");
+			ClassicAssert.IsFalse (inputSimdL == inputSimdR, "inequality 2 actual");
 
 			inputL = inputR;
 			inputSimdL = inputSimdR;
 			// matrices are identical
-			Assert.AreEqual (inputL == inputR, inputSimdL == inputSimdR, "equality");
-			Assert.IsTrue (inputL == inputR, "equality 2 expected");
-			Assert.IsTrue (inputSimdL == inputSimdR, "equality 2 actual");
+			ClassicAssert.AreEqual (inputL == inputR, inputSimdL == inputSimdR, "equality");
+			ClassicAssert.IsTrue (inputL == inputR, "equality 2 expected");
+			ClassicAssert.IsTrue (inputSimdL == inputSimdR, "equality 2 actual");
 		}
 
 		[Test]
@@ -47,16 +47,16 @@ namespace MonoTouchFixtures.Simd {
 			var inputSimdR = (VectorFloat3) inputR;
 
 			// matrices are different
-			Assert.AreEqual (inputL != inputR, inputSimdL != inputSimdR, "inequality");
-			Assert.IsTrue (inputL != inputR, "inequality 2 expected");
-			Assert.IsTrue (inputSimdL != inputSimdR, "inequality 2 actual");
+			ClassicAssert.AreEqual (inputL != inputR, inputSimdL != inputSimdR, "inequality");
+			ClassicAssert.IsTrue (inputL != inputR, "inequality 2 expected");
+			ClassicAssert.IsTrue (inputSimdL != inputSimdR, "inequality 2 actual");
 
 			inputL = inputR;
 			inputSimdL = inputSimdR;
 			// matrices are identical
-			Assert.AreEqual (inputL != inputR, inputSimdL != inputSimdR, "equality");
-			Assert.IsFalse (inputL != inputR, "equality 2 expected");
-			Assert.IsFalse (inputSimdL != inputSimdR, "equality 2 actual");
+			ClassicAssert.AreEqual (inputL != inputR, inputSimdL != inputSimdR, "equality");
+			ClassicAssert.IsFalse (inputL != inputR, "equality 2 expected");
+			ClassicAssert.IsFalse (inputSimdL != inputSimdR, "equality 2 actual");
 		}
 
 		[Test]
@@ -82,7 +82,7 @@ namespace MonoTouchFixtures.Simd {
 		{
 			var vector = new VectorFloat3 (1, 2, 3);
 
-			Assert.AreEqual ("(1, 2, 3)", vector.ToString (), "tostring");
+			ClassicAssert.AreEqual ("(1, 2, 3)", vector.ToString (), "tostring");
 		}
 
 		// GetHashCode doesn't have to be identical, so no need to test
@@ -95,10 +95,10 @@ namespace MonoTouchFixtures.Simd {
 			var actualA = (VectorFloat3) expectedA;
 			var actualB = (VectorFloat3) expectedB;
 
-			Assert.IsTrue (actualA.Equals ((object) actualA), "self");
-			Assert.IsFalse (actualA.Equals ((object) actualB), "other");
-			Assert.IsFalse (actualA.Equals (null), "null");
-			Assert.IsTrue (actualA.Equals (expectedA), "same type");
+			ClassicAssert.IsTrue (actualA.Equals ((object) actualA), "self");
+			ClassicAssert.IsFalse (actualA.Equals ((object) actualB), "other");
+			ClassicAssert.IsFalse (actualA.Equals (null), "null");
+			ClassicAssert.IsTrue (actualA.Equals (expectedA), "same type");
 		}
 
 		[Test]
@@ -109,8 +109,8 @@ namespace MonoTouchFixtures.Simd {
 			var actualA = (VectorFloat3) expectedA;
 			var actualB = (VectorFloat3) expectedB;
 
-			Assert.IsTrue (actualA.Equals (actualA), "self");
-			Assert.IsFalse (actualA.Equals (actualB), "other");
+			ClassicAssert.IsTrue (actualA.Equals (actualA), "self");
+			ClassicAssert.IsFalse (actualA.Equals (actualB), "other");
 		}
 
 		static VectorFloat3 [] test_vectors = new [] {

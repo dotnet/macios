@@ -39,7 +39,7 @@ namespace MonoTouchFixtures.Network {
 		public void SetUp ()
 		{
 			options = stack.InternetProtocol as NWProtocolIPOptions;
-			Assert.NotNull (options, "options");
+			ClassicAssert.NotNull (options, "options");
 		}
 
 		// we cannot assert that the C code those the right thing, BUT we do know

@@ -41,7 +41,7 @@ namespace MonoTouchFixtures.ModelIO {
 			using (var obj = new MDLObject ()) {
 				var p = new Protocol (typeof (IMDLComponent));
 				obj.SetComponent (new MDLTransform (), p);
-				Assert.NotNull (obj.GetComponent (p));
+				ClassicAssert.NotNull (obj.GetComponent (p));
 			}
 		}
 	}

@@ -204,10 +204,10 @@ namespace MonoTouchFixtures.Foundation {
 														// since ObjC thinks it's different
 				Assert.That (s1.GetHashCode (), Is.Not.EqualTo (s2.GetHashCode ()), "GetHashCode");
 				// then it's "correct" to return false for equality
-				Assert.False (s1.Equals ((object) s2), "Equal(object)");
-				Assert.False (s1.Equals ((NSObject) s2), "Equal(NSObject)");
-				Assert.False (s1.Equals ((NSString) s2), "Equal(NSString)");
-				Assert.False (NSString.Equals (s1, s2), "static");
+				ClassicAssert.False (s1.Equals ((object) s2), "Equal(object)");
+				ClassicAssert.False (s1.Equals ((NSObject) s2), "Equal(NSObject)");
+				ClassicAssert.False (s1.Equals ((NSString) s2), "Equal(NSString)");
+				ClassicAssert.False (NSString.Equals (s1, s2), "static");
 				// and people need to call compare
 				Assert.That (s1.Compare (s2), Is.EqualTo (NSComparisonResult.Same), "Same");
 			}
@@ -220,7 +220,7 @@ namespace MonoTouchFixtures.Foundation {
 			UIImage img = UIImage.FromFile (Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png"));
 			using (NSData imageData = img.AsPNG ()) {
 				using (var str = NSString.FromData (imageData, NSStringEncoding.UTF8)) {
-					Assert.IsNull (str, "NSDataFromImage");
+					ClassicAssert.IsNull (str, "NSDataFromImage");
 				}
 			}
 			Assert.Throws<ArgumentNullException> (() => {

@@ -73,8 +73,8 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			if (!fetchThread.Join (TimeSpan.FromSeconds (30)))
 				Assert.Fail ("Fetch thread is hung.");
 
-			Assert.IsNull (switchException, $"Switch thread failed: {switchException}");
-			Assert.IsNull (fetchException, $"Fetch thread failed: {fetchException}");
+			ClassicAssert.IsNull (switchException, $"Switch thread failed: {switchException}");
+			ClassicAssert.IsNull (fetchException, $"Fetch thread failed: {fetchException}");
 		}
 	}
 }

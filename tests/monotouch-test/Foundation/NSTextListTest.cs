@@ -18,9 +18,9 @@ namespace MonoTouchFixtures.Foundation {
 		public void Constructor_CustomFormat (string format)
 		{
 			var textList = new NSTextList (format);
-			Assert.AreEqual (format, textList.CustomMarkerFormat, "CustomMarkerFormat");
-			Assert.AreEqual (NSTextListMarkerFormats.CustomString, textList.MarkerFormat, "MarkerFormat");
-			Assert.AreEqual (NSTextListOptions.None, textList.ListOptions, "ListOptions");
+			ClassicAssert.AreEqual (format, textList.CustomMarkerFormat, "CustomMarkerFormat");
+			ClassicAssert.AreEqual (NSTextListMarkerFormats.CustomString, textList.MarkerFormat, "MarkerFormat");
+			ClassicAssert.AreEqual (NSTextListOptions.None, textList.ListOptions, "ListOptions");
 		}
 
 		[TestCase ("{decimal}.", NSTextListOptions.None)]
@@ -28,9 +28,9 @@ namespace MonoTouchFixtures.Foundation {
 		public void Constructor_CustomFormat_2 (string format, NSTextListOptions options)
 		{
 			var textList = new NSTextList (format, options);
-			Assert.AreEqual (format, textList.CustomMarkerFormat, "CustomMarkerFormat");
-			Assert.AreEqual (NSTextListMarkerFormats.CustomString, textList.MarkerFormat, "MarkerFormat");
-			Assert.AreEqual (options, textList.ListOptions, "ListOptions");
+			ClassicAssert.AreEqual (format, textList.CustomMarkerFormat, "CustomMarkerFormat");
+			ClassicAssert.AreEqual (NSTextListMarkerFormats.CustomString, textList.MarkerFormat, "MarkerFormat");
+			ClassicAssert.AreEqual (options, textList.ListOptions, "ListOptions");
 		}
 
 
@@ -39,9 +39,9 @@ namespace MonoTouchFixtures.Foundation {
 		public void Constructor_TypedFormat_2 (NSTextListMarkerFormats format, NSTextListOptions options)
 		{
 			var textList = new NSTextList (format, options);
-			Assert.AreEqual ((string) format.GetConstant ()!, textList.CustomMarkerFormat, "CustomMarkerFormat");
-			Assert.AreEqual (format, textList.MarkerFormat, "MarkerFormat");
-			Assert.AreEqual (options, textList.ListOptions, "ListOptions");
+			ClassicAssert.AreEqual ((string) format.GetConstant ()!, textList.CustomMarkerFormat, "CustomMarkerFormat");
+			ClassicAssert.AreEqual (format, textList.MarkerFormat, "MarkerFormat");
+			ClassicAssert.AreEqual (options, textList.ListOptions, "ListOptions");
 		}
 
 		[TestCase (NSTextListMarkerFormats.Circle)]
@@ -49,9 +49,9 @@ namespace MonoTouchFixtures.Foundation {
 		public void Constructor_TypedFormat (NSTextListMarkerFormats format)
 		{
 			var textList = new NSTextList (format);
-			Assert.AreEqual ((string) format.GetConstant ()!, textList.CustomMarkerFormat, "CustomMarkerFormat");
-			Assert.AreEqual (format, textList.MarkerFormat, "MarkerFormat");
-			Assert.AreEqual (NSTextListOptions.None, textList.ListOptions, "ListOptions");
+			ClassicAssert.AreEqual ((string) format.GetConstant ()!, textList.CustomMarkerFormat, "CustomMarkerFormat");
+			ClassicAssert.AreEqual (format, textList.MarkerFormat, "MarkerFormat");
+			ClassicAssert.AreEqual (NSTextListOptions.None, textList.ListOptions, "ListOptions");
 		}
 	}
 }

@@ -52,7 +52,7 @@ namespace MonoTouchFixtures.CoreServices {
 				createOptions.PathsToWatch,
 				stream.PathsBeingWatched);
 
-			Assert.AreEqual (0, stream.DeviceBeingWatched);
+			ClassicAssert.AreEqual (0, stream.DeviceBeingWatched);
 		}
 
 		[Test]
@@ -70,7 +70,7 @@ namespace MonoTouchFixtures.CoreServices {
 				createOptions.PathsToWatch,
 				stream.PathsBeingWatched);
 
-			Assert.AreEqual (123456789, stream.DeviceBeingWatched);
+			ClassicAssert.AreEqual (123456789, stream.DeviceBeingWatched);
 		}
 
 		[Test]
@@ -151,7 +151,7 @@ namespace MonoTouchFixtures.CoreServices {
 			public void Run ()
 			{
 				SetDispatchQueue (_dispatchQueue);
-				Assert.IsTrue (Start ());
+				ClassicAssert.IsTrue (Start ());
 				log.Add ($"{DateTime.Now} Started monitor");
 
 				var isWorking = true;
@@ -184,9 +184,9 @@ namespace MonoTouchFixtures.CoreServices {
 						throw _exceptions [0];
 				}
 
-				Assert.IsEmpty (_createdDirectories);
-				Assert.IsEmpty (_createdFiles);
-				Assert.IsNotEmpty (_removedFiles);
+				ClassicAssert.IsEmpty (_createdDirectories);
+				ClassicAssert.IsEmpty (_createdFiles);
+				ClassicAssert.IsNotEmpty (_removedFiles);
 
 				_removedFiles.Sort ();
 				_createdThenRemovedFiles.Sort ();
@@ -279,13 +279,13 @@ namespace MonoTouchFixtures.CoreServices {
 				void HandleEvent (FSEvent evnt)
 				{
 					log.Add ($"{DateTime.Now} HandleEvent ({evnt}) Path: {evnt.Path} Flags: {evnt.Flags}");
-					Assert.IsNotNull (evnt.Path);
+					ClassicAssert.IsNotNull (evnt.Path);
 					// Roslyn analyzer doesn't consider the assert above wrt nullability
 					if (evnt.Path is null)
 						return;
 
 					if (_createFlags.HasFlag (UseExtendedData))
-						Assert.Greater (evnt.FileId, 0);
+						ClassicAssert.Greater (evnt.FileId, 0);
 
 					if (evnt.Flags.HasFlag (ItemCreated)) {
 						if (evnt.Flags.HasFlag (ItemIsFile)) {

@@ -33,13 +33,13 @@ namespace MonoTouchFixtures.Security {
 			using (var npo = new NWProtocolTlsOptions ()) {
 				var options = npo.ProtocolOptions;
 
-				Assert.True (SecProtocolOptions.Equals (null, null), "1");
-				Assert.True (SecProtocolOptions.Equals (options, options), "2");
-				Assert.False (SecProtocolOptions.Equals (null, options), "3");
-				Assert.False (SecProtocolOptions.Equals (options, null), "4");
+				ClassicAssert.True (SecProtocolOptions.Equals (null, null), "1");
+				ClassicAssert.True (SecProtocolOptions.Equals (options, options), "2");
+				ClassicAssert.False (SecProtocolOptions.Equals (null, options), "3");
+				ClassicAssert.False (SecProtocolOptions.Equals (options, null), "4");
 
-				Assert.True (options.Equals (options), "5");
-				Assert.False (options.Equals (null), "6");
+				ClassicAssert.True (options.Equals (options), "5");
+				ClassicAssert.False (options.Equals (null), "6");
 			}
 		}
 

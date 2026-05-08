@@ -12,7 +12,7 @@ namespace Xamarin.Mac.Tests {
 			var title = item.Title;
 			item.Title = "Test";
 
-			Assert.IsTrue (item.Title != title, "NSPathControlShouldSetTitle - Title value did not change.");
+			ClassicAssert.IsTrue (item.Title != title, "NSPathControlShouldSetTitle - Title value did not change.");
 		}
 
 		[Test]
@@ -22,7 +22,7 @@ namespace Xamarin.Mac.Tests {
 			var attributedTitle = item.AttributedTitle;
 			item.AttributedTitle = new NSAttributedString ("Test");
 
-			Assert.IsTrue (item.AttributedTitle != attributedTitle, "NSPathControlShouldSetAttributedTitle - AttributedTitle value did not change.");
+			ClassicAssert.IsTrue (item.AttributedTitle != attributedTitle, "NSPathControlShouldSetAttributedTitle - AttributedTitle value did not change.");
 
 		}
 
@@ -30,10 +30,10 @@ namespace Xamarin.Mac.Tests {
 		public void NSPathControlItemShouldSetImage ()
 		{
 			var item = new NSPathControlItem ();
-			Assert.IsTrue (item.Image is null, "NSPathControlItemShouldSetImage - Image did not start as null");
+			ClassicAssert.IsTrue (item.Image is null, "NSPathControlItemShouldSetImage - Image did not start as null");
 
 			item.Image = new NSImage ();
-			Assert.IsTrue (item.Image is not null, "NSPathControlItemShouldSetImage - Failed to set Image property");
+			ClassicAssert.IsTrue (item.Image is not null, "NSPathControlItemShouldSetImage - Failed to set Image property");
 		}
 	}
 }

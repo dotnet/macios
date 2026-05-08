@@ -19,7 +19,7 @@ namespace Xamarin.Mac.Tests {
 			var material = view.Material;
 			view.Material = NSVisualEffectMaterial.Titlebar;
 
-			Assert.IsFalse (view.Material == material, "NSVisualEffectViewShouldChangeMaterial - Failed to set the Material property");
+			ClassicAssert.IsFalse (view.Material == material, "NSVisualEffectViewShouldChangeMaterial - Failed to set the Material property");
 		}
 
 		[Test]
@@ -28,7 +28,7 @@ namespace Xamarin.Mac.Tests {
 			var blendingMode = view.BlendingMode;
 			view.BlendingMode = NSVisualEffectBlendingMode.WithinWindow;
 
-			Assert.IsFalse (view.BlendingMode == blendingMode, "NSVisualEffectViewShouldChangeBlendingMode - Failed to set the BlendingMode property");
+			ClassicAssert.IsFalse (view.BlendingMode == blendingMode, "NSVisualEffectViewShouldChangeBlendingMode - Failed to set the BlendingMode property");
 		}
 
 		[Test]
@@ -37,7 +37,7 @@ namespace Xamarin.Mac.Tests {
 			var state = view.State;
 			view.State = NSVisualEffectState.Inactive;
 
-			Assert.IsFalse (view.State == state, "NSVisualEffectViewShouldChangeState - Failed to set the State property");
+			ClassicAssert.IsFalse (view.State == state, "NSVisualEffectViewShouldChangeState - Failed to set the State property");
 		}
 
 		[Test]
@@ -46,7 +46,7 @@ namespace Xamarin.Mac.Tests {
 			var image = view.MaskImage;
 			view.MaskImage = new NSImage ();
 
-			Assert.IsFalse (view.MaskImage == image, "NSVisualEffectViewShouldChangeMaskImage - Failed to set the MaskImage property");
+			ClassicAssert.IsFalse (view.MaskImage == image, "NSVisualEffectViewShouldChangeMaskImage - Failed to set the MaskImage property");
 		}
 	}
 }

@@ -56,7 +56,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			using (var c = new CGColor (0.5f, 0.5f, 0.5f, 0.5f)) {
 				using (var spc = c.ColorSpace)
-					Assert.IsNotNull (spc, "ColorSpace");
+					ClassicAssert.IsNotNull (spc, "ColorSpace");
 			}
 		}
 
@@ -98,7 +98,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			TestRuntime.AssertXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch);
 			using (var c = new CGColor (CGConstantColor.Black)) {
-				Assert.IsNotNull (c.AXName, "AXName");
+				ClassicAssert.IsNotNull (c.AXName, "AXName");
 			}
 		}
 
@@ -107,14 +107,14 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			TestRuntime.AssertXcodeVersion (11, 0);
 			using (var c = CGColor.CreateByMatchingToColorSpace (null, CGColorRenderingIntent.Default, null, null)) {
-				Assert.IsNull (c, "0");
+				ClassicAssert.IsNull (c, "0");
 			}
 
 			using (var cs = CGColorSpace.CreateGenericRgbLinear ())
 			using (var c1 = CGColor.CreateSrgb (1, 2, 3, 4))
 			using (var c2 = CGColor.CreateByMatchingToColorSpace (cs, CGColorRenderingIntent.Default, c1, null)) {
-				Assert.IsNotNull (c1, "1");
-				Assert.IsNotNull (c2, "2");
+				ClassicAssert.IsNotNull (c1, "1");
+				ClassicAssert.IsNotNull (c2, "2");
 			}
 		}
 
@@ -124,12 +124,12 @@ namespace MonoTouchFixtures.CoreGraphics {
 			TestRuntime.AssertXcodeVersion (26, 0);
 
 			using (var color = CGColor.CreateWithContentHeadroom (0.5f, null, 0.3f, 0.4f, 0.5f, 0.6f)) {
-				Assert.IsNull (color, "color #1");
+				ClassicAssert.IsNull (color, "color #1");
 			}
 
 			using var headroomCapableColorspace = CGColorSpace.CreateWithName (CGColorSpaceNames.ExtendedSrgb);
 			using (var color = CGColor.CreateWithContentHeadroom (0.0f, headroomCapableColorspace, 0.3f, 0.4f, 0.5f, 0.6f)) {
-				Assert.IsNotNull (color, "color #2");
+				ClassicAssert.IsNotNull (color, "color #2");
 				Assert.That (color.ContentHeadroom, Is.EqualTo (0.0f), "ContentHeadroom #2");
 				Assert.That (color.NumberOfComponents, Is.EqualTo ((nint) 4), "NumberOfComponents #2");
 				Assert.That (color.Components, Is.EqualTo (new nfloat [] { 0.3f, 0.4f, 0.5f, 0.6f }), "Components #2");

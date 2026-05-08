@@ -40,27 +40,27 @@ namespace LinkSdk.Aot {
 		public void Aot_3285 ()
 		{
 			// called as an extension method (always worked)
-			Assert.False (GetType ().GetInterfaces (typeof (IExpectException)).Select (interf => interf is not null).FirstOrDefault (), "false");
+			ClassicAssert.False (GetType ().GetInterfaces (typeof (IExpectException)).Select (interf => interf is not null).FirstOrDefault (), "false");
 
 			// workaround for #3285 - similar to previous fix for monotouch/aot
 			// called as a static method (does not change the result - but it was closer to the original test case)
-			Assert.True (AotExtension.GetInterfaces (GetType (), typeof (IAotTest)).Select (interf => interf is not null).FirstOrDefault (delegate { return true; }), "delegate");
+			ClassicAssert.True (AotExtension.GetInterfaces (GetType (), typeof (IAotTest)).Select (interf => interf is not null).FirstOrDefault (delegate { return true; }), "delegate");
 
 			// actual, failing, test case (fixed by inlining code)
-			Assert.True (GetType ().GetInterfaces (typeof (IAotTest)).Select (interf => interf is not null).FirstOrDefault (), "FirstOrDefault/true");
+			ClassicAssert.True (GetType ().GetInterfaces (typeof (IAotTest)).Select (interf => interf is not null).FirstOrDefault (), "FirstOrDefault/true");
 
 			// other similar cases (returning bool with optional predicate delegate)
 			var enumerable = GetType ().GetInterfaces (typeof (IAotTest)).Select (interf => interf is not null);
-			Assert.True (enumerable.Any (), "Any");
-			Assert.True (enumerable.ElementAt (0), "ElementAt");
-			Assert.True (enumerable.ElementAtOrDefault (0), "ElementAtOrDefault");
-			Assert.True (enumerable.First (), "First");
-			Assert.True (enumerable.Last (), "Last");                       // failed before fix
-			Assert.True (enumerable.LastOrDefault (), "LastOrDefault");     // failed before fix
-			Assert.True (enumerable.Max (), "Max");
-			Assert.True (enumerable.Min (), "Min");
-			Assert.True (enumerable.Single (), "Single");                   // failed before fix
-			Assert.True (enumerable.SingleOrDefault (), "SingleOrDefault"); // failed before fix
+			ClassicAssert.True (enumerable.Any (), "Any");
+			ClassicAssert.True (enumerable.ElementAt (0), "ElementAt");
+			ClassicAssert.True (enumerable.ElementAtOrDefault (0), "ElementAtOrDefault");
+			ClassicAssert.True (enumerable.First (), "First");
+			ClassicAssert.True (enumerable.Last (), "Last");                       // failed before fix
+			ClassicAssert.True (enumerable.LastOrDefault (), "LastOrDefault");     // failed before fix
+			ClassicAssert.True (enumerable.Max (), "Max");
+			ClassicAssert.True (enumerable.Min (), "Min");
+			ClassicAssert.True (enumerable.Single (), "Single");                   // failed before fix
+			ClassicAssert.True (enumerable.SingleOrDefault (), "SingleOrDefault"); // failed before fix
 		}
 
 		[Test]
@@ -149,7 +149,7 @@ namespace LinkSdk.Aot {
 			var query = (from wqual in c
 						 join personTable in p on wqual.FK_PERSON equals personTable.Id
 						 select new CounselingWithPerson (wqual, personTable));
-			Assert.NotNull (query.ToList ());
+			ClassicAssert.NotNull (query.ToList ());
 			// above throws ExecutionEngineException
 		}
 
@@ -164,7 +164,7 @@ namespace LinkSdk.Aot {
 			var query = (from wqual in c
 						 join personTable in p on wqual.FK_PERSON.ToString () equals personTable.Id.ToString ()
 						 select new CounselingWithPerson (wqual, personTable));
-			Assert.NotNull (query.ToList ());
+			ClassicAssert.NotNull (query.ToList ());
 		}
 
 		public class Foo {
@@ -226,7 +226,7 @@ namespace LinkSdk.Aot {
 				Environment.SpecialFolder.ApplicationData,
 				Environment.SpecialFolder.CommonApplicationData
 			};
-			Assert.True (array.Any (folder => folder == Environment.SpecialFolder.ApplicationData));
+			ClassicAssert.True (array.Any (folder => folder == Environment.SpecialFolder.ApplicationData));
 			// above throws ExecutionEngineException
 			// Attempting to JIT compile method '(wrapper managed-to-managed) System.Environment/SpecialFolder[]:System.Collections.Generic.IEnumerable`1.GetEnumerator ()' while running with --aot-only.
 		}
@@ -239,7 +239,7 @@ namespace LinkSdk.Aot {
 			List<MidpointRounding> list = new List<MidpointRounding> () {
 				MidpointRounding.AwayFromZero
 			};
-			Assert.True (list.Any (rounding => rounding == MidpointRounding.AwayFromZero));
+			ClassicAssert.True (list.Any (rounding => rounding == MidpointRounding.AwayFromZero));
 		}
 
 		Task<bool> InnerTestB<T> ()
@@ -289,7 +289,7 @@ namespace LinkSdk.Aot {
 						 select q;
 			// note: orderby causing:
 			// Attempting to JIT compile method 'System.Linq.OrderedEnumerable`1<<>__AnonType0`2<MonoTouchFixtures.AotBugsTest/Question, MonoTouchFixtures.AotBugsTest/Section>>:CreateOrderedEnumerable<int> (System.Func`2<<>__AnonType0`2<MonoTouchFixtures.AotBugsTest/Question, MonoTouchFixtures.AotBugsTest/Section>, int>,System.Collections.Generic.IComparer`1<int>,bool)' while running with --aot-only.
-			Assert.NotNull (result);
+			ClassicAssert.NotNull (result);
 		}
 
 		[Test]
@@ -302,7 +302,7 @@ namespace LinkSdk.Aot {
 						 where s.BoardId == boardId
 						 orderby q.IsAnswered.ToString (), s.Position.ToString (), q.Position.ToString ()
 						 select q;
-			Assert.NotNull (result);
+			ClassicAssert.NotNull (result);
 		}
 
 		[Test]
@@ -316,7 +316,7 @@ namespace LinkSdk.Aot {
 						  select q;
 			// query is ok
 			foreach (var result in results)
-				Assert.NotNull (result);
+				ClassicAssert.NotNull (result);
 		}
 
 		[Test]
@@ -329,7 +329,7 @@ namespace LinkSdk.Aot {
 						  where s.BoardId == boardId
 						  select q;
 			foreach (var result in results)
-				Assert.NotNull (result);
+				ClassicAssert.NotNull (result);
 		}
 
 		public class VirtualGeneric {
@@ -347,7 +347,7 @@ namespace LinkSdk.Aot {
 		public void Virtual_4114 ()
 		{
 			VirtualGeneric g = new VirtualGeneric ();
-			Assert.NotNull (g.MakeCollectionOfInputs<double> (1.0, 2.0, 3.0));
+			ClassicAssert.NotNull (g.MakeCollectionOfInputs<double> (1.0, 2.0, 3.0));
 		}
 
 		public class OverrideGeneric : VirtualGeneric {
@@ -469,7 +469,7 @@ namespace LinkSdk.Aot {
 		{
 			int n = 1;
 			foreach (var e in GetStringList<NSFileManagerItemReplacementOptions> ()) {
-				Assert.NotNull (e, n.ToString ());
+				ClassicAssert.NotNull (e, n.ToString ());
 				n++;
 			}
 		}
@@ -479,7 +479,7 @@ namespace LinkSdk.Aot {
 		{
 			int n = 1;
 			foreach (var e in Enum.GetValues (typeof (NSFileManagerItemReplacementOptions)).Cast<NSFileManagerItemReplacementOptions> ().Select (x => x.ToString ())) {
-				Assert.NotNull (e, n.ToString ());
+				ClassicAssert.NotNull (e, n.ToString ());
 				n++;
 			}
 		}
@@ -530,10 +530,10 @@ namespace LinkSdk.Aot {
 		[Test]
 		public void Bug12605 ()
 		{
-			Assert.AreEqual ("One", Convert.ToString ((MyEnum8ElementsInInt32) 1), "1");
-			Assert.AreEqual ("One", Convert.ToString ((MyEnum8ElementsInUInt32) 1), "2");
-			Assert.AreEqual ("One", Convert.ToString ((MyEnum7ElementsInUInt16) 1), "3");
-			Assert.AreEqual ("One", Convert.ToString ((MyEnum8ElementsInUInt16) 1), "4");
+			ClassicAssert.AreEqual ("One", Convert.ToString ((MyEnum8ElementsInInt32) 1), "1");
+			ClassicAssert.AreEqual ("One", Convert.ToString ((MyEnum8ElementsInUInt32) 1), "2");
+			ClassicAssert.AreEqual ("One", Convert.ToString ((MyEnum7ElementsInUInt16) 1), "3");
+			ClassicAssert.AreEqual ("One", Convert.ToString ((MyEnum8ElementsInUInt16) 1), "4");
 		}
 
 		[Test]
@@ -560,7 +560,7 @@ namespace LinkSdk.Aot {
                 (?:[Ee][+-]?[0-9]+)?           # Optional exponent
                 (?![A-Za-z0-9_])               # Must not be followed by an alphanumeric character
                 )", System.Text.RegularExpressions.RegexOptions.IgnorePatternWhitespace);
-			Assert.NotNull (r); // looking got EEE while executing, on devices, the above code
+			ClassicAssert.NotNull (r); // looking got EEE while executing, on devices, the above code
 		}
 
 		[Test]

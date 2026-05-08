@@ -21,7 +21,7 @@ namespace MonoTouchFixtures.NearbyInteraction {
 		public void GetConvergenceStatusReasonTest ()
 		{
 			var reason = NIAlgorithmConvergenceStatusReason.InsufficientHorizontalSweep;
-			Assert.IsNotNull (NIAlgorithmConvergenceStatusReasonValues.GetConvergenceStatusReason (reason), "NIAlgorithmConvergenceStatusReason should not be null.");
+			ClassicAssert.IsNotNull (NIAlgorithmConvergenceStatusReasonValues.GetConvergenceStatusReason (reason), "NIAlgorithmConvergenceStatusReason should not be null.");
 		}
 	}
 }

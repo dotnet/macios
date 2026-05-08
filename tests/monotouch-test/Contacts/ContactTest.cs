@@ -30,44 +30,44 @@ namespace MonoTouchFixtures.Contacts {
 			// while most input for ICNKeyDescriptor are done with NSString
 			// the output is opaque and an internal type
 			// note: this is not very robust - but I want to know if this changes during the next betas
-			Assert.True (keys.Description.StartsWith ("<CNAggregateKeyDescriptor:", StringComparison.Ordinal), "type");
-			Assert.True (keys.Description.Contains (" kind=Formatter "), "kind");
-			Assert.True (keys.Description.Contains (" style: 100"), "style"); // 1002 before iOS 10, 1003 after
+			ClassicAssert.True (keys.Description.StartsWith ("<CNAggregateKeyDescriptor:", StringComparison.Ordinal), "type");
+			ClassicAssert.True (keys.Description.Contains (" kind=Formatter "), "kind");
+			ClassicAssert.True (keys.Description.Contains (" style: 100"), "style"); // 1002 before iOS 10, 1003 after
 		}
 
 		[Test]
 		public void Ctor ()
 		{
 			using (var contact = new CNContact ()) {
-				Assert.IsNull (contact.Birthday, "Birthday");
-				Assert.AreEqual (0, contact.ContactRelations.Length, "ContactRelations");
-				Assert.AreEqual (CNContactType.Person, contact.ContactType, "ContactType");
-				Assert.AreEqual (0, contact.Dates.Length, "Dates");
-				Assert.AreEqual (string.Empty, contact.DepartmentName, "DepartmentName");
-				Assert.AreEqual (0, contact.EmailAddresses.Length, "EmailAddresses");
-				Assert.AreEqual (string.Empty, contact.FamilyName, "FamilyName");
-				Assert.AreEqual (string.Empty, contact.GivenName, "GivenName");
-				Assert.AreNotEqual (string.Empty, contact.Identifier, "Identifier");
-				Assert.IsNull (contact.ImageData, "ImageData");
-				Assert.IsFalse (contact.ImageDataAvailable, "ImageDataAvailable");
-				Assert.AreEqual (0, contact.InstantMessageAddresses.Length, "InstantMessageAddresses");
-				Assert.AreEqual (string.Empty, contact.JobTitle, "JobTitle");
-				Assert.AreEqual (string.Empty, contact.MiddleName, "MiddleName");
-				Assert.AreEqual (string.Empty, contact.NamePrefix, "NamePrefix");
-				Assert.AreEqual (string.Empty, contact.NameSuffix, "NameSuffix");
-				Assert.AreEqual (string.Empty, contact.Nickname, "Nickname");
-				Assert.IsNull (contact.NonGregorianBirthday, "NonGregorianBirthday");
-				Assert.AreEqual (string.Empty, contact.Note, "Note");
-				Assert.AreEqual (string.Empty, contact.OrganizationName, "OrganizationName");
-				Assert.AreEqual (0, contact.PhoneNumbers.Length, "PhoneNumbers");
-				Assert.AreEqual (string.Empty, contact.PhoneticFamilyName, "PhoneticFamilyName");
-				Assert.AreEqual (string.Empty, contact.PhoneticGivenName, "PhoneticGivenName");
-				Assert.AreEqual (string.Empty, contact.PhoneticMiddleName, "PhoneticMiddleName");
-				Assert.AreEqual (0, contact.PostalAddresses.Length, "PostalAddresses");
-				Assert.AreEqual (string.Empty, contact.PreviousFamilyName, "PreviousFamilyName");
-				Assert.AreEqual (0, contact.SocialProfiles.Length, "SocialProfiles");
-				Assert.IsNull (contact.ThumbnailImageData, "ThumbnailImageData");
-				Assert.AreEqual (0, contact.UrlAddresses.Length, "UrlAddresses");
+				ClassicAssert.IsNull (contact.Birthday, "Birthday");
+				ClassicAssert.AreEqual (0, contact.ContactRelations.Length, "ContactRelations");
+				ClassicAssert.AreEqual (CNContactType.Person, contact.ContactType, "ContactType");
+				ClassicAssert.AreEqual (0, contact.Dates.Length, "Dates");
+				ClassicAssert.AreEqual (string.Empty, contact.DepartmentName, "DepartmentName");
+				ClassicAssert.AreEqual (0, contact.EmailAddresses.Length, "EmailAddresses");
+				ClassicAssert.AreEqual (string.Empty, contact.FamilyName, "FamilyName");
+				ClassicAssert.AreEqual (string.Empty, contact.GivenName, "GivenName");
+				ClassicAssert.AreNotEqual (string.Empty, contact.Identifier, "Identifier");
+				ClassicAssert.IsNull (contact.ImageData, "ImageData");
+				ClassicAssert.IsFalse (contact.ImageDataAvailable, "ImageDataAvailable");
+				ClassicAssert.AreEqual (0, contact.InstantMessageAddresses.Length, "InstantMessageAddresses");
+				ClassicAssert.AreEqual (string.Empty, contact.JobTitle, "JobTitle");
+				ClassicAssert.AreEqual (string.Empty, contact.MiddleName, "MiddleName");
+				ClassicAssert.AreEqual (string.Empty, contact.NamePrefix, "NamePrefix");
+				ClassicAssert.AreEqual (string.Empty, contact.NameSuffix, "NameSuffix");
+				ClassicAssert.AreEqual (string.Empty, contact.Nickname, "Nickname");
+				ClassicAssert.IsNull (contact.NonGregorianBirthday, "NonGregorianBirthday");
+				ClassicAssert.AreEqual (string.Empty, contact.Note, "Note");
+				ClassicAssert.AreEqual (string.Empty, contact.OrganizationName, "OrganizationName");
+				ClassicAssert.AreEqual (0, contact.PhoneNumbers.Length, "PhoneNumbers");
+				ClassicAssert.AreEqual (string.Empty, contact.PhoneticFamilyName, "PhoneticFamilyName");
+				ClassicAssert.AreEqual (string.Empty, contact.PhoneticGivenName, "PhoneticGivenName");
+				ClassicAssert.AreEqual (string.Empty, contact.PhoneticMiddleName, "PhoneticMiddleName");
+				ClassicAssert.AreEqual (0, contact.PostalAddresses.Length, "PostalAddresses");
+				ClassicAssert.AreEqual (string.Empty, contact.PreviousFamilyName, "PreviousFamilyName");
+				ClassicAssert.AreEqual (0, contact.SocialProfiles.Length, "SocialProfiles");
+				ClassicAssert.IsNull (contact.ThumbnailImageData, "ThumbnailImageData");
+				ClassicAssert.AreEqual (0, contact.UrlAddresses.Length, "UrlAddresses");
 			}
 		}
 	}

@@ -29,12 +29,12 @@ namespace MonoTouchFixtures.Foundation {
 
 			if (value) {
 				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.IsNull (ex, message + " Exception");
+				ClassicAssert.IsNull (ex, message + " Exception");
 				return;
 			}
 
 			TestRuntime.IgnoreInCI ($"This test times out randomly in CI due to bad network: {message}");
-			Assert.IsNull (ex, $"Exception - {message}");
+			ClassicAssert.IsNull (ex, $"Exception - {message}");
 			Assert.Fail (message);
 		}
 
@@ -91,8 +91,8 @@ namespace MonoTouchFixtures.Foundation {
 			}, out var ex);
 
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
-			Assert.IsNull (ex, "Exception");
-			Assert.AreEqual (-1, failed_iteration, "Failed");
+			ClassicAssert.IsNull (ex, "Exception");
+			ClassicAssert.AreEqual (-1, failed_iteration, "Failed");
 		}
 
 		[Test]
@@ -104,9 +104,9 @@ namespace MonoTouchFixtures.Foundation {
 			// in iOS9 those selectors do not respond - but they do work (forwarded to __NSURLSessionLocal type ?)
 			// * delegateQueue, sessionDescription, setSessionDescription:, delegate
 			var session = NSUrlSession.SharedSession;
-			Assert.Null (session.Delegate, "delegate");
-			Assert.NotNull (session.DelegateQueue, "delegateQueue");
-			Assert.Null (session.SessionDescription, "sessionDescription");
+			ClassicAssert.Null (session.Delegate, "delegate");
+			ClassicAssert.NotNull (session.DelegateQueue, "delegateQueue");
+			ClassicAssert.Null (session.SessionDescription, "sessionDescription");
 			session.SessionDescription = "descriptive label";
 			Assert.That ((string) session.SessionDescription, Is.EqualTo ("descriptive label"), "setSessionDescription:");
 			session.SessionDescription = null; // the session instance is global, so revert value to to make sure the test can be re-run successfully.

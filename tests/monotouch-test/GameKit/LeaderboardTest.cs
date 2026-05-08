@@ -24,7 +24,7 @@ namespace MonoTouchFixtures.GameKit {
 		void Check (GKLeaderboard lb)
 		{
 #if !__TVOS__
-			Assert.Null (lb.Category, "Category");
+			ClassicAssert.Null (lb.Category, "Category");
 #endif
 #if __MACOS__
 			var hasGroupIdentifier = true;
@@ -40,11 +40,11 @@ namespace MonoTouchFixtures.GameKit {
 			var hasRange = true;
 #endif
 			if (hasGroupIdentifier) {
-				Assert.Null (lb.GroupIdentifier, "GroupIdentifier");
+				ClassicAssert.Null (lb.GroupIdentifier, "GroupIdentifier");
 				if (hasIdentifier)
-					Assert.Null (lb.Identifier, "Identifier");
+					ClassicAssert.Null (lb.Identifier, "Identifier");
 			}
-			Assert.Null (lb.LocalPlayerScore, "LocalPlayerScore");
+			ClassicAssert.Null (lb.LocalPlayerScore, "LocalPlayerScore");
 			Assert.That (lb.MaxRange, Is.EqualTo ((nint) 0), "MaxRange");
 			Assert.That (lb.PlayerScope, Is.EqualTo (GKLeaderboardPlayerScope.Global), "PlayerScope");
 			if (hasRange) {
@@ -52,9 +52,9 @@ namespace MonoTouchFixtures.GameKit {
 				Assert.That (lb.Range.Location, Is.EqualTo ((nint) 1), "Range.Location");
 				Assert.That (lb.Range.Length, Is.EqualTo ((nint) 25), "Range.Length");
 			}
-			Assert.Null (lb.Scores, "Scores");
+			ClassicAssert.Null (lb.Scores, "Scores");
 			Assert.That (lb.TimeScope, Is.EqualTo (GKLeaderboardTimeScope.AllTime), "TimeScope");
-			Assert.Null (lb.Title, "Title");
+			ClassicAssert.Null (lb.Title, "Title");
 		}
 
 		[Test]

@@ -21,7 +21,7 @@ namespace MonoTouchFixtures.CoreData {
 			using (var exp = new NSExpression (NSExpressionType.Block))
 			using (var context = new NSExpression (NSExpressionType.EvaluatedObject))
 			using (var fetch = NSFetchRequestExpression.FromFetch (exp, context, false))
-				Assert.NotNull (fetch.Request);
+				ClassicAssert.NotNull (fetch.Request);
 		}
 
 		[Test]
@@ -30,7 +30,7 @@ namespace MonoTouchFixtures.CoreData {
 			using (var exp = new NSExpression (NSExpressionType.Block))
 			using (var context = new NSExpression (NSExpressionType.EvaluatedObject))
 			using (var fetch = NSFetchRequestExpression.FromFetch (exp, context, false))
-				Assert.NotNull (fetch.Context);
+				ClassicAssert.NotNull (fetch.Context);
 		}
 
 		[Test]
@@ -39,12 +39,12 @@ namespace MonoTouchFixtures.CoreData {
 			using (var exp = new NSExpression (NSExpressionType.Block))
 			using (var context = new NSExpression (NSExpressionType.EvaluatedObject))
 			using (var fetch = NSFetchRequestExpression.FromFetch (exp, context, false))
-				Assert.IsFalse (fetch.IsCountOnly, "IsCountOnly was not correctly set to false.");
+				ClassicAssert.IsFalse (fetch.IsCountOnly, "IsCountOnly was not correctly set to false.");
 
 			using (var exp = new NSExpression (NSExpressionType.Block))
 			using (var context = new NSExpression (NSExpressionType.EvaluatedObject))
 			using (var fetch = NSFetchRequestExpression.FromFetch (exp, context, true))
-				Assert.IsTrue (fetch.IsCountOnly, "IsCountOnly was not correctly set to true.");
+				ClassicAssert.IsTrue (fetch.IsCountOnly, "IsCountOnly was not correctly set to true.");
 		}
 	}
 }

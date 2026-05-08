@@ -26,11 +26,11 @@ namespace MonoTouchFixtures.AVFoundation {
 			using (NSUrl video_url = NSUrl.FromFilename (video_asset_path))
 			using (AVAsset video_asset = AVAsset.FromUrl (video_url))
 			using (AVAssetImageGenerator aig = new AVAssetImageGenerator (video_asset)) {
-				Assert.Null (aig.ApertureMode, "ApertureMode");
-				Assert.False (aig.AppliesPreferredTrackTransform, "AppliesPreferredTrackTransform");
+				ClassicAssert.Null (aig.ApertureMode, "ApertureMode");
+				ClassicAssert.False (aig.AppliesPreferredTrackTransform, "AppliesPreferredTrackTransform");
 				Assert.That (aig.MaximumSize, Is.EqualTo (CGSize.Empty), "MaximumSize");
-				Assert.True (aig.RequestedTimeToleranceAfter.IsPositiveInfinity, "RequestedTimeToleranceAfter");
-				Assert.True (aig.RequestedTimeToleranceBefore.IsPositiveInfinity, "RequestedTimeToleranceBefore");
+				ClassicAssert.True (aig.RequestedTimeToleranceAfter.IsPositiveInfinity, "RequestedTimeToleranceAfter");
+				ClassicAssert.True (aig.RequestedTimeToleranceBefore.IsPositiveInfinity, "RequestedTimeToleranceBefore");
 			}
 		}
 
@@ -42,7 +42,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			using (AVAssetImageGenerator aig = new AVAssetImageGenerator (video_asset)) {
 				// setter was missing see https://bugzilla.xamarin.com/show_bug.cgi?id=5216
 				aig.AppliesPreferredTrackTransform = true;
-				Assert.True (aig.AppliesPreferredTrackTransform, "AppliesPreferredTrackTransform");
+				ClassicAssert.True (aig.AppliesPreferredTrackTransform, "AppliesPreferredTrackTransform");
 			}
 		}
 
@@ -57,9 +57,9 @@ namespace MonoTouchFixtures.AVFoundation {
 				CMTime actual;
 				NSError error;
 				var img = aig.CopyCGImageAtTime (CMTime.Zero, out actual, out error);
-				Assert.NotNull (img, "CopyCGImageAtTime");
-				Assert.False (actual.IsInvalid, "actual");
-				Assert.Null (error, "error");
+				ClassicAssert.NotNull (img, "CopyCGImageAtTime");
+				ClassicAssert.False (actual.IsInvalid, "actual");
+				ClassicAssert.Null (error, "error");
 			}
 		}
 
@@ -74,9 +74,9 @@ namespace MonoTouchFixtures.AVFoundation {
 				CMTime actual;
 				NSError error;
 				var img = aig.CopyCGImageAtTime (CMTime.Zero, out actual, out error);
-				Assert.Null (img, "missing");
-				Assert.True (actual.IsInvalid, "actual");
-				Assert.NotNull (error, "error");
+				ClassicAssert.Null (img, "missing");
+				ClassicAssert.True (actual.IsInvalid, "actual");
+				ClassicAssert.NotNull (error, "error");
 			}
 		}
 
@@ -107,8 +107,8 @@ namespace MonoTouchFixtures.AVFoundation {
 				IsBackground = true,
 			};
 			thread.Start ();
-			Assert.True (mre.WaitOne (2000), "wait");
-			Assert.True (handled, "handled");
+			ClassicAssert.True (mre.WaitOne (2000), "wait");
+			ClassicAssert.True (handled, "handled");
 		}
 
 		void handler (CMTime requestedTime, IntPtr imageRef, CMTime actualTime, AVAssetImageGeneratorResult result, NSError error)

@@ -26,18 +26,18 @@ namespace MonoTouchFixtures.CoreVideo {
 			var data = new byte [height * bytesPerRow];
 
 			using (var buf = CVPixelBuffer.Create (width, height, CVPixelFormatType.CV32RGBA, data, bytesPerRow, null, out status)) {
-				Assert.AreEqual (status, CVReturn.InvalidPixelFormat, "CV32RGBA");
-				Assert.IsNull (buf, "CV32RGBA - null");
+				ClassicAssert.AreEqual (status, CVReturn.InvalidPixelFormat, "CV32RGBA");
+				ClassicAssert.IsNull (buf, "CV32RGBA - null");
 			}
 
 			using (var buf = CVPixelBuffer.Create (width, height, CVPixelFormatType.CV32BGRA, data, bytesPerRow, null, out status)) {
-				Assert.AreEqual (status, CVReturn.Success, "CV32RGBA");
-				Assert.IsNotNull (buf, "CV32BGRA - null");
+				ClassicAssert.AreEqual (status, CVReturn.Success, "CV32RGBA");
+				ClassicAssert.IsNotNull (buf, "CV32BGRA - null");
 			}
 
 			var dict = new CVPixelBufferAttributes ();
 			using (var buf = CVPixelBuffer.Create (width, height, CVPixelFormatType.CV32BGRA, data, bytesPerRow, dict)) {
-				Assert.IsNotNull (buf);
+				ClassicAssert.IsNotNull (buf);
 			}
 
 			Assert.Throws<ArgumentNullException> (() => CVPixelBuffer.Create (width, height, CVPixelFormatType.CV32BGRA, null, bytesPerRow, null), "null data");
@@ -61,17 +61,17 @@ namespace MonoTouchFixtures.CoreVideo {
 			};
 
 			using (var buf = CVPixelBuffer.Create (width, height, CVPixelFormatType.CV32RGBA, data, planeWidths, planeHeights, planeBytesPerRow, null, out status)) {
-				Assert.IsNull (buf);
-				Assert.AreEqual (CVReturn.InvalidPixelFormat, status, "invalid status");
+				ClassicAssert.IsNull (buf);
+				ClassicAssert.AreEqual (CVReturn.InvalidPixelFormat, status, "invalid status");
 			}
 
 			using (var buf = CVPixelBuffer.Create (width, height, CVPixelFormatType.CV420YpCbCr8BiPlanarVideoRange, data, planeWidths, planeHeights, planeBytesPerRow, null)) {
-				Assert.IsNotNull (buf);
+				ClassicAssert.IsNotNull (buf);
 			}
 
 			var dict = new CVPixelBufferAttributes ();
 			using (var buf = CVPixelBuffer.Create (width, height, CVPixelFormatType.CV420YpCbCr8BiPlanarVideoRange, data, planeWidths, planeHeights, planeBytesPerRow, dict)) {
-				Assert.IsNotNull (buf);
+				ClassicAssert.IsNotNull (buf);
 			}
 
 			Assert.Throws<ArgumentNullException> (() => CVPixelBuffer.Create (width, height, CVPixelFormatType.CV420YpCbCr8BiPlanarVideoRange, null, planeWidths, planeHeights, planeBytesPerRow, null), "null data");
@@ -91,7 +91,7 @@ namespace MonoTouchFixtures.CoreVideo {
 		public void CheckInvalidPtr ()
 		{
 			var invalid = Runtime.GetINativeObject<CVPixelBuffer> (IntPtr.Zero, false);
-			Assert.Null (invalid, "CheckInvalidPtr");
+			ClassicAssert.Null (invalid, "CheckInvalidPtr");
 		}
 
 		[Test]
@@ -109,8 +109,8 @@ namespace MonoTouchFixtures.CoreVideo {
 			var data = new byte [height * bytesPerRow];
 
 			using var buffer = CVPixelBuffer.Create (width, height, pixelFormat, data, bytesPerRow, null, out var status);
-			Assert.AreEqual (status, CVReturn.Success, "Status");
-			Assert.IsNotNull (buffer, "Buffer");
+			ClassicAssert.AreEqual (status, CVReturn.Success, "Status");
+			ClassicAssert.IsNotNull (buffer, "Buffer");
 
 			var attributes = new CVPixelBufferAttributes (pixelFormat, width, height);
 			Assert.That (buffer.IsCompatibleWithAttributes (attributes), Is.EqualTo (true), "IsCompatible 1");

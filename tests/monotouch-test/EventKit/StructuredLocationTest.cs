@@ -23,9 +23,9 @@ namespace MonoTouchFixtures.EventKit {
 				Assert.Inconclusive ("EKStructuredLocation is new in 6.0");
 
 			var sl = new EKStructuredLocation ();
-			Assert.IsNull (sl.GeoLocation, "GeoLocation");
-			Assert.AreEqual (0, sl.Radius, "Radius");
-			Assert.IsNull (sl.Title, "Title");
+			ClassicAssert.IsNull (sl.GeoLocation, "GeoLocation");
+			ClassicAssert.AreEqual (0, sl.Radius, "Radius");
+			ClassicAssert.IsNull (sl.Title, "Title");
 		}
 
 		[Test]
@@ -35,9 +35,9 @@ namespace MonoTouchFixtures.EventKit {
 				Assert.Inconclusive ("EKStructuredLocation is new in 6.0");
 
 			var sl = EKStructuredLocation.FromTitle ("my title");
-			Assert.IsNull (sl.GeoLocation, "GeoLocation");
-			Assert.AreEqual (0, sl.Radius, "Radius");
-			Assert.AreEqual ("my title", sl.Title, "Title");
+			ClassicAssert.IsNull (sl.GeoLocation, "GeoLocation");
+			ClassicAssert.AreEqual (0, sl.Radius, "Radius");
+			ClassicAssert.AreEqual ("my title", sl.Title, "Title");
 		}
 	}
 }

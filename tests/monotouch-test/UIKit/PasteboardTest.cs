@@ -25,14 +25,14 @@ namespace MonoTouchFixtures.UIKit {
 					using (var img = new UIImage (cgimg)) {
 						UIPasteboard.General.Images = new UIImage [] { img };
 						if (TestRuntime.CheckXcodeVersion (8, 0))
-							Assert.True (UIPasteboard.General.HasImages, "HasImages");
+							ClassicAssert.True (UIPasteboard.General.HasImages, "HasImages");
 
-						Assert.AreEqual (1, UIPasteboard.General.Images.Length, "a - length");
+						ClassicAssert.AreEqual (1, UIPasteboard.General.Images.Length, "a - length");
 
 						UIPasteboard.General.Images = new UIImage [] { img, img };
-						Assert.AreEqual (2, UIPasteboard.General.Images.Length, "b - length");
-						Assert.IsNotNull (UIPasteboard.General.Images [0], "b - nonnull[0]");
-						Assert.IsNotNull (UIPasteboard.General.Images [1], "b - nonnull[0]");
+						ClassicAssert.AreEqual (2, UIPasteboard.General.Images.Length, "b - length");
+						ClassicAssert.IsNotNull (UIPasteboard.General.Images [0], "b - nonnull[0]");
+						ClassicAssert.IsNotNull (UIPasteboard.General.Images [1], "b - nonnull[0]");
 					}
 				}
 			}

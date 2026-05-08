@@ -28,7 +28,7 @@ namespace MonoTouchFixtures.UIKit {
 		public void BaseDefaultFormat ()
 		{
 			var f = UIGraphicsRendererFormat.DefaultFormat;
-			Assert.True (f.Bounds.IsEmpty, "Bounds");
+			ClassicAssert.True (f.Bounds.IsEmpty, "Bounds");
 			Assert.That (f.GetType ().Name, Is.EqualTo ("UIGraphicsRendererFormat"), "Name");
 		}
 
@@ -36,9 +36,9 @@ namespace MonoTouchFixtures.UIKit {
 		public void ImageDefaultFormat ()
 		{
 			var f = UIGraphicsImageRendererFormat.DefaultFormat;
-			Assert.True (f.Bounds.IsEmpty, "Bounds");
-			Assert.False (f.Opaque, "Opaque");
-			//Assert.False (f.PrefersExtendedRange, "PrefersExtendedRange"); // new iPhone (7/7+) returns True
+			ClassicAssert.True (f.Bounds.IsEmpty, "Bounds");
+			ClassicAssert.False (f.Opaque, "Opaque");
+			//ClassicAssert.False (f.PrefersExtendedRange, "PrefersExtendedRange"); // new iPhone (7/7+) returns True
 			Assert.That (f.Scale, Is.GreaterThan ((nfloat) 0), "Scale"); // varies on platform
 			Assert.That (f.GetType ().Name, Is.EqualTo ("UIGraphicsImageRendererFormat"), "Name");
 		}
@@ -47,8 +47,8 @@ namespace MonoTouchFixtures.UIKit {
 		public void PdfDefaultFormat ()
 		{
 			var f = UIGraphicsPdfRendererFormat.DefaultFormat;
-			Assert.True (f.Bounds.IsEmpty, "Bounds");
-			Assert.Null (f.DocumentInfo, "DocumentInfo");
+			ClassicAssert.True (f.Bounds.IsEmpty, "Bounds");
+			ClassicAssert.Null (f.DocumentInfo, "DocumentInfo");
 			Assert.That (f.GetType ().Name, Is.EqualTo ("UIGraphicsPdfRendererFormat"), "Name");
 		}
 	}

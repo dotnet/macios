@@ -53,93 +53,93 @@ namespace MonoTouchFixtures.System {
 		[Test]
 		public void Equals ()
 		{
-			Assert.IsTrue (((nint) 0).Equals ((nint) 0), "eq nint 1");
-			Assert.IsTrue (((nint) 0).Equals ((object) (nint) 0), "eq nint 2");
-			Assert.IsFalse (((nint) 0).Equals (null), "eq nint 3");
+			ClassicAssert.IsTrue (((nint) 0).Equals ((nint) 0), "eq nint 1");
+			ClassicAssert.IsTrue (((nint) 0).Equals ((object) (nint) 0), "eq nint 2");
+			ClassicAssert.IsFalse (((nint) 0).Equals (null), "eq nint 3");
 
-			Assert.IsTrue (((nuint) 0).Equals ((nuint) 0), "eq nuint 1");
-			Assert.IsTrue (((nuint) 0).Equals ((object) (nuint) 0), "eq nuint 2");
-			Assert.IsFalse (((nuint) 0).Equals (null), "eq nuint 3");
+			ClassicAssert.IsTrue (((nuint) 0).Equals ((nuint) 0), "eq nuint 1");
+			ClassicAssert.IsTrue (((nuint) 0).Equals ((object) (nuint) 0), "eq nuint 2");
+			ClassicAssert.IsFalse (((nuint) 0).Equals (null), "eq nuint 3");
 
-			Assert.IsTrue (((nfloat) 0).Equals ((nfloat) 0), "eq nfloat 1");
-			Assert.IsTrue (((nfloat) 0).Equals ((object) (nfloat) 0), "eq nfloat 2");
-			Assert.IsFalse (((nfloat) 0).Equals (null), "eq nfloat 3");
+			ClassicAssert.IsTrue (((nfloat) 0).Equals ((nfloat) 0), "eq nfloat 1");
+			ClassicAssert.IsTrue (((nfloat) 0).Equals ((object) (nfloat) 0), "eq nfloat 2");
+			ClassicAssert.IsFalse (((nfloat) 0).Equals (null), "eq nfloat 3");
 		}
 
 		[Test]
 		public void IsInfinity ()
 		{
-			Assert.IsTrue (nfloat.IsInfinity (nfloat.PositiveInfinity), "PositiveInfinity");
-			Assert.IsTrue (nfloat.IsInfinity (nfloat.NegativeInfinity), "NegativeInfinity");
-			Assert.IsTrue (!nfloat.IsInfinity (12), "12");
-			Assert.IsTrue (!nfloat.IsInfinity (nfloat.NaN), "NaN");
+			ClassicAssert.IsTrue (nfloat.IsInfinity (nfloat.PositiveInfinity), "PositiveInfinity");
+			ClassicAssert.IsTrue (nfloat.IsInfinity (nfloat.NegativeInfinity), "NegativeInfinity");
+			ClassicAssert.IsTrue (!nfloat.IsInfinity (12), "12");
+			ClassicAssert.IsTrue (!nfloat.IsInfinity (nfloat.NaN), "NaN");
 		}
 
 		[Test]
 		public void IsNan ()
 		{
-			Assert.IsTrue (nfloat.IsNaN (nfloat.NaN), "Nan");
-			Assert.IsTrue (!nfloat.IsNaN (12), "12");
-			Assert.IsTrue (!nfloat.IsNaN (nfloat.PositiveInfinity), "PositiveInfinity");
-			Assert.IsTrue (!nfloat.IsNaN (nfloat.PositiveInfinity), "NegativeInfinity");
+			ClassicAssert.IsTrue (nfloat.IsNaN (nfloat.NaN), "Nan");
+			ClassicAssert.IsTrue (!nfloat.IsNaN (12), "12");
+			ClassicAssert.IsTrue (!nfloat.IsNaN (nfloat.PositiveInfinity), "PositiveInfinity");
+			ClassicAssert.IsTrue (!nfloat.IsNaN (nfloat.PositiveInfinity), "NegativeInfinity");
 		}
 
 		[Test]
 		public void IsNegativeInfinity ()
 		{
-			Assert.IsTrue (nfloat.IsNegativeInfinity (nfloat.NegativeInfinity), "IsNegativeInfinity");
-			Assert.IsTrue (!nfloat.IsNegativeInfinity (12), "12");
-			Assert.IsTrue (!nfloat.IsNegativeInfinity (nfloat.NaN), "NaN");
+			ClassicAssert.IsTrue (nfloat.IsNegativeInfinity (nfloat.NegativeInfinity), "IsNegativeInfinity");
+			ClassicAssert.IsTrue (!nfloat.IsNegativeInfinity (12), "12");
+			ClassicAssert.IsTrue (!nfloat.IsNegativeInfinity (nfloat.NaN), "NaN");
 		}
 
 		[Test]
 		public void IsPositiveInfinity ()
 		{
-			Assert.IsTrue (nfloat.IsPositiveInfinity (nfloat.PositiveInfinity), "PositiveInfinity");
-			Assert.IsTrue (!nfloat.IsPositiveInfinity (12), "12");
-			Assert.IsTrue (!nfloat.IsPositiveInfinity (nfloat.NaN), "NaN");
+			ClassicAssert.IsTrue (nfloat.IsPositiveInfinity (nfloat.PositiveInfinity), "PositiveInfinity");
+			ClassicAssert.IsTrue (!nfloat.IsPositiveInfinity (12), "12");
+			ClassicAssert.IsTrue (!nfloat.IsPositiveInfinity (nfloat.NaN), "NaN");
 		}
 
 		[Test]
 		public void PositiveInfinity_Cast ()
 		{
 			float f = float.PositiveInfinity;
-			Assert.IsTrue (float.IsPositiveInfinity (f), "float PositiveInfinity");
+			ClassicAssert.IsTrue (float.IsPositiveInfinity (f), "float PositiveInfinity");
 			nfloat n = (nfloat) f; // no-op on 32 bits arch
-			Assert.IsTrue (nfloat.IsPositiveInfinity (n), "nfloat PositiveInfinity 1");
+			ClassicAssert.IsTrue (nfloat.IsPositiveInfinity (n), "nfloat PositiveInfinity 1");
 
 			double d = double.PositiveInfinity;
-			Assert.IsTrue (double.IsPositiveInfinity (d), "double PositiveInfinity");
+			ClassicAssert.IsTrue (double.IsPositiveInfinity (d), "double PositiveInfinity");
 			n = (nfloat) d; // no-op on 64 bits arch
-			Assert.IsTrue (nfloat.IsPositiveInfinity (n), "nfloat PositiveInfinity 2");
+			ClassicAssert.IsTrue (nfloat.IsPositiveInfinity (n), "nfloat PositiveInfinity 2");
 		}
 
 		[Test]
 		public void NegativeInfinity_Cast ()
 		{
 			float f = float.NegativeInfinity;
-			Assert.IsTrue (float.IsNegativeInfinity (f), "float NegativeInfinity");
+			ClassicAssert.IsTrue (float.IsNegativeInfinity (f), "float NegativeInfinity");
 			nfloat n = (nfloat) f; // no-op on 32 bits arch
-			Assert.IsTrue (nfloat.IsNegativeInfinity (n), "nfloat NegativeInfinity 1");
+			ClassicAssert.IsTrue (nfloat.IsNegativeInfinity (n), "nfloat NegativeInfinity 1");
 
 			double d = double.NegativeInfinity;
-			Assert.IsTrue (double.IsNegativeInfinity (d), "double NegativeInfinity");
+			ClassicAssert.IsTrue (double.IsNegativeInfinity (d), "double NegativeInfinity");
 			n = (nfloat) d; // no-op on 64 bits arch
-			Assert.IsTrue (nfloat.IsNegativeInfinity (n), "nfloat NegativeInfinity 2");
+			ClassicAssert.IsTrue (nfloat.IsNegativeInfinity (n), "nfloat NegativeInfinity 2");
 		}
 
 		[Test]
 		public void NaN_Cast ()
 		{
 			float f = float.NaN;
-			Assert.IsTrue (float.IsNaN (f), "float NaN");
+			ClassicAssert.IsTrue (float.IsNaN (f), "float NaN");
 			nfloat n = (nfloat) f; // no-op on 32 bits arch
-			Assert.IsTrue (nfloat.IsNaN (n), "nfloat NaN 1");
+			ClassicAssert.IsTrue (nfloat.IsNaN (n), "nfloat NaN 1");
 
 			double d = double.NaN;
-			Assert.IsTrue (double.IsNaN (d), "double NaN");
+			ClassicAssert.IsTrue (double.IsNaN (d), "double NaN");
 			n = (nfloat) d; // no-op on 64 bits arch
-			Assert.IsTrue (nfloat.IsNaN (n), "nfloat NaN 2");
+			ClassicAssert.IsTrue (nfloat.IsNaN (n), "nfloat NaN 2");
 		}
 	}
 }

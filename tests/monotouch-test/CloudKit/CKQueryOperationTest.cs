@@ -28,14 +28,14 @@ namespace MonoTouchFixtures.CloudKit {
 		public void TestRecordFetchedSetter ()
 		{
 			op.RecordFetched = (record) => { Console.WriteLine ("Completed"); };
-			Assert.NotNull (op.RecordFetched);
+			ClassicAssert.NotNull (op.RecordFetched);
 		}
 
 		[Test]
 		public void TestCompletedSetter ()
 		{
 			op.Completed = (cursor, e) => { Console.WriteLine ("Completed"); };
-			Assert.NotNull (op.Completed);
+			ClassicAssert.NotNull (op.Completed);
 		}
 	}
 }

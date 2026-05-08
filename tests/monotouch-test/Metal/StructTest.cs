@@ -11,14 +11,14 @@ namespace MonoTouchFixtures.Metal {
 		public void MTLQuadTessellationFactorsHalfStructSize ()
 		{
 			// tested with a native iOS app
-			Assert.AreEqual (12, Marshal.SizeOf<MTLQuadTessellationFactorsHalf> (), $"Reported size was {Marshal.SizeOf<MTLQuadTessellationFactorsHalf> ()}");
+			ClassicAssert.AreEqual (12, Marshal.SizeOf<MTLQuadTessellationFactorsHalf> (), $"Reported size was {Marshal.SizeOf<MTLQuadTessellationFactorsHalf> ()}");
 		}
 
 		[Test]
 		public void MTLTriangleTessellationFactorsHalfStructSize ()
 		{
 			// tested with a native iOS app
-			Assert.AreEqual (8, Marshal.SizeOf<MTLTriangleTessellationFactorsHalf> (), $"Reported size was {Marshal.SizeOf<MTLTriangleTessellationFactorsHalf> ()}");
+			ClassicAssert.AreEqual (8, Marshal.SizeOf<MTLTriangleTessellationFactorsHalf> (), $"Reported size was {Marshal.SizeOf<MTLTriangleTessellationFactorsHalf> ()}");
 		}
 	}
 }

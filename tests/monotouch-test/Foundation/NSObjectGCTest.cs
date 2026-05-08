@@ -27,13 +27,13 @@ namespace Xamarin.Mac.Tests {
 			// and so `GCHandle` will return its reference:
 			var o = ObjCRuntime.Runtime.GetNSObject<NSString> (nativeHandle);
 
-			Assert.AreNotEqual (IntPtr.Zero, (IntPtr) o.Handle);
+			ClassicAssert.AreNotEqual (IntPtr.Zero, (IntPtr) o.Handle);
 
 			// Pump the run loop and thus drain the NSObject_Disposer
 			PumpLoop ();
 
 			// The object is invalid now
-			Assert.AreNotEqual (IntPtr.Zero, (IntPtr) o.Handle);
+			ClassicAssert.AreNotEqual (IntPtr.Zero, (IntPtr) o.Handle);
 		}
 
 		[System.Runtime.CompilerServices.MethodImpl (System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]

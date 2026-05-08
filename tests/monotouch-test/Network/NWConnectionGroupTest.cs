@@ -40,11 +40,11 @@ namespace MonoTouchFixtures.Network {
 
 		[Test]
 		public void GroupDescriptorTest ()
-			=> Assert.NotNull (connectionGroup.GroupDescriptor);
+			=> ClassicAssert.NotNull (connectionGroup.GroupDescriptor);
 
 		[Test]
 		public void ParametersTest ()
-			=> Assert.NotNull (connectionGroup.Parameters);
+			=> ClassicAssert.NotNull (connectionGroup.Parameters);
 
 		[Test]
 		public void SetQueueTest ()

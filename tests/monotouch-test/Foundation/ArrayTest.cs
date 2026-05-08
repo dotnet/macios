@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.Foundation {
 
 			using (var a = NSArray.FromStrings (new string [1])) {
 				Assert.That (a.Count, Is.EqualTo ((nuint) 1), "null item");
-				Assert.IsNull (a.GetItem<NSString> (0), "0");
+				ClassicAssert.IsNull (a.GetItem<NSString> (0), "0");
 			}
 		}
 
@@ -35,9 +35,9 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var a = NSArray.FromStrings (new string? [] { "a", null, "b" })) {
 				Assert.That (a.Count, Is.EqualTo ((nuint) 3), "Count");
-				Assert.AreEqual ("a", a.GetItem<NSString> (0)?.ToString (), "0");
-				Assert.IsNull (a.GetItem<NSString> (1), "1 - null item");
-				Assert.AreEqual ("b", a.GetItem<NSString> (2)?.ToString (), "2");
+				ClassicAssert.AreEqual ("a", a.GetItem<NSString> (0)?.ToString (), "0");
+				ClassicAssert.IsNull (a.GetItem<NSString> (1), "1 - null item");
+				ClassicAssert.AreEqual ("b", a.GetItem<NSString> (2)?.ToString (), "2");
 			}
 		}
 
@@ -47,27 +47,27 @@ namespace MonoTouchFixtures.Foundation {
 			IReadOnlyList<string?> list = new List<string?> { "x", null, "y" };
 			using (var a = NSArray.FromStrings (list)) {
 				Assert.That (a.Count, Is.EqualTo ((nuint) 3), "Count");
-				Assert.AreEqual ("x", a.GetItem<NSString> (0)?.ToString (), "0");
-				Assert.IsNull (a.GetItem<NSString> (1), "1 - null item");
-				Assert.AreEqual ("y", a.GetItem<NSString> (2)?.ToString (), "2");
+				ClassicAssert.AreEqual ("x", a.GetItem<NSString> (0)?.ToString (), "0");
+				ClassicAssert.IsNull (a.GetItem<NSString> (1), "1 - null item");
+				ClassicAssert.AreEqual ("y", a.GetItem<NSString> (2)?.ToString (), "2");
 			}
 		}
 
 		[Test]
 		public void FromNullableStrings_Null ()
 		{
-			Assert.IsNull (NSArray.FromNullableStrings (null), "null returns null");
+			ClassicAssert.IsNull (NSArray.FromNullableStrings (null), "null returns null");
 		}
 
 		[Test]
 		public void FromNullableStrings_WithValues ()
 		{
 			using (var a = NSArray.FromNullableStrings (new string? [] { "hello", null, "world" })) {
-				Assert.IsNotNull (a, "not null");
+				ClassicAssert.IsNotNull (a, "not null");
 				Assert.That (a!.Count, Is.EqualTo ((nuint) 3), "Count");
-				Assert.AreEqual ("hello", a.GetItem<NSString> (0)?.ToString (), "0");
-				Assert.IsNull (a.GetItem<NSString> (1), "1 - null item");
-				Assert.AreEqual ("world", a.GetItem<NSString> (2)?.ToString (), "2");
+				ClassicAssert.AreEqual ("hello", a.GetItem<NSString> (0)?.ToString (), "0");
+				ClassicAssert.IsNull (a.GetItem<NSString> (1), "1 - null item");
+				ClassicAssert.AreEqual ("world", a.GetItem<NSString> (2)?.ToString (), "2");
 			}
 		}
 
@@ -75,7 +75,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void FromNullableStrings_Empty ()
 		{
 			using (var a = NSArray.FromNullableStrings (Array.Empty<string?> ())) {
-				Assert.IsNotNull (a, "not null");
+				ClassicAssert.IsNotNull (a, "not null");
 				Assert.That (a!.Count, Is.EqualTo ((nuint) 0), "Count");
 			}
 		}
@@ -85,7 +85,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var a = NSArray.FromNSObjects (NSNull.Null)) {
 				Assert.That (a.Count, Is.EqualTo ((nuint) 1), "Count");
-				Assert.IsNull (a.GetItem<NSNull> (0), "0");
+				ClassicAssert.IsNull (a.GetItem<NSNull> (0), "0");
 			}
 		}
 
@@ -152,7 +152,7 @@ namespace MonoTouchFixtures.Foundation {
 			using (var policy = SecPolicy.CreateSslPolicy (true, "mail.xamarin.com")) {
 				using (var a = NSArray.FromObjects (policy)) {
 					var b = NSArray.ArrayFromHandle<SecPolicy> (a.Handle);
-					Assert.AreNotSame (a, b);
+					ClassicAssert.AreNotSame (a, b);
 				}
 			}
 		}
@@ -173,8 +173,8 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var a = NSArray.FromStrings (new string [1] { "abc" })) {
 				var arr = a.ToArray ();
-				Assert.AreEqual (1, arr.Length, "Length");
-				Assert.AreEqual ("abc", arr [0].ToString (), "Value");
+				ClassicAssert.AreEqual (1, arr.Length, "Length");
+				ClassicAssert.AreEqual ("abc", arr [0].ToString (), "Value");
 			}
 		}
 
@@ -183,8 +183,8 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var a = NSArray.FromStrings (new string [1] { "abc" })) {
 				var arr = a.ToArray<NSString> ();
-				Assert.AreEqual (1, arr.Length, "Length");
-				Assert.AreEqual ("abc", arr [0].ToString (), "Value");
+				ClassicAssert.AreEqual (1, arr.Length, "Length");
+				ClassicAssert.AreEqual ("abc", arr [0].ToString (), "Value");
 			}
 		}
 
@@ -193,10 +193,10 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var a = NSArray.FromStrings (new string [1] { "abc" })) {
 				foreach (var item in a)
-					Assert.AreEqual ("abc", item.ToString (), "Value");
+					ClassicAssert.AreEqual ("abc", item.ToString (), "Value");
 				var list = a.ToList ();
-				Assert.AreEqual (1, list.Count (), "Length");
-				Assert.AreEqual ("abc", list [0].ToString (), "Value");
+				ClassicAssert.AreEqual (1, list.Count (), "Length");
+				ClassicAssert.AreEqual ("abc", list [0].ToString (), "Value");
 			}
 		}
 	}

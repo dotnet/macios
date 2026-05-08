@@ -34,19 +34,19 @@ namespace MonoTouchFixtures.CarPlay {
 
 			var waypoint = CPNavigationWaypoint.Create (centerPoint, null, "Test", "123 Main St", entryPoints, null);
 
-			Assert.IsNotNull (waypoint, "waypoint");
-			Assert.AreEqual ("Test", waypoint.Name, "Name");
-			Assert.AreEqual ("123 Main St", waypoint.Address, "Address");
-			Assert.AreEqual ((nuint) 2, waypoint.EntryPointsCount, "EntryPointsCount");
+			ClassicAssert.IsNotNull (waypoint, "waypoint");
+			ClassicAssert.AreEqual ("Test", waypoint.Name, "Name");
+			ClassicAssert.AreEqual ("123 Main St", waypoint.Address, "Address");
+			ClassicAssert.AreEqual ((nuint) 2, waypoint.EntryPointsCount, "EntryPointsCount");
 
 			var result = waypoint.EntryPoints;
-			Assert.AreEqual (2, result.Length, "EntryPoints.Length");
-			Assert.AreEqual (37.7750, result [0].Latitude, 0.0001, "EntryPoints[0].Latitude");
-			Assert.AreEqual (-122.4195, result [0].Longitude, 0.0001, "EntryPoints[0].Longitude");
-			Assert.AreEqual (5.0, result [0].Altitude, 0.0001, "EntryPoints[0].Altitude");
-			Assert.AreEqual (37.7751, result [1].Latitude, 0.0001, "EntryPoints[1].Latitude");
-			Assert.AreEqual (-122.4196, result [1].Longitude, 0.0001, "EntryPoints[1].Longitude");
-			Assert.AreEqual (15.0, result [1].Altitude, 0.0001, "EntryPoints[1].Altitude");
+			ClassicAssert.AreEqual (2, result.Length, "EntryPoints.Length");
+			ClassicAssert.AreEqual (37.7750, result [0].Latitude, 0.0001, "EntryPoints[0].Latitude");
+			ClassicAssert.AreEqual (-122.4195, result [0].Longitude, 0.0001, "EntryPoints[0].Longitude");
+			ClassicAssert.AreEqual (5.0, result [0].Altitude, 0.0001, "EntryPoints[0].Altitude");
+			ClassicAssert.AreEqual (37.7751, result [1].Latitude, 0.0001, "EntryPoints[1].Latitude");
+			ClassicAssert.AreEqual (-122.4196, result [1].Longitude, 0.0001, "EntryPoints[1].Longitude");
+			ClassicAssert.AreEqual (15.0, result [1].Altitude, 0.0001, "EntryPoints[1].Altitude");
 		}
 
 		[Test]
@@ -56,12 +56,12 @@ namespace MonoTouchFixtures.CarPlay {
 
 			var waypoint = CPNavigationWaypoint.Create (centerPoint, null, "NYC", null, null, null);
 
-			Assert.IsNotNull (waypoint, "waypoint");
-			Assert.AreEqual ("NYC", waypoint.Name, "Name");
-			Assert.AreEqual ((nuint) 0, waypoint.EntryPointsCount, "EntryPointsCount");
+			ClassicAssert.IsNotNull (waypoint, "waypoint");
+			ClassicAssert.AreEqual ("NYC", waypoint.Name, "Name");
+			ClassicAssert.AreEqual ((nuint) 0, waypoint.EntryPointsCount, "EntryPointsCount");
 
 			var result = waypoint.EntryPoints;
-			Assert.AreEqual (0, result.Length, "EntryPoints.Length");
+			ClassicAssert.AreEqual (0, result.Length, "EntryPoints.Length");
 		}
 
 		[Test]
@@ -71,9 +71,9 @@ namespace MonoTouchFixtures.CarPlay {
 
 			var waypoint = CPNavigationWaypoint.Create (centerPoint, null, "London", null, new CPLocationCoordinate3D [0], null);
 
-			Assert.IsNotNull (waypoint, "waypoint");
-			Assert.AreEqual ((nuint) 0, waypoint.EntryPointsCount, "EntryPointsCount");
-			Assert.AreEqual (0, waypoint.EntryPoints.Length, "EntryPoints.Length");
+			ClassicAssert.IsNotNull (waypoint, "waypoint");
+			ClassicAssert.AreEqual ((nuint) 0, waypoint.EntryPointsCount, "EntryPointsCount");
+			ClassicAssert.AreEqual (0, waypoint.EntryPoints.Length, "EntryPoints.Length");
 		}
 
 		[Test]
@@ -86,12 +86,12 @@ namespace MonoTouchFixtures.CarPlay {
 
 			var waypoint = CPNavigationWaypoint.Create (centerPoint, null, null, null, entryPoints, null);
 
-			Assert.IsNotNull (waypoint, "waypoint");
-			Assert.AreEqual ((nuint) 1, waypoint.EntryPointsCount, "EntryPointsCount");
+			ClassicAssert.IsNotNull (waypoint, "waypoint");
+			ClassicAssert.AreEqual ((nuint) 1, waypoint.EntryPointsCount, "EntryPointsCount");
 
 			var result = waypoint.EntryPoints;
-			Assert.AreEqual (1, result.Length, "EntryPoints.Length");
-			Assert.AreEqual (48.8567, result [0].Latitude, 0.0001, "EntryPoints[0].Latitude");
+			ClassicAssert.AreEqual (1, result.Length, "EntryPoints.Length");
+			ClassicAssert.AreEqual (48.8567, result [0].Latitude, 0.0001, "EntryPoints[0].Latitude");
 		}
 
 		[Test]
@@ -101,9 +101,9 @@ namespace MonoTouchFixtures.CarPlay {
 
 			var waypoint = CPNavigationWaypoint.Create (centerPoint, null, null, null, null, null);
 
-			Assert.AreEqual (-33.8688, waypoint.CenterPoint.Latitude, 0.0001, "CenterPoint.Latitude");
-			Assert.AreEqual (151.2093, waypoint.CenterPoint.Longitude, 0.0001, "CenterPoint.Longitude");
-			Assert.AreEqual (58.0, waypoint.CenterPoint.Altitude, 0.0001, "CenterPoint.Altitude");
+			ClassicAssert.AreEqual (-33.8688, waypoint.CenterPoint.Latitude, 0.0001, "CenterPoint.Latitude");
+			ClassicAssert.AreEqual (151.2093, waypoint.CenterPoint.Longitude, 0.0001, "CenterPoint.Longitude");
+			ClassicAssert.AreEqual (58.0, waypoint.CenterPoint.Altitude, 0.0001, "CenterPoint.Altitude");
 		}
 	}
 
@@ -145,20 +145,20 @@ namespace MonoTouchFixtures.CarPlay {
 				estimates, estimates,
 				coordinates);
 
-			Assert.IsNotNull (segment, "segment");
-			Assert.AreEqual ((nint) 3, segment.CoordinatesCount, "CoordinatesCount");
+			ClassicAssert.IsNotNull (segment, "segment");
+			ClassicAssert.AreEqual ((nint) 3, segment.CoordinatesCount, "CoordinatesCount");
 
 			var result = segment.Coordinates;
-			Assert.AreEqual (3, result.Length, "Coordinates.Length");
-			Assert.AreEqual (37.0, result [0].Latitude, 0.0001, "Coordinates[0].Latitude");
-			Assert.AreEqual (-122.0, result [0].Longitude, 0.0001, "Coordinates[0].Longitude");
-			Assert.AreEqual (0.0, result [0].Altitude, 0.0001, "Coordinates[0].Altitude");
-			Assert.AreEqual (36.0, result [1].Latitude, 0.0001, "Coordinates[1].Latitude");
-			Assert.AreEqual (-121.0, result [1].Longitude, 0.0001, "Coordinates[1].Longitude");
-			Assert.AreEqual (100.0, result [1].Altitude, 0.0001, "Coordinates[1].Altitude");
-			Assert.AreEqual (35.0, result [2].Latitude, 0.0001, "Coordinates[2].Latitude");
-			Assert.AreEqual (-120.0, result [2].Longitude, 0.0001, "Coordinates[2].Longitude");
-			Assert.AreEqual (200.0, result [2].Altitude, 0.0001, "Coordinates[2].Altitude");
+			ClassicAssert.AreEqual (3, result.Length, "Coordinates.Length");
+			ClassicAssert.AreEqual (37.0, result [0].Latitude, 0.0001, "Coordinates[0].Latitude");
+			ClassicAssert.AreEqual (-122.0, result [0].Longitude, 0.0001, "Coordinates[0].Longitude");
+			ClassicAssert.AreEqual (0.0, result [0].Altitude, 0.0001, "Coordinates[0].Altitude");
+			ClassicAssert.AreEqual (36.0, result [1].Latitude, 0.0001, "Coordinates[1].Latitude");
+			ClassicAssert.AreEqual (-121.0, result [1].Longitude, 0.0001, "Coordinates[1].Longitude");
+			ClassicAssert.AreEqual (100.0, result [1].Altitude, 0.0001, "Coordinates[1].Altitude");
+			ClassicAssert.AreEqual (35.0, result [2].Latitude, 0.0001, "Coordinates[2].Latitude");
+			ClassicAssert.AreEqual (-120.0, result [2].Longitude, 0.0001, "Coordinates[2].Longitude");
+			ClassicAssert.AreEqual (200.0, result [2].Altitude, 0.0001, "Coordinates[2].Altitude");
 		}
 
 		[Test]
@@ -187,9 +187,9 @@ namespace MonoTouchFixtures.CarPlay {
 				estimates, estimates,
 				coordinates);
 
-			Assert.IsNotNull (segment.Origin, "Origin");
-			Assert.IsNotNull (segment.Destination, "Destination");
-			Assert.IsNotNull (segment.Identifier, "Identifier");
+			ClassicAssert.IsNotNull (segment.Origin, "Origin");
+			ClassicAssert.IsNotNull (segment.Destination, "Destination");
+			ClassicAssert.IsNotNull (segment.Identifier, "Identifier");
 		}
 	}
 }

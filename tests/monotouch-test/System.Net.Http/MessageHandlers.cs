@@ -63,9 +63,9 @@ namespace MonoTests.System.Net.Http {
 				response = await client.GetStringAsync ("http://doesnotexist.xamarin.com");
 			}, out var ex);
 
-			Assert.IsTrue (done, "Did not time out");
-			Assert.IsNull (response, $"Response is not null {response}");
-			Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
+			ClassicAssert.IsTrue (done, "Did not time out");
+			ClassicAssert.IsNull (response, $"Response is not null {response}");
+			ClassicAssert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
 		}
 
 		// ensure that we do get the same cookies as the managed handler for the default session
@@ -112,10 +112,10 @@ namespace MonoTests.System.Net.Http {
 
 			if (!completed || !managedCookieResult || !nativeCookieResult || !managedHasExpectedCookie || !nativeHasExpectedCookie)
 				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
-			Assert.IsTrue (completed, "Network request completed");
-			Assert.IsNull (ex, "Exception");
-			Assert.IsTrue (managedCookieResult, $"Failed to get managed cookies");
-			Assert.IsTrue (nativeCookieResult, $"Failed to get native cookies");
+			Assert.That (completed, Is.True, "Network request completed");
+			Assert.That (ex, Is.Null, "Exception");
+			Assert.That (managedCookieResult, Is.True, $"Failed to get managed cookies");
+			Assert.That (nativeCookieResult, Is.True, $"Failed to get native cookies");
 			Assert.That (managedHasExpectedCookie, Is.True, $"Managed Cookie Value");
 			Assert.That (nativeHasExpectedCookie, Is.True, $"Native Cookie Value");
 		}
@@ -171,10 +171,10 @@ namespace MonoTests.System.Net.Http {
 			if (intermittentFailures.Any (v => managedCookieResult.Contains (v) || nativeCookieResult.Contains (v)))
 				TestRuntime.IgnoreInCI ("Intermittent network failure - ignore in CI");
 
-			Assert.IsTrue (completed, "Network request completed");
-			Assert.IsNull (ex, "Exception");
-			Assert.IsNotNull (managedCookieResult, "Managed cookies result");
-			Assert.IsNotNull (nativeCookieResult, "Native cookies result");
+			ClassicAssert.IsTrue (completed, "Network request completed");
+			ClassicAssert.IsNull (ex, "Exception");
+			ClassicAssert.IsNotNull (managedCookieResult, "Managed cookies result");
+			ClassicAssert.IsNotNull (nativeCookieResult, "Native cookies result");
 			Assert.That (managedCookieResult, Does.Contain ("\"cookie\": \"chocolate-chip\""), "Managed cookies");
 			Assert.That (nativeCookieResult, Does.Contain ("\"cookie\": \"chocolate-chip\""), "Native cookies");
 		}
@@ -200,9 +200,9 @@ namespace MonoTests.System.Net.Http {
 
 			if (!completed)
 				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
-			Assert.IsTrue (completed, "Network request completed");
-			Assert.IsNull (ex, "Exception");
-			Assert.IsNotNull (nativeCookieResult, "Native cookies result");
+			ClassicAssert.IsTrue (completed, "Network request completed");
+			ClassicAssert.IsNull (ex, "Exception");
+			ClassicAssert.IsNotNull (nativeCookieResult, "Native cookies result");
 			var cookiesFromServer = cookieContainer.GetCookies (new Uri (url));
 			var hasExpectedCookie = cookiesFromServer.Cast<Cookie> ().Any (v => v.Name == "cookie" && v.Value == "chocolate-chip");
 			if (!hasExpectedCookie)
@@ -237,11 +237,11 @@ namespace MonoTests.System.Net.Http {
 
 			if (!completed)
 				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
-			Assert.IsTrue (completed, "Network request completed");
-			Assert.IsNull (ex, "Exception");
-			Assert.IsNotNull (nativeSetCookieResult, "Native set-cookies result");
-			Assert.IsNotNull (nativeCookieResult, "Native cookies result");
-			Assert.IsFalse (nativeCookieResult.Contains ("chocolate-chip"));
+			ClassicAssert.IsTrue (completed, "Network request completed");
+			ClassicAssert.IsNull (ex, "Exception");
+			ClassicAssert.IsNotNull (nativeSetCookieResult, "Native set-cookies result");
+			ClassicAssert.IsNotNull (nativeCookieResult, "Native cookies result");
+			ClassicAssert.IsFalse (nativeCookieResult.Contains ("chocolate-chip"));
 		}
 
 		[Test]
@@ -272,13 +272,13 @@ namespace MonoTests.System.Net.Http {
 
 			if (!completed)
 				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
-			Assert.IsTrue (completed, "Network request completed");
-			Assert.IsNull (ex, "Exception");
-			Assert.IsNotNull (nativeSetCookieResult, "Native set-cookies result");
-			Assert.IsNotNull (nativeCookieResult, "Native cookies result");
-			Assert.IsFalse (nativeCookieResult.Contains ("chocolate-chip"));
+			ClassicAssert.IsTrue (completed, "Network request completed");
+			ClassicAssert.IsNull (ex, "Exception");
+			ClassicAssert.IsNotNull (nativeSetCookieResult, "Native set-cookies result");
+			ClassicAssert.IsNotNull (nativeCookieResult, "Native cookies result");
+			ClassicAssert.IsFalse (nativeCookieResult.Contains ("chocolate-chip"));
 			var cookiesFromServer = cookieContainer.GetCookies (new Uri (url));
-			Assert.AreEqual (0, cookiesFromServer.Count, "Cookies received from server.");
+			ClassicAssert.AreEqual (0, cookiesFromServer.Count, "Cookies received from server.");
 		}
 
 		[Test]
@@ -423,12 +423,12 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("Test run timedout.");
 			}
 
-			Assert.IsNull (ex, "Exception");
+			ClassicAssert.IsNull (ex, "Exception");
 
 			if (!timeoutExceptionShouldHaveBeenThrown) {
 				Assert.Inconclusive ("Failed to produce a timeout. The response content was streamed completely.");
 			} else {
-				Assert.IsTrue (timeoutExceptionWasThrown, "Timeout exception is thrown.");
+				ClassicAssert.IsTrue (timeoutExceptionWasThrown, "Timeout exception is thrown.");
 			}
 		}
 
@@ -463,8 +463,8 @@ namespace MonoTests.System.Net.Http {
 			} else if (!containsHeaders) {
 				Assert.Inconclusive ("Response from httpbin does not contain headers, therefore we cannot ensure that if the authoriation is present.");
 			} else {
-				Assert.IsFalse (containsAuthorizarion, $"Authorization header did reach the final destination. {json}");
-				Assert.IsNull (ex, $"Exception {ex} for {json}");
+				ClassicAssert.IsFalse (containsAuthorizarion, $"Authorization header did reach the final destination. {json}");
+				ClassicAssert.IsNull (ex, $"Exception {ex} for {json}");
 			}
 		}
 
@@ -537,13 +537,13 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("Request timedout.");
 			} else {
 				// the ServicePointManager.ServerCertificateValidationCallback will never be executed.
-				Assert.False (invalidServicePointManagerCbWasExcuted, "Invalid SPM executed");
-				Assert.True (validationCbWasExecuted, "Validation Callback called");
+				ClassicAssert.False (invalidServicePointManagerCbWasExcuted, "Invalid SPM executed");
+				ClassicAssert.True (validationCbWasExecuted, "Validation Callback called");
 				// assert the exception type
-				Assert.IsNotNull (ex, (result is null) ? "Expected exception is missing and got no result" : $"Expected exception but got {result.Content.ReadAsStringAsync ().Result}");
-				Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception type");
-				Assert.IsNotNull (ex.InnerException, "InnerException");
-				Assert.IsInstanceOf (expectedExceptionType, ex.InnerException, "InnerException type");
+				ClassicAssert.IsNotNull (ex, (result is null) ? "Expected exception is missing and got no result" : $"Expected exception but got {result.Content.ReadAsStringAsync ().Result}");
+				ClassicAssert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception type");
+				ClassicAssert.IsNotNull (ex.InnerException, "InnerException");
+				ClassicAssert.IsInstanceOf (expectedExceptionType, ex.InnerException, "InnerException type");
 			}
 		}
 
@@ -591,11 +591,11 @@ namespace MonoTests.System.Net.Http {
 				// assert that we did not get an exception
 				if (ex is not null && ex.InnerException is not null) {
 					// we could get here.. if we have a diff issue, in that case, lets get the exception message and assert is not the trust issue
-					Assert.AreNotEqual (ex.InnerException.Message, "Error: TrustFailure");
+					ClassicAssert.AreNotEqual (ex.InnerException.Message, "Error: TrustFailure");
 				}
 			}
-			Assert.IsNull (ex);
-			// Assert.IsTrue (servicePointManagerCbWasExcuted, "Executed");
+			ClassicAssert.IsNull (ex);
+			// ClassicAssert.IsTrue (servicePointManagerCbWasExcuted, "Executed");
 		}
 
 		[Ignore ("https://github.com/dotnet/macios/issues/21912")]
@@ -628,12 +628,12 @@ namespace MonoTests.System.Net.Http {
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
 				Assert.Inconclusive ("Request timedout.");
 			} else {
-				Assert.True (callbackWasExecuted, "Validation Callback called");
-				Assert.AreNotEqual (SslPolicyErrors.None, sslPolicyErrors, "Callback was called with unexpected SslPolicyErrors");
-				Assert.IsNotNull (serverCertificate, "Server certificate is null");
-				Assert.IsNull (ex, "Exception wasn't expected.");
-				Assert.IsNotNull (result, "Result was null");
-				Assert.IsTrue (result.IsSuccessStatusCode, $"Status code was not success: {result.StatusCode}");
+				ClassicAssert.True (callbackWasExecuted, "Validation Callback called");
+				ClassicAssert.AreNotEqual (SslPolicyErrors.None, sslPolicyErrors, "Callback was called with unexpected SslPolicyErrors");
+				ClassicAssert.IsNotNull (serverCertificate, "Server certificate is null");
+				ClassicAssert.IsNull (ex, "Exception wasn't expected.");
+				ClassicAssert.IsNotNull (result, "Result was null");
+				ClassicAssert.IsTrue (result.IsSuccessStatusCode, $"Status code was not success: {result.StatusCode}");
 			}
 		}
 
@@ -651,10 +651,10 @@ namespace MonoTests.System.Net.Http {
 				ServerCertificateCustomValidationCallback = (sender, certificate, chain, errors) => {
 					callbackWasExecuted = true;
 					try {
-						Assert.IsNotNull (certificate);
+						ClassicAssert.IsNotNull (certificate);
 						if (errors == SslPolicyErrors.RemoteCertificateChainErrors && TestRuntime.IsInCI)
 							return false;
-						Assert.AreEqual (SslPolicyErrors.None, errors);
+						ClassicAssert.AreEqual (SslPolicyErrors.None, errors);
 					} catch (ResultStateException) {
 						throw;
 					} catch (Exception e) {
@@ -672,12 +672,12 @@ namespace MonoTests.System.Net.Http {
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
 				Assert.Inconclusive ("Request timedout.");
 			} else {
-				Assert.True (callbackWasExecuted, "Validation Callback called.");
-				Assert.IsNotNull (ex, result is null ? "Expected exception is missing and got no result." : $"Expected exception but got {result.Content.ReadAsStringAsync ().Result}.");
-				Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception type");
-				Assert.IsNotNull (ex.InnerException, "InnerException");
-				Assert.IsInstanceOf (typeof (WebException), ex.InnerException, "InnerException type");
-				Assert.IsNull (ex2, "Callback asserts");
+				ClassicAssert.True (callbackWasExecuted, "Validation Callback called.");
+				ClassicAssert.IsNotNull (ex, result is null ? "Expected exception is missing and got no result." : $"Expected exception but got {result.Content.ReadAsStringAsync ().Result}.");
+				ClassicAssert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception type");
+				ClassicAssert.IsNotNull (ex.InnerException, "InnerException");
+				ClassicAssert.IsInstanceOf (typeof (WebException), ex.InnerException, "InnerException type");
+				ClassicAssert.IsNull (ex2, "Callback asserts");
 			}
 		}
 
@@ -710,9 +710,9 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("Request timedout.");
 			} else {
 				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.IsNull (ex, "Exception wasn't expected.");
+				ClassicAssert.IsNull (ex, "Exception wasn't expected.");
 				X509Certificate2 certificate2 = X509CertificateLoader.LoadCertificate (global::System.Convert.FromBase64String (content));
-				Assert.AreEqual (certificate.Thumbprint, certificate2.Thumbprint);
+				ClassicAssert.AreEqual (certificate.Thumbprint, certificate2.Thumbprint);
 			}
 		}
 
@@ -731,8 +731,8 @@ namespace MonoTests.System.Net.Http {
 					var response = await client.GetAsync ($"https://localhost:{port}/");
 					response.EnsureSuccessStatusCode ();
 				}, out var ex);
-				Assert.IsTrue (done, "Request to localhost timed out.");
-				Assert.IsNull (ex, $"Exception wasn't expected, but got: {ex}");
+				ClassicAssert.IsTrue (done, "Request to localhost timed out.");
+				ClassicAssert.IsNull (ex, $"Exception wasn't expected, but got: {ex}");
 			} finally {
 				listener?.Cancel ();
 				listener?.Dispose ();
@@ -753,12 +753,12 @@ namespace MonoTests.System.Net.Http {
 					using var client = new HttpClient (handler);
 					await client.GetAsync ($"https://localhost:{port}/");
 				}, out var ex);
-				Assert.IsTrue (done, "Request to localhost timed out.");
-				Assert.IsNotNull (ex, "Exception was expected.");
-				Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
-				Assert.IsInstanceOf (typeof (WebException), ex!.InnerException, "InnerException Type");
+				ClassicAssert.IsTrue (done, "Request to localhost timed out.");
+				ClassicAssert.IsNotNull (ex, "Exception was expected.");
+				ClassicAssert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
+				ClassicAssert.IsInstanceOf (typeof (WebException), ex!.InnerException, "InnerException Type");
 				Assert.That (((WebException) ex.InnerException!).Status, Is.EqualTo (WebExceptionStatus.SecureChannelFailure), "InnerException Status");
-				Assert.IsInstanceOf (typeof (AuthenticationException), ex.InnerException.InnerException, "InnerException.InnerException Type");
+				ClassicAssert.IsInstanceOf (typeof (AuthenticationException), ex.InnerException.InnerException, "InnerException.InnerException Type");
 			} finally {
 				listener?.Cancel ();
 				listener?.Dispose ();
@@ -781,11 +781,11 @@ namespace MonoTests.System.Net.Http {
 					using var client = new HttpClient (handler);
 					await client.GetAsync ($"https://localhost:{port}/");
 				}, out var ex);
-				Assert.IsTrue (done, "Request to localhost timed out.");
+				ClassicAssert.IsTrue (done, "Request to localhost timed out.");
 				// With the opt-out switch enabled, the new specific exception is not thrown.
 				// Instead we get a generic connection error (no WebException/AuthenticationException chain).
-				Assert.IsNotNull (ex, "Exception was expected.");
-				Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
+				ClassicAssert.IsNotNull (ex, "Exception was expected.");
+				ClassicAssert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
 				if (ex!.InnerException is WebException we)
 					Assert.That (we.Status, Is.Not.EqualTo (WebExceptionStatus.SecureChannelFailure), "Should not be SecureChannelFailure");
 			} finally {
@@ -870,13 +870,13 @@ namespace MonoTests.System.Net.Http {
 		public void AssertDefaultValuesNSUrlSessionHandler ()
 		{
 			using (var handler = new NSUrlSessionHandler ()) {
-				Assert.True (handler.AllowAutoRedirect, "Default redirects value");
-				Assert.True (handler.AllowsCellularAccess, "Default cellular data value.");
+				ClassicAssert.True (handler.AllowAutoRedirect, "Default redirects value");
+				ClassicAssert.True (handler.AllowsCellularAccess, "Default cellular data value.");
 			}
 			using (var config = NSUrlSessionConfiguration.DefaultSessionConfiguration) {
 				config.AllowsCellularAccess = false;
 				using (var handler = new NSUrlSessionHandler (config)) {
-					Assert.False (handler.AllowsCellularAccess, "Configuration cellular data value.");
+					ClassicAssert.False (handler.AllowsCellularAccess, "Configuration cellular data value.");
 				}
 			}
 		}
@@ -903,8 +903,8 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("Request timedout.");
 			} else {
 				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
-				Assert.IsNull (ex, "Exception not null");
-				Assert.AreEqual (expectedStatus, httpStatus, "Status not ok");
+				ClassicAssert.IsNull (ex, "Exception not null");
+				ClassicAssert.AreEqual (expectedStatus, httpStatus, "Status not ok");
 			}
 		}
 
@@ -929,8 +929,8 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("Request timedout.");
 			} else {
 				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
-				Assert.IsNull (ex, "Exception not null");
-				Assert.AreEqual (expectedStatus, httpStatus, "Status not ok");
+				ClassicAssert.IsNull (ex, "Exception not null");
+				ClassicAssert.AreEqual (expectedStatus, httpStatus, "Status not ok");
 			}
 		}
 
@@ -959,8 +959,8 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("First request timedout.");
 			} else {
 				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
-				Assert.IsNull (ex, "First request exception not null");
-				Assert.AreEqual (HttpStatusCode.OK, httpStatus, "First status not ok");
+				ClassicAssert.IsNull (ex, "First request exception not null");
+				ClassicAssert.AreEqual (HttpStatusCode.OK, httpStatus, "First status not ok");
 			}
 			// exactly same operation, diff handler, wrong password, should fail
 
@@ -980,8 +980,8 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("Second request timedout.");
 			} else {
 				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
-				Assert.IsNull (ex, "Second request exception not null");
-				Assert.AreEqual (HttpStatusCode.Unauthorized, httpStatus, "Second status not ok");
+				ClassicAssert.IsNull (ex, "Second request exception not null");
+				ClassicAssert.AreEqual (HttpStatusCode.Unauthorized, httpStatus, "Second status not ok");
 			}
 		}
 
@@ -1039,14 +1039,14 @@ namespace MonoTests.System.Net.Http {
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
 				Assert.Inconclusive ("Request timedout.");
 			} else {
-				Assert.IsNull (ex, "Exception");
+				ClassicAssert.IsNull (ex, "Exception");
 
 				for (var i = 0; i < iterations; i++) {
 					var rsp = delegatingHandler.Responses [i];
 					TestRuntime.IgnoreInCIIfBadNetwork (rsp.StatusCode);
-					Assert.IsTrue (delegatingHandler.IsCompleted (i), $"Completed #{i}");
-					Assert.AreEqual ("OK", rsp.ReasonPhrase, $"ReasonPhrase #{i}");
-					Assert.AreEqual (HttpStatusCode.OK, rsp.StatusCode, $"StatusCode #{i}");
+					ClassicAssert.IsTrue (delegatingHandler.IsCompleted (i), $"Completed #{i}");
+					ClassicAssert.AreEqual ("OK", rsp.ReasonPhrase, $"ReasonPhrase #{i}");
+					ClassicAssert.AreEqual (HttpStatusCode.OK, rsp.StatusCode, $"StatusCode #{i}");
 
 					var body = bodies [i];
 					// Poor-man's json parser
@@ -1054,7 +1054,7 @@ namespace MonoTests.System.Net.Http {
 					data = data.Trim ().Replace ("\"data\": \"", "").TrimEnd ('"', ',');
 					data = data.Replace ("\\\"", "\"");
 
-					Assert.AreEqual (json, data, $"Post data #{i}");
+					ClassicAssert.AreEqual (json, data, $"Post data #{i}");
 				}
 			}
 		}
@@ -1070,17 +1070,17 @@ namespace MonoTests.System.Net.Http {
 				var postRequestUri = NetworkResources.Httpbin.Url + "/";
 				var initialRequestUri = NetworkResources.Httpbin.GetRedirectToUrl (postRequestUri);
 				var request = new HttpRequestMessage (HttpMethod.Get, initialRequestUri);
-				Assert.AreEqual (initialRequestUri, request.RequestUri.ToString (), "Initial RequestUri");
+				ClassicAssert.AreEqual (initialRequestUri, request.RequestUri.ToString (), "Initial RequestUri");
 				var response = await client.SendAsync (request);
 				TestRuntime.IgnoreInCIIfBadNetwork (response.StatusCode);
-				Assert.AreEqual (postRequestUri, request.RequestUri.ToString (), "Post RequestUri");
+				ClassicAssert.AreEqual (postRequestUri, request.RequestUri.ToString (), "Post RequestUri");
 			}, out var ex);
 
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc. we do not want to fail
 				Assert.Inconclusive ("Request timedout.");
 			} else {
 				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.IsNull (ex, "Exception");
+				ClassicAssert.IsNull (ex, "Exception");
 			}
 		}
 
@@ -1094,17 +1094,17 @@ namespace MonoTests.System.Net.Http {
 				var client = new HttpClient (GetHandler (handlerType));
 				var requestUri = NetworkResources.Httpbin.Uri + "?stuffHere=[]{}";
 				var request = new HttpRequestMessage (HttpMethod.Get, requestUri);
-				Assert.AreEqual (requestUri, request.RequestUri.ToString (), "Initial RequestUri");
+				ClassicAssert.AreEqual (requestUri, request.RequestUri.ToString (), "Initial RequestUri");
 				var response = await client.SendAsync (request);
 				TestRuntime.IgnoreInCIIfBadNetwork (response.StatusCode);
-				Assert.AreEqual (requestUri, request.RequestUri.ToString (), "Post RequestUri");
+				ClassicAssert.AreEqual (requestUri, request.RequestUri.ToString (), "Post RequestUri");
 			}, out var ex);
 
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc. we do not want to fail
 				Assert.Inconclusive ("Request timedout.");
 			} else {
 				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.IsNull (ex, "Exception");
+				ClassicAssert.IsNull (ex, "Exception");
 			}
 		}
 
@@ -1141,7 +1141,7 @@ namespace MonoTests.System.Net.Http {
 			if (verificationFlags.HasValue)
 				handler.CertificateChainPolicy.VerificationFlags = verificationFlags.Value;
 
-			Assert.IsTrue (handler.CheckCertificateRevocationList, "CheckCertificateRevocationList");
+			ClassicAssert.IsTrue (handler.CheckCertificateRevocationList, "CheckCertificateRevocationList");
 
 			for (var i = 0; i < 3; i++) {
 				callbackWasExecuted = false;
@@ -1176,11 +1176,11 @@ namespace MonoTests.System.Net.Http {
 			if (!callbackWasExecuted)
 				Assert.Inconclusive ("Validation callback was not called.");
 
-			Assert.AreEqual (expectedError, sslPolicyErrors, "Callback was called with unexpected SslPolicyErrors");
-			Assert.IsNotNull (serverCertificate, "Server certificate is null");
-			Assert.IsNull (ex, "Exception wasn't expected.");
-			Assert.IsNotNull (result, "Result was null");
-			Assert.IsTrue (result.IsSuccessStatusCode, $"Status code was not success: {result.StatusCode}");
+			ClassicAssert.AreEqual (expectedError, sslPolicyErrors, "Callback was called with unexpected SslPolicyErrors");
+			ClassicAssert.IsNotNull (serverCertificate, "Server certificate is null");
+			ClassicAssert.IsNull (ex, "Exception wasn't expected.");
+			ClassicAssert.IsNotNull (result, "Result was null");
+			ClassicAssert.IsTrue (result.IsSuccessStatusCode, $"Status code was not success: {result.StatusCode}");
 		}
 	}
 }

@@ -61,13 +61,13 @@ namespace MonoTouchFixtures.AVFoundation {
 				Assert.Ignore ("The current system doesn't have a microphone.");
 
 			session.SetCategory (AVAudioSessionCategory.PlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker, out var categoryError);
-			Assert.IsNull (categoryError, "Category Error");
+			ClassicAssert.IsNull (categoryError, "Category Error");
 			session.SetPreferredSampleRate (48000, out var sampleRateError);
-			Assert.IsNull (sampleRateError, "Sample Rate Error");
+			ClassicAssert.IsNull (sampleRateError, "Sample Rate Error");
 			if (session.MaximumInputNumberOfChannels == 0)
 				Assert.Ignore ("The current system doesn't support any input channels");
 			session.SetPreferredInputNumberOfChannels (1, out var inputChannelCountError);
-			Assert.IsNull (inputChannelCountError, "Input Channel Count Error");
+			ClassicAssert.IsNull (inputChannelCountError, "Input Channel Count Error");
 			session.SetActive (true);
 #endif // __MACOS__
 
@@ -83,8 +83,8 @@ namespace MonoTouchFixtures.AVFoundation {
 				engine.Connect (inputNode, sinkNode, inputFormat);
 				engine.StartAndReturnError (out var error);
 
-				Assert.IsNull (error, "Start error");
-				Assert.True (callbackEvent.WaitOne (TimeSpan.FromSeconds (5)), "Called back");
+				ClassicAssert.IsNull (error, "Start error");
+				ClassicAssert.True (callbackEvent.WaitOne (TimeSpan.FromSeconds (5)), "Called back");
 			} finally {
 				engine.Stop ();
 			}

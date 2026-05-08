@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			// http://stackoverflow.com/q/10504966/220643
 			using (UINavigationBar nb = new UINavigationBar ()) {
-				Assert.Null (nb.GetBackgroundImage (UIBarMetrics.Default), "Get");
+				ClassicAssert.Null (nb.GetBackgroundImage (UIBarMetrics.Default), "Get");
 				nb.SetBackgroundImage (null, UIBarMetrics.Default);
 			}
 		}

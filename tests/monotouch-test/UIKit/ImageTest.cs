@@ -56,7 +56,7 @@ namespace MonoTouchFixtures.UIKit {
 						Assert.That ((nint) 16, Is.EqualTo (resized.CGImage.Width), "half");
 					} else {
 						var h = resized.CGImage.Height;
-						Assert.True (h == 16 || h == 32, "mostly");
+						ClassicAssert.True (h == 16 || h == 32, "mostly");
 					}
 					Assert.That (handle, Is.Not.EqualTo (resized.CGImage.Handle), "Handle");
 				}
@@ -69,7 +69,7 @@ namespace MonoTouchFixtures.UIKit {
 			using (var i = UIImage.CreateAnimatedImage ("xamarin", UIEdgeInsets.Zero, 1d)) {
 				Assert.That (i.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 				Assert.That (i.Images.Length, Is.EqualTo (3), "3 images");
-				Assert.True (i.Description.Contains ("UIAnimatedImage"), "UIAnimatedImage");
+				ClassicAssert.True (i.Description.Contains ("UIAnimatedImage"), "UIAnimatedImage");
 			}
 		}
 

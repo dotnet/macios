@@ -23,7 +23,7 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSStackViewShouldCreateWithEmptyConstructor ()
 		{
-			Assert.IsNotNull (view, "NSStackViewCreateWithEmptyConstructor - Failed to create view");
+			ClassicAssert.IsNotNull (view, "NSStackViewCreateWithEmptyConstructor - Failed to create view");
 		}
 
 		[Test]
@@ -31,8 +31,8 @@ namespace Xamarin.Mac.Tests {
 		{
 			view = NSStackView.FromViews (new [] { first, second });
 
-			Assert.IsNotNull (view, "NSStackViewCreateWithViews - Failed to create view");
-			Assert.IsTrue (view.Views.Length == 2, "NSStackViewShouldCreateWithViews - StackView does not have 2 views");
+			ClassicAssert.IsNotNull (view, "NSStackViewCreateWithViews - Failed to create view");
+			ClassicAssert.IsTrue (view.Views.Length == 2, "NSStackViewShouldCreateWithViews - StackView does not have 2 views");
 		}
 
 		[Test]
@@ -40,7 +40,7 @@ namespace Xamarin.Mac.Tests {
 		{
 			view.AddView (new NSView (), NSStackViewGravity.Bottom);
 
-			Assert.IsTrue (view.Views.Length == 1, "NSStackViewShouldAddView - Failed to add view - length was 0");
+			ClassicAssert.IsTrue (view.Views.Length == 1, "NSStackViewShouldAddView - Failed to add view - length was 0");
 		}
 
 		[Test]
@@ -51,8 +51,8 @@ namespace Xamarin.Mac.Tests {
 
 			view.InsertView (third, 1, NSStackViewGravity.Trailing);
 
-			Assert.IsTrue (view.Views.Length == 3, "NSStackViewShouldInsertView - Wrong number of views");
-			Assert.IsTrue (view.Views [1] == third, "NSStackViewShouldInsertView - New view not inserted at the correct location");
+			ClassicAssert.IsTrue (view.Views.Length == 3, "NSStackViewShouldInsertView - Wrong number of views");
+			ClassicAssert.IsTrue (view.Views [1] == third, "NSStackViewShouldInsertView - New view not inserted at the correct location");
 		}
 
 		[Test]
@@ -62,7 +62,7 @@ namespace Xamarin.Mac.Tests {
 
 			view.RemoveView (second);
 
-			Assert.IsTrue (view.Views.Length == 1, "NSStackViewShouldRemoveView - Failed to remove view");
+			ClassicAssert.IsTrue (view.Views.Length == 1, "NSStackViewShouldRemoveView - Failed to remove view");
 		}
 
 		[Test]
@@ -70,9 +70,9 @@ namespace Xamarin.Mac.Tests {
 		{
 			view.SetViews (new [] { first, second }, NSStackViewGravity.Leading);
 
-			Assert.IsTrue (view.Views.Length == 2, "NSStackViewShouldSetViews - Views length was not 0");
-			Assert.IsTrue (view.ViewsInGravity (NSStackViewGravity.Leading).Length == 2, "NSStackViewShouldSetViews - ViewsInGravity Leading was not 2");
-			Assert.IsTrue (view.ViewsInGravity (NSStackViewGravity.Trailing).Length == 0, "NSStackViewShouldSetViews - ViewsInGravity Trailing was not 0");
+			ClassicAssert.IsTrue (view.Views.Length == 2, "NSStackViewShouldSetViews - Views length was not 0");
+			ClassicAssert.IsTrue (view.ViewsInGravity (NSStackViewGravity.Leading).Length == 2, "NSStackViewShouldSetViews - ViewsInGravity Leading was not 2");
+			ClassicAssert.IsTrue (view.ViewsInGravity (NSStackViewGravity.Trailing).Length == 0, "NSStackViewShouldSetViews - ViewsInGravity Trailing was not 0");
 		}
 
 		[Test]
@@ -81,7 +81,7 @@ namespace Xamarin.Mac.Tests {
 			var alignment = view.Alignment;
 			view.Alignment = NSLayoutAttribute.Right;
 
-			Assert.IsFalse (view.Alignment == alignment, "NSStackViewShouldChangeAlignment - Failed to change Alignment property");
+			ClassicAssert.IsFalse (view.Alignment == alignment, "NSStackViewShouldChangeAlignment - Failed to change Alignment property");
 		}
 
 		[Test]
@@ -90,7 +90,7 @@ namespace Xamarin.Mac.Tests {
 			var orientation = view.Orientation;
 			view.Orientation = NSUserInterfaceLayoutOrientation.Vertical;
 
-			Assert.IsFalse (view.Orientation == orientation, "NSStackViewShouldChangeOrientation - Failed to change Orientation property");
+			ClassicAssert.IsFalse (view.Orientation == orientation, "NSStackViewShouldChangeOrientation - Failed to change Orientation property");
 		}
 
 		[Test]
@@ -99,7 +99,7 @@ namespace Xamarin.Mac.Tests {
 			var spacing = view.Spacing;
 			view.Spacing = spacing + 3;
 
-			Assert.IsFalse (view.Spacing == spacing, "NSStackViewShouldChangeSpacing - Failed to change Spacing property");
+			ClassicAssert.IsFalse (view.Spacing == spacing, "NSStackViewShouldChangeSpacing - Failed to change Spacing property");
 		}
 
 		[Test]
@@ -108,10 +108,10 @@ namespace Xamarin.Mac.Tests {
 			var edgeInsets = view.EdgeInsets;
 			view.EdgeInsets = new NSEdgeInsets (20, 20, 20, 20);
 
-			Assert.IsFalse (view.EdgeInsets.Left == edgeInsets.Left, "NSStackViewShouldChangeEdgeInsets - Failed to change EdgeInsets property");
-			Assert.IsFalse (view.EdgeInsets.Right == edgeInsets.Right, "NSStackViewShouldChangeEdgeInsets - Failed to change EdgeInsets property");
-			Assert.IsFalse (view.EdgeInsets.Top == edgeInsets.Top, "NSStackViewShouldChangeEdgeInsets - Failed to change EdgeInsets property");
-			Assert.IsFalse (view.EdgeInsets.Bottom == edgeInsets.Bottom, "NSStackViewShouldChangeEdgeInsets - Failed to change EdgeInsets property");
+			ClassicAssert.IsFalse (view.EdgeInsets.Left == edgeInsets.Left, "NSStackViewShouldChangeEdgeInsets - Failed to change EdgeInsets property");
+			ClassicAssert.IsFalse (view.EdgeInsets.Right == edgeInsets.Right, "NSStackViewShouldChangeEdgeInsets - Failed to change EdgeInsets property");
+			ClassicAssert.IsFalse (view.EdgeInsets.Top == edgeInsets.Top, "NSStackViewShouldChangeEdgeInsets - Failed to change EdgeInsets property");
+			ClassicAssert.IsFalse (view.EdgeInsets.Bottom == edgeInsets.Bottom, "NSStackViewShouldChangeEdgeInsets - Failed to change EdgeInsets property");
 		}
 
 		[Test]
@@ -120,7 +120,7 @@ namespace Xamarin.Mac.Tests {
 			var hasEqualSpacing = view.HasEqualSpacing;
 			view.HasEqualSpacing = !hasEqualSpacing;
 
-			Assert.IsFalse (view.HasEqualSpacing == hasEqualSpacing, "NSStackViewShouldChangeHasEqualSpacing - Failed to change HasEqualSpacing property");
+			ClassicAssert.IsFalse (view.HasEqualSpacing == hasEqualSpacing, "NSStackViewShouldChangeHasEqualSpacing - Failed to change HasEqualSpacing property");
 		}
 
 		//		[Test]
@@ -129,7 +129,7 @@ namespace Xamarin.Mac.Tests {
 		//			var view = new NSStackView ();
 		//			view.Delegate = new NSStackViewDelegate ();
 		//
-		//			Assert.IsNotNull (view.Delegate, "NSStackViewShouldSetDelegate - Delegate property returned null");
+		//			ClassicAssert.IsNotNull (view.Delegate, "NSStackViewShouldSetDelegate - Delegate property returned null");
 		//		}
 
 		[Test]
@@ -138,7 +138,7 @@ namespace Xamarin.Mac.Tests {
 			var clippingResistance = view.ClippingResistancePriorityForOrientation (NSLayoutConstraintOrientation.Vertical);
 			view.SetClippingResistancePriority (clippingResistance + 3, NSLayoutConstraintOrientation.Vertical);
 
-			Assert.IsFalse (view.ClippingResistancePriorityForOrientation (NSLayoutConstraintOrientation.Vertical) == clippingResistance,
+			ClassicAssert.IsFalse (view.ClippingResistancePriorityForOrientation (NSLayoutConstraintOrientation.Vertical) == clippingResistance,
 				"NSStackViewShouldChangeClippingResistance - Failed to set ClippingResistance");
 		}
 
@@ -148,7 +148,7 @@ namespace Xamarin.Mac.Tests {
 			var huggingPriority = view.HuggingPriority (NSLayoutConstraintOrientation.Horizontal);
 			view.SetHuggingPriority (huggingPriority + 10, NSLayoutConstraintOrientation.Horizontal);
 
-			Assert.IsFalse (view.HuggingPriority (NSLayoutConstraintOrientation.Horizontal) == huggingPriority,
+			ClassicAssert.IsFalse (view.HuggingPriority (NSLayoutConstraintOrientation.Horizontal) == huggingPriority,
 				"NSStackViewShouldChangeHuggingPriority - Failed to set HuggingPriority");
 		}
 
@@ -161,7 +161,7 @@ namespace Xamarin.Mac.Tests {
 			var customSpacing = view.CustomSpacingAfterView (first);
 			view.SetCustomSpacing (10, first);
 
-			Assert.IsFalse (view.CustomSpacingAfterView (first) == customSpacing,
+			ClassicAssert.IsFalse (view.CustomSpacingAfterView (first) == customSpacing,
 				"NSStackViewShouldChangeCustomSpacing - Failed to set CustomSpacing");
 		}
 
@@ -174,7 +174,7 @@ namespace Xamarin.Mac.Tests {
 			var visibilityPriority = view.VisibilityPriority (first);
 			view.SetVisibilityPriority (10, first);
 
-			Assert.IsFalse (view.VisibilityPriority (first) == visibilityPriority,
+			ClassicAssert.IsFalse (view.VisibilityPriority (first) == visibilityPriority,
 				"NSStackViewShouldChangeVisibilityPriority - Failed to set VisibilityPriority");
 		}
 	}

@@ -29,7 +29,7 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				objCount = descriptor.FunctionCount;
 			}, "Getter");
-			Assert.AreEqual (newCount, objCount, "Count");
+			ClassicAssert.AreEqual (newCount, objCount, "Count");
 		}
 	}
 }

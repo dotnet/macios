@@ -26,20 +26,20 @@ namespace MonoTouchFixtures.Metal {
 		[Test]
 		public void GetLayoutsTest ()
 		{
-			Assert.NotNull (descriptor.Layouts); // default value
+			ClassicAssert.NotNull (descriptor.Layouts); // default value
 		}
 
 		[Test]
 		public void GetAttributesTest ()
 		{
-			Assert.NotNull (descriptor.Attributes); // default value
+			ClassicAssert.NotNull (descriptor.Attributes); // default value
 		}
 
 		[Test]
 		public void GetSetIndexType ()
 		{
 			descriptor.IndexType = MTLIndexType.UInt32;
-			Assert.AreEqual (MTLIndexType.UInt32, descriptor.IndexType);
+			ClassicAssert.AreEqual (MTLIndexType.UInt32, descriptor.IndexType);
 		}
 
 		[Test]
@@ -47,7 +47,7 @@ namespace MonoTouchFixtures.Metal {
 		{
 			uint index = 5;
 			descriptor.IndexBufferIndex = 5;
-			Assert.AreEqual (descriptor.IndexBufferIndex, (nuint) index);
+			ClassicAssert.AreEqual (descriptor.IndexBufferIndex, (nuint) index);
 		}
 	}
 }

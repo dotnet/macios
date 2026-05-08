@@ -115,9 +115,9 @@ namespace LinkAll.Attributes {
 					result = true;
 			}
 #if DEBUG
-			Assert.True (result, "DebuggableAttribute");
+			ClassicAssert.True (result, "DebuggableAttribute");
 #else
-			Assert.False (result, "DebuggableAttribute");
+			ClassicAssert.False (result, "DebuggableAttribute");
 #endif
 		}
 
@@ -157,9 +157,9 @@ namespace LinkAll.Attributes {
 					result = true;
 			}
 #if DEBUG
-			Assert.True (result, "DebuggerBrowsable");
+			ClassicAssert.True (result, "DebuggerBrowsable");
 #else
-			Assert.False (result, "DebuggerBrowsable");
+			ClassicAssert.False (result, "DebuggerBrowsable");
 #endif
 		}
 
@@ -167,15 +167,15 @@ namespace LinkAll.Attributes {
 		public void DebuggerTypeProxy_24203 ()
 		{
 			var d = new Dictionary<string, int> () { { "key", 0 } };
-			Assert.NotNull (d); // just to be 100% sure it won't be linked away (with the attribute we'll be looking for)
+			ClassicAssert.NotNull (d); // just to be 100% sure it won't be linked away (with the attribute we'll be looking for)
 			var proxy = Type.GetType ("System.Collections.Generic.IDictionaryDebugView`2, " + mscorlib)!;
 #if DEBUG
-			Assert.NotNull (proxy, "proxy");
+			ClassicAssert.NotNull (proxy, "proxy");
 			// having the type is nice, but it must not be empty to be useful
 			Assert.That (proxy.GetConstructors ().Length, Is.GreaterThan (0), "constructors");
 			Assert.That (proxy.GetProperties ().Length, Is.GreaterThan (0), "properties");
 #else
-			Assert.Null (proxy, "proxy");
+			ClassicAssert.Null (proxy, "proxy");
 #endif
 		}
 
@@ -185,19 +185,19 @@ namespace LinkAll.Attributes {
 			var assembly = GetType ().Assembly;
 			var ta = assembly.GetCustomAttributes<CustomAttributeArray> ();
 			Assert.That (ta.Count (), Is.EqualTo (3), "Type[]");
-			Assert.NotNull (Type.GetType ("LinkAll.Attributes.CustomTypeA"), "CustomTypeA");
-			Assert.NotNull (Type.GetType ("LinkAll.Attributes.CustomTypeAA"), "CustomTypeAA");
-			Assert.NotNull (Type.GetType ("LinkAll.Attributes.CustomTypeAAA"), "CustomTypeAAA");
-			//Assert.NotNull (Type.GetType ("LinkAll.Attributes.CustomTypeAAAA"), "CustomTypeAAAA");
+			ClassicAssert.NotNull (Type.GetType ("LinkAll.Attributes.CustomTypeA"), "CustomTypeA");
+			ClassicAssert.NotNull (Type.GetType ("LinkAll.Attributes.CustomTypeAA"), "CustomTypeAA");
+			ClassicAssert.NotNull (Type.GetType ("LinkAll.Attributes.CustomTypeAAA"), "CustomTypeAAA");
+			//ClassicAssert.NotNull (Type.GetType ("LinkAll.Attributes.CustomTypeAAAA"), "CustomTypeAAAA");
 
 			var t = assembly.GetCustomAttributes<CustomAttribute> ();
 			Assert.That (t.Count (), Is.EqualTo (2), "Type");
-			Assert.NotNull (Type.GetType ("LinkAll.Attributes.CustomType"), "CustomType");
-			Assert.NotNull (Type.GetType ("LinkAll.Attributes.CustomTypeG"), "CustomTypeG");
+			ClassicAssert.NotNull (Type.GetType ("LinkAll.Attributes.CustomType"), "CustomType");
+			ClassicAssert.NotNull (Type.GetType ("LinkAll.Attributes.CustomTypeG"), "CustomTypeG");
 
 			//var to = assembly.GetCustomAttributes<CustomAttributeObject> ();
 			//Assert.That (to.Count (), Is.EqualTo (1), "Object");
-			//Assert.NotNull (Type.GetType ("LinkAll.Attributes.CustomTypeO"), "CustomTypeO");
+			//ClassicAssert.NotNull (Type.GetType ("LinkAll.Attributes.CustomTypeO"), "CustomTypeO");
 		}
 	}
 }

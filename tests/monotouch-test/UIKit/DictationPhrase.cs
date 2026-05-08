@@ -15,8 +15,8 @@ namespace MonoTouchFixtures.UIKit {
 		public void Defaults ()
 		{
 			using (UIDictationPhrase dp = new UIDictationPhrase ()) {
-				Assert.Null (dp.AlternativeInterpretations, "AlternativeInterpretations");
-				Assert.Null (dp.Text, "Text");
+				ClassicAssert.Null (dp.AlternativeInterpretations, "AlternativeInterpretations");
+				ClassicAssert.Null (dp.Text, "Text");
 			}
 		}
 	}

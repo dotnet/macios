@@ -27,14 +27,14 @@ namespace MonoTouchFixtures.GameplayKit {
 		{
 			var chaseState = new ValidState ();
 			var isValid = chaseState.IsValidNextState (typeof (InvalidState));
-			Assert.IsFalse (isValid, "Type");
+			ClassicAssert.IsFalse (isValid, "Type");
 
 			var invalid = new InvalidState ();
 			isValid = chaseState.IsValidNextState (invalid);
-			Assert.IsFalse (isValid, "Instance");
+			ClassicAssert.IsFalse (isValid, "Instance");
 
 			isValid = chaseState.IsValidNextState (invalid.Class);
-			Assert.IsFalse (isValid, "Class");
+			ClassicAssert.IsFalse (isValid, "Class");
 		}
 
 		[Test]
@@ -54,8 +54,8 @@ namespace MonoTouchFixtures.GameplayKit {
 			// GKState is an abstract type - but it does implement IsValidNextState (and accept anything)
 			using (var s1 = new ValidState ())
 			using (var s2 = new InvalidState ()) {
-				Assert.True (s2.IsValidNextState (s2), "self");
-				Assert.True (s2.IsValidNextState (s1), "different");
+				ClassicAssert.True (s2.IsValidNextState (s2), "self");
+				ClassicAssert.True (s2.IsValidNextState (s1), "different");
 			}
 		}
 	}

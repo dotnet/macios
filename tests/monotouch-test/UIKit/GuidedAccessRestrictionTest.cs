@@ -46,8 +46,8 @@ namespace MonoTouchFixtures.UIKit {
 				}
 			}, () => done);
 
-			Assert.NotNull (gotError, "Error was null.");
-			Assert.IsFalse (didSuccess, "Somehow this succeeded, are we running monotouch-tests app in kiosk mode?");
+			ClassicAssert.NotNull (gotError, "Error was null.");
+			ClassicAssert.IsFalse (didSuccess, "Somehow this succeeded, are we running monotouch-tests app in kiosk mode?");
 		}
 #endif // !__TVOS__
 	}

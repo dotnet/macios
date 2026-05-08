@@ -30,9 +30,9 @@ namespace MonoTouchFixtures.SpriteKit {
 
 			using (var node = new SK3DNode ()) {
 				var v = node.ProjectPoint (new Vector3 (1, 2, 3));
-				Assert.AreEqual (1, v.X, "#x1");
-				Assert.AreEqual (2, v.Y, "#y1");
-				Assert.AreEqual (3, v.Z, "#z1");
+				ClassicAssert.AreEqual (1, v.X, "#x1");
+				ClassicAssert.AreEqual (2, v.Y, "#y1");
+				ClassicAssert.AreEqual (3, v.Z, "#z1");
 			}
 		}
 
@@ -48,9 +48,9 @@ namespace MonoTouchFixtures.SpriteKit {
 
 			using (var node = new SK3DNode ()) {
 				var v = node.UnprojectPoint (new Vector3 (1, 2, 3));
-				Assert.AreEqual (1, v.X, "#x1");
-				Assert.AreEqual (2, v.Y, "#y1");
-				Assert.AreEqual (3, v.Z, "#z1");
+				ClassicAssert.AreEqual (1, v.X, "#x1");
+				ClassicAssert.AreEqual (2, v.Y, "#y1");
+				ClassicAssert.AreEqual (3, v.Z, "#z1");
 			}
 		}
 	}

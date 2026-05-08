@@ -39,7 +39,7 @@ namespace MonoTouchFixtures.Network {
 			try {
 				Assert.DoesNotThrow (
 					() => capturedConfig = NWProxyConfig.CreateRelay (hop, null), "Throws");
-				Assert.NotNull (capturedConfig, "Not null");
+				ClassicAssert.NotNull (capturedConfig, "Not null");
 			} finally {
 				capturedConfig?.Dispose ();
 			}
@@ -52,7 +52,7 @@ namespace MonoTouchFixtures.Network {
 			try {
 				Assert.DoesNotThrow (
 					() => capturedConfig = NWProxyConfig.CreateObliviousHttp (hop, "", new byte [0]), "Throws");
-				Assert.Null (capturedConfig, "Not null");
+				ClassicAssert.Null (capturedConfig, "Not null");
 			} finally {
 				capturedConfig?.Dispose ();
 			}
@@ -66,7 +66,7 @@ namespace MonoTouchFixtures.Network {
 				Assert.DoesNotThrow (
 					() => capturedConfig = NWProxyConfig.CreateHttpConnect (endpoint, null),
 				"Throws");
-				Assert.NotNull (capturedConfig, "Not null");
+				ClassicAssert.NotNull (capturedConfig, "Not null");
 			} finally {
 				capturedConfig?.Dispose ();
 			}
@@ -80,7 +80,7 @@ namespace MonoTouchFixtures.Network {
 				Assert.DoesNotThrow (
 					() => capturedConfig = NWProxyConfig.CreateSocksV5 (endpoint),
 				"Throws");
-				Assert.NotNull (capturedConfig, "Not null");
+				ClassicAssert.NotNull (capturedConfig, "Not null");
 			} finally {
 				capturedConfig?.Dispose ();
 			}
@@ -104,7 +104,7 @@ namespace MonoTouchFixtures.Network {
 		public void FailoverAllowedTest ()
 		{
 			config.FailoverAllowed = true;
-			Assert.True (config.FailoverAllowed);
+			ClassicAssert.True (config.FailoverAllowed);
 		}
 
 		[Test]
@@ -188,10 +188,10 @@ namespace MonoTouchFixtures.Network {
 		public void DefaultSessionConfigurationProxyConfigurationsTests ()
 		{
 			var defaultConfig = NSUrlSessionConfiguration.DefaultSessionConfiguration;
-			Assert.AreEqual (0, defaultConfig.ProxyConfigurations.Length, "getter");
+			ClassicAssert.AreEqual (0, defaultConfig.ProxyConfigurations.Length, "getter");
 
 			defaultConfig.ProxyConfigurations = new [] { config };
-			Assert.AreEqual (1, defaultConfig.ProxyConfigurations.Length, "setter");
+			ClassicAssert.AreEqual (1, defaultConfig.ProxyConfigurations.Length, "setter");
 		}
 	}
 }

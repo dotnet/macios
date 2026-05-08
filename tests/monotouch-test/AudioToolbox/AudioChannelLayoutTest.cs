@@ -18,20 +18,20 @@ namespace MonoTouchFixtures.AudioToolbox {
 		public void Validate ()
 		{
 			var acl = AudioChannelLayout.FromAudioChannelLayoutTag (AudioChannelLayoutTag.AudioUnit_6_1);
-			Assert.AreEqual (AudioFormatError.None, AudioChannelLayout.Validate (acl));
+			ClassicAssert.AreEqual (AudioFormatError.None, AudioChannelLayout.Validate (acl));
 		}
 
 		[Test]
 		public void FromAudioChannelBitmap ()
 		{
 			var bitmap = AudioChannelLayoutTag.AudioUnit_7_1_Front.ToAudioChannel ();
-			Assert.IsNotNull (AudioChannelLayout.FromAudioChannelBitmap (bitmap.Value));
+			ClassicAssert.IsNotNull (AudioChannelLayout.FromAudioChannelBitmap (bitmap.Value));
 		}
 
 		[Test]
 		public void FromAudioChannelLayoutTag ()
 		{
-			Assert.IsNotNull (AudioChannelLayout.FromAudioChannelLayoutTag (AudioChannelLayoutTag.AudioUnit_6_1));
+			ClassicAssert.IsNotNull (AudioChannelLayout.FromAudioChannelLayoutTag (AudioChannelLayoutTag.AudioUnit_6_1));
 		}
 
 		[Test]
@@ -54,13 +54,13 @@ namespace MonoTouchFixtures.AudioToolbox {
 			var acl1 = AudioChannelLayout.FromAudioChannelLayoutTag (AudioChannelLayoutTag.AudioUnit_6_1);
 			var acl2 = AudioChannelLayout.FromAudioChannelLayoutTag (AudioChannelLayoutTag.MPEG_7_1_B);
 
-			Assert.IsNotNull (AudioChannelLayout.GetChannelMap (acl1, acl2));
+			ClassicAssert.IsNotNull (AudioChannelLayout.GetChannelMap (acl1, acl2));
 		}
 
 		[Test]
 		public void GetTagsForNumberOfChannels ()
 		{
-			Assert.IsNotNull (AudioChannelLayout.GetTagsForNumberOfChannels (4));
+			ClassicAssert.IsNotNull (AudioChannelLayout.GetTagsForNumberOfChannels (4));
 		}
 
 		[Test]
@@ -69,7 +69,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 			var acl1 = AudioChannelLayout.FromAudioChannelLayoutTag (AudioChannelLayoutTag.AudioUnit_6_1);
 			var acl2 = AudioChannelLayout.FromAudioChannelLayoutTag (AudioChannelLayoutTag.MPEG_7_1_B);
 
-			Assert.IsNotNull (AudioChannelLayout.GetMatrixMixMap (acl1, acl2));
+			ClassicAssert.IsNotNull (AudioChannelLayout.GetMatrixMixMap (acl1, acl2));
 		}
 	}
 }

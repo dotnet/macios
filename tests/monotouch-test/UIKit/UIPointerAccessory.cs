@@ -27,9 +27,9 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			UIPointerAccessory acc = null;
 			Assert.DoesNotThrow (() => acc = UIPointerAccessory.CreateArrow (UIPointerAccessoryPosition.Top), "Should not throw");
-			Assert.NotNull (acc, $"{nameof (acc)} was null");
-			Assert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.Top.Offset, "Offset");
-			Assert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.Top.Angle, "Angle");
+			ClassicAssert.NotNull (acc, $"{nameof (acc)} was null");
+			ClassicAssert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.Top.Offset, "Offset");
+			ClassicAssert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.Top.Angle, "Angle");
 		}
 
 		[Test]
@@ -37,9 +37,9 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			UIPointerAccessory acc = null;
 			Assert.DoesNotThrow (() => acc = UIPointerAccessory.CreateArrow (UIPointerAccessoryPosition.TopRight), "Should not throw");
-			Assert.NotNull (acc, $"{nameof (acc)} was null");
-			Assert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.TopRight.Offset, "Offset");
-			Assert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.TopRight.Angle, "Angle");
+			ClassicAssert.NotNull (acc, $"{nameof (acc)} was null");
+			ClassicAssert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.TopRight.Offset, "Offset");
+			ClassicAssert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.TopRight.Angle, "Angle");
 		}
 
 		[Test]
@@ -47,9 +47,9 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			UIPointerAccessory acc = null;
 			Assert.DoesNotThrow (() => acc = UIPointerAccessory.CreateArrow (UIPointerAccessoryPosition.Right), "Should not throw");
-			Assert.NotNull (acc, $"{nameof (acc)} was null");
-			Assert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.Right.Offset, "Offset");
-			Assert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.Right.Angle, "Angle");
+			ClassicAssert.NotNull (acc, $"{nameof (acc)} was null");
+			ClassicAssert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.Right.Offset, "Offset");
+			ClassicAssert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.Right.Angle, "Angle");
 		}
 
 		[Test]
@@ -57,9 +57,9 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			UIPointerAccessory acc = null;
 			Assert.DoesNotThrow (() => acc = UIPointerAccessory.CreateArrow (UIPointerAccessoryPosition.BottomRight), "Should not throw");
-			Assert.NotNull (acc, $"{nameof (acc)} was null");
-			Assert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.BottomRight.Offset, "Offset");
-			Assert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.BottomRight.Angle, "Angle");
+			ClassicAssert.NotNull (acc, $"{nameof (acc)} was null");
+			ClassicAssert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.BottomRight.Offset, "Offset");
+			ClassicAssert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.BottomRight.Angle, "Angle");
 		}
 
 		[Test]
@@ -67,9 +67,9 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			UIPointerAccessory acc = null;
 			Assert.DoesNotThrow (() => acc = UIPointerAccessory.CreateArrow (UIPointerAccessoryPosition.Bottom), "Should not throw");
-			Assert.NotNull (acc, $"{nameof (acc)} was null");
-			Assert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.Bottom.Offset, "Offset");
-			Assert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.Bottom.Angle, "Angle");
+			ClassicAssert.NotNull (acc, $"{nameof (acc)} was null");
+			ClassicAssert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.Bottom.Offset, "Offset");
+			ClassicAssert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.Bottom.Angle, "Angle");
 		}
 
 		[Test]
@@ -77,9 +77,9 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			UIPointerAccessory acc = null;
 			Assert.DoesNotThrow (() => acc = UIPointerAccessory.CreateArrow (UIPointerAccessoryPosition.BottomLeft), "Should not throw");
-			Assert.NotNull (acc, $"{nameof (acc)} was null");
-			Assert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.BottomLeft.Offset, "Offset");
-			Assert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.BottomLeft.Angle, "Angle");
+			ClassicAssert.NotNull (acc, $"{nameof (acc)} was null");
+			ClassicAssert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.BottomLeft.Offset, "Offset");
+			ClassicAssert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.BottomLeft.Angle, "Angle");
 		}
 
 		[Test]
@@ -87,9 +87,9 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			UIPointerAccessory acc = null;
 			Assert.DoesNotThrow (() => acc = UIPointerAccessory.CreateArrow (UIPointerAccessoryPosition.Left), "Should not throw");
-			Assert.NotNull (acc, $"{nameof (acc)} was null");
-			Assert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.Left.Offset, "Offset");
-			Assert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.Left.Angle, "Angle");
+			ClassicAssert.NotNull (acc, $"{nameof (acc)} was null");
+			ClassicAssert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.Left.Offset, "Offset");
+			ClassicAssert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.Left.Angle, "Angle");
 		}
 
 		[Test]
@@ -97,9 +97,9 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			UIPointerAccessory acc = null;
 			Assert.DoesNotThrow (() => acc = UIPointerAccessory.CreateArrow (UIPointerAccessoryPosition.TopLeft), "Should not throw");
-			Assert.NotNull (acc, $"{nameof (acc)} was null");
-			Assert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.TopLeft.Offset, "Offset");
-			Assert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.TopLeft.Angle, "Angle");
+			ClassicAssert.NotNull (acc, $"{nameof (acc)} was null");
+			ClassicAssert.AreEqual (acc.Position.Offset, UIPointerAccessoryPosition.TopLeft.Offset, "Offset");
+			ClassicAssert.AreEqual (acc.Position.Angle, UIPointerAccessoryPosition.TopLeft.Angle, "Angle");
 		}
 	}
 }

@@ -26,22 +26,22 @@ namespace MonoTouchFixtures.MediaAccessibility {
 			Assert.Throws<ArgumentNullException> (() => MAImageCaptioning.GetCaption (null, out _));
 			using (NSUrl url = new NSUrl (NetworkResources.MicrosoftUrl)) {
 				var s = MAImageCaptioning.GetCaption (url, out var e);
-				Assert.Null (s, "remote / return value");
+				ClassicAssert.Null (s, "remote / return value");
 				Assert.That (e, Is.Null.Or.Not.Null, "remote / error"); // sometimes we get an error, and sometimes we don't 🤷‍♂️
 			}
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
 			file = file.Replace (" ", "%20");
 			using (NSUrl url = new NSUrl (file)) {
 				var s = MAImageCaptioning.GetCaption (url, out var e);
-				Assert.Null (s, "local / return value");
-				Assert.NotNull (e, "local / error"); // does not like the URL (invalid)
+				ClassicAssert.Null (s, "local / return value");
+				ClassicAssert.NotNull (e, "local / error"); // does not like the URL (invalid)
 			}
 			file = NSBundle.MainBundle.ResourceUrl.AbsoluteString + "basn3p08.png";
 			file = file.Replace (" ", "%20");
 			using (NSUrl url = new NSUrl (file)) {
 				var s = MAImageCaptioning.GetCaption (url, out var e);
-				Assert.Null (s, "local / return value");
-				Assert.Null (e, "local / no error");
+				ClassicAssert.Null (s, "local / return value");
+				ClassicAssert.Null (e, "local / no error");
 			}
 		}
 
@@ -70,43 +70,43 @@ namespace MonoTouchFixtures.MediaAccessibility {
 					var read_only = Runtime.Arch == Arch.DEVICE;
 #endif
 					if (read_only) {
-						Assert.False (MAImageCaptioning.SetCaption (url, "xamarin", out var e), "Set");
-						Assert.NotNull (e, "ro / set / no error"); // weird, it can't be saved back to the file metadata
+						ClassicAssert.False (MAImageCaptioning.SetCaption (url, "xamarin", out var e), "Set");
+						ClassicAssert.NotNull (e, "ro / set / no error"); // weird, it can't be saved back to the file metadata
 
 						var s = MAImageCaptioning.GetCaption (url, out e);
-						Assert.Null (s, "ro / roundtrip 1"); // not very surprising since Set can't save it
-						Assert.Null (e, "ro / get / no error");
+						ClassicAssert.Null (s, "ro / roundtrip 1"); // not very surprising since Set can't save it
+						ClassicAssert.Null (e, "ro / get / no error");
 
-						Assert.False (MAImageCaptioning.SetCaption (url, "xamarin", out e), "Set 2");
+						ClassicAssert.False (MAImageCaptioning.SetCaption (url, "xamarin", out e), "Set 2");
 						s = MAImageCaptioning.GetCaption (url, out e);
-						Assert.Null (s, "ro / back to original");
-						Assert.Null (e, "ro / get back / no error");
+						ClassicAssert.Null (s, "ro / back to original");
+						ClassicAssert.Null (e, "ro / get back / no error");
 					} else {
-						Assert.True (MAImageCaptioning.SetCaption (url, "xamarin", out var e), "Set");
-						Assert.Null (e, "ro / set / no error"); // weird, it can't be saved back to the file metadata
+						ClassicAssert.True (MAImageCaptioning.SetCaption (url, "xamarin", out var e), "Set");
+						ClassicAssert.Null (e, "ro / set / no error"); // weird, it can't be saved back to the file metadata
 
 						var s = MAImageCaptioning.GetCaption (url, out e);
 						if (TestRuntime.CheckXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch)) {
-							Assert.AreEqual ("xamarin", s, "ro / roundtrip 2");
+							ClassicAssert.AreEqual ("xamarin", s, "ro / roundtrip 2");
 						} else {
-							Assert.Null (s, "ro / roundtrip 3"); // not very surprising since Set can't save it
+							ClassicAssert.Null (s, "ro / roundtrip 3"); // not very surprising since Set can't save it
 						}
-						Assert.Null (e, "ro / get / no error");
+						ClassicAssert.Null (e, "ro / get / no error");
 
-						Assert.True (MAImageCaptioning.SetCaption (url, "xamarin", out e), "Set 2");
+						ClassicAssert.True (MAImageCaptioning.SetCaption (url, "xamarin", out e), "Set 2");
 						s = MAImageCaptioning.GetCaption (url, out e);
 						if (TestRuntime.CheckXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch)) {
-							Assert.AreEqual ("xamarin", s, "ro / back to original");
+							ClassicAssert.AreEqual ("xamarin", s, "ro / back to original");
 						} else {
-							Assert.Null (s, "ro / back to original");
+							ClassicAssert.Null (s, "ro / back to original");
 						}
-						Assert.Null (e, "ro / get back / no error");
+						ClassicAssert.Null (e, "ro / get back / no error");
 
 						// Restore original value
-						Assert.True (MAImageCaptioning.SetCaption (url, null, out e), "Set 2");
+						ClassicAssert.True (MAImageCaptioning.SetCaption (url, null, out e), "Set 2");
 						s = MAImageCaptioning.GetCaption (url, out e);
-						Assert.Null (s, "ro / back to null");
-						Assert.Null (e, "ro / get back null / no error");
+						ClassicAssert.Null (s, "ro / back to null");
+						ClassicAssert.Null (e, "ro / get back null / no error");
 					}
 
 					// 2nd try with a read/write copy
@@ -114,25 +114,25 @@ namespace MonoTouchFixtures.MediaAccessibility {
 					File.Copy (url.Path, temp, overwrite: true);
 				}
 				using (var rw_url = NSUrl.FromFilename (temp)) {
-					Assert.True (MAImageCaptioning.SetCaption (rw_url, "xamarin", out var e), "Set");
-					Assert.Null (e, "rw / set / no error"); // weird, it can't be saved back to the file metadata
+					ClassicAssert.True (MAImageCaptioning.SetCaption (rw_url, "xamarin", out var e), "Set");
+					ClassicAssert.Null (e, "rw / set / no error"); // weird, it can't be saved back to the file metadata
 
 					var s = MAImageCaptioning.GetCaption (rw_url, out e);
 					if (TestRuntime.CheckXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch)) {
-						Assert.AreEqual ("xamarin", s, "rw / roundtrip"); // :)
+						ClassicAssert.AreEqual ("xamarin", s, "rw / roundtrip"); // :)
 					} else {
-						Assert.Null (s, "rw / roundtrip"); // :(
+						ClassicAssert.Null (s, "rw / roundtrip"); // :(
 					}
-					Assert.Null (e, "rw / get / no error");
+					ClassicAssert.Null (e, "rw / get / no error");
 
-					Assert.True (MAImageCaptioning.SetCaption (rw_url, "xamarin", out e), "Set 2");
+					ClassicAssert.True (MAImageCaptioning.SetCaption (rw_url, "xamarin", out e), "Set 2");
 					s = MAImageCaptioning.GetCaption (rw_url, out e);
 					if (TestRuntime.CheckXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch)) {
-						Assert.AreEqual ("xamarin", s, "rw / back to original");
+						ClassicAssert.AreEqual ("xamarin", s, "rw / back to original");
 					} else {
-						Assert.Null (s, "rw / back to original");
+						ClassicAssert.Null (s, "rw / back to original");
 					}
-					Assert.Null (e, "rw / get back / no error");
+					ClassicAssert.Null (e, "rw / get back / no error");
 				}
 
 			} finally {

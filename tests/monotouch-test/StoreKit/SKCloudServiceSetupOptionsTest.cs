@@ -25,8 +25,8 @@ namespace MonoTouchFixtures.StoreKit {
 			var optionsObject = new SKCloudServiceSetupOptions {
 				Action = SKCloudServiceSetupAction.Subscribe
 			};
-			Assert.AreEqual ("sdkSubscribe", optionsObject.Dictionary ["SKCloudServiceSetupOptionsActionKey"].ToString (), "SKCloudServiceSetupOptionsActionKey");
-			Assert.AreEqual (SKCloudServiceSetupAction.Subscribe, optionsObject.Action, "SKCloudServiceSetupOptions.Action");
+			ClassicAssert.AreEqual ("sdkSubscribe", optionsObject.Dictionary ["SKCloudServiceSetupOptionsActionKey"].ToString (), "SKCloudServiceSetupOptionsActionKey");
+			ClassicAssert.AreEqual (SKCloudServiceSetupAction.Subscribe, optionsObject.Action, "SKCloudServiceSetupOptions.Action");
 		}
 	}
 }

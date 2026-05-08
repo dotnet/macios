@@ -32,7 +32,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			var alertController = new UIAlertController ();
 			alertController.SpringLoaded = true;
-			Assert.IsTrue (alertController.SpringLoaded);
+			ClassicAssert.IsTrue (alertController.SpringLoaded);
 		}
 
 		[Test]
@@ -40,7 +40,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			var barButtonItem = new UIBarButtonItem ();
 			barButtonItem.SpringLoaded = true;
-			Assert.IsTrue (barButtonItem.SpringLoaded);
+			ClassicAssert.IsTrue (barButtonItem.SpringLoaded);
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			var button = new UIButton ();
 			button.SpringLoaded = true;
-			Assert.IsTrue (button.SpringLoaded);
+			ClassicAssert.IsTrue (button.SpringLoaded);
 		}
 
 		[Test]
@@ -56,7 +56,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			var collectionView = new UICollectionView (new CGRect (0, 0, 100, 100), new UICollectionViewLayout ());
 			collectionView.SpringLoaded = true;
-			Assert.IsTrue (collectionView.SpringLoaded);
+			ClassicAssert.IsTrue (collectionView.SpringLoaded);
 		}
 
 		[Test]
@@ -64,7 +64,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			var segmentedControl = new UISegmentedControl ();
 			segmentedControl.SpringLoaded = true;
-			Assert.IsTrue (segmentedControl.SpringLoaded);
+			ClassicAssert.IsTrue (segmentedControl.SpringLoaded);
 		}
 
 		[Test]
@@ -72,7 +72,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			var tabBarItem = new UITabBarItem ();
 			tabBarItem.SpringLoaded = true;
-			Assert.IsTrue (tabBarItem.SpringLoaded);
+			ClassicAssert.IsTrue (tabBarItem.SpringLoaded);
 		}
 
 		[Test]
@@ -80,7 +80,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			var tabBar = new UITabBar ();
 			tabBar.SpringLoaded = true;
-			Assert.IsTrue (tabBar.SpringLoaded);
+			ClassicAssert.IsTrue (tabBar.SpringLoaded);
 		}
 
 		[Test]
@@ -88,7 +88,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			var tableView = new UITableView ();
 			tableView.SpringLoaded = true;
-			Assert.IsTrue (tableView.SpringLoaded);
+			ClassicAssert.IsTrue (tableView.SpringLoaded);
 		}
 
 		[Test]
@@ -97,7 +97,7 @@ namespace MonoTouchFixtures.UIKit {
 			TestRuntime.AssertXcodeVersion (16, 0);
 			using var instance = new UISearchTab (null);
 			instance.SpringLoaded = true;
-			Assert.IsTrue (instance.SpringLoaded);
+			ClassicAssert.IsTrue (instance.SpringLoaded);
 		}
 
 		[Test]
@@ -106,7 +106,7 @@ namespace MonoTouchFixtures.UIKit {
 			TestRuntime.AssertXcodeVersion (16, 0);
 			using var instance = new UITab ("title", null, "identifier", null);
 			instance.SpringLoaded = true;
-			Assert.IsTrue (instance.SpringLoaded);
+			ClassicAssert.IsTrue (instance.SpringLoaded);
 		}
 
 		[Test]
@@ -115,7 +115,7 @@ namespace MonoTouchFixtures.UIKit {
 			TestRuntime.AssertXcodeVersion (16, 0);
 			using var instance = new UITabGroup ("title", null, "identifier", new UITab [0], null);
 			instance.SpringLoaded = true;
-			Assert.IsTrue (instance.SpringLoaded);
+			ClassicAssert.IsTrue (instance.SpringLoaded);
 		}
 
 #if HAS_INTENTUI
@@ -126,7 +126,7 @@ namespace MonoTouchFixtures.UIKit {
 			TestRuntime.AssertDevice ();
 			var shortcutButton = new INUIAddVoiceShortcutButton (INUIAddVoiceShortcutButtonStyle.Black);
 			shortcutButton.SpringLoaded = true;
-			Assert.IsTrue (shortcutButton.SpringLoaded);
+			ClassicAssert.IsTrue (shortcutButton.SpringLoaded);
 		}
 #endif
 	}

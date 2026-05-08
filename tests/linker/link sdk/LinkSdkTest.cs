@@ -7,7 +7,7 @@ namespace LinkSdkTests {
 		{
 			var type = Type.GetType ("System.Globalization." + calendarName);
 			bool success = present == (type is not null);
-			Assert.AreEqual (present, type is not null, calendarName);
+			ClassicAssert.AreEqual (present, type is not null, calendarName);
 		}
 
 		[Test]

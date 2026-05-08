@@ -20,15 +20,15 @@ namespace MonoTouchFixtures.MapKit {
 		public void Defaults ()
 		{
 			MKMapRect rect = new MKMapRect ();
-			Assert.False (rect.IsNull, "IsNull");
-			Assert.True (rect.IsEmpty, "IsEmpty");
-			Assert.False (rect.Spans180thMeridian, "default");
-			Assert.True (rect.Equals (rect), "Equals");
+			ClassicAssert.False (rect.IsNull, "IsNull");
+			ClassicAssert.True (rect.IsEmpty, "IsEmpty");
+			ClassicAssert.False (rect.Spans180thMeridian, "default");
+			ClassicAssert.True (rect.Equals (rect), "Equals");
 			Assert.That (rect.ToString (), Is.EqualTo (@"{{0, 0}, {0, 0}}"), "default");
 
 			MKMapRect rect2 = new MKMapRect ();
-			Assert.True (rect == rect2, "==");
-			Assert.False (rect != rect2, "!=");
+			ClassicAssert.True (rect == rect2, "==");
+			ClassicAssert.False (rect != rect2, "!=");
 			Assert.That (rect.GetHashCode (), Is.EqualTo (rect2.GetHashCode ()), "GetHashCode");
 		}
 
@@ -38,9 +38,9 @@ namespace MonoTouchFixtures.MapKit {
 			MKMapRect rect = new MKMapRect ();
 			MKMapPoint point = new MKMapPoint ();
 			if (TestRuntime.CheckXcodeVersion (8, 0))
-				Assert.True (rect.Contains (point), "default");
+				ClassicAssert.True (rect.Contains (point), "default");
 			else
-				Assert.False (rect.Contains (point), "default");
+				ClassicAssert.False (rect.Contains (point), "default");
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace MonoTouchFixtures.MapKit {
 		{
 			MKMapRect rect1 = new MKMapRect ();
 			MKMapRect rect2 = new MKMapRect ();
-			Assert.True (rect1.Contains (rect2), "default");
+			ClassicAssert.True (rect1.Contains (rect2), "default");
 		}
 
 		[Test]
@@ -66,15 +66,15 @@ namespace MonoTouchFixtures.MapKit {
 		{
 			MKMapRect rect1 = new MKMapRect (1, 2, 3, 4);
 			MKMapRect rect2 = new MKMapRect (2, 3, 2, 1);
-			Assert.True (MKMapRect.Intersects (rect1, rect2), "Intersects");
+			ClassicAssert.True (MKMapRect.Intersects (rect1, rect2), "Intersects");
 
 			MKMapRect n = MKMapRect.Intersection (rect1, rect2);
 			Assert.That (n.ToString (), Is.EqualTo (@"{{2, 3}, {2, 1}}"), "ToString");
 
 			MKMapRect rect3 = new MKMapRect (-2, -3, 2, 1);
-			Assert.False (MKMapRect.Intersects (rect1, rect3), "!Intersects");
+			ClassicAssert.False (MKMapRect.Intersects (rect1, rect3), "!Intersects");
 			n = MKMapRect.Intersection (rect1, rect3);
-			Assert.True (n.IsNull, "IsNull");
+			ClassicAssert.True (n.IsNull, "IsNull");
 		}
 
 		[Test]
@@ -82,7 +82,7 @@ namespace MonoTouchFixtures.MapKit {
 		{
 			MKMapRect rect = new MKMapRect (Double.PositiveInfinity, Double.PositiveInfinity, 0, 0);
 			MKMapRect rectin = rect.Inset (-1, 1);
-			Assert.True (rectin.IsNull, "IsNull");
+			ClassicAssert.True (rectin.IsNull, "IsNull");
 
 			rect = new MKMapRect (1, 2, 3, 4);
 			rectin = rect.Inset (-1, 1);
@@ -94,7 +94,7 @@ namespace MonoTouchFixtures.MapKit {
 		{
 			MKMapRect rect = new MKMapRect (Double.PositiveInfinity, Double.PositiveInfinity, 0, 0);
 			MKMapRect rectoff = rect.Offset (-1, 1);
-			Assert.True (rectoff.IsNull, "IsNull");
+			ClassicAssert.True (rectoff.IsNull, "IsNull");
 
 			rect = new MKMapRect (1, 2, 3, 4);
 			rectoff = rect.Offset (1, -1);
@@ -105,9 +105,9 @@ namespace MonoTouchFixtures.MapKit {
 		public void Remainder ()
 		{
 			MKMapRect rect = new MKMapRect ();
-			Assert.False (rect.Spans180thMeridian, "default");
+			ClassicAssert.False (rect.Spans180thMeridian, "default");
 			MKMapRect remainder = rect.Remainder ();
-			Assert.True (remainder.IsNull, "IsNull");
+			ClassicAssert.True (remainder.IsNull, "IsNull");
 
 			rect = new MKMapRect (-90, -90, 90, 90);
 			Assert.That (rect.Spans180thMeridian, Is.EqualTo (!TestRuntime.CheckXcodeVersion (5, 1)), rect.ToString ());
@@ -130,8 +130,8 @@ namespace MonoTouchFixtures.MapKit {
 		{
 			MKMapRect nullRect = MKMapRect.Null;
 			MKMapRect expectedValue = new MKMapRect (double.PositiveInfinity, double.PositiveInfinity, 0, 0);
-			Assert.AreEqual (expectedValue, nullRect, "NullRect equals (PositiveInfinity, PositiveInfinity, 0, 0)");
-			Assert.IsTrue (nullRect.IsNull, "IsNull");
+			ClassicAssert.AreEqual (expectedValue, nullRect, "NullRect equals (PositiveInfinity, PositiveInfinity, 0, 0)");
+			ClassicAssert.IsTrue (nullRect.IsNull, "IsNull");
 		}
 	}
 }

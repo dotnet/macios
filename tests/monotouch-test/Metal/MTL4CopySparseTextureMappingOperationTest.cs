@@ -18,12 +18,12 @@ namespace MonoTouchFixtures.Metal {
 			var operation = new MTL4CopySparseTextureMappingOperation ();
 
 			// Assert
-			Assert.AreEqual (default (MTLRegion), operation.SourceRegion);
-			Assert.AreEqual (default (nuint), operation.SourceLevel);
-			Assert.AreEqual (default (nuint), operation.SourceSlice);
-			Assert.AreEqual (default (MTLOrigin), operation.DestinationOrigin);
-			Assert.AreEqual (default (nuint), operation.DestinationLevel);
-			Assert.AreEqual (default (nuint), operation.DestinationSlice);
+			ClassicAssert.AreEqual (default (MTLRegion), operation.SourceRegion);
+			ClassicAssert.AreEqual (default (nuint), operation.SourceLevel);
+			ClassicAssert.AreEqual (default (nuint), operation.SourceSlice);
+			ClassicAssert.AreEqual (default (MTLOrigin), operation.DestinationOrigin);
+			ClassicAssert.AreEqual (default (nuint), operation.DestinationLevel);
+			ClassicAssert.AreEqual (default (nuint), operation.DestinationSlice);
 		}
 
 		[Test]
@@ -37,7 +37,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.SourceRegion = expectedRegion;
 
 			// Assert
-			Assert.AreEqual (expectedRegion, operation.SourceRegion);
+			ClassicAssert.AreEqual (expectedRegion, operation.SourceRegion);
 		}
 
 		[Test]
@@ -51,7 +51,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.SourceLevel = expectedLevel;
 
 			// Assert
-			Assert.AreEqual (expectedLevel, operation.SourceLevel);
+			ClassicAssert.AreEqual (expectedLevel, operation.SourceLevel);
 		}
 
 		[Test]
@@ -65,7 +65,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.SourceSlice = expectedSlice;
 
 			// Assert
-			Assert.AreEqual (expectedSlice, operation.SourceSlice);
+			ClassicAssert.AreEqual (expectedSlice, operation.SourceSlice);
 		}
 
 		[Test]
@@ -79,7 +79,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.DestinationOrigin = expectedOrigin;
 
 			// Assert
-			Assert.AreEqual (expectedOrigin, operation.DestinationOrigin);
+			ClassicAssert.AreEqual (expectedOrigin, operation.DestinationOrigin);
 		}
 
 		[Test]
@@ -93,7 +93,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.DestinationLevel = expectedLevel;
 
 			// Assert
-			Assert.AreEqual (expectedLevel, operation.DestinationLevel);
+			ClassicAssert.AreEqual (expectedLevel, operation.DestinationLevel);
 		}
 
 		[Test]
@@ -107,7 +107,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.DestinationSlice = expectedSlice;
 
 			// Assert
-			Assert.AreEqual (expectedSlice, operation.DestinationSlice);
+			ClassicAssert.AreEqual (expectedSlice, operation.DestinationSlice);
 		}
 
 		[Test]
@@ -131,12 +131,12 @@ namespace MonoTouchFixtures.Metal {
 			operation.DestinationSlice = expectedDestinationSlice;
 
 			// Assert
-			Assert.AreEqual (expectedSourceRegion, operation.SourceRegion);
-			Assert.AreEqual (expectedSourceLevel, operation.SourceLevel);
-			Assert.AreEqual (expectedSourceSlice, operation.SourceSlice);
-			Assert.AreEqual (expectedDestinationOrigin, operation.DestinationOrigin);
-			Assert.AreEqual (expectedDestinationLevel, operation.DestinationLevel);
-			Assert.AreEqual (expectedDestinationSlice, operation.DestinationSlice);
+			ClassicAssert.AreEqual (expectedSourceRegion, operation.SourceRegion);
+			ClassicAssert.AreEqual (expectedSourceLevel, operation.SourceLevel);
+			ClassicAssert.AreEqual (expectedSourceSlice, operation.SourceSlice);
+			ClassicAssert.AreEqual (expectedDestinationOrigin, operation.DestinationOrigin);
+			ClassicAssert.AreEqual (expectedDestinationLevel, operation.DestinationLevel);
+			ClassicAssert.AreEqual (expectedDestinationSlice, operation.DestinationSlice);
 		}
 
 		[Test]
@@ -152,10 +152,10 @@ namespace MonoTouchFixtures.Metal {
 			operation.DestinationSlice = 0;
 
 			// Assert
-			Assert.AreEqual (0, (int) operation.SourceLevel);
-			Assert.AreEqual (0, (int) operation.SourceSlice);
-			Assert.AreEqual (0, (int) operation.DestinationLevel);
-			Assert.AreEqual (0, (int) operation.DestinationSlice);
+			ClassicAssert.AreEqual (0, (int) operation.SourceLevel);
+			ClassicAssert.AreEqual (0, (int) operation.SourceSlice);
+			ClassicAssert.AreEqual (0, (int) operation.DestinationLevel);
+			ClassicAssert.AreEqual (0, (int) operation.DestinationSlice);
 		}
 
 		[Test]
@@ -171,10 +171,10 @@ namespace MonoTouchFixtures.Metal {
 			operation.DestinationSlice = nuint.MaxValue;
 
 			// Assert
-			Assert.AreEqual (nuint.MaxValue, operation.SourceLevel);
-			Assert.AreEqual (nuint.MaxValue, operation.SourceSlice);
-			Assert.AreEqual (nuint.MaxValue, operation.DestinationLevel);
-			Assert.AreEqual (nuint.MaxValue, operation.DestinationSlice);
+			ClassicAssert.AreEqual (nuint.MaxValue, operation.SourceLevel);
+			ClassicAssert.AreEqual (nuint.MaxValue, operation.SourceSlice);
+			ClassicAssert.AreEqual (nuint.MaxValue, operation.DestinationLevel);
+			ClassicAssert.AreEqual (nuint.MaxValue, operation.DestinationSlice);
 		}
 
 		[Test]
@@ -194,9 +194,9 @@ namespace MonoTouchFixtures.Metal {
 			operation2.SourceSlice = 7;
 
 			// Assert
-			Assert.AreNotEqual (operation1.SourceRegion, operation2.SourceRegion);
-			Assert.AreNotEqual (operation1.SourceLevel, operation2.SourceLevel);
-			Assert.AreNotEqual (operation1.SourceSlice, operation2.SourceSlice);
+			ClassicAssert.AreNotEqual (operation1.SourceRegion, operation2.SourceRegion);
+			ClassicAssert.AreNotEqual (operation1.SourceLevel, operation2.SourceLevel);
+			ClassicAssert.AreNotEqual (operation1.SourceSlice, operation2.SourceSlice);
 		}
 
 		[Test]
@@ -210,7 +210,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.SourceRegion = zeroSizeRegion;
 
 			// Assert
-			Assert.AreEqual (zeroSizeRegion, operation.SourceRegion);
+			ClassicAssert.AreEqual (zeroSizeRegion, operation.SourceRegion);
 		}
 
 		[Test]
@@ -224,7 +224,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.DestinationOrigin = zeroOrigin;
 
 			// Assert
-			Assert.AreEqual (zeroOrigin, operation.DestinationOrigin);
+			ClassicAssert.AreEqual (zeroOrigin, operation.DestinationOrigin);
 		}
 	}
 }

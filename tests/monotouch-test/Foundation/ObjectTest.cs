@@ -51,10 +51,10 @@ namespace MonoTouchFixtures.Foundation {
 		public void IsDirectBinding ()
 		{
 			using (var o1 = new NSObject ()) {
-				Assert.True (GetIsDirectBinding (o1), "inside monotouch.dll");
+				ClassicAssert.True (GetIsDirectBinding (o1), "inside monotouch.dll");
 			}
 			using (var o2 = new MyObject ()) {
-				Assert.False (o2.GetIsDirectBinding (), "outside monotouch.dll");
+				ClassicAssert.False (o2.GetIsDirectBinding (), "outside monotouch.dll");
 			}
 		}
 
@@ -72,15 +72,15 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			// https://bugzilla.xamarin.com/show_bug.cgi?id=8458
 			using (CGPath p = CGPath.FromRect (new CGRect (1, 2, 3, 4))) {
-				Assert.IsNotNull (NSObject.FromObject (p), "CGPath");
+				ClassicAssert.IsNotNull (NSObject.FromObject (p), "CGPath");
 			}
 			using (CGColor c = new CGColor (CGColorSpace.CreateDeviceRGB (), new nfloat [] { 0.1f, 0.2f, 0.3f, 1.0f })) {
-				Assert.IsNotNull (NSObject.FromObject (c), "CGColor");
+				ClassicAssert.IsNotNull (NSObject.FromObject (c), "CGColor");
 			}
 			var hasSecAccessControl = TestRuntime.CheckXcodeVersion (6, 0);
 			if (hasSecAccessControl) {
 				using (var sac = new SecAccessControl (SecAccessible.WhenPasscodeSetThisDeviceOnly)) {
-					Assert.IsNotNull (NSObject.FromObject (sac), "SecAccessControl");
+					ClassicAssert.IsNotNull (NSObject.FromObject (sac), "SecAccessControl");
 				}
 			}
 		}
@@ -89,10 +89,10 @@ namespace MonoTouchFixtures.Foundation {
 		public void FromObject_Handle ()
 		{
 			using (CGPath p = CGPath.FromRect (new CGRect (1, 2, 3, 4))) {
-				Assert.IsNotNull (NSObject.FromObject (p.Handle), "CGPath");
+				ClassicAssert.IsNotNull (NSObject.FromObject (p.Handle), "CGPath");
 			}
 			using (CGColor c = new CGColor (CGColorSpace.CreateDeviceRGB (), new nfloat [] { 0.1f, 0.2f, 0.3f, 1.0f })) {
-				Assert.IsNotNull (NSObject.FromObject (c.Handle), "CGColor");
+				ClassicAssert.IsNotNull (NSObject.FromObject (c.Handle), "CGColor");
 			}
 		}
 
@@ -133,31 +133,31 @@ namespace MonoTouchFixtures.Foundation {
 
 			// NSObject does not conform to NSCopying
 			using (var o = new NSObject ()) {
-				Assert.False (o.ConformsToProtocol (nscopying), "NSObject/NSCopying");
-				Assert.False (o.ConformsToProtocol (nsmutablecopying), "NSObject/NSMutableCopying");
+				ClassicAssert.False (o.ConformsToProtocol (nscopying), "NSObject/NSCopying");
+				ClassicAssert.False (o.ConformsToProtocol (nsmutablecopying), "NSObject/NSMutableCopying");
 			}
 
 			// NSNumber conforms to NSCopying - but not NSMutableCopying
 			using (var n = new NSNumber (-1)) {
-				Assert.True (n.ConformsToProtocol (nscopying), "NSNumber/NSCopying");
+				ClassicAssert.True (n.ConformsToProtocol (nscopying), "NSNumber/NSCopying");
 				using (var xn = n.Copy ()) {
-					Assert.NotNull (xn, "NSNumber/Copy/NotNull");
-					Assert.AreSame (n, xn, "NSNumber/Copy/NotSame");
+					ClassicAssert.NotNull (xn, "NSNumber/Copy/NotNull");
+					ClassicAssert.AreSame (n, xn, "NSNumber/Copy/NotSame");
 				}
-				Assert.False (n.ConformsToProtocol (nsmutablecopying), "NSNumber/NSMutableCopying");
+				ClassicAssert.False (n.ConformsToProtocol (nsmutablecopying), "NSNumber/NSMutableCopying");
 			}
 
 			// NSMutableString conforms to NSCopying - but not NSMutableCopying
 			using (var s = new NSMutableString (1)) {
-				Assert.True (s.ConformsToProtocol (nscopying), "NSMutableString/NSCopying");
+				ClassicAssert.True (s.ConformsToProtocol (nscopying), "NSMutableString/NSCopying");
 				using (var xs = s.Copy ()) {
-					Assert.NotNull (xs, "NSMutableString/Copy/NotNull");
-					Assert.AreNotSame (s, xs, "NSMutableString/Copy/NotSame");
+					ClassicAssert.NotNull (xs, "NSMutableString/Copy/NotNull");
+					ClassicAssert.AreNotSame (s, xs, "NSMutableString/Copy/NotSame");
 				}
-				Assert.True (s.ConformsToProtocol (nsmutablecopying), "NSMutableString/NSMutableCopying");
+				ClassicAssert.True (s.ConformsToProtocol (nsmutablecopying), "NSMutableString/NSMutableCopying");
 				using (var xs = s.MutableCopy ()) {
-					Assert.NotNull (xs, "NSMutableString/MutableCopy/NotNull");
-					Assert.AreNotSame (s, xs, "NSMutableString/MutableCopy/NotSame");
+					ClassicAssert.NotNull (xs, "NSMutableString/MutableCopy/NotNull");
+					ClassicAssert.AreNotSame (s, xs, "NSMutableString/MutableCopy/NotSame");
 				}
 			}
 		}
@@ -170,7 +170,7 @@ namespace MonoTouchFixtures.Foundation {
 
 			// NSNumber conforms to NSCoding
 			using (var n = new NSNumber (-1)) {
-				Assert.True (n.ConformsToProtocol (nscoding), "NSNumber/NSCoding");
+				ClassicAssert.True (n.ConformsToProtocol (nscoding), "NSNumber/NSCoding");
 				using (var d = new NSMutableData ())
 				using (var a = new NSKeyedArchiver (d)) {
 					n.EncodeTo (a);
@@ -184,19 +184,19 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var o1 = new NSObject ())
 			using (var o2 = new NSObject ()) {
-				Assert.False (o1.Equals ((object) null), "Equals(object) null");
-				Assert.False (o1.Equals ((object) o2), "Equals(object) 1-2");
-				Assert.False (o2.Equals ((object) o1), "Equals(object) 2-1");
+				ClassicAssert.False (o1.Equals ((object) null), "Equals(object) null");
+				ClassicAssert.False (o1.Equals ((object) o2), "Equals(object) 1-2");
+				ClassicAssert.False (o2.Equals ((object) o1), "Equals(object) 2-1");
 
-				Assert.False (o1.Equals (3), "Equals(object) 1-3");
+				ClassicAssert.False (o1.Equals (3), "Equals(object) 1-3");
 
-				Assert.False (o1.Equals ((NSObject) null), "Equals(NSObject) null");
-				Assert.False (o1.Equals ((NSObject) o2), "Equals(NSObject) 1-2");
-				Assert.False (o2.Equals ((NSObject) o1), "Equals(NSObject) 2-1");
+				ClassicAssert.False (o1.Equals ((NSObject) null), "Equals(NSObject) null");
+				ClassicAssert.False (o1.Equals ((NSObject) o2), "Equals(NSObject) 1-2");
+				ClassicAssert.False (o2.Equals ((NSObject) o1), "Equals(NSObject) 2-1");
 
 				// on a more positive note...
-				Assert.True (o1.Equals ((object) o1), "Equals(object) 1-1");
-				Assert.True (o2.Equals ((NSObject) o2), "Equals(NSObject) 2-2");
+				ClassicAssert.True (o1.Equals ((object) o1), "Equals(object) 1-1");
+				ClassicAssert.True (o2.Equals ((NSObject) o2), "Equals(NSObject) 2-2");
 			}
 		}
 
@@ -233,15 +233,15 @@ namespace MonoTouchFixtures.Foundation {
 			using (var o2 = new NSOverrideEqualObject (true))
 			using (var o3 = new NSOverrideEqualObject (false)) {
 				// true, same object
-				Assert.True (o1.Equals (o1), "direct - direct / same");
-				Assert.True (o3.Equals (o3), "indirect - indirect / same");
+				ClassicAssert.True (o1.Equals (o1), "direct - direct / same");
+				ClassicAssert.True (o3.Equals (o3), "indirect - indirect / same");
 
 				// false, good since there's state in o2 and o3 that does not exists in o1 (direct / native only)
-				Assert.False (o1.Equals (o2), "direct - indirect");
-				Assert.False (o3.Equals (o1), "indirect - direct");
+				ClassicAssert.False (o1.Equals (o2), "direct - indirect");
+				ClassicAssert.False (o3.Equals (o1), "indirect - direct");
 
 				// default is false, which is good since the managed state (Throw) differs between o2 and o3
-				Assert.False (o3.Equals (o2), "indirect - indirect");
+				ClassicAssert.False (o3.Equals (o2), "indirect - indirect");
 
 				// throws (as implemented above)
 				Assert.Throws<NotFiniteNumberException> (() => { o2.Equals ((object) o1); }, "Equals(object) 2-1");
@@ -259,14 +259,14 @@ namespace MonoTouchFixtures.Foundation {
 				using (var observer = o.AddObserver ("frame", NSKeyValueObservingOptions.OldNew, change => {
 					var old = ((NSValue) change.OldValue).CGRectValue;
 					var @new = ((NSValue) change.NewValue).CGRectValue;
-					Assert.AreEqual ("{{0, 0}, {0, 0}}", old.ToString (), "#old");
-					Assert.AreEqual ("{{0, 0}, {123, 234}}", @new.ToString (), "#new");
+					ClassicAssert.AreEqual ("{{0, 0}, {0, 0}}", old.ToString (), "#old");
+					ClassicAssert.AreEqual ("{{0, 0}, {123, 234}}", @new.ToString (), "#new");
 					observed = true;
 				})) {
 					o.Frame = new CGRect (0, 0, 123, 234);
 				}
 			}
-			Assert.IsTrue (observed, "observed");
+			ClassicAssert.IsTrue (observed, "observed");
 		}
 
 		[Test]
@@ -279,7 +279,7 @@ namespace MonoTouchFixtures.Foundation {
 			while (!evt.WaitOne (1))
 				NSRunLoop.Current.RunUntil (NSRunLoopMode.Default, NSDate.Now.AddSeconds (1));
 
-			Assert.True (evt.WaitOne (1), "Our invoke was not fired?");
+			ClassicAssert.True (evt.WaitOne (1), "Our invoke was not fired?");
 		}
 	}
 }

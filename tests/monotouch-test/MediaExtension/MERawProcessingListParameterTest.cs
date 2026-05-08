@@ -18,15 +18,15 @@ namespace MonoTouchFixtures.MediaExtension {
 			};
 			using var obj = new MERawProcessingListParameter ("name", "key", "description", array, 1, 3, MERawProcessingListParameterInitializationOption.NeutralValue);
 			Assert.Multiple (() => {
-				Assert.AreEqual ("name", obj.Name, "Name");
-				Assert.AreEqual ("key", obj.Key, "Key");
-				Assert.IsNull (obj.LongDescription, "LongDescription");
-				Assert.AreEqual ((nint) 1, obj.InitialValue, "InitialValue");
-				Assert.AreEqual ((nint) 1, obj.CurrentValue, "CurrentValue");
-				Assert.IsTrue (obj.HasNeutralValue (out var neutralValue), "HasNeutralValue");
-				Assert.AreEqual ((nint) 3, neutralValue, "NeutralValue");
-				Assert.IsFalse (obj.HasCameraValue (out var cameraValue), "HasCameraValue");
-				Assert.AreEqual ((nint) 0, cameraValue, "NeutralValue");
+				ClassicAssert.AreEqual ("name", obj.Name, "Name");
+				ClassicAssert.AreEqual ("key", obj.Key, "Key");
+				ClassicAssert.IsNull (obj.LongDescription, "LongDescription");
+				ClassicAssert.AreEqual ((nint) 1, obj.InitialValue, "InitialValue");
+				ClassicAssert.AreEqual ((nint) 1, obj.CurrentValue, "CurrentValue");
+				ClassicAssert.IsTrue (obj.HasNeutralValue (out var neutralValue), "HasNeutralValue");
+				ClassicAssert.AreEqual ((nint) 3, neutralValue, "NeutralValue");
+				ClassicAssert.IsFalse (obj.HasCameraValue (out var cameraValue), "HasCameraValue");
+				ClassicAssert.AreEqual ((nint) 0, cameraValue, "NeutralValue");
 			});
 		}
 
@@ -43,15 +43,15 @@ namespace MonoTouchFixtures.MediaExtension {
 			};
 			using var obj = new MERawProcessingListParameter ("name", "key", "description", array, 1, 3, MERawProcessingListParameterInitializationOption.CameraValue);
 			Assert.Multiple (() => {
-				Assert.AreEqual ("name", obj.Name, "Name");
-				Assert.AreEqual ("key", obj.Key, "Key");
-				Assert.IsNull (obj.LongDescription, "LongDescription");
-				Assert.AreEqual ((nint) 1, obj.InitialValue, "InitialValue");
-				Assert.AreEqual ((nint) 1, obj.CurrentValue, "CurrentValue");
-				Assert.IsFalse (obj.HasNeutralValue (out var neutralValue), "HasNeutralValue");
-				Assert.AreEqual ((nint) 0, neutralValue, "NeutralValue");
-				Assert.IsTrue (obj.HasCameraValue (out var cameraValue), "HasCameraValue");
-				Assert.AreEqual ((nint) 3, cameraValue, "NeutralValue");
+				ClassicAssert.AreEqual ("name", obj.Name, "Name");
+				ClassicAssert.AreEqual ("key", obj.Key, "Key");
+				ClassicAssert.IsNull (obj.LongDescription, "LongDescription");
+				ClassicAssert.AreEqual ((nint) 1, obj.InitialValue, "InitialValue");
+				ClassicAssert.AreEqual ((nint) 1, obj.CurrentValue, "CurrentValue");
+				ClassicAssert.IsFalse (obj.HasNeutralValue (out var neutralValue), "HasNeutralValue");
+				ClassicAssert.AreEqual ((nint) 0, neutralValue, "NeutralValue");
+				ClassicAssert.IsTrue (obj.HasCameraValue (out var cameraValue), "HasCameraValue");
+				ClassicAssert.AreEqual ((nint) 3, cameraValue, "NeutralValue");
 			});
 		}
 	}

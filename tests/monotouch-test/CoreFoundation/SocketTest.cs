@@ -30,9 +30,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 
 				receiver.DataEvent += (o, a) => {
 					var data = a.Data;
-					Assert.AreEqual (dataToSend.Length, data.Length);
+					ClassicAssert.AreEqual (dataToSend.Length, data.Length);
 					for (int i = 0; i < data.Length; ++i)
-						Assert.AreEqual (dataToSend [i], data [i]);
+						ClassicAssert.AreEqual (dataToSend [i], data [i]);
 
 					received.Set ();
 				};
@@ -79,9 +79,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 						receiver.SetAddress (IPAddress.Loopback, 0);
 						receiver.DataEvent += (o, a) => {
 							var data = a.Data;
-							Assert.AreEqual (dataToSend.Length, data.Length);
+							ClassicAssert.AreEqual (dataToSend.Length, data.Length);
 							for (int i = 0; i < data.Length; ++i)
-								Assert.AreEqual (dataToSend [i], data [i]);
+								ClassicAssert.AreEqual (dataToSend [i], data [i]);
 
 							received.Set ();
 						};
@@ -106,8 +106,8 @@ namespace MonoTouchFixtures.CoreFoundation {
 			};
 			thread.Start ();
 
-			Assert.IsTrue (thread.Join (TimeSpan.FromSeconds (socketCount * 2)), "Completed");
-			Assert.IsNull (ex, "No exceptions");
+			ClassicAssert.IsTrue (thread.Join (TimeSpan.FromSeconds (socketCount * 2)), "Completed");
+			ClassicAssert.IsNull (ex, "No exceptions");
 			GC.Collect ();
 			GC.WaitForPendingFinalizers ();
 			GC.Collect ();

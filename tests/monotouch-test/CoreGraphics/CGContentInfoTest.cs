@@ -15,11 +15,11 @@ namespace MonoTouchFixtures.CoreGraphics {
 		public void DefaultValuesTest ()
 		{
 			var c = new CGContentInfo ();
-			Assert.AreEqual (default (CGComponent), c.DeepestImageComponent, "DeepestImageComponent");
-			Assert.AreEqual (default (CGColorModel), c.ContentColorModels, "ContentColorModels");
-			Assert.IsFalse (c.HasWideGamut, "HasWideGamut");
-			Assert.IsFalse (c.HasTransparency, "HasTransparency");
-			Assert.AreEqual (0f, c.LargestContentHeadroom, "LargestContentHeadroom");
+			ClassicAssert.AreEqual (default (CGComponent), c.DeepestImageComponent, "DeepestImageComponent");
+			ClassicAssert.AreEqual (default (CGColorModel), c.ContentColorModels, "ContentColorModels");
+			ClassicAssert.IsFalse (c.HasWideGamut, "HasWideGamut");
+			ClassicAssert.IsFalse (c.HasTransparency, "HasTransparency");
+			ClassicAssert.AreEqual (0f, c.LargestContentHeadroom, "LargestContentHeadroom");
 		}
 
 		[Test]
@@ -32,11 +32,11 @@ namespace MonoTouchFixtures.CoreGraphics {
 			c.HasTransparency = true;
 			c.LargestContentHeadroom = 1.25f;
 
-			Assert.AreEqual ((CGComponent) 2, c.DeepestImageComponent, "DeepestImageComponent");
-			Assert.AreEqual ((CGColorModel) 3, c.ContentColorModels, "ContentColorModels");
-			Assert.IsTrue (c.HasWideGamut, "HasWideGamut");
-			Assert.IsTrue (c.HasTransparency, "HasTransparency");
-			Assert.AreEqual (1.25f, c.LargestContentHeadroom, "LargestContentHeadroom");
+			ClassicAssert.AreEqual ((CGComponent) 2, c.DeepestImageComponent, "DeepestImageComponent");
+			ClassicAssert.AreEqual ((CGColorModel) 3, c.ContentColorModels, "ContentColorModels");
+			ClassicAssert.IsTrue (c.HasWideGamut, "HasWideGamut");
+			ClassicAssert.IsTrue (c.HasTransparency, "HasTransparency");
+			ClassicAssert.AreEqual (1.25f, c.LargestContentHeadroom, "LargestContentHeadroom");
 		}
 
 		[Test]
@@ -44,7 +44,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			var c = new CGContentInfo ();
 			c.HasWideGamut = false;
-			Assert.IsFalse (c.HasWideGamut, "HasWideGamut");
+			ClassicAssert.IsFalse (c.HasWideGamut, "HasWideGamut");
 		}
 
 		[Test]
@@ -52,7 +52,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			var c = new CGContentInfo ();
 			c.HasTransparency = false;
-			Assert.IsFalse (c.HasTransparency, "HasTransparency");
+			ClassicAssert.IsFalse (c.HasTransparency, "HasTransparency");
 		}
 	}
 }

@@ -37,7 +37,7 @@ namespace MonoTouchFixtures.AudioUnit {
 			var mixerNode = graph.AddNode (AudioComponentDescription.CreateMixer (AudioTypeMixer.MultiChannel));
 			graph.Open ();
 			var mixer = graph.GetNodeInfo (mixerNode);
-			Assert.AreEqual (1, mixer.GetElementCount (AudioUnitScopeType.Global));
+			ClassicAssert.AreEqual (1, mixer.GetElementCount (AudioUnitScopeType.Global));
 		}
 
 		[Test]
@@ -62,9 +62,9 @@ namespace MonoTouchFixtures.AudioUnit {
 		[Test]
 		public unsafe void TestSizeOf ()
 		{
-			Assert.AreEqual (sizeof (AudioFormat), Marshal.SizeOf<AudioFormat> ());
-			Assert.AreEqual (sizeof (AudioValueRange), Marshal.SizeOf<AudioValueRange> ());
-			Assert.AreEqual (sizeof (AudioClassDescription), Marshal.SizeOf<AudioClassDescription> ());
+			ClassicAssert.AreEqual (sizeof (AudioFormat), Marshal.SizeOf<AudioFormat> ());
+			ClassicAssert.AreEqual (sizeof (AudioValueRange), Marshal.SizeOf<AudioValueRange> ());
+			ClassicAssert.AreEqual (sizeof (AudioClassDescription), Marshal.SizeOf<AudioClassDescription> ());
 		}
 	}
 }

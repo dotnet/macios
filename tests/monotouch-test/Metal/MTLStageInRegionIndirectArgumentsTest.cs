@@ -17,7 +17,7 @@ namespace MonoTouchFixtures.Metal {
 		public void SizeOfMTLStageInRegionIndirectArgumentsTest ()
 		{
 			unsafe {
-				Assert.AreEqual (sizeof (MTLStageInRegionIndirectArguments), 24); // 24 is the size of the native struct
+				ClassicAssert.AreEqual (sizeof (MTLStageInRegionIndirectArguments), 24); // 24 is the size of the native struct
 			}
 		}
 	}

@@ -29,8 +29,8 @@ namespace MonoTouchFixtures.JavascriptCore {
 			var obj = new MyJavaExporter ();
 			context [(NSString) "obj"] = JSValue.From (obj, context);
 			context.EvaluateScript ("obj.myFunc ();");
-			Assert.IsNull (exc, "JS exception");
-			Assert.IsTrue (obj.MyFuncCalled, "Called");
+			ClassicAssert.IsNull (exc, "JS exception");
+			ClassicAssert.IsTrue (obj.MyFuncCalled, "Called");
 
 			context.EvaluateScript ("obj.hello (42);");
 			context.EvaluateScript ("obj.callMeBack (function() { return 314; });");
@@ -61,15 +61,15 @@ namespace MonoTouchFixtures.JavascriptCore {
 
 		public void Hello (JSValue val)
 		{
-			Assert.IsTrue (val.IsNumber, "Hello - IsNumber");
-			Assert.AreEqual (42, val.ToNumber ().Int32Value, "Hello - Number");
+			ClassicAssert.IsTrue (val.IsNumber, "Hello - IsNumber");
+			ClassicAssert.AreEqual (42, val.ToNumber ().Int32Value, "Hello - Number");
 		}
 
 		public void CallMeBack (JSValue callbackFunc)
 		{
 			var rv = callbackFunc.Call ();
-			Assert.IsTrue (rv.IsNumber, "CallMeBack - IsNumber");
-			Assert.AreEqual (314, rv.ToNumber ().Int32Value, "CallMeBack - Number");
+			ClassicAssert.IsTrue (rv.IsNumber, "CallMeBack - IsNumber");
+			ClassicAssert.AreEqual (314, rv.ToNumber ().Int32Value, "CallMeBack - Number");
 		}
 	}
 }

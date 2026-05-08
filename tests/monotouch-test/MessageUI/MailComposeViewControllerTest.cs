@@ -41,9 +41,9 @@ namespace MonoTouchFixtures.MessageUI {
 				Assert.Inconclusive ("Not configured to send emails");
 
 			using (var mail = new MFMailComposeViewController ()) {
-				Assert.Null (mail.MailComposeDelegate, "MailComposeDelegate");
+				ClassicAssert.Null (mail.MailComposeDelegate, "MailComposeDelegate");
 				mail.Finished += (sender, e) => { };
-				Assert.NotNull (mail.MailComposeDelegate, "MailComposeDelegate");
+				ClassicAssert.NotNull (mail.MailComposeDelegate, "MailComposeDelegate");
 			}
 		}
 	}

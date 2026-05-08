@@ -11,10 +11,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 		[Test]
 		public void Extensions ()
 		{
-			Assert.AreEqual (CGImageAlphaInfo.PremultipliedLast, ((CGBitmapInfo) CGImageAlphaInfo.PremultipliedLast).GetAlphaInfo (), "GetAlphaInfo");
-			Assert.AreEqual (CGImageComponentInfo.Float, ((CGBitmapInfo) CGImageComponentInfo.Float).GetComponentInfo (), "CGImageComponentInfo");
-			Assert.AreEqual (CGImageByteOrderInfo.ByteOrder32Little, ((CGBitmapInfo) CGImageByteOrderInfo.ByteOrder32Little).GetByteOrderInfo (), "CGImageByteOrderInfo");
-			Assert.AreEqual (CGImagePixelFormatInfo.Rgb101010, ((CGBitmapInfo) CGImagePixelFormatInfo.Rgb101010).GetPixelFormatInfo (), "CGImagePixelFormatInfo");
+			ClassicAssert.AreEqual (CGImageAlphaInfo.PremultipliedLast, ((CGBitmapInfo) CGImageAlphaInfo.PremultipliedLast).GetAlphaInfo (), "GetAlphaInfo");
+			ClassicAssert.AreEqual (CGImageComponentInfo.Float, ((CGBitmapInfo) CGImageComponentInfo.Float).GetComponentInfo (), "CGImageComponentInfo");
+			ClassicAssert.AreEqual (CGImageByteOrderInfo.ByteOrder32Little, ((CGBitmapInfo) CGImageByteOrderInfo.ByteOrder32Little).GetByteOrderInfo (), "CGImageByteOrderInfo");
+			ClassicAssert.AreEqual (CGImagePixelFormatInfo.Rgb101010, ((CGBitmapInfo) CGImagePixelFormatInfo.Rgb101010).GetPixelFormatInfo (), "CGImagePixelFormatInfo");
 		}
 	}
 }

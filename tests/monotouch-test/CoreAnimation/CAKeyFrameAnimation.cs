@@ -14,9 +14,9 @@ namespace Xamarin.Mac.Tests {
 		{
 			CAKeyFrameAnimation keyFrameAni = new CAKeyFrameAnimation ();
 			keyFrameAni.Values = new NSObject [] { new NSNumber (5) };
-			Assert.AreEqual (1, keyFrameAni.Values.Length);
+			ClassicAssert.AreEqual (1, keyFrameAni.Values.Length);
 			NSNumber arrayNumber = (NSNumber) keyFrameAni.Values [0];
-			Assert.AreEqual (5, arrayNumber.Int32Value);
+			ClassicAssert.AreEqual (5, arrayNumber.Int32Value);
 
 			CGRect frame = new CGRect (10, 10, 10, 10);
 
@@ -26,9 +26,9 @@ namespace Xamarin.Mac.Tests {
 				CGBitmapFlags.ByteOrderDefault | CGBitmapFlags.Last, provider, null, false, CGColorRenderingIntent.Default);
 
 			keyFrameAni.SetValues (new CGImage [] { image, image });
-			Assert.AreEqual (2, keyFrameAni.Values.Length);
+			ClassicAssert.AreEqual (2, keyFrameAni.Values.Length);
 			CGImage arrayImage = (CGImage) keyFrameAni.GetValuesAs<CGImage> () [1];
-			Assert.AreEqual (image.Handle, arrayImage.Handle);
+			ClassicAssert.AreEqual (image.Handle, arrayImage.Handle);
 		}
 	}
 }

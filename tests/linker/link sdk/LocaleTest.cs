@@ -33,13 +33,13 @@ namespace LinkSdk {
 			var n1 = "SEARCHFIELDS";
 			var n2 = "Searchfields";
 
-			Assert.True (string.Equals (n1, n2, StringComparison.OrdinalIgnoreCase), "string equality");
+			ClassicAssert.True (string.Equals (n1, n2, StringComparison.OrdinalIgnoreCase), "string equality");
 
 			var dict = new Dictionary<string, string> (StringComparer.OrdinalIgnoreCase);
 			dict [n1] = "test";
 
 			string? result;
-			Assert.True (dict.TryGetValue (n2, out result), "dictionary value");
+			ClassicAssert.True (dict.TryGetValue (n2, out result), "dictionary value");
 		}
 	}
 }

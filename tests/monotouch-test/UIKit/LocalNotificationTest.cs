@@ -21,17 +21,17 @@ namespace MonoTouchFixtures.UIKit {
 		public void DefaultValues ()
 		{
 			using (var def = new UILocalNotification ()) {
-				Assert.IsNull (def.FireDate, "FireDate");
-				Assert.IsNull (def.TimeZone, "TimeZone");
+				ClassicAssert.IsNull (def.FireDate, "FireDate");
+				ClassicAssert.IsNull (def.TimeZone, "TimeZone");
 				Assert.That ((nuint) (ulong) def.RepeatInterval, Is.EqualTo ((nuint) 0), "RepeatInterval"); // documented to be 0, which is not in the enum.
-				Assert.IsNull (def.RepeatCalendar, "RepeatCalendar");
-				Assert.IsNull (def.AlertBody, "AlertBody");
-				Assert.IsTrue (def.HasAction, "HasAction");
-				Assert.IsNull (def.AlertAction, "AlertAction");
-				Assert.IsNull (def.AlertLaunchImage, "AlertLaunchImage");
-				Assert.IsNull (def.SoundName, "SoundName");
+				ClassicAssert.IsNull (def.RepeatCalendar, "RepeatCalendar");
+				ClassicAssert.IsNull (def.AlertBody, "AlertBody");
+				ClassicAssert.IsTrue (def.HasAction, "HasAction");
+				ClassicAssert.IsNull (def.AlertAction, "AlertAction");
+				ClassicAssert.IsNull (def.AlertLaunchImage, "AlertLaunchImage");
+				ClassicAssert.IsNull (def.SoundName, "SoundName");
 				Assert.That (def.ApplicationIconBadgeNumber, Is.EqualTo ((nint) 0), "ApplicationIconBadgeNumber");
-				Assert.IsNull (def.UserInfo, "UserInfo");
+				ClassicAssert.IsNull (def.UserInfo, "UserInfo");
 			}
 		}
 
@@ -41,15 +41,15 @@ namespace MonoTouchFixtures.UIKit {
 			using (var def = new UILocalNotification ()) {
 				def.FireDate = null;
 				def.FireDate = new NSDate ();
-				Assert.IsNotNull (def.FireDate, "FireDate NN");
+				ClassicAssert.IsNotNull (def.FireDate, "FireDate NN");
 				def.FireDate = null;
-				Assert.IsNull (def.FireDate, "FireDate N");
+				ClassicAssert.IsNull (def.FireDate, "FireDate N");
 
 				def.TimeZone = null;
 				def.TimeZone = new NSTimeZone ("GMT");
-				Assert.IsNotNull (def.TimeZone, "TimeZone NN");
+				ClassicAssert.IsNotNull (def.TimeZone, "TimeZone NN");
 				def.TimeZone = null;
-				Assert.IsNull (def.TimeZone, "TimeZone N");
+				ClassicAssert.IsNull (def.TimeZone, "TimeZone N");
 
 				def.RepeatInterval = NSCalendarUnit.Calendar;
 				Assert.That (def.RepeatInterval, Is.EqualTo (NSCalendarUnit.Calendar), "RepeatInterval 1");
@@ -58,39 +58,39 @@ namespace MonoTouchFixtures.UIKit {
 
 				def.RepeatCalendar = null;
 				def.RepeatCalendar = new NSCalendar (NSCalendarType.Hebrew);
-				Assert.IsNotNull (def.RepeatCalendar, "RepeatCalendar NN");
+				ClassicAssert.IsNotNull (def.RepeatCalendar, "RepeatCalendar NN");
 				def.RepeatCalendar = null;
-				Assert.IsNull (def.RepeatCalendar, "RepeatCalendar N");
+				ClassicAssert.IsNull (def.RepeatCalendar, "RepeatCalendar N");
 
 				def.AlertBody = null;
 				def.AlertBody = "body";
-				Assert.AreEqual ("body", def.AlertBody, "AlertBody NN");
+				ClassicAssert.AreEqual ("body", def.AlertBody, "AlertBody NN");
 				def.AlertBody = null;
-				Assert.IsNull (def.AlertBody, "AlertBody N");
+				ClassicAssert.IsNull (def.AlertBody, "AlertBody N");
 
 				def.AlertAction = null;
 				def.AlertAction = "action";
-				Assert.AreEqual ("action", def.AlertAction, "AlertAction NN");
+				ClassicAssert.AreEqual ("action", def.AlertAction, "AlertAction NN");
 				def.AlertAction = null;
-				Assert.IsNull (def.AlertAction, "AlertAction N");
+				ClassicAssert.IsNull (def.AlertAction, "AlertAction N");
 
 				def.AlertLaunchImage = null;
 				def.AlertLaunchImage = "image";
-				Assert.AreEqual ("image", def.AlertLaunchImage, "AlertLaunchImage NN");
+				ClassicAssert.AreEqual ("image", def.AlertLaunchImage, "AlertLaunchImage NN");
 				def.AlertLaunchImage = null;
-				Assert.IsNull (def.AlertLaunchImage, "AlertLaunchImage N");
+				ClassicAssert.IsNull (def.AlertLaunchImage, "AlertLaunchImage N");
 
 				def.SoundName = null;
 				def.SoundName = "sound";
-				Assert.AreEqual ("sound", def.SoundName, "SoundName NN");
+				ClassicAssert.AreEqual ("sound", def.SoundName, "SoundName NN");
 				def.SoundName = null;
-				Assert.IsNull (def.SoundName, "SoundName N");
+				ClassicAssert.IsNull (def.SoundName, "SoundName N");
 
 				def.UserInfo = null;
 				def.UserInfo = new NSDictionary ();
-				Assert.IsNotNull (def.UserInfo, "UserInfo NN");
+				ClassicAssert.IsNotNull (def.UserInfo, "UserInfo NN");
 				def.UserInfo = null;
-				Assert.IsNull (def.UserInfo, "UserInfo N");
+				ClassicAssert.IsNull (def.UserInfo, "UserInfo N");
 			}
 		}
 	}

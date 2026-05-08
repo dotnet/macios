@@ -140,7 +140,7 @@ namespace MonoTouchFixtures.SceneKit {
 				5, 3, 5, 8,
 				9, 6, 4, 2,
 				4, 6, 9, 8);
-			Assert.AreEqual ((pfloat) (-165), matrix.Determinant, "Determinant");
+			ClassicAssert.AreEqual ((pfloat) (-165), matrix.Determinant, "Determinant");
 		}
 
 
@@ -169,22 +169,22 @@ namespace MonoTouchFixtures.SceneKit {
 				12, 22, 32, 42,
 				13, 23, 33, 43,
 				14, 24, 34, 44);
-			Assert.AreEqual ((pfloat) 11, matrix.M11, "M11");
-			Assert.AreEqual ((pfloat) 12, matrix.M12, "M12");
-			Assert.AreEqual ((pfloat) 13, matrix.M13, "M13");
-			Assert.AreEqual ((pfloat) 14, matrix.M14, "M14");
-			Assert.AreEqual ((pfloat) 21, matrix.M21, "M21");
-			Assert.AreEqual ((pfloat) 22, matrix.M22, "M22");
-			Assert.AreEqual ((pfloat) 23, matrix.M23, "M23");
-			Assert.AreEqual ((pfloat) 24, matrix.M24, "M24");
-			Assert.AreEqual ((pfloat) 31, matrix.M31, "M31");
-			Assert.AreEqual ((pfloat) 32, matrix.M32, "M32");
-			Assert.AreEqual ((pfloat) 33, matrix.M33, "M33");
-			Assert.AreEqual ((pfloat) 34, matrix.M34, "M34");
-			Assert.AreEqual ((pfloat) 41, matrix.M41, "M41");
-			Assert.AreEqual ((pfloat) 42, matrix.M42, "M42");
-			Assert.AreEqual ((pfloat) 43, matrix.M43, "M43");
-			Assert.AreEqual ((pfloat) 44, matrix.M44, "M44");
+			ClassicAssert.AreEqual ((pfloat) 11, matrix.M11, "M11");
+			ClassicAssert.AreEqual ((pfloat) 12, matrix.M12, "M12");
+			ClassicAssert.AreEqual ((pfloat) 13, matrix.M13, "M13");
+			ClassicAssert.AreEqual ((pfloat) 14, matrix.M14, "M14");
+			ClassicAssert.AreEqual ((pfloat) 21, matrix.M21, "M21");
+			ClassicAssert.AreEqual ((pfloat) 22, matrix.M22, "M22");
+			ClassicAssert.AreEqual ((pfloat) 23, matrix.M23, "M23");
+			ClassicAssert.AreEqual ((pfloat) 24, matrix.M24, "M24");
+			ClassicAssert.AreEqual ((pfloat) 31, matrix.M31, "M31");
+			ClassicAssert.AreEqual ((pfloat) 32, matrix.M32, "M32");
+			ClassicAssert.AreEqual ((pfloat) 33, matrix.M33, "M33");
+			ClassicAssert.AreEqual ((pfloat) 34, matrix.M34, "M34");
+			ClassicAssert.AreEqual ((pfloat) 41, matrix.M41, "M41");
+			ClassicAssert.AreEqual ((pfloat) 42, matrix.M42, "M42");
+			ClassicAssert.AreEqual ((pfloat) 43, matrix.M43, "M43");
+			ClassicAssert.AreEqual ((pfloat) 44, matrix.M44, "M44");
 
 			var pos = new SCNVector3 (10, 20, 30);
 			var transformed = SCNVector3.TransformPosition (pos, matrix);
@@ -956,7 +956,7 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (921, 922, 923, 924),
 				new SCNVector4 (931, 932, 933, 934),
 				new SCNVector4 (941, 942, 943, 944));
-			Assert.IsFalse (a == b, "Equals");
+			ClassicAssert.IsFalse (a == b, "Equals");
 		}
 
 		[Test]
@@ -972,7 +972,7 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (921, 922, 923, 924),
 				new SCNVector4 (931, 932, 933, 934),
 				new SCNVector4 (941, 942, 943, 944));
-			Assert.IsTrue (a != b, "NotEquals");
+			ClassicAssert.IsTrue (a != b, "NotEquals");
 		}
 
 		[Test]
@@ -983,7 +983,7 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (21, 22, 23, 24),
 				new SCNVector4 (31, 32, 33, 34),
 				new SCNVector4 (41, 42, 43, 44));
-			Assert.AreEqual ("(11, 12, 13, 14)\n(21, 22, 23, 24)\n(31, 32, 33, 34)\n(41, 42, 43, 44)", matrix.ToString (), "ToString");
+			ClassicAssert.AreEqual ("(11, 12, 13, 14)\n(21, 22, 23, 24)\n(31, 32, 33, 34)\n(41, 42, 43, 44)", matrix.ToString (), "ToString");
 		}
 
 		[Test]
@@ -999,7 +999,7 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (921, 922, 923, 924),
 				new SCNVector4 (931, 932, 933, 934),
 				new SCNVector4 (941, 942, 943, 944));
-			Assert.IsFalse (((object) a).Equals (b), "object.Equals");
+			ClassicAssert.IsFalse (((object) a).Equals (b), "object.Equals");
 		}
 
 		[Test]
@@ -1015,7 +1015,7 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (921, 922, 923, 924),
 				new SCNVector4 (931, 932, 933, 934),
 				new SCNVector4 (941, 942, 943, 944));
-			Assert.IsFalse (((IEquatable<SCNMatrix4>) a).Equals (b), "object.Equals");
+			ClassicAssert.IsFalse (((IEquatable<SCNMatrix4>) a).Equals (b), "object.Equals");
 		}
 
 		[Test]

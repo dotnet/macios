@@ -35,8 +35,8 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				dupe = array [0];
 			});
-			Assert.IsNotNull (dupe, "Dupe");
-			Assert.AreNotEqual (IntPtr.Zero, dupe.Handle, "Dupe");
+			ClassicAssert.IsNotNull (dupe, "Dupe");
+			ClassicAssert.AreNotEqual (IntPtr.Zero, dupe.Handle, "Dupe");
 		}
 	}
 }

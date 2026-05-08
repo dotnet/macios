@@ -37,8 +37,8 @@ namespace MonoTouchFixtures.AVFoundation {
 			var audioSettings = new AudioSettings (NSDictionary.FromObjectsAndKeys (Values, Keys));
 
 			using (var recorder = AVAudioRecorder.Create (url, audioSettings, out error)) {
-				Assert.NotNull (recorder);
-				Assert.Null (error);
+				ClassicAssert.NotNull (recorder);
+				ClassicAssert.Null (error);
 			}
 		}
 		[Test]
@@ -50,8 +50,8 @@ namespace MonoTouchFixtures.AVFoundation {
 			NSError error;
 			var audioSettings = new AudioSettings (NSDictionary.FromObjectsAndKeys (Values, Keys));
 			using (var recorder = AVAudioRecorder.Create (url, audioSettings, out error)) {
-				Assert.Null (recorder);
-				Assert.NotNull (error);
+				ClassicAssert.Null (recorder);
+				ClassicAssert.NotNull (error);
 			}
 		}
 

@@ -46,7 +46,7 @@ namespace MonoTouchFixtures.AddressBook {
 		{
 			TestRuntime.CheckAddressBookPermission ();
 			ABAddressBook ab = new ABAddressBook ();
-			Assert.NotNull (ab.GetDefaultSource (), "GetDefaultSource");
+			ClassicAssert.NotNull (ab.GetDefaultSource (), "GetDefaultSource");
 		}
 
 		[Test]
@@ -54,9 +54,9 @@ namespace MonoTouchFixtures.AddressBook {
 		{
 			TestRuntime.CheckAddressBookPermission ();
 			ABAddressBook ab = new ABAddressBook ();
-			Assert.Null (ab.GetSource (-1), "-1");
+			ClassicAssert.Null (ab.GetSource (-1), "-1");
 			// GetSource(0) is not reliable across device/simulator and iOS versions
-			Assert.Null (ab.GetSource (Int32.MaxValue), "MaxValue");
+			ClassicAssert.Null (ab.GetSource (Int32.MaxValue), "MaxValue");
 		}
 
 		[Test]
@@ -65,7 +65,7 @@ namespace MonoTouchFixtures.AddressBook {
 			TestRuntime.CheckAddressBookPermission ();
 			var label = ABPersonPhoneLabel.Mobile;
 			var result = ABAddressBook.LocalizedLabel (label);
-			Assert.NotNull (result, "result");
+			ClassicAssert.NotNull (result, "result");
 			Assert.That (result.Length, Is.GreaterThan (0), "Length");
 		}
 	}

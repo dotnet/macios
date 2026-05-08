@@ -33,7 +33,7 @@ namespace MonoTouchFixtures.MapKit {
 			var frame = new CGRect (10, 10, 100, 100);
 			using (MKAnnotationView av = new MKAnnotationView (frame)) {
 				Assert.That (av.Frame, Is.EqualTo (frame), "Frame");
-				Assert.Null (av.Annotation, "Annotation");
+				ClassicAssert.Null (av.Annotation, "Annotation");
 			}
 		}
 
@@ -43,7 +43,7 @@ namespace MonoTouchFixtures.MapKit {
 			// using a null 'annotation' crash - but the property can be set to null later
 			using (var a = new MKPolygon ())
 			using (MKAnnotationView av = new MKAnnotationView (a, "reuse")) {
-				Assert.AreSame (a, av.Annotation, "Annotation");
+				ClassicAssert.AreSame (a, av.Annotation, "Annotation");
 				av.Annotation = null;
 			}
 		}
@@ -52,19 +52,19 @@ namespace MonoTouchFixtures.MapKit {
 		public void Default ()
 		{
 			using (var def = new MKAnnotationView ()) {
-				Assert.IsNull (def.Annotation, "Annotation");
-				Assert.AreEqual (def.CalloutOffset, CGPoint.Empty, "CalloutOffset");
-				Assert.IsFalse (def.CanShowCallout, "CanShowCallout");
-				Assert.AreEqual (def.CenterOffset, CGPoint.Empty, "CenterOffset");
-				Assert.IsFalse (def.Draggable, "Draggable");
+				ClassicAssert.IsNull (def.Annotation, "Annotation");
+				ClassicAssert.AreEqual (def.CalloutOffset, CGPoint.Empty, "CalloutOffset");
+				ClassicAssert.IsFalse (def.CanShowCallout, "CanShowCallout");
+				ClassicAssert.AreEqual (def.CenterOffset, CGPoint.Empty, "CenterOffset");
+				ClassicAssert.IsFalse (def.Draggable, "Draggable");
 				Assert.That (def.DragState, Is.EqualTo (MKAnnotationViewDragState.None), "DragState");
-				Assert.IsTrue (def.Enabled, "Enabled");
-				Assert.IsFalse (def.Highlighted, "Highlighted");
-				Assert.IsNull (def.Image, "Image");
-				Assert.IsNull (def.LeftCalloutAccessoryView, "LeftCalloutAccessoryView");
-				Assert.IsNull (def.ReuseIdentifier, "ReuseIdentifier");
-				Assert.IsNull (def.RightCalloutAccessoryView, "RightCalloutAccessoryView");
-				Assert.IsFalse (def.Selected, "Selected");
+				ClassicAssert.IsTrue (def.Enabled, "Enabled");
+				ClassicAssert.IsFalse (def.Highlighted, "Highlighted");
+				ClassicAssert.IsNull (def.Image, "Image");
+				ClassicAssert.IsNull (def.LeftCalloutAccessoryView, "LeftCalloutAccessoryView");
+				ClassicAssert.IsNull (def.ReuseIdentifier, "ReuseIdentifier");
+				ClassicAssert.IsNull (def.RightCalloutAccessoryView, "RightCalloutAccessoryView");
+				ClassicAssert.IsFalse (def.Selected, "Selected");
 			}
 		}
 
@@ -74,27 +74,27 @@ namespace MonoTouchFixtures.MapKit {
 			using (var def = new MKAnnotationView ()) {
 				def.Annotation = null;
 				def.Annotation = new MKPolygon ();
-				Assert.IsNotNull (def.Annotation, "Annotation NN");
+				ClassicAssert.IsNotNull (def.Annotation, "Annotation NN");
 				def.Annotation = null;
-				Assert.IsNull (def.Annotation, "Annotation N");
+				ClassicAssert.IsNull (def.Annotation, "Annotation N");
 
 				def.Image = null;
 				def.Image = new PlatformImage ();
-				Assert.IsNotNull (def.Image, "Image NN");
+				ClassicAssert.IsNotNull (def.Image, "Image NN");
 				def.Image = null;
-				Assert.IsNull (def.Image, "Image N");
+				ClassicAssert.IsNull (def.Image, "Image N");
 
 				def.LeftCalloutAccessoryView = null;
 				def.LeftCalloutAccessoryView = new PlatformView ();
-				Assert.IsNotNull (def.LeftCalloutAccessoryView, "LeftCalloutAccessoryView NN");
+				ClassicAssert.IsNotNull (def.LeftCalloutAccessoryView, "LeftCalloutAccessoryView NN");
 				def.LeftCalloutAccessoryView = null;
-				Assert.IsNull (def.LeftCalloutAccessoryView, "LeftCalloutAccessoryView N");
+				ClassicAssert.IsNull (def.LeftCalloutAccessoryView, "LeftCalloutAccessoryView N");
 
 				def.RightCalloutAccessoryView = null;
 				def.RightCalloutAccessoryView = new PlatformView ();
-				Assert.IsNotNull (def.RightCalloutAccessoryView, "RightCalloutAccessoryView NN");
+				ClassicAssert.IsNotNull (def.RightCalloutAccessoryView, "RightCalloutAccessoryView NN");
 				def.RightCalloutAccessoryView = null;
-				Assert.IsNull (def.RightCalloutAccessoryView, "RightCalloutAccessoryView N");
+				ClassicAssert.IsNull (def.RightCalloutAccessoryView, "RightCalloutAccessoryView N");
 			}
 		}
 	}

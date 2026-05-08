@@ -32,22 +32,22 @@ namespace MonoTouchFixtures.CoreFoundation {
 					});
 			});
 			d.PostNotification ("hello", target, null, deliverImmediately: true);
-			Assert.AreEqual (1, count);
+			ClassicAssert.AreEqual (1, count);
 			d.PostNotification ("hello", target, null, deliverImmediately: true);
-			Assert.AreEqual (2, count);
-			Assert.AreEqual (1, count2);
+			ClassicAssert.AreEqual (2, count);
+			ClassicAssert.AreEqual (1, count2);
 
 			// Remove the first observer, count should not be updated
 			d.RemoveObserver (o1);
 			d.PostNotification ("hello", target, null);
-			Assert.AreEqual (2, count);
-			Assert.AreEqual (2, count2);
+			ClassicAssert.AreEqual (2, count);
+			ClassicAssert.AreEqual (2, count2);
 
 			// Remove the last observer, there should be no change in count
 			d.RemoveObserver (o2);
 			d.PostNotification ("hello", target, null);
-			Assert.AreEqual (2, count);
-			Assert.AreEqual (2, count2);
+			ClassicAssert.AreEqual (2, count);
+			ClassicAssert.AreEqual (2, count2);
 
 			// Test removing all observers
 			count = 0;
@@ -58,15 +58,15 @@ namespace MonoTouchFixtures.CoreFoundation {
 			o2 = d.AddObserver ("hello", target, (y, ee) => { count++; });
 			d.RemoveEveryObserver ();
 			d.PostNotification ("hello", target, null);
-			Assert.AreEqual (0, count);
+			ClassicAssert.AreEqual (0, count);
 
 			// Test removing from a callback
 			count = 0;
 			o2 = d.AddObserver ("hello", target, (y, ee) => { count++; d.RemoveObserver (o2); });
 			d.PostNotification ("hello", target, null);
-			Assert.AreEqual (1, count);
+			ClassicAssert.AreEqual (1, count);
 			d.PostNotification ("hello", target, null);
-			Assert.AreEqual (1, count);
+			ClassicAssert.AreEqual (1, count);
 		}
 
 		[Test]
@@ -85,7 +85,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			NSNotificationCenter.DefaultCenter.PostNotificationName ("MornNotification", null);
 
 			d.RemoveObserver (token);
-			Assert.IsTrue (mornNotification.WaitOne (TimeSpan.FromSeconds (10)), "Didn't get a notification after waiting 10 seconds.");
+			ClassicAssert.IsTrue (mornNotification.WaitOne (TimeSpan.FromSeconds (10)), "Didn't get a notification after waiting 10 seconds.");
 		}
 
 		[Test]
@@ -103,22 +103,22 @@ namespace MonoTouchFixtures.CoreFoundation {
 					});
 			});
 			d.PostNotification ("hello", null, null, deliverImmediately: true);
-			Assert.AreEqual (1, count);
+			ClassicAssert.AreEqual (1, count);
 			NSNotificationCenter.DefaultCenter.PostNotificationName ("hello", null);
-			Assert.AreEqual (2, count);
-			Assert.AreEqual (1, count2);
+			ClassicAssert.AreEqual (2, count);
+			ClassicAssert.AreEqual (1, count2);
 
 			// Remove the first observer, count should not be updated
 			d.RemoveObserver (o1);
 			d.PostNotification ("hello", null, null);
-			Assert.AreEqual (2, count);
-			Assert.AreEqual (2, count2);
+			ClassicAssert.AreEqual (2, count);
+			ClassicAssert.AreEqual (2, count2);
 
 			// Remove the last observer, there should be no change in count
 			d.RemoveObserver (o2);
 			NSNotificationCenter.DefaultCenter.PostNotificationName ("hello", null);
-			Assert.AreEqual (2, count);
-			Assert.AreEqual (2, count2);
+			ClassicAssert.AreEqual (2, count);
+			ClassicAssert.AreEqual (2, count2);
 
 			// Test removing all observers
 			count = 0;
@@ -128,15 +128,15 @@ namespace MonoTouchFixtures.CoreFoundation {
 			o2 = d.AddObserver (null, null, (y, ee) => { count++; });
 			d.RemoveEveryObserver ();
 			NSNotificationCenter.DefaultCenter.PostNotificationName ("hello", null);
-			Assert.AreEqual (0, count);
+			ClassicAssert.AreEqual (0, count);
 
 			// Test removing from a callback
 			count = 0;
 			o2 = d.AddObserver (null, null, (y, ee) => { count++; d.RemoveObserver (o2); });
 			d.PostNotification ("hello", null, null);
-			Assert.AreEqual (1, count);
+			ClassicAssert.AreEqual (1, count);
 			NSNotificationCenter.DefaultCenter.PostNotificationName ("hello", null);
-			Assert.AreEqual (1, count);
+			ClassicAssert.AreEqual (1, count);
 		}
 	}
 }

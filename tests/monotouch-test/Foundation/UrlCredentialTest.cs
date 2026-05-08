@@ -36,12 +36,12 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var trust = GetTrust ())
 			using (var creds = new NSUrlCredential (trust)) {
-				Assert.Null (creds.Certificates, "Certificates");
-				Assert.False (creds.HasPassword, "HasPassword");
-				Assert.Null (creds.SecIdentity, "SecIdentity");
-				Assert.Null (creds.Password, "Password");
+				ClassicAssert.Null (creds.Certificates, "Certificates");
+				ClassicAssert.False (creds.HasPassword, "HasPassword");
+				ClassicAssert.Null (creds.SecIdentity, "SecIdentity");
+				ClassicAssert.Null (creds.Password, "Password");
 				Assert.That (creds.Persistence, Is.EqualTo (NSUrlCredentialPersistence.ForSession), "Persistence");
-				Assert.Null (creds.User, "User");
+				ClassicAssert.Null (creds.User, "User");
 			}
 		}
 
@@ -50,12 +50,12 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var trust = GetTrust ())
 			using (var creds = NSUrlCredential.FromTrust (trust)) {
-				Assert.Null (creds.Certificates, "Certificates");
-				Assert.False (creds.HasPassword, "HasPassword");
-				Assert.Null (creds.SecIdentity, "SecIdentity");
-				Assert.Null (creds.Password, "Password");
+				ClassicAssert.Null (creds.Certificates, "Certificates");
+				ClassicAssert.False (creds.HasPassword, "HasPassword");
+				ClassicAssert.Null (creds.SecIdentity, "SecIdentity");
+				ClassicAssert.Null (creds.Password, "Password");
 				Assert.That (creds.Persistence, Is.EqualTo (NSUrlCredentialPersistence.ForSession), "Persistence");
-				Assert.Null (creds.User, "User");
+				ClassicAssert.Null (creds.User, "User");
 			}
 		}
 	}

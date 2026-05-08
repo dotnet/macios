@@ -35,9 +35,9 @@ namespace Xamarin.Mac.Tests {
 			RegistrarTestDerivedClass derivedObj = new RegistrarTestDerivedClass ();
 			IntPtr derivedReceiver = derivedObj.Handle;
 
-			Assert.AreEqual (Runtime.GetNSObject<NSString> (IntPtr_objc_msgSend (receiver, Selector.GetHandle ("value"))), (NSString) "RegistrarTestClass");
+			ClassicAssert.AreEqual (Runtime.GetNSObject<NSString> (IntPtr_objc_msgSend (receiver, Selector.GetHandle ("value"))), (NSString) "RegistrarTestClass");
 
-			Assert.AreEqual (Runtime.GetNSObject<NSString> (IntPtr_objc_msgSend (derivedReceiver, Selector.GetHandle ("value"))), (NSString) "RegistrarTestDerivedClass");
+			ClassicAssert.AreEqual (Runtime.GetNSObject<NSString> (IntPtr_objc_msgSend (derivedReceiver, Selector.GetHandle ("value"))), (NSString) "RegistrarTestDerivedClass");
 		}
 
 		[Test]

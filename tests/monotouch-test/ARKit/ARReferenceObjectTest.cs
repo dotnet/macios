@@ -35,12 +35,12 @@ namespace MonoTouchFixtures.ARKit {
 			TestRuntime.AssertNotSimulator (); // The Objective-C constructor is just stubbed out to return NULL in the simulator, so this test only works on device.
 
 			var model3 = new ARReferenceObject (NSUrl.FromFilename ("Model3.arobject"), out NSError error);
-			Assert.IsNull (error, "Error");
-			Assert.AreEqual ("Model3", model3.Name, "Name");
-			Assert.NotNull (model3.Center, "Center");
-			Assert.NotNull (model3.Extent, "Extent");
-			Assert.NotNull (model3.Scale, "Scale");
-			Assert.NotNull (model3.ApplyTransform (MatrixFloat4x4.Identity), "ApplyTransform");
+			ClassicAssert.IsNull (error, "Error");
+			ClassicAssert.AreEqual ("Model3", model3.Name, "Name");
+			ClassicAssert.NotNull (model3.Center, "Center");
+			ClassicAssert.NotNull (model3.Extent, "Extent");
+			ClassicAssert.NotNull (model3.Scale, "Scale");
+			ClassicAssert.NotNull (model3.ApplyTransform (MatrixFloat4x4.Identity), "ApplyTransform");
 		}
 	}
 }

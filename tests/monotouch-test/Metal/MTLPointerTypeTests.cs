@@ -26,31 +26,31 @@ namespace MonoTouchFixtures.Metal {
 		[Test]
 		public void GetAccessTest ()
 		{
-			Assert.AreEqual (MTLArgumentAccess.ReadOnly, ptrType.Access);
+			ClassicAssert.AreEqual (MTLArgumentAccess.ReadOnly, ptrType.Access);
 		}
 
 		[Test]
 		public void GetAlignmentTest ()
 		{
-			Assert.AreEqual ((nuint) 0, ptrType.Alignment);
+			ClassicAssert.AreEqual ((nuint) 0, ptrType.Alignment);
 		}
 
 		[Test]
 		public void GetDataSizeTest ()
 		{
-			Assert.AreEqual ((nuint) 0, ptrType.DataSize);
+			ClassicAssert.AreEqual ((nuint) 0, ptrType.DataSize);
 		}
 
 		[Test]
 		public void GetElementIsArgumentBufferTest ()
 		{
-			Assert.False (ptrType.ElementIsArgumentBuffer);
+			ClassicAssert.False (ptrType.ElementIsArgumentBuffer);
 		}
 
 		[Test]
 		public void GetElementTypeTest ()
 		{
-			Assert.AreEqual (MTLDataType.None, ptrType.ElementType);
+			ClassicAssert.AreEqual (MTLDataType.None, ptrType.ElementType);
 		}
 	}
 }

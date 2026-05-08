@@ -24,21 +24,21 @@ namespace MonoTouchFixtures.AVFoundation {
 		public void Defaults ()
 		{
 			using (var obj = new AVCaptureMetadataOutput ()) {
-				Assert.AreEqual (AVMetadataObjectType.None, obj.AvailableMetadataObjectTypes, "AvailableMetadataObjectTypes");
-				Assert.AreEqual (AVMetadataObjectType.None, obj.MetadataObjectTypes, "MetadataObjectTypes");
+				ClassicAssert.AreEqual (AVMetadataObjectType.None, obj.AvailableMetadataObjectTypes, "AvailableMetadataObjectTypes");
+				ClassicAssert.AreEqual (AVMetadataObjectType.None, obj.MetadataObjectTypes, "MetadataObjectTypes");
 
-				Assert.IsNotNull (obj.WeakAvailableMetadataObjectTypes, "WeakAvailableMetadataObjectTypes");
-				Assert.AreEqual (0, obj.WeakAvailableMetadataObjectTypes.Length, "WeakAvailableMetadataObjectTypes#");
-				Assert.IsNotNull (obj.WeakMetadataObjectTypes, "WeakMetadataObjectTypes");
-				Assert.AreEqual (0, obj.WeakMetadataObjectTypes.Length, "WeakMetadataObjectTypes#");
+				ClassicAssert.IsNotNull (obj.WeakAvailableMetadataObjectTypes, "WeakAvailableMetadataObjectTypes");
+				ClassicAssert.AreEqual (0, obj.WeakAvailableMetadataObjectTypes.Length, "WeakAvailableMetadataObjectTypes#");
+				ClassicAssert.IsNotNull (obj.WeakMetadataObjectTypes, "WeakMetadataObjectTypes");
+				ClassicAssert.AreEqual (0, obj.WeakMetadataObjectTypes.Length, "WeakMetadataObjectTypes#");
 				if (TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false))
-					Assert.AreEqual (new CGRect (0, 0, 1, 1), obj.RectOfInterest, "RectOfInterest");
+					ClassicAssert.AreEqual (new CGRect (0, 0, 1, 1), obj.RectOfInterest, "RectOfInterest");
 
 				if (TestRuntime.CheckXcodeVersion (13, 0)) {
 					obj.WeakMetadataObjectTypes = null;
-					Assert.AreEqual (AVMetadataObjectType.None, obj.MetadataObjectTypes, "MetadataObjectTypes");
+					ClassicAssert.AreEqual (AVMetadataObjectType.None, obj.MetadataObjectTypes, "MetadataObjectTypes");
 					obj.MetadataObjectTypes = AVMetadataObjectType.None;
-					Assert.AreEqual (AVMetadataObjectType.None, obj.MetadataObjectTypes, "MetadataObjectTypes");
+					ClassicAssert.AreEqual (AVMetadataObjectType.None, obj.MetadataObjectTypes, "MetadataObjectTypes");
 					obj.SetDelegate (null, null);
 				}
 			}
@@ -50,7 +50,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			// single
 			var flags = AVMetadataObjectType.Face;
 			var result = AVMetadataObjectTypeExtensions.ToFlags (new NSString [] { flags.GetConstant () });
-			Assert.AreEqual (flags, result, "a2e 1");
+			ClassicAssert.AreEqual (flags, result, "a2e 1");
 
 			var back = result.ToArray ();
 			Assert.That (back.Length, Is.EqualTo (1), "l 1");
@@ -66,7 +66,7 @@ namespace MonoTouchFixtures.AVFoundation {
 					AVMetadataObjectType.HumanBody.GetConstant ()
 				};
 				result = AVMetadataObjectTypeExtensions.ToFlags (array);
-				Assert.AreEqual (flags, result, "a2e 3");
+				ClassicAssert.AreEqual (flags, result, "a2e 3");
 				back = result.ToArray ();
 				Assert.That (back.Length, Is.EqualTo (3), "l 3");
 				Assert.That (back [0], Is.EqualTo (array [0]), "e2a 3a");
@@ -127,10 +127,10 @@ namespace MonoTouchFixtures.AVFoundation {
 								}
 								metadataOutput.MetadataObjectTypes = val;
 								all |= val;
-								Assert.AreEqual (val, metadataOutput.MetadataObjectTypes, val.ToString ());
+								ClassicAssert.AreEqual (val, metadataOutput.MetadataObjectTypes, val.ToString ());
 							}
 							metadataOutput.MetadataObjectTypes = all;
-							Assert.AreEqual (all, metadataOutput.MetadataObjectTypes, all.ToString ());
+							ClassicAssert.AreEqual (all, metadataOutput.MetadataObjectTypes, all.ToString ());
 						}
 					}
 				}

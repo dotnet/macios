@@ -27,7 +27,7 @@ namespace LinkSdk {
 			// Aes resides in mscorlib.dll but needs to create instance of types that are
 			// located inside System.Core.dll - IOW the linker needs to be aware of this
 			Aes aes = Aes.Create ();
-			Assert.NotNull (aes, "Aes");
+			ClassicAssert.NotNull (aes, "Aes");
 			const string prefix = "System.Security.Cryptography, ";
 			Assert.That (aes.GetType ().Assembly.FullName, Does.StartWith (prefix), prefix);
 		}
@@ -47,12 +47,12 @@ namespace LinkSdk {
 						return false;
 					Assert.That (errors, Is.EqualTo (SslPolicyErrors.None), "certificateProblem");
 					X509Certificate2 c2 = X509CertificateLoader.LoadCertificate (cert.GetRawCertData ());
-					Assert.True (chain.Build (c2), "Build");
+					ClassicAssert.True (chain.Build (c2), "Build");
 					trust_validation_callback++;
 					return true;
 				};
 				WebClient wc = new WebClient ();
-				Assert.IsNotNull (wc.DownloadString (NetworkResources.XamarinUrl));
+				ClassicAssert.IsNotNull (wc.DownloadString (NetworkResources.XamarinUrl));
 				// caching means it will be called at least for the first run, but it might not
 				// be called again in subsequent requests (unless it expires)
 				Assert.That (trust_validation_callback, Is.GreaterThan (0), "validation done");
@@ -101,13 +101,13 @@ namespace LinkSdk {
 						return false;
 					Assert.That (errors, Is.EqualTo (SslPolicyErrors.None), "certificateProblem");
 					X509Certificate2 c2 = X509CertificateLoader.LoadCertificate (cert.GetRawCertData ());
-					Assert.True (chain.Build (c2), "Build");
+					ClassicAssert.True (chain.Build (c2), "Build");
 					sne_validation_callback++;
 					return true;
 				};
 				ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
 				WebClient wc = new WebClient ();
-				Assert.IsNotNull (wc.DownloadString (NetworkResources.StatsUrl));
+				ClassicAssert.IsNotNull (wc.DownloadString (NetworkResources.StatsUrl));
 			} catch (WebException we) {
 				// failing to get data does not mean the SSL/TLS session was not established
 				if (sne_validation_callback == 0) {
@@ -137,16 +137,16 @@ namespace LinkSdk {
 			chain.ChainPolicy.TrustMode = X509ChainTrustMode.CustomRootTrust;
 			chain.ChainPolicy.CustomTrustStore.Add (rootCert);
 
-			Assert.False (chain.Build (cert), "Online");
-			Assert.True (chain.ChainStatus.Any (s => s.Status.HasFlag (X509ChainStatusFlags.RevocationStatusUnknown)), "Online");
+			ClassicAssert.False (chain.Build (cert), "Online");
+			ClassicAssert.True (chain.ChainStatus.Any (s => s.Status.HasFlag (X509ChainStatusFlags.RevocationStatusUnknown)), "Online");
 
 			chain.ChainPolicy.RevocationMode = X509RevocationMode.Offline;
-			Assert.False (chain.Build (cert), "Offline");
-			Assert.True (chain.ChainStatus.Any (s => s.Status.HasFlag (X509ChainStatusFlags.RevocationStatusUnknown)), "Offline");
+			ClassicAssert.False (chain.Build (cert), "Offline");
+			ClassicAssert.True (chain.ChainStatus.Any (s => s.Status.HasFlag (X509ChainStatusFlags.RevocationStatusUnknown)), "Offline");
 
 			chain.ChainPolicy.RevocationMode = X509RevocationMode.NoCheck;
-			Assert.True (chain.Build (cert), "NoCheck");
-			Assert.AreEqual (0, chain.ChainStatus.Length, "NoCheck");
+			ClassicAssert.True (chain.Build (cert), "NoCheck");
+			ClassicAssert.AreEqual (0, chain.ChainStatus.Length, "NoCheck");
 		}
 
 		byte [] sha256_data = {
@@ -209,7 +209,7 @@ namespace LinkSdk {
 		{
 			X509Certificate2 c = X509CertificateLoader.LoadCertificate (sha256_data);
 			// can't build is fine - as long as we do not throw
-			Assert.False (new X509Chain (false).Build (c), "Build");
+			ClassicAssert.False (new X509Chain (false).Build (c), "Build");
 		}
 	}
 }

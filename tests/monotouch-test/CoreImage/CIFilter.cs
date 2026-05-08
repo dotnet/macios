@@ -24,7 +24,7 @@ namespace Xamarin.Mac.Tests {
 				Radius = 1
 			};
 			var output = gloom.OutputImage;
-			Assert.IsNotNull (output, "CIFilterOutputImageTest - output was null");
+			ClassicAssert.IsNotNull (output, "CIFilterOutputImageTest - output was null");
 		}
 	}
 }

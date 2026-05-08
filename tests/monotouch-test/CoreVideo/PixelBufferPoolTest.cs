@@ -28,10 +28,10 @@ namespace MonoTouchFixtures.CoreVideo {
 			};
 
 			CVReturn error;
-			Assert.IsNotNull (pbp.CreatePixelBuffer (a, out error), "#1");
-			Assert.IsNotNull (pbp.CreatePixelBuffer (a, out error), "#2");
-			Assert.IsNull (pbp.CreatePixelBuffer (a, out error), "#3");
-			Assert.AreEqual (CVReturn.WouldExceedAllocationThreshold, error, "#3a");
+			ClassicAssert.IsNotNull (pbp.CreatePixelBuffer (a, out error), "#1");
+			ClassicAssert.IsNotNull (pbp.CreatePixelBuffer (a, out error), "#2");
+			ClassicAssert.IsNull (pbp.CreatePixelBuffer (a, out error), "#3");
+			ClassicAssert.AreEqual (CVReturn.WouldExceedAllocationThreshold, error, "#3a");
 		}
 	}
 }

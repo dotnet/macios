@@ -31,11 +31,11 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 			using var pixelBuffer = new CVPixelBuffer (720, 480, CVPixelFormatType.CV422YpCbCr8BiPlanarFullRange);
 			using var desc = CMVideoFormatDescription.CreateForImageBuffer (pixelBuffer, out var fde);
-			Assert.IsNotNull (desc, "Desc");
-			Assert.AreEqual (CMFormatDescriptionError.None, fde, "vdf error");
+			ClassicAssert.IsNotNull (desc, "Desc");
+			ClassicAssert.AreEqual (CMFormatDescriptionError.None, fde, "vdf error");
 			using var session = VTRawProcessingSession.Create (desc, (NSDictionary) null, (NSDictionary) null, out var vtStatus);
 			// I have not been able to figure out what kind of CMVideoFormatDescription is needed to create a VTRawProcessingSession.
-			Assert.AreEqual (VTStatus.CouldNotCreateInstance, vtStatus, "status");
+			ClassicAssert.AreEqual (VTStatus.CouldNotCreateInstance, vtStatus, "status");
 		}
 
 		[Test]
@@ -45,11 +45,11 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 			using var pixelBuffer = new CVPixelBuffer (480, 360, CVPixelFormatType.CV422YpCbCr8BiPlanarFullRange);
 			using var desc = CMVideoFormatDescription.CreateForImageBuffer (pixelBuffer, out var fde);
-			Assert.IsNotNull (desc, "Desc");
-			Assert.AreEqual (CMFormatDescriptionError.None, fde, "vdf error");
+			ClassicAssert.IsNotNull (desc, "Desc");
+			ClassicAssert.AreEqual (CMFormatDescriptionError.None, fde, "vdf error");
 			using var session = VTRawProcessingSession.Create (desc, (CVPixelBufferAttributes) null, (VTRawProcessingParameters) null, out var vtStatus);
 			// I have not been able to figure out what kind of CMVideoFormatDescription is needed to create a VTRawProcessingSession.
-			Assert.AreEqual (VTStatus.CouldNotCreateInstance, vtStatus, "status");
+			ClassicAssert.AreEqual (VTStatus.CouldNotCreateInstance, vtStatus, "status");
 		}
 
 		[Test]
@@ -57,7 +57,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 		{
 			TestRuntime.AssertXcodeVersion (16, 0);
 
-			Assert.AreNotEqual (0, VTRawProcessingSession.GetTypeId (), "GetTypeId");
+			ClassicAssert.AreNotEqual (0, VTRawProcessingSession.GetTypeId (), "GetTypeId");
 		}
 
 		[Test]
@@ -67,10 +67,10 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 			using var pixelBuffer = new CVPixelBuffer (20, 10, CVPixelFormatType.CV24RGB);
 			using var desc = CMVideoFormatDescription.CreateForImageBuffer (pixelBuffer, out var fde);
-			Assert.IsNotNull (desc, "Desc");
-			Assert.AreEqual (CMFormatDescriptionError.None, fde, "vdf error");
+			ClassicAssert.IsNotNull (desc, "Desc");
+			ClassicAssert.AreEqual (CMFormatDescriptionError.None, fde, "vdf error");
 			using var session = VTRawProcessingSession.Create (desc, (CVPixelBufferAttributes) null, (VTRawProcessingParameters) null, out var vtStatus);
-			Assert.AreEqual (VTStatus.CouldNotCreateInstance, vtStatus, "Create status");
+			ClassicAssert.AreEqual (VTStatus.CouldNotCreateInstance, vtStatus, "Create status");
 
 			// I have not been able to figure out what kind of CMVideoFormatDescription
 			// is needed to successfully create a VTRawProcessingSession,
@@ -81,18 +81,18 @@ namespace MonoTouchFixtures.VideoToolbox {
 			// });
 
 			// var parameters = session.CopyProcessingParameters (out vtStatus);
-			// Assert.AreEqual (VTStatus.Ok, vtStatus, "CopyProcessingParameters status");
-			// Assert.IsNotNull (parameters, "Parameters");
+			// ClassicAssert.AreEqual (VTStatus.Ok, vtStatus, "CopyProcessingParameters status");
+			// ClassicAssert.IsNotNull (parameters, "Parameters");
 			// Console.WriteLine (parameters);
 			// var prms = session.ProcessingParameters;
-			// Assert.IsNotNull (prms, "ProcessingParameters");
+			// ClassicAssert.IsNotNull (prms, "ProcessingParameters");
 			// Console.WriteLine (prms);
 
 			// vtStatus = session.SetProcessingParameters (new NSDictionary ());
-			// Assert.AreEqual (VTStatus.Ok, vtStatus, "SetProcessingParameters status");
+			// ClassicAssert.AreEqual (VTStatus.Ok, vtStatus, "SetProcessingParameters status");
 
 			// vtStatus = session.SetProcessingParameters (new VTRawProcessingParameters ());
-			// Assert.AreEqual (VTStatus.Ok, vtStatus, "SetProcessingParameters status (VTRawProcessingParameter)");
+			// ClassicAssert.AreEqual (VTStatus.Ok, vtStatus, "SetProcessingParameters status (VTRawProcessingParameter)");
 
 			// session.ProcessFrame (pixelBuffer, (NSDictionary) null, (VTStatus status, CVPixelBuffer? processedPixelBuffer) =>
 			// {

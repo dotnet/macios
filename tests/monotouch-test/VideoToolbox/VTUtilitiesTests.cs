@@ -56,15 +56,15 @@ namespace MonoTouchFixtures.VideoToolbox {
 				pxbuffer.Unlock (CVPixelBufferLock.None);
 			}
 
-			Assert.NotNull (pxbuffer, "VTUtilitiesTests.ToCGImageTest pxbuffer should not be null");
+			ClassicAssert.NotNull (pxbuffer, "VTUtilitiesTests.ToCGImageTest pxbuffer should not be null");
 
 			CGImage newImage;
 			var newImageStatus = pxbuffer.ToCGImage (out newImage);
 
 			Assert.That (newImageStatus == VTStatus.Ok, "VTUtilitiesTests.ToCGImageTest must be ok");
-			Assert.NotNull (newImage, "VTUtilitiesTests.ToCGImageTest pxbuffer should not be newImage");
-			Assert.AreEqual (originalCGImage.Width, newImage.Width, "VTUtilitiesTests.ToCGImageTest");
-			Assert.AreEqual (originalCGImage.Height, newImage.Height, "VTUtilitiesTests.ToCGImageTest");
+			ClassicAssert.NotNull (newImage, "VTUtilitiesTests.ToCGImageTest pxbuffer should not be newImage");
+			ClassicAssert.AreEqual (originalCGImage.Width, newImage.Width, "VTUtilitiesTests.ToCGImageTest");
+			ClassicAssert.AreEqual (originalCGImage.Height, newImage.Height, "VTUtilitiesTests.ToCGImageTest");
 
 			var retainCount = CFGetRetainCount (newImage.Handle);
 			Assert.That (retainCount, Is.EqualTo (1), "RetainCount");
@@ -122,11 +122,11 @@ namespace MonoTouchFixtures.VideoToolbox {
 			TestRuntime.AssertXcodeVersion (16, 0);
 
 			using var desc = CMFormatDescription.Create (CMMediaType.Video, (uint) codecType, out var fde);
-			Assert.IsNotNull (desc, "CMFormatDescription");
+			ClassicAssert.IsNotNull (desc, "CMFormatDescription");
 			Assert.That (fde, Is.EqualTo (CMFormatDescriptionError.None), "CMFormatDescriptionError #2 (authorized)");
 			using var dict = VTUtilities.CopyVideoDecoderExtensionProperties (desc, out var vtError);
 			Assert.That (vtError, Is.EqualTo (VTStatus.CouldNotFindVideoDecoder).Or.EqualTo (VTStatus.CouldNotFindExtensionErr), "VTError");
-			Assert.IsNull (dict, "CopyVideoDecoderExtensionProperties");
+			ClassicAssert.IsNull (dict, "CopyVideoDecoderExtensionProperties");
 
 			// I have not been able to figure out what kind of CMVideoFormatDescription is needed for CopyVideoDecoderExtensionProperties to work,
 			// so I can't test that case.
@@ -140,10 +140,10 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 			using var desc = CMFormatDescription.Create (CMMediaType.Video, (uint) codecType, out var fde);
 			Assert.That (fde, Is.EqualTo (CMFormatDescriptionError.None), "CMFormatDescriptionError #2 (authorized)");
-			Assert.IsNotNull (desc, "CMFormatDescription");
+			ClassicAssert.IsNotNull (desc, "CMFormatDescription");
 			using var dict = VTUtilities.CopyRawProcessorExtensionProperties (desc, out var vtError);
 			Assert.That (vtError, Is.EqualTo (VTStatus.CouldNotCreateInstance).Or.EqualTo (VTStatus.CouldNotFindExtensionErr), "VTError");
-			Assert.IsNull (dict, "CopyRawProcessorExtensionProperties");
+			ClassicAssert.IsNull (dict, "CopyRawProcessorExtensionProperties");
 
 			// I have not been able to figure out what kind of CMVideoFormatDescription is needed for VTRawProcessingSession,
 			// so I can't test the case where a CMFormatDescription is handled.

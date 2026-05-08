@@ -25,21 +25,21 @@ namespace MonoTouchFixtures.AVFoundation {
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 10, throwIfOtherPlatform: false);
 
 			using (var obj = new AVMetadataFaceObject ()) {
-				Assert.AreEqual ((nint) 0, obj.FaceID, "FaceID");
-				Assert.AreEqual (false, obj.HasRollAngle, "HasRollAngle");
-				Assert.AreEqual (false, obj.HasYawAngle, "HasYawAngle");
+				ClassicAssert.AreEqual ((nint) 0, obj.FaceID, "FaceID");
+				ClassicAssert.AreEqual (false, obj.HasRollAngle, "HasRollAngle");
+				ClassicAssert.AreEqual (false, obj.HasYawAngle, "HasYawAngle");
 #if !MONOMAC // No Type property for Mac
-				Assert.AreEqual (AVMetadataObjectType.Face, obj.Type, "Type");
+				ClassicAssert.AreEqual (AVMetadataObjectType.Face, obj.Type, "Type");
 #endif
 			}
 
 #if !MONOMAC // iOS only
 			using (var obj = new AVMetadataMachineReadableCodeObject ()) {
-				Assert.IsNotNull (obj.Corners, "Corners");
-				Assert.AreEqual (0, obj.Corners.Length, "Corners");
-				Assert.IsNull (obj.StringValue, "StringValue");
-				Assert.AreEqual (AVMetadataObjectType.None, obj.Type, "Type");
-				Assert.IsNull (obj.WeakType, "WeakType");
+				ClassicAssert.IsNotNull (obj.Corners, "Corners");
+				ClassicAssert.AreEqual (0, obj.Corners.Length, "Corners");
+				ClassicAssert.IsNull (obj.StringValue, "StringValue");
+				ClassicAssert.AreEqual (AVMetadataObjectType.None, obj.Type, "Type");
+				ClassicAssert.IsNull (obj.WeakType, "WeakType");
 			}
 #endif
 		}

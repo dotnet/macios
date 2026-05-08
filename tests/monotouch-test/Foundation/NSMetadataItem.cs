@@ -17,32 +17,32 @@ namespace Xamarin.Mac.Tests {
 			var url = NSBundle.MainBundle.BundleUrl;
 			using (var mi = new NSMetadataItem (url)) {
 				Assert.That (mi.DisplayName.ToString (), Is.EqualTo ("apitest"), "DisplayName");
-				Assert.NotNull (mi.FileSystemContentChangeDate, "FileSystemContentChangeDate");
-				Assert.NotNull (mi.FileSystemCreationDate, "FileSystemCreationDate");
+				ClassicAssert.NotNull (mi.FileSystemContentChangeDate, "FileSystemContentChangeDate");
+				ClassicAssert.NotNull (mi.FileSystemCreationDate, "FileSystemCreationDate");
 				Assert.That (mi.FileSystemName.ToString (), Is.EqualTo ("apitest.app"), "FileSystemName");
 				Assert.That (mi.FileSystemSize.UInt64Value, Is.GreaterThan (0), "FileSystemSize");
-				Assert.False (mi.IsUbiquitous, "IsUbiquitous");
+				ClassicAssert.False (mi.IsUbiquitous, "IsUbiquitous");
 				Assert.That (mi.Path.ToString (), Does.EndWith ("/apitest.app"), "Path");
-				Assert.False (mi.UbiquitousItemHasUnresolvedConflicts, "UbiquitousItemHasUnresolvedConflicts");
-				Assert.False (mi.UbiquitousItemIsDownloading, "UbiquitousItemIsDownloading");
-				Assert.False (mi.UbiquitousItemIsUploaded, "UbiquitousItemIsUploaded");
-				Assert.False (mi.UbiquitousItemIsUploading, "UbiquitousItemIsUploading");
+				ClassicAssert.False (mi.UbiquitousItemHasUnresolvedConflicts, "UbiquitousItemHasUnresolvedConflicts");
+				ClassicAssert.False (mi.UbiquitousItemIsDownloading, "UbiquitousItemIsDownloading");
+				ClassicAssert.False (mi.UbiquitousItemIsUploaded, "UbiquitousItemIsUploaded");
+				ClassicAssert.False (mi.UbiquitousItemIsUploading, "UbiquitousItemIsUploading");
 				Assert.That (mi.UbiquitousItemPercentDownloaded, Is.EqualTo (0), "UbiquitousItemPercentDownloaded");
 				Assert.That (mi.UbiquitousItemPercentUploaded, Is.EqualTo (0), "UbiquitousItemPercentUploaded");
-				Assert.Null (mi.Url, "Url");
+				ClassicAssert.Null (mi.Url, "Url");
 
 				Assert.That (mi.ContentType.ToString (), Is.EqualTo ("com.apple.application-bundle"), "ContentType");
 				Assert.That (mi.ContentTypeTree.Length, Is.GreaterThan (1), "ContentTypeTree");
 				Assert.That (mi.UbiquitousItemDownloadingStatus, Is.EqualTo (NSItemDownloadingStatus.Unknown), "UbiquitousItemDownloadingStatus");
-				Assert.Null (mi.UbiquitousItemDownloadingError, "UbiquitousItemDownloadingError");
-				Assert.Null (mi.UbiquitousItemUploadingError, "UbiquitousItemUploadingError");
-				Assert.Null (mi.UbiquitousItemContainerDisplayName, "UbiquitousItemContainerDisplayName");
-				Assert.Null (mi.UbiquitousItemUrlInLocalContainer, "UbiquitousItemUrlInLocalContainer");
+				ClassicAssert.Null (mi.UbiquitousItemDownloadingError, "UbiquitousItemDownloadingError");
+				ClassicAssert.Null (mi.UbiquitousItemUploadingError, "UbiquitousItemUploadingError");
+				ClassicAssert.Null (mi.UbiquitousItemContainerDisplayName, "UbiquitousItemContainerDisplayName");
+				ClassicAssert.Null (mi.UbiquitousItemUrlInLocalContainer, "UbiquitousItemUrlInLocalContainer");
 
 				// 10.10
 				if (TestRuntime.CheckXcodeVersion (6, 0)) {
-					Assert.False (mi.UbiquitousItemDownloadRequested, "UbiquitousItemDownloadRequested");
-					Assert.False (mi.UbiquitousItemIsExternalDocument, "UbiquitousItemIsExternalDocument");
+					ClassicAssert.False (mi.UbiquitousItemDownloadRequested, "UbiquitousItemDownloadRequested");
+					ClassicAssert.False (mi.UbiquitousItemIsExternalDocument, "UbiquitousItemIsExternalDocument");
 				}
 			}
 		}

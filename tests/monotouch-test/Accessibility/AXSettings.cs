@@ -35,8 +35,8 @@ namespace MonoTouchFixtures.Accessibility {
 				e = error;
 				didComplete.TrySetResult (true);
 			});
-			Assert.IsTrue (TestRuntime.RunAsync (TimeSpan.FromSeconds (30), didComplete.Task), "Timed out");
-			Assert.IsNull (error);
+			ClassicAssert.IsTrue (TestRuntime.RunAsync (TimeSpan.FromSeconds (30), didComplete.Task), "Timed out");
+			ClassicAssert.IsNull (error);
 		}
 	}
 }

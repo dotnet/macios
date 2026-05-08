@@ -23,11 +23,11 @@ namespace Xamarin.Mac.Tests {
 
 			layer.Contents = image;
 			CGImage arrayImage = layer.Contents;
-			Assert.AreEqual (image.Handle, arrayImage.Handle);
+			ClassicAssert.AreEqual (image.Handle, arrayImage.Handle);
 
 			layer.SetContents (NSImage);
 			NSImage arrayNSImage = layer.GetContentsAs<NSImage> ();
-			Assert.AreEqual (NSImage.Handle, arrayNSImage.Handle);
+			ClassicAssert.AreEqual (NSImage.Handle, arrayNSImage.Handle);
 
 			layer.SetContents (null); // Should not throw
 			layer.Contents = null; // Should not throw

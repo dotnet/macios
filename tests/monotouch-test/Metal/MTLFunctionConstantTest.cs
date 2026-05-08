@@ -17,28 +17,28 @@ namespace MonoTouchFixtures.Metal {
 		public void GetNameTest ()
 		{
 			var constant = new MTLFunctionConstant ();
-			Assert.IsNull (constant.Name); // defualt value is null
+			ClassicAssert.IsNull (constant.Name); // defualt value is null
 		}
 
 		[Test]
 		public void GetTypeTest ()
 		{
 			var constant = new MTLFunctionConstant ();
-			Assert.AreEqual (MTLDataType.None, constant.Type); // default value is none
+			ClassicAssert.AreEqual (MTLDataType.None, constant.Type); // default value is none
 		}
 
 		[Test]
 		public void GetIndexTest ()
 		{
 			var constant = new MTLFunctionConstant ();
-			Assert.AreEqual ((nuint) 0, constant.Index, $"Index is {constant.Index}"); // default value is 0
+			ClassicAssert.AreEqual ((nuint) 0, constant.Index, $"Index is {constant.Index}"); // default value is 0
 		}
 
 		[Test]
 		public void GetIsRequiredTest ()
 		{
 			var constant = new MTLFunctionConstant ();
-			Assert.False (constant.IsRequired); // defualt value is false
+			ClassicAssert.False (constant.IsRequired); // defualt value is false
 		}
 	}
 }

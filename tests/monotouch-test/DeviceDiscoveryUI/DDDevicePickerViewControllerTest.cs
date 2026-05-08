@@ -33,9 +33,9 @@ namespace MonoTouchFixtures.DeviceDiscoveryUI {
 
 			// DDDevicePickerViewController seems to work only for devices
 			if (TestRuntime.IsSimulator)
-				Assert.IsFalse (isSupported, "IsSupported");
+				ClassicAssert.IsFalse (isSupported, "IsSupported");
 			else
-				Assert.IsTrue (isSupported, "IsSupported");
+				ClassicAssert.IsTrue (isSupported, "IsSupported");
 		}
 
 		[Test]
@@ -50,7 +50,7 @@ namespace MonoTouchFixtures.DeviceDiscoveryUI {
 
 			// If this fails, please, double check that MyAppService is registered within the Info.plist
 			// https://developer.apple.com/documentation/bundleresources/information_property_list/nsapplicationservices
-			Assert.IsTrue (isSupported, $"The {serviceName} key might not be registered in the Info.plist.");
+			ClassicAssert.IsTrue (isSupported, $"The {serviceName} key might not be registered in the Info.plist.");
 
 			Assert.DoesNotThrow (() => { var devicePicker = new DDDevicePickerViewController (browserDescriptor, parameters); },
 				"InitWithBrowseDescriptorAndParameters");
@@ -68,7 +68,7 @@ namespace MonoTouchFixtures.DeviceDiscoveryUI {
 
 			// If this fails, please, double check that MyAppService is registered within the Info.plist
 			// https://developer.apple.com/documentation/bundleresources/information_property_list/nsapplicationservices
-			Assert.IsTrue (isSupported, $"The {serviceName} key might not be registered in the Info.plist.");
+			ClassicAssert.IsTrue (isSupported, $"The {serviceName} key might not be registered in the Info.plist.");
 
 			Assert.DoesNotThrow (() => {
 				var devicePicker = new DDDevicePickerViewController (browserDescriptor, parameters);

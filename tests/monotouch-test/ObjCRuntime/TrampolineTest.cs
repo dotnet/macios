@@ -57,10 +57,10 @@ namespace MonoTouchFixtures.ObjCRuntime {
 					CMTimeRange_objc_msgSend (out tr, obj.Handle, Selector.GetHandle ("myTimeRange"));
 				}
 			}
-			Assert.AreEqual (12, tr.Duration.Value);
-			Assert.AreEqual (1, tr.Duration.TimeScale);
-			Assert.AreEqual (1, tr.Start.Value);
-			Assert.AreEqual (1, tr.Start.TimeScale);
+			ClassicAssert.AreEqual (12, tr.Duration.Value);
+			ClassicAssert.AreEqual (1, tr.Duration.TimeScale);
+			ClassicAssert.AreEqual (1, tr.Start.Value);
+			ClassicAssert.AreEqual (1, tr.Start.TimeScale);
 		}
 
 		[Test]
@@ -158,10 +158,10 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		void AreAlmostEqual (CGRect left, CGRect right, string message)
 		{
 			var delta = 0.000001f;
-			Assert.AreEqual (left.X, right.X, delta, message);
-			Assert.AreEqual (left.Y, right.Y, delta, message);
-			Assert.AreEqual (left.Width, right.Width, delta, message);
-			Assert.AreEqual (left.Height, right.Height, delta, message);
+			ClassicAssert.AreEqual (left.X, right.X, delta, message);
+			ClassicAssert.AreEqual (left.Y, right.Y, delta, message);
+			ClassicAssert.AreEqual (left.Width, right.Width, delta, message);
+			ClassicAssert.AreEqual (left.Height, right.Height, delta, message);
 		}
 
 		[Test]
@@ -342,10 +342,10 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Assert.That (arr [0] == "def", "#b2");
 
 			arr = NSArray.StringArrayFromHandle (Messaging.IntPtr_objc_msgSend (obj.Handle, new Selector ("Test_StringArrayNullReturn").Handle));
-			Assert.IsNull (arr, "#c1");
+			ClassicAssert.IsNull (arr, "#c1");
 
 			c = Messaging.int_objc_msgSend_IntPtr (obj.Handle, new Selector ("Test_StringArray:").Handle, IntPtr.Zero);
-			Assert.AreEqual (-1, c, "#d1");
+			ClassicAssert.AreEqual (-1, c, "#d1");
 		}
 
 		[Test]
@@ -375,12 +375,12 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Export ("x64argumentoverflow:::::")]
 		void X64ArgumentOverflow (nint a, nint b, nint c, NSRange overflow, nint d)
 		{
-			Assert.AreEqual ((nint) 1, a, "1");
-			Assert.AreEqual ((nint) 2, b, "2");
-			Assert.AreEqual ((nint) 3, c, "3");
-			Assert.AreEqual ((nint) 4, overflow.Location, "length");
-			Assert.AreEqual ((nint) 5, overflow.Length, "location");
-			Assert.AreEqual ((nint) 6, d, "4");
+			ClassicAssert.AreEqual ((nint) 1, a, "1");
+			ClassicAssert.AreEqual ((nint) 2, b, "2");
+			ClassicAssert.AreEqual ((nint) 3, c, "3");
+			ClassicAssert.AreEqual ((nint) 4, overflow.Location, "length");
+			ClassicAssert.AreEqual ((nint) 5, overflow.Length, "location");
+			ClassicAssert.AreEqual ((nint) 6, d, "4");
 		}
 	}
 

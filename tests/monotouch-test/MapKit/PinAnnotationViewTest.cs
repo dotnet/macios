@@ -35,11 +35,11 @@ namespace MonoTouchFixtures.MapKit {
 		{
 			using (var a = new MKPolyline ())
 			using (MKPinAnnotationView av = new MKPinAnnotationView (a, "reuse")) {
-				Assert.AreSame (a, av.Annotation, "Annotation");
+				ClassicAssert.AreSame (a, av.Annotation, "Annotation");
 
 #if !MONOMAC
 				if (TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 7, 0)) // Crashes with EXC_BAD_ACCESS (SIGABRT) if < iOS 7.0
-					Assert.False (av.AnimatesDrop, "AnimatesDrop");
+					ClassicAssert.False (av.AnimatesDrop, "AnimatesDrop");
 
 				if (!TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 9, 0))
 					return;
@@ -48,7 +48,7 @@ namespace MonoTouchFixtures.MapKit {
 				Assert.That (av.PinColor, Is.EqualTo (MKPinAnnotationColor.Red), "PinColor");
 
 				if (TestRuntime.CheckXcodeVersion (7, 0))
-					Assert.NotNull (av.PinTintColor, "PinTintColor");
+					ClassicAssert.NotNull (av.PinTintColor, "PinTintColor");
 			}
 		}
 
@@ -63,8 +63,8 @@ namespace MonoTouchFixtures.MapKit {
 			var frame = new CGRect (10, 10, 100, 100);
 			using (var av = new MKPinAnnotationView (frame)) {
 				Assert.That (av.Frame.ToString (), Is.EqualTo (frame.ToString ()), "Frame"); // fp comparison fails
-				Assert.Null (av.Annotation, "Annotation");
-				Assert.False (av.AnimatesDrop, "AnimatesDrop");
+				ClassicAssert.Null (av.Annotation, "Annotation");
+				ClassicAssert.False (av.AnimatesDrop, "AnimatesDrop");
 
 				if (!TestRuntime.CheckXcodeVersion (7, 0))
 					return;
@@ -75,9 +75,9 @@ namespace MonoTouchFixtures.MapKit {
 #else
 				bool not_null = TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 10, 0);
 				if (not_null)
-					Assert.NotNull (av.PinTintColor, "PinTintColor");
+					ClassicAssert.NotNull (av.PinTintColor, "PinTintColor");
 				else
-					Assert.Null (av.PinTintColor, "PinTintColor"); // differs from the other init call
+					ClassicAssert.Null (av.PinTintColor, "PinTintColor"); // differs from the other init call
 #endif
 			}
 		}

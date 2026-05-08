@@ -51,8 +51,8 @@ namespace MonoTouchFixtures.UIKit {
 			Assert.That (r.Width, Is.EqualTo ((nfloat) (-57f)), "Width");
 			Assert.That (r.Height, Is.EqualTo ((nfloat) (-36f)), "Height");
 
-			Assert.False (i.Equals (UIEdgeInsets.Zero), "Equals(UIEdgeInsets)");
-			Assert.False (UIEdgeInsets.Zero.Equals ((object) i), "Equals(object)");
+			ClassicAssert.False (i.Equals (UIEdgeInsets.Zero), "Equals(UIEdgeInsets)");
+			ClassicAssert.False (UIEdgeInsets.Zero.Equals ((object) i), "Equals(object)");
 		}
 
 		[Test]
@@ -62,10 +62,10 @@ namespace MonoTouchFixtures.UIKit {
 			var i2 = new UIEdgeInsets (10, 10, 10, 10);
 
 #pragma warning disable CS1718 // warning CS1718: Comparison made to same variable; did you mean to compare something else?
-			Assert.True (i1 == i1, "i1 == i1");
-			Assert.True (i2 == i2, "i1 == i1");
-			Assert.True (i1 != i2, "i1 != i2");
-			Assert.True (i2 != i1, "i2 != i1");
+			ClassicAssert.True (i1 == i1, "i1 == i1");
+			ClassicAssert.True (i2 == i2, "i1 == i1");
+			ClassicAssert.True (i1 != i2, "i1 != i2");
+			ClassicAssert.True (i2 != i1, "i2 != i1");
 #pragma warning restore
 		}
 	}

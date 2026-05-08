@@ -31,7 +31,7 @@ namespace MonoTouchFixtures.CoreImage {
 				filter.HighlightAmount = 0.75f;
 				filter.ShadowAmount = 1.5f;
 				// https://bugzilla.xamarin.com/show_bug.cgi?id=15465
-				Assert.NotNull (filter.OutputImage, "OutputImage");
+				ClassicAssert.NotNull (filter.OutputImage, "OutputImage");
 			}
 		}
 
@@ -46,9 +46,9 @@ namespace MonoTouchFixtures.CoreImage {
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 11, throwIfOtherPlatform: false);
 
 			MyFilter filter = new MyFilter ();
-			Assert.NotNull (filter);
+			ClassicAssert.NotNull (filter);
 			filter.Input = 10;
-			Assert.AreEqual (10, filter.Input);
+			ClassicAssert.AreEqual (10, filter.Input);
 		}
 
 		[DllImport (Constants.CoreFoundationLibrary)]
@@ -61,18 +61,18 @@ namespace MonoTouchFixtures.CoreImage {
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
 
 			using (var f = new CIColorCubeWithColorSpace ()) {
-				Assert.Null (f.ColorSpace, "ColorSpace/default");
+				ClassicAssert.Null (f.ColorSpace, "ColorSpace/default");
 				using (var cs = CGColorSpace.CreateDeviceGray ()) {
 					f.ColorSpace = cs;
 					var rc = CFGetRetainCount (cs.Handle);
 					for (int i = 0; i < 5; i++) {
 						using (var fcs = f.ColorSpace)
-							Assert.NotNull (fcs, i.ToString ());
+							ClassicAssert.NotNull (fcs, i.ToString ());
 					}
 					Assert.That (CFGetRetainCount (cs.Handle), Is.EqualTo (rc), "RetainCount");
 					f.ColorSpace = null;
 				}
-				Assert.Null (f.ColorSpace, "ColorSpace/reset-null");
+				ClassicAssert.Null (f.ColorSpace, "ColorSpace/reset-null");
 			}
 		}
 
@@ -82,17 +82,17 @@ namespace MonoTouchFixtures.CoreImage {
 			TestRuntime.AssertXcodeVersion (9, 0);
 
 			using (var f = new CIBarcodeGenerator ()) {
-				Assert.Null (f.BarcodeDescriptor, "CIBarcodeDescriptor/default");
+				ClassicAssert.Null (f.BarcodeDescriptor, "CIBarcodeDescriptor/default");
 				using (var d = new NSData ())
 				using (var b = new CIQRCodeDescriptor (d, 1, 0, CIQRCodeErrorCorrectionLevel.Q)) {
 					f.BarcodeDescriptor = b;
 					var rc = CFGetRetainCount (b.Handle);
 					for (int i = 0; i < 5; i++)
-						Assert.NotNull (f.BarcodeDescriptor, i.ToString ());
+						ClassicAssert.NotNull (f.BarcodeDescriptor, i.ToString ());
 					Assert.That (CFGetRetainCount (b.Handle), Is.EqualTo (rc), "RetainCount");
 					f.BarcodeDescriptor = null;
 				}
-				Assert.Null (f.BarcodeDescriptor, "CIBarcodeDescriptor/reset-null");
+				ClassicAssert.Null (f.BarcodeDescriptor, "CIBarcodeDescriptor/reset-null");
 			}
 		}
 
@@ -102,14 +102,14 @@ namespace MonoTouchFixtures.CoreImage {
 			TestRuntime.AssertXcodeVersion (9, 0);
 
 			using (var f = new CIAttributedTextImageGenerator ()) {
-				Assert.Null (f.Text, "NSAttributedString/default");
+				ClassicAssert.Null (f.Text, "NSAttributedString/default");
 				var attr = new CTStringAttributes () {
 					ForegroundColorFromContext = true,
 					Font = new CTFont ("Arial", 24)
 				};
 				using (var s = new NSAttributedString ("testString", attr)) {
 					f.Text = s;
-					Assert.NotNull (f.Text, "NSAttributedString/not-null");
+					ClassicAssert.NotNull (f.Text, "NSAttributedString/not-null");
 				}
 			}
 		}
@@ -120,11 +120,11 @@ namespace MonoTouchFixtures.CoreImage {
 			TestRuntime.AssertXcodeVersion (10, 0);
 
 			using (var f = new CIMeshGenerator ()) {
-				Assert.Null (f.Mesh, "Mesh/Null");
+				ClassicAssert.Null (f.Mesh, "Mesh/Null");
 				f.Mesh = new CIVector [1] { new CIVector (1) };
 				Assert.That (f.Mesh.Length, Is.EqualTo (1), "Mesh/Non-null");
 				f.Mesh = null;
-				Assert.Null (f.Mesh, "Mesh/Null/again");
+				ClassicAssert.Null (f.Mesh, "Mesh/Null/again");
 			}
 		}
 

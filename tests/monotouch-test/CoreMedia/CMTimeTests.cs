@@ -140,15 +140,15 @@ namespace MonoTouchFixtures.CoreMedia {
 			CompareCMTimeRange (map.Source, CMTimeRange.InvalidRange, "CMTimeMapping.CreateFromDictionary");
 			CompareCMTimeRange (map.Target, CMTimeRange.InvalidRange, "CMTimeMapping.CreateFromDictionary");
 
-			Assert.IsNotNull (map.AsDictionary (), "CMTimeMapping AsDictionary");
+			ClassicAssert.IsNotNull (map.AsDictionary (), "CMTimeMapping AsDictionary");
 
-			Assert.IsNotNull (map.Description, "CMTimeMapping Description");
+			ClassicAssert.IsNotNull (map.Description, "CMTimeMapping Description");
 		}
 
 		void CompareCMTimeRange (CMTimeRange first, CMTimeRange second, string description)
 		{
-			Assert.AreEqual (first.Duration, second.Duration, "CompareCMTimeRange - duration - " + description);
-			Assert.AreEqual (first.Start, second.Start, "CompareCMTimeRange - start - " + description);
+			ClassicAssert.AreEqual (first.Duration, second.Duration, "CompareCMTimeRange - duration - " + description);
+			ClassicAssert.AreEqual (first.Start, second.Start, "CompareCMTimeRange - start - " + description);
 		}
 
 		[Test]
@@ -159,7 +159,7 @@ namespace MonoTouchFixtures.CoreMedia {
 				Time = time
 			};
 			var retrievedTime = timeDict.Time;
-			Assert.IsTrue (time == retrievedTime, "CMTimeStrongDictionary");
+			ClassicAssert.IsTrue (time == retrievedTime, "CMTimeStrongDictionary");
 		}
 
 		class CMTimeDict : DictionaryContainer {

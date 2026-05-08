@@ -30,7 +30,7 @@ namespace MonoTouchFixtures.SceneKit {
 				timeFunctionValue = f;
 				return timeFunctionValue;
 			};
-			// Assert.Null (a.TimingFunction, "TimingFunction-end");
+			// ClassicAssert.Null (a.TimingFunction, "TimingFunction-end");
 		}
 	}
 }

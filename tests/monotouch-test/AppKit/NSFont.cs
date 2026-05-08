@@ -23,8 +23,8 @@ namespace Xamarin.Mac.Tests {
 
 			var bounding = nsFont.GetBoundingRects (glyphs);
 			var advancement = nsFont.GetAdvancements (glyphs);
-			Assert.AreEqual (5, bounding.Length);
-			Assert.AreEqual (5, advancement.Length);
+			ClassicAssert.AreEqual (5, bounding.Length);
+			ClassicAssert.AreEqual (5, advancement.Length);
 		}
 
 		[Test]

@@ -62,11 +62,11 @@ namespace MonoTouchFixtures.CoreGraphics {
 
 			using (var url = new NSUrl (filename)) {
 				using (var ctx = new CGContextPDF (url, new CGRect (0, 0, 1000, 1000), info)) {
-					Assert.IsNotNull (ctx, "1");
+					ClassicAssert.IsNotNull (ctx, "1");
 				}
 				using (var consumer = new CGDataConsumer (url)) {
 					using (var ctx = new CGContextPDF (consumer, new CGRect (0, 0, 1000, 1000), info)) {
-						Assert.IsNotNull (ctx, "2");
+						ClassicAssert.IsNotNull (ctx, "2");
 					}
 				}
 			}

@@ -27,7 +27,7 @@ namespace MonoTouchFixtures.Metal {
 
 		[Test]
 		public void GetLayerTest ()
-			=> Assert.Null (descriptor.GetLayer (1));
+			=> ClassicAssert.Null (descriptor.GetLayer (1));
 
 		[Test]
 		public void SetLayerTest ()
@@ -50,7 +50,7 @@ namespace MonoTouchFixtures.Metal {
 		{
 			string label = "my label";
 			Assert.DoesNotThrow (() => descriptor.Label = label, "Set label");
-			Assert.AreEqual (label, descriptor.Label, "Get label");
+			ClassicAssert.AreEqual (label, descriptor.Label, "Get label");
 		}
 
 		[Test]

@@ -18,9 +18,9 @@ namespace MonoTouchFixtures.CoreData {
 		{
 			using (var exp = new NSExpressionDescription ()) {
 				exp.Name = "Test";
-				Assert.IsNull (exp.Expression, "An unset Expression should be null.");
+				ClassicAssert.IsNull (exp.Expression, "An unset Expression should be null.");
 				exp.Expression = new NSExpression (NSExpressionType.Block);
-				Assert.IsNotNull (exp.Expression, "Expression was not correctly set.");
+				ClassicAssert.IsNotNull (exp.Expression, "Expression was not correctly set.");
 			}
 		}
 
@@ -29,10 +29,10 @@ namespace MonoTouchFixtures.CoreData {
 		{
 			using (var exp = new NSExpressionDescription ()) {
 				exp.Name = "Test";
-				Assert.AreEqual (exp.ResultType, NSAttributeType.Undefined,
+				ClassicAssert.AreEqual (exp.ResultType, NSAttributeType.Undefined,
 								 "The default value of an unset ResultType should be 'Undefined'");
 				exp.ResultType = NSAttributeType.Boolean;
-				Assert.AreEqual (NSAttributeType.Boolean, exp.ResultType,
+				ClassicAssert.AreEqual (NSAttributeType.Boolean, exp.ResultType,
 								 "ResultType was not correctly set.");
 			}
 		}

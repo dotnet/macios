@@ -11,7 +11,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void Ctor ()
 		{
 			using (var arr = new NSSet<NSDate> ()) {
-				Assert.AreEqual ((nuint) 0, arr.Count, "Count");
+				ClassicAssert.AreEqual ((nuint) 0, arr.Count, "Count");
 			}
 		}
 
@@ -19,10 +19,10 @@ namespace MonoTouchFixtures.Foundation {
 		public void Ctor_Params ()
 		{
 			using (var arr = new NSSet<NSString> ((NSString) "foo")) {
-				Assert.AreEqual ((nuint) 1, arr.Count, "Count");
+				ClassicAssert.AreEqual ((nuint) 1, arr.Count, "Count");
 			}
 			using (var arr = new NSSet<NSString> ((NSString) "foo", (NSString) "bar")) {
-				Assert.AreEqual ((nuint) 2, arr.Count, "Count");
+				ClassicAssert.AreEqual ((nuint) 2, arr.Count, "Count");
 			}
 		}
 
@@ -33,8 +33,8 @@ namespace MonoTouchFixtures.Foundation {
 
 			using (var first = new NSSet<NSString> (v1)) {
 				using (var second = new NSSet<NSString> (first)) {
-					Assert.AreEqual ((nuint) 1, first.Count, "1 count");
-					Assert.AreEqual ((nuint) 1, second.Count, "2 count");
+					ClassicAssert.AreEqual ((nuint) 1, first.Count, "1 count");
+					ClassicAssert.AreEqual ((nuint) 1, second.Count, "2 count");
 				}
 			}
 		}
@@ -46,8 +46,8 @@ namespace MonoTouchFixtures.Foundation {
 
 			using (var first = new NSMutableSet<NSString> (v1)) {
 				using (var second = new NSSet<NSString> (first)) {
-					Assert.AreEqual ((nuint) 1, first.Count, "1 count");
-					Assert.AreEqual ((nuint) 1, second.Count, "2 count");
+					ClassicAssert.AreEqual ((nuint) 1, first.Count, "1 count");
+					ClassicAssert.AreEqual ((nuint) 1, second.Count, "2 count");
 				}
 			}
 		}
@@ -60,8 +60,8 @@ namespace MonoTouchFixtures.Foundation {
 
 			using (var st = new NSSet<NSString> (v1)) {
 				Assert.Throws<ArgumentNullException> (() => st.LookupMember ((NSString) null), "LookupMember ANE 1");
-				Assert.AreSame (v1, st.LookupMember (v1), "LookupMember 1");
-				Assert.IsNull (st.LookupMember (v2), "LookupMember 2");
+				ClassicAssert.AreSame (v1, st.LookupMember (v1), "LookupMember 1");
+				ClassicAssert.IsNull (st.LookupMember (v2), "LookupMember 2");
 			}
 		}
 
@@ -72,11 +72,11 @@ namespace MonoTouchFixtures.Foundation {
 			var v2 = (NSString) "2";
 
 			using (var st = new NSSet<NSString> ()) {
-				Assert.IsNull (st.AnyObject, "AnyObject 1");
+				ClassicAssert.IsNull (st.AnyObject, "AnyObject 1");
 			}
 
 			using (var st = new NSSet<NSString> (v1)) {
-				Assert.AreSame (v1, st.AnyObject, "AnyObject 2");
+				ClassicAssert.AreSame (v1, st.AnyObject, "AnyObject 2");
 			}
 		}
 
@@ -88,8 +88,8 @@ namespace MonoTouchFixtures.Foundation {
 
 			using (var st = new NSSet<NSString> (v1)) {
 				Assert.Throws<ArgumentNullException> (() => st.Contains ((NSString) null), "Contains ANE 1");
-				Assert.IsTrue (st.Contains (v1), "Contains 1");
-				Assert.IsFalse (st.Contains (v2), "Contains 2");
+				ClassicAssert.IsTrue (st.Contains (v1), "Contains 1");
+				ClassicAssert.IsFalse (st.Contains (v2), "Contains 2");
 			}
 		}
 
@@ -100,8 +100,8 @@ namespace MonoTouchFixtures.Foundation {
 
 			using (var st = new NSSet<NSString> (v1)) {
 				var arr = st.ToArray ();
-				Assert.AreEqual (1, arr.Length, "ToArray Length");
-				Assert.AreSame (v1, arr [0], "ToArray () [0]");
+				ClassicAssert.AreEqual (1, arr.Length, "ToArray Length");
+				ClassicAssert.AreSame (v1, arr [0], "ToArray () [0]");
 			}
 		}
 
@@ -114,9 +114,9 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSSet<NSString> (v1)) {
 				using (var second = new NSSet<NSString> (v2)) {
 					using (var third = first + second) {
-						Assert.AreEqual ((nuint) 2, third.Count, "+ Count");
-						Assert.IsTrue (third.Contains (v1), "+ 1");
-						Assert.IsTrue (third.Contains (v2), "+ 2");
+						ClassicAssert.AreEqual ((nuint) 2, third.Count, "+ Count");
+						ClassicAssert.IsTrue (third.Contains (v1), "+ 1");
+						ClassicAssert.IsTrue (third.Contains (v2), "+ 2");
 					}
 				}
 			}
@@ -131,8 +131,8 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSSet<NSString> (v1, v2)) {
 				using (var second = new NSSet<NSString> (v2)) {
 					using (var third = first - second) {
-						Assert.AreEqual ((nuint) 1, third.Count, "- Count");
-						Assert.IsTrue (third.Contains (v1), "- 1");
+						ClassicAssert.AreEqual ((nuint) 1, third.Count, "- Count");
+						ClassicAssert.IsTrue (third.Contains (v1), "- 1");
 					}
 				}
 			}
@@ -147,23 +147,23 @@ namespace MonoTouchFixtures.Foundation {
 
 			// Both null -> null
 			var result1 = nullSet + nullSet;
-			Assert.IsNull (result1, "null + null");
+			ClassicAssert.IsNull (result1, "null + null");
 
 			// First null, second non-null -> copy of second
 			using (var second = new NSSet<NSString> (v2)) {
 				using (var result2 = nullSet + second) {
-					Assert.IsNotNull (result2, "null + non-null");
-					Assert.AreEqual ((nuint) 1, result2.Count, "null + non-null Count");
-					Assert.IsTrue (result2.Contains (v2), "null + non-null contains");
+					ClassicAssert.IsNotNull (result2, "null + non-null");
+					ClassicAssert.AreEqual ((nuint) 1, result2.Count, "null + non-null Count");
+					ClassicAssert.IsTrue (result2.Contains (v2), "null + non-null contains");
 				}
 			}
 
 			// First non-null, second null -> copy of first
 			using (var first = new NSSet<NSString> (v1)) {
 				using (var result3 = first + nullSet) {
-					Assert.IsNotNull (result3, "non-null + null");
-					Assert.AreEqual ((nuint) 1, result3.Count, "non-null + null Count");
-					Assert.IsTrue (result3.Contains (v1), "non-null + null contains");
+					ClassicAssert.IsNotNull (result3, "non-null + null");
+					ClassicAssert.AreEqual ((nuint) 1, result3.Count, "non-null + null Count");
+					ClassicAssert.IsTrue (result3.Contains (v1), "non-null + null contains");
 				}
 			}
 		}
@@ -178,9 +178,9 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSSet<NSString> ()) {
 				using (var second = new NSSet<NSString> (v2)) {
 					using (var result = first + second) {
-						Assert.IsNotNull (result, "empty + non-empty");
-						Assert.AreEqual ((nuint) 1, result.Count, "empty + non-empty Count");
-						Assert.IsTrue (result.Contains (v2), "empty + non-empty contains");
+						ClassicAssert.IsNotNull (result, "empty + non-empty");
+						ClassicAssert.AreEqual ((nuint) 1, result.Count, "empty + non-empty Count");
+						ClassicAssert.IsTrue (result.Contains (v2), "empty + non-empty contains");
 					}
 				}
 			}
@@ -189,9 +189,9 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSSet<NSString> (v1)) {
 				using (var second = new NSSet<NSString> ()) {
 					using (var result = first + second) {
-						Assert.IsNotNull (result, "non-empty + empty");
-						Assert.AreEqual ((nuint) 1, result.Count, "non-empty + empty Count");
-						Assert.IsTrue (result.Contains (v1), "non-empty + empty contains");
+						ClassicAssert.IsNotNull (result, "non-empty + empty");
+						ClassicAssert.AreEqual ((nuint) 1, result.Count, "non-empty + empty Count");
+						ClassicAssert.IsTrue (result.Contains (v1), "non-empty + empty contains");
 					}
 				}
 			}
@@ -206,21 +206,21 @@ namespace MonoTouchFixtures.Foundation {
 
 			// null - null -> null
 			var result1 = nullSet - nullSet;
-			Assert.IsNull (result1, "null - null");
+			ClassicAssert.IsNull (result1, "null - null");
 
 			// null - non-null -> null
 			using (var second = new NSSet<NSString> (v2)) {
 				var result2 = nullSet - second;
-				Assert.IsNull (result2, "null - non-null");
+				ClassicAssert.IsNull (result2, "null - non-null");
 			}
 
 			// non-null - null -> copy of first
 			using (var first = new NSSet<NSString> (v1, v2)) {
 				using (var result3 = first - nullSet) {
-					Assert.IsNotNull (result3, "non-null - null");
-					Assert.AreEqual ((nuint) 2, result3.Count, "non-null - null Count");
-					Assert.IsTrue (result3.Contains (v1), "non-null - null contains v1");
-					Assert.IsTrue (result3.Contains (v2), "non-null - null contains v2");
+					ClassicAssert.IsNotNull (result3, "non-null - null");
+					ClassicAssert.AreEqual ((nuint) 2, result3.Count, "non-null - null Count");
+					ClassicAssert.IsTrue (result3.Contains (v1), "non-null - null contains v1");
+					ClassicAssert.IsTrue (result3.Contains (v2), "non-null - null contains v2");
 				}
 			}
 		}
@@ -235,7 +235,7 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSSet<NSString> ()) {
 				using (var second = new NSSet<NSString> (v2)) {
 					var result = first - second;
-					Assert.IsNull (result, "empty - non-empty");
+					ClassicAssert.IsNull (result, "empty - non-empty");
 				}
 			}
 
@@ -243,10 +243,10 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSSet<NSString> (v1, v2)) {
 				using (var second = new NSSet<NSString> ()) {
 					using (var result = first - second) {
-						Assert.IsNotNull (result, "non-empty - empty");
-						Assert.AreEqual ((nuint) 2, result.Count, "non-empty - empty Count");
-						Assert.IsTrue (result.Contains (v1), "non-empty - empty contains v1");
-						Assert.IsTrue (result.Contains (v2), "non-empty - empty contains v2");
+						ClassicAssert.IsNotNull (result, "non-empty - empty");
+						ClassicAssert.AreEqual ((nuint) 2, result.Count, "non-empty - empty Count");
+						ClassicAssert.IsTrue (result.Contains (v1), "non-empty - empty contains v1");
+						ClassicAssert.IsTrue (result.Contains (v2), "non-empty - empty contains v2");
 					}
 				}
 			}
@@ -255,8 +255,8 @@ namespace MonoTouchFixtures.Foundation {
 			using (var first = new NSSet<NSString> (v1)) {
 				using (var second = new NSSet<NSString> (v1)) {
 					var result = first - second;
-					Assert.IsNotNull (result, "result is not null");
-					Assert.AreEqual ((nuint) 0, result.Count, "result is empty");
+					ClassicAssert.IsNotNull (result, "result is not null");
+					ClassicAssert.AreEqual ((nuint) 0, result.Count, "result is empty");
 				}
 			}
 		}
@@ -270,16 +270,16 @@ namespace MonoTouchFixtures.Foundation {
 				values [i] = (NSString) i.ToString ();
 
 			using (var st = new NSSet<NSString> (values)) {
-				Assert.AreEqual ((nuint) C, st.Count, "Count 1");
+				ClassicAssert.AreEqual ((nuint) C, st.Count, "Count 1");
 
 				var lst = new List<NSString> ();
 				foreach (var a in (IEnumerable<NSString>) st) {
-					Assert.IsNotNull (a, "null item iterator");
-					Assert.IsFalse (lst.Contains (a), "duplicated item iterator");
+					ClassicAssert.IsNotNull (a, "null item iterator");
+					ClassicAssert.IsFalse (lst.Contains (a), "duplicated item iterator");
 					lst.Add (a);
-					Assert.IsTrue (Array.IndexOf (values, a) >= 0, "different object");
+					ClassicAssert.IsTrue (Array.IndexOf (values, a) >= 0, "different object");
 				}
-				Assert.AreEqual (C, lst.Count, "iterator count");
+				ClassicAssert.AreEqual (C, lst.Count, "iterator count");
 			}
 		}
 
@@ -303,16 +303,16 @@ namespace MonoTouchFixtures.Foundation {
 				values [i] = (NSString) i.ToString ();
 
 			using (var st = new NSSet<NSString> (values)) {
-				Assert.AreEqual ((nuint) C, st.Count, "Count 1");
+				ClassicAssert.AreEqual ((nuint) C, st.Count, "Count 1");
 
 				var lst = new List<NSString> ();
 				foreach (NSString a in (IEnumerable) st) {
-					Assert.IsNotNull (a, "null item iterator");
-					Assert.IsFalse (lst.Contains (a), "duplicated item iterator");
+					ClassicAssert.IsNotNull (a, "null item iterator");
+					ClassicAssert.IsFalse (lst.Contains (a), "duplicated item iterator");
 					lst.Add (a);
-					Assert.IsTrue (Array.IndexOf (values, a) >= 0, "different object");
+					ClassicAssert.IsTrue (Array.IndexOf (values, a) >= 0, "different object");
 				}
-				Assert.AreEqual (C, lst.Count, "iterator count");
+				ClassicAssert.AreEqual (C, lst.Count, "iterator count");
 			}
 		}
 
@@ -327,8 +327,8 @@ namespace MonoTouchFixtures.Foundation {
 			using (var sum3 = one + two) {
 
 			}
-			Assert.AreNotEqual (IntPtr.Zero, one.Handle, "Handle must be != IntPtr.Zero");
-			Assert.AreNotEqual (IntPtr.Zero, two.Handle, "Handle must be != IntPtr.Zero");
+			ClassicAssert.AreNotEqual (IntPtr.Zero, one.Handle, "Handle must be != IntPtr.Zero");
+			ClassicAssert.AreNotEqual (IntPtr.Zero, two.Handle, "Handle must be != IntPtr.Zero");
 		}
 
 		[Test]

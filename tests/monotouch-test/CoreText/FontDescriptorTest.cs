@@ -40,7 +40,7 @@ namespace MonoTouchFixtures.CoreText {
 				Assert.That (font.FullName, Is.EqualTo ("Courier Bold"), "FullName");
 				Assert.That (font.Size, Is.EqualTo ((nfloat) 16), "Size");
 				// that changed in iOS 8.3, there's an undocumented flag + MonoSpace (make sense) + bold
-				Assert.True ((font.SymbolicTraits & CTFontSymbolicTraits.Bold) != 0, "SymbolicTraits");
+				ClassicAssert.True ((font.SymbolicTraits & CTFontSymbolicTraits.Bold) != 0, "SymbolicTraits");
 			}
 		}
 
@@ -82,8 +82,8 @@ namespace MonoTouchFixtures.CoreText {
 			var rv = CTFontDescriptor.MatchFontDescriptors (new CTFontDescriptor [] { desc1 }, null, (CTFontDescriptorMatchingState state, CTFontDescriptorMatchingProgress progress) => {
 				try {
 					if (state == CTFontDescriptorMatchingState.Finished) {
-						Assert.AreEqual (1, progress.Result.Length, "Result.Length");
-						Assert.AreEqual (fda1.Name, progress.Result [0].GetAttributes ().Name, "Result[0].Name");
+						ClassicAssert.AreEqual (1, progress.Result.Length, "Result.Length");
+						ClassicAssert.AreEqual (fda1.Name, progress.Result [0].GetAttributes ().Name, "Result[0].Name");
 						tcs.TrySetResult (true);
 					}
 				} catch (Exception e) {
@@ -91,7 +91,7 @@ namespace MonoTouchFixtures.CoreText {
 				}
 				return true;
 			});
-			Assert.IsTrue (rv, "Return value");
+			ClassicAssert.IsTrue (rv, "Return value");
 			TestRuntime.RunAsync (TimeSpan.FromSeconds (30), tcs.Task);
 		}
 

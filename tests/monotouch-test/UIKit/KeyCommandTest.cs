@@ -12,7 +12,7 @@ namespace MonoTouchFixtures.UIKit {
 		public void Create ()
 		{
 			using (var key = new NSString ("a")) {
-				Assert.NotNull (UIKeyCommand.Create (key, UIKeyModifierFlags.Command, new Selector ("foo")), "Create");
+				ClassicAssert.NotNull (UIKeyCommand.Create (key, UIKeyModifierFlags.Command, new Selector ("foo")), "Create");
 			}
 		}
 	}

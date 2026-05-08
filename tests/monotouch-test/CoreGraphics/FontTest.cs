@@ -36,13 +36,13 @@ namespace MonoTouchFixtures.CoreGraphics {
 		[Test]
 		public void CreateFromProvider ()
 		{
-			Assert.Null (CGFont.CreateFromProvider (null), "CreateFromProvider");
+			ClassicAssert.Null (CGFont.CreateFromProvider (null), "CreateFromProvider");
 		}
 
 		[Test]
 		public void CreateWithFontName ()
 		{
-			Assert.Null (CGFont.CreateWithFontName (null), "CreateWithFontName");
+			ClassicAssert.Null (CGFont.CreateWithFontName (null), "CreateWithFontName");
 		}
 
 		[Test]

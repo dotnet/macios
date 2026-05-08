@@ -29,8 +29,8 @@ namespace MonoTouchFixtures.CoreData {
 		{
 			using (NSFetchedResultsController frc = new NSFetchedResultsController ()) {
 				NSError e;
-				Assert.False (frc.PerformFetch (out e), "PerformFetch");
-				Assert.Null (e, "NSError");
+				ClassicAssert.False (frc.PerformFetch (out e), "PerformFetch");
+				ClassicAssert.Null (e, "NSError");
 			}
 		}
 
@@ -45,7 +45,7 @@ namespace MonoTouchFixtures.CoreData {
 				r.Entity = new NSEntityDescription ();
 				using (NSFetchedResultsController frc = new NSFetchedResultsController (r, c, null, null)) {
 					NSError e;
-					Assert.False (frc.PerformFetch (out e), "PerformFetch");
+					ClassicAssert.False (frc.PerformFetch (out e), "PerformFetch");
 				}
 			}
 		}

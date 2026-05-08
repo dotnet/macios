@@ -28,7 +28,7 @@ namespace MonoTouchFixtures.CoreImage {
 		{
 			var options = new CIImageInitializationOptions ();
 			Assert.That (options.Dictionary.Count, Is.EqualTo ((nuint) 0), "Count");
-			Assert.Null (options.ColorSpace, "ColorSpace");
+			ClassicAssert.Null (options.ColorSpace, "ColorSpace");
 		}
 
 		[Test]
@@ -38,7 +38,7 @@ namespace MonoTouchFixtures.CoreImage {
 				ColorSpace = CGColorSpace.CreateDeviceRGB ()
 			};
 			Assert.That (options.Dictionary.Count, Is.EqualTo ((nuint) 1), "Count");
-			Assert.NotNull (options.ColorSpace, "ColorSpace");
+			ClassicAssert.NotNull (options.ColorSpace, "ColorSpace");
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace MonoTouchFixtures.CoreImage {
 
 			var options = new CIImageInitializationOptionsWithMetadata ();
 			Assert.That (options.Dictionary.Count, Is.EqualTo ((nuint) 0), "Count");
-			Assert.Null (options.Properties, "Properties");
+			ClassicAssert.Null (options.Properties, "Properties");
 		}
 
 		[Test]

@@ -20,9 +20,9 @@ namespace MonoTouchFixtures.SpriteKit {
 			using (var scene = new SKScene ()) {
 				using (var world = scene.PhysicsWorld) {
 					var v = world.SampleFields (new Vector3 (1, 2, 3));
-					Assert.AreEqual (0, v.X, "#x1");
-					Assert.AreEqual (0, v.Y, "#y1");
-					Assert.AreEqual (0, v.Z, "#z1");
+					ClassicAssert.AreEqual (0, v.X, "#x1");
+					ClassicAssert.AreEqual (0, v.Y, "#y1");
+					ClassicAssert.AreEqual (0, v.Z, "#z1");
 				}
 			}
 		}

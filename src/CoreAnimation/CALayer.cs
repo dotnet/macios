@@ -55,7 +55,7 @@ namespace CoreAnimation {
 				GC.KeepAlive (other);
 			} else {
 				unsafe {
-					var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);
+					var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
 					Messaging.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle (selInitWithLayer), other.Handle);
 					GC.KeepAlive (this);
 					GC.KeepAlive (other);

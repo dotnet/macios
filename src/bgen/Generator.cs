@@ -3081,7 +3081,7 @@ public partial class Generator : IMemberGatherer {
 		if (supercall && !minfo.is_static) {
 			print ("unsafe {");
 			indent++;
-			print ("var __objc_super__ = new global::ObjCRuntime.ObjCSuper ({0}.Handle, {0}.ClassHandle);", target_name);
+			print ("var __objc_super__ = new global::ObjCRuntime.ObjCSuper ({0});", target_name);
 			receiver = "&__objc_super__";
 		} else {
 			receiver = "";
@@ -6076,7 +6076,7 @@ public partial class Generator : IMemberGatherer {
 							var indentation = 3;
 							WriteIsDirectBindingCondition (sw, ref indentation, is_direct_binding, is_direct_binding_value,
 														   () => string.Format ("InitializeHandle (global::{1}.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.{0}), \"init\");", initSelector, NamespaceCache.Messaging),
-														   () => string.Format ("unsafe {{\nvar __objc_super__ = new global::ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);\nInitializeHandle (global::{1}.IntPtr_objc_msgSendSuper (&__objc_super__, global::ObjCRuntime.{0}), \"init\");\nGC.KeepAlive (this);\n}}", initSelector, NamespaceCache.Messaging));
+														   () => string.Format ("unsafe {{\nvar __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);\nInitializeHandle (global::{1}.IntPtr_objc_msgSendSuper (&__objc_super__, global::ObjCRuntime.{0}), \"init\");\nGC.KeepAlive (this);\n}}", initSelector, NamespaceCache.Messaging));
 
 							WriteMarkDirtyIfDerived (sw, type);
 							sw.WriteLine ("\t\t}");
@@ -6109,7 +6109,7 @@ public partial class Generator : IMemberGatherer {
 								var indentation = 3;
 								WriteIsDirectBindingCondition (sw, ref indentation, is_direct_binding, is_direct_binding_value,
 															   () => string.Format ("InitializeHandle (global::{1}.IntPtr_objc_msgSend_IntPtr (this.Handle, {0}, coder.Handle), \"initWithCoder:\");", initWithCoderSelector, NamespaceCache.Messaging),
-															   () => string.Format ("unsafe {{\nvar __objc_super__ = new global::ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);\nInitializeHandle (global::{1}.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, {0}, coder.Handle), \"initWithCoder:\");\nGC.KeepAlive (this);\n}}", initWithCoderSelector, NamespaceCache.Messaging));
+															   () => string.Format ("unsafe {{\nvar __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);\nInitializeHandle (global::{1}.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, {0}, coder.Handle), \"initWithCoder:\");\nGC.KeepAlive (this);\n}}", initWithCoderSelector, NamespaceCache.Messaging));
 								WriteMarkDirtyIfDerived (sw, type);
 								sw.WriteLine ("\t\t\tGC.KeepAlive (coder);");
 							} else {
@@ -6160,7 +6160,7 @@ public partial class Generator : IMemberGatherer {
 							sw.WriteLine ("\t\t///     if (IsDirectBinding) {");
 							sw.WriteLine ("\t\t///         Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);");
 							sw.WriteLine ("\t\t///     } else {");
-							sw.WriteLine ("\t\t///         var __objc_super__ = new ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);");
+							sw.WriteLine ("\t\t///         var __objc_super__ = new ObjCRuntime.ObjCSuper (this);");
 							sw.WriteLine ("\t\t///         Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);");
 							sw.WriteLine ("\t\t///     }");
 							sw.WriteLine ("\t\t/// }");
@@ -6950,7 +6950,7 @@ public partial class Generator : IMemberGatherer {
 						}
 						print ("unsafe {");
 						indent++;
-						print ("var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);");
+						print ("var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);");
 						print ("return global::" + NamespaceCache.Messaging + ".bool_objc_msgSendSuper_IntPtr (&__objc_super__, " + selRespondsToSelector + ", selHandle) != 0;");
 						indent--;
 						print ("}");

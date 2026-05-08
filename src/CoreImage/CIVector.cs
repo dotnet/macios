@@ -64,7 +64,7 @@ namespace CoreImage {
 					handle = Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (Handle, Selector.GetHandle ("initWithValues:count:"), (IntPtr) ptr, (IntPtr) count);
 				} else {
 					unsafe {
-						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);
+						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
 						handle = Messaging.IntPtr_objc_msgSendSuper_IntPtr_IntPtr (&__objc_super__, Selector.GetHandle ("initWithValues:count:"), (IntPtr) ptr, (IntPtr) count);
 						GC.KeepAlive (this);
 					}

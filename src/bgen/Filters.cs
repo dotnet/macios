@@ -121,7 +121,7 @@ public partial class Generator {
 		indent++;
 		print ("unsafe {");
 		indent++;
-		print ("var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);");
+		print ("var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);");
 		print ("h = global::ObjCRuntime.Messaging.{0}_objc_msgSendSuper_{0} (&__objc_super__, Selector.GetHandle (\"initWithCoder:\"), coder.Handle);", NativeHandleType);
 		print ("GC.KeepAlive (this);");
 		indent--;

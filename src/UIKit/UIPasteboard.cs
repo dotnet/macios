@@ -45,7 +45,7 @@ namespace UIKit {
 					ret = GetImageArray (ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, Selector.GetHandle (selImages)));
 				} else {
 					unsafe {
-						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);
+						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
 						ret = GetImageArray (ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (&__objc_super__, Selector.GetHandle (selImages)));
 						GC.KeepAlive (this);
 					}
@@ -63,7 +63,7 @@ namespace UIKit {
 					ObjCRuntime.Messaging.void_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle (selSetImages_), nsa_valueHandle);
 				} else {
 					unsafe {
-						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);
+						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
 						ObjCRuntime.Messaging.void_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle (selSetImages_), nsa_valueHandle);
 						GC.KeepAlive (this);
 					}

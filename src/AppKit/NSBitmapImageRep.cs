@@ -40,7 +40,7 @@ namespace AppKit {
 				InitializeHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, Selector.GetHandle (selInitForIncrementalLoad)), selInitForIncrementalLoad);
 			} else {
 				unsafe {
-					var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);
+					var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
 					InitializeHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (&__objc_super__, Selector.GetHandle (selInitForIncrementalLoad)), selInitForIncrementalLoad);
 					GC.KeepAlive (this);
 				}

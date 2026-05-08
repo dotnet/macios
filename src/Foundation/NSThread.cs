@@ -48,7 +48,7 @@ namespace Foundation {
 			if (IsDirectBinding) {
 				result = xamarin_init_nsthread (this.Handle, IsDirectBinding.AsByte (), target.Handle, selector.Handle, argument.GetHandle ());
 			} else {
-				var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);
+				var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
 				result = xamarin_init_nsthread ((IntPtr) (&__objc_super__), IsDirectBinding.AsByte (), target.Handle, selector.Handle, argument.GetHandle ());
 				GC.KeepAlive (this);
 			}

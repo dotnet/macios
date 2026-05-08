@@ -26,7 +26,7 @@ namespace Foundation {
 					if (IsDirectBinding) {
 						InitializeHandle (Messaging.IntPtr_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle ("initWithUUIDBytes:"), ptr), "initWithUUIDBytes:");
 					} else {
-						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this.Handle, this.ClassHandle);
+						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
 						InitializeHandle (Messaging.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle ("initWithUUIDBytes:"), ptr), "initWithUUIDBytes:");
 						GC.KeepAlive (this);
 					}

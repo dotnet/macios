@@ -105,7 +105,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var date = (DateTime) start;
 			var backAgain = (NSDate) date;
-			Assert.That (backAgain, Is.EqualTo (start).Within (message));
+			Assert.That (backAgain, Is.EqualTo (start), message);
 		}
 
 		[Test]

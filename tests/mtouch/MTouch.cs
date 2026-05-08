@@ -4605,7 +4605,7 @@ public class TestApp {
 			var e = string.Join (", ", expected);
 			var a = string.Join (", ", actual);
 
-			Assert.That (a, Is.EqualTo (e).Within (message));
+			Assert.That (a, Is.EqualTo (e), message);
 		}
 
 		public static IEnumerable<string> GetNativeSymbols (string file, string arch = null)

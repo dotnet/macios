@@ -51,7 +51,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 				var id = b.Identifier;
 				if (!String.IsNullOrEmpty (id)) {
 					var otherBundle = CFBundle.Get (id);
-					Assert.That (otherBundle.Info.Type, Is.EqualTo (b.Info.Type).Within (String.Format ("Found bundle with diff type and id {0}", id)));
+					Assert.That (otherBundle.Info.Type, Is.EqualTo (b.Info.Type), String.Format ("Found bundle with diff type and id {0}", id));
 					var bPath = (string) ((NSString) b.Url.Path).ResolveSymlinksInPath ();
 					var list = dict [id];
 					Assert.That (list, Does.Contain (bPath), "None of the bundles for {0} matches the path {1}", id, bPath);
@@ -416,7 +416,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 					break;
 				}
 				s = main.GetLocalizedString (key, defaultValue, tableName);
-				Assert.That (s, Is.EqualTo (expectedValue).Within (key));
+				Assert.That (s, Is.EqualTo (expectedValue), key);
 			});
 		}
 

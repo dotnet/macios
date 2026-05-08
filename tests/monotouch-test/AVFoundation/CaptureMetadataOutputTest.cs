@@ -127,10 +127,10 @@ namespace MonoTouchFixtures.AVFoundation {
 								}
 								metadataOutput.MetadataObjectTypes = val;
 								all |= val;
-								Assert.That (metadataOutput.MetadataObjectTypes, Is.EqualTo (val).Within (val.ToString ()));
+								Assert.That (metadataOutput.MetadataObjectTypes, Is.EqualTo (val), val.ToString ());
 							}
 							metadataOutput.MetadataObjectTypes = all;
-							Assert.That (metadataOutput.MetadataObjectTypes, Is.EqualTo (all).Within (all.ToString ()));
+							Assert.That (metadataOutput.MetadataObjectTypes, Is.EqualTo (all), all.ToString ());
 						}
 					}
 				}

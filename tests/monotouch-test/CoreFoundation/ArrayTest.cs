@@ -14,7 +14,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			Assert.That (a, Is.Not.Null, "NotNull");
 			Assert.That (a.Count, Is.EqualTo ((nint) 3), "Count");
 			for (var i = 0; i < a.Count; i++)
-				Assert.That ((string) CFString.FromHandle (a.GetValue (i), false), Is.EqualTo (TestArray [i]).Within (i.ToString ()));
+				Assert.That ((string) CFString.FromHandle (a.GetValue (i), false), Is.EqualTo (TestArray [i]), i.ToString ());
 		}
 
 		void VerifyArray (NSString []? a)
@@ -22,7 +22,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			Assert.That (a, Is.Not.Null, "NotNull");
 			Assert.That (a.Length, Is.EqualTo (3), "Count");
 			for (var i = 0; i < a.Length; i++)
-				Assert.That ((string) a [i], Is.EqualTo (TestArray [i]).Within (i.ToString ()));
+				Assert.That ((string) a [i], Is.EqualTo (TestArray [i]), i.ToString ());
 		}
 
 		void VerifyArray (string []? a)
@@ -30,7 +30,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			Assert.That (a, Is.Not.Null, "NotNull");
 			Assert.That (a.Length, Is.EqualTo (3), "Count");
 			for (var i = 0; i < a.Length; i++)
-				Assert.That ((string) a [i], Is.EqualTo (TestArray [i]).Within (i.ToString ()));
+				Assert.That ((string) a [i], Is.EqualTo (TestArray [i]), i.ToString ());
 		}
 
 		[Test]

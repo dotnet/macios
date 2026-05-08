@@ -153,7 +153,7 @@ namespace Xamarin {
 		public void AssertExecuteFailure (MTouchAction action, string message = null)
 		{
 			Action = action;
-			Assert.That (Execute (), Is.EqualTo (1).Within (message));
+			Assert.That (Execute (), Is.EqualTo (1), message);
 		}
 
 		// Assert that none of the files in the app has changed (except 'except' files)

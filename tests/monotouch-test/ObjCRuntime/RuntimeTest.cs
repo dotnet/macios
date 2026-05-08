@@ -338,7 +338,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			while (!thread.Join (1))
 				NSRunLoop.Main.RunUntil (NSDate.Now.AddSeconds (0.1));
 
-			Assert.That (broken, Is.EqualTo (0).Within (string.Format ("broken after {0} iterations", count)));
+			Assert.That (broken, Is.EqualTo (0), string.Format ("broken after {0} iterations", count));
 		}
 
 		[Test]

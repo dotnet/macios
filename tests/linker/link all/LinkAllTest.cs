@@ -138,7 +138,7 @@ namespace LinkAll {
 		{
 			var type = Type.GetType ("System.Globalization." + calendarName);
 			bool success = present == (type is not null);
-			Assert.That (type is not null, Is.EqualTo (present).Within (calendarName));
+			Assert.That (type is not null, Is.EqualTo (present), calendarName);
 		}
 
 		[Test]

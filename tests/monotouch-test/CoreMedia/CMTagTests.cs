@@ -286,7 +286,7 @@ namespace MonoTouchFixtures.CoreMedia {
 			var roundTrip = new Action<CMTag, string> ((tag, message) => {
 				var dict = tag.ToDictionary ();
 				var deserializedTag = CMTag.Create (dict);
-				Assert.That (CMTag.Equals (tag, deserializedTag), Is.EqualTo (true).Within (message));
+				Assert.That (CMTag.Equals (tag, deserializedTag), Is.EqualTo (true), message);
 			});
 
 			Assert.Multiple (() => {

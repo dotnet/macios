@@ -130,6 +130,8 @@ namespace Xharness.Jenkins.TestTasks {
 			if (testTask.ExecutionResult == TestExecutingResult.LaunchTimedOut && testTask.Harness.InCI) {
 				mainLog.WriteLine ($"Test launch timed out for {testTask.ProjectFile} on {testTask.Device?.Name} ({testTask.Device?.UDID}). Retrying once...");
 				testTask.Runner = null;
+				// Reset execution result so SelectSimulatorAsync doesn't bail due to Finished flag
+				testTask.ExecutionResult = testTask.ExecutionResult & ~TestExecutingResult.StateMask | TestExecutingResult.Running;
 				using (var resource = await testTask.NotifyBlockingWaitAsync (testTask.AcquireResourceAsync ())) {
 					await SelectSimulatorAsync ();
 					await testTask.Runner!.RunAsync ();

@@ -13,8 +13,8 @@ namespace Xamarin.Mac.Tests {
 		{
 			bool exactMatch = false;
 			var rv = NSGraphics.BestDepth (NSColorSpace.DeviceRGB, 8, 8, false, ref exactMatch);
-			ClassicAssert.AreEqual (NSWindowDepth.TwentyfourBitRgb, rv, "BestDepth");
-			ClassicAssert.IsTrue (exactMatch, "ExactMatch");
+			Assert.That (rv, Is.EqualTo (NSWindowDepth.TwentyfourBitRgb), "BestDepth");
+			Assert.That (exactMatch, Is.True, "ExactMatch");
 		}
 #endif
 
@@ -22,8 +22,8 @@ namespace Xamarin.Mac.Tests {
 		public void GetBestDepth ()
 		{
 			var rv = NSGraphics.GetBestDepth (NSColorSpace.DeviceRGB, 8, 8, false, out var exactMatch);
-			ClassicAssert.AreEqual (NSWindowDepth.TwentyfourBitRgb, rv, "GetBestDepth");
-			ClassicAssert.IsTrue (exactMatch, "ExactMatch");
+			Assert.That (rv, Is.EqualTo (NSWindowDepth.TwentyfourBitRgb), "GetBestDepth");
+			Assert.That (exactMatch, Is.True, "ExactMatch");
 		}
 	}
 }

@@ -13,8 +13,8 @@ namespace MonoTouchFixtures.PassKit {
 		public void CheckDefaultNulls ()
 		{
 			using var ps = new PKPaymentSummaryItem ();
-			ClassicAssert.IsNull (ps.Amount, "'PKPaymentSummaryItem.Amount' is not returning null by default.");
-			ClassicAssert.IsNull (ps.Label, "'PKPaymentSummaryItem.Label' is not returning null by default.");
+			Assert.That (ps.Amount, Is.Null, "'PKPaymentSummaryItem.Amount' is not returning null by default.");
+			Assert.That (ps.Label, Is.Null, "'PKPaymentSummaryItem.Label' is not returning null by default.");
 
 			Assert.DoesNotThrow (delegate { ps.Amount = null; },
 				"'PKPaymentSummaryItem.Amount' cannot be set to null.");

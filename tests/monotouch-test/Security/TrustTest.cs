@@ -88,7 +88,7 @@ namespace MonoTouchFixtures.Security {
 				});
 				Assert.That (err, Is.EqualTo (SecStatusCode.Success), "async1/err");
 				TestRuntime.RunAsync (TimeSpan.FromSeconds (5), called.Task);
-				ClassicAssert.True (assert, "async1");
+				Assert.That (assert, Is.True, "async1");
 			}
 
 			if (TestRuntime.CheckXcodeVersion (11, 0)) {
@@ -101,7 +101,7 @@ namespace MonoTouchFixtures.Security {
 					});
 					Assert.That (err, Is.EqualTo (SecStatusCode.Success), "async2/err");
 					TestRuntime.RunAsync (TimeSpan.FromSeconds (5), called.Task);
-					ClassicAssert.True (assert, "async2");
+					Assert.That (assert, Is.True, "async2");
 				}
 			}
 
@@ -111,9 +111,9 @@ namespace MonoTouchFixtures.Security {
 			var hasNetworkFetchAllowed = TestRuntime.CheckXcodeVersion (5, 0);
 #endif
 			if (hasNetworkFetchAllowed) {
-				ClassicAssert.True (trust.NetworkFetchAllowed, "NetworkFetchAllowed-1");
+				Assert.That (trust.NetworkFetchAllowed, Is.True, "NetworkFetchAllowed-1");
 				trust.NetworkFetchAllowed = false;
-				ClassicAssert.False (trust.NetworkFetchAllowed, "NetworkFetchAllowed-2");
+				Assert.That (trust.NetworkFetchAllowed, Is.False, "NetworkFetchAllowed-2");
 
 				trust.SetPolicy (policy);
 
@@ -206,7 +206,7 @@ namespace MonoTouchFixtures.Security {
 #endif
 				if (hasGetResult) {
 					// by default there's no *custom* anchors
-					ClassicAssert.Null (trust.GetCustomAnchorCertificates (), "GetCustomAnchorCertificates");
+					Assert.That (trust.GetCustomAnchorCertificates (), Is.Null, "GetCustomAnchorCertificates");
 
 					using (var results = trust.GetResult ()) {
 						Assert.That (CFGetRetainCount (results.Handle), Is.EqualTo ((nint) 1), "RetainCount");
@@ -283,8 +283,8 @@ namespace MonoTouchFixtures.Security {
 				}
 			}
 			if (TestRuntime.CheckXcodeVersion (10, 0)) {
-				ClassicAssert.False (trust.Evaluate (out var error), "Evaluate");
-				ClassicAssert.NotNull (error, "error");
+				Assert.That (trust.Evaluate (out var error), Is.False, "Evaluate");
+				Assert.That (error, Is.Not.Null, "error");
 			}
 		}
 
@@ -341,13 +341,13 @@ namespace MonoTouchFixtures.Security {
 			Assert.That (trust.GetTrustResult (), Is.EqualTo (SecTrustResult.Unspecified), "GetTrustResult-2");
 
 			if (result == SecTrustResult.Unspecified) {
-				ClassicAssert.True (trust.Evaluate (out var error), $"Evaluate: {error}");
-				ClassicAssert.Null (error, "error");
+				Assert.That (trust.Evaluate (out var error), Is.True, $"Evaluate: {error}");
+				Assert.That (error, Is.Null, "error");
 			} else if (result == SecTrustResult.RecoverableTrustFailure) {
 				if (trust.Evaluate (out var error))
-					ClassicAssert.Null (error, "error");
+					Assert.That (error, Is.Null, "error");
 				else
-					ClassicAssert.NotNull (error, "error");
+					Assert.That (error, Is.Not.Null, "error");
 			} else {
 				Assert.Fail ($"Unexpected trust result: {result}");
 			}

@@ -42,7 +42,7 @@ namespace MonoTouchFixtures.NaturalLanguage {
 				var tags = tagger.GetTags (new NSRange (0, Text.Length), NLTokenUnit.Word, NLTagScheme.Lemma, NLTaggerOptions.OmitWhitespace | NLTaggerOptions.OmitPunctuation, out var ranges);
 				Assert.That (tags.Length, Is.EqualTo (ranges.Length), "Length");
 				foreach (var tag in tags)
-					ClassicAssert.NotNull (tag, tag);
+					Assert.That (tag, Is.Not.Null, tag);
 			}
 		}
 

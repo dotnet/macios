@@ -18,9 +18,9 @@ namespace MonoTouchFixtures.Metal {
 			var operation = new MTL4UpdateSparseBufferMappingOperation ();
 
 			// Assert
-			ClassicAssert.AreEqual (default (MTLSparseTextureMappingMode), operation.Mode);
-			ClassicAssert.AreEqual (default (NSRange), operation.BufferRange);
-			ClassicAssert.AreEqual (default (nuint), operation.HeapOffset);
+			Assert.That (operation.Mode, Is.EqualTo (default (MTLSparseTextureMappingMode)));
+			Assert.That (operation.BufferRange, Is.EqualTo (default (NSRange)));
+			Assert.That (operation.HeapOffset, Is.EqualTo (default (nuint)));
 		}
 
 		[Test]
@@ -34,7 +34,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.Mode = expectedMode;
 
 			// Assert
-			ClassicAssert.AreEqual (expectedMode, operation.Mode);
+			Assert.That (operation.Mode, Is.EqualTo (expectedMode));
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.BufferRange = expectedRange;
 
 			// Assert
-			ClassicAssert.AreEqual (expectedRange, operation.BufferRange);
+			Assert.That (operation.BufferRange, Is.EqualTo (expectedRange));
 		}
 
 		[Test]
@@ -62,7 +62,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.HeapOffset = expectedOffset;
 
 			// Assert
-			ClassicAssert.AreEqual (expectedOffset, operation.HeapOffset);
+			Assert.That (operation.HeapOffset, Is.EqualTo (expectedOffset));
 		}
 
 		[Test]
@@ -80,9 +80,9 @@ namespace MonoTouchFixtures.Metal {
 			operation.HeapOffset = expectedOffset;
 
 			// Assert
-			ClassicAssert.AreEqual (expectedMode, operation.Mode);
-			ClassicAssert.AreEqual (expectedRange, operation.BufferRange);
-			ClassicAssert.AreEqual (expectedOffset, operation.HeapOffset);
+			Assert.That (operation.Mode, Is.EqualTo (expectedMode));
+			Assert.That (operation.BufferRange, Is.EqualTo (expectedRange));
+			Assert.That (operation.HeapOffset, Is.EqualTo (expectedOffset));
 		}
 
 		[Test]
@@ -96,9 +96,9 @@ namespace MonoTouchFixtures.Metal {
 			operation.BufferRange = zeroLengthRange;
 
 			// Assert
-			ClassicAssert.AreEqual (zeroLengthRange, operation.BufferRange);
-			ClassicAssert.AreEqual (10, (int) operation.BufferRange.Location);
-			ClassicAssert.AreEqual (0, (int) operation.BufferRange.Length);
+			Assert.That (operation.BufferRange, Is.EqualTo (zeroLengthRange));
+			Assert.That ((int) operation.BufferRange.Location, Is.EqualTo (10));
+			Assert.That ((int) operation.BufferRange.Length, Is.EqualTo (0));
 		}
 
 		[Test]
@@ -112,7 +112,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.BufferRange = maxRange;
 
 			// Assert
-			ClassicAssert.AreEqual (maxRange, operation.BufferRange);
+			Assert.That (operation.BufferRange, Is.EqualTo (maxRange));
 		}
 
 		[Test]
@@ -125,7 +125,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.HeapOffset = 0;
 
 			// Assert
-			ClassicAssert.AreEqual (0, (int) operation.HeapOffset);
+			Assert.That ((int) operation.HeapOffset, Is.EqualTo (0));
 		}
 
 		[Test]
@@ -138,7 +138,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.HeapOffset = nuint.MaxValue;
 
 			// Assert
-			ClassicAssert.AreEqual (nuint.MaxValue, operation.HeapOffset);
+			Assert.That (operation.HeapOffset, Is.EqualTo (nuint.MaxValue));
 		}
 
 		[Test]
@@ -151,7 +151,7 @@ namespace MonoTouchFixtures.Metal {
 			// Act & Assert
 			foreach (var mode in validModes) {
 				operation.Mode = mode;
-				ClassicAssert.AreEqual (mode, operation.Mode);
+				Assert.That (operation.Mode, Is.EqualTo (mode));
 			}
 		}
 
@@ -172,10 +172,10 @@ namespace MonoTouchFixtures.Metal {
 			operation2.HeapOffset = 2048;
 
 			// Assert
-			ClassicAssert.AreEqual (MTLSparseTextureMappingMode.Map, operation1.Mode);
-			ClassicAssert.AreEqual (MTLSparseTextureMappingMode.Unmap, operation2.Mode);
-			ClassicAssert.AreNotEqual (operation1.BufferRange, operation2.BufferRange);
-			ClassicAssert.AreNotEqual (operation1.HeapOffset, operation2.HeapOffset);
+			Assert.That (operation1.Mode, Is.EqualTo (MTLSparseTextureMappingMode.Map));
+			Assert.That (operation2.Mode, Is.EqualTo (MTLSparseTextureMappingMode.Unmap));
+			Assert.That (operation2.BufferRange, Is.Not.EqualTo (operation1.BufferRange));
+			Assert.That (operation2.HeapOffset, Is.Not.EqualTo (operation1.HeapOffset));
 		}
 	}
 }

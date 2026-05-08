@@ -26,10 +26,10 @@ namespace MonoTouchFixtures.SpriteKit {
 
 		void CheckEmpty (SKSpriteNode n)
 		{
-			ClassicAssert.IsNotNull (n.Color, "Color");
-			ClassicAssert.Null (n.Name, "Name");
-			ClassicAssert.True (n.Size.IsEmpty, "Size");
-			ClassicAssert.Null (n.Texture, "Texture");
+			Assert.That (n.Color, Is.Not.Null, "Color");
+			Assert.That (n.Name, Is.Null, "Name");
+			Assert.That (n.Size.IsEmpty, Is.True, "Size");
+			Assert.That (n.Texture, Is.Null, "Texture");
 		}
 
 		[SetUp]
@@ -101,9 +101,9 @@ namespace MonoTouchFixtures.SpriteKit {
 		{
 			using (var t = SKTexture.FromImageNamed ("basn3p08.png"))
 			using (var n = new SKSpriteNode (t)) {
-				ClassicAssert.AreSame (n.Texture, t, "Texture-1");
+				Assert.That (t, Is.SameAs (n.Texture), "Texture-1");
 				n.Texture = null;
-				ClassicAssert.IsNull (n.Texture, "Texture-2");
+				Assert.That (n.Texture, Is.Null, "Texture-2");
 			}
 		}
 	}

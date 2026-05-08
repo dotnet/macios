@@ -21,8 +21,8 @@ namespace MonoTouchFixtures.AVFoundation {
 			nfloat val = 10;
 			var units = AVCaptionUnitsType.Cells;
 			var dimension = AVCaptionDimension.Create (val, units);
-			ClassicAssert.AreEqual (val, dimension.Value, "Value");
-			ClassicAssert.AreEqual (units, dimension.Units);
+			Assert.That (dimension.Value, Is.EqualTo (val), "Value");
+			Assert.That (dimension.Units, Is.EqualTo (units));
 		}
 	}
 }

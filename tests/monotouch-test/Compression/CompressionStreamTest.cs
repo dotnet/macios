@@ -72,8 +72,8 @@ namespace MonoTouchFixtures.Compression {
 			DeflateStream decompressing = new DeflateStream (backing, CompressionMode.Decompress, algorithm);
 			MemoryStream output = new MemoryStream ();
 			CopyStream (decompressing, output);
-			ClassicAssert.AreNotEqual (0, output.Length, "Length should be more than 0.");
-			ClassicAssert.IsTrue (compare_buffers (data, output.GetBuffer (), (int) output.Length), "Buffers are not equal.");
+			Assert.That (output.Length, Is.Not.EqualTo (0), "Length should be more than 0.");
+			Assert.That (compare_buffers (data, output.GetBuffer (), (int) output.Length), Is.True, "Buffers are not equal.");
 			decompressing.Close ();
 			output.Close ();
 		}
@@ -86,7 +86,7 @@ namespace MonoTouchFixtures.Compression {
 			MemoryStream backing = new MemoryStream (compressed_data);
 			DeflateStream decompressing = new DeflateStream (backing, CompressionMode.Decompress, CompressionAlgorithm.Zlib);
 			StreamReader reader = new StreamReader (decompressing);
-			ClassicAssert.AreEqual ("Hello", reader.ReadLine ());
+			Assert.That (reader.ReadLine (), Is.EqualTo ("Hello"));
 			decompressing.Close ();
 		}
 
@@ -172,19 +172,19 @@ namespace MonoTouchFixtures.Compression {
 				Assert.Ignore ("Requires iOS 9.0+ or macOS 10.11+");
 			MemoryStream backing = new MemoryStream (compressed_data);
 			DeflateStream decompress = new DeflateStream (backing, CompressionMode.Decompress, CompressionAlgorithm.Zlib);
-			ClassicAssert.IsFalse (decompress.CanSeek, "#A1");
-			ClassicAssert.IsTrue (backing.CanSeek, "#A2");
+			Assert.That (decompress.CanSeek, Is.False, "#A1");
+			Assert.That (backing.CanSeek, Is.True, "#A2");
 			decompress.Dispose ();
-			ClassicAssert.IsFalse (decompress.CanSeek, "#A3");
-			ClassicAssert.IsFalse (backing.CanSeek, "#A4");
+			Assert.That (decompress.CanSeek, Is.False, "#A3");
+			Assert.That (backing.CanSeek, Is.False, "#A4");
 
 			backing = new MemoryStream ();
 			DeflateStream compress = new DeflateStream (backing, CompressionMode.Compress, CompressionAlgorithm.Zlib);
-			ClassicAssert.IsFalse (compress.CanSeek, "#B1");
-			ClassicAssert.IsTrue (backing.CanSeek, "#B2");
+			Assert.That (compress.CanSeek, Is.False, "#B1");
+			Assert.That (backing.CanSeek, Is.True, "#B2");
 			compress.Dispose ();
-			ClassicAssert.IsFalse (decompress.CanSeek, "#B3");
-			ClassicAssert.IsFalse (backing.CanSeek, "#B4");
+			Assert.That (decompress.CanSeek, Is.False, "#B3");
+			Assert.That (backing.CanSeek, Is.False, "#B4");
 		}
 
 		[Test]
@@ -194,19 +194,19 @@ namespace MonoTouchFixtures.Compression {
 				Assert.Ignore ("Requires iOS 9.0+ or macOS 10.11+");
 			MemoryStream backing = new MemoryStream (compressed_data);
 			DeflateStream decompress = new DeflateStream (backing, CompressionMode.Decompress, CompressionAlgorithm.Zlib);
-			ClassicAssert.IsTrue (decompress.CanRead, "#A1");
-			ClassicAssert.IsTrue (backing.CanRead, "#A2");
+			Assert.That (decompress.CanRead, Is.True, "#A1");
+			Assert.That (backing.CanRead, Is.True, "#A2");
 			decompress.Dispose ();
-			ClassicAssert.IsFalse (decompress.CanRead, "#A3");
-			ClassicAssert.IsFalse (backing.CanRead, "#A4");
+			Assert.That (decompress.CanRead, Is.False, "#A3");
+			Assert.That (backing.CanRead, Is.False, "#A4");
 
 			backing = new MemoryStream ();
 			DeflateStream compress = new DeflateStream (backing, CompressionMode.Compress, CompressionAlgorithm.Zlib);
-			ClassicAssert.IsFalse (compress.CanRead, "#B1");
-			ClassicAssert.IsTrue (backing.CanRead, "#B2");
+			Assert.That (compress.CanRead, Is.False, "#B1");
+			Assert.That (backing.CanRead, Is.True, "#B2");
 			compress.Dispose ();
-			ClassicAssert.IsFalse (decompress.CanRead, "#B3");
-			ClassicAssert.IsFalse (backing.CanRead, "#B4");
+			Assert.That (decompress.CanRead, Is.False, "#B3");
+			Assert.That (backing.CanRead, Is.False, "#B4");
 		}
 
 		[Test]
@@ -216,19 +216,19 @@ namespace MonoTouchFixtures.Compression {
 				Assert.Ignore ("Requires iOS 9.0+ or macOS 10.11+");
 			MemoryStream backing = new MemoryStream ();
 			DeflateStream decompress = new DeflateStream (backing, CompressionMode.Decompress, CompressionAlgorithm.Zlib);
-			ClassicAssert.IsFalse (decompress.CanWrite, "#A1");
-			ClassicAssert.IsTrue (backing.CanWrite, "#A2");
+			Assert.That (decompress.CanWrite, Is.False, "#A1");
+			Assert.That (backing.CanWrite, Is.True, "#A2");
 			decompress.Dispose ();
-			ClassicAssert.IsFalse (decompress.CanWrite, "#A3");
-			ClassicAssert.IsFalse (backing.CanWrite, "#A4");
+			Assert.That (decompress.CanWrite, Is.False, "#A3");
+			Assert.That (backing.CanWrite, Is.False, "#A4");
 
 			backing = new MemoryStream ();
 			DeflateStream compress = new DeflateStream (backing, CompressionMode.Compress, CompressionAlgorithm.Zlib);
-			ClassicAssert.IsTrue (compress.CanWrite, "#B1");
-			ClassicAssert.IsTrue (backing.CanWrite, "#B2");
+			Assert.That (compress.CanWrite, Is.True, "#B1");
+			Assert.That (backing.CanWrite, Is.True, "#B2");
 			compress.Dispose ();
-			ClassicAssert.IsFalse (decompress.CanWrite, "#B3");
-			ClassicAssert.IsFalse (backing.CanWrite, "#B4");
+			Assert.That (decompress.CanWrite, Is.False, "#B3");
+			Assert.That (backing.CanWrite, Is.False, "#B4");
 		}
 
 		[Test]
@@ -317,7 +317,7 @@ namespace MonoTouchFixtures.Compression {
 				// blocks the thread waiting for at least a byte to return.
 				// This assert guarantees that Read is called only when there 
 				// is something to be read.
-				ClassicAssert.IsTrue (Position < Length, "Trying to read empty stream.");
+				Assert.That (Position < Length, Is.True, "Trying to read empty stream.");
 
 				return base.Read (buffer, offset, count);
 			}

@@ -130,48 +130,47 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void TestClassName ()
 		{
-			ClassicAssert.AreEqual (cmdClass, scriptDescription.ClassName);
+			Assert.That (scriptDescription.ClassName, Is.EqualTo (cmdClass));
 		}
 
 		[Test]
 		public void TestName ()
 		{
-			ClassicAssert.AreEqual (commandName, scriptDescription.Name);
+			Assert.That (scriptDescription.Name, Is.EqualTo (commandName));
 		}
 
 		[Test]
 		public void TestSuiteName ()
 		{
-			ClassicAssert.AreEqual (suiteName, scriptDescription.SuitName);
+			Assert.That (scriptDescription.SuitName, Is.EqualTo (suiteName));
 		}
 
 		[Test]
 		public void TestArgumentsNames ()
 		{
-			ClassicAssert.AreEqual (args.Keys.Count, scriptDescription.ArgumentNames.Length);
+			Assert.That (scriptDescription.ArgumentNames.Length, Is.EqualTo (args.Keys.Count));
 			foreach (var argName in scriptDescription.ArgumentNames) {
-				ClassicAssert.IsTrue (args.Keys.Contains (argName), "Arg {0} is missing", argName);
+				Assert.That (args.Keys.Contains (argName), Is.True, "Arg {0} is missing", argName);
 			}
 		}
 
 		[Test]
 		public void TestAppleEventClassCode ()
 		{
-			ClassicAssert.AreEqual (eventClass, scriptDescription.AppleEventClassCode);
+			Assert.That (scriptDescription.AppleEventClassCode, Is.EqualTo (eventClass));
 		}
 
 		[Test]
 		public void TestAppleEventCode ()
 		{
-			ClassicAssert.AreEqual (eventCode, scriptDescription.AppleEventCode);
+			Assert.That (scriptDescription.AppleEventCode, Is.EqualTo (eventCode));
 		}
 
 		[Test]
 		public void TestIsOptionalArgument ()
 		{
 			foreach (KeyValuePair<string, NSScriptCommandArgumentDescription> kvp in args) {
-				ClassicAssert.AreEqual (kvp.Value.IsOptional, scriptDescription.IsOptionalArgument (kvp.Key),
-					"Wrong apple event code for arg {0}", kvp.Key);
+				Assert.That (scriptDescription.IsOptionalArgument (kvp.Key), Is.EqualTo (kvp.Value.IsOptional), "Wrong apple event code for arg {0}", kvp.Key);
 			}
 		}
 
@@ -179,15 +178,14 @@ namespace MonoTouchFixtures.Foundation {
 		public void TestGetAppleEventCodeForArgument ()
 		{
 			foreach (KeyValuePair<string, NSScriptCommandArgumentDescription> kvp in args) {
-				ClassicAssert.AreEqual (kvp.Value.AppleEventCode, scriptDescription.GetAppleEventCodeForArgument (kvp.Key),
-					"Wrong apple event code for arg {0}", kvp.Key);
+				Assert.That (scriptDescription.GetAppleEventCodeForArgument (kvp.Key), Is.EqualTo (kvp.Value.AppleEventCode), "Wrong apple event code for arg {0}", kvp.Key);
 			}
 		}
 
 		[Test]
 		public void TestReturnType ()
 		{
-			ClassicAssert.AreEqual (returnType, scriptDescription.ReturnType);
+			Assert.That (scriptDescription.ReturnType, Is.EqualTo (returnType));
 		}
 	}
 }

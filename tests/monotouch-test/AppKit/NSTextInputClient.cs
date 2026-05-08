@@ -14,7 +14,7 @@ namespace apitest {
 		{
 			textView = new NSTextView (new CGRect (0, 0, 37, 120));
 			textView.Value = "This is a new string";
-			ClassicAssert.AreEqual (textView.Value, "This is a new string", "NSTextInputClientSetup - Failed to set value");
+			Assert.That ("This is a new string", Is.EqualTo (textView.Value), "NSTextInputClientSetup - Failed to set value");
 		}
 
 		[TearDown]
@@ -28,7 +28,7 @@ namespace apitest {
 		{
 			textView.InsertText ((NSString) "Test", new NSRange (5, 4));
 
-			ClassicAssert.AreEqual (textView.Value, "This Test new string", "NSTextInputClient_ShouldInsertText - Failed to insert text");
+			Assert.That ("This Test new string", Is.EqualTo (textView.Value), "NSTextInputClient_ShouldInsertText - Failed to insert text");
 		}
 
 		[Test]
@@ -36,8 +36,8 @@ namespace apitest {
 		{
 			textView.SetMarkedText ((NSString) "Testing", new NSRange (0, 10), new NSRange (5, 4));
 
-			ClassicAssert.IsTrue (textView.HasMarkedText, "NSTextInputClient_ShouldMarkText - Failed to mark text");
-			ClassicAssert.AreEqual (textView.MarkedRange, new NSRange (5, 7));
+			Assert.That (textView.HasMarkedText, Is.True, "NSTextInputClient_ShouldMarkText - Failed to mark text");
+			Assert.That (new NSRange (5, 7), Is.EqualTo (textView.MarkedRange));
 
 			textView.UnmarkText ();
 		}
@@ -45,7 +45,7 @@ namespace apitest {
 		[Test]
 		public void NSTextInputClient_ShouldGetValidAttributesForMarkedText ()
 		{
-			ClassicAssert.IsTrue (textView.ValidAttributesForMarkedText.Length > 0, "NSTextInputClient_ShouldGetValidAttributesForMarkedTExt - No valid attributes");
+			Assert.That (textView.ValidAttributesForMarkedText.Length > 0, Is.True, "NSTextInputClient_ShouldGetValidAttributesForMarkedTExt - No valid attributes");
 		}
 
 		[Test]
@@ -53,12 +53,12 @@ namespace apitest {
 		{
 			textView.SetMarkedText ((NSString) "Testing", new NSRange (0, 10), new NSRange (5, 4));
 
-			ClassicAssert.IsTrue (textView.HasMarkedText, "NSTextInputClient_ShouldUnMarkText - Failed to mark text");
+			Assert.That (textView.HasMarkedText, Is.True, "NSTextInputClient_ShouldUnMarkText - Failed to mark text");
 
 			textView.UnmarkText ();
 
-			ClassicAssert.IsFalse (textView.HasMarkedText, "NSTextInputClient_ShouldUnmarkText - Failed to Unmark text");
-			ClassicAssert.IsTrue (textView.MarkedRange.Length == 0, "NSTextInputClient_ShouldUnmarkText - MarkedRange is not 0");
+			Assert.That (textView.HasMarkedText, Is.False, "NSTextInputClient_ShouldUnmarkText - Failed to Unmark text");
+			Assert.That (textView.MarkedRange.Length == 0, Is.True, "NSTextInputClient_ShouldUnmarkText - MarkedRange is not 0");
 		}
 
 		[Test]
@@ -67,8 +67,8 @@ namespace apitest {
 			NSRange range;
 			var attributedString = textView.GetAttributedSubstring (new NSRange (10, 15), out range);
 
-			ClassicAssert.AreEqual (attributedString.Value, "new string", "NSTextInputClient_ShouldGetAttributedSubstring - Failed to get the correct string");
-			ClassicAssert.AreEqual (range, new NSRange (10, 10), "NSTextInputClient_ShouldGetAttributedSubstring - Wrong range value returned");
+			Assert.That ("new string", Is.EqualTo (attributedString.Value), "NSTextInputClient_ShouldGetAttributedSubstring - Failed to get the correct string");
+			Assert.That (new NSRange (10, 10), Is.EqualTo (range), "NSTextInputClient_ShouldGetAttributedSubstring - Wrong range value returned");
 		}
 
 		[Test]
@@ -88,13 +88,13 @@ namespace apitest {
 		[Test]
 		public void NSTextInputClient_ShouldGetAttributedString ()
 		{
-			ClassicAssert.AreEqual (textView.AttributedString.Value, "This is a new string", "NSTextInputClient_ShouldGetAttributedString - Returned the wrong attributed string");
+			Assert.That ("This is a new string", Is.EqualTo (textView.AttributedString.Value), "NSTextInputClient_ShouldGetAttributedString - Returned the wrong attributed string");
 		}
 
 		[Test]
 		public void NSTextInputClient_ShouldGetFractionofDistanceThroughGlyph ()
 		{
-			ClassicAssert.IsTrue (textView.GetFractionOfDistanceThroughGlyph (new CGPoint (1, 2)) == 0, "NSTextInputClient_ShouldGetFractionofDistanceThroughGlyph - Returned wrong fraaction value");
+			Assert.That (textView.GetFractionOfDistanceThroughGlyph (new CGPoint (1, 2)) == 0, Is.True, "NSTextInputClient_ShouldGetFractionofDistanceThroughGlyph - Returned wrong fraaction value");
 		}
 
 		[Test]
@@ -106,13 +106,13 @@ namespace apitest {
 		[Test]
 		public void NSTextInputClient_ShouldGetDrawsVertically ()
 		{
-			ClassicAssert.IsFalse (textView.DrawsVertically (4), "NSTextInputClient_ShouldGetDrawsVertically - Returned wrong value");
+			Assert.That (textView.DrawsVertically (4), Is.False, "NSTextInputClient_ShouldGetDrawsVertically - Returned wrong value");
 		}
 
 		[Test]
 		public void NSTextInputClient_ShouldGetWindowLevel ()
 		{
-			ClassicAssert.AreEqual (textView.WindowLevel, NSWindowLevel.Normal, "NSTextInputClient_ShouldGetWindowLevel - WindowLevel returned the wrong value");
+			Assert.That (NSWindowLevel.Normal, Is.EqualTo (textView.WindowLevel), "NSTextInputClient_ShouldGetWindowLevel - WindowLevel returned the wrong value");
 		}
 	}
 }

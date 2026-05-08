@@ -23,11 +23,11 @@ namespace monotouchtest {
 				objptr = Messaging.IntPtr_objc_msgSend_IntPtr (Class.GetHandle (typeof (NSString)), Selector.GetHandle ("stringWithUTF8String:"), strobjptr);
 				using (var dict = Runtime.GetNSObject<NSMutableDictionary> (Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (Class.GetHandle (typeof (NSMutableDictionary)), Selector.GetHandle ("dictionaryWithObject:forKey:"), objptr, keyptr))) {
 					v = (NSString) dict ["key"];
-					ClassicAssert.AreEqual ("obj", (string) v, "a");
+					Assert.That ((string) v, Is.EqualTo ("obj"), "a");
 
 					dict ["key"] = (NSString) "value";
 					v = (NSString) dict ["key"];
-					ClassicAssert.AreEqual ("value", (string) v, "a");
+					Assert.That ((string) v, Is.EqualTo ("value"), "a");
 				}
 
 				// this[NSObject]
@@ -35,11 +35,11 @@ namespace monotouchtest {
 				objptr = Messaging.IntPtr_objc_msgSend_IntPtr (Class.GetHandle (typeof (NSString)), Selector.GetHandle ("stringWithUTF8String:"), strobjptr);
 				using (var dict = Runtime.GetNSObject<NSMutableDictionary> (Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (Class.GetHandle (typeof (NSMutableDictionary)), Selector.GetHandle ("dictionaryWithObject:forKey:"), objptr, keyptr))) {
 					v = (NSString) dict [(NSObject) (NSString) "key"];
-					ClassicAssert.AreEqual ("obj", (string) v, "b");
+					Assert.That ((string) v, Is.EqualTo ("obj"), "b");
 
 					dict [(NSObject) (NSString) "key"] = (NSString) "value";
 					v = (NSString) dict ["key"];
-					ClassicAssert.AreEqual ("value", (string) v, "a");
+					Assert.That ((string) v, Is.EqualTo ("value"), "a");
 				}
 
 				// this[NSString]
@@ -47,11 +47,11 @@ namespace monotouchtest {
 				objptr = Messaging.IntPtr_objc_msgSend_IntPtr (Class.GetHandle (typeof (NSString)), Selector.GetHandle ("stringWithUTF8String:"), strobjptr);
 				using (var dict = Runtime.GetNSObject<NSMutableDictionary> (Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (Class.GetHandle (typeof (NSMutableDictionary)), Selector.GetHandle ("dictionaryWithObject:forKey:"), objptr, keyptr))) {
 					v = (NSString) dict [(NSString) "key"];
-					ClassicAssert.AreEqual ("obj", (string) v, "c");
+					Assert.That ((string) v, Is.EqualTo ("obj"), "c");
 
 					dict [(NSString) "key"] = (NSString) "value";
 					v = (NSString) dict ["key"];
-					ClassicAssert.AreEqual ("value", (string) v, "a");
+					Assert.That ((string) v, Is.EqualTo ("value"), "a");
 				}
 
 			} finally {
@@ -66,8 +66,8 @@ namespace monotouchtest {
 			using (NSMutableDictionary testDict = new NSMutableDictionary ()) {
 				testDict.Add ((NSString) "Key1", (NSString) "Key1");
 				testDict.Add ((NSString) "Key2", (NSString) "KeyTest2");
-				ClassicAssert.NotNull (testDict ["Key1"], "Key1");
-				ClassicAssert.NotNull (testDict ["Key2"], "Key2");
+				Assert.That (testDict ["Key1"], Is.Not.Null, "Key1");
+				Assert.That (testDict ["Key2"], Is.Not.Null, "Key2");
 			}
 		}
 
@@ -76,17 +76,17 @@ namespace monotouchtest {
 		{
 			using (var dic1 = new NSMutableDictionary ()) {
 				using (var dic2 = NSDictionary.FromObjectAndKey ((NSString) "value", (NSString) "key")) {
-					ClassicAssert.AreEqual ((nuint) 0, dic1.Count, "Count 0");
+					Assert.That (dic1.Count, Is.EqualTo ((nuint) 0), "Count 0");
 
 					dic1.AddEntries (dic2);
 
-					ClassicAssert.AreEqual ((nuint) 1, dic1.Count, "Count 1");
-					ClassicAssert.AreEqual ("value", dic1 ["key"].ToString (), "Value 1");
+					Assert.That (dic1.Count, Is.EqualTo ((nuint) 1), "Count 1");
+					Assert.That (dic1 ["key"].ToString (), Is.EqualTo ("value"), "Value 1");
 
 					dic1.AddEntries (dic2);
 
-					ClassicAssert.AreEqual ((nuint) 1, dic1.Count, "Count 2");
-					ClassicAssert.AreEqual ("value", dic1 ["key"].ToString (), "Value 2");
+					Assert.That (dic1.Count, Is.EqualTo ((nuint) 1), "Count 2");
+					Assert.That (dic1 ["key"].ToString (), Is.EqualTo ("value"), "Value 2");
 				}
 			}
 		}
@@ -99,10 +99,10 @@ namespace monotouchtest {
 
 				// Accessing a missing key should return null
 				var result = dict ["missingKey"];
-				ClassicAssert.IsNull (result, "Missing key should return null");
+				Assert.That (result, Is.Null, "Missing key should return null");
 
 				// Verify the existing key still works
-				ClassicAssert.IsNotNull (dict ["existingKey"], "Existing key should return value");
+				Assert.That (dict ["existingKey"], Is.Not.Null, "Existing key should return value");
 			}
 		}
 
@@ -116,10 +116,10 @@ namespace monotouchtest {
 
 				// Accessing a missing key should return null
 				var result = dict [missingKey];
-				ClassicAssert.IsNull (result, "Missing key should return null");
+				Assert.That (result, Is.Null, "Missing key should return null");
 
 				// Verify the existing key still works
-				ClassicAssert.IsNotNull (existingKey, "Existing key should return value");
+				Assert.That (existingKey, Is.Not.Null, "Existing key should return value");
 			}
 		}
 
@@ -131,10 +131,10 @@ namespace monotouchtest {
 
 				// Accessing a missing key should return null
 				var result = dict [(NSString) "missingKey"];
-				ClassicAssert.IsNull (result, "Missing key should return null");
+				Assert.That (result, Is.Null, "Missing key should return null");
 
 				// Verify the existing key still works
-				ClassicAssert.IsNotNull (dict [(NSString) "existingKey"], "Existing key should return value");
+				Assert.That (dict [(NSString) "existingKey"], Is.Not.Null, "Existing key should return value");
 			}
 		}
 
@@ -146,10 +146,10 @@ namespace monotouchtest {
 
 				// ObjectForKey with missing key should return null
 				var result = dict.ObjectForKey ((NSString) "missingKey");
-				ClassicAssert.IsNull (result, "ObjectForKey with missing key should return null");
+				Assert.That (result, Is.Null, "ObjectForKey with missing key should return null");
 
 				// Verify the existing key still works
-				ClassicAssert.IsNotNull (dict.ObjectForKey ((NSString) "existingKey"), "ObjectForKey with existing key should return value");
+				Assert.That (dict.ObjectForKey ((NSString) "existingKey"), Is.Not.Null, "ObjectForKey with existing key should return value");
 			}
 		}
 
@@ -161,14 +161,14 @@ namespace monotouchtest {
 
 				// TryGetValue with missing key should return false
 				var found = dict.TryGetValue ((NSString) "missingKey", out var result);
-				ClassicAssert.IsFalse (found, "TryGetValue should return false for missing key");
-				ClassicAssert.IsNull (result, "Output value should be null for missing key");
+				Assert.That (found, Is.False, "TryGetValue should return false for missing key");
+				Assert.That (result, Is.Null, "Output value should be null for missing key");
 
 				// Verify the existing key works
 				found = dict.TryGetValue ((NSString) "existingKey", out result);
-				ClassicAssert.IsTrue (found, "TryGetValue should return true for existing key");
-				ClassicAssert.IsNotNull (result, "Output value should not be null for existing key");
-				ClassicAssert.AreEqual ("value", result.ToString (), "Output value should match");
+				Assert.That (found, Is.True, "TryGetValue should return true for existing key");
+				Assert.That (result, Is.Not.Null, "Output value should not be null for existing key");
+				Assert.That (result.ToString (), Is.EqualTo ("value"), "Output value should match");
 			}
 		}
 
@@ -183,10 +183,10 @@ namespace monotouchtest {
 				// This is different from the typed indexers which return null
 				var result = idict [(NSString) "missingKey"];
 				// The IDictionary indexer calls _ObjectForKey which returns IntPtr.Zero boxed
-				ClassicAssert.AreEqual (IntPtr.Zero, result, "IDictionary indexer with missing key returns IntPtr.Zero");
+				Assert.That (result, Is.EqualTo (IntPtr.Zero), "IDictionary indexer with missing key returns IntPtr.Zero");
 
 				// Verify the existing key still works
-				ClassicAssert.IsNotNull (idict [(NSString) "existingKey"], "IDictionary indexer with existing key should return value");
+				Assert.That (idict [(NSString) "existingKey"], Is.Not.Null, "IDictionary indexer with existing key should return value");
 			}
 		}
 
@@ -198,10 +198,10 @@ namespace monotouchtest {
 				idict [(NSString) "existingKey"] = (NSString) "value";
 
 				// Contains should return false for missing key
-				ClassicAssert.IsFalse (idict.Contains ((NSString) "missingKey"), "Contains should return false for missing key");
+				Assert.That (idict.Contains ((NSString) "missingKey"), Is.False, "Contains should return false for missing key");
 
 				// Contains should return true for existing key
-				ClassicAssert.IsTrue (idict.Contains ((NSString) "existingKey"), "Contains should return true for existing key");
+				Assert.That (idict.Contains ((NSString) "existingKey"), Is.True, "Contains should return true for existing key");
 			}
 		}
 
@@ -212,9 +212,9 @@ namespace monotouchtest {
 			var objs = new NSObject? [] { new NSString ("value1"), null };
 
 			using (var dict = NSMutableDictionary.FromObjectsAndKeys (objs, keys)) {
-				ClassicAssert.AreEqual ((nuint) 2, dict.Count, "Count");
-				ClassicAssert.AreEqual ("value1", dict [keys [0]].ToString (), "First value");
-				ClassicAssert.IsInstanceOf<NSNull> (dict [keys [1]], "Null value should be NSNull");
+				Assert.That (dict.Count, Is.EqualTo ((nuint) 2), "Count");
+				Assert.That (dict [keys [0]].ToString (), Is.EqualTo ("value1"), "First value");
+				Assert.That (dict [keys [1]], Is.InstanceOf<NSNull> (), "Null value should be NSNull");
 			}
 		}
 
@@ -225,9 +225,9 @@ namespace monotouchtest {
 			var objs = new NSObject? [] { new NSString ("value1"), null, new NSString ("value3") };
 
 			using (var dict = NSMutableDictionary.FromObjectsAndKeys (objs, keys, 2)) {
-				ClassicAssert.AreEqual ((nuint) 2, dict.Count, "Count");
-				ClassicAssert.AreEqual ("value1", dict [keys [0]].ToString (), "First value");
-				ClassicAssert.IsInstanceOf<NSNull> (dict [keys [1]], "Null value should be NSNull");
+				Assert.That (dict.Count, Is.EqualTo ((nuint) 2), "Count");
+				Assert.That (dict [keys [0]].ToString (), Is.EqualTo ("value1"), "First value");
+				Assert.That (dict [keys [1]], Is.InstanceOf<NSNull> (), "Null value should be NSNull");
 			}
 		}
 
@@ -238,9 +238,9 @@ namespace monotouchtest {
 			var objs = new NSObject [] { new NSString ("value1"), new NSString ("value2"), new NSString ("value3") };
 
 			using (var dict = NSMutableDictionary.FromObjectsAndKeys (objs, keys, 2)) {
-				ClassicAssert.AreEqual ((nuint) 2, dict.Count, "Count");
-				ClassicAssert.AreEqual ("value1", dict [keys [0]].ToString (), "First value");
-				ClassicAssert.AreEqual ("value2", dict [keys [1]].ToString (), "Second value");
+				Assert.That (dict.Count, Is.EqualTo ((nuint) 2), "Count");
+				Assert.That (dict [keys [0]].ToString (), Is.EqualTo ("value1"), "First value");
+				Assert.That (dict [keys [1]].ToString (), Is.EqualTo ("value2"), "Second value");
 			}
 		}
 
@@ -251,7 +251,7 @@ namespace monotouchtest {
 			var objs = new NSObject [] { new NSString ("value1"), new NSString ("value2") };
 
 			using (var dict = NSMutableDictionary.FromObjectsAndKeys (objs, keys, 0)) {
-				ClassicAssert.AreEqual ((nuint) 0, dict.Count, "Count should be 0");
+				Assert.That (dict.Count, Is.EqualTo ((nuint) 0), "Count should be 0");
 			}
 		}
 
@@ -262,9 +262,9 @@ namespace monotouchtest {
 			var objs = new object [] { "value1", "value2", "value3" };
 
 			using (var dict = NSMutableDictionary.FromObjectsAndKeys (objs, keys, 2)) {
-				ClassicAssert.AreEqual ((nuint) 2, dict.Count, "Count");
-				ClassicAssert.AreEqual ("value1", dict [(NSString) "key1"].ToString (), "First value");
-				ClassicAssert.AreEqual ("value2", dict [(NSString) "key2"].ToString (), "Second value");
+				Assert.That (dict.Count, Is.EqualTo ((nuint) 2), "Count");
+				Assert.That (dict [(NSString) "key1"].ToString (), Is.EqualTo ("value1"), "First value");
+				Assert.That (dict [(NSString) "key2"].ToString (), Is.EqualTo ("value2"), "Second value");
 			}
 		}
 
@@ -276,9 +276,9 @@ namespace monotouchtest {
 
 			// Should work fine since we only use first 2 items from each array
 			using (var dict = NSMutableDictionary.FromObjectsAndKeys (objs, keys, 2)) {
-				ClassicAssert.AreEqual ((nuint) 2, dict.Count, "Count");
-				ClassicAssert.AreEqual ("value1", dict [keys [0]].ToString (), "First value");
-				ClassicAssert.AreEqual ("value2", dict [keys [1]].ToString (), "Second value");
+				Assert.That (dict.Count, Is.EqualTo ((nuint) 2), "Count");
+				Assert.That (dict [keys [0]].ToString (), Is.EqualTo ("value1"), "First value");
+				Assert.That (dict [keys [1]].ToString (), Is.EqualTo ("value2"), "Second value");
 			}
 		}
 

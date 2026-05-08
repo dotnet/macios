@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 using System.Reflection;
 
 namespace Xamarin.MMP.Tests {
@@ -31,8 +30,8 @@ namespace Xamarin.MMP.Tests {
 
 		void AssertAppKitLinkage (Dictionary<string, LinkStatus> status)
 		{
-			ClassicAssert.IsTrue (status.ContainsKey ("AppKit"), "AppKit must have framework reference in clang invocation");
-			ClassicAssert.AreEqual (LinkStatus.Strong, status ["AppKit"], "AppKit must be strong linked");
+			Assert.That (status.ContainsKey ("AppKit"), Is.True, "AppKit must have framework reference in clang invocation");
+			Assert.That (status ["AppKit"], Is.EqualTo (LinkStatus.Strong), "AppKit must be strong linked");
 		}
 
 		void AssertFrameworkMinOSRespected (Dictionary<string, LinkStatus> status)
@@ -58,7 +57,7 @@ namespace Xamarin.MMP.Tests {
 				} else {
 					linkStatus = currentFramework.Version > SdkVersions.MinOSXVersion ? LinkStatus.Weak : LinkStatus.Strong;
 				}
-				ClassicAssert.AreEqual (linkStatus, entry.Value, $"Framework link status of {entry.Key} was {entry.Value} but expected to be {linkStatus}");
+				Assert.That (entry.Value, Is.EqualTo (linkStatus), $"Framework link status of {entry.Key} was {entry.Value} but expected to be {linkStatus}");
 			}
 		}
 
@@ -83,7 +82,7 @@ namespace Xamarin.MMP.Tests {
 			AssertAppKitLinkage (status);
 
 			// We expect a large number of entires, which will grow as we add more bindings
-			ClassicAssert.Greater (status.Count, 20, "Did not found as many framework entries in clang invocation as expected - {0}\n{1}", status.Count, string.Join (" ", clangParts));
+			Assert.That (status.Count, Is.GreaterThan (20), "Did not found as many framework entries in clang invocation as expected - {0}\n{1}", status.Count, string.Join (" ", clangParts));
 
 			AssertFrameworkMinOSRespected (status);
 		}
@@ -110,7 +109,7 @@ namespace Xamarin.MMP.Tests {
 
 			// We expect a few number of entires, which should not grow much over time
 			// Today - Foundation, AppKit, Security, QuartzCore, CoreFoundation, CFNetwork, Carbon, CoreServices, CoreData, Quartz, CloudKit, GSS
-			ClassicAssert.Less (status.Count, 12, "Found more framework entries in clang invocation then expected - {0}\n{1}", string.Join (" ", status.Select ((v) => v.Key)), string.Join (" ", clangParts));
+			Assert.That (status.Count, Is.LessThan (12), "Found more framework entries in clang invocation then expected - {0}\n{1}", string.Join (" ", status.Select ((v) => v.Key)), string.Join (" ", clangParts));
 
 			AssertFrameworkMinOSRespected (status);
 		}

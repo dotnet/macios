@@ -9,8 +9,8 @@ namespace LinkSdk {
 		{
 			var supported = true;
 			if (supported) {
-				ClassicAssert.AreEqual (0, FilterClause (), "Filter me");
-				ClassicAssert.AreEqual (10, FilterClauseProperty, "Filter me getter");
+				Assert.That (FilterClause (), Is.EqualTo (0), "Filter me");
+				Assert.That (FilterClauseProperty, Is.EqualTo (10), "Filter me getter");
 				Assert.DoesNotThrow (() => FilterClauseProperty = 20, "Filter me setter");
 			} else {
 				Assert.Throws<NotSupportedException> (() => FilterClause (), "Filter me not supported");
@@ -68,12 +68,12 @@ namespace LinkSdk {
 			var body = method.GetMethodBody ();
 			if (body is null)
 				throw new InvalidOperationException ("MoveNext body");
-			ClassicAssert.IsTrue (body.ExceptionHandlingClauses.Any ((v) => v.Flags == ExceptionHandlingClauseOptions.Fault), "Any fault clauses");
+			Assert.That (body.ExceptionHandlingClauses.Any ((v) => v.Flags == ExceptionHandlingClauseOptions.Fault, Is.True), "Any fault clauses");
 
 			// Then assert that the method can be called successfully.
 			var rv = FaultClause ().ToArray ();
-			ClassicAssert.AreEqual (1, rv.Count (), "Count");
-			ClassicAssert.AreEqual (1, rv [0], "Item 1");
+			Assert.That (rv.Count (), Is.EqualTo (1), "Count");
+			Assert.That (rv [0], Is.EqualTo (1), "Item 1");
 
 		}
 

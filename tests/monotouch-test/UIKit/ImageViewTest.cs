@@ -29,8 +29,8 @@ namespace MonoTouchFixtures.UIKit {
 			using (var v = new UIImageView ()) {
 				v.AnimationImages = new UIImage [] { i1, i2 };
 				// no need for [PostGet] since it does not change other properties
-				ClassicAssert.Null (v.Image, "Image");
-				ClassicAssert.Null (v.HighlightedImage);
+				Assert.That (v.Image, Is.Null, "Image");
+				Assert.That (v.HighlightedImage, Is.Null);
 			}
 		}
 
@@ -42,8 +42,8 @@ namespace MonoTouchFixtures.UIKit {
 			using (var v = new UIImageView ()) {
 				v.HighlightedAnimationImages = new UIImage [] { i1, i2 };
 				// no need for [PostGet] since it does not change other properties
-				ClassicAssert.Null (v.Image, "Image");
-				ClassicAssert.Null (v.HighlightedImage);
+				Assert.That (v.Image, Is.Null, "Image");
+				Assert.That (v.HighlightedImage, Is.Null);
 			}
 		}
 	}

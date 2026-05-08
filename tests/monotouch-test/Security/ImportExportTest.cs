@@ -45,7 +45,7 @@ namespace MonoTouchFixtures.Security {
 					Assert.That (x.Value, Is.TypeOf (typeof (NSObject)), "NSObject");
 					break;
 				case "chain":
-					ClassicAssert.True (x.Value is NSArray, "NSArray");
+					Assert.That (x.Value is NSArray, Is.True, "NSArray");
 					NSArray a = (x.Value as NSArray);
 					Assert.That (a.Count, Is.EqualTo ((nuint) 1), "Count");
 					break;

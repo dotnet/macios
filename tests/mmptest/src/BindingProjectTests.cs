@@ -4,7 +4,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 using Xamarin.Utils;
 
 namespace Xamarin.MMP.Tests {
@@ -107,9 +106,9 @@ namespace Xamarin.MMP.Tests {
 				string appName = RemoveCSProj (projects.Item2.ProjectName);
 
 				string libPath = Path.Combine (tmpDir, $"bin/Debug/{appName}.app/Contents/MonoBundle/{bindingName}.dll");
-				ClassicAssert.True (File.Exists (libPath), $"Did not find expected library: {libPath}");
+				Assert.That (File.Exists (libPath), Is.True, $"Did not find expected library: {libPath}");
 				string monoDisResults = TI.RunAndAssert ("/Library/Frameworks/Mono.framework/Commands/monodis", new [] { "--presources", libPath }, "monodis");
-				ClassicAssert.IsFalse (monoDisResults.Contains ("SimpleClassDylib.dylib"));
+				Assert.That (monoDisResults.Contains ("SimpleClassDylib.dylib"), Is.False);
 			});
 		}
 
@@ -129,16 +128,16 @@ namespace Xamarin.MMP.Tests {
 
 				var logs = SetupAndBuildLinkedTestProjects (projects.Item1, projects.Item2, tmpDir, useProjectReference: false, setupDefaultNativeReference: noEmbedding);
 
-				ClassicAssert.True (logs.BindingBuildResult.BuildOutput.Contains ("csc"), "Bindings project must use csc:\n" + logs.Item1);
+				Assert.That (logs.BindingBuildResult.BuildOutput.Contains ("csc"), Is.True, "Bindings project must use csc:\n" + logs.Item1);
 
 				var bgenInvocation = logs.BindingBuildResult.BuildOutputLines.First (x => x.Contains ("bin/bgen"));
-				ClassicAssert.IsTrue (StringUtils.TryParseArguments (bgenInvocation, out var bgenArguments, out var _), "Parse bgen arguments");
+				Assert.That (StringUtils.TryParseArguments (bgenInvocation, out var bgenArguments, out var _), Is.True, "Parse bgen arguments");
 				// unfurl any response files
 				var bgenParts = bgenArguments.ToList ();
 				var responseFiles = bgenParts.Where (v => v [0] == '@').ToArray ();
 				bgenParts.RemoveAll (v => v [0] == '@');
 				foreach (var rsp in responseFiles) {
-					ClassicAssert.IsTrue (StringUtils.TryParseArguments (File.ReadAllText (rsp.Substring (1)).Replace ('\n', ' '), out var args, out var _), "Parse response file");
+					Assert.That (StringUtils.TryParseArguments (File.ReadAllText (rsp.Substring (1)).Replace ('\n', ' '), out var args, out var _), Is.True, "Parse response file");
 					bgenParts.AddRange (args);
 				}
 				var mscorlib = bgenParts.First (x => x.Contains ("mscorlib.dll"));
@@ -160,20 +159,20 @@ namespace Xamarin.MMP.Tests {
 					throw new NotImplementedException ();
 				}
 
-				ClassicAssert.False (logs.BindingBuildResult.BuildOutput.Contains ("CS1685"), "Binding should not contains CS1685 multiple definition warning.");
+				Assert.That (logs.BindingBuildResult.BuildOutput.Contains ("CS1685"), Is.False, "Binding should not contains CS1685 multiple definition warning.");
 
-				ClassicAssert.False (logs.BindingBuildResult.BuildOutput.Contains ("MSB9004"), "Binding should not contains MSB9004 warning");
+				Assert.That (logs.BindingBuildResult.BuildOutput.Contains ("MSB9004"), Is.False, "Binding should not contains MSB9004 warning");
 
 				string bindingName = RemoveCSProj (projects.Item1.ProjectName);
 				string appName = RemoveCSProj (projects.Item2.ProjectName);
 				string libPath = Path.Combine (tmpDir, $"bin/Debug/{appName}.app/Contents/MonoBundle/{bindingName}.dll");
 
-				ClassicAssert.True (File.Exists (libPath));
+				Assert.That (File.Exists (libPath), Is.True);
 				string results = TI.RunAndAssert ("/Library/Frameworks/Mono.framework/Commands/monop", new [] { "--refs", "-r:" + libPath }, "monop");
 				string mscorlibLine = results.Split (new char [] { '\n' }).First (x => x.Contains ("mscorlib"));
 
 				string expectedVersion = GetExpectedBCLVersion (type);
-				ClassicAssert.True (mscorlibLine.Contains (expectedVersion), $"{mscorlibLine} did not contain expected version {expectedVersion}");
+				Assert.That (mscorlibLine.Contains (expectedVersion), Is.True, $"{mscorlibLine} did not contain expected version {expectedVersion}");
 			});
 		}
 

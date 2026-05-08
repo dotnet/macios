@@ -62,8 +62,8 @@ namespace Xamarin.Tests {
 
 			var rv = DotNet.AssertPackFailure (project_path, properties, msbuildParallelism: false);
 			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
-			ClassicAssert.AreEqual (1, errors.Length, "Error count");
-			ClassicAssert.AreEqual ($"Creating a NuGet package is not supported for projects that have ObjcBindingNativeLibrary items. Migrate to use NativeReference items instead.", errors [0].Message, "Error message");
+			Assert.That (errors.Length, Is.EqualTo (1), "Error count");
+			Assert.That (errors [0].Message, Is.EqualTo ($"Creating a NuGet package is not supported for projects that have ObjcBindingNativeLibrary items. Migrate to use NativeReference items instead."), "Error message");
 		}
 
 		[Test]
@@ -191,8 +191,8 @@ namespace Xamarin.Tests {
 			var assemblyName = "bindings-framework-test";
 
 			if (!noBindingEmbedding) {
-				ClassicAssert.IsFalse (platformSpecificXcframework, "Invalid test variation: platformSpecificXcframework");
-				ClassicAssert.IsFalse (compressedXcframework, "Invalid test variation: compressedXcframework");
+				Assert.That (platformSpecificXcframework, Is.False, "Invalid test variation: platformSpecificXcframework");
+				Assert.That (compressedXcframework, Is.False, "Invalid test variation: compressedXcframework");
 			}
 
 			if (!platformSpecificXcframework) {
@@ -365,7 +365,7 @@ namespace Xamarin.Tests {
 			using var archive = ZipFile.OpenRead (nupkg);
 			var files = archive.Entries.Select (v => v.FullName).ToHashSet ();
 			var tfm = platform.ToFrameworkWithPlatformVersion (isExecutable: false);
-			ClassicAssert.AreEqual (compressed ? 6 : 9, archive.Entries.Count, $"nupkg file count - {nupkg}");
+			Assert.That (archive.Entries.Count, Is.EqualTo (compressed ? 6 : 9), $"nupkg file count - {nupkg}");
 			Assert.That (files, Does.Contain (assemblyName + ".nuspec"), "nuspec");
 			Assert.That (files, Does.Contain ("_rels/.rels"), ".rels");
 			Assert.That (files, Does.Contain ("[Content_Types].xml"), "[Content_Types].xml");
@@ -431,7 +431,7 @@ namespace Xamarin.Tests {
 				</NativeReference>
 			</BindingAssembly>
 			""";
-			ClassicAssert.AreEqual (expectedManifest, manifest, "manifest contents");
+			Assert.That (manifest, Is.EqualTo (expectedManifest), "manifest contents");
 		}
 
 		[Test]

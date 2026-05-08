@@ -27,15 +27,15 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (UITabBarItem item = new UITabBarItem ())
 			using (UITabBar tb = new UITabBar ()) {
-				ClassicAssert.Null (tb.SelectedItem, "1a");
+				Assert.That (tb.SelectedItem, Is.Null, "1a");
 
 				tb.SelectedItem = item;
 				// setter did not work because 'item' is not in Items
-				ClassicAssert.Null (tb.SelectedItem, "2a");
-				ClassicAssert.Null (tb.Items, "2b");
+				Assert.That (tb.SelectedItem, Is.Null, "2a");
+				Assert.That (tb.Items, Is.Null, "2b");
 
 				tb.SelectedItem = null;
-				ClassicAssert.Null (tb.SelectedItem, "3a");
+				Assert.That (tb.SelectedItem, Is.Null, "3a");
 			}
 		}
 
@@ -44,18 +44,18 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (UITabBarItem item = new UITabBarItem ())
 			using (UITabBar tb = new UITabBar ()) {
-				ClassicAssert.Null (tb.Items, "1a");
-				ClassicAssert.Null (tb.SelectedItem, "1b");
+				Assert.That (tb.Items, Is.Null, "1a");
+				Assert.That (tb.SelectedItem, Is.Null, "1b");
 
 				tb.Items = new UITabBarItem [] { item };
-				ClassicAssert.NotNull (tb.Items, "2a");
+				Assert.That (tb.Items, Is.Not.Null, "2a");
 				tb.SelectedItem = item;
-				ClassicAssert.NotNull (tb.SelectedItem, "2b");
+				Assert.That (tb.SelectedItem, Is.Not.Null, "2b");
 
 				tb.Items = null;
-				ClassicAssert.Null (tb.Items, "3a");
+				Assert.That (tb.Items, Is.Null, "3a");
 				// Interaction between Items and SelectedItems -> backing fields!
-				ClassicAssert.Null (tb.SelectedItem, "3b");
+				Assert.That (tb.SelectedItem, Is.Null, "3b");
 			}
 		}
 
@@ -65,16 +65,16 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (UITabBarItem item = new UITabBarItem ())
 			using (UITabBar tb = new UITabBar ()) {
-				ClassicAssert.False (tb.IsCustomizing, "IsCustomizing-1");
+				Assert.That (tb.IsCustomizing, Is.False, "IsCustomizing-1");
 
 				tb.BeginCustomizingItems (new UITabBarItem [] { item });
-				ClassicAssert.True (tb.IsCustomizing, "IsCustomizing-2");
-				ClassicAssert.False (tb.EndCustomizing (false), "End-1");
+				Assert.That (tb.IsCustomizing, Is.True, "IsCustomizing-2");
+				Assert.That (tb.EndCustomizing (false), Is.False, "End-1");
 
 				tb.BeginCustomizingItems (null);
-				ClassicAssert.False (tb.EndCustomizing (false), "End-2");
+				Assert.That (tb.EndCustomizing (false), Is.False, "End-2");
 
-				ClassicAssert.False (tb.IsCustomizing, "IsCustomizing-3");
+				Assert.That (tb.IsCustomizing, Is.False, "IsCustomizing-3");
 			}
 		}
 #endif
@@ -84,13 +84,13 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (UIImage i = new UIImage ())
 			using (UITabBar tb = new UITabBar ()) {
-				ClassicAssert.Null (tb.BackgroundImage, "1");
+				Assert.That (tb.BackgroundImage, Is.Null, "1");
 
 				tb.BackgroundImage = i;
-				ClassicAssert.NotNull (tb.BackgroundImage, "2");
+				Assert.That (tb.BackgroundImage, Is.Not.Null, "2");
 
 				tb.BackgroundImage = null;
-				ClassicAssert.Null (tb.BackgroundImage, "3");
+				Assert.That (tb.BackgroundImage, Is.Null, "3");
 			}
 		}
 
@@ -99,13 +99,13 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (UIImage i = new UIImage ())
 			using (UITabBar tb = new UITabBar ()) {
-				ClassicAssert.Null (tb.SelectionIndicatorImage, "1");
+				Assert.That (tb.SelectionIndicatorImage, Is.Null, "1");
 
 				tb.SelectionIndicatorImage = i;
-				ClassicAssert.NotNull (tb.SelectionIndicatorImage, "2");
+				Assert.That (tb.SelectionIndicatorImage, Is.Not.Null, "2");
 
 				tb.SelectionIndicatorImage = null;
-				ClassicAssert.Null (tb.SelectionIndicatorImage, "3");
+				Assert.That (tb.SelectionIndicatorImage, Is.Null, "3");
 			}
 		}
 
@@ -115,9 +115,9 @@ namespace MonoTouchFixtures.UIKit {
 			using (UITabBar tb = new UITabBar ()) {
 				// TintColor is inherited in iOS7 so it won't be null by default
 				if (TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false))
-					ClassicAssert.NotNull (tb.TintColor, "1");
+					Assert.That (tb.TintColor, Is.Not.Null, "1");
 				else
-					ClassicAssert.Null (tb.TintColor, "1");
+					Assert.That (tb.TintColor, Is.Null, "1");
 
 				tb.TintColor = UIColor.White;
 				Assert.That (tb.TintColor, Is.EqualTo (UIColor.White), "2");
@@ -125,11 +125,11 @@ namespace MonoTouchFixtures.UIKit {
 				tb.TintColor = null;
 				if (TestRuntime.IsTVOS) {
 					// we only care that setting `null` gives us back some default OS value
-					ClassicAssert.NotNull (tb.TintColor, "3");
+					Assert.That (tb.TintColor, Is.Not.Null, "3");
 				} else if (TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false)) {
 					Assert.That (tb.TintColor, Is.Not.EqualTo (UIColor.White), "3");
 				} else
-					ClassicAssert.Null (tb.TintColor, "3");
+					Assert.That (tb.TintColor, Is.Null, "3");
 			}
 		}
 
@@ -138,16 +138,16 @@ namespace MonoTouchFixtures.UIKit {
 		public void SelectedImageTintColor ()
 		{
 			using (UITabBar tb = new UITabBar ()) {
-				ClassicAssert.Null (tb.SelectedImageTintColor, "1");
+				Assert.That (tb.SelectedImageTintColor, Is.Null, "1");
 
 				tb.SelectedImageTintColor = UIColor.Black;
 				if (!TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 7, 1)) {
 					// before 7.1 the tintColor would have been accepted
-					ClassicAssert.NotNull (tb.SelectedImageTintColor, "2");
+					Assert.That (tb.SelectedImageTintColor, Is.Not.Null, "2");
 
 					tb.SelectedImageTintColor = null;
 				}
-				ClassicAssert.Null (tb.SelectedImageTintColor, "3");
+				Assert.That (tb.SelectedImageTintColor, Is.Null, "3");
 			}
 		}
 #endif

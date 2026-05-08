@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 using Xamarin.Utils;
 using Xamarin.Tests;
@@ -38,27 +37,27 @@ namespace Xamarin.MMP.Tests {
 		{
 			var archsFound = MachO.GetArchitectures (libPath);
 			if (shouldStrip) {
-				ClassicAssert.AreEqual (1, archsFound.Count, "Did not contain one archs");
-				ClassicAssert.True (archsFound.Contains (Abi.x86_64), "Did not contain x86_64");
+				Assert.That (archsFound.Count, Is.EqualTo (1), "Did not contain one archs");
+				Assert.That (archsFound.Contains (Abi.x86_64), Is.True, "Did not contain x86_64");
 			} else {
 				Assert.That (archsFound.Count, Is.GreaterThanOrEqualTo (2), "Did not contain two or more archs");
-				ClassicAssert.True (archsFound.Contains (Abi.i386) || archsFound.Contains (Abi.ARM64), "Did not contain i386 nor arm64");
-				ClassicAssert.True (archsFound.Contains (Abi.x86_64), "Did not contain x86_64");
+				Assert.That (archsFound.Contains (Abi.i386) || archsFound.Contains (Abi.ARM64), Is.True, "Did not contain i386 nor arm64");
+				Assert.That (archsFound.Contains (Abi.x86_64), Is.True, "Did not contain x86_64");
 			}
 		}
 
 		void StripTestCore (TI.UnifiedTestConfig test, bool debugStrips, bool releaseStrips, string libPath, bool shouldWarn)
 		{
 			var testResult = TI.TestUnifiedExecutable (test);
-			ClassicAssert.AreEqual (debugStrips, DidAnyLipoStrip (testResult.BuildResult), "Debug lipo usage did not match expectations");
+			Assert.That (DidAnyLipoStrip (testResult.BuildResult), Is.EqualTo (debugStrips), "Debug lipo usage did not match expectations");
 			AssertStrip (Path.Combine (test.TmpDir, "bin/Debug/UnifiedExample.app/", libPath), shouldStrip: debugStrips);
-			ClassicAssert.AreEqual (shouldWarn && debugStrips, testResult.BuildResult.HasMessage (2108), "Debug warning did not match expectations");
+			Assert.That (testResult.BuildResult.HasMessage (2108), Is.EqualTo (shouldWarn && debugStrips), "Debug warning did not match expectations");
 
 			test.Release = true;
 			testResult = TI.TestUnifiedExecutable (test);
-			ClassicAssert.AreEqual (releaseStrips, DidAnyLipoStrip (testResult.BuildResult), "Release lipo usage did not match expectations");
+			Assert.That (DidAnyLipoStrip (testResult.BuildResult), Is.EqualTo (releaseStrips), "Release lipo usage did not match expectations");
 			AssertStrip (Path.Combine (test.TmpDir, "bin/Release/UnifiedExample.app/", libPath), shouldStrip: releaseStrips);
-			ClassicAssert.AreEqual (shouldWarn && releaseStrips, testResult.BuildResult.HasMessage (2108), "Release warning did not match expectations");
+			Assert.That (testResult.BuildResult.HasMessage (2108), Is.EqualTo (shouldWarn && releaseStrips), "Release warning did not match expectations");
 		}
 
 		[TestCase (null, false, true)]
@@ -113,11 +112,11 @@ namespace Xamarin.MMP.Tests {
 
 				var architectures = MachO.GetArchitectures (bundleDylib);
 				if (shouldStrip) {
-					ClassicAssert.AreEqual (1, architectures.Count, "libTest.dylib should only contain 1 architecture");
-					ClassicAssert.AreEqual (Abi.x86_64, architectures [0], "libTest.dylib should be x86_64");
+					Assert.That (architectures.Count, Is.EqualTo (1), "libTest.dylib should only contain 1 architecture");
+					Assert.That (architectures [0], Is.EqualTo (Abi.x86_64), "libTest.dylib should be x86_64");
 					testResult.Messages.AssertWarning (2108, "libTest.dylib was stripped of architectures except x86_64 to comply with App Store restrictions. This could break existing codesigning signatures. Consider stripping the library with lipo or disabling with --optimize=-trim-architectures");
 				} else {
-					ClassicAssert.AreEqual (2, architectures.Count, "libTest.dylib should contain 2+ architectures");
+					Assert.That (architectures.Count, Is.EqualTo (2), "libTest.dylib should contain 2+ architectures");
 					Assert.That (architectures, Is.EquivalentTo (new Abi [] { Abi.i386, Abi.x86_64 }), "libTest.dylib should be x86_64 + i386");
 					testResult.Messages.AssertWarningCount (0);
 				}
@@ -126,14 +125,14 @@ namespace Xamarin.MMP.Tests {
 
 		void AssertNoLipoOrWarning (BuildResult buildOutput, string context)
 		{
-			ClassicAssert.False (DidAnyLipoStrip (buildOutput), "lipo incorrectly run in context: " + context);
-			ClassicAssert.False (buildOutput.HasMessage (2108), "MM2108 incorrectly given in in context: " + context);
+			Assert.That (DidAnyLipoStrip (buildOutput), Is.False, "lipo incorrectly run in context: " + context);
+			Assert.That (buildOutput.HasMessage (2108), Is.False, "MM2108 incorrectly given in in context: " + context);
 		}
 
 		void AssertLipoOnlyMonoPosix (BuildResult buildOutput, string context)
 		{
-			ClassicAssert.False (DidAnyLipoStripSkipPosix (buildOutput), "lipo incorrectly run in context outside of libMonoPosixHelper/libmono-native: " + context);
-			ClassicAssert.False (buildOutput.HasMessage (2108), "MM2108 incorrectly given in in context: " + context);
+			Assert.That (DidAnyLipoStripSkipPosix (buildOutput), Is.False, "lipo incorrectly run in context outside of libMonoPosixHelper/libmono-native: " + context);
+			Assert.That (buildOutput.HasMessage (2108), Is.False, "MM2108 incorrectly given in in context: " + context);
 		}
 
 		[TestCase (false)]
@@ -153,9 +152,9 @@ namespace Xamarin.MMP.Tests {
 				// Should always lipo/warn in Release
 				test.Release = true;
 				testResult = TI.TestUnifiedExecutable (test);
-				ClassicAssert.True (DidAnyLipoStrip (testResult.BuildResult), $"lipo did not run in release");
+				Assert.That (DidAnyLipoStrip (testResult.BuildResult), Is.True, $"lipo did not run in release");
 				testResult.BuildResult.Messages.AssertError (2108, $"{frameworkPath} was stripped of architectures except x86_64 to comply with App Store restrictions. This could break existing codesigning signatures. Consider stripping the library with lipo or disabling with --optimize=-trim-architectures");
-				// ClassicAssert.True (testResult.Contains ("MM2108"), $"MM2108 not given in release");
+				// Assert.That (testResult.Contains ("MM2108"), Is.True, $"MM2108 not given in release");
 
 			});
 		}

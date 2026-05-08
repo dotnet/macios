@@ -35,8 +35,8 @@ namespace MonoTouchFixtures.Foundation {
 				NSError err;
 				fileop = false;
 				fc.CoordinateRead (url, NSFileCoordinatorReadingOptions.WithoutChanges, out err, FileOp);
-				ClassicAssert.True (fileop, "fileop/sync");
-				ClassicAssert.Null (err, "NSError");
+				Assert.That (fileop, Is.True, "fileop/sync");
+				Assert.That (err, Is.Null, "NSError");
 			}
 		}
 
@@ -60,8 +60,8 @@ namespace MonoTouchFixtures.Foundation {
 				NSError err;
 				fileop = false;
 				fc.CoordinateWrite (url, NSFileCoordinatorWritingOptions.ForDeleting, out err, FileOp);
-				ClassicAssert.True (fileop, "fileop/sync");
-				ClassicAssert.Null (err, "NSError");
+				Assert.That (fileop, Is.True, "fileop/sync");
+				Assert.That (err, Is.Null, "NSError");
 			}
 		}
 
@@ -90,8 +90,8 @@ namespace MonoTouchFixtures.Foundation {
 				NSError err;
 				fileop = false;
 				fc.CoordinateReadWrite (url, NSFileCoordinatorReadingOptions.WithoutChanges, url, NSFileCoordinatorWritingOptions.ForDeleting, out err, FileOp);
-				ClassicAssert.True (fileop, "fileop/sync");
-				ClassicAssert.Null (err, "NSError");
+				Assert.That (fileop, Is.True, "fileop/sync");
+				Assert.That (err, Is.Null, "NSError");
 			}
 		}
 
@@ -115,8 +115,8 @@ namespace MonoTouchFixtures.Foundation {
 				NSError err;
 				fileop = false;
 				fc.CoordinateWriteWrite (url, NSFileCoordinatorWritingOptions.ForMoving, url, NSFileCoordinatorWritingOptions.ForDeleting, out err, FileOp);
-				ClassicAssert.True (fileop, "fileop/sync");
-				ClassicAssert.Null (err, "NSError");
+				Assert.That (fileop, Is.True, "fileop/sync");
+				Assert.That (err, Is.Null, "NSError");
 			}
 		}
 
@@ -145,8 +145,8 @@ namespace MonoTouchFixtures.Foundation {
 				NSError err;
 				fileop = false;
 				fc.CoordinateBatch (new NSUrl [] { url }, NSFileCoordinatorReadingOptions.WithoutChanges, new NSUrl [] { url }, NSFileCoordinatorWritingOptions.ForDeleting, out err, Action);
-				ClassicAssert.True (fileop, "fileop/sync");
-				ClassicAssert.Null (err, "NSError");
+				Assert.That (fileop, Is.True, "fileop/sync");
+				Assert.That (err, Is.Null, "NSError");
 			}
 		}
 

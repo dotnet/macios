@@ -59,9 +59,9 @@ namespace MonoTouchFixtures.Foundation {
 		{
 #if MONOMAC
 			NSArray objects;
-			ClassicAssert.NotNull (main.LoadNibNamed ("EmptyNib", main, out objects));
+			Assert.That (main.LoadNibNamed ("EmptyNib", main, out objects), Is.Not.Null);
 #else
-			ClassicAssert.NotNull (main.LoadNib ("EmptyNib", main, null));
+			Assert.That (main.LoadNib ("EmptyNib", main, null), Is.Not.Null);
 #endif
 		}
 #endif

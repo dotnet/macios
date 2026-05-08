@@ -29,7 +29,7 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				descriptor.Label = label;
 			}, "Set label");
-			ClassicAssert.AreEqual (label, descriptor.Label, "Get label");
+			Assert.That (descriptor.Label, Is.EqualTo (label), "Get label");
 		}
 
 		[Test]

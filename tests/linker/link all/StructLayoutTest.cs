@@ -53,9 +53,9 @@ namespace LinkAll.Layout {
 			var fields = t.GetFields ();
 			Assert.That (fields.Length, Is.EqualTo (2), "Length");
 
-			ClassicAssert.False (t.IsAutoLayout, "IsAutoLayout");
-			ClassicAssert.False (t.IsExplicitLayout, "IsExplicitLayout");
-			ClassicAssert.True (t.IsLayoutSequential, "IsLayoutSequential");
+			Assert.That (t.IsAutoLayout, Is.False, "IsAutoLayout");
+			Assert.That (t.IsExplicitLayout, Is.False, "IsExplicitLayout");
+			Assert.That (t.IsLayoutSequential, Is.True, "IsLayoutSequential");
 		}
 
 		[Test]
@@ -68,9 +68,9 @@ namespace LinkAll.Layout {
 			var fields = t.GetFields ();
 			Assert.That (fields.Length, Is.EqualTo (2), "Length");
 
-			ClassicAssert.True (t.IsAutoLayout, "IsAutoLayout");
-			ClassicAssert.False (t.IsExplicitLayout, "IsExplicitLayout");
-			ClassicAssert.False (t.IsLayoutSequential, "IsLayoutSequential");
+			Assert.That (t.IsAutoLayout, Is.True, "IsAutoLayout");
+			Assert.That (t.IsExplicitLayout, Is.False, "IsExplicitLayout");
+			Assert.That (t.IsLayoutSequential, Is.False, "IsLayoutSequential");
 		}
 
 		[Test]
@@ -83,9 +83,9 @@ namespace LinkAll.Layout {
 			var fields = t.GetFields ();
 			Assert.That (fields.Length, Is.EqualTo (2), "Length");
 
-			ClassicAssert.False (t.IsAutoLayout, "IsAutoLayout");
-			ClassicAssert.False (t.IsExplicitLayout, "IsExplicitLayout");
-			ClassicAssert.True (t.IsLayoutSequential, "IsLayoutSequential");
+			Assert.That (t.IsAutoLayout, Is.False, "IsAutoLayout");
+			Assert.That (t.IsExplicitLayout, Is.False, "IsExplicitLayout");
+			Assert.That (t.IsLayoutSequential, Is.True, "IsLayoutSequential");
 		}
 
 		[Test]
@@ -98,9 +98,9 @@ namespace LinkAll.Layout {
 			var fields = t.GetFields ();
 			Assert.That (fields.Length, Is.EqualTo (3), "Length");
 
-			ClassicAssert.False (t.IsAutoLayout, "IsAutoLayout");
-			ClassicAssert.True (t.IsExplicitLayout, "IsExplicitLayout");
-			ClassicAssert.False (t.IsLayoutSequential, "IsLayoutSequential");
+			Assert.That (t.IsAutoLayout, Is.False, "IsAutoLayout");
+			Assert.That (t.IsExplicitLayout, Is.True, "IsExplicitLayout");
+			Assert.That (t.IsLayoutSequential, Is.False, "IsLayoutSequential");
 		}
 	}
 }

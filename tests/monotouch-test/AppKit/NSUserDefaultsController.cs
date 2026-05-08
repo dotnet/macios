@@ -12,7 +12,7 @@ namespace Xamarin.Mac.Tests {
 		{
 			controller = NSUserDefaultsController.SharedUserDefaultsController;
 
-			ClassicAssert.IsNotNull (controller, "NSUserDefaultsControllerShouldGetDefaultController - SharedUserDefaultsController returned null");
+			Assert.That (controller, Is.Not.Null, "NSUserDefaultsControllerShouldGetDefaultController - SharedUserDefaultsController returned null");
 		}
 
 		[Test]
@@ -20,7 +20,7 @@ namespace Xamarin.Mac.Tests {
 		{
 			controller = new NSUserDefaultsController ();
 
-			ClassicAssert.IsNotNull (controller, "NSUserDefaultsControllerShouldCreateNewControllerWithDefaultConstructor - Constructor returned null");
+			Assert.That (controller, Is.Not.Null, "NSUserDefaultsControllerShouldCreateNewControllerWithDefaultConstructor - Constructor returned null");
 		}
 
 		[Test]
@@ -28,9 +28,9 @@ namespace Xamarin.Mac.Tests {
 		{
 			controller = new NSUserDefaultsController (null, null);
 
-			ClassicAssert.IsTrue (controller.Defaults == NSUserDefaults.StandardUserDefaults);
-			ClassicAssert.IsTrue (controller.InitialValues is null);
-			ClassicAssert.IsNotNull (controller, "NSUserDefaultsControllerShouldCreateNewControllerWithNullParameters - Constructor returned null");
+			Assert.That (controller.Defaults == NSUserDefaults.StandardUserDefaults, Is.True);
+			Assert.That (controller.InitialValues is null, Is.True);
+			Assert.That (controller, Is.Not.Null, "NSUserDefaultsControllerShouldCreateNewControllerWithNullParameters - Constructor returned null");
 		}
 
 		[Test]
@@ -39,9 +39,9 @@ namespace Xamarin.Mac.Tests {
 			var initialValues = new NSDictionary ();
 			controller = new NSUserDefaultsController (NSUserDefaults.StandardUserDefaults, initialValues);
 
-			ClassicAssert.IsTrue (controller.Defaults == NSUserDefaults.StandardUserDefaults);
-			ClassicAssert.IsTrue (controller.InitialValues == initialValues);
-			ClassicAssert.IsNotNull (controller, "NSUserDefaultsControllerShouldCreateNewControllerWithParameters - Constructor returned null");
+			Assert.That (controller.Defaults == NSUserDefaults.StandardUserDefaults, Is.True);
+			Assert.That (controller.InitialValues == initialValues, Is.True);
+			Assert.That (controller, Is.Not.Null, "NSUserDefaultsControllerShouldCreateNewControllerWithParameters - Constructor returned null");
 		}
 
 		[Test]
@@ -51,7 +51,7 @@ namespace Xamarin.Mac.Tests {
 			var initialValues = controller.InitialValues;
 			controller.InitialValues = new NSDictionary ();
 
-			ClassicAssert.IsFalse (controller.InitialValues == initialValues, "NSUserDefaultsControllerShouldChangeInitialValues - Failed to set the InitialValues property");
+			Assert.That (controller.InitialValues == initialValues, Is.False, "NSUserDefaultsControllerShouldChangeInitialValues - Failed to set the InitialValues property");
 		}
 
 		[Test]
@@ -61,7 +61,7 @@ namespace Xamarin.Mac.Tests {
 			var appliesImmediately = controller.AppliesImmediately;
 			controller.AppliesImmediately = !appliesImmediately;
 
-			ClassicAssert.IsFalse (controller.AppliesImmediately == appliesImmediately, "NSUserDefaultsControllerShouldChangeAppliesImmediately - Failed to set the AppliesImmediately property");
+			Assert.That (controller.AppliesImmediately == appliesImmediately, Is.False, "NSUserDefaultsControllerShouldChangeAppliesImmediately - Failed to set the AppliesImmediately property");
 		}
 	}
 }

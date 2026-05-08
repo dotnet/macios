@@ -24,9 +24,9 @@ namespace MonoTouchFixtures.MediaAccessibility {
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 10, throwIfOtherPlatform: false);
 
 			if (TestRuntime.CheckXcodeVersion (7, 0)) {
-				ClassicAssert.NotNull (MAAudibleMedia.GetPreferredCharacteristics ());
+				Assert.That (MAAudibleMedia.GetPreferredCharacteristics (), Is.Not.Null);
 			} else {
-				ClassicAssert.Null (MAAudibleMedia.GetPreferredCharacteristics ());
+				Assert.That (MAAudibleMedia.GetPreferredCharacteristics (), Is.Null);
 			}
 		}
 	}

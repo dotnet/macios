@@ -9,20 +9,20 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void TestAppleEventCodeKey ()
 		{
-			ClassicAssert.IsNotNull (NSScriptCommandArgumentDescriptionKeys.AppleEventCodeKey);
-			ClassicAssert.AreEqual ("AppleEventCode", NSScriptCommandArgumentDescriptionKeys.AppleEventCodeKey?.ToString ());
+			Assert.That (NSScriptCommandArgumentDescriptionKeys.AppleEventCodeKey, Is.Not.Null);
+			Assert.That (NSScriptCommandArgumentDescriptionKeys.AppleEventCodeKey?.ToString (), Is.EqualTo ("AppleEventCode"));
 		}
 
 		[Test]
 		public void TestTypeKey ()
 		{
-			ClassicAssert.AreEqual ("Type", NSScriptCommandArgumentDescriptionKeys.TypeKey.ToString ());
+			Assert.That (NSScriptCommandArgumentDescriptionKeys.TypeKey.ToString (), Is.EqualTo ("Type"));
 		}
 
 		[Test]
 		public void TestOptionalKey ()
 		{
-			ClassicAssert.AreEqual ("Optional", NSScriptCommandArgumentDescriptionKeys.OptionalKey.ToString ());
+			Assert.That (NSScriptCommandArgumentDescriptionKeys.OptionalKey.ToString (), Is.EqualTo ("Optional"));
 		}
 	}
 
@@ -67,9 +67,9 @@ namespace MonoTouchFixtures.Foundation {
 			var arg = new NSScriptCommandArgumentDescription (name, code, type, isOptional);
 			var description = arg.Dictionary;
 
-			ClassicAssert.AreEqual (code, description [new NSString ("AppleEventCode")].ToString ());
-			ClassicAssert.AreEqual (type, description [new NSString ("Type")].ToString ());
-			ClassicAssert.AreEqual (isOptional ? "Yes" : "No", description [new NSString ("Optional")].ToString ());
+			Assert.That (description [new NSString ("AppleEventCode")].ToString (), Is.EqualTo (code));
+			Assert.That (description [new NSString ("Type")].ToString (), Is.EqualTo (type));
+			Assert.That (description [new NSString ("Optional")].ToString (), Is.EqualTo (isOptional ? "Yes" : "No"));
 		}
 	}
 }

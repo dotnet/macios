@@ -18,10 +18,10 @@ namespace MonoTouchFixtures.Network {
 			using (var m = new NWIPMetadata ()) {
 				Assert.That (m.EcnFlag, Is.EqualTo (NWIPEcnFlag.NonEct), "IPMetadataEcnFlag");
 				Assert.That (m.ReceiveTime, Is.EqualTo (TimeSpan.Zero), "IPMetadataReceiveTime");
-				ClassicAssert.True (m.IsIP, "IsIP");
-				ClassicAssert.False (m.IsTcp, "IsTcp");
-				ClassicAssert.False (m.IsUdp, "IsUdp");
-				ClassicAssert.NotNull (m.ProtocolDefinition, "ProtocolDefinition");
+				Assert.That (m.IsIP, Is.True, "IsIP");
+				Assert.That (m.IsTcp, Is.False, "IsTcp");
+				Assert.That (m.IsUdp, Is.False, "IsUdp");
+				Assert.That (m.ProtocolDefinition, Is.Not.Null, "ProtocolDefinition");
 				Assert.That (m.ServiceClass, Is.EqualTo (NWServiceClass.BestEffort), "ServiceClass");
 			}
 		}
@@ -30,10 +30,10 @@ namespace MonoTouchFixtures.Network {
 		public void Udp ()
 		{
 			using (var m = new NWUdpMetadata ()) {
-				ClassicAssert.False (m.IsIP, "IsIP");
-				ClassicAssert.False (m.IsTcp, "IsTcp");
-				ClassicAssert.True (m.IsUdp, "IsUdp");
-				ClassicAssert.NotNull (m.ProtocolDefinition, "ProtocolDefinition");
+				Assert.That (m.IsIP, Is.False, "IsIP");
+				Assert.That (m.IsTcp, Is.False, "IsTcp");
+				Assert.That (m.IsUdp, Is.True, "IsUdp");
+				Assert.That (m.ProtocolDefinition, Is.Not.Null, "ProtocolDefinition");
 			}
 		}
 
@@ -44,11 +44,11 @@ namespace MonoTouchFixtures.Network {
 			using (var m = new NWIPMetadata ()) {
 				Assert.That (m.EcnFlag, Is.EqualTo (NWIPEcnFlag.NonEct), "IPMetadataEcnFlag");
 				Assert.That (m.ReceiveTime, Is.EqualTo (TimeSpan.Zero), "IPMetadataReceiveTime");
-				ClassicAssert.True (m.IsIP, "IsIP");
-				ClassicAssert.False (m.IsTcp, "IsTcp");
-				ClassicAssert.False (m.IsUdp, "IsUdp");
-				ClassicAssert.False (m.IsQuic, "IsQuic");
-				ClassicAssert.NotNull (m.ProtocolDefinition, "ProtocolDefinition");
+				Assert.That (m.IsIP, Is.True, "IsIP");
+				Assert.That (m.IsTcp, Is.False, "IsTcp");
+				Assert.That (m.IsUdp, Is.False, "IsUdp");
+				Assert.That (m.IsQuic, Is.False, "IsQuic");
+				Assert.That (m.ProtocolDefinition, Is.Not.Null, "ProtocolDefinition");
 				Assert.That (m.ServiceClass, Is.EqualTo (NWServiceClass.BestEffort), "ServiceClass");
 			}
 		}

@@ -32,38 +32,38 @@ namespace MonoTouchFixtures.Metal {
 		public void ColorAttachmentsTest ()
 		{
 			var attachments = descriptor.ColorAttachments;
-			ClassicAssert.NotNull (attachments);
+			Assert.That (attachments, Is.Not.Null);
 		}
 
 		[Test]
 		public void GetSetLabelTest ()
 		{
 			descriptor.Label = "Foo";
-			ClassicAssert.AreEqual ("Foo", descriptor.Label);
+			Assert.That (descriptor.Label, Is.EqualTo ("Foo"));
 		}
 
 		[Test]
 		public void GetSetRasterSampleCount ()
 		{
 			descriptor.RasterSampleCount = 2;
-			ClassicAssert.AreEqual ((nuint) 2, descriptor.RasterSampleCount);
+			Assert.That (descriptor.RasterSampleCount, Is.EqualTo ((nuint) 2));
 		}
 
 		[Test]
 		public void GetSetThreadgroupSizeMatchesTileSize ()
 		{
 			descriptor.ThreadgroupSizeMatchesTileSize = true;
-			ClassicAssert.AreEqual (true, descriptor.ThreadgroupSizeMatchesTileSize);
+			Assert.That (descriptor.ThreadgroupSizeMatchesTileSize, Is.EqualTo (true));
 
 			descriptor.ThreadgroupSizeMatchesTileSize = false;
-			ClassicAssert.AreEqual (false, descriptor.ThreadgroupSizeMatchesTileSize);
+			Assert.That (descriptor.ThreadgroupSizeMatchesTileSize, Is.EqualTo (false));
 		}
 
 		[Test]
 		public void GetTileBuffers ()
 		{
 			var buffers = descriptor.TileBuffers;
-			ClassicAssert.NotNull (buffers);
+			Assert.That (buffers, Is.Not.Null);
 		}
 
 		[Test]
@@ -71,7 +71,7 @@ namespace MonoTouchFixtures.Metal {
 		{
 			TestRuntime.AssertXcodeVersion (10, 0);
 			descriptor.MaxTotalThreadsPerThreadgroup = 10;
-			ClassicAssert.AreEqual ((nuint) 10, descriptor.MaxTotalThreadsPerThreadgroup);
+			Assert.That (descriptor.MaxTotalThreadsPerThreadgroup, Is.EqualTo ((nuint) 10));
 		}
 	}
 }

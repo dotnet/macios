@@ -9,21 +9,21 @@ namespace MonoTouchFixtures.Foundation {
 		public void TestSessionTypeDefault ()
 		{
 			using (var config = NSUrlSessionConfiguration.DefaultSessionConfiguration)
-				ClassicAssert.AreEqual (NSUrlSessionConfiguration.SessionConfigurationType.Default, config.SessionType);
+				Assert.That (config.SessionType, Is.EqualTo (NSUrlSessionConfiguration.SessionConfigurationType.Default));
 		}
 
 		[Test]
 		public void TestSessionTypeBackground ()
 		{
 			using (var config = NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration ("my.identifier.test"))
-				ClassicAssert.AreEqual (NSUrlSessionConfiguration.SessionConfigurationType.Background, config.SessionType);
+				Assert.That (config.SessionType, Is.EqualTo (NSUrlSessionConfiguration.SessionConfigurationType.Background));
 		}
 
 		[Test]
 		public void TestSessionTypeEphemeral ()
 		{
 			using (var config = NSUrlSessionConfiguration.EphemeralSessionConfiguration)
-				ClassicAssert.AreEqual (NSUrlSessionConfiguration.SessionConfigurationType.Ephemeral, config.SessionType);
+				Assert.That (config.SessionType, Is.EqualTo (NSUrlSessionConfiguration.SessionConfigurationType.Ephemeral));
 		}
 	}
 }

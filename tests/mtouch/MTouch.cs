@@ -12,7 +12,6 @@ using Xamarin.Utils;
 using Xamarin.Tests;
 
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 using MTouchLinker = Xamarin.Tests.LinkerOption;
 using MTouchRegistrar = Xamarin.Tests.RegistrarOption;
@@ -218,7 +217,7 @@ public class B : A {}
 						continue;
 					expectedFailed.Add (expected);
 				}
-				ClassicAssert.IsEmpty (expectedFailed, "expected files");
+				Assert.That (expectedFailed, Is.Empty, "expected files");
 
 				var notExpectedFailed = new List<string> ();
 				foreach (var notExpected in notExpectedFiles) {
@@ -226,7 +225,7 @@ public class B : A {}
 						continue;
 					notExpectedFailed.Add (notExpected);
 				}
-				ClassicAssert.IsEmpty (notExpectedFailed, "not expected files");
+				Assert.That (notExpectedFailed, Is.Empty, "not expected files");
 			}
 		}
 
@@ -257,7 +256,7 @@ public class B : A {}
 				mtouch.ForAllOutputLines ((line) => {
 					if (!line.Contains ("arm-darwin-mono-sgen") && !line.Contains ("arm64-darwin-mono-sgen"))
 						return;
-					StringAssert.Contains (" --llvm ", line, "aot command must pass --llvm to the AOT compiler");
+					Assert.That (line, Does.Contain (" --llvm "), "aot command must pass --llvm to the AOT compiler");
 					assemblies_checked++;
 				});
 				Assert.That (assemblies_checked, Is.AtLeast (3), "We build at least 3 dlls, so we must have had at least 3 asserts above."); // mscorlib.dll, Xamarin.iOS.dll, System.dll, theApp.exe
@@ -334,14 +333,14 @@ public class B : A {}
 				tool.Cache = Path.Combine (tool.CreateTemporaryDirectory (), "mtouch-test-cache");
 				tool.CreateTemporaryApp ();
 
-				ClassicAssert.AreEqual (0, tool.Execute (MTouchAction.BuildSim));
+				Assert.That (tool.Execute (MTouchAction.BuildSim), Is.EqualTo (0));
 
 				var pre_files = Directory.EnumerateFiles (tool.AppPath, "*", SearchOption.AllDirectories).ToArray ();
 
 				Directory.Delete (tool.AppPath, true);
 				Directory.CreateDirectory (tool.AppPath);
 
-				ClassicAssert.AreEqual (0, tool.Execute (MTouchAction.BuildSim));
+				Assert.That (tool.Execute (MTouchAction.BuildSim), Is.EqualTo (0));
 
 				var post_files = Directory.EnumerateFiles (tool.AppPath, "*", SearchOption.AllDirectories).ToArray ();
 
@@ -435,7 +434,7 @@ public class B : A {}
 							var app_main = File.ReadAllText (Path.Combine (mtouch.Cache, a, "main.m"));
 							var ext_str = ext_main.Substring (ext_main.IndexOf ("xamarin_supports_dynamic_registration", StringComparison.Ordinal) + 40, 4);
 							var app_str = app_main.Substring (app_main.IndexOf ("xamarin_supports_dynamic_registration", StringComparison.Ordinal) + 40, 4);
-							ClassicAssert.AreEqual (ext_str, app_str, $"Expected dynamic registration support to be identical between app ({app_str}) and extension ({ext_str}).");
+							Assert.That (app_str, Is.EqualTo (ext_str), $"Expected dynamic registration support to be identical between app ({app_str}) and extension ({ext_str}).");
 							Assert.That (ext_str, Is.EqualTo ("FALS").Or.EqualTo ("TRUE"), "SDR value");
 						}
 					};
@@ -517,7 +516,7 @@ public class B : A {}
 					DumpFileStats (mtouch);
 					mtouch.AssertNoneModified (timestamp, name);
 					extension.AssertNoneModified (timestamp, name, "testServiceExtension.dll.config", "testServiceExtension", "testServiceExtension.aotdata.armv7", "testServiceExtension.aotdata.arm64");
-					CollectionAssert.Contains (Directory.EnumerateFiles (extension.AppPath, "*", SearchOption.AllDirectories).Select ((v) => Path.GetFileName (v)), "testServiceExtension.dll.config", "extension config added");
+					Assert.That (Directory.EnumerateFiles (extension.AppPath, "*", SearchOption.AllDirectories).Select ((v) => Path.GetFileName (v)), Does.Contain ("testServiceExtension.dll.config"), "extension config added");
 					assertSupportsDynamicRegistrar ();
 
 					timestamp = DateTime.Now;
@@ -530,7 +529,7 @@ public class B : A {}
 					DumpFileStats (mtouch);
 					mtouch.AssertNoneModified (timestamp, name, "testApp.exe.config", "testApp", "testApp.aotdata.armv7", "testApp.aotdata.arm64");
 					extension.AssertNoneModified (timestamp, name);
-					CollectionAssert.Contains (Directory.EnumerateFiles (mtouch.AppPath, "*", SearchOption.AllDirectories).Select ((v) => Path.GetFileName (v)), "testApp.exe.config", "container config added");
+					Assert.That (Directory.EnumerateFiles (mtouch.AppPath, "*", SearchOption.AllDirectories).Select ((v) => Path.GetFileName (v)), Does.Contain ("testApp.exe.config"), "container config added");
 					assertSupportsDynamicRegistrar ();
 
 					timestamp = DateTime.Now;
@@ -544,7 +543,7 @@ public class B : A {}
 						mtouch.AssertNoneModified (timestamp, name, Path.GetFileName (satellite));
 						extension.AssertNoneModified (timestamp, name, Path.GetFileName (satellite));
 						extension.AssertModified (timestamp, name, Path.GetFileName (satellite));
-						CollectionAssert.Contains (Directory.EnumerateFiles (extension.AppPath, "*", SearchOption.AllDirectories).Select ((v) => Path.GetFileName (v)), Path.GetFileName (satellite), "extension satellite added");
+						Assert.That (Directory.EnumerateFiles (extension.AppPath, "*", SearchOption.AllDirectories).Select ((v) => Path.GetFileName (v)), Does.Contain (Path.GetFileName (satellite)), "extension satellite added");
 						assertSupportsDynamicRegistrar ();
 					}
 
@@ -560,7 +559,7 @@ public class B : A {}
 						mtouch.AssertNoneModified (timestamp, name, Path.GetFileName (satellite));
 						extension.AssertNoneModified (timestamp, name, Path.GetFileName (satellite));
 						mtouch.AssertModified (timestamp, name, Path.GetFileName (satellite));
-						CollectionAssert.Contains (Directory.EnumerateFiles (mtouch.AppPath, "*", SearchOption.AllDirectories).Select ((v) => Path.GetFileName (v)), Path.GetFileName (satellite), "container satellite added");
+						Assert.That (Directory.EnumerateFiles (mtouch.AppPath, "*", SearchOption.AllDirectories).Select ((v) => Path.GetFileName (v)), Does.Contain (Path.GetFileName (satellite)), "container satellite added");
 						assertSupportsDynamicRegistrar ();
 					}
 				}
@@ -612,9 +611,9 @@ public class B : A {}
 				var msymDir = appDir + ".mSYM";
 				var is_dual_asm = !is_sim && extra_mtouch_args.Contains ("--abi") && extra_mtouch_args.Contains (",");
 				if (!is_dual_asm) {
-					ClassicAssert.AreEqual (has_mdb, File.Exists (Path.Combine (appDir, "mscorlib.pdb")), "#pdb");
+					Assert.That (File.Exists (Path.Combine (appDir, "mscorlib.pdb")), Is.EqualTo (has_mdb), "#pdb");
 				} else {
-					ClassicAssert.AreEqual (has_mdb, File.Exists (Path.Combine (appDir, ".monotouch-32", "mscorlib.pdb")), "#pdb");
+					Assert.That (File.Exists (Path.Combine (appDir, ".monotouch-32", "mscorlib.pdb")), Is.EqualTo (has_mdb), "#pdb");
 				}
 
 				if (has_msym) {
@@ -628,10 +627,10 @@ public class B : A {}
 							msymFiles.Add (f.Name);
 						}
 					}
-					ClassicAssert.AreEqual (has_msym, msymFiles.Contains ("mscorlib.dll.msym"));
+					Assert.That (msymFiles.Contains ("mscorlib.dll.msym"), Is.EqualTo (has_msym));
 					var manifest = new XmlDocument ();
 					manifest.Load (Path.Combine (msymDir, "manifest.xml"));
-					ClassicAssert.AreEqual ("com.xamarin.testApp", manifest.SelectSingleNode ("/mono-debug/app-id").InnerText, "app-id");
+					Assert.That (manifest.SelectSingleNode ("/mono-debug/app-id").InnerText, Is.EqualTo ("com.xamarin.testApp"), "app-id");
 				} else {
 					DirectoryAssert.DoesNotExist (msymDir, "mSYM found when not expected");
 				}
@@ -738,7 +737,7 @@ public class B : A {}
 					GetBaseLibrary (profile),
 					GetBaseLibrary (other),
 				};
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.BuildSim));
+				Assert.That (mtouch.Execute (MTouchAction.BuildSim), Is.EqualTo (1));
 				mtouch.AssertError (41, string.Format ("Cannot reference '{0}' in a {1} app.", Path.GetFileName (GetBaseLibrary (other)), GetPlatformName (profile)));
 			}
 		}
@@ -816,7 +815,7 @@ public class B : A {}
 				mtouch.Profile = exe_profile;
 				mtouch.RootAssembly = exe;
 				mtouch.References = new string [] { GetBaseLibrary (exe_profile) };
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.BuildSim), "build");
+				Assert.That (mtouch.Execute (MTouchAction.BuildSim), Is.EqualTo (1), "build");
 				var dllBase = Path.GetFileName (GetBaseLibrary (dll_profile));
 				mtouch.AssertError (34, string.Format ("Cannot reference '{0}' in a {1} project - it is implicitly referenced by 'testLib, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'.", dllBase, GetPlatformName (exe_profile)));
 			}
@@ -1049,7 +1048,7 @@ public class B : A {}
 				mtouch.TargetFramework = BundlerTool.None;
 				mtouch.CreateTemporaryApp ();
 				mtouch.References = new string [] { GetBaseLibrary (profile) };
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.BuildSim));
+				Assert.That (mtouch.Execute (MTouchAction.BuildSim), Is.EqualTo (1));
 				mtouch.AssertError (86, "A target framework (--target-framework) must be specified.");
 			}
 		}
@@ -1088,7 +1087,7 @@ public class B : A {}
 				mtouch.SdkRoot = old_xcode;
 				mtouch.Linker = MTouchLinker.DontLink;
 				mtouch.Sdk = sdk_version;
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.BuildSim));
+				Assert.That (mtouch.Execute (MTouchAction.BuildSim), Is.EqualTo (1));
 				var xcodeVersionString = Configuration.XcodeVersionString;
 				mtouch.AssertError (180, String.Format ("This version of Xamarin.iOS requires the {0} {1} SDK (shipped with Xcode {2}). Either upgrade Xcode to get the required header files or set the managed linker behaviour to Link Framework SDKs Only in your project's iOS Build Options > Linker Behavior (to try to avoid the new APIs).", name, GetSdkVersion (profile), xcodeVersionString));
 			}
@@ -1111,10 +1110,10 @@ public class B : A {}
 				mtouch.Bitcode = mode;
 				mtouch.WarnAsError = new int [] { 186 };
 				if (Configuration.XcodeVersion.Major >= 14) {
-					ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.BuildDev));
+					Assert.That (mtouch.Execute (MTouchAction.BuildDev), Is.EqualTo (1));
 					mtouch.AssertError (186, "Bitcode is enabled, but bitcode is not supported in Xcode 14+ and has been disabled. Please disable bitcode by removing the 'MtouchEnableBitcode' property from the project file.");
 				} else {
-					ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildDev));
+					Assert.That (mtouch.Execute (MTouchAction.BuildDev), Is.EqualTo (0));
 				}
 			}
 		}
@@ -1142,8 +1141,8 @@ public class B : A {}
 					apptool.Linker = MTouchLinker.LinkAll;
 					apptool.AssertExecute (MTouchAction.BuildDev, "build app");
 
-					ClassicAssert.IsTrue (Directory.Exists (Path.Combine (apptool.Cache, "3-Build", "Msym")), "App Msym dir");
-					ClassicAssert.IsFalse (Directory.Exists (Path.Combine (exttool.Cache, "3-Build", "Msym")), "Extenson Msym dir");
+					Assert.That (Directory.Exists (Path.Combine (apptool.Cache, "3-Build", "Msym")), Is.True, "App Msym dir");
+					Assert.That (Directory.Exists (Path.Combine (exttool.Cache, "3-Build", "Msym")), Is.False, "Extenson Msym dir");
 					exttool.AssertNoWarnings ();
 					apptool.AssertNoWarnings ();
 				}
@@ -1174,8 +1173,8 @@ public class B : A {}
 					apptool.CustomArguments = new string [] { "--nodevcodeshare" };
 					apptool.AssertExecute (MTouchAction.BuildDev, "build app");
 
-					ClassicAssert.IsTrue (Directory.Exists (Path.Combine (apptool.Cache, "3-Build", "Msym")), "App Msym dir");
-					ClassicAssert.IsTrue (Directory.Exists (Path.Combine (exttool.Cache, "3-Build", "Msym")), "Extenson Msym dir");
+					Assert.That (Directory.Exists (Path.Combine (apptool.Cache, "3-Build", "Msym")), Is.True, "App Msym dir");
+					Assert.That (Directory.Exists (Path.Combine (exttool.Cache, "3-Build", "Msym")), Is.True, "Extenson Msym dir");
 					exttool.AssertNoWarnings ();
 					apptool.AssertNoWarnings ();
 				}
@@ -1921,8 +1920,8 @@ public class TestApp {
 				mtouch.CreateTemporaryApp (hasPlist: true);
 				mtouch.Extension = true;
 				mtouch.TargetVer = Configuration.sdk_version;
-				ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildSim));
-				ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildDev));
+				Assert.That (mtouch.Execute (MTouchAction.BuildSim), Is.EqualTo (0));
+				Assert.That (mtouch.Execute (MTouchAction.BuildDev), Is.EqualTo (0));
 			}
 		}
 
@@ -2082,7 +2081,7 @@ public class TestApp {
 			if (!Directory.Exists (bindingResourcePackage))
 				throw new InvalidOperationException ($"The binding project {libName} does not have a binding resource package?");
 			var frameworks = CollectFrameworks (bindingResourcePackage);
-			ClassicAssert.AreEqual (5, frameworks.Length, "Framework count in binding resource package");
+			Assert.That (frameworks.Length, Is.EqualTo (5), "Framework count in binding resource package");
 
 			var refs = new string [] { fn };
 			if (tool.References is null) {
@@ -2251,7 +2250,7 @@ public class TestApp {
 			}) {
 				mtouch.CreateTemporaryApp_LinkWith ();
 				mtouch.DlsymString = "+nunit.framework.dll"; // nunit.framework.dll has a P/Invoke to GetVersionEx, so we need to use dlsym to avoid a native linker error.
-				ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildDev), "build");
+				Assert.That (mtouch.Execute (MTouchAction.BuildDev), Is.EqualTo (0), "build");
 
 				var symbols = GetNativeSymbols (mtouch.NativeExecutablePath);
 				Assert.That (symbols, Has.None.EqualTo ("_theUltimateAnswer"), "Binding symbol not in executable");
@@ -2277,7 +2276,7 @@ public class TestApp {
 				Linker = MTouchLinker.DontLink,
 			}) {
 				mtouch.CreateTemporaryApp_LinkWith ();
-				ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildSim), "build");
+				Assert.That (mtouch.Execute (MTouchAction.BuildSim), Is.EqualTo (0), "build");
 			}
 		}
 
@@ -2296,7 +2295,7 @@ public class TestApp {
 				NoFastSim = true,
 			}) {
 				mtouch.CreateTemporaryApp_LinkWith ();
-				ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildSim), "build");
+				Assert.That (mtouch.Execute (MTouchAction.BuildSim), Is.EqualTo (0), "build");
 			}
 		}
 
@@ -2316,7 +2315,7 @@ public class TestApp {
 				NoFastSim = true,
 			}) {
 				mtouch.CreateTemporaryApp_LinkWith ();
-				ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildSim), "build");
+				Assert.That (mtouch.Execute (MTouchAction.BuildSim), Is.EqualTo (0), "build");
 			}
 		}
 
@@ -2334,7 +2333,7 @@ public class TestApp {
 				References = GetBindingsLibraryWithReferences (profile),
 			}) {
 				mtouch.CreateTemporaryApp_LinkWith ();
-				ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildSim), "build");
+				Assert.That (mtouch.Execute (MTouchAction.BuildSim), Is.EqualTo (0), "build");
 			}
 		}
 
@@ -2351,7 +2350,7 @@ public class TestApp {
 				References = GetBindingsLibraryWithReferences (profile),
 			}) {
 				mtouch.CreateTemporaryApp_LinkWith ();
-				ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildDev), "build");
+				Assert.That (mtouch.Execute (MTouchAction.BuildDev), Is.EqualTo (0), "build");
 			}
 		}
 
@@ -2372,7 +2371,7 @@ public class TestApp {
 			}) {
 				mtouch.CreateTemporaryApp_LinkWith ();
 				mtouch.DlsymString = "+nunit.framework.dll"; // nunit.framework.dll has a P/Invoke to GetVersionEx, so we need to use dlsym to avoid a native linker error.
-				ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildDev), "build 1");
+				Assert.That (mtouch.Execute (MTouchAction.BuildDev), Is.EqualTo (0), "build 1");
 			}
 		}
 
@@ -2392,11 +2391,11 @@ public class TestApp {
 				mtouch.DlsymString = "+nunit.framework.dll"; // nunit.framework.dll has a P/Invoke to GetVersionEx, so we need to use dlsym to avoid a native linker error.
 
 				// --fastdev w/all link
-				ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildDev), "build 1");
+				Assert.That (mtouch.Execute (MTouchAction.BuildDev), Is.EqualTo (0), "build 1");
 
 				// --fastdev w/no link
 				mtouch.Linker = MTouchLinker.DontLink;
-				ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildDev), "build 2");
+				Assert.That (mtouch.Execute (MTouchAction.BuildDev), Is.EqualTo (0), "build 2");
 			}
 		}
 
@@ -2417,7 +2416,7 @@ public class TestApp {
 				mtouch.DlsymString = "+nunit.framework.dll"; // nunit.framework.dll has a P/Invoke to GetVersionEx, so we need to use dlsym to avoid a native linker error.
 
 				// --fastdev w/sdk link
-				ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildDev), "build");
+				Assert.That (mtouch.Execute (MTouchAction.BuildDev), Is.EqualTo (0), "build");
 			}
 		}
 
@@ -2535,9 +2534,9 @@ public class TestApp {
 				var bin32 = Path.Combine (mtouch.AppPath, ".monotouch-32", Path.GetFileNameWithoutExtension (mtouch.RootAssembly));
 				var bin64 = Path.Combine (mtouch.AppPath, ".monotouch-64", Path.GetFileNameWithoutExtension (mtouch.RootAssembly));
 
-				ClassicAssert.AreEqual (0, mtouch.Execute (MTouchAction.BuildSim));
+				Assert.That (mtouch.Execute (MTouchAction.BuildSim), Is.EqualTo (0));
 
-				ClassicAssert.IsFalse (File.Exists (bin), "none");
+				Assert.That (File.Exists (bin), Is.False, "none");
 				VerifyArchitectures (bin64, "64/x86_64", "x86_64");
 				VerifyArchitectures (bin32, "32/i386", "i386");
 			}
@@ -2552,11 +2551,11 @@ public class TestApp {
 
 				mtouch.TargetVer = SdkVersions.MiniOS;
 				mtouch.Abi = "armv6";
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.BuildDev));
+				Assert.That (mtouch.Execute (MTouchAction.BuildDev), Is.EqualTo (1));
 				mtouch.AssertError ("MT", 15, "Invalid ABI: armv6. Supported ABIs are: i386, x86_64, armv7, armv7+llvm, armv7+llvm+thumb2, armv7s, armv7s+llvm, armv7s+llvm+thumb2, armv7k, armv7k+llvm, arm64, arm64+llvm, arm64_32 and arm64_32+llvm.");
 
 				mtouch.Abi = "armv7";
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.BuildSim));
+				Assert.That (mtouch.Execute (MTouchAction.BuildSim), Is.EqualTo (1));
 				mtouch.AssertError ("MT", 75, "Invalid architecture 'ARMv7' for iOS projects. Valid architectures are: i386, x86_64");
 			}
 		}
@@ -2574,7 +2573,7 @@ public class TestApp {
 
 				var bin = Path.Combine (mtouch.AppPath, Path.GetFileNameWithoutExtension (mtouch.RootAssembly));
 
-				ClassicAssert.AreEqual (0, mtouch.Execute (target == Target.Dev ? MTouchAction.BuildDev : MTouchAction.BuildSim), "build");
+				Assert.That (mtouch.Execute (target == Target.Dev ? MTouchAction.BuildDev : MTouchAction.BuildSim), Is.EqualTo (0), "build");
 				VerifyArchitectures (bin, "arch", target == Target.Dev ? "ARM64" : "x86_64");
 			}
 		}
@@ -2587,7 +2586,7 @@ public class TestApp {
 				mtouch.CreateTemporaryApp ();
 
 				mtouch.Abi = "armv7";
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.BuildDev), "device - armv7");
+				Assert.That (mtouch.Execute (MTouchAction.BuildDev), Is.EqualTo (1), "device - armv7");
 				mtouch.AssertError ("MT", 75, "Invalid architecture 'ARMv7' for TVOS projects. Valid architectures are: ARM64, ARM64+LLVM");
 			}
 		}
@@ -2810,8 +2809,8 @@ public class TestApp {
 					var found_field = lines.Contains ("_dummy_field");
 					var found_pinvoke = lines.Contains ("_DummyMethod");
 
-					ClassicAssert.IsFalse (found_field, string.Format ("Field found for variation #{0}", iteration));
-					ClassicAssert.IsFalse (found_field, string.Format ("P/Invoke found for variation #{0}", iteration));
+					Assert.That (found_field, Is.False, string.Format ("Field found for variation #{0}", iteration));
+					Assert.That (found_field, Is.False, string.Format ("P/Invoke found for variation #{0}", iteration));
 				}
 			}
 		}
@@ -2823,7 +2822,7 @@ public class TestApp {
 				mtouch.CreateTemporaryApp ();
 				mtouch.NoFastSim = true;
 				mtouch.AssertExecute (MTouchAction.BuildSim, "build a");
-				ClassicAssert.IsFalse (mtouch.HasOutput ("ld: warning:"), "#a");
+				Assert.That (mtouch.HasOutput ("ld: warning:"), Is.False, "#a");
 				mtouch.AssertNoWarnings ();
 			}
 
@@ -2880,7 +2879,7 @@ public class TestApp {
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.AppPath = "/tmp";
 				mtouch.Device = ":vX;";
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.LaunchSim), "launch");
+				Assert.That (mtouch.Execute (MTouchAction.LaunchSim), Is.EqualTo (1), "launch");
 				mtouch.HasError ("MT", 1202, "Invalid simulator configuration: :vX;");
 			}
 		}
@@ -2891,7 +2890,7 @@ public class TestApp {
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.AppPath = "/tmp";
 				mtouch.Device = ":v2;a";
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.LaunchSim), "launch");
+				Assert.That (mtouch.Execute (MTouchAction.LaunchSim), Is.EqualTo (1), "launch");
 				mtouch.HasError ("MT", 1203, "Invalid simulator specification: a");
 			}
 		}
@@ -2902,14 +2901,14 @@ public class TestApp {
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.AppPath = "/tmp";
 				mtouch.Device = ":v2;";
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.LaunchSim), "launch");
+				Assert.That (mtouch.Execute (MTouchAction.LaunchSim), Is.EqualTo (1), "launch");
 				mtouch.HasError ("MT", 1204, "Invalid simulator specification '': runtime not specified.");
 			}
 
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.AppPath = "/tmp";
 				mtouch.Device = ":v2;devicetype=1";
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.LaunchSim), "launch");
+				Assert.That (mtouch.Execute (MTouchAction.LaunchSim), Is.EqualTo (1), "launch");
 				mtouch.HasError ("MT", 1204, "Invalid simulator specification 'devicetype=1': runtime not specified.");
 			}
 		}
@@ -2920,7 +2919,7 @@ public class TestApp {
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.AppPath = "/tmp";
 				mtouch.Device = ":v2;runtime=1";
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.LaunchSim), "launch");
+				Assert.That (mtouch.Execute (MTouchAction.LaunchSim), Is.EqualTo (1), "launch");
 				mtouch.HasError ("MT", 1205, "Invalid simulator specification 'runtime=1': device type not specified.");
 			}
 		}
@@ -2931,7 +2930,7 @@ public class TestApp {
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.AppPath = "/tmp";
 				mtouch.Device = ":v2;runtime=1,devicetype=2";
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.LaunchSim), "launch");
+				Assert.That (mtouch.Execute (MTouchAction.LaunchSim), Is.EqualTo (1), "launch");
 				mtouch.HasError ("MT", 1206, "Could not find the simulator runtime '1'.");
 			}
 		}
@@ -2942,7 +2941,7 @@ public class TestApp {
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.AppPath = "/tmp";
 				mtouch.Device = ":v2;runtime=com.apple.CoreSimulator.SimRuntime.iOS-" + Configuration.sdk_version.Replace ('.', '-') + ",devicetype=2";
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.LaunchSim), "launch");
+				Assert.That (mtouch.Execute (MTouchAction.LaunchSim), Is.EqualTo (1), "launch");
 				mtouch.HasError ("MT", 1207, "Could not find the simulator device type '2'.");
 			}
 		}
@@ -2957,7 +2956,7 @@ public class TestApp {
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.AppPath = "/tmp";
 				mtouch.Device = ":v2;a=1";
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.LaunchSim), "launch");
+				Assert.That (mtouch.Execute (MTouchAction.LaunchSim), Is.EqualTo (1), "launch");
 				mtouch.HasError ("MT", 1210, "Invalid simulator specification: 'a=1', unknown key 'a'");
 			}
 		}
@@ -2972,7 +2971,7 @@ public class TestApp {
 			using (var mtouch = new MTouchTool ()) {
 				mtouch.AppPath = "/tmp";
 				mtouch.Device = ":v2;udid=unknown";
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.LaunchSim), "launch");
+				Assert.That (mtouch.Execute (MTouchAction.LaunchSim), Is.EqualTo (1), "launch");
 				mtouch.HasError ("MT", 1216, "Could not find the simulator UDID 'unknown'.");
 			}
 		}
@@ -3321,7 +3320,7 @@ class Test {
 				tool.FastDev = true;
 				tool.Dlsym = false;
 
-				ClassicAssert.AreEqual (0, tool.Execute (MTouchAction.BuildDev));
+				Assert.That (tool.Execute (MTouchAction.BuildDev), Is.EqualTo (0));
 			}
 		}
 
@@ -3334,9 +3333,9 @@ class Test {
 				tool.CreateTemporaryWatchKitExtension ();
 
 				tool.FastDev = true;
-				ClassicAssert.AreEqual (0, tool.Execute (MTouchAction.BuildDev), "build");
+				Assert.That (tool.Execute (MTouchAction.BuildDev), Is.EqualTo (0), "build");
 
-				ClassicAssert.IsTrue (File.Exists (Path.Combine (tool.AppPath, "libpinvokes.dylib")), "libpinvokes.dylib existence");
+				Assert.That (File.Exists (Path.Combine (tool.AppPath, "libpinvokes.dylib")), Is.True, "libpinvokes.dylib existence");
 
 				var otool_output = ExecutionHelper.Execute ("otool", new [] { "-l", Path.Combine (tool.AppPath, "libpinvokes.dylib") }, hide_output: true);
 				Assert.That (otool_output, Does.Contain ("LC_ID_DYLIB"), "output contains LC_ID_DYLIB");
@@ -3349,7 +3348,7 @@ class Test {
 					}
 				}
 
-				ClassicAssert.AreEqual (0, tool.Execute (MTouchAction.BuildDev), "cached build");
+				Assert.That (tool.Execute (MTouchAction.BuildDev), Is.EqualTo (0), "cached build");
 			}
 		}
 
@@ -3411,7 +3410,7 @@ class C {
 				tool.NoFastSim = true;
 				tool.Dlsym = false;
 				tool.Linker = MTouchLinker.LinkSdk;
-				ClassicAssert.AreEqual (0, tool.Execute (MTouchAction.BuildDev), "build");
+				Assert.That (tool.Execute (MTouchAction.BuildDev), Is.EqualTo (0), "build");
 			}
 		}
 
@@ -3433,8 +3432,8 @@ class C {
 					apptool.AppExtensions.Add (exttool);
 					apptool.AssertExecute (MTouchAction.BuildSim, "build app");
 
-					ClassicAssert.IsFalse (Directory.Exists (Path.Combine (apptool.AppPath, "Frameworks", "XTest.framework")), "framework inexistence");
-					ClassicAssert.IsTrue (Directory.Exists (Path.Combine (exttool.AppPath, "Frameworks", "XTest.framework")), "extension framework existence");
+					Assert.That (Directory.Exists (Path.Combine (apptool.AppPath, "Frameworks", "XTest.framework")), Is.False, "framework inexistence");
+					Assert.That (Directory.Exists (Path.Combine (exttool.AppPath, "Frameworks", "XTest.framework")), Is.True, "extension framework existence");
 				}
 			}
 		}
@@ -3461,8 +3460,8 @@ class C {
 					apptool.Linker = MTouchLinker.DontLink; // faster
 					apptool.AssertExecute (MTouchAction.BuildSim, "build app");
 
-					ClassicAssert.IsTrue (Directory.Exists (Path.Combine (apptool.AppPath, "Frameworks", "XTest.framework")), "framework exists");
-					ClassicAssert.IsFalse (Directory.Exists (Path.Combine (exttool.AppPath, "Frameworks")), "extension framework inexistence");
+					Assert.That (Directory.Exists (Path.Combine (apptool.AppPath, "Frameworks", "XTest.framework")), Is.True, "framework exists");
+					Assert.That (Directory.Exists (Path.Combine (exttool.AppPath, "Frameworks")), Is.False, "extension framework inexistence");
 				}
 			}
 		}
@@ -3496,8 +3495,8 @@ public partial class NotificationService : UNNotificationServiceExtension
 					apptool.AppExtensions.Add (exttool);
 					apptool.AssertExecute (MTouchAction.BuildSim, "build app");
 
-					ClassicAssert.IsTrue (Directory.Exists (Path.Combine (apptool.AppPath, "Frameworks", "XTest.framework")), "framework exists");
-					ClassicAssert.IsFalse (Directory.Exists (Path.Combine (exttool.AppPath, "Frameworks")), "extension framework inexistence");
+					Assert.That (Directory.Exists (Path.Combine (apptool.AppPath, "Frameworks", "XTest.framework")), Is.True, "framework exists");
+					Assert.That (Directory.Exists (Path.Combine (exttool.AppPath, "Frameworks")), Is.False, "extension framework inexistence");
 				}
 			}
 		}
@@ -3522,8 +3521,8 @@ public partial class NotificationService : UNNotificationServiceExtension
 					apptool.AppExtensions.Add (exttool);
 					apptool.AssertExecute (MTouchAction.BuildSim, "build app");
 
-					ClassicAssert.IsTrue (Directory.Exists (Path.Combine (apptool.AppPath, "Frameworks", "XTest.framework")), "framework exists");
-					ClassicAssert.IsFalse (Directory.Exists (Path.Combine (exttool.AppPath, "Frameworks")), "extension framework inexistence");
+					Assert.That (Directory.Exists (Path.Combine (apptool.AppPath, "Frameworks", "XTest.framework")), Is.True, "framework exists");
+					Assert.That (Directory.Exists (Path.Combine (exttool.AppPath, "Frameworks")), Is.False, "extension framework inexistence");
 				}
 			}
 		}
@@ -3597,9 +3596,9 @@ public partial class NotificationService : UNNotificationServiceExtension
 						apptool.AppExtensions.Add (today_ext);
 						apptool.AssertExecute (MTouchAction.BuildSim, "build app");
 
-						ClassicAssert.IsTrue (Directory.Exists (Path.Combine (apptool.AppPath, "Frameworks", "XTest.framework")), "framework exists");
-						ClassicAssert.IsFalse (Directory.Exists (Path.Combine (service_ext.AppPath, "Frameworks")), "service extension framework inexistence");
-						ClassicAssert.IsFalse (Directory.Exists (Path.Combine (today_ext.AppPath, "Frameworks")), "today framework inexistence");
+						Assert.That (Directory.Exists (Path.Combine (apptool.AppPath, "Frameworks", "XTest.framework")), Is.True, "framework exists");
+						Assert.That (Directory.Exists (Path.Combine (service_ext.AppPath, "Frameworks")), Is.False, "service extension framework inexistence");
+						Assert.That (Directory.Exists (Path.Combine (today_ext.AppPath, "Frameworks")), Is.False, "today framework inexistence");
 					}
 				}
 			}
@@ -3641,9 +3640,9 @@ public partial class NotificationService : UNNotificationServiceExtension
 				mtouch.AssertExecute (MTouchAction.BuildSim);
 
 				// The pdb files should be updated, but the exe should not.
-				ClassicAssert.AreNotEqual (exeStamp, File.GetLastWriteTimeUtc (exePath), $"exe change");
-				ClassicAssert.IsTrue (File.Exists (pdbPath), "csc existence");
-				ClassicAssert.AreNotEqual (pdbStamp, File.GetLastWriteTimeUtc (pdbPath), $"pdb changed");
+				Assert.That (File.GetLastWriteTimeUtc (exePath), Is.Not.EqualTo (exeStamp), $"exe change");
+				Assert.That (File.Exists (pdbPath), Is.True, "csc existence");
+				Assert.That (File.GetLastWriteTimeUtc (pdbPath), Is.Not.EqualTo (pdbStamp), $"pdb changed");
 			}
 		}
 
@@ -3697,7 +3696,7 @@ public partial class NotificationService : UNNotificationServiceExtension
 				mtouch.CreateTemporaryApp ();
 
 				mtouch.HttpMessageHandler = "Dummy";
-				ClassicAssert.AreEqual (1, mtouch.Execute (MTouchAction.BuildSim));
+				Assert.That (mtouch.Execute (MTouchAction.BuildSim), Is.EqualTo (1));
 				mtouch.AssertError (2010, "Unknown HttpMessageHandler `Dummy`. Valid values are HttpClientHandler (default), CFNetworkHandler or NSUrlSessionHandler");
 			}
 		}
@@ -3923,7 +3922,7 @@ public class HandlerTest
 		var fieldValue = field.GetValue (client);
 		if (fieldValue is null)
 			throw new System.Exception (""Unexpected null value found in 'HttpMessageInvoker.handler' field."");
-		ClassicAssert.AreEqual (""{expectedHandler}"", fieldValue.GetType ().Name, ""default http client handler"");
+		Assert.That (fieldValue.GetType ().Name, Is.EqualTo (""{expectedHandler}""), ""default http client handler"");
 	}}
 }}
 ";
@@ -4606,7 +4605,7 @@ public class TestApp {
 			var e = string.Join (", ", expected);
 			var a = string.Join (", ", actual);
 
-			ClassicAssert.AreEqual (e, a, message);
+			Assert.That (a, Is.EqualTo (e).Within (message));
 		}
 
 		public static IEnumerable<string> GetNativeSymbols (string file, string arch = null)

@@ -15,7 +15,7 @@ namespace Xamarin.Mac.Tests {
 			NSSlider slider = new NSSlider ();
 			var isVert = slider.IsVertical;
 			slider.IsVertical = true;
-			ClassicAssert.IsTrue (slider.IsVertical);
+			Assert.That (slider.IsVertical, Is.True);
 		}
 	}
 }

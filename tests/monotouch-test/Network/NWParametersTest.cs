@@ -90,8 +90,8 @@ namespace MonoTouchFixtures.Network {
 			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				secureEvent.WaitOne ();
 				configureEvent.WaitOne ();
-				ClassicAssert.True (secureConnectionWasSet, "Configure TLS handler was not called.");
-				ClassicAssert.True (protocolConfigured, "Protocol configure handler was not called.");
+				Assert.That (secureConnectionWasSet, Is.True, "Configure TLS handler was not called.");
+				Assert.That (protocolConfigured, Is.True, "Protocol configure handler was not called.");
 			}
 		}
 
@@ -103,8 +103,8 @@ namespace MonoTouchFixtures.Network {
 			using (var parameters = NWParameters.CreateSecureUdp (configureTls: setUpTls))
 			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				secureEvent.WaitOne ();
-				ClassicAssert.True (secureConnectionWasSet, "Configure TLS handler was not called.");
-				ClassicAssert.False (protocolConfigured, "Protocol configure handler was called.");
+				Assert.That (secureConnectionWasSet, Is.True, "Configure TLS handler was not called.");
+				Assert.That (protocolConfigured, Is.False, "Protocol configure handler was called.");
 			}
 		}
 
@@ -116,8 +116,8 @@ namespace MonoTouchFixtures.Network {
 			using (var parameters = NWParameters.CreateSecureUdp (configureTls: null, configureUdp: setUpProtocol))
 			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				configureEvent.WaitOne ();
-				ClassicAssert.False (secureConnectionWasSet, "Configure TLS handler was not called.");
-				ClassicAssert.True (protocolConfigured, "Protocol configure handler was not called.");
+				Assert.That (secureConnectionWasSet, Is.False, "Configure TLS handler was not called.");
+				Assert.That (protocolConfigured, Is.True, "Protocol configure handler was not called.");
 			}
 		}
 
@@ -131,8 +131,8 @@ namespace MonoTouchFixtures.Network {
 			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				secureEvent.WaitOne ();
 				configureEvent.WaitOne ();
-				ClassicAssert.True (secureConnectionWasSet, "Configure TLS handler was not called.");
-				ClassicAssert.True (protocolConfigured, "Protocol configure handler was not called.");
+				Assert.That (secureConnectionWasSet, Is.True, "Configure TLS handler was not called.");
+				Assert.That (protocolConfigured, Is.True, "Protocol configure handler was not called.");
 			}
 		}
 
@@ -145,8 +145,8 @@ namespace MonoTouchFixtures.Network {
 			using (var parameters = NWParameters.CreateSecureTcp (configureTls: setUpTls))
 			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				secureEvent.WaitOne ();
-				ClassicAssert.True (secureConnectionWasSet, "Configure TLS handler was not called.");
-				ClassicAssert.False (protocolConfigured, "Protocol configure handler was called.");
+				Assert.That (secureConnectionWasSet, Is.True, "Configure TLS handler was not called.");
+				Assert.That (protocolConfigured, Is.False, "Protocol configure handler was called.");
 			}
 		}
 
@@ -158,8 +158,8 @@ namespace MonoTouchFixtures.Network {
 			using (var parameters = NWParameters.CreateSecureTcp (configureTls: null, configureTcp: setUpProtocol))
 			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				configureEvent.WaitOne ();
-				ClassicAssert.False (secureConnectionWasSet, "Configure TLS handler was called.");
-				ClassicAssert.True (protocolConfigured, "Protocol configure handler was not called.");
+				Assert.That (secureConnectionWasSet, Is.False, "Configure TLS handler was called.");
+				Assert.That (protocolConfigured, Is.True, "Protocol configure handler was not called.");
 			}
 		}
 
@@ -173,7 +173,7 @@ namespace MonoTouchFixtures.Network {
 			using (var parameters = NWParameters.CreateCustomIP (ipVersion, setUpProtocol))
 			using (var endpoint = NWEndpoint.Create ("wwww.google.com", "80")) {
 				configureEvent.WaitOne ();
-				ClassicAssert.True (protocolConfigured, "Protocol configure handler was not called.");
+				Assert.That (protocolConfigured, Is.True, "Protocol configure handler was not called.");
 			}
 		}
 #endif
@@ -183,10 +183,10 @@ namespace MonoTouchFixtures.Network {
 		{
 			using (var parameters = new NWParameters ()) {
 				var defaultValue = parameters.MultipathService;
-				ClassicAssert.AreEqual (defaultValue, NWMultiPathService.Disabled, "Default value changed.");
+				Assert.That (NWMultiPathService.Disabled, Is.EqualTo (defaultValue), "Default value changed.");
 				var newValue = NWMultiPathService.Aggregate;
 				parameters.MultipathService = newValue;
-				ClassicAssert.AreEqual (newValue, parameters.MultipathService, "New value was not stored.");
+				Assert.That (parameters.MultipathService, Is.EqualTo (newValue), "New value was not stored.");
 			}
 		}
 
@@ -195,7 +195,7 @@ namespace MonoTouchFixtures.Network {
 		{
 			using (var parameters = new NWParameters ()) {
 				var stack = parameters.ProtocolStack;
-				ClassicAssert.AreNotEqual (IntPtr.Zero, stack.Handle);
+				Assert.That (stack.Handle, Is.Not.EqualTo (IntPtr.Zero));
 			}
 		}
 
@@ -204,9 +204,9 @@ namespace MonoTouchFixtures.Network {
 		{
 			using (var parameters = new NWParameters ()) {
 				var defaultValue = parameters.LocalOnly;
-				ClassicAssert.False (defaultValue, "Default value changed.");
+				Assert.That (defaultValue, Is.False, "Default value changed.");
 				parameters.LocalOnly = true;
-				ClassicAssert.True (parameters.LocalOnly, "New value was not stored.");
+				Assert.That (parameters.LocalOnly, Is.True, "New value was not stored.");
 			}
 		}
 
@@ -215,9 +215,9 @@ namespace MonoTouchFixtures.Network {
 		{
 			using (var parameters = new NWParameters ()) {
 				var defaultValue = parameters.PreferNoProxy;
-				ClassicAssert.False (defaultValue, "Default value changed.");
+				Assert.That (defaultValue, Is.False, "Default value changed.");
 				parameters.PreferNoProxy = true;
-				ClassicAssert.True (parameters.PreferNoProxy, "New value was not stored.");
+				Assert.That (parameters.PreferNoProxy, Is.True, "New value was not stored.");
 			}
 		}
 
@@ -226,9 +226,9 @@ namespace MonoTouchFixtures.Network {
 		{
 			using (var parameters = new NWParameters ()) {
 				var defaultValue = parameters.ExpiredDnsBehavior;
-				ClassicAssert.AreEqual (NWParametersExpiredDnsBehavior.Default, defaultValue, "Default value changed.");
+				Assert.That (defaultValue, Is.EqualTo (NWParametersExpiredDnsBehavior.Default), "Default value changed.");
 				parameters.ExpiredDnsBehavior = NWParametersExpiredDnsBehavior.Allow;
-				ClassicAssert.AreEqual (NWParametersExpiredDnsBehavior.Allow, parameters.ExpiredDnsBehavior, "New value was not stored.");
+				Assert.That (parameters.ExpiredDnsBehavior, Is.EqualTo (NWParametersExpiredDnsBehavior.Allow), "New value was not stored.");
 			}
 		}
 
@@ -238,12 +238,12 @@ namespace MonoTouchFixtures.Network {
 
 			using (var parameters = new NWParameters ()) {
 				var defaultValue = parameters.RequiredInterface;
-				ClassicAssert.IsNull (defaultValue, "Default value changed.");
+				Assert.That (defaultValue, Is.Null, "Default value changed.");
 				// try to set a null value, we should have no issues
 				parameters.RequiredInterface = null;
-				ClassicAssert.IsNull (parameters.RequiredInterface, "Value should still be null.");
+				Assert.That (parameters.RequiredInterface, Is.Null, "Value should still be null.");
 				parameters.RequiredInterface = interfaces [0];
-				ClassicAssert.AreNotEqual (IntPtr.Zero, parameters.RequiredInterface.Handle, "New value was not set.");
+				Assert.That (parameters.RequiredInterface.Handle, Is.Not.EqualTo (IntPtr.Zero), "New value was not set.");
 			}
 		}
 
@@ -252,7 +252,7 @@ namespace MonoTouchFixtures.Network {
 		{
 			using (var parameters = new NWParameters ()) {
 				Assert.Throws<ArgumentNullException> (() => parameters.ProhibitInterface (null), "");
-				ClassicAssert.AreNotEqual (0, interfaces.Count, "No network interfaces found.");
+				Assert.That (interfaces.Count, Is.Not.EqualTo (0), "No network interfaces found.");
 				parameters.ProhibitInterface (interfaces [0]);
 			}
 		}
@@ -262,9 +262,9 @@ namespace MonoTouchFixtures.Network {
 		{
 			using (var parameters = new NWParameters ()) {
 				var defaultValue = parameters.RequiredInterfaceType;
-				ClassicAssert.AreEqual (NWInterfaceType.Other, defaultValue, "Default value changed.");
+				Assert.That (defaultValue, Is.EqualTo (NWInterfaceType.Other), "Default value changed.");
 				parameters.RequiredInterfaceType = NWInterfaceType.Wifi;
-				ClassicAssert.AreEqual (NWInterfaceType.Wifi, parameters.RequiredInterfaceType, "BNe value was not stored.");
+				Assert.That (parameters.RequiredInterfaceType, Is.EqualTo (NWInterfaceType.Wifi), "BNe value was not stored.");
 			}
 		}
 
@@ -275,7 +275,7 @@ namespace MonoTouchFixtures.Network {
 				var types = new List<NWInterfaceType> ();
 				parameters.ProhibitInterfaceType (NWInterfaceType.Wifi);
 				parameters.IterateProhibitedInterfaces ((type) => { types.Add (type); return true; });
-				ClassicAssert.True (types.Contains (NWInterfaceType.Wifi), "Type was not prohibited.");
+				Assert.That (types.Contains (NWInterfaceType.Wifi), Is.True, "Type was not prohibited.");
 			}
 		}
 
@@ -284,9 +284,9 @@ namespace MonoTouchFixtures.Network {
 		{
 			using (var parameters = new NWParameters ()) {
 				var defaultValue = parameters.ReuseLocalAddress;
-				ClassicAssert.False (defaultValue, "Default value changed.");
+				Assert.That (defaultValue, Is.False, "Default value changed.");
 				parameters.ReuseLocalAddress = true;
-				ClassicAssert.True (parameters.ReuseLocalAddress, "New value was not stored.");
+				Assert.That (parameters.ReuseLocalAddress, Is.True, "New value was not stored.");
 			}
 		}
 
@@ -295,9 +295,9 @@ namespace MonoTouchFixtures.Network {
 		{
 			using (var parameters = new NWParameters ()) {
 				var defaultValue = parameters.FastOpenEnabled;
-				ClassicAssert.False (defaultValue, "Defalue value changed.");
+				Assert.That (defaultValue, Is.False, "Defalue value changed.");
 				parameters.FastOpenEnabled = true;
-				ClassicAssert.True (parameters.FastOpenEnabled, "New value was not stored.");
+				Assert.That (parameters.FastOpenEnabled, Is.True, "New value was not stored.");
 			}
 		}
 
@@ -306,9 +306,9 @@ namespace MonoTouchFixtures.Network {
 		{
 			using (var parameters = new NWParameters ()) {
 				var defaultValue = parameters.ServiceClass;
-				ClassicAssert.AreEqual (NWServiceClass.BestEffort, defaultValue, "Default value changed.");
+				Assert.That (defaultValue, Is.EqualTo (NWServiceClass.BestEffort), "Default value changed.");
 				parameters.ServiceClass = NWServiceClass.InteractiveVideo;
-				ClassicAssert.AreEqual (NWServiceClass.InteractiveVideo, parameters.ServiceClass, "New value was not stored.");
+				Assert.That (parameters.ServiceClass, Is.EqualTo (NWServiceClass.InteractiveVideo), "New value was not stored.");
 			}
 		}
 
@@ -319,9 +319,9 @@ namespace MonoTouchFixtures.Network {
 			using (var parameters = NWParameters.CreateUdp ())
 			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				var defaultValue = parameters.LocalEndpoint;
-				ClassicAssert.IsNull (defaultValue, "Default value changed.");
+				Assert.That (defaultValue, Is.Null, "Default value changed.");
 				parameters.LocalEndpoint = endpoint;
-				ClassicAssert.IsNotNull (parameters.LocalEndpoint, "New value was not stored.");
+				Assert.That (parameters.LocalEndpoint, Is.Not.Null, "New value was not stored.");
 			}
 		}
 
@@ -330,9 +330,9 @@ namespace MonoTouchFixtures.Network {
 		{
 			using (var parameters = new NWParameters ()) {
 				var defaultValue = parameters.IncludePeerToPeer;
-				ClassicAssert.False (defaultValue, "Default value changed.");
+				Assert.That (defaultValue, Is.False, "Default value changed.");
 				parameters.IncludePeerToPeer = true;
-				ClassicAssert.True (parameters.IncludePeerToPeer, "New value was not stored.");
+				Assert.That (parameters.IncludePeerToPeer, Is.True, "New value was not stored.");
 			}
 		}
 
@@ -342,9 +342,9 @@ namespace MonoTouchFixtures.Network {
 			TestRuntime.AssertXcodeVersion (11, 0);
 			using (var parameters = new NWParameters ()) {
 				var defaultValue = false;
-				ClassicAssert.False (defaultValue, "Default value changed.");
+				Assert.That (defaultValue, Is.False, "Default value changed.");
 				parameters.ProhibitConstrained = true;
-				ClassicAssert.True (parameters.ProhibitConstrained, "New value was not stored.");
+				Assert.That (parameters.ProhibitConstrained, Is.True, "New value was not stored.");
 			}
 		}
 
@@ -356,7 +356,7 @@ namespace MonoTouchFixtures.Network {
 				Assert.DoesNotThrow (() => {
 					parameters.Attribution = NWParametersAttribution.Developer;
 				});
-				ClassicAssert.AreEqual (NWParametersAttribution.Developer, parameters.Attribution);
+				Assert.That (parameters.Attribution, Is.EqualTo (NWParametersAttribution.Developer));
 			}
 		}
 
@@ -378,7 +378,7 @@ namespace MonoTouchFixtures.Network {
 		{
 			TestRuntime.AssertXcodeVersion (14, 0);
 			using var nwParams = NWParameters.CreateApplicationService ();
-			ClassicAssert.NotNull (nwParams);
+			Assert.That (nwParams, Is.Not.Null);
 		}
 
 		[Test]

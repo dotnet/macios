@@ -366,7 +366,7 @@ namespace Introspection {
 			if (to_confirm_manually.Length > 0) {
 				Console.WriteLine (to_confirm_manually);
 			}
-			ClassicAssert.AreEqual (0, Errors, "{0} potential errors found{1}", Errors, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), "{0} potential errors found{1}", Errors, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
 		}
 
 		[Test]
@@ -535,7 +535,7 @@ namespace Introspection {
 						ReportError ($"{t.Name}: Property `{po.Name}` should NOT have a setter.");
 				}
 			}
-			ClassicAssert.AreEqual (0, Errors, "{0} potential errors found{1}", Errors, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), "{0} potential errors found{1}", Errors, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
 		}
 	}
 }

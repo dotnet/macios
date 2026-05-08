@@ -30,18 +30,18 @@ namespace MonoTouchFixtures.AudioToolbox {
 			};
 			using var aq = new OutputAudioQueue (asbd);
 			AudioQueueBuffer* buffer = null;
-			ClassicAssert.AreEqual (AudioQueueStatus.Ok, aq.AllocateBuffer (5000, 1, out buffer), "AllocateBuffer");
+			Assert.That (aq.AllocateBuffer (5000, 1, out buffer), Is.EqualTo (AudioQueueStatus.Ok), "AllocateBuffer");
 			Assert.Multiple (() => {
-				ClassicAssert.AreEqual (5000, buffer->AudioDataBytesCapacity, "AudioDataBytesCapacity");
-				ClassicAssert.AreNotEqual (IntPtr.Zero, buffer->AudioData, "AudioData");
-				ClassicAssert.AreEqual (0, buffer->AudioDataByteSize, "AudioDataByteSize");
-				ClassicAssert.AreEqual (IntPtr.Zero, buffer->UserData, "UserData");
-				ClassicAssert.AreEqual (1, buffer->PacketDescriptionCapacity, "PacketDescriptionCapacity");
-				ClassicAssert.AreNotEqual (IntPtr.Zero, buffer->IntPtrPacketDescriptions, "IntPtrPacketDescriptions");
-				ClassicAssert.AreEqual (0, buffer->PacketDescriptionCount, "PacketDescriptionCount");
-				ClassicAssert.AreEqual (0, buffer->PacketDescriptions.Length, "PacketDescriptions");
-				ClassicAssert.AreEqual (5000, buffer->AsSpan ().Length, "AsSpan ().Length");
-				ClassicAssert.AreEqual (0, buffer->AsSpanOfValidData ().Length, "AsSpanOfValidData ().Length");
+				Assert.That (buffer->AudioDataBytesCapacity, Is.EqualTo (5000), "AudioDataBytesCapacity");
+				Assert.That (buffer->AudioData, Is.Not.EqualTo (IntPtr.Zero), "AudioData");
+				Assert.That (buffer->AudioDataByteSize, Is.EqualTo (0), "AudioDataByteSize");
+				Assert.That (buffer->UserData, Is.EqualTo (IntPtr.Zero), "UserData");
+				Assert.That (buffer->PacketDescriptionCapacity, Is.EqualTo (1), "PacketDescriptionCapacity");
+				Assert.That (buffer->IntPtrPacketDescriptions, Is.Not.EqualTo (IntPtr.Zero), "IntPtrPacketDescriptions");
+				Assert.That (buffer->PacketDescriptionCount, Is.EqualTo (0), "PacketDescriptionCount");
+				Assert.That (buffer->PacketDescriptions.Length, Is.EqualTo (0), "PacketDescriptions");
+				Assert.That (buffer->AsSpan ().Length, Is.EqualTo (5000), "AsSpan ().Length");
+				Assert.That (buffer->AsSpanOfValidData ().Length, Is.EqualTo (0), "AsSpanOfValidData ().Length");
 
 				buffer->PacketDescriptions = new AudioStreamPacketDescription [] {
 					new AudioStreamPacketDescription () {
@@ -50,15 +50,15 @@ namespace MonoTouchFixtures.AudioToolbox {
 						DataByteSize = 4,
 					},
 				};
-				ClassicAssert.AreEqual (1, buffer->PacketDescriptionCapacity, "PacketDescriptionCapacity#2");
-				ClassicAssert.AreEqual (1, buffer->PacketDescriptionCount, "PacketDescriptionCount#2");
-				ClassicAssert.AreEqual (2, buffer->PacketDescriptions [0].StartOffset, "PacketDescriptions[0].StartOffset");
-				ClassicAssert.AreEqual (3, buffer->PacketDescriptions [0].VariableFramesInPacket, "PacketDescriptions[0].VariableFramesInPacket");
-				ClassicAssert.AreEqual (4, buffer->PacketDescriptions [0].DataByteSize, "PacketDescriptions[0].DataByteSize");
+				Assert.That (buffer->PacketDescriptionCapacity, Is.EqualTo (1), "PacketDescriptionCapacity#2");
+				Assert.That (buffer->PacketDescriptionCount, Is.EqualTo (1), "PacketDescriptionCount#2");
+				Assert.That (buffer->PacketDescriptions [0].StartOffset, Is.EqualTo (2), "PacketDescriptions[0].StartOffset");
+				Assert.That (buffer->PacketDescriptions [0].VariableFramesInPacket, Is.EqualTo (3), "PacketDescriptions[0].VariableFramesInPacket");
+				Assert.That (buffer->PacketDescriptions [0].DataByteSize, Is.EqualTo (4), "PacketDescriptions[0].DataByteSize");
 
 				buffer->PacketDescriptions = new AudioStreamPacketDescription [0];
-				ClassicAssert.AreEqual (1, buffer->PacketDescriptionCapacity, "PacketDescriptionCapacity#3");
-				ClassicAssert.AreEqual (0, buffer->PacketDescriptionCount, "PacketDescriptionCount#3");
+				Assert.That (buffer->PacketDescriptionCapacity, Is.EqualTo (1), "PacketDescriptionCapacity#3");
+				Assert.That (buffer->PacketDescriptionCount, Is.EqualTo (0), "PacketDescriptionCount#3");
 
 				Assert.Throws<ArgumentOutOfRangeException> (() => buffer->PacketDescriptions = new AudioStreamPacketDescription [2], "too many packet descriptions");
 
@@ -66,21 +66,21 @@ namespace MonoTouchFixtures.AudioToolbox {
 				fixed (byte* dataPtr = data)
 					buffer->CopyToAudioData ((IntPtr) dataPtr, data.Length);
 				Assert.That (buffer->AsSpanOfValidData ().ToArray (), Is.EqualTo (data), "CopyToAudioData 1");
-				ClassicAssert.AreEqual (data.Length, buffer->AudioDataByteSize, "CopyToAudioData 1 - AudioDataByteSize");
+				Assert.That (buffer->AudioDataByteSize, Is.EqualTo (data.Length), "CopyToAudioData 1 - AudioDataByteSize");
 				Assert.That (buffer->AsSpan ().Length, Is.EqualTo (5000), "CopyToAudioData 1 - AsSpan");
 				Assert.That (buffer->AsSpan ().Slice (0, data.Length).ToArray (), Is.EqualTo (buffer->AsSpanOfValidData ().ToArray ()), "CopyToAudioData 1 - Sliced AsSpan");
 
 				data = new byte [] { 2, 3, 4, 5, 6 };
 				buffer->CopyToAudioData (data);
 				Assert.That (buffer->AsSpanOfValidData ().ToArray (), Is.EqualTo (data), "CopyToAudioData 2");
-				ClassicAssert.AreEqual (data.Length, buffer->AudioDataByteSize, "CopyToAudioData 2 - AudioDataByteSize");
+				Assert.That (buffer->AudioDataByteSize, Is.EqualTo (data.Length), "CopyToAudioData 2 - AudioDataByteSize");
 				Assert.That (buffer->AsSpan ().Length, Is.EqualTo (5000), "CopyToAudioData 2 - AsSpan");
 				Assert.That (buffer->AsSpan ().Slice (0, data.Length).ToArray (), Is.EqualTo (buffer->AsSpanOfValidData ().ToArray ()), "CopyToAudioData 2 - Sliced AsSpan");
 
 				data = new byte [5000];
 				buffer->CopyToAudioData (data);
 				Assert.That (buffer->AsSpanOfValidData ().ToArray (), Is.EqualTo (data), "CopyToAudioData 3");
-				ClassicAssert.AreEqual (data.Length, buffer->AudioDataByteSize, "CopyToAudioData 3 - AudioDataByteSize");
+				Assert.That (buffer->AudioDataByteSize, Is.EqualTo (data.Length), "CopyToAudioData 3 - AudioDataByteSize");
 				Assert.That (buffer->AsSpan ().Length, Is.EqualTo (5000), "CopyToAudioData 3 - AsSpan");
 				Assert.That (buffer->AsSpan ().Slice (0, data.Length).ToArray (), Is.EqualTo (buffer->AsSpanOfValidData ().ToArray ()), "CopyToAudioData 3 - Sliced AsSpan");
 
@@ -93,14 +93,14 @@ namespace MonoTouchFixtures.AudioToolbox {
 				data = new byte [0];
 				buffer->CopyToAudioData (IntPtr.Zero, 0);
 				Assert.That (buffer->AsSpanOfValidData ().ToArray (), Is.EqualTo (data), "CopyToAudioData 5");
-				ClassicAssert.AreEqual (data.Length, buffer->AudioDataByteSize, "CopyToAudioData 5 - AudioDataByteSize");
+				Assert.That (buffer->AudioDataByteSize, Is.EqualTo (data.Length), "CopyToAudioData 5 - AudioDataByteSize");
 				Assert.That (buffer->AsSpan ().Length, Is.EqualTo (5000), "CopyToAudioData 5 - AsSpan");
 				Assert.That (buffer->AsSpan ().Slice (0, data.Length).ToArray (), Is.EqualTo (buffer->AsSpanOfValidData ().ToArray ()), "CopyToAudioData 5 - Sliced AsSpan");
 
 				data = new byte [0];
 				buffer->CopyToAudioData (data);
 				Assert.That (buffer->AsSpanOfValidData ().ToArray (), Is.EqualTo (data), "CopyToAudioData 6");
-				ClassicAssert.AreEqual (data.Length, buffer->AudioDataByteSize, "CopyToAudioData 6 - AudioDataByteSize");
+				Assert.That (buffer->AudioDataByteSize, Is.EqualTo (data.Length), "CopyToAudioData 6 - AudioDataByteSize");
 				Assert.That (buffer->AsSpan ().Length, Is.EqualTo (5000), "CopyToAudioData 6 - AsSpan");
 				Assert.That (buffer->AsSpan ().Slice (0, data.Length).ToArray (), Is.EqualTo (buffer->AsSpanOfValidData ().ToArray ()), "CopyToAudioData 6 - Sliced AsSpan");
 

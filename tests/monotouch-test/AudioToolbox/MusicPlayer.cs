@@ -19,14 +19,14 @@ namespace MonoTouchFixtures.AudioToolbox {
 		public void Defaults ()
 		{
 			using (var player = new MusicPlayer ()) {
-				ClassicAssert.IsFalse (player.IsPlaying, "IsPlaying");
-				ClassicAssert.AreEqual (0, player.Time, "Time");
-				ClassicAssert.AreEqual (1, player.PlayRateScalar, "PlayRateScalar");
-				ClassicAssert.AreEqual (MusicPlayerStatus.InvalidPlayerState, player.GetHostTimeForBeats (0, out var hosttime), "GetHostTimeForBeats");
-				ClassicAssert.AreEqual (0, hosttime, "GetHostTimeForBeats - rv");
-				ClassicAssert.AreEqual (MusicPlayerStatus.InvalidPlayerState, player.GetBeatsForHostTime (0, out var beats), "GetBeatsForHostTime");
-				ClassicAssert.AreEqual (0, beats, "GetBeatsForHostTime - rv");
-				ClassicAssert.IsNull (player.MusicSequence, "MusicSequence");
+				Assert.That (player.IsPlaying, Is.False, "IsPlaying");
+				Assert.That (player.Time, Is.EqualTo (0), "Time");
+				Assert.That (player.PlayRateScalar, Is.EqualTo (1), "PlayRateScalar");
+				Assert.That (player.GetHostTimeForBeats (0, out var hosttime), Is.EqualTo (MusicPlayerStatus.InvalidPlayerState), "GetHostTimeForBeats");
+				Assert.That (hosttime, Is.EqualTo (0), "GetHostTimeForBeats - rv");
+				Assert.That (player.GetBeatsForHostTime (0, out var beats), Is.EqualTo (MusicPlayerStatus.InvalidPlayerState), "GetBeatsForHostTime");
+				Assert.That (beats, Is.EqualTo (0), "GetBeatsForHostTime - rv");
+				Assert.That (player.MusicSequence, Is.Null, "MusicSequence");
 			}
 		}
 
@@ -35,13 +35,13 @@ namespace MonoTouchFixtures.AudioToolbox {
 		{
 			using (var player = new MusicPlayer ()) {
 				using (var ms = new MusicSequence ()) {
-					ClassicAssert.IsNull (player.MusicSequence, "MusicSequence A");
+					Assert.That (player.MusicSequence, Is.Null, "MusicSequence A");
 					player.MusicSequence = null;
-					ClassicAssert.IsNull (player.MusicSequence, "MusicSequence B");
+					Assert.That (player.MusicSequence, Is.Null, "MusicSequence B");
 					player.MusicSequence = ms;
-					ClassicAssert.AreSame (ms, player.MusicSequence, "MusicSequence C");
+					Assert.That (player.MusicSequence, Is.SameAs (ms), "MusicSequence C");
 					player.MusicSequence = null;
-					ClassicAssert.IsNull (player.MusicSequence, "MusicSequence D");
+					Assert.That (player.MusicSequence, Is.Null, "MusicSequence D");
 				}
 			}
 		}
@@ -50,9 +50,9 @@ namespace MonoTouchFixtures.AudioToolbox {
 		public void PlayRateScalarTest ()
 		{
 			using (var player = new MusicPlayer ()) {
-				ClassicAssert.AreEqual (1, player.PlayRateScalar, "PlayRateScalar A");
+				Assert.That (player.PlayRateScalar, Is.EqualTo (1), "PlayRateScalar A");
 				player.PlayRateScalar = 2;
-				ClassicAssert.AreEqual (2, player.PlayRateScalar, "PlayRateScalar B");
+				Assert.That (player.PlayRateScalar, Is.EqualTo (2), "PlayRateScalar B");
 			}
 		}
 
@@ -60,14 +60,14 @@ namespace MonoTouchFixtures.AudioToolbox {
 		public void TimeTest ()
 		{
 			using (var player = new MusicPlayer ()) {
-				ClassicAssert.AreEqual (0, player.Time, "Time A");
+				Assert.That (player.Time, Is.EqualTo (0), "Time A");
 				player.Time = 1;
-				ClassicAssert.AreEqual (0, player.Time, "Time B");
-				ClassicAssert.AreEqual (MusicPlayerStatus.Success, player.GetTime (out var time), "GetTime A");
-				ClassicAssert.AreEqual (0, time, "GetTime B");
-				ClassicAssert.AreEqual (MusicPlayerStatus.Success, player.SetTime (1), "SetTime A");
-				ClassicAssert.AreEqual (MusicPlayerStatus.Success, player.GetTime (out time), "GetTime C");
-				ClassicAssert.AreEqual (0, time, "GetTime D");
+				Assert.That (player.Time, Is.EqualTo (0), "Time B");
+				Assert.That (player.GetTime (out var time), Is.EqualTo (MusicPlayerStatus.Success), "GetTime A");
+				Assert.That (time, Is.EqualTo (0), "GetTime B");
+				Assert.That (player.SetTime (1), Is.EqualTo (MusicPlayerStatus.Success), "SetTime A");
+				Assert.That (player.GetTime (out time), Is.EqualTo (MusicPlayerStatus.Success), "GetTime C");
+				Assert.That (time, Is.EqualTo (0), "GetTime D");
 			}
 		}
 
@@ -75,19 +75,19 @@ namespace MonoTouchFixtures.AudioToolbox {
 		public void CreateTest ()
 		{
 			using var player = MusicPlayer.Create (out var status);
-			ClassicAssert.NotNull (player, "Got a player");
-			ClassicAssert.AreEqual (MusicPlayerStatus.Success, status, "Status");
+			Assert.That (player, Is.Not.Null, "Got a player");
+			Assert.That (status, Is.EqualTo (MusicPlayerStatus.Success), "Status");
 		}
 
 		[Test]
 		public void StartStopPreroll ()
 		{
 			using var player = MusicPlayer.Create (out var status);
-			ClassicAssert.NotNull (player, "Got a player");
-			ClassicAssert.AreEqual (MusicPlayerStatus.Success, status, "Status");
-			ClassicAssert.AreEqual (MusicPlayerStatus.NoSequence, player.Preroll (), "Preroll");
-			ClassicAssert.AreEqual (MusicPlayerStatus.NoSequence, player.Start (), "Start");
-			ClassicAssert.AreEqual (MusicPlayerStatus.NoSequence, player.Stop (), "Stop");
+			Assert.That (player, Is.Not.Null, "Got a player");
+			Assert.That (status, Is.EqualTo (MusicPlayerStatus.Success), "Status");
+			Assert.That (player.Preroll (), Is.EqualTo (MusicPlayerStatus.NoSequence), "Preroll");
+			Assert.That (player.Start (), Is.EqualTo (MusicPlayerStatus.NoSequence), "Start");
+			Assert.That (player.Stop (), Is.EqualTo (MusicPlayerStatus.NoSequence), "Stop");
 		}
 	}
 }

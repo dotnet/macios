@@ -200,7 +200,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			ClassicAssert.AreEqual (0, Errors, "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_fields));
+			Assert.That (Errors, Is.EqualTo (0), "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_fields));
 		}
 
 		[Test]
@@ -225,7 +225,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			ClassicAssert.AreEqual (0, Errors, "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_fields));
+			Assert.That (Errors, Is.EqualTo (0), "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_fields));
 		}
 
 		[Test]
@@ -264,7 +264,7 @@ namespace Introspection {
 				Dlfcn.dlclose (lib);
 				n++;
 			}
-			ClassicAssert.AreEqual (0, Errors, "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_fields));
+			Assert.That (Errors, Is.EqualTo (0), "{0} errors found in {1} fields validated: {2}", Errors, n, string.Join (", ", failed_fields));
 		}
 	}
 }

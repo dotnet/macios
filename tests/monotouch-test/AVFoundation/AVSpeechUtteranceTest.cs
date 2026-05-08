@@ -14,14 +14,14 @@ namespace MonoTouchFixtures.AVFoundation {
 		public void StringCtor ()
 		{
 			using var utterance = new AVSpeechUtterance ("hello world");
-			ClassicAssert.AreEqual (utterance.SpeechString, "hello world", "SpeechString");
+			Assert.That ("hello world", Is.EqualTo (utterance.SpeechString), "SpeechString");
 		}
 
 		[Test]
 		public void StringOptionCtor_PlainText ()
 		{
 			using var utterance = new AVSpeechUtterance ("hello world", AVSpeechUtteranceInitializationOption.PlainText);
-			ClassicAssert.AreEqual (utterance.SpeechString, "hello world", "SpeechString");
+			Assert.That ("hello world", Is.EqualTo (utterance.SpeechString), "SpeechString");
 		}
 
 		[Test]
@@ -31,7 +31,7 @@ namespace MonoTouchFixtures.AVFoundation {
 
 			var ssml = $"""<speak>Hello World</speak>""";
 			using var utterance = new AVSpeechUtterance (ssml, AVSpeechUtteranceInitializationOption.SsmlRepresentation);
-			ClassicAssert.AreEqual (utterance.SpeechString, "Hello World", "SpeechString");
+			Assert.That ("Hello World", Is.EqualTo (utterance.SpeechString), "SpeechString");
 		}
 	}
 }

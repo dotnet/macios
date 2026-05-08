@@ -54,7 +54,7 @@ namespace MonoTouchFixtures.Photos {
 
 			// Actual Test
 			var obj = collection [0];
-			ClassicAssert.IsNotNull (obj);
+			Assert.That (obj, Is.Not.Null);
 		}
 
 		[Test]

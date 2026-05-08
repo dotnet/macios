@@ -47,10 +47,10 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("Request timed out.");
 			}
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
-			ClassicAssert.IsNull (ex, $"Exception: {ex}");
-			ClassicAssert.IsTrue (noContentEncoding, "Content-Encoding header should be removed for decompressed content");
-			ClassicAssert.IsTrue (noContentLength, "Content-Length header should be removed for decompressed content");
-			ClassicAssert.IsTrue (body.Contains ("\"gzipped\"", StringComparison.OrdinalIgnoreCase), "Response body should contain decompressed gzip data");
+			Assert.That (ex, Is.Null, $"Exception: {ex}");
+			Assert.That (noContentEncoding, Is.True, "Content-Encoding header should be removed for decompressed content");
+			Assert.That (noContentLength, Is.True, "Content-Length header should be removed for decompressed content");
+			Assert.That (body.Contains ("\"gzipped\"", StringComparison.OrdinalIgnoreCase), Is.True, "Response body should contain decompressed gzip data");
 		}
 
 		// https://github.com/dotnet/macios/issues/23958
@@ -86,11 +86,11 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("Request timed out.");
 			}
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
-			ClassicAssert.IsNull (ex, $"Exception: {ex}");
-			ClassicAssert.IsTrue (noContentEncoding, "Content-Encoding should not be present for non-compressed content");
-			ClassicAssert.IsNotNull (contentLength, "Content-Length header should be present for non-compressed content");
-			ClassicAssert.IsTrue (contentLength > 0, "Content-Length should be greater than zero");
-			ClassicAssert.IsTrue (body.Length > 0, "Response body should not be empty");
+			Assert.That (ex, Is.Null, $"Exception: {ex}");
+			Assert.That (noContentEncoding, Is.True, "Content-Encoding should not be present for non-compressed content");
+			Assert.That (contentLength, Is.Not.Null, "Content-Length header should be present for non-compressed content");
+			Assert.That (contentLength > 0, Is.True, "Content-Length should be greater than zero");
+			Assert.That (body.Length > 0, Is.True, "Response body should not be empty");
 		}
 
 		// https://github.com/dotnet/macios/issues/23958
@@ -125,10 +125,10 @@ namespace MonoTests.System.Net.Http {
 					Assert.Inconclusive ("Request timed out.");
 				}
 				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				ClassicAssert.IsNull (ex, $"Exception: {ex}");
-				ClassicAssert.IsTrue (hasContentEncoding, "Content-Encoding header should be preserved when KeepHeadersAfterDecompression is enabled");
-				ClassicAssert.IsTrue (hasContentLength, "Content-Length header should be preserved when KeepHeadersAfterDecompression is enabled");
-				ClassicAssert.IsTrue (body.Contains ("\"gzipped\"", StringComparison.OrdinalIgnoreCase), "Response body should contain decompressed gzip data");
+				Assert.That (ex, Is.Null, $"Exception: {ex}");
+				Assert.That (hasContentEncoding, Is.True, "Content-Encoding header should be preserved when KeepHeadersAfterDecompression is enabled");
+				Assert.That (hasContentLength, Is.True, "Content-Length header should be preserved when KeepHeadersAfterDecompression is enabled");
+				Assert.That (body.Contains ("\"gzipped\"", StringComparison.OrdinalIgnoreCase), Is.True, "Response body should contain decompressed gzip data");
 			} finally {
 				AppContext.SetSwitch ("Foundation.NSUrlSessionHandler.KeepHeadersAfterDecompression", false);
 			}
@@ -145,8 +145,8 @@ namespace MonoTests.System.Net.Http {
 				using (var handler = new NSUrlSessionHandler (NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration ("test-id"))) {
 					using (var client = new HttpClient (handler)) {
 						var response = await client.GetByteArrayAsync (NetworkResources.MicrosoftUrl);
-						ClassicAssert.IsNotNull (response, "First request response");
-						ClassicAssert.IsTrue (response.Length > 0, "First request response length");
+						Assert.That (response, Is.Not.Null, "First request response");
+						Assert.That (response.Length > 0, Is.True, "First request response length");
 						firstRequestSucceeded = true;
 					}
 				}
@@ -159,15 +159,15 @@ namespace MonoTests.System.Net.Http {
 
 			IgnoreIfExceptionDueToBackgroundServiceInUseByAnotherProcess (ex);
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
-			ClassicAssert.IsNull (ex, "First request exception");
+			Assert.That (ex, Is.Null, "First request exception");
 
 			// Second request with new handler using same background session ID - should not timeout
 			done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				using (var handler = new NSUrlSessionHandler (NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration ("test-id"))) {
 					using (var client = new HttpClient (handler)) {
 						var response = await client.GetByteArrayAsync (NetworkResources.MicrosoftUrl);
-						ClassicAssert.IsNotNull (response, "Second request response");
-						ClassicAssert.IsTrue (response.Length > 0, "Second request response length");
+						Assert.That (response, Is.Not.Null, "Second request response");
+						Assert.That (response.Length > 0, Is.True, "Second request response length");
 					}
 				}
 			}, out ex);
@@ -197,7 +197,7 @@ namespace MonoTests.System.Net.Http {
 				// * Detect this scenario here, and just mark the test as inconclusive. The test does something somewhat unusual (create two background sessions with the same identifier in quick succession), so this seems like the best approach for now.
 				Assert.Inconclusive ("The previous background session wasn't fully invalidated before we tried to create a new background session (with the same identifier)");
 			}
-			ClassicAssert.IsNull (ex, "Second request exception");
+			Assert.That (ex, Is.Null, "Second request exception");
 		}
 
 		void IgnoreIfExceptionDueToBackgroundServiceInUseByAnotherProcess (Exception? e)

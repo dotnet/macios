@@ -1,6 +1,5 @@
 using System.Text;
 using System.Text.RegularExpressions;
-using NUnit.Framework.Legacy;
 
 namespace Xamarin.Tests {
 	public delegate void Action ();
@@ -12,7 +11,7 @@ namespace Xamarin.Tests {
 				action ();
 				throw new AssertionException (string.Format ("Expected {0}, but no exception was thrown. {1}.", typeof (T).FullName, message));
 			} catch (T ex) {
-				ClassicAssert.AreEqual (expectedExceptionMessage, ex.Message, message);
+				Assert.That (ex.Message, Is.EqualTo (expectedExceptionMessage).Within (message));
 			}
 		}
 

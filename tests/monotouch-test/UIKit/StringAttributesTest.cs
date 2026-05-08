@@ -51,10 +51,10 @@ namespace MonoTouchFixtures.UIKit {
 			Assert.That (ps.RetainCount, Is.EqualTo ((nuint) 2), "ParagraphStyle-set");
 
 			for (int i = 0; i < 16; i++) {
-				ClassicAssert.NotNull (sa.BackgroundColor, "BackgroundColor-get");
-				ClassicAssert.NotNull (sa.ForegroundColor, "ForegroundColor-get");
-				ClassicAssert.NotNull (sa.Font, "Font-get");
-				ClassicAssert.NotNull (sa.ParagraphStyle, "ParagraphStyle-get");
+				Assert.That (sa.BackgroundColor, Is.Not.Null, "BackgroundColor-get");
+				Assert.That (sa.ForegroundColor, Is.Not.Null, "ForegroundColor-get");
+				Assert.That (sa.Font, Is.Not.Null, "Font-get");
+				Assert.That (sa.ParagraphStyle, Is.Not.Null, "ParagraphStyle-get");
 			}
 
 			Assert.That (sa.BackgroundColor.RetainCount, Is.EqualTo ((nuint) 3), "BackgroundColor");
@@ -97,10 +97,10 @@ namespace MonoTouchFixtures.UIKit {
 			Assert.That (ta.RetainCount, Is.EqualTo ((nuint) 2), "TextAttachment-set");
 
 			for (int i = 0; i < 16; i++) {
-				ClassicAssert.NotNull (sa.UnderlineColor, "UnderlineColor-get");
-				ClassicAssert.NotNull (sa.StrikethroughColor, "StrikethroughColor-get");
-				ClassicAssert.NotNull (sa.Link, "Link-get");
-				ClassicAssert.NotNull (sa.TextAttachment, "TextAttachment-get");
+				Assert.That (sa.UnderlineColor, Is.Not.Null, "UnderlineColor-get");
+				Assert.That (sa.StrikethroughColor, Is.Not.Null, "StrikethroughColor-get");
+				Assert.That (sa.Link, Is.Not.Null, "Link-get");
+				Assert.That (sa.TextAttachment, Is.Not.Null, "TextAttachment-get");
 			}
 
 			Assert.That (sa.UnderlineColor.RetainCount, Is.EqualTo ((nuint) 3), "UnderlineColor");
@@ -122,14 +122,14 @@ namespace MonoTouchFixtures.UIKit {
 			// This test proves that the bug is fixed
 
 			using (var nb = new UINavigationBar ()) {
-				ClassicAssert.Null (nb.TitleTextAttributes, "TitleTextAttributes should be null");
+				Assert.That (nb.TitleTextAttributes, Is.Null, "TitleTextAttributes should be null");
 				nb.TitleTextAttributes = new UIStringAttributes { ForegroundColor = UIColor.Green };
-				ClassicAssert.AreSame (UIColor.Green, nb.TitleTextAttributes.ForegroundColor, "TitleTextAttributes.ForegroundColor should match");
+				Assert.That (nb.TitleTextAttributes.ForegroundColor, Is.SameAs (UIColor.Green), "TitleTextAttributes.ForegroundColor should match");
 
 				var titleAttribtues = nb.TitleTextAttributes; // we now get a mutable dictionary for this DictionaryContainer
 				titleAttribtues.ForegroundColor = UIColor.Red; // this used to throw unrecognized selector before fixing bug 28158
 				nb.TitleTextAttributes = titleAttribtues;
-				ClassicAssert.AreSame (UIColor.Red, nb.TitleTextAttributes.ForegroundColor, "TitleTextAttributes.ForegroundColor should match");
+				Assert.That (nb.TitleTextAttributes.ForegroundColor, Is.SameAs (UIColor.Red), "TitleTextAttributes.ForegroundColor should match");
 			}
 		}
 

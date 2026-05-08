@@ -41,24 +41,24 @@ namespace MonoTouchFixtures.AudioToolbox {
 			Assert.That (track.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 			Assert.That (track.Sequence, Is.Not.Null, "Sequence");
 
-			ClassicAssert.IsFalse (track.MuteStatus, "MuteStatus");
+			Assert.That (track.MuteStatus, Is.False, "MuteStatus");
 			track.MuteStatus = true;
-			ClassicAssert.IsTrue (track.MuteStatus, "MuteStatus B");
+			Assert.That (track.MuteStatus, Is.True, "MuteStatus B");
 			track.MuteStatus = false;
-			ClassicAssert.IsFalse (track.MuteStatus, "MuteStatus C");
+			Assert.That (track.MuteStatus, Is.False, "MuteStatus C");
 
-			ClassicAssert.IsFalse (track.SoloStatus, "SoloStatus");
+			Assert.That (track.SoloStatus, Is.False, "SoloStatus");
 			track.SoloStatus = true;
-			ClassicAssert.IsTrue (track.SoloStatus, "SoloStatus B");
+			Assert.That (track.SoloStatus, Is.True, "SoloStatus B");
 			track.SoloStatus = false;
-			ClassicAssert.IsFalse (track.SoloStatus, "SoloStatus C");
+			Assert.That (track.SoloStatus, Is.False, "SoloStatus C");
 
-			ClassicAssert.AreEqual (0.0f, track.TrackLength, "TrackLength");
+			Assert.That (track.TrackLength, Is.EqualTo (0.0f), "TrackLength");
 			var originalTrackLength = track.TrackLength;
 			track.TrackLength = 1.32f;
-			ClassicAssert.AreEqual (1.32f, track.TrackLength, "TrackLength B");
+			Assert.That (track.TrackLength, Is.EqualTo (1.32f), "TrackLength B");
 			track.TrackLength = originalTrackLength;
-			ClassicAssert.AreEqual (0.0f, track.TrackLength, "TrackLength C");
+			Assert.That (track.TrackLength, Is.EqualTo (0.0f), "TrackLength C");
 		}
 
 		[Test]
@@ -72,7 +72,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 					track.SetDestMidiEndpoint (endpoint);
 					MidiEndpoint outEnpoint;
 					var status = track.GetDestMidiEndpoint (out outEnpoint);
-					ClassicAssert.AreEqual (endpoint.Handle, outEnpoint.Handle, "Track endpoint.");
+					Assert.That (outEnpoint.Handle, Is.EqualTo (endpoint.Handle), "Track endpoint.");
 				}
 			}
 		}

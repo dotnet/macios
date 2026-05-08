@@ -17,11 +17,11 @@ namespace Xamarin.Mac.Tests {
 			NSString key = new NSString ("MyKey");
 			c.AddAnimation (a, key);
 			CAPropertyAnimation cur = (CAPropertyAnimation) c.GetAnimation (key);
-			ClassicAssert.IsNotNull (cur);
-			ClassicAssert.AreEqual (cur.KeyPath, "hidden");
+			Assert.That (cur, Is.Not.Null);
+			Assert.That ("hidden", Is.EqualTo (cur.KeyPath));
 			c.RemoveAnimation (key);
 			cur = (CAPropertyAnimation) c.GetAnimation (key);
-			ClassicAssert.IsNull (cur);
+			Assert.That (cur, Is.Null);
 		}
 
 		[Test]

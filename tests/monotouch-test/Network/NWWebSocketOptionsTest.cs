@@ -29,7 +29,7 @@ namespace MonoTouchFixtures.Network {
 		{
 			Assert.DoesNotThrow (() => {
 				using (var otherOptions = new NWWebSocketOptions (NWWebSocketVersion.Invalid))
-					ClassicAssert.AreNotEqual (IntPtr.Zero, otherOptions.Handle);
+					Assert.That (otherOptions.Handle, Is.Not.EqualTo (IntPtr.Zero));
 			});
 		}
 
@@ -53,27 +53,27 @@ namespace MonoTouchFixtures.Network {
 		public void TestAutoReplyPing ()
 		{
 			var defaultValue = options.AutoReplyPing;
-			ClassicAssert.IsFalse (defaultValue, "defaultValue");
+			Assert.That (defaultValue, Is.False, "defaultValue");
 			options.AutoReplyPing = true;
-			ClassicAssert.IsTrue (options.AutoReplyPing, "new value");
+			Assert.That (options.AutoReplyPing, Is.True, "new value");
 		}
 
 		[Test]
 		public void TestMaxMessageSize ()
 		{
 			var defaultValue = options.MaximumMessageSize;
-			ClassicAssert.AreEqual (defaultValue, (nuint) 0, "defaultValue");
+			Assert.That ((nuint) 0, Is.EqualTo (defaultValue), "defaultValue");
 			nuint newValue = 40;
 			options.MaximumMessageSize = newValue;
-			ClassicAssert.AreEqual (newValue, options.MaximumMessageSize, "new value");
+			Assert.That (options.MaximumMessageSize, Is.EqualTo (newValue), "new value");
 		}
 
 		[Test]
 		public void TestSkipHandShake ()
 		{
-			ClassicAssert.IsFalse (options.SkipHandShake, "defaultValue");
+			Assert.That (options.SkipHandShake, Is.False, "defaultValue");
 			options.SkipHandShake = true;
-			ClassicAssert.IsTrue (options.SkipHandShake, "new value");
+			Assert.That (options.SkipHandShake, Is.True, "new value");
 		}
 
 		[Test]

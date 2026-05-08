@@ -9,10 +9,10 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSWorkspaceConstantTests ()
 		{
-			ClassicAssert.IsNotNull (NSWorkspace.LaunchConfigurationAppleEvent);
-			ClassicAssert.IsNotNull (NSWorkspace.LaunchConfigurationArguments);
-			ClassicAssert.IsNotNull (NSWorkspace.LaunchConfigurationEnvironment);
-			ClassicAssert.IsNotNull (NSWorkspace.LaunchConfigurationArchitecture);
+			Assert.That (NSWorkspace.LaunchConfigurationAppleEvent, Is.Not.Null);
+			Assert.That (NSWorkspace.LaunchConfigurationArguments, Is.Not.Null);
+			Assert.That (NSWorkspace.LaunchConfigurationEnvironment, Is.Not.Null);
+			Assert.That (NSWorkspace.LaunchConfigurationArchitecture, Is.Not.Null);
 		}
 
 		[Test]

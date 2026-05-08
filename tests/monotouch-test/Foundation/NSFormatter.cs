@@ -21,7 +21,7 @@ namespace apitest {
 		{
 			var str = formatter.StringFor (NSNumber.FromFloat (0.12f));
 
-			ClassicAssert.AreEqual (str, "$0.12");
+			Assert.That ("$0.12", Is.EqualTo (str));
 		}
 
 		[Test]
@@ -29,7 +29,7 @@ namespace apitest {
 		{
 			var str = formatter.GetAttributedString (NSNumber.FromFloat (3.21f), new NSStringAttributes () { Font = NSFont.SystemFontOfSize (8) });
 
-			ClassicAssert.AreEqual (str.Value, "$3.21");
+			Assert.That ("$3.21", Is.EqualTo (str.Value));
 		}
 
 		[Test]
@@ -37,7 +37,7 @@ namespace apitest {
 		{
 			var str = formatter.EditingStringFor (NSNumber.FromInt32 (14));
 
-			ClassicAssert.AreEqual (str, "$14.00");
+			Assert.That ("$14.00", Is.EqualTo (str));
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace apitest {
 			formatter.PartialStringValidationEnabled = true;
 			var valid = formatter.IsPartialStringValid ("valid string", out newstr, out error);
 
-			ClassicAssert.IsTrue (valid);
+			Assert.That (valid, Is.True);
 		}
 	}
 }

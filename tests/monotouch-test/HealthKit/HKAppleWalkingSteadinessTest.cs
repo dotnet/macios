@@ -24,18 +24,18 @@ namespace MonoTouchFixtures.HealthKit {
 		public void TryGetClassificationTest ()
 		{
 			var max = HKAppleWalkingSteadiness.GetMaximumQuantity (HKAppleWalkingSteadinessClassification.Ok);
-			ClassicAssert.True (HKAppleWalkingSteadiness.TryGetClassification (max, out var classification, out var error));
-			ClassicAssert.Null (error, "error");
-			ClassicAssert.AreEqual (classification, HKAppleWalkingSteadinessClassification.Ok, "classification");
+			Assert.That (HKAppleWalkingSteadiness.TryGetClassification (max, out var classification, out var error), Is.True);
+			Assert.That (error, Is.Null, "error");
+			Assert.That (HKAppleWalkingSteadinessClassification.Ok, Is.EqualTo (classification), "classification");
 		}
 
 		[Test]
 		public void GetMinimumQuantityTest ()
-			=> ClassicAssert.NotNull (HKAppleWalkingSteadiness.GetMinimumQuantity (HKAppleWalkingSteadinessClassification.Ok));
+			=> Assert.That (HKAppleWalkingSteadiness.GetMinimumQuantity (HKAppleWalkingSteadinessClassification.Ok), Is.Not.Null);
 
 		[Test]
 		public void GetMaximumQuantityTest ()
-			=> ClassicAssert.NotNull (HKAppleWalkingSteadiness.GetMaximumQuantity (HKAppleWalkingSteadinessClassification.Ok));
+			=> Assert.That (HKAppleWalkingSteadiness.GetMaximumQuantity (HKAppleWalkingSteadinessClassification.Ok), Is.Not.Null);
 	}
 }
 

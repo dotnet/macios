@@ -31,16 +31,16 @@ namespace MonoTouchFixtures.Foundation {
 
 						store [key] = value;
 						if (expectNull) {
-							ClassicAssert.Null (store [key], "key 1");
+							Assert.That (store [key], Is.Null, "key 1");
 						} else {
-							ClassicAssert.AreEqual (value, store [key], "key 1");
+							Assert.That (store [key], Is.EqualTo (value), "key 1");
 						}
 
 						store [(string) key] = value;
 						if (expectNull) {
-							ClassicAssert.Null (store [key], "key 2");
+							Assert.That (store [key], Is.Null, "key 2");
 						} else {
-							ClassicAssert.AreEqual (value, store [key], "key 2");
+							Assert.That (store [key], Is.EqualTo (value), "key 2");
 						}
 					}
 				}

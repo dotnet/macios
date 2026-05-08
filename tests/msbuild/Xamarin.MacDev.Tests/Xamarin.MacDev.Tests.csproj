@@ -8,9 +8,6 @@
     <AssemblyOriginatorKeyFile>../../../product.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Using Include="NUnit.Framework.Legacy" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="NUnit" Version="$(NUnitPackageVersion)" />
     <PackageReference Include="NUnit3TestAdapter" Version="$(NUnit3TestAdapterPackageVersion)" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNETTestSdkPackageVersion)" />

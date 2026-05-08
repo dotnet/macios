@@ -24,11 +24,11 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (var rc = new UIRefreshControl ())
 			using (var tvc = new UITableViewController ()) {
-				ClassicAssert.Null (tvc.RefreshControl, "default");
+				Assert.That (tvc.RefreshControl, Is.Null, "default");
 				tvc.RefreshControl = rc;
-				ClassicAssert.AreSame (tvc.RefreshControl, rc, "same");
+				Assert.That (rc, Is.SameAs (tvc.RefreshControl), "same");
 				tvc.RefreshControl = null;
-				ClassicAssert.Null (tvc.RefreshControl, "nullable");
+				Assert.That (tvc.RefreshControl, Is.Null, "nullable");
 			}
 		}
 #endif // !__TVOS__

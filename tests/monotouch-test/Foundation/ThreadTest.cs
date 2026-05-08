@@ -19,15 +19,15 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void MainThread ()
 		{
-			ClassicAssert.True (NSThread.IsMain, "IsMain");
-			ClassicAssert.True (NSThread.MainThread.IsMainThread, "IsMainThread");
+			Assert.That (NSThread.IsMain, Is.True, "IsMain");
+			Assert.That (NSThread.MainThread.IsMainThread, Is.True, "IsMainThread");
 		}
 
 		[Test]
 		public void GetEntryAssemblyReturnsOk ()
 		{
-			ClassicAssert.IsNotNull (Assembly.GetEntryAssembly ());
-			ClassicAssert.IsTrue (NSThread.IsMain);
+			Assert.That (Assembly.GetEntryAssembly (), Is.Not.Null);
+			Assert.That (NSThread.IsMain, Is.True);
 			int rv = -1;
 			var t = new Thread (() => {
 				if (NSThread.IsMain)
@@ -41,7 +41,7 @@ namespace MonoTouchFixtures.Foundation {
 			};
 			t.Start ();
 			t.Join ();
-			ClassicAssert.AreEqual (0, rv);
+			Assert.That (rv, Is.EqualTo (0));
 		}
 
 		[Test]
@@ -50,7 +50,7 @@ namespace MonoTouchFixtures.Foundation {
 			var obj = new InitWithDataObject ();
 			var thread = new NSThread (obj, new Selector ("start:"), null);
 			thread.Start ();
-			ClassicAssert.IsTrue (obj.StartedEvent.WaitOne (TimeSpan.FromSeconds (5)), "thread start");
+			Assert.That (obj.StartedEvent.WaitOne (TimeSpan.FromSeconds (5)), Is.True, "thread start");
 			GC.Collect ();
 		}
 

@@ -26,20 +26,20 @@ namespace MonoTouchFixtures.MediaPlayer {
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 12, 2, throwIfOtherPlatform: false);
 
 			MPRemoteCommandCenter shared = MPRemoteCommandCenter.Shared;
-			ClassicAssert.NotNull (shared.BookmarkCommand, "BookmarkCommand");
-			ClassicAssert.NotNull (shared.ChangePlaybackRateCommand, "ChangePlaybackRateCommand");
-			ClassicAssert.NotNull (shared.DislikeCommand, "DislikeCommand");
-			ClassicAssert.NotNull (shared.LikeCommand, "LikeCommand");
-			ClassicAssert.NotNull (shared.NextTrackCommand, "NextTrackCommand");
-			ClassicAssert.NotNull (shared.PauseCommand, "PauseCommand");
-			ClassicAssert.NotNull (shared.PlayCommand, "PlayCommand");
-			ClassicAssert.NotNull (shared.PreviousTrackCommand, "PreviousTrackCommand");
-			ClassicAssert.NotNull (shared.SeekBackwardCommand, "SeekBackwardCommand");
-			ClassicAssert.NotNull (shared.SeekForwardCommand, "SeekForwardCommand");
-			ClassicAssert.NotNull (shared.SkipBackwardCommand, "SkipBackwardCommand");
-			ClassicAssert.NotNull (shared.SkipForwardCommand, "SkipForwardCommand");
-			ClassicAssert.NotNull (shared.StopCommand, "StopCommand");
-			ClassicAssert.NotNull (shared.TogglePlayPauseCommand, "TogglePlayPauseCommand");
+			Assert.That (shared.BookmarkCommand, Is.Not.Null, "BookmarkCommand");
+			Assert.That (shared.ChangePlaybackRateCommand, Is.Not.Null, "ChangePlaybackRateCommand");
+			Assert.That (shared.DislikeCommand, Is.Not.Null, "DislikeCommand");
+			Assert.That (shared.LikeCommand, Is.Not.Null, "LikeCommand");
+			Assert.That (shared.NextTrackCommand, Is.Not.Null, "NextTrackCommand");
+			Assert.That (shared.PauseCommand, Is.Not.Null, "PauseCommand");
+			Assert.That (shared.PlayCommand, Is.Not.Null, "PlayCommand");
+			Assert.That (shared.PreviousTrackCommand, Is.Not.Null, "PreviousTrackCommand");
+			Assert.That (shared.SeekBackwardCommand, Is.Not.Null, "SeekBackwardCommand");
+			Assert.That (shared.SeekForwardCommand, Is.Not.Null, "SeekForwardCommand");
+			Assert.That (shared.SkipBackwardCommand, Is.Not.Null, "SkipBackwardCommand");
+			Assert.That (shared.SkipForwardCommand, Is.Not.Null, "SkipForwardCommand");
+			Assert.That (shared.StopCommand, Is.Not.Null, "StopCommand");
+			Assert.That (shared.TogglePlayPauseCommand, Is.Not.Null, "TogglePlayPauseCommand");
 		}
 
 		[Test]
@@ -49,8 +49,8 @@ namespace MonoTouchFixtures.MediaPlayer {
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 12, 2, throwIfOtherPlatform: false);
 
 			MPRemoteCommandCenter shared = MPRemoteCommandCenter.Shared;
-			ClassicAssert.NotNull (shared.ChangeRepeatModeCommand, "ChangeRepeatModeCommand");
-			ClassicAssert.NotNull (shared.ChangeShuffleModeCommand, "ChangeShuffleModeCommand");
+			Assert.That (shared.ChangeRepeatModeCommand, Is.Not.Null, "ChangeRepeatModeCommand");
+			Assert.That (shared.ChangeShuffleModeCommand, Is.Not.Null, "ChangeShuffleModeCommand");
 		}
 
 		[Test]
@@ -60,7 +60,7 @@ namespace MonoTouchFixtures.MediaPlayer {
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 12, 2, throwIfOtherPlatform: false);
 
 			MPRemoteCommandCenter shared = MPRemoteCommandCenter.Shared;
-			ClassicAssert.NotNull (shared.EnableLanguageOptionCommand, "EnableLanguageOptionCommand");
+			Assert.That (shared.EnableLanguageOptionCommand, Is.Not.Null, "EnableLanguageOptionCommand");
 		}
 	}
 }

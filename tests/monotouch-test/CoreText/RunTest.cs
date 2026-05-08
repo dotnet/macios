@@ -48,7 +48,7 @@ namespace MonoTouchFixtures.CoreText {
 		{
 			using (var o = new MyOps ())
 			using (var d = new CTRunDelegate (o)) {
-				ClassicAssert.AreSame (o, d.Operations, "same");
+				Assert.That (d.Operations, Is.SameAs (o), "same");
 			}
 		}
 
@@ -62,9 +62,9 @@ namespace MonoTouchFixtures.CoreText {
 				};
 				mas.SetAttributes (sa, new NSRange (3, 3));
 				using (var fs = new CTFramesetter (mas)) {
-					ClassicAssert.True (MyOps.Ascent, "Ascent called");
-					ClassicAssert.True (MyOps.Descent, "Descent called");
-					ClassicAssert.True (MyOps.Width, "Width called");
+					Assert.That (MyOps.Ascent, Is.True, "Ascent called");
+					Assert.That (MyOps.Descent, Is.True, "Descent called");
+					Assert.That (MyOps.Width, Is.True, "Width called");
 				}
 			}
 		}
@@ -79,8 +79,8 @@ namespace MonoTouchFixtures.CoreText {
 				var runs = line.GetGlyphRuns ();
 				Assert.That (runs.Length, Is.EqualTo (1), "runs");
 				runs [0].GetBaseAdvancesAndOrigins (new NSRange (0, 10), out var advances, out var origins);
-				ClassicAssert.IsNotNull (advances, "advances");
-				ClassicAssert.IsNotNull (origins, "origins");
+				Assert.That (advances, Is.Not.Null, "advances");
+				Assert.That (origins, Is.Not.Null, "origins");
 			}
 		}
 	}

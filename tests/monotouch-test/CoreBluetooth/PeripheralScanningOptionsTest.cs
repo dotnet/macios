@@ -20,7 +20,7 @@ namespace MonoTouchFixtures.CoreBluetooth {
 		{
 			var options = new PeripheralScanningOptions ();
 			Assert.That (options.Dictionary.Count, Is.EqualTo ((nuint) 0), "Count");
-			ClassicAssert.False (options.AllowDuplicatesKey, "AllowDuplicatesKey");
+			Assert.That (options.AllowDuplicatesKey, Is.False, "AllowDuplicatesKey");
 		}
 
 		[Test]
@@ -30,7 +30,7 @@ namespace MonoTouchFixtures.CoreBluetooth {
 				AllowDuplicatesKey = true
 			};
 			Assert.That (options.Dictionary.Count, Is.EqualTo ((nuint) 1), "Count");
-			ClassicAssert.True (options.AllowDuplicatesKey, "AllowDuplicatesKey");
+			Assert.That (options.AllowDuplicatesKey, Is.True, "AllowDuplicatesKey");
 		}
 
 		[Test]
@@ -40,7 +40,7 @@ namespace MonoTouchFixtures.CoreBluetooth {
 				AllowDuplicatesKey = false
 			};
 			Assert.That (options.Dictionary.Count, Is.EqualTo ((nuint) 1), "Count");
-			ClassicAssert.False (options.AllowDuplicatesKey, "AllowDuplicatesKey");
+			Assert.That (options.AllowDuplicatesKey, Is.False, "AllowDuplicatesKey");
 		}
 	}
 }

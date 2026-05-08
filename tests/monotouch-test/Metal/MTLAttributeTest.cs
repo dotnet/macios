@@ -26,37 +26,37 @@ namespace MonoTouchFixtures.Metal {
 		[Test]
 		public void GetNameTest ()
 		{
-			ClassicAssert.Null (attr.Name, $"Name default value is {attr.Name}");
+			Assert.That (attr.Name, Is.Null, $"Name default value is {attr.Name}");
 		}
 
 		[Test]
 		public void GetAttributeIndexTest ()
 		{
-			ClassicAssert.AreEqual ((nuint) 0, attr.AttributeIndex, $"AttributeIndex default value is {attr.AttributeIndex}");
+			Assert.That (attr.AttributeIndex, Is.EqualTo ((nuint) 0), $"AttributeIndex default value is {attr.AttributeIndex}");
 		}
 
 		[Test]
 		public void GetAttributeTypeTest ()
 		{
-			ClassicAssert.AreEqual (MTLDataType.None, attr.AttributeType, $"AttributeType default value is {attr.AttributeType}");
+			Assert.That (attr.AttributeType, Is.EqualTo (MTLDataType.None), $"AttributeType default value is {attr.AttributeType}");
 		}
 
 		[Test]
 		public void GetActiveTest ()
 		{
-			ClassicAssert.False (attr.Active);
+			Assert.That (attr.Active, Is.False);
 		}
 
 		[Test]
 		public void GetIsPatchDataTest ()
 		{
-			ClassicAssert.False (attr.IsPatchData);
+			Assert.That (attr.IsPatchData, Is.False);
 		}
 
 		[Test]
 		public void GetIsPatchControlPointDataTest ()
 		{
-			ClassicAssert.False (attr.IsPatchControlPointData);
+			Assert.That (attr.IsPatchControlPointData, Is.False);
 		}
 	}
 }

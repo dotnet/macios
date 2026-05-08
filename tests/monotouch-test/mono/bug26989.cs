@@ -9,7 +9,7 @@ namespace MonoTouchFixtures {
 		public void Bug26989 ()
 		{
 			strlen ("abc");
-			ClassicAssert.AreEqual ("ChocolateCookie", cookie);
+			Assert.That (cookie, Is.EqualTo ("ChocolateCookie"));
 		}
 
 		[DllImport (Constants.libcLibrary)]

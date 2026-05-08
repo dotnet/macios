@@ -19,10 +19,10 @@ namespace MonoTouchFixtures.UserNotifications {
 				UNNotificationInterruptionLevelTimeSensitive,
 				UNNotificationInterruptionLevelCritical,
 			} */
-			ClassicAssert.AreEqual ((int) UNNotificationInterruptionLevel.Passive2, 0);
-			ClassicAssert.AreEqual ((int) UNNotificationInterruptionLevel.Active2, 1);
-			ClassicAssert.AreEqual ((int) UNNotificationInterruptionLevel.TimeSensitive2, 2);
-			ClassicAssert.AreEqual ((int) UNNotificationInterruptionLevel.Critical2, 3);
+			Assert.That (0, Is.EqualTo ((int) UNNotificationInterruptionLevel.Passive2));
+			Assert.That (1, Is.EqualTo ((int) UNNotificationInterruptionLevel.Active2));
+			Assert.That (2, Is.EqualTo ((int) UNNotificationInterruptionLevel.TimeSensitive2));
+			Assert.That (3, Is.EqualTo ((int) UNNotificationInterruptionLevel.Critical2));
 #endif
 		}
 	}

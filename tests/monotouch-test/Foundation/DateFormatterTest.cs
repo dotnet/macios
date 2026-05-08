@@ -17,7 +17,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void ToLocalizedStringTest ()
 		{
 			var str = NSDateFormatter.ToLocalizedString (NSDate.Now, NSDateFormatterStyle.Full, NSDateFormatterStyle.Full);
-			ClassicAssert.IsNotNull (str);
+			Assert.That (str, Is.Not.Null);
 		}
 
 		[Test]
@@ -28,10 +28,10 @@ namespace MonoTouchFixtures.Foundation {
 			const string dateComponents = "yMMMMd";
 
 			var dateFormat = NSDateFormatter.GetDateFormatFromTemplate (dateComponents, 0, us_locale);
-			ClassicAssert.AreEqual ("MMMM d, y", dateFormat, "#US");
+			Assert.That (dateFormat, Is.EqualTo ("MMMM d, y"), "#US");
 
 			dateFormat = NSDateFormatter.GetDateFormatFromTemplate (dateComponents, 0, gb_locale);
-			ClassicAssert.AreEqual ("d MMMM y", dateFormat, "GB");
+			Assert.That (dateFormat, Is.EqualTo ("d MMMM y"), "GB");
 		}
 	}
 }

@@ -23,10 +23,10 @@ namespace MonoTouchFixtures.CoreAnimation {
 				TextTruncationMode = CATextLayerTruncationMode.Middle
 			};
 
-			ClassicAssert.AreEqual (CATextLayerTruncationMode.Middle, textLayer.TextTruncationMode, "TextTruncationMode");
+			Assert.That (textLayer.TextTruncationMode, Is.EqualTo (CATextLayerTruncationMode.Middle), "TextTruncationMode");
 
 			textLayer.TextTruncationMode = CATextLayerTruncationMode.End;
-			ClassicAssert.AreEqual (CATextLayerTruncationMode.End, textLayer.TextTruncationMode, "TextTruncationMode 2");
+			Assert.That (textLayer.TextTruncationMode, Is.EqualTo (CATextLayerTruncationMode.End), "TextTruncationMode 2");
 		}
 
 		[Test]
@@ -37,10 +37,10 @@ namespace MonoTouchFixtures.CoreAnimation {
 				TextAlignmentMode = CATextLayerAlignmentMode.Justified
 			};
 
-			ClassicAssert.AreEqual (CATextLayerAlignmentMode.Justified, textLayer.TextAlignmentMode, "TextAlignmentMode");
+			Assert.That (textLayer.TextAlignmentMode, Is.EqualTo (CATextLayerAlignmentMode.Justified), "TextAlignmentMode");
 
 			textLayer.TextAlignmentMode = CATextLayerAlignmentMode.Natural;
-			ClassicAssert.AreEqual (CATextLayerAlignmentMode.Natural, textLayer.TextAlignmentMode, "TextAlignmentMode 2");
+			Assert.That (textLayer.TextAlignmentMode, Is.EqualTo (CATextLayerAlignmentMode.Natural), "TextAlignmentMode 2");
 		}
 	}
 }

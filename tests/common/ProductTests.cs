@@ -8,7 +8,6 @@ using System.Xml;
 using System.Text;
 
 using Xamarin;
-using NUnit.Framework.Legacy;
 
 namespace Xamarin.Tests {
 	[TestFixture]
@@ -72,7 +71,7 @@ namespace Xamarin.Tests {
 						Version lc_min_version;
 						var mincmd = lc as MinCommand;
 						if (mincmd is not null) {
-							ClassicAssert.AreEqual (load_command, mincmd.Command, "Unexpected min load command");
+							Assert.That (mincmd.Command, Is.EqualTo (load_command), "Unexpected min load command");
 							lc_min_version = mincmd.Version;
 						} else {
 							// starting from iOS SDK 12 the LC_BUILD_VERSION is used instead

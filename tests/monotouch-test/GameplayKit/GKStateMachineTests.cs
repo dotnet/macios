@@ -30,17 +30,17 @@ namespace MonoTouchFixtures.GameplayKit {
 				new FleeState ()
 			});
 
-			ClassicAssert.Null (sm.CurrentState, "CurrentState");
+			Assert.That (sm.CurrentState, Is.Null, "CurrentState");
 
-			ClassicAssert.NotNull (sm, "StateMachine must not be null");
+			Assert.That (sm, Is.Not.Null, "StateMachine must not be null");
 			sm.EnterState (typeof (ChaseState));
 
 			var chaseState = sm.GetState (typeof (ChaseState));
-			ClassicAssert.NotNull (chaseState, "ChaseState must not be null");
-			ClassicAssert.AreSame (chaseState, sm.CurrentState, "Must be same state");
+			Assert.That (chaseState, Is.Not.Null, "ChaseState must not be null");
+			Assert.That (sm.CurrentState, Is.SameAs (chaseState), "Must be same state");
 
 			var canEnterState = sm.EnterState (typeof (UndefinedState));
-			ClassicAssert.IsFalse (canEnterState, "Should not be able to enter that state since we did not allow it");
+			Assert.That (canEnterState, Is.False, "Should not be able to enter that state since we did not allow it");
 		}
 	}
 

@@ -6,7 +6,6 @@ open System.Reflection
 open Foundation
 
 open NUnit.Framework
-open NUnit.Framework.Legacy
 
 [<TestFixture>]
 [<Preserve (AllMembers=true)>]
@@ -25,4 +24,4 @@ type FSharpTest () =
         let e = 5555
 
         let pr = sprintf "%d %d %d %d %d" a b c d e
-        ClassicAssert.AreEqual ("1111 2222 3333 4444 5555", pr)
+        Assert.That (pr, Is.EqualTo ("1111 2222 3333 4444 5555"))

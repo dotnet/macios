@@ -48,9 +48,9 @@ namespace MonoTouchFixtures.Network {
 		[Test]
 		public void TestMetadataType ()
 		{
-			ClassicAssert.True (metadata.IsIP, "IsIP");
-			ClassicAssert.False (metadata.IsTcp, "IsTcp");
-			ClassicAssert.False (metadata.IsUdp, "IsUdp");
+			Assert.That (metadata.IsIP, Is.True, "IsIP");
+			Assert.That (metadata.IsTcp, Is.False, "IsTcp");
+			Assert.That (metadata.IsUdp, Is.False, "IsUdp");
 		}
 	}
 }

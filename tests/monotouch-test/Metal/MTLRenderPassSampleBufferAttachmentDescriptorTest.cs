@@ -47,7 +47,7 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				objIndex = descriptor.StartOfVertexSampleIndex;
 			}, "Getter");
-			ClassicAssert.AreEqual (newIndex, objIndex, "Index");
+			Assert.That (objIndex, Is.EqualTo (newIndex), "Index");
 		}
 
 		[Test]
@@ -62,7 +62,7 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				objIndex = descriptor.EndOfVertexSampleIndex;
 			}, "Getter");
-			ClassicAssert.AreEqual (newIndex, objIndex, "Index");
+			Assert.That (objIndex, Is.EqualTo (newIndex), "Index");
 		}
 
 		[Test]
@@ -77,7 +77,7 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				objIndex = descriptor.StartOfFragmentSampleIndex;
 			}, "Getter");
-			ClassicAssert.AreEqual (newIndex, objIndex, "Index");
+			Assert.That (objIndex, Is.EqualTo (newIndex), "Index");
 		}
 
 		[Test]
@@ -92,7 +92,7 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				objIndex = descriptor.EndOfFragmentSampleIndex;
 			}, "Getter");
-			ClassicAssert.AreEqual (newIndex, objIndex, "Index");
+			Assert.That (objIndex, Is.EqualTo (newIndex), "Index");
 		}
 	}
 }

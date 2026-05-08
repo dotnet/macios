@@ -30,7 +30,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 		public void PixelTransferSessionCreateTest ()
 		{
 			using var session = VTPixelTransferSession.Create ();
-			ClassicAssert.IsNotNull (session, "Session should not be null");
+			Assert.That (session, Is.Not.Null, "Session should not be null");
 		}
 
 		[Test]
@@ -40,7 +40,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			using var sourcePixelBuffer = new CVPixelBuffer (640, 480, CVPixelFormatType.CV420YpCbCr8BiPlanarFullRange);
 			using var destinationPixelBuffer = new CVPixelBuffer (320, 240, CVPixelFormatType.CV420YpCbCr8BiPlanarFullRange);
 			var result = session.TransferImage (sourcePixelBuffer, destinationPixelBuffer);
-			ClassicAssert.AreEqual (result, VTStatus.Ok, "TransferImage");
+			Assert.That (VTStatus.Ok, Is.EqualTo (result), "TransferImage");
 		}
 
 		[Test]
@@ -51,7 +51,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 				ScalingMode = VTScalingMode.Letterbox
 			});
 
-			ClassicAssert.AreEqual (result, VTStatus.Ok, "SetTransferProperties");
+			Assert.That (VTStatus.Ok, Is.EqualTo (result), "SetTransferProperties");
 		}
 	}
 }

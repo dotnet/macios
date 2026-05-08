@@ -28,7 +28,7 @@ namespace MonoTouchFixtures.UIKit {
 			var frame = new CGRect (10, 10, 100, 100);
 			using (UIView v = new UIView (frame)) {
 				UIView result = v.HitTest (new CGPoint (-10, -10), null);
-				ClassicAssert.Null (result, "outside");
+				Assert.That (result, Is.Null, "outside");
 				result = v.HitTest (new CGPoint (50, 50), null);
 				Assert.That (result.Handle, Is.EqualTo (v.Handle), "inside");
 			}
@@ -39,8 +39,8 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			var frame = new CGRect (10, 10, 100, 100);
 			using (UIView v = new UIView (frame)) {
-				ClassicAssert.False (v.PointInside (new CGPoint (-10, -10), null), "outside");
-				ClassicAssert.True (v.PointInside (new CGPoint (50, 50), null), "inside");
+				Assert.That (v.PointInside (new CGPoint (-10, -10), null), Is.False, "outside");
+				Assert.That (v.PointInside (new CGPoint (50, 50), null), Is.True, "inside");
 			}
 		}
 
@@ -50,7 +50,7 @@ namespace MonoTouchFixtures.UIKit {
 			// same as LinkerTest in 'linksdk' project - but won't be linked here (for simulator)
 			var empty = CGSize.Empty;
 			using (UIView v = new UIView ()) {
-				ClassicAssert.True (v.SizeThatFits (empty).IsEmpty, "Empty");
+				Assert.That (v.SizeThatFits (empty).IsEmpty, Is.True, "Empty");
 			}
 		}
 
@@ -205,37 +205,37 @@ namespace MonoTouchFixtures.UIKit {
 		public void TraitTest ()
 		{
 			using (var view = new UIView ()) {
-				ClassicAssert.AreEqual (UIAccessibilityTrait.None, view.AccessibilityTraits, "a");
+				Assert.That (view.AccessibilityTraits, Is.EqualTo (UIAccessibilityTrait.None), "a");
 				view.AccessibilityTraits = UIAccessibilityTrait.None;
-				ClassicAssert.AreEqual (UIAccessibilityTrait.None, view.AccessibilityTraits, "b");
+				Assert.That (view.AccessibilityTraits, Is.EqualTo (UIAccessibilityTrait.None), "b");
 				view.AccessibilityTraits = UIAccessibilityTrait.Adjustable;
-				ClassicAssert.AreEqual (UIAccessibilityTrait.Adjustable, view.AccessibilityTraits, "c");
+				Assert.That (view.AccessibilityTraits, Is.EqualTo (UIAccessibilityTrait.Adjustable), "c");
 				view.AccessibilityTraits = UIAccessibilityTrait.Adjustable | UIAccessibilityTrait.Button;
-				ClassicAssert.AreEqual (UIAccessibilityTrait.Adjustable | UIAccessibilityTrait.Button, view.AccessibilityTraits, "e");
+				Assert.That (view.AccessibilityTraits, Is.EqualTo (UIAccessibilityTrait.Adjustable | UIAccessibilityTrait.Button), "e");
 			}
 		}
 
 		[Test]
 		public void TraitMatch ()
 		{
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.Adjustable, UIView.TraitAdjustable, "Adjustable");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.AllowsDirectInteraction, UIView.TraitAllowsDirectInteraction, "AllowsDirectInteraction");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.Button, UIView.TraitButton, "Button");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.CausesPageTurn, UIView.TraitCausesPageTurn, "CausesPageTurn");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.Image, UIView.TraitImage, "Image");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.KeyboardKey, UIView.TraitKeyboardKey, "KeyboardKey");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.Link, UIView.TraitLink, "Link");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.None, UIView.TraitNone, "None");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.NotEnabled, UIView.TraitNotEnabled, "NotEnabled");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.PlaysSound, UIView.TraitPlaysSound, "PlaysSound");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.SearchField, UIView.TraitSearchField, "SearchField");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.Selected, UIView.TraitSelected, "Selected");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.StartsMediaSession, UIView.TraitStartsMediaSession, "StartsMediaSession");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.StaticText, UIView.TraitStaticText, "StaticText");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.SummaryElement, UIView.TraitSummaryElement, "SummaryElement");
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.UpdatesFrequently, UIView.TraitUpdatesFrequently, "UpdatesFrequently");
+			Assert.That (UIView.TraitAdjustable, Is.EqualTo ((int) UIAccessibilityTrait.Adjustable), "Adjustable");
+			Assert.That (UIView.TraitAllowsDirectInteraction, Is.EqualTo ((int) UIAccessibilityTrait.AllowsDirectInteraction), "AllowsDirectInteraction");
+			Assert.That (UIView.TraitButton, Is.EqualTo ((int) UIAccessibilityTrait.Button), "Button");
+			Assert.That (UIView.TraitCausesPageTurn, Is.EqualTo ((int) UIAccessibilityTrait.CausesPageTurn), "CausesPageTurn");
+			Assert.That (UIView.TraitImage, Is.EqualTo ((int) UIAccessibilityTrait.Image), "Image");
+			Assert.That (UIView.TraitKeyboardKey, Is.EqualTo ((int) UIAccessibilityTrait.KeyboardKey), "KeyboardKey");
+			Assert.That (UIView.TraitLink, Is.EqualTo ((int) UIAccessibilityTrait.Link), "Link");
+			Assert.That (UIView.TraitNone, Is.EqualTo ((int) UIAccessibilityTrait.None), "None");
+			Assert.That (UIView.TraitNotEnabled, Is.EqualTo ((int) UIAccessibilityTrait.NotEnabled), "NotEnabled");
+			Assert.That (UIView.TraitPlaysSound, Is.EqualTo ((int) UIAccessibilityTrait.PlaysSound), "PlaysSound");
+			Assert.That (UIView.TraitSearchField, Is.EqualTo ((int) UIAccessibilityTrait.SearchField), "SearchField");
+			Assert.That (UIView.TraitSelected, Is.EqualTo ((int) UIAccessibilityTrait.Selected), "Selected");
+			Assert.That (UIView.TraitStartsMediaSession, Is.EqualTo ((int) UIAccessibilityTrait.StartsMediaSession), "StartsMediaSession");
+			Assert.That (UIView.TraitStaticText, Is.EqualTo ((int) UIAccessibilityTrait.StaticText), "StaticText");
+			Assert.That (UIView.TraitSummaryElement, Is.EqualTo ((int) UIAccessibilityTrait.SummaryElement), "SummaryElement");
+			Assert.That (UIView.TraitUpdatesFrequently, Is.EqualTo ((int) UIAccessibilityTrait.UpdatesFrequently), "UpdatesFrequently");
 
-			ClassicAssert.AreEqual ((int) UIAccessibilityTrait.Header, UIView.TraitHeader, "Header");
+			Assert.That (UIView.TraitHeader, Is.EqualTo ((int) UIAccessibilityTrait.Header), "Header");
 		}
 
 		[Test]
@@ -247,7 +247,7 @@ namespace MonoTouchFixtures.UIKit {
 				// even if null we want to ensure we can use UIView.GetEnumarator to iterate subviews
 				int n = 0;
 				foreach (var sv in v)
-					ClassicAssert.NotNull (sv, n++.ToString ());
+					Assert.That (sv, Is.Not.Null, n++.ToString ());
 			}
 		}
 
@@ -258,11 +258,11 @@ namespace MonoTouchFixtures.UIKit {
 
 			using (var v = new UIView ()) {
 				var tc = v.TintColor;
-				ClassicAssert.NotNull (tc, "TintColor-1");
+				Assert.That (tc, Is.Not.Null, "TintColor-1");
 				v.TintColor = UIColor.Red;
 				v.TintColor = null;
 				// setting to null returns to default (i.e. not the last non-null value)
-				ClassicAssert.NotNull (v.TintColor, "TintColor-2");
+				Assert.That (v.TintColor, Is.Not.Null, "TintColor-2");
 			}
 		}
 
@@ -275,7 +275,7 @@ namespace MonoTouchFixtures.UIKit {
 				Assert.That (v1.Handle, Is.Not.EqualTo (v2.Handle), "Handle");
 				// and that's enough to make them totally different (natively in objc for both `hash` and `isEqual:`)
 				Assert.That (v1.GetHashCode (), Is.Not.EqualTo (v2.GetHashCode ()), "GetHashCode");
-				ClassicAssert.False (v1.Equals (v2.Handle), "Equals");
+				Assert.That (v1.Equals (v2.Handle), Is.False, "Equals");
 			}
 		}
 	}

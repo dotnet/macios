@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 
 using Xamarin.Utils;
-using NUnit.Framework.Legacy;
 
 namespace Xamarin.Tests {
 	public enum LinkerOption {
@@ -322,7 +321,7 @@ namespace Xamarin.Tests {
 
 		public void AssertExecuteFailure (string message = null)
 		{
-			ClassicAssert.AreEqual (1, Execute (), message);
+			Assert.That (Execute (), Is.EqualTo (1).Within (message));
 		}
 
 		public abstract void CreateTemporaryApp (Profile profile, string appName = "testApp", string code = null, IList<string> extraArgs = null, string extraCode = null, string usings = null);

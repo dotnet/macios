@@ -28,8 +28,8 @@ namespace MonoTouchFixtures.Metal {
 				InitialCapacity = 3
 			};
 			using var residencySet = device.CreateResidencySet (residencySetDescriptor, out var error);
-			ClassicAssert.IsNull (error, "Error #1");
-			ClassicAssert.IsNotNull (residencySet, "ResidencySet #1");
+			Assert.That (error, Is.Null, "Error #1");
+			Assert.That (residencySet, Is.Not.Null, "ResidencySet #1");
 
 			commandQ.AddResidencySets (residencySet);
 			commandQ.RemoveResidencySets (residencySet);

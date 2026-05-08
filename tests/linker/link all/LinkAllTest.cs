@@ -100,8 +100,8 @@ namespace LinkAll {
 
 			PropertyInfo pi = not_preserved_type.GetProperty ("Two")!;
 			// check the *unused* setter absence from the application
-			ClassicAssert.NotNull (pi.GetGetMethod (), "getter");
-			ClassicAssert.Null (pi.GetSetMethod (), "setter");
+			Assert.That (pi.GetGetMethod (), Is.Not.Null, "getter");
+			Assert.That (pi.GetSetMethod (), Is.Null, "setter");
 		}
 
 		[Test]
@@ -113,8 +113,8 @@ namespace LinkAll {
 
 			PropertyInfo pi = not_preserved_type.GetProperty ("One")!;
 			// check the *unused* setter absence from the application
-			ClassicAssert.Null (pi.GetGetMethod (), "getter");
-			ClassicAssert.NotNull (pi.GetSetMethod (), "setter");
+			Assert.That (pi.GetGetMethod (), Is.Null, "getter");
+			Assert.That (pi.GetSetMethod (), Is.Not.Null, "setter");
 		}
 
 		[Test]
@@ -131,14 +131,14 @@ namespace LinkAll {
 					break;
 				}
 			}
-			ClassicAssert.True (default_value, "DefaultValue");
+			Assert.That (default_value, Is.True, "DefaultValue");
 		}
 
 		static void Check (string calendarName, bool present)
 		{
 			var type = Type.GetType ("System.Globalization." + calendarName);
 			bool success = present == (type is not null);
-			ClassicAssert.AreEqual (present, type is not null, calendarName);
+			Assert.That (type is not null, Is.EqualTo (present).Within (calendarName));
 		}
 
 		[Test]
@@ -176,8 +176,8 @@ namespace LinkAll {
 		{
 			// for (future) nunit[lite] platform detection - if this test fails then platform detection won't work
 			var typename = NamespacePrefix + "UIKit.UIApplicationDelegate, " + AssemblyName;
-			ClassicAssert.NotNull (Helper.GetType (typename), typename);
-			ClassicAssert.Null (Helper.GetType ("Mono.Runtime"), "Mono.Runtime");
+			Assert.That (Helper.GetType (typename), Is.Not.Null, typename);
+			Assert.That (Helper.GetType ("Mono.Runtime"), Is.Null, "Mono.Runtime");
 		}
 #endif // !__MACOS__
 
@@ -194,20 +194,20 @@ namespace LinkAll {
 			string suffix = AssemblyName;
 
 			// since we're linking the attributes will NOT be available - even if they are used
-			ClassicAssert.Null (Helper.GetType (prefix + "ObjCRuntime.IntroducedAttribute, " + suffix), "IntroducedAttribute");
-			ClassicAssert.Null (Helper.GetType (prefix + "ObjCRuntime.DeprecatedAttribute, " + suffix), "DeprecatedAttribute");
-			ClassicAssert.Null (Helper.GetType (prefix + "ObjCRuntime.ObsoletedAttribute, " + suffix), "ObsoletedAttribute");
-			ClassicAssert.Null (Helper.GetType (prefix + "ObjCRuntime.UnavailableAttribute, " + suffix), "UnavailableAttribute");
-			ClassicAssert.Null (Helper.GetType (prefix + "ObjCRuntime.ThreadSafeAttribute, " + suffix), "ThreadSafeAttribute");
-			ClassicAssert.Null (Helper.GetType ("System.Runtime.Versioning.SupportedOSPlatformAttribute, " + suffix), "SupportedOSPlatformAttribute");
-			ClassicAssert.Null (Helper.GetType ("System.Runtime.Versioning.UnsupportedOSPlatformAttribute, " + suffix), "UnsupportedOSPlatformAttribute");
+			Assert.That (Helper.GetType (prefix + "ObjCRuntime.IntroducedAttribute, " + suffix), Is.Null, "IntroducedAttribute");
+			Assert.That (Helper.GetType (prefix + "ObjCRuntime.DeprecatedAttribute, " + suffix), Is.Null, "DeprecatedAttribute");
+			Assert.That (Helper.GetType (prefix + "ObjCRuntime.ObsoletedAttribute, " + suffix), Is.Null, "ObsoletedAttribute");
+			Assert.That (Helper.GetType (prefix + "ObjCRuntime.UnavailableAttribute, " + suffix), Is.Null, "UnavailableAttribute");
+			Assert.That (Helper.GetType (prefix + "ObjCRuntime.ThreadSafeAttribute, " + suffix), Is.Null, "ThreadSafeAttribute");
+			Assert.That (Helper.GetType ("System.Runtime.Versioning.SupportedOSPlatformAttribute, " + suffix), Is.Null, "SupportedOSPlatformAttribute");
+			Assert.That (Helper.GetType ("System.Runtime.Versioning.UnsupportedOSPlatformAttribute, " + suffix), Is.Null, "UnsupportedOSPlatformAttribute");
 		}
 
 		[Test]
 		public void Assembly_Load ()
 		{
 			Assembly mscorlib = Assembly.Load ("System.Private.CoreLib.dll");
-			ClassicAssert.NotNull (mscorlib, "System.Private.CoreLib.dll");
+			Assert.That (mscorlib, Is.Not.Null, "System.Private.CoreLib.dll");
 		}
 
 		string FindAssemblyPath ()
@@ -238,14 +238,14 @@ namespace LinkAll {
 		public void Assembly_LoadFile ()
 		{
 			string filename = FindAssemblyPath ();
-			ClassicAssert.NotNull (Assembly.LoadFile (Path.GetFullPath (filename)), "1");
+			Assert.That (Assembly.LoadFile (Path.GetFullPath (filename)), Is.Not.Null, "1");
 		}
 
 		[Test]
 		public void Assembly_LoadFrom ()
 		{
 			string filename = FindAssemblyPath ();
-			ClassicAssert.NotNull (Assembly.LoadFrom (filename), "1");
+			Assert.That (Assembly.LoadFrom (filename), Is.Not.Null, "1");
 		}
 
 		[Test]
@@ -268,14 +268,14 @@ namespace LinkAll {
 					using (var img = new UIImage (cgimg)) {
 						UIPasteboard.General.Images = new UIImage [] { img };
 						if (TestRuntime.CheckXcodeVersion (8, 0))
-							ClassicAssert.True (UIPasteboard.General.HasImages, "HasImages");
+							Assert.That (UIPasteboard.General.HasImages, Is.True, "HasImages");
 
-						ClassicAssert.AreEqual (1, UIPasteboard.General.Images.Length, "a - length");
+						Assert.That (UIPasteboard.General.Images.Length, Is.EqualTo (1), "a - length");
 
 						UIPasteboard.General.Images = new UIImage [] { img, img };
-						ClassicAssert.AreEqual (2, UIPasteboard.General.Images.Length, "b - length");
-						ClassicAssert.IsNotNull (UIPasteboard.General.Images [0], "b - nonnull[0]");
-						ClassicAssert.IsNotNull (UIPasteboard.General.Images [1], "b - nonnull[0]");
+						Assert.That (UIPasteboard.General.Images.Length, Is.EqualTo (2), "b - length");
+						Assert.That (UIPasteboard.General.Images [0], Is.Not.Null, "b - nonnull[0]");
+						Assert.That (UIPasteboard.General.Images [1], Is.Not.Null, "b - nonnull[0]");
 					}
 				}
 			}
@@ -285,7 +285,7 @@ namespace LinkAll {
 		[Test]
 		public void UltimateBindings ()
 		{
-			ClassicAssert.IsNotNull (Bindings.Test.UltimateMachine.SharedInstance, "SharedInstance");
+			Assert.That (Bindings.Test.UltimateMachine.SharedInstance, Is.Not.Null, "SharedInstance");
 		}
 
 		#region bug 14456
@@ -371,14 +371,14 @@ namespace LinkAll {
 		{
 			// Parent type is not used - but it's not linked out
 			var p = Helper.GetType ("LinkAll.Parent");
-			ClassicAssert.NotNull (p, "Parent");
+			Assert.That (p, Is.Not.Null, "Parent");
 			// because a nested type is a subclass of NSObject (and not part of monotouch.dll)
 			var n = p.GetNestedType ("Derived")!;
-			ClassicAssert.NotNull (n, "Derived");
+			Assert.That (n, Is.Not.Null, "Derived");
 			// however other stuff in Parent, like unused methods, will be removed
-			ClassicAssert.Null (p.GetMethod ("UnusedMethod"), "unused method");
+			Assert.That (p.GetMethod ("UnusedMethod"), Is.Null, "unused method");
 			// while exported stuff will be present
-			ClassicAssert.NotNull (n.GetMethod ("Foo"), "unused Export method");
+			Assert.That (n.GetMethod ("Foo"), Is.Not.Null, "unused Export method");
 		}
 
 		[Test]
@@ -386,7 +386,7 @@ namespace LinkAll {
 		{
 			// testing compile time error
 			CancelEventArgs cea = new CancelEventArgs ();
-			ClassicAssert.NotNull (cea, "CancelEventArgs");
+			Assert.That (cea, Is.Not.Null, "CancelEventArgs");
 		}
 
 		string? GetField (object o, string s)
@@ -420,14 +420,14 @@ namespace LinkAll {
 				id = 1234,
 				contentType = "xml"
 			});
-			ClassicAssert.Null (result, result);
+			Assert.That (result, Is.Null, result);
 		}
 
 		[Test]
 		public void Events ()
 		{
 			using (var pr = new SKProductsRequest ()) {
-				ClassicAssert.Null (pr.WeakDelegate, "none");
+				Assert.That (pr.WeakDelegate, Is.Null, "none");
 				// event on SKProductsRequest itself
 				pr.ReceivedResponse += (object? sender, SKProductsRequestResponseEventArgs e) => { };
 
@@ -435,15 +435,15 @@ namespace LinkAll {
 				Assert.That (t.Name, Is.EqualTo ("_SKProductsRequestDelegate"), "delegate");
 
 				var fi = t.GetField ("receivedResponse", BindingFlags.NonPublic | BindingFlags.Instance)!;
-				ClassicAssert.NotNull (fi, "receivedResponse");
+				Assert.That (fi, Is.Not.Null, "receivedResponse");
 				var value = fi.GetValue (pr.WeakDelegate);
-				ClassicAssert.NotNull (value, "value");
+				Assert.That (value, Is.Not.Null, "value");
 
 				// and on the SKRequest defined one
 				pr.RequestFailed += (object? sender, SKRequestErrorEventArgs e) => { };
 				// and the existing (initial field) is still set
 				fi = t.GetField ("receivedResponse", BindingFlags.NonPublic | BindingFlags.Instance);
-				ClassicAssert.NotNull (fi, "receivedResponse/SKRequest");
+				Assert.That (fi, Is.Not.Null, "receivedResponse/SKRequest");
 			}
 		}
 
@@ -453,7 +453,7 @@ namespace LinkAll {
 			var nix = (from nic in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces ()
 					   where nic.Id.StartsWith ("en") || nic.Id.StartsWith ("pdp_ip")
 					   select nic);
-			ClassicAssert.NotNull (nix);
+			Assert.That (nix, Is.Not.Null);
 		}
 
 		[Test]
@@ -461,7 +461,7 @@ namespace LinkAll {
 		{
 			// make test work for classic (monotouch) and unified (iOS, tvOS)
 			var fqn = typeof (NSObject).AssemblyQualifiedName!.Replace ("Foundation.NSObject", "Security.Tls.AppleTlsProvider");
-			ClassicAssert.Null (Helper.GetType (fqn), "Should NOT be included (no SslStream or Socket support)");
+			Assert.That (Helper.GetType (fqn), Is.Null, "Should NOT be included (no SslStream or Socket support)");
 		}
 
 		[Test]
@@ -470,7 +470,7 @@ namespace LinkAll {
 		{
 			// this test works only because "Link all" does not use WebKit
 			var fqn = typeof (NSObject).AssemblyQualifiedName!.Replace ("Foundation.NSObject", "Foundation.NSProxy");
-			ClassicAssert.Null (Helper.GetType (fqn), fqn);
+			Assert.That (Helper.GetType (fqn), Is.Null, fqn);
 		}
 
 		static Type type_Task = typeof (Task);
@@ -482,24 +482,24 @@ namespace LinkAll {
 			CheckAsyncTaskMethodBuilder (typeof (AsyncTaskMethodBuilder<int>));
 			var snfwc = type_Task.GetMethod ("NotifyDebuggerOfWaitCompletion", BindingFlags.Instance | BindingFlags.NonPublic);
 #if DEBUG
-			ClassicAssert.NotNull (snfwc, "Task.NotifyDebuggerOfWaitCompletion");
+			Assert.That (snfwc, Is.Not.Null, "Task.NotifyDebuggerOfWaitCompletion");
 #else
 			// something keeps it from being removed
-			// ClassicAssert.Null (snfwc, "Task.NotifyDebuggerOfWaitCompletion");
+			// Assert.That (snfwc, Is.Null, "Task.NotifyDebuggerOfWaitCompletion");
 #endif
 		}
 
 		void CheckAsyncTaskMethodBuilder (Type atmb)
 		{
-			ClassicAssert.NotNull (atmb, "AsyncTaskMethodBuilder");
+			Assert.That (atmb, Is.Not.Null, "AsyncTaskMethodBuilder");
 			var snfwc = atmb.GetMethod ("SetNotificationForWaitCompletion", BindingFlags.Instance | BindingFlags.NonPublic);
 			var oifd = atmb.GetProperty ("ObjectIdForDebugger", BindingFlags.Instance | BindingFlags.NonPublic);
 #if DEBUG
-			ClassicAssert.NotNull (snfwc, atmb.FullName + ".SetNotificationForWaitCompletion");
-			ClassicAssert.NotNull (oifd,  atmb.FullName + ".ObjectIdForDebugger");
+			Assert.That (snfwc, Is.Not.Null, atmb.FullName + ".SetNotificationForWaitCompletion");
+			Assert.That (oifd, Is.Not.Null, atmb.FullName + ".ObjectIdForDebugger");
 #else
-			ClassicAssert.Null (snfwc, atmb.FullName + ".SetNotificationForWaitCompletion");
-			ClassicAssert.Null (oifd, atmb.FullName + ".ObjectIdForDebugger");
+			Assert.That (snfwc, Is.Null, atmb.FullName + ".SetNotificationForWaitCompletion");
+			Assert.That (oifd, Is.Null, atmb.FullName + ".ObjectIdForDebugger");
 #endif
 		}
 
@@ -509,7 +509,7 @@ namespace LinkAll {
 		{
 			// https://github.com/dotnet/macios/issues/3523
 			// This test will fail at build time if it regresses (usually these types of build tests go into monotouch-test, but monotouch-test uses NSSet<T> elsewhere, which this test requires to be linked away).
-			ClassicAssert.IsNull (typeof (NSObject).Assembly.GetType (NamespacePrefix + "Foundation.NSSet`1"), "NSSet<T> must be linked away, otherwise this test is useless");
+			Assert.That (typeof (NSObject).Assembly.GetType (NamespacePrefix + "Foundation.NSSet`1"), Is.Null, "NSSet<T> must be linked away, otherwise this test is useless");
 		}
 
 		[Protocol (Name = "ProtocolWithGenericsInOptionalMember", WrapperType = typeof (ProtocolWithGenericsInOptionalMemberWrapper))]
@@ -550,7 +550,7 @@ namespace LinkAll {
 			using var view = new PdfView ();
 			view.Document = new PdfDocument (NSUrl.FromFilename (pdfPath)!);
 			using var page = view.CurrentPage!;
-			ClassicAssert.IsNotNull (page.Page, "Page");
+			Assert.That (page.Page, Is.Not.Null, "Page");
 		}
 #endif
 	}

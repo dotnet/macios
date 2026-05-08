@@ -25,7 +25,7 @@ namespace MonoTouchFixtures.QuickLook {
 		public void Defaults ()
 		{
 			using (QLPreviewController pc = new QLPreviewController ()) {
-				ClassicAssert.Null (pc.CurrentPreviewItem, "CurrentPreviewItem");
+				Assert.That (pc.CurrentPreviewItem, Is.Null, "CurrentPreviewItem");
 				nint index = 0;
 #if !__MACCATALYST__
 				if (TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 10, 0))
@@ -35,11 +35,11 @@ namespace MonoTouchFixtures.QuickLook {
 #endif
 				Assert.That (pc.CurrentPreviewItemIndex, Is.EqualTo (index), "CurrentPreviewItemIndex");
 
-				ClassicAssert.Null (pc.Delegate, "Delegate");
-				ClassicAssert.Null (pc.WeakDelegate, "WeakDelegate");
+				Assert.That (pc.Delegate, Is.Null, "Delegate");
+				Assert.That (pc.WeakDelegate, Is.Null, "WeakDelegate");
 
-				ClassicAssert.Null (pc.DataSource, "DataSource");
-				ClassicAssert.Null (pc.WeakDataSource, "WeakDataSource");
+				Assert.That (pc.DataSource, Is.Null, "DataSource");
+				Assert.That (pc.WeakDataSource, Is.Null, "WeakDataSource");
 
 				pc.RefreshCurrentPreviewItem ();
 				pc.ReloadData ();
@@ -63,8 +63,8 @@ namespace MonoTouchFixtures.QuickLook {
 					return new UIImage ();
 				};
 
-				ClassicAssert.NotNull (pc.Delegate, "Delegate");
-				ClassicAssert.NotNull (pc.WeakDelegate, "WeakDelegate");
+				Assert.That (pc.Delegate, Is.Not.Null, "Delegate");
+				Assert.That (pc.WeakDelegate, Is.Not.Null, "WeakDelegate");
 			}
 		}
 	}

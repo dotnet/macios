@@ -16,8 +16,8 @@ namespace MonoTouchFixtures.CoreFoundation {
 		[Test]
 		public void Static ()
 		{
-			ClassicAssert.NotNull (CFNotificationCenter.Darwin, "Darwin");
-			ClassicAssert.NotNull (CFNotificationCenter.Local, "Local");
+			Assert.That (CFNotificationCenter.Darwin, Is.Not.Null, "Darwin");
+			Assert.That (CFNotificationCenter.Local, Is.Not.Null, "Local");
 		}
 	}
 }

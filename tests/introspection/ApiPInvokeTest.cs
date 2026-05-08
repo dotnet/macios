@@ -176,7 +176,7 @@ namespace Introspection {
 				Dlfcn.dlclose (lib);
 				n++;
 			}
-			ClassicAssert.AreEqual (0, Errors, "{0} errors found in {1} functions validated: {2}", Errors, n, string.Join (", ", failed_api));
+			Assert.That (Errors, Is.EqualTo (0), "{0} errors found in {1} functions validated: {2}", Errors, n, string.Join (", ", failed_api));
 		}
 
 		bool SkipDueToDeviceCapabilities (Type type)
@@ -282,7 +282,7 @@ namespace Introspection {
 					n++;
 				}
 			}
-			ClassicAssert.AreEqual (0, Errors, "{0} errors found in {1} symbol lookups{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), "{0} errors found in {1} symbol lookups{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
 		}
 
 		protected string ResolveLibrarySymlinks (string path)

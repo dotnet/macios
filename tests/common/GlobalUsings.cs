@@ -12,5 +12,4 @@ global using ObjCRuntime;
 
 #if !EXCLUDE_NUNITLITE_REFERENCE
 global using NUnit.Framework;
-global using NUnit.Framework.Legacy;
 #endif

@@ -19,14 +19,14 @@ namespace MonoTouchFixtures {
 		[Test]
 		public void CFunction ()
 		{
-			ClassicAssert.AreEqual (42, CFunctions.theUltimateAnswer (), "a");
+			Assert.That (CFunctions.theUltimateAnswer (), Is.EqualTo (42), "a");
 		}
 
 		[Test]
 		public void ObjCClass ()
 		{
 			using (var obj = new FrameworkTest ()) {
-				ClassicAssert.AreEqual (42, obj.Func (), "a");
+				Assert.That (obj.Func (), Is.EqualTo (42), "a");
 			}
 		}
 	}

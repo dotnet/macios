@@ -28,7 +28,7 @@ namespace MonoTouchFixtures.Network {
 				report = r;
 				reportEvent.Set ();
 			});
-			ClassicAssert.True (reportEvent.WaitOne (20000), "Connection timed out.");
+			Assert.That (reportEvent.WaitOne (20000), Is.True, "Connection timed out.");
 		}
 
 		[OneTimeTearDown]
@@ -42,34 +42,34 @@ namespace MonoTouchFixtures.Network {
 		public void TestUsedProxy ()
 		{
 			TestRuntime.IgnoreInCI ("CI bots might have proxies setup and will mean that the test will fail.");
-			ClassicAssert.IsFalse (report.UsedProxy, "Used proxy");
+			Assert.That (report.UsedProxy, Is.False, "Used proxy");
 		}
 
 		[Test]
 		public void TestProxyConfigured ()
 		{
 			TestRuntime.IgnoreInCI ("CI bots might have proxies setup and will mean that the test will fail.");
-			ClassicAssert.IsFalse (report.ProxyConfigured, "Proxy configured.");
+			Assert.That (report.ProxyConfigured, Is.False, "Proxy configured.");
 		}
 
 		[Test]
-		public void TestPreviousAttemptCount () => ClassicAssert.AreNotEqual (uint.MaxValue, report.PreviousAttemptCount);
+		public void TestPreviousAttemptCount () => Assert.That (report.PreviousAttemptCount, Is.Not.EqualTo (uint.MaxValue));
 
 		[Test]
-		public void TestDuration () => ClassicAssert.IsTrue (report.Duration > TimeSpan.MinValue);
+		public void TestDuration () => Assert.That (report.Duration > TimeSpan.MinValue, Is.True);
 
 		[Test]
-		public void TestConnectionSetupTime () => ClassicAssert.IsTrue (report.ConnectionSetupTime > TimeSpan.MinValue);
+		public void TestConnectionSetupTime () => Assert.That (report.ConnectionSetupTime > TimeSpan.MinValue, Is.True);
 
 		[Test]
 		public void TestEnumerateResolutions ()
 		{
 			var e = new AutoResetEvent (false);
 			report.EnumerateResolutions ((source, duration, count, endpoint, preferred) => {
-				ClassicAssert.IsTrue (duration > TimeSpan.MinValue, "Durantion");
-				ClassicAssert.AreNotEqual (0, count, "Count");
-				ClassicAssert.IsNotNull (endpoint, "endpoint");
-				ClassicAssert.IsNotNull (preferred, "preferred");
+				Assert.That (duration > TimeSpan.MinValue, Is.True, "Durantion");
+				Assert.That (count, Is.Not.EqualTo (0), "Count");
+				Assert.That (endpoint, Is.Not.Null, "endpoint");
+				Assert.That (preferred, Is.Not.Null, "preferred");
 				e.Set ();
 			});
 			e.WaitOne ();
@@ -79,7 +79,7 @@ namespace MonoTouchFixtures.Network {
 		public void TestProxyEnpoint ()
 		{
 			TestRuntime.IgnoreInCI ("CI bots might have proxies setup and will mean that the test will fail.");
-			ClassicAssert.IsNull (report.ProxyEndpoint);
+			Assert.That (report.ProxyEndpoint, Is.Null);
 		}
 
 		[Test]

@@ -24,11 +24,11 @@ namespace MonoTouchFixtures.UIKit {
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
 
 			using (var ta = new NSTextAttachment (null, null)) {
-				ClassicAssert.IsTrue (ta.Bounds.IsEmpty, "Bounds");
-				ClassicAssert.Null (ta.Contents, "Contents");
-				ClassicAssert.Null (ta.FileType, "FileType");
-				ClassicAssert.Null (ta.FileWrapper, "FileWrapper");
-				ClassicAssert.Null (ta.Image, "Image");
+				Assert.That (ta.Bounds.IsEmpty, Is.True, "Bounds");
+				Assert.That (ta.Contents, Is.Null, "Contents");
+				Assert.That (ta.FileType, Is.Null, "FileType");
+				Assert.That (ta.FileWrapper, Is.Null, "FileWrapper");
+				Assert.That (ta.Image, Is.Null, "Image");
 			}
 		}
 	}

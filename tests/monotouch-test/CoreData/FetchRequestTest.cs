@@ -19,25 +19,25 @@ namespace MonoTouchFixtures.CoreData {
 		public void DefaultValues ()
 		{
 			using (var fr = new NSFetchRequest ()) {
-				ClassicAssert.Null (fr.AffectedStores, "AffectedStores");
-				ClassicAssert.Null (fr.Entity, "Entity");
-				ClassicAssert.Null (fr.EntityName, "EntityName");
+				Assert.That (fr.AffectedStores, Is.Null, "AffectedStores");
+				Assert.That (fr.Entity, Is.Null, "Entity");
+				Assert.That (fr.EntityName, Is.Null, "EntityName");
 				Assert.That (fr.FetchBatchSize, Is.EqualTo ((nint) 0), "FetchBatchSize");
 				Assert.That (fr.FetchLimit, Is.EqualTo ((nuint) 0), "FetchLimit");
 				Assert.That (fr.FetchOffset, Is.EqualTo ((nuint) 0), "FetchOffset");
-				ClassicAssert.Null (fr.HavingPredicate, "HavingPredicate");
-				ClassicAssert.True (fr.IncludesPendingChanges, "IncludesPendingChanges");
-				ClassicAssert.True (fr.IncludesPropertyValues, "IncludesPropertyValues");
-				ClassicAssert.True (fr.IncludesSubentities, "IncludesSubentities");
-				ClassicAssert.Null (fr.Predicate, "Predicate");
-				ClassicAssert.Null (fr.PropertiesToFetch, "PropertiesToFetch");
-				ClassicAssert.Null (fr.PropertiesToGroupBy, "PropertiesToGroupBy");
-				ClassicAssert.Null (fr.RelationshipKeyPathsForPrefetching, "RelationshipKeyPathsForPrefetching");
+				Assert.That (fr.HavingPredicate, Is.Null, "HavingPredicate");
+				Assert.That (fr.IncludesPendingChanges, Is.True, "IncludesPendingChanges");
+				Assert.That (fr.IncludesPropertyValues, Is.True, "IncludesPropertyValues");
+				Assert.That (fr.IncludesSubentities, Is.True, "IncludesSubentities");
+				Assert.That (fr.Predicate, Is.Null, "Predicate");
+				Assert.That (fr.PropertiesToFetch, Is.Null, "PropertiesToFetch");
+				Assert.That (fr.PropertiesToGroupBy, Is.Null, "PropertiesToGroupBy");
+				Assert.That (fr.RelationshipKeyPathsForPrefetching, Is.Null, "RelationshipKeyPathsForPrefetching");
 				Assert.That (fr.ResultType, Is.EqualTo (NSFetchRequestResultType.ManagedObject), "ResultType");
-				ClassicAssert.False (fr.ReturnsDistinctResults, "ReturnsDistinctResults");
-				ClassicAssert.True (fr.ReturnsObjectsAsFaults, "ReturnsObjectsAsFaults");
-				ClassicAssert.False (fr.ShouldRefreshRefetchedObjects, "ShouldRefreshRefetchedObjects");
-				ClassicAssert.Null (fr.SortDescriptors, "SortDescriptors");
+				Assert.That (fr.ReturnsDistinctResults, Is.False, "ReturnsDistinctResults");
+				Assert.That (fr.ReturnsObjectsAsFaults, Is.True, "ReturnsObjectsAsFaults");
+				Assert.That (fr.ShouldRefreshRefetchedObjects, Is.False, "ShouldRefreshRefetchedObjects");
+				Assert.That (fr.SortDescriptors, Is.Null, "SortDescriptors");
 			}
 		}
 
@@ -48,7 +48,7 @@ namespace MonoTouchFixtures.CoreData {
 				Assert.That (fr.EntityName, Is.EqualTo ("entityName"), "EntityName");
 				// Entity is invalid (and throws) so we do not check it - except to see if we can set it to null
 				fr.Entity = null;
-				ClassicAssert.Null (fr.Entity, "Entity");
+				Assert.That (fr.Entity, Is.Null, "Entity");
 			}
 		}
 

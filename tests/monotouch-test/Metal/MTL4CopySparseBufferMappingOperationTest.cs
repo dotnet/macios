@@ -18,8 +18,8 @@ namespace MonoTouchFixtures.Metal {
 			var operation = new MTL4CopySparseBufferMappingOperation ();
 
 			// Assert
-			ClassicAssert.AreEqual (default (NSRange), operation.SourceRange);
-			ClassicAssert.AreEqual (default (nuint), operation.DestinationOffset);
+			Assert.That (operation.SourceRange, Is.EqualTo (default (NSRange)));
+			Assert.That (operation.DestinationOffset, Is.EqualTo (default (nuint)));
 		}
 
 		[Test]
@@ -33,7 +33,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.SourceRange = expectedRange;
 
 			// Assert
-			ClassicAssert.AreEqual (expectedRange, operation.SourceRange);
+			Assert.That (operation.SourceRange, Is.EqualTo (expectedRange));
 		}
 
 		[Test]
@@ -47,7 +47,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.DestinationOffset = expectedOffset;
 
 			// Assert
-			ClassicAssert.AreEqual (expectedOffset, operation.DestinationOffset);
+			Assert.That (operation.DestinationOffset, Is.EqualTo (expectedOffset));
 		}
 
 		[Test]
@@ -63,8 +63,8 @@ namespace MonoTouchFixtures.Metal {
 			operation.DestinationOffset = expectedOffset;
 
 			// Assert
-			ClassicAssert.AreEqual (expectedRange, operation.SourceRange);
-			ClassicAssert.AreEqual (expectedOffset, operation.DestinationOffset);
+			Assert.That (operation.SourceRange, Is.EqualTo (expectedRange));
+			Assert.That (operation.DestinationOffset, Is.EqualTo (expectedOffset));
 		}
 
 		[Test]
@@ -78,9 +78,9 @@ namespace MonoTouchFixtures.Metal {
 			operation.SourceRange = zeroLengthRange;
 
 			// Assert
-			ClassicAssert.AreEqual (zeroLengthRange, operation.SourceRange);
-			ClassicAssert.AreEqual (10, (int) operation.SourceRange.Location);
-			ClassicAssert.AreEqual (0, (int) operation.SourceRange.Length);
+			Assert.That (operation.SourceRange, Is.EqualTo (zeroLengthRange));
+			Assert.That ((int) operation.SourceRange.Location, Is.EqualTo (10));
+			Assert.That ((int) operation.SourceRange.Length, Is.EqualTo (0));
 		}
 
 		[Test]
@@ -94,7 +94,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.SourceRange = maxRange;
 
 			// Assert
-			ClassicAssert.AreEqual (maxRange, operation.SourceRange);
+			Assert.That (operation.SourceRange, Is.EqualTo (maxRange));
 		}
 
 		[Test]
@@ -107,7 +107,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.DestinationOffset = 0;
 
 			// Assert
-			ClassicAssert.AreEqual (0, (int) operation.DestinationOffset);
+			Assert.That ((int) operation.DestinationOffset, Is.EqualTo (0));
 		}
 
 		[Test]
@@ -120,7 +120,7 @@ namespace MonoTouchFixtures.Metal {
 			operation.DestinationOffset = nuint.MaxValue;
 
 			// Assert
-			ClassicAssert.AreEqual (nuint.MaxValue, operation.DestinationOffset);
+			Assert.That (operation.DestinationOffset, Is.EqualTo (nuint.MaxValue));
 		}
 
 		[Test]
@@ -138,8 +138,8 @@ namespace MonoTouchFixtures.Metal {
 			operation2.DestinationOffset = 2048;
 
 			// Assert
-			ClassicAssert.AreNotEqual (operation1.SourceRange, operation2.SourceRange);
-			ClassicAssert.AreNotEqual (operation1.DestinationOffset, operation2.DestinationOffset);
+			Assert.That (operation2.SourceRange, Is.Not.EqualTo (operation1.SourceRange));
+			Assert.That (operation2.DestinationOffset, Is.Not.EqualTo (operation1.DestinationOffset));
 		}
 
 		[Test]
@@ -153,9 +153,9 @@ namespace MonoTouchFixtures.Metal {
 			operation.SourceRange = largeRange;
 
 			// Assert
-			ClassicAssert.AreEqual (largeRange, operation.SourceRange);
-			ClassicAssert.AreEqual (1000000, (int) operation.SourceRange.Location);
-			ClassicAssert.AreEqual (500000, (int) operation.SourceRange.Length);
+			Assert.That (operation.SourceRange, Is.EqualTo (largeRange));
+			Assert.That ((int) operation.SourceRange.Location, Is.EqualTo (1000000));
+			Assert.That ((int) operation.SourceRange.Length, Is.EqualTo (500000));
 		}
 	}
 }

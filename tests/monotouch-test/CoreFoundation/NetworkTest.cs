@@ -31,7 +31,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void WebProxy ()
 		{
 			IWebProxy proxy = PlatformCFNetwork.GetDefaultProxy ();
-			ClassicAssert.True (proxy.IsBypassed (uri), "IsBypassed");
+			Assert.That (proxy.IsBypassed (uri), Is.True, "IsBypassed");
 			Assert.That (proxy.GetProxy (uri), Is.SameAs (uri), "GetProxy");
 		}
 
@@ -41,13 +41,13 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var proxies = PlatformCFNetwork.GetProxiesForUri (uri, settings);
 			Assert.That (proxies.Length, Is.EqualTo (1), "single");
 			var p = proxies [0];
-			ClassicAssert.Null (p.AutoConfigurationJavaScript, "AutoConfigurationJavaScript");
-			ClassicAssert.Null (p.AutoConfigurationUrl, "AutoConfigurationUrl");
-			ClassicAssert.Null (p.HostName, "HostName");
+			Assert.That (p.AutoConfigurationJavaScript, Is.Null, "AutoConfigurationJavaScript");
+			Assert.That (p.AutoConfigurationUrl, Is.Null, "AutoConfigurationUrl");
+			Assert.That (p.HostName, Is.Null, "HostName");
 			Assert.That (p.Port, Is.EqualTo (0), "Port");
-			ClassicAssert.Null (p.Password, "Password");
+			Assert.That (p.Password, Is.Null, "Password");
 			Assert.That (p.ProxyType, Is.EqualTo (CFProxyType.None), "Type");
-			ClassicAssert.Null (p.Username, "Username");
+			Assert.That (p.Username, Is.Null, "Username");
 		}
 
 		[Test]

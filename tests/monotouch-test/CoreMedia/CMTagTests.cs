@@ -73,58 +73,58 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			Assert.Multiple (() => {
-				ClassicAssert.AreEqual (true, CMTag.Equals (default (CMTag), default (CMTag)), "Default");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.Invalid, CMTag.Invalid), "Invalid");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.MediaTypeVideo, CMTag.MediaTypeVideo), "MediaTypeVideo");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.MediaSubTypeMebx, CMTag.MediaSubTypeMebx), "MediaSubTypeMebx");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.MediaTypeAudio, CMTag.MediaTypeAudio), "MediaTypeAudio");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.MediaTypeMetadata, CMTag.MediaTypeMetadata), "MediaTypeMetadata");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.StereoLeftEye, CMTag.StereoLeftEye), "StereoLeftEye");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.StereoRightEye, CMTag.StereoRightEye), "StereoRightEye");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.StereoLeftAndRightEye, CMTag.StereoLeftAndRightEye), "StereoLeftAndRightEye");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.StereoNone, CMTag.StereoNone), "StereoNone");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.StereoInterpretationOrderReversed, CMTag.StereoInterpretationOrderReversed), "StereoInterpretationOrderReversed");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.ProjectionTypeRectangular, CMTag.ProjectionTypeRectangular), "ProjectionTypeRectangular");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.ProjectionTypeEquirectangular, CMTag.ProjectionTypeEquirectangular), "ProjectionTypeEquirectangular");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.ProjectionTypeHalfEquirectangular, CMTag.ProjectionTypeHalfEquirectangular), "ProjectionTypeHalfEquirectangular");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.ProjectionTypeFisheye, CMTag.ProjectionTypeFisheye), "ProjectionTypeFisheye");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.PackingTypeNone, CMTag.PackingTypeNone), "PackingTypeNone");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.PackingTypeSideBySide, CMTag.PackingTypeSideBySide), "PackingTypeSideBySide");
-				ClassicAssert.AreEqual (true, CMTag.Equals (CMTag.PackingTypeOverUnder, CMTag.PackingTypeOverUnder), "PackingTypeOverUnder");
+				Assert.That (CMTag.Equals (default (CMTag), default (CMTag)), Is.EqualTo (true), "Default");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.Invalid), Is.EqualTo (true), "Invalid");
+				Assert.That (CMTag.Equals (CMTag.MediaTypeVideo, CMTag.MediaTypeVideo), Is.EqualTo (true), "MediaTypeVideo");
+				Assert.That (CMTag.Equals (CMTag.MediaSubTypeMebx, CMTag.MediaSubTypeMebx), Is.EqualTo (true), "MediaSubTypeMebx");
+				Assert.That (CMTag.Equals (CMTag.MediaTypeAudio, CMTag.MediaTypeAudio), Is.EqualTo (true), "MediaTypeAudio");
+				Assert.That (CMTag.Equals (CMTag.MediaTypeMetadata, CMTag.MediaTypeMetadata), Is.EqualTo (true), "MediaTypeMetadata");
+				Assert.That (CMTag.Equals (CMTag.StereoLeftEye, CMTag.StereoLeftEye), Is.EqualTo (true), "StereoLeftEye");
+				Assert.That (CMTag.Equals (CMTag.StereoRightEye, CMTag.StereoRightEye), Is.EqualTo (true), "StereoRightEye");
+				Assert.That (CMTag.Equals (CMTag.StereoLeftAndRightEye, CMTag.StereoLeftAndRightEye), Is.EqualTo (true), "StereoLeftAndRightEye");
+				Assert.That (CMTag.Equals (CMTag.StereoNone, CMTag.StereoNone), Is.EqualTo (true), "StereoNone");
+				Assert.That (CMTag.Equals (CMTag.StereoInterpretationOrderReversed, CMTag.StereoInterpretationOrderReversed), Is.EqualTo (true), "StereoInterpretationOrderReversed");
+				Assert.That (CMTag.Equals (CMTag.ProjectionTypeRectangular, CMTag.ProjectionTypeRectangular), Is.EqualTo (true), "ProjectionTypeRectangular");
+				Assert.That (CMTag.Equals (CMTag.ProjectionTypeEquirectangular, CMTag.ProjectionTypeEquirectangular), Is.EqualTo (true), "ProjectionTypeEquirectangular");
+				Assert.That (CMTag.Equals (CMTag.ProjectionTypeHalfEquirectangular, CMTag.ProjectionTypeHalfEquirectangular), Is.EqualTo (true), "ProjectionTypeHalfEquirectangular");
+				Assert.That (CMTag.Equals (CMTag.ProjectionTypeFisheye, CMTag.ProjectionTypeFisheye), Is.EqualTo (true), "ProjectionTypeFisheye");
+				Assert.That (CMTag.Equals (CMTag.PackingTypeNone, CMTag.PackingTypeNone), Is.EqualTo (true), "PackingTypeNone");
+				Assert.That (CMTag.Equals (CMTag.PackingTypeSideBySide, CMTag.PackingTypeSideBySide), Is.EqualTo (true), "PackingTypeSideBySide");
+				Assert.That (CMTag.Equals (CMTag.PackingTypeOverUnder, CMTag.PackingTypeOverUnder), Is.EqualTo (true), "PackingTypeOverUnder");
 
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.MediaTypeVideo), "Invalid vs MediaTypeVideo");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.MediaSubTypeMebx), "Invalid vs MediaSubTypeMebx");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.MediaTypeAudio), "Invalid vs MediaTypeAudio");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.MediaTypeMetadata), "Invalid vs MediaTypeMetadata");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.StereoLeftEye), "Invalid vs StereoLeftEye");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.StereoRightEye), "Invalid vs StereoRightEye");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.StereoLeftAndRightEye), "Invalid vs StereoLeftAndRightEye");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.StereoNone), "Invalid vs StereoNone");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.StereoInterpretationOrderReversed), "Invalid vs StereoInterpretationOrderReversed");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.ProjectionTypeRectangular), "Invalid vs ProjectionTypeRectangular");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.ProjectionTypeEquirectangular), "Invalid vs ProjectionTypeEquirectangular");
-				ClassicAssert.AreEqual (!TestRuntime.CheckXcodeVersion (16, 0), CMTag.Equals (CMTag.Invalid, CMTag.ProjectionTypeHalfEquirectangular), "Invalid vs ProjectionTypeHalfEquirectangular");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.ProjectionTypeFisheye), "Invalid vs ProjectionTypeFisheye");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.PackingTypeNone), "Invalid vs PackingTypeNone");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.PackingTypeSideBySide), "Invalid vs PackingTypeSideBySide");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.Invalid, CMTag.PackingTypeOverUnder), "Invalid vs PackingTypeOverUnder");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.MediaTypeVideo), Is.EqualTo (false), "Invalid vs MediaTypeVideo");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.MediaSubTypeMebx), Is.EqualTo (false), "Invalid vs MediaSubTypeMebx");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.MediaTypeAudio), Is.EqualTo (false), "Invalid vs MediaTypeAudio");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.MediaTypeMetadata), Is.EqualTo (false), "Invalid vs MediaTypeMetadata");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.StereoLeftEye), Is.EqualTo (false), "Invalid vs StereoLeftEye");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.StereoRightEye), Is.EqualTo (false), "Invalid vs StereoRightEye");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.StereoLeftAndRightEye), Is.EqualTo (false), "Invalid vs StereoLeftAndRightEye");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.StereoNone), Is.EqualTo (false), "Invalid vs StereoNone");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.StereoInterpretationOrderReversed), Is.EqualTo (false), "Invalid vs StereoInterpretationOrderReversed");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.ProjectionTypeRectangular), Is.EqualTo (false), "Invalid vs ProjectionTypeRectangular");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.ProjectionTypeEquirectangular), Is.EqualTo (false), "Invalid vs ProjectionTypeEquirectangular");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.ProjectionTypeHalfEquirectangular), Is.EqualTo (!TestRuntime.CheckXcodeVersion (16, 0)), "Invalid vs ProjectionTypeHalfEquirectangular");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.ProjectionTypeFisheye), Is.EqualTo (false), "Invalid vs ProjectionTypeFisheye");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.PackingTypeNone), Is.EqualTo (false), "Invalid vs PackingTypeNone");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.PackingTypeSideBySide), Is.EqualTo (false), "Invalid vs PackingTypeSideBySide");
+				Assert.That (CMTag.Equals (CMTag.Invalid, CMTag.PackingTypeOverUnder), Is.EqualTo (false), "Invalid vs PackingTypeOverUnder");
 
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.MediaTypeVideo, CMTag.Invalid), "MediaTypeVideo vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.MediaSubTypeMebx, CMTag.Invalid), "MediaSubTypeMebx vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.MediaTypeAudio, CMTag.Invalid), "MediaTypeAudio vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.MediaTypeMetadata, CMTag.Invalid), "MediaTypeMetadata vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.StereoLeftEye, CMTag.Invalid), "StereoLeftEye vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.StereoRightEye, CMTag.Invalid), "StereoRightEye vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.StereoLeftAndRightEye, CMTag.Invalid), "StereoLeftAndRightEye vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.StereoNone, CMTag.Invalid), "StereoNone vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.StereoInterpretationOrderReversed, CMTag.Invalid), "StereoInterpretationOrderReversed vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.ProjectionTypeRectangular, CMTag.Invalid), "ProjectionTypeRectangular vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.ProjectionTypeEquirectangular, CMTag.Invalid), "ProjectionTypeEquirectangular vs Invalid");
-				ClassicAssert.AreEqual (!TestRuntime.CheckXcodeVersion (16, 0), CMTag.Equals (CMTag.ProjectionTypeHalfEquirectangular, CMTag.Invalid), "ProjectionTypeHalfEquirectangular vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.ProjectionTypeFisheye, CMTag.Invalid), "ProjectionTypeFisheye vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.PackingTypeNone, CMTag.Invalid), "PackingTypeNone vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.PackingTypeSideBySide, CMTag.Invalid), "PackingTypeSideBySide vs Invalid");
-				ClassicAssert.AreEqual (false, CMTag.Equals (CMTag.PackingTypeOverUnder, CMTag.Invalid), "PackingTypeOverUnder vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.MediaTypeVideo, CMTag.Invalid), Is.EqualTo (false), "MediaTypeVideo vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.MediaSubTypeMebx, CMTag.Invalid), Is.EqualTo (false), "MediaSubTypeMebx vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.MediaTypeAudio, CMTag.Invalid), Is.EqualTo (false), "MediaTypeAudio vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.MediaTypeMetadata, CMTag.Invalid), Is.EqualTo (false), "MediaTypeMetadata vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.StereoLeftEye, CMTag.Invalid), Is.EqualTo (false), "StereoLeftEye vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.StereoRightEye, CMTag.Invalid), Is.EqualTo (false), "StereoRightEye vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.StereoLeftAndRightEye, CMTag.Invalid), Is.EqualTo (false), "StereoLeftAndRightEye vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.StereoNone, CMTag.Invalid), Is.EqualTo (false), "StereoNone vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.StereoInterpretationOrderReversed, CMTag.Invalid), Is.EqualTo (false), "StereoInterpretationOrderReversed vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.ProjectionTypeRectangular, CMTag.Invalid), Is.EqualTo (false), "ProjectionTypeRectangular vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.ProjectionTypeEquirectangular, CMTag.Invalid), Is.EqualTo (false), "ProjectionTypeEquirectangular vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.ProjectionTypeHalfEquirectangular, CMTag.Invalid), Is.EqualTo (!TestRuntime.CheckXcodeVersion (16, 0)), "ProjectionTypeHalfEquirectangular vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.ProjectionTypeFisheye, CMTag.Invalid), Is.EqualTo (false), "ProjectionTypeFisheye vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.PackingTypeNone, CMTag.Invalid), Is.EqualTo (false), "PackingTypeNone vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.PackingTypeSideBySide, CMTag.Invalid), Is.EqualTo (false), "PackingTypeSideBySide vs Invalid");
+				Assert.That (CMTag.Equals (CMTag.PackingTypeOverUnder, CMTag.Invalid), Is.EqualTo (false), "PackingTypeOverUnder vs Invalid");
 			});
 		}
 
@@ -134,87 +134,87 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			Assert.Multiple (() => {
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (default (CMTag), default (CMTag)), "Default");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.Invalid, CMTag.Invalid), "Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.MediaTypeVideo, CMTag.MediaTypeVideo), "MediaTypeVideo");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.MediaSubTypeMebx, CMTag.MediaSubTypeMebx), "MediaSubTypeMebx");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.MediaTypeAudio, CMTag.MediaTypeAudio), "MediaTypeAudio");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.MediaTypeMetadata, CMTag.MediaTypeMetadata), "MediaTypeMetadata");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.StereoLeftEye, CMTag.StereoLeftEye), "StereoLeftEye");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.StereoRightEye, CMTag.StereoRightEye), "StereoRightEye");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.StereoLeftAndRightEye, CMTag.StereoLeftAndRightEye), "StereoLeftAndRightEye");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.StereoNone, CMTag.StereoNone), "StereoNone");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.StereoInterpretationOrderReversed, CMTag.StereoInterpretationOrderReversed), "StereoInterpretationOrderReversed");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.ProjectionTypeRectangular, CMTag.ProjectionTypeRectangular), "ProjectionTypeRectangular");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.ProjectionTypeEquirectangular, CMTag.ProjectionTypeEquirectangular), "ProjectionTypeEquirectangular");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.ProjectionTypeHalfEquirectangular, CMTag.ProjectionTypeHalfEquirectangular), "ProjectionTypeHalfEquirectangular");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.ProjectionTypeFisheye, CMTag.ProjectionTypeFisheye), "ProjectionTypeFisheye");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.PackingTypeNone, CMTag.PackingTypeNone), "PackingTypeNone");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.PackingTypeSideBySide, CMTag.PackingTypeSideBySide), "PackingTypeSideBySide");
-				ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.PackingTypeOverUnder, CMTag.PackingTypeOverUnder), "PackingTypeOverUnder");
+				Assert.That (CMTag.Compare (default (CMTag), default (CMTag)), Is.EqualTo (CFComparisonResult.EqualTo), "Default");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.Invalid), Is.EqualTo (CFComparisonResult.EqualTo), "Invalid");
+				Assert.That (CMTag.Compare (CMTag.MediaTypeVideo, CMTag.MediaTypeVideo), Is.EqualTo (CFComparisonResult.EqualTo), "MediaTypeVideo");
+				Assert.That (CMTag.Compare (CMTag.MediaSubTypeMebx, CMTag.MediaSubTypeMebx), Is.EqualTo (CFComparisonResult.EqualTo), "MediaSubTypeMebx");
+				Assert.That (CMTag.Compare (CMTag.MediaTypeAudio, CMTag.MediaTypeAudio), Is.EqualTo (CFComparisonResult.EqualTo), "MediaTypeAudio");
+				Assert.That (CMTag.Compare (CMTag.MediaTypeMetadata, CMTag.MediaTypeMetadata), Is.EqualTo (CFComparisonResult.EqualTo), "MediaTypeMetadata");
+				Assert.That (CMTag.Compare (CMTag.StereoLeftEye, CMTag.StereoLeftEye), Is.EqualTo (CFComparisonResult.EqualTo), "StereoLeftEye");
+				Assert.That (CMTag.Compare (CMTag.StereoRightEye, CMTag.StereoRightEye), Is.EqualTo (CFComparisonResult.EqualTo), "StereoRightEye");
+				Assert.That (CMTag.Compare (CMTag.StereoLeftAndRightEye, CMTag.StereoLeftAndRightEye), Is.EqualTo (CFComparisonResult.EqualTo), "StereoLeftAndRightEye");
+				Assert.That (CMTag.Compare (CMTag.StereoNone, CMTag.StereoNone), Is.EqualTo (CFComparisonResult.EqualTo), "StereoNone");
+				Assert.That (CMTag.Compare (CMTag.StereoInterpretationOrderReversed, CMTag.StereoInterpretationOrderReversed), Is.EqualTo (CFComparisonResult.EqualTo), "StereoInterpretationOrderReversed");
+				Assert.That (CMTag.Compare (CMTag.ProjectionTypeRectangular, CMTag.ProjectionTypeRectangular), Is.EqualTo (CFComparisonResult.EqualTo), "ProjectionTypeRectangular");
+				Assert.That (CMTag.Compare (CMTag.ProjectionTypeEquirectangular, CMTag.ProjectionTypeEquirectangular), Is.EqualTo (CFComparisonResult.EqualTo), "ProjectionTypeEquirectangular");
+				Assert.That (CMTag.Compare (CMTag.ProjectionTypeHalfEquirectangular, CMTag.ProjectionTypeHalfEquirectangular), Is.EqualTo (CFComparisonResult.EqualTo), "ProjectionTypeHalfEquirectangular");
+				Assert.That (CMTag.Compare (CMTag.ProjectionTypeFisheye, CMTag.ProjectionTypeFisheye), Is.EqualTo (CFComparisonResult.EqualTo), "ProjectionTypeFisheye");
+				Assert.That (CMTag.Compare (CMTag.PackingTypeNone, CMTag.PackingTypeNone), Is.EqualTo (CFComparisonResult.EqualTo), "PackingTypeNone");
+				Assert.That (CMTag.Compare (CMTag.PackingTypeSideBySide, CMTag.PackingTypeSideBySide), Is.EqualTo (CFComparisonResult.EqualTo), "PackingTypeSideBySide");
+				Assert.That (CMTag.Compare (CMTag.PackingTypeOverUnder, CMTag.PackingTypeOverUnder), Is.EqualTo (CFComparisonResult.EqualTo), "PackingTypeOverUnder");
 
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.MediaTypeVideo), "Invalid vs MediaTypeVideo");
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.MediaSubTypeMebx), "Invalid vs MediaSubTypeMebx");
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.MediaTypeAudio), "Invalid vs MediaTypeAudio");
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.MediaTypeMetadata), "Invalid vs MediaTypeMetadata");
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.StereoLeftEye), "Invalid vs StereoLeftEye");
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.StereoRightEye), "Invalid vs StereoRightEye");
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.StereoLeftAndRightEye), "Invalid vs StereoLeftAndRightEye");
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.StereoNone), "Invalid vs StereoNone");
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.StereoInterpretationOrderReversed), "Invalid vs StereoInterpretationOrderReversed");
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.ProjectionTypeRectangular), "Invalid vs ProjectionTypeRectangular");
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.ProjectionTypeEquirectangular), "Invalid vs ProjectionTypeEquirectangular");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.MediaTypeVideo), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs MediaTypeVideo");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.MediaSubTypeMebx), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs MediaSubTypeMebx");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.MediaTypeAudio), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs MediaTypeAudio");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.MediaTypeMetadata), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs MediaTypeMetadata");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.StereoLeftEye), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs StereoLeftEye");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.StereoRightEye), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs StereoRightEye");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.StereoLeftAndRightEye), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs StereoLeftAndRightEye");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.StereoNone), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs StereoNone");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.StereoInterpretationOrderReversed), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs StereoInterpretationOrderReversed");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.ProjectionTypeRectangular), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs ProjectionTypeRectangular");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.ProjectionTypeEquirectangular), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs ProjectionTypeEquirectangular");
 				if (TestRuntime.CheckXcodeVersion (16, 0)) {
-					ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.ProjectionTypeHalfEquirectangular), "Invalid vs ProjectionTypeHalfEquirectangular");
+					Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.ProjectionTypeHalfEquirectangular), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs ProjectionTypeHalfEquirectangular");
 				} else {
-					ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.Invalid, CMTag.ProjectionTypeHalfEquirectangular), "Invalid vs ProjectionTypeHalfEquirectangular");
+					Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.ProjectionTypeHalfEquirectangular), Is.EqualTo (CFComparisonResult.EqualTo), "Invalid vs ProjectionTypeHalfEquirectangular");
 				}
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.ProjectionTypeFisheye), "Invalid vs ProjectionTypeFisheye");
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.PackingTypeNone), "Invalid vs PackingTypeNone");
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.PackingTypeSideBySide), "Invalid vs PackingTypeSideBySide");
-				ClassicAssert.AreEqual (CFComparisonResult.LessThan, CMTag.Compare (CMTag.Invalid, CMTag.PackingTypeOverUnder), "Invalid vs PackingTypeOverUnder");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.ProjectionTypeFisheye), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs ProjectionTypeFisheye");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.PackingTypeNone), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs PackingTypeNone");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.PackingTypeSideBySide), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs PackingTypeSideBySide");
+				Assert.That (CMTag.Compare (CMTag.Invalid, CMTag.PackingTypeOverUnder), Is.EqualTo (CFComparisonResult.LessThan), "Invalid vs PackingTypeOverUnder");
 
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.MediaTypeVideo, CMTag.Invalid), "MediaTypeVideo vs Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.MediaSubTypeMebx, CMTag.Invalid), "MediaSubTypeMebx vs Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.MediaTypeAudio, CMTag.Invalid), "MediaTypeAudio vs Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.MediaTypeMetadata, CMTag.Invalid), "MediaTypeMetadata vs Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.StereoLeftEye, CMTag.Invalid), "StereoLeftEye vs Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.StereoRightEye, CMTag.Invalid), "StereoRightEye vs Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.StereoLeftAndRightEye, CMTag.Invalid), "StereoLeftAndRightEye vs Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.StereoNone, CMTag.Invalid), "StereoNone vs Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.StereoInterpretationOrderReversed, CMTag.Invalid), "StereoInterpretationOrderReversed vs Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.ProjectionTypeRectangular, CMTag.Invalid), "ProjectionTypeRectangular vs Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.ProjectionTypeEquirectangular, CMTag.Invalid), "ProjectionTypeEquirectangular vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.MediaTypeVideo, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "MediaTypeVideo vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.MediaSubTypeMebx, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "MediaSubTypeMebx vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.MediaTypeAudio, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "MediaTypeAudio vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.MediaTypeMetadata, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "MediaTypeMetadata vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.StereoLeftEye, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "StereoLeftEye vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.StereoRightEye, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "StereoRightEye vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.StereoLeftAndRightEye, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "StereoLeftAndRightEye vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.StereoNone, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "StereoNone vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.StereoInterpretationOrderReversed, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "StereoInterpretationOrderReversed vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.ProjectionTypeRectangular, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "ProjectionTypeRectangular vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.ProjectionTypeEquirectangular, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "ProjectionTypeEquirectangular vs Invalid");
 				if (TestRuntime.CheckXcodeVersion (16, 0)) {
-					ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.ProjectionTypeHalfEquirectangular, CMTag.Invalid), "ProjectionTypeHalfEquirectangular vs Invalid");
+					Assert.That (CMTag.Compare (CMTag.ProjectionTypeHalfEquirectangular, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "ProjectionTypeHalfEquirectangular vs Invalid");
 				} else {
-					ClassicAssert.AreEqual (CFComparisonResult.EqualTo, CMTag.Compare (CMTag.ProjectionTypeHalfEquirectangular, CMTag.Invalid), "ProjectionTypeHalfEquirectangular vs Invalid");
+					Assert.That (CMTag.Compare (CMTag.ProjectionTypeHalfEquirectangular, CMTag.Invalid), Is.EqualTo (CFComparisonResult.EqualTo), "ProjectionTypeHalfEquirectangular vs Invalid");
 				}
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.ProjectionTypeFisheye, CMTag.Invalid), "ProjectionTypeFisheye vs Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.PackingTypeNone, CMTag.Invalid), "PackingTypeNone vs Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.PackingTypeSideBySide, CMTag.Invalid), "PackingTypeSideBySide vs Invalid");
-				ClassicAssert.AreEqual (CFComparisonResult.GreaterThan, CMTag.Compare (CMTag.PackingTypeOverUnder, CMTag.Invalid), "PackingTypeOverUnder vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.ProjectionTypeFisheye, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "ProjectionTypeFisheye vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.PackingTypeNone, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "PackingTypeNone vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.PackingTypeSideBySide, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "PackingTypeSideBySide vs Invalid");
+				Assert.That (CMTag.Compare (CMTag.PackingTypeOverUnder, CMTag.Invalid), Is.EqualTo (CFComparisonResult.GreaterThan), "PackingTypeOverUnder vs Invalid");
 			});
 		}
 
 		void AssertTag (CMTag tag, CMTagCategory category, CMTagDataType dataType, ulong value, bool isValid, bool hasFloat64Value, double float64Value, bool hasOSTypeValue, uint osTypeValue, bool hasFlagsValue, ulong flagsValue, bool hasInt64Value, long int64Value, string message)
 		{
-			ClassicAssert.AreEqual (category, tag.Category, $"{message}: Category");
-			ClassicAssert.AreEqual (dataType, tag.DataType, $"{message}: DataType");
-			ClassicAssert.AreEqual (value, tag.Value, $"{message}: Value");
-			ClassicAssert.AreEqual (isValid, tag.IsValid, $"{message}: IsValid");
-			ClassicAssert.AreEqual (hasFloat64Value, tag.HasFloat64Value, $"{message}: HasFloat64Value");
+			Assert.That (tag.Category, Is.EqualTo (category), $"{message}: Category");
+			Assert.That (tag.DataType, Is.EqualTo (dataType), $"{message}: DataType");
+			Assert.That (tag.Value, Is.EqualTo (value), $"{message}: Value");
+			Assert.That (tag.IsValid, Is.EqualTo (isValid), $"{message}: IsValid");
+			Assert.That (tag.HasFloat64Value, Is.EqualTo (hasFloat64Value), $"{message}: HasFloat64Value");
 			if (hasFloat64Value)
-				ClassicAssert.AreEqual (float64Value, tag.Float64Value, $"{message}: Float64Value");
-			ClassicAssert.AreEqual (hasOSTypeValue, tag.HasOSTypeValue, $"{message}: HasOSTypeValue");
+				Assert.That (tag.Float64Value, Is.EqualTo (float64Value), $"{message}: Float64Value");
+			Assert.That (tag.HasOSTypeValue, Is.EqualTo (hasOSTypeValue), $"{message}: HasOSTypeValue");
 			if (hasOSTypeValue)
-				ClassicAssert.AreEqual (osTypeValue, tag.OSTypeValue, $"{message}: OSTypeValue ({AVFoundationEnumTest.FourCC (osTypeValue)}={osTypeValue} vs {AVFoundationEnumTest.FourCC (tag.OSTypeValue)}={tag.OSTypeValue})");
-			ClassicAssert.AreEqual (hasFlagsValue, tag.HasFlagsValue, $"{message}: HasFlagsValue");
+				Assert.That (tag.OSTypeValue, Is.EqualTo (osTypeValue), $"{message}: OSTypeValue ({AVFoundationEnumTest.FourCC (osTypeValue)}={osTypeValue} vs {AVFoundationEnumTest.FourCC (tag.OSTypeValue)}={tag.OSTypeValue})");
+			Assert.That (tag.HasFlagsValue, Is.EqualTo (hasFlagsValue), $"{message}: HasFlagsValue");
 			if (hasFlagsValue)
-				ClassicAssert.AreEqual (flagsValue, tag.FlagsValue, $"{message}: FlagsValue");
-			ClassicAssert.AreEqual (hasInt64Value, tag.HasInt64Value, $"{message}: HasInt64Value");
+				Assert.That (tag.FlagsValue, Is.EqualTo (flagsValue), $"{message}: FlagsValue");
+			Assert.That (tag.HasInt64Value, Is.EqualTo (hasInt64Value), $"{message}: HasInt64Value");
 			if (hasInt64Value)
-				ClassicAssert.AreEqual (int64Value, tag.Int64Value, $"{message}: Int64Value");
+				Assert.That (tag.Int64Value, Is.EqualTo (int64Value), $"{message}: Int64Value");
 		}
 
 		[Test]
@@ -253,28 +253,28 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			Assert.Multiple (() => {
-				ClassicAssert.AreEqual ("{category:''{INVALID}", default (CMTag).ToString (), "Default");
-				ClassicAssert.AreEqual ("{category:''{INVALID}", CMTag.Invalid.ToString (), "Invalid");
-				ClassicAssert.AreEqual ("{category:'mdia' value:'vide' <OSType>}", CMTag.MediaTypeVideo.ToString (), "MediaTypeVideo");
-				ClassicAssert.AreEqual ("{category:'msub' value:'mebx' <OSType>}", CMTag.MediaSubTypeMebx.ToString (), "MediaSubTypeMebx");
-				ClassicAssert.AreEqual ("{category:'mdia' value:'soun' <OSType>}", CMTag.MediaTypeAudio.ToString (), "MediaTypeAudio");
-				ClassicAssert.AreEqual ("{category:'mdia' value:'meta' <OSType>}", CMTag.MediaTypeMetadata.ToString (), "MediaTypeMetadata");
-				ClassicAssert.AreEqual ("{category:'eyes' value:0x1 <flags>}", CMTag.StereoLeftEye.ToString (), "StereoLeftEye");
-				ClassicAssert.AreEqual ("{category:'eyes' value:0x2 <flags>}", CMTag.StereoRightEye.ToString (), "StereoRightEye");
-				ClassicAssert.AreEqual ("{category:'eyes' value:0x3 <flags>}", CMTag.StereoLeftAndRightEye.ToString (), "StereoLeftAndRightEye");
-				ClassicAssert.AreEqual ("{category:'eyes' value:0x0 <flags>}", CMTag.StereoNone.ToString (), "StereoNone");
-				ClassicAssert.AreEqual ("{category:'eyip' value:0x1 <flags>}", CMTag.StereoInterpretationOrderReversed.ToString (), "StereoInterpretationOrderReversed");
-				ClassicAssert.AreEqual ("{category:'proj' value:'rect' <OSType>}", CMTag.ProjectionTypeRectangular.ToString (), "ProjectionTypeRectangular");
-				ClassicAssert.AreEqual ("{category:'proj' value:'equi' <OSType>}", CMTag.ProjectionTypeEquirectangular.ToString (), "ProjectionTypeEquirectangular");
+				Assert.That (default (CMTag).ToString (), Is.EqualTo ("{category:''{INVALID}"), "Default");
+				Assert.That (CMTag.Invalid.ToString (), Is.EqualTo ("{category:''{INVALID}"), "Invalid");
+				Assert.That (CMTag.MediaTypeVideo.ToString (), Is.EqualTo ("{category:'mdia' value:'vide' <OSType>}"), "MediaTypeVideo");
+				Assert.That (CMTag.MediaSubTypeMebx.ToString (), Is.EqualTo ("{category:'msub' value:'mebx' <OSType>}"), "MediaSubTypeMebx");
+				Assert.That (CMTag.MediaTypeAudio.ToString (), Is.EqualTo ("{category:'mdia' value:'soun' <OSType>}"), "MediaTypeAudio");
+				Assert.That (CMTag.MediaTypeMetadata.ToString (), Is.EqualTo ("{category:'mdia' value:'meta' <OSType>}"), "MediaTypeMetadata");
+				Assert.That (CMTag.StereoLeftEye.ToString (), Is.EqualTo ("{category:'eyes' value:0x1 <flags>}"), "StereoLeftEye");
+				Assert.That (CMTag.StereoRightEye.ToString (), Is.EqualTo ("{category:'eyes' value:0x2 <flags>}"), "StereoRightEye");
+				Assert.That (CMTag.StereoLeftAndRightEye.ToString (), Is.EqualTo ("{category:'eyes' value:0x3 <flags>}"), "StereoLeftAndRightEye");
+				Assert.That (CMTag.StereoNone.ToString (), Is.EqualTo ("{category:'eyes' value:0x0 <flags>}"), "StereoNone");
+				Assert.That (CMTag.StereoInterpretationOrderReversed.ToString (), Is.EqualTo ("{category:'eyip' value:0x1 <flags>}"), "StereoInterpretationOrderReversed");
+				Assert.That (CMTag.ProjectionTypeRectangular.ToString (), Is.EqualTo ("{category:'proj' value:'rect' <OSType>}"), "ProjectionTypeRectangular");
+				Assert.That (CMTag.ProjectionTypeEquirectangular.ToString (), Is.EqualTo ("{category:'proj' value:'equi' <OSType>}"), "ProjectionTypeEquirectangular");
 				if (TestRuntime.CheckXcodeVersion (16, 0)) {
-					ClassicAssert.AreEqual ("{category:'proj' value:'hequ' <OSType>}", CMTag.ProjectionTypeHalfEquirectangular.ToString (), "ProjectionTypeHalfEquirectangular");
+					Assert.That (CMTag.ProjectionTypeHalfEquirectangular.ToString (), Is.EqualTo ("{category:'proj' value:'hequ' <OSType>}"), "ProjectionTypeHalfEquirectangular");
 				} else {
-					ClassicAssert.AreEqual ("{category:''{INVALID}", CMTag.ProjectionTypeHalfEquirectangular.ToString (), "ProjectionTypeHalfEquirectangular");
+					Assert.That (CMTag.ProjectionTypeHalfEquirectangular.ToString (), Is.EqualTo ("{category:''{INVALID}"), "ProjectionTypeHalfEquirectangular");
 				}
-				ClassicAssert.AreEqual ("{category:'proj' value:'fish' <OSType>}", CMTag.ProjectionTypeFisheye.ToString (), "ProjectionTypeFisheye");
-				ClassicAssert.AreEqual ("{category:'pack' value:'none' <OSType>}", CMTag.PackingTypeNone.ToString (), "PackingTypeNone");
-				ClassicAssert.AreEqual ("{category:'pack' value:'side' <OSType>}", CMTag.PackingTypeSideBySide.ToString (), "PackingTypeSideBySide");
-				ClassicAssert.AreEqual ("{category:'pack' value:'over' <OSType>}", CMTag.PackingTypeOverUnder.ToString (), "PackingTypeOverUnder");
+				Assert.That (CMTag.ProjectionTypeFisheye.ToString (), Is.EqualTo ("{category:'proj' value:'fish' <OSType>}"), "ProjectionTypeFisheye");
+				Assert.That (CMTag.PackingTypeNone.ToString (), Is.EqualTo ("{category:'pack' value:'none' <OSType>}"), "PackingTypeNone");
+				Assert.That (CMTag.PackingTypeSideBySide.ToString (), Is.EqualTo ("{category:'pack' value:'side' <OSType>}"), "PackingTypeSideBySide");
+				Assert.That (CMTag.PackingTypeOverUnder.ToString (), Is.EqualTo ("{category:'pack' value:'over' <OSType>}"), "PackingTypeOverUnder");
 			});
 		}
 
@@ -286,7 +286,7 @@ namespace MonoTouchFixtures.CoreMedia {
 			var roundTrip = new Action<CMTag, string> ((tag, message) => {
 				var dict = tag.ToDictionary ();
 				var deserializedTag = CMTag.Create (dict);
-				ClassicAssert.AreEqual (true, CMTag.Equals (tag, deserializedTag), message);
+				Assert.That (CMTag.Equals (tag, deserializedTag), Is.EqualTo (true).Within (message));
 			});
 
 			Assert.Multiple (() => {
@@ -317,24 +317,24 @@ namespace MonoTouchFixtures.CoreMedia {
 			TestRuntime.AssertXcodeVersion (15, 0);
 
 			Assert.Multiple (() => {
-				ClassicAssert.AreNotEqual (0, default (CMTag).GetHashCode (), "Default");
-				ClassicAssert.AreNotEqual (0, CMTag.Invalid.GetHashCode (), "Invalid");
-				ClassicAssert.AreNotEqual (0, CMTag.MediaTypeVideo.GetHashCode (), "MediaTypeVideo");
-				ClassicAssert.AreNotEqual (0, CMTag.MediaSubTypeMebx.GetHashCode (), "MediaSubTypeMebx");
-				ClassicAssert.AreNotEqual (0, CMTag.MediaTypeAudio.GetHashCode (), "MediaTypeAudio");
-				ClassicAssert.AreNotEqual (0, CMTag.MediaTypeMetadata.GetHashCode (), "MediaTypeMetadata");
-				ClassicAssert.AreNotEqual (0, CMTag.StereoLeftEye.GetHashCode (), "StereoLeftEye");
-				ClassicAssert.AreNotEqual (0, CMTag.StereoRightEye.GetHashCode (), "StereoRightEye");
-				ClassicAssert.AreNotEqual (0, CMTag.StereoLeftAndRightEye.GetHashCode (), "StereoLeftAndRightEye");
-				ClassicAssert.AreNotEqual (0, CMTag.StereoNone.GetHashCode (), "StereoNone");
-				ClassicAssert.AreNotEqual (0, CMTag.StereoInterpretationOrderReversed.GetHashCode (), "StereoInterpretationOrderReversed");
-				ClassicAssert.AreNotEqual (0, CMTag.ProjectionTypeRectangular.GetHashCode (), "ProjectionTypeRectangular");
-				ClassicAssert.AreNotEqual (0, CMTag.ProjectionTypeEquirectangular.GetHashCode (), "ProjectionTypeEquirectangular");
-				ClassicAssert.AreNotEqual (0, CMTag.ProjectionTypeHalfEquirectangular.GetHashCode (), "ProjectionTypeHalfEquirectangular");
-				ClassicAssert.AreNotEqual (0, CMTag.ProjectionTypeFisheye.GetHashCode (), "ProjectionTypeFisheye");
-				ClassicAssert.AreNotEqual (0, CMTag.PackingTypeNone.GetHashCode (), "PackingTypeNone");
-				ClassicAssert.AreNotEqual (0, CMTag.PackingTypeSideBySide.GetHashCode (), "PackingTypeSideBySide");
-				ClassicAssert.AreNotEqual (0, CMTag.PackingTypeOverUnder.GetHashCode (), "PackingTypeOverUnder");
+				Assert.That (default (CMTag).GetHashCode (), Is.Not.EqualTo (0), "Default");
+				Assert.That (CMTag.Invalid.GetHashCode (), Is.Not.EqualTo (0), "Invalid");
+				Assert.That (CMTag.MediaTypeVideo.GetHashCode (), Is.Not.EqualTo (0), "MediaTypeVideo");
+				Assert.That (CMTag.MediaSubTypeMebx.GetHashCode (), Is.Not.EqualTo (0), "MediaSubTypeMebx");
+				Assert.That (CMTag.MediaTypeAudio.GetHashCode (), Is.Not.EqualTo (0), "MediaTypeAudio");
+				Assert.That (CMTag.MediaTypeMetadata.GetHashCode (), Is.Not.EqualTo (0), "MediaTypeMetadata");
+				Assert.That (CMTag.StereoLeftEye.GetHashCode (), Is.Not.EqualTo (0), "StereoLeftEye");
+				Assert.That (CMTag.StereoRightEye.GetHashCode (), Is.Not.EqualTo (0), "StereoRightEye");
+				Assert.That (CMTag.StereoLeftAndRightEye.GetHashCode (), Is.Not.EqualTo (0), "StereoLeftAndRightEye");
+				Assert.That (CMTag.StereoNone.GetHashCode (), Is.Not.EqualTo (0), "StereoNone");
+				Assert.That (CMTag.StereoInterpretationOrderReversed.GetHashCode (), Is.Not.EqualTo (0), "StereoInterpretationOrderReversed");
+				Assert.That (CMTag.ProjectionTypeRectangular.GetHashCode (), Is.Not.EqualTo (0), "ProjectionTypeRectangular");
+				Assert.That (CMTag.ProjectionTypeEquirectangular.GetHashCode (), Is.Not.EqualTo (0), "ProjectionTypeEquirectangular");
+				Assert.That (CMTag.ProjectionTypeHalfEquirectangular.GetHashCode (), Is.Not.EqualTo (0), "ProjectionTypeHalfEquirectangular");
+				Assert.That (CMTag.ProjectionTypeFisheye.GetHashCode (), Is.Not.EqualTo (0), "ProjectionTypeFisheye");
+				Assert.That (CMTag.PackingTypeNone.GetHashCode (), Is.Not.EqualTo (0), "PackingTypeNone");
+				Assert.That (CMTag.PackingTypeSideBySide.GetHashCode (), Is.Not.EqualTo (0), "PackingTypeSideBySide");
+				Assert.That (CMTag.PackingTypeOverUnder.GetHashCode (), Is.Not.EqualTo (0), "PackingTypeOverUnder");
 			});
 		}
 	}

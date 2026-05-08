@@ -12,6 +12,6 @@ public static partial class TestLoader {
 public class LoaderTest {
 	public void TestAssemblyCount ()
 	{
-		ClassicAssert.AreEqual (2, TestLoader.GetTestAssemblies ().Count (), "Test assembly count");
+		Assert.That (TestLoader.GetTestAssemblies ().Count (), Is.EqualTo (2), "Test assembly count");
 	}
 }

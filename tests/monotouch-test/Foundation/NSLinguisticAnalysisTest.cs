@@ -32,8 +32,8 @@ namespace monotouchtest {
 			var testString = new NSString ("Hello Hola Bonjour!");
 			var range = new NSRange (0, testString.Length - 1);
 			testString.EnumerateLinguisticTags (range, NSLinguisticTagScheme.Token, NSLinguisticTaggerOptions.OmitWhitespace, null, Enumerator);
-			ClassicAssert.AreEqual (3, words.Count, "Word count: " + string.Join (", ", words));
-			ClassicAssert.True (words.Contains (NSLinguisticTag.Word.GetConstant ()), "Token type.");
+			Assert.That (words.Count, Is.EqualTo (3), "Word count: " + string.Join (", ", words));
+			Assert.That (words.Contains (NSLinguisticTag.Word.GetConstant ()), Is.True, "Token type.");
 		}
 
 		[Test]
@@ -42,8 +42,8 @@ namespace monotouchtest {
 			var testString = new NSString ("Hello Hola Bonjour!");
 			var range = new NSRange (0, testString.Length - 1);
 			testString.EnumerateLinguisticTags (range, NSLinguisticTagScheme.Token, NSLinguisticTaggerOptions.OmitWhitespace, null, StopEnumerator);
-			ClassicAssert.AreEqual (1, words.Count, "Word count");
-			ClassicAssert.True (words.Contains (NSLinguisticTag.Word.GetConstant ()), "Token type.");
+			Assert.That (words.Count, Is.EqualTo (1), "Word count");
+			Assert.That (words.Contains (NSLinguisticTag.Word.GetConstant ()), Is.True, "Token type.");
 		}
 
 		[Test]
@@ -53,7 +53,7 @@ namespace monotouchtest {
 			var range = new NSRange (0, testString.Length - 1);
 			NSValue [] tokenRanges;
 			var tags = testString.GetLinguisticTags (range, NSLinguisticTagScheme.NameOrLexicalClass, NSLinguisticTaggerOptions.OmitWhitespace, null, out tokenRanges);
-			ClassicAssert.AreEqual (3, tags.Length, "Tags Length");
+			Assert.That (tags.Length, Is.EqualTo (3), "Tags Length");
 		}
 	}
 }

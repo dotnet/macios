@@ -100,13 +100,13 @@ namespace MonoTouchFixtures.CoreGraphics {
 			};
 
 			var retrievedRect = graphicsDict.Rect;
-			ClassicAssert.IsTrue (rect == retrievedRect, "CoreGraphicsStrongDictionary CGRect");
+			Assert.That (rect == retrievedRect, Is.True, "CoreGraphicsStrongDictionary CGRect");
 
 			var retrievedSize = graphicsDict.Size;
-			ClassicAssert.IsTrue (size == retrievedSize, "CoreGraphicsStrongDictionary CGSize");
+			Assert.That (size == retrievedSize, Is.True, "CoreGraphicsStrongDictionary CGSize");
 
 			var retrievedPoint = graphicsDict.Point;
-			ClassicAssert.IsTrue (point == retrievedPoint, "CoreGraphicsStrongDictionary CGPoint");
+			Assert.That (point == retrievedPoint, Is.True, "CoreGraphicsStrongDictionary CGPoint");
 		}
 
 		class GraphicsDict : DictionaryContainer {

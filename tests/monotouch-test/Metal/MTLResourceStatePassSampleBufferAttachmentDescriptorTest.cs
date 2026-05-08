@@ -49,7 +49,7 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				objIndex = descriptor.StartOfEncoderSampleIndex;
 			}, "Getter");
-			ClassicAssert.AreEqual (newIndex, objIndex, "Value");
+			Assert.That (objIndex, Is.EqualTo (newIndex), "Value");
 		}
 
 		[Test]
@@ -64,7 +64,7 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				objIndex = descriptor.EndOfEncoderSampleIndex;
 			}, "Getter");
-			ClassicAssert.AreEqual (newIndex, objIndex, "Value");
+			Assert.That (objIndex, Is.EqualTo (newIndex), "Value");
 		}
 	}
 }

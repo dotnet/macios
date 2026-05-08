@@ -30,9 +30,9 @@ namespace Xamarin.Mac.Tests {
 		void TestDelegates (NSComboBox b)
 		{
 			NSTextField f = (NSTextField) b;
-			ClassicAssert.IsNotNull (b.Delegate, "NSComboBox delegate null");
-			ClassicAssert.IsNotNull (f.Delegate, "NSTextField delegate null");
-			ClassicAssert.AreEqual (b.Delegate.GetHashCode (), f.Delegate.GetHashCode (), "Delegates are not equal");
+			Assert.That (b.Delegate, Is.Not.Null, "NSComboBox delegate null");
+			Assert.That (f.Delegate, Is.Not.Null, "NSTextField delegate null");
+			Assert.That (f.Delegate.GetHashCode (), Is.EqualTo (b.Delegate.GetHashCode ()), "Delegates are not equal");
 		}
 
 		[Test]

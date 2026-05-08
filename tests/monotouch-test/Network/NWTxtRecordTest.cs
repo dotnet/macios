@@ -27,7 +27,7 @@ namespace MonoTouchFixtures.Network {
 			var e = new AutoResetEvent (false);
 			record.GetRawBytes (
 				(d) => {
-					ClassicAssert.AreNotEqual (0, d.Length, "Raw data length.");
+					Assert.That (d.Length, Is.Not.EqualTo (0), "Raw data length.");
 					e.Set ();
 				}
 			);
@@ -41,26 +41,26 @@ namespace MonoTouchFixtures.Network {
 		}
 
 		[Test]
-		public void TestMissingKey () => ClassicAssert.AreEqual (NWTxtRecordFindKey.NotPresent, record.FindKey ("foo"));
+		public void TestMissingKey () => Assert.That (record.FindKey ("foo"), Is.EqualTo (NWTxtRecordFindKey.NotPresent));
 
 		[Test]
-		public void TestPresentKey () => ClassicAssert.AreEqual (NWTxtRecordFindKey.NonEmptyValue, record.FindKey (randomKey));
+		public void TestPresentKey () => Assert.That (record.FindKey (randomKey), Is.EqualTo (NWTxtRecordFindKey.NonEmptyValue));
 
 		[Test]
 		public void TestAddByteValue ()
 		{
 			var data = new byte [] { 10, 20, 30, 40 };
 			var mySecondKey = "secondKey";
-			ClassicAssert.True (record.Add (mySecondKey, data), "Add");
-			ClassicAssert.AreEqual (NWTxtRecordFindKey.NonEmptyValue, record.FindKey (mySecondKey));
+			Assert.That (record.Add (mySecondKey, data), Is.True, "Add");
+			Assert.That (record.FindKey (mySecondKey), Is.EqualTo (NWTxtRecordFindKey.NonEmptyValue));
 		}
 
 		[Test]
 		public void TestAddNoValue ()
 		{
 			var mySecondKey = "secondLKey";
-			ClassicAssert.True (record.Add (mySecondKey), "Add");
-			ClassicAssert.AreEqual (NWTxtRecordFindKey.NoValue, record.FindKey (mySecondKey));
+			Assert.That (record.Add (mySecondKey), Is.True, "Add");
+			Assert.That (record.FindKey (mySecondKey), Is.EqualTo (NWTxtRecordFindKey.NoValue));
 		}
 
 		[Test]
@@ -68,8 +68,8 @@ namespace MonoTouchFixtures.Network {
 		{
 			var data = "hello";
 			var mySecondKey = "secondLKey";
-			ClassicAssert.True (record.Add (mySecondKey, data), "Add");
-			ClassicAssert.AreEqual (NWTxtRecordFindKey.NonEmptyValue, record.FindKey (mySecondKey));
+			Assert.That (record.Add (mySecondKey, data), Is.True, "Add");
+			Assert.That (record.FindKey (mySecondKey), Is.EqualTo (NWTxtRecordFindKey.NonEmptyValue));
 		}
 
 		[Test]
@@ -77,28 +77,28 @@ namespace MonoTouchFixtures.Network {
 		{
 			string data = null;
 			var mySecondKey = "secondLKey";
-			ClassicAssert.True (record.Add (mySecondKey, data), "Add");
-			ClassicAssert.AreEqual (NWTxtRecordFindKey.NoValue, record.FindKey (mySecondKey));
+			Assert.That (record.Add (mySecondKey, data), Is.True, "Add");
+			Assert.That (record.FindKey (mySecondKey), Is.EqualTo (NWTxtRecordFindKey.NoValue));
 		}
 
 		[Test]
-		public void TestRemoveMissingKey () => ClassicAssert.IsFalse (record.Remove ("NotPresentKey"));
+		public void TestRemoveMissingKey () => Assert.That (record.Remove ("NotPresentKey"), Is.False);
 
 		[Test]
 		public void TestRemovePresentKey ()
 		{
-			ClassicAssert.True (record.Remove (randomKey), "Remove");
-			ClassicAssert.AreEqual (NWTxtRecordFindKey.NotPresent, record.FindKey (randomKey), "FindKey");
+			Assert.That (record.Remove (randomKey), Is.True, "Remove");
+			Assert.That (record.FindKey (randomKey), Is.EqualTo (NWTxtRecordFindKey.NotPresent), "FindKey");
 		}
 
 		[Test]
-		public void TestKeyCount () => ClassicAssert.AreEqual (1, record.KeyCount);
+		public void TestKeyCount () => Assert.That (record.KeyCount, Is.EqualTo (1));
 
 		[Test]
-		public void TestIsDictionary () => ClassicAssert.IsTrue (record.IsDictionary);
+		public void TestIsDictionary () => Assert.That (record.IsDictionary, Is.True);
 
 		[Test]
-		public void TestNotNullEquals () => ClassicAssert.IsFalse (record.Equals (null));
+		public void TestNotNullEquals () => Assert.That (record.Equals (null), Is.False);
 
 		[Test]
 		public void TestApply ()
@@ -112,10 +112,10 @@ namespace MonoTouchFixtures.Network {
 			var keyCount2 = 0;
 			record.Apply ((k, r, v) => {
 				keyCount2++;
-				ClassicAssert.IsTrue (keys.Contains (k), k);
+				Assert.That (keys.Contains (k), Is.True, k);
 				return true;
 			});
-			ClassicAssert.AreEqual (keys.Count, keyCount2, "keycount2");
+			Assert.That (keyCount2, Is.EqualTo (keys.Count), "keycount2");
 		}
 
 		[Test]
@@ -123,9 +123,9 @@ namespace MonoTouchFixtures.Network {
 		{
 			var missing = "missingKey";
 			record.GetValue (missing, (k, r, value) => {
-				ClassicAssert.AreEqual (missing, k, "key");
-				ClassicAssert.AreEqual (NWTxtRecordFindKey.NotPresent, r, "result");
-				ClassicAssert.AreEqual (0, value.Length, "value");
+				Assert.That (k, Is.EqualTo (missing), "key");
+				Assert.That (r, Is.EqualTo (NWTxtRecordFindKey.NotPresent), "result");
+				Assert.That (value.Length, Is.EqualTo (0), "value");
 			});
 		}
 
@@ -133,9 +133,9 @@ namespace MonoTouchFixtures.Network {
 		public void TestGetValuePresent ()
 		{
 			record.GetValue (randomKey, (k, r, value) => {
-				ClassicAssert.AreEqual (randomKey, k, "key");
-				ClassicAssert.AreEqual (NWTxtRecordFindKey.NonEmptyValue, r, "result");
-				ClassicAssert.AreNotEqual (0, value.Length, "value");
+				Assert.That (k, Is.EqualTo (randomKey), "key");
+				Assert.That (r, Is.EqualTo (NWTxtRecordFindKey.NonEmptyValue), "result");
+				Assert.That (value.Length, Is.Not.EqualTo (0), "value");
 			});
 		}
 
@@ -145,7 +145,7 @@ namespace MonoTouchFixtures.Network {
 			var e = new AutoResetEvent (false);
 			record.GetRawBytes (
 				(d) => {
-					ClassicAssert.AreNotEqual (0, d.Length);
+					Assert.That (d.Length, Is.Not.EqualTo (0));
 					e.Set ();
 				}
 			);

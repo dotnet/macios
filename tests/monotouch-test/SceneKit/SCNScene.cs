@@ -20,16 +20,16 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void SCNSceneLoadingOptions_AnimationImportPolicyTestKeysNonNull ()
 		{
-			ClassicAssert.IsNotNull (SCNSceneSourceLoading.AnimationImportPolicyPlay);
-			ClassicAssert.IsNotNull (SCNSceneSourceLoading.AnimationImportPolicyPlayRepeatedly);
-			ClassicAssert.IsNotNull (SCNSceneSourceLoading.AnimationImportPolicyDoNotPlay);
-			ClassicAssert.IsNotNull (SCNSceneSourceLoading.AnimationImportPolicyPlayUsingSceneTimeBase);
+			Assert.That (SCNSceneSourceLoading.AnimationImportPolicyPlay, Is.Not.Null);
+			Assert.That (SCNSceneSourceLoading.AnimationImportPolicyPlayRepeatedly, Is.Not.Null);
+			Assert.That (SCNSceneSourceLoading.AnimationImportPolicyDoNotPlay, Is.Not.Null);
+			Assert.That (SCNSceneSourceLoading.AnimationImportPolicyPlayUsingSceneTimeBase, Is.Not.Null);
 		}
 
 		void RoundTrip (SCNSceneLoadingOptions o, SCNAnimationImportPolicy policy)
 		{
 			o.AnimationImportPolicy = policy;
-			ClassicAssert.IsTrue (o.AnimationImportPolicy == policy);
+			Assert.That (o.AnimationImportPolicy == policy, Is.True);
 		}
 	}
 }

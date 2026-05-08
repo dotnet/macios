@@ -20,27 +20,27 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSStoryboardSegueShouldCreateSegueWithConstructor ()
 		{
-			ClassicAssert.IsNotNull (segue, "NSStoryboardSegueShouldCreateSegueWithConstructor - Failed to create segue, value is null");
+			Assert.That (segue, Is.Not.Null, "NSStoryboardSegueShouldCreateSegueWithConstructor - Failed to create segue, value is null");
 		}
 
 		[Test]
 		public void NSStoryboardSegueShouldGetIdentifier ()
 		{
-			ClassicAssert.IsFalse (string.IsNullOrEmpty (segue.Identifier), "NSStoryboardSegueShouldGetIdentifier - Identifier property was empty or null");
+			Assert.That (string.IsNullOrEmpty (segue.Identifier), Is.False, "NSStoryboardSegueShouldGetIdentifier - Identifier property was empty or null");
 		}
 
 		[Test]
 		public void NSStoryboardSegueShouldGetSourceController ()
 		{
-			ClassicAssert.IsNotNull (segue.SourceController, "NSStoryboardSegueShouldGetSourceController - Source controller was null");
-			ClassicAssert.IsTrue (segue.SourceController == source, "NSStoryboardSegueShouldGetSourceController - Source controller did not match the source controller passed into the segue.");
+			Assert.That (segue.SourceController, Is.Not.Null, "NSStoryboardSegueShouldGetSourceController - Source controller was null");
+			Assert.That (segue.SourceController == source, Is.True, "NSStoryboardSegueShouldGetSourceController - Source controller did not match the source controller passed into the segue.");
 		}
 
 		[Test]
 		public void NSStoryboardSegueShouldGetDestinationController ()
 		{
-			ClassicAssert.IsNotNull (segue.DestinationController, "NSStoryboardSegueShouldGetDestinationController - Destination controller was null");
-			ClassicAssert.IsTrue (segue.DestinationController == destination, "NSStoryboardSegueShouldGetDestinationController - Destination controller did not mass the destination controller passed into the segue.");
+			Assert.That (segue.DestinationController, Is.Not.Null, "NSStoryboardSegueShouldGetDestinationController - Destination controller was null");
+			Assert.That (segue.DestinationController == destination, Is.True, "NSStoryboardSegueShouldGetDestinationController - Destination controller did not mass the destination controller passed into the segue.");
 		}
 
 #if false //		Crashes when run in test from command line, works from an actual app
@@ -49,7 +49,7 @@ namespace Xamarin.Mac.Tests {
 		{
 			var segue = NSStoryboardSegue.FromIdentifier ("Test", new NSViewController (), new NSViewController (), () => {
 			});
-			ClassicAssert.IsNotNull (segue);
+			Assert.That (segue, Is.Not.Null);
 		}
 #endif
 	}

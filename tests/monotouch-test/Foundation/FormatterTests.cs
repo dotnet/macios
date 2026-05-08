@@ -27,8 +27,8 @@ namespace MonoTouchFixtures.Foundation {
 
 		static void TestFormattedString (string formattedString, string testName)
 		{
-			ClassicAssert.IsNotNull (formattedString, testName);
-			ClassicAssert.IsTrue (formattedString.Length > 0, testName + " length");
+			Assert.That (formattedString, Is.Not.Null, testName);
+			Assert.That (formattedString.Length > 0, Is.True, testName + " length");
 		}
 
 		public NSDateComponents NowComponents {
@@ -45,35 +45,35 @@ namespace MonoTouchFixtures.Foundation {
 			RequiresIos8 ();
 
 			dateComponentsFormatter.UnitsStyle = NSDateComponentsFormatterUnitsStyle.Full;
-			ClassicAssert.AreEqual (NSDateComponentsFormatterUnitsStyle.Full, dateComponentsFormatter.UnitsStyle, "UnitsStyle");
+			Assert.That (dateComponentsFormatter.UnitsStyle, Is.EqualTo (NSDateComponentsFormatterUnitsStyle.Full), "UnitsStyle");
 
 			dateComponentsFormatter.AllowedUnits = NSCalendarUnit.Month | NSCalendarUnit.Day;
-			ClassicAssert.AreEqual (NSCalendarUnit.Month | NSCalendarUnit.Day, dateComponentsFormatter.AllowedUnits, "AllowedUnits");
+			Assert.That (dateComponentsFormatter.AllowedUnits, Is.EqualTo (NSCalendarUnit.Month | NSCalendarUnit.Day), "AllowedUnits");
 
 			dateComponentsFormatter.ZeroFormattingBehavior = NSDateComponentsFormatterZeroFormattingBehavior.Pad;
-			ClassicAssert.AreEqual (NSDateComponentsFormatterZeroFormattingBehavior.Pad, dateComponentsFormatter.ZeroFormattingBehavior, "ZeroFormattingBehavior");
+			Assert.That (dateComponentsFormatter.ZeroFormattingBehavior, Is.EqualTo (NSDateComponentsFormatterZeroFormattingBehavior.Pad), "ZeroFormattingBehavior");
 
 			NSCalendar c = new NSCalendar (NSCalendarType.Buddhist);
-			ClassicAssert.IsNotNull (dateComponentsFormatter.Calendar);
+			Assert.That (dateComponentsFormatter.Calendar, Is.Not.Null);
 			dateComponentsFormatter.Calendar = c;
-			ClassicAssert.AreEqual (c.Identifier, dateComponentsFormatter.Calendar.Identifier, "Calendar");
+			Assert.That (dateComponentsFormatter.Calendar.Identifier, Is.EqualTo (c.Identifier), "Calendar");
 
 			dateComponentsFormatter.AllowsFractionalUnits = true;
-			ClassicAssert.IsTrue (dateComponentsFormatter.AllowsFractionalUnits, "AllowsFractionalUnits");
+			Assert.That (dateComponentsFormatter.AllowsFractionalUnits, Is.True, "AllowsFractionalUnits");
 
 			dateComponentsFormatter.MaximumUnitCount = 50;
-			ClassicAssert.AreEqual ((nint) 50, dateComponentsFormatter.MaximumUnitCount, "MaximumUnitCount");
+			Assert.That (dateComponentsFormatter.MaximumUnitCount, Is.EqualTo ((nint) 50), "MaximumUnitCount");
 
 			dateComponentsFormatter.CollapsesLargestUnit = true;
-			ClassicAssert.IsTrue (dateComponentsFormatter.CollapsesLargestUnit, "CollapsesLargestUnit");
+			Assert.That (dateComponentsFormatter.CollapsesLargestUnit, Is.True, "CollapsesLargestUnit");
 
 			dateComponentsFormatter.IncludesApproximationPhrase = true;
-			ClassicAssert.IsTrue (dateComponentsFormatter.IncludesApproximationPhrase, "IncludesApproximationPhrase");
+			Assert.That (dateComponentsFormatter.IncludesApproximationPhrase, Is.True, "IncludesApproximationPhrase");
 
 			dateComponentsFormatter.IncludesTimeRemainingPhrase = true;
-			ClassicAssert.IsTrue (dateComponentsFormatter.IncludesTimeRemainingPhrase, "IncludesTimeRemainingPhrase");
+			Assert.That (dateComponentsFormatter.IncludesTimeRemainingPhrase, Is.True, "IncludesTimeRemainingPhrase");
 
-			ClassicAssert.IsNotNull (dateComponentsFormatter.FormattingContext);
+			Assert.That (dateComponentsFormatter.FormattingContext, Is.Not.Null);
 			dateComponentsFormatter.FormattingContext = new NSFormattingContext ();
 		}
 
@@ -133,7 +133,7 @@ namespace MonoTouchFixtures.Foundation {
 			NSObject o;
 			string e;
 			bool value = dateComponentsFormatter.GetObjectValue (out o, string.Empty, out e);
-			ClassicAssert.IsFalse (value, "DateGetObjectValueTest"); // If this ever returns true, we need to write a better test
+			Assert.That (value, Is.False, "DateGetObjectValueTest"); // If this ever returns true, we need to write a better test
 		}
 
 		#endregion
@@ -175,7 +175,7 @@ namespace MonoTouchFixtures.Foundation {
 			NSEnergyFormatterUnit unit;
 			string formattedString = energyFormatter.UnitStringFromJoules (2.0, out unit);
 			TestFormattedString (formattedString, "UnitStringFromJoules");
-			ClassicAssert.IsTrue ((int) unit > 0); // We got some value from the API
+			Assert.That ((int) unit > 0, Is.True); // We got some value from the API
 		}
 
 		[Test]
@@ -187,7 +187,7 @@ namespace MonoTouchFixtures.Foundation {
 			NSObject o;
 			string e;
 			bool value = energyFormatter.GetObjectValue (out o, string.Empty, out e);
-			ClassicAssert.IsFalse (value, "EnergyGetObjectValue"); // If this ever returns true, we need to write a better test
+			Assert.That (value, Is.False, "EnergyGetObjectValue"); // If this ever returns true, we need to write a better test
 		}
 
 		#endregion

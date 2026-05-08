@@ -31,12 +31,12 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var args = new CFSocket.CFSocketDataEventArgs (remoteEndPoint, testData);
 
 			// Assert
-			ClassicAssert.AreSame (remoteEndPoint, args.RemoteEndPoint);
+			Assert.That (args.RemoteEndPoint, Is.SameAs (remoteEndPoint));
 			var retrievedData = args.Data;
-			ClassicAssert.IsNotNull (retrievedData);
-			ClassicAssert.AreEqual (testData.Length, retrievedData.Length);
+			Assert.That (retrievedData, Is.Not.Null);
+			Assert.That (retrievedData.Length, Is.EqualTo (testData.Length));
 			for (int i = 0; i < testData.Length; i++) {
-				ClassicAssert.AreEqual (testData [i], retrievedData [i]);
+				Assert.That (retrievedData [i], Is.EqualTo (testData [i]));
 			}
 		}
 
@@ -50,8 +50,8 @@ namespace MonoTouchFixtures.CoreFoundation {
 			// Since RemoteEndPoint uses nullable reference types, null should be accepted
 			Assert.DoesNotThrow (() => {
 				var args = new CFSocket.CFSocketDataEventArgs (null, testData);
-				ClassicAssert.IsNull (args.RemoteEndPoint);
-				ClassicAssert.AreSame (testData, args.Data);
+				Assert.That (args.RemoteEndPoint, Is.Null);
+				Assert.That (args.Data, Is.SameAs (testData));
 			});
 		}
 
@@ -65,10 +65,10 @@ namespace MonoTouchFixtures.CoreFoundation {
 			// Since data uses nullable reference types, null should be accepted
 			Assert.DoesNotThrow (() => {
 				var args = new CFSocket.CFSocketDataEventArgs (remoteEndPoint, (byte []) null);
-				ClassicAssert.AreSame (remoteEndPoint, args.RemoteEndPoint);
+				Assert.That (args.RemoteEndPoint, Is.SameAs (remoteEndPoint));
 				// Data property should return empty array when null
-				ClassicAssert.IsNotNull (args.Data);
-				ClassicAssert.AreEqual (0, args.Data.Length);
+				Assert.That (args.Data, Is.Not.Null);
+				Assert.That (args.Data.Length, Is.EqualTo (0));
 			});
 		}
 
@@ -83,8 +83,8 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var args = new CFSocket.CFSocketDataEventArgs (remoteEndPoint, emptyData);
 
 			// Assert
-			ClassicAssert.AreSame (emptyData, args.Data);
-			ClassicAssert.AreEqual (0, args.Data.Length);
+			Assert.That (args.Data, Is.SameAs (emptyData));
+			Assert.That (args.Data.Length, Is.EqualTo (0));
 		}
 
 		[Test]
@@ -96,7 +96,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var remoteEndPoint = new IPEndPoint (IPAddress.Loopback, 8080);
 			var args = new CFSocket.CFSocketDataEventArgs (remoteEndPoint, (byte []) null);
 
-			ClassicAssert.AreEqual (0, args.Data.Length);
+			Assert.That (args.Data.Length, Is.EqualTo (0));
 		}
 
 		[Test]
@@ -114,13 +114,13 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var data2 = args1.Data;
 
 			// Assert
-			ClassicAssert.AreSame (data1, data2, "Data property should return the same instance when accessed multiple times with byte array");
+			Assert.That (data2, Is.SameAs (data1), "Data property should return the same instance when accessed multiple times with byte array");
 
 			// Test with null data (should return empty array consistently)
 			var args2 = new CFSocket.CFSocketDataEventArgs (remoteEndPoint, (byte []) null);
 			var emptyData1 = args2.Data;
 			var emptyData2 = args2.Data;
-			ClassicAssert.AreSame (emptyData1, emptyData2, "Data property should return the same empty array instance when accessed multiple times with null data");
+			Assert.That (emptyData2, Is.SameAs (emptyData1), "Data property should return the same empty array instance when accessed multiple times with null data");
 		}
 
 		[Test]
@@ -135,9 +135,9 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var args = new CFSocket.CFSocketDataEventArgs (remoteEndPoint, testData);
 
 			// Assert
-			ClassicAssert.AreSame (remoteEndPoint, args.RemoteEndPoint);
-			ClassicAssert.AreEqual (ipv6Address, args.RemoteEndPoint.Address);
-			ClassicAssert.AreEqual (9090, args.RemoteEndPoint.Port);
+			Assert.That (args.RemoteEndPoint, Is.SameAs (remoteEndPoint));
+			Assert.That (args.RemoteEndPoint.Address, Is.EqualTo (ipv6Address));
+			Assert.That (args.RemoteEndPoint.Port, Is.EqualTo (9090));
 		}
 
 		[Test]
@@ -154,7 +154,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 				var args = new CFSocket.CFSocketDataEventArgs (remoteEndPoint, testData);
 
 				// Assert
-				ClassicAssert.AreEqual (port, args.RemoteEndPoint.Port, $"Port {port} should be set correctly");
+				Assert.That (args.RemoteEndPoint.Port, Is.EqualTo (port), $"Port {port} should be set correctly");
 			}
 		}
 
@@ -169,7 +169,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var args = new CFSocket.CFSocketDataEventArgs (remoteEndPoint, testData);
 
 			// Assert
-			ClassicAssert.IsInstanceOf<EventArgs> (args, "CFSocketDataEventArgs should inherit from EventArgs");
+			Assert.That (args, Is.InstanceOf<EventArgs> (), "CFSocketDataEventArgs should inherit from EventArgs");
 		}
 
 		[Test]
@@ -186,13 +186,13 @@ namespace MonoTouchFixtures.CoreFoundation {
 			var args = new CFSocket.CFSocketDataEventArgs (remoteEndPoint, largeData);
 
 			// Assert
-			ClassicAssert.AreSame (largeData, args.Data);
-			ClassicAssert.AreEqual (1024 * 1024, args.Data.Length);
+			Assert.That (args.Data, Is.SameAs (largeData));
+			Assert.That (args.Data.Length, Is.EqualTo (1024 * 1024));
 
 			// Verify a few sample bytes
-			ClassicAssert.AreEqual (0, args.Data [0]);
-			ClassicAssert.AreEqual (255, args.Data [255]);
-			ClassicAssert.AreEqual (0, args.Data [256]);
+			Assert.That (args.Data [0], Is.EqualTo (0));
+			Assert.That (args.Data [255], Is.EqualTo (255));
+			Assert.That (args.Data [256], Is.EqualTo (0));
 		}
 
 		[Test]
@@ -208,12 +208,12 @@ namespace MonoTouchFixtures.CoreFoundation {
 			// Act & Assert
 			// First access to Data should trigger the lazy loading (should return empty array)
 			var retrievedData = args.Data;
-			ClassicAssert.IsNotNull (retrievedData);
-			ClassicAssert.AreEqual (0, retrievedData.Length);
+			Assert.That (retrievedData, Is.Not.Null);
+			Assert.That (retrievedData.Length, Is.EqualTo (0));
 
 			// Subsequent accesses should return the same cached instance
 			var retrievedData2 = args.Data;
-			ClassicAssert.AreSame (retrievedData, retrievedData2);
+			Assert.That (retrievedData2, Is.SameAs (retrievedData));
 		}
 	}
 }

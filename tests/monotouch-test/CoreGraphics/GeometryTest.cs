@@ -31,27 +31,27 @@ namespace MonoTouchFixtures.CoreGraphics {
 		public void Infinite ()
 		{
 			var r = GetRect (Dlfcn.dlsym (Handle, "CGRectInfinite"));
-			ClassicAssert.False (r.IsEmpty, "IsEmpty");
-			ClassicAssert.False (r.IsNull (), "IsNull");
-			ClassicAssert.True (r.IsInfinite (), "IsInfinite");
+			Assert.That (r.IsEmpty, Is.False, "IsEmpty");
+			Assert.That (r.IsNull (), Is.False, "IsNull");
+			Assert.That (r.IsInfinite (), Is.True, "IsInfinite");
 		}
 
 		[Test]
 		public void Null ()
 		{
 			var r = GetRect (Dlfcn.dlsym (Handle, "CGRectNull"));
-			ClassicAssert.True (r.IsEmpty, "IsEmpty");
-			ClassicAssert.True (r.IsNull (), "IsNull");
-			ClassicAssert.False (r.IsInfinite (), "IsInfinite");
+			Assert.That (r.IsEmpty, Is.True, "IsEmpty");
+			Assert.That (r.IsNull (), Is.True, "IsNull");
+			Assert.That (r.IsInfinite (), Is.False, "IsInfinite");
 		}
 
 		[Test]
 		public void Zero ()
 		{
 			var r = GetRect (Dlfcn.dlsym (Handle, "CGRectZero"));
-			ClassicAssert.True (r.IsEmpty, "IsEmpty");
-			ClassicAssert.False (r.IsNull (), "IsNull");
-			ClassicAssert.False (r.IsInfinite (), "IsInfinite");
+			Assert.That (r.IsEmpty, Is.True, "IsEmpty");
+			Assert.That (r.IsNull (), Is.False, "IsNull");
+			Assert.That (r.IsInfinite (), Is.False, "IsInfinite");
 		}
 	}
 }

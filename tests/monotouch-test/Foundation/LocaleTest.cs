@@ -23,7 +23,7 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void CurrentLocale ()
 		{
-			ClassicAssert.NotNull (NSLocale.CurrentLocale, "CurrentLocale");
+			Assert.That (NSLocale.CurrentLocale, Is.Not.Null, "CurrentLocale");
 		}
 
 		[Test]
@@ -56,7 +56,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			string name = "zh-Hans"; // there's no country data from the supplied name - ref bug #18520
 			using (NSLocale locale = new NSLocale (name)) {
-				ClassicAssert.Null (locale.CountryCode, "CountryCode");
+				Assert.That (locale.CountryCode, Is.Null, "CountryCode");
 			}
 		}
 
@@ -69,7 +69,7 @@ namespace MonoTouchFixtures.Foundation {
 				if (TestRuntime.CheckXcodeVersion (15, 0)) {
 					Assert.That (en.CollationIdentifier, Is.EqualTo ("standard"), "CollationIdentifier");
 				} else {
-					ClassicAssert.Null (en.CollationIdentifier, "CollationIdentifier");
+					Assert.That (en.CollationIdentifier, Is.Null, "CollationIdentifier");
 				}
 				Assert.That (en.CollatorIdentifier, Is.EqualTo ("en-US"), "CollatorIdentifier");
 				Assert.That (en.CountryCode, Is.EqualTo ("US"), "CountryCode");

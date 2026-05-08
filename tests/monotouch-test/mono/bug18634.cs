@@ -31,7 +31,7 @@ namespace MonoTouchFixtures {
 				return true;
 			}).Subscribe (new AnonymousObserver ());
 
-			ClassicAssert.IsTrue (hit, "The second CombineLatest callback wasn't called.");
+			Assert.That (hit, Is.True, "The second CombineLatest callback wasn't called.");
 		}
 
 		class QueryLanguage : IQueryLanguage {

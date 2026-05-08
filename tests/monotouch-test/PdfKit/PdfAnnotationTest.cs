@@ -29,8 +29,8 @@ namespace MonoTouchFixtures.PdfKit {
 		public void QuadrilateralPoints ()
 		{
 			using (var obj = new PdfAnnotation ()) {
-				ClassicAssert.IsNotNull (obj.QuadrilateralPoints, "Q1");
-				ClassicAssert.AreEqual (0, obj.QuadrilateralPoints.Length, "Q1b");
+				Assert.That (obj.QuadrilateralPoints, Is.Not.Null, "Q1");
+				Assert.That (obj.QuadrilateralPoints.Length, Is.EqualTo (0), "Q1b");
 
 				var points = new CGPoint []
 				{
@@ -41,11 +41,11 @@ namespace MonoTouchFixtures.PdfKit {
 				};
 
 				obj.QuadrilateralPoints = points;
-				ClassicAssert.AreEqual (points, obj.QuadrilateralPoints, "Q2");
+				Assert.That (obj.QuadrilateralPoints, Is.EqualTo (points), "Q2");
 
 				obj.QuadrilateralPoints = null;
-				ClassicAssert.IsNotNull (obj.QuadrilateralPoints, "Q3");
-				ClassicAssert.AreEqual (0, obj.QuadrilateralPoints.Length, "Q3b");
+				Assert.That (obj.QuadrilateralPoints, Is.Not.Null, "Q3");
+				Assert.That (obj.QuadrilateralPoints.Length, Is.EqualTo (0), "Q3b");
 			}
 		}
 

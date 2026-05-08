@@ -21,14 +21,14 @@ namespace MonoTouchFixtures.UIKit {
 		public void Defaults ()
 		{
 			UIPageViewController pvc = new UIPageViewController ();
-			ClassicAssert.Null (pvc.DataSource, "DataSource");
-			ClassicAssert.Null (pvc.Delegate, "Delegate");
-			ClassicAssert.False (pvc.DoubleSided, "DoubleSided");
+			Assert.That (pvc.DataSource, Is.Null, "DataSource");
+			Assert.That (pvc.Delegate, Is.Null, "Delegate");
+			Assert.That (pvc.DoubleSided, Is.False, "DoubleSided");
 			Assert.That (pvc.GestureRecognizers.Length, Is.EqualTo (2), "GestureRecognizers");
-			ClassicAssert.Null (pvc.GetNextViewController, "GetNextViewController");
-			ClassicAssert.Null (pvc.GetPreviousViewController, "GetPreviousViewController");
+			Assert.That (pvc.GetNextViewController, Is.Null, "GetNextViewController");
+			Assert.That (pvc.GetPreviousViewController, Is.Null, "GetPreviousViewController");
 #if !__TVOS__
-			ClassicAssert.Null (pvc.GetSpineLocation, "GetSpineLocation");
+			Assert.That (pvc.GetSpineLocation, Is.Null, "GetSpineLocation");
 #endif
 			Assert.That (pvc.NavigationOrientation, Is.EqualTo (UIPageViewControllerNavigationOrientation.Horizontal), "NavigationOrientation");
 			Assert.That (pvc.SpineLocation, Is.EqualTo (UIPageViewControllerSpineLocation.Min), "SpineLocation");
@@ -44,12 +44,12 @@ namespace MonoTouchFixtures.UIKit {
 			pvc = new UIPageViewController ();
 			// note: Complete is called synchronously
 			pvc.SetViewControllers (pvc.ViewControllers, UIPageViewControllerNavigationDirection.Forward, false, Complete);
-			ClassicAssert.Null (pvc, "pvc");
+			Assert.That (pvc, Is.Null, "pvc");
 		}
 
 		void Complete (bool finished)
 		{
-			ClassicAssert.True (finished, "finished");
+			Assert.That (finished, Is.True, "finished");
 			pvc = null;
 		}
 	}

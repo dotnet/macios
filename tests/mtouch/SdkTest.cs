@@ -8,7 +8,6 @@ using System.Text;
 
 using Mono.Cecil;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 using Xamarin.Tests;
 
@@ -73,7 +72,7 @@ namespace Xamarin.Linker {
 					break;
 				}
 			}
-			CollectionAssert.IsEmpty (failed_bcl, "BCL");
+			Assert.That (failed_bcl, Is.Empty, "BCL");
 		}
 
 		void REPL (string path)
@@ -97,7 +96,7 @@ namespace Xamarin.Linker {
 					break;
 				}
 			}
-			CollectionAssert.IsEmpty (failed_repl, "Repl");
+			Assert.That (failed_repl, Is.Empty, "Repl");
 		}
 
 		void Facades (string path)
@@ -109,7 +108,7 @@ namespace Xamarin.Linker {
 				if (!ProfilePoker.IsWellKnownSdk (aname))
 					failed_facades.Add (aname);
 			}
-			CollectionAssert.IsEmpty (failed_facades, "Facades");
+			Assert.That (failed_facades, Is.Empty, "Facades");
 		}
 
 		[Test]
@@ -158,7 +157,7 @@ namespace Xamarin.Linker {
 					Environment.CurrentDirectory = curdir;
 				}
 			}
-			ClassicAssert.IsEmpty (string.Join ("\n", failed), "Failed files");
+			Assert.That (string.Join ("\n", failed), Is.Empty, "Failed files");
 		}
 
 		void VerifyNoAdditionalAssemblyReferenceInAttributes (string filename)
@@ -178,7 +177,7 @@ namespace Xamarin.Linker {
 				}
 
 				var post_attributes = pre_attributes.Except (references).ToArray ();
-				ClassicAssert.IsEmpty (post_attributes, assembly.Name.Name);
+				Assert.That (post_attributes, Is.Empty, assembly.Name.Name);
 			}
 		}
 
@@ -355,18 +354,18 @@ namespace Xamarin.Linker {
 			int expected_exit_code = 0;
 			if (known_llvm_failures.TryGetValue (asm, out var known_failures)) {
 				expected_exit_code = known_failures.Item1;
-				ClassicAssert.AreEqual (expected_exit_code, rv, "AOT compilation");
+				Assert.That (rv, Is.EqualTo (expected_exit_code), "AOT compilation");
 				if (known_failures.Item2 is not null) {
 					// Check if there are known failures for failures we've fixed
 					var known_inexistent_failures = known_failures.Item2.Where ((v) => !llvm_failed.Contains (v));
-					ClassicAssert.IsEmpty (string.Join ("\n", known_inexistent_failures), $"Redundant known failures: should be removed from dictionary for {asm}");
+					Assert.That (string.Join ("\n", known_inexistent_failures), Is.Empty, $"Redundant known failures: should be removed from dictionary for {asm}");
 					// Filter the known failures from the failed llvm lines.
 					llvm_failed = llvm_failed.Where ((v) => !known_failures.Item2.Contains (v));
 				}
 			}
 
-			ClassicAssert.AreEqual (expected_exit_code, rv, "AOT compilation");
-			ClassicAssert.IsEmpty (string.Join ("\n", llvm_failed), "LLVM failed");
+			Assert.That (rv, Is.EqualTo (expected_exit_code), "AOT compilation");
+			Assert.That (string.Join ("\n", llvm_failed), Is.Empty, "LLVM failed");
 		}
 	}
 }

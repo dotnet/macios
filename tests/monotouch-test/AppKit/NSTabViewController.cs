@@ -21,7 +21,7 @@ namespace Xamarin.Mac.Tests {
 			var tabStyle = controller.TabStyle;
 			controller.TabStyle = NSTabViewControllerTabStyle.Toolbar;
 
-			ClassicAssert.IsFalse (controller.TabStyle == tabStyle, "NSTabViewControllerShouldChangeTabStyle - Failed to set the TabStyle property");
+			Assert.That (controller.TabStyle == tabStyle, Is.False, "NSTabViewControllerShouldChangeTabStyle - Failed to set the TabStyle property");
 		}
 
 		//		[Test]
@@ -30,7 +30,7 @@ namespace Xamarin.Mac.Tests {
 		//			var tabView = controller.TabView;
 		//			controller.TabView = new NSTabView ();
 		//
-		//			ClassicAssert.IsFalse (controller.TabView == tabView, "NSTabViewControllerShouldChangeTabView - Failed to set the TabView property");
+		//			Assert.That (controller.TabView == tabView, Is.False, "NSTabViewControllerShouldChangeTabView - Failed to set the TabView property");
 		//		}
 
 		[Test]
@@ -39,7 +39,7 @@ namespace Xamarin.Mac.Tests {
 			var options = controller.TransitionOptions;
 			controller.TransitionOptions = NSViewControllerTransitionOptions.Crossfade | NSViewControllerTransitionOptions.SlideRight;
 
-			ClassicAssert.IsFalse (controller.TransitionOptions == options, "NSTabViewControllerShouldChangeTransitionOptions - Failed to set the TransitionOptions property");
+			Assert.That (controller.TransitionOptions == options, Is.False, "NSTabViewControllerShouldChangeTransitionOptions - Failed to set the TransitionOptions property");
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace Xamarin.Mac.Tests {
 			var canPropogate = controller.CanPropagateSelectedChildViewControllerTitle;
 			controller.CanPropagateSelectedChildViewControllerTitle = !canPropogate;
 
-			ClassicAssert.IsFalse (controller.CanPropagateSelectedChildViewControllerTitle == canPropogate, "NSTabViewControllerShouldChangeCanPropagateSelectedChildViewControllerTitle - Failed to set the CanPropagateSelectedChildViewControllerTitle property");
+			Assert.That (controller.CanPropagateSelectedChildViewControllerTitle == canPropogate, Is.False, "NSTabViewControllerShouldChangeCanPropagateSelectedChildViewControllerTitle - Failed to set the CanPropagateSelectedChildViewControllerTitle property");
 		}
 
 		[Test]
@@ -57,7 +57,7 @@ namespace Xamarin.Mac.Tests {
 			var items = controller.TabViewItems;
 			controller.TabViewItems = new NSTabViewItem [] { new NSTabViewItem { ViewController = new NSViewController () } };
 
-			ClassicAssert.IsFalse (controller.TabViewItems == items, "NSTabViewControllerShouldChangeTabViewItems - Failed to set the TabViewItems property");
+			Assert.That (controller.TabViewItems == items, Is.False, "NSTabViewControllerShouldChangeTabViewItems - Failed to set the TabViewItems property");
 		}
 
 		[Test]
@@ -72,7 +72,7 @@ namespace Xamarin.Mac.Tests {
 			var index = controller.SelectedTabViewItemIndex;
 			controller.SelectedTabViewItemIndex = (index + 1) % 3;
 
-			ClassicAssert.IsFalse (controller.SelectedTabViewItemIndex == index, "NSTabViewControllerShouldChangeSelectedTabViewItemIndex - Failed to set the SelectedTabViewItemIndex property");
+			Assert.That (controller.SelectedTabViewItemIndex == index, Is.False, "NSTabViewControllerShouldChangeSelectedTabViewItemIndex - Failed to set the SelectedTabViewItemIndex property");
 		}
 
 		[Test]
@@ -81,7 +81,7 @@ namespace Xamarin.Mac.Tests {
 			var item = new NSTabViewItem { ViewController = new NSViewController () };
 			controller.AddTabViewItem (item);
 
-			ClassicAssert.IsTrue (controller.TabViewItems.Contains (item), "NSTabViewControllerShouldAddTabViewItem - Failed to add TabViewItem");
+			Assert.That (controller.TabViewItems.Contains (item), Is.True, "NSTabViewControllerShouldAddTabViewItem - Failed to add TabViewItem");
 		}
 
 		[Test]
@@ -90,11 +90,11 @@ namespace Xamarin.Mac.Tests {
 			var item = new NSTabViewItem { ViewController = new NSViewController () };
 			controller.AddTabViewItem (item);
 
-			ClassicAssert.IsTrue (controller.TabViewItems.Contains (item), "NSTabViewControllerShouldRemoveTabViewItem - Failed to add item");
+			Assert.That (controller.TabViewItems.Contains (item), Is.True, "NSTabViewControllerShouldRemoveTabViewItem - Failed to add item");
 
 			controller.RemoveTabViewItem (item);
 
-			ClassicAssert.IsFalse (controller.TabViewItems.Contains (item), "NSTabViewControllerShouldRemoveTabViewItem - Failed to remove item");
+			Assert.That (controller.TabViewItems.Contains (item), Is.False, "NSTabViewControllerShouldRemoveTabViewItem - Failed to remove item");
 		}
 
 		[Test]
@@ -106,8 +106,8 @@ namespace Xamarin.Mac.Tests {
 			var item = new NSTabViewItem { ViewController = new NSViewController () };
 			controller.InsertTabViewItem (item, 1);
 
-			ClassicAssert.IsTrue (controller.TabViewItems [1] == item, "NSTabViewControllerShouldInsertTabViewItem - Failed to insert the item at the given position.");
-			ClassicAssert.IsFalse (controller.TabViewItems [0] == item, "NSTabViewControllerShouldInsertTabViewItem - Inserted the item in the wrong position.");
+			Assert.That (controller.TabViewItems [1] == item, Is.True, "NSTabViewControllerShouldInsertTabViewItem - Failed to insert the item at the given position.");
+			Assert.That (controller.TabViewItems [0] == item, Is.False, "NSTabViewControllerShouldInsertTabViewItem - Inserted the item in the wrong position.");
 		}
 
 		[Test]
@@ -122,7 +122,7 @@ namespace Xamarin.Mac.Tests {
 
 			var retrievedItem = controller.GetTabViewItem (viewController);
 
-			ClassicAssert.IsTrue (retrievedItem == item, "NSTabViewControllerShouldGetTabViewItem - Failed to get TabViewItem from ViewController");
+			Assert.That (retrievedItem == item, Is.True, "NSTabViewControllerShouldGetTabViewItem - Failed to get TabViewItem from ViewController");
 		}
 	}
 }

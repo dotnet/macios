@@ -794,7 +794,7 @@ namespace Xamarin.Tests {
 				});
 			foreach (var lib in libraries) {
 				var libArchitectures = renderArchitectures (MachO.GetArchitectures (lib));
-				ClassicAssert.AreEqual (expectedArchitectures, libArchitectures, $"Architectures in {lib}");
+				Assert.That (libArchitectures, Is.EqualTo (expectedArchitectures), $"Architectures in {lib}");
 			}
 		}
 	}

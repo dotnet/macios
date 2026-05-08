@@ -21,12 +21,12 @@ namespace LinkSdk {
 			mre.Set ();
 			contSuccess.Wait (100);
 
-			ClassicAssert.True (contSuccess.IsCompleted, "contSuccess.IsCompleted");
-			ClassicAssert.True (contFailed.IsCompleted, "contFailed.IsCompleted");
-			ClassicAssert.True (contCanceled.IsCompleted, "contCanceled.IsCompleted");
-			ClassicAssert.False (contSuccess.IsCanceled, "contSuccess.IsCanceled");
-			ClassicAssert.True (contFailed.IsCanceled, "contFailed.IsCanceled");
-			ClassicAssert.True (contCanceled.IsCanceled, "contCanceled.IsCanceled");
+			Assert.That (contSuccess.IsCompleted, Is.True, "contSuccess.IsCompleted");
+			Assert.That (contFailed.IsCompleted, Is.True, "contFailed.IsCompleted");
+			Assert.That (contCanceled.IsCompleted, Is.True, "contCanceled.IsCompleted");
+			Assert.That (contSuccess.IsCanceled, Is.False, "contSuccess.IsCanceled");
+			Assert.That (contFailed.IsCanceled, Is.True, "contFailed.IsCanceled");
+			Assert.That (contCanceled.IsCanceled, Is.True, "contCanceled.IsCanceled");
 		}
 
 		[Test]
@@ -45,7 +45,7 @@ namespace LinkSdk {
 			mre.Set ();
 			cont.Wait (200);
 
-			ClassicAssert.True (ran, "ran");
+			Assert.That (ran, Is.True, "ran");
 			Assert.That (cont.Status, Is.EqualTo (TaskStatus.RanToCompletion), "Status");
 		}
 	}

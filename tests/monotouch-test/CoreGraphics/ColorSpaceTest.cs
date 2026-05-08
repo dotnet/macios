@@ -35,16 +35,16 @@ namespace MonoTouchFixtures.CoreGraphics {
 			using (var cs = CGColorSpace.CreateDeviceGray ()) {
 				Assert.That (cs.Components, Is.EqualTo ((nint) 1), "1");
 				Assert.That (cs.Model, Is.EqualTo (CGColorSpaceModel.Monochrome), "Monochrome");
-				ClassicAssert.Null (cs.GetBaseColorSpace (), "GetBaseColorSpace");
+				Assert.That (cs.GetBaseColorSpace (), Is.Null, "GetBaseColorSpace");
 				// not indexed so no color table
 				Assert.That (cs.GetColorTable ().Length, Is.EqualTo (0), "GetColorTable");
-				ClassicAssert.Null (cs.GetIccProfile (), "GetIccProfile");
+				Assert.That (cs.GetIccProfile (), Is.Null, "GetIccProfile");
 				if (TestRuntime.CheckXcodeVersion (8, 0)) {
 					// kCGColorSpaceDeviceGray is not a public constant, e.g. from CGColorSpaceNames.*
 					Assert.That (cs.Name, Is.EqualTo ("kCGColorSpaceDeviceGray"), "Name");
-					ClassicAssert.False (cs.IsWideGamutRgb, "IsWideGamutRgb");
-					ClassicAssert.True (cs.SupportsOutput, "SupportsOutput");
-					ClassicAssert.Null (cs.GetIccData (), "GetIccData");
+					Assert.That (cs.IsWideGamutRgb, Is.False, "IsWideGamutRgb");
+					Assert.That (cs.SupportsOutput, Is.True, "SupportsOutput");
+					Assert.That (cs.GetIccData (), Is.Null, "GetIccData");
 				}
 			}
 		}
@@ -55,16 +55,16 @@ namespace MonoTouchFixtures.CoreGraphics {
 			using (var cs = CGColorSpace.CreateDeviceRGB ()) {
 				Assert.That (cs.Components, Is.EqualTo ((nint) 3), "3");
 				Assert.That (cs.Model, Is.EqualTo (CGColorSpaceModel.RGB), "RGB");
-				ClassicAssert.Null (cs.GetBaseColorSpace (), "GetBaseColorSpace");
+				Assert.That (cs.GetBaseColorSpace (), Is.Null, "GetBaseColorSpace");
 				// not indexed so no color table
 				Assert.That (cs.GetColorTable ().Length, Is.EqualTo (0), "GetColorTable");
-				ClassicAssert.Null (cs.GetIccProfile (), "GetIccProfile");
+				Assert.That (cs.GetIccProfile (), Is.Null, "GetIccProfile");
 				if (TestRuntime.CheckXcodeVersion (8, 0)) {
 					// kCGColorSpaceDeviceRGB is not a public constant
 					Assert.That (cs.Name, Is.EqualTo ("kCGColorSpaceDeviceRGB"), "Name");
-					ClassicAssert.False (cs.IsWideGamutRgb, "IsWideGamutRgb");
-					ClassicAssert.True (cs.SupportsOutput, "SupportsOutput");
-					ClassicAssert.Null (cs.GetIccData (), "GetIccData");
+					Assert.That (cs.IsWideGamutRgb, Is.False, "IsWideGamutRgb");
+					Assert.That (cs.SupportsOutput, Is.True, "SupportsOutput");
+					Assert.That (cs.GetIccData (), Is.Null, "GetIccData");
 				}
 			}
 		}
@@ -75,16 +75,16 @@ namespace MonoTouchFixtures.CoreGraphics {
 			using (var cs = CGColorSpace.CreateDeviceCmyk ()) {
 				Assert.That (cs.Components, Is.EqualTo ((nint) 4), "4");
 				Assert.That (cs.Model, Is.EqualTo (CGColorSpaceModel.CMYK), "CMYK");
-				ClassicAssert.Null (cs.GetBaseColorSpace (), "GetBaseColorSpace");
+				Assert.That (cs.GetBaseColorSpace (), Is.Null, "GetBaseColorSpace");
 				// not indexed so no color table
 				Assert.That (cs.GetColorTable ().Length, Is.EqualTo (0), "GetColorTable");
-				ClassicAssert.Null (cs.GetIccProfile (), "GetIccProfile");
+				Assert.That (cs.GetIccProfile (), Is.Null, "GetIccProfile");
 				if (TestRuntime.CheckXcodeVersion (8, 0)) {
 					// kCGColorSpaceDeviceCMYK is not a public constant
 					Assert.That (cs.Name, Is.EqualTo ("kCGColorSpaceDeviceCMYK"), "Name");
-					ClassicAssert.False (cs.IsWideGamutRgb, "IsWideGamutRgb");
-					ClassicAssert.True (cs.SupportsOutput, "SupportsOutput");
-					ClassicAssert.Null (cs.GetIccData (), "GetIccData");
+					Assert.That (cs.IsWideGamutRgb, Is.False, "IsWideGamutRgb");
+					Assert.That (cs.SupportsOutput, Is.True, "SupportsOutput");
+					Assert.That (cs.GetIccData (), Is.Null, "GetIccData");
 				}
 			}
 		}
@@ -107,16 +107,16 @@ namespace MonoTouchFixtures.CoreGraphics {
 				Assert.That (base_cs.Model, Is.EqualTo (bcs.Model), "GetBaseColorSpace");
 				var new_table = cs.GetColorTable ();
 				Assert.That (table, Is.EqualTo (new_table), "GetColorTable");
-				ClassicAssert.Null (cs.GetIccProfile (), "GetIccProfile");
+				Assert.That (cs.GetIccProfile (), Is.Null, "GetIccProfile");
 				if (TestRuntime.CheckXcodeVersion (8, 0)) {
-					ClassicAssert.Null (cs.Name, "Name");
-					ClassicAssert.False (cs.IsWideGamutRgb, "IsWideGamutRgb");
-					ClassicAssert.False (cs.SupportsOutput, "SupportsOutput");
-					ClassicAssert.Null (cs.GetIccData (), "GetIccData");
+					Assert.That (cs.Name, Is.Null, "Name");
+					Assert.That (cs.IsWideGamutRgb, Is.False, "IsWideGamutRgb");
+					Assert.That (cs.SupportsOutput, Is.False, "SupportsOutput");
+					Assert.That (cs.GetIccData (), Is.Null, "GetIccData");
 				}
 
 				if (TestRuntime.CheckXcodeVersion (12, 0))
-					ClassicAssert.False (cs.UsesExtendedRange, "UsesExtendedRange");
+					Assert.That (cs.UsesExtendedRange, Is.False, "UsesExtendedRange");
 			}
 		}
 
@@ -129,7 +129,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			using (var cs = CGColorSpace.CreateWithName (CGColorSpaceNames.ExtendedSrgb)) {
 				Assert.That (cs.Components, Is.EqualTo ((nint) 3), "3");
 				Assert.That (cs.Model, Is.EqualTo (CGColorSpaceModel.RGB), "RGB");
-				ClassicAssert.Null (cs.GetBaseColorSpace (), "GetBaseColorSpace");
+				Assert.That (cs.GetBaseColorSpace (), Is.Null, "GetBaseColorSpace");
 				// not indexed so no color table
 				Assert.That (cs.GetColorTable ().Length, Is.EqualTo (0), "GetColorTable");
 
@@ -137,14 +137,14 @@ namespace MonoTouchFixtures.CoreGraphics {
 					Assert.That (icc_profile.Length, Is.EqualTo ((nuint) 3144), "GetIccProfile");
 
 				Assert.That (cs.Name, Is.EqualTo (CGColorSpaceNames.ExtendedSrgb.ToString ()), "Name");
-				ClassicAssert.True (cs.IsWideGamutRgb, "IsWideGamutRgb");
-				ClassicAssert.True (cs.SupportsOutput, "SupportsOutput");
+				Assert.That (cs.IsWideGamutRgb, Is.True, "IsWideGamutRgb");
+				Assert.That (cs.SupportsOutput, Is.True, "SupportsOutput");
 
 				using (var icc_data = cs.GetIccData ())
 					Assert.That (icc_data.Length, Is.EqualTo ((nuint) 3144), "GetIccData");
 
 				if (TestRuntime.CheckXcodeVersion (12, 0))
-					ClassicAssert.True (cs.UsesExtendedRange, "UsesExtendedRange");
+					Assert.That (cs.UsesExtendedRange, Is.True, "UsesExtendedRange");
 			}
 		}
 
@@ -159,13 +159,13 @@ namespace MonoTouchFixtures.CoreGraphics {
 
 			Assert.That (cs.Components, Is.EqualTo ((nint) 0), "0");
 			Assert.That (cs.Model, Is.EqualTo (CGColorSpaceModel.Unknown), "Unknown");
-			ClassicAssert.Null (cs.GetBaseColorSpace (), "GetBaseColorSpace");
+			Assert.That (cs.GetBaseColorSpace (), Is.Null, "GetBaseColorSpace");
 			Assert.That (cs.GetColorTable ().Length, Is.EqualTo (0), "GetColorTable");
-			ClassicAssert.Null (cs.GetIccProfile (), "GetIccProfile");
-			ClassicAssert.Null (cs.Name, "Name");
-			ClassicAssert.False (cs.IsWideGamutRgb, "IsWideGamutRgb");
-			ClassicAssert.False (cs.SupportsOutput, "SupportsOutput");
-			ClassicAssert.Null (cs.GetIccData (), "GetIccData");
+			Assert.That (cs.GetIccProfile (), Is.Null, "GetIccProfile");
+			Assert.That (cs.Name, Is.Null, "Name");
+			Assert.That (cs.IsWideGamutRgb, Is.False, "IsWideGamutRgb");
+			Assert.That (cs.SupportsOutput, Is.False, "SupportsOutput");
+			Assert.That (cs.GetIccData (), Is.Null, "GetIccData");
 			// IOW all safe to call with a `nil` handle
 		}
 
@@ -182,7 +182,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			}
 
 			using (var space = CGColorSpace.CreateIccProfile ((NSData) null)) {
-				ClassicAssert.IsNull (space, "null data");
+				Assert.That (space, Is.Null, "null data");
 			}
 		}
 
@@ -190,7 +190,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			Assert.That (cs.Components, Is.EqualTo ((nint) 3), "Components");
 			Assert.That (cs.Model, Is.EqualTo (CGColorSpaceModel.RGB), "Model");
-			ClassicAssert.Null (cs.GetBaseColorSpace (), "GetBaseColorSpace");
+			Assert.That (cs.GetBaseColorSpace (), Is.Null, "GetBaseColorSpace");
 			// not indexed so no color table
 			Assert.That (cs.GetColorTable ().Length, Is.EqualTo (0), "GetColorTable");
 
@@ -198,9 +198,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 				Assert.That (icc_profile.Length, Is.EqualTo ((nuint) 3284), "GetIccProfile");
 
 			if (TestRuntime.CheckXcodeVersion (8, 0)) {
-				ClassicAssert.Null (cs.Name, "Name");
-				ClassicAssert.False (cs.IsWideGamutRgb, "IsWideGamutRgb");
-				ClassicAssert.True (cs.SupportsOutput, "SupportsOutput");
+				Assert.That (cs.Name, Is.Null, "Name");
+				Assert.That (cs.IsWideGamutRgb, Is.False, "IsWideGamutRgb");
+				Assert.That (cs.SupportsOutput, Is.True, "SupportsOutput");
 				using (var icc_data = cs.GetIccData ())
 					Assert.That (icc_data.Length, Is.EqualTo ((nuint) 3284), "GetIccData");
 			}
@@ -233,7 +233,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		public void CreateIccData_Null_NSData ()
 		{
 			using (var space = CGColorSpace.CreateIccData ((NSData) null)) {
-				ClassicAssert.IsNull (space, "null data");
+				Assert.That (space, Is.Null, "null data");
 			}
 		}
 
@@ -241,7 +241,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		public void CreateIccData_Null_CGDataProvider ()
 		{
 			using (var space = CGColorSpace.CreateIccData ((CGDataProvider) null)) {
-				ClassicAssert.IsNull (space, "null data provider");
+				Assert.That (space, Is.Null, "null data provider");
 			}
 		}
 
@@ -296,11 +296,11 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Assert.Throws<ArgumentException> (() => CGColorSpace.CreateCalibratedGray (whitepoint, new nfloat [4], gamma), "invalid blackpoint4");
 
 			using (var space = CGColorSpace.CreateCalibratedGray (whitepoint, blackpoint, gamma)) {
-				ClassicAssert.IsNotNull (space, "all non-null");
+				Assert.That (space, Is.Not.Null, "all non-null");
 			}
 
 			using (var space = CGColorSpace.CreateCalibratedGray (whitepoint, null, gamma)) {
-				ClassicAssert.IsNotNull (space, "null blackpoint");
+				Assert.That (space, Is.Not.Null, "null blackpoint");
 			}
 		}
 
@@ -325,23 +325,23 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Assert.Throws<ArgumentException> (() => CGColorSpace.CreateCalibratedRGB (whitepoint, blackpoint, gamma, new nfloat [4]), "invalid matrix4");
 
 			using (var space = CGColorSpace.CreateCalibratedRGB (whitepoint, blackpoint, gamma, matrix)) {
-				ClassicAssert.IsNotNull (space, "all non-null");
+				Assert.That (space, Is.Not.Null, "all non-null");
 			}
 
 			using (var space = CGColorSpace.CreateCalibratedRGB (whitepoint, null, gamma, matrix)) {
-				ClassicAssert.IsNotNull (space, "null blackpoint");
+				Assert.That (space, Is.Not.Null, "null blackpoint");
 			}
 
 			using (var space = CGColorSpace.CreateCalibratedRGB (whitepoint, blackpoint, null, matrix)) {
-				ClassicAssert.IsNotNull (space, "null gamma");
+				Assert.That (space, Is.Not.Null, "null gamma");
 			}
 
 			using (var space = CGColorSpace.CreateCalibratedRGB (whitepoint, blackpoint, gamma, null)) {
-				ClassicAssert.IsNotNull (space, "all matrix-null");
+				Assert.That (space, Is.Not.Null, "all matrix-null");
 			}
 
 			using (var space = CGColorSpace.CreateCalibratedRGB (whitepoint, null, null, null)) {
-				ClassicAssert.IsNotNull (space, "all null");
+				Assert.That (space, Is.Not.Null, "all null");
 			}
 		}
 
@@ -362,19 +362,19 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Assert.Throws<ArgumentException> (() => CGColorSpace.CreateLab (whitepoint, blackpoint, new nfloat [3]), "invalid range3");
 
 			using (var space = CGColorSpace.CreateLab (whitepoint, blackpoint, range)) {
-				ClassicAssert.IsNotNull (space, "all non-null");
+				Assert.That (space, Is.Not.Null, "all non-null");
 			}
 
 			using (var space = CGColorSpace.CreateLab (whitepoint, null, range)) {
-				ClassicAssert.IsNotNull (space, "null blackpoint");
+				Assert.That (space, Is.Not.Null, "null blackpoint");
 			}
 
 			using (var space = CGColorSpace.CreateLab (whitepoint, blackpoint, null)) {
-				ClassicAssert.IsNotNull (space, "null gamma");
+				Assert.That (space, Is.Not.Null, "null gamma");
 			}
 
 			using (var space = CGColorSpace.CreateLab (whitepoint, null, null)) {
-				ClassicAssert.IsNotNull (space, "all null");
+				Assert.That (space, Is.Not.Null, "all null");
 			}
 		}
 
@@ -383,9 +383,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			TestRuntime.AssertXcodeVersion (11, 0);
 			using (var cs = CGColorSpace.CreateWithName (CGColorSpaceNames.GenericRgb))
-				ClassicAssert.False (cs.IsHdr, "GenericRgb");
+				Assert.That (cs.IsHdr, Is.False, "GenericRgb");
 			using (var cs = CGColorSpace.CreateWithName (CGColorSpaceNames.DisplayP3_Hlg))
-				ClassicAssert.True (cs.IsHdr, "DisplayP3_Hlg");
+				Assert.That (cs.IsHdr, Is.True, "DisplayP3_Hlg");
 		}
 
 		[Test]
@@ -393,9 +393,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			TestRuntime.AssertXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch);
 			using (var cs = CGColorSpace.CreateWithName (CGColorSpaceNames.DisplayP3_Hlg))
-				ClassicAssert.True (cs.UsesItur2100TF, "DisplayP3_Hlg");
+				Assert.That (cs.UsesItur2100TF, Is.True, "DisplayP3_Hlg");
 			using (var cs = CGColorSpace.CreateWithName (CGColorSpaceNames.GenericRgb))
-				ClassicAssert.False (cs.UsesItur2100TF, "GenericRgb");
+				Assert.That (cs.UsesItur2100TF, Is.False, "GenericRgb");
 		}
 
 		[Test]
@@ -404,7 +404,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			TestRuntime.AssertXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch);
 			using (var cs = CGColorSpace.CreateWithName (CGColorSpaceNames.GenericRgb)) {
 				var csl = cs.CreateLinearized ();
-				ClassicAssert.NotNull (csl, "not null");
+				Assert.That (csl, Is.Not.Null, "not null");
 				Assert.That ((nint) TestRuntime.CFGetRetainCount (csl.Handle), Is.EqualTo ((nint) 1).Or.EqualTo ((nint) 2));
 			}
 		}
@@ -415,7 +415,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			TestRuntime.AssertXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch);
 			using (var cs = CGColorSpace.CreateWithName (CGColorSpaceNames.GenericRgb)) {
 				var csl = cs.CreateExtended ();
-				ClassicAssert.NotNull (csl, "not null");
+				Assert.That (csl, Is.Not.Null, "not null");
 				Assert.That ((nint) TestRuntime.CFGetRetainCount (csl.Handle), Is.EqualTo ((nint) 1).Or.EqualTo ((nint) 2));
 			}
 		}
@@ -426,7 +426,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			TestRuntime.AssertXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch);
 			using (var cs = CGColorSpace.CreateWithName (CGColorSpaceNames.GenericRgb)) {
 				var csl = cs.CreateExtendedLinearized ();
-				ClassicAssert.NotNull (csl, "not null");
+				Assert.That (csl, Is.Not.Null, "not null");
 				Assert.That ((nint) TestRuntime.CFGetRetainCount (csl.Handle), Is.EqualTo ((nint) 1).Or.EqualTo ((nint) 2));
 			}
 		}
@@ -436,7 +436,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			TestRuntime.AssertXcodeVersion (14, 0);
 			using var cs = CGColorSpace.CreateWithName (CGColorSpaceNames.GenericRgb);
-			ClassicAssert.NotNull (cs.CreateCopyWithStandardRange ());
+			Assert.That (cs.CreateCopyWithStandardRange (), Is.Not.Null);
 		}
 
 		[Test]
@@ -467,7 +467,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			TestRuntime.AssertXcodeVersion (16, 0);
 			using (var cs = CGColorSpace.CreateDeviceRGB ()) {
 				using var cbcs = cs.CopyBaseColorSpace ();
-				ClassicAssert.IsNull (cbcs, "CopyBaseColorSpace");
+				Assert.That (cbcs, Is.Null, "CopyBaseColorSpace");
 			}
 		}
 	}

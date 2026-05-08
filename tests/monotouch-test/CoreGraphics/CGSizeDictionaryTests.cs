@@ -22,19 +22,19 @@ public class CGSizeDictionaryTests {
 			var size = new CGSize ((nfloat) 1, (nfloat) 2);
 			using var dict = size.ToDictionary ();
 			var strongDict = new CGSizeDictionary (dict);
-			ClassicAssert.AreEqual (size.Width, strongDict.Width, "Width");
-			ClassicAssert.AreEqual (size.Height, strongDict.Height, "Height");
+			Assert.That (strongDict.Width, Is.EqualTo (size.Width), "Width");
+			Assert.That (strongDict.Height, Is.EqualTo (size.Height), "Height");
 
 			var size2 = strongDict.ToSize ();
-			ClassicAssert.AreEqual (size, size2, "Size");
+			Assert.That (size2, Is.EqualTo (size), "Size");
 
 			strongDict = new CGSizeDictionary ();
 			strongDict.Width = 3;
-			ClassicAssert.AreEqual ((nfloat) 3, strongDict.Width, "Width 2");
+			Assert.That (strongDict.Width, Is.EqualTo ((nfloat) 3), "Width 2");
 			strongDict.Height = 4;
-			ClassicAssert.AreEqual ((nfloat) 4, strongDict.Height, "Height 2");
+			Assert.That (strongDict.Height, Is.EqualTo ((nfloat) 4), "Height 2");
 			size2 = strongDict.ToSize ();
-			ClassicAssert.AreEqual (new CGSize (3, 4), size2, "Size 2");
+			Assert.That (size2, Is.EqualTo (new CGSize (3, 4)), "Size 2");
 		});
 	}
 
@@ -43,10 +43,10 @@ public class CGSizeDictionaryTests {
 	{
 		Assert.Multiple (() => {
 			var strongDict = new CGSizeDictionary ();
-			ClassicAssert.IsNull (strongDict.Width, "Width");
-			ClassicAssert.IsNull (strongDict.Height, "Height");
+			Assert.That (strongDict.Width, Is.Null, "Width");
+			Assert.That (strongDict.Height, Is.Null, "Height");
 			var size = strongDict.ToSize ();
-			ClassicAssert.AreEqual (default (CGSize), size, "Size");
+			Assert.That (size, Is.EqualTo (default (CGSize)), "Size");
 		});
 	}
 
@@ -54,8 +54,8 @@ public class CGSizeDictionaryTests {
 	public void ToStringTest1 ()
 	{
 		var strongDict = new CGSizeDictionary ();
-		ClassicAssert.AreEqual ("CoreGraphics.CGSizeDictionary", strongDict.ToString (), "A");
-		ClassicAssert.AreEqual ("{\n}", strongDict.Dictionary.ToString (), "B");
+		Assert.That (strongDict.ToString (), Is.EqualTo ("CoreGraphics.CGSizeDictionary"), "A");
+		Assert.That (strongDict.Dictionary.ToString (), Is.EqualTo ("{\n}"), "B");
 	}
 
 	[Test]
@@ -64,7 +64,7 @@ public class CGSizeDictionaryTests {
 		var strongDict = new CGSizeDictionary ();
 		strongDict.Width = 3;
 		strongDict.Height = 4;
-		ClassicAssert.AreEqual ("CoreGraphics.CGSizeDictionary", strongDict.ToString (), "A");
-		ClassicAssert.AreEqual ("{\n    Height = 4;\n    Width = 3;\n}", strongDict.Dictionary.ToString (), "B");
+		Assert.That (strongDict.ToString (), Is.EqualTo ("CoreGraphics.CGSizeDictionary"), "A");
+		Assert.That (strongDict.Dictionary.ToString (), Is.EqualTo ("{\n    Height = 4;\n    Width = 3;\n}"), "B");
 	}
 }

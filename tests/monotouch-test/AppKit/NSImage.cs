@@ -13,7 +13,7 @@ namespace Xamarin.Mac.Tests {
 			var image = NSImage.ImageWithSize (new CGSize (50, 50), false, rect => {
 				return true;
 			});
-			ClassicAssert.IsNotNull (image);
+			Assert.That (image, Is.Not.Null);
 		}
 
 		[Test]
@@ -22,11 +22,11 @@ namespace Xamarin.Mac.Tests {
 			var image = new NSImage ();
 			image.CapInsets = new NSEdgeInsets (5f, 6f, 7f, 8f);
 
-			ClassicAssert.IsNotNull (image.CapInsets);
-			ClassicAssert.IsTrue (image.CapInsets.Top == 5f, "NSImageCapInsets - Top value was not 5");
-			ClassicAssert.IsTrue (image.CapInsets.Left == 6f, "NSImageCapInsets - Left value was not 6");
-			ClassicAssert.IsTrue (image.CapInsets.Bottom == 7f, "NSImageCapInsets - Bottom value was not 7");
-			ClassicAssert.IsTrue (image.CapInsets.Right == 8f, "NSImageCapInsets - Right value was not 8");
+			Assert.That (image.CapInsets, Is.Not.Null);
+			Assert.That (image.CapInsets.Top == 5f, Is.True, "NSImageCapInsets - Top value was not 5");
+			Assert.That (image.CapInsets.Left == 6f, Is.True, "NSImageCapInsets - Left value was not 6");
+			Assert.That (image.CapInsets.Bottom == 7f, Is.True, "NSImageCapInsets - Bottom value was not 7");
+			Assert.That (image.CapInsets.Right == 8f, Is.True, "NSImageCapInsets - Right value was not 8");
 		}
 
 		[Test]
@@ -34,8 +34,8 @@ namespace Xamarin.Mac.Tests {
 		{
 			var image = new NSImage ();
 			image.ResizingMode = NSImageResizingMode.Stretch;
-			ClassicAssert.AreEqual (image.ResizingMode, NSImageResizingMode.Stretch, "NSImageResizingMode - Was not equal to Stretch");
-			ClassicAssert.AreNotEqual (image.ResizingMode, NSImageResizingMode.Tile, "NSImageResizingMode - Was incorrectly equal to Tile");
+			Assert.That (NSImageResizingMode.Stretch, Is.EqualTo (image.ResizingMode), "NSImageResizingMode - Was not equal to Stretch");
+			Assert.That (NSImageResizingMode.Tile, Is.Not.EqualTo (image.ResizingMode), "NSImageResizingMode - Was incorrectly equal to Tile");
 		}
 	}
 }

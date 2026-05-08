@@ -13,7 +13,7 @@ namespace Xamarin.Mac.Tests {
 		{
 			SKProduct product = new SKProduct ();
 			SKPayment payment = SKPayment.CreateFrom (product);
-			ClassicAssert.IsNotNull (payment);
+			Assert.That (payment, Is.Not.Null);
 		}
 	}
 }

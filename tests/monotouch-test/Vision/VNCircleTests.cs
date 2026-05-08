@@ -25,10 +25,10 @@ namespace MonoTouchFixtures.Vision {
 		public void CreateUsingRadiusTest ()
 		{
 			var circle = VNCircle.CreateUsingRadius (new VNPoint (10, 10), radius: 10);
-			ClassicAssert.NotNull (circle, "Circle not null");
-			ClassicAssert.AreEqual (circle.Radius, 10, "Radius");
-			ClassicAssert.AreEqual (circle.Center.X, 10, "X");
-			ClassicAssert.AreEqual (circle.Center.Y, 10, "Y");
+			Assert.That (circle, Is.Not.Null, "Circle not null");
+			Assert.That (10, Is.EqualTo (circle.Radius), "Radius");
+			Assert.That (10, Is.EqualTo (circle.Center.X), "X");
+			Assert.That (10, Is.EqualTo (circle.Center.Y), "Y");
 			Assert.That (circle.RetainCount, Is.EqualTo ((nuint) 1), "RetainCount");
 		}
 
@@ -36,10 +36,10 @@ namespace MonoTouchFixtures.Vision {
 		public void CreateUsingDiameterTest ()
 		{
 			var circle = VNCircle.CreateUsingDiameter (new VNPoint (5, 6), diameter: 7);
-			ClassicAssert.NotNull (circle, "Circle not null");
-			ClassicAssert.AreEqual (circle.Diameter, 7, "Diameter");
-			ClassicAssert.AreEqual (circle.Center.Y, 6, "Y");
-			ClassicAssert.AreEqual (circle.Center.X, 5, "X");
+			Assert.That (circle, Is.Not.Null, "Circle not null");
+			Assert.That (7, Is.EqualTo (circle.Diameter), "Diameter");
+			Assert.That (6, Is.EqualTo (circle.Center.Y), "Y");
+			Assert.That (5, Is.EqualTo (circle.Center.X), "X");
 			Assert.That (circle.RetainCount, Is.EqualTo ((nuint) 1), "RetainCount");
 		}
 
@@ -47,10 +47,10 @@ namespace MonoTouchFixtures.Vision {
 		public void CreateUsingRadiusCtorTest ()
 		{
 			using var circle = new VNCircle (new VNPoint (10, 10), radiusOrDiameter: 10, option: VNCircleInitializationOption.Radius);
-			ClassicAssert.NotNull (circle, "Circle not null");
-			ClassicAssert.AreEqual (circle.Radius, 10, "Radius");
-			ClassicAssert.AreEqual (circle.Center.X, 10, "X");
-			ClassicAssert.AreEqual (circle.Center.Y, 10, "Y");
+			Assert.That (circle, Is.Not.Null, "Circle not null");
+			Assert.That (10, Is.EqualTo (circle.Radius), "Radius");
+			Assert.That (10, Is.EqualTo (circle.Center.X), "X");
+			Assert.That (10, Is.EqualTo (circle.Center.Y), "Y");
 			Assert.That (circle.RetainCount, Is.EqualTo ((nuint) 1), "RetainCount");
 		}
 
@@ -58,10 +58,10 @@ namespace MonoTouchFixtures.Vision {
 		public void CreateUsingDiameterCtorTest ()
 		{
 			using var circle = new VNCircle (new VNPoint (5, 6), radiusOrDiameter: 7, option: VNCircleInitializationOption.Diameter);
-			ClassicAssert.NotNull (circle, "Circle not null");
-			ClassicAssert.AreEqual (circle.Diameter, 7, "Diameter");
-			ClassicAssert.AreEqual (circle.Center.Y, 6, "Y");
-			ClassicAssert.AreEqual (circle.Center.X, 5, "X");
+			Assert.That (circle, Is.Not.Null, "Circle not null");
+			Assert.That (7, Is.EqualTo (circle.Diameter), "Diameter");
+			Assert.That (6, Is.EqualTo (circle.Center.Y), "Y");
+			Assert.That (5, Is.EqualTo (circle.Center.X), "X");
 			Assert.That (circle.RetainCount, Is.EqualTo ((nuint) 1), "RetainCount");
 		}
 

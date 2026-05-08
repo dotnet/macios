@@ -21,17 +21,17 @@ namespace MonoTouchFixtures.ARKit {
 		[Test]
 		public void GetSupportedVideoFormats_9_3 ()
 		{
-			ClassicAssert.NotNull (ARWorldTrackingConfiguration.GetSupportedVideoFormats (), "ARWorldTrackingConfiguration");
-			ClassicAssert.NotNull (AROrientationTrackingConfiguration.GetSupportedVideoFormats (), "AROrientationTrackingConfiguration");
-			ClassicAssert.NotNull (ARFaceTrackingConfiguration.GetSupportedVideoFormats (), "ARFaceTrackingConfiguration");
+			Assert.That (ARWorldTrackingConfiguration.GetSupportedVideoFormats (), Is.Not.Null, "ARWorldTrackingConfiguration");
+			Assert.That (AROrientationTrackingConfiguration.GetSupportedVideoFormats (), Is.Not.Null, "AROrientationTrackingConfiguration");
+			Assert.That (ARFaceTrackingConfiguration.GetSupportedVideoFormats (), Is.Not.Null, "ARFaceTrackingConfiguration");
 		}
 
 		[Test]
 		public void GetSupportedVideoFormats_10_0 ()
 		{
 			TestRuntime.AssertXcodeVersion (10, 0);
-			ClassicAssert.NotNull (ARImageTrackingConfiguration.GetSupportedVideoFormats (), "ARImageTrackingConfiguration");
-			ClassicAssert.NotNull (ARObjectScanningConfiguration.GetSupportedVideoFormats (), "ARObjectScanningConfiguration");
+			Assert.That (ARImageTrackingConfiguration.GetSupportedVideoFormats (), Is.Not.Null, "ARImageTrackingConfiguration");
+			Assert.That (ARObjectScanningConfiguration.GetSupportedVideoFormats (), Is.Not.Null, "ARObjectScanningConfiguration");
 		}
 	}
 }

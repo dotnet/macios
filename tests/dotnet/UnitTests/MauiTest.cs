@@ -52,19 +52,19 @@ namespace Xamarin.Tests {
 			AssertThatLinkerExecuted (rv);
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
 			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
-			ClassicAssert.AreEqual ("com.xamarin.mymauiapp", infoPlist.GetString ("CFBundleIdentifier").Value, "CFBundleIdentifier");
-			ClassicAssert.AreEqual ("MyMauiApp", infoPlist.GetString ("CFBundleDisplayName").Value, "CFBundleDisplayName");
-			ClassicAssert.AreEqual ("1", infoPlist.GetString ("CFBundleVersion").Value, "CFBundleVersion");
-			ClassicAssert.AreEqual ("1.0", infoPlist.GetString ("CFBundleShortVersionString").Value, "CFBundleShortVersionString");
+			Assert.That (infoPlist.GetString ("CFBundleIdentifier").Value, Is.EqualTo ("com.xamarin.mymauiapp"), "CFBundleIdentifier");
+			Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo ("MyMauiApp"), "CFBundleDisplayName");
+			Assert.That (infoPlist.GetString ("CFBundleVersion").Value, Is.EqualTo ("1"), "CFBundleVersion");
+			Assert.That (infoPlist.GetString ("CFBundleShortVersionString").Value, Is.EqualTo ("1.0"), "CFBundleShortVersionString");
 
 
-			ClassicAssert.IsTrue (BinLog.TryFindPropertyValue (rv.BinLogPath, "TrimMode", out var trimModeValue), "Could not find the property 'TrimMode' in the binlog.");
-			ClassicAssert.IsTrue (BinLog.TryFindPropertyValue (rv.BinLogPath, "_LinkMode", out var linkModeValue), "Could not find the property '_LinkMode' in the binlog.");
-			ClassicAssert.IsTrue (BinLog.TryFindPropertyValue (rv.BinLogPath, "MtouchLink", out var mtouchLinkValue), "Could not find the property 'MtouchLink' in the binlog.");
+			Assert.That (BinLog.TryFindPropertyValue (rv.BinLogPath, "TrimMode", out var trimModeValue), Is.True, "Could not find the property 'TrimMode' in the binlog.");
+			Assert.That (BinLog.TryFindPropertyValue (rv.BinLogPath, "_LinkMode", out var linkModeValue), Is.True, "Could not find the property '_LinkMode' in the binlog.");
+			Assert.That (BinLog.TryFindPropertyValue (rv.BinLogPath, "MtouchLink", out var mtouchLinkValue), Is.True, "Could not find the property 'MtouchLink' in the binlog.");
 
-			ClassicAssert.AreEqual ("copy", trimModeValue, "TrimMode");
-			ClassicAssert.AreEqual ("None", linkModeValue, "LinkMode");
-			ClassicAssert.AreEqual ("None", mtouchLinkValue, "MtouchLink");
+			Assert.That (trimModeValue, Is.EqualTo ("copy"), "TrimMode");
+			Assert.That (linkModeValue, Is.EqualTo ("None"), "LinkMode");
+			Assert.That (mtouchLinkValue, Is.EqualTo ("None"), "MtouchLink");
 		}
 
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]

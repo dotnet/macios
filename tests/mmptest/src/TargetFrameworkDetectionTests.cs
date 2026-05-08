@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 using Xamarin.Tests;
 using Xamarin.Utils;
 
@@ -71,7 +70,7 @@ namespace Xamarin.MMP.Tests {
 					bool mobile = targetProfile.Profile == "Mobile";
 					string referenceLine = mmpOutput.Split (Environment.NewLine.ToCharArray ()).First (x => x.StartsWith ("Added assembly ", StringComparison.Ordinal) && x.Contains ("Xamarin.Mac.dll"));
 
-					ClassicAssert.True (referenceLine.Contains ("mobile") == mobile, "Selected Reference Line Unexpected: {0} with {1}", referenceLine, targetProfile);
+					Assert.That (referenceLine.Contains ("mobile") == mobile, Is.True, "Selected Reference Line Unexpected: {0} with {1}", referenceLine, targetProfile);
 				}
 			});
 		}
@@ -84,7 +83,7 @@ namespace Xamarin.MMP.Tests {
 					string libPath = CreateTestExe (tmpDir);
 					var args = GetTestMMPInvocation (tmpDir, libPath, targetProfile, false);
 					string buildResults = TI.RunAndAssert (MMPPath, args, "mmp invoke with wrong XM", shouldFail: true);
-					ClassicAssert.IsTrue (buildResults.Contains ("1407"), "Did not contains 1407 error expected");
+					Assert.That (buildResults.Contains ("1407"), Is.True, "Did not contains 1407 error expected");
 				}
 			});
 		}

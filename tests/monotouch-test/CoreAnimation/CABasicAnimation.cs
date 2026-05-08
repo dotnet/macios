@@ -15,20 +15,20 @@ namespace Xamarin.Mac.Tests {
 			CABasicAnimation test = CABasicAnimation.FromKeyPath ("bounds");
 			NSNumber number = new NSNumber (10);
 			test.From = number;
-			ClassicAssert.AreEqual (test.From, number, "NSObject from");
+			Assert.That (number, Is.EqualTo (test.From), "NSObject from");
 			test.To = number;
-			ClassicAssert.AreEqual (test.To, number, "NSObject to");
+			Assert.That (number, Is.EqualTo (test.To), "NSObject to");
 			test.By = number;
-			ClassicAssert.AreEqual (test.By, number, "NSObject by");
+			Assert.That (number, Is.EqualTo (test.By), "NSObject by");
 
 			CGColor color = new CGColor (.5f, .5f, .5f);
 			test = CABasicAnimation.FromKeyPath ("color");
 			test.SetFrom (color);
-			ClassicAssert.AreEqual (test.GetFromAs<CGColor> (), color, "INativeObject from");
+			Assert.That (color, Is.EqualTo (test.GetFromAs<CGColor> ()), "INativeObject from");
 			test.SetTo (color);
-			ClassicAssert.AreEqual (test.GetToAs<CGColor> (), color, "INativeObject to");
+			Assert.That (color, Is.EqualTo (test.GetToAs<CGColor> ()), "INativeObject to");
 			test.SetBy (color);
-			ClassicAssert.AreEqual (test.GetByAs<CGColor> (), color, "INativeObject by");
+			Assert.That (color, Is.EqualTo (test.GetByAs<CGColor> ()), "INativeObject by");
 		}
 	}
 }

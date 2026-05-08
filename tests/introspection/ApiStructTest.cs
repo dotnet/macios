@@ -44,9 +44,7 @@ namespace Introspection {
 				}
 			}
 
-			ClassicAssert.AreEqual (0, totalErrors,
-				"{0} errors found in {1} structures validated",
-				totalErrors, totalStructs);
+			Assert.That (totalErrors, Is.EqualTo (0), "{0} errors found in {1} structures validated", totalErrors, totalStructs);
 		}
 
 		protected virtual bool CheckStruct (Type type)

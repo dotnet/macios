@@ -27,7 +27,7 @@ namespace MonoTouchFixtures.Metal {
 		public void GetSetMutabilityTest ()
 		{
 			descriptor.Mutability = MTLMutability.Immutable;
-			ClassicAssert.AreEqual (MTLMutability.Immutable, descriptor.Mutability);
+			Assert.That (descriptor.Mutability, Is.EqualTo (MTLMutability.Immutable));
 		}
 	}
 }

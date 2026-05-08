@@ -28,15 +28,15 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var ps = new NSUrlProtectionSpace ("www.xamarin.com", 80, NSUrlProtectionSpace.HTTP, null, null)) {
 				Assert.That (ps.AuthenticationMethod, Is.EqualTo ("NSURLAuthenticationMethodDefault"), "AuthenticationMethod");
-				ClassicAssert.Null (ps.DistinguishedNames, "DistinguishedNames");
+				Assert.That (ps.DistinguishedNames, Is.Null, "DistinguishedNames");
 				Assert.That (ps.Host, Is.EqualTo ("www.xamarin.com"), "Host");
-				ClassicAssert.False (ps.IsProxy, "IsProxy");
+				Assert.That (ps.IsProxy, Is.False, "IsProxy");
 				Assert.That (ps.Port, Is.EqualTo ((nint) 80), "Port");
 				Assert.That (ps.Protocol, Is.EqualTo ("http"), "Protocol");
-				ClassicAssert.Null (ps.ProxyType, "ProxyType");
-				ClassicAssert.Null (ps.Realm, "Realm");
-				ClassicAssert.False (ps.ReceivesCredentialSecurely, "ReceivesCredentialSecurely");
-				ClassicAssert.Null (ps.ServerSecTrust, "ServerSecTrust");
+				Assert.That (ps.ProxyType, Is.Null, "ProxyType");
+				Assert.That (ps.Realm, Is.Null, "Realm");
+				Assert.That (ps.ReceivesCredentialSecurely, Is.False, "ReceivesCredentialSecurely");
+				Assert.That (ps.ServerSecTrust, Is.Null, "ServerSecTrust");
 			}
 		}
 
@@ -49,15 +49,15 @@ namespace MonoTouchFixtures.Foundation {
 				} else {
 					Assert.That (ps.AuthenticationMethod, Is.EqualTo ("NSURLAuthenticationMethodDefault"), "AuthenticationMethod");
 				}
-				ClassicAssert.Null (ps.DistinguishedNames, "DistinguishedNames");
+				Assert.That (ps.DistinguishedNames, Is.Null, "DistinguishedNames");
 				Assert.That (ps.Host, Is.EqualTo ("mail.google.com"), "Host");
-				ClassicAssert.False (ps.IsProxy, "IsProxy");
+				Assert.That (ps.IsProxy, Is.False, "IsProxy");
 				Assert.That (ps.Port, Is.EqualTo ((nint) 443), "Port");
 				Assert.That (ps.Protocol, Is.EqualTo ("https"), "Protocol");
-				ClassicAssert.Null (ps.ProxyType, "ProxyType");
-				ClassicAssert.Null (ps.Realm, "Realm");
-				ClassicAssert.True (ps.ReceivesCredentialSecurely, "ReceivesCredentialSecurely");
-				ClassicAssert.Null (ps.ServerSecTrust, "ServerSecTrust");
+				Assert.That (ps.ProxyType, Is.Null, "ProxyType");
+				Assert.That (ps.Realm, Is.Null, "Realm");
+				Assert.That (ps.ReceivesCredentialSecurely, Is.True, "ReceivesCredentialSecurely");
+				Assert.That (ps.ServerSecTrust, Is.Null, "ServerSecTrust");
 			}
 		}
 
@@ -66,15 +66,15 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var ps = new NSUrlProtectionSpace ("www.xamarin.com", 80, NSUrlProtectionSpace.HTTPProxy, "default", NSUrlProtectionSpace.AuthenticationMethodHTTPDigest, false)) {
 				Assert.That (ps.AuthenticationMethod, Is.EqualTo ("NSURLAuthenticationMethodHTTPDigest"), "AuthenticationMethod");
-				ClassicAssert.Null (ps.DistinguishedNames, "DistinguishedNames");
+				Assert.That (ps.DistinguishedNames, Is.Null, "DistinguishedNames");
 				Assert.That (ps.Host, Is.EqualTo ("www.xamarin.com"), "Host");
-				ClassicAssert.False (ps.IsProxy, "IsProxy");
+				Assert.That (ps.IsProxy, Is.False, "IsProxy");
 				Assert.That (ps.Port, Is.EqualTo ((nint) 80), "Port");
 				Assert.That (ps.Protocol, Is.EqualTo ("http"), "Protocol");
-				ClassicAssert.Null (ps.ProxyType, "ProxyType");
+				Assert.That (ps.ProxyType, Is.Null, "ProxyType");
 				Assert.That (ps.Realm, Is.EqualTo ("default"), "Realm");
-				ClassicAssert.True (ps.ReceivesCredentialSecurely, "ReceivesCredentialSecurely");
-				ClassicAssert.Null (ps.ServerSecTrust, "ServerSecTrust");
+				Assert.That (ps.ReceivesCredentialSecurely, Is.True, "ReceivesCredentialSecurely");
+				Assert.That (ps.ServerSecTrust, Is.Null, "ServerSecTrust");
 			}
 		}
 
@@ -83,15 +83,15 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var ps = new NSUrlProtectionSpace ("www.xamarin.com", 80, NSUrlProtectionSpace.HTTPProxy, "default", NSUrlProtectionSpace.AuthenticationMethodHTTPDigest, true)) {
 				Assert.That (ps.AuthenticationMethod, Is.EqualTo ("NSURLAuthenticationMethodHTTPDigest"), "AuthenticationMethod");
-				ClassicAssert.Null (ps.DistinguishedNames, "DistinguishedNames");
+				Assert.That (ps.DistinguishedNames, Is.Null, "DistinguishedNames");
 				Assert.That (ps.Host, Is.EqualTo ("www.xamarin.com"), "Host");
-				ClassicAssert.True (ps.IsProxy, "IsProxy");
+				Assert.That (ps.IsProxy, Is.True, "IsProxy");
 				Assert.That (ps.Port, Is.EqualTo ((nint) 80), "Port");
 				Assert.That (ps.Protocol, Is.EqualTo ("http"), "Protocol");
 				Assert.That (ps.ProxyType, Is.EqualTo ("http"), "ProxyType");
-				ClassicAssert.Null (ps.Realm, "Realm");
-				ClassicAssert.True (ps.ReceivesCredentialSecurely, "ReceivesCredentialSecurely");
-				ClassicAssert.Null (ps.ServerSecTrust, "ServerSecTrust");
+				Assert.That (ps.Realm, Is.Null, "Realm");
+				Assert.That (ps.ReceivesCredentialSecurely, Is.True, "ReceivesCredentialSecurely");
+				Assert.That (ps.ServerSecTrust, Is.Null, "ServerSecTrust");
 			}
 		}
 	}

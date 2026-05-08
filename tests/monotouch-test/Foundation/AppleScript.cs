@@ -16,12 +16,12 @@ end tell";
 
 			NSDictionary errorInfo;
 			bool success = s.CompileAndReturnError (out errorInfo);
-			ClassicAssert.IsTrue (success);
-			ClassicAssert.IsNull (errorInfo);
-			ClassicAssert.IsTrue (s.Compiled);
+			Assert.That (success, Is.True);
+			Assert.That (errorInfo, Is.Null);
+			Assert.That (s.Compiled, Is.True);
 
 			NSAppleEventDescriptor descriptor = s.ExecuteAndReturnError (out errorInfo);
-			ClassicAssert.IsNull (errorInfo);
+			Assert.That (errorInfo, Is.Null);
 #pragma warning restore 0219
 		}
 	}

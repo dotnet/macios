@@ -693,7 +693,7 @@ namespace MonoTouch.NUnit.UI {
 				if (runnerResult is null)
 					continue;
 				var rv = (TestResult) runnerResult;
-					tsr.AddResult (rv);
+				tsr.AddResult (rv);
 			}
 			Result = tsr;
 #else

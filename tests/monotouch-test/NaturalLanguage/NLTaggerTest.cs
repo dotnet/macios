@@ -55,7 +55,7 @@ namespace MonoTouchFixtures.NaturalLanguage {
 					var constant = ((NLTagScheme) scheme).GetConstant ();
 					if (constant is null)
 						continue; // can vary by SDK version
-					Assert.That (tagger.GetModels (constant), Is.Empty, constant);
+					Assert.That (tagger.GetModels (constant), Is.Empty, constant.ToString ());
 				}
 			}
 		}

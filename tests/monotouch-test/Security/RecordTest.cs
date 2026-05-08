@@ -331,7 +331,7 @@ namespace MonoTouchFixtures.Security {
 
 				//TEST 2: Get the saved keychain value
 				var test2 = GetKeychainEntry (testServer, testUsername);
-				ClassicAssert.IsTrue (StringUtil.StringsEqual (test2, "testValue1", false));
+				ClassicAssert.AreEqual ("testValue1", test2);
 
 				//TEST 3: Update the keychain value
 				var test3 = SaveKeychainEntry (testServer, testUsername, "testValue2", out queryCode, out addCode, out updateCode);
@@ -339,7 +339,7 @@ namespace MonoTouchFixtures.Security {
 
 				//TEST 4: Get the updated keychain value
 				var test4 = GetKeychainEntry (testServer, testUsername);
-				ClassicAssert.IsTrue (StringUtil.StringsEqual (test4, "testValue2", false));
+				ClassicAssert.AreEqual ("testValue2", test4);
 
 				//TEST 5: Clear the keychain values
 				var test5 = ClearKeychainEntry (testServer, testUsername, out queryCode, out var removeCode);

@@ -98,7 +98,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			Assert.That (filters.Count, Is.EqualTo (0), "{0} native filters missing: {1}", filters.Count, String.Join (", ", filters));
+			Assert.That (filters.Count, Is.EqualTo (0), $"{filters.Count} native filters missing: {String.Join (", ", filters)}");
 		}
 
 		[Test]
@@ -149,7 +149,7 @@ namespace Introspection {
 				if (Skip (filters [i]))
 					filters.RemoveAt (i);
 			}
-			Assert.That (filters.Count, Is.EqualTo (0), "Managed filters not found for {0}", String.Join (", ", filters));
+			Assert.That (filters.Count, Is.EqualTo (0), $"Managed filters not found for {String.Join (", ", filters)}");
 		}
 
 		static void GenerateBinding (NSObject filter, TextWriter writer)

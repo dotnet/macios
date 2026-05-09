@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace MonoTests.System.Net.Http {
 	[Preserve (AllMembers = true)]
 	public static class NetworkResources {
+		public const string AppleHost = "apple.com";
 		public static string MicrosoftUrl => AssertNetworkConnection ("https://www.microsoft.com");
 		public static Uri MicrosoftUri => new Uri (MicrosoftUrl);
 		public static string MicrosoftHttpUrl => AssertNetworkConnection ("http://www.microsoft.com");

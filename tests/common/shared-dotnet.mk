@@ -178,6 +178,7 @@ reload-and-run:
 	$(Q) $(MAKE) run
 
 build: prepare
+	@echo "Building $(wildcard *.?.csproj)..."
 	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT)
 
 run: export SIMCTL_CHILD_NUNIT_AUTOSTART=true

@@ -81,7 +81,7 @@
 		<Exec SessionId="$(BuildSessionId)" Command="'$(MlaunchPath)' $(MlaunchInstallArguments)" />
 	</Target>
 
-	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices;_ShowRunHelpConditioned;_ComputeMlaunchRunArguments" Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'" />
+	<Target Name="ComputeMlaunchRunArguments" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;_DetectAppManifest;ComputeAvailableDevices;_ShowRunHelpConditioned;_ComputeMlaunchRunArguments" Condition="'$(SdkIsDesktop)' != 'true'" />
 
 	<Target Name="_ComputeMlaunchRunArguments" Condition="'$(Help)' != 'true'">
 		<!-- Launching from the command line on windows hasn't been implemented: https://github.com/dotnet/macios/issues/16609 -->
@@ -145,7 +145,7 @@
 		Name="_PrepareRunMobile"
 		BeforeTargets="ComputeRunArguments"
 		DependsOnTargets="_ValidateHotReloadConfiguration;_InstallMobile;ComputeMlaunchRunArguments"
-		Condition="'$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'">
+		Condition="'$(SdkIsDesktop)' != 'true'">
 	</Target>
 
 	<!--
@@ -162,7 +162,7 @@
 	-->
 	<Target Name="ComputeAvailableDevices"
 		DependsOnTargets="_DetectSdkLocations;_GenerateBundleName;"
-		Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS'"
+		Condition="'$(SdkIsMobile)' == 'true'"
 		Returns="@(Devices)">
 		<PropertyGroup>
 			<_FilterDevicesToRuntimeIdentifier Condition="'$(_XamarinUsingDefaultRuntimeIdentifier)' != 'true'">$(RuntimeIdentifier)</_FilterDevicesToRuntimeIdentifier>

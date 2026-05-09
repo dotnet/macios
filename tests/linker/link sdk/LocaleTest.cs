@@ -38,7 +38,7 @@ namespace LinkSdk {
 			var dict = new Dictionary<string, string> (StringComparer.OrdinalIgnoreCase);
 			dict [n1] = "test";
 
-			string result;
+			string? result;
 			Assert.True (dict.TryGetValue (n2, out result), "dictionary value");
 		}
 	}

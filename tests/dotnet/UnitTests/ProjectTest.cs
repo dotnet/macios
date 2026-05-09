@@ -1870,6 +1870,19 @@ namespace Xamarin.Tests {
 		// [TestCase ("MacCatalyst", "")] - No extension support yet
 		public void BuildProjectsWithExtensions (ApplePlatform platform, string runtimeIdentifier, bool isNativeAot)
 		{
+			BuildProjectsWithExtensionsImpl (platform, runtimeIdentifier, isNativeAot);
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
+		[Category ("RemoteWindows")]
+		public void BuildProjectsWithExtensionsOnRemoteWindows (ApplePlatform platform, string runtimeIdentifier, bool isNativeAot)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+			BuildProjectsWithExtensionsImpl (platform, runtimeIdentifier, isNativeAot, AddRemoteProperties ());
+		}
+
+		void BuildProjectsWithExtensionsImpl (ApplePlatform platform, string runtimeIdentifier, bool isNativeAot, Dictionary<string, string>? properties = null)
+		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			var consumingProjectDir = GetProjectPath ("ExtensionConsumer", runtimeIdentifier, platform, out var appPath);
 			var extensionProjectDir = GetProjectPath ("ExtensionProject", platform: platform);
@@ -1877,7 +1890,7 @@ namespace Xamarin.Tests {
 			Clean (extensionProjectDir);
 			Clean (consumingProjectDir);
 
-			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties = GetDefaultProperties (runtimeIdentifier, extraProperties: properties);
 
 			if (isNativeAot) {
 				properties ["PublishAot"] = "true";
@@ -1995,22 +2008,6 @@ namespace Xamarin.Tests {
 
 			var appExecutable = GetNativeExecutable (platform, appPath);
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
-		}
-
-		// This test can be removed in .NET 7
-		[TestCase (ApplePlatform.iOS)]
-		[TestCase (ApplePlatform.TVOS)]
-		[TestCase (ApplePlatform.MacCatalyst)]
-		[TestCase (ApplePlatform.MacOSX)]
-		public void CentralPackageVersionsApp (ApplePlatform platform)
-		{
-			var project = "CentralPackageVersionsApp";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-
-			var project_path = GetProjectPath (project, platform: platform);
-			Clean (project_path);
-			var properties = GetDefaultProperties ();
-			DotNet.AssertBuild (project_path, properties);
 		}
 
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", false)]

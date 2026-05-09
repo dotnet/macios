@@ -20,7 +20,7 @@
 	<Target Name="EvaluateRemoteBuild">
 		<PropertyGroup>
 			<IsRemoteBuild>True</IsRemoteBuild>
-			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(OutputType)' != 'Exe' And '$(BuildBindingProjectLocally)' != 'false'">False</IsRemoteBuild>
+			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(_CanOutputAppBundle)' != 'true' And '$(BuildBindingProjectLocally)' != 'false'">False</IsRemoteBuild>
 		</PropertyGroup>
 	</Target>
 

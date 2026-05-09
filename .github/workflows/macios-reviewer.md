@@ -56,6 +56,6 @@ A maintainer commented `/review` on this pull request. Perform a thorough code r
 - Don't flag what CI catches (compiler errors, linter issues).
 - Don't review C# code formatting — it is handled automatically.
 - Avoid false positives — verify concerns given the full file context.
-- **Never submit an APPROVE event.** Use COMMENT for clean PRs and REQUEST_CHANGES when issues are found.
+- **Never submit an APPROVE event.** Use COMMENT for clean PRs (or re-reviews where previous issues are fixed) and REQUEST_CHANGES only when ❌ error-level issues are found. Submitting COMMENT on a re-review clears any previous REQUEST_CHANGES state.
 - Prioritize: bugs > breaking changes > binding correctness > safety > performance > missing tests > duplication > consistency > documentation.
 - Ignore comments from the user 'vs-mobiletools-engineering-service2'.

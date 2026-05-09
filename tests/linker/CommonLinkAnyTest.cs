@@ -17,12 +17,12 @@ namespace LinkAnyTest {
 		public void Blocks ()
 		{
 			int i = 0;
-			string b = null;
+			string? b = null;
 			NSSet s = new NSSet ("a", "b", "c");
 			s.Enumerate (delegate (NSObject obj, ref bool stop)
 			{
 				stop = i++ == 1;
-				b = obj.ToString ();
+				b = obj.ToString ()!;
 			});
 			// test behavior (we did not break anything)
 			Assert.AreEqual ("b", b, "Stop");
@@ -39,7 +39,7 @@ namespace LinkAnyTest {
 		}
 
 		// https://bugzilla.xamarin.com/show_bug.cgi?id=7114
-		public static void Bug7114 ([CallerFilePath] string filePath = null)
+		public static void Bug7114 ([CallerFilePath] string? filePath = null)
 		{
 			Assert.IsNotNull (filePath, "CallerFilePath");
 		}

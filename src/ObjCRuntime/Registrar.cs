@@ -148,6 +148,10 @@ namespace Registrar {
 
 			public bool IsCategory { get { return CategoryAttribute is not null; } }
 
+			public bool IsStubClass {
+				get => RegisterAttribute?.IsStubClass == true;
+			}
+
 			public ObjCType (Registrar registrar, TType type)
 			{
 				this.Registrar = registrar;

@@ -9,7 +9,6 @@
     <AssemblyName>Microsoft.%PLATFORM%</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\..\..\..\product.snk</AssemblyOriginatorKeyFile>
-    <LangVersion>latest</LangVersion>
     <DefineConstants>MINIMAL</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>BI1234,108,114,219,414,618,660,661,1635,3003,3014,3021,4014</NoWarn>

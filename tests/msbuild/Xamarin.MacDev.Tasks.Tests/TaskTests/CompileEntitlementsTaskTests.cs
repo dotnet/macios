@@ -573,6 +573,38 @@ namespace Xamarin.MacDev.Tasks {
 			ValidateEntitlementsImpl (platform, "error", [], mode, entitlement, "String", "InvalidValue", mobileProvision: "Apple_Signin_Test_Profile.mobileprovision");
 		}
 
+		// Test case inspired by https://github.com/dotnet/macios/issues/25306
+		// A wallet extension requests com.apple.developer.payment-pass-provisioning,
+		// but the provisioning profile doesn't grant it. This should produce a
+		// warning/error so the developer knows why installation fails on device.
+		[Test]
+		[TestCase (EntitlementsMode.InCustomEntitlements)]
+		[TestCase (EntitlementsMode.InFile)]
+		public void ValidateEntitlements_PaymentPassProvisioningNotInProfile (EntitlementsMode mode)
+		{
+			ValidateEntitlementsImpl (ApplePlatform.iOS, "error", [
+				"MT7140:The app requests the entitlement 'com.apple.developer.payment-pass-provisioning', but the provisioning profile 'iOS Team Provisioning Profile: *' doesn't contain this entitlement."
+			], mode, "com.apple.developer.payment-pass-provisioning", "Boolean", "true");
+		}
+
+		[Test]
+		[TestCase (EntitlementsMode.InCustomEntitlements)]
+		[TestCase (EntitlementsMode.InFile)]
+		public void ValidateEntitlements_PaymentPassProvisioningNotInProfile_Warning (EntitlementsMode mode)
+		{
+			ValidateEntitlementsImpl (ApplePlatform.iOS, "warn", [
+				"MT7140:The app requests the entitlement 'com.apple.developer.payment-pass-provisioning', but the provisioning profile 'iOS Team Provisioning Profile: *' doesn't contain this entitlement."
+			], mode, "com.apple.developer.payment-pass-provisioning", "Boolean", "true");
+		}
+
+		[Test]
+		[TestCase (EntitlementsMode.InCustomEntitlements)]
+		[TestCase (EntitlementsMode.InFile)]
+		public void ValidateEntitlements_PaymentPassProvisioningNotInProfile_Disable (EntitlementsMode mode)
+		{
+			ValidateEntitlementsImpl (ApplePlatform.iOS, "disable", [], mode, "com.apple.developer.payment-pass-provisioning", "Boolean", "true");
+		}
+
 		public enum EntitlementsMode {
 			None,
 			InFile,

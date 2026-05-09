@@ -27,7 +27,7 @@ namespace Xamarin.Bundler {
 		public bool Ignore;
 		public Abi? ValidAbis;
 
-		static string ObjectiveCPrefix {
+		public static string ObjectiveCPrefix {
 			get {
 				return "OBJC_CLASS_$_";
 			}
@@ -52,11 +52,7 @@ namespace Xamarin.Bundler {
 		}
 		public string? ObjectiveCName;
 
-		public string Prefix {
-			get {
-				return "_";
-			}
-		}
+		public const string Prefix = "_";
 
 		List<MemberReference> members = new List<MemberReference> ();
 		public IEnumerable<MemberReference> Members { get { return members; } }
@@ -158,6 +154,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
+#if !MSBUILD_TASKS
 		public void Load (string filename, Application app)
 		{
 			using (var reader = new StreamReader (filename)) {
@@ -183,6 +180,7 @@ namespace Xamarin.Bundler {
 				}
 			}
 		}
+#endif // !MSBUILD_TASKS
 
 		public void Save (string filename)
 		{

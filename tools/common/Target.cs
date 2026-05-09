@@ -431,6 +431,8 @@ namespace Xamarin.Bundler {
 			if (app.XamarinRuntime != XamarinRuntime.NativeAOT)
 				sw.WriteLine ("\txamarin_supports_dynamic_registration = {0};", app.DynamicRegistrationSupported ? "TRUE" : "FALSE");
 			sw.WriteLine ("\txamarin_runtime_configuration_name = {0};", string.IsNullOrEmpty (app.RuntimeConfigurationFile) ? "NULL" : $"\"{app.RuntimeConfigurationFile}\"");
+			if (app.Registrar == RegistrarMode.TrimmableStatic)
+				sw.WriteLine ("\txamarin_set_is_trimmable_static_registrar (true);");
 			if (app.Registrar == RegistrarMode.ManagedStatic)
 				sw.WriteLine ("\txamarin_set_is_managed_static_registrar (true);");
 			sw.WriteLine ("}");

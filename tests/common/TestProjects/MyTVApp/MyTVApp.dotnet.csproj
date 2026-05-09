@@ -5,7 +5,6 @@
     <RuntimeIdentifier>tvossimulator-x64</RuntimeIdentifier>
     <OutputType>Exe</OutputType>
     <CustomBeforeMicrosoftCommonTargets>$(CustomBeforeMicrosoftCommonTargets);$(MSBuildThisFileDirectory)../../SupportedOSPlatformVersions.targets</CustomBeforeMicrosoftCommonTargets>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

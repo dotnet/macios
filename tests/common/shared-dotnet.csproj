@@ -54,9 +54,6 @@
 		<!-- There's unsafe code in shared test code, which means pretty much all test suites need unsafe code -->
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
-		<!-- Always use the latest C# version everywhere -->
-		<LangVersion>latest</LangVersion>
-
 		<!-- Don't show warnings about platform availability -->
 		<NoWarn Condition="'$(IncludeCS1416Warnigs)' != 'true'">CA1416;$(NoWarn)</NoWarn>
 

@@ -42,6 +42,21 @@ namespace Xamarin.Linker {
 			return rv;
 		}
 
+		public static bool TryFindSingle<T> (this Mono.Collections.Generic.Collection<T> self, Func<T, bool> predicate, out T? result) where T : class
+		{
+			result = null;
+			foreach (var item in self) {
+				if (predicate (item)) {
+					if (result is not null) {
+						result = null;
+						return false;
+					}
+					result = item;
+				}
+			}
+			return result is not null;
+		}
+
 		public static MethodBody CreateBody (this MethodDefinition self, out ILProcessor il)
 		{
 			var body = new MethodBody (self);

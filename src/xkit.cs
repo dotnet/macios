@@ -1582,7 +1582,7 @@ namespace UIKit {
 	interface INSLayoutManagerDelegate { }
 
 	/// <summary>A delegate object that exposes events for <see cref="NSLayoutManager" />s.</summary>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSLayoutManagerDelegate_Protocol_TextKit/index.html">Apple documentation for <c>NSLayoutManagerDelegate</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nslayoutmanagerdelegate">Apple documentation for <c>NSLayoutManagerDelegate</c></related>
 	[BaseType (typeof (NSObject))]
 	[Model]
 	[Protocol]
@@ -2914,7 +2914,7 @@ namespace UIKit {
 	/// <summary>An attachment to a <see cref="Foundation.NSAttributedString" />.</summary>
 	///     
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSTextAttachment_Class_TextKit/index.html">Apple documentation for <c>NSTextAttachment</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nstextattachment">Apple documentation for <c>NSTextAttachment</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	partial interface NSTextAttachment : NSTextAttachmentContainer, NSSecureCoding, NSTextAttachmentLayout
@@ -3152,7 +3152,7 @@ namespace UIKit {
 	interface INSTextStorageDelegate { }
 
 	/// <summary>A delegate object that provides events relating to processing editing for <see cref="NSTextStorage" />.</summary>
-	/// <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSTextStorageDelegate_Protocol_TextKit/index.html">Apple documentation for <c>NSTextStorageDelegate</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nstextstoragedelegate">Apple documentation for <c>NSTextStorageDelegate</c></related>
 	[MacCatalyst (13, 1)]
 	[Model]
 	[BaseType (typeof (NSObject))]
@@ -3523,7 +3523,7 @@ namespace UIKit {
 
 	/// <summary>Represents a tab location in Text Kit.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/NSTextTab_Class_TextKit/index.html">Apple documentation for <c>NSTextTab</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/uikit/nstexttab">Apple documentation for <c>NSTextTab</c></related>
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (NSObject))]
 	interface NSTextTab : NSSecureCoding, NSCopying {

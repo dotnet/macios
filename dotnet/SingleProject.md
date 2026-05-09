@@ -18,8 +18,7 @@ Info.plist in the project doesn't already contain entries for these keys):
 | ApplicationDisplayVersion | CFBundleShortVersionString | Defaults to ApplicationVersion when blank |
 
 This is only enabled if the `GenerateApplicationManifest` is set to `true`
-(which is the default for `.NET 6`, and not for "legacy"
-Xamarin.iOS/Xamarin.Mac)
+(which is the default for all supported .NET versions)
 
 Additionally, `$(ApplicationDisplayVersion)` will overwrite the value for `$(Version)`,
 so the following properties will be set with the same value:
@@ -30,5 +29,5 @@ so the following properties will be set with the same value:
 
 Ref: [Issue #10473][2]
 
-[1]: https://github.com/xamarin/xamarin-android/blob/40cedfa89c2660479fcb5e2482d2463fbcad1d04/Documentation/guides/OneDotNetSingleProject.md
+[1]: https://github.com/dotnet/android/blob/main/Documentation/guides/OneDotNetSingleProject.md
 [2]: https://github.com/dotnet/macios/issues/10473

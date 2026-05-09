@@ -20,10 +20,7 @@ namespace Xamarin {
 		{
 			base.TryProcessAssembly (assembly);
 
-			if (Configuration.PlatformAssembly != assembly.Name.Name)
-				return;
-
-			global::Frameworks.Gather (Configuration.Application, assembly, Frameworks, WeakFrameworks);
+			global::Frameworks.Gather (Configuration.Application, [assembly], Frameworks, WeakFrameworks);
 		}
 
 		protected override void TryEndProcess ()

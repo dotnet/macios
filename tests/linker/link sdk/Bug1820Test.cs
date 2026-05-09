@@ -15,7 +15,7 @@ namespace LinkSdk.Serialization {
 		[XmlRoot (Namespace = "", IsNullable = false)]
 		public class Response {
 			private DataUpdates dataUpdatesField;
-			private static XmlSerializer serializer;
+			private static XmlSerializer? serializer;
 
 			public Response ()
 			{
@@ -38,10 +38,10 @@ namespace LinkSdk.Serialization {
 
 			public static Response Deserialize (string xml)
 			{
-				StringReader stringReader = null;
+				StringReader? stringReader = null;
 				try {
 					stringReader = new StringReader (xml);
-					return ((Response) (Serializer.Deserialize (XmlReader.Create (stringReader))));
+					return (Response) (Serializer.Deserialize (XmlReader.Create (stringReader)) ?? throw new InvalidOperationException ("Deserialization returned null."));
 				} finally {
 					if ((stringReader is not null)) {
 						stringReader.Dispose ();
@@ -55,7 +55,7 @@ namespace LinkSdk.Serialization {
 		[XmlRoot (Namespace = "", IsNullable = false)]
 		public class DataUpdates {
 			private List<DataUpdatesDataUpdateInfo> dataUpdateInfoField;
-			private static XmlSerializer serializer;
+			private static XmlSerializer? serializer;
 
 			public DataUpdates ()
 			{
@@ -79,10 +79,10 @@ namespace LinkSdk.Serialization {
 
 			public static DataUpdates Deserialize (string xml)
 			{
-				StringReader stringReader = null;
+				StringReader? stringReader = null;
 				try {
 					stringReader = new StringReader (xml);
-					return ((DataUpdates) (Serializer.Deserialize (XmlReader.Create (stringReader))));
+					return (DataUpdates) (Serializer.Deserialize (XmlReader.Create (stringReader)) ?? throw new InvalidOperationException ("Deserialization returned null."));
 				} finally {
 					if ((stringReader is not null)) {
 						stringReader.Dispose ();
@@ -96,9 +96,9 @@ namespace LinkSdk.Serialization {
 		public class DataUpdatesDataUpdateInfo {
 
 			private DateTime dataDateField;
-			private string dataTypeField;
+			private string dataTypeField = "";
 			private DateTime lastUpdatedDateField;
-			private static XmlSerializer serializer;
+			private static XmlSerializer? serializer;
 
 			public DataUpdatesDataUpdateInfo ()
 			{
@@ -132,10 +132,10 @@ namespace LinkSdk.Serialization {
 
 			public static DataUpdatesDataUpdateInfo Deserialize (string xml)
 			{
-				StringReader stringReader = null;
+				StringReader? stringReader = null;
 				try {
 					stringReader = new StringReader (xml);
-					return ((DataUpdatesDataUpdateInfo) (Serializer.Deserialize (XmlReader.Create (stringReader))));
+					return (DataUpdatesDataUpdateInfo) (Serializer.Deserialize (XmlReader.Create (stringReader)) ?? throw new InvalidOperationException ("Deserialization returned null."));
 				} finally {
 					if ((stringReader is not null)) {
 						stringReader.Dispose ();

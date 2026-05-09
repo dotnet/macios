@@ -197,7 +197,7 @@ namespace Xamarin.Tests {
 						is_apfs = false;
 					} else {
 						var exit_code = ExecutionHelper.Execute ("/bin/df", new string [] { "-t", "apfs", "/" }, out var output, TimeSpan.FromSeconds (10));
-						is_apfs = exit_code == 0 && output.Trim ().Split ('\n').Length >= 2;
+						is_apfs = exit_code == 0 && output?.Trim ()?.Split ('\n')?.Length >= 2;
 					}
 				}
 				return is_apfs.Value;

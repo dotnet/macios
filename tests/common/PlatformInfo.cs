@@ -18,14 +18,13 @@ using UIKit;
 
 using Xamarin.Utils;
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Xamarin.Tests {
 	public sealed class PlatformInfo {
 		static PlatformInfo GetHostPlatformInfo ()
 		{
-			string name;
+			string? name;
 			string version;
 #if __MACCATALYST__
 			name = "MacCatalyst";
@@ -35,8 +34,8 @@ namespace Xamarin.Tests {
 			version = UIDevice.CurrentDevice.SystemVersion;
 #elif MONOMAC || __MACOS__
 			using (var plist = NSDictionary.FromFile ("/System/Library/CoreServices/SystemVersion.plist")) {
-				name = (NSString) plist ["ProductName"];
-				version = (NSString) plist ["ProductVersion"];
+				name = (NSString) plist ["ProductName"]!;
+				version = (NSString) plist ["ProductVersion"]!;
 			}
 #else
 #error Unknown platform
@@ -58,21 +57,21 @@ namespace Xamarin.Tests {
 			else
 				throw new FormatException ($"Unknown product name: {name}");
 
-			platformInfo.Version = Version.Parse (version);
+			platformInfo.Version = Version.Parse (version)!;
 
 			return platformInfo;
 		}
 
 #if __MACCATALYST__
-		static string _iOSSupportVersion;
+		static string? _iOSSupportVersion;
 		internal static string iOSSupportVersion {
 			get {
 				if (_iOSSupportVersion is null) {
 					// This is how Apple does it: https://github.com/llvm/llvm-project/blob/62ec4ac90738a5f2d209ed28c822223e58aaaeb7/lldb/source/Host/macosx/objcxx/HostInfoMacOSX.mm#L100-L105
 					using var dict = NSMutableDictionary.FromFile ("/System/Library/CoreServices/SystemVersion.plist");
 					using var str = (NSString) "iOSSupportVersion";
-					using var obj = dict.ObjectForKey (str);
-					_iOSSupportVersion = obj.ToString ();
+					using var obj = dict.ObjectForKey (str)!;
+					_iOSSupportVersion = obj.ToString ()!;
 				}
 				return _iOSSupportVersion;
 			}
@@ -82,7 +81,7 @@ namespace Xamarin.Tests {
 		public static readonly PlatformInfo Host = GetHostPlatformInfo ();
 
 		public ApplePlatform Name { get; private set; }
-		public Version Version { get; private set; }
+		public Version? Version { get; private set; }
 
 		public bool IsMac => Name == ApplePlatform.MacOSX;
 		public bool IsIos => Name == ApplePlatform.iOS;
@@ -117,7 +116,7 @@ namespace Xamarin.Tests {
 			return attributes.IsAvailable (PlatformInfo.Host);
 		}
 
-		static IEnumerable<(OSPlatformAttribute Attribute, ApplePlatform Platform, Version Version)> ParseAttributes (IEnumerable<OSPlatformAttribute> attributes)
+		static IEnumerable<(OSPlatformAttribute Attribute, ApplePlatform Platform, Version? Version)> ParseAttributes (IEnumerable<OSPlatformAttribute> attributes)
 		{
 			foreach (var attr in attributes) {
 				if (!attr.TryParse (out ApplePlatform? platform, out var version))
@@ -153,7 +152,7 @@ namespace Xamarin.Tests {
 		}
 
 		[UnconditionalSuppressMessage ("Trimming", "IL2045", Justification = "Some of the attributes this method uses may have been linked away, so things might not work. It actually works though, so unless something changes, we're going to assume it's trimmer-compatible.")]
-		public static bool? IsAvailable (IEnumerable<(OSPlatformAttribute Attribute, ApplePlatform Platform, Version Version)> attributes, PlatformInfo targetPlatform, ApplePlatform attributePlatform)
+		public static bool? IsAvailable (IEnumerable<(OSPlatformAttribute Attribute, ApplePlatform Platform, Version? Version)> attributes, PlatformInfo targetPlatform, ApplePlatform attributePlatform)
 		{
 			// First we check for any unsupported attributes, and only once we know that there aren't any unsupported
 			// attributes, we check for supported attributes. Otherwise we might determine that an API is available

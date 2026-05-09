@@ -27,11 +27,13 @@ namespace MySimpleApp {
 
 #if HAS_UIKIT
 	public partial class AppDelegate : UIApplicationDelegate {
-		UIWindow window;
+		UIWindow? window;
 
-		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+		public override bool FinishedLaunching (UIApplication app, NSDictionary? options)
 		{
+#pragma warning disable CA1422
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
+#pragma warning restore CA1422
 
 			var dvc = new UIViewController ();
 			var button = new UIButton (window.Bounds);

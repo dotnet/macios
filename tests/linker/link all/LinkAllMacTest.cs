@@ -58,8 +58,8 @@ namespace LinkAllTests {
 			using (var sr = new StringReader (xml))
 			using (var xr = new XmlTextReader (sr)) {
 				var xs = new XmlSerializer (typeof (SerializeMe));
-				SerializeMe item = xs.Deserialize (xr) as SerializeMe;
-				Assert.AreEqual (2, item.SetMe, "SetMe");
+				var item = xs.Deserialize (xr) as SerializeMe;
+				Assert.AreEqual (2, item!.SetMe, "SetMe");
 			}
 		}
 

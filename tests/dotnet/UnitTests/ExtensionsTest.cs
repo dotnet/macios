@@ -27,7 +27,7 @@ namespace Xamarin.Tests {
 				"-target", "NativeIntentsExtension",
 				"-project", Path.Combine (xcodeProjectFolder, "NativeContainer.xcodeproj"),
 			};
-			var env = new Dictionary<string, string> {
+			var env = new Dictionary<string, string?> {
 				{ "DEVELOPER_DIR", Configuration.XcodeLocation },
 			};
 			foreach (var action in new string [] { "clean", "build" })

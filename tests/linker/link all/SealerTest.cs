@@ -68,9 +68,9 @@ namespace Linker.Sealer {
 		public void Final ()
 		{
 			var t = typeof (Sealable);
-			var a = t.GetMethod ("A");
-			var b = t.GetMethod ("B");
-			var c = t.GetMethod ("C");
+			var a = t.GetMethod ("A")!;
+			var b = t.GetMethod ("B")!;
+			var c = t.GetMethod ("C")!;
 #if DEBUG || __MACOS__
 			// this is not a sealed (C#) method (in the source)
 			Assert.False (a.IsFinal, "A");
@@ -88,9 +88,9 @@ namespace Linker.Sealer {
 		public void Virtual ()
 		{
 			var t = typeof (Sealable);
-			var a = t.GetMethod ("A");
-			var b = t.GetMethod ("B");
-			var c = t.GetMethod ("C");
+			var a = t.GetMethod ("A")!;
+			var b = t.GetMethod ("B")!;
+			var c = t.GetMethod ("C")!;
 #if DEBUG || __MACOS__
 			// both methods are virtual (both in C# and IL)
 			Assert.True (a.IsVirtual, "A");
@@ -110,7 +110,7 @@ namespace Linker.Sealer {
 		public void Interface ()
 		{
 			var t = typeof (Subclass);
-			var a = t.GetMethod ("A");
+			var a = t.GetMethod ("A")!;
 			// A cannot be de-virtualized since Concrete must satisfy Interface thru Base
 			Assert.True (a.IsVirtual, "A");
 		}

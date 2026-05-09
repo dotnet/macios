@@ -373,6 +373,10 @@ namespace Foundation {
 		[UnconditionalSuppressMessage ("", "IL2072", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		internal static IntPtr CreateNSObject (IntPtr type_gchandle, IntPtr handle, Flags flags)
 		{
+			// This method should never be called when using the trimmable static registrar, so assert that never happens by throwing an exception in that case.
+			if (Runtime.IsTrimmableStaticRegistrar)
+				throw new System.Diagnostics.UnreachableException ();
+
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception if using the managed static registrar (which is required for NativeAOT)
 			if (Runtime.IsManagedStaticRegistrar) {
 				throw new System.Diagnostics.UnreachableException ();

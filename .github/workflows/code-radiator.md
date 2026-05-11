@@ -36,6 +36,12 @@ safe-outputs:
   push-to-pull-request-branch:
     max: 10
     target: "*"
+    allowed-head-branches:
+      - "merge/main-to-net*.0"
+      - "merge/main-to-xcode*"
+    allowed-base-branches:
+      - "net*.0"
+      - "xcode*"
     title-prefix: "🤖 Merge 'main' => '"
   update-pull-request:
     max: 10

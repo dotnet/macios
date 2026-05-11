@@ -452,6 +452,10 @@ namespace Xharness.Jenkins.Reports {
 								}
 								if (!exists) {
 									writer.WriteLine ("<a href='{0}' type='{2}' target='{3}'>{1}</a> (does not exist)<br />", GetLinkFullPath (fileLog.FullPath.Substring (jenkins.LogDirectory.Length + 1)), log.Description, log_type, log_target);
+								} else if (log_type.StartsWith ("image/", StringComparison.Ordinal)) {
+									var imgLinkPath = GetLinkFullPath (fileLog.FullPath.Substring (jenkins.LogDirectory.Length + 1));
+									writer.WriteLine ("<a href='{0}' target='{2}'>{1}</a><br />", imgLinkPath, log.Description, log_target);
+									writer.WriteLine ("<a href='{0}' target='{1}'><img src='{0}' style='max-width: 800px; border: 1px solid #ccc; margin: 5px 0;' /></a><br />", imgLinkPath, log_target);
 								} else if (log.Description == LogType.BuildLog.ToString ()) {
 									var binlog = fileLog.FullPath.Replace (".txt", ".binlog");
 									if (File.Exists (binlog)) {

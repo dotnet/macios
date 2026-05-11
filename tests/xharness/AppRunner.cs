@@ -495,6 +495,17 @@ namespace Xharness {
 					diagnosticLog.WriteLine ($"listapps exit code: {listAppsResult.ExitCode}");
 				}
 
+				// Capture a screenshot of the entire screen to help diagnose what's happening
+				diagnosticLog.WriteLine ("=== Screenshot ===");
+				var screenshotPath = Logs.CreateFile ($"launch-timeout-screenshot-{Harness.Helpers.Timestamp}.png", "Launch timeout screenshot");
+				var screenshotResult = await processManager.ExecuteCommandAsync ("screencapture", new [] { "-x", screenshotPath }, diagnosticLog, TimeSpan.FromSeconds (10));
+				if (screenshotResult.ExitCode == 0 && File.Exists (screenshotPath)) {
+					diagnosticLog.WriteLine ($"Screenshot saved to {screenshotPath}");
+					MainLog.WriteLine ($"Launch timeout screenshot saved to {screenshotPath}");
+				} else {
+					diagnosticLog.WriteLine ($"Failed to capture screenshot (exit code: {screenshotResult.ExitCode})");
+				}
+
 				MainLog.WriteLine ($"Launch timeout diagnostics written to {diagnosticLog.FullPath}");
 			} catch (Exception e) {
 				MainLog.WriteLine ($"Failed to collect launch timeout diagnostics: {e.Message}");

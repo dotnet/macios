@@ -36,8 +36,15 @@ using Xamarin.Utils;
 #nullable enable
 
 namespace Introspection {
-	public abstract class ApiTypoTest : ApiBaseTest {
-		protected ApiTypoTest ()
+	[TestFixture]
+	public class ApiTypoTest : ApiBaseTest {
+#if MONOMAC
+		NSSpellChecker? checker;
+#else
+		UITextChecker checker = new UITextChecker ();
+#endif
+
+		public ApiTypoTest ()
 		{
 			ContinueOnFailure = true;
 		}
@@ -978,6 +985,21 @@ namespace Introspection {
 		[Test]
 		public virtual void TypoTest ()
 		{
+#if MONOMAC
+			AssertMatchingOSVersionAndSdkVersion ();
+			checker = new NSSpellChecker ();
+#else
+			// the dictionary used by iOS varies with versions and
+			// we don't want to maintain special cases for each version
+			var sdk = new Version (Constants.SdkVersion);
+			if (!UIDevice.CurrentDevice.CheckSystemVersion (sdk.Major, sdk.Minor))
+				Assert.Ignore ("Typos only verified using the latest SDK");
+
+			// that's slow and there's no value to run it on devices as the API names
+			// being verified won't change from the simulator
+			TestRuntime.AssertSimulatorOrDesktop ("Typos only detected on simulator");
+#endif
+
 			var types = Assembly.GetTypes ();
 			int totalErrors = 0;
 			foreach (Type t in types) {
@@ -1125,7 +1147,20 @@ namespace Introspection {
 				cached_typoes [txt] = rv = GetTypo (txt);
 			return rv;
 		}
-		public abstract string GetTypo (string txt);
+		public string GetTypo (string txt)
+		{
+#if MONOMAC
+			var checkRange = new NSRange (0, txt.Length);
+			nint wordCount;
+			var typoRange = checker!.CheckSpelling (txt, 0, "en_US", false, 0, out wordCount);
+#else
+			var checkRange = new NSRange (0, txt.Length);
+			var typoRange = checker.RangeOfMisspelledWordInString (txt, checkRange, checkRange.Location, false, "en_US");
+#endif
+			if (typoRange.Length == 0)
+				return String.Empty;
+			return txt.Substring ((int) typoRange.Location, (int) typoRange.Length);
+		}
 
 		static StringBuilder clean = new StringBuilder ();
 

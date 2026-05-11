@@ -27,8 +27,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 #if MONOMAC
 using AppKit;
+using SpellChecker = AppKit.NSSpellChecker;
 #else
 using UIKit;
+using SpellChecker = UIKit.UITextChecker;
 #endif
 using Xamarin.Tests;
 using Xamarin.Utils;
@@ -39,12 +41,6 @@ namespace Introspection {
 	[TestFixture]
 	public class ApiTypoTest : ApiBaseTest {
 		const ApplePlatform All = ApplePlatform.MacOSX | ApplePlatform.iOS | ApplePlatform.TVOS | ApplePlatform.MacCatalyst;
-
-#if MONOMAC
-		NSSpellChecker? checker;
-#else
-		UITextChecker checker = new UITextChecker ();
-#endif
 
 		public ApiTypoTest ()
 		{
@@ -874,20 +870,13 @@ namespace Introspection {
 		[Test]
 		public virtual void TypoTest ()
 		{
-#if MONOMAC
 			AssertMatchingOSVersionAndSdkVersion ();
-			checker = new NSSpellChecker ();
-#else
-			// the dictionary used by iOS varies with versions and
-			// we don't want to maintain special cases for each version
-			var sdk = new Version (Constants.SdkVersion);
-			if (!UIDevice.CurrentDevice.CheckSystemVersion (sdk.Major, sdk.Minor))
-				Assert.Ignore ("Typos only verified using the latest SDK");
 
 			// that's slow and there's no value to run it on devices as the API names
 			// being verified won't change from the simulator
-			TestRuntime.AssertSimulatorOrDesktop ("Typos only detected on simulator");
-#endif
+			TestRuntime.AssertSimulatorOrDesktop ("Typos only detected on simulator/desktop");
+
+			using var checker = new SpellChecker ();
 
 			var types = Assembly.GetTypes ();
 			int totalErrors = 0;
@@ -897,7 +886,7 @@ namespace Introspection {
 						continue;
 
 					string txt = NameCleaner (t.Name);
-					var typo = GetCachedTypo (txt);
+					var typo = GetCachedTypo (checker, txt);
 					if (typo.Length > 0) {
 						if (!Skip (t, typo)) {
 							ReportError ("Typo in TYPE: {0} - {1} ", t.Name, typo);
@@ -914,7 +903,7 @@ namespace Introspection {
 							continue;
 
 						txt = NameCleaner (f.Name);
-						typo = GetCachedTypo (txt);
+						typo = GetCachedTypo (checker, txt);
 						if (typo.Length > 0) {
 							if (!Skip (f, typo)) {
 								ReportError ("Typo in FIELD name: {0} - {1}, Type: {2}", f.Name, typo, t.Name);
@@ -932,7 +921,7 @@ namespace Introspection {
 							continue;
 
 						txt = NameCleaner (m.Name);
-						typo = GetCachedTypo (txt);
+						typo = GetCachedTypo (checker, txt);
 						if (typo.Length > 0) {
 							if (!Skip (m, typo)) {
 								ReportError ("Typo in METHOD name: {0} - {1}, Type: {2}", m.Name, typo, t.Name);
@@ -943,7 +932,7 @@ namespace Introspection {
 						var parameters = m.GetParameters ();
 						foreach (ParameterInfo p in parameters) {
 							txt = NameCleaner (p.Name);
-							typo = GetCachedTypo (txt);
+							typo = GetCachedTypo (checker, txt);
 							if (typo.Length > 0) {
 								ReportError ("Typo in PARAMETER Name: {0} - {1}, Method: {2}, Type: {3}", p.Name, typo, m.Name, t.Name);
 								totalErrors++;
@@ -1033,20 +1022,19 @@ namespace Introspection {
 		}
 
 		Dictionary<string, string> cached_typoes = new Dictionary<string, string> ();
-		string GetCachedTypo (string txt)
+		string GetCachedTypo (SpellChecker checker, string txt)
 		{
 			if (!cached_typoes.TryGetValue (txt, out var rv))
-				cached_typoes [txt] = rv = GetTypo (txt);
+				cached_typoes [txt] = rv = GetTypo (checker, txt);
 			return rv;
 		}
-		public string GetTypo (string txt)
+
+		string GetTypo (SpellChecker checker, string txt)
 		{
+			var checkRange = new NSRange (0, txt.Length);
 #if MONOMAC
-			var checkRange = new NSRange (0, txt.Length);
-			nint wordCount;
-			var typoRange = checker!.CheckSpelling (txt, 0, "en_US", false, 0, out wordCount);
+			var typoRange = checker.CheckSpelling (txt, 0, "en_US", false, 0, out var _);
 #else
-			var checkRange = new NSRange (0, txt.Length);
 			var typoRange = checker.RangeOfMisspelledWordInString (txt, checkRange, checkRange.Location, false, "en_US");
 #endif
 			if (typoRange.Length == 0)

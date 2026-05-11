@@ -25,8 +25,8 @@ safe-outputs:
   create-pull-request:
     max: 10
     allowed-base-branches:
-      - "net*.0"
-      - "xcode*"
+      - "net[0-9]*.0"
+      - "xcode[0-9]*"
   add-comment:
     max: 10
   add-labels:

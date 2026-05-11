@@ -3579,6 +3579,15 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; has conflicting simulator availability attributes for the &apos;{1}&apos; platform (both SupportedSimulator and UnsupportedSimulator). Please file an issue at https://github.com/dotnet/macios/issues/new.
+        /// </summary>
+        public static string MX2260 {
+            get {
+                return ResourceManager.GetString("MX2260", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not {0} the assembly &apos;{1}&apos;.
         /// </summary>
         public static string MX3001 {

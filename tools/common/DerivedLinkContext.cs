@@ -276,6 +276,7 @@ namespace Xamarin.Tuner {
 
 			// Pass 2: check for any matching SupportedSimulator attributes — evaluate as OR across versions.
 			var hasSupported = false;
+			var supportedCount = 0;
 			var isAvailable = false;
 			foreach (var attrib in provider.CustomAttributes) {
 				if (!attrib.AttributeType.Is ("ObjCRuntime", "SupportedSimulatorAttribute"))
@@ -285,6 +286,7 @@ namespace Xamarin.Tuner {
 						continue;
 
 					hasSupported = true;
+					supportedCount++;
 					var osVersion = supportedPlatform.Substring (platformName.Length);
 					if (string.IsNullOrEmpty (osVersion)) {
 						// no version constraint: available in the simulator
@@ -308,6 +310,12 @@ namespace Xamarin.Tuner {
 			// Conflicting attributes: both Supported and Unsupported for the same platform
 			if (hasUnsupported && hasSupported) {
 				LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateError (App, 2260, methodForErrorReporting, Errors.MX2260, provider.AsString (), platformName));
+				return true; // treat as unavailable
+			}
+
+			// Multiple SupportedSimulator attributes for the same platform
+			if (supportedCount > 1) {
+				LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateError (App, 2261, methodForErrorReporting, Errors.MX2261, provider.AsString (), platformName));
 				return true; // treat as unavailable
 			}
 

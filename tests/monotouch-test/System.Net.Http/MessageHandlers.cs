@@ -65,7 +65,7 @@ namespace MonoTests.System.Net.Http {
 
 			Assert.That (done, Is.True, "Did not time out");
 			Assert.That (response, Is.Null, $"Response is not null {response}");
-			Assert.That (typeof (HttpRequestException), Is.InstanceOf (), ex, "Exception");
+			Assert.That (ex, Is.InstanceOf (typeof (HttpRequestException)), "Exception");
 		}
 
 		// ensure that we do get the same cookies as the managed handler for the default session
@@ -541,9 +541,9 @@ namespace MonoTests.System.Net.Http {
 				Assert.That (validationCbWasExecuted, Is.True, "Validation Callback called");
 				// assert the exception type
 				Assert.That (ex, Is.Not.Null, (result is null) ? "Expected exception is missing and got no result" : $"Expected exception but got {result.Content.ReadAsStringAsync ().Result}");
-				Assert.That (typeof (HttpRequestException), Is.InstanceOf (), ex, "Exception type");
+				Assert.That (ex, Is.InstanceOf (typeof (HttpRequestException)), "Exception type");
 				Assert.That (ex.InnerException, Is.Not.Null, "InnerException");
-				Assert.That (expectedExceptionType, Is.InstanceOf (), ex.InnerException, "InnerException type");
+				Assert.That (ex.InnerException, Is.InstanceOf (expectedExceptionType), "InnerException type");
 			}
 		}
 
@@ -674,9 +674,9 @@ namespace MonoTests.System.Net.Http {
 			} else {
 				Assert.That (callbackWasExecuted, Is.True, "Validation Callback called.");
 				Assert.That (ex, Is.Not.Null, result is null ? "Expected exception is missing and got no result." : $"Expected exception but got {result.Content.ReadAsStringAsync ().Result}.");
-				Assert.That (typeof (HttpRequestException), Is.InstanceOf (), ex, "Exception type");
+				Assert.That (ex, Is.InstanceOf (typeof (HttpRequestException)), "Exception type");
 				Assert.That (ex.InnerException, Is.Not.Null, "InnerException");
-				Assert.That (typeof (WebException), Is.InstanceOf (), ex.InnerException, "InnerException type");
+				Assert.That (ex.InnerException, Is.InstanceOf (typeof (WebException)), "InnerException type");
 				Assert.That (ex2, Is.Null, "Callback asserts");
 			}
 		}
@@ -755,10 +755,10 @@ namespace MonoTests.System.Net.Http {
 				}, out var ex);
 				Assert.That (done, Is.True, "Request to localhost timed out.");
 				Assert.That (ex, Is.Not.Null, "Exception was expected.");
-				Assert.That (typeof (HttpRequestException), Is.InstanceOf (), ex, "Exception");
-				Assert.That (typeof (WebException), Is.InstanceOf (), ex!.InnerException, "InnerException Type");
+				Assert.That (ex, Is.InstanceOf (typeof (HttpRequestException)), "Exception");
+				Assert.That (ex!.InnerException, Is.InstanceOf (typeof (WebException)), "InnerException Type");
 				Assert.That (((WebException) ex.InnerException!).Status, Is.EqualTo (WebExceptionStatus.SecureChannelFailure), "InnerException Status");
-				Assert.That (typeof (AuthenticationException), Is.InstanceOf (), ex.InnerException.InnerException, "InnerException.InnerException Type");
+				Assert.That (ex.InnerException.InnerException, Is.InstanceOf (typeof (AuthenticationException)), "InnerException.InnerException Type");
 			} finally {
 				listener?.Cancel ();
 				listener?.Dispose ();
@@ -785,7 +785,7 @@ namespace MonoTests.System.Net.Http {
 				// With the opt-out switch enabled, the new specific exception is not thrown.
 				// Instead we get a generic connection error (no WebException/AuthenticationException chain).
 				Assert.That (ex, Is.Not.Null, "Exception was expected.");
-				Assert.That (typeof (HttpRequestException), Is.InstanceOf (), ex, "Exception");
+				Assert.That (ex, Is.InstanceOf (typeof (HttpRequestException)), "Exception");
 				if (ex!.InnerException is WebException we)
 					Assert.That (we.Status, Is.Not.EqualTo (WebExceptionStatus.SecureChannelFailure), "Should not be SecureChannelFailure");
 			} finally {

@@ -110,7 +110,7 @@ namespace Xamarin.MMP.Tests {
 				NativeReferenceTestCore (tmpDir, test, "Unified_WithNativeReferences_InMainProjectWorks - Static", null, true, false, s => {
 					var clangLines = s.BuildOutputLines.Where (x => x.Contains ("usr/bin/clang"));
 					var staticLib = clangLines.Where (x => x.Contains ("SimpleClassStatic.a"));
-					Assert.That (staticLib, Is.Not.Empty, "SimpleClassStatic.a:\n\t{0}", string.Join ("\n\t", clangLines));
+					Assert.That (staticLib, Is.Not.Empty, $"SimpleClassStatic.a:\n\t{string.Join ("\n\t", clangLines)}");
 					return true;
 				});
 			});

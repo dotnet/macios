@@ -70,7 +70,7 @@ namespace Xamarin.MMP.Tests {
 					bool mobile = targetProfile.Profile == "Mobile";
 					string referenceLine = mmpOutput.Split (Environment.NewLine.ToCharArray ()).First (x => x.StartsWith ("Added assembly ", StringComparison.Ordinal) && x.Contains ("Xamarin.Mac.dll"));
 
-					Assert.That (referenceLine.Contains ("mobile") == mobile, Is.True, "Selected Reference Line Unexpected: {0} with {1}", referenceLine, targetProfile);
+					Assert.That (referenceLine.Contains ("mobile") == mobile, Is.True, $"Selected Reference Line Unexpected: {referenceLine} with {targetProfile}");
 				}
 			});
 		}

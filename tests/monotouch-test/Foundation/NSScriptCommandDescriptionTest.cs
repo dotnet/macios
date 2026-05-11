@@ -150,7 +150,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			Assert.That (scriptDescription.ArgumentNames.Length, Is.EqualTo (args.Keys.Count));
 			foreach (var argName in scriptDescription.ArgumentNames) {
-				Assert.That (args.Keys.Contains (argName), Is.True, "Arg {0} is missing", argName);
+				Assert.That (args.Keys.Contains (argName), Is.True, $"Arg {argName} is missing");
 			}
 		}
 
@@ -170,7 +170,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void TestIsOptionalArgument ()
 		{
 			foreach (KeyValuePair<string, NSScriptCommandArgumentDescription> kvp in args) {
-				Assert.That (scriptDescription.IsOptionalArgument (kvp.Key), Is.EqualTo (kvp.Value.IsOptional), "Wrong apple event code for arg {0}", kvp.Key);
+				Assert.That (scriptDescription.IsOptionalArgument (kvp.Key), Is.EqualTo (kvp.Value.IsOptional), $"Wrong apple event code for arg {kvp.Key}");
 			}
 		}
 
@@ -178,7 +178,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void TestGetAppleEventCodeForArgument ()
 		{
 			foreach (KeyValuePair<string, NSScriptCommandArgumentDescription> kvp in args) {
-				Assert.That (scriptDescription.GetAppleEventCodeForArgument (kvp.Key), Is.EqualTo (kvp.Value.AppleEventCode), "Wrong apple event code for arg {0}", kvp.Key);
+				Assert.That (scriptDescription.GetAppleEventCodeForArgument (kvp.Key), Is.EqualTo (kvp.Value.AppleEventCode), $"Wrong apple event code for arg {kvp.Key}");
 			}
 		}
 

@@ -62,7 +62,7 @@ namespace MonoTouchFixtures.Security {
 					Assert.That (i1.Certificate.GetCommonName (), Is.EqualTo (c.Certificate.GetCommonName ()), "GetCommonName");
 					call++;
 
-				}, Is.True), "Access");
+				}), Is.True, "Access");
 				Assert.That (call, Is.EqualTo (1), "call");
 			}
 		}

@@ -1471,7 +1471,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			//			}
 			for (uint i = 0; i < exp.Length; i++) {
 				var p = Marshal.PtrToStringAuto (sig.GetArgumentType (i));
-				Assert.That (p, Is.EqualTo (exp [i]), "#{0}", i);
+				Assert.That (p, Is.EqualTo (exp [i]), $"#{i}");
 			}
 		}
 

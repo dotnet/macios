@@ -549,7 +549,7 @@ namespace Introspection {
 					using (var otherAttch = obj.GetAttachment<CFString> ("key", out otherMode)!) {
 						obj.RemoveAllAttachments ();
 						Assert.That (otherMode, Is.EqualTo (mode));
-						Assert.That (otherAttch, Is.Not.Null, "For type {0}", t.Name);
+						Assert.That (otherAttch, Is.Not.Null, $"For type {t.Name}");
 						Assert.That (otherAttch.ToString (), Is.EqualTo (attch.ToString ()), "For type {0}", t.Name);
 					}
 				}
@@ -583,7 +583,7 @@ namespace Introspection {
 					obj.SetAttachment ("key", attch, CMAttachmentMode.ShouldNotPropagate);
 					using (var otherAttch = obj.GetAttachment<CFString> ("key", out otherMode)) {
 						obj.RemoveAllAttachments ();
-						Assert.That (otherAttch, Is.Null, "For type {0}", t.Name);
+						Assert.That (otherAttch, Is.Null, $"For type {t.Name}");
 					}
 				}
 				if (t is IDisposable disp) {

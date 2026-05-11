@@ -64,28 +64,28 @@ namespace MonoTouchFixtures.Foundation {
 				NSUrlSessionDownloadTask task = null;
 				Assert.DoesNotThrow (() => task = NSUrlSession.SharedSession.CreateDownloadTask (ur), "Should not throw InvalidCastException");
 				Assert.That (task, Is.Not.Null, "task should not be null");
-				Assert.That (typeof (NSUrlSessionDownloadTask), Is.InstanceOf (), task, "task should be an instance of NSUrlSessionDownloadTask");
+				Assert.That (task, Is.InstanceOf (typeof (NSUrlSessionDownloadTask)), "task should be an instance of NSUrlSessionDownloadTask");
 			}
 
 			using (var ur = new NSUrlRequest ()) {
 				NSUrlSessionDownloadTask task = null;
 				Assert.DoesNotThrow (() => task = NSUrlSession.SharedSession.CreateDownloadTask (ur, null), "Should not throw InvalidCastException 2");
 				Assert.That (task, Is.Not.Null, "task should not be null 2");
-				Assert.That (typeof (NSUrlSessionDownloadTask), Is.InstanceOf (), task, "task should be an instance of NSUrlSessionDownloadTask 2");
+				Assert.That (task, Is.InstanceOf (typeof (NSUrlSessionDownloadTask)), "task should be an instance of NSUrlSessionDownloadTask 2");
 			}
 
 			using (var ur = new NSUrl (NetworkResources.MicrosoftUrl)) {
 				NSUrlSessionDownloadTask task = null;
 				Assert.DoesNotThrow (() => task = NSUrlSession.SharedSession.CreateDownloadTask (ur), "Should not throw InvalidCastException 3");
 				Assert.That (task, Is.Not.Null, "task should not be null 3");
-				Assert.That (typeof (NSUrlSessionDownloadTask), Is.InstanceOf (), task, "task should be an instance of NSUrlSessionDownloadTask 3");
+				Assert.That (task, Is.InstanceOf (typeof (NSUrlSessionDownloadTask)), "task should be an instance of NSUrlSessionDownloadTask 3");
 			}
 
 			using (var ur = new NSUrl (NetworkResources.MicrosoftUrl)) {
 				NSUrlSessionDownloadTask task = null;
 				Assert.DoesNotThrow (() => task = NSUrlSession.SharedSession.CreateDownloadTask (ur, null), "Should not throw InvalidCastException 4");
 				Assert.That (task, Is.Not.Null, "task should not be null 4");
-				Assert.That (typeof (NSUrlSessionDownloadTask), Is.InstanceOf (), task, "task should be an instance of NSUrlSessionDownloadTask 4");
+				Assert.That (task, Is.InstanceOf (typeof (NSUrlSessionDownloadTask)), "task should be an instance of NSUrlSessionDownloadTask 4");
 			}
 		}
 
@@ -98,28 +98,28 @@ namespace MonoTouchFixtures.Foundation {
 				NSUrlSessionDataTask task = null;
 				Assert.DoesNotThrow (() => task = NSUrlSession.SharedSession.CreateDataTask (ur), "Should not throw InvalidCastException");
 				Assert.That (task, Is.Not.Null, "task should not be null");
-				Assert.That (typeof (NSUrlSessionDataTask), Is.InstanceOf (), task, "task should be an instance of NSUrlSessionDataTask");
+				Assert.That (task, Is.InstanceOf (typeof (NSUrlSessionDataTask)), "task should be an instance of NSUrlSessionDataTask");
 			}
 
 			using (var ur = new NSUrlRequest ()) {
 				NSUrlSessionDataTask task = null;
 				Assert.DoesNotThrow (() => task = NSUrlSession.SharedSession.CreateDataTask (ur, null), "Should not throw InvalidCastException 2");
 				Assert.That (task, Is.Not.Null, "task should not be null 2");
-				Assert.That (typeof (NSUrlSessionDataTask), Is.InstanceOf (), task, "task should be an instance of NSUrlSessionDataTask 2");
+				Assert.That (task, Is.InstanceOf (typeof (NSUrlSessionDataTask)), "task should be an instance of NSUrlSessionDataTask 2");
 			}
 
 			using (var ur = new NSUrl (NetworkResources.MicrosoftUrl)) {
 				NSUrlSessionDataTask task = null;
 				Assert.DoesNotThrow (() => task = NSUrlSession.SharedSession.CreateDataTask (ur), "Should not throw InvalidCastException 3");
 				Assert.That (task, Is.Not.Null, "task should not be null 3");
-				Assert.That (typeof (NSUrlSessionDataTask), Is.InstanceOf (), task, "task should be an instance of NSUrlSessionDataTask 3");
+				Assert.That (task, Is.InstanceOf (typeof (NSUrlSessionDataTask)), "task should be an instance of NSUrlSessionDataTask 3");
 			}
 
 			using (var ur = new NSUrl (NetworkResources.MicrosoftUrl)) {
 				NSUrlSessionDataTask task = null;
 				Assert.DoesNotThrow (() => task = NSUrlSession.SharedSession.CreateDataTask (ur, null), "Should not throw InvalidCastException 4");
 				Assert.That (task, Is.Not.Null, "task should not be null 4");
-				Assert.That (typeof (NSUrlSessionDataTask), Is.InstanceOf (), task, "task should be an instance of NSUrlSessionDataTask 4");
+				Assert.That (task, Is.InstanceOf (typeof (NSUrlSessionDataTask)), "task should be an instance of NSUrlSessionDataTask 4");
 			}
 		}
 
@@ -132,7 +132,7 @@ namespace MonoTouchFixtures.Foundation {
 				NSUrlSessionUploadTask task = null;
 				Assert.DoesNotThrow (() => task = NSUrlSession.SharedSession.CreateUploadTask (ur), "Should not throw InvalidCastException");
 				Assert.That (task, Is.Not.Null, "task should not be null");
-				Assert.That (typeof (NSUrlSessionUploadTask), Is.InstanceOf (), task, "task should be an instance of NSUrlSessionUploadTask");
+				Assert.That (task, Is.InstanceOf (typeof (NSUrlSessionUploadTask)), "task should be an instance of NSUrlSessionUploadTask");
 			}
 
 			using (var data = NSData.FromString ("Hola"))
@@ -140,7 +140,7 @@ namespace MonoTouchFixtures.Foundation {
 				NSUrlSessionUploadTask task = null;
 				Assert.DoesNotThrow (() => task = NSUrlSession.SharedSession.CreateUploadTask (ur, data), "Should not throw InvalidCastException 2");
 				Assert.That (task, Is.Not.Null, "task should not be null 2");
-				Assert.That (typeof (NSUrlSessionUploadTask), Is.InstanceOf (), task, "task should be an instance of NSUrlSessionUploadTask 2");
+				Assert.That (task, Is.InstanceOf (typeof (NSUrlSessionUploadTask)), "task should be an instance of NSUrlSessionUploadTask 2");
 			}
 
 			using (var ur = new NSUrlRequest ())
@@ -148,7 +148,7 @@ namespace MonoTouchFixtures.Foundation {
 				NSUrlSessionUploadTask task = null;
 				Assert.DoesNotThrow (() => task = NSUrlSession.SharedSession.CreateUploadTask (ur, url), "Should not throw InvalidCastException 3");
 				Assert.That (task, Is.Not.Null, "task should not be null 3");
-				Assert.That (typeof (NSUrlSessionUploadTask), Is.InstanceOf (), task, "task should be an instance of NSUrlSessionUploadTask 3");
+				Assert.That (task, Is.InstanceOf (typeof (NSUrlSessionUploadTask)), "task should be an instance of NSUrlSessionUploadTask 3");
 			}
 
 			using (var ur = new NSUrlRequest ())
@@ -156,7 +156,7 @@ namespace MonoTouchFixtures.Foundation {
 				NSUrlSessionUploadTask task = null;
 				Assert.DoesNotThrow (() => task = NSUrlSession.SharedSession.CreateUploadTask (ur, url, (data, response, error) => { }), "Should not throw InvalidCastException 4");
 				Assert.That (task, Is.Not.Null, "task should not be null 4");
-				Assert.That (typeof (NSUrlSessionUploadTask), Is.InstanceOf (), task, "task should be an instance of NSUrlSessionUploadTask 4");
+				Assert.That (task, Is.InstanceOf (typeof (NSUrlSessionUploadTask)), "task should be an instance of NSUrlSessionUploadTask 4");
 			}
 
 			using (var ur = new NSUrlRequest ())
@@ -164,7 +164,7 @@ namespace MonoTouchFixtures.Foundation {
 				NSUrlSessionUploadTask task = null;
 				Assert.DoesNotThrow (() => task = NSUrlSession.SharedSession.CreateUploadTask (ur, data, (d, response, error) => { }), "Should not throw InvalidCastException 5");
 				Assert.That (task, Is.Not.Null, "task should not be null 5");
-				Assert.That (typeof (NSUrlSessionUploadTask), Is.InstanceOf (), task, "task should be an instance of NSUrlSessionUploadTask 5");
+				Assert.That (task, Is.InstanceOf (typeof (NSUrlSessionUploadTask)), "task should be an instance of NSUrlSessionUploadTask 5");
 			}
 		}
 	}

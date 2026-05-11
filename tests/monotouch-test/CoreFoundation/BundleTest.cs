@@ -54,7 +54,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 					Assert.That (otherBundle.Info.Type, Is.EqualTo (b.Info.Type), String.Format ("Found bundle with diff type and id {0}", id));
 					var bPath = (string) ((NSString) b.Url.Path).ResolveSymlinksInPath ();
 					var list = dict [id];
-					Assert.That (list, Does.Contain (bPath), "None of the bundles for {0} matches the path {1}", id, bPath);
+					Assert.That (list, Does.Contain (bPath), $"None of the bundles for {id} matches the path {bPath}");
 				}
 			}
 		}

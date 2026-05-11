@@ -142,6 +142,10 @@ public class AttributeManager {
 			return typeof (ObjCRuntime.RequiresSuperAttribute);
 		case "ObjCRuntime.ObjectiveCFrameworkAttribute":
 			return typeof (ObjCRuntime.ObjectiveCFrameworkAttribute);
+		case "ObjCRuntime.SupportedSimulatorAttribute":
+			return typeof (ObjCRuntime.SupportedSimulatorAttribute);
+		case "ObjCRuntime.UnsupportedSimulatorAttribute":
+			return typeof (ObjCRuntime.UnsupportedSimulatorAttribute);
 		case "UnavailableAttribute":
 			return typeof (UnavailableAttribute);
 		case "OptionalImplementationAttribute":

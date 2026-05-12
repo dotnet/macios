@@ -63,8 +63,8 @@ namespace Mono.ApiTools {
 			else if (eGP is null ^ sGP is null)
 				return false;
 			else {
-				var eGPs = eGP.Elements ("generic-parameter");
-				var sGPs = sGP.Elements ("generic-parameter");
+				var eGPs = eGP!.Elements ("generic-parameter");
+				var sGPs = sGP!.Elements ("generic-parameter");
 				return eGPs.Count () == sGPs.Count ();
 			}
 		}

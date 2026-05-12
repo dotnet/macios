@@ -38,10 +38,6 @@ namespace Introspection {
 				if (TestRuntime.IsSimulatorOrDesktop)
 					return true;
 				break;
-			case "SafetyKit":
-				if (TestRuntime.IsSimulator)
-					return !TestRuntime.CheckXcodeVersion (15, 0); // doesn't seem to be available in the iOS simulator until iOS 17+
-				break;
 			case "SensorKit": // SensorKit doesn't exist on iPads
 				if (TestRuntime.IsDevice && TestRuntime.IsiPad)
 					return true;
@@ -67,108 +63,12 @@ namespace Introspection {
 			// was removed by apple and is a compat class.
 			case "HMMatterRequestHandler":
 				return true;
-			case "CIFilterGenerator":
-				// only present on device :/
-				return TestRuntime.IsSimulatorOrDesktop;
 #if !XAMCORE_5_0
 			case "GKHybridStrategist":
 				// We removed the bindings for this type.
 				return true;
 #endif
-#if __TVOS__
-			case "MTLAccelerationStructureBoundingBoxGeometryDescriptor":
-			case "MTLAccelerationStructureDescriptor":
-			case "MTLAccelerationStructureGeometryDescriptor":
-			case "MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor":
-			case "MTLAccelerationStructureMotionTriangleGeometryDescriptor":
-			case "MTLAccelerationStructurePassDescriptor":
-			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptor":
-			case "MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray":
-			case "MTLAccelerationStructureTriangleGeometryDescriptor":
-			case "MTLInstanceAccelerationStructureDescriptor":
-			case "MTLIntersectionFunctionDescriptor":
-			case "MTLIntersectionFunctionTableDescriptor":
-			case "MTLMeshRenderPipelineDescriptor":
-			case "MTLMotionKeyframeData":
-			case "MTLPrimitiveAccelerationStructureDescriptor":
-			case "MTLRasterizationRateLayerArray":
-			case "MTLRasterizationRateLayerDescriptor":
-			case "MTLRasterizationRateMapDescriptor":
-			case "MTLRasterizationRateSampleArray":
-			case "MTLRenderPipelineFunctionsDescriptor":
-			case "MTLResourceStatePassDescriptor":
-			case "MTLResourceStatePassSampleBufferAttachmentDescriptor":
-			case "MTLResourceStatePassSampleBufferAttachmentDescriptorArray":
-			case "MTLVisibleFunctionTableDescriptor":
-				// The initial tvOS 16.0 simulator doesn't have these classes, but the tvOS 16.1 simulator doess
-				if (TestRuntime.IsSimulator && !TestRuntime.CheckXcodeVersion (14, 1))
-					return true;
-				goto default;
-#endif
-			case "MTL4AccelerationStructureBoundingBoxGeometryDescriptor":
-			case "MTL4AccelerationStructureCurveGeometryDescriptor":
-			case "MTL4AccelerationStructureDescriptor":
-			case "MTL4AccelerationStructureGeometryDescriptor":
-			case "MTL4AccelerationStructureMotionBoundingBoxGeometryDescriptor":
-			case "MTL4AccelerationStructureMotionCurveGeometryDescriptor":
-			case "MTL4AccelerationStructureMotionTriangleGeometryDescriptor":
-			case "MTL4AccelerationStructureTriangleGeometryDescriptor":
-			case "MTL4ArgumentTableDescriptor":
-			case "MTL4BinaryFunctionDescriptor":
-			case "MTL4CommandAllocatorDescriptor":
-			case "MTL4CommandBufferOptions":
-			case "MTL4CommandQueueDescriptor":
-			case "MTL4CommitOptions":
-			case "MTL4CompilerDescriptor":
-			case "MTL4CompilerTaskOptions":
-			case "MTL4ComputePipelineDescriptor":
-			case "MTL4CounterHeapDescriptor":
-			case "MTL4FunctionDescriptor":
-			case "MTL4IndirectInstanceAccelerationStructureDescriptor":
-			case "MTL4InstanceAccelerationStructureDescriptor":
-			case "MTL4LibraryDescriptor":
-			case "MTL4LibraryFunctionDescriptor":
-			case "MTL4MachineLearningPipelineDescriptor":
-			case "MTL4MachineLearningPipelineReflection":
-			case "MTL4MeshRenderPipelineDescriptor":
-			case "MTL4PipelineDataSetSerializerDescriptor":
-			case "MTL4PipelineDescriptor":
-			case "MTL4PipelineOptions":
-			case "MTL4PipelineStageDynamicLinkingDescriptor":
-			case "MTL4PrimitiveAccelerationStructureDescriptor":
-			case "MTL4RenderPassDescriptor":
-			case "MTL4RenderPipelineBinaryFunctionsDescriptor":
-			case "MTL4RenderPipelineColorAttachmentDescriptor":
-			case "MTL4RenderPipelineColorAttachmentDescriptorArray":
-			case "MTL4RenderPipelineDescriptor":
-			case "MTL4RenderPipelineDynamicLinkingDescriptor":
-			case "MTL4SpecializedFunctionDescriptor":
-			case "MTL4StaticLinkingDescriptor":
-			case "MTL4StitchedFunctionDescriptor":
-			case "MTL4TileRenderPipelineDescriptor":
-			case "MTLLogicalToPhysicalColorAttachmentMap":
-			case "MTLResourceViewPoolDescriptor":
-			case "MTLTensorDescriptor":
-			case "MTLTensorExtents":
-			case "MTLTensorReferenceType":
-			case "MTLTextureViewDescriptor":
-			case "VTFrameRateConversionConfiguration":
-			case "VTFrameRateConversionParameters":
-			case "VTLowLatencyFrameInterpolationConfiguration":
-			case "VTLowLatencyFrameInterpolationParameters":
-			case "VTLowLatencySuperResolutionScalerConfiguration":
-			case "VTLowLatencySuperResolutionScalerParameters":
-			case "VTMotionBlurConfiguration":
-			case "VTMotionBlurParameters":
-			case "VTOpticalFlowConfiguration":
-			case "VTOpticalFlowParameters":
-			case "VTSuperResolutionScalerConfiguration":
-			case "VTSuperResolutionScalerParameters":
-			case "VTTemporalNoiseFilterConfiguration":
-			case "VTTemporalNoiseFilterParameters":
-				if (TestRuntime.IsSimulator)
-					return true;
-				goto default;
+
 			default:
 				return SkipDueToAttribute (type);
 			}
@@ -1016,7 +916,6 @@ namespace Introspection {
 					// check that +supportsSecureCoding returns YES
 					if (!supports) {
 #if __IOS__ && !__MACCATALYST__
-						// broken in xcode 12 beta 1 simulator (only)
 						if (TestRuntime.IsSimulator) {
 							switch (type.Name) {
 							case "ARFaceGeometry":
@@ -1100,21 +999,6 @@ namespace Introspection {
 					switch (t.Name) {
 					case "AVPlayerInterstitialEventMonitor": // deprecated
 						continue;
-#if !MONOMAC
-					case "MTLCaptureManager":
-					case "NEHotspotConfiguration":
-					case "NEHotspotConfigurationManager":
-					case "NEHotspotEapSettings":
-					case "NEHotspotHS20Settings":
-					case "SCNGeometryTessellator":
-					case "SKRenderer":
-						// was not possible in iOS 11.4 (current minimum) simulator
-						if (!TestRuntime.CheckXcodeVersion (12, 0)) {
-							if (TestRuntime.IsSimulatorOrDesktop)
-								continue;
-						}
-						break;
-#endif
 					default:
 						var e = $"[FAIL] Could not load {t.FullName}";
 						list.Add (e);

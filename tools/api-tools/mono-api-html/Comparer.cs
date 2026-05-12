@@ -156,14 +156,14 @@ namespace Mono.ApiTools {
 
 		public abstract void SetContext (XElement current);
 
-		public virtual void Compare (IEnumerable<XElement> source, IEnumerable<XElement> target)
+		public virtual void Compare (IEnumerable<XElement> source, IEnumerable<XElement>? target)
 		{
 			removed.Clear ();
 			modified.Clear ();
 
 			foreach (var s in source) {
 				SetContext (s);
-				string sn = s.GetAttribute ("name");
+				string? sn = s.GetAttribute ("name");
 				var t = target is null ? null : target.SingleOrDefault (x => x.GetAttribute ("name") == sn);
 				if (t is null) {
 					// not in target, it was removed

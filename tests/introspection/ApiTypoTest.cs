@@ -1047,15 +1047,8 @@ namespace Introspection {
 					break;
 #endif
 #if __TVOS__
-				case "MetalPerformanceShadersLibrary":
 				case "MetalPerformanceShadersGraphLibrary":
 					// not supported in tvOS (12.1) simulator so load fails
-					if (TestRuntime.IsSimulatorOrDesktop)
-						break;
-					goto default;
-				case "PhaseLibrary":
-					// framework support for tvOS was added in xcode 15
-					// but not supported on tvOS simulator so load fails
 					if (TestRuntime.IsSimulatorOrDesktop)
 						break;
 					goto default;
@@ -1081,9 +1074,6 @@ namespace Introspection {
 						if (fi.Name == "CoreNFCLibrary") {
 							// NFC is currently not available on iPad
 							if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad)
-								continue;
-							// Phone works unless Xcode 12 on simulator
-							if (TestRuntime.IsSimulatorOrDesktop && TestRuntime.CheckXcodeVersion (12, 0))
 								continue;
 						}
 #endif

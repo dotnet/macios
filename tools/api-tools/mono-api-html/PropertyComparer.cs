@@ -55,7 +55,7 @@ namespace Mono.ApiTools {
 			return e.GetAttribute ("params") == Source.GetAttribute ("params");
 		}
 
-		void GetAccessors (XElement element, out XElement getter, out XElement setter)
+		void GetAccessors (XElement element, out XElement? getter, out XElement? setter)
 		{
 			var methods = element.Element ("methods");
 
@@ -66,7 +66,7 @@ namespace Mono.ApiTools {
 				return;
 
 			foreach (var m in methods.Elements ("method")) {
-				var n = m.GetAttribute ("name");
+				var n = m.GetAttribute ("name") ?? "";
 				if (n.StartsWith ("get_", StringComparison.Ordinal)) {
 					getter = m;
 				} else if (n.StartsWith ("set_", StringComparison.Ordinal)) {
@@ -75,10 +75,10 @@ namespace Mono.ApiTools {
 			}
 		}
 
-		MethodAttributes GetMethodAttributes (XElement getter, XElement setter)
+		MethodAttributes GetMethodAttributes (XElement? getter, XElement? setter)
 		{
 			if (getter is null)
-				return setter.GetMethodAttributes ();
+				return setter!.GetMethodAttributes ();
 			else if (setter is null)
 				return getter.GetMethodAttributes ();
 
@@ -97,8 +97,8 @@ namespace Mono.ApiTools {
 
 		void RenderPropertyType (XElement source, XElement target, ApiChange change)
 		{
-			var srcType = source.GetTypeName ("ptype", State);
-			var tgtType = target.GetTypeName ("ptype", State);
+			var srcType = source.GetTypeName ("ptype", State) ?? "";
+			var tgtType = target.GetTypeName ("ptype", State) ?? "";
 
 			if (srcType == tgtType) {
 				change.Append (tgtType);
@@ -108,7 +108,7 @@ namespace Mono.ApiTools {
 			change.Append (" ");
 		}
 
-		void RenderAccessors (XElement srcGetter, XElement tgtGetter, XElement srcSetter, XElement tgtSetter, ApiChange change)
+		void RenderAccessors (XElement? srcGetter, XElement? tgtGetter, XElement? srcSetter, XElement? tgtSetter, ApiChange change)
 		{
 			// FIXME: this doesn't render changes in the accessor visibility (a protected setter can become public for instance).
 			change.Append (" {");
@@ -145,8 +145,8 @@ namespace Mono.ApiTools {
 				if (i > 0)
 					change.Append (", ");
 
-				var srcType = source.GetTypeName ("type", State);
-				var tgtType = target.GetTypeName ("type", State);
+				var srcType = source.GetTypeName ("type", State) ?? "";
+				var tgtType = target.GetTypeName ("type", State) ?? "";
 				if (srcType == tgtType) {
 					change.Append (tgtType);
 				} else {
@@ -154,8 +154,8 @@ namespace Mono.ApiTools {
 				}
 				change.Append (" ");
 
-				var srcName = source.GetAttribute ("name");
-				var tgtName = target.GetAttribute ("name");
+				var srcName = source.GetAttribute ("name") ?? "";
+				var tgtName = target.GetAttribute ("name") ?? "";
 				if (srcName == tgtName) {
 					change.Append (tgtName);
 				} else {
@@ -170,17 +170,17 @@ namespace Mono.ApiTools {
 			if (base.Equals (source, target, changes))
 				return true;
 
-			XElement srcGetter, srcSetter;
-			XElement tgtGetter, tgtSetter;
+			XElement? srcGetter, srcSetter;
+			XElement? tgtGetter, tgtSetter;
 			GetAccessors (source, out srcGetter, out srcSetter);
 			GetAccessors (target, out tgtGetter, out tgtSetter);
 
-			List<XElement> srcIndexers = null;
-			List<XElement> tgtIndexers = null;
+			List<XElement>? srcIndexers = null;
+			List<XElement>? tgtIndexers = null;
 			bool isIndexer = false;
 			if (srcGetter is not null) {
 				srcIndexers = srcGetter.DescendantList ("parameters", "parameter");
-				tgtIndexers = tgtGetter.DescendantList ("parameters", "parameter");
+				tgtIndexers = tgtGetter?.DescendantList ("parameters", "parameter");
 				isIndexer = srcIndexers is not null && srcIndexers.Count > 0;
 			}
 
@@ -189,8 +189,8 @@ namespace Mono.ApiTools {
 			RenderAttributes (source, target, change);
 			RenderMethodAttributes (source, target, GetMethodAttributes (srcGetter, srcSetter), GetMethodAttributes (tgtGetter, tgtSetter), change);
 			RenderPropertyType (source, target, change);
-			if (isIndexer) {
-				RenderIndexers (srcIndexers, tgtIndexers, change);
+			if (isIndexer && tgtIndexers is not null) {
+				RenderIndexers (srcIndexers!, tgtIndexers, change);
 			} else {
 				RenderName (source, target, change);
 			}
@@ -211,10 +211,10 @@ namespace Mono.ApiTools {
 				foreach (var m in methods.Elements ("method")) {
 					@virtual |= m.IsTrue ("virtual");
 					@static |= m.IsTrue ("static");
-					var n = m.GetAttribute ("name");
+					var n = m.GetAttribute ("name") ?? "";
 					getter |= n.StartsWith ("get_", StringComparison.Ordinal);
 					setter |= n.StartsWith ("set_", StringComparison.Ordinal);
-					var attribs = (MethodAttributes) Int32.Parse (m.GetAttribute ("attrib"));
+					var attribs = (MethodAttributes) Int32.Parse (m.GetAttribute ("attrib") ?? "0");
 					family = ((attribs & MethodAttributes.Public) != MethodAttributes.Public);
 					@override |= (attribs & MethodAttributes.NewSlot) == 0;
 				}
@@ -223,8 +223,8 @@ namespace Mono.ApiTools {
 
 		public override string GetDescription (XElement e)
 		{
-			string name = e.Attribute ("name").Value;
-			string ptype = e.GetTypeName ("ptype", State);
+			string name = e.Attribute ("name")!.Value;
+			string ptype = e.GetTypeName ("ptype", State) ?? "";
 
 			bool virt = false;
 			bool over = false;

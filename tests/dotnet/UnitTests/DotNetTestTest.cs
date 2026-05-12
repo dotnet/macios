@@ -35,14 +35,6 @@ public sealed class Test1 {{
 ");
 
 			var properties = GetDefaultProperties ();
-
-			// Mobile platforms use mlaunch to run the app in the simulator.
-			// Override MlaunchPath if set via the environment variable.
-			var mlaunchPath = Environment.GetEnvironmentVariable ("MLAUNCH_PATH");
-			if (!string.IsNullOrEmpty (mlaunchPath)) {
-				properties ["MlaunchPath"] = mlaunchPath;
-			}
-
 			DotNet.Execute ("test", proj, properties);
 		}
 	}

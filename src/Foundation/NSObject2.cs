@@ -20,11 +20,10 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-// We can probably switch to the CWT once #25376 lands.
+// We can probably switch to the CWT once https://github.com/dotnet/macios/issues/25376 lands.
 #if NET11_0_OR_GREATER
 #define USE_CWT_FOR_SUPER_MEMORY
 #endif
-
 
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -158,7 +157,6 @@ namespace Foundation {
 #endif // USE_CWT_FOR_SUPER_MEMORY
 
 	// Allocated in native memory, so that it can be accessed from native code without having to deal with the GC.
-	// Also put objc_super here, because it simplifies code.
 	// This is mirrored in runtime.h and the definition needs to be in sync.
 	struct NSObjectData {
 		public NativeHandle handle;
@@ -452,12 +450,16 @@ namespace Foundation {
 				unsafe {
 					var memory = new TrackedMemory ((nuint) sizeof (objc_super));
 					memory.CreateHandle (obj);
-					objc_super* sup = (objc_super*) memory.Value;
-					sup->ClassHandle = ClassHandle;
-					sup->Handle = handle;
 					return memory;
 				}
 			});
+
+			unsafe {
+				objc_super* sup = (objc_super*) memory.Value;
+				sup->ClassHandle = ClassHandle;
+				sup->Handle = handle;
+			}
+
 			return memory.Value;
 #else
 			if (super == NativeHandle.Zero) {

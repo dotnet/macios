@@ -2861,15 +2861,15 @@ namespace ObjCRuntime {
 
 		/// <summary>Allocate unmanaged zeroed memory of the specified struct.</summary>
 		/// <remarks>Call <see cref="NativeMemory.Free" /> to free the returned pointer.</remarks>
-		internal unsafe static T* AllocZeroed<T> () where T: unmanaged
+		internal unsafe static T* AllocZeroed<T> () where T : unmanaged
 		{
-			return (T *) NativeMemory.AllocZeroed ((nuint) sizeof (T));
+			return (T*) NativeMemory.AllocZeroed ((nuint) sizeof (T));
 		}
 
-		internal unsafe static T* InterlockedCompareExchange<T> (ref T* location1, T* value, T* comparand) where T: unmanaged
+		internal unsafe static T* InterlockedCompareExchange<T> (ref T* location1, T* value, T* comparand) where T : unmanaged
 		{
 			fixed (T** ptr = &location1) {
-				return (T *) Interlocked.CompareExchange (ref Unsafe.AsRef<IntPtr> (ptr), (IntPtr) value, (IntPtr) comparand);
+				return (T*) Interlocked.CompareExchange (ref Unsafe.AsRef<IntPtr> (ptr), (IntPtr) value, (IntPtr) comparand);
 			}
 		}
 	}

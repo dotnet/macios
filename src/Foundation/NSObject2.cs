@@ -213,13 +213,13 @@ namespace Foundation {
 		{
 			var data = __data;
 			if (data != IntPtr.Zero)
-				return (NSObjectData *) data;
+				return (NSObjectData*) data;
 
 			var data_handle = new NSObjectDataHandle ();
 			var existing_data = Interlocked.CompareExchange (ref __data, (IntPtr) data_handle.Data, IntPtr.Zero);
 			if (existing_data != IntPtr.Zero) {
 				// return the existing data, the GC will collect the other one we just created
-				return (NSObjectData *) existing_data;
+				return (NSObjectData*) existing_data;
 			}
 			// tell the data handle we just created to track us
 			data_handle.CreateHandle (this);

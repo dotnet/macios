@@ -339,5 +339,5 @@ try {
 ```
 ## Git Branch Safety
 
-* When creating a branch from `origin/main` (e.g. `git checkout -b <name> origin/main`), the tracking is automatically set to `origin/main`. This means a subsequent `git push origin <branchname>` will push directly to main, not to a remote branch with the same name.
-* To avoid accidentally pushing to main, always use `git push origin <branch>:<branch>` for the first push to create the remote branch, then fix tracking with `git branch --set-upstream-to=origin/<branch>`.
+* When creating a branch from `origin/main` (for example `git checkout -b <name> origin/main`), the new branch may be configured to track `origin/main` depending on how it is created and your Git configuration. In that case, a later `git push` or `git push origin` may try to push to `main`.
+* To avoid accidentally pushing to main, use `git push -u origin <branch>` for the first push so Git creates `origin/<branch>` and sets the branch's upstream safely. If you want to be completely explicit, use `git push origin <branch>:<branch>`.

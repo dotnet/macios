@@ -471,7 +471,7 @@ namespace Foundation {
 				if (previousValue != IntPtr.Zero) {
 					// somebody beat us to the assignment.
 					unsafe {
-						NativeMemory.Free ((void *) ptr);
+						NativeMemory.Free ((void*) ptr);
 					}
 					ptr = IntPtr.Zero;
 				}
@@ -1214,7 +1214,7 @@ namespace Foundation {
 		unsafe void FreeData ()
 		{
 			if (super != NativeHandle.Zero) {
-				NativeMemory.Free ((void *) super);
+				NativeMemory.Free ((void*) super);
 				super = NativeHandle.Zero;
 			}
 		}

@@ -337,6 +337,7 @@ try {
     // Code here
 }
 ```
+
 ## Git Branch Safety
 
 * When creating a branch from `origin/main` (for example `git checkout -b <name> origin/main`), the new branch may be configured to track `origin/main` depending on how it is created and your Git configuration. In that case, a later `git push` or `git push origin` may try to push to `main`.

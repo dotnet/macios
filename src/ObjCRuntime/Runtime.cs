@@ -2865,13 +2865,6 @@ namespace ObjCRuntime {
 		{
 			return (T*) NativeMemory.AllocZeroed ((nuint) sizeof (T));
 		}
-
-		internal unsafe static T* InterlockedCompareExchange<T> (ref T* location1, T* value, T* comparand) where T : unmanaged
-		{
-			fixed (T** ptr = &location1) {
-				return (T*) Interlocked.CompareExchange (ref Unsafe.AsRef<IntPtr> (ptr), (IntPtr) value, (IntPtr) comparand);
-			}
-		}
 	}
 
 

@@ -189,8 +189,8 @@ namespace Mono.ApiTools {
 			RenderAttributes (source, target, change);
 			RenderMethodAttributes (source, target, GetMethodAttributes (srcGetter, srcSetter), GetMethodAttributes (tgtGetter, tgtSetter), change);
 			RenderPropertyType (source, target, change);
-			if (isIndexer) {
-				RenderIndexers (srcIndexers!, tgtIndexers!, change);
+			if (isIndexer && tgtIndexers is not null) {
+				RenderIndexers (srcIndexers!, tgtIndexers, change);
 			} else {
 				RenderName (source, target, change);
 			}

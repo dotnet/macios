@@ -79,9 +79,13 @@ namespace Mono.ApiTools {
 
 		public override void WriteString (string? text)
 		{
-			int i = IndexOfInvalid (text!, true);
+			if (text is null) {
+				Writer.WriteString (text);
+				return;
+			}
+			int i = IndexOfInvalid (text, true);
 			if (i >= 0) {
-				char [] arr = text!.ToCharArray ();
+				char [] arr = text.ToCharArray ();
 				Writer.WriteChars (arr, 0, i);
 				WriteChars (arr, i, arr.Length - i);
 			} else {

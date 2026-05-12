@@ -513,7 +513,11 @@ namespace Mono.ApiTools {
 					AddAttribute ("attrib", GetMemberAttributes (member) ?? "");
 				AddExtraAttributes (member);
 
-				AttributeData.OutputAttributes (writer, state, (ICustomAttributeProvider) member, GetAdditionalCustomAttributeProvider (member)!);
+				var additionalProvider = GetAdditionalCustomAttributeProvider (member);
+				if (additionalProvider is not null)
+					AttributeData.OutputAttributes (writer, state, (ICustomAttributeProvider) member, additionalProvider);
+				else
+					AttributeData.OutputAttributes (writer, state, (ICustomAttributeProvider) member);
 
 				AddExtraData (member);
 				writer.WriteEndElement (); // Tag
@@ -596,7 +600,7 @@ namespace Mono.ApiTools {
 		TypeDefinition type;
 
 		public TypeData (XmlWriter writer, TypeDefinition type, State state)
-			: base (writer, null!, state)
+			: base (writer, [], state)
 		{
 			this.type = type;
 		}
@@ -928,7 +932,9 @@ namespace Mono.ApiTools {
 		sealed class ParameterComparer : IEqualityComparer<ParameterDefinition> {
 			public bool Equals (ParameterDefinition? x, ParameterDefinition? y)
 			{
-				return x!.ParameterType.Name == y!.ParameterType.Name;
+				if (x is null || y is null)
+					return x is null && y is null;
+				return x.ParameterType.Name == y.ParameterType.Name;
 			}
 
 			public int GetHashCode (ParameterDefinition obj)
@@ -1455,7 +1461,10 @@ namespace Mono.ApiTools {
 
 		public int Compare (TypeReference? a, TypeReference? b)
 		{
-			int result = String.Compare (a!.Namespace, b!.Namespace, StringComparison.Ordinal);
+			if (a is null && b is null) return 0;
+			if (a is null) return -1;
+			if (b is null) return 1;
+			int result = String.Compare (a.Namespace, b.Namespace, StringComparison.Ordinal);
 			if (result != 0)
 				return result;
 
@@ -1468,8 +1477,11 @@ namespace Mono.ApiTools {
 
 		public int Compare (object? a, object? b)
 		{
-			MemberReference ma = (MemberReference) a!;
-			MemberReference mb = (MemberReference) b!;
+			if (a is null && b is null) return 0;
+			if (a is null) return -1;
+			if (b is null) return 1;
+			MemberReference ma = (MemberReference) a;
+			MemberReference mb = (MemberReference) b;
 			return String.Compare (ma.Name, mb.Name, StringComparison.Ordinal);
 		}
 	}
@@ -1479,7 +1491,10 @@ namespace Mono.ApiTools {
 
 		public int Compare (PropertyDefinition? ma, PropertyDefinition? mb)
 		{
-			int res = String.Compare (ma!.Name, mb!.Name, StringComparison.Ordinal);
+			if (ma is null && mb is null) return 0;
+			if (ma is null) return -1;
+			if (mb is null) return 1;
+			int res = String.Compare (ma.Name, mb.Name, StringComparison.Ordinal);
 			if (res != 0)
 				return res;
 
@@ -1501,8 +1516,11 @@ namespace Mono.ApiTools {
 
 		public int Compare (object? a, object? b)
 		{
-			MethodDefinition ma = (MethodDefinition) a!;
-			MethodDefinition mb = (MethodDefinition) b!;
+			if (a is null && b is null) return 0;
+			if (a is null) return -1;
+			if (b is null) return 1;
+			MethodDefinition ma = (MethodDefinition) a;
+			MethodDefinition mb = (MethodDefinition) b;
 			int res = String.Compare (ma.Name, mb.Name, StringComparison.Ordinal);
 			if (res != 0)
 				return res;

@@ -539,6 +539,18 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		if (method.DeclaringType.Name == "Dlfcn" && method.DeclaringType.Namespace == "ObjCRuntime")
 			return modified; // don't process the Dlfcn methods themselves
 
+		if (DerivedLinkContext.App.IsSimulatorBuild) {
+			// if the method or its declaring type aren't available in the simulator, and we're building for the simulator, then don't inline.
+			if (DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (method, method)) {
+				Driver.Log (3, $"Method {method.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this method.");
+				return modified;
+			}
+			if (DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (method.DeclaringType, method)) {
+				Driver.Log (3, $"Type {method.DeclaringType.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this type.");
+				return modified;
+			}
+		}
+
 		foreach (var instr in method.Body.Instructions) {
 			if (instr.Operand is not MethodReference mr)
 				continue;

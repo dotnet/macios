@@ -46,7 +46,7 @@ namespace Mono.ApiTools {
 
 		public override string GetDescription (XElement e)
 		{
-			return e.GetTypeName ("name", State);
+			return e.GetTypeName ("name", State) ?? "";
 		}
 	}
 }

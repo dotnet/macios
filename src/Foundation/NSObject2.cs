@@ -19,6 +19,13 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
+// We can probably switch to the CWT once #25376 lands.
+#if NET11_0_OR_GREATER
+#define USE_CWT_FOR_SUPER_MEMORY
+#endif
+
+
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Collections.Generic;
@@ -114,13 +121,47 @@ namespace Foundation {
 	}
 
 #if !COREBUILD
+#if USE_CWT_FOR_SUPER_MEMORY
+	class TrackedMemory {
+		GCHandle handle;
+
+		public IntPtr Value { get; private set; }
+
+		public unsafe TrackedMemory (nuint size)
+		{
+			Value = (IntPtr) NativeMemory.AllocZeroed (size);
+		}
+
+		public unsafe void CreateHandle (NSObject trackedObject)
+		{
+			handle = GCHandle.Alloc (trackedObject, GCHandleType.WeakTrackResurrection);
+		}
+
+		~TrackedMemory ()
+		{
+			var handleAllocated = handle.IsAllocated;
+			if (handleAllocated && handle.Target is not null) {
+				// The NSObject instance isn't gone yet, we have to try again later.
+				GC.ReRegisterForFinalize (this);
+				return;
+			}
+
+			unsafe {
+				NativeMemory.Free ((void *) Value);
+			}
+			Value = IntPtr.Zero;
+
+			if (handleAllocated)
+				handle.Free ();
+		}
+	}
+#endif // USE_CWT_FOR_SUPER_MEMORY
+
 	// Allocated in native memory, so that it can be accessed from native code without having to deal with the GC.
 	// Also put objc_super here, because it simplifies code.
 	// This is mirrored in runtime.h and the definition needs to be in sync.
 	struct NSObjectData {
-		// the layout here is important, the two first fields have to match the objc_super struct.
 		public NativeHandle handle;
-		public NativeHandle classHandle;
 		public NSObject.Flags flags;
 	}
 
@@ -198,6 +239,14 @@ namespace Foundation {
 		// This is exclusively for Mono
 		unsafe NSObjectData* __data_for_mono; // Read directly from several places in the runtime
 
+#if USE_CWT_FOR_SUPER_MEMORY
+#pragma warning disable CS8618 // "Non-nullable field '...' must contain a non-null value when exiting constructor.": this field is always non-null, because NSObject.Initialize is called before anything else is done.
+		static ConditionalWeakTable<NSObject, TrackedMemory> super_map;
+#pragma warning restore CS8618
+#else
+		IntPtr super; /* objc_super* */
+#endif
+
 		unsafe NativeHandle handle {
 			get => GetData ()->handle;
 			set => GetData ()->handle = value;
@@ -268,7 +317,6 @@ namespace Foundation {
 			InitialSet = 4,
 		}
 
-		[StructLayout (LayoutKind.Sequential)]
 		internal struct objc_super {
 			public IntPtr Handle;
 			public IntPtr ClassHandle;
@@ -397,16 +445,54 @@ namespace Foundation {
 			}
 		}
 
-		unsafe NativeHandle GetSuper ()
+		NativeHandle GetSuper ()
 		{
-			var data = GetData ();
-			if (data->classHandle == NativeHandle.Zero)
-				data->classHandle = ClassHandle;
-			return (IntPtr) (&data->handle);
+#if USE_CWT_FOR_SUPER_MEMORY
+			var memory = super_map.GetValue (this, (obj) => {
+				unsafe {
+					var memory = new TrackedMemory ((nuint) sizeof (objc_super));
+					memory.CreateHandle (obj);
+					objc_super* sup = (objc_super*) memory.Value;
+					sup->ClassHandle = ClassHandle;
+					sup->Handle = handle;
+					return memory;
+				}
+			});
+			return memory.Value;
+#else
+			if (super == NativeHandle.Zero) {
+				IntPtr ptr;
+
+				unsafe {
+					ptr = (IntPtr) NativeMemory.AllocZeroed ((nuint) sizeof (objc_super));
+				}
+
+				var previousValue = Interlocked.CompareExchange (ref super, ptr, IntPtr.Zero);
+				if (previousValue != IntPtr.Zero) {
+					// somebody beat us to the assignment.
+					unsafe {
+						NativeMemory.Free ((void *) ptr);
+					}
+					ptr = IntPtr.Zero;
+				}
+			}
+
+			unsafe {
+				objc_super* sup = (objc_super*) super;
+				if (sup->ClassHandle == NativeHandle.Zero)
+					sup->ClassHandle = ClassHandle;
+				sup->Handle = handle;
+			}
+
+			return super;
+#endif
 		}
 
 		internal static NativeHandle Initialize ()
 		{
+#if USE_CWT_FOR_SUPER_MEMORY
+			super_map = new ConditionalWeakTable<NSObject, TrackedMemory> ();
+#endif
 			return class_ptr;
 		}
 
@@ -1117,8 +1203,22 @@ namespace Foundation {
 					NSObject_Disposer.Add (this);
 					RecreateDataHandle ();
 				}
+#if !USE_CWT_FOR_SUPER_MEMORY
+			} else {
+				FreeData ();
+#endif
 			}
 		}
+
+#if !USE_CWT_FOR_SUPER_MEMORY
+		unsafe void FreeData ()
+		{
+			if (super != NativeHandle.Zero) {
+				NativeMemory.Free ((void *) super);
+				super = NativeHandle.Zero;
+			}
+		}
+#endif
 
 		void RecreateDataHandle ()
 		{

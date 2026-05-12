@@ -511,6 +511,10 @@ namespace ObjCRuntime {
 		[UnconditionalSuppressMessage ("", "IL2072", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		static Type? GetDelegateProxyType (MethodInfo minfo, uint token_ref, out MethodInfo? baseMethod)
 		{
+			// This method should never be called when using the trimmable static registrar, so assert that never happens by throwing an exception in that case.
+			if (Runtime.IsTrimmableStaticRegistrar)
+				throw new System.Diagnostics.UnreachableException ();
+
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception if using the managed static registrar (which is required for NativeAOT)
 			if (Runtime.IsManagedStaticRegistrar)
 				throw new System.Diagnostics.UnreachableException ();
@@ -610,6 +614,10 @@ namespace ObjCRuntime {
 		[UnconditionalSuppressMessage ("", "IL2075", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		internal static IntPtr GetBlockForDelegate (MethodInfo minfo, object? @delegate, uint token_ref, string? signature)
 		{
+			// This method should never be called when using the trimmable static registrar, so assert that never happens by throwing an exception in that case.
+			if (Runtime.IsTrimmableStaticRegistrar)
+				throw new System.Diagnostics.UnreachableException ();
+
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception if using the managed static registrar (which is required for NativeAOT)
 			if (Runtime.IsManagedStaticRegistrar)
 				throw new System.Diagnostics.UnreachableException ();

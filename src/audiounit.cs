@@ -442,7 +442,7 @@ namespace AudioUnit {
 		[Export ("renderQuality", ArgumentSemantic.Assign)]
 		nint RenderQuality { get; set; }
 
-		/// <summary>Gets or sets a Boolean value that contols whether an effect should skip processing and go directly to the output.</summary>
+		/// <summary>Gets or sets a Boolean value that controls whether an effect should skip processing and go directly to the output.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("shouldBypassEffect")]
@@ -527,10 +527,10 @@ namespace AudioUnit {
 		[Export ("shouldChangeToFormat:forBus:")]
 		bool ShouldChangeToFormat (AVAudioFormat format, AUAudioUnitBus bus);
 
-		[Notification, Field ("kAudioComponentRegistrationsChangedNotification")]
+		[Notification, Field ("kAudioComponentRegistrationsChangedNotification", "AudioToolbox")]
 		NSString AudioComponentRegistrationsChangedNotification { get; }
 
-		[Notification, Field ("kAudioComponentInstanceInvalidationNotification")]
+		[Notification, Field ("kAudioComponentInstanceInvalidationNotification", "AudioToolbox")]
 		NSString AudioComponentInstanceInvalidationNotification { get; }
 
 		/// <summary>To be added.</summary>
@@ -825,7 +825,7 @@ namespace AudioUnit {
 
 		/// <summary>Gets or sets the latency of the processing context for the audio unit.</summary>
 		///         <value>To be added.</value>
-		///         <remarks>For input units, this is the time, in seconds, since the arriving audio was acquired. For ouput units, this is the delay, in seconds, until the output is presented.</remarks>
+		///         <remarks>For input units, this is the time, in seconds, since the arriving audio was acquired. For output units, this is the delay, in seconds, until the output is presented.</remarks>
 		[Export ("contextPresentationLatency")]
 		double ContextPresentationLatency { get; set; }
 
@@ -884,8 +884,8 @@ namespace AudioUnit {
 
 		// -(AUAudioUnitBus * __nonnull)objectAtIndexedSubscript:(NSUInteger)index;
 		/// <param name="index">The zero-based index into the bus array of the desired bus.</param>
-		/// <summary>Returns the bus at the spcified location in the array.</summary>
-		/// <returns>The bus at the spcified location in the array.</returns>
+		/// <summary>Returns the bus at the specified location in the array.</summary>
+		/// <returns>The bus at the specified location in the array.</returns>
 		/// <remarks>To be added.</remarks>
 		[Export ("objectAtIndexedSubscript:")]
 		AUAudioUnitBus GetObject (nuint index);

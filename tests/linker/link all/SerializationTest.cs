@@ -13,12 +13,12 @@ namespace LinkAll {
 	static class Helper {
 		public static Type GetType (string name)
 		{
-			return Type.GetType (name);
+			return Type.GetType (name)!;
 		}
 
 		public static Type GetType (string typeName, bool throwOnError)
 		{
-			return Type.GetType (typeName, throwOnError);
+			return Type.GetType (typeName, throwOnError)!;
 		}
 	}
 }

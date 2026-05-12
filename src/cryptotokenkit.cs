@@ -514,6 +514,11 @@ namespace CryptoTokenKit {
 #if !STABLE_CRYPTOTOKENKIT
 	[Experimental ("APL0001")]
 #endif
+	delegate void TKCreateNfcSlotCallback ([NullAllowed] TKSmartCardSlotNFCSession session, [NullAllowed] NSError error);
+
+#if !STABLE_CRYPTOTOKENKIT
+	[Experimental ("APL0001")]
+#endif
 	[iOS (13, 0), Mac (10, 10), MacCatalyst (13, 1), TV (13, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -533,6 +538,21 @@ namespace CryptoTokenKit {
 		[Export ("slotNamed:")]
 		[return: NullAllowed]
 		TKSmartCardSlot GetSlot (string name);
+
+		[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+		[Export ("isNFCSupported")]
+		bool IsNfcSupported { get; }
+
+		[iOS (26, 0), NoMac, NoMacCatalyst, NoTV]
+		[Async (XmlDocs = """
+			<param name="message">The message to display in the system-presented NFC UI.</param>
+			<summary>Creates an NFC smart card slot asynchronously, displaying a message in the system-presented NFC UI.</summary>
+			<returns>
+			          <para class="improve-task-t-return-type-description">A task that represents the asynchronous CreateNfcSlot operation.  The value of the TResult parameter is of type System.Action&lt;CryptoTokenKit.TKSmartCardSlotNFCSession,Foundation.NSError&gt;.</para>
+			        </returns>
+			""")]
+		[Export ("createNFCSlotWithMessage:completion:")]
+		void CreateNfcSlot ([NullAllowed] string message, TKCreateNfcSlotCallback completion);
 	}
 
 #if !STABLE_CRYPTOTOKENKIT
@@ -568,8 +588,55 @@ namespace CryptoTokenKit {
 		[DesignatedInitializer]
 		NativeHandle Constructor (TKToken token);
 
+		[Deprecated (PlatformName.iOS, 26, 0, "Use 'GetSmartCard' instead.")]
+		[Deprecated (PlatformName.MacOSX, 26, 0, "Use 'GetSmartCard' instead.")]
+		[Deprecated (PlatformName.TvOS, 26, 0, "Use 'GetSmartCard' instead.")]
+		[Deprecated (PlatformName.MacCatalyst, 26, 0, "Use 'GetSmartCard' instead.")]
 		[Export ("smartCard")]
 		TKSmartCard SmartCard { get; }
+
+		[iOS (26, 0), Mac (26, 0), TV (26, 0), MacCatalyst (26, 0)]
+		[Export ("getSmartCardWithError:")]
+		[return: NullAllowed]
+		TKSmartCard GetSmartCard ([NullAllowed] out NSError error);
+	}
+
+#if !STABLE_CRYPTOTOKENKIT
+	[Experimental ("APL0001")]
+#endif
+	[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface TKSmartCardSlotNFCSession {
+		[NullAllowed, Export ("slotName")]
+		string SlotName { get; }
+
+		[Export ("updateWithMessage:error:")]
+		bool Update (string message, [NullAllowed] out NSError error);
+
+		[Export ("endSession")]
+		void EndSession ();
+	}
+
+#if !STABLE_CRYPTOTOKENKIT
+	[Experimental ("APL0001")]
+#endif
+	[iOS (26, 0), MacCatalyst (26, 0), NoMac, NoTV]
+	[BaseType (typeof (NSObject))]
+	[DisableDefaultCtor]
+	interface TKSmartCardTokenRegistrationManager {
+		[Static]
+		[Export ("defaultManager")]
+		TKSmartCardTokenRegistrationManager DefaultManager { get; }
+
+		[Export ("registeredSmartCardTokens")]
+		string [] RegisteredSmartCardTokens { get; }
+
+		[Export ("registerSmartCardWithTokenID:promptMessage:error:")]
+		bool RegisterSmartCard (string tokenId, string promptMessage, [NullAllowed] out NSError error);
+
+		[Export ("unregisterSmartCardWithTokenID:error:")]
+		bool UnregisterSmartCard (string tokenId, [NullAllowed] out NSError error);
 	}
 
 #if !STABLE_CRYPTOTOKENKIT

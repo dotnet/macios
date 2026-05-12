@@ -51,7 +51,7 @@ namespace Mono.ApiTools {
 				return;
 
 			if (s is null) {
-				Add (t.Elements (ElementName));
+				Add (t!.Elements (ElementName));
 			} else if (t is null) {
 				Remove (s.Elements (ElementName));
 			} else {
@@ -65,7 +65,7 @@ namespace Mono.ApiTools {
 
 		string GetContainingType (XElement el)
 		{
-			return el.Ancestors ("class").First ().Attribute ("type").Value;
+			return el.Ancestors ("class").First ().Attribute ("type")!.Value;
 		}
 
 		bool IsInInterface (XElement el)
@@ -73,19 +73,19 @@ namespace Mono.ApiTools {
 			return GetContainingType (el) == "interface";
 		}
 
-		public XElement Source { get; set; }
+		public XElement Source { get; set; } = null!;
 
 		public virtual bool Find (XElement e)
 		{
 			return e.GetAttribute ("name") == Source.GetAttribute ("name");
 		}
 
-		XElement Find (IEnumerable<XElement> target)
+		XElement? Find (IEnumerable<XElement> target)
 		{
 			return target.SingleOrDefault (Find);
 		}
 
-		public override void Compare (IEnumerable<XElement> source, IEnumerable<XElement> target)
+		public override void Compare (IEnumerable<XElement> source, IEnumerable<XElement>? target)
 		{
 			removed.Clear ();
 			modified.Clear ();
@@ -93,7 +93,7 @@ namespace Mono.ApiTools {
 			foreach (var s in source) {
 				SetContext (s);
 				Source = s;
-				var t = Find (target);
+				var t = target is null ? null : Find (target);
 				if (t is null) {
 					// not in target, it was removed
 					removed.Add (s);
@@ -112,7 +112,8 @@ namespace Mono.ApiTools {
 			Modify (modified);
 
 			// remaining == newly added in target
-			Add (target);
+			if (target is not null)
+				Add (target);
 		}
 
 		void Add (IEnumerable<XElement> elements)
@@ -162,7 +163,7 @@ namespace Mono.ApiTools {
 		protected StringBuilder GetObsoleteMessage (XElement e)
 		{
 			var sb = new StringBuilder ();
-			string o = e.GetObsoleteMessage ();
+			string? o = e.GetObsoleteMessage ();
 			if (o is not null) {
 				sb.Append ("[Obsolete");
 				if (o.Length > 0)
@@ -237,12 +238,12 @@ namespace Mono.ApiTools {
 				if (i > 0)
 					change.Append (", ");
 				if (i >= srcCount) {
-					change.AppendAdded (RenderGenericParameter (tgt [i]));
+					change.AppendAdded (RenderGenericParameter (tgt! [i]));
 				} else if (i >= tgtCount) {
-					change.AppendRemoved (RenderGenericParameter (src [i]));
+					change.AppendRemoved (RenderGenericParameter (src! [i]));
 				} else {
-					var srcName = RenderGenericParameter (src [i]);
-					var tgtName = RenderGenericParameter (tgt [i]);
+					var srcName = RenderGenericParameter (src! [i]);
+					var tgtName = RenderGenericParameter (tgt! [i]);
 
 					if (srcName != tgtName) {
 						change.AppendModified (srcName, tgtName);
@@ -254,7 +255,7 @@ namespace Mono.ApiTools {
 			change.Append (Formatter.GreaterThan);
 		}
 
-		protected string FormatValue (string type, string value)
+		protected string FormatValue (string? type, string? value)
 		{
 			if (value is null)
 				return "null";
@@ -287,8 +288,8 @@ namespace Mono.ApiTools {
 				if (i > 0)
 					change.Append (", ");
 
-				string mods_tgt = tgt [i].GetAttribute ("direction") ?? "";
-				string mods_src = src [i].GetAttribute ("direction") ?? "";
+				string mods_tgt = tgt! [i].GetAttribute ("direction") ?? "";
+				string mods_src = src! [i].GetAttribute ("direction") ?? "";
 
 				if (mods_tgt.Length > 0)
 					mods_tgt = mods_tgt + " ";
@@ -297,12 +298,12 @@ namespace Mono.ApiTools {
 					mods_src = mods_src + " ";
 
 				if (i >= srcCount) {
-					change.AppendAdded (mods_tgt + tgt [i].GetTypeName ("type", State) + " " + tgt [i].GetAttribute ("name"));
+					change.AppendAdded (mods_tgt + tgt! [i].GetTypeName ("type", State) + " " + tgt [i].GetAttribute ("name"));
 				} else if (i >= tgtCount) {
-					change.AppendRemoved (mods_src + src [i].GetTypeName ("type", State) + " " + src [i].GetAttribute ("name"));
+					change.AppendRemoved (mods_src + src! [i].GetTypeName ("type", State) + " " + src [i].GetAttribute ("name"));
 				} else {
-					var paramSourceType = src [i].GetTypeName ("type", State);
-					var paramTargetType = tgt [i].GetTypeName ("type", State);
+					var paramSourceType = src! [i].GetTypeName ("type", State);
+					var paramTargetType = tgt! [i].GetTypeName ("type", State);
 
 					var paramSourceName = src [i].GetAttribute ("name");
 					var paramTargetName = tgt [i].GetAttribute ("name");
@@ -314,15 +315,15 @@ namespace Mono.ApiTools {
 					}
 
 					if (paramSourceType != paramTargetType) {
-						change.AppendModified (paramSourceType, paramTargetType);
+						change.AppendModified (paramSourceType ?? "", paramTargetType ?? "");
 					} else {
-						change.Append (paramSourceType);
+						change.Append (paramSourceType ?? "");
 					}
 					change.Append (" ");
 					if (paramSourceName != paramTargetName) {
-						change.AppendModified (paramSourceName, paramTargetName);
+						change.AppendModified (paramSourceName ?? "", paramTargetName ?? "");
 					} else {
-						change.Append (paramSourceName);
+						change.Append (paramSourceName ?? "");
 					}
 
 					var optSource = src [i].Attribute ("optional");
@@ -467,13 +468,13 @@ namespace Mono.ApiTools {
 			// Changing between 'protected' and 'protected internal' is not visible in the API, so remove the 'internal' part.
 			if ((attrib & MethodAttributes.FamORAssem) == MethodAttributes.FamORAssem) {
 				attrib = (attrib & ~MethodAttributes.MemberAccessMask) | MethodAttributes.Family;
-				element.Attribute ("attrib").Value = ((int) attrib).ToString ();
+				element.Attribute ("attrib")!.Value = ((int) attrib).ToString ();
 			}
 		}
 
 		protected void RenderName (XElement source, XElement target, ApiChange change)
 		{
-			var name = target.GetAttribute ("name");
+			var name = target.GetAttribute ("name") ?? "";
 			// show the constructor as it would be defined in C#
 			name = name.Replace (".ctor", State.Type);
 

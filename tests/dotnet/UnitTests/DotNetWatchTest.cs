@@ -55,7 +55,8 @@ namespace Xamarin.Tests {
 			// which can take a while because when things go wrong here it will most likely result in timeouts.
 			// So instead we log to a separate file, which can be viewed as the test is running.
 			var debugLogPath = Path.Combine (tmpdir, "debug.log");
-			using var debugLog = new StreamWriter (File.OpenWrite (debugLogPath)) {
+			var debugLogStream = new FileStream (debugLogPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+			var debugLog = new StreamWriter (debugLogStream) {
 				AutoFlush = true,
 			};
 
@@ -101,6 +102,7 @@ namespace Xamarin.Tests {
 				}
 			}) {
 				IsBackground = true,
+				Name = "Output Polling Thread",
 			};
 			pollThread.Start ();
 

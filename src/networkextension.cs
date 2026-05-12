@@ -614,7 +614,7 @@ namespace NetworkExtension {
 		[NullAllowed, Export ("matchPath")]
 		string MatchPath { get; set; }
 
-		/// <summary>Gets the siging identifer of the app that the rule matched.</summary>
+		/// <summary>Gets the signing identifier of the app that the rule matched.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("matchSigningIdentifier")]
@@ -2640,7 +2640,7 @@ namespace NetworkExtension {
 		[Export ("diffieHellmanGroup")]
 		NEVpnIke2DiffieHellman DiffieHellmanGroup { get; set; }
 
-		/// <summary>Gets or sets the Security Association's lifetime, in mintues.</summary>
+		/// <summary>Gets or sets the Security Association's lifetime, in minutes.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("lifetimeMinutes")]

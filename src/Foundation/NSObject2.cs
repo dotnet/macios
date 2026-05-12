@@ -373,6 +373,10 @@ namespace Foundation {
 		[UnconditionalSuppressMessage ("", "IL2072", Justification = "The APIs this method tries to access are marked by other means, so this is linker-safe.")]
 		internal static IntPtr CreateNSObject (IntPtr type_gchandle, IntPtr handle, Flags flags)
 		{
+			// This method should never be called when using the trimmable static registrar, so assert that never happens by throwing an exception in that case.
+			if (Runtime.IsTrimmableStaticRegistrar)
+				throw new System.Diagnostics.UnreachableException ();
+
 			// Note that the code in this method doesn't necessarily work with NativeAOT, so assert that never happens by throwing an exception if using the managed static registrar (which is required for NativeAOT)
 			if (Runtime.IsManagedStaticRegistrar) {
 				throw new System.Diagnostics.UnreachableException ();
@@ -1091,6 +1095,14 @@ namespace Foundation {
 			handle = NativeHandle.Zero;
 		}
 
+		// This is weird - a setter only - but it's so that we can remove an object right after creating it using object creation syntax:
+		//     new NSString ("") { RemoveFromObjectMap = true };
+		internal bool RemoveFromObjectMap {
+			set {
+				Runtime.RemoveFromObjectMap (this);
+			}
+		}
+
 		/// <include file="../../docs/api/Foundation/NSObject.xml" path="/Documentation/Docs[@DocId='M:Foundation.NSObject.Dispose(System.Boolean)']/*" />
 		protected virtual void Dispose (bool disposing)
 		{
@@ -1256,6 +1268,7 @@ namespace Foundation {
 					base.ObserveValue (keyPath, ofObject, change, context);
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				if (disposing) {

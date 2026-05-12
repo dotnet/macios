@@ -55,8 +55,8 @@ namespace Mono.ApiTools {
 			RenderAttributes (source, target, change);
 			change.Append ("public event ");
 
-			var srcEventType = source.GetTypeName ("eventtype", State);
-			var tgtEventType = target.GetTypeName ("eventtype", State);
+			var srcEventType = source.GetTypeName ("eventtype", State) ?? "";
+			var tgtEventType = target.GetTypeName ("eventtype", State) ?? "";
 
 			if (srcEventType != tgtEventType) {
 				change.AppendModified (srcEventType, tgtEventType);
@@ -64,7 +64,7 @@ namespace Mono.ApiTools {
 				change.Append (srcEventType);
 			}
 			change.Append (" ");
-			change.Append (source.GetAttribute ("name")).Append (";");
+			change.Append (source.GetAttribute ("name") ?? "").Append (";");
 			return false;
 		}
 
@@ -73,8 +73,8 @@ namespace Mono.ApiTools {
 			var sb = new StringBuilder ();
 			// TODO: attribs
 			sb.Append ("public event ");
-			sb.Append (e.GetTypeName ("eventtype", State)).Append (' ');
-			sb.Append (e.GetAttribute ("name")).Append (';');
+			sb.Append (e.GetTypeName ("eventtype", State) ?? "").Append (' ');
+			sb.Append (e.GetAttribute ("name") ?? "").Append (';');
 			return sb.ToString ();
 		}
 	}

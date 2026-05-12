@@ -29,14 +29,13 @@ namespace MonoTouchFixtures.MultipeerConnectivity {
 		public void CtorPeer ()
 		{
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 10, throwIfOtherPlatform: false);
 
 			using (var peer = new MCPeerID ("me"))
 			using (var s = new MCSession (peer)) {
 				Assert.AreSame (s.MyPeerID, peer, "MyPeerID");
 				Assert.Null (s.SecurityIdentity, "SecurityIdentity");
 #if MONOMAC
-				var pref = TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 11) ? MCEncryptionPreference.Required : MCEncryptionPreference.Optional;
+				var pref = MCEncryptionPreference.Required;
 #else
 				var pref = TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 9, 0) ? MCEncryptionPreference.Required : MCEncryptionPreference.Optional;
 #endif
@@ -49,7 +48,6 @@ namespace MonoTouchFixtures.MultipeerConnectivity {
 		public void Ctor_OptionalIdentity ()
 		{
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 10, throwIfOtherPlatform: false);
 
 			using (var peer = new MCPeerID ("me"))
 			using (var s = new MCSession (peer, null, MCEncryptionPreference.None)) {
@@ -64,7 +62,6 @@ namespace MonoTouchFixtures.MultipeerConnectivity {
 		public void Ctor_Identity ()
 		{
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 10, throwIfOtherPlatform: false);
 
 			using (var id = IdentityTest.GetIdentity ())
 			using (var peer = new MCPeerID ("me"))

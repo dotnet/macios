@@ -4,7 +4,6 @@
     <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>class_redirector_tests</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>

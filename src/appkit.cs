@@ -26805,11 +26805,7 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	interface NSWorkspaceFileOperationEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSOperationNumber")]
-		nint FileType { get; }
+		// The 'FileType' property has manual bindings.
 	}
 
 	delegate void NSWorkspaceUrlHandler (NSDictionary newUrls, NSError error);
@@ -28279,39 +28275,15 @@ namespace AppKit {
 	}
 
 	partial interface NSViewColumnMoveEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSOldColumn")]
-		nint OldColumn { get; }
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSNewColumn")]
-		nint NewColumn { get; }
+		// The 'OldColumn' and 'NewColumn' properties have manual bindings.
 	}
 
 	partial interface NSViewColumnResizeEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSTableColumn")]
-		NSTableColumn Column { get; }
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSOldWidth")]
-		nint OldWidth { get; }
+		// The 'Column' and 'OldWidth' properties have manual bindings.
 	}
 
 	partial interface NSOutlineViewItemEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSObject")]
-		NSObject Item { get; }
+		// The 'Item' property has manual bindings.
 	}
 
 	partial interface NSOutlineView : NSAccessibilityOutline {
@@ -28704,26 +28676,11 @@ namespace AppKit {
 	}
 
 	partial interface NSTextViewDidChangeSelectionEventArgs {
-		// FIXME: verify property type "NSValue object containing an NSRange structure"
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSOldSelectedCharacterRange")]
-		NSValue OldSelectedCharacterRange { get; }
+		// The 'OldSelectedCharacterRange' property has manual bindings.
 	}
 
 	partial interface NSTextViewWillChangeNotifyingTextViewEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSOldNotifyingTextView")]
-		NSTextView OldView { get; }
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSNewNotifyingTextView")]
-		NSTextView NewView { get; }
+		// The 'OldView' and 'NewView' properties have manual bindings.
 	}
 
 	partial interface NSTextView : NSTextLayoutOrientationProvider {
@@ -28785,11 +28742,7 @@ namespace AppKit {
 	}
 
 	partial interface NSControlTextEditingEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSFieldEditor")]
-		NSTextView FieldEditor { get; }
+		// The 'FieldEditor' property has manual bindings.
 	}
 
 	partial interface NSControl {
@@ -29083,11 +29036,7 @@ namespace AppKit {
 	}*/
 
 	interface NSTextAlternativesSelectedAlternativeStringEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSAlternativeString")]
-		string AlternativeString { get; }
+		// The 'AlternativeString' property has manual bindings.
 	}
 
 	[NoMacCatalyst]
@@ -29218,19 +29167,11 @@ namespace AppKit {
 	}
 
 	partial interface NSMenuItemIndexEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSMenuItemIndex")]
-		nint MenuItemIndex { get; }
+		// The 'MenuItemIndex' property has manual bindings.
 	}
 
 	partial interface NSMenuItemEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("MenuItem")]
-		NSMenu MenuItem { get; }
+		// The 'MenuItem' property has manual bindings.
 	}
 
 	partial interface NSMenu {
@@ -29299,14 +29240,7 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	partial interface NSTextDidEndEditingEventArgs {
-		// FIXME: I think this is essentially a flags value
-		// of movements and characters. The docs are a bit
-		// confusing.
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSTextMovement")]
-		nint Movement { get; }
+		// The 'Movement' property has manual bindings.
 	}
 
 	partial interface NSText {
@@ -29334,18 +29268,22 @@ namespace AppKit {
 	}
 
 	partial interface NSToolbarItemEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("item")]
+		/// <summary>Gets the toolbar item associated with the notification.</summary>
+		/// <value>The toolbar item that will be added to or has been removed from the toolbar.</value>
+		/// <remarks>This value is read from the notification's <c>userInfo</c> dictionary using <see cref="NSToolbar.NSToolbarItemKey"/>.</remarks>
+		[Export ("NSToolbarItemKey")]
 		NSToolbarItem Item { get; }
 	}
 
 	partial interface NSToolbar {
+		/// <summary>Notification posted when a toolbar is about to add an item.</summary>
+		/// <remarks>The notification payload can be accessed using <see cref="NSToolbarItemEventArgs"/>.</remarks>
 		[Notification (typeof (NSToolbarItemEventArgs))]
 		[Field ("NSToolbarWillAddItemNotification")]
 		NSString NSToolbarWillAddItemNotification { get; }
 
+		/// <summary>Notification posted after a toolbar removes an item.</summary>
+		/// <remarks>The notification payload can be accessed using <see cref="NSToolbarItemEventArgs"/>.</remarks>
 		[Notification (typeof (NSToolbarItemEventArgs))]
 		[Field ("NSToolbarDidRemoveItemNotification")]
 		NSString NSToolbarDidRemoveItemNotification { get; }

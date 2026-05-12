@@ -564,7 +564,7 @@ namespace Photos {
 	// include the availability attributes to any new member (and don't trust the type-level ones)
 	interface PHChangeRequest { }
 
-	/// <summary>Enumerates differences between snapshots of the objec at the specified indices.</summary>
+	/// <summary>Enumerates differences between snapshots of the object at the specified indices.</summary>
 	[MacCatalyst (13, 1)]
 	delegate void PHChangeDetailEnumerator (nuint fromIndex, nuint toIndex);
 
@@ -1993,8 +1993,13 @@ namespace Photos {
 	[NoTV, NoMacCatalyst, NoMac, iOS (26, 1)]
 	[Native]
 	public enum PHAssetResourceUploadJobAction : long {
+		/// <summary>Acknowledges an upload job.</summary>
 		Acknowledge = 1,
+		/// <summary>Retries an upload job.</summary>
 		Retry = 2,
+		/// <summary>Processes an upload job.</summary>
+		[iOS (26, 5)]
+		Process = 3,
 	}
 
 	/// <summary>Enumerates the types of <see cref="PHAssetResourceUploadJob" />.</summary>

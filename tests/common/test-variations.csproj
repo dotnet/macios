@@ -6,18 +6,25 @@
 		<TestVariations Include="debug" Description="Debug ('Configuration=Debug')" />
 		<TestVariations Include="release" Description="Release ('Configuration=Release')" />
 		<TestVariations Include="interpreter" Description="Run with the interpreter ('UseInterpreter=true')" />
+		<TestVariations Include="llvm" Description="Enable llvm ('MtouchUseLlvm=true')" />
 		<TestVariations Include="bundle-original-resources" Description="Bundle original resources ('BundleOriginalResources=true')" />
 		<TestVariations Include="do-not-bundle-original-resources" Description="Do not bundle original resources ('BundleOriginalResources=false')" />
-		<TestVariations Include="nativeaot" Description="Run with NativeAOT ('PublishAot=true' and '_IsPublishing=true')" />
+		<TestVariations Include="nativeaot" Description="Run with NativeAOT ('PublishAot=true', '_IsPublishing=true' and 'TrimMode=full')" />
 		<TestVariations Include="linksdk" Description="Run with trimmer (MtouchLink/LinkMode) set to 'SdkOnly'" />
 		<TestVariations Include="linkall" Description="Run with trimmer (MtouchLink/LinkMode) set to 'Full'" />
 		<TestVariations Include="coreclr" Description="Use CoreCLR ('UseMonoRuntime=false')" />
 		<TestVariations Include="monovm" Description="Use MonoVM ('UseMonoRuntime=true')" />
+		<TestVariations Include="dynamic-registrar" Description="Dynamic registrar" />
 		<TestVariations Include="static-registrar" Description="Static registrar" />
 		<TestVariations Include="static-registrar-all-optimizations" Description="Static registrar + all optimizations" />
 		<TestVariations Include="static-registrar-all-optimizations-linkall" Description="Static registrar + all optimizations + Link all" />
 		<TestVariations Include="static-registrar-optimizations-except-uithread-checks-linkall" Description="Static registrar + all optimizations + Link all" />
+		<TestVariations Include="managed-static-registrar" Description="Managed static registrar" />
 		<TestVariations Include="managed-static-registrar-all-optimizations-linkall" Description="Managed static registrar + all optimizations" />
+		<TestVariations Include="trimmable-static-registrar" Description="Trimmable static registrar" />
+		<TestVariations Include="trimmable-static-registrar-all-optimizations-linkall" Description="Trimmable static registrar + all optimizations" />
+		<TestVariations Include="inline-dlfcn-methods-compat" Description="Enables 'InlineDlfcnMethods' in compatibility mode." />
+		<TestVariations Include="inline-dlfcn-methods-strict" Description="Enables 'InlineDlfcnMethods' in strict mode." />
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -39,6 +46,11 @@
 		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|llvm|'))">
+		<MtouchUseLlvm>true</MtouchUseLlvm>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|bundle-original-resources|'))">
 		<BundleOriginalResources>true</BundleOriginalResources>
 		<_TestVariationApplied>true</_TestVariationApplied>
@@ -52,6 +64,7 @@
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|nativeaot|'))">
 		<PublishAot>true</PublishAot>
 		<_IsPublishing>true</_IsPublishing>
+		<TrimMode>full</TrimMode>
 		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
@@ -75,8 +88,19 @@
 		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|dynamic-registrar|'))">
+		<Registrar>dynamic</Registrar>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|static-registrar|'))">
 		<Registrar>static</Registrar>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|trimmable-static-registrar|'))">
+		<Registrar>trimmable-static</Registrar>
+		<UseMonoRuntime>false</UseMonoRuntime> <!-- doesn't work with Mono -->
 		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
@@ -103,12 +127,38 @@
 		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|managed-static-registrar|'))">
+		<Registrar>managed-static</Registrar>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|managed-static-registrar-all-optimizations-linkall|'))">
 		<AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
 		<Registrar>managed-static</Registrar>
 		<TrimMode>full</TrimMode>
 		<DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
 		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|trimmable-static-registrar-all-optimizations-linkall|'))">
+		<AppBundleExtraOptions>$(AppBundleExtraOptions) --optimize:all</AppBundleExtraOptions>
+		<Registrar>trimmable-static</Registrar>
+		<TrimMode>full</TrimMode>
+		<DefineConstants>$(DefineConstants);OPTIMIZEALL</DefineConstants>
+		<UseMonoRuntime>false</UseMonoRuntime> <!-- doesn't work with Mono -->
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|inline-dlfcn-methods-compat|'))">
+		<InlineDlfcnMethods>compatibility</InlineDlfcnMethods>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|inline-dlfcn-methods-strict|'))">
+		<InlineDlfcnMethods>strict</InlineDlfcnMethods>
+		<_TestVariationApplied>true</_TestVariationApplied>
+
+		<DefineConstants>$(DefineConstants);STATIC_NATIVE_SYMBOL_LOOKUP</DefineConstants>
 	</PropertyGroup>
 
 	<Target Name="ValidateTestVariation" Condition="'$(TestVariation)' != '' And '$(OutputType)' == 'exe'" BeforeTargets="Build">

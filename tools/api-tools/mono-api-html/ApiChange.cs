@@ -7,7 +7,7 @@ using System.Xml.Linq;
 namespace Mono.ApiTools {
 
 	class ApiChange {
-		public string Header;
+		public string Header = "";
 		public TextChunk Member = new TextChunk ();
 		public bool AnyChange;
 		public string SourceDescription;
@@ -61,8 +61,7 @@ namespace Mono.ApiTools {
 			if (!change.AnyChange)
 				return;
 
-			List<ApiChange> list;
-			if (!TryGetValue (change.Header, out list)) {
+			if (!TryGetValue (change.Header, out List<ApiChange>? list)) {
 				list = new List<ApiChange> ();
 				base.Add (change.Header, list);
 			}

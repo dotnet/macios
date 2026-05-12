@@ -50,7 +50,7 @@ namespace Mono.ApiTools {
 
 		public override bool Find (XElement e)
 		{
-			return (e.Attribute ("name").Value == Source.Attribute ("name").Value);
+			return (e.Attribute ("name")!.Value == Source.Attribute ("name")!.Value);
 		}
 
 		void RenderReturnType (XElement source, XElement target, ApiChange change)
@@ -59,7 +59,7 @@ namespace Mono.ApiTools {
 			var tgtType = target.GetTypeName ("returntype", State);
 
 			if (srcType != tgtType) {
-				change.AppendModified (srcType, tgtType);
+				change.AppendModified (srcType ?? "", tgtType ?? "");
 				change.Append (" ");
 			} else if (srcType is not null) {
 				// ctor don't have a return type
@@ -114,7 +114,7 @@ namespace Mono.ApiTools {
 				}
 			}
 
-			string name = e.GetAttribute ("name");
+			string name = e.GetAttribute ("name") ?? "";
 
 			var r = e.GetTypeName ("returntype", State);
 			if (r is not null) {
@@ -133,7 +133,7 @@ namespace Mono.ApiTools {
 			if (genericp is not null) {
 				var list = new List<string> ();
 				foreach (var p in genericp.Elements ("generic-parameter")) {
-					list.Add (p.GetTypeName ("name", State));
+					list.Add (p.GetTypeName ("name", State) ?? "");
 				}
 				sb.Append (Formatter.LesserThan).Append (String.Join (", ", list)).Append (Formatter.GreaterThan);
 			}

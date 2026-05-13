@@ -26,7 +26,9 @@ pack: $(SHARPIE_BIND_TOOL_NUPKG)
 $(SHARPIE_BIND_TOOL_NUPKG): $(Sharpie.Bind_dependencies) $(SHARPIE_BIND_TOOL_X64_SHIM)
 	$(Q_BUILD) $(DOTNET) pack Sharpie.Bind.Tool/Sharpie.Bind.Tool.csproj "/p:Version=$(SHARPIE_VERSION)" "/p:CurrentBranch=$(CURRENT_BRANCH)" "/p:CurrentHash=$(CURRENT_HASH_LONG)" $(DOTNET_PACK_VERBOSITY) -bl:$@.binlog
 
-$(SHARPIE_BIND_TOOL_X64_SHIM):
+SHARPIE_BIND_TOOL_UNSUPPORTED_SOURCES = $(wildcard Sharpie.Bind.Tool.Unsupported/*.cs) Sharpie.Bind.Tool.Unsupported/Sharpie.Bind.Tool.Unsupported.csproj
+
+$(SHARPIE_BIND_TOOL_X64_SHIM): $(SHARPIE_BIND_TOOL_UNSUPPORTED_SOURCES)
 	$(Q_BUILD) $(DOTNET) publish Sharpie.Bind.Tool.Unsupported/Sharpie.Bind.Tool.Unsupported.csproj -c Release $(DOTNET_BUILD_VERBOSITY) -bl:$@.binlog
 
 all-local:: $(DOTNET_NUPKG_DIR)/$(SHARPIE_BIND_TOOL_NUPKG_NAME)

@@ -4,10 +4,10 @@
 class Program {
 	static int Main (string [] args)
 	{
-		Console.Error.WriteLine ("error: sharpie is not supported on x64. Please use an Apple Silicon (arm64) Mac.");
+		Console.Error.WriteLine ("error: sharpie is not supported with an x64 runtime.");
 		Console.Error.WriteLine ();
 		Console.Error.WriteLine ("sharpie requires Apple's libclang, which is only available for arm64.");
-		Console.Error.WriteLine ("If you're running on an Intel Mac, consider using a Mac with Apple Silicon (M1 or later).");
+		Console.Error.WriteLine ("Please install the arm64 version of .NET and run sharpie with the arm64 .NET runtime.");
 		return 1;
 	}
 }

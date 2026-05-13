@@ -53,9 +53,11 @@
   <!-- Include the x64 shim in the nupkg so that x64 users get a helpful error message -->
   <PropertyGroup>
     <_X64ShimPublishDir>$([MSBuild]::NormalizePath('$(MSBuildThisFileDirectory)', '..', 'Sharpie.Bind.Tool.Unsupported', 'bin', 'Release', 'osx-x64', 'publish'))</_X64ShimPublishDir>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_IncludeX64Shim</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
 
-  <Target Name="_IncludeX64Shim" AfterTargets="PackTool" Condition="'$(PackAsTool)' == 'true'">
+  <Target Name="_IncludeX64Shim" Condition="'$(PackAsTool)' == 'true'">
+    <Error Condition="!Exists('$(_X64ShimPublishDir)/Sharpie.Bind.Tool')" Text="The x64 shim has not been published yet. Run 'dotnet publish Sharpie.Bind.Tool.Unsupported/Sharpie.Bind.Tool.Unsupported.csproj -c Release' first." />
     <ItemGroup>
       <TfmSpecificPackageFile Include="$(_X64ShimPublishDir)/Sharpie.Bind.Tool">
         <PackagePath>tools/any/osx-x64/</PackagePath>

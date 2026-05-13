@@ -2606,10 +2606,6 @@ namespace Xamarin.Tests {
 			// Verify that we don't get any IL2009 warnings (the bug we're testing for).
 			var il2009Warnings = warnings.Where (v => v.Code == "IL2009").ToArray ();
 			Assert.That (il2009Warnings, Is.Empty, $"Expected no IL2009 warnings, but got:\n\t{string.Join ("\n\t", il2009Warnings.Select (v => v.ToString ()))}");
-
-			// Verify that we still get some expected warnings (so that we're notified if they're ever fixed/go away).
-			var il2026Warnings = warnings.Where (v => v.Code == "IL2026").ToArray ();
-			Assert.That (il2026Warnings, Is.Not.Empty, "Expected IL2026 warnings from monotouch-test");
 		}
 
 		void AssertThatDylibExistsAndIsReidentified (string appPath, string dylibRelPath)

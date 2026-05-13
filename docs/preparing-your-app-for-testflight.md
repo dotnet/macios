@@ -26,7 +26,6 @@ Here's an example within a project file that is correctly configured for publish
     <TargetFramework>net7.0-maccatalyst</TargetFramework>
     <RuntimeIdentifiers>maccatalyst-x64;maccatalyst-arm64</RuntimeIdentifiers>
     <OutputType>Exe</OutputType>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
     <SupportedOSPlatformVersion>14.2</SupportedOSPlatformVersion>
     <ApplicationTitle>YourAppName</ApplicationTitle>

@@ -158,7 +158,7 @@ namespace Linker.Shared {
 		unsafe static void BlockCallback (IntPtr block)
 		{
 			var descriptor = (BlockLiteral*) block;
-			var del = (Action) (descriptor->Target);
+			var del = (Action) (descriptor->Target)!;
 			del ();
 		}
 
@@ -285,17 +285,17 @@ namespace Linker.Shared {
 			int dummy208 = 0, int dummy218 = 0, int dummy228 = 0, int dummy238 = 0, int dummy248 = 0, int dummy258 = 0, int dummy268 = 0, int dummy278 = 0, int dummy288 = 0, int dummy298 = 0,
 			int dummy209 = 0, int dummy219 = 0, int dummy229 = 0, int dummy239 = 0, int dummy249 = 0, int dummy259 = 0, int dummy269 = 0, int dummy279 = 0, int dummy289 = 0, int dummy299 = 0,
 
-			Action_IntPtr block_callback = null
+			Action_IntPtr? block_callback = null
 		)
 		{
 			// ldarg
 			BlockLiteral block = new BlockLiteral ();
-			block.SetupBlock (block_callback, callback);
+			block.SetupBlock (block_callback!, callback);
 			Bindings.Test.CFunctions.x_call_block (ref block);
 			block.CleanupBlock ();
 		}
 
-		Action_IntPtr block_callback_instance_field;
+		Action_IntPtr? block_callback_instance_field;
 		[BindingImpl (BindingImplOptions.Optimizable)]
 		void SetupBlockOptimized_LoadField (Action callback)
 		{
@@ -514,17 +514,17 @@ namespace Linker.Shared {
 			IEnumerable<ILInstruction> instructions;
 			IEnumerable<ILInstruction> call_instructions;
 
-			method = typeof (BaseOptimizeGeneratedCodeTest).GetMethod (nameof (GetIsARM64CallingConventionOptimized), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static);
+			method = typeof (BaseOptimizeGeneratedCodeTest).GetMethod (nameof (GetIsARM64CallingConventionOptimized), BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.Static)!;
 			instructions = new ILReader (method);
 			call_instructions = instructions.Where ((v) => v.OpCode.Name == "ldsfld");
 			Assert.AreEqual (0, call_instructions.Count (), "optimized: no ldsfld instruction");
 
-			method = typeof (BaseOptimizeGeneratedCodeTest).GetMethod (nameof (GetIsARM64CallingConventionNotOptimized), BindingFlags.NonPublic | BindingFlags.Instance);
+			method = typeof (BaseOptimizeGeneratedCodeTest).GetMethod (nameof (GetIsARM64CallingConventionNotOptimized), BindingFlags.NonPublic | BindingFlags.Instance)!;
 			instructions = new ILReader (method);
 			call_instructions = instructions.Where ((v) => v.OpCode.Name == "ldsfld");
 			Assert.AreEqual (1, call_instructions.Count (), "not optimized: 1 ldsfld instruction");
-			
-			method = typeof (Runtime).GetMethod ("GetIsARM64CallingConvention", BindingFlags.Static | BindingFlags.NonPublic);
+
+			method = typeof (Runtime).GetMethod ("GetIsARM64CallingConvention", BindingFlags.Static | BindingFlags.NonPublic)!;
 			instructions = new ILReader (method);
 			Assert.AreEqual (2, instructions.Count (), "IL Count");
 			Assert.That (instructions.Skip (0).First ().OpCode, Is.EqualTo (OpCodes.Ldc_I4_0).Or.EqualTo (OpCodes.Ldc_I4_1), "IL 1");

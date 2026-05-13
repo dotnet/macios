@@ -34,22 +34,22 @@ namespace Xamarin.BindingTests {
 		{
 			using var dateNow = (NSDate) DateTime.Now;
 
-			using (var obj = IConstructorProtocol.CreateInstance<TypeProvidingProtocolConstructors> ("Hello world")) {
+			using (var obj = IConstructorProtocol.CreateInstance<TypeProvidingProtocolConstructors> ("Hello world")!) {
 				Assert.AreEqual ("Hello world", obj.StringValue, "A StringValue");
 				Assert.IsNull (obj.DateValue, "A DateValue");
 			}
 
-			using (var obj = IConstructorProtocol.CreateInstance<TypeProvidingProtocolConstructors> (dateNow)) {
+			using (var obj = IConstructorProtocol.CreateInstance<TypeProvidingProtocolConstructors> (dateNow)!) {
 				Assert.IsNull (obj.StringValue, "B StringValue");
 				Assert.AreEqual (dateNow, obj.DateValue, "B DateValue");
 			}
 
-			using (var obj = IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors> ("Hello Subclassed")) {
+			using (var obj = IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors> ("Hello Subclassed")!) {
 				Assert.AreEqual ("Hello Subclassed", obj.StringValue, "C1 StringValue");
 				Assert.IsNull (obj.DateValue, "C1 DateValue");
 			}
 
-			using (var obj = IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors> (dateNow)) {
+			using (var obj = IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors> (dateNow)!) {
 				Assert.IsNull (obj.StringValue, "C2 StringValue");
 				Assert.AreEqual (dateNow, obj.DateValue, "C2 DateValue");
 			}
@@ -59,7 +59,7 @@ namespace Xamarin.BindingTests {
 					IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors2> ("Hello Subclassed 2");
 				}, "D1 Exception");
 			} else {
-				using (var obj = IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors2> ("Hello Subclassed 2")) {
+				using (var obj = IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors2> ("Hello Subclassed 2")!) {
 					Assert.AreEqual ("Managed interceptor! Hello Subclassed 2", obj.StringValue, "D1 StringValue");
 					Assert.IsNull (obj.DateValue, "D1 DateValue");
 				}
@@ -70,7 +70,7 @@ namespace Xamarin.BindingTests {
 					IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors2> (dateNow);
 				}, "D2 Exception");
 			} else {
-				using (var obj = IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors2> (dateNow)) {
+				using (var obj = IConstructorProtocol.CreateInstance<SubclassedTypeProvidingProtocolConstructors2> (dateNow)!) {
 					Assert.IsNull (obj.StringValue, "D2 StringValue");
 					Assert.AreEqual (dateNow.AddSeconds (42), obj.DateValue, "D2 DateValue");
 				}
@@ -106,7 +106,7 @@ namespace Xamarin.BindingTests {
 			var bindingAssembly = GetType ().Assembly;
 
 			// the interface must be created
-			var IP1 = bindingAssembly.GetType ("Bindings.Test.Protocol.IP1");
+			var IP1 = bindingAssembly.GetType ("Bindings.Test.Protocol.IP1")!;
 			Assert.IsNotNull (IP1, "IP1");
 			// with a [Protocol] attribute
 			var IP1Attributes = IP1.GetCustomAttributes (typeof (ProtocolAttribute), false);
@@ -138,7 +138,7 @@ namespace Xamarin.BindingTests {
 			var bindingAssembly = GetType ().Assembly;
 
 			// the interface must be created
-			var IP2 = bindingAssembly.GetType ("Bindings.Test.Protocol.IP2");
+			var IP2 = bindingAssembly.GetType ("Bindings.Test.Protocol.IP2")!;
 			Assert.IsNotNull (IP2, "IP2");
 
 			// with a [Protocol] attribute
@@ -161,7 +161,7 @@ namespace Xamarin.BindingTests {
 			}
 
 			// and a model-like class
-			var model = bindingAssembly.GetType ("Bindings.Test.Protocol.P2");
+			var model = bindingAssembly.GetType ("Bindings.Test.Protocol.P2")!;
 			Assert.IsNotNull (model, "P2");
 			// but without the [Model] attribute
 			Assert.False (model.IsDefined (typeof (ModelAttribute), false), "model");
@@ -175,7 +175,7 @@ namespace Xamarin.BindingTests {
 			var bindingAssembly = GetType ().Assembly;
 
 			// the interface must be created
-			var IP3 = bindingAssembly.GetType ("Bindings.Test.Protocol.IP3");
+			var IP3 = bindingAssembly.GetType ("Bindings.Test.Protocol.IP3")!;
 			Assert.IsNotNull (IP3, "IP3");
 
 			// with a [Protocol] attribute
@@ -198,7 +198,7 @@ namespace Xamarin.BindingTests {
 			}
 
 			// and a model class
-			var model = bindingAssembly.GetType ("Bindings.Test.Protocol.P3");
+			var model = bindingAssembly.GetType ("Bindings.Test.Protocol.P3")!;
 			Assert.IsNotNull (model, "P3");
 			// with a [Model] attribute
 			Assert.True (model.IsDefined (typeof (ModelAttribute), false), "model");
@@ -210,12 +210,12 @@ namespace Xamarin.BindingTests {
 			}
 
 			public string RequiredInstanceProperty {
-				get { return null; }
+				get { return null!; }
 				set { }
 			}
 
 			public NSString RequiredReadonlyProperty {
-				get { return null; }
+				get { return null!; }
 			}
 		}
 
@@ -381,7 +381,7 @@ namespace Xamarin.BindingTests {
 				var rv = new objc_method_description [count];
 				for (int i = 0; i < count; i++) {
 					var sel = new Selector (Marshal.ReadIntPtr (methods + (IntPtr.Size * 2) * i)).Name;
-					var types = Marshal.PtrToStringAuto (Marshal.ReadIntPtr (methods + (IntPtr.Size * 2) * i + IntPtr.Size));
+					var types = Marshal.PtrToStringAuto (Marshal.ReadIntPtr (methods + (IntPtr.Size * 2) * i + IntPtr.Size))!;
 					rv [i] = new objc_method_description (sel, types);
 				}
 				return rv;
@@ -406,12 +406,13 @@ namespace Xamarin.BindingTests {
 			Trace ($"Protocol {new Protocol (protocol)} has {rv} properties");
 			try {
 				for (int i = 0; i < count; i++) {
-					var prop = new objc_property ();
 					IntPtr p = Marshal.ReadIntPtr (list, IntPtr.Size * i);
+					var prop = new objc_property (
+						property_getName (p),
+						property_getAttributes (p),
+						property_copyAttributeList (p)
+					);
 					rv [i] = prop;
-					prop.Name = property_getName (p);
-					prop.Attributes = property_getAttributes (p);
-					prop.AttributeList = property_copyAttributeList (p);
 					Trace ($"    #{i + 1}: Name={prop.Name} Attributes={prop.Attributes} AttributeList={prop.AttributeList}");
 				}
 				return rv;
@@ -429,7 +430,7 @@ namespace Xamarin.BindingTests {
 
 		static string property_getName (IntPtr property)
 		{
-			return Marshal.PtrToStringAuto (_property_getName (property));
+			return Marshal.PtrToStringAuto (_property_getName (property))!;
 		}
 
 		[DllImport ("/usr/lib/libobjc.dylib", EntryPoint = "property_getAttributes")]
@@ -437,7 +438,7 @@ namespace Xamarin.BindingTests {
 
 		static string property_getAttributes (IntPtr property)
 		{
-			var v = Marshal.PtrToStringAuto (_property_getAttributes (property));
+			var v = Marshal.PtrToStringAuto (_property_getAttributes (property))!;
 
 			// Ignore any "?" attributes, apparently it's a new property attribute in Xcode 16, but since there's no documentation about it yet, just ignore it.
 			var attribs = v.Split (',').Where (v => v != "?").ToArray ();
@@ -454,11 +455,12 @@ namespace Xamarin.BindingTests {
 			var rv = new List<objc_property_attribute> (count);
 			try {
 				for (int i = 0; i < count; i++) {
-					var attrib = new objc_property_attribute ();
 					IntPtr n = Marshal.ReadIntPtr (list, (IntPtr.Size * 2) * i);
 					IntPtr v = Marshal.ReadIntPtr (list, (IntPtr.Size * 2) * i + IntPtr.Size);
-					attrib.Name = Marshal.PtrToStringAuto (n);
-					attrib.Value = Marshal.PtrToStringAuto (v);
+					var attrib = new objc_property_attribute (
+						Marshal.PtrToStringAuto (n)!,
+						Marshal.PtrToStringAuto (v)!
+					);
 					// Ignore any "?" attributes, apparently it's a new property attribute in Xcode 16, but since there's no documentation about it yet, just ignore it.
 					if (attrib.Name == "?" && string.IsNullOrEmpty (attrib.Value))
 						continue;
@@ -477,25 +479,23 @@ namespace Xamarin.BindingTests {
 			public string Name;
 			public string Value;
 
-			public objc_property_attribute ()
-			{
-			}
-
 			public objc_property_attribute (string name, string value)
 			{
 				this.Name = name;
 				this.Value = value;
 			}
 
-			bool IEquatable<objc_property_attribute>.Equals (objc_property_attribute other)
+			bool IEquatable<objc_property_attribute>.Equals (objc_property_attribute? other)
 			{
+				if (other is null)
+					return false;
+
 				return Name == other.Name && Value == other.Value;
 			}
 
-			public override bool Equals (object obj)
+			public override bool Equals (object? obj)
 			{
-				var other = (objc_property_attribute) obj;
-				if (other is null)
+				if (obj is not objc_property_attribute other)
 					return false;
 				return Name == other.Name && Value == other.Value;
 			}
@@ -515,11 +515,11 @@ namespace Xamarin.BindingTests {
 			public string Name;
 			public string Attributes;
 			public objc_property_attribute [] AttributeList;
-
-			public objc_property ()
-			{
-			}
-
+			/*
+						public objc_property ()
+						{
+						}
+			*/
 			public objc_property (string name, string attributes, objc_property_attribute [] list)
 			{
 				this.Name = name;
@@ -532,8 +532,11 @@ namespace Xamarin.BindingTests {
 				return string.Format ("[{0}; {1}; {2}]", Name, Attributes, string.Join (", ", new List<objc_property_attribute> (AttributeList).Select ((v) => string.Format ("{0} = {1}", v.Name, v.Value))));
 			}
 
-			bool IEquatable<objc_property>.Equals (objc_property other)
+			bool IEquatable<objc_property>.Equals (objc_property? other)
 			{
+				if (other is null)
+					return false;
+
 				if (other.Name != Name)
 					return false;
 				if (other.Attributes != Attributes)
@@ -562,8 +565,11 @@ namespace Xamarin.BindingTests {
 				return string.Format ("[{0}; {1}]", Name, Types);
 			}
 
-			bool IEquatable<objc_method_description>.Equals (objc_method_description other)
+			bool IEquatable<objc_method_description>.Equals (objc_method_description? other)
 			{
+				if (other is null)
+					return false;
+
 				return other.Name == Name && other.Types == Types;
 			}
 		}

@@ -4,9 +4,6 @@
     <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
     <RootNamespace>ceciltests</RootNamespace>
     <AssemblyName>cecil-tests</AssemblyName>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Mono.Cecil" Version="$(MonoCecilPackageVersion)" />

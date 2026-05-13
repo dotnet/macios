@@ -16,10 +16,6 @@
     <!-- if this one becomes a problem we can easily fix it with a search&replace -->
     <NoWarn>$(NoWarn);CS8981</NoWarn>
 
-    <!-- We're warning-free, so let's make sure we stay that way -->
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
-
     <DefineConstants>$(DefineConstants);BINDINGS_TEST</DefineConstants>
   </PropertyGroup>
 

@@ -66,8 +66,8 @@ namespace MonoTouchFixtures.SpriteKit {
 				);
 				obj.RotationMatrix = rotatedMatrix;
 				Asserts.AreEqual (rotatedMatrix, obj.RotationMatrix, 0.000001f, "RotationMatrix b");
-				Assert.That (obj.XRotation, Is.EqualTo ((nfloat) (Math.PI / 2)).Within (0.000001f), "XRotation b");
-				Assert.That (obj.YRotation, Is.EqualTo (0).Within (0.000001f), "YRotation b"); // Setting YRotation changes RotationMatrix, but setting RotationMatrix doesn't change YRotation.
+				Assert.That ((double) obj.XRotation, Is.EqualTo (Math.PI / 2).Within (0.000001), "XRotation b");
+				Assert.That ((double) obj.YRotation, Is.EqualTo (0.0).Within (0.000001), "YRotation b"); // Setting YRotation changes RotationMatrix, but setting RotationMatrix doesn't change YRotation.
 			}
 		}
 

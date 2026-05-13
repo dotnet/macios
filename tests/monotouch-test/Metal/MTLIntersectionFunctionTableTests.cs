@@ -55,6 +55,9 @@ namespace MonoTouchFixtures.Metal {
 		[Test]
 		public void SetBuffersTest ()
 		{
+			if (functionTable is null)
+				Assert.Inconclusive ("Could not create the intersection function table.");
+
 			Assert.Throws<ArgumentNullException> (() => {
 				functionTable.SetBuffers (null, new nuint [0], new NSRange ());
 			}, "Null buffers should throw.");

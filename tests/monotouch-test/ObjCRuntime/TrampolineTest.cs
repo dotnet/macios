@@ -157,11 +157,11 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 		void AreAlmostEqual (CGRect left, CGRect right, string message)
 		{
-			var delta = 0.000001f;
-			Assert.That (right.X, Is.EqualTo (left.X).Within (delta), message);
-			Assert.That (right.Y, Is.EqualTo (left.Y).Within (delta), message);
-			Assert.That (right.Width, Is.EqualTo (left.Width).Within (delta), message);
-			Assert.That (right.Height, Is.EqualTo (left.Height).Within (delta), message);
+			var delta = 0.000001;
+			Assert.That ((double) right.X, Is.EqualTo ((double) left.X).Within (delta), message);
+			Assert.That ((double) right.Y, Is.EqualTo ((double) left.Y).Within (delta), message);
+			Assert.That ((double) right.Width, Is.EqualTo ((double) left.Width).Within (delta), message);
+			Assert.That ((double) right.Height, Is.EqualTo ((double) left.Height).Within (delta), message);
 		}
 
 		[Test]

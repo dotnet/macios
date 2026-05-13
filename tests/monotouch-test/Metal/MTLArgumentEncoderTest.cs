@@ -48,6 +48,9 @@ namespace MonoTouchFixtures.Metal {
 		[Test]
 		public void SetBuffers ()
 		{
+			if (encoder is null)
+				Assert.Inconclusive ("Could not create the argument encoder.");
+
 			Assert.Throws<ArgumentNullException> (() => {
 				encoder.SetBuffers (null, new nuint [0], new NSRange ());
 			}, "Null buffers should throw.");

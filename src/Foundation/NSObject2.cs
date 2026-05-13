@@ -20,7 +20,10 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-// We can probably switch to the CWT once https://github.com/dotnet/macios/issues/25376 lands.
+// Use a ConditionalWeakTable to track the objc_super memory for .NET 11+.
+// For older versions, the objc_super memory is stored in a field on NSObject
+// and freed in Dispose. Once https://github.com/dotnet/macios/issues/25376
+// lands, the non-CWT code path can be removed.
 #if NET11_0_OR_GREATER
 #define USE_CWT_FOR_SUPER_MEMORY
 #endif

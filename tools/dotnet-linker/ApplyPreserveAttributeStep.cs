@@ -186,14 +186,15 @@ namespace Xamarin.Linker.Steps {
 			return method.FullName.Substring (0, index) + method.FullName.Substring (index + marker.Length);
 		}
 
-		// Check if a method has any parameters whose type is a generic parameter (from the declaring type or method).
+		// Check if a method has any generic parameters in its signature (return type or parameter types).
+		// This includes generic parameters nested inside other types (e.g. Action<T>, T[], ref T, Nullable<T>).
 		// The linker XML descriptor can't resolve generic parameter names like 'T' in method signatures.
 		static bool HasGenericParameterInSignature (MethodDefinition method)
 		{
-			if (method.ReturnType is GenericParameter)
+			if (method.ReturnType.ContainsGenericParameter)
 				return true;
 			foreach (var param in method.Parameters) {
-				if (param.ParameterType is GenericParameter)
+				if (param.ParameterType.ContainsGenericParameter)
 					return true;
 			}
 			return false;

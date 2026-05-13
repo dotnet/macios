@@ -1481,10 +1481,12 @@ PHOTOS_SOURCES = \
 PHOTOSUI_API_SOURCES = \
 	PhotosUI/PHEnums.cs \
 
-# PrintCode
-PRINTCORE_SOURCES = \
+# PrintCore
+PRINTCORE_CORE_SOURCES = \
 	PrintCore/Defs.cs	\
 	PrintCore/PrintCore.cs
+
+PRINTCORE_SOURCES =
 
 # PushToTalk
 PUSHTOTALK_SOURCES = \
@@ -2374,6 +2376,7 @@ MACCATALYST_FRAMEWORKS = \
 	MapKit \
 	MediaAccessibility \
 	MediaPlayer \
+	MediaSetup \
 	MediaToolbox \
 	Messages \
 	MessageUI \
@@ -2399,6 +2402,7 @@ MACCATALYST_FRAMEWORKS = \
 	QuickLookThumbnailing \
 	ReplayKit \
 	SafariServices \
+	SafetyKit \
 	ScreenCaptureKit \
 	ScreenTime \
 	Security \

@@ -1,3 +1,4 @@
+## Looks like this API leaked from VisionOS
 !missing-field! ar_error_domain not bound
 !missing-pinvoke! ar_anchor_get_identifier is not bound
 !missing-pinvoke! ar_anchor_get_origin_from_anchor_transform is not bound

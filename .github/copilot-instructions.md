@@ -136,6 +136,16 @@ interface SomeClass {
 Located in `msbuild/` directory:
 - `Xamarin.MacDev.Tasks` - Shared Apple development tasks
 
+### MSBuild Targets Pitfalls
+
+* **Never use `$([System.IO.Path]::GetFullPath('...'))` in MSBuild targets.** When building
+  remotely from Windows (Hot Restart, remote Mac builds), `GetFullPath` resolves against the
+  *local* Windows file system, producing a Windows-style absolute path instead of the intended
+  remote Mac path. Use relative paths or existing MSBuild metadata (such as `ComputedRelativePath`)
+  instead. The same applies to other `System.IO.Path` methods that resolve against the current
+  working directory (e.g., `GetDirectoryName` with a relative path may produce unexpected results
+  in a cross-platform build).
+
 ### Project Templates
 
 Common project structure for Apple platform apps:

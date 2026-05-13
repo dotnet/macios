@@ -2954,8 +2954,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 		<PropertyGroup>
 			<_AppContentsRelativePathForPostProcessing Condition="'$(_AppContentsRelativePath)' != ''">$(_AppContentsRelativePath)/</_AppContentsRelativePathForPostProcessing>
-			<!-- Get the absolute path to the intermediate native library directory, so that MakeRelative works correctly -->
-			<_IntermediateNativeLibraryDirFull Condition="'$(_IntermediateNativeLibraryDir)' != ''">$([System.IO.Path]::GetFullPath('$(_IntermediateNativeLibraryDir)'))</_IntermediateNativeLibraryDirFull>
 		</PropertyGroup>
 
 		<ItemGroup>
@@ -2971,14 +2969,13 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
 				<DSymName>%(Filename)%(Extension).framework.dSYM</DSymName>
 			</_PostProcessingItem>
-			<!-- Compute the bundle-relative path for dynamic native references, preserving any subdirectory structure.
-			     Using %(Filename)%(Extension) alone would lose subdirectory paths (e.g., subdir/libframework.so becomes libframework.so).
-			     MakeRelative requires absolute paths to work correctly, so resolve both paths first. -->
-			<_FileNativeReference Condition="'%(Kind)' == 'Dynamic' And '$(_IntermediateNativeLibraryDirFull)' != ''">
-				<_BundleRelativePath>$([MSBuild]::MakeRelative('$(_IntermediateNativeLibraryDirFull)', $([System.IO.Path]::GetFullPath('%(Identity)'))))</_BundleRelativePath>
+			<!-- Normalize ComputedRelativePath (which may contain backslashes from Windows-style paths) for dynamic native references.
+			     Using %(Filename)%(Extension) alone would lose subdirectory paths (e.g., subdir/libframework.so becomes libframework.so). -->
+			<_FileNativeReference Condition="'%(Kind)' == 'Dynamic' And '%(ComputedRelativePath)' != ''">
+				<_NormalizedRelativePath>$([System.String]::Copy('%(ComputedRelativePath)').Replace('\', '/'))</_NormalizedRelativePath>
 			</_FileNativeReference>
 			<!-- add dylibs, with the path relative to the app bundle -->
-			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/%(_BundleRelativePath)')" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic' And '%(_FileNativeReference._BundleRelativePath)' != ''">
+			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/%(_NormalizedRelativePath)')" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic' And '%(_FileNativeReference._NormalizedRelativePath)' != ''">
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
@@ -2986,8 +2983,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
 				<DSymName>%(Filename).dSYM</DSymName>
 			</_PostProcessingItem>
-			<!-- Fallback for when _IntermediateNativeLibraryDir is not available -->
-			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic' And '%(_FileNativeReference._BundleRelativePath)' == ''">
+			<!-- Fallback for items without ComputedRelativePath -->
+			<_PostProcessingItem Include="@(_FileNativeReference->'$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'%(_FileNativeReference.Kind)' == 'Dynamic' And '%(_FileNativeReference._NormalizedRelativePath)' == ''">
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->

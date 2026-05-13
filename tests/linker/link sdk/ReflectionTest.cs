@@ -20,7 +20,7 @@ namespace Linker.Shared.Reflection {
 			// and the linker will keep the parameter names inside such classes.
 			ReflectionTestClass.MethodWithParameters (null, 0);
 
-			var mi = GetType ().Assembly.GetType ("Linker.Shared.Reflection.ReflectionTestClass").GetMethod ("MethodWithParameters");
+			var mi = GetType ().Assembly.GetType ("Linker.Shared.Reflection.ReflectionTestClass")!.GetMethod ("MethodWithParameters")!;
 			var p = mi.GetParameters ();
 #if DEBUG
 			// dotnet has adopted (and adapted) the metadata reducer and runs it on it's own conditions
@@ -42,7 +42,7 @@ namespace Linker.Shared.Reflection {
 	}
 
 	class ReflectionTestClass {
-		public static void MethodWithParameters (string firstParameter, int secondParameter)
+		public static void MethodWithParameters (string? firstParameter, int secondParameter)
 		{
 		}
 	}

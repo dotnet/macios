@@ -135,7 +135,7 @@ namespace LinkAll.Attributes {
 		[Test]
 		public void DebugConstructorAttributes ()
 		{
-			var ca = typeof (FullyDecorated).GetConstructor (Type.EmptyTypes).GetCustomAttributes (false);
+			var ca = typeof (FullyDecorated).GetConstructor (Type.EmptyTypes)!.GetCustomAttributes (false);
 #if DEBUG
 			Assert.That (ca.Length, Is.EqualTo (2), "Debug attributes in debug mode");
 #else
@@ -152,7 +152,7 @@ namespace LinkAll.Attributes {
 			c.Property = 1;
 
 			bool result = false;
-			foreach (object ca in typeof (FullyDecorated).GetProperty ("Property").GetCustomAttributes (false)) {
+			foreach (object ca in typeof (FullyDecorated).GetProperty ("Property")!.GetCustomAttributes (false)) {
 				if (ca is DebuggerBrowsableAttribute)
 					result = true;
 			}
@@ -168,7 +168,7 @@ namespace LinkAll.Attributes {
 		{
 			var d = new Dictionary<string, int> () { { "key", 0 } };
 			Assert.NotNull (d); // just to be 100% sure it won't be linked away (with the attribute we'll be looking for)
-			var proxy = Type.GetType ("System.Collections.Generic.IDictionaryDebugView`2, " + mscorlib);
+			var proxy = Type.GetType ("System.Collections.Generic.IDictionaryDebugView`2, " + mscorlib)!;
 #if DEBUG
 			Assert.NotNull (proxy, "proxy");
 			// having the type is nice, but it must not be empty to be useful

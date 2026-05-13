@@ -10,8 +10,6 @@ namespace Xamarin.Mac.Tests {
 		[SetUp]
 		public void SetUp ()
 		{
-			Asserts.EnsureYosemite ();
-
 			view = new NSVisualEffectView ();
 		}
 

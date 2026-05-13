@@ -36,7 +36,7 @@ namespace LinkAll.Serialization.DataContract {
 		{
 			using (var r = XmlReader.Create (new StringReader (xml))) {
 				var s = new DataContractSerializer (typeof (T));
-				return (T) s.ReadObject (r);
+				return (T) s.ReadObject (r)!;
 			}
 		}
 

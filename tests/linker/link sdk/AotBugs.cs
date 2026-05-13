@@ -72,7 +72,7 @@ namespace LinkSdk.Aot {
 		}
 
 		class SomeObject {
-			public event EventHandler Event;
+			public event EventHandler? Event;
 
 			public void RaiseEvent ()
 			{
@@ -82,7 +82,7 @@ namespace LinkSdk.Aot {
 			}
 		}
 
-		void OnEvent (object sender, EventArgs e)
+		void OnEvent (object? sender, EventArgs e)
 		{
 		}
 
@@ -103,7 +103,8 @@ namespace LinkSdk.Aot {
 			var e = so.GetType ().GetEvent ("Event");
 			if (e is not null) {
 				var add = e.GetAddMethod ();
-				add.Invoke (so, new object [] { new EventHandler (OnEvent) });
+				if (add is not null)
+					add.Invoke (so, new object [] { new EventHandler (OnEvent) });
 			}
 		}
 
@@ -168,7 +169,7 @@ namespace LinkSdk.Aot {
 
 		public class Foo {
 			public int Id { get; set; }
-			public string Name { get; set; }
+			public string Name { get; set; } = "";
 		}
 
 		[Test]
@@ -368,15 +369,15 @@ namespace LinkSdk.Aot {
 			g.MakeCollectionOfInputs<double> (1.0, 2.0, 3.0);
 		}
 
-		public sealed class NewDictionary<TKey, TValue> {
+		public sealed class NewDictionary<TKey, TValue> where TKey : notnull {
 			Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue> ();
 
-			public NewDictionary (IEnumerable<KeyValuePair<TKey, TValue>> items)
+			public NewDictionary (IEnumerable<KeyValuePair<TKey, TValue>>? items)
 			{
 				ForEach (items, (item) => _dictionary.Add (item.Key, item.Value));
 			}
 
-			static void ForEach<T> (IEnumerable<T> collection, Action<T> action)
+			static void ForEach<T> (IEnumerable<T>? collection, Action<T> action)
 			{
 				if (collection is not null)
 					foreach (T item in collection)
@@ -392,8 +393,10 @@ namespace LinkSdk.Aot {
 		}
 
 		public class Enumbers<T> {
-			public IEnumerable<KeyValuePair<T, string>> Enumerate (List<KeyValuePair<T, string>> alist)
+			public IEnumerable<KeyValuePair<T, string>> Enumerate (List<KeyValuePair<T, string>>? alist)
 			{
+				if (alist is null)
+					throw new NullReferenceException ();
 				return MakeEnumerable (alist.ToArray ());
 			}
 
@@ -411,7 +414,7 @@ namespace LinkSdk.Aot {
 			Assert.Throws<NullReferenceException> (() => e.Enumerate (null));
 		}
 
-		static object mInstance = null;
+		static object? mInstance = null;
 
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static object getInstance ()
@@ -458,7 +461,7 @@ namespace LinkSdk.Aot {
 
 		public static IEnumerable<string> GetStringList<T> () where T : struct, IConvertible
 		{
-			return Enum.GetValues (typeof (T)).Cast<T> ().Select (x => x.ToString ());
+			return Enum.GetValues (typeof (T)).Cast<T> ().Select (x => x.ToString () ?? "");
 		}
 
 		[Test]

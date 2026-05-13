@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Sharpie.Bind;
 
 namespace Extrospection {
@@ -10,7 +11,7 @@ namespace Extrospection {
 		}
 
 		// These both return out Version and bool as you can have an an attribute with no version (null) which is different no matching attribute at all
-		public static bool FindDeprecated (ICustomAttributeProvider item, out Version version)
+		public static bool FindDeprecated (ICustomAttributeProvider item, [NotNullWhen (true)] out Version? version)
 		{
 			version = null;
 
@@ -23,7 +24,7 @@ namespace Extrospection {
 			return false;
 		}
 
-		public static bool FindObsolete (ICustomAttributeProvider item, out Version version)
+		public static bool FindObsolete (ICustomAttributeProvider item, [NotNullWhen (true)] out Version? version)
 		{
 			version = null;
 
@@ -70,7 +71,7 @@ namespace Extrospection {
 			return attribute.Constructor.DeclaringType.Name == "ObsoleteAttribute";
 		}
 
-		static bool GetPlatformVersion (CustomAttribute attribute, out Version version)
+		static bool GetPlatformVersion (CustomAttribute attribute, out Version? version)
 		{
 			// Three different Attribute flavors
 			// (PlatformName platform, PlatformArchitecture architecture = PlatformArchitecture.None, string message = null)
@@ -95,7 +96,7 @@ namespace Extrospection {
 		{
 			var attr = attrs.GetAvailabilityAttributes ().FirstOrDefault (x => x.AvailabilityAttributeDeprecated.HasValue && !x.AvailabilityAttributeDeprecated.Value.IsEmptyVersionTuple && x.AvailabilityAttributePlatformIdentifierName == Helpers.ClangPlatformName);
 			if (attr is not null) {
-				version = attr.AvailabilityAttributeDeprecated.Value;
+				version = attr.AvailabilityAttributeDeprecated!.Value;
 				return true;
 			} else {
 				version = VersionTuple.Empty;
@@ -111,7 +112,7 @@ namespace Extrospection {
 			// Properties are a special case  as it is generated on the property itself and not the individual get_ \ set_ methods
 			// Cecil does not have a link between the MethodDefinition we have and the hosting PropertyDefinition, so we have to dig to find the match
 			if (item is MethodDefinition method) {
-				PropertyDefinition property = method.DeclaringType.Properties.FirstOrDefault (p => p.GetMethod == method || p.SetMethod == method);
+				var property = method.DeclaringType.Properties.FirstOrDefault (p => p.GetMethod == method || p.SetMethod == method);
 				if (property is not null && HasAnyDeprecationForCurrentPlatform (property)) {
 					return true;
 				}
@@ -159,7 +160,7 @@ namespace Extrospection {
 			// Properties are a special case for [Advice], as it is generated on the property itself and not the individual get_ \ set_ methods
 			// Cecil does not have a link between the MethodDefinition we have and the hosting PropertyDefinition, so we have to dig to find the match
 			if (item is MethodDefinition method) {
-				PropertyDefinition property = method.DeclaringType.Properties.FirstOrDefault (p => p.GetMethod == method || p.SetMethod == method);
+				var property = method.DeclaringType.Properties.FirstOrDefault (p => p.GetMethod == method || p.SetMethod == method);
 				if (property is not null && HasAdviced (property.CustomAttributes))
 					return true;
 			}

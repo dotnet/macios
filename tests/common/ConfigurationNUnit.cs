@@ -6,7 +6,7 @@ using System.Threading;
 
 using Xamarin.Utils;
 
-#nullable disable // until we get around to fixing this file
+#nullable enable
 
 namespace Xamarin.Tests {
 	static partial class Configuration {

@@ -107,7 +107,7 @@ namespace Xamarin.Tests {
 
 			Assert.AreEqual ("42", obj.DoSomething ("42"), "DoSomething");
 
-			string asyncResult = null;
+			string? asyncResult = null;
 			obj.DoSomethingAsync ("dolphins", (v) => asyncResult = v);
 			var done = TestRuntime.RunAsync (TimeSpan.FromSeconds (5), () => asyncResult is not null);
 			Assert.AreEqual ("dolphins", asyncResult, "DoSomethingAsync");

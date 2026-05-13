@@ -1095,7 +1095,7 @@ namespace CoreImage {
 		///           <para>
 		///             Each filter has a set of attributes that control it.  You can
 		///             get this list by requesting the Attributes dictionary from the
-		///             filter.  Each fitler, in addition to having a series of
+		///             filter. Each filter, in addition to having a series of
 		///             configurable properties always includes its name
 		///             ("CIAttributeFilterName" key), a user friendly name
 		///             ("CIAttributeFilterDisplayName" key) and a list of categories
@@ -1140,7 +1140,7 @@ namespace CoreImage {
 		///           <para>To be added.</para>
 		///           <para tool="nullallowed">This parameter can be <see langword="null" />.</para>
 		///         </param>
-		///         <summary>Returns an array of strings that specifies the filters taht the system provides for the specified <paramref name="category" />.</summary>
+		///         <summary>Returns an array of strings that specifies the filters that the system provides for the specified <paramref name="category" />.</summary>
 		///         <returns>To be added.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
@@ -1701,7 +1701,7 @@ namespace CoreImage {
 	interface CIRawFilterOptions {
 
 		/// <summary>
-		///           <see langword="true" /> if draft mode shoud be allowed. (Switching this key is an expensive operation.)</summary>
+		///           <see langword="true" /> if draft mode should be allowed. (Switching this key is an expensive operation.)</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
@@ -5245,7 +5245,7 @@ namespace CoreImage {
 		NativeHandle Constructor (CGRect r);
 
 		/// <param name="r">To be added.</param>
-		/// <summary>Creates a new CIVector by flattening the six values in an affine transform into the first six posistions in the new CIVector.</summary>
+		/// <summary>Creates a new CIVector by flattening the six values in an affine transform into the first six positions in the new CIVector.</summary>
 		/// <remarks>To be added.</remarks>
 		[MacCatalyst (13, 1)]
 		[Export ("initWithCGAffineTransform:")]
@@ -5618,7 +5618,7 @@ namespace CoreImage {
 		bool RightEyeClosed { get; }
 	}
 
-	/// <summary>A <see cref="CoreImage.CIFeature" /> an image space rectange that contains a detected physical rectangle.</summary>
+	/// <summary>A <see cref="CoreImage.CIFeature" /> describing an image-space rectangle that contains a detected physical rectangle.</summary>
 	///     
 	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/QuartzCore/Reference/CIRectangleFeature/index.html">Apple documentation for <c>CIRectangleFeature</c></related>
 	[MacCatalyst (13, 1)]
@@ -5772,7 +5772,7 @@ namespace CoreImage {
 		///         <param name="error">Developers should set this <see cref="Foundation.NSError" /> as necessary.</param>
 		///         <summary>Developers should override this method to perform custom processing on the <paramref name="inputs" />.</summary>
 		///         <returns>
-		///           <see langword="true" /> if the processing completed successfuly.</returns>
+		///           <see langword="true" /> if the processing completed successfully.</returns>
 		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("processWithInputs:arguments:output:error:")]
@@ -7145,7 +7145,7 @@ namespace CoreImage {
 		[Export ("center", ArgumentSemantic.Assign)]
 		CGPoint InputCenter { get; set; }
 
-		/// <summary>Gets or sets the initial anlge of the image sample.</summary>
+		/// <summary>Gets or sets the initial angle of the image sample.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
@@ -11162,14 +11162,14 @@ namespace CoreImage {
 		[Export ("radius")]
 		float Radius { get; set; }
 
-		/// <summary>Gets or sets a value in the range [0,1] that contols by how much to brighten shaded areas.</summary>
+		/// <summary>Gets or sets a value in the range [0,1] that controls how much to brighten shaded areas.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("shadowAmount")]
 		float ShadowAmount { get; set; }
 
-		/// <summary>Gets or sets a value in the range [0,1] that contols by how much to dampen highlights.</summary>
+		/// <summary>Gets or sets a value in the range [0,1] that controls how much to dampen highlights.</summary>
 		/// <value>To be added.</value>
 		/// <remarks>To be added.</remarks>
 		[Abstract]
@@ -12050,7 +12050,7 @@ namespace CoreImage {
 		[Export ("compactionMode")]
 		float InputCompactionMode { get; set; }
 
-		/// <summary>Gets or sets an integer with Boolean semantics that controls whether redunant elements should be omitted to save space. <c>1</c> is true. <c>0</c> is false.</summary>
+		/// <summary>Gets or sets an integer with Boolean semantics that controls whether redundant elements should be omitted to save space. <c>1</c> is true. <c>0</c> is false.</summary>
 		[Abstract]
 		[Export ("compactStyle")]
 		float InputCompactStyle { get; set; }

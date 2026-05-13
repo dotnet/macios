@@ -13,6 +13,53 @@ namespace MonoTouchFixtures.ObjCRuntime {
 	[Preserve (AllMembers = true)]
 	public class DlfcnTest {
 
+		// These tests exercise [Field]-backed properties from Apple frameworks.
+		// The generated binding code calls Dlfcn.GetStringConstant / GetIntPtr / etc.
+		// under the hood, which is what InlineDlfcnMethodsStep transforms.
+
+		[Test]
+		public void StringConstant_NSLocaleNotification ()
+		{
+			var value = NSLocale.CurrentLocaleDidChangeNotification;
+			Assert.IsNotNull (value, "CurrentLocaleDidChangeNotification");
+			Assert.AreEqual ("kCFLocaleCurrentLocaleDidChangeNotification", (string) value, "value");
+		}
+
+		[Test]
+		public void StringConstant_NSBundleNotification ()
+		{
+			var value = NSBundle.BundleDidLoadNotification;
+			Assert.IsNotNull (value, "BundleDidLoadNotification");
+			Assert.AreEqual ("NSBundleDidLoadNotification", (string) value, "value");
+		}
+
+		[Test]
+		public void StringConstant_NSUserDefaultsNotification ()
+		{
+			var value = NSUserDefaults.DidChangeNotification;
+			Assert.IsNotNull (value, "DidChangeNotification");
+			Assert.AreEqual ("NSUserDefaultsDidChangeNotification", (string) value, "value");
+		}
+
+		[Test]
+		public void StringConstant_NSUndoManagerNotification ()
+		{
+			var value = NSUndoManager.CheckpointNotification;
+			Assert.IsNotNull (value, "CheckpointNotification");
+			Assert.AreEqual ("NSUndoManagerCheckpointNotification", (string) value, "value");
+		}
+
+		[Test]
+		public void StringConstant_CachePointer ()
+		{
+			// Access several string constants multiple times to test caching behavior.
+			// The binding code uses Dlfcn.CachePointer for repeated accesses.
+			for (int i = 0; i < 3; i++) {
+				var value = NSLocale.CurrentLocaleDidChangeNotification;
+				Assert.IsNotNull (value, $"iteration {i}");
+			}
+		}
+
 		[Test]
 		public void OpenClose_libSystem ()
 		{
@@ -32,7 +79,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void GetVariables ()
 		{
-			var symbol = "x_native_field";
+			const string symbol = "x_native_field";
 			var handle = (IntPtr) Dlfcn.RTLD.Default;
 
 			Assert.AreNotEqual (IntPtr.Zero, Dlfcn.dlsym (handle, symbol), "Symbol");
@@ -63,8 +110,10 @@ namespace MonoTouchFixtures.ObjCRuntime {
 					Assert.AreEqual (-3.9541907E+28f, Dlfcn.GetStruct<float> (handle, symbol), "GetStruct<float>");
 					Assert.AreEqual (-7.7576533930025207E-103d, Dlfcn.GetStruct<double> (handle, symbol), "GetStruct<double>");
 
+#if !STATIC_NATIVE_SYMBOL_LOOKUP
 					Assert.AreEqual ((ulong) 0, Dlfcn.GetStruct<ulong> (handle, "inexistent_symbol"), "GetStruct<ulong> inexistent");
 					Assert.AreEqual ((ulong) 0, Dlfcn.GetStruct<SomeValue> (handle, "inexistent_symbol").Value, "GetStruct<SomeValue> inexistent");
+#endif
 
 					Dlfcn.SetInt16 (handle, symbol, 0x77);
 					Assert.AreEqual ((short) 0x77, Dlfcn.GetInt16 (handle, symbol), "SetInt16");
@@ -122,5 +171,24 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			public ulong Value;
 		}
 #pragma warning restore CS0649
+
+		[Test]
+		public void FieldProperty_CGRect ()
+		{
+			Assert.Multiple (() => {
+				// CGRect.Null is backed by [Field("CGRectNull")] which calls Dlfcn.GetCGRect.
+				var value = global::CoreGraphics.CGRect.Null;
+				Assert.That (value.X, Is.EqualTo (nfloat.PositiveInfinity), "CGRectNull.X");
+				Assert.That (value.Y, Is.EqualTo (nfloat.PositiveInfinity), "CGRectNull.Y");
+				Assert.That (value.Width, Is.EqualTo ((nfloat) 0), "CGRectNull.Width");
+				Assert.That (value.Height, Is.EqualTo ((nfloat) 0), "CGRectNull.Height");
+
+				var infinite = global::CoreGraphics.CGRect.Infinite;
+				Assert.That (infinite.X, Is.EqualTo (nfloat.MinValue / 2), "CGRectInfinite.X");
+				Assert.That (infinite.Y, Is.EqualTo (nfloat.MinValue / 2), "CGRectInfinite.Y");
+				Assert.That (infinite.Width, Is.EqualTo (nfloat.MaxValue), "CGRectInfinite.Width");
+				Assert.That (infinite.Height, Is.EqualTo (nfloat.MaxValue), "CGRectInfinite.Height");
+			});
+		}
 	}
 }

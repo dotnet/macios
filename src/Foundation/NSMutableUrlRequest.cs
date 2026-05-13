@@ -9,7 +9,7 @@ namespace Foundation {
 		///             <code lang="csharp lang-csharp"><![CDATA[
 		/// void DumpLenght (NSUrlRequest request)
 		/// {
-		///     Console.WriteLine ("The content lenght is: {0}", request ["Content-Length"]);
+		///     Console.WriteLine ("The content length is: {0}", request ["Content-Length"]);
 		/// }
 		/// 	    ]]></code>
 		///           </example>

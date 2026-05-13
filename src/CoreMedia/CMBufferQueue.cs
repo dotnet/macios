@@ -87,7 +87,7 @@ namespace CoreMedia {
 			internal IntPtr XgetSize;
 		}
 
-		/// <include file="../../docs/api/CoreMedia/CMBufferQueue.xml" path="/Documentation/Docs[@DocId='M:CoreMedia.CMBufferQueue.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			queueObjects.Clear ();

@@ -234,6 +234,7 @@ namespace CoreText {
 			values [index].pointer = value.Handle;
 		}
 
+		/// <inheritdoc />
 		public override void Dispose (CTParagraphStyleSettingValue [] values, int index)
 		{
 			values [index].pointer = IntPtr.Zero;

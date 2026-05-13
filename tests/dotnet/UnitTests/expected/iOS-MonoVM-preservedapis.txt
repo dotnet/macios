@@ -116,6 +116,7 @@ Microsoft.iOS.dll:Foundation.NSObject.Dispose(System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.Equals(Foundation.NSObject)
 Microsoft.iOS.dll:Foundation.NSObject.Equals(System.Object)
 Microsoft.iOS.dll:Foundation.NSObject.Finalize()
+Microsoft.iOS.dll:Foundation.NSObject.FreeData()
 Microsoft.iOS.dll:Foundation.NSObject.get_ClassHandle()
 Microsoft.iOS.dll:Foundation.NSObject.get_Description()
 Microsoft.iOS.dll:Foundation.NSObject.get_disposed()
@@ -169,6 +170,7 @@ Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3090_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.iOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3091_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.iOS.dll:Foundation.NSObject/objc_super
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
@@ -378,7 +380,6 @@ Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::ClassHandle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::Handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::SuperHandle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::classHandle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::Handle()
@@ -412,10 +413,12 @@ Microsoft.iOS.dll:ObjCRuntime.NativeHandle.get_Handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle.GetHashCode()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Equality(ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Equality(ObjCRuntime.NativeHandle, System.IntPtr)
+Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Equality(System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Implicit(ObjCRuntime.NativeHandle) => System.IntPtr
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Implicit(System.IntPtr) => ObjCRuntime.NativeHandle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Inequality(ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Inequality(ObjCRuntime.NativeHandle, System.IntPtr)
+Microsoft.iOS.dll:ObjCRuntime.NativeHandle.op_Inequality(System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle.ToString()
 Microsoft.iOS.dll:ObjCRuntime.NativeObjectExtensions
 Microsoft.iOS.dll:ObjCRuntime.NativeObjectExtensions.GetHandle(ObjCRuntime.INativeObject)
@@ -719,7 +722,10 @@ Microsoft.iOS.dll:System.Int32 ObjCRuntime.TransientString/Encoding::value__
 Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFArray::_CFNullHandle()
 Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFRange::loc
+Microsoft.iOS.dll:System.IntPtr Foundation.NSObject::super
 Microsoft.iOS.dll:System.IntPtr Foundation.NSObject/NSObject_Disposer::class_ptr
+Microsoft.iOS.dll:System.IntPtr Foundation.NSObject/objc_super::ClassHandle
+Microsoft.iOS.dll:System.IntPtr Foundation.NSObject/objc_super::Handle
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.BlockCollector::block
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Libraries/CoreFoundation::Handle
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.NativeHandle::handle

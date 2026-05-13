@@ -116,6 +116,7 @@ Microsoft.tvOS.dll:Foundation.NSObject.Dispose(System.Boolean)
 Microsoft.tvOS.dll:Foundation.NSObject.Equals(Foundation.NSObject)
 Microsoft.tvOS.dll:Foundation.NSObject.Equals(System.Object)
 Microsoft.tvOS.dll:Foundation.NSObject.Finalize()
+Microsoft.tvOS.dll:Foundation.NSObject.FreeData()
 Microsoft.tvOS.dll:Foundation.NSObject.get_ClassHandle()
 Microsoft.tvOS.dll:Foundation.NSObject.get_Description()
 Microsoft.tvOS.dll:Foundation.NSObject.get_disposed()
@@ -169,6 +170,7 @@ Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_2670_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.tvOS.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_2671_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.tvOS.dll:Foundation.NSObject/objc_super
 Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
 Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
@@ -378,7 +380,6 @@ Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::ClassHandle()
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::handle()
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::Handle()
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::SuperHandle()
-Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::classHandle
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::handle
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::handle
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::Handle()
@@ -412,10 +413,12 @@ Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.get_Handle()
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.GetHashCode()
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Equality(ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Equality(ObjCRuntime.NativeHandle, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Equality(System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Implicit(ObjCRuntime.NativeHandle) => System.IntPtr
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Implicit(System.IntPtr) => ObjCRuntime.NativeHandle
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Inequality(ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Inequality(ObjCRuntime.NativeHandle, System.IntPtr)
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.op_Inequality(System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle.ToString()
 Microsoft.tvOS.dll:ObjCRuntime.NativeObjectExtensions
 Microsoft.tvOS.dll:ObjCRuntime.NativeObjectExtensions.GetHandle(ObjCRuntime.INativeObject)
@@ -719,7 +722,10 @@ Microsoft.tvOS.dll:System.Int32 ObjCRuntime.TransientString/Encoding::value__
 Microsoft.tvOS.dll:System.IntPtr CoreFoundation.CFArray::_CFNullHandle()
 Microsoft.tvOS.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.tvOS.dll:System.IntPtr CoreFoundation.CFRange::loc
+Microsoft.tvOS.dll:System.IntPtr Foundation.NSObject::super
 Microsoft.tvOS.dll:System.IntPtr Foundation.NSObject/NSObject_Disposer::class_ptr
+Microsoft.tvOS.dll:System.IntPtr Foundation.NSObject/objc_super::ClassHandle
+Microsoft.tvOS.dll:System.IntPtr Foundation.NSObject/objc_super::Handle
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.BlockCollector::block
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Libraries/CoreFoundation::Handle
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.NativeHandle::handle

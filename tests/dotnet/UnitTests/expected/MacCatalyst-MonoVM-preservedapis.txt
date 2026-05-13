@@ -124,6 +124,7 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject.Dispose(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.Equals(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.Equals(System.Object)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.Finalize()
+Microsoft.MacCatalyst.dll:Foundation.NSObject.FreeData()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.get_ClassHandle()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.get_Description()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.get_disposed()
@@ -177,6 +178,7 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3055_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3056_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:Foundation.NSObject/objc_super
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
@@ -383,7 +385,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObject::ClassHan
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObject::handle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObject::Handle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObject::SuperHandle()
-Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::classHandle
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::handle
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::handle
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::Handle()
@@ -417,10 +418,12 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle.get_Handle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle.GetHashCode()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle.op_Equality(ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle.op_Equality(ObjCRuntime.NativeHandle, System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle.op_Equality(System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle.op_Implicit(ObjCRuntime.NativeHandle) => System.IntPtr
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle.op_Implicit(System.IntPtr) => ObjCRuntime.NativeHandle
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle.op_Inequality(ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle.op_Inequality(ObjCRuntime.NativeHandle, System.IntPtr)
+Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle.op_Inequality(System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle.ToString()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeObjectExtensions
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeObjectExtensions.GetHandle(ObjCRuntime.INativeObject)
@@ -724,7 +727,10 @@ Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.TransientString/Encoding::val
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFArray::_CFNullHandle()
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFRange::loc
+Microsoft.MacCatalyst.dll:System.IntPtr Foundation.NSObject::super
 Microsoft.MacCatalyst.dll:System.IntPtr Foundation.NSObject/NSObject_Disposer::class_ptr
+Microsoft.MacCatalyst.dll:System.IntPtr Foundation.NSObject/objc_super::ClassHandle
+Microsoft.MacCatalyst.dll:System.IntPtr Foundation.NSObject/objc_super::Handle
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.BlockCollector::block
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.Libraries/CoreFoundation::Handle
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.NativeHandle::handle

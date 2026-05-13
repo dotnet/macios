@@ -17,7 +17,7 @@ namespace LinkSdk {
 		public MyClass () { }
 
 		[DataMember]
-		List<MyEnum> MyList { get; set; }
+		List<MyEnum> MyList { get; set; } = [];
 	}
 
 	[TestFixture]

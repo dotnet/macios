@@ -15,7 +15,7 @@ namespace LinkAll.Linq {
 		[Test]
 		public void Expression_T_Ctor ()
 		{
-			var ctor = typeof (LinqExpressionTest).GetConstructor (Type.EmptyTypes);
+			var ctor = typeof (LinqExpressionTest).GetConstructor (Type.EmptyTypes)!;
 			var expr = Expression.New (ctor, new Expression [0]);
 			Assert.NotNull (Expression.Lambda (typeof (Bug14863Delegate), expr, null), "Lambda");
 			// note: reflection is used to create an instance of Expression<TDelegate> using an internal ctor

@@ -39,23 +39,20 @@
 
     <!-- warning CS8002: Referenced assembly 'Touch.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null' does not have a strong name. -->
     <NoWarn>$(NoWarn);CS8002</NoWarn>
-
-    <!-- We're warning-free, so let's make sure we stay that way -->
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
-    <CustomEntitlements Include="com.apple.security.network.client" Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" Type="boolean" Value="true" />
-    <CustomEntitlements Include="com.apple.security.network.server" Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.security.network.client" Condition="'$(SdkIsDesktop)' == 'true'" Type="boolean" Value="true" />
+    <CustomEntitlements Include="com.apple.security.network.server" Condition="'$(SdkIsDesktop)' == 'true'" Type="boolean" Value="true" />
     <CustomEntitlements Include="com.apple.developer.networking.multicast" Condition="'$(_PlatformName)' == 'iOS' And '$(SdkIsSimulator)' == 'true'" Type="boolean" Value="true" />
-    <CustomEntitlements Include="com.apple.developer.ubiquity-kvstore-identifier" Condition="('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' == 'true'" Type="string" Value="%24(TeamIdentifierPrefix)com.xamarin.monotouch-test" />
-    <CustomEntitlements Include="keychain-access-groups" Condition="('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' == 'true'" Type="stringarray" Value="%24(AppIdentifierPrefix)com.xamarin.monotouch-test" />
-    <CustomEntitlements Include="com.apple.developer.pass-type-identifiers" Condition="('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS') And '$(SdkIsSimulator)' == 'true'" Type="stringarray" Value=" A93A5CM278.tests/monotouch-test/Entitlements.plist" />
+    <CustomEntitlements Include="com.apple.developer.ubiquity-kvstore-identifier" Condition="'$(SdkIsMobile)' == 'true' And '$(SdkIsSimulator)' == 'true'" Type="string" Value="%24(TeamIdentifierPrefix)com.xamarin.monotouch-test" />
+    <CustomEntitlements Include="keychain-access-groups" Condition="'$(SdkIsMobile)' == 'true' And '$(SdkIsSimulator)' == 'true'" Type="stringarray" Value="%24(AppIdentifierPrefix)com.xamarin.monotouch-test" />
+    <CustomEntitlements Include="com.apple.developer.pass-type-identifiers" Condition="'$(SdkIsMobile)' == 'true' And '$(SdkIsSimulator)' == 'true'" Type="stringarray" Value=" A93A5CM278.tests/monotouch-test/Entitlements.plist" />
   </ItemGroup>
 
   <ItemGroup>
     <ReferenceNativeSymbol Include="Inexistent" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
+    <ReferenceNativeSymbol Include="inexistent_symbol" SymbolType="Field" SymbolMode="Ignore" />
     <ReferenceNativeSymbol Include="x_native_field" SymbolType="Field" />
   </ItemGroup>
 
@@ -238,11 +235,11 @@
 
   <Target Name="ComputeMetalOutputPath" DependsOnTargets="_GenerateBundleName;_DetectSdkLocations">
     <PropertyGroup>
-      <MetalBundleSubDirectory Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">Contents/Resources/</MetalBundleSubDirectory>
+      <MetalBundleSubDirectory Condition="'$(SdkIsDesktop)' == 'true'">Contents/Resources/</MetalBundleSubDirectory>
     </PropertyGroup>
   </Target>
 
-  <Target Name="CustomMetalSmelting" Inputs="@(CustomMetalSmeltingInput)" Outputs="$(_AppBundlePath)\fragmentShader.metallib" Condition="'$(_SdkIsSimulator)' != 'true' Or '$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'" DependsOnTargets="_GenerateBundleName;_DetectSdkLocations;ComputeMetalOutputPath" BeforeTargets="BeforeBuild">
+  <Target Name="CustomMetalSmelting" Inputs="@(CustomMetalSmeltingInput)" Outputs="$(_AppBundlePath)\fragmentShader.metallib" Condition="'$(_SdkIsSimulator)' != 'true' Or '$(SdkIsDesktop)' == 'true'" DependsOnTargets="_GenerateBundleName;_DetectSdkLocations;ComputeMetalOutputPath" BeforeTargets="BeforeBuild">
     <PropertyGroup>
       <_SmeltingSdk Condition="'$(_PlatformName)' == 'iOS'">iphoneos</_SmeltingSdk>
       <_SmeltingSdk Condition="'$(_PlatformName)' == 'tvOS'">appletvos</_SmeltingSdk>

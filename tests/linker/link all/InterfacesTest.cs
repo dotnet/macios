@@ -30,7 +30,7 @@ namespace LinkAll.Interfaces {
 
 		public object MarshalNativeToManaged (IntPtr pNativeData)
 		{
-			return null;
+			return null!;
 		}
 
 		public IntPtr MarshalManagedToNative (object managedObject)

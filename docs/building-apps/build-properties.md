@@ -559,6 +559,36 @@ See also:
 * The [AlternateAppIcon](build-items.md#alternateappicon) item group.
 * The [AppIcon](#appicon) property.
 
+## InlineDlfcnMethods
+
+Controls whether the build system replaces runtime calls to `ObjCRuntime.Dlfcn` methods with direct native symbol lookups at build time, eliminating the overhead of `dlsym` at runtime.
+
+The valid options are:
+
+* `compatibility`: Only inlines symbol usages backed by `[Field]` attributes. This is more conservative and avoids link errors for symbols that don't exist at build time.
+* `strict`: Inlines dlfcn method calls and creates native references for all symbols. This is more aggressive and may cause link errors if referenced native symbols don't exist.
+* (empty): Disables inlining of dlfcn method calls.
+
+Default value:
+* .NET 11+: `strict` when using NativeAOT (`PublishAot=true`), `compatibility` otherwise.
+* .NET 10 and earlier: not set (disabled).
+
+Example:
+
+```xml
+<PropertyGroup>
+    <InlineDlfcnMethods>compatibility</InlineDlfcnMethods>
+</PropertyGroup>
+```
+
+Custom behavior for specific symbols can be set using the [ReferenceNativeSymbol](build-items.md#referencenativesymbols) item group:
+
+```xml
+<ItemGroup>
+    <ReferenceNativeSymbol SymbolMode="Ignore" SymbolType="Field" Include="InexistentSymbol" />
+</ItemGroup>
+```
+
 ## iOSMinimumVersion
 
 Specifies the minimum iOS version the app can run on.
@@ -1103,7 +1133,7 @@ Only applicable to macOS and Mac Catalyst apps.
 
 ## ReferenceNativeSymbol
 
-See [ReferenceNativeSymbol](build-items.md#referencenativesymbols)
+See [ReferenceNativeSymbol](build-items.md#referencenativesymbol)
 
 ## RequireLinkWithAttributeForObjectiveCClassSearch
 
@@ -1234,6 +1264,18 @@ $ dotnet run -p:StandardInputPath=stdin.txt
 
 Note: this can also be accomplished by passing `--stdin ...` using the [OpenArguments](#openarguments) property.
 
+## SdkIsDesktop
+
+This property is a read-only property (setting it will have no effect) that
+specifies whether we're building for a desktop platform (macOS or Mac Catalyst).
+
+This property is `true` when the target platform is macOS or Mac Catalyst,
+and is not set for iOS or tvOS builds.
+
+Like `SdkIsSimulator`, this property is only set after [imports and
+properties](/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
+have been evaluated.
+
 ## SdkIsDevice
 
 This property is a read-only property (setting it will have no effect) that
@@ -1242,6 +1284,18 @@ specifies whether we're building for a device or not.
 This property is only `true` when building for an iOS or tvOS device (i.e.,
 when `SdkIsSimulator` is not `true` and the platform is iOS or tvOS). It is
 not set for macOS or Mac Catalyst builds.
+
+Like `SdkIsSimulator`, this property is only set after [imports and
+properties](/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
+have been evaluated.
+
+## SdkIsMobile
+
+This property is a read-only property (setting it will have no effect) that
+specifies whether we're building for a mobile platform (iOS or tvOS).
+
+This property is `true` when the target platform is iOS or tvOS, and is not
+set for macOS or Mac Catalyst builds.
 
 Like `SdkIsSimulator`, this property is only set after [imports and
 properties](/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)

@@ -5,9 +5,9 @@ Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher.get_WorksWhenModal()
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher.OnActivated(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher.OnActivated2(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__
-Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3134_AppKit_ActionDispatcher_OnActivated(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
-Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3135_AppKit_ActionDispatcher_OnActivated2(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
-Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3137_AppKit_ActionDispatcher_get_WorksWhenModal(System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3136_AppKit_ActionDispatcher_OnActivated(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3137_AppKit_ActionDispatcher_OnActivated2(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:AppKit.ActionDispatcher/__Registrar_Callbacks__.callback_3139_AppKit_ActionDispatcher_get_WorksWhenModal(System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:CoreFoundation.CFArray..cctor()
@@ -175,8 +175,8 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Add(Foundation.N
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.Drain(Foundation.NSObject)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer.ScheduleDrain()
 Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3053_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
-Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3054_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
+Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3055_Foundation_NSObject_NSObject_Disposer__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.MacCatalyst.dll:Foundation.NSObject/NSObject_Disposer/__Registrar_Callbacks__.callback_3056_Foundation_NSObject_NSObject_Disposer_Drain(System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::HasManagedRef
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
@@ -910,7 +910,7 @@ Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate..ctor(ObjCRuntime.NativeHa
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate..ctor(System.IntPtr, ObjCRuntime.IManagedRegistrar)
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate.FinishedLaunching(UIKit.UIApplication, Foundation.NSDictionary)
 Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__
-Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_566_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
+Microsoft.MacCatalyst.dll:UIKit.UIApplicationDelegate/__Registrar_Callbacks__.callback_568_UIKit_UIApplicationDelegate__ctor(System.IntPtr, System.IntPtr, System.Byte*, System.IntPtr*)
 Microsoft.MacCatalyst.dll:UIKit.UIButton
 Microsoft.MacCatalyst.dll:UIKit.UIButton._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:UIKit.UIButton._Xamarin_ConstructNSObject(ObjCRuntime.NativeHandle)

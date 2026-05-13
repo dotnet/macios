@@ -101,7 +101,7 @@ namespace Introspection {
 #if MONOMAC
 			get { return Console.Out; }
 #else
-			get { return AppDelegate.Runner.Writer!; }
+			get { return AppDelegate.Runner!.Writer!; }
 #endif
 		}
 
@@ -158,6 +158,7 @@ namespace Introspection {
 				return false;
 
 			return !member.IsAvailableOnHostPlatform () ||
+						  !member.IsAvailableInSimulator () ||
 						  SkipDueToAttribute (member.DeclaringType) ||
 						  SkipDueToAttributeInProperty (member);
 		}

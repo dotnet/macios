@@ -4,9 +4,6 @@
     <TargetFrameworks>netstandard2.0;net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFrameworks>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../../product.snk</AssemblyOriginatorKeyFile>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup>

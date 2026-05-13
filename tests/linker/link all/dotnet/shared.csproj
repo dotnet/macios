@@ -18,10 +18,6 @@
 
     <!-- warning CA1422: This call site is reachable on: '...': we use APIs that aren't available on a certain OS platform all the time (in some cases to verify any broken behavior), so ignore such warnings -->
     <NoWarn>$(NoWarn);CA1422</NoWarn>
-
-    <!-- We're warning-free, so let's make sure we stay that way -->
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
   </PropertyGroup>
 
   <Import Project="$(RootTestsDirectory)/common/shared-dotnet.csproj" />

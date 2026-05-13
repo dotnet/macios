@@ -53,7 +53,7 @@ namespace LinkAll {
 		public void BindingsAndBeforeInitField ()
 		{
 			ObjCRuntime.Trampolines.SDInnerBlock.Invoke (IntPtr.Zero, 0);
-			var fields = Type.GetType ("ObjCRuntime.Trampolines+SDInnerBlock" + WorkAroundLinkerHeuristics).GetFields (BindingFlags.NonPublic | BindingFlags.Static);
+			var fields = Type.GetType ("ObjCRuntime.Trampolines+SDInnerBlock" + WorkAroundLinkerHeuristics)!.GetFields (BindingFlags.NonPublic | BindingFlags.Static);
 			Assert.That (fields.Length, Is.EqualTo (1), "one");
 			Assert.That (fields [0].Name, Is.EqualTo ("Handler"), "Name");
 		}
@@ -62,7 +62,7 @@ namespace LinkAll {
 		public void BindingsAndBeforeInitField_2 ()
 		{
 			ObjCRuntime.Trampolines.SDInnerBlock_Misnamed.Invoke (IntPtr.Zero, 0);
-			var fields = Type.GetType ("ObjCRuntime.Trampolines+SDInnerBlock_Misnamed" + WorkAroundLinkerHeuristics).GetFields (BindingFlags.NonPublic | BindingFlags.Static);
+			var fields = Type.GetType ("ObjCRuntime.Trampolines+SDInnerBlock_Misnamed" + WorkAroundLinkerHeuristics)!.GetFields (BindingFlags.NonPublic | BindingFlags.Static);
 			Assert.That (fields.Length, Is.EqualTo (0), "zero");
 		}
 
@@ -71,7 +71,7 @@ namespace LinkAll {
 		{
 			Assert.NotNull (TypeDescriptor.GetConverter (new BuiltInConverter ()), "BuiltInConverter");
 
-			string name = (typeof (BuiltInConverter).GetCustomAttributes (false) [0] as TypeConverterAttribute).ConverterTypeName;
+			string? name = (typeof (BuiltInConverter).GetCustomAttributes (false) [0] as TypeConverterAttribute)?.ConverterTypeName;
 			var typename = $"System.ComponentModel.BooleanConverter, System.ComponentModel.TypeConverter, Version={typeof (int).Assembly.GetName ().Version}, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
 			Assert.That (name, Is.EqualTo (typename), "ConverterTypeName");
 		}
@@ -81,7 +81,7 @@ namespace LinkAll {
 		{
 			Assert.NotNull (TypeDescriptor.GetConverter (new TypeDescriptorTest ()), "TypeDescriptorTest");
 
-			string name = (typeof (TypeDescriptorTest).GetCustomAttributes (false) [0] as TypeConverterAttribute).ConverterTypeName;
+			string? name = (typeof (TypeDescriptorTest).GetCustomAttributes (false) [0] as TypeConverterAttribute)?.ConverterTypeName;
 			var typename = "LinkAll.CustomConverter, link all, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
 			Assert.That (name, Is.EqualTo (typename), "ConverterTypeName");
 		}

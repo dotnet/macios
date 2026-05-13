@@ -6,7 +6,7 @@ using UIKit;
 
 namespace MyTVApp {
 	public partial class AppDelegate : UIApplicationDelegate {
-		public override UIWindow Window {
+		public override UIWindow? Window {
 			get;
 			set;
 		}

@@ -165,6 +165,8 @@ namespace MetalFX {
 		bool SupportsMetal4FX (IMTLDevice device);
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTLFXFrameInterpolatorDescriptor : NSCopying {
@@ -405,6 +407,8 @@ namespace MetalFX {
 		void Encode (IMTL4CommandBuffer commandBuffer);
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[BaseType (typeof (NSObject))]
 	interface MTLFXTemporalDenoisedScalerDescriptor : NSCopying {

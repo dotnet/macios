@@ -266,6 +266,79 @@ When a test runner crashes (exit code 134, etc.) or a build fails before tests r
 
 Capture these from the HTML and record them as separate failure types (CRASH, BUILD_FAILURE).
 
+### Step 2.6a: Collect detailed information for build failures
+
+For any failure that involves a **build error** (a test suite that fails to build, or a unit test that builds something and the build fails), collect as much detail as possible:
+
+#### 1. Extract specific build error messages
+
+When the NUnit failure message says something like `'dotnet build' failed with exit code 1`, that alone is not useful. Look for the actual compiler/linker/MSBuild errors in:
+- The NUnit failure `message` and `stack-trace` elements (sometimes the full build output is captured there)
+- The HtmlReport `index.html` — build errors are often shown inline
+- The build step log (download via `az devops invoke --area build --resource logs`)
+
+Look for patterns like:
+- `error CS####:` (C# compiler errors)
+- `error MT####:` / `error MM####:` (mtouch/mmp errors)
+- `error MSB####:` (MSBuild errors)
+- `error IL####:` (ILLink/trimmer errors)
+- `error NETSDK####:` (SDK errors)
+
+#### 2. Collect binlogs when available
+
+Binlog files (`.binlog`) contain the full MSBuild log and are invaluable for diagnosing build failures. They are often available as build artifacts.
+
+```bash
+# List artifacts to find binlog-related ones
+az pipelines runs artifact list --run-id <buildId> \
+  --org https://devdiv.visualstudio.com --project DevDiv -o json \
+  | python3 -c "import json,sys; [print(a['name']) for a in json.load(sys.stdin) if 'binlog' in a['name'].lower() or 'Binlog' in a['name']]"
+```
+
+If binlogs are inside the HtmlReport zip (common path: `tests/<suite>/<num>/*.binlog` or referenced in test output), extract them.
+
+Binlogs may also be embedded in test failure messages or stack traces as file paths — note these paths for reference.
+
+#### 3. Attach binlogs to issues
+
+When filing an issue for a build failure:
+- Download the relevant binlog file
+- Zip it (GitHub doesn't allow `.binlog` attachments, but `.zip` is fine)
+- Attach the zipped binlog to the issue using `gh issue comment` with the `--attach` flag, or by uploading via the GitHub API
+
+```bash
+# Download a binlog artifact
+az pipelines runs artifact download \
+  --artifact-name "<binlog-artifact-name>" \
+  --path "/tmp/postmortem_binlogs/" \
+  --run-id <buildId> \
+  --org https://devdiv.visualstudio.com --project DevDiv
+
+# Zip it for attachment
+zip /tmp/postmortem_binlogs/build_<buildId>.binlog.zip /tmp/postmortem_binlogs/*.binlog
+
+# Attach to issue (if the gh CLI version supports --attach, otherwise note the link)
+```
+
+#### 4. Include build errors in the issue body
+
+Always include the specific build error messages in the issue body. Example:
+
+```markdown
+### Build Errors
+
+The `dotnet build` step failed with the following errors:
+
+```
+error CS8602: Dereference of a possibly null reference. [src/Foo/Bar.csproj]
+error MT0099: No platform assembly! [src/Baz/Qux.csproj]
+```
+
+**Binlog:** [build_14017033.binlog.zip](link-to-attachment) (attached)
+```
+
+This makes the issue actionable without requiring the reader to navigate through AzDO build logs.
+
 ### Step 2.7: For infrastructure/setup failures without TestSummary
 
 Check the timeline for failed tasks in setup/provisioning stages. Extract error info from task log lines:
@@ -563,6 +636,11 @@ The `j=` (job) and `t=` (task) parameters are the `id` fields from the timeline 
 ### Error Details
 
 Include the **specific error messages** from the NUnit XML failure messages. If the failure is a build error, include the actual compiler/linker error codes and messages. If different PRs/builds show different error messages for the same test, list them separately — they may be different root causes.
+
+For **build failures** specifically, always include:
+1. The actual build error messages (error codes like CS####, MT####, IL####, MSB####)
+2. Links to or attachments of binlog files (zipped) when available
+3. The full `dotnet build` command that failed (from the test failure message)
 
 ```
 <Specific error message from NUnit XML failure/message element>

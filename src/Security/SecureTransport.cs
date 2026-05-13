@@ -106,6 +106,9 @@ namespace Security {
 		Legacy,
 		Ats,
 		AtsCompatibility,
+		/// <summary>The ciphersuite group that conforms to the App Transport Security Forward Compatibility Profile version 2.1.</summary>
+		[iOS (26, 5), TV (26, 5), Mac (26, 5), MacCatalyst (26, 5)]
+		AtsFcpV21,
 	}
 
 	// subset of OSStatus (int)
@@ -416,5 +419,8 @@ namespace Security {
 		Ats,
 		/// <summary>To be added.</summary>
 		AtsCompatibility,
+		/// <summary>The ciphersuite group that conforms to the App Transport Security Forward Compatibility Profile version 2.1.</summary>
+		[iOS (26, 5), TV (26, 5), Mac (26, 5), MacCatalyst (26, 5)]
+		AtsFcpV21,
 	}
 }

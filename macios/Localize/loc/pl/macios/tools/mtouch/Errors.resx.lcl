@@ -4501,6 +4501,42 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MX2254" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported primitive field type '{0}' for symbol '{1}' in method '{2}'. Sub-optimal but functional code will be generated. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nieobsługiwany typ pola pierwotnego „{0}” dla symbolu „{1}” w metodzie „{2}”. Zostanie wygenerowany nieoptymalny, ale działający kod. Zgłoś problem w witrynie https://github.com/dotnet/macios/issues/new]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2255" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nieznany lub nieobsługiwany wzorzec Dlfcn: „{0}” w metodzie „{1}”. Wywołanie nie zostanie wstawione bezpośrednio. Zgłoś problem w witrynie https://github.com/dotnet/macios/issues/new]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2256" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The field type '{0}' for symbol '{1}' in method '{2}' is not an NSObject subclass. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Typ pola „{0}” dla symbolu „{1}” w metodzie „{2}” nie jest podklasą NSObject. Zgłoś problem w witrynie https://github.com/dotnet/macios/issues/new]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2257" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unknown IL sequence for method with call to Dlfcn.CachePointer: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Nieznana sekwencja IL dla metody z wywołaniem Dlfcn.CachePointer: „{0}” w metodzie „{1}”. Wywołanie nie zostanie wstawione bezpośrednio. Zgłoś problem w witrynie https://github.com/dotnet/macios/issues/new]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MX3001" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Could not {0} the assembly '{1}']]></Val>

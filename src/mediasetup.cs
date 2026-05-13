@@ -5,6 +5,7 @@ namespace MediaSetup {
 	[NoTV]
 	[NoMac]
 	[iOS (14, 0)]
+	[MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MSServiceAccount {
@@ -40,6 +41,7 @@ namespace MediaSetup {
 	[NoTV]
 	[NoMac]
 	[iOS (14, 0)]
+	[MacCatalyst (16, 0)]
 	[Protocol]
 	interface MSAuthenticationPresentationContext {
 
@@ -51,6 +53,7 @@ namespace MediaSetup {
 	[NoTV]
 	[NoMac]
 	[iOS (14, 0)]
+	[MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface MSSetupSession {

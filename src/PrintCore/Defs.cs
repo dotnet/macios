@@ -284,6 +284,15 @@ namespace PrintCore {
 		ReverseLandscape = 4,
 	}
 
+	/// <summary>Specifies the type of page-to-paper mapping to use when printing.</summary>
+	[SupportedOSPlatform ("macos")]
+	public enum PMPageToPaperMappingType {
+		/// <summary>No page-to-paper mapping is applied.</summary>
+		None = 1,
+		/// <summary>The page is scaled to fit the paper size.</summary>
+		ScaleToFit = 2,
+	}
+
 	/// <summary>To be added.</summary>
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]

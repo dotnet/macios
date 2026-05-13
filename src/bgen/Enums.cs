@@ -200,6 +200,7 @@ public partial class Generator {
 				}
 			}
 			// the *Extensions has the same version requirement as the enum itself
+			PrintSimulatorAvailabilityAttributes (type);
 			PrintPlatformAttributes (type);
 			PrintExperimentalAttribute (type);
 			print_generated_code ();

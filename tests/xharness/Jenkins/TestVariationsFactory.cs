@@ -114,7 +114,7 @@ namespace Xharness.Jenkins {
 						yield return new TestData { Variation = "Release (interpreter)", TestVariation = "release|interpreter", Ignored = ignore };
 					}
 					yield return new TestData { Variation = $"Release (compat inline dlfcn)", TestVariation = "inline-dlfcn-methods-compat|release", Ignored = ignore };
-					yield return new TestData { Variation = $"Release (strict inline dlfcn)", TestVariation = "inline-dlfcn-methods-strict|release", Ignored = ignore };
+					yield return new TestData { Variation = $"Release (strict inline dlfcn, link sdk)", TestVariation = "inline-dlfcn-methods-strict|linksdk|release", Ignored = ignore };
 					if (mac_supports_arm64)
 						yield return new TestData { Variation = $"Release (NativeAOT, .NET 11 defaults)", TestVariation = "inline-dlfcn-methods-strict|nativeaot|release", Ignored = ignore, RuntimeIdentifier = arm64_sim_runtime_identifier }; // it's necessary to specify RID, because NativeAOT defaults to building for device
 					break;

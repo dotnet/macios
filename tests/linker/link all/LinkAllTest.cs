@@ -80,7 +80,7 @@ namespace LinkAll {
 
 
 		class TypeAttribute : Attribute {
-			public TypeAttribute (Type type) { }
+			public TypeAttribute (Type? type) { }
 		}
 
 		[Type (null)]
@@ -98,7 +98,7 @@ namespace LinkAll {
 			NotPreserved np = new NotPreserved ();
 			Assert.That (np.Two, Is.EqualTo (0), "Two==0");
 
-			PropertyInfo pi = not_preserved_type.GetProperty ("Two");
+			PropertyInfo pi = not_preserved_type.GetProperty ("Two")!;
 			// check the *unused* setter absence from the application
 			Assert.NotNull (pi.GetGetMethod (), "getter");
 			Assert.Null (pi.GetSetMethod (), "setter");
@@ -111,7 +111,7 @@ namespace LinkAll {
 			NotPreserved np = new NotPreserved ();
 			np.One = 1;
 
-			PropertyInfo pi = not_preserved_type.GetProperty ("One");
+			PropertyInfo pi = not_preserved_type.GetProperty ("One")!;
 			// check the *unused* setter absence from the application
 			Assert.Null (pi.GetGetMethod (), "getter");
 			Assert.NotNull (pi.GetSetMethod (), "setter");
@@ -122,7 +122,7 @@ namespace LinkAll {
 		{
 			// note: avoiding using "typeof(DefaultValueAttribute)" in the code
 			// so the linker does not keep it just because of it
-			PropertyInfo pi = not_preserved_type.GetProperty ("Two");
+			PropertyInfo pi = not_preserved_type.GetProperty ("Two")!;
 			object [] attrs = pi.GetCustomAttributes (false);
 			bool default_value = false;
 			foreach (var ca in attrs) {
@@ -213,11 +213,11 @@ namespace LinkAll {
 		string FindAssemblyPath ()
 		{
 			var filename = Path.GetFileName (GetType ().Assembly.Location);
-			var bundlePath = NSBundle.MainBundle.BundlePath;
+			var bundlePath = NSBundle.MainBundle.BundlePath!;
 			var isExtension = bundlePath.EndsWith (".appex", StringComparison.Ordinal);
 			var mainBundlePath = bundlePath;
 			if (isExtension)
-				mainBundlePath = Path.GetDirectoryName (Path.GetDirectoryName (bundlePath));
+				mainBundlePath = Path.GetDirectoryName (Path.GetDirectoryName (bundlePath))!;
 			foreach (var filepath in Directory.EnumerateFiles (mainBundlePath, filename, SearchOption.AllDirectories)) {
 				var fname = Path.GetFileName (filepath);
 				if (filepath.EndsWith ($"{fname}.framework/{fname}", StringComparison.Ordinal)) {
@@ -262,9 +262,9 @@ namespace LinkAll {
 		[Test]
 		public void Pasteboard_ImagesTest ()
 		{
-			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
+			string file = Path.Combine (NSBundle.MainBundle.ResourcePath!, "basn3p08.png");
 			using (var dp = new CGDataProvider (file)) {
-				using (var cgimg = CGImage.FromPNG (dp, null, false, CGColorRenderingIntent.Default)) {
+				using (var cgimg = CGImage.FromPNG (dp, null, false, CGColorRenderingIntent.Default)!) {
 					using (var img = new UIImage (cgimg)) {
 						UIPasteboard.General.Images = new UIImage [] { img };
 						if (TestRuntime.CheckXcodeVersion (8, 0))
@@ -298,7 +298,7 @@ namespace LinkAll {
 		[Preserve (AllMembers = true)]
 		public class TestEnumTypeConverter : System.ComponentModel.TypeConverter {
 
-			public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+			public override object ConvertTo (ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType)
 			{
 				return "hello";
 			}
@@ -373,7 +373,7 @@ namespace LinkAll {
 			var p = Helper.GetType ("LinkAll.Parent");
 			Assert.NotNull (p, "Parent");
 			// because a nested type is a subclass of NSObject (and not part of monotouch.dll)
-			var n = p.GetNestedType ("Derived");
+			var n = p.GetNestedType ("Derived")!;
 			Assert.NotNull (n, "Derived");
 			// however other stuff in Parent, like unused methods, will be removed
 			Assert.Null (p.GetMethod ("UnusedMethod"), "unused method");
@@ -389,7 +389,7 @@ namespace LinkAll {
 			Assert.NotNull (cea, "CancelEventArgs");
 		}
 
-		string GetField (object o, string s)
+		string? GetField (object o, string s)
 		{
 			var type = o.GetType ();
 			var f1 = type.GetField (s, BindingFlags.Instance | BindingFlags.NonPublic);
@@ -409,7 +409,7 @@ namespace LinkAll {
 			s = GetField (o, "<id>");
 			if (s is not null)
 				return s;
-			return GetField (o, "<contentType>");
+			return GetField (o, "<contentType>")!;
 		}
 
 		[Test]
@@ -429,18 +429,18 @@ namespace LinkAll {
 			using (var pr = new SKProductsRequest ()) {
 				Assert.Null (pr.WeakDelegate, "none");
 				// event on SKProductsRequest itself
-				pr.ReceivedResponse += (object sender, SKProductsRequestResponseEventArgs e) => { };
+				pr.ReceivedResponse += (object? sender, SKProductsRequestResponseEventArgs e) => { };
 
-				var t = pr.WeakDelegate.GetType ();
+				var t = pr.WeakDelegate!.GetType ();
 				Assert.That (t.Name, Is.EqualTo ("_SKProductsRequestDelegate"), "delegate");
 
-				var fi = t.GetField ("receivedResponse", BindingFlags.NonPublic | BindingFlags.Instance);
+				var fi = t.GetField ("receivedResponse", BindingFlags.NonPublic | BindingFlags.Instance)!;
 				Assert.NotNull (fi, "receivedResponse");
 				var value = fi.GetValue (pr.WeakDelegate);
 				Assert.NotNull (value, "value");
 
 				// and on the SKRequest defined one
-				pr.RequestFailed += (object sender, SKRequestErrorEventArgs e) => { };
+				pr.RequestFailed += (object? sender, SKRequestErrorEventArgs e) => { };
 				// and the existing (initial field) is still set
 				fi = t.GetField ("receivedResponse", BindingFlags.NonPublic | BindingFlags.Instance);
 				Assert.NotNull (fi, "receivedResponse/SKRequest");
@@ -460,7 +460,7 @@ namespace LinkAll {
 		public void AppleTls ()
 		{
 			// make test work for classic (monotouch) and unified (iOS, tvOS)
-			var fqn = typeof (NSObject).AssemblyQualifiedName.Replace ("Foundation.NSObject", "Security.Tls.AppleTlsProvider");
+			var fqn = typeof (NSObject).AssemblyQualifiedName!.Replace ("Foundation.NSObject", "Security.Tls.AppleTlsProvider");
 			Assert.Null (Helper.GetType (fqn), "Should NOT be included (no SslStream or Socket support)");
 		}
 
@@ -469,7 +469,7 @@ namespace LinkAll {
 		public void WebKit_NSProxy ()
 		{
 			// this test works only because "Link all" does not use WebKit
-			var fqn = typeof (NSObject).AssemblyQualifiedName.Replace ("Foundation.NSObject", "Foundation.NSProxy");
+			var fqn = typeof (NSObject).AssemblyQualifiedName!.Replace ("Foundation.NSObject", "Foundation.NSProxy");
 			Assert.Null (Helper.GetType (fqn), fqn);
 		}
 
@@ -546,10 +546,10 @@ namespace LinkAll {
 		public void CGPdfPage ()
 		{
 			TestRuntime.AssertXcodeVersion (9, 0);
-			var pdfPath = NSBundle.MainBundle.PathForResource ("Tamarin", "pdf");
+			var pdfPath = NSBundle.MainBundle.PathForResource ("Tamarin", "pdf")!;
 			using var view = new PdfView ();
-			view.Document = new PdfDocument (NSUrl.FromFilename (pdfPath));
-			using var page = view.CurrentPage;
+			view.Document = new PdfDocument (NSUrl.FromFilename (pdfPath)!);
+			using var page = view.CurrentPage!;
 			Assert.IsNotNull (page.Page, "Page");
 		}
 #endif

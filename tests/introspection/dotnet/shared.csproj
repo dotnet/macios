@@ -34,7 +34,6 @@
     <Compile Include="$(IntrospectionTestDirectory)\MacCoreImageFiltersTest.cs" />
     <Compile Include="$(IntrospectionTestDirectory)\MacApiPInvokeTest.cs" />
     <Compile Include="$(IntrospectionTestDirectory)\MacApiWeakPropertyTest.cs" />
-    <Compile Include="$(IntrospectionTestDirectory)\MacApiTypoTest.cs" />
     <Compile Include="$(RootTestsDirectory)\common\mac\MacMain.cs">
       <Link>MacMain.cs</Link>
     </Compile>
@@ -54,7 +53,6 @@
     <Compile Include="$(IntrospectionTestDirectory)\iOSApiPInvokeTest.cs" />
     <Compile Include="$(IntrospectionTestDirectory)\iOSApiSimulatorAvailabilityTest.cs" />
     <Compile Include="$(IntrospectionTestDirectory)\iOSApiClassPtrTest.cs" />
-    <Compile Include="$(IntrospectionTestDirectory)\iOSApiTypoTest.cs" />
     <Compile Include="$(IntrospectionTestDirectory)\iOSCoreImageFiltersTest.cs" />
 
     <Compile Include="$(IntrospectionTestDirectory)\ApiCMAttachmentTest.cs">

@@ -2583,6 +2583,35 @@ namespace Xamarin.Tests {
 			});
 		}
 
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void PublishAotMonoTouchTest_NoIL2009 (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = Path.Combine (Configuration.SourceRoot, "tests", "monotouch-test", "dotnet", platform.AsString (), "monotouch-test.csproj");
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["PublishAot"] = "true";
+			properties ["_IsPublishing"] = "true";
+			properties ["TrimmerSingleWarn"] = "false";
+			var rv = DotNet.AssertBuild (project_path, properties);
+
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
+
+			// Verify that we don't get any IL2009 warnings (the bug we're testing for).
+			var il2009Warnings = warnings.Where (v => v.Code == "IL2009").ToArray ();
+			Assert.That (il2009Warnings, Is.Empty, $"Expected no IL2009 warnings, but got:\n\t{string.Join ("\n\t", il2009Warnings.Select (v => v.ToString ()))}");
+
+			// Verify that we still get some expected warnings (so that we're notified if they're ever fixed/go away).
+			var il2026Warnings = warnings.Where (v => v.Code == "IL2026").ToArray ();
+			Assert.That (il2026Warnings, Is.Not.Empty, "Expected IL2026 warnings from monotouch-test");
+		}
+
 		void AssertThatDylibExistsAndIsReidentified (string appPath, string dylibRelPath)
 		{
 			var dylibPath = Path.Join (appPath, "Contents", "MonoBundle", dylibRelPath);

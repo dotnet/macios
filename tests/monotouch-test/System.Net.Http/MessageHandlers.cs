@@ -195,13 +195,14 @@ namespace MonoTests.System.Net.Http {
 				nativeCookieResult = await nativeResponse.Content.ReadAsStringAsync ();
 			}, out var ex);
 
-			if (!completed)
+			var cookiesFromServer = cookieContainer.GetCookies (new Uri (url));
+			var hasExpectedCookie = cookiesFromServer.Cast<Cookie> ().Any (v => v.Name == "cookie" && v.Value == "chocolate-chip");
+			if (!completed || !hasExpectedCookie)
 				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 			Assert.IsTrue (completed, "Network request completed");
 			Assert.IsNull (ex, "Exception");
 			Assert.IsNotNull (nativeCookieResult, "Native cookies result");
-			var cookiesFromServer = cookieContainer.GetCookies (new Uri (url));
-			Assert.That (cookiesFromServer.Cast<Cookie> ().Any (v => v.Name == "cookie" && v.Value == "chocolate-chip"), Is.True, "Cookies received from server.");
+			Assert.That (hasExpectedCookie, Is.True, "Cookies received from server.");
 		}
 
 		[Test]

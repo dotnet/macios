@@ -220,14 +220,12 @@ namespace Xamarin.Bundler {
 			return System.Reflection.Assembly.GetExecutingAssembly ().Location;
 		}
 
-#if !LEGACY_TOOLS
 		static string? xcode_product_version;
 		public static string? XcodeProductVersion {
 			get {
 				return xcode_product_version;
 			}
 		}
-#endif // !LEGACY_TOOLS
 
 		static Version? xcode_version;
 		public static Version XcodeVersion {
@@ -315,18 +313,15 @@ namespace Xamarin.Bundler {
 			Console.WriteLine ("Timestamp {0}: {1} ms", msg, watch.ElapsedMilliseconds);
 		}
 
-#if !LEGACY_TOOLS
 		internal static PDictionary? FromPList (string name)
 		{
 			if (!File.Exists (name))
 				throw ErrorHelper.CreateError (24, Errors.MT0024, name);
 			return PDictionary.FromFile (name);
 		}
-#endif // !LEGACY_TOOLS
 
 		const string XcodeDefault = "/Applications/Xcode.app";
 
-#if !LEGACY_TOOLS
 		static string? FindSystemXcode ()
 		{
 			var output = new StringBuilder ();
@@ -336,7 +331,6 @@ namespace Xamarin.Bundler {
 			}
 			return output.ToString ().Trim ();
 		}
-#endif // !LEGACY_TOOLS
 
 		static string? sdk_root;
 		static string? developer_directory = null;
@@ -420,7 +414,6 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-#if !LEGACY_TOOLS
 		public static void ValidateXcode (Application app, bool accept_any_xcode_version, bool warn_if_not_found)
 		{
 			if (sdk_root is null) {
@@ -480,7 +473,6 @@ namespace Xamarin.Bundler {
 
 			Driver.Log (1, "Using Xcode {0} ({2}) found in {1}", XcodeVersion, sdk_root, XcodeProductVersion);
 		}
-#endif // !LEGACY_TOOLS
 
 		internal static bool TryParseBool (string value, out bool result)
 		{

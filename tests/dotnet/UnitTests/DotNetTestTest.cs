@@ -44,11 +44,8 @@ public sealed class Test1 {{
 			// Run 'dotnet test' directly using Execution.RunAsync.
 			// dotnet test's MTP flow doesn't forward /p: properties to its internal
 			// ComputeRunArguments MSBuild API call, so properties must be in the csproj.
-			var env = new Dictionary<string, string?> ();
-			env ["MSBuildSDKsPath"] = null;
-			env ["MSBUILD_EXE_PATH"] = null;
 			var testArgs = new List<string> { "test", proj };
-			var testResult = Execution.RunAsync (DotNet.Executable, testArgs, env, Console.Out, workingDirectory: outputDir, timeout: TimeSpan.FromMinutes (10)).Result;
+			var testResult = Execution.RunAsync (DotNet.Executable, testArgs, environment: null, log: Console.Out, workingDirectory: outputDir, timeout: TimeSpan.FromMinutes (10)).Result;
 			Assert.AreEqual (0, testResult.ExitCode, $"'dotnet test' failed with exit code {testResult.ExitCode}.\nOutput:\n{testResult.Output.MergedOutput}");
 		}
 	}

@@ -17,7 +17,7 @@ namespace ObjCRuntime {
 	/// <remarks>
 	///   <para>
 	///     This struct is intended to be stack-allocated and passed by pointer to
-	///     <c>objc_msgSendSuper</c> variants. The second field (<see cref="ClassHandle" />)
+	///     <c>objc_msgSendSuper</c> variants. The second field (<c>classHandle</c>)
 	///     must be the receiver's class (i.e. <see cref="NSObject.ClassHandle" />), not the
 	///     superclass, because the Objective-C runtime resolves the superclass internally.
 	///   </para>
@@ -27,11 +27,6 @@ namespace ObjCRuntime {
 	public readonly ref struct ObjCSuper {
 		readonly NativeHandle receiver;
 		readonly NativeHandle classHandle;
-
-		/// <summary>The receiver's native handle.</summary>
-		public NativeHandle Receiver => receiver;
-		/// <summary>The receiver's class handle (used by the runtime to find the superclass implementation).</summary>
-		public NativeHandle ClassHandle => classHandle;
 
 		/// <summary>Creates a new <see cref="ObjCSuper" /> for the specified object.</summary>
 		/// <param name="obj">The object to create the super struct for.</param>

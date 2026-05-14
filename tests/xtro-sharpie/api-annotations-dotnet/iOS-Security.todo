@@ -1,1 +1,3 @@
 !deprecated-attribute-missing! SecAddSharedWebCredential missing a [Deprecated] attribute
+!missing-enum-value! SslCipherSuiteGroup native value kSSLCiphersuiteGroupATSFCP_v2_1 = 5 not bound
+!missing-enum-value! TlsCipherSuiteGroup native value tls_ciphersuite_group_ats_fcp_v2_1 = 5 not bound

@@ -561,6 +561,9 @@ namespace Introspection {
 				case "ASPropertyCompareString":
 				case "PKAddIdentityDocumentMetadata":
 					return true;
+				// Xcode 26.5 Conformance not in headers
+				case "CNFetchRequest":
+					return true;
 				}
 				break;
 			case "NSSecureCoding":
@@ -794,6 +797,9 @@ namespace Introspection {
 				case "ASPickerDisplaySettings":
 				case "ASPropertyCompareString":
 				case "PKAddIdentityDocumentMetadata":
+					return true;
+				// Xcode 26.5 Conformance not in headers
+				case "CNFetchRequest":
 					return true;
 				}
 				break;

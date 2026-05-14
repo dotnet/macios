@@ -247,11 +247,11 @@ namespace Xamarin.MMP.Tests {
 		public static string RunEXEAndVerifyGUID (string tmpDir, Guid guid, string path)
 		{
 			// Assert that the program actually runs and returns our guid
-			Assert.IsTrue (File.Exists (path), string.Format ("{0} did not generate an exe?", path));
+			Assert.That (File.Exists (path), Is.True, string.Format ("{0} did not generate an exe?", path));
 			string output = RunAndAssert (path, Array.Empty<string> (), "Run");
 
 			string guidPath = Path.Combine (tmpDir, guid.ToString ());
-			Assert.IsTrue (File.Exists (guidPath), "Generated program did not create expected guid file: " + output);
+			Assert.That (File.Exists (guidPath), Is.True, "Generated program did not create expected guid file: " + output);
 
 			// Let's delete the guid file so re-runs inside same tests are accurate
 			File.Delete (guidPath);
@@ -442,7 +442,7 @@ namespace Xamarin.MMP.Tests {
 
 		public static void CopyDirectory (string src, string target)
 		{
-			Assert.AreEqual (0, ExecutionHelper.Execute ("/bin/cp", new [] { "-r", src, target }));
+			Assert.That (ExecutionHelper.Execute ("/bin/cp", new [] { "-r", src, target }), Is.EqualTo (0));
 		}
 
 		public static string CopyFileWithSubstitutions (string src, string target, Func<string, string> replacementAction)

@@ -21,6 +21,12 @@ namespace Xamarin.Tests {
 			DotNet.AssertNew (outputDir, template);
 			var proj = Path.Combine (outputDir, $"{template}.csproj");
 
+			// dotnet test internally calls ComputeRunArguments via MSBuild API without
+			// forwarding /p: properties, so we must set them in the project file directly.
+			var csproj = File.ReadAllText (proj);
+			csproj = csproj.Replace ("</PropertyGroup>", "  <UseFloatingTargetPlatformVersion>true</UseFloatingTargetPlatformVersion>\n  </PropertyGroup>");
+			File.WriteAllText (proj, csproj);
+
 			// Replace generated tests with a single passing test
 			var testFile = Path.Combine (outputDir, "Test1.cs");
 			File.WriteAllText (testFile, $@"namespace {template};

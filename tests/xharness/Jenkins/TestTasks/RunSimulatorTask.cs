@@ -8,6 +8,10 @@ namespace Xharness.Jenkins.TestTasks {
 		readonly RunSimulator runSimulator;
 		public IAcquiredResource? AcquiredResource;
 
+		// When true, skip retrying on LaunchTimedOut. Set by AggregatedRunSimulatorTask
+		// when consecutive timeouts indicate a persistent machine-level problem.
+		public bool SkipRetryOnTimeout { get; set; }
+
 		public IEnumerable<ISimulatorDevice> Simulators => runSimulator.Simulators;
 
 		public RunSimulatorTask (Jenkins jenkins, SimulatorLoader simulators, MSBuildTask buildTask, IMlaunchProcessManager processManager, IEnumerable<ISimulatorDevice>? candidates = null)

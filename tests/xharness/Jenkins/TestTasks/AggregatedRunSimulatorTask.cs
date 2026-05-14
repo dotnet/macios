@@ -79,13 +79,22 @@ namespace Xharness.Jenkins.TestTasks {
 						task.Logs.Add (tcclog);
 				}
 
+				int consecutiveTimeouts = 0;
 				foreach (var task in executingTasks) {
+					// After 2 consecutive LaunchTimedOut results (each already retried once
+					// internally, so 4 actual timeout attempts), skip retries for subsequent
+					// tasks — the problem is machine-level and retrying just wastes time.
+					task.SkipRetryOnTimeout = consecutiveTimeouts >= 2;
 					task.AcquiredResource = desktop;
 					try {
 						await task.RunAsync ();
 					} finally {
 						task.AcquiredResource = null;
 					}
+					if (task.ExecutionResult == TestExecutingResult.LaunchTimedOut)
+						consecutiveTimeouts++;
+					else
+						consecutiveTimeouts = 0;
 				}
 
 				foreach (var dev in devices)

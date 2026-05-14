@@ -127,7 +127,9 @@ namespace Xharness.Jenkins.TestTasks {
 
 			// Retry once on LaunchTimedOut - this is a transient failure typically caused by
 			// high system load or simulator instability (e.g. sqlite3 crashes). Ref #25299.
-			if (testTask.ExecutionResult == TestExecutingResult.LaunchTimedOut && testTask.Harness.InCI) {
+			// Skip the retry if AggregatedRunSimulatorTask has already detected consecutive
+			// timeouts (machine-level problem where retrying just doubles the wall-clock time).
+			if (testTask.ExecutionResult == TestExecutingResult.LaunchTimedOut && testTask.Harness.InCI && !testTask.SkipRetryOnTimeout) {
 				mainLog.WriteLine ($"Test launch timed out for {testTask.ProjectFile} on {testTask.Device?.Name} ({testTask.Device?.UDID}). Retrying once...");
 				testTask.Runner = null;
 				// Reset execution result so SelectSimulatorAsync doesn't bail due to Finished flag
@@ -138,6 +140,8 @@ namespace Xharness.Jenkins.TestTasks {
 				}
 				testTask.ExecutionResult = testTask.Runner.Result;
 				testTask.FailureMessage = testTask.Runner.FailureMessage;
+			} else if (testTask.ExecutionResult == TestExecutingResult.LaunchTimedOut && testTask.Harness.InCI && testTask.SkipRetryOnTimeout) {
+				mainLog.WriteLine ($"Test launch timed out for {testTask.ProjectFile} on {testTask.Device?.Name} ({testTask.Device?.UDID}). Skipping retry (consecutive timeouts detected).");
 			}
 
 			if (testTask.ExecutionResult == TestExecutingResult.LaunchTimedOut)

@@ -41,22 +41,15 @@ public sealed class Test1 {{
 }}
 ");
 
-			var properties = GetDefaultProperties ();
-
-			// Build first to ensure the app bundle is created correctly.
-			// dotnet test won't deploy properly on its own, so we need to build separately.
-			DotNet.Execute ("build", proj, properties);
-
-			// Run 'dotnet test --no-build' directly using Execution.RunAsync.
-			// We can't use DotNet.Execute because dotnet test's MTP flow
-			// doesn't forward /p: properties to its internal ComputeRunArguments call,
-			// and --no-build means no binlog is produced (causing FileNotFound errors).
+			// Run 'dotnet test' directly using Execution.RunAsync.
+			// dotnet test's MTP flow doesn't forward /p: properties to its internal
+			// ComputeRunArguments MSBuild API call, so properties must be in the csproj.
 			var env = new Dictionary<string, string?> ();
 			env ["MSBuildSDKsPath"] = null;
 			env ["MSBUILD_EXE_PATH"] = null;
-			var testArgs = new List<string> { "test", proj, "--no-build" };
+			var testArgs = new List<string> { "test", proj };
 			var testResult = Execution.RunAsync (DotNet.Executable, testArgs, env, Console.Out, workingDirectory: outputDir, timeout: TimeSpan.FromMinutes (10)).Result;
-			Assert.AreEqual (0, testResult.ExitCode, $"'dotnet test --no-build' failed with exit code {testResult.ExitCode}.\nOutput:\n{testResult.Output.MergedOutput}");
+			Assert.AreEqual (0, testResult.ExitCode, $"'dotnet test' failed with exit code {testResult.ExitCode}.\nOutput:\n{testResult.Output.MergedOutput}");
 		}
 	}
 }

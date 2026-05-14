@@ -38,13 +38,9 @@ namespace MonoTouchFixtures.Photos {
 				collection = PHAsset.FetchAssets (PHAssetMediaType.Image, null);
 			}
 
-			if (collection.Count == 0)
-				Assert.Inconclusive ("No images in the photo library (saving is async and may not have completed yet)");
-
 			// Actual Test
 			var array = collection.ToArray ();
-			Assert.That (array, Is.Not.Null);
-			Assert.That (array.Count (), Is.GreaterThan (0));
+			Assert.That (array is not null && array.Count () > 0);
 		}
 
 		[Test]
@@ -55,9 +51,6 @@ namespace MonoTouchFixtures.Photos {
 				XamagramImage.Image.SaveToPhotosAlbum (null);
 				collection = PHAsset.FetchAssets (PHAssetMediaType.Image, null);
 			}
-
-			if (collection.Count == 0)
-				Assert.Inconclusive ("No images in the photo library (saving is async and may not have completed yet)");
 
 			// Actual Test
 			var obj = collection [0];
@@ -73,13 +66,9 @@ namespace MonoTouchFixtures.Photos {
 				collection = PHAsset.FetchAssets (PHAssetMediaType.Image, null);
 			}
 
-			if (collection.Count == 0)
-				Assert.Inconclusive ("No images in the photo library (saving is async and may not have completed yet)");
-
 			// Actual Test
 			var obj = collection.ObjectsAt<NSObject> (NSIndexSet.FromNSRange (new NSRange (0, 1)));
-			Assert.That (obj, Is.Not.Null);
-			Assert.That (obj.Count (), Is.GreaterThan (0));
+			Assert.That (obj is not null && obj.Count () > 0);
 		}
 	}
 

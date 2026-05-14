@@ -36,14 +36,9 @@ public sealed class Test1 {{
 
 			var properties = GetDefaultProperties ();
 
-			// Build first to ensure the app bundle is created with the correct properties.
+			// Build first to ensure the app bundle is created correctly.
+			// dotnet test won't deploy properly on its own, so we need to build separately.
 			DotNet.Execute ("build", proj, properties);
-
-			// Verify ComputeRunArguments targets work with diagnostic output.
-			// This helps diagnose failures that dotnet test hides (it uses loggers: null internally).
-			DotNet.Execute ("build", proj, properties, target: "ComputeRunArguments");
-
-			// Now run dotnet test with --no-build since we already built above.
 			DotNet.Execute ("test", proj, properties, extraArguments: new [] { "--no-build" });
 		}
 	}

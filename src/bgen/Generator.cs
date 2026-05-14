@@ -6218,8 +6218,11 @@ public partial class Generator : IMemberGatherer {
 							sw.WriteLine ("\t\t///     if (IsDirectBinding) {");
 							sw.WriteLine ("\t\t///         Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);");
 							sw.WriteLine ("\t\t///     } else {");
-							sw.WriteLine ("\t\t///         var __objc_super__ = new ObjCRuntime.ObjCSuper (this);");
-							sw.WriteLine ("\t\t///         Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);");
+							sw.WriteLine ("\t\t///         unsafe {");
+							sw.WriteLine ("\t\t///             var __objc_super__ = new ObjCRuntime.ObjCSuper (this);");
+							sw.WriteLine ("\t\t///             Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);");
+							sw.WriteLine ("\t\t///         }");
+							sw.WriteLine ("\t\t///         GC.KeepAlive (this);");
 							sw.WriteLine ("\t\t///     }");
 							sw.WriteLine ("\t\t/// }");
 							sw.WriteLine ("\t\t/// ]]></code>");

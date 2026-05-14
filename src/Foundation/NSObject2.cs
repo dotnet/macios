@@ -77,8 +77,11 @@ namespace Foundation {
 	///     	if (IsDirectBinding) {
 	///     		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);
 	///     	} else {
-	///     		var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
-	///     		Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+	///     		unsafe {
+	///     			var __objc_super__ = new ObjCRuntime.ObjCSuper (this);
+	///     			Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);
+	///     		}
+	///     		GC.KeepAlive (this);
 	///     	}
 	///     }
 	///     ]]></code>

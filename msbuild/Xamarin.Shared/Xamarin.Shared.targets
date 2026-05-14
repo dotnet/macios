@@ -115,7 +115,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_DetectBuildType">
 		<PropertyGroup>
-			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(OutputType)' != 'Exe' And '$(BuildBindingProjectLocally)' != 'false'">False</IsRemoteBuild>
+			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(_CanOutputAppBundle)' != 'true' And '$(BuildBindingProjectLocally)' != 'false'">False</IsRemoteBuild>
 		</PropertyGroup>
 	</Target>
 
@@ -2676,6 +2676,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<!-- App extensions -->
 
+	<Target Name="GetAppExtensionBundlePath" DependsOnTargets="_GenerateBundleName;$(GetTargetPathDependsOn)" Outputs="@(_AppExtensionBundlePath)" />
+
+	<Target Name="BuildAndGetAppExtensionBundlePath" DependsOnTargets="Build" Outputs="@(_AppExtensionBundlePath)" />
+
 	<Target Name="_AssignAppExtensionConfiguration" Condition="'@(_AppExtensionReference)' != ''">
 		<!-- assign configs if building a solution file -->
 		<AssignProjectConfiguration
@@ -2723,10 +2727,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_BuildReferencedExtensionProjects Condition="'$(BuildingInsideVisualStudio)' != 'true'">true</_BuildReferencedExtensionProjects>
 		</PropertyGroup>
 
-		<!-- If the referenced projects have already been built, then just get the target paths -->
+		<!-- If the referenced projects have already been built, then just get the app extensions' bundle paths -->
 		<MSBuild
 			Projects="@(_AppExtensionReferenceWithConfigurationExistent)"
-			Targets="GetBundleTargetPath"
+			Targets="GetAppExtensionBundlePath"
 			Properties="%(_AppExtensionReferenceWithConfigurationExistent.SetConfiguration); %(_AppExtensionReferenceWithConfigurationExistent.SetPlatform)"
 			Condition="'@(_AppExtensionReferenceWithConfigurationExistent)' != '' and '$(_BuildReferencedExtensionProjects)' != 'true'">
 
@@ -2736,6 +2740,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<!-- Build the referenced project if required -->
 		<MSBuild
 			Projects="@(_AppExtensionReferenceWithConfigurationExistent)"
+			Targets="BuildAndGetAppExtensionBundlePath"
 			Properties="%(_AppExtensionReferenceWithConfigurationExistent.SetConfiguration); %(_AppExtensionReferenceWithConfigurationExistent.SetPlatform)"
 			Condition="'@(_AppExtensionReferenceWithConfigurationExistent)' != '' and '$(_BuildReferencedExtensionProjects)' == 'true' ">
 

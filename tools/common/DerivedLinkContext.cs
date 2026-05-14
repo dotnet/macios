@@ -9,6 +9,7 @@ using Registrar;
 using Mono.Tuner;
 using Xamarin.Bundler;
 using Xamarin.Linker;
+using Xamarin.Utils;
 
 #if !LEGACY_TOOLS
 using LinkContext = Xamarin.Bundler.DotNetLinkContext;
@@ -236,6 +237,98 @@ namespace Xamarin.Tuner {
 		}
 
 #if !LEGACY_TOOLS
+		public bool HasAvailabilityAttributesShowingUnavailableInSimulator (ICustomAttributeProvider provider, MethodDefinition? methodForErrorReporting = null)
+		{
+			if (!App.IsSimulatorBuild) {
+				LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateError (99, "HasAvailabilityAttributesShowingUnavailableInSimulator should not be called when not building for the simulator. Please file an issue at https://github.com/dotnet/macios/issues."));
+				return false;
+			}
+
+			if (!provider.HasCustomAttributes)
+				return false; // no attributes to say otherwise, so available
+
+			string platformName;
+
+			switch (App.Platform) {
+			case ApplePlatform.iOS:
+				platformName = "ios";
+				break;
+			case ApplePlatform.TVOS:
+				platformName = "tvos";
+				break;
+			default:
+				LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 99, methodForErrorReporting, "Unexpected platform '{0}'. Please file an issue at https://github.com/dotnet/macios/issues.", App.Platform));
+				return false;
+			}
+
+			// Pass 1: check for any matching UnsupportedSimulator attribute — if found, it's unavailable.
+			var hasUnsupported = false;
+			foreach (var attrib in provider.CustomAttributes) {
+				if (!attrib.AttributeType.Is ("ObjCRuntime", "UnsupportedSimulatorAttribute"))
+					continue;
+				if (attrib.ConstructorArguments.Count == 1 && attrib.ConstructorArguments [0].Value is string unsupportedPlatform) {
+					if (string.Equals (unsupportedPlatform, platformName, StringComparison.OrdinalIgnoreCase))
+						hasUnsupported = true;
+				} else {
+					LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 2258, methodForErrorReporting, Errors.MX2258, provider.AsString (), attrib.RenderAttribute ()));
+				}
+			}
+
+			// Pass 2: check for any matching SupportedSimulator attributes — evaluate as OR across versions.
+			var hasSupported = false;
+			var supportedCount = 0;
+			var isAvailable = false;
+			foreach (var attrib in provider.CustomAttributes) {
+				if (!attrib.AttributeType.Is ("ObjCRuntime", "SupportedSimulatorAttribute"))
+					continue;
+				if (attrib.ConstructorArguments.Count == 1 && attrib.ConstructorArguments [0].Value is string supportedPlatform) {
+					if (!supportedPlatform.StartsWith (platformName, StringComparison.OrdinalIgnoreCase))
+						continue;
+
+					hasSupported = true;
+					supportedCount++;
+					var osVersion = supportedPlatform.Substring (platformName.Length);
+					if (string.IsNullOrEmpty (osVersion)) {
+						// no version constraint: available in the simulator
+						isAvailable = true;
+					} else if (Version.TryParse (osVersion, out var version)) {
+						var simulatorVersion = App.DeploymentTarget;
+						if (simulatorVersion is null) {
+							LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 99, methodForErrorReporting, "No deployment target available. Please file an issue at https://github.com/dotnet/macios/issues."));
+							continue;
+						}
+						if (simulatorVersion >= version)
+							isAvailable = true;
+					} else {
+						LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 2259, methodForErrorReporting, Errors.MX2259, provider.AsString (), attrib.RenderAttribute ()));
+					}
+				} else {
+					LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateWarning (App, 2258, methodForErrorReporting, Errors.MX2258, provider.AsString (), attrib.RenderAttribute ()));
+				}
+			}
+
+			// Conflicting attributes: both Supported and Unsupported for the same platform
+			if (hasUnsupported && hasSupported) {
+				LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateError (App, 2260, methodForErrorReporting, Errors.MX2260, provider.AsString (), platformName));
+				return true; // treat as unavailable
+			}
+
+			// Multiple SupportedSimulator attributes for the same platform
+			if (supportedCount > 1) {
+				LinkerConfiguration.Report (LinkerConfiguration.Context, ErrorHelper.CreateError (App, 2261, methodForErrorReporting, Errors.MX2261, provider.AsString (), platformName));
+				return true; // treat as unavailable
+			}
+
+			if (hasUnsupported)
+				return true;
+
+			if (hasSupported)
+				return !isAvailable;
+
+			// No matching attributes: assume available
+			return false;
+		}
+
 		class AttributeStorage : ICustomAttribute {
 			public CustomAttribute Attribute { get; }
 			public TypeReference AttributeType { get; set; }

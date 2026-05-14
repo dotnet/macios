@@ -119,7 +119,7 @@ DOTNET_IOS_WINDOWS_FILES += Messaging/Xamarin.Messaging.Build/obj/$(CONFIG)/Buil
 
 .dotnet-windows: .build-stamp .copy-windows-files
 
-ifndef IS_LINUX
+ifndef NO_XCODE
 all-local:: .dotnet-windows
 dotnet:: .dotnet-windows
 endif
@@ -130,7 +130,7 @@ endif
 
 # we must install locally during 'make all', because the F# build depends on the msbuild targets/assemblies.
 all-local:: $(MSBUILD_PRODUCTS)
-ifndef IS_LINUX
+ifndef NO_XCODE
 all-local:: .stamp-test-xml
 endif
 

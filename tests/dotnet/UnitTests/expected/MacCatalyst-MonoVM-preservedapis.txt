@@ -107,7 +107,6 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor()
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(Foundation.NSObjectFlag)
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject..ctor(ObjCRuntime.NativeHandle)
-Microsoft.MacCatalyst.dll:Foundation.NSObject.AllocateData()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.AllocIfNeeded()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.ClearHandle()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.ConformsToProtocol(ObjCRuntime.NativeHandle)
@@ -144,7 +143,6 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.Nativ
 Microsoft.MacCatalyst.dll:Foundation.NSObject.InitializeObject(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.InvokeConformsToProtocol(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.IsEqual(Foundation.NSObject)
-Microsoft.MacCatalyst.dll:Foundation.NSObject.RecreateDataHandle()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.ReleaseManagedRef()
 Microsoft.MacCatalyst.dll:Foundation.NSObject.set_disposed(System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.NSObject.set_flags(Foundation.NSObject/Flags)
@@ -182,16 +180,13 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NS
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::None
 Microsoft.MacCatalyst.dll:Foundation.NSObjectData
-Microsoft.MacCatalyst.dll:Foundation.NSObjectData* Foundation.NSObject::__data_for_mono
+Microsoft.MacCatalyst.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::data
 Microsoft.MacCatalyst.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::Data()
 Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle
-Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle Foundation.NSObject::data_handle
 Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle..ctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle..ctor(System.IntPtr)
+Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle.CreateHandle(Foundation.NSObject)
+Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle.Finalize()
 Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle.get_Data()
-Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle.get_IsInvalid()
-Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle.Invalidate()
-Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle.ReleaseHandle()
 Microsoft.MacCatalyst.dll:Foundation.NSObjectFlag
 Microsoft.MacCatalyst.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
 Microsoft.MacCatalyst.dll:Foundation.ProtocolAttribute
@@ -454,6 +449,7 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__Constru
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|288_0`1(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
+Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocZeroed`1()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.attempt_retain_nsobject(System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AttemptRetainNSObject(System.IntPtr)
@@ -667,8 +663,6 @@ Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObject::InFinalizerQueue()
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObject::IsDirectBinding()
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObject::IsRegisteredToggleRef()
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObject/NSObject_Disposer::draining
-Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObjectDataHandle::invalidated
-Microsoft.MacCatalyst.dll:System.Boolean Foundation.NSObjectDataHandle::IsInvalid()
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.ProtocolAttribute::<BackwardsCompatibleCodeGeneration>k__BackingField
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.RegisterAttribute::is_wrapper
 Microsoft.MacCatalyst.dll:System.Boolean Foundation.RegisterAttribute::IsWrapper()
@@ -724,6 +718,7 @@ Microsoft.MacCatalyst.dll:System.Int32 ObjCRuntime.TransientString/Encoding::val
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFArray::_CFNullHandle()
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFRange::loc
+Microsoft.MacCatalyst.dll:System.IntPtr Foundation.NSObject::__data
 Microsoft.MacCatalyst.dll:System.IntPtr Foundation.NSObject/NSObject_Disposer::class_ptr
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.BlockCollector::block
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.Libraries/CoreFoundation::Handle
@@ -855,8 +850,10 @@ Microsoft.MacCatalyst.dll:System.Object Foundation.NSObject/NSObject_Disposer::l
 Microsoft.MacCatalyst.dll:System.Object ObjCRuntime.Class::verification_lock
 Microsoft.MacCatalyst.dll:System.Object ObjCRuntime.Runtime::lock_obj
 Microsoft.MacCatalyst.dll:System.Reflection.Assembly Foundation.NSObject::PlatformAssembly
+Microsoft.MacCatalyst.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.NSObjectDataHandle> Foundation.NSObject::data_table
 Microsoft.MacCatalyst.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Delegate,ObjCRuntime.BlockCollector> ObjCRuntime.Runtime::block_lifetime_table
 Microsoft.MacCatalyst.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Reflection.Assembly,System.String> ObjCRuntime.Class::assembly_to_name
+Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.GCHandle Foundation.NSObjectDataHandle::handle
 Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::height
 Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::width
 Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::x
@@ -1951,14 +1948,12 @@ System.Private.CoreLib.dll:System.Boolean System.Runtime.CompilerServices.Nullab
 System.Private.CoreLib.dll:System.Boolean System.Runtime.CompilerServices.RuntimeCompatibilityAttribute::<WrapNonExceptionThrows>k__BackingField
 System.Private.CoreLib.dll:System.Boolean System.Runtime.CompilerServices.RuntimeCompatibilityAttribute::WrapNonExceptionThrows()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.DependentHandle::IsAllocated()
-System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.CriticalHandle::_isClosed
-System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.CriticalHandle::IsClosed()
-System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.CriticalHandle::IsInvalid()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::BestFitMapping
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::ExactSpelling
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::PreserveSig
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::SetLastError
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.DllImportAttribute::ThrowOnUnmappableChar
+System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.GCHandle::IsAllocated()
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedIn::_addRefd
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.Marshalling.SafeHandleMarshaller`1/ManagedToUnmanagedOut::_initialized
 System.Private.CoreLib.dll:System.Boolean System.Runtime.InteropServices.Marshalling.Utf8StringMarshaller/ManagedToUnmanagedIn::_allocated
@@ -6024,7 +6019,6 @@ System.Private.CoreLib.dll:System.IntPtr System.Reflection.RuntimePropertyInfo::
 System.Private.CoreLib.dll:System.IntPtr System.Reflection.RuntimePropertyInfo::prop
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.CompilerServices.QCallAssembly::_assembly
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.CompilerServices.QCallTypeHandle::_handle
-System.Private.CoreLib.dll:System.IntPtr System.Runtime.InteropServices.CriticalHandle::handle
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.InteropServices.GCHandle::_handle
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.InteropServices.SafeHandle::handle
 System.Private.CoreLib.dll:System.IntPtr System.Runtime.InteropServices.WeakGCHandle`1::_handle
@@ -8550,15 +8544,6 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.CollectionsMarshal
 System.Private.CoreLib.dll:System.Runtime.InteropServices.CollectionsMarshal.GetValueRefOrAddDefault`2(System.Collections.Generic.Dictionary`2<TKey,TValue>, TKey, out System.Boolean&)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.ComImportAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.ComImportAttribute..ctor()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle..ctor(System.IntPtr)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.Cleanup()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.Dispose()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.Dispose(System.Boolean)
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.Finalize()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.get_IsClosed()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.get_IsInvalid()
-System.Private.CoreLib.dll:System.Runtime.InteropServices.CriticalHandle.ReleaseHandle()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.DefaultDllImportSearchPathsAttribute
 System.Private.CoreLib.dll:System.Runtime.InteropServices.DefaultDllImportSearchPathsAttribute..ctor(System.Runtime.InteropServices.DllImportSearchPath)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.DllImportAttribute
@@ -8586,6 +8571,7 @@ System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.Equals(System
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.Equals(System.Runtime.InteropServices.GCHandle)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.Free()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.FromIntPtr(System.IntPtr)
+System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.get_IsAllocated()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.get_Target()
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.GetHandleValue(System.IntPtr)
 System.Private.CoreLib.dll:System.Runtime.InteropServices.GCHandle.GetHashCode()

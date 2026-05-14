@@ -21,9 +21,15 @@ tools:
     toolsets: [pull_requests, repos]
     min-integrity: approved
   bash: true
+checkout:
+  fetch: ["*"]
+  fetch-depth: 0
 safe-outputs:
   create-pull-request:
     max: 10
+    allowed-base-branches:
+      - "net[0-9]*.0"
+      - "xcode[0-9]*"
   add-comment:
     max: 10
     target: "*"
@@ -34,6 +40,8 @@ safe-outputs:
     max: 10
   push-to-pull-request-branch:
     max: 10
+    target: "*"
+    title-prefix: "🤖 Merge 'main' => '"
   update-pull-request:
     max: 10
 ---

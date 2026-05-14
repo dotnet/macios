@@ -124,47 +124,46 @@ namespace Foundation {
 		public NSObject.Flags flags;
 	}
 
-	class NSObjectDataHandle : CriticalHandle {
-		bool invalidated;
+	// This type wraps native memory that will track an NSObject, and free the native memory
+	// once the NSObject is finalized and completely gone / unresurrectable. It does so by
+	// creating a GCHandle that tracks the NSObject in question, and if this instance's
+	// finalizer is called, but the NSObject is still reachable, then re-schedule this instance's
+	// finalizer to run again later.
+	// This is similar to how NativeAOT handles the tagged memory returned by ObjectiveCMarshal.CreateReferenceTrackingHandle
+	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L15
+	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L59-L71
+	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L181-L185
+	unsafe class NSObjectDataHandle {
+		NSObjectData* data;
+		GCHandle handle;
+
+		public NSObjectData* Data { get => data; }
+
 		public NSObjectDataHandle ()
-			: base (IntPtr.Zero)
 		{
-			unsafe {
-				this.handle = (IntPtr) NativeMemory.AllocZeroed ((nuint) sizeof (NSObjectData));
+			data = Runtime.AllocZeroed<NSObjectData> ();
+		}
+
+		public void CreateHandle (NSObject obj)
+		{
+			handle = GCHandle.Alloc (obj, GCHandleType.WeakTrackResurrection);
+		}
+
+		~NSObjectDataHandle ()
+		{
+			var handleAllocated = handle.IsAllocated;
+
+			if (handleAllocated && handle.Target is not null) {
+				// The NSObject instance isn't gone yet, we have to try again later.
+				GC.ReRegisterForFinalize (this);
+				return;
 			}
-		}
 
-		public NSObjectDataHandle (IntPtr handle)
-			: base (handle)
-		{
-		}
+			NativeMemory.Free (data);
+			data = null;
 
-		public void Invalidate ()
-		{
-			invalidated = true;
-		}
-
-		public unsafe NSObjectData* Data {
-			get => (NSObjectData*) handle;
-		}
-
-		public override bool IsInvalid {
-			get => handle == IntPtr.Zero;
-		}
-
-		protected override bool ReleaseHandle ()
-		{
-			if (handle != IntPtr.Zero) {
-				if (invalidated) {
-					// nothing to do here.
-				} else {
-					unsafe {
-						NativeMemory.Free ((void*) handle);
-					}
-				}
-			}
-			handle = IntPtr.Zero;
-			return true;
+			if (handleAllocated)
+				handle.Free ();
 		}
 	}
 #endif
@@ -195,51 +194,39 @@ namespace Foundation {
 		/// <value>The assembly containing the platform-specific Foundation types.</value>
 		public static readonly Assembly PlatformAssembly = typeof (NSObject).Assembly;
 
-		// This is exclusively for Mono
-		unsafe NSObjectData* __data_for_mono; // Read directly from several places in the runtime
+#pragma warning disable CS8618 // "Non-nullable field '...' must contain a non-null value when exiting constructor.": this field is always non-null, because NSObject.Initialize is called before anything else is done.
+		static ConditionalWeakTable<NSObject, NSObjectDataHandle> data_table;
+#pragma warning restore CS8618
+
+		// The NSObjectData contains some data we want to keep in native memory, so that it can be accessed
+		// safely from native code without having to make sure the GC doesn't move the memory around. Among
+		// other things, this means it's accessible from threads that has never seen/run managed code without
+		// having to attach those threads to to the managed runtime.
+		IntPtr /* unsafe NSObjectData* */ __data; // Read directly from several places in the runtime
 
 		unsafe NativeHandle handle {
 			get => GetData ()->handle;
 			set => GetData ()->handle = value;
 		}
 
-		// The NSObjectData contains some data we want to keep in native memory, so that it can be accessed
-		// safely from native code without having to make sure the GC doesn't move the memory around. Among
-		// other things, this means it's accessible from threads that has never seen/run managed code without
-		// having to attach those threads to to the managed runtime.
-		NSObjectDataHandle? data_handle;
-
 		internal unsafe NSObjectData* GetData ()
 		{
-			var rv = AllocateData ().Data;
+			var data = __data;
+			if (data != IntPtr.Zero)
+				return (NSObjectData*) data;
 
-			if (rv is null) {
-				// Throwing an exception here is better than returning a null pointer, because that will crash the process when the pointer is dereferenced
-				// (and none of the callers can do anything useful with a null pointer anyway).
-				throw new ObjectDisposedException ($"This object (of type {GetType ().Name}) does not have a data pointer anymore, possibly because of a race condition. Please file a bug at https://github.com/dotnet/macios/issues.");
+			var data_handle = new NSObjectDataHandle ();
+			var existing_data = Interlocked.CompareExchange (ref __data, (IntPtr) data_handle.Data, IntPtr.Zero);
+			if (existing_data != IntPtr.Zero) {
+				// return the existing data, the GC will collect the other one we just created
+				return (NSObjectData*) existing_data;
 			}
-
-			return rv;
-		}
-
-		unsafe NSObjectDataHandle AllocateData ()
-		{
-			var dh = data_handle;
-			if (dh is not null)
-				return dh;
-
-			var data = new NSObjectDataHandle ();
-			var previousValue = Interlocked.CompareExchange (ref data_handle, data, null);
-			if (previousValue is not null) {
-				// somebody beat us to the allocation and assignment.
-				data.Dispose ();
-				return previousValue;
-			}
-
-			if (!Runtime.IsCoreCLR) // This condition (and the assignment to __handle_for_mono if applicable) is trimmed away by the linker.
-				__data_for_mono = data.Data;
-
-			return data;
+			// tell the data handle we just created to track us
+			data_handle.CreateHandle (this);
+			// make sure the data isn't freed before this NSObject is collected, but also
+			// that it is freed after this NSObject is collected.
+			data_table.Add (this, data_handle);
+			return data_handle.Data;
 		}
 
 		unsafe Flags flags {
@@ -407,6 +394,7 @@ namespace Foundation {
 
 		internal static NativeHandle Initialize ()
 		{
+			data_table = new ConditionalWeakTable<NSObject, NSObjectDataHandle> ();
 			return class_ptr;
 		}
 
@@ -1115,60 +1103,8 @@ namespace Foundation {
 					ReleaseManagedRef ();
 				} else {
 					NSObject_Disposer.Add (this);
-					RecreateDataHandle ();
 				}
 			}
-		}
-
-		void RecreateDataHandle ()
-		{
-			// OK, this code is _weird_.
-			// We need to delay the deletion of the native memory pointed to by data_handle until
-			// after this instance has been collected. A CriticalHandle seems to fit this purpose like a glove, until
-			// you realize that a CriticalHandle is only kept alive until the parent object _becomes finalizable_,
-			// not _is collected_, which is very different - in other words, resurrected objects don't keep CriticalHandles
-			// they contain alive. This is a problem because every single managed NSObject instance is resurrected, and we
-			// need the native memory to stay alive after resurrection.
-			//
-			// So this solution depends on a few bits:
-			// * At this point, this instance may have become finalizable, but the native memory shouldn't have been freed yet.
-			// * The original NSObjectDataHandle (aka CriticalHandle) will be collected in this/upcoming GC cycle, and can't
-			//   be trusted to keep the native memory alive anymore.
-			// * So we just create a new one, pointing to the same native memory, and replace the original NSObjectDataHandle (aka
-			//   CriticalHandle) with it
-			// * This works, because since this instance has become / will become resurrected, it's not finalizable anymore,
-			//   and it will keep the new NSObjectDataHandle instance (and the native memory it points to) alive.
-			// * Now if this instance is deemed finalizable, and then resurrected *again*, bad things will likely happen. This
-			//   is a bit more unlikely though, because we don't re-register the finalizer for execution, so unless somebody
-			//   else does that, it's quite unlikely this instance will become resurrected a second time.
-			var previous_data = data_handle;
-			if (previous_data is null) {
-				var msg = $"This object (of type {GetType ().Name}) does not have an existing data pointer, possibly because of a race condition. Please file a bug at https://github.com/dotnet/macios/issues.";
-#if CONSISTENCY_CHECKS
-				throw new InvalidOperationException (msg);
-#else
-				Runtime.NSLog (msg);
-				return;
-#endif
-			}
-
-			unsafe {
-				data_handle = new NSObjectDataHandle ((IntPtr) previous_data.Data);
-			}
-
-			if (previous_data.IsInvalid) {
-				var msg = $"This object (of type {GetType ().Name}) does not have valid data pointer, possibly because of a race condition. Please file a bug at https://github.com/dotnet/macios/issues.";
-#if CONSISTENCY_CHECKS
-				throw new InvalidOperationException (msg);
-#else
-				Runtime.NSLog (msg);
-				return;
-#endif
-			}
-
-			previous_data.Invalidate ();
-			// Don't dispose previous_data, because another thread might be referencing it, and trying to access its pointer - which is still valid.
-			// The GC will dispose of previous_data when its not accessible anymore.
 		}
 
 		[Register ("__NSObject_Disposer")]

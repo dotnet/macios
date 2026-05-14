@@ -25,10 +25,13 @@ namespace ObjCRuntime {
 	[StructLayout (LayoutKind.Sequential)]
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	public readonly ref struct ObjCSuper {
+		readonly NativeHandle receiver;
+		readonly NativeHandle classHandle;
+
 		/// <summary>The receiver's native handle.</summary>
-		public readonly NativeHandle Receiver;
+		public NativeHandle Receiver => receiver;
 		/// <summary>The receiver's class handle (used by the runtime to find the superclass implementation).</summary>
-		public readonly NativeHandle ClassHandle;
+		public NativeHandle ClassHandle => classHandle;
 
 		/// <summary>Creates a new <see cref="ObjCSuper" /> for the specified object.</summary>
 		/// <param name="obj">The object to create the super struct for.</param>
@@ -36,11 +39,11 @@ namespace ObjCRuntime {
 		{
 			ArgumentNullException.ThrowIfNull (obj);
 #if COREBUILD
-			Receiver = NativeHandle.Zero;
-			ClassHandle = NativeHandle.Zero;
+			receiver = NativeHandle.Zero;
+			classHandle = NativeHandle.Zero;
 #else
-			Receiver = obj.Handle;
-			ClassHandle = obj.ClassHandle;
+			receiver = obj.Handle;
+			classHandle = obj.ClassHandle;
 #endif
 		}
 	}

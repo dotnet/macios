@@ -383,8 +383,8 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject:
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::Handle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.INativeObject::Handle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.NativeHandle::Zero
-Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::ClassHandle
-Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::Receiver
+Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::classHandle
+Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::receiver
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.Runtime/ClassHandles::unused
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::handle
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::Handle()

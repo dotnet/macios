@@ -378,8 +378,8 @@ Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::handle
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::Handle()
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.INativeObject::Handle()
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.NativeHandle::Zero
-Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::ClassHandle
-Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::Receiver
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::classHandle
+Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::receiver
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Runtime/ClassHandles::unused
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::handle
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::Handle()

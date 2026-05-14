@@ -378,8 +378,8 @@ Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::Handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.INativeObject::Handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.NativeHandle::Zero
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::ClassHandle
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::Receiver
+Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::classHandle
+Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::receiver
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Runtime/ClassHandles::unused
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::Handle()

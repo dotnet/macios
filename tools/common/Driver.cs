@@ -69,6 +69,9 @@ namespace Xamarin.Bundler {
 			options.Add ("rid=", "The runtime identifier we're building for", v => {
 				app.RuntimeIdentifier = v;
 			});
+			options.Add ("xcode-version=", "The Xcode version we're building with", v => {
+				Driver.XcodeVersion = Version.Parse (v);
+			});
 
 			try {
 				app.RootAssemblies.AddRange (options.Parse (args));
@@ -231,6 +234,9 @@ namespace Xamarin.Bundler {
 		public static Version XcodeVersion {
 			get {
 				return xcode_version!;
+			}
+			set {
+				xcode_version = value;
 			}
 		}
 

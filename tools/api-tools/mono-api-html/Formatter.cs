@@ -33,11 +33,11 @@ using System.Text;
 namespace Mono.ApiTools {
 
 	abstract class Formatter {
-		public string OutputPath { get; set; }
+		public string OutputPath { get; set; } = "";
 
-		Stack<(StringBuilder, TextWriter)> builders;
-		public StringBuilder StringBuilder { get; private set; }
-		protected TextWriter output;
+		Stack<(StringBuilder, TextWriter)> builders = null!;
+		public StringBuilder StringBuilder { get; private set; } = null!;
+		protected TextWriter output = null!;
 
 		protected int IndentLevel { get; set; }
 

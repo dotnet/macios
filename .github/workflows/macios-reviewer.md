@@ -3,7 +3,10 @@ on:
   slash_command:
     name: review
     events: [pull_request_comment]
-  roles: [admin, maintainer, write]
+  roles: [admin, maintain, write]
+concurrency:
+  group: "macios-reviewer-${{ github.event.issue.number || github.event.pull_request.number || github.run_id }}"
+  cancel-in-progress: false
 permissions:
   contents: read
   pull-requests: read
@@ -22,13 +25,14 @@ network:
 tools:
   github:
     toolsets: [pull_requests, repos]
-    min-integrity: none
+    min-integrity: approved
 safe-outputs:
   create-pull-request-review-comment:
     max: 50
   submit-pull-request-review:
     max: 1
     allowed-events: [COMMENT, REQUEST_CHANGES]
+    supersede-older-reviews: true
 ---
 
 # .NET for Apple Platforms PR Reviewer

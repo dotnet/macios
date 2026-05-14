@@ -65,8 +65,13 @@ This happens after the stable version of Xcode has been released and the `xcodeX
 * [ ] Publish NuGets to nuget.org.
 * [ ] Publish release notes.
 * [ ] Update API diff (the `STABLE_NUGET_VERSION_*` variables in `Make.config`) for the `main` branch. Can only be done after the NuGets have been published to nuget.org.
+  * [ ] Link to PR
 * [ ] Update docs by executing `docs/sync-mobile-docs.sh`. Beware if docs were modified in the [docs-mobile](https://github.com/dotnet/docs-mobile) repository by somebody else, any such changes will have to be copied back first.
+  * [ ] Link to dotnet/docs-mobile PR
 * [ ] Update API / reference docs. See [update-api-docs.md](https://github.com/dotnet/macios/blob/main/docs/update-api-docs.md) for instructions.
+  * [ ] Create new monikers (add link to dev.azure.com ticket)
+  * [ ] Add reference docs (add link to dotnet/macios-api-docs PR)
+  * [ ] Flip the monikers from prerelease to live (add link to dev.azure.com ticket)
 * [ ] Make sure all items in the milestone for the current release have been closed.
 * [ ] Close this issue & close the milestone.
 * [ ] Wonder about life as you consider the impossibility of actually reaching this point, because you can't close the milestone before all issues have been closed, and you can't close this issue until checking off all items, which you can't do until you've closed the milestone. Decide to schedule yet another viewing of [Life of Brian](https://en.wikipedia.org/wiki/Monty_Python%27s_Life_of_Brian) to ~cope~ celebrate the release 🍾.

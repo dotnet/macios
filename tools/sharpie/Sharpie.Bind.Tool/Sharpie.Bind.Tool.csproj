@@ -51,18 +51,8 @@
   </ItemGroup>
 
   <!-- Include the x64 shim in the nupkg so that x64 users get a helpful error message -->
-  <PropertyGroup>
-    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_IncludeX64Shim</TargetsForTfmSpecificContentInPackage>
-  </PropertyGroup>
-
-  <Target Name="_IncludeX64Shim" Condition="'$(PackAsTool)' == 'true'">
-    <ItemGroup>
-      <TfmSpecificPackageFile Include="$(MSBuildThisFileDirectory)sharpie-unsupported.sh">
-        <PackagePath>tools/any/osx-x64/Sharpie.Bind.Tool</PackagePath>
-      </TfmSpecificPackageFile>
-      <TfmSpecificPackageFile Include="$(MSBuildThisFileDirectory)DotnetToolSettings.osx-x64.xml">
-        <PackagePath>tools/any/osx-x64/DotnetToolSettings.xml</PackagePath>
-      </TfmSpecificPackageFile>
-    </ItemGroup>
-  </Target>
+  <ItemGroup Condition="'$(PackAsTool)' == 'true'">
+    <None Include="sharpie-unsupported.sh" Pack="true" PackagePath="tools/$(TargetFramework)/osx-x64/Sharpie.Bind.Tool" />
+    <None Include="DotnetToolSettings.osx-x64.xml" Pack="true" PackagePath="tools/$(TargetFramework)/osx-x64/DotnetToolSettings.xml" />
+  </ItemGroup>
 </Project>

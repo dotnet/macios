@@ -4501,6 +4501,78 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MX2254" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported primitive field type '{0}' for symbol '{1}' in method '{2}'. Sub-optimal but functional code will be generated. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[方法 '{2}' 中符號 '{1}' 的不支援基本欄位類型 '{0}'。將產生次佳但可運作的程式碼。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2255" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[未知或不支援的 Dlfcn 模式: 方法 '{1}' 中的 '{0}'。此呼叫不會內嵌。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2256" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The field type '{0}' for symbol '{1}' in method '{2}' is not an NSObject subclass. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[方法 '{2}' 中符號 '{1}' 的欄位類型 '{0}' 不是 NSObject 子類別。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2257" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unknown IL sequence for method with call to Dlfcn.CachePointer: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[呼叫 Dlfcn.CachePointer 時出現未知的 IL 序列: 方法 '{1}' 中的 '{0}'。此呼叫不會內嵌。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2258" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' is marked with a malformed simulator availability attribute: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' 標示了格式錯誤的模擬器可用性屬性: {1}。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2259" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' is marked with a simulator availability attribute with an invalid version: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' 標示了無效版本的模擬器可用性屬性: {1}。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2260" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' has conflicting simulator availability attributes for the '{1}' platform (both SupportedSimulator and UnsupportedSimulator). Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' 的 '{1}' 平台有衝突的模擬器可用性屬性 (SupportedSimulator 和 UnsupportedSimulator 兩者皆有)。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2261" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' has multiple SupportedSimulator attributes for the '{1}' platform. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' 的 '{1}' 平台有多個 SupportedSimulator 屬性。請前往 https://github.com/dotnet/macios/issues/new 提交問題]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MX3001" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Could not {0} the assembly '{1}']]></Val>

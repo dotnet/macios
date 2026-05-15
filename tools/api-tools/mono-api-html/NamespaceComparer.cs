@@ -56,20 +56,20 @@ namespace Mono.ApiTools {
 			var t = target.Element ("namespaces");
 			if (XNode.DeepEquals (s, t))
 				return;
-			Compare (s.Elements ("namespace"), t.Elements ("namespace"));
+			Compare (s!.Elements ("namespace"), t!.Elements ("namespace"));
 		}
 
 		public override void SetContext (XElement current)
 		{
-			State.Namespace = current.Attribute ("name").Value;
+			State.Namespace = current.Attribute ("name")!.Value;
 		}
 
 		public override void Added (XElement target, bool wasParentAdded)
 		{
 			Formatter.BeginNamespace ("New ");
 			// list all new types
-			foreach (var addedType in target.Element ("classes").Elements ("class")) {
-				State.Type = addedType.Attribute ("name").Value;
+			foreach (var addedType in target.Element ("classes")!.Elements ("class")) {
+				State.Type = addedType.Attribute ("name")!.Value;
 				comparer.Added (addedType, true);
 			}
 			Formatter.EndNamespace ();
@@ -96,8 +96,8 @@ namespace Mono.ApiTools {
 			Formatter.BeginNamespace ("Removed ");
 			Output.WriteLine ();
 			// list all removed types
-			foreach (var removedType in source.Element ("classes").Elements ("class")) {
-				State.Type = comparer.GetTypeName (removedType);
+			foreach (var removedType in source.Element ("classes")!.Elements ("class")) {
+				State.Type = comparer.GetTypeName (removedType) ?? "";
 				comparer.Removed (removedType);
 			}
 			Formatter.EndNamespace ();

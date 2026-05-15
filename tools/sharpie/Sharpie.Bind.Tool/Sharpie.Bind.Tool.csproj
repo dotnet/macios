@@ -52,7 +52,7 @@
 
   <!-- Include the x64 shim in the nupkg so that x64 users get a helpful error message -->
   <ItemGroup Condition="'$(PackAsTool)' == 'true'">
-    <None Include="sharpie-unsupported.sh" Pack="true" PackagePath="tools/$(TargetFramework)/osx-x64/Sharpie.Bind.Tool" />
-    <None Include="DotnetToolSettings.osx-x64.xml" Pack="true" PackagePath="tools/$(TargetFramework)/osx-x64/DotnetToolSettings.xml" />
+    <None Include="sharpie-x64-shim" Pack="true" PackagePath="tools/any/osx-x64/" />
+    <None Include="DotnetToolSettings.osx-x64.xml" Pack="true" PackagePath="tools/any/osx-x64/DotnetToolSettings.xml" />
   </ItemGroup>
 </Project>

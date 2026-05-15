@@ -57,10 +57,10 @@ namespace MonoTouchFixtures.UIKit {
 			using (var a = new UIAlertView ("title", "message", del, null, null)) {
 				Assert.That (a.Title, Is.EqualTo ("title"), "Title");
 				Assert.That (a.Message, Is.EqualTo ("message"), "Message");
-				Assert.NotNull (typeof (UIAlertView).GetField ("__mt_WeakDelegate_var", BindingFlags.Instance | BindingFlags.NonPublic).GetValue (a), "backing field");
+				Assert.That (typeof (UIAlertView).GetField ("__mt_WeakDelegate_var", BindingFlags.Instance | BindingFlags.NonPublic).GetValue (a), Is.Not.Null, "backing field");
 				// check properties after the field (so we're not setting it only when calling the properties)
-				Assert.NotNull (a.Delegate, "Delegate");
-				Assert.NotNull (a.WeakDelegate, "WeakDelegate");
+				Assert.That (a.Delegate, Is.Not.Null, "Delegate");
+				Assert.That (a.WeakDelegate, Is.Not.Null, "WeakDelegate");
 			}
 		}
 

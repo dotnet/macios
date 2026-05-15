@@ -59,13 +59,13 @@ namespace MonoTouchFixtures.Security {
 
 				using (var m = connection.GetProtocolMetadata<NWTlsMetadata> (NWProtocolDefinition.CreateTlsDefinition ())) {
 					var s = m.SecProtocolMetadata;
-					Assert.False (s.EarlyDataAccepted, "EarlyDataAccepted");
-					Assert.Null (s.NegotiatedProtocol, "NegotiatedProtocol");
+					Assert.That (s.EarlyDataAccepted, Is.False, "EarlyDataAccepted");
+					Assert.That (s.NegotiatedProtocol, Is.Null, "NegotiatedProtocol");
 					Assert.That (s.NegotiatedProtocolVersion, Is.EqualTo (SslProtocol.Tls_1_2).Or.EqualTo (SslProtocol.Tls_1_3), "NegotiatedProtocolVersion");
 					Assert.That (s.PeerPublicKey, Is.Null.Or.Not.Null, "PeerPublicKey");
 
-					Assert.True (SecProtocolMetadata.ChallengeParametersAreEqual (s, s), "ChallengeParametersAreEqual");
-					Assert.True (SecProtocolMetadata.PeersAreEqual (s, s), "PeersAreEqual");
+					Assert.That (SecProtocolMetadata.ChallengeParametersAreEqual (s, s), Is.True, "ChallengeParametersAreEqual");
+					Assert.That (SecProtocolMetadata.PeersAreEqual (s, s), Is.True, "PeersAreEqual");
 
 					if (TestRuntime.CheckXcodeVersion (11, 0)) {
 						using (var d = s.CreateSecret ("Xamarin", 128)) {
@@ -80,7 +80,7 @@ namespace MonoTouchFixtures.Security {
 						Assert.That (s.NegotiatedTlsCipherSuite, Is.Not.EqualTo (0), "NegotiatedTlsCipherSuite");
 						Assert.That (s.ServerName, Is.EqualTo ("www.microsoft.com"), "ServerName");
 						// we don't have a TLS-PSK enabled server to test this
-						Assert.False (s.AccessPreSharedKeys ((psk, pskId) => { }), "AccessPreSharedKeys");
+						Assert.That (s.AccessPreSharedKeys ((psk, pskId) => { }), Is.False, "AccessPreSharedKeys");
 					}
 				}
 

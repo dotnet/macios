@@ -91,7 +91,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			// OTOH a null colorspace is possible with the valid parameters, e.g. bug #25600, so we can't throw a ANE blindly
 			using (var context = new CGBitmapContext (null, 16, 32, 8, 0, null, CGImageAlphaInfo.Only)) {
 				Assert.That (context.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
-				Assert.Null (context.ColorSpace, "ColorSpace");
+				Assert.That (context.ColorSpace, Is.Null, "ColorSpace");
 			}
 		}
 
@@ -102,9 +102,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 			using (CGColorSpace space = CGColorSpace.CreateDeviceRGB ()) {
 				CGBitmapContext c = new CGBitmapContext (data, 10, 10, 8, 40, space, CGImageAlphaInfo.PremultipliedLast);
 				using (var img = c.ToImage ())
-					Assert.NotNull (img, "ToImage");
+					Assert.That (img, Is.Not.Null, "ToImage");
 				c.Dispose (); // Handle is now 0x0
-				Assert.Null (c.ToImage (), "ToImage/Disposed");
+				Assert.That (c.ToImage (), Is.Null, "ToImage/Disposed");
 			}
 		}
 
@@ -118,7 +118,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 
 			using (var pool = new NSAutoreleasePool ()) {
 				using var context = CGBitmapContext.Create (width, height, (NSDictionary?) null, null, null, null, null);
-				Assert.NotNull (context, "Context#1");
+				Assert.That (context, Is.Not.Null, "Context#1");
 			}
 		}
 
@@ -177,10 +177,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 						calledOnError = true;
 					});
 
-				Assert.NotNull (context, "Context#2");
+				Assert.That (context, Is.Not.Null, "Context#2");
 
 				using var img = context.ToImage ();
-				Assert.NotNull (img, "ToImage");
+				Assert.That (img, Is.Not.Null, "ToImage");
 			}
 
 			Assert.That (calledOnResolve, Is.True, "calledOnResolve#2");
@@ -252,10 +252,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 						calledOnError = true;
 					});
 
-				Assert.NotNull (context, "Context#3");
+				Assert.That (context, Is.Not.Null, "Context#3");
 
 				using var img = context.ToImage ();
-				Assert.NotNull (img, "ToImage");
+				Assert.That (img, Is.Not.Null, "ToImage");
 			}
 
 			Assert.That (calledOnResolve, Is.True, "calledOnResolve#3");
@@ -328,10 +328,10 @@ namespace MonoTouchFixtures.CoreGraphics {
 						calledOnError = true;
 					})) {
 
-					Assert.NotNull (context, "Context#4");
+					Assert.That (context, Is.Not.Null, "Context#4");
 
 					using var img = context.ToImage ();
-					Assert.NotNull (img, "ToImage");
+					Assert.That (img, Is.Not.Null, "ToImage");
 				}
 
 				Assert.That (calledOnResolve, Is.True, "calledOnResolve#4");

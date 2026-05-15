@@ -21,14 +21,14 @@ namespace MonoTouchFixtures.UIKit {
 		void CheckDefault (UITabBarController c)
 		{
 #if !__TVOS__
-			Assert.Null (c.CustomizableViewControllers, "CustomizableViewControllers");
-			Assert.NotNull (c.MoreNavigationController, "MoreNavigationController");
+			Assert.That (c.CustomizableViewControllers, Is.Null, "CustomizableViewControllers");
+			Assert.That (c.MoreNavigationController, Is.Not.Null, "MoreNavigationController");
 #endif
 			Assert.That (c.SelectedIndex, Is.EqualTo (nint.MaxValue), "SelectedIndex");
-			Assert.Null (c.SelectedViewController, "SelectedViewController");
-			Assert.Null (c.ShouldSelectViewController, "ShouldSelectViewController");
-			Assert.NotNull (c.TabBar, "TabBar");
-			Assert.Null (c.ViewControllers, "ViewControllers");
+			Assert.That (c.SelectedViewController, Is.Null, "SelectedViewController");
+			Assert.That (c.ShouldSelectViewController, Is.Null, "ShouldSelectViewController");
+			Assert.That (c.TabBar, Is.Not.Null, "TabBar");
+			Assert.That (c.ViewControllers, Is.Null, "ViewControllers");
 		}
 
 		[Test]

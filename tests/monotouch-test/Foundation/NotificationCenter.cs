@@ -30,9 +30,9 @@ namespace MonoTouchFixtures.Foundation {
 				GC.Collect (GC.MaxGeneration);
 				Thread.Sleep (10);
 			}
-			Assert.True (a, "a");
-			Assert.True (b, "b");
-			Assert.True (freed, "freed");
+			Assert.That (a, Is.True, "a");
+			Assert.That (b, Is.True, "b");
+			Assert.That (freed, Is.True, "freed");
 		}
 
 		void FreeLeaf (Action<TestNotification> destroyedCallback)
@@ -97,10 +97,10 @@ namespace MonoTouchFixtures.Foundation {
 			using (var txt = new global::UIKit.UITextField ())
 			using (var notification = global::UIKit.UITextField.Notifications.ObserveTextFieldTextDidChange (txt, (sender, e) => called = true)) {
 				NSNotificationCenter.DefaultCenter.PostNotificationName (global::UIKit.UITextField.TextFieldTextDidChangeNotification, null);
-				Assert.False (called, "Notification should not be called");
+				Assert.That (called, Is.False, "Notification should not be called");
 
 				NSNotificationCenter.DefaultCenter.PostNotificationName (global::UIKit.UITextField.TextFieldTextDidChangeNotification, txt);
-				Assert.True (called, "Notification should have been called");
+				Assert.That (called, Is.True, "Notification should have been called");
 			}
 		}
 #endif
@@ -142,7 +142,7 @@ namespace MonoTouchFixtures.Foundation {
 			for (var i = 0; i < threadCount; i++) {
 				threads [i].Join ();
 			}
-			Assert.IsNull (ex, "Exception");
+			Assert.That (ex, Is.Null, "Exception");
 		}
 	}
 }

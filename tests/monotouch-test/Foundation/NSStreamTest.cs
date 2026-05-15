@@ -21,12 +21,12 @@ namespace MonoTouchFixtures.Foundation {
 			var send = Encoding.ASCII.GetBytes ("hello, world");
 			nint n = send.Length;
 
-			Assert.AreEqual (n, write.Write (send));
+			Assert.That (write.Write (send), Is.EqualTo (n));
 			var result = new byte [n + 10];
 
-			Assert.AreEqual (n, read.Read (result, (uint) n));
+			Assert.That (read.Read (result, (uint) n), Is.EqualTo (n));
 			for (int i = 0; i < n; i++)
-				Assert.AreEqual (send [i], result [i], "Item " + i);
+				Assert.That (result [i], Is.EqualTo (send [i]), "Item " + i);
 
 		}
 
@@ -69,11 +69,11 @@ namespace MonoTouchFixtures.Foundation {
 			read.Open ();
 			write.Open ();
 			var send = new byte [] { 1, 2, 3, 4, 5 };
-			Assert.AreEqual ((nint) 5, write.Write (send));
+			Assert.That (write.Write (send), Is.EqualTo ((nint) 5));
 			var result = new byte [5];
-			Assert.AreEqual ((nint) 5, read.Read (result, 5));
+			Assert.That (read.Read (result, 5), Is.EqualTo ((nint) 5));
 			for (int i = 0; i < 5; i++)
-				Assert.AreEqual (send [i] * 10, result [i]);
+				Assert.That (result [i], Is.EqualTo (send [i] * 10));
 			listenThread.Join ();
 			listener.Stop ();
 			read.Close ();
@@ -106,11 +106,11 @@ namespace MonoTouchFixtures.Foundation {
 						read.Open ();
 						write.Open ();
 						var send = new byte [] { 1, 2, 3, 4, 5 };
-						Assert.AreEqual ((nint) 5, write.Write (send), "Write");
+						Assert.That (write.Write (send), Is.EqualTo ((nint) 5), "Write");
 						var result = new byte [5];
-						Assert.AreEqual ((nint) 5, read.Read (result, 5), "Read");
+						Assert.That (read.Read (result, 5), Is.EqualTo ((nint) 5), "Read");
 						for (int i = 0; i < 5; i++)
-							Assert.AreEqual (send [i] * 10, result [i], "Item " + i);
+							Assert.That (result [i], Is.EqualTo (send [i] * 10), "Item " + i);
 						listenThreadCompleted = listenThread.Join (TimeSpan.FromSeconds (5));
 						Assert.That (listenThreadCompleted, Is.True, "Listener thread");
 					} finally {
@@ -126,7 +126,7 @@ namespace MonoTouchFixtures.Foundation {
 			};
 			thread.Start ();
 			Assert.That (thread.Join (TimeSpan.FromSeconds (10)), Is.True, "Background thread completion");
-			Assert.IsNull (ex, "No exception");
+			Assert.That (ex, Is.Null, "No exception");
 		}
 
 		void DebugListener (object data)

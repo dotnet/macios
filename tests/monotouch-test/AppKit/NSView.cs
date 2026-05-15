@@ -23,7 +23,7 @@ namespace Xamarin.Mac.Tests {
 				length = view.GestureRecognizers.Length;
 			view.AddGestureRecognizer (new NSGestureRecognizer ());
 
-			Assert.IsTrue (view.GestureRecognizers.Length == length + 1, "NSViewShouldAddGestureRecognizer - Failed to add recognizer, count didn't change.");
+			Assert.That (view.GestureRecognizers.Length, Is.EqualTo (length + 1), "NSViewShouldAddGestureRecognizer - Failed to add recognizer, count didn't change.");
 		}
 
 		[Test]
@@ -32,11 +32,11 @@ namespace Xamarin.Mac.Tests {
 			var recognizer = new NSClickGestureRecognizer ();
 			view.AddGestureRecognizer (recognizer);
 
-			Assert.IsTrue (view.GestureRecognizers.Length != 0, "NSViewShouldRemoveGestureRecognizer - Failed to add gesture recognizer");
+			Assert.That (view.GestureRecognizers.Length, Is.Not.EqualTo (0), "NSViewShouldRemoveGestureRecognizer - Failed to add gesture recognizer");
 
 			view.RemoveGestureRecognizer (recognizer);
 
-			Assert.IsTrue (view.GestureRecognizers.Length == 0, "NSViewShouldRemoveGestureRecognizer - Failed to remove gesture recognizer");
+			Assert.That (view.GestureRecognizers.Length, Is.EqualTo (0), "NSViewShouldRemoveGestureRecognizer - Failed to remove gesture recognizer");
 		}
 
 		[Test]
@@ -45,7 +45,7 @@ namespace Xamarin.Mac.Tests {
 			var recognizers = view.GestureRecognizers;
 			view.GestureRecognizers = new NSGestureRecognizer [] { new NSClickGestureRecognizer (), new NSPanGestureRecognizer () };
 
-			Assert.IsFalse (view.GestureRecognizers == recognizers);
+			Assert.That (view.GestureRecognizers, Is.Not.EqualTo (recognizers));
 		}
 
 		[Test]
@@ -87,10 +87,10 @@ namespace Xamarin.Mac.Tests {
 
 				Assert.Throws<ArgumentNullException> (() => containerView.SortSubviews (null), "ANE");
 
-				Assert.AreEqual (3, containerView.Subviews.Length, "Presort Length");
-				Assert.AreEqual ("b", ((NSTextView) containerView.Subviews [0]).Value, "Presort Value 0");
-				Assert.AreEqual ("c", ((NSTextView) containerView.Subviews [1]).Value, "Presort Value 1");
-				Assert.AreEqual ("a", ((NSTextView) containerView.Subviews [2]).Value, "Presort Value 2");
+				Assert.That (containerView.Subviews.Length, Is.EqualTo (3), "Presort Length");
+				Assert.That (((NSTextView) containerView.Subviews [0]).Value, Is.EqualTo ("b"), "Presort Value 0");
+				Assert.That (((NSTextView) containerView.Subviews [1]).Value, Is.EqualTo ("c"), "Presort Value 1");
+				Assert.That (((NSTextView) containerView.Subviews [2]).Value, Is.EqualTo ("a"), "Presort Value 2");
 
 				containerView.SortSubviews ((x, y) => {
 					var viewX = (NSTextView) x;
@@ -104,10 +104,10 @@ namespace Xamarin.Mac.Tests {
 						return NSComparisonResult.Descending;
 				});
 
-				Assert.AreEqual (3, containerView.Subviews.Length, "Postsort Length");
-				Assert.AreEqual ("a", ((NSTextView) containerView.Subviews [0]).Value, "Postsort Value 0");
-				Assert.AreEqual ("b", ((NSTextView) containerView.Subviews [1]).Value, "Postsort Value 1");
-				Assert.AreEqual ("c", ((NSTextView) containerView.Subviews [2]).Value, "Postsort Value 2");
+				Assert.That (containerView.Subviews.Length, Is.EqualTo (3), "Postsort Length");
+				Assert.That (((NSTextView) containerView.Subviews [0]).Value, Is.EqualTo ("a"), "Postsort Value 0");
+				Assert.That (((NSTextView) containerView.Subviews [1]).Value, Is.EqualTo ("b"), "Postsort Value 1");
+				Assert.That (((NSTextView) containerView.Subviews [2]).Value, Is.EqualTo ("c"), "Postsort Value 2");
 
 				try {
 					containerView.SortSubviews ((x, y) => {
@@ -115,8 +115,8 @@ namespace Xamarin.Mac.Tests {
 					});
 					Assert.Fail ("No exception thrown");
 				} catch (Exception e) {
-					Assert.AreEqual ("An exception occurred during sorting.", e.Message, "Exception Message");
-					Assert.AreEqual ("Something went wrong", e.InnerException.Message, "InnerException Message");
+					Assert.That (e.Message, Is.EqualTo ("An exception occurred during sorting."), "Exception Message");
+					Assert.That (e.InnerException.Message, Is.EqualTo ("Something went wrong"), "InnerException Message");
 				}
 			}
 		}

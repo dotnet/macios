@@ -21,7 +21,7 @@ namespace BundledResources {
 		{
 			// files are extracted (by MonoDevelop) so we can see them in the file system
 			// that's true for simulator or devices and whatever the linker settings are
-			var dir = NSBundle.MainBundle.ResourcePath;
+			var dir = NSBundle.MainBundle.ResourcePath!;
 			Assert.True (File.Exists (Path.Combine (dir, "basn3p08.png")), "file-basn3p08.png");
 			Assert.True (File.Exists (Path.Combine (dir, "basn3p08_with_loc.png")), "file-basn3p08_with_loc.png");
 			Assert.True (File.Exists (Path.Combine (dir, "xamvideotest.mp4")), "xamvideotest.mp4");

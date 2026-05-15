@@ -8,6 +8,9 @@
 //
 
 using System.Net.NetworkInformation;
+using System.Linq;
+using System.Threading.Tasks;
+
 #if !__MACOS__
 using UIKit;
 #endif
@@ -78,10 +81,17 @@ namespace LinkSdk {
 		[Test]
 		public void PingSend ()
 		{
-			var p = new Ping ();
 			// support was implemented with https://github.com/dotnet/runtime/pull/52240
-			var reply = p.Send ("localhost");
-			Assert.That (reply.Status, Is.EqualTo (IPStatus.Success), "Pong");
+			var hosts = new string [] {
+				"localhost",
+				"www.microsoft.com",
+				"microsoft.com",
+			};
+			var timeout = TimeSpan.FromSeconds (10);
+			var tasks = hosts.Select (host => (new Ping ()).SendPingAsync (host, timeout)).ToArray ();
+			Assert.IsTrue (Task.WaitAll (tasks, timeout.Add (TimeSpan.FromSeconds (10))), "One or more of the ping requests timed out.");
+			var results = tasks.Select (task => task.Result.Status).ToArray ();
+			Assert.That (results, Has.Some.EqualTo (IPStatus.Success), "Pong any host");
 		}
 	}
 }

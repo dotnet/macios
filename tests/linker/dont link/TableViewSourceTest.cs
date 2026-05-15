@@ -32,13 +32,13 @@ namespace DontLink.UIKit {
 
 			var methods = new List<string> ();
 			foreach (var mi in typeof (UITableViewDelegate).GetMethods (flags))
-				methods.Add (mi.ToString ());
+				methods.Add (mi.ToString ()!);
 			foreach (var mi in typeof (UITableViewDataSource).GetMethods (flags))
-				methods.Add (mi.ToString ());
+				methods.Add (mi.ToString ()!);
 
 			var tvsource = new List<string> ();
 			foreach (var mi in typeof (UITableViewSource).GetMethods (flags))
-				tvsource.Add (mi.ToString ());
+				tvsource.Add (mi.ToString ()!);
 
 			methods.RemoveAll (delegate (string name)
 			{

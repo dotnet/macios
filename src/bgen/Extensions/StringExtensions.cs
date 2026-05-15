@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable enable
 
@@ -24,18 +25,30 @@ public static class StringExtensions {
 		return arity > 0 ? typeName.Substring (0, arity) : typeName;
 	}
 
-	public static string CamelCase (this string ins)
+	[return: NotNullIfNotNull (nameof (ins))]
+	public static string? CamelCase (this string? ins)
 	{
+		if (string.IsNullOrEmpty (ins))
+			return ins;
+
 		return Char.ToUpper (ins [0]) + ins.Substring (1);
 	}
 
-	public static string PascalCase (this string ins)
+	[return: NotNullIfNotNull (nameof (ins))]
+	public static string? PascalCase (this string? ins)
 	{
+		if (string.IsNullOrEmpty (ins))
+			return ins;
+
 		return Char.ToLower (ins [0]) + ins.Substring (1);
 	}
 
-	public static string Capitalize (this string str)
+	[return: NotNullIfNotNull (nameof (str))]
+	public static string? Capitalize (this string? str)
 	{
+		if (string.IsNullOrEmpty (str))
+			return str;
+
 		if (str.StartsWith ("@", StringComparison.Ordinal))
 			return char.ToUpper (str [1]) + str.Substring (2);
 

@@ -95,7 +95,7 @@ namespace Xamarin.Linker {
 		{
 			base.TryProcess ();
 
-			if (App.Registrar != RegistrarMode.ManagedStatic)
+			if (App.Registrar != RegistrarMode.ManagedStatic && App.Registrar != RegistrarMode.TrimmableStatic)
 				return;
 
 			Configuration.Application.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
@@ -105,7 +105,7 @@ namespace Xamarin.Linker {
 		{
 			base.TryEndProcess ();
 
-			if (App.Registrar != RegistrarMode.ManagedStatic) {
+			if (App.Registrar != RegistrarMode.ManagedStatic && App.Registrar != RegistrarMode.TrimmableStatic) {
 				exceptions = null;
 				return;
 			}
@@ -123,7 +123,7 @@ namespace Xamarin.Linker {
 		{
 			base.TryProcessAssembly (assembly);
 
-			if (App.Registrar != RegistrarMode.ManagedStatic)
+			if (App.Registrar != RegistrarMode.ManagedStatic && App.Registrar != RegistrarMode.TrimmableStatic)
 				return;
 
 			if (Annotations.GetAction (assembly) == AssemblyAction.Delete)
@@ -179,8 +179,31 @@ namespace Xamarin.Linker {
 
 			// Figure out if there are any types we need to process
 			var process = false;
+			var isNSObject = IsNSObject (type);
 
-			process |= IsNSObject (type);
+			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface) {
+				if (isNSObject) {
+					var ctorRef = ManagedRegistrarLookupTablesStep.FindNSObjectConstructor (type);
+					if (ctorRef is not null) {
+						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
+
+						// Implement INSObjectFactory._Xamarin_ConstructNSObject
+						ManagedRegistrarLookupTablesStep.ImplementConstructNSObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+						// Implement INativeObject._Xamarin_ConstructINativeObject
+						ManagedRegistrarLookupTablesStep.ImplementConstructINativeObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+					}
+				} else if (type.IsNativeObject ()) {
+					var ctorRef = ManagedRegistrarLookupTablesStep.FindINativeObjectConstructor (type);
+					if (ctorRef is not null) {
+						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
+
+						// Implement INativeObject._Xamarin_ConstructINativeObject
+						ManagedRegistrarLookupTablesStep.ImplementConstructINativeObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+					}
+				}
+			}
+
+			process |= isNSObject;
 			process |= StaticRegistrar.GetCategoryAttribute (type) is not null;
 
 			var registerAttribute = StaticRegistrar.GetRegisterAttribute (type);
@@ -351,6 +374,11 @@ namespace Xamarin.Linker {
 					proxyInterface = new TypeDefinition ("ObjCRuntime", proxyInterfaceName, TypeAttributes.NotPublic | TypeAttributes.Interface | TypeAttributes.Abstract);
 					method.DeclaringType.Interfaces.Add (new InterfaceImplementation (proxyInterface));
 					proxyInterfaces.Add (proxyInterface);
+
+					// The trimmer may just remove the interface implementation, because it thinks it's not used - which it technically
+					// isn't, because the consuming code is generated in the ManagedRegistrarLookupTables step, which happens after trimming.
+					var attrib = abr.CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.Interfaces, method.DeclaringType);
+					abr.AddAttributeToStaticConstructor (method.DeclaringType, attrib);
 				}
 
 				var methodName = $"{proxyInterfaceName}_{method.Name}";
@@ -364,6 +392,9 @@ namespace Xamarin.Linker {
 				// and also to the proxy interface 
 				callback.ReturnType = implementationMethod.ReturnType;
 				interfaceMethod.ReturnType = implementationMethod.ReturnType;
+
+				// make the interface method depend on the implementation method, so that the trimmer doesn't remove the implementation method
+				abr.AddDynamicDependencyAttribute (interfaceMethod, implementationMethod);
 
 				foreach (var parameter in implementationMethod.Parameters) {
 					callback.AddParameter (parameter.Name, parameter.ParameterType);

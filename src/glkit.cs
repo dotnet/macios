@@ -683,7 +683,7 @@ namespace GLKit {
 		uint Depth { get; }
 	}
 
-	/// <param name="textureInfo">The infromation about the texture loaded, or null on error.</param>
+	/// <param name="textureInfo">The information about the texture loaded, or null on error.</param>
 	///     <param name="error">On success, this value is null.   Otherwise it contains the error information.</param>
 	///     <summary>Signature used by the asynchrous texture loading methods in <see cref="GLKit.GLKTextureLoader" />.</summary>
 	delegate void GLKTextureLoaderCallback ([NullAllowed] GLKTextureInfo textureInfo, [NullAllowed] NSError error);
@@ -1092,7 +1092,7 @@ namespace GLKit {
 		/// <summary>Initializes the GLKView with the specified frame.</summary>
 		/// <remarks>
 		///           <para>This constructor is used to programmatically create a new instance of GLKView with the specified dimension in the frame.   The object will only be displayed once it has been added to a view hierarchy by calling AddSubview in a containing view.</para>
-		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB filesinstead the constructor that takes an NSCoder parameter is invoked.</para>
+		///           <para>This constructor is not invoked when deserializing objects from storyboards or XIB files; instead, the constructor that takes an NSCoder parameter is invoked.</para>
 		///         </remarks>
 		[Export ("initWithFrame:")]
 		NativeHandle Constructor (CGRect frame);

@@ -68,15 +68,15 @@ namespace Xamarin.MacDev.Tasks {
 			var taskParameterIndex = recordArgs.FindIndex (taskIndex + 1, v => {
 				if (!(v is BuildMessageEventArgs bmea))
 					return false;
-				if (bmea.Message.StartsWith ("Task Parameter:BundleIdentifier="))
+				if (bmea.Message?.StartsWith ("Task Parameter:BundleIdentifier=") == true)
 					return true;
-				if (bmea.Message.StartsWith ("TaskInput: BundleIdentifier"))
+				if (bmea.Message?.StartsWith ("TaskInput: BundleIdentifier") == true)
 					return true;
 				return false;
 			});
 			Assert.That (taskParameterIndex, Is.GreaterThan (0), "Parameter index");
 			var taskParameter = (BuildMessageEventArgs) recordArgs [taskParameterIndex];
-			var taskMessage = taskParameter.Message;
+			var taskMessage = taskParameter.Message ?? "";
 			string bundleIdentifier;
 			if (taskMessage.StartsWith ("Task Parameter:BundleIdentifier=")) {
 				bundleIdentifier = taskMessage.Substring ("Task Parameter:BundleIdentifier=".Length);

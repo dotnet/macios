@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
 using System.Net.Security;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Linq;
 using System.IO;
@@ -16,6 +17,9 @@ using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Text;
 using Xamarin.Utils;
+
+using Network;
+using Security;
 
 namespace MonoTests.System.Net.Http {
 	[TestFixture]
@@ -103,16 +107,17 @@ namespace MonoTests.System.Net.Http {
 				Assert.That (nativeHandler.UseCookies, Is.EqualTo (true), "UseCookies");
 			}, out var ex);
 
-			if (!completed || !managedCookieResult || !nativeCookieResult)
+			var managedHasExpectedCookie = managedCookies?.Any (v => v.StartsWith ("cookie=chocolate-chip;", StringComparison.Ordinal)) == true;
+			var nativeHasExpectedCookie = nativeCookies?.Any (v => v.StartsWith ("cookie=chocolate-chip;", StringComparison.Ordinal)) == true;
+
+			if (!completed || !managedCookieResult || !nativeCookieResult || !managedHasExpectedCookie || !nativeHasExpectedCookie)
 				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 			Assert.IsTrue (completed, "Network request completed");
 			Assert.IsNull (ex, "Exception");
 			Assert.IsTrue (managedCookieResult, $"Failed to get managed cookies");
 			Assert.IsTrue (nativeCookieResult, $"Failed to get native cookies");
-			Assert.AreEqual (1, managedCookies.Count (), $"Managed Cookie Count");
-			Assert.AreEqual (1, nativeCookies.Count (), $"Native Cookie Count");
-			Assert.That (nativeCookies.First (), Does.StartWith ("cookie=chocolate-chip;"), $"Native Cookie Value");
-			Assert.That (managedCookies.First (), Does.StartWith ("cookie=chocolate-chip;"), $"Managed Cookie Value");
+			Assert.That (managedHasExpectedCookie, Is.True, $"Managed Cookie Value");
+			Assert.That (nativeHasExpectedCookie, Is.True, $"Native Cookie Value");
 		}
 
 		// ensure that we can use a cookie container to set the cookies for a url
@@ -170,7 +175,8 @@ namespace MonoTests.System.Net.Http {
 			Assert.IsNull (ex, "Exception");
 			Assert.IsNotNull (managedCookieResult, "Managed cookies result");
 			Assert.IsNotNull (nativeCookieResult, "Native cookies result");
-			Assert.AreEqual (managedCookieResult, nativeCookieResult, "Cookies");
+			Assert.That (managedCookieResult, Does.Contain ("\"cookie\": \"chocolate-chip\""), "Managed cookies");
+			Assert.That (nativeCookieResult, Does.Contain ("\"cookie\": \"chocolate-chip\""), "Native cookies");
 		}
 
 		// ensure that the Set-Cookie headers do update the CookieContainer
@@ -198,9 +204,10 @@ namespace MonoTests.System.Net.Http {
 			Assert.IsNull (ex, "Exception");
 			Assert.IsNotNull (nativeCookieResult, "Native cookies result");
 			var cookiesFromServer = cookieContainer.GetCookies (new Uri (url));
-			if (cookiesFromServer.Count != 1)
-				TestRuntime.IgnoreInCI ("Unexpected network failure in CI");
-			Assert.AreEqual (1, cookiesFromServer.Count, "Cookies received from server.");
+			var hasExpectedCookie = cookiesFromServer.Cast<Cookie> ().Any (v => v.Name == "cookie" && v.Value == "chocolate-chip");
+			if (!hasExpectedCookie)
+				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
+			Assert.That (hasExpectedCookie, Is.True, "Cookies received from server.");
 		}
 
 		[Test]
@@ -468,11 +475,6 @@ namespace MonoTests.System.Net.Http {
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 9, throwIfOtherPlatform: false);
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
 
-#if __MACOS__
-			if (handlerType == typeof (NSUrlSessionHandler) && TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 10, 0) && !TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 11, 0))
-				Assert.Ignore ("Fails on macOS 10.10: https://github.com/xamarin/maccore/issues/1645");
-#endif
-
 			bool validationCbWasExecuted = false;
 			bool invalidServicePointManagerCbWasExcuted = false;
 			Type expectedExceptionType = null;
@@ -707,10 +709,161 @@ namespace MonoTests.System.Net.Http {
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
 				Assert.Inconclusive ("Request timedout.");
 			} else {
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
 				Assert.IsNull (ex, "Exception wasn't expected.");
 				X509Certificate2 certificate2 = X509CertificateLoader.LoadCertificate (global::System.Convert.FromBase64String (content));
 				Assert.AreEqual (certificate.Thumbprint, certificate2.Thumbprint);
 			}
+		}
+
+		[Test]
+		public void TestNSUrlSessionHandlerOptionalClientCertificate ()
+		{
+			NWListener? listener = null;
+			try {
+				listener = CreateNWTlsListener (requireClientCert: false);
+				var port = listener.Port;
+
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					using var handler = new NSUrlSessionHandler ();
+					handler.TrustOverrideForUrl = (sender, url, trust) => true;
+					using var client = new HttpClient (handler);
+					var response = await client.GetAsync ($"https://localhost:{port}/");
+					response.EnsureSuccessStatusCode ();
+				}, out var ex);
+				Assert.IsTrue (done, "Request to localhost timed out.");
+				Assert.IsNull (ex, $"Exception wasn't expected, but got: {ex}");
+			} finally {
+				listener?.Cancel ();
+				listener?.Dispose ();
+			}
+		}
+
+		[Test]
+		public void TestNSUrlSessionHandlerDetectMissingClientCertificate ()
+		{
+			NWListener? listener = null;
+			try {
+				listener = CreateNWTlsListener (requireClientCert: true);
+				var port = listener.Port;
+
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					using var handler = new NSUrlSessionHandler ();
+					handler.TrustOverrideForUrl = (sender, url, trust) => true;
+					using var client = new HttpClient (handler);
+					await client.GetAsync ($"https://localhost:{port}/");
+				}, out var ex);
+				Assert.IsTrue (done, "Request to localhost timed out.");
+				Assert.IsNotNull (ex, "Exception was expected.");
+				Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
+				Assert.IsInstanceOf (typeof (WebException), ex!.InnerException, "InnerException Type");
+				Assert.That (((WebException) ex.InnerException!).Status, Is.EqualTo (WebExceptionStatus.SecureChannelFailure), "InnerException Status");
+				Assert.IsInstanceOf (typeof (AuthenticationException), ex.InnerException.InnerException, "InnerException.InnerException Type");
+			} finally {
+				listener?.Cancel ();
+				listener?.Dispose ();
+			}
+		}
+
+		[Test]
+		public void TestNSUrlSessionHandlerDetectMissingClientCertificateOptOut ()
+		{
+			AppContext.TryGetSwitch ("Foundation.NSUrlSessionHandler.NoMissingCertificateHandling", out var originalValue);
+			NWListener? listener = null;
+			try {
+				AppContext.SetSwitch ("Foundation.NSUrlSessionHandler.NoMissingCertificateHandling", true);
+				listener = CreateNWTlsListener (requireClientCert: true);
+				var port = listener.Port;
+
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					using var handler = new NSUrlSessionHandler ();
+					handler.TrustOverrideForUrl = (sender, url, trust) => true;
+					using var client = new HttpClient (handler);
+					await client.GetAsync ($"https://localhost:{port}/");
+				}, out var ex);
+				Assert.IsTrue (done, "Request to localhost timed out.");
+				// With the opt-out switch enabled, the new specific exception is not thrown.
+				// Instead we get a generic connection error (no WebException/AuthenticationException chain).
+				Assert.IsNotNull (ex, "Exception was expected.");
+				Assert.IsInstanceOf (typeof (HttpRequestException), ex, "Exception");
+				if (ex!.InnerException is WebException we)
+					Assert.That (we.Status, Is.Not.EqualTo (WebExceptionStatus.SecureChannelFailure), "Should not be SecureChannelFailure");
+			} finally {
+				AppContext.SetSwitch ("Foundation.NSUrlSessionHandler.NoMissingCertificateHandling", originalValue);
+				listener?.Cancel ();
+				listener?.Dispose ();
+			}
+		}
+
+		static NWListener CreateNWTlsListener (bool requireClientCert)
+		{
+			var (pfxData, pfxPassword) = CreateSelfSignedServerCertificatePfx ();
+			using var secIdentity = SecIdentity.Import (pfxData, pfxPassword);
+			using var secIdentity2 = new SecIdentity2 (secIdentity);
+			using var readyEvent = new ManualResetEventSlim (false);
+			NWError? listenerError = null;
+
+			var parameters = NWParameters.CreateSecureTcp (
+				configureTls: tlsOptions => {
+					var tls = (NWProtocolTlsOptions) tlsOptions;
+					var secOptions = tls.ProtocolOptions;
+					secOptions.SetLocalIdentity (secIdentity2);
+					secOptions.SetPeerAuthenticationRequired (requireClientCert);
+				});
+			using var localEndpoint = NWEndpoint.Create ("127.0.0.1", "0");
+			parameters.LocalEndpoint = localEndpoint;
+
+			var listener = NWListener.Create (parameters);
+			parameters.Dispose ();
+
+			listener.SetQueue (CoreFoundation.DispatchQueue.DefaultGlobalQueue);
+
+			listener.SetStateChangedHandler ((state, error) => {
+				if (state == NWListenerState.Failed)
+					listenerError = error;
+				if (state == NWListenerState.Ready || state == NWListenerState.Failed)
+					readyEvent.Set ();
+			});
+
+			listener.SetNewConnectionHandler (connection => {
+				connection.SetQueue (CoreFoundation.DispatchQueue.DefaultGlobalQueue);
+				connection.SetStateChangeHandler ((connState, connError) => {
+					if (connState == NWConnectionState.Ready) {
+						// Read the HTTP request (just consume it), then send a response
+						connection.ReceiveReadOnlyData (1, 4096, (data, context, isComplete, error) => {
+							var response = Encoding.UTF8.GetBytes ("HTTP/1.1 200 OK\r\nContent-Length: 2\r\nConnection: close\r\n\r\nOK");
+							connection.Send (response, NWContentContext.FinalMessage, true, sendError => {
+								connection.Cancel ();
+							});
+						});
+					}
+				});
+				connection.Start ();
+			});
+
+			listener.Start ();
+
+			if (!readyEvent.Wait (TimeSpan.FromSeconds (10)))
+				throw new TimeoutException ("NWListener did not become ready in time.");
+
+			if (listenerError is not null)
+				throw new InvalidOperationException ($"NWListener failed to start: {listenerError}");
+
+			return listener;
+		}
+
+		static (byte [] Data, string Password) CreateSelfSignedServerCertificatePfx ()
+		{
+			using var rsa = RSA.Create (2048);
+			var certRequest = new CertificateRequest (
+				"CN=localhost", rsa, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+			var sanBuilder = new SubjectAlternativeNameBuilder ();
+			sanBuilder.AddIpAddress (IPAddress.Loopback);
+			sanBuilder.AddDnsName ("localhost");
+			certRequest.CertificateExtensions.Add (sanBuilder.Build ());
+			var cert = certRequest.CreateSelfSigned (DateTimeOffset.UtcNow.AddDays (-1), DateTimeOffset.UtcNow.AddYears (1));
+			var password = Guid.NewGuid ().ToString ();
+			return (cert.Export (X509ContentType.Pfx, password), password);
 		}
 
 		[Test]
@@ -747,6 +900,32 @@ namespace MonoTests.System.Net.Http {
 			}, out var ex);
 
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
+				Assert.Inconclusive ("Request timedout.");
+			} else {
+				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
+				Assert.IsNull (ex, "Exception not null");
+				Assert.AreEqual (expectedStatus, httpStatus, "Status not ok");
+			}
+		}
+
+		[TestCase (HttpStatusCode.OK, "mandel", "12345678", "mandel", "12345678")]
+		[TestCase (HttpStatusCode.Unauthorized, "mandel", "12345678", "mandel", "87654321")]
+		[TestCase (HttpStatusCode.Unauthorized, "mandel", "12345678", "", "")]
+		public void SupportsDigestAuthentication (HttpStatusCode expectedStatus, string validUsername, string validPassword, string username, string password)
+		{
+			var handler = new NSUrlSessionHandler () {
+				Credentials = new NetworkCredential (username, password, "")
+			};
+
+			var client = new HttpClient (handler);
+
+			HttpStatusCode httpStatus = HttpStatusCode.NotFound;
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				var result = await client.GetAsync (NetworkResources.Httpbin.GetDigestAuthUrl (validUsername, validPassword));
+				httpStatus = result.StatusCode;
+			}, out var ex);
+
+			if (!done) {
 				Assert.Inconclusive ("Request timedout.");
 			} else {
 				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);

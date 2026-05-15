@@ -13,26 +13,26 @@ using Microsoft.DotNet.XHarness.iOS.Shared.Logging;
 using Microsoft.DotNet.XHarness.iOS.Shared.Utilities;
 
 namespace Xharness.Jenkins.TestTasks {
-	public abstract class TestTasks : IEnvManager, IEventLogger, ITestTask {
+	public abstract class TestTask : IEnvManager, IEventLogger {
 		static int counter;
-		static DriveInfo rootDrive;
+		static DriveInfo? rootDrive;
 
 		protected readonly Stopwatch waitingDuration = new ();
 
 		#region Private vars
 
-		ILog testLog;
+		ILog? testLog;
 		bool? supportsParallelExecution;
-		string testName;
-		Task executeTask;
+		string? testName;
+		Task? executeTask;
 
 		#endregion
 
 		#region Public vars
 
-		public Dictionary<string, string> Environment = new ();
-		public Task InitialTask { get; set; } // a task that's executed before this task's ExecuteAsync method.
-		public Task CompletedTask; // a task that's executed after this task's ExecuteAsync method.
+		public Dictionary<string, string?> Environment = new ();
+		public Task? InitialTask { get; set; } // a task that's executed before this task's ExecuteAsync method.
+		public Task? CompletedTask; // a task that's executed after this task's ExecuteAsync method.
 		public List<Resource> Resources = new ();
 
 		#endregion
@@ -41,12 +41,12 @@ namespace Xharness.Jenkins.TestTasks {
 
 		public int ID { get; private set; }
 		public bool BuildOnly { get; set; }
-		public KnownIssue KnownFailure { get; set; }
-		public string ProjectConfiguration { get; set; }
-		public string ProjectPlatform { get; set; }
+		public KnownIssue? KnownFailure { get; set; }
+		public string? ProjectConfiguration { get; set; }
+		public string? ProjectPlatform { get; set; }
 
 		protected static string Timestamp => Harness.Helpers.Timestamp;
-		public string ProjectFile => TestProject?.Path;
+		public string ProjectFile => TestProject?.Path ?? "";
 		public bool HasCustomTestName => testName is not null;
 
 		public bool NotStarted => (ExecutionResult & TestExecutingResult.StateMask) == TestExecutingResult.NotStarted;
@@ -80,19 +80,19 @@ namespace Xharness.Jenkins.TestTasks {
 		public Stopwatch DurationStopWatch { get; } = new ();
 		public TimeSpan Duration => DurationStopWatch.Elapsed;
 
-		string failureMessage;
-		public string FailureMessage {
+		string? failureMessage;
+		public string? FailureMessage {
 			get { return failureMessage; }
 			set {
 				failureMessage = value;
-				MainLog.WriteLine (failureMessage);
+				MainLog.WriteLine (failureMessage ?? "");
 			}
 		}
 
 		public ILog MainLog
 			=> testLog ??= Logs.Create ($"main-{Timestamp}.log", "Main log");
 
-		ILogs logs;
+		ILogs? logs;
 		public ILogs Logs => logs ??= new Logs (LogDirectory);
 
 		#endregion
@@ -112,11 +112,11 @@ namespace Xharness.Jenkins.TestTasks {
 
 		#region Virtual
 
-		public virtual TestProject TestProject { get; set; }
+		public virtual TestProject? TestProject { get; set; }
 		public virtual TestPlatform Platform { get; set; }
-		public virtual string ProgressMessage { get; }
-		public virtual string Mode { get; set; }
-		public virtual string Variation { get; set; }
+		public virtual string? ProgressMessage { get; }
+		public virtual string? Mode { get; set; }
+		public virtual string? Variation { get; set; }
 
 		public virtual bool SupportsParallelExecution {
 			get => supportsParallelExecution ?? true;
@@ -174,7 +174,7 @@ namespace Xharness.Jenkins.TestTasks {
 
 		#endregion
 
-		public TestTasks ()
+		public TestTask ()
 		{
 			ID = Interlocked.Increment (ref counter);
 		}
@@ -265,7 +265,7 @@ namespace Xharness.Jenkins.TestTasks {
 
 		protected void AddCILogFiles (StreamReader stream)
 		{
-			string line;
+			string? line;
 			while ((line = stream.ReadLine ()) is not null) {
 				if (!line.StartsWith ("@MonkeyWrench: ", StringComparison.Ordinal))
 					continue;
@@ -287,11 +287,11 @@ namespace Xharness.Jenkins.TestTasks {
 			}
 		}
 
-		public string GuessFailureReason (IReadableLog log)
+		public string? GuessFailureReason (IReadableLog log)
 		{
 			try {
 				using (var reader = log.GetReader ()) {
-					string line;
+					string? line;
 					var error_msg = new System.Text.RegularExpressions.Regex ("([A-Z][A-Z][0-9][0-9][0-9][0-9]:.*)");
 					while ((line = reader.ReadLine ()) is not null) {
 						var match = error_msg.Match (line);
@@ -310,7 +310,9 @@ namespace Xharness.Jenkins.TestTasks {
 		// It will also pause the duration.
 		public async Task<IAcquiredResource> NotifyBlockingWaitAsync (Task<IAcquiredResource> task)
 		{
-			var rv = new BlockingWait ();
+			var rv = new BlockingWait () {
+				OnDispose = DurationStopWatch.Stop,
+			};
 
 			// Stop the timer while we're waiting for a resource
 			DurationStopWatch.Stop ();
@@ -320,20 +322,19 @@ namespace Xharness.Jenkins.TestTasks {
 			ExecutionResult = ExecutionResult & ~TestExecutingResult.Waiting;
 			waitingDuration.Stop ();
 			DurationStopWatch.Start ();
-			rv.OnDispose = DurationStopWatch.Stop;
 			return rv;
 		}
 
 		class BlockingWait : IAcquiredResource {
-			public IAcquiredResource Wrapped;
-			public Action OnDispose;
+			public IAcquiredResource? Wrapped;
+			public required Action OnDispose;
 
-			public Resource Resource { get { return Wrapped.Resource; } }
+			public Resource Resource { get { return Wrapped!.Resource; } }
 
 			public void Dispose ()
 			{
 				OnDispose ();
-				Wrapped.Dispose ();
+				Wrapped!.Dispose ();
 			}
 		}
 	}

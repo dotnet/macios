@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 #if LEGACY_TOOLS || BUNDLER
 using Mono.Cecil;
+using Mono.Tuner;
 
 using Xamarin.Bundler;
+using Xamarin.Linker;
 using Registrar;
 #endif
 
@@ -405,7 +408,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "CoreNFC", "CoreNFC", new Version (11, 0), new Version (15, 0), true }, /* not always present, e.g. iPad w/iOS 12, so must be weak linked; doesn't work in the simulator in Xcode 12 (https://stackoverflow.com/q/63915728/183422), but works in at least Xcode 15 (maybe earlier too) */
 				{ "DeviceCheck", "DeviceCheck", new Version (11, 0), new Version (13, 0) },
 				{ "IdentityLookup", "IdentityLookup", 11 },
-				{ "IOSurface", "IOSurface", new Version (11, 0), NotAvailableInSimulator /* Not available in the simulator (the header is there, but broken) */  },
+				{ "IOSurface", "IOSurface", new Version (11, 0), new Version (26, 0) /* The headers were broken at some point, not sure when they started working again */ },
 				{ "CoreML", "CoreML", 11 },
 				{ "Vision", "Vision", 11 },
 				{ "FileProvider", "FileProvider", 11 },
@@ -451,7 +454,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "CoreLocationUI", "CoreLocationUI", 15,0 },
 
 				{ "DataDetection", "DataDetection", 15, 0 },
-				{ "Phase", "PHASE", new Version (15,0), NotAvailableInSimulator /* no headers in beta 2 */ },
+				{ "Phase", "PHASE", new Version (15, 0), new Version (26, 0) /* not certain about the exact version when this framework was added to the simulator, but this should be a safe default */ },
 				{ "OSLog", "OSLog", 15,0 },
 				{ "ShazamKit", "ShazamKit", new Version (15,0), new Version (16, 0)},
 				{ "ThreadNetwork", "ThreadNetwork", new Version (15,0), NotAvailableInSimulator},
@@ -554,7 +557,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 					{ "DeviceCheck", "DeviceCheck", new Version (11, 0), new Version (13, 0) },
 					{ "CoreML", "CoreML", 11 },
-					{ "IOSurface", "IOSurface", new Version (11, 0), NotAvailableInSimulator /* Not available in the simulator (the header is there, but broken) */  },
+					{ "IOSurface", "IOSurface", new Version (11, 0), new Version (26, 0) /* The headers were broken at some point, not sure when they started working again */ },
 					{ "Vision", "Vision", 11 },
 
 					{ "CoreServices", "MobileCoreServices", 12 },
@@ -617,6 +620,7 @@ public class Frameworks : Dictionary<string, Framework> {
 			var v16_1 = new Version (16, 1);
 			var v18_0 = new Version (18, 0);
 			var v26_0 = new Version (26, 0);
+			var v16_0 = new Version (16, 0);
 			foreach (var f in catalyst_frameworks.Values) {
 				switch (f.Name) {
 				// These frameworks were added to Catalyst after they were added to iOS, so we have to adjust the Versions fields
@@ -638,6 +642,9 @@ public class Frameworks : Dictionary<string, Framework> {
 				case "Cinematic":
 					f.Version = v26_0;
 					break;
+				case "MediaSetup":
+					f.Version = v16_0;
+					break;
 				case "BrowserEngineKit":
 				case "DeviceDiscoveryExtension":
 					f.Version = v18_0;
@@ -646,7 +653,6 @@ public class Frameworks : Dictionary<string, Framework> {
 				case "DeviceDiscoveryUI": // xtro and introspection says it's not in Mac Catalyst, Apple's website says it is. For now, listen to xtro and introspection, until proven otherwise.
 				case "OpenGLES":
 				case "NewsstandKit":
-				case "MediaSetup":
 				case "NotificationCenter":
 				case "GLKit":
 				case "VideoSubscriberAccount":
@@ -700,20 +706,70 @@ public class Frameworks : Dictionary<string, Framework> {
 		}
 	}
 
-#if LEGACY_TOOLS || BUNDLER
-	static void Gather (Application app, AssemblyDefinition product_assembly, HashSet<string> frameworks, HashSet<string> weak_frameworks, Func<Framework, bool> include_framework)
+#if BUNDLER
+	public static bool TryGetFramework (Application app, TypeDefinition td, [NotNullWhen (true)] out string? framework)
+	{
+		framework = null;
+
+		if (td.HasCustomAttributes) {
+			foreach (var attrib in td.CustomAttributes) {
+				if (!attrib.AttributeType.Is ("ObjCRuntime", "ObjectiveCFrameworkAttribute"))
+					continue;
+				if (attrib.ConstructorArguments.Count != 1)
+					continue;
+				var arg = attrib.ConstructorArguments [0];
+				if (arg.Value is not string stringArgument)
+					continue;
+				framework = stringArgument;
+				return framework is not null;
+			}
+		}
+
+		if (!app.Profile.IsProductAssembly (td.Module.Assembly))
+			return false;
+
+		framework = td.Namespace;
+		return framework is not null;
+	}
+
+	public static bool TryGetFramework (Application app, TypeDefinition td, [NotNullWhen (true)] out Framework? framework)
+	{
+		framework = null;
+
+		if (!TryGetFramework (app, td, out string? frameworkName))
+			return false;
+
+		var all_frameworks = GetFrameworks (app.Platform, app.IsSimulatorBuild);
+		if (all_frameworks is null)
+			return false;
+		return all_frameworks.TryGetValue (frameworkName, out framework);
+	}
+
+	static void Gather (Application app, IEnumerable<AssemblyDefinition> assemblies, HashSet<string> frameworks, HashSet<string> weak_frameworks, Func<Framework, bool> include_framework)
 	{
 		var namespaces = new HashSet<string> ();
 
-		// Collect all the namespaces.
-		foreach (var md in product_assembly.Modules) {
-			foreach (var td in md.Types) {
-#if !XAMCORE_5_0
-				// AVCustomRoutingControllerDelegate was incorrectly placed in AVKit
-				if (td.Namespace == "AVKit" && td.Name == "AVCustomRoutingControllerDelegate")
-					namespaces.Add ("AVRouting");
-#endif
-				namespaces.Add (td.Namespace);
+		// Process our product assembly + any assembly with the [ObjectiveCFramework] attribute, and collect all the namespaces that are used in those assemblies.
+		// For non-product assemblies, we only look at types with the [ObjectiveCFramework] attribute.
+		foreach (var assembly in assemblies) {
+			var hasObjectiveCFrameworkAttribute = false;
+			if (!app.Profile.IsProductAssembly (assembly)) {
+				hasObjectiveCFrameworkAttribute = assembly.MainModule.HasTypeReference ("ObjCRuntime.ObjectiveCFrameworkAttribute");
+				if (!hasObjectiveCFrameworkAttribute)
+					continue;
+			}
+
+			// Collect all the namespaces.
+			foreach (var md in assembly.Modules) {
+				foreach (var td in md.Types) {
+					if (hasObjectiveCFrameworkAttribute && !td.HasCustomAttribute ("ObjCRuntime", "ObjectiveCFrameworkAttribute"))
+						continue;
+
+					if (TryGetFramework (app, td, out string? framework)) {
+						namespaces.Add (framework);
+						continue;
+					}
+				}
 			}
 		}
 
@@ -778,9 +834,9 @@ public class Frameworks : Dictionary<string, Framework> {
 		return true;
 	}
 
-	public static void Gather (Application app, AssemblyDefinition product_assembly, HashSet<string> frameworks, HashSet<string> weak_frameworks)
+	public static void Gather (Application app, IEnumerable<AssemblyDefinition> assemblies, HashSet<string> frameworks, HashSet<string> weak_frameworks)
 	{
-		Gather (app, product_assembly, frameworks, weak_frameworks, (framework) => FilterFrameworks (app, framework));
+		Gather (app, assemblies, frameworks, weak_frameworks, (framework) => FilterFrameworks (app, framework));
 	}
-#endif // LEGACY_TOOLS || BUNDLER
+#endif // BUNDLER
 }

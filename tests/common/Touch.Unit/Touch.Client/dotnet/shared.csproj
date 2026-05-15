@@ -1,7 +1,6 @@
 <Project>
   <PropertyGroup>
     <DefineConstants>NUNITLITE_NUGET</DefineConstants>
-    <LangVersion>latest</LangVersion>
     <AssemblyName>Touch.Client</AssemblyName>
 
     <!-- warning CA1416: This call site is reachable on: '...'. '...' is only supported on: '...'. -->

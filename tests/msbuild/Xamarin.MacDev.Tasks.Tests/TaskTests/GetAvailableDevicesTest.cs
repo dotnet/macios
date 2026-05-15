@@ -139,7 +139,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [1].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 2 mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 2 Name mismatch.");
-				Assert.That (task.DiscardedDevices [1].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 2 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [1].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 2 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 2 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 2 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 2 reason mismatch.");
@@ -216,7 +216,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [2].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 3 Name mismatch.");
-				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 3 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 3 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 3 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 3 reason mismatch.");
@@ -306,7 +306,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [2].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 3 Name mismatch.");
-				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 3 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 3 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 3 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 3 reason mismatch.");
@@ -393,7 +393,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [4].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 5 ItemSpec mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 5 Description mismatch.");
-				Assert.That (task.DiscardedDevices [4].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 5 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [4].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 5 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 5 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 5 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 5 reason mismatch.");
@@ -487,7 +487,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [3].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 4 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 4 Name mismatch.");
-				Assert.That (task.DiscardedDevices [3].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 4 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [3].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 4 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 4 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 4 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 4 reason mismatch.");
@@ -573,7 +573,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [2].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 3 Name mismatch.");
-				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 3 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 3 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 3 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 3 reason mismatch.");
@@ -651,7 +651,7 @@ namespace Xamarin.MacDev.Tasks {
 
 				Assert.That (task.DiscardedDevices [4].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 5 ItemSpec mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro"), "Discarded Device 5 Description mismatch.");
-				Assert.That (task.DiscardedDevices [4].GetMetadata ("OSVersion"), Is.EqualTo (""), "Discarded Device 5 OSVersion mismatch.");
+				Assert.That (task.DiscardedDevices [4].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 5 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 5 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 5 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 5 reason mismatch.");

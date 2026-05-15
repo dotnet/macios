@@ -162,7 +162,7 @@
 		<None Include="$(RootTestsDirectory)/test-libraries/frameworks/.libs/$(RuntimeIdentifier)/CompressedXpcServiceF.xpc.zip" CopyToPublishDirectory="PreserveNewest" PublishFolderType="CompressedXPCServices" />
 		<None Update="UnknownI.bin" CopyToOutputDirectory="PreserveNewest" PublishFolderType="Unknown" />
 		<!-- any files in the root directory will make macOS or Mac Catalyst app bundles invalid, and code signing will fail, so skip the following for those platforms when signing the app bundle-->
-		<None Update="UnknownJ.bin" CopyToOutputDirectory="PreserveNewest" PublishFolderType="RootDirectory" Condition="('$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst') Or '$(_IsAppSigned)' == 'false'" />
+		<None Update="UnknownJ.bin" CopyToOutputDirectory="PreserveNewest" PublishFolderType="RootDirectory" Condition="'$(SdkIsDesktop)' != 'true' Or '$(_IsAppSigned)' == 'false'" />
 
 		<None Update="SomewhatUnknownA.bin" CopyToOutputDirectory="PreserveNewest" Link="Subfolder/SomewhatUnknownA.bin" PublishFolderType="None" />
 		<None Update="SomewhatUnknownB.bin" CopyToOutputDirectory="PreserveNewest" Link="Subfolder/SomewhatUnknownB.bin" PublishFolderType="Assembly" />
@@ -177,7 +177,7 @@
 		<None Include="$(RootTestsDirectory)/test-libraries/frameworks/.libs/$(RuntimeIdentifier)/CompressedXpcServiceH.xpc.zip"   CopyToPublishDirectory="PreserveNewest" Link="Subfolder/CompressedXpcServiceH.xpc" PublishFolderType="CompressedXPCServices" />
 		<None Update="SomewhatUnknownI.bin" CopyToOutputDirectory="PreserveNewest" Link="Subfolder/SomewhatUnknownI.bin" PublishFolderType="Unknown" />
 		<!-- any files in the root directory will make macOS or Mac Catalyst app bundles invalid, and code signing will fail, so skip the following for those platforms when signing the app bundle-->
-		<None Update="SomewhatUnknownJ.bin" CopyToOutputDirectory="PreserveNewest" Link="Subfolder/SomewhatUnknownJ.bin" PublishFolderType="RootDirectory" Condition="('$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst') Or '$(_IsAppSigned)' == 'false'" />
+		<None Update="SomewhatUnknownJ.bin" CopyToOutputDirectory="PreserveNewest" Link="Subfolder/SomewhatUnknownJ.bin" PublishFolderType="RootDirectory" Condition="'$(SdkIsDesktop)' != 'true' Or '$(_IsAppSigned)' == 'false'" />
 
 		<!-- https://github.com/dotnet/macios/issues/15727 -->
 		<None Include="$(RootTestsDirectory)/test-libraries/frameworks/.libs/$(RuntimeIdentifier)/Framework.With.Dots.framework"           CopyToPublishDirectory="PreserveNewest" PublishFolderType="AppleFramework" />
@@ -217,6 +217,10 @@
 		<!-- Content with just PublishFolderType=None: not bundled -->
 		<Content Include="../ContentH.txt">
 			<PublishFolderType>None</PublishFolderType>
+		</Content>
+		<!-- Content with PublishFolderType=Resource: bundled (https://github.com/dotnet/macios/issues/25053) -->
+		<Content Include="../ContentJ.txt">
+			<PublishFolderType>Resource</PublishFolderType>
 		</Content>
 
 		<!-- EmbeddedResource items -->
@@ -287,6 +291,10 @@
 		<!-- BundleResource with just PublishFolderType=None: not bundled -->
 		<BundleResource Include="../BundleResourceH.txt">
 			<PublishFolderType>None</PublishFolderType>
+		</BundleResource>
+		<!-- BundleResource with PublishFolderType=Resource: bundled (https://github.com/dotnet/macios/issues/25053) -->
+		<BundleResource Include="../BundleResourceJ.txt">
+			<PublishFolderType>Resource</PublishFolderType>
 		</BundleResource>
 
 		<None Remove="@(Content)" />

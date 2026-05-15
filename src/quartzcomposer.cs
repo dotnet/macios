@@ -158,19 +158,10 @@ namespace QuartzComposer {
 		[Field ("QCCompositionInputDestinationImageKey")]
 		NSString InputDestinationImageKey { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' instead.")]
-		[Field ("QCCompositionInputRSSFeedURLKey")]
-		NSString InputRSSFeedURLKey { get; }
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' instead.")]
-		[Field ("QCCompositionInputRSSArticleDurationKey")]
-		NSString InputRSSArticleDurationKey { get; }
+#if !XAMCORE_5_0
+		// The 'InputRSSFeedURLKey' property has manual bindings.
+		// The 'InputRSSArticleDurationKey' property has manual bindings.
+#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -280,12 +271,9 @@ namespace QuartzComposer {
 		[Field ("QCCompositionProtocolScreenSaver")]
 		NSString ProtocolScreenSaver { get; }
 
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Deprecated (PlatformName.MacOSX, 10, 14, message: "Use 'Metal' instead.")]
-		[Field ("QCCompositionProtocolRSSVisualizer")]
-		NSString ProtocolRSSVisualizer { get; }
+#if !XAMCORE_5_0
+		// The 'ProtocolRSSVisualizer' property has manual bindings.
+#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

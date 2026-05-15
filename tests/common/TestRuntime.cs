@@ -491,6 +491,16 @@ partial class TestRuntime {
 #else
 				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
 #endif
+			case 5:
+#if __TVOS__
+				return ChecktvOSSystemVersion (26, 5);
+#elif __IOS__
+				return CheckiOSSystemVersion (26, 5);
+#elif MONOMAC
+				return CheckMacSystemVersion (26, 5);
+#else
+				throw new NotImplementedException ($"Missing platform case for Xcode {major}.{minor}");
+#endif
 			default:
 				throw new NotImplementedException ($"Missing version logic for checking for Xcode {major}.{minor}");
 			}
@@ -1663,6 +1673,11 @@ partial class TestRuntime {
 			if (msg.Contains ("The operation has timed out.")) {
 				IgnoreInCI ($"Ignored due to network error: {wex}");
 			}
+		}
+
+		var se = FindInner<System.Net.Sockets.SocketException> (ex);
+		if (se is not null && se.SocketErrorCode == System.Net.Sockets.SocketError.TimedOut) {
+			IgnoreInCI ($"Ignored due to socket timeout: {se.Message}");
 		}
 	}
 

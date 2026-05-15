@@ -8,6 +8,10 @@ This is the main branch targeting .NET 9.
 
 Ignore comments from the user 'vs-mobiletools-engineering-service2' when processing issues and pull requests.
 
+## Pull request review instructions
+
+- Don't report potential C# compilation errors (the compiler will report those).
+
 ## Repository Overview
 
 This repository provides C# bindings and tooling for Apple platforms:
@@ -152,6 +156,7 @@ Common project structure for Apple platform apps:
 2. Run `make` to rebuild affected components
 3. Test changes using appropriate test suite
 4. Verify on both simulator and device when possible
+5. Check if the documentation in the `docs/` directory needs to be updated to reflect the changes (e.g. new MSBuild properties should be documented in `docs/building-apps/build-properties.md`)
 
 ### Code Style
 
@@ -332,3 +337,8 @@ try {
     // Code here
 }
 ```
+
+## Git Branch Safety
+
+* When creating a branch from `origin/main` (for example `git checkout -b <name> origin/main`), the new branch may be configured to track `origin/main` depending on how it is created and your Git configuration. In that case, a later `git push` or `git push origin` may try to push to `main`.
+* To avoid accidentally pushing to main, use `git push -u origin <branch>` for the first push so Git creates `origin/<branch>` and sets the branch's upstream safely. If you want to be completely explicit, use `git push origin <branch>:<branch>`.

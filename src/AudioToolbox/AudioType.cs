@@ -281,7 +281,7 @@ namespace AudioToolbox {
 		const int AudioUnitSampleFractionBits = 24;
 		const AudioFormatFlags AudioFormatFlagIsBigEndian = 0;
 
-		/// <summary>Developers should not use this deprecated field. Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preffered instead.</summary>
+		/// <summary>Developers should not use this deprecated field. Canonical is no longer encouraged, since fixed-point no longer provides a performance advantage over floating point. 'AudioFormatFlagsNativeFloatPacked' is preferred instead.</summary>
 		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -1834,7 +1834,7 @@ namespace AudioToolbox {
 		Hvxc = 9,
 	}
 
-	/// <summary>SMPTE-based time representation.   SMPTE times are used to synchronize an point in the audio stream with some external event.</summary>
+	/// <summary>SMPTE-based time representation. SMPTE times are used to synchronize a point in the audio stream with some external event.</summary>
 	///     <remarks>SMPTE stands for "Society of Motion Picture and Television Engineers"</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]

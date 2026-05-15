@@ -13,8 +13,7 @@ using UIKit;
 using WatchConnectivity;
 #endif
 
-// Disable until we get around to enable + fix any issues.
-#nullable disable
+#nullable enable
 
 namespace Introspection {
 
@@ -130,7 +129,7 @@ namespace Introspection {
 
 			var declaredType = method.DeclaringType;
 
-			switch (declaredType.Name) {
+			switch (declaredType?.Name) {
 #if __MACCATALYST__
 			case "AVPictureInPictureControllerContentSource":
 				switch (name) {
@@ -389,7 +388,7 @@ namespace Introspection {
 			case "toggleBoldface:":
 			case "toggleItalics:":
 			case "toggleUnderline:":
-				if (declaredType.Name == "UIResponder")
+				if (declaredType?.Name == "UIResponder")
 					return true;
 				break;
 			case "makeTextWritingDirectionLeftToRight:":
@@ -397,7 +396,7 @@ namespace Introspection {
 				// MonoTouch.AddressBookUI.ABNewPersonViewController
 				// MonoTouch.AddressBookUI.ABPeoplePickerNavigationController
 				// MonoTouch.AddressBookUI.ABPersonViewController
-				if (declaredType.Name == "UIResponder")
+				if (declaredType?.Name == "UIResponder")
 					return true;
 				break;
 			case "autocapitalizationType":
@@ -409,9 +408,9 @@ namespace Introspection {
 			case "spellCheckingType":
 			case "setSpellCheckingType:":
 				// UITextInputTraits and UITextInputProtocol
-				if (declaredType.Name == "UITextField" || declaredType.Name == "UITextView")
+				if (declaredType?.Name == "UITextField" || declaredType?.Name == "UITextView")
 					return true;
-				if (TestRuntime.CheckXcodeVersion (5, 1) && declaredType.Name == "UISearchBar")
+				if (TestRuntime.CheckXcodeVersion (5, 1) && declaredType?.Name == "UISearchBar")
 					return true;
 				break;
 			case "keyboardAppearance":
@@ -423,7 +422,7 @@ namespace Introspection {
 			case "isSecureTextEntry":
 			case "setSecureTextEntry:":
 				// UITextInputTraits and UITextInput Protocol
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				case "UITextField":
 				case "UITextView":
 				case "UISearchBar":
@@ -435,22 +434,22 @@ namespace Introspection {
 			case "characterOffsetOfPosition:withinRange:":
 			case "shouldChangeTextInRange:replacementText:":
 				// UITextInputTraits and UITextInputProtocol
-				if (declaredType.Name == "UITextField" || declaredType.Name == "UITextView")
+				if (declaredType?.Name == "UITextField" || declaredType?.Name == "UITextView")
 					return true;
 				// ignore UISearchBar before iOS8 - it did not really implement UITextInput
-				if (declaredType.Name == "UISearchBar" && !TestRuntime.CheckXcodeVersion (6, 0))
+				if (declaredType?.Name == "UISearchBar" && !TestRuntime.CheckXcodeVersion (6, 0))
 					return true;
 				break;
 			case "dictationRecognitionFailed":
 			case "dictationRecordingDidEnd":
 			case "insertDictationResult:":
 				// iOS 5.1 and not every device (or simulator)
-				if (declaredType.Name == "UITextField" || declaredType.Name == "UITextView")
+				if (declaredType?.Name == "UITextField" || declaredType?.Name == "UITextView")
 					return true;
 				break;
 			// special case: see http://developer.apple.com/library/ios/#documentation/GLkit/Reference/GLKViewController_ClassRef/Reference/Reference.html
 			case "update":
-				if (declaredType.Name == "GLKViewController")
+				if (declaredType?.Name == "GLKViewController")
 					return true;
 				break;
 			case "thumbnailImageAtTime:timeOption:":
@@ -459,7 +458,7 @@ namespace Introspection {
 			case "accessLog":
 			case "errorLog":
 			case "timedMetadata":
-				if (declaredType.Name == "MPMoviePlayerController")
+				if (declaredType?.Name == "MPMoviePlayerController")
 					return true;
 				break;
 			// deprecated (removed in iOS 3.2)
@@ -467,7 +466,7 @@ namespace Introspection {
 			case "setBackgroundColor:":
 			case "movieControlMode":
 			case "setMovieControlMode:":
-				if (declaredType.Name == "MPMoviePlayerController")
+				if (declaredType?.Name == "MPMoviePlayerController")
 					return true;
 				break;
 			case "skipToNextItem":
@@ -480,32 +479,32 @@ namespace Introspection {
 			// deprecated (according to docs) but actually removed (test) in iOS 6
 			case "useApplicationAudioSession":
 			case "setUseApplicationAudioSession:":
-				if (declaredType.Name == "MPMoviePlayerController")
+				if (declaredType?.Name == "MPMoviePlayerController")
 					return TestRuntime.CheckXcodeVersion (4, 5);
 				break;
 
 			// iOS6 - headers says readwrite but they do not respond
 			case "setUUID:":
 			case "setIsPrimary:":
-				if (declaredType.Name == "CBMutableService")
+				if (declaredType?.Name == "CBMutableService")
 					return TestRuntime.CheckXcodeVersion (4, 5);
-				if (declaredType.Name == "CBMutableCharacteristic")
+				if (declaredType?.Name == "CBMutableCharacteristic")
 					return TestRuntime.CheckXcodeVersion (7, 0);
 				break;
 
 			// documented since 4.0 - but does not answer on an iPad1 with 5.1.1
 			case "isAdjustingFocus":
-				if (declaredType.Name == "AVCaptureDevice")
+				if (declaredType?.Name == "AVCaptureDevice")
 					return true;
 				break;
 
 			// GameKit: documented since 4.1 - but does not answer
 			case "alias":
-				if (declaredType.Name == "GKPlayer")
+				if (declaredType?.Name == "GKPlayer")
 					return true;
 				break;
 			case "playerID":
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				case "GKPlayer":
 				case "GKScore":
 				case "GKTurnBasedParticipant": // iOS 5
@@ -521,15 +520,15 @@ namespace Introspection {
 			case "setValue:":
 			case "context": // iOS5
 			case "setContext:": // iOS5
-				if (declaredType.Name == "GKScore")
+				if (declaredType?.Name == "GKScore")
 					return true;
 				break;
 			case "isUnderage":
-				if (declaredType.Name == "GKLocalPlayer")
+				if (declaredType?.Name == "GKLocalPlayer")
 					return true;
 				break;
 			case "identifier":
-				if (declaredType.Name == "GKAchievement" || declaredType.Name == "GKAchievementDescription")
+				if (declaredType?.Name == "GKAchievement" || declaredType?.Name == "GKAchievementDescription")
 					return true;
 				break;
 			case "setIdentifier:":
@@ -537,7 +536,7 @@ namespace Introspection {
 			case "setPercentComplete:":
 			case "lastReportedDate":
 			case "setLastReportedDate:":
-				if (declaredType.Name == "GKAchievement")
+				if (declaredType?.Name == "GKAchievement")
 					return true;
 				break;
 			case "achievedDescription":
@@ -545,21 +544,21 @@ namespace Introspection {
 			case "maximumPoints":
 			case "title":
 			case "unachievedDescription":
-				if (declaredType.Name == "GKAchievementDescription")
+				if (declaredType?.Name == "GKAchievementDescription")
 					return true;
 				break;
 			// 5.0
 			case "lastTurnDate":
 			case "matchOutcome":
 			case "setMatchOutcome:":
-				if (declaredType.Name == "GKTurnBasedParticipant")
+				if (declaredType?.Name == "GKTurnBasedParticipant")
 					return true;
 				break;
 			case "creationDate":
 			case "matchData":
 			case "message":
 			case "setMessage:":
-				if (declaredType.Name == "GKTurnBasedMatch")
+				if (declaredType?.Name == "GKTurnBasedMatch")
 					return true;
 				break;
 
@@ -592,7 +591,7 @@ namespace Introspection {
 			case "scrollViewDidZoom:":
 			case "scrollViewWillBeginZooming:withView:":
 			case "scrollViewWillEndDragging:withVelocity:targetContentOffset:":
-				if (declaredType.Name == "UICollectionViewController")
+				if (declaredType?.Name == "UICollectionViewController")
 					return TestRuntime.CheckXcodeVersion (4, 5);
 				break;
 
@@ -601,7 +600,7 @@ namespace Introspection {
 			case "initialLayoutAttributesForInsertedSupplementaryElementOfKind:atIndexPath:":
 			case "finalLayoutAttributesForDeletedItemAtIndexPath:":
 			case "finalLayoutAttributesForDeletedSupplementaryElementOfKind:atIndexPath:":
-				if (declaredType.Name == "UICollectionViewLayout")
+				if (declaredType?.Name == "UICollectionViewLayout")
 					return TestRuntime.CheckXcodeVersion (4, 5);
 				break;
 
@@ -614,7 +613,7 @@ namespace Introspection {
 			case "acceptConnectionInBackgroundAndNotify":
 			case "waitForDataInBackgroundAndNotifyForModes:":
 			case "waitForDataInBackgroundAndNotify":
-				if (declaredType.Name == "NSFileHandle")
+				if (declaredType?.Name == "NSFileHandle")
 					return true;
 				break;
 
@@ -653,7 +652,7 @@ namespace Introspection {
 			case "tableView:estimatedHeightForFooterInSection:":
 			// iOS 8
 			case "tableView:editActionsForRowAtIndexPath:":
-				if (declaredType.Name == "UITableViewController")
+				if (declaredType?.Name == "UITableViewController")
 					return true;
 				break;
 
@@ -679,12 +678,12 @@ namespace Introspection {
 			case "textAlignment":
 			case "setTextAlignment:":
 				// iOS7 GM a "no text" instance does not answer to the selector (but you can call them)
-				if (declaredType.Name == "UISimpleTextPrintFormatter")
+				if (declaredType?.Name == "UISimpleTextPrintFormatter")
 					return true;
 				break;
 
 			case "copyWithZone:":
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				// not conforming to NSCopying in 5.1 SDK
 				case "UIFont":
 					return !TestRuntime.CheckXcodeVersion (4, 5);
@@ -714,14 +713,14 @@ namespace Introspection {
 
 			// on iOS8.0 this does not work on the simulator (but works on devices)
 			case "language":
-				if (declaredType.Name == "AVSpeechSynthesisVoice" && TestRuntime.CheckXcodeVersion (6, 0) && TestRuntime.IsSimulatorOrDesktop)
+				if (declaredType?.Name == "AVSpeechSynthesisVoice" && TestRuntime.CheckXcodeVersion (6, 0) && TestRuntime.IsSimulatorOrDesktop)
 					return true;
 				break;
 
 			// new, optional members of UIDynamicItem protocol in iOS9
 			case "collisionBoundingPath":
 			case "collisionBoundsType":
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				case "UICollectionViewLayoutAttributes":
 				case "UIView":
 				case "UIDynamicItemGroup":
@@ -736,7 +735,7 @@ namespace Introspection {
 			case "depthPixelFormat":
 			case "device":
 			case "stencilPixelFormat":
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				case "SCNRenderer":
 				case "SCNView":
 					return TestRuntime.IsSimulatorOrDesktop;
@@ -744,7 +743,7 @@ namespace Introspection {
 				break;
 
 			case "preferredFocusedView":
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				// UIFocusGuide (added in iOS 9.0 and deprecated in iOS 10)
 				case "UIView":
 				case "UIViewController":
@@ -755,7 +754,7 @@ namespace Introspection {
 			// some types adopted NS[Secure]Coding after the type was added
 			// and for unified that's something we generate automatically (so we can't put [iOS] on them)
 			case "encodeWithCoder:":
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				// UITextInputMode was added in 4.2 but conformed to NSSecureCoding only from 7.0+ 
 				case "UITextInputMode":
 					return !TestRuntime.CheckXcodeVersion (5, 0);
@@ -779,13 +778,13 @@ namespace Introspection {
 				}
 				break;
 			case "mutableCopyWithZone:":
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				case "HMLocationEvent":
 					return !TestRuntime.CheckXcodeVersion (9, 0);
 				}
 				break;
 			case "addTracksForCinematicAssetInfo:preferredStartingTrackID:": // cinematic method only supported on devices
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				case "AVMutableComposition":
 					return TestRuntime.IsSimulatorOrDesktop;
 				}
@@ -802,7 +801,7 @@ namespace Introspection {
 			case "setInheritFrontFacingWinding:":
 			case "inheritTriangleFillMode":
 			case "setInheritTriangleFillMode:":
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				case "MTLIndirectCommandBufferDescriptor":
 					return TestRuntime.IsSimulator;
 				}
@@ -812,19 +811,19 @@ namespace Introspection {
 			return base.CheckResponse (value, actualType, method, ref name);
 		}
 
-		protected override bool CheckStaticResponse (bool value, Type actualType, Type declaredType, MethodBase method, ref string name)
+		protected override bool CheckStaticResponse (bool value, Type actualType, Type? declaredType, MethodBase method, ref string name)
 		{
 			switch (name) {
 			// new API in iOS9 beta 5 but is does not respond when queried - https://bugzilla.xamarin.com/show_bug.cgi?id=33431
 			case "geometrySourceWithBuffer:vertexFormat:semantic:vertexCount:dataOffset:dataStride:":
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				case "SCNGeometrySource":
 					return true;
 				}
 				break;
 			case "imageWithIOSurface:":
 			case "imageWithIOSurface:options:":
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				case "CIImage":
 					// works on both sim/device with Xcode 11 (continue main logic)
 					if (TestRuntime.CheckXcodeVersion (11, 0))
@@ -840,7 +839,7 @@ namespace Introspection {
 				break;
 			case "objectWithItemProviderData:typeIdentifier:error:":
 			case "readableTypeIdentifiersForItemProvider":
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				case "PHLivePhoto":
 					// not yet conforming to NSItemProviderReading
 					if (!TestRuntime.CheckXcodeVersion (10, 0))
@@ -849,7 +848,7 @@ namespace Introspection {
 				}
 				break;
 			case "affectsColorAppearance":
-				switch (declaredType.Name) {
+				switch (declaredType?.Name) {
 				case "UITraitTypesettingLanguage":
 					return true;
 				}

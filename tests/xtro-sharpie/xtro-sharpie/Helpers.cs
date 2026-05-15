@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Extrospection {
 
 	public enum Platforms {
@@ -160,10 +162,10 @@ namespace Extrospection {
 				if (attr.AvailabilityAttributeUnavailable && (availName == platform))
 					return false;
 				// for iOS we won't report missing members that were deprecated before 5.0
-				if (!attr.Deprecated.IsEmpty && availName == "ios" && attr.Deprecated.Major < 5)
+				if (!attr.Deprecated.IsEmptyVersionTuple && availName == "ios" && attr.Deprecated.Major < 5)
 					return false;
 				// can't return true right away as it can be deprecated too
-				if (!attr.Introduced.IsEmpty && (availName == platform))
+				if (!attr.Introduced.IsEmptyVersionTuple && availName == platform)
 					result = true;
 			}
 			return result;
@@ -205,7 +207,7 @@ namespace Extrospection {
 				var availName = attr.AvailabilityAttributePlatformIdentifierName.ToLowerInvariant ();
 				if (availName != platform)
 					continue;
-				if (!attr.Deprecated.IsEmpty)
+				if (!attr.Deprecated.IsEmptyVersionTuple)
 					return true;
 			}
 			// then check for introduced - there may be both, so we must check *all* attributes for deprecation before checking for introduced
@@ -213,7 +215,7 @@ namespace Extrospection {
 				var availName = attr.AvailabilityAttributePlatformIdentifierName.ToLowerInvariant ();
 				if (availName != platform)
 					continue;
-				if (!attr.Introduced.IsEmpty)
+				if (!attr.Introduced.IsEmptyVersionTuple)
 					return false;
 			}
 
@@ -252,7 +254,9 @@ namespace Extrospection {
 			return (self.IsSealed && self.IsAbstract);
 		}
 
-		public static string GetName (this ObjCMethodDecl self)
+
+		[return: NotNullIfNotNull (nameof (self))]
+		public static string? GetName (this ObjCMethodDecl? self)
 		{
 			if (self is null)
 				return null;
@@ -263,7 +267,7 @@ namespace Extrospection {
 			if (self.DeclContext is ObjCCategoryDecl category) {
 				sb.Append (category.ClassInterface.Name);
 			} else {
-				sb.Append ((self.DeclContext as NamedDecl).Name);
+				sb.Append (((NamedDecl) self.DeclContext!).Name);
 			}
 			sb.Append ("::");
 			var sel = self.Selector.ToString ();
@@ -271,7 +275,7 @@ namespace Extrospection {
 			return sb.ToString ();
 		}
 
-		public static string GetName (this TypeDefinition self)
+		public static string? GetName (this TypeDefinition? self)
 		{
 			if ((self is null) || !self.HasCustomAttributes)
 				return null;
@@ -309,13 +313,13 @@ namespace Extrospection {
 			return null;
 		}
 
-		public static string GetName (this MethodDefinition self)
+		public static string? GetName (this MethodDefinition? self)
 		{
 			if (self is null)
 				return null;
 
 			var type = self.DeclaringType;
-			string tname = self.DeclaringType.GetName ();
+			string? tname = self.DeclaringType.GetName ();
 			// a static type is not used for static selectors
 			bool is_static = !type.IsStatic () && self.IsStatic;
 
@@ -340,7 +344,7 @@ namespace Extrospection {
 			return sb.ToString ();
 		}
 
-		public static string GetSelector (this MethodDefinition self)
+		public static string? GetSelector (this MethodDefinition self)
 		{
 			if ((self is null) || !self.HasCustomAttributes)
 				return null;
@@ -375,9 +379,12 @@ namespace Extrospection {
 			return false;
 		}
 
-		public static PropertyDefinition FindProperty (this MethodReference method)
+		public static PropertyDefinition? FindProperty (this MethodReference? method)
 		{
-			var def = method?.Resolve ();
+			if (method is null)
+				return null;
+
+			var def = method.Resolve ();
 			if (def is null)
 				return null;
 
@@ -409,7 +416,7 @@ namespace Extrospection {
 
 		public static string GetFramework (MethodDefinition method)
 		{
-			string framework = null;
+			string? framework = null;
 			if (method.HasPInvokeInfo)
 				framework = Path.GetFileNameWithoutExtension (method.PInvokeInfo.Module.Name);
 			else
@@ -423,7 +430,7 @@ namespace Extrospection {
 			return MapFramework (framework);
 		}
 
-		public static string GetFramework (Decl decl)
+		public static string? GetFramework (Decl decl)
 		{
 			var header_file = decl.PresumedLoc?.FileName;
 			if (header_file is null)
@@ -469,7 +476,7 @@ namespace Extrospection {
 			}
 		}
 
-		public static (T, T) Sort<T> (T o1, T o2)
+		public static (T, T) Sort<T> (T o1, T o2) where T : notnull
 		{
 			if (StringComparer.Ordinal.Compare (o1.ToString (), o2.ToString ()) < 0)
 				return (o2, o1);

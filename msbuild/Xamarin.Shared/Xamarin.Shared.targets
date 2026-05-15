@@ -115,7 +115,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_DetectBuildType">
 		<PropertyGroup>
-			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(OutputType)' != 'Exe' And '$(BuildBindingProjectLocally)' != 'false'">False</IsRemoteBuild>
+			<IsRemoteBuild Condition="'$(BundleOriginalResources)' == 'true' And '$(_CanOutputAppBundle)' != 'true' And '$(BuildBindingProjectLocally)' != 'false'">False</IsRemoteBuild>
 		</PropertyGroup>
 	</Target>
 
@@ -294,7 +294,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<Delete SessionId="$(BuildSessionId)" Condition="'$(IsMacEnabled)' == 'true'" Files="$(DeviceSpecificOutputPath)bundler.stamp" />
 	</Target>
 
-	<Target Name="_CleanAppBundleRootDirectory" Condition="'$(_PlatformName)' == 'MacCatalyst' Or '$(_PlatformName)' == 'macOS'" DependsOnTargets="_GenerateBundleName">
+	<Target Name="_CleanAppBundleRootDirectory" Condition="'$(SdkIsDesktop)' == 'true'" DependsOnTargets="_GenerateBundleName">
 		<!-- There shouldn't be any files in the root directory of the app bundle for macOS or Mac Catalyst (signing will fail) -->
 
 		<!-- Delete any crash dumps in the app bundle that might exist. Ref: https://github.com/dotnet/macios/issues/12320 -->
@@ -302,7 +302,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<!-- This is enabled by default, but can be disabled by setting EnableAutomaticAppBundleRootDirectoryCleanup=false -->
 		<GetFileSystemEntries
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And ('$(_PlatformName)' == 'MacCatalyst' Or '$(_PlatformName)' == 'macOS')"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(SdkIsDesktop)' == 'true'"
 			DirectoryPath="$(AppBundleDir)"
 			Pattern="mono_crash.*"
 			Recursive="false"
@@ -312,7 +312,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</GetFileSystemEntries>
 		<Delete
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And ('$(_PlatformName)' == 'MacCatalyst' Or '$(_PlatformName)' == 'macOS') And '$(EnableAutomaticAppBundleRootDirectoryCleanup)' != 'false'"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(SdkIsDesktop)' == 'true' And '$(EnableAutomaticAppBundleRootDirectoryCleanup)' != 'false'"
 			Files="@(_MonoCrashDumpsInAppBundle)"
 		/>
 
@@ -320,7 +320,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<!-- These can be deleted automatically by setting EnableAutomaticAppBundleRootDirectoryCleanup=true (in which case we won't show the warning) -->
 		<GetFileSystemEntries
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And ('$(_PlatformName)' == 'MacCatalyst' Or '$(_PlatformName)' == 'macOS')"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(SdkIsDesktop)' == 'true'"
 			DirectoryPath="$(AppBundleDir)"
 			Pattern="*"
 			Recursive="true"
@@ -339,7 +339,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<!-- We may have both files and directories, so just run both the Delete and RemoveDir task on all entries we're to delete -->
 		<Delete
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And ('$(_PlatformName)' == 'MacCatalyst' Or '$(_PlatformName)' == 'macOS') And '$(EnableAutomaticAppBundleRootDirectoryCleanup)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(SdkIsDesktop)' == 'true' And '$(EnableAutomaticAppBundleRootDirectoryCleanup)' == 'true'"
 			Files="@(_FilesInAppBundleRootDirectory)"
 		/>
 		<!-- Create a separate item group for directories, excluding anything with length <= 1. This is an additional protection against accidentally wiping out the hard drive: https://github.com/dotnet/msbuild/issues/4105 -->
@@ -348,7 +348,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</ItemGroup>
 		<RemoveDir
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And ('$(_PlatformName)' == 'MacCatalyst' Or '$(_PlatformName)' == 'macOS') And '$(EnableAutomaticAppBundleRootDirectoryCleanup)' == 'true'"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(SdkIsDesktop)' == 'true' And '$(EnableAutomaticAppBundleRootDirectoryCleanup)' == 'true'"
 			Directories="@(_DirectoriesInAppBundleRootDirectory)"
 		/>
 		<Warning
@@ -466,9 +466,16 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="BundleResourcesWithLogicalNames" ItemName="_BundleResourceWithLogicalName" />
 		</CollectBundleResources>
 
-		<!-- Write out the list of assets we've processed, so that an inner build in a multi-rid build can skip processing them -->
-		<WriteItemsToFile Items="@(BundleResource)" Condition="'$(_SaveProcessedItems)' == 'true'" ItemName="BundleResource" File="$(_ProcessedBundleResourcesPath)" Overwrite="true" IncludeMetadata="false" />
-		<WriteItemsToFile Items="@(Content)" Condition="'$(_SaveProcessedItems)' == 'true'" ItemName="Content" File="$(_ProcessedContentPath)" Overwrite="true" IncludeMetadata="false" />
+		<!-- Write out the list of assets we've processed, so that an inner build in a multi-rid build can skip processing them.
+		     Items with a PublishFolderType are not actually processed by CollectBundleResources (they go to ResolvedFileToPublish instead),
+		     so don't include them in the list of processed items - inner builds need to see them to add them to ResolvedFileToPublish.
+		     Ref: https://github.com/dotnet/macios/issues/25053 -->
+		<ItemGroup Condition="'$(_SaveProcessedItems)' == 'true'">
+			<_BundleResourceToSave Include="@(BundleResource)" Condition="'%(BundleResource.PublishFolderType)' == ''" />
+			<_ContentToSave Include="@(Content)" Condition="'%(Content.PublishFolderType)' == ''" />
+		</ItemGroup>
+		<WriteItemsToFile Items="@(_BundleResourceToSave)" Condition="'$(_SaveProcessedItems)' == 'true'" ItemName="BundleResource" File="$(_ProcessedBundleResourcesPath)" Overwrite="true" IncludeMetadata="false" />
+		<WriteItemsToFile Items="@(_ContentToSave)" Condition="'$(_SaveProcessedItems)' == 'true'" ItemName="Content" File="$(_ProcessedContentPath)" Overwrite="true" IncludeMetadata="false" />
 		<ItemGroup>
 			<FileWrites Include="$(_ProcessedBundleResourcesPath)" />
 			<FileWrites Include="$(_ProcessedContentPath)" />
@@ -779,7 +786,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		DependsOnTargets="$(_CompileEntitlementsDependsOn)"
 		Outputs="$(_CompiledEntitlementsPath)">
 		<!-- Automatically add the 'allow-jit' entitlement for desktop release builds in .NET -->
-		<ItemGroup Condition="'$(Configuration)' == 'Release' And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst')">
+		<ItemGroup Condition="'$(Configuration)' == 'Release' And '$(SdkIsDesktop)' == 'true'">
 			<!-- We need to compare the result of AnyHaveMetadataValue to 'true', because if it's empty, the return value is not a boolean, it's an empty string -->
 			<CustomEntitlements Condition="'@(CustomEntitlements->AnyHaveMetadataValue('Identity','com.apple.security.cs.allow-jit'))' != 'true'" Include="com.apple.security.cs.allow-jit" Type="Boolean" Value="true" />
 		</ItemGroup>
@@ -1274,7 +1281,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			will apply to Xamarin.Mac as well.
 		-->
 		<ParseDeviceSpecificBuildInformation
-			Condition="'$(DeviceSpecificBuild)' == 'true' And '$(TargetiOSDevice)' != '' And '$(_CanDeployToDeviceOrSimulator)' == 'true' And '$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'"
+			Condition="'$(DeviceSpecificBuild)' == 'true' And '$(TargetiOSDevice)' != '' And '$(_CanDeployToDeviceOrSimulator)' == 'true' And '$(SdkIsDesktop)' != 'true'"
 			Architectures="$(TargetArchitectures)"
 			IntermediateOutputPath="$(IntermediateOutputPath)"
 			OutputPath="$(OutputPath)"
@@ -1376,7 +1383,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_ComputePkgInfoPath" DependsOnTargets="_GenerateBundleName">
 		<PropertyGroup>
-			<_PkgInfoPath Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">$(_AppBundlePath)Contents\PkgInfo</_PkgInfoPath>
+			<_PkgInfoPath Condition="'$(SdkIsDesktop)' == 'true'">$(_AppBundlePath)Contents\PkgInfo</_PkgInfoPath>
 			<_PkgInfoPath Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'watchOS'">$(_AppBundlePath)PkgInfo</_PkgInfoPath>
 		</PropertyGroup>
 	</Target>
@@ -2079,7 +2086,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</DetectSigningIdentity>
 
 		<PropertyGroup>
-			<_EmbeddedProvisionProfilePath Condition="'$(_EmbeddedProvisionProfilePath)' == '' And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst')">$(_AppBundlePath)Contents\embedded.provisionprofile</_EmbeddedProvisionProfilePath>
+			<_EmbeddedProvisionProfilePath Condition="'$(_EmbeddedProvisionProfilePath)' == '' And '$(SdkIsDesktop)' == 'true'">$(_AppBundlePath)Contents\embedded.provisionprofile</_EmbeddedProvisionProfilePath>
 			<_EmbeddedProvisionProfilePath Condition="'$(_EmbeddedProvisionProfilePath)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'watchOS')">$(_AppBundlePath)embedded.mobileprovision</_EmbeddedProvisionProfilePath>
 		</PropertyGroup>
 	</Target>
@@ -2572,7 +2579,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		>
 
 		<PropertyGroup>
-			<CodesignDisallowResourcesSubdirectoryInAppBundle Condition="'$(CodesignDisallowResourcesSubdirectoryInAppBundle)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">true</CodesignDisallowResourcesSubdirectoryInAppBundle>
+			<CodesignDisallowResourcesSubdirectoryInAppBundle Condition="'$(CodesignDisallowResourcesSubdirectoryInAppBundle)' == '' And '$(SdkIsMobile)' == 'true'">true</CodesignDisallowResourcesSubdirectoryInAppBundle>
 			<CodesignDisallowResourcesSubdirectoryInAppBundle Condition="'$(CodesignDisallowResourcesSubdirectoryInAppBundle)' == ''">false</CodesignDisallowResourcesSubdirectoryInAppBundle>
 		</PropertyGroup>
 
@@ -2608,20 +2615,27 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<PropertyGroup>
 		<_ComputeLinkModeDependsOn>
 			$(_ComputeLinkModeDependsOn);
-			_DetectSdkLocations;
 		</_ComputeLinkModeDependsOn>
 	</PropertyGroup>
 	<Target Name="_ComputeLinkMode" DependsOnTargets="$(_ComputeLinkModeDependsOn)">
-		<PropertyGroup>
+		<PropertyGroup Condition="'$(PublishTrimmed)' == 'true'">
 			<!-- Determine if any assemblies are actually trimmed, or if we're in a "Don't link" scenario -->
-			<!-- We're in a "Don't link" scenario if both of the following are true:
+			<!-- We're in a "Don't link" scenario if all of the following are true:
 					1. The global TrimMode property is set to 'copy'
 					2. No assembly has the TrimMode metadata (unless it's set to 'copy')
+					3. We're not using NativeAOT
+				Unfortunately we can only determine the latter once the PrepareForILLink target has run, and we need to know this before that
+				target has executed, so we do a simpler estimation: we just look at the 'TrimMode' property, and assume we're not trimming anything
+				if its value is 'copy'.
 			-->
-			<_AssembliesWithCustomTrimMode>@(ManagedAssemblyToLink->HasMetadata('TrimMode')->Count())</_AssembliesWithCustomTrimMode>
-			<_AssembliesWithCopyTrimMode>@(ManagedAssemblyToLink->WithMetadataValue('TrimMode', 'copy')->Count())</_AssembliesWithCopyTrimMode>
-			<_AreAnyAssembliesTrimmed Condition="'$(_AreAnyAssembliesTrimmed)' == '' And '$(TrimMode)' == 'copy' And '$(_AssembliesWithCustomTrimMode)' == '$(_AssembliesWithCopyTrimMode)'">false</_AreAnyAssembliesTrimmed>
-			<_AreAnyAssembliesTrimmed Condition="'$(_AreAnyAssembliesTrimmed)' == ''">true</_AreAnyAssembliesTrimmed>
+			<_AreAnyAssembliesTrimmed Condition="'$(_AreAnyAssembliesTrimmed)' == '' And '$(_UseNativeAot)' == 'true'">true</_AreAnyAssembliesTrimmed>
+			<_AreAnyAssembliesTrimmed Condition="'$(_AreAnyAssembliesTrimmed)' == '' And '$(TrimMode)' == 'full'">true</_AreAnyAssembliesTrimmed>
+			<_AreAnyAssembliesTrimmed Condition="'$(_AreAnyAssembliesTrimmed)' == '' And '$(TrimMode)' == 'partial'">true</_AreAnyAssembliesTrimmed>
+			<_AreAnyAssembliesTrimmed Condition="'$(_AreAnyAssembliesTrimmed)' == '' And '$(TrimMode)' == 'copy'">false</_AreAnyAssembliesTrimmed>
+			<_AreAnyAssembliesTrimmed Condition="'$(_AreAnyAssembliesTrimmed)' == '' And '$(TrimMode)' == 'link'">true</_AreAnyAssembliesTrimmed>
+		</PropertyGroup>
+		<PropertyGroup>
+			<_AreAnyAssembliesTrimmed Condition="'$(_AreAnyAssembliesTrimmed)' == ''">false</_AreAnyAssembliesTrimmed>
 		</PropertyGroup>
 	</Target>
 
@@ -2656,7 +2670,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_PrepareResourceRules" DependsOnTargets="_DetectSdkLocations;_GenerateBundleName">
 		<PrepareResourceRules
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '$(CodesignResourceRules)' != '' And '$(ComputedPlatform)' == 'iPhone'"
+			Condition="'$(IsMacEnabled)' == 'true' And '$(CodesignResourceRules)' != '' And '$(SdkIsDevice)' == 'true'"
 			AppBundleDir="$(AppBundleDir)"
 			ResourceRules="$(CodesignResourceRules)"
 			SdkVersion="$(_SdkVersion)"
@@ -2666,6 +2680,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	</Target>
 
 	<!-- App extensions -->
+
+	<Target Name="GetAppExtensionBundlePath" DependsOnTargets="_GenerateBundleName;$(GetTargetPathDependsOn)" Outputs="@(_AppExtensionBundlePath)" />
+
+	<Target Name="BuildAndGetAppExtensionBundlePath" DependsOnTargets="Build" Outputs="@(_AppExtensionBundlePath)" />
 
 	<Target Name="_AssignAppExtensionConfiguration" Condition="'@(_AppExtensionReference)' != ''">
 		<!-- assign configs if building a solution file -->
@@ -2714,10 +2732,10 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_BuildReferencedExtensionProjects Condition="'$(BuildingInsideVisualStudio)' != 'true'">true</_BuildReferencedExtensionProjects>
 		</PropertyGroup>
 
-		<!-- If the referenced projects have already been built, then just get the target paths -->
+		<!-- If the referenced projects have already been built, then just get the app extensions' bundle paths -->
 		<MSBuild
 			Projects="@(_AppExtensionReferenceWithConfigurationExistent)"
-			Targets="GetBundleTargetPath"
+			Targets="GetAppExtensionBundlePath"
 			Properties="%(_AppExtensionReferenceWithConfigurationExistent.SetConfiguration); %(_AppExtensionReferenceWithConfigurationExistent.SetPlatform)"
 			Condition="'@(_AppExtensionReferenceWithConfigurationExistent)' != '' and '$(_BuildReferencedExtensionProjects)' != 'true'">
 
@@ -2727,6 +2745,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<!-- Build the referenced project if required -->
 		<MSBuild
 			Projects="@(_AppExtensionReferenceWithConfigurationExistent)"
+			Targets="BuildAndGetAppExtensionBundlePath"
 			Properties="%(_AppExtensionReferenceWithConfigurationExistent.SetConfiguration); %(_AppExtensionReferenceWithConfigurationExistent.SetPlatform)"
 			Condition="'@(_AppExtensionReferenceWithConfigurationExistent)' != '' and '$(_BuildReferencedExtensionProjects)' == 'true' ">
 
@@ -2781,12 +2800,12 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_GetNativeExecutableName" DependsOnTargets="_DetectAppManifest;_GenerateBundleName;_ReadAppManifest">
 		<PropertyGroup>
 			<_NativeExecutableRelativePath Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'watchOS'">$(_ExecutableName)</_NativeExecutableRelativePath>
-			<_NativeExecutableRelativePath Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">Contents\MacOS\$(_ExecutableName)</_NativeExecutableRelativePath>
+			<_NativeExecutableRelativePath Condition="'$(SdkIsDesktop)' == 'true'">Contents\MacOS\$(_ExecutableName)</_NativeExecutableRelativePath>
 			<_NativeExecutable>$(_AppBundlePath)$(_NativeExecutableRelativePath)</_NativeExecutable>
 		</PropertyGroup>
 	</Target>
 
-	<Target Name="_CreateDebugSettings" Condition="'$(_BundlerDebug)' == 'true' And '$(IsWatchApp)' == 'false' And '$(_PlatformName)' != 'MacCatalyst' And '$(_PlatformName)' != 'macOS'"
+	<Target Name="_CreateDebugSettings" Condition="'$(_BundlerDebug)' == 'true' And '$(IsWatchApp)' == 'false' And '$(SdkIsDesktop)' != 'true'"
 		DependsOnTargets="_CopyResourcesToBundle"
 		Outputs="$(_AppBundlePath)Settings.bundle\Root.plist" >
 		<CreateDebugSettings
@@ -2950,7 +2969,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<!-- add frameworks, with the path relative to the app bundle -->
 			<!-- Use _FilteredFrameworkToPublish (from the _ComputeFrameworkFilesToPublish target) to only include dynamic frameworks
 			     that will actually be present in the app bundle. Ref: https://github.com/dotnet/macios/issues/24840 -->
-			<_PostProcessingItem Include="@(_FilteredFrameworkToPublish->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
+			<!-- The condition is necessary due to https://github.com/dotnet/msbuild/issues/4056 -->
+			<_PostProcessingItem Condition="@(_FilteredFrameworkToPublish->Count()) &gt; 0" Include="@(_FilteredFrameworkToPublish->'$(_AppBundleName)$(AppBundleExtension)/$(_AppFrameworksRelativePath)%(Filename)%(Extension).framework/%(Filename)%(Extension)')">
 				<!-- Store where this item came from -->
 				<ItemSourcePath>%(Identity)</ItemSourcePath>
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
@@ -2965,6 +2985,15 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<!-- If the item in question came with a .dSYM directory, this would be the path to it: -->
 				<dSYMSourcePath>%(Identity).dSYM</dSYMSourcePath>
 				<!-- This is the name of the dSYM that will be created (if that's the case) -->
+				<DSymName>%(Filename).dSYM</DSymName>
+			</_PostProcessingItem>
+			<!-- In outer multi-RID builds the merged app bundle already contains the universal dylibs,
+			     but the RID-specific native references are no longer available as items. Scan the merged
+			     app bundle so that dsymutil/strip still runs for those dylibs. -->
+			<_MergedAppBundleDylib Include="$(AppBundleDir)/$(_AppContentsRelativePathForPostProcessing)*.dylib" Condition="'$(RuntimeIdentifiers)' != ''" />
+			<_PostProcessingItem Include="@(_MergedAppBundleDylib -> '$(_AppBundleName)$(AppBundleExtension)/$(_AppContentsRelativePathForPostProcessing)%(Filename)%(Extension)')" Condition="'$(RuntimeIdentifiers)' != ''">
+				<ItemSourcePath>$(_AppContainerDir)%(_PostProcessingItem.Identity)</ItemSourcePath>
+				<dSYMSourcePath>$(_AppContainerDir)%(_PostProcessingItem.Identity).dSYM</dSYMSourcePath>
 				<DSymName>%(Filename).dSYM</DSymName>
 			</_PostProcessingItem>
 			<_PostProcessingItem Include="$([System.IO.Path]::GetFileName('$(AppBundleDir)'))/$(_NativeExecutableRelativePath)" Condition="'$(IsWatchApp)' != 'true'">
@@ -3187,11 +3216,11 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="Archive" Condition="'$(_CanArchive)' == 'true'" DependsOnTargets="$(ArchiveDependsOn)" />
 
 	<Target Name="_CoreArchive" Condition="'$(ArchiveOnBuild)' == 'true'" DependsOnTargets="Codesign">
-		<Error Text="Code signing must be enabled to create an Xcode archive." Condition="'$(_CodeSigningKey)' == '' And '$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'" />
+		<Error Text="Code signing must be enabled to create an Xcode archive." Condition="'$(_CodeSigningKey)' == '' And '$(SdkIsDesktop)' != 'true'" />
 
 		<CollectITunesSourceFiles
 			SessionId="$(BuildSessionId)"
-			Condition="'$(IsMacEnabled)' == 'true' And '@(_ITunesSourceFile)' == '' And '$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'"
+			Condition="'$(IsMacEnabled)' == 'true' And '@(_ITunesSourceFile)' == '' And '$(SdkIsDesktop)' != 'true'"
 			OutputPath="$(DeviceSpecificOutputPath)"
 			>
 			<Output TaskParameter="ITunesSourceFiles" PropertyName="_ITunesSourceFile"/>
@@ -3233,30 +3262,30 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<_AppBundlePath>$(AppBundleDir)</_AppBundlePath>
 			<_AppBundlePath Condition="$([System.IO.Path]::IsPathRooted('$(AppBundleDir)'))">$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)','$(AppBundleDir)'))</_AppBundlePath>
 			<_AppBundlePath>$([MSBuild]::EnsureTrailingSlash('$(_AppBundlePath)'))</_AppBundlePath>
-			<_AppResourcesRelativePath Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">Contents\Resources\</_AppResourcesRelativePath>
+			<_AppResourcesRelativePath Condition="'$(SdkIsDesktop)' == 'true'">Contents\Resources\</_AppResourcesRelativePath>
 			<_AppResourcesRelativePath Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'watchOS'"></_AppResourcesRelativePath>
 			<_AppResourcesPath>$(_AppBundlePath)$(_AppResourcesRelativePath)</_AppResourcesPath>
 
-			<_AppContentsRelativePath Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">Contents\$(_CustomBundleName)</_AppContentsRelativePath>
+			<_AppContentsRelativePath Condition="'$(SdkIsDesktop)' == 'true'">Contents\$(_CustomBundleName)</_AppContentsRelativePath>
 			<_AppContentsRelativePath Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'watchOS'"></_AppContentsRelativePath>
 			<_AppContentsPath>$(_AppBundlePath)$(_AppContentsRelativePath)</_AppContentsPath>
 
-			<_AppFrameworksRelativePath Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">Contents\Frameworks\</_AppFrameworksRelativePath>
+			<_AppFrameworksRelativePath Condition="'$(SdkIsDesktop)' == 'true'">Contents\Frameworks\</_AppFrameworksRelativePath>
 			<_AppFrameworksRelativePath Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'watchOS'">Frameworks\</_AppFrameworksRelativePath>
 			<_AppFrameworksPath>$(_AppBundlePath)$(_AppFrameworksRelativePath)</_AppFrameworksPath>
 
-			<_AppCodeSignatureRelativePath Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">Contents\</_AppCodeSignatureRelativePath>
+			<_AppCodeSignatureRelativePath Condition="'$(SdkIsDesktop)' == 'true'">Contents\</_AppCodeSignatureRelativePath>
 			<_AppCodeSignatureRelativePath Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'watchOS'"></_AppCodeSignatureRelativePath>
 			<_AppCodeSignaturePath>$(_AppBundlePath)$(_AppCodeSignatureRelativePath)</_AppCodeSignaturePath>
 
-			<_AppPlugInsRelativeLocation Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">Contents\</_AppPlugInsRelativeLocation>
-			<_AppPlugInsRelativeLocation Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS'"></_AppPlugInsRelativeLocation>
+			<_AppPlugInsRelativeLocation Condition="'$(SdkIsDesktop)' == 'true'">Contents\</_AppPlugInsRelativeLocation>
+			<_AppPlugInsRelativeLocation Condition="'$(SdkIsMobile)' == 'true'"></_AppPlugInsRelativeLocation>
 
 			<_AppPlugInsRelativePath>$(_AppPlugInsRelativeLocation)PlugIns\</_AppPlugInsRelativePath>
 			<_AppExtensionRoot>$(_AppBundlePath)$(_AppPlugInsRelativeLocation)</_AppExtensionRoot>
 			<_AppPlugInsPath>$(_AppBundlePath)$(_AppPlugInsRelativePath)</_AppPlugInsPath>
 
-			<_AppXpcServicesRelativePath Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">Contents\XPCServices\</_AppXpcServicesRelativePath>
+			<_AppXpcServicesRelativePath Condition="'$(SdkIsDesktop)' == 'true'">Contents\XPCServices\</_AppXpcServicesRelativePath>
 			<_AppXpcServicesRelativePath Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS' Or '$(_PlatformName)' == 'watchOS'">XPCServices\</_AppXpcServicesRelativePath>
 			<_AppXpcServicesPath>$(_AppBundlePath)$(_AppXpcServicesRelativePath)</_AppXpcServicesPath>
 
@@ -3356,7 +3385,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="_BeforeCreateIpaForDistribution" Condition="'$(IsAppDistribution)' == 'true'" DependsOnTargets="$(_BeforeCreateIpaForDistributionDependsOn)" />
 
-	<Target Name="CreateIpa" Condition="'$(_CanArchive)' == 'true' And '$(_PlatformName)' != 'macOS' And '$(_PlatformName)' != 'MacCatalyst'" DependsOnTargets="$(CreateIpaDependsOn)" />
+	<Target Name="CreateIpa" Condition="'$(_CanArchive)' == 'true' And '$(SdkIsDesktop)' != 'true'" DependsOnTargets="$(CreateIpaDependsOn)" />
 
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Shared.ObjCBinding.targets" Condition="'$(IsBindingProject)' == 'true'" />
 

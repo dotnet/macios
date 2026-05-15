@@ -132,7 +132,7 @@ struct Trampolines {
 enum InitializationFlags : int {
 	InitializationFlagsIsPartialStaticRegistrar = 0x01,
 	InitializationFlagsIsManagedStaticRegistrar = 0x02,
-	/* unused									= 0x04,*/
+	InitializationFlagsIsTrimmableStaticRegistrar = 0x04,
 	/* unused									= 0x08,*/
 	InitializationFlagsIsSimulator				= 0x10,
 	InitializationFlagsIsCoreCLR                = 0x20,
@@ -2553,7 +2553,7 @@ xamarin_vprintf (const char *format, va_list args)
 }
 
 void
-xamarin_registrar_dlsym (void **function_pointer, const char *assembly, const char *symbol, int32_t id)
+xamarin_registrar_dlsym (void **function_pointer, const char *assembly, const char *symbol, int32_t id, const char* objcClassName)
 {
 	if (*function_pointer != NULL)
 		return;
@@ -2563,7 +2563,7 @@ xamarin_registrar_dlsym (void **function_pointer, const char *assembly, const ch
 		return;
 
 	GCHandle exception_gchandle = INVALID_GCHANDLE;
-	*function_pointer = xamarin_lookup_unmanaged_function (assembly, symbol, id, &exception_gchandle);
+	*function_pointer = xamarin_lookup_unmanaged_function (assembly, symbol, id, objcClassName, &exception_gchandle);
 	if (*function_pointer != NULL)
 		return;
 
@@ -3050,6 +3050,16 @@ xamarin_set_is_managed_static_registrar (bool value)
 		options.flags = (InitializationFlags) (options.flags | InitializationFlagsIsManagedStaticRegistrar);
 	} else {
 		options.flags = (InitializationFlags) (options.flags & ~InitializationFlagsIsManagedStaticRegistrar);
+	}
+}
+
+void
+xamarin_set_is_trimmable_static_registrar (bool value)
+{
+	if (value) {
+		options.flags = (InitializationFlags) (options.flags | InitializationFlagsIsTrimmableStaticRegistrar);
+	} else {
+		options.flags = (InitializationFlags) (options.flags & ~InitializationFlagsIsTrimmableStaticRegistrar);
 	}
 }
 

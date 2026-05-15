@@ -46,7 +46,7 @@ namespace LinkAll.InernalCalls {
 			Assert.That (count, Is.GreaterThan (400), "count");
 			for (int i = 0, offset = 0; i < count; i++, offset += IntPtr.Size) {
 				IntPtr p = Marshal.ReadIntPtr (array, offset);
-				string s = Marshal.PtrToStringAnsi (p);
+				string s = Marshal.PtrToStringAnsi (p)!;
 				Assert.NotNull (s, i.ToString ());
 				Marshal.FreeHGlobal (p);
 			}
@@ -54,7 +54,7 @@ namespace LinkAll.InernalCalls {
 		}
 
 		[DllImport ("__Internal")]
-		extern static IntPtr xamarin_timezone_get_data (string name, ref uint size);
+		extern static IntPtr xamarin_timezone_get_data (string? name, ref uint size);
 
 		[Test]
 		public void TimeZone_Data ()

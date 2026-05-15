@@ -38,7 +38,7 @@ namespace Xamarin {
 				break;
 			case SymbolMode.Linker:
 				foreach (var symbol in required_symbols) {
-					var item = new MSBuildItem (symbol.Prefix + symbol.Name);
+					var item = new MSBuildItem (Symbol.Prefix + symbol.Name);
 					item.Metadata ["SymbolType"] = symbol.Type.ToString ();
 					items.Add (item);
 				}

@@ -30,6 +30,13 @@ namespace Xamarin.Linker {
 		public string IntermediateLinkDir { get; private set; } = string.Empty;
 		public bool InvariantGlobalization { get; private set; }
 		public bool HybridGlobalization { get; private set; }
+		public InlineDlfcnMethodsMode InlineDlfcnMethods { get; set; }
+		public bool InlineDlfcnMethodsEnabled => InlineDlfcnMethods != InlineDlfcnMethodsMode.Disabled;
+		// Per-assembly field symbols collected by InlineDlfcnMethodsStep, keyed by assembly name.
+		public Dictionary<string, HashSet<string>> InlinedDlfcnFields { get; } = new Dictionary<string, HashSet<string>> ();
+		// All [Field] symbol names collected by ProcessExportedFields, used in compatibility mode.
+		public HashSet<string> FieldSymbols { get; } = new HashSet<string> ();
+		public string IntermediateOutputPath { get; private set; } = string.Empty;
 		public string ItemsDirectory { get; private set; } = string.Empty;
 		public bool IsSimulatorBuild { get; private set; }
 		public string PartialStaticRegistrarLibrary { get; set; } = string.Empty;
@@ -46,6 +53,7 @@ namespace Xamarin.Linker {
 		public Application Application { get; private set; }
 
 		public IList<string> RegistrationMethods { get; set; } = new List<string> ();
+		public List<string> NativeCodeToCompileAndLink { get; private set; } = new List<string> ();
 		public CompilerFlags CompilerFlags;
 
 		LinkContext? context;
@@ -205,8 +213,21 @@ namespace Xamarin.Linker {
 				case "FrameworkAssembly":
 					FrameworkAssemblies.Add (value);
 					break;
+				case "InlineDlfcnMethods":
+					if (Enum.TryParse<InlineDlfcnMethodsMode> (value, true, out var inlineDlfcnMode))
+						InlineDlfcnMethods = inlineDlfcnMode;
+					else if (string.Equals (value, "compatibility", StringComparison.OrdinalIgnoreCase))
+						InlineDlfcnMethods = InlineDlfcnMethodsMode.Compat;
+					else if (string.IsNullOrEmpty (value))
+						InlineDlfcnMethods = InlineDlfcnMethodsMode.Disabled;
+					else
+						throw new InvalidOperationException ($"Unknown InlineDlfcnMethods value: {value}");
+					break;
 				case "IntermediateLinkDir":
 					IntermediateLinkDir = value;
+					break;
+				case "IntermediateOutputPath":
+					IntermediateOutputPath = value;
 					break;
 				case "Interpreter":
 					if (!string.IsNullOrEmpty (value))
@@ -536,7 +557,9 @@ namespace Xamarin.Linker {
 				foreach (var lib in Application.DylibsToConvertToFrameworks.OrderBy (v => v))
 					Console.WriteLine ($"        {lib}");
 				Console.WriteLine ($"    EnableSGenConc {Application.EnableSGenConc}");
+				Console.WriteLine ($"    InlineDlfcnMethods: {InlineDlfcnMethods}");
 				Console.WriteLine ($"    IntermediateLinkDir: {IntermediateLinkDir}");
+				Console.WriteLine ($"    IntermediateOutputPath: {IntermediateOutputPath}");
 				Console.WriteLine ($"    InterpretedAssemblies: {string.Join (", ", Application.InterpretedAssemblies)}");
 				Console.WriteLine ($"    ItemsDirectory: {ItemsDirectory}");
 				Console.WriteLine ($"    {FrameworkAssemblies.Count} framework assemblies:");
@@ -652,4 +675,10 @@ public class MSBuildItem {
 		Include = include;
 		Metadata = metadata;
 	}
+}
+
+public enum InlineDlfcnMethodsMode {
+	Disabled,
+	Strict,
+	Compat,
 }

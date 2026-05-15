@@ -7,6 +7,7 @@ using Mono.Cecil;
 using Mono.Tuner;
 
 using Xamarin.Bundler;
+using Xamarin.Linker;
 using Registrar;
 #endif
 
@@ -453,7 +454,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "CoreLocationUI", "CoreLocationUI", 15,0 },
 
 				{ "DataDetection", "DataDetection", 15, 0 },
-				{ "Phase", "PHASE", new Version (15,0), NotAvailableInSimulator /* no headers in beta 2 */ },
+				{ "Phase", "PHASE", new Version (15, 0), new Version (26, 0) /* not certain about the exact version when this framework was added to the simulator, but this should be a safe default */ },
 				{ "OSLog", "OSLog", 15,0 },
 				{ "ShazamKit", "ShazamKit", new Version (15,0), new Version (16, 0)},
 				{ "ThreadNetwork", "ThreadNetwork", new Version (15,0), NotAvailableInSimulator},
@@ -702,11 +703,12 @@ public class Frameworks : Dictionary<string, Framework> {
 		}
 	}
 
-#if LEGACY_TOOLS || BUNDLER
-	public static IEnumerable<string> GetFrameworks (TypeDefinition td)
+#if BUNDLER
+	public static bool TryGetFramework (Application app, TypeDefinition td, [NotNullWhen (true)] out string? framework)
 	{
+		framework = null;
+
 		if (td.HasCustomAttributes) {
-			var any = false;
 			foreach (var attrib in td.CustomAttributes) {
 				if (!attrib.AttributeType.Is ("ObjCRuntime", "ObjectiveCFrameworkAttribute"))
 					continue;
@@ -715,25 +717,56 @@ public class Frameworks : Dictionary<string, Framework> {
 				var arg = attrib.ConstructorArguments [0];
 				if (arg.Value is not string stringArgument)
 					continue;
-				yield return stringArgument;
-				any = true;
+				framework = stringArgument;
+				return framework is not null;
 			}
-			if (any)
-				yield break;
 		}
 
-		yield return td.Namespace;
+		if (!app.Profile.IsProductAssembly (td.Module.Assembly))
+			return false;
+
+		framework = td.Namespace;
+		return framework is not null;
 	}
 
-	static void Gather (Application app, AssemblyDefinition product_assembly, HashSet<string> frameworks, HashSet<string> weak_frameworks, Func<Framework, bool> include_framework)
+	public static bool TryGetFramework (Application app, TypeDefinition td, [NotNullWhen (true)] out Framework? framework)
+	{
+		framework = null;
+
+		if (!TryGetFramework (app, td, out string? frameworkName))
+			return false;
+
+		var all_frameworks = GetFrameworks (app.Platform, app.IsSimulatorBuild);
+		if (all_frameworks is null)
+			return false;
+		return all_frameworks.TryGetValue (frameworkName, out framework);
+	}
+
+	static void Gather (Application app, IEnumerable<AssemblyDefinition> assemblies, HashSet<string> frameworks, HashSet<string> weak_frameworks, Func<Framework, bool> include_framework)
 	{
 		var namespaces = new HashSet<string> ();
 
-		// Collect all the namespaces.
-		foreach (var md in product_assembly.Modules) {
-			foreach (var td in md.Types) {
-				foreach (var fw in GetFrameworks (td))
-					namespaces.Add (fw);
+		// Process our product assembly + any assembly with the [ObjectiveCFramework] attribute, and collect all the namespaces that are used in those assemblies.
+		// For non-product assemblies, we only look at types with the [ObjectiveCFramework] attribute.
+		foreach (var assembly in assemblies) {
+			var hasObjectiveCFrameworkAttribute = false;
+			if (!app.Profile.IsProductAssembly (assembly)) {
+				hasObjectiveCFrameworkAttribute = assembly.MainModule.HasTypeReference ("ObjCRuntime.ObjectiveCFrameworkAttribute");
+				if (!hasObjectiveCFrameworkAttribute)
+					continue;
+			}
+
+			// Collect all the namespaces.
+			foreach (var md in assembly.Modules) {
+				foreach (var td in md.Types) {
+					if (hasObjectiveCFrameworkAttribute && !td.HasCustomAttribute ("ObjCRuntime", "ObjectiveCFrameworkAttribute"))
+						continue;
+
+					if (TryGetFramework (app, td, out string? framework)) {
+						namespaces.Add (framework);
+						continue;
+					}
+				}
 			}
 		}
 
@@ -798,9 +831,9 @@ public class Frameworks : Dictionary<string, Framework> {
 		return true;
 	}
 
-	public static void Gather (Application app, AssemblyDefinition product_assembly, HashSet<string> frameworks, HashSet<string> weak_frameworks)
+	public static void Gather (Application app, IEnumerable<AssemblyDefinition> assemblies, HashSet<string> frameworks, HashSet<string> weak_frameworks)
 	{
-		Gather (app, product_assembly, frameworks, weak_frameworks, (framework) => FilterFrameworks (app, framework));
+		Gather (app, assemblies, frameworks, weak_frameworks, (framework) => FilterFrameworks (app, framework));
 	}
-#endif // LEGACY_TOOLS || BUNDLER
+#endif // BUNDLER
 }

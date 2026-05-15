@@ -35,8 +35,10 @@ if test -f configure.inc; then
 	source configure.inc
 
 	if test -n "$NO_XCODE"; then
+		IGNORE_OSX=1
 		IGNORE_XCODE=1
 		IGNORE_SIMULATORS=1
+		IGNORE_OLD_SIMULATORS=1
 		IGNORE_XCODE_COMPONENTS=1
 	fi
 fi

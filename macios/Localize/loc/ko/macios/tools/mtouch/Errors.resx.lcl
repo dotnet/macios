@@ -4552,6 +4552,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MX4191" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not find the trampoline for the category method {0}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[범주 메서드 {0}에 대한 트램펄린을 찾을 수 없습니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MX5222" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[The native linker failed to execute: {0}. Please file a bug report at https://github.com/dotnet/macios/issues/new]D;]A; 		]]></Val>
@@ -4878,6 +4887,24 @@
           <Val><![CDATA[Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No 'Invoke' method found. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[메서드 {0}의 반환 값에 대한 DelegateProxyAttribute가 잘못되었습니다. {1}: 'Invoke' 메서드를 찾을 수 없습니다. 테스트 사례가 포함된 버그 보고서를 제출하세요(https://github.com/dotnet/macios/issues/new).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX8061" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to find the managed function with id {0} ({1}, {2}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ID가 {0}({1}, {2})인 관리되는 함수를 찾을 수 없습니다. 테스트 사례가 포함된 버그 보고서를 제출하세요(https://github.com/dotnet/macios/issues/new).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX8062" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Type '{0}' is expected to have a ProtocolProxyAttribute. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' 형식에는 ProtocolProxyAttribute가 있어야 합니다. 테스트 사례가 포함된 버그 보고서를 제출하세요(https://github.com/dotnet/macios/issues/new).]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

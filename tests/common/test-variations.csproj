@@ -23,6 +23,8 @@
 		<TestVariations Include="managed-static-registrar-all-optimizations-linkall" Description="Managed static registrar + all optimizations" />
 		<TestVariations Include="trimmable-static-registrar" Description="Trimmable static registrar" />
 		<TestVariations Include="trimmable-static-registrar-all-optimizations-linkall" Description="Trimmable static registrar + all optimizations" />
+		<TestVariations Include="inline-dlfcn-methods-compat" Description="Enables 'InlineDlfcnMethods' in compatibility mode." />
+		<TestVariations Include="inline-dlfcn-methods-strict" Description="Enables 'InlineDlfcnMethods' in strict mode." />
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -146,6 +148,25 @@
 		<UseMonoRuntime>false</UseMonoRuntime> <!-- doesn't work with Mono -->
 		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|inline-dlfcn-methods-compat|'))">
+		<InlineDlfcnMethods>compatibility</InlineDlfcnMethods>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|inline-dlfcn-methods-strict|'))">
+		<InlineDlfcnMethods>strict</InlineDlfcnMethods>
+		<_TestVariationApplied>true</_TestVariationApplied>
+
+		<DefineConstants>$(DefineConstants);STATIC_NATIVE_SYMBOL_LOOKUP</DefineConstants>
+	</PropertyGroup>
+
+	<ItemGroup Condition="$(_TestVariationForComparison.Contains('|inline-dlfcn-methods-strict|'))">
+		<!-- fields that aren't available in the simulator -->
+		<ReferenceNativeSymbol Condition="'$(SdkIsSimulator)' == 'true'" SymbolMode="Ignore" SymbolType="Field" Include="MTL4CommandQueueErrorDomain" />
+		<ReferenceNativeSymbol Condition="'$(SdkIsSimulator)' == 'true'" SymbolMode="Ignore" SymbolType="Field" Include="MTLIOErrorDomain" />
+		<ReferenceNativeSymbol Condition="'$(SdkIsSimulator)' == 'true'" SymbolMode="Ignore" SymbolType="Field" Include="MTLTensorDomain"/>
+	</ItemGroup>
 
 	<Target Name="ValidateTestVariation" Condition="'$(TestVariation)' != '' And '$(OutputType)' == 'exe'" BeforeTargets="Build">
 		<ItemGroup>

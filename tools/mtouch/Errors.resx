@@ -1097,6 +1097,24 @@
 	<!-- 223x: CollectUnmarkedMembersSubStep -->
 	<!-- 224x: PreserveBlockCodeSubStep -->
 	
+	<!-- 225x: InlineDlfcnMethodsStep -->
+
+	<data name="MX2254" xml:space="preserve">
+		<value>Unsupported primitive field type '{0}' for symbol '{1}' in method '{2}'. Sub-optimal but functional code will be generated. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+
+	<data name="MX2255" xml:space="preserve">
+		<value>Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+
+	<data name="MX2256" xml:space="preserve">
+		<value>The field type '{0}' for symbol '{1}' in method '{2}' is not an NSObject subclass. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+
+	<data name="MX2257" xml:space="preserve">
+		<value>Unknown IL sequence for method with call to Dlfcn.CachePointer: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+
 	<!-- 2300 -> 2399 is used by/reserved for ConfigurationAwareStep subclasses in the linker -->
 
 	<data name="MX_ConfigurationAwareStep" xml:space="preserve">

@@ -8,7 +8,6 @@ using System.Diagnostics.CodeAnalysis;
 namespace CloudKit {
 	/// <summary>A <see cref="CloudKit.CKOperation" /> that ret../../summary_set.sh CKFetchNotificationChangesOperation A</summary>
 	///     <remarks>To be added.</remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CloudKit/Reference/CKFetchNotificationChangesOperation_class/index.html">Apple documentation for <c>CKFetchNotificationChangesOperation</c></related>
 	[Register ("CKFetchNotificationChangesOperation", SkipRegistration = true)]
 	[UnsupportedOSPlatform ("ios", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
 	[UnsupportedOSPlatform ("macos", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]

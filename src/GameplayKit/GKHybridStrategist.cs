@@ -6,7 +6,6 @@ using System.ComponentModel;
 namespace GameplayKit {
 	/// <summary>A <see cref="GameplayKit.IGKStrategist" /> that combines Monte Carlo Tree Search and local search via MinMax.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/reference/GameplayKit/GKHybridStrategist">Apple documentation for <c>GKHybridStrategist</c></related>
 	[Register ("GKHybridStrategist", SkipRegistration = true)]
 	[UnsupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]

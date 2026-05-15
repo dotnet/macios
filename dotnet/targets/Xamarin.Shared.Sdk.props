@@ -100,6 +100,12 @@
 		<AccelerateBuildsInVisualStudio Condition="'$(AccelerateBuildsInVisualStudio)' == ''">false</AccelerateBuildsInVisualStudio>
 	</PropertyGroup>
 
+	<!-- Set default value for InlineDlfcnMethods based on .NET version and NativeAOT -->
+	<PropertyGroup Condition="'$(InlineDlfcnMethods)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">
+		<InlineDlfcnMethods Condition="'$(_UseNativeAot)' == 'true'">strict</InlineDlfcnMethods>
+		<InlineDlfcnMethods Condition="'$(InlineDlfcnMethods)' == ''">compatibility</InlineDlfcnMethods>
+	</PropertyGroup>
+
 	<!-- Set the default RuntimeIdentifier if not already specified. -->
 	<PropertyGroup Condition="'$(_RuntimeIdentifierIsRequired)' == 'true' And '$(RuntimeIdentifier)' == '' And '$(RuntimeIdentifiers)' == '' ">
 		<!-- The _<platform>RuntimeIdentifier values are set from the IDE -->
@@ -151,6 +157,19 @@
 		<_SdkIsSimulator Condition="'$(_SdkIsSimulator)' == ''">false</_SdkIsSimulator>
 		<!-- Set a public property that specifies if we're building for the simulator. -->
 		<SdkIsSimulator>$(_SdkIsSimulator)</SdkIsSimulator>
+
+		<!-- SdkIsMobile is true when building for a mobile platform (iOS or tvOS). -->
+		<SdkIsMobile Condition="'$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS'">true</SdkIsMobile>
+
+		<!-- SdkIsDevice is true when building for device (which can only happen on iOS and tvOS). -->
+		<SdkIsDevice Condition="'$(SdkIsSimulator)' != 'true' And '$(SdkIsMobile)' == 'true'">true</SdkIsDevice>
+
+		<!-- SdkIsDesktop is true when building for macOS or Mac Catalyst. -->
+		<SdkIsDesktop Condition="'$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst'">true</SdkIsDesktop>
+
+		<!-- We don't use the 'ComputedPlatform' property anymore, but it seems like there's code out there that depends on it (according to a search on GitHub at least), so define it like we did when we used the property. -->
+		<ComputedPlatform Condition="'$(ComputedPlatform)' == '' And '$(SdkIsSimulator)' == 'true'">iPhoneSimulator</ComputedPlatform>
+		<ComputedPlatform Condition="'$(ComputedPlatform)' == '' And '$(SdkIsDevice)' == 'true'">iPhone</ComputedPlatform>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -196,7 +215,7 @@
 		but the MtouchUseLlvm value is ignored when using the simulator, so it doesn't matter
 		if we set it in all cases.
 	-->
-	<PropertyGroup Condition="'$(MtouchUseLlvm)' == '' And '$(Configuration)' == 'Release' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">
+	<PropertyGroup Condition="'$(MtouchUseLlvm)' == '' And '$(Configuration)' == 'Release' And '$(SdkIsMobile)' == 'true'">
 		<MtouchUseLlvm>true</MtouchUseLlvm>
 	</PropertyGroup>
 

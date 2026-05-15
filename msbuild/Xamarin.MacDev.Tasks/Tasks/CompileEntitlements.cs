@@ -789,6 +789,7 @@ namespace Xamarin.MacDev.Tasks {
 					new EntitlementData ("com.apple.developer.on-demand-install-capable", iOS, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.developer.parent-application-identifiers", iOS, EntitlementType.ArrayOfStrings ),
 					new EntitlementData ("com.apple.developer.pass-type-identifiers", iOS, EntitlementType.ArrayOfStrings ),
+					new EntitlementData ("com.apple.developer.payment-pass-provisioning", iOS, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.developer.persistent-content-capture", desktop, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.developer.playable-content", iOS, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.developer.proximity-reader.identity.display", iOS, EntitlementType.Boolean ),

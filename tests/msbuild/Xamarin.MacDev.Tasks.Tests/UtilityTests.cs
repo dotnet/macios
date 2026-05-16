@@ -19,7 +19,7 @@ namespace Xamarin.MacDev.Tasks {
 			string rpath;
 
 			rpath = PathUtils.AbsoluteToRelative ("/Users/user/source/Project", "/Users/user/Source/Project/Info.plist");
-			Assert.AreEqual ("Info.plist", rpath, "#1");
+			Assert.That (rpath, Is.EqualTo ("Info.plist"), "#1");
 		}
 	}
 }

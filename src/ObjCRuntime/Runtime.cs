@@ -19,6 +19,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 
 using CoreFoundation;
 using Registrar;
@@ -2856,6 +2857,13 @@ namespace ObjCRuntime {
 		internal static bool ValidateObjectPointers {
 			get => validate_object_pointers;
 			set => validate_object_pointers = value;
+		}
+
+		/// <summary>Allocate unmanaged zeroed memory of the specified struct.</summary>
+		/// <remarks>Call <see cref="NativeMemory.Free" /> to free the returned pointer.</remarks>
+		internal unsafe static T* AllocZeroed<T> () where T : unmanaged
+		{
+			return (T*) NativeMemory.AllocZeroed ((nuint) sizeof (T));
 		}
 	}
 

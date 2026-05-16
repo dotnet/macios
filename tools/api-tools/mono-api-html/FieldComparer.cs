@@ -106,15 +106,15 @@ namespace Mono.ApiTools {
 
 		string GetFullName (XElement element)
 		{
-			var rv = element.GetAttribute ("name");
-			element = element.Parent;
+			var rv = element.GetAttribute ("name") ?? "";
+			element = element.Parent!;
 			while (element is not null) {
 				if (element.Name.LocalName == "assembly")
 					break;
 				var name = element.GetAttribute ("name");
 				if (!string.IsNullOrEmpty (name))
 					rv = name + "." + rv;
-				element = element.Parent;
+				element = element.Parent!;
 			}
 			return rv;
 		}
@@ -124,7 +124,7 @@ namespace Mono.ApiTools {
 			if (base.Equals (source, target, changes))
 				return true;
 
-			var name = source.GetAttribute ("name");
+			var name = source.GetAttribute ("name") ?? "";
 			var srcValue = source.GetAttribute ("value");
 			var tgtValue = target.GetAttribute ("value");
 			var change = new ApiChange (GetDescription (source), State);
@@ -135,15 +135,15 @@ namespace Mono.ApiTools {
 			if (State.BaseType == "System.Enum") {
 				change.Append (name).Append (" = ");
 				if (srcValue != tgtValue) {
-					change.AppendModified (srcValue, tgtValue);
+					change.AppendModified (srcValue ?? "", tgtValue ?? "");
 				} else {
-					change.Append (srcValue);
+					change.Append (srcValue ?? "");
 				}
 			} else {
 				RenderFieldAttributes (source.GetFieldAttributes (), target.GetFieldAttributes (), change);
 
-				var srcType = source.GetTypeName ("fieldtype", State);
-				var tgtType = target.GetTypeName ("fieldtype", State);
+				var srcType = source.GetTypeName ("fieldtype", State) ?? "";
+				var tgtType = target.GetTypeName ("fieldtype", State) ?? "";
 
 				if (srcType != tgtType) {
 					change.AppendModified (srcType, tgtType);
@@ -183,8 +183,8 @@ namespace Mono.ApiTools {
 		{
 			var sb = new StringBuilder ();
 
-			string name = e.GetAttribute ("name");
-			string value = e.GetAttribute ("value");
+			string name = e.GetAttribute ("name") ?? "";
+			string? value = e.GetAttribute ("value");
 
 			if (State.BaseType == "System.Enum") {
 				sb.Append (name).Append (" = ").Append (value).Append (',');
@@ -205,8 +205,8 @@ namespace Mono.ApiTools {
 						sb.Append ("const ");
 				}
 
-				string ftype = e.GetTypeName ("fieldtype", State);
-				sb.Append (ftype).Append (' ');
+				string? ftype = e.GetTypeName ("fieldtype", State);
+				sb.Append (ftype ?? "").Append (' ');
 				sb.Append (name);
 				if (ftype == "string" && e.Attribute ("value") is not null) {
 					if (value is null)

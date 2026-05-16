@@ -49,7 +49,7 @@ The steps are:
 
 7. Create a pull request in the [binaries](https://apidrop.visualstudio.com/_git/binaries) repository for the `netX.Y-xcodeZ.W` we created with the new assemblies (into the `master` branch).
 
-8. The final step is to flip the monikers from prerelease to live monikers (another ticket has to be created for this).
+8. The final step is to flip the monikers from prerelease to live monikers (another ticket has to be created for this). Sample ticket: [#540739](https://dev.azure.com/msft-skilling/Content/_workitems/edit/540739).
 
 ## How to create new monikers
 

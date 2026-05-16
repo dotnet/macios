@@ -8,3 +8,7 @@
 
 ## no generator support for FastEnumeration - https://bugzilla.xamarin.com/show_bug.cgi?id=4391
 !missing-protocol-conformance! CMSensorDataList should conform to NSFastEnumeration
+
+## Types that use these are not available on MacCatalyst
+!missing-enum! CMWaterSubmersionDepthState not bound
+!missing-enum! CMWaterSubmersionState not bound

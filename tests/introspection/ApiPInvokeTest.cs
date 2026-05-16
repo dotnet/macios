@@ -170,7 +170,7 @@ namespace Introspection {
 
 				IntPtr lib = Dlfcn.dlopen (path, 0);
 				if (Dlfcn.GetIndirect (lib, name) == IntPtr.Zero && !failed_api.Contains (name)) {
-					ReportError ("Could not find the field '{0}' in {1}", name, path);
+					ReportError ("Could not find the symbol '{0}' in {1}", name, path);
 					failed_api.Add (name);
 				}
 				Dlfcn.dlclose (lib);

@@ -137,6 +137,13 @@ public class TypeCache {
 	// optional if MediaToolbox is present 
 	public Type? MTAudioProcessingTap { get; }
 
+	// optional if PrintCore present
+	public Type? PMPageFormat { get; }
+	public Type? PMPaper { get; }
+	public Type? PMPrinter { get; }
+	public Type? PMPrintSession { get; }
+	public Type? PMPrintSettings { get; }
+
 	public Type NWEndpoint { get; }
 	public Type NWInterface { get; }
 	public Type NWParameters { get; }
@@ -294,6 +301,13 @@ public class TypeCache {
 			MKCoordinateSpan = ConditionalLookup (platformAssembly, "MapKit", "MKCoordinateSpan", true /* isn't in XM/Classic */);
 		if (frameworks.HaveMediaToolbox)
 			MTAudioProcessingTap = ConditionalLookup (platformAssembly, "MediaToolbox", "MTAudioProcessingTap");
+		if (frameworks.HavePrintCore) {
+			PMPageFormat = ConditionalLookup (platformAssembly, "PrintCore", "PMPageFormat");
+			PMPaper = ConditionalLookup (platformAssembly, "PrintCore", "PMPaper");
+			PMPrinter = ConditionalLookup (platformAssembly, "PrintCore", "PMPrinter");
+			PMPrintSession = ConditionalLookup (platformAssembly, "PrintCore", "PMPrintSession");
+			PMPrintSettings = ConditionalLookup (platformAssembly, "PrintCore", "PMPrintSettings");
+		}
 		if (frameworks.HaveUIKit) {
 			UIOffset = ConditionalLookup (platformAssembly, "UIKit", "UIOffset");
 			UIEdgeInsets = ConditionalLookup (platformAssembly, "UIKit", "UIEdgeInsets");

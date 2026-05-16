@@ -97,6 +97,54 @@ namespace Xamarin.Tests {
 			return attributeProvider.IsAvailable (PlatformInfo.Host);
 		}
 
+		public static bool IsAvailableInSimulator (this ICustomAttributeProvider attributeProvider)
+		{
+			if (!TestRuntime.IsSimulator)
+				return true;
+
+			var customAttributes = attributeProvider.GetCustomAttributes (true);
+
+			string platformPrefix;
+			switch (PlatformInfo.Host.Name) {
+			case ApplePlatform.iOS:
+				platformPrefix = "ios";
+				break;
+			case ApplePlatform.TVOS:
+				platformPrefix = "tvos";
+				break;
+			default:
+				return true;
+			}
+
+			// Check for [UnsupportedSimulator] attributes
+			foreach (var attr in customAttributes.OfType<ObjCRuntime.UnsupportedSimulatorAttribute> ()) {
+				if (attr.PlatformName.StartsWith (platformPrefix, StringComparison.OrdinalIgnoreCase))
+					return false;
+			}
+
+			// Check for [SupportedSimulator] attributes
+			var supportedAttrs = customAttributes.OfType<ObjCRuntime.SupportedSimulatorAttribute> ()
+				.Where (a => a.PlatformName.StartsWith (platformPrefix, StringComparison.OrdinalIgnoreCase))
+				.ToArray ();
+
+			// If no SupportedSimulator attributes for the current platform, assume available
+			if (supportedAttrs.Length == 0)
+				return true;
+
+			// There's a SupportedSimulator attribute for the current platform - check version
+			foreach (var attr in supportedAttrs) {
+				var versionString = attr.PlatformName.AsSpan (platformPrefix.Length);
+				if (versionString.IsEmpty)
+					return true; // supported, no version constraint
+				if (!Version.TryParse (versionString, out var version))
+					throw new InvalidOperationException ($"Invalid version string in SupportedSimulator attribute: '{attr.PlatformName}'");
+				if (PlatformInfo.Host.Version >= version)
+					return true;
+			}
+
+			return false;
+		}
+
 		[UnconditionalSuppressMessage ("Trimming", "IL2045", Justification = "Some of the attributes this method uses may have been linked away, so things might not work. It actually works though, so unless something changes, we're going to assume it's trimmer-compatible.")]
 		public static bool IsAvailable (this ICustomAttributeProvider attributeProvider, PlatformInfo targetPlatform)
 		{

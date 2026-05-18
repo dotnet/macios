@@ -178,12 +178,9 @@ Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NS
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
 Microsoft.MacCatalyst.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::None
 Microsoft.MacCatalyst.dll:Foundation.NSObjectData
-Microsoft.MacCatalyst.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::data
 Microsoft.MacCatalyst.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::Data()
 Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle
 Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle..ctor()
-Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle.CreateHandle(Foundation.NSObject)
-Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle.Finalize()
 Microsoft.MacCatalyst.dll:Foundation.NSObjectDataHandle.get_Data()
 Microsoft.MacCatalyst.dll:Foundation.NSObjectFlag
 Microsoft.MacCatalyst.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
@@ -194,6 +191,12 @@ Microsoft.MacCatalyst.dll:Foundation.RegisterAttribute
 Microsoft.MacCatalyst.dll:Foundation.RegisterAttribute..ctor(System.String, System.Boolean)
 Microsoft.MacCatalyst.dll:Foundation.RegisterAttribute..ctor(System.String)
 Microsoft.MacCatalyst.dll:Foundation.RegisterAttribute.get_IsWrapper()
+Microsoft.MacCatalyst.dll:Foundation.TrackedMemory
+Microsoft.MacCatalyst.dll:Foundation.TrackedMemory..ctor(System.UIntPtr)
+Microsoft.MacCatalyst.dll:Foundation.TrackedMemory.CreateHandle(Foundation.NSObject)
+Microsoft.MacCatalyst.dll:Foundation.TrackedMemory.Finalize()
+Microsoft.MacCatalyst.dll:Foundation.TrackedMemory.get_Value()
+Microsoft.MacCatalyst.dll:Foundation.TrackedMemory.set_Value(System.IntPtr)
 Microsoft.MacCatalyst.dll:Foundation.You_Should_Not_Call_base_In_This_Method
 Microsoft.MacCatalyst.dll:Foundation.You_Should_Not_Call_base_In_This_Method..ctor()
 Microsoft.MacCatalyst.dll:ObjCRuntime.__Registrar__
@@ -375,7 +378,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObject::class_pt
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObject::ClassHandle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObject::handle()
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObject::Handle()
-Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::classHandle
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::handle
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::handle
 Microsoft.MacCatalyst.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::Handle()
@@ -450,7 +452,6 @@ Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__Constru
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|288_0`1(ObjCRuntime.NativeHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
-Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AllocZeroed`1()
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.attempt_retain_nsobject(System.IntPtr, System.IntPtr*)
 Microsoft.MacCatalyst.dll:ObjCRuntime.Runtime.AttemptRetainNSObject(System.IntPtr)
@@ -721,6 +722,8 @@ Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.MacCatalyst.dll:System.IntPtr CoreFoundation.CFRange::loc
 Microsoft.MacCatalyst.dll:System.IntPtr Foundation.NSObject::__data
 Microsoft.MacCatalyst.dll:System.IntPtr Foundation.NSObject/NSObject_Disposer::class_ptr
+Microsoft.MacCatalyst.dll:System.IntPtr Foundation.TrackedMemory::<Value>k__BackingField
+Microsoft.MacCatalyst.dll:System.IntPtr Foundation.TrackedMemory::Value()
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.BlockCollector::block
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.Libraries/CoreFoundation::Handle
 Microsoft.MacCatalyst.dll:System.IntPtr ObjCRuntime.NativeHandle::handle
@@ -852,9 +855,10 @@ Microsoft.MacCatalyst.dll:System.Object ObjCRuntime.Class::verification_lock
 Microsoft.MacCatalyst.dll:System.Object ObjCRuntime.Runtime::lock_obj
 Microsoft.MacCatalyst.dll:System.Reflection.Assembly Foundation.NSObject::PlatformAssembly
 Microsoft.MacCatalyst.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.NSObjectDataHandle> Foundation.NSObject::data_table
+Microsoft.MacCatalyst.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.TrackedMemory> Foundation.NSObject::super_map
 Microsoft.MacCatalyst.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Delegate,ObjCRuntime.BlockCollector> ObjCRuntime.Runtime::block_lifetime_table
 Microsoft.MacCatalyst.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Reflection.Assembly,System.String> ObjCRuntime.Class::assembly_to_name
-Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.GCHandle Foundation.NSObjectDataHandle::handle
+Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.GCHandle Foundation.TrackedMemory::handle
 Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::height
 Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::width
 Microsoft.MacCatalyst.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::x

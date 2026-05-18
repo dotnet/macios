@@ -68,7 +68,7 @@ namespace LinkSdk {
 		// http://bugzilla.xamarin.com/show_bug.cgi?id=234
 		public void Bug234_Interlocked ()
 		{
-			string str = null;
+			string? str = null;
 			Assert.Null (Interlocked.Exchange (ref str, "one"), "Exchange");
 			// the above should not crash with System.ExecutionEngineException
 			Assert.That (str, Is.EqualTo ("one"), "one");
@@ -119,7 +119,9 @@ namespace LinkSdk {
 			if (TestRuntime.CheckXcodeVersion (15, 0))
 				Assert.Ignore ("NSUrl was fixed with Xcode 15.0");
 
+#pragma warning disable CS8625 // Intentional null test case
 			Assert.False (UIApplication.SharedApplication.CanOpenUrl (null), "null");
+#pragma warning restore CS8625
 			// the above should not throw an ArgumentNullException
 			// and that's important because NSUrl.FromString and NSUrl.ctor(string) differs
 			const string bad_tel = "tel://1800 023 009";
@@ -284,7 +286,8 @@ namespace LinkSdk {
 			model.Entities = new NSEntityDescription [1] { entity };
 			model.SetEntities (model.Entities, String.Empty);
 
-			var sqlitePath = Path.Combine (NSFileManager.TemporaryDirectory, $"test-{System.Diagnostics.Process.GetCurrentProcess ().Id}.sqlite");
+			var temporaryDirectory = NSFileManager.TemporaryDirectory ?? Path.GetTempPath ();
+			var sqlitePath = Path.Combine (temporaryDirectory, $"test-{System.Diagnostics.Process.GetCurrentProcess ().Id}.sqlite");
 			NSUrl url = NSUrl.FromFilename (sqlitePath);
 
 			try {
@@ -461,7 +464,7 @@ namespace LinkSdk {
 
 		public class Location { }
 
-		private static Location mInstance = null;
+		private static Location? mInstance = null;
 
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static Location getInstance ()
@@ -560,7 +563,7 @@ namespace LinkSdk {
 
 		class AddedInSilverlight5 : INotifyPropertyChanging {
 #pragma warning disable CS0067 // The event 'LinkSdkRegressionTest.AddedInSilverlight5.PropertyChanging' is never used
-			public event PropertyChangingEventHandler PropertyChanging;
+			public event PropertyChangingEventHandler? PropertyChanging;
 #pragma warning restore CS0067
 		}
 
@@ -573,9 +576,17 @@ namespace LinkSdk {
 		[Test]
 		public void MonoIOStat_6118 ()
 		{
-			string file = NSBundle.MainBundle.ExecutablePath;
+			var file = NSBundle.MainBundle.ExecutablePath;
+			if (string.IsNullOrEmpty (file))
+				throw new InvalidOperationException ("No executable path.");
 			DateTime c1 = File.GetCreationTime (file).ToUniversalTime ();
-			DateTime c2 = (DateTime) NSFileManager.DefaultManager.GetAttributes (file).CreationDate;
+			var attributes = NSFileManager.DefaultManager.GetAttributes (file);
+			if (attributes is null)
+				throw new InvalidOperationException ("No file attributes.");
+			var creationDate = attributes.CreationDate;
+			if (creationDate is null)
+				throw new InvalidOperationException ("No creation date.");
+			DateTime c2 = (DateTime) creationDate;
 			Assert.That ((c1 - c2).Seconds, Is.LessThan (30), "MonoIOStat");
 		}
 
@@ -584,7 +595,11 @@ namespace LinkSdk {
 		{
 			Type o = typeof (Object);
 			// this returns a new System.Runtime.Remoting.ObjectHandle which (was) linked away previously 
-			Assert.NotNull (Activator.CreateInstance (o.Assembly.GetName ().Name, o.FullName), "ObjectHandle");
+			var assemblyName = o.Assembly.GetName ().Name;
+			var typeName = o.FullName;
+			if (string.IsNullOrEmpty (assemblyName) || string.IsNullOrEmpty (typeName))
+				throw new InvalidOperationException ("Unable to create an ObjectHandle.");
+			Assert.NotNull (Activator.CreateInstance (assemblyName, typeName), "ObjectHandle");
 		}
 
 		[Test]
@@ -614,7 +629,7 @@ namespace LinkSdk {
 		public void Action_14493 ()
 		{
 			var Demo = new Demo_14493 ();
-			Action<object> a = null;
+			Action<object>? a = null;
 			a += Demo.Update;
 			a -= Demo.Update; // Crash here
 		}
@@ -710,10 +725,10 @@ namespace LinkSdk {
 		{
 			// iOS8 changes the rules of the game
 			var fm = NSFileManager.DefaultManager;
-			var docs = fm.GetUrls (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User) [0].Path;
-			var libs = fm.GetUrls (NSSearchPathDirectory.LibraryDirectory, NSSearchPathDomain.User) [0].Path;
+			var docs = fm.GetUrls (NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomain.User) [0].Path ?? "";
+			var libs = fm.GetUrls (NSSearchPathDirectory.LibraryDirectory, NSSearchPathDomain.User) [0].Path ?? "";
 #if __MACOS__
-			var home = Environment.GetEnvironmentVariable ("HOME");
+			var home = Environment.GetEnvironmentVariable ("HOME") ?? throw new InvalidOperationException ("No HOME directory.");
 #endif
 
 			// note: this test is more interesting on devices because of the sandbox they have
@@ -891,21 +906,29 @@ namespace LinkSdk {
 			using (var tv = new UITextView ()) {
 				Assert.Null (tv.WeakDelegate, "none");
 				// event on UITextView itself
-				tv.Ended += (object sender, EventArgs e) => { };
+				tv.Ended += (object? sender, EventArgs e) => { };
 
-				var t = tv.WeakDelegate.GetType ();
+				var weakDelegate = tv.WeakDelegate;
+				Assert.NotNull (weakDelegate, "textview delegate");
+				if (weakDelegate is null)
+					throw new InvalidOperationException ("The text view delegate was not created.");
+				var t = weakDelegate.GetType ();
 				Assert.That (t.Name, Is.EqualTo ("_UITextViewDelegate"), "textview");
 
 				var fi = t.GetField ("editingEnded", BindingFlags.NonPublic | BindingFlags.Instance);
 				Assert.NotNull (fi, "editingEnded");
-				var value = fi.GetValue (tv.WeakDelegate);
+				if (fi is null)
+					throw new InvalidOperationException ("The editingEnded field was not found.");
+				var value = fi.GetValue (weakDelegate);
 				Assert.NotNull (value, "value");
 
 				// and on the UIScrollView defined one
-				tv.Scrolled += (object sender, EventArgs e) => { };
+				tv.Scrolled += (object? sender, EventArgs e) => { };
 				// and the existing (initial field) is still set
 				fi = t.GetField ("editingEnded", BindingFlags.NonPublic | BindingFlags.Instance);
 				Assert.NotNull (fi, "editingEnded/scrollview");
+				if (fi is null)
+					throw new InvalidOperationException ("The editingEnded field was not found after scroll hookup.");
 			}
 		}
 #endif // !__MACOS__
@@ -923,13 +946,17 @@ namespace LinkSdk {
 		}
 #endif // !__MACOS__
 
-		static void CheckILLinkStubbedMethod (MethodInfo m)
+		static void CheckILLinkStubbedMethod (MethodInfo? m)
 		{
 			// ILLink does not remove the method, but it can "stub" (empty) it
-			Assert.NotNull (m, "Method not found (null)");
+			if (m is null)
+				throw new InvalidOperationException ("Method not found (null)");
 			var mb = m.GetMethodBody ();
-			Assert.NotNull (m, "GetMethodBody");
+			if (mb is null)
+				throw new InvalidOperationException ("GetMethodBody");
 			var il = mb.GetILAsByteArray ();
+			if (il is null)
+				throw new InvalidOperationException ("GetILAsByteArray");
 #if DEBUG
 			// means some stuff in addition to the `ret` instruction
 			Assert.That (il.Length, Is.GreaterThan (1), "il > 1");
@@ -991,9 +1018,13 @@ namespace LinkSdk {
 				sc.SetSearchResultsUpdater ((vc) => { });
 
 				var a = typeof (UISearchController).AssemblyQualifiedName;
+				if (string.IsNullOrEmpty (a))
+					throw new InvalidOperationException ("No assembly qualified name for UISearchController.");
 				var n = a.Replace ("UIKit.UISearchController", "UIKit.UISearchController+__Xamarin_UISearchResultsUpdating");
 				var t = Type.GetType (n);
 				Assert.NotNull (t, "private inner type");
+				if (t is null)
+					throw new InvalidOperationException ("The private inner type was not found.");
 				Assert.IsNotNull (t.GetMethod ("UpdateSearchResultsForSearchController"), "preserved");
 			}
 		}
@@ -1003,7 +1034,7 @@ namespace LinkSdk {
 		public void OldTlsProvider_LinkedOut ()
 		{
 			// make test work for classic (monotouch) and unified (iOS, tvOS)
-			var fqn = typeof (NSObject).AssemblyQualifiedName.Replace ("Foundation.NSObject", "Security.Tls.OldTlsProvider");
+			var fqn = GetReplacedNSObjectAssemblyQualifiedName ("Security.Tls.OldTlsProvider");
 			Assert.Null (GetTypeHelper (fqn), "Should not be included");
 		}
 
@@ -1011,7 +1042,7 @@ namespace LinkSdk {
 		public void AppleTls_Default ()
 		{
 			// make test work for classic (monotouch) and unified (iOS, tvOS)
-			var fqn = typeof (NSObject).AssemblyQualifiedName.Replace ("Foundation.NSObject", "Security.Tls.AppleTlsProvider");
+			var fqn = GetReplacedNSObjectAssemblyQualifiedName ("Security.Tls.AppleTlsProvider");
 			Assert.Null (GetTypeHelper (fqn), "Should be included");
 		}
 
@@ -1023,20 +1054,28 @@ namespace LinkSdk {
 			// a reference to WKWebView will bring the internal NSProxy type
 			var t = typeof (WKWebView);
 			Assert.NotNull (t, "avoid compiler optimization of unused variable");
-			var fqn = typeof (NSObject).AssemblyQualifiedName.Replace ("Foundation.NSObject", "Foundation.NSProxy");
+			var fqn = GetReplacedNSObjectAssemblyQualifiedName ("Foundation.NSProxy");
 			Assert.NotNull (GetTypeHelper (fqn), fqn);
 		}
 #endif // !__TVOS__
 
 		// Fools linker not to keep the type by using it in test check
-		static Type GetTypeHelper (string name)
+		static Type? GetTypeHelper (string name)
 		{
 			return Type.GetType (name);
 		}
 
-		static Type GetTypeHelper (string name, bool throwOnError)
+		static Type? GetTypeHelper (string name, bool throwOnError)
 		{
 			return Type.GetType (name, throwOnError);
+		}
+
+		static string GetReplacedNSObjectAssemblyQualifiedName (string replacement)
+		{
+			var assemblyQualifiedName = typeof (NSObject).AssemblyQualifiedName;
+			if (string.IsNullOrEmpty (assemblyQualifiedName))
+				throw new InvalidOperationException ("No assembly qualified name for NSObject.");
+			return assemblyQualifiedName.Replace ("Foundation.NSObject", replacement);
 		}
 
 		[Test]
@@ -1073,7 +1112,11 @@ namespace LinkSdk {
 		public void Principal ()
 		{
 			Thread.CurrentPrincipal = new CustomPrincipal ();
-			Assert.That (Thread.CurrentPrincipal.Identity.Name, Is.EqualTo ("abc"), "Name");
+			var identity = Thread.CurrentPrincipal?.Identity;
+			Assert.NotNull (identity, "Identity");
+			if (identity is null)
+				throw new InvalidOperationException ("No current principal identity.");
+			Assert.That (identity.Name, Is.EqualTo ("abc"), "Name");
 		}
 
 		[Test]

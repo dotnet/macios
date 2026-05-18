@@ -1,8 +1,11 @@
 ---
 on:
-  schedule: "0 0 * * *"
+  schedule: daily
   workflow_dispatch:
-  roles: [admin, maintainer, write]
+  roles: [admin, maintain, write]
+concurrency:
+  group: "code-radiator-${{ github.ref || github.run_id }}"
+  cancel-in-progress: true
 permissions:
   contents: read
   pull-requests: read
@@ -16,19 +19,30 @@ network:
 tools:
   github:
     toolsets: [pull_requests, repos]
-    min-integrity: none
+    min-integrity: approved
   bash: true
+checkout:
+  fetch: ["*"]
+  fetch-depth: 0
 safe-outputs:
   create-pull-request:
     max: 10
+    allowed-base-branches:
+      - "net[0-9]*.0"
+      - "xcode[0-9]*"
+      - "xcode[0-9]*.[0-9]*"
   add-comment:
     max: 10
+    target: "*"
   add-labels:
     max: 10
+    target: "*"
   merge-pull-request:
     max: 10
   push-to-pull-request-branch:
     max: 10
+    target: "*"
+    title-prefix: "🤖 Merge 'main' => '"
   update-pull-request:
     max: 10
 ---

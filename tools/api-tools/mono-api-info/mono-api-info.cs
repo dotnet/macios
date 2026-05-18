@@ -29,8 +29,8 @@ namespace Mono.ApiTools {
 		public static int Main (string [] args)
 		{
 			bool showHelp = false;
-			string output = null;
-			List<string> asms = null;
+			string? output = null;
+			List<string>? asms = null;
 			ApiInfoConfig config = new ApiInfoConfig ();
 
 			var options = new Mono.Options.OptionSet {
@@ -82,7 +82,7 @@ namespace Mono.ApiTools {
 				return showHelp ? 0 : 1;
 			}
 
-			TextWriter outputStream = null;
+			TextWriter? outputStream = null;
 			try {
 				if (!string.IsNullOrEmpty (output))
 					outputStream = new StreamWriter (output);
@@ -116,7 +116,7 @@ namespace Mono.ApiTools {
 
 		public List<Stream> ResolveStreams { get; } = new List<Stream> ();
 
-		public TypeHelper TypeHelper { get; private set; }
+		public TypeHelper TypeHelper { get; private set; } = null!;
 
 		public void ResolveTypes ()
 		{
@@ -156,7 +156,7 @@ namespace Mono.ApiTools {
 	}
 
 	public static class ApiInfo {
-		public static void Generate (string assemblyPath, TextWriter outStream, ApiInfoConfig config = null)
+		public static void Generate (string assemblyPath, TextWriter outStream, ApiInfoConfig? config = null)
 		{
 			if (assemblyPath is null)
 				throw new ArgumentNullException (nameof (assemblyPath));
@@ -164,7 +164,7 @@ namespace Mono.ApiTools {
 			Generate (new [] { assemblyPath }, null, outStream, config);
 		}
 
-		public static void Generate (Stream assemblyStream, TextWriter outStream, ApiInfoConfig config = null)
+		public static void Generate (Stream assemblyStream, TextWriter outStream, ApiInfoConfig? config = null)
 		{
 			if (assemblyStream is null)
 				throw new ArgumentNullException (nameof (assemblyStream));
@@ -172,17 +172,17 @@ namespace Mono.ApiTools {
 			Generate (null, new [] { assemblyStream }, outStream, config);
 		}
 
-		public static void Generate (IEnumerable<string> assemblyPaths, TextWriter outStream, ApiInfoConfig config = null)
+		public static void Generate (IEnumerable<string> assemblyPaths, TextWriter outStream, ApiInfoConfig? config = null)
 		{
 			Generate (assemblyPaths, null, outStream, config);
 		}
 
-		public static void Generate (IEnumerable<Stream> assemblyStreams, TextWriter outStream, ApiInfoConfig config = null)
+		public static void Generate (IEnumerable<Stream> assemblyStreams, TextWriter outStream, ApiInfoConfig? config = null)
 		{
 			Generate (null, assemblyStreams, outStream, config);
 		}
 
-		public static void Generate (IEnumerable<string> assemblyPaths, IEnumerable<Stream> assemblyStreams, TextWriter outStream, ApiInfoConfig config = null)
+		public static void Generate (IEnumerable<string>? assemblyPaths, IEnumerable<Stream>? assemblyStreams, TextWriter outStream, ApiInfoConfig? config = null)
 		{
 			if (outStream is null)
 				throw new ArgumentNullException (nameof (outStream));
@@ -204,7 +204,7 @@ namespace Mono.ApiTools {
 			Generate (assemblyPaths, assemblyStreams, outStream, state);
 		}
 
-		internal static void Generate (IEnumerable<string> assemblyFiles, IEnumerable<Stream> assemblyStreams, TextWriter outStream, State state = null)
+		internal static void Generate (IEnumerable<string>? assemblyFiles, IEnumerable<Stream>? assemblyStreams, TextWriter outStream, State? state = null)
 		{
 			if (outStream is null)
 				throw new ArgumentNullException (nameof (outStream));
@@ -295,7 +295,7 @@ namespace Mono.ApiTools {
 	}
 
 	class AssemblyCollection {
-		XmlWriter writer;
+		XmlWriter writer = null!;
 		List<AssemblyDefinition> assemblies = new List<AssemblyDefinition> ();
 		State state;
 
@@ -384,7 +384,7 @@ namespace Mono.ApiTools {
 					continue;
 
 				writer.WriteStartElement ("attribute");
-				AddAttribute ("name", typeof (TypeForwardedToAttribute).FullName);
+				AddAttribute ("name", typeof (TypeForwardedToAttribute).FullName!);
 				writer.WriteStartElement ("properties");
 				writer.WriteStartElement ("property");
 				AddAttribute ("name", "Destination");
@@ -497,7 +497,7 @@ namespace Mono.ApiTools {
 			this.members = members;
 		}
 
-		protected virtual ICustomAttributeProvider GetAdditionalCustomAttributeProvider (MemberReference member)
+		protected virtual ICustomAttributeProvider? GetAdditionalCustomAttributeProvider (MemberReference member)
 		{
 			return null;
 		}
@@ -510,10 +510,14 @@ namespace Mono.ApiTools {
 				writer.WriteStartElement (Tag);
 				AddAttribute ("name", GetName (member));
 				if (!NoMemberAttributes)
-					AddAttribute ("attrib", GetMemberAttributes (member));
+					AddAttribute ("attrib", GetMemberAttributes (member) ?? "");
 				AddExtraAttributes (member);
 
-				AttributeData.OutputAttributes (writer, state, (ICustomAttributeProvider) member, GetAdditionalCustomAttributeProvider (member));
+				var additionalProvider = GetAdditionalCustomAttributeProvider (member);
+				if (additionalProvider is not null)
+					AttributeData.OutputAttributes (writer, state, (ICustomAttributeProvider) member, additionalProvider);
+				else
+					AttributeData.OutputAttributes (writer, state, (ICustomAttributeProvider) member);
 
 				AddExtraData (member);
 				writer.WriteEndElement (); // Tag
@@ -535,7 +539,7 @@ namespace Mono.ApiTools {
 			return "NoNAME";
 		}
 
-		protected virtual string GetMemberAttributes (MemberReference memberDefenition)
+		protected virtual string? GetMemberAttributes (MemberReference memberDefenition)
 		{
 			return null;
 		}
@@ -596,7 +600,7 @@ namespace Mono.ApiTools {
 		TypeDefinition type;
 
 		public TypeData (XmlWriter writer, TypeDefinition type, State state)
-			: base (writer, null, state)
+			: base (writer, [], state)
 		{
 			this.type = type;
 		}
@@ -625,7 +629,7 @@ namespace Mono.ApiTools {
 			string charSet = GetCharSet (type);
 			AddAttribute ("charset", charSet);
 
-			string layout = GetLayout (type);
+			string? layout = GetLayout (type);
 			if (layout is not null)
 				AddAttribute ("layout", layout);
 
@@ -732,7 +736,7 @@ namespace Mono.ApiTools {
 			writer.WriteEndElement (); // class
 		}
 
-		static FieldReference GetEnumValueField (TypeDefinition type)
+		static FieldReference? GetEnumValueField (TypeDefinition type)
 		{
 			foreach (FieldDefinition field in type.Fields)
 				if (field.IsSpecialName && field.Name == "value__")
@@ -793,7 +797,7 @@ namespace Mono.ApiTools {
 			return CharSet.None.ToString ();
 		}
 
-		static string GetLayout (TypeDefinition type)
+		static string? GetLayout (TypeDefinition type)
 		{
 			TypeAttributes maskedLayout = type.Attributes & TypeAttributes.LayoutMask;
 			if (maskedLayout == TypeAttributes.AutoLayout)
@@ -926,8 +930,10 @@ namespace Mono.ApiTools {
 		}
 
 		sealed class ParameterComparer : IEqualityComparer<ParameterDefinition> {
-			public bool Equals (ParameterDefinition x, ParameterDefinition y)
+			public bool Equals (ParameterDefinition? x, ParameterDefinition? y)
 			{
+				if (x is null || y is null)
+					return x is null && y is null;
 				return x.ParameterType.Name == y.ParameterType.Name;
 			}
 
@@ -1012,7 +1018,7 @@ namespace Mono.ApiTools {
 
 			if (field.IsLiteral) {
 				object value = field.Constant;//object value = field.GetValue (null);
-				string stringValue = null;
+				string? stringValue = null;
 				//if (value is Enum) {
 				//    // FIXME: when Mono bug #60090 has been
 				//    // fixed, we should just be able to use
@@ -1049,21 +1055,21 @@ namespace Mono.ApiTools {
 			return prop.Name;
 		}
 
-		MethodDefinition [] GetMethods (PropertyDefinition prop, out bool haveParameters)
+		MethodDefinition []? GetMethods (PropertyDefinition prop, out bool haveParameters)
 		{
 			MethodDefinition _get = prop.GetMethod;
 			MethodDefinition _set = prop.SetMethod;
 			bool haveGet = (_get is not null && TypeData.MustDocumentMethod (_get));
 			bool haveSet = (_set is not null && TypeData.MustDocumentMethod (_set));
-			haveParameters = haveGet || (haveSet && _set.Parameters.Count > 1);
+			haveParameters = haveGet || (haveSet && _set!.Parameters.Count > 1);
 			MethodDefinition [] methods;
 
 			if (haveGet && haveSet) {
-				methods = new MethodDefinition [] { _get, _set };
+				methods = new MethodDefinition [] { _get!, _set! };
 			} else if (haveGet) {
-				methods = new MethodDefinition [] { _get };
+				methods = new MethodDefinition [] { _get! };
 			} else if (haveSet) {
-				methods = new MethodDefinition [] { _set };
+				methods = new MethodDefinition [] { _set! };
 			} else {
 				//odd
 				return null;
@@ -1080,7 +1086,7 @@ namespace Mono.ApiTools {
 			AddAttribute ("ptype", Utils.CleanupTypeName (prop.PropertyType));
 
 			bool haveParameters;
-			MethodDefinition [] methods = GetMethods ((PropertyDefinition) memberDefinition, out haveParameters);
+			MethodDefinition []? methods = GetMethods ((PropertyDefinition) memberDefinition, out haveParameters);
 
 			if (methods is not null && haveParameters) {
 				string parms = Parameters.GetSignature (methods [0].Parameters);
@@ -1095,7 +1101,7 @@ namespace Mono.ApiTools {
 			base.AddExtraData (memberDefenition);
 
 			bool haveParameters;
-			MethodDefinition [] methods = GetMethods ((PropertyDefinition) memberDefenition, out haveParameters);
+			MethodDefinition []? methods = GetMethods ((PropertyDefinition) memberDefenition, out haveParameters);
 
 			if (methods is null)
 				return;
@@ -1301,7 +1307,7 @@ namespace Mono.ApiTools {
 				if (parameter.IsOptional) {
 					AddAttribute ("optional", "true");
 					if (parameter.HasConstant)
-						AddAttribute ("defaultValue", parameter.Constant is null ? "NULL" : parameter.Constant.ToString ());
+						AddAttribute ("defaultValue", parameter.Constant is null ? "NULL" : parameter.Constant.ToString () ?? "");
 				}
 
 				if (direction != "in")
@@ -1453,8 +1459,11 @@ namespace Mono.ApiTools {
 	class TypeReferenceComparer : IComparer<TypeReference> {
 		public static TypeReferenceComparer Default = new TypeReferenceComparer ();
 
-		public int Compare (TypeReference a, TypeReference b)
+		public int Compare (TypeReference? a, TypeReference? b)
 		{
+			if (a is null && b is null) return 0;
+			if (a is null) return -1;
+			if (b is null) return 1;
 			int result = String.Compare (a.Namespace, b.Namespace, StringComparison.Ordinal);
 			if (result != 0)
 				return result;
@@ -1466,8 +1475,11 @@ namespace Mono.ApiTools {
 	class MemberReferenceComparer : IComparer {
 		public static MemberReferenceComparer Default = new MemberReferenceComparer ();
 
-		public int Compare (object a, object b)
+		public int Compare (object? a, object? b)
 		{
+			if (a is null && b is null) return 0;
+			if (a is null) return -1;
+			if (b is null) return 1;
 			MemberReference ma = (MemberReference) a;
 			MemberReference mb = (MemberReference) b;
 			return String.Compare (ma.Name, mb.Name, StringComparison.Ordinal);
@@ -1477,8 +1489,11 @@ namespace Mono.ApiTools {
 	class PropertyDefinitionComparer : IComparer<PropertyDefinition> {
 		public static PropertyDefinitionComparer Default = new PropertyDefinitionComparer ();
 
-		public int Compare (PropertyDefinition ma, PropertyDefinition mb)
+		public int Compare (PropertyDefinition? ma, PropertyDefinition? mb)
 		{
+			if (ma is null && mb is null) return 0;
+			if (ma is null) return -1;
+			if (mb is null) return 1;
 			int res = String.Compare (ma.Name, mb.Name, StringComparison.Ordinal);
 			if (res != 0)
 				return res;
@@ -1499,8 +1514,11 @@ namespace Mono.ApiTools {
 	class MethodDefinitionComparer : IComparer {
 		public static MethodDefinitionComparer Default = new MethodDefinitionComparer ();
 
-		public int Compare (object a, object b)
+		public int Compare (object? a, object? b)
 		{
+			if (a is null && b is null) return 0;
+			if (a is null) return -1;
+			if (b is null) return 1;
 			MethodDefinition ma = (MethodDefinition) a;
 			MethodDefinition mb = (MethodDefinition) b;
 			int res = String.Compare (ma.Name, mb.Name, StringComparison.Ordinal);

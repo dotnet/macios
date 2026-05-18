@@ -845,6 +845,18 @@
   <data name="MX2257" xml:space="preserve">
 		<value>Unknown IL sequence for method with call to Dlfcn.CachePointer: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
 	</data>
+  <data name="MX2258" xml:space="preserve">
+		<value>'{0}' is marked with a malformed simulator availability attribute: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+  <data name="MX2259" xml:space="preserve">
+		<value>'{0}' is marked with a simulator availability attribute with an invalid version: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+  <data name="MX2260" xml:space="preserve">
+		<value>'{0}' has conflicting simulator availability attributes for the '{1}' platform (both SupportedSimulator and UnsupportedSimulator). Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
+  <data name="MX2261" xml:space="preserve">
+		<value>'{0}' has multiple SupportedSimulator attributes for the '{1}' platform. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
+	</data>
   <!-- 2300 -> 2399 is used by/reserved for ConfigurationAwareStep subclasses in the linker -->
   <data name="MX_ConfigurationAwareStep" xml:space="preserve">
 		<value>The linker step '{0}' failed during processing: {1}</value>

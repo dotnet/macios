@@ -167,7 +167,7 @@ namespace Foundation {
 			}
 
 			unsafe {
-				NativeMemory.Free ((void *) Value);
+				NativeMemory.Free ((void*) Value);
 			}
 			Value = IntPtr.Zero;
 

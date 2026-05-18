@@ -124,11 +124,9 @@ Microsoft.iOS.dll:Foundation.NSObject.get_Handle()
 Microsoft.iOS.dll:Foundation.NSObject.get_InFinalizerQueue()
 Microsoft.iOS.dll:Foundation.NSObject.get_IsDirectBinding()
 Microsoft.iOS.dll:Foundation.NSObject.get_IsRegisteredToggleRef()
-Microsoft.iOS.dll:Foundation.NSObject.get_SuperHandle()
 Microsoft.iOS.dll:Foundation.NSObject.GetData()
 Microsoft.iOS.dll:Foundation.NSObject.GetHashCode()
 Microsoft.iOS.dll:Foundation.NSObject.GetNativeHash()
-Microsoft.iOS.dll:Foundation.NSObject.GetSuper()
 Microsoft.iOS.dll:Foundation.NSObject.Initialize()
 Microsoft.iOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String, System.Boolean)
 Microsoft.iOS.dll:Foundation.NSObject.InitializeHandle(ObjCRuntime.NativeHandle, System.String)
@@ -343,17 +341,17 @@ Microsoft.iOS.dll:ObjCRuntime.MarshalObjectiveCExceptionMode ObjCRuntime.Runtime
 Microsoft.iOS.dll:ObjCRuntime.Messaging
 Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSend_IntPtr(System.IntPtr, System.IntPtr, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_IntPtr(System.IntPtr, System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
+Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_IntPtr(ObjCRuntime.ObjCSuper*, System.IntPtr, System.IntPtr)
+Microsoft.iOS.dll:ObjCRuntime.Messaging.bool_objc_msgSendSuper_NativeHandle(ObjCRuntime.ObjCSuper*, System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.CGRect_objc_msgSend(System.IntPtr, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.iOS.dll:ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend_CGRect(System.IntPtr, System.IntPtr, CoreGraphics.CGRect)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.iOS.dll:ObjCRuntime.Messaging.NativeHandle_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSend(System.IntPtr, System.IntPtr)
-Microsoft.iOS.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper(System.IntPtr, System.IntPtr)
+Microsoft.iOS.dll:ObjCRuntime.Messaging.UIntPtr_objc_msgSendSuper(ObjCRuntime.ObjCSuper*, System.IntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_NativeHandle_bool(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle, ObjCRuntime.NativeHandle, System.Byte)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle_UIntPtr(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle, System.UIntPtr)
 Microsoft.iOS.dll:ObjCRuntime.Messaging.void_objc_msgSend_NativeHandle(System.IntPtr, System.IntPtr, ObjCRuntime.NativeHandle)
@@ -372,7 +370,6 @@ Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::class_ptr
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::ClassHandle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::Handle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::SuperHandle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::classHandle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::handle
@@ -381,6 +378,8 @@ Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.DisposableObject::Handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.INativeObject::Handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.NativeHandle::Zero
+Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::classHandle
+Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.ObjCSuper::receiver
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Runtime/ClassHandles::unused
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Selector::Handle()
@@ -423,6 +422,8 @@ Microsoft.iOS.dll:ObjCRuntime.ObjCException.get_Name()
 Microsoft.iOS.dll:ObjCRuntime.ObjCException.get_NSException()
 Microsoft.iOS.dll:ObjCRuntime.ObjCException.get_Reason()
 Microsoft.iOS.dll:ObjCRuntime.ObjCException.ToString()
+Microsoft.iOS.dll:ObjCRuntime.ObjCSuper
+Microsoft.iOS.dll:ObjCRuntime.ObjCSuper..ctor(Foundation.NSObject)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.ConstructINativeObject`1(System.Type, ObjCRuntime.NativeHandle, System.Boolean)
 Microsoft.iOS.dll:ObjCRuntime.RegistrarHelper.ConstructNSObject`1(System.Type, ObjCRuntime.NativeHandle)

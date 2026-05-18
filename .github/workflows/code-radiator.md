@@ -30,6 +30,7 @@ safe-outputs:
     allowed-base-branches:
       - "net[0-9]*.0"
       - "xcode[0-9]*"
+      - "xcode[0-9]*.[0-9]*"
   add-comment:
     max: 10
     target: "*"

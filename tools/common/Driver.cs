@@ -70,7 +70,9 @@ namespace Xamarin.Bundler {
 				app.RuntimeIdentifier = v;
 			});
 			options.Add ("xcode-version=", "The Xcode version we're building with", v => {
-				Driver.XcodeVersion = Version.Parse (v);
+				if (!Version.TryParse (v, out var xcodeVersion))
+					throw ErrorHelper.CreateError (26, Errors.MX0026, $"xcode-version:{v}", "Expected a valid version string.");
+				Driver.XcodeVersion = xcodeVersion;
 			});
 
 			try {
@@ -233,7 +235,9 @@ namespace Xamarin.Bundler {
 		static Version? xcode_version;
 		public static Version XcodeVersion {
 			get {
-				return xcode_version!;
+				if (xcode_version is null)
+					throw ErrorHelper.CreateError (99, Errors.MX0099, "The Xcode version has not been configured. Pass --xcode-version or configure an Xcode installation.");
+				return xcode_version;
 			}
 			set {
 				xcode_version = value;

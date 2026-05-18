@@ -13,6 +13,9 @@ namespace Xamarin.BindingTests {
 #if OPTIMIZEALL && __MACOS__
 					return false;
 #else
+					if (IsStaticRegistrar)
+						return false;
+
 					if (!Runtime.DynamicRegistrationSupported)
 						return false;
 #endif
@@ -20,6 +23,12 @@ namespace Xamarin.BindingTests {
 
 
 				return true;
+			}
+		}
+
+		bool IsStaticRegistrar {
+			get {
+				return global::XamarinTests.ObjCRuntime.Registrar.IsStaticRegistrar;
 			}
 		}
 

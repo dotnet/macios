@@ -1092,9 +1092,11 @@ public partial class Generator : IMemberGatherer {
 		else if (returnType == "char")
 			returnType = "ushort";
 
-		print (m, "\t\tpublic unsafe extern static {0} {1} ({3}IntPtr receiver, IntPtr selector{2});",
+		var receiverType = method_name.IndexOf ("objc_msgSendSuper", StringComparison.Ordinal) != -1 ? "ObjCSuper*" : "IntPtr";
+		print (m, "\t\tpublic unsafe extern static {0} {1} ({3}{4} receiver, IntPtr selector{2});",
 			   returnType, method_name, b.ToString (),
-			   (need_stret && aligned) ? "IntPtr* retval, " : "");
+			   (need_stret && aligned) ? "IntPtr* retval, " : "",
+			   receiverType);
 	}
 
 	bool IsNativeEnum (Type type)
@@ -1338,14 +1340,14 @@ public partial class Generator : IMemberGatherer {
 			print (m, "\t\tpublic extern static IntPtr IntPtr_objc_msgSend (IntPtr receiever, IntPtr selector);");
 			send_methods ["IntPtr_objc_msgSend"] = "IntPtr_objc_msgSend";
 			print (m, "\t\t[DllImport (LIBOBJC_DYLIB, EntryPoint=\"objc_msgSendSuper\")]");
-			print (m, "\t\tpublic extern static IntPtr IntPtr_objc_msgSendSuper (IntPtr receiever, IntPtr selector);");
+			print (m, "\t\tpublic unsafe extern static IntPtr IntPtr_objc_msgSendSuper (ObjCSuper* receiever, IntPtr selector);");
 			send_methods ["IntPtr_objc_msgSendSuper"] = "IntPtr_objc_msgSendSuper";
 			// IntPtr_objc_msgSendSuper_IntPtr: for initWithCoder:
 			print (m, "\t\t[DllImport (LIBOBJC_DYLIB, EntryPoint=\"objc_msgSend\")]");
 			print (m, "\t\tpublic extern static IntPtr IntPtr_objc_msgSend_IntPtr (IntPtr receiever, IntPtr selector, IntPtr arg1);");
 			send_methods ["IntPtr_objc_msgSend_IntPtr"] = "IntPtr_objc_msgSend_IntPtr";
 			print (m, "\t\t[DllImport (LIBOBJC_DYLIB, EntryPoint=\"objc_msgSendSuper\")]");
-			print (m, "\t\tpublic extern static IntPtr IntPtr_objc_msgSendSuper_IntPtr (IntPtr receiever, IntPtr selector, IntPtr arg1);");
+			print (m, "\t\tpublic unsafe extern static IntPtr IntPtr_objc_msgSendSuper_IntPtr (ObjCSuper* receiever, IntPtr selector, IntPtr arg1);");
 			send_methods ["IntPtr_objc_msgSendSuper_IntPtr"] = "IntPtr_objc_msgSendSuper_IntPtr";
 		}
 
@@ -2344,7 +2346,7 @@ public partial class Generator : IMemberGatherer {
 		if (is_direct_binding != false) {
 			var code = trueCode ();
 			if (!string.IsNullOrEmpty (code))
-				sw!.Write ('\t', tabs).WriteLine (code);
+				WriteIsDirectBindingCode (sw!, code, tabs);
 		}
 
 		if (!is_direct_binding.HasValue)
@@ -2354,12 +2356,21 @@ public partial class Generator : IMemberGatherer {
 		if (is_direct_binding != true) {
 			var code = falseCode ();
 			if (!string.IsNullOrEmpty (code))
-				sw!.Write ('\t', tabs).WriteLine (code);
+				WriteIsDirectBindingCode (sw!, code, tabs);
 		}
 
 		if (!is_direct_binding.HasValue) {
 			tabs--;
 			sw!.Write ('\t', tabs).WriteLine ("}");
+		}
+	}
+
+	static void WriteIsDirectBindingCode (StreamWriter sw, string code, int tabs)
+	{
+		var lines = code.Split ('\n');
+		foreach (var line in lines) {
+			if (!string.IsNullOrEmpty (line))
+				sw.Write ('\t', tabs).WriteLine (line);
 		}
 	}
 
@@ -3063,7 +3074,18 @@ public partial class Generator : IMemberGatherer {
 		var isInstanceMethod = category_type is null && !minfo.is_extension_method &&
 								  !minfo.is_protocol_implementation_method;
 		string? target_name = isInstanceMethod ? "this" : "This";
-		string handle = supercall ? ".SuperHandle" : ".Handle";
+		string handle = supercall ? "" : ".Handle";
+		string receiver;
+
+		// For super calls on instance methods, emit a stack-allocated ObjCSuper and pass its address.
+		if (supercall && !minfo.is_static) {
+			print ("unsafe {");
+			indent++;
+			print ("var __objc_super__ = new global::ObjCRuntime.ObjCSuper ({0});", target_name);
+			receiver = "&__objc_super__";
+		} else {
+			receiver = "";
+		}
 
 		// If we have supercall == false, we can be a Bind method that has a [Target]
 		if (supercall == false && !minfo.is_static) {
@@ -3110,8 +3132,10 @@ public partial class Generator : IMemberGatherer {
 			var ret_val = "(IntPtr*) aligned_ret";
 			if (minfo.is_static)
 				print ("{0} ({5}, class_ptr, {3}{4});", sig, "/*unusued*/", "/*unusued*/", selector_field, args, ret_val);
-			else
-				print ("{0} ({5}, {1}{2}, {3}{4});", sig, target_name, handle, selector_field, args, ret_val);
+			else {
+				var rcv = receiver.Length > 0 ? receiver : target_name + handle;
+				print ("{0} ({3}, {1}, {2}{4});", sig, rcv, selector_field, ret_val, args);
+			}
 
 			print ("aligned_assigned = true;");
 		} else if (minfo.is_protocol_member && mi.Name == "Constructor") {
@@ -3138,12 +3162,13 @@ public partial class Generator : IMemberGatherer {
 					   cast_a, sig, target_name,
 					   "/*unusued3*/", //supercall ? "Super" : "",
 					   selector_field, args, cast_b);
-			else
-				print ("{0}{1}{2} ({3}{4}, {5}{6}){7};",
+			else {
+				var rcv = receiver.Length > 0 ? receiver : target_name + handle;
+				print ("{0}{1}{2} ({3}, {4}{5}){6};",
 					   returns ? "ret = " : "",
-					   cast_a, sig, target_name,
-					   handle,
+					   cast_a, sig, rcv,
 					   selector_field, args, cast_b);
+			}
 
 			if (postproc.Length > 0)
 				print (postproc.ToString ());
@@ -3153,6 +3178,10 @@ public partial class Generator : IMemberGatherer {
 			// if this is a extension of any kind, ensure that we keep alive the this parameter
 			// so that it is not collected before the msg send call has completed.
 			print ("GC.KeepAlive (This);");
+		} else if (supercall) {
+			print ("GC.KeepAlive ({0});", target_name);
+			indent--;
+			print ("}"); // close unsafe block
 		}
 	}
 
@@ -6105,7 +6134,7 @@ public partial class Generator : IMemberGatherer {
 							var indentation = 3;
 							WriteIsDirectBindingCondition (sw, ref indentation, is_direct_binding, is_direct_binding_value,
 														   () => string.Format ("InitializeHandle (global::{1}.IntPtr_objc_msgSend (this.Handle, global::ObjCRuntime.{0}), \"init\");", initSelector, NamespaceCache.Messaging),
-														   () => string.Format ("InitializeHandle (global::{1}.IntPtr_objc_msgSendSuper (this.SuperHandle, global::ObjCRuntime.{0}), \"init\");", initSelector, NamespaceCache.Messaging));
+														   () => string.Format ("unsafe {{\nvar __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);\nInitializeHandle (global::{1}.IntPtr_objc_msgSendSuper (&__objc_super__, global::ObjCRuntime.{0}), \"init\");\nGC.KeepAlive (this);\n}}", initSelector, NamespaceCache.Messaging));
 
 							WriteMarkDirtyIfDerived (sw, type);
 							sw.WriteLine ("\t\t}");
@@ -6138,7 +6167,7 @@ public partial class Generator : IMemberGatherer {
 								var indentation = 3;
 								WriteIsDirectBindingCondition (sw, ref indentation, is_direct_binding, is_direct_binding_value,
 															   () => string.Format ("InitializeHandle (global::{1}.IntPtr_objc_msgSend_IntPtr (this.Handle, {0}, coder.Handle), \"initWithCoder:\");", initWithCoderSelector, NamespaceCache.Messaging),
-															   () => string.Format ("InitializeHandle (global::{1}.IntPtr_objc_msgSendSuper_IntPtr (this.SuperHandle, {0}, coder.Handle), \"initWithCoder:\");", initWithCoderSelector, NamespaceCache.Messaging));
+															   () => string.Format ("unsafe {{\nvar __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);\nInitializeHandle (global::{1}.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, {0}, coder.Handle), \"initWithCoder:\");\nGC.KeepAlive (this);\n}}", initWithCoderSelector, NamespaceCache.Messaging));
 								WriteMarkDirtyIfDerived (sw, type);
 								sw.WriteLine ("\t\t\tGC.KeepAlive (coder);");
 							} else {
@@ -6189,7 +6218,11 @@ public partial class Generator : IMemberGatherer {
 							sw.WriteLine ("\t\t///     if (IsDirectBinding) {");
 							sw.WriteLine ("\t\t///         Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSend_CGRect (this.Handle, initWithFrame, frame);");
 							sw.WriteLine ("\t\t///     } else {");
-							sw.WriteLine ("\t\t///         Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (this.SuperHandle, initWithFrame, frame);");
+							sw.WriteLine ("\t\t///         unsafe {");
+							sw.WriteLine ("\t\t///             var __objc_super__ = new ObjCRuntime.ObjCSuper (this);");
+							sw.WriteLine ("\t\t///             Handle = ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper_CGRect (&__objc_super__, initWithFrame, frame);");
+							sw.WriteLine ("\t\t///         }");
+							sw.WriteLine ("\t\t///         GC.KeepAlive (this);");
 							sw.WriteLine ("\t\t///     }");
 							sw.WriteLine ("\t\t/// }");
 							sw.WriteLine ("\t\t/// ]]></code>");
@@ -6976,7 +7009,12 @@ public partial class Generator : IMemberGatherer {
 							print ("return {0} is not null;", mi.Name.PascalCase ());
 							--indent;
 						}
-						print ("return global::" + NamespaceCache.Messaging + ".bool_objc_msgSendSuper_IntPtr (SuperHandle, " + selRespondsToSelector + ", selHandle) != 0;");
+						print ("unsafe {");
+						indent++;
+						print ("var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);");
+						print ("return global::" + NamespaceCache.Messaging + ".bool_objc_msgSendSuper_IntPtr (&__objc_super__, " + selRespondsToSelector + ", selHandle) != 0;");
+						indent--;
+						print ("}");
 						--indent;
 						print ("}");
 
@@ -6984,7 +7022,7 @@ public partial class Generator : IMemberGatherer {
 						// bool_objc_msgSendSuper_IntPtr: for respondsToSelector:
 						if (!send_methods.ContainsKey ("bool_objc_msgSendSuper_IntPtr")) {
 							print (m, "[DllImport (LIBOBJC_DYLIB, EntryPoint=\"objc_msgSendSuper\")]");
-							print (m, "public extern static byte bool_objc_msgSendSuper_IntPtr (IntPtr receiever, IntPtr selector, IntPtr arg1);");
+							print (m, "public unsafe extern static byte bool_objc_msgSendSuper_IntPtr (ObjCSuper* receiever, IntPtr selector, IntPtr arg1);");
 							RegisterMethodName ("bool_objc_msgSendSuper_IntPtr");
 						}
 					}

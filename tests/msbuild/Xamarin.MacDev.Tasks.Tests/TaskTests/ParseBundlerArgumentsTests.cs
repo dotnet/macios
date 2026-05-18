@@ -16,14 +16,14 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var task = CreateTask<CustomParseBundlerArguments> ();
 			ExecuteTask (task);
-			Assert.AreEqual ("false", task.NoSymbolStrip, "nosymbolstrip");
-			Assert.AreEqual ("false", task.NoDSymUtil, "nodsymutil");
+			Assert.That (task.NoSymbolStrip, Is.EqualTo ("false"), "nosymbolstrip");
+			Assert.That (task.NoDSymUtil, Is.EqualTo ("false"), "nodsymutil");
 
 			task = CreateTask<CustomParseBundlerArguments> ();
 			task.ExtraArgs = string.Empty;
 			ExecuteTask (task);
-			Assert.AreEqual ("false", task.NoSymbolStrip, "nosymbolstrip");
-			Assert.AreEqual ("false", task.NoDSymUtil, "nodsymutil");
+			Assert.That (task.NoSymbolStrip, Is.EqualTo ("false"), "nosymbolstrip");
+			Assert.That (task.NoDSymUtil, Is.EqualTo ("false"), "nodsymutil");
 		}
 
 		[Test]
@@ -48,16 +48,16 @@ namespace Xamarin.MacDev.Tasks {
 				var task = CreateTask<CustomParseBundlerArguments> ();
 				task.ExtraArgs = variation;
 				ExecuteTask (task, message: "execute: " + variation);
-				Assert.AreEqual ("false", task.NoSymbolStrip, "nosymbolstrip: " + variation);
-				Assert.AreEqual ("false", task.NoDSymUtil, "nodsymutil: " + variation);
+				Assert.That (task.NoSymbolStrip, Is.EqualTo ("false"), "nosymbolstrip: " + variation);
+				Assert.That (task.NoDSymUtil, Is.EqualTo ("false"), "nodsymutil: " + variation);
 			}
 
 			foreach (var variation in true_variations) {
 				var task = CreateTask<CustomParseBundlerArguments> ();
 				task.ExtraArgs = variation;
 				ExecuteTask (task, message: "execute: " + variation);
-				Assert.AreEqual ("true", task.NoSymbolStrip, "nosymbolstrip: " + variation);
-				Assert.AreEqual ("false", task.NoDSymUtil, "nodsymutil: " + variation);
+				Assert.That (task.NoSymbolStrip, Is.EqualTo ("true"), "nosymbolstrip: " + variation);
+				Assert.That (task.NoDSymUtil, Is.EqualTo ("false"), "nodsymutil: " + variation);
 			}
 		}
 
@@ -86,16 +86,16 @@ namespace Xamarin.MacDev.Tasks {
 				var task = CreateTask<CustomParseBundlerArguments> ();
 				task.ExtraArgs = variation;
 				ExecuteTask (task, message: "execute: " + variation);
-				Assert.AreEqual ("false", task.NoSymbolStrip, "nosymbolstrip: " + variation);
-				Assert.AreEqual ("false", task.NoDSymUtil, "nodsymutil: " + variation);
+				Assert.That (task.NoSymbolStrip, Is.EqualTo ("false"), "nosymbolstrip: " + variation);
+				Assert.That (task.NoDSymUtil, Is.EqualTo ("false"), "nodsymutil: " + variation);
 			}
 
 			foreach (var variation in true_variations) {
 				var task = CreateTask<CustomParseBundlerArguments> ();
 				task.ExtraArgs = variation;
 				ExecuteTask (task, message: "execute: " + variation);
-				Assert.AreEqual ("false", task.NoSymbolStrip, "nosymbolstrip: " + variation);
-				Assert.AreEqual ("true", task.NoDSymUtil, "nodsymutil: " + variation);
+				Assert.That (task.NoSymbolStrip, Is.EqualTo ("false"), "nosymbolstrip: " + variation);
+				Assert.That (task.NoDSymUtil, Is.EqualTo ("true"), "nodsymutil: " + variation);
 			}
 		}
 
@@ -117,7 +117,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.MarshalManagedExceptionMode = existingValue;
 			task.ExtraArgs = input;
 			ExecuteTask (task, message: input);
-			Assert.AreEqual (output, task.MarshalManagedExceptionMode, output);
+			Assert.That (task.MarshalManagedExceptionMode, Is.EqualTo (output), output);
 		}
 
 		[Test]
@@ -138,7 +138,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.MarshalObjectiveCExceptionMode = existingValue;
 			task.ExtraArgs = input;
 			ExecuteTask (task, message: input);
-			Assert.AreEqual (output, task.MarshalObjectiveCExceptionMode, output);
+			Assert.That (task.MarshalObjectiveCExceptionMode, Is.EqualTo (output), output);
 		}
 
 		[Test]
@@ -156,7 +156,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CustomParseBundlerArguments> ();
 			task.ExtraArgs = input;
 			ExecuteTask (task, message: input);
-			Assert.AreEqual (output, task.Optimize, output);
+			Assert.That (task.Optimize, Is.EqualTo (output), output);
 		}
 
 		[TestCase ("--registrar", "")]
@@ -172,7 +172,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CustomParseBundlerArguments> ();
 			task.ExtraArgs = input;
 			ExecuteTask (task, message: input);
-			Assert.AreEqual (output, task.Registrar, output);
+			Assert.That (task.Registrar, Is.EqualTo (output), output);
 		}
 
 		[TestCase ("--xml", null, "")]
@@ -198,7 +198,7 @@ namespace Xamarin.MacDev.Tasks {
 				task.XmlDefinitions = existing.Split (new char [] { ';' }, StringSplitOptions.RemoveEmptyEntries).Select (v => new TaskItem (v)).ToArray ();
 			task.ExtraArgs = input;
 			ExecuteTask (task, message: input);
-			Assert.AreEqual (output, string.Join (";", task.XmlDefinitions.Select (v => v.ItemSpec).ToArray ()), output);
+			Assert.That (string.Join (";", task.XmlDefinitions.Select (v => v.ItemSpec).ToArray ()), Is.EqualTo (output), output);
 		}
 
 		[TestCase ("/xml:\\path\\a /xml:/path/b", null, "/path/a;/path/b")]
@@ -219,7 +219,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CustomParseBundlerArguments> ();
 			task.ExtraArgs = input;
 			ExecuteTask (task, message: input);
-			Assert.AreEqual (output, task.CustomBundleName, output);
+			Assert.That (task.CustomBundleName, Is.EqualTo (output), output);
 		}
 
 		[TestCase ("--gcc_flags -dead_strip", new string [] { "-dead_strip" })]
@@ -236,7 +236,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CustomParseBundlerArguments> ();
 			task.ExtraArgs = input;
 			ExecuteTask (task, message: input);
-			CollectionAssert.AreEquivalent (output, task.CustomLinkFlags.Select (v => v.ItemSpec).ToArray (), string.Join (" ", output));
+			Assert.That (task.CustomLinkFlags.Select (v => v.ItemSpec).ToArray (), Is.EquivalentTo (output), string.Join (" ", output));
 		}
 
 		[TestCase ("-v", "1")]
@@ -250,7 +250,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CustomParseBundlerArguments> ();
 			task.ExtraArgs = input;
 			ExecuteTask (task, message: input);
-			Assert.AreEqual (output, task.Verbosity, "Equality");
+			Assert.That (task.Verbosity, Is.EqualTo (output), "Equality");
 		}
 
 		[TestCase ("--nowarn", "-1")]
@@ -264,7 +264,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CustomParseBundlerArguments> ();
 			task.ExtraArgs = input;
 			ExecuteTask (task, message: input);
-			Assert.AreEqual (output, task.NoWarn, output);
+			Assert.That (task.NoWarn, Is.EqualTo (output), output);
 		}
 
 		[TestCase ("--warnaserror", "-1")]
@@ -278,7 +278,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CustomParseBundlerArguments> ();
 			task.ExtraArgs = input;
 			ExecuteTask (task, message: input);
-			Assert.AreEqual (output, task.WarnAsError, output);
+			Assert.That (task.WarnAsError, Is.EqualTo (output), output);
 		}
 	}
 }

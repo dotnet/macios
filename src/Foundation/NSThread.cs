@@ -37,14 +37,21 @@ namespace Foundation {
 		[DllImport ("__Internal")]
 		static extern NativeHandle xamarin_init_nsthread (IntPtr handle, byte is_direct_binding, IntPtr target, IntPtr selector, IntPtr argument);
 
-		NativeHandle InitNSThread (NSObject target, Selector selector, NSObject? argument)
+		unsafe NativeHandle InitNSThread (NSObject target, Selector selector, NSObject? argument)
 		{
 			if (target is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (target));
 			if (selector is null)
 				ThrowHelper.ThrowArgumentNullException (nameof (selector));
 
-			IntPtr result = xamarin_init_nsthread (IsDirectBinding ? this.Handle : this.SuperHandle, IsDirectBinding.AsByte (), target.Handle, selector.Handle, argument.GetHandle ());
+			IntPtr result;
+			if (IsDirectBinding) {
+				result = xamarin_init_nsthread (this.Handle, IsDirectBinding.AsByte (), target.Handle, selector.Handle, argument.GetHandle ());
+			} else {
+				var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+				result = xamarin_init_nsthread ((IntPtr) (&__objc_super__), IsDirectBinding.AsByte (), target.Handle, selector.Handle, argument.GetHandle ());
+				GC.KeepAlive (this);
+			}
 			GC.KeepAlive (target);
 			GC.KeepAlive (selector);
 			GC.KeepAlive (argument);

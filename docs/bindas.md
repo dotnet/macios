@@ -23,14 +23,14 @@ The sample code is to support a new type for NSValue, the exact code locations w
    code this is the two functions to convert between NSValue and
    NSDirectionalEdgeInsets:
 
-   `xamarin_nsdirectionaledgeinsets_to_nsvalue`: [trampolines.h#151][2], [trampolines.m#889][3]
-   `xamarin_nsvalue_to_nsdirectionaledgeinsets`: [trampolines.h#116][4], [trampolines.m#799][5]
+   `xamarin_nsdirectionaledgeinsets_to_nsvalue`: [trampolines.h#197][2], [trampolines.m#1252][3]
+   `xamarin_nsvalue_to_nsdirectionaledgeinsets`: [trampolines.h#161][4], [trampolines.m#1192][5]
 
-3. Add a switch entry to [trampolines.m#1007][6] to use the two new conversion functions.
+3. Add a switch entry to [trampolines.m#1601][6] to use the two new conversion functions.
 
-4. The registrar also needs to know ([Registrar.cs#687][7]).
+4. The registrar also needs to know ([Registrar.cs#794][7]).
 
-5. And the static registrar needs to know too, so that it can call the right native conversion function ([StaticRegistrar.cs#3796][9], [StaticRegistrar.cs#3830][10]).
+5. And the static registrar needs to know too, so that it can call the right native conversion function ([StaticRegistrar.cs#4896][9], [StaticRegistrar.cs#4925][10]).
 
 6. Now there's just the generator support left ([Generator.cs#390][11], [Generator.cs#470][12]).
 

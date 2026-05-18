@@ -70,7 +70,9 @@
 		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_SdkIsSimulator)' == 'true' And '$(UseMonoRuntime)' == 'true' And $(RuntimeIdentifier.Contains('arm64')) And '$(MtouchInterpreter)' == ''">SdkOnly</_DefaultLinkMode>
 		<!-- Linking is off by default in the simulator when not building for arm64 and using MonoVM -->
 		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_SdkIsSimulator)' == 'true' And '$(UseMonoRuntime)' == 'true' And (!$(RuntimeIdentifier.Contains('arm64')) Or '$(MtouchInterpreter)' != '')">None</_DefaultLinkMode>
-		<!-- Otherwise, default linking is SdkOnly for iOS/tvOS apps -->
+		<!-- For iOS/tvOS device builds, default to Full link to keep the deploy bundle small -->
+		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_SdkIsSimulator)' != 'true'">Full</_DefaultLinkMode>
+		<!-- SdkOnly for any iOS/tvOS scenario not matched above -->
 		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == ''">SdkOnly</_DefaultLinkMode>
 
 	</PropertyGroup>

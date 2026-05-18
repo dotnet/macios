@@ -47,9 +47,10 @@ public sealed class Test1 {{
 			var env = new Dictionary<string, string?> ();
 			env ["MSBuildSDKsPath"] = null;
 			env ["MSBUILD_EXE_PATH"] = null;
-			var testArgs = new List<string> { "test", proj };
+			var binlog = Path.Combine (outputDir, "log-test.binlog");
+			var testArgs = new List<string> { "test", proj, $"/bl:{binlog}" };
 			var testResult = Execution.RunAsync (DotNet.Executable, testArgs, env, Console.Out, workingDirectory: outputDir, timeout: TimeSpan.FromMinutes (10)).Result;
-			Assert.AreEqual (0, testResult.ExitCode, $"'dotnet test' failed with exit code {testResult.ExitCode}.\nOutput:\n{testResult.Output.MergedOutput}");
+			Assert.AreEqual (0, testResult.ExitCode, $"'dotnet test' failed with exit code {testResult.ExitCode}.\nBinlog: {binlog}\nOutput:\n{testResult.Output.MergedOutput}");
 		}
 	}
 }

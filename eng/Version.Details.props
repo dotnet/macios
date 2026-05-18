@@ -9,11 +9,11 @@ This file should be imported by eng/Versions.props
     <MicrosoftDotNetArcadeSdkPackageVersion>9.0.0-beta.25462.4</MicrosoftDotNetArcadeSdkPackageVersion>
     <MicrosoftDotNetBuildTasksFeedPackageVersion>9.0.0-beta.25462.4</MicrosoftDotNetBuildTasksFeedPackageVersion>
     <!-- dotnet-aspnetcore dependencies -->
-    <MicrosoftAspNetCoreAppRefPackageVersion>9.0.15</MicrosoftAspNetCoreAppRefPackageVersion>
+    <MicrosoftAspNetCoreAppRefPackageVersion>9.0.16</MicrosoftAspNetCoreAppRefPackageVersion>
     <!-- dotnet-cecil dependencies -->
     <MicrosoftDotNetCecilPackageVersion>0.11.5-alpha.26122.3</MicrosoftDotNetCecilPackageVersion>
     <!-- dotnet-emsdk dependencies -->
-    <MicrosoftNETWorkloadEmscriptenCurrentManifest90100TransportPackageVersion>9.0.15-servicing.26175.1</MicrosoftNETWorkloadEmscriptenCurrentManifest90100TransportPackageVersion>
+    <MicrosoftNETWorkloadEmscriptenCurrentManifest90100TransportPackageVersion>9.0.16-servicing.26221.3</MicrosoftNETWorkloadEmscriptenCurrentManifest90100TransportPackageVersion>
     <!-- dotnet-macios dependencies -->
     <MicrosoftiOSSdknet80_170PackageVersion>17.0.8523</MicrosoftiOSSdknet80_170PackageVersion>
     <MicrosoftiOSSdknet80_180PackageVersion>18.0.8324</MicrosoftiOSSdknet80_180PackageVersion>
@@ -29,11 +29,11 @@ This file should be imported by eng/Versions.props
     <MicrosofttvOSSdknet90_180PackageVersion>18.0.9617</MicrosofttvOSSdknet90_180PackageVersion>
     <!-- dotnet-runtime dependencies -->
     <MicrosoftNETILLinkPackageVersion>9.0.0-alpha.1.23556.4</MicrosoftNETILLinkPackageVersion>
-    <MicrosoftNETILLinkTasksPackageVersion>9.0.15</MicrosoftNETILLinkTasksPackageVersion>
+    <MicrosoftNETILLinkTasksPackageVersion>9.0.16</MicrosoftNETILLinkTasksPackageVersion>
     <MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>9.0.0-rc.2.24462.10</MicrosoftNETRuntimeMonoTargetsSdkPackageVersion>
-    <MicrosoftNETCoreAppRefPackageVersion>9.0.15</MicrosoftNETCoreAppRefPackageVersion>
+    <MicrosoftNETCoreAppRefPackageVersion>9.0.16</MicrosoftNETCoreAppRefPackageVersion>
     <!-- dotnet-sdk dependencies -->
-    <MicrosoftNETSdkPackageVersion>9.0.118-servicing.26257.2</MicrosoftNETSdkPackageVersion>
+    <MicrosoftNETSdkPackageVersion>9.0.118-servicing.26265.7</MicrosoftNETSdkPackageVersion>
     <!-- dotnet-templating dependencies -->
     <MicrosoftTemplateEngineTasksPackageVersion>7.0.100-alpha.1.21601.1</MicrosoftTemplateEngineTasksPackageVersion>
     <!-- dotnet-xharness dependencies -->

@@ -10,12 +10,12 @@ namespace Xamarin.BindingTests {
 		bool HasProtocolAttributes {
 			get {
 				if (TestRuntime.IsLinkAll) {
-					if (IsStaticRegistrar)
-						return false;
-
 #if OPTIMIZEALL && __MACOS__
 					return false;
 #else
+					if (IsStaticRegistrar)
+						return false;
+
 					if (!Runtime.DynamicRegistrationSupported)
 						return false;
 #endif

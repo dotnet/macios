@@ -84,14 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\Contents.json" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\Icon-app-60%403x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-57.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-57%402x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-60%402x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-72.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-72%402x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-76.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-76%402x.png" />
-    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-app-83.5%402x.png" />
+    <ImageAsset Include="$(ThisTestDirectory)\Assets.xcassets\AppIcons.appiconset\icon-1024.png" />
   </ItemGroup>
 </Project>

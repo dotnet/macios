@@ -22,7 +22,6 @@ jobs:
         run: pip install yamllint
 
       - name: Lint YAML pipeline files
-        id: lint-pipeline
         working-directory: ./tools/devops/automation
         run: |
             yamllint . -f github

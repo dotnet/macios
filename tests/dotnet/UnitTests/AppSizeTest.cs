@@ -8,7 +8,6 @@ using Mono.Cecil;
 
 namespace Xamarin.Tests {
 	[TestFixture]
-	[Ignore ("The results depend on the macOS version of the bot running the test")]
 	public class AppSizeTest : TestBaseClass {
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
@@ -114,7 +113,8 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (project_path, properties);
 
 			// FORCE_UPDATE_KNOWN_FAILURES will update the known failures files even if the test doesn't actually fail
-			// WRITE_KNOWN_FAILURES will only update the known failures files if the test fails
+			// WRITE_KNOWN_FAILURES will only update the known failures files if the test fails (and mark the test as passed)
+			// If neither is set, the updated expected file is uploaded as an Azure DevOps artifact.
 
 			var forceUpdate = !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("FORCE_UPDATE_KNOWN_FAILURES"));
 			var update = forceUpdate || !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("WRITE_KNOWN_FAILURES"));
@@ -174,7 +174,8 @@ namespace Xamarin.Tests {
 				msg += " Check the modified files for more information.";
 				updated = true;
 			} else if (!withinTolerance) {
-				msg += " Set the environment variable WRITE_KNOWN_FAILURES=1, run the test again, and verify the modified files for more information.";
+				UploadUpdatedExpectedFile (expectedSizeReportPath, report.ToString ());
+				msg += " The updated expected file has been uploaded as an Azure DevOps artifact.";
 			}
 
 			Console.WriteLine ($"    {msg}");
@@ -186,11 +187,11 @@ namespace Xamarin.Tests {
 				if (!expectedLines.TryGetValue (key, out var expectedLine)) {
 					Console.WriteLine ($"        File '{key}' was added to app bundle: {actualLines [key]}");
 					if (!updated)
-						Assert.Fail ($"The file '{key}' was added to the app bundle.");
+						Assert.Fail ($"The file '{key}' was added to the app bundle. The updated expected file has been uploaded as an artifact.");
 				} else if (!actualLines.TryGetValue (key, out var actualLine)) {
 					Console.WriteLine ($"        File '{key}' was removed from app bundle: {expectedLine}");
 					if (!updated)
-						Assert.Fail ($"The file '{key}' was removed from the app bundle.");
+						Assert.Fail ($"The file '{key}' was removed from the app bundle. The updated expected file has been uploaded as an artifact.");
 				} else if (expectedLine != actualLine) {
 					Console.WriteLine ($"        File '{key}' changed in app bundle:");
 					Console.WriteLine ($"            -{expectedLine}");
@@ -238,9 +239,22 @@ namespace Xamarin.Tests {
 			}
 
 			if (!update) {
-				Assert.That (addedAPIs, Is.Empty, "No added APIs (set the environment variable WRITE_KNOWN_FAILURES=1 and run the test again to update the expected set of APIs)");
-				Assert.That (removedAPIs, Is.Empty, "No removed APIs (set the environment variable WRITE_KNOWN_FAILURES=1 and run the test again to update the expected set of APIs)");
+				if (addedAPIs.Count > 0 || removedAPIs.Count > 0) {
+					UploadUpdatedExpectedFile (expectedFile, string.Join ('\n', preservedAPIs) + "\n");
+					var updateMsg = " The updated expected file has been uploaded as an artifact.";
+					Assert.That (addedAPIs, Is.Empty, "No added APIs." + updateMsg);
+					Assert.That (removedAPIs, Is.Empty, "No removed APIs." + updateMsg);
+				}
 			}
+		}
+
+		static void UploadUpdatedExpectedFile (string expectedFilePath, string content)
+		{
+			var fileName = Path.GetFileName (expectedFilePath);
+			var tmpDir = Cache.CreateTemporaryDirectory ("AppSizeTest");
+			var tmpFile = Path.Combine (tmpDir, fileName);
+			File.WriteAllText (tmpFile, content);
+			Console.WriteLine ($"##vso[artifact.upload containerfolder=updated-expected-sizes;artifactname={Path.GetFileNameWithoutExtension (fileName)}]{tmpFile}");
 		}
 
 		static string FormatBytes (long bytes, bool alwaysShowSign = false)

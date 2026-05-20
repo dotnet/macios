@@ -1627,4 +1627,22 @@
     <data name="E7169" xml:space="preserve">
         <value>The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
     </data>
+
+    <data name="E7170" xml:space="preserve">
+        <value>The {0} simulator runtime is not installed. This is required by Apple's development tools (even when building for physical devices). Install it by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings &gt; Components).</value>
+        <comment>Shown when the required simulator runtime is not installed.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
+
+    <data name="W7171" xml:space="preserve">
+        <value>Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.</value>
+        <comment>Shown when we're unable to check for simulator runtime availability.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
+
+    <data name="E7172" xml:space="preserve">
+        <value>The installed {0} simulator runtime is not compatible with the current Xcode version. Update the simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings &gt; Components).</value>
+        <comment>Shown when the tool reports a simulator runtime version mismatch.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
 </root>

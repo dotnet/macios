@@ -68,7 +68,7 @@ namespace Xamarin.Bundler {
 		TrimmableStatic,
 	}
 
-	public partial class Application {
+	public partial class Application : IToolLog {
 		public Cache? Cache;
 		public string AppDirectory = ".";
 		public bool DeadStrip = true;
@@ -268,7 +268,7 @@ namespace Xamarin.Bundler {
 #if LEGACY_TOOLS
 			if (macOSVersion.Major >= 26 && Driver.SdkRoot is null) {
 				// this shouldn't happen for normal builds, nor for customers, so just show an internal 99 warning.
-				ErrorHelper.Warning (99, Errors.MX0099, $"No Xcode configured, assuming the macOS version {macOSVersion} is identical to the Mac Catalyst/iOS version.");
+				ErrorHelper.Warning (this, 99, Errors.MX0099, $"No Xcode configured, assuming the macOS version {macOSVersion} is identical to the Mac Catalyst/iOS version.");
 				return macOSVersion;
 			}
 #endif
@@ -286,6 +286,7 @@ namespace Xamarin.Bundler {
 			this.LinkContext = new Tuner.DerivedLinkContext (configuration, this);
 #endif
 			this.StaticRegistrar = new StaticRegistrar (this);
+			this.Resolver = new PlatformResolver (this);
 		}
 
 #if !LEGACY_TOOLS
@@ -419,9 +420,9 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public static bool IsUptodate (string source, string target, bool check_contents = false, bool check_stamp = true)
+		public static bool IsUptodate (IToolLog log, string source, string target, bool check_contents = false, bool check_stamp = true)
 		{
-			return FileCopier.IsUptodate (source, target, check_contents, check_stamp);
+			return FileCopier.IsUptodate (log, source, target, check_contents, check_stamp);
 		}
 
 		public static void RemoveResource (ModuleDefinition module, string name)
@@ -493,14 +494,14 @@ namespace Xamarin.Bundler {
 		//
 		// If check_stamp is true, the function will use the timestamp of a "target".stamp file
 		// if it's later than the timestamp of the "target" file itself.
-		public static bool IsUptodate (IEnumerable<string> sources, IEnumerable<string> targets, bool check_stamp = true)
+		public static bool IsUptodate (IToolLog log, IEnumerable<string> sources, IEnumerable<string> targets, bool check_stamp = true)
 		{
-			return FileCopier.IsUptodate (sources, targets, check_stamp);
+			return FileCopier.IsUptodate (log, sources, targets, check_stamp);
 		}
 
-		public static void UpdateDirectory (string source, string target)
+		public static void UpdateDirectory (IToolLog log, string source, string target)
 		{
-			FileCopier.UpdateDirectory (source, target);
+			FileCopier.UpdateDirectory (log, source, target);
 		}
 
 		public void InitializeCommon ()
@@ -539,13 +540,13 @@ namespace Xamarin.Bundler {
 			if (!package_managed_debug_symbols.HasValue) {
 				package_managed_debug_symbols = EnableDebug;
 			} else if (package_managed_debug_symbols.Value && IsLLVM) {
-				ErrorHelper.Warning (3007, Errors.MX3007);
+				ErrorHelper.Warning (this, 3007, Errors.MX3007);
 			}
 
 			Optimizations.Initialize (this, out var messages);
-			ErrorHelper.Show (messages);
-			if (Driver.Verbosity > 3)
-				Driver.Log (4, $"Enabled optimizations: {Optimizations}");
+			ErrorHelper.Show (this, messages);
+			if (this.Verbosity > 3)
+				this.Log (4, $"Enabled optimizations: {Optimizations}");
 		}
 
 		void InitializeDeploymentTarget ()
@@ -575,7 +576,7 @@ namespace Xamarin.Bundler {
 				throw ErrorHelper.CreateError (99, "RegistrarOutputLibrary must be specified.");
 			var RootAssembly = RootAssemblies [0];
 			var resolvedAssemblies = new Dictionary<string, AssemblyDefinition> ();
-			var resolver = new PlatformResolver () {
+			var resolver = new PlatformResolver (this) {
 				RootDirectory = Path.GetDirectoryName (RootAssembly),
 			};
 			resolver.Configure ();
@@ -583,7 +584,7 @@ namespace Xamarin.Bundler {
 			var ps = new ReaderParameters ();
 			ps.AssemblyResolver = resolver;
 			foreach (var reference in References) {
-				var r = resolver.Load (reference);
+				var r = resolver.Load (this, reference);
 				if (r is null)
 					throw ErrorHelper.CreateError (2002, Errors.MT2002, reference);
 			}
@@ -598,21 +599,21 @@ namespace Xamarin.Bundler {
 				try {
 					AssemblyDefinition lastAssembly = ps.AssemblyResolver.Resolve (AssemblyNameReference.Parse (rootName), new ReaderParameters ());
 					if (lastAssembly is null) {
-						ErrorHelper.Warning (7, Errors.MX0007, rootName);
+						ErrorHelper.Warning (this, 7, Errors.MX0007, rootName);
 						continue;
 					}
 
 					if (resolvedAssemblies.TryGetValue (rootName, out var previousAssembly)) {
 						if (lastAssembly.MainModule.RuntimeVersion != previousAssembly.MainModule.RuntimeVersion) {
-							Driver.Log (2, "Attemping to load an assembly another time {0} (previous {1})", lastAssembly.FullName, previousAssembly.FullName);
+							this.Log (2, "Attemping to load an assembly another time {0} (previous {1})", lastAssembly.FullName, previousAssembly.FullName);
 						}
 						continue;
 					}
 
 					resolvedAssemblies.Add (rootName, lastAssembly);
-					Driver.Log (3, "Loaded {0}", lastAssembly.MainModule.FileName);
+					this.Log (3, "Loaded {0}", lastAssembly.MainModule.FileName);
 				} catch (Exception ex) {
-					ErrorHelper.Warning (9, ex, Errors.MX0009, $"{rootName}: {ex.Message}");
+					ErrorHelper.Warning (this, 9, ex, Errors.MX0009, $"{rootName}: {ex.Message}");
 					continue;
 				}
 			}
@@ -1191,7 +1192,7 @@ namespace Xamarin.Bundler {
 			}
 
 			if (!dynamic)
-				Driver.Log (1, "The framework {0} is a framework of static libraries, and will not be copied to the app.", framework_path);
+				this.Log (1, "The framework {0} is a framework of static libraries, and will not be copied to the app.", framework_path);
 
 			return dynamic;
 		}
@@ -1208,6 +1209,32 @@ namespace Xamarin.Bundler {
 			ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, "4178"); // The class '{0}' will not be registered because the {1} framework has been removed from the {2} SDK.
 			ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, "4189"); // The class '{0}' will not be registered because it has been removed from the {1} SDK.
 			ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, "4190"); // The class '{0}' will not be registered because the {1} framework has been deprecated from the {2} SDK.
+		}
+
+		public void Log (string message)
+		{
+			Console.WriteLine (message);
+		}
+
+		public void LogError (string message)
+		{
+			Console.Error.WriteLine (message);
+		}
+
+		public void LogError (Exception exception)
+		{
+			ErrorHelper.Show (this, exception);
+		}
+
+		public void LogException (Exception exception)
+		{
+			ErrorHelper.Show (this, exception);
+		}
+
+		int verbosity = Driver.GetDefaultVerbosity ();
+		public int Verbosity {
+			get => verbosity;
+			set => verbosity = value;
 		}
 	}
 }

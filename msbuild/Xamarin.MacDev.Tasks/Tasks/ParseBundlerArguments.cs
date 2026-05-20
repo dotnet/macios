@@ -64,7 +64,7 @@ namespace Xamarin.MacDev.Tasks {
 		public string? SkipMarkingNSObjectsInUserAssemblies { get; set; }
 
 		[Output]
-		public string? Verbosity { get; set; }
+		public new string? Verbosity { get; set; }
 
 		[Output]
 		public string? Warn { get; set; }

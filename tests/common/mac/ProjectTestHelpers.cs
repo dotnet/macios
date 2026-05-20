@@ -7,6 +7,8 @@ using System.Reflection;
 using Xamarin.Utils;
 using Xamarin.Tests;
 
+#nullable enable
+
 namespace Xamarin.MMP.Tests {
 	internal class MessageTool : Tool {
 		public MessageTool ()
@@ -43,7 +45,7 @@ namespace Xamarin.MMP.Tests {
 	public class BuildResult {
 		public readonly string BinLogPath;
 
-		string build_output;
+		string? build_output;
 		public string BuildOutput {
 			get {
 				if (build_output is null)
@@ -52,7 +54,7 @@ namespace Xamarin.MMP.Tests {
 			}
 		}
 
-		string [] build_output_lines;
+		string []? build_output_lines;
 		public IList<string> BuildOutputLines {
 			get {
 				if (build_output_lines is null)
@@ -76,7 +78,7 @@ namespace Xamarin.MMP.Tests {
 			return Messages.Messages.Any (v => v.Number == code && v.Message == message);
 		}
 
-		MessageTool messages;
+		MessageTool? messages;
 		internal MessageTool Messages {
 			get {
 				if (messages is null) {
@@ -121,12 +123,12 @@ namespace Xamarin.MMP.Tests {
 			public string SystemMonoVersion { get; set; } = "";
 			public string TargetFrameworkVersion { get; set; } = "";
 			public Dictionary<string, string> PlistReplaceStrings { get; set; } = new Dictionary<string, string> ();
-			public Tuple<string, string> CustomProjectReplacement { get; set; } = null;
+			public Tuple<string, string>? CustomProjectReplacement { get; set; } = null;
 
 			// Binding project specific
-			public string APIDefinitionConfig { get; set; }
-			public string StructsAndEnumsConfig { get; set; }
-			public string LinkWithName { get; set; } = null; // Only generates if non-null
+			public string? APIDefinitionConfig { get; set; }
+			public string? StructsAndEnumsConfig { get; set; }
+			public string? LinkWithName { get; set; } = null; // Only generates if non-null
 
 			// Unified Executable Specific
 			public bool AssetIcons { get; set; }
@@ -165,17 +167,17 @@ namespace Xamarin.MMP.Tests {
 			return RunAndAssert (exe, args, "Command: " + exe);
 		}
 
-		public static string RunAndAssert (string exe, IList<string> args, string stepName, bool shouldFail = false, Func<string> getAdditionalFailInfo = null, Dictionary<string, string> environment = null)
+		public static string RunAndAssert (string exe, IList<string> args, string stepName, bool shouldFail = false, Func<string>? getAdditionalFailInfo = null, Dictionary<string, string?>? environment = null)
 		{
 			StringBuilder output = new StringBuilder ();
-			environment ??= new Dictionary<string, string> ();
+			environment ??= new Dictionary<string, string?> ();
 			environment ["DYLD_FALLBACK_LIBRARY_PATH"] = null;
 			int compileResult = ExecutionHelper.Execute (exe, args, environmentVariables: environment, stdout: output, stderr: output);
 			if (!shouldFail && compileResult != 0) {
 				Console.WriteLine ($"Execution of the following command failed (exit code: {compileResult}):");
 				Console.WriteLine ($"cd {Environment.CurrentDirectory}");
 				foreach (var kvp in Environment.GetEnvironmentVariables ().Cast<System.Collections.DictionaryEntry> ().OrderBy (v => v.Key))
-					Console.WriteLine ($"export {kvp.Key}={StringUtils.Quote (kvp.Value.ToString ())}");
+					Console.WriteLine ($"export {kvp.Key}={StringUtils.Quote (kvp.Value?.ToString () ?? "")}");
 				Console.WriteLine ($"{exe} {StringUtils.FormatArguments (args)}");
 				Console.WriteLine (output);
 			}
@@ -192,13 +194,14 @@ namespace Xamarin.MMP.Tests {
 			RunAndAssert ("Legacy projects not supported anymore", new [] { "--", csprojTarget, "/t:clean" }, "Clean", environment: Configuration.GetBuildEnvironment (ApplePlatform.MacOSX));
 		}
 
-		public static BuildResult BuildProject (string csprojTarget, bool shouldFail = false, bool release = false, Dictionary<string, string> environment = null, IList<string> extraArgs = null)
+		public static BuildResult BuildProject (string csprojTarget, bool shouldFail = false, bool release = false, Dictionary<string, string?>? environment = null, IList<string>? extraArgs = null)
 		{
 			Configuration.SetBuildVariables (ApplePlatform.MacOSX, ref environment);
 
 			// This is to force build to use our mmp and not system mmp
 			var buildArgs = new List<string> ();
-			var binlog = Path.Combine (Path.GetDirectoryName (csprojTarget), $"log-{DateTime.Now:yyyyMMdd_HHmmss}.binlog");
+			var binlogDir = Path.GetDirectoryName (csprojTarget) ?? ".";
+			var binlog = Path.Combine (binlogDir, $"log-{DateTime.Now:yyyyMMdd_HHmmss}.binlog");
 			buildArgs.Add ($"/bl:{binlog}");
 			Console.WriteLine ($"Binlog: {binlog}");
 
@@ -217,7 +220,7 @@ namespace Xamarin.MMP.Tests {
 
 			Func<string> getBuildProjectErrorInfo = () => {
 				string csprojText = "\n\n\n\tCSProj: \n" + File.ReadAllText (csprojTarget);
-				string csprojLocation = Path.GetDirectoryName (csprojTarget);
+				var csprojLocation = Path.GetDirectoryName (csprojTarget) ?? ".";
 				string fileList = "\n\n\tFiles: " + String.Join (" ", Directory.GetFiles (csprojLocation).Select (x => x.Replace (csprojLocation + "/", "")));
 				return csprojText + fileList;
 			};
@@ -293,10 +296,10 @@ namespace Xamarin.MMP.Tests {
 		public static string GenerateBindingLibraryProject (UnifiedTestConfig config)
 		{
 			string sourceDir = FindSourceDirectory ();
-			CopyFileWithSubstitutions (Path.Combine (sourceDir, "ApiDefinition.cs"), Path.Combine (config.TmpDir, "ApiDefinition.cs"), text => text.Replace ("REPLACE_CODE_REPLACE", config.APIDefinitionConfig));
-			CopyFileWithSubstitutions (Path.Combine (sourceDir, "StructsAndEnums.cs"), Path.Combine (config.TmpDir, "StructsAndEnums.cs"), text => text.Replace ("REPLACE_CODE_REPLACE", config.StructsAndEnumsConfig));
+			CopyFileWithSubstitutions (Path.Combine (sourceDir, "ApiDefinition.cs"), Path.Combine (config.TmpDir, "ApiDefinition.cs"), text => text.Replace ("REPLACE_CODE_REPLACE", config.APIDefinitionConfig ?? ""));
+			CopyFileWithSubstitutions (Path.Combine (sourceDir, "StructsAndEnums.cs"), Path.Combine (config.TmpDir, "StructsAndEnums.cs"), text => text.Replace ("REPLACE_CODE_REPLACE", config.StructsAndEnumsConfig ?? ""));
 
-			string linkWithName = null;
+			string? linkWithName = null;
 			if (config.LinkWithName is not null) {
 				string fileName = Path.GetFileNameWithoutExtension (config.LinkWithName);
 				linkWithName = $"{fileName}.linkwith.cs";
@@ -362,7 +365,7 @@ namespace Xamarin.MMP.Tests {
 			return GenerateEXEProject (config);
 		}
 
-		public static BuildResult GenerateAndBuildUnifiedExecutable (UnifiedTestConfig config, bool shouldFail = false, Dictionary<string, string> environment = null)
+		public static BuildResult GenerateAndBuildUnifiedExecutable (UnifiedTestConfig config, bool shouldFail = false, Dictionary<string, string?>? environment = null)
 		{
 			string csprojTarget = GenerateUnifiedExecutableProject (config);
 			return BuildProject (csprojTarget, shouldFail: shouldFail, release: config.Release, environment: environment);
@@ -373,7 +376,7 @@ namespace Xamarin.MMP.Tests {
 			return RunEXEAndVerifyGUID (config.TmpDir, config.guid, config.ExecutablePath);
 		}
 
-		public static OutputText TestUnifiedExecutable (UnifiedTestConfig config, bool shouldFail = false, Dictionary<string, string> environment = null)
+		public static OutputText TestUnifiedExecutable (UnifiedTestConfig config, bool shouldFail = false, Dictionary<string, string?>? environment = null)
 		{
 			AddGUIDTestCode (config);
 

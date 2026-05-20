@@ -71,6 +71,10 @@ ifeq ($(TEST_TFM),)
 TEST_TFM=$(DOTNET_TFM)
 endif
 
+ifeq ($(findstring |release|,|$(TEST_VARIATION)|),|release|)
+CONFIG=Release
+endif
+
 ifeq ($(CONFIG),)
 CONFIG=Debug
 else
@@ -174,11 +178,13 @@ reload-and-run:
 	$(Q) $(MAKE) run
 
 build: prepare
+	@echo "Building $(wildcard *.?sproj)..."
 	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT)
 
 run: export SIMCTL_CHILD_NUNIT_AUTOSTART=true
 run: export SIMCTL_CHILD_NUNIT_AUTOEXIT=true
 run: prepare
+	@echo "Running $(wildcard *.?sproj)..."
 	$(Q) $(DOTNET) build "/bl:$(abspath $@-$(BINLOG_TIMESTAMP).binlog)" *.?sproj $(DOTNET_BUILD_VERBOSITY) $(BUILD_ARGUMENTS) $(CONFIG_ARGUMENT) $(UNIVERSAL_ARGUMENT) $(NATIVEAOT_ARGUMENTS) $(TEST_VARIATION_ARGUMENT) -t:Run $(RUN_ARGUMENTS) -tl:off
 
 run-bare:

@@ -17,20 +17,32 @@ namespace Xamarin.Linker.Steps;
 public abstract class AssemblyModifierStep : ConfigurationAwareStep {
 	private protected AppBundleRewriter abr => Configuration.AppBundleRewriter;
 
-	protected override void TryProcessAssembly (AssemblyDefinition assembly)
+	protected sealed override void TryProcessAssembly (AssemblyDefinition assembly)
 	{
 		var modified = false;
 
 		abr.SetCurrentAssembly (assembly);
-		foreach (var type in assembly.MainModule.Types)
-			modified |= ProcessTypeImpl (type);
-
+		modified |= ModifyAssembly (assembly);
 		if (modified)
 			abr.SaveCurrentAssembly ();
 		abr.ClearCurrentAssembly ();
 	}
 
+	protected virtual bool ModifyAssembly (AssemblyDefinition assembly)
+	{
+		var modified = false;
+		// ToArray () is needed because subclasses (e.g. InlineDlfcnMethodsStep) may add new types during iteration.
+		foreach (var type in assembly.MainModule.Types.ToArray ())
+			modified |= ProcessTypeImpl (type);
+		return modified;
+	}
+
 	protected virtual bool ProcessType (TypeDefinition type)
+	{
+		return false;
+	}
+
+	protected virtual bool ProcessMethod (MethodDefinition method)
 	{
 		return false;
 	}
@@ -39,9 +51,21 @@ public abstract class AssemblyModifierStep : ConfigurationAwareStep {
 	{
 		var modified = ProcessType (type);
 		if (type.HasNestedTypes) {
-			foreach (var nested in type.NestedTypes)
+			// ToArray () is needed because subclasses may add new types during iteration.
+			foreach (var nested in type.NestedTypes.ToArray ())
 				modified |= ProcessTypeImpl (nested);
 		}
+		return modified;
+	}
+
+	protected bool ProcessMethods (TypeDefinition type)
+	{
+		if (!type.HasMethods)
+			return false;
+
+		var modified = false;
+		foreach (var method in type.Methods)
+			modified |= ProcessMethod (method);
 		return modified;
 	}
 }

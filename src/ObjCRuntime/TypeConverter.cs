@@ -10,7 +10,7 @@ namespace ObjCRuntime {
 	/// <summary>Converts Objective-C type encodings to managed types and vice versa.</summary>
 	/// <remarks>
 	/// <para>This class provides a way to convert Objective-C encoded type strings to .NET types and vice versa.</para>
-	/// <para>The full details about type encodings are available <see href="https://developer.apple.com/documentation/DeveloperTools/gcc-4.0.1/gcc/Type-encoding.html">here</see>.</para>
+	/// <para>The full details about type encodings are available <see href="https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html">here</see>.</para>
 	/// </remarks>
 	public static class TypeConverter {
 #if !COREBUILD

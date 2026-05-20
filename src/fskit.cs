@@ -897,7 +897,7 @@ namespace FSKit {
 		bool EnableOpenUnlinkEmulation { get; set; }
 
 		/// <summary>Gets or sets the mount options that the file system requests from FSKit.</summary>
-		/// <remarks>FSKit reads this value after the volume replies to the <see cref="Mount" /> call. Changing the returned value during the runtime of the volume has no effect.</remarks>
+		/// <remarks>FSKit reads this value after the volume replies to the <see cref="M:FSKit.IFSVolumeOperations.Mount(FSKit.FSTaskOptions,FSKit.FSVolumeOperationsMountHandler)" /> call. Changing the returned value during the runtime of the volume has no effect.</remarks>
 		[Mac (26, 0)]
 		[Export ("requestedMountOptions", ArgumentSemantic.Assign)]
 		FSMountOptions RequestedMountOptions { get; set; }

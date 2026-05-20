@@ -127,5 +127,16 @@ namespace MonoTouchFixtures.CoreImage {
 				Assert.Null (f.Mesh, "Mesh/Null/again");
 			}
 		}
+
+		[Test]
+		public void FilterNamesInCategories ()
+		{
+			var a = CIFilter.FilterNamesInCategories ();
+			var b = CIFilter.FilterNamesInCategories (null);
+
+			Assert.That (a, Is.EquivalentTo (b), "Filtering");
+			Assert.That (a.Length, Is.GreaterThan (0), "Filtered A");
+			Assert.That (b.Length, Is.GreaterThan (0), "Filtered B");
+		}
 	}
 }

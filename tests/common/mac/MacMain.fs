@@ -11,8 +11,11 @@ module PInvokes =
     extern void _exit (int exit_code)
 
 type MainClass =
-    static member ThreadMonitor(obj : System.Object) =
-        let exit_code = obj :?> int
+    static member ThreadMonitor (state : obj | null) =
+        let exit_code =
+            match state with
+            | :? int as value -> value
+            | _ -> failwith "Expected an exit code."
         Thread.Sleep (3000)
         Console.WriteLine ($"The process didn't exit within 3s of returning from Main. Assuming something is deadlocked, and will now exit immediately and forcefully (with exit code {exit_code}).")
         Console.Out.Flush ()

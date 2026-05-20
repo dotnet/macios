@@ -374,7 +374,7 @@ namespace Extrospection {
 
 		static Frameworks GetFrameworks (string platform)
 		{
-			return Frameworks.GetFrameworks (ApplePlatformExtensions.Parse (platform), false);
+			return Frameworks.GetFrameworks (ApplePlatformExtensions.Parse (platform), false)!;
 		}
 
 		static List<Frameworks> GetFrameworks (IEnumerable<string> platforms)

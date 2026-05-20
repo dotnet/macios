@@ -1284,15 +1284,6 @@ namespace CoreBluetooth {
 		[Field ("CBUUIDCharacteristicAggregateFormatString")]
 		NSString CharacteristicAggregateFormatString { get; }
 
-		[Internal]
-		[Field ("CBUUIDValidRangeString")]
-		[Deprecated (PlatformName.MacOSX, 10, 13)]
-		[Obsoleted (PlatformName.MacOSX, 10, 13)]
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
-		NSString CBUUIDValidRangeString { get; }
-
 		/// <summary>Represents the value associated with the constant CBUUIDCharacteristicValidRangeString</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>

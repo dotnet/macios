@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Xamarin.MacDev.Tasks {
 	[TestFixture]
 	public class CollectITunesArtworkTaskTests : TestBase {
-		string AppPath => Path.GetDirectoryName (GetType ().Assembly.Location);
+		string AppPath => Path.GetDirectoryName (GetType ().Assembly.Location) ?? "";
 
 		[Test]
 		public void UnknownImageFormat ()

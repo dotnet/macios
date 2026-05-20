@@ -1,9 +1,6 @@
 <Documentation>
   <Docs DocId="T:UIKit.UIWebView">
     <summary>A <see cref="UIKit.UIView" /> that displays a web browser.</summary>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Content_Controls/Web_View/Load_a_Web_Page">Load a Web Page</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Content_Controls/Web_View/Load_Local_Content">Load Local Content</related>
-    <related type="recipe" href="https://developer.xamarin.com/ios/Recipes/Content_Controls/Web_View/Load_Non-Web_Documents">Load Non-Web Documents</related>
     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIWebView_Class/index.html">Apple documentation for <c>UIWebView</c></related>
   </Docs>
 </Documentation>

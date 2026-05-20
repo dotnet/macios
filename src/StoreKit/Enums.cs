@@ -73,6 +73,9 @@ namespace StoreKit {
 		UnsupportedPlatform = 19,
 		// iOS 14.5
 		OverlayPresentedInBackgroundScene = 20,
+		// Xcode 26.5
+		/// <summary>Indicates that the payment method binding configuration is required.</summary>
+		PaymentMethodBindingConfigurationRequired = 21,
 	}
 
 	// typedef NSInteger SKDownloadState;
@@ -132,7 +135,7 @@ namespace StoreKit {
 		AddToCloudMusicLibrary = 1 << 8,
 	}
 
-	/// <summary>Enumerates visiblity settings for a promoted product.</summary>
+	/// <summary>Enumerates visibility settings for a promoted product.</summary>
 	[Deprecated (PlatformName.iOS, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacCatalyst, 18, 0 /* Apple's replacement requires Swift */ )]
 	[Deprecated (PlatformName.MacOSX, 15, 0 /* Apple's replacement requires Swift */ )]

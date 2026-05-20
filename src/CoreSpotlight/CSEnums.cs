@@ -17,7 +17,7 @@ namespace CoreSpotlight {
 	[Native]
 	[ErrorDomain ("CSIndexErrorDomain")]
 	public enum CSIndexErrorCode : long {
-		/// <summary>An unknown error occured.</summary>
+		/// <summary>An unknown error occurred.</summary>
 		UnknownError = -1,
 		/// <summary>The index was not available.</summary>
 		IndexUnavailableError = -1000,

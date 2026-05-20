@@ -125,7 +125,7 @@ namespace AudioToolbox {
 		{
 		}
 
-		/// <include file="../../docs/api/AudioToolbox/MusicPlayer.xml" path="/Documentation/Docs[@DocId='M:AudioToolbox.MusicPlayer.Dispose(System.Boolean)']/*" />
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			currentSequence = null;

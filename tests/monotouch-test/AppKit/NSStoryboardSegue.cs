@@ -12,8 +12,6 @@ namespace Xamarin.Mac.Tests {
 		[SetUp]
 		public void Setup ()
 		{
-			Asserts.EnsureYosemite ();
-
 			source = new NSViewController ();
 			destination = new NSViewController ();
 			segue = new NSStoryboardSegue ("Test", source, destination);

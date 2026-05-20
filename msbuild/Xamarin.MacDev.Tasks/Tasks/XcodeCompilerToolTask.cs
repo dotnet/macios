@@ -206,7 +206,6 @@ namespace Xamarin.MacDev.Tasks {
 
 				if (rv.ExitCode != 0) {
 					Log.LogWarning (MSBStrings.W7171, simPlatform);
-					simulatorRuntimeCache [cacheKey] = true;
 					return;
 				}
 

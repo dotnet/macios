@@ -594,6 +594,7 @@ namespace MonoTests.System.Net.Http {
 					Assert.AreNotEqual (ex.InnerException.Message, "Error: TrustFailure");
 				}
 			}
+			TestRuntime.IgnoreInCIIfBadNetwork (ex);
 			Assert.IsNull (ex);
 			// Assert.IsTrue (servicePointManagerCbWasExcuted, "Executed");
 		}
@@ -902,6 +903,7 @@ namespace MonoTests.System.Net.Http {
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
 				Assert.Inconclusive ("Request timedout.");
 			} else {
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
 				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
 				Assert.IsNull (ex, "Exception not null");
 				Assert.AreEqual (expectedStatus, httpStatus, "Status not ok");
@@ -928,6 +930,7 @@ namespace MonoTests.System.Net.Http {
 			if (!done) {
 				Assert.Inconclusive ("Request timedout.");
 			} else {
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
 				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
 				Assert.IsNull (ex, "Exception not null");
 				Assert.AreEqual (expectedStatus, httpStatus, "Status not ok");
@@ -1039,6 +1042,7 @@ namespace MonoTests.System.Net.Http {
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
 				Assert.Inconclusive ("Request timedout.");
 			} else {
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
 				Assert.IsNull (ex, "Exception");
 
 				for (var i = 0; i < iterations; i++) {

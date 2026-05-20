@@ -242,12 +242,12 @@ namespace Xamarin.Bundler {
 					continue;
 
 				// Remove the resource from the assembly at a later stage.
-				if (!string.IsNullOrEmpty (metadata.LibraryName))
+				if (!StringUtils.IsNullOrEmpty (metadata.LibraryName))
 					AddResourceToBeRemoved (metadata.LibraryName);
 
 				ProcessNativeReferenceOptions (metadata);
 
-				if (!string.IsNullOrEmpty (linkWith.LibraryName)) {
+				if (!StringUtils.IsNullOrEmpty (linkWith.LibraryName)) {
 					switch (Path.GetExtension (linkWith.LibraryName).ToLowerInvariant ()) {
 					case ".framework": {
 						// TryExtractFramework prints a error/warning if something goes wrong, so no need for us to have an error handling path.
@@ -282,7 +282,7 @@ namespace Xamarin.Bundler {
 			if (metadata.ForceLoad && !(metadata.SmartLink && (App.Registrar == RegistrarMode.Static || App.Registrar == RegistrarMode.ManagedStatic || App.Registrar == RegistrarMode.TrimmableStatic)))
 				ForceLoad = true;
 
-			if (!string.IsNullOrEmpty (metadata.LinkerFlags)) {
+			if (!StringUtils.IsNullOrEmpty (metadata.LinkerFlags)) {
 				if (LinkerFlags is null)
 					LinkerFlags = new List<string> ();
 				if (!StringUtils.TryParseArguments (metadata.LinkerFlags, out var args, out var ex))
@@ -290,7 +290,7 @@ namespace Xamarin.Bundler {
 				LinkerFlags.AddRange (args);
 			}
 
-			if (!string.IsNullOrEmpty (metadata.Frameworks)) {
+			if (!StringUtils.IsNullOrEmpty (metadata.Frameworks)) {
 				foreach (var f in metadata.Frameworks.Split (new char [] { ' ' })) {
 					if (Frameworks is null)
 						Frameworks = new HashSet<string> ();
@@ -298,7 +298,7 @@ namespace Xamarin.Bundler {
 				}
 			}
 
-			if (!string.IsNullOrEmpty (metadata.WeakFrameworks)) {
+			if (!StringUtils.IsNullOrEmpty (metadata.WeakFrameworks)) {
 				foreach (var f in metadata.WeakFrameworks.Split (new char [] { ' ' })) {
 					if (WeakFrameworks is null)
 						WeakFrameworks = new HashSet<string> ();

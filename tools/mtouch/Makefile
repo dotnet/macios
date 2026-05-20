@@ -89,7 +89,7 @@ endef
 
 $(foreach platform,$(DOTNET_PLATFORMS_MTOUCH),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call InstallRegistrar,$(platform),$(rid)))))
 
-ifdef IS_LINUX
+ifdef NO_XCODE
 dotnet:: no-xcode-build
 else
 dotnet: $(TARGETS_DOTNET)

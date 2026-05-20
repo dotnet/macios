@@ -1,5 +1,10 @@
 name: Bump global.json for dotnet/sdk bumps
-on: pull_request_target
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+permissions: {}
 
 jobs:
   bump-global-json:
@@ -10,14 +15,18 @@ jobs:
     # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
     permissions:
       contents: write
-    if: contains(github.event.pull_request.title, 'Update dependencies from dotnet/') && github.actor == 'dotnet-maestro[bot]'
+    # We'll never need to run this workflow for PRs from forks, so explicitly avoid that to limit potential exposure
+    if: github.event.pull_request.head.repo.full_name == github.repository &&
+        github.event.pull_request.user.login == 'dotnet-maestro[bot]' &&
+        contains(github.event.pull_request.title, 'Update dependencies from dotnet/')
     steps:
     - name: 'Checkout repo'
-      uses: actions/checkout@v6
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         fetch-depth: 0
         repository: ${{ github.event.pull_request.head.repo.full_name }}
-        ref: ${{ github.event.pull_request.head.sha }}
+        ref: ${{ github.head_ref }}
+        persist-credentials: true # we need the credentials to push code
 
     - name: 'Update global.json'
       env:
@@ -34,6 +43,5 @@ jobs:
         git add -- global.json
         git config --global user.email "github-actions@xamarin.com"
         git config --global user.name "GitHub Actions"
-        git checkout "$GITHUB_HEAD_REF"
         git commit -m "Re-generate global.json for PR #$PR_NUMBER: $PR_TITLE"
         git push

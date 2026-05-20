@@ -228,7 +228,7 @@ namespace Xamarin.Bundler {
 
 		public bool IsSimulatorBuild {
 			get {
-				if (!string.IsNullOrEmpty (RuntimeIdentifier))
+				if (!StringUtils.IsNullOrEmpty (RuntimeIdentifier))
 					return RuntimeIdentifier.IndexOf ("simulator", StringComparison.OrdinalIgnoreCase) >= 0;
 
 				switch (Platform) {
@@ -686,6 +686,9 @@ namespace Xamarin.Bundler {
 #if !LEGACY_TOOLS
 		public void ParseRegistrar (string v)
 		{
+			if (StringUtils.IsNullOrEmpty (v))
+				return;
+
 			var split = v.Split ('=');
 			var name = split [0];
 			var value = split.Length > 1 ? split [1] : string.Empty;

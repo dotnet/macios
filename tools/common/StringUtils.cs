@@ -283,11 +283,7 @@ namespace Xamarin.Utils {
 			code = 0;
 			message = null;
 
-#if NET
-			if (string.IsNullOrEmpty (line))
-#else
-			if (string.IsNullOrEmpty (line) || line is null)
-#endif
+			if (IsNullOrEmpty (line))
 				return false;
 
 			var origin = string.Empty;
@@ -362,11 +358,7 @@ namespace Xamarin.Utils {
 
 		static string RemovePathAtEnd (string line)
 		{
-#if NET
 			if (line.TrimEnd ().EndsWith (']')) {
-#else
-			if (line.TrimEnd ().EndsWith ("]")) {
-#endif
 				var start = line.LastIndexOf ('[');
 				if (start >= 0) {
 					// we want to get the space before `[` too.
@@ -379,6 +371,14 @@ namespace Xamarin.Utils {
 			}
 
 			return line;
+		}
+
+		// This function only exists because netstandard2.0's version doesn't have the [NotNullWhen] attribute,
+		// which makes nullability analysis somewhat annoying. This function can be removed and callsites updated
+		// to call string.IsNullOrEmpty directly once we stop targeting netstandard2.0.
+		public static bool IsNullOrEmpty ([NotNullWhen (false)] string? s)
+		{
+			return string.IsNullOrEmpty (s);
 		}
 	}
 
@@ -397,5 +397,14 @@ namespace Xamarin.Utils {
 			tmpArray [tmpArray.Length - 1] = value;
 			return tmpArray;
 		}
+
+#if !NET
+		public static bool EndsWith (this string s, char value)
+		{
+			if (s.Length == 0)
+				return false;
+			return s [s.Length - 1] == value;
+		}
+#endif
 	}
 }

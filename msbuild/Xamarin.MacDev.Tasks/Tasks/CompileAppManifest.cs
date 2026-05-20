@@ -258,11 +258,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 			}
 
-#if NET
-			if (string.IsNullOrEmpty (minimumOSVersionInManifest)) {
-#else
-			if (string.IsNullOrEmpty (minimumOSVersionInManifest) || minimumOSVersionInManifest is null) {
-#endif
+			if (StringUtils.IsNullOrEmpty (minimumOSVersionInManifest)) {
 				// Nothing is specified in the Info.plist - use SupportedOSPlatformVersion, and if that's not set, then use the sdkVersion
 				if (!string.IsNullOrEmpty (convertedSupportedOSPlatformVersion)) {
 					minimumOSVersion = convertedSupportedOSPlatformVersion;

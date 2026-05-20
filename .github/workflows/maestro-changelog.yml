@@ -1,5 +1,8 @@
 name: Add changelog for Maestro bump
+
 on: pull_request
+
+permissions: {}
 
 jobs:
   add-changelog:
@@ -9,13 +12,12 @@ jobs:
     # https://docs.opensource.microsoft.com/github/apps/permission-changes/
     # https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
     permissions:
-      issues: write
-      pull-requests: write
+      pull-requests: write # will add/edit comments
       contents: read
-    if: github.actor == 'dotnet-maestro[bot]'
+    if: github.event.pull_request.user.login == 'dotnet-maestro[bot]'
 
     steps:
-    - uses: actions/setup-dotnet@v5
+    - uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5
       with:
         dotnet-version: '9'
 
@@ -28,7 +30,7 @@ jobs:
         ./bin/Debug/net9.0/changelog https://github.com/$GITHUB_REPOSITORY/pull/${GITHUB_REF_NAME/\/*/} > /tmp/changelog.txt 2>&1
 
     - name: 'Add changelog'
-      uses: actions/github-script@v9.0.0
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |

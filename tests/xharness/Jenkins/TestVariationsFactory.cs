@@ -59,6 +59,10 @@ namespace Xharness.Jenkins {
 					yield return new TestData { Variation = "Debug (don't bundle original resources)", TestVariation = "do-not-bundle-original-resources" };
 				}
 				break;
+			case "monotouch-test":
+				yield return new TestData { Variation = "Release (link sdk)", TestVariation = "release|linksdk", Ignored = ignore };
+				yield return new TestData { Variation = "Release (link all)", TestVariation = "release|linkall", Ignored = ignore };
+				break;
 			}
 
 			switch (test.ProjectPlatform) {

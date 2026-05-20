@@ -81,7 +81,7 @@ namespace Introspection {
 				IntPtr class_ptr = (IntPtr) (NativeHandle) fi.GetValue (null)!;
 				IntPtr register_class_ptr = GetClassPtrFromRegister (t);
 
-				Assert.AreEqual (class_ptr, register_class_ptr, "class_ptr and RegisterAttribute are different: " + t.Name);
+				Assert.That (register_class_ptr, Is.EqualTo (class_ptr), "class_ptr and RegisterAttribute are different: " + t.Name);
 			}
 		}
 
@@ -104,7 +104,7 @@ namespace Introspection {
 				else
 					extended_class_ptr = GetClassPtrFromRegister (extendedType);
 
-				Assert.AreEqual (class_ptr, extended_class_ptr, "class_ptr and RegisterAttribute from extended class are different: " + t.Name);
+				Assert.That (extended_class_ptr, Is.EqualTo (class_ptr), "class_ptr and RegisterAttribute from extended class are different: " + t.Name);
 			}
 		}
 	}

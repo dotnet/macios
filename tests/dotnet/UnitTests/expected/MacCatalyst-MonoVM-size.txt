@@ -1,4 +1,3 @@
-AppBundleSize: 16,323,580 bytes (15,941.0 KB = 15.6 MB)
 # The following list of files and their sizes is just informational / for review, and isn't used in the test:
 Contents/_CodeSignature/CodeResources: 4,134 bytes (4.0 KB = 0.0 MB)
 Contents/Info.plist: 1,101 bytes (1.1 KB = 0.0 MB)

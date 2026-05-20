@@ -82,7 +82,6 @@ Microsoft.MacCatalyst.dll:Foundation.NSAutoreleasePool.get_ClassHandle()
 Microsoft.MacCatalyst.dll:Foundation.NSComparisonResult
 Microsoft.MacCatalyst.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Ascending
 Microsoft.MacCatalyst.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Descending
-Microsoft.MacCatalyst.dll:Foundation.NSComparisonResult Foundation.NSComparisonResult::Same
 Microsoft.MacCatalyst.dll:Foundation.NSDictionary
 Microsoft.MacCatalyst.dll:Foundation.NSDictionary Foundation.NSDictionary/<GetEnumerator>d__66::<>4__this
 Microsoft.MacCatalyst.dll:Foundation.NSDictionary._Xamarin_ConstructINativeObject(ObjCRuntime.NativeHandle, System.Boolean)

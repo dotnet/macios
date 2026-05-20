@@ -38,7 +38,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			var path = Path.Combine (Path.GetDirectoryName (GetType ().Assembly.Location)!, "Resources", "xcf-xcode12.2.plist");
 			var plist = PDictionary.FromFile (path)!;
 			var result = ResolveNativeReferences.TryResolveXCFramework (log, plist, "N/A", targetFrameworkMoniker, isSimulator, architecture, null, out var frameworkPath);
-			Assert.AreEqual (result, !string.IsNullOrEmpty (expected), "result");
+			Assert.That (!string.IsNullOrEmpty (expected), Is.EqualTo (result), "result");
 			Assert.That (frameworkPath, Is.EqualTo (expected), "frameworkPath");
 		}
 
@@ -48,7 +48,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 			var path = Path.Combine (Path.GetDirectoryName (GetType ().Assembly.Location)!, "Resources", "xcf-prexcode12.plist");
 			var plist = PDictionary.FromFile (path)!;
 			var result = ResolveNativeReferences.TryResolveXCFramework (log, plist, "N/A", targetFrameworkMoniker, isSimulator, architecture, null, out var frameworkPath);
-			Assert.AreEqual (result, !string.IsNullOrEmpty (expected), "result");
+			Assert.That (!string.IsNullOrEmpty (expected), Is.EqualTo (result), "result");
 			Assert.That (frameworkPath, Is.EqualTo (expected), "frameworkPath");
 		}
 
@@ -57,7 +57,7 @@ namespace Xamarin.MacDev.Tasks.Tests {
 		{
 			var plist = new PDictionary ();
 			var result = ResolveNativeReferences.TryResolveXCFramework (log, plist, "N/A", TargetFramework.DotNet_iOS_String, false, "x86_64", null, out var frameworkPath);
-			Assert.IsFalse (result, "Invalid Info.plist");
+			Assert.That (result, Is.False, "Invalid Info.plist");
 		}
 	}
 }

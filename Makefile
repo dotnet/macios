@@ -3,8 +3,8 @@ SUBDIRS=builds
 include $(TOP)/Make.config
 include $(TOP)/mk/versions.mk
 
-# On Linux, skip directories that require native compilation or macOS platform
-ifndef IS_LINUX
+# Without Xcode, skip directories that require native compilation or macOS platform
+ifndef NO_XCODE
 SUBDIRS += runtime
 endif
 
@@ -16,7 +16,7 @@ endif
 
 SUBDIRS += tools
 
-ifndef IS_LINUX
+ifndef NO_XCODE
 SUBDIRS += dotnet
 endif
 

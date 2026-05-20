@@ -30,6 +30,8 @@ Usage: configure [options]
     --custom-dotnet=[dotnet/runtime] Use a locally built version of dotnet/runtime. Pass the path to an already build checkout of dotnet/runtime. See docs/CORECLR.md for detailed instructions about how to build dotnet/runtime from source.
 
     --ignore-unknown-params  alters the default behavior to not return an non-zero exit code when an unknown parameter is provided.
+
+    --no-xcode               Only do things that don't require Xcode. This won't produce anything useful, but might come in handy once in a blue moon when testing something that doesn't require Xcode somewhere Xcode can't be installed (Linux, older macOS devices, etc.)
 EOL
 }
 
@@ -147,6 +149,11 @@ while test "x$1" != x; do
     --ignore-unknown-params)
         echo "ignoring unknown parameters"
         IGNORE_UNKNOWN_PARAMS=true
+        shift
+        ;;
+    --no-xcode)
+        echo "Ignoring Xcode requirement"
+        echo "NO_XCODE=1" >> "$CONFIGURED_FILE"
         shift
         ;;
     --help|-h)

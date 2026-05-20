@@ -58,7 +58,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, simctl, devicectl);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.That (task.Devices.Count, Is.EqualTo (0), "Devices should be empty.");
 			Assert.That (task.DiscardedDevices.Count, Is.EqualTo (0), "No devices should have been discarded.");
 		}
@@ -68,7 +68,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, "", DEVICECTL_JSON_1);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (3), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (1), "Discarded device count mismatch.");
@@ -111,7 +111,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, "");
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (2), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (3), "Discarded device count mismatch.");
@@ -160,7 +160,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (5), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (4), "Discarded device count mismatch.");
@@ -250,7 +250,7 @@ namespace Xamarin.MacDev.Tasks {
 			</plist>
 			""";
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1, appManifestXml);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (5), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (4), "Discarded device count mismatch.");
@@ -344,7 +344,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1, appManifestXml);
 
 
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (2), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (7), "Discarded device count mismatch.");
@@ -438,7 +438,7 @@ namespace Xamarin.MacDev.Tasks {
 			File.WriteAllText (appManifestPath, appManifestXml);
 			task.AppBundleManifestPath = appManifestPath;
 
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (3), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (6), "Discarded device count mismatch.");
@@ -531,7 +531,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.AppBundleManifestPath = appManifestPath;
 			task.RuntimeIdentifier = $"ios-arm64";
 
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (3), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (6), "Discarded device count mismatch.");
@@ -609,7 +609,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var platform = ApplePlatform.TVOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (1), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (8), "Discarded device count mismatch.");
@@ -684,7 +684,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, "", DEVICECTL_JSON_2);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 
 			Assert.Multiple (() => {
 				Assert.That (task.DiscardedDevices [0].ItemSpec, Is.EqualTo ("12345678-1234-1234-ABCD-1234567980AB"), "Discarded Device 1 itemspec mismatch.");

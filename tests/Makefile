@@ -2,9 +2,9 @@ TOP = ..
 
 include $(TOP)/Make.config
 
-# Skip test-libraries on Linux (requires native compilation with Xcode/clang)
+# Skip test-libraries without Xcode (requires native compilation with Xcode/clang)
 ifndef ONLY_SHARPIE
-ifndef IS_LINUX
+ifndef NO_XCODE
 SUBDIRS=test-libraries
 endif
 endif

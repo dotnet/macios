@@ -594,6 +594,7 @@ namespace MonoTests.System.Net.Http {
 					Assert.That (ex.InnerException.Message, Is.Not.EqualTo ("Error: TrustFailure"));
 				}
 			}
+			TestRuntime.IgnoreInCIIfBadNetwork (ex);
 			Assert.That (ex, Is.Null);
 			// Assert.That (servicePointManagerCbWasExcuted, Is.True, "Executed");
 		}
@@ -902,6 +903,7 @@ namespace MonoTests.System.Net.Http {
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
 				Assert.Inconclusive ("Request timedout.");
 			} else {
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
 				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
 				Assert.That (ex, Is.Null, "Exception not null");
 				Assert.That (httpStatus, Is.EqualTo (expectedStatus), "Status not ok");
@@ -928,6 +930,7 @@ namespace MonoTests.System.Net.Http {
 			if (!done) {
 				Assert.Inconclusive ("Request timedout.");
 			} else {
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
 				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
 				Assert.That (ex, Is.Null, "Exception not null");
 				Assert.That (httpStatus, Is.EqualTo (expectedStatus), "Status not ok");
@@ -1039,6 +1042,7 @@ namespace MonoTests.System.Net.Http {
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
 				Assert.Inconclusive ("Request timedout.");
 			} else {
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
 				Assert.That (ex, Is.Null, "Exception");
 
 				for (var i = 0; i < iterations; i++) {

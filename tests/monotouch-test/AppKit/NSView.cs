@@ -64,7 +64,7 @@ namespace Xamarin.Mac.Tests {
 			foreach (var ctor in types) {
 				var o = ctor ();
 				var prop = o.GetType ().GetProperty ("Menu", BindingFlags.Public | BindingFlags.Instance);
-				if (prop is null && TestRuntime.IsLinkAll)
+				if (prop is null && TestRuntime.IsLinkAny)
 					continue; // the property was linked away.
 				prop.SetValue (o, null, null);
 			}

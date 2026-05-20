@@ -175,7 +175,7 @@ namespace Xamarin.Tests {
 				updated = true;
 			} else if (!withinTolerance) {
 				UploadUpdatedExpectedFile (expectedSizeReportPath, report.ToString ());
-				msg += " The updated expected file has been uploaded as an Azure DevOps artifact.";
+				msg += " The updated expected file is available as a build artifact (set WRITE_KNOWN_FAILURES=1 to update locally).";
 			}
 
 			Console.WriteLine ($"    {msg}");
@@ -187,11 +187,11 @@ namespace Xamarin.Tests {
 				if (!expectedLines.TryGetValue (key, out var expectedLine)) {
 					Console.WriteLine ($"        File '{key}' was added to app bundle: {actualLines [key]}");
 					if (!updated)
-						Assert.Fail ($"The file '{key}' was added to the app bundle. The updated expected file has been uploaded as an artifact.");
+						Assert.Fail ($"The file '{key}' was added to the app bundle. The updated expected file is available as a build artifact (set WRITE_KNOWN_FAILURES=1 to update locally).");
 				} else if (!actualLines.TryGetValue (key, out var actualLine)) {
 					Console.WriteLine ($"        File '{key}' was removed from app bundle: {expectedLine}");
 					if (!updated)
-						Assert.Fail ($"The file '{key}' was removed from the app bundle. The updated expected file has been uploaded as an artifact.");
+						Assert.Fail ($"The file '{key}' was removed from the app bundle. The updated expected file is available as a build artifact (set WRITE_KNOWN_FAILURES=1 to update locally).");
 				} else if (expectedLine != actualLine) {
 					Console.WriteLine ($"        File '{key}' changed in app bundle:");
 					Console.WriteLine ($"            -{expectedLine}");
@@ -241,7 +241,7 @@ namespace Xamarin.Tests {
 			if (!update) {
 				if (addedAPIs.Count > 0 || removedAPIs.Count > 0) {
 					UploadUpdatedExpectedFile (expectedFile, string.Join ('\n', preservedAPIs) + "\n");
-					var updateMsg = " The updated expected file has been uploaded as an artifact.";
+					var updateMsg = " The updated expected file is available as a build artifact (set WRITE_KNOWN_FAILURES=1 to update locally).";
 					Assert.That (addedAPIs, Is.Empty, "No added APIs." + updateMsg);
 					Assert.That (removedAPIs, Is.Empty, "No removed APIs." + updateMsg);
 				}
@@ -251,10 +251,17 @@ namespace Xamarin.Tests {
 		static void UploadUpdatedExpectedFile (string expectedFilePath, string content)
 		{
 			var fileName = Path.GetFileName (expectedFilePath);
-			var tmpDir = Cache.CreateTemporaryDirectory ("AppSizeTest");
-			var tmpFile = Path.Combine (tmpDir, fileName);
-			File.WriteAllText (tmpFile, content);
-			Console.WriteLine ($"##vso[artifact.upload containerfolder=updated-expected-sizes;artifactname={Path.GetFileNameWithoutExtension (fileName)}]{tmpFile}");
+			var artifactStagingDir = Environment.GetEnvironmentVariable ("BUILD_ARTIFACTSTAGINGDIRECTORY");
+			string outputDir;
+			if (!string.IsNullOrEmpty (artifactStagingDir)) {
+				outputDir = Path.Combine (artifactStagingDir, "updated-expected-sizes");
+			} else {
+				outputDir = Path.Combine (Cache.CreateTemporaryDirectory ("AppSizeTest"), "updated-expected-sizes");
+			}
+			Directory.CreateDirectory (outputDir);
+			var outputFile = Path.Combine (outputDir, fileName);
+			File.WriteAllText (outputFile, content);
+			Console.WriteLine ($"    Updated expected file written to: {outputFile}");
 		}
 
 		static string FormatBytes (long bytes, bool alwaysShowSign = false)

@@ -19,15 +19,15 @@ Download updated expected app size files from Azure DevOps artifacts for the cur
 
 ## Background
 
-The app size tests (`tests/dotnet/UnitTests/AppSizeTest.cs`) compare the built app's size and preserved APIs against expected files stored in `tests/dotnet/UnitTests/expected/`. When the test detects a difference and `WRITE_KNOWN_FAILURES` is not set, it uploads the updated expected file as an Azure DevOps artifact named `updated-expected-sizes`.
+The app size tests (`tests/dotnet/UnitTests/AppSizeTest.cs`) compare the built app's size and preserved APIs against expected files stored in `tests/dotnet/UnitTests/expected/`. When the test detects a difference and `WRITE_KNOWN_FAILURES` is not set, it writes the updated expected file to `$(Build.ArtifactStagingDirectory)/updated-expected-sizes/`, and a pipeline step publishes this directory as a build artifact.
 
-Individual artifact names follow these patterns:
-- `{Platform}-{Runtime}-size` — e.g., `iOS-MonoVM-size`, `MacCatalyst-NativeAOT-size`
-- `{Platform}-{Runtime}-preservedapis` — e.g., `iOS-MonoVM-preservedapis`
+The artifact name follows the pattern `updated-expected-sizes-{testPrefix}-{attempt}` (e.g., `updated-expected-sizes-dotnettests_ios-1`). Inside the artifact, files are named:
+- `{Platform}-{Runtime}-size.txt` — e.g., `iOS-MonoVM-size.txt`
+- `{Platform}-{Runtime}-preservedapis.txt` — e.g., `iOS-MonoVM-preservedapis.txt`
 
 The expected files on disk are at:
-- `tests/dotnet/UnitTests/expected/{name}-size.txt`
-- `tests/dotnet/UnitTests/expected/{name}-preservedapis.txt`
+- `tests/dotnet/UnitTests/expected/{Platform}-{Runtime}-size.txt`
+- `tests/dotnet/UnitTests/expected/{Platform}-{Runtime}-preservedapis.txt`
 
 ## Workflow
 
@@ -64,32 +64,36 @@ Use the Azure DevOps REST API to list and download artifacts:
 
 ```bash
 # List artifacts for the build
+TOKEN=$(az account get-access-token --resource 499b84ac-1321-427f-aa17-267ca6975798 --query accessToken -o tsv)
 curl -s "https://devdiv.visualstudio.com/DevDiv/_apis/build/builds/{buildId}/artifacts?api-version=7.0" \
-  -H "Authorization: Bearer $(az account get-access-token --resource 499b84ac-1321-427f-aa17-267ca6975798 --query accessToken -o tsv)"
+  -H "Authorization: Bearer $TOKEN"
 ```
 
-Look for artifacts in the `updated-expected-sizes` container folder. Download each one:
+Look for artifacts whose names contain `updated-expected-sizes` (e.g., `updated-expected-sizes-dotnettests_ios-1`). Get the artifact's `downloadUrl` and download it:
 
 ```bash
-# Download a specific artifact
-curl -s "https://devdiv.visualstudio.com/DevDiv/_apis/build/builds/{buildId}/artifacts?artifactName={artifactName}&api-version=7.0&%24format=zip" \
-  -H "Authorization: Bearer $(az account get-access-token --resource 499b84ac-1321-427f-aa17-267ca6975798 --query accessToken -o tsv)" \
-  -o artifact.zip
+# Get the download URL for a specific artifact
+ARTIFACT_INFO=$(curl -s "https://devdiv.visualstudio.com/DevDiv/_apis/build/builds/{buildId}/artifacts?artifactName={artifactName}&api-version=7.0" \
+  -H "Authorization: Bearer $TOKEN")
+DOWNLOAD_URL=$(echo "$ARTIFACT_INFO" | python3 -c "import sys,json; print(json.load(sys.stdin)['resource']['downloadUrl'])")
+
+# Download the artifact zip
+curl -sL "$DOWNLOAD_URL" -H "Authorization: Bearer $TOKEN" -o artifact.zip
 ```
 
 If `az` is not available or not authenticated, direct the user to download manually from the Azure DevOps build artifacts page.
 
 ### 4. Place the files
 
-Extract the downloaded artifacts and place them in the expected directory:
+Extract the downloaded artifact zip and place the files in the expected directory:
 
 ```bash
 EXPECTED_DIR="tests/dotnet/UnitTests/expected"
+unzip -o artifact.zip -d /tmp/updated-sizes/
+cp /tmp/updated-sizes/*/*.txt "$EXPECTED_DIR/"
 ```
 
-Map artifact names to file names:
-- Artifact `{name}-size` → file `{name}-size.txt`
-- Artifact `{name}-preservedapis` → file `{name}-preservedapis.txt`
+The files inside the zip already have the correct names (e.g., `iOS-MonoVM-size.txt`) and can be copied directly.
 
 ### 5. Verify and commit
 

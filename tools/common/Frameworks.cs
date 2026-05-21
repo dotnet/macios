@@ -22,8 +22,8 @@ public class Framework {
 	public required Version Version { get; set; }
 	public Version? VersionAvailableInSimulator { get; set; }
 	public bool AlwaysWeakLinked { get; set; }
-	public bool Unavailable { get; set; }
-	public Version? VersionUnavailable { get; set; }
+	public bool Unavailable { private get; set; } // Call IsFrameworkUnavailable () to determine if a framework is available or not
+	public Version? VersionUnavailable { get; set; } // if null, always unavailable (if Unavailable=true)
 
 	public string LibraryPath {
 		get {

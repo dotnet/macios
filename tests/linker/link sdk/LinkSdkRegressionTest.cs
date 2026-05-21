@@ -203,7 +203,7 @@ namespace LinkSdk {
 				case "Message":
 				case "StackTrace":
 				case "Type":
-					Assert.Fail ($"{pi.Name} is missing it's [DataMember] attribute");
+					Assert.Fail ($"{pi.Name} is missing its [DataMember] attribute");
 					break;
 				}
 			}

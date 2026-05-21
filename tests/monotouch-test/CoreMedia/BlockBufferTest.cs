@@ -31,7 +31,7 @@ namespace MonoTouchFixtures.CoreMedia {
 		public void CMBlockBufferCustomBlockSource ()
 		{
 			var type = typeof (CMCustomBlockAllocator).GetNestedType ("CMBlockBufferCustomBlockSource", BindingFlags.NonPublic);
-			Assert.NotNull (type, "CMBlockBufferCustomBlockSource");
+			Assert.That (type, Is.Not.Null, "CMBlockBufferCustomBlockSource");
 			// it's 28 (not 32) bytes when executed on 64bits iOS, which implies it's packed to 4 bytes
 #pragma warning disable IL3050 // Using member 'System.Runtime.InteropServices.Marshal.SizeOf(Type)' which has 'RequiresDynamicCodeAttribute' can break functionality when AOT compiling. Marshalling code for the object might not be available. Use the SizeOf<T> overload instead.
 			Assert.That (Marshal.SizeOf (type), Is.EqualTo (4 + 3 * IntPtr.Size), "Size");
@@ -75,7 +75,7 @@ namespace MonoTouchFixtures.CoreMedia {
 				Assert.That (err2, Is.EqualTo (CMBlockBufferError.None), "AppendMemoryBlock error");
 				Assert.That (bb.DataLength, Is.EqualTo ((nuint) 10), "FromMemoryBlock DataLength");
 			}
-			Assert.IsTrue (freeCalled, "FromMemoryBlock FreeCalled");
+			Assert.That (freeCalled, Is.True, "FromMemoryBlock FreeCalled");
 		}
 
 		public bool allocateCalled;
@@ -107,9 +107,9 @@ namespace MonoTouchFixtures.CoreMedia {
 			using (var bb = CMBlockBuffer.FromMemoryBlock (IntPtr.Zero, 16, allocator, 0, 5, CMBlockBufferFlags.AssureMemoryNow, out err1)) {
 				Assert.That (err1, Is.EqualTo (CMBlockBufferError.None), "FromMemoryBlock error");
 				Assert.That (bb.DataLength, Is.EqualTo ((nuint) 5), "FromMemoryBlock DataLength");
-				Assert.IsTrue (allocateCalled, "FromMemoryBlock AllocateCalled");
+				Assert.That (allocateCalled, Is.True, "FromMemoryBlock AllocateCalled");
 			}
-			Assert.IsTrue (freeCalled, "FromMemoryBlock FreeCalled");
+			Assert.That (freeCalled, Is.True, "FromMemoryBlock FreeCalled");
 		}
 
 		class CustomAllocator : CMCustomBlockAllocator {
@@ -209,7 +209,7 @@ namespace MonoTouchFixtures.CoreMedia {
 				err = buf.CopyDataBytes (0, (uint) data.Length, destPointer);
 				Assert.That (err, Is.EqualTo (CMBlockBufferError.None), $"CMBlockBufferError 2: {err}");
 				for (int i = 0; i < data.Length; i++)
-					Assert.AreEqual (data [0], destData [0], $"CMBlockBuffer CopyDataBytesTest iteration: {i}");
+					Assert.That (destData [0], Is.EqualTo (data [0]), $"CMBlockBuffer CopyDataBytesTest iteration: {i}");
 			}
 			pinned.Free ();
 			destPinned.Free ();
@@ -227,7 +227,7 @@ namespace MonoTouchFixtures.CoreMedia {
 				err = buf.CopyDataBytes (0, (uint) data.Length, out destData);
 				Assert.That (err, Is.EqualTo (CMBlockBufferError.None), $"CMBlockBufferError 2: {err}");
 				for (int i = 0; i < data.Length; i++)
-					Assert.AreEqual (data [0], destData [0], $"CMBlockBuffer CopyDataBytesUsingManagedArrayTest iteration: {i}");
+					Assert.That (destData [0], Is.EqualTo (data [0]), $"CMBlockBuffer CopyDataBytesUsingManagedArrayTest iteration: {i}");
 			}
 		}
 
@@ -248,7 +248,7 @@ namespace MonoTouchFixtures.CoreMedia {
 				err = buf.ReplaceDataBytes (replacePointer, 0, (uint) replaceData.Length);
 				Assert.That (err, Is.EqualTo (CMBlockBufferError.None), $"CMBlockBufferError 2: {err}");
 				for (int i = 0; i < data.Length; i++)
-					Assert.AreEqual (0x5, data [0], $"CMBlockBuffer ReplaceDataBytesTest iteration: {i}");
+					Assert.That (data [0], Is.EqualTo (0x5), $"CMBlockBuffer ReplaceDataBytesTest iteration: {i}");
 			}
 			pinned.Free ();
 			replacePinned.Free ();
@@ -267,7 +267,7 @@ namespace MonoTouchFixtures.CoreMedia {
 				err = buf.ReplaceDataBytes (replaceData, 0);
 				Assert.That (err, Is.EqualTo (CMBlockBufferError.None), $"CMBlockBufferError 2: {err}");
 				for (int i = 0; i < data.Length; i++)
-					Assert.AreEqual (0x5, data [0], $"CMBlockBuffer ReplaceDataBytesManagedTest iteration: {i}");
+					Assert.That (data [0], Is.EqualTo (0x5), $"CMBlockBuffer ReplaceDataBytesManagedTest iteration: {i}");
 			}
 		}
 
@@ -290,7 +290,7 @@ namespace MonoTouchFixtures.CoreMedia {
 				Marshal.Copy (outPtr, tempBuffer, 0, 5);
 
 				for (int i = 0; i < tempBuffer.Length; i++)
-					Assert.AreEqual ((byte) (i + 5), tempBuffer [i], $"CMBlockBuffer AccessDataBytesTest iteration: {i}");
+					Assert.That (tempBuffer [i], Is.EqualTo ((byte) (i + 5)), $"CMBlockBuffer AccessDataBytesTest iteration: {i}");
 			}
 			pinned.Free ();
 			tempBufferPinned.Free ();
@@ -315,7 +315,7 @@ namespace MonoTouchFixtures.CoreMedia {
 				Marshal.Copy (outPtr, tempBuffer, 0, (int) lengthAtOffset);
 
 				for (int i = 0; i < tempBuffer.Length; i++)
-					Assert.AreEqual ((byte) (i + 5), tempBuffer [i], $"CMBlockBuffer GetDataPointerTest iteration: {i}");
+					Assert.That (tempBuffer [i], Is.EqualTo ((byte) (i + 5)), $"CMBlockBuffer GetDataPointerTest iteration: {i}");
 			}
 			pinned.Free ();
 		}

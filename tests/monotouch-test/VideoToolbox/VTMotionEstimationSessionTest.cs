@@ -111,6 +111,6 @@ public class VTMotionEstimationSessionTest {
 	{
 		TestRuntime.AssertXcodeVersion (26, 0);
 
-		Assert.AreNotEqual (0, VTMotionEstimationSession.GetTypeId (), "GetTypeId");
+		Assert.That (VTMotionEstimationSession.GetTypeId (), Is.Not.EqualTo (0), "GetTypeId");
 	}
 }

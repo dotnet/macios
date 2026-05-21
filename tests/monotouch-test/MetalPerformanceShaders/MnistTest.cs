@@ -86,8 +86,8 @@ namespace MonoTouchFixtures.MetalPerformanceShadersGraph {
 				completed = true;
 			});
 
-			Assert.IsTrue (TestRuntime.RunAsync (TimeSpan.FromSeconds (30), () => {
-			}, () => completed), "Completion");
+			Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (30), () => {
+			}, () => completed), Is.True, "Completion");
 
 			// Don't need to commit since EncodeTrainingBatch oddly does that
 			return commandBuffer;

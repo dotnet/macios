@@ -29,7 +29,7 @@ namespace MonoTouchFixtures.GamePlayKit {
 			var def = new GKTriangle ();
 
 			using (var mesh = new GKMeshGraph<GKGraphNode2D> (2, min, max, typeof (GKGraphNode2D))) {
-				Assert.NotNull (mesh, "mesh is null");
+				Assert.That (mesh, Is.Not.Null, "mesh is null");
 				mesh.AddObstacles (new [] {
 					new GKPolygonObstacle (new [] {
 						new Vector2 (3,1),
@@ -47,7 +47,7 @@ namespace MonoTouchFixtures.GamePlayKit {
 				mesh.Triangulate ();
 				Assert.That (mesh.TriangleCount, Is.GreaterThan ((nuint) 0), "No Triangles");
 				var triangle = mesh.GetTriangle (0);
-				Assert.AreNotEqual (def, triangle, "Default triangle");
+				Assert.That (triangle, Is.Not.EqualTo (def), "Default triangle");
 			}
 		}
 	}

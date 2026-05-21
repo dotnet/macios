@@ -38,25 +38,25 @@ namespace MonoTouchFixtures.Foundation {
 				}
 
 				using (var decoder = new NSKeyedUnarchiver (mutableData)) {
-					Assert.IsNotNull (decoder.DecodeObject ("obj"));
+					Assert.That (decoder.DecodeObject ("obj"), Is.Not.Null);
 					var buf = decoder.DecodeBytes ("buffer");
-					Assert.AreEqual (buf.Length, buffer.Length, "buffer.length");
+					Assert.That (buffer.Length, Is.EqualTo (buf.Length), "buffer.length");
 					for (int i = 0; i < buf.Length; i++)
-						Assert.AreEqual (buf [i], buffer [i], "buffer [" + i.ToString () + "]");
-					Assert.AreEqual (Int32.MaxValue, decoder.DecodeInt ("int32"));
-					Assert.AreEqual (float.MaxValue, decoder.DecodeFloat ("float"));
-					Assert.AreEqual (true, decoder.DecodeBool ("bool"));
-					Assert.AreEqual (long.MaxValue, decoder.DecodeLong ("long"));
+						Assert.That (buffer [i], Is.EqualTo (buf [i]), "buffer [" + i.ToString () + "]");
+					Assert.That (decoder.DecodeInt ("int32"), Is.EqualTo (Int32.MaxValue));
+					Assert.That (decoder.DecodeFloat ("float"), Is.EqualTo (float.MaxValue));
+					Assert.That (decoder.DecodeBool ("bool"), Is.EqualTo (true));
+					Assert.That (decoder.DecodeLong ("long"), Is.EqualTo (long.MaxValue));
 					buf = decoder.DecodeBytes ("buffer2");
-					Assert.AreEqual (buf.Length, buffer.Length, "buffer2.length");
+					Assert.That (buffer.Length, Is.EqualTo (buf.Length), "buffer2.length");
 					for (int i = 0; i < buf.Length; i++)
-						Assert.AreEqual (buf [i], buffer [i], "buffer2 [" + i.ToString () + "]");
-					Assert.AreEqual (nint.MaxValue, decoder.DecodeNInt ("nint"));
+						Assert.That (buffer [i], Is.EqualTo (buf [i]), "buffer2 [" + i.ToString () + "]");
+					Assert.That (decoder.DecodeNInt ("nint"), Is.EqualTo (nint.MaxValue));
 
 					buf = decoder.DecodeBytes ("block");
-					Assert.AreEqual (buf.Length, buffer.Length, "block.length");
+					Assert.That (buffer.Length, Is.EqualTo (buf.Length), "block.length");
 					for (int i = 0; i < buf.Length; i++)
-						Assert.AreEqual (buf [i], buffer [i], "block [" + i.ToString () + "]");
+						Assert.That (buffer [i], Is.EqualTo (buf [i]), "block [" + i.ToString () + "]");
 				}
 			}
 

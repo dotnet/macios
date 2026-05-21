@@ -42,21 +42,21 @@ namespace MonoTouchFixtures.Foundation {
 			using (var data = new NSData (bytes, 1, (a, b) => {
 				deallocated = true;
 				Marshal.FreeHGlobal (a);
-				Assert.AreEqual (1, (int) b, "length in deallocator");
+				Assert.That ((int) b, Is.EqualTo (1), "length in deallocator");
 			})) {
 				NSError error;
 				var file = Path.GetTempFileName ();
 				var url = NSUrl.FromFilename (file + ".url");
 
-				Assert.IsTrue (data.Save (file, false, out error), "save 1");
-				Assert.IsTrue (data.Save (file, true, out error), "save 2");
-				Assert.IsTrue (data.Save (file, NSDataWritingOptions.Atomic, out error), "save 3");
-				Assert.IsTrue (data.Save (url, false, out error), "save url 1");
-				Assert.IsTrue (data.Save (url, true, out error), "save url 2");
-				Assert.IsTrue (data.Save (url, NSDataWritingOptions.Atomic, out error), "save url 3");
+				Assert.That (data.Save (file, false, out error), Is.True, "save 1");
+				Assert.That (data.Save (file, true, out error), Is.True, "save 2");
+				Assert.That (data.Save (file, NSDataWritingOptions.Atomic, out error), Is.True, "save 3");
+				Assert.That (data.Save (url, false, out error), Is.True, "save url 1");
+				Assert.That (data.Save (url, true, out error), Is.True, "save url 2");
+				Assert.That (data.Save (url, NSDataWritingOptions.Atomic, out error), Is.True, "save url 3");
 			}
 
-			Assert.IsTrue (deallocated, "deallocated");
+			Assert.That (deallocated, Is.True, "deallocated");
 		}
 
 		[Test]
@@ -68,14 +68,14 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void FromFile ()
 		{
-			Assert.Null (NSData.FromFile ("does not exists"), "unexisting");
+			Assert.That (NSData.FromFile ("does not exists"), Is.Null, "unexisting");
 #if MONOMAC || __MACCATALYST__
 			// Info.Plist isn't there to load from the same location on mac
 			var plistPath = Path.Combine (NSBundle.MainBundle.BundlePath, "Contents", "Info.plist");
 #else
 			var plistPath = Path.Combine (NSBundle.MainBundle.BundlePath, "Info.plist");
 #endif
-			Assert.NotNull (NSData.FromFile (plistPath), "Info.plist");
+			Assert.That (NSData.FromFile (plistPath), Is.Not.Null, "Info.plist");
 		}
 
 		[Test]
@@ -83,7 +83,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			NSError err;
 			var n = NSData.FromFile ("does not exists", NSDataReadingOptions.Uncached, out err);
-			Assert.Null (n, "unexisting");
+			Assert.That (n, Is.Null, "unexisting");
 			Assert.That (err.Code, Is.EqualTo ((nint) 260), "err");
 		}
 
@@ -105,9 +105,9 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var data = NSData.FromArray (new byte [] { 1, 2, 3 })) {
 				var arr = data.ToArray ();
-				Assert.AreEqual (3, arr.Length, "Length");
+				Assert.That (arr.Length, Is.EqualTo (3), "Length");
 				for (int i = 0; i < arr.Length; i++)
-					Assert.AreEqual (i + 1, arr [i], "idx " + i.ToString ());
+					Assert.That (arr [i], Is.EqualTo (i + 1), "idx " + i.ToString ());
 			}
 		}
 
@@ -116,7 +116,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var data = NSData.FromArray (new byte [0])) {
 				var arr = data.ToArray ();
-				Assert.AreEqual (0, arr.Length, "Length");
+				Assert.That (arr.Length, Is.EqualTo (0), "Length");
 			}
 		}
 
@@ -220,7 +220,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void FromStream_CanNotRead ()
 		{
 			using (var s = new CanNotReadStream ()) {
-				Assert.Null (NSData.FromStream (s), "!CanRead");
+				Assert.That (NSData.FromStream (s), Is.Null, "!CanRead");
 			}
 		}
 
@@ -385,7 +385,7 @@ namespace MonoTouchFixtures.Foundation {
 
 				using var emptyData = NSData.FromArray (new byte [0]);
 				var emptyVT = data.ToValueType<EmptyValueType> ();
-				Assert.AreEqual (default (EmptyValueType), emptyVT, "Empty Value Type");
+				Assert.That (emptyVT, Is.EqualTo (default (EmptyValueType)), "Empty Value Type");
 
 				emptyVT = new EmptyValueType ();
 				using var emptyData2 = NSData.CreateFromValueType<EmptyValueType> (emptyVT);
@@ -393,7 +393,7 @@ namespace MonoTouchFixtures.Foundation {
 				unsafe {
 					emptyValueTypeSize = sizeof (EmptyValueType);
 				}
-				Assert.AreEqual (emptyValueTypeSize, (int) emptyData2.Length, "Empty Value Type 2");
+				Assert.That ((int) emptyData2.Length, Is.EqualTo (emptyValueTypeSize), "Empty Value Type 2");
 			});
 		}
 

@@ -40,10 +40,10 @@ namespace MonoTouchFixtures.ModelIO {
 		public void Properties ()
 		{
 			using (var obj = new MDLStereoscopicCamera ()) {
-				Assert.AreEqual (63f, obj.InterPupillaryDistance, "InterPupillaryDistance");
-				Assert.AreEqual (0f, obj.LeftVergence, "LeftVergence");
-				Assert.AreEqual (0f, obj.RightVergence, "RightVergence");
-				Assert.AreEqual (0f, obj.Overlap, "Overlap");
+				Assert.That (obj.InterPupillaryDistance, Is.EqualTo (63f), "InterPupillaryDistance");
+				Assert.That (obj.LeftVergence, Is.EqualTo (0f), "LeftVergence");
+				Assert.That (obj.RightVergence, Is.EqualTo (0f), "RightVergence");
+				Assert.That (obj.Overlap, Is.EqualTo (0f), "Overlap");
 
 				var mat1 = new Matrix4 (
 					1, 0, 0, -0.63f,

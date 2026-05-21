@@ -20,8 +20,8 @@ namespace MonoTouchFixtures.UIKit {
 			using (var l2 = new UICollectionViewLayout ())
 			using (var tl = new UICollectionViewTransitionLayout (l1, l2)) {
 				// interesting ctor for the linker (two [PostGet])
-				Assert.AreSame (tl.CurrentLayout, l1, "CurrentLayout");
-				Assert.AreSame (tl.NextLayout, l2, "NextLayout");
+				Assert.That (l1, Is.SameAs (tl.CurrentLayout), "CurrentLayout");
+				Assert.That (l2, Is.SameAs (tl.NextLayout), "NextLayout");
 			}
 		}
 	}

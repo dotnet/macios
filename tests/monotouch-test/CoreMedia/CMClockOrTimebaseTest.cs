@@ -15,7 +15,7 @@ namespace MonoTouchFixtures.CoreMedia {
 			var clock = CMClock.HostTimeClock;
 			var timebase = Runtime.GetINativeObject<CMClockOrTimebase> (clock.Handle, false);
 			// we should be able to dispose the clock and the timebase with no crashes.
-			Assert.AreEqual (clock.Handle, timebase.Handle);
+			Assert.That (timebase.Handle, Is.EqualTo (clock.Handle));
 			clock.Dispose ();
 			timebase.Dispose ();
 		}

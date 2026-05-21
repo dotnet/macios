@@ -41,8 +41,10 @@ namespace LinkSdk {
 			// untrusted, custom ICertificatePolicy and ServerCertificateValidationCallback without
 			// having caching issues (in S.Net or the SSL handshake cache)
 			try {
-				ServicePointManager.ServerCertificateValidationCallback = delegate (object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors errors)
+				ServicePointManager.ServerCertificateValidationCallback = delegate (object sender, X509Certificate? cert, X509Chain? chain, SslPolicyErrors errors)
 				{
+					if (cert is null || chain is null)
+						return false;
 					Assert.That (errors, Is.EqualTo (SslPolicyErrors.None), "certificateProblem");
 					X509Certificate2 c2 = X509CertificateLoader.LoadCertificate (cert.GetRawCertData ());
 					Assert.True (chain.Build (c2), "Build");
@@ -93,8 +95,10 @@ namespace LinkSdk {
 
 			var actual = ServicePointManager.SecurityProtocol;
 			try {
-				ServicePointManager.ServerCertificateValidationCallback = delegate (object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors errors)
+				ServicePointManager.ServerCertificateValidationCallback = delegate (object sender, X509Certificate? cert, X509Chain? chain, SslPolicyErrors errors)
 				{
+					if (cert is null || chain is null)
+						return false;
 					Assert.That (errors, Is.EqualTo (SslPolicyErrors.None), "certificateProblem");
 					X509Certificate2 c2 = X509CertificateLoader.LoadCertificate (cert.GetRawCertData ());
 					Assert.True (chain.Build (c2), "Build");

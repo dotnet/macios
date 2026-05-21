@@ -1888,6 +1888,19 @@ namespace Xamarin.Tests {
 		// [TestCase ("MacCatalyst", "")] - No extension support yet
 		public void BuildProjectsWithExtensions (ApplePlatform platform, string runtimeIdentifier, bool isNativeAot)
 		{
+			BuildProjectsWithExtensionsImpl (platform, runtimeIdentifier, isNativeAot);
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64", false)]
+		[Category ("RemoteWindows")]
+		public void BuildProjectsWithExtensionsOnRemoteWindows (ApplePlatform platform, string runtimeIdentifier, bool isNativeAot)
+		{
+			Configuration.IgnoreIfNotOnWindows ();
+			BuildProjectsWithExtensionsImpl (platform, runtimeIdentifier, isNativeAot, AddRemoteProperties ());
+		}
+
+		void BuildProjectsWithExtensionsImpl (ApplePlatform platform, string runtimeIdentifier, bool isNativeAot, Dictionary<string, string>? properties = null)
+		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			var consumingProjectDir = GetProjectPath ("ExtensionConsumer", runtimeIdentifier, platform, out var appPath);
 			var extensionProjectDir = GetProjectPath ("ExtensionProject", platform: platform);
@@ -1895,7 +1908,7 @@ namespace Xamarin.Tests {
 			Clean (extensionProjectDir);
 			Clean (consumingProjectDir);
 
-			var properties = GetDefaultProperties (runtimeIdentifier);
+			properties = GetDefaultProperties (runtimeIdentifier, extraProperties: properties);
 
 			if (isNativeAot) {
 				properties ["PublishAot"] = "true";
@@ -2630,6 +2643,54 @@ namespace Xamarin.Tests {
 
 				return true;
 			});
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
+		public void PublishAotMonoTouchTest_NoIL2009 (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = Path.Combine (Configuration.SourceRoot, "tests", "monotouch-test", "dotnet", platform.AsString (), "monotouch-test.csproj");
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["PublishAot"] = "true";
+			properties ["_IsPublishing"] = "true";
+			properties ["TrimmerSingleWarn"] = "false";
+			var rv = DotNet.AssertBuild (project_path, properties);
+
+			var config = "Debug";
+			var runtimeIdentifierInfix = $"/{runtimeIdentifiers}/";
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
+								.Where (evt => {
+									if (platform == ApplePlatform.iOS && evt.Message?.Trim () == "Supported iPhone orientations have not been set")
+										return false;
+									return true;
+								});
+			var expectedWarnings = new ExpectedBuildMessage [] {
+				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),
+				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, Foundation.ExportAttribute)'."),
+				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),
+				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.RegisterAssembly (System.Reflection.Assembly)'."),
+				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::set_MyOptionalProperty(Bindings.Test.SimpleCallback)'s parameter #1."),
+				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::set_MyOptionalStaticProperty(Bindings.Test.SimpleCallback)'s parameter #1."),
+				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::set_MyRequiredProperty(Bindings.Test.SimpleCallback)'s parameter #1."),
+				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::set_MyRequiredStaticProperty(Bindings.Test.SimpleCallback)'s parameter #1."),
+				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the delegate to block conversion type for the return value of the method Bindings.Test.SimpleCallback Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::get_MyOptionalProperty()."),
+				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the delegate to block conversion type for the return value of the method Bindings.Test.SimpleCallback Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::get_MyOptionalStaticProperty()."),
+				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the delegate to block conversion type for the return value of the method Bindings.Test.SimpleCallback Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::get_MyRequiredProperty()."),
+				new ExpectedBuildMessage ($"tests/bindings-test/RegistrarBindingTest.cs", $"Unable to locate the delegate to block conversion type for the return value of the method Bindings.Test.SimpleCallback Xamarin.BindingTests.RegistrarBindingTest/FakePropertyBlock::get_MyRequiredStaticProperty()."),
+				new ExpectedBuildMessage ($"tests/monotouch-test/dotnet/{platform.AsString ()}/obj/{config}/{Configuration.DotNetTfm}-{platform.AsString ().ToLower ()}{runtimeIdentifierInfix}linked/nunit.framework.dll", $"Assembly 'nunit.framework' produced AOT analysis warnings."),
+				new ExpectedBuildMessage ($"tests/monotouch-test/ObjCRuntime/ClassTest.cs", $"MonoTouchFixtures.ObjCRuntime.ClassTest.GetHandle(): Using member 'System.Type.MakeArrayType()' which has 'RequiresDynamicCodeAttribute' can break functionality when AOT compiling. The code for an array of the specified type might not be available."),
+				new ExpectedBuildMessage ($"tests/monotouch-test/ObjCRuntime/RegistrarTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void MonoTouchFixtures.ObjCRuntime.GHIssue7733::DoWork(System.String,MonoTouchFixtures.ObjCRuntime.ACompletionHandler)'s parameter #2."),
+				new ExpectedBuildMessage ($"tests/monotouch-test/ObjCRuntime/RegistrarTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void MonoTouchFixtures.ObjCRuntime.RegistrarTest/ClosedGenericParameter::Foo(System.Action`1<System.String>)'s parameter #1."),
+				new ExpectedBuildMessage ($"tests/monotouch-test/ObjCRuntime/RegistrarTest.cs", $"Unable to locate the block to delegate conversion method for the method System.Void MonoTouchFixtures.ObjCRuntime.RegistrarTest/RegistrarTestClass::TestNSAction(System.Action)'s parameter #1."),
+			};
+			warnings.AssertWarnings (expectedWarnings);
 		}
 
 		void AssertThatDylibExistsAndIsReidentified (string appPath, string dylibRelPath)
@@ -3602,6 +3663,7 @@ namespace Xamarin.Tests {
 			"/System/iOSSupport/System/Library/Frameworks/LinkPresentation.framework/Versions/A/LinkPresentation",
 			"/System/iOSSupport/System/Library/Frameworks/MapKit.framework/Versions/A/MapKit",
 			"/System/iOSSupport/System/Library/Frameworks/MediaPlayer.framework/Versions/A/MediaPlayer",
+			"/System/iOSSupport/System/Library/Frameworks/MediaSetup.framework/Versions/A/MediaSetup",
 			"/System/iOSSupport/System/Library/Frameworks/Messages.framework/Versions/A/Messages",
 			"/System/iOSSupport/System/Library/Frameworks/MessageUI.framework/Versions/A/MessageUI",
 			"/System/iOSSupport/System/Library/Frameworks/MetalKit.framework/Versions/A/MetalKit",
@@ -3696,6 +3758,7 @@ namespace Xamarin.Tests {
 			"/System/Library/Frameworks/PushKit.framework/Versions/A/PushKit",
 			"/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore",
 			"/System/Library/Frameworks/QuickLookThumbnailing.framework/Versions/A/QuickLookThumbnailing",
+			"/System/Library/Frameworks/SafetyKit.framework/Versions/A/SafetyKit",
 			"/System/Library/Frameworks/Security.framework/Versions/A/Security",
 			"/System/Library/Frameworks/SecurityUI.framework/Versions/A/SecurityUI",
 			"/System/Library/Frameworks/SensitiveContentAnalysis.framework/Versions/A/SensitiveContentAnalysis",

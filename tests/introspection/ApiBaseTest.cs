@@ -101,7 +101,7 @@ namespace Introspection {
 #if MONOMAC
 			get { return Console.Out; }
 #else
-			get { return AppDelegate.Runner.Writer!; }
+			get { return AppDelegate.Runner!.Writer!; }
 #endif
 		}
 
@@ -109,7 +109,7 @@ namespace Introspection {
 		protected void ReportError (string s, params object? [] parameters)
 		{
 			if (!ContinueOnFailure)
-				Assert.Fail (s, parameters);
+				Assert.Fail (string.Format (s, parameters));
 			else {
 				Writer.Write ("[FAIL] ");
 				Writer.WriteLine (s, parameters);
@@ -158,6 +158,7 @@ namespace Introspection {
 				return false;
 
 			return !member.IsAvailableOnHostPlatform () ||
+						  !member.IsAvailableInSimulator () ||
 						  SkipDueToAttribute (member.DeclaringType) ||
 						  SkipDueToAttributeInProperty (member);
 		}

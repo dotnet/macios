@@ -2333,6 +2333,8 @@ namespace Metal {
 	[iOS (16, 0), MacCatalyst (16, 0), TV (16, 0)]
 	[Native]
 	[ErrorDomain ("MTLIOErrorDomain")]
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	public enum MTLIOError : long {
 		UrlInvalid = 1,
 		Internal = 2,
@@ -2441,6 +2443,8 @@ namespace Metal {
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
 	[ErrorDomain ("MTL4CommandQueueErrorDomain")]
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	public enum MTL4CommandQueueError : long {
 		None = 0,
 		Timeout = 1,
@@ -2574,6 +2578,8 @@ namespace Metal {
 	[Mac (26, 0), iOS (26, 0), MacCatalyst (26, 0), TV (26, 0)]
 	[Native]
 	[ErrorDomain ("MTLTensorDomain")]
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	public enum MTLTensorError : long {
 		None = 0,
 		InternalError = 1,

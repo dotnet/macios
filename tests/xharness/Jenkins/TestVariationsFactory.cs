@@ -74,6 +74,8 @@ namespace Xharness.Jenkins {
 					yield return new TestData { Variation = "Release (CoreCLR, x64)", TestVariation = "release|coreclr", Ignored = ignore_coreclr, RuntimeIdentifier = x64_sim_runtime_identifier };
 					yield return new TestData { Variation = "Release (CoreCLR, Universal)", TestVariation = "release|coreclr", Ignored = ignore_coreclr };
 				}
+				yield return new TestData { Variation = "Release (link sdk)", TestVariation = "release|linksdk", Ignored = ignore };
+				yield return new TestData { Variation = "Release (link all)", TestVariation = "release|linkall", Ignored = ignore };
 				break;
 			}
 

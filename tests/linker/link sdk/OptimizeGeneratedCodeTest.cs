@@ -90,7 +90,7 @@ namespace Linker.Shared {
 		{
 			var empty = CGRect.Empty;
 			using (UIView v = new UIView ())
-			using (UIFont font = UIFont.SystemFontOfSize (12f)) {
+			using (UIFont font = UIFont.SystemFontOfSize (12f)!) {
 				var size = "MonoTouch".StringSize (font);
 				Assert.False (size.IsEmpty, "!Empty");
 			}

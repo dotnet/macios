@@ -98,7 +98,7 @@ namespace Introspection {
 				}
 				n++;
 			}
-			Assert.That (filters.Count, Is.EqualTo (0), "{0} native filters missing: {1}", filters.Count, String.Join (", ", filters));
+			Assert.That (filters.Count, Is.EqualTo (0), $"{filters.Count} native filters missing: {String.Join (", ", filters)}");
 		}
 
 		[Test]
@@ -149,7 +149,7 @@ namespace Introspection {
 				if (Skip (filters [i]))
 					filters.RemoveAt (i);
 			}
-			Assert.That (filters.Count, Is.EqualTo (0), "Managed filters not found for {0}", String.Join (", ", filters));
+			Assert.That (filters.Count, Is.EqualTo (0), $"Managed filters not found for {String.Join (", ", filters)}");
 		}
 
 		static void GenerateBinding (NSObject filter, TextWriter writer)
@@ -366,7 +366,7 @@ namespace Introspection {
 			if (to_confirm_manually.Length > 0) {
 				Console.WriteLine (to_confirm_manually);
 			}
-			Assert.AreEqual (0, Errors, "{0} potential errors found{1}", Errors, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found:\n{ErrorData}\n");
 		}
 
 		[Test]
@@ -535,7 +535,7 @@ namespace Introspection {
 						ReportError ($"{t.Name}: Property `{po.Name}` should NOT have a setter.");
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} potential errors found{1}", Errors, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} potential errors found:\n{ErrorData}\n");
 		}
 	}
 }

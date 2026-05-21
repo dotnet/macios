@@ -46,7 +46,9 @@ public class Framework {
 
 		return true;
 	}
+#endif
 
+#if LEGACY_TOOLS || BUNDLER
 	public bool IsFrameworkUnavailable (Application app)
 	{
 		if (app.IsSimulatorBuild && !IsFrameworkAvailableInSimulator (app))
@@ -59,6 +61,11 @@ public class Framework {
 			return true;
 
 		return app.SdkVersion >= VersionUnavailable;
+	}
+#else
+	public bool IsFrameworkUnavailable ()
+	{
+		return Unavailable;
 	}
 #endif
 }

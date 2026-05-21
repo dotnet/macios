@@ -277,7 +277,7 @@ namespace LinkAll {
 						UIPasteboard.General.Images = new UIImage [] { img, img };
 						Assert.That (UIPasteboard.General.Images.Length, Is.EqualTo (2), "b - length");
 						Assert.That (UIPasteboard.General.Images [0], Is.Not.Null, "b - nonnull[0]");
-						Assert.That (UIPasteboard.General.Images [1], Is.Not.Null, "b - nonnull[0]");
+						Assert.That (UIPasteboard.General.Images [1], Is.Not.Null, "b - nonnull[1]");
 					}
 				}
 			}

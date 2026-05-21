@@ -57,7 +57,7 @@ public class Framework {
 
 		if (VersionUnavailable is null)
 			return true;
-		
+
 		return app.SdkVersion >= VersionUnavailable;
 	}
 #endif

@@ -154,7 +154,7 @@ namespace Xamarin.Tests {
 
 			var isReleaseBuild = string.Equals (configuration, "Release", StringComparison.OrdinalIgnoreCase);
 			var isCoreCLR = !useMonoRuntime;
-			var maxPathLength = isCoreCLR ? 180 : 118;
+			var maxPathLength = isCoreCLR ? 180 : 130;
 			var platformString = platform.AsString ();
 			var tfm = platform.ToFramework ();
 			var testsDirectory = Path.GetDirectoryName (Path.GetDirectoryName (project_dir))!;
@@ -279,7 +279,7 @@ namespace Xamarin.Tests {
 		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-arm64;iossimulator-x64")]
-		[Ignore ("This test is currently failing")]
+		[Ignore ("https://github.com/dotnet/macios/issues/25438")]
 		public void PluralRuntimeIdentifiersWithRemoteMac_Mono (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var properties = AddRemoteProperties ();

@@ -186,7 +186,7 @@ namespace Xamarin.MacDev.Tasks {
 						hasEntitlements = false;
 					} else {
 						// Check the file to see if there are any entitlements inside
-						var entitlements = PDictionary.FromFile (CodesignEntitlements!.ItemSpec)!;
+						var entitlements = PDictionary.OpenFile (CodesignEntitlements!.ItemSpec);
 						hasEntitlements = entitlements.Count > 0;
 					}
 				}

@@ -51,12 +51,11 @@ namespace Xamarin.Tests {
 			var rv = DotNet.AssertBuild (project_path, properties);
 			AssertThatLinkerExecuted (rv);
 			var infoPlistPath = GetInfoPListPath (platform, appPath);
-			var infoPlist = PDictionary.FromFile (infoPlistPath)!;
+			var infoPlist = PDictionary.OpenFile (infoPlistPath);
 			Assert.That (infoPlist.GetString ("CFBundleIdentifier").Value, Is.EqualTo ("com.xamarin.mymauiapp"), "CFBundleIdentifier");
 			Assert.That (infoPlist.GetString ("CFBundleDisplayName").Value, Is.EqualTo ("MyMauiApp"), "CFBundleDisplayName");
 			Assert.That (infoPlist.GetString ("CFBundleVersion").Value, Is.EqualTo ("1"), "CFBundleVersion");
 			Assert.That (infoPlist.GetString ("CFBundleShortVersionString").Value, Is.EqualTo ("1.0"), "CFBundleShortVersionString");
-
 
 			Assert.That (BinLog.TryFindPropertyValue (rv.BinLogPath, "TrimMode", out var trimModeValue), Is.True, "Could not find the property 'TrimMode' in the binlog.");
 			Assert.That (BinLog.TryFindPropertyValue (rv.BinLogPath, "_LinkMode", out var linkModeValue), Is.True, "Could not find the property '_LinkMode' in the binlog.");

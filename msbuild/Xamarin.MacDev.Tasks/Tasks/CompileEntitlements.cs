@@ -526,7 +526,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 			if (injectDefaultEntitlements) {
 				try {
-					var defaultEntitlements = PDictionary.FromFile (DefaultEntitlementsPath)!;
+					var defaultEntitlements = PDictionary.OpenFile (DefaultEntitlementsPath);
 					templates.Add (defaultEntitlements);
 					Log.LogMessage (MessageImportance.Low, $"Loading default entitlements from: {DefaultEntitlementsPath}");
 				} catch (Exception ex) {
@@ -541,7 +541,7 @@ namespace Xamarin.MacDev.Tasks {
 						Log.LogError (MSBStrings.E0112, Entitlements);
 						return false;
 					}
-					var projectEntitlements = PDictionary.FromFile (Entitlements)!;
+					var projectEntitlements = PDictionary.OpenFile (Entitlements);
 					templates.Add (projectEntitlements);
 					Log.LogMessage (MessageImportance.Low, $"Loading user requested entitlements from: {Entitlements}");
 				} catch (Exception ex) {
@@ -609,7 +609,7 @@ namespace Xamarin.MacDev.Tasks {
 			var path = Path.Combine (EntitlementBundlePath, "archived-expanded-entitlements.xcent");
 
 			if (File.Exists (path)) {
-				var plist = PDictionary.FromFile (path)!;
+				var plist = PDictionary.OpenFile (path);
 				var src = archived.ToXml ();
 				var dest = plist.ToXml ();
 

@@ -240,7 +240,7 @@ public class Binding
 			AssertTargetExecuted (allTargets, "_BuildXcodeProjects", "Third _BuildXcodeProjects");
 			Assert.That (expectedXcodeFxOutput, Does.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' did not exist.");
 			var outputFxThirdWriteTime = File.GetLastWriteTime (expectedXcodeFxOutput);
-			Assert.That (outputFxThirdWriteTime > outputFxFirstWriteTime, Is.True, $"Expected '{outputFxThirdWriteTime}' write time of '{outputFxThirdWriteTime}' to be greater than first write '{outputFxFirstWriteTime}'");
+			Assert.That (outputFxThirdWriteTime, Is.GreaterThan (outputFxFirstWriteTime), $"Expected '{expectedXcodeFxOutput}' third write time '{outputFxThirdWriteTime}' to be greater than first write '{outputFxFirstWriteTime}'");
 		}
 
 		[Test]

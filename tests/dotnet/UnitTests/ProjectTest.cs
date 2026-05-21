@@ -760,8 +760,10 @@ namespace Xamarin.Tests {
 			// Verify that the MyNativeClass class exists in the assembly, and that it's actually a class.
 			var ad = AssemblyDefinition.ReadAssembly (dllPath, new ReaderParameters { ReadingMode = ReadingMode.Deferred });
 			var myNativeClass = ad.MainModule.Types.FirstOrDefault (v => v.FullName == "MyApiDefinition.MyNativeClass");
+			Assert.That (myNativeClass, Is.Not.Null, "MyNativeClass");
 			Assert.That (myNativeClass!.IsInterface, Is.False, "IsInterface");
 			var myStruct = ad.MainModule.Types.FirstOrDefault (v => v.FullName == "MyClassLibrary.MyStruct");
+			Assert.That (myStruct, Is.Not.Null, "MyStruct type");
 			Assert.That (myStruct!.IsValueType, Is.True, "MyStruct");
 
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
@@ -2536,8 +2538,8 @@ namespace Xamarin.Tests {
 			}
 
 			Assert.That (warnings.Length, Is.EqualTo (1), "Warning count");
-			Assert.That ("IL2075", Is.EqualTo (warnings [0].Code), "Warning code");
-			Assert.That ("'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperties()'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to.", Is.EqualTo (warnings [0].Message));
+			Assert.That (warnings [0].Code, Is.EqualTo ("IL2075"), "Warning code");
+			Assert.That (warnings [0].Message, Is.EqualTo ("'this' argument does not satisfy 'DynamicallyAccessedMemberTypes.PublicProperties' in call to 'System.Type.GetProperties()'. The return value of method 'System.Object.GetType()' does not have matching annotations. The source value must declare at least the same requirements as those declared on the target location it is assigned to."));
 		}
 
 		[Test]

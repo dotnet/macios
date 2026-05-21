@@ -376,13 +376,13 @@ namespace Xamarin.Tests {
 			// Open the zipped app bundle and get the Info.plist
 			using var zip = ZipFile.OpenRead (zippedAppBundlePath);
 			ZipHelpers.DumpZipFile (zip, zippedAppBundlePath);
-			var infoPlistEntry = zip.Entries.SingleOrDefault (v => v.Name == "Info.plist")!;
+			var infoPlistEntry = zip.Entries.SingleOrDefault (v => v.Name == "Info.plist");
 			Assert.That (infoPlistEntry, Is.Not.Null, "Info.plist");
 
 			// Parse the Info.plist
 			// PDictionary.FromStream requires a seekable stream, but the zip stream isn't seekable, so copy to a
 			// MemoryStream and use that. Info.plist files aren't big, so this shouldn't become a memory consumption problem.
-			using var memoryStream = new MemoryStream ((int) infoPlistEntry.Length);
+			using var memoryStream = new MemoryStream ((int) infoPlistEntry!.Length);
 			using var plistStream = infoPlistEntry.Open ();
 			plistStream.CopyTo (memoryStream);
 

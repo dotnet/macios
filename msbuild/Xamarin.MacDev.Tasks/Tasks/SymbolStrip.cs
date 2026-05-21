@@ -45,10 +45,18 @@ namespace Xamarin.MacDev.Tasks {
 			var executable = GetExecutable (args, "strip", StripPath);
 
 			var symbolFile = GetNonEmptyStringOrFallback (item, "SymbolFile", SymbolFile);
-			if (!string.IsNullOrEmpty (symbolFile)) {
+			if (!string.IsNullOrEmpty (symbolFile) && File.Exists (symbolFile)) {
 				args.Add ("-i");
 				args.Add ("-s");
 				args.Add (symbolFile);
+			} else if (!GetIsFrameworkOrDynamicLibrary (item)) {
+				// If there's no symbol file for the main executable (e.g. when
+				// building remotely from Windows with _ExportSymbolsExplicitly=false),
+				// use -S -x to only strip debug and local symbols, keeping external
+				// symbols intact. Running bare 'strip' would remove all symbols,
+				// which can cause the app to crash at launch.
+				args.Add ("-S");
+				args.Add ("-x");
 			}
 
 			if (GetIsFrameworkOrDynamicLibrary (item)) {

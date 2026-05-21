@@ -2101,7 +2101,7 @@ namespace Registrar {
 
 			namespaces.Add (ns);
 
-			if (Frameworks.GetFrameworks (App.Platform, false)?.TryGetValue (ns, out var fw) == true && fw.IsFrameworkUnavailable (App)) {
+			if (Driver.GetFrameworks (App).TryGetValue (ns, out var fw) && fw.IsFrameworkUnavailable (App)) {
 				Driver.Log (5, "Not importing the framework {0} in the generated registrar code because it's not available in the current platform.", ns);
 				return;
 			}

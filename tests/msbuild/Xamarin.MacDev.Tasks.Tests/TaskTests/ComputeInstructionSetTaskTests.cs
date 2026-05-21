@@ -29,7 +29,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			Assert.AreEqual (expectedInstructionSet, task.InstructionSet, $"Instruction set for {platform} {osVersion}");
+			Assert.That (task.InstructionSet, Is.EqualTo (expectedInstructionSet), $"Instruction set for {platform} {osVersion}");
 		}
 
 		[Test]
@@ -46,7 +46,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			Assert.AreEqual (expectedInstructionSet, task.InstructionSet, $"Instruction set for {platform} {osVersion}");
+			Assert.That (task.InstructionSet, Is.EqualTo (expectedInstructionSet), $"Instruction set for {platform} {osVersion}");
 		}
 
 		[Test]
@@ -67,7 +67,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			Assert.AreEqual (expectedInstructionSet, task.InstructionSet, $"Instruction set for {platform} {osVersion} with {runtimeIdentifier}");
+			Assert.That (task.InstructionSet, Is.EqualTo (expectedInstructionSet), $"Instruction set for {platform} {osVersion} with {runtimeIdentifier}");
 		}
 
 		[Test]
@@ -78,7 +78,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			Assert.AreEqual ("", task.InstructionSet, "Instruction set should be empty for empty OS version");
+			Assert.That (task.InstructionSet, Is.EqualTo (""), "Instruction set should be empty for empty OS version");
 		}
 
 		[Test]
@@ -89,7 +89,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			Assert.AreEqual ("", task.InstructionSet, "Instruction set should be empty for invalid OS version");
+			Assert.That (task.InstructionSet, Is.EqualTo (""), "Instruction set should be empty for invalid OS version");
 		}
 
 		[Test]
@@ -113,7 +113,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			// For a future OS version that no current device supports, we won't compute an instruction set
 			// This is expected behavior - we can't predict future instruction sets
-			Assert.IsEmpty (task.InstructionSet, "Should not compute instruction set for future OS version");
+			Assert.That (task.InstructionSet, Is.Empty, "Should not compute instruction set for future OS version");
 		}
 	}
 }

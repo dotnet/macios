@@ -53,28 +53,6 @@ namespace MonoTouchFixtures.Foundation {
 		}
 
 		[Test]
-		public void Fields ()
-		{
-			// fields are not available in iOS (at least up to 5.1.1)
-			// this test will fail if this ever change in the future
-			IntPtr lib = Dlfcn.dlopen (Constants.FoundationLibrary, 0);
-			try {
-				Assert.That (Dlfcn.dlsym (lib, "NSFontAttributeName"), Is.EqualTo (IntPtr.Zero), "NSFontAttributeName");
-				Assert.That (Dlfcn.dlsym (lib, "NSLinkAttributeName"), Is.EqualTo (IntPtr.Zero), "NSLinkAttributeName");
-				Assert.That (Dlfcn.dlsym (lib, "NSUnderlineStyleAttributeName"), Is.EqualTo (IntPtr.Zero), "NSUnderlineStyleAttributeName");
-				Assert.That (Dlfcn.dlsym (lib, "NSStrikethroughStyleAttributeName"), Is.EqualTo (IntPtr.Zero), "NSStrikethroughStyleAttributeName");
-				Assert.That (Dlfcn.dlsym (lib, "NSStrokeWidthAttributeName"), Is.EqualTo (IntPtr.Zero), "NSStrokeWidthAttributeName");
-				Assert.That (Dlfcn.dlsym (lib, "NSParagraphStyleAttributeName"), Is.EqualTo (IntPtr.Zero), "NSParagraphStyleAttributeName");
-				Assert.That (Dlfcn.dlsym (lib, "NSForegroundColorAttributeName"), Is.EqualTo (IntPtr.Zero), "NSForegroundColorAttributeName");
-				Assert.That (Dlfcn.dlsym (lib, "NSBackgroundColorAttributeName"), Is.EqualTo (IntPtr.Zero), "NSBackgroundColorAttributeName");
-				Assert.That (Dlfcn.dlsym (lib, "NSLigatureAttributeName"), Is.EqualTo (IntPtr.Zero), "NSLigatureAttributeName");
-				Assert.That (Dlfcn.dlsym (lib, "NSObliquenessAttributeName"), Is.EqualTo (IntPtr.Zero), "NSObliquenessAttributeName");
-			} finally {
-				Dlfcn.dlclose (lib);
-			}
-		}
-
-		[Test]
 		public void UIKitAttachmentConveniences_New ()
 		{
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);

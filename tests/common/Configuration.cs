@@ -6,23 +6,23 @@ using System.Text;
 using System.Threading;
 using Xamarin.Utils;
 
-#nullable disable // until we get around to fixing this file
+#nullable enable
 
 namespace Xamarin.Tests {
 	static partial class Configuration {
 		public const string XI_ProductName = "MonoTouch";
 		public const string XM_ProductName = "Xamarin.Mac";
 
-		public static string DotNetBclDir;
-		public static string DotNetCscCommand;
+		public static string DotNetBclDir = "";
+		public static string DotNetCscCommand = "";
 		public static string DotNetExecutable;
 		public static string DotNetTfm;
-		public static string mt_src_root;
+		public static string? mt_src_root;
 		public static string sdk_version;
 		public static string tvos_sdk_version;
 		public static string macos_sdk_version;
 		public static string xcode_root;
-		public static string XcodeVersionString;
+		public static string? XcodeVersionString;
 		public static string xcode83_root;
 		public static string xcode94_root;
 #if MONOMAC
@@ -37,12 +37,12 @@ namespace Xamarin.Tests {
 		public static bool XcodeIsStable;
 		public static string DOTNET_DIR;
 
-		static Version xcode_version;
+		static Version? xcode_version;
 
 		public static Version XcodeVersion {
 			get {
 				if (xcode_version is null)
-					xcode_version = Version.Parse (XcodeVersionString);
+					xcode_version = Version.Parse (XcodeVersionString!);
 				return xcode_version;
 			}
 		}
@@ -101,11 +101,11 @@ namespace Xamarin.Tests {
 		}
 
 		// This is the location of an Xcode which is older than the recommended one.
-		public static string GetOldXcodeRoot (Version min_version = null)
+		public static string? GetOldXcodeRoot (Version? min_version = null)
 		{
 			var with_versions = new List<Tuple<Version, string>> ();
 
-			var max_version = Version.Parse (XcodeVersionString);
+			var max_version = Version.Parse (XcodeVersionString!);
 			foreach (var xcode in GetAllXcodes ()) {
 				var path = xcode.Path;
 				var version = xcode.Version;
@@ -153,8 +153,8 @@ namespace Xamarin.Tests {
 			if (!test_config.Any () && Environment.OSVersion.Platform != PlatformID.Win32NT) {
 				// Run 'make test.config' in the tests/ directory
 				// First find the tests/ directory
-				var dir = TestAssemblyDirectory;
-				string tests_dir = null;
+				var dir = TestAssemblyDirectory!;
+				string? tests_dir = null;
 				while (dir.Length > 1) {
 					var file = Path.Combine (dir, "tests");
 					if (Directory.Exists (file)) {
@@ -162,7 +162,7 @@ namespace Xamarin.Tests {
 						break;
 					}
 
-					dir = Path.GetDirectoryName (dir);
+					dir = Path.GetDirectoryName (dir)!;
 				}
 
 				if (tests_dir is null)
@@ -202,7 +202,8 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		internal static string GetVariable (string variable, string @default)
+		[return: NotNullIfNotNull (nameof (@default))]
+		internal static string? GetVariable (string variable, string? @default)
 		{
 			var result = Environment.GetEnvironmentVariable (variable);
 			if (string.IsNullOrEmpty (result))
@@ -239,7 +240,7 @@ namespace Xamarin.Tests {
 			return result.Substring (variable.Length + 1);
 		}
 
-		static string GetXcodeVersion (string xcode_path)
+		static string? GetXcodeVersion (string xcode_path)
 		{
 			var version_plist = Path.Combine (xcode_path, "..", "version.plist");
 			if (!File.Exists (version_plist))
@@ -248,7 +249,7 @@ namespace Xamarin.Tests {
 			return GetPListStringValue (version_plist, "CFBundleShortVersionString");
 		}
 
-		public static string GetPListStringValue (string plist, string key)
+		public static string? GetPListStringValue (string plist, string key)
 		{
 			var settings = new System.Xml.XmlReaderSettings ();
 			settings.DtdProcessing = System.Xml.DtdProcessing.Ignore;
@@ -256,15 +257,15 @@ namespace Xamarin.Tests {
 			using (var fs = new StringReader (ReadPListAsXml (plist))) {
 				using (var reader = System.Xml.XmlReader.Create (fs, settings)) {
 					doc.Load (reader);
-					return doc.DocumentElement
-						.SelectSingleNode ($"//dict/key[text()='{key}']/following-sibling::string[1]/text()").Value;
+					return doc.DocumentElement!
+						.SelectSingleNode ($"//dict/key[text()='{key}']/following-sibling::string[1]/text()")!.Value;
 				}
 			}
 		}
 
 		public static string ReadPListAsXml (string path)
 		{
-			string tmpfile = null;
+			string? tmpfile = null;
 			try {
 				tmpfile = Path.GetTempFileName ();
 				File.Copy (path, tmpfile, true);
@@ -295,10 +296,10 @@ namespace Xamarin.Tests {
 			include_mac = !string.IsNullOrEmpty (GetVariable ("INCLUDE_MAC", ""));
 			include_tvos = !string.IsNullOrEmpty (GetVariable ("INCLUDE_TVOS", ""));
 			include_maccatalyst = !string.IsNullOrEmpty (GetVariable ("INCLUDE_MACCATALYST", ""));
-			DotNetBclDir = GetVariable ("DOTNET_BCL_DIR", null);
-			DotNetCscCommand = GetVariable ("DOTNET_CSC_COMMAND", null)?.Trim ('\'');
-			DotNetExecutable = GetVariable ("DOTNET", null);
-			DotNetTfm = GetVariable ("DOTNET_TFM", null);
+			DotNetBclDir = GetVariable ("DOTNET_BCL_DIR", "");
+			DotNetCscCommand = GetVariable ("DOTNET_CSC_COMMAND", "").Trim ('\'');
+			DotNetExecutable = GetVariable ("DOTNET", "");
+			DotNetTfm = GetVariable ("DOTNET_TFM", "");
 			XcodeIsStable = string.Equals (GetVariable ("XCODE_IS_STABLE", ""), "true",
 				StringComparison.OrdinalIgnoreCase);
 			DOTNET_DIR = GetVariable ("DOTNET_DIR", "");
@@ -359,7 +360,7 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		public static bool TryGetRootPath (out string rootPath)
+		public static bool TryGetRootPath ([NotNullWhen (true)] out string? rootPath)
 		{
 			try {
 				rootPath = RootPath;
@@ -643,7 +644,7 @@ namespace Xamarin.Tests {
 			foreach (var file in files) {
 				var src = Path.Combine (directory, file);
 				var tgt = Path.Combine (testsTemporaryDirectory, file);
-				var tgtDir = Path.GetDirectoryName (tgt);
+				var tgtDir = Path.GetDirectoryName (tgt)!;
 				Directory.CreateDirectory (tgtDir);
 				File.Copy (src, tgt);
 				if (tgt.EndsWith (".csproj", StringComparison.OrdinalIgnoreCase)) {
@@ -681,19 +682,19 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		public static Dictionary<string, string> GetBuildEnvironment (ApplePlatform platform)
+		public static Dictionary<string, string?> GetBuildEnvironment (ApplePlatform platform)
 		{
-			var environment = new Dictionary<string, string> ();
+			var environment = new Dictionary<string, string?> ();
 			SetBuildVariables (platform, ref environment);
 			return environment;
 		}
 
-		public static void SetBuildVariables (ApplePlatform platform, ref Dictionary<string, string> environment)
+		public static void SetBuildVariables (ApplePlatform platform, [NotNullIfNotNull (nameof (environment))] ref Dictionary<string, string?>? environment)
 		{
 			if (environment is null)
-				environment = new Dictionary<string, string> ();
+				environment = new Dictionary<string, string?> ();
 
-			environment ["MD_APPLE_SDK_ROOT"] = Path.GetDirectoryName (Path.GetDirectoryName (xcode_root));
+			environment ["MD_APPLE_SDK_ROOT"] = Path.GetDirectoryName (Path.GetDirectoryName (xcode_root)!)!;
 
 			// This is set by `dotnet test` and can cause building legacy projects to fail to build with:
 			// Microsoft.NET.Build.Extensions.ConflictResolution.targets(30,5):
@@ -713,13 +714,13 @@ namespace Xamarin.Tests {
 
 			switch (platform) {
 			case ApplePlatform.iOS:
-				dir = simulator.Value ? "iphonesimulator" : "iphoneos";
+				dir = simulator == true ? "iphonesimulator" : "iphoneos";
 				break;
 			case ApplePlatform.MacOSX:
 				dir = "macos";
 				break;
 			case ApplePlatform.TVOS:
-				dir = simulator.Value ? "tvsimulator" : "tvos";
+				dir = simulator == true ? "tvsimulator" : "tvos";
 				break;
 			case ApplePlatform.MacCatalyst:
 				dir = "maccatalyst";
@@ -751,7 +752,7 @@ namespace Xamarin.Tests {
 					} else {
 						var exit_code = ExecutionHelper.Execute ("/bin/df", new string [] { "-t", "apfs", "/" },
 							out var output, TimeSpan.FromSeconds (10));
-						is_apfs = exit_code == 0 && output.Trim ().Split ('\n').Length >= 2;
+						is_apfs = exit_code == 0 && output?.Trim ()?.Split ('\n')?.Length >= 2;
 					}
 				}
 
@@ -790,7 +791,7 @@ namespace Xamarin.Tests {
 		[DllImport ("libc")]
 		static extern int sysctlbyname (string name, ref int value, ref IntPtr size, IntPtr zero, IntPtr zeroAgain);
 
-		public static IEnumerable<string> CallNM (string file, string nmArguments, string arch = null)
+		public static IEnumerable<string> CallNM (string file, string nmArguments, string? arch = null)
 		{
 			var arguments = new List<string> (new [] { nmArguments, file });
 			if (!string.IsNullOrEmpty (arch)) {
@@ -809,12 +810,12 @@ namespace Xamarin.Tests {
 			});
 		}
 
-		public static IEnumerable<string> GetNativeSymbols (string file, string arch = null)
+		public static IEnumerable<string> GetNativeSymbols (string file, string? arch = null)
 		{
 			return CallNM (file, "-gUjA", arch);
 		}
 
-		public static IEnumerable<string> GetUndefinedNativeSymbols (string file, string arch = null)
+		public static IEnumerable<string> GetUndefinedNativeSymbols (string file, string? arch = null)
 		{
 			return CallNM (file, "-gujA", arch);
 		}
@@ -829,7 +830,7 @@ namespace Xamarin.Tests {
 		}
 
 		public static bool TryGetApiDefinitionRsp (TargetFramework framework,
-			[NotNullWhen (true)] out string rspPath)
+			[NotNullWhen (true)] out string? rspPath)
 		{
 			rspPath = null;
 			var platform = framework.Platform switch {
@@ -846,7 +847,7 @@ namespace Xamarin.Tests {
 		}
 
 		public static bool TryGetPlatformPreprocessorSymbolsRsp (TargetFramework framework,
-			[NotNullWhen (true)] out string rspPath)
+			[NotNullWhen (true)] out string? rspPath)
 		{
 			rspPath = null;
 			var platform = framework.Platform switch {

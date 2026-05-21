@@ -39,7 +39,7 @@ namespace Mono.ApiTools {
 			return (self.GetAttribute (name) == "true");
 		}
 
-		public static string GetAttribute (this XElement self, string name)
+		public static string? GetAttribute (this XElement self, string name)
 		{
 			var n = self.Attribute (name);
 			if (n is null)
@@ -47,7 +47,7 @@ namespace Mono.ApiTools {
 			return n.Value;
 		}
 
-		public static IEnumerable<XElement> EnumerateAttributes (this XElement self, string attributeName = null)
+		public static IEnumerable<XElement> EnumerateAttributes (this XElement self, string? attributeName = null)
 		{
 			if (self is null)
 				yield break;
@@ -63,7 +63,7 @@ namespace Mono.ApiTools {
 			}
 		}
 
-		static bool TryGetAttributeProperty (this XElement self, string attributeName, bool recursive, out string firstArgument)
+		static bool TryGetAttributeProperty (this XElement? self, string attributeName, bool recursive, out string? firstArgument)
 		{
 			firstArgument = null;
 
@@ -89,16 +89,16 @@ namespace Mono.ApiTools {
 		}
 
 		// null == no obsolete, String.Empty == no description
-		public static string GetObsoleteMessage (this XElement self)
+		public static string? GetObsoleteMessage (this XElement self)
 		{
-			if (TryGetAttributeProperty (self, "System.ObsoleteAttribute", false, out string message))
+			if (TryGetAttributeProperty (self, "System.ObsoleteAttribute", false, out string? message))
 				return message ?? String.Empty;
 			return null;
 		}
 
-		public static IEnumerable<XElement> Descendants (this XElement self, params string [] names)
+		public static IEnumerable<XElement>? Descendants (this XElement self, params string [] names)
 		{
-			XElement el = self;
+			XElement? el = self;
 			if (el is null)
 				return null;
 
@@ -110,7 +110,7 @@ namespace Mono.ApiTools {
 			return el.Elements (names [names.Length - 1]);
 		}
 
-		public static List<XElement> DescendantList (this XElement self, params string [] names)
+		public static List<XElement>? DescendantList (this XElement self, params string [] names)
 		{
 			var descendants = self.Descendants (names);
 			if (descendants is null)
@@ -119,13 +119,13 @@ namespace Mono.ApiTools {
 		}
 
 		// make it beautiful (.NET -> C#)
-		public static string GetTypeName (this XElement self, string name, State state)
+		public static string? GetTypeName (this XElement self, string name, State state)
 		{
-			string type = self.GetAttribute (name);
+			string? type = self.GetAttribute (name);
 			if (type is null)
 				return null;
 
-			StringBuilder sb = null;
+			StringBuilder sb = null!;
 			bool is_nullable = false;
 			if (type.StartsWith ("System.Nullable`1[", StringComparison.Ordinal)) {
 				is_nullable = true;

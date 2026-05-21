@@ -8,7 +8,6 @@ using System.Diagnostics.CodeAnalysis;
 namespace CloudKit {
 	/// <summary>Marks push notifications as read. Typically used by apps that use push notifications to track record changes.</summary>
 	///     <remarks>To be added.</remarks>
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/CloudKit/Reference/CKMarkNotificationsReadOperation_class/index.html">Apple documentation for <c>CKMarkNotificationsReadOperation</c></related>
 	[Register ("CKMarkNotificationsReadOperation", SkipRegistration = true)]
 	[UnsupportedOSPlatform ("ios", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]
 	[UnsupportedOSPlatform ("macos", "Use 'CKDatabaseSubscription', 'CKFetchDatabaseChangesOperation' and 'CKFetchRecordZoneChangesOperation' instead.")]

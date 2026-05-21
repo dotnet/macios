@@ -2884,6 +2884,8 @@ namespace VideoToolbox {
 		SequentialReferencesUnchanged = 3,
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[MacCatalyst (18, 4), NoTV, iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2924,6 +2926,8 @@ namespace VideoToolbox {
 		bool Supported { [Bind ("isSupported")] get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[MacCatalyst (18, 4), NoTV, iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2965,6 +2969,8 @@ namespace VideoToolbox {
 		Sequential = 2,
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[MacCatalyst (26, 0), NoTV, iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3005,6 +3011,8 @@ namespace VideoToolbox {
 		bool Supported { [Bind ("isSupported")] get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[MacCatalyst (26, 0), NoTV, iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3051,6 +3059,8 @@ namespace VideoToolbox {
 		Sequential = 2,
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[MacCatalyst (26, 0), NoTV, iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3088,6 +3098,8 @@ namespace VideoToolbox {
 		bool Supported { [Bind ("isSupported")] get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[MacCatalyst (26, 0), NoTV, iOS (26, 0), Mac (15, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3105,6 +3117,8 @@ namespace VideoToolbox {
 		VTFrameProcessorOpticalFlow DestinationOpticalFlow { get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3134,6 +3148,8 @@ namespace VideoToolbox {
 		bool Supported { [Bind ("isSupported")] get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3149,6 +3165,8 @@ namespace VideoToolbox {
 		NSNumber [] InterpolationPhase { get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3175,6 +3193,8 @@ namespace VideoToolbox {
 		NSNumber [] GetSupportedScaleFactors (nint frameWidth, nint frameHeight);
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[NoTV, MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3233,6 +3253,8 @@ namespace VideoToolbox {
 
 	delegate void VTSuperResolutionScalerConfigurationDownloadConfigurationModelCallback ([NullAllowed] NSError error);
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3253,6 +3275,8 @@ namespace VideoToolbox {
 		VTSuperResolutionScalerParametersSubmissionMode SubmissionMode { get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3276,6 +3300,8 @@ namespace VideoToolbox {
 		bool Supported { [Bind ("isSupported")] get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -3323,6 +3349,8 @@ namespace VideoToolbox {
 		NSString Label { get; }
 	}
 
+	[UnsupportedSimulator ("ios")]
+	[UnsupportedSimulator ("tvos")]
 	[TV (26, 0), MacCatalyst (26, 0), Mac (26, 0), iOS (26, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]

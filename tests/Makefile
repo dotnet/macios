@@ -2,9 +2,9 @@ TOP = ..
 
 include $(TOP)/Make.config
 
-# Skip test-libraries on Linux (requires native compilation with Xcode/clang)
+# Skip test-libraries without Xcode (requires native compilation with Xcode/clang)
 ifndef ONLY_SHARPIE
-ifndef IS_LINUX
+ifndef NO_XCODE
 SUBDIRS=test-libraries
 endif
 endif
@@ -164,14 +164,14 @@ test-msbuild run-tests-msbuild:
 # Docs: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test#filter-option-details
 test-macdev-tests: export MSBUILD_EXE_PATH=
 test-macdev-tests: verify-system-vsmac-xcode-match
-	$(Q) $(DOTNET) test $(TOP)/tests/msbuild/Xamarin.MacDev.Tests/Xamarin.MacDev.Tests.csproj $(TEST_FILTER)
+	$(Q) $(DOTNET) test $(TOP)/tests/msbuild/Xamarin.MacDev.Tests/Xamarin.MacDev.Tests.csproj $(TEST_FILTER) /p:NuGetPackageRoot=$(abspath $(TOP)/packages)/
 
 # Example TEST_FILTER:
 #    TEST_FILTER="--filter:FullyQualifiedName~BuildMyCocoaApp"
 # Docs: https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-test#filter-option-details
 test-macdev-tasks: export MSBUILD_EXE_PATH=
 test-macdev-tasks: verify-system-vsmac-xcode-match
-	$(Q) $(DOTNET) test $(TOP)/tests/msbuild/Xamarin.MacDev.Tasks.Tests/Xamarin.MacDev.Tasks.Tests.csproj $(TEST_FILTER)
+	$(Q) $(DOTNET) test $(TOP)/tests/msbuild/Xamarin.MacDev.Tasks.Tests/Xamarin.MacDev.Tasks.Tests.csproj $(TEST_FILTER) /p:NuGetPackageRoot=$(abspath $(TOP)/packages)/
 
 mac-test-package.zip:
 ifdef INCLUDE_MAC

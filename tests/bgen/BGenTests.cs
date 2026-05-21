@@ -1657,5 +1657,72 @@ namespace GeneratorTests {
 			var bgen = BuildFile (profile, "both-protected-and-internal.cs");
 			bgen.AssertNoWarnings ();
 		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
+		[TestCase (Profile.tvOS)]
+		public void SimulatorAvailabilityAttributes (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "simulator-availability-attributes.cs");
+			bgen.AssertNoWarnings ();
+
+			var module = bgen.ApiAssembly.MainModule;
+
+			// Verify [UnsupportedSimulator] is copied for the current platform
+			var unsupportedAll = module.GetType ("NS", "UnsupportedOnAllSimulators");
+			var unsupportedAttrs = unsupportedAll.CustomAttributes
+				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (unsupportedAttrs.Length, Is.EqualTo (1), "UnsupportedOnAllSimulators: one attribute for current platform");
+			var platformName = (string) unsupportedAttrs [0].ConstructorArguments [0].Value;
+			var expectedPlatform = profile == Profile.iOS ? "ios" : "tvos";
+			Assert.That (platformName, Is.EqualTo (expectedPlatform), "UnsupportedOnAllSimulators platform name");
+
+			// Verify only the current platform's attribute is emitted
+			var iosOnly = module.GetType ("NS", "UnsupportedOnIosSimulatorOnly");
+			var iosOnlyAttrs = iosOnly.CustomAttributes
+				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute")
+				.ToArray ();
+			if (profile == Profile.iOS)
+				Assert.That (iosOnlyAttrs.Length, Is.EqualTo (1), "UnsupportedOnIosSimulatorOnly: present for iOS");
+			else
+				Assert.That (iosOnlyAttrs.Length, Is.EqualTo (0), "UnsupportedOnIosSimulatorOnly: absent for tvOS");
+
+			// Verify [SupportedSimulator] with version is copied
+			var supported = module.GetType ("NS", "SupportedOnSimulatorFromVersion");
+			var supportedAttrs = supported.CustomAttributes
+				.Where (a => a.AttributeType.Name == "SupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (supportedAttrs.Length, Is.EqualTo (1), "SupportedOnSimulatorFromVersion: one attribute");
+			var expectedVersion = profile == Profile.iOS ? "ios17.0" : "tvos17.0";
+			Assert.That ((string) supportedAttrs [0].ConstructorArguments [0].Value, Is.EqualTo (expectedVersion), "SupportedOnSimulatorFromVersion platform name");
+
+			// Verify no simulator attributes when none are specified
+			var noAttrs = module.GetType ("NS", "NoSimulatorAttributes");
+			var simulatorAttrs = noAttrs.CustomAttributes
+				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (simulatorAttrs.Length, Is.EqualTo (0), "NoSimulatorAttributes: no simulator attributes");
+		}
+
+		[Test]
+		[TestCase (Profile.macOSMobile)]
+		[TestCase (Profile.MacCatalyst)]
+		public void SimulatorAvailabilityAttributes_NotEmittedForMacPlatforms (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "simulator-availability-attributes.cs");
+			bgen.AssertNoWarnings ();
+
+			var module = bgen.ApiAssembly.MainModule;
+			foreach (var typeName in new [] { "UnsupportedOnAllSimulators", "UnsupportedOnIosSimulatorOnly", "SupportedOnSimulatorFromVersion", "NoSimulatorAttributes" }) {
+				var type = module.GetType ("NS", typeName);
+				var simulatorAttrs = type.CustomAttributes
+					.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
+					.ToArray ();
+				Assert.That (simulatorAttrs.Length, Is.EqualTo (0), $"{typeName}: no simulator attributes on Mac platforms");
+			}
+		}
 	}
 }

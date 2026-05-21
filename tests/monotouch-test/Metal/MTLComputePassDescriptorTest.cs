@@ -35,7 +35,7 @@ namespace MonoTouchFixtures.Metal {
 			Assert.DoesNotThrow (() => {
 				objType = descriptor.DispatchType;
 			}, "Getter");
-			Assert.AreEqual (newType, objType, "Type");
+			Assert.That (objType, Is.EqualTo (newType), "Type");
 		}
 
 		[Test]

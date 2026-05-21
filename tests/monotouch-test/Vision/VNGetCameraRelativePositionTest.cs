@@ -39,14 +39,14 @@ namespace MonoTouchFixtures.Vision {
 			var request = new VNDetectHumanBodyPose3DRequest ();
 
 			var didPerform = requestHandler.Perform (new VNRequest [] { request }, out NSError error);
-			Assert.Null (error, $"VNImageRequestHandler.Perform should not return an error {error}");
+			Assert.That (error, Is.Null, $"VNImageRequestHandler.Perform should not return an error {error}");
 
 			var observation = request.Results?.Length > 0 ? request.Results [0] : null;
 
 			if (TestRuntime.IsDevice && observation is null)
 				Assert.Ignore ("This test fails sometimes on device."); // maybe it requires camera access?
 
-			Assert.NotNull (observation, "VNImageRequestHandler.Perform should return a result.");
+			Assert.That (observation, Is.Not.Null, "VNImageRequestHandler.Perform should return a result.");
 
 			Matrix4 expectedMatrix = new Matrix4 (
 				(float) -0.98357517, (float) 0.014054606, (float) -0.17995091, (float) 0.012865879,
@@ -55,7 +55,7 @@ namespace MonoTouchFixtures.Vision {
 				(float) 0, (float) 0, (float) 0, (float) 1);
 
 			var position = observation.GetCameraRelativePosition (out var modelPositionOut, VNHumanBodyPose3DObservationJointName.CenterHead, out NSError observationError);
-			Assert.Null (observationError, $"GetCameraRelativePosition should not return an error {observationError}");
+			Assert.That (observationError, Is.Null, $"GetCameraRelativePosition should not return an error {observationError}");
 			// GetCameraRelativePosition results can vary slightly between runs so we need to use a delta.
 			Asserts.AreEqual (expectedMatrix, modelPositionOut, 0.5f, "VNVector3DGetCameraRelativePosition result is not equal to expected matrix");
 		}

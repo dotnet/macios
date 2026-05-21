@@ -37,7 +37,7 @@ namespace MonoTouchFixtures.AddressBook {
 
 			// we assume the simulator defaults (e.g. after a reset)
 			ABSource source = new ABAddressBook ().GetDefaultSource ();
-			Assert.Null (source.Name, "Name");
+			Assert.That (source.Name, Is.Null, "Name");
 			Assert.That (source.SourceType, Is.EqualTo (ABSourceType.Local), "SourceType");
 
 			// ABRecord

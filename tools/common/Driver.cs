@@ -333,7 +333,7 @@ namespace Xamarin.Bundler {
 		}
 
 		static string? sdk_root;
-		static string? developer_directory;
+		static string? developer_directory = null;
 
 		public static string? SdkRoot {
 			get => sdk_root;
@@ -507,6 +507,7 @@ namespace Xamarin.Bundler {
 			return result;
 		}
 
+#if !LEGACY_TOOLS
 		static readonly Dictionary<string, string?> tools = new Dictionary<string, string?> ();
 		static string FindTool (Application app, string tool)
 		{
@@ -708,6 +709,7 @@ namespace Xamarin.Bundler {
 		{
 			RunXcodeTool (app, "strip", options);
 		}
+#endif // !LEGACY_TOOLS
 
 		public static string CorlibName {
 			get {

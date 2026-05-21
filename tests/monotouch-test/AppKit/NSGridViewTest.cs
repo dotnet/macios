@@ -23,11 +23,11 @@ namespace MonoTouchFixtures.AppKit {
 
 			NSGridView nSGridViewArrayOfArray = NSGridView.Create (nSViewsArrayOfArray);
 
-			Assert.NotNull (nSGridViewArrayOfArray);
-			Assert.AreEqual ("0", ((NSTextView) (nSGridViewArrayOfArray.GetCell (0, 0)).ContentView).Value, "0,0");
-			Assert.AreEqual ("1", ((NSTextView) (nSGridViewArrayOfArray.GetCell (0, 1)).ContentView).Value, "0,1");
-			Assert.AreEqual ("2", ((NSTextView) (nSGridViewArrayOfArray.GetCell (0, 2)).ContentView).Value, "0,2");
-			Assert.AreEqual ("3", ((NSTextView) (nSGridViewArrayOfArray.GetCell (0, 3)).ContentView).Value, "0,3");
+			Assert.That (nSGridViewArrayOfArray, Is.Not.Null);
+			Assert.That (((NSTextView) (nSGridViewArrayOfArray.GetCell (0, 0)).ContentView).Value, Is.EqualTo ("0"), "0,0");
+			Assert.That (((NSTextView) (nSGridViewArrayOfArray.GetCell (0, 1)).ContentView).Value, Is.EqualTo ("1"), "0,1");
+			Assert.That (((NSTextView) (nSGridViewArrayOfArray.GetCell (0, 2)).ContentView).Value, Is.EqualTo ("2"), "0,2");
+			Assert.That (((NSTextView) (nSGridViewArrayOfArray.GetCell (0, 3)).ContentView).Value, Is.EqualTo ("3"), "0,3");
 		}
 
 		[Test]
@@ -39,10 +39,10 @@ namespace MonoTouchFixtures.AppKit {
 
 			NSGridView nSGridViewArrayOfArray = NSGridView.Create (nSViewsArrayOfArray);
 
-			Assert.NotNull (nSGridViewArrayOfArray);
-			Assert.AreEqual ("0", ((NSTextView) (nSGridViewArrayOfArray.GetCell (0, 0)).ContentView).Value, "0,0");
-			Assert.AreEqual ("1", ((NSTextView) (nSGridViewArrayOfArray.GetCell (0, 1)).ContentView).Value, "0,1");
-			Assert.AreEqual ("1bis", ((NSTextView) (nSGridViewArrayOfArray.GetCell (1, 1)).ContentView).Value, "0,2");
+			Assert.That (nSGridViewArrayOfArray, Is.Not.Null);
+			Assert.That (((NSTextView) (nSGridViewArrayOfArray.GetCell (0, 0)).ContentView).Value, Is.EqualTo ("0"), "0,0");
+			Assert.That (((NSTextView) (nSGridViewArrayOfArray.GetCell (0, 1)).ContentView).Value, Is.EqualTo ("1"), "0,1");
+			Assert.That (((NSTextView) (nSGridViewArrayOfArray.GetCell (1, 1)).ContentView).Value, Is.EqualTo ("1bis"), "0,2");
 		}
 
 		[Test]
@@ -56,11 +56,11 @@ namespace MonoTouchFixtures.AppKit {
 
 			NSGridView nSGridViewTwoDimensionalArray = NSGridView.Create (nSViewsTwoDim);
 
-			Assert.NotNull (nSGridViewTwoDimensionalArray);
-			Assert.AreEqual ("0", ((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (0, 0)).ContentView).Value, "0,0");
-			Assert.AreEqual ("1", ((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (0, 1)).ContentView).Value, "0,1");
-			Assert.AreEqual ("2", ((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (1, 0)).ContentView).Value, "1,0");
-			Assert.AreEqual ("3", ((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (1, 1)).ContentView).Value, "1,1");
+			Assert.That (nSGridViewTwoDimensionalArray, Is.Not.Null);
+			Assert.That (((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (0, 0)).ContentView).Value, Is.EqualTo ("0"), "0,0");
+			Assert.That (((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (0, 1)).ContentView).Value, Is.EqualTo ("1"), "0,1");
+			Assert.That (((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (1, 0)).ContentView).Value, Is.EqualTo ("2"), "1,0");
+			Assert.That (((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (1, 1)).ContentView).Value, Is.EqualTo ("3"), "1,1");
 		}
 
 		[Test]
@@ -74,11 +74,11 @@ namespace MonoTouchFixtures.AppKit {
 
 			NSGridView nSGridViewTwoDimensionalArray = NSGridView.Create (nSViewsTwoDim);
 
-			Assert.NotNull (nSGridViewTwoDimensionalArray);
-			Assert.AreEqual ("0", ((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (0, 0)).ContentView).Value, "0,0");
-			Assert.AreEqual ("1", ((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (0, 1)).ContentView).Value, "0,1");
-			Assert.AreEqual ("2", ((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (0, 2)).ContentView).Value, "0,2");
-			Assert.AreEqual ("3", ((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (0, 3)).ContentView).Value, "0,3");
+			Assert.That (nSGridViewTwoDimensionalArray, Is.Not.Null);
+			Assert.That (((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (0, 0)).ContentView).Value, Is.EqualTo ("0"), "0,0");
+			Assert.That (((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (0, 1)).ContentView).Value, Is.EqualTo ("1"), "0,1");
+			Assert.That (((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (0, 2)).ContentView).Value, Is.EqualTo ("2"), "0,2");
+			Assert.That (((NSTextView) (nSGridViewTwoDimensionalArray.GetCell (0, 3)).ContentView).Value, Is.EqualTo ("3"), "0,3");
 		}
 
 		[Test]

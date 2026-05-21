@@ -121,62 +121,62 @@ namespace MonoTouchFixtures.Vision {
 			var rect = new CGRect (0, 0, 10, 10);
 			{
 				var detectedObjectObservation = VNDetectedObjectObservation.FromBoundingBox (VNDetectedObjectObservationRequestRevision.Unspecified, rect);
-				Assert.NotNull (detectedObjectObservation, "detectedObjectObservation is null");
+				Assert.That (detectedObjectObservation, Is.Not.Null, "detectedObjectObservation is null");
 				Assert.That (detectedObjectObservation.BoundingBox, Is.EqualTo (rect));
 
 				var faceObservation = VNFaceObservation.FromBoundingBox (VNFaceObservationRequestRevision.Unspecified, rect);
-				Assert.NotNull (faceObservation, "faceObservation is null");
+				Assert.That (faceObservation, Is.Not.Null, "faceObservation is null");
 				Assert.That (faceObservation.BoundingBox, Is.EqualTo (rect));
 
 				var recognizedObjectObservation = VNRecognizedObjectObservation.FromBoundingBox (VNRecognizedObjectObservationRequestRevision.Unspecified, rect);
 				if (TestRuntime.CheckXcodeVersion (11, 0) && !TestRuntime.CheckXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch)) {
-					Assert.IsNull (recognizedObjectObservation, "recognizedObjectObservation is not null");
+					Assert.That (recognizedObjectObservation, Is.Null, "recognizedObjectObservation is not null");
 				} else {
-					Assert.NotNull (recognizedObjectObservation, "recognizedObjectObservation is null");
+					Assert.That (recognizedObjectObservation, Is.Not.Null, "recognizedObjectObservation is null");
 					Assert.That (recognizedObjectObservation.BoundingBox, Is.EqualTo (rect));
 				}
 
 				var rectangleObservation = VNRectangleObservation.FromBoundingBox (VNRectangleObservationRequestRevision.Unspecified, rect);
-				Assert.NotNull (rectangleObservation, "rectangleObservation is null");
+				Assert.That (rectangleObservation, Is.Not.Null, "rectangleObservation is null");
 				Assert.That (rectangleObservation.BoundingBox, Is.EqualTo (rect));
 
 				var textObservation = VNTextObservation.FromBoundingBox (VNTextObservationRequestRevision.Unspecified, rect);
-				Assert.NotNull (textObservation, "textObservation is null");
+				Assert.That (textObservation, Is.Not.Null, "textObservation is null");
 				Assert.That (textObservation.BoundingBox, Is.EqualTo (rect));
 
 				var barcodeObservation = VNBarcodeObservation.FromBoundingBox (VNBarcodeObservationRequestRevision.Unspecified, rect);
-				Assert.NotNull (barcodeObservation, "barcodeObservation is null");
+				Assert.That (barcodeObservation, Is.Not.Null, "barcodeObservation is null");
 				Assert.That (barcodeObservation.BoundingBox, Is.EqualTo (rect));
 			}
 
 			// Tests random request revision
 			{
 				var detectedObjectObservation = VNDetectedObjectObservation.FromBoundingBox ((VNDetectedObjectObservationRequestRevision) 5000, rect);
-				Assert.NotNull (detectedObjectObservation, "randomRevision detectedObjectObservation is null");
+				Assert.That (detectedObjectObservation, Is.Not.Null, "randomRevision detectedObjectObservation is null");
 				Assert.That (detectedObjectObservation.BoundingBox, Is.EqualTo (rect));
 
 				var faceObservation = VNFaceObservation.FromBoundingBox ((VNFaceObservationRequestRevision) 5000, rect);
-				Assert.NotNull (faceObservation, "randomRevision faceObservation is null");
+				Assert.That (faceObservation, Is.Not.Null, "randomRevision faceObservation is null");
 				Assert.That (faceObservation.BoundingBox, Is.EqualTo (rect));
 
 				var recognizedObjectObservation = VNRecognizedObjectObservation.FromBoundingBox ((VNRecognizedObjectObservationRequestRevision) 5000, rect);
 				if (TestRuntime.CheckXcodeVersion (11, 0) && !TestRuntime.CheckXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch)) {
-					Assert.IsNull (recognizedObjectObservation, "randomRevision recognizedObjectObservation is null");
+					Assert.That (recognizedObjectObservation, Is.Null, "randomRevision recognizedObjectObservation is null");
 				} else {
-					Assert.NotNull (recognizedObjectObservation, "randomRevision recognizedObjectObservation is null");
+					Assert.That (recognizedObjectObservation, Is.Not.Null, "randomRevision recognizedObjectObservation is null");
 					Assert.That (recognizedObjectObservation.BoundingBox, Is.EqualTo (rect));
 				}
 
 				var rectangleObservation = VNRectangleObservation.FromBoundingBox ((VNRectangleObservationRequestRevision) 5000, rect);
-				Assert.NotNull (rectangleObservation, "randomRevision rectangleObservation is null");
+				Assert.That (rectangleObservation, Is.Not.Null, "randomRevision rectangleObservation is null");
 				Assert.That (rectangleObservation.BoundingBox, Is.EqualTo (rect));
 
 				var textObservation = VNTextObservation.FromBoundingBox ((VNTextObservationRequestRevision) 5000, rect);
-				Assert.NotNull (textObservation, "randomRevision textObservation is null");
+				Assert.That (textObservation, Is.Not.Null, "randomRevision textObservation is null");
 				Assert.That (textObservation.BoundingBox, Is.EqualTo (rect));
 
 				var barcodeObservation = VNBarcodeObservation.FromBoundingBox ((VNBarcodeObservationRequestRevision) 5000, rect);
-				Assert.NotNull (barcodeObservation, "randomRevision barcodeObservation is null");
+				Assert.That (barcodeObservation, Is.Not.Null, "randomRevision barcodeObservation is null");
 				Assert.That (barcodeObservation.BoundingBox, Is.EqualTo (rect));
 			}
 		}
@@ -188,31 +188,31 @@ namespace MonoTouchFixtures.Vision {
 			var rect = new CGRect (0, 0, 10, 10);
 			{
 				var detectedObjectObservation = VNDetectedObjectObservation.FromBoundingBox (VNDetectedObjectObservationRequestRevision.Two, rect);
-				Assert.NotNull (detectedObjectObservation, "detectedObjectObservation is null");
+				Assert.That (detectedObjectObservation, Is.Not.Null, "detectedObjectObservation is null");
 				Assert.That (detectedObjectObservation.BoundingBox, Is.EqualTo (rect));
 
 				var faceObservation = VNFaceObservation.FromBoundingBox (VNFaceObservationRequestRevision.Two, rect);
-				Assert.NotNull (faceObservation, "faceObservation is null");
+				Assert.That (faceObservation, Is.Not.Null, "faceObservation is null");
 				Assert.That (faceObservation.BoundingBox, Is.EqualTo (rect));
 
 				var recognizedObjectObservation = VNRecognizedObjectObservation.FromBoundingBox (VNRecognizedObjectObservationRequestRevision.Two, rect);
 				if (TestRuntime.CheckXcodeVersion (11, 0) && !TestRuntime.CheckXcodeVersion (12, TestRuntime.MinorXcode12APIMismatch)) {
-					Assert.Null (recognizedObjectObservation, "recognizedObjectObservation is null");
+					Assert.That (recognizedObjectObservation, Is.Null, "recognizedObjectObservation is null");
 				} else {
-					Assert.NotNull (recognizedObjectObservation, "recognizedObjectObservation is null");
+					Assert.That (recognizedObjectObservation, Is.Not.Null, "recognizedObjectObservation is null");
 					Assert.That (recognizedObjectObservation.BoundingBox, Is.EqualTo (rect));
 				}
 
 				var rectangleObservation = VNRectangleObservation.FromBoundingBox (VNRectangleObservationRequestRevision.Two, rect);
-				Assert.NotNull (rectangleObservation, "rectangleObservation is null");
+				Assert.That (rectangleObservation, Is.Not.Null, "rectangleObservation is null");
 				Assert.That (rectangleObservation.BoundingBox, Is.EqualTo (rect));
 
 				var textObservation = VNTextObservation.FromBoundingBox (VNTextObservationRequestRevision.Two, rect);
-				Assert.NotNull (textObservation, "textObservation is null");
+				Assert.That (textObservation, Is.Not.Null, "textObservation is null");
 				Assert.That (textObservation.BoundingBox, Is.EqualTo (rect));
 
 				var barcodeObservation = VNBarcodeObservation.FromBoundingBox (VNBarcodeObservationRequestRevision.Two, rect);
-				Assert.NotNull (barcodeObservation, "barcodeObservation is null");
+				Assert.That (barcodeObservation, Is.Not.Null, "barcodeObservation is null");
 				Assert.That (barcodeObservation.BoundingBox, Is.EqualTo (rect));
 			}
 		}

@@ -771,12 +771,12 @@ namespace Xamarin.Bundler {
 		}
 #endif // !LEGACY_TOOLS
 
-		public bool IsFrameworkAvailableInSimulator (string framework)
+		public bool IsFrameworkUnavailable (string @namespace)
 		{
-			if (!Driver.GetFrameworks (this).TryGetValue (framework, out var fw))
-				return true; // Unknown framework, assume it's valid for the simulator
+			if (!Driver.GetFrameworks (this).TryGetValue (@namespace, out var fw))
+				return false; // Unknown framework, assume it's valid
 
-			return fw.IsFrameworkAvailableInSimulator (this);
+			return fw.IsFrameworkUnavailable (this);
 		}
 
 #if !LEGACY_TOOLS

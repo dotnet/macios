@@ -490,8 +490,8 @@ namespace Xamarin.Bundler {
 
 					string file = Path.GetFileNameWithoutExtension (name);
 
-					if (App.IsSimulatorBuild && !App.IsFrameworkAvailableInSimulator (file)) {
-						Driver.Log (3, "Not linking with {0} (referenced by a module reference in {1}) because it's not available in the simulator.", file, FileName);
+					if (App.IsFrameworkUnavailable (file)) {
+						Driver.Log (3, "Not linking with {0} (referenced by a module reference in {1}) because it's not available in the current SDK.", file, FileName);
 						continue;
 					}
 

@@ -201,7 +201,13 @@ namespace Xamarin.MacDev.Tasks {
 			try {
 				using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource (cancellationTokenSource.Token);
 				timeoutCts.CancelAfter (TimeSpan.FromMinutes (1));
-				var args = new List<string> { "simctl", "--json-output=" + jsonOutputFile, "list", "runtimes" };
+				var args = new List<string> {
+					"simctl",
+					"list",
+					"runtimes",
+					"-j",
+					"--json-output=" + jsonOutputFile
+				};
 				var rv = ExecuteAsync ("xcrun", args, showErrorIfFailure: false, cancellationToken: timeoutCts.Token).Result;
 
 				if (rv.ExitCode != 0) {
@@ -275,7 +281,7 @@ namespace Xamarin.MacDev.Tasks {
 			if (Log.HasLoggedErrors)
 				return 1;
 
-			var rv = ExecuteAsync (executable, args, environment: environment, cancellationToken: cancellationTokenSource.Token).Result;
+			var rv = ExecuteAsync (executable, args, showErrorIfFailure: true, environment: environment, cancellationToken: cancellationTokenSource.Token).Result;
 			var exitCode = rv.ExitCode;
 			var messages = rv.Output.StandardOutput;
 			File.WriteAllText (manifest.ItemSpec, messages);
@@ -287,8 +293,6 @@ namespace Xamarin.MacDev.Tasks {
 				var errors = rv.Output.StandardError;
 				if (errors.Length > 0)
 					Log.LogError (null, null, null, items [0].ItemSpec, 0, 0, 0, 0, "{0}", errors);
-
-				Log.LogError (MSBStrings.E0117, ToolName, exitCode);
 
 				// Note: If the log file exists and is parseable, log those warnings/errors as well...
 				if (File.Exists (manifest.ItemSpec)) {

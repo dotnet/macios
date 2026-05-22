@@ -37,7 +37,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 			TestRuntime.AssertSystemVersion (ApplePlatform.TVOS, 10, 2, throwIfOtherPlatform: false);
 
 			using (var session = CreateSession ()) {
-				Assert.IsNotNull (session, "Session should not be null");
+				Assert.That (session, Is.Not.Null, "Session should not be null");
 			}
 		}
 
@@ -107,7 +107,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 			using (var session = CreateSession ()) {
 				var supportedProps = session.GetSupportedProperties ();
-				Assert.NotNull (supportedProps, "GetSupportedProperties IsNull");
+				Assert.That (supportedProps, Is.Not.Null, "GetSupportedProperties IsNull");
 
 				var key = new NSString ("ShouldBeSerialized");
 				foreach (var item in supportedProps) {
@@ -117,7 +117,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 					NSObject value;
 					if (dict.TryGetValue (key, out value) && value is not null) {
 						var number = (NSNumber) value;
-						Assert.IsFalse (number.BoolValue, "CompressionSession GetSupportedPropertiesTest ShouldBeSerialized is True");
+						Assert.That (number.BoolValue, Is.False, "CompressionSession GetSupportedPropertiesTest ShouldBeSerialized is True");
 					}
 				}
 			}
@@ -137,7 +137,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 			using (var session = CreateSession ()) {
 				var supportedProps = session.GetSerializableProperties ();
-				Assert.IsNull (supportedProps, "CompressionSession GetSerializableProperties is not null");
+				Assert.That (supportedProps, Is.Null, "CompressionSession GetSerializableProperties is not null");
 			}
 		}
 
@@ -187,10 +187,10 @@ namespace MonoTouchFixtures.VideoToolbox {
 			thread.IsBackground = true;
 			thread.Start ();
 			var completed = thread.Join (TimeSpan.FromSeconds (30));
-			Assert.IsNull (ex); // We check for this before the completion assert, to show any other assertion failures that may occur in CI.
+			Assert.That (ex, Is.Null); // We check for this before the completion assert, to show any other assertion failures that may occur in CI.
 			if (!completed)
 				TestRuntime.IgnoreInCI ("This test fails occasionally in CI");
-			Assert.IsTrue (completed, "timed out");
+			Assert.That (completed, Is.True, "timed out");
 		}
 
 		public void TestCallbackBackground (bool stronglyTyped)
@@ -217,14 +217,14 @@ namespace MonoTouchFixtures.VideoToolbox {
 				using var imageBuffer = new CVPixelBuffer (width, height, CVPixelFormatType.CV420YpCbCr8BiPlanarFullRange);
 				var pts = new CMTime (40 * i, 1);
 				status = session.EncodeFrame (imageBuffer, pts, duration, null, sourceFrameValue, out var infoFlags);
-				Assert.AreEqual (VTStatus.Ok, status, $"status #{i}");
+				Assert.That (status, Is.EqualTo (VTStatus.Ok), $"status #{i}");
 				// This looks weird, but it seems the video encoder can become overwhelmed otherwise, and it
 				// will start failing (and taking a long time to do so, eventually timing out the test).
 				Thread.Sleep (10);
 			}
 			status = session.CompleteFrames (new CMTime (40 * frameCount, 1));
-			Assert.AreEqual (VTStatus.Ok, status, "status finished");
-			Assert.AreEqual (frameCount, callbackCounter, "frame count");
+			Assert.That (status, Is.EqualTo (VTStatus.Ok), "status finished");
+			Assert.That (callbackCounter, Is.EqualTo (frameCount), "frame count");
 			Assert.That (failures, Is.Empty, "no callback failures");
 		}
 
@@ -254,11 +254,11 @@ namespace MonoTouchFixtures.VideoToolbox {
 
 			if (ex is NUnit.Framework.Internal.NUnitException)
 				throw ex;
-			Assert.IsNull (ex); // We check for this before the completion assert, to show any other assertion failures that may occur in CI.
+			Assert.That (ex, Is.Null); // We check for this before the completion assert, to show any other assertion failures that may occur in CI.
 
 			if (!completed)
 				TestRuntime.IgnoreInCI ("This test fails occasionally in CI");
-			Assert.IsTrue (completed, "timed out");
+			Assert.That (completed, Is.True, "timed out");
 		}
 
 		void TestMultiImageCallbackBackground (bool stronglyTyped, bool customCallback)
@@ -321,7 +321,7 @@ namespace MonoTouchFixtures.VideoToolbox {
 				} else {
 					status = session.EncodeMultiImageFrame (taggedBufferGroup, pts, duration, null, sourceFrameValue, out infoFlags);
 				}
-				Assert.AreEqual (VTStatus.Ok, status, $"status #{i}");
+				Assert.That (status, Is.EqualTo (VTStatus.Ok), $"status #{i}");
 				Assert.That (infoFlags, Is.EqualTo (VTEncodeInfoFlags.Asynchronous), $"infoFlags #{i}");
 
 				foreach (var img in buffers)
@@ -329,13 +329,13 @@ namespace MonoTouchFixtures.VideoToolbox {
 			}
 			status = session.CompleteFrames (new CMTime (40 * frameCount * chunks, 1));
 			GC.KeepAlive (session);
-			Assert.AreEqual (VTStatus.Ok, status, "status finished");
+			Assert.That (status, Is.EqualTo (VTStatus.Ok), "status finished");
 			if (customCallback) {
-				Assert.AreEqual (0, callbackCounter, "frame count A");
-				Assert.AreEqual (frameCount, callbackCounter2, "frame count A2");
+				Assert.That (callbackCounter, Is.EqualTo (0), "frame count A");
+				Assert.That (callbackCounter2, Is.EqualTo (frameCount), "frame count A2");
 			} else {
-				Assert.AreEqual (frameCount, callbackCounter, "frame count B");
-				Assert.AreEqual (0, callbackCounter2, "frame count B2");
+				Assert.That (callbackCounter, Is.EqualTo (frameCount), "frame count B");
+				Assert.That (callbackCounter2, Is.EqualTo (0), "frame count B2");
 			}
 			Assert.That (failures, Is.Empty, "no callback failures");
 		}

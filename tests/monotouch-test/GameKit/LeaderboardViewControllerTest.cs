@@ -32,8 +32,8 @@ namespace MonoTouchFixtures.GameKit {
 			Assert.Inconclusive ("'LeaderboardViewControllerTest' the native 'init' method returned nil.");
 #endif
 			using (var vc = new GKLeaderboardViewController ()) {
-				Assert.Null (vc.Category, "Category");
-				Assert.Null (vc.Delegate, "Delegate");
+				Assert.That (vc.Category, Is.Null, "Category");
+				Assert.That (vc.Delegate, Is.Null, "Delegate");
 				// default Scope vary by iOS version and can't be changed on iOS7 - not worth testing
 			}
 		}

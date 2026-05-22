@@ -24,10 +24,10 @@ namespace MonoTouchFixtures.Foundation {
 			using (var set1 = new NSMutableOrderedSet (str1))
 			using (var set2 = new NSMutableOrderedSet (str2, str3))
 			using (var result = set1 + set2) {
-				Assert.AreEqual ((nint) 3, result.Count, "AddTest Count");
-				Assert.IsTrue (result.Contains (str1), "AddTest Contains 1");
-				Assert.IsTrue (result.Contains (str2), "AddTest Contains 2");
-				Assert.IsTrue (result.Contains (str3), "AddTest Contains 3");
+				Assert.That (result.Count, Is.EqualTo ((nint) 3), "AddTest Count");
+				Assert.That (result.Contains (str1), Is.True, "AddTest Contains 1");
+				Assert.That (result.Contains (str2), Is.True, "AddTest Contains 2");
+				Assert.That (result.Contains (str3), Is.True, "AddTest Contains 3");
 			}
 		}
 
@@ -43,11 +43,11 @@ namespace MonoTouchFixtures.Foundation {
 			using (var second = new NSMutableOrderedSet (str3, str4))
 			using (var third = first - second) {
 
-				Assert.AreEqual ((nint) 2, third.Count, "OperatorSubtract Count");
-				Assert.IsTrue (third.Contains (str1), "OperatorSubtract 1");
-				Assert.IsTrue (third.Contains (str2), "OperatorSubtract 2");
-				Assert.IsFalse (third.Contains (str3), "OperatorSubtract 3");
-				Assert.IsFalse (third.Contains (str4), "OperatorSubtract 4");
+				Assert.That (third.Count, Is.EqualTo ((nint) 2), "OperatorSubtract Count");
+				Assert.That (third.Contains (str1), Is.True, "OperatorSubtract 1");
+				Assert.That (third.Contains (str2), Is.True, "OperatorSubtract 2");
+				Assert.That (third.Contains (str3), Is.False, "OperatorSubtract 3");
+				Assert.That (third.Contains (str4), Is.False, "OperatorSubtract 4");
 			}
 		}
 
@@ -62,8 +62,8 @@ namespace MonoTouchFixtures.Foundation {
 			using (var sum3 = one + two) {
 
 			}
-			Assert.AreNotEqual (IntPtr.Zero, one.Handle, "Handle must be != IntPtr.Zero");
-			Assert.AreNotEqual (IntPtr.Zero, two.Handle, "Handle must be != IntPtr.Zero");
+			Assert.That (one.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle must be != IntPtr.Zero");
+			Assert.That (two.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle must be != IntPtr.Zero");
 		}
 
 		[Test]
@@ -75,8 +75,8 @@ namespace MonoTouchFixtures.Foundation {
 
 			using (var oSet = new NSMutableOrderedSet (str1, str2, str3))
 			using (var oSet2 = new NSMutableOrderedSet (str1, str2, str3)) {
-				Assert.IsTrue (oSet == oSet2, "NSMutableOrderedSetTest == must be true");
-				Assert.IsTrue (oSet.Equals (oSet2), "NSMutableOrderedSetTest Equals must be true");
+				Assert.That (oSet == oSet2, Is.True, "NSMutableOrderedSetTest == must be true");
+				Assert.That (oSet.Equals (oSet2), Is.True, "NSMutableOrderedSetTest Equals must be true");
 			}
 		}
 
@@ -89,8 +89,8 @@ namespace MonoTouchFixtures.Foundation {
 
 			using (var oSet = new NSMutableOrderedSet (str1, str2, str3))
 			using (var oSet2 = new NSMutableOrderedSet (str3, str2, str1)) {
-				Assert.IsTrue (oSet != oSet2, "NSMutableOrderedSetTest != must be true");
-				Assert.IsFalse (oSet.Equals (oSet2), "NSMutableOrderedSetTest Equals must be false");
+				Assert.That (oSet != oSet2, Is.True, "NSMutableOrderedSetTest != must be true");
+				Assert.That (oSet.Equals (oSet2), Is.False, "NSMutableOrderedSetTest Equals must be false");
 			}
 		}
 
@@ -100,9 +100,9 @@ namespace MonoTouchFixtures.Foundation {
 			var str1 = (NSString) "1";
 			NSObject? nullObj = null;
 			using (var set = new NSMutableOrderedSet (str1, nullObj)) {
-				Assert.AreEqual (2, (int) set.Count, "Count should include null");
-				Assert.AreEqual (str1, set [0], "First item");
-				Assert.IsInstanceOf<NSNull> (set [1], "Second item should be NSNull");
+				Assert.That ((int) set.Count, Is.EqualTo (2), "Count should include null");
+				Assert.That (set [0], Is.EqualTo (str1), "First item");
+				Assert.That (set [1], Is.InstanceOf<NSNull> (), "Second item should be NSNull");
 			}
 		}
 
@@ -111,7 +111,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			NSObject []? objs = null;
 			using (var set = new NSMutableOrderedSet (objs)) {
-				Assert.AreEqual (0, (int) set.Count, "Null array should create empty set");
+				Assert.That ((int) set.Count, Is.EqualTo (0), "Null array should create empty set");
 			}
 		}
 	}

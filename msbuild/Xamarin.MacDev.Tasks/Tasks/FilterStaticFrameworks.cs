@@ -44,17 +44,14 @@ namespace Xamarin.MacDev.Tasks {
 			var infoPlistPath = GetFrameworkInfoPlistPath (frameworkPath, platform);
 
 			if (File.Exists (infoPlistPath)) {
-				try {
-					var plist = PDictionary.FromFile (infoPlistPath);
-					if (plist is not null) {
-						var bundleExecutable = plist.GetCFBundleExecutable ();
-						if (!string.IsNullOrEmpty (bundleExecutable)) {
-							return Path.Combine (frameworkPath, bundleExecutable);
-						}
+				if (PDictionary.TryOpenFile (infoPlistPath, out var plist)) {
+					var bundleExecutable = plist.GetCFBundleExecutable ();
+					if (!string.IsNullOrEmpty (bundleExecutable)) {
+						return Path.Combine (frameworkPath, bundleExecutable);
 					}
-				} catch (Exception ex) {
+				} else {
 					// Log exceptions from malformed plist files and fall back to default behavior
-					log?.LogMessage (MessageImportance.Low, $"Failed to parse Info.plist for framework '{frameworkPath}': {ex.Message}");
+					log?.LogMessage (MessageImportance.Low, $"Failed to parse Info.plist for framework '{frameworkPath}'");
 				}
 			}
 

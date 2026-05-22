@@ -227,7 +227,7 @@ namespace Xamarin.Tests {
 				var platform = info.Platform;
 				var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
 
-				Assert.IsTrue (CanExecute (info.Platform, runtimeIdentifiers), "Must be executable to execute!");
+				Assert.That (CanExecute (info.Platform, runtimeIdentifiers), Is.True, "Must be executable to execute!");
 
 				// First add some code to exit the template if it launches successfully.
 				InsertCodeToExitAppAfterLaunch (language, outputDir);
@@ -286,7 +286,7 @@ namespace Xamarin.Tests {
 			if (info.Execute) {
 				var runtimeIdentifiers = GetDefaultRuntimeIdentifier (platform);
 
-				Assert.IsTrue (CanExecute (info.Platform, runtimeIdentifiers), "Must be executable to execute!");
+				Assert.That (CanExecute (info.Platform, runtimeIdentifiers), Is.True, "Must be executable to execute!");
 
 				// First add some code to exit the template if it launches successfully.
 				InsertCodeToExitAppAfterLaunch (language, outputDir);
@@ -333,7 +333,7 @@ Environment.Exit (0);
 			var modifiedMainContents =
 				mainContents.Replace ("// This is the main entry point of the application.",
 					exitSampleWithSuccess);
-			Assert.AreNotEqual (modifiedMainContents, mainContents, "Failed to modify the main content");
+			Assert.That (mainContents, Is.Not.EqualTo (modifiedMainContents), "Failed to modify the main content");
 			File.WriteAllText (mainFile, modifiedMainContents);
 		}
 
@@ -349,7 +349,7 @@ Environment.Exit (0);
 			var modifiedMainContents =
 				mainContents.Replace ("// This is the main entry point of the application.",
 					exitSampleWithSuccess);
-			Assert.AreNotEqual (modifiedMainContents, mainContents, "Failed to modify the main content");
+			Assert.That (mainContents, Is.Not.EqualTo (modifiedMainContents), "Failed to modify the main content");
 			File.WriteAllText (mainFile, modifiedMainContents);
 		}
 
@@ -367,7 +367,7 @@ End Sub
 			var modifiedMainContents =
 				mainContents.Replace ("' This is the main entry point of the application.",
 					exitSampleWithSuccess);
-			Assert.AreNotEqual (modifiedMainContents, mainContents, "Failed to modify the main content");
+			Assert.That (mainContents, Is.Not.EqualTo (modifiedMainContents), "Failed to modify the main content");
 			File.WriteAllText (mainFile, modifiedMainContents);
 		}
 	}

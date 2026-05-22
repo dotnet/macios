@@ -102,7 +102,7 @@ namespace Xamarin.MacDev.Tasks {
 				plist = new PDictionary ();
 			} else if (File.Exists (appManifest)) {
 				try {
-					plist = PDictionary.FromFile (appManifest)!;
+					plist = PDictionary.OpenFile (appManifest);
 				} catch (Exception ex) {
 					LogAppManifestError (MSBStrings.E0010, appManifest, ex.Message);
 					return false;
@@ -393,7 +393,7 @@ namespace Xamarin.MacDev.Tasks {
 				var overwrite = !string.Equals (template.GetMetadata ("Overwrite"), "false", StringComparison.OrdinalIgnoreCase);
 
 				try {
-					partial = PDictionary.FromFile (template.ItemSpec)!;
+					partial = PDictionary.OpenFile (template.ItemSpec);
 				} catch (Exception ex) {
 					task.Log.LogError (MSBStrings.E0107, template.ItemSpec, ex.Message);
 					continue;

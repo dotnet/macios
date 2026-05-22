@@ -119,12 +119,9 @@ namespace Foundation {
 
 #if !COREBUILD
 	// Allocated in native memory, so that it can be accessed from native code without having to deal with the GC.
-	// Also put objc_super here, because it simplifies code.
 	// This is mirrored in runtime.h and the definition needs to be in sync.
 	struct NSObjectData {
-		// the layout here is important, the two first fields have to match the objc_super struct.
 		public NativeHandle handle;
-		public NativeHandle classHandle;
 		public NSObject.Flags flags;
 	}
 
@@ -137,34 +134,42 @@ namespace Foundation {
 	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L15
 	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L59-L71
 	// * https://github.com/AustinWise/runtime/blob/2bd10ad43df967950657ae0ade1f899dc1b18a41/src/coreclr/nativeaot/System.Private.CoreLib/src/System/Runtime/InteropServices/ObjectiveCMarshal.NativeAot.cs#L181-L185
-	unsafe class NSObjectDataHandle {
-		NSObjectData* data;
+	unsafe class NSObjectDataHandle : TrackedMemory {
+		public NSObjectData* Data { get => (NSObjectData*) Value; }
+
+		public NSObjectDataHandle () : base ((nuint) sizeof (NSObjectData))
+		{
+		}
+	}
+
+	class TrackedMemory {
 		GCHandle handle;
 
-		public NSObjectData* Data { get => data; }
+		public IntPtr Value { get; private set; }
 
-		public NSObjectDataHandle ()
+		public unsafe TrackedMemory (nuint size)
 		{
-			data = Runtime.AllocZeroed<NSObjectData> ();
+			Value = (IntPtr) NativeMemory.AllocZeroed (size);
 		}
 
-		public void CreateHandle (NSObject obj)
+		public unsafe void CreateHandle (NSObject trackedObject)
 		{
-			handle = GCHandle.Alloc (obj, GCHandleType.WeakTrackResurrection);
+			handle = GCHandle.Alloc (trackedObject, GCHandleType.WeakTrackResurrection);
 		}
 
-		~NSObjectDataHandle ()
+		~TrackedMemory ()
 		{
 			var handleAllocated = handle.IsAllocated;
-
 			if (handleAllocated && handle.Target is not null) {
 				// The NSObject instance isn't gone yet, we have to try again later.
 				GC.ReRegisterForFinalize (this);
 				return;
 			}
 
-			NativeMemory.Free (data);
-			data = null;
+			unsafe {
+				NativeMemory.Free ((void*) Value);
+			}
+			Value = IntPtr.Zero;
 
 			if (handleAllocated)
 				handle.Free ();
@@ -207,6 +212,10 @@ namespace Foundation {
 		// other things, this means it's accessible from threads that has never seen/run managed code without
 		// having to attach those threads to to the managed runtime.
 		IntPtr /* unsafe NSObjectData* */ __data; // Read directly from several places in the runtime
+
+#pragma warning disable CS8618 // "Non-nullable field '...' must contain a non-null value when exiting constructor.": this field is always non-null, because NSObject.Initialize is called before anything else is done.
+		static ConditionalWeakTable<NSObject, TrackedMemory> super_map;
+#pragma warning restore CS8618
 
 		unsafe NativeHandle handle {
 			get => GetData ()->handle;
@@ -388,17 +397,28 @@ namespace Foundation {
 			}
 		}
 
+#if !XAMCORE_5_0
 		unsafe NativeHandle GetSuper ()
 		{
-			var data = GetData ();
-			if (data->classHandle == NativeHandle.Zero)
-				data->classHandle = ClassHandle;
-			return (IntPtr) (&data->handle);
+			var memory = super_map.GetValue (this, (obj) => {
+				unsafe {
+					var memory = new TrackedMemory ((nuint) sizeof (objc_super));
+					memory.CreateHandle (obj);
+					return memory;
+				}
+			});
+			objc_super* sup = (objc_super*) memory.Value;
+			if (sup->ClassHandle == NativeHandle.Zero)
+				sup->ClassHandle = ClassHandle;
+			sup->Handle = handle;
+			return memory.Value;
 		}
+#endif // !XAMCORE_5_0
 
 		internal static NativeHandle Initialize ()
 		{
 			data_table = new ConditionalWeakTable<NSObject, NSObjectDataHandle> ();
+			super_map = new ConditionalWeakTable<NSObject, TrackedMemory> ();
 			return class_ptr;
 		}
 
@@ -722,16 +742,35 @@ namespace Foundation {
 			return this;
 		}
 
+#if !XAMCORE_5_0
 		/// <summary>Handle used to represent the methods in the base class for this <see cref="NSObject" />.</summary>
 		/// <value>An opaque pointer, represents an Objective-C objc_super object pointing to our base class.</value>
 		/// <remarks>
-		///   This property is used to access members of a base class.
-		///   This is typically used when you call any of the Messaging
-		///   methods to invoke methods that were implemented in your base
-		///   class, instead of invoking the implementation in the current
-		///   class.
+		///   <para>
+		///     This property is used to access members of a base class.
+		///     This is typically used when you call any of the Messaging
+		///     methods to invoke methods that were implemented in your base
+		///     class, instead of invoking the implementation in the current
+		///     class.
+		///   </para>
+		///   <para>
+		///     This property is obsolete; use the <see cref="ObjCSuper" /> struct instead:
+		///   </para>
+		///   <example>
+		///     <code lang="csharp lang-csharp"><![CDATA[
+		/// [DllImport ("/usr/lib/libobjc.dylib")]
+		/// unsafe static extern void objc_msgSendSuper (ObjCSuper* super, IntPtr sel);
+		///
+		/// var obj = new MyNSObject ();
+		/// var super = new ObjCSuper (obj);
+		/// objc_msgSendSuper (&super, Selector.GetHandle ("description"));
+		/// ]]></code>
+		///   </example>
 		/// </remarks>
 		[EditorBrowsable (EditorBrowsableState.Never)]
+#if NET11_0_OR_GREATER
+		[Obsolete ("Use 'ObjCSuper' instead.")]
+#endif
 		public NativeHandle SuperHandle {
 			get {
 				if (handle == IntPtr.Zero)
@@ -740,6 +779,7 @@ namespace Foundation {
 				return GetSuper ();
 			}
 		}
+#endif // !XAMCORE_5_0
 
 		/// <summary>Handle (pointer) to the unmanaged object representation.</summary>
 		/// <value>A pointer.</value>

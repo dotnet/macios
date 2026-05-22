@@ -2125,7 +2125,7 @@ namespace Registrar {
 					objcType.Add (new ObjCMethod (this, objcType, null) {
 						Selector = "xamarinGetNSObjectData",
 						Trampoline = Trampoline.GetNSObjectData,
-						Signature = "^{NSObjectData=@^{objc_super}I}:",
+						Signature = "^{NSObjectData=@I}:",
 						IsStatic = false,
 					}, ref exceptions);
 				}

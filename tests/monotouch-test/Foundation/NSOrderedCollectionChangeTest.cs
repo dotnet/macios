@@ -12,8 +12,8 @@ namespace MonoTouchFixtures.Foundation {
 
 			using var str = new NSString ("Test");
 			using var change = NSOrderedCollectionChange.ChangeWithObject (str, NSCollectionChangeType.Insert, 0);
-			Assert.AreEqual (str, change.Object, "Content");
-			Assert.AreEqual ((nuint)0, change.Index, "Index");
+			Assert.That (change.Object, Is.EqualTo (str), "Content");
+			Assert.That (change.Index, Is.EqualTo ((nuint)0), "Index");
 		}
 
 		[Test]
@@ -23,9 +23,9 @@ namespace MonoTouchFixtures.Foundation {
 
 			using var str = new NSString ("Test");
 			using var change = NSOrderedCollectionChange.ChangeWithObject (str, NSCollectionChangeType.Insert, 0, 1);
-			Assert.AreEqual (str, change.Object, "Content");
-			Assert.AreEqual ((nuint)0, change.Index, "Index");
-			Assert.AreEqual ((nuint)1, change.AssociatedIndex);
+			Assert.That (change.Object, Is.EqualTo (str), "Content");
+			Assert.That (change.Index, Is.EqualTo ((nuint)0), "Index");
+			Assert.That (change.AssociatedIndex, Is.EqualTo ((nuint)1));
 		}
 	}
 #endif

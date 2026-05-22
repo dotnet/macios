@@ -96,7 +96,7 @@ namespace Xamarin.Tests {
 			Console.WriteLine ($"If this is expected, an updated list of expected warnings in stored in {fn}");
 			File.WriteAllText (fn, sb.ToString ());
 
-			// Rather than doing an Assert.IsEmpty, which produces a horrendous error message, we'll do an Assert.Multiple which generates a 
+			// Rather than doing an Assert.That(..., Is.Empty), which produces a horrendous error message, we'll do an Assert.Multiple which generates a 
 			// nice enumerated output of all the failures.
 			Assert.Multiple (() => {
 				// fail for each of the new warnings

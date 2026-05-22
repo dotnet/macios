@@ -28,7 +28,7 @@ namespace MonoTouchFixtures.UIKit {
 		public void ConformsTo ()
 		{
 			using (UIPickerView pv = new UIPickerView ()) {
-				Assert.True (pv.ConformsToProtocol (Protocol.GetHandle ("UITableViewDataSource")), "UITableViewDataSource");
+				Assert.That (pv.ConformsToProtocol (Protocol.GetHandle ("UITableViewDataSource")), Is.True, "UITableViewDataSource");
 			}
 		}
 	}

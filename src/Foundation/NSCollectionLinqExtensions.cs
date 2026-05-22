@@ -43,17 +43,17 @@ namespace System.Linq {
 			return Enumerable.FirstOrDefault ((IEnumerable<TKey>) source, predicate);
 		}
 
-		public static TValue? FirstOrDefault<TValue> (this Foundation.NSMutableArray<TValue> source) where TValue : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
-			return Enumerable.FirstOrDefault ((IEnumerable<TValue>) source);
+			return Enumerable.FirstOrDefault ((IEnumerable<TKey>) source);
 		}
 
-		public static TValue? FirstOrDefault<TValue> (this Foundation.NSMutableArray<TValue> source, Func<TValue, bool> predicate) where TValue : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
-			return Enumerable.FirstOrDefault ((IEnumerable<TValue>) source, predicate);
+			return Enumerable.FirstOrDefault ((IEnumerable<TKey>) source, predicate);
 		}
 
 		public static TKey? FirstOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject

@@ -120,7 +120,7 @@ namespace Foundation {
 #if !COREBUILD
 	// Allocated in native memory, so that it can be accessed from native code without having to deal with the GC.
 	// This is mirrored in runtime.h and the definition needs to be in sync.
-	struct NSObjectData {
+	internal struct NSObjectData {
 		public NativeHandle handle;
 		public NSObject.Flags flags;
 	}
@@ -228,18 +228,24 @@ namespace Foundation {
 			if (data != IntPtr.Zero)
 				return (NSObjectData*) data;
 
-			var data_handle = new NSObjectDataHandle ();
-			var existing_data = Interlocked.CompareExchange (ref __data, (IntPtr) data_handle.Data, IntPtr.Zero);
-			if (existing_data != IntPtr.Zero) {
-				// return the existing data, the GC will collect the other one we just created
-				return (NSObjectData*) existing_data;
+			if (Runtime.IsCoreCLR) {
+				data = (IntPtr) Runtime.GetTaggedMemory (this);
+				__data = data; // Runtime.GetTaggedMemory will always return the same pointer for the same object, so no synchronization is needed here (redundant writes are benign).
+				return (NSObjectData*) data;
+			} else {
+				var data_handle = new NSObjectDataHandle ();
+				var existing_data = Interlocked.CompareExchange (ref __data, (IntPtr) data_handle.Data, IntPtr.Zero);
+				if (existing_data != IntPtr.Zero) {
+					// return the existing data, the GC will collect the other one we just created
+					return (NSObjectData*) existing_data;
+				}
+				// tell the data handle we just created to track us
+				data_handle.CreateHandle (this);
+				// make sure the data isn't freed before this NSObject is collected, but also
+				// that it is freed after this NSObject is collected.
+				data_table.Add (this, data_handle);
+				return data_handle.Data;
 			}
-			// tell the data handle we just created to track us
-			data_handle.CreateHandle (this);
-			// make sure the data isn't freed before this NSObject is collected, but also
-			// that it is freed after this NSObject is collected.
-			data_table.Add (this, data_handle);
-			return data_handle.Data;
 		}
 
 		unsafe Flags flags {
@@ -417,7 +423,8 @@ namespace Foundation {
 
 		internal static NativeHandle Initialize ()
 		{
-			data_table = new ConditionalWeakTable<NSObject, NSObjectDataHandle> ();
+			if (!Runtime.IsCoreCLR)
+				data_table = new ConditionalWeakTable<NSObject, NSObjectDataHandle> ();
 			super_map = new ConditionalWeakTable<NSObject, TrackedMemory> ();
 			return class_ptr;
 		}

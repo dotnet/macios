@@ -213,10 +213,6 @@ monoobject_dict_free_value (CFAllocatorRef allocator, const void *value)
  * Ref: https://github.com/dotnet/designs/blob/1bb5844c165195e2f633cb1dbe042c4b92aefc4d/accepted/2021/objectivec-interop.md
  */
 
-struct TrackedObjectInfo {
-	struct NSObjectData* data;
-};
-
 void
 xamarin_bridge_setup ()
 {
@@ -296,10 +292,10 @@ xamarin_coreclr_reference_tracking_is_referenced_callback (void* ptr)
 	// But we can access the native memory given to us when the object was toggled
 	// (and which is passed as the 'ptr' argument), so let's get the data we need from there.
 	int rv = 0;
-	struct TrackedObjectInfo *info = (struct TrackedObjectInfo *) ptr;
-	enum NSObjectFlags flags = (enum NSObjectFlags) info->data->flags;
+	struct NSObjectData *data = (struct NSObjectData *) ptr;
+	enum NSObjectFlags flags = (enum NSObjectFlags) data->flags;
 	bool isRegisteredToggleRef = (flags & NSObjectFlagsRegisteredToggleRef) == NSObjectFlagsRegisteredToggleRef;
-	id handle = info->data->handle;
+	id handle = data->handle;
 	MonoToggleRefStatus res = (MonoToggleRefStatus) 0;
 
 	if (isRegisteredToggleRef) {
@@ -337,9 +333,9 @@ xamarin_coreclr_reference_tracking_is_referenced_callback (void* ptr)
 void
 xamarin_coreclr_reference_tracking_tracked_object_entered_finalization (void* ptr)
 {
-	struct TrackedObjectInfo *info = (struct TrackedObjectInfo *) ptr;
-	info->data->flags = (enum NSObjectFlags) (info->data->flags | NSObjectFlagsInFinalizerQueue);
-	LOG_CORECLR (stderr, "%s (%p) flags: %i\n", __func__, ptr, (int) info->flags);
+	struct NSObjectData *data = (struct NSObjectData *) ptr;
+	data->flags = (enum NSObjectFlags) (data->flags | NSObjectFlagsInFinalizerQueue);
+	LOG_CORECLR (stderr, "%s (%p) flags: %i\n", __func__, ptr, (int) data->flags);
 }
 
 void

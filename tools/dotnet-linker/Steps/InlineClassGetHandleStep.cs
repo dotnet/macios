@@ -236,14 +236,14 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 
 		if (!type.HasCustomAttributes)
 			return false;
-		
+
 		foreach (var ca in type.CustomAttributes) {
 			if (!ca.AttributeType.Is ("System.Runtime.Versioning", "UnsupportedOSPlatformAttribute"))
 				continue;
 
 			if (!DerivedLinkContext.StaticRegistrar.GetDotNetAvailabilityAttribute (ca, App.Platform, out var sdkVersion, out _))
 				continue;
-			
+
 			if (sdkVersion is null)
 				return true; // if there's no version, then it's always unavailable
 

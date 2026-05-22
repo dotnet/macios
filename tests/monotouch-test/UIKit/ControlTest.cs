@@ -56,7 +56,7 @@ namespace MonoTouchFixtures.UIKit {
 					any_collected = true;
 				handles [i].Free ();
 			}
-			Assert.IsTrue (any_collected, "Nothing collected");
+			Assert.That (any_collected, Is.True, "Nothing collected");
 		}
 
 		[Test]
@@ -64,7 +64,7 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (var ctrl = new UIControl ()) {
 				ctrl.AddTarget ((a, b) => { }, UIControlEvent.EditingDidBegin);
-				Assert.IsTrue ((TestRuntime.GetFlags (ctrl) & 0x8) /* RegisteredToggleRef */ == 0x8, "RegisteredToggleRef");
+				Assert.That (TestRuntime.GetFlags (ctrl) & 0x8, Is.EqualTo (0x8), "RegisteredToggleRef");
 			}
 		}
 	}

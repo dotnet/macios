@@ -60,7 +60,7 @@ namespace Xamarin.MacDev.Tasks {
 			ConfigureTask ();
 
 			ExecuteTask (Task);
-			CompiledPlist = PDictionary.FromFile (Task.CompiledAppManifest!.ItemSpec) ?? throw new InvalidOperationException ("Failed to load compiled plist");
+			CompiledPlist = PDictionary.OpenFile (Task.CompiledAppManifest!.ItemSpec);
 		}
 
 		#region General tests

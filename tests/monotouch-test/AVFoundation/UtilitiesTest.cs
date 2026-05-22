@@ -26,7 +26,7 @@ namespace MonoTouchFixtures.AVFoundation {
 		public void AspectRatio ()
 		{
 			var r = CGRect.Empty.WithAspectRatio (CGSize.Empty);
-			Assert.True (nfloat.IsNaN (r.Top), "Top");
+			Assert.That (nfloat.IsNaN (r.Top), Is.True, "Top");
 			Assert.That (nfloat.IsNaN (r.Left), "Left");
 			Assert.That (nfloat.IsNaN (r.Width), "Width");
 			Assert.That (nfloat.IsNaN (r.Height), "Height");

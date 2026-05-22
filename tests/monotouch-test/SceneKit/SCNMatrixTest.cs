@@ -140,7 +140,7 @@ namespace MonoTouchFixtures.SceneKit {
 				5, 3, 5, 8,
 				9, 6, 4, 2,
 				4, 6, 9, 8);
-			Assert.AreEqual ((pfloat) (-165), matrix.Determinant, "Determinant");
+			Assert.That (matrix.Determinant, Is.EqualTo ((pfloat) (-165)), "Determinant");
 		}
 
 
@@ -169,22 +169,22 @@ namespace MonoTouchFixtures.SceneKit {
 				12, 22, 32, 42,
 				13, 23, 33, 43,
 				14, 24, 34, 44);
-			Assert.AreEqual ((pfloat) 11, matrix.M11, "M11");
-			Assert.AreEqual ((pfloat) 12, matrix.M12, "M12");
-			Assert.AreEqual ((pfloat) 13, matrix.M13, "M13");
-			Assert.AreEqual ((pfloat) 14, matrix.M14, "M14");
-			Assert.AreEqual ((pfloat) 21, matrix.M21, "M21");
-			Assert.AreEqual ((pfloat) 22, matrix.M22, "M22");
-			Assert.AreEqual ((pfloat) 23, matrix.M23, "M23");
-			Assert.AreEqual ((pfloat) 24, matrix.M24, "M24");
-			Assert.AreEqual ((pfloat) 31, matrix.M31, "M31");
-			Assert.AreEqual ((pfloat) 32, matrix.M32, "M32");
-			Assert.AreEqual ((pfloat) 33, matrix.M33, "M33");
-			Assert.AreEqual ((pfloat) 34, matrix.M34, "M34");
-			Assert.AreEqual ((pfloat) 41, matrix.M41, "M41");
-			Assert.AreEqual ((pfloat) 42, matrix.M42, "M42");
-			Assert.AreEqual ((pfloat) 43, matrix.M43, "M43");
-			Assert.AreEqual ((pfloat) 44, matrix.M44, "M44");
+			Assert.That (matrix.M11, Is.EqualTo ((pfloat) 11), "M11");
+			Assert.That (matrix.M12, Is.EqualTo ((pfloat) 12), "M12");
+			Assert.That (matrix.M13, Is.EqualTo ((pfloat) 13), "M13");
+			Assert.That (matrix.M14, Is.EqualTo ((pfloat) 14), "M14");
+			Assert.That (matrix.M21, Is.EqualTo ((pfloat) 21), "M21");
+			Assert.That (matrix.M22, Is.EqualTo ((pfloat) 22), "M22");
+			Assert.That (matrix.M23, Is.EqualTo ((pfloat) 23), "M23");
+			Assert.That (matrix.M24, Is.EqualTo ((pfloat) 24), "M24");
+			Assert.That (matrix.M31, Is.EqualTo ((pfloat) 31), "M31");
+			Assert.That (matrix.M32, Is.EqualTo ((pfloat) 32), "M32");
+			Assert.That (matrix.M33, Is.EqualTo ((pfloat) 33), "M33");
+			Assert.That (matrix.M34, Is.EqualTo ((pfloat) 34), "M34");
+			Assert.That (matrix.M41, Is.EqualTo ((pfloat) 41), "M41");
+			Assert.That (matrix.M42, Is.EqualTo ((pfloat) 42), "M42");
+			Assert.That (matrix.M43, Is.EqualTo ((pfloat) 43), "M43");
+			Assert.That (matrix.M44, Is.EqualTo ((pfloat) 44), "M44");
 
 			var pos = new SCNVector3 (10, 20, 30);
 			var transformed = SCNVector3.TransformPosition (pos, matrix);
@@ -956,7 +956,7 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (921, 922, 923, 924),
 				new SCNVector4 (931, 932, 933, 934),
 				new SCNVector4 (941, 942, 943, 944));
-			Assert.IsFalse (a == b, "Equals");
+			Assert.That (a == b, Is.False, "Equals");
 		}
 
 		[Test]
@@ -972,7 +972,7 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (921, 922, 923, 924),
 				new SCNVector4 (931, 932, 933, 934),
 				new SCNVector4 (941, 942, 943, 944));
-			Assert.IsTrue (a != b, "NotEquals");
+			Assert.That (a != b, Is.True, "NotEquals");
 		}
 
 		[Test]
@@ -983,7 +983,7 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (21, 22, 23, 24),
 				new SCNVector4 (31, 32, 33, 34),
 				new SCNVector4 (41, 42, 43, 44));
-			Assert.AreEqual ("(11, 12, 13, 14)\n(21, 22, 23, 24)\n(31, 32, 33, 34)\n(41, 42, 43, 44)", matrix.ToString (), "ToString");
+			Assert.That (matrix.ToString (), Is.EqualTo ("(11, 12, 13, 14)\n(21, 22, 23, 24)\n(31, 32, 33, 34)\n(41, 42, 43, 44)"), "ToString");
 		}
 
 		[Test]
@@ -999,7 +999,7 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (921, 922, 923, 924),
 				new SCNVector4 (931, 932, 933, 934),
 				new SCNVector4 (941, 942, 943, 944));
-			Assert.IsFalse (((object) a).Equals (b), "object.Equals");
+			Assert.That (((object) a).Equals (b), Is.False, "object.Equals");
 		}
 
 		[Test]
@@ -1015,7 +1015,7 @@ namespace MonoTouchFixtures.SceneKit {
 				new SCNVector4 (921, 922, 923, 924),
 				new SCNVector4 (931, 932, 933, 934),
 				new SCNVector4 (941, 942, 943, 944));
-			Assert.IsFalse (((IEquatable<SCNMatrix4>) a).Equals (b), "object.Equals");
+			Assert.That (((IEquatable<SCNMatrix4>) a).Equals (b), Is.False, "object.Equals");
 		}
 
 		[Test]

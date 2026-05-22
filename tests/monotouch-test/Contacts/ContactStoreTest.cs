@@ -60,10 +60,10 @@ namespace MonoTouchFixtures.Contacts {
 					// it fails on some bots (watchOS 4.2 on jenkins) so we cannot assume it always work
 					if (error is not null)
 						return;
-					Assert.NotNull (contact, "contact");
-					Assert.False (contact.AreKeysAvailable (CNContactOptions.OrganizationName | CNContactOptions.Note), "AreKeysAvailable-1");
-					Assert.True (contact.AreKeysAvailable (CNContactOptions.None), "AreKeysAvailable-2");
-					Assert.True (contact.AreKeysAvailable (fetchKeys), "AreKeysAvailable-3");
+					Assert.That (contact, Is.Not.Null, "contact");
+					Assert.That (contact.AreKeysAvailable (CNContactOptions.OrganizationName | CNContactOptions.Note), Is.False, "AreKeysAvailable-1");
+					Assert.That (contact.AreKeysAvailable (CNContactOptions.None), Is.True, "AreKeysAvailable-2");
+					Assert.That (contact.AreKeysAvailable (fetchKeys), Is.True, "AreKeysAvailable-3");
 				}
 			}
 		}

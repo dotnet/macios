@@ -19,18 +19,18 @@ namespace MonoTouchFixtures.CoreData {
 		void Default (NSManagedObjectContext moc)
 		{
 			Assert.That (moc.DeletedObjects.Count, Is.EqualTo ((nuint) 0), "DeletedObjects");
-			Assert.False (moc.HasChanges, "HasChanges");
+			Assert.That (moc.HasChanges, Is.False, "HasChanges");
 			Assert.That (moc.InsertedObjects.Count, Is.EqualTo ((nuint) 0), "InsertedObjects");
 			Assert.That (moc.MergePolicy, Is.Not.EqualTo (IntPtr.Zero), "MergePolicy");
-			Assert.Null (moc.ParentContext, "ParentContext");
-			Assert.Null (moc.PersistentStoreCoordinator, "PersistentStoreCoordinator");
+			Assert.That (moc.ParentContext, Is.Null, "ParentContext");
+			Assert.That (moc.PersistentStoreCoordinator, Is.Null, "PersistentStoreCoordinator");
 			Assert.That (moc.RegisteredObjects.Count, Is.EqualTo ((nuint) 0), "RegisteredObjects");
-			Assert.False (moc.RetainsRegisteredObjects, "RetainsRegisteredObjects");
+			Assert.That (moc.RetainsRegisteredObjects, Is.False, "RetainsRegisteredObjects");
 			Assert.That (moc.StalenessInterval, Is.EqualTo (-1), "StalenessInterval");
 			if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 12, throwIfOtherPlatform: false))
-				Assert.Null (moc.UndoManager, "UndoManager");
+				Assert.That (moc.UndoManager, Is.Null, "UndoManager");
 			else
-				Assert.NotNull (moc.UndoManager, "UndoManager");
+				Assert.That (moc.UndoManager, Is.Not.Null, "UndoManager");
 			Assert.That (moc.UpdatedObjects.Count, Is.EqualTo ((nuint) 0), "UpdatedObjects");
 			Assert.That (moc.UserInfo.Count, Is.EqualTo ((nuint) 0), "UserInfo");
 		}

@@ -157,13 +157,11 @@ namespace Xamarin.MacDev.Tasks {
 			if (!File.Exists (path))
 				return false;
 
-			try {
-				PDictionary.FromFile (path);
+			if (PDictionary.TryOpenFile (path, out _))
 				return true;
-			} catch {
-				File.Delete (path);
-				return false;
-			}
+
+			File.Delete (path);
+			return false;
 		}
 
 		static bool InterfaceDefinitionChanged (ITaskItem interfaceDefinition, ITaskItem log)
@@ -226,7 +224,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 
 				try {
-					var dict = PDictionary.FromFile (manifest.ItemSpec)!;
+					var dict = PDictionary.OpenFile (manifest.ItemSpec);
 
 					LogWarningsAndErrors (dict, item);
 				} catch (Exception ex) {

@@ -34,7 +34,7 @@ namespace MonoTouchFixtures.CoreFoundation {
 			using var nativeStr = new CFString (str);
 			var array = str.ToCharArray ();
 			for (int i = 0; i < array.Length; i++) {
-				Assert.AreEqual (str [i], nativeStr [i], $"{str [i]} != {nativeStr [i]}");
+				Assert.That (nativeStr [i], Is.EqualTo (str [i]), $"{str [i]} != {nativeStr [i]}");
 			}
 		}
 	}

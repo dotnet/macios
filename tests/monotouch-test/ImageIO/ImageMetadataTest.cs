@@ -35,7 +35,7 @@ namespace MonoTouchFixtures.ImageIO {
 
 				using (var meta = new CGImageMetadata (mutable.CreateXMPData ())) {
 					// not surprising since it's all empty
-					Assert.Null (meta.CopyTagMatchingImageProperty (CGImageProperties.ExifDictionary, CGImageProperties.ExifDateTimeOriginal), "CopyTagMatchingImageProperty");
+					Assert.That (meta.CopyTagMatchingImageProperty (CGImageProperties.ExifDictionary, CGImageProperties.ExifDateTimeOriginal), Is.Null, "CopyTagMatchingImageProperty");
 				}
 			}
 		}

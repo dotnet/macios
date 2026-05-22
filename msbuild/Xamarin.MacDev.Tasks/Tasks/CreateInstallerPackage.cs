@@ -62,14 +62,9 @@ namespace Xamarin.MacDev.Tasks {
 			PDictionary plist;
 
 			try {
-				plist = PDictionary.FromFile (AppManifest)!;
+				plist = PDictionary.OpenFile (AppManifest);
 			} catch (Exception ex) {
 				Log.LogError (null, null, null, AppManifest, 0, 0, 0, 0, MSBStrings.E0010, AppManifest, ex.Message);
-				return null;
-			}
-
-			if (plist is null) {
-				Log.LogError (null, null, null, AppManifest, 0, 0, 0, 0, MSBStrings.E0122, AppManifest);
 				return null;
 			}
 

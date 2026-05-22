@@ -177,8 +177,8 @@ $@"<Project Sdk=""Microsoft.NET.Sdk"">
 			var properties = GetDefaultProperties ();
 			var result = DotNet.AssertBuildFailure (project_path, properties);
 			var errors = BinLog.GetBuildLogErrors (result.BinLogPath).ToArray ();
-			Assert.AreEqual (1, errors.Length, "Errors");
-			Assert.AreEqual ("A bundle identifier is required. Either add an 'ApplicationId' property in the project file, or add a 'CFBundleIdentifier' entry in the project's Info.plist file.", errors [0].Message);
+			Assert.That (errors.Length, Is.EqualTo (1), "Errors");
+			Assert.That (errors [0].Message, Is.EqualTo ("A bundle identifier is required. Either add an 'ApplicationId' property in the project file, or add a 'CFBundleIdentifier' entry in the project's Info.plist file."));
 		}
 	}
 }

@@ -14,10 +14,10 @@ namespace MonoTouchFixtures.CoreAnimation {
 
 		[Test]
 		public void IsEqualToTest ()
-			=> Assert.True (CAFrameRateRange.Default.IsEqualTo (CAFrameRateRange.Default));
+			=> Assert.That (CAFrameRateRange.Default.IsEqualTo (CAFrameRateRange.Default), Is.True);
 
 		[Test]
 		public void DefaultTest ()
-			=> Assert.IsNotNull (CAFrameRateRange.Default, "Default");
+			=> Assert.That (CAFrameRateRange.Default, Is.Not.Null, "Default");
 	}
 }

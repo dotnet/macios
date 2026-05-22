@@ -178,38 +178,6 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		IEnumerable<NativeReferenceMetadata> ReadManifest (string manifestPath)
-		{
-			var document = new XmlDocument ();
-			document.LoadWithoutNetworkAccess (manifestPath);
-
-			foreach (XmlNode referenceNode in document.GetElementsByTagName ("NativeReference")) {
-
-				var metadata = new NativeReferenceMetadata ();
-				metadata.LibraryName = Path.Combine (Path.GetDirectoryName (manifestPath)!, referenceNode.Attributes? ["Name"]?.Value!);
-
-				var attributes = new Dictionary<string, string> ();
-				foreach (XmlNode attribute in referenceNode.ChildNodes)
-					attributes [attribute.Name] = attribute.InnerText;
-
-				metadata.ForceLoad = ParseAttributeWithDefault (attributes ["ForceLoad"], false);
-				metadata.Frameworks = attributes ["Frameworks"];
-				metadata.WeakFrameworks = attributes ["WeakFrameworks"];
-				metadata.LinkerFlags = attributes ["LinkerFlags"];
-				metadata.NeedsGccExceptionHandling = ParseAttributeWithDefault (attributes ["NeedsGccExceptionHandling"], false);
-				metadata.IsCxx = ParseAttributeWithDefault (attributes ["IsCxx"], false);
-				metadata.LinkWithSwiftSystemLibraries = ParseAttributeWithDefault (attributes ["LinkWithSwiftSystemLibraries"], false);
-				metadata.SmartLink = ParseAttributeWithDefault (attributes ["SmartLink"], true);
-
-				// TODO - The project attributes do not contain these bits, is that OK?
-				//metadata.LinkTarget = (LinkTarget) Enum.Parse (typeof (LinkTarget), attributes ["LinkTarget"]);
-				//metadata.Dlsym = (DlsymOption)Enum.Parse (typeof (DlsymOption), attributes ["Dlsym"]);
-				yield return metadata;
-			}
-		}
-
-		static bool ParseAttributeWithDefault (string attribute, bool defaultValue) => string.IsNullOrEmpty (attribute) ? defaultValue : bool.Parse (attribute);
-
 		void ProcessLinkWithAttributes (AssemblyDefinition assembly)
 		{
 			//
@@ -242,12 +210,12 @@ namespace Xamarin.Bundler {
 					continue;
 
 				// Remove the resource from the assembly at a later stage.
-				if (!string.IsNullOrEmpty (metadata.LibraryName))
+				if (!StringUtils.IsNullOrEmpty (metadata.LibraryName))
 					AddResourceToBeRemoved (metadata.LibraryName);
 
 				ProcessNativeReferenceOptions (metadata);
 
-				if (!string.IsNullOrEmpty (linkWith.LibraryName)) {
+				if (!StringUtils.IsNullOrEmpty (linkWith.LibraryName)) {
 					switch (Path.GetExtension (linkWith.LibraryName).ToLowerInvariant ()) {
 					case ".framework": {
 						// TryExtractFramework prints a error/warning if something goes wrong, so no need for us to have an error handling path.
@@ -279,10 +247,10 @@ namespace Xamarin.Bundler {
 			}
 
 			// Don't add -force_load if the binding's SmartLink value is set and the static registrar is being used.
-			if (metadata.ForceLoad && !(metadata.SmartLink && (App.Registrar == RegistrarMode.Static || App.Registrar == RegistrarMode.ManagedStatic)))
+			if (metadata.ForceLoad && !(metadata.SmartLink && (App.Registrar == RegistrarMode.Static || App.Registrar == RegistrarMode.ManagedStatic || App.Registrar == RegistrarMode.TrimmableStatic)))
 				ForceLoad = true;
 
-			if (!string.IsNullOrEmpty (metadata.LinkerFlags)) {
+			if (!StringUtils.IsNullOrEmpty (metadata.LinkerFlags)) {
 				if (LinkerFlags is null)
 					LinkerFlags = new List<string> ();
 				if (!StringUtils.TryParseArguments (metadata.LinkerFlags, out var args, out var ex))
@@ -290,7 +258,7 @@ namespace Xamarin.Bundler {
 				LinkerFlags.AddRange (args);
 			}
 
-			if (!string.IsNullOrEmpty (metadata.Frameworks)) {
+			if (!StringUtils.IsNullOrEmpty (metadata.Frameworks)) {
 				foreach (var f in metadata.Frameworks.Split (new char [] { ' ' })) {
 					if (Frameworks is null)
 						Frameworks = new HashSet<string> ();
@@ -298,7 +266,7 @@ namespace Xamarin.Bundler {
 				}
 			}
 
-			if (!string.IsNullOrEmpty (metadata.WeakFrameworks)) {
+			if (!StringUtils.IsNullOrEmpty (metadata.WeakFrameworks)) {
 				foreach (var f in metadata.WeakFrameworks.Split (new char [] { ' ' })) {
 					if (WeakFrameworks is null)
 						WeakFrameworks = new HashSet<string> ();
@@ -469,7 +437,7 @@ namespace Xamarin.Bundler {
 		void AddFramework (string file)
 		{
 			if (Driver.GetFrameworks (App).TryGetValue (file, out var framework)) {
-				if (framework.Unavailable) {
+				if (framework.IsFrameworkUnavailable (App)) {
 					ErrorHelper.Warning (182, Errors.MX0182 /* Not linking with the framework {0} (referenced by a module reference in {1}) because it's not available on the current platform ({2}). */, framework.Name, FileName, App.PlatformName);
 					return;
 				}
@@ -522,8 +490,8 @@ namespace Xamarin.Bundler {
 
 					string file = Path.GetFileNameWithoutExtension (name);
 
-					if (App.IsSimulatorBuild && !App.IsFrameworkAvailableInSimulator (file)) {
-						Driver.Log (3, "Not linking with {0} (referenced by a module reference in {1}) because it's not available in the simulator.", file, FileName);
+					if (App.IsFrameworkUnavailable (file)) {
+						Driver.Log (3, "Not linking with {0} (referenced by a module reference in {1}) because it's not available in the current SDK.", file, FileName);
 						continue;
 					}
 

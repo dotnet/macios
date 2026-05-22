@@ -25,7 +25,7 @@ namespace Xamarin.Linker.Steps {
 			public bool PreserveFields { get; set; }
 			public bool PreserveType { get; set; }
 			public Dictionary<string, bool> Fields { get; } = new (StringComparer.Ordinal);
-			public Dictionary<string, bool> Methods { get; } = new (StringComparer.Ordinal);
+			public Dictionary<string, (bool Conditional, MethodDefinition Method)> Methods { get; } = new (StringComparer.Ordinal);
 		}
 
 		ApplyPreserveAttributeImpl impl;
@@ -186,6 +186,20 @@ namespace Xamarin.Linker.Steps {
 			return method.FullName.Substring (0, index) + method.FullName.Substring (index + marker.Length);
 		}
 
+		// Check if a method has any generic parameters in its signature (return type or parameter types).
+		// This includes generic parameters nested inside other types (e.g. Action<T>, T[], ref T, Nullable<T>).
+		// The linker XML descriptor can't resolve generic parameter names like 'T' in method signatures.
+		static bool HasGenericParameterInSignature (MethodDefinition method)
+		{
+			if (method.ReturnType.ContainsGenericParameter)
+				return true;
+			foreach (var param in method.Parameters) {
+				if (param.ParameterType.ContainsGenericParameter)
+					return true;
+			}
+			return false;
+		}
+
 		XmlTypeDescription GetOrCreateXmlDescription (TypeDefinition type)
 		{
 			var assemblyName = type.Module.Assembly.Name.Name;
@@ -222,7 +236,7 @@ namespace Xamarin.Linker.Steps {
 			var description = GetOrCreateXmlDescription (onType);
 			if (!conditional)
 				description.PreserveType = true;
-			description.Methods [GetXmlSignature (forMethod)] = conditional;
+			description.Methods [GetXmlSignature (forMethod)] = (conditional, forMethod);
 		}
 
 		void AddUnconditionalXmlDescription (IMetadataTokenProvider provider)
@@ -261,8 +275,18 @@ namespace Xamarin.Linker.Steps {
 			foreach (var field in description.Fields.OrderBy (v => v.Key, System.StringComparer.Ordinal))
 				type.Add (new XElement ("field", new XAttribute ("name", field.Key), new XAttribute ("required", field.Value ? "false" : "true")));
 
-			foreach (var method in description.Methods.OrderBy (v => v.Key, System.StringComparer.Ordinal))
-				type.Add (new XElement ("method", new XAttribute ("signature", method.Key), new XAttribute ("required", method.Value ? "false" : "true")));
+			foreach (var method in description.Methods.OrderBy (v => v.Key, System.StringComparer.Ordinal)) {
+				var element = new XElement ("method");
+				// ILC (NativeAOT compiler) can't resolve generic parameter names (like 'T') in XML descriptor
+				// method signatures (see https://github.com/dotnet/runtime/issues/128121), so use the method
+				// name instead of the full signature when the method has generic parameter types.
+				if (HasGenericParameterInSignature (method.Value.Method))
+					element.SetAttributeValue ("name", method.Value.Method.Name);
+				else
+					element.SetAttributeValue ("signature", method.Key);
+				element.SetAttributeValue ("required", method.Value.Conditional ? "false" : "true");
+				type.Add (element);
+			}
 
 			return type;
 		}

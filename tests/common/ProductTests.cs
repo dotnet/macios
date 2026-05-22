@@ -18,7 +18,7 @@ namespace Xamarin.Tests {
 			// Verify that the mono version is in the Versions.plist, and that it's a parsable version number.
 			var settings = new XmlReaderSettings () {
 				XmlResolver = null,
-				DtdProcessing = DtdProcessing.Parse
+				DtdProcessing = DtdProcessing.Ignore
 			};
 
 			var plist = Path.Combine (Configuration.SdkRoot, "Versions.plist");

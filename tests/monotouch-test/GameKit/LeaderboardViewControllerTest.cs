@@ -29,14 +29,11 @@ namespace MonoTouchFixtures.GameKit {
 		public void DefaultCtor ()
 		{
 #if MONOMAC
-			// fails when executed under BigSur - this has been deprecated for a while (even if it remains working elsewhere)
-			if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 11, 0))
-				Assert.Inconclusive ("'LeaderboardViewControllerTest' the native 'init' method returned nil.");
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 8, throwIfOtherPlatform: false);
+			Assert.Inconclusive ("'LeaderboardViewControllerTest' the native 'init' method returned nil.");
 #endif
 			using (var vc = new GKLeaderboardViewController ()) {
-				Assert.Null (vc.Category, "Category");
-				Assert.Null (vc.Delegate, "Delegate");
+				Assert.That (vc.Category, Is.Null, "Category");
+				Assert.That (vc.Delegate, Is.Null, "Delegate");
 				// default Scope vary by iOS version and can't be changed on iOS7 - not worth testing
 			}
 		}

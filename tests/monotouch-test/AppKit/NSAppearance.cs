@@ -9,11 +9,9 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSAppearanceShouldLoadAppearanceNamed ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var appearance = NSAppearance.GetAppearance (NSAppearance.NameVibrantDark);
-			Assert.IsNotNull (appearance, "NSAppearanceShouldLoadAppearanceNamed - Failed to initialize appearance VibrantDark");
-			Assert.AreEqual (appearance.Name, NSAppearance.NameVibrantDark.ToString (), "NSAppearanceShouldLoadAppearanceNamed - Appearance initialized with incorrect name.");
+			Assert.That (appearance, Is.Not.Null, "NSAppearanceShouldLoadAppearanceNamed - Failed to initialize appearance VibrantDark");
+			Assert.That (NSAppearance.NameVibrantDark.ToString (), Is.EqualTo (appearance.Name), "NSAppearanceShouldLoadAppearanceNamed - Appearance initialized with incorrect name.");
 		}
 
 #if FALSE // Test failing, exception doesn't appear to be thrown during test, throw correctly running in an app.
@@ -28,27 +26,23 @@ namespace Xamarin.Mac.Tests {
 				exceptionHit = true;
 			}
 
-			Assert.IsTrue (exceptionHit, "NSAppearanceConstructorShouldFailWithInvalidName - No exception thrown while initializing appearance with invalid name.");
+			Assert.That (exceptionHit, Is.True, "NSAppearanceConstructorShouldFailWithInvalidName - No exception thrown while initializing appearance with invalid name.");
 		}
 #endif
 
 		[Test]
 		public void NSAppearanceShouldChangeCurrentAppearance ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var appearance = NSAppearance.CurrentAppearance;
 
 			NSAppearance.CurrentAppearance = NSAppearance.GetAppearance (NSAppearance.NameVibrantDark);
 
-			Assert.AreNotEqual (appearance, NSAppearance.CurrentAppearance, "NSAppearanceShouldChangeCurrentAppearance - Failed to change appearance.");
+			Assert.That (NSAppearance.CurrentAppearance, Is.Not.EqualTo (appearance), "NSAppearanceShouldChangeCurrentAppearance - Failed to change appearance.");
 		}
 
 		[Test]
 		public void NSAppearanceCustomizationNull ()
 		{
-			Asserts.EnsureYosemite ();
-
 			using (NSButton b = new NSButton ()) {
 				b.Appearance = null;
 			}

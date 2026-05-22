@@ -7,6 +7,7 @@ using Mono.Cecil;
 using Mono.Tuner;
 
 using Xamarin.Bundler;
+using Xamarin.Linker;
 using Registrar;
 #endif
 
@@ -21,7 +22,8 @@ public class Framework {
 	public required Version Version { get; set; }
 	public Version? VersionAvailableInSimulator { get; set; }
 	public bool AlwaysWeakLinked { get; set; }
-	public bool Unavailable { get; set; }
+	public bool Unavailable { private get; set; } // Call IsFrameworkUnavailable () to determine if a framework is available or not
+	public Version? VersionUnavailable { get; set; } // if null, always unavailable (if Unavailable=true)
 
 	public string LibraryPath {
 		get {
@@ -34,7 +36,7 @@ public class Framework {
 	}
 
 #if LEGACY_TOOLS || BUNDLER
-	public bool IsFrameworkAvailableInSimulator (Application app)
+	bool IsFrameworkAvailableInSimulator (Application app)
 	{
 		if (VersionAvailableInSimulator is null)
 			return false;
@@ -43,6 +45,27 @@ public class Framework {
 			return false;
 
 		return true;
+	}
+#endif
+
+#if LEGACY_TOOLS || BUNDLER
+	public bool IsFrameworkUnavailable (Application app)
+	{
+		if (app.IsSimulatorBuild && !IsFrameworkAvailableInSimulator (app))
+			return true;
+
+		if (!Unavailable)
+			return false;
+
+		if (VersionUnavailable is null)
+			return true;
+
+		return app.SdkVersion >= VersionUnavailable;
+	}
+#else
+	public bool IsFrameworkUnavailable ()
+	{
+		return Unavailable;
 	}
 #endif
 }
@@ -88,7 +111,7 @@ public class Frameworks : Dictionary<string, Framework> {
 		Add (@namespace, framework, new Version (major_version, minor_version, build_version));
 	}
 
-	public void Add (string @namespace, string framework, Version version, Version? version_available_in_simulator = null, bool alwaysWeakLink = false, string? subFramework = null)
+	public void Add (string @namespace, string framework, Version version, Version? version_available_in_simulator = null, bool alwaysWeakLink = false, string? subFramework = null, Version? version_unavailable = null)
 	{
 		var fr = new Framework () {
 			Namespace = @namespace,
@@ -97,6 +120,8 @@ public class Frameworks : Dictionary<string, Framework> {
 			VersionAvailableInSimulator = version_available_in_simulator ?? version,
 			AlwaysWeakLinked = alwaysWeakLink,
 			SubFramework = subFramework,
+			Unavailable = version_unavailable is not null,
+			VersionUnavailable = version_unavailable,
 		};
 		base.Add (fr.Namespace, fr);
 	}
@@ -337,6 +362,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "UIKit", "UIKit", 3 },
 
 				{ "Accelerate", "Accelerate", 4 },
+				{ "AssetsLibrary", "AssetsLibrary", new Version (4, 0), null, false, null, /* version_unavailable = */ new Version (17, 4) },
 				{ "EventKit", "EventKit", 4 },
 				{ "EventKitUI", "EventKitUI", 4 },
 				{ "CoreMotion", "CoreMotion", 4 },
@@ -350,6 +376,7 @@ public class Frameworks : Dictionary<string, Framework> {
 
 				{ "Accounts", "Accounts", 5 },
 				{ "GLKit", "GLKit", 5 },
+				{ "NewsstandKit", "NewsstandKit", new Version (5, 0), null, false, null, /* version_unavailable = */ new Version (17, 0) },
 				{ "CoreImage", "CoreImage", 5 },
 				{ "CoreBluetooth", "CoreBluetooth", 5 },
 				{ "Twitter", "Twitter", 5 },
@@ -453,7 +480,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				{ "CoreLocationUI", "CoreLocationUI", 15,0 },
 
 				{ "DataDetection", "DataDetection", 15, 0 },
-				{ "Phase", "PHASE", new Version (15,0), NotAvailableInSimulator /* no headers in beta 2 */ },
+				{ "Phase", "PHASE", new Version (15, 0), new Version (26, 0) /* not certain about the exact version when this framework was added to the simulator, but this should be a safe default */ },
 				{ "OSLog", "OSLog", 15,0 },
 				{ "ShazamKit", "ShazamKit", new Version (15,0), new Version (16, 0)},
 				{ "ThreadNetwork", "ThreadNetwork", new Version (15,0), NotAvailableInSimulator},
@@ -619,6 +646,7 @@ public class Frameworks : Dictionary<string, Framework> {
 			var v16_1 = new Version (16, 1);
 			var v18_0 = new Version (18, 0);
 			var v26_0 = new Version (26, 0);
+			var v16_0 = new Version (16, 0);
 			foreach (var f in catalyst_frameworks.Values) {
 				switch (f.Name) {
 				// These frameworks were added to Catalyst after they were added to iOS, so we have to adjust the Versions fields
@@ -640,6 +668,9 @@ public class Frameworks : Dictionary<string, Framework> {
 				case "Cinematic":
 					f.Version = v26_0;
 					break;
+				case "MediaSetup":
+					f.Version = v16_0;
+					break;
 				case "BrowserEngineKit":
 				case "DeviceDiscoveryExtension":
 					f.Version = v18_0;
@@ -647,8 +678,6 @@ public class Frameworks : Dictionary<string, Framework> {
 				// These frameworks are not available on Mac Catalyst
 				case "DeviceDiscoveryUI": // xtro and introspection says it's not in Mac Catalyst, Apple's website says it is. For now, listen to xtro and introspection, until proven otherwise.
 				case "OpenGLES":
-				case "NewsstandKit":
-				case "MediaSetup":
 				case "NotificationCenter":
 				case "GLKit":
 				case "VideoSubscriberAccount":
@@ -660,7 +689,6 @@ public class Frameworks : Dictionary<string, Framework> {
 				// headers-based xtro reporting those are *all* unknown API for Catalyst
 				case "AddressBookUI":
 				case "ARKit":
-				case "AssetsLibrary":
 				case "BrowserEngineCore":
 				case "CarPlay":
 				case "WatchConnectivity":
@@ -702,11 +730,15 @@ public class Frameworks : Dictionary<string, Framework> {
 		}
 	}
 
-#if LEGACY_TOOLS || BUNDLER
-	public static IEnumerable<string> GetFrameworks (TypeDefinition td)
+#if BUNDLER || LEGACY_TOOLS
+	public static bool TryGetFramework (Application app, TypeDefinition? td, [NotNullWhen (true)] out string? framework)
 	{
+		framework = null;
+
+		if (td is null)
+			return false;
+
 		if (td.HasCustomAttributes) {
-			var any = false;
 			foreach (var attrib in td.CustomAttributes) {
 				if (!attrib.AttributeType.Is ("ObjCRuntime", "ObjectiveCFrameworkAttribute"))
 					continue;
@@ -715,25 +747,65 @@ public class Frameworks : Dictionary<string, Framework> {
 				var arg = attrib.ConstructorArguments [0];
 				if (arg.Value is not string stringArgument)
 					continue;
-				yield return stringArgument;
-				any = true;
+				framework = stringArgument;
+				return framework is not null;
 			}
-			if (any)
-				yield break;
 		}
 
-		yield return td.Namespace;
+#if !LEGACY_TOOLS
+		if (!app.Profile.IsProductAssembly (td.Module.Assembly))
+			return false;
+#endif
+
+		framework = td.Namespace;
+		return framework is not null;
 	}
 
-	static void Gather (Application app, AssemblyDefinition product_assembly, HashSet<string> frameworks, HashSet<string> weak_frameworks, Func<Framework, bool> include_framework)
+	public static bool TryGetFramework (Application app, TypeDefinition? td, [NotNullWhen (true)] out Framework? framework)
+	{
+		framework = null;
+
+		if (td is null)
+			return false;
+
+		if (!TryGetFramework (app, td, out string? frameworkName))
+			return false;
+
+		var all_frameworks = GetFrameworks (app.Platform, app.IsSimulatorBuild);
+		if (all_frameworks is null)
+			return false;
+		return all_frameworks.TryGetValue (frameworkName, out framework);
+	}
+
+	static void Gather (Application app, IEnumerable<AssemblyDefinition> assemblies, HashSet<string> frameworks, HashSet<string> weak_frameworks, Func<Framework, bool> include_framework)
 	{
 		var namespaces = new HashSet<string> ();
 
-		// Collect all the namespaces.
-		foreach (var md in product_assembly.Modules) {
-			foreach (var td in md.Types) {
-				foreach (var fw in GetFrameworks (td))
-					namespaces.Add (fw);
+		// Process our product assembly + any assembly with the [ObjectiveCFramework] attribute, and collect all the namespaces that are used in those assemblies.
+		// For non-product assemblies, we only look at types with the [ObjectiveCFramework] attribute.
+		foreach (var assembly in assemblies) {
+#if LEGACY_TOOLS
+			var hasObjectiveCFrameworkAttribute = true;
+#else
+			var hasObjectiveCFrameworkAttribute = false;
+			if (!app.Profile.IsProductAssembly (assembly)) {
+				hasObjectiveCFrameworkAttribute = assembly.MainModule.HasTypeReference ("ObjCRuntime.ObjectiveCFrameworkAttribute");
+				if (!hasObjectiveCFrameworkAttribute)
+					continue;
+			}
+#endif
+
+			// Collect all the namespaces.
+			foreach (var md in assembly.Modules) {
+				foreach (var td in md.Types) {
+					if (hasObjectiveCFrameworkAttribute && !td.HasCustomAttribute ("ObjCRuntime", "ObjectiveCFrameworkAttribute"))
+						continue;
+
+					if (TryGetFramework (app, td, out string? framework)) {
+						namespaces.Add (framework);
+						continue;
+					}
+				}
 			}
 		}
 
@@ -753,7 +825,7 @@ public class Frameworks : Dictionary<string, Framework> {
 				continue;
 			}
 
-			if (app.IsSimulatorBuild && !framework.IsFrameworkAvailableInSimulator (app))
+			if (framework.IsFrameworkUnavailable (app))
 				continue;
 
 			var weak_link = framework.AlwaysWeakLinked || app.DeploymentTarget < framework.Version;
@@ -768,39 +840,25 @@ public class Frameworks : Dictionary<string, Framework> {
 
 	static bool FilterFrameworks (Application app, Framework framework)
 	{
-		var xcodeVersion = Driver.XcodeVersion;
-		if (xcodeVersion is not null && framework.Name == "NewsstandKit" && xcodeVersion.Major >= 15) {
-			Driver.Log (3, "Not linking with the framework {0} because it's not available when using Xcode 15+.", framework.Name);
+		if (framework.IsFrameworkUnavailable (app)) {
+			Driver.Log (3, "Not linking with the framework {0} because it's not available in the current SDK.", framework.Name);
 			return false;
 		}
 
 		switch (app.Platform) {
 		case ApplePlatform.iOS:
-			switch (framework.Name) {
-			case "GameKit":
-				break;
-			case "NewsstandKit":
-				if (xcodeVersion is not null && xcodeVersion.Major >= 15) {
-					Driver.Log (3, "Not linking with the framework {0} because it's been removed from Xcode 15+.", framework.Name);
-					return false;
-				}
-				break;
-			}
-			break;
 		case ApplePlatform.TVOS:
 		case ApplePlatform.MacCatalyst:
-			break; // Include all frameworks by default
 		case ApplePlatform.MacOSX:
-			return true;
+			return true; // Include all frameworks by default
 		default:
 			throw ErrorHelper.CreateError (71, Errors.MX0071 /* "Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case." */, app.Platform, app.ProductName);
 		}
-		return true;
 	}
 
-	public static void Gather (Application app, AssemblyDefinition product_assembly, HashSet<string> frameworks, HashSet<string> weak_frameworks)
+	public static void Gather (Application app, IEnumerable<AssemblyDefinition> assemblies, HashSet<string> frameworks, HashSet<string> weak_frameworks)
 	{
-		Gather (app, product_assembly, frameworks, weak_frameworks, (framework) => FilterFrameworks (app, framework));
+		Gather (app, assemblies, frameworks, weak_frameworks, (framework) => FilterFrameworks (app, framework));
 	}
-#endif // LEGACY_TOOLS || BUNDLER
+#endif // BUNDLER
 }

@@ -35,7 +35,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			if (File.Exists (path)) {
 				try {
-					plist = PDictionary.FromFile (path)!;
+					plist = PDictionary.OpenFile (path);
 				} catch (Exception ex) {
 					Log.LogError (MSBStrings.E0024, Path.GetFileName (AppBundleDir), ex.Message);
 					return false;

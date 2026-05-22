@@ -4501,6 +4501,78 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MX2254" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unsupported primitive field type '{0}' for symbol '{1}' in method '{2}'. Sub-optimal but functional code will be generated. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[メソッド '{2}' のシンボル '{1}' のプリミティブ フィールド型 '{0}' はサポートされていません。最適ではありませんが、機能するコードが生成されます。https://github.com/dotnet/macios/issues/new で問題を提出してください]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2255" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[不明またはサポートされていない Dlfcn パターン: '{0}' メソッド '{1}' です。呼び出しはインライン化されません。https://github.com/dotnet/macios/issues/new で問題を提出してください]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2256" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The field type '{0}' for symbol '{1}' in method '{2}' is not an NSObject subclass. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[メソッド '{2}' のシンボル '{1}' のフィールド型 '{0}' は NSObject サブクラスではありません。https://github.com/dotnet/macios/issues/new で問題を提出してください]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2257" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unknown IL sequence for method with call to Dlfcn.CachePointer: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[Dlfcn.CachePointer を呼び出すメソッドの IL シーケンスが不明です: メソッド '{1}' の '{0}' です。呼び出しはインライン化されません。https://github.com/dotnet/macios/issues/new で問題を提出してください]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2258" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' is marked with a malformed simulator availability attribute: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' は、シミュレーター可用性属性の形式に誤りがある ({1}) という理由でマークされています。https://github.com/dotnet/macios/issues/new で問題を共有してください]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2259" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' is marked with a simulator availability attribute with an invalid version: {1}. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' は、シミュレーター可用性属性のバージョンが無効 ({1}) という理由でマークされています。https://github.com/dotnet/macios/issues/new で問題を共有してください]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2260" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' has conflicting simulator availability attributes for the '{1}' platform (both SupportedSimulator and UnsupportedSimulator). Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' では、'{1}' プラットフォームのシミュレーター可用性属性が競合しています (SupportedSimulator と UnsupportedSimulator の両方が存在)。https://github.com/dotnet/macios/issues/new で問題を共有してください]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX2261" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA['{0}' has multiple SupportedSimulator attributes for the '{1}' platform. Please file an issue at https://github.com/dotnet/macios/issues/new]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA['{0}' には、'{1}' プラットフォームの SupportedSimulator 属性が複数あります。https://github.com/dotnet/macios/issues/new で問題を共有してください]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MX3001" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Could not {0} the assembly '{1}']]></Val>
@@ -4548,6 +4620,15 @@
           <Val><![CDATA[The class '{0}' will not be registered because it has been removed from the {1} SDK.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[{1} SDK から削除されたため、クラス '{0}' は登録されません。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX4191" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Could not find the trampoline for the category method {0}.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[カテゴリ メソッド {0} のトランポリンが見つかりませんでした。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />
@@ -4878,6 +4959,24 @@
           <Val><![CDATA[Invalid DelegateProxyAttribute for the return value for the method {0}.{1}: No 'Invoke' method found. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[メソッド {0}.{1} の戻り値の DelegateProxyAttribute が無効です: 'Invoke' メソッドが見つかりません。テスト ケースを添えて、バグ レポートを提出してください (https://github.com/dotnet/macios/issues/new)。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX8061" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to find the managed function with id {0} ({1}, {2}). Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ID {0} ({1}、{2}) のマネージド関数が見つかりません。テスト ケースを添えて、バグ レポートを提出してください (https://github.com/dotnet/macios/issues/new)。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";MX8062" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Type '{0}' is expected to have a ProtocolProxyAttribute. Please file a bug report with a test case (https://github.com/dotnet/macios/issues/new).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[型 '{0}' には ProtocolProxyAttribute が必要です。テスト ケースを添えて、バグ レポートを提出してください (https://github.com/dotnet/macios/issues/new)。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

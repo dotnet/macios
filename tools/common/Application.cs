@@ -65,6 +65,7 @@ namespace Xamarin.Bundler {
 		PartialStatic,
 		Static,
 		ManagedStatic,
+		TrimmableStatic,
 	}
 
 	public partial class Application {
@@ -106,6 +107,9 @@ namespace Xamarin.Bundler {
 		public List<string> MonoLibraries = new List<string> ();
 		public List<string> InterpretedAssemblies = new List<string> ();
 
+		public string TypeMapAssemblyName = "";
+		public string TypeMapOutputDirectory = "";
+
 		// Linker config
 #if LEGACY_TOOLS
 		public LinkMode LinkMode = LinkMode.Full;
@@ -127,6 +131,10 @@ namespace Xamarin.Bundler {
 			}
 		}
 		public bool EnableSGenConc;
+
+		public bool IsAnyStaticRegistrar {
+			get => Registrar == RegistrarMode.Static || Registrar == RegistrarMode.ManagedStatic || Registrar == RegistrarMode.TrimmableStatic;
+		}
 
 		public Dictionary<string, (string Value, bool Overwrite)> EnvironmentVariables = new Dictionary<string, (string Value, bool Overwrite)> ();
 
@@ -150,6 +158,7 @@ namespace Xamarin.Bundler {
 		public bool SkipMarkingNSObjectsInUserAssemblies { get; set; }
 
 		// How Mono should be embedded into the app.
+#if !LEGACY_TOOLS
 		AssemblyBuildTarget? libmono_link_mode;
 		public AssemblyBuildTarget LibMonoLinkMode {
 			get {
@@ -184,6 +193,7 @@ namespace Xamarin.Bundler {
 				return libmono_link_mode.Value;
 			}
 		}
+#endif // !LEGACY_TOOLS
 
 		bool RequiresXcodeHeaders {
 			get {
@@ -193,7 +203,7 @@ namespace Xamarin.Bundler {
 				case ApplePlatform.MacCatalyst:
 					return !AreAnyAssembliesTrimmed;
 				case ApplePlatform.MacOSX:
-					return (Registrar == RegistrarMode.Static || Registrar == RegistrarMode.ManagedStatic) && !AreAnyAssembliesTrimmed;
+					return (Registrar == RegistrarMode.Static || Registrar == RegistrarMode.ManagedStatic || Registrar == RegistrarMode.TrimmableStatic) && !AreAnyAssembliesTrimmed;
 				default:
 					throw ErrorHelper.CreateError (71, Errors.MX0071, Platform, ProductName);
 				}
@@ -220,7 +230,7 @@ namespace Xamarin.Bundler {
 
 		public bool IsSimulatorBuild {
 			get {
-				if (!string.IsNullOrEmpty (RuntimeIdentifier))
+				if (!StringUtils.IsNullOrEmpty (RuntimeIdentifier))
 					return RuntimeIdentifier.IndexOf ("simulator", StringComparison.OrdinalIgnoreCase) >= 0;
 
 				switch (Platform) {
@@ -270,10 +280,12 @@ namespace Xamarin.Bundler {
 			this.StaticRegistrar = new StaticRegistrar (this);
 		}
 
+#if !LEGACY_TOOLS
 		public void CreateCache (string [] arguments)
 		{
 			Cache = new Cache (arguments);
 		}
+#endif // !LEGACY_TOOLS
 
 		public bool DynamicRegistrationSupported {
 			get {
@@ -281,6 +293,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
+#if !LEGACY_TOOLS
 		public void ParseCustomLinkFlags (string value, string value_name)
 		{
 			if (!StringUtils.TryParseArguments (value, out var lf, out var ex))
@@ -302,7 +315,9 @@ namespace Xamarin.Bundler {
 			UseInterpreter = false;
 			InterpretedAssemblies.Clear ();
 		}
+#endif // !LEGACY_TOOLS
 
+#if !LEGACY_TOOLS
 		public bool IsTodayExtension {
 			get {
 				return ExtensionIdentifier == "com.apple.widget-extension";
@@ -351,12 +366,14 @@ namespace Xamarin.Bundler {
 				info_plistpath = value;
 			}
 		}
+#endif // !LEGACY_TOOLS
 
 		// This is just a name for this app to show in log/error messages, etc.
 		public string Name {
 			get { return Path.GetFileNameWithoutExtension (AppDirectory); }
 		}
 
+#if !LEGACY_TOOLS
 		bool? requires_pinvoke_wrappers;
 		public bool RequiresPInvokeWrappers {
 			get {
@@ -369,6 +386,7 @@ namespace Xamarin.Bundler {
 				requires_pinvoke_wrappers = value;
 			}
 		}
+#endif // !LEGACY_TOOLS
 
 #if !LEGACY_TOOLS
 		public bool RequireLinkWithAttributeForObjectiveCClassSearch;
@@ -617,6 +635,7 @@ namespace Xamarin.Bundler {
 			return (abi & arch) != 0;
 		}
 
+#if !LEGACY_TOOLS
 		public void ValidateAbi ()
 		{
 			var validAbis = new List<Abi> ();
@@ -654,6 +673,7 @@ namespace Xamarin.Bundler {
 		{
 			abi = default;
 		}
+#endif // !LEGACY_TOOLS
 
 		public void ParseAbi (string abi)
 		{
@@ -678,6 +698,9 @@ namespace Xamarin.Bundler {
 #if !LEGACY_TOOLS
 		public void ParseRegistrar (string v)
 		{
+			if (StringUtils.IsNullOrEmpty (v))
+				return;
+
 			var split = v.Split ('=');
 			var name = split [0];
 			var value = split.Length > 1 ? split [1] : string.Empty;
@@ -698,8 +721,11 @@ namespace Xamarin.Bundler {
 			case "managed-static":
 				Registrar = RegistrarMode.ManagedStatic;
 				break;
+			case "trimmable-static":
+				Registrar = RegistrarMode.TrimmableStatic;
+				break;
 			default:
-				throw ErrorHelper.CreateError (20, Errors.MX0020, "--registrar", "managed-static, static, dynamic or default");
+				throw ErrorHelper.CreateError (20, Errors.MX0020, "--registrar", "managed-static, trimmable-static, static, dynamic or default");
 			}
 
 			switch (value) {
@@ -716,16 +742,7 @@ namespace Xamarin.Bundler {
 		}
 #endif // !LEGACY_TOOLS
 
-		public static string GetArchitectures (IEnumerable<Abi> abis)
-		{
-			var res = new List<string> ();
-
-			foreach (var abi in abis)
-				res.Add (abi.AsArchString ());
-
-			return string.Join (", ", res.ToArray ());
-		}
-
+#if !LEGACY_TOOLS
 		public string MonoGCParams {
 			get {
 				switch (Platform) {
@@ -752,15 +769,17 @@ namespace Xamarin.Bundler {
 				}
 			}
 		}
+#endif // !LEGACY_TOOLS
 
-		public bool IsFrameworkAvailableInSimulator (string framework)
+		public bool IsFrameworkUnavailable (string @namespace)
 		{
-			if (!Driver.GetFrameworks (this).TryGetValue (framework, out var fw))
-				return true; // Unknown framework, assume it's valid for the simulator
+			if (!Driver.GetFrameworks (this).TryGetValue (@namespace, out var fw))
+				return false; // Unknown framework, assume it's valid
 
-			return fw.IsFrameworkAvailableInSimulator (this);
+			return fw.IsFrameworkUnavailable (this);
 		}
 
+#if !LEGACY_TOOLS
 		public static bool TryParseManagedExceptionMode (string value, out MarshalManagedExceptionMode mode)
 		{
 			mode = MarshalManagedExceptionMode.Default;
@@ -816,6 +835,7 @@ namespace Xamarin.Bundler {
 			}
 			return true;
 		}
+#endif // !LEGACY_TOOLS
 
 		public void SetManagedExceptionMode ()
 		{
@@ -1150,6 +1170,7 @@ namespace Xamarin.Bundler {
 		}
 #endif // !LEGACY_TOOLS
 
+#if !LEGACY_TOOLS
 		public bool VerifyDynamicFramework (string framework_path)
 		{
 			var framework_filename = Path.Combine (framework_path, Path.GetFileNameWithoutExtension (framework_path));
@@ -1166,6 +1187,7 @@ namespace Xamarin.Bundler {
 
 			return dynamic;
 		}
+#endif // !LEGACY_TOOLS
 
 		static Application ()
 		{

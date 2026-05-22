@@ -9,7 +9,7 @@ namespace MonoTouchFixtures.Network {
 		{
 			global::System.Uri uri = null;
 			NSUrl sUrl = uri;
-			Assert.IsNull (sUrl);
+			Assert.That (sUrl, Is.Null);
 		}
 	}
 }

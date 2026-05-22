@@ -77,7 +77,7 @@ namespace MonoTouchFixtures.UIKit {
 
 		void OperationHandler (bool success)
 		{
-			Assert.True (success);
+			Assert.That (success, Is.True);
 		}
 
 		[Test]

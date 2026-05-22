@@ -407,14 +407,7 @@ namespace Registrar {
 					} else {
 						iface_methods.Remove (ifaceMethodDef);
 
-						List<MethodDefinition>? list;
-						if (rv is null) {
-							rv = new Dictionary<MethodDefinition, List<MethodDefinition>> ();
-							rv [impl] = list = new List<MethodDefinition> ();
-						} else if (!rv.TryGetValue (impl, out list)) {
-							rv [impl] = list = new List<MethodDefinition> ();
-						}
-						list.Add (ifaceMethodDef);
+						AddMethodMapping (ref rv, impl, ifaceMethodDef);
 					}
 				}
 			}
@@ -428,18 +421,23 @@ namespace Registrar {
 					if (!MethodMatch (impl, ifaceMethod))
 						continue;
 
-					List<MethodDefinition>? list;
-					if (rv is null) {
-						rv = new Dictionary<MethodDefinition, List<MethodDefinition>> ();
-						rv [impl] = list = new List<MethodDefinition> ();
-					} else if (!rv.TryGetValue (impl, out list)) {
-						rv [impl] = list = new List<MethodDefinition> ();
-					}
-					list.Add (ifaceMethod);
+					AddMethodMapping (ref rv, impl, ifaceMethod);
 				}
 			}
 
 			return rv;
+		}
+
+		static void AddMethodMapping (ref Dictionary<MethodDefinition, List<MethodDefinition>>? rv, MethodDefinition impl, MethodDefinition ifaceMethod)
+		{
+			List<MethodDefinition>? list;
+			if (rv is null) {
+				rv = new Dictionary<MethodDefinition, List<MethodDefinition>> ();
+				rv [impl] = list = new List<MethodDefinition> ();
+			} else if (!rv.TryGetValue (impl, out list)) {
+				rv [impl] = list = new List<MethodDefinition> ();
+			}
+			list.Add (ifaceMethod);
 		}
 
 		public static TypeReference GetEnumUnderlyingType (TypeDefinition type)
@@ -833,7 +831,7 @@ namespace Registrar {
 		protected override IEnumerable<TypeReference> CollectTypes (AssemblyDefinition assembly)
 			=> GetAllTypes (assembly);
 
-		internal static IEnumerable<TypeReference> GetAllTypes (AssemblyDefinition assembly)
+		internal static IEnumerable<TypeDefinition> GetAllTypes (AssemblyDefinition assembly)
 		{
 			var queue = new Queue<TypeDefinition> ();
 
@@ -1517,6 +1515,18 @@ namespace Registrar {
 			return null;
 		}
 
+		static T []? ExtractAttributeArray<T> (CustomAttributeArgument argument)
+		{
+			if (argument.Value is null)
+				return null;
+			var arr = (CustomAttributeArgument []) argument.Value;
+			var result = new T [arr.Length];
+			for (int i = 0; i < arr.Length; i++) {
+				result [i] = (T) arr [i].Value;
+			}
+			return result;
+		}
+
 		protected override IEnumerable<ProtocolMemberAttribute> GetProtocolMemberAttributes (TypeReference type)
 		{
 			var td = type.Resolve ();
@@ -1551,31 +1561,13 @@ namespace Registrar {
 						rv.ReturnTypeDelegateProxy = (TypeReference) prop.Argument.Value!;
 						break;
 					case "ParameterType":
-						if (prop.Argument.Value is not null) {
-							var arr = (CustomAttributeArgument []) prop.Argument.Value;
-							rv.ParameterType = new TypeReference [arr.Length];
-							for (int i = 0; i < arr.Length; i++) {
-								rv.ParameterType [i] = (TypeReference) arr [i].Value;
-							}
-						}
+						rv.ParameterType = ExtractAttributeArray<TypeReference> (prop.Argument);
 						break;
 					case "ParameterByRef":
-						if (prop.Argument.Value is not null) {
-							var arr = (CustomAttributeArgument []) prop.Argument.Value;
-							rv.ParameterByRef = new bool [arr.Length];
-							for (int i = 0; i < arr.Length; i++) {
-								rv.ParameterByRef [i] = (bool) arr [i].Value;
-							}
-						}
+						rv.ParameterByRef = ExtractAttributeArray<bool> (prop.Argument);
 						break;
 					case "ParameterBlockProxy":
-						if (prop.Argument.Value is not null) {
-							var arr = (CustomAttributeArgument []) prop.Argument.Value;
-							rv.ParameterBlockProxy = new TypeReference [arr.Length];
-							for (int i = 0; i < arr.Length; i++) {
-								rv.ParameterBlockProxy [i] = (TypeReference) arr [i].Value;
-							}
-						}
+						rv.ParameterBlockProxy = ExtractAttributeArray<TypeReference> (prop.Argument);
 						break;
 					case "IsVariadic":
 						rv.IsVariadic = (bool) prop.Argument.Value!;
@@ -2022,6 +2014,17 @@ namespace Registrar {
 		uint full_token_reference_count;
 		List<(AssemblyDefinition Assembly, string Name)> registered_assemblies = new List<(AssemblyDefinition Assembly, string Name)> ();
 
+		public bool IsCustomType (ObjCType type)
+		{
+			if (IsPlatformType (type.Type))
+				return false;
+
+			if (!type.IsProtocol && !type.IsCategory)
+				return true;
+
+			return false;
+		}
+
 		bool IsPlatformType (TypeReference type)
 		{
 			if (type.IsNested)
@@ -2098,10 +2101,7 @@ namespace Registrar {
 
 			namespaces.Add (ns);
 
-			if (App.IsSimulatorBuild && !App.IsFrameworkAvailableInSimulator (ns)) {
-				Driver.Log (5, "Not importing the framework {0} in the generated registrar code because it's not available in the simulator.", ns);
-				return;
-			} else if (Frameworks.GetFrameworks (App.Platform, false)?.TryGetValue (ns, out var fw) == true && fw.Unavailable) {
+			if (Driver.GetFrameworks (App).TryGetValue (ns, out var fw) && fw.IsFrameworkUnavailable (App)) {
 				Driver.Log (5, "Not importing the framework {0} in the generated registrar code because it's not available in the current platform.", ns);
 				return;
 			}
@@ -2177,6 +2177,9 @@ namespace Registrar {
 				return;
 			case "ThreadNetwork":
 				h = "<ThreadNetwork/THClient.h>";
+				break;
+			case "PrintCore":
+				h = "<ApplicationServices/ApplicationServices.h>";
 				break;
 			default:
 				h = string.Format ("<{0}/{0}.h>", ns);
@@ -2625,12 +2628,6 @@ namespace Registrar {
 		static bool IsIntentsType (ObjCType type) => IsTypeCore (type, "Intents");
 		static bool IsExternalAccessoryType (ObjCType type) => IsTypeCore (type, "ExternalAccessory");
 
-		bool IsTypeAllowedInSimulator (ObjCType type)
-		{
-			var ns = type.Type.Namespace;
-			return App.IsFrameworkAvailableInSimulator (ns);
-		}
-
 		class ProtocolInfo {
 			public uint TokenReference;
 			public ObjCType Protocol;
@@ -2668,7 +2665,7 @@ namespace Registrar {
 
 		public string GetInitializationMethodName (string? single_assembly)
 		{
-			if (!string.IsNullOrEmpty (single_assembly)) {
+			if (!StringUtils.IsNullOrEmpty (single_assembly)) {
 				return "xamarin_create_classes_" + single_assembly.Replace ('.', '_').Replace ('-', '_');
 			} else {
 				return "xamarin_create_classes";
@@ -2682,24 +2679,13 @@ namespace Registrar {
 				return all_types;
 			var allTypes = new List<ObjCType> ();
 			foreach (var @class in Types.Values) {
+				if (@class.Type is null)
+					continue;
+
 				if (!string.IsNullOrEmpty (single_assembly) && single_assembly != @class.Type.Module.Assembly.Name.Name)
 					continue;
 
-				if (App.Platform != ApplePlatform.MacOSX) {
-					var isPlatformType = IsPlatformType (@class.Type);
-					if (isPlatformType && IsSimulatorOrDesktop && !IsTypeAllowedInSimulator (@class)) {
-						Driver.Log (5, "The static registrar won't generate code for {0} because its framework is not supported in the simulator.", @class.ExportedName);
-						continue; // Some types are not supported in the simulator.
-					}
-				}
-
-				// Xcode 15 removed NewsstandKit
 				if (Driver.XcodeVersion.Major >= 15) {
-					if (IsTypeCore (@class, "NewsstandKit")) {
-						exceptions.Add (ErrorHelper.CreateWarning (4178, $"The class '{@class.Type.FullName}' will not be registered because the NewsstandKit framework has been removed from the {App.Platform} SDK."));
-						continue;
-					}
-
 					if (@class.Type.Is ("PassKit", "PKDisbursementAuthorizationControllerDelegate") || @class.Type.Is ("PassKit", "IPKDisbursementAuthorizationControllerDelegate")) {
 						exceptions.Add (ErrorHelper.CreateWarning (4189, $"The class '{@class.Type.FullName}' will not be registered it has been removed from the {App.Platform} SDK."));
 						continue;
@@ -2709,21 +2695,11 @@ namespace Registrar {
 						exceptions.Add (ErrorHelper.CreateWarning (4189, $"The class '{@class.Type.FullName}' will not be registered it has been removed from the {App.Platform} SDK."));
 						continue;
 					}
-
-					if (Driver.XcodeVersion.Minor >= 3 || Driver.XcodeVersion.Major >= 16) {
-						// Xcode 15.3+ will remove AssetsLibrary
-						if (IsTypeCore (@class, "AssetsLibrary")) {
-							exceptions.Add (ErrorHelper.CreateWarning (4178, $"The class '{@class.Type.FullName}' will not be registered because the AssetsLibrary framework has been removed from the {App.Platform} SDK."));
-							continue;
-						}
-					}
 				}
 
-				if (Driver.XcodeVersion.Major >= 16) {
-					if (@class.Type.Namespace == "AssetsLibrary") {
-						exceptions.Add (ErrorHelper.CreateWarning (4190, $"The class '{@class.Type.FullName}' will not be registered because the {@class.Type.Namespace} framework has been deprecated from the {App.Platform} SDK."));
-						continue;
-					}
+				if (Frameworks.TryGetFramework (App, @class.Type.Resolve (), out Framework? framework) && framework.IsFrameworkUnavailable (App)) {
+					exceptions.Add (ErrorHelper.CreateWarning (4178, $"The class '{@class.Type.FullName}' will not be registered because the {framework.Name} framework has been removed from the {App.Platform} SDK."));
+					continue;
 				}
 
 				if (@class.IsFakeProtocol)
@@ -2810,7 +2786,7 @@ namespace Registrar {
 			// Select the types that needs to be registered.
 			var allTypes = GetAllTypes (exceptions);
 
-			if (string.IsNullOrEmpty (single_assembly)) {
+			if (StringUtils.IsNullOrEmpty (single_assembly)) {
 				foreach (var assembly in GetAssemblies ())
 					registered_assemblies.Add (new (assembly, GetAssemblyName (assembly)));
 			} else {
@@ -2824,13 +2800,13 @@ namespace Registrar {
 				var isPlatformType = IsPlatformType (@class.Type);
 				var flags = MTTypeFlags.None;
 
+				if (IsCustomType (@class))
+					flags |= MTTypeFlags.CustomType;
+
 				skip.Clear ();
 
 				uint token_ref = uint.MaxValue;
-				if (!@class.IsProtocol && !@class.IsCategory) {
-					if (!isPlatformType)
-						flags |= MTTypeFlags.CustomType;
-
+				if (App.Registrar != RegistrarMode.TrimmableStatic && !@class.IsProtocol && !@class.IsCategory) {
 					if (!@class.IsWrapper && !@class.IsModel)
 						flags |= MTTypeFlags.UserType;
 
@@ -2844,7 +2820,7 @@ namespace Registrar {
 									(int) flags, flags);
 
 					bool? use_dynamic = null;
-					if (@class.RegisterAttribute?.IsStubClass == true)
+					if (@class.IsStubClass)
 						use_dynamic = false;
 
 					if (!use_dynamic.HasValue) {
@@ -2880,10 +2856,11 @@ namespace Registrar {
 					if (App.Optimizations.RedirectClassHandles == true)
 						map_init.AppendLine ("__xamarin_class_handles [{0}] = __xamarin_class_map [{0}].handle;", @class.ClassMapIndex);
 					i++;
+				} else if (App.Registrar == RegistrarMode.TrimmableStatic && @class.IsStubClass) {
+					map_init.AppendLine ("[{0} class];", EncodeNonAsciiCharacters (@class.ExportedName));
 				}
 
-
-				if (@class.IsProtocol && @class.ProtocolWrapperType is not null) {
+				if (App.Registrar != RegistrarMode.TrimmableStatic && @class.IsProtocol && @class.ProtocolWrapperType is not null) {
 					if (token_ref == INVALID_TOKEN_REF && !TryCreateTokenReference (@class.Type, TokenType.TypeDef, out token_ref, exceptions))
 						continue;
 					if (!TryCreateTokenReference (@class.ProtocolWrapperType, TokenType.TypeDef, out var protocol_wrapper_type_ref, exceptions))
@@ -2925,8 +2902,7 @@ namespace Registrar {
 					iface.Write ("@protocol ").Write (exportedName);
 					declarations.AppendFormat ("@protocol {0};\n", exportedName);
 				} else {
-					var is_stub_class = @class.RegisterAttribute?.IsStubClass;
-					if (is_stub_class == true)
+					if (@class.IsStubClass)
 						iface.WriteLine ("__attribute__((objc_class_stub)) __attribute__((objc_subclassing_restricted))");
 					iface.Write ("@interface {0} : {1}", class_name, EncodeNonAsciiCharacters (@class.SuperType!.ExportedName));
 					declarations.AppendFormat ("@class {0};\n", class_name);
@@ -3114,7 +3090,9 @@ namespace Registrar {
 
 			if (App.Optimizations.RedirectClassHandles == true)
 				map.AppendLine ("static void *__xamarin_class_handles [{0}];", i);
-			if (skipped_types.Count > 0) {
+
+			var has_skipped_map = App.Registrar != RegistrarMode.TrimmableStatic && skipped_types.Count > 0;
+			if (has_skipped_map) {
 				map.AppendLine ("static const MTManagedClassMap __xamarin_skipped_map [] = {");
 				foreach (var skipped in skipped_types) {
 					if (!TryCreateTokenReference (skipped.Skipped, TokenType.TypeDef, out var skipped_ref, exceptions))
@@ -3197,7 +3175,7 @@ namespace Registrar {
 			map.AppendLine ("__xamarin_registration_assemblies,");
 			map.AppendLine ("__xamarin_class_map,");
 			map.AppendLine (full_token_reference_count == 0 ? "NULL," : "__xamarin_token_references,");
-			map.AppendLine (skipped_types.Count == 0 ? "NULL," : "__xamarin_skipped_map,");
+			map.AppendLine (!has_skipped_map ? "NULL," : "__xamarin_skipped_map,");
 			map.AppendLine (protocol_wrapper_map.Count == 0 ? "NULL," : "__xamarin_protocol_wrapper_map,");
 			if (needs_protocol_map && protocols.Count > 0) {
 				map.AppendLine ("{ __xamarin_protocol_tokens, __xamarin_protocols },");
@@ -3207,7 +3185,7 @@ namespace Registrar {
 			map.AppendLine ("{0},", count);
 			map.AppendLine ("{0},", i);
 			map.AppendLine ("{0},", full_token_reference_count);
-			map.AppendLine ("{0},", skipped_types.Count);
+			map.AppendLine ("{0},", has_skipped_map ? skipped_types.Count : 0);
 			map.AppendLine ("{0},", protocol_wrapper_map.Count);
 			map.AppendLine ("{0},", needs_protocol_map ? protocols.Count : 0);
 			if (App.Optimizations.RedirectClassHandles == true)
@@ -3339,7 +3317,7 @@ namespace Registrar {
 			case Trampoline.CopyWithZone2:
 #if !LEGACY_TOOLS
 				// Managed Static Registrar handles CopyWithZone2 in GenerateCallToUnmanagedCallersOnlyMethod
-				if (LinkContext.App.Registrar == RegistrarMode.ManagedStatic) {
+				if (LinkContext.App.Registrar == RegistrarMode.ManagedStatic || LinkContext.App.Registrar == RegistrarMode.TrimmableStatic) {
 					return false;
 				}
 #endif
@@ -3987,7 +3965,7 @@ namespace Registrar {
 
 #if !LEGACY_TOOLS
 			// Generate the native trampoline to call the generated UnmanagedCallersOnly method if we're using the managed static registrar.
-			if (LinkContext.App.Registrar == RegistrarMode.ManagedStatic) {
+			if (LinkContext.App.Registrar == RegistrarMode.ManagedStatic || LinkContext.App.Registrar == RegistrarMode.TrimmableStatic) {
 				GenerateCallToUnmanagedCallersOnlyMethod (sb, method, isCtor, isVoid, num_arg, descriptiveMethodName, exceptions);
 				return;
 			}
@@ -4295,7 +4273,7 @@ namespace Registrar {
 
 			if (!staticCall) {
 				sb.WriteLine ($"static {ucoEntryPoint}_function {ucoEntryPoint};");
-				sb.WriteLine ($"xamarin_registrar_dlsym ((void **) &{ucoEntryPoint}, \"{method.Method!.Module.Assembly.Name.Name}\", \"{ucoEntryPoint}\", {pinvokeMethodInfo.Id});");
+				sb.WriteLine ($"xamarin_registrar_dlsym ((void **) &{ucoEntryPoint}, \"{method.Method!.Module.Assembly.Name.Name}\", \"{ucoEntryPoint}\", {pinvokeMethodInfo.Id}, \"{method.DeclaringType.ExportedName}\");");
 			}
 			if (hasReturnType)
 				sb.Write ("rv = ");
@@ -5192,6 +5170,9 @@ namespace Registrar {
 			var token = member.MetadataToken;
 
 #if !LEGACY_TOOLS
+			if (App.Registrar == RegistrarMode.TrimmableStatic)
+				throw ErrorHelper.CreateError (99, $"Can't create a token reference when using the trimmable static registrar (for: {member.FullName})");
+
 			if (App.Registrar == RegistrarMode.ManagedStatic) {
 				if (implied_type == TokenType.TypeDef && member is TypeDefinition td) {
 					if (App.Configuration.AssemblyTrampolineInfos.TryGetValue (td.Module.Assembly, out var infos) && infos.TryGetRegisteredTypeIndex (td, out var id)) {

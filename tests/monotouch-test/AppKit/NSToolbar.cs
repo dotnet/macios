@@ -17,12 +17,10 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSToolbarShouldChangeAllowsExtensionItems ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var allows = toolbar.AllowsExtensionItems;
 			toolbar.AllowsExtensionItems = !allows;
 
-			Assert.IsFalse (toolbar.AllowsExtensionItems == allows, "NSToolbarShouldChangeAllowsExtensionItems - Failed to set the AllowsExtensionItems property");
+			Assert.That (toolbar.AllowsExtensionItems == allows, Is.False, "NSToolbarShouldChangeAllowsExtensionItems - Failed to set the AllowsExtensionItems property");
 		}
 
 		[Test]

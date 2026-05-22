@@ -28,6 +28,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Collections.Generic;
+
 using Mono.Cecil;
 using Mono.Linker;
 using Mono.Tuner;
@@ -119,8 +121,11 @@ namespace Xamarin.Linker.Steps {
 				marker.PreserveType (type, allMembers: true);
 			} else if (type.HasMethods) {
 				modified |= PreserveIntPtrConstructor (marker, type);
-				if (nsobject)
+				if (nsobject) {
 					modified |= PreserveExportedMethods (marker, type);
+					if (marker.App.Registrar == RegistrarMode.TrimmableStatic)
+						modified |= PreserveVirtualOverrides (marker, type);
+				}
 			}
 
 			return modified;
@@ -183,6 +188,29 @@ namespace Xamarin.Linker.Steps {
 				modified |= marker.PreserveMethod (type, constructor);
 				break; // only one .ctor can match this
 			}
+			return modified;
+		}
+
+		static bool PreserveVirtualOverrides (IMarkNSObjects marker, TypeDefinition type)
+		{
+			// Preserve all virtual method overrides for product NSObject types.
+			// When TrimMode=full, the trimmer may remove virtual overrides from
+			// product types (like ClassHandle, ToString, Dispose, etc.), causing
+			// incorrect base class behavior at runtime. These overrides are called
+			// through virtual dispatch and must be preserved.
+			// Collect first to avoid modifying the collection while iterating.
+			List<MethodDefinition>? overrides = null;
+			foreach (var method in type.Methods) {
+				if (!method.IsVirtual || method.IsNewSlot || method.IsAbstract)
+					continue;
+				overrides ??= new List<MethodDefinition> ();
+				overrides.Add (method);
+			}
+			if (overrides is null)
+				return false;
+			var modified = false;
+			foreach (var method in overrides)
+				modified |= marker.PreserveMethod (type, method);
 			return modified;
 		}
 

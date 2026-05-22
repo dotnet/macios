@@ -17,7 +17,7 @@ namespace ShareExtensionTest {
 		{
 			base.LoadView ();
 
-			NSExtensionItem item = ExtensionContext.InputItems.First ();
+			NSExtensionItem item = ExtensionContext?.InputItems.First () ?? new NSExtensionItem ();
 			Console.WriteLine ("Attachments {0}", item);
 		}
 
@@ -25,13 +25,13 @@ namespace ShareExtensionTest {
 		{
 			NSExtensionItem outputItem = new NSExtensionItem ();
 			var outputItems = new [] { outputItem };
-			ExtensionContext.CompleteRequest (outputItems, null);
+			ExtensionContext?.CompleteRequest (outputItems, null);
 		}
 
 		partial void Send (Foundation.NSObject sender)
 		{
 			NSError cancelError = NSError.FromDomain (NSError.CocoaErrorDomain, 3072, null);
-			ExtensionContext.CancelRequest (cancelError);
+			ExtensionContext?.CancelRequest (cancelError);
 		}
 	}
 }

@@ -152,6 +152,17 @@ APPKIT_SOURCES = \
 	AppKit/NSCollectionView.cs \
 	AppKit/NSCollectionViewLayout.cs \
 	AppKit/NSColorPickerTouchBarItem.cs \
+	AppKit/NSControlTextEditingEventArgs.cs \
+	AppKit/NSMenuItemEventArgs.cs \
+	AppKit/NSMenuItemIndexEventArgs.cs \
+	AppKit/NSOutlineViewItemEventArgs.cs \
+	AppKit/NSTextAlternativesSelectedAlternativeStringEventArgs.cs \
+	AppKit/NSTextViewDidChangeSelectionEventArgs.cs \
+	AppKit/NSTextViewWillChangeNotifyingTextViewEventArgs.cs \
+	AppKit/NSTextDidEndEditingEventArgs.cs \
+	AppKit/NSViewColumnMoveEventArgs.cs \
+	AppKit/NSViewColumnResizeEventArgs.cs \
+	AppKit/NSWorkspaceFileOperationEventArgs.cs \
 	AppKit/NSSliderTouchBarItem.cs \
 	AppKit/NSView.cs \
 	AppKit/NSCollectionLayoutAnchor.cs \
@@ -624,6 +635,7 @@ COREMIDI_SOURCES = \
 COREML_SOURCES = \
 	CoreML/MLDictionaryFeatureProvider.cs \
 	CoreML/MLModel.cs \
+	CoreML/MLModelCollection.cs \
 	CoreML/MLMultiArray.cs \
 	CoreML/MLMultiArrayConstraint.cs \
 
@@ -1469,14 +1481,21 @@ PHOTOS_SOURCES = \
 PHOTOSUI_API_SOURCES = \
 	PhotosUI/PHEnums.cs \
 
-# PrintCode
-PRINTCORE_SOURCES = \
+# PrintCore
+PRINTCORE_CORE_SOURCES = \
 	PrintCore/Defs.cs	\
 	PrintCore/PrintCore.cs
+
+PRINTCORE_SOURCES =
 
 # PushToTalk
 PUSHTOTALK_SOURCES = \
 	PushToTalk/Compat.cs \
+
+# QuartzComposer
+
+QUARTZCOMPOSER_SOURCES = \
+	QuartzComposer/QCComposition.cs \
 
 # QuickLook
 
@@ -1889,12 +1908,14 @@ SHARED_CORE_SOURCES = \
 	ObjCRuntime/TransientCFString.cs \
 	ObjCRuntime/TransientString.cs \
 	ObjCRuntime/NFloat.cs \
+	ObjCRuntime/ObjCSuper.cs \
 	ObjCRuntime/ObjectiveCFrameworkAttribute.cs \
 	ObjCRuntime/ObsoleteConstants.cs \
 	ObjCRuntime/Protocol.cs \
 	ObjCRuntime/Registrar.core.cs \
 	ObjCRuntime/RequiresSuperAttribute.cs \
 	ObjCRuntime/Selector.cs \
+	ObjCRuntime/SupportedSimulatorAttribute.cs \
 	ObjCRuntime/SystemVersion.cs \
 	ObjCRuntime/ThrowHelper.cs \
 	Simd/MathHelper.cs \
@@ -1952,6 +1973,7 @@ SHARED_SOURCES = \
 	ObjCRuntime/TrampolineBlockBase.cs \
 	ObjCRuntime/TransientAttribute.cs \
 	ObjCRuntime/TypeConverter.cs \
+	ObjCRuntime/TypeMaps.cs \
 	ObjCRuntime/UserDelegateTypeAttribute.cs \
 	System.Net.Http/CFContentStream.cs \
 	System.Net.Http/CFNetworkHandler.cs \
@@ -2355,6 +2377,7 @@ MACCATALYST_FRAMEWORKS = \
 	MapKit \
 	MediaAccessibility \
 	MediaPlayer \
+	MediaSetup \
 	MediaToolbox \
 	Messages \
 	MessageUI \
@@ -2380,6 +2403,7 @@ MACCATALYST_FRAMEWORKS = \
 	QuickLookThumbnailing \
 	ReplayKit \
 	SafariServices \
+	SafetyKit \
 	ScreenCaptureKit \
 	ScreenTime \
 	Security \

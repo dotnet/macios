@@ -1352,4 +1352,76 @@ Test results reported success, but the tests job failed.
             $sonomaIdx | Should -BeLessThan $sequoiaIdx
         }
     }
+
+    Context "VSDrops publish failed" {
+        It "shows publish failed text instead of VSDrops link" {
+            $VerbosePreference = "Continue"
+            $DebugPreference = "Continue"
+
+            $vsdropsMatrix = @"
+{
+    "cecil": {
+        "LABEL": "cecil",
+        "TESTS_LABELS": "--label=skip-all-tests,run-cecil-tests",
+        "TEST_STAGE": "simulator_tests",
+        "LABEL_WITH_PLATFORM": "cecil",
+        "STATUS_CONTEXT": "VSTS: simulator tests - cecil",
+        "TEST_PREFIX": "simulator_testscecil",
+        "TEST_PLATFORM": ""
+    }
+}
+"@
+            $vsdropsFailedStageDeps = @"
+{
+  "configure_build": {
+    "configure": {
+      "outputs": {
+        "test_matrix.TEST_MATRIX": "$($vsdropsMatrix.Replace("`n", "\n").Replace("`"", "\`""))"
+      }
+    }
+  },
+  "simulator_tests": {
+    "tests": {
+      "outputs": {
+        "cecil.PowerShell15.TESTS_ATTEMPT": "1",
+        "cecil.PowerShell15.TESTS_BOT": "XAMMINI-013.Ventura",
+        "cecil.PowerShell15.TESTS_LABEL": "cecil",
+        "cecil.PowerShell15.TESTS_PLATFORM": "",
+        "cecil.PowerShell15.TESTS_TITLE": "cecil",
+        "cecil.runTests.TESTS_JOBSTATUS": "Succeeded",
+        "cecil.setVSDropsPublishResult.VSDROPS_PUBLISHED": "Failed"
+      },
+      "identifier": null,
+      "name": "tests",
+      "attempt": 1,
+      "startTime": null,
+      "finishTime": null,
+      "state": "NotStarted",
+      "result": "Succeeded"
+    }
+  }
+}
+"@
+            $testDirectory = Join-Path "." "subdir"
+            New-Item -Path "$testDirectory" -ItemType "directory" -Force
+            New-Item -Path "$testDirectory/TestSummary-simulator_testscecil-1" -Name "TestSummary.md" -Value "# :tada: All 1 tests passed :tada:" -Force
+
+            $parallelResults = New-ParallelTestsResults -Path "$testDirectory" -StageDependencies "$vsdropsFailedStageDeps" -Context "context" -VSDropsIndex "vsdropsIndex"
+
+            $parallelResults.IsSuccess() | Should -Be $true
+
+            $sb = [System.Text.StringBuilder]::new()
+            $parallelResults.WriteComment($sb)
+
+            Remove-Item -Path $testDirectory -Recurse
+
+            $content = $sb.ToString()
+
+            Write-Host $content
+
+            $content | Should -Not -BeLike "*[Html Report (VSDrops)]*"
+            $content | Should -BeLike "*(:warning: Html Report Publish failed :warning:)*"
+            $content | Should -BeLike "*[Download]*"
+        }
+    }
 }

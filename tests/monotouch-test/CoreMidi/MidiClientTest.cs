@@ -23,7 +23,7 @@ namespace MonoTouchFixtures.CoreMidi {
 				Assert.Inconclusive ("No Midi Destinations");
 
 			using var ep = MidiEndpoint.GetDestination (0);
-			Assert.NotNull (ep, "EndPoint");
+			Assert.That (ep, Is.Not.Null, "EndPoint");
 
 			var mevent = new byte [] { 0x90, 0x40, 0x70 };
 			using var client = new MidiClient ($"outputclient-{Process.GetCurrentProcess ().Id}");

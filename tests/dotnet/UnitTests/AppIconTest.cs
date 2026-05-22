@@ -673,10 +673,10 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
-		[TestCase (ApplePlatform.TVOS, "tvossimulator-x64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64")]
-		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
+		[TestCase (ApplePlatform.iOS, "iossimulator-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvossimulator-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-arm64")]
 		public void ComposerIcon (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);

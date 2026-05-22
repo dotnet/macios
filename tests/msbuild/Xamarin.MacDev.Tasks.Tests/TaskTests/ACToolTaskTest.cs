@@ -788,8 +788,7 @@ namespace Xamarin.MacDev.Tasks {
 			ExecuteTask (actool, 1);
 
 			var errorMessages = Engine.Logger.ErrorEvents.Select (e => e.Message).ToList ();
-			Assert.IsTrue (errorMessages.Any (m => m?.Contains ("Can't find the AppIcon 'InexistentIcon'") == true),
-				"Should report that InexistentIcon is not found among image resources");
+			Assert.That (errorMessages.Any (m => m?.Contains ("Can't find the AppIcon 'InexistentIcon'") == true), Is.True, "Should report that InexistentIcon is not found among image resources");
 		}
 
 		[Test]

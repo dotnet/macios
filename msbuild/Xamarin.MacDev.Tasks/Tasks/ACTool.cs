@@ -248,7 +248,7 @@ namespace Xamarin.MacDev.Tasks {
 			yield break;
 		}
 
-		void FindXCAssetsDirectory (string main, string secondary, out string mainResult, out string secondaryResult)
+		void FindAssetCatalogDirectory (string main, string secondary, out string mainResult, out string secondaryResult)
 		{
 			mainResult = main;
 			secondaryResult = secondary;
@@ -299,7 +299,7 @@ namespace Xamarin.MacDev.Tasks {
 					var assetType = Path.GetExtension (catalog).TrimStart ('.');
 
 					// keep walking up the directory structure until we get to the .xcassets or .icon directory
-					FindXCAssetsDirectory (catalog, catalogFullPath, out var catalog2, out var catalogFullPath2);
+					FindAssetCatalogDirectory (catalog, catalogFullPath, out var catalog2, out var catalogFullPath2);
 					catalog = catalog2;
 					catalogFullPath = catalogFullPath2;
 
@@ -378,7 +378,7 @@ namespace Xamarin.MacDev.Tasks {
 						item = new TaskItem (dest);
 						assetItem.CopyMetadataTo (item);
 						item.SetMetadata ("Link", vpath);
-						FindXCAssetsDirectory (Path.GetFullPath (dest), "", out var catalogFullPath, out var _);
+						FindAssetCatalogDirectory (Path.GetFullPath (dest), "", out var catalogFullPath, out var _);
 						items.Add (new AssetInfo (item, vpath, asset.Catalog, catalogFullPath, asset.AssetType));
 					} else {
 						// Handle both Contents.json (for .xcassets) and icon.json (for .icon folders)

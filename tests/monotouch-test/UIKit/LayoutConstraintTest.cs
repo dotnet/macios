@@ -42,7 +42,7 @@ namespace MonoTouchFixtures.UIKit {
 				dict ["button0"] = b0;
 				dict ["button1"] = b1;
 				var constaints = NSLayoutConstraint.FromVisualFormat ("[button0]-20-[button1]", NSLayoutFormatOptions.AlignAllBaseline, metrics, dict);
-				Assert.NotNull (constaints);
+				Assert.That (constaints, Is.Not.Null);
 			}
 		}
 	}

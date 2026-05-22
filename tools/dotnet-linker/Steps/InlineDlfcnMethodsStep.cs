@@ -39,8 +39,8 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 	{
 		var modified = false;
 		if (type.HasMethods) {
-			if (Frameworks.TryGetFramework (App, type, out Framework? framework) && App.IsSimulatorBuild && !framework.IsFrameworkAvailableInSimulator (App)) {
-				Driver.Log (3, $"Type {type.FullName} appears to be part of the '{framework.Name}' framework, which is not available in the simulator. Skipping inlining Dlfcn calls for this type.");
+			if (Frameworks.TryGetFramework (App, type, out Framework? framework) && framework.IsFrameworkUnavailable (App)) {
+				Driver.Log (3, $"Type {type.FullName} appears to be part of the '{framework.Name}' framework, which is not available in the current SDK. Skipping inlining Dlfcn calls for this type.");
 				return modified;
 			}
 

@@ -656,7 +656,7 @@ namespace Xamarin.Tests {
 
 			try {
 				var doc = AssetsTest.ProcessAssets (assetsCar, AssetsTest.GetFullSdkVersion (platform, runtimeIdentifiers));
-				Assert.IsNotNull (doc, "There was an issue processing the asset binary.");
+				Assert.That (doc, Is.Not.Null, "There was an issue processing the asset binary.");
 
 				var foundAssets = AssetsTest.FindAssets (platform, doc);
 
@@ -666,7 +666,7 @@ namespace Xamarin.Tests {
 						expectedAssets.Add (asset);
 				}
 
-				CollectionAssert.AreEquivalent (expectedAssets, foundAssets, "Incorrect assets");
+				Assert.That (foundAssets, Is.EquivalentTo (expectedAssets), "Incorrect assets");
 			} catch {
 				Console.WriteLine ($"Assets.car: {assetsCar}");
 				throw;

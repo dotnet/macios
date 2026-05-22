@@ -29,14 +29,14 @@ namespace MonoTouchFixtures.EventKit {
 		{
 			using var store = new EKEventStore ();
 			using (var rem = EKReminder.Create (store)) {
-				Assert.AreEqual (0, rem.Priority, "Priority");
-				Assert.IsFalse (rem.Completed, "Completed");
-				Assert.IsNull (rem.CompletionDate, "CompletionDate");
-				Assert.IsNull (rem.StartDateComponents, "StartDateComponents");
-				Assert.IsNull (rem.DueDateComponents, "DueDateComponents");
+				Assert.That (rem.Priority, Is.EqualTo (0), "Priority");
+				Assert.That (rem.Completed, Is.False, "Completed");
+				Assert.That (rem.CompletionDate, Is.Null, "CompletionDate");
+				Assert.That (rem.StartDateComponents, Is.Null, "StartDateComponents");
+				Assert.That (rem.DueDateComponents, Is.Null, "DueDateComponents");
 
 				rem.Completed = true;
-				Assert.IsTrue (rem.Completed, "Completed - Changed");
+				Assert.That (rem.Completed, Is.True, "Completed - Changed");
 			}
 		}
 

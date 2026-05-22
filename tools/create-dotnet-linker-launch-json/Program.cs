@@ -68,7 +68,7 @@ class Program {
 				}
 
 
-				var relevantRecords = records.Where (v => v?.Args?.BuildEventContext?.TaskId == tsea.BuildEventContext.TaskId).Select (v => v.Args).ToArray ();
+				var relevantRecords = records.Where (v => v?.Args?.BuildEventContext?.TaskId == tsea.BuildEventContext?.TaskId).Select (v => v.Args).ToArray ();
 				var cla = relevantRecords.Where (v => v is BuildMessageEventArgs).Cast<BuildMessageEventArgs> ().Where (v => v?.ToString ()?.Contains ("CommandLineArguments") == true).ToArray ();
 				foreach (var rr in relevantRecords) {
 					if (rr is TaskCommandLineEventArgs tclea) {

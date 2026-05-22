@@ -222,14 +222,14 @@ namespace Xamarin.Tests {
 
 			var rv = DotNet.AssertPublishFailure (project_path, properties);
 			var errors = BinLog.GetBuildLogErrors (rv.BinLogPath).ToArray ();
-			Assert.AreEqual (1, errors.Length, "Error Count");
+			Assert.That (errors.Length, Is.EqualTo (1), "Error Count");
 			string expectedErrorMessage;
 			if (runtimeIdentifiers.IndexOf (';') >= 0) {
 				expectedErrorMessage = $"A runtime identifier for a device architecture must be specified in order to publish this project. '{runtimeIdentifiers}' are simulator architectures.";
 			} else {
 				expectedErrorMessage = $"A runtime identifier for a device architecture must be specified in order to publish this project. '{runtimeIdentifiers}' is a simulator architecture.";
 			}
-			Assert.AreEqual (expectedErrorMessage, errors [0].Message, "Error Message");
+			Assert.That (errors [0].Message, Is.EqualTo (expectedErrorMessage), "Error Message");
 
 			Assert.That (pkgPath, Does.Not.Exist, "ipa/pkg creation");
 		}

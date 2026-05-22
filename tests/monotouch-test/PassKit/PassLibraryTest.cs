@@ -38,18 +38,18 @@ namespace MonoTouchFixtures.PassKit {
 			if (passes is null)
 				TestRuntime.IgnoreInCI ("GetPasses () seems to randomly return null on our bots.");
 			// If the following assert fails for you locally, please investigate! See https://github.com/xamarin/maccore/issues/2598.
-			Assert.NotNull (passes, "GetPasses - if this assert fails for you locally, please investigate! See https://github.com/xamarin/maccore/issues/2598.");
+			Assert.That (passes, Is.Not.Null, "GetPasses - if this assert fails for you locally, please investigate! See https://github.com/xamarin/maccore/issues/2598.");
 
 			using (var url = PassTest.GetBoardingPassUrl ()) {
 				// we can just open the url
 				Assert.That (UIApplication.SharedApplication.OpenUrl (url), Is.EqualTo (true).Or.EqualTo (false), "OpenUrl");
 			}
 
-			Assert.Null (library.GetPass (String.Empty, String.Empty), "GetPass");
+			Assert.That (library.GetPass (String.Empty, String.Empty), Is.Null, "GetPass");
 
 			using (var pass = PassTest.GetBoardingPass ()) {
-				Assert.False (library.Contains (pass), "Contains");
-				Assert.False (library.Replace (pass), "Replace");
+				Assert.That (library.Contains (pass), Is.False, "Contains");
+				Assert.That (library.Replace (pass), Is.False, "Replace");
 				library.Remove (pass);
 			}
 		}

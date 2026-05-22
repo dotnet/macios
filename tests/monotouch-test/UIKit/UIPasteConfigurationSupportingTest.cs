@@ -53,7 +53,7 @@ namespace MonoTouchFixtures.UIKit {
 
 			public override void Paste (NSItemProvider [] itemProviders)
 			{
-				Assert.IsTrue (itemProviders [0].CanLoadObject (typeof (UIImage)));
+				Assert.That (itemProviders [0].CanLoadObject (typeof (UIImage)), Is.True);
 			}
 		}
 
@@ -61,7 +61,7 @@ namespace MonoTouchFixtures.UIKit {
 
 			public override void Paste (NSItemProvider [] itemProviders)
 			{
-				Assert.IsTrue (itemProviders [0].CanLoadObject (typeof (UIImage)));
+				Assert.That (itemProviders [0].CanLoadObject (typeof (UIImage)), Is.True);
 			}
 		}
 
@@ -69,7 +69,7 @@ namespace MonoTouchFixtures.UIKit {
 
 			public override void Paste (NSItemProvider [] itemProviders)
 			{
-				Assert.IsTrue (itemProviders [0].CanLoadObject (typeof (UIImage)));
+				Assert.That (itemProviders [0].CanLoadObject (typeof (UIImage)), Is.True);
 			}
 		}
 	}

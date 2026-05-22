@@ -56,7 +56,7 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			if (status == StatusCode.NoKey)
 				return;
 
-			Assert.AreEqual (StatusCode.OK, status, "Status");
+			Assert.That (status, Is.EqualTo (StatusCode.OK), "Status");
 			// It's quite complex to figure out whether we should get a dictionary back or not.
 			// References:
 			// * https://github.com/dotnet/macios/commit/24331f35dd67d19f3ed9aca7b8b21827ce0823c0
@@ -72,7 +72,7 @@ namespace MonoTouchFixtures.SystemConfiguration {
 		{
 #if !__TVOS__
 			var status = CaptiveNetwork.TryGetSupportedInterfaces (out var ifaces);
-			Assert.AreEqual (StatusCode.OK, status, "Status");
+			Assert.That (status, Is.EqualTo (StatusCode.OK), "Status");
 #endif // __TVOS__
 		}
 #endif
@@ -92,7 +92,7 @@ namespace MonoTouchFixtures.SystemConfiguration {
 
 
 #if !__TVOS__
-			Assert.False (CaptiveNetwork.MarkPortalOnline ("xamxam"));
+			Assert.That (CaptiveNetwork.MarkPortalOnline ("xamxam"), Is.False);
 #endif
 		}
 
@@ -110,7 +110,7 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 8, throwIfOtherPlatform: false);
 
 #if !__TVOS__
-			Assert.False (CaptiveNetwork.MarkPortalOffline ("xamxam"));
+			Assert.That (CaptiveNetwork.MarkPortalOffline ("xamxam"), Is.False);
 #endif
 		}
 

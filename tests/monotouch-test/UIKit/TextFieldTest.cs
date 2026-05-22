@@ -38,9 +38,9 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (var tf = new UITextField ()) {
 				if (TestRuntime.CheckXcodeVersion (9, 0)) {
-					Assert.IsNotNull (tf.SelectedTextRange, "SelectedTextRange 1");
+					Assert.That (tf.SelectedTextRange, Is.Not.Null, "SelectedTextRange 1");
 				} else {
-					Assert.IsNull (tf.SelectedTextRange, "SelectedTextRange");
+					Assert.That (tf.SelectedTextRange, Is.Null, "SelectedTextRange");
 				}
 				if (TestRuntime.CheckXcodeVersion (13, 0)) {
 #if !__TVOS__
@@ -57,7 +57,7 @@ namespace MonoTouchFixtures.UIKit {
 					else
 						Assert.That (tf.TypingAttributes, Is.Empty, "default");
 				} else {
-					Assert.IsNull (tf.TypingAttributes, "default");
+					Assert.That (tf.TypingAttributes, Is.Null, "default");
 				}
 				// ^ calling TypingAttributes does not crash like UITextView does, it simply returns null
 				tf.TypingAttributes = new NSDictionary ();
@@ -77,7 +77,7 @@ namespace MonoTouchFixtures.UIKit {
 					else
 						Assert.That (tf.TypingAttributes, Is.Empty, "empty");
 				} else {
-					Assert.IsNull (tf.TypingAttributes, "empty not xcode 11");
+					Assert.That (tf.TypingAttributes, Is.Null, "empty not xcode 11");
 				}
 				// and it stays null, even if assigned, since there's not selection
 			}
@@ -88,9 +88,9 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			// https://bugzilla.xamarin.com/show_bug.cgi?id=15004
 			using (UITextField tf = new UITextField ()) {
-				Assert.IsNull (tf.LeftView, "LeftView");
+				Assert.That (tf.LeftView, Is.Null, "LeftView");
 				tf.LeftView = null;
-				Assert.IsNull (tf.RightView, "RightView");
+				Assert.That (tf.RightView, Is.Null, "RightView");
 				tf.RightView = null;
 			}
 		}

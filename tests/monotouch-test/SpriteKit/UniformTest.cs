@@ -31,29 +31,29 @@ namespace MonoTouchFixtures.SpriteKit {
 				var N3Zero = default (NMatrix3);
 				var N2Zero = default (NMatrix2);
 
-				Assert.AreEqual ("name", obj.Name, "1 Name");
-				Assert.AreEqual (SKUniformType.None, obj.UniformType, "1 UniformType");
-				Assert.IsNull (obj.TextureValue, "1 TextureValue");
-				Assert.AreEqual (0.0f, obj.FloatValue, "1 FloatValue");
+				Assert.That (obj.Name, Is.EqualTo ("name"), "1 Name");
+				Assert.That (obj.UniformType, Is.EqualTo (SKUniformType.None), "1 UniformType");
+				Assert.That (obj.TextureValue, Is.Null, "1 TextureValue");
+				Assert.That (obj.FloatValue, Is.EqualTo (0.0f), "1 FloatValue");
 				Asserts.AreEqual (N2Zero, obj.MatrixFloat2x2Value, "1 MatrixFloat2x2Value");
 				Asserts.AreEqual (N3Zero, obj.MatrixFloat3x3Value, "1 MatrixFloat3x3Value");
 				Asserts.AreEqual (N4Zero, obj.MatrixFloat4x4Value, "1 MatrixFloat4x4Value");
 
 				texture = SKTexture.FromImageNamed ("basn3p08.png");
 				obj.TextureValue = texture;
-				Assert.AreEqual (texture, obj.TextureValue, "2 TextureValue");
+				Assert.That (obj.TextureValue, Is.EqualTo (texture), "2 TextureValue");
 
 				obj.FloatValue = 0.5f;
-				Assert.AreEqual (0.5f, obj.FloatValue, "2 FloatValue");
+				Assert.That (obj.FloatValue, Is.EqualTo (0.5f), "2 FloatValue");
 			}
 
 			bool hasSimdConstructors = TestRuntime.CheckXcodeVersion (8, 0);
 			using (var obj = new SKUniform ("name", texture)) {
-				Assert.AreEqual (texture, obj.TextureValue, "3 TextureValue");
+				Assert.That (obj.TextureValue, Is.EqualTo (texture), "3 TextureValue");
 			}
 
 			using (var obj = new SKUniform ("name", 3.1415f)) {
-				Assert.AreEqual (3.1415f, obj.FloatValue, "4 FloatValue");
+				Assert.That (obj.FloatValue, Is.EqualTo (3.1415f), "4 FloatValue");
 			}
 		}
 

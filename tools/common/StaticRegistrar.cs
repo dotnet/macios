@@ -2101,10 +2101,7 @@ namespace Registrar {
 
 			namespaces.Add (ns);
 
-			if (App.IsSimulatorBuild && !App.IsFrameworkAvailableInSimulator (ns)) {
-				Driver.Log (5, "Not importing the framework {0} in the generated registrar code because it's not available in the simulator.", ns);
-				return;
-			} else if (Frameworks.GetFrameworks (App.Platform, false)?.TryGetValue (ns, out var fw) == true && fw.Unavailable) {
+			if (Driver.GetFrameworks (App).TryGetValue (ns, out var fw) && fw.IsFrameworkUnavailable (App)) {
 				Driver.Log (5, "Not importing the framework {0} in the generated registrar code because it's not available in the current platform.", ns);
 				return;
 			}
@@ -2631,12 +2628,6 @@ namespace Registrar {
 		static bool IsIntentsType (ObjCType type) => IsTypeCore (type, "Intents");
 		static bool IsExternalAccessoryType (ObjCType type) => IsTypeCore (type, "ExternalAccessory");
 
-		bool IsTypeAllowedInSimulator (ObjCType type)
-		{
-			var ns = type.Type.Namespace;
-			return App.IsFrameworkAvailableInSimulator (ns);
-		}
-
 		class ProtocolInfo {
 			public uint TokenReference;
 			public ObjCType Protocol;
@@ -2688,24 +2679,13 @@ namespace Registrar {
 				return all_types;
 			var allTypes = new List<ObjCType> ();
 			foreach (var @class in Types.Values) {
+				if (@class.Type is null)
+					continue;
+
 				if (!string.IsNullOrEmpty (single_assembly) && single_assembly != @class.Type.Module.Assembly.Name.Name)
 					continue;
 
-				if (App.Platform != ApplePlatform.MacOSX) {
-					var isPlatformType = IsPlatformType (@class.Type);
-					if (isPlatformType && IsSimulatorOrDesktop && !IsTypeAllowedInSimulator (@class)) {
-						Driver.Log (5, "The static registrar won't generate code for {0} because its framework is not supported in the simulator.", @class.ExportedName);
-						continue; // Some types are not supported in the simulator.
-					}
-				}
-
-				// Xcode 15 removed NewsstandKit
 				if (Driver.XcodeVersion.Major >= 15) {
-					if (IsTypeCore (@class, "NewsstandKit")) {
-						exceptions.Add (ErrorHelper.CreateWarning (4178, $"The class '{@class.Type.FullName}' will not be registered because the NewsstandKit framework has been removed from the {App.Platform} SDK."));
-						continue;
-					}
-
 					if (@class.Type.Is ("PassKit", "PKDisbursementAuthorizationControllerDelegate") || @class.Type.Is ("PassKit", "IPKDisbursementAuthorizationControllerDelegate")) {
 						exceptions.Add (ErrorHelper.CreateWarning (4189, $"The class '{@class.Type.FullName}' will not be registered it has been removed from the {App.Platform} SDK."));
 						continue;
@@ -2715,21 +2695,11 @@ namespace Registrar {
 						exceptions.Add (ErrorHelper.CreateWarning (4189, $"The class '{@class.Type.FullName}' will not be registered it has been removed from the {App.Platform} SDK."));
 						continue;
 					}
-
-					if (Driver.XcodeVersion.Minor >= 3 || Driver.XcodeVersion.Major >= 16) {
-						// Xcode 15.3+ will remove AssetsLibrary
-						if (IsTypeCore (@class, "AssetsLibrary")) {
-							exceptions.Add (ErrorHelper.CreateWarning (4178, $"The class '{@class.Type.FullName}' will not be registered because the AssetsLibrary framework has been removed from the {App.Platform} SDK."));
-							continue;
-						}
-					}
 				}
 
-				if (Driver.XcodeVersion.Major >= 16) {
-					if (@class.Type.Namespace == "AssetsLibrary") {
-						exceptions.Add (ErrorHelper.CreateWarning (4190, $"The class '{@class.Type.FullName}' will not be registered because the {@class.Type.Namespace} framework has been deprecated from the {App.Platform} SDK."));
-						continue;
-					}
+				if (Frameworks.TryGetFramework (App, @class.Type.Resolve (), out Framework? framework) && framework.IsFrameworkUnavailable (App)) {
+					exceptions.Add (ErrorHelper.CreateWarning (4178, $"The class '{@class.Type.FullName}' will not be registered because the {framework.Name} framework has been removed from the {App.Platform} SDK."));
+					continue;
 				}
 
 				if (@class.IsFakeProtocol)

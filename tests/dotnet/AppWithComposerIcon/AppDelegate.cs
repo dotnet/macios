@@ -10,7 +10,7 @@ using UIKit;
 namespace AppWithComposerIcon {
 #if !(__MACCATALYST__ || __MACOS__)
 	public class AppDelegate : UIApplicationDelegate {
-		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
+		public override bool FinishedLaunching (UIApplication app, NSDictionary? options)
 		{
 			return true;
 		}

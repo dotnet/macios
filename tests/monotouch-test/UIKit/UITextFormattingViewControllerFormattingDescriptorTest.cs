@@ -21,26 +21,26 @@ namespace MonoTouchFixtures.UIKit {
 				var textAlignments = UITextFormattingViewControllerTextAlignment.Left | UITextFormattingViewControllerTextAlignment.Center;
 				obj.TextAlignments = textAlignments;
 				var weakTestAlignments = ((IEnumerable<NSString>) obj.WeakTextAlignments).Select (v => v.ToString ()).ToArray ();
-				Assert.AreEqual (2, weakTestAlignments.Length, "WeakTextAlignments.Length");
+				Assert.That (weakTestAlignments.Length, Is.EqualTo (2), "WeakTextAlignments.Length");
 				Assert.That (weakTestAlignments, Does.Contain ((string) UITextFormattingViewControllerTextAlignment.Left.GetConstant ()), "WeakTextAlignments #1");
 				Assert.That (weakTestAlignments, Does.Contain ((string) UITextFormattingViewControllerTextAlignment.Center.GetConstant ()), "WeakTextAlignments #2");
-				Assert.AreEqual (textAlignments, obj.TextAlignments, "TextAlignments");
+				Assert.That (obj.TextAlignments, Is.EqualTo (textAlignments), "TextAlignments");
 
 				var textLists = UITextFormattingViewControllerTextList.Hyphen | UITextFormattingViewControllerTextList.Decimal;
 				obj.TextLists = textLists;
 				var weakTextLists = ((IEnumerable<NSString>) obj.WeakTextLists).Select (v => v.ToString ()).ToArray ();
-				Assert.AreEqual (2, weakTextLists.Length, "WeakTextLists.Length");
+				Assert.That (weakTextLists.Length, Is.EqualTo (2), "WeakTextLists.Length");
 				Assert.That (weakTextLists, Does.Contain ((string) UITextFormattingViewControllerTextList.Hyphen.GetConstant ()), "WeakTextLists #1");
 				Assert.That (weakTextLists, Does.Contain ((string) UITextFormattingViewControllerTextList.Decimal.GetConstant ()), "WeakTextLists #2");
-				Assert.AreEqual (textLists, obj.TextLists, "TextLists");
+				Assert.That (obj.TextLists, Is.EqualTo (textLists), "TextLists");
 
 				var highlights = UITextFormattingViewControllerHighlight.Purple | UITextFormattingViewControllerHighlight.Pink;
 				obj.Highlights = highlights;
 				var weakHighlights = ((IEnumerable<NSString>) obj.WeakHighlights).Select (v => v.ToString ()).ToArray ();
-				Assert.AreEqual (2, weakHighlights.Length, "WeakHighlights.Length");
+				Assert.That (weakHighlights.Length, Is.EqualTo (2), "WeakHighlights.Length");
 				Assert.That (weakHighlights, Does.Contain ((string) UITextFormattingViewControllerHighlight.Purple.GetConstant ()), "WeakHighlights #1");
 				Assert.That (weakHighlights, Does.Contain ((string) UITextFormattingViewControllerHighlight.Pink.GetConstant ()), "WeakHighlights #2");
-				Assert.AreEqual (highlights, obj.Highlights, "Highlights");
+				Assert.That (obj.Highlights, Is.EqualTo (highlights), "Highlights");
 			});
 		}
 
@@ -59,7 +59,7 @@ namespace MonoTouchFixtures.UIKit {
 		public void IsKeyWindow_5199 ()
 		{
 			using (UIWindow w = new UIWindow ()) {
-				Assert.False (w.IsKeyWindow, "IsKeyWindow");
+				Assert.That (w.IsKeyWindow, Is.False, "IsKeyWindow");
 			}
 		}
 

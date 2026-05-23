@@ -619,7 +619,7 @@ namespace Xamarin.MacDev.Tasks {
 					var manifestPath = Path.Combine (item.ItemSpec, "Info.plist");
 
 					if (File.Exists (manifestPath)) {
-						var bundleExecutable = PDictionary.FromFile (manifestPath).GetCFBundleExecutable ();
+						var bundleExecutable = PDictionary.OpenFile (manifestPath).GetCFBundleExecutable ();
 
 						if (!string.IsNullOrEmpty (bundleExecutable))
 							executableName = bundleExecutable;

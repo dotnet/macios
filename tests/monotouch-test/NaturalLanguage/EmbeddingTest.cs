@@ -33,10 +33,10 @@ namespace MonoTouchFixtures.NaturalLanguage {
 				NLEmbedding e = null;
 				Assert.DoesNotThrow (() => e = NLEmbedding.GetWordEmbedding (v), $"Throws: {v}");
 				if (e is not null) {
-					Assert.NotNull (e, "GetWordEmbedding");
-					Assert.Null (e.GetVector ("Xamarin"), "GetVector");
-					Assert.False (e.TryGetVector ("Xamarin", out var vector), "TryGetVector");
-					Assert.Null (vector, "vector");
+					Assert.That (e, Is.Not.Null, "GetWordEmbedding");
+					Assert.That (e.GetVector ("Xamarin"), Is.Null, "GetVector");
+					Assert.That (e.TryGetVector ("Xamarin", out var vector), Is.False, "TryGetVector");
+					Assert.That (vector, Is.Null, "vector");
 				}
 			}
 		}
@@ -57,12 +57,12 @@ namespace MonoTouchFixtures.NaturalLanguage {
 
 			using (var url = NSUrl.FromFilename (temp)) {
 				var strong = NLEmbedding.Write (vd, NLLanguage.French, 1, url, out var error);
-				Assert.True (strong, "strong");
-				Assert.Null (error, "strong error");
+				Assert.That (strong, Is.True, "strong");
+				Assert.That (error, Is.Null, "strong error");
 
 				var weak = NLEmbedding.Write (wd, NLLanguage.French.GetConstant (), 1, url, out error);
-				Assert.True (strong, "strong");
-				Assert.Null (error, "weak error");
+				Assert.That (strong, Is.True, "strong");
+				Assert.That (error, Is.Null, "weak error");
 			}
 		}
 	}

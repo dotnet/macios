@@ -28,18 +28,18 @@ namespace MonoTouchFixtures.Metal {
 				InitialCapacity = 3
 			};
 			using var residencySet = device.CreateResidencySet (residencySetDescriptor, out var error);
-			Assert.IsNull (error, "Error #1");
-			Assert.IsNotNull (residencySet, "ResidencySet #1");
+			Assert.That (error, Is.Null, "Error #1");
+			Assert.That (residencySet, Is.Not.Null, "ResidencySet #1");
 
 			residencySet.AddAllocations (heap);
-			Assert.AreEqual (1, (int) residencySet.AllocationCount, "AllocationCount #1");
+			Assert.That ((int) residencySet.AllocationCount, Is.EqualTo (1), "AllocationCount #1");
 			residencySet.RemoveAllocations (heap);
-			Assert.AreEqual (0, (int) residencySet.AllocationCount, "AllocationCount #2");
+			Assert.That ((int) residencySet.AllocationCount, Is.EqualTo (0), "AllocationCount #2");
 
 			residencySet.AddAllocations (new IMTLAllocation [] { heap });
-			Assert.AreEqual (1, (int) residencySet.AllocationCount, "AllocationCount #3");
+			Assert.That ((int) residencySet.AllocationCount, Is.EqualTo (1), "AllocationCount #3");
 			residencySet.RemoveAllocations (new IMTLAllocation [] { heap });
-			Assert.AreEqual (0, (int) residencySet.AllocationCount, "AllocationCount #4");
+			Assert.That ((int) residencySet.AllocationCount, Is.EqualTo (0), "AllocationCount #4");
 		}
 	}
 }

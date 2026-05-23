@@ -1175,15 +1175,19 @@ namespace Foundation {
 					authenticationType = "basic";
 				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTTPDigest) {
 					authenticationType = "digest";
-				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodNegotiate ||
-					protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTMLForm) {
-					// Want to reject this authentication type to allow the next authentication method in the request to
-					// be used.
-					authenticationType = RejectProtectionSpaceAuthType;
-				} else {
-					// ServerTrust, ClientCertificate or Default.
+				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodServerTrust ||
+					protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodClientCertificate) {
+					// ServerTrust and ClientCertificate are handled earlier in DidReceiveChallengeImpl,
+					// so we should not reach here for these types. Return false just in case.
 					authenticationType = null;
 					return false;
+				} else {
+					// For any other authentication method (Negotiate, HTMLForm, Bearer, etc.),
+					// reject this protection space to allow the next authentication method in the
+					// request to be tried. This is important when the server advertises multiple
+					// WWW-Authenticate challenges (e.g. Bearer before Basic) - rejecting unsupported
+					// methods allows fallback to one we can handle.
+					authenticationType = RejectProtectionSpaceAuthType;
 				}
 				return true;
 			}

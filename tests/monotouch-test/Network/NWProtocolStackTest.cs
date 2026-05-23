@@ -65,7 +65,7 @@ namespace MonoTouchFixtures.Network {
 			options = new List<NWProtocolOptions> ();
 			stack.ClearApplicationProtocols ();
 			stack.IterateProtocols (InterateProtocolsHandler);
-			Assert.AreEqual (0, options.Count, "Cleared options");
+			Assert.That (options.Count, Is.EqualTo (0), "Cleared options");
 		}
 		/*
 		[Test]
@@ -73,7 +73,7 @@ namespace MonoTouchFixtures.Network {
 		{
 			using (var options = stack.TransportProtocol)
 			{
-				Assert.IsNotNull (options, "Transport protocol should not be null.");
+				Assert.That (options, Is.Not.Null, "Transport protocol should not be null.");
 			}
 			using (var options = NWProtocolOptions.CreateUdp ())
 			{

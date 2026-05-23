@@ -107,7 +107,7 @@
 	</Target>
 
 	<ItemGroup>
-		<PackageReference Include="NUnitLite" Version="3.12.0" Condition="'$(ExcludeNUnitLiteReference)' != 'true'" />
+		<PackageReference Include="NUnitLite" Version="$(NUnitLitePackageVersion)" Condition="'$(ExcludeNUnitLiteReference)' != 'true'" />
 		<ProjectReference Include="$(MSBuildThisFileDirectory)\Touch.Unit\Touch.Client\dotnet\Touch.Client.$(_PlatformName).csproj" Condition="'$(ExcludeTouchUnitReference)' != 'true'" />
 	</ItemGroup>
 	<PropertyGroup>

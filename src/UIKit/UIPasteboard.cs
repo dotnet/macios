@@ -44,7 +44,11 @@ namespace UIKit {
 				if (IsDirectBinding) {
 					ret = GetImageArray (ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, Selector.GetHandle (selImages)));
 				} else {
-					ret = GetImageArray (ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, Selector.GetHandle (selImages)));
+					unsafe {
+						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+						ret = GetImageArray (ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (&__objc_super__, Selector.GetHandle (selImages)));
+						GC.KeepAlive (this);
+					}
 				}
 				return ret;
 			}
@@ -58,7 +62,11 @@ namespace UIKit {
 				if (IsDirectBinding) {
 					ObjCRuntime.Messaging.void_objc_msgSend_IntPtr (this.Handle, Selector.GetHandle (selSetImages_), nsa_valueHandle);
 				} else {
-					ObjCRuntime.Messaging.void_objc_msgSendSuper_IntPtr (this.SuperHandle, Selector.GetHandle (selSetImages_), nsa_valueHandle);
+					unsafe {
+						var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+						ObjCRuntime.Messaging.void_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle (selSetImages_), nsa_valueHandle);
+						GC.KeepAlive (this);
+					}
 				}
 
 				nsa_value.Dispose ();

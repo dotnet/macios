@@ -41,7 +41,7 @@ namespace MonoTouchFixtures.Foundation {
 			// was important to track this down
 
 			NSObject value;
-			Assert.True (NSBundle.MainBundle.ExecutableUrl.TryGetResource (NSUrl.IsExcludedFromBackupKey, out value), "MainBundle");
+			Assert.That (NSBundle.MainBundle.ExecutableUrl.TryGetResource (NSUrl.IsExcludedFromBackupKey, out value), Is.True, "MainBundle");
 			Assert.That (value, Is.TypeOf (typeof (NSNumber)), "NSNumber");
 			Assert.That ((int) (value as NSNumber), Is.EqualTo (0), "0");
 
@@ -50,17 +50,17 @@ namespace MonoTouchFixtures.Foundation {
 			try {
 				File.WriteAllText (filename, "not worth a bit");
 				using (NSUrl url = NSUrl.FromFilename (filename)) {
-					Assert.True (url.TryGetResource (NSUrl.IsExcludedFromBackupKey, out value));
+					Assert.That (url.TryGetResource (NSUrl.IsExcludedFromBackupKey, out value), Is.True);
 					Assert.That ((int) (value as NSNumber), Is.EqualTo (0), "DoNotBackupMe-0");
 
 					url.SetResource (NSUrl.IsExcludedFromBackupKey, (NSNumber) 1);
 
-					Assert.True (url.TryGetResource (NSUrl.IsExcludedFromBackupKey, out value));
+					Assert.That (url.TryGetResource (NSUrl.IsExcludedFromBackupKey, out value), Is.True);
 					Assert.That ((int) (value as NSNumber), Is.EqualTo (1), "DoNotBackupMe-1");
 
 					NSError error;
 					NSDictionary dict = url.GetResourceValues (new NSString [] { NSUrl.IsExcludedFromBackupKey }, out error);
-					Assert.Null (error, "error");
+					Assert.That (error, Is.Null, "error");
 					Assert.That (dict.Keys [0], Is.EqualTo (NSUrl.IsExcludedFromBackupKey), "Key");
 					Assert.That ((int) (dict.Values [0] as NSNumber), Is.EqualTo (1), "Value");
 				}
@@ -78,9 +78,9 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			if (TestRuntime.CheckXcodeVersion (15, 0)) {
 				using (var url = NSUrl.FromString (bad_uri))
-					Assert.NotNull (bad_uri, "invalid");
+					Assert.That (bad_uri, Is.Not.Null, "invalid");
 			} else {
-				Assert.Null (NSUrl.FromString (bad_uri), "invalid");
+				Assert.That (NSUrl.FromString (bad_uri), Is.Null, "invalid");
 			}
 
 			using (var url = NSUrl.FromString (good_uri)) {
@@ -88,7 +88,7 @@ namespace MonoTouchFixtures.Foundation {
 
 				Assert.That (url.PathExtension, Is.EqualTo (String.Empty), "PathExtension-1");
 
-				Assert.NotNull (url.ToString (), "ToString"); // see #4763
+				Assert.That (url.ToString (), Is.Not.Null, "ToString"); // see #4763
 			}
 
 			using (var url = NSUrl.FromString ("file.extension")) {
@@ -117,13 +117,13 @@ namespace MonoTouchFixtures.Foundation {
 			const string bug6597 = "http://www.bing.com/images/search?q=雅詩蘭黛";
 
 			if (TestRuntime.CheckXcodeVersion (15, 0)) {
-				Assert.NotNull (NSUrl.FromString (bug6597), "1");
+				Assert.That (NSUrl.FromString (bug6597), Is.Not.Null, "1");
 
 				using (var url = new NSUrl (bug6597))
-					Assert.NotNull (url, "exception");
+					Assert.That (url, Is.Not.Null, "exception");
 			} else {
 				// does not work - From* static methods returns null for invalid URL
-				Assert.Null (NSUrl.FromString (bug6597), "1");
+				Assert.That (NSUrl.FromString (bug6597), Is.Null, "1");
 
 				// does not work - handle is null (as a .NET .ctor can't return null like ObjC init can do)
 				Assert.Throws<Exception> (() => new NSUrl (bug6597), "exception");
@@ -161,7 +161,7 @@ namespace MonoTouchFixtures.Foundation {
 
 			if (TestRuntime.CheckXcodeVersion (15, 0)) {
 				using (var url = NSUrl.FromString (file))
-					Assert.NotNull (url, "1");
+					Assert.That (url, Is.Not.Null, "1");
 			} else {
 				// initWithString: will fail with spaces
 				Assert.Throws<Exception> (() => new NSUrl (file), "1");
@@ -207,14 +207,14 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.That (url2.GetHashCode (), Is.EqualTo (url3.GetHashCode ()), "GetHashCode 2-3");
 
 				// NSObject
-				Assert.False (url1.Equals ((NSObject) url2), "Equals(NSObject) 1-2");
-				Assert.True (url2.Equals ((NSObject) url3), "Equals(NSObject) 2-3");
-				Assert.False (url1.Equals ((NSObject) null), "Equals(NSObject) null");
+				Assert.That (url1.Equals ((NSObject) url2), Is.False, "Equals(NSObject) 1-2");
+				Assert.That (url2.Equals ((NSObject) url3), Is.True, "Equals(NSObject) 2-3");
+				Assert.That (url1.Equals ((NSObject) null), Is.False, "Equals(NSObject) null");
 
 				// NSUrl / IEquatable<NSUrl>
-				Assert.False (url1.Equals (url2), "Equals(NSUrl) 1-2");
-				Assert.True (url2.Equals (url3), "Equals(NSUrl) 2-3");
-				Assert.False (url1.Equals ((NSUrl) null), "Equals(NSUrl) null");
+				Assert.That (url1.Equals (url2), Is.False, "Equals(NSUrl) 1-2");
+				Assert.That (url2.Equals (url3), Is.True, "Equals(NSUrl) 2-3");
+				Assert.That (url1.Equals ((NSUrl) null), Is.False, "Equals(NSUrl) null");
 			}
 		}
 
@@ -268,21 +268,21 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.That (url1.GetHashCode (), Is.Not.EqualTo (url2.GetHashCode ()), "GetHashCode 1-2");
 				Assert.That (url2.GetHashCode (), Is.Not.EqualTo (url3.GetHashCode ()), "GetHashCode 2-3");
 
-				Assert.False (url2.DirectBinding, "DirectBinding 2");
-				Assert.False (url3.DirectBinding, "DirectBinding 3");
+				Assert.That (url2.DirectBinding, Is.False, "DirectBinding 2");
+				Assert.That (url3.DirectBinding, Is.False, "DirectBinding 3");
 				Assert.That (url2.GetHashCode (), Is.Not.EqualTo (url3.GetHashCode ()), "GetHashCode 2-3");
 
 				// NSObject
-				Assert.False (url1.Equals ((NSObject) url2), "Equals(NSObject) 1-2");
-				Assert.False (url2.Equals ((NSObject) url3), "Equals(NSObject) 2-3");
+				Assert.That (url1.Equals ((NSObject) url2), Is.False, "Equals(NSObject) 1-2");
+				Assert.That (url2.Equals ((NSObject) url3), Is.False, "Equals(NSObject) 2-3");
 
 				// NSUrl / IEquatable<NSUrl>
-				Assert.False (url1.Equals (url2), "Equals(NSUrl) 1-2");
-				Assert.False (url2.Equals (url3), "Equals(NSUrl) 2-3");
+				Assert.That (url1.Equals (url2), Is.False, "Equals(NSUrl) 1-2");
+				Assert.That (url2.Equals (url3), Is.False, "Equals(NSUrl) 2-3");
 
 				// System.Object
-				Assert.False (url1.Equals ((object) url2), "Equals(object) 1-2");
-				Assert.False (url2.Equals ((object) url3), "Equals(object) 2-3");
+				Assert.That (url1.Equals ((object) url2), Is.False, "Equals(object) 1-2");
+				Assert.That (url2.Equals ((object) url3), Is.False, "Equals(object) 2-3");
 			}
 		}
 
@@ -296,9 +296,9 @@ namespace MonoTouchFixtures.Foundation {
 #pragma warning restore
 			if (TestRuntime.CheckXcodeVersion (15, 0)) {
 				using (var url = NSUrl.FromString (bad_url))
-					Assert.NotNull (bad_url, "bad");
+					Assert.That (bad_url, Is.Not.Null, "bad");
 			} else {
-				Assert.Null (NSUrl.FromString (bad_url), "bad");
+				Assert.That (NSUrl.FromString (bad_url), Is.Null, "bad");
 			}
 
 			string converted = ((NSString) bad).CreateStringByAddingPercentEscapes (NSStringEncoding.UTF8);
@@ -312,7 +312,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var url = NSUrl.FromString ("http://www.xamarin.com"))
 #pragma warning disable CS1718 // warning CS1718: Comparison made to same variable; did you mean to compare something else?
-				Assert.IsTrue (url == url);
+				Assert.That (url == url, Is.True);
 #pragma warning restore
 
 		}
@@ -321,8 +321,8 @@ namespace MonoTouchFixtures.Foundation {
 		public void TestEqualOperatorNull ()
 		{
 			using (var url = NSUrl.FromString ("http://www.xamarin.com")) {
-				Assert.IsFalse (url is null, "url is null");
-				Assert.IsFalse (null == url, "null == url");
+				Assert.That (url is null, Is.False, "url is null");
+				Assert.That (null == url, Is.False, "null == url");
 			}
 		}
 
@@ -331,15 +331,15 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var url1 = NSUrl.FromString ("http://www.xamarin.com"))
 			using (var url2 = NSUrl.FromString ("http://www.xamarin.com/foo"))
-				Assert.AreEqual (url1 == url2, url1.IsEqual (url2));
+				Assert.That (url1.IsEqual (url2), Is.EqualTo (url1 == url2));
 		}
 
 		[Test]
 		public void TestNotEqualOperatorNull ()
 		{
 			using (var url = NSUrl.FromString ("http://www.xamarin.com")) {
-				Assert.IsTrue (url is not null, "url is not null");
-				Assert.IsTrue (null != url, "null != url");
+				Assert.That (url is not null, Is.True, "url is not null");
+				Assert.That (null != url, Is.True, "null != url");
 			}
 		}
 
@@ -348,7 +348,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			using (var url1 = NSUrl.FromString ("http://www.xamarin.com"))
 			using (var url2 = NSUrl.FromString ("http://www.xamarin.com/foo"))
-				Assert.AreEqual (url1 != url2, !url1.IsEqual (url2));
+				Assert.That (!url1.IsEqual (url2), Is.EqualTo (url1 != url2));
 		}
 
 		[TestCase ("http://microsoft.com/", UriKind.Absolute)]
@@ -361,16 +361,16 @@ namespace MonoTouchFixtures.Foundation {
 		public void ImplicitOperatorRoundTrip (string value, UriKind kind)
 		{
 			var nsurl = new NSUrl (value);
-			Assert.AreEqual (nsurl.ToString (), ((NSUrl) (Uri) nsurl).ToString (), "RoundTrip NSUrl");
+			Assert.That (((NSUrl) (Uri) nsurl).ToString (), Is.EqualTo (nsurl.ToString ()), "RoundTrip NSUrl");
 
 			var url = new Uri (value, kind);
-			Assert.AreEqual (url.ToString (), ((Uri) (NSUrl) url).ToString (), "RoundTrip Uri");
+			Assert.That (((Uri) (NSUrl) url).ToString (), Is.EqualTo (url.ToString ()), "RoundTrip Uri");
 		}
 
 		[Test]
 		public void FromNullString ()
 		{
-			Assert.IsNull (NSUrl.FromString (null));
+			Assert.That (NSUrl.FromString (null), Is.Null);
 		}
 	}
 }

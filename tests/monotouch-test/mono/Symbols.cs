@@ -26,7 +26,7 @@ namespace MonoTouchFixtures {
 				}
 			}
 
-			Assert.IsTrue (aot || interp || llvmonly || nativeaot, $"#1\n\t{string.Join ("\n\t", symbols)}");
+			Assert.That (aot || interp || llvmonly || nativeaot, Is.True, $"#1\n\t{string.Join ("\n\t", symbols)}");
 		}
 
 		void Collect ()

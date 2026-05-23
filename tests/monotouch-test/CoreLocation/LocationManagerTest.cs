@@ -15,7 +15,7 @@ namespace MonoTouchFixtures.CoreLocation {
 		{
 			TestRuntime.AssertXcodeVersion (11, 0);
 			// deprecated - mention not to call it, but unclear what it returns to existing code
-			Assert.False (CLLocationManager.DeferredLocationUpdatesAvailable, "DeferredLocationUpdatesAvailable");
+			Assert.That (CLLocationManager.DeferredLocationUpdatesAvailable, Is.False, "DeferredLocationUpdatesAvailable");
 		}
 	}
 }

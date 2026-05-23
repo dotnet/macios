@@ -22,8 +22,8 @@ namespace MonoTouchFixtures.Foundation {
 			using (var md = NSMutableDictionary.FromObjectAndKey (s2, s1))
 			using (var ur = new NSUrlRequest ())
 			using (var mur = (NSMutableUrlRequest) ur.MutableCopy ()) {
-				Assert.Null (ur.Headers, "NSUrlRequest / Headers / null");
-				Assert.Null (mur.Headers, "NSMutableUrlRequest / Headers / null");
+				Assert.That (ur.Headers, Is.Null, "NSUrlRequest / Headers / null");
+				Assert.That (mur.Headers, Is.Null, "NSMutableUrlRequest / Headers / null");
 
 				mur.Headers = md;
 
@@ -48,7 +48,7 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.That (md.Count, Is.EqualTo ((nuint) 1), "3");
 				Assert.That (mur.Headers.Count, Is.EqualTo ((nuint) 1), "40");
 
-				Assert.AreNotSame (md, mur.Headers, "!same");
+				Assert.That (mur.Headers, Is.Not.SameAs (md), "!same");
 
 				// https://www.bignerdranch.com/blog/about-mutability/
 				Assert.That (mur.Headers.Class.Name, Is.EqualTo ("__NSCFDictionary"), "__NSCFDictionary");

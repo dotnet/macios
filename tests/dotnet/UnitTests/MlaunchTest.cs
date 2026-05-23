@@ -48,11 +48,11 @@ namespace Xamarin.Tests {
 			expectedArguments.Append ("--installdev ");
 			expectedArguments.Append (appPath.Substring (Path.GetDirectoryName (project_path)!.Length + 1)).Append ('/');
 			expectedArguments.Append ($" --wait-for-exit:false");
-			Assert.AreEqual (expectedArguments.ToString (), mlaunchInstallArguments);
+			Assert.That (mlaunchInstallArguments, Is.EqualTo (expectedArguments.ToString ()));
 
 			var scriptContents = File.ReadAllText (outputPath).Trim ('\n');
 			var expectedScriptContents = mlaunchPath + " " + expectedArguments.ToString ();
-			Assert.AreEqual (expectedScriptContents, scriptContents, "Script contents");
+			Assert.That (scriptContents, Is.EqualTo (expectedScriptContents), "Script contents");
 		}
 
 		public static object [] GetMlaunchRunArgumentsTestCases ()

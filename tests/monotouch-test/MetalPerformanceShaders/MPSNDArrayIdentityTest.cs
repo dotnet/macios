@@ -23,8 +23,8 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 			using var identity = new MPSNDArrayIdentity (device);
 			using var sourceArray = new MPSNDArray (device, 3.14f);
 			using var newArray = identity.Reshape (null, sourceArray, new nuint [] { 1 }, null);
-			Assert.AreEqual (1, (int) newArray.NumberOfDimensions, "NumberOfDimensions");
-			Assert.AreEqual (1, (int) newArray.GetLength (0), "Length #0");
+			Assert.That ((int) newArray.NumberOfDimensions, Is.EqualTo (1), "NumberOfDimensions");
+			Assert.That ((int) newArray.GetLength (0), Is.EqualTo (1), "Length #0");
 		}
 
 		[Test]
@@ -39,8 +39,8 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 			using var identity = new MPSNDArrayIdentity (device);
 			using var sourceArray = new MPSNDArray (device, 3.14f);
 			using var newArray = identity.Reshape (null, null, sourceArray, new nuint [] { 1 }, null);
-			Assert.AreEqual (1, (int) newArray.NumberOfDimensions, "NumberOfDimensions");
-			Assert.AreEqual (1, (int) newArray.GetLength (0), "Length #0");
+			Assert.That ((int) newArray.NumberOfDimensions, Is.EqualTo (1), "NumberOfDimensions");
+			Assert.That ((int) newArray.GetLength (0), Is.EqualTo (1), "Length #0");
 		}
 	}
 }

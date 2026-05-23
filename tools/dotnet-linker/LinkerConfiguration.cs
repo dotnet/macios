@@ -424,7 +424,7 @@ namespace Xamarin.Linker {
 			ErrorHelper.Platform = Platform;
 
 			// Optimizations.Parse can only be called after setting ErrorHelper.Platform
-			if (!string.IsNullOrEmpty (user_optimize_flags)) {
+			if (!StringUtils.IsNullOrEmpty (user_optimize_flags)) {
 				var messages = new List<ProductException> ();
 				Application.Optimizations.Parse (Application.Platform, user_optimize_flags, messages);
 				ErrorHelper.Show (messages);

@@ -22,7 +22,7 @@ namespace MonoTouchFixtures.AdSupport {
 		public void SharedManager ()
 		{
 			// IsAdvertisingTrackingEnabled - device specific config
-			Assert.NotNull (ASIdentifierManager.SharedManager.AdvertisingIdentifier, "AdvertisingIdentifier");
+			Assert.That (ASIdentifierManager.SharedManager.AdvertisingIdentifier, Is.Not.Null, "AdvertisingIdentifier");
 		}
 	}
 }

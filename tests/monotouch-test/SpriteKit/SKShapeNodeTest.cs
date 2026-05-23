@@ -29,7 +29,7 @@ namespace MonoTouchFixtures.SpriteKit {
 			};
 
 			var result = SKShapeNode.FromPoints (pts);
-			Assert.IsNotNull (result, "result should not be null");
+			Assert.That (result, Is.Not.Null, "result should not be null");
 		}
 
 		[Test]
@@ -44,7 +44,7 @@ namespace MonoTouchFixtures.SpriteKit {
 			};
 
 			var result = SKShapeNode.FromPoints (pts, 1, 1);
-			Assert.IsNotNull (result, "result should not be null");
+			Assert.That (result, Is.Not.Null, "result should not be null");
 
 			Assert.Throws<InvalidOperationException> (() => SKShapeNode.FromPoints (pts, 1, 2));
 		}
@@ -61,7 +61,7 @@ namespace MonoTouchFixtures.SpriteKit {
 			};
 
 			var result = SKShapeNode.FromSplinePoints (pts);
-			Assert.IsNotNull (result, "result should not be null");
+			Assert.That (result, Is.Not.Null, "result should not be null");
 		}
 
 		[Test]
@@ -76,7 +76,7 @@ namespace MonoTouchFixtures.SpriteKit {
 			};
 
 			var result = SKShapeNode.FromSplinePoints (pts, 1, 1);
-			Assert.IsNotNull (result, "result should not be null");
+			Assert.That (result, Is.Not.Null, "result should not be null");
 
 			Assert.Throws<InvalidOperationException> (() => SKShapeNode.FromSplinePoints (pts, 1, 2));
 		}

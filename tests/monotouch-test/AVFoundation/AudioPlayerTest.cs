@@ -22,11 +22,11 @@ namespace MonoTouchFixtures.AVFoundation {
 		public void FromUrl ()
 		{
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "Hand.wav");
-			Assert.True (File.Exists (file), file);
+			Assert.That (File.Exists (file), Is.True, file);
 			using (NSUrl url = new (file, false))
 			using (AVAudioPlayer ap = AVAudioPlayer.FromUrl (url, out NSError error)) {
-				Assert.NotNull (ap, "AVAudioPlayer");
-				Assert.Null (error, "NSError");
+				Assert.That (ap, Is.Not.Null, "AVAudioPlayer");
+				Assert.That (error, Is.Null, "NSError");
 			}
 		}
 
@@ -35,8 +35,8 @@ namespace MonoTouchFixtures.AVFoundation {
 		{
 			Assert.DoesNotThrow (() => {
 				using (AVAudioPlayer player = AVAudioPlayer.FromUrl (NSUrl.FromString ("sdf"), out NSError error)) {
-					Assert.Null (player, "AVAudioPlayer");
-					Assert.NotNull (error, "NSError");
+					Assert.That (player, Is.Null, "AVAudioPlayer");
+					Assert.That (error, Is.Not.Null, "NSError");
 				}
 			});
 		}
@@ -45,17 +45,17 @@ namespace MonoTouchFixtures.AVFoundation {
 		public void FromUrlWithHint ()
 		{
 			var file = Path.Combine (NSBundle.MainBundle.ResourcePath, "Hand.wav");
-			Assert.True (File.Exists (file), file);
+			Assert.That (File.Exists (file), Is.True, file);
 			using var url = new NSUrl (file, false);
 			{
 				using var ap = AVAudioPlayer.FromUrl (url, AVFileTypes.Wave, out var error);
-				Assert.NotNull (ap, "AVAudioPlayer");
-				Assert.Null (error, "NSError");
+				Assert.That (ap, Is.Not.Null, "AVAudioPlayer");
+				Assert.That (error, Is.Null, "NSError");
 			}
 			{
 				using var ap = AVAudioPlayer.FromUrl (url, AVFileTypes.Wave.GetConstant (), out var error);
-				Assert.NotNull (ap, "AVAudioPlayer 2");
-				Assert.Null (error, "NSError 2");
+				Assert.That (ap, Is.Not.Null, "AVAudioPlayer 2");
+				Assert.That (error, Is.Null, "NSError 2");
 			}
 		}
 
@@ -65,13 +65,13 @@ namespace MonoTouchFixtures.AVFoundation {
 			using var url = new NSUrl ("sdf", false);
 			{
 				using var ap = AVAudioPlayer.FromUrl (url, AVFileTypes.Wave, out var error);
-				Assert.Null (ap, "AVAudioPlayer");
-				Assert.NotNull (error, "NSError");
+				Assert.That (ap, Is.Null, "AVAudioPlayer");
+				Assert.That (error, Is.Not.Null, "NSError");
 			}
 			{
 				using var ap = AVAudioPlayer.FromUrl (url, AVFileTypes.Wave.GetConstant (), out var error);
-				Assert.Null (ap, "AVAudioPlayer 2");
-				Assert.NotNull (error, "NSError 2");
+				Assert.That (ap, Is.Null, "AVAudioPlayer 2");
+				Assert.That (error, Is.Not.Null, "NSError 2");
 			}
 		}
 
@@ -80,8 +80,8 @@ namespace MonoTouchFixtures.AVFoundation {
 		{
 			using (NSData data = NSData.FromFile (NSBundle.MainBundle.PathForResource ("Hand", "wav")))
 			using (AVAudioPlayer player = AVAudioPlayer.FromData (data, out NSError error)) {
-				Assert.NotNull (player, "AVAudioPlayer");
-				Assert.Null (error, "NSError");
+				Assert.That (player, Is.Not.Null, "AVAudioPlayer");
+				Assert.That (error, Is.Null, "NSError");
 			}
 		}
 
@@ -91,13 +91,13 @@ namespace MonoTouchFixtures.AVFoundation {
 			using var data = NSData.FromFile (NSBundle.MainBundle.PathForResource ("Hand", "wav"));
 			{
 				using var player = AVAudioPlayer.FromData (data, AVFileTypes.Wave, out var error);
-				Assert.NotNull (player, "AVAudioPlayer");
-				Assert.Null (error, "NSError");
+				Assert.That (player, Is.Not.Null, "AVAudioPlayer");
+				Assert.That (error, Is.Null, "NSError");
 			}
 			{
 				using var player = AVAudioPlayer.FromData (data, AVFileTypes.Wave.GetConstant (), out var error);
-				Assert.NotNull (player, "AVAudioPlayer 2");
-				Assert.Null (error, "NSError 2");
+				Assert.That (player, Is.Not.Null, "AVAudioPlayer 2");
+				Assert.That (error, Is.Null, "NSError 2");
 			}
 		}
 
@@ -106,8 +106,8 @@ namespace MonoTouchFixtures.AVFoundation {
 		{
 			Assert.Throws<ArgumentNullException> (() => {
 				using (var player = AVAudioPlayer.FromData (null, out NSError error)) {
-					Assert.Null (player, "AVAudioPlayer");
-					Assert.NotNull (error, "NSError");
+					Assert.That (player, Is.Null, "AVAudioPlayer");
+					Assert.That (error, Is.Not.Null, "NSError");
 				}
 			});
 		}

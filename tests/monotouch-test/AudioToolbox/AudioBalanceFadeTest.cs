@@ -19,7 +19,7 @@ namespace MonoTouchFixtures.AudioToolbox {
 		{
 			var acl = AudioChannelLayout.FromAudioChannelLayoutTag (AudioChannelLayoutTag.AudioUnit_6_1);
 			var abf = new AudioBalanceFade (acl);
-			Assert.IsNotNull (abf.GetBalanceFade ());
+			Assert.That (abf.GetBalanceFade (), Is.Not.Null);
 		}
 	}
 }

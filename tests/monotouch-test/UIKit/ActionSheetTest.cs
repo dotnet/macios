@@ -18,18 +18,18 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			Assert.That (a.ButtonCount, Is.EqualTo ((nint) 0), "ButtonCount");
 			Assert.That (a.CancelButtonIndex, Is.EqualTo ((nint) (-1)), "CancelButtonIndex");
-			Assert.Null (a.Delegate, "Delegate");
+			Assert.That (a.Delegate, Is.Null, "Delegate");
 			Assert.That (a.DestructiveButtonIndex, Is.EqualTo ((nint) (-1)), "DestructiveButtonIndex");
 			Assert.That (a.FirstOtherButtonIndex, Is.EqualTo ((nint) (-1)), "FirstOtherButtonIndex");
 
 			var style = TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 8, 0) ? UIActionSheetStyle.Default : UIActionSheetStyle.Automatic;
 			Assert.That (a.Style, Is.EqualTo (style), "Style");
 
-			Assert.Null (a.Title, "Title");
+			Assert.That (a.Title, Is.Null, "Title");
 
-			Assert.False (a.Visible, "Visible");
+			Assert.That (a.Visible, Is.False, "Visible");
 
-			Assert.Null (a.WeakDelegate, "WeakDelegate");
+			Assert.That (a.WeakDelegate, Is.Null, "WeakDelegate");
 		}
 
 		[Test]
@@ -68,10 +68,10 @@ namespace MonoTouchFixtures.UIKit {
 			using (var del = new MyActionSheetDelegate ())
 			using (var a = new UIActionSheet ("title", del, null, null, null)) {
 				Assert.That (a.Title, Is.EqualTo ("title"), "Title");
-				Assert.NotNull (typeof (UIActionSheet).GetField ("__mt_WeakDelegate_var", BindingFlags.Instance | BindingFlags.NonPublic).GetValue (a), "backing field");
+				Assert.That (typeof (UIActionSheet).GetField ("__mt_WeakDelegate_var", BindingFlags.Instance | BindingFlags.NonPublic).GetValue (a), Is.Not.Null, "backing field");
 				// check properties after the field (so we're not setting it only when calling the properties)
-				Assert.NotNull (a.Delegate, "Delegate");
-				Assert.NotNull (a.WeakDelegate, "WeakDelegate");
+				Assert.That (a.Delegate, Is.Not.Null, "Delegate");
+				Assert.That (a.WeakDelegate, Is.Not.Null, "WeakDelegate");
 			}
 		}
 	}

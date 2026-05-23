@@ -70,7 +70,7 @@ namespace Xamarin.MacDev.Tasks {
 			var appManifestPath = Path.Combine (tmpdir, "bin", "Debug", Configuration.DotNetTfm + "-macos", "osx-x64", "PartialAppManifest.app", "Contents", "Info.plist");
 			Assert.That (appManifestPath, Does.Exist, "App manifest existence");
 
-			var plist = PDictionary.FromFile (appManifestPath);
+			var plist = PDictionary.OpenFile (appManifestPath);
 			Assert.That (plist.GetCFBundleDisplayName (), Is.EqualTo ("PartialAppManifestDisplayName"), "Bundle display name");
 			Assert.That (plist.GetCFBundleIdentifier (), Is.EqualTo ("com.xamarin.partialappmanifest"), "Bundle identifier");
 		}

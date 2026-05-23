@@ -35,7 +35,7 @@ namespace Xamarin.Mac.Tests {
 		{
 			NSRange pnt;
 			NSRange range = manager.GetCharacterRange (new NSRange (0, 4), out pnt);
-			Assert.IsNotNull (range);
+			Assert.That (range, Is.Not.Null);
 		}
 
 		[Test]
@@ -43,7 +43,7 @@ namespace Xamarin.Mac.Tests {
 		{
 			NSRange pnt;
 			NSRange range = manager.GetGlyphRange (new NSRange (0, 4), out pnt);
-			Assert.IsNotNull (range);
+			Assert.That (range, Is.Not.Null);
 		}
 	}
 }

@@ -94,7 +94,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			Assert.That (actool.PartialAppManifest, Is.Not.Null, "PartialAppManifest");
 			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
-			var appIconsManifest = PDictionary.FromFile (appIconsManifestPath)!;
+			var appIconsManifest = PDictionary.OpenFile (appIconsManifestPath);
 			Assert.That (appIconsManifest.Count, Is.EqualTo (0), $"Partial plist contents: {actool.PartialAppManifest?.ItemSpec}");
 			var expectedXml =
 				"""

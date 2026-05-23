@@ -42,7 +42,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<IBTool> ();
 			task.InterfaceDefinitions = interfaceDefinitions.ToArray ();
 			task.IntermediateOutputPath = intermediateOutputPath;
-			task.MinimumOSVersion = PDictionary.FromFile (Path.Combine (projectDir, "Info.plist")).GetMinimumOSVersion ();
+			task.MinimumOSVersion = PDictionary.OpenFile (Path.Combine (projectDir, "Info.plist")).GetMinimumOSVersion ();
 			task.ResourcePrefix = "Resources";
 			task.ProjectDir = projectDir;
 			task.SdkDevPath = Configuration.xcode_root;

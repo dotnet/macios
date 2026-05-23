@@ -39,7 +39,11 @@ namespace AppKit {
 			if (IsDirectBinding) {
 				InitializeHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSend (this.Handle, Selector.GetHandle (selInitForIncrementalLoad)), selInitForIncrementalLoad);
 			} else {
-				InitializeHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (this.SuperHandle, Selector.GetHandle (selInitForIncrementalLoad)), selInitForIncrementalLoad);
+				unsafe {
+					var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+					InitializeHandle (ObjCRuntime.Messaging.IntPtr_objc_msgSendSuper (&__objc_super__, Selector.GetHandle (selInitForIncrementalLoad)), selInitForIncrementalLoad);
+					GC.KeepAlive (this);
+				}
 			}
 		}
 

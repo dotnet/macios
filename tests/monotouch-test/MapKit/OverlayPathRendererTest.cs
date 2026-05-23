@@ -30,7 +30,7 @@ namespace MonoTouchFixtures.MapKit {
 			TestRuntime.AssertXcodeVersion (5, 0, 1);
 
 			using (var opr = new MKOverlayPathRenderer ()) {
-				Assert.Null (opr.Path, "Path");
+				Assert.That (opr.Path, Is.Null, "Path");
 			}
 		}
 
@@ -42,7 +42,7 @@ namespace MonoTouchFixtures.MapKit {
 			var loc = new CLLocationCoordinate2D (40, 70);
 			using (var overlay = MKCircle.Circle (loc, 2000))
 			using (var opr = new MKOverlayPathRenderer (overlay)) {
-				Assert.Null (opr.Path, "Path");
+				Assert.That (opr.Path, Is.Null, "Path");
 			}
 		}
 	}

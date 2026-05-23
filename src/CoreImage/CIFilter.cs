@@ -270,8 +270,12 @@ namespace CoreImage {
 				Messaging.void_objc_msgSend_IntPtr_IntPtr (
 					this.Handle, Selector.GetHandle ("setValue:forKey:"), handle, nsname);
 			} else {
-				Messaging.void_objc_msgSendSuper_IntPtr_IntPtr (
-					this.SuperHandle, Selector.GetHandle ("setValue:forKey:"), handle, nsname);
+				unsafe {
+					var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+					Messaging.void_objc_msgSendSuper_IntPtr_IntPtr (
+						&__objc_super__, Selector.GetHandle ("setValue:forKey:"), handle, nsname);
+					GC.KeepAlive (this);
+				}
 			}
 			CFString.ReleaseNative (nsname);
 		}
@@ -283,8 +287,13 @@ namespace CoreImage {
 
 			if (IsDirectBinding)
 				ret = Messaging.IntPtr_objc_msgSend_IntPtr (Handle, Selector.GetHandle ("valueForKey:"), nsname);
-			else
-				ret = Messaging.IntPtr_objc_msgSendSuper_IntPtr (SuperHandle, Selector.GetHandle ("valueForKey:"), nsname);
+			else {
+				unsafe {
+					var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+					ret = Messaging.IntPtr_objc_msgSendSuper_IntPtr (&__objc_super__, Selector.GetHandle ("valueForKey:"), nsname);
+					GC.KeepAlive (this);
+				}
+			}
 
 			CFString.ReleaseNative (nsname);
 			return ret;

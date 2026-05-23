@@ -394,7 +394,7 @@ namespace Xamarin.Bundler {
 			return true;
 		}
 
-		[DllImport ("/usr/lib/libSystem.dylib", SetLastError = true, EntryPoint = "strerror")]
+		[DllImport ("libc", SetLastError = true, EntryPoint = "strerror")]
 		static extern IntPtr _strerror (int errno);
 
 		internal static string strerror (int errno)

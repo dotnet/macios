@@ -38,7 +38,7 @@ namespace Xamarin.Utils {
 			return path;
 		}
 
-		[DllImport ("/usr/lib/libc.dylib")]
+		[DllImport ("libc")]
 		static extern IntPtr realpath (string path, IntPtr buffer);
 
 #if NET

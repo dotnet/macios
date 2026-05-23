@@ -12,31 +12,31 @@ namespace MonoTouchFixtures.Metal {
 
 			value = new MTLClearValue ();
 
-			Assert.AreEqual (0, value.Color.Alpha, "1-color-alpha");
-			Assert.AreEqual (0, value.Color.Blue, "1-color-blue");
-			Assert.AreEqual (0, value.Color.Green, "1-color-green");
-			Assert.AreEqual (0, value.Color.Red, "1-color-red");
-			Assert.AreEqual (0, value.Depth, "1-depth");
-			Assert.AreEqual (0, value.Stencil, "1-stencil");
+			Assert.That (value.Color.Alpha, Is.EqualTo (0), "1-color-alpha");
+			Assert.That (value.Color.Blue, Is.EqualTo (0), "1-color-blue");
+			Assert.That (value.Color.Green, Is.EqualTo (0), "1-color-green");
+			Assert.That (value.Color.Red, Is.EqualTo (0), "1-color-red");
+			Assert.That (value.Depth, Is.EqualTo (0), "1-depth");
+			Assert.That (value.Stencil, Is.EqualTo (0), "1-stencil");
 
 			value = new MTLClearValue (0.2f);
 
-			Assert.AreEqual (0.2f, value.Depth, "2-depth");
+			Assert.That (value.Depth, Is.EqualTo (0.2f), "2-depth");
 
 			value = new MTLClearValue (123);
 
-			Assert.AreEqual (123, value.Stencil, "3-stencil");
+			Assert.That (value.Stencil, Is.EqualTo (123), "3-stencil");
 
 			value = new MTLClearValue (-2);
 
-			Assert.AreEqual (-2, value.Depth, "4-depth");
+			Assert.That (value.Depth, Is.EqualTo (-2), "4-depth");
 
 			value = new MTLClearValue (new MTLClearColor (1, 2, 3, 4));
 
-			Assert.AreEqual (4, value.Color.Alpha, "5-color-alpha");
-			Assert.AreEqual (3, value.Color.Blue, "5-color-blue");
-			Assert.AreEqual (2, value.Color.Green, "5-color-green");
-			Assert.AreEqual (1, value.Color.Red, "5-color-red");
+			Assert.That (value.Color.Alpha, Is.EqualTo (4), "5-color-alpha");
+			Assert.That (value.Color.Blue, Is.EqualTo (3), "5-color-blue");
+			Assert.That (value.Color.Green, Is.EqualTo (2), "5-color-green");
+			Assert.That (value.Color.Red, Is.EqualTo (1), "5-color-red");
 		}
 	}
 }

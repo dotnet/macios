@@ -16,17 +16,17 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			Assert.Multiple (() => {
 				var p = new CGBitmapParameters ();
-				Assert.AreEqual ((nuint) 0u, p.Width, "Width");
-				Assert.AreEqual ((nuint) 0u, p.Height, "Height");
-				Assert.AreEqual ((nuint) 0u, p.BytesPerPixel, "BytesPerPixel");
-				Assert.AreEqual ((nuint) 0u, p.AlignedBytesPerRow, "AlignedBytesPerRow");
-				Assert.AreEqual (default (CGComponent), p.Component, "Component");
-				Assert.AreEqual (default (CGBitmapLayout), p.Layout, "Layout");
-				Assert.AreEqual (default (CGImagePixelFormatInfo), p.Format, "Format");
-				Assert.AreEqual (IntPtr.Zero, p.ColorSpaceHandle, "ColorSpaceHandle");
-				Assert.AreEqual (false, p.HasPremultipliedAlpha, "HasPremultipliedAlpha");
-				Assert.AreEqual ((CFByteOrder) 0, p.ByteOrder, "ByteOrder");
-				Assert.AreEqual (0f, p.EdrTargetHeadroom, "EdrTargetHeadroom");
+				Assert.That (p.Width, Is.EqualTo ((nuint) 0u), "Width");
+				Assert.That (p.Height, Is.EqualTo ((nuint) 0u), "Height");
+				Assert.That (p.BytesPerPixel, Is.EqualTo ((nuint) 0u), "BytesPerPixel");
+				Assert.That (p.AlignedBytesPerRow, Is.EqualTo ((nuint) 0u), "AlignedBytesPerRow");
+				Assert.That (p.Component, Is.EqualTo (default (CGComponent)), "Component");
+				Assert.That (p.Layout, Is.EqualTo (default (CGBitmapLayout)), "Layout");
+				Assert.That (p.Format, Is.EqualTo (default (CGImagePixelFormatInfo)), "Format");
+				Assert.That (p.ColorSpaceHandle, Is.EqualTo (IntPtr.Zero), "ColorSpaceHandle");
+				Assert.That (p.HasPremultipliedAlpha, Is.EqualTo (false), "HasPremultipliedAlpha");
+				Assert.That (p.ByteOrder, Is.EqualTo ((CFByteOrder) 0), "ByteOrder");
+				Assert.That (p.EdrTargetHeadroom, Is.EqualTo (0f), "EdrTargetHeadroom");
 			});
 		}
 
@@ -47,17 +47,17 @@ namespace MonoTouchFixtures.CoreGraphics {
 				p.ByteOrder = CFByteOrder.LittleEndian;
 				p.EdrTargetHeadroom = 1.5f;
 
-				Assert.AreEqual ((nuint) 123u, p.Width, "Width");
-				Assert.AreEqual ((nuint) 456u, p.Height, "Height");
-				Assert.AreEqual ((nuint) 4u, p.BytesPerPixel, "BytesPerPixel");
-				Assert.AreEqual ((nuint) 512u, p.AlignedBytesPerRow, "AlignedBytesPerRow");
-				Assert.AreEqual ((CGComponent) 1, p.Component, "Component");
-				Assert.AreEqual ((CGBitmapLayout) 2, p.Layout, "Layout");
-				Assert.AreEqual ((CGImagePixelFormatInfo) 3, p.Format, "Format");
-				Assert.AreEqual (new IntPtr (0xDEADBEEF), p.ColorSpaceHandle, "ColorSpaceHandle");
-				Assert.IsTrue (p.HasPremultipliedAlpha, "HasPremultipliedAlpha");
-				Assert.AreEqual (CFByteOrder.LittleEndian, p.ByteOrder, "ByteOrder");
-				Assert.AreEqual (1.5f, p.EdrTargetHeadroom, "EdrTargetHeadroom");
+				Assert.That (p.Width, Is.EqualTo ((nuint) 123u), "Width");
+				Assert.That (p.Height, Is.EqualTo ((nuint) 456u), "Height");
+				Assert.That (p.BytesPerPixel, Is.EqualTo ((nuint) 4u), "BytesPerPixel");
+				Assert.That (p.AlignedBytesPerRow, Is.EqualTo ((nuint) 512u), "AlignedBytesPerRow");
+				Assert.That (p.Component, Is.EqualTo ((CGComponent) 1), "Component");
+				Assert.That (p.Layout, Is.EqualTo ((CGBitmapLayout) 2), "Layout");
+				Assert.That (p.Format, Is.EqualTo ((CGImagePixelFormatInfo) 3), "Format");
+				Assert.That (p.ColorSpaceHandle, Is.EqualTo (new IntPtr (0xDEADBEEF)), "ColorSpaceHandle");
+				Assert.That (p.HasPremultipliedAlpha, Is.True, "HasPremultipliedAlpha");
+				Assert.That (p.ByteOrder, Is.EqualTo (CFByteOrder.LittleEndian), "ByteOrder");
+				Assert.That (p.EdrTargetHeadroom, Is.EqualTo (1.5f), "EdrTargetHeadroom");
 			});
 		}
 
@@ -66,7 +66,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			var p = new CGBitmapParameters ();
 			p.HasPremultipliedAlpha = false;
-			Assert.IsFalse (p.HasPremultipliedAlpha, "HasPremultipliedAlpha");
+			Assert.That (p.HasPremultipliedAlpha, Is.False, "HasPremultipliedAlpha");
 		}
 
 		[Test]
@@ -74,9 +74,9 @@ namespace MonoTouchFixtures.CoreGraphics {
 		{
 			var p = new CGBitmapParameters ();
 			p.ByteOrder = CFByteOrder.BigEndian;
-			Assert.AreEqual (CFByteOrder.BigEndian, p.ByteOrder, "ByteOrder");
+			Assert.That (p.ByteOrder, Is.EqualTo (CFByteOrder.BigEndian), "ByteOrder");
 			p.ByteOrder = CFByteOrder.LittleEndian;
-			Assert.AreEqual (CFByteOrder.LittleEndian, p.ByteOrder, "ByteOrder");
+			Assert.That (p.ByteOrder, Is.EqualTo (CFByteOrder.LittleEndian), "ByteOrder");
 		}
 	}
 }

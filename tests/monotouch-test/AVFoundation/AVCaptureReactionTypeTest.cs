@@ -14,7 +14,7 @@ namespace MonoTouchFixtures.AVFoundation {
 		public void GetSystemImage ()
 		{
 			TestRuntime.AssertXcodeVersion (15, 0);
-			Assert.IsNotNull (AVCaptureReactionType.ThumbsUp.GetSystemImage (), "GetSystemImage");
+			Assert.That (AVCaptureReactionType.ThumbsUp.GetSystemImage (), Is.Not.Null, "GetSystemImage");
 		}
 	}
 }

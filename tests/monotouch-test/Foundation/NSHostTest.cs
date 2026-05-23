@@ -9,7 +9,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void EqualsNullAllowed ()
 		{
 			using var host = NSHost.FromAddress ("http://microsoft.com");
-			Assert.False (host.Equals (null));
+			Assert.That (host.Equals (null), Is.False);
 		}
 	}
 }

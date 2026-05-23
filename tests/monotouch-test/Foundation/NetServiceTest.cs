@@ -35,9 +35,9 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.That (ns.Port, Is.EqualTo ((nint) 1234), "Port");
 				NSInputStream input;
 				NSOutputStream output;
-				Assert.True (ns.GetStreams (out input, out output), "GetStreams");
-				Assert.NotNull (input, "input");
-				Assert.NotNull (output, "output");
+				Assert.That (ns.GetStreams (out input, out output), Is.True, "GetStreams");
+				Assert.That (input, Is.Not.Null, "input");
+				Assert.That (output, Is.Not.Null, "output");
 			}
 		}
 	}

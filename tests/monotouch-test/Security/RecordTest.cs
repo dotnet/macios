@@ -113,7 +113,7 @@ namespace MonoTouchFixtures.Security {
 				if (hasIdnt)
 					Assert.That (dict ["class"].ToString (), Is.EqualTo ("idnt"), "idnt");
 				else
-					Assert.Null (dict ["class"], "idnt");
+					Assert.That (dict ["class"], Is.Null, "idnt");
 			}
 		}
 
@@ -145,13 +145,13 @@ namespace MonoTouchFixtures.Security {
 			var rec = CreateSecRecord (SecKind.GenericPassword,
 				account: "Username"
 			);
-			Assert.Null (rec.MatchIssuers, "MatchIssuers");
+			Assert.That (rec.MatchIssuers, Is.Null, "MatchIssuers");
 			// we do not have a way (except the getter) to craete SecKeyChain instances
-			Assert.Null (rec.MatchItemList, "MatchItemList");
+			Assert.That (rec.MatchItemList, Is.Null, "MatchItemList");
 
 			using (var data = new NSData ()) {
 				rec.MatchIssuers = new NSData [] { data };
-				Assert.AreSame (rec.MatchIssuers [0], data, "MatchIssuers [0]");
+				Assert.That (data, Is.SameAs (rec.MatchIssuers [0]), "MatchIssuers [0]");
 			}
 
 			if (!TestRuntime.CheckXcodeVersion (7, 0))
@@ -327,27 +327,27 @@ namespace MonoTouchFixtures.Security {
 			try {
 				//TEST 1: Save a keychain value
 				var test1 = SaveKeychainEntry (testServer, testUsername, "testValue1", out var queryCode, out var addCode, out var updateCode);
-				Assert.IsTrue (test1, $"Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
+				Assert.That (test1, Is.True, $"Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
 
 				//TEST 2: Get the saved keychain value
 				var test2 = GetKeychainEntry (testServer, testUsername);
-				Assert.IsTrue (StringUtil.StringsEqual (test2, "testValue1", false));
+				Assert.That (test2, Is.EqualTo ("testValue1"));
 
 				//TEST 3: Update the keychain value
 				var test3 = SaveKeychainEntry (testServer, testUsername, "testValue2", out queryCode, out addCode, out updateCode);
-				Assert.IsTrue (test3, $"Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
+				Assert.That (test3, Is.True, $"Password could not be saved to keychain. queryCode: {queryCode} addCode: {addCode} updateCode: {updateCode}");
 
 				//TEST 4: Get the updated keychain value
 				var test4 = GetKeychainEntry (testServer, testUsername);
-				Assert.IsTrue (StringUtil.StringsEqual (test4, "testValue2", false));
+				Assert.That (test4, Is.EqualTo ("testValue2"));
 
 				//TEST 5: Clear the keychain values
 				var test5 = ClearKeychainEntry (testServer, testUsername, out queryCode, out var removeCode);
-				Assert.IsTrue (test5, $"Password could not be cleared from keychain. queryCode: {queryCode} removeCode: {removeCode}");
+				Assert.That (test5, Is.True, $"Password could not be cleared from keychain. queryCode: {queryCode} removeCode: {removeCode}");
 
 				//TEST 6: Verify no keychain value
 				var test6 = GetKeychainEntry (testServer, testUsername);
-				Assert.IsNull (test6, "No password should exist here");
+				Assert.That (test6, Is.Null, "No password should exist here");
 			} finally {
 				// Always clean up to avoid leaving stale entries for subsequent runs
 				ForceRemoveKeychainEntry (testServer, testUsername);
@@ -437,10 +437,10 @@ namespace MonoTouchFixtures.Security {
 			using (var identity = IdentityTest.GetIdentity ())
 			using (var rec = CreateSecRecord (identity)) {
 				SecStatusCode code = SecKeyChain.Add (rec);
-				Assert.True (code == SecStatusCode.DuplicateItem || code == SecStatusCode.Success, "Identity added");
+				Assert.That (code == SecStatusCode.DuplicateItem || code == SecStatusCode.Success, Is.True, "Identity added");
 
 				var ret = rec.GetIdentity ();
-				Assert.NotNull (ret, "ret is null");
+				Assert.That (ret, Is.Not.Null, "ret is null");
 				Assert.That (identity.Handle, Is.EqualTo (ret.Handle), "Same Handle");
 
 				Assert.Throws<InvalidOperationException> (() => rec.GetKey (), "GetKey should throw");
@@ -455,7 +455,7 @@ namespace MonoTouchFixtures.Security {
 			using (var cert = X509CertificateLoader.LoadCertificate (CertificateTest.mail_google_com))
 			using (var sc = new SecCertificate (cert))
 			using (var rec = CreateSecRecord (sc)) {
-				Assert.NotNull (rec, "rec is null");
+				Assert.That (rec, Is.Not.Null, "rec is null");
 
 				var ret = rec.GetCertificate ();
 				Assert.That (ret.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
@@ -475,7 +475,7 @@ namespace MonoTouchFixtures.Security {
 				trust.Evaluate ();
 				using (SecKey pubkey = trust.GetPublicKey ())
 				using (var rec = CreateSecRecord (pubkey)) {
-					Assert.NotNull (rec, "rec is null");
+					Assert.That (rec, Is.Not.Null, "rec is null");
 
 					var ret = rec.GetKey ();
 					Assert.That (ret.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");

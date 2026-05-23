@@ -43,18 +43,18 @@ namespace MonoTouchFixtures.CoreImage {
 #endif
 				using (var v = ctx.CreateCGImage (img, new CGRect (0, 0, 5, 5))) {
 					int rc = Messaging.int_objc_msgSend (v.Handle, retainCount.Handle);
-					Assert.AreEqual (1, rc, "CreateCGImage #a1");
+					Assert.That (rc, Is.EqualTo (1), "CreateCGImage #a1");
 				}
 
 				using (var v = ctx.CreateCGImage (img, new CGRect (0, 0, 32, 32), CIImage.FormatARGB8, null)) {
 					int rc = Messaging.int_objc_msgSend (v.Handle, retainCount.Handle);
-					Assert.AreEqual (1, rc, "CreateCGImage #b1");
+					Assert.That (rc, Is.EqualTo (1), "CreateCGImage #b1");
 				}
 
 #if !MONOMAC // CreateCGImage returning null on mac
 				using (var v = ctx.CreateCGImage (img, new CGRect (0, 0, 5, 5), CIFormat.ARGB8, null)) {
 					int rc = Messaging.int_objc_msgSend (v.Handle, retainCount.Handle);
-					Assert.AreEqual (1, rc, "CreateCGImage #c1");
+					Assert.That (rc, Is.EqualTo (1), "CreateCGImage #c1");
 				}
 #endif
 			}
@@ -66,7 +66,7 @@ namespace MonoTouchFixtures.CoreImage {
 		{
 			using (var ctx = new EAGLContext (EAGLRenderingAPI.OpenGLES2))
 			using (var ci = CIContext.FromContext (ctx)) {
-				Assert.NotNull (ci);
+				Assert.That (ci, Is.Not.Null);
 				if (TestRuntime.CheckXcodeVersion (7, 0))
 					Assert.That (ci.WorkingColorSpace.Model, Is.EqualTo (CGColorSpaceModel.RGB), "WorkingColorSpace");
 			}

@@ -505,7 +505,7 @@ namespace Xamarin.MacDev.Tasks {
 				Log.LogError (MSBStrings.E0093, Path.GetFullPath (partialAppManifestPath));
 
 			try {
-				var manifestOutput = PDictionary.FromFile (manifest.ItemSpec)!;
+				var manifestOutput = PDictionary.OpenFile (manifest.ItemSpec);
 
 				LogWarningsAndErrors (manifestOutput, catalogs [0]);
 

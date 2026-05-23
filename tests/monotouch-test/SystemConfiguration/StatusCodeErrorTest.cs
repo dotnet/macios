@@ -20,15 +20,15 @@ namespace MonoTouchFixtures.SystemConfiguration {
 		{
 			var s = StatusCodeError.GetErrorDescription ((StatusCode) 1);
 			// "Operation not permitted" (might be localized so we just check non-null)
-			Assert.NotNull (s, "1");
+			Assert.That (s, Is.Not.Null, "1");
 			s = StatusCodeError.GetErrorDescription ((StatusCode) Int32.MinValue);
 			// in previous version of xcode, if the error was not known you would get a null ptr, in Xcode 13 and later you
 			// get a message stating that the error is not knwon.
 			if (TestRuntime.CheckXcodeVersion (13, 0, 0)) {
-				Assert.NotNull (s, "MinValue null");
-				Assert.True (s.StartsWith ("Unknown error:"), "MinValue value");
+				Assert.That (s, Is.Not.Null, "MinValue null");
+				Assert.That (s.StartsWith ("Unknown error:"), Is.True, "MinValue value");
 			} else {
-				Assert.Null (s, "MinValue");
+				Assert.That (s, Is.Null, "MinValue");
 			}
 		}
 	}

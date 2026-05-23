@@ -93,10 +93,10 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void TransformNoRangeEnum ()
 		{
 			using (var s = new CFMutableString ("Bonjour à tous!")) {
-				Assert.True (s.Transform (CFStringTransform.ToXmlHex, false), "Transform-1");
+				Assert.That (s.Transform (CFStringTransform.ToXmlHex, false), Is.True, "Transform-1");
 				Assert.That (s.ToString (), Is.EqualTo ("Bonjour &#xE0; tous!"), "ToString-1");
 
-				Assert.True (s.Transform (CFStringTransform.ToXmlHex, true), "Transform-2");
+				Assert.That (s.Transform (CFStringTransform.ToXmlHex, true), Is.True, "Transform-2");
 				Assert.That (s.ToString (), Is.EqualTo ("Bonjour à tous!"), "ToString-2");
 			}
 		}
@@ -120,11 +120,11 @@ namespace MonoTouchFixtures.CoreFoundation {
 		{
 			var r = new CFRange (0, 15);
 			using (var s = new CFMutableString ("Bonjour à tous!")) {
-				Assert.True (s.Transform (ref r, CFStringTransform.ToXmlHex, false), "Transform-1");
+				Assert.That (s.Transform (ref r, CFStringTransform.ToXmlHex, false), Is.True, "Transform-1");
 				Assert.That (s.ToString (), Is.EqualTo ("Bonjour &#xE0; tous!"), "ToString-1");
 				Assert.That (r.Length, Is.EqualTo (20), "Length-1");
 
-				Assert.True (s.Transform (ref r, CFStringTransform.ToXmlHex, true), "Transform-2");
+				Assert.That (s.Transform (ref r, CFStringTransform.ToXmlHex, true), Is.True, "Transform-2");
 				Assert.That (s.ToString (), Is.EqualTo ("Bonjour à tous!"), "ToString-2");
 				Assert.That (r.Length, Is.EqualTo (15), "Length-2");
 			}
@@ -134,10 +134,10 @@ namespace MonoTouchFixtures.CoreFoundation {
 		public void TransformICU ()
 		{
 			using (var s = new CFMutableString ("hello world")) {
-				Assert.True (s.Transform ("Title", false), "Transform-1");
+				Assert.That (s.Transform ("Title", false), Is.True, "Transform-1");
 				Assert.That (s.ToString (), Is.EqualTo ("Hello World"), "ToString-1");
 
-				Assert.True (s.Transform ((NSString) "Title", true), "Transform-2");
+				Assert.That (s.Transform ((NSString) "Title", true), Is.True, "Transform-2");
 				Assert.That (s.ToString (), Is.EqualTo ("hello world"), "ToString-2");
 			}
 		}

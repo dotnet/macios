@@ -79,9 +79,9 @@ namespace MonoTouchFixtures.UIKit {
 			pool.Dispose ();
 
 			TestRuntime.RunAsync (TimeSpan.FromSeconds (1), () => { GC.Collect (); }, () => finalizedAnyCtor && finalizedAnyAddTarget1 && finalizedAnyAddTarget2);
-			Assert.IsTrue (finalizedAnyCtor, "Any finalized");
-			Assert.IsTrue (finalizedAnyAddTarget1, "AddTarget1 finalized");
-			Assert.IsTrue (finalizedAnyAddTarget2, "AddTarget2 finalized");
+			Assert.That (finalizedAnyCtor, Is.True, "Any finalized");
+			Assert.That (finalizedAnyAddTarget1, Is.True, "AddTarget1 finalized");
+			Assert.That (finalizedAnyAddTarget2, Is.True, "AddTarget2 finalized");
 
 			GC.KeepAlive (list);
 		}
@@ -109,7 +109,7 @@ namespace MonoTouchFixtures.UIKit {
 
 			// blocks main thread until event is trigerred
 			callbackEvent.WaitOne (30000);
-			Assert.IsTrue (didRun, "didRun");
+			Assert.That (didRun, Is.True, "didRun");
 		}
 
 		class FinalizerNotifier {

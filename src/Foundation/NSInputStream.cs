@@ -63,10 +63,10 @@ namespace Foundation {
 		static extern nint objc_msgSend (IntPtr handle, IntPtr sel, IntPtr buffer, nuint len);
 
 		[DllImport (Messaging.LIBOBJC_DYLIB)]
-		static extern nint objc_msgSendSuper (IntPtr handle, IntPtr sel, IntPtr buffer, nuint len);
+		static extern unsafe nint objc_msgSendSuper (global::ObjCRuntime.ObjCSuper* handle, IntPtr sel, IntPtr buffer, nuint len);
 
 		[Export ("read:maxLength:")]
-		public virtual nint Read (IntPtr buffer, nuint len)
+		public virtual unsafe nint Read (IntPtr buffer, nuint len)
 		{
 			if (buffer == IntPtr.Zero)
 				throw new ArgumentNullException ("buffer");
@@ -74,7 +74,10 @@ namespace Foundation {
 			if (IsDirectBinding) {
 				return objc_msgSend (this.Handle, Selector.GetHandle (selReadMaxLength), buffer, len);
 			} else {
-				return objc_msgSendSuper (this.SuperHandle, Selector.GetHandle (selReadMaxLength), buffer, len);
+				var __objc_super__ = new global::ObjCRuntime.ObjCSuper (this);
+				var __result__ = objc_msgSendSuper (&__objc_super__, Selector.GetHandle (selReadMaxLength), buffer, len);
+				GC.KeepAlive (this);
+				return __result__;
 			}
 		}
 

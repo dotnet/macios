@@ -23,8 +23,8 @@ namespace MonoTouchFixtures.EventKitUI {
 				Assert.Ignore ("Ignoring tests: Requires iOS11+");
 
 			var bundle = EKUIBundle.UIBundle;
-			Assert.NotNull (bundle, "Was Null");
-			Assert.AreEqual ("com.apple.eventkitui", bundle.BundleIdentifier, "BundleIdentifier");
+			Assert.That (bundle, Is.Not.Null, "Was Null");
+			Assert.That (bundle.BundleIdentifier, Is.EqualTo ("com.apple.eventkitui"), "BundleIdentifier");
 		}
 	}
 }

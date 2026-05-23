@@ -34,7 +34,7 @@ namespace MonoTouchFixtures.CoreImage {
 			{
 				Type = type;
 				kernel = CIKernel.FromProgramSingle (GetKernelString ());
-				Assert.IsNotNull (kernel, $"Kernel: {Type}");
+				Assert.That (kernel, Is.Not.Null, $"Kernel: {Type}");
 			}
 
 			public bool IsColorKernel {
@@ -143,12 +143,12 @@ namespace MonoTouchFixtures.CoreImage {
 #else
 						UIImage finalImg = new UIImage (cgImage);
 #endif
-						Assert.IsNotNull (finalImg, "CIKernel_BasicTest should not be null");
-						Assert.IsTrue (filter.CallbackHit, "CIKernel_BasicTest callback must be hit");
+						Assert.That (finalImg, Is.Not.Null, "CIKernel_BasicTest should not be null");
+						Assert.That (filter.CallbackHit, Is.True, "CIKernel_BasicTest callback must be hit");
 						if (filter.IsColorKernel)
-							Assert.IsTrue (filter.kernel is CIColorKernel, "CIKernel_BasicTest we disagree that it is a color kernel");
+							Assert.That (filter.kernel is CIColorKernel, Is.True, "CIKernel_BasicTest we disagree that it is a color kernel");
 						else
-							Assert.IsTrue (filter.kernel is CIWarpKernel, "CIKernel_BasicTest we disagree that it is a warp kernel");
+							Assert.That (filter.kernel is CIWarpKernel, Is.True, "CIKernel_BasicTest we disagree that it is a warp kernel");
 					}
 				} catch (Exception ex2) {
 					ex = ex2;
@@ -169,9 +169,9 @@ namespace MonoTouchFixtures.CoreImage {
 			CIKernel [] kernels =
 				CIKernel.FromProgramMultiple (
 					NoOpColorKernel + "\n" + NoOpWithParamColorKernel + "\n" + PositionColorKernel + "\n" + NoOpWarpKernel);
-			Assert.AreEqual (4, kernels.Length, "CIKernel_TestFromPrograms did not get back the right number of programs");
+			Assert.That (kernels.Length, Is.EqualTo (4), "CIKernel_TestFromPrograms did not get back the right number of programs");
 			foreach (CIKernel kernel in kernels) {
-				Assert.IsTrue (kernel is CIColorKernel || kernel is CIWarpKernel, "CIKernel_TestFromPrograms is neither type of kernel?");
+				Assert.That (kernel is CIColorKernel || kernel is CIWarpKernel, Is.True, "CIKernel_TestFromPrograms is neither type of kernel?");
 			}
 		}
 	}

@@ -25,14 +25,14 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			AssertNotBrokenFontWithSize ();
 			var f1 = UIFont.SystemFontOfSize (10).WithSize (20);
-			Assert.AreEqual (f1.PointSize, (nfloat) 20, "#size");
+			Assert.That ((nfloat) 20, Is.EqualTo (f1.PointSize), "#size");
 		}
 
 		[Test]
 		public void GetWeight ()
 		{
 			var weight = UIFontWeight.Semibold;
-			Assert.AreEqual (weight.GetWeight (), UIFontWeightConstants.Semibold);
+			Assert.That (UIFontWeightConstants.Semibold, Is.EqualTo (weight.GetWeight ()));
 		}
 
 		[Test]
@@ -48,8 +48,8 @@ namespace MonoTouchFixtures.UIKit {
 			// but make sure we dont regress if they fix it.
 
 			var size = descriptor.FontAttributes.Size;
-			Assert.AreEqual (true, size.HasValue);
-			Assert.AreEqual (80.0f, size.Value);
+			Assert.That (size.HasValue, Is.EqualTo (true));
+			Assert.That (size.Value, Is.EqualTo (80.0f));
 		}
 
 		// ref: https://trello.com/c/wKZyugio/437-many-managed-peers-on-a-single-native-instance
@@ -58,18 +58,18 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			using (f1) {
 				// the same instance will be returned (from an iOS cache)
-				Assert.That (f1.Handle, Is.EqualTo (f2.Handle), "{0} Handle", api);
+				Assert.That (f1.Handle, Is.EqualTo (f2.Handle), $"{api} Handle");
 				// using means f1 will be disposed and it's handle will be zero'ed
 				// but f2 is the same (managed) instance and _normally_ would become unusable
 				// to fix this we now return a different instance - but we must still match the existing behavior
-				Assert.True (f1 == f2, "{0} ==", api);
-				Assert.True (f1.Equals ((object) f2), "{0} Equals(object)", api);
+				Assert.That (f1 == f2, Is.True, $"{api} ==");
+				Assert.That (f1.Equals ((object) f2), Is.True, $"{api} Equals(object)");
 				// IEquatable<NSObject> is only in unified - otherwise it would be the same call as above
-				Assert.True (f1.Equals (f2), "{0} Equals", api);
+				Assert.That (f1.Equals (f2), Is.True, $"{api} Equals");
 			}
-			Assert.That (f1.Handle, Is.EqualTo (NativeHandle.Zero), "{0} 1", api);
+			Assert.That (f1.Handle, Is.EqualTo (NativeHandle.Zero), $"{api} 1");
 			// without our "fix" that would be the same managed instance (as f1) and the handle would be nil
-			Assert.That (f2.Handle, Is.Not.EqualTo (NativeHandle.Zero), "{0} 2", api);
+			Assert.That (f2.Handle, Is.Not.EqualTo (NativeHandle.Zero), $"{api} 2");
 		}
 
 		[Test]
@@ -163,25 +163,25 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			var invalidFontName = new NSString ("Invalid Font Name");
 			if (TestRuntime.CheckXcodeVersion (5, 0)) {
-				Assert.IsNotNull (UIFont.GetPreferredFontForTextStyle (invalidFontName), "GetPreferredFontForTextStyle");
-				Assert.IsNotNull (UIFont.FromDescriptor (new UIFontDescriptor (), -2), "FromDescriptor (,)");
+				Assert.That (UIFont.GetPreferredFontForTextStyle (invalidFontName), Is.Not.Null, "GetPreferredFontForTextStyle");
+				Assert.That (UIFont.FromDescriptor (new UIFontDescriptor (), -2), Is.Not.Null, "FromDescriptor (,)");
 			}
 
-			Assert.IsNull (UIFont.FromName (invalidFontName, 1), "FromName");
+			Assert.That (UIFont.FromName (invalidFontName, 1), Is.Null, "FromName");
 
-			Assert.IsNotNull (UIFont.SystemFontOfSize (-3), "SystemFontOfSize()");
+			Assert.That (UIFont.SystemFontOfSize (-3), Is.Not.Null, "SystemFontOfSize()");
 
 			if (TestRuntime.CheckXcodeVersion (6, 2)) {
-				Assert.IsNotNull (UIFont.SystemFontOfSize (0, UIFontWeight.Regular), "SystemFontOfSize (nfloat, UIFontWeight)");
-				Assert.IsNotNull (UIFont.SystemFontOfSize (0, (nfloat) 0), "SystemFontOfSize (nfloat, nfloat)");
+				Assert.That (UIFont.SystemFontOfSize (0, UIFontWeight.Regular), Is.Not.Null, "SystemFontOfSize (nfloat, UIFontWeight)");
+				Assert.That (UIFont.SystemFontOfSize (0, (nfloat) 0), Is.Not.Null, "SystemFontOfSize (nfloat, nfloat)");
 			}
 
-			Assert.IsNotNull (UIFont.BoldSystemFontOfSize (-4), "BoldSystemFontOfSize");
-			Assert.IsNotNull (UIFont.ItalicSystemFontOfSize (-5), "ItalicSystemFontOfSize");
+			Assert.That (UIFont.BoldSystemFontOfSize (-4), Is.Not.Null, "BoldSystemFontOfSize");
+			Assert.That (UIFont.ItalicSystemFontOfSize (-5), Is.Not.Null, "ItalicSystemFontOfSize");
 
 			AssertNotBrokenFontWithSize ();
 			using (var font = UIFont.SystemFontOfSize (12)) {
-				Assert.IsNotNull (font.WithSize (-6), "WithSize");
+				Assert.That (font.WithSize (-6), Is.Not.Null, "WithSize");
 			}
 		}
 	}

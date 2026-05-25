@@ -173,13 +173,20 @@ steps:
   condition: succeededOrFailed()
 
 # Upload updated expected app size files if the app size tests produced any.
+- bash: |
+    if [ -d "$(Build.ArtifactStagingDirectory)/updated-expected-sizes" ]; then
+      echo "##vso[task.setvariable variable=HAS_UPDATED_EXPECTED_SIZES]true"
+    fi
+  displayName: 'Check for updated expected app size files'
+  condition: succeededOrFailed()
+
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Artifact: Updated expected app size files'
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)/updated-expected-sizes'
     artifactName: '${{ parameters.uploadPrefix }}updated-expected-sizes-${{ parameters.testPrefix }}-$(System.JobAttempt)'
   continueOnError: true
-  condition: succeededOrFailed()
+  condition: and(succeededOrFailed(), eq(variables['HAS_UPDATED_EXPECTED_SIZES'], 'true'))
 
 - pwsh: |
     $summaryName = "TestSummary-${{ parameters.testPrefix }}.md"

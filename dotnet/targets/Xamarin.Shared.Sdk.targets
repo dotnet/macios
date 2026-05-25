@@ -1789,8 +1789,15 @@
 			<_PostTrimmingSourceFiles>
 				<OutputFile>$(DeviceSpecificIntermediateOutputPath)posttrim-info-compiled/%(Arch)/%(Filename).o</OutputFile>
 			</_PostTrimmingSourceFiles>
+			<_NativeExecutableObjectFiles Include="@(_PostTrimmingSourceFiles -> '%(OutputFile)')" />
 		</ItemGroup>
+	</Target>
 
+	<Target Name="_CompilePostTrimmingFiles"
+		DependsOnTargets="_PostTrimmingProcessing"
+		Inputs="@(_PostTrimmingSourceFiles)"
+		Outputs="@(_PostTrimmingSourceFiles -> '%(OutputFile)')"
+		>
 		<CompileNativeCode
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
@@ -1806,9 +1813,7 @@
 		</CompileNativeCode>
 
 		<ItemGroup>
-			<_CompiledPostTrimmingFiles Include="@(_PostTrimmingSourceFiles -> '%(OutputFile)')" />
-			<_NativeExecutableObjectFiles Include="@(_CompiledPostTrimmingFiles)" />
-			<FileWrites Include="@(_CompiledPostTrimmingFiles)" />
+			<FileWrites Include="@(_PostTrimmingSourceFiles -> '%(OutputFile)')" />
 		</ItemGroup>
 	</Target>
 
@@ -1868,7 +1873,7 @@
 			_ReadAppManifest;
 			_WriteAppManifest;
 			_CompileNativeExecutable;
-			_PostTrimmingProcessing;
+			_CompilePostTrimmingFiles;
 			_ReidentifyDynamicLibraries;
 			_AddSwiftLinkerFlags;
 			_ComputeLinkerProperties;

@@ -64,7 +64,7 @@ namespace Xamarin.Bundler {
 		}
 #endif // !LEGACY_TOOLS
 
-		[DllImport (Constants.libSystemLibrary, SetLastError = true)]
+		[DllImport ("libc", SetLastError = true)]
 		static extern string realpath (string path, IntPtr zero);
 
 		public static string GetRealPath (string path, bool warnIfNoSuchPathExists = true)

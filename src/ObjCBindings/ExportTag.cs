@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 
 #nullable enable
@@ -171,6 +172,7 @@ namespace ObjCBindings {
 		/// <summary>
 		/// This flag is obsolete and has no effect. Zero-copy string marshaling is no longer supported.
 		/// </summary>
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Obsolete ("Zero-copy string marshaling is no longer supported. This flag has no effect.")]
 		DisableZeroCopy = 1 << 6,
 

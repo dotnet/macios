@@ -1,6 +1,8 @@
 name: Autoformat code v2
 on: pull_request
 
+permissions: {}
+
 jobs:
   # Job for same-repo PRs: format and push directly
   autoformat-push:
@@ -15,7 +17,7 @@ jobs:
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
         ref: ${{ github.head_ref }}
-        fetch-depth: 0
+        fetch-depth: 1
         persist-credentials: false
 
     - name: 'Install .NET'
@@ -59,9 +61,10 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
         ref: ${{ github.event.pull_request.head.sha }}
         persist-credentials: false
-        fetch-depth: 0
+        fetch-depth: 1
 
     - name: 'Install .NET'
       uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5

@@ -172,6 +172,15 @@ steps:
   continueOnError: true
   condition: succeededOrFailed()
 
+# Upload updated expected app size files if the app size tests produced any.
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish Artifact: Updated expected app size files'
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/updated-expected-sizes'
+    artifactName: '${{ parameters.uploadPrefix }}updated-expected-sizes-${{ parameters.testPrefix }}-$(System.JobAttempt)'
+  continueOnError: true
+  condition: succeededOrFailed()
+
 - pwsh: |
     $summaryName = "TestSummary-${{ parameters.testPrefix }}.md"
     $summaryPath = "$Env:SYSTEM_DEFAULTWORKINGDIRECTORY/$(BUILD_REPOSITORY_TITLE)/tests/TestSummary.md"

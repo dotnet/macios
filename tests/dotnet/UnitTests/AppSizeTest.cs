@@ -114,7 +114,8 @@ namespace Xamarin.Tests {
 			DotNet.AssertBuild (project_path, properties);
 
 			// FORCE_UPDATE_KNOWN_FAILURES will update the known failures files even if the test doesn't actually fail
-			// WRITE_KNOWN_FAILURES will only update the known failures files if the test fails
+			// WRITE_KNOWN_FAILURES will only update the known failures files if the test fails (and mark the test as passed)
+			// If neither is set, the updated expected file is uploaded as an Azure DevOps artifact.
 
 			var forceUpdate = !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("FORCE_UPDATE_KNOWN_FAILURES"));
 			var update = forceUpdate || !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("WRITE_KNOWN_FAILURES"));
@@ -167,30 +168,21 @@ namespace Xamarin.Tests {
 				msg = $"App size changed significantly ({FormatBytes (appSizeDifference, true)} different > tolerance of +-{FormatBytes (toleranceInBytes)}). Expected app size: {FormatBytes (expectedAppBundleSize)}, actual app size: {FormatBytes (appBundleSize)}.";
 			}
 
-			var updated = false;
-			if (forceUpdate || (update && !withinTolerance)) {
-				Directory.CreateDirectory (expectedDirectory);
-				File.WriteAllText (expectedSizeReportPath, report.ToString ());
-				msg += " Check the modified files for more information.";
-				updated = true;
-			} else if (!withinTolerance) {
-				msg += " Set the environment variable WRITE_KNOWN_FAILURES=1, run the test again, and verify the modified files for more information.";
-			}
-
 			Console.WriteLine ($"    {msg}");
 
+			// Compare individual files in the app bundle
 			var expectedLines = expectedSizeReport.SplitLines ().Skip (2).Where (v => v.IndexOf (':') >= 0).ToDictionary (v => v [..v.IndexOf (':')], v => v [(v.IndexOf (':') + 1)..]);
 			var actualLines = report.ToString ().SplitLines ().Skip (2).Where (v => v.IndexOf (':') >= 0).ToDictionary (v => v [..v.IndexOf (':')], v => v [(v.IndexOf (':') + 1)..]);
 			var allKeys = expectedLines.Keys.Union (actualLines.Keys).OrderBy (v => v);
+			var filesAdded = new List<string> ();
+			var filesRemoved = new List<string> ();
 			foreach (var key in allKeys) {
 				if (!expectedLines.TryGetValue (key, out var expectedLine)) {
 					Console.WriteLine ($"        File '{key}' was added to app bundle: {actualLines [key]}");
-					if (!updated)
-						Assert.Fail ($"The file '{key}' was added to the app bundle.");
+					filesAdded.Add (key);
 				} else if (!actualLines.TryGetValue (key, out var actualLine)) {
 					Console.WriteLine ($"        File '{key}' was removed from app bundle: {expectedLine}");
-					if (!updated)
-						Assert.Fail ($"The file '{key}' was removed from the app bundle.");
+					filesRemoved.Add (key);
 				} else if (expectedLine != actualLine) {
 					Console.WriteLine ($"        File '{key}' changed in app bundle:");
 					Console.WriteLine ($"            -{expectedLine}");
@@ -198,8 +190,27 @@ namespace Xamarin.Tests {
 				}
 			}
 
-			if (!updated && !withinTolerance)
-				Assert.Fail (msg);
+			// Determine if there are any meaningful differences
+			var hasFileDifferences = filesAdded.Count > 0 || filesRemoved.Count > 0;
+			var hasSizeDifference = !withinTolerance;
+			var hasDifferences = hasFileDifferences || hasSizeDifference;
+
+			if (forceUpdate || (update && hasDifferences)) {
+				Directory.CreateDirectory (expectedDirectory);
+				File.WriteAllText (expectedSizeReportPath, report.ToString ());
+				Console.WriteLine ($"    Updated expected file: {expectedSizeReportPath}");
+			} else if (hasDifferences) {
+				UploadUpdatedExpectedFile (expectedSizeReportPath, report.ToString ());
+				if (hasFileDifferences) {
+					var details = new List<string> ();
+					foreach (var key in filesAdded)
+						details.Add ($"added: '{key}'");
+					foreach (var key in filesRemoved)
+						details.Add ($"removed: '{key}'");
+					Assert.Fail ($"The app bundle's file list changed ({string.Join (", ", details)}). The updated expected file is available as a build artifact (set WRITE_KNOWN_FAILURES=1 to update locally).");
+				}
+				Assert.Fail ($"{msg} The updated expected file is available as a build artifact (set WRITE_KNOWN_FAILURES=1 to update locally).");
+			}
 		}
 
 		// Create a file with all the APIs that survived the trimmer; this can be useful to determine what is not trimmed away.
@@ -238,9 +249,29 @@ namespace Xamarin.Tests {
 			}
 
 			if (!update) {
-				Assert.That (addedAPIs, Is.Empty, "No added APIs (set the environment variable WRITE_KNOWN_FAILURES=1 and run the test again to update the expected set of APIs)");
-				Assert.That (removedAPIs, Is.Empty, "No removed APIs (set the environment variable WRITE_KNOWN_FAILURES=1 and run the test again to update the expected set of APIs)");
+				if (addedAPIs.Count > 0 || removedAPIs.Count > 0) {
+					UploadUpdatedExpectedFile (expectedFile, string.Join ('\n', preservedAPIs) + "\n");
+					var updateMsg = " The updated expected file is available as a build artifact (set WRITE_KNOWN_FAILURES=1 to update locally).";
+					Assert.That (addedAPIs, Is.Empty, "No added APIs." + updateMsg);
+					Assert.That (removedAPIs, Is.Empty, "No removed APIs." + updateMsg);
+				}
 			}
+		}
+
+		static void UploadUpdatedExpectedFile (string expectedFilePath, string content)
+		{
+			var fileName = Path.GetFileName (expectedFilePath);
+			var artifactStagingDir = Environment.GetEnvironmentVariable ("BUILD_ARTIFACTSTAGINGDIRECTORY");
+			string outputDir;
+			if (!string.IsNullOrEmpty (artifactStagingDir)) {
+				outputDir = Path.Combine (artifactStagingDir, "updated-expected-sizes");
+			} else {
+				outputDir = Path.Combine (Cache.CreateTemporaryDirectory ("AppSizeTest"), "updated-expected-sizes");
+			}
+			Directory.CreateDirectory (outputDir);
+			var outputFile = Path.Combine (outputDir, fileName);
+			File.WriteAllText (outputFile, content);
+			Console.WriteLine ($"    Updated expected file written to: {outputFile}");
 		}
 
 		static string FormatBytes (long bytes, bool alwaysShowSign = false)

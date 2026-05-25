@@ -35,6 +35,52 @@ namespace Xamarin.MacDev.Tasks {
 			return SdkDevPath;
 		}
 
+		XcodeLocator? xcodeLocator = null;
+		public XcodeLocator GetXcodeLocator (bool initialDiscovery = false, Action<XcodeLocator>? preprocess = null)
+		{
+			if (xcodeLocator is null) {
+				if (!initialDiscovery && string.IsNullOrEmpty (SdkDevPath)) {
+					Log.LogError (MSBStrings.E7169, /* The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose. */ GetType ().Name, "SdkDevPath");
+				}
+
+				var xcodeLocator = new XcodeLocator (this);
+				preprocess?.Invoke (xcodeLocator);
+				if (!xcodeLocator.TryLocatingXcode (SdkDevPath))
+					Log.LogError (MSBStrings.E0086 /* Could not find a valid Xcode developer path */);
+				this.xcodeLocator = xcodeLocator;
+			}
+			return xcodeLocator;
+		}
+
+		protected void SetXcodeLocator (XcodeLocator xcodeLocator)
+		{
+			this.xcodeLocator = xcodeLocator;
+		}
+
+		IAppleSdk? currentSdk;
+		public IAppleSdk CurrentSdk {
+			get {
+				if (currentSdk is null) {
+					var xcodeLocator = GetXcodeLocator ();
+					switch (Platform) {
+					case ApplePlatform.iOS:
+						currentSdk = new AppleIPhoneSdk (xcodeLocator.DeveloperRoot, xcodeLocator.DeveloperRootVersionPlist);
+						break;
+					case ApplePlatform.TVOS:
+						currentSdk = new AppleTVOSSdk (xcodeLocator.DeveloperRoot, xcodeLocator.DeveloperRootVersionPlist);
+						break;
+					case ApplePlatform.MacCatalyst:
+					case ApplePlatform.MacOSX:
+						currentSdk = new MacOSXSdk (xcodeLocator.DeveloperRoot, xcodeLocator.DeveloperRootVersionPlist);
+						break;
+					default:
+						throw new InvalidOperationException (string.Format (MSBStrings.InvalidPlatform, Platform));
+					}
+				}
+				return currentSdk;
+			}
+		}
+
 		void VerifyTargetFrameworkMoniker ()
 		{
 			if (!string.IsNullOrEmpty (TargetFrameworkMoniker))

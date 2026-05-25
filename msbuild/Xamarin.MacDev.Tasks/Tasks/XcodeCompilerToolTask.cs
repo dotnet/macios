@@ -193,7 +193,7 @@ namespace Xamarin.MacDev.Tasks {
 			var cacheKey = $"{simPlatform}:{SdkDevPath}";
 			if (simulatorRuntimeCache.TryGetValue (cacheKey, out var cachedResult)) {
 				if (!cachedResult)
-					Log.LogError (MSBStrings.E7170, simPlatform);
+					Log.LogError (MSBStrings.E7175, simPlatform);
 				return;
 			}
 
@@ -211,7 +211,7 @@ namespace Xamarin.MacDev.Tasks {
 				var rv = ExecuteAsync ("xcrun", args, showErrorIfFailure: false, cancellationToken: timeoutCts.Token).Result;
 
 				if (rv.ExitCode != 0) {
-					Log.LogWarning (MSBStrings.W7171, simPlatform);
+					Log.LogWarning (MSBStrings.W7176, simPlatform);
 					return;
 				}
 
@@ -223,19 +223,19 @@ namespace Xamarin.MacDev.Tasks {
 
 				simulatorRuntimeCache [cacheKey] = hasRuntime;
 				if (!hasRuntime)
-					Log.LogError (MSBStrings.E7170, simPlatform);
+					Log.LogError (MSBStrings.E7175, simPlatform);
 			} catch (OperationCanceledException) when (cancellationTokenSource.IsCancellationRequested) {
 				// User cancelled - don't emit diagnostics
 			} catch (AggregateException ae) when (ae.InnerException is OperationCanceledException && cancellationTokenSource.IsCancellationRequested) {
 				// User cancelled - don't emit diagnostics
 			} catch (OperationCanceledException) {
 				// Timeout
-				Log.LogWarning (MSBStrings.W7171, simPlatform);
+				Log.LogWarning (MSBStrings.W7176, simPlatform);
 			} catch (AggregateException ae) when (ae.InnerException is OperationCanceledException) {
 				// Timeout
-				Log.LogWarning (MSBStrings.W7171, simPlatform);
+				Log.LogWarning (MSBStrings.W7176, simPlatform);
 			} catch (Exception ex) {
-				Log.LogWarning (MSBStrings.W7171, simPlatform);
+				Log.LogWarning (MSBStrings.W7176, simPlatform);
 				Log.LogMessage (MessageImportance.Low, "Exception while checking simulator runtime: {0}", ex.Message);
 			} finally {
 				File.Delete (jsonOutputFile);
@@ -379,7 +379,7 @@ namespace Xamarin.MacDev.Tasks {
 						if (IsSimulatorRuntimeVersionError (message.Value)) {
 							var simPlatform = GetSimulatorPlatformName ();
 							if (simPlatform is not null)
-								Log.LogError (MSBStrings.E7172, simPlatform);
+								Log.LogError (MSBStrings.E7177, simPlatform);
 						}
 					}
 				}

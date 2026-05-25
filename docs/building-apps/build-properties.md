@@ -1505,6 +1505,21 @@ Consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) p
 
 See also [IPhoneResourcePrefix](#iphoneresourceprefix) and [MonoMacResourcePrefix](#monomacresourceprefix).
 
+## XcodeLocation
+
+Specifies the location of Xcode.
+
+When the build searches for Xcode, it's done in this order:
+
+1. If the `XcodeLocation` property is set, use that. Note that since all environment variables are automatically MSBuild properties as well, it's also possible to set the `XcodeLocation` environment variable for the same effect.
+2. If the `MD_APPLE_SDK_ROOT` environment variable is set, use that.
+3. If either of the files `~/Library/Preferences/maui/Settings.plist` or `~/Library/Preferences/Xamarin/Settings.plist` exist, and has the property list value `AppleSdkRoot`, use that.
+4. Use the system version of Xcode (as determined by executing `xcode-select --print-path`).
+
+> [!WARNING]
+> Support for the `MD_APPLE_SDK_ROOT` environment variable, and the `~/Library/Preferences/maui/Settings.plist` and `~/Library/Preferences/Xamarin/Settings.plist` files, is deprecated and will be removed in the future.
+> Going forward, choose which Xcode to use by either making it the system's version of Xcode (either using `xcode-select --switch ...` on the command line, or in Xcode's settings), or by setting the `XcodeLocation` MSBuild property / environment variable.
+
 ## ZipPath
 
 The full path to the `zip` command-line tool.

@@ -101,8 +101,12 @@
 			<ManagedAssemblyToLink Condition="'%(Filename)' == 'nunit.framework'">
 				<TrimmerSingleWarn>true</TrimmerSingleWarn>
 			</ManagedAssemblyToLink>
+			<ManagedAssemblyToLink Condition="'%(Filename)' == 'nunit.framework.legacy'">
+				<TrimmerSingleWarn>true</TrimmerSingleWarn>
+			</ManagedAssemblyToLink>
 			<!-- The above ItemGroup doesn't work for NativeAOT, so pass the argument manually to ILC: https://github.com/dotnet/runtime/issues/94255 -->
 			<IlcArg Include="--singlewarnassembly:nunit.framework" />
+			<IlcArg Include="--singlewarnassembly:nunit.framework.legacy" />
 		</ItemGroup>
 	</Target>
 

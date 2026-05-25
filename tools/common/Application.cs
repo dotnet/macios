@@ -265,6 +265,14 @@ namespace Xamarin.Bundler {
 
 		public Version GetMacCatalystiOSVersion (Version macOSVersion)
 		{
+#if LEGACY_TOOLS
+			if (macOSVersion.Major >= 26 && Driver.SdkRoot is null) {
+				// this shouldn't happen for normal builds, nor for customers, so just show an internal 99 warning.
+				ErrorHelper.Warning (99, Errors.MX0099, $"No Xcode configured, assuming the macOS version {macOSVersion} is identical to the Mac Catalyst/iOS version.");
+				return macOSVersion;
+			}
+#endif
+
 			if (!MacCatalystSupport.TryGetiOSVersion (Driver.GetFrameworkDirectory (this), macOSVersion, out var value, out var knownMacOSVersions))
 				throw ErrorHelper.CreateError (184, Errors.MX0184 /* Could not map the macOS version {0} to a corresponding Mac Catalyst version. Valid macOS versions are: {1} */, macOSVersion.ToString (), string.Join (", ", knownMacOSVersions.OrderBy (v => v)));
 

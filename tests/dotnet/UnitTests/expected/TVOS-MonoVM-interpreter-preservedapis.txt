@@ -187,12 +187,9 @@ Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/
 Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
 Microsoft.tvOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::None
 Microsoft.tvOS.dll:Foundation.NSObjectData
-Microsoft.tvOS.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::data
 Microsoft.tvOS.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::Data()
 Microsoft.tvOS.dll:Foundation.NSObjectDataHandle
 Microsoft.tvOS.dll:Foundation.NSObjectDataHandle..ctor()
-Microsoft.tvOS.dll:Foundation.NSObjectDataHandle.CreateHandle(Foundation.NSObject)
-Microsoft.tvOS.dll:Foundation.NSObjectDataHandle.Finalize()
 Microsoft.tvOS.dll:Foundation.NSObjectDataHandle.get_Data()
 Microsoft.tvOS.dll:Foundation.NSObjectFlag
 Microsoft.tvOS.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
@@ -244,6 +241,12 @@ Microsoft.tvOS.dll:Foundation.RegisterAttribute.get_IsStubClass()
 Microsoft.tvOS.dll:Foundation.RegisterAttribute.get_IsWrapper()
 Microsoft.tvOS.dll:Foundation.RegisterAttribute.get_Name()
 Microsoft.tvOS.dll:Foundation.RegisterAttribute.get_SkipRegistration()
+Microsoft.tvOS.dll:Foundation.TrackedMemory
+Microsoft.tvOS.dll:Foundation.TrackedMemory..ctor(System.UIntPtr)
+Microsoft.tvOS.dll:Foundation.TrackedMemory.CreateHandle(Foundation.NSObject)
+Microsoft.tvOS.dll:Foundation.TrackedMemory.Finalize()
+Microsoft.tvOS.dll:Foundation.TrackedMemory.get_Value()
+Microsoft.tvOS.dll:Foundation.TrackedMemory.set_Value(System.IntPtr)
 Microsoft.tvOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method
 Microsoft.tvOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method..ctor()
 Microsoft.tvOS.dll:ObjCRuntime.__Registrar__
@@ -490,7 +493,6 @@ Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::class_ptr
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::ClassHandle()
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::handle()
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::Handle()
-Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::classHandle
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::handle
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSString::class_ptr
 Microsoft.tvOS.dll:ObjCRuntime.NativeHandle Foundation.NSString::ClassHandle()
@@ -588,7 +590,6 @@ Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINati
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|288_0`1(ObjCRuntime.NativeHandle)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
-Microsoft.tvOS.dll:ObjCRuntime.Runtime.AllocZeroed`1()
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.attempt_retain_nsobject(System.IntPtr, System.IntPtr*)
 Microsoft.tvOS.dll:ObjCRuntime.Runtime.AttemptRetainNSObject(System.IntPtr)
@@ -1324,6 +1325,8 @@ Microsoft.tvOS.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.tvOS.dll:System.IntPtr CoreFoundation.CFRange::loc
 Microsoft.tvOS.dll:System.IntPtr Foundation.NSObject::__data
 Microsoft.tvOS.dll:System.IntPtr Foundation.NSObject/NSObject_Disposer::class_ptr
+Microsoft.tvOS.dll:System.IntPtr Foundation.TrackedMemory::<Value>k__BackingField
+Microsoft.tvOS.dll:System.IntPtr Foundation.TrackedMemory::Value()
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.AdoptsAttribute::ProtocolHandle()
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.BlockCollector::block
 Microsoft.tvOS.dll:System.IntPtr ObjCRuntime.Libraries/CoreFoundation::Handle
@@ -1485,9 +1488,10 @@ Microsoft.tvOS.dll:System.Reflection.MethodBase Registrar.Registrar/ObjCMethod::
 Microsoft.tvOS.dll:System.Reflection.PropertyInfo Registrar.Registrar/ObjCProperty::Property
 Microsoft.tvOS.dll:System.Reflection.TypeFilter Registrar.SharedDynamic/<>c::<>9__0_0
 Microsoft.tvOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.NSObjectDataHandle> Foundation.NSObject::data_table
+Microsoft.tvOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.TrackedMemory> Foundation.NSObject::super_map
 Microsoft.tvOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Delegate,ObjCRuntime.BlockCollector> ObjCRuntime.Runtime::block_lifetime_table
 Microsoft.tvOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Reflection.Assembly,System.String> ObjCRuntime.Class::assembly_to_name
-Microsoft.tvOS.dll:System.Runtime.InteropServices.GCHandle Foundation.NSObjectDataHandle::handle
+Microsoft.tvOS.dll:System.Runtime.InteropServices.GCHandle Foundation.TrackedMemory::handle
 Microsoft.tvOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::height
 Microsoft.tvOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::width
 Microsoft.tvOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::x

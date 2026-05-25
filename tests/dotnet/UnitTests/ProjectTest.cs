@@ -2376,14 +2376,15 @@ namespace Xamarin.Tests {
 				properties ["CodesignDisallowResourcesSubdirectoryInAppBundle"] = "false";
 				buildFailure = DotNet.AssertBuildFailure (project_path, properties);
 				errors = BinLog.GetBuildLogErrors (buildFailure.BinLogPath).ToArray ();
+				// Verify that codesign reports "replacing existing signature" — this confirms
+				// the app was still signed from the first build (i.e. not re-linked).
+				// The exact secondary error varies between MonoRuntime and CoreCLR builds.
 				var errorMessagePrefixes = new string []
 				{
 					$"/usr/bin/codesign exited with code 1:\n" +
-					$"{appPath}: replacing existing signature\n" +
-					$"{appPath}: code object is not signed at all\n",
+					$"{appPath}: replacing existing signature\n",
 
-					$"Failed to codesign '{appPath}': {appPath}: replacing existing signature\n" +
-					$"{appPath}: code object is not signed at all\n",
+					$"Failed to codesign '{appPath}': {appPath}: replacing existing signature\n",
 				};
 
 				AssertErrorMessages (errors,

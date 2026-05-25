@@ -159,6 +159,18 @@
 			BeforeTargets="_CreateR2RImages">
 		<Touch Files="%(_ReadyToRunCompileList.OutputR2RImage)"
 			Condition="Exists('%(_ReadyToRunCompileList.OutputR2RImage)')" />
+		<!-- Also touch the corresponding framework/dylib outputs to prevent _CreateR2RModuleFrameworks
+		     and _CreateR2RModuleDylibs from re-linking when the .o was only touched (not actually recompiled). -->
+		<ItemGroup>
+			<_R2ROutputsToTouch Remove="@(_R2ROutputsToTouch)" />
+			<_R2ROutputsToTouch Include="@(_ReadyToRunCompileList)" Condition="Exists('%(_ReadyToRunCompileList.OutputR2RImage)')">
+				<_R2RModuleName>$([System.IO.Path]::GetFileNameWithoutExtension ('%(_ReadyToRunCompileList.OutputR2RImage)'))</_R2RModuleName>
+			</_R2ROutputsToTouch>
+		</ItemGroup>
+		<Touch Files="$(_R2RModuleIntermediateOutputPath)%(_R2ROutputsToTouch._R2RModuleName).framework$(_R2RFrameworkBinaryInfix)/%(_R2ROutputsToTouch._R2RModuleName)"
+			Condition="'$(CreateR2RFramework)' == 'true' And Exists('$(_R2RModuleIntermediateOutputPath)%(_R2ROutputsToTouch._R2RModuleName).framework$(_R2RFrameworkBinaryInfix)/%(_R2ROutputsToTouch._R2RModuleName)')" />
+		<Touch Files="$(_R2RModuleIntermediateOutputPath)%(_R2ROutputsToTouch._R2RModuleName).dylib"
+			Condition="'$(CreateR2RDylib)' == 'true' And Exists('$(_R2RModuleIntermediateOutputPath)%(_R2ROutputsToTouch._R2RModuleName).dylib')" />
 	</Target>
 
 	<!--

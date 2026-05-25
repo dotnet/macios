@@ -163,7 +163,9 @@ public class BindingTouch : IDisposable {
 				{ "p", "Sets private mode", v => config.IsPublicMode = false },
 				{ "baselib=", "Sets the base library", v => config.Baselibdll = v },
 				{ "attributelib=", "Sets the attribute library", v => config.Attributedll = v },
+#if !XAMCORE_5_0
 				{ "use-zero-copy", v=> ErrorHelper.Warning (1027) },
+#endif
 				{ "nostdlib", "Does not reference mscorlib.dll library", l => config.OmitStandardLibrary = true },
 #if !XAMCORE_5_0
 				{ "no-mono-path", "Launches compiler with empty MONO_PATH", l => { }, true },

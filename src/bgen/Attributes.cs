@@ -517,11 +517,14 @@ public class NoDefaultValueAttribute : Attribute {
 public class IgnoredInDelegateAttribute : Attribute {
 }
 
+#if !XAMCORE_5_0
 // This attribute is obsolete and has no effect. Zero-copy string marshaling is no longer supported.
+[Obsolete ("Zero-copy string marshaling is no longer supported. This attribute has no effect.")]
 [AttributeUsage (AttributeTargets.Property | AttributeTargets.Parameter, AllowMultiple = true)]
 public class DisableZeroCopyAttribute : Attribute {
 	public DisableZeroCopyAttribute () { }
 }
+#endif
 
 // Apply this attribute to methods that need a custom binding method.
 //
@@ -552,10 +555,13 @@ public class MarshalDirectiveAttribute : Attribute {
 	public string? Library { get; set; }
 }
 
+#if !XAMCORE_5_0
 // This attribute is obsolete and has no effect. Zero-copy string marshaling is no longer supported.
+[Obsolete ("Zero-copy string marshaling is no longer supported. This attribute has no effect.")]
 [AttributeUsage (AttributeTargets.Assembly | AttributeTargets.Method | AttributeTargets.Interface, AllowMultiple = true)]
 public class ZeroCopyStringsAttribute : Attribute {
 }
+#endif
 
 [AttributeUsage (AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = true)]
 public class SnippetAttribute : Attribute {

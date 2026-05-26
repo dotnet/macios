@@ -17,14 +17,14 @@ namespace MonoTouchFixtures.Foundation {
 			var value = new NSString ("value");
 			var j = new NSDictionary (key, value);
 
-			Assert.AreEqual (j.Count, (nuint) 1, "count");
-			Assert.AreEqual (j [key], value, "key lookup");
+			Assert.That (j.Count, Is.EqualTo ((nuint) 1), "count");
+			Assert.That (value, Is.EqualTo (j [key]), "key lookup");
 
 			j = new NSDictionary (new NSString ("first"), new NSString ("first-k"),
 								  new NSString ("second"), new NSString ("second-k"));
-			Assert.AreEqual (j.Count, (nuint) 2, "count");
-			Assert.AreEqual ((string) (NSString) (j ["first"]), "first-k", "lookup1");
-			Assert.AreEqual ((string) (NSString) (j ["second"]), "second-k", "lookup2");
+			Assert.That (j.Count, Is.EqualTo ((nuint) 2), "count");
+			Assert.That ((string) (NSString) (j ["first"]), Is.EqualTo ("first-k"), "lookup1");
+			Assert.That ((string) (NSString) (j ["second"]), Is.EqualTo ("second-k"), "lookup2");
 		}
 
 		[Test]
@@ -32,14 +32,14 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var j = new NSDictionary ("key", "value");
 
-			Assert.AreEqual (j.Count, (nuint) 1, "count");
-			Assert.AreEqual ((string) (NSString) (j ["key"]), "value", "key lookup");
+			Assert.That (j.Count, Is.EqualTo ((nuint) 1), "count");
+			Assert.That ((string) (NSString) (j ["key"]), Is.EqualTo ("value"), "key lookup");
 
 			j = new NSDictionary (1, 2, 3, 4);
 
-			Assert.AreEqual (j.Count, (nuint) 2, "count");
-			Assert.AreEqual (((NSNumber) j [new NSNumber (1)]).Int32Value, 2, "lookup1");
-			Assert.AreEqual (((NSNumber) j [new NSNumber (3)]).Int32Value, 4, "lookup2");
+			Assert.That (j.Count, Is.EqualTo ((nuint) 2), "count");
+			Assert.That (((NSNumber) j [new NSNumber (1)]).Int32Value, Is.EqualTo (2), "lookup1");
+			Assert.That (((NSNumber) j [new NSNumber (3)]).Int32Value, Is.EqualTo (4), "lookup2");
 		}
 
 		[Test]
@@ -83,13 +83,13 @@ namespace MonoTouchFixtures.Foundation {
 					v2 = v.RetainCount;
 					Assert.That (v2, Is.GreaterThan (v1), "Value.RetainCount-b");
 
-					Assert.NotNull (d.Keys, "Keys");
+					Assert.That (d.Keys, Is.Not.Null, "Keys");
 					// accessing `allKeys` should *NOT* change the retainCount
 					// that would happen without an [Autorelease] and can lead to memory exhaustion
 					// https://bugzilla.xamarin.com/show_bug.cgi?id=7723
 					Assert.That (k.RetainCount, Is.EqualTo (k2), "Key.RetainCount-c");
 
-					Assert.NotNull (d.Values, "Values");
+					Assert.That (d.Values, Is.Not.Null, "Values");
 					Assert.That (v.RetainCount, Is.EqualTo (v2), "Value.RetainCount-c");
 				}
 				Assert.That (k.RetainCount, Is.LessThan (k2), "Key.RetainCount-d");
@@ -120,7 +120,7 @@ namespace MonoTouchFixtures.Foundation {
 					Assert.That (x [0], Is.SameAs (k), "KeysForObject");
 
 					var y = d.ObjectForKey (k);
-					Assert.NotNull (y, "ObjectForKey");
+					Assert.That (y, Is.Not.Null, "ObjectForKey");
 
 					using (var a = new NSMutableArray ()) {
 						a.Add (k);
@@ -144,13 +144,13 @@ namespace MonoTouchFixtures.Foundation {
 				var objs = new NSObject [] { new NSNumber (1), new NSNumber (4) };
 				NSDictionary ns = NSDictionary.FromObjectsAndKeys (objs, keys, 1);
 				Console.WriteLine (ns.Count);
-				Assert.AreEqual ((nuint) 1, ns.Count, "#1");
+				Assert.That (ns.Count, Is.EqualTo ((nuint) 1), "#1");
 			}
 			{
 				var keys = new object [] { 1, 2 };
 				var objs = new object [] { 3, 4 };
 				NSDictionary ns = NSDictionary.FromObjectsAndKeys (objs, keys, 1);
-				Assert.AreEqual ((nuint) 1, ns.Count, "#2");
+				Assert.That (ns.Count, Is.EqualTo ((nuint) 1), "#2");
 			}
 		}
 
@@ -160,10 +160,10 @@ namespace MonoTouchFixtures.Foundation {
 			var keys = new NSObject [] { new NSNumber (1), new NSNumber (2), new NSNumber (3) };
 			var objs = new NSObject? [] { new NSNumber (1), null, new NSNumber (4) };
 			NSDictionary ns = NSDictionary.FromObjectsAndKeys (objs, keys, 3);
-			Assert.AreEqual ((nuint) 3, ns.Count, "Count");
-			Assert.AreEqual (1, ((NSNumber) ns [new NSNumber (1)]).Int32Value, "Value 1");
-			Assert.IsInstanceOf<NSNull> (ns [new NSNumber (2)], "Null value");
-			Assert.AreEqual (4, ((NSNumber) ns [new NSNumber (3)]).Int32Value, "Value 3");
+			Assert.That (ns.Count, Is.EqualTo ((nuint) 3), "Count");
+			Assert.That (((NSNumber) ns [new NSNumber (1)]).Int32Value, Is.EqualTo (1), "Value 1");
+			Assert.That (ns [new NSNumber (2)], Is.InstanceOf<NSNull> (), "Null value");
+			Assert.That (((NSNumber) ns [new NSNumber (3)]).Int32Value, Is.EqualTo (4), "Value 3");
 		}
 
 		[Test]
@@ -172,10 +172,10 @@ namespace MonoTouchFixtures.Foundation {
 			var keys = new NSObject [] { new NSNumber (1), new NSNumber (2), new NSNumber (3) };
 			var objs = new NSObject? [] { new NSNumber (1), null, new NSNumber (4) };
 			NSDictionary ns = NSDictionary.FromObjectsAndKeys (objs, keys);
-			Assert.AreEqual ((nuint) 3, ns.Count, "Count");
-			Assert.AreEqual (1, ((NSNumber) ns [new NSNumber (1)]).Int32Value, "Value 1");
-			Assert.IsInstanceOf<NSNull> (ns [new NSNumber (2)], "Null value");
-			Assert.AreEqual (4, ((NSNumber) ns [new NSNumber (3)]).Int32Value, "Value 3");
+			Assert.That (ns.Count, Is.EqualTo ((nuint) 3), "Count");
+			Assert.That (((NSNumber) ns [new NSNumber (1)]).Int32Value, Is.EqualTo (1), "Value 1");
+			Assert.That (ns [new NSNumber (2)], Is.InstanceOf<NSNull> (), "Null value");
+			Assert.That (((NSNumber) ns [new NSNumber (3)]).Int32Value, Is.EqualTo (4), "Value 3");
 		}
 
 		[Test]
@@ -187,15 +187,15 @@ namespace MonoTouchFixtures.Foundation {
 
 			// Test null value
 			var dict = new NSDictionary (key1, null);
-			Assert.AreEqual ((nuint) 1, dict.Count, "count with null value");
+			Assert.That (dict.Count, Is.EqualTo ((nuint) 1), "count with null value");
 			var rawValue = dict.ObjectForKey (key1);
-			Assert.IsInstanceOf<NSNull> (rawValue, "Null value should be NSNull");
+			Assert.That (rawValue, Is.InstanceOf<NSNull> (), "Null value should be NSNull");
 
 			// Test null in variadic args (value position)
 			dict = new NSDictionary (key1, value, key2, null);
-			Assert.AreEqual ((nuint) 2, dict.Count, "count with null in args");
+			Assert.That (dict.Count, Is.EqualTo ((nuint) 2), "count with null in args");
 			rawValue = dict.ObjectForKey (key2);
-			Assert.IsInstanceOf<NSNull> (rawValue, "Null value in args should be NSNull");
+			Assert.That (rawValue, Is.InstanceOf<NSNull> (), "Null value in args should be NSNull");
 		}
 
 		[Test]
@@ -207,17 +207,17 @@ namespace MonoTouchFixtures.Foundation {
 				// NSObject.Copy works because NSDictionary conforms to NSCopying
 				// note: we do not Dispose the "copies" because it's the same instance being returned
 				var copy1 = (NSDictionary) d.Copy ();
-				Assert.AreSame (d, copy1, "1");
+				Assert.That (copy1, Is.SameAs (d), "1");
 				Assert.That (copy1, Is.Not.TypeOf<NSMutableDictionary> (), "NSDictionary-1");
 				Assert.That (copy1.Count, Is.EqualTo ((nuint) 1), "Count-1");
 
 				var copy2 = (NSDictionary) d.Copy (null);
-				Assert.AreSame (d, copy2, "2");
+				Assert.That (copy2, Is.SameAs (d), "2");
 				Assert.That (copy2, Is.Not.TypeOf<NSMutableDictionary> (), "NSDictionary-2");
 				Assert.That (copy2.Count, Is.EqualTo ((nuint) 1), "Count-2");
 
 				var copy3 = (NSDictionary) d.Copy (NSZone.Default);
-				Assert.AreSame (d, copy3, "3");
+				Assert.That (copy3, Is.SameAs (d), "3");
 				Assert.That (copy3, Is.Not.TypeOf<NSMutableDictionary> (), "NSDictionary-3");
 				Assert.That (copy3.Count, Is.EqualTo ((nuint) 1), "Count-3");
 			}
@@ -268,7 +268,7 @@ namespace MonoTouchFixtures.Foundation {
 				objptr = Messaging.IntPtr_objc_msgSend_IntPtr (Class.GetHandle (typeof (NSString)), Selector.GetHandle ("stringWithUTF8String:"), strobjptr);
 				using (var dict = Runtime.GetNSObject<NSDictionary> (Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (Class.GetHandle (typeof (NSDictionary)), Selector.GetHandle ("dictionaryWithObject:forKey:"), objptr, keyptr))) {
 					v = (NSString) dict ["key"];
-					Assert.AreEqual ("obj", (string) v, "a");
+					Assert.That ((string) v, Is.EqualTo ("obj"), "a");
 
 					Assert.Throws<NotSupportedException> (() => dict ["key"] = (NSString) "value", "a ex");
 				}
@@ -278,7 +278,7 @@ namespace MonoTouchFixtures.Foundation {
 				objptr = Messaging.IntPtr_objc_msgSend_IntPtr (Class.GetHandle (typeof (NSString)), Selector.GetHandle ("stringWithUTF8String:"), strobjptr);
 				using (var dict = Runtime.GetNSObject<NSDictionary> (Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (Class.GetHandle (typeof (NSDictionary)), Selector.GetHandle ("dictionaryWithObject:forKey:"), objptr, keyptr))) {
 					v = (NSString) dict [(NSObject) (NSString) "key"];
-					Assert.AreEqual ("obj", (string) v, "b");
+					Assert.That ((string) v, Is.EqualTo ("obj"), "b");
 
 					Assert.Throws<NotSupportedException> (() => dict [(NSObject) (NSString) "key"] = (NSString) "value", "a ex");
 				}
@@ -288,7 +288,7 @@ namespace MonoTouchFixtures.Foundation {
 				objptr = Messaging.IntPtr_objc_msgSend_IntPtr (Class.GetHandle (typeof (NSString)), Selector.GetHandle ("stringWithUTF8String:"), strobjptr);
 				using (var dict = Runtime.GetNSObject<NSDictionary> (Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr (Class.GetHandle (typeof (NSDictionary)), Selector.GetHandle ("dictionaryWithObject:forKey:"), objptr, keyptr))) {
 					v = (NSString) dict [(NSString) "key"];
-					Assert.AreEqual ("obj", (string) v, "c");
+					Assert.That ((string) v, Is.EqualTo ("obj"), "c");
 
 					Assert.Throws<NotSupportedException> (() => dict [(NSString) "key"] = (NSString) "value", "a ex");
 				}

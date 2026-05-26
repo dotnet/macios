@@ -38,7 +38,7 @@ namespace MonoTouchFixtures.MediaToolbox {
 			IntPtr handle;
 			using (var res = new MTAudioProcessingTap (cb, MTAudioProcessingTapCreationFlags.PreEffects)) {
 				handle = res.Handle;
-				Assert.AreEqual (44, (int) res.GetStorage ());
+				Assert.That ((int) res.GetStorage (), Is.EqualTo (44));
 				Assert.That (CFGetRetainCount (handle), Is.EqualTo ((nint) 1), "RC");
 			}
 		}

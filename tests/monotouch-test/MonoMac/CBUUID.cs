@@ -21,7 +21,7 @@ namespace MonoMacFixtures.CoreBluetooth {
 		{
 			using (CBUUID uuid = CBUUID.FromString ("1234")) {
 				Assert.That (uuid.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
-				Assert.IsNotNull (uuid.Data, "Data");
+				Assert.That (uuid.Data, Is.Not.Null, "Data");
 				Assert.That (uuid.ToString (false), Is.EqualTo ("1234"), "ToString(false)");
 				Assert.That (uuid.ToString (true), Is.EqualTo ("00001234-0000-1000-8000-00805f9b34fb"), "ToString(true)");
 				using (CBUUID u2 = CBUUID.FromString (uuid.ToString ())) {
@@ -35,7 +35,7 @@ namespace MonoMacFixtures.CoreBluetooth {
 		{
 			using (CBUUID uuid = CBUUID.FromString ("12345678-90AB-CDEF-cafe-c80c20443d0b")) {
 				Assert.That (uuid.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
-				Assert.IsNotNull (uuid.Data, "Data");
+				Assert.That (uuid.Data, Is.Not.Null, "Data");
 				Assert.That (uuid.ToString (false), Is.EqualTo (uuid.ToString (true)), "ToString");
 				using (CBUUID u2 = CBUUID.FromString (uuid.ToString ())) {
 					Assert.That (u2.ToString (), Is.EqualTo (uuid.ToString ()), "Roundtrip");

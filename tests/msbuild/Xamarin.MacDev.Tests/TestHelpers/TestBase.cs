@@ -147,8 +147,7 @@ namespace Xamarin.Tests {
 
 		public void TestPList (string path, string [] keys)
 		{
-			var plist = PDictionary.FromFile (Path.Combine (path, "Info.plist"));
-			if (plist is null) {
+			if (!PDictionary.TryOpenFile (Path.Combine (path, "Info.plist"), out var plist)) {
 				Assert.Fail ($"Could not load Info.plist from {path}");
 				return;
 			}

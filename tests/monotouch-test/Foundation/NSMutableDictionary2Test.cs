@@ -13,7 +13,7 @@ namespace MonoTouchFixtures.Foundation {
 		public void Ctor ()
 		{
 			var dict = new NSMutableDictionary<NSDate, NSSet> ();
-			Assert.AreEqual ((nuint) 0, dict.Count, "Count");
+			Assert.That (dict.Count, Is.EqualTo ((nuint) 0), "Count");
 		}
 
 		[Test]
@@ -22,8 +22,8 @@ namespace MonoTouchFixtures.Foundation {
 			var other = new NSDictionary<NSString, NSString> ((NSString) "key", (NSString) "value");
 			var j = new NSMutableDictionary<NSString, NSString> (other);
 
-			Assert.AreEqual (j.Count, (nuint) 1, "count");
-			Assert.AreEqual ((string) (NSString) (j [(NSString) "key"]), "value", "key lookup");
+			Assert.That (j.Count, Is.EqualTo ((nuint) 1), "count");
+			Assert.That ((string) (NSString) (j [(NSString) "key"]), Is.EqualTo ("value"), "key lookup");
 		}
 
 		[Test]
@@ -33,8 +33,8 @@ namespace MonoTouchFixtures.Foundation {
 			other.Add ((NSString) "key", (NSString) "value");
 			var j = new NSMutableDictionary<NSString, NSString> (other);
 
-			Assert.AreEqual (j.Count, (nuint) 1, "count");
-			Assert.AreEqual ((string) (NSString) (j [(NSString) "key"]), "value", "key lookup");
+			Assert.That (j.Count, Is.EqualTo ((nuint) 1), "count");
+			Assert.That ((string) (NSString) (j [(NSString) "key"]), Is.EqualTo ("value"), "key lookup");
 		}
 
 		[Test]
@@ -56,9 +56,9 @@ namespace MonoTouchFixtures.Foundation {
 			};
 
 			var dict = NSMutableDictionary<NSString, NSNumber>.FromObjectsAndKeys (values, keys, values.Length);
-			Assert.AreEqual (dict.Count, (nuint) 5, "count");
+			Assert.That (dict.Count, Is.EqualTo ((nuint) 5), "count");
 			for (int i = 0; i < values.Length; i++)
-				Assert.AreEqual (dict [keys [i]], values [i], $"key lookup, Iteration: {i}");
+				Assert.That (values [i], Is.EqualTo (dict [keys [i]]), $"key lookup, Iteration: {i}");
 		}
 
 		[Test]
@@ -66,10 +66,10 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			var key = (NSString) "key";
 			using (var dict = new NSMutableDictionary<NSString, NSString> (key, null)) {
-				Assert.AreEqual ((nuint) 1, dict.Count, "count");
+				Assert.That (dict.Count, Is.EqualTo ((nuint) 1), "count");
 				var baseDict = (NSDictionary) dict;
 				var rawValue = baseDict.ObjectForKey (key);
-				Assert.IsInstanceOf<NSNull> (rawValue, "Null value should be NSNull");
+				Assert.That (rawValue, Is.InstanceOf<NSNull> (), "Null value should be NSNull");
 			}
 		}
 
@@ -80,12 +80,12 @@ namespace MonoTouchFixtures.Foundation {
 			var values = new NSString? [] { (NSString) "value1", null };
 
 			using (var dict = NSMutableDictionary<NSString, NSString>.FromObjectsAndKeys (values, keys)) {
-				Assert.IsNotNull (dict, "Dictionary should not be null");
-				Assert.AreEqual ((nuint) 2, dict!.Count, "Count");
-				Assert.AreEqual ("value1", dict [keys [0]].ToString (), "First value");
+				Assert.That (dict, Is.Not.Null, "Dictionary should not be null");
+				Assert.That (dict!.Count, Is.EqualTo ((nuint) 2), "Count");
+				Assert.That (dict [keys [0]].ToString (), Is.EqualTo ("value1"), "First value");
 				var baseDict = (NSDictionary) dict;
 				var rawValue = baseDict.ObjectForKey (keys [1]);
-				Assert.IsInstanceOf<NSNull> (rawValue, "Null value should be NSNull");
+				Assert.That (rawValue, Is.InstanceOf<NSNull> (), "Null value should be NSNull");
 			}
 		}
 
@@ -96,12 +96,12 @@ namespace MonoTouchFixtures.Foundation {
 			var values = new NSString? [] { (NSString) "value1", null, (NSString) "value3" };
 
 			using (var dict = NSMutableDictionary<NSString, NSString>.FromObjectsAndKeys (values, keys, 2)) {
-				Assert.IsNotNull (dict, "Dictionary should not be null");
-				Assert.AreEqual ((nuint) 2, dict!.Count, "Count");
-				Assert.AreEqual ("value1", dict [keys [0]].ToString (), "First value");
+				Assert.That (dict, Is.Not.Null, "Dictionary should not be null");
+				Assert.That (dict!.Count, Is.EqualTo ((nuint) 2), "Count");
+				Assert.That (dict [keys [0]].ToString (), Is.EqualTo ("value1"), "First value");
 				var baseDict = (NSDictionary) dict;
 				var rawValue = baseDict.ObjectForKey (keys [1]);
-				Assert.IsInstanceOf<NSNull> (rawValue, "Null value should be NSNull");
+				Assert.That (rawValue, Is.InstanceOf<NSNull> (), "Null value should be NSNull");
 			}
 		}
 
@@ -112,10 +112,10 @@ namespace MonoTouchFixtures.Foundation {
 			var objs = new object [] { "value1", "value2", "value3" };
 
 			using (var dict = NSMutableDictionary<NSString, NSString>.FromObjectsAndKeys (objs, keys, 2)) {
-				Assert.IsNotNull (dict, "Dictionary should not be null");
-				Assert.AreEqual ((nuint) 2, dict!.Count, "Count");
-				Assert.AreEqual ("value1", dict [(NSString) "key1"].ToString (), "First value");
-				Assert.AreEqual ("value2", dict [(NSString) "key2"].ToString (), "Second value");
+				Assert.That (dict, Is.Not.Null, "Dictionary should not be null");
+				Assert.That (dict!.Count, Is.EqualTo ((nuint) 2), "Count");
+				Assert.That (dict [(NSString) "key1"].ToString (), Is.EqualTo ("value1"), "First value");
+				Assert.That (dict [(NSString) "key2"].ToString (), Is.EqualTo ("value2"), "Second value");
 			}
 		}
 
@@ -126,12 +126,12 @@ namespace MonoTouchFixtures.Foundation {
 			var objs = new NSObject? [] { new NSString ("value1"), null, new NSString ("value3") };
 
 			using (var dict = NSMutableDictionary<NSString, NSString>.FromObjectsAndKeys (objs, keys, 2)) {
-				Assert.IsNotNull (dict, "Dictionary should not be null");
-				Assert.AreEqual ((nuint) 2, dict!.Count, "Count");
-				Assert.AreEqual ("value1", dict [(NSString) keys [0]].ToString (), "First value");
+				Assert.That (dict, Is.Not.Null, "Dictionary should not be null");
+				Assert.That (dict!.Count, Is.EqualTo ((nuint) 2), "Count");
+				Assert.That (dict [(NSString) keys [0]].ToString (), Is.EqualTo ("value1"), "First value");
 				var baseDict = (NSDictionary) dict;
 				var rawValue = baseDict.ObjectForKey (keys [1]);
-				Assert.IsInstanceOf<NSNull> (rawValue, "Null value should be NSNull");
+				Assert.That (rawValue, Is.InstanceOf<NSNull> (), "Null value should be NSNull");
 			}
 		}
 
@@ -142,10 +142,10 @@ namespace MonoTouchFixtures.Foundation {
 			var objs = new NSObject [] { new NSString ("value1"), new NSString ("value2"), new NSString ("value3") };
 
 			using (var dict = NSMutableDictionary<NSString, NSString>.FromObjectsAndKeys (objs, keys, 2)) {
-				Assert.IsNotNull (dict, "Dictionary should not be null");
-				Assert.AreEqual ((nuint) 2, dict!.Count, "Count");
-				Assert.AreEqual ("value1", dict [(NSString) keys [0]].ToString (), "First value");
-				Assert.AreEqual ("value2", dict [(NSString) keys [1]].ToString (), "Second value");
+				Assert.That (dict, Is.Not.Null, "Dictionary should not be null");
+				Assert.That (dict!.Count, Is.EqualTo ((nuint) 2), "Count");
+				Assert.That (dict [(NSString) keys [0]].ToString (), Is.EqualTo ("value1"), "First value");
+				Assert.That (dict [(NSString) keys [1]].ToString (), Is.EqualTo ("value2"), "Second value");
 			}
 		}
 
@@ -156,8 +156,8 @@ namespace MonoTouchFixtures.Foundation {
 			var values = new NSString [] { (NSString) "value1", (NSString) "value2" };
 
 			using (var dict = NSMutableDictionary<NSString, NSString>.FromObjectsAndKeys (values, keys, 0)) {
-				Assert.IsNotNull (dict, "Dictionary should not be null");
-				Assert.AreEqual ((nuint) 0, dict!.Count, "Count should be 0");
+				Assert.That (dict, Is.Not.Null, "Dictionary should not be null");
+				Assert.That (dict!.Count, Is.EqualTo ((nuint) 0), "Count should be 0");
 			}
 		}
 
@@ -169,10 +169,10 @@ namespace MonoTouchFixtures.Foundation {
 
 			// Should work fine since we only use first 2 items from each array
 			using (var dict = NSMutableDictionary<NSString, NSString>.FromObjectsAndKeys (values, keys, 2)) {
-				Assert.IsNotNull (dict, "Dictionary should not be null");
-				Assert.AreEqual ((nuint) 2, dict!.Count, "Count");
-				Assert.AreEqual ("value1", dict [keys [0]].ToString (), "First value");
-				Assert.AreEqual ("value2", dict [keys [1]].ToString (), "Second value");
+				Assert.That (dict, Is.Not.Null, "Dictionary should not be null");
+				Assert.That (dict!.Count, Is.EqualTo ((nuint) 2), "Count");
+				Assert.That (dict [keys [0]].ToString (), Is.EqualTo ("value1"), "First value");
+				Assert.That (dict [keys [1]].ToString (), Is.EqualTo ("value2"), "Second value");
 			}
 		}
 
@@ -225,13 +225,13 @@ namespace MonoTouchFixtures.Foundation {
 					v2 = v.RetainCount;
 					Assert.That (v2, Is.GreaterThan (v1), "Value.RetainCount-b");
 
-					Assert.NotNull (d.Keys, "Keys");
+					Assert.That (d.Keys, Is.Not.Null, "Keys");
 					// accessing `allKeys` should *NOT* change the retainCount
 					// that would happen without an [Autorelease] and can lead to memory exhaustion
 					// https://bugzilla.xamarin.com/show_bug.cgi?id=7723
 					Assert.That (k.RetainCount, Is.EqualTo (k2), "Key.RetainCount-c");
 
-					Assert.NotNull (d.Values, "Values");
+					Assert.That (d.Values, Is.Not.Null, "Values");
 					Assert.That (v.RetainCount, Is.EqualTo (v2), "Value.RetainCount-c");
 				}
 				Assert.That (k.RetainCount, Is.LessThan (k2), "Key.RetainCount-d");
@@ -262,7 +262,7 @@ namespace MonoTouchFixtures.Foundation {
 					Assert.That (x [0], Is.SameAs (k), "KeysForObject");
 
 					var y = d.ObjectForKey (k);
-					Assert.NotNull (y, "ObjectForKey");
+					Assert.That (y, Is.Not.Null, "ObjectForKey");
 
 					using (var a = new NSMutableArray ()) {
 						a.Add (k);
@@ -286,19 +286,19 @@ namespace MonoTouchFixtures.Foundation {
 			using (var d = new NSMutableDictionary<NSString, NSString> (k, v)) {
 				// NSObject.Copy works because NSDictionary conforms to NSCopying
 				using (var copy1 = (NSDictionary) d.Copy ()) {
-					Assert.AreNotSame (d, copy1, "1");
+					Assert.That (copy1, Is.Not.SameAs (d), "1");
 					Assert.That (copy1, Is.Not.TypeOf<NSMutableDictionary> (), "NSDictionary-1");
 					Assert.That (copy1.Count, Is.EqualTo ((nuint) 1), "Count-1");
 				}
 
 				using (var copy2 = (NSDictionary) d.Copy (null)) {
-					Assert.AreNotSame (d, copy2, "2");
+					Assert.That (copy2, Is.Not.SameAs (d), "2");
 					Assert.That (copy2, Is.Not.TypeOf<NSMutableDictionary> (), "NSDictionary-2");
 					Assert.That (copy2.Count, Is.EqualTo ((nuint) 1), "Count-2");
 				}
 
 				using (var copy3 = (NSDictionary) d.Copy (NSZone.Default)) {
-					Assert.AreNotSame (d, copy3, "3");
+					Assert.That (copy3, Is.Not.SameAs (d), "3");
 					Assert.That (copy3, Is.Not.TypeOf<NSMutableDictionary> (), "NSDictionary-3");
 					Assert.That (copy3.Count, Is.EqualTo ((nuint) 1), "Count-3");
 				}
@@ -337,8 +337,8 @@ namespace MonoTouchFixtures.Foundation {
 			var dict = new NSMutableDictionary<NSString, NSDate> (key, value);
 
 			Assert.Throws<ArgumentNullException> (() => dict.ObjectForKey ((NSString) null), "ANE");
-			Assert.AreSame (value, dict.ObjectForKey (key), "right");
-			Assert.IsNull (dict.ObjectForKey ((NSString) "wrong key"), "wrong");
+			Assert.That (dict.ObjectForKey (key), Is.SameAs (value), "right");
+			Assert.That (dict.ObjectForKey ((NSString) "wrong key"), Is.Null, "wrong");
 		}
 
 		[Test]
@@ -349,8 +349,8 @@ namespace MonoTouchFixtures.Foundation {
 			var dict = new NSMutableDictionary<NSString, NSDate> (key, value);
 
 			var keys = dict.Keys;
-			Assert.AreEqual (1, keys.Length, "Length");
-			Assert.AreSame (key, keys [0], "1");
+			Assert.That (keys.Length, Is.EqualTo (1), "Length");
+			Assert.That (keys [0], Is.SameAs (key), "1");
 		}
 
 		[Test]
@@ -369,14 +369,14 @@ namespace MonoTouchFixtures.Foundation {
 			);
 
 			var rv = dict.KeysForObject (value1);
-			Assert.AreEqual (2, rv.Length, "v1");
+			Assert.That (rv.Length, Is.EqualTo (2), "v1");
 
 			rv = dict.KeysForObject (value2);
-			Assert.AreEqual (1, rv.Length, "v2");
-			Assert.AreSame (key3, rv [0], "v2 key");
+			Assert.That (rv.Length, Is.EqualTo (1), "v2");
+			Assert.That (rv [0], Is.SameAs (key3), "v2 key");
 
 			rv = dict.KeysForObject (value3);
-			Assert.AreEqual (0, rv.Length, "v3");
+			Assert.That (rv.Length, Is.EqualTo (0), "v3");
 
 			Assert.Throws<ArgumentNullException> (() => dict.KeysForObject (null), "ANE");
 		}
@@ -389,8 +389,8 @@ namespace MonoTouchFixtures.Foundation {
 			var dict = new NSMutableDictionary<NSString, NSDate> (key, value);
 
 			var keys = dict.Values;
-			Assert.AreEqual (1, dict.Values.Length, "Length");
-			Assert.AreSame (value, dict [key], "1");
+			Assert.That (dict.Values.Length, Is.EqualTo (1), "Length");
+			Assert.That (dict [key], Is.SameAs (value), "1");
 		}
 
 		[Test]
@@ -410,12 +410,12 @@ namespace MonoTouchFixtures.Foundation {
 			);
 
 			var rv = dict.ObjectsForKeys (new NSString [] { key1, key4 }, value3);
-			Assert.AreEqual (2, rv.Length, "a");
-			Assert.AreSame (value1, rv [0], "a 0");
-			Assert.AreSame (value3, rv [1], "a 1");
+			Assert.That (rv.Length, Is.EqualTo (2), "a");
+			Assert.That (rv [0], Is.SameAs (value1), "a 0");
+			Assert.That (rv [1], Is.SameAs (value3), "a 1");
 
 			rv = dict.ObjectsForKeys (new NSString [] { }, value3);
-			Assert.AreEqual (0, rv.Length, "b length");
+			Assert.That (rv.Length, Is.EqualTo (0), "b length");
 
 			Assert.Throws<ArgumentNullException> (() => dict.ObjectsForKeys ((NSString []) null, value3), "c");
 			Assert.Throws<ArgumentNullException> (() => dict.ObjectsForKeys (new NSString [] { }, null), "d");
@@ -436,8 +436,8 @@ namespace MonoTouchFixtures.Foundation {
 				new NSDate [] { value1, value1 }
 			);
 
-			Assert.True (dict.ContainsKey (key1), "a");
-			Assert.False (dict.ContainsKey (key3), "b");
+			Assert.That (dict.ContainsKey (key1), Is.True, "a");
+			Assert.That (dict.ContainsKey (key3), Is.False, "b");
 			Assert.Throws<ArgumentNullException> (() => dict.ContainsKey ((NSString) null), "ANE");
 		}
 
@@ -458,11 +458,11 @@ namespace MonoTouchFixtures.Foundation {
 
 			NSDate value;
 
-			Assert.True (dict.TryGetValue (key1, out value), "a");
-			Assert.AreSame (value1, value, "a same");
+			Assert.That (dict.TryGetValue (key1, out value), Is.True, "a");
+			Assert.That (value, Is.SameAs (value1), "a same");
 
-			Assert.False (dict.TryGetValue (key3, out value), "b");
-			Assert.IsNull (value, "b null");
+			Assert.That (dict.TryGetValue (key3, out value), Is.False, "b");
+			Assert.That (value, Is.Null, "b null");
 		}
 
 		[Test]
@@ -480,8 +480,8 @@ namespace MonoTouchFixtures.Foundation {
 				new NSDate [] { value1, value1 }
 			);
 
-			Assert.AreSame (value1, dict [key1], "a");
-			Assert.IsNull (dict [key3], "b");
+			Assert.That (dict [key1], Is.SameAs (value1), "a");
+			Assert.That (dict [key3], Is.Null, "b");
 			Assert.Throws<ArgumentNullException> (() => GC.KeepAlive (dict [(NSString) null]), "c");
 		}
 
@@ -495,11 +495,11 @@ namespace MonoTouchFixtures.Foundation {
 			var dict = new NSMutableDictionary<NSString, NSDate> (key1, value1);
 
 			// Accessing via the indexer property should return null
-			Assert.IsNull (dict [keyMissing], "missing key");
+			Assert.That (dict [keyMissing], Is.Null, "missing key");
 
 			// Accessing via IDictionary interface should return null too
 			IDictionary<NSString, NSDate> idict = dict;
-			Assert.IsNull (idict [keyMissing], "missing key via interface");
+			Assert.That (idict [keyMissing], Is.Null, "missing key via interface");
 		}
 
 		[Test]
@@ -517,22 +517,22 @@ namespace MonoTouchFixtures.Foundation {
 			);
 
 			// ObjectForKey should return null for missing keys
-			Assert.IsNull (dict.ObjectForKey (keyMissing), "ObjectForKey missing");
+			Assert.That (dict.ObjectForKey (keyMissing), Is.Null, "ObjectForKey missing");
 
 			// TryGetValue should return false for missing keys
 			NSDate value;
-			Assert.IsFalse (dict.TryGetValue (keyMissing, out value), "TryGetValue missing");
-			Assert.IsNull (value, "TryGetValue out value");
+			Assert.That (dict.TryGetValue (keyMissing, out value), Is.False, "TryGetValue missing");
+			Assert.That (value, Is.Null, "TryGetValue out value");
 
 			// ContainsKey should return false for missing keys
-			Assert.IsFalse (dict.ContainsKey (keyMissing), "ContainsKey missing");
+			Assert.That (dict.ContainsKey (keyMissing), Is.False, "ContainsKey missing");
 
 			// Indexer getter should return null
-			Assert.IsNull (dict [keyMissing], "Indexer missing");
+			Assert.That (dict [keyMissing], Is.Null, "Indexer missing");
 
 			// IDictionary indexer should also return null
 			IDictionary<NSString, NSDate> idict = dict;
-			Assert.IsNull (idict [keyMissing], "IDictionary indexer missing");
+			Assert.That (idict [keyMissing], Is.Null, "IDictionary indexer missing");
 		}
 
 		[Test]
@@ -542,17 +542,17 @@ namespace MonoTouchFixtures.Foundation {
 			var keyMissing = new NSString ("missing");
 
 			// All access methods should handle missing keys in empty dictionary
-			Assert.IsNull (dict.ObjectForKey (keyMissing), "ObjectForKey");
-			Assert.IsFalse (dict.ContainsKey (keyMissing), "ContainsKey");
+			Assert.That (dict.ObjectForKey (keyMissing), Is.Null, "ObjectForKey");
+			Assert.That (dict.ContainsKey (keyMissing), Is.False, "ContainsKey");
 
 			NSDate value;
-			Assert.IsFalse (dict.TryGetValue (keyMissing, out value), "TryGetValue");
-			Assert.IsNull (value, "TryGetValue out");
+			Assert.That (dict.TryGetValue (keyMissing, out value), Is.False, "TryGetValue");
+			Assert.That (value, Is.Null, "TryGetValue out");
 
-			Assert.IsNull (dict [keyMissing], "Indexer");
+			Assert.That (dict [keyMissing], Is.Null, "Indexer");
 
 			IDictionary<NSString, NSDate> idict = dict;
-			Assert.IsNull (idict [keyMissing], "IDictionary indexer");
+			Assert.That (idict [keyMissing], Is.Null, "IDictionary indexer");
 		}
 
 		[Test]
@@ -573,17 +573,17 @@ namespace MonoTouchFixtures.Foundation {
 
 			// Request mix of existing and missing keys - marker should replace missing values
 			var result = dict.ObjectsForKeys (new NSString [] { key1, keyMissing1, key2, keyMissing2 }, marker);
-			Assert.AreEqual (4, result.Length, "Length");
-			Assert.AreSame (value1, result [0], "0 - existing");
-			Assert.AreSame (marker, result [1], "1 - missing");
-			Assert.AreSame (value2, result [2], "2 - existing");
-			Assert.AreSame (marker, result [3], "3 - missing");
+			Assert.That (result.Length, Is.EqualTo (4), "Length");
+			Assert.That (result [0], Is.SameAs (value1), "0 - existing");
+			Assert.That (result [1], Is.SameAs (marker), "1 - missing");
+			Assert.That (result [2], Is.SameAs (value2), "2 - existing");
+			Assert.That (result [3], Is.SameAs (marker), "3 - missing");
 
 			// Request all missing keys
 			result = dict.ObjectsForKeys (new NSString [] { keyMissing1, keyMissing2 }, marker);
-			Assert.AreEqual (2, result.Length, "All missing length");
-			Assert.AreSame (marker, result [0], "All missing 0");
-			Assert.AreSame (marker, result [1], "All missing 1");
+			Assert.That (result.Length, Is.EqualTo (2), "All missing length");
+			Assert.That (result [0], Is.SameAs (marker), "All missing 0");
+			Assert.That (result [1], Is.SameAs (marker), "All missing 1");
 		}
 
 		[Test]
@@ -607,24 +607,24 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.Throws<ArgumentNullException> (() => dict.Add (new KeyValuePair<NSString, NSDate> (null, value1)), "Add ANE 1");
 			Assert.Throws<ArgumentNullException> (() => dict.Add (new KeyValuePair<NSString, NSDate> (key1, null)), "Add ANE 2");
 			dict.Add (new KeyValuePair<NSString, NSDate> (key3, value3));
-			Assert.AreSame (value3, dictobj [key3], "Add 1");
-			Assert.AreEqual (3, dict.Count, "Add Count");
+			Assert.That (dictobj [key3], Is.SameAs (value3), "Add 1");
+			Assert.That (dict.Count, Is.EqualTo (3), "Add Count");
 			dictobj.Remove (key3); // restore state.
 
 			// Clear
 			dict.Clear ();
-			Assert.AreEqual (0, dict.Count, "Clear Count");
+			Assert.That (dict.Count, Is.EqualTo (0), "Clear Count");
 			dictobj.Add (key1, value1); // restore state
 			dictobj.Add (key2, value1); // restore state
 
 			// Contains
-			Assert.IsTrue (dict.Contains (new KeyValuePair<NSString, NSDate> (key1, value1)), "Contains 1"); // both key and value matches
-			Assert.IsFalse (dict.Contains (new KeyValuePair<NSString, NSDate> (key1, value2)), "Contains 2"); // found key, wrong value
-			Assert.IsFalse (dict.Contains (new KeyValuePair<NSString, NSDate> (key3, value2)), "Contains 3"); // wrong key
+			Assert.That (dict.Contains (new KeyValuePair<NSString, NSDate> (key1, value1)), Is.True, "Contains 1"); // both key and value matches
+			Assert.That (dict.Contains (new KeyValuePair<NSString, NSDate> (key1, value2)), Is.False, "Contains 2"); // found key, wrong value
+			Assert.That (dict.Contains (new KeyValuePair<NSString, NSDate> (key3, value2)), Is.False, "Contains 3"); // wrong key
 
 			// ContainsKey
-			Assert.IsTrue (dict.ContainsKey (key1), "ContainsKey 1");
-			Assert.IsFalse (dict.ContainsKey (key3), "ContainsKey 2");
+			Assert.That (dict.ContainsKey (key1), Is.True, "ContainsKey 1");
+			Assert.That (dict.ContainsKey (key3), Is.False, "ContainsKey 2");
 
 			// CopyTo
 			var kvp_array = new KeyValuePair<NSString, NSDate> [1];
@@ -638,54 +638,54 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.Throws<ArgumentException> (() => dict.CopyTo (kvp_array, 1), "CopyTo AE 4");
 			dict.CopyTo (kvp_array, 0);
 			Assert.That (key1, Is.SameAs (kvp_array [0].Key).Or.SameAs (kvp_array [1].Key), "CopyTo K1");
-			Assert.AreSame (value1, kvp_array [0].Value, "CopyTo V1");
+			Assert.That (kvp_array [0].Value, Is.SameAs (value1), "CopyTo V1");
 			Assert.That (key2, Is.SameAs (kvp_array [0].Key).Or.SameAs (kvp_array [1].Key), "CopyTo K2");
-			Assert.AreSame (value1, kvp_array [1].Value, "CopyTo V2");
+			Assert.That (kvp_array [1].Value, Is.SameAs (value1), "CopyTo V2");
 
 			// Count
-			Assert.AreEqual (2, dict.Count, "Count");
+			Assert.That (dict.Count, Is.EqualTo (2), "Count");
 
 			// GetEnumerator
 			var enumerated = Enumerable.ToArray (dict);
-			Assert.AreEqual (2, enumerated.Length, "Enumerator Count");
+			Assert.That (enumerated.Length, Is.EqualTo (2), "Enumerator Count");
 
 			// IsReadOnly
-			Assert.IsFalse (dict.IsReadOnly, "IsReadOnly");
+			Assert.That (dict.IsReadOnly, Is.False, "IsReadOnly");
 
 			// Keys
-			Assert.AreEqual (2, dict.Keys.Count, "Keys Count");
+			Assert.That (dict.Keys.Count, Is.EqualTo (2), "Keys Count");
 
 			// Remove
 			Assert.Throws<ArgumentNullException> (() => dict.Remove (new KeyValuePair<NSString, NSDate> (null, value3)), "Remove ANE 1");
 			Assert.Throws<ArgumentNullException> (() => dict.Remove (new KeyValuePair<NSString, NSDate> (key3, null)), "Remove ANE 2");
-			Assert.IsFalse (dict.Remove (new KeyValuePair<NSString, NSDate> (key3, value3)), "Remove 1"); // inexistent key
-			Assert.AreEqual (2, dict.Count, "Remove 1 Count");
+			Assert.That (dict.Remove (new KeyValuePair<NSString, NSDate> (key3, value3)), Is.False, "Remove 1"); // inexistent key
+			Assert.That (dict.Count, Is.EqualTo (2), "Remove 1 Count");
 
-			Assert.IsFalse (dict.Remove (new KeyValuePair<NSString, NSDate> (key1, value2)), "Remove 2"); // existing key, wrong value
-			Assert.AreEqual (2, dict.Count, "Remove 2 Count");
+			Assert.That (dict.Remove (new KeyValuePair<NSString, NSDate> (key1, value2)), Is.False, "Remove 2"); // existing key, wrong value
+			Assert.That (dict.Count, Is.EqualTo (2), "Remove 2 Count");
 
-			Assert.IsTrue (dict.Remove (new KeyValuePair<NSString, NSDate> (key1, value1)), "Remove 3"); // existing key,value pair
-			Assert.AreEqual (1, dict.Count, "Remove 3 Count");
+			Assert.That (dict.Remove (new KeyValuePair<NSString, NSDate> (key1, value1)), Is.True, "Remove 3"); // existing key,value pair
+			Assert.That (dict.Count, Is.EqualTo (1), "Remove 3 Count");
 			dictobj.Add (key1, value1); // restore state
 
 			// TryGetValue
 			NSDate value;
 			Assert.Throws<ArgumentNullException> (() => dict.TryGetValue (null, out value), "TryGetValue ANE");
-			Assert.IsTrue (dict.TryGetValue (key1, out value), "TryGetValue K1");
-			Assert.AreSame (value1, value, "TryGetValue V1");
-			Assert.IsFalse (dict.TryGetValue (key3, out value), "TryGetValue K2");
+			Assert.That (dict.TryGetValue (key1, out value), Is.True, "TryGetValue K1");
+			Assert.That (value, Is.SameAs (value1), "TryGetValue V1");
+			Assert.That (dict.TryGetValue (key3, out value), Is.False, "TryGetValue K2");
 
 			// Values
-			Assert.AreEqual (2, dict.Values.Count, "Values Count");
+			Assert.That (dict.Values.Count, Is.EqualTo (2), "Values Count");
 
 			// Indexer
-			Assert.AreSame (value1, dict [key1], "this [1]");
-			Assert.IsNull (dict [key3], "this [2]");
+			Assert.That (dict [key1], Is.SameAs (value1), "this [1]");
+			Assert.That (dict [key3], Is.Null, "this [2]");
 			Assert.Throws<ArgumentNullException> (() => GC.KeepAlive (dict [null]), "this [null]");
 
 			dict [key3] = value3;
-			Assert.AreEqual (3, dict.Count, "this [3] Count");
-			Assert.AreSame (value3, dict [key3], "this [3] = 3");
+			Assert.That (dict.Count, Is.EqualTo (3), "this [3] Count");
+			Assert.That (dict [key3], Is.SameAs (value3), "this [3] = 3");
 			dictobj.Remove (key3); // restore state
 
 			Assert.Throws<ArgumentNullException> (() => dict [key3] = null, "this [4] = null");
@@ -712,20 +712,20 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.Throws<ArgumentNullException> (() => dict.Add (new KeyValuePair<NSString, NSDate> (null, value1)), "Add ANE 1");
 			Assert.Throws<ArgumentNullException> (() => dict.Add (new KeyValuePair<NSString, NSDate> (key1, null)), "Add ANE 2");
 			dict.Add (new KeyValuePair<NSString, NSDate> (key3, value3));
-			Assert.AreSame (value3, dictobj [key3], "Add 1");
-			Assert.AreEqual (3, dict.Count, "Add Count");
+			Assert.That (dictobj [key3], Is.SameAs (value3), "Add 1");
+			Assert.That (dict.Count, Is.EqualTo (3), "Add Count");
 			dictobj.Remove (key3); // restore state.
 
 			// Clear
 			dict.Clear ();
-			Assert.AreEqual (0, dict.Count, "Clear Count");
+			Assert.That (dict.Count, Is.EqualTo (0), "Clear Count");
 			dictobj.Add (key1, value1); // restore state
 			dictobj.Add (key2, value1); // restore state
 
 			// Contains
-			Assert.IsTrue (dict.Contains (new KeyValuePair<NSString, NSDate> (key1, value1)), "Contains 1"); // both key and value matches
-			Assert.IsFalse (dict.Contains (new KeyValuePair<NSString, NSDate> (key1, value2)), "Contains 2"); // found key, wrong value
-			Assert.IsFalse (dict.Contains (new KeyValuePair<NSString, NSDate> (key3, value2)), "Contains 3"); // wrong key
+			Assert.That (dict.Contains (new KeyValuePair<NSString, NSDate> (key1, value1)), Is.True, "Contains 1"); // both key and value matches
+			Assert.That (dict.Contains (new KeyValuePair<NSString, NSDate> (key1, value2)), Is.False, "Contains 2"); // found key, wrong value
+			Assert.That (dict.Contains (new KeyValuePair<NSString, NSDate> (key3, value2)), Is.False, "Contains 3"); // wrong key
 
 
 			// CopyTo
@@ -740,31 +740,31 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.Throws<ArgumentException> (() => dict.CopyTo (kvp_array, 1), "CopyTo AE 4");
 			dict.CopyTo (kvp_array, 0);
 			Assert.That (key1, Is.SameAs (kvp_array [0].Key).Or.SameAs (kvp_array [1].Key), "CopyTo K1");
-			Assert.AreSame (value1, kvp_array [0].Value, "CopyTo V1");
+			Assert.That (kvp_array [0].Value, Is.SameAs (value1), "CopyTo V1");
 			Assert.That (key2, Is.SameAs (kvp_array [0].Key).Or.SameAs (kvp_array [1].Key), "CopyTo K2");
-			Assert.AreSame (value1, kvp_array [1].Value, "CopyTo V2");
+			Assert.That (kvp_array [1].Value, Is.SameAs (value1), "CopyTo V2");
 
 			// Count
-			Assert.AreEqual (2, dict.Count, "Count");
+			Assert.That (dict.Count, Is.EqualTo (2), "Count");
 
 			// GetEnumerator
 			var enumerated = Enumerable.ToArray (dict);
-			Assert.AreEqual (2, enumerated.Length, "Enumerator Count");
+			Assert.That (enumerated.Length, Is.EqualTo (2), "Enumerator Count");
 
 			// IsReadOnly
-			Assert.IsFalse (dict.IsReadOnly, "IsReadOnly");
+			Assert.That (dict.IsReadOnly, Is.False, "IsReadOnly");
 
 			// Remove
 			Assert.Throws<ArgumentNullException> (() => dict.Remove (new KeyValuePair<NSString, NSDate> (null, value3)), "Remove ANE 1");
 			Assert.Throws<ArgumentNullException> (() => dict.Remove (new KeyValuePair<NSString, NSDate> (key3, null)), "Remove ANE 2");
-			Assert.IsFalse (dict.Remove (new KeyValuePair<NSString, NSDate> (key3, value3)), "Remove 1"); // inexistent key
-			Assert.AreEqual (2, dict.Count, "Remove 1 Count");
+			Assert.That (dict.Remove (new KeyValuePair<NSString, NSDate> (key3, value3)), Is.False, "Remove 1"); // inexistent key
+			Assert.That (dict.Count, Is.EqualTo (2), "Remove 1 Count");
 
-			Assert.IsFalse (dict.Remove (new KeyValuePair<NSString, NSDate> (key1, value2)), "Remove 2"); // existing key, wrong value
-			Assert.AreEqual (2, dict.Count, "Remove 2 Count");
+			Assert.That (dict.Remove (new KeyValuePair<NSString, NSDate> (key1, value2)), Is.False, "Remove 2"); // existing key, wrong value
+			Assert.That (dict.Count, Is.EqualTo (2), "Remove 2 Count");
 
-			Assert.IsTrue (dict.Remove (new KeyValuePair<NSString, NSDate> (key1, value1)), "Remove 3"); // existing key,value pair
-			Assert.AreEqual (1, dict.Count, "Remove 3 Count");
+			Assert.That (dict.Remove (new KeyValuePair<NSString, NSDate> (key1, value1)), Is.True, "Remove 3"); // existing key,value pair
+			Assert.That (dict.Count, Is.EqualTo (1), "Remove 3 Count");
 			dictobj.Add (key1, value1); // restore state
 		}
 
@@ -787,7 +787,7 @@ namespace MonoTouchFixtures.Foundation {
 
 			// GetEnumerator
 			var enumerated = Enumerable.ToArray (dict);
-			Assert.AreEqual (2, enumerated.Length, "Enumerator Count");
+			Assert.That (enumerated.Length, Is.EqualTo (2), "Enumerator Count");
 		}
 
 		[Test]
@@ -811,7 +811,7 @@ namespace MonoTouchFixtures.Foundation {
 			var c = 0;
 			foreach (var obj in dict)
 				c++;
-			Assert.AreEqual (2, c, "Enumerator Count");
+			Assert.That (c, Is.EqualTo (2), "Enumerator Count");
 		}
 
 		[Test]
@@ -828,16 +828,16 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.Throws<ArgumentNullException> (() => dict.Add (key1, null), "ANE 2");
 
 			dict.Add (key1, value1);
-			Assert.AreEqual ((nuint) 1, dict.Count, "a Count");
-			Assert.AreSame (value1, dict [key1], "a idx");
+			Assert.That (dict.Count, Is.EqualTo ((nuint) 1), "a Count");
+			Assert.That (dict [key1], Is.SameAs (value1), "a idx");
 
 			dict.Add (key1, value1);
-			Assert.AreEqual ((nuint) 1, dict.Count, "b Count");
-			Assert.AreSame (value1, dict [key1], "b idx");
+			Assert.That (dict.Count, Is.EqualTo ((nuint) 1), "b Count");
+			Assert.That (dict [key1], Is.SameAs (value1), "b idx");
 
 			dict.Add (key2, value1);
-			Assert.AreEqual ((nuint) 2, dict.Count, "c Count");
-			Assert.AreSame (value1, dict [key2], "c idx");
+			Assert.That (dict.Count, Is.EqualTo ((nuint) 2), "c Count");
+			Assert.That (dict [key2], Is.SameAs (value1), "c idx");
 		}
 
 		[Test]
@@ -855,11 +855,11 @@ namespace MonoTouchFixtures.Foundation {
 			dict.Add (key1, value1);
 
 			dict.Remove (key2);
-			Assert.AreEqual ((nuint) 1, dict.Count, "a Count");
-			Assert.AreSame (value1, dict [key1], "a idx");
+			Assert.That (dict.Count, Is.EqualTo ((nuint) 1), "a Count");
+			Assert.That (dict [key1], Is.SameAs (value1), "a idx");
 
 			dict.Remove (key1);
-			Assert.AreEqual ((nuint) 0, dict.Count, "b Count");
+			Assert.That (dict.Count, Is.EqualTo ((nuint) 0), "b Count");
 		}
 
 		[Test]
@@ -892,28 +892,28 @@ namespace MonoTouchFixtures.Foundation {
 			using (var dic1 = new NSMutableDictionary<NSString, NSDate> ()) {
 				var now = NSDate.Now;
 				using (var dic2 = NSDictionary.FromObjectAndKey ((NSDate) now, (NSString) "key")) {
-					Assert.AreEqual ((nuint) 0, dic1.Count, "Count 0");
+					Assert.That (dic1.Count, Is.EqualTo ((nuint) 0), "Count 0");
 
 					dic1.AddEntries (dic2);
 
-					Assert.AreEqual ((nuint) 1, dic1.Count, "Count 1");
-					Assert.AreEqual (now, dic1 ["key"], "Value 1");
+					Assert.That (dic1.Count, Is.EqualTo ((nuint) 1), "Count 1");
+					Assert.That (dic1 ["key"], Is.EqualTo (now), "Value 1");
 
 					dic1.AddEntries (dic2);
 
-					Assert.AreEqual ((nuint) 1, dic1.Count, "Count 2");
-					Assert.AreEqual (now, dic1 ["key"], "Value 2");
+					Assert.That (dic1.Count, Is.EqualTo ((nuint) 1), "Count 2");
+					Assert.That (dic1 ["key"], Is.EqualTo (now), "Value 2");
 				}
 
 				// Be nasty, and put something of the wrong type in the dictionary
 				dic1.Clear ();
 				var value = (NSString) "value";
 				using (var dic2 = NSDictionary.FromObjectAndKey (value, (NSString) "key")) {
-					Assert.AreEqual ((nuint) 0, dic1.Count, "X Count 0");
+					Assert.That (dic1.Count, Is.EqualTo ((nuint) 0), "X Count 0");
 
 					dic1.AddEntries (dic2);
 
-					Assert.AreEqual ((nuint) 1, dic1.Count, "X Count 1");
+					Assert.That (dic1.Count, Is.EqualTo ((nuint) 1), "X Count 1");
 					Assert.Throws<InvalidCastException> (() => {
 						var obj = dic1 [(NSString) "key"];
 						// We shouldn't get this far
@@ -924,13 +924,13 @@ namespace MonoTouchFixtures.Foundation {
 				// Use a generic dict of the right types
 				dic1.Clear ();
 				using (var dic2 = new NSDictionary<NSString, NSDate> ((NSString) "key2", now.AddSeconds (3600))) {
-					Assert.AreEqual ((nuint) 0, dic1.Count, "Y Count 0");
+					Assert.That (dic1.Count, Is.EqualTo ((nuint) 0), "Y Count 0");
 
 					dic1.AddEntries (dic2);
 
-					Assert.AreEqual ((nuint) 1, dic1.Count, "Y Count 1");
+					Assert.That (dic1.Count, Is.EqualTo ((nuint) 1), "Y Count 1");
 					var obj = dic1 [(NSString) "key2"];
-					Assert.AreEqual (now.AddSeconds (3600).SecondsSinceReferenceDate, obj.SecondsSinceReferenceDate, "Y Value 1");
+					Assert.That (obj.SecondsSinceReferenceDate, Is.EqualTo (now.AddSeconds (3600).SecondsSinceReferenceDate), "Y Value 1");
 				}
 			}
 		}

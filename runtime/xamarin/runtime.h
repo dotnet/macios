@@ -367,10 +367,9 @@ extern xamarin_register_assemblies_callback xamarin_register_assemblies;
 // This has a managed equivalent in NSObject.cs
 struct NSObjectData {
 	id handle;
-	struct objc_super* super;
 	uint32_t /* NSObjectFlags */ flags;
 	// if this structure ever changes, the encoding for this method will likely have to be updated in Registrar.RegistrarTypeUnsafe, currently it's:
-	//    Signature = "^{NSObjectData=@^{objc_super}I}:",
+	//    Signature = "^{NSObjectData=@I}:",
 };
 
 #ifdef __cplusplus

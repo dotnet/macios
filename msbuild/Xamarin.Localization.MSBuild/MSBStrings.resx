@@ -1639,4 +1639,20 @@
     <data name="E7170" xml:space="preserve">
         <value>Invalid RuntimeLibLinkMode value: '{0}'</value>
     </data>
+
+    <data name="W7171" xml:space="preserve">
+        <value>The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+
+    <data name="W7172" xml:space="preserve">
+        <value>The environment variable '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+
+    <data name="W7173" xml:space="preserve">
+        <value>The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+
+    <data name="W7174" xml:space="preserve">
+        <value>The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
 </root>

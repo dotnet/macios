@@ -3,6 +3,7 @@
 //
 
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
@@ -25,6 +26,9 @@ namespace MonoTests.System.Net.Http {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class MessageHandlerTest {
+		const string AllowSameOriginRedirectCredentialsSwitch = "Foundation.NSUrlSessionHandler.AllowSameOriginRedirectCredentials";
+		const string UseSharedCredentialStorageSwitch = "Foundation.NSUrlSessionHandler.UseSharedCredentialStorage";
+
 		public MessageHandlerTest ()
 		{
 			// Https seems broken on our macOS 10.9 bot, so skip this test.
@@ -468,6 +472,138 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
+		[TestCase (true, false, HttpStatusCode.Unauthorized, false, TestName = "NSUrlSessionHandlerOriginCredentialCacheNotSentToCrossOriginRedirectTarget")]
+		[TestCase (true, true, HttpStatusCode.OK, true, TestName = "NSUrlSessionHandlerTargetCredentialCacheSentToCrossOriginRedirectTarget")]
+		[TestCase (false, false, HttpStatusCode.Unauthorized, false, TestName = "NSUrlSessionHandlerNetworkCredentialNotSentToCrossOriginRedirectTarget")]
+		public void NSUrlSessionHandlerCredentialsCrossOriginRedirectTarget (bool useCredentialCache, bool cacheRedirectTarget, HttpStatusCode expectedStatusCode, bool expectAuthorizationHeader)
+		{
+			if (!HttpListener.IsSupported) {
+				Assert.Inconclusive ("HttpListener is not supported");
+			}
+
+			using var server = new RedirectBasicAuthServer (crossOrigin: true);
+			using var handler = new NSUrlSessionHandler ();
+			var username = "origin-user";
+			var password = "origin-password";
+
+			if (useCredentialCache) {
+				var cache = new CredentialCache ();
+				var credentialUri = cacheRedirectTarget ? new Uri (server.TargetUri, "protected") : server.OriginUri;
+				cache.Add (credentialUri, "basic", new NetworkCredential (username, password));
+				handler.Credentials = cache;
+			} else {
+				handler.Credentials = new NetworkCredential (username, password);
+			}
+
+			HttpStatusCode statusCode = HttpStatusCode.NotFound;
+			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+				using var client = new HttpClient (handler);
+				using var response = await client.GetAsync (new Uri (server.OriginUri, "start"));
+				statusCode = response.StatusCode;
+			}, out var ex);
+
+			Assert.That (done, Is.True, "Request timed out.");
+			Assert.That (ex, Is.Null, "Exception");
+			Assert.That (statusCode, Is.EqualTo (expectedStatusCode), "StatusCode");
+			Assert.That (server.TargetRequestCount, Is.GreaterThanOrEqualTo (1), "Target request count");
+			Assert.That (server.TargetAuthorizationHeaders.Length > 0, Is.EqualTo (expectAuthorizationHeader), "Authorization header presence.");
+		}
+
+		[TestCase (false, HttpStatusCode.Unauthorized, TestName = "NSUrlSessionHandlerNetworkCredentialNotSentAfterSameOriginRedirectByDefault")]
+		[TestCase (true, HttpStatusCode.OK, TestName = "NSUrlSessionHandlerNetworkCredentialSentAfterSameOriginRedirectWithAppContextSwitch")]
+		public void NSUrlSessionHandlerNetworkCredentialSameOriginRedirectCredentials (bool allowSameOriginRedirectCredentials, HttpStatusCode expectedStatusCode)
+		{
+			if (!HttpListener.IsSupported) {
+				Assert.Inconclusive ("HttpListener is not supported");
+			}
+
+			AppContext.TryGetSwitch (AllowSameOriginRedirectCredentialsSwitch, out var originalValue);
+			try {
+				AppContext.SetSwitch (AllowSameOriginRedirectCredentialsSwitch, allowSameOriginRedirectCredentials);
+
+				using var server = new RedirectBasicAuthServer (crossOrigin: false);
+				using var handler = new NSUrlSessionHandler {
+					Credentials = new NetworkCredential ("origin-user", "origin-password"),
+				};
+
+				HttpStatusCode statusCode = HttpStatusCode.NotFound;
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					using var client = new HttpClient (handler);
+					using var response = await client.GetAsync (new Uri (server.OriginUri, "start"));
+					statusCode = response.StatusCode;
+				}, out var ex);
+
+				Assert.That (done, Is.True, "Request timed out.");
+				Assert.That (ex, Is.Null, "Exception");
+				Assert.That (statusCode, Is.EqualTo (expectedStatusCode), "StatusCode");
+				Assert.That (server.TargetRequestCount, Is.GreaterThanOrEqualTo (1), "Target request count");
+				Assert.That (server.TargetAuthorizationHeaders.Length > 0, Is.EqualTo (allowSameOriginRedirectCredentials), "Authorization header presence.");
+			} finally {
+				AppContext.SetSwitch (AllowSameOriginRedirectCredentialsSwitch, originalValue);
+			}
+		}
+
+		[TestCase (false, HttpStatusCode.Unauthorized, false, TestName = "NSUrlSessionHandlerNetworkCredentialNotSentToCrossOriginRedirectWithDefaultCredentialStorage")]
+		[TestCase (true, HttpStatusCode.OK, true, TestName = "NSUrlSessionHandlerNetworkCredentialSentToCrossOriginRedirectWithSharedCredentialStorage")]
+		public void NSUrlSessionHandlerUseSharedCredentialStorage (bool useSharedCredentialStorage, HttpStatusCode expectedStatusCode, bool expectSecondRequestAuthorizationHeader)
+		{
+			if (!HttpListener.IsSupported) {
+				Assert.Inconclusive ("HttpListener is not supported");
+			}
+
+			AppContext.TryGetSwitch (UseSharedCredentialStorageSwitch, out var originalValue);
+			try {
+				AppContext.SetSwitch (UseSharedCredentialStorageSwitch, useSharedCredentialStorage);
+
+				using var server = new RedirectBasicAuthServer (crossOrigin: true);
+
+				// First, prime the shared credential storage by making a successful auth request
+				// using a CredentialCache with the target URI. When shared storage is enabled,
+				// NSUrlSession stores the credential with ForSession persistence in SharedCredentialStorage,
+				// making it available to subsequent handlers targeting the same host:port.
+				var cache = new CredentialCache ();
+				cache.Add (new Uri (server.TargetUri, "protected"), "basic", new NetworkCredential ("origin-user", "origin-password"));
+
+				using (var primingHandler = new NSUrlSessionHandler { Credentials = cache }) {
+					var primingDone = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+						using var client = new HttpClient (primingHandler);
+						using var response = await client.GetAsync (new Uri (server.OriginUri, "start"));
+					}, out var primingEx);
+
+					Assert.That (primingDone, Is.True, "Priming request timed out.");
+					Assert.That (primingEx, Is.Null, "Priming exception");
+				}
+
+				// Record how many auth headers the server received from the priming request
+				var authHeadersAfterPriming = server.TargetAuthorizationHeaders.Length;
+
+				// Now make a second request with a NetworkCredential (not CredentialCache) to the same server.
+				// With shared storage enabled, NSUrlSession finds cached credentials in SharedCredentialStorage
+				// and pre-emptively authenticates the redirect target without calling DidReceiveChallenge.
+				// With shared storage disabled (default), no stored credentials exist, and the
+				// DidReceiveChallenge delegate blocks the NetworkCredential after the cross-origin redirect.
+				using var handler = new NSUrlSessionHandler {
+					Credentials = new NetworkCredential ("origin-user", "origin-password"),
+				};
+
+				HttpStatusCode statusCode = HttpStatusCode.NotFound;
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					using var client = new HttpClient (handler);
+					using var response = await client.GetAsync (new Uri (server.OriginUri, "start"));
+					statusCode = response.StatusCode;
+				}, out var ex);
+
+				Assert.That (done, Is.True, "Request timed out.");
+				Assert.That (ex, Is.Null, "Exception");
+				Assert.That (statusCode, Is.EqualTo (expectedStatusCode), "StatusCode");
+
+				var authHeadersFromSecondRequest = server.TargetAuthorizationHeaders.Length - authHeadersAfterPriming;
+				Assert.That (authHeadersFromSecondRequest > 0, Is.EqualTo (expectSecondRequestAuthorizationHeader), "Authorization header on second request.");
+			} finally {
+				AppContext.SetSwitch (UseSharedCredentialStorageSwitch, originalValue);
+			}
+		}
+
 		[TestCase (typeof (SocketsHttpHandler))]
 		[TestCase (typeof (NSUrlSessionHandler))]
 		public void RejectSslCertificatesServicePointManager (Type handlerType)
@@ -865,6 +1001,154 @@ namespace MonoTests.System.Net.Http {
 			var cert = certRequest.CreateSelfSigned (DateTimeOffset.UtcNow.AddDays (-1), DateTimeOffset.UtcNow.AddYears (1));
 			var password = Guid.NewGuid ().ToString ();
 			return (cert.Export (X509ContentType.Pfx, password), password);
+		}
+
+		sealed class RedirectBasicAuthServer : IDisposable {
+			readonly bool crossOrigin;
+			readonly HttpListener originListener;
+			readonly HttpListener? targetListener;
+			readonly Task originTask;
+			readonly Task? targetTask;
+			readonly object targetAuthorizationHeadersLock = new object ();
+			readonly List<string> targetAuthorizationHeaders = new List<string> ();
+			readonly string expectedBasicAuth;
+			int targetRequestCount;
+
+			public Uri OriginUri { get; }
+			public Uri TargetUri { get; }
+			public int TargetRequestCount => Volatile.Read (ref targetRequestCount);
+
+			public string [] TargetAuthorizationHeaders {
+				get {
+					lock (targetAuthorizationHeadersLock)
+						return targetAuthorizationHeaders.ToArray ();
+				}
+			}
+
+			public RedirectBasicAuthServer (bool crossOrigin, string username = "origin-user", string password = "origin-password")
+			{
+				this.crossOrigin = crossOrigin;
+				expectedBasicAuth = "Basic " + Convert.ToBase64String (global::System.Text.Encoding.UTF8.GetBytes ($"{username}:{password}"));
+				originListener = CreateStartedHttpListener (out var originUri);
+				OriginUri = originUri;
+
+				if (crossOrigin) {
+					targetListener = CreateStartedHttpListener (out var targetUri);
+					TargetUri = targetUri;
+				} else {
+					TargetUri = OriginUri;
+				}
+
+				originTask = Task.Run (RunOrigin);
+				if (targetListener is not null)
+					targetTask = Task.Run (RunTarget);
+			}
+
+			async Task RunOrigin ()
+			{
+				while (true) {
+					var context = await GetContextAsync (originListener);
+					if (context is null)
+						return;
+
+					if (!crossOrigin && string.Equals (context.Request.Url?.AbsolutePath, "/protected", StringComparison.Ordinal)) {
+						RespondToProtectedResource (context);
+					} else {
+						RespondWithRedirect (context);
+					}
+				}
+			}
+
+			async Task RunTarget ()
+			{
+				if (targetListener is null)
+					return;
+
+				while (true) {
+					var context = await GetContextAsync (targetListener);
+					if (context is null)
+						return;
+
+					RespondToProtectedResource (context);
+				}
+			}
+
+			void RespondWithRedirect (HttpListenerContext context)
+			{
+				var response = context.Response;
+				response.StatusCode = (int) HttpStatusCode.Redirect;
+				response.RedirectLocation = new Uri (TargetUri, "protected").AbsoluteUri;
+				response.Close ();
+			}
+
+			void RespondToProtectedResource (HttpListenerContext context)
+			{
+				Interlocked.Increment (ref targetRequestCount);
+
+				var authorization = context.Request.Headers ["Authorization"];
+				if (!string.IsNullOrEmpty (authorization)) {
+					lock (targetAuthorizationHeadersLock)
+						targetAuthorizationHeaders.Add (authorization);
+				}
+
+				var response = context.Response;
+				if (string.Equals (authorization, expectedBasicAuth, StringComparison.Ordinal)) {
+					response.StatusCode = (int) HttpStatusCode.OK;
+				} else {
+					response.StatusCode = (int) HttpStatusCode.Unauthorized;
+					response.AddHeader ("WWW-Authenticate", "Basic realm=\"redirect-target\"");
+				}
+				response.Close ();
+			}
+
+			static async Task<HttpListenerContext?> GetContextAsync (HttpListener listener)
+			{
+				try {
+					return await listener.GetContextAsync ();
+				} catch (HttpListenerException) {
+					return null;
+				} catch (ObjectDisposedException) {
+					return null;
+				} catch (InvalidOperationException) {
+					return null;
+				}
+			}
+
+			static HttpListener CreateStartedHttpListener (out Uri uri)
+			{
+				const int MinPort = 49215;
+				const int MaxPort = 65535;
+
+				for (var port = MinPort; port < MaxPort; port++) {
+					var listener = new HttpListener ();
+					var url = $"http://127.0.0.1:{port}/";
+					listener.Prefixes.Add (url);
+					try {
+						listener.Start ();
+						uri = new Uri (url);
+						return listener;
+					} catch {
+						listener.Close ();
+					}
+				}
+
+				throw new InvalidOperationException ("Could not start a local HTTP listener.");
+			}
+
+			public void Dispose ()
+			{
+				originListener.Close ();
+				targetListener?.Close ();
+
+				try {
+					if (targetTask is null)
+						Task.WaitAll (new [] { originTask }, TimeSpan.FromSeconds (1));
+					else
+						Task.WaitAll (new [] { originTask, targetTask }, TimeSpan.FromSeconds (1));
+				} catch {
+					// Listener disposal wakes the request loops.
+				}
+			}
 		}
 
 		[Test]

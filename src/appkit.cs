@@ -32,6 +32,7 @@
 #nullable enable
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics;
 using System.ComponentModel;
 using CoreGraphics;
@@ -8701,7 +8702,11 @@ namespace AppKit {
 		NSGraphicsContext FromGraphicsPort (IntPtr graphicsPort, bool initialFlippedState);
 
 		[Static, Export ("currentContext"), NullAllowed]
-		NSGraphicsContext CurrentContext { get; set; }
+		NSGraphicsContext CurrentContext {
+			[DynamicDependency (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors, "Foundation.NSProxy", "Microsoft.macOS")] // https://github.com/xamarin/bugzilla-archives/blob/main/16/16505/bug.html
+			get;
+			set;
+		}
 
 		[Static, Export ("currentContextDrawingToScreen")]
 		bool IsCurrentContextDrawingToScreen { get; }
@@ -8962,12 +8967,6 @@ namespace AppKit {
 
 		[Export ("customPlacementConstraints", ArgumentSemantic.Copy)]
 		NSLayoutConstraint [] CustomPlacementConstraints { get; set; }
-	}
-
-	[NoMacCatalyst]
-	[BaseType (typeof (NSGraphicsContext))]
-	[DisableDefaultCtor]
-	interface NSPrintPreviewGraphicsContext {
 	}
 
 	[NoMacCatalyst]

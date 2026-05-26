@@ -24,23 +24,23 @@ namespace MonoTouchFixtures.UIKit {
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 7, 0, throwIfOtherPlatform: false);
 
 			using (var lm = new NSLayoutManager ()) {
-				Assert.False (lm.AllowsNonContiguousLayout, "AllowsNonContiguousLayout");
-				Assert.True (lm.ExtraLineFragmentRect.IsEmpty, "ExtraLineFragmentRect");
-				Assert.Null (lm.ExtraLineFragmentTextContainer, "ExtraLineFragmentTextContainer");
-				Assert.True (lm.ExtraLineFragmentUsedRect.IsEmpty, "ExtraLineFragmentUsedRect");
+				Assert.That (lm.AllowsNonContiguousLayout, Is.False, "AllowsNonContiguousLayout");
+				Assert.That (lm.ExtraLineFragmentRect.IsEmpty, Is.True, "ExtraLineFragmentRect");
+				Assert.That (lm.ExtraLineFragmentTextContainer, Is.Null, "ExtraLineFragmentTextContainer");
+				Assert.That (lm.ExtraLineFragmentUsedRect.IsEmpty, Is.True, "ExtraLineFragmentUsedRect");
 				Assert.That (lm.FirstUnlaidCharacterIndex, Is.EqualTo ((nuint) 0), "FirstUnlaidCharacterIndex");
 				Assert.That (lm.FirstUnlaidGlyphIndex, Is.EqualTo ((nuint) 0), "FirstUnlaidGlyphIndex");
-				Assert.False (lm.HasNonContiguousLayout, "HasNonContiguousLayout");
+				Assert.That (lm.HasNonContiguousLayout, Is.False, "HasNonContiguousLayout");
 #if !__MACCATALYST__
 				Assert.That (lm.HyphenationFactor, Is.EqualTo ((nfloat) 0), "HyphenationFactor");
 #endif
 				Assert.That (lm.NumberOfGlyphs, Is.EqualTo ((nuint) 0), "NumberOfGlyphs");
-				Assert.False (lm.ShowsControlCharacters, "ShowsControlCharacters");
-				Assert.False (lm.ShowsInvisibleCharacters, "ShowsInvisibleCharacters");
-				Assert.Null (lm.TextStorage, "TextStorage");
-				Assert.True (lm.UsesFontLeading, "UsesFontLeading");
+				Assert.That (lm.ShowsControlCharacters, Is.False, "ShowsControlCharacters");
+				Assert.That (lm.ShowsInvisibleCharacters, Is.False, "ShowsInvisibleCharacters");
+				Assert.That (lm.TextStorage, Is.Null, "TextStorage");
+				Assert.That (lm.UsesFontLeading, Is.True, "UsesFontLeading");
 				if (TestRuntime.CheckXcodeVersion (10, 0))
-					Assert.False (lm.LimitsLayoutForSuspiciousContents, "LimitsLayoutForSuspiciousContents");
+					Assert.That (lm.LimitsLayoutForSuspiciousContents, Is.False, "LimitsLayoutForSuspiciousContents");
 			}
 		}
 

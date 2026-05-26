@@ -37,18 +37,21 @@ namespace Xamarin.Bundler {
 
 		internal StaticRegistrar StaticRegistrar { get; set; }
 
+#if !LEGACY_TOOLS
 		public Assembly AddAssembly (AssemblyDefinition assembly)
 		{
 			var asm = new Assembly (this, assembly);
 			Assemblies.Add (asm);
 			return asm;
 		}
+#endif // !LEGACY_TOOLS
 
 		public PlatformLinkContext? GetLinkContext ()
 		{
 			return LinkContext;
 		}
 
+#if !LEGACY_TOOLS
 		public void ExtractNativeLinkInfo (List<Exception> exceptions)
 		{
 			foreach (var a in Assemblies) {
@@ -59,6 +62,7 @@ namespace Xamarin.Bundler {
 				}
 			}
 		}
+#endif // !LEGACY_TOOLS
 
 		[DllImport (Constants.libSystemLibrary, SetLastError = true)]
 		static extern string realpath (string path, IntPtr zero);
@@ -80,114 +84,13 @@ namespace Xamarin.Bundler {
 			return path;
 		}
 
-		public void ValidateAssembliesBeforeLink ()
-		{
-			if (App.AreAnyAssembliesTrimmed) {
-				foreach (Assembly assembly in Assemblies) {
-					if ((assembly.AssemblyDefinition.MainModule.Attributes & ModuleAttributes.ILOnly) == 0)
-						throw ErrorHelper.CreateError (2014, Errors.MT2014, assembly.AssemblyDefinition.MainModule.FileName);
-				}
-			}
-		}
-
+#if !LEGACY_TOOLS
 		public void ComputeLinkerFlags ()
 		{
 			foreach (var a in Assemblies)
 				a.ComputeLinkerFlags ();
 		}
-
-		public void GatherFrameworks ()
-		{
-			Assembly? asm = null;
-
-			foreach (var assembly in Assemblies) {
-				if (assembly.AssemblyDefinition.Name.Name == Driver.GetProductAssembly (App)) {
-					asm = assembly;
-					break;
-				}
-			}
-
-			if (asm is null)
-				throw ErrorHelper.CreateError (99, Errors.MX0099, $"could not find the product assembly {Driver.GetProductAssembly (App)} in the list of assemblies referenced by the executable");
-
-			AssemblyDefinition productAssembly = asm.AssemblyDefinition;
-
-			// *** make sure any change in the above lists (or new list) are also reflected in 
-			// *** Makefile so simlauncher-sgen does not miss any framework
-
-			var processed = new HashSet<string> ();
-			var v80 = new Version (8, 0);
-
-			foreach (ModuleDefinition md in productAssembly.Modules) {
-				foreach (TypeDefinition td in md.Types) {
-					// process only once each namespace (as we keep adding logic below)
-					string nspace = td.Namespace;
-#if !XAMCORE_5_0
-					// AVCustomRoutingControllerDelegate was incorrectly placed in AVKit
-					if (td.Is ("AVKit", "AVCustomRoutingControllerDelegate"))
-						nspace = "AVRouting";
-#endif
-
-					if (processed.Contains (nspace))
-						continue;
-					processed.Add (nspace);
-
-					if (Driver.GetFrameworks (App).TryGetValue (nspace, out var framework) && framework is not null) {
-						// framework specific processing
-						switch (framework.Name) {
-						case "Metal":
-						case "MetalKit":
-						case "MetalPerformanceShaders":
-						case "PHASE":
-						case "ThreadNetwork":
-							// some frameworks do not exists on simulators and will result in linker errors if we include them
-							if (App.IsSimulatorBuild)
-								continue;
-							break;
-						case "NewsstandKit":
-							if (Driver.XcodeVersion.Major >= 15) {
-								Driver.Log (3, "Not linking with the framework {0} because it's not available when using Xcode 15+.", framework.Name);
-								continue;
-							}
-							break;
-						case "AssetsLibrary":
-							if (Driver.XcodeVersion.Major >= 16 || (Driver.XcodeVersion.Major == 15 && Driver.XcodeVersion.Minor >= 3)) {
-								Driver.Log (3, "Not linking with the framework {0} because it's not available when using Xcode 15.3+.", framework.Name);
-								continue;
-							}
-							break;
-						default:
-							if (App.IsSimulatorBuild && !App.IsFrameworkAvailableInSimulator (framework.Name)) {
-								if (App.AreAnyAssembliesTrimmed) {
-									ErrorHelper.Warning (5223, Errors.MX5223, framework.Name, App.PlatformName);
-								} else {
-									Driver.Log (3, Errors.MX5223, framework.Name, App.PlatformName);
-								}
-								continue;
-							}
-							break;
-						}
-
-						if (framework.Unavailable) {
-							ErrorHelper.Warning (181, Errors.MX0181 /* Not linking with the framework {0} (used by the type {1}) because it's not available on the current platform ({2}). */, framework.Name, td.FullName, App.PlatformName);
-							continue;
-						}
-
-						if (App.SdkVersion >= framework.Version) {
-							var add_to = framework.AlwaysWeakLinked || App.DeploymentTarget < framework.Version ? asm.WeakFrameworks : asm.Frameworks;
-							add_to.Add (framework.Name);
-							continue;
-						} else {
-							Driver.Log (3, "Not linking with the framework {0} (used by the type {1}) because it was introduced in {2} {3}, and we're using the {2} {4} SDK.", framework.Name, td.FullName, App.PlatformName, framework.Version, App.SdkVersion);
-						}
-					}
-				}
-			}
-
-			// Make sure there are no duplicates between frameworks and weak frameworks.
-			// Keep the weak ones.
-			asm.Frameworks.ExceptWith (asm.WeakFrameworks);
-		}
+#endif // !LEGACY_TOOLS
 
 #if !LEGACY_TOOLS
 		internal string? GenerateReferencingSource (string reference_m, IEnumerable<Symbol> symbols)

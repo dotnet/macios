@@ -10,7 +10,7 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void SCNGeometrySourceSemanticTest ()
 		{
-			Assert.IsNotNull (SCNGeometrySourceSemantic.Color, "Color");
+			Assert.That (SCNGeometrySourceSemantic.Color, Is.Not.Null, "Color");
 		}
 
 		[Test]

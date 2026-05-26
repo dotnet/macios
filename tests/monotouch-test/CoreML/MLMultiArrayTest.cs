@@ -26,30 +26,30 @@ namespace MonoTouchFixtures.CoreML {
 			var nsstrides = new NSNumber [] { NSNumber.FromNInt (0) };
 
 			using (var arr = new MLMultiArray (shape, MLMultiArrayDataType.Int32, out err)) {
-				Assert.AreEqual (shape, arr.Shape, "1 Shape");
-				Assert.AreEqual (MLMultiArrayDataType.Int32, arr.DataType, "1 DataType");
-				Assert.IsNull (err, "1 err");
+				Assert.That (arr.Shape, Is.EqualTo (shape), "1 Shape");
+				Assert.That (arr.DataType, Is.EqualTo (MLMultiArrayDataType.Int32), "1 DataType");
+				Assert.That (err, Is.Null, "1 err");
 			}
 
 			using (var arr = new MLMultiArray (IntPtr.Zero, shape, MLMultiArrayDataType.Float32, strides, (v) => Marshal.FreeHGlobal (v), out err)) {
-				Assert.AreEqual (shape, arr.Shape, "2 Shape");
-				Assert.AreEqual (MLMultiArrayDataType.Float32, arr.DataType, "2 DataType");
-				Assert.AreEqual (strides, arr.Strides, "2 Strides");
-				Assert.IsNull (err, "2 err");
+				Assert.That (arr.Shape, Is.EqualTo (shape), "2 Shape");
+				Assert.That (arr.DataType, Is.EqualTo (MLMultiArrayDataType.Float32), "2 DataType");
+				Assert.That (arr.Strides, Is.EqualTo (strides), "2 Strides");
+				Assert.That (err, Is.Null, "2 err");
 			}
 
 			using (var arr = new MLMultiArray (IntPtr.Zero, nsshape, MLMultiArrayDataType.Double, nsstrides, (v) => Marshal.FreeHGlobal (v), out err)) {
-				Assert.AreEqual (shape, arr.Shape, "3 Shape");
-				Assert.AreEqual (MLMultiArrayDataType.Double, arr.DataType, "3 DataType");
-				Assert.AreEqual (strides, arr.Strides, "3 Strides");
-				Assert.AreEqual (IntPtr.Zero, arr.DataPointer, "3 DataPointer");
-				Assert.IsNull (err, "3 err");
+				Assert.That (arr.Shape, Is.EqualTo (shape), "3 Shape");
+				Assert.That (arr.DataType, Is.EqualTo (MLMultiArrayDataType.Double), "3 DataType");
+				Assert.That (arr.Strides, Is.EqualTo (strides), "3 Strides");
+				Assert.That (arr.DataPointer, Is.EqualTo (IntPtr.Zero), "3 DataPointer");
+				Assert.That (err, Is.Null, "3 err");
 			}
 
 			using (var arr = new MLMultiArray (nsshape, MLMultiArrayDataType.Int32, out err)) {
-				Assert.AreEqual (shape, arr.Shape, "4 Shape");
-				Assert.AreEqual (MLMultiArrayDataType.Int32, arr.DataType, "4 DataType");
-				Assert.IsNull (err, "4 err");
+				Assert.That (arr.Shape, Is.EqualTo (shape), "4 Shape");
+				Assert.That (arr.DataType, Is.EqualTo (MLMultiArrayDataType.Int32), "4 DataType");
+				Assert.That (err, Is.Null, "4 err");
 			}
 		}
 
@@ -61,25 +61,25 @@ namespace MonoTouchFixtures.CoreML {
 			NSError err;
 			var shape = new nint [] { 10 };
 			using (var arr = new MLMultiArray (shape, MLMultiArrayDataType.Int32, out err)) {
-				Assert.IsNull (err, "err");
-				Assert.AreEqual ((nint) 10, arr.Count, "Count");
-				Assert.AreEqual (new nint [] { 10 }, arr.Shape, "Shape");
-				Assert.AreEqual (new nint [] { 1 }, arr.Strides, "Strides");
+				Assert.That (err, Is.Null, "err");
+				Assert.That (arr.Count, Is.EqualTo ((nint) 10), "Count");
+				Assert.That (arr.Shape, Is.EqualTo (new nint [] { 10 }), "Shape");
+				Assert.That (arr.Strides, Is.EqualTo (new nint [] { 1 }), "Strides");
 
 				arr [0] = 0; // MLMultiArray's elements aren't zero-initialized
-				Assert.AreEqual (0, arr [0].Int32Value, "a");
-				Assert.AreEqual (0, arr [new nint [] { 0 }].Int32Value, "b");
-				Assert.AreEqual (0, arr [new NSNumber [] { NSNumber.FromNInt (0) }].Int32Value, "c nint");
-				Assert.AreEqual (0, arr [new NSNumber [] { NSNumber.FromInt32 (0) }].Int32Value, "c int32");
-				Assert.AreEqual (0, arr [new NSNumber [] { NSNumber.FromByte (0) }].Int32Value, "c byte");
-				Assert.AreEqual (0, arr [new NSNumber [] { NSNumber.FromFloat (0) }].Int32Value, "c float");
+				Assert.That (arr [0].Int32Value, Is.EqualTo (0), "a");
+				Assert.That (arr [new nint [] { 0 }].Int32Value, Is.EqualTo (0), "b");
+				Assert.That (arr [new NSNumber [] { NSNumber.FromNInt (0) }].Int32Value, Is.EqualTo (0), "c nint");
+				Assert.That (arr [new NSNumber [] { NSNumber.FromInt32 (0) }].Int32Value, Is.EqualTo (0), "c int32");
+				Assert.That (arr [new NSNumber [] { NSNumber.FromByte (0) }].Int32Value, Is.EqualTo (0), "c byte");
+				Assert.That (arr [new NSNumber [] { NSNumber.FromFloat (0) }].Int32Value, Is.EqualTo (0), "c float");
 
-				Assert.AreEqual (0, arr.GetObject (0).Int32Value, "GetObject a");
-				Assert.AreEqual (0, arr.GetObject (new nint [] { 0 }).Int32Value, "GetObject b");
-				Assert.AreEqual (0, arr.GetObject (new NSNumber [] { NSNumber.FromNInt (0) }).Int32Value, "GetObject c nint");
-				Assert.AreEqual (0, arr.GetObject (new NSNumber [] { NSNumber.FromInt32 (0) }).Int32Value, "GetObject c int32");
-				Assert.AreEqual (0, arr.GetObject (new NSNumber [] { NSNumber.FromByte (0) }).Int32Value, "GetObject c byte");
-				Assert.AreEqual (0, arr.GetObject (new NSNumber [] { NSNumber.FromFloat (0) }).Int32Value, "GetObject c float");
+				Assert.That (arr.GetObject (0).Int32Value, Is.EqualTo (0), "GetObject a");
+				Assert.That (arr.GetObject (new nint [] { 0 }).Int32Value, Is.EqualTo (0), "GetObject b");
+				Assert.That (arr.GetObject (new NSNumber [] { NSNumber.FromNInt (0) }).Int32Value, Is.EqualTo (0), "GetObject c nint");
+				Assert.That (arr.GetObject (new NSNumber [] { NSNumber.FromInt32 (0) }).Int32Value, Is.EqualTo (0), "GetObject c int32");
+				Assert.That (arr.GetObject (new NSNumber [] { NSNumber.FromByte (0) }).Int32Value, Is.EqualTo (0), "GetObject c byte");
+				Assert.That (arr.GetObject (new NSNumber [] { NSNumber.FromFloat (0) }).Int32Value, Is.EqualTo (0), "GetObject c float");
 
 				arr [1] = NSNumber.FromInt32 (1);
 				arr [new nint [] { 2 }] = NSNumber.FromInt32 (2);
@@ -88,28 +88,28 @@ namespace MonoTouchFixtures.CoreML {
 				arr.SetObject (NSNumber.FromInt32 (5), new nint [] { 5 });
 				arr.SetObject (NSNumber.FromInt32 (6), new NSNumber [] { NSNumber.FromSByte (6) });
 
-				Assert.AreEqual (1, arr [1].Int32Value, "1");
-				Assert.AreEqual (2, arr [2].Int32Value, "2");
-				Assert.AreEqual (3, arr [3].Int32Value, "3");
-				Assert.AreEqual (4, arr [4].Int32Value, "4");
-				Assert.AreEqual (5, arr [5].Int32Value, "5");
-				Assert.AreEqual (6, arr [6].Int32Value, "6");
+				Assert.That (arr [1].Int32Value, Is.EqualTo (1), "1");
+				Assert.That (arr [2].Int32Value, Is.EqualTo (2), "2");
+				Assert.That (arr [3].Int32Value, Is.EqualTo (3), "3");
+				Assert.That (arr [4].Int32Value, Is.EqualTo (4), "4");
+				Assert.That (arr [5].Int32Value, Is.EqualTo (5), "5");
+				Assert.That (arr [6].Int32Value, Is.EqualTo (6), "6");
 			}
 
 			// multi-dimensional
 			shape = new nint [] { 7, 7, 7 };
 			using (var arr = new MLMultiArray (shape, MLMultiArrayDataType.Int32, out err)) {
-				Assert.IsNull (err, "err");
-				Assert.AreEqual (shape [0] * shape [1] * shape [2], arr.Count, "Count");
+				Assert.That (err, Is.Null, "err");
+				Assert.That (arr.Count, Is.EqualTo (shape [0] * shape [1] * shape [2]), "Count");
 
 				arr [0, 0, 0] = 0; // MLMultiArray's elements aren't zero-initialized
-				Assert.AreEqual (0, arr [0, 0, 0].Int32Value, "a");
-				Assert.AreEqual (0, arr [new nint [] { 0, 0, 0 }].Int32Value, "b");
-				Assert.AreEqual (0, arr [new NSNumber [] { NSNumber.FromNInt (0), NSNumber.FromNInt (0), NSNumber.FromNInt (0) }].Int32Value, "c nint");
+				Assert.That (arr [0, 0, 0].Int32Value, Is.EqualTo (0), "a");
+				Assert.That (arr [new nint [] { 0, 0, 0 }].Int32Value, Is.EqualTo (0), "b");
+				Assert.That (arr [new NSNumber [] { NSNumber.FromNInt (0), NSNumber.FromNInt (0), NSNumber.FromNInt (0) }].Int32Value, Is.EqualTo (0), "c nint");
 
-				Assert.AreEqual (0, arr.GetObject (0, 0, 0).Int32Value, "GetObject a");
-				Assert.AreEqual (0, arr.GetObject (new nint [] { 0, 0, 0 }).Int32Value, "GetObject b");
-				Assert.AreEqual (0, arr.GetObject (new NSNumber [] { NSNumber.FromNInt (0), NSNumber.FromNInt (0), NSNumber.FromNInt (0) }).Int32Value, "GetObject c nint");
+				Assert.That (arr.GetObject (0, 0, 0).Int32Value, Is.EqualTo (0), "GetObject a");
+				Assert.That (arr.GetObject (new nint [] { 0, 0, 0 }).Int32Value, Is.EqualTo (0), "GetObject b");
+				Assert.That (arr.GetObject (new NSNumber [] { NSNumber.FromNInt (0), NSNumber.FromNInt (0), NSNumber.FromNInt (0) }).Int32Value, Is.EqualTo (0), "GetObject c nint");
 
 				arr [1, 1, 1] = NSNumber.FromInt32 (1);
 				arr [new nint [] { 2, 2, 2 }] = NSNumber.FromInt32 (2);
@@ -118,12 +118,12 @@ namespace MonoTouchFixtures.CoreML {
 				arr.SetObject (NSNumber.FromInt32 (5), new nint [] { 5, 5, 5 });
 				arr.SetObject (NSNumber.FromInt32 (6), new NSNumber [] { NSNumber.FromSByte (6), NSNumber.FromSByte (6), NSNumber.FromSByte (6) });
 
-				Assert.AreEqual (1, arr [1, 1, 1].Int32Value, "1");
-				Assert.AreEqual (2, arr [2, 2, 2].Int32Value, "2");
-				Assert.AreEqual (3, arr [3, 3, 3].Int32Value, "3");
-				Assert.AreEqual (4, arr [4, 4, 4].Int32Value, "4");
-				Assert.AreEqual (5, arr [5, 5, 5].Int32Value, "5");
-				Assert.AreEqual (6, arr [6, 6, 6].Int32Value, "6");
+				Assert.That (arr [1, 1, 1].Int32Value, Is.EqualTo (1), "1");
+				Assert.That (arr [2, 2, 2].Int32Value, Is.EqualTo (2), "2");
+				Assert.That (arr [3, 3, 3].Int32Value, Is.EqualTo (3), "3");
+				Assert.That (arr [4, 4, 4].Int32Value, Is.EqualTo (4), "4");
+				Assert.That (arr [5, 5, 5].Int32Value, Is.EqualTo (5), "5");
+				Assert.That (arr [6, 6, 6].Int32Value, Is.EqualTo (6), "6");
 			}
 		}
 	}

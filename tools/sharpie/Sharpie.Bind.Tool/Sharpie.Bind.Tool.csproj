@@ -7,7 +7,8 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 
     <!-- packing options -->
-    <!-- there's no x64 version of libClang, so we're only supporting arm64 -->
+    <!-- there's no x64 version of libClang, so only arm64 is fully functional -->
+    <!-- an x64 shim is included that prints a helpful error message -->
     <RuntimeIdentifier>osx-arm64</RuntimeIdentifier>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>sharpie</ToolCommandName>
@@ -47,5 +48,11 @@
     <None Include="README.md" Pack="true" PackagePath="/"/>
     <None Include="../../../LICENSE" Pack="true" PackagePath="/"/>
     <None Include="../../../NOTICE.txt" Pack="true" PackagePath="/"/>
+  </ItemGroup>
+
+  <!-- Include the x64 shim in the nupkg so that x64 users get a helpful error message -->
+  <ItemGroup Condition="'$(PackAsTool)' == 'true'">
+    <None Include="sharpie-x64-shim" Pack="true" PackagePath="tools/any/osx-x64/" />
+    <None Include="DotnetToolSettings.osx-x64.xml" Pack="true" PackagePath="tools/any/osx-x64/DotnetToolSettings.xml" />
   </ItemGroup>
 </Project>

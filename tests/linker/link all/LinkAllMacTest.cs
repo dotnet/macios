@@ -18,14 +18,14 @@ namespace LinkAllTests {
 			NSApplication.EnsureUIThread ();
 
 			ThreadPool.QueueUserWorkItem ((v) => Tester.Test ());
-			Assert.IsTrue (Tester.mre.WaitOne (TimeSpan.FromSeconds (10)), "Successful wait");
+			Assert.That (Tester.mre.WaitOne (TimeSpan.FromSeconds (10)), Is.True, "Successful wait");
 			// The UI thread check only happens for debug builds, on release build it's linked away.
 #if DEBUG
 			var expected_ex_thrown = true;
 #else
 			var expected_ex_thrown = false;
 #endif
-			Assert.AreEqual (expected_ex_thrown, Tester.exception_thrown, "Success");
+			Assert.That (Tester.exception_thrown, Is.EqualTo (expected_ex_thrown), "Success");
 		}
 
 
@@ -59,7 +59,7 @@ namespace LinkAllTests {
 			using (var xr = new XmlTextReader (sr)) {
 				var xs = new XmlSerializer (typeof (SerializeMe));
 				var item = xs.Deserialize (xr) as SerializeMe;
-				Assert.AreEqual (2, item!.SetMe, "SetMe");
+				Assert.That (item!.SetMe, Is.EqualTo (2), "SetMe");
 			}
 		}
 

@@ -48,7 +48,7 @@ namespace Xamarin.Tests {
 					ExecuteProjectWithMagicWordAndAssert (projectPath, platform, runtimeIdentifiers);
 				} else if (CanExecute (platform, runtimeIdentifiers)) {
 					var rv = base.Execute (GetNativeExecutable (platform, appDir), out var output, out _);
-					Assert.AreEqual (1, rv.ExitCode, "Expected no validation");
+					Assert.That (rv.ExitCode, Is.EqualTo (1), "Expected no validation");
 				}
 			} finally {
 				Environment.SetEnvironmentVariable ("XAMARIN_VALIDATE_STATIC_REGISTRAR_CODE", null);
@@ -89,7 +89,7 @@ namespace Xamarin.Tests {
 			Assert.That (File.Exists (platformDll), "No platform dll.");
 			var module = ModuleDefinition.ReadModule (platformDll);
 			var classHandlesMaybe = AllTypes (module).FirstOrDefault (t => t.FullName == "ObjCRuntime.Runtime/ClassHandles");
-			Assert.NotNull (classHandlesMaybe, "Couldn't find ClassHandles type.");
+			Assert.That (classHandlesMaybe, Is.Not.Null, "Couldn't find ClassHandles type.");
 			var classHandles = classHandlesMaybe!;
 			if (!rewriteHandles) {
 				// NB: there is always at least one field named "unused"
@@ -103,7 +103,7 @@ namespace Xamarin.Tests {
 				// NB: there is always at least one field named "unused"
 				Assert.That (classHandles.HasFields && classHandles.Fields.Count () > 1, "There are no fields in ClassHandles - rewriter did nothing.");
 				var field = classHandles.Fields.FirstOrDefault (f => f.Name.Contains ("SomeObj"));
-				Assert.IsNotNull (field, "Didn't find a field for 'SomeObj'");
+				Assert.That (field, Is.Not.Null, "Didn't find a field for 'SomeObj'");
 			}
 		}
 

@@ -52,7 +52,7 @@ namespace MonoTouchFixtures.SpriteKit {
 #endif
 
 					Assert.That (texture.TextureRect, Is.EqualTo (new CGRect (0, 0, 1, 1)), "TextureRect");
-					Assert.False (texture.UsesMipmaps, "UsesMipmaps");
+					Assert.That (texture.UsesMipmaps, Is.False, "UsesMipmaps");
 				}
 			}
 		}

@@ -41,9 +41,9 @@ namespace MonoTouchFixtures.AudioToolbox {
 				for (int i = 0; i < aq.AudioStreamDescription.ChannelsPerFrame; i++) {
 					assignments.Add (new AudioQueueChannelAssignment (id, (uint) i));
 				}
-				Assert.AreEqual (AudioQueueStatus.Ok, aq.SetChannelAssignments (assignments.ToArray ()));
+				Assert.That (aq.SetChannelAssignments (assignments.ToArray ()), Is.EqualTo (AudioQueueStatus.Ok));
 			} else {
-				Assert.Ignore ("No outputs in the current route ({0})", route.Description);
+				Assert.Ignore ($"No outputs in the current route ({route.Description})");
 			}
 
 		}
@@ -63,13 +63,13 @@ namespace MonoTouchFixtures.AudioToolbox {
 					// called = true;
 					return 33;
 				}, AudioQueueProcessingTapFlags.PreEffects, out ret)) {
-				Assert.AreEqual (AudioQueueStatus.Ok, ret, "#1");
+				Assert.That (ret, Is.EqualTo (AudioQueueStatus.Ok), "#1");
 
 				unsafe {
 					AudioQueueBuffer* buffer;
-					Assert.AreEqual (AudioQueueStatus.Ok, aq.AllocateBuffer (5000, out buffer), "#2");
-					Assert.AreEqual (AudioQueueStatus.Ok, aq.EnqueueBuffer (buffer), "#3");
-					//Assert.AreEqual (AudioQueueStatus.Ok, aq.Start (), "#4");
+					Assert.That (aq.AllocateBuffer (5000, out buffer), Is.EqualTo (AudioQueueStatus.Ok), "#2");
+					Assert.That (aq.EnqueueBuffer (buffer), Is.EqualTo (AudioQueueStatus.Ok), "#3");
+					//Assert.That (aq.Start (), Is.EqualTo (AudioQueueStatus.Ok), "#4");
 				}
 			}
 
@@ -88,20 +88,20 @@ namespace MonoTouchFixtures.AudioToolbox {
 		{
 			var asbd = AudioStreamBasicDescription.CreateLinearPCM ();
 			using var aq = new InputAudioQueue (asbd);
-			Assert.AreEqual (AudioQueueStatus.Ok, aq.AllocateBuffer (5000, out AudioQueueBuffer* buffer), "AllocateBuffer");
+			Assert.That (aq.AllocateBuffer (5000, out AudioQueueBuffer* buffer), Is.EqualTo (AudioQueueStatus.Ok), "AllocateBuffer");
 			Assert.Multiple (() => {
-				Assert.AreEqual (5000, buffer->AudioDataBytesCapacity, "AudioDataBytesCapacity");
-				Assert.AreNotEqual (IntPtr.Zero, buffer->AudioData, "AudioData");
-				Assert.AreEqual (0, buffer->AudioDataByteSize, "AudioDataByteSize");
-				Assert.AreEqual (IntPtr.Zero, buffer->UserData, "UserData");
-				Assert.AreEqual (0, buffer->PacketDescriptionCapacity, "PacketDescriptionCapacity");
-				Assert.AreEqual (IntPtr.Zero, buffer->IntPtrPacketDescriptions, "IntPtrPacketDescriptions");
-				Assert.AreEqual (0, buffer->PacketDescriptionCount, "PacketDescriptionCount");
-				Assert.AreEqual (0, buffer->PacketDescriptions.Length, "PacketDescriptions");
-				Assert.AreEqual (5000, buffer->AsSpan ().Length, "AsSpan ().Length");
-				Assert.AreEqual (0, buffer->AsSpanOfValidData ().Length, "AsSpanOfValidData ().Length");
+				Assert.That (buffer->AudioDataBytesCapacity, Is.EqualTo (5000), "AudioDataBytesCapacity");
+				Assert.That (buffer->AudioData, Is.Not.EqualTo (IntPtr.Zero), "AudioData");
+				Assert.That (buffer->AudioDataByteSize, Is.EqualTo (0), "AudioDataByteSize");
+				Assert.That (buffer->UserData, Is.EqualTo (IntPtr.Zero), "UserData");
+				Assert.That (buffer->PacketDescriptionCapacity, Is.EqualTo (0), "PacketDescriptionCapacity");
+				Assert.That (buffer->IntPtrPacketDescriptions, Is.EqualTo (IntPtr.Zero), "IntPtrPacketDescriptions");
+				Assert.That (buffer->PacketDescriptionCount, Is.EqualTo (0), "PacketDescriptionCount");
+				Assert.That (buffer->PacketDescriptions.Length, Is.EqualTo (0), "PacketDescriptions");
+				Assert.That (buffer->AsSpan ().Length, Is.EqualTo (5000), "AsSpan ().Length");
+				Assert.That (buffer->AsSpanOfValidData ().Length, Is.EqualTo (0), "AsSpanOfValidData ().Length");
 			});
-			Assert.AreEqual (AudioQueueStatus.Ok, aq.FreeBuffer (buffer), "FreeBuffer");
+			Assert.That (aq.FreeBuffer (buffer), Is.EqualTo (AudioQueueStatus.Ok), "FreeBuffer");
 		}
 
 		[Test]
@@ -119,18 +119,18 @@ namespace MonoTouchFixtures.AudioToolbox {
 				FramesPerPacket = 1024,
 			};
 			using var aq = new OutputAudioQueue (asbd);
-			Assert.AreEqual (AudioQueueStatus.Ok, aq.AllocateBuffer (5000, 1, out var buffer), "AllocateBuffer");
+			Assert.That (aq.AllocateBuffer (5000, 1, out var buffer), Is.EqualTo (AudioQueueStatus.Ok), "AllocateBuffer");
 			Assert.Multiple (() => {
-				Assert.AreEqual (5000, buffer->AudioDataBytesCapacity, "AudioDataBytesCapacity");
-				Assert.AreNotEqual (IntPtr.Zero, buffer->AudioData, "AudioData");
-				Assert.AreEqual (0, buffer->AudioDataByteSize, "AudioDataByteSize");
-				Assert.AreEqual (IntPtr.Zero, buffer->UserData, "UserData");
-				Assert.AreEqual (1, buffer->PacketDescriptionCapacity, "PacketDescriptionCapacity");
-				Assert.AreNotEqual (IntPtr.Zero, buffer->IntPtrPacketDescriptions, "IntPtrPacketDescriptions");
-				Assert.AreEqual (0, buffer->PacketDescriptionCount, "PacketDescriptionCount");
-				Assert.AreEqual (0, buffer->PacketDescriptions.Length, "PacketDescriptions");
-				Assert.AreEqual (5000, buffer->AsSpan ().Length, "AsSpan ().Length");
-				Assert.AreEqual (0, buffer->AsSpanOfValidData ().Length, "AsSpanOfValidData ().Length");
+				Assert.That (buffer->AudioDataBytesCapacity, Is.EqualTo (5000), "AudioDataBytesCapacity");
+				Assert.That (buffer->AudioData, Is.Not.EqualTo (IntPtr.Zero), "AudioData");
+				Assert.That (buffer->AudioDataByteSize, Is.EqualTo (0), "AudioDataByteSize");
+				Assert.That (buffer->UserData, Is.EqualTo (IntPtr.Zero), "UserData");
+				Assert.That (buffer->PacketDescriptionCapacity, Is.EqualTo (1), "PacketDescriptionCapacity");
+				Assert.That (buffer->IntPtrPacketDescriptions, Is.Not.EqualTo (IntPtr.Zero), "IntPtrPacketDescriptions");
+				Assert.That (buffer->PacketDescriptionCount, Is.EqualTo (0), "PacketDescriptionCount");
+				Assert.That (buffer->PacketDescriptions.Length, Is.EqualTo (0), "PacketDescriptions");
+				Assert.That (buffer->AsSpan ().Length, Is.EqualTo (5000), "AsSpan ().Length");
+				Assert.That (buffer->AsSpanOfValidData ().Length, Is.EqualTo (0), "AsSpanOfValidData ().Length");
 			});
 		}
 	}

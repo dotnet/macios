@@ -34,7 +34,7 @@ namespace MonoTouchFixtures.Security {
 			using (var ssl = new SslContext (SslProtocolSide.Client, SslConnectionType.Stream)) {
 				Assert.That (ssl.BufferedReadSize, Is.EqualTo ((nint) 0), "BufferedReadSize");
 				Assert.That (ssl.ClientCertificateState, Is.EqualTo (SslClientCertificateState.None), "ClientCertificateState");
-				Assert.Null (ssl.Connection, "Connection");
+				Assert.That (ssl.Connection, Is.Null, "Connection");
 				Assert.That (ssl.DatagramWriteSize, Is.EqualTo ((nint) 0), "DatagramWriteSize");
 				Assert.That (ssl.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 				Assert.That (ssl.MaxDatagramRecordSize, Is.EqualTo ((nint) 0), "MaxDatagramRecordSize");
@@ -51,7 +51,7 @@ namespace MonoTouchFixtures.Security {
 				ssl.PeerDomainName = null;
 				Assert.That (ssl.PeerDomainName, Is.Empty, "PeerDomainName");
 
-				Assert.Null (ssl.PeerId, "PeerId");
+				Assert.That (ssl.PeerId, Is.Null, "PeerId");
 				ssl.PeerId = new byte [] { 0xff };
 				Assert.That (ssl.PeerId.Length, Is.EqualTo (1), "1a");
 
@@ -63,12 +63,12 @@ namespace MonoTouchFixtures.Security {
 				ssl.PeerId = new byte [] { 0x01, 0x02 };
 				Assert.That (ssl.PeerId.Length, Is.EqualTo (2), "2");
 
-				Assert.Null (ssl.PeerTrust, "PeerTrust");
+				Assert.That (ssl.PeerTrust, Is.Null, "PeerTrust");
 				Assert.That (ssl.SessionState, Is.EqualTo (SslSessionState.Idle), "SessionState");
 
 				Assert.That ((int) ssl.SetDatagramHelloCookie (new byte [32]), Is.EqualTo (-50), "no cookie in stream");
 
-				// Assert.Null (ssl.GetDistinguishedNames<string> (), "GetDistinguishedNames");
+				// Assert.That (ssl.GetDistinguishedNames<string> (), Is.Null, "GetDistinguishedNames");
 
 				if (TestRuntime.CheckXcodeVersion (9, 0)) {
 					Assert.That (ssl.SetSessionTickets (false), Is.EqualTo (0), "SetSessionTickets");
@@ -104,14 +104,14 @@ namespace MonoTouchFixtures.Security {
 #endif
 			using (var ssl = new SslContext (SslProtocolSide.Client, SslConnectionType.Datagram)) {
 				Assert.That (ssl.BufferedReadSize, Is.EqualTo ((nint) 0), "BufferedReadSize");
-				Assert.Null (ssl.Connection, "Connection");
+				Assert.That (ssl.Connection, Is.Null, "Connection");
 				Assert.That (ssl.DatagramWriteSize, Is.EqualTo (dsize), "DatagramWriteSize");
 				Assert.That (ssl.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 				Assert.That (ssl.MaxDatagramRecordSize, Is.EqualTo ((nint) 1400), "MaxDatagramRecordSize");
 				Assert.That (ssl.MaxProtocol, Is.EqualTo (SslProtocol.Dtls_1_0), "MaxProtocol");
 				Assert.That (ssl.MinProtocol, Is.EqualTo (SslProtocol.Dtls_1_0), "MinProtocol");
 				Assert.That (ssl.NegotiatedProtocol, Is.EqualTo (SslProtocol.Unknown), "NegotiatedProtocol");
-				Assert.Null (ssl.PeerId, "PeerId");
+				Assert.That (ssl.PeerId, Is.Null, "PeerId");
 				Assert.That (ssl.SessionState, Is.EqualTo (SslSessionState.Idle), "SessionState");
 
 				ssl.PeerId = new byte [] { 0xff };

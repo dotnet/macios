@@ -1,0 +1,97 @@
+name: Autoformat code v2
+on: pull_request
+
+permissions: {}
+
+jobs:
+  # Job for same-repo PRs: format and push directly
+  autoformat-push:
+    name: Autoformat and push
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: write
+
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      with:
+        ref: ${{ github.head_ref }}
+        fetch-depth: 1
+        persist-credentials: false
+
+    - name: 'Install .NET'
+      uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5
+      with:
+        global-json-file: ./global.json
+
+    - name: 'Autoformat'
+      run: ./tools/autoformat.sh
+
+    - name: 'Check for changes'
+      id: check
+      run: |
+        if git diff --quiet; then
+          echo "changes=false" >> "$GITHUB_OUTPUT"
+        else
+          echo "changes=true" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: 'Commit and push'
+      if: steps.check.outputs.changes == 'true'
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        git config user.email 'github-actions-autoformatter@xamarin.com'
+        git config user.name 'GitHub Actions Autoformatter'
+        git remote set-url origin "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}"
+        git add -A
+        git commit -m 'Auto-format source code'
+        git push
+
+  # Job for fork PRs: format and upload patch as artifact
+  autoformat-artifact:
+    name: Autoformat and upload patch
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name != github.repository
+    permissions:
+      contents: read
+
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.event.pull_request.head.sha }}
+        persist-credentials: false
+        fetch-depth: 1
+
+    - name: 'Install .NET'
+      uses: actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7 # v5
+      with:
+        global-json-file: ./global.json
+
+    - name: 'Autoformat'
+      run: ./tools/autoformat.sh
+
+    - name: 'Create patch'
+      id: patch
+      run: |
+        if git diff --quiet; then
+          echo "changes=false" >> "$GITHUB_OUTPUT"
+        else
+          echo "changes=true" >> "$GITHUB_OUTPUT"
+          git config user.email 'github-actions-autoformatter@xamarin.com'
+          git config user.name 'GitHub Actions Autoformatter'
+          git add -A
+          git commit -m 'Auto-format source code'
+          mkdir -p autoformat-output
+          git format-patch HEAD~1 --stdout > autoformat-output/autoformat.patch
+        fi
+
+    - name: 'Upload patch'
+      if: steps.patch.outputs.changes == 'true'
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      with:
+        name: autoformat
+        path: autoformat-output/

@@ -27,6 +27,11 @@ parameters:
   type: boolean
   default: false 
 
+- name: useACES
+  displayName: 'Use ACES shared pool'
+  type: boolean
+  default: false
+
 resources:
   repositories:
   - repository: self
@@ -113,3 +118,4 @@ extends:
         forceInsertion: ${{ parameters.forceInsertion }}
         pushNugets: false
         pushNugetsToMaestro: false
+        useACES: ${{ parameters.useACES }}

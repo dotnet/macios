@@ -26,3 +26,4 @@ extends:
   parameters:
     isPR: true
     pool: $(PRBuildPool)
+    useACES: false

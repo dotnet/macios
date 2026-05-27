@@ -507,6 +507,10 @@ xamarin_bridge_vm_initialize (int propertyCount, const char **propertyKeys, cons
 
 	LOG_CORECLR (stderr, "xamarin_vm_initialize (%i, %p, %p): rv: %i domainId: %i handle: %p\n", combinedPropertyCount, combinedPropertyKeys, combinedPropertyValues, rv, coreclr_domainId, coreclr_handle);
 
+	if (rv != 0) {
+		LOG (PRODUCT ": The call to 'coreclr_initialize' failed: %i (%p)\n", rv, rv);
+	}
+
 	return rv == 0;
 }
 #endif // !defined (NATIVEAOT)

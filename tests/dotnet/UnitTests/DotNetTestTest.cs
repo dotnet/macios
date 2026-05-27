@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 using Xamarin.Tests;
 using Xamarin.Utils;
 
@@ -41,6 +43,11 @@ public sealed class Test1 {{
 }}
 ");
 
+			// Boot a simulator so that ComputeRunArguments can find a device
+			var runtimeIdentifier = GetDefaultRuntimeIdentifier (platform);
+			var deviceUdid = GetDeviceUdid (outputDir, runtimeIdentifier);
+			BootSimulator (deviceUdid);
+
 			// Run 'dotnet test' directly using Execution.RunAsync.
 			// dotnet test's MTP flow doesn't forward /p: properties to its internal
 			// ComputeRunArguments MSBuild API call, so properties must be in the csproj.
@@ -51,6 +58,45 @@ public sealed class Test1 {{
 			var testArgs = new List<string> { "test", proj, $"/bl:{binlog}" };
 			var testResult = Execution.RunAsync (DotNet.Executable, testArgs, env, Console.Out, workingDirectory: outputDir, timeout: TimeSpan.FromMinutes (10)).Result;
 			Assert.AreEqual (0, testResult.ExitCode, $"'dotnet test' failed with exit code {testResult.ExitCode}.\nBinlog: {binlog}\nOutput:\n{testResult.Output.MergedOutput}");
+		}
+
+		static string GetDeviceUdid (string projectDirectory, string runtimeIdentifier)
+		{
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+			var outputFile = Path.Combine (tmpdir, "AvailableDevices.json");
+			var args = new List<string> {
+				"build",
+				"-t:ComputeAvailableDevices",
+				"-getItem:Devices",
+				$"-getResultOutputFile:{outputFile}",
+				$"-p:RuntimeIdentifier={runtimeIdentifier}",
+			};
+
+			var env = new Dictionary<string, string?> ();
+			env ["MSBuildSDKsPath"] = null;
+			env ["MSBUILD_EXE_PATH"] = null;
+			var rv = Execution.RunAsync (DotNet.Executable, args, env, Console.Out, workingDirectory: projectDirectory, timeout: TimeSpan.FromMinutes (2)).Result;
+			Assert.AreEqual (0, rv.ExitCode, $"Failed to compute available devices. Output:\n{rv.Output.MergedOutput}");
+
+			var output = File.ReadAllText (outputFile);
+			var doc = JsonDocument.Parse (output);
+			var devices = doc.RootElement.GetProperty ("Items").GetProperty ("Devices").EnumerateArray ().Select (e => {
+				var identity = e.GetProperty ("Identity").GetString ()!;
+				var osVersion = Version.Parse (e.GetProperty ("OSVersion").GetString ()!);
+				var deviceTypeIdentifier = e.GetProperty ("DeviceTypeIdentifier").GetString ()!;
+				return (Identity: identity, OsVersion: osVersion, DeviceTypeIdentifier: deviceTypeIdentifier);
+			}).OrderByDescending (d => d.OsVersion).ThenBy (d => d.DeviceTypeIdentifier).ThenBy (d => d.Identity).ToList ();
+
+			Assert.That (devices, Is.Not.Empty, $"No devices found. Output:\n{output}");
+			return devices.First ().Identity;
+		}
+
+		static void BootSimulator (string udid)
+		{
+			var rv = Execution.RunAsync ("xcrun", new List<string> { "simctl", "boot", udid }, timeout: TimeSpan.FromMinutes (1)).Result;
+			// Exit code 149 means "already booted", which is fine
+			if (rv.ExitCode != 0 && rv.ExitCode != 149)
+				Assert.Fail ($"Failed to boot simulator {udid}. Exit code: {rv.ExitCode}\nOutput:\n{rv.Output.MergedOutput}");
 		}
 	}
 }

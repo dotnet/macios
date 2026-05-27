@@ -259,37 +259,42 @@ public class TypeManager {
 
 	public string FormatType (Type? usedIn, Type? type, byte []? nullabilityBytes)
 	{
-		if (type is null)
+		if (type is null) {
 			throw new BindingException (1065, true);
-		if (nullabilityBytes is null || nullabilityBytes.Length <= 1)
+		}
+		if (nullabilityBytes is null || nullabilityBytes.Length <= 1) {
 			return FormatTypeUsedIn (usedIn?.Namespace, type);
+		}
 
 		// The byte array encodes nullability for the type tree in depth-first order.
 		// Byte 0 is for the outer type itself (which the caller handles separately via
 		// [NullAllowed] / IsNullable), so we skip it. The rest are for generic arguments.
 		var targs = type.GetGenericArguments ();
-		if (targs.Length == 0)
+		if (targs.Length == 0) {
 			return FormatTypeUsedIn (usedIn?.Namespace, type);
+		}
 
 		// Render the outer type name using the standard method (without nullability)
 		// and then render generic arguments with nullability from the byte array
 		int index = 1; // skip byte[0] (the outer type)
 		var formattedArgs = new string [targs.Length];
-		for (int i = 0; i < targs.Length; i++)
+		for (int i = 0; i < targs.Length; i++) {
 			formattedArgs [i] = FormatTypeUsedIn (usedIn?.Namespace, targs [i], nullabilityBytes, ref index);
+		}
 
 		// Get the outer type name without generic args
 		var usedInNamespace = usedIn?.Namespace;
 		string tname;
 		var parentClass = (type.ReflectedType is null) ? String.Empty : type.ReflectedType.Name + ".";
-		if (typesThatMustAlwaysBeGloballyNamed.Contains (type.Name))
+		if (typesThatMustAlwaysBeGloballyNamed.Contains (type.Name)) {
 			tname = $"global::{type.Namespace}.{parentClass}{type.Name}";
-		else if ((usedInNamespace is not null && type.Namespace == usedInNamespace) ||
+		} else if ((usedInNamespace is not null && type.Namespace == usedInNamespace) ||
 				 BindingTouch.NamespaceCache.StandardNamespaces.Contains (type.Namespace ?? String.Empty) ||
-				 string.IsNullOrEmpty (type.FullName))
+				 string.IsNullOrEmpty (type.FullName)) {
 			tname = type.Name;
-		else
+		} else {
 			tname = $"global::{type.Namespace}.{parentClass}{type.Name}";
+		}
 
 		return tname.RemoveArity () + "<" + string.Join (", ", formattedArgs) + ">";
 	}
@@ -384,83 +389,143 @@ public class TypeManager {
 	// Overload that consumes nullability bytes in depth-first order.
 	// The byte array from [NullableAttribute] encodes nullability for each type position:
 	//   0 = oblivious, 1 = not nullable, 2 = nullable
+	// Value types do NOT consume bytes from the array (their nullability is structural).
 	// The index tracks our position as we traverse the type tree depth-first.
 	string FormatTypeUsedIn (string? usedInNamespace, Type? type, byte [] nullabilityBytes, ref int index)
 	{
-		if (type is null)
+		if (type is null) {
 			throw new BindingException (1065, true);
+		}
 
-		// Consume one byte for the current type
+		// Value types don't have bytes in the NullableAttribute array.
+		// Their nullability is determined structurally (by being Nullable<T>).
+		if (type.IsValueType) {
+			if (type == TypeCache.System_SByte) {
+				return "sbyte";
+			}
+			if (type == TypeCache.System_Int32) {
+				return "int";
+			}
+			if (type == TypeCache.System_Int16) {
+				return "short";
+			}
+			if (type == TypeCache.System_Int64) {
+				return "long";
+			}
+			if (type == TypeCache.System_Byte) {
+				return "byte";
+			}
+			if (type == TypeCache.System_UInt16) {
+				return "ushort";
+			}
+			if (type == TypeCache.System_UInt32) {
+				return "uint";
+			}
+			if (type == TypeCache.System_UInt64) {
+				return "ulong";
+			}
+			if (type == TypeCache.System_Float) {
+				return "float";
+			}
+			if (type == TypeCache.System_Double) {
+				return "double";
+			}
+			if (type == TypeCache.System_Boolean) {
+				return "bool";
+			}
+			if (type == TypeCache.System_nfloat) {
+				return "nfloat";
+			}
+			if (type == TypeCache.System_nint) {
+				return "nint";
+			}
+			if (type == TypeCache.System_nuint) {
+				return "nuint";
+			}
+			if (type == TypeCache.System_Char) {
+				return "char";
+			}
+
+			// Generic value types (e.g. Nullable<T>, KeyValuePair<K,V>)
+			var vtargs = type.GetGenericArguments ();
+			if (vtargs.Length > 0) {
+				var isNullableValueType = GetUnderlyingNullableType (type) is not null;
+				if (isNullableValueType) {
+					return FormatTypeUsedIn (usedInNamespace, vtargs [0], nullabilityBytes, ref index) + "?";
+				}
+
+				// Non-nullable generic value type: recurse into its args
+				var formattedVtArgs = new string [vtargs.Length];
+				for (int i = 0; i < vtargs.Length; i++) {
+					formattedVtArgs [i] = FormatTypeUsedIn (usedInNamespace, vtargs [i], nullabilityBytes, ref index);
+				}
+
+				string vtname;
+				var vtParentClass = (type.ReflectedType is null) ? String.Empty : type.ReflectedType.Name + ".";
+				if (typesThatMustAlwaysBeGloballyNamed.Contains (type.Name)) {
+					vtname = $"global::{type.Namespace}.{vtParentClass}{type.Name}";
+				} else if ((usedInNamespace is not null && type.Namespace == usedInNamespace) ||
+						 BindingTouch.NamespaceCache.StandardNamespaces.Contains (type.Namespace ?? String.Empty) ||
+						 string.IsNullOrEmpty (type.FullName)) {
+					vtname = type.Name;
+				} else {
+					vtname = $"global::{type.Namespace}.{vtParentClass}{type.Name}";
+				}
+				return vtname.RemoveArity () + "<" + string.Join (", ", formattedVtArgs) + ">";
+			}
+
+			// Non-generic value type: use the standard name
+			string vname;
+			var vParentClass = (type.ReflectedType is null) ? String.Empty : type.ReflectedType.Name + ".";
+			if (typesThatMustAlwaysBeGloballyNamed.Contains (type.Name)) {
+				vname = $"global::{type.Namespace}.{vParentClass}{type.Name}";
+			} else if ((usedInNamespace is not null && type.Namespace == usedInNamespace) ||
+					 BindingTouch.NamespaceCache.StandardNamespaces.Contains (type.Namespace ?? String.Empty) ||
+					 string.IsNullOrEmpty (type.FullName)) {
+				vname = type.Name;
+			} else {
+				vname = $"global::{type.Namespace}.{vParentClass}{type.Name}";
+			}
+			return vname;
+		}
+
+		// Reference types consume one byte from the array
 		byte currentByte = index < nullabilityBytes.Length ? nullabilityBytes [index] : (byte) 0;
 		index++;
 
-		// For value types, the byte is consumed but doesn't affect the output
-		bool isCurrentNullable = !type.IsValueType && currentByte == 2;
+		bool isCurrentNullable = currentByte == 2;
 
-		// Simple types that don't have generic arguments
-		if (type == TypeCache.System_Void)
+		// Simple reference types
+		if (type == TypeCache.System_Void) {
 			return "void";
-		if (type == TypeCache.System_String)
+		}
+		if (type == TypeCache.System_String) {
 			return "string" + (isCurrentNullable ? "?" : "");
-
-		// Value types are never annotated with ?  from the byte array
-		// (Nullable<T> is handled separately via GetUnderlyingNullableType)
-		if (type == TypeCache.System_SByte)
-			return "sbyte";
-		if (type == TypeCache.System_Int32)
-			return "int";
-		if (type == TypeCache.System_Int16)
-			return "short";
-		if (type == TypeCache.System_Int64)
-			return "long";
-		if (type == TypeCache.System_Byte)
-			return "byte";
-		if (type == TypeCache.System_UInt16)
-			return "ushort";
-		if (type == TypeCache.System_UInt32)
-			return "uint";
-		if (type == TypeCache.System_UInt64)
-			return "ulong";
-		if (type == TypeCache.System_Float)
-			return "float";
-		if (type == TypeCache.System_Double)
-			return "double";
-		if (type == TypeCache.System_Boolean)
-			return "bool";
-		if (type == TypeCache.System_nfloat)
-			return "nfloat";
-		if (type == TypeCache.System_nint)
-			return "nint";
-		if (type == TypeCache.System_nuint)
-			return "nuint";
-		if (type == TypeCache.System_Char)
-			return "char";
+		}
 
 		if (type.IsArray) {
-			return FormatTypeUsedIn (usedInNamespace, type.GetElementType (), nullabilityBytes, ref index) + "[" + new string (',', type.GetArrayRank () - 1) + "]";
+			return FormatTypeUsedIn (usedInNamespace, type.GetElementType (), nullabilityBytes, ref index) + "[" + new string (',', type.GetArrayRank () - 1) + "]" + (isCurrentNullable ? "?" : "");
 		}
 
 		string tname;
 		var parentClass = (type.ReflectedType is null) ? String.Empty : type.ReflectedType.Name + ".";
-		if (typesThatMustAlwaysBeGloballyNamed.Contains (type.Name))
+		if (typesThatMustAlwaysBeGloballyNamed.Contains (type.Name)) {
 			tname = $"global::{type.Namespace}.{parentClass}{type.Name}";
-		else if ((usedInNamespace is not null && type.Namespace == usedInNamespace) ||
+		} else if ((usedInNamespace is not null && type.Namespace == usedInNamespace) ||
 				 BindingTouch.NamespaceCache.StandardNamespaces.Contains (type.Namespace ?? String.Empty) ||
-				 string.IsNullOrEmpty (type.FullName))
+				 string.IsNullOrEmpty (type.FullName)) {
 			tname = type.Name;
-		else
+		} else {
 			tname = $"global::{type.Namespace}.{parentClass}{type.Name}";
+		}
 
 		var targs = type.GetGenericArguments ();
 		if (targs.Length > 0) {
-			var isNullableValueType = GetUnderlyingNullableType (type) is not null;
-			if (isNullableValueType)
-				return FormatTypeUsedIn (usedInNamespace, targs [0], nullabilityBytes, ref index) + "?";
-
 			var formattedArgs = new string [targs.Length];
-			for (int i = 0; i < targs.Length; i++)
+			for (int i = 0; i < targs.Length; i++) {
 				formattedArgs [i] = FormatTypeUsedIn (usedInNamespace, targs [i], nullabilityBytes, ref index);
-			return tname.RemoveArity () + "<" + string.Join (", ", formattedArgs) + ">";
+			}
+			return tname.RemoveArity () + "<" + string.Join (", ", formattedArgs) + ">" + (isCurrentNullable ? "?" : "");
 		}
 
 		return tname + (isCurrentNullable ? "?" : "");

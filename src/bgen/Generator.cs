@@ -2957,8 +2957,9 @@ public partial class Generator : IMemberGatherer {
 					} else if (pi.Position == 0 && mi is MethodInfo minfo) {
 						// only need to check for setter, since we wouldn't get here for a getter.
 						var propertyInfo = GetProperty (minfo, getter: false, setter: true);
-						if (AttributeManager.IsNullable (propertyInfo))
+						if (AttributeManager.IsNullable (propertyInfo)) {
 							sb.Append ('?');
+						}
 					}
 				}
 			}
@@ -4138,7 +4139,16 @@ public partial class Generator : IMemberGatherer {
 			// it remains nullable only if the BindAs type can be null (i.e. a reference type)
 			nullable = !bindAsAttrib.Type.IsValueType && AttributeManager.IsNullable (pi);
 		} else {
-			var nullabilityBytes = AttributeManager.GetNullabilityBytes (pi);
+			// Only apply nullability bytes for delegate types whose generic type parameters
+			// are all contravariant (Action<> variants). Func<> types have a covariant TResult
+			// which creates a type mismatch with the trampoline's CreateNullableBlock signature.
+			byte []? nullabilityBytes = null;
+			if (pi.PropertyType.IsSubclassOf (TypeCache.System_Delegate)) {
+				var invokeMethod = pi.PropertyType.GetMethod ("Invoke");
+				if (invokeMethod is not null && invokeMethod.ReturnType == TypeCache.System_Void) {
+					nullabilityBytes = AttributeManager.GetNullabilityBytes (pi);
+				}
+			}
 			propertyTypeName = TypeManager.FormatType (minfo.type, pi.PropertyType, nullabilityBytes);
 		}
 

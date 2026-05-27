@@ -1647,11 +1647,33 @@ namespace GeneratorTests {
 			Assert.That (File.Exists (generatedFile), Is.True, "Generated file exists");
 			var contents = File.ReadAllText (generatedFile);
 
-			// Verify nullable generic type arguments are properly annotated
+			// Basic: two nullable generic args
 			Assert.That (contents, Does.Contain ("Action<NSObject?, NSError?>?"), "AuthenticateHandler should have nullable generic args");
+			// Three nullable generic args
 			Assert.That (contents, Does.Contain ("Action<NSObject?, NSArray?, NSError?>?"), "CompletionHandler should have nullable generic args");
 			// Non-nullable generic args should NOT have ?
 			Assert.That (contents, Does.Contain ("Action<NSObject, NSError>?"), "NonNullableHandler should NOT have nullable generic args");
+
+			// Value type between nullable reference types (int should never get ?)
+			Assert.That (contents, Does.Contain ("Action<NSObject?, int, NSError?>?"), "WithValueType should not annotate value types");
+
+			// Four nullable reference type args
+			Assert.That (contents, Does.Contain ("Action<NSObject?, NSString?, NSArray?, NSError?>?"), "ManyNullableArgs should handle 4 nullable args");
+
+			// Mixed: first and last non-nullable, middle nullable
+			Assert.That (contents, Does.Contain ("Action<NSObject, NSString?, NSError>?"), "MixedMiddleNullable should only annotate the middle arg");
+
+			// Multiple value types (int, bool should never get ?)
+			Assert.That (contents, Does.Contain ("Action<NSObject?, int, bool, NSError?>?"), "MultipleValueTypes should not annotate any value types");
+
+			// Alternating nullable/non-nullable pattern
+			Assert.That (contents, Does.Contain ("Action<NSObject?, NSString, NSArray?, NSError, NSObject?>?"), "AlternatingNullability should preserve alternating pattern");
+
+			// All non-nullable (5 reference type args, none should get ?)
+			Assert.That (contents, Does.Contain ("Action<NSObject, NSString, NSArray, NSError, NSObject>?"), "AllNonNullable should not annotate any args");
+
+			// Value type at the end
+			Assert.That (contents, Does.Contain ("Action<NSObject?, NSError?, int>?"), "ValueTypeAtEnd should not annotate trailing value type");
 		}
 
 		[Test]

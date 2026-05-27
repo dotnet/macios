@@ -13,6 +13,7 @@ namespace AppKit {
 	[EditorBrowsable (EditorBrowsableState.Never)]
 	public partial class NSPrintPreviewGraphicsContext : NSGraphicsContext {
 
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public override NativeHandle ClassHandle { get { return default; } }
 
 		[EditorBrowsable (EditorBrowsableState.Never)]

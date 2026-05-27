@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 #pragma warning disable APL0003
+#pragma warning disable CS0618 // DisableZeroCopy is obsolete
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;

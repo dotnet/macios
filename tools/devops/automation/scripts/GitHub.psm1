@@ -306,7 +306,7 @@ class GitHubComments {
             return $true
         } else {
             # we might have gotten here because of the trigger type. This means that we are in a PR BUT
-            # we did not get the PR ids, but those can be found in the diff evirtoment vars
+            # we did not get the PR ids, but those can be found in the diff environment vars
             if ($Env:BUILD_REASON -eq "PullRequest") {
                 # set the PR ids to the PR we have in the VSTS env vars
                 $this.PRIds = @($Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER)
@@ -1118,6 +1118,13 @@ function Get-GitHubPRsForHash {
     Write-Host "Getting related PR ids for commit $Hash"
 
     $prs = [System.Collections.ArrayList]@()
+
+    if ($Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER) {
+        Write-Host "Found PR in environment: $Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER"
+        $prs.Add($Env:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER) > $null
+        return $prs
+    }
+
     if ($Env:IS_PR -eq "false") {
         Write-Host "This isn't a PR, IS_PR=false"
         return $prs

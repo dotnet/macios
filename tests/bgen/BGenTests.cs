@@ -1636,6 +1636,26 @@ namespace GeneratorTests {
 
 		[Test]
 		[TestCase (Profile.iOS)]
+		public void GenericTypeNullability (Profile profile)
+		{
+			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
+			var bgen = BuildFile (profile, "generic-type-nullability.cs");
+			bgen.AssertNoWarnings ();
+
+			// Find the generated source file and check the property signatures
+			var generatedFile = Path.Combine (bgen.TmpDirectory!, "NS", "Widget.g.cs");
+			Assert.That (File.Exists (generatedFile), Is.True, "Generated file exists");
+			var contents = File.ReadAllText (generatedFile);
+
+			// Verify nullable generic type arguments are properly annotated
+			Assert.That (contents, Does.Contain ("Action<NSObject?, NSError?>?"), "AuthenticateHandler should have nullable generic args");
+			Assert.That (contents, Does.Contain ("Action<NSObject?, NSArray?, NSError?>?"), "CompletionHandler should have nullable generic args");
+			// Non-nullable generic args should NOT have ?
+			Assert.That (contents, Does.Contain ("Action<NSObject, NSError>?"), "NonNullableHandler should NOT have nullable generic args");
+		}
+
+		[Test]
+		[TestCase (Profile.iOS)]
 		public void DelegatesWithPointerTypes (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());

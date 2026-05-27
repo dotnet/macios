@@ -4051,10 +4051,11 @@ public partial class Generator : IMemberGatherer {
 			print_generated_code ();
 			PrintPropertyAttributes (pi, minfo);
 			PrintAttributes (pi, preserve: true, advice: true);
+			var wrapNullabilityBytes = AttributeManager.GetNullabilityBytes (pi);
 			print ("{0} {1}{2}{3} {4} {{",
 				   mod,
 				   minfo.GetModifiers (),
-				   TypeManager.FormatType (pi.DeclaringType, pi.PropertyType),
+				   TypeManager.FormatType (pi.DeclaringType, pi.PropertyType, wrapNullabilityBytes),
 				   nullable ? "?" : String.Empty,
 					pi.Name.GetSafeParamName ());
 			indent++;
@@ -4137,7 +4138,8 @@ public partial class Generator : IMemberGatherer {
 			// it remains nullable only if the BindAs type can be null (i.e. a reference type)
 			nullable = !bindAsAttrib.Type.IsValueType && AttributeManager.IsNullable (pi);
 		} else {
-			propertyTypeName = TypeManager.FormatType (minfo.type, pi.PropertyType);
+			var nullabilityBytes = AttributeManager.GetNullabilityBytes (pi);
+			propertyTypeName = TypeManager.FormatType (minfo.type, pi.PropertyType, nullabilityBytes);
 		}
 
 		print ("{0} {1}{2}{3} {4} {{",

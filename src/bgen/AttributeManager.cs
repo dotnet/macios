@@ -733,4 +733,36 @@ public class AttributeManager {
 
 		return false;
 	}
+
+	// Returns the full nullability byte array from a [NullableAttribute], or null if not present.
+	// The byte array encodes nullability for the type and all its generic type arguments in
+	// depth-first traversal order:
+	//   0 = oblivious, 1 = not nullable, 2 = nullable
+	// For example, Action<NSObject?, NSError?> would have bytes [1, 2, 2].
+	public byte []? GetNullabilityBytes (ICustomAttributeProvider? provider)
+	{
+		var attributes = GetAttributes (provider);
+		if (attributes is null)
+			return null;
+
+		foreach (var attrib in attributes) {
+			var attribType = attrib.GetAttributeType ();
+			if (attribType.Name == "NullableAttribute") {
+				if (attrib.ConstructorArguments.Count == 1) {
+					var argType = attrib.ConstructorArguments [0].ArgumentType;
+					if (argType.Namespace == "System" && argType.Name == "Byte")
+						return new [] { (byte) attrib.ConstructorArguments [0].Value! };
+					if (argType.IsArray && argType.GetElementType ()?.Namespace == "System" && argType.GetElementType ()?.Name == "Byte") {
+						var valueCollection = (ReadOnlyCollection<CustomAttributeTypedArgument>) attrib.ConstructorArguments [0].Value!;
+						var result = new byte [valueCollection.Count];
+						for (int i = 0; i < valueCollection.Count; i++)
+							result [i] = (byte) valueCollection [i].Value!;
+						return result;
+					}
+				}
+			}
+		}
+
+		return null;
+	}
 }

@@ -44,6 +44,12 @@ variables:
   value: 'VSEng-Xamarin-RedmondMacBuildPool-iOS-Trusted'
 - name: CIBuildPoolUrl
   value: 'https://devdiv.visualstudio.com/_settings/agentpools?poolId=367&view=agents'
+- name: CIBuildPoolACES
+  value: 'AcesShared'
+- name: CIBuildPoolACESUrl
+  value: 'https://dev.azure.com/devdiv/DevDiv/_settings/agentqueues?queueId=8259&view=jobs'
+- name: CIBuildPoolACESImage
+  value: 'ACES_VM_SharedPool_Tahoe'
 
 # override the default build revision
 - name: BUILD_REVISION

@@ -36,6 +36,11 @@ parameters:
     displayName: 'Push Nugets (Maestro)'
     default: true
 
+  - name: useACES
+    type: boolean
+    displayName: 'Use ACES shared pool'
+    default: true
+
 resources:
   repositories:
     - repository: self
@@ -132,6 +137,7 @@ extends:
           forceInsertion: ${{ parameters.forceInsertion }}
           pushNugets: ${{ parameters.pushNugets }}
           pushNugetsToMaestro: ${{ parameters.pushNugetsToMaestro }}
+          useACES: ${{ parameters.useACES }}
 
       - template: localization/v1.yml@yaml-templates
         parameters:

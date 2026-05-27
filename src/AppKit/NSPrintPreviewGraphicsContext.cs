@@ -10,6 +10,7 @@ namespace AppKit {
 	[UnsupportedOSPlatform ("maccatalyst")]
 	[UnsupportedOSPlatform ("macos")]
 	[Obsolete ("This class does not form part of the public API in macOS, and will be removed in the future.")]
+	[EditorBrowsable (EditorBrowsableState.Never)]
 	public partial class NSPrintPreviewGraphicsContext : NSGraphicsContext {
 
 		public override NativeHandle ClassHandle { get { return default; } }

@@ -32,8 +32,7 @@ namespace Xamarin.Tests {
 				Assert.That (expectedXcodeFxOutput, Does.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' did not exist.");
 			} else {
 				var resourcesZip = Path.Combine (testDir, "bin", config, platform.ToFramework (), $"{TestName}.resources.zip");
-				Assert.Contains ($"{xcodeProjName}{platform.AsString ()}.xcframework/Info.plist", ZipHelpers.List (resourcesZip),
-					$"Expected xcframework output was not found in '{resourcesZip}'.");
+				Assert.That (ZipHelpers.List (resourcesZip), Does.Contain ($"{xcodeProjName}{platform.AsString ()}.xcframework/Info.plist"), $"Expected xcframework output was not found in '{resourcesZip}'.");
 			}
 		}
 
@@ -66,7 +65,7 @@ namespace Xamarin.Tests {
 			Assert.That (appDir, Does.Exist, $"Expected app dir '{appDir}' did not exist.");
 			var appContent = Directory.GetFiles (appDir, "*", SearchOption.AllDirectories);
 			var expectedAppOutput = Path.Combine (testDir, "bin", projConfig, platform.ToFramework (), rid, $"{TestName}.app", "Frameworks", $"{xcodeProjName}.framework", "Info.plist");
-			Assert.Contains (expectedAppOutput, appContent, $"Expected framework output '{expectedAppOutput}' did not exist.");
+			Assert.That (appContent, Does.Contain (expectedAppOutput), $"Expected framework output '{expectedAppOutput}' did not exist.");
 
 		}
 
@@ -189,7 +188,7 @@ public class Binding
 				zipContent = ZipHelpers.ListInnerZip (expectedNupkgOutput, $"lib/{tfm}/{TestName}.resources.zip");
 				expectedFxPath = $"{xcodeProjName}{platform.AsString ()}.xcframework/Info.plist";
 			}
-			Assert.Contains (expectedFxPath, zipContent, $"Expected xcframework output was not found in '{expectedNupkgOutput}'.");
+			Assert.That (zipContent, Does.Contain (expectedFxPath), $"Expected xcframework output was not found in '{expectedNupkgOutput}'.");
 		}
 
 		[Test]
@@ -241,7 +240,7 @@ public class Binding
 			AssertTargetExecuted (allTargets, "_BuildXcodeProjects", "Third _BuildXcodeProjects");
 			Assert.That (expectedXcodeFxOutput, Does.Exist, $"Expected xcframework output '{expectedXcodeFxOutput}' did not exist.");
 			var outputFxThirdWriteTime = File.GetLastWriteTime (expectedXcodeFxOutput);
-			Assert.IsTrue (outputFxThirdWriteTime > outputFxFirstWriteTime, $"Expected '{outputFxThirdWriteTime}' write time of '{outputFxThirdWriteTime}' to be greater than first write '{outputFxFirstWriteTime}'");
+			Assert.That (outputFxThirdWriteTime, Is.GreaterThan (outputFxFirstWriteTime), $"Expected '{expectedXcodeFxOutput}' third write time '{outputFxThirdWriteTime}' to be greater than first write '{outputFxFirstWriteTime}'");
 		}
 
 		[Test]
@@ -323,7 +322,7 @@ public class Binding
 			var existingProjContent = File.ReadAllText (proj);
 			var newProjContent = existingProjContent.Replace ($"<TargetFramework>{templatePlatform.ToFramework ()}</TargetFramework>", tfxs);
 			File.WriteAllText (proj, newProjContent);
-			StringAssert.Contains (tfxs, File.ReadAllText (proj));
+			Assert.That (File.ReadAllText (proj), Does.Contain (tfxs));
 
 			var xcodeProjName = "TemplateFx";
 			var xcodeProjDirSrc = Path.Combine (XCodeTestProjectDir, xcodeProjName);

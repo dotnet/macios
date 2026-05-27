@@ -96,7 +96,7 @@ namespace MonoTouchFixtures.Security {
 		public void CreateSharedWebCredentialPassword ()
 		{
 			var pwd = SecSharedCredential.CreateSharedWebCredentialPassword ();
-			Assert.IsNotNull (pwd);
+			Assert.That (pwd, Is.Not.Null);
 		}
 
 	}

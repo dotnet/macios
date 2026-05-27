@@ -39,8 +39,8 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			RequiresIos8 ();
 
-			Assert.IsNotNull (s, setName + " was null");
-			Assert.IsTrue (s.Contains (characterThatShouldBeInSet), setName + " did not contain: " + characterThatShouldBeInSet);
+			Assert.That (s, Is.Not.Null, setName + " was null");
+			Assert.That (s.Contains (characterThatShouldBeInSet), Is.True, setName + " did not contain: " + characterThatShouldBeInSet);
 		}
 	}
 }

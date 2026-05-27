@@ -2,7 +2,7 @@ TOP=..
 
 include $(TOP)/Make.config
 
-ifndef IS_LINUX
+ifndef NO_XCODE
 SUBDIRS += sharpie
 endif
 

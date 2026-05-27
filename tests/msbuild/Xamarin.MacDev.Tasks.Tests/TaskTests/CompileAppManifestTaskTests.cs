@@ -20,11 +20,11 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CompileAppManifest> ();
 			task.AppBundleName = "AppBundleName";
 			task.CompiledAppManifest = new TaskItem (Path.Combine (tmpdir, "TemporaryAppManifest.plist"));
-			task.DefaultSdkVersion = Sdks.GetAppleSdk (platform).GetInstalledSdkVersions (false).First ().ToString ()!;
 			task.MinSupportedOSPlatformVersion = "10.0";
 			task.SupportedOSPlatformVersion = "15.0";
 			task.SdkVersion = task.DefaultSdkVersion ?? string.Empty;
 			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
+			task.DefaultSdkVersion = task.CurrentSdk.GetInstalledSdkVersions (false).First ().ToString ()!;
 
 			return task;
 		}
@@ -45,8 +45,8 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			var plist = PDictionary.FromFile (task.CompiledAppManifest!.ItemSpec)!;
-			Assert.AreEqual ("14.0", plist.GetMinimumOSVersion (), "MinimumOSVersion");
+			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
+			Assert.That (plist.GetMinimumOSVersion (), Is.EqualTo ("14.0"), "MinimumOSVersion");
 		}
 
 		[Test]
@@ -72,8 +72,8 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			var plist = PDictionary.FromFile (task.CompiledAppManifest!.ItemSpec)!;
-			Assert.AreEqual ("13.0", plist.GetMinimumOSVersion (), "MinimumOSVersion");
+			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
+			Assert.That (plist.GetMinimumOSVersion (), Is.EqualTo ("13.0"), "MinimumOSVersion");
 		}
 
 		[Test]
@@ -102,8 +102,8 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			var plist = PDictionary.FromFile (task.CompiledAppManifest!.ItemSpec)!;
-			Assert.AreEqual (expectedMinimumOSVersion, plist.GetMinimumOSVersion (), "MinimumOSVersion");
+			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
+			Assert.That (plist.GetMinimumOSVersion (), Is.EqualTo (expectedMinimumOSVersion), "MinimumOSVersion");
 		}
 
 		[Test]
@@ -120,7 +120,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.SupportedOSPlatformVersion = "11.0";
 
 			ExecuteTask (task, expectedErrorCount: 1);
-			Assert.AreEqual ("The MinimumOSVersion value in the Info.plist (10.0) does not match the SupportedOSPlatformVersion value (11.0) in the project file (if there is no SupportedOSPlatformVersion value in the project file, then a default value has been assumed). Either change the value in the Info.plist to match the SupportedOSPlatformVersion value, or remove the value in the Info.plist (and add a SupportedOSPlatformVersion value to the project file if it doesn't already exist).", Engine.Logger.ErrorEvents [0].Message);
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("The MinimumOSVersion value in the Info.plist (10.0) does not match the SupportedOSPlatformVersion value (11.0) in the project file (if there is no SupportedOSPlatformVersion value in the project file, then a default value has been assumed). Either change the value in the Info.plist to match the SupportedOSPlatformVersion value, or remove the value in the Info.plist (and add a SupportedOSPlatformVersion value to the project file if it doesn't already exist)."));
 		}
 
 		[Test]
@@ -133,8 +133,8 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (task);
 
-			var plist = PDictionary.FromFile (task.CompiledAppManifest!.ItemSpec)!;
-			Assert.AreEqual ("11.0", plist.GetMinimumOSVersion (), "MinimumOSVersion");
+			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
+			Assert.That (plist.GetMinimumOSVersion (), Is.EqualTo ("11.0"), "MinimumOSVersion");
 		}
 
 		[Test]
@@ -144,8 +144,8 @@ namespace Xamarin.MacDev.Tasks {
 			task.SupportedOSPlatformVersion = "14.2";
 			ExecuteTask (task);
 
-			var plist = PDictionary.FromFile (task.CompiledAppManifest!.ItemSpec)!;
-			Assert.AreEqual ("11.0", plist.GetMinimumSystemVersion (), "MinimumOSVersion");
+			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
+			Assert.That (plist.GetMinimumSystemVersion (), Is.EqualTo ("11.0"), "MinimumOSVersion");
 		}
 
 		[Test]
@@ -171,7 +171,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.SdkIsSimulator = isSimulator;
 			ExecuteTask (task);
 
-			var plist = PDictionary.FromFile (task.CompiledAppManifest!.ItemSpec)!;
+			var plist = PDictionary.OpenFile (task.CompiledAppManifest!.ItemSpec);
 			var variables = new string [] {
 				"DTCompiler",
 				"DTPlatformBuild",
@@ -186,7 +186,7 @@ namespace Xamarin.MacDev.Tasks {
 				var value = plist.GetString (variable)?.Value;
 				Assert.That (value, Is.Not.Null.And.Not.Empty, variable);
 			}
-			Assert.AreEqual (expectedDTPlatformName, plist.GetString ("DTPlatformName")?.Value, "Expected DTPlatformName");
+			Assert.That (plist.GetString ("DTPlatformName")?.Value, Is.EqualTo (expectedDTPlatformName), "Expected DTPlatformName");
 		}
 	}
 }

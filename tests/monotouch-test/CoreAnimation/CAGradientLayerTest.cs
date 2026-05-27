@@ -18,18 +18,18 @@ namespace MonoTouchFixtures.CoreAnimation {
 		public void Colors_GetSet ()
 		{
 			using var layer = new CAGradientLayer ();
-			Assert.IsNull (layer.Colors, "Colors/default");
+			Assert.That (layer.Colors, Is.Null, "Colors/default");
 
 			var red = new CGColor (1, 0, 0);
 			var green = new CGColor (0, 1, 0);
 			var blue = new CGColor (0, 0, 1);
 			layer.Colors = new CGColor [] { red, green, blue };
 			var colors = layer.Colors;
-			Assert.IsNotNull (colors, "Colors/assigned");
-			Assert.AreEqual (3, colors!.Length, "Colors/length");
+			Assert.That (colors, Is.Not.Null, "Colors/assigned");
+			Assert.That (colors!.Length, Is.EqualTo (3), "Colors/length");
 
 			layer.Colors = null;
-			Assert.IsNull (layer.Colors, "Colors/null");
+			Assert.That (layer.Colors, Is.Null, "Colors/null");
 		}
 	}
 }

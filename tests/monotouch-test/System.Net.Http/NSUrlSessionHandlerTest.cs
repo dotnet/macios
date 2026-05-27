@@ -3,7 +3,11 @@
 //
 
 using System;
+using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Foundation;
 using NUnit.Framework;
@@ -47,10 +51,10 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("Request timed out.");
 			}
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
-			Assert.IsNull (ex, $"Exception: {ex}");
-			Assert.IsTrue (noContentEncoding, "Content-Encoding header should be removed for decompressed content");
-			Assert.IsTrue (noContentLength, "Content-Length header should be removed for decompressed content");
-			Assert.IsTrue (body.Contains ("\"gzipped\"", StringComparison.OrdinalIgnoreCase), "Response body should contain decompressed gzip data");
+			Assert.That (ex, Is.Null, $"Exception: {ex}");
+			Assert.That (noContentEncoding, Is.True, "Content-Encoding header should be removed for decompressed content");
+			Assert.That (noContentLength, Is.True, "Content-Length header should be removed for decompressed content");
+			Assert.That (body.Contains ("\"gzipped\"", StringComparison.OrdinalIgnoreCase), Is.True, "Response body should contain decompressed gzip data");
 		}
 
 		// https://github.com/dotnet/macios/issues/23958
@@ -86,11 +90,11 @@ namespace MonoTests.System.Net.Http {
 				Assert.Inconclusive ("Request timed out.");
 			}
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
-			Assert.IsNull (ex, $"Exception: {ex}");
-			Assert.IsTrue (noContentEncoding, "Content-Encoding should not be present for non-compressed content");
-			Assert.IsNotNull (contentLength, "Content-Length header should be present for non-compressed content");
-			Assert.IsTrue (contentLength > 0, "Content-Length should be greater than zero");
-			Assert.IsTrue (body.Length > 0, "Response body should not be empty");
+			Assert.That (ex, Is.Null, $"Exception: {ex}");
+			Assert.That (noContentEncoding, Is.True, "Content-Encoding should not be present for non-compressed content");
+			Assert.That (contentLength, Is.Not.Null, "Content-Length header should be present for non-compressed content");
+			Assert.That (contentLength > 0, Is.True, "Content-Length should be greater than zero");
+			Assert.That (body.Length > 0, Is.True, "Response body should not be empty");
 		}
 
 		// https://github.com/dotnet/macios/issues/23958
@@ -125,10 +129,10 @@ namespace MonoTests.System.Net.Http {
 					Assert.Inconclusive ("Request timed out.");
 				}
 				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.IsNull (ex, $"Exception: {ex}");
-				Assert.IsTrue (hasContentEncoding, "Content-Encoding header should be preserved when KeepHeadersAfterDecompression is enabled");
-				Assert.IsTrue (hasContentLength, "Content-Length header should be preserved when KeepHeadersAfterDecompression is enabled");
-				Assert.IsTrue (body.Contains ("\"gzipped\"", StringComparison.OrdinalIgnoreCase), "Response body should contain decompressed gzip data");
+				Assert.That (ex, Is.Null, $"Exception: {ex}");
+				Assert.That (hasContentEncoding, Is.True, "Content-Encoding header should be preserved when KeepHeadersAfterDecompression is enabled");
+				Assert.That (hasContentLength, Is.True, "Content-Length header should be preserved when KeepHeadersAfterDecompression is enabled");
+				Assert.That (body.Contains ("\"gzipped\"", StringComparison.OrdinalIgnoreCase), Is.True, "Response body should contain decompressed gzip data");
 			} finally {
 				AppContext.SetSwitch ("Foundation.NSUrlSessionHandler.KeepHeadersAfterDecompression", false);
 			}
@@ -145,8 +149,8 @@ namespace MonoTests.System.Net.Http {
 				using (var handler = new NSUrlSessionHandler (NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration ("test-id"))) {
 					using (var client = new HttpClient (handler)) {
 						var response = await client.GetByteArrayAsync (NetworkResources.MicrosoftUrl);
-						Assert.IsNotNull (response, "First request response");
-						Assert.IsTrue (response.Length > 0, "First request response length");
+						Assert.That (response, Is.Not.Null, "First request response");
+						Assert.That (response.Length > 0, Is.True, "First request response length");
 						firstRequestSucceeded = true;
 					}
 				}
@@ -159,15 +163,15 @@ namespace MonoTests.System.Net.Http {
 
 			IgnoreIfExceptionDueToBackgroundServiceInUseByAnotherProcess (ex);
 			TestRuntime.IgnoreInCIIfBadNetwork (ex);
-			Assert.IsNull (ex, "First request exception");
+			Assert.That (ex, Is.Null, "First request exception");
 
 			// Second request with new handler using same background session ID - should not timeout
 			done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				using (var handler = new NSUrlSessionHandler (NSUrlSessionConfiguration.CreateBackgroundSessionConfiguration ("test-id"))) {
 					using (var client = new HttpClient (handler)) {
 						var response = await client.GetByteArrayAsync (NetworkResources.MicrosoftUrl);
-						Assert.IsNotNull (response, "Second request response");
-						Assert.IsTrue (response.Length > 0, "Second request response length");
+						Assert.That (response, Is.Not.Null, "Second request response");
+						Assert.That (response.Length > 0, Is.True, "Second request response length");
 					}
 				}
 			}, out ex);
@@ -197,7 +201,7 @@ namespace MonoTests.System.Net.Http {
 				// * Detect this scenario here, and just mark the test as inconclusive. The test does something somewhat unusual (create two background sessions with the same identifier in quick succession), so this seems like the best approach for now.
 				Assert.Inconclusive ("The previous background session wasn't fully invalidated before we tried to create a new background session (with the same identifier)");
 			}
-			Assert.IsNull (ex, "Second request exception");
+			Assert.That (ex, Is.Null, "Second request exception");
 		}
 
 		void IgnoreIfExceptionDueToBackgroundServiceInUseByAnotherProcess (Exception? e)
@@ -215,6 +219,108 @@ namespace MonoTests.System.Net.Http {
 				return;
 
 			Assert.Ignore ("The background service is in use by another process.");
+		}
+
+		// https://github.com/dotnet/macios/issues/25485
+		[Test]
+		public void BasicAuthWorksWhenBearerIsAdvertisedFirst ()
+		{
+			if (!HttpListener.IsSupported) {
+				Assert.Inconclusive ("HttpListener is not supported");
+			}
+
+			const string username = "admin";
+			const string password = "secret";
+			var expectedBasicValue = Convert.ToBase64String (Encoding.UTF8.GetBytes ($"{username}:{password}"));
+
+			var serverReady = new SemaphoreSlim (0, 1);
+
+			var httpListener = StartListenerOnAvailablePort (out var listeningPort);
+			if (httpListener is null) {
+				Assert.Inconclusive ("Could not find an available port for the test server.");
+				return;
+			}
+
+			var serverTask = Task.Run (async () => {
+				serverReady.Release ();
+				try {
+					while (httpListener.IsListening) {
+						var context = await httpListener.GetContextAsync ().ConfigureAwait (false);
+						var request = context.Request;
+						var response = context.Response;
+
+						var authHeader = request.Headers ["Authorization"];
+						if (authHeader is not null && authHeader == $"Basic {expectedBasicValue}") {
+							// Authenticated - return success
+							response.StatusCode = 200;
+							var body = Encoding.UTF8.GetBytes ("authenticated");
+							response.ContentLength64 = body.Length;
+							response.OutputStream.Write (body, 0, body.Length);
+						} else {
+							// Return 401 with Bearer first, then Basic
+							response.StatusCode = 401;
+							response.AddHeader ("WWW-Authenticate", "Bearer realm=\"test\", charset=\"UTF-8\"");
+							response.AppendHeader ("WWW-Authenticate", "Basic realm=\"test\", charset=\"UTF-8\"");
+						}
+						response.Close ();
+					}
+				} catch (ObjectDisposedException) {
+					// listener was stopped
+				} catch (HttpListenerException) {
+					// listener was stopped
+				}
+			});
+
+			HttpStatusCode? statusCode = null;
+			string responseBody = null;
+
+			try {
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					await serverReady.WaitAsync ().ConfigureAwait (false);
+
+					using var handler = new NSUrlSessionHandler ();
+					handler.Credentials = new NetworkCredential (username, password);
+					using var client = new HttpClient (handler);
+					using var request = new HttpRequestMessage (HttpMethod.Get, $"http://localhost:{listeningPort}/test");
+					var response = await client.SendAsync (request).ConfigureAwait (false);
+					statusCode = response.StatusCode;
+					responseBody = await response.Content.ReadAsStringAsync ().ConfigureAwait (false);
+				}, out var ex);
+
+				Assert.That (done, Is.True, "Request timed out");
+				Assert.That (ex, Is.Null, $"Exception: {ex}");
+				Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), "Expected 200 OK after Basic auth negotiation");
+				Assert.That (responseBody, Is.EqualTo ("authenticated"), "Response body");
+
+				if (serverTask.IsFaulted)
+					Assert.Fail ($"Server task failed: {serverTask.Exception}");
+			} finally {
+				httpListener.Stop ();
+				httpListener.Close ();
+			}
+		}
+
+		static HttpListener? StartListenerOnAvailablePort (out int listeningPort)
+		{
+			// IANA suggested range for dynamic or private ports
+			const int MinPort = 49215;
+			const int MaxPort = 65535;
+
+			for (var port = MinPort; port < MaxPort; port++) {
+				var listener = new HttpListener ();
+				listener.Prefixes.Add ($"http://*:{port}/");
+				try {
+					listener.Start ();
+					listeningPort = port;
+					return listener;
+				} catch {
+					// port in use, try next
+					listener.Close ();
+				}
+			}
+
+			listeningPort = -1;
+			return null;
 		}
 	}
 }

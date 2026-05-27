@@ -28,7 +28,7 @@ namespace MonoTouchFixtures.CoreBluetooth {
 		{
 			using (CBUUID uuid = CBUUID.FromString ("1234")) {
 				Assert.That (uuid.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
-				Assert.IsNotNull (uuid.Data, "Data");
+				Assert.That (uuid.Data, Is.Not.Null, "Data");
 				var firstExpected = "Unknown (<1234>)";
 				var secondExpected = "1234";
 				Assert.That (uuid.Description, Is.EqualTo (firstExpected).Or.EqualTo (secondExpected), "Description");
@@ -45,7 +45,7 @@ namespace MonoTouchFixtures.CoreBluetooth {
 		{
 			using (CBUUID uuid = CBUUID.FromString ("12345678-90AB-CDEF-cafe-c80c20443d0b")) {
 				Assert.That (uuid.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
-				Assert.IsNotNull (uuid.Data, "Data");
+				Assert.That (uuid.Data, Is.Not.Null, "Data");
 				var firstExpected = "Unknown (<12345678 90abcdef cafec80c 20443d0b>)";
 				var secondExpected = "12345678-90AB-CDEF-CAFE-C80C20443D0B";
 				Assert.That (uuid.Description, Is.EqualTo (firstExpected).Or.EqualTo (secondExpected), "Description");
@@ -97,25 +97,25 @@ namespace MonoTouchFixtures.CoreBluetooth {
 			var guid = new byte [] { 0xaa, 0xbb };
 			using (var u1 = CBUUID.FromBytes (guid))
 			using (var u2 = CBUUID.FromBytes (guid)) {
-				Assert.True (u1.Equals ((object) u2), "Equals-1a");
-				Assert.True (u1.Equals ((NSObject) u2), "Equals-1b");
-				Assert.True (u1.Equals ((CBUUID) u2), "Equals-1b");
+				Assert.That (u1.Equals ((object) u2), Is.True, "Equals-1a");
+				Assert.That (u1.Equals ((NSObject) u2), Is.True, "Equals-1b");
+				Assert.That (u1.Equals ((CBUUID) u2), Is.True, "Equals-1b");
 				Assert.That (u1.GetHashCode (), Is.EqualTo (u2.GetHashCode ()), "GetHashCode-1");
 			}
 
 			using (var u1 = CBUUID.FromPartial (0x1234))
 			using (var u2 = CBUUID.FromPartial (0x1234)) {
-				Assert.True (u1.Equals ((object) u2), "Equals-2a");
-				Assert.True (u1.Equals ((NSObject) u2), "Equals-2b");
-				Assert.True (u1.Equals ((CBUUID) u2), "Equals-2b");
+				Assert.That (u1.Equals ((object) u2), Is.True, "Equals-2a");
+				Assert.That (u1.Equals ((NSObject) u2), Is.True, "Equals-2b");
+				Assert.That (u1.Equals ((CBUUID) u2), Is.True, "Equals-2b");
 				Assert.That (u1.GetHashCode (), Is.EqualTo (u2.GetHashCode ()), "GetHashCode-2");
 			}
 
 			using (var u1 = CBUUID.FromString ("1234"))
 			using (var u2 = CBUUID.FromBytes (new byte [] { 0x12, 0x34 })) {
-				Assert.True (u1.Equals ((object) u2), "Equals-3a");
-				Assert.True (u1.Equals ((NSObject) u2), "Equals-3b");
-				Assert.True (u1.Equals ((CBUUID) u2), "Equals-3b");
+				Assert.That (u1.Equals ((object) u2), Is.True, "Equals-3a");
+				Assert.That (u1.Equals ((NSObject) u2), Is.True, "Equals-3b");
+				Assert.That (u1.Equals ((CBUUID) u2), Is.True, "Equals-3b");
 				Assert.That (u1.GetHashCode (), Is.EqualTo (u2.GetHashCode ()), "GetHashCode-3");
 			}
 #if MONOMAC
@@ -133,25 +133,25 @@ namespace MonoTouchFixtures.CoreBluetooth {
 		{
 			using (var u1 = CBUUID.FromPartial (0x0127))
 			using (var u2 = MakeFull (0x01, 0x27)) {
-				Assert.True (u1.Equals ((object) u2), "Equals-1a");
-				Assert.True (u1.Equals ((NSObject) u2), "Equals-1b");
-				Assert.True (u1.Equals ((CBUUID) u2), "Equals-1b");
+				Assert.That (u1.Equals ((object) u2), Is.True, "Equals-1a");
+				Assert.That (u1.Equals ((NSObject) u2), Is.True, "Equals-1b");
+				Assert.That (u1.Equals ((CBUUID) u2), Is.True, "Equals-1b");
 				Assert.That (u1.GetHashCode (), Is.EqualTo (u2.GetHashCode ()), "GetHashCode-1");
 			}
 
 			using (var u1 = CBUUID.FromBytes (new byte [] { 0xab, 0xcd }))
 			using (var u2 = MakeFull (0xab, 0xcd)) {
-				Assert.True (u1.Equals ((object) u2), "Equals-2a");
-				Assert.True (u1.Equals ((NSObject) u2), "Equals-2b");
-				Assert.True (u1.Equals ((CBUUID) u2), "Equals-2b");
+				Assert.That (u1.Equals ((object) u2), Is.True, "Equals-2a");
+				Assert.That (u1.Equals ((NSObject) u2), Is.True, "Equals-2b");
+				Assert.That (u1.Equals ((CBUUID) u2), Is.True, "Equals-2b");
 				Assert.That (u1.GetHashCode (), Is.EqualTo (u2.GetHashCode ()), "GetHashCode-2");
 			}
 
 			using (var u1 = CBUUID.FromString ("1234"))
 			using (var u2 = CBUUID.FromString ("00001234-0000-1000-8000-00805f9b34fb")) {
-				Assert.True (u1.Equals ((object) u2), "Equals-3a");
-				Assert.True (u1.Equals ((NSObject) u2), "Equals-3b");
-				Assert.True (u1.Equals ((CBUUID) u2), "Equals-3b");
+				Assert.That (u1.Equals ((object) u2), Is.True, "Equals-3a");
+				Assert.That (u1.Equals ((NSObject) u2), Is.True, "Equals-3b");
+				Assert.That (u1.Equals ((CBUUID) u2), Is.True, "Equals-3b");
 				Assert.That (u1.GetHashCode (), Is.EqualTo (u2.GetHashCode ()), "GetHashCode-3");
 			}
 #if MONOMAC

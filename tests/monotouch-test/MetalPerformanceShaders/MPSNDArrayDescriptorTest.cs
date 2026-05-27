@@ -21,7 +21,7 @@ namespace MonoTouchFixtures.MetalPerformanceShaders {
 
 			using var desc = MPSNDArrayDescriptor.Create (MPSDataType.Int32, new nuint [] { 10 });
 			desc.PermuteWithDimensionOrder (new nuint [] { 0 });
-			Assert.AreEqual (1, (int) desc.NumberOfDimensions, "NumberOfDimensions");
+			Assert.That ((int) desc.NumberOfDimensions, Is.EqualTo (1), "NumberOfDimensions");
 		}
 
 		[Test]

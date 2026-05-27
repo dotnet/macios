@@ -22,9 +22,9 @@ namespace Xamarin.MacDev.Tasks {
 
 			intermediateOutputPath = Cache.CreateTemporaryDirectory ();
 
-			var sdk = Sdks.GetAppleSdk (platform);
+			var task = CreateTask<ACTool> ();
+
 			var version = AppleSdkVersion.UseDefault.ToString ();
-			var root = sdk.GetSdkPath (version, false);
 			string sdkPlatform;
 			var uiDeviceFamily = "";
 
@@ -47,7 +47,6 @@ namespace Xamarin.MacDev.Tasks {
 				throw new NotImplementedException (platform.ToString ());
 			}
 
-			var task = CreateTask<ACTool> ();
 			task.ImageAssets = imageAssets
 				.Select (v => {
 					var spl = v.Split ('|');
@@ -92,10 +91,10 @@ namespace Xamarin.MacDev.Tasks {
 			var actool = CreateACToolTaskWithResources (platform);
 			ExecuteTask (actool);
 
-			Assert.IsNotNull (actool.PartialAppManifest, "PartialAppManifest");
+			Assert.That (actool.PartialAppManifest, Is.Not.Null, "PartialAppManifest");
 			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
-			var appIconsManifest = PDictionary.FromFile (appIconsManifestPath)!;
-			Assert.AreEqual (0, appIconsManifest.Count, $"Partial plist contents: {actool.PartialAppManifest?.ItemSpec}");
+			var appIconsManifest = PDictionary.OpenFile (appIconsManifestPath);
+			Assert.That (appIconsManifest.Count, Is.EqualTo (0), $"Partial plist contents: {actool.PartialAppManifest?.ItemSpec}");
 			var expectedXml =
 				"""
 				<?xml version="1.0" encoding="UTF-8"?>
@@ -120,7 +119,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (actool);
 
-			Assert.IsNotNull (actool.PartialAppManifest, "PartialAppManifest");
+			Assert.That (actool.PartialAppManifest, Is.Not.Null, "PartialAppManifest");
 
 			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
 			string expectedXml;
@@ -168,7 +167,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (actool);
 
-			Assert.IsNotNull (actool.PartialAppManifest, "PartialAppManifest");
+			Assert.That (actool.PartialAppManifest, Is.Not.Null, "PartialAppManifest");
 
 			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec!;
 			string expectedXml;
@@ -293,7 +292,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (actool);
 
-			Assert.IsNotNull (actool.PartialAppManifest, "PartialAppManifest");
+			Assert.That (actool.PartialAppManifest, Is.Not.Null, "PartialAppManifest");
 
 			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
 			string expectedXml;
@@ -390,7 +389,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ExecuteTask (actool);
 
-			Assert.IsNotNull (actool.PartialAppManifest, "PartialAppManifest");
+			Assert.That (actool.PartialAppManifest, Is.Not.Null, "PartialAppManifest");
 
 			var appIconsManifestPath = actool.PartialAppManifest?.ItemSpec ?? "";
 			string expectedXml;
@@ -575,7 +574,7 @@ namespace Xamarin.MacDev.Tasks {
 			default:
 				throw new NotImplementedException (platform.ToString ());
 			}
-			Assert.AreEqual (expectedErrorMessage, Engine.Logger.ErrorEvents [0].Message, "Error message");
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo (expectedErrorMessage), "Error message");
 		}
 
 		[Test]
@@ -602,7 +601,7 @@ namespace Xamarin.MacDev.Tasks {
 			default:
 				throw new NotImplementedException (platform.ToString ());
 			}
-			Assert.AreEqual (expectedErrorMessage, Engine.Logger.ErrorEvents [0].Message, "Error message");
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo (expectedErrorMessage), "Error message");
 		}
 
 		[Test]
@@ -617,7 +616,7 @@ namespace Xamarin.MacDev.Tasks {
 			actool.AppIcon = "AppIcons";
 
 			ExecuteTask (actool, 1);
-			Assert.AreEqual ($"The image resource '{actool.AppIcon}' is specified as both 'AppIcon' and 'AlternateAppIcon'.", Engine.Logger.ErrorEvents [0].Message, "Error message");
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ($"The image resource '{actool.AppIcon}' is specified as both 'AppIcon' and 'AlternateAppIcon'."), "Error message");
 		}
 
 		[Test]
@@ -632,7 +631,7 @@ namespace Xamarin.MacDev.Tasks {
 			actool.XSAppIconAssets = "Resources/Images.xcassets/AppIcons.appiconset";
 
 			ExecuteTask (actool, 1);
-			Assert.AreEqual ("Can't specify both 'XSAppIconAssets' in the Info.plist and 'AppIcon' in the project file. Please select one or the other.", Engine.Logger.ErrorEvents [0].Message, "Error message");
+			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("Can't specify both 'XSAppIconAssets' in the Info.plist and 'AppIcon' in the project file. Please select one or the other."), "Error message");
 		}
 	}
 }

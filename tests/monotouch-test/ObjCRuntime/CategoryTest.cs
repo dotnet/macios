@@ -56,12 +56,12 @@ namespace MonoTouchFixtures {
 		public void Static ()
 		{
 			using (var str = Runtime.GetNSObject (Messaging.IntPtr_objc_msgSend (new NSString ("").ClassHandle, Selector.GetHandle ("toUpper")))) {
-				Assert.AreEqual ("TOUPPER", str.ToString (), "#1");
+				Assert.That (str.ToString (), Is.EqualTo ("TOUPPER"), "#1");
 			}
 
 			using (var istr = (NSString) "test-string") {
 				using (var str = Runtime.GetNSObject (Messaging.IntPtr_objc_msgSend_IntPtr (new NSString ("").ClassHandle, Selector.GetHandle ("toUpper:"), istr.Handle))) {
-					Assert.AreEqual ("TEST-STRING", str.ToString (), "#2");
+					Assert.That (str.ToString (), Is.EqualTo ("TEST-STRING"), "#2");
 				}
 			}
 		}
@@ -71,13 +71,13 @@ namespace MonoTouchFixtures {
 		{
 			using (var istr = (NSString) "SoMeUpPeRcAsElEtTeRs") {
 				using (var str = Runtime.GetNSObject (Messaging.IntPtr_objc_msgSend (istr.Handle, Selector.GetHandle ("toLower")))) {
-					Assert.AreEqual ("someuppercaseletters", str.ToString (), "#1");
+					Assert.That (str.ToString (), Is.EqualTo ("someuppercaseletters"), "#1");
 				}
 			}
 			using (var istr = (NSString) "fIrSt") {
 				using (var istr2 = (NSString) "secOND") {
 					using (var str = Runtime.GetNSObject (Messaging.IntPtr_objc_msgSend_IntPtr (istr.Handle, Selector.GetHandle ("joinLower:"), istr2.Handle))) {
-						Assert.AreEqual ("firstsecond", str.ToString (), "#2");
+						Assert.That (str.ToString (), Is.EqualTo ("firstsecond"), "#2");
 					}
 				}
 			}

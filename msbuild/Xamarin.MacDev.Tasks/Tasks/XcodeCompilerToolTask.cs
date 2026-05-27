@@ -211,7 +211,7 @@ namespace Xamarin.MacDev.Tasks {
 				// Note: If the log file exists and is parseable, log those warnings/errors as well...
 				if (File.Exists (manifest.ItemSpec)) {
 					try {
-						var plist = PDictionary.FromFile (manifest.ItemSpec)!;
+						var plist = PDictionary.OpenFile (manifest.ItemSpec);
 
 						LogWarningsAndErrors (plist, items [0]);
 					} catch (Exception ex) {

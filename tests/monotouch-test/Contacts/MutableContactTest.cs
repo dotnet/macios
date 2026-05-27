@@ -27,74 +27,74 @@ namespace MonoTouchFixtures.Contacts {
 		public void Properties ()
 		{
 			using (var contact = new CNMutableContact ()) {
-				Assert.IsNull (contact.Birthday, "Birthday");
-				Assert.AreEqual (0, contact.ContactRelations.Length, "ContactRelations");
-				Assert.AreEqual (CNContactType.Person, contact.ContactType, "ContactType");
-				Assert.AreEqual (0, contact.Dates.Length, "Dates");
-				Assert.AreEqual (string.Empty, contact.DepartmentName, "DepartmentName");
-				Assert.AreEqual (0, contact.EmailAddresses.Length, "EmailAddresses");
-				Assert.AreEqual (string.Empty, contact.FamilyName, "FamilyName");
-				Assert.AreEqual (string.Empty, contact.GivenName, "GivenName");
-				Assert.AreNotEqual (string.Empty, contact.Identifier, "Identifier");
-				Assert.IsNull (contact.ImageData, "ImageData");
-				Assert.IsFalse (contact.ImageDataAvailable, "ImageDataAvailable");
-				Assert.AreEqual (0, contact.InstantMessageAddresses.Length, "InstantMessageAddresses");
-				Assert.AreEqual (string.Empty, contact.JobTitle, "JobTitle");
-				Assert.AreEqual (string.Empty, contact.MiddleName, "MiddleName");
-				Assert.AreEqual (string.Empty, contact.NamePrefix, "NamePrefix");
-				Assert.AreEqual (string.Empty, contact.NameSuffix, "NameSuffix");
-				Assert.AreEqual (string.Empty, contact.Nickname, "Nickname");
-				Assert.IsNull (contact.NonGregorianBirthday, "NonGregorianBirthday");
-				Assert.AreEqual (string.Empty, contact.Note, "Note");
-				Assert.AreEqual (string.Empty, contact.OrganizationName, "OrganizationName");
-				Assert.AreEqual (0, contact.PhoneNumbers.Length, "PhoneNumbers");
-				Assert.AreEqual (string.Empty, contact.PhoneticFamilyName, "PhoneticFamilyName");
-				Assert.AreEqual (string.Empty, contact.PhoneticGivenName, "PhoneticGivenName");
-				Assert.AreEqual (string.Empty, contact.PhoneticMiddleName, "PhoneticMiddleName");
-				Assert.AreEqual (0, contact.PostalAddresses.Length, "PostalAddresses");
-				Assert.AreEqual (string.Empty, contact.PreviousFamilyName, "PreviousFamilyName");
-				Assert.AreEqual (0, contact.SocialProfiles.Length, "SocialProfiles");
-				Assert.IsNull (contact.ThumbnailImageData, "ThumbnailImageData");
-				Assert.AreEqual (0, contact.UrlAddresses.Length, "UrlAddresses");
+				Assert.That (contact.Birthday, Is.Null, "Birthday");
+				Assert.That (contact.ContactRelations.Length, Is.EqualTo (0), "ContactRelations");
+				Assert.That (contact.ContactType, Is.EqualTo (CNContactType.Person), "ContactType");
+				Assert.That (contact.Dates.Length, Is.EqualTo (0), "Dates");
+				Assert.That (contact.DepartmentName, Is.EqualTo (string.Empty), "DepartmentName");
+				Assert.That (contact.EmailAddresses.Length, Is.EqualTo (0), "EmailAddresses");
+				Assert.That (contact.FamilyName, Is.EqualTo (string.Empty), "FamilyName");
+				Assert.That (contact.GivenName, Is.EqualTo (string.Empty), "GivenName");
+				Assert.That (contact.Identifier, Is.Not.EqualTo (string.Empty), "Identifier");
+				Assert.That (contact.ImageData, Is.Null, "ImageData");
+				Assert.That (contact.ImageDataAvailable, Is.False, "ImageDataAvailable");
+				Assert.That (contact.InstantMessageAddresses.Length, Is.EqualTo (0), "InstantMessageAddresses");
+				Assert.That (contact.JobTitle, Is.EqualTo (string.Empty), "JobTitle");
+				Assert.That (contact.MiddleName, Is.EqualTo (string.Empty), "MiddleName");
+				Assert.That (contact.NamePrefix, Is.EqualTo (string.Empty), "NamePrefix");
+				Assert.That (contact.NameSuffix, Is.EqualTo (string.Empty), "NameSuffix");
+				Assert.That (contact.Nickname, Is.EqualTo (string.Empty), "Nickname");
+				Assert.That (contact.NonGregorianBirthday, Is.Null, "NonGregorianBirthday");
+				Assert.That (contact.Note, Is.EqualTo (string.Empty), "Note");
+				Assert.That (contact.OrganizationName, Is.EqualTo (string.Empty), "OrganizationName");
+				Assert.That (contact.PhoneNumbers.Length, Is.EqualTo (0), "PhoneNumbers");
+				Assert.That (contact.PhoneticFamilyName, Is.EqualTo (string.Empty), "PhoneticFamilyName");
+				Assert.That (contact.PhoneticGivenName, Is.EqualTo (string.Empty), "PhoneticGivenName");
+				Assert.That (contact.PhoneticMiddleName, Is.EqualTo (string.Empty), "PhoneticMiddleName");
+				Assert.That (contact.PostalAddresses.Length, Is.EqualTo (0), "PostalAddresses");
+				Assert.That (contact.PreviousFamilyName, Is.EqualTo (string.Empty), "PreviousFamilyName");
+				Assert.That (contact.SocialProfiles.Length, Is.EqualTo (0), "SocialProfiles");
+				Assert.That (contact.ThumbnailImageData, Is.Null, "ThumbnailImageData");
+				Assert.That (contact.UrlAddresses.Length, Is.EqualTo (0), "UrlAddresses");
 
 				contact.Birthday = new NSDateComponents () {
 					Year = 1980
 				};
-				Assert.AreEqual ((nint) 1980, contact.Birthday.Year, "Birthday");
+				Assert.That (contact.Birthday.Year, Is.EqualTo ((nint) 1980), "Birthday");
 
 				contact.ContactRelations = new CNLabeledValue<CNContactRelation> [] {
 					new CNLabeledValue<CNContactRelation> ("label", new CNContactRelation ("relation"))
 				};
-				Assert.AreEqual (1, contact.ContactRelations.Length, "ContactRelations");
+				Assert.That (contact.ContactRelations.Length, Is.EqualTo (1), "ContactRelations");
 
 				contact.ContactType = CNContactType.Organization;
-				Assert.AreEqual (CNContactType.Organization, contact.ContactType, "ContactType");
+				Assert.That (contact.ContactType, Is.EqualTo (CNContactType.Organization), "ContactType");
 
 				contact.Dates = new CNLabeledValue<NSDateComponents> [] {
 					new CNLabeledValue<NSDateComponents> ("label", new NSDateComponents () {
 						Month = 6
 					})
 				};
-				Assert.AreEqual (1, contact.Dates.Length, "Dates");
+				Assert.That (contact.Dates.Length, Is.EqualTo (1), "Dates");
 
 				contact.DepartmentName = "department";
-				Assert.AreEqual ("department", contact.DepartmentName, "DepartmentName");
+				Assert.That (contact.DepartmentName, Is.EqualTo ("department"), "DepartmentName");
 
 				contact.EmailAddresses = new CNLabeledValue<NSString> [] {
 					new CNLabeledValue<NSString> ("label", (NSString) "foo@bar.com")
 				};
-				Assert.AreEqual (1, contact.EmailAddresses.Length, "EmailAddresses");
+				Assert.That (contact.EmailAddresses.Length, Is.EqualTo (1), "EmailAddresses");
 
 				contact.FamilyName = "familyName";
-				Assert.AreEqual ("familyName", contact.FamilyName, "FamilyName");
+				Assert.That (contact.FamilyName, Is.EqualTo ("familyName"), "FamilyName");
 
 				contact.GivenName = "givenName";
-				Assert.AreEqual ("givenName", contact.GivenName, "GivenName");
+				Assert.That (contact.GivenName, Is.EqualTo ("givenName"), "GivenName");
 
-				Assert.AreNotEqual (string.Empty, contact.Identifier, "Identifier");
+				Assert.That (contact.Identifier, Is.Not.EqualTo (string.Empty), "Identifier");
 
 				contact.ImageData = new NSData ();
-				Assert.IsNotNull (contact.ImageData, "ImageData-2");
+				Assert.That (contact.ImageData, Is.Not.Null, "ImageData-2");
 				// iOS 10 (beta 1) fixed this bug (if not null then it's available)
 				var avail = TestRuntime.CheckXcodeVersion (8, 0);
 				Assert.That (contact.ImageDataAvailable, Is.EqualTo (avail), "ImageDataAvailable-2");
@@ -102,47 +102,47 @@ namespace MonoTouchFixtures.Contacts {
 				contact.InstantMessageAddresses = new CNLabeledValue<CNInstantMessageAddress> [] {
 					new CNLabeledValue<CNInstantMessageAddress> ("label", new CNInstantMessageAddress ("user", "service")),
 				};
-				Assert.AreEqual (1, contact.InstantMessageAddresses.Length, "InstantMessageAddresses");
+				Assert.That (contact.InstantMessageAddresses.Length, Is.EqualTo (1), "InstantMessageAddresses");
 
 				contact.JobTitle = "title";
-				Assert.AreEqual ("title", contact.JobTitle, "JobTitle");
+				Assert.That (contact.JobTitle, Is.EqualTo ("title"), "JobTitle");
 
 				contact.MiddleName = "middleName";
-				Assert.AreEqual ("middleName", contact.MiddleName, "MiddleName");
+				Assert.That (contact.MiddleName, Is.EqualTo ("middleName"), "MiddleName");
 
 				contact.NamePrefix = "namePrefix";
-				Assert.AreEqual ("namePrefix", contact.NamePrefix, "NamePrefix");
+				Assert.That (contact.NamePrefix, Is.EqualTo ("namePrefix"), "NamePrefix");
 
 				contact.NameSuffix = "nameSuffix";
-				Assert.AreEqual ("nameSuffix", contact.NameSuffix, "NameSuffix");
+				Assert.That (contact.NameSuffix, Is.EqualTo ("nameSuffix"), "NameSuffix");
 
 				contact.Nickname = "nickname";
-				Assert.AreEqual ("nickname", contact.Nickname, "Nickname");
+				Assert.That (contact.Nickname, Is.EqualTo ("nickname"), "Nickname");
 
 				contact.NonGregorianBirthday = new NSDateComponents () {
 					Year = 2099,
 				};
-				Assert.AreEqual ((nint) 2099, contact.NonGregorianBirthday.Year, "NonGregorianBirthday");
+				Assert.That (contact.NonGregorianBirthday.Year, Is.EqualTo ((nint) 2099), "NonGregorianBirthday");
 
 				contact.Note = "note";
-				Assert.AreEqual ("note", contact.Note, "Note");
+				Assert.That (contact.Note, Is.EqualTo ("note"), "Note");
 
 				contact.OrganizationName = "organizationName";
-				Assert.AreEqual ("organizationName", contact.OrganizationName, "OrganizationName");
+				Assert.That (contact.OrganizationName, Is.EqualTo ("organizationName"), "OrganizationName");
 
 				contact.PhoneNumbers = new CNLabeledValue<CNPhoneNumber> [] {
 					new CNLabeledValue<CNPhoneNumber> ("label", new CNPhoneNumber ("123-345-456"))
 				};
-				Assert.AreEqual (1, contact.PhoneNumbers.Length, "PhoneNumbers");
+				Assert.That (contact.PhoneNumbers.Length, Is.EqualTo (1), "PhoneNumbers");
 
 				contact.PhoneticFamilyName = "phoneticFamilyName";
-				Assert.AreEqual ("phoneticFamilyName", contact.PhoneticFamilyName, "PhoneticFamilyName");
+				Assert.That (contact.PhoneticFamilyName, Is.EqualTo ("phoneticFamilyName"), "PhoneticFamilyName");
 
 				contact.PhoneticGivenName = "phoneticGivenName";
-				Assert.AreEqual ("phoneticGivenName", contact.PhoneticGivenName, "PhoneticGivenName");
+				Assert.That (contact.PhoneticGivenName, Is.EqualTo ("phoneticGivenName"), "PhoneticGivenName");
 
 				contact.PhoneticMiddleName = "phoneticMiddleName";
-				Assert.AreEqual ("phoneticMiddleName", contact.PhoneticMiddleName, "PhoneticMiddleName");
+				Assert.That (contact.PhoneticMiddleName, Is.EqualTo ("phoneticMiddleName"), "PhoneticMiddleName");
 
 				contact.PostalAddresses = new CNLabeledValue<CNPostalAddress> [] {
 					new CNLabeledValue<CNPostalAddress> ("label", new CNMutablePostalAddress ()
@@ -150,20 +150,20 @@ namespace MonoTouchFixtures.Contacts {
 							Street = "my Street",
 						})
 				};
-				Assert.AreEqual (1, contact.PostalAddresses.Length, "PostalAddresses");
+				Assert.That (contact.PostalAddresses.Length, Is.EqualTo (1), "PostalAddresses");
 
 				contact.PreviousFamilyName = "previousFamilyName";
-				Assert.AreEqual ("previousFamilyName", contact.PreviousFamilyName, "PreviousFamilyName");
+				Assert.That (contact.PreviousFamilyName, Is.EqualTo ("previousFamilyName"), "PreviousFamilyName");
 
 				contact.SocialProfiles = new CNLabeledValue<CNSocialProfile> [] {
 					new CNLabeledValue<CNSocialProfile> ("label", new CNSocialProfile ("url", "username", "useridentifier", "service"))
 				};
-				Assert.AreEqual (1, contact.SocialProfiles.Length, "SocialProfiles");
+				Assert.That (contact.SocialProfiles.Length, Is.EqualTo (1), "SocialProfiles");
 
 				contact.UrlAddresses = new CNLabeledValue<NSString> [] {
 					new CNLabeledValue<NSString> ("label", (NSString) "url@address.com")
 				};
-				Assert.AreEqual (1, contact.UrlAddresses.Length, "UrlAddresses");
+				Assert.That (contact.UrlAddresses.Length, Is.EqualTo (1), "UrlAddresses");
 			}
 		}
 	}

@@ -22,16 +22,16 @@ namespace MonoTouchFixtures.SpriteKit {
 
 				var v = new Vector4 (1, 2, 3, 4);
 				node.Direction = v;
-				Assert.AreEqual (node.Direction.X, 1, "#x1");
-				Assert.AreEqual (node.Direction.Y, 2, "#y1");
-				Assert.AreEqual (node.Direction.Z, 3, "#z1");
-				Assert.AreEqual (node.Direction.W, 0, "#w1");
+				Assert.That (node.Direction.X, Is.EqualTo (1), "#x1");
+				Assert.That (node.Direction.Y, Is.EqualTo (2), "#y1");
+				Assert.That (node.Direction.Z, Is.EqualTo (3), "#z1");
+				Assert.That (node.Direction.W, Is.EqualTo (0), "#w1");
 
 				v = node.Direction;
-				Assert.AreEqual (v.X, 1, "#x2");
-				Assert.AreEqual (v.Y, 2, "#y2");
-				Assert.AreEqual (v.Z, 3, "#z2");
-				Assert.AreEqual (v.W, 0, "#w2");
+				Assert.That (v.X, Is.EqualTo (1), "#x2");
+				Assert.That (v.Y, Is.EqualTo (2), "#y2");
+				Assert.That (v.Z, Is.EqualTo (3), "#z2");
+				Assert.That (v.W, Is.EqualTo (0), "#w2");
 			}
 		}
 
@@ -40,7 +40,7 @@ namespace MonoTouchFixtures.SpriteKit {
 		{
 			using (var node = SKFieldNode.CreateLinearGravityField (new Vector4 (1, 2, 3, 4))) {
 
-				Assert.AreEqual (0.00457763672f, node.MinimumRadius, "#minimum radius");
+				Assert.That (node.MinimumRadius, Is.EqualTo (0.00457763672f), "#minimum radius");
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace MonoTouchFixtures.SpriteKit {
 		{
 			using (var node = SKFieldNode.CreateVelocityField (new Vector4 (1, 2, 3, 4))) {
 
-				Assert.AreEqual (0.00457763672f, node.MinimumRadius, "#minimum radius");
+				Assert.That (node.MinimumRadius, Is.EqualTo (0.00457763672f), "#minimum radius");
 			}
 		}
 
@@ -62,10 +62,10 @@ namespace MonoTouchFixtures.SpriteKit {
 
 				// FIXME: the code below doesn't end up calling the anonymous delegate above.
 				var v = node.Direction;
-				Assert.AreEqual (0, v.X, "#x2");
-				Assert.AreEqual (0, v.Y, "#y2");
-				Assert.AreEqual (0, v.Z, "#z2");
-				Assert.AreEqual (0, v.W, "#w2");
+				Assert.That (v.X, Is.EqualTo (0), "#x2");
+				Assert.That (v.Y, Is.EqualTo (0), "#y2");
+				Assert.That (v.Z, Is.EqualTo (0), "#z2");
+				Assert.That (v.W, Is.EqualTo (0), "#w2");
 			}
 		}
 	}

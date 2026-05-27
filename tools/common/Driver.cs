@@ -69,6 +69,11 @@ namespace Xamarin.Bundler {
 			options.Add ("rid=", "The runtime identifier we're building for", v => {
 				app.RuntimeIdentifier = v;
 			});
+			options.Add ("xcode-version=", "The Xcode version we're building with", v => {
+				if (!Version.TryParse (v, out var xcodeVersion))
+					throw ErrorHelper.CreateError (26, Errors.MX0026, $"xcode-version:{v}", "Expected a valid version string.");
+				Driver.XcodeVersion = xcodeVersion;
+			});
 
 			try {
 				app.RootAssemblies.AddRange (options.Parse (args));
@@ -230,7 +235,12 @@ namespace Xamarin.Bundler {
 		static Version? xcode_version;
 		public static Version XcodeVersion {
 			get {
-				return xcode_version!;
+				if (xcode_version is null)
+					throw ErrorHelper.CreateError (99, Errors.MX0099, "The Xcode version has not been configured. Pass --xcode-version or configure an Xcode installation.");
+				return xcode_version;
+			}
+			set {
+				xcode_version = value;
 			}
 		}
 
@@ -317,7 +327,7 @@ namespace Xamarin.Bundler {
 		{
 			if (!File.Exists (name))
 				throw ErrorHelper.CreateError (24, Errors.MT0024, name);
-			return PDictionary.FromFile (name);
+			return PDictionary.OpenFile (name);
 		}
 
 		const string XcodeDefault = "/Applications/Xcode.app";
@@ -333,7 +343,7 @@ namespace Xamarin.Bundler {
 		}
 
 		static string? sdk_root;
-		static string? developer_directory;
+		static string? developer_directory = null;
 
 		public static string? SdkRoot {
 			get => sdk_root;
@@ -507,6 +517,7 @@ namespace Xamarin.Bundler {
 			return result;
 		}
 
+#if !LEGACY_TOOLS
 		static readonly Dictionary<string, string?> tools = new Dictionary<string, string?> ();
 		static string FindTool (Application app, string tool)
 		{
@@ -708,6 +719,7 @@ namespace Xamarin.Bundler {
 		{
 			RunXcodeTool (app, "strip", options);
 		}
+#endif // !LEGACY_TOOLS
 
 		public static string CorlibName {
 			get {

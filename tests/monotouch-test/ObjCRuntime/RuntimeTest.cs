@@ -66,7 +66,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 		[Test]
 		public void GetNSObject_IntPtrZero ()
 		{
-			Assert.Null (Runtime.GetNSObject (IntPtr.Zero));
+			Assert.That (Runtime.GetNSObject (IntPtr.Zero), Is.Null);
 		}
 
 		[Test]
@@ -217,13 +217,13 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 			// Send a message to the collected object.
 			Messaging.void_objc_msgSend (notifierHandle, Selector.GetHandle ("notify"));
-			Assert.IsTrue (isNotified, "notified");
+			Assert.That (isNotified, Is.True, "notified");
 
 			// We're done. Cleanup.
 			NSRunLoop.Main.RunUntil (NSDate.Now.AddSeconds (0.1));
 			// Don't verify cleanup, it's not consistent.
 			// And in any case it's not what this test is about.
-			//			Assert.IsTrue (isDeallocated, "released");
+			//			Assert.That (isDeallocated, Is.True, "released");
 
 			return true;
 		}
@@ -338,7 +338,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			while (!thread.Join (1))
 				NSRunLoop.Main.RunUntil (NSDate.Now.AddSeconds (0.1));
 
-			Assert.AreEqual (0, broken, string.Format ("broken after {0} iterations", count));
+			Assert.That (broken, Is.EqualTo (0), string.Format ("broken after {0} iterations", count));
 		}
 
 		[Test]
@@ -390,7 +390,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Runtime.ConnectMethod (typeof (A), typeof (RuntimeTest).GetMethod ("Test2"), new Selector ("test2"));
 
 			Messaging.void_objc_msgSend (Class.GetHandle (typeof (A)), Selector.GetHandle ("test2"));
-			Assert.IsTrue (calledTest2);
+			Assert.That (calledTest2, Is.True);
 		}
 
 		static bool calledTest2;
@@ -414,7 +414,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			Runtime.ConnectMethod (typeof (NSString), typeof (RuntimeTest).GetMethod ("Test3"), new Selector ("test3"));
 
 			Messaging.void_objc_msgSend (Class.GetHandle (typeof (NSString)), Selector.GetHandle ("test3"));
-			Assert.IsTrue (calledTest3);
+			Assert.That (calledTest3, Is.True);
 		}
 
 		static bool calledTest3;
@@ -445,15 +445,15 @@ namespace MonoTouchFixtures.ObjCRuntime {
 
 				valueptr = Messaging.IntPtr_objc_msgSend_IntPtr (Class.GetHandle (typeof (NSString)), Selector.GetHandle ("stringWithUTF8String:"), strptr);
 				obj = Runtime.GetINativeObject<NSObject> (valueptr, false) as NSString;
-				Assert.AreEqual ("value", (string) obj, "NSObject");
+				Assert.That ((string) obj, Is.EqualTo ("value"), "NSObject");
 
 				valueptr = Messaging.IntPtr_objc_msgSend_IntPtr (Class.GetHandle (typeof (NSString)), Selector.GetHandle ("stringWithUTF8String:"), strptr);
 				obj = Runtime.GetINativeObject<NSString> (valueptr, false) as NSString;
-				Assert.AreEqual ("value", (string) obj, "NSString");
+				Assert.That ((string) obj, Is.EqualTo ("value"), "NSString");
 
 				valueptr = Messaging.IntPtr_objc_msgSend_IntPtr (Class.GetHandle (typeof (NSString)), Selector.GetHandle ("stringWithUTF8String:"), strptr);
 				var nscopying = Runtime.GetINativeObject<INSCopying> (valueptr, false);
-				Assert.NotNull (nscopying, "INSCopying");
+				Assert.That (nscopying, Is.Not.Null, "INSCopying");
 			} finally {
 				Marshal.FreeHGlobal (strptr);
 			}
@@ -473,7 +473,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				});
 			}
 
-			Assert.IsTrue (counter.Wait (TimeSpan.FromSeconds (5)), "timed out");
+			Assert.That (counter.Wait (TimeSpan.FromSeconds (5)), Is.True, "timed out");
 			// there is a race condition here: we don't necessarily know when the
 			// threadpool's autorelease pools are freed (in theory we can have X
 			// threadpool threads stopped just after the 'counter.Signal' line,
@@ -508,7 +508,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			}
 
 			for (var i = 0; i < count; i++) {
-				Assert.IsTrue (threads [i].Join (TimeSpan.FromSeconds (1)), $"Thread #{i}");
+				Assert.That (threads [i].Join (TimeSpan.FromSeconds (1)), Is.True, $"Thread #{i}");
 			}
 
 			// Strangely enough there seems to be a race condition here, not all threads will necessarily
@@ -597,7 +597,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			for (int i = 0; i < objects.Length; i++)
 				Messaging.void_objc_msgSend (objects [i], Selector.GetHandle ("release"));
 
-			Assert.AreEqual (0, brokenCount, "broken count");
+			Assert.That (brokenCount, Is.EqualTo (0), "broken count");
 		}
 
 		[Test]
@@ -643,7 +643,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 					Assert.Fail ("An exception should have been thrown");
 				}
 			} catch (RuntimeException re) {
-				Assert.AreEqual (8029, re.Code, "Code");
+				Assert.That (re.Code, Is.EqualTo (8029), "Code");
 				string expectedExceptionMessage;
 				if (TestRuntime.IsCoreCLR) {
 					expectedExceptionMessage = @"Unable to marshal the array parameter #1 whose managed type is 'System.Int32[]' to managed.
@@ -658,10 +658,10 @@ Additional information:
 	Method: MonoTouchFixtures.ObjCRuntime.RuntimeTest/Dummy:SetIntArray (int[])
 ";
 				}
-				Assert.AreEqual (expectedExceptionMessage, re.Message, "Message");
+				Assert.That (re.Message, Is.EqualTo (expectedExceptionMessage), "Message");
 				var inner = (RuntimeException)re.InnerException;
-				Assert.AreEqual (8031, inner.Code, "Inner Code");
-				Assert.AreEqual ("Unable to convert from an NSArray to a managed array of System.Int32.", inner.Message, "Inner Message");
+				Assert.That (inner.Code, Is.EqualTo (8031), "Inner Code");
+				Assert.That (inner.Message, Is.EqualTo ("Unable to convert from an NSArray to a managed array of System.Int32."), "Inner Message");
 			}
 		}
 
@@ -672,7 +672,7 @@ Additional information:
 				Messaging.IntPtr_objc_msgSend (Class.GetHandle (typeof (Dummy)), Selector.GetHandle ("intArray"));
 				Assert.Fail ("An exception should have been thrown");
 			} catch (RuntimeException re) {
-				Assert.AreEqual (8033, re.Code, "Code");
+				Assert.That (re.Code, Is.EqualTo (8033), "Code");
 				string expectedExceptionMessage;
 				if (TestRuntime.IsCoreCLR) {
 					expectedExceptionMessage = @"Unable to marshal the return value of type 'System.Int32[]' to Objective-C.
@@ -687,10 +687,10 @@ Additional information:
 	Method: MonoTouchFixtures.ObjCRuntime.RuntimeTest/Dummy:GetIntArray ()
 ";
 				}
-				Assert.AreEqual (expectedExceptionMessage, re.Message, "Message");
+				Assert.That (re.Message, Is.EqualTo (expectedExceptionMessage), "Message");
 				var inner = (RuntimeException) re.InnerException;
-				Assert.AreEqual (8032, inner.Code, "Inner Code");
-				Assert.AreEqual ("Unable to convert from a managed array of System.Int32 to an NSArray.", inner.Message, "Inner Message");
+				Assert.That (inner.Code, Is.EqualTo (8032), "Inner Code");
+				Assert.That (inner.Message, Is.EqualTo ("Unable to convert from a managed array of System.Int32 to an NSArray."), "Inner Message");
 			}
 		}
 #endif
@@ -742,7 +742,7 @@ Additional information:
 				// This is a big hack, but hopefully it works well enough for this particular test case.
 				// Just don't inspect the date variable in a debugger (it will most likely crash the app).
 				date = Runtime.GetINativeObject<NSDate> (str.Handle, true, false);
-				Assert.AreEqual (date.Handle, str.Handle, "Same native pointer");
+				Assert.That (str.Handle, Is.EqualTo (date.Handle), "Same native pointer");
 				date.Dispose ();
 				date = null;
 			}
@@ -771,7 +771,7 @@ Additional information:
 				Name = "ToggleRef_NonToggledObjectsShouldBeCollected",
 			};
 			t.Start ();
-			Assert.IsTrue (t.Join (TimeSpan.FromSeconds (10)), "Background thread completion");
+			Assert.That (t.Join (TimeSpan.FromSeconds (10)), Is.True, "Background thread completion");
 
 			var checkForCollectedManagedObjects = new Func<bool> (() => {
 				GC.Collect ();
@@ -786,11 +786,11 @@ Additional information:
 			// Iterate over the runloop in case something has to happen on the main thread for the objects to be collected.
 			TestRuntime.RunAsync (TimeSpan.FromSeconds (5), checkForCollectedManagedObjects);
 
-			Assert.IsTrue (checkForCollectedManagedObjects (), "Any collected objects");
+			Assert.That (checkForCollectedManagedObjects (), Is.True, "Any collected objects");
 
 			for (var i = 0; i < counter; i++) {
 				var obj = Runtime.GetNSObject (pointers [i]);
-				Assert.IsNotNull (obj, $"Object #{i} couldn't be resurrected");
+				Assert.That (obj, Is.Not.Null, $"Object #{i} couldn't be resurrected");
 				obj.DangerousRelease (); // release the native reference
 				obj.Dispose ();
 				handles [i].Free ();
@@ -820,7 +820,7 @@ Additional information:
 				Name = "ToggleRef_ToggledObjectsShouldNotBeCollected",
 			};
 			t.Start ();
-			Assert.IsTrue (t.Join (TimeSpan.FromSeconds (10)), "Background thread completion");
+			Assert.That (t.Join (TimeSpan.FromSeconds (10)), Is.True, "Background thread completion");
 
 			TestRuntime.RunAsync (TimeSpan.FromSeconds (2), () => {
 				// Iterate over the runloop a bit to make sure we're just not collecting because objects are queued on for things to happen on the main thread
@@ -831,7 +831,7 @@ Additional information:
 
 			for (var i = 0; i < counter; i++) {
 				var obj = (NSFileManager) handles [i].Target;
-				Assert.IsNotNull (obj, $"Object #{i} was unexpectedly collected.");
+				Assert.That (obj, Is.Not.Null, $"Object #{i} was unexpectedly collected.");
 				obj.DangerousRelease (); // release the native reference
 				obj.Dispose ();
 				handles [i].Free ();
@@ -844,7 +844,7 @@ Additional information:
 			var expectedDirectory = (string) ((NSString) Environment.CurrentDirectory).ResolveSymlinksInPath ();
 
 			var actualDirectory = (string) ((NSString) NSBundle.MainBundle.BundlePath).ResolveSymlinksInPath ();
-			Assert.AreEqual (expectedDirectory, actualDirectory, "Current directory at launch");
+			Assert.That (actualDirectory, Is.EqualTo (expectedDirectory), "Current directory at launch");
 		}
 
 		[Test]
@@ -863,27 +863,27 @@ Additional information:
 		public void IntPtrCtor_1 ()
 		{
 			using var obj = Runtime.GetNSObject (IntPtrConstructor.New ());
-			Assert.IsNotNull (obj, "NotNull");
+			Assert.That (obj, Is.Not.Null, "NotNull");
 			Assert.That (obj, Is.TypeOf<IntPtrConstructor> (), "Type");
-			Assert.AreNotEqual (IntPtr.Zero, obj.Handle, "Handle");
+			Assert.That (obj.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 		}
 
 		[Test]
 		public void IntPtrCtor_2 ()
 		{
 			using var obj = Runtime.GetNSObject<IntPtrConstructor> (IntPtrConstructor.New ());
-			Assert.IsNotNull (obj, "NotNull");
+			Assert.That (obj, Is.Not.Null, "NotNull");
 			Assert.That (obj, Is.TypeOf<IntPtrConstructor> (), "Type");
-			Assert.AreNotEqual (IntPtr.Zero, obj.Handle, "Handle");
+			Assert.That (obj.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 		}
 
 		[Test]
 		public void IntPtrCtor_3 ()
 		{
 			using var obj = Runtime.GetINativeObject<IntPtrConstructor> (IntPtrConstructor.New (), false);
-			Assert.IsNotNull (obj, "NotNull");
+			Assert.That (obj, Is.Not.Null, "NotNull");
 			Assert.That (obj, Is.TypeOf<IntPtrConstructor> (), "Type");
-			Assert.AreNotEqual (IntPtr.Zero, obj.Handle, "Handle");
+			Assert.That (obj.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 		}
 
 		class IntPtrConstructor : NSObject {
@@ -902,9 +902,9 @@ Additional information:
 		public void IntPtrBoolCtor_1 ()
 		{
 			using var obj = Runtime.GetINativeObject<IntPtrBoolConstructor> ((IntPtr) 1234, false);
-			Assert.IsNotNull (obj, "NotNull");
+			Assert.That (obj, Is.Not.Null, "NotNull");
 			Assert.That (obj, Is.TypeOf<IntPtrBoolConstructor> (), "Type");
-			Assert.AreNotEqual (IntPtr.Zero, obj.Handle, "Handle");
+			Assert.That (obj.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 		}
 
 		class IntPtrBoolConstructor : DisposableObject {
@@ -944,80 +944,80 @@ Additional information:
 		public void GetINativeObjectTest_NSObject_Owns ()
 		{
 			var handle = CreateNativeNSObject ();
-			Assert.AreEqual (1, GetRetainCount (handle), "A 1");
+			Assert.That (GetRetainCount (handle), Is.EqualTo (1), "A 1");
 			using var obj = Runtime.GetINativeObject<NSObject> (handle, false, true);
-			Assert.AreEqual (1, GetRetainCount (handle), "A 2");
+			Assert.That (GetRetainCount (handle), Is.EqualTo (1), "A 2");
 			obj.DangerousRetain ();
-			Assert.AreEqual (2, GetRetainCount (handle), "A 3");
+			Assert.That (GetRetainCount (handle), Is.EqualTo (2), "A 3");
 			using var obj2 = Runtime.GetINativeObject<NSObject> (handle, false, true);
-			Assert.AreEqual (1, GetRetainCount (handle), "A 4");
+			Assert.That (GetRetainCount (handle), Is.EqualTo (1), "A 4");
 			using var obj3 = Runtime.GetINativeObject<NSObject> (handle, false, false);
-			Assert.AreEqual (1, GetRetainCount (handle), "A 5");
-			Assert.AreSame (obj, obj2, "A 6");
-			Assert.AreSame (obj, obj3, "A 7");
+			Assert.That (GetRetainCount (handle), Is.EqualTo (1), "A 5");
+			Assert.That (obj2, Is.SameAs (obj), "A 6");
+			Assert.That (obj3, Is.SameAs (obj), "A 7");
 		}
 
 		[Test]
 		public void GetINativeObjectTest_NSObject_Unowned ()
 		{
 			var handle = CreateNativeNSObject ();
-			Assert.AreEqual (1, GetRetainCount (handle), "A 1");
+			Assert.That (GetRetainCount (handle), Is.EqualTo (1), "A 1");
 			using var obj = Runtime.GetINativeObject<NSObject> (handle, false, false);
-			Assert.AreEqual (2, GetRetainCount (handle), "A 2");
+			Assert.That (GetRetainCount (handle), Is.EqualTo (2), "A 2");
 			obj.DangerousRelease ();
-			Assert.AreEqual (1, GetRetainCount (handle), "A 3");
+			Assert.That (GetRetainCount (handle), Is.EqualTo (1), "A 3");
 			obj.DangerousRetain ();
-			Assert.AreEqual (2, GetRetainCount (handle), "A 4");
+			Assert.That (GetRetainCount (handle), Is.EqualTo (2), "A 4");
 			using var obj2 = Runtime.GetINativeObject<NSObject> (handle, false, true);
-			Assert.AreEqual (1, GetRetainCount (handle), "A 5");
+			Assert.That (GetRetainCount (handle), Is.EqualTo (1), "A 5");
 			using var obj3 = Runtime.GetINativeObject<NSObject> (handle, false, false);
-			Assert.AreEqual (1, GetRetainCount (handle), "A 6");
-			Assert.AreSame (obj, obj2, "A 7");
-			Assert.AreSame (obj, obj3, "A 8");
+			Assert.That (GetRetainCount (handle), Is.EqualTo (1), "A 6");
+			Assert.That (obj2, Is.SameAs (obj), "A 7");
+			Assert.That (obj3, Is.SameAs (obj), "A 8");
 		}
 
 		[Test]
 		public void GetINativeObjectTest_INativeObject_Owns ()
 		{
 			var handle = CreateNativeBitmapContext ();
-			Assert.AreEqual (1, CFGetRetainCount (handle), "A 1");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (1), "A 1");
 			using var obj = Runtime.GetINativeObject<CGBitmapContext> (handle, false, true);
-			Assert.AreEqual (1, CFGetRetainCount (handle), "A 2");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (1), "A 2");
 			CGContextRetain (obj.Handle);
-			Assert.AreEqual (2, CFGetRetainCount (handle), "A 3");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (2), "A 3");
 			using var obj2 = Runtime.GetINativeObject<CGBitmapContext> (handle, false, true); // does not decrease refcount because we return a new instance
-			Assert.AreEqual (2, CFGetRetainCount (handle), "A 4");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (2), "A 4");
 			using var obj3 = Runtime.GetINativeObject<CGBitmapContext> (handle, false, false);
-			Assert.AreEqual (3, CFGetRetainCount (handle), "A 5");
-			Assert.AreNotSame (obj, obj2, "A 6");
-			Assert.AreNotSame (obj, obj3, "A 7");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (3), "A 5");
+			Assert.That (obj2, Is.Not.SameAs (obj), "A 6");
+			Assert.That (obj3, Is.Not.SameAs (obj), "A 7");
 			obj3.Dispose ();
-			Assert.AreEqual (2, CFGetRetainCount (handle), "A 8");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (2), "A 8");
 			obj2.Dispose ();
-			Assert.AreEqual (1, CFGetRetainCount (handle), "A 9");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (1), "A 9");
 		}
 
 		[Test]
 		public void GetINativeObjectTest_INativeObject_Unowned ()
 		{
 			var handle = CreateNativeBitmapContext ();
-			Assert.AreEqual (1, CFGetRetainCount (handle), "A 1");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (1), "A 1");
 			using var obj = Runtime.GetINativeObject<CGBitmapContext> (handle, false, false);
-			Assert.AreEqual (2, CFGetRetainCount (handle), "A 2");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (2), "A 2");
 			CGContextRelease (obj.Handle);
-			Assert.AreEqual (1, CFGetRetainCount (handle), "A 3");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (1), "A 3");
 			CGContextRetain (obj.Handle);
-			Assert.AreEqual (2, CFGetRetainCount (handle), "A 4");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (2), "A 4");
 			using var obj2 = Runtime.GetINativeObject<CGBitmapContext> (handle, false, true); // does not decrease refcount because we return a new instance
-			Assert.AreEqual (2, CFGetRetainCount (handle), "A 5");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (2), "A 5");
 			using var obj3 = Runtime.GetINativeObject<CGBitmapContext> (handle, false, false);
-			Assert.AreEqual (3, CFGetRetainCount (handle), "A 6");
-			Assert.AreNotSame (obj, obj2, "A 7");
-			Assert.AreNotSame (obj, obj3, "A 8");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (3), "A 6");
+			Assert.That (obj2, Is.Not.SameAs (obj), "A 7");
+			Assert.That (obj3, Is.Not.SameAs (obj), "A 8");
 			obj3.Dispose ();
-			Assert.AreEqual (2, CFGetRetainCount (handle), "A 9");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (2), "A 9");
 			obj2.Dispose ();
-			Assert.AreEqual (1, CFGetRetainCount (handle), "A 10");
+			Assert.That (CFGetRetainCount (handle), Is.EqualTo (1), "A 10");
 		}
 
 		static IntPtr CreateNativeNSObject ()

@@ -29,14 +29,14 @@ namespace MonoTouchFixtures.Foundation {
 			NSUserDefaults defaults = NSUserDefaults.StandardUserDefaults;
 			var keyName = $"spid-{Process.GetCurrentProcess ().Id}";
 			defaults.RemoveObject (keyName);
-			Assert.Null (defaults.StringForKey (keyName), "StringForKey-1");
+			Assert.That (defaults.StringForKey (keyName), Is.Null, "StringForKey-1");
 			defaults.SetString ("coucou", keyName);
 			defaults.Synchronize ();
 			Assert.That (defaults.StringForKey (keyName), Is.EqualTo ("coucou"), "StringForKey-2");
 			// Clean up after ourselves.
 			defaults.RemoveObject (keyName);
 			defaults.Synchronize ();
-			Assert.IsNull (defaults.StringForKey (keyName), "StringForKey-3");
+			Assert.That (defaults.StringForKey (keyName), Is.Null, "StringForKey-3");
 		}
 
 		[Test]
@@ -59,7 +59,7 @@ namespace MonoTouchFixtures.Foundation {
 				Assert.That (keyValue.ToString (), Is.EqualTo ("value"), "[key]-1");
 				ud.RemoveObject (keyName);
 				ud.Synchronize ();
-				Assert.Null (ud [keyName], "[key]-2");
+				Assert.That (ud [keyName], Is.Null, "[key]-2");
 			}
 		}
 

@@ -22,7 +22,7 @@ namespace MonoTouchFixtures.UIKit {
 		[Test]
 		public void SetKeepAliveTimeout_Null ()
 		{
-			Assert.False (UIApplication.SharedApplication.SetKeepAliveTimeout (600, null), "SetKeepAliveTimeout");
+			Assert.That (UIApplication.SharedApplication.SetKeepAliveTimeout (600, null), Is.False, "SetKeepAliveTimeout");
 		}
 #endif
 

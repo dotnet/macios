@@ -109,9 +109,6 @@ public partial class Generator : IMemberGatherer {
 	string? is_direct_binding_value; // An expression that calculates the IsDirectBinding value. Might not be a constant expression. This will be added to every constructor for a type.
 	bool? is_direct_binding; // If a constant value for IsDirectBinding is known, it's stored here. Will be null if no constant value is known.
 
-	// Whether to use ZeroCopy for strings, defaults to false
-	public bool ZeroCopyStrings;
-
 	public bool BindThirdPartyLibrary { get { return BindingTouch.BindThirdPartyLibrary; } }
 	public bool InlineSelectors;
 	public string BaseDir { get { return basedir; } set { basedir = value; } }
@@ -123,11 +120,6 @@ public partial class Generator : IMemberGatherer {
 	// Set on every call to Generate
 	//
 	bool type_needs_thread_checks;
-
-	//
-	// If set, the members of this type will get zero copy
-	// 
-	internal bool type_wants_zero_copy;
 
 	//
 	// Used by the public binding generator to populate the
@@ -843,16 +835,7 @@ public partial class Generator : IMemberGatherer {
 			if (mai.PlainString)
 				return safe_name;
 			else {
-				bool allow_null = null_allowed_override || AttributeManager.IsNullable (pi);
-
-				if (mai.ZeroCopyStringMarshal) {
-					if (allow_null)
-						return String.Format ("{0} is null ? IntPtr.Zero : (IntPtr)(&_s{0})", pi.Name);
-					else
-						return String.Format ("(IntPtr)(&_s{0})", pi.Name);
-				} else {
-					return "ns" + pi.Name;
-				}
+				return "ns" + pi.Name;
 			}
 		}
 
@@ -3097,13 +3080,8 @@ public partial class Generator : IMemberGatherer {
 						if (mai.PlainString)
 							ErrorHelper.Warning (1101);
 
-						if (mai.ZeroCopyStringMarshal) {
-							target_name = "(IntPtr)(&_s" + pi.Name + ")";
-							handle = "";
-						} else {
-							target_name = "ns" + pi.Name;
-							handle = "";
-						}
+						target_name = "ns" + pi.Name;
+						handle = "";
 					} else
 						target_name = pi.Name.GetSafeParamName ();
 					break;
@@ -3248,48 +3226,16 @@ public partial class Generator : IMemberGatherer {
 	// @probe_null: determines whether null is allowed, and
 	// whether we need to generate code to handle this
 	//
-	// @must_copy: determines whether to create a new NSString, necessary
-	// for NSString properties that are flagged with "retain" instead of "copy"
-	//
-	// @prefix: prefix to prepend on each line
-	//
 	// @property: the name of the property
 	//
-	public string GenerateMarshalString (bool probe_null, bool must_copy)
+	public string GenerateMarshalString (bool probe_null)
 	{
-		if (must_copy) {
-			return "var ns{0} = CFString.CreateNative ({1});\n";
-		}
-		return
-			"ObjCRuntime.NSStringStruct _s{0}; Console.WriteLine (\"" + CurrentMethod + ": Marshalling: {{1}}\", {1}); \n" +
-			"_s{0}.ClassPtr = ObjCRuntime.NSStringStruct.ReferencePtr;\n" +
-			"_s{0}.Flags = 0x010007d1; // RefCount=1, Unicode, InlineContents = 0, DontFreeContents\n" +
-			"_s{0}.UnicodePtr = _p{0};\n" +
-			"_s{0}.Length = " + (probe_null ? "{1} is null ? 0 : {1}.Length;" : "{1}.Length;\n");
+		return "var ns{0} = CFString.CreateNative ({1});\n";
 	}
 
-	public string GenerateDisposeString (bool probe_null, bool must_copy)
+	public string GenerateDisposeString (bool probe_null)
 	{
-		if (must_copy) {
-			return "CFString.ReleaseNative (ns{0});\n";
-		} else
-			return "if (_s{0}.Flags != 0x010007d1) throw new Exception (\"String was retained, not copied\");";
-	}
-
-	List<string>? CollectFastStringMarshalParameters (MethodInfo mi)
-	{
-		List<string>? stringParameters = null;
-
-		foreach (var pi in mi.GetParameters ()) {
-			var mai = new MarshalInfo (this, mi, pi);
-
-			if (mai.ZeroCopyStringMarshal) {
-				if (stringParameters is null)
-					stringParameters = new List<string> ();
-				stringParameters.Add (pi.Name.GetSafeParamName () ?? "");
-			}
-		}
-		return stringParameters;
+		return "CFString.ReleaseNative (ns{0});\n";
 	}
 
 	AvailabilityBaseAttribute? GetIntroduced (Type? type, string methodName)
@@ -3371,8 +3317,8 @@ public partial class Generator : IMemberGatherer {
 			if (mai.Type == TypeCache.System_String && !mai.PlainString) {
 				bool probe_null = null_allowed_override || AttributeManager.IsNullable (pi);
 
-				convs.AppendFormat (GenerateMarshalString (probe_null, !mai.ZeroCopyStringMarshal), pi.Name, pi.Name.GetSafeParamName ());
-				disposes.AppendFormat (GenerateDisposeString (probe_null, !mai.ZeroCopyStringMarshal), pi.Name);
+				convs.AppendFormat (GenerateMarshalString (probe_null), pi.Name, pi.Name.GetSafeParamName ());
+				disposes.AppendFormat (GenerateDisposeString (probe_null), pi.Name);
 			} else if (mai.Type.TryIsArray (out var etype)) {
 				if (HasBindAsAttribute (pi)) {
 					convs.AppendFormat ("using var nsb_{0} = {1}\n", pi.Name, GetToBindAsWrapper (mi, null, pi));
@@ -3615,9 +3561,6 @@ public partial class Generator : IMemberGatherer {
 
 		GenerateArgumentChecks (mi, false, propInfo, out bool needsGCKeepAlives);
 
-		// Collect all strings that can be fast-marshalled
-		var stringParameters = CollectFastStringMarshalParameters (mi);
-
 		GenerateTypeLowering (mi, null_allowed_override, out var args, out var convs, out var disposes, out var by_ref_processing, out var by_ref_init, out var post_return, propInfo);
 
 		if (minfo.is_protocol_member && minfo.is_static) {
@@ -3628,12 +3571,6 @@ public partial class Generator : IMemberGatherer {
 
 		if (by_ref_init.Length > 0)
 			print (by_ref_init.ToString ());
-
-		if (stringParameters is not null) {
-			print ("fixed (char * {0}){{",
-				  stringParameters.Select (name => "_p" + name + " = " + name).Aggregate ((first, second) => first + ", " + second));
-			indent++;
-		}
 
 		if (propInfo is not null && IsSetter (mi) && HasBindAsAttribute (propInfo)) {
 			convs.AppendFormat ("using var nsb_{0} = {1}\n", propInfo.Name, GetToBindAsWrapper (mi, minfo, null));
@@ -3834,10 +3771,6 @@ public partial class Generator : IMemberGatherer {
 			WriteMarkDirtyIfDerived (sw, mi.DeclaringType!);
 		if (post_return?.Length > 0)
 			print (post_return.ToString ());
-		if (stringParameters is not null) {
-			indent--;
-			print ("}");
-		}
 		indent--;
 	}
 
@@ -5769,12 +5702,6 @@ public partial class Generator : IMemberGatherer {
 		if (is_rgen_type)
 			return;
 
-		if (ZeroCopyStrings) {
-			ErrorHelper.Warning (1027);
-			ZeroCopyStrings = false;
-		}
-
-		type_wants_zero_copy = AttributeManager.HasAttribute<ZeroCopyStringsAttribute> (type) || ZeroCopyStrings;
 		var tsa = AttributeManager.GetCustomAttribute<ThreadSafeAttribute> (type);
 		// if we're inside a special namespace then default is non-thread safe, otherwise default is thread safe
 		if (NamespaceCache.UINamespaces.Contains (type.Namespace!)) {

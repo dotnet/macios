@@ -1627,4 +1627,20 @@
     <data name="E7169" xml:space="preserve">
         <value>The task '{0}' requires the property '{1}' to be set. Please file an issue at https://github.com/dotnet/macios/issues/new/choose.</value>
     </data>
+
+    <data name="W7171" xml:space="preserve">
+        <value>The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+
+    <data name="W7172" xml:space="preserve">
+        <value>The environment variable '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+
+    <data name="W7173" xml:space="preserve">
+        <value>The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+
+    <data name="W7174" xml:space="preserve">
+        <value>The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
 </root>

@@ -13062,6 +13062,7 @@ namespace Foundation {
 	[NoTV]
 	[NoiOS]
 	[NoMacCatalyst]
+	[ObjectiveCFramework ("AppKit")]
 	interface NSBindingSelectionMarker : NSCopying {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

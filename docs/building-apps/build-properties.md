@@ -559,6 +559,42 @@ See also:
 * The [AlternateAppIcon](build-items.md#alternateappicon) item group.
 * The [AppIcon](#appicon) property.
 
+## InlineClassGetHandle
+
+Controls whether the build system replaces runtime calls to `Class.GetHandle` /
+`Class.GetHandleIntrinsic` with direct native references to Objective-C classes
+at build time.
+
+See [docs/code/class-handles.md](../code/class-handles.md) for an overview.
+
+The valid options are:
+
+* `compatibility`: Inlines `Class.GetHandle` calls only for types whose declaring
+  type matches the requested Objective-C class name.
+* `strict`: Inlines all `Class.GetHandle` calls unconditionally. Requires using
+  the static registrar (not the dynamic registrar).
+* (empty): Disables inlining of `Class.GetHandle` calls.
+
+Default value:
+* .NET 11+: `strict` when using NativeAOT (`PublishAot=true`), `compatibility` otherwise.
+* .NET 10 and earlier: not set (disabled).
+
+Example:
+
+```xml
+<PropertyGroup>
+    <InlineClassGetHandle>compatibility</InlineClassGetHandle>
+</PropertyGroup>
+```
+
+Custom behavior for specific Objective-C classes can be set using the [ReferenceNativeSymbol](build-items.md#referencenativesymbols) item group:
+
+```xml
+<ItemGroup>
+    <ReferenceNativeSymbol SymbolMode="Ignore" SymbolType="ObjectiveCClass" Include="SomeClassName" />
+</ItemGroup>
+```
+
 ## InlineDlfcnMethods
 
 Controls whether the build system replaces runtime calls to `ObjCRuntime.Dlfcn` methods with direct native symbol lookups at build time, eliminating the overhead of `dlsym` at runtime.
@@ -1504,6 +1540,21 @@ Applicable to macOS projects.
 Consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
 
 See also [IPhoneResourcePrefix](#iphoneresourceprefix) and [MonoMacResourcePrefix](#monomacresourceprefix).
+
+## XcodeLocation
+
+Specifies the location of Xcode.
+
+When the build searches for Xcode, it's done in this order:
+
+1. If the `XcodeLocation` property is set, use that. Note that since all environment variables are automatically MSBuild properties as well, it's also possible to set the `XcodeLocation` environment variable for the same effect.
+2. If the `MD_APPLE_SDK_ROOT` environment variable is set, use that.
+3. If either of the files `~/Library/Preferences/maui/Settings.plist` or `~/Library/Preferences/Xamarin/Settings.plist` exist, and has the property list value `AppleSdkRoot`, use that.
+4. Use the system version of Xcode (as determined by executing `xcode-select --print-path`).
+
+> [!WARNING]
+> Support for the `MD_APPLE_SDK_ROOT` environment variable, and the `~/Library/Preferences/maui/Settings.plist` and `~/Library/Preferences/Xamarin/Settings.plist` files, is deprecated and will be removed in the future.
+> Going forward, choose which Xcode to use by either making it the system's version of Xcode (either using `xcode-select --switch ...` on the command line, or in Xcode's settings), or by setting the `XcodeLocation` MSBuild property / environment variable.
 
 ## ZipPath
 

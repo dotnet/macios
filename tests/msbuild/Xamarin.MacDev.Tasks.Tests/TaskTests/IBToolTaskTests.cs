@@ -18,10 +18,10 @@ namespace Xamarin.MacDev.Tasks {
 	public class IBToolTaskTests : TestBase {
 		IBTool CreateIBToolTask (ApplePlatform framework, string projectDir, string intermediateOutputPath)
 		{
+			var task = CreateTask<IBTool> ();
+
 			var interfaceDefinitions = new List<ITaskItem> ();
-			var sdk = Sdks.GetSdk (framework);
-			var version = AppleSdkVersion.GetDefault (sdk, false);
-			var root = sdk.GetSdkPath (version, false);
+			var version = AppleSdkVersion.UseDefault.ToString ();
 			string platform;
 
 			switch (framework) {
@@ -39,7 +39,6 @@ namespace Xamarin.MacDev.Tasks {
 			foreach (var item in Directory.EnumerateFiles (projectDir, "*.xib", SearchOption.AllDirectories))
 				interfaceDefinitions.Add (new TaskItem (item));
 
-			var task = CreateTask<IBTool> ();
 			task.InterfaceDefinitions = interfaceDefinitions.ToArray ();
 			task.IntermediateOutputPath = intermediateOutputPath;
 			task.MinimumOSVersion = PDictionary.OpenFile (Path.Combine (projectDir, "Info.plist")).GetMinimumOSVersion ();
@@ -48,8 +47,8 @@ namespace Xamarin.MacDev.Tasks {
 			task.SdkDevPath = Configuration.xcode_root;
 			task.SdkPlatform = platform;
 			task.SdkVersion = version.ToString ();
-			task.SdkRoot = root;
 			task.TargetFrameworkMoniker = TargetFramework.DotNet_iOS_String;
+			task.SdkRoot = task.CurrentSdk.GetSdkPath (version, false);
 			return task;
 		}
 
@@ -62,7 +61,7 @@ namespace Xamarin.MacDev.Tasks {
 			var ibtool = CreateIBToolTask (ApplePlatform.iOS, srcdir, tmp);
 			var bundleResources = new HashSet<string> ();
 
-			Assert.That (ibtool.Execute (), Is.True, "Execution of IBTool task failed.");
+			ExecuteTask (ibtool);
 
 			foreach (var bundleResource in ibtool.BundleResources) {
 				Assert.That (File.Exists (bundleResource.ItemSpec), Is.True, $"File does not exist: {bundleResource.ItemSpec}");
@@ -104,7 +103,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ibtool.EnableOnDemandResources = true;
 
-			Assert.That (ibtool.Execute (), Is.True, "Execution of IBTool task failed.");
+			ExecuteTask (ibtool);
 
 			foreach (var bundleResource in ibtool.BundleResources) {
 				var bundleName = bundleResource.GetMetadata ("LogicalName");
@@ -179,7 +178,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			ibtool.EnableOnDemandResources = true;
 
-			Assert.That (ibtool.Execute (), Is.True, "Execution of IBTool task failed.");
+			ExecuteTask (ibtool);
 
 			foreach (var bundleResource in ibtool.BundleResources) {
 				var bundleName = bundleResource.GetMetadata ("LogicalName");

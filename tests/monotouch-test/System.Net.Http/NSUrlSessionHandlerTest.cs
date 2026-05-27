@@ -3,7 +3,10 @@
 //
 
 using System;
+using System.Net;
 using System.Net.Http;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Foundation;
 using NUnit.Framework;
@@ -215,6 +218,117 @@ namespace MonoTests.System.Net.Http {
 				return;
 
 			Assert.Ignore ("The background service is in use by another process.");
+		}
+
+		// https://github.com/dotnet/macios/issues/25485
+		[Test]
+		public void BasicAuthWorksWhenBearerIsAdvertisedFirst ()
+		{
+			if (!HttpListener.IsSupported) {
+				Assert.Inconclusive ("HttpListener is not supported");
+			}
+
+			const string username = "admin";
+			const string password = "secret";
+			var expectedBasicValue = Convert.ToBase64String (Encoding.UTF8.GetBytes ($"{username}:{password}"));
+
+			var serverReady = new SemaphoreSlim (0, 1);
+			int requestIndex = 0;
+			int firstUnauthenticatedIndex = -1;
+			int firstAuthenticatedIndex = -1;
+
+			var httpListener = StartListenerOnAvailablePort (out var listeningPort);
+			if (httpListener is null) {
+				Assert.Inconclusive ("Could not find an available port for the test server.");
+				return;
+			}
+
+			var serverTask = Task.Run (async () => {
+				serverReady.Release ();
+				try {
+					while (httpListener.IsListening) {
+						var context = await httpListener.GetContextAsync ().ConfigureAwait (false);
+						var request = context.Request;
+						var response = context.Response;
+
+						var authHeader = request.Headers ["Authorization"];
+						var currentIndex = Interlocked.Increment (ref requestIndex);
+						if (authHeader is not null && authHeader == $"Basic {expectedBasicValue}") {
+							// Authenticated - return success
+							Interlocked.CompareExchange (ref firstAuthenticatedIndex, currentIndex, -1);
+							response.StatusCode = 200;
+							var body = Encoding.UTF8.GetBytes ("authenticated");
+							response.ContentLength64 = body.Length;
+							response.OutputStream.Write (body, 0, body.Length);
+						} else {
+							// Return 401 with Bearer first, then Basic
+							Interlocked.CompareExchange (ref firstUnauthenticatedIndex, currentIndex, -1);
+							response.StatusCode = 401;
+							response.AddHeader ("WWW-Authenticate", "Bearer realm=\"test\", charset=\"UTF-8\"");
+							response.AppendHeader ("WWW-Authenticate", "Basic realm=\"test\", charset=\"UTF-8\"");
+						}
+						response.Close ();
+					}
+				} catch (ObjectDisposedException) {
+					// listener was stopped
+				} catch (HttpListenerException) {
+					// listener was stopped
+				}
+			});
+
+			HttpStatusCode? statusCode = null;
+			string responseBody = null;
+
+			try {
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					await serverReady.WaitAsync ().ConfigureAwait (false);
+
+					using var handler = new NSUrlSessionHandler ();
+					handler.Credentials = new NetworkCredential (username, password);
+					using var client = new HttpClient (handler);
+					using var request = new HttpRequestMessage (HttpMethod.Get, $"http://localhost:{listeningPort}/test");
+					var response = await client.SendAsync (request).ConfigureAwait (false);
+					statusCode = response.StatusCode;
+					responseBody = await response.Content.ReadAsStringAsync ().ConfigureAwait (false);
+				}, out var ex);
+
+				Assert.That (done, Is.True, "Request timed out");
+				Assert.That (ex, Is.Null, $"Exception: {ex}");
+				Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), "Expected 200 OK after Basic auth negotiation");
+				Assert.That (responseBody, Is.EqualTo ("authenticated"), "Response body");
+				Assert.That (firstUnauthenticatedIndex, Is.GreaterThan (0), "Server should have received an unauthenticated request");
+				Assert.That (firstAuthenticatedIndex, Is.GreaterThan (0), "Server should have received an authenticated request");
+				Assert.That (firstUnauthenticatedIndex, Is.LessThan (firstAuthenticatedIndex), "Unauthenticated request should have arrived before the authenticated retry");
+
+				if (serverTask.IsFaulted)
+					Assert.Fail ($"Server task failed: {serverTask.Exception}");
+			} finally {
+				httpListener.Stop ();
+				httpListener.Close ();
+			}
+		}
+
+		static HttpListener? StartListenerOnAvailablePort (out int listeningPort)
+		{
+			// IANA suggested range for dynamic or private ports
+			const int MinPort = 49215;
+			const int MaxPort = 65535;
+
+			for (var port = MinPort; port < MaxPort; port++) {
+				var listener = new HttpListener ();
+				listener.Prefixes.Add ($"http://*:{port}/");
+				try {
+					listener.Start ();
+					listeningPort = port;
+					return listener;
+				} catch {
+					// port in use, try next
+					listener.Close ();
+				}
+			}
+
+			listeningPort = -1;
+			return null;
 		}
 	}
 }

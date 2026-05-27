@@ -108,7 +108,7 @@
 	</PropertyGroup>
 
 	<!-- Set default value for InlineClassGetHandle based on .NET version -->
-	<PropertyGroup Condition="'$(InlineClassGetHandle)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0'))">
+	<PropertyGroup Condition="'$(InlineClassGetHandle)' == '' And $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), '11.0')) And !('$(Registrar)' == 'static' And '$(PrepareAssemblies)' != 'true')">
 		<InlineClassGetHandle Condition="'$(_UseNativeAot)' == 'true'">strict</InlineClassGetHandle>
 		<InlineClassGetHandle Condition="'$(InlineClassGetHandle)' == ''">compatibility</InlineClassGetHandle>
 	</PropertyGroup>

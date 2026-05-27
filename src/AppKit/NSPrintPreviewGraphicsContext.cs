@@ -4,7 +4,7 @@
 using System;
 using System.ComponentModel;
 
-#if __MACOS__ && !__XAMCORE_5_0__
+#if __MACOS__ && !XAMCORE_5_0
 
 namespace AppKit {
 	[UnsupportedOSPlatform ("maccatalyst")]
@@ -27,4 +27,4 @@ namespace AppKit {
 	} /* class NSPrintPreviewGraphicsContext */
 }
 
-#endif // __MACOS__ && !__XAMCORE_5_0__
+#endif // __MACOS__ && !XAMCORE_5_0

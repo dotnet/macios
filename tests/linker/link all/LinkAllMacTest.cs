@@ -79,6 +79,8 @@ namespace LinkAllTests {
 		[Test]
 		public void PrintPreview_NSGraphicsContextCurrentContext ()
 		{
+			TestRuntime.AssertXcodeVersion (26, 0);
+
 			// Verify that accessing NSGraphicsContext.CurrentContext during print preview
 			// doesn't crash due to the linker trimming NSPrintPreviewGraphicsContext.
 			var printableView = new PrintableView (new CoreGraphics.CGRect (0, 0, 100, 100));

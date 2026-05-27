@@ -11,7 +11,7 @@ namespace System.Linq {
 		/// <returns>The first element in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey First<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey First<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.First ((IEnumerable<TKey>) source);
@@ -24,7 +24,7 @@ namespace System.Linq {
 		/// <returns>The first element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey First<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey First<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -36,7 +36,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The first element in <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? FirstOrDefault<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.FirstOrDefault ((IEnumerable<TKey>) source);
@@ -48,7 +48,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The first element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static TKey? FirstOrDefault<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -61,7 +61,7 @@ namespace System.Linq {
 		/// <returns>The last element in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey Last<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey Last<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Last ((IEnumerable<TKey>) source);
@@ -74,7 +74,7 @@ namespace System.Linq {
 		/// <returns>The last element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey Last<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey Last<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -86,7 +86,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The last element in <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? LastOrDefault<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? LastOrDefault<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.LastOrDefault ((IEnumerable<TKey>) source);
@@ -98,7 +98,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The last element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static TKey? LastOrDefault<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? LastOrDefault<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -111,7 +111,7 @@ namespace System.Linq {
 		/// <returns>The single element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty or contains more than one element.</exception>
-		public static TKey Single<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey Single<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Single ((IEnumerable<TKey>) source);
@@ -124,7 +124,7 @@ namespace System.Linq {
 		/// <returns>The single element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element or more than one element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey Single<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey Single<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -137,7 +137,7 @@ namespace System.Linq {
 		/// <returns>The single element of <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> contains more than one element.</exception>
-		public static TKey? SingleOrDefault<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? SingleOrDefault<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.SingleOrDefault ((IEnumerable<TKey>) source);
@@ -150,7 +150,7 @@ namespace System.Linq {
 		/// <returns>The single element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when more than one element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey? SingleOrDefault<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? SingleOrDefault<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -164,7 +164,7 @@ namespace System.Linq {
 		/// <returns>The element at position <paramref name="index"/> in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="index"/> is less than 0 or greater than or equal to the number of elements in <paramref name="source"/>.</exception>
-		public static TKey ElementAt<TKey> (this Foundation.NSSet<TKey> source, int index) where TKey : class, Foundation.INativeObject
+		public static TKey ElementAt<TKey> (this Foundation.NSSet<TKey> source, int index) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ElementAt ((IEnumerable<TKey>) source, index);
@@ -176,7 +176,7 @@ namespace System.Linq {
 		/// <param name="index">The zero-based index of the element to retrieve.</param>
 		/// <returns>The element at position <paramref name="index"/> in <paramref name="source"/>, or <see langword="null"/> if the index is out of range.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? ElementAtOrDefault<TKey> (this Foundation.NSSet<TKey> source, int index) where TKey : class, Foundation.INativeObject
+		public static TKey? ElementAtOrDefault<TKey> (this Foundation.NSSet<TKey> source, int index) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ElementAtOrDefault ((IEnumerable<TKey>) source, index);
@@ -187,7 +187,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns><see langword="true"/> if <paramref name="source"/> contains any elements; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static bool Any<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static bool Any<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Any ((IEnumerable<TKey>) source);
@@ -199,7 +199,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns><see langword="true"/> if any element in <paramref name="source"/> passes the test in <paramref name="predicate"/>; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static bool Any<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static bool Any<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -212,7 +212,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns><see langword="true"/> if every element in <paramref name="source"/> passes the test in <paramref name="predicate"/>, or if the collection is empty; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static bool All<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static bool All<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -224,7 +224,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The number of elements in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static int Count<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static int Count<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Count ((IEnumerable<TKey>) source);
@@ -236,7 +236,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The number of elements in <paramref name="source"/> that pass the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static int Count<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static int Count<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -248,7 +248,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The number of elements in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static long LongCount<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static long LongCount<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.LongCount ((IEnumerable<TKey>) source);
@@ -260,7 +260,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The number of elements in <paramref name="source"/> that pass the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static long LongCount<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static long LongCount<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -273,7 +273,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> that satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -286,7 +286,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element; the second parameter represents the zero-based index of the element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> that satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, int, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, int, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -300,7 +300,7 @@ namespace System.Linq {
 		/// <param name="selector">A transform function to apply to each element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements are the result of invoking the transform function on each element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="selector"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSSet<TKey> source, Func<TKey, TResult> selector) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSSet<TKey> source, Func<TKey, TResult> selector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (selector);
@@ -314,7 +314,7 @@ namespace System.Linq {
 		/// <param name="selector">A transform function to apply to each element; the second parameter represents the zero-based index of the element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements are the result of invoking the transform function on each element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="selector"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSSet<TKey> source, Func<TKey, int, TResult> selector) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSSet<TKey> source, Func<TKey, int, TResult> selector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (selector);
@@ -328,7 +328,7 @@ namespace System.Linq {
 		/// <param name="keySelector">A function to extract a key from an element.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}"/> whose elements are sorted according to a key.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.</exception>
-		public static IOrderedEnumerable<TKey> OrderBy<TKey, TOrderKey> (this Foundation.NSSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, Foundation.INativeObject
+		public static IOrderedEnumerable<TKey> OrderBy<TKey, TOrderKey> (this Foundation.NSSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (keySelector);
@@ -342,7 +342,7 @@ namespace System.Linq {
 		/// <param name="keySelector">A function to extract a key from an element.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}"/> whose elements are sorted in descending order according to a key.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.</exception>
-		public static IOrderedEnumerable<TKey> OrderByDescending<TKey, TOrderKey> (this Foundation.NSSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, Foundation.INativeObject
+		public static IOrderedEnumerable<TKey> OrderByDescending<TKey, TOrderKey> (this Foundation.NSSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (keySelector);
@@ -355,7 +355,7 @@ namespace System.Linq {
 		/// <param name="count">The number of elements to skip before returning the remaining elements.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements after the skipped ones.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Skip<TKey> (this Foundation.NSSet<TKey> source, int count) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Skip<TKey> (this Foundation.NSSet<TKey> source, int count) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Skip ((IEnumerable<TKey>) source, count);
@@ -367,7 +367,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements starting at the first element that does not satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> SkipWhile<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> SkipWhile<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -380,7 +380,7 @@ namespace System.Linq {
 		/// <param name="count">The number of elements to return.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the specified number of elements from the start of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Take<TKey> (this Foundation.NSSet<TKey> source, int count) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Take<TKey> (this Foundation.NSSet<TKey> source, int count) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Take ((IEnumerable<TKey>) source, count);
@@ -392,7 +392,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> as long as the condition is true.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> TakeWhile<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> TakeWhile<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -404,7 +404,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains distinct elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Distinct<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Distinct<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Distinct ((IEnumerable<TKey>) source);
@@ -415,7 +415,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements correspond to those of <paramref name="source"/> in reverse order.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Reverse<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Reverse<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Reverse ((IEnumerable<TKey>) source);
@@ -427,7 +427,7 @@ namespace System.Linq {
 		/// <param name="second">The sequence to concatenate to <paramref name="source"/>.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the concatenated elements of the two sequences.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="second"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Concat<TKey> (this Foundation.NSSet<TKey> source, IEnumerable<TKey> second) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Concat<TKey> (this Foundation.NSSet<TKey> source, IEnumerable<TKey> second) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (second);
@@ -439,7 +439,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>A <see cref="List{T}"/> that contains elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static List<TKey> ToList<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static List<TKey> ToList<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ToList ((IEnumerable<TKey>) source);
@@ -450,7 +450,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An array that contains elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey [] ToArray<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey [] ToArray<TKey> (this Foundation.NSSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ToArray ((IEnumerable<TKey>) source);
@@ -463,7 +463,7 @@ namespace System.Linq {
 		/// <returns>The final accumulator value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="func"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey Aggregate<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, TKey, TKey> func) where TKey : class, Foundation.INativeObject
+		public static TKey Aggregate<TKey> (this Foundation.NSSet<TKey> source, Func<TKey, TKey, TKey> func) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (func);
@@ -478,7 +478,7 @@ namespace System.Linq {
 		/// <param name="func">An accumulator function to be invoked on each element.</param>
 		/// <returns>The final accumulator value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="func"/> is <see langword="null"/>.</exception>
-		public static TAccumulate Aggregate<TKey, TAccumulate> (this Foundation.NSSet<TKey> source, TAccumulate seed, Func<TAccumulate, TKey, TAccumulate> func) where TKey : class, Foundation.INativeObject
+		public static TAccumulate Aggregate<TKey, TAccumulate> (this Foundation.NSSet<TKey> source, TAccumulate seed, Func<TAccumulate, TKey, TAccumulate> func) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (func);
@@ -492,7 +492,7 @@ namespace System.Linq {
 		/// <returns>The first element in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey First<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey First<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.First ((IEnumerable<TKey>) source);
@@ -505,7 +505,7 @@ namespace System.Linq {
 		/// <returns>The first element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey First<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey First<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -517,7 +517,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The first element in <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.FirstOrDefault ((IEnumerable<TKey>) source);
@@ -529,7 +529,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The first element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -542,7 +542,7 @@ namespace System.Linq {
 		/// <returns>The last element in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey Last<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey Last<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Last ((IEnumerable<TKey>) source);
@@ -555,7 +555,7 @@ namespace System.Linq {
 		/// <returns>The last element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey Last<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey Last<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -567,7 +567,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The last element in <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? LastOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? LastOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.LastOrDefault ((IEnumerable<TKey>) source);
@@ -579,7 +579,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The last element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static TKey? LastOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? LastOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -592,7 +592,7 @@ namespace System.Linq {
 		/// <returns>The single element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty or contains more than one element.</exception>
-		public static TKey Single<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey Single<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Single ((IEnumerable<TKey>) source);
@@ -605,7 +605,7 @@ namespace System.Linq {
 		/// <returns>The single element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element or more than one element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey Single<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey Single<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -618,7 +618,7 @@ namespace System.Linq {
 		/// <returns>The single element of <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> contains more than one element.</exception>
-		public static TKey? SingleOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? SingleOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.SingleOrDefault ((IEnumerable<TKey>) source);
@@ -631,7 +631,7 @@ namespace System.Linq {
 		/// <returns>The single element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when more than one element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey? SingleOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? SingleOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -645,7 +645,7 @@ namespace System.Linq {
 		/// <returns>The element at position <paramref name="index"/> in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="index"/> is less than 0 or greater than or equal to the number of elements in <paramref name="source"/>.</exception>
-		public static TKey ElementAt<TKey> (this Foundation.NSMutableSet<TKey> source, int index) where TKey : class, Foundation.INativeObject
+		public static TKey ElementAt<TKey> (this Foundation.NSMutableSet<TKey> source, int index) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ElementAt ((IEnumerable<TKey>) source, index);
@@ -657,7 +657,7 @@ namespace System.Linq {
 		/// <param name="index">The zero-based index of the element to retrieve.</param>
 		/// <returns>The element at position <paramref name="index"/> in <paramref name="source"/>, or <see langword="null"/> if the index is out of range.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? ElementAtOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source, int index) where TKey : class, Foundation.INativeObject
+		public static TKey? ElementAtOrDefault<TKey> (this Foundation.NSMutableSet<TKey> source, int index) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ElementAtOrDefault ((IEnumerable<TKey>) source, index);
@@ -668,7 +668,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns><see langword="true"/> if <paramref name="source"/> contains any elements; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static bool Any<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static bool Any<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Any ((IEnumerable<TKey>) source);
@@ -680,7 +680,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns><see langword="true"/> if any element in <paramref name="source"/> passes the test in <paramref name="predicate"/>; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static bool Any<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static bool Any<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -693,7 +693,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns><see langword="true"/> if every element in <paramref name="source"/> passes the test in <paramref name="predicate"/>, or if the collection is empty; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static bool All<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static bool All<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -705,7 +705,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The number of elements in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static int Count<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static int Count<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Count ((IEnumerable<TKey>) source);
@@ -717,7 +717,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The number of elements in <paramref name="source"/> that pass the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static int Count<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static int Count<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -729,7 +729,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The number of elements in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static long LongCount<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static long LongCount<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.LongCount ((IEnumerable<TKey>) source);
@@ -741,7 +741,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The number of elements in <paramref name="source"/> that pass the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static long LongCount<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static long LongCount<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -754,7 +754,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> that satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -767,7 +767,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element; the second parameter represents the zero-based index of the element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> that satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, int, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, int, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -781,7 +781,7 @@ namespace System.Linq {
 		/// <param name="selector">A transform function to apply to each element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements are the result of invoking the transform function on each element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="selector"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSMutableSet<TKey> source, Func<TKey, TResult> selector) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSMutableSet<TKey> source, Func<TKey, TResult> selector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (selector);
@@ -795,7 +795,7 @@ namespace System.Linq {
 		/// <param name="selector">A transform function to apply to each element; the second parameter represents the zero-based index of the element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements are the result of invoking the transform function on each element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="selector"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSMutableSet<TKey> source, Func<TKey, int, TResult> selector) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSMutableSet<TKey> source, Func<TKey, int, TResult> selector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (selector);
@@ -809,7 +809,7 @@ namespace System.Linq {
 		/// <param name="keySelector">A function to extract a key from an element.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}"/> whose elements are sorted according to a key.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.</exception>
-		public static IOrderedEnumerable<TKey> OrderBy<TKey, TOrderKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, Foundation.INativeObject
+		public static IOrderedEnumerable<TKey> OrderBy<TKey, TOrderKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (keySelector);
@@ -823,7 +823,7 @@ namespace System.Linq {
 		/// <param name="keySelector">A function to extract a key from an element.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}"/> whose elements are sorted in descending order according to a key.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.</exception>
-		public static IOrderedEnumerable<TKey> OrderByDescending<TKey, TOrderKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, Foundation.INativeObject
+		public static IOrderedEnumerable<TKey> OrderByDescending<TKey, TOrderKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (keySelector);
@@ -836,7 +836,7 @@ namespace System.Linq {
 		/// <param name="count">The number of elements to skip before returning the remaining elements.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements after the skipped ones.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Skip<TKey> (this Foundation.NSMutableSet<TKey> source, int count) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Skip<TKey> (this Foundation.NSMutableSet<TKey> source, int count) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Skip ((IEnumerable<TKey>) source, count);
@@ -848,7 +848,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements starting at the first element that does not satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> SkipWhile<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> SkipWhile<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -861,7 +861,7 @@ namespace System.Linq {
 		/// <param name="count">The number of elements to return.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the specified number of elements from the start of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Take<TKey> (this Foundation.NSMutableSet<TKey> source, int count) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Take<TKey> (this Foundation.NSMutableSet<TKey> source, int count) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Take ((IEnumerable<TKey>) source, count);
@@ -873,7 +873,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> as long as the condition is true.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> TakeWhile<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> TakeWhile<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -885,7 +885,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains distinct elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Distinct<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Distinct<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Distinct ((IEnumerable<TKey>) source);
@@ -896,7 +896,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements correspond to those of <paramref name="source"/> in reverse order.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Reverse<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Reverse<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Reverse ((IEnumerable<TKey>) source);
@@ -908,7 +908,7 @@ namespace System.Linq {
 		/// <param name="second">The sequence to concatenate to <paramref name="source"/>.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the concatenated elements of the two sequences.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="second"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Concat<TKey> (this Foundation.NSMutableSet<TKey> source, IEnumerable<TKey> second) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Concat<TKey> (this Foundation.NSMutableSet<TKey> source, IEnumerable<TKey> second) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (second);
@@ -920,7 +920,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>A <see cref="List{T}"/> that contains elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static List<TKey> ToList<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static List<TKey> ToList<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ToList ((IEnumerable<TKey>) source);
@@ -931,7 +931,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An array that contains elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey [] ToArray<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey [] ToArray<TKey> (this Foundation.NSMutableSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ToArray ((IEnumerable<TKey>) source);
@@ -944,7 +944,7 @@ namespace System.Linq {
 		/// <returns>The final accumulator value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="func"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey Aggregate<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, TKey, TKey> func) where TKey : class, Foundation.INativeObject
+		public static TKey Aggregate<TKey> (this Foundation.NSMutableSet<TKey> source, Func<TKey, TKey, TKey> func) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (func);
@@ -959,7 +959,7 @@ namespace System.Linq {
 		/// <param name="func">An accumulator function to be invoked on each element.</param>
 		/// <returns>The final accumulator value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="func"/> is <see langword="null"/>.</exception>
-		public static TAccumulate Aggregate<TKey, TAccumulate> (this Foundation.NSMutableSet<TKey> source, TAccumulate seed, Func<TAccumulate, TKey, TAccumulate> func) where TKey : class, Foundation.INativeObject
+		public static TAccumulate Aggregate<TKey, TAccumulate> (this Foundation.NSMutableSet<TKey> source, TAccumulate seed, Func<TAccumulate, TKey, TAccumulate> func) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (func);
@@ -973,7 +973,7 @@ namespace System.Linq {
 		/// <returns>The first element in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey First<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey First<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.First ((IEnumerable<TKey>) source);
@@ -986,7 +986,7 @@ namespace System.Linq {
 		/// <returns>The first element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey First<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey First<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -998,7 +998,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The first element in <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? FirstOrDefault<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.FirstOrDefault ((IEnumerable<TKey>) source);
@@ -1010,7 +1010,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The first element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static TKey? FirstOrDefault<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1023,7 +1023,7 @@ namespace System.Linq {
 		/// <returns>The last element in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey Last<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey Last<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Last ((IEnumerable<TKey>) source);
@@ -1036,7 +1036,7 @@ namespace System.Linq {
 		/// <returns>The last element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey Last<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey Last<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1048,7 +1048,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The last element in <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? LastOrDefault<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? LastOrDefault<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.LastOrDefault ((IEnumerable<TKey>) source);
@@ -1060,7 +1060,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The last element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static TKey? LastOrDefault<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? LastOrDefault<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1073,7 +1073,7 @@ namespace System.Linq {
 		/// <returns>The single element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty or contains more than one element.</exception>
-		public static TKey Single<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey Single<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Single ((IEnumerable<TKey>) source);
@@ -1086,7 +1086,7 @@ namespace System.Linq {
 		/// <returns>The single element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element or more than one element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey Single<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey Single<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1099,7 +1099,7 @@ namespace System.Linq {
 		/// <returns>The single element of <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> contains more than one element.</exception>
-		public static TKey? SingleOrDefault<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? SingleOrDefault<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.SingleOrDefault ((IEnumerable<TKey>) source);
@@ -1112,7 +1112,7 @@ namespace System.Linq {
 		/// <returns>The single element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when more than one element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey? SingleOrDefault<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? SingleOrDefault<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1126,7 +1126,7 @@ namespace System.Linq {
 		/// <returns>The element at position <paramref name="index"/> in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="index"/> is less than 0 or greater than or equal to the number of elements in <paramref name="source"/>.</exception>
-		public static TKey ElementAt<TKey> (this Foundation.NSArray<TKey> source, int index) where TKey : class, Foundation.INativeObject
+		public static TKey ElementAt<TKey> (this Foundation.NSArray<TKey> source, int index) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ElementAt ((IEnumerable<TKey>) source, index);
@@ -1138,7 +1138,7 @@ namespace System.Linq {
 		/// <param name="index">The zero-based index of the element to retrieve.</param>
 		/// <returns>The element at position <paramref name="index"/> in <paramref name="source"/>, or <see langword="null"/> if the index is out of range.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? ElementAtOrDefault<TKey> (this Foundation.NSArray<TKey> source, int index) where TKey : class, Foundation.INativeObject
+		public static TKey? ElementAtOrDefault<TKey> (this Foundation.NSArray<TKey> source, int index) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ElementAtOrDefault ((IEnumerable<TKey>) source, index);
@@ -1149,7 +1149,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns><see langword="true"/> if <paramref name="source"/> contains any elements; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static bool Any<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static bool Any<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Any ((IEnumerable<TKey>) source);
@@ -1161,7 +1161,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns><see langword="true"/> if any element in <paramref name="source"/> passes the test in <paramref name="predicate"/>; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static bool Any<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static bool Any<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1174,7 +1174,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns><see langword="true"/> if every element in <paramref name="source"/> passes the test in <paramref name="predicate"/>, or if the collection is empty; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static bool All<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static bool All<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1186,7 +1186,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The number of elements in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static int Count<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static int Count<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Count ((IEnumerable<TKey>) source);
@@ -1198,7 +1198,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The number of elements in <paramref name="source"/> that pass the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static int Count<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static int Count<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1210,7 +1210,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The number of elements in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static long LongCount<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static long LongCount<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.LongCount ((IEnumerable<TKey>) source);
@@ -1222,7 +1222,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The number of elements in <paramref name="source"/> that pass the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static long LongCount<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static long LongCount<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1235,7 +1235,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> that satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1248,7 +1248,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element; the second parameter represents the zero-based index of the element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> that satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, int, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, int, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1262,7 +1262,7 @@ namespace System.Linq {
 		/// <param name="selector">A transform function to apply to each element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements are the result of invoking the transform function on each element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="selector"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSArray<TKey> source, Func<TKey, TResult> selector) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSArray<TKey> source, Func<TKey, TResult> selector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (selector);
@@ -1276,7 +1276,7 @@ namespace System.Linq {
 		/// <param name="selector">A transform function to apply to each element; the second parameter represents the zero-based index of the element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements are the result of invoking the transform function on each element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="selector"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSArray<TKey> source, Func<TKey, int, TResult> selector) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSArray<TKey> source, Func<TKey, int, TResult> selector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (selector);
@@ -1290,7 +1290,7 @@ namespace System.Linq {
 		/// <param name="keySelector">A function to extract a key from an element.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}"/> whose elements are sorted according to a key.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.</exception>
-		public static IOrderedEnumerable<TKey> OrderBy<TKey, TOrderKey> (this Foundation.NSArray<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, Foundation.INativeObject
+		public static IOrderedEnumerable<TKey> OrderBy<TKey, TOrderKey> (this Foundation.NSArray<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (keySelector);
@@ -1304,7 +1304,7 @@ namespace System.Linq {
 		/// <param name="keySelector">A function to extract a key from an element.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}"/> whose elements are sorted in descending order according to a key.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.</exception>
-		public static IOrderedEnumerable<TKey> OrderByDescending<TKey, TOrderKey> (this Foundation.NSArray<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, Foundation.INativeObject
+		public static IOrderedEnumerable<TKey> OrderByDescending<TKey, TOrderKey> (this Foundation.NSArray<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (keySelector);
@@ -1317,7 +1317,7 @@ namespace System.Linq {
 		/// <param name="count">The number of elements to skip before returning the remaining elements.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements after the skipped ones.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Skip<TKey> (this Foundation.NSArray<TKey> source, int count) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Skip<TKey> (this Foundation.NSArray<TKey> source, int count) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Skip ((IEnumerable<TKey>) source, count);
@@ -1329,7 +1329,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements starting at the first element that does not satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> SkipWhile<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> SkipWhile<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1342,7 +1342,7 @@ namespace System.Linq {
 		/// <param name="count">The number of elements to return.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the specified number of elements from the start of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Take<TKey> (this Foundation.NSArray<TKey> source, int count) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Take<TKey> (this Foundation.NSArray<TKey> source, int count) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Take ((IEnumerable<TKey>) source, count);
@@ -1354,7 +1354,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> as long as the condition is true.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> TakeWhile<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> TakeWhile<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1366,7 +1366,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains distinct elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Distinct<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Distinct<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Distinct ((IEnumerable<TKey>) source);
@@ -1377,7 +1377,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements correspond to those of <paramref name="source"/> in reverse order.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Reverse<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Reverse<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Reverse ((IEnumerable<TKey>) source);
@@ -1389,7 +1389,7 @@ namespace System.Linq {
 		/// <param name="second">The sequence to concatenate to <paramref name="source"/>.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the concatenated elements of the two sequences.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="second"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Concat<TKey> (this Foundation.NSArray<TKey> source, IEnumerable<TKey> second) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Concat<TKey> (this Foundation.NSArray<TKey> source, IEnumerable<TKey> second) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (second);
@@ -1401,7 +1401,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>A <see cref="List{T}"/> that contains elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static List<TKey> ToList<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static List<TKey> ToList<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ToList ((IEnumerable<TKey>) source);
@@ -1412,7 +1412,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An array that contains elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey [] ToArray<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey [] ToArray<TKey> (this Foundation.NSArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ToArray ((IEnumerable<TKey>) source);
@@ -1425,7 +1425,7 @@ namespace System.Linq {
 		/// <returns>The final accumulator value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="func"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey Aggregate<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, TKey, TKey> func) where TKey : class, Foundation.INativeObject
+		public static TKey Aggregate<TKey> (this Foundation.NSArray<TKey> source, Func<TKey, TKey, TKey> func) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (func);
@@ -1440,7 +1440,7 @@ namespace System.Linq {
 		/// <param name="func">An accumulator function to be invoked on each element.</param>
 		/// <returns>The final accumulator value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="func"/> is <see langword="null"/>.</exception>
-		public static TAccumulate Aggregate<TKey, TAccumulate> (this Foundation.NSArray<TKey> source, TAccumulate seed, Func<TAccumulate, TKey, TAccumulate> func) where TKey : class, Foundation.INativeObject
+		public static TAccumulate Aggregate<TKey, TAccumulate> (this Foundation.NSArray<TKey> source, TAccumulate seed, Func<TAccumulate, TKey, TAccumulate> func) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (func);
@@ -1454,7 +1454,7 @@ namespace System.Linq {
 		/// <returns>The first element in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey First<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey First<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.First ((IEnumerable<TKey>) source);
@@ -1467,7 +1467,7 @@ namespace System.Linq {
 		/// <returns>The first element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey First<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey First<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1479,7 +1479,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The first element in <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.FirstOrDefault ((IEnumerable<TKey>) source);
@@ -1491,7 +1491,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The first element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1504,7 +1504,7 @@ namespace System.Linq {
 		/// <returns>The last element in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey Last<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey Last<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Last ((IEnumerable<TKey>) source);
@@ -1517,7 +1517,7 @@ namespace System.Linq {
 		/// <returns>The last element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey Last<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey Last<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1529,7 +1529,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The last element in <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? LastOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? LastOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.LastOrDefault ((IEnumerable<TKey>) source);
@@ -1541,7 +1541,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The last element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static TKey? LastOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? LastOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1554,7 +1554,7 @@ namespace System.Linq {
 		/// <returns>The single element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty or contains more than one element.</exception>
-		public static TKey Single<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey Single<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Single ((IEnumerable<TKey>) source);
@@ -1567,7 +1567,7 @@ namespace System.Linq {
 		/// <returns>The single element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element or more than one element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey Single<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey Single<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1580,7 +1580,7 @@ namespace System.Linq {
 		/// <returns>The single element of <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> contains more than one element.</exception>
-		public static TKey? SingleOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? SingleOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.SingleOrDefault ((IEnumerable<TKey>) source);
@@ -1593,7 +1593,7 @@ namespace System.Linq {
 		/// <returns>The single element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when more than one element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey? SingleOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? SingleOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1607,7 +1607,7 @@ namespace System.Linq {
 		/// <returns>The element at position <paramref name="index"/> in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="index"/> is less than 0 or greater than or equal to the number of elements in <paramref name="source"/>.</exception>
-		public static TKey ElementAt<TKey> (this Foundation.NSMutableArray<TKey> source, int index) where TKey : class, Foundation.INativeObject
+		public static TKey ElementAt<TKey> (this Foundation.NSMutableArray<TKey> source, int index) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ElementAt ((IEnumerable<TKey>) source, index);
@@ -1619,7 +1619,7 @@ namespace System.Linq {
 		/// <param name="index">The zero-based index of the element to retrieve.</param>
 		/// <returns>The element at position <paramref name="index"/> in <paramref name="source"/>, or <see langword="null"/> if the index is out of range.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? ElementAtOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source, int index) where TKey : class, Foundation.INativeObject
+		public static TKey? ElementAtOrDefault<TKey> (this Foundation.NSMutableArray<TKey> source, int index) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ElementAtOrDefault ((IEnumerable<TKey>) source, index);
@@ -1630,7 +1630,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns><see langword="true"/> if <paramref name="source"/> contains any elements; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static bool Any<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static bool Any<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Any ((IEnumerable<TKey>) source);
@@ -1642,7 +1642,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns><see langword="true"/> if any element in <paramref name="source"/> passes the test in <paramref name="predicate"/>; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static bool Any<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static bool Any<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1655,7 +1655,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns><see langword="true"/> if every element in <paramref name="source"/> passes the test in <paramref name="predicate"/>, or if the collection is empty; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static bool All<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static bool All<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1667,7 +1667,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The number of elements in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static int Count<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static int Count<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Count ((IEnumerable<TKey>) source);
@@ -1679,7 +1679,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The number of elements in <paramref name="source"/> that pass the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static int Count<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static int Count<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1691,7 +1691,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The number of elements in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static long LongCount<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static long LongCount<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.LongCount ((IEnumerable<TKey>) source);
@@ -1703,7 +1703,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The number of elements in <paramref name="source"/> that pass the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static long LongCount<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static long LongCount<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1716,7 +1716,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> that satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1729,7 +1729,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element; the second parameter represents the zero-based index of the element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> that satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, int, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, int, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1743,7 +1743,7 @@ namespace System.Linq {
 		/// <param name="selector">A transform function to apply to each element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements are the result of invoking the transform function on each element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="selector"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSMutableArray<TKey> source, Func<TKey, TResult> selector) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSMutableArray<TKey> source, Func<TKey, TResult> selector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (selector);
@@ -1757,7 +1757,7 @@ namespace System.Linq {
 		/// <param name="selector">A transform function to apply to each element; the second parameter represents the zero-based index of the element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements are the result of invoking the transform function on each element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="selector"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSMutableArray<TKey> source, Func<TKey, int, TResult> selector) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSMutableArray<TKey> source, Func<TKey, int, TResult> selector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (selector);
@@ -1771,7 +1771,7 @@ namespace System.Linq {
 		/// <param name="keySelector">A function to extract a key from an element.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}"/> whose elements are sorted according to a key.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.</exception>
-		public static IOrderedEnumerable<TKey> OrderBy<TKey, TOrderKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, Foundation.INativeObject
+		public static IOrderedEnumerable<TKey> OrderBy<TKey, TOrderKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (keySelector);
@@ -1785,7 +1785,7 @@ namespace System.Linq {
 		/// <param name="keySelector">A function to extract a key from an element.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}"/> whose elements are sorted in descending order according to a key.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.</exception>
-		public static IOrderedEnumerable<TKey> OrderByDescending<TKey, TOrderKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, Foundation.INativeObject
+		public static IOrderedEnumerable<TKey> OrderByDescending<TKey, TOrderKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (keySelector);
@@ -1798,7 +1798,7 @@ namespace System.Linq {
 		/// <param name="count">The number of elements to skip before returning the remaining elements.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements after the skipped ones.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Skip<TKey> (this Foundation.NSMutableArray<TKey> source, int count) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Skip<TKey> (this Foundation.NSMutableArray<TKey> source, int count) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Skip ((IEnumerable<TKey>) source, count);
@@ -1810,7 +1810,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements starting at the first element that does not satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> SkipWhile<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> SkipWhile<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1823,7 +1823,7 @@ namespace System.Linq {
 		/// <param name="count">The number of elements to return.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the specified number of elements from the start of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Take<TKey> (this Foundation.NSMutableArray<TKey> source, int count) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Take<TKey> (this Foundation.NSMutableArray<TKey> source, int count) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Take ((IEnumerable<TKey>) source, count);
@@ -1835,7 +1835,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> as long as the condition is true.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> TakeWhile<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> TakeWhile<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1847,7 +1847,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains distinct elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Distinct<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Distinct<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Distinct ((IEnumerable<TKey>) source);
@@ -1858,7 +1858,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements correspond to those of <paramref name="source"/> in reverse order.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Reverse<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Reverse<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Reverse ((IEnumerable<TKey>) source);
@@ -1870,7 +1870,7 @@ namespace System.Linq {
 		/// <param name="second">The sequence to concatenate to <paramref name="source"/>.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the concatenated elements of the two sequences.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="second"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Concat<TKey> (this Foundation.NSMutableArray<TKey> source, IEnumerable<TKey> second) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Concat<TKey> (this Foundation.NSMutableArray<TKey> source, IEnumerable<TKey> second) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (second);
@@ -1882,7 +1882,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>A <see cref="List{T}"/> that contains elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static List<TKey> ToList<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static List<TKey> ToList<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ToList ((IEnumerable<TKey>) source);
@@ -1893,7 +1893,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An array that contains elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey [] ToArray<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey [] ToArray<TKey> (this Foundation.NSMutableArray<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ToArray ((IEnumerable<TKey>) source);
@@ -1906,7 +1906,7 @@ namespace System.Linq {
 		/// <returns>The final accumulator value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="func"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey Aggregate<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, TKey, TKey> func) where TKey : class, Foundation.INativeObject
+		public static TKey Aggregate<TKey> (this Foundation.NSMutableArray<TKey> source, Func<TKey, TKey, TKey> func) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (func);
@@ -1921,7 +1921,7 @@ namespace System.Linq {
 		/// <param name="func">An accumulator function to be invoked on each element.</param>
 		/// <returns>The final accumulator value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="func"/> is <see langword="null"/>.</exception>
-		public static TAccumulate Aggregate<TKey, TAccumulate> (this Foundation.NSMutableArray<TKey> source, TAccumulate seed, Func<TAccumulate, TKey, TAccumulate> func) where TKey : class, Foundation.INativeObject
+		public static TAccumulate Aggregate<TKey, TAccumulate> (this Foundation.NSMutableArray<TKey> source, TAccumulate seed, Func<TAccumulate, TKey, TAccumulate> func) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (func);
@@ -1935,7 +1935,7 @@ namespace System.Linq {
 		/// <returns>The first element in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey First<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey First<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.First ((IEnumerable<TKey>) source);
@@ -1948,7 +1948,7 @@ namespace System.Linq {
 		/// <returns>The first element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey First<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey First<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1960,7 +1960,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The first element in <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? FirstOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.FirstOrDefault ((IEnumerable<TKey>) source);
@@ -1972,7 +1972,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The first element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static TKey? FirstOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -1985,7 +1985,7 @@ namespace System.Linq {
 		/// <returns>The last element in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey Last<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey Last<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Last ((IEnumerable<TKey>) source);
@@ -1998,7 +1998,7 @@ namespace System.Linq {
 		/// <returns>The last element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey Last<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey Last<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2010,7 +2010,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The last element in <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? LastOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? LastOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.LastOrDefault ((IEnumerable<TKey>) source);
@@ -2022,7 +2022,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The last element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static TKey? LastOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? LastOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2035,7 +2035,7 @@ namespace System.Linq {
 		/// <returns>The single element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty or contains more than one element.</exception>
-		public static TKey Single<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey Single<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Single ((IEnumerable<TKey>) source);
@@ -2048,7 +2048,7 @@ namespace System.Linq {
 		/// <returns>The single element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element or more than one element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey Single<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey Single<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2061,7 +2061,7 @@ namespace System.Linq {
 		/// <returns>The single element of <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> contains more than one element.</exception>
-		public static TKey? SingleOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? SingleOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.SingleOrDefault ((IEnumerable<TKey>) source);
@@ -2074,7 +2074,7 @@ namespace System.Linq {
 		/// <returns>The single element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when more than one element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey? SingleOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? SingleOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2088,7 +2088,7 @@ namespace System.Linq {
 		/// <returns>The element at position <paramref name="index"/> in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="index"/> is less than 0 or greater than or equal to the number of elements in <paramref name="source"/>.</exception>
-		public static TKey ElementAt<TKey> (this Foundation.NSOrderedSet<TKey> source, int index) where TKey : class, Foundation.INativeObject
+		public static TKey ElementAt<TKey> (this Foundation.NSOrderedSet<TKey> source, int index) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ElementAt ((IEnumerable<TKey>) source, index);
@@ -2100,7 +2100,7 @@ namespace System.Linq {
 		/// <param name="index">The zero-based index of the element to retrieve.</param>
 		/// <returns>The element at position <paramref name="index"/> in <paramref name="source"/>, or <see langword="null"/> if the index is out of range.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? ElementAtOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source, int index) where TKey : class, Foundation.INativeObject
+		public static TKey? ElementAtOrDefault<TKey> (this Foundation.NSOrderedSet<TKey> source, int index) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ElementAtOrDefault ((IEnumerable<TKey>) source, index);
@@ -2111,7 +2111,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns><see langword="true"/> if <paramref name="source"/> contains any elements; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static bool Any<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static bool Any<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Any ((IEnumerable<TKey>) source);
@@ -2123,7 +2123,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns><see langword="true"/> if any element in <paramref name="source"/> passes the test in <paramref name="predicate"/>; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static bool Any<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static bool Any<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2136,7 +2136,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns><see langword="true"/> if every element in <paramref name="source"/> passes the test in <paramref name="predicate"/>, or if the collection is empty; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static bool All<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static bool All<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2148,7 +2148,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The number of elements in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static int Count<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static int Count<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Count ((IEnumerable<TKey>) source);
@@ -2160,7 +2160,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The number of elements in <paramref name="source"/> that pass the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static int Count<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static int Count<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2172,7 +2172,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The number of elements in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static long LongCount<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static long LongCount<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.LongCount ((IEnumerable<TKey>) source);
@@ -2184,7 +2184,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The number of elements in <paramref name="source"/> that pass the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static long LongCount<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static long LongCount<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2197,7 +2197,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> that satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2210,7 +2210,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element; the second parameter represents the zero-based index of the element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> that satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, int, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, int, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2224,7 +2224,7 @@ namespace System.Linq {
 		/// <param name="selector">A transform function to apply to each element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements are the result of invoking the transform function on each element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="selector"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, TResult> selector) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, TResult> selector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (selector);
@@ -2238,7 +2238,7 @@ namespace System.Linq {
 		/// <param name="selector">A transform function to apply to each element; the second parameter represents the zero-based index of the element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements are the result of invoking the transform function on each element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="selector"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, int, TResult> selector) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, int, TResult> selector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (selector);
@@ -2252,7 +2252,7 @@ namespace System.Linq {
 		/// <param name="keySelector">A function to extract a key from an element.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}"/> whose elements are sorted according to a key.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.</exception>
-		public static IOrderedEnumerable<TKey> OrderBy<TKey, TOrderKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, Foundation.INativeObject
+		public static IOrderedEnumerable<TKey> OrderBy<TKey, TOrderKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (keySelector);
@@ -2266,7 +2266,7 @@ namespace System.Linq {
 		/// <param name="keySelector">A function to extract a key from an element.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}"/> whose elements are sorted in descending order according to a key.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.</exception>
-		public static IOrderedEnumerable<TKey> OrderByDescending<TKey, TOrderKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, Foundation.INativeObject
+		public static IOrderedEnumerable<TKey> OrderByDescending<TKey, TOrderKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (keySelector);
@@ -2279,7 +2279,7 @@ namespace System.Linq {
 		/// <param name="count">The number of elements to skip before returning the remaining elements.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements after the skipped ones.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Skip<TKey> (this Foundation.NSOrderedSet<TKey> source, int count) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Skip<TKey> (this Foundation.NSOrderedSet<TKey> source, int count) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Skip ((IEnumerable<TKey>) source, count);
@@ -2291,7 +2291,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements starting at the first element that does not satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> SkipWhile<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> SkipWhile<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2304,7 +2304,7 @@ namespace System.Linq {
 		/// <param name="count">The number of elements to return.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the specified number of elements from the start of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Take<TKey> (this Foundation.NSOrderedSet<TKey> source, int count) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Take<TKey> (this Foundation.NSOrderedSet<TKey> source, int count) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Take ((IEnumerable<TKey>) source, count);
@@ -2316,7 +2316,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> as long as the condition is true.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> TakeWhile<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> TakeWhile<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2328,7 +2328,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains distinct elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Distinct<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Distinct<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Distinct ((IEnumerable<TKey>) source);
@@ -2339,7 +2339,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements correspond to those of <paramref name="source"/> in reverse order.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Reverse<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Reverse<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Reverse ((IEnumerable<TKey>) source);
@@ -2351,7 +2351,7 @@ namespace System.Linq {
 		/// <param name="second">The sequence to concatenate to <paramref name="source"/>.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the concatenated elements of the two sequences.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="second"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Concat<TKey> (this Foundation.NSOrderedSet<TKey> source, IEnumerable<TKey> second) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Concat<TKey> (this Foundation.NSOrderedSet<TKey> source, IEnumerable<TKey> second) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (second);
@@ -2363,7 +2363,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>A <see cref="List{T}"/> that contains elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static List<TKey> ToList<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static List<TKey> ToList<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ToList ((IEnumerable<TKey>) source);
@@ -2374,7 +2374,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An array that contains elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey [] ToArray<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey [] ToArray<TKey> (this Foundation.NSOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ToArray ((IEnumerable<TKey>) source);
@@ -2387,7 +2387,7 @@ namespace System.Linq {
 		/// <returns>The final accumulator value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="func"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey Aggregate<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, TKey, TKey> func) where TKey : class, Foundation.INativeObject
+		public static TKey Aggregate<TKey> (this Foundation.NSOrderedSet<TKey> source, Func<TKey, TKey, TKey> func) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (func);
@@ -2402,7 +2402,7 @@ namespace System.Linq {
 		/// <param name="func">An accumulator function to be invoked on each element.</param>
 		/// <returns>The final accumulator value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="func"/> is <see langword="null"/>.</exception>
-		public static TAccumulate Aggregate<TKey, TAccumulate> (this Foundation.NSOrderedSet<TKey> source, TAccumulate seed, Func<TAccumulate, TKey, TAccumulate> func) where TKey : class, Foundation.INativeObject
+		public static TAccumulate Aggregate<TKey, TAccumulate> (this Foundation.NSOrderedSet<TKey> source, TAccumulate seed, Func<TAccumulate, TKey, TAccumulate> func) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (func);
@@ -2416,7 +2416,7 @@ namespace System.Linq {
 		/// <returns>The first element in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey First<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey First<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.First ((IEnumerable<TKey>) source);
@@ -2429,7 +2429,7 @@ namespace System.Linq {
 		/// <returns>The first element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey First<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey First<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2441,7 +2441,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The first element in <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.FirstOrDefault ((IEnumerable<TKey>) source);
@@ -2453,7 +2453,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The first element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? FirstOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2466,7 +2466,7 @@ namespace System.Linq {
 		/// <returns>The last element in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey Last<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey Last<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Last ((IEnumerable<TKey>) source);
@@ -2479,7 +2479,7 @@ namespace System.Linq {
 		/// <returns>The last element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey Last<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey Last<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2491,7 +2491,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The last element in <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? LastOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? LastOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.LastOrDefault ((IEnumerable<TKey>) source);
@@ -2503,7 +2503,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The last element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static TKey? LastOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? LastOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2516,7 +2516,7 @@ namespace System.Linq {
 		/// <returns>The single element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty or contains more than one element.</exception>
-		public static TKey Single<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey Single<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Single ((IEnumerable<TKey>) source);
@@ -2529,7 +2529,7 @@ namespace System.Linq {
 		/// <returns>The single element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when no element or more than one element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey Single<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey Single<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2542,7 +2542,7 @@ namespace System.Linq {
 		/// <returns>The single element of <paramref name="source"/>, or <see langword="null"/> if the collection is empty.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> contains more than one element.</exception>
-		public static TKey? SingleOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey? SingleOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.SingleOrDefault ((IEnumerable<TKey>) source);
@@ -2555,7 +2555,7 @@ namespace System.Linq {
 		/// <returns>The single element in <paramref name="source"/> that passes the test in <paramref name="predicate"/>, or <see langword="null"/> if no such element is found.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when more than one element satisfies the condition in <paramref name="predicate"/>.</exception>
-		public static TKey? SingleOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static TKey? SingleOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2569,7 +2569,7 @@ namespace System.Linq {
 		/// <returns>The element at position <paramref name="index"/> in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="index"/> is less than 0 or greater than or equal to the number of elements in <paramref name="source"/>.</exception>
-		public static TKey ElementAt<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, int index) where TKey : class, Foundation.INativeObject
+		public static TKey ElementAt<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, int index) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ElementAt ((IEnumerable<TKey>) source, index);
@@ -2581,7 +2581,7 @@ namespace System.Linq {
 		/// <param name="index">The zero-based index of the element to retrieve.</param>
 		/// <returns>The element at position <paramref name="index"/> in <paramref name="source"/>, or <see langword="null"/> if the index is out of range.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey? ElementAtOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, int index) where TKey : class, Foundation.INativeObject
+		public static TKey? ElementAtOrDefault<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, int index) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ElementAtOrDefault ((IEnumerable<TKey>) source, index);
@@ -2592,7 +2592,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns><see langword="true"/> if <paramref name="source"/> contains any elements; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static bool Any<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static bool Any<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Any ((IEnumerable<TKey>) source);
@@ -2604,7 +2604,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns><see langword="true"/> if any element in <paramref name="source"/> passes the test in <paramref name="predicate"/>; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static bool Any<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static bool Any<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2617,7 +2617,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns><see langword="true"/> if every element in <paramref name="source"/> passes the test in <paramref name="predicate"/>, or if the collection is empty; otherwise <see langword="false"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static bool All<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static bool All<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2629,7 +2629,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The number of elements in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static int Count<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static int Count<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Count ((IEnumerable<TKey>) source);
@@ -2641,7 +2641,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The number of elements in <paramref name="source"/> that pass the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static int Count<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static int Count<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2653,7 +2653,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>The number of elements in <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static long LongCount<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static long LongCount<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.LongCount ((IEnumerable<TKey>) source);
@@ -2665,7 +2665,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>The number of elements in <paramref name="source"/> that pass the test in <paramref name="predicate"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static long LongCount<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static long LongCount<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2678,7 +2678,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> that satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2691,7 +2691,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element; the second parameter represents the zero-based index of the element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> that satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, int, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Where<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, int, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2705,7 +2705,7 @@ namespace System.Linq {
 		/// <param name="selector">A transform function to apply to each element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements are the result of invoking the transform function on each element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="selector"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, TResult> selector) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, TResult> selector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (selector);
@@ -2719,7 +2719,7 @@ namespace System.Linq {
 		/// <param name="selector">A transform function to apply to each element; the second parameter represents the zero-based index of the element.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements are the result of invoking the transform function on each element of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="selector"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, int, TResult> selector) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TResult> Select<TKey, TResult> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, int, TResult> selector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (selector);
@@ -2733,7 +2733,7 @@ namespace System.Linq {
 		/// <param name="keySelector">A function to extract a key from an element.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}"/> whose elements are sorted according to a key.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.</exception>
-		public static IOrderedEnumerable<TKey> OrderBy<TKey, TOrderKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, Foundation.INativeObject
+		public static IOrderedEnumerable<TKey> OrderBy<TKey, TOrderKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (keySelector);
@@ -2747,7 +2747,7 @@ namespace System.Linq {
 		/// <param name="keySelector">A function to extract a key from an element.</param>
 		/// <returns>An <see cref="IOrderedEnumerable{T}"/> whose elements are sorted in descending order according to a key.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="keySelector"/> is <see langword="null"/>.</exception>
-		public static IOrderedEnumerable<TKey> OrderByDescending<TKey, TOrderKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, Foundation.INativeObject
+		public static IOrderedEnumerable<TKey> OrderByDescending<TKey, TOrderKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, TOrderKey> keySelector) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (keySelector);
@@ -2760,7 +2760,7 @@ namespace System.Linq {
 		/// <param name="count">The number of elements to skip before returning the remaining elements.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements after the skipped ones.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Skip<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, int count) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Skip<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, int count) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Skip ((IEnumerable<TKey>) source, count);
@@ -2772,7 +2772,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the elements starting at the first element that does not satisfy the condition.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> SkipWhile<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> SkipWhile<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2785,7 +2785,7 @@ namespace System.Linq {
 		/// <param name="count">The number of elements to return.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the specified number of elements from the start of <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Take<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, int count) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Take<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, int count) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Take ((IEnumerable<TKey>) source, count);
@@ -2797,7 +2797,7 @@ namespace System.Linq {
 		/// <param name="predicate">A function to test each element for a condition.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains elements from <paramref name="source"/> as long as the condition is true.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="predicate"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> TakeWhile<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> TakeWhile<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, bool> predicate) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (predicate);
@@ -2809,7 +2809,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains distinct elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Distinct<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Distinct<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Distinct ((IEnumerable<TKey>) source);
@@ -2820,7 +2820,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> whose elements correspond to those of <paramref name="source"/> in reverse order.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Reverse<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Reverse<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.Reverse ((IEnumerable<TKey>) source);
@@ -2832,7 +2832,7 @@ namespace System.Linq {
 		/// <param name="second">The sequence to concatenate to <paramref name="source"/>.</param>
 		/// <returns>An <see cref="IEnumerable{T}"/> that contains the concatenated elements of the two sequences.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="second"/> is <see langword="null"/>.</exception>
-		public static IEnumerable<TKey> Concat<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, IEnumerable<TKey> second) where TKey : class, Foundation.INativeObject
+		public static IEnumerable<TKey> Concat<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, IEnumerable<TKey> second) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (second);
@@ -2844,7 +2844,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>A <see cref="List{T}"/> that contains elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static List<TKey> ToList<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static List<TKey> ToList<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ToList ((IEnumerable<TKey>) source);
@@ -2855,7 +2855,7 @@ namespace System.Linq {
 		/// <param name="source">The source collection.</param>
 		/// <returns>An array that contains elements from <paramref name="source"/>.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> is <see langword="null"/>.</exception>
-		public static TKey [] ToArray<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, Foundation.INativeObject
+		public static TKey [] ToArray<TKey> (this Foundation.NSMutableOrderedSet<TKey> source) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			return Enumerable.ToArray ((IEnumerable<TKey>) source);
@@ -2868,7 +2868,7 @@ namespace System.Linq {
 		/// <returns>The final accumulator value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="func"/> is <see langword="null"/>.</exception>
 		/// <exception cref="InvalidOperationException">Thrown when <paramref name="source"/> is empty.</exception>
-		public static TKey Aggregate<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, TKey, TKey> func) where TKey : class, Foundation.INativeObject
+		public static TKey Aggregate<TKey> (this Foundation.NSMutableOrderedSet<TKey> source, Func<TKey, TKey, TKey> func) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (func);
@@ -2883,7 +2883,7 @@ namespace System.Linq {
 		/// <param name="func">An accumulator function to be invoked on each element.</param>
 		/// <returns>The final accumulator value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="source"/> or <paramref name="func"/> is <see langword="null"/>.</exception>
-		public static TAccumulate Aggregate<TKey, TAccumulate> (this Foundation.NSMutableOrderedSet<TKey> source, TAccumulate seed, Func<TAccumulate, TKey, TAccumulate> func) where TKey : class, Foundation.INativeObject
+		public static TAccumulate Aggregate<TKey, TAccumulate> (this Foundation.NSMutableOrderedSet<TKey> source, TAccumulate seed, Func<TAccumulate, TKey, TAccumulate> func) where TKey : class, ObjCRuntime.INativeObject
 		{
 			ArgumentNullException.ThrowIfNull (source);
 			ArgumentNullException.ThrowIfNull (func);

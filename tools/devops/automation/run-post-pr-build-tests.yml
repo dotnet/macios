@@ -27,4 +27,4 @@ extends:
   parameters:
     isPR: true
     buildPackages: true
-    useACES: false
+    useACES: ${{ eq(variables.UseACES_PR, 'true') }}

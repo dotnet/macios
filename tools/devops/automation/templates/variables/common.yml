@@ -51,6 +51,37 @@ variables:
 - name: CIBuildPoolACESImage
   value: 'ACES_VM_SharedPool_Tahoe'
 
+# Global switches that route build / api-diff / simulator-test jobs onto the
+# ACES shared pool ($(CIBuildPoolACES) with image $(CIBuildPoolACESImage))
+# instead of the traditional Redmond Mac build pools ($(CIBuildPool) / $(PRBuildPool)).
+#
+# There is one switch per "side" of the pipeline so CI and PR can be migrated
+# independently:
+#   - UseACES_CI: consumed by build-pipeline.yml, run-ci-api-diff.yml and
+#                 run-post-ci-build-tests.yml.
+#   - UseACES_PR: consumed by build-pull-request.yml, run-pr-api-diff.yml and
+#                 run-post-pr-build-tests.yml.
+#
+# Each entry pipeline reads the matching variable with
+#   ${{ eq(variables.UseACES_XX, 'true') }}
+# and forwards the resulting boolean as the `useACES` template parameter. That
+# parameter is threaded through main-stage.yml / build-stage.yml /
+# api-diff-stage.yml / tests/stage.yml, where the `pool:` block is emitted at
+# template-expansion time as either:
+#   - ACES:    name: $(CIBuildPoolACES), demands: ImageOverride -equals $(CIBuildPoolACESImage)
+#   - default: the original pool + Darwin / macOS.Name / XcodeChannel demands
+#
+# Because the value is used inside a `${{ }}` template expression, it must stay
+# a literal string ('true' / 'false') defined here — variable groups or runtime
+# expressions would not work. Flip a value and queue a new run to switch sides.
+#
+# We may want to switch back to traditional pools for example when the ACES pool is not available
+# or when we need beta versions of Xcode or macOS that are not available in the ACES pool.
+- name: UseACES_CI
+  value: 'true'
+- name: UseACES_PR
+  value: 'false'
+
 # override the default build revision
 - name: BUILD_REVISION
   value: azure-devops-$(Build.SourceVersion)

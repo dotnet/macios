@@ -28,9 +28,9 @@ safe-outputs:
   create-pull-request:
     max: 10
     allowed-base-branches:
-      - "net[0-9]*.0"
-      - "xcode[0-9]*"
-      - "xcode[0-9]*.[0-9]*"
+      - "net*.0"
+      - "xcode*"
+      - "xcode*.*"
   add-comment:
     max: 10
     target: "*"
@@ -54,9 +54,9 @@ Merge code from `main` into active target branches, creating pull requests for e
 ## Target Branch Patterns
 
 Only consider remote branches matching these patterns:
-- `net[0-9]*.0` (e.g., `net11.0`, `net10.0`)
-- `xcode[0-9]*` (e.g., `xcode26`)
-- `xcode[0-9]*.[0-9]*` (e.g., `xcode26.4`)
+- `net*.0` (e.g., `net11.0`, `net10.0`)
+- `xcode*` (e.g., `xcode26`)
+- `xcode*.*` (e.g., `xcode26.4`)
 
 Only process branches that have had commits in the last 30 days.
 

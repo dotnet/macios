@@ -3,7 +3,7 @@
 		<!-- Disables the transitive restore of packages like Microsoft.AspNetCore.App.Ref, Microsoft.WindowsDesktop.App.Ref -->
 		<DisableTransitiveFrameworkReferenceDownloads>true</DisableTransitiveFrameworkReferenceDownloads>
 		<MSBuildStructuredLoggerPackageVersion>2.2.158</MSBuildStructuredLoggerPackageVersion>
-		<MicrosoftBuildPackageVersion>17.13.26</MicrosoftBuildPackageVersion>
+		<MicrosoftBuildPackageVersion>17.14.28</MicrosoftBuildPackageVersion>
 		<MicrosoftBuildFrameworkPackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildFrameworkPackageVersion>
 		<MicrosoftBuildTasksCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildTasksCorePackageVersion>
 		<MicrosoftBuildUtilitiesCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildUtilitiesCorePackageVersion>
@@ -11,8 +11,6 @@
 		<NUnitXmlTestLoggerPackageVersion>3.1.15</NUnitXmlTestLoggerPackageVersion>
 		<!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.2 brought by Microsoft.Build package -->
 		<SystemDrawingCommonPackageVersion>4.7.2</SystemDrawingCommonPackageVersion>
-		<!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.1 brought by Microsoft.Build.Tasks.Core package -->
-		<SystemSecurityCryptographyXmlPackageVersion>8.0.0</SystemSecurityCryptographyXmlPackageVersion>
 
 		<ClangSharpPackageVersion>21.1.8.3</ClangSharpPackageVersion>
 		<ICSharpCodeNRefactoryPackageVersion>5.5.1</ICSharpCodeNRefactoryPackageVersion>

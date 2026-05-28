@@ -17,4 +17,3 @@ extends:
   parameters:
     isPR: false
     pool: $(CIBuildPool)
-    useACES: ${{ eq(variables.UseACES_CI, 'true') }}

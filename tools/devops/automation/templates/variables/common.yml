@@ -62,12 +62,19 @@ variables:
 #   - UseACES_PR: consumed by build-pull-request.yml, run-pr-api-diff.yml and
 #                 run-post-pr-build-tests.yml.
 #
-# Each entry pipeline reads the matching variable with
-#   ${{ eq(variables.UseACES_XX, 'true') }}
-# and forwards the resulting boolean as the `useACES` template parameter. That
-# parameter is threaded through main-stage.yml / build-stage.yml /
-# api-diff-stage.yml / tests/stage.yml, where the `pool:` block is emitted at
-# template-expansion time as either:
+# Each entry pipeline reads the matching variable via
+#   ${{ eq(variables['UseACES_XX'], 'true') }}
+# inside the template chain heads that actually import this file as
+# variables (main-stage.yml, pipelines/api-diff-pipeline.yml and
+# pipelines/run-tests-pipeline.yml). The lookup must happen there — the leaf
+# `run-*.yml` entry pipelines do not include common.yml themselves, so the
+# variable would be undefined if read at that level.
+#
+# Each template head picks the right variable based on the `isPR` parameter
+# and forwards the resulting boolean as the `useACES` template parameter down
+# to the job-level templates (build-stage.yml, build/api-diff-stage.yml and
+# tests/stage.yml), where the `pool:` block is emitted at template-expansion
+# time as either:
 #   - ACES:    name: $(CIBuildPoolACES), demands: ImageOverride -equals $(CIBuildPoolACESImage)
 #   - default: the original pool + Darwin / macOS.Name / XcodeChannel demands
 #

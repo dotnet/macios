@@ -22,10 +22,6 @@ parameters:
   type: boolean
   default: false
 
-- name: useACES
-  type: boolean
-  default: false
-
 resources:
   repositories:
   - repository: self
@@ -53,4 +49,7 @@ stages:
     isPR: ${{ parameters.isPR }}
     provisionatorChannel: ${{ parameters.provisionatorChannel }}
     pool: ${{ parameters.pool }}
-    useACES: ${{ parameters.useACES }}
+    ${{ if parameters.isPR }}:
+      useACES: ${{ eq(variables['UseACES_PR'], 'true') }}
+    ${{ else }}:
+      useACES: ${{ eq(variables['UseACES_CI'], 'true') }}

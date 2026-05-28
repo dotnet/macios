@@ -26,4 +26,3 @@ extends:
   parameters:
     isPR: true
     pool: $(PRBuildPool)
-    useACES: ${{ eq(variables.UseACES_PR, 'true') }}

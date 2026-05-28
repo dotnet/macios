@@ -113,4 +113,3 @@ extends:
         forceInsertion: ${{ parameters.forceInsertion }}
         pushNugets: false
         pushNugetsToMaestro: false
-        useACES: ${{ eq(variables.UseACES_PR, 'true') }}

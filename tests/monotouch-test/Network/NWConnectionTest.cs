@@ -72,7 +72,7 @@ namespace MonoTouchFixtures.Network {
 	}
 
 	class ConnectionManager : IDisposable {
-		string host = NetworkResources.MicrosoftUri.Host;
+		string host = NetworkResources.MicrosoftHttpUri.Host;
 		AutoResetEvent connectedEvent = new AutoResetEvent (false);  // used to let us know when the connection was established so that we can access the Report
 		NWConnection? connection;
 		NWParameters? parameters;

@@ -391,7 +391,7 @@ namespace Xamarin.MacDev.Tasks {
 		}
 		#endregion
 
-#region Xamarin.Bundler.IToolLog
+		#region Xamarin.Bundler.IToolLog
 		void IToolLog.Log (string message)
 		{
 			((ICustomLogger) this).LogInfo (message);
@@ -411,6 +411,6 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			((ICustomLogger) this).LogError ("", exception);
 		}
-#endregion
+		#endregion
 	}
 }

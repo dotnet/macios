@@ -343,7 +343,7 @@ namespace Xamarin.Linker {
 		}
 
 		// Check if there are any branches in the instructions that branch to anywhere between 'first' and 'last' instructions (both inclusive).
-		static  bool AnyBranchTo (OptimizeGeneratedCodeData data, Mono.Collections.Generic.Collection<Instruction> instructions, Instruction first, Instruction last)
+		static bool AnyBranchTo (OptimizeGeneratedCodeData data, Mono.Collections.Generic.Collection<Instruction> instructions, Instruction first, Instruction last)
 		{
 			if (first.Offset > last.Offset) {
 				data.App.Log ($"Broken assumption: {first} is after {last}");

@@ -10,8 +10,7 @@ public interface IToolLog {
 	void LogException (Exception exception);
 }
 
-public static class IToolLogExtensions
-{
+public static class IToolLogExtensions {
 	public static void Log (this IToolLog log, string format, params object? [] args)
 	{
 		log.Log (string.Format (format, args));

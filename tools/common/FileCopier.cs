@@ -196,7 +196,7 @@ namespace Xamarin.Bundler {
 		static CopyFileResult CopyFileCallback (CopyFileWhat what, CopyFileStep stage, IntPtr state, string source, string target, IntPtr ctx)
 		{
 #endif
-		var log = (IToolLog) GCHandle.FromIntPtr (ctx).Target!;
+			var log = (IToolLog) GCHandle.FromIntPtr (ctx).Target!;
 
 			// log.Log ("CopyFileCallback ({0}, {1}, 0x{2}, {3}, {4}, 0x{5})", what, stage, state.ToString ("x"), source, target, ctx.ToString ("x"));
 			switch (what) {

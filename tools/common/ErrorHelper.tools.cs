@@ -345,7 +345,7 @@ namespace Xamarin.Bundler {
 				log.LogError (ie.ToString ());
 				log.LogError ("---");
 			} else if (log.Verbosity > 0 || ie is ProductException) {
-				log.LogError ("\t{0}", ie.Message);
+				log.LogError ($"\t{ie.Message}");
 			}
 			ShowInner (log, ie);
 		}

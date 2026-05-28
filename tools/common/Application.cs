@@ -102,7 +102,8 @@ namespace Xamarin.Bundler {
 		public HashSet<string> WeakFrameworks = new HashSet<string> ();
 
 		public bool IsExtension;
-		public ApplePlatform Platform { get { return Driver.TargetFramework.Platform; } }
+		public TargetFramework TargetFramework { get; set; }
+		public ApplePlatform Platform { get { return TargetFramework.Platform; } }
 
 		public List<string> MonoLibraries = new List<string> ();
 		public List<string> InterpretedAssemblies = new List<string> ();
@@ -266,7 +267,7 @@ namespace Xamarin.Bundler {
 		public Version GetMacCatalystiOSVersion (Version macOSVersion)
 		{
 #if LEGACY_TOOLS
-			if (macOSVersion.Major >= 26 && Driver.SdkRoot is null) {
+			if (macOSVersion.Major >= 26 && SdkRoot is null) {
 				// this shouldn't happen for normal builds, nor for customers, so just show an internal 99 warning.
 				ErrorHelper.Warning (this, 99, Errors.MX0099, $"No Xcode configured, assuming the macOS version {macOSVersion} is identical to the Mac Catalyst/iOS version.");
 				return macOSVersion;
@@ -287,6 +288,7 @@ namespace Xamarin.Bundler {
 #endif
 			this.StaticRegistrar = new StaticRegistrar (this);
 			this.Resolver = new PlatformResolver (this);
+			SetDefaultHiddenWarnings ();
 		}
 
 #if !LEGACY_TOOLS
@@ -1032,7 +1034,7 @@ namespace Xamarin.Bundler {
 				if (!string.IsNullOrEmpty (llvm_path)) {
 					aotArguments.Add ($"llvm-path={llvm_path}");
 				} else {
-					aotArguments.Add ($"llvm-path={Driver.GetFrameworkCurrentDirectory (app)}/LLVM/bin/");
+					aotArguments.Add ($"llvm-path={app.FrameworkCurrentDirectory}/LLVM/bin/");
 				}
 			}
 
@@ -1198,17 +1200,12 @@ namespace Xamarin.Bundler {
 		}
 #endif // !LEGACY_TOOLS
 
-		static Application ()
-		{
-			SetDefaultHiddenWarnings ();
-		}
-
-		public static void SetDefaultHiddenWarnings ()
+		public void SetDefaultHiddenWarnings ()
 		{
 			// People don't like these warnings (#20670), and they also complicate our tests, so ignore them.
-			ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, "4178"); // The class '{0}' will not be registered because the {1} framework has been removed from the {2} SDK.
-			ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, "4189"); // The class '{0}' will not be registered because it has been removed from the {1} SDK.
-			ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, "4190"); // The class '{0}' will not be registered because the {1} framework has been deprecated from the {2} SDK.
+			ErrorHelper.ParseWarningLevel (this, ErrorHelper.WarningLevel.Disable, "4178"); // The class '{0}' will not be registered because the {1} framework has been removed from the {2} SDK.
+			ErrorHelper.ParseWarningLevel (this, ErrorHelper.WarningLevel.Disable, "4189"); // The class '{0}' will not be registered because it has been removed from the {1} SDK.
+			ErrorHelper.ParseWarningLevel (this, ErrorHelper.WarningLevel.Disable, "4190"); // The class '{0}' will not be registered because the {1} framework has been deprecated from the {2} SDK.
 		}
 
 		public void Log (string message)
@@ -1236,5 +1233,45 @@ namespace Xamarin.Bundler {
 			get => verbosity;
 			set => verbosity = value;
 		}
+
+		public string? SdkRoot { get; set; }
+		public string? DeveloperDirectory { get; set; }
+
+		string? framework_dir;
+		public string FrameworkCurrentDirectory {
+			get {
+				if (framework_dir is null)
+					throw new InvalidOperationException ($"Teh current framework directory hasn't been set.");
+				return framework_dir;
+			}
+			set {
+				framework_dir = value;
+			}
+		}
+
+		/// <summary>
+		/// This returns the /Applications/Xcode*.app/Contents/Developer/Platforms directory
+		/// </summary>
+		public string PlatformsDirectory {
+			get {
+				if (DeveloperDirectory is null)
+					throw new InvalidOperationException ("DeveloperDirectory is not set");
+				return Path.Combine (DeveloperDirectory, "Platforms");
+			}
+		}
+
+		Version? xcode_version;
+		public Version XcodeVersion {
+			get {
+				if (xcode_version is null)
+					throw ErrorHelper.CreateError (99, Errors.MX0099, "The Xcode version has not been configured. Pass --xcode-version or configure an Xcode installation.");
+				return xcode_version;
+			}
+			set {
+				xcode_version = value;
+			}
+		}
+
+		public string? XcodeProductVersion { get; set; }
 	}
 }

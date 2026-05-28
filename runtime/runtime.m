@@ -2497,7 +2497,7 @@ static const char *xamarin_compute_corelib_directory(void)
 	return cached;
 }
 
-static size_t xamarin_coreclr_get_runtime_property(const char *key, char *value_buffer, size_t value_buffer_size, void *contract_context)
+static size_t xamarin_coreclr_get_runtime_property (const char *key, char *value_buffer, size_t value_buffer_size, void *contract_context)
 {
 	if (strcmp (key, HOST_PROPERTY_BUNDLE_EXTRACTION_PATH) != 0)
 		return (size_t) -1;

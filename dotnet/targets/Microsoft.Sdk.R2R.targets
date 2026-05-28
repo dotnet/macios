@@ -22,6 +22,61 @@
 		</ItemGroup>
 	</Target>
 
+	<!--
+	    Restrict the R2R composite to a single root (System.Private.CoreLib.dll) for Debug
+	    iOS/tvOS/MacCatalyst CoreCLR builds. All other BCL/framework assemblies remain in
+	    the composite as UNROOTED inputs, so crossgen2 rewrites their component R2R header
+	    owner pointer to our local composite (e.g. "MyApp.iOS.r2r.dylib") but skips code
+	    generation for them.
+
+	    Why this is needed: BCL assemblies in the runtime pack come pre-built with a
+	    component R2R header pointing to upstream "Microsoft.NETCore.App.r2r.dylib".
+	    Adding them to PublishReadyToRunExclude would leave that header in place, and at
+	    runtime CoreCLR's NativeImage::Open -> HostInformation::GetNativeCodeData lookup
+	    of "Microsoft.NETCore.App.r2r.dylib" fails (macios only registers the local
+	    composite), triggering RaiseFailFastException -> SIGABRT at startup. Making them
+	    unrooted composite inputs is the only mechanism that rewrites the per-component
+	    header to a name macios actually registered.
+
+	    User assemblies stay in PublishReadyToRunExclude via _SelectR2RAssemblies (they
+	    have no upstream R2R headers to begin with).
+
+	    Opt out per-project for the rare app that wants the all-framework-rooted composite
+	    in Debug (e.g. a native app with a very large BCL surface):
+	        <PublishReadyToRunCompositeRoots Remove="System.Private.CoreLib.dll" />
+	-->
+	<Target Name="_ConfigureCoreLibOnlyCompositeRoots"
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(_UseNativeAot)' != 'true' And '$(Configuration)' == 'Debug' And '$(RuntimeIdentifiers)' == '' And '$(PublishReadyToRun)' == 'true' And '$(PublishReadyToRunComposite)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho'"
+			AfterTargets="_SelectR2RAssemblies"
+			BeforeTargets="_PrepareForReadyToRunCompilation">
+		<ItemGroup>
+			<PublishReadyToRunCompositeRoots Include="System.Private.CoreLib.dll" KeepDuplicates="false" />
+		</ItemGroup>
+		<Message Importance="high" Text="Restricting R2R composite roots to @(PublishReadyToRunCompositeRoots) for Debug $(_PlatformName) CoreCLR" />
+	</Target>
+
+	<!--
+	    Microsoft.NET.CrossGen.targets removes _ReadyToRunCompositeBuildInput (rooted
+	    composite inputs) and _ReadyToRunCompileList from ResolvedFileToPublish so the
+	    rewritten copies in obj/.../R2R/ replace the originals. It does NOT remove
+	    _ReadyToRunCompositeUnrootedBuildInput, which causes NETSDK1152 "multiple publish
+	    output files with the same relative path" once we have any unrooted composite
+	    inputs. Mirror the same Remove for the unrooted set.
+
+	    Decoupled from the policy target above so this fix also applies whenever a user
+	    explicitly sets PublishReadyToRunCompositeRoots in their csproj (in any
+	    configuration). Track upstream fix at dotnet/sdk; once the SDK does the
+	    symmetric Remove, this target can be retired.
+	-->
+	<Target Name="_DedupUnrootedReadyToRunPublish"
+			Condition="@(PublishReadyToRunCompositeRoots->Count()) != 0"
+			AfterTargets="_PrepareForReadyToRunCompilation">
+		<ItemGroup>
+			<ResolvedFileToPublish Remove="@(_ReadyToRunCompositeUnrootedBuildInput)" />
+		</ItemGroup>
+		<Message Importance="high" Text="Removed @(_ReadyToRunCompositeUnrootedBuildInput->Count()) unrooted composite originals from ResolvedFileToPublish (NETSDK1152 workaround)" />
+	</Target>
+
 	<!-- Set per-module R2R header symbol names so each .o file exports a unique symbol directly,
 	     avoiding the need for post-link symbol aliasing. -->
 	<Target Name="_SetR2RHeaderSymbolNames"

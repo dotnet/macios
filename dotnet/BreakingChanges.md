@@ -212,3 +212,38 @@ for tvOS apps).
 
 The version format has also changed, from "X.Y.Z.W (`branch`: `hash`)" to the
 semantic versioning we use for .NET: "X.Y.Z-`branch`.Z+sha.`hash`".
+
+## Debug iOS / tvOS / Mac Catalyst CoreCLR bundle composition
+
+Debug iOS, tvOS, and Mac Catalyst apps built on CoreCLR now restrict the
+composite ReadyToRun (R2R) image to root only on `System.Private.CoreLib.dll`.
+Every other R2R-eligible framework assembly is re-headered to point at the
+single per-app composite, so the upstream `Microsoft.NETCore.App.r2r.framework`
+and per-module BCL `.r2r.framework` bundles are no longer carried into the app
+bundle. The bundle now contains a single `<App>.r2r.framework` instead.
+
+This change reduces Debug bundle size and improves cold startup and incremental
+build times, but it changes the on-disk shape of the Debug bundle:
+
+* `Microsoft.NETCore.App.r2r.framework` is no longer present.
+* Per-module BCL R2R frameworks (e.g. `System.Linq.r2r.framework`) are no
+  longer present.
+* A single `<App>.r2r.framework` aggregates the R2R code path.
+
+Apps that introspect their own Debug bundle structure may need adjustment.
+macOS, NativeAOT, Mono, and Release builds are unaffected.
+
+To opt out and restore the previous behavior (every R2R-eligible assembly is a
+root), declare the underlying SDK item group statically in the project:
+
+```xml
+<ItemGroup>
+  <PublishReadyToRunCompositeRoots Include="System.Private.CoreLib.dll" />
+  <PublishReadyToRunCompositeRoots Include="System.Linq.dll" />
+  <!-- ...enumerate the roots you want in the composite... -->
+</ItemGroup>
+```
+
+Any user-provided `PublishReadyToRunCompositeRoots` takes precedence over the
+macios default.
+

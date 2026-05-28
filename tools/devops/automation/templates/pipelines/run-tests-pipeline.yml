@@ -36,6 +36,11 @@ parameters:
     type: boolean
     default: false
 
+  - name: useACES
+    displayName: Use ACES shared pool for simulator tests
+    type: boolean
+    default: false
+
 resources:
   repositories:
     - repository: self
@@ -62,7 +67,4 @@ stages:
       runTests: ${{ parameters.runTests }}
       runWindowsIntegration: ${{ parameters.runWindowsIntegration }}
       buildPackages: ${{ parameters.buildPackages }}
-      ${{ if parameters.isPR }}:
-        useACES: ${{ eq(variables['UseACES_PR'], 'true') }}
-      ${{ else }}:
-        useACES: ${{ eq(variables['UseACES_CI'], 'true') }}
+      useACES: ${{ parameters.useACES }}

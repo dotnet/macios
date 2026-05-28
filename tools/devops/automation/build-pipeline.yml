@@ -132,6 +132,7 @@ extends:
           forceInsertion: ${{ parameters.forceInsertion }}
           pushNugets: ${{ parameters.pushNugets }}
           pushNugetsToMaestro: ${{ parameters.pushNugetsToMaestro }}
+          useACES: true  # flip to false to opt CI out of ACES; see templates/variables/common.yml
 
       - template: localization/v1.yml@yaml-templates
         parameters:

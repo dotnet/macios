@@ -2468,7 +2468,7 @@ xamarin_get_native_code_data (const struct host_runtime_contract_native_code_con
 // Bundle::AppIsBundle () && Bundle::AppBundle->HasExtractedFiles (). Register a no-op
 // bundle_probe so AppBundle is non-null, and answer BUNDLE_EXTRACTION_PATH with the
 // directory containing System.Private.CoreLib.dll so the fallback finds it.
-static bool xamarin_coreclr_bundle_probe(const char *path, int64_t *offset, int64_t *size, int64_t *compressed_size)
+static bool xamarin_coreclr_bundle_probe (const char *path, int64_t *offset, int64_t *size, int64_t *compressed_size)
 {
 	return false;
 }

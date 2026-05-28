@@ -41,12 +41,17 @@
 	    User assemblies stay in PublishReadyToRunExclude via _SelectR2RAssemblies (they
 	    have no upstream R2R headers to begin with).
 
-	    Opt out per-project for the rare app that wants the all-framework-rooted composite
-	    in Debug (e.g. a native app with a very large BCL surface):
-	        <PublishReadyToRunCompositeRoots Remove="System.Private.CoreLib.dll" />
+	    Override per-project by declaring PublishReadyToRunCompositeRoots statically in
+	    the csproj (or an imported props/targets file). Any user-provided set takes
+	    precedence over this default and this target becomes a no-op:
+	        <ItemGroup>
+	          <PublishReadyToRunCompositeRoots Include="System.Private.CoreLib.dll" />
+	          <PublishReadyToRunCompositeRoots Include="System.Linq.dll" />
+	          ... whatever roots you need ...
+	        </ItemGroup>
 	-->
 	<Target Name="_ConfigureCoreLibOnlyCompositeRoots"
-			Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(_UseNativeAot)' != 'true' And '$(Configuration)' == 'Debug' And '$(RuntimeIdentifiers)' == '' And '$(PublishReadyToRun)' == 'true' And '$(PublishReadyToRunComposite)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho'"
+			Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(_UseNativeAot)' != 'true' And '$(Configuration)' == 'Debug' And '$(RuntimeIdentifiers)' == '' And '$(PublishReadyToRun)' == 'true' And '$(PublishReadyToRunComposite)' == 'true' And '$(PublishReadyToRunContainerFormat)' == 'macho' And '@(PublishReadyToRunCompositeRoots->Count())' == '0'"
 			AfterTargets="_SelectR2RAssemblies"
 			BeforeTargets="_PrepareForReadyToRunCompilation">
 		<ItemGroup>

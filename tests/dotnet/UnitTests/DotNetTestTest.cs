@@ -57,7 +57,7 @@ public sealed class Test1 {{
 			var binlog = Path.Combine (outputDir, "log-test.binlog");
 			var testArgs = new List<string> { "test", proj, $"/bl:{binlog}" };
 			var testResult = Execution.RunAsync (DotNet.Executable, testArgs, env, Console.Out, workingDirectory: outputDir, timeout: TimeSpan.FromMinutes (10)).Result;
-			Assert.AreEqual (0, testResult.ExitCode, $"'dotnet test' failed with exit code {testResult.ExitCode}.\nBinlog: {binlog}\nOutput:\n{testResult.Output.MergedOutput}");
+			Assert.That (testResult.ExitCode, Is.EqualTo (0), $"'dotnet test' failed with exit code {testResult.ExitCode}.\nBinlog: {binlog}\nOutput:\n{testResult.Output.MergedOutput}");
 		}
 
 		static string GetDeviceUdid (string projectDirectory, string runtimeIdentifier)
@@ -76,7 +76,7 @@ public sealed class Test1 {{
 			env ["MSBuildSDKsPath"] = null;
 			env ["MSBUILD_EXE_PATH"] = null;
 			var rv = Execution.RunAsync (DotNet.Executable, args, env, Console.Out, workingDirectory: projectDirectory, timeout: TimeSpan.FromMinutes (2)).Result;
-			Assert.AreEqual (0, rv.ExitCode, $"Failed to compute available devices. Output:\n{rv.Output.MergedOutput}");
+			Assert.That (rv.ExitCode, Is.EqualTo (0), $"Failed to compute available devices. Output:\n{rv.Output.MergedOutput}");
 
 			var output = File.ReadAllText (outputFile);
 			var doc = JsonDocument.Parse (output);

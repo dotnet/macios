@@ -208,6 +208,7 @@ steps:
     provisioning_script: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/build-provisioning.csx
     displayName: 'Provisionator dependencies'
     provisionatorChannel: $(PROVISIONATOR_CHANNEL)
+    retryCount: 3
 
 - bash: |
     set -x

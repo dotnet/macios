@@ -21,13 +21,13 @@ Download updated expected app size files from Azure DevOps artifacts for the cur
 
 The app size tests (`tests/dotnet/UnitTests/AppSizeTest.cs`) compare the built app's size and preserved APIs against expected files stored in `tests/dotnet/UnitTests/expected/`. When the test detects a difference and `WRITE_KNOWN_FAILURES` is not set, it writes the updated expected file to `$(Build.ArtifactStagingDirectory)/updated-expected-sizes/`, and a pipeline step publishes this directory as a build artifact.
 
-The artifact name follows the pattern `updated-expected-sizes-{testPrefix}-{attempt}` (e.g., `updated-expected-sizes-dotnettests_ios-1`). Inside the artifact, files are named:
-- `{Platform}-{Runtime}-size.txt` — e.g., `iOS-MonoVM-size.txt`
-- `{Platform}-{Runtime}-preservedapis.txt` — e.g., `iOS-MonoVM-preservedapis.txt`
+The artifact name follows the pattern `{uploadPrefix}updated-expected-sizes-{testPrefix}-{attempt}` (e.g., `updated-expected-sizes-dotnettests_ios-1`). Inside the artifact, files are named after the test variant:
+- `{Platform}-{Variant}-size.txt` — e.g., `iOS-MonoVM-size.txt`, `iOS-MonoVM-interpreter-size.txt`, `iOS-NativeAOT-TrimmableStatic-size.txt`, `MacOSX-CoreCLR-Interpreter-size.txt`
+- `{Platform}-{Variant}-preservedapis.txt` — e.g., `iOS-MonoVM-preservedapis.txt`, `MacCatalyst-MonoVM-interpreter-preservedapis.txt`
 
 The expected files on disk are at:
-- `tests/dotnet/UnitTests/expected/{Platform}-{Runtime}-size.txt`
-- `tests/dotnet/UnitTests/expected/{Platform}-{Runtime}-preservedapis.txt`
+- `tests/dotnet/UnitTests/expected/{Platform}-{Variant}-size.txt`
+- `tests/dotnet/UnitTests/expected/{Platform}-{Variant}-preservedapis.txt`
 
 ## Workflow
 
@@ -111,8 +111,8 @@ After placing the files:
 If automated download fails (auth issues, etc.), provide the user with:
 1. The Azure DevOps build URL
 2. Instructions to navigate to the build → Summary → Artifacts section
-3. Look for individual artifacts whose names match the patterns above
-4. Download each file and place it as `tests/dotnet/UnitTests/expected/{artifactName}.txt`
+3. Look for individual artifacts whose names contain `updated-expected-sizes`
+4. Download the artifact zip, extract it, and copy the `.txt` files (e.g., `iOS-MonoVM-interpreter-size.txt`) into `tests/dotnet/UnitTests/expected/`
 
 ## Fallback: Run Locally
 

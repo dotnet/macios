@@ -5,7 +5,6 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -234,6 +233,9 @@ namespace MonoTests.System.Net.Http {
 			var expectedBasicValue = Convert.ToBase64String (Encoding.UTF8.GetBytes ($"{username}:{password}"));
 
 			var serverReady = new SemaphoreSlim (0, 1);
+			int requestIndex = 0;
+			int firstUnauthenticatedIndex = -1;
+			int firstAuthenticatedIndex = -1;
 
 			var httpListener = StartListenerOnAvailablePort (out var listeningPort);
 			if (httpListener is null) {
@@ -250,14 +252,17 @@ namespace MonoTests.System.Net.Http {
 						var response = context.Response;
 
 						var authHeader = request.Headers ["Authorization"];
+						var currentIndex = Interlocked.Increment (ref requestIndex);
 						if (authHeader is not null && authHeader == $"Basic {expectedBasicValue}") {
 							// Authenticated - return success
+							Interlocked.CompareExchange (ref firstAuthenticatedIndex, currentIndex, -1);
 							response.StatusCode = 200;
 							var body = Encoding.UTF8.GetBytes ("authenticated");
 							response.ContentLength64 = body.Length;
 							response.OutputStream.Write (body, 0, body.Length);
 						} else {
 							// Return 401 with Bearer first, then Basic
+							Interlocked.CompareExchange (ref firstUnauthenticatedIndex, currentIndex, -1);
 							response.StatusCode = 401;
 							response.AddHeader ("WWW-Authenticate", "Bearer realm=\"test\", charset=\"UTF-8\"");
 							response.AppendHeader ("WWW-Authenticate", "Basic realm=\"test\", charset=\"UTF-8\"");
@@ -291,6 +296,9 @@ namespace MonoTests.System.Net.Http {
 				Assert.That (ex, Is.Null, $"Exception: {ex}");
 				Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), "Expected 200 OK after Basic auth negotiation");
 				Assert.That (responseBody, Is.EqualTo ("authenticated"), "Response body");
+				Assert.That (firstUnauthenticatedIndex, Is.GreaterThan (0), "Server should have received an unauthenticated request");
+				Assert.That (firstAuthenticatedIndex, Is.GreaterThan (0), "Server should have received an authenticated request");
+				Assert.That (firstUnauthenticatedIndex, Is.LessThan (firstAuthenticatedIndex), "Unauthenticated request should have arrived before the authenticated retry");
 
 				if (serverTask.IsFaulted)
 					Assert.Fail ($"Server task failed: {serverTask.Exception}");

@@ -32,7 +32,7 @@ parameters:
 
 - name: retryCount
   type: number
-  default: 3
+  default: 0
 
 steps:
 - bash: |

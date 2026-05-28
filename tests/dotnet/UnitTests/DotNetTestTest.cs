@@ -44,8 +44,7 @@ public sealed class Test1 {{
 ");
 
 			// Boot a simulator so that ComputeRunArguments can find a device
-			var runtimeIdentifier = GetDefaultRuntimeIdentifier (platform);
-			var deviceUdid = GetDeviceUdid (outputDir, runtimeIdentifier);
+			var deviceUdid = GetDeviceUdid (platform);
 			BootSimulator (deviceUdid);
 
 			// Run 'dotnet test' directly using Execution.RunAsync.
@@ -60,35 +59,33 @@ public sealed class Test1 {{
 			Assert.That (testResult.ExitCode, Is.EqualTo (0), $"'dotnet test' failed with exit code {testResult.ExitCode}.\nBinlog: {binlog}\nOutput:\n{testResult.Output.MergedOutput}");
 		}
 
-		static string GetDeviceUdid (string projectDirectory, string runtimeIdentifier)
+		static string GetDeviceUdid (ApplePlatform platform)
 		{
-			var tmpdir = Cache.CreateTemporaryDirectory ();
-			var outputFile = Path.Combine (tmpdir, "AvailableDevices.json");
-			var args = new List<string> {
-				"build",
-				"-t:ComputeAvailableDevices",
-				"-getItem:Devices",
-				$"-getResultOutputFile:{outputFile}",
-				$"-p:RuntimeIdentifier={runtimeIdentifier}",
+			// Use xcrun simctl directly to find available simulator devices.
+			var rv = Execution.RunAsync ("xcrun", new List<string> { "simctl", "list", "devices", "available", "--json" }, timeout: TimeSpan.FromMinutes (1)).Result;
+			Assert.That (rv.ExitCode, Is.EqualTo (0), $"Failed to list simulators. Output:\n{rv.Output.MergedOutput}");
+
+			var runtimePrefix = platform switch {
+				ApplePlatform.iOS => "com.apple.CoreSimulator.SimRuntime.iOS-",
+				ApplePlatform.TVOS => "com.apple.CoreSimulator.SimRuntime.tvOS-",
+				_ => throw new ArgumentException ($"Unsupported platform: {platform}"),
 			};
 
-			var env = new Dictionary<string, string?> ();
-			env ["MSBuildSDKsPath"] = null;
-			env ["MSBUILD_EXE_PATH"] = null;
-			var rv = Execution.RunAsync (DotNet.Executable, args, env, Console.Out, workingDirectory: projectDirectory, timeout: TimeSpan.FromMinutes (2)).Result;
-			Assert.That (rv.ExitCode, Is.EqualTo (0), $"Failed to compute available devices. Output:\n{rv.Output.MergedOutput}");
+			var doc = JsonDocument.Parse (rv.Output.MergedOutput);
+			var devicesObj = doc.RootElement.GetProperty ("devices");
+			var allDevices = new List<(string Udid, string Runtime)> ();
+			foreach (var runtimeProp in devicesObj.EnumerateObject ()) {
+				if (!runtimeProp.Name.StartsWith (runtimePrefix, StringComparison.Ordinal))
+					continue;
+				foreach (var device in runtimeProp.Value.EnumerateArray ()) {
+					var udid = device.GetProperty ("udid").GetString ()!;
+					allDevices.Add ((udid, runtimeProp.Name));
+				}
+			}
 
-			var output = File.ReadAllText (outputFile);
-			var doc = JsonDocument.Parse (output);
-			var devices = doc.RootElement.GetProperty ("Items").GetProperty ("Devices").EnumerateArray ().Select (e => {
-				var identity = e.GetProperty ("Identity").GetString ()!;
-				var osVersion = Version.Parse (e.GetProperty ("OSVersion").GetString ()!);
-				var deviceTypeIdentifier = e.GetProperty ("DeviceTypeIdentifier").GetString ()!;
-				return (Identity: identity, OsVersion: osVersion, DeviceTypeIdentifier: deviceTypeIdentifier);
-			}).OrderByDescending (d => d.OsVersion).ThenBy (d => d.DeviceTypeIdentifier).ThenBy (d => d.Identity).ToList ();
-
-			Assert.That (devices, Is.Not.Empty, $"No devices found. Output:\n{output}");
-			return devices.First ().Identity;
+			Assert.That (allDevices, Is.Not.Empty, $"No {platform} simulators found. Output:\n{rv.Output.MergedOutput}");
+			// Pick the last runtime (highest version) and first device
+			return allDevices.OrderByDescending (d => d.Runtime).First ().Udid;
 		}
 
 		static void BootSimulator (string udid)

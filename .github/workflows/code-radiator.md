@@ -42,7 +42,7 @@ safe-outputs:
   push-to-pull-request-branch:
     max: 10
     target: "*"
-    title-prefix: "🤖 Merge 'main' => '"
+    required-title-prefix: "🤖 Merge 'main' => '"
   update-pull-request:
     max: 10
 ---

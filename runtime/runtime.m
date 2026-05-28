@@ -2473,7 +2473,7 @@ static bool xamarin_coreclr_bundle_probe(const char *path, int64_t *offset, int6
 	return false;
 }
 
-static const char *xamarin_compute_corelib_directory(void)
+static const char *xamarin_compute_corelib_directory (void)
 {
 	static char *cached = NULL;
 

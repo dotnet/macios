@@ -2413,6 +2413,55 @@ xamarin_get_native_code_data (const struct host_runtime_contract_native_code_con
 
 	return true;
 }
+
+// dotnet/runtime#128278 (.NET 11 preview 5) gates the BindToSystem CoreLib fallback on
+// Bundle::AppIsBundle () && Bundle::AppBundle->HasExtractedFiles (). Register a no-op
+// bundle_probe so AppBundle is non-null, and answer BUNDLE_EXTRACTION_PATH with the
+// directory containing System.Private.CoreLib.dll so the fallback finds it.
+static bool xamarin_coreclr_bundle_probe(const char *path, int64_t *offset, int64_t *size, int64_t *compressed_size)
+{
+	return false;
+}
+
+static const char *xamarin_compute_corelib_directory(void)
+{
+	static char *cached = NULL;
+
+	if (cached)
+		return cached;
+
+	const char *bundle_path = xamarin_get_bundle_path ();
+	NSFileManager *manager = [NSFileManager defaultManager];
+	NSString *candidates [] = {
+		[NSString stringWithUTF8String: bundle_path],
+		[NSString stringWithFormat: @"%s/.xamarin/%s", bundle_path, RUNTIMEIDENTIFIER],
+	};
+	for (size_t i = 0; i < sizeof (candidates) / sizeof (candidates [0]); i++) {
+		NSString *probe = [candidates [i] stringByAppendingPathComponent: @"System.Private.CoreLib.dll"];
+		if ([manager fileExistsAtPath: probe]) {
+			cached = strdup ([candidates [i] UTF8String]);
+			break;
+		}
+	}
+
+	return cached;
+}
+
+static size_t xamarin_coreclr_get_runtime_property(const char *key, char *value_buffer, size_t value_buffer_size, void *contract_context)
+{
+	if (strcmp (key, HOST_PROPERTY_BUNDLE_EXTRACTION_PATH) != 0)
+		return (size_t) -1;
+
+	const char *dir = xamarin_compute_corelib_directory ();
+	if (dir == NULL)
+		return (size_t) -1;
+
+	size_t len = strlen (dir);
+	size_t required = len + 1; // include null terminator
+	if (value_buffer != NULL && value_buffer_size >= required)
+		memcpy (value_buffer, dir, required);
+	return required;
+}
 #endif // defined (CORECLR_RUNTIME)
 
 void
@@ -2421,6 +2470,8 @@ xamarin_vm_initialize ()
 #if defined (CORECLR_RUNTIME)
 	struct host_runtime_contract host_contract = {
 		.size = sizeof (struct host_runtime_contract),
+		.get_runtime_property = &xamarin_coreclr_get_runtime_property,
+		.bundle_probe = &xamarin_coreclr_bundle_probe,
 		.pinvoke_override = &xamarin_pinvoke_override,
 		.get_native_code_data = &xamarin_get_native_code_data
 	};

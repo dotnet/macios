@@ -42,7 +42,7 @@ safe-outputs:
   push-to-pull-request-branch:
     max: 10
     target: "*"
-    title-prefix: "🤖 Merge 'main' => '"
+    required-title-prefix: "🤖 Merge 'main' => '"
   update-pull-request:
     max: 10
 ---
@@ -137,19 +137,19 @@ If there are merge conflicts:
   - Add the `do-not-merge` label.
   - Add a comment requesting human review of the conflict resolution, listing which files were manually resolved.
 
-#### e. Push and create/update the PR
+#### e. Create or update the PR
 
-```bash
-git push origin "<local-branch>"
-```
+Do **NOT** run `git push` manually. The safeoutputs tool handles pushing.
 
-- If updating an existing PR: the push is sufficient (the PR updates automatically).
-- If creating a new PR:
-  - Title: `🤖 Merge 'main' => '<target>'`
-  - Body: `Automated merge of \`main\` into \`<target>\`.\n\nCreated by the code-radiator workflow.`
-  - Base: the target branch
-  - Head: the local branch
-  - Enable automerge (merge strategy) on the new PR.
+Use the `create_pull_request` safeoutput tool to push the branch and create/update the PR:
+- `branch`: `<local-branch>` (e.g., `merge/main-to-net11.0-20260527`)
+- `base`: `<target>` (e.g., `net11.0`) — **always provide this field**
+- `title`: `🤖 Merge 'main' => '<target>'`
+- `body`: `Automated merge of \`main\` into \`<target>\`.\n\nCreated by the code-radiator workflow.`
+
+> **Important**: Do NOT unset the upstream tracking branch. After `git checkout -B "<local-branch>" "origin/<target>"`, the upstream is set to `origin/<target>`. Keep it set — the safeoutputs tool relies on this to detect the commits to push.
+
+After creating the PR, enable automerge (merge strategy) using the GitHub MCP `enable_auto_merge` tool or `gh pr merge --auto --merge`.
 
 ### 3. Summary
 
@@ -178,7 +178,10 @@ Split version strings on `.`, `-`, and `+`. Compare each segment numerically. Ex
 
 ## Important Notes
 
-- Never force push. Always use regular `git push`.
+- Never force push.
+- Do NOT run `git push` manually — the safeoutputs `create_pull_request` tool handles pushing.
+- Do NOT unset the upstream tracking branch after creating the local branch. The safeoutputs tool uses `@{upstream}` to detect commits that need to be pushed. Unsetting the upstream causes the tool to report "No changes to commit - no commits found" even when commits exist.
+- Always provide the `base` branch when calling `safeoutputs create_pull_request` (e.g., `base: "net11.0"`).
 - The workflow operates on the current repository checkout.
 - Run `git fetch origin` before starting to ensure up-to-date remote refs.
-- Use `gh` CLI for PR operations (create, comment, list, merge --auto).
+- Use the GitHub MCP tools or `gh` CLI for non-push PR operations (comment, list, merge --auto, enable automerge).

@@ -280,6 +280,7 @@
 			_CompileNativeExecutable;
 			_LinkNativeExecutable;
 			_ComputePublishLocation;
+			_BundleLateDynamicLibrariesToPublish;
 			_ComputeCodesignItems;
 			CopyFilesToPublishDirectory;
 			_CopyDirectoriesToBundle;
@@ -2223,6 +2224,22 @@
 			_ComputeMonoComponents;
 		</_ComputePublishLocationDependsOn>
 	</PropertyGroup>
+
+	<Target Name="_BundleLateDynamicLibrariesToPublish"
+	        DependsOnTargets="_ComputeVariables;_ComputePublishLocation;ComputeFilesToPublish"
+	        Condition="'$(_CanOutputAppBundle)' == 'true'">
+		<ItemGroup>
+			<_LateBundleDylib Include="@(ResolvedFileToPublish)" Condition="('%(ResolvedFileToPublish.PublishFolderType)' == 'DynamicLibrary' Or '%(ResolvedFileToPublish.PublishFolderType)' == 'PluginLibrary') And '%(ResolvedFileToPublish.CopyToAppBundle)' != 'false' And !$([System.String]::Copy('%(ResolvedFileToPublish.RelativePath)').StartsWith('$(_RelativeAppBundlePath)'))" />
+
+			<ResolvedFileToPublish Remove="@(_LateBundleDylib)" />
+
+			<ResolvedFileToPublish Include="@(_LateBundleDylib)">
+				<RelativePath Condition="'%(_LateBundleDylib.RelativePath)' == ''">$(_DylibPublishDir)\%(Filename)%(Extension)</RelativePath>
+				<RelativePath Condition="'%(_LateBundleDylib.RelativePath)' != ''">$(_RelativeAppBundlePath)\%(_LateBundleDylib.RelativePath)</RelativePath>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+			</ResolvedFileToPublish>
+		</ItemGroup>
+	</Target>
 
 	<Target Name="_ComputePublishLocation"
 		DependsOnTargets="$(_ComputePublishLocationDependsOn)"

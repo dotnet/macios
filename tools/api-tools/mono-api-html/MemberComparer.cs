@@ -134,11 +134,24 @@ namespace Mono.ApiTools {
 		void Modify (ApiChanges modified)
 		{
 			foreach (var changes in modified) {
-				Formatter.BeginMemberModification (changes.Key);
-				foreach (var element in changes.Value) {
-					Formatter.Diff (element);
+				var nonNullability = changes.Value.Where (c => !c.IsNullabilityChange).ToList ();
+				var nullabilityOnly = changes.Value.Where (c => c.IsNullabilityChange).ToList ();
+
+				if (nonNullability.Count > 0) {
+					Formatter.BeginMemberModification (changes.Key);
+					foreach (var element in nonNullability) {
+						Formatter.Diff (element);
+					}
+					Formatter.EndMemberModification ();
 				}
-				Formatter.EndMemberModification ();
+
+				if (nullabilityOnly.Count > 0) {
+					Formatter.BeginMemberModification (changes.Key + " (nullability)");
+					foreach (var element in nullabilityOnly) {
+						Formatter.Diff (element);
+					}
+					Formatter.EndMemberModification ();
+				}
 			}
 		}
 

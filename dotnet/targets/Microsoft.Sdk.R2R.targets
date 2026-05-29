@@ -125,7 +125,7 @@
 			<_ResolvedAssembliesToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And '%(ResolvedFileToPublish.DestinationSubDirectory)' == ''" />
 			<_NonUserAssemblies
 				Include="@(_ResolvedAssembliesToPublish)"
-				Condition="'%(_ResolvedAssembliesToPublish.NuGetPackageId)' != ''" />
+				Condition="'%(_ResolvedAssembliesToPublish.NuGetPackageId)' != '' And '%(Filename)' == 'System.Private.CoreLib'" />
 			<_UserAssemblies Include="@(_ResolvedAssembliesToPublish)" Exclude="@(_NonUserAssemblies)" />
 			<PublishReadyToRunExclude Include="@(_UserAssemblies -> '%(Filename)%(Extension)')" />
 		</ItemGroup>

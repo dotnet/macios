@@ -25,6 +25,7 @@ checkout:
   fetch: ["*"]
   fetch-depth: 0
 safe-outputs:
+  max-patch-files: 1000
   create-pull-request:
     max: 10
     allowed-base-branches:

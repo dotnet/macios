@@ -129,27 +129,60 @@ class MainClass {
 		{
 			Assert.That (appPath, Does.Exist, "App bundle directory");
 
-			var frameworksDir = Path.Combine (appPath, GetFrameworksRelativePath (platform));
-			Assert.That (frameworksDir, Does.Exist, "Frameworks directory");
+			// iOS/tvOS package the per-app composite as a <App>.r2r.framework under
+			// Frameworks/; Mac Catalyst packages it as a <App>.r2r.dylib under
+			// Contents/MonoBundle/ (see _CreateR2RModuleFrameworks vs
+			// _CreateR2RModuleDylibs in Microsoft.Sdk.R2R.targets, and the
+			// <Platform>-CoreCLR-R2R-size.txt baselines).
+			switch (platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+				var frameworksDir = Path.Combine (appPath, GetFrameworksRelativePath (platform));
+				Assert.That (frameworksDir, Does.Exist, "Frameworks directory");
 
-			var r2rFrameworks = Directory.GetDirectories (frameworksDir, "*.r2r.framework");
-			Assert.That (r2rFrameworks.Length, Is.EqualTo (1),
-				$"Expected exactly one .r2r.framework (the per-app composite), found:\n  {string.Join ("\n  ", r2rFrameworks)}");
+				var r2rFrameworks = Directory.GetDirectories (frameworksDir, "*.r2r.framework");
+				Assert.That (r2rFrameworks.Length, Is.EqualTo (1),
+					$"Expected exactly one .r2r.framework (the per-app composite), found:\n  {string.Join ("\n  ", r2rFrameworks)}");
 
-			var perAppName = applicationName + ".r2r.framework";
-			Assert.That (Path.GetFileName (r2rFrameworks [0]), Is.EqualTo (perAppName),
-				$"The single .r2r.framework should be the per-app composite ({perAppName})");
+				var perAppFramework = applicationName + ".r2r.framework";
+				Assert.That (Path.GetFileName (r2rFrameworks [0]), Is.EqualTo (perAppFramework),
+					$"The single .r2r.framework should be the per-app composite ({perAppFramework})");
 
-			// The upstream Microsoft.NETCore.App.r2r.* (.framework on iOS/tvOS/MacCatalyst,
-			// .dylib on macOS) must not be carried into the bundle: every non-CoreLib BCL
-			// assembly was re-headered to point at the per-app composite instead.
-			var leakedNetCoreFrameworks = Directory.GetDirectories (frameworksDir, "Microsoft.NETCore.App.r2r*");
-			Assert.That (leakedNetCoreFrameworks, Is.Empty,
-				$"Bundle must not contain upstream Microsoft.NETCore.App.r2r framework(s):\n  {string.Join ("\n  ", leakedNetCoreFrameworks)}");
+				// The upstream Microsoft.NETCore.App.r2r.framework must not be carried
+				// into the bundle: every non-CoreLib BCL assembly was re-headered to
+				// point at the per-app composite instead.
+				var leakedNetCoreFrameworks = Directory.GetDirectories (frameworksDir, "Microsoft.NETCore.App.r2r*");
+				Assert.That (leakedNetCoreFrameworks, Is.Empty,
+					$"Bundle must not contain upstream Microsoft.NETCore.App.r2r framework(s):\n  {string.Join ("\n  ", leakedNetCoreFrameworks)}");
 
-			var leakedR2RDylibs = Directory.GetFiles (appPath, "*.r2r.dylib", SearchOption.AllDirectories);
-			Assert.That (leakedR2RDylibs, Is.Empty,
-				$"Bundle must not contain any *.r2r.dylib files on iOS/tvOS/MacCatalyst:\n  {string.Join ("\n  ", leakedR2RDylibs)}");
+				// On iOS/tvOS the composite ships as a framework whose binary is
+				// <App>.r2r (no extension), so no *.r2r.dylib should be present.
+				var leakedR2RDylibs = Directory.GetFiles (appPath, "*.r2r.dylib", SearchOption.AllDirectories);
+				Assert.That (leakedR2RDylibs, Is.Empty,
+					$"Bundle must not contain any *.r2r.dylib files on iOS/tvOS:\n  {string.Join ("\n  ", leakedR2RDylibs)}");
+				break;
+			case ApplePlatform.MacCatalyst:
+				var monoBundleDir = Path.Combine (appPath, "Contents", "MonoBundle");
+				Assert.That (monoBundleDir, Does.Exist, "MonoBundle directory");
+
+				var r2rDylibs = Directory.GetFiles (monoBundleDir, "*.r2r.dylib");
+				Assert.That (r2rDylibs.Length, Is.EqualTo (1),
+					$"Expected exactly one .r2r.dylib (the per-app composite), found:\n  {string.Join ("\n  ", r2rDylibs)}");
+
+				var perAppDylib = applicationName + ".r2r.dylib";
+				Assert.That (Path.GetFileName (r2rDylibs [0]), Is.EqualTo (perAppDylib),
+					$"The single .r2r.dylib should be the per-app composite ({perAppDylib})");
+
+				// The upstream Microsoft.NETCore.App.r2r.dylib must not be carried into
+				// the bundle: every non-CoreLib BCL assembly was re-headered to point at
+				// the per-app composite instead.
+				var leakedNetCoreDylibs = Directory.GetFiles (monoBundleDir, "Microsoft.NETCore.App.r2r*");
+				Assert.That (leakedNetCoreDylibs, Is.Empty,
+					$"Bundle must not contain upstream Microsoft.NETCore.App.r2r dylib(s):\n  {string.Join ("\n  ", leakedNetCoreDylibs)}");
+				break;
+			default:
+				throw new ArgumentOutOfRangeException (nameof (platform), platform, "Unsupported platform for CoreLib-only R2R bundle composition");
+			}
 		}
 	}
 }

@@ -115,8 +115,8 @@
 
 
 	<!--
-		Exclude user assemblies from R2R composite so they run interpreted for debugging.
-		User assembly is defined as anything not coming from a NuGet package.
+		Restrict R2R composite input to System.Private.CoreLib so all other framework,
+		MAUI, and NuGet assemblies run interpreted for inner-loop debug builds.
 	-->
 	<Target Name="_SelectR2RAssemblies"
 			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == ''"

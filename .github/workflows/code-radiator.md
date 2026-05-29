@@ -27,6 +27,7 @@ checkout:
 safe-outputs:
   create-pull-request:
     max: 10
+    signed-commits: false
     allowed-base-branches:
       - "net*.0"
       - "xcode*"
@@ -41,6 +42,7 @@ safe-outputs:
     max: 10
   push-to-pull-request-branch:
     max: 10
+    signed-commits: false
     target: "*"
     required-title-prefix: "🤖 Merge 'main' => '"
   update-pull-request:

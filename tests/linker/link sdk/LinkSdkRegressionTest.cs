@@ -898,12 +898,12 @@ namespace LinkSdk {
 			Assert.That (path.EndsWith ("/Library", StringComparison.Ordinal), Is.True, "Resources");
 #endif
 			// Some CI VM images don't initialize all standard user directories, so keep this
-			// tolerance CI-only and preserve the stricter check for local runs.
+			// tolerance limited to CI VMs and preserve the stricter check for other runs.
 			string TestFolderIfAvailableInCI (Environment.SpecialFolder folder, bool exists)
 			{
 #if __MACOS__
 				var path = Environment.GetFolderPath (folder);
-				if (string.IsNullOrEmpty (path) && TestRuntime.IsInCI)
+				if (string.IsNullOrEmpty (path) && TestRuntime.IsInCI && TestRuntime.IsVM)
 					return path;
 #endif
 				return TestFolder (folder, exists: exists);

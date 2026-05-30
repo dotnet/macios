@@ -35,6 +35,7 @@ steps:
   - task: AzureCLI@2
     displayName: 'Generate BosStorageMirror SAS tokens'
     condition: and(succeeded(), ${{ parameters.enabled }})
+    retryCountOnTaskFailure: 3
     inputs:
       azureSubscription: 'Xamarin - RelEng (BosStorageMirror-Contributor-MI)'
       scriptType: 'bash'

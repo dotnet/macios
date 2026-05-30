@@ -440,7 +440,7 @@ namespace bgen {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Support for ZeroCopy strings is not implemented. Strings will be marshalled as NSStrings..
+        ///   Looks up a localized string similar to The --use-zero-copy option is not supported and will be ignored..
         /// </summary>
         internal static string BI1027 {
             get {

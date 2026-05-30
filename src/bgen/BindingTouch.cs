@@ -163,7 +163,9 @@ public class BindingTouch : IDisposable {
 				{ "p", "Sets private mode", v => config.IsPublicMode = false },
 				{ "baselib=", "Sets the base library", v => config.Baselibdll = v },
 				{ "attributelib=", "Sets the attribute library", v => config.Attributedll = v },
-				{ "use-zero-copy", v=> config.UseZeroCopy = true },
+#if !XAMCORE_5_0
+				{ "use-zero-copy", v=> ErrorHelper.Warning (1027) },
+#endif
 				{ "nostdlib", "Does not reference mscorlib.dll library", l => config.OmitStandardLibrary = true },
 #if !XAMCORE_5_0
 				{ "no-mono-path", "Launches compiler with empty MONO_PATH", l => { }, true },
@@ -364,7 +366,6 @@ public class BindingTouch : IDisposable {
 		try {
 			var g = new Generator (this, api, config.IsPublicMode, config.IsExternal, config.IsDebug) {
 				BaseDir = config.BindingFilesOutputDirectory ?? config.TemporaryFileDirectory!,
-				ZeroCopyStrings = config.UseZeroCopy,
 				InlineSelectors = config.InlineSelectors ?? (CurrentPlatform != PlatformName.MacOSX),
 			};
 

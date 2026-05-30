@@ -35,7 +35,7 @@ namespace Xharness.Jenkins.TestTasks {
 			var xcodeRoot = Jenkins.Harness.XcodeRoot;
 
 			process.StartInfo.EnvironmentVariables ["RootTestsDirectory"] = HarnessConfiguration.RootDirectory;
-			process.StartInfo.EnvironmentVariables ["MD_APPLE_SDK_ROOT"] = xcodeRoot;
+			process.StartInfo.EnvironmentVariables ["DEVELOPER_DIR"] = xcodeRoot;
 
 			foreach (var kvp in Environment) {
 				if (kvp.Value is null) {

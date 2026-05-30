@@ -857,6 +857,9 @@
   <data name="MX2261" xml:space="preserve">
 		<value>'{0}' has multiple SupportedSimulator attributes for the '{1}' platform. Please file an issue at https://github.com/dotnet/macios/issues/new</value>
 	</data>
+  <data name="MX2262" xml:space="preserve">
+		<value>The 'InlineClassGetHandle' option is set to 'Strict', but we're using the dynamic registrar. This is not a supported configuration, because 'Strict' mode requires exported Objective-C classes to be available at compile time, but the dynamic registrar will create them at runtime. Please either change the 'InlineClassGetHandle' option to 'Disabled' or 'Compat', or switch to using the static registrar.</value>
+	</data>
   <!-- 2300 -> 2399 is used by/reserved for ConfigurationAwareStep subclasses in the linker -->
   <data name="MX_ConfigurationAwareStep" xml:space="preserve">
 		<value>The linker step '{0}' failed during processing: {1}</value>

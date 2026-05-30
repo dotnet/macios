@@ -18,7 +18,6 @@ using Xamarin.Utils;
 namespace Xamarin.Linker.Steps {
 	public class ListExportedSymbols : BaseStep {
 		PInvokeWrapperGenerator? state;
-		bool is_product_assembly;
 
 		PInvokeWrapperGenerator? State {
 			get {
@@ -80,8 +79,6 @@ namespace Xamarin.Linker.Steps {
 			if (!hasSymbols)
 				return;
 
-			is_product_assembly = Configuration.Profile.IsProductAssembly (assembly);
-
 			var modified = false;
 			foreach (var type in assembly.MainModule.Types)
 				modified |= ProcessType (type);
@@ -114,40 +111,41 @@ namespace Xamarin.Linker.Steps {
 
 		void AddRequiredObjectiveCType (TypeDefinition type)
 		{
+			if (TryGetRequiredObjectiveCType (DerivedLinkContext, type, out var exportedName))
+				DerivedLinkContext.RequiredSymbols.AddObjectiveCClass (exportedName).AddMember (type);
+		}
+
+		// Returns true if the specified type represents an Objective-C class that should be referenced as a required symbol, so that the native linker doesn't link it away.
+		public static bool TryGetRequiredObjectiveCType (DerivedLinkContext derivedLinkContext, TypeDefinition type, [NotNullWhen (true)] out string? exportedName)
+		{
+			exportedName = null;
+
 			// The product assembly only has one type we may need to keep: XamarinSwiftFunctions
-			if (is_product_assembly) {
+			if (derivedLinkContext.LinkerConfiguration.Profile.IsProductAssembly (type.Module.Assembly)) {
 				switch (type.Name) {
 				case "XamarinSwiftFunctions":
 					break;
 				default:
-					return;
+					return false;
 				}
 			}
 
-			var staticRegistrar = DerivedLinkContext.StaticRegistrar;
+			var staticRegistrar = derivedLinkContext.StaticRegistrar;
 			if (staticRegistrar is null)
-				return;
+				return false;
 
-			var registerAttribute = staticRegistrar.GetRegisterAttribute (type);
-			if (registerAttribute is null)
-				return;
+			if (!staticRegistrar.TryGetExportedTypeName (type, out exportedName))
+				return false;
 
-			if (!registerAttribute.IsWrapper)
-				return;
-
-			if (staticRegistrar.HasProtocolAttribute (type))
-				return;
-
-			if (DerivedLinkContext.App.RequireLinkWithAttributeForObjectiveCClassSearch) {
+			if (derivedLinkContext.App.RequireLinkWithAttributeForObjectiveCClassSearch) {
 				var has_linkwith_attributes = false;
-				if (DerivedLinkContext.App.Assemblies.TryGetValue (type.Module.Assembly, out var asm))
+				if (derivedLinkContext.App.Assemblies.TryGetValue (type.Module.Assembly, out var asm))
 					has_linkwith_attributes = asm.HasLinkWithAttributes;
 				if (!has_linkwith_attributes)
-					return;
+					return false;
 			}
 
-			var exportedName = staticRegistrar.GetExportedTypeName (type, registerAttribute);
-			DerivedLinkContext.RequiredSymbols.AddObjectiveCClass (exportedName).AddMember (type);
+			return true;
 		}
 
 		bool ProcessMethod (MethodDefinition method)
@@ -191,13 +189,18 @@ namespace Xamarin.Linker.Steps {
 
 				switch (pinfo.Module.Name) {
 				case "__Internal":
-					// For NativeAOT builds, don't add inlined dlfcn P/Invoke wrappers as
-					// required symbols: only the surviving ones will have native code generated,
-					// so force-referencing all of them causes linker errors for symbols that
-					// NativeAOT trimmed away. For non-NativeAOT builds, the wrappers are resolved
-					// via dlsym and need the -u flags to be exported from the binary.
-					if (Configuration.InlineDlfcnMethodsEnabled && Configuration.Application.XamarinRuntime == XamarinRuntime.NativeAOT && pinfo.EntryPoint.StartsWith ("xamarin_Dlfcn_", StringComparison.Ordinal))
-						break;
+					if (Configuration.Application.XamarinRuntime == XamarinRuntime.NativeAOT) {
+						// For NativeAOT builds, don't add inlined dlfcn P/Invoke wrappers as
+						// required symbols: only the surviving ones will have native code generated,
+						// so force-referencing all of them causes linker errors for symbols that
+						// NativeAOT trimmed away. For non-NativeAOT builds, the wrappers are resolved
+						// via dlsym and need the -u flags to be exported from the binary.
+						if (Configuration.InlineDlfcnMethodsEnabled && pinfo.EntryPoint.StartsWith (InlineDlfcnMethodsStep.PInvokePrefix, StringComparison.Ordinal))
+							break;
+						// Same goes for inlined Class.GetHandle calls.
+						if (Configuration.InlineClassGetHandle != InlineClassGetHandleMode.Disabled && pinfo.EntryPoint.StartsWith (InlineClassGetHandleStep.PInvokePrefix, StringComparison.Ordinal))
+							break;
+					}
 					Driver.Log (4, "Adding native reference to {0} in {1} because it's referenced by {2} in {3}.", pinfo.EntryPoint, pinfo.Module.Name, method.FullName, method.Module.Name);
 					DerivedLinkContext.RequiredSymbols.AddFunction (pinfo.EntryPoint).AddMember (method);
 					break;

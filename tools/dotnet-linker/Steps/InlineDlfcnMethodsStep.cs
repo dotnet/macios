@@ -28,6 +28,9 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 
 	bool strictMode;
 
+	public const string PInvokePrefix = "xamarin_Dlfcn_";
+	public const string PInvokeSuffix = "_Native";
+
 	protected override void TryProcess ()
 	{
 		strictMode = Configuration.InlineDlfcnMethods == InlineDlfcnMethodsMode.Strict;
@@ -99,18 +102,15 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 	{
 		var frameworkOverride = !string.IsNullOrEmpty (fieldLibraryName) ? fieldLibraryName : current_framework;
 		var ns = string.IsNullOrEmpty (frameworkOverride) ? @namespace : frameworkOverride;
-		var dlfcn = module.Types.FirstOrDefault (t => t.Namespace == ns && t.Name == "Dlfcn");
-		if (dlfcn is null) {
-			dlfcn = new TypeDefinition (ns, "Dlfcn", TypeAttributes.NotPublic | TypeAttributes.Sealed, module.TypeSystem.Object);
-			module.Types.Add (dlfcn);
-
+		var rv = abr.GetOrCreateType (module, ns, "Dlfcn", out var created);
+		if (created) {
 			if (!string.IsNullOrEmpty (frameworkOverride)) {
-				var attrib = new CustomAttribute (abr.ObjectiveCFrameworkAttribute_ctor_String);
+				var attrib = abr.CreateAttribute (abr.ObjectiveCFrameworkAttribute_ctor_String);
 				attrib.ConstructorArguments.Add (new CustomAttributeArgument (abr.System_String, frameworkOverride));
-				dlfcn.CustomAttributes.Add (attrib);
+				rv.CustomAttributes.Add (attrib);
 			}
 		}
-		return dlfcn;
+		return rv;
 	}
 
 	void AddField (string assemblyName, string symbolName)
@@ -124,30 +124,13 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 
 	MethodDefinition GetOrCreatePInvokeMethod (MethodDefinition callingMethod, string symbolName)
 	{
-		var dlfcn = GetDlfcnType (callingMethod);
-		var methodName = $"xamarin_Dlfcn_{symbolName}_Native";
-		var nativeMethod = methodName;
-		var rv = dlfcn.Methods.FirstOrDefault (m => m.Name == methodName);
-		if (rv is not null)
-			return rv; // already exists, no need to create it again
-
 		// [DllImport ("__Internal")]
 		// static extern IntPtr xamarin_Dlfcn_{symbolName}_Native ();
 
-		rv = new MethodDefinition (methodName, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.PInvokeImpl, abr.System_IntPtr);
-		rv.IsPreserveSig = true;
-
-		var mod = callingMethod.Module.ModuleReferences.FirstOrDefault (mr => mr.Name == "__Internal");
-		if (mod is null) {
-			mod = new ModuleReference ("__Internal");
-			callingMethod.Module.ModuleReferences.Add (mod);
-		}
-		rv.PInvokeInfo = new PInvokeInfo (PInvokeAttributes.CharSetNotSpec | PInvokeAttributes.CallConvCdecl, nativeMethod, mod);
-
-		dlfcn.Methods.Add (rv);
-
-		AddField (callingMethod.Module.Assembly.Name.Name, symbolName);
-
+		var methodName = $"{PInvokePrefix}{symbolName}{PInvokeSuffix}";
+		var rv = abr.CreateInternalPInvoke (callingMethod.Module, callingMethod.DeclaringType.Namespace, "Dlfcn", methodName, out var created);
+		if (created)
+			AddField (callingMethod.Module.Assembly.Name.Name, symbolName);
 		return rv;
 	}
 

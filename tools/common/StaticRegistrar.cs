@@ -1591,7 +1591,7 @@ namespace Registrar {
 		}
 
 #if !LEGACY_TOOLS
-		bool GetDotNetAvailabilityAttribute (ICustomAttribute ca, ApplePlatform currentPlatform, out Version? sdkVersion, out string? message)
+		public bool GetDotNetAvailabilityAttribute (ICustomAttribute ca, ApplePlatform currentPlatform, out Version? sdkVersion, out string? message)
 		{
 			var caType = ca.AttributeType;
 
@@ -1601,6 +1601,7 @@ namespace Registrar {
 			string supportedPlatformAndVersion;
 			switch (ca.ConstructorArguments.Count) {
 			case 1:
+			case 2: // second argument can be a message
 				supportedPlatformAndVersion = (string) ca.ConstructorArguments [0].Value;
 				break;
 			default:
@@ -1679,7 +1680,7 @@ namespace Registrar {
 			return false;
 		}
 
-		protected override Version? GetSdkIntroducedVersion (TypeReference obj, out string? message)
+		public override Version? GetSdkIntroducedVersion (TypeReference obj, out string? message)
 		{
 			TypeDefinition td = obj.Resolve ();
 
@@ -2025,7 +2026,7 @@ namespace Registrar {
 			return false;
 		}
 
-		bool IsPlatformType (TypeReference type)
+		public bool IsPlatformType (TypeReference type)
 		{
 			if (type.IsNested)
 				return false;

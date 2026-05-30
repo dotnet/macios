@@ -54,6 +54,10 @@
     <ReferenceNativeSymbol Include="Inexistent" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
     <ReferenceNativeSymbol Include="inexistent_symbol" SymbolType="Field" SymbolMode="Ignore" />
     <ReferenceNativeSymbol Include="x_native_field" SymbolType="Field" />
+    <!-- The following three classes are managed classes with [Protocol]+[BaseType], in which case we don't create a corresponding Objective-C class, so there's no native Objective-C symbol to link with -->
+    <ReferenceNativeSymbol Include="P2" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
+    <ReferenceNativeSymbol Include="ProtocolWithBlockProperties" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
+    <ReferenceNativeSymbol Include="TestProtocolRegister" SymbolType="ObjectiveCClass" SymbolMode="Ignore" />
   </ItemGroup>
 
   <Import Project="$(RootTestsDirectory)/common/shared-dotnet.csproj" />

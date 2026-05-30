@@ -694,7 +694,7 @@ namespace Xamarin.Tests {
 			if (environment is null)
 				environment = new Dictionary<string, string?> ();
 
-			environment ["MD_APPLE_SDK_ROOT"] = Path.GetDirectoryName (Path.GetDirectoryName (xcode_root)!)!;
+			environment ["DEVELOPER_DIR"] = Path.GetDirectoryName (Path.GetDirectoryName (xcode_root)!)!;
 
 			// This is set by `dotnet test` and can cause building legacy projects to fail to build with:
 			// Microsoft.NET.Build.Extensions.ConflictResolution.targets(30,5):

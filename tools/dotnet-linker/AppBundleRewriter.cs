@@ -70,6 +70,7 @@ namespace Xamarin.Linker {
 		Dictionary<AssemblyDefinition, Dictionary<string, (TypeDefinition, TypeReference)>> type_map = new ();
 		Dictionary<string, (MethodDefinition, MethodReference)> method_map = new ();
 		Dictionary<string, (FieldDefinition, FieldReference)> field_map = new ();
+		Dictionary<string, TypeDefinition> created_types = new ();
 
 		public AppBundleRewriter (LinkerConfiguration configuration)
 		{
@@ -1450,6 +1451,7 @@ namespace Xamarin.Linker {
 			type_map.Clear ();
 			method_map.Clear ();
 			field_map.Clear ();
+			created_types.Clear ();
 		}
 
 		public CustomAttribute CreateAttribute (MethodReference constructor)
@@ -1675,6 +1677,54 @@ namespace Xamarin.Linker {
 					debug_attributes = !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("PRINT_ATTRIBUTES"));
 				return debug_attributes.Value;
 			}
+		}
+
+		public TypeDefinition GetOrCreateType (ModuleDefinition module, string @namespace, string @typename, out bool created)
+		{
+			created = false;
+
+			var fullName = @namespace + "." + typename;
+			if (!created_types.TryGetValue (fullName, out var cachedTypeDefinition)) {
+				cachedTypeDefinition = module.Types.FirstOrDefault (t => t.Namespace == @namespace && t.Name == typename);
+				if (cachedTypeDefinition is null) {
+					cachedTypeDefinition = new TypeDefinition (@namespace, typename, TypeAttributes.Public | TypeAttributes.Sealed, module.TypeSystem.Object);
+					module.Types.Add (cachedTypeDefinition);
+					created = true;
+				}
+				created_types [fullName] = cachedTypeDefinition;
+			}
+
+			return cachedTypeDefinition;
+		}
+
+		public MethodDefinition CreateInternalPInvoke (ModuleDefinition module, string @namespace, string @typename, string methodName, out bool created)
+		{
+			var cachedTypeDefinition = GetOrCreateType (module, @namespace, @typename, out _);
+			var nativeMethod = methodName;
+			var rv = cachedTypeDefinition.Methods.FirstOrDefault (m => m.Name == methodName);
+			if (rv is not null) {
+				created = false;
+				return rv; // already exists, no need to create it again
+			}
+
+			// [DllImport ("__Internal")]
+			// static extern IntPtr {methodName} ();
+
+			rv = new MethodDefinition (methodName, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.PInvokeImpl, System_IntPtr);
+			rv.IsPreserveSig = true;
+
+			var mod = module.ModuleReferences.FirstOrDefault (mr => mr.Name == "__Internal");
+			if (mod is null) {
+				mod = new ModuleReference ("__Internal");
+				module.ModuleReferences.Add (mod);
+			}
+			rv.PInvokeInfo = new PInvokeInfo (PInvokeAttributes.CharSetNotSpec | PInvokeAttributes.CallConvCdecl, nativeMethod, mod);
+
+			cachedTypeDefinition.Methods.Add (rv);
+
+			created = true;
+
+			return rv;
 		}
 	}
 }

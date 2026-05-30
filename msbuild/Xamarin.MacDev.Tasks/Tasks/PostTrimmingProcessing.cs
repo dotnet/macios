@@ -9,13 +9,14 @@ using System.Text;
 using Microsoft.Build.Framework;
 
 using Xamarin.Bundler;
+using Xamarin.Utils;
 
 #nullable enable
 
 namespace Xamarin.MacDev.Tasks {
 	/// <summary>
 	/// Performs post-trimming processing, generating native code only for symbols that survived trimming.
-	/// See docs/code/native-symbols.md for an overview of native symbol handling.
+	/// See docs/code/native-symbols.md and docs/code/class-handles.md for an overview of native symbol handling.
 	/// </summary>
 	public class PostTrimmingProcessing : XamarinTask {
 		[Required]
@@ -27,11 +28,21 @@ namespace Xamarin.MacDev.Tasks {
 		public ITaskItem [] ReferenceNativeSymbol { get; set; } = [];
 
 		/// <summary>
+		/// Files listing calls to Class.GetHandle that survived trimming. Each file contains one symbol name per line.
+		/// These can come from either ILTrim (CollectPostILTrimInformation) or NativeAOT
+		/// (ComputeNativeAOTSurvivingNativeSymbols).
+		/// </summary>
+		public ITaskItem [] SurvivingClassesFiles { get; set; } = [];
+
+		/// <summary>
 		/// Files listing native symbols that survived trimming. Each file contains one symbol name per line.
 		/// These can come from either ILTrim (CollectPostILTrimInformation) or NativeAOT
 		/// (ComputeNativeAOTSurvivingNativeSymbols).
 		/// </summary>
 		public ITaskItem [] SurvivingNativeSymbolsFiles { get; set; } = [];
+
+		// Type map
+		public string TypeMapFilePath { get; set; } = "";
 
 		/// <summary>
 		/// Output native source files to be compiled and linked.
@@ -71,40 +82,165 @@ namespace Xamarin.MacDev.Tasks {
 
 		public override bool Execute ()
 		{
-			var items = new List<ITaskItem> ();
+			var nativeSourceFiles = new List<string> ();
 
-			GenerateInlinedDlfcnNativeCode (items);
+			Directory.CreateDirectory (OutputDirectory);
+			GenerateInlinedDlfcnNativeCode (nativeSourceFiles);
+			GenerateInlinedClassGetHandleNativeCode (nativeSourceFiles);
 
-			NativeSourceFiles = items.ToArray ();
+			NativeSourceFiles = nativeSourceFiles.Select (path => {
+				var item = new Microsoft.Build.Utilities.TaskItem (path);
+				item.SetMetadata ("Arch", Architecture.ToLowerInvariant ());
+				return item;
+			}).ToArray ();
+
 			return !Log.HasLoggedErrors;
 		}
 
-		void GenerateInlinedDlfcnNativeCode (List<ITaskItem> items)
+		static HashSet<string> ReadUniqueLinesFromFiles (IEnumerable<ITaskItem> files)
 		{
-			// Collect all surviving symbols from all input files.
-			var survivingSymbols = new HashSet<string> ();
-			foreach (var file in SurvivingNativeSymbolsFiles) {
+			var lines = new HashSet<string> ();
+			foreach (var file in files) {
 				var path = file.ItemSpec;
 				if (!File.Exists (path))
 					continue;
-				survivingSymbols.UnionWith (File.ReadAllLines (path));
+				lines.UnionWith (File.ReadAllLines (path));
+			}
+			return lines;
+		}
+
+		List<string> FilterOutIgnoredSymbols (HashSet<string> survivingSymbols, bool filterObjectiveCClasses)
+		{
+			var rv = new HashSet<string> (survivingSymbols);
+
+			foreach (var rns in ReferenceNativeSymbol) {
+				var nativeSymbol = rns.ItemSpec;
+				var symbolMode = rns.GetMetadata ("SymbolMode");
+				if (!string.Equals (symbolMode, "Ignore", StringComparison.OrdinalIgnoreCase))
+					continue;
+
+				var symbolType = rns.GetMetadata ("SymbolType").ToLowerInvariant ();
+				switch (symbolType) {
+				case "objectivecclass":
+					if (filterObjectiveCClasses && rv.Remove (nativeSymbol)) {
+						Log.LogMessage (MessageImportance.Low, "Ignoring Objective-C class '{0}'", nativeSymbol);
+					}
+					break;
+				case "function":
+				case "field":
+					if (!filterObjectiveCClasses && rv.Remove (nativeSymbol)) {
+						Log.LogMessage (MessageImportance.Low, "Ignoring native symbol '{0}'", nativeSymbol);
+					}
+					break;
+				default:
+					Log.LogMessage (MessageImportance.Low, "Ignoring symbol '{0}' with unknown SymbolType '{1}'", nativeSymbol, symbolType);
+					continue;
+				}
 			}
 
-			var survivingButIgnoredSymbols = survivingSymbols.Intersect (IgnoredSymbols).ToList ();
-			if (survivingButIgnoredSymbols.Count > 0) {
-				Log.LogMessage (MessageImportance.Low, "The following symbols survived trimming but are marked as ignored:");
-				foreach (var symbol in survivingButIgnoredSymbols)
-					Log.LogMessage (MessageImportance.Low, "  {0}", symbol);
-				survivingSymbols.ExceptWith (survivingButIgnoredSymbols);
+			rv.Remove (""); // no empty symbols
+
+			return rv.OrderBy (v => v).ToList ();
+		}
+
+		void GenerateInlinedClassGetHandleNativeCode (List<string> items)
+		{
+			// Collect all surviving symbols from all input files.
+			var classes = FilterOutIgnoredSymbols (ReadUniqueLinesFromFiles (SurvivingClassesFiles), filterObjectiveCClasses: true);
+
+			if (classes.Count == 0) {
+				Log.LogMessage (MessageImportance.Low, "There were no surviving Objective-C classes that require inlined Class.GetHandle native code.");
+				return;
 			}
+
+			if (string.IsNullOrEmpty (TypeMapFilePath) || !File.Exists (TypeMapFilePath)) {
+				Log.LogError ("The type map file '{0}' does not exist. This file is generated by the linker's CoreTypeMapStep. Ensure that trimming ran successfully.", TypeMapFilePath ?? "");
+				return;
+			}
+
+			var typeMapEntries = File.ReadAllLines (TypeMapFilePath)
+				.Select (line => {
+					var parts = line.Split ('|');
+					string className = "";
+					string framework = "";
+					string introduced = "";
+					bool iswrapper = false;
+					bool isstubclass = false;
+					foreach (var part in parts) {
+						var kvp = part.Split (new char [] { '=' }, 2);
+						if (kvp.Length != 2)
+							continue;
+						var key = kvp [0].Trim ();
+						var value = kvp [1].Trim ();
+						switch (key) {
+						case "Class":
+							className = value;
+							break;
+						case "Framework":
+							framework = value;
+							break;
+						case "Introduced":
+							introduced = value;
+							break;
+						case "IsWrapper":
+							iswrapper = string.Equals (value, "true", StringComparison.OrdinalIgnoreCase);
+							break;
+						case "IsStubClass":
+							isstubclass = string.Equals (value, "true", StringComparison.OrdinalIgnoreCase);
+							break;
+						}
+					}
+					return (Class: className, Framework: framework, Introduced: introduced, IsWrapper: iswrapper, IsStubClass: isstubclass);
+				})
+				.ToArray ();
+
+			var typeMap = new Dictionary<string, (string Class, string Framework, string Introduced, bool IsWrapper, bool IsStubClass)> ();
+			foreach (var entry in typeMapEntries) {
+				if (string.IsNullOrEmpty (entry.Class))
+					continue;
+				if (typeMap.ContainsKey (entry.Class)) {
+					Log.LogError ("Duplicate class '{0}' found in the type map file '{1}'.", entry.Class, TypeMapFilePath);
+					return;
+				}
+				typeMap [entry.Class] = entry;
+			}
+
+			var sb = new StringBuilder ();
+			sb.AppendLine ($"#include <objc/runtime.h>");
+			sb.AppendLine ($"#include <Foundation/Foundation.h>");
+			foreach (var objectiveCClassName in classes) {
+				// We don't want to import every header under the sun to find the @interface definitions for each class, so we generate
+				// a forward declaration for each class. To avoid potential issues with missing classes at runtime, we mark each declaration with __attribute__((weak_import)).
+				// The only exception is that we need to #include Foundation, which means we can't create declarations for Foundation classes.
+				if (!typeMap.TryGetValue (objectiveCClassName, out var info)) {
+					sb.AppendLine ($"__attribute__((weak_import)) @interface {objectiveCClassName} : NSObject @end // no objc type found");
+				} else if (info.IsWrapper && info.Framework == "Foundation") {
+					// This is a special case for wrapper classes in the Foundation framework. Since we need to #include Foundation, we can't create a forward declaration for these classes. However, since they are wrappers, we know they won't be missing at runtime, so we don't need to mark them with __attribute__((weak_import)).
+					sb.AppendLine ($"// The class '{objectiveCClassName}' comes from the Foundation framework, so no generated @interface declaration.");
+				} else {
+					if (info.IsStubClass)
+						sb.AppendLine ("__attribute__((objc_class_stub)) __attribute__((objc_subclassing_restricted))");
+					sb.AppendLine ($"__attribute__((weak_import)) @interface {objectiveCClassName} : NSObject @end // is stub: {info.IsStubClass}");
+				}
+				sb.AppendLine ($"Class xamarin_Class_GetHandle_{objectiveCClassName}_Native ();");
+				sb.AppendLine ($"Class xamarin_Class_GetHandle_{objectiveCClassName}_Native () {{ return [{objectiveCClassName} class]; }}");
+				sb.AppendLine ();
+			}
+
+			var outputPath = Path.Combine (OutputDirectory, "inlined-class-gethandle.m");
+			FileUtils.WriteIfDifferent (outputPath, sb.ToString (), (msg) => Log.LogMessage (MessageImportance.Low, msg));
+
+			items.Add (outputPath);
+		}
+
+		void GenerateInlinedDlfcnNativeCode (List<string> items)
+		{
+			var survivingSymbols = FilterOutIgnoredSymbols (ReadUniqueLinesFromFiles (SurvivingNativeSymbolsFiles), filterObjectiveCClasses: false);
 
 			if (survivingSymbols.Count == 0) {
 				Log.LogMessage (MessageImportance.Low, "There were no surviving symbols that require inlined dlfcn native code.");
 				return;
 			}
-
-			Directory.CreateDirectory (OutputDirectory);
-			var outputPath = Path.Combine (OutputDirectory, "inlined-dlfcn.c");
 
 			var sb = new StringBuilder ();
 			// The generated C code uses 'extern void*' declarations and returns the address of the symbol.
@@ -118,17 +254,10 @@ namespace Xamarin.MacDev.Tasks {
 				sb.AppendLine ();
 			}
 
-			var content = sb.ToString ();
-			if (File.Exists (outputPath) && File.ReadAllText (outputPath) == content) {
-				Log.LogMessage (MessageImportance.Low, "Inlined dlfcn native code is up to date");
-			} else {
-				File.WriteAllText (outputPath, content);
-				Log.LogMessage (MessageImportance.Low, "Generated inlined dlfcn native code with {0} symbols", survivingSymbols.Count);
-			}
+			var outputPath = Path.Combine (OutputDirectory, "inlined-dlfcn.c");
+			FileUtils.WriteIfDifferent (outputPath, sb.ToString (), (msg) => Log.LogMessage (MessageImportance.Low, msg));
 
-			var item = new Microsoft.Build.Utilities.TaskItem (outputPath);
-			item.SetMetadata ("Arch", Architecture.ToLowerInvariant ());
-			items.Add (item);
+			items.Add (outputPath);
 		}
 	}
 }

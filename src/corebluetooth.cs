@@ -791,7 +791,6 @@ namespace CoreBluetooth {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("name", ArgumentSemantic.Retain)]
-		[DisableZeroCopy]
 		[NullAllowed]
 		string Name { get; }
 

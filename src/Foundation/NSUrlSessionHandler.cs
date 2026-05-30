@@ -134,6 +134,15 @@ namespace Foundation {
 			// Double.MaxValue does not work, so default to 24 hours
 			config.TimeoutIntervalForRequest = 24 * 60 * 60;
 			config.TimeoutIntervalForResource = 24 * 60 * 60;
+
+			// Disable shared credential storage so credentials we pass with UseCredential in DidReceiveChallenge dont get saved in
+			// the SharedCredentialStorage so (native) NSUrlSession can't try to authenticate later requests by itself using old credentials
+			// incluiding redirects, and then our managed DidReceiveChallenge delegate may not get called at all. We already manage 
+			// the credential flow in DidReceiveChallenge and the Credentials property. The switch is just a compat in case we
+			// someone needs to go back to the old behaviour.
+			var useSharedCredentialStorage = AppContext.TryGetSwitch ("Foundation.NSUrlSessionHandler.UseSharedCredentialStorage", out var useSharedStorage) && useSharedStorage;
+			if (!useSharedCredentialStorage)
+				config.URLCredentialStorage = null;
 			return config;
 		}
 
@@ -1029,7 +1038,30 @@ namespace Foundation {
 			[Preserve (Conditional = true)]
 			public override void WillPerformHttpRedirection (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response, NSUrlRequest newRequest, Action<NSUrlRequest> completionHandler)
 			{
-				completionHandler (sessionHandler.AllowAutoRedirect ? newRequest : null!);
+				if (!sessionHandler.AllowAutoRedirect) {
+					completionHandler (null!);
+					return;
+				}
+
+				var inflight = GetInflightData (task);
+
+				if (inflight is null) {
+					completionHandler (null!);
+					return;
+				}
+
+				inflight.HasRedirected = true;
+
+				if (newRequest.Url?.AbsoluteString is string redirectUrl) {
+					inflight.CurrentRequestUrl = redirectUrl;
+
+					if (Uri.TryCreate (redirectUrl, UriKind.Absolute, out var redirectUri))
+						inflight.HasCrossOriginRedirect |= IsCrossOriginRedirect (inflight.RequestUrl, redirectUri);
+					else
+						inflight.HasCrossOriginRedirect = true;
+				}
+
+				completionHandler (newRequest);
 			}
 
 			[Preserve (Conditional = true)]
@@ -1127,6 +1159,22 @@ namespace Foundation {
 					}
 				}
 
+				// Detect redirect from the task as a fallback in case
+				// WillPerformHttpRedirection has not updated infligth state yet
+				if (!inflight.HasRedirected) {
+					var originalUrl = task.OriginalRequest?.Url?.AbsoluteString;
+					var currentUrl = task.CurrentRequest?.Url?.AbsoluteString;
+					if (originalUrl is not null && currentUrl is not null
+						&& !string.Equals (originalUrl, currentUrl, StringComparison.Ordinal)) {
+						inflight.HasRedirected = true;
+						inflight.CurrentRequestUrl = currentUrl;
+						if (Uri.TryCreate (currentUrl, UriKind.Absolute, out var redirectUri))
+							inflight.HasCrossOriginRedirect |= IsCrossOriginRedirect (inflight.RequestUrl, redirectUri);
+						else
+							inflight.HasCrossOriginRedirect = true;
+					}
+				}
+
 				if (sessionHandler.Credentials is not null && TryGetAuthenticationType (challenge.ProtectionSpace, out var authType)) {
 					NetworkCredential? credentialsToUse = null;
 					if (authType != RejectProtectionSpaceAuthType) {
@@ -1147,8 +1195,9 @@ namespace Foundation {
 						var nsurlRespose = challenge.FailureResponse as NSHttpUrlResponse;
 						var responseIsUnauthorized = (nsurlRespose is null) ? false : nsurlRespose.StatusCode == (int) HttpStatusCode.Unauthorized && challenge.PreviousFailureCount > 0;
 						if (!responseIsUnauthorized) {
-							var uri = inflight.Request.RequestUri!;
-							credentialsToUse = sessionHandler.Credentials.GetCredential (uri, authType);
+							var uri = GetCredentialLookupUri (task, inflight);
+							if (ShouldLookupCredentials (sessionHandler.Credentials, inflight))
+								credentialsToUse = sessionHandler.Credentials.GetCredential (uri, authType);
 						}
 					}
 
@@ -1163,6 +1212,45 @@ namespace Foundation {
 				} else {
 					completionHandler (NSUrlSessionAuthChallengeDisposition.PerformDefaultHandling, challenge.ProposedCredential);
 				}
+			}
+
+			static Uri GetCredentialLookupUri (NSUrlSessionTask task, InflightData inflight)
+			{
+				var currentRequestUrl = task.CurrentRequest?.Url?.AbsoluteString;
+				if (currentRequestUrl is not null && Uri.TryCreate (currentRequestUrl, UriKind.Absolute, out var currentRequestUri))
+					return currentRequestUri;
+
+				if (Uri.TryCreate (inflight.CurrentRequestUrl, UriKind.Absolute, out var inflightCurrentRequestUri))
+					return inflightCurrentRequestUri;
+
+				return inflight.Request.RequestUri!;
+			}
+
+			static bool ShouldLookupCredentials (ICredentials credentials, InflightData inflight)
+			{
+				if (credentials is CredentialCache)
+					return true;
+
+				if (!inflight.HasRedirected)
+					return true;
+
+				// We are now matching .NET handlers (SocketsHttpHandler and WinHttpHandler) redirect behavior by dropping non CredentialCache credentials after a redirect
+				// Ref:
+				//	https://github.com/dotnet/runtime/blob/eb5503a1f0dc40ee7b73eb79a039eb143ee25038/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/SocketsHttpHandler.cs#L541-L547
+				//	https://github.com/dotnet/runtime/blob/eb5503a1f0dc40ee7b73eb79a039eb143ee25038/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/RedirectHandler.cs#L52-L87
+				// Provide a way for customers to opt into the old behavior for same origin redirects.
+				var allowSameOriginRedirectCredentials = AppContext.TryGetSwitch ("Foundation.NSUrlSessionHandler.AllowSameOriginRedirectCredentials", out var allowRedirectCred) && allowRedirectCred;
+				return allowSameOriginRedirectCredentials && !inflight.HasCrossOriginRedirect;
+			}
+
+			static bool IsCrossOriginRedirect (string originalRequestUrl, Uri currentRequestUri)
+			{
+				if (!Uri.TryCreate (originalRequestUrl, UriKind.Absolute, out var originalRequestUri))
+					return true;
+
+				return !string.Equals (originalRequestUri.Scheme, currentRequestUri.Scheme, StringComparison.OrdinalIgnoreCase)
+					|| !string.Equals (originalRequestUri.IdnHost, currentRequestUri.IdnHost, StringComparison.OrdinalIgnoreCase)
+					|| originalRequestUri.Port != currentRequestUri.Port;
 			}
 
 			static readonly string RejectProtectionSpaceAuthType = "reject";
@@ -1196,6 +1284,9 @@ namespace Foundation {
 		class InflightData {
 			public readonly object Lock = new object ();
 			public string RequestUrl { get; set; }
+			public string CurrentRequestUrl { get; set; }
+			public bool HasRedirected { get; set; }
+			public bool HasCrossOriginRedirect { get; set; }
 
 			public TaskCompletionSource<HttpResponseMessage> CompletionSource { get; } = new TaskCompletionSource<HttpResponseMessage> (TaskCreationOptions.RunContinuationsAsynchronously);
 			public CancellationToken CancellationToken { get; set; }
@@ -1214,6 +1305,7 @@ namespace Foundation {
 			public InflightData (string requestUrl, CancellationToken cancellationToken, HttpRequestMessage request)
 			{
 				RequestUrl = requestUrl;
+				CurrentRequestUrl = requestUrl;
 				CancellationToken = cancellationToken;
 				Request = request;
 			}

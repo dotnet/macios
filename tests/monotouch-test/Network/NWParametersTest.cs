@@ -87,7 +87,7 @@ namespace MonoTouchFixtures.Network {
 			var setUpProtocol = CreateConfigureProtocolHandler ();
 
 			using (var parameters = NWParameters.CreateSecureUdp (configureTls: setUpTls, configureUdp: setUpProtocol))
-			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftHttpUri.Host, "80")) {
+			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				secureEvent.WaitOne ();
 				configureEvent.WaitOne ();
 				Assert.That (secureConnectionWasSet, Is.True, "Configure TLS handler was not called.");
@@ -101,7 +101,7 @@ namespace MonoTouchFixtures.Network {
 			var setUpTls = CreateTlsHandler ();
 
 			using (var parameters = NWParameters.CreateSecureUdp (configureTls: setUpTls))
-			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftHttpUri.Host, "80")) {
+			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				secureEvent.WaitOne ();
 				Assert.That (secureConnectionWasSet, Is.True, "Configure TLS handler was not called.");
 				Assert.That (protocolConfigured, Is.False, "Protocol configure handler was called.");
@@ -114,7 +114,7 @@ namespace MonoTouchFixtures.Network {
 			var setUpProtocol = CreateConfigureProtocolHandler ();
 
 			using (var parameters = NWParameters.CreateSecureUdp (configureTls: null, configureUdp: setUpProtocol))
-			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftHttpUri.Host, "80")) {
+			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				configureEvent.WaitOne ();
 				Assert.That (secureConnectionWasSet, Is.False, "Configure TLS handler was not called.");
 				Assert.That (protocolConfigured, Is.True, "Protocol configure handler was not called.");
@@ -128,7 +128,7 @@ namespace MonoTouchFixtures.Network {
 			var setUpProtocol = CreateConfigureProtocolHandler ();
 
 			using (var parameters = NWParameters.CreateSecureTcp (configureTls: setUpTls, configureTcp: setUpProtocol))
-			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftHttpUri.Host, "80")) {
+			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				secureEvent.WaitOne ();
 				configureEvent.WaitOne ();
 				Assert.That (secureConnectionWasSet, Is.True, "Configure TLS handler was not called.");
@@ -143,7 +143,7 @@ namespace MonoTouchFixtures.Network {
 			var setUpProtocol = CreateConfigureProtocolHandler ();
 
 			using (var parameters = NWParameters.CreateSecureTcp (configureTls: setUpTls))
-			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftHttpUri.Host, "80")) {
+			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				secureEvent.WaitOne ();
 				Assert.That (secureConnectionWasSet, Is.True, "Configure TLS handler was not called.");
 				Assert.That (protocolConfigured, Is.False, "Protocol configure handler was called.");
@@ -156,7 +156,7 @@ namespace MonoTouchFixtures.Network {
 			var setUpProtocol = CreateConfigureProtocolHandler ();
 
 			using (var parameters = NWParameters.CreateSecureTcp (configureTls: null, configureTcp: setUpProtocol))
-			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftHttpUri.Host, "80")) {
+			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				configureEvent.WaitOne ();
 				Assert.That (secureConnectionWasSet, Is.False, "Configure TLS handler was called.");
 				Assert.That (protocolConfigured, Is.True, "Protocol configure handler was not called.");
@@ -317,7 +317,7 @@ namespace MonoTouchFixtures.Network {
 		{
 			Assert.Ignore ("nw_parameters_copy_local_endpoint always return null. Rdar filled 44095278.");
 			using (var parameters = NWParameters.CreateUdp ())
-			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftHttpUri.Host, "80")) {
+			using (var endpoint = NWEndpoint.Create (NetworkResources.MicrosoftUri.Host, "80")) {
 				var defaultValue = parameters.LocalEndpoint;
 				Assert.That (defaultValue, Is.Null, "Default value changed.");
 				parameters.LocalEndpoint = endpoint;

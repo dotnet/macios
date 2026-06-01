@@ -246,6 +246,15 @@
 		<PublishReadyToRunComposite Condition="'$(PublishReadyToRunComposite)' == '' And '$(PublishReadyToRun)' == 'true'">true</PublishReadyToRunComposite>
 		<PublishReadyToRunContainerFormat Condition="'$(PublishReadyToRunContainerFormat)' == '' And '$(PublishReadyToRun)' == 'true'">macho</PublishReadyToRunContainerFormat>
 		<PublishReadyToRunCreateSharedLibrary>false</PublishReadyToRunCreateSharedLibrary>
+		<!--
+			The .NET SDK defaults PublishReadyToRunStripDebugInfo=true for apple-mobile RIDs,
+			which passes --strip-debug-info to crossgen2 and drops READYTORUN_SECTION_DEBUG_INFO
+			from the composite R2R image. Without that section, DebuggerJitInfo::m_sequenceMap
+			stays NULL for every R2R method, line-level breakpoints cannot bind to a native
+			offset, and the CoreCLR remote debugger experience is degraded. Keep the debug info
+			in Debug builds at the cost of a larger R2R image; release builds still strip it.
+		-->
+		<PublishReadyToRunStripDebugInfo Condition="'$(PublishReadyToRunStripDebugInfo)' == '' And '$(Configuration)' == 'Debug'">false</PublishReadyToRunStripDebugInfo>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(PublishReadyToRun)' != 'true'">

@@ -633,5 +633,215 @@ namespace Xamarin.MacDev.Tasks {
 			ExecuteTask (actool, 1);
 			Assert.That (Engine.Logger.ErrorEvents [0].Message, Is.EqualTo ("Can't specify both 'XSAppIconAssets' in the Info.plist and 'AppIcon' in the project file. Please select one or the other."), "Error message");
 		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[TestCase (ApplePlatform.MacOSX)]
+		public void IconFileSupport (ApplePlatform platform)
+		{
+			// Test that .icon folders (Icon Composer format) are recognized as app icons
+			var projectDir = Cache.CreateTemporaryDirectory ();
+			var iconFolderPath = Path.Combine (projectDir, "Resources", "AppIcon.icon");
+			var assetsPath = Path.Combine (iconFolderPath, "Assets");
+			Directory.CreateDirectory (assetsPath);
+
+			// Create a placeholder icon.json file (simplified structure for testing)
+			var iconJsonPath = Path.Combine (iconFolderPath, "icon.json");
+			File.WriteAllText (iconJsonPath, @"{""groups"":[{""layers"":[{""image-name"":""icon_512x512.png"",""name"":""icon""}]}]}");
+
+			// Create a placeholder image file in the Assets folder
+			var imagePath = Path.Combine (assetsPath, "icon_512x512.png");
+			File.WriteAllText (imagePath, "placeholder image");
+
+			var actool = CreateACToolTask (
+				platform,
+				projectDir,
+				out var _,
+				iconJsonPath + "|Resources/AppIcon.icon/icon.json",
+				imagePath + "|Resources/AppIcon.icon/Assets/icon_512x512.png"
+			);
+			actool.AppIcon = "AppIcon";
+
+			// actool may fail on the placeholder .icon content, but the validation phase should pass
+			actool.Execute ();
+
+			// Verify that no icon validation errors were logged
+			AssertNoIconValidationErrors ();
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[TestCase (ApplePlatform.MacOSX)]
+		public void IconFileSupportWithIncludeAllAppIcons (ApplePlatform platform)
+		{
+			// Test that .icon folders work with IncludeAllAppIcons
+			var projectDir = Cache.CreateTemporaryDirectory ();
+			var iconFolderPath = Path.Combine (projectDir, "Resources", "AppIcon.icon");
+			var assetsPath = Path.Combine (iconFolderPath, "Assets");
+			Directory.CreateDirectory (assetsPath);
+
+			var iconJsonPath = Path.Combine (iconFolderPath, "icon.json");
+			File.WriteAllText (iconJsonPath, @"{""groups"":[{""layers"":[{""image-name"":""icon_512x512.png"",""name"":""icon""}]}]}");
+
+			var imagePath = Path.Combine (assetsPath, "icon_512x512.png");
+			File.WriteAllText (imagePath, "placeholder image");
+
+			var actool = CreateACToolTask (
+				platform,
+				projectDir,
+				out var _,
+				iconJsonPath + "|Resources/AppIcon.icon/icon.json",
+				imagePath + "|Resources/AppIcon.icon/Assets/icon_512x512.png"
+			);
+			actool.AppIcon = "AppIcon";
+			actool.IncludeAllAppIcons = true;
+
+			// actool may fail on the placeholder .icon content, but the validation phase should pass
+			actool.Execute ();
+
+			// Verify that no icon validation errors were logged
+			AssertNoIconValidationErrors ();
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[TestCase (ApplePlatform.MacOSX)]
+		public void IconFileSupportAsAlternateIcon (ApplePlatform platform)
+		{
+			// Test that .icon folders work as alternate app icons
+			var projectDir = Cache.CreateTemporaryDirectory ();
+			var iconFolderPath = Path.Combine (projectDir, "Resources", "AlternateIcon.icon");
+			var assetsPath = Path.Combine (iconFolderPath, "Assets");
+			Directory.CreateDirectory (assetsPath);
+
+			var iconJsonPath = Path.Combine (iconFolderPath, "icon.json");
+			File.WriteAllText (iconJsonPath, @"{""groups"":[{""layers"":[{""image-name"":""icon_512x512.png"",""name"":""icon""}]}]}");
+
+			var imagePath = Path.Combine (assetsPath, "icon_512x512.png");
+			File.WriteAllText (imagePath, "placeholder image");
+
+			// Also need a primary icon for the alternate icon test to make sense
+			var primaryIconPath = Path.Combine (projectDir, "Resources", "AppIcon.icon");
+			var primaryAssetsPath = Path.Combine (primaryIconPath, "Assets");
+			Directory.CreateDirectory (primaryAssetsPath);
+
+			var primaryIconJsonPath = Path.Combine (primaryIconPath, "icon.json");
+			File.WriteAllText (primaryIconJsonPath, @"{""groups"":[{""layers"":[{""image-name"":""icon_512x512.png"",""name"":""icon""}]}]}");
+
+			var primaryImagePath = Path.Combine (primaryAssetsPath, "icon_512x512.png");
+			File.WriteAllText (primaryImagePath, "placeholder image");
+
+			var actool = CreateACToolTask (
+				platform,
+				projectDir,
+				out var _,
+				iconJsonPath + "|Resources/AlternateIcon.icon/icon.json",
+				imagePath + "|Resources/AlternateIcon.icon/Assets/icon_512x512.png",
+				primaryIconJsonPath + "|Resources/AppIcon.icon/icon.json",
+				primaryImagePath + "|Resources/AppIcon.icon/Assets/icon_512x512.png"
+			);
+			actool.AppIcon = "AppIcon";
+			actool.AlternateAppIcons = new ITaskItem [] { new TaskItem ("AlternateIcon") };
+
+			// actool may fail on the placeholder .icon content, but the validation phase should pass
+			actool.Execute ();
+
+			// Verify that no icon validation errors were logged
+			AssertNoIconValidationErrors ();
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.TVOS)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[TestCase (ApplePlatform.MacOSX)]
+		public void InexistentIconFile (ApplePlatform platform)
+		{
+			// Test that an inexistent .icon-based app icon is correctly reported
+			var projectDir = Cache.CreateTemporaryDirectory ();
+			var iconFolderPath = Path.Combine (projectDir, "Resources", "AppIcon.icon");
+			var assetsPath = Path.Combine (iconFolderPath, "Assets");
+			Directory.CreateDirectory (assetsPath);
+
+			var iconJsonPath = Path.Combine (iconFolderPath, "icon.json");
+			File.WriteAllText (iconJsonPath, @"{""groups"":[{""layers"":[{""image-name"":""icon_512x512.png"",""name"":""icon""}]}]}");
+
+			var imagePath = Path.Combine (assetsPath, "icon_512x512.png");
+			File.WriteAllText (imagePath, "placeholder image");
+
+			var actool = CreateACToolTask (
+				platform,
+				projectDir,
+				out var _,
+				iconJsonPath + "|Resources/AppIcon.icon/icon.json",
+				imagePath + "|Resources/AppIcon.icon/Assets/icon_512x512.png"
+			);
+			actool.AppIcon = "InexistentIcon";
+
+			ExecuteTask (actool, 1);
+
+			var errorMessages = Engine.Logger.ErrorEvents.Select (e => e.Message).ToList ();
+			Assert.That (errorMessages.Any (m => m?.Contains ("Can't find the AppIcon 'InexistentIcon'") == true), Is.True, "Should report that InexistentIcon is not found among image resources");
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS)]
+		[TestCase (ApplePlatform.MacCatalyst)]
+		[TestCase (ApplePlatform.MacOSX)]
+		public void MixedXCAssetsAndIconFile (ApplePlatform platform)
+		{
+			// Test that .icon folders and .xcassets can coexist in the validation phase
+			var projectDir = Path.Combine (Configuration.SourceRoot, "tests", "dotnet", "AppWithXCAssets", platform.AsString ());
+			var files = Directory.GetFiles (Path.Combine (projectDir, "Resources", "Images.xcassets"), "*", SearchOption.AllDirectories);
+			var imageAssets = files.Select (v => v + "|" + v.Substring (projectDir.Length + 1)).ToList ();
+
+			// Add a .icon folder alongside the existing .xcassets
+			var tmpDir = Cache.CreateTemporaryDirectory ();
+			var iconFolderPath = Path.Combine (tmpDir, "ComposerIcon.icon");
+			var assetsPath = Path.Combine (iconFolderPath, "Assets");
+			Directory.CreateDirectory (assetsPath);
+
+			var iconJsonPath = Path.Combine (iconFolderPath, "icon.json");
+			File.WriteAllText (iconJsonPath, @"{""groups"":[{""layers"":[{""image-name"":""icon_512x512.png"",""name"":""icon""}]}]}");
+
+			var imagePath = Path.Combine (assetsPath, "icon_512x512.png");
+			File.WriteAllText (imagePath, "placeholder image");
+
+			imageAssets.Add (iconJsonPath + "|Resources/ComposerIcon.icon/icon.json");
+			imageAssets.Add (imagePath + "|Resources/ComposerIcon.icon/Assets/icon_512x512.png");
+
+			var actool = CreateACToolTask (
+				platform,
+				projectDir,
+				out var _,
+				imageAssets.ToArray ()
+			);
+			actool.AppIcon = "AppIcons";
+
+			// actool may fail on the placeholder .icon content, but the validation phase should pass
+			actool.Execute ();
+
+			// Verify that no icon validation errors were logged
+			AssertNoIconValidationErrors ();
+		}
+
+		void AssertNoIconValidationErrors ()
+		{
+			var errorMessages = Engine.Logger.ErrorEvents.Select (e => e.Message).ToList ();
+			Assert.That (errorMessages, Has.None.Contain ("Can't find the AppIcon"),
+				"Should not report that AppIcon is not found among image resources");
+			Assert.That (errorMessages, Has.None.Contain ("Can't find the AlternateAppIcon"),
+				"Should not report that AlternateAppIcon is not found among image resources");
+			Assert.That (errorMessages, Has.None.Contain ("is specified as both 'AppIcon' and 'AlternateAppIcon'"),
+				"Should not report icon conflict between AppIcon and AlternateAppIcon");
+			Assert.That (errorMessages, Has.None.Contain ("Can't specify both 'XSAppIconAssets'"),
+				"Should not report XSAppIconAssets conflict");
+		}
 	}
 }

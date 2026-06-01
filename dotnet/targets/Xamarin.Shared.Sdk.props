@@ -246,6 +246,8 @@
 		<PublishReadyToRunComposite Condition="'$(PublishReadyToRunComposite)' == '' And '$(PublishReadyToRun)' == 'true'">true</PublishReadyToRunComposite>
 		<PublishReadyToRunContainerFormat Condition="'$(PublishReadyToRunContainerFormat)' == '' And '$(PublishReadyToRun)' == 'true'">macho</PublishReadyToRunContainerFormat>
 		<PublishReadyToRunCreateSharedLibrary>false</PublishReadyToRunCreateSharedLibrary>
+		<!-- Keep R2R debug info in Debug so the CoreCLR debugger can bind breakpoints to native offsets. -->
+		<PublishReadyToRunStripDebugInfo Condition="'$(PublishReadyToRunStripDebugInfo)' == '' And '$(Configuration)' == 'Debug'">false</PublishReadyToRunStripDebugInfo>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(UseMonoRuntime)' == 'false' And '$(_PlatformName)' != 'macOS' And '$(PublishReadyToRun)' != 'true'">

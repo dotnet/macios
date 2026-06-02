@@ -2741,8 +2741,9 @@ namespace Registrar {
 				return "#";
 
 			if (IsINativeObject (type)) {
-				if (!IsGenericType (type) && !IsInterface (type) && !IsNSObject (type) && IsAbstract (type))
-					ErrorHelper.Show (CreateWarning (4179, member, Errors.MT4179, type.FullName, member?.FullName));
+				if (!IsGenericType (type) && !IsInterface (type) && !IsNSObject (type) && IsAbstract (type)) {
+					ReportWarning (4179, Errors.MT4179, type.FullName, member?.FullName);
+				}
 				if (IsNSObject (type) && forProperty) {
 					return "@\"" + GetExportedTypeName (type) + "\"";
 				} else {
@@ -2811,7 +2812,7 @@ namespace Registrar {
 		}
 #endif
 
-		protected virtual void ReportError (int code, string message, params object [] args)
+		protected virtual void ReportError (int code, string message, params object? [] args)
 		{
 			// Using Console.WriteLine here is error prone, since if we get an early error
 			// we'll end up crashing/infinite recursion since Console.WriteLine is redirected
@@ -2820,7 +2821,7 @@ namespace Registrar {
 			R.NSLog (String.Format (message, args));
 		}
 
-		protected virtual void ReportWarning (int code, string message, params object [] args)
+		protected virtual void ReportWarning (int code, string message, params object? [] args)
 		{
 			// Using Console.WriteLine here is error prone, since if we get an early error
 			// we'll end up crashing/infinite recursion since Console.WriteLine is redirected

@@ -68,6 +68,7 @@ namespace Xamarin.Linker {
 		public static void ReapplyDisposedFields (DerivedLinkContext context, string operation)
 		{
 			// note: all methods in the dictionary are marked (since they were added from an IMarkHandler)
+			var app = context.App;
 			foreach ((var method, var body) in dispose) {
 				foreach (var ins in body.Instructions) {
 					switch (ins.OpCode.OperandType) {
@@ -79,9 +80,9 @@ namespace Xamarin.Linker {
 							var store_field = ins;
 							var load_null = ins.Previous;
 							var load_this = ins.Previous.Previous;
-							if (OptimizeGeneratedCodeHandler.ValidateInstruction (method, store_field, operation, Code.Stfld) &&
-								OptimizeGeneratedCodeHandler.ValidateInstruction (method, load_null, operation, Code.Ldnull) &&
-								OptimizeGeneratedCodeHandler.ValidateInstruction (method, load_this, operation, Code.Ldarg_0)) {
+							if (OptimizeGeneratedCodeHandler.ValidateInstruction (app, method, store_field, operation, Code.Stfld) &&
+								OptimizeGeneratedCodeHandler.ValidateInstruction (app, method, load_null, operation, Code.Ldnull) &&
+								OptimizeGeneratedCodeHandler.ValidateInstruction (app, method, load_this, operation, Code.Ldarg_0)) {
 								store_field.OpCode = OpCodes.Nop;
 								load_null.OpCode = OpCodes.Nop;
 								load_this.OpCode = OpCodes.Nop;

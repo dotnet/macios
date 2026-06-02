@@ -1296,4 +1296,19 @@
   <data name="W7174" xml:space="preserve">
         <value>The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
     </data>
+  <data name="E7175" xml:space="preserve">
+        <value>The {0} simulator runtime is not installed. This is required by Apple's development tools (even when building for physical devices). Install it by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings &gt; Components).</value>
+        <comment>Shown when the required simulator runtime is not installed.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
+  <data name="W7176" xml:space="preserve">
+        <value>Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.</value>
+        <comment>Shown when we're unable to check for simulator runtime availability.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
+  <data name="E7177" xml:space="preserve">
+        <value>The installed {0} simulator runtime is not compatible with the current Xcode version. Update the simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings &gt; Components).</value>
+        <comment>Shown when the tool reports a simulator runtime version mismatch.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
 </root>

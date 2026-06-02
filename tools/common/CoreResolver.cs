@@ -60,7 +60,7 @@ namespace Xamarin.Bundler {
 			return parameters;
 		}
 
-		public virtual AssemblyDefinition? Load (string fileName)
+		public virtual AssemblyDefinition? Load (IToolLog log, string fileName)
 		{
 			if (!File.Exists (fileName))
 				return null;
@@ -70,7 +70,7 @@ namespace Xamarin.Bundler {
 				return assembly;
 
 			try {
-				fileName = Application.GetRealPath (fileName);
+				fileName = Application.GetRealPath (log, fileName);
 
 				// Check the architecture-specific directory
 				if (Path.GetDirectoryName (fileName) == FrameworkDirectory && !string.IsNullOrEmpty (ArchDirectory)) {
@@ -89,14 +89,14 @@ namespace Xamarin.Bundler {
 						// Warn about this.
 						var pdb = Path.ChangeExtension (fileName, "pdb");
 						if (File.Exists (pdb))
-							ErrorHelper.Show (ErrorHelper.CreateWarning (178, Errors.MX0178, fileName));
+							ErrorHelper.Show (log, ErrorHelper.CreateWarning (178, Errors.MX0178, fileName));
 					}
 					// Don't load native .pdb symbols, because we won't be able to write them back out again (so just drop them)
 					if (assembly.MainModule?.SymbolReader?.GetType ()?.FullName == "Mono.Cecil.Pdb.NativePdbReader") {
 						parameters.ReadSymbols = false;
 						parameters.SymbolReaderProvider = null;
 						assembly = ModuleDefinition.ReadModule (fileName, parameters).Assembly;
-						ErrorHelper.Show (ErrorHelper.CreateWarning (178, Errors.MX0178, fileName));
+						ErrorHelper.Show (log, ErrorHelper.CreateWarning (178, Errors.MX0178, fileName));
 					}
 				} catch (IOException ex) when (ex.GetType ().FullName == "Microsoft.Cci.Pdb.PdbException") { // Microsoft.Cci.Pdb.PdbException is not public, so we have to check the runtime type :/
 					symbolLoadFailure = true;
@@ -108,7 +108,7 @@ namespace Xamarin.Bundler {
 					parameters.SymbolReaderProvider = null;
 					assembly = ModuleDefinition.ReadModule (fileName, parameters).Assembly;
 					// only report the warning (on symbols) if we can actually load the assembly itself (otherwise it's more confusing than helpful)
-					ErrorHelper.Show (ErrorHelper.CreateWarning (129, Errors.MX0129, fileName));
+					ErrorHelper.Show (log, ErrorHelper.CreateWarning (129, Errors.MX0129, fileName));
 				}
 			} catch (Exception e) {
 				throw new ProductException (9, true, e, Errors.MX0009, fileName);
@@ -126,23 +126,23 @@ namespace Xamarin.Bundler {
 			return assembly;
 		}
 
-		protected AssemblyDefinition? SearchDirectory (string name, string directory, string extension = ".dll")
+		protected AssemblyDefinition? SearchDirectory (IToolLog log, string name, string directory, string extension = ".dll")
 		{
 			if (!Directory.Exists (directory))
 				return null;
 
-			var file = DirectoryGetFile (directory, name + extension);
+			var file = DirectoryGetFile (log, directory, name + extension);
 			if (file.Length > 0)
-				return Load (file);
+				return Load (log, file);
 			return null;
 		}
 
-		static string DirectoryGetFile (string directory, string file)
+		static string DirectoryGetFile (IToolLog log, string directory, string file)
 		{
 			var files = Directory.GetFiles (directory, file);
 			if (files is not null && files.Length > 0) {
 				if (files.Length > 1) {
-					ErrorHelper.Warning (133, Errors.MX0133, file, Environment.NewLine, string.Join ("\n", files));
+					ErrorHelper.Warning (log, 133, Errors.MX0133, file, Environment.NewLine, string.Join ("\n", files));
 				}
 				return files [0];
 			}

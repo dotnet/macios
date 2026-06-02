@@ -15,6 +15,7 @@ public class AttributeManager {
 		"System.Runtime.CompilerServices.NullableAttribute",
 		"System.Runtime.CompilerServices.NullableContextAttribute",
 		"System.Runtime.CompilerServices.NativeIntegerAttribute",
+		"System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute",
 	};
 
 	TypeCache TypeCache { get; }

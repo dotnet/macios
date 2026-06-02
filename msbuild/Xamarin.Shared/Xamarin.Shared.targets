@@ -481,10 +481,18 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<FileWrites Include="$(_ProcessedContentPath)" />
 		</ItemGroup>
 
-		<!-- Copy any items with the PublishFolderType metadata directly to the ResolvedFileToPublish item group -->
+		<!-- Copy any items with the PublishFolderType metadata directly to the ResolvedFileToPublish item group.
+		     Set TargetPath from the Link metadata (if not already set) so that the .NET SDK's conflict resolution
+		     (ResolveOverlappingItemGroupConflicts) sees the full relative path instead of just the filename.
+		     Without this, items whose filename matches an SDK assembly or runtime file would be incorrectly
+		     removed as conflicts. Ref: https://github.com/dotnet/macios/issues/25497 -->
 		<ItemGroup>
-			<ResolvedFileToPublish Include="@(BundleResource)" Condition="'%(BundleResource.PublishFolderType)' != ''" />
-			<ResolvedFileToPublish Include="@(Content)" Condition="'%(Content.PublishFolderType)' != ''" />
+			<ResolvedFileToPublish Include="@(BundleResource)" Condition="'%(BundleResource.PublishFolderType)' != ''">
+				<TargetPath Condition="'%(BundleResource.TargetPath)' == '' and '%(BundleResource.Link)' != ''">%(BundleResource.Link)</TargetPath>
+			</ResolvedFileToPublish>
+			<ResolvedFileToPublish Include="@(Content)" Condition="'%(Content.PublishFolderType)' != ''">
+				<TargetPath Condition="'%(Content.TargetPath)' == '' and '%(Content.Link)' != ''">%(Content.Link)</TargetPath>
+			</ResolvedFileToPublish>
 		</ItemGroup>
 	</Target>
 

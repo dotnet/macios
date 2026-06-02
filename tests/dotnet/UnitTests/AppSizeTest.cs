@@ -201,15 +201,16 @@ namespace Xamarin.Tests {
 				Console.WriteLine ($"    Updated expected file: {expectedSizeReportPath}");
 			} else if (hasDifferences) {
 				UploadUpdatedExpectedFile (expectedSizeReportPath, report.ToString ());
+				var updateHint = GetUpdateHint ();
 				if (hasFileDifferences) {
 					var details = new List<string> ();
 					foreach (var key in filesAdded)
 						details.Add ($"added: '{key}'");
 					foreach (var key in filesRemoved)
 						details.Add ($"removed: '{key}'");
-					Assert.Fail ($"The app bundle's file list changed ({string.Join (", ", details)}). The updated expected file is available as a build artifact (set WRITE_KNOWN_FAILURES=1 to update locally).");
+					Assert.Fail ($"The app bundle's file list changed ({string.Join (", ", details)}). {updateHint}");
 				}
-				Assert.Fail ($"{msg} The updated expected file is available as a build artifact (set WRITE_KNOWN_FAILURES=1 to update locally).");
+				Assert.Fail ($"{msg} {updateHint}");
 			}
 		}
 
@@ -251,9 +252,9 @@ namespace Xamarin.Tests {
 			if (!update) {
 				if (addedAPIs.Count > 0 || removedAPIs.Count > 0) {
 					UploadUpdatedExpectedFile (expectedFile, string.Join ('\n', preservedAPIs) + "\n");
-					var updateMsg = " The updated expected file is available as a build artifact (set WRITE_KNOWN_FAILURES=1 to update locally).";
-					Assert.That (addedAPIs, Is.Empty, "No added APIs." + updateMsg);
-					Assert.That (removedAPIs, Is.Empty, "No removed APIs." + updateMsg);
+					var updateHint = " " + GetUpdateHint ();
+					Assert.That (addedAPIs, Is.Empty, "Unexpected APIs were added to the preserved set." + updateHint);
+					Assert.That (removedAPIs, Is.Empty, "APIs were unexpectedly removed from the preserved set." + updateHint);
 				}
 			}
 		}
@@ -272,6 +273,13 @@ namespace Xamarin.Tests {
 			var outputFile = Path.Combine (outputDir, fileName);
 			File.WriteAllText (outputFile, content);
 			Console.WriteLine ($"    Updated expected file written to: {outputFile}");
+		}
+
+		static string GetUpdateHint ()
+		{
+			if (IsInCI)
+				return "The updated expected file is available as a build artifact (set WRITE_KNOWN_FAILURES=1 to update locally).";
+			return "Set WRITE_KNOWN_FAILURES=1 to update the expected files in-place.";
 		}
 
 		static string FormatBytes (long bytes, bool alwaysShowSign = false)

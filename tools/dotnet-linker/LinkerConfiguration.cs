@@ -47,7 +47,7 @@ namespace Xamarin.Linker {
 		public Version? SdkVersion { get; private set; }
 		public string SdkRootDirectory { get; private set; } = string.Empty;
 		public string TypeMapFilePath { get; set; } = string.Empty;
-		public int Verbosity => Driver.Verbosity;
+		public int Verbosity => Application.Verbosity;
 		public string XamarinNativeLibraryDirectory { get; private set; } = string.Empty;
 
 		static ConditionalWeakTable<LinkContext, LinkerConfiguration> configurations = new ConditionalWeakTable<LinkContext, LinkerConfiguration> ();
@@ -397,7 +397,7 @@ namespace Xamarin.Linker {
 				case "Verbosity":
 					if (!int.TryParse (value, out var verbosity))
 						throw new InvalidOperationException ($"Invalid Verbosity '{value}' in {linker_file}");
-					Driver.Verbosity += verbosity;
+					Application.Verbosity += verbosity;
 					break;
 				case "Warn":
 					try {
@@ -438,7 +438,7 @@ namespace Xamarin.Linker {
 			if (!StringUtils.IsNullOrEmpty (user_optimize_flags)) {
 				var messages = new List<ProductException> ();
 				Application.Optimizations.Parse (Application.Platform, user_optimize_flags, messages);
-				ErrorHelper.Show (messages);
+				ErrorHelper.Show (Application, messages);
 			}
 
 			if (use_llvm) {
@@ -447,7 +447,7 @@ namespace Xamarin.Linker {
 
 			Application.CreateCache (significantLines.ToArray ());
 			if (Application.Cache is not null)
-				Application.Cache.Location = CacheDirectory;
+				Application.Cache.SetLocation (Application, CacheDirectory);
 			if (DeploymentTarget is not null)
 				Application.DeploymentTarget = DeploymentTarget;
 			if (SdkVersion is not null) {
@@ -472,7 +472,7 @@ namespace Xamarin.Linker {
 				throw ErrorHelper.CreateError (99, "Inconsistent platforms. TargetFramework={0}, Platform={1}", Driver.TargetFramework.Platform, Platform);
 
 			if (Application.XamarinRuntime != XamarinRuntime.MonoVM && Application.UseInterpreter) {
-				Driver.Log (4, "The interpreter is enabled, but the current runtime isn't MonoVM. The interpreter settings will be ignored.");
+				Application.Log (4, "The interpreter is enabled, but the current runtime isn't MonoVM. The interpreter settings will be ignored.");
 				Application.UnsetInterpreter ();
 			}
 
@@ -539,52 +539,52 @@ namespace Xamarin.Linker {
 		public void Write ()
 		{
 			if (Verbosity > 0) {
-				Console.WriteLine ($"LinkerConfiguration:");
-				Console.WriteLine ($"    ABI: {Abi.AsArchString ()}");
-				Console.WriteLine ($"    AOTArguments: {string.Join (", ", Application.AotArguments)}");
-				Console.WriteLine ($"    AOTOutputDirectory: {AOTOutputDirectory}");
-				Console.WriteLine ($"    DedupAssembly: {DedupAssembly}");
-				Console.WriteLine ($"    AppBundleManifestPath: {Application.InfoPListPath}");
-				Console.WriteLine ($"    AreAnyAssembliesTrimmed: {Application.AreAnyAssembliesTrimmed}");
-				Console.WriteLine ($"    AssemblyName: {Application.AssemblyName}");
-				Console.WriteLine ($"    CacheDirectory: {CacheDirectory}");
-				Console.WriteLine ($"    Debug: {Application.EnableDebug}");
-				Console.WriteLine ($"    Dlsym: {Application.DlsymOptions} {(Application.DlsymAssemblies is not null ? string.Join (" ", Application.DlsymAssemblies.Select (v => (v.Item2 ? "+" : "-") + v.Item1)) : string.Empty)}");
-				Console.WriteLine ($"    DeploymentTarget: {DeploymentTarget}");
-				Console.WriteLine ($"    EnableSGenConc {Application.EnableSGenConc}");
-				Console.WriteLine ($"    InlineDlfcnMethods: {InlineDlfcnMethods}");
-				Console.WriteLine ($"    IntermediateLinkDir: {IntermediateLinkDir}");
-				Console.WriteLine ($"    IntermediateOutputPath: {IntermediateOutputPath}");
-				Console.WriteLine ($"    InterpretedAssemblies: {string.Join (", ", Application.InterpretedAssemblies)}");
-				Console.WriteLine ($"    ItemsDirectory: {ItemsDirectory}");
-				Console.WriteLine ($"    {FrameworkAssemblies.Count} framework assemblies:");
+				Application.Log ($"LinkerConfiguration:");
+				Application.Log ($"    ABI: {Abi.AsArchString ()}");
+				Application.Log ($"    AOTArguments: {string.Join (", ", Application.AotArguments)}");
+				Application.Log ($"    AOTOutputDirectory: {AOTOutputDirectory}");
+				Application.Log ($"    DedupAssembly: {DedupAssembly}");
+				Application.Log ($"    AppBundleManifestPath: {Application.InfoPListPath}");
+				Application.Log ($"    AreAnyAssembliesTrimmed: {Application.AreAnyAssembliesTrimmed}");
+				Application.Log ($"    AssemblyName: {Application.AssemblyName}");
+				Application.Log ($"    CacheDirectory: {CacheDirectory}");
+				Application.Log ($"    Debug: {Application.EnableDebug}");
+				Application.Log ($"    Dlsym: {Application.DlsymOptions} {(Application.DlsymAssemblies is not null ? string.Join (" ", Application.DlsymAssemblies.Select (v => (v.Item2 ? "+" : "-") + v.Item1)) : string.Empty)}");
+				Application.Log ($"    DeploymentTarget: {DeploymentTarget}");
+				Application.Log ($"    EnableSGenConc {Application.EnableSGenConc}");
+				Application.Log ($"    InlineDlfcnMethods: {InlineDlfcnMethods}");
+				Application.Log ($"    IntermediateLinkDir: {IntermediateLinkDir}");
+				Application.Log ($"    IntermediateOutputPath: {IntermediateOutputPath}");
+				Application.Log ($"    InterpretedAssemblies: {string.Join (", ", Application.InterpretedAssemblies)}");
+				Application.Log ($"    ItemsDirectory: {ItemsDirectory}");
+				Application.Log ($"    {FrameworkAssemblies.Count} framework assemblies:");
 				foreach (var fw in FrameworkAssemblies.OrderBy (v => v))
-					Console.WriteLine ($"        {fw}");
-				Console.WriteLine ($"    IsSimulatorBuild: {IsSimulatorBuild}");
-				Console.WriteLine ($"    MarshalManagedExceptions: {Application.MarshalManagedExceptions} (IsDefault: {Application.IsDefaultMarshalManagedExceptionMode})");
-				Console.WriteLine ($"    MarshalObjectiveCExceptions: {Application.MarshalObjectiveCExceptions}");
-				Console.WriteLine ($"    {Application.MonoLibraries.Count} mono libraries:");
+					Application.Log ($"        {fw}");
+				Application.Log ($"    IsSimulatorBuild: {IsSimulatorBuild}");
+				Application.Log ($"    MarshalManagedExceptions: {Application.MarshalManagedExceptions} (IsDefault: {Application.IsDefaultMarshalManagedExceptionMode})");
+				Application.Log ($"    MarshalObjectiveCExceptions: {Application.MarshalObjectiveCExceptions}");
+				Application.Log ($"    {Application.MonoLibraries.Count} mono libraries:");
 				foreach (var lib in Application.MonoLibraries.OrderBy (v => v))
-					Console.WriteLine ($"        {lib}");
-				Console.WriteLine ($"    Optimize: {user_optimize_flags} => {Application.Optimizations}");
-				Console.WriteLine ($"    PartialStaticRegistrarLibrary: {PartialStaticRegistrarLibrary}");
-				Console.WriteLine ($"    Platform: {Platform}");
-				Console.WriteLine ($"    PlatformAssembly: {PlatformAssembly}.dll");
-				Console.WriteLine ($"    RelativeAppBundlePath: {RelativeAppBundlePath}");
-				Console.WriteLine ($"    Registrar: {Application.Registrar} (Options: {Application.RegistrarOptions})");
-				Console.WriteLine ($"    RuntimeConfigurationFile: {Application.RuntimeConfigurationFile}");
-				Console.WriteLine ($"    RequirePInvokeWrappers: {Application.RequiresPInvokeWrappers}");
-				Console.WriteLine ($"    SdkDevPath: {Driver.SdkRoot}");
-				Console.WriteLine ($"    SdkRootDirectory: {SdkRootDirectory}");
-				Console.WriteLine ($"    SdkVersion: {SdkVersion}");
-				Console.WriteLine ($"    TypeMapAssemblyName: {Application.TypeMapAssemblyName}");
-				Console.WriteLine ($"    TypeMapFilePath: {TypeMapFilePath}");
-				Console.WriteLine ($"    TypeMapOutputDirectory: {Application.TypeMapOutputDirectory}");
-				Console.WriteLine ($"    UseInterpreter: {Application.UseInterpreter}");
-				Console.WriteLine ($"    UseLlvm: {Application.IsLLVM}");
-				Console.WriteLine ($"    Verbosity: {Verbosity}");
-				Console.WriteLine ($"    XamarinNativeLibraryDirectory: {XamarinNativeLibraryDirectory}");
-				Console.WriteLine ($"    XamarinRuntime: {Application.XamarinRuntime}");
+					Application.Log ($"        {lib}");
+				Application.Log ($"    Optimize: {user_optimize_flags} => {Application.Optimizations}");
+				Application.Log ($"    PartialStaticRegistrarLibrary: {PartialStaticRegistrarLibrary}");
+				Application.Log ($"    Platform: {Platform}");
+				Application.Log ($"    PlatformAssembly: {PlatformAssembly}.dll");
+				Application.Log ($"    RelativeAppBundlePath: {RelativeAppBundlePath}");
+				Application.Log ($"    Registrar: {Application.Registrar} (Options: {Application.RegistrarOptions})");
+				Application.Log ($"    RuntimeConfigurationFile: {Application.RuntimeConfigurationFile}");
+				Application.Log ($"    RequirePInvokeWrappers: {Application.RequiresPInvokeWrappers}");
+				Application.Log ($"    SdkDevPath: {Driver.SdkRoot}");
+				Application.Log ($"    SdkRootDirectory: {SdkRootDirectory}");
+				Application.Log ($"    SdkVersion: {SdkVersion}");
+				Application.Log ($"    TypeMapAssemblyName: {Application.TypeMapAssemblyName}");
+				Application.Log ($"    TypeMapFilePath: {TypeMapFilePath}");
+				Application.Log ($"    TypeMapOutputDirectory: {Application.TypeMapOutputDirectory}");
+				Application.Log ($"    UseInterpreter: {Application.UseInterpreter}");
+				Application.Log ($"    UseLlvm: {Application.IsLLVM}");
+				Application.Log ($"    Verbosity: {Verbosity}");
+				Application.Log ($"    XamarinNativeLibraryDirectory: {XamarinNativeLibraryDirectory}");
+				Application.Log ($"    XamarinRuntime: {Application.XamarinRuntime}");
 			}
 		}
 
@@ -644,7 +644,7 @@ namespace Xamarin.Linker {
 				context.LogMessage (msg);
 			}
 			// ErrorHelper.Show will print our errors and warnings to stderr.
-			ErrorHelper.Show (list);
+			ErrorHelper.Show (ConsoleLog.Instance, list);
 		}
 
 		public IEnumerable<AssemblyDefinition> GetNonDeletedAssemblies (BaseStep step)

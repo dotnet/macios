@@ -67,28 +67,33 @@ namespace Xamarin.Linker {
 			ins.Operand = null;
 		}
 
-		internal static bool ValidateInstruction (MethodDefinition caller, Instruction ins, string operation, Code expected)
+		internal static bool ValidateInstruction (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins, string operation, Code expected)
+		{
+			return ValidateInstruction (data.App, caller, ins, operation, expected);
+		}
+
+		internal static bool ValidateInstruction (IToolLog log, MethodDefinition caller, Instruction ins, string operation, Code expected)
 		{
 			if (ins.OpCode.Code != expected) {
-				Driver.Log (1, "Could not {0} in {1} at offset {2}, expected {3} got {4}", operation, caller, ins.Offset, expected, ins);
+				log.Log (1, "Could not {0} in {1} at offset {2}, expected {3} got {4}", operation, caller, ins.Offset, expected, ins);
 				return false;
 			}
 
 			return true;
 		}
 
-		internal static bool ValidateInstruction (MethodDefinition caller, Instruction ins, string operation, params Code [] expected)
+		internal static bool ValidateInstruction (OptimizeGeneratedCodeData data, MethodDefinition caller, Instruction ins, string operation, params Code [] expected)
 		{
 			foreach (var code in expected) {
 				if (ins.OpCode.Code == code)
 					return true;
 			}
 
-			Driver.Log (1, "Could not {0} in {1} at offset {2}, expected any of [{3}] got {4}", operation, caller, ins.Offset, string.Join (", ", expected), ins);
+			data.App.Log (1, "Could not {0} in {1} at offset {2}, expected any of [{3}] got {4}", operation, caller, ins.Offset, string.Join (", ", expected), ins);
 			return false;
 		}
 
-		static int? GetConstantValue (Instruction? ins)
+		static int? GetConstantValue (OptimizeGeneratedCodeData data, Instruction? ins)
 		{
 			if (ins is null)
 				return null;
@@ -159,13 +164,13 @@ namespace Xamarin.Linker {
 #endif
 			default:
 #if DEBUG
-				Driver.Log (9, "Unknown conditional instruction: {0}", ins);
+				data.App.Log (9, "Unknown conditional instruction: {0}", ins);
 #endif
 				return null;
 			}
 		}
 
-		static bool MarkInstructions (MethodDefinition method, Mono.Collections.Generic.Collection<Instruction> instructions, bool [] reachable, int start, int end)
+		static bool MarkInstructions (OptimizeGeneratedCodeData data, MethodDefinition method, Mono.Collections.Generic.Collection<Instruction> instructions, bool [] reachable, int start, int end)
 		{
 			if (reachable [start])
 				return true; // We've already marked this section of code
@@ -178,7 +183,7 @@ namespace Xamarin.Linker {
 				case FlowControl.Branch:
 					// Unconditional branch, we continue marking from the instruction that we branch to.
 					var br_target = (Instruction) ins.Operand;
-					return MarkInstructions (method, instructions, reachable, instructions.IndexOf (br_target), instructions.Count);
+					return MarkInstructions (data, method, instructions, reachable, instructions.IndexOf (br_target), instructions.Count);
 				case FlowControl.Cond_Branch:
 					// Conditional instruction, we need to check if we can calculate a constant value for the condition
 					var cond_target = ins.Operand as Instruction;
@@ -190,26 +195,26 @@ namespace Xamarin.Linker {
 						// FIXME: calculate the potential constant branch (currently there are no optimizable methods where the switch condition is constant, so this is not needed for now)
 						var targets = ins.Operand as Instruction [];
 						if (targets is null) {
-							Driver.Log (4, "Can't optimize {0} because of unknown target of branch instruction {1} {2}", method, ins, ins.Operand);
+							data.App.Log (4, "Can't optimize {0} because of unknown target of branch instruction {1} {2}", method, ins, ins.Operand);
 							return false;
 						}
 						foreach (var target in targets) {
 							// not constant, continue marking both this code sequence and the branched sequence
-							if (!MarkInstructions (method, instructions, reachable, instructions.IndexOf (target), end))
+							if (!MarkInstructions (data, method, instructions, reachable, instructions.IndexOf (target), end))
 								return false;
 						}
-						return MarkInstructions (method, instructions, reachable, instructions.IndexOf (ins.Next), end);
+						return MarkInstructions (data, method, instructions, reachable, instructions.IndexOf (ins.Next), end);
 					}
 
 					if (cond_target is null) {
-						Driver.Log (4, "Can't optimize {0} because of unknown target of branch instruction {1} {2}", method, ins, ins.Operand);
+						data.App.Log (4, "Can't optimize {0} because of unknown target of branch instruction {1} {2}", method, ins, ins.Operand);
 						return false;
 					}
 
 					switch (ins.OpCode.Code) {
 					case Code.Brtrue:
 					case Code.Brtrue_S: {
-						var v = GetConstantValue (ins.Previous);
+						var v = GetConstantValue (data, ins.Previous);
 						if (v.HasValue)
 							branch = v.Value != 0;
 						cond_instruction_count = 2;
@@ -217,7 +222,7 @@ namespace Xamarin.Linker {
 					}
 					case Code.Brfalse:
 					case Code.Brfalse_S: {
-						var v = GetConstantValue (ins.Previous);
+						var v = GetConstantValue (data, ins.Previous);
 						if (v.HasValue)
 							branch = v.Value == 0;
 						cond_instruction_count = 2;
@@ -225,8 +230,8 @@ namespace Xamarin.Linker {
 					}
 					case Code.Beq:
 					case Code.Beq_S: {
-						var x1 = GetConstantValue (ins.Previous?.Previous);
-						var x2 = GetConstantValue (ins.Previous);
+						var x1 = GetConstantValue (data, ins.Previous?.Previous);
+						var x2 = GetConstantValue (data, ins.Previous);
 						if (x1.HasValue && x2.HasValue)
 							branch = x1.Value == x2.Value;
 						cond_instruction_count = 3;
@@ -234,8 +239,8 @@ namespace Xamarin.Linker {
 					}
 					case Code.Bne_Un:
 					case Code.Bne_Un_S: {
-						var x1 = GetConstantValue (ins.Previous?.Previous);
-						var x2 = GetConstantValue (ins.Previous);
+						var x1 = GetConstantValue (data, ins.Previous?.Previous);
+						var x2 = GetConstantValue (data, ins.Previous);
 						if (x1.HasValue && x2.HasValue)
 							branch = x1.Value != x2.Value;
 						cond_instruction_count = 3;
@@ -245,8 +250,8 @@ namespace Xamarin.Linker {
 					case Code.Ble_S:
 					case Code.Ble_Un:
 					case Code.Ble_Un_S: {
-						var x1 = GetConstantValue (ins.Previous?.Previous);
-						var x2 = GetConstantValue (ins.Previous);
+						var x1 = GetConstantValue (data, ins.Previous?.Previous);
+						var x2 = GetConstantValue (data, ins.Previous);
 						if (x1.HasValue && x2.HasValue)
 							branch = x1.Value <= x2.Value;
 						cond_instruction_count = 3;
@@ -256,8 +261,8 @@ namespace Xamarin.Linker {
 					case Code.Blt_S:
 					case Code.Blt_Un:
 					case Code.Blt_Un_S: {
-						var x1 = GetConstantValue (ins.Previous?.Previous);
-						var x2 = GetConstantValue (ins.Previous);
+						var x1 = GetConstantValue (data, ins.Previous?.Previous);
+						var x2 = GetConstantValue (data, ins.Previous);
 						if (x1.HasValue && x2.HasValue)
 							branch = x1.Value < x2.Value;
 						cond_instruction_count = 3;
@@ -267,8 +272,8 @@ namespace Xamarin.Linker {
 					case Code.Bge_S:
 					case Code.Bge_Un:
 					case Code.Bge_Un_S: {
-						var x1 = GetConstantValue (ins.Previous?.Previous);
-						var x2 = GetConstantValue (ins.Previous);
+						var x1 = GetConstantValue (data, ins.Previous?.Previous);
+						var x2 = GetConstantValue (data, ins.Previous);
 						if (x1.HasValue && x2.HasValue)
 							branch = x1.Value >= x2.Value;
 						cond_instruction_count = 3;
@@ -278,15 +283,15 @@ namespace Xamarin.Linker {
 					case Code.Bgt_S:
 					case Code.Bgt_Un:
 					case Code.Bgt_Un_S: {
-						var x1 = GetConstantValue (ins.Previous?.Previous);
-						var x2 = GetConstantValue (ins.Previous);
+						var x1 = GetConstantValue (data, ins.Previous?.Previous);
+						var x2 = GetConstantValue (data, ins.Previous);
 						if (x1.HasValue && x2.HasValue)
 							branch = x1.Value > x2.Value;
 						cond_instruction_count = 3;
 						break;
 					}
 					default:
-						Driver.Log ("Can't optimize {0} because of unknown branch instruction: {1}", method, ins);
+						data.App.Log ("Can't optimize {0} because of unknown branch instruction: {1}", method, ins);
 						break;
 					}
 
@@ -294,13 +299,13 @@ namespace Xamarin.Linker {
 						// Make sure nothing else in the method branches into the middle of our supposedly constant condition,
 						// bypassing our constant calculation. Note that it's not a bad to branch to the _first_ instruction in
 						// the sequence (thus the +2 here), just into the middle of it.
-						if (AnyBranchTo (instructions, instructions [i - cond_instruction_count + 2], ins))
+						if (AnyBranchTo (data, instructions, instructions [i - cond_instruction_count + 2], ins))
 							branch = null;
 					}
 
 					if (!branch.HasValue) {
 						// not constant, continue marking both this code sequence and the branched sequence
-						if (!MarkInstructions (method, instructions, reachable, instructions.IndexOf (cond_target), end))
+						if (!MarkInstructions (data, method, instructions, reachable, instructions.IndexOf (cond_target), end))
 							return false;
 					} else {
 						// we can remove the branch (and the code that loads the condition), so we mark those instructions as dead.
@@ -310,7 +315,7 @@ namespace Xamarin.Linker {
 						// Now continue marking according to whether we branched or not
 						if (branch.Value) {
 							// branch always taken
-							return MarkInstructions (method, instructions, reachable, instructions.IndexOf (cond_target), end);
+							return MarkInstructions (data, method, instructions, reachable, instructions.IndexOf (cond_target), end);
 						} else {
 							// branch never taken
 							// continue looping
@@ -329,7 +334,7 @@ namespace Xamarin.Linker {
 				case FlowControl.Meta:
 				case FlowControl.Phi:
 				default:
-					Driver.Log (4, "Can't optimize {0} because of unknown flow control for: {1}", method, ins);
+					data.App.Log (4, "Can't optimize {0} because of unknown flow control for: {1}", method, ins);
 					return false;
 				}
 			}
@@ -338,10 +343,10 @@ namespace Xamarin.Linker {
 		}
 
 		// Check if there are any branches in the instructions that branch to anywhere between 'first' and 'last' instructions (both inclusive).
-		static bool AnyBranchTo (Mono.Collections.Generic.Collection<Instruction> instructions, Instruction first, Instruction last)
+		static bool AnyBranchTo (OptimizeGeneratedCodeData data, Mono.Collections.Generic.Collection<Instruction> instructions, Instruction first, Instruction last)
 		{
 			if (first.Offset > last.Offset) {
-				Driver.Log ($"Broken assumption: {first} is after {last}");
+				data.App.Log ($"Broken assumption: {first} is after {last}");
 				return true; // This is the safe thing to do, since it will prevent inlining
 			}
 
@@ -373,7 +378,7 @@ namespace Xamarin.Linker {
 			// marking all reachable instructions. Any non-reachable instructions at the end
 			// can be removed.
 
-			if (!MarkInstructions (caller, instructions, reachable, 0, instructions.Count))
+			if (!MarkInstructions (data, caller, instructions, reachable, 0, instructions.Count))
 				return modified;
 
 			// Handle exception handlers specially, they do not follow normal code flow.
@@ -407,19 +412,19 @@ namespace Xamarin.Linker {
 							}
 						}
 						if (!allNops) {
-							if (!MarkInstructions (caller, instructions, reachable, instructions.IndexOf (eh.HandlerStart), instructions.IndexOf (eh.HandlerEnd)))
+							if (!MarkInstructions (data, caller, instructions, reachable, instructions.IndexOf (eh.HandlerStart), instructions.IndexOf (eh.HandlerEnd)))
 								return modified;
 						}
 						break;
 					case ExceptionHandlerType.Finally:
 						// finally clauses are always executed, even if the protected region is empty
-						if (!MarkInstructions (caller, instructions, reachable, instructions.IndexOf (eh.HandlerStart), instructions.IndexOf (eh.HandlerEnd)))
+						if (!MarkInstructions (data, caller, instructions, reachable, instructions.IndexOf (eh.HandlerStart), instructions.IndexOf (eh.HandlerEnd)))
 							return modified;
 						break;
 					case ExceptionHandlerType.Fault:
 					case ExceptionHandlerType.Filter:
 						// FIXME: and until fixed, exit gracefully without doing anything
-						Driver.Log (4, "Unhandled exception handler: {0}, skipping dead code elimination for {1}", eh.HandlerType, caller);
+						data.App.Log (4, "Unhandled exception handler: {0}, skipping dead code elimination for {1}", eh.HandlerType, caller);
 						return modified;
 					}
 				}
@@ -475,7 +480,7 @@ namespace Xamarin.Linker {
 					case FlowControl.Cond_Branch:
 						var target = (Instruction) ins.Operand;
 						if (target.Offset > last_reachable_offset) {
-							Driver.Log (4, "Can't optimize {0} because of branching beyond last instruction alive: {1}", caller, ins);
+							data.App.Log (4, "Can't optimize {0} because of branching beyond last instruction alive: {1}", caller, ins);
 							return modified;
 						}
 						break;
@@ -483,13 +488,13 @@ namespace Xamarin.Linker {
 				}
 			}
 #if false
-			Console.WriteLine ($"{caller.FullName}:");
+			data.App.Log ($"{caller.FullName}:");
 			for (int i = 0; i < reachable.Length; i++) {
-				Console.WriteLine ($"{(reachable [i] ? "   " : "-  ")} {instructions [i]}");
+				data.App.Log ($"{(reachable [i] ? "   " : "-  ")} {instructions [i]}");
 				if (!reachable [i])
 					Nop (instructions [i]);
 			}
-			Console.WriteLine ();
+			data.App.Log ("");
 #endif
 
 			// Exterminate, exterminate, exterminate
@@ -648,7 +653,7 @@ namespace Xamarin.Linker {
 
 			// Verify a few assumptions before doing anything
 			const string operation = "remove calls to [NS|UI]Application::EnsureUIThread";
-			if (!ValidateInstruction (caller, ins, operation, Code.Call))
+			if (!ValidateInstruction (data, caller, ins, operation, Code.Call))
 				return false;
 
 			// This is simple: just remove the call
@@ -680,10 +685,10 @@ namespace Xamarin.Linker {
 				return false;
 
 			// Verify a few assumptions before doing anything
-			if (!ValidateInstruction (caller, ins.Previous, operation, Code.Ldarg_0))
+			if (!ValidateInstruction (data, caller, ins.Previous, operation, Code.Ldarg_0))
 				return false;
 
-			if (!ValidateInstruction (caller, ins, operation, Code.Call))
+			if (!ValidateInstruction (data, caller, ins, operation, Code.Call))
 				return false;
 
 			// Clearing the branch succeeded, so clear the condition too
@@ -742,10 +747,10 @@ namespace Xamarin.Linker {
 					prev = prev.Previous; // Skip any nops.
 				if (prev.OpCode.StackBehaviourPush != StackBehaviour.Push1) {
 					//todo: localize mmp error 2106
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106, caller, ins.Offset, mr.Name, prev));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106, caller, ins.Offset, mr.Name, prev));
 					return false;
 				} else if (prev.OpCode.StackBehaviourPop != StackBehaviour.Pop0) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106, caller, ins.Offset, mr.Name, prev));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106, caller, ins.Offset, mr.Name, prev));
 					return false;
 				}
 
@@ -756,22 +761,22 @@ namespace Xamarin.Linker {
 				// Then find the type of the previous instruction (the first argument to SetupBlock[Unsafe])
 				var trampolineDelegateType = GetPushedType (caller, loadTrampolineInstruction);
 				if (trampolineDelegateType is null) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106_A, caller, ins.Offset, mr.Name, loadTrampolineInstruction));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106_A, caller, ins.Offset, mr.Name, loadTrampolineInstruction));
 					return false;
 				}
 
 				if (trampolineDelegateType.Is ("System", "Delegate") || trampolineDelegateType.Is ("System", "MulticastDelegate")) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106_B, caller, trampolineDelegateType.FullName, mr.Name));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106_B, caller, trampolineDelegateType.FullName, mr.Name));
 					return false;
 				}
 
 				if (!data.LinkContext.App.StaticRegistrar.TryComputeBlockSignature (caller, trampolineDelegateType, out var exception, out signature)) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, exception, caller, ins, Errors.MM2106_D, caller, ins.Offset, exception.Message));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, exception, caller, ins, Errors.MM2106_D, caller, ins.Offset, exception.Message));
 					return false;
 
 				}
 			} catch (Exception e) {
-				ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, e, caller, ins, Errors.MM2106_D, caller, ins.Offset, e.Message));
+				ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, e, caller, ins, Errors.MM2106_D, caller, ins.Offset, e.Message));
 				return false;
 			}
 
@@ -854,34 +859,34 @@ namespace Xamarin.Linker {
 				// Verify 'ldstr ...'
 				var loadString = GetPreviousSkippingNops (ins);
 				if (loadString.OpCode != OpCodes.Ldstr) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the previous instruction was unexpected ({3}) */, caller, ins.Offset, mr.Name, loadString));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the previous instruction was unexpected ({3}) */, caller, ins.Offset, mr.Name, loadString));
 					return false;
 				}
 
 				// Verify 'call System.Type System.Type::GetTypeFromHandle(System.RuntimeTypeHandle)' 
 				var callGetTypeFromHandle = GetPreviousSkippingNops (loadString);
 				if (callGetTypeFromHandle.OpCode != OpCodes.Call || !(callGetTypeFromHandle.Operand is MethodReference methodOperand) || methodOperand.Name != "GetTypeFromHandle" || !methodOperand.DeclaringType.Is ("System", "Type")) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the previous instruction was unexpected ({3}) */, caller, ins.Offset, mr.Name, callGetTypeFromHandle));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the previous instruction was unexpected ({3}) */, caller, ins.Offset, mr.Name, callGetTypeFromHandle));
 					return false;
 				}
 
 				// Verify 'ldtoken ...'
 				var loadType = GetPreviousSkippingNops (callGetTypeFromHandle);
 				if (loadType.OpCode != OpCodes.Ldtoken) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the previous instruction was unexpected ({3}) */, caller, ins.Offset, mr.Name, loadType));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the previous instruction was unexpected ({3}) */, caller, ins.Offset, mr.Name, loadType));
 					return false;
 				}
 
 				// Then find the type of the previous instruction
 				var trampolineContainerTypeReference = loadType.Operand as TypeReference;
 				if (trampolineContainerTypeReference is null) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the previous instruction was unexpected ({3}) */, caller, ins.Offset, mr.Name, loadType.Operand));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the previous instruction was unexpected ({3}) */, caller, ins.Offset, mr.Name, loadType.Operand));
 					return false;
 				}
 
 				var trampolineContainerType = trampolineContainerTypeReference.Resolve ();
 				if (trampolineContainerType is null) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the previous instruction was unexpected ({3}) */, caller, ins.Offset, mr.Name, trampolineContainerTypeReference));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the previous instruction was unexpected ({3}) */, caller, ins.Offset, mr.Name, trampolineContainerTypeReference));
 					return false;
 				}
 
@@ -889,15 +894,15 @@ namespace Xamarin.Linker {
 				var trampolineMethodName = (string) loadString.Operand;
 				var trampolineMethods = trampolineContainerType.Methods.Where (v => v.Name == trampolineMethodName).ToArray ();
 				if (!trampolineMethods.Any ()) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_E1 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named '{3}' was found in the type '{4}'. */, caller, ins.Offset, mr.Name, trampolineMethodName, trampolineContainerType.FullName));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_E1 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because no method named '{3}' was found in the type '{4}'. */, caller, ins.Offset, mr.Name, trampolineMethodName, trampolineContainerType.FullName));
 					return false;
 				} else if (trampolineMethods.Count () > 1) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_E2 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named '{3}' was found in the type '{4}'. */, caller, ins.Offset, mr.Name, trampolineMethodName, trampolineContainerType.FullName));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_E2 /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because more than one method named '{3}' was found in the type '{4}'. */, caller, ins.Offset, mr.Name, trampolineMethodName, trampolineContainerType.FullName));
 					return false;
 				}
 				var trampolineMethod = trampolineMethods [0];
 				if (!trampolineMethod.HasParameters || trampolineMethod.Parameters.Count < 1) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_F /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the method '{3}' must have at least one parameter. */, caller, ins.Offset, mr.Name, trampolineContainerType.FullName + "::" + trampolineMethodName));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_F /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the method '{3}' must have at least one parameter. */, caller, ins.Offset, mr.Name, trampolineContainerType.FullName + "::" + trampolineMethodName));
 					return false;
 				}
 
@@ -908,18 +913,18 @@ namespace Xamarin.Linker {
 				} else if (firstParameterType is PointerType ptrType) {
 					var ptrTargetType = ptrType.ElementType;
 					if (!(ptrTargetType.Is ("System", "Void") || ptrTargetType.Is ("ObjCRuntime", "BlockLiteral"))) {
-						ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_G /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the first parameter in the method '{3}' isn't 'System.IntPtr', 'void*' or 'ObjCRuntime.BlockLiteral*' (it's '{4}') */, caller, ins.Offset, mr.Name, trampolineContainerType.FullName + "::" + trampolineMethodName, firstParameterType.FullName));
+						ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_G /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the first parameter in the method '{3}' isn't 'System.IntPtr', 'void*' or 'ObjCRuntime.BlockLiteral*' (it's '{4}') */, caller, ins.Offset, mr.Name, trampolineContainerType.FullName + "::" + trampolineMethodName, firstParameterType.FullName));
 						return false;
 					}
 					// ok
 				} else {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_G /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the first parameter in the method '{3}' isn't 'System.IntPtr', 'void*' or 'ObjCRuntime.BlockLiteral*' (it's '{4}') */, caller, ins.Offset, mr.Name, trampolineContainerType.FullName + "::" + trampolineMethodName, firstParameterType.FullName));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_G /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the first parameter in the method '{3}' isn't 'System.IntPtr', 'void*' or 'ObjCRuntime.BlockLiteral*' (it's '{4}') */, caller, ins.Offset, mr.Name, trampolineContainerType.FullName + "::" + trampolineMethodName, firstParameterType.FullName));
 					return false;
 				}
 
 				// Check that the method has [UnmanagedCallersOnly]
 				if (!trampolineMethod.HasCustomAttributes || !trampolineMethod.CustomAttributes.Any (v => v.AttributeType.Is ("System.Runtime.InteropServices", "UnmanagedCallersOnlyAttribute"))) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_H /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the method '{3}' does not have an [UnmanagedCallersOnly] attribute. */, caller, ins.Offset, mr.Name, trampolineContainerType.FullName + "::" + trampolineMethodName));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MX2106_H /* Could not optimize the call to BlockLiteral.{2} in {0} at offset {1} because the method '{3}' does not have an [UnmanagedCallersOnly] attribute. */, caller, ins.Offset, mr.Name, trampolineContainerType.FullName + "::" + trampolineMethodName));
 					return false;
 				}
 
@@ -933,7 +938,7 @@ namespace Xamarin.Linker {
 				}
 
 				if (userMethod is null) {
-					ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106_D, caller, ins.Offset, "Could not find delegate invoke method"));
+					ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, caller, ins, Errors.MM2106_D, caller, ins.Offset, "Could not find delegate invoke method"));
 					return false;
 				}
 
@@ -945,7 +950,7 @@ namespace Xamarin.Linker {
 
 				sequenceStart = loadType;
 			} catch (Exception e) {
-				ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2106, e, caller, ins, Errors.MM2106_D, caller, ins.Offset, e.Message));
+				ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2106, e, caller, ins, Errors.MM2106_D, caller, ins.Offset, e.Message));
 				return false;
 			}
 
@@ -963,7 +968,7 @@ namespace Xamarin.Linker {
 			// Change the call to call the ctor with the string signature parameter instead
 			ins.Operand = GetBlockLiteralConstructor (data, caller, ins);
 
-			Driver.Log (4, "Optimized call to BlockLiteral..ctor in {0} at offset {1} with signature {2}", caller, ins.Offset, signature);
+			data.App.Log (4, "Optimized call to BlockLiteral..ctor in {0} at offset {1} with signature {2}", caller, ins.Offset, signature);
 			instructionsAddedOrRemoved = instructionDiff;
 			return true;
 		}
@@ -1004,7 +1009,7 @@ namespace Xamarin.Linker {
 			if (fr is null || !fr.DeclaringType.Is (Namespaces.ObjCRuntime, "Runtime"))
 				return false;
 
-			if (!ValidateInstruction (caller, ins, operation, Code.Ldsfld))
+			if (!ValidateInstruction (data, caller, ins, operation, Code.Ldsfld))
 				return false;
 
 			// We're fine, inline the Runtime.IsARM64CallingConvention value
@@ -1027,7 +1032,7 @@ namespace Xamarin.Linker {
 				return false;
 
 			// Verify a few assumptions before doing anything
-			if (!ValidateInstruction (caller, ins, operation, Code.Ldsfld))
+			if (!ValidateInstruction (data, caller, ins, operation, Code.Ldsfld))
 				return false;
 
 			// We're fine, inline the Runtime.Arch condition
@@ -1153,52 +1158,52 @@ namespace Xamarin.Linker {
 				return false;
 
 			if (data.Optimizations.RegisterProtocols != true) {
-				Driver.Log (4, "Did not optimize static constructor in the protocol interface {0}: the 'register-protocols' optimization is disabled.", method.DeclaringType.FullName);
+				data.App.Log (4, "Did not optimize static constructor in the protocol interface {0}: the 'register-protocols' optimization is disabled.", method.DeclaringType.FullName);
 				return false;
 			}
 
 			if (!method.DeclaringType.HasCustomAttributes || !method.DeclaringType.CustomAttributes.Any (v => v.AttributeType.Is ("Foundation", "ProtocolAttribute"))) {
-				Driver.Log (4, "Did not optimize static constructor in the protocol interface {0}: no Protocol attribute found.", method.DeclaringType.FullName);
+				data.App.Log (4, "Did not optimize static constructor in the protocol interface {0}: no Protocol attribute found.", method.DeclaringType.FullName);
 				return false;
 			}
 
 			var ins = SkipNops (method.Body.Instructions.First ());
 			if (ins is null) {
-				ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_A /* Could not optimize the static constructor in the interface {0} because it did not have the expected instruction sequence (found end of method too soon). */, method.DeclaringType.FullName));
+				ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_A /* Could not optimize the static constructor in the interface {0} because it did not have the expected instruction sequence (found end of method too soon). */, method.DeclaringType.FullName));
 				return false;
 			} else if (ins.OpCode != OpCodes.Ldnull) {
-				ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_B /* Could not optimize the static constructor in the interface {0} because it had an unexpected instruction {1} at offset {2}. */, method.DeclaringType.FullName, ins.OpCode, ins.Offset));
+				ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_B /* Could not optimize the static constructor in the interface {0} because it had an unexpected instruction {1} at offset {2}. */, method.DeclaringType.FullName, ins.OpCode, ins.Offset));
 				return false;
 			}
 
 			ins = SkipNops (ins.Next);
 			if (ins is null) {
-				ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_A /* Could not optimize the static constructor in the interface {0} because it did not have the expected instruction sequence (found end of method too soon). */, method.DeclaringType.FullName));
+				ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_A /* Could not optimize the static constructor in the interface {0} because it did not have the expected instruction sequence (found end of method too soon). */, method.DeclaringType.FullName));
 				return false;
 			}
 			var callGCKeepAlive = ins;
 			if (callGCKeepAlive.OpCode != OpCodes.Call || !(callGCKeepAlive.Operand is MethodReference methodOperand) || methodOperand.Name != "KeepAlive" || !methodOperand.DeclaringType.Is ("System", "GC")) {
-				ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_B /* Could not optimize the static constructor in the interface {0} because it had an unexpected instruction {1} at offset {2}. */, method.DeclaringType.FullName, ins.OpCode, ins.Offset));
+				ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_B /* Could not optimize the static constructor in the interface {0} because it had an unexpected instruction {1} at offset {2}. */, method.DeclaringType.FullName, ins.OpCode, ins.Offset));
 				return false;
 			}
 
 			ins = SkipNops (ins.Next);
 			if (ins is null) {
-				ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_A /* Could not optimize the static constructor in the interface {0} because it did not have the expected instruction sequence (found end of method too soon). */, method.DeclaringType.FullName));
+				ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_A /* Could not optimize the static constructor in the interface {0} because it did not have the expected instruction sequence (found end of method too soon). */, method.DeclaringType.FullName));
 				return false;
 			} else if (ins.OpCode != OpCodes.Ret) {
-				ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_B /* Could not optimize the static constructor in the interface {0} because it had an unexpected instruction {1} at offset {2}. */, method.DeclaringType.FullName, ins.OpCode, ins.Offset));
+				ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_B /* Could not optimize the static constructor in the interface {0} because it had an unexpected instruction {1} at offset {2}. */, method.DeclaringType.FullName, ins.OpCode, ins.Offset));
 				return false;
 			}
 
 			ins = SkipNops (ins.Next);
 			if (ins is not null) {
-				ErrorHelper.Show (ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_B /* Could not optimize the static constructor in the interface {0} because it had an unexpected instruction {1} at offset {2}. */, method.DeclaringType.FullName, ins.OpCode, ins.Offset));
+				ErrorHelper.Show (data.App, ErrorHelper.CreateWarning (data.LinkContext.App, 2112, method, ins, Errors.MX2112_B /* Could not optimize the static constructor in the interface {0} because it had an unexpected instruction {1} at offset {2}. */, method.DeclaringType.FullName, ins.OpCode, ins.Offset));
 				return false;
 			}
 
 			// We can just remove the entire method, however that confuses the linker later on, so just empty it out and remove all the attributes.
-			Driver.Log (4, "Optimized static constructor in the protocol interface {0} (static constructor was cleared and custom attributes removed)", method.DeclaringType.FullName);
+			data.App.Log (4, "Optimized static constructor in the protocol interface {0} (static constructor was cleared and custom attributes removed)", method.DeclaringType.FullName);
 			method.Body.Instructions.Clear ();
 			method.Body.Instructions.Add (Instruction.Create (OpCodes.Ret));
 
@@ -1234,6 +1239,8 @@ namespace Xamarin.Linker {
 		public MethodDefinition? SetupBlockImplDefinition;
 		public MethodDefinition? BlockCtorDefinition;
 		public bool? InlineIsArm64CallingConvention;
+
+		public Application App => LinkContext.App;
 	}
 
 }

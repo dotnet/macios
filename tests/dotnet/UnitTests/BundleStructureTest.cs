@@ -1,5 +1,7 @@
 #nullable enable
 
+using Xamarin.Bundler;
+
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class BundleStructureTest : TestBaseClass {
@@ -793,7 +795,7 @@ namespace Xamarin.Tests {
 					return false;
 				});
 			foreach (var lib in libraries) {
-				var libArchitectures = renderArchitectures (MachO.GetArchitectures (lib));
+				var libArchitectures = renderArchitectures (MachO.GetArchitectures (ConsoleLog.Instance, lib));
 				Assert.That (libArchitectures, Is.EqualTo (expectedArchitectures), $"Architectures in {lib}");
 			}
 		}

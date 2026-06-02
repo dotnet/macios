@@ -27,12 +27,12 @@ namespace Xamarin.Bundler {
 		{
 			try {
 				Console.OutputEncoding = new UTF8Encoding (false, false);
-				SetCurrentLanguage ();
+				SetCurrentLanguage (ConsoleLog.Instance);
 				return Main2 (args);
 			} catch (Exception e) {
-				ErrorHelper.Show (e);
+				ErrorHelper.Show (ConsoleLog.Instance, e);
 			} finally {
-				Watch ("Total time", 0);
+				Watch (ConsoleLog.Instance, "Total time", 0);
 			}
 			return 0;
 		}
@@ -40,8 +40,8 @@ namespace Xamarin.Bundler {
 		// Returns true if the process should exit (with a 0 exit code; failures are propagated using exceptions)
 		static void ParseOptions (Application app, Mono.Options.OptionSet options, string [] args)
 		{
-			options.Add ("v|verbose", "Specify how verbose the output should be. This can be passed multiple times to increase the verbosity.", v => Verbosity++);
-			options.Add ("q|quiet", "Specify how quiet the output should be. This can be passed multiple times to increase the silence.", v => Verbosity--);
+			options.Add ("v|verbose", "Specify how verbose the output should be. This can be passed multiple times to increase the verbosity.", v => app.Verbosity++);
+			options.Add ("q|quiet", "Specify how quiet the output should be. This can be passed multiple times to increase the silence.", v => app.Verbosity--);
 			options.Add ("reference=", "Add an assembly to be processed.", v => app.References.Add (v));
 			options.Add ("sdkroot=", "Specify the location of Apple SDKs, default to 'xcode-select' value.", v => sdk_root = v);
 			options.Add ("sdk=", "Specifies the SDK version to compile against (version, for example \"10.9\"). For Mac Catalyst, this is the macOS version of the SDK.", v => {
@@ -85,17 +85,7 @@ namespace Xamarin.Bundler {
 		}
 #endif // !LEGACY_TOOLS
 
-		public static int Verbosity {
-			get { return ErrorHelper.Verbosity; }
-			set { ErrorHelper.Verbosity = value; }
-		}
-
-		static Driver ()
-		{
-			Verbosity = GetDefaultVerbosity ();
-		}
-
-		static int GetDefaultVerbosity ()
+		public static int GetDefaultVerbosity ()
 		{
 			var v = 0;
 			var fn = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), $".{NAME}-verbosity");
@@ -105,35 +95,6 @@ namespace Xamarin.Bundler {
 					v = 4; // this is the magic verbosity level we give everybody.
 			}
 			return v;
-		}
-
-		public static void Log (string value)
-		{
-			Log (0, value);
-		}
-
-		public static void Log (string format, params object? [] args)
-		{
-			Log (0, format, args);
-		}
-
-		public static void Log (int min_verbosity, string value)
-		{
-			if (min_verbosity > Verbosity)
-				return;
-
-			Console.WriteLine (value);
-		}
-
-		public static void Log (int min_verbosity, string format, params object? [] args)
-		{
-			if (min_verbosity > Verbosity)
-				return;
-
-			if (args.Length > 0)
-				Console.WriteLine (format, args);
-			else
-				Console.WriteLine (format);
 		}
 
 		static TargetFramework targetFramework;
@@ -149,7 +110,7 @@ namespace Xamarin.Bundler {
 			File.Move (source, target);
 		}
 
-		static void MoveIfDifferent (string path, string tmp, bool use_stamp = false)
+		static void MoveIfDifferent (IToolLog log, string path, string tmp, bool use_stamp = false)
 		{
 			// Don't read the entire file into memory, it can be quite big in certain cases.
 
@@ -158,10 +119,10 @@ namespace Xamarin.Bundler {
 			using (var fs1 = new FileStream (path, FileMode.Open, FileAccess.Read)) {
 				using (var fs2 = new FileStream (tmp, FileMode.Open, FileAccess.Read)) {
 					if (fs1.Length != fs2.Length) {
-						Log (3, "New file '{0}' has different length, writing new file.", path);
+						log.Log (3, "New file '{0}' has different length, writing new file.", path);
 						move = true;
 					} else {
-						move = !Cache.CompareStreams (fs1, fs2);
+						move = !Cache.CompareStreams (log, fs1, fs2);
 					}
 				}
 			}
@@ -169,13 +130,13 @@ namespace Xamarin.Bundler {
 			if (move) {
 				FileMove (tmp, path);
 			} else {
-				Log (3, "Target {0} is up-to-date.", path);
+				log.Log (3, "Target {0} is up-to-date.", path);
 				if (use_stamp)
-					Driver.Touch (path + ".stamp");
+					Driver.Touch (log, path + ".stamp");
 			}
 		}
 
-		public static void WriteIfDifferent (string path, string contents, bool use_stamp = false)
+		public static void WriteIfDifferent (IToolLog log, string path, string contents, bool use_stamp = false)
 		{
 			var tmp = path + ".tmp";
 
@@ -185,36 +146,36 @@ namespace Xamarin.Bundler {
 					if (!string.IsNullOrEmpty (dir))
 						Directory.CreateDirectory (dir);
 					File.WriteAllText (path, contents);
-					Log (3, "File '{0}' does not exist, creating it.", path);
+					log.Log (3, "File '{0}' does not exist, creating it.", path);
 					return;
 				}
 
 				File.WriteAllText (tmp, contents);
-				MoveIfDifferent (path, tmp, use_stamp);
+				MoveIfDifferent (log, path, tmp, use_stamp);
 			} catch (Exception e) {
 				File.WriteAllText (path, contents);
-				ErrorHelper.Warning (1014, e, Errors.MT1014, path, e.Message);
+				ErrorHelper.Warning (log, 1014, e, Errors.MT1014, path, e.Message);
 			} finally {
 				File.Delete (tmp);
 			}
 		}
 
-		public static void WriteIfDifferent (string path, byte [] contents, bool use_stamp = false)
+		public static void WriteIfDifferent (IToolLog log, string path, byte [] contents, bool use_stamp = false)
 		{
 			var tmp = path + ".tmp";
 
 			try {
 				if (!File.Exists (path)) {
 					File.WriteAllBytes (path, contents);
-					Log (3, "File '{0}' does not exist, creating it.", path);
+					log.Log (3, "File '{0}' does not exist, creating it.", path);
 					return;
 				}
 
 				File.WriteAllBytes (tmp, contents);
-				MoveIfDifferent (path, tmp, use_stamp);
+				MoveIfDifferent (log, path, tmp, use_stamp);
 			} catch (Exception e) {
 				File.WriteAllBytes (path, contents);
-				ErrorHelper.Warning (1014, e, Errors.MT1014, path, e.Message);
+				ErrorHelper.Warning (log, 1014, e, Errors.MT1014, path, e.Message);
 			} finally {
 				File.Delete (tmp);
 			}
@@ -244,7 +205,7 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		static void SetCurrentLanguage ()
+		static void SetCurrentLanguage (IToolLog log)
 		{
 			// There's no way to change the current culture from the command-line
 			// without changing the system settings, so honor LANG if set.
@@ -269,14 +230,14 @@ namespace Xamarin.Bundler {
 				var culture = CultureInfo.GetCultureInfo (lang);
 				if (culture is not null) {
 					CultureInfo.DefaultThreadCurrentCulture = culture;
-					Log (2, $"The current language was set to '{culture.DisplayName}' according to the LANG environment variable (LANG={lang_variable}).");
+					log.Log (2, $"The current language was set to '{culture.DisplayName}' according to the LANG environment variable (LANG={lang_variable}).");
 				}
 			} catch (Exception e) {
-				ErrorHelper.Warning (124, e, Errors.MT0124, lang, lang_variable, e.Message);
+				ErrorHelper.Warning (log, 124, e, Errors.MT0124, lang, lang_variable, e.Message);
 			}
 		}
 
-		public static void Touch (IEnumerable<string> filenames, DateTime? timestamp = null)
+		public static void Touch (IToolLog log, IEnumerable<string> filenames, DateTime? timestamp = null)
 		{
 			if (timestamp is null)
 				timestamp = DateTime.Now;
@@ -290,14 +251,14 @@ namespace Xamarin.Bundler {
 					}
 					fi.LastWriteTime = timestamp.Value;
 				} catch (Exception e) {
-					ErrorHelper.Warning (128, Errors.MT0128, filename, e.Message);
+					ErrorHelper.Warning (log, 128, Errors.MT0128, filename, e.Message);
 				}
 			}
 		}
 
-		public static void Touch (params string [] filenames)
+		public static void Touch (IToolLog log, params string [] filenames)
 		{
-			Touch ((IEnumerable<string>) filenames);
+			Touch (log, (IEnumerable<string>) filenames);
 		}
 
 		static int watch_level;
@@ -314,13 +275,11 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		public static void Watch (string msg, int level)
+		public static void Watch (IToolLog log, string msg, int level)
 		{
 			if ((watch is null) || (level > WatchLevel))
 				return;
-			for (int i = 0; i < level; i++)
-				Console.Write ("!");
-			Console.WriteLine ("Timestamp {0}: {1} ms", msg, watch.ElapsedMilliseconds);
+			log.Log ($"{new string ('!', level)}Timestamp {msg}: {watch.ElapsedMilliseconds} ms");
 		}
 
 		internal static PDictionary? FromPList (string name)
@@ -332,11 +291,11 @@ namespace Xamarin.Bundler {
 
 		const string XcodeDefault = "/Applications/Xcode.app";
 
-		static string? FindSystemXcode ()
+		static string? FindSystemXcode (IToolLog log)
 		{
 			var output = new StringBuilder ();
-			if (Driver.RunCommand ("xcode-select", new [] { "-p" }, output: output) != 0) {
-				ErrorHelper.Warning (59, Errors.MX0059, output.ToString ());
+			if (Driver.RunCommand (log, "xcode-select", new [] { "-p" }, output: output) != 0) {
+				ErrorHelper.Warning (log, 59, Errors.MX0059, output.ToString ());
 				return null;
 			}
 			return output.ToString ().Trim ();
@@ -427,31 +386,31 @@ namespace Xamarin.Bundler {
 		public static void ValidateXcode (Application app, bool accept_any_xcode_version, bool warn_if_not_found)
 		{
 			if (sdk_root is null) {
-				sdk_root = FindSystemXcode ();
+				sdk_root = FindSystemXcode (app);
 				if (sdk_root is null) {
 					// FindSystemXcode showed a warning in this case. In particular do not use 'string.IsNullOrEmpty' here,
 					// because FindSystemXcode may return an empty string (with no warning printed) if the xcode-select command
 					// succeeds, but returns nothing.
 					sdk_root = null;
 				} else if (!Directory.Exists (sdk_root)) {
-					ErrorHelper.Warning (60, Errors.MX0060, sdk_root);
+					ErrorHelper.Warning (app, 60, Errors.MX0060, sdk_root);
 					sdk_root = null;
 				} else {
 					if (!accept_any_xcode_version)
-						ErrorHelper.Warning (61, Errors.MT0061, sdk_root);
+						ErrorHelper.Warning (app, 61, Errors.MT0061, sdk_root);
 				}
 				if (sdk_root is null) {
 					sdk_root = XcodeDefault;
 					if (!Directory.Exists (sdk_root)) {
 						if (warn_if_not_found) {
 							// mmp: and now we give up, but don't throw like mtouch, because we don't want to change behavior (this sometimes worked it appears)
-							ErrorHelper.Warning (56, Errors.MX0056);
+							ErrorHelper.Warning (app, 56, Errors.MX0056);
 							return; // Can't validate the version below if we can't even find Xcode...
 						}
 
 						throw ErrorHelper.CreateError (56, Errors.MX0056);
 					}
-					ErrorHelper.Warning (62, Errors.MT0062, sdk_root);
+					ErrorHelper.Warning (app, 62, Errors.MT0062, sdk_root);
 				}
 			} else if (!Directory.Exists (sdk_root)) {
 				throw ErrorHelper.CreateError (55, Errors.MT0055, sdk_root);
@@ -481,7 +440,7 @@ namespace Xamarin.Bundler {
 				throw ErrorHelper.CreateError (58, Errors.MT0058, Path.GetDirectoryName (Path.GetDirectoryName (DeveloperDirectory)), plist_path);
 			}
 
-			Driver.Log (1, "Using Xcode {0} ({2}) found in {1}", XcodeVersion, sdk_root, XcodeProductVersion);
+			app.Log (1, "Using Xcode {0} ({2}) found in {1}", XcodeVersion, sdk_root, XcodeProductVersion);
 		}
 
 		internal static bool TryParseBool (string value, out bool result)
@@ -607,7 +566,7 @@ namespace Xamarin.Bundler {
 			// We also want to print out what happened if something went wrong, and in that case we don't want stdout
 			// and stderr captured separately, because related lines could end up printed far from eachother in time,
 			// and that's confusing. So capture stdout and stderr by themselves, and also capture both together.
-			int ret = RunCommand ("xcrun", args, env,
+			int ret = RunCommand (app, "xcrun", args, env,
 				(v) => {
 					lock (both) {
 						both.AppendLine (v);
@@ -624,11 +583,11 @@ namespace Xamarin.Bundler {
 			if (ret == 0) {
 				path = stdout.ToString ().Trim ();
 				if (!File.Exists (path)) {
-					ErrorHelper.Warning (5315, Errors.MX5315 /* The tool xcrun failed to return a valid result (the file {0} does not exist). Check build log for details. */, tool, path);
+					ErrorHelper.Warning (app, 5315, Errors.MX5315 /* The tool xcrun failed to return a valid result (the file {0} does not exist). Check build log for details. */, tool, path);
 					return false;
 				}
 			} else {
-				Log (1, "Failed to locate the developer tool '{0}', 'xcrun {1}' returned with the exit code {2}:\n{3}", tool, string.Join (" ", args), ret, both.ToString ());
+				app.Log (1, "Failed to locate the developer tool '{0}', 'xcrun {1}' returned with the exit code {2}:\n{3}", tool, string.Join (" ", args), ret, both.ToString ());
 			}
 
 			return ret == 0;
@@ -642,7 +601,7 @@ namespace Xamarin.Bundler {
 		public static void RunXcodeTool (Application app, string tool, IList<string> arguments)
 		{
 			var executable = FindTool (app, tool);
-			var rv = RunCommand (executable, arguments);
+			var rv = RunCommand (app, executable, arguments);
 			if (rv != 0)
 				throw ErrorHelper.CreateError (5309, Errors.MX5309 /* Failed to execute the tool '{0}', it failed with an error code '{1}'. Please check the build log for details. */, tool, rv);
 		}
@@ -695,7 +654,7 @@ namespace Xamarin.Bundler {
 				if (Directory.Exists (outputDsymDir))
 					Directory.Delete (outputDsymDir, true);
 				Directory.Move (dsymFolders [0], outputDsymDir);
-				RunCommand ("/usr/bin/mdimport", outputDsymDir);
+				RunCommand (app, "/usr/bin/mdimport", outputDsymDir);
 			}
 		}
 
@@ -707,7 +666,7 @@ namespace Xamarin.Bundler {
 		public static void CreateDsym (Application app, string output_dir, string appname, string dsym_dir)
 		{
 			RunDsymUtil (app, Path.Combine (output_dir, appname), "-num-threads", "4", "-z", "-o", dsym_dir);
-			RunCommand ("/usr/bin/mdimport", dsym_dir);
+			RunCommand (app, "/usr/bin/mdimport", dsym_dir);
 		}
 
 		public static void RunDsymUtil (Application app, params string [] options)

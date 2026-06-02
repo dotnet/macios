@@ -39,7 +39,6 @@ namespace Xamarin.Bundler {
 		}
 
 		static Dictionary<int, WarningLevel>? warning_levels;
-		public static int Verbosity { get; set; }
 
 #pragma warning disable 649
 		public static Func<Exception, bool>? IsExpectedException;
@@ -253,18 +252,18 @@ namespace Xamarin.Bundler {
 			return e;
 		}
 
-		public static void Warning (int code, string message, params object [] args)
+		public static void Warning (IToolLog log, int code, string message, params object [] args)
 		{
-			Show (new ProductException (code, false, message, args));
+			Show (log, new ProductException (code, false, message, args));
 		}
 
-		public static void Warning (int code, Exception innerException, string message, params object [] args)
+		public static void Warning (IToolLog log, int code, Exception innerException, string message, params object [] args)
 		{
-			Show (new ProductException (code, false, innerException, message, args));
+			Show (log, new ProductException (code, false, innerException, message, args));
 		}
 
 		// Shows any warnings, and if there are any errors, throws an AggregateException.
-		public static void ThrowIfErrors (IList<Exception> exceptions)
+		public static void ThrowIfErrors (IToolLog log, IList<Exception> exceptions)
 		{
 			if (exceptions?.Any () != true)
 				return;
@@ -274,28 +273,28 @@ namespace Xamarin.Bundler {
 
 			var warnings = grouped.SingleOrDefault ((v) => v.Key);
 			if (warnings?.Any () == true)
-				Show (warnings);
+				Show (log, warnings);
 
 			var errors = grouped.SingleOrDefault ((v) => !v.Key);
 			if (errors?.Any () == true)
 				throw new AggregateException (errors);
 		}
 
-		public static void Show (IEnumerable<Exception> list)
+		public static void Show (IToolLog log, IEnumerable<Exception> list)
 		{
 			var exceptions = CollectExceptions (list);
 			bool error = false;
 
 			foreach (var ex in exceptions)
-				error |= ShowInternal (ex);
+				error |= ShowInternal (log, ex);
 
 			if (error)
 				Exit (1);
 		}
 
-		public static void Show (Exception e)
+		public static void Show (IToolLog log, Exception e)
 		{
-			Show (new Exception [] { e });
+			Show (log, new Exception [] { e });
 		}
 
 		static void Exit (int exitCode)
@@ -305,7 +304,7 @@ namespace Xamarin.Bundler {
 			Environment.Exit (exitCode);
 		}
 
-		static bool ShowInternal (Exception e)
+		static bool ShowInternal (IToolLog log, Exception e)
 		{
 			var mte = e as ProductException;
 			bool error = true;
@@ -316,39 +315,39 @@ namespace Xamarin.Bundler {
 				if (!error && GetWarningLevel (mte.Code) == WarningLevel.Disable)
 					return false; // This is an ignored warning.
 
-				Console.Error.WriteLine (mte.ToString ());
+				log.LogError (mte.ToString ());
 
-				ShowInner (e);
+				ShowInner (log, e);
 
-				if (Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace))
-					Console.Error.WriteLine (e.StackTrace);
+				if (log.Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace))
+					log.LogError (e.StackTrace);
 			} else if (IsExpectedException is null || !IsExpectedException (e)) {
-				Console.Error.WriteLine ("error " + Prefix + "0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
-				Console.Error.WriteLine (e.ToString ());
+				log.LogError ("error " + Prefix + "0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
+				log.LogError (e.ToString ());
 			} else {
-				Console.Error.WriteLine (e.ToString ());
-				ShowInner (e);
-				if (Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace))
-					Console.Error.WriteLine (e.StackTrace);
+				log.LogError (e.ToString ());
+				ShowInner (log, e);
+				if (log.Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace))
+					log.LogError (e.StackTrace);
 			}
 
 			return error;
 		}
 
-		static void ShowInner (Exception e)
+		static void ShowInner (IToolLog log, Exception e)
 		{
 			var ie = e.InnerException;
 			if (ie is null)
 				return;
 
-			if (Verbosity > 3) {
-				Console.Error.WriteLine ("--- inner exception");
-				Console.Error.WriteLine (ie);
-				Console.Error.WriteLine ("---");
-			} else if (Verbosity > 0 || ie is ProductException) {
-				Console.Error.WriteLine ("\t{0}", ie.Message);
+			if (log.Verbosity > 3) {
+				log.LogError ("--- inner exception");
+				log.LogError (ie.ToString ());
+				log.LogError ("---");
+			} else if (log.Verbosity > 0 || ie is ProductException) {
+				log.LogError ($"\t{ie.Message}");
 			}
-			ShowInner (ie);
+			ShowInner (log, ie);
 		}
 	}
 }

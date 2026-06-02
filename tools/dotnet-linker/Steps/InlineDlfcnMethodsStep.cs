@@ -43,7 +43,7 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		var modified = false;
 		if (type.HasMethods) {
 			if (Frameworks.TryGetFramework (App, type, out Framework? framework) && framework.IsFrameworkUnavailable (App)) {
-				Driver.Log (3, $"Type {type.FullName} appears to be part of the '{framework.Name}' framework, which is not available in the current SDK. Skipping inlining Dlfcn calls for this type.");
+				App.Log (3, $"Type {type.FullName} appears to be part of the '{framework.Name}' framework, which is not available in the current SDK. Skipping inlining Dlfcn calls for this type.");
 				return modified;
 			}
 
@@ -525,11 +525,11 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 		if (DerivedLinkContext.App.IsSimulatorBuild) {
 			// if the method or its declaring type aren't available in the simulator, and we're building for the simulator, then don't inline.
 			if (DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (method, method)) {
-				Driver.Log (3, $"Method {method.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this method.");
+				App.Log (3, $"Method {method.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this method.");
 				return modified;
 			}
 			if (DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (method.DeclaringType, method)) {
-				Driver.Log (3, $"Type {method.DeclaringType.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this type.");
+				App.Log (3, $"Type {method.DeclaringType.FullName} is not available in the simulator. Skipping inlining Dlfcn calls for this type.");
 				return modified;
 			}
 		}

@@ -37,7 +37,11 @@ public static class IToolLogExtensions {
 public class ConsoleLog : IToolLog {
 	public readonly static IToolLog Instance = new ConsoleLog ();
 
+#if TESTS
+	int verbosity = 0;
+#else
 	int verbosity = Driver.GetDefaultVerbosity ();
+#endif
 
 	public int Verbosity { get => verbosity; }
 

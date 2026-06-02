@@ -635,6 +635,8 @@ public class Frameworks : Dictionary<string, Framework> {
 		get {
 			if (catalyst_frameworks is null) {
 				catalyst_frameworks = iOSFrameworks;
+				// We're going to mutate the value returned from iOSFrameworks, so clear the cached value so the next time iOSFrameworks is called it's re-generated.
+				ios_frameworks = null;
 				// not present in iOS but present in catalyst
 				catalyst_frameworks.Add ("CoreWlan", "CoreWLAN", 15, 0);
 

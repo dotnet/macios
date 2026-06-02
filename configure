@@ -231,7 +231,7 @@ if [[ "$IGNORE_UNKNOWN_PARAMS" = true ]] && [[ -n "$UNKNOWN_PARAMETERS" ]]; then
 fi
 
 if [[ -n "$XCODE_ARG" ]]; then
-    echo "CONFIGURED_XCODE_DEVELOPER_ROOT=$XCODE_ARG" >> "$CONFIGURED_FILE"
+    echo "XCODE_DEVELOPER_ROOT=$XCODE_ARG" >> "$CONFIGURED_FILE"
     echo "Xcode developer root set to $XCODE_ARG"
 fi
 

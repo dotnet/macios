@@ -53,13 +53,13 @@ function get_xcode_developer_root ()
 			return
 		fi
 
-		if test -n "${CONFIGURED_XCODE_DEVELOPER_ROOT:-}"; then
-			echo "$CONFIGURED_XCODE_DEVELOPER_ROOT"
+		if XCODE_DEVELOPER_ROOT_ASSIGNMENT=$(grep "^XCODE_DEVELOPER_ROOT=" configure.inc 2>/dev/null); then
+			echo "${XCODE_DEVELOPER_ROOT_ASSIGNMENT#*=}"
 			return
 		fi
 	fi
 
-	grep "^XCODE${suffix}_DEVELOPER_ROOT=" Make.config | sed 's/.*=//'
+	grep "^XCODE${suffix}_DEVELOPER_ROOT[?:]*=" Make.config | sed 's/^[^=]*=//'
 }
 
 # parse command-line arguments

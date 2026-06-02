@@ -955,14 +955,14 @@ namespace LinkSdk {
 			var reader = new ILReader (m);
 			var il = reader.ToArray ();
 			var actualIL = string.Join ("\n", il.Select (v => v.ToString ().Trim ()));
-			var releaseRet = "IL_0000 ret";
-			var releaseThrow = "IL_0000 ldnull\nIL_0001 throw";
+			var releaseRet = "IL_0000 ret"; // only release
 #if DEBUG
 			// means some stuff in addition to the `ret` instruction
-			Assert.That (actualIL, Is.Not.EqualTo (releaseRet).And.Not.EqualTo (releaseThrow), $"debug il");
+			Assert.That (actualIL, Is.Not.EqualTo (releaseRet), $"debug il");
 #else
 			// empty means a `ret` instruction (and that's true even if IL is stripped)
-			Assert.That (actualIL, Is.EqualTo (releaseRet).Or.EqualTo (releaseThrow), $"release il");
+			var trimmedBody = "IL_0000 ldnull\nIL_0001 throw"; // this can happen for both release and debug
+			Assert.That (actualIL, Is.EqualTo (releaseRet).Or.EqualTo (trimmedBody), $"release il");
 #endif
 		}
 

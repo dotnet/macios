@@ -100,8 +100,13 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 				continue;
 			}
 			// if we have multiple runtime identifiers, we're running in the simulator, and one is x64 and the other is arm64.
+			// if 'RuntimeIdentifier' is set on the task, set that value, otherwise
 			// if we can run on arm64, then pick the arm64 simulator, otherwise pick the x64 simulator
-			d.Item.SetMetadata ("RuntimeIdentifier", d.RuntimeIdentifiers.Single (v => v.Contains ("arm64") == CanRunArm64));
+			if (!string.IsNullOrEmpty (RuntimeIdentifier)) {
+				d.Item.SetMetadata ("RuntimeIdentifier", RuntimeIdentifier);
+			} else {
+				d.Item.SetMetadata ("RuntimeIdentifier", d.RuntimeIdentifiers.Single (v => v.Contains ("arm64") == CanRunArm64));
+			}
 		}
 
 		DiscardedDevices = devices.Where (d => d.Discarded).Select (v => {

@@ -2788,7 +2788,7 @@ public partial class Generator : IMemberGatherer {
 		string name = GetMethodName (minfo, is_async);
 
 		// Some codepaths already write preservation info
-		PrintAttributes (minfo.mi, preserve: !alreadyPreserved, advice: true, bindAs: true, requiresSuper: true);
+		PrintAttributes (minfo.mi, preserve: !alreadyPreserved, advice: true, bindAs: true, requiresSuper: true, dynamicDependency: true);
 
 		if (minfo.is_ctor && minfo.is_protocol_member) {
 			sb.Append ("T? ");
@@ -4037,7 +4037,7 @@ public partial class Generator : IMemberGatherer {
 					pi.Name.GetSafeParamName ());
 			indent++;
 			if (generate_getter) {
-				PrintAttributes (pi.GetGetMethod ()!, platform: true, preserve: true, advice: true);
+				PrintAttributes (pi.GetGetMethod ()!, platform: true, preserve: true, advice: true, dynamicDependency: true);
 				print ("get {");
 				indent++;
 
@@ -4056,7 +4056,7 @@ public partial class Generator : IMemberGatherer {
 				print ("}");
 			}
 			if (generate_setter) {
-				PrintAttributes (pi.GetSetMethod ()!, platform: true, preserve: true, advice: true);
+				PrintAttributes (pi.GetSetMethod ()!, platform: true, preserve: true, advice: true, dynamicDependency: true);
 				print ("set {");
 				indent++;
 
@@ -4130,7 +4130,7 @@ public partial class Generator : IMemberGatherer {
 			// If property getter or setter has its own WrapAttribute we let the user do whatever their heart desires
 			if (generate_getter) {
 				PrintAttributes (pi, platform: true);
-				PrintAttributes (pi.GetGetMethod (), platform: true, preserve: true, advice: true);
+				PrintAttributes (pi.GetGetMethod (), platform: true, preserve: true, advice: true, dynamicDependency: true);
 				print ("get {");
 				indent++;
 
@@ -4170,7 +4170,7 @@ public partial class Generator : IMemberGatherer {
 				PrintExport (minfo, sel, export!.ArgumentSemantic);
 			}
 
-			PrintAttributes (pi.GetGetMethod (), platform: true, preserve: true, advice: true, notImplemented: true, inlinedType: inlinedType);
+			PrintAttributes (pi.GetGetMethod (), platform: true, preserve: true, advice: true, notImplemented: true, inlinedType: inlinedType, dynamicDependency: true);
 			if (minfo.is_protocol_member && !minfo.is_static) {
 				print ("get {");
 				print ($"\treturn _Get{pi.Name.GetSafeParamName ()} (this);");
@@ -4226,7 +4226,7 @@ public partial class Generator : IMemberGatherer {
 			if (not_implemented_attr is null && (!minfo.is_sealed || !minfo.is_wrapper))
 				PrintExport (minfo, sel, export!.ArgumentSemantic);
 
-			PrintAttributes (pi.GetSetMethod (), platform: true, preserve: true, advice: true, notImplemented: true, inlinedType: inlinedType);
+			PrintAttributes (pi.GetSetMethod (), platform: true, preserve: true, advice: true, notImplemented: true, inlinedType: inlinedType, dynamicDependency: true);
 			if (minfo.is_protocol_member && !minfo.is_static) {
 				print ("set {");
 				print ($"\t_Set{pi.Name.GetSafeParamName ()} (this, value);");
@@ -5509,7 +5509,7 @@ public partial class Generator : IMemberGatherer {
 	// Not adding the experimental attribute is bad (it would mean that an API
 	// we meant to be experimental ended up being released as stable), so it's
 	// opt-out instead of opt-in.
-	public void PrintAttributes (ICustomAttributeProvider? mi, bool platform = false, bool preserve = false, bool advice = false, bool notImplemented = false, bool bindAs = false, bool requiresSuper = false, Type? inlinedType = null, bool experimental = true, bool obsolete = false, bool objectiveCFramework = false, bool simulatorAvailability = true)
+	public void PrintAttributes (ICustomAttributeProvider? mi, bool platform = false, bool preserve = false, bool advice = false, bool notImplemented = false, bool bindAs = false, bool requiresSuper = false, Type? inlinedType = null, bool experimental = true, bool obsolete = false, bool objectiveCFramework = false, bool simulatorAvailability = true, bool dynamicDependency = false)
 	{
 		if (platform)
 			PrintPlatformAttributes (mi as MemberInfo, inlinedType);
@@ -5531,6 +5531,70 @@ public partial class Generator : IMemberGatherer {
 			PrintObjectiveCFrameworkAttribute (mi);
 		if (simulatorAvailability)
 			PrintSimulatorAvailabilityAttributes (mi);
+		if (dynamicDependency)
+			PrintDynamicDependencyAttributes (mi);
+	}
+
+	public void PrintDynamicDependencyAttributes (ICustomAttributeProvider? mi)
+	{
+		if (mi is not MemberInfo memberInfo)
+			return;
+
+		var allAttribs = memberInfo.GetCustomAttributesData ();
+		foreach (var attrib in allAttribs) {
+			if (attrib.GetAttributeType ().FullName != "System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute")
+				continue;
+			var args = attrib.ConstructorArguments;
+			var parts = new List<string> ();
+			foreach (var arg in args) {
+				if (arg.Value is string stringValue) {
+					parts.Add ($"\"{stringValue}\"");
+				} else if (arg.Value is int intValue) {
+					parts.Add (FormatDynamicallyAccessedMemberTypes (intValue));
+				} else if (arg.Value is Type typeValue) {
+					parts.Add ($"typeof ({typeValue})");
+				} else {
+					exceptions.Add (ErrorHelper.CreateError (99, $"Unexpected attribute argument value for DynamicDependency attribute: {arg.ArgumentType.FullName} => {arg.Value}"));
+				}
+			}
+			print ($"[DynamicDependency ({string.Join (", ", parts)})]");
+		}
+	}
+
+	static string FormatDynamicallyAccessedMemberTypes (int memberTypes)
+	{
+		if (memberTypes == -1) // All
+			return "DynamicallyAccessedMemberTypes.All";
+		if (memberTypes == 0) // None
+			return "DynamicallyAccessedMemberTypes.None";
+
+		// Use the composite values first to match the original source
+		var flagValues = new (int value, string name) [] {
+			(3, "PublicConstructors"), // 3 includes PublicParameterlessConstructor
+			(1, "PublicParameterlessConstructor"),
+			(4, "NonPublicConstructors"),
+			(8, "PublicMethods"),
+			(16, "NonPublicMethods"),
+			(32, "PublicFields"),
+			(64, "NonPublicFields"),
+			(128, "PublicNestedTypes"),
+			(256, "NonPublicNestedTypes"),
+			(512, "PublicProperties"),
+			(1024, "NonPublicProperties"),
+			(2048, "PublicEvents"),
+			(4096, "NonPublicEvents"),
+			(8192, "Interfaces"),
+		};
+
+		var parts = new List<string> ();
+		var remaining = memberTypes;
+		foreach (var (value, name) in flagValues) {
+			if (value != 0 && (remaining & value) == value) {
+				parts.Add ($"DynamicallyAccessedMemberTypes.{name}");
+				remaining &= ~value;
+			}
+		}
+		return string.Join (" | ", parts);
 	}
 
 	public void PrintExperimentalAttribute (ICustomAttributeProvider? mi)

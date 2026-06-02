@@ -1,5 +1,7 @@
 #nullable enable
 
+using Xamarin.Bundler;
+
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class BundleStructureTest : TestBaseClass {
@@ -311,6 +313,7 @@ namespace Xamarin.Tests {
 			if (platform != ApplePlatform.MacOSX)
 				AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "MonoTouch.Dialog", runtimeIdentifiers, forceSingleRid: (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunit.framework.dll"));
+			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunit.framework.legacy.dll"));
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunitlite.dll"));
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "Mono.Options.dll"));
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "Touch.Client", runtimeIdentifiers, platform == ApplePlatform.MacOSX || (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
@@ -793,7 +796,7 @@ namespace Xamarin.Tests {
 					return false;
 				});
 			foreach (var lib in libraries) {
-				var libArchitectures = renderArchitectures (MachO.GetArchitectures (lib));
+				var libArchitectures = renderArchitectures (MachO.GetArchitectures (ConsoleLog.Instance, lib));
 				Assert.That (libArchitectures, Is.EqualTo (expectedArchitectures), $"Architectures in {lib}");
 			}
 		}

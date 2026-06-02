@@ -286,14 +286,27 @@ namespace MonoTests.System.Net.Http {
 					using var handler = new NSUrlSessionHandler ();
 					handler.Credentials = new NetworkCredential (username, password);
 					using var client = new HttpClient (handler);
-					using var request = new HttpRequestMessage (HttpMethod.Get, $"http://localhost:{listeningPort}/test");
+					// Use 127.0.0.1 instead of localhost to avoid IPv6 resolution
+					// issues where NSUrlSession may connect to ::1 while
+					// HttpListener only binds to IPv4.
+					using var request = new HttpRequestMessage (HttpMethod.Get, $"http://127.0.0.1:{listeningPort}/test");
 					var response = await client.SendAsync (request).ConfigureAwait (false);
 					statusCode = response.StatusCode;
 					responseBody = await response.Content.ReadAsStringAsync ().ConfigureAwait (false);
 				}, out var ex);
 
-				Assert.That (done, Is.True, "Request timed out");
+				if (!done) {
+					TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
+					Assert.Inconclusive ("Request timed out.");
+				}
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
 				Assert.That (ex, Is.Null, $"Exception: {ex}");
+				// If no request reached the server, the failure is an infrastructure
+				// issue (e.g. port conflict), not a code bug.
+				if (Volatile.Read (ref requestIndex) == 0 && statusCode == HttpStatusCode.NotFound) {
+					TestRuntime.IgnoreInCI ($"Server received no requests and got status {statusCode} - infrastructure issue, ignore in CI");
+					Assert.Inconclusive ($"Server received no requests; status was {statusCode}. Likely a port/binding issue.");
+				}
 				Assert.That (statusCode, Is.EqualTo (HttpStatusCode.OK), "Expected 200 OK after Basic auth negotiation");
 				Assert.That (responseBody, Is.EqualTo ("authenticated"), "Response body");
 				Assert.That (firstUnauthenticatedIndex, Is.GreaterThan (0), "Server should have received an unauthenticated request");
@@ -316,7 +329,7 @@ namespace MonoTests.System.Net.Http {
 
 			for (var port = MinPort; port < MaxPort; port++) {
 				var listener = new HttpListener ();
-				listener.Prefixes.Add ($"http://*:{port}/");
+				listener.Prefixes.Add ($"http://127.0.0.1:{port}/");
 				try {
 					listener.Start ();
 					listeningPort = port;

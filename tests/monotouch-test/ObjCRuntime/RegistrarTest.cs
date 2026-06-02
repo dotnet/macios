@@ -1027,7 +1027,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			[Export ("testNativeEnum1:")]
 			public virtual void TestNativeEnum1 (NSWritingDirection twd)
 			{
-				Assert.That (Enum.GetValues<NSWritingDirection> (), Contains.Item (twd), "TestNativeEnum1");
+				Assert.That (Enum.GetValues<NSWritingDirection> ().Contains (twd), "TestNativeEnum1");
 			}
 
 			public virtual UIPopoverArrowDirection TestNativeEnum2 {

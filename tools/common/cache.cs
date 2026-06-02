@@ -33,77 +33,79 @@ public class Cache {
 	}
 
 	// see --cache=DIR
-	public string Location {
-		get {
-			if (cache_dir is null) {
-				do {
-					cache_dir = Path.Combine (Path.GetTempPath (), NAME + ".cache", Path.GetRandomFileName ());
-					if (File.Exists (cache_dir) || Directory.Exists (cache_dir))
-						continue;
-					Directory.CreateDirectory (cache_dir);
-					break;
-				} while (true);
+	public string GetLocation (IToolLog log)
+	{
+		if (cache_dir is null) {
+			do {
+				cache_dir = Path.Combine (Path.GetTempPath (), NAME + ".cache", Path.GetRandomFileName ());
+				if (File.Exists (cache_dir) || Directory.Exists (cache_dir))
+					continue;
+				Directory.CreateDirectory (cache_dir);
+				break;
+			} while (true);
 
-				cache_dir = Application.GetRealPath (cache_dir);
+			cache_dir = Application.GetRealPath (log, cache_dir);
 
-				temporary_cache = true;
-				if (!Directory.Exists (cache_dir))
-					Directory.CreateDirectory (cache_dir);
-#if DEBUG
-				Console.WriteLine ("Cache defaults to {0}", cache_dir);
-#endif
-			}
-			return cache_dir;
-		}
-		set {
-			cache_dir = value;
+			temporary_cache = true;
 			if (!Directory.Exists (cache_dir))
 				Directory.CreateDirectory (cache_dir);
-			cache_dir = Application.GetRealPath (Path.GetFullPath (cache_dir));
-		}
-	}
-
-	public void Clean ()
-	{
 #if DEBUG
-		Console.WriteLine ("Cache.Clean: {0}", Location);
+			log.Log ("Cache defaults to {0}", cache_dir);
 #endif
-		Directory.Delete (Location, true);
-		Directory.CreateDirectory (Location);
+		}
+		return cache_dir;
 	}
 
-	public static bool CompareFiles (string a, string b, bool ignore_cache = false)
+	public void SetLocation (IToolLog log, string value)
+	{
+		cache_dir = value;
+		if (!Directory.Exists (cache_dir))
+			Directory.CreateDirectory (cache_dir);
+		cache_dir = Application.GetRealPath (log, Path.GetFullPath (cache_dir));
+	}
+
+	public void Clean (IToolLog log)
+	{
+		var location = GetLocation (log);
+#if DEBUG
+		log.Log ("Cache.Clean: {0}", location);
+#endif
+		Directory.Delete (location, true);
+		Directory.CreateDirectory (location);
+	}
+
+	public static bool CompareFiles (IToolLog log, string a, string b, bool ignore_cache = false)
 	{
 		if (Driver.Force && !ignore_cache) {
-			Driver.Log (6, "Files {0} and {1} are considered different because -f was passed to " + NAME + ".", a, b);
+			log.Log (6, "Files {0} and {1} are considered different because -f was passed to " + NAME + ".", a, b);
 			return false;
 		}
 
 		if (!File.Exists (b)) {
-			Driver.Log (6, "Files {0} and {1} are considered different because the latter doesn't exist.", a, b);
+			log.Log (6, "Files {0} and {1} are considered different because the latter doesn't exist.", a, b);
 			return false;
 		}
 
 		using (var astream = new FileStream (a, FileMode.Open, FileAccess.Read, FileShare.Read)) {
 			using (var bstream = new FileStream (b, FileMode.Open, FileAccess.Read, FileShare.Read)) {
 				bool rv;
-				Driver.Log (6, "Comparing files {0} and {1}...", a, b);
-				rv = CompareStreams (astream, bstream, ignore_cache);
-				Driver.Log (6, " > {0}", rv ? "Identical" : "Different");
+				log.Log (6, "Comparing files {0} and {1}...", a, b);
+				rv = CompareStreams (log, astream, bstream, ignore_cache);
+				log.Log (6, " > {0}", rv ? "Identical" : "Different");
 				return rv;
 			}
 		}
 	}
 
-	public unsafe static bool CompareStreams (Stream astream, Stream bstream, bool ignore_cache = false)
+	public unsafe static bool CompareStreams (IToolLog log, Stream astream, Stream bstream, bool ignore_cache = false)
 	{
 		if (Driver.Force && !ignore_cache) {
-			Driver.Log (6, " > streams are considered different because -f was passed to " + NAME + ".");
+			log.Log (6, " > streams are considered different because -f was passed to " + NAME + ".");
 			return false;
 		}
 
 		if (astream.Length != bstream.Length) {
-			Driver.Log (6, " > streams are considered different because their lengths do not match.");
+			log.Log (6, " > streams are considered different because their lengths do not match.");
 			return false;
 		}
 
@@ -151,20 +153,20 @@ public class Cache {
 	public bool IsCacheValid (Application app)
 	{
 		var name = "arguments";
-		var pcache = Path.Combine (Location, name);
+		var pcache = Path.Combine (GetLocation (app), name);
 
 		if (!File.Exists (pcache)) {
-			Driver.Log (3, "A full rebuild will be performed because the cache is either incomplete or entirely missing.");
+			app.Log (3, "A full rebuild will be performed because the cache is either incomplete or entirely missing.");
 			return false;
 		} else if (GetArgumentsForCacheData (app) != File.ReadAllText (pcache)) {
-			Driver.Log (3, "A full rebuild will be performed because the arguments to " + NAME + " has changed with regards to the cached data.");
+			app.Log (3, "A full rebuild will be performed because the arguments to " + NAME + " has changed with regards to the cached data.");
 			return false;
 		}
 
 		// Check if mtouch/mmp has been modified.
 		var executable = System.Reflection.Assembly.GetExecutingAssembly ().Location;
-		if (!Application.IsUptodate (executable, pcache)) {
-			Driver.Log (3, "A full rebuild will be performed because " + NAME + " has been modified.");
+		if (!Application.IsUptodate (app, executable, pcache)) {
+			app.Log (3, "A full rebuild will be performed because " + NAME + " has been modified.");
 			return false;
 		}
 
@@ -174,7 +176,7 @@ public class Cache {
 	public bool VerifyCache (Application app)
 	{
 		if (!IsCacheValid (app)) {
-			Clean ();
+			Clean (app);
 			return false;
 		}
 
@@ -184,54 +186,7 @@ public class Cache {
 	public void ValidateCache (Application app)
 	{
 		var name = "arguments";
-		var pcache = Path.Combine (Location, name);
+		var pcache = Path.Combine (GetLocation (app), name);
 		File.WriteAllText (pcache, GetArgumentsForCacheData (app));
 	}
-
-#if false
-	static public void ComputeDependencies (IEnumerable<string> assemblies, MonoTouchResolver resolver)
-	{
-		// note: Parallel.ForEach (with lock to add on 'digests') turns out (much) slower
-		// (linksdk.app with 20 assemblies)
-		// likely because it's faster (using commoncrypto) than it seems
-		foreach (string a in assemblies) {
-			string key = Path.GetFileNameWithoutExtension (a);
-			using (Stream fs = File.OpenRead (a)) {
-				string digest = ComputeDigest (fs, 140);
-				digests.Add (key, digest);
-			}
-		}
-		
-		Dictionary<string, HashSet<string>> dependencies = new Dictionary<string, HashSet<string>> ();
-		foreach (string a in assemblies) {
-			HashSet<string> references;
-			AssemblyDefinition ad = resolver.Load (a);
-			foreach (AssemblyNameReference ar in ad.MainModule.AssemblyReferences) {
-				if (!dependencies.TryGetValue (ar.Name, out references)) {
-					references = new HashSet<string> ();
-					dependencies.Add (ar.Name, references);
-				}
-				references.Add (ad.Name.Name);
-			}
-		}
-#if DEBUG
-		foreach (var kvp in dependencies) {
-			Console.WriteLine ("The following assemblies depends on {0}", kvp.Key);
-			foreach (var s in kvp.Value)
-				Console.WriteLine ("\t{0}", s);
-		}
-#endif
-		// if a dependency has changed everything that depends on it must be cleaned
-		foreach (var kvp in dependencies) {
-			string cname = kvp.Key + ".*.cache." + GetDigestForAssembly (kvp.Key) + ".o";
-			var files = Directory.GetFiles (Location, cname);
-			if (files.Length != 0)
-				continue;
-
-			Clean (kvp.Key + "*");
-			foreach (var deps in kvp.Value)
-				Clean (deps + "*");
-		}
-	}
-#endif
 }

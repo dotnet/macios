@@ -3625,6 +3625,42 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";W7171" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[環境變數 '{0}' 已棄用，.NET 11+ 將忽略它。請使用 'DEVELOPER_DIR' 環境變數或 'XcodeLocation' MSBuild 屬性來選擇要使用的 Xcode。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7172" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[環境變數 '{0}' 已棄用，將被忽略。請使用 'DEVELOPER_DIR' 環境變數或 'XcodeLocation' MSBuild 屬性來選擇要使用的 Xcode。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7173" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[設定檔案 '{0}' 已棄用，.NET 11+ 將忽略它。請使用 'DEVELOPER_DIR' 環境變數或 'XcodeLocation' MSBuild 屬性來選擇要使用的 Xcode。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7174" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[設定檔案 '{0}' 已棄用，將被忽略。請使用 'DEVELOPER_DIR' 環境變數或 'XcodeLocation' MSBuild 屬性來選擇要使用的 Xcode。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";XcodeBuild_CreateNativeRef" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Adding reference to Xcode project output: '{0}'. The '%(CreateNativeReference)' metadata can be set to 'false' to opt out of this behavior.]]></Val>

@@ -1601,12 +1601,7 @@ namespace Xamarin.Tests {
 					throw new NotImplementedException (scenario.ToString ());
 				}
 			}
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
-								.Where (evt => {
-									if (platform == ApplePlatform.iOS && evt.Message?.Trim () == "Supported iPhone orientations have not been set")
-										return false;
-									return true;
-								});
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform);
 			warnings.AssertWarnings (expectedWarnings);
 
 			if (bundleOriginalResources && expectedWarnings.Length > 0) {
@@ -2578,12 +2573,10 @@ namespace Xamarin.Tests {
 			var rv = DotNet.AssertBuild (project_path, properties);
 
 			// We expect to get a warning from the trim analzyer in Debug build
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
+								.FilterWarnings (platform)
+								.ToArray ();
 
-			// Ignore warnings we haven't fixed yet
-			if (platform == ApplePlatform.iOS) {
-				warnings = warnings.Where (w => w.Message?.Trim () != "Supported iPhone orientations have not been set").ToArray ();
-			}
 
 			Assert.That (warnings.Length, Is.EqualTo (1), "Warning count");
 			Assert.That (warnings [0].Code, Is.EqualTo ("IL2075"), "Warning code");
@@ -2639,12 +2632,7 @@ namespace Xamarin.Tests {
 
 			// Verify that we have no warnings, but unfortunately we still have some we haven't fixed yet.
 			// Ignore those, and fail the test if we stop getting them (so that we can update the test to not ignore them anymore).
-			rv.AssertNoWarnings ((evt) => {
-				if (platform == ApplePlatform.iOS && evt.Message?.Trim () == "Supported iPhone orientations have not been set")
-					return false;
-
-				return true;
-			});
+			rv.AssertNoWarnings ((evt) => !Extensions.IsFilteredWarning (evt, platform));
 		}
 
 		[Test]
@@ -2668,11 +2656,7 @@ namespace Xamarin.Tests {
 			var config = "Debug";
 			var runtimeIdentifierInfix = $"/{runtimeIdentifiers}/";
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
-								.Where (evt => {
-									if (platform == ApplePlatform.iOS && evt.Message?.Trim () == "Supported iPhone orientations have not been set")
-										return false;
-									return true;
-								});
+								.FilterWarnings (platform);
 			var expectedWarnings = new ExpectedBuildMessage [] {
 				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),
 				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, Foundation.ExportAttribute)'."),

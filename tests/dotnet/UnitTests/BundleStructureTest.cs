@@ -686,7 +686,7 @@ namespace Xamarin.Tests {
 			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			var warningMessages = FilterWarnings (warnings);
+			var warningMessages = FilterWarnings (warnings, platform);
 
 			var isReleaseBuild = string.Equals (configuration, "Release", StringComparison.OrdinalIgnoreCase);
 			var platformString = platform.AsString ();
@@ -733,7 +733,7 @@ namespace Xamarin.Tests {
 
 			rv = DotNet.AssertBuild (project_path, properties);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = FilterWarnings (warnings);
+			warningMessages = FilterWarnings (warnings, platform);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 1");
@@ -745,7 +745,7 @@ namespace Xamarin.Tests {
 
 			rv = DotNet.AssertBuild (project_path, properties);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = FilterWarnings (warnings);
+			warningMessages = FilterWarnings (warnings, platform);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 2");
@@ -754,7 +754,7 @@ namespace Xamarin.Tests {
 			// a simple rebuild should succeed
 			rv = DotNet.AssertBuild (project_path, properties);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = FilterWarnings (warnings);
+			warningMessages = FilterWarnings (warnings, platform);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 3");
@@ -781,9 +781,9 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		public static string [] FilterWarnings (IEnumerable<BuildLogEvent> warnings, bool canonicalizePaths = false)
+		public static string [] FilterWarnings (IEnumerable<BuildLogEvent> warnings, ApplePlatform platform, bool canonicalizePaths = false)
 		{
-			return warnings
+			return Extensions.FilterWarnings (warnings, platform)
 				.Select (v => v?.Message!).Where (v => !string.IsNullOrWhiteSpace (v))
 				// Remove warnings of the form "This call site is reachable on: '...' and later. 'TheAPI' is only supported on: '...' and later."
 				.Where (v => !v.StartsWith ("This call site is reachable on:"))
@@ -793,8 +793,6 @@ namespace Xamarin.Tests {
 				.Where (v => !v.Contains (" is obsolete: "))
 				// More obsolete warnings
 				.Where (v => !v.Contains (" overrides obsolete member "))
-				// Don't care about this
-				.Where (v => !v.Contains ("Supported iPhone orientations have not been set"))
 				// Canonicalize if so requested
 				.Select (v => canonicalizePaths ? v.Replace (Path.DirectorySeparatorChar, '/') : v)
 				// Sort the messages so that comparison against the expected array is faster

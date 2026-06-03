@@ -150,7 +150,7 @@ namespace Xamarin.Tests {
 
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			var warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
+			var warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
 			var isReleaseBuild = string.Equals (configuration, "Release", StringComparison.OrdinalIgnoreCase);
 			var isCoreCLR = !useMonoRuntime;
@@ -225,7 +225,7 @@ namespace Xamarin.Tests {
 			rv = DotNet.AssertBuild (project_path, properties);
 			var allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
+			warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 1");
@@ -245,7 +245,7 @@ namespace Xamarin.Tests {
 			rv = DotNet.AssertBuild (project_path, properties);
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
+			warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 2");
@@ -262,7 +262,7 @@ namespace Xamarin.Tests {
 			rv = DotNet.AssertBuild (project_path, properties);
 			allTargets = BinLog.GetAllTargets (rv.BinLogPath);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = BundleStructureTest.FilterWarnings (warnings, canonicalizePaths: true);
+			warningMessages = BundleStructureTest.FilterWarnings (warnings, platform, canonicalizePaths: true);
 
 			BundleStructureTest.CheckZippedAppBundleContents (platform, zippedAppBundlePath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
 			AssertWarningsEqual (expectedWarnings, warningMessages, "Warnings Rebuild 3");

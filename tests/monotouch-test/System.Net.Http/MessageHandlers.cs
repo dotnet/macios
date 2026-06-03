@@ -52,7 +52,9 @@ namespace MonoTests.System.Net.Http {
 
 		[Test]
 		[TestCase (typeof (HttpClientHandler))]
-		[TestCase (typeof (CFNetworkHandler))]
+		// There are known issues (deadlocks) with CFNetworkHandler: https://github.com/dotnet/macios/issues/25634
+		// CFNetworkHandler is obsolete, so we won't fix any such issues, so to avoid deadlocks, just avoid testing CFNetworkHandler.
+		[TestCase (typeof (CFNetworkHandler), Ignore = "There are known issues (deadlocks) with CFNetworkHandler: https://github.com/dotnet/macios/issues/25634")]
 		[TestCase (typeof (SocketsHttpHandler))]
 		[TestCase (typeof (NSUrlSessionHandler))]
 		public void DnsFailure (Type handlerType)
@@ -438,7 +440,9 @@ namespace MonoTests.System.Net.Http {
 
 		// ensure that if we have a redirect, we do not have the auth headers in the following requests
 		[TestCase (typeof (HttpClientHandler))]
-		[TestCase (typeof (CFNetworkHandler))]
+		// There are known issues (deadlocks) with CFNetworkHandler: https://github.com/dotnet/macios/issues/25634
+		// CFNetworkHandler is obsolete, so we won't fix any such issues, so to avoid deadlocks, just avoid testing CFNetworkHandler.
+		[TestCase (typeof (CFNetworkHandler), Ignore = "There are known issues (deadlocks) with CFNetworkHandler: https://github.com/dotnet/macios/issues/25634")]
 		[TestCase (typeof (NSUrlSessionHandler))]
 		public void RedirectionWithAuthorizationHeaders (Type handlerType)
 		{

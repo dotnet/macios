@@ -15,7 +15,7 @@ namespace Foundation {
 		/// <summary>Returns the modes governing the types of input handled during a cycle of the run loop.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		public NSRunLoopMode []? RunLoopModes {
+		public NSRunLoopMode [] RunLoopModes {
 			get {
 				var modes = WeakRunLoopModes;
 				if (modes is null)

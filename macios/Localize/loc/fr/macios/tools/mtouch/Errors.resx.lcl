@@ -4573,6 +4573,15 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";MX2262" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The 'InlineClassGetHandle' option is set to 'Strict', but we're using the dynamic registrar. This is not a supported configuration, because 'Strict' mode requires exported Objective-C classes to be available at compile time, but the dynamic registrar will create them at runtime. Please either change the 'InlineClassGetHandle' option to 'Disabled' or 'Compat', or switch to using the static registrar.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[L’option « InlineClassGetHandle » est définie sur « Strict », mais nous utilisons le registrar dynamique. Cette configuration n’est pas prise en charge, car le mode « Strict » nécessite la disponibilité des classes Objective-C exportées au moment de la compilation, tandis que le registrar dynamique les crée au moment du runtime. Veuillez soit remplacer l’option « InlineClassGetHandle » par « Disabled » ou « Compat », soit passer au registrar statique.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";MX3001" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Could not {0} the assembly '{1}']]></Val>

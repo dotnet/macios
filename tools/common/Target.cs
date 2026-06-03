@@ -33,7 +33,7 @@ namespace Xamarin.Bundler {
 #else
 		public PlatformLinkContext LinkContext;
 #endif
-		public PlatformResolver Resolver = new PlatformResolver ();
+		public PlatformResolver Resolver;
 
 		internal StaticRegistrar StaticRegistrar { get; set; }
 
@@ -67,7 +67,7 @@ namespace Xamarin.Bundler {
 		[DllImport ("libc", SetLastError = true)]
 		static extern string realpath (string path, IntPtr zero);
 
-		public static string GetRealPath (string path, bool warnIfNoSuchPathExists = true)
+		public static string GetRealPath (IToolLog log, string path, bool warnIfNoSuchPathExists = true)
 		{
 			// For some reason realpath doesn't always like filenames only, and will randomly fail.
 			// Prepend the current directory if there's no directory specified.
@@ -80,7 +80,7 @@ namespace Xamarin.Bundler {
 
 			var errno = Marshal.GetLastWin32Error ();
 			if (warnIfNoSuchPathExists || (errno != 2))
-				ErrorHelper.Warning (54, Errors.MT0054, path, FileCopier.strerror (errno), errno);
+				ErrorHelper.Warning (log, 54, Errors.MT0054, path, FileCopier.strerror (errno), errno);
 			return path;
 		}
 
@@ -135,7 +135,7 @@ namespace Xamarin.Bundler {
 			sb.AppendLine ("}");
 			sb.AppendLine ();
 
-			Driver.WriteIfDifferent (reference_m, sb.ToString (), true);
+			Driver.WriteIfDifferent (App, reference_m, sb.ToString (), true);
 
 			return reference_m;
 		}
@@ -193,7 +193,7 @@ namespace Xamarin.Bundler {
 						throw ErrorHelper.CreateError (71, Errors.MX0071, platform, App.ProductName);
 					}
 				}
-				Driver.WriteIfDifferent (main_source, sb.ToString (), true);
+				Driver.WriteIfDifferent (App, main_source, sb.ToString (), true);
 			} catch (ProductException) {
 				throw;
 			} catch (Exception e) {
@@ -315,7 +315,7 @@ namespace Xamarin.Bundler {
 			sw.WriteLine ("\txamarin_executable_name = \"{0}\";", assembly_name);
 			if (app.XamarinRuntime == XamarinRuntime.MonoVM)
 				sw.WriteLine ("\tmono_use_llvm = {0};", enable_llvm ? "TRUE" : "FALSE");
-			sw.WriteLine ("\txamarin_log_level = {0};", Driver.Verbosity.ToString (CultureInfo.InvariantCulture));
+			sw.WriteLine ("\txamarin_log_level = {0};", Verbosity.ToString (CultureInfo.InvariantCulture));
 			sw.WriteLine ("\txamarin_arch_name = \"{0}\";", abi.AsArchString ());
 			if (!app.IsDefaultMarshalManagedExceptionMode)
 				sw.WriteLine ("\txamarin_marshal_managed_exception_mode = MarshalManagedExceptionMode{0};", app.MarshalManagedExceptions);

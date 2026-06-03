@@ -153,7 +153,7 @@ namespace MonoTouch.Tuner {
 
 		void Warn (AssemblyDefinition assembly, MemberReference mr)
 		{
-			ErrorHelper.Warning (WarnCode, Errors.MM2107, assembly.Name.Name, mr.DeclaringType.FullName, mr.Name, string.Join (", ", ((MethodReference) mr).Parameters.Select ((v) => v.ParameterType.FullName)));
+			ErrorHelper.Warning (App, WarnCode, Errors.MM2107, assembly.Name.Name, mr.DeclaringType.FullName, mr.Name, string.Join (", ", ((MethodReference) mr).Parameters.Select ((v) => v.ParameterType.FullName)));
 		}
 
 		protected override void TryEndProcess ()
@@ -164,7 +164,7 @@ namespace MonoTouch.Tuner {
 				Optimizations.RemoveDynamicRegistrar = !dynamic_registration_support_required;
 			}
 
-			Driver.Log (4, "Optimization dynamic registrar removal: {0}", Optimizations.RemoveDynamicRegistrar.Value ? "enabled" : "disabled");
+			App.Log (4, "Optimization dynamic registrar removal: {0}", Optimizations.RemoveDynamicRegistrar.Value ? "enabled" : "disabled");
 
 			if (Optimizations.RemoveDynamicRegistrar.Value) {
 				// ILLink will optimize `Runtime.Initialize` based on `DynamicRegistrationSupported` returning a constant (`true`)

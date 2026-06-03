@@ -80,6 +80,11 @@
 		<DefineConstants>$(DefineConstants);NATIVEAOT</DefineConstants>
 		<!-- We're enabling warnaserror by default, but we're not warning-free for ILC (especially for NUnit), so disable warnaserror for ILC - https://github.com/dotnet/macios/issues/19911 -->
 		<IlcTreatWarningsAsErrors>false</IlcTreatWarningsAsErrors>
+		<!-- NUnit 4.x's EquatablesComparer calls Type.GetInterfaceMap() which requires complete type metadata.
+		     Without this, any Assert.That(x, Is.EqualTo(y)) where x implements IEquatable<T> will throw
+		     NotSupportedException on NativeAOT. See https://github.com/nunit/nunit/issues/3970 -->
+		<IlcGenerateCompleteTypeMetadata>true</IlcGenerateCompleteTypeMetadata>
+		<IlcTrimMetadata>false</IlcTrimMetadata>
 	</PropertyGroup>
 
 	<!-- Trimmer options -->
@@ -101,8 +106,12 @@
 			<ManagedAssemblyToLink Condition="'%(Filename)' == 'nunit.framework'">
 				<TrimmerSingleWarn>true</TrimmerSingleWarn>
 			</ManagedAssemblyToLink>
+			<ManagedAssemblyToLink Condition="'%(Filename)' == 'nunit.framework.legacy'">
+				<TrimmerSingleWarn>true</TrimmerSingleWarn>
+			</ManagedAssemblyToLink>
 			<!-- The above ItemGroup doesn't work for NativeAOT, so pass the argument manually to ILC: https://github.com/dotnet/runtime/issues/94255 -->
 			<IlcArg Include="--singlewarnassembly:nunit.framework" />
+			<IlcArg Include="--singlewarnassembly:nunit.framework.legacy" />
 		</ItemGroup>
 	</Target>
 
@@ -126,6 +135,11 @@
 		<DefineConstants>$(DefineConstants);NATIVEAOT</DefineConstants>
 		<!-- We're enabling warnaserror by default, but we're not warning-free for ILC (especially for NUnit), so disable warnaserror for ILC - https://github.com/dotnet/macios/issues/19911 -->
 		<IlcTreatWarningsAsErrors>false</IlcTreatWarningsAsErrors>
+		<!-- NUnit 4.x's EquatablesComparer calls Type.GetInterfaceMap() which requires complete type metadata.
+		     Without this, any Assert.That(x, Is.EqualTo(y)) where x implements IEquatable<T> will throw
+		     NotSupportedException on NativeAOT. See https://github.com/nunit/nunit/issues/3970 -->
+		<IlcGenerateCompleteTypeMetadata>true</IlcGenerateCompleteTypeMetadata>
+		<IlcTrimMetadata>false</IlcTrimMetadata>
 	</PropertyGroup>
 
 	<!--

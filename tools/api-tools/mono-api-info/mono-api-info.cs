@@ -1516,8 +1516,26 @@ namespace Mono.ApiTools {
 				return GetNullableContextFlag (field.DeclaringType);
 			if (provider is EventDefinition evt)
 				return GetNullableContextFlag (evt.DeclaringType);
-			if (provider is TypeDefinition type && type.DeclaringType is not null)
-				return GetNullableContextFlag (type.DeclaringType);
+			if (provider is TypeDefinition type) {
+				if (type.DeclaringType is not null)
+					return GetNullableContextFlag (type.DeclaringType);
+				// Fall back to module-level NullableContextAttribute
+				return GetNullableContextFlagFromAttributes (type.Module);
+			}
+			return null;
+		}
+
+		static byte? GetNullableContextFlagFromAttributes (ICustomAttributeProvider? provider)
+		{
+			if (provider is null || !provider.HasCustomAttributes)
+				return null;
+
+			foreach (var attr in provider.CustomAttributes) {
+				if (attr.AttributeType.FullName != NullableContextAttributeName)
+					continue;
+				if (attr.ConstructorArguments.Count == 1 && attr.ConstructorArguments [0].Value is byte b)
+					return b;
+			}
 			return null;
 		}
 
@@ -1551,8 +1569,7 @@ namespace Mono.ApiTools {
 			if (type.IsValueType)
 				return false;
 
-			// Generic parameters can be nullable
-			// ByReference types: check the element type
+			// ByReference types (ref/out parameters): check the element type
 			if (type.IsByReference) {
 				var elementType = ((ByReferenceType) type).ElementType;
 				if (elementType.IsValueType)

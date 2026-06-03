@@ -64,7 +64,7 @@ namespace Mono.ApiTools {
 			int ti = 0;
 			while (si < old.Length && ti < @new.Length) {
 				if (old [si] == @new [ti]) {
-					Member.Append (old [si].ToString ());
+					Member.Append (old [si]);
 					si++;
 					ti++;
 				} else if (old [si] == '?' && IsNullabilitySuffix (old, si)) {
@@ -89,7 +89,7 @@ namespace Mono.ApiTools {
 					AnyChange = true;
 					si++;
 				} else {
-					Member.Append (old [si].ToString ());
+					Member.Append (old [si]);
 					si++;
 				}
 			}
@@ -99,7 +99,7 @@ namespace Mono.ApiTools {
 					AnyChange = true;
 					ti++;
 				} else {
-					Member.Append (@new [ti].ToString ());
+					Member.Append (@new [ti]);
 					ti++;
 				}
 			}
@@ -108,11 +108,12 @@ namespace Mono.ApiTools {
 
 		static bool IsNullabilitySuffix (string text, int index)
 		{
-			// A '?' is a nullability suffix if it's at the end, or before a type separator
+			// A '?' is a nullability suffix if it's at the end, or before a type separator.
+			// The input type names are already formatted (via GetTypeName + Formatter), so generic
+			// brackets appear as HTML entities (&lt; / &gt;). A '?' before '&' catches the &gt; case.
 			if (index + 1 >= text.Length)
 				return true;
 			char next = text [index + 1];
-			// Before ']', ',', '>', '&' (start of &gt; or &amp;), or ' ' (before parameter name)
 			return next == ']' || next == ',' || next == '>' || next == '&' || next == ' ';
 		}
 	}
@@ -175,20 +176,19 @@ namespace Mono.ApiTools {
 				}
 			}
 
-			if (!hasNullabilityDiff) {
-				// Check child elements recursively
-				var srcChildren = source.Elements ().ToList ();
-				var tgtChildren = target.Elements ().ToList ();
-				if (srcChildren.Count != tgtChildren.Count)
-					return false;
+			// Always check child elements — a non-nullability child diff means this
+			// is not a nullability-only change, even if the parent attributes differ only by nullability.
+			var srcChildren = source.Elements ().ToList ();
+			var tgtChildren = target.Elements ().ToList ();
+			if (srcChildren.Count != tgtChildren.Count)
+				return false;
 
-				for (int i = 0; i < srcChildren.Count; i++) {
-					if (XNode.DeepEquals (srcChildren [i], tgtChildren [i]))
-						continue;
-					if (!DiffersOnlyByNullability (srcChildren [i], tgtChildren [i]))
-						return false;
-					hasNullabilityDiff = true;
-				}
+			for (int i = 0; i < srcChildren.Count; i++) {
+				if (XNode.DeepEquals (srcChildren [i], tgtChildren [i]))
+					continue;
+				if (!DiffersOnlyByNullability (srcChildren [i], tgtChildren [i]))
+					return false;
+				hasNullabilityDiff = true;
 			}
 
 			return hasNullabilityDiff;

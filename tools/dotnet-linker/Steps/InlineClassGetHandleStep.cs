@@ -61,7 +61,7 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 				Frameworks.TryGetFramework (App, td, out string? framework);
 				sb.AppendLine ($"Class={info.ExportedName}|Framework={framework}|Introduced={introduced}|IsWrapper={info.IsWrapper}|IsStubClass={info.IsStubClass}");
 			}
-			Driver.WriteIfDifferent (Configuration.TypeMapFilePath, sb.ToString ());
+			Driver.WriteIfDifferent (App, Configuration.TypeMapFilePath, sb.ToString ());
 		}
 
 		base.TryProcess ();
@@ -153,17 +153,17 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 			var ldstr = instr.Previous;
 			if (ldstr.OpCode != OpCodes.Ldstr) {
 				if (!isOurOwnCode ())
-					Driver.Log (3, "Unknown or unsupported pattern in call to Class.GetHandle in '{0}': {1}. The call will not be inlined.", FormatMethod (method), ldstr);
+					App.Log (3, "Unknown or unsupported pattern in call to Class.GetHandle in '{0}': {1}. The call will not be inlined.", FormatMethod (method), ldstr);
 				continue;
 			}
 			if (ldstr.Operand is not string objectiveCClassName) {
 				if (!isOurOwnCode ())
-					Driver.Log (3, "Unknown or unsupported pattern in call to Class.GetHandle in '{0}': {1}. The call will not be inlined.", FormatMethod (method), ldstr.Operand);
+					App.Log (3, "Unknown or unsupported pattern in call to Class.GetHandle in '{0}': {1}. The call will not be inlined.", FormatMethod (method), ldstr.Operand);
 				continue;
 			}
 
 			if (!objectiveCTypeMap.TryGetValue (objectiveCClassName, out var objCType)) {
-				Driver.Log (3, "Could not find a managed type for the Objective-C type '{1}' in the call to Class.GetHandle in '{0}', assuming the Objective-C type is available in the simulator.", FormatMethod (method), objectiveCClassName);
+				App.Log (3, "Could not find a managed type for the Objective-C type '{1}' in the call to Class.GetHandle in '{0}', assuming the Objective-C type is available in the simulator.", FormatMethod (method), objectiveCClassName);
 			}
 
 			if (!strictMode) {
@@ -171,12 +171,12 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 					// This is a call to Class.GetHandle for the same class that it's being called from, this is OK.
 				} else if (ListExportedSymbols.TryGetRequiredObjectiveCType (DerivedLinkContext, method.DeclaringType, out var exportedName)) {
 					if (exportedName != objectiveCClassName) {
-						Driver.Log (3, "The call to Class.GetHandle in '{0}' is trying to get the handle for the Objective-C class '{1}', but the declaring type's exported name is '{2}', not '{1}'. Since we're in compat mode, we're assuming the class should not be preserved.", FormatMethod (method), objectiveCClassName, exportedName);
+						App.Log (3, "The call to Class.GetHandle in '{0}' is trying to get the handle for the Objective-C class '{1}', but the declaring type's exported name is '{2}', not '{1}'. Since we're in compat mode, we're assuming the class should not be preserved.", FormatMethod (method), objectiveCClassName, exportedName);
 						continue;
 					}
 				} else {
 					if (App.StaticRegistrar.GetCategoryAttribute (method.DeclaringType) is not null)
-						Driver.Log (3, "The call to Class.GetHandle in '{0}' is trying to get the handle for the Objective-C class '{1}', but we couldn't determine whether this class should be statically preserved or not. Since we're in compat mode, we're assuming the class should not be statically preserved.", FormatMethod (method), objectiveCClassName);
+						App.Log (3, "The call to Class.GetHandle in '{0}' is trying to get the handle for the Objective-C class '{1}', but we couldn't determine whether this class should be statically preserved or not. Since we're in compat mode, we're assuming the class should not be statically preserved.", FormatMethod (method), objectiveCClassName);
 					continue;
 				}
 			}
@@ -184,20 +184,20 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 			// Check if the Objective-C class is listed as a ReferenceNativeSymbol with Ignore mode, and if so, don't inline the call to Class.GetHandle (because the native symbol won't be available at link time)
 			var existingSymbol = DerivedLinkContext.RequiredSymbols.Find (Symbol.ObjectiveCPrefix + objectiveCClassName);
 			if (existingSymbol is not null && existingSymbol.Type == SymbolType.ObjectiveCClass && existingSymbol.Mode == SymbolMode.Ignore) {
-				Driver.Log (3, "Not inlining the call to Class.GetHandle (\"{0}\") in method {1} because the class is listed as a ReferenceNativeSymbol with Ignore mode.", objectiveCClassName, FormatMethod (method));
+				App.Log (3, "Not inlining the call to Class.GetHandle (\"{0}\") in method {1} because the class is listed as a ReferenceNativeSymbol with Ignore mode.", objectiveCClassName, FormatMethod (method));
 				continue;
 			}
 
 			if (objCType is not null) {
 				if (DerivedLinkContext.App.IsSimulatorBuild) {
 					if (DerivedLinkContext.HasAvailabilityAttributesShowingUnavailableInSimulator (objCType.Type.Resolve (), method)) {
-						Driver.Log (3, "Not inlining the call to Class.GetHandle (\"{0}\") in method {1} because the type is marked with an attribute indicating it's not available in the simulator.", objectiveCClassName, FormatMethod (method));
+						App.Log (3, "Not inlining the call to Class.GetHandle (\"{0}\") in method {1} because the type is marked with an attribute indicating it's not available in the simulator.", objectiveCClassName, FormatMethod (method));
 						continue;
 					}
 				}
 
 				if (IsUnsupported (objCType.Type.Resolve ())) {
-					Driver.Log (3, "Not inlining the call to Class.GetHandle (\"{0}\") in method {1} because the type is marked with an [UnsupportedOSPlatform] attribute.", objectiveCClassName, FormatMethod (method));
+					App.Log (3, "Not inlining the call to Class.GetHandle (\"{0}\") in method {1} because the type is marked with an [UnsupportedOSPlatform] attribute.", objectiveCClassName, FormatMethod (method));
 					continue;
 				}
 
@@ -207,7 +207,7 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 				}
 
 				if (Frameworks.TryGetFramework (App, objCType.Type.Resolve (), out Framework? framework) && framework.IsFrameworkUnavailable (App)) {
-					Driver.Log (3, "Not inlining the call to Class.GetHandle (\"{0}\") in method {1} because the framework {2} is unavailable.", objectiveCClassName, FormatMethod (method), framework.Name);
+					App.Log (3, "Not inlining the call to Class.GetHandle (\"{0}\") in method {1} because the framework {2} is unavailable.", objectiveCClassName, FormatMethod (method), framework.Name);
 					continue;
 				}
 

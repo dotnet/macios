@@ -22,10 +22,6 @@ using Xamarin.Bundler;
 #nullable enable
 
 namespace MonoTouch.Tuner {
-
-	public partial class MonoTouchManifestResolver : MonoTouchResolver {
-	}
-
 	// recent cecil removed some overloads - https://github.com/mono/cecil/commit/42db79cc16f1cbe8dbab558904e188352dba2b41
 	public static class AssemblyResolverRocks {
 
@@ -41,6 +37,12 @@ namespace MonoTouch.Tuner {
 	}
 
 	public class MonoTouchResolver : CoreResolver {
+		Application app;
+
+		public MonoTouchResolver (Application app)
+		{
+			this.app = app;
+		}
 
 		public IEnumerable<AssemblyDefinition> GetAssemblies ()
 		{
@@ -63,29 +65,29 @@ namespace MonoTouch.Tuner {
 
 			if (FrameworkDirectory is not null) {
 				var facadeDir = Path.Combine (FrameworkDirectory, "Facades");
-				assembly = SearchDirectory (aname, facadeDir);
+				assembly = SearchDirectory (app, aname, facadeDir);
 				if (assembly is not null)
 					return assembly;
 			}
 
 			if (ArchDirectory is not null) {
-				assembly = SearchDirectory (aname, ArchDirectory);
+				assembly = SearchDirectory (app, aname, ArchDirectory);
 				if (assembly is not null)
 					return assembly;
 			}
 
 			if (FrameworkDirectory is not null) {
-				assembly = SearchDirectory (aname, FrameworkDirectory);
+				assembly = SearchDirectory (app, aname, FrameworkDirectory);
 				if (assembly is not null)
 					return assembly;
 			}
 
 			if (RootDirectory is not null) {
-				assembly = SearchDirectory (aname, RootDirectory);
+				assembly = SearchDirectory (app, aname, RootDirectory);
 				if (assembly is not null)
 					return assembly;
 
-				assembly = SearchDirectory (aname, RootDirectory, ".exe");
+				assembly = SearchDirectory (app, aname, RootDirectory, ".exe");
 				if (assembly is not null)
 					return assembly;
 			}

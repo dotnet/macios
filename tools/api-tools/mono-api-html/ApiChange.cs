@@ -46,6 +46,75 @@ namespace Mono.ApiTools {
 			AnyChange = true;
 			return this;
 		}
+
+		// Renders a type change: uses inline nullability rendering if the only
+		// difference is '?' annotations, otherwise falls back to full modification.
+		public ApiChange AppendTypeModified (string old, string @new)
+		{
+			if (Helper.DiffersOnlyByNullability (old, @new))
+				return AppendNullabilityModified (old, @new);
+			return AppendModified (old, @new);
+		}
+
+		// Renders a type modification where only nullability annotations ('?') differ.
+		// Only the added/removed '?' characters are highlighted; the rest is plain text.
+		public ApiChange AppendNullabilityModified (string old, string @new)
+		{
+			int si = 0;
+			int ti = 0;
+			while (si < old.Length && ti < @new.Length) {
+				if (old [si] == @new [ti]) {
+					Member.Append (old [si].ToString ());
+					si++;
+					ti++;
+				} else if (old [si] == '?' && IsNullabilitySuffix (old, si)) {
+					State.Formatter.DiffRemoval (Member, "?");
+					AnyChange = true;
+					si++;
+				} else if (@new [ti] == '?' && IsNullabilitySuffix (@new, ti)) {
+					State.Formatter.DiffAddition (Member, "?");
+					AnyChange = true;
+					ti++;
+				} else {
+					// Shouldn't happen for nullability-only diffs, fall back to full modification
+					State.Formatter.DiffModification (Member, old.Substring (si), @new.Substring (ti));
+					AnyChange = true;
+					return this;
+				}
+			}
+			// Handle remaining characters
+			while (si < old.Length) {
+				if (old [si] == '?' && IsNullabilitySuffix (old, si)) {
+					State.Formatter.DiffRemoval (Member, "?");
+					AnyChange = true;
+					si++;
+				} else {
+					Member.Append (old [si].ToString ());
+					si++;
+				}
+			}
+			while (ti < @new.Length) {
+				if (@new [ti] == '?' && IsNullabilitySuffix (@new, ti)) {
+					State.Formatter.DiffAddition (Member, "?");
+					AnyChange = true;
+					ti++;
+				} else {
+					Member.Append (@new [ti].ToString ());
+					ti++;
+				}
+			}
+			return this;
+		}
+
+		static bool IsNullabilitySuffix (string text, int index)
+		{
+			// A '?' is a nullability suffix if it's at the end, or before a type separator
+			if (index + 1 >= text.Length)
+				return true;
+			char next = text [index + 1];
+			// Before ']', ',', '>', '&' (start of &gt; or &amp;), or ' ' (before parameter name)
+			return next == ']' || next == ',' || next == '>' || next == '&' || next == ' ';
+		}
 	}
 
 	class ApiChanges : Dictionary<string, List<ApiChange>> {

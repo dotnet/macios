@@ -261,13 +261,12 @@ namespace Mono.ApiTools {
 		{
 			if (type is null)
 				return null;
-			// Remove all '?' that appear before ']', at end of string, or before ','
-			// These are the positions where nullable reference type annotations appear
+			// Remove all '?' that appear before ']', at end of string, before ',',
+			// before '>' or '&' (HTML entities like &gt;), or before ' ' (before param name)
 			var sb = new StringBuilder (type.Length);
 			for (int i = 0; i < type.Length; i++) {
 				if (type [i] == '?') {
-					// Skip '?' if it's at the end, before ']', or before ','
-					if (i + 1 >= type.Length || type [i + 1] == ']' || type [i + 1] == ',')
+					if (i + 1 >= type.Length || type [i + 1] == ']' || type [i + 1] == ',' || type [i + 1] == '>' || type [i + 1] == '&' || type [i + 1] == ' ')
 						continue;
 				}
 				sb.Append (type [i]);

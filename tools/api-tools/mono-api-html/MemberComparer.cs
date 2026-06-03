@@ -328,7 +328,7 @@ namespace Mono.ApiTools {
 					}
 
 					if (paramSourceType != paramTargetType) {
-						change.AppendModified (paramSourceType ?? "", paramTargetType ?? "");
+						change.AppendTypeModified (paramSourceType ?? "", paramTargetType ?? "");
 					} else {
 						change.Append (paramSourceType ?? "");
 					}

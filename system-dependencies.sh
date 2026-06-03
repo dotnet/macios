@@ -436,7 +436,9 @@ function xcodebuild_download_selected_platforms ()
 		log "Looking for iOS/tvOS 26+ simulator runtimes that don't support x64..."
 
 		get_non_universal_simulator_runtimes
-		if [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 ]]; then
+		if [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 && "$ACES" == "1" ]]; then
+			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, but we're running on ACES, so we can't do anything about that."
+		elif [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 ]]; then
 			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, which will now be deleted: ${SIMULATORS_WITHOUT_X64[*]}"
 			for sim in "${SIMULATORS_WITHOUT_X64[@]}"; do
 				log "Executing 'xcrun simctl runtime delete $sim'"

@@ -44,7 +44,7 @@ public sealed class Test1 {{
 ");
 
 			// Boot a simulator so that ComputeRunArguments can find a device
-			var deviceUdid = GetDeviceUdid (platform);
+			var deviceUdid = GetOrCreateDeviceUdid (platform);
 			BootSimulator (deviceUdid);
 
 			// Run 'dotnet test' directly using Execution.RunAsync.
@@ -59,7 +59,7 @@ public sealed class Test1 {{
 			Assert.That (testResult.ExitCode, Is.EqualTo (0), $"'dotnet test' failed with exit code {testResult.ExitCode}.\nBinlog: {binlog}\nOutput:\n{testResult.Output.MergedOutput}");
 		}
 
-		static string GetDeviceUdid (ApplePlatform platform)
+		static string GetOrCreateDeviceUdid (ApplePlatform platform)
 		{
 			// Use xcrun simctl directly to find available simulator devices.
 			var rv = Execution.RunAsync ("xcrun", new List<string> { "simctl", "list", "devices", "available", "--json" }, timeout: TimeSpan.FromMinutes (1)).Result;
@@ -73,19 +73,34 @@ public sealed class Test1 {{
 
 			var doc = JsonDocument.Parse (rv.Output.MergedOutput);
 			var devicesObj = doc.RootElement.GetProperty ("devices");
+			string? bestRuntime = null;
 			var allDevices = new List<(string Udid, string Runtime)> ();
 			foreach (var runtimeProp in devicesObj.EnumerateObject ()) {
 				if (!runtimeProp.Name.StartsWith (runtimePrefix, StringComparison.Ordinal))
 					continue;
+				if (bestRuntime is null || string.Compare (runtimeProp.Name, bestRuntime, StringComparison.Ordinal) > 0)
+					bestRuntime = runtimeProp.Name;
 				foreach (var device in runtimeProp.Value.EnumerateArray ()) {
 					var udid = device.GetProperty ("udid").GetString ()!;
 					allDevices.Add ((udid, runtimeProp.Name));
 				}
 			}
 
-			Assert.That (allDevices, Is.Not.Empty, $"No {platform} simulators found. Output:\n{rv.Output.MergedOutput}");
-			// Pick the last runtime (highest version) and first device
-			return allDevices.OrderByDescending (d => d.Runtime).First ().Udid;
+			if (allDevices.Count > 0)
+				return allDevices.OrderByDescending (d => d.Runtime).First ().Udid;
+
+			// No devices exist — create one. CI agents may have runtimes but no devices.
+			Assert.That (bestRuntime, Is.Not.Null, $"No {platform} simulator runtimes found. Output:\n{rv.Output.MergedOutput}");
+
+			var defaultDeviceType = platform switch {
+				ApplePlatform.iOS => "com.apple.CoreSimulator.SimDeviceType.iPhone-16",
+				ApplePlatform.TVOS => "com.apple.CoreSimulator.SimDeviceType.Apple-TV-4K-3rd-generation-4K",
+				_ => throw new ArgumentException ($"Unsupported platform: {platform}"),
+			};
+
+			var createResult = Execution.RunAsync ("xcrun", new List<string> { "simctl", "create", "test-device", defaultDeviceType, bestRuntime! }, timeout: TimeSpan.FromMinutes (2)).Result;
+			Assert.That (createResult.ExitCode, Is.EqualTo (0), $"Failed to create simulator. Output:\n{createResult.Output.MergedOutput}");
+			return createResult.Output.MergedOutput.Trim ();
 		}
 
 		static void BootSimulator (string udid)

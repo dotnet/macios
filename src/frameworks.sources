@@ -574,6 +574,7 @@ COREIMAGE_SOURCES = \
 	CoreImage/CIDetector.cs \
 	CoreImage/CIDetectorOptions.cs \
 	CoreImage/CIFilter.cs \
+	CoreImage/CIFilterGenerator.cs \
 	CoreImage/CIImage.cs \
 	CoreImage/CISampler.cs \
 	CoreImage/CISystemToneMap.cs \

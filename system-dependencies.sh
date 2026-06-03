@@ -43,6 +43,25 @@ if test -f configure.inc; then
 	fi
 fi
 
+function get_xcode_developer_root ()
+{
+	local suffix="${1:-}"
+
+	if test -z "$suffix"; then
+		if test -n "${XCODE_DEVELOPER_ROOT:-}"; then
+			echo "$XCODE_DEVELOPER_ROOT"
+			return
+		fi
+
+		if XCODE_DEVELOPER_ROOT_ASSIGNMENT=$(grep "^XCODE_DEVELOPER_ROOT=" configure.inc 2>/dev/null); then
+			echo "${XCODE_DEVELOPER_ROOT_ASSIGNMENT#*=}"
+			return
+		fi
+	fi
+
+	grep "^XCODE${suffix}_DEVELOPER_ROOT[?:]*=" Make.config | sed 's/^[^=]*=//'
+}
+
 # parse command-line arguments
 while ! test -z $1; do
 	case $1 in
@@ -219,6 +238,12 @@ while ! test -z $1; do
 	esac
 done
 
+if test -z "${NO_XCODE:-}"; then
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
+	export XCODE_DEVELOPER_ROOT
+	export DEVELOPER_DIR="$XCODE_DEVELOPER_ROOT"
+fi
+
 # reporting functions
 COLOR_RED=$(tput setaf 1 2>/dev/null || true)
 COLOR_ORANGE=$(tput setaf 3 2>/dev/null || true)
@@ -351,7 +376,7 @@ function xcodebuild_download_selected_platforms ()
 	local TVOS_NUGET_OS_VERSION
 	local TVOS_BUILD_VERSION
 
-	XCODE_DEVELOPER_ROOT=$(grep XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
 	XCODE_NAME=$(basename "$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")")
 	# we use the same logic here as in Make.config to determine whether we're using a stable version of Xcode or not (search for XCODE_IS_STABLE/XCODE_IS_PREVIEW)
 	XCODE_IS_STABLE=$(echo "$XCODE_NAME" | sed -e 's@^Xcode[_0-9.]*[.]app$@YES@')
@@ -592,7 +617,7 @@ function install_coresimulator ()
 	local TARGET_CORESIMULATOR_VERSION
 	local CURRENT_CORESIMULATOR_VERSION
 
-	XCODE_DEVELOPER_ROOT=$(grep XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
 	XCODE_ROOT=$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")
 	CORESIMULATOR_PKG=$XCODE_ROOT/Contents/Resources/Packages/XcodeSystemResources.pkg
 
@@ -658,9 +683,13 @@ function install_coresimulator ()
 }
 
 function check_specific_xcode () {
-	local XCODE_DEVELOPER_ROOT=`grep XCODE$1_DEVELOPER_ROOT= Make.config | sed 's/.*=//'`
-	local XCODE_VERSION=`grep XCODE$1_VERSION= Make.config | sed 's/.*=//'`
-	local XCODE_ROOT=$(dirname `dirname $XCODE_DEVELOPER_ROOT`)
+	local XCODE_DEVELOPER_ROOT
+	local XCODE_VERSION
+	local XCODE_ROOT
+
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root "$1")
+	XCODE_VERSION=$(grep "XCODE$1_VERSION=" Make.config | sed 's/.*=//')
+	XCODE_ROOT=$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")
 	
 	if ! test -d $XCODE_DEVELOPER_ROOT; then
 		if ! test -z $PROVISION_XCODE; then
@@ -698,11 +727,13 @@ function check_xcode () {
 	if ! test -z $IGNORE_XCODE; then return; fi
 
 	# must have latest Xcode in /Applications/Xcode<version>.app
-	check_specific_xcode
+	check_specific_xcode ""
 	install_coresimulator
 
 	local IOS_SDK_VERSION MACOS_SDK_VERSION TVOS_SDK_VERSION
-	local XCODE_DEVELOPER_ROOT=`grep ^XCODE_DEVELOPER_ROOT= Make.config | sed 's/.*=//'`
+	local XCODE_DEVELOPER_ROOT
+
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root)
 	IOS_SDK_VERSION=$(grep ^IOS_NUGET_OS_VERSION= Make.versions | sed -e 's/.*=//')
 	MACOS_SDK_VERSION=$(grep ^MACOS_NUGET_OS_VERSION= Make.versions | sed -e 's/.*=//')
 	TVOS_SDK_VERSION=$(grep ^TVOS_NUGET_OS_VERSION= Make.versions | sed -e 's/.*=//')
@@ -928,7 +959,7 @@ function check_old_simulators ()
 	local XCODE
 	local XCODE_DEVELOPER_ROOT
 
-	XCODE_DEVELOPER_ROOT=$(grep XCODE$1_DEVELOPER_ROOT= Make.config | sed 's/.*=//')
+	XCODE_DEVELOPER_ROOT=$(get_xcode_developer_root "$1")
 
 	IFS=' ' read -r -a EXTRA_SIMULATORS <<< "$(grep ^EXTRA_SIMULATORS= Make.config | sed 's/.*=//')"
 	XCODE=$(dirname "$(dirname "$XCODE_DEVELOPER_ROOT")")
@@ -1006,4 +1037,3 @@ else
 	echo "System check failed"
 	exit 1
 fi
-

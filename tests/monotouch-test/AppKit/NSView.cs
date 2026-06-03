@@ -50,6 +50,11 @@ namespace Xamarin.Mac.Tests {
 
 		[Test]
 		[UnconditionalSuppressMessage ("Trimming", "IL2075", Justification = "This test handles APIs that have been linked away, so it's trimmer-safe.")]
+		[DynamicDependency ("Menu", typeof (AppKit.NSCell))]
+		[DynamicDependency ("Menu", typeof (AppKit.NSMenuItem))]
+		[DynamicDependency ("Menu", typeof (AppKit.NSPathControl))]
+		[DynamicDependency ("Menu", typeof (AppKit.NSPopUpButton))]
+		[DynamicDependency ("Menu", typeof (AppKit.NSPopUpButtonCell))]
 		public void AllItemsWithNSMenuShouldAllowNull ()
 		{
 			// Can't test NSResponder since it is abstract

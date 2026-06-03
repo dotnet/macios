@@ -42,7 +42,7 @@ using System.Diagnostics;
 using System.Threading;
 #endif
 
-public class BindingTouch : IDisposable {
+public class BindingTouch : IDisposable, IToolLog {
 	public static ApplePlatform [] AllPlatforms = new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst };
 	public static PlatformName [] AllPlatformNames = new PlatformName [] { PlatformName.iOS, PlatformName.MacOSX, PlatformName.TvOS, PlatformName.MacCatalyst };
 	public PlatformName CurrentPlatform;
@@ -156,8 +156,8 @@ public class BindingTouch : IDisposable {
 				{ "d=", "Defines a symbol", v => config.Defines.Add (v) },
 				{ "api=", "Adds a API definition source file", v => config.ApiSources.Add (v) },
 				{ "s=", "Adds a source file required to build the API", v => config.CoreSources.Add (v) },
-				{ "q", "Quiet", v => ErrorHelper.Verbosity-- },
-				{ "v", "Sets verbose mode", v => ErrorHelper.Verbosity++ },
+				{ "q", "Quiet", v => Verbosity-- },
+				{ "v", "Sets verbose mode", v => Verbosity++ },
 				{ "x=", "Adds the specified file to the build, used after the core files are compiled", v => config.ExtraSources.Add (v) },
 				{ "e", "Generates smaller classes that can not be subclassed (previously called 'external mode')", v => config.IsExternal = true },
 				{ "p", "Sets private mode", v => config.IsPublicMode = false },
@@ -522,7 +522,7 @@ public class BindingTouch : IDisposable {
 			arguments.Insert (i - 1, compile_command [i]);
 		}
 
-		if (Driver.RunCommand (compile_command [0], arguments, null, out var compile_output, true, Driver.Verbosity) != 0)
+		if (Driver.RunCommand (this, compile_command [0], arguments, null, out var compile_output, true, Verbosity) != 0)
 			throw ErrorHelper.CreateError (errorCode, $"{compiler} {StringUtils.FormatArguments (arguments)}\n{compile_output}".Replace ("\n", "\n\t"));
 		var output = string.Join (Environment.NewLine, compile_output.ToString ().Split (new char [] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
 		if (!string.IsNullOrEmpty (output))
@@ -537,10 +537,10 @@ public class BindingTouch : IDisposable {
 		try {
 			assembly = universe?.LoadFromAssemblyPath (name);
 		} catch (Exception e) {
-			if (Driver.Verbosity > 0)
-				Console.WriteLine (e);
+			if (Verbosity > 0)
+				Log (e.ToString ());
 
-			Console.Error.WriteLine ("Error loading {0}", name);
+			LogError ($"Error loading {name}");
 		}
 
 		return assembly is not null;
@@ -574,5 +574,37 @@ public class BindingTouch : IDisposable {
 	{
 		Dispose (disposing: true);
 		GC.SuppressFinalize (this);
+	}
+
+	public void Log (string message)
+	{
+		Console.WriteLine (message);
+	}
+
+	public void LogError (string message)
+	{
+		Console.Error.WriteLine (message);
+	}
+
+	public void LogError (Exception exception)
+	{
+		ErrorHelper.Show (exception);
+	}
+
+	public void LogException (Exception exception)
+	{
+		ErrorHelper.Show (exception);
+	}
+
+	int verbosity = 0;
+	public int Verbosity {
+		get => verbosity;
+		set => verbosity = value;
+	}
+}
+
+namespace Xamarin.Bundler {
+	public partial class Driver {
+		public static int GetDefaultVerbosity () => 0;
 	}
 }

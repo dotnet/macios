@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -27,6 +28,7 @@ namespace Xamarin.Bundler {
 
 		enum CopyFileState : uint {
 			StatusCB = 6,
+			StatusCtx = 7,
 		}
 
 		enum CopyFileStep {
@@ -57,81 +59,39 @@ namespace Xamarin.Bundler {
 		[DllImport ("/usr/lib/libSystem.dylib")]
 		static extern int copyfile_state_free (IntPtr state);
 
+#if NET
 		[DllImport ("/usr/lib/libSystem.dylib")]
-		static extern int copyfile_state_set (IntPtr state, CopyFileState flag, IntPtr value);
-
+		static extern unsafe int copyfile_state_set (IntPtr state, CopyFileState flag, delegate* unmanaged<CopyFileWhat, CopyFileStep, IntPtr, IntPtr, IntPtr, IntPtr, CopyFileResult> value);
+#else
 		delegate CopyFileResult CopyFileCallbackDelegate (CopyFileWhat what, CopyFileStep stage, IntPtr state, string src, string dst, IntPtr ctx);
+#endif
+
+		[DllImport ("/usr/lib/libSystem.dylib")]
+		static extern unsafe int copyfile_state_set (IntPtr state, CopyFileState flag, IntPtr value);
 
 		[DllImport ("/usr/lib/libSystem.dylib", SetLastError = true)]
 		static extern int copyfile (string @from, string @to, IntPtr state, CopyFileFlags flags);
 
-		// This code is shared between our packaging tools (mmp\mtouch) and msbuild tasks
-		public delegate void LogCallback (int verbosity, string format, params object? [] arguments);
-		public delegate void ReportErrorCallback (int code, string format, params object? [] arguments);
-
-		[ThreadStatic]
-		static LogCallback? logCallback;
-
-		[ThreadStatic]
-		static ReportErrorCallback? reportErrorCallback;
-
-		static void Log (int min_verbosity, string format, params object? [] arguments)
+		static void ReportError (IToolLog log, int code, string format, params object? [] arguments)
 		{
-			if (logCallback is not null) {
-				logCallback (min_verbosity, format, arguments);
-				return;
-			}
-
 #if LEGACY_TOOLS || BUNDLER
-			// LogMessage and LogError are instance objects on the tasks themselves and bubbling an event up is not ideal
-			Driver.Log (min_verbosity, format, arguments);
+			log.LogError (ErrorHelper.CreateError (code, format, arguments));
 #else
-			Console.WriteLine (format, arguments);
+			log.LogError (new Exception ($"{code} {string.Format (format, arguments)}"));
 #endif
 		}
 
-		static void ReportError (int code, string format, params object? [] arguments)
-		{
-			if (reportErrorCallback is not null) {
-				reportErrorCallback (code, format, arguments);
-				return;
-			}
-
-#if LEGACY_TOOLS || BUNDLER
-			throw ErrorHelper.CreateError (code, format, arguments);
-#else
-			// msbuild handles uncaught exceptions as a task error
-			throw new Exception ($"{code} {string.Format (format, arguments)}");
-#endif
-		}
-
-		public static void UpdateDirectory (string source, string target, ReportErrorCallback reportErrorCallback, LogCallback logCallback)
-		{
-			try {
-				FileCopier.reportErrorCallback = reportErrorCallback;
-				FileCopier.logCallback = logCallback;
-				UpdateDirectory (source, target);
-			} finally {
-				FileCopier.reportErrorCallback = null;
-				FileCopier.logCallback = null;
-			}
-		}
-
-#if LEGACY_TOOLS || BUNDLER
-		public static void UpdateDirectory (string source, string target)
-#else
-		static void UpdateDirectory (string source, string target)
-#endif
+		public static void UpdateDirectory (IToolLog log, string source, string target)
 		{
 			// first chance, try to update existing content inside `target`
-			if (TryUpdateDirectory (source, target, out var err))
+			if (TryUpdateDirectory (log, source, target, out var err))
 				return;
 
 			// 2nd chance, remove `target` then copy everything
-			Log (1, "Could not update `{0}` content (error #{1} : {2}), trying to overwrite everything...", target, err, strerror (err));
+			log.Log (1, "Could not update `{0}` content (error #{1} : {2}), trying to overwrite everything...", target, err, strerror (err));
 			Directory.Delete (target, true);
-			if (!TryUpdateDirectory (source, target, out err))
-				ReportError (1022, Errors.MT1022, source, target, err, strerror (err));
+			if (!TryUpdateDirectory (log, source, target, out err))
+				ReportError (log, 1022, Errors.MT1022, source, target, err, strerror (err));
 		}
 
 		static bool? use_managed_copying;
@@ -150,16 +110,16 @@ namespace Xamarin.Bundler {
 			}
 		}
 
-		static bool TryUpdateDirectory (string source, string target, out int errno)
+		static bool TryUpdateDirectory (IToolLog log, string source, string target, out int errno)
 		{
 			if (UseManagedCopying)
-				return TryUpdateDirectoryWindows (source, target, out errno);
-			return TryUpdateDirectoryMacOS (source, target, out errno);
+				return TryUpdateDirectoryWindows (log, source, target, out errno);
+			return TryUpdateDirectoryMacOS (log, source, target, out errno);
 		}
 
-		static bool TryUpdateDirectoryWindows (string source, string target, out int errno)
+		static bool TryUpdateDirectoryWindows (IToolLog log, string source, string target, out int errno)
 		{
-			Log (1, $"Copying {source} to {target} recursively");
+			log.Log (1, $"Copying {source} to {target} recursively");
 			errno = 0;
 			Directory.CreateDirectory (target);
 
@@ -170,39 +130,47 @@ namespace Xamarin.Bundler {
 				foreach (var sourceFile in dir.GetFiles ()) {
 					var sourcePath = sourceFile.FullName;
 					var targetPath = Path.Combine (target, Path.GetFileName (source), sourceFile.Name);
-					CopyIfNeeded (sourcePath, targetPath);
+					CopyIfNeeded (log, sourcePath, targetPath);
 				}
 				foreach (var subdir in dir.GetDirectories ()) {
-					rv &= TryUpdateDirectoryWindows (Path.Combine (source, subdir.Name), Path.Combine (target, Path.GetFileName (source)), out errno);
+					rv &= TryUpdateDirectoryWindows (log, Path.Combine (source, subdir.Name), Path.Combine (target, Path.GetFileName (source)), out errno);
 				}
 			} else {
 				var targetPath = Path.Combine (target, Path.GetFileName (source));
-				CopyIfNeeded (source, targetPath);
+				CopyIfNeeded (log, source, targetPath);
 			}
 			return rv;
 		}
 
-		static void CopyIfNeeded (string source, string target)
+		static void CopyIfNeeded (IToolLog log, string source, string target)
 		{
-			if (IsUptodate (source, target)) {
-				Log (3, "Target '{0}' is up-to-date", target);
+			if (IsUptodate (log, source, target)) {
+				log.Log (3, "Target '{0}' is up-to-date", target);
 			} else {
 				Directory.CreateDirectory (Path.GetDirectoryName (target)!);
 				File.Copy (source, target, true);
-				Log (1, "Copied {0} to {1}", source, target);
+				log.Log (1, "Copied {0} to {1}", source, target);
 			}
 		}
 
-		static bool TryUpdateDirectoryMacOS (string source, string target, out int errno)
+		static bool TryUpdateDirectoryMacOS (IToolLog log, string source, string target, out int errno)
 		{
 			Directory.CreateDirectory (target);
 
 			// Mono's File.Copy can't handle symlinks (the symlinks are followed instead of copied),
 			// so we need to use native functions directly. Luckily OSX provides exactly what we need.
 			IntPtr state = copyfile_state_alloc ();
+			var logHandle = GCHandle.Alloc (log);
 			try {
+#if NET
+				unsafe {
+					copyfile_state_set (state, CopyFileState.StatusCB, &CopyFileCallback);
+				}
+#else
 				CopyFileCallbackDelegate del = CopyFileCallback;
 				copyfile_state_set (state, CopyFileState.StatusCB, Marshal.GetFunctionPointerForDelegate (del));
+#endif
+				copyfile_state_set (state, CopyFileState.StatusCtx, (IntPtr) logHandle);
 				int rv = copyfile (source, target, state, CopyFileFlags.Data | CopyFileFlags.Recursive | CopyFileFlags.Nofollow | CopyFileFlags.Clone);
 				if (rv == 0) {
 					errno = 0; // satisfy compiler and make sure not to pick up some older error code
@@ -212,25 +180,36 @@ namespace Xamarin.Bundler {
 					return false;
 				}
 			} finally {
+				logHandle.Free ();
 				copyfile_state_free (state);
 			}
 		}
 
 		// do not call `Marshal.GetLastWin32Error` inside this method since it's called while the p/invoke is executing and will return `260`
+#if NET
+		[UnmanagedCallersOnly]
+		static CopyFileResult CopyFileCallback (CopyFileWhat what, CopyFileStep stage, IntPtr state, IntPtr sourcePtr, IntPtr targetPtr, IntPtr ctx)
+		{
+			var source = Marshal.PtrToStringUTF8 (sourcePtr)!;
+			var target = Marshal.PtrToStringUTF8 (targetPtr)!;
+#else
 		static CopyFileResult CopyFileCallback (CopyFileWhat what, CopyFileStep stage, IntPtr state, string source, string target, IntPtr ctx)
 		{
-			//			Console.WriteLine ("CopyFileCallback ({0}, {1}, 0x{2}, {3}, {4}, 0x{5})", what, stage, state.ToString ("x"), source, target, ctx.ToString ("x"));
+#endif
+			var log = (IToolLog) GCHandle.FromIntPtr (ctx).Target!;
+
+			// log.Log ("CopyFileCallback ({0}, {1}, 0x{2}, {3}, {4}, 0x{5})", what, stage, state.ToString ("x"), source, target, ctx.ToString ("x"));
 			switch (what) {
 			case CopyFileWhat.File:
-				if (!IsUptodate (source, target)) {
+				if (!IsUptodate (log, source, target)) {
 					if (stage == CopyFileStep.Finish)
-						Log (1, "Copied {0} to {1}", source, target);
+						log.Log (1, "Copied {0} to {1}", source, target);
 					else if (stage == CopyFileStep.Err) {
-						Log (1, "Could not copy the file '{0}' to '{1}'", source, target);
+						log.Log (1, "Could not copy the file '{0}' to '{1}'", source, target);
 						return CopyFileResult.Quit;
 					} else if (stage == CopyFileStep.Start) {
 						if (File.Exists (target) || Directory.Exists (target)) {
-							Log (1, "Deleted target {0}, it's not up-to-date", target);
+							log.Log (1, "Deleted target {0}, it's not up-to-date", target);
 							// This callback won't be called for directories, but we can get here for symlinks to directories.
 							// This means that File.Delete should always work (no need to check for a directory to call Directory.Delete)
 							File.Delete (target);
@@ -238,7 +217,7 @@ namespace Xamarin.Bundler {
 					}
 					return CopyFileResult.Continue;
 				} else {
-					Log (3, "Target '{0}' is up-to-date", target);
+					log.Log (3, "Target '{0}' is up-to-date", target);
 					return CopyFileResult.Skip;
 				}
 			case CopyFileWhat.Dir:
@@ -247,22 +226,10 @@ namespace Xamarin.Bundler {
 			case CopyFileWhat.CopyXattr:
 				return CopyFileResult.Continue;
 			case CopyFileWhat.Error:
-				Log (1, "Could not copy the file '{0}' to '{1}'", source, target);
+				log.Log (1, "Could not copy the file '{0}' to '{1}'", source, target);
 				return CopyFileResult.Quit;
 			default:
 				return CopyFileResult.Continue;
-			}
-		}
-
-		public static bool IsUptodate (string source, string target, ReportErrorCallback reportErrorCallback, LogCallback logCallback, bool check_contents = false, bool check_stamp = true)
-		{
-			try {
-				FileCopier.reportErrorCallback = reportErrorCallback;
-				FileCopier.logCallback = logCallback;
-				return IsUptodate (source, target, check_contents, check_stamp);
-			} finally {
-				FileCopier.reportErrorCallback = null;
-				FileCopier.logCallback = null;
 			}
 		}
 
@@ -272,11 +239,7 @@ namespace Xamarin.Bundler {
 		//
 		// If check_stamp is true, the function will use the timestamp of a "target".stamp file
 		// if it's later than the timestamp of the "target" file itself.
-#if LEGACY_TOOLS || BUNDLER
-		public static bool IsUptodate (string source, string target, bool check_contents = false, bool check_stamp = true)
-#else
-		static bool IsUptodate (string source, string target, bool check_contents = false, bool check_stamp = true)
-#endif
+		public static bool IsUptodate (IToolLog log, string source, string target, bool check_contents = false, bool check_stamp = true)
 		{
 #if LEGACY_TOOLS || BUNDLER   // msbuild does not have force                                  
 			if (Driver.Force)
@@ -286,14 +249,14 @@ namespace Xamarin.Bundler {
 			var tfi = new FileInfo (target);
 
 			if (!tfi.Exists) {
-				Log (3, "Target '{0}' does not exist.", target);
+				log.Log (3, "Target '{0}' does not exist.", target);
 				return false;
 			}
 
 			if (check_stamp) {
 				var tfi_stamp = new FileInfo (target + ".stamp");
 				if (tfi_stamp.Exists && tfi_stamp.LastWriteTimeUtc > tfi.LastWriteTimeUtc) {
-					Log (3, "Target '{0}' has a stamp file with newer timestamp ({1} > {2}), using the stamp file's timestamp", target, tfi_stamp.LastWriteTimeUtc, tfi.LastWriteTimeUtc);
+					log.Log (3, "Target '{0}' has a stamp file with newer timestamp ({1} > {2}), using the stamp file's timestamp", target, tfi_stamp.LastWriteTimeUtc, tfi.LastWriteTimeUtc);
 					tfi = tfi_stamp;
 				}
 			}
@@ -301,13 +264,13 @@ namespace Xamarin.Bundler {
 			var sfi = new FileInfo (source);
 
 			if (sfi.LastWriteTimeUtc <= tfi.LastWriteTimeUtc) {
-				Log (3, "Prerequisite '{0}' is older than the target '{1}'.", source, target);
+				log.Log (3, "Prerequisite '{0}' is older than the target '{1}'.", source, target);
 				return true;
 			}
 
 #if LEGACY_TOOLS || BUNDLER   // msbuild usages do not require CompareFiles optimization                                                              
-			if (check_contents && Cache.CompareFiles (source, target)) {
-				Log (3, "Prerequisite '{0}' is newer than the target '{1}', but the contents are identical.", source, target);
+			if (check_contents && Cache.CompareFiles (log, source, target)) {
+				log.Log (3, "Prerequisite '{0}' is newer than the target '{1}', but the contents are identical.", source, target);
 				return true;
 			}
 #else
@@ -315,31 +278,15 @@ namespace Xamarin.Bundler {
 				throw new NotImplementedException ("Checking file contents is not supported");
 #endif
 
-			Log (3, "Prerequisite '{0}' is newer than the target '{1}'.", source, target);
+			log.Log (3, "Prerequisite '{0}' is newer than the target '{1}'.", source, target);
 			return false;
-		}
-
-		public static bool IsUptodate (IEnumerable<string> sources, IEnumerable<string> targets, ReportErrorCallback reportErrorCallback, LogCallback logCallback, bool check_stamp = true)
-		{
-			try {
-				FileCopier.reportErrorCallback = reportErrorCallback;
-				FileCopier.logCallback = logCallback;
-				return IsUptodate (sources, targets, check_stamp);
-			} finally {
-				FileCopier.reportErrorCallback = null;
-				FileCopier.logCallback = null;
-			}
 		}
 
 		// Checks if any of the source files have a time stamp later than any of the target files.
 		//
 		// If check_stamp is true, the function will use the timestamp of a "target".stamp file
 		// if it's later than the timestamp of the "target" file itself.
-#if LEGACY_TOOLS || BUNDLER
-		public static bool IsUptodate (IEnumerable<string> sources, IEnumerable<string> targets, bool check_stamp = true)
-#else
-		static bool IsUptodate (IEnumerable<string> sources, IEnumerable<string> targets, bool check_stamp = true)
-#endif
+		public static bool IsUptodate (IToolLog log, IEnumerable<string> sources, IEnumerable<string> targets, bool check_stamp = true)
 		{
 #if LEGACY_TOOLS || BUNDLER  // msbuild does not have force
 			if (Driver.Force)
@@ -355,7 +302,7 @@ namespace Xamarin.Bundler {
 			foreach (var s in sources) {
 				var sfi = new FileInfo (s);
 				if (!sfi.Exists) {
-					Log (3, "Prerequisite '{0}' does not exist.", s);
+					log.Log (3, "Prerequisite '{0}' does not exist.", s);
 					return false;
 				}
 
@@ -370,26 +317,26 @@ namespace Xamarin.Bundler {
 			foreach (var t in targets) {
 				var tfi = new FileInfo (t);
 				if (!tfi.Exists) {
-					Log (3, "Target '{0}' does not exist.", t);
+					log.Log (3, "Target '{0}' does not exist.", t);
 					return false;
 				}
 
 				if (check_stamp) {
 					var tfi_stamp = new FileInfo (t + ".stamp");
 					if (tfi_stamp.Exists && tfi_stamp.LastWriteTimeUtc > tfi.LastWriteTimeUtc) {
-						Log (3, "Target '{0}' has a stamp file with newer timestamp ({1} > {2}), using the stamp file's timestamp", t, tfi_stamp.LastWriteTimeUtc, tfi.LastWriteTimeUtc);
+						log.Log (3, "Target '{0}' has a stamp file with newer timestamp ({1} > {2}), using the stamp file's timestamp", t, tfi_stamp.LastWriteTimeUtc, tfi.LastWriteTimeUtc);
 						tfi = tfi_stamp;
 					}
 				}
 
 				var lwt = tfi.LastWriteTimeUtc;
 				if (max_source > lwt) {
-					Log (3, "Prerequisite '{0}' is newer than target '{1}' ({2} vs {3}).", max_s, t, max_source, lwt);
+					log.Log (3, "Prerequisite '{0}' is newer than target '{1}' ({2} vs {3}).", max_s, t, max_source, lwt);
 					return false;
 				}
 			}
 
-			Log (3, "Prerequisite(s) '{0}' are all older than the target(s) '{1}'.", string.Join ("', '", sources.ToArray ()), string.Join ("', '", targets.ToArray ()));
+			log.Log (3, "Prerequisite(s) '{0}' are all older than the target(s) '{1}'.", string.Join ("', '", sources.ToArray ()), string.Join ("', '", targets.ToArray ()));
 
 			return true;
 		}

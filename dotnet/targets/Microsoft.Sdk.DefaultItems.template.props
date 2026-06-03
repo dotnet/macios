@@ -24,7 +24,7 @@
 		</None>
 
 		<!-- Default Asset Catalog file inclusion -->
-		<ImageAsset Include="**\*.xcassets\**\*.*" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);**\*.xcassets\**\*.DS_Store">
+		<ImageAsset Include="**\*.xcassets\**\*.*;**\*.icon\**\*.*" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);**\*.xcassets\**\*.DS_Store;**\*.icon\**\*.DS_Store">
 			<Link>$([MSBuild]::MakeRelative ('$(MSBuildProjectDirectory)', '%(FullPath)'))</Link>
 			<Visible>false</Visible>
 			<IsDefaultItem>true</IsDefaultItem>
@@ -65,6 +65,7 @@
 			$(DefaultItemExcludes);
 			$(DefaultExcludesInProjectFolder);
 			$(_ResourcePrefix)\**\*.xcassets\**\*.*;
+			$(_ResourcePrefix)\**\*.icon\**\*.*;
 			$(_ResourcePrefix)\**\*.storyboard;**\*.xib;
 			$(_ResourcePrefix)\**\*.atlas\*.png;
 			$(_ResourcePrefix)\**\*.mlmodel;

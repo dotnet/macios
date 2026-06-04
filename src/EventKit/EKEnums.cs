@@ -336,13 +336,13 @@ namespace EventKit {
 	// turned into a typed (NSInteger) enum in El Capitan (and also an NSInteger in watchOS)
 	[Native]
 	public enum EKAlarmType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>A display alarm that shows a visual notification.</summary>
 		Display,
-		/// <summary>To be added.</summary>
+		/// <summary>An audio alarm that plays a sound.</summary>
 		Audio,
-		/// <summary>To be added.</summary>
+		/// <summary>A procedure alarm that runs a script or application.</summary>
 		Procedure,
-		/// <summary>To be added.</summary>
+		/// <summary>An email alarm that sends an email.</summary>
 		Email,
 	}
 #endif

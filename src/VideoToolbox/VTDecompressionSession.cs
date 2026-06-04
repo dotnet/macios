@@ -88,7 +88,7 @@ namespace VideoToolbox {
 
 
 		/// <summary>Create a new <see cref="VTDecompressionSession" /> instance.</summary>
-		/// <param name="outputCallback">To be added.</param>
+		/// <param name="outputCallback">The callback to invoke when a frame has been decompressed.</param>
 		/// <param name="formatDescription">A format description for the source video frames.</param>
 		/// <param name="decoderSpecification">Optionally specify which decoder to use</param>
 		/// <param name="destinationImageBufferAttributes">Optionally specify any requirements for the decoded frames.</param>

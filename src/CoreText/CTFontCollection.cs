@@ -103,7 +103,6 @@ namespace CoreText {
 	}
 
 	/// <summary>Font collections are the standard mechanism used to enumerate fonts descriptors.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -145,10 +144,8 @@ namespace CoreText {
 			return result;
 		}
 		/// <param name="queryDescriptors">An array of font descriptors, can be null.</param>
-		///         <param name="options">To be added.</param>
-		///         <summary>Creates a CTFontCollection from the specified set of queryDescriptors.</summary>
-		///         <remarks>
-		///         </remarks>
+		/// <param name="options">The options for matching font descriptors.</param>
+		/// <summary>Creates a CTFontCollection from the specified set of queryDescriptors.</summary>
 		public CTFontCollection (CTFontDescriptor []? queryDescriptors, CTFontCollectionOptions? options)
 			: base (Create (queryDescriptors, options), true, true)
 		{
@@ -200,7 +197,6 @@ namespace CoreText {
 		/// <param name="options">The options to match.</param>
 		///         <summary>Returns an array of font descriptors that have the specified options.</summary>
 		///         <returns>An array of font descriptors that have the specified options.</returns>
-		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]

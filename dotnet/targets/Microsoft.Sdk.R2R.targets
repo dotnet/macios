@@ -115,8 +115,8 @@
 
 
 	<!--
-		Restrict R2R composite input to System.Private.CoreLib so all other framework,
-		MAUI, and NuGet assemblies run interpreted for inner-loop debug builds.
+		Exclude user assemblies from R2R composite so they run interpreted for debugging.
+		User assembly is defined as anything not coming from a NuGet package.
 	-->
 	<Target Name="_SelectR2RAssemblies"
 			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == ''"
@@ -125,9 +125,10 @@
 			<_ResolvedAssembliesToPublish Include="@(ResolvedFileToPublish)" Condition="'%(Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And '%(ResolvedFileToPublish.DestinationSubDirectory)' == ''" />
 			<_NonUserAssemblies
 				Include="@(_ResolvedAssembliesToPublish)"
-				Condition="'%(_ResolvedAssembliesToPublish.NuGetPackageId)' != '' And '%(Filename)' == 'System.Private.CoreLib'" />
+				Condition="'%(_ResolvedAssembliesToPublish.NuGetPackageId)' != ''" />
 			<_UserAssemblies Include="@(_ResolvedAssembliesToPublish)" Exclude="@(_NonUserAssemblies)" />
 			<PublishReadyToRunExclude Include="@(_UserAssemblies -> '%(Filename)%(Extension)')" />
+			<PublishReadyToRunCompositeRoots Include="System.Private.CoreLib.dll" KeepDuplicates="false" />
 		</ItemGroup>
 
 		<!-- Hash the R2R input assemblies so we can detect when the set actually changes -->
@@ -152,14 +153,11 @@
 		</ItemGroup>
 	</Target>
 
-	<Target Name="_AddExcludedAssembliesAsR2RCompositeReferences"
-			Condition="'$(FilterReadyToRunAssemblies)' == 'true' And '$(PublishReadyToRunComposite)' == 'true'"
-			AfterTargets="_PrepareForReadyToRunCompilation"
-			BeforeTargets="_CreateR2RImages">
+	<Target Name="_DedupUnrootedReadyToRunPublish"
+			Condition="@(PublishReadyToRunCompositeRoots->Count()) != 0"
+			AfterTargets="_PrepareForReadyToRunCompilation">
 		<ItemGroup>
-			<_ReadyToRunCompositeBuildReferences
-				Include="@(_ReadyToRunAssembliesToReference)"
-				Exclude="@(_ReadyToRunCompositeBuildInput);@(_ReadyToRunCompositeUnrootedBuildInput)" />
+			<ResolvedFileToPublish Remove="@(_ReadyToRunCompositeUnrootedBuildInput)" />
 		</ItemGroup>
 	</Target>
 

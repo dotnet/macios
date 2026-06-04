@@ -2734,6 +2734,24 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7175" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} simulator runtime is not installed. This is required by Apple's development tools (even when building for physical devices). Install it by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El entorno de ejecución del simulador de {0}no está instalado. Esto es necesario para las herramientas de desarrollo de Apple (incluso al compilar para dispositivos físicos). Instálelo ejecutando "xcodebuild -downloadPlatform {0}" desde la línea de comandos o desde Xcode (Configuración > Componentes).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7177" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The installed {0} simulator runtime is not compatible with the current Xcode version. Update the simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[El entorno de ejecución del simulador {0}instalado no es compatible con la versión actual de Xcode. Actualice el entorno de ejecución del simulador mediante la ejecución de "xcodebuild -downloadPlatform {0}" desde la línea de comandos o desde Xcode (Configuración > Componentes).]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>
@@ -3657,6 +3675,15 @@
           <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[El archivo de configuración "{0}" está en desuso y se omitirá. Use la variable de entorno "DEVELOPER_DIR" o la propiedad "XcodeLocation" de MSBuild para elegir qué Xcode usar.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7176" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[No se puede determinar si está instalado el entorno de ejecución del simulador {0}. Si se produce un error en la compilación o se bloquea, instale el entorno de ejecución del {0} simulador ejecutando "xcodebuild -downloadPlatform {0}" desde la línea de comandos.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

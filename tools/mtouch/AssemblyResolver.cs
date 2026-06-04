@@ -25,7 +25,7 @@ namespace MonoTouch.Tuner {
 	// recent cecil removed some overloads - https://github.com/mono/cecil/commit/42db79cc16f1cbe8dbab558904e188352dba2b41
 	public static class AssemblyResolverRocks {
 
-		static ReaderParameters defaults = new ReaderParameters ();
+		static readonly ReaderParameters defaults = new ReaderParameters ();
 
 		public static AssemblyDefinition Resolve (this IAssemblyResolver self, string fullName)
 		{

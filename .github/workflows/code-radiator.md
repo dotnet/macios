@@ -26,6 +26,7 @@ checkout:
   fetch-depth: 0
 safe-outputs:
   max-patch-files: 1000
+  max-patch-size: 10240
   create-pull-request:
     max: 10
     signed-commits: false

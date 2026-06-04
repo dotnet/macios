@@ -9,8 +9,6 @@ using System.Text;
 namespace Xamarin.Bundler {
 
 	public class ProductException : Exception {
-		public static string Prefix => ErrorHelper.Prefix;
-
 		public ProductException (int code, string message) :
 			this (code, false, message)
 		{
@@ -49,22 +47,37 @@ namespace Xamarin.Bundler {
 
 		public int Code { get; private set; }
 
-		public bool Error { get; private set; }
+		bool Warning { get; set; }
+
+		public bool IsError (IToolLog? log)
+		{
+			if (!Warning)
+				return true;
+			if (log is null)
+				return false;
+			return ErrorHelper.GetWarningLevel (log, Code) == ErrorHelper.WarningLevel.Error;
+		}
 
 		void SetValues (int code, bool error)
 		{
 			Code = code;
-			Error = error || ErrorHelper.GetWarningLevel (code) == ErrorHelper.WarningLevel.Error;
+			Warning = !error;
 		}
 
 		// http://blogs.msdn.com/b/msbuild/archive/2006/11/03/msbuild-visual-studio-aware-error-messages-and-message-formats.aspx
 		public override string ToString ()
 		{
+			return ToString (null);
+		}
+
+		// http://blogs.msdn.com/b/msbuild/archive/2006/11/03/msbuild-visual-studio-aware-error-messages-and-message-formats.aspx
+		public string ToString (IToolLog? log)
+		{
 			var sb = new StringBuilder ();
 			if (!String.IsNullOrEmpty (FileName))
 				sb.Append (FileName).Append ('(').Append (LineNumber).Append ("): ");
 
-			sb.Append (Error ? "error" : "warning").Append (' ').Append (Prefix).Append (Code.ToString ("0000: ")).Append (Message);
+			sb.Append (IsError (log) ? "error" : "warning").Append (' ').Append (ErrorHelper.GetPrefix (log)).Append (Code.ToString ("0000: ")).Append (Message);
 			return sb.ToString ();
 		}
 

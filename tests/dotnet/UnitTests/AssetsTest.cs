@@ -136,9 +136,9 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 				if (runtimeIdentifiers.Contains ("simulator")) {
-					return $"iphonesimulator{Configuration.sdk_version}";
+					return $"iphonesimulator{Configuration.ios_sdk_version}";
 				} else {
-					return $"iphoneos{Configuration.sdk_version}";
+					return $"iphoneos{Configuration.ios_sdk_version}";
 				}
 			case ApplePlatform.TVOS:
 				if (runtimeIdentifiers.Contains ("simulator")) {

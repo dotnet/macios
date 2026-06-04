@@ -366,7 +366,7 @@ namespace Xamarin.Linker {
 					new LoadValue ((key, value) => loadNullableBool (key, value, out Application.AotFloat32)),
 					new SaveValue ((key, storage) => saveNullableBool (key, Application.AotFloat32, storage))
 				)},
-				{ "NoWarn", (
+				{ "NoWarn", ( // we should support '$(NoWarn)' at some point: https://github.com/dotnet/macios/issues/25645
 					new LoadValue ((key, value) => loadWarningLevel (key, value, ErrorHelper.WarningLevel.Disable)),
 					new SaveValue ((key, storage) => saveWarningLevel (key, storage, ErrorHelper.WarningLevel.Disable))
 				)},

@@ -152,6 +152,7 @@ namespace Xamarin.Bundler {
 		// How Mono should be embedded into the app.
 #if !LEGACY_TOOLS
 		AssemblyBuildTarget? libmono_link_mode;
+		public bool HasLibMonoLinkMode => libmono_link_mode.HasValue;
 		public AssemblyBuildTarget LibMonoLinkMode {
 			get {
 				if (!libmono_link_mode.HasValue)
@@ -165,6 +166,7 @@ namespace Xamarin.Bundler {
 
 		// How libxamarin should be embedded into the app.
 		AssemblyBuildTarget? libxamarin_link_mode;
+		public bool HasLibXamarinLinkMode => libxamarin_link_mode.HasValue;
 		public AssemblyBuildTarget LibXamarinLinkMode {
 			get {
 				if (!libxamarin_link_mode.HasValue)

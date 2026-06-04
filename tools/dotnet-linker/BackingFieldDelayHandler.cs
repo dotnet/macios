@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Mono.Linker;
@@ -38,7 +39,7 @@ namespace Xamarin.Linker {
 		}
 
 		// cache `Dispose` body of optimization NSObject subclasses
-		static Dictionary<MethodDefinition, MethodBody> dispose = new ();
+		static ConditionalWeakTable<DerivedLinkContext, Dictionary<MethodDefinition, MethodBody>> disposes = new ();
 
 		protected override void Process (MethodDefinition method)
 		{
@@ -54,7 +55,7 @@ namespace Xamarin.Linker {
 				return;
 
 			// keep original for later (if needed)
-			dispose.Add (method, method.Body);
+			disposes.GetOrCreateValue (LinkContext).Add (method, method.Body);
 
 			// setting body to null will only cause it to be reloaded again
 			// same if we don't get a new IL processor
@@ -68,6 +69,9 @@ namespace Xamarin.Linker {
 		public static void ReapplyDisposedFields (DerivedLinkContext context, string operation)
 		{
 			// note: all methods in the dictionary are marked (since they were added from an IMarkHandler)
+			if (!disposes.TryGetValue (context, out var dispose))
+				return;
+
 			var app = context.App;
 			foreach ((var method, var body) in dispose) {
 				foreach (var ins in body.Instructions) {

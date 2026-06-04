@@ -2633,17 +2633,8 @@ namespace CoreImage {
 		NSString OptionColorSpace { get; }
 	}
 
-#if XAMCORE_5_0
 	[NoiOS]
 	[NoMacCatalyst]
-#else
-#if __IOS__ || __MACCATALYST__
-	[EditorBrowsable (EditorBrowsableState.Never)]
-	[Obsolete ("Do not use; this type does not exist on this platform.")]
-#endif
-	[iOS (17, 0)]
-	[MacCatalyst (17, 0)]
-#endif
 	[NoTV]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
@@ -2744,21 +2735,18 @@ namespace CoreImage {
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[NoiOS, NoMacCatalyst]
 		[Field ("kCIFilterGeneratorExportedKey", "+CoreImage")]
 		NSString ExportedKey { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[NoiOS, NoMacCatalyst]
 		[Field ("kCIFilterGeneratorExportedKeyTargetObject", "+CoreImage")]
 		NSString ExportedKeyTargetObject { get; }
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
-		[NoiOS, NoMacCatalyst]
 		[Field ("kCIFilterGeneratorExportedKeyName", "+CoreImage")]
 		NSString ExportedKeyName { get; }
 	}

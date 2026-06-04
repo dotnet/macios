@@ -27,8 +27,7 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static IntPtr CFCopyDescription (IntPtr ptr);
 
-		/// <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <summary>Initializes a new instance of the <see cref="CFType" /> class.</summary>
 		internal CFType ()
 		{
 		}
@@ -56,12 +55,10 @@ namespace CoreFoundation {
 		[DllImport (Constants.CoreFoundationLibrary)]
 		extern static byte CFEqual (/*CFTypeRef*/ IntPtr cf1, /*CFTypeRef*/ IntPtr cf2);
 
-		/// <param name="cf1">To be added.</param>
-		///         <param name="cf2">To be added.</param>
-		///         <summary>Compares two handles of native objects for equality.</summary>
-		///         <returns>true if the types are the same.</returns>
-		///         <remarks>
-		///         </remarks>
+		/// <param name="cf1">The first CoreFoundation object handle.</param>
+		/// <param name="cf2">The second CoreFoundation object handle.</param>
+		/// <summary>Compares two handles of native objects for equality.</summary>
+		/// <returns>true if the types are the same.</returns>
 		public static bool Equal (IntPtr cf1, IntPtr cf2)
 		{
 			// CFEqual is not happy (but crashy) when it receive null

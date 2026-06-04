@@ -2734,6 +2734,24 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7175" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} simulator runtime is not installed. This is required by Apple's development tools (even when building for physical devices). Install it by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{0} 시뮬레이터 런타임이 설치되어 있지 않습니다. 이 런타임은 Apple의 개발 도구에 필요합니다. 실제 장치용으로 빌드할 때도 필요합니다. 명령줄 또는 Xcode(설정 > 구성 요소)에서 'xcodebuild -downloadPlatform {0}'을 실행하여 설치합니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7177" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The installed {0} simulator runtime is not compatible with the current Xcode version. Update the simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[설치된 {0} 시뮬레이터 런타임이 현재 Xcode 버전과 호환되지 않습니다. 명령줄 또는 Xcode(설정 > 구성 요소)에서 'xcodebuild -downloadPlatform {0}'을 실행하여 시뮬레이터 런타임을 업데이트합니다.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>
@@ -3657,6 +3675,15 @@
           <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[설정 파일 '{0}'은(는) 더 이상 사용되지 않으며 무시됩니다. 사용할 Xcode를 선택하려면 'DEVELOPER_DIR' 환경 변수 또는 'XcodeLocation' MSBuild 속성을 사용하세요.]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7176" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{0} 시뮬레이터 런타임이 설치되어 있는지 확인할 수 없습니다. 빌드가 실패하거나 멈추면 명령줄에서 'xcodebuild -downloadPlatform {0}'을 실행하여 {0} 시뮬레이터 런타임을 설치하세요.]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

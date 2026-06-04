@@ -215,6 +215,13 @@ public class InlineClassGetHandleStep : AssemblyModifierStep {
 					// UITitlebar is a weird special case, the class exists in the headers, and it's documented online, but it's not possible to link with it (not even in an Xcode project, it's not in any .tbd files).
 					continue;
 				}
+
+				if (objCType.Type.Namespace == "BrowserEngineKit" || objCType.Type.Namespace == "BrowserEngineCore") {
+					// Most apps do not use BrowserEngineKit, and linking with it when an app is not supposed to will prevent it from getting approved in the App Store.
+					// So we treat these frameworks specially, where we don't link with these two frameworks by default, *even if they're detected as used*,
+					// which means we shouldn't inline Class.GetHandle calls for any classes in these frameworks, since native linking will fail.
+					continue;
+				}
 			}
 
 			ldstr.OpCode = OpCodes.Call;

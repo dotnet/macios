@@ -19,7 +19,7 @@ namespace StoreKit {
 		Failed,
 		/// <summary>The transaction has restored the original content purchased by the user.</summary>
 		Restored,
-		/// <summary>To be added.</summary>
+		/// <summary>The transaction is in a deferred state, waiting for an external action such as parental approval.</summary>
 		[MacCatalyst (13, 1)]
 		Deferred,
 	}

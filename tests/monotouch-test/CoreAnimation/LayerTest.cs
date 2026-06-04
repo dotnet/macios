@@ -131,7 +131,9 @@ namespace MonoTouchFixtures.CoreAnimation {
 				} catch (Exception e) {
 					ex = e;
 				}
-			});
+			}) {
+				IsBackground = true,
+			};
 			thread.Start ();
 			Assert.That (thread.Join (TimeSpan.FromSeconds (10)), Is.True, "Thread.Join timed out");
 

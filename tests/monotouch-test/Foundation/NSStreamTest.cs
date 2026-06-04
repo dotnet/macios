@@ -63,7 +63,9 @@ namespace MonoTouchFixtures.Foundation {
 				return;
 			}
 
-			var listenThread = new Thread (new ParameterizedThreadStart (DebugListener));
+			var listenThread = new Thread (new ParameterizedThreadStart (DebugListener)) {
+				IsBackground = true,
+			};
 			listenThread.Start (listener);
 			NSStream.CreatePairWithSocketToHost (new IPEndPoint (IPAddress.Loopback, port), out read, out write);
 			read.Open ();

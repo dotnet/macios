@@ -555,7 +555,9 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			var t1 = new Thread (() => {
 				for (int i = 0; i < objects.Length; i++)
 					Messaging.bool_objc_msgSend_IntPtr_int (invokerClassHandle, Selector.GetHandle ("invokeMe:wait:"), objects [i], 0);
-			});
+			}) {
+				IsBackground = true,
+			};
 			t1.Start ();
 			Assert.That (t1.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");
 

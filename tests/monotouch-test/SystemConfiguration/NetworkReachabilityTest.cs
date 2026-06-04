@@ -220,7 +220,9 @@ namespace MonoTouchFixtures.SystemConfiguration {
 					// Dispose to ensure GCHandle is freed
 					reachability.Dispose ();
 				}
-			});
+			}) {
+				IsBackground = true,
+			};
 
 			thread.Start ();
 			Assert.That (thread.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");
@@ -263,7 +265,9 @@ namespace MonoTouchFixtures.SystemConfiguration {
 					// Store weak reference to track if object is collected
 					weakRefs [i] = new WeakReference (reachability);
 				}
-			});
+			}) {
+				IsBackground = true,
+			};
 
 			thread.Start ();
 			Assert.That (thread.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");

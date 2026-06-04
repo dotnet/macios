@@ -12,18 +12,15 @@
 namespace GameplayKit {
 	public partial class GKEntity {
 
-		/// <param name="componentType">To be added.</param>
+		/// <param name="componentType">The component type.</param>
 		///         <summary>Removes the element in <see cref="GameplayKit.GKEntity.Components" /> of the specified <paramref name="componentType" />.</summary>
-		///         <remarks>To be added.</remarks>
 		public void RemoveComponent (Type componentType)
 		{
 			RemoveComponent (GKState.GetClass (componentType, "componentType"));
 		}
 
-		/// <param name="componentType">To be added.</param>
+		/// <param name="componentType">The component type.</param>
 		///         <summary>Retrieves the element in <see cref="GameplayKit.GKEntity.Components" /> of the specified <paramref name="componentType" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public GKComponent? GetComponent (Type componentType)
 		{
 			return GetComponent (GKState.GetClass (componentType, "componentType"));

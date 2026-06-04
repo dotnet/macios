@@ -7,9 +7,8 @@
  */
 
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
 using System.IO;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -20,8 +19,6 @@ using Xamarin.Utils;
 
 namespace Xamarin.Bundler {
 	public partial class Driver {
-		public static bool Force { get; set; }
-
 #if LEGACY_TOOLS
 		public static int Main (string [] args)
 		{
@@ -31,8 +28,6 @@ namespace Xamarin.Bundler {
 				return Main2 (args);
 			} catch (Exception e) {
 				ErrorHelper.Show (ConsoleLog.Instance, e);
-			} finally {
-				Watch (ConsoleLog.Instance, "Total time", 0);
 			}
 			return 0;
 		}
@@ -43,7 +38,7 @@ namespace Xamarin.Bundler {
 			options.Add ("v|verbose", "Specify how verbose the output should be. This can be passed multiple times to increase the verbosity.", v => app.Verbosity++);
 			options.Add ("q|quiet", "Specify how quiet the output should be. This can be passed multiple times to increase the silence.", v => app.Verbosity--);
 			options.Add ("reference=", "Add an assembly to be processed.", v => app.References.Add (v));
-			options.Add ("sdkroot=", "Specify the location of Apple SDKs, default to 'xcode-select' value.", v => sdk_root = v);
+			options.Add ("sdkroot=", "Specify the location of Apple SDKs, default to 'xcode-select' value.", v => app.SdkRoot = v);
 			options.Add ("sdk=", "Specifies the SDK version to compile against (version, for example \"10.9\"). For Mac Catalyst, this is the macOS version of the SDK.", v => {
 				try {
 					app.SdkVersion = StringUtils.ParseVersion (v);
@@ -53,7 +48,7 @@ namespace Xamarin.Bundler {
 				}
 			});
 			options.Add ("target-framework=", "Specify target framework to use. Currently supported: '" + string.Join ("', '", TargetFramework.ValidFrameworks.Select ((v) => v.ToString ())) + "'.", v => {
-				targetFramework = TargetFramework.Parse (v);
+				app.TargetFramework = TargetFramework.Parse (v);
 			});
 			options.Add ("abi=", "Comma-separated list of ABIs to target.", v => app.ParseAbi (v));
 			options.Add ("runregistrar:", "Runs the registrar on the input assembly and outputs a corresponding native library.",
@@ -72,7 +67,7 @@ namespace Xamarin.Bundler {
 			options.Add ("xcode-version=", "The Xcode version we're building with", v => {
 				if (!Version.TryParse (v, out var xcodeVersion))
 					throw ErrorHelper.CreateError (26, Errors.MX0026, $"xcode-version:{v}", "Expected a valid version string.");
-				Driver.XcodeVersion = xcodeVersion;
+				app.XcodeVersion = xcodeVersion;
 			});
 
 			try {
@@ -95,13 +90,6 @@ namespace Xamarin.Bundler {
 					v = 4; // this is the magic verbosity level we give everybody.
 			}
 			return v;
-		}
-
-		static TargetFramework targetFramework;
-
-		public static TargetFramework TargetFramework {
-			get { return targetFramework; }
-			set { targetFramework = value; }
 		}
 
 		static void FileMove (string source, string target)
@@ -186,25 +174,7 @@ namespace Xamarin.Bundler {
 			return System.Reflection.Assembly.GetExecutingAssembly ().Location;
 		}
 
-		static string? xcode_product_version;
-		public static string? XcodeProductVersion {
-			get {
-				return xcode_product_version;
-			}
-		}
-
-		static Version? xcode_version;
-		public static Version XcodeVersion {
-			get {
-				if (xcode_version is null)
-					throw ErrorHelper.CreateError (99, Errors.MX0099, "The Xcode version has not been configured. Pass --xcode-version or configure an Xcode installation.");
-				return xcode_version;
-			}
-			set {
-				xcode_version = value;
-			}
-		}
-
+#if LEGACY_TOOLS
 		static void SetCurrentLanguage (IToolLog log)
 		{
 			// There's no way to change the current culture from the command-line
@@ -236,6 +206,7 @@ namespace Xamarin.Bundler {
 				ErrorHelper.Warning (log, 124, e, Errors.MT0124, lang, lang_variable, e.Message);
 			}
 		}
+#endif
 
 		public static void Touch (IToolLog log, IEnumerable<string> filenames, DateTime? timestamp = null)
 		{
@@ -261,28 +232,7 @@ namespace Xamarin.Bundler {
 			Touch (log, (IEnumerable<string>) filenames);
 		}
 
-		static int watch_level;
-		static Stopwatch? watch;
-
-		public static int WatchLevel {
-			get { return watch_level; }
-			set {
-				watch_level = value;
-				if ((watch_level > 0) && (watch is null)) {
-					watch = new Stopwatch ();
-					watch.Start ();
-				}
-			}
-		}
-
-		public static void Watch (IToolLog log, string msg, int level)
-		{
-			if ((watch is null) || (level > WatchLevel))
-				return;
-			log.Log ($"{new string ('!', level)}Timestamp {msg}: {watch.ElapsedMilliseconds} ms");
-		}
-
-		internal static PDictionary? FromPList (string name)
+		internal static PDictionary FromPList (string name)
 		{
 			if (!File.Exists (name))
 				throw ErrorHelper.CreateError (24, Errors.MT0024, name);
@@ -299,48 +249,6 @@ namespace Xamarin.Bundler {
 				return null;
 			}
 			return output.ToString ().Trim ();
-		}
-
-		static string? sdk_root;
-		static string? developer_directory = null;
-
-		public static string? SdkRoot {
-			get => sdk_root;
-			set => sdk_root = value;
-		}
-
-		public static string? DeveloperDirectory {
-			get {
-				return developer_directory;
-			}
-		}
-
-		// This returns the /Applications/Xcode*.app/Contents/Developer/Platforms directory
-		public static string PlatformsDirectory {
-			get {
-				if (DeveloperDirectory is null)
-					throw new InvalidOperationException ("DeveloperDirectory is not set");
-				return Path.Combine (DeveloperDirectory, "Platforms");
-			}
-		}
-
-		// This returns the /Applications/Xcode*.app/Contents/Developer/Platforms/*.platform directory
-		public static string GetPlatformDirectory (Application app)
-		{
-			return Path.Combine (PlatformsDirectory, GetPlatform (app) + ".platform");
-		}
-
-		static string? framework_dir;
-		public static string GetFrameworkCurrentDirectory (Application app)
-		{
-			if (framework_dir is null)
-				throw new InvalidOperationException ($"Teh current framework directory hasn't been set.");
-			return framework_dir;
-		}
-
-		public static void SetFrameworkCurrentDirectory (string value)
-		{
-			framework_dir = value;
 		}
 
 		// This returns the platform to use in /Applications/Xcode*.app/Contents/Developer/Platforms/*.platform
@@ -364,7 +272,7 @@ namespace Xamarin.Bundler {
 		{
 			var platform = GetPlatform (app);
 			var sdkVersion = app.NativeSdkVersion?.ToString () ?? "";
-			return Path.Combine (PlatformsDirectory, platform + ".platform", "Developer", "SDKs", platform + sdkVersion + ".sdk");
+			return Path.Combine (app.PlatformsDirectory, platform + ".platform", "Developer", "SDKs", platform + sdkVersion + ".sdk");
 		}
 
 		public static string GetProductAssembly (Application app)
@@ -385,6 +293,8 @@ namespace Xamarin.Bundler {
 
 		public static void ValidateXcode (Application app, bool accept_any_xcode_version, bool warn_if_not_found)
 		{
+			var sdk_root = app.SdkRoot;
+
 			if (sdk_root is null) {
 				sdk_root = FindSystemXcode (app);
 				if (sdk_root is null) {
@@ -419,28 +329,28 @@ namespace Xamarin.Bundler {
 			// Check what kind of path we got
 			if (File.Exists (Path.Combine (sdk_root, "Contents", "MacOS", "Xcode"))) {
 				// path to the Xcode.app
-				developer_directory = Path.Combine (sdk_root, "Contents", "Developer");
+				app.DeveloperDirectory = Path.Combine (sdk_root, "Contents", "Developer");
 			} else if (File.Exists (Path.Combine (sdk_root, "..", "MacOS", "Xcode"))) {
 				// path to Contents/Developer
-				developer_directory = Path.GetFullPath (Path.Combine (sdk_root, "..", "..", "Contents", "Developer"));
+				app.DeveloperDirectory = Path.GetFullPath (Path.Combine (sdk_root, "..", "..", "Contents", "Developer"));
 			} else {
 				throw ErrorHelper.CreateError (57, Errors.MT0057, sdk_root);
 			}
 
-			var plist_path = Path.Combine (Path.GetDirectoryName (DeveloperDirectory)!, "version.plist");
+			var plist_path = Path.Combine (Path.GetDirectoryName (app.DeveloperDirectory)!, "version.plist");
 
 			if (File.Exists (plist_path)) {
 				var plist = FromPList (plist_path);
-				var version = plist?.GetString ("CFBundleShortVersionString");
+				var version = plist.GetString ("CFBundleShortVersionString");
 				if (version is null)
-					throw ErrorHelper.CreateError (58, Errors.MT0058, Path.GetDirectoryName (Path.GetDirectoryName (DeveloperDirectory)), plist_path);
-				xcode_version = new Version (version);
-				xcode_product_version = plist!.GetString ("ProductBuildVersion");
+					throw ErrorHelper.CreateError (58, Errors.MT0058, Path.GetDirectoryName (Path.GetDirectoryName (app.DeveloperDirectory)), plist_path);
+				app.XcodeVersion = new Version (version);
+				app.XcodeProductVersion = plist.GetString ("ProductBuildVersion");
 			} else {
-				throw ErrorHelper.CreateError (58, Errors.MT0058, Path.GetDirectoryName (Path.GetDirectoryName (DeveloperDirectory)), plist_path);
+				throw ErrorHelper.CreateError (58, Errors.MT0058, Path.GetDirectoryName (Path.GetDirectoryName (app.DeveloperDirectory)), plist_path);
 			}
 
-			app.Log (1, "Using Xcode {0} ({2}) found in {1}", XcodeVersion, sdk_root, XcodeProductVersion);
+			app.Log (1, "Using Xcode {0} ({2}) found in {1}", app.XcodeVersion, sdk_root, app.XcodeProductVersion);
 		}
 
 		internal static bool TryParseBool (string value, out bool result)
@@ -475,210 +385,6 @@ namespace Xamarin.Bundler {
 				throw ErrorHelper.CreateError (26, Errors.MX0026, name, value);
 			return result;
 		}
-
-#if !LEGACY_TOOLS
-		static readonly Dictionary<string, string?> tools = new Dictionary<string, string?> ();
-		static string FindTool (Application app, string tool)
-		{
-			lock (tools) {
-				if (tools.TryGetValue (tool, out var path) && path is not null)
-					return path;
-			}
-
-			var foundPath = LocateTool (app, tool);
-			static string? LocateTool (Application app, string tool)
-			{
-				if (XcrunFind (app, tool, out var path))
-					return path;
-
-				if (DeveloperDirectory is null)
-					return null;
-
-				// either /Developer (Xcode 4.2 and earlier), /Applications/Xcode.app/Contents/Developer (Xcode 4.3) or user override
-				path = Path.Combine (DeveloperDirectory, "usr", "bin", tool);
-				if (File.Exists (path))
-					return path;
-
-				// Xcode 4.3 (without command-line tools) also has a copy of 'strip'
-				path = Path.Combine (DeveloperDirectory, "Toolchains", "XcodeDefault.xctoolchain", "usr", "bin", tool);
-				if (File.Exists (path))
-					return path;
-
-				// Xcode "Command-Line Tools" install a copy in /usr/bin (and it can be there afterward)
-				path = Path.Combine ("/usr", "bin", tool);
-				if (File.Exists (path))
-					return path;
-
-				return null;
-			}
-
-			// We can end up finding the same tool multiple times.
-			// That's not a problem.
-			lock (tools)
-				tools [tool] = foundPath;
-
-			if (foundPath is null)
-				throw ErrorHelper.CreateError (5307, Errors.MX5307 /* Missing '{0}' tool. Please install Xcode 'Command-Line Tools' component */, tool);
-
-			return foundPath;
-		}
-
-		static bool XcrunFind (Application app, string tool, [NotNullWhen (true)] out string? path)
-		{
-			return XcrunFind (app, ApplePlatform.None, false, tool, out path);
-		}
-
-		static bool XcrunFind (Application app, ApplePlatform platform, bool is_simulator, string tool, [NotNullWhen (true)] out string? path)
-		{
-			var env = new Dictionary<string, string?> ();
-			// Unset XCODE_DEVELOPER_DIR_PATH. See https://github.com/dotnet/macios/issues/3931.
-			env.Add ("XCODE_DEVELOPER_DIR_PATH", null);
-			// Set DEVELOPER_DIR if we have it
-			if (!string.IsNullOrEmpty (DeveloperDirectory))
-				env.Add ("DEVELOPER_DIR", DeveloperDirectory);
-
-			path = null;
-
-			var args = new List<string> ();
-			if (platform != ApplePlatform.None) {
-				args.Add ("-sdk");
-				switch (platform) {
-				case ApplePlatform.iOS:
-					args.Add (is_simulator ? "iphonesimulator" : "iphoneos");
-					break;
-				case ApplePlatform.MacOSX:
-					args.Add ("macosx");
-					break;
-				case ApplePlatform.TVOS:
-					args.Add (is_simulator ? "appletvsimulator" : "appletvos");
-					break;
-				default:
-					throw ErrorHelper.CreateError (71, Errors.MX0071 /* Unknown platform: {0}. This usually indicates a bug in {1}; please file a bug report at https://github.com/dotnet/macios/issues/new with a test case. */, platform.ToString (), app.ProductName);
-				}
-			}
-			args.Add ("-f");
-			args.Add (tool);
-
-			var stdout = new StringBuilder ();
-			var stderr = new StringBuilder ();
-			var both = new StringBuilder ();
-			// xcrun can write unrelated stuff to stderr even if it succeeds, so we need to separate stdout and stderr.
-			// We also want to print out what happened if something went wrong, and in that case we don't want stdout
-			// and stderr captured separately, because related lines could end up printed far from eachother in time,
-			// and that's confusing. So capture stdout and stderr by themselves, and also capture both together.
-			int ret = RunCommand (app, "xcrun", args, env,
-				(v) => {
-					lock (both) {
-						both.AppendLine (v);
-						stdout.AppendLine (v);
-					}
-				},
-				(v) => {
-					lock (both) {
-						both.AppendLine (v);
-						stderr.AppendLine (v);
-					}
-				});
-
-			if (ret == 0) {
-				path = stdout.ToString ().Trim ();
-				if (!File.Exists (path)) {
-					ErrorHelper.Warning (app, 5315, Errors.MX5315 /* The tool xcrun failed to return a valid result (the file {0} does not exist). Check build log for details. */, tool, path);
-					return false;
-				}
-			} else {
-				app.Log (1, "Failed to locate the developer tool '{0}', 'xcrun {1}' returned with the exit code {2}:\n{3}", tool, string.Join (" ", args), ret, both.ToString ());
-			}
-
-			return ret == 0;
-		}
-
-		public static void RunXcodeTool (Application app, string tool, params string [] arguments)
-		{
-			RunXcodeTool (app, tool, (IList<string>) arguments);
-		}
-
-		public static void RunXcodeTool (Application app, string tool, IList<string> arguments)
-		{
-			var executable = FindTool (app, tool);
-			var rv = RunCommand (app, executable, arguments);
-			if (rv != 0)
-				throw ErrorHelper.CreateError (5309, Errors.MX5309 /* Failed to execute the tool '{0}', it failed with an error code '{1}'. Please check the build log for details. */, tool, rv);
-		}
-
-		public static void RunClang (Application app, IList<string> arguments)
-		{
-			RunXcodeTool (app, "clang", arguments);
-		}
-
-		public static void RunInstallNameTool (Application app, IList<string> arguments)
-		{
-			RunXcodeTool (app, "install_name_tool", arguments);
-		}
-
-		public static void RunBitcodeStrip (Application app, IList<string> arguments)
-		{
-			RunXcodeTool (app, "bitcode_strip", arguments);
-		}
-
-		public static void RunLipo (Application app, string output, IEnumerable<string> inputs)
-		{
-			var sb = new List<string> ();
-			sb.AddRange (inputs);
-			sb.Add ("-create");
-			sb.Add ("-output");
-			sb.Add (output);
-			RunLipo (app, sb);
-		}
-
-		public static void RunLipoAndCreateDsym (Application app, string output, IEnumerable<string> inputs)
-		{
-			RunLipo (app, output, inputs);
-
-			var dsymFolders = inputs.Select (input => input + ".dSYM").Where (Directory.Exists).ToArray ();
-			if (dsymFolders.Length > 1) {
-				// Lipo the dSYMs into one big happy dSYM
-				var dsymLibsDir = dsymFolders.Select (dsym => Path.Combine (dsym, "Contents", "Resources", "DWARF")).ToArray ();
-				var allLibs = dsymLibsDir.Where (Directory.Exists).SelectMany (dir => Directory.EnumerateFiles (dir)).Select (dir => Path.GetFileName (dir)).Distinct ().ToArray ();
-
-				foreach (var lib in allLibs) {
-					var outputLib = Path.Combine (dsymLibsDir [0], lib);
-					var allDsymInputs = dsymLibsDir.Select (libDir => Path.Combine (libDir, lib)).Where (File.Exists).ToArray ();
-					Driver.RunLipo (app, outputLib, allDsymInputs);
-				}
-			}
-
-			// Move the dSYM next to its executable
-			if (dsymFolders.Length > 0) {
-				var outputDsymDir = output + ".dSYM";
-				if (Directory.Exists (outputDsymDir))
-					Directory.Delete (outputDsymDir, true);
-				Directory.Move (dsymFolders [0], outputDsymDir);
-				RunCommand (app, "/usr/bin/mdimport", outputDsymDir);
-			}
-		}
-
-		public static void RunLipo (Application app, IList<string> options)
-		{
-			RunXcodeTool (app, "lipo", options);
-		}
-
-		public static void CreateDsym (Application app, string output_dir, string appname, string dsym_dir)
-		{
-			RunDsymUtil (app, Path.Combine (output_dir, appname), "-num-threads", "4", "-z", "-o", dsym_dir);
-			RunCommand (app, "/usr/bin/mdimport", dsym_dir);
-		}
-
-		public static void RunDsymUtil (Application app, params string [] options)
-		{
-			RunXcodeTool (app, "dsymutil", options);
-		}
-
-		public static void RunStrip (Application app, IList<string> options)
-		{
-			RunXcodeTool (app, "strip", options);
-		}
-#endif // !LEGACY_TOOLS
 
 		public static string CorlibName {
 			get {

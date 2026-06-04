@@ -74,13 +74,8 @@ public class Cache {
 		Directory.CreateDirectory (location);
 	}
 
-	public static bool CompareFiles (IToolLog log, string a, string b, bool ignore_cache = false)
+	public static bool CompareFiles (IToolLog log, string a, string b)
 	{
-		if (Driver.Force && !ignore_cache) {
-			log.Log (6, "Files {0} and {1} are considered different because -f was passed to " + NAME + ".", a, b);
-			return false;
-		}
-
 		if (!File.Exists (b)) {
 			log.Log (6, "Files {0} and {1} are considered different because the latter doesn't exist.", a, b);
 			return false;
@@ -90,20 +85,15 @@ public class Cache {
 			using (var bstream = new FileStream (b, FileMode.Open, FileAccess.Read, FileShare.Read)) {
 				bool rv;
 				log.Log (6, "Comparing files {0} and {1}...", a, b);
-				rv = CompareStreams (log, astream, bstream, ignore_cache);
+				rv = CompareStreams (log, astream, bstream);
 				log.Log (6, " > {0}", rv ? "Identical" : "Different");
 				return rv;
 			}
 		}
 	}
 
-	public unsafe static bool CompareStreams (IToolLog log, Stream astream, Stream bstream, bool ignore_cache = false)
+	public unsafe static bool CompareStreams (IToolLog log, Stream astream, Stream bstream)
 	{
-		if (Driver.Force && !ignore_cache) {
-			log.Log (6, " > streams are considered different because -f was passed to " + NAME + ".");
-			return false;
-		}
-
 		if (astream.Length != bstream.Length) {
 			log.Log (6, " > streams are considered different because their lengths do not match.");
 			return false;

@@ -241,11 +241,6 @@ namespace Xamarin.Bundler {
 		// if it's later than the timestamp of the "target" file itself.
 		public static bool IsUptodate (IToolLog log, string source, string target, bool check_contents = false, bool check_stamp = true)
 		{
-#if LEGACY_TOOLS || BUNDLER   // msbuild does not have force                                  
-			if (Driver.Force)
-				return false;
-#endif
-
 			var tfi = new FileInfo (target);
 
 			if (!tfi.Exists) {
@@ -288,11 +283,6 @@ namespace Xamarin.Bundler {
 		// if it's later than the timestamp of the "target" file itself.
 		public static bool IsUptodate (IToolLog log, IEnumerable<string> sources, IEnumerable<string> targets, bool check_stamp = true)
 		{
-#if LEGACY_TOOLS || BUNDLER  // msbuild does not have force
-			if (Driver.Force)
-				return false;
-#endif
-
 			DateTime max_source = DateTime.MinValue;
 			string? max_s = null;
 

@@ -20,7 +20,6 @@ namespace ModelIO {
 
 #if !COREBUILD
 	/// <summary>Extension methods for <see cref="ModelIO.MDLVertexFormat" />.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -33,10 +32,8 @@ namespace ModelIO {
 		[DllImport (Constants.MetalKitLibrary)]
 		static extern /* MTLVertexFormat */ nuint MTKMetalVertexFormatFromModelIO (/* MTLVertexFormat */ nuint vertexFormat);
 
-		/// <param name="vertexFormat">To be added.</param>
+		/// <param name="vertexFormat">The vertex format.</param>
 		///         <summary>Converts the current vertex format into the specified <paramref name="vertexFormat" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
@@ -50,7 +47,6 @@ namespace ModelIO {
 #endif
 
 	/// <summary>A bounding box whose axes are aligned with its coordinate system.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -58,10 +54,8 @@ namespace ModelIO {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct MDLAxisAlignedBoundingBox {
 		/// <summary>Gets the maximum bounds.</summary>
-		///         <remarks>To be added.</remarks>
 		public Vector3 MaxBounds;
 		/// <summary>Gets the minimum bounds.</summary>
-		///         <remarks>To be added.</remarks>
 		public Vector3 MinBounds;
 
 		public MDLAxisAlignedBoundingBox (Vector3 maxBounds, Vector3 minBounds)

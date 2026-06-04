@@ -29,14 +29,13 @@ namespace Twitter {
 	// 	Return Value of selector: requestMethod, Type: Twitter.TWRequestMethod, Encoded as: q
 	// which likely means it's internally used as a `SLRequestMethod`
 	/// <summary>The HTTP verb used to perform a Twitter request.</summary>
-	///     <remarks>To be added.</remarks>
 	[Native]
 	public enum TWRequestMethod : long {
-		/// <summary>To be added.</summary>
+		/// <summary>An HTTP GET request.</summary>
 		Get,
-		/// <summary>To be added.</summary>
+		/// <summary>An HTTP POST request.</summary>
 		Post,
-		/// <summary>To be added.</summary>
+		/// <summary>An HTTP DELETE request.</summary>
 		Delete,
 	}
 }

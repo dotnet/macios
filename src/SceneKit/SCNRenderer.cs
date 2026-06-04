@@ -18,11 +18,9 @@ namespace SceneKit {
 
 #if !__MACCATALYST__
 
-		/// <param name="context">To be added.</param>
-		/// <param name="options">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <param name="context">The context.</param>
+		/// <param name="options">The options.</param>
+		/// <summary>FromContext.</summary>
 		[UnsupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]

@@ -34,19 +34,15 @@ namespace Foundation {
 		/// <param name="len">The size of the buffer (in bytes).</param>
 		/// <summary>Reads data from the stream into the provided buffer.</summary>
 		/// <returns>The number of bytes actually written.</returns>
-		/// <remarks>
-		///         </remarks>
 		public nint Read (byte [] buffer, nuint len)
 		{
 			return objc_msgSend (Handle, Selector.GetHandle (selReadMaxLength), buffer, len);
 		}
 
-		/// <param name="buffer">To be added.</param>
-		/// <param name="offset">To be added.</param>
-		/// <param name="len">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <param name="buffer">The buffer.</param>
+		/// <param name="offset">The offset.</param>
+		/// <param name="len">The len.</param>
+		/// <summary>Read.</summary>
 		public unsafe nint Read (byte [] buffer, int offset, nuint len)
 		{
 			if (offset + (long) len > buffer.Length)
@@ -97,8 +93,6 @@ namespace Foundation {
 		///         <summary>Adds a client for the stream. This method is not supposed to be called by managed code, it will be called by consumers of the stream. When overriding it make sure to call the base implementation.</summary>
 		///         <returns>
 		///         </returns>
-		///         <remarks>
-		///         </remarks>
 		[Export ("_setCFClientFlags:callback:context:")]
 		protected virtual bool SetCFClientFlags (CFStreamEventType inFlags, IntPtr inCallback, IntPtr inContextPtr)
 		{
@@ -131,8 +125,6 @@ namespace Foundation {
 
 		/// <param name="eventType">The events to notify.</param>
 		///         <summary>Notifies consumers of events in the stream.</summary>
-		///         <remarks>
-		///         </remarks>
 		public void Notify (CFStreamEventType eventType)
 		{
 			if ((flags & eventType) == 0)

@@ -302,11 +302,11 @@ namespace EventKit {
 	/// <summary>An enumeration whose values specify whether an event was raised by entering or leaving a region.</summary>
 	[Native]
 	public enum EKAlarmProximity : long {
-		/// <summary>To be added.</summary>
+		/// <summary>No proximity alarm.</summary>
 		None,
-		/// <summary>To be added.</summary>
+		/// <summary>The alarm fires when entering the region.</summary>
 		Enter,
-		/// <summary>To be added.</summary>
+		/// <summary>The alarm fires when leaving the region.</summary>
 		Leave,
 	}
 

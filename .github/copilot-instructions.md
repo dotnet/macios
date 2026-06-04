@@ -146,6 +146,11 @@ Located in `msbuild/` directory:
   working directory (e.g., `GetDirectoryName` with a relative path may produce unexpected results
   in a cross-platform build).
 
+### FileWrites
+
+If a target or task creates a file, that file must be added to the `FileWrites` item group. This ensures MSBuild's incremental clean can delete generated files. Additionally, if a target produces multiple output files, all of them should be listed in the target's `Outputs` attribute for correct incremental build behavior.
+
+
 ### Project Templates
 
 Common project structure for Apple platform apps:

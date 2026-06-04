@@ -17,9 +17,9 @@ namespace Xamarin.Utils {
 				shellQuoteChar = '\''; // !Windows
 		}
 
-		static char shellQuoteChar;
-		static char [] mustQuoteCharacters = new char [] { ' ', '\'', ',', '$', '\\' };
-		static char [] mustQuoteCharactersProcess = { ' ', '\\', '"', '\'' };
+		static readonly char shellQuoteChar;
+		static readonly char [] mustQuoteCharacters = new char [] { ' ', '\'', ',', '$', '\\' };
+		static readonly char [] mustQuoteCharactersProcess = { ' ', '\\', '"', '\'' };
 
 		[return: NotNullIfNotNull (nameof (array))]
 		public static string []? Quote (params string [] array)

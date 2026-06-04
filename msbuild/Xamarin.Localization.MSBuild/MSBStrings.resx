@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <root>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
@@ -105,24 +105,24 @@
         <value>Could not parse the SDK version '{0}'</value>
     </data>
     
-    <!-- E0026: not used anymore -->
-    <!-- E0027: not used anymore -->
-    <!-- E0028: not used anymore -->
-    <!-- E0029: not used anymore -->
-    <!-- E0030: not used anymore -->
-    <!-- E0031: not used anymore -->
-    <!-- E0032: not used anymore -->
-    <!-- E0033: not used anymore -->
-    <!-- E0034: not used anymore -->
-    <!-- E0035: not used anymore -->
-    <!-- E0036: not used anymore -->
-    <!-- E0037: not used anymore -->
-    <!-- E0038: not used anymore -->
-    <!-- E0039: not used anymore -->
-    <!-- E0040: not used anymore -->
-    <!-- E0041: not used anymore -->
-    <!-- E0042: not used anymore -->
-    <!-- E0043: not used anymore -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     <data name="E0044" xml:space="preserve">
         <value>Could not find a valid Xcode app bundle at '{0}'. Please update your Apple SDK location in Visual Studio's preferences {1}.</value>
@@ -224,7 +224,7 @@
     </data>
     
     <data name="E0068" xml:space="preserve">
-        <value>An installation of Xcode >= 6.2 is required to build WatchKit applications.</value>
+        <value>An installation of Xcode &gt;= 6.2 is required to build WatchKit applications.</value>
     </data>
     
     <data name="E0069" xml:space="preserve">
@@ -284,21 +284,21 @@
         <value>The Watch Extension '{0}' has a CFBundleVersion ({1}) that does not match the main app bundle's CFBundleVersion ({2})</value>
     </data>
     
-    <!-- E0083: not used anymore -->
+    
     
     <data name="E0084" xml:space="preserve">
         <value>Could not locate the {0} '{1}' SDK at path '{}'</value>
     </data>
     
-    <!-- E0085: not used anymore -->
+    
         
     <data name="E0086" xml:space="preserve">
         <value>Could not find a valid Xcode developer path</value>
     </data>
     
-    <!-- E0087: not used anymore -->
     
-    <!-- E0088: not used anymore -->
+    
+    
         
     <data name="E0089" xml:space="preserve">
         <value>Unrecognized platform: {0}</value>
@@ -333,7 +333,7 @@
             Output: {1}</value>
     </data>
 
-    <!-- E0096: not used anymore -->
+    
     
     <data name="E0097" xml:space="preserve">
         <value>No API definition file specified.</value>
@@ -792,9 +792,9 @@
         <value>The App Extension '{0}' has an invalid Info.plist: the NSExtension dictionary does not contain an NSExtensionPointIdentifier value.</value>
     </data>
     
-    <!-- E7011: not used anymore -->
-    <!-- E7012: not used anymore -->
-    <!-- E7013: not used anymore -->
+    
+    
+    
     
     <data name="E7014" xml:space="preserve">
         <value>The Watch App '{0}' does not contain an Info.plist.</value>
@@ -1027,9 +1027,9 @@
         <value>Set: Entry, "{0}", Does Not Exist</value>
     </data>
     
-    <!-- E7068: not in use anymore -->
     
-    <!-- legacy only error -->
+    
+    
     <data name="E7069" xml:space="preserve">
         <value>Xamarin.iOS 14+ does not support watchOS 1 apps. Please migrate your project to watchOS 2+.</value>
     </data>
@@ -1174,7 +1174,7 @@
         <value>The framework {0} is a framework of static libraries, and will not be copied to the app.</value>
     </data>
 
-    <!-- This is the same as MT0140 -->
+    
     <data name="E7092" xml:space="preserve">
         <value>File '{0}' is not a valid framework: {1}</value>
     </data>
@@ -1317,7 +1317,7 @@
 
     <data name="E7119" xml:space="preserve">
         <value>Task execution was cancelled.</value>
-        <comment></comment>
+        <comment />
     </data>
 
     <data name="E7120" xml:space="preserve">
@@ -1638,5 +1638,38 @@
 
     <data name="E7170" xml:space="preserve">
         <value>Invalid RuntimeLibLinkMode value: '{0}'</value>
+    </data>
+<data name="W7171" xml:space="preserve">
+        <value>The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+
+    <data name="W7172" xml:space="preserve">
+        <value>The environment variable '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+
+    <data name="W7173" xml:space="preserve">
+        <value>The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+
+    <data name="W7174" xml:space="preserve">
+        <value>The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.</value>
+    </data>
+
+    <data name="E7175" xml:space="preserve">
+        <value>The {0} simulator runtime is not installed. This is required by Apple's development tools (even when building for physical devices). Install it by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings &gt; Components).</value>
+        <comment>Shown when the required simulator runtime is not installed.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
+
+    <data name="W7176" xml:space="preserve">
+        <value>Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.</value>
+        <comment>Shown when we're unable to check for simulator runtime availability.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
+    </data>
+
+    <data name="E7177" xml:space="preserve">
+        <value>The installed {0} simulator runtime is not compatible with the current Xcode version. Update the simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings &gt; Components).</value>
+        <comment>Shown when the tool reports a simulator runtime version mismatch.
+{0} - The platform name (e.g. "iOS" or "tvOS").</comment>
     </data>
 </root>

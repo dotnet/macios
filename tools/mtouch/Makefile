@@ -35,18 +35,21 @@ $(abspath Constants.cs): Constants.cs.in Makefile $(TOP)/Make.config.inc
 #
 define RunRegistrar
 .libs/Microsoft.$(9).registrar.$(10)%m .libs/Microsoft.$(9).registrar.$(10)%h: $(TOP)/src/build/dotnet/$(1)/$(3)/Microsoft.$(9).dll $(LOCAL_MTOUCH) | .libs
-	$$(Q_GEN) $$(LOCAL_MTOUCH_COMMAND) $$(MTOUCH_VERBOSITY) --runregistrar:$$(abspath $$(basename $$@).m) --sdkroot $$(XCODE_DEVELOPER_ROOT) --sdk $(4) $$< --target-framework .NETCoreApp,Version=$(subst net,,$(DOTNET_TFM)),Profile=$(1) --abi $(2) --reference:$(DOTNET_BCL_DIR)/System.Runtime.dll --reference:$(DOTNET_BCL_DIR)/System.Runtime.InteropServices.dll --rid $(10)
+	$$(Q_GEN) $$(LOCAL_MTOUCH_COMMAND) $$(MTOUCH_VERBOSITY) --runregistrar:$$(abspath $$(basename $$@).m) --xcode-version $$(XCODE_VERSION) --sdk $(4) $$< --target-framework .NETCoreApp,Version=$(subst net,,$(DOTNET_TFM)),Profile=$(1) --abi $(2) --reference:$(DOTNET_BCL_DIR)/System.Runtime.dll --reference:$(DOTNET_BCL_DIR)/System.Runtime.InteropServices.dll --rid $(10)
 	$$(Q) touch $$(basename $$@).m $$(basename $$@).h
 
 .libs/Microsoft.$(9).registrar.$(10).a: .libs/Microsoft.$(9).registrar.$(10).m .libs/Microsoft.$(9).registrar.$(10).h | .libs
 	$$(Q_CC) $$(CLANG) -DDEBUG -g -gdwarf-2 $(6) -stdlib=libc++ -std=c++14 -x objective-c++ -o $$@ -c $$< -Wall -Wno-unguarded-availability-new -I$(TOP)/runtime
 
 .libs/Microsoft.$(9).registrar.coreclr.$(10)%m .libs/Microsoft.$(9).registrar.coreclr.$(10)%h: $(TOP)/src/build/dotnet/$(1)/$(3)/Microsoft.$(9).dll $(LOCAL_MTOUCH) | .libs
-	$$(Q_GEN) $$(LOCAL_MTOUCH_COMMAND) $$(MTOUCH_VERBOSITY) --runregistrar:$$(abspath $$(basename $$@).m) --sdkroot $$(XCODE_DEVELOPER_ROOT) --sdk $(4) $$< --target-framework .NETCoreApp,Version=$(subst net,,$(DOTNET_TFM)),Profile=$(1) --abi $(2) --reference:$(DOTNET_BCL_DIR)/System.Runtime.dll --reference:$(DOTNET_BCL_DIR)/System.Runtime.InteropServices.dll --rid $(10) --xamarin-runtime CoreCLR
+	$$(Q_GEN) $$(LOCAL_MTOUCH_COMMAND) $$(MTOUCH_VERBOSITY) --runregistrar:$$(abspath $$(basename $$@).m) --xcode-version $$(XCODE_VERSION) --sdk $(4) $$< --target-framework .NETCoreApp,Version=$(subst net,,$(DOTNET_TFM)),Profile=$(1) --abi $(2) --reference:$(DOTNET_BCL_DIR)/System.Runtime.dll --reference:$(DOTNET_BCL_DIR)/System.Runtime.InteropServices.dll --rid $(10) --xamarin-runtime CoreCLR
 	$$(Q) touch $$(basename $$@).m $$(basename $$@).h
 
 .libs/Microsoft.$(9).registrar.coreclr.$(10).a: .libs/Microsoft.$(9).registrar.coreclr.$(10).m .libs/Microsoft.$(9).registrar.$(10).h | .libs
 	$$(Q_CC) $$(CLANG) -DDEBUG -g -gdwarf-2 $(6) -stdlib=libc++ -std=c++14 -x objective-c++ -o $$@ -c $$< -Wall -Wno-unguarded-availability-new -I$(TOP)/runtime
+
+no-xcode-build:: .libs/Microsoft.$(9).registrar.$(10).m .libs/Microsoft.$(9).registrar.$(10).h
+no-xcode-build:: .libs/Microsoft.$(9).registrar.coreclr.$(10).m .libs/Microsoft.$(9).registrar.$(10).h
 endef
 $(eval $(call RunRegistrar,ios,x86_64,64,$(IOS_SDK_VERSION),iOS,$(iossimulator-x64_CFLAGS),,,iOS,iossimulator-x64))
 $(eval $(call RunRegistrar,ios,arm64,64,$(IOS_SDK_VERSION),iOS,$(iossimulator-arm64_CFLAGS),,,iOS,iossimulator-arm64))
@@ -86,11 +89,14 @@ endef
 
 $(foreach platform,$(DOTNET_PLATFORMS_MTOUCH),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(eval $(call InstallRegistrar,$(platform),$(rid)))))
 
-ifndef NO_XCODE
+ifdef NO_XCODE
+dotnet:: no-xcode-build
+else
 dotnet: $(TARGETS_DOTNET)
-install-local:: $(TARGETS_DOTNET)
-all-local:: $(TARGETS_DOTNET)
 endif
+
+install-local:: dotnet
+all-local:: dotnet
 
 clean-local::
 	rm -Rf bin obj

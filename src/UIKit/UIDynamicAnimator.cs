@@ -46,17 +46,14 @@ namespace UIKit {
 
 		/// <param name="behaviors">Array of behaviors to be removed from the animator.</param>
 		///         <summary>Removes the listed behaviors from the animator.</summary>
-		///         <remarks>
-		///         </remarks>
 		public void RemoveBehaviors (params UIDynamicBehavior [] behaviors)
 		{
 			foreach (var behavior in behaviors)
 				RemoveBehavior (behavior);
 		}
 
-		/// <param name="behavior">To be added.</param>
+		/// <param name="behavior">The behavior.</param>
 		///         <summary>Adds the specified behavior.</summary>
-		///         <remarks>To be added.</remarks>
 		public void Add (UIDynamicBehavior behavior)
 		{
 			AddBehavior (behavior);
@@ -70,8 +67,6 @@ namespace UIKit {
 		}
 
 		/// <summary>Retrieves the behaviors via an enumerator.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			foreach (var behavior in Behaviors)

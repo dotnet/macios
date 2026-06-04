@@ -66,9 +66,8 @@ namespace Foundation {
 		{
 		}
 
-		/// <param name="type">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <param name="type">The type to preserve.</param>
+		/// <summary>Initializes a new instance of the <see cref="PreserveAttribute" /> class with the specified type.</summary>
 		public PreserveAttribute (Type type)
 		{
 		}

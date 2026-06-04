@@ -48,8 +48,6 @@ namespace CoreVideo {
 	public struct CVTime {
 
 		/// <summary>Determines how many TimeValues are represented by this CVTime.</summary>
-		///         <remarks>
-		///         </remarks>
 		public /* int64_t */ long TimeValue;
 		/// <summary>Determines how many TimeValues make up one second.</summary>
 		///         <remarks>
@@ -75,8 +73,6 @@ namespace CoreVideo {
 		/// <summary>Represents a zero duration..</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>
-		///         </remarks>
 		public static CVTime ZeroTime {
 			get {
 				return Marshal.PtrToStructure<CVTime> (Dlfcn.GetIndirect (Libraries.CoreVideo.Handle, "kCVZeroTime"))!;
@@ -86,8 +82,6 @@ namespace CoreVideo {
 		/// <summary>Unknown or indefinite time.</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>
-		///         </remarks>
 		public static CVTime IndefiniteTime {
 			get {
 				return Marshal.PtrToStructure<CVTime> (Dlfcn.GetIndirect (Libraries.CoreVideo.Handle, "kCVIndefiniteTime"))!;
@@ -113,8 +107,6 @@ namespace CoreVideo {
 		/// <summary>Returns the hashcode for this object.</summary>
 		///         <returns>
 		///         </returns>
-		///         <remarks>
-		///         </remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (TimeValue, TimeScale, Flags);
@@ -122,9 +114,7 @@ namespace CoreVideo {
 
 		// CVHostTime.h
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>GetCurrentHostTime.</summary>
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVGetCurrentHostTime")]
 		public static extern /* uint64_t */ ulong GetCurrentHostTime ();
 
@@ -140,9 +130,7 @@ namespace CoreVideo {
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVGetHostClockFrequency")]
 		public static extern /* double */ double GetHostClockFrequency ();
 
-		/// <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <summary>GetHostClockMinimumTimeDelta.</summary>
 		[DllImport (Constants.CoreVideoLibrary, EntryPoint = "CVGetHostClockMinimumTimeDelta")]
 		public static extern /* uint32_t */ uint GetHostClockMinimumTimeDelta ();
 	}

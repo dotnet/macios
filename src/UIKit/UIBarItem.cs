@@ -15,7 +15,6 @@ namespace UIKit {
 		/// <param name="attributes">Specified title text attributes.</param>
 		/// <param name="state">Specified <see cref="UIKit.UIControlState" />.</param>
 		/// <summary>Specifies the text attributes of the title of the UIBarItem.</summary>
-		/// <remarks>To be added.</remarks>
 		public void SetTitleTextAttributes (TextAttributes attributes, UIControlState state)
 		{
 			var dict = attributes?.Dictionary;
@@ -33,10 +32,9 @@ namespace UIKit {
 		}
 
 		public partial class UIBarItemAppearance {
-			/// <param name="attributes">To be added.</param>
-			/// <param name="state">To be added.</param>
+			/// <param name="attributes">The attributes.</param>
+			/// <param name="state">The state.</param>
 			/// <summary>Sets the attributes applied to the title text of the UIBarItem.</summary>
-			/// <remarks>To be added.</remarks>
 			public virtual void SetTitleTextAttributes (TextAttributes attributes, UIControlState state)
 			{
 				if (attributes is null)
@@ -45,10 +43,8 @@ namespace UIKit {
 				_SetTitleTextAttributes (dict, state);
 			}
 
-			/// <param name="state">To be added.</param>
+			/// <param name="state">The state.</param>
 			///         <summary>The attributes applies to the title text of the UIBarItem.</summary>
-			///         <returns>To be added.</returns>
-			///         <remarks>To be added.</remarks>
 			public virtual TextAttributes GetTitleTextAttributes (UIControlState state)
 			{
 				using (var d = _GetTitleTextAttributes (state)) {

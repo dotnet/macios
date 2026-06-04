@@ -26,3 +26,4 @@ extends:
   parameters:
     isPR: true
     pool: $(PRBuildPool)
+    useACES: false  # flip to true to opt PR api-diff into ACES; see templates/variables/common.yml

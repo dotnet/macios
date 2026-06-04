@@ -286,7 +286,6 @@ namespace CFNetwork {
 
 		// convenience enum on top of kCFHTTPAuthenticationScheme* fields
 		/// <summary>An enumeration whose values specify HTTP authentication schemes.</summary>
-		///     <remarks>To be added.</remarks>
 		public enum AuthenticationScheme {
 			Default,
 			Basic,

@@ -39,16 +39,15 @@ namespace AppKit {
 			IntPtr /* NSImage* */ startCap, IntPtr /* NSImage* */ centerFill, IntPtr /* NSImage* */ endCap,
 			byte vertial, nint op, nfloat alphaFraction, byte flipped);
 
-		/// <param name="frame">To be added.</param>
-		/// <param name="startCap">To be added.</param>
-		/// <param name="centerFill">To be added.</param>
-		/// <param name="endCap">To be added.</param>
-		/// <param name="vertical">To be added.</param>
-		/// <param name="op">To be added.</param>
-		/// <param name="alphaFraction">To be added.</param>
-		/// <param name="flipped">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <param name="frame">The frame.</param>
+		/// <param name="startCap">The start cap.</param>
+		/// <param name="centerFill">The center fill.</param>
+		/// <param name="endCap">The end cap.</param>
+		/// <param name="vertical">The vertical.</param>
+		/// <param name="op">The op.</param>
+		/// <param name="alphaFraction">The alpha fraction.</param>
+		/// <param name="flipped">The flipped.</param>
+		/// <summary>DrawThreePartImage.</summary>
 		public void DrawThreePartImage (CGRect frame,
 			NSImage startCap, NSImage centerFill, NSImage endCap,
 			bool vertical, NSCompositingOperation op, nfloat alphaFraction, bool flipped)
@@ -73,21 +72,20 @@ namespace AppKit {
 			IntPtr /* NSImage* */ bottomLeftCorner, IntPtr /* NSImage* */ bottomEdgeFill, IntPtr /* NSImage* */ bottomRightCnint,
 			nint op, nfloat alphaFraction, byte flipped);
 
-		/// <param name="frame">To be added.</param>
-		/// <param name="topLeftCorner">To be added.</param>
-		/// <param name="topEdgeFill">To be added.</param>
-		/// <param name="topRightCorner">To be added.</param>
-		/// <param name="leftEdgeFill">To be added.</param>
-		/// <param name="centerFill">To be added.</param>
-		/// <param name="rightEdgeFill">To be added.</param>
-		/// <param name="bottomLeftCorner">To be added.</param>
-		/// <param name="bottomEdgeFill">To be added.</param>
-		/// <param name="bottomRightCorner">To be added.</param>
-		/// <param name="op">To be added.</param>
-		/// <param name="alphaFraction">To be added.</param>
-		/// <param name="flipped">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <remarks>To be added.</remarks>
+		/// <param name="frame">The frame.</param>
+		/// <param name="topLeftCorner">The top left corner.</param>
+		/// <param name="topEdgeFill">The top edge fill.</param>
+		/// <param name="topRightCorner">The top right corner.</param>
+		/// <param name="leftEdgeFill">The left edge fill.</param>
+		/// <param name="centerFill">The center fill.</param>
+		/// <param name="rightEdgeFill">The right edge fill.</param>
+		/// <param name="bottomLeftCorner">The bottom left corner.</param>
+		/// <param name="bottomEdgeFill">The bottom edge fill.</param>
+		/// <param name="bottomRightCorner">The bottom right corner.</param>
+		/// <param name="op">The op.</param>
+		/// <param name="alphaFraction">The alpha fraction.</param>
+		/// <param name="flipped">The flipped.</param>
+		/// <summary>DrawNinePartImage.</summary>
 		public void DrawNinePartImage (CGRect frame,
 			NSImage topLeftCorner, NSImage topEdgeFill, NSImage topRightCorner,
 			NSImage leftEdgeFill, NSImage centerFill, NSImage rightEdgeFill,

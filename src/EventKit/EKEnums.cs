@@ -139,15 +139,15 @@ namespace EventKit {
 		SourceDoesNotAllowReminders,
 		/// <summary>The source does not allow events.</summary>
 		SourceDoesNotAllowEvents,
-		/// <summary>To be added.</summary>
+		/// <summary>The priority value is invalid.</summary>
 		PriorityIsInvalid,
-		/// <summary>To be added.</summary>
+		/// <summary>The entity type is invalid.</summary>
 		InvalidEntityType,
-		/// <summary>To be added.</summary>
+		/// <summary>Procedure alarms cannot be modified.</summary>
 		ProcedureAlarmsNotMutable,
-		/// <summary>To be added.</summary>
+		/// <summary>The event store is not authorized to perform the operation.</summary>
 		EventStoreNotAuthorized,
-		/// <summary>To be added.</summary>
+		/// <summary>The operating system does not support this operation.</summary>
 		OSNotSupported,
 		InvalidInviteReplyCalendar,
 		NotificationsCollectionFlagNotSet,

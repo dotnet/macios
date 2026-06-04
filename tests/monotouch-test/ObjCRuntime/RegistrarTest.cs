@@ -2124,7 +2124,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				}
 			});
 			thread.Start ();
-			thread.Join ();
+			Assert.That (thread.Join (TimeSpan.FromSeconds (30)), Is.True, "Thread.Join timed out");
 			GC.Collect ();
 			GC.WaitForPendingFinalizers ();
 			TestRuntime.RunAsync (TimeSpan.FromSeconds (30), () => { }, () => ObjCBlockTester.FreedBlockCount > initialFreedCount);

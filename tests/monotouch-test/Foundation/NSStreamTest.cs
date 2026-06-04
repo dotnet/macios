@@ -74,7 +74,7 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.That (read.Read (result, 5), Is.EqualTo ((nint) 5));
 			for (int i = 0; i < 5; i++)
 				Assert.That (result [i], Is.EqualTo (send [i] * 10));
-			listenThread.Join ();
+			Assert.That (listenThread.Join (TimeSpan.FromSeconds (10)), Is.True, "listenThread.Join timed out");
 			listener.Stop ();
 			read.Close ();
 			write.Close ();

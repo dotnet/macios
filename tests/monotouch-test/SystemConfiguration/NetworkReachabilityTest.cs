@@ -223,7 +223,7 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			});
 
 			thread.Start ();
-			thread.Join ();
+			Assert.That (thread.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");
 
 			// Force garbage collection
 			GC.Collect ();
@@ -266,7 +266,7 @@ namespace MonoTouchFixtures.SystemConfiguration {
 			});
 
 			thread.Start ();
-			thread.Join ();
+			Assert.That (thread.Join (TimeSpan.FromSeconds (5)), Is.True, "Thread.Join timed out");
 
 			// Force garbage collection
 			GC.Collect ();

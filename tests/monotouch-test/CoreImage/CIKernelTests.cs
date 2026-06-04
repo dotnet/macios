@@ -155,7 +155,7 @@ namespace MonoTouchFixtures.CoreImage {
 				}
 			});
 			t.Start ();
-			t.Join ();
+			Assert.That (t.Join (TimeSpan.FromSeconds (30)), Is.True, "Thread.Join timed out");
 			if (ex is not null)
 				throw ex;
 		}

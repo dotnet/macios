@@ -35,8 +35,6 @@ namespace CoreImage {
 	public partial class CIImageInitializationOptions {
 #if !COREBUILD
 		/// <summary>Gets or sets the color space.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public CGColorSpace? ColorSpace {
 			get {
 				return GetNativeValue<CGColorSpace> (CIImageInitializationOptionsKeys.ColorSpaceKey);
@@ -49,7 +47,6 @@ namespace CoreImage {
 	}
 
 	/// <summary>A type of <see cref="CoreImage.CIImageInitializationOptions" /> that has additional metadata properties.</summary>
-	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]
@@ -58,14 +55,12 @@ namespace CoreImage {
 	public class CIImageInitializationOptionsWithMetadata : CIImageInitializationOptions {
 #if !COREBUILD
 		/// <summary>Creates a new CIImageInitializationOptionsWithMetadata with default values.</summary>
-		///         <remarks>To be added.</remarks>
 		public CIImageInitializationOptionsWithMetadata ()
 		{
 		}
 
-		/// <param name="dictionary">To be added.</param>
+		/// <param name="dictionary">The dictionary.</param>
 		///         <summary>Creates a new CIImageInitializationOptionsWithMetadata by using the specified dictionary of options.</summary>
-		///         <remarks>To be added.</remarks>
 		public CIImageInitializationOptionsWithMetadata (NSDictionary dictionary)
 			: base (dictionary)
 		{

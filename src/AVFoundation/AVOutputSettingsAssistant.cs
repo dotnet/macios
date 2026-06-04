@@ -15,8 +15,6 @@ namespace AVFoundation {
 		/// <summary>Preset for 640x480 output.</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>
-		///         </remarks>
 		public AVOutputSettingsAssistant? Preset640x480 {
 			get {
 				return FromPreset (_Preset640x480);
@@ -26,8 +24,6 @@ namespace AVFoundation {
 		/// <summary>Preset for 960x540 output.</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>
-		///         </remarks>
 		public AVOutputSettingsAssistant? Preset960x540 {
 			get {
 				return FromPreset (_Preset960x540);
@@ -37,8 +33,6 @@ namespace AVFoundation {
 		/// <summary>Preset for 1280x720 output.</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>
-		///         </remarks>
 		public AVOutputSettingsAssistant? Preset1280x720 {
 			get {
 				return FromPreset (_Preset1280x720);
@@ -48,8 +42,6 @@ namespace AVFoundation {
 		/// <summary>Preset for 1920x1080 output.</summary>
 		///         <value>
 		///         </value>
-		///         <remarks>
-		///         </remarks>
 		public AVOutputSettingsAssistant? Preset1920x1080 {
 			get {
 				return FromPreset (_Preset1920x1080);
@@ -57,8 +49,6 @@ namespace AVFoundation {
 		}
 
 		/// <summary>Preset for 3840x2160 output.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public AVOutputSettingsAssistant? Preset3840x2160 {
 			get {
 				return FromPreset (_Preset3840x2160);
@@ -66,8 +56,6 @@ namespace AVFoundation {
 		}
 
 		/// <summary>Preset for HVEC 1920x1080 output.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public AVOutputSettingsAssistant? PresetHevc1920x1080 {
 			get {
 				return FromPreset (_PresetHevc1920x1080);
@@ -75,8 +63,6 @@ namespace AVFoundation {
 		}
 
 		/// <summary>Preset for HVEC 3840x2160 output</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public AVOutputSettingsAssistant? PresetHevc3840x2160 {
 			get {
 				return FromPreset (_PresetHevc3840x2160);

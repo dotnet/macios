@@ -29,7 +29,7 @@ namespace EventKit {
 	/// <summary>The kind of participant to the event.</summary>
 	[Native]
 	public enum EKParticipantType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The participant type is unknown.</summary>
 		Unknown,
 		/// <summary>A person.</summary>
 		Person,

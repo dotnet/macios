@@ -325,9 +325,9 @@ namespace EventKit {
 	/// <summary>An enumeration that specifies whether an entity is an event or a reminder.</summary>
 	[Native]
 	public enum EKEntityType : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The entity is a calendar event.</summary>
 		Event,
-		/// <summary>To be added.</summary>
+		/// <summary>The entity is a reminder.</summary>
 		Reminder,
 	}
 

@@ -284,17 +284,17 @@ namespace EventKit {
 	/// <summary>An enumeration whose values indicate the type of a <see cref="EventKit.EKSource" /> object.</summary>
 	[Native]
 	public enum EKSourceType : long {
-		/// <summary>To be added.</summary>
+		/// <summary>The source is stored locally on the device.</summary>
 		Local,
-		/// <summary>To be added.</summary>
+		/// <summary>The source is a Microsoft Exchange server.</summary>
 		Exchange,
-		/// <summary>To be added.</summary>
+		/// <summary>The source is a CalDAV server.</summary>
 		CalDav,
-		/// <summary>To be added.</summary>
+		/// <summary>The source is MobileMe (iCloud).</summary>
 		MobileMe,
-		/// <summary>To be added.</summary>
+		/// <summary>The source is a subscribed calendar.</summary>
 		Subscribed,
-		/// <summary>To be added.</summary>
+		/// <summary>The source provides birthday events.</summary>
 		Birthdays,
 	}
 

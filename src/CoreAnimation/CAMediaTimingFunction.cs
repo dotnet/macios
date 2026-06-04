@@ -32,10 +32,9 @@ using CoreGraphics;
 
 namespace CoreAnimation {
 	public unsafe partial class CAMediaTimingFunction {
-		/// <param name="index">To be added.</param>
-		/// <summary>To be added.</summary>
-		/// <returns>To be added.</returns>
-		/// <remarks>To be added.</remarks>
+		/// <param name="index">The index of the control point (0-3).</param>
+		/// <summary>Gets the control point at the specified index.</summary>
+		/// <returns>The control point at the specified index.</returns>
 		public CGPoint GetControlPoint (nint index)
 		{
 			if ((index < 0) || (index > 3))

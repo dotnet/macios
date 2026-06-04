@@ -1,5 +1,7 @@
 #nullable enable
 
+using Xamarin.Bundler;
+
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class BundleStructureTest : TestBaseClass {
@@ -332,6 +334,7 @@ namespace Xamarin.Tests {
 			if (platform != ApplePlatform.MacOSX)
 				AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "MonoTouch.Dialog", runtimeIdentifiers, forceSingleRid: (platform == ApplePlatform.MacCatalyst && !isReleaseBuild && !isCoreCLR), includeDebugFiles: includeDebugFiles);
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "nunit.framework", runtimeIdentifiers, forceSingleRid: !isCoreCLR || platform == ApplePlatform.MacOSX);
+			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "nunit.framework.legacy", runtimeIdentifiers, forceSingleRid: !isCoreCLR || platform == ApplePlatform.MacOSX);
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "nunitlite", runtimeIdentifiers, forceSingleRid: !isCoreCLR || platform == ApplePlatform.MacOSX);
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "Mono.Options", runtimeIdentifiers, forceSingleRid: !isCoreCLR || platform == ApplePlatform.MacOSX);
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "Touch.Client", runtimeIdentifiers, platform == ApplePlatform.MacOSX || (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
@@ -837,7 +840,7 @@ namespace Xamarin.Tests {
 					return false;
 				});
 			foreach (var lib in libraries) {
-				var libArchitectures = renderArchitectures (MachO.GetArchitectures (lib));
+				var libArchitectures = renderArchitectures (MachO.GetArchitectures (ConsoleLog.Instance, lib));
 				Assert.That (libArchitectures, Is.EqualTo (expectedArchitectures), $"Architectures in {lib}");
 			}
 		}

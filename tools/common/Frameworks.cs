@@ -841,7 +841,7 @@ public class Frameworks : Dictionary<string, Framework> {
 	static bool FilterFrameworks (Application app, Framework framework)
 	{
 		if (framework.IsFrameworkUnavailable (app)) {
-			Driver.Log (3, "Not linking with the framework {0} because it's not available in the current SDK.", framework.Name);
+			app.Log (3, "Not linking with the framework {0} because it's not available in the current SDK.", framework.Name);
 			return false;
 		}
 

@@ -330,7 +330,7 @@ namespace Xamarin.Linker {
 			foreach (var type in types) {
 				var ctorRef = FindNSObjectConstructor (type);
 				if (ctorRef is null) {
-					Driver.Log (9, $"Cannot include {type.FullName} in ConstructNSObject because it doesn't have a suitable constructor");
+					App.Log (9, $"Cannot include {type.FullName} in ConstructNSObject because it doesn't have a suitable constructor");
 					continue;
 				}
 
@@ -652,7 +652,7 @@ namespace Xamarin.Linker {
 			MethodDefinition? lookupMethods = null;
 			if (App.IsAOTCompiled (abr.CurrentAssembly.Name.Name)) {
 				// Don't generate lookup code, because native code will call the EntryPoint for the UnmanagedCallerOnly methods directly.
-				Driver.Log (9, $"Not generating method lookup code for {abr.CurrentAssembly.Name.Name}, because it's AOT compiled");
+				App.Log (9, $"Not generating method lookup code for {abr.CurrentAssembly.Name.Name}, because it's AOT compiled");
 			} else if (trampolineInfos.Count > 0) {
 				// All the methods in a given assembly will have consecutive IDs (but might not start at 0).
 				if (trampolineInfos.First ().Id + trampolineInfos.Count - 1 != trampolineInfos.Last ().Id)

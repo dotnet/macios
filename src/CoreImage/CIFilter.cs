@@ -118,7 +118,6 @@ using UIKit;
 namespace CoreImage {
 	public partial class CIFilter {
 		/// <summary>Creates a new CIFilter with default values.</summary>
-		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
@@ -132,19 +131,15 @@ namespace CoreImage {
 		{
 		}
 
-		/// <param name="categories">To be added.</param>
+		/// <param name="categories">The categories.</param>
 		///         <summary>Returns an array of strings that specifies the filters that the system provides for the specified <paramref name="categories" />.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public static string [] FilterNamesInCategories (params string []? categories)
 		{
 			return _FilterNamesInCategories (categories);
 		}
 
-		/// <param name="key">To be added.</param>
+		/// <param name="key">The key.</param>
 		/// <summary>Gets the value that is identified by <paramref name="key" />.</summary>
-		/// <value>To be added.</value>
-		/// <remarks>To be added.</remarks>
 		public NSObject? this [NSString key] {
 			get {
 				NSObject? result = ValueForKey (key.GetHandle ());

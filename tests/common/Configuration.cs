@@ -10,25 +10,17 @@ using Xamarin.Utils;
 
 namespace Xamarin.Tests {
 	static partial class Configuration {
-		public const string XI_ProductName = "MonoTouch";
-		public const string XM_ProductName = "Xamarin.Mac";
-
 		public static string DotNetBclDir = "";
 		public static string DotNetCscCommand = "";
 		public static string DotNetExecutable;
 		public static string DotNetTfm;
-		public static string? mt_src_root;
-		public static string sdk_version;
+		public static string ios_sdk_version;
 		public static string tvos_sdk_version;
 		public static string macos_sdk_version;
-		public static string xcode_root;
+		public static string maccatalyst_sdk_version;
+		static string xcode_root;
 		public static string? XcodeVersionString;
-		public static string xcode83_root;
-		public static string xcode94_root;
-#if MONOMAC
-		public static string mac_xcode_root;
-#endif
-		public static Dictionary<string, string> make_config = new Dictionary<string, string> ();
+		static Dictionary<string, string> make_config = new Dictionary<string, string> ();
 
 		public static bool include_ios;
 		public static bool include_mac;
@@ -286,12 +278,11 @@ namespace Xamarin.Tests {
 		{
 			ParseConfigFiles ();
 
-			sdk_version = GetVariable ("IOS_SDK_VERSION", "8.0");
+			ios_sdk_version = GetVariable ("IOS_SDK_VERSION", "8.0");
 			tvos_sdk_version = GetVariable ("TVOS_SDK_VERSION", "9.0");
 			macos_sdk_version = GetVariable ("MACOS_SDK_VERSION", "10.12");
+			maccatalyst_sdk_version = GetVariable ("MACCATALYST_SDK_VERSION", "14.0");
 			xcode_root = GetVariable ("XCODE_DEVELOPER_ROOT", "/Applications/Xcode.app/Contents/Developer");
-			xcode83_root = GetVariable ("XCODE83_DEVELOPER_ROOT", "/Applications/Xcode83.app/Contents/Developer");
-			xcode94_root = GetVariable ("XCODE94_DEVELOPER_ROOT", "/Applications/Xcode94.app/Contents/Developer");
 			include_ios = !string.IsNullOrEmpty (GetVariable ("INCLUDE_IOS", ""));
 			include_mac = !string.IsNullOrEmpty (GetVariable ("INCLUDE_MAC", ""));
 			include_tvos = !string.IsNullOrEmpty (GetVariable ("INCLUDE_TVOS", ""));
@@ -305,16 +296,10 @@ namespace Xamarin.Tests {
 			DOTNET_DIR = GetVariable ("DOTNET_DIR", "");
 
 			XcodeVersionString = GetVariable ("XCODE_VERSION", GetXcodeVersion (xcode_root));
-#if MONOMAC
-			mac_xcode_root = xcode_root;
-#endif
 
 			Console.WriteLine ("Test configuration:");
-			Console.WriteLine ("  SDK_VERSION={0}", sdk_version);
 			Console.WriteLine ("  XCODE_ROOT={0}", xcode_root);
-#if MONOMAC
-			Console.WriteLine ("  MAC_XCODE_ROOT={0}", mac_xcode_root);
-#endif
+			Console.WriteLine ("  XCODE_VERSION={0}", XcodeVersionString);
 			Console.WriteLine ("  INCLUDE_IOS={0}", include_ios);
 			Console.WriteLine ("  INCLUDE_MAC={0}", include_mac);
 			Console.WriteLine ("  INCLUDE_TVOS={0}", include_tvos);
@@ -371,13 +356,7 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		public static string SourceRoot {
-			get {
-				if (mt_src_root is null)
-					mt_src_root = RootPath;
-				return mt_src_root;
-			}
-		}
+		public static string SourceRoot => RootPath;
 
 		public static string TestProjectsDirectory {
 			get {
@@ -694,7 +673,7 @@ namespace Xamarin.Tests {
 			if (environment is null)
 				environment = new Dictionary<string, string?> ();
 
-			environment ["DEVELOPER_DIR"] = Path.GetDirectoryName (Path.GetDirectoryName (xcode_root)!)!;
+			environment ["DEVELOPER_DIR"] = Path.GetDirectoryName (Path.GetDirectoryName (XcodeLocation)!)!;
 
 			// This is set by `dotnet test` and can cause building legacy projects to fail to build with:
 			// Microsoft.NET.Build.Extensions.ConflictResolution.targets(30,5):
@@ -730,6 +709,22 @@ namespace Xamarin.Tests {
 			}
 
 			return Path.Combine (SourceRoot, "tests", "test-libraries", ".libs", dir);
+		}
+
+		public static string GetSdkVersion (ApplePlatform platform)
+		{
+			switch (platform) {
+			case ApplePlatform.iOS:
+				return ios_sdk_version;
+			case ApplePlatform.MacOSX:
+				return macos_sdk_version;
+			case ApplePlatform.TVOS:
+				return tvos_sdk_version;
+			case ApplePlatform.MacCatalyst:
+				return maccatalyst_sdk_version;
+			default:
+				throw new NotImplementedException ($"Unknown platform: {platform}");
+			}
 		}
 
 		// This implementation of Touch is to update a timestamp (not to make sure a certain file exists).

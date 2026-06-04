@@ -34,13 +34,12 @@ namespace CoreGraphics {
 
 	// untyped enum -> CGPattern.h
 	/// <summary>Pattern styling style.</summary>
-	///     <remarks>To be added.</remarks>
 	public enum CGPatternTiling {
 		/// <summary>No distortion.</summary>
 		NoDistortion,
-		/// <summary>To be added.</summary>
+		/// <summary>Constant spacing with minimal distortion.</summary>
 		ConstantSpacingMinimalDistortion,
-		/// <summary>To be added.</summary>
+		/// <summary>Constant spacing.</summary>
 		ConstantSpacing,
 	}
 
@@ -57,9 +56,8 @@ namespace CoreGraphics {
 
 
 	/// <summary>A pattern to draw in a CGContext.</summary>
-	///     <remarks>To be added.</remarks>
-	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/Drawing/">Example_Drawing</related>
-	///     <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/QuartzSample/">QuartzSample</related>
+	/// <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/Drawing/">Example_Drawing</related>
+	/// <related type="sample" href="https://github.com/xamarin/ios-samples/tree/master/QuartzSample/">QuartzSample</related>
 	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[SupportedOSPlatform ("macos")]

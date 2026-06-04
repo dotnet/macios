@@ -1,7 +1,10 @@
+using Xamarin.Utils;
+
 namespace Xamarin.Bundler;
 
 public interface IToolLog {
 	int Verbosity { get; }
+	ApplePlatform Platform { get; }
 	void Log (string message);
 	void LogError (string message);
 	// Log an error we raise ourselves (through an exception)
@@ -44,6 +47,8 @@ public class ConsoleLog : IToolLog {
 #endif
 
 	public int Verbosity { get => verbosity; }
+
+	public ApplePlatform Platform => ApplePlatform.None;
 
 	public void Log (string message)
 	{

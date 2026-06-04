@@ -47,7 +47,7 @@ namespace Xamarin.Linker {
 			AssemblyDefinition rootTypeMapAssembly;
 
 			// .NET 10 doesn't support a separate root type map assembly, so we have to add these attributes to the entry assembly instead.
-			var useEntryAssemblyAsRootTypeMapAssembly = Driver.TargetFramework.Version.Major <= 10;
+			var useEntryAssemblyAsRootTypeMapAssembly = App.TargetFramework.Version.Major <= 10;
 
 			if (useEntryAssemblyAsRootTypeMapAssembly) {
 				rootTypeMapAssembly = Configuration.EntryAssembly;

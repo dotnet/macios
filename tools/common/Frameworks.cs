@@ -134,7 +134,7 @@ public class Frameworks : Dictionary<string, Framework> {
 		return null;
 	}
 
-	static Version NotAvailableInSimulator = new Version (int.MaxValue, int.MaxValue);
+	static readonly Version NotAvailableInSimulator = new Version (int.MaxValue, int.MaxValue);
 
 	static Frameworks? mac_frameworks;
 	public static Frameworks MacFrameworks {

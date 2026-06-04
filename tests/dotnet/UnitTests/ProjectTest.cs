@@ -506,7 +506,7 @@ namespace Xamarin.Tests {
 			properties.Remove ("RuntimeIdentifiers");
 			properties ["cmdline:RuntimeIdentifier"] = "maccatalyst-x64";
 			var rv = DotNet.AssertBuild (project_path, properties);
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
 			Assert.That (warnings.Length, Is.EqualTo (1), "Warning Count");
 			Assert.That (warnings [0].Message, Is.EqualTo ("RuntimeIdentifier was set on the command line, and will override the value for RuntimeIdentifiers set in the project file."), "Warning message");
 		}
@@ -649,7 +649,7 @@ namespace Xamarin.Tests {
 
 			// Build again - this time it'll fail
 			var rv = DotNet.Build (project_path, properties);
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
 			Assert.That (rv.ExitCode, Is.Not.EqualTo (0), "Unexpected success");
 			Assert.That (warnings.Length, Is.EqualTo (1), "Warning Count");
 			Assert.That (warnings [0].Message, Is.EqualTo ($"Found files in the root directory of the app bundle. This will likely cause codesign to fail. Files:\nbin/Debug/{Configuration.DotNetTfm}-maccatalyst/maccatalyst-x64/MySimpleApp.app/otherfile.txt\nbin/Debug/{Configuration.DotNetTfm}-maccatalyst/maccatalyst-x64/MySimpleApp.app/otherdir\nbin/Debug/{Configuration.DotNetTfm}-maccatalyst/maccatalyst-x64/MySimpleApp.app/otherdir/otherfile.log"), "Warning");
@@ -658,7 +658,7 @@ namespace Xamarin.Tests {
 			var enableAutomaticCleanupProperties = new Dictionary<string, string> (properties);
 			enableAutomaticCleanupProperties ["EnableAutomaticAppBundleRootDirectoryCleanup"] = "true";
 			rv = DotNet.AssertBuild (project_path, enableAutomaticCleanupProperties);
-			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
+			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
 			Assert.That (warnings.Length, Is.EqualTo (0), "Warning Count");
 
 			// Verify that the files were in fact removed.
@@ -766,7 +766,7 @@ namespace Xamarin.Tests {
 			Assert.That (myStruct, Is.Not.Null, "MyStruct type");
 			Assert.That (myStruct!.IsValueType, Is.True, "MyStruct");
 
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).Select (v => v.Message);
 			Assert.That (warnings, Is.Empty, $"Build warnings:\n\t{string.Join ("\n\t", warnings)}");
 		}
 
@@ -1583,12 +1583,7 @@ namespace Xamarin.Tests {
 					throw new NotImplementedException (scenario.ToString ());
 				}
 			}
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
-								.Where (evt => {
-									if (platform == ApplePlatform.iOS && evt.Message?.Trim () == "Supported iPhone orientations have not been set")
-										return false;
-									return true;
-								});
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform);
 			warnings.AssertWarnings (expectedWarnings);
 
 			if (bundleOriginalResources && expectedWarnings.Length > 0) {
@@ -2530,12 +2525,10 @@ namespace Xamarin.Tests {
 			var rv = DotNet.AssertBuild (project_path, properties);
 
 			// We expect to get a warning from the trim analzyer in Debug build
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
+								.FilterWarnings (platform)
+								.ToArray ();
 
-			// Ignore warnings we haven't fixed yet
-			if (platform == ApplePlatform.iOS) {
-				warnings = warnings.Where (w => w.Message?.Trim () != "Supported iPhone orientations have not been set").ToArray ();
-			}
 
 			Assert.That (warnings.Length, Is.EqualTo (1), "Warning count");
 			Assert.That (warnings [0].Code, Is.EqualTo ("IL2075"), "Warning code");
@@ -2577,12 +2570,7 @@ namespace Xamarin.Tests {
 
 			// Verify that we have no warnings, but unfortunately we still have some we haven't fixed yet.
 			// Ignore those, and fail the test if we stop getting them (so that we can update the test to not ignore them anymore).
-			rv.AssertNoWarnings ((evt) => {
-				if (platform == ApplePlatform.iOS && evt.Message?.Trim () == "Supported iPhone orientations have not been set")
-					return false;
-
-				return true;
-			});
+			rv.AssertNoWarnings ((evt) => !Extensions.IsFilteredWarning (evt, platform));
 		}
 
 		[Test]
@@ -2606,11 +2594,7 @@ namespace Xamarin.Tests {
 			var config = "Debug";
 			var runtimeIdentifierInfix = $"/{runtimeIdentifiers}/";
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath)
-								.Where (evt => {
-									if (platform == ApplePlatform.iOS && evt.Message?.Trim () == "Supported iPhone orientations have not been set")
-										return false;
-									return true;
-								});
+								.FilterWarnings (platform);
 			var expectedWarnings = new ExpectedBuildMessage [] {
 				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Reflection.MethodInfo, ObjCRuntime.Selector)'."),
 				new ExpectedBuildMessage ($"ILLINK", $"It's not safe to remove the dynamic registrar, because monotouchtest references 'ObjCRuntime.Runtime.ConnectMethod (System.Type, System.Reflection.MethodInfo, Foundation.ExportAttribute)'."),
@@ -2731,7 +2715,7 @@ namespace Xamarin.Tests {
 
 			if (IsTargetPlatformVersionCompatEnabled) {
 				var rv = DotNet.AssertBuild (project_path, properties);
-				var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
+				var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).ToArray ();
 				AssertWarningMessages (warnings, $"{minSupportedOSVersion} is not a valid TargetPlatformVersion for {platform.AsString ()}. This warning will become an error in future versions of the {platform.AsString ()} workload. Valid versions include:\n{string.Join ('\n', supportedApiVersions)}");
 			} else {
 				var rv = DotNet.AssertBuildFailure (project_path, properties);

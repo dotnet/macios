@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Runtime.CompilerServices;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
@@ -13,22 +13,20 @@ using Xamarin.Utils;
 
 namespace Xamarin.Bundler {
 	public static partial class ErrorHelper {
-		public static ApplePlatform Platform;
-
-		internal static string Prefix {
-			get {
-				switch (Platform) {
-				case ApplePlatform.iOS:
-				case ApplePlatform.TVOS:
-				case ApplePlatform.MacCatalyst:
-				case ApplePlatform.None: // Return "MT" by default instead of throwing an exception, because any exception here will most likely hide whatever other error we're trying to show.
-					return "MT";
-				case ApplePlatform.MacOSX:
-					return "MM";
-				default:
-					// Do not use the ErrorHandler machinery, because it will probably end up recursing and eventually throwing a StackOverflowException.
-					throw new InvalidOperationException ($"Unknown platform: {Platform}");
-				}
+		internal static string GetPrefix (IToolLog? log)
+		{
+			switch (log?.Platform) {
+			case ApplePlatform.iOS:
+			case ApplePlatform.TVOS:
+			case ApplePlatform.MacCatalyst:
+			case ApplePlatform.None: // Return "MT" by default instead of throwing an exception, because any exception here will most likely hide whatever other error we're trying to show.
+			case null:
+				return "MT";
+			case ApplePlatform.MacOSX:
+				return "MM";
+			default:
+				// Do not use the ErrorHandler machinery, because it will probably end up recursing and eventually throwing a StackOverflowException.
+				throw new InvalidOperationException ($"Unknown platform: {log.Platform}");
 			}
 		}
 
@@ -38,48 +36,42 @@ namespace Xamarin.Bundler {
 			Disable = 1,
 		}
 
-		static Dictionary<int, WarningLevel>? warning_levels;
+		static ConditionalWeakTable<IToolLog, Dictionary<int, WarningLevel>> warning_levels = new ();
 
-#pragma warning disable 649
-		public static Func<Exception, bool>? IsExpectedException;
-		public static Action<int>? ExitCallback;
-#pragma warning restore 649
-
-		public static WarningLevel GetWarningLevel (int code)
+		public static WarningLevel GetWarningLevel (IToolLog log, int code)
 		{
-			WarningLevel level;
+			if (warning_levels.TryGetValue (log, out var log_warning_levels)) {
+				// code -1: all codes
+				if (log_warning_levels.TryGetValue (-1, out var level))
+					return level;
 
-			if (warning_levels is null)
-				return WarningLevel.Warning;
-
-			// code -1: all codes
-			if (warning_levels.TryGetValue (-1, out level))
-				return level;
-
-			if (warning_levels.TryGetValue (code, out level))
-				return level;
+				if (log_warning_levels.TryGetValue (code, out level))
+					return level;
+			}
 
 			return WarningLevel.Warning;
 		}
 
-		public static void SetWarningLevel (WarningLevel level, int? code = null /* if null, apply to all warnings */)
+		public static void SetWarningLevel (IToolLog log, WarningLevel level, int? code = null /* if null, apply to all warnings */)
 		{
-			if (warning_levels is null)
-				warning_levels = new Dictionary<int, WarningLevel> ();
+			if (!warning_levels.TryGetValue (log, out var log_warning_levels)) {
+				log_warning_levels = new Dictionary<int, WarningLevel> ();
+				warning_levels.Add (log, log_warning_levels);
+			}
 			if (code.HasValue) {
-				warning_levels [code.Value] = level;
+				log_warning_levels [code.Value] = level;
 			} else {
-				warning_levels [-1] = level; // code -1: all codes.
+				log_warning_levels [-1] = level; // code -1: all codes.
 			}
 		}
 
-		public static void ParseWarningLevel (WarningLevel level, string value)
+		public static void ParseWarningLevel (IToolLog log, WarningLevel level, string value)
 		{
 			if (string.IsNullOrEmpty (value)) {
-				SetWarningLevel (level);
+				SetWarningLevel (log, level);
 			} else {
 				foreach (var code in value.Split (new char [] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-					SetWarningLevel (level, int.Parse (code));
+					SetWarningLevel (log, level, int.Parse (code));
 			}
 		}
 
@@ -254,7 +246,7 @@ namespace Xamarin.Bundler {
 
 		public static void Warning (IToolLog log, int code, string message, params object [] args)
 		{
-			Show (log, new ProductException (code, false, message, args));
+			Show (log, new ProductException (code, false, null, message, args));
 		}
 
 		public static void Warning (IToolLog log, int code, Exception innerException, string message, params object [] args)
@@ -269,7 +261,7 @@ namespace Xamarin.Bundler {
 				return;
 
 			// Separate warnings from errors
-			var grouped = exceptions.GroupBy ((v) => (v as ProductException)?.Error == false);
+			var grouped = exceptions.GroupBy ((v) => (v as ProductException)?.IsError (log) == false);
 
 			var warnings = grouped.SingleOrDefault ((v) => v.Key);
 			if (warnings?.Any () == true)
@@ -299,8 +291,6 @@ namespace Xamarin.Bundler {
 
 		static void Exit (int exitCode)
 		{
-			if (ExitCallback is not null)
-				ExitCallback (exitCode);
 			Environment.Exit (exitCode);
 		}
 
@@ -310,9 +300,9 @@ namespace Xamarin.Bundler {
 			bool error = true;
 
 			if (mte is not null) {
-				error = mte.Error;
+				error = mte.IsError (log);
 
-				if (!error && GetWarningLevel (mte.Code) == WarningLevel.Disable)
+				if (!error && GetWarningLevel (log, mte.Code) == WarningLevel.Disable)
 					return false; // This is an ignored warning.
 
 				log.LogError (mte.ToString ());
@@ -321,14 +311,9 @@ namespace Xamarin.Bundler {
 
 				if (log.Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace))
 					log.LogError (e.StackTrace);
-			} else if (IsExpectedException is null || !IsExpectedException (e)) {
-				log.LogError ("error " + Prefix + "0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
-				log.LogError (e.ToString ());
 			} else {
+				log.LogError ("error " + GetPrefix (log) + "0000: Unexpected error - Please file a bug report at https://github.com/dotnet/macios/issues/new");
 				log.LogError (e.ToString ());
-				ShowInner (log, e);
-				if (log.Verbosity > 2 && !string.IsNullOrEmpty (e.StackTrace))
-					log.LogError (e.StackTrace);
 			}
 
 			return error;

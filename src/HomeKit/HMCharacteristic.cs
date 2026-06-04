@@ -4,8 +4,6 @@ namespace HomeKit {
 
 	partial class HMCharacteristic {
 		/// <summary>Gets a value that tells whether the characteristic supports event notifications.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public bool SupportsEventNotification {
 			get {
 				foreach (var p in Properties) {
@@ -17,8 +15,6 @@ namespace HomeKit {
 		}
 
 		/// <summary>Gets a value that tells whether the characteristic value is readable.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public bool Readable {
 			get {
 				foreach (var p in Properties) {
@@ -30,8 +26,6 @@ namespace HomeKit {
 		}
 
 		/// <summary>Gets a value that tells whether the characteristic is writeable.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		public bool Writable {
 			get {
 				foreach (var p in Properties) {
@@ -43,8 +37,6 @@ namespace HomeKit {
 		}
 
 		/// <summary>If <see langword="true" />, the property should not be displayed to the user.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
 		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]

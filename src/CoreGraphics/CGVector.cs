@@ -44,10 +44,8 @@ namespace CoreGraphics {
 	// CGGeometry.h
 	public struct CGVector {
 		/// <summary>X component of the vector</summary>
-		///         <remarks>To be added.</remarks>
 		public /* CGFloat */ nfloat dx;
 		/// <summary>Y component of the vector</summary>
-		///         <remarks>To be added.</remarks>
 		public /* CGFloat */ nfloat dy;
 
 		public CGVector (nfloat dx, nfloat dy)
@@ -67,17 +65,13 @@ namespace CoreGraphics {
 		}
 
 		/// <summary />
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public override int GetHashCode ()
 		{
 			return HashCode.Combine (dx, dy);
 		}
 
-		/// <param name="other">To be added.</param>
+		/// <param name="other">The other.</param>
 		///         <summary />
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
 		public override bool Equals (object? other)
 		{
 			if (other is CGVector vector)

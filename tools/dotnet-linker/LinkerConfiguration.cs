@@ -276,7 +276,7 @@ namespace Xamarin.Linker {
 					break;
 				case "NoWarn":
 					try {
-						ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Disable, value);
+						ErrorHelper.ParseWarningLevel (Application, ErrorHelper.WarningLevel.Disable, value);
 					} catch (Exception ex) {
 						throw new InvalidOperationException ($"Invalid WarnAsError '{value}' in {linker_file}", ex);
 					}
@@ -357,11 +357,11 @@ namespace Xamarin.Linker {
 					Application.RuntimeConfigurationFile = value;
 					break;
 				case "SdkDevPath":
-					Driver.SdkRoot = value;
+					Application.SdkRoot = value;
 					break;
 				case "SdkRootDirectory":
 					SdkRootDirectory = value;
-					Driver.SetFrameworkCurrentDirectory (value);
+					Application.FrameworkCurrentDirectory = value;
 					break;
 				case "SdkVersion":
 					if (!Version.TryParse (value, out var sdk_version))
@@ -380,7 +380,7 @@ namespace Xamarin.Linker {
 				case "TargetFramework":
 					if (!TargetFramework.TryParse (value, out var tf))
 						throw new InvalidOperationException ($"Invalid TargetFramework '{value}' in {linker_file}");
-					Driver.TargetFramework = TargetFramework.Parse (value);
+					Application.TargetFramework = TargetFramework.Parse (value);
 					break;
 				case "TypeMapAssemblyName":
 					Application.TypeMapAssemblyName = value;
@@ -401,14 +401,14 @@ namespace Xamarin.Linker {
 					break;
 				case "Warn":
 					try {
-						ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Warning, value);
+						ErrorHelper.ParseWarningLevel (Application, ErrorHelper.WarningLevel.Warning, value);
 					} catch (Exception ex) {
 						throw new InvalidOperationException ($"Invalid Warn '{value}' in {linker_file}", ex);
 					}
 					break;
 				case "WarnAsError":
 					try {
-						ErrorHelper.ParseWarningLevel (ErrorHelper.WarningLevel.Error, value);
+						ErrorHelper.ParseWarningLevel (Application, ErrorHelper.WarningLevel.Error, value);
 					} catch (Exception ex) {
 						throw new InvalidOperationException ($"Invalid WarnAsError '{value}' in {linker_file}", ex);
 					}
@@ -431,8 +431,6 @@ namespace Xamarin.Linker {
 					throw new InvalidOperationException ($"Unknown key '{key}' in {linker_file}");
 				}
 			}
-
-			ErrorHelper.Platform = Platform;
 
 			// Optimizations.Parse can only be called after setting ErrorHelper.Platform
 			if (!StringUtils.IsNullOrEmpty (user_optimize_flags)) {
@@ -468,8 +466,8 @@ namespace Xamarin.Linker {
 				break;
 			}
 
-			if (Driver.TargetFramework.Platform != Platform)
-				throw ErrorHelper.CreateError (99, "Inconsistent platforms. TargetFramework={0}, Platform={1}", Driver.TargetFramework.Platform, Platform);
+			if (Application.TargetFramework.Platform != Platform)
+				throw ErrorHelper.CreateError (99, "Inconsistent platforms. TargetFramework={0}, Platform={1}", Application.TargetFramework.Platform, Platform);
 
 			if (Application.XamarinRuntime != XamarinRuntime.MonoVM && Application.UseInterpreter) {
 				Application.Log (4, "The interpreter is enabled, but the current runtime isn't MonoVM. The interpreter settings will be ignored.");
@@ -574,7 +572,7 @@ namespace Xamarin.Linker {
 				Application.Log ($"    Registrar: {Application.Registrar} (Options: {Application.RegistrarOptions})");
 				Application.Log ($"    RuntimeConfigurationFile: {Application.RuntimeConfigurationFile}");
 				Application.Log ($"    RequirePInvokeWrappers: {Application.RequiresPInvokeWrappers}");
-				Application.Log ($"    SdkDevPath: {Driver.SdkRoot}");
+				Application.Log ($"    SdkDevPath: {Application.SdkRoot}");
 				Application.Log ($"    SdkRootDirectory: {SdkRootDirectory}");
 				Application.Log ($"    SdkVersion: {SdkVersion}");
 				Application.Log ($"    TypeMapAssemblyName: {Application.TypeMapAssemblyName}");
@@ -636,15 +634,23 @@ namespace Xamarin.Linker {
 			// Since we print using a standard message format, msbuild will parse those error messages and show
 			// them as msbuild errors.
 			var list = ErrorHelper.CollectExceptions (exceptions);
-			var allWarnings = list.All (v => v is ProductException pe && !pe.Error);
+			if (!TryGetInstance (context, out var instance)) {
+				// Something went very wrong. Just dump out everything.
+				context.LogMessage (MessageContainer.CreateCustomErrorMessage ("No linker configuration available.", 7000));
+				foreach (var exception in exceptions) {
+					context.LogMessage (MessageContainer.CreateCustomErrorMessage (exception.ToString (), 7000));
+				}
+				return;
+			}
+
+			var allWarnings = list.All (v => v is ProductException pe && !pe.IsError (instance.Application));
 			if (!allWarnings) {
-				TryGetInstance (context, out var instance);
-				var platform = (instance?.Platform)?.ToString () ?? "unknown";
+				var platform = instance.Platform.ToString ();
 				var msg = MessageContainer.CreateCustomErrorMessage (Errors.MX7000 /* An error occurred while executing the custom linker steps. Please review the build log for more information. */, 7000, platform);
 				context.LogMessage (msg);
 			}
 			// ErrorHelper.Show will print our errors and warnings to stderr.
-			ErrorHelper.Show (ConsoleLog.Instance, list);
+			ErrorHelper.Show (instance.Application, list);
 		}
 
 		public IEnumerable<AssemblyDefinition> GetNonDeletedAssemblies (BaseStep step)

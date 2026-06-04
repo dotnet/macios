@@ -9,7 +9,7 @@ using Xamarin.Utils;
 
 namespace Xamarin.Bundler {
 	public class Optimizations {
-		static string [] opt_names =
+		static readonly string [] opt_names =
 		{
 			"remove-uithread-checks",
 			"dead-code-elimination",
@@ -31,7 +31,7 @@ namespace Xamarin.Bundler {
 			"redirect-class-handles",
 		};
 
-		static ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
+		static readonly ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
 			/* Opt.RemoveUIThreadChecks               */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.DeadCodeElimination                */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.InlineIsDirectBinding              */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },

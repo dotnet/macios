@@ -385,13 +385,13 @@ namespace EventKit {
 
 	[Native]
 	public enum EKReminderPriority : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>No priority set.</summary>
 		None = 0,
-		/// <summary>To be added.</summary>
+		/// <summary>High priority.</summary>
 		High = 1,
-		/// <summary>To be added.</summary>
+		/// <summary>Medium priority.</summary>
 		Medium = 5,
-		/// <summary>To be added.</summary>
+		/// <summary>Low priority.</summary>
 		Low = 9,
 	}
 

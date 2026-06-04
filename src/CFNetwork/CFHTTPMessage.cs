@@ -16,7 +16,6 @@ using CoreFoundation;
 
 namespace CFNetwork {
 	/// <summary>An HTTP message.</summary>
-	///     <remarks>To be added.</remarks>
 	public partial class CFHTTPMessage : CFType {
 		[Preserve (Conditional = true)]
 		internal CFHTTPMessage (NativeHandle handle, bool owns)

@@ -85,10 +85,9 @@ namespace AddressBook {
 		{
 		}
 
-		/// <param name="handle">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <returns>To be added.</returns>
-		///         <remarks>To be added.</remarks>
+		/// <param name="handle">The native handle of the address book record.</param>
+		/// <summary>Creates an <see cref="ABRecord" /> from the specified native handle.</summary>
+		/// <returns>An <see cref="ABRecord" /> instance, or <see langword="null" /> if the handle is invalid.</returns>
 		public static ABRecord? FromHandle (IntPtr handle)
 		{
 			return FromHandle (handle, false);

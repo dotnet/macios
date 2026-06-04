@@ -315,9 +315,9 @@ namespace EventKit {
 	[Native]
 	[Flags]
 	public enum EKEntityMask : ulong {
-		/// <summary>To be added.</summary>
+		/// <summary>The calendar supports events.</summary>
 		Event = 1 << (int) EKEntityType.Event,
-		/// <summary>To be added.</summary>
+		/// <summary>The calendar supports reminders.</summary>
 		Reminder = 1 << (int) EKEntityType.Reminder,
 	}
 

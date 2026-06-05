@@ -245,7 +245,7 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 #if NET
-		internal static bool ExecuteRemotely<T> (T task, [NotNullWhen (true)] out TaskRunner? taskRunner, Action<TaskRunner>? preprocessTaskRunner = null) where T: Task, IHasSessionId
+		internal static bool ExecuteRemotely<T> (T task, [NotNullWhen (true)] out TaskRunner? taskRunner, Action<TaskRunner>? preprocessTaskRunner = null) where T : Task, IHasSessionId
 #else
 		internal static bool ExecuteRemotely<T> (T task, out TaskRunner taskRunner, Action<TaskRunner>? preprocessTaskRunner = null) where T : Task, IHasSessionId
 #endif

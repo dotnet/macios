@@ -86,6 +86,8 @@ namespace MonoTouchFixtures.Metal {
 			if (device is null)
 				Assert.Inconclusive ("Metal is not supported");
 
+			TestRuntime.AssertNotVirtualMachine ();
+
 			// Apple claims that "Indirect command buffers" are available with MTLGPUFamilyCommon2, but it crashes on at least one machine.
 			// Log what the current device supports, just to have it in the log.
 			foreach (MTLFeatureSet fs in Enum.GetValues<MTLFeatureSet> ()) {

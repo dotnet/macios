@@ -45,6 +45,46 @@ variables:
 - name: CIBuildPoolUrl
   value: 'https://devdiv.visualstudio.com/_settings/agentpools?poolId=367&view=agents'
 
+# ACES shared pool wiring.
+#
+# The infrastructure for routing build / api-diff / simulator-test jobs onto
+# the ACES shared pool ($(CIBuildPoolACES), image $(CIBuildPoolACESImage))
+# instead of the traditional Redmond Mac build pools ($(CIBuildPool) /
+# $(PRBuildPool)) is plumbed through the `useACES` template parameter, which
+# flows from each entry pipeline down through main-stage.yml /
+# build-stage.yml, api-diff-stage.yml and tests/stage.yml. When `useACES` is
+# true, those job-level templates emit:
+#     pool:
+#       name: $(CIBuildPoolACES)
+#       demands: ImageOverride -equals $(CIBuildPoolACESImage)
+# Otherwise they emit the original pool + Darwin / macOS.Name / XcodeChannel
+# demands.
+#
+# The switch MUST be a literal in the entry pipeline. Azure Pipelines only
+# resolves `${{ }}` expressions at template-expansion time, and variables
+# brought in via `- template:` (like this file) are not visible at that
+# point — they are runtime-only. So there is no working "single global
+# variable" we can read here; the literal lives in each entry pipeline:
+#
+#   CI (uses CIBuildPool / ACES):
+#     - build-pipeline.yml            -> useACES: true
+#     - run-ci-api-diff.yml           -> useACES: true
+#     - run-post-ci-build-tests.yml   -> useACES: true
+#   PR (uses PRBuildPool):
+#     - build-pull-request.yml        -> useACES: false
+#     - run-pr-api-diff.yml           -> useACES: false
+#     - run-post-pr-build-tests.yml   -> useACES: false
+#
+# Flip the literal in the three files on the side you want to move (e.g. when
+# the ACES pool is unavailable, or when you need an Xcode/macOS beta that is
+# only present on the traditional pools) and queue a new run.
+- name: CIBuildPoolACES
+  value: 'AcesShared'
+- name: CIBuildPoolACESUrl
+  value: 'https://dev.azure.com/devdiv/DevDiv/_settings/agentqueues?queueId=8259&view=jobs'
+- name: CIBuildPoolACESImage
+  value: 'ACES_VM_SharedPool_Tahoe'
+
 # override the default build revision
 - name: BUILD_REVISION
   value: azure-devops-$(Build.SourceVersion)

@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <Dependencies>
   <ProductDependencies>
     <Dependency Name="Microsoft.NET.Sdk" Version="11.0.100-preview.5.26256.105">
@@ -16,7 +17,7 @@
       <Uri>https://github.com/dotnet/dotnet</Uri>
       <Sha>d64191f29ec9042e2696d8b7d8326c4bd10ba268</Sha>
     </Dependency>
-    <!-- Set TRACKING_DOTNET_RUNTIME_SEPARATELY to something in Make.config if changing the version outside of dependency flow -->
+    
     <Dependency Name="Microsoft.NETCore.App.Ref" Version="11.0.0-preview.5.26256.105">
       <Uri>https://github.com/dotnet/dotnet</Uri>
       <Sha>d64191f29ec9042e2696d8b7d8326c4bd10ba268</Sha>
@@ -25,7 +26,7 @@
       <Uri>https://github.com/dotnet/dotnet</Uri>
       <Sha>d64191f29ec9042e2696d8b7d8326c4bd10ba268</Sha>
     </Dependency>
-    <!-- This is a subscription of the .NET 10/Xcode 26.0 versions of our packages -->
+    
     <Dependency Name="Microsoft.MacCatalyst.Sdk.net10.0_26.0" Version="26.0.11017">
       <Uri>https://github.com/dotnet/macios</Uri>
       <Sha>23eb1c2c9465fe76c810c8a69982c1254161f4b0</Sha>
@@ -42,7 +43,7 @@
       <Uri>https://github.com/dotnet/macios</Uri>
       <Sha>23eb1c2c9465fe76c810c8a69982c1254161f4b0</Sha>
     </Dependency>
-    <!-- This is a subscription of the .NET 10/Xcode 26.5 versions of our packages -->
+    
     <Dependency Name="Microsoft.MacCatalyst.Sdk.net10.0_26.5" Version="26.5.10289">
       <Uri>https://github.com/dotnet/macios</Uri>
       <Sha>6efb055f2806fbb89e4b201dca9e985ce7399db1</Sha>

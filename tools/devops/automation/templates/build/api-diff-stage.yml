@@ -34,6 +34,10 @@ parameters:
 - name: macOSName
   type: string
 
+- name: useACES
+  type: boolean
+  default: false
+
 jobs:
 # Detect changes
 - job: api_diff
@@ -44,13 +48,19 @@ jobs:
     # set the branch variable name, this is required by jenkins and we have a lot of scripts that depend on it
     BRANCH_NAME: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
     XHARNESS_LABELS: $[ stageDependencies.configure_build.configure.outputs['labels.xharness_labels'] ]
-  pool:
-    name: ${{ parameters.pool }}
-    demands:
-    - Agent.OS -equals Darwin
-    - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
-    - macOS.Name -equals ${{ parameters.macOSName }}
-    - XcodeChannel -equals ${{ parameters.xcodeChannel }}
+  ${{ if parameters.useACES }}:
+    pool:
+      name: $(CIBuildPoolACES)
+      demands:
+      - ImageOverride -equals $(CIBuildPoolACESImage)
+  ${{ else }}:
+    pool:
+      name: ${{ parameters.pool }}
+      demands:
+      - Agent.OS -equals Darwin
+      - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
+      - macOS.Name -equals ${{ parameters.macOSName }}
+      - XcodeChannel -equals ${{ parameters.xcodeChannel }}
   workspace:
     clean: all
 

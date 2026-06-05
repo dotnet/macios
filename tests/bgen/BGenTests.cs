@@ -1156,6 +1156,64 @@ namespace GeneratorTests {
 		}
 
 		[Test]
+		public void DynamicDependencyAttribute ()
+		{
+			var bgen = BuildFile (Profile.macOSMobile, "dynamic-dependency-attribute.cs");
+
+			var type = bgen.ApiAssembly.MainModule.Types.First (v => v.Name == "MyClass");
+			var getter = type.Methods.First (v => v.Name == "get_CurrentContext");
+			var setter = type.Methods.First (v => v.Name == "set_CurrentContext");
+			var doSomething = type.Methods.First (v => v.Name == "DoSomething");
+			var doSomethingElse = type.Methods.First (v => v.Name == "DoSomethingElse");
+			var doAnother = type.Methods.First (v => v.Name == "DoAnother");
+			var doYetAnother = type.Methods.First (v => v.Name == "DoYetAnother");
+			var doAll = type.Methods.First (v => v.Name == "DoAll");
+
+			// (DynamicallyAccessedMemberTypes, string, string) on property getter
+			var getterDDA = getter.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (getterDDA.Length, Is.EqualTo (1), "Getter DynamicDependency count");
+			Assert.That ((int) getterDDA [0].ConstructorArguments [0].Value, Is.EqualTo (7), "Getter DynamicDependency MemberTypes (PublicConstructors | NonPublicConstructors)");
+			Assert.That (getterDDA [0].ConstructorArguments [1].Value, Is.EqualTo ("Foundation.NSProxy"), "Getter DynamicDependency TypeName");
+			Assert.That (getterDDA [0].ConstructorArguments [2].Value, Is.EqualTo ("Microsoft.macOS"), "Getter DynamicDependency AssemblyName");
+
+			// Setter should not have it
+			var setterDDA = setter.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (setterDDA.Length, Is.EqualTo (0), "Setter DynamicDependency count");
+
+			// (string, string, string) on method
+			var methodDDA = doSomething.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (methodDDA.Length, Is.EqualTo (1), "DoSomething DynamicDependency count");
+			Assert.That (methodDDA [0].ConstructorArguments [0].Value, Is.EqualTo ("Create"), "DoSomething DynamicDependency MemberSignature");
+			Assert.That (methodDDA [0].ConstructorArguments [1].Value, Is.EqualTo ("NS.MyClass"), "DoSomething DynamicDependency TypeName");
+			Assert.That (methodDDA [0].ConstructorArguments [2].Value, Is.EqualTo ("api0"), "DoSomething DynamicDependency AssemblyName");
+
+			// (string) - single member signature
+			var elseDDA = doSomethingElse.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (elseDDA.Length, Is.EqualTo (1), "DoSomethingElse DynamicDependency count");
+			Assert.That (elseDDA [0].ConstructorArguments.Count, Is.EqualTo (1), "DoSomethingElse DynamicDependency arg count");
+			Assert.That (elseDDA [0].ConstructorArguments [0].Value, Is.EqualTo ("Activate"), "DoSomethingElse DynamicDependency MemberSignature");
+
+			// (DynamicallyAccessedMemberTypes, Type)
+			var anotherDDA = doAnother.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (anotherDDA.Length, Is.EqualTo (1), "DoAnother DynamicDependency count");
+			Assert.That ((int) anotherDDA [0].ConstructorArguments [0].Value, Is.EqualTo (8 | 512), "DoAnother DynamicDependency MemberTypes (PublicMethods | PublicProperties)");
+			Assert.That (((Mono.Cecil.TypeReference) anotherDDA [0].ConstructorArguments [1].Value).Name, Is.EqualTo ("NSObject"), "DoAnother DynamicDependency Type");
+
+			// (string, Type)
+			var yetAnotherDDA = doYetAnother.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (yetAnotherDDA.Length, Is.EqualTo (1), "DoYetAnother DynamicDependency count");
+			Assert.That (yetAnotherDDA [0].ConstructorArguments [0].Value, Is.EqualTo ("Create"), "DoYetAnother DynamicDependency MemberSignature");
+			Assert.That (((Mono.Cecil.TypeReference) yetAnotherDDA [0].ConstructorArguments [1].Value).Name, Is.EqualTo ("NSObject"), "DoYetAnother DynamicDependency Type");
+
+			// (DynamicallyAccessedMemberTypes.All, string, string)
+			var allDDA = doAll.CustomAttributes.Where (ca => ca.AttributeType.Name == "DynamicDependencyAttribute").ToArray ();
+			Assert.That (allDDA.Length, Is.EqualTo (1), "DoAll DynamicDependency count");
+			Assert.That ((int) allDDA [0].ConstructorArguments [0].Value, Is.EqualTo (-1), "DoAll DynamicDependency MemberTypes (All)");
+			Assert.That (allDDA [0].ConstructorArguments [1].Value, Is.EqualTo ("NS.MyClass"), "DoAll DynamicDependency TypeName");
+			Assert.That (allDDA [0].ConstructorArguments [2].Value, Is.EqualTo ("api0"), "DoAll DynamicDependency AssemblyName");
+		}
+
+		[Test]
 		[TestCase (Profile.iOS)]
 		public void NewerAvailabilityInInlinedProtocol (Profile profile)
 		{

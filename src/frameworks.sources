@@ -130,6 +130,7 @@ APPKIT_SOURCES = \
 	AppKit/NSPopUpButtonCell.cs \
 	AppKit/NSPredicateEditorRowTemplate.cs \
 	AppKit/NSPrintInfo.cs \
+	AppKit/NSPrintPreviewGraphicsContext.cs \
 	AppKit/NSScreen.cs \
 	AppKit/NSSegmentedControl.cs \
 	AppKit/NSSharingService.cs \
@@ -573,6 +574,7 @@ COREIMAGE_SOURCES = \
 	CoreImage/CIDetector.cs \
 	CoreImage/CIDetectorOptions.cs \
 	CoreImage/CIFilter.cs \
+	CoreImage/CIFilterGenerator.cs \
 	CoreImage/CIImage.cs \
 	CoreImage/CISampler.cs \
 	CoreImage/CISystemToneMap.cs \

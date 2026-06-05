@@ -10,6 +10,7 @@ namespace MonoTests.System.Net.Http {
 		public static string MicrosoftUrl => AssertNetworkConnection ("https://www.microsoft.com");
 		public static Uri MicrosoftUri => new Uri (MicrosoftUrl);
 		public static string MicrosoftHttpUrl => AssertNetworkConnection ("http://www.microsoft.com");
+		public static Uri MicrosoftHttpUri => new Uri (MicrosoftHttpUrl);
 		public static string XamarinUrl => AssertNetworkConnection ("https://dotnet.microsoft.com/apps/xamarin");
 		public static string XamarinHttpUrl => AssertNetworkConnection ("http://dotnet.microsoft.com/apps/xamarin");
 		public static Uri XamarinUri => new Uri (XamarinUrl);

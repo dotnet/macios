@@ -2055,6 +2055,7 @@ namespace MapKit {
 
 	[BaseType (typeof (NSFormatter))]
 	[MacCatalyst (13, 1)]
+	[ThreadSafe]
 	partial interface MKDistanceFormatter {
 
 		[Export ("stringFromDistance:")]

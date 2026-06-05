@@ -183,22 +183,22 @@ namespace Xamarin.Linker {
 
 			if (App.Registrar == RegistrarMode.TrimmableStatic && !type.IsAbstract && !type.IsInterface) {
 				if (isNSObject) {
-					var ctorRef = ManagedRegistrarLookupTablesStep.FindNSObjectConstructor (type);
+					var ctorRef = AppBundleRewriter.FindNSObjectConstructor (type);
 					if (ctorRef is not null) {
 						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 						// Implement INSObjectFactory._Xamarin_ConstructNSObject
-						ManagedRegistrarLookupTablesStep.ImplementConstructNSObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+						abr.ImplementConstructNSObjectFactoryMethod (DerivedLinkContext, type, ctor);
 						// Implement INativeObject._Xamarin_ConstructINativeObject
-						ManagedRegistrarLookupTablesStep.ImplementConstructINativeObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+						abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
 					}
 				} else if (type.IsNativeObject ()) {
-					var ctorRef = ManagedRegistrarLookupTablesStep.FindINativeObjectConstructor (type);
+					var ctorRef = AppBundleRewriter.FindINativeObjectConstructor (type);
 					if (ctorRef is not null) {
 						var ctor = abr.CurrentAssembly.MainModule.ImportReference (ctorRef);
 
 						// Implement INativeObject._Xamarin_ConstructINativeObject
-						ManagedRegistrarLookupTablesStep.ImplementConstructINativeObjectFactoryMethod (abr, DerivedLinkContext, type, ctor);
+						abr.ImplementConstructINativeObjectFactoryMethod (DerivedLinkContext, type, ctor);
 					}
 				}
 			}

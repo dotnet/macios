@@ -264,7 +264,7 @@ namespace Xamarin.Linker {
 				// INativeObject subclasses
 				var inativeObjectTypes = StaticRegistrar.GetAllTypes (assembly).Where (t => !t.IsInterface && !t.IsAbstract && t.IsNativeObject ());
 				foreach (var tr in inativeObjectTypes.OrderBy (v => v.FullName)) {
-					var inativeObjCtor = ManagedRegistrarLookupTablesStep.FindINativeObjectConstructor (tr);
+					var inativeObjCtor = AppBundleRewriter.FindINativeObjectConstructor (tr);
 					if (inativeObjCtor is null)
 						continue;
 
@@ -373,7 +373,7 @@ namespace Xamarin.Linker {
 						var createObjectMethod = proxyType.AddMethod ("CreateObject", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig, abr.Foundation_NSObject);
 						createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
 						il = createObjectMethod.Body.GetILProcessor ();
-						var nativeHandleCtor = ManagedRegistrarLookupTablesStep.FindNSObjectConstructor (td);
+						var nativeHandleCtor = AppBundleRewriter.FindNSObjectConstructor (td);
 						if (nativeHandleCtor is not null) {
 							il.Append (il.Create (OpCodes.Ldarg_1));
 							if (nativeHandleCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
@@ -512,7 +512,7 @@ namespace Xamarin.Linker {
 						createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
 						createObjectMethod.AddParameter ("owns", abr.System_Boolean);
 						createObjectMethod.CreateBody (out il);
-						var nativeHandleCtor = ManagedRegistrarLookupTablesStep.FindINativeObjectConstructor (objcType.ProtocolWrapperType.Resolve ());
+						var nativeHandleCtor = AppBundleRewriter.FindINativeObjectConstructor (objcType.ProtocolWrapperType.Resolve ());
 						if (nativeHandleCtor is not null) {
 							il.Append (il.Create (OpCodes.Ldarg_1));
 							if (nativeHandleCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))

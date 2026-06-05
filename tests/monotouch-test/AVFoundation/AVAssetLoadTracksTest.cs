@@ -46,7 +46,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			using var url = NSUrl.FromFilename (VideoPath);
 			using var asset = AVAsset.FromUrl (url);
 
-			var tcs = new TaskCompletionSource<AVAssetTrack[]?> ();
+			var tcs = new TaskCompletionSource<AVAssetTrack []?> ();
 			asset.LoadTrackWithMediaCharacteristics (AVMediaCharacteristics.Visual.GetConstant ()!, (tracks, error) => {
 				tcs.TrySetResult (tracks);
 			});
@@ -66,7 +66,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			using var url = NSUrl.FromFilename (VideoPath);
 			using var asset = AVAsset.FromUrl (url);
 
-			var tcs = new TaskCompletionSource<AVAssetTrack[]?> ();
+			var tcs = new TaskCompletionSource<AVAssetTrack []?> ();
 			asset.LoadTracksWithMediaType (AVMediaTypes.Video.GetConstant ()!, (AVAssetLoadTracksCallback) ((tracks, error) => {
 				tcs.TrySetResult (tracks);
 			}));
@@ -86,7 +86,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			using var url = NSUrl.FromFilename (VideoPath);
 			using var asset = AVAsset.FromUrl (url);
 
-			var tcs = new TaskCompletionSource<AVAssetTrack[]?> ();
+			var tcs = new TaskCompletionSource<AVAssetTrack []?> ();
 			asset.LoadTracksWithMediaType (AVMediaTypes.Video, (AVAssetLoadTracksCallback) ((tracks, error) => {
 				tcs.TrySetResult (tracks);
 			}));
@@ -130,7 +130,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			using var url = NSUrl.FromFilename (VideoPath);
 			using var movie = new AVMovie (url, (NSDictionary<NSString, NSObject>?) null);
 
-			var tcs = new TaskCompletionSource<AVMovieTrack[]?> ();
+			var tcs = new TaskCompletionSource<AVMovieTrack []?> ();
 			movie.LoadTracksWithMediaType (AVMediaTypes.Video.GetConstant ()!, (AVMovieLoadTracksCallback) ((tracks, error) => {
 				tcs.TrySetResult (tracks);
 			}));
@@ -152,7 +152,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			using var url = NSUrl.FromFilename (VideoPath);
 			using var movie = new AVMovie (url, (NSDictionary<NSString, NSObject>?) null);
 
-			var tcs = new TaskCompletionSource<AVMovieTrack[]?> ();
+			var tcs = new TaskCompletionSource<AVMovieTrack []?> ();
 			movie.LoadTracksWithMediaType (AVMediaTypes.Video, (AVMovieLoadTracksCallback) ((tracks, error) => {
 				tcs.TrySetResult (tracks);
 			}));
@@ -173,7 +173,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			using var url = NSUrl.FromFilename (VideoPath);
 			using var movie = new AVMovie (url, (NSDictionary<NSString, NSObject>?) null);
 
-			var tcs = new TaskCompletionSource<AVMovieTrack[]?> ();
+			var tcs = new TaskCompletionSource<AVMovieTrack []?> ();
 			movie.LoadTracksWithMediaCharacteristic (AVMediaCharacteristics.Visual.GetConstant ()!, (AVMovieLoadTracksCallback) ((tracks, error) => {
 				tcs.TrySetResult (tracks);
 			}));
@@ -186,7 +186,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			}
 		}
 
-		#endregion
+#endregion
 
 		#region AVMutableMovie
 
@@ -221,7 +221,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			if (initError is not null)
 				Assert.Ignore ($"Could not create AVMutableMovie from test file: {initError.LocalizedDescription}");
 
-			var tcs = new TaskCompletionSource<AVMutableMovieTrack[]?> ();
+			var tcs = new TaskCompletionSource<AVMutableMovieTrack []?> ();
 			movie.LoadTracksWithMediaType (AVMediaTypes.Video.GetConstant ()!, (AVMutableMovieLoadTracksCallback) ((tracks, error) => {
 				tcs.TrySetResult (tracks);
 			}));
@@ -244,7 +244,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			if (initError is not null)
 				Assert.Ignore ($"Could not create AVMutableMovie from test file: {initError.LocalizedDescription}");
 
-			var tcs = new TaskCompletionSource<AVMutableMovieTrack[]?> ();
+			var tcs = new TaskCompletionSource<AVMutableMovieTrack []?> ();
 			movie.LoadTracksWithMediaType (AVMediaTypes.Video, (AVMutableMovieLoadTracksCallback) ((tracks, error) => {
 				tcs.TrySetResult (tracks);
 			}));
@@ -267,7 +267,7 @@ namespace MonoTouchFixtures.AVFoundation {
 			if (initError is not null)
 				Assert.Ignore ($"Could not create AVMutableMovie from test file: {initError.LocalizedDescription}");
 
-			var tcs = new TaskCompletionSource<AVMutableMovieTrack[]?> ();
+			var tcs = new TaskCompletionSource<AVMutableMovieTrack []?> ();
 			movie.LoadTracksWithMediaCharacteristic (AVMediaCharacteristics.Visual.GetConstant ()!, (AVMutableMovieLoadTracksCallback) ((tracks, error) => {
 				tcs.TrySetResult (tracks);
 			}));
@@ -335,7 +335,7 @@ namespace MonoTouchFixtures.AVFoundation {
 
 			compositionTrack.InsertTimeRange (new CMTimeRange { Start = CMTime.Zero, Duration = asset.Duration }, sourceTracks [0], CMTime.Zero, out _);
 
-			var tcs = new TaskCompletionSource<AVCompositionTrack[]?> ();
+			var tcs = new TaskCompletionSource<AVCompositionTrack []?> ();
 			composition.LoadTracksWithMediaType (AVMediaTypes.Video.GetConstant ()!, (AVCompositionLoadTracksCallback) ((tracks, error) => {
 				tcs.TrySetResult (tracks);
 			}));
@@ -366,7 +366,7 @@ namespace MonoTouchFixtures.AVFoundation {
 
 			compositionTrack.InsertTimeRange (new CMTimeRange { Start = CMTime.Zero, Duration = asset.Duration }, sourceTracks [0], CMTime.Zero, out _);
 
-			var tcs = new TaskCompletionSource<AVCompositionTrack[]?> ();
+			var tcs = new TaskCompletionSource<AVCompositionTrack []?> ();
 			composition.LoadTracksWithMediaType (AVMediaTypes.Video, (AVCompositionLoadTracksCallback) ((tracks, error) => {
 				tcs.TrySetResult (tracks);
 			}));
@@ -397,7 +397,7 @@ namespace MonoTouchFixtures.AVFoundation {
 
 			compositionTrack.InsertTimeRange (new CMTimeRange { Start = CMTime.Zero, Duration = asset.Duration }, sourceTracks [0], CMTime.Zero, out _);
 
-			var tcs = new TaskCompletionSource<AVCompositionTrack[]?> ();
+			var tcs = new TaskCompletionSource<AVCompositionTrack []?> ();
 			composition.LoadTracksWithMediaCharacteristic (AVMediaCharacteristics.Visual.GetConstant ()!, (AVCompositionLoadTracksCallback) ((tracks, error) => {
 				tcs.TrySetResult (tracks);
 			}));

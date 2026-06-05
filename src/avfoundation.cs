@@ -5733,7 +5733,7 @@ namespace AVFoundation {
 	}
 
 	delegate void AVAssetLoadTrackCallback ([NullAllowed] AVAssetTrack track, [NullAllowed] NSError error);
-	delegate void AVAssetLoadTracksCallback ([NullAllowed] AVAssetTrack[] tracks, [NullAllowed] NSError error);
+	delegate void AVAssetLoadTracksCallback ([NullAllowed] AVAssetTrack [] tracks, [NullAllowed] NSError error);
 
 	interface IAVFragmentMinding { }
 
@@ -12760,7 +12760,7 @@ namespace AVFoundation {
 	}
 
 	delegate void AVMovieLoadTrackCallback ([NullAllowed] AVMovieTrack track, [NullAllowed] NSError error);
-	delegate void AVMovieLoadTracksCallback ([NullAllowed] AVMovieTrack[] tracks, [NullAllowed] NSError error);
+	delegate void AVMovieLoadTracksCallback ([NullAllowed] AVMovieTrack [] tracks, [NullAllowed] NSError error);
 
 	[NoTV, iOS (13, 0)]
 	[MacCatalyst (13, 1)]
@@ -12907,7 +12907,7 @@ namespace AVFoundation {
 	}
 
 	delegate void AVMutableMovieLoadTrackCallback ([NullAllowed] AVMutableMovieTrack track, [NullAllowed] NSError error);
-	delegate void AVMutableMovieLoadTracksCallback ([NullAllowed] AVMutableMovieTrack[] tracks, [NullAllowed] NSError error);
+	delegate void AVMutableMovieLoadTracksCallback ([NullAllowed] AVMutableMovieTrack [] tracks, [NullAllowed] NSError error);
 
 	[NoTV, iOS (13, 0)]
 	[MacCatalyst (13, 1)]
@@ -13167,7 +13167,7 @@ namespace AVFoundation {
 	}
 
 	delegate void AVFragmentedMovieLoadTrackCallback ([NullAllowed] AVFragmentedMovieTrack track, [NullAllowed] NSError error);
-	delegate void AVFragmentedMovieLoadTracksCallback ([NullAllowed] AVFragmentedMovieTrack[] tracks, [NullAllowed] NSError error);
+	delegate void AVFragmentedMovieLoadTracksCallback ([NullAllowed] AVFragmentedMovieTrack [] tracks, [NullAllowed] NSError error);
 
 	[iOS (13, 0), NoTV]
 	[MacCatalyst (13, 1)]
@@ -13801,7 +13801,7 @@ namespace AVFoundation {
 	}
 
 	delegate void AVCompositionLoadTrackCallback ([NullAllowed] AVCompositionTrack track, [NullAllowed] NSError error);
-	delegate void AVCompositionLoadTracksCallback ([NullAllowed] AVCompositionTrack[] tracks, [NullAllowed] NSError error);
+	delegate void AVCompositionLoadTracksCallback ([NullAllowed] AVCompositionTrack [] tracks, [NullAllowed] NSError error);
 
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (AVComposition))]

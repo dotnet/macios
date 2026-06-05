@@ -24,10 +24,16 @@ namespace Xamarin.Tests {
 			DotNet.AssertNew (outputDir, template);
 			var proj = Path.Combine (outputDir, $"{template}.csproj");
 
+			// Boot a simulator so that ComputeRunArguments can find a device
+			var deviceUdid = GetOrCreateDeviceUdid (platform);
+			BootSimulator (deviceUdid);
+
 			// dotnet test internally calls ComputeRunArguments via MSBuild API without
 			// forwarding /p: properties, so we must set them in the project file directly.
 			var csproj = File.ReadAllText (proj);
-			csproj = csproj.Replace ("</PropertyGroup>", "  <UseFloatingTargetPlatformVersion>true</UseFloatingTargetPlatformVersion>\n  </PropertyGroup>");
+			csproj = csproj.Replace (
+				"</PropertyGroup>",
+				$"  <UseFloatingTargetPlatformVersion>true</UseFloatingTargetPlatformVersion>\n    <Device>{deviceUdid}</Device>\n  </PropertyGroup>");
 			File.WriteAllText (proj, csproj);
 
 			// Replace generated tests with a single passing test
@@ -42,10 +48,6 @@ public sealed class Test1 {{
 	}}
 }}
 ");
-
-			// Boot a simulator so that ComputeRunArguments can find a device
-			var deviceUdid = GetOrCreateDeviceUdid (platform);
-			BootSimulator (deviceUdid);
 
 			// Run 'dotnet test' directly using Execution.RunAsync.
 			// dotnet test's MTP flow doesn't forward /p: properties to its internal

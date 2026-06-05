@@ -30,9 +30,10 @@ namespace Xamarin.Tests {
 			var log = ConsoleLogger.Instance;
 			var simService = new SimulatorService (log);
 			var runtimeService = new RuntimeService (log);
-			var deviceUdid = GetOrCreateDeviceUdid (platform, simService, runtimeService);
+			var device = GetOrCreateDevice (platform, simService, runtimeService);
 
-			Assert.That (simService.Boot (deviceUdid), Is.True, $"Failed to boot simulator {deviceUdid}.");
+			if (!device.IsBooted)
+				Assert.That (simService.Boot (device.Udid), Is.True, $"Failed to boot simulator {device.Udid}.");
 
 			try {
 				// dotnet test internally calls ComputeRunArguments via MSBuild API without
@@ -40,7 +41,7 @@ namespace Xamarin.Tests {
 				var csproj = File.ReadAllText (proj);
 				csproj = csproj.Replace (
 					"</PropertyGroup>",
-					$"  <UseFloatingTargetPlatformVersion>true</UseFloatingTargetPlatformVersion>\n    <Device>{deviceUdid}</Device>\n  </PropertyGroup>");
+					$"  <UseFloatingTargetPlatformVersion>true</UseFloatingTargetPlatformVersion>\n    <Device>{device.Udid}</Device>\n  </PropertyGroup>");
 				File.WriteAllText (proj, csproj);
 
 				// Replace generated tests with a single passing test
@@ -67,11 +68,11 @@ public sealed class Test1 {{
 				var testResult = Execution.RunAsync (DotNet.Executable, testArgs, env, Console.Out, workingDirectory: outputDir, timeout: TimeSpan.FromMinutes (10)).Result;
 				Assert.That (testResult.ExitCode, Is.EqualTo (0), $"'dotnet test' failed with exit code {testResult.ExitCode}.\nBinlog: {binlog}\nOutput:\n{testResult.Output.MergedOutput}");
 			} finally {
-				simService.Shutdown (deviceUdid);
+				simService.Shutdown (device.Udid);
 			}
 		}
 
-		static string GetOrCreateDeviceUdid (ApplePlatform platform, SimulatorService simService, RuntimeService runtimeService)
+		static SimulatorDeviceInfo GetOrCreateDevice (ApplePlatform platform, SimulatorService simService, RuntimeService runtimeService)
 		{
 			var runtimePlatform = platform switch {
 				ApplePlatform.iOS => "iOS",
@@ -87,7 +88,7 @@ public sealed class Test1 {{
 				.ToList ();
 
 			if (platformDevices.Count > 0)
-				return platformDevices [0].Udid;
+				return platformDevices [0];
 
 			// No devices exist — find the best runtime and create one
 			var runtimes = runtimeService.ListByPlatform (runtimePlatform, availableOnly: true);
@@ -103,7 +104,11 @@ public sealed class Test1 {{
 
 			var udid = simService.Create ("test-device", defaultDeviceType, bestRuntime.Identifier);
 			Assert.That (udid, Is.Not.Null, $"Failed to create {runtimePlatform} simulator device.");
-			return udid!;
+
+			// Re-fetch the device info so we have the full object
+			var created = simService.List (availableOnly: true).FirstOrDefault (d => d.Udid == udid);
+			Assert.That (created, Is.Not.Null, $"Created simulator {udid} not found in device list.");
+			return created!;
 		}
 	}
 }

@@ -1379,7 +1379,7 @@
 			<_RuntimeConfigurationFile>runtimeconfig.bin</_RuntimeConfigurationFile>
 
 			<!-- Path to the file where Objective-C type map information is stored -->
-			<_TypeMapFilePath Condition="'$(_TypeMapFilePath)' == ''">$(DeviceSpecificIntermediateOutputPath)type-map.txt</_TypeMapFilePath>
+			<_TypeMapFilePath Condition="'$(_TypeMapFilePath)' == ''">$(_LinkerCacheDirectory)/type-map.txt</_TypeMapFilePath>
 		</PropertyGroup>
 
 		<!-- Not sure about how to handle nested app extensions here, but if it ever becomes a problem we can look into it (I believe only watch extensions can have embedded extensions at this point, and we don't support watchOS on .NET anyways) -->

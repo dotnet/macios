@@ -38,6 +38,10 @@ parameters:
   - name: use1ES
     type: boolean
 
+  - name: useACES
+    type: boolean
+    default: false
+
 jobs:
   # This job performs the build of the nuget pkgs and the framework pkgs. There are two interesting dependencies in this job:
   - job: build
@@ -66,14 +70,21 @@ jobs:
       BRANCH_NAME: $[ replace(variables['Build.SourceBranch'], 'refs/heads/', '') ]
       XHARNESS_LABELS: $[ stageDependencies.configure_build.configure.outputs['labels.xharness_labels'] ]
       RUN_MAC_TESTS: $[ stageDependencies.configure_build.configure.outputs['decisions.RUN_MAC_TESTS'] ]
-    pool:
-      os: macOS
-      name: ${{ parameters.pool }}
-      demands:
-        - Agent.OS -equals Darwin
-        - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
-        - macOS.Name -equals ${{ parameters.macOSName }}
-        - XcodeChannel -equals ${{ parameters.xcodeChannel }}
+    ${{ if parameters.useACES }}:
+      pool:
+        os: macOS
+        name: $(CIBuildPoolACES)
+        demands:
+          - ImageOverride -equals $(CIBuildPoolACESImage)
+    ${{ else }}:
+      pool:
+        os: macOS
+        name: ${{ parameters.pool }}
+        demands:
+          - Agent.OS -equals Darwin
+          - Agent.OSVersion -gtVersion $(minimumMacOSVersion)
+          - macOS.Name -equals ${{ parameters.macOSName }}
+          - XcodeChannel -equals ${{ parameters.xcodeChannel }}
 
     steps:
       - template: build-pkgs.yml

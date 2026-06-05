@@ -454,12 +454,15 @@ namespace MonoTests.System.Net.Http {
 			bool containsHeaders = false;
 			string json = "";
 
+			using var handler = GetHandler (handlerType);
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-				HttpClient client = new HttpClient (GetHandler (handlerType));
+				using var client = new HttpClient (handler, disposeHandler: false) {
+					Timeout = TimeSpan.FromSeconds (20),
+				};
 				client.BaseAddress = NetworkResources.Httpbin.Uri;
 				var byteArray = new UTF8Encoding ().GetBytes ("username:password");
 				client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue ("Basic", Convert.ToBase64String (byteArray));
-				var result = await client.GetAsync (NetworkResources.Httpbin.GetRedirectUrl (3));
+				using var result = await client.GetAsync (NetworkResources.Httpbin.GetRedirectUrl (3));
 				// get the data returned from httpbin which contains the details of the requested performed.
 				json = await result.Content.ReadAsStringAsync ();
 				containsAuthorizarion = json.Contains ("Authorization");
@@ -467,12 +470,15 @@ namespace MonoTests.System.Net.Http {
 			}, out var ex);
 
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
+				TestRuntime.IgnoreInCIIfHttpClientTimedOut ();
 				Assert.Inconclusive ("Request timedout.");
+			} else if (ex is not null) {
+				TestRuntime.IgnoreInCIIfBadNetwork (ex);
+				Assert.That (ex, Is.Null, $"Exception {ex} for {json}");
 			} else if (!containsHeaders) {
 				Assert.Inconclusive ("Response from httpbin does not contain headers, therefore we cannot ensure that if the authoriation is present.");
 			} else {
 				Assert.That (containsAuthorizarion, Is.False, $"Authorization header did reach the final destination. {json}");
-				Assert.That (ex, Is.Null, $"Exception {ex} for {json}");
 			}
 		}
 
@@ -1357,18 +1363,22 @@ namespace MonoTests.System.Net.Http {
 		{
 			// https://github.com/dotnet/macios/issues/20629
 
+			using var handler = GetHandler (handlerType);
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-				var client = new HttpClient (GetHandler (handlerType));
+				using var client = new HttpClient (handler, disposeHandler: false) {
+					Timeout = TimeSpan.FromSeconds (20),
+				};
 				var postRequestUri = NetworkResources.Httpbin.Url + "/";
 				var initialRequestUri = NetworkResources.Httpbin.GetRedirectToUrl (postRequestUri);
-				var request = new HttpRequestMessage (HttpMethod.Get, initialRequestUri);
+				using var request = new HttpRequestMessage (HttpMethod.Get, initialRequestUri);
 				Assert.That (request.RequestUri.ToString (), Is.EqualTo (initialRequestUri), "Initial RequestUri");
-				var response = await client.SendAsync (request);
+				using var response = await client.SendAsync (request);
 				TestRuntime.IgnoreInCIIfBadNetwork (response.StatusCode);
 				Assert.That (request.RequestUri.ToString (), Is.EqualTo (postRequestUri), "Post RequestUri");
 			}, out var ex);
 
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc. we do not want to fail
+				TestRuntime.IgnoreInCIIfHttpClientTimedOut ();
 				Assert.Inconclusive ("Request timedout.");
 			} else {
 				TestRuntime.IgnoreInCIIfBadNetwork (ex);
@@ -1382,17 +1392,21 @@ namespace MonoTests.System.Net.Http {
 		{
 			// https://github.com/dotnet/macios/issues/20629
 
+			using var handler = GetHandler (handlerType);
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
-				var client = new HttpClient (GetHandler (handlerType));
+				using var client = new HttpClient (handler, disposeHandler: false) {
+					Timeout = TimeSpan.FromSeconds (20),
+				};
 				var requestUri = NetworkResources.Httpbin.Uri + "?stuffHere=[]{}";
-				var request = new HttpRequestMessage (HttpMethod.Get, requestUri);
+				using var request = new HttpRequestMessage (HttpMethod.Get, requestUri);
 				Assert.That (request.RequestUri.ToString (), Is.EqualTo (requestUri), "Initial RequestUri");
-				var response = await client.SendAsync (request);
+				using var response = await client.SendAsync (request);
 				TestRuntime.IgnoreInCIIfBadNetwork (response.StatusCode);
 				Assert.That (request.RequestUri.ToString (), Is.EqualTo (requestUri), "Post RequestUri");
 			}, out var ex);
 
 			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc. we do not want to fail
+				TestRuntime.IgnoreInCIIfHttpClientTimedOut ();
 				Assert.Inconclusive ("Request timedout.");
 			} else {
 				TestRuntime.IgnoreInCIIfBadNetwork (ex);

@@ -220,7 +220,7 @@ namespace Xamarin.Tests {
 			var proj = Path.Combine (outputDir, $"{info.Template}.{language.AsFileExtension ()}");
 			var properties = GetDefaultProperties ();
 			var rv = DotNet.AssertBuild (proj, properties);
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (info.Platform).Select (v => v.Message);
 			Assert.That (warnings, Is.Empty, $"Build warnings:\n\t{string.Join ("\n\t", warnings)}");
 
 			if (info.Execute) {

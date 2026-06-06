@@ -8,6 +8,10 @@ using Xamarin.Bundler;
 
 namespace Xamarin.Linker {
 	public class DotNetResolver : CoreResolver {
+		public DotNetResolver (Application app)
+		{
+		}
+
 		public override AssemblyDefinition Resolve (AssemblyNameReference name, ReaderParameters parameters)
 		{
 			throw new NotImplementedException ($"Unable to resolve the assembly reference {name}");

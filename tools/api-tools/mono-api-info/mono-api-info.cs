@@ -1014,7 +1014,9 @@ namespace Mono.ApiTools {
 			base.AddExtraAttributes (memberDefinition);
 
 			FieldDefinition field = (FieldDefinition) memberDefinition;
-			AddAttribute ("fieldtype", Utils.CleanupTypeName (field.FieldType));
+			var fieldTypeName = Utils.CleanupTypeName (field.FieldType);
+			fieldTypeName = NullabilityHelper.AppendNullabilityToTypeName (fieldTypeName, field.FieldType, field, field.DeclaringType);
+			AddAttribute ("fieldtype", fieldTypeName);
 
 			if (field.IsLiteral) {
 				object value = field.Constant;//object value = field.GetValue (null);
@@ -1083,7 +1085,9 @@ namespace Mono.ApiTools {
 			base.AddExtraAttributes (memberDefinition);
 
 			PropertyDefinition prop = (PropertyDefinition) memberDefinition;
-			AddAttribute ("ptype", Utils.CleanupTypeName (prop.PropertyType));
+			var ptypeName = Utils.CleanupTypeName (prop.PropertyType);
+			ptypeName = NullabilityHelper.AppendNullabilityToTypeName (ptypeName, prop.PropertyType, prop, prop.DeclaringType);
+			AddAttribute ("ptype", ptypeName);
 
 			bool haveParameters;
 			MethodDefinition []? methods = GetMethods ((PropertyDefinition) memberDefinition, out haveParameters);
@@ -1149,7 +1153,9 @@ namespace Mono.ApiTools {
 			base.AddExtraAttributes (memberDefinition);
 
 			EventDefinition evt = (EventDefinition) memberDefinition;
-			AddAttribute ("eventtype", Utils.CleanupTypeName (evt.EventType));
+			var evtTypeName = Utils.CleanupTypeName (evt.EventType);
+			evtTypeName = NullabilityHelper.AppendNullabilityToTypeName (evtTypeName, evt.EventType, evt, evt.DeclaringType);
+			AddAttribute ("eventtype", evtTypeName);
 		}
 
 		public override string ParentTag {
@@ -1217,8 +1223,10 @@ namespace Mono.ApiTools {
 				AddAttribute ("is-override", "true");
 			}
 			string rettype = Utils.CleanupTypeName (mbase.MethodReturnType.ReturnType);
-			if (rettype != "System.Void" || !mbase.IsConstructor)
+			if (rettype != "System.Void" || !mbase.IsConstructor) {
+				rettype = NullabilityHelper.AppendNullabilityToTypeName (rettype, mbase.MethodReturnType.ReturnType, mbase.MethodReturnType, mbase);
 				AddAttribute ("returntype", (rettype));
+			}
 			//
 			//			if (mbase.MethodReturnType.HasCustomAttributes)
 			//				AttributeData.OutputAttributes (writer, mbase.MethodReturnType);
@@ -1302,7 +1310,7 @@ namespace Mono.ApiTools {
 					pt = brt.ElementType;
 				}
 
-				AddAttribute ("type", Utils.CleanupTypeName (pt));
+				AddAttribute ("type", NullabilityHelper.AppendNullabilityToTypeName (Utils.CleanupTypeName (pt), pt, parameter, parameter.Method as ICustomAttributeProvider));
 
 				if (parameter.IsOptional) {
 					AddAttribute ("optional", "true");
@@ -1454,6 +1462,130 @@ namespace Mono.ApiTools {
 			return signature.ToString ();
 		}
 
+	}
+
+	static class NullabilityHelper {
+		const string NullableAttributeName = "System.Runtime.CompilerServices.NullableAttribute";
+		const string NullableContextAttributeName = "System.Runtime.CompilerServices.NullableContextAttribute";
+
+		// Returns the nullability flag for the top-level type:
+		// 0 = oblivious, 1 = not-null, 2 = nullable
+		public static byte GetTopLevelNullability (ICustomAttributeProvider provider, ICustomAttributeProvider? context)
+		{
+			// Check for NullableAttribute directly on the member/parameter/return type
+			var flag = GetNullableFlagFromProvider (provider);
+			if (flag.HasValue)
+				return flag.Value;
+
+			// Fall back to NullableContextAttribute on the containing method/type
+			if (context is not null) {
+				var contextFlag = GetNullableContextFlag (context);
+				if (contextFlag.HasValue)
+					return contextFlag.Value;
+			}
+
+			return 0; // oblivious
+		}
+
+		// Gets the NullableContextAttribute flag from a method or type
+		public static byte? GetNullableContextFlag (ICustomAttributeProvider provider)
+		{
+			if (provider is null)
+				return null;
+
+			if (!provider.HasCustomAttributes)
+				return GetNullableContextFromParent (provider);
+
+			foreach (var attr in provider.CustomAttributes) {
+				if (attr.AttributeType.FullName != NullableContextAttributeName)
+					continue;
+				if (attr.ConstructorArguments.Count == 1 && attr.ConstructorArguments [0].Value is byte b)
+					return b;
+			}
+
+			return GetNullableContextFromParent (provider);
+		}
+
+		static byte? GetNullableContextFromParent (ICustomAttributeProvider? provider)
+		{
+			if (provider is MethodDefinition method)
+				return GetNullableContextFlag (method.DeclaringType);
+			if (provider is PropertyDefinition prop)
+				return GetNullableContextFlag (prop.DeclaringType);
+			if (provider is FieldDefinition field)
+				return GetNullableContextFlag (field.DeclaringType);
+			if (provider is EventDefinition evt)
+				return GetNullableContextFlag (evt.DeclaringType);
+			if (provider is TypeDefinition type) {
+				if (type.DeclaringType is not null)
+					return GetNullableContextFlag (type.DeclaringType);
+				// Fall back to module-level NullableContextAttribute
+				return GetNullableContextFlagFromAttributes (type.Module);
+			}
+			return null;
+		}
+
+		static byte? GetNullableContextFlagFromAttributes (ICustomAttributeProvider? provider)
+		{
+			if (provider is null || !provider.HasCustomAttributes)
+				return null;
+
+			foreach (var attr in provider.CustomAttributes) {
+				if (attr.AttributeType.FullName != NullableContextAttributeName)
+					continue;
+				if (attr.ConstructorArguments.Count == 1 && attr.ConstructorArguments [0].Value is byte b)
+					return b;
+			}
+			return null;
+		}
+
+		static byte? GetNullableFlagFromProvider (ICustomAttributeProvider provider)
+		{
+			if (!provider.HasCustomAttributes)
+				return null;
+
+			foreach (var attr in provider.CustomAttributes) {
+				if (attr.AttributeType.FullName != NullableAttributeName)
+					continue;
+				if (attr.ConstructorArguments.Count != 1)
+					continue;
+
+				var arg = attr.ConstructorArguments [0];
+				if (arg.Value is byte b)
+					return b;
+				if (arg.Value is CustomAttributeArgument [] arr && arr.Length > 0 && arr [0].Value is byte b2)
+					return b2;
+			}
+
+			return null;
+		}
+
+		public static bool IsNullableReferenceType (TypeReference type, ICustomAttributeProvider provider, ICustomAttributeProvider? context)
+		{
+			if (type is null)
+				return false;
+
+			// Value types use Nullable<T> for nullability, not annotations
+			if (type.IsValueType)
+				return false;
+
+			// ByReference types (ref/out parameters): check the element type
+			if (type.IsByReference) {
+				var elementType = ((ByReferenceType) type).ElementType;
+				if (elementType.IsValueType)
+					return false;
+			}
+
+			var flag = GetTopLevelNullability (provider, context);
+			return flag == 2;
+		}
+
+		public static string AppendNullabilityToTypeName (string typeName, TypeReference type, ICustomAttributeProvider provider, ICustomAttributeProvider? context)
+		{
+			if (IsNullableReferenceType (type, provider, context))
+				return typeName + "?";
+			return typeName;
+		}
 	}
 
 	class TypeReferenceComparer : IComparer<TypeReference> {

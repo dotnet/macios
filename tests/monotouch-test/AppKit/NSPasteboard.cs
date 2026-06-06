@@ -129,7 +129,7 @@ namespace Xamarin.Mac.Tests {
 				Assert.That (evt.WaitOne (TimeSpan.FromSeconds (1)), "StronglyTyped DetectPatterns #2 wait");
 				Assert.That (detectedPatterns, Is.Not.Null, "StronglyTyped DetectedPatterns #2 patterns");
 				Assert.That ((int) detectedPatterns.Count, Is.EqualTo (1), "StronglyTyped DetectedPatterns #2 count");
-				Assert.That (detectedPatterns, Does.Contain (NSPasteboardDetectionPattern.EmailAddress), "StronglyTyped DetectedPatterns #2 email");
+				Assert.That (detectedPatterns.Contains (NSPasteboardDetectionPattern.EmailAddress), "StronglyTyped DetectedPatterns #2 email");
 				Assert.That (error, Is.Null, "StronglyTyped DetectedPatterns #2 error");
 			} finally {
 				pasteboard.ReleaseGlobally ();
@@ -294,7 +294,7 @@ namespace Xamarin.Mac.Tests {
 				Assert.That (evt.WaitOne (TimeSpan.FromSeconds (1)), "StronglyTyped DetectValues #2 wait");
 				Assert.That (detected, Is.Not.Null, "StronglyTyped DetectValues #2 patterns");
 				Assert.That ((int) detected.Count, Is.EqualTo (1), "StronglyTyped DetectValues #2 count");
-				Assert.That (detected.Keys, Does.Contain (NSPasteboardDetectionPattern.EmailAddress), "StronglyTyped DetectValues #2 email");
+				Assert.That (detected.Keys.Contains (NSPasteboardDetectionPattern.EmailAddress), "StronglyTyped DetectValues #2 email");
 				matches = detected.Values.First ();
 				Assert.That (matches.Length, Is.EqualTo (1), "StronglyTyped DetectValues #2 matches.Length");
 				match = matches [0];
@@ -312,7 +312,7 @@ namespace Xamarin.Mac.Tests {
 				Assert.That (evt.WaitOne (TimeSpan.FromSeconds (1)), "StronglyTyped DetectValues #3 wait");
 				Assert.That (detected, Is.Not.Null, "StronglyTyped DetectValues #3 patterns");
 				Assert.That ((int) detected.Count, Is.EqualTo (1), "StronglyTyped DetectValues #3 count");
-				Assert.That (detected.Keys, Does.Contain (NSPasteboardDetectionPattern.EmailAddress), "StronglyTyped DetectValues #3 email");
+				Assert.That (detected.Keys.Contains (NSPasteboardDetectionPattern.EmailAddress), "StronglyTyped DetectValues #3 email");
 				matches = detected.Values.First ();
 				Assert.That (matches.Length, Is.EqualTo (1), "StronglyTyped DetectValues #3 matches.Length");
 				match = matches [0];

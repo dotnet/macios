@@ -201,18 +201,18 @@ namespace Xamarin.Linker.Steps {
 						if (Configuration.InlineClassGetHandle != InlineClassGetHandleMode.Disabled && pinfo.EntryPoint.StartsWith (InlineClassGetHandleStep.PInvokePrefix, StringComparison.Ordinal))
 							break;
 					}
-					Driver.Log (4, "Adding native reference to {0} in {1} because it's referenced by {2} in {3}.", pinfo.EntryPoint, pinfo.Module.Name, method.FullName, method.Module.Name);
+					DerivedLinkContext.App.Log (4, "Adding native reference to {0} in {1} because it's referenced by {2} in {3}.", pinfo.EntryPoint, pinfo.Module.Name, method.FullName, method.Module.Name);
 					DerivedLinkContext.RequiredSymbols.AddFunction (pinfo.EntryPoint).AddMember (method);
 					break;
 
 				default:
 					if (!addPInvokeSymbol)
-						Driver.Log (4, "Did not add native reference to {0} in {1} referenced by {2} in {3}.", pinfo.EntryPoint, pinfo.Module.Name, method.FullName, method.Module.Name);
+						DerivedLinkContext.App.Log (4, "Did not add native reference to {0} in {1} referenced by {2} in {3}.", pinfo.EntryPoint, pinfo.Module.Name, method.FullName, method.Module.Name);
 					break;
 				}
 
 				if (addPInvokeSymbol) {
-					Driver.Log (4, "Adding native reference to {0} in {1} because it's referenced by {2} in {3}.", pinfo.EntryPoint, pinfo.Module.Name, method.FullName, method.Module.Name);
+					DerivedLinkContext.App.Log (4, "Adding native reference to {0} in {1} because it's referenced by {2} in {3}.", pinfo.EntryPoint, pinfo.Module.Name, method.FullName, method.Module.Name);
 					DerivedLinkContext.RequireMonoNative = true;
 					if (DerivedLinkContext.App.Platform != ApplePlatform.MacOSX &&
 						DerivedLinkContext.App.LibMonoNativeLinkMode == AssemblyBuildTarget.StaticObject) {

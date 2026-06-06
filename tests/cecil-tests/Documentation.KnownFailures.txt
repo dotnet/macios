@@ -25152,7 +25152,6 @@ T:AppKit.NSPrintingPageOrder
 T:AppKit.NSPrintingPaginationMode
 T:AppKit.NSPrintPanelOptions
 T:AppKit.NSPrintPanelResult
-T:AppKit.NSPrintPreviewGraphicsContext
 T:AppKit.NSPrintRenderingQuality
 T:AppKit.NSProgressIndicatorStyle
 T:AppKit.NSProgressIndicatorThickness

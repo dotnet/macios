@@ -1027,7 +1027,7 @@ namespace MonoTouchFixtures.ObjCRuntime {
 			[Export ("testNativeEnum1:")]
 			public virtual void TestNativeEnum1 (NSWritingDirection twd)
 			{
-				Assert.That (Enum.GetValues<NSWritingDirection> (), Contains.Item (twd), "TestNativeEnum1");
+				Assert.That (Enum.GetValues<NSWritingDirection> ().Contains (twd), "TestNativeEnum1");
 			}
 
 			public virtual UIPopoverArrowDirection TestNativeEnum2 {
@@ -2122,9 +2122,11 @@ namespace MonoTouchFixtures.ObjCRuntime {
 				} catch (Exception e) {
 					ex = e;
 				}
-			});
+			}) {
+				IsBackground = true,
+			};
 			thread.Start ();
-			thread.Join ();
+			Assert.That (thread.Join (TimeSpan.FromSeconds (30)), Is.True, "Thread.Join timed out");
 			GC.Collect ();
 			GC.WaitForPendingFinalizers ();
 			TestRuntime.RunAsync (TimeSpan.FromSeconds (30), () => { }, () => ObjCBlockTester.FreedBlockCount > initialFreedCount);

@@ -91,13 +91,18 @@ steps:
 # if we got to this point, it means that we do have at least 20 Gb to run the test, should
 # be more than enough, else the above script would have stopped the pipeline
 - bash: |
+    set -eo pipefail
     set -x
-    set -e
     cd "$BUILD_REPOSITORY_TITLE"
+    ARGS=()
     TEST_PLATFORM=$(echo "${{ parameters.testPlatform }}" | tr '[:upper:]' '[:lower:]')
     if test -n "$TEST_PLATFORM"; then
       ARGS+=("--disable-all-platforms")
       ARGS+=("--enable-$TEST_PLATFORM")
+    fi
+    XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
+    if [[ -n "$XCODE_PATH" && -d "$XCODE_PATH" ]]; then
+      ARGS+=("--xcode=$XCODE_PATH")
     fi
     ./configure "${ARGS[@]}"
   displayName: 'Enable Xamarin and configure platforms'
@@ -208,6 +213,7 @@ steps:
     provisioning_script: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/build-provisioning.csx
     displayName: 'Provisionator dependencies'
     provisionatorChannel: $(PROVISIONATOR_CHANNEL)
+    retryCount: 3
 
 - bash: |
     set -x

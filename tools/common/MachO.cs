@@ -269,7 +269,7 @@ namespace Xamarin {
 			}
 		}
 
-		public static List<Abi> GetArchitectures (string file)
+		public static List<Abi> GetArchitectures (IToolLog log, string file)
 		{
 			var result = new List<Abi> ();
 
@@ -309,7 +309,7 @@ namespace Xamarin {
 						result.Add (GetArch (System.Net.IPAddress.NetworkToHostOrder (reader.ReadInt32 ()), System.Net.IPAddress.NetworkToHostOrder (reader.ReadInt32 ())));
 						break;
 					default:
-						Console.WriteLine ("File '{0}' is neither a Universal binary nor a Mach-O binary (magic: 0x{1})", file, magic.ToString ("x"));
+						log.Log ("File '{0}' is neither a Universal binary nor a Mach-O binary (magic: 0x{1})", file, magic.ToString ("x"));
 						break;
 					}
 				}
@@ -1023,10 +1023,10 @@ namespace Xamarin {
 		}
 
 #if DEBUG
-		public virtual void Dump ()
+		public virtual void Dump (IToolLog log)
 		{
-			Console.WriteLine ("    cmd: {0}", cmd);
-			Console.WriteLine ("    cmdsize: {0}", cmdsize);
+			log.Log ("    cmd: {0}", cmd);
+			log.Log ("    cmdsize: {0}", cmdsize);
 		}
 #endif
 	}
@@ -1038,13 +1038,13 @@ namespace Xamarin {
 		public uint compatibility_version;
 
 #if DEBUG
-		public override void Dump ()
+		public override void Dump (IToolLog log)
 		{
-			base.Dump ();
-			Console.WriteLine ("    name: {0}", name);
-			Console.WriteLine ("    timestamp: {0}", timestamp);
-			Console.WriteLine ("    current_version: {0}", current_version);
-			Console.WriteLine ("    compatibility_version: {0}", compatibility_version);
+			base.Dump (log);
+			log.Log ("    name: {0}", name);
+			log.Log ("    timestamp: {0}", timestamp);
+			log.Log ("    current_version: {0}", current_version);
+			log.Log ("    compatibility_version: {0}", compatibility_version);
 		}
 #endif
 	}
@@ -1056,13 +1056,13 @@ namespace Xamarin {
 		public uint compatibility_version;
 
 #if DEBUG
-		public override void Dump ()
+		public override void Dump (IToolLog log)
 		{
-			base.Dump ();
-			Console.WriteLine ("    name: {0}", name);
-			Console.WriteLine ("    timestamp: {0}", timestamp);
-			Console.WriteLine ("    current_version: {0}", current_version);
-			Console.WriteLine ("    compatibility_version: {0}", compatibility_version);
+			base.Dump (log);
+			log.Log ("    name: {0}", name);
+			log.Log ("    timestamp: {0}", timestamp);
+			log.Log ("    current_version: {0}", current_version);
+			log.Log ("    compatibility_version: {0}", compatibility_version);
 		}
 #endif
 	}
@@ -1071,11 +1071,11 @@ namespace Xamarin {
 		public byte []? uuid;
 
 #if DEBUG
-		public override void Dump ()
+		public override void Dump (IToolLog log)
 		{
-			base.Dump ();
-			Console.WriteLine ("    cmd: {0}", cmd);
-			Console.WriteLine ("    uuid: {0}", uuid);
+			base.Dump (log);
+			log.Log ("    cmd: {0}", cmd);
+			log.Log ("    uuid: {0}", uuid);
 		}
 #endif
 	}

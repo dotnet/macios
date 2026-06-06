@@ -186,7 +186,8 @@ Only applicable to iOS and tvOS projects.
 
 ## ImageAsset
 
-An item group that contains image assets.
+An item group that contains image assets, including files inside asset catalogs
+(\*.xcassets) and Icon Composer directories (\*.icon).
 
 ## InterfaceDefinition
 

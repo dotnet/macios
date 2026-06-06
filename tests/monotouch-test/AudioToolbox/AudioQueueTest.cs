@@ -30,6 +30,8 @@ namespace MonoTouchFixtures.AudioToolbox {
 		[Test]
 		public void ChannelAssignments ()
 		{
+			TestRuntime.AssertNotVirtualMachine ();
+
 			var aq = new OutputAudioQueue (AudioStreamBasicDescription.CreateLinearPCM ());
 
 			var route = global::AVFoundation.AVAudioSession.SharedInstance ().CurrentRoute;

@@ -25,8 +25,11 @@ checkout:
   fetch: ["*"]
   fetch-depth: 0
 safe-outputs:
+  max-patch-files: 1000
+  max-patch-size: 10240
   create-pull-request:
     max: 10
+    signed-commits: false
     allowed-base-branches:
       - "net*.0"
       - "xcode*"
@@ -41,6 +44,7 @@ safe-outputs:
     max: 10
   push-to-pull-request-branch:
     max: 10
+    signed-commits: false
     target: "*"
     required-title-prefix: "🤖 Merge 'main' => '"
   update-pull-request:

@@ -8,7 +8,7 @@
 		<MicrosoftBuildTasksCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildTasksCorePackageVersion>
 		<MicrosoftBuildUtilitiesCorePackageVersion>$(MicrosoftBuildPackageVersion)</MicrosoftBuildUtilitiesCorePackageVersion>
 		<NUnitConsoleRunnerPackageVersion>3.22.0</NUnitConsoleRunnerPackageVersion>
-		<NUnitXmlTestLoggerPackageVersion>3.1.15</NUnitXmlTestLoggerPackageVersion>
+		<NUnitXmlTestLoggerPackageVersion>8.0.0</NUnitXmlTestLoggerPackageVersion>
 		<!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.2 brought by Microsoft.Build package -->
 		<SystemDrawingCommonPackageVersion>4.7.2</SystemDrawingCommonPackageVersion>
 		<!-- Fix transient dependency issue found by component governance 4.7.0 -> 4.7.1 brought by Microsoft.Build.Tasks.Core package -->
@@ -19,11 +19,11 @@
 		<libclangPackageVersion>21.1.8</libclangPackageVersion>
 		<MicrosoftNETTestSdkPackageVersion>18.0.1</MicrosoftNETTestSdkPackageVersion>
 		<MonoCecilPackageVersion>0.11.6</MonoCecilPackageVersion>
-		<NUnit3TestAdapterPackageVersion>6.1.0</NUnit3TestAdapterPackageVersion>
-		<NUnitAnalyzersPackageVersion>4.7.0</NUnitAnalyzersPackageVersion>
-		<NUnitPackageVersion>4.4.0</NUnitPackageVersion>
-		<NUnitLitePackageVersion>3.12.0</NUnitLitePackageVersion>
-		<NUnitV2ResultWriterPackageVersion>3.6.0</NUnitV2ResultWriterPackageVersion>
+		<NUnit3TestAdapterPackageVersion>6.2.0</NUnit3TestAdapterPackageVersion>
+		<NUnitAnalyzersPackageVersion>4.13.0</NUnitAnalyzersPackageVersion>
+		<NUnitPackageVersion>4.6.1</NUnitPackageVersion>
+		<NUnitLitePackageVersion>$(NUnitPackageVersion)</NUnitLitePackageVersion>
+		<NUnitV2ResultWriterPackageVersion>3.8.0</NUnitV2ResultWriterPackageVersion>
 
 		<!-- Use the latest C# version by default -->
 		<LangVersion Condition="'$(LangVersion)' == ''">latest</LangVersion>

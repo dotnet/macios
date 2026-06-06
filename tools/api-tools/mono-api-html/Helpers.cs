@@ -127,11 +127,18 @@ namespace Mono.ApiTools {
 
 			StringBuilder sb = null!;
 			bool is_nullable = false;
+			bool is_nullable_ref = false;
 			if (type.StartsWith ("System.Nullable`1[", StringComparison.Ordinal)) {
 				is_nullable = true;
 				sb = new StringBuilder (type, 18, type.Length - 19, 1024);
 			} else {
 				sb = new StringBuilder (type);
+			}
+
+			// Handle nullable reference type annotation (trailing '?' added by mono-api-info)
+			if (!is_nullable && sb.Length > 0 && sb [sb.Length - 1] == '?') {
+				is_nullable_ref = true;
+				sb.Remove (sb.Length - 1, 1);
 			}
 
 			bool is_ref = (sb [sb.Length - 1] == '&');
@@ -158,6 +165,8 @@ namespace Mono.ApiTools {
 			while (array-- > 0)
 				sb.Append ("[]");
 			if (is_nullable)
+				sb.Append ('?');
+			if (is_nullable_ref)
 				sb.Append ('?');
 			if (is_pointer)
 				sb.Append ('*');
@@ -244,6 +253,33 @@ namespace Mono.ApiTools {
 		{
 			var srcAttribs = element.Attribute ("attrib");
 			return (FieldAttributes) (srcAttribs is not null ? Int32.Parse (srcAttribs.Value) : 0);
+		}
+
+		// Strips trailing '?' nullability annotations from a type name for comparison purposes.
+		// Handles both top-level (System.String?) and nested generics (List`1[System.String?]).
+		public static string? StripNullability (string? type)
+		{
+			if (type is null)
+				return null;
+			// Remove all '?' that appear before ']', at end of string, before ',',
+			// before '>' or '&' (HTML entities like &gt;), or before ' ' (before param name)
+			var sb = new StringBuilder (type.Length);
+			for (int i = 0; i < type.Length; i++) {
+				if (type [i] == '?') {
+					if (i + 1 >= type.Length || type [i + 1] == ']' || type [i + 1] == ',' || type [i + 1] == '>' || type [i + 1] == '&' || type [i + 1] == ' ')
+						continue;
+				}
+				sb.Append (type [i]);
+			}
+			return sb.ToString ();
+		}
+
+		// Returns true if two type names differ only in nullability annotations.
+		public static bool DiffersOnlyByNullability (string? source, string? target)
+		{
+			if (source == target)
+				return false;
+			return StripNullability (source) == StripNullability (target);
 		}
 	}
 }

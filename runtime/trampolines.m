@@ -283,9 +283,15 @@ get_method_description (Class cls, SEL sel)
 	Method method = class_getInstanceMethod (cls, sel);
 	if (!method)
 		return NULL;
-	struct objc_method_description* m_desc;
-	m_desc = method_getDescription (method);
-	return m_desc ? m_desc->types : NULL;
+	// Read the method's Objective-C type encoding. We deliberately use method_getTypeEncoding
+	// instead of method_getDescription (method)->types: method_getTypeEncoding returns the same
+	// type-encoding string we previously read from the objc_method_description's 'types' field, but
+	// method_getDescription was marked deprecated in the Xcode 27 SDK (the <objc/runtime.h>
+	// annotation reads "first deprecated in macOS 11.0 - Use method_getName and
+	// method_getTypeEncoding"). The runtime is compiled with -Werror and -Wdeprecated-declarations,
+	// so a call to method_getDescription would break the build. Since we only ever consumed the
+	// 'types' field, method_getTypeEncoding is the exact, non-deprecated replacement.
+	return method_getTypeEncoding (method);
 }
 
 static int

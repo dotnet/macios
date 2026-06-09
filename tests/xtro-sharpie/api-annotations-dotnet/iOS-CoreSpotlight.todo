@@ -1,0 +1,4 @@
+!missing-protocol-member! CSSearchableIndexDelegate::searchableItemsForIdentifiers:protectionClass:searchableItemsHandler: not found
+!missing-selector! CSSearchableIndex::protectionClass not bound
+!missing-selector! CSSearchableIndexDescription::protectionClass not bound
+!missing-type! CSSearchableIndexDescription not bound

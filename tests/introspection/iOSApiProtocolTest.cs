@@ -768,7 +768,7 @@ namespace Introspection {
 				case "SRWristDetection":
 				case "UIMenuSystemFindElementGroupConfiguration": // conformance not in headers
 				case "PKAddIdentityDocumentMetadata": // conformance not in headers
-				// Xcode 27
+													  // Xcode 27
 				case "CPTextButton": // conformance not in headers
 					return true;
 				}

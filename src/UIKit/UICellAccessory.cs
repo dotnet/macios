@@ -57,8 +57,8 @@ namespace UIKit {
 	//
 	// This class bridges native block invocations that call into C#
 	//
-	[SupportedOSPlatform ("tvos14.0")]
-	[SupportedOSPlatform ("ios14.0")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	static internal class SDUICellAccessoryPosition {
 		[UnmanagedCallersOnly]
@@ -72,8 +72,8 @@ namespace UIKit {
 		}
 	} /* class SDUICellAccessoryPosition */
 
-	[SupportedOSPlatform ("tvos14.0")]
-	[SupportedOSPlatform ("ios14.0")]
+	[SupportedOSPlatform ("tvos")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	internal sealed class NIDUICellAccessoryPosition : TrampolineBlockBase {
 		DUICellAccessoryPosition invoker;

@@ -128,14 +128,14 @@ namespace CoreGraphics {
 		public CGPDFAccessPermissions? AccessPermissions { get; set; }
 		//public NSDictionary OutputIntent { get; set; }
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool? CreateLinearizedPdf { get; set; }
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public bool? CreatePdfA2u { get; set; }
 
@@ -408,15 +408,15 @@ namespace CoreGraphics {
 		}
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern void CGPDFContextBeginTag (/* CGContextRef* */ IntPtr context, CGPdfTagType tagType, /* CFDictionaryRef* _Nullable */ IntPtr tagProperties);
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public void BeginTag (CGPdfTagType tagType, NSDictionary tagProperties)
 		{
@@ -425,8 +425,8 @@ namespace CoreGraphics {
 		}
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public void BeginTag (CGPdfTagType tagType, CGPdfTagProperties tagProperties)
 		{
@@ -436,15 +436,15 @@ namespace CoreGraphics {
 		}
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreGraphicsLibrary)]
 		static extern void CGPDFContextEndTag (/* CGContextRef* */ IntPtr context);
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public void EndTag ()
 		{

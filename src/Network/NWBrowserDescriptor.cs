@@ -14,9 +14,9 @@ using CoreFoundation;
 using OS_nw_browse_descriptor = System.IntPtr;
 
 namespace Network {
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public class NWBrowserDescriptor : NativeObject {
 

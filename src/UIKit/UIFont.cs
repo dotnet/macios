@@ -330,8 +330,8 @@ namespace UIKit {
 		/// <param name="size">The size of the font in points.</param>
 		/// <param name="weight">The weight of the font.</param>
 		/// <returns>The monospaced system font, or <see langword="null" /> if the font could not be created.</returns>
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static UIFont? GetMonospacedSystemFont (nfloat size, nfloat weight)
 		{
@@ -343,8 +343,8 @@ namespace UIKit {
 		/// <param name="size">The size of the font in points.</param>
 		/// <param name="weight">The weight of the font.</param>
 		/// <returns>The monospaced system font, or <see langword="null" /> if the font could not be created.</returns>
-		[SupportedOSPlatform ("ios13.0")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static UIFont? GetMonospacedSystemFont (nfloat size, UIFontWeight weight) => GetMonospacedSystemFont (size, weight.GetWeight ());
 

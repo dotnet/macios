@@ -90,9 +90,9 @@ namespace AudioToolbox {
 		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		FLAC = 0x666c6163, // flac
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		LatmInLoas = 0x6c6f6173, // loas
 	}
@@ -357,9 +357,9 @@ namespace AudioToolbox {
 		}
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketRangeByteCountTranslation {
@@ -368,9 +368,9 @@ namespace AudioToolbox {
 		public long ByteCountUpperBound;
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketRollDistanceTranslation {
@@ -378,9 +378,9 @@ namespace AudioToolbox {
 		public long RollDistance;
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioIndependentPacketTranslation {
@@ -388,9 +388,9 @@ namespace AudioToolbox {
 		public long IndependentlyDecodablePacket;
 	}
 
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AudioPacketDependencyInfoTranslation {

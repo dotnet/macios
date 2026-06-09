@@ -1749,7 +1749,7 @@ namespace CoreMidi {
 			}
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -1995,7 +1995,7 @@ namespace CoreMidi {
 #endif // !XAMCORE_5_0 || __MACOS__
 
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public string? NameConfigurationDictionary {
 			get {
@@ -2469,7 +2469,7 @@ namespace CoreMidi {
 			}
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]
@@ -2940,7 +2940,7 @@ namespace CoreMidi {
 			}
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
 		[UnsupportedOSPlatform ("tvos")]

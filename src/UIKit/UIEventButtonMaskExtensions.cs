@@ -9,7 +9,7 @@
 #if IOS
 
 namespace UIKit {
-	[SupportedOSPlatform ("ios13.4")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[BindingImpl (BindingImplOptions.Optimizable)]
 	public static partial class UIEventButtonMaskExtensions {

@@ -43,9 +43,9 @@ namespace Vision {
 		[DllImport (Constants.VisionLibrary, EntryPoint = "VNImagePointForNormalizedPoint")]
 		public static extern CGPoint GetImagePoint (CGPoint normalizedPoint, nuint imageWidth, nuint imageHeight);
 
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.VisionLibrary, EntryPoint = "VNNormalizedPointForImagePoint")]
 		public static extern CGPoint GetNormalizedPoint (CGPoint imagePoint, nuint imageWidth, nuint imageHeight);
@@ -56,30 +56,30 @@ namespace Vision {
 		[DllImport (Constants.VisionLibrary, EntryPoint = "VNNormalizedRectForImageRect")]
 		public static extern CGRect GetNormalizedRect (CGRect imageRect, nuint imageWidth, nuint imageHeight);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.VisionLibrary, EntryPoint = "VNImagePointForNormalizedPointUsingRegionOfInterest")]
 		public static extern CGPoint GetImagePoint (CGPoint normalizedPoint, nuint imageWidth, nuint imageHeight, CGRect regionOfInterest);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.VisionLibrary, EntryPoint = "VNNormalizedPointForImagePointUsingRegionOfInterest")]
 		public static extern CGPoint GetNormalizedPoint (CGPoint imagePoint, nuint imageWidth, nuint imageHeight, CGRect regionOfInterest);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.VisionLibrary, EntryPoint = "VNImageRectForNormalizedRectUsingRegionOfInterest")]
 		public static extern CGRect GetImageRect (CGRect normalizedRect, nuint imageWidth, nuint imageHeight, CGRect regionOfInterest);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.VisionLibrary, EntryPoint = "VNNormalizedRectForImageRectUsingRegionOfInterest")]
 		public static extern CGRect GetNormalizedRect (CGRect imageRect, nuint imageWidth, nuint imageHeight, CGRect regionOfInterest);
@@ -116,16 +116,16 @@ namespace Vision {
 			return result;
 		}
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.VisionLibrary)]
 		static extern nuint VNElementTypeSize (nuint elementType);
 
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static nuint GetElementTypeSize (VNElementType elementType) => VNElementTypeSize ((nuint) (ulong) elementType);
 	}

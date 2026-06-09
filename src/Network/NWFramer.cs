@@ -25,9 +25,9 @@ namespace Network {
 	public delegate nuint NWFramerParseCompletionDelegate (Memory<byte> buffer, bool isCompleted);
 	public delegate nuint NWFramerInputDelegate (NWFramer framer);
 
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public class NWFramer : NativeObject {
 		[Preserve (Conditional = true)]

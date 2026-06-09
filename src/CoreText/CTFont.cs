@@ -2894,9 +2894,9 @@ namespace CoreText {
 			}
 		}
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern /* CTFontRef */ IntPtr CTFontCreateForStringWithLanguage (
@@ -2905,9 +2905,9 @@ namespace CoreText {
 			NSRange range,
 			/* CFStringRef _Nullable */ IntPtr language);
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public CTFont? ForString (string value, NSRange range, string? language)
 		{
@@ -3169,16 +3169,16 @@ namespace CoreText {
 			return GetGlyphsForCharacters (characters, glyphs, Math.Min (characters.Length, glyphs.Length));
 		}
 
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.CoreTextLibrary)]
 		static extern unsafe /* CFStringRef _Nullable */ IntPtr CTFontCopyNameForGlyph (/* CTFontRef */ IntPtr font, CGGlyph glyph);
 
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public string? GetGlyphName (CGGlyph glyph)
 		{
@@ -3661,10 +3661,10 @@ namespace CoreText {
 			GC.KeepAlive (context);
 		}
 
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[DllImport (Constants.CoreTextLibrary)]
 		extern static byte CTFontHasTable (
 			/* CTFontRef */ IntPtr font,
@@ -3674,10 +3674,10 @@ namespace CoreText {
 		/// <param name="tag">The table identifier to check for.</param>
 		/// <returns>Whether the table is present in the font or not.</returns>
 		/// <remarks>The check behaves as if <see cref="CTFontTableOptions.None" /> was specified.</remarks>
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		public bool HasTable (CTFontTable tag)
 		{
 			return CTFontHasTable (GetCheckedHandle (), tag) != 0;

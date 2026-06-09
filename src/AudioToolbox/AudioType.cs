@@ -133,9 +133,9 @@ namespace AudioToolbox {
 		EnhancedAC3 = 0x65632d33, // 'ec-3'
 		/// <summary>To be added.</summary>
 		Flac = 0x666c6163, // 'flac'
-		[SupportedOSPlatform ("ios13.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("tvos13.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		LatmInLoas = 0x6c6f6173, // 'loas'
 		/// <summary>To be added.</summary>

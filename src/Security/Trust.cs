@@ -227,16 +227,16 @@ namespace Security {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		static extern /* CFArrayRef */ IntPtr SecTrustCopyCertificateChain (/* SecTrustRef */ IntPtr trust);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public SecCertificate []? GetCertificateChain ()
 			=> NSArray.ArrayFromHandleDropNullElements<SecCertificate> (SecTrustCopyCertificateChain (Handle), releaseHandle: true);
@@ -269,15 +269,15 @@ namespace Security {
 			return new SecKey (SecTrustCopyPublicKey (GetCheckedHandle ()), true);
 		}
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.SecurityLibrary)]
 		extern static IntPtr /* SecKeyRef */ SecTrustCopyKey (IntPtr /* SecTrustRef */ trust);
 
-		[SupportedOSPlatform ("ios14.0")]
-		[SupportedOSPlatform ("tvos14.0")]
+		[SupportedOSPlatform ("ios")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public SecKey GetKey ()

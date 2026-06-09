@@ -21,7 +21,7 @@ namespace MonoTouchFixtures.UIKit {
 
 			using (var vc = new UIViewController ())
 			using (var pc = new UIPopoverPresentationController (vc, null)) {
-				Assert.Null (pc.PopoverBackgroundViewType, "PopoverBackgroundViewType");
+				Assert.That (pc.PopoverBackgroundViewType, Is.Null, "PopoverBackgroundViewType");
 				Type my = typeof (MyPopoverBackgroundView);
 				pc.PopoverBackgroundViewType = my;
 				Assert.That (pc.PopoverBackgroundViewType, Is.SameAs (my), "MyPopoverBackgroundView");

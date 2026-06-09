@@ -481,10 +481,18 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<FileWrites Include="$(_ProcessedContentPath)" />
 		</ItemGroup>
 
-		<!-- Copy any items with the PublishFolderType metadata directly to the ResolvedFileToPublish item group -->
+		<!-- Copy any items with the PublishFolderType metadata directly to the ResolvedFileToPublish item group.
+		     Set TargetPath from the Link metadata (if not already set) so that the .NET SDK's conflict resolution
+		     (ResolveOverlappingItemGroupConflicts) sees the full relative path instead of just the filename.
+		     Without this, items whose filename matches an SDK assembly or runtime file would be incorrectly
+		     removed as conflicts. Ref: https://github.com/dotnet/macios/issues/25497 -->
 		<ItemGroup>
-			<ResolvedFileToPublish Include="@(BundleResource)" Condition="'%(BundleResource.PublishFolderType)' != ''" />
-			<ResolvedFileToPublish Include="@(Content)" Condition="'%(Content.PublishFolderType)' != ''" />
+			<ResolvedFileToPublish Include="@(BundleResource)" Condition="'%(BundleResource.PublishFolderType)' != ''">
+				<TargetPath Condition="'%(BundleResource.TargetPath)' == '' and '%(BundleResource.Link)' != ''">%(BundleResource.Link)</TargetPath>
+			</ResolvedFileToPublish>
+			<ResolvedFileToPublish Include="@(Content)" Condition="'%(Content.PublishFolderType)' != ''">
+				<TargetPath Condition="'%(Content.TargetPath)' == '' and '%(Content.Link)' != ''">%(Content.Link)</TargetPath>
+			</ResolvedFileToPublish>
 		</ItemGroup>
 	</Target>
 
@@ -684,6 +692,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
 			ResourceRules="$(_PreparedResourceRules)"
+			SdkDevPath="$(_SdkDevPath)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkVersion="$(_SdkVersion)"
 			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
@@ -710,6 +719,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Condition="'$(IsMacEnabled)' == 'true' And '$(_BundleOriginalResources)' != 'true'"
 			SessionId="$(BuildSessionId)"
 			AppManifest="$(_TemporaryAppManifest)"
+			SdkDevPath="$(_SdkDevPath)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			>
 			<Output TaskParameter="CFBundleExecutable" PropertyName="_ExecutableName" />
@@ -797,6 +807,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			Entitlements="$(CodesignEntitlements)"
 			CompiledEntitlements="$(_CompiledEntitlementsPath)"
 			ProvisioningProfile="$(_ProvisioningProfile)"
+			SdkDevPath="$(_SdkDevPath)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkPlatform="$(_SdkPlatform)"
 			SdkVersion="$(_SdkVersion)"
@@ -2069,6 +2080,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkPlatform="$(_SdkPlatform)"
 			ProvisioningProfile="$(CodesignProvision)"
+			SdkDevPath="$(_SdkDevPath)"
 			SigningKey="$(_SpecifiedCodesignKey)"
 			DetectedCodeSigningKey="$(_CodeSigningKey)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
@@ -2091,6 +2103,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		<DetectSdkLocations
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
+			SdkDevPath="$(XcodeLocation)"
 			SdkVersion="$(_SdkVersion)"
 			SdkIsSimulator="$(SdkIsSimulator)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
@@ -2285,7 +2298,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			NoDSymUtil="$(NoDSymUtil)"
 			PackageDebugSymbols="$(PackageDebugSymbols)"
 			Registrar="$(Registrar)"
-			Verbosity="$(_BundlerVerbosity)"
+			BundlerVerbosity="$(_BundlerVerbosity)"
 			>
 			<Output TaskParameter="Aot" ItemName="_AotArguments" />
 			<Output TaskParameter="CustomBundleName" PropertyName="_CustomBundleName" />
@@ -2302,7 +2315,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<Output TaskParameter="Registrar" PropertyName="Registrar" />
 			<Output TaskParameter="RequirePInvokeWrappers" PropertyName="_RequirePInvokeWrappers" />
 			<Output TaskParameter="SkipMarkingNSObjectsInUserAssemblies" PropertyName="_SkipMarkingNSObjectsInUserAssemblies" />
-			<Output TaskParameter="Verbosity" PropertyName="_BundlerVerbosity" />
+			<Output TaskParameter="BundlerVerbosity" PropertyName="_BundlerVerbosity" />
 			<Output TaskParameter="WarnAsError" PropertyName="_BundlerWarnAsError" />
 			<Output TaskParameter="Warn" PropertyName="_BundlerWarn" />
 			<Output TaskParameter="XmlDefinitions" ItemName="_BundlerXmlDefinitions" />

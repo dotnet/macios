@@ -68,10 +68,12 @@ namespace Xamarin.Mac.Tests {
 									dataSource.SetValue (instance, null, null);
 								}
 							}
+						} catch (NotSupportedException e) when (e.Message.Contains ("This object cannot be invoked because no code was generated for it")) {
+							Console.WriteLine ($"Not testing {t.FullName}, because it's been partially trimmed away.");
 						} catch (TargetInvocationException e) {
 							failingTypes.Add (t, e.InnerException.Message);
 						} catch (Exception e) {
-							Assert.Fail ("Unexpected exception {0} while testing {1}", e, t);
+							Assert.Fail ($"Unexpected exception {e} while testing {t}");
 						}
 					}
 				}
@@ -82,7 +84,7 @@ namespace Xamarin.Mac.Tests {
 				Console.WriteLine ("{0} failing types:", failingTypes.Count);
 				foreach (var kvp in failingTypes)
 					Console.WriteLine ("{0}: {1}", kvp.Key, kvp.Value);
-				Assert.Fail ("{0} failing types", failingTypes.Count);
+				Assert.Fail ($"{failingTypes.Count} failing types");
 			}
 		}
 
@@ -220,7 +222,7 @@ namespace Xamarin.Mac.Tests {
 				Console.WriteLine ("{0} failing types:", failingTypes.Count);
 				foreach (var kvp in failingTypes)
 					Console.WriteLine ("{0}: {1}", kvp.Key, kvp.Value);
-				Assert.Fail ("{0} failing types", failingTypes.Count);
+				Assert.Fail ($"{failingTypes.Count} failing types");
 			}
 		}
 
@@ -258,7 +260,7 @@ namespace Xamarin.Mac.Tests {
 				Console.WriteLine ("{0} failing types:", failingTypes.Count);
 				foreach (var kvp in failingTypes)
 					Console.WriteLine ("{0}: {1}", kvp.Key, kvp.Value);
-				Assert.Fail ("{0} failing types", failingTypes.Count);
+				Assert.Fail ($"{failingTypes.Count} failing types");
 			}
 		}
 

@@ -60,7 +60,7 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 
 		// filter to values we find in the app manifest, if it exists
 		if (File.Exists (AppBundleManifestPath)) {
-			var appManifest = PDictionary.FromFile (AppBundleManifestPath)!;
+			var appManifest = PDictionary.OpenFile (AppBundleManifestPath);
 
 			var uiDeviceFamily = appManifest.GetUIDeviceFamily ();
 			// an iPhone app can run on an iPad, but an iPad app cannot run on an iPhone
@@ -100,8 +100,13 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 				continue;
 			}
 			// if we have multiple runtime identifiers, we're running in the simulator, and one is x64 and the other is arm64.
+			// if 'RuntimeIdentifier' is set on the task, set that value, otherwise
 			// if we can run on arm64, then pick the arm64 simulator, otherwise pick the x64 simulator
-			d.Item.SetMetadata ("RuntimeIdentifier", d.RuntimeIdentifiers.Single (v => v.Contains ("arm64") == CanRunArm64));
+			if (!string.IsNullOrEmpty (RuntimeIdentifier)) {
+				d.Item.SetMetadata ("RuntimeIdentifier", RuntimeIdentifier);
+			} else {
+				d.Item.SetMetadata ("RuntimeIdentifier", d.RuntimeIdentifiers.Single (v => v.Contains ("arm64") == CanRunArm64));
+			}
 		}
 
 		DiscardedDevices = devices.Where (d => d.Discarded).Select (v => {

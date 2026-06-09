@@ -548,9 +548,9 @@ namespace Introspection {
 					obj.SetAttachment ("key", attch, CMAttachmentMode.ShouldNotPropagate);
 					using (var otherAttch = obj.GetAttachment<CFString> ("key", out otherMode)!) {
 						obj.RemoveAllAttachments ();
-						Assert.AreEqual (mode, otherMode);
-						Assert.IsNotNull (otherAttch, "For type {0}", t.Name);
-						Assert.AreEqual (attch.ToString (), otherAttch.ToString (), "For type {0}", t.Name);
+						Assert.That (otherMode, Is.EqualTo (mode));
+						Assert.That (otherAttch, Is.Not.Null, $"For type {t.Name}");
+						Assert.That (otherAttch.ToString (), Is.EqualTo (attch.ToString ()), "For type {0}", t.Name);
 					}
 				}
 				if (obj is IDisposable disp) {
@@ -575,7 +575,7 @@ namespace Introspection {
 					continue;
 				var n = GetINativeInstance (t);
 				if (n is null)
-					Assert.Fail ("Could not create instance of '{0}'.", t);
+					Assert.Fail ($"Could not create instance of '{t}'.");
 				var obj = new AttachableNativeObject (n!);
 				Assert.That (obj.Handle, Is.Not.EqualTo (IntPtr.Zero), t.Name + ".Handle");
 				using (var attch = new CFString ("myAttch")) {
@@ -583,7 +583,7 @@ namespace Introspection {
 					obj.SetAttachment ("key", attch, CMAttachmentMode.ShouldNotPropagate);
 					using (var otherAttch = obj.GetAttachment<CFString> ("key", out otherMode)) {
 						obj.RemoveAllAttachments ();
-						Assert.Null (otherAttch, "For type {0}", t.Name);
+						Assert.That (otherAttch, Is.Null, $"For type {t.Name}");
 					}
 				}
 				if (t is IDisposable disp) {

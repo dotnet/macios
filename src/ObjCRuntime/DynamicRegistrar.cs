@@ -806,7 +806,7 @@ namespace Registrar {
 			return attribute is not null;
 		}
 
-		protected override void ReportError (int code, string message, params object [] args)
+		protected override void ReportError (int code, string message, params object? [] args)
 		{
 			Runtime.NSLog (String.Format (message, args));
 		}

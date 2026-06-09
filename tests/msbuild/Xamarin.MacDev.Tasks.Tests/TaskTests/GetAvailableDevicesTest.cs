@@ -58,7 +58,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, simctl, devicectl);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.That (task.Devices.Count, Is.EqualTo (0), "Devices should be empty.");
 			Assert.That (task.DiscardedDevices.Count, Is.EqualTo (0), "No devices should have been discarded.");
 		}
@@ -68,7 +68,7 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, "", DEVICECTL_JSON_1);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (3), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (1), "Discarded device count mismatch.");
@@ -111,7 +111,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, "");
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (2), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (3), "Discarded device count mismatch.");
@@ -160,7 +160,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (5), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (4), "Discarded device count mismatch.");
@@ -250,7 +250,7 @@ namespace Xamarin.MacDev.Tasks {
 			</plist>
 			""";
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1, appManifestXml);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (5), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (4), "Discarded device count mismatch.");
@@ -344,7 +344,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1, appManifestXml);
 
 
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (2), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (7), "Discarded device count mismatch.");
@@ -438,7 +438,7 @@ namespace Xamarin.MacDev.Tasks {
 			File.WriteAllText (appManifestPath, appManifestXml);
 			task.AppBundleManifestPath = appManifestPath;
 
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (3), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (6), "Discarded device count mismatch.");
@@ -531,7 +531,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.AppBundleManifestPath = appManifestPath;
 			task.RuntimeIdentifier = $"ios-arm64";
 
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (3), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (6), "Discarded device count mismatch.");
@@ -609,7 +609,7 @@ namespace Xamarin.MacDev.Tasks {
 
 			var platform = ApplePlatform.TVOS;
 			var task = CreateTask (platform, SIMCTL_JSON_1, DEVICECTL_JSON_1);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 			Assert.Multiple (() => {
 				Assert.That (task.Devices.Count, Is.EqualTo (1), "Devices count mismatch.");
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (8), "Discarded device count mismatch.");
@@ -680,11 +680,35 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 		[Test]
+		[TestCase ("iossimulator-x64", "iossimulator-x64")]
+		[TestCase ("iossimulator-arm64", "iossimulator-arm64")]
+		[TestCase ("", null)] // null means it depends on CanRunArm64
+		public void SimCtl_MultiArch_RuntimeIdentifier (string runtimeIdentifier, string? expectedRid)
+		{
+			var platform = ApplePlatform.iOS;
+			var task = CreateTask (platform, SIMCTL_JSON_MULTIARCH, "");
+			task.RuntimeIdentifier = runtimeIdentifier;
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
+			Assert.Multiple (() => {
+				Assert.That (task.Devices.Count, Is.EqualTo (1), "Devices count mismatch.");
+
+				Assert.That (task.Devices [0].ItemSpec, Is.EqualTo ("AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"), "Device 1 mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1"), "Device 1 Name mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 1 OSVersion mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("UDID"), Is.EqualTo ("AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"), "Device 1 UDID mismatch.");
+				if (expectedRid is null)
+					expectedRid = GetAvailableDevices.CanRunArm64 ? "iossimulator-arm64" : "iossimulator-x64";
+				Assert.That (task.Devices [0].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (expectedRid), "Device 1 RuntimeIdentifier mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("DiscardedReason"), Is.Empty, "Device 1 discarded reason mismatch.");
+			});
+		}
+
+		[Test]
 		public void DeviceCtl2_Mac ()
 		{
 			var platform = ApplePlatform.iOS;
 			var task = CreateTask (platform, "", DEVICECTL_JSON_2);
-			Assert.IsTrue (task.Execute (), "Task should have succeeded.");
+			Assert.That (task.Execute (), Is.True, "Task should have succeeded.");
 
 			Assert.Multiple (() => {
 				Assert.That (task.DiscardedDevices [0].ItemSpec, Is.EqualTo ("12345678-1234-1234-ABCD-1234567980AB"), "Discarded Device 1 itemspec mismatch.");
@@ -1100,6 +1124,68 @@ namespace Xamarin.MacDev.Tasks {
 						"deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-M5-12GB",
 						"state" : "Shutdown",
 						"name" : "iPad Pro 11-inch (M5)"
+					}
+				]
+			},
+			"pairs" : {
+
+			}
+		}
+		""";
+
+		const string SIMCTL_JSON_MULTIARCH =
+		"""
+		{
+			"devicetypes" : [
+				{
+				"productFamily" : "iPhone",
+				"bundlePath" : "\/Library\/Developer\/CoreSimulator\/Profiles\/DeviceTypes\/iPhone 11.simdevicetype",
+				"maxRuntimeVersion" : 4294967295,
+				"maxRuntimeVersionString" : "65535.255.255",
+				"identifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-11",
+				"modelIdentifier" : "iPhone12,1",
+				"minRuntimeVersionString" : "13.0.0",
+				"minRuntimeVersion" : 851968,
+				"name" : "iPhone 11"
+				}
+			],
+			"runtimes" : [
+				{
+				"isAvailable" : true,
+				"version" : "26.1",
+				"isInternal" : false,
+				"buildversion" : "23B80",
+				"supportedArchitectures" : [
+					"arm64",
+					"x86_64"
+				],
+				"supportedDeviceTypes" : [
+					{
+					"bundlePath" : "\/Library\/Developer\/CoreSimulator\/Profiles\/DeviceTypes\/iPhone 11.simdevicetype",
+					"name" : "iPhone 11",
+					"identifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-11",
+					"productFamily" : "iPhone"
+					}
+				],
+				"identifier" : "com.apple.CoreSimulator.SimRuntime.iOS-26-1",
+				"platform" : "iOS",
+				"bundlePath" : "\/Library\/Developer\/CoreSimulator\/Volumes\/iOS_23B80\/Library\/Developer\/CoreSimulator\/Profiles\/Runtimes\/iOS 26.1.simruntime",
+				"runtimeRoot" : "\/Library\/Developer\/CoreSimulator\/Volumes\/iOS_23B80\/Library\/Developer\/CoreSimulator\/Profiles\/Runtimes\/iOS 26.1.simruntime\/Contents\/Resources\/RuntimeRoot",
+				"name" : "iOS 26.1"
+				}
+			],
+			"devices" : {
+				"com.apple.CoreSimulator.SimRuntime.iOS-26-1" : [
+					{
+						"dataPath" : "\/Users\/rolf\/Library\/Developer\/CoreSimulator\/Devices\/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE\/data",
+						"dataPathSize" : 2274861056,
+						"logPath" : "\/Users\/rolf\/Library\/Logs\/CoreSimulator\/AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE",
+						"udid" : "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE",
+						"isAvailable" : true,
+						"logPathSize" : 253952,
+						"deviceTypeIdentifier" : "com.apple.CoreSimulator.SimDeviceType.iPhone-11",
+						"state" : "Shutdown",
+						"name" : "iPhone 11 - iOS 26.1"
 					}
 				]
 			},

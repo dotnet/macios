@@ -1,5 +1,7 @@
 #nullable enable
 
+using Xamarin.Bundler;
+
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class BundleStructureTest : TestBaseClass {
@@ -311,6 +313,7 @@ namespace Xamarin.Tests {
 			if (platform != ApplePlatform.MacOSX)
 				AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "MonoTouch.Dialog", runtimeIdentifiers, forceSingleRid: (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunit.framework.dll"));
+			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunit.framework.legacy.dll"));
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "nunitlite.dll"));
 			expectedFiles.Add (Path.Combine (assemblyDirectory, "Mono.Options.dll"));
 			AddMultiRidAssembly (platform, expectedFiles, assemblyDirectory, "Touch.Client", runtimeIdentifiers, platform == ApplePlatform.MacOSX || (platform == ApplePlatform.MacCatalyst && !isReleaseBuild), includeDebugFiles: includeDebugFiles);
@@ -643,7 +646,7 @@ namespace Xamarin.Tests {
 				properties ["Configuration"] = configuration;
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			var warningMessages = FilterWarnings (warnings);
+			var warningMessages = FilterWarnings (warnings, platform);
 
 			var isReleaseBuild = string.Equals (configuration, "Release", StringComparison.OrdinalIgnoreCase);
 			var platformString = platform.AsString ();
@@ -680,7 +683,7 @@ namespace Xamarin.Tests {
 			var appExecutable = GetNativeExecutable (platform, appPath);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
-			CollectionAssert.AreEqual (expectedWarnings, warningMessages, "Warnings");
+			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// touch AppDelegate.cs, and rebuild should succeed and do the right thing
@@ -689,10 +692,10 @@ namespace Xamarin.Tests {
 
 			rv = DotNet.AssertBuild (project_path, properties);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = FilterWarnings (warnings);
+			warningMessages = FilterWarnings (warnings, platform);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
-			CollectionAssert.AreEqual (expectedWarnings, warningMessages, "Warnings Rebuild 1");
+			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 1");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// remove the bin directory, and rebuild should succeed and do the right thing
@@ -701,19 +704,19 @@ namespace Xamarin.Tests {
 
 			rv = DotNet.AssertBuild (project_path, properties);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = FilterWarnings (warnings);
+			warningMessages = FilterWarnings (warnings, platform);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
-			CollectionAssert.AreEqual (expectedWarnings, warningMessages, "Warnings Rebuild 2");
+			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 2");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
 			// a simple rebuild should succeed
 			rv = DotNet.AssertBuild (project_path, properties);
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
-			warningMessages = FilterWarnings (warnings);
+			warningMessages = FilterWarnings (warnings, platform);
 
 			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild);
-			CollectionAssert.AreEqual (expectedWarnings, warningMessages, "Warnings Rebuild 3");
+			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 3");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}
 
@@ -737,9 +740,9 @@ namespace Xamarin.Tests {
 			}
 		}
 
-		public static string [] FilterWarnings (IEnumerable<BuildLogEvent> warnings, bool canonicalizePaths = false)
+		public static string [] FilterWarnings (IEnumerable<BuildLogEvent> warnings, ApplePlatform platform, bool canonicalizePaths = false)
 		{
-			return warnings
+			return Extensions.FilterWarnings (warnings, platform)
 				.Select (v => v?.Message!).Where (v => !string.IsNullOrWhiteSpace (v))
 				// Remove warnings of the form "This call site is reachable on: '...' and later. 'TheAPI' is only supported on: '...' and later."
 				.Where (v => !v.StartsWith ("This call site is reachable on:"))
@@ -749,8 +752,6 @@ namespace Xamarin.Tests {
 				.Where (v => !v.Contains (" is obsolete: "))
 				// More obsolete warnings
 				.Where (v => !v.Contains (" overrides obsolete member "))
-				// Don't care about this
-				.Where (v => !v.Contains ("Supported iPhone orientations have not been set"))
 				// Canonicalize if so requested
 				.Select (v => canonicalizePaths ? v.Replace (Path.DirectorySeparatorChar, '/') : v)
 				// Sort the messages so that comparison against the expected array is faster
@@ -793,8 +794,8 @@ namespace Xamarin.Tests {
 					return false;
 				});
 			foreach (var lib in libraries) {
-				var libArchitectures = renderArchitectures (MachO.GetArchitectures (lib));
-				Assert.AreEqual (expectedArchitectures, libArchitectures, $"Architectures in {lib}");
+				var libArchitectures = renderArchitectures (MachO.GetArchitectures (ConsoleLog.Instance, lib));
+				Assert.That (libArchitectures, Is.EqualTo (expectedArchitectures), $"Architectures in {lib}");
 			}
 		}
 	}

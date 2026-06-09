@@ -22,7 +22,6 @@ namespace Xamarin {
 		protected override void TryProcess ()
 		{
 			Configuration.Write ();
-			ErrorHelper.Platform = Configuration.Platform;
 			Directory.CreateDirectory (Configuration.ItemsDirectory);
 			Directory.CreateDirectory (Configuration.CacheDirectory);
 		}

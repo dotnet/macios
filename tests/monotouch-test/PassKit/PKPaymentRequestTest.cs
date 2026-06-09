@@ -66,11 +66,11 @@ namespace MonoTouchFixtures.PassKit {
 		public void CheckDefaultNulls ()
 		{
 			using var pr = new PKPaymentRequest ();
-			Assert.IsNull (pr.CountryCode, "'PKPaymentRequest.CountryCode' is not returning null by default.");
-			Assert.IsNull (pr.CurrencyCode, "'PKPaymentRequest.CurrencyCode' is not returning null by default.");
-			Assert.IsNull (pr.MerchantIdentifier, "'PKPaymentRequest.MerchantIdentifier' is not returning null by default.");
-			Assert.IsNull (pr.PaymentSummaryItems, "'PKPaymentRequest.PaymentSummaryItems' is not returning null by default.");
-			Assert.IsNull (pr.SupportedNetworks, "'PKPaymentRequest.SupportedNetworks' is not returning null by default.");
+			Assert.That (pr.CountryCode, Is.Null, "'PKPaymentRequest.CountryCode' is not returning null by default.");
+			Assert.That (pr.CurrencyCode, Is.Null, "'PKPaymentRequest.CurrencyCode' is not returning null by default.");
+			Assert.That (pr.MerchantIdentifier, Is.Null, "'PKPaymentRequest.MerchantIdentifier' is not returning null by default.");
+			Assert.That (pr.PaymentSummaryItems, Is.Null, "'PKPaymentRequest.PaymentSummaryItems' is not returning null by default.");
+			Assert.That (pr.SupportedNetworks, Is.Null, "'PKPaymentRequest.SupportedNetworks' is not returning null by default.");
 
 			Assert.DoesNotThrow (delegate { pr.CountryCode = null; },
 				"'PKPaymentRequest.CountryCode' cannot be set to null.");

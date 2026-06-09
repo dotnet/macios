@@ -69,7 +69,8 @@ parameters:
     },
     {
       label: linker,
-      splitByPlatforms: false,
+      splitByPlatforms: true,
+      needsMultiplePlatforms: false,
       testPrefix: 'simulator_tests',
     },
     {

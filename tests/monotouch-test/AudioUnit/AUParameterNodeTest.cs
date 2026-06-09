@@ -31,14 +31,11 @@ namespace monotouchtest {
 					Exception ex = null;
 					var recordingObserver = tree.CreateTokenByAddingParameterRecordingObserver ((nint numberOfEvents, ref AURecordedParameterEvent events) => {
 						try {
-							Assert.True (numberOfEvents == 1,
-								$"Number of events was wrong. Expected {1} but was {numberOfEvents}");
+							Assert.That (numberOfEvents == 1, Is.True, $"Number of events was wrong. Expected {1} but was {numberOfEvents}");
 
-							Assert.True (events.Address == address,
-								$"Address was wrong. Expected {address} but was {events.Address}");
+							Assert.That (events.Address == address, Is.True, $"Address was wrong. Expected {address} but was {events.Address}");
 
-							Assert.True (events.Value == newValue,
-								$"Value was wrong. Expected {newValue} but was {events.Value}");
+							Assert.That (events.Value == newValue, Is.True, $"Value was wrong. Expected {newValue} but was {events.Value}");
 
 							recordingObserverInvoked = true;
 						} catch (Exception e) {
@@ -48,12 +45,12 @@ namespace monotouchtest {
 						}
 					});
 
-					Assert.True (recordingObserver.ObserverToken != IntPtr.Zero, "TokenByAddingParameterRecordingObserver return zero pointer for recording observer.");
+					Assert.That (recordingObserver.ObserverToken != IntPtr.Zero, Is.True, "TokenByAddingParameterRecordingObserver return zero pointer for recording observer.");
 					parameter.Value = newValue;
 
 					completion.WaitOne (TimeSpan.FromSeconds (1));
-					Assert.IsNull (ex, "Exceptions");
-					Assert.True (recordingObserverInvoked, "Recording observer was not invoked when parameter value was changed.");
+					Assert.That (ex, Is.Null, "Exceptions");
+					Assert.That (recordingObserverInvoked, Is.True, "Recording observer was not invoked when parameter value was changed.");
 				}
 			}
 		}
@@ -77,11 +74,11 @@ namespace monotouchtest {
 
 					tree.RemoveParameterObserver (recordingObserver);
 
-					Assert.True (recordingObserver.ObserverToken != IntPtr.Zero, "TokenByAddingParameterRecordingObserver return zero pointer for recording observer.");
+					Assert.That (recordingObserver.ObserverToken != IntPtr.Zero, Is.True, "TokenByAddingParameterRecordingObserver return zero pointer for recording observer.");
 					parameter.Value = newValue;
 
 					completion.WaitOne (TimeSpan.FromSeconds (1));
-					Assert.False (recordingObserverInvoked, "Recording observer was invoked however observer it should be removed already.");
+					Assert.That (recordingObserverInvoked, Is.False, "Recording observer was invoked however observer it should be removed already.");
 				}
 			}
 		}
@@ -100,11 +97,9 @@ namespace monotouchtest {
 			using (var parameter = CreateAUParameter ()) {
 				parameter.ImplementorStringFromValueCallback = new AUImplementorStringFromValueCallback ((AUParameter param, ref float? value) => {
 					try {
-						Assert.True (floatValue == value.Value,
-							$"Passed float value was incorrect. Expected {floatValue} but was {value}");
+						Assert.That (floatValue == value.Value, Is.True, $"Passed float value was incorrect. Expected {floatValue} but was {value}");
 
-						Assert.True (param.Identifier == parameter.Identifier,
-							$"Passed AUParameter was incorrect. Expected {parameter.Identifier} but was {param.Identifier}");
+						Assert.That (param.Identifier == parameter.Identifier, Is.True, $"Passed AUParameter was incorrect. Expected {parameter.Identifier} but was {param.Identifier}");
 					} catch (Exception e) {
 						ex = e;
 					} finally {
@@ -113,13 +108,12 @@ namespace monotouchtest {
 					return (NSString) value.ToString ();
 				});
 
-				Assert.IsNull (ex, "Exception");
+				Assert.That (ex, Is.Null, "Exception");
 
 				var str = parameter.GetString (floatValue);
 
-				Assert.True (implementorCallbackInvoked, "StringValueFrom callback was not invoked.");
-				Assert.True (str == expectedStringValue,
-					$"String doesn't match. Expected {expectedStringValue}, actual {str}");
+				Assert.That (implementorCallbackInvoked, Is.True, "StringValueFrom callback was not invoked.");
+				Assert.That (str == expectedStringValue, Is.True, $"String doesn't match. Expected {expectedStringValue}, actual {str}");
 			}
 		}
 
@@ -135,11 +129,9 @@ namespace monotouchtest {
 
 			using (var parameter = CreateAUParameter ()) {
 				parameter.ImplementorValueFromStringCallback = new AUImplementorValueFromStringCallback ((param, str) => {
-					Assert.True (str == stringValue,
-						$"Passed string value was incorrect. Expected {stringValue} but was {str}");
+					Assert.That (str == stringValue, Is.True, $"Passed string value was incorrect. Expected {stringValue} but was {str}");
 
-					Assert.True (param.Identifier == parameter.Identifier,
-						$"Passed AUParameter was incorrect. Expected {parameter.Identifier} but was {param.Identifier}");
+					Assert.That (param.Identifier == parameter.Identifier, Is.True, $"Passed AUParameter was incorrect. Expected {parameter.Identifier} but was {param.Identifier}");
 
 					implementorCallbackInvoked = true;
 					return Single.Parse (str);
@@ -147,9 +139,8 @@ namespace monotouchtest {
 
 				var value = parameter.GetValue (stringValue);
 
-				Assert.True (implementorCallbackInvoked, "ValueFromString callback was not invoked.");
-				Assert.False (Math.Abs (value - expectedValue) > float.Epsilon,
-					$"Values doesn't match. Expected {expectedValue}, actual {value}");
+				Assert.That (implementorCallbackInvoked, Is.True, "ValueFromString callback was not invoked.");
+				Assert.That (Math.Abs (value - expectedValue) > float.Epsilon, Is.False, $"Values doesn't match. Expected {expectedValue}, actual {value}");
 			}
 		}
 
@@ -170,17 +161,16 @@ namespace monotouchtest {
 
 			using (var parameter = CreateAUParameter ()) {
 				parameter.ImplementorDisplayNameWithLengthCallback = new AUImplementorDisplayNameWithLengthCallback ((node, desiredLength) => {
-					Assert.AreEqual ((nint) length, (nint) desiredLength, "Passed length value is incorrect.");
-					Assert.True (node.Identifier == parameter.Identifier,
-						$"Passed AUParameterNode was incorrect. Expected {parameter.Identifier} but was {node.Identifier}");
+					Assert.That ((nint) desiredLength, Is.EqualTo ((nint) length), "Passed length value is incorrect.");
+					Assert.That (node.Identifier == parameter.Identifier, Is.True, $"Passed AUParameterNode was incorrect. Expected {parameter.Identifier} but was {node.Identifier}");
 
 					implementorCallbackInvoked = true;
 					return node.DisplayName.Substring (0, (int) desiredLength);
 				});
 
 				var s = parameter.GetDisplayName (length);
-				Assert.True (implementorCallbackInvoked, "Display name callback was not invoked.");
-				Assert.True (expectedTruncatedName == s, $"Truncated node display name was incorrect. Expected {expectedTruncatedName} but was {s}");
+				Assert.That (implementorCallbackInvoked, Is.True, "Display name callback was not invoked.");
+				Assert.That (expectedTruncatedName == s, Is.True, $"Truncated node display name was incorrect. Expected {expectedTruncatedName} but was {s}");
 			}
 		}
 

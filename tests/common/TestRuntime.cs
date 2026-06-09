@@ -210,7 +210,7 @@ partial class TestRuntime {
 		if (CheckXcodeVersion (major, minor, build))
 			return;
 
-		NUnit.Framework.Assert.Ignore ("Requires the platform version shipped with Xcode {0}.{1}", major, minor);
+		NUnit.Framework.Assert.Ignore ($"Requires the platform version shipped with Xcode {major}.{minor}");
 	}
 
 	public static void AssertDevice (string message = "This test only runs on device.")
@@ -299,12 +299,10 @@ partial class TestRuntime {
 
 	public static void AssertNotVirtualMachine ()
 	{
-#if MONOMAC || __MACCATALYST__
 		// enviroment variable set by the CI when running on a VM
 		var vmVendor = Environment.GetEnvironmentVariable ("VM_VENDOR");
 		if (!string.IsNullOrEmpty (vmVendor))
 			NUnit.Framework.Assert.Ignore ($"This test only runs on device. Found vm vendor: {vmVendor}");
-#endif
 	}
 
 	public static bool IsVSTS =>
@@ -1625,6 +1623,7 @@ partial class TestRuntime {
 		IgnoreInCIIfDnsResolutionFailed (ex);
 		IgnoreInCIIfSshConnectionError (ex);
 		IgnoreInCIIfTimedOut (ex);
+		IgnoreInCIIfHttpClientTimedOut (ex);
 	}
 
 	public static void IgnoreInCIIfBadNetwork (NSError? error)
@@ -1664,6 +1663,26 @@ partial class TestRuntime {
 	public static void IgnoreInCIIfTimedOut (NSError error)
 	{
 		IgnoreNetworkError (error, CFNetworkErrors.TimedOut);
+	}
+
+	public static void IgnoreInCIIfHttpClientTimedOut ()
+	{
+		IgnoreInCI ("Ignored due to HTTP client timeout.");
+	}
+
+	public static void IgnoreInCIIfHttpClientTimedOut (Exception? ex)
+	{
+		if (ex is null)
+			return;
+
+		var tce = FindInner<System.Threading.Tasks.TaskCanceledException> (ex);
+		if (tce is null)
+			return;
+
+		if (FindInner<TimeoutException> (tce) is not null ||
+			tce.Message.Contains ("HttpClient.Timeout", StringComparison.Ordinal)) {
+			IgnoreInCI ($"Ignored due to HTTP client timeout: {tce.Message}");
+		}
 	}
 
 	public static void IgnoreInCIIfTimedOut (Exception ex)
@@ -1732,9 +1751,19 @@ partial class TestRuntime {
 
 	public static void IgnoreInCIIfSshConnectionError (Exception ex)
 	{
-		var msg = ex.Message;
-		if (msg.Contains ("The SSL connection could not be established")) {
-			IgnoreInCI ($"Ignored due to network error: {ex}");
+		// Check all exceptions in the chain for TLS/SSL error messages
+		var current = ex;
+		while (current is not null) {
+			var msg = current.Message;
+			if (msg.Contains ("The SSL connection could not be established") ||
+				msg.Contains ("A TLS error caused the secure connection to fail")) {
+				IgnoreInCI ($"Ignored due to network error: {ex}");
+			}
+			if (current is NSErrorException nex) {
+				// CFNetworkErrors.SecureConnectionFailed = -1200
+				IgnoreNetworkError (nex.Error, CFNetworkErrors.SecureConnectionFailed);
+			}
+			current = current.InnerException;
 		}
 	}
 
@@ -1857,7 +1886,7 @@ partial class TestRuntime {
 		case InconclusiveException: throw new InconclusiveException (ex.Message, ex);
 		case ResultStateException: throw ex;
 		default:
-			Assert.IsNull (ex, message);
+			Assert.That (ex, Is.Null, message);
 			break;
 		}
 	}

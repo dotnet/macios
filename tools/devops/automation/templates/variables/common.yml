@@ -56,6 +56,14 @@ variables:
 - name: system.debug
   value: false
 
+# Work around dotnet/sdk#54544: the NativeAOT dotnet muxer crashes on macOS during
+# telemetry init because it can't resolve the AppleCrypto native library, aborting any
+# script step that invokes dotnet directly (e.g. install-workloads.sh). Opting out of
+# telemetry skips the crashing code path. Remove once the SDK fix (dotnet/sdk#54699)
+# has flowed in.
+- name: DOTNET_CLI_TELEMETRY_OPTOUT
+  value: 1
+
 # the name of our repository
 - name: BUILD_REPOSITORY_TITLE
   value: ${{ split(variables['Build.Repository.Name'],'/')[1] }}

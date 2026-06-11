@@ -32,7 +32,7 @@ namespace Xharness.Jenkins {
 			var x64_runtime_identifier = string.Empty;
 			var arm64_sim_runtime_identifier = string.Empty;
 			var x64_sim_runtime_identifier = string.Empty;
-			var supports_mono = test.Platform != TestPlatform.Mac;
+			var supports_mono = false;
 			var supports_coreclr = true;
 			var ignore_coreclr = ignore;
 
@@ -90,10 +90,11 @@ namespace Xharness.Jenkins {
 					yield return new TestData { Variation = "Debug (dynamic registrar)", TestVariation = "dynamic-registrar", Ignored = ignore };
 					yield return new TestData { Variation = "Release (all optimizations)", TestVariation = "release|static-registrar-all-optimizations", Ignored = ignore };
 					yield return new TestData { Variation = "Debug (all optimizations)", TestVariation = "static-registrar-all-optimizations", Ignored = ignore };
-					if (supports_interpreter) {
+					if (supports_mono && supports_interpreter) {
 						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Ignored = ignore };
 					}
-					yield return new TestData { Variation = "Release (LLVM)", TestVariation = "release|llvm", Ignored = ignore };
+					if (supports_mono)
+						yield return new TestData { Variation = "Release (LLVM)", TestVariation = "release|llvm", Ignored = ignore };
 					yield return new TestData { Variation = "Debug (managed static registrar)", TestVariation = "managed-static-registrar", Ignored = ignore };
 					if (supports_coreclr)
 						yield return new TestData { Variation = "Debug (trimmable static registrar)", TestVariation = "trimmable-static-registrar", Ignored = ignore };
@@ -127,7 +128,7 @@ namespace Xharness.Jenkins {
 						yield return new TestData { Variation = "Release (trimmable static registrar, all optimizations)", TestVariation = "trimmable-static-registrar-all-optimizations-linkall", Ignored = ignore };
 					yield return new TestData { Variation = "Release (NativeAOT, x64)", TestVariation = "release|nativeaot", Ignored = ignore, RuntimeIdentifier = x64_sim_runtime_identifier };
 					yield return new TestData { Variation = "Release (trimmable static registrar, NativeAOT, x64)", TestVariation = "trimmable-static-registrar|release|nativeaot", Ignored = ignore, RuntimeIdentifier = x64_sim_runtime_identifier };
-					if (supports_interpreter) {
+					if (supports_mono && supports_interpreter) {
 						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Ignored = ignore };
 						yield return new TestData { Variation = "Release (interpreter)", TestVariation = "release|interpreter", Ignored = ignore };
 					}
@@ -175,10 +176,10 @@ namespace Xharness.Jenkins {
 					yield return new TestData { Variation = "Release (trimmable static registrar, NativeAOT, x64)", TestVariation = "trimmable-static-registrar|nativeaot|release", Ignored = ignore, RuntimeIdentifier = x64_runtime_identifier };
 					yield return new TestData { Variation = "Release (static registrar)", TestVariation = "release|static-registrar", Ignored = ignore };
 					yield return new TestData { Variation = "Release (static registrar, all optimizations)", TestVariation = "release|static-registrar-all-optimizations-linkall", Ignored = ignore };
-					if (test.Platform == TestPlatform.MacCatalyst) {
+					if (supports_mono && test.Platform == TestPlatform.MacCatalyst) {
 						yield return new TestData { Variation = "Release (ARM64, LLVM)", TestVariation = "release|llvm", Ignored = !mac_supports_arm64 ? true : ignore, RuntimeIdentifier = arm64_runtime_identifier };
 					}
-					if (supports_interpreter) {
+					if (supports_mono && supports_interpreter) {
 						yield return new TestData { Variation = "Debug (interpreter)", TestVariation = "interpreter", Ignored = ignore };
 						yield return new TestData { Variation = "Release (interpreter)", TestVariation = "release|interpreter", Ignored = ignore };
 					}

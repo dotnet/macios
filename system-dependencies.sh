@@ -379,6 +379,36 @@ function print_non_universal_simulator_runtimes ()
 	rm -f "$TMPFILE"
 }
 
+# Downloads the simulator platform/runtime for the given platform (iOS, tvOS, ...).
+#
+# 'variant' is the (possibly empty) extra xcodebuild arguments, typically
+# " -architectureVariant universal" so that x64 apps can run in the simulator on arm64
+# machines. However some Xcode betas only ship a single-architecture (arm64) simulator
+# runtime, with no universal variant available to download, in which case
+# 'xcodebuild -downloadPlatform <platform> -architectureVariant universal' installs nothing
+# and prints "No matching universal downloadable found for platform: <platform>". Detect that
+# specific message and fall back to downloading the default variant, so that at least the
+# arm64 simulator runtime gets installed (otherwise there'd be no runtime to run tests on).
+function download_platform ()
+{
+	local platform="$1"
+	local variant="$2"
+	local logfile
+	logfile=$(mktemp)
+
+	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform $platform$variant'"
+	# Note: $variant is intentionally unquoted so it word-splits into separate arguments.
+	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$platform" $variant 2>&1 | tee "$logfile" | sed 's/^/        /'
+
+	if test -n "$variant" && grep -q "No matching universal downloadable found for platform" "$logfile"; then
+		warn "No universal $platform simulator runtime is available to download; falling back to the default (single-architecture) variant."
+		log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform $platform'"
+		"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$platform" 2>&1 | sed 's/^/        /'
+	fi
+
+	rm -f "$logfile"
+}
+
 function xcodebuild_download_selected_platforms ()
 {
 	local XCODE_DEVELOPER_ROOT
@@ -471,11 +501,8 @@ function xcodebuild_download_selected_platforms ()
 		fi
 	fi
 
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform iOS$IOS_BUILD_VERSION' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform iOS $IOS_BUILD_VERSION   2>&1 | sed 's/^/        /'
-
-	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform tvOS$TVOS_BUILD_VERSION' $1"
-	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform tvOS $TVOS_BUILD_VERSION 2>&1 | sed 's/^/        /'
+	download_platform iOS "$IOS_BUILD_VERSION"
+	download_platform tvOS "$TVOS_BUILD_VERSION"
 
 	return 0
 }

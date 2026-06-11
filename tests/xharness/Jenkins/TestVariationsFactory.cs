@@ -34,10 +34,10 @@ namespace Xharness.Jenkins {
 			var x64_sim_runtime_identifier = string.Empty;
 			var supports_coreclr = test.Platform == TestPlatform.Mac || jenkins.Harness.DotNetVersion.Major >= 11;
 			var supports_x64 = string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("ACES")); // x64 is not supported on ACES machines
-			// Xcode 27 only ships arm64 simulator runtimes (there's no x86_64/universal variant available
-			// to download), so x64 simulator apps can't run there. Skip x64 *simulator* configurations on
-			// Xcode 27+. x64 macOS / Mac Catalyst configs are unaffected (they run on macOS via Rosetta,
-			// not in a simulator), so they keep using 'supports_x64'.
+																								   // Xcode 27 only ships arm64 simulator runtimes (there's no x86_64/universal variant available
+																								   // to download), so x64 simulator apps can't run there. Skip x64 *simulator* configurations on
+																								   // Xcode 27+. x64 macOS / Mac Catalyst configs are unaffected (they run on macOS via Rosetta,
+																								   // not in a simulator), so they keep using 'supports_x64'.
 			var supports_x64_simulator = supports_x64 && ((IMacOSProcessManager) processManager).XcodeVersion.Major < 27;
 
 			switch (test.Platform) {

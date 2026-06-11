@@ -385,10 +385,17 @@ function print_non_universal_simulator_runtimes ()
 # " -architectureVariant universal" so that x64 apps can run in the simulator on arm64
 # machines. However some Xcode betas only ship a single-architecture (arm64) simulator
 # runtime, with no universal variant available to download, in which case
-# 'xcodebuild -downloadPlatform <platform> -architectureVariant universal' installs nothing
-# and prints "No matching universal downloadable found for platform: <platform>". Detect that
-# specific message and fall back to downloading the default variant, so that at least the
-# arm64 simulator runtime gets installed (otherwise there'd be no runtime to run tests on).
+# 'xcodebuild -downloadPlatform <platform> -architectureVariant universal' installs nothing and
+# prints "No matching universal downloadable found for platform: <platform>". Detect that and
+# retry, this time explicitly requesting the arm64 variant, so that at least the arm64 simulator
+# runtime gets installed (otherwise there'd be no runtime to run tests on).
+#
+# The retry passes "-architectureVariant arm64" explicitly rather than omitting the argument: with
+# no -architectureVariant xcodebuild auto-resolves the variant, and in some environments (e.g. CI)
+# it resolves to 'universal' again and fails ("Automatically resolved architecture variant for
+# platform <platform> as 'universal'" / "No matching downloadable found for platform: <platform>"),
+# while on other machines it resolves to 'arm64' and succeeds. Requesting arm64 explicitly makes
+# the fallback deterministic. ('universal' and 'arm64' are the only two values xcodebuild accepts.)
 function download_platform ()
 {
 	local platform="$1"
@@ -401,9 +408,9 @@ function download_platform ()
 	"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$platform" $variant 2>&1 | tee "$logfile" | sed 's/^/        /'
 
 	if test -n "$variant" && grep -q "No matching universal downloadable found for platform" "$logfile"; then
-		warn "No universal $platform simulator runtime is available to download; falling back to the default (single-architecture) variant."
-		log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform $platform'"
-		"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$platform" 2>&1 | sed 's/^/        /'
+		warn "No universal $platform simulator runtime is available to download; falling back to the single-architecture (arm64) variant."
+		log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform $platform -architectureVariant arm64'"
+		"$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild" -downloadPlatform "$platform" -architectureVariant arm64 2>&1 | sed 's/^/        /'
 	fi
 
 	rm -f "$logfile"

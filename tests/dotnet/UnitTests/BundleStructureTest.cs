@@ -640,22 +640,6 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64", CodeSignature.All, "Debug")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", CodeSignature.All, "Debug")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", CodeSignature.All, "Debug")]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64", CodeSignature.All, "Debug")]
-		// Release
-		[TestCase (ApplePlatform.iOS, "ios-arm64", CodeSignature.All, "Release")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", CodeSignature.All, "Release")]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64", CodeSignature.All, "Release")]
-		public void Build_Mono (ApplePlatform platform, string runtimeIdentifiers, CodeSignature signature, string configuration)
-		{
-			Build (platform, runtimeIdentifiers, signature, configuration, true);
-		}
-
-		[Test]
-		// Debug
-		[TestCase (ApplePlatform.iOS, "ios-arm64", CodeSignature.All, "Debug")]
-		[TestCase (ApplePlatform.iOS, "iossimulator-x64", CodeSignature.All, "Debug")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64", CodeSignature.All, "Debug")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-x64;maccatalyst-arm64", CodeSignature.All, "Debug")]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64", CodeSignature.All, "Debug")]
 		[TestCase (ApplePlatform.MacOSX, "osx-x64;osx-arm64", CodeSignature.All, "Debug")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64", CodeSignature.All, "Debug")]

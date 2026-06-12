@@ -51,14 +51,6 @@ namespace Xamarin.Tests {
 		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
-		public void BuildIpaTest_Mono (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			BuildIpaTestImpl (platform, runtimeIdentifiers, useMonoRuntime: true);
-		}
-
-		[Test]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		public void BuildIpaTest_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			BuildIpaTestImpl (platform, runtimeIdentifiers, useMonoRuntime: false);
@@ -227,15 +219,6 @@ namespace Xamarin.Tests {
 
 			var pkgPath = Path.Combine (appPath, "..", $"{project}-{projectVersion}.pkg");
 			Assert.That (pkgPath, Does.Exist, "pkg creation");
-		}
-
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
-		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64;maccatalyst-x64")]
-		public void PublishTest_Mono (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			PublishTestImpl (platform, runtimeIdentifiers, useMonoRuntime: true);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]

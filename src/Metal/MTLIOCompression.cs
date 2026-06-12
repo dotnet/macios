@@ -15,8 +15,8 @@ namespace Metal {
 		MTLIOCompressionContext (NativeHandle handle, bool owns) : base (handle, owns) { }
 
 		[DllImport (Constants.MetalLibrary)]
-		[UnsupportedSimulator ("ios")]
-		[UnsupportedSimulator ("tvos")]
+		[UnsupportedSimulator ("ios18.0")]
+		[UnsupportedSimulator ("tvos18.0")]
 		static extern unsafe void MTLIOCompressionContextAppendData (IntPtr context, void* data, nuint size);
 
 		unsafe void AppendData (void* data, nuint size)
@@ -49,8 +49,8 @@ namespace Metal {
 		}
 
 		[DllImport (Constants.MetalLibrary)]
-		[UnsupportedSimulator ("ios")]
-		[UnsupportedSimulator ("tvos")]
+		[UnsupportedSimulator ("ios18.0")]
+		[UnsupportedSimulator ("tvos18.0")]
 		// [return: NullAllowed]
 		static extern IntPtr MTLIOCreateCompressionContext (IntPtr path, long type, long chunkSize);
 
@@ -78,8 +78,8 @@ namespace Metal {
 		}
 
 		[DllImport (Constants.MetalLibrary)]
-		[UnsupportedSimulator ("ios")]
-		[UnsupportedSimulator ("tvos")]
+		[UnsupportedSimulator ("ios18.0")]
+		[UnsupportedSimulator ("tvos18.0")]
 		static extern long MTLIOFlushAndDestroyCompressionContext (IntPtr context);
 
 		public MTLIOCompressionStatus FlushAndDestroy ()
@@ -92,8 +92,8 @@ namespace Metal {
 		}
 
 		[DllImport (Constants.MetalLibrary)]
-		[UnsupportedSimulator ("ios")]
-		[UnsupportedSimulator ("tvos")]
+		[UnsupportedSimulator ("ios18.0")]
+		[UnsupportedSimulator ("tvos18.0")]
 		static extern nint MTLIOCompressionContextDefaultChunkSize ();
 
 		public static nint DefaultChunkSize => MTLIOCompressionContextDefaultChunkSize ();

@@ -913,6 +913,9 @@ namespace CoreMedia {
 
 		[TV (16, 0), Mac (13, 0), iOS (16, 0)]
 		[MacCatalyst (16, 0)]
+		// Declared available at iOS/tvOS 16.0 but only added to the simulator runtimes in a later release.
+		[SupportedSimulator ("ios18.0")]
+		[SupportedSimulator ("tvos26.0")]
 		[Field ("kCMSampleAttachmentKey_HDR10PlusPerFrameData")]
 		NSString Hdr10PlusPerFrameDataKey { get; }
 

@@ -13,6 +13,8 @@ using CoreLocation;
 namespace SafetyKit {
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	// SafetyKit (Crash Detection) is device-only; the framework was only added to the iOS simulator later.
+	[SupportedSimulator ("ios18.0")]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface SACrashDetectionEvent : NSSecureCoding, NSCopying {
@@ -29,6 +31,7 @@ namespace SafetyKit {
 	delegate void SACrashDetectionManagerRequestAuthorizationCompletionHandler (SAAuthorizationStatus status, [NullAllowed] NSError error);
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[SupportedSimulator ("ios18.0")]
 	[BaseType (typeof (NSObject))]
 	interface SACrashDetectionManager {
 		[Static]
@@ -63,6 +66,7 @@ namespace SafetyKit {
 	delegate void SAEmergencyResponseManagerDialVoiceCallCompletionHandler (bool requestAccepted, [NullAllowed] NSError error);
 
 	[Mac (13, 0), iOS (16, 0), MacCatalyst (16, 0), NoTV]
+	[SupportedSimulator ("ios18.0")]
 	[BaseType (typeof (NSObject))]
 	interface SAEmergencyResponseManager {
 		[Wrap ("WeakDelegate")]

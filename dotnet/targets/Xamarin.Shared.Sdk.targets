@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+	<Target Name="_ErrorOnMonoMobileRuntime"
+			BeforeTargets="Build;Publish"
+			Condition="'$(UseMonoRuntime)' == 'true' and '$(_PlatformName)' != 'macOS'">
+		<Error Code="NETSDK1242" Text="Building $(_PlatformName) projects with the Mono runtime is not supported in .NET 11.0 and later. Use the .NET 10.0 SDK to build this project." />
+	</Target>
+
 	<PropertyGroup>
 		<!-- Use single-project MSBuild properties to generate the application manifest by default -->
 		<GenerateApplicationManifest Condition="'$(GenerateApplicationManifest)' == ''">true</GenerateApplicationManifest>

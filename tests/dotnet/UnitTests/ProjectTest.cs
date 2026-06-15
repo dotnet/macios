@@ -461,10 +461,10 @@ namespace Xamarin.Tests {
 		[Category ("WindowsInclusive")]
 		public void IsNotMacBuild_CoreCLR (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties = null, string configuration = "Debug")
 		{
-			IsNotMacBuild (platform, runtimeIdentifiers, isDeviceBuild, extraProperties, configuration, useMonoRuntime: false);
+			IsNotMacBuild (platform, runtimeIdentifiers, isDeviceBuild, extraProperties, configuration);
 		}
 
-		void IsNotMacBuild (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties, string configuration, bool useMonoRuntime)
+		void IsNotMacBuild (ApplePlatform platform, string runtimeIdentifiers, bool isDeviceBuild, string? extraProperties, string configuration)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -474,7 +474,6 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["IsMacEnabled"] = "false";
-			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 			if (!string.IsNullOrEmpty (configuration))
 				properties ["Configuration"] = configuration;
 			if (extraProperties is not null) {
@@ -2242,10 +2241,10 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-arm64")]
 		public void PluralRuntimeIdentifiers_CoreCLR (ApplePlatform platform, string runtimeIdentifiers)
 		{
-			PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers, useMonoRuntime: false);
+			PluralRuntimeIdentifiersImpl (platform, runtimeIdentifiers);
 		}
 
-		internal static void PluralRuntimeIdentifiersImpl (ApplePlatform platform, string runtimeIdentifiers, bool useMonoRuntime = false, Dictionary<string, string>? extraProperties = null)
+		internal static void PluralRuntimeIdentifiersImpl (ApplePlatform platform, string runtimeIdentifiers, Dictionary<string, string>? extraProperties = null)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -2255,7 +2254,6 @@ namespace Xamarin.Tests {
 			Clean (project_path);
 			var properties = GetDefaultProperties (extraProperties: extraProperties);
 			properties ["RuntimeIdentifiers"] = runtimeIdentifiers;
-			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 
 			DotNet.AssertBuild (project_path, properties);
 		}
@@ -3744,10 +3742,10 @@ namespace Xamarin.Tests {
 		[TestCaseSource (nameof (GetLinkedWithNativeLibrariesTestCases_CoreCLR))]
 		public void LinkedWithNativeLibraries_CoreCLR (ApplePlatform platform, string runtimeIdentifiers, string linkMode, string [] expectedFrameworks)
 		{
-			LinkedWithNativeLibraries (platform, runtimeIdentifiers, linkMode, expectedFrameworks, useMonoRuntime: false);
+			LinkedWithNativeLibraries (platform, runtimeIdentifiers, linkMode, expectedFrameworks);
 		}
 
-		void LinkedWithNativeLibraries (ApplePlatform platform, string runtimeIdentifiers, string linkMode, string [] expectedFrameworks, bool useMonoRuntime)
+		void LinkedWithNativeLibraries (ApplePlatform platform, string runtimeIdentifiers, string linkMode, string [] expectedFrameworks)
 		{
 			var project = "MySimpleApp";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -3758,7 +3756,6 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["MtouchLink"] = linkMode;
 			properties ["LinkMode"] = linkMode;
-			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 			if (platform != ApplePlatform.MacOSX)
 				properties ["UseInterpreter"] = "true"; // just to speed up the build
 			DotNet.AssertBuild (project_path, properties);

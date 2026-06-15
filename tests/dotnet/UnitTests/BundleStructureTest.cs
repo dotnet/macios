@@ -650,10 +650,10 @@ namespace Xamarin.Tests {
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64", CodeSignature.All, "Release")]
 		public void Build_CoreCLR (ApplePlatform platform, string runtimeIdentifiers, CodeSignature signature, string configuration)
 		{
-			Build (platform, runtimeIdentifiers, signature, configuration, false);
+			Build (platform, runtimeIdentifiers, signature, configuration);
 		}
 
-		void Build (ApplePlatform platform, string runtimeIdentifiers, CodeSignature signature, string configuration, bool useMonoRuntime)
+		void Build (ApplePlatform platform, string runtimeIdentifiers, CodeSignature signature, string configuration)
 		{
 			var project = "BundleStructure";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
@@ -667,7 +667,6 @@ namespace Xamarin.Tests {
 			properties ["_IsAppSigned"] = signature != CodeSignature.None ? "true" : "false";
 			if (!string.IsNullOrWhiteSpace (configuration))
 				properties ["Configuration"] = configuration;
-			properties ["UseMonoRuntime"] = useMonoRuntime ? "true" : "false";
 			var rv = DotNet.AssertBuild (project_path, properties);
 			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			var warningMessages = FilterWarnings (warnings);
@@ -705,9 +704,7 @@ namespace Xamarin.Tests {
 				.ToList ();
 
 			var appExecutable = GetNativeExecutable (platform, appPath);
-			var isCoreCLR = !useMonoRuntime;
-
-			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
+			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: true);
 			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
@@ -719,7 +716,7 @@ namespace Xamarin.Tests {
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = FilterWarnings (warnings);
 
-			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
+			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: true);
 			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 1");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
@@ -731,7 +728,7 @@ namespace Xamarin.Tests {
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = FilterWarnings (warnings);
 
-			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
+			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: true);
 			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 2");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 
@@ -740,7 +737,7 @@ namespace Xamarin.Tests {
 			warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).ToArray ();
 			warningMessages = FilterWarnings (warnings);
 
-			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: isCoreCLR);
+			CheckAppBundleContents (platform, appPath, rids, signature, isReleaseBuild, isCoreCLR: true);
 			Assert.That (warningMessages, Is.EqualTo (expectedWarnings), "Warnings Rebuild 3");
 			ExecuteWithMagicWordAndAssert (platform, runtimeIdentifiers, appExecutable);
 		}

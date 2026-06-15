@@ -100,8 +100,8 @@ namespace MonoTouchFixtures.AVFoundation {
 
 		#endregion
 
-		#region AVMovie
 #if !__TVOS__
+		#region AVMovie
 
 		[Test]
 		public void AVMovie_LoadTrack ()
@@ -280,8 +280,8 @@ namespace MonoTouchFixtures.AVFoundation {
 			}
 		}
 
-#endif // !__TVOS__
 		#endregion
+#endif // !__TVOS__
 
 		#region AVComposition
 

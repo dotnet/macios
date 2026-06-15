@@ -527,8 +527,15 @@ namespace Linker.Shared {
 			method = typeof (Runtime).GetMethod ("GetIsARM64CallingConvention", BindingFlags.Static | BindingFlags.NonPublic)!;
 			instructions = new ILReader (method);
 			Assert.That (instructions.Count (), Is.EqualTo (2), "IL Count");
-			Assert.That (instructions.Skip (0).First ().OpCode, Is.EqualTo (OpCodes.Ldc_I4_0).Or.EqualTo (OpCodes.Ldc_I4_1), "IL 1");
-			Assert.That (instructions.Skip (1).First ().OpCode, Is.EqualTo (OpCodes.Ret), "IL 2");
+			// The method body should be either:
+			// - ldc.i4.X; ret (optimized to a constant by our OptimizeGeneratedCodeStep), or
+			// - ldnull; throw (the linker stubbed the body after our step inlined the value at all call sites)
+			Assert.That (instructions.Skip (0).First ().OpCode,
+				Is.EqualTo (OpCodes.Ldc_I4_0).Or.EqualTo (OpCodes.Ldc_I4_1).Or.EqualTo (OpCodes.Ldnull), "IL 1");
+			if (instructions.Skip (0).First ().OpCode == OpCodes.Ldnull)
+				Assert.That (instructions.Skip (1).First ().OpCode, Is.EqualTo (OpCodes.Throw), "IL 2 (linker-stubbed)");
+			else
+				Assert.That (instructions.Skip (1).First ().OpCode, Is.EqualTo (OpCodes.Ret), "IL 2");
 #endif
 
 			Assert.That (GetIsARM64CallingConventionOptimized (), Is.EqualTo (Runtime.IsARM64CallingConvention), "Value optimized");

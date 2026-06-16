@@ -10312,7 +10312,16 @@ namespace UIKit {
 		nint GetSectionForObject (NSObject obj, Selector collationStringSelector);
 
 		[Export ("sortedArrayFromArray:collationStringSelector:")]
+#if XAMCORE_5_0
+		NSObject [] SortedArrayFromArrayCollationStringSelector (NSObject [] array, Selector collationStringSelector);
+#else
+		[Obsolete ("Use 'SortedArrayFromArrayCollationStringSelector' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		NSObject [] SortedArrayFromArraycollationStringSelector (NSObject [] array, Selector collationStringSelector);
+
+		[Wrap ("SortedArrayFromArraycollationStringSelector (array, collationStringSelector)")]
+		NSObject [] SortedArrayFromArrayCollationStringSelector (NSObject [] array, Selector collationStringSelector);
+#endif
 	}
 
 	/// <summary>Creates time-based notifications that the operating system delivers to the user.</summary>

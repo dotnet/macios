@@ -5478,7 +5478,11 @@ namespace Foundation {
 			<remarks>Developers assign a function, delegate or anonymous method to this property to return a value to the object.   If developers assign a value to this property, it this will reset the value for the Delegate property to an internal handler that maps delegates to events.</remarks>
 			""")]
 		[Export ("metadataQuery:replacementValueForAttribute:value:"), DelegateName ("NSMetadataQueryValue"), DefaultValue (null)]
+#if XAMCORE_5_0
+		NSObject ReplacementValueForAttributeValue (NSMetadataQuery query, string attributeName, NSObject value);
+#else
 		NSObject ReplacementValueForAttributevalue (NSMetadataQuery query, string attributeName, NSObject value);
+#endif
 	}
 
 	[BaseType (typeof (NSObject))]

@@ -101,7 +101,9 @@ namespace Introspection {
 			{ "Apv", ApplePlatform.MacOSX },
 			{ "Arcball", All },
 			{ "Argb", All },
-			{ "Arraycollation", All & ~ApplePlatform.MacOSX },
+#if !XAMCORE_5_0
+			{ "Arraycollation", All & ~ApplePlatform.MacOSX }, // SortedArrayFromArraycollationStringSelector - will be renamed in XAMCORE_5_0
+#endif
 			{ "Asin", All },
 			{ "Asinh", All },
 			{ "Astc", All },
@@ -114,7 +116,9 @@ namespace Introspection {
 			{ "Atsc", All },
 			{ "Attr", ApplePlatform.MacOSX },
 			{ "Attrib", All },
-			{ "Attributevalue", All },
+#if !XAMCORE_5_0
+			{ "Attributevalue", All }, // ReplacementValueForAttributevalue - will be renamed in XAMCORE_5_0
+#endif
 			{ "Attrs", All }, // Attributes (used by Apple for keys)
 			{ "Audiofile", All },
 			{ "Audiograph", ApplePlatform.MacOSX },
@@ -167,7 +171,9 @@ namespace Introspection {
 			{ "Cfa", All }, // acronym: Color Filter Array
 			{ "Chacha", All },
 			{ "Chapv", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Characterteristic", All },
+#if !XAMCORE_5_0
+			{ "Characterteristic", All }, // UpdatedCharacterteristicValue - will be renamed in XAMCORE_5_0
+#endif
 			{ "Cholesky", All },
 			{ "Chromaticities", All },
 			{ "Chw", All },
@@ -230,7 +236,9 @@ namespace Introspection {
 			{ "Distinguised", ApplePlatform.MacOSX }, // ITLibPlaylistPropertyDistinguisedKind
 			{ "dlclose", All },
 			{ "dlerror", All },
+#if !XAMCORE_5_0
 			{ "Directionfor", All & ~ApplePlatform.MacOSX }, // SetBaseWritingDirectionforRange - will be renamed in XAMCORE_5_0
+#endif
 			{ "Dlfcn", All },
 			{ "Dls", ApplePlatform.MacOSX },
 			{ "Dng", All },
@@ -271,7 +279,9 @@ namespace Introspection {
 			{ "Elu", All },
 			{ "Emagic", All },
 			{ "Embd", All },
-			{ "Emebedding", All },
+#if !XAMCORE_5_0
+			{ "Emebedding", All }, // NLContextualEmebeddingKey - will be renamed in XAMCORE_5_0
+#endif
 			{ "Emsg", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // 4cc
 			{ "Enc", All },
 			{ "Endc", All },
@@ -296,7 +306,7 @@ namespace Introspection {
 			{ "Fft", All },
 			{ "Fhir", All & ~ApplePlatform.TVOS },
 			{ "Fieldset", All & ~ApplePlatform.MacCatalyst },
-			{ "Formati", All },
+			{ "Formati", All }, // FormatiTunesMetadata - word split of "Format" + "iTunes"
 			{ "Fov", All },
 			{ "Fqdns", All },
 			{ "Framebuffer", All },
@@ -421,7 +431,7 @@ namespace Introspection {
 			{ "Kiloamperes", All },
 			{ "Kiloohms", All },
 			{ "Kilopascals", All },
-			{ "ks", All },
+			{ "ks", All }, // word fragment from spell checker
 			{ "Kullback", All }, // Kullback-Leibler Divergence
 			{ "Lacunarity", All },
 			{ "Latm", All }, //  Low Overhead Audio Transport Multiplex
@@ -545,7 +555,7 @@ namespace Introspection {
 			{ "Orth", All },
 			{ "Osa", All }, // Open Scripting Architecture
 			{ "Otsu", All }, // threshold for image binarization
-			{ "ove", All },
+			{ "ove", All }, // word fragment from spell checker
 			{ "Overline", All & ~ApplePlatform.TVOS },
 			{ "Paeth", All }, // PNG filter
 			{ "Palettize", All },

@@ -63,7 +63,9 @@ namespace MonoTouchFixtures.Foundation {
 				return;
 			}
 
-			var listenThread = new Thread (new ParameterizedThreadStart (DebugListener));
+			var listenThread = new Thread (new ParameterizedThreadStart (DebugListener)) {
+				IsBackground = true,
+			};
 			listenThread.Start (listener);
 			NSStream.CreatePairWithSocketToHost (new IPEndPoint (IPAddress.Loopback, port), out read, out write);
 			read.Open ();
@@ -74,7 +76,7 @@ namespace MonoTouchFixtures.Foundation {
 			Assert.That (read.Read (result, 5), Is.EqualTo ((nint) 5));
 			for (int i = 0; i < 5; i++)
 				Assert.That (result [i], Is.EqualTo (send [i] * 10));
-			listenThread.Join ();
+			Assert.That (listenThread.Join (TimeSpan.FromSeconds (10)), Is.True, "listenThread.Join timed out");
 			listener.Stop ();
 			read.Close ();
 			write.Close ();

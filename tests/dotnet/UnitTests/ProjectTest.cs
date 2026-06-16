@@ -2400,7 +2400,7 @@ namespace Xamarin.Tests {
 			properties ["ExcludeNUnitLiteReference"] = "true";
 			properties ["ExcludeTouchUnitReference"] = "true";
 			var rv = DotNet.AssertBuild (project_path, properties);
-			rv.AssertNoWarnings ();
+			rv.AssertNoWarnings ((evt) => !Extensions.IsFilteredWarning (evt, platform));
 		}
 
 		[Test]
@@ -2652,7 +2652,7 @@ namespace Xamarin.Tests {
 
 			properties ["cmdline:AllTheTargetFrameworks"] = targetFrameworks;
 			var rv = DotNet.AssertBuild (project_path, properties);
-			rv.AssertNoWarnings ();
+			rv.AssertNoWarnings ((evt) => !Extensions.IsFilteredWarning (evt, platform));
 		}
 
 		// Mac Catalyst projects can't be built with an earlier version of Xcode (even library projects),

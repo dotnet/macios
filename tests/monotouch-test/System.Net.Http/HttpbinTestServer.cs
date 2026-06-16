@@ -91,7 +91,7 @@ namespace MonoTests.System.Net.Http {
 				HandleGet (context);
 			} else if (path == "/post") {
 				HandlePost (context);
-			} else if (path == "/cookies" && !path.StartsWith ("/cookies/", StringComparison.Ordinal)) {
+			} else if (path == "/cookies") {
 				HandleCookies (context);
 			} else if (path.StartsWith ("/cookies/set", StringComparison.Ordinal)) {
 				HandleSetCookies (context);

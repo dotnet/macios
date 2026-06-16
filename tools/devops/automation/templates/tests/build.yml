@@ -90,23 +90,6 @@ steps:
 
 # if we got to this point, it means that we do have at least 20 Gb to run the test, should
 # be more than enough, else the above script would have stopped the pipeline
-- bash: |
-    set -eo pipefail
-    set -x
-    cd "$BUILD_REPOSITORY_TITLE"
-    ARGS=()
-    TEST_PLATFORM=$(echo "${{ parameters.testPlatform }}" | tr '[:upper:]' '[:lower:]')
-    if test -n "$TEST_PLATFORM"; then
-      ARGS+=("--disable-all-platforms")
-      ARGS+=("--enable-$TEST_PLATFORM")
-    fi
-    XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
-    if [[ -n "$XCODE_PATH" && -d "$XCODE_PATH" ]]; then
-      ARGS+=("--xcode=$XCODE_PATH")
-    fi
-    ./configure "${ARGS[@]}"
-  displayName: 'Enable Xamarin and configure platforms'
-  timeoutInMinutes: 1
 
 # Add the required provisioning profiles to be able to execute the tests.
 - bash: |
@@ -214,6 +197,29 @@ steps:
     displayName: 'Provisionator dependencies'
     provisionatorChannel: $(PROVISIONATOR_CHANNEL)
     retryCount: 3
+
+# Run ./configure AFTER 'Provisionator dependencies' so it captures the Xcode that
+# Provisionator selected (via xcode-select). configure writes XCODE_DEVELOPER_ROOT into
+# configure.inc, which Make.config includes; running it before provisioning would bake in
+# the bot's pre-provisioning Xcode and make 'Provision system dependencies' (and the test
+# build) use the wrong Xcode.
+- bash: |
+    set -eo pipefail
+    set -x
+    cd "$BUILD_REPOSITORY_TITLE"
+    ARGS=()
+    TEST_PLATFORM=$(echo "${{ parameters.testPlatform }}" | tr '[:upper:]' '[:lower:]')
+    if test -n "$TEST_PLATFORM"; then
+      ARGS+=("--disable-all-platforms")
+      ARGS+=("--enable-$TEST_PLATFORM")
+    fi
+    XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
+    if [[ -n "$XCODE_PATH" && -d "$XCODE_PATH" ]]; then
+      ARGS+=("--xcode=$XCODE_PATH")
+    fi
+    ./configure "${ARGS[@]}"
+  displayName: 'Enable Xamarin and configure platforms'
+  timeoutInMinutes: 1
 
 - bash: |
     set -x

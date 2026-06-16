@@ -147,8 +147,9 @@ namespace Xamarin.Tests {
 					return $"appletvos{Configuration.tvos_sdk_version}";
 				}
 			case ApplePlatform.MacOSX:
-			case ApplePlatform.MacCatalyst:
 				return $"macosx{Configuration.macos_sdk_version}";
+			case ApplePlatform.MacCatalyst:
+				return $"macosx{Configuration.maccatalyst_sdk_version}";
 			default:
 				throw new ArgumentOutOfRangeException ($"Unknown platform: {platform}");
 			}

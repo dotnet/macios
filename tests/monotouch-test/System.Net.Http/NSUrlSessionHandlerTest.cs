@@ -389,11 +389,7 @@ namespace MonoTests.System.Net.Http {
 					}
 				}, out var ex2);
 
-				if (!done) {
-					TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
-					Assert.Inconclusive ("Request timed out.");
-				}
-				TestRuntime.IgnoreInCIIfBadNetwork (ex2);
+				Assert.That (done, Is.True, "Test timed out");
 				Assert.That (ex2, Is.Null, $"Unexpected exception: {ex2}");
 
 				// Caller cancellation should surface as OperationCanceledException (or a subclass like TaskCanceledException),

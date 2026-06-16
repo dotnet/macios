@@ -498,8 +498,6 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 				<PlatformName>$(_PlatformName)</PlatformName>
 				<AppBundlePath>$(AppBundleDir)</AppBundlePath>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
-				<Signed Condition="'$(_CodeSigningKey)' != ''">true</Signed>
-				<Signed Condition="'$(_CodeSigningKey)' == ''">false</Signed>
 			</ApplePackageOutput>
 		</ItemGroup>
 	</Target>

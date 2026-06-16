@@ -2379,8 +2379,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<PlatformName>$(_PlatformName)</PlatformName>
 				<AppBundlePath>$(AppBundleDir)</AppBundlePath>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
-				<Signed Condition="'$(_CodeSigningKey)' != ''">true</Signed>
-				<Signed Condition="'$(_CodeSigningKey)' == ''">false</Signed>
 			</ApplePackageOutput>
 		</ItemGroup>
 	</Target>
@@ -3282,8 +3280,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<PlatformName>$(_PlatformName)</PlatformName>
 				<AppBundlePath>$(AppBundleDir)</AppBundlePath>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
-				<Signed Condition="'$(_CodeSigningKey)' != ''">true</Signed>
-				<Signed Condition="'$(_CodeSigningKey)' == ''">false</Signed>
 			</ApplePackageOutput>
 		</ItemGroup>
 	</Target>
@@ -3401,10 +3397,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<PlatformName>$(_PlatformName)</PlatformName>
 				<AppBundlePath>$(AppBundleDir)</AppBundlePath>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
-				<Signed Condition="'$(_CodeSigningKey)' != ''">true</Signed>
-				<Signed Condition="'$(_CodeSigningKey)' == ''">false</Signed>
-				<PackageSigned Condition="'$(EnablePackageSigning)' == 'true'">true</PackageSigned>
-				<PackageSigned Condition="'$(EnablePackageSigning)' != 'true'">false</PackageSigned>
 			</ApplePackageOutput>
 		</ItemGroup>
 	</Target>

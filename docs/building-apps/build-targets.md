@@ -44,28 +44,18 @@ $ dotnet run --device UDID
 
 Added in .NET 11.
 
-## GetMaciOSArtifactOutputs
+## GetApplePackageOutputs
 
-Builds the project and returns the `@(MaciOSArtifactOutput)` item group. This
+Builds the project and returns the `@(ApplePackageOutput)` item group. This
 target can be used by custom build scripts to query final `.app`, `.ipa`,
-`.pkg`, and `.xcarchive` artifacts without invoking the `Publish` target.
+`.pkg`, and `.xcarchive` artifacts. The `Publish` target also populates the
+same item group for packages it creates.
 
 ```shell
-$ dotnet build -t:GetMaciOSArtifactOutputs
+$ dotnet build -t:GetApplePackageOutputs
 ```
 
-See [MaciOSArtifactOutput](build-items.md#maciosartifactoutput) for supported metadata.
-
-## GetMaciOSPublishedArtifactOutputs
-
-Publishes the project and returns the `@(MaciOSPublishedArtifactOutput)` item
-group.
-
-```shell
-$ dotnet publish -t:GetMaciOSPublishedArtifactOutputs
-```
-
-See [MaciOSPublishedArtifactOutput](build-items.md#maciospublishedartifactoutput) for supported metadata.
+See [ApplePackageOutput](build-items.md#applepackageoutput) for supported metadata.
 
 ## Run
 

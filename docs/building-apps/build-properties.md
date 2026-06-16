@@ -109,7 +109,7 @@ Only applicable to iOS projects (since only iOS projects can be built remotely f
 
 If an Xcode archive should be created at the end of the build.
 
-Created archives are exposed in the [MaciOSArtifactOutput](build-items.md#maciosartifactoutput) item group.
+Created archives are exposed in the [ApplePackageOutput](build-items.md#applepackageoutput) item group.
 
 ## BGenEmitDebugInformation
 
@@ -141,7 +141,7 @@ Only applicable to iOS and tvOS projects.
 
 See [CreatePackage](#createpackage) for macOS and Mac Catalyst projects.
 
-Created IPA packages are exposed in the [MaciOSArtifactOutput](build-items.md#maciosartifactoutput) item group.
+Created IPA packages are exposed in the [ApplePackageOutput](build-items.md#applepackageoutput) item group.
 
 ## BundleCreateDump
 
@@ -354,7 +354,7 @@ Only applicable to macOS and Mac Catalyst projects.
 
 See [BuildIpa](#buildipa) for iOS and tvOS projects.
 
-Created PKG packages are exposed in the [MaciOSArtifactOutput](build-items.md#maciosartifactoutput) item group.
+Created PKG packages are exposed in the [ApplePackageOutput](build-items.md#applepackageoutput) item group.
 
 ## Device
 
@@ -675,7 +675,7 @@ Specifies the path to the resulting .ipa file when creating an IPA package (see 
 
 Only applicable to iOS and tvOS projects.
 
-The resulting IPA is exposed in the [MaciOSArtifactOutput](build-items.md#maciosartifactoutput) item group.
+The resulting IPA is exposed in the [ApplePackageOutput](build-items.md#applepackageoutput) item group.
 
 ## IsAppExtension
 
@@ -1147,7 +1147,7 @@ Specifies the path to the resulting .pkg file when creating a package (see [Crea
 
 Only applicable to macOS and Mac Catalyst apps.
 
-The resulting PKG is exposed in the [MaciOSArtifactOutput](build-items.md#maciosartifactoutput) item group.
+The resulting PKG is exposed in the [ApplePackageOutput](build-items.md#applepackageoutput) item group.
 
 ## PlutilPath
 

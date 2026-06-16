@@ -249,9 +249,9 @@ An item group that contains environment variables that will be set when the app 
 > [!NOTE]
 > This only applies when launching the app from the command line (`dotnet run` or `dotnet build -t:Run`), not when launching from the IDE.
 
-## MaciOSArtifactOutput
+## ApplePackageOutput
 
-An item group that contains final app artifacts produced by the build. This can include:
+An item group that contains final Apple app artifacts produced by the build or publish. This can include:
 
 * `.app` app bundles for iOS, tvOS, macOS, and Mac Catalyst apps.
 * `.ipa` packages when [BuildIpa](build-properties.md#buildipa) is enabled.
@@ -260,44 +260,25 @@ An item group that contains final app artifacts produced by the build. This can 
 
 The following metadata is set:
 
-* `ArtifactKind`: The artifact kind. Possible values are `AppBundle`, `Package`, and `Archive`.
 * `PackageFormat`: The artifact format. Possible values are `app`, `ipa`, `pkg`, and `xcarchive`.
 * `IsDirectory`: `true` for `.app` and `.xcarchive` outputs; `false` for `.ipa` and `.pkg` outputs.
 * `PlatformName`: The Apple platform name, such as `iOS`, `tvOS`, `macOS`, or `MacCatalyst`.
-* `TargetPlatformIdentifier`: The target platform identifier, such as `ios`, `tvos`, `macos`, or `maccatalyst`.
-* `TargetFramework`: The target framework.
-* `RuntimeIdentifier`: The runtime identifier when building with `RuntimeIdentifier`.
-* `RuntimeIdentifiers`: The runtime identifiers when building with `RuntimeIdentifiers`.
-* `Configuration`: The build configuration.
-* `RelativePath`: The artifact file or directory name.
 * `AppBundlePath`: The app bundle path associated with the artifact.
 * `BundleIdentifier`: The resolved app bundle identifier.
-* `CodeSigned`: Whether the app bundle was code signed.
-* `PackageSigned`: Whether a `.pkg` installer package was signed. This metadata is only set for `.pkg` outputs.
-* `BuildIpa`: The effective [BuildIpa](build-properties.md#buildipa) value.
-* `CreatePackage`: The effective [CreatePackage](build-properties.md#createpackage) value.
-* `ArchiveOnBuild`: The effective [ArchiveOnBuild](build-properties.md#archiveonbuild) value.
+* `Signed`: `true` when the app or package output is signed; otherwise `false`.
 
 Example:
 
 ```xml
-<Target Name="WriteMaciOSArtifacts" AfterTargets="Build">
+<Target Name="WriteApplePackages" AfterTargets="Build">
     <WriteLinesToFile
-        File="$(OutputPath)macios-artifacts.txt"
-        Lines="%(MaciOSArtifactOutput.Identity)|%(MaciOSArtifactOutput.ArtifactKind)|%(MaciOSArtifactOutput.PackageFormat)"
+        File="$(OutputPath)apple-packages.txt"
+        Lines="%(ApplePackageOutput.Identity)|%(ApplePackageOutput.PackageFormat)|%(ApplePackageOutput.Signed)"
         Overwrite="true" />
 </Target>
 ```
 
-See also the [GetMaciOSArtifactOutputs](build-targets.md#getmaciosartifactoutputs) target.
-
-## MaciOSPublishedArtifactOutput
-
-An item group that contains the `@(MaciOSArtifactOutput)` items produced by the `Publish` target.
-
-This item group has the same metadata as [MaciOSArtifactOutput](#maciosartifactoutput), plus:
-
-* `OriginalPath`: The corresponding path from `@(MaciOSArtifactOutput)`.
+See also the [GetApplePackageOutputs](build-targets.md#getapplepackageoutputs) target.
 
 ## NativeReference
 

@@ -2369,29 +2369,19 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="Codesign" Condition="'$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="$(CodesignDependsOn)" />
 
-	<Target Name="_CollectMaciOSAppBundleOutput"
+	<Target Name="_CollectAppleAppBundleOutput"
 		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(OutputType)' == 'Exe' And '$(IsAppExtension)' != 'true' And '$(IsWatchApp)' != 'true' And Exists('$(AppBundleDir)')"
 		AfterTargets="Codesign">
 		<ItemGroup>
-			<MaciOSArtifactOutput Include="$(AppBundleDir)">
-				<ArtifactKind>AppBundle</ArtifactKind>
+			<ApplePackageOutput Include="$(AppBundleDir)">
 				<PackageFormat>app</PackageFormat>
 				<IsDirectory>true</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>
-				<TargetPlatformIdentifier>$(TargetPlatformIdentifier)</TargetPlatformIdentifier>
-				<TargetFramework>$(TargetFramework)</TargetFramework>
-				<RuntimeIdentifier>$(RuntimeIdentifier)</RuntimeIdentifier>
-				<RuntimeIdentifiers>$(RuntimeIdentifiers)</RuntimeIdentifiers>
-				<Configuration>$(Configuration)</Configuration>
-				<RelativePath>%(Filename)%(Extension)</RelativePath>
 				<AppBundlePath>$(AppBundleDir)</AppBundlePath>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
-				<CodeSigned Condition="'$(_CodeSigningKey)' != ''">true</CodeSigned>
-				<CodeSigned Condition="'$(_CodeSigningKey)' == ''">false</CodeSigned>
-				<BuildIpa>$(BuildIpa)</BuildIpa>
-				<CreatePackage>$(CreatePackage)</CreatePackage>
-				<ArchiveOnBuild>$(ArchiveOnBuild)</ArchiveOnBuild>
-			</MaciOSArtifactOutput>
+				<Signed Condition="'$(_CodeSigningKey)' != ''">true</Signed>
+				<Signed Condition="'$(_CodeSigningKey)' == ''">false</Signed>
+			</ApplePackageOutput>
 		</ItemGroup>
 	</Target>
 
@@ -3282,29 +3272,19 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</Archive>
 	</Target>
 
-	<Target Name="_CollectMaciOSArchiveOutput"
+	<Target Name="_CollectAppleArchiveOutput"
 		Condition="'$(ArchiveOnBuild)' == 'true' And '$(ArchiveDir)' != '' And Exists('$(ArchiveDir)')"
 		AfterTargets="_CoreArchive">
 		<ItemGroup>
-			<MaciOSArtifactOutput Include="$(ArchiveDir)">
-				<ArtifactKind>Archive</ArtifactKind>
+			<ApplePackageOutput Include="$(ArchiveDir)">
 				<PackageFormat>xcarchive</PackageFormat>
 				<IsDirectory>true</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>
-				<TargetPlatformIdentifier>$(TargetPlatformIdentifier)</TargetPlatformIdentifier>
-				<TargetFramework>$(TargetFramework)</TargetFramework>
-				<RuntimeIdentifier>$(RuntimeIdentifier)</RuntimeIdentifier>
-				<RuntimeIdentifiers>$(RuntimeIdentifiers)</RuntimeIdentifiers>
-				<Configuration>$(Configuration)</Configuration>
-				<RelativePath>%(Filename)%(Extension)</RelativePath>
 				<AppBundlePath>$(AppBundleDir)</AppBundlePath>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
-				<CodeSigned Condition="'$(_CodeSigningKey)' != ''">true</CodeSigned>
-				<CodeSigned Condition="'$(_CodeSigningKey)' == ''">false</CodeSigned>
-				<BuildIpa>$(BuildIpa)</BuildIpa>
-				<CreatePackage>$(CreatePackage)</CreatePackage>
-				<ArchiveOnBuild>$(ArchiveOnBuild)</ArchiveOnBuild>
-			</MaciOSArtifactOutput>
+				<Signed Condition="'$(_CodeSigningKey)' != ''">true</Signed>
+				<Signed Condition="'$(_CodeSigningKey)' == ''">false</Signed>
+			</ApplePackageOutput>
 		</ItemGroup>
 	</Target>
 
@@ -3411,30 +3391,19 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</CreateInstallerPackage>
 	</Target>
 
-	<Target Name="_CollectMaciOSPkgOutput"
+	<Target Name="_CollectApplePkgOutput"
 		Condition="'$(CreatePackage)' == 'true' And '$(PkgPackagePath)' != '' And Exists('$(PkgPackagePath)')"
 		AfterTargets="_CreateInstaller">
 		<ItemGroup>
-			<MaciOSArtifactOutput Include="$(PkgPackagePath)">
-				<ArtifactKind>Package</ArtifactKind>
+			<ApplePackageOutput Include="$(PkgPackagePath)">
 				<PackageFormat>pkg</PackageFormat>
 				<IsDirectory>false</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>
-				<TargetPlatformIdentifier>$(TargetPlatformIdentifier)</TargetPlatformIdentifier>
-				<TargetFramework>$(TargetFramework)</TargetFramework>
-				<RuntimeIdentifier>$(RuntimeIdentifier)</RuntimeIdentifier>
-				<RuntimeIdentifiers>$(RuntimeIdentifiers)</RuntimeIdentifiers>
-				<Configuration>$(Configuration)</Configuration>
-				<RelativePath>%(Filename)%(Extension)</RelativePath>
 				<AppBundlePath>$(AppBundleDir)</AppBundlePath>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
-				<CodeSigned Condition="'$(_CodeSigningKey)' != ''">true</CodeSigned>
-				<CodeSigned Condition="'$(_CodeSigningKey)' == ''">false</CodeSigned>
-				<PackageSigned>$(EnablePackageSigning)</PackageSigned>
-				<BuildIpa>$(BuildIpa)</BuildIpa>
-				<CreatePackage>$(CreatePackage)</CreatePackage>
-				<ArchiveOnBuild>$(ArchiveOnBuild)</ArchiveOnBuild>
-			</MaciOSArtifactOutput>
+				<Signed Condition="'$(_CodeSigningKey)' != '' Or '$(EnablePackageSigning)' == 'true'">true</Signed>
+				<Signed Condition="'$(_CodeSigningKey)' == '' And '$(EnablePackageSigning)' != 'true'">false</Signed>
+			</ApplePackageOutput>
 		</ItemGroup>
 	</Target>
 
@@ -3474,7 +3443,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="CreateIpa" Condition="'$(_CanArchive)' == 'true' And '$(SdkIsDesktop)' != 'true'" DependsOnTargets="$(CreateIpaDependsOn)" />
 
-	<Target Name="GetMaciOSArtifactOutputs" DependsOnTargets="Build" Returns="@(MaciOSArtifactOutput)" />
+	<Target Name="GetApplePackageOutputs" DependsOnTargets="Build" Returns="@(ApplePackageOutput)" />
 
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Shared.ObjCBinding.targets" Condition="'$(IsBindingProject)' == 'true'" />
 

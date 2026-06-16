@@ -109,6 +109,8 @@ Only applicable to iOS projects (since only iOS projects can be built remotely f
 
 If an Xcode archive should be created at the end of the build.
 
+Created archives are exposed in the [MaciOSArtifactOutput](build-items.md#maciosartifactoutput) item group.
+
 ## BGenEmitDebugInformation
 
 Whether the `bgen` tool (the binding generator) should emit debug information or not.
@@ -138,6 +140,8 @@ If a package (.ipa) should be created for the app bundle at the end of the build
 Only applicable to iOS and tvOS projects.
 
 See [CreatePackage](#createpackage) for macOS and Mac Catalyst projects.
+
+Created IPA packages are exposed in the [MaciOSArtifactOutput](build-items.md#maciosartifactoutput) item group.
 
 ## BundleCreateDump
 
@@ -349,6 +353,8 @@ If a package (.pkg) should be created for the app bundle at the end of the build
 Only applicable to macOS and Mac Catalyst projects.
 
 See [BuildIpa](#buildipa) for iOS and tvOS projects.
+
+Created PKG packages are exposed in the [MaciOSArtifactOutput](build-items.md#maciosartifactoutput) item group.
 
 ## Device
 
@@ -668,6 +674,8 @@ Only applicable to iOS and tvOS projects.
 Specifies the path to the resulting .ipa file when creating an IPA package (see [BuildIpa](#buildipa)).
 
 Only applicable to iOS and tvOS projects.
+
+The resulting IPA is exposed in the [MaciOSArtifactOutput](build-items.md#maciosartifactoutput) item group.
 
 ## IsAppExtension
 
@@ -1138,6 +1146,8 @@ Only applicable to macOS and Mac Catalyst apps.
 Specifies the path to the resulting .pkg file when creating a package (see [CreatePackage](#createpackage)).
 
 Only applicable to macOS and Mac Catalyst apps.
+
+The resulting PKG is exposed in the [MaciOSArtifactOutput](build-items.md#maciosartifactoutput) item group.
 
 ## PlutilPath
 

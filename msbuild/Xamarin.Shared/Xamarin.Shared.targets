@@ -2369,6 +2369,32 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="Codesign" Condition="'$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="$(CodesignDependsOn)" />
 
+	<Target Name="_CollectMaciOSAppBundleOutput"
+		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(OutputType)' == 'Exe' And '$(IsAppExtension)' != 'true' And '$(IsWatchApp)' != 'true' And Exists('$(AppBundleDir)')"
+		AfterTargets="Codesign">
+		<ItemGroup>
+			<MaciOSArtifactOutput Include="$(AppBundleDir)">
+				<ArtifactKind>AppBundle</ArtifactKind>
+				<PackageFormat>app</PackageFormat>
+				<IsDirectory>true</IsDirectory>
+				<PlatformName>$(_PlatformName)</PlatformName>
+				<TargetPlatformIdentifier>$(TargetPlatformIdentifier)</TargetPlatformIdentifier>
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<RuntimeIdentifier>$(RuntimeIdentifier)</RuntimeIdentifier>
+				<RuntimeIdentifiers>$(RuntimeIdentifiers)</RuntimeIdentifiers>
+				<Configuration>$(Configuration)</Configuration>
+				<RelativePath>%(Filename)%(Extension)</RelativePath>
+				<AppBundlePath>$(AppBundleDir)</AppBundlePath>
+				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
+				<CodeSigned Condition="'$(_CodeSigningKey)' != ''">true</CodeSigned>
+				<CodeSigned Condition="'$(_CodeSigningKey)' == ''">false</CodeSigned>
+				<BuildIpa>$(BuildIpa)</BuildIpa>
+				<CreatePackage>$(CreatePackage)</CreatePackage>
+				<ArchiveOnBuild>$(ArchiveOnBuild)</ArchiveOnBuild>
+			</MaciOSArtifactOutput>
+		</ItemGroup>
+	</Target>
+
 	<!--
 
 		Code signing
@@ -3256,6 +3282,32 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</Archive>
 	</Target>
 
+	<Target Name="_CollectMaciOSArchiveOutput"
+		Condition="'$(ArchiveOnBuild)' == 'true' And '$(ArchiveDir)' != '' And Exists('$(ArchiveDir)')"
+		AfterTargets="_CoreArchive">
+		<ItemGroup>
+			<MaciOSArtifactOutput Include="$(ArchiveDir)">
+				<ArtifactKind>Archive</ArtifactKind>
+				<PackageFormat>xcarchive</PackageFormat>
+				<IsDirectory>true</IsDirectory>
+				<PlatformName>$(_PlatformName)</PlatformName>
+				<TargetPlatformIdentifier>$(TargetPlatformIdentifier)</TargetPlatformIdentifier>
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<RuntimeIdentifier>$(RuntimeIdentifier)</RuntimeIdentifier>
+				<RuntimeIdentifiers>$(RuntimeIdentifiers)</RuntimeIdentifiers>
+				<Configuration>$(Configuration)</Configuration>
+				<RelativePath>%(Filename)%(Extension)</RelativePath>
+				<AppBundlePath>$(AppBundleDir)</AppBundlePath>
+				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
+				<CodeSigned Condition="'$(_CodeSigningKey)' != ''">true</CodeSigned>
+				<CodeSigned Condition="'$(_CodeSigningKey)' == ''">false</CodeSigned>
+				<BuildIpa>$(BuildIpa)</BuildIpa>
+				<CreatePackage>$(CreatePackage)</CreatePackage>
+				<ArchiveOnBuild>$(ArchiveOnBuild)</ArchiveOnBuild>
+			</MaciOSArtifactOutput>
+		</ItemGroup>
+	</Target>
+
 	<Target Name="_GenerateBundleName" Condition="'$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="_ComputeTargetArchitectures;_ParseBundlerArguments">
 		<PropertyGroup Condition="'$(AppBundleDir)' == ''">
 			<_AppContainerDir Condition="'$(IsAppDistribution)' != 'true'">$(DeviceSpecificOutputPath)</_AppContainerDir>
@@ -3359,6 +3411,33 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		</CreateInstallerPackage>
 	</Target>
 
+	<Target Name="_CollectMaciOSPkgOutput"
+		Condition="'$(CreatePackage)' == 'true' And '$(PkgPackagePath)' != '' And Exists('$(PkgPackagePath)')"
+		AfterTargets="_CreateInstaller">
+		<ItemGroup>
+			<MaciOSArtifactOutput Include="$(PkgPackagePath)">
+				<ArtifactKind>Package</ArtifactKind>
+				<PackageFormat>pkg</PackageFormat>
+				<IsDirectory>false</IsDirectory>
+				<PlatformName>$(_PlatformName)</PlatformName>
+				<TargetPlatformIdentifier>$(TargetPlatformIdentifier)</TargetPlatformIdentifier>
+				<TargetFramework>$(TargetFramework)</TargetFramework>
+				<RuntimeIdentifier>$(RuntimeIdentifier)</RuntimeIdentifier>
+				<RuntimeIdentifiers>$(RuntimeIdentifiers)</RuntimeIdentifiers>
+				<Configuration>$(Configuration)</Configuration>
+				<RelativePath>%(Filename)%(Extension)</RelativePath>
+				<AppBundlePath>$(AppBundleDir)</AppBundlePath>
+				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
+				<CodeSigned Condition="'$(_CodeSigningKey)' != ''">true</CodeSigned>
+				<CodeSigned Condition="'$(_CodeSigningKey)' == ''">false</CodeSigned>
+				<PackageSigned>$(EnablePackageSigning)</PackageSigned>
+				<BuildIpa>$(BuildIpa)</BuildIpa>
+				<CreatePackage>$(CreatePackage)</CreatePackage>
+				<ArchiveOnBuild>$(ArchiveOnBuild)</ArchiveOnBuild>
+			</MaciOSArtifactOutput>
+		</ItemGroup>
+	</Target>
+
 	<!-- 
 		Creates a plist with the entitlements used to sign the App bundle.
 		MacCatalyst apps don't have a compiled entitlements file in the app bundle, 
@@ -3394,6 +3473,8 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	<Target Name="_BeforeCreateIpaForDistribution" Condition="'$(IsAppDistribution)' == 'true'" DependsOnTargets="$(_BeforeCreateIpaForDistributionDependsOn)" />
 
 	<Target Name="CreateIpa" Condition="'$(_CanArchive)' == 'true' And '$(SdkIsDesktop)' != 'true'" DependsOnTargets="$(CreateIpaDependsOn)" />
+
+	<Target Name="GetMaciOSArtifactOutputs" DependsOnTargets="Build" Returns="@(MaciOSArtifactOutput)" />
 
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Shared.ObjCBinding.targets" Condition="'$(IsBindingProject)' == 'true'" />
 

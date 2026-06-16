@@ -5,9 +5,9 @@ using CoreGraphics;
 using CoreText;
 
 namespace MediaAccessibility {
-	[SupportedOSPlatform ("tvos13.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios13.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public static partial class MAImageCaptioning {
 

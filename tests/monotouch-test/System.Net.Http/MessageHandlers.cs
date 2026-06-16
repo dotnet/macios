@@ -668,10 +668,9 @@ namespace MonoTests.System.Net.Http {
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				try {
 					HttpClient client = new HttpClient (handler);
-					client.BaseAddress = NetworkResources.Httpbin.Uri;
 					var byteArray = new UTF8Encoding ().GetBytes ("username:password");
 					client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue ("Basic", Convert.ToBase64String (byteArray));
-					result = await client.GetAsync (NetworkResources.Httpbin.GetRedirectUrl (3));
+					result = await client.GetAsync (NetworkResources.MicrosoftUrl);
 				} finally {
 #pragma warning disable SYSLIB0014 // 'ServicePointManager' is obsolete: 'WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. Settings on ServicePointManager no longer affect SslStream or HttpClient.' (https://aka.ms/dotnet-warnings/SYSLIB0014)
 					ServicePointManager.ServerCertificateValidationCallback = null;
@@ -720,10 +719,9 @@ namespace MonoTests.System.Net.Http {
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				try {
 					HttpClient client = new HttpClient (handler);
-					client.BaseAddress = NetworkResources.Httpbin.Uri;
 					var byteArray = new UTF8Encoding ().GetBytes ("username:password");
 					client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue ("Basic", Convert.ToBase64String (byteArray));
-					var result = await client.GetAsync (NetworkResources.Httpbin.GetRedirectUrl (3));
+					var result = await client.GetAsync (NetworkResources.MicrosoftUrl);
 				} finally {
 #pragma warning disable SYSLIB0014 // 'ServicePointManager' is obsolete: 'WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. Settings on ServicePointManager no longer affect SslStream or HttpClient.' (https://aka.ms/dotnet-warnings/SYSLIB0014)
 					ServicePointManager.ServerCertificateValidationCallback = null;

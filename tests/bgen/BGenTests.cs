@@ -1722,7 +1722,7 @@ namespace GeneratorTests {
 		public void SimulatorAvailabilityAttributes (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			var bgen = BuildFile (profile, "simulator-availability-attributes.cs");
+			var bgen = BuildFile (profile, true, true, "simulator-availability-attributes.cs");
 			bgen.AssertNoWarnings ();
 
 			var module = bgen.ApiAssembly.MainModule;
@@ -1762,6 +1762,24 @@ namespace GeneratorTests {
 				.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
 				.ToArray ();
 			Assert.That (simulatorAttrs.Length, Is.EqualTo (0), "NoSimulatorAttributes: no simulator attributes");
+
+			// Verify a [SupportedSimulator] on a smart-enum [Field] member is propagated to the generated accessor
+			var smartExtensions = module.GetType ("NS", "SmartEnumWithSimulatorFieldExtensions");
+			Assert.That (smartExtensions, Is.Not.Null, "SmartEnumWithSimulatorFieldExtensions: generated");
+			var supportedAccessor = smartExtensions.Properties.Single (p => p.Name == "SupportedSmartField");
+			var accessorAttrs = supportedAccessor.CustomAttributes
+				.Where (a => a.AttributeType.Name == "SupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (accessorAttrs.Length, Is.EqualTo (1), "SupportedSmartField accessor: one SupportedSimulator attribute");
+			var expectedSmartVersion = profile == Profile.iOS ? "ios17.0" : "tvos17.0";
+			Assert.That ((string) accessorAttrs [0].ConstructorArguments [0].Value, Is.EqualTo (expectedSmartVersion), "SupportedSmartField accessor platform name");
+
+			// And a smart-enum member without simulator attributes must not gain any
+			var plainAccessor = smartExtensions.Properties.Single (p => p.Name == "PlainSmartField");
+			var plainAccessorAttrs = plainAccessor.CustomAttributes
+				.Where (a => a.AttributeType.Name == "SupportedSimulatorAttribute" || a.AttributeType.Name == "UnsupportedSimulatorAttribute")
+				.ToArray ();
+			Assert.That (plainAccessorAttrs.Length, Is.EqualTo (0), "PlainSmartField accessor: no simulator attributes");
 		}
 
 		[Test]
@@ -1770,7 +1788,7 @@ namespace GeneratorTests {
 		public void SimulatorAvailabilityAttributes_NotEmittedForMacPlatforms (Profile profile)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (profile.AsPlatform ());
-			var bgen = BuildFile (profile, "simulator-availability-attributes.cs");
+			var bgen = BuildFile (profile, true, true, "simulator-availability-attributes.cs");
 			bgen.AssertNoWarnings ();
 
 			var module = bgen.ApiAssembly.MainModule;
@@ -1780,6 +1798,16 @@ namespace GeneratorTests {
 					.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
 					.ToArray ();
 				Assert.That (simulatorAttrs.Length, Is.EqualTo (0), $"{typeName}: no simulator attributes on Mac platforms");
+			}
+
+			// The smart-enum field accessor must not carry simulator attributes on Mac platforms either
+			var smartExtensions = module.GetType ("NS", "SmartEnumWithSimulatorFieldExtensions");
+			Assert.That (smartExtensions, Is.Not.Null, "SmartEnumWithSimulatorFieldExtensions: generated");
+			foreach (var property in smartExtensions.Properties) {
+				var accessorAttrs = property.CustomAttributes
+					.Where (a => a.AttributeType.Name == "UnsupportedSimulatorAttribute" || a.AttributeType.Name == "SupportedSimulatorAttribute")
+					.ToArray ();
+				Assert.That (accessorAttrs.Length, Is.EqualTo (0), $"{property.Name} accessor: no simulator attributes on Mac platforms");
 			}
 		}
 	}

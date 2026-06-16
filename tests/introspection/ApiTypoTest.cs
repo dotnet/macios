@@ -60,780 +60,780 @@ namespace Introspection {
 		};
 
 		Dictionary<string, ApplePlatform> allowed = new Dictionary<string, ApplePlatform> () {
-			{ "Aac", All },
-			{ "Abgr", All },
-			{ "Achivements", All },
+			{ "Aac", All }, // Advanced Audio Coding
+			{ "Abgr", All }, // alpha-blue-green-red
+			{ "Achivements", All }, // Apple API spelling
 			{ "Ack", All }, // acknowledgment
 			{ "Acn", All }, // Ambisonic Channel Numbering
-			{ "Acos", All },
-			{ "Acosh", All },
-			{ "Activatable", All },
-			{ "Addin", All },
-			{ "Addl", All },
-			{ "Addons", ApplePlatform.MacOSX },
-			{ "Addr", All },
-			{ "Adessive", All },
+			{ "Acos", All }, // arc cosine
+			{ "Acosh", All }, // inverse hyperbolic cosine
+			{ "Activatable", All }, // valid English derivative
+			{ "Addin", All }, // compound word
+			{ "Addl", All }, // additional abbreviation
+			{ "Addons", ApplePlatform.MacOSX }, // compound word
+			{ "Addr", All }, // address abbreviation
+			{ "Adessive", All }, // linguistic case
 			{ "Adposition", All }, // linguistic term
 			{ "Aes", All }, // Advanced Encryption Standard
-			{ "Afi", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Agc", All },
-			{ "Ahap", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
-			{ "Aifc", All },
-			{ "Aiff", All },
-			{ "Aime", ApplePlatform.MacOSX },
-			{ "Aio", ApplePlatform.MacOSX },
+			{ "Afi", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation
+			{ "Agc", All }, // automatic gain control
+			{ "Ahap", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // Apple Haptics Pattern
+			{ "Aifc", All }, // AIFF-C audio format
+			{ "Aiff", All }, // Audio Interchange File
+			{ "Aime", ApplePlatform.MacOSX }, // cashless payment brand
+			{ "Aio", ApplePlatform.MacOSX }, // all-in-one abbreviation
 			{ "Alg", All }, // short for Algorithm
 			{ "Alem", All }, // Ethiopic "Amete Alem" calendar
-			{ "Aliasable", All },
-			{ "Allative", All },
-			{ "Amete", All },
-			{ "Amr", All },
-			{ "Ancs", All & ~ApplePlatform.MacOSX },
-			{ "Ane", All },
-			{ "Anglet", All },
-			{ "Apac", All },
-			{ "Apdu", All },
-			{ "Apl", All & ~ApplePlatform.TVOS },
+			{ "Aliasable", All }, // valid English derivative
+			{ "Allative", All }, // linguistic case
+			{ "Amete", All }, // Ethiopic calendar term
+			{ "Amr", All }, // Adaptive Multi-Rate
+			{ "Ancs", All & ~ApplePlatform.MacOSX }, // Apple Notification Center
+			{ "Ane", All }, // Apple Neural Engine
+			{ "Anglet", All }, // measurement term
+			{ "Apac", All }, // Asia-Pacific abbreviation
+			{ "Apdu", All }, // smart-card protocol unit
+			{ "Apl", All & ~ApplePlatform.TVOS }, // APL language acronym
 			{ "Apng", All }, // Animated Portable Network Graphics
-			{ "Apns", All & ~ApplePlatform.TVOS },
-			{ "Applei", All },
-			{ "Aps", ApplePlatform.MacOSX },
-			{ "Apv", ApplePlatform.MacOSX },
-			{ "Arcball", All },
-			{ "Argb", All },
+			{ "Apns", All & ~ApplePlatform.TVOS }, // Apple Push Notification Service
+			{ "Applei", All }, // Apple API selector fragment
+			{ "Aps", ApplePlatform.MacOSX }, // Apple Push Service
+			{ "Apv", ApplePlatform.MacOSX }, // Apple API abbreviation
+			{ "Arcball", All }, // 3D rotation control
+			{ "Argb", All }, // alpha-red-green-blue
 #if !XAMCORE_5_0
 			{ "Arraycollation", All & ~ApplePlatform.MacOSX }, // SortedArrayFromArraycollationStringSelector - will be renamed in XAMCORE_5_0
 #endif
-			{ "Asin", All },
-			{ "Asinh", All },
-			{ "Astc", All },
-			{ "Atan", All },
-			{ "Atanh", All },
-			{ "Atm", All },
+			{ "Asin", All }, // arc sine
+			{ "Asinh", All }, // inverse hyperbolic sine
+			{ "Astc", All }, // Adaptive Scalable Texture Compression
+			{ "Atan", All }, // arc tangent
+			{ "Atanh", All }, // inverse hyperbolic tangent
+			{ "Atm", All }, // asynchronous transfer mode
 			{ "Atmos", All }, // Dolby Atmos
-			{ "Atr", All },
+			{ "Atr", All }, // Answer To Reset
 			{ "Ats", All }, // App Transport Security
-			{ "Atsc", All },
-			{ "Attr", ApplePlatform.MacOSX },
-			{ "Attrib", All },
+			{ "Atsc", All }, // TV broadcast standard
+			{ "Attr", ApplePlatform.MacOSX }, // attribute abbreviation
+			{ "Attrib", All }, // attribute abbreviation
 #if !XAMCORE_5_0
 			{ "Attributevalue", All }, // ReplacementValueForAttributevalue - will be renamed in XAMCORE_5_0
 #endif
 			{ "Attrs", All }, // Attributes (used by Apple for keys)
-			{ "Audiofile", All },
-			{ "Audiograph", ApplePlatform.MacOSX },
-			{ "Authenticatable", ApplePlatform.MacOSX },
-			{ "Automapping", All },
-			{ "Automatch", All },
-			{ "Automounted", All },
-			{ "Autoredirect", ApplePlatform.MacCatalyst | ApplePlatform.TVOS },
-			{ "Autospace", ApplePlatform.MacOSX },
-			{ "Autostarts", ApplePlatform.MacOSX },
+			{ "Audiofile", All }, // compound word
+			{ "Audiograph", ApplePlatform.MacOSX }, // compound word
+			{ "Authenticatable", ApplePlatform.MacOSX }, // valid English derivative
+			{ "Automapping", All }, // compound word
+			{ "Automatch", All }, // compound word
+			{ "Automounted", All }, // compound word
+			{ "Autoredirect", ApplePlatform.MacCatalyst | ApplePlatform.TVOS }, // compound word
+			{ "Autospace", ApplePlatform.MacOSX }, // compound word
+			{ "Autostarts", ApplePlatform.MacOSX }, // compound word
 			{ "Avb", All }, // acronym: Audio Video Bridging
 			{ "Avci", All }, // file type
-			{ "Avg", All },
-			{ "Axept", All & ~ApplePlatform.TVOS },
-			{ "Bancomat", All & ~ApplePlatform.TVOS },
+			{ "Avg", All }, // average abbreviation
+			{ "Axept", All & ~ApplePlatform.TVOS }, // payment terminal brand
+			{ "Bancomat", All & ~ApplePlatform.TVOS }, // Italian payment network
 			{ "Bancaires", All & ~ApplePlatform.TVOS }, // Cartes Bancaires payment network
-			{ "Bary", All },
-			{ "Ber", All },
+			{ "Bary", All }, // barycentric abbreviation
+			{ "Ber", All }, // Basic Encoding Rules
 			{ "Bggr", All }, // acronym for Blue, Green, Green, Red
 			{ "Bgra", All }, // acrnym for Blue, Green, Red, Alpha
-			{ "Bgrx", All },
-			{ "Bim", All },
-			{ "Bitangent", All },
-			{ "Blinn", All },
-			{ "Blit", All },
-			{ "Blockmap", ApplePlatform.MacOSX },
-			{ "Blockquote", ApplePlatform.MacOSX },
-			{ "Brotli", All },
-			{ "Bsd", ApplePlatform.MacOSX },
-			{ "Bsln", All },
-			{ "Bssid", All & ~ApplePlatform.TVOS },
+			{ "Bgrx", All }, // blue-green-red-unused
+			{ "Bim", All }, // BIM file/code term
+			{ "Bitangent", All }, // geometry term
+			{ "Blinn", All }, // Blinn shading model
+			{ "Blit", All }, // graphics copy operation
+			{ "Blockmap", ApplePlatform.MacOSX }, // compound word
+			{ "Blockquote", ApplePlatform.MacOSX }, // HTML element name
+			{ "Brotli", All }, // compression format
+			{ "Bsd", ApplePlatform.MacOSX }, // Berkeley Software Distribution
+			{ "Bsln", All }, // OpenType baseline tag
+			{ "Bssid", All & ~ApplePlatform.TVOS }, // wireless network identifier
 			{ "Btle", ApplePlatform.MacOSX }, // Bluetooth Low Energy
-			{ "Cabac", All },
+			{ "Cabac", All }, // video coding acronym
 			{ "Caf", All }, // acronym: Core Audio Format
-			{ "Callables", All },
+			{ "Callables", All }, // valid English plural
 			{ "Cartes", All & ~ApplePlatform.TVOS }, // french
-			{ "Catmull", All },
-			{ "Cavlc", All },
-			{ "Ccitt", ApplePlatform.MacOSX },
+			{ "Catmull", All }, // Catmull-Rom term
+			{ "Cavlc", All }, // video coding acronym
+			{ "Ccitt", ApplePlatform.MacOSX }, // standards body acronym
 			{ "Cbc", All }, // Cipher Block Chaining
-			{ "Cct", All },
-			{ "Ccw", All },
+			{ "Cct", All }, // correlated color temperature
+			{ "Ccw", All }, // counterclockwise abbreviation
 			{ "Cda", All & ~ApplePlatform.TVOS }, // acronym: Clinical Document Architecture
 			{ "Cdf", All }, // Cumulative Distribution Function
-			{ "Cdma", All },
-			{ "Cdrom", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
-			{ "Cea", All },
+			{ "Cdma", All }, // cellular standard
+			{ "Cdrom", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // Compact Disc Read-Only Memory
+			{ "Cea", All }, // standards acronym
 			{ "Celp", All }, // MPEG4ObjectID
 			{ "Celu", All }, // Continuously Differentiable Exponential Linear Unit (ML)
 			{ "Cfa", All }, // acronym: Color Filter Array
-			{ "Chacha", All },
-			{ "Chapv", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
+			{ "Chacha", All }, // ChaCha cipher
+			{ "Chapv", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // CHAP variant acronym
 #if !XAMCORE_5_0
 			{ "Characterteristic", All }, // UpdatedCharacterteristicValue - will be renamed in XAMCORE_5_0
 #endif
-			{ "Cholesky", All },
-			{ "Chromaticities", All },
-			{ "Chw", All },
-			{ "Ciexyz", ApplePlatform.MacOSX },
+			{ "Cholesky", All }, // matrix decomposition
+			{ "Chromaticities", All }, // color science term
+			{ "Chw", All }, // tensor layout abbrev
+			{ "Ciexyz", ApplePlatform.MacOSX }, // CIE XYZ color space
 			{ "Cif", All }, // Common Intermediate Format
-			{ "Ciff", All },
-			{ "Cinemagraph", ApplePlatform.TVOS },
-			{ "Cinepak", All },
+			{ "Ciff", All }, // Canon image format
+			{ "Cinemagraph", ApplePlatform.TVOS }, // still-photo animation
+			{ "Cinepak", All }, // video codec
 			{ "Ciphersuite", All }, // TLS cipher suite
-			{ "Cla", All },
-			{ "Clearcoat", All },
-			{ "Clockstamp", All },
+			{ "Cla", All }, // command class byte
+			{ "Clearcoat", All }, // material property
+			{ "Clockstamp", All }, // timestamp variant
 			{ "Cmaf", All }, // Common Media Application Format (mpeg4)
 			{ "Cmy", ApplePlatform.MacOSX }, // acronym: Cyan, magenta, yellow
 			{ "Cmyk", All }, // acronym: Cyan, magenta, yellow and key
-			{ "Cmyka", ApplePlatform.MacOSX },
+			{ "Cmyka", ApplePlatform.MacOSX }, // CMYK plus alpha
 			{ "Cnn", All }, // Convolutional Neural Network
-			{ "Cns", ApplePlatform.MacOSX },
-			{ "Codabar", All },
+			{ "Cns", ApplePlatform.MacOSX }, // Chinese National Standard
+			{ "Codabar", All }, // barcode symbology
 			{ "Commited", ApplePlatform.MacOSX }, // CommitedLoad - will be renamed in XAMCORE_5_0
 			{ "Conf", All }, // configuration abbreviation
-			{ "Conecs", All & ~ApplePlatform.TVOS },
-			{ "Conv", All },
-			{ "Cooldown", All & ~ApplePlatform.TVOS },
-			{ "Copyback", All },
-			{ "Cose", All & ~ApplePlatform.TVOS },
-			{ "Crosstraining", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Csr", All },
+			{ "Conecs", All & ~ApplePlatform.TVOS }, // card network acronym
+			{ "Conv", All }, // convolution abbreviation
+			{ "Cooldown", All & ~ApplePlatform.TVOS }, // compound word
+			{ "Copyback", All }, // storage operation
+			{ "Cose", All & ~ApplePlatform.TVOS }, // CBOR Object Signing and Encryption
+			{ "Crosstraining", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // compound word
+			{ "Csr", All }, // certificate signing request
 			{ "Csc", All }, // cosecant
-			{ "Ctm", ApplePlatform.MacOSX },
-			{ "Ctor", All },
-			{ "Cubemap", All },
-			{ "Cymk", ApplePlatform.MacOSX },
-			{ "Cymka", ApplePlatform.MacOSX },
-			{ "Daap", All },
-			{ "Dangi", All },
-			{ "Dankort", All & ~ApplePlatform.TVOS },
-			{ "Dav", All & ~ApplePlatform.TVOS },
+			{ "Ctm", ApplePlatform.MacOSX }, // current transform matrix
+			{ "Ctor", All }, // constructor abbreviation
+			{ "Cubemap", All }, // graphics texture type
+			{ "Cymk", ApplePlatform.MacOSX }, // CMYK channel order
+			{ "Cymka", ApplePlatform.MacOSX }, // CMYK plus alpha
+			{ "Daap", All }, // Digital Audio Access Protocol
+			{ "Dangi", All }, // Korean calendar
+			{ "Dankort", All & ~ApplePlatform.TVOS }, // Danish payment card
+			{ "Dav", All & ~ApplePlatform.TVOS }, // DAV protocol term
 			{ "Dcip", All }, // acronym: Digital Cinema Implementation Partners
-			{ "Deca", All & ~ApplePlatform.TVOS },
-			{ "Decomposables", All },
-			{ "Deinterlace", All },
-			{ "Denoise", All },
-			{ "Denoised", All },
+			{ "Deca", All & ~ApplePlatform.TVOS }, // metric prefix
+			{ "Decomposables", All }, // valid English plural
+			{ "Deinterlace", All }, // video processing term
+			{ "Denoise", All }, // noise reduction term
+			{ "Denoised", All }, // noise reduction term
 			{ "Denoiser", All }, // noise reduction filter
-			{ "Depthwise", All },
-			{ "Dequantize", All },
-			{ "Dfsi", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
+			{ "Depthwise", All }, // ML convolution term
+			{ "Dequantize", All }, // signal processing term
+			{ "Dfsi", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation
 			{ "Dhe", All }, // Diffie–Hellman key exchange
-			{ "Dhs", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Dhwio", All },
-			{ "Dicom", All },
-			{ "Diconnection", All },
+			{ "Dhs", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation
+			{ "Dhwio", All }, // tensor layout abbrev
+			{ "Dicom", All }, // medical imaging standard
+			{ "Diconnection", All }, // Apple API spelling
 			{ "Diffable", All }, // that you can diff it.. made up word from apple
-			{ "Diffie", All },
-			{ "Dirbursement", All & ~ApplePlatform.TVOS },
-			{ "Dirs", ApplePlatform.MacOSX },
-			{ "Dismissable", ApplePlatform.MacOSX },
-			{ "Dist", All },
+			{ "Diffie", All }, // Diffie-Hellman name
+			{ "Dirbursement", All & ~ApplePlatform.TVOS }, // Apple API spelling
+			{ "Dirs", ApplePlatform.MacOSX }, // directories abbreviation
+			{ "Dismissable", ApplePlatform.MacOSX }, // variant of dismissible
+			{ "Dist", All }, // distance abbreviation
 			{ "Distinguised", ApplePlatform.MacOSX }, // ITLibPlaylistPropertyDistinguisedKind
-			{ "dlclose", All },
-			{ "dlerror", All },
+			{ "dlclose", All }, // POSIX dynamic loader API
+			{ "dlerror", All }, // POSIX dynamic loader API
 #if !XAMCORE_5_0
 			{ "Directionfor", All & ~ApplePlatform.MacOSX }, // SetBaseWritingDirectionforRange - will be renamed in XAMCORE_5_0
 #endif
-			{ "Dlfcn", All },
-			{ "Dls", ApplePlatform.MacOSX },
-			{ "Dng", All },
-			{ "Dnssec", All },
-			{ "Dont", All },
-			{ "Dop", All },
-			{ "Dopesheet", All },
+			{ "Dlfcn", All }, // dynamic loader header
+			{ "Dls", ApplePlatform.MacOSX }, // Downloadable Sounds
+			{ "Dng", All }, // Digital Negative format
+			{ "Dnssec", All }, // DNS Security Extensions
+			{ "Dont", All }, // selector fragment without apostrophe
+			{ "Dop", All }, // data object parameter
+			{ "Dopesheet", All }, // animation timeline view
 			{ "Downmix", All }, // Sound terminology that means making a stereo mix from a 5.1 surround mix.
-			{ "Dpa", All },
+			{ "Dpa", All }, // Apple API abbreviation
 			{ "Dpad", All }, // Directional pad (D-pad)
 			{ "Dpads", All }, // plural of above
 			{ "Drm", ApplePlatform.MacOSX }, // MediaItemProperty.IsDrmProtected
-			{ "Droste", All },
-			{ "Dsf", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Dsfi", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Dstu", All & ~ApplePlatform.TVOS },
-			{ "Dtls", All },
+			{ "Droste", All }, // Droste effect name
+			{ "Dsf", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation
+			{ "Dsfi", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation
+			{ "Dstu", All & ~ApplePlatform.TVOS }, // Ukrainian standard acronym
+			{ "Dtls", All }, // Datagram TLS
 			{ "Dtmf", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // DTMF
-			{ "Dtss", ApplePlatform.MacOSX },
-			{ "dy", All },
-			{ "Eap", All },
+			{ "Dtss", ApplePlatform.MacOSX }, // audio format acronym
+			{ "dy", All }, // tensor dimension symbol
+			{ "Eap", All }, // Extensible Authentication Protocol
 			{ "Ean", All }, // European Article Number (barcode standard)
-			{ "Ebu", All },
+			{ "Ebu", All }, // European Broadcasting Union
 			{ "Ecc", All }, // Elliptic Curve Cryptography
 			{ "Ecdh", All }, // Elliptic Curve Diffie–Hellman
 			{ "Ecdhe", All }, // Elliptic Curve Diffie-Hellman Ephemeral
 			{ "Ecdsa", All }, // Elliptic Curve Digital Signature Algorithm
-			{ "Ecg", All & ~ApplePlatform.TVOS },
+			{ "Ecg", All & ~ApplePlatform.TVOS }, // electrocardiogram
 			{ "Echos", ApplePlatform.MacOSX }, // plural of echo
 			{ "Ecies", All }, // Elliptic Curve Integrated Encryption Scheme
 			{ "Ecn", All }, // Explicit Congestion Notification
 			{ "Ect", All }, // ECN Capable Transport
-			{ "Editability", All & ~ApplePlatform.MacOSX },
-			{ "Edr", All },
+			{ "Editability", All & ~ApplePlatform.MacOSX }, // valid English noun
+			{ "Edr", All }, // extended dynamic range
 			{ "Eftpos", All & ~ApplePlatform.TVOS }, // Electronic funds transfer at point of sale
-			{ "Eisu", ApplePlatform.MacOSX },
-			{ "Elative", All },
-			{ "Elu", All },
-			{ "Emagic", All },
-			{ "Embd", All },
+			{ "Eisu", ApplePlatform.MacOSX }, // Japanese input mode
+			{ "Elative", All }, // linguistic case
+			{ "Elu", All }, // activation function
+			{ "Emagic", All }, // audio software brand
+			{ "Embd", All }, // embedded abbreviation
 #if !XAMCORE_5_0
 			{ "Emebedding", All }, // NLContextualEmebeddingKey - will be renamed in XAMCORE_5_0
 #endif
 			{ "Emsg", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // 4cc
-			{ "Enc", All },
-			{ "Endc", All },
+			{ "Enc", All }, // encoding abbreviation
+			{ "Endc", All }, // 5G dual connectivity
 			{ "Eof", All }, // acronym End-Of-File
-			{ "Eppc", All },
-			{ "Epub", All },
-			{ "Erf", All },
-			{ "Essive", All },
-			{ "Evdo", All },
-			{ "Evictable", ApplePlatform.MacOSX | ApplePlatform.iOS },
-			{ "Exabits", All },
-			{ "Exbibits", All },
-			{ "Exbibytes", All },
+			{ "Eppc", All }, // program-to-program comms
+			{ "Epub", All }, // ebook file format
+			{ "Erf", All }, // Ericsson Texture Compression format
+			{ "Essive", All }, // linguistic case
+			{ "Evdo", All }, // cellular data standard
+			{ "Evictable", ApplePlatform.MacOSX | ApplePlatform.iOS }, // valid English derivative
+			{ "Exabits", All }, // SI unit name
+			{ "Exbibits", All }, // IEC unit name
+			{ "Exbibytes", All }, // IEC unit name
 			{ "Exp", All }, // exponent/exponential
-			{ "Expr", All },
-			{ "Exr", All },
-			{ "Extrinsics", All },
+			{ "Expr", All }, // expression abbreviation
+			{ "Exr", All }, // OpenEXR image format
+			{ "Extrinsics", All }, // computer vision term
 			{ "Fcp", All }, // Apple ATS Forward Compatibility Policy
-			{ "Feli", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
+			{ "Feli", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // FeliCa term
 			{ "Felica", All & ~ApplePlatform.TVOS }, // Japanese contactless RFID smart card system
-			{ "Femtowatts", All },
-			{ "Fft", All },
-			{ "Fhir", All & ~ApplePlatform.TVOS },
-			{ "Fieldset", All & ~ApplePlatform.MacCatalyst },
+			{ "Femtowatts", All }, // SI unit name
+			{ "Fft", All }, // Fast Fourier Transform
+			{ "Fhir", All & ~ApplePlatform.TVOS }, // healthcare data standard
+			{ "Fieldset", All & ~ApplePlatform.MacCatalyst }, // HTML element name
 			{ "Formati", All }, // FormatiTunesMetadata - word split of "Format" + "iTunes"
-			{ "Fov", All },
-			{ "Fqdns", All },
-			{ "Framebuffer", All },
-			{ "Framesetter", All },
-			{ "Freq", All },
+			{ "Fov", All }, // field of view
+			{ "Fqdns", All }, // fully qualified domain names
+			{ "Framebuffer", All }, // graphics buffer
+			{ "Framesetter", All }, // Core Text type
+			{ "Freq", All }, // frequency abbreviation
 			{ "Froms", ApplePlatform.MacOSX }, // NSMetadataItemWhereFromsKey
-			{ "Ftps", All },
+			{ "Ftps", All }, // FTP over TLS
 			{ "Func", All }, // function abbreviation
-			{ "Gadu", All & ~ApplePlatform.TVOS },
-			{ "Gainmap", All },
+			{ "Gadu", All & ~ApplePlatform.TVOS }, // Gadu-Gadu messenger
+			{ "Gainmap", All }, // HDR image term
 			{ "Gbrg", All }, // acronym for Green-Blue-Reg-Green
-			{ "Gbtac", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Gbtdc", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Gcm", All },
+			{ "Gbtac", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation
+			{ "Gbtdc", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation
+			{ "Gcm", All }, // Galois/Counter Mode
 			{ "Gelu", All }, // Gaussian Error Linear Unit (ML)
 			{ "Gen", All }, // generation (e.g. SiriRemote1stGen)
-			{ "Gibibits", All },
-			{ "Gid", ApplePlatform.MacOSX },
-			{ "Gigapascals", All },
-			{ "Girocard", All & ~ApplePlatform.TVOS },
-			{ "Gles", ApplePlatform.iOS | ApplePlatform.TVOS },
+			{ "Gibibits", All }, // IEC unit name
+			{ "Gid", ApplePlatform.MacOSX }, // group identifier
+			{ "Gigapascals", All }, // SI unit name
+			{ "Girocard", All & ~ApplePlatform.TVOS }, // German payment network
+			{ "Gles", ApplePlatform.iOS | ApplePlatform.TVOS }, // OpenGL ES abbreviation
 			{ "Glorot", All }, // NN
 			{ "Gop", All }, // acronym for Group Of Pictures
-			{ "Gpp", All },
-			{ "Gps", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
+			{ "Gpp", All }, // 3GPP standards acronym
+			{ "Gps", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // Global Positioning System
 			{ "Gsm", All }, // Global System for Mobile Communications
 			{ "Grbg", All }, // acronym for Green-Red-Blue-Green
-			{ "Groupless", All & ~ApplePlatform.TVOS },
-			{ "Gru", All },
-			{ "Gtin", All },
-			{ "Gui", All },
-			{ "Handwashing", All & ~ApplePlatform.TVOS },
-			{ "Hankaku", All & ~ApplePlatform.MacOSX },
-			{ "Hardlink", ApplePlatform.MacOSX },
-			{ "Hdmi", All & ~ApplePlatform.MacOSX },
-			{ "Hdr", All },
+			{ "Groupless", All & ~ApplePlatform.TVOS }, // valid English derivative
+			{ "Gru", All }, // gated recurrent unit
+			{ "Gtin", All }, // Global Trade Item Number
+			{ "Gui", All }, // graphical user interface
+			{ "Handwashing", All & ~ApplePlatform.TVOS }, // compound word
+			{ "Hankaku", All & ~ApplePlatform.MacOSX }, // Japanese half-width text
+			{ "Hardlink", ApplePlatform.MacOSX }, // filesystem term
+			{ "Hdmi", All & ~ApplePlatform.MacOSX }, // video connector standard
+			{ "Hdr", All }, // high dynamic range
 			{ "Heic", All }, // file type
 			{ "Heics", All }, // High Efficiency Image File Format (Sequence)
 			{ "Heif", All }, // High Efficiency Image File Format
-			{ "Hectopascals", All },
+			{ "Hectopascals", All }, // SI unit name
 			{ "Hevc", All }, // CMVideoCodecType / High Efficiency Video Coding
-			{ "Hfp", All & ~ApplePlatform.MacOSX },
-			{ "Hhr", All },
-			{ "Himyan", All & ~ApplePlatform.TVOS },
+			{ "Hfp", All & ~ApplePlatform.MacOSX }, // Bluetooth Hands-Free Profile
+			{ "Hhr", All }, // Apple API abbreviation
+			{ "Himyan", All & ~ApplePlatform.TVOS }, // South Arabian script
 			{ "Hermitean", All }, // Apple's spelling of Hermitian in MPSGraph FFT methods
-			{ "Hindlegs", All },
-			{ "Hipass", All },
-			{ "Histogrammed", All & ~ApplePlatform.TVOS },
+			{ "Hindlegs", All }, // compound word
+			{ "Hipass", All }, // high-pass filter
+			{ "Histogrammed", All & ~ApplePlatform.TVOS }, // valid technical term
 			{ "Hlg", All }, // Hybrid Log-Gamma
-			{ "Hls", All },
-			{ "Hoa", All },
-			{ "Hpke", ApplePlatform.MacOSX },
+			{ "Hls", All }, // HTTP Live Streaming
+			{ "Hoa", All }, // higher-order ambisonics
+			{ "Hpke", ApplePlatform.MacOSX }, // Hybrid Public Key Encryption
 			{ "Hrtf", All }, // acronym used in AUSpatializationAlgorithm
-			{ "Hsb", ApplePlatform.MacOSX },
-			{ "Hsba", ApplePlatform.MacOSX },
+			{ "Hsb", ApplePlatform.MacOSX }, // hue-saturation-brightness
+			{ "Hsba", ApplePlatform.MacOSX }, // HSB plus alpha
 			{ "Hvxc", All }, // MPEG4ObjectID
-			{ "Hwc", All },
-			{ "Hwio", All },
-			{ "Iap", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Ibss", ApplePlatform.MacOSX },
-			{ "Icns", All },
-			{ "Ico", All },
-			{ "Icq", All & ~ApplePlatform.TVOS },
-			{ "Identd", All },
+			{ "Hwc", All }, // tensor layout abbrev
+			{ "Hwio", All }, // tensor layout abbrev
+			{ "Iap", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // in-app purchase
+			{ "Ibss", ApplePlatform.MacOSX }, // Wi-Fi ad hoc mode
+			{ "Icns", All }, // Apple icon format
+			{ "Ico", All }, // Windows icon format
+			{ "Icq", All & ~ApplePlatform.TVOS }, // ICQ messenger name
+			{ "Identd", All }, // ident daemon name
 			{ "Ident", All }, // identifier abbreviation
-			{ "Iec", All },
-			{ "Ies", All },
+			{ "Iec", All }, // International Electrotechnical Commission
+			{ "Ies", All }, // lighting data format
 			{ "Ikev", All }, // Internet Key Exchange v2
 			{ "Ima", All }, // Interactive Multimedia Association
-			{ "Imageblock", All },
-			{ "Imap", All },
-			{ "Imaps", All },
-			{ "Imei", All & ~ApplePlatform.MacOSX },
-			{ "Img", All },
+			{ "Imageblock", All }, // compound word
+			{ "Imap", All }, // Internet Message Access Protocol
+			{ "Imaps", All }, // IMAP over TLS
+			{ "Imei", All & ~ApplePlatform.MacOSX }, // device identifier acronym
+			{ "Img", All }, // image abbreviation
 			{ "Impl", All }, // BindingImplAttribute
-			{ "Incrementor", ApplePlatform.MacOSX },
-			{ "Indoorcycle", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Indoorrun", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Indoorwalk", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Inessive", All },
+			{ "Incrementor", ApplePlatform.MacOSX }, // valid English noun
+			{ "Indoorcycle", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // compound word
+			{ "Indoorrun", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // compound word
+			{ "Indoorwalk", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // compound word
+			{ "Inessive", All }, // linguistic case
 			{ "Ingles", All }, // El Corte Ingles = Spanish payment card
-			{ "Inklist", All },
-			{ "Inode", ApplePlatform.MacOSX },
-			{ "Inser", All },
-			{ "Instamatic", ApplePlatform.MacOSX },
-			{ "Interac", All & ~ApplePlatform.TVOS },
-			{ "Interactable", ApplePlatform.MacOSX },
-			{ "Interframe", All },
-			{ "Interitem", All },
-			{ "Intermenstrual", All & ~ApplePlatform.TVOS },
-			{ "Intravaginal", All & ~ApplePlatform.TVOS },
-			{ "Inv", All },
-			{ "Invitable", All },
-			{ "Iou", All },
-			{ "Ipa", All },
-			{ "Ipp", All },
-			{ "Iptc", All },
-			{ "Ircs", All },
-			{ "Isrc", All },
-			{ "Itf", All },
-			{ "Itt", All & ~ApplePlatform.TVOS },
-			{ "Itu", All },
+			{ "Inklist", All }, // compound word
+			{ "Inode", ApplePlatform.MacOSX }, // filesystem metadata term
+			{ "Inser", All }, // Apple API selector fragment
+			{ "Instamatic", ApplePlatform.MacOSX }, // Kodak camera brand
+			{ "Interac", All & ~ApplePlatform.TVOS }, // Canadian payment network
+			{ "Interactable", ApplePlatform.MacOSX }, // valid English derivative
+			{ "Interframe", All }, // video coding term
+			{ "Interitem", All }, // compound word
+			{ "Intermenstrual", All & ~ApplePlatform.TVOS }, // medical term
+			{ "Intravaginal", All & ~ApplePlatform.TVOS }, // medical term
+			{ "Inv", All }, // inverse abbreviation
+			{ "Invitable", All }, // valid English derivative
+			{ "Iou", All }, // IOU abbreviation
+			{ "Ipa", All }, // International Phonetic Alphabet
+			{ "Ipp", All }, // Internet Printing Protocol
+			{ "Iptc", All }, // photo metadata standard
+			{ "Ircs", All }, // remote control standard
+			{ "Isrc", All }, // recording code standard
+			{ "Itf", All }, // Interleaved 2 of 5
+			{ "Itt", All & ~ApplePlatform.TVOS }, // International Tape Association
+			{ "Itu", All }, // International Telecommunication Union
 			{ "Itur", All }, // Itur_2020_Hlg
-			{ "Jaywan", All & ~ApplePlatform.TVOS },
+			{ "Jaywan", All & ~ApplePlatform.TVOS }, // Jordanian payment network
 			{ "Jcb", All & ~ApplePlatform.TVOS }, // Japanese credit card company
-			{ "Jfif", All },
-			{ "Jis", ApplePlatform.MacOSX },
-			{ "Jrts", All & ~ApplePlatform.TVOS },
+			{ "Jfif", All }, // JPEG File Interchange Format
+			{ "Jis", ApplePlatform.MacOSX }, // Japanese Industrial Standards
+			{ "Jrts", All & ~ApplePlatform.TVOS }, // Apple API abbreviation
 			{ "Jws", ApplePlatform.MacOSX }, // JSON Web Signature
-			{ "Jwks", ApplePlatform.MacOSX },
-			{ "Jwt", ApplePlatform.MacOSX },
-			{ "Keepalive", All },
-			{ "Keycode", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
-			{ "Keyerror", All },
-			{ "Keyi", All },
-			{ "Keypath", ApplePlatform.MacOSX },
-			{ "Keypoint", All },
-			{ "Keypoints", All },
-			{ "Kibibits", All },
-			{ "Kickboard", All & ~ApplePlatform.TVOS },
-			{ "Kiloampere", All },
-			{ "Kiloamperes", All },
-			{ "Kiloohms", All },
-			{ "Kilopascals", All },
+			{ "Jwks", ApplePlatform.MacOSX }, // JSON Web Key Set
+			{ "Jwt", ApplePlatform.MacOSX }, // JSON Web Token
+			{ "Keepalive", All }, // networking compound word
+			{ "Keycode", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // compound word
+			{ "Keyerror", All }, // compound word
+			{ "Keyi", All }, // Apple API selector fragment
+			{ "Keypath", ApplePlatform.MacOSX }, // compound word
+			{ "Keypoint", All }, // computer vision term
+			{ "Keypoints", All }, // computer vision term
+			{ "Kibibits", All }, // IEC unit name
+			{ "Kickboard", All & ~ApplePlatform.TVOS }, // compound word
+			{ "Kiloampere", All }, // SI unit name
+			{ "Kiloamperes", All }, // SI unit name
+			{ "Kiloohms", All }, // SI unit name
+			{ "Kilopascals", All }, // SI unit name
 			{ "ks", All }, // word fragment from spell checker
 			{ "Kullback", All }, // Kullback-Leibler Divergence
-			{ "Lacunarity", All },
+			{ "Lacunarity", All }, // fractal geometry term
 			{ "Latm", All }, //  Low Overhead Audio Transport Multiplex
-			{ "Lbc", All },
-			{ "Ldaps", All },
+			{ "Lbc", All }, // audio codec acronym
+			{ "Ldaps", All }, // LDAP over TLS
 			{ "Leibler", All }, // Kullback-Leibler divergence
-			{ "Lerp", All },
-			{ "libcompression", All },
-			{ "libdispatch", All },
-			{ "Lingustic", All },
+			{ "Lerp", All }, // linear interpolation
+			{ "libcompression", All }, // Apple library name
+			{ "libdispatch", All }, // Apple library name
+			{ "Lingustic", All }, // Apple API spelling
 			{ "Lite", All }, // lightweight variant
 			{ "Loas", All }, // Low Overhead Audio Stream
-			{ "Lod", All },
-			{ "Lopass", All },
-			{ "Lowlevel", All },
-			{ "Lpcm", All },
+			{ "Lod", All }, // level of detail
+			{ "Lopass", All }, // low-pass filter
+			{ "Lowlevel", All }, // compound word
+			{ "Lpcm", All }, // Linear PCM audio
 			{ "Lsb", All }, // Least Significant Bit
-			{ "Lstm", All },
-			{ "Lte", All },
+			{ "Lstm", All }, // long short-term memory
+			{ "Lte", All }, // Long-Term Evolution
 			{ "Ltp", All }, // AAC Long Term Prediction
-			{ "Ltr", All },
+			{ "Ltr", All }, // left-to-right abbreviation
 			{ "Luma", All }, // luminance component in video
-			{ "Lun", All },
-			{ "Lut", All },
+			{ "Lun", All }, // logical unit number
+			{ "Lut", All }, // lookup table
 			{ "Lzfse", All }, // acronym
 			{ "Lzma", All }, // acronym
-			{ "Lzw", ApplePlatform.MacOSX },
+			{ "Lzw", ApplePlatform.MacOSX }, // Lempel-Ziv-Welch
 			{ "Mada", All & ~ApplePlatform.TVOS }, // payment system
 			{ "Mcp", All }, // metacarpophalangeal (hand)
-			{ "Mebibits", All },
-			{ "Mebx", All },
-			{ "Meeza", All & ~ApplePlatform.TVOS },
-			{ "Megaampere", All },
-			{ "Megaamperes", All },
-			{ "Megaliters", All },
-			{ "Megameters", All },
-			{ "Megaohms", All },
-			{ "Megapascals", All },
-			{ "Mennekes", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Metacharacters", All },
-			{ "Metadatas", All },
-			{ "Metalness", All },
-			{ "Mgmt", All },
-			{ "Microampere", All },
-			{ "Microamperes", All },
-			{ "Microohms", All },
-			{ "Microwatts", All },
-			{ "Mifare", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
+			{ "Mebibits", All }, // IEC unit name
+			{ "Mebx", All }, // image metadata box
+			{ "Meeza", All & ~ApplePlatform.TVOS }, // Egyptian payment network
+			{ "Megaampere", All }, // SI unit name
+			{ "Megaamperes", All }, // SI unit name
+			{ "Megaliters", All }, // SI unit name
+			{ "Megameters", All }, // SI unit name
+			{ "Megaohms", All }, // SI unit name
+			{ "Megapascals", All }, // SI unit name
+			{ "Mennekes", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // EV connector brand
+			{ "Metacharacters", All }, // regex syntax term
+			{ "Metadatas", All }, // valid technical plural
+			{ "Metalness", All }, // PBR material property
+			{ "Mgmt", All }, // management abbreviation
+			{ "Microampere", All }, // SI unit name
+			{ "Microamperes", All }, // SI unit name
+			{ "Microohms", All }, // SI unit name
+			{ "Microwatts", All }, // SI unit name
+			{ "Mifare", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // NFC card brand
 			{ "Mihret", All }, // Ethiopic "Amete Mihret" calendar
-			{ "Millimoles", All },
-			{ "Milliohms", All },
-			{ "Minification", All },
-			{ "Mmw", All },
-			{ "Mncs", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
+			{ "Millimoles", All }, // SI unit name
+			{ "Milliohms", All }, // SI unit name
+			{ "Minification", All }, // graphics scaling term
+			{ "Mmw", All }, // millimeter wave
+			{ "Mncs", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API abbreviation
 			{ "Mobike", All }, // acronym
-			{ "Monoline", All & ~ApplePlatform.TVOS },
-			{ "Morpher", All },
+			{ "Monoline", All & ~ApplePlatform.TVOS }, // single-stroke design term
+			{ "Morpher", All }, // graphics/animation term
 			{ "Mpe", All }, // acronym
-			{ "Mps", All },
+			{ "Mps", All }, // metal performance shaders
 			{ "Msaa", All }, // multisample anti-aliasing
 			{ "Msb", All }, // Most Significant Bit
-			{ "Msi", All },
+			{ "Msi", All }, // installer package format
 			{ "Mtc", All }, // acronym
-			{ "Mtgp", All },
-			{ "Mtl", All },
+			{ "Mtgp", All }, // PRNG algorithm name
+			{ "Mtl", All }, // Metal framework prefix
 			{ "Mtu", All }, // acronym
-			{ "Muid", All & ~ApplePlatform.TVOS },
-			{ "Mul", All },
-			{ "Mult", All },
-			{ "Multiary", All },
-			{ "Multipath", All },
-			{ "Multipeer", All },
-			{ "Multiscript", All },
-			{ "Multiselect", All & ~ApplePlatform.MacOSX },
-			{ "Multivariant", All },
-			{ "Multiview", All },
-			{ "Muxed", All },
-			{ "Nacs", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Nai", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
+			{ "Muid", All & ~ApplePlatform.TVOS }, // MIDI universal identifier
+			{ "Mul", All }, // multiply abbreviation
+			{ "Mult", All }, // multiply abbreviation
+			{ "Multiary", All }, // math/logic term
+			{ "Multipath", All }, // networking term
+			{ "Multipeer", All }, // Apple framework term
+			{ "Multiscript", All }, // compound word
+			{ "Multiselect", All & ~ApplePlatform.MacOSX }, // compound word
+			{ "Multivariant", All }, // valid technical term
+			{ "Multiview", All }, // graphics term
+			{ "Muxed", All }, // multiplexed media term
+			{ "Nacs", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // EV charging standard
+			{ "Nai", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // network access identifier
 			{ "Nal", All }, // Network Abstraction Layer (video coding)
-			{ "Nanaco", All & ~ApplePlatform.TVOS },
-			{ "Nand", All },
-			{ "Nanograms", All },
-			{ "Nanowatts", All },
+			{ "Nanaco", All & ~ApplePlatform.TVOS }, // Japanese payment card
+			{ "Nand", All }, // flash memory type
+			{ "Nanograms", All }, // SI unit name
+			{ "Nanowatts", All }, // SI unit name
 			{ "Napas", All & ~ApplePlatform.TVOS }, // Vietnamese payment network
-			{ "Ncdhw", All },
-			{ "Nchw", All },
-			{ "nd", All },
-			{ "Ndef", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Ndhwc", All },
-			{ "Nesterov", All },
-			{ "Nestrov", All },
-			{ "Nfc", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
-			{ "Nfnt", All },
-			{ "Nhwc", All },
-			{ "Nntps", All },
-			{ "Nonenumerated", ApplePlatform.MacOSX },
-			{ "Noninteractive", All & ~ApplePlatform.TVOS },
-			{ "Noop", All },
-			{ "Nop", ApplePlatform.MacOSX },
-			{ "Nsa", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Nsevent", ApplePlatform.MacOSX },
+			{ "Ncdhw", All }, // tensor layout abbrev
+			{ "Nchw", All }, // tensor layout abbrev
+			{ "nd", All }, // tensor dimension symbol
+			{ "Ndef", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // NFC data exchange format
+			{ "Ndhwc", All }, // tensor layout abbrev
+			{ "Nesterov", All }, // optimization method
+			{ "Nestrov", All }, // Apple API spelling
+			{ "Nfc", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // Near Field Communication
+			{ "Nfnt", All }, // classic Mac font format
+			{ "Nhwc", All }, // tensor layout abbrev
+			{ "Nntps", All }, // NNTP over TLS
+			{ "Nonenumerated", ApplePlatform.MacOSX }, // valid English derivative
+			{ "Noninteractive", All & ~ApplePlatform.TVOS }, // valid English derivative
+			{ "Noop", All }, // no-op abbreviation
+			{ "Nop", ApplePlatform.MacOSX }, // no-op instruction
+			{ "Nsa", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // network service access
+			{ "Nsevent", ApplePlatform.MacOSX }, // Apple API class name
 			{ "Nsl", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // InternetLocationNslNeighborhoodIcon
-			{ "Ntlm", All },
-			{ "Ntsc", All },
-			{ "Nyquist", All & ~ApplePlatform.MacOSX },
+			{ "Ntlm", All }, // Windows auth protocol
+			{ "Ntsc", All }, // video standard acronym
+			{ "Nyquist", All & ~ApplePlatform.MacOSX }, // sampling theorem term
 			{ "Oaep", All }, // Optimal Asymmetric Encryption Padding
-			{ "Objectness", All },
-			{ "Ocr", All },
+			{ "Objectness", All }, // ML detection score
+			{ "Ocr", All }, // optical character recognition
 			{ "Ocsp", All }, // Online Certificate Status Protocol
-			{ "Octree", All },
-			{ "Odia", All },
-			{ "Ohwi", All },
-			{ "Oid", All },
-			{ "Oidhw", All },
-			{ "Oihw", All },
-			{ "Onnx", All },
+			{ "Octree", All }, // spatial partition tree
+			{ "Odia", All }, // Indic language name
+			{ "Ohwi", All }, // tensor layout abbrev
+			{ "Oid", All }, // object identifier
+			{ "Oidhw", All }, // tensor layout abbrev
+			{ "Oihw", All }, // tensor layout abbrev
+			{ "Onnx", All }, // Open Neural Network Exchange
 			{ "Ootf", All }, // Opto-Optical Transfer Function (HDR)
-			{ "Oper", All & ~ApplePlatform.MacOSX },
+			{ "Oper", All & ~ApplePlatform.MacOSX }, // operator abbreviation
 			{ "Organisation", All }, // kCGImagePropertyIPTCExtRegistryOrganisationID in Xcode9.3-b1
-			{ "Orth", All },
+			{ "Orth", All }, // orthographic abbreviation
 			{ "Osa", All }, // Open Scripting Architecture
 			{ "Otsu", All }, // threshold for image binarization
 			{ "ove", All }, // word fragment from spell checker
-			{ "Overline", All & ~ApplePlatform.TVOS },
+			{ "Overline", All & ~ApplePlatform.TVOS }, // typography term
 			{ "Paeth", All }, // PNG filter
-			{ "Palettize", All },
-			{ "Parms", All },
-			{ "Pausable", All },
-			{ "Pbm", ApplePlatform.MacOSX },
-			{ "Pci", All & ~ApplePlatform.MacOSX },
-			{ "Pcl", All },
-			{ "Pcm", All },
-			{ "Pde", ApplePlatform.MacOSX },
-			{ "Pdu", All },
-			{ "Peap", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Pebibits", All },
-			{ "Pebibytes", All },
-			{ "Perlin", All },
-			{ "Persistable", All },
-			{ "Petabits", All },
+			{ "Palettize", All }, // graphics term
+			{ "Parms", All }, // parameters abbreviation
+			{ "Pausable", All }, // valid English derivative
+			{ "Pbm", ApplePlatform.MacOSX }, // Portable Bitmap format
+			{ "Pci", All & ~ApplePlatform.MacOSX }, // Peripheral Component Interconnect
+			{ "Pcl", All }, // Printer Command Language
+			{ "Pcm", All }, // pulse-code modulation
+			{ "Pde", ApplePlatform.MacOSX }, // partial differential equation
+			{ "Pdu", All }, // protocol data unit
+			{ "Peap", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Protected EAP
+			{ "Pebibits", All }, // IEC unit name
+			{ "Pebibytes", All }, // IEC unit name
+			{ "Perlin", All }, // Perlin noise name
+			{ "Persistable", All }, // valid English derivative
+			{ "Petabits", All }, // SI unit name
 			{ "Pfs", All }, // acronym
-			{ "Philox", All },
+			{ "Philox", All }, // PRNG algorithm name
 			{ "Phong", All }, // Phong shading/reflection model
-			{ "Photoplethysmogram", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Phq", All & ~ApplePlatform.TVOS },
-			{ "Phy", ApplePlatform.MacOSX },
-			{ "Picometers", All },
-			{ "Pickleball", All & ~ApplePlatform.TVOS },
-			{ "Picowatts", All },
-			{ "Pkcs", All },
-			{ "Placemark", All },
-			{ "Playout", All },
+			{ "Photoplethysmogram", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // medical sensor term
+			{ "Phq", All & ~ApplePlatform.TVOS }, // questionnaire acronym
+			{ "Phy", ApplePlatform.MacOSX }, // physical layer term
+			{ "Picometers", All }, // SI unit name
+			{ "Pickleball", All & ~ApplePlatform.TVOS }, // sport name
+			{ "Picowatts", All }, // SI unit name
+			{ "Pkcs", All }, // crypto standard acronym
+			{ "Placemark", All }, // mapping term
+			{ "Playout", All }, // broadcasting term
 			{ "Plessey", All }, // MSI/Plessey barcode symbology
 			{ "Pnc", All }, // MIDI
-			{ "Pnorm", All },
-			{ "Polyline", All },
-			{ "Polylines", All },
-			{ "Popularimeter", All },
-			{ "Postback", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
+			{ "Pnorm", All }, // Lp norm notation
+			{ "Polyline", All }, // graphics geometry term
+			{ "Polylines", All }, // graphics geometry term
+			{ "Popularimeter", All }, // ID3 metadata field
+			{ "Postback", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // marketing/webhook term
 			{ "Ppd", ApplePlatform.MacOSX }, // PostScript Printer Description
-			{ "Ppk", All },
-			{ "Preauthentication", ApplePlatform.MacOSX },
-			{ "Preds", All },
-			{ "Prefilter", All },
-			{ "Prereleased", All },
-			{ "Prerolls", All },
-			{ "Preseti", All },
+			{ "Ppk", All }, // Apple API abbreviation
+			{ "Preauthentication", ApplePlatform.MacOSX }, // compound word
+			{ "Preds", All }, // predictions abbreviation
+			{ "Prefilter", All }, // compound word
+			{ "Prereleased", All }, // compound word
+			{ "Prerolls", All }, // media playback term
+			{ "Preseti", All }, // Apple API selector fragment
 			{ "Prev", All }, // previous abbreviation
-			{ "Previewable", ApplePlatform.MacOSX },
-			{ "Prf", All & ~ApplePlatform.TVOS },
-			{ "Psec", All },
-			{ "Psk", All },
-			{ "Pskc", All & ~ApplePlatform.TVOS },
+			{ "Previewable", ApplePlatform.MacOSX }, // valid English derivative
+			{ "Prf", All & ~ApplePlatform.TVOS }, // pseudo-random function
+			{ "Psec", All }, // picosecond abbreviation
+			{ "Psk", All }, // pre-shared key
+			{ "Pskc", All & ~ApplePlatform.TVOS }, // PSKC key container
 			{ "Psm", All }, // Protocol/Service Multiplexer
 			{ "Privs", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // privileges abbreviation
 			{ "Pss", All }, // Probabilistic Signature Scheme (RSA-PSS)
-			{ "Ptp", ApplePlatform.MacOSX },
+			{ "Ptp", ApplePlatform.MacOSX }, // Precision Time Protocol
 			{ "Ptss", All & ~ApplePlatform.TVOS }, // Presentation Timestamps (plural)
-			{ "Pvr", All },
+			{ "Pvr", All }, // PowerVR graphics brand
 			{ "Pvrtc", All }, // MTLBlitOption - PowerVR Texture Compression
-			{ "Qos", All },
-			{ "Quadding", All },
-			{ "Quaterniond", All },
-			{ "Quic", All },
-			{ "Qura", All },
-			{ "Qwac", All },
-			{ "Raycast", ApplePlatform.iOS },
-			{ "Raycasts", ApplePlatform.iOS },
-			{ "Reacquirer", All },
-			{ "Reassociation", ApplePlatform.MacOSX },
-			{ "Reauthentication", ApplePlatform.MacOSX },
-			{ "Reinvitation", All },
-			{ "Reinvite", All },
-			{ "Rel", All },
-			{ "Relocalization", ApplePlatform.iOS },
+			{ "Qos", All }, // quality of service
+			{ "Quadding", All }, // typesetting term
+			{ "Quaterniond", All }, // double quaternion type
+			{ "Quic", All }, // transport protocol
+			{ "Qura", All }, // payment network name
+			{ "Qwac", All }, // qualified website cert
+			{ "Raycast", ApplePlatform.iOS }, // graphics/AR term
+			{ "Raycasts", ApplePlatform.iOS }, // graphics/AR term
+			{ "Reacquirer", All }, // valid English noun
+			{ "Reassociation", ApplePlatform.MacOSX }, // networking term
+			{ "Reauthentication", ApplePlatform.MacOSX }, // compound word
+			{ "Reinvitation", All }, // valid English noun
+			{ "Reinvite", All }, // session protocol term
+			{ "Rel", All }, // relation abbreviation
+			{ "Relocalization", ApplePlatform.iOS }, // AR/vision term
 			{ "Relu", All }, // Rectified Linear Unit (ML)
-			{ "Replayable", All },
-			{ "Reprojection", All },
+			{ "Replayable", All }, // valid English derivative
+			{ "Reprojection", All }, // graphics/vision term
 			{ "Rfc", All }, // Request for Comments
-			{ "Rgb", All },
-			{ "Rgba", All },
-			{ "Rgbaf", All },
-			{ "Rgbah", All },
-			{ "Rgbx", All },
+			{ "Rgb", All }, // red-green-blue
+			{ "Rgba", All }, // red-green-blue-alpha
+			{ "Rgbaf", All }, // RGBA float format
+			{ "Rgbah", All }, // RGBA half-float format
+			{ "Rgbx", All }, // RGB plus unused byte
 			{ "Rggb", All }, // acronym for Red, Green, Green, Blue
-			{ "Rint", All },
-			{ "Rle", All },
+			{ "Rint", All }, // round-to-integer function
+			{ "Rle", All }, // run-length encoding
 			{ "Rms", All }, // root mean square
-			{ "Rnn", All },
-			{ "Roi", All },
+			{ "Rnn", All }, // recurrent neural network
+			{ "Roi", All }, // region of interest
 			{ "Romm", All }, // acronym: Reference Output Medium Metric
-			{ "Rpa", All },
+			{ "Rpa", All }, // Resolvable Private Address
 			{ "Rpn", All }, // acronym
 			{ "Rsa", All }, // Rivest, Shamir and Adleman
-			{ "Rsapss", All },
+			{ "Rsapss", All }, // RSA-PSS signature scheme
 			{ "Rsqrt", All }, // reciprocal square root
-			{ "Rssi", All },
-			{ "Rtl", All },
-			{ "Rtp", All & ~ApplePlatform.MacOSX },
-			{ "Rtsp", All },
+			{ "Rssi", All }, // signal strength acronym
+			{ "Rtl", All }, // right-to-left abbreviation
+			{ "Rtp", All & ~ApplePlatform.MacOSX }, // Real-time Transport Protocol
+			{ "Rtsp", All }, // streaming control protocol
 			{ "Saml", All & ~ApplePlatform.MacCatalyst }, // acronym
 			{ "Sbr", All }, // Spectral Band Replication (AAC)
-			{ "Scc", All },
-			{ "Scn", All },
-			{ "Sdh", ApplePlatform.TVOS },
-			{ "Sdk", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
-			{ "Sdnn", All & ~ApplePlatform.TVOS },
-			{ "Sdof", ApplePlatform.MacOSX },
-			{ "Sdr", All },
+			{ "Scc", All }, // subtitle/timing format
+			{ "Scn", All }, // SceneKit prefix
+			{ "Sdh", ApplePlatform.TVOS }, // subtitles for deaf/hard hearing
+			{ "Sdk", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // software development kit
+			{ "Sdnn", All & ~ApplePlatform.TVOS }, // Apple API abbreviation
+			{ "Sdof", ApplePlatform.MacOSX }, // synthetic depth of field
+			{ "Sdr", All }, // standard dynamic range
 			{ "Sdtv", ApplePlatform.TVOS }, // acronym: Standard Definition Tele Vision
-			{ "Securit", ApplePlatform.iOS },
-			{ "Seekable", All },
-			{ "Sel", All & ~ApplePlatform.MacOSX },
+			{ "Securit", ApplePlatform.iOS }, // Apple API selector fragment
+			{ "Seekable", All }, // valid English derivative
+			{ "Sel", All & ~ApplePlatform.MacOSX }, // Objective-C selector
 			{ "Selu", All }, // Scaled Exponential Linear unit (ML)
-			{ "Semitransient", ApplePlatform.MacOSX },
-			{ "Sensel", All },
+			{ "Semitransient", ApplePlatform.MacOSX }, // valid technical term
+			{ "Sensel", All }, // pressure sensor brand
 			{ "Sha", All }, // Secure Hash Algorithm
-			{ "Shadable", All },
-			{ "Siemen", All & ~ApplePlatform.TVOS },
-			{ "Signbit", All },
+			{ "Shadable", All }, // graphics term
+			{ "Siemen", All & ~ApplePlatform.TVOS }, // Apple API singular form
+			{ "Signbit", All }, // math library term
 			{ "Sint", All }, // as in "Signed Integer"
-			{ "Sixtyfour", ApplePlatform.MacOSX },
-			{ "Slerp", All },
-			{ "Slomo", All },
-			{ "Smpte", All },
-			{ "Snapshotter", All },
-			{ "Snn", All },
-			{ "Snorm", All },
-			{ "Sobel", All },
+			{ "Sixtyfour", ApplePlatform.MacOSX }, // compound number word
+			{ "Slerp", All }, // spherical interpolation
+			{ "Slomo", All }, // slow motion shorthand
+			{ "Smpte", All }, // media standards body
+			{ "Snapshotter", All }, // valid English noun
+			{ "Snn", All }, // Apple API abbreviation
+			{ "Snorm", All }, // signed normalized format
+			{ "Sobel", All }, // image filter name
 			{ "Softmax", All }, // get_SoftmaxNormalization
-			{ "Sopen", ApplePlatform.MacOSX },
-			{ "Spacei", All },
-			{ "Spl", All },
-			{ "Sqrt", All },
-			{ "Srgb", All },
-			{ "Ssid", All },
-			{ "Ssids", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Ssml", All },
-			{ "Sso", ApplePlatform.MacOSX },
+			{ "Sopen", ApplePlatform.MacOSX }, // Apple API abbreviation
+			{ "Spacei", All }, // Apple API selector fragment
+			{ "Spl", All }, // sound pressure level
+			{ "Sqrt", All }, // square root function
+			{ "Srgb", All }, // standard RGB color space
+			{ "Ssid", All }, // Wi-Fi network identifier
+			{ "Ssids", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // plural of SSID
+			{ "Ssml", All }, // Speech Synthesis Markup Language
+			{ "Sso", ApplePlatform.MacOSX }, // single sign-on
 			{ "Ssr", All }, // Scalable Sample Rate (AAC)
-			{ "st", All },
-			{ "Sta", ApplePlatform.MacOSX },
-			{ "Strided", All },
-			{ "Subband", All & ~ApplePlatform.TVOS },
-			{ "Subbeat", All },
-			{ "Subcaption", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Subcardioid", All & ~ApplePlatform.MacOSX },
-			{ "Subentities", All },
-			{ "Subfilter", All & ~ApplePlatform.TVOS },
-			{ "Subfilters", All & ~ApplePlatform.TVOS },
-			{ "Subheadline", All },
-			{ "Sublocality", All },
-			{ "Sublocation", All },
-			{ "Submesh", All },
-			{ "Submeshes", All },
-			{ "Subpixel", All },
-			{ "Subresources", All },
-			{ "Subsec", All },
+			{ "st", All }, // ordinal suffix
+			{ "Sta", ApplePlatform.MacOSX }, // station mode acronym
+			{ "Strided", All }, // linear algebra term
+			{ "Subband", All & ~ApplePlatform.TVOS }, // signal processing term
+			{ "Subbeat", All }, // music timing term
+			{ "Subcaption", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // compound word
+			{ "Subcardioid", All & ~ApplePlatform.MacOSX }, // microphone polar pattern
+			{ "Subentities", All }, // valid English plural
+			{ "Subfilter", All & ~ApplePlatform.TVOS }, // compound word
+			{ "Subfilters", All & ~ApplePlatform.TVOS }, // compound word
+			{ "Subheadline", All }, // compound word
+			{ "Sublocality", All }, // MapKit placemark term
+			{ "Sublocation", All }, // compound word
+			{ "Submesh", All }, // graphics geometry term
+			{ "Submeshes", All }, // graphics geometry term
+			{ "Subpixel", All }, // display/graphics term
+			{ "Subresources", All }, // valid English plural
+			{ "Subsec", All }, // subsecond abbreviation
 			{ "Suica", All & ~ApplePlatform.TVOS }, // Japanese contactless smart card type
-			{ "Superentity", All },
-			{ "Supertype", All },
-			{ "Supertypes", All },
-			{ "Svfg", All },
+			{ "Superentity", All }, // Core Data term
+			{ "Supertype", All }, // type-system term
+			{ "Supertypes", All }, // type-system term
+			{ "Svfg", All }, // stochastic variance filtering
 			{ "Svg", All }, // Scalable Vector Graphics
-			{ "Svgf", All },
-			{ "Swolf", All & ~ApplePlatform.TVOS },
+			{ "Svgf", All }, // spatiotemporal variance-guided filter
+			{ "Swolf", All & ~ApplePlatform.TVOS }, // swim efficiency score
 			{ "Symbologies", All }, // plural of symbology (barcode)
-			{ "Synchronizable", All },
-			{ "Sysex", All },
-			{ "Tbgr", All },
-			{ "Tdoa", ApplePlatform.iOS },
-			{ "Tebibits", All },
-			{ "Tensorflow", All },
-			{ "Tessellator", All },
-			{ "Texcoord", All },
-			{ "Texel", All },
-			{ "Tga", All },
-			{ "th", All },
-			{ "Threadgroup", All },
-			{ "Threadgroups", All },
-			{ "Thumbnailing", All & ~ApplePlatform.TVOS },
-			{ "Thumbstick", All },
-			{ "Thumbsticks", ApplePlatform.iOS },
-			{ "Timecodes", All & ~ApplePlatform.TVOS },
-			{ "Timelapse", All },
-			{ "Timelapses", All },
-			{ "Tls", All },
-			{ "Tlv", All },
-			{ "Tmoney", All & ~ApplePlatform.TVOS },
-			{ "Toc", All },
-			{ "Toci", All },
-			{ "Tonemap", All },
-			{ "Touchpads", All },
-			{ "Transceive", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Trc", All },
-			{ "Tri", All },
-			{ "Ttls", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Tweening", All },
-			{ "Twentyfour", ApplePlatform.MacOSX },
-			{ "Twips", ApplePlatform.MacOSX },
-			{ "tx", All },
-			{ "ty", All },
-			{ "Udi", All & ~ApplePlatform.TVOS },
-			{ "Udp", All },
-			{ "Uid", All & ~ApplePlatform.TVOS },
-			{ "Unconfigured", All & ~ApplePlatform.MacOSX },
-			{ "Undecodable", All },
-			{ "Underrun", All },
-			{ "Unemphasized", ApplePlatform.MacOSX },
-			{ "Unentitled", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Unfetched", All },
-			{ "Unfocus", All },
-			{ "Unioning", All },
-			{ "Unmap", All },
-			{ "Unmatch", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Unorm", All },
-			{ "Unpair", ApplePlatform.MacOSX },
-			{ "Unpremultiplied", All },
-			{ "Unpremultiplying", All },
-			{ "Unprepare", All },
-			{ "Unproject", All },
-			{ "Unpublish", All },
-			{ "Unsend", All & ~ApplePlatform.TVOS },
-			{ "Unsolo", All },
-			{ "Unsynced", ApplePlatform.MacOSX | ApplePlatform.iOS },
-			{ "Untrash", ApplePlatform.iOS },
-			{ "Upce", All },
-			{ "Upi", ApplePlatform.iOS },
-			{ "Uri", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
+			{ "Synchronizable", All }, // valid English derivative
+			{ "Sysex", All }, // MIDI system exclusive
+			{ "Tbgr", All }, // texture color format
+			{ "Tdoa", ApplePlatform.iOS }, // time difference of arrival
+			{ "Tebibits", All }, // IEC unit name
+			{ "Tensorflow", All }, // machine learning framework
+			{ "Tessellator", All }, // graphics term
+			{ "Texcoord", All }, // texture coordinate
+			{ "Texel", All }, // texture pixel term
+			{ "Tga", All }, // Targa image format
+			{ "th", All }, // ordinal suffix
+			{ "Threadgroup", All }, // Metal compute term
+			{ "Threadgroups", All }, // Metal compute term
+			{ "Thumbnailing", All & ~ApplePlatform.TVOS }, // valid technical term
+			{ "Thumbstick", All }, // game controller term
+			{ "Thumbsticks", ApplePlatform.iOS }, // plural of thumbstick
+			{ "Timecodes", All & ~ApplePlatform.TVOS }, // media timing term
+			{ "Timelapse", All }, // compound word
+			{ "Timelapses", All }, // plural of timelapse
+			{ "Tls", All }, // Transport Layer Security
+			{ "Tlv", All }, // tag-length-value
+			{ "Tmoney", All & ~ApplePlatform.TVOS }, // Korean transit card
+			{ "Toc", All }, // table of contents
+			{ "Toci", All }, // Apple API selector fragment
+			{ "Tonemap", All }, // image processing term
+			{ "Touchpads", All }, // plural of touchpad
+			{ "Transceive", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // communications verb
+			{ "Trc", All }, // tone reproduction curve
+			{ "Tri", All }, // triangle abbreviation
+			{ "Ttls", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // tunneled TLS
+			{ "Tweening", All }, // animation term
+			{ "Twentyfour", ApplePlatform.MacOSX }, // compound number word
+			{ "Twips", ApplePlatform.MacOSX }, // typography unit
+			{ "tx", All }, // translation x axis
+			{ "ty", All }, // translation y axis
+			{ "Udi", All & ~ApplePlatform.TVOS }, // device identifier standard
+			{ "Udp", All }, // User Datagram Protocol
+			{ "Uid", All & ~ApplePlatform.TVOS }, // user identifier
+			{ "Unconfigured", All & ~ApplePlatform.MacOSX }, // valid English derivative
+			{ "Undecodable", All }, // valid English derivative
+			{ "Underrun", All }, // audio/buffer term
+			{ "Unemphasized", ApplePlatform.MacOSX }, // valid English derivative
+			{ "Unentitled", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // security entitlement term
+			{ "Unfetched", All }, // valid English derivative
+			{ "Unfocus", All }, // valid UI verb
+			{ "Unioning", All }, // set operation term
+			{ "Unmap", All }, // memory mapping verb
+			{ "Unmatch", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Apple API verb
+			{ "Unorm", All }, // unsigned normalized format
+			{ "Unpair", ApplePlatform.MacOSX }, // device pairing verb
+			{ "Unpremultiplied", All }, // graphics term
+			{ "Unpremultiplying", All }, // graphics term
+			{ "Unprepare", All }, // API verb form
+			{ "Unproject", All }, // graphics math term
+			{ "Unpublish", All }, // content management verb
+			{ "Unsend", All & ~ApplePlatform.TVOS }, // messaging verb
+			{ "Unsolo", All }, // audio control verb
+			{ "Unsynced", ApplePlatform.MacOSX | ApplePlatform.iOS }, // sync state adjective
+			{ "Untrash", ApplePlatform.iOS }, // mail/files verb
+			{ "Upce", All }, // UPC-E barcode
+			{ "Upi", ApplePlatform.iOS }, // Unified Payments Interface
+			{ "Uri", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // Uniform Resource Identifier
 			{ "Usac", All }, // Unified Speech and Audio Coding
 			{ "Usd", All }, // Universal Scene Description
 			{ "Usdz", All }, // USD zip
-			{ "Usec", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
-			{ "Ussd", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Uterance", All },
-			{ "Utf", All },
-			{ "Uti", All & ~ApplePlatform.TVOS },
-			{ "Varispeed", All },
-			{ "Vbr", All },
-			{ "Vbv", All },
-			{ "Vergence", All },
-			{ "Vnode", All },
-			{ "Voip", ApplePlatform.MacCatalyst },
-			{ "Voronoi", All },
-			{ "Vpn", All },
-			{ "Vtt", All },
-			{ "Waon", All & ~ApplePlatform.TVOS },
-			{ "Warichu", All },
-			{ "Warpable", All },
-			{ "Wcdma", All },
-			{ "Wep", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Wlan", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
-			{ "Wpa", All & ~ApplePlatform.TVOS },
-			{ "Writeability", All },
-			{ "Xattr", ApplePlatform.MacOSX },
-			{ "Xattrs", ApplePlatform.MacOSX },
-			{ "Xbgr", All },
-			{ "Xmp", All },
-			{ "Xnor", All },
-			{ "Xrgb", All },
-			{ "xy", All },
-			{ "Xyz", All },
-			{ "Xzy", All },
-			{ "Yobibits", All },
-			{ "Yobibytes", All },
-			{ "Yottabits", All },
-			{ "Yuv", ApplePlatform.MacOSX },
-			{ "Yuvk", ApplePlatform.MacOSX },
-			{ "yuvs", All },
-			{ "yx", All },
-			{ "Yxz", All },
-			{ "yy", All },
-			{ "Yyy", All },
-			{ "Yzx", All },
-			{ "Zebibits", All },
-			{ "Zebibytes", All },
-			{ "Zenkaku", All & ~ApplePlatform.MacOSX },
-			{ "Zettabits", All },
-			{ "Zlib", All },
-			{ "Zxy", All },
-			{ "Zyx", All },
+			{ "Usec", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // microsecond abbreviation
+			{ "Ussd", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // cellular signaling code
+			{ "Uterance", All }, // speech synthesis term
+			{ "Utf", All }, // Unicode Transformation Format
+			{ "Uti", All & ~ApplePlatform.TVOS }, // Uniform Type Identifier
+			{ "Varispeed", All }, // audio playback effect
+			{ "Vbr", All }, // variable bitrate
+			{ "Vbv", All }, // video buffering verifier
+			{ "Vergence", All }, // binocular vision term
+			{ "Vnode", All }, // virtual node term
+			{ "Voip", ApplePlatform.MacCatalyst }, // voice over IP
+			{ "Voronoi", All }, // geometry diagram name
+			{ "Vpn", All }, // virtual private network
+			{ "Vtt", All }, // WebVTT subtitle format
+			{ "Waon", All & ~ApplePlatform.TVOS }, // Japanese e-money card
+			{ "Warichu", All }, // Japanese annotation term
+			{ "Warpable", All }, // valid English derivative
+			{ "Wcdma", All }, // cellular standard
+			{ "Wep", ApplePlatform.iOS | ApplePlatform.MacCatalyst }, // Wi-Fi security protocol
+			{ "Wlan", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // wireless LAN acronym
+			{ "Wpa", All & ~ApplePlatform.TVOS }, // Wi-Fi security standard
+			{ "Writeability", All }, // variant of writability
+			{ "Xattr", ApplePlatform.MacOSX }, // extended attribute
+			{ "Xattrs", ApplePlatform.MacOSX }, // plural of xattr
+			{ "Xbgr", All }, // X-blue-green-red format
+			{ "Xmp", All }, // Extensible Metadata Platform
+			{ "Xnor", All }, // logic gate name
+			{ "Xrgb", All }, // X-red-green-blue format
+			{ "xy", All }, // coordinate axis pair
+			{ "Xyz", All }, // axis order abbreviation
+			{ "Xzy", All }, // axis order abbreviation
+			{ "Yobibits", All }, // IEC unit name
+			{ "Yobibytes", All }, // IEC unit name
+			{ "Yottabits", All }, // SI unit name
+			{ "Yuv", ApplePlatform.MacOSX }, // luma/chroma color space
+			{ "Yuvk", ApplePlatform.MacOSX }, // YUV plus black channel
+			{ "yuvs", All }, // packed YUV format
+			{ "yx", All }, // coordinate axis pair
+			{ "Yxz", All }, // axis order abbreviation
+			{ "yy", All }, // coordinate repetition term
+			{ "Yyy", All }, // axis placeholder term
+			{ "Yzx", All }, // axis order abbreviation
+			{ "Zebibits", All }, // IEC unit name
+			{ "Zebibytes", All }, // IEC unit name
+			{ "Zenkaku", All & ~ApplePlatform.MacOSX }, // Japanese full-width text
+			{ "Zettabits", All }, // SI unit name
+			{ "Zlib", All }, // compression library name
+			{ "Zxy", All }, // axis order abbreviation
+			{ "Zyx", All }, // axis order abbreviation
 		};
 
 		// Check if any API name in the assembly contains the given word.

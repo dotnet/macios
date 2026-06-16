@@ -265,7 +265,8 @@ The following metadata is set:
 * `PlatformName`: The Apple platform name, such as `iOS`, `tvOS`, `macOS`, or `MacCatalyst`.
 * `AppBundlePath`: The app bundle path associated with the artifact.
 * `BundleIdentifier`: The resolved app bundle identifier.
-* `Signed`: `true` when the app or package output is signed; otherwise `false`.
+* `Signed`: `true` when the app bundle associated with the output is code signed; otherwise `false`.
+* `PackageSigned`: For `.pkg` outputs, `true` when installer package signing is enabled; otherwise `false`. This metadata is not set for other formats.
 
 Example:
 
@@ -273,7 +274,7 @@ Example:
 <Target Name="WriteApplePackages" AfterTargets="Build">
     <WriteLinesToFile
         File="$(OutputPath)apple-packages.txt"
-        Lines="%(ApplePackageOutput.Identity)|%(ApplePackageOutput.PackageFormat)|%(ApplePackageOutput.Signed)"
+        Lines="%(ApplePackageOutput.Identity)|%(ApplePackageOutput.PackageFormat)|%(ApplePackageOutput.Signed)|%(ApplePackageOutput.PackageSigned)"
         Overwrite="true" />
 </Target>
 ```

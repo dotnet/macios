@@ -394,7 +394,11 @@ namespace Xamarin.Tests {
 			Assert.That (output.GetMetadata ("Signed"), Is.AnyOf ("true", "false"), "Signed");
 			Assert.That (output.GetMetadata ("ArtifactKind"), Is.Empty, "ArtifactKind");
 			Assert.That (output.GetMetadata ("CodeSigned"), Is.Empty, "CodeSigned");
-			Assert.That (output.GetMetadata ("PackageSigned"), Is.Empty, "PackageSigned");
+			if (packageFormat == "pkg") {
+				Assert.That (output.GetMetadata ("PackageSigned"), Is.AnyOf ("true", "false"), "PackageSigned");
+			} else {
+				Assert.That (output.GetMetadata ("PackageSigned"), Is.Empty, "PackageSigned");
+			}
 			return output;
 		}
 

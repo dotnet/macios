@@ -10088,11 +10088,11 @@ namespace Foundation {
 
 		[Static]
 		[Export ("credentialWithUser:password:persistence:")]
-		NSUrlCredential FromUserPasswordPersistence (string user, string password, NSUrlCredentialPersistence persistence);
+		NSUrlCredential Create (string user, string password, NSUrlCredentialPersistence persistence);
 
 #if !XAMCORE_5_0
-		[Obsolete ("Use 'FromUserPasswordPersistence' instead.")]
-		[Wrap ("FromUserPasswordPersistence (user, password, persistence)")]
+		[Obsolete ("Use 'Create' instead.")]
+		[Wrap ("Create (user, password, persistence)")]
 		[Static]
 		NSUrlCredential FromUserPasswordPersistance (string user, string password, NSUrlCredentialPersistence persistence);
 #endif
@@ -15789,14 +15789,14 @@ namespace Foundation {
 
 		[Export ("dequeueNotificationsMatching:coalesceMask:")]
 #if XAMCORE_5_0
-		void DequeueNotificationsMatchingCoalesceMask (NSNotification notification, NSNotificationCoalescing coalesceMask);
+		void DequeueNotifications (NSNotification notification, NSNotificationCoalescing coalesceMask);
 #else
-		[Obsolete ("Use 'DequeueNotificationsMatchingCoalesceMask' instead.")]
+		[Obsolete ("Use 'DequeueNotifications' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		void DequeueNotificationsMatchingcoalesceMask (NSNotification notification, NSNotificationCoalescing coalesceMask);
 
 		[Wrap ("DequeueNotificationsMatchingcoalesceMask (notification, coalesceMask)")]
-		void DequeueNotificationsMatchingCoalesceMask (NSNotification notification, NSNotificationCoalescing coalesceMask);
+		void DequeueNotifications (NSNotification notification, NSNotificationCoalescing coalesceMask);
 #endif
 	}
 
@@ -20516,14 +20516,14 @@ namespace Foundation {
 
 		[Export ("setParamDescriptor:forKeyword:")]
 #if XAMCORE_5_0
-		void SetParamDescriptorForKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		void SetParamDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
 #else
-		[Obsolete ("Use 'SetParamDescriptorForKeyword' instead.")]
+		[Obsolete ("Use 'SetParamDescriptor' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetParamDescriptorforKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
 
 		[Wrap ("SetParamDescriptorforKeyword (descriptor, keyword)")]
-		void SetParamDescriptorForKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		void SetParamDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
 #endif
 
 		[return: NullAllowed]
@@ -20535,14 +20535,14 @@ namespace Foundation {
 
 		[Export ("setAttributeDescriptor:forKeyword:")]
 #if XAMCORE_5_0
-		void SetAttributeDescriptorForKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		void SetAttributeDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
 #else
-		[Obsolete ("Use 'SetAttributeDescriptorForKeyword' instead.")]
+		[Obsolete ("Use 'SetAttributeDescriptor' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetAttributeDescriptorforKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
 
 		[Wrap ("SetAttributeDescriptorforKeyword (descriptor, keyword)")]
-		void SetAttributeDescriptorForKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		void SetAttributeDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
 #endif
 
 		[return: NullAllowed]
@@ -20558,14 +20558,14 @@ namespace Foundation {
 		/// <remarks>To be added.</remarks>
 		[Export ("insertDescriptor:atIndex:")]
 #if XAMCORE_5_0
-		void InsertDescriptorAtIndex (NSAppleEventDescriptor descriptor, nint index);
+		void InsertDescriptor (NSAppleEventDescriptor descriptor, nint index);
 #else
-		[Obsolete ("Use 'InsertDescriptorAtIndex' instead.")]
+		[Obsolete ("Use 'InsertDescriptor' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		void InsertDescriptoratIndex (NSAppleEventDescriptor descriptor, nint index);
 
 		[Wrap ("InsertDescriptoratIndex (descriptor, index)")]
-		void InsertDescriptorAtIndex (NSAppleEventDescriptor descriptor, nint index);
+		void InsertDescriptor (NSAppleEventDescriptor descriptor, nint index);
 #endif
 
 		/// <param name="index">To be added.</param>
@@ -20584,14 +20584,14 @@ namespace Foundation {
 
 		[Export ("setDescriptor:forKeyword:")]
 #if XAMCORE_5_0
-		void SetDescriptorForKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		void SetDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
 #else
-		[Obsolete ("Use 'SetDescriptorForKeyword' instead.")]
+		[Obsolete ("Use 'SetDescriptor' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetDescriptorforKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
 
 		[Wrap ("SetDescriptorforKeyword (descriptor, keyword)")]
-		void SetDescriptorForKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+		void SetDescriptor (NSAppleEventDescriptor descriptor, AEKeyword keyword);
 #endif
 
 		[return: NullAllowed]

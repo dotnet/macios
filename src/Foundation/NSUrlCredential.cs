@@ -31,7 +31,7 @@ namespace Foundation {
 		/// <param name="certificates">The certificates to use for the credential.</param>
 		/// <param name="persistence">Specifies how long the credential should be kept.</param>
 		/// <returns>A new <see cref="NSUrlCredential" /> instance.</returns>
-		public static NSUrlCredential FromIdentityCertificatesPersistence (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
+		public static NSUrlCredential Create (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence)
 		{
 			ArgumentNullException.ThrowIfNull (identity);
 			ArgumentNullException.ThrowIfNull (certificates);
@@ -44,9 +44,9 @@ namespace Foundation {
 		}
 
 #if !XAMCORE_5_0
-		[Obsolete ("Use 'FromIdentityCertificatesPersistence' instead.")]
+		[Obsolete ("Use 'Create' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
-		public static NSUrlCredential FromIdentityCertificatesPersistance (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence) => FromIdentityCertificatesPersistence (identity, certificates, persistence);
+		public static NSUrlCredential FromIdentityCertificatesPersistance (SecIdentity identity, SecCertificate [] certificates, NSUrlCredentialPersistence persistence) => Create (identity, certificates, persistence);
 #endif
 
 		/// <summary>Gets the identity (digital certificate + private key) associated with this credential.</summary>

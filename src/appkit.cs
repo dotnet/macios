@@ -8608,14 +8608,14 @@ namespace AppKit {
 
 		[Export ("titleWidth:")]
 #if XAMCORE_5_0
-		nfloat TitleWidthConstrainedToSize (CGSize aSize);
+		nfloat GetTitleWidth (CGSize size);
 #else
-		[Obsolete ("Use 'TitleWidthConstrainedToSize' instead.")]
+		[Obsolete ("Use 'GetTitleWidth' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		nfloat TitleWidthConstraintedToSize (CGSize aSize);
 
-		[Wrap ("TitleWidthConstraintedToSize (aSize)")]
-		nfloat TitleWidthConstrainedToSize (CGSize aSize);
+		[Wrap ("TitleWidthConstraintedToSize (size)")]
+		nfloat GetTitleWidth (CGSize size);
 #endif
 
 		[Export ("title")]

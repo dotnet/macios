@@ -16697,8 +16697,8 @@ namespace UIKit {
 		/// <param name="state">To be added.</param>
 		/// <summary>Sets the image to be used for the specified UISearchBarIcon type and UIControlState.</summary>
 		/// <remarks>To be added.</remarks>
-		[Appearance]
 		[Export ("setImage:forSearchBarIcon:state:")]
+		[Appearance]
 #if XAMCORE_5_0
 		void SetImageForSearchBarIcon ([NullAllowed] UIImage iconImage, UISearchBarIcon icon, UIControlState state);
 #else

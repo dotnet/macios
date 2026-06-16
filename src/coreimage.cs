@@ -2704,14 +2704,14 @@ namespace CoreImage {
 		///         <remarks>To be added.</remarks>
 		[Export ("setAttributes:forExportedKey:")]
 #if XAMCORE_5_0
-		void SetAttributesForExportedKey (NSDictionary attributes, NSString exportedKey);
+		void SetAttributes (NSDictionary attributes, NSString exportedKey);
 #else
-		[Obsolete ("Use 'SetAttributesForExportedKey' instead.")]
+		[Obsolete ("Use 'SetAttributes' instead.")]
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetAttributesforExportedKey (NSDictionary attributes, NSString exportedKey);
 
 		[Wrap ("SetAttributesforExportedKey (attributes, exportedKey)")]
-		void SetAttributesForExportedKey (NSDictionary attributes, NSString exportedKey);
+		void SetAttributes (NSDictionary attributes, NSString exportedKey);
 #endif
 
 		/// <summary>To be added.</summary>

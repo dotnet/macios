@@ -377,7 +377,7 @@ namespace Introspection {
 			{ "Indoorrun", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Indoorwalk", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Inessive", All },
-			{ "Ingles", All }, // Inglés locale identifier
+			{ "Ingles", All }, // El Corte Ingles = Spanish payment card
 			{ "Inklist", All },
 			{ "Inode", ApplePlatform.MacOSX },
 			{ "Inser", All },
@@ -405,7 +405,6 @@ namespace Introspection {
 			{ "Jfif", All },
 			{ "Jis", ApplePlatform.MacOSX },
 			{ "Jrts", All & ~ApplePlatform.TVOS },
-			// "Jws" - HKVerifiableClinicalRecord is [ObsoletedOSPlatform] on iOS/MacCatalyst but not macOS
 			{ "Jws", ApplePlatform.MacOSX }, // JSON Web Signature
 			{ "Jwks", ApplePlatform.MacOSX },
 			{ "Jwt", ApplePlatform.MacOSX },
@@ -917,9 +916,9 @@ namespace Introspection {
 		{
 			AssertMatchingOSVersionAndSdkVersion ();
 
+			// that's slow and there's no value to run it on devices as the API names
+			// being verified won't change from the simulator
 			TestRuntime.AssertSimulatorOrDesktop ("Typos only detected on simulator/desktop");
-
-			var sw = Stopwatch.StartNew ();
 
 			using var checker = new SpellChecker ();
 
@@ -981,7 +980,6 @@ namespace Introspection {
 				ReportError ($"Unnecessary allowed typo \"{typo}\" is not present in any API name");
 				totalErrors++;
 			}
-			Console.WriteLine ($"TypoTest completed in {sw.Elapsed.TotalMilliseconds:F0}ms (unique words: {words.Count}, typos found: {typos.Count})");
 			Assert.That (totalErrors, Is.EqualTo (0), "Typos!");
 		}
 

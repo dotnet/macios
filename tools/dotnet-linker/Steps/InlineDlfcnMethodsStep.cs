@@ -587,12 +587,12 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 					continue;
 				case "GetStruct":
 					if (mr is not GenericInstanceMethod gim || gim.GenericArguments.Count != 1) {
-							App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
+						App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 						continue;
 					}
 					var returnType = gim.GenericArguments [0];
 					if (returnType.IsGenericInstance) {
-							App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
+						App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 						continue;
 					}
 

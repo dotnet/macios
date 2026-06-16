@@ -44,18 +44,18 @@ $ dotnet run --device UDID
 
 Added in .NET 11.
 
-## GetApplePackageOutputs
+## GetApplicationArtifacts
 
-Builds the project and returns the `@(ApplePackageOutput)` item group. This
+Builds the project and returns the `@(ApplicationArtifact)` item group. This
 target can be used by custom build scripts to query final `.app`, `.ipa`,
 `.pkg`, and `.xcarchive` artifacts. The `Publish` target also populates the
-same item group for packages it creates.
+same item group for artifacts it creates.
 
 ```shell
-$ dotnet build -t:GetApplePackageOutputs
+$ dotnet build -t:GetApplicationArtifacts
 ```
 
-See [ApplePackageOutput](build-items.md#applepackageoutput) for supported metadata.
+See [ApplicationArtifact](build-items.md#applicationartifact) for supported metadata.
 
 ## Run
 

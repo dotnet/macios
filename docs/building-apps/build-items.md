@@ -249,9 +249,9 @@ An item group that contains environment variables that will be set when the app 
 > [!NOTE]
 > This only applies when launching the app from the command line (`dotnet run` or `dotnet build -t:Run`), not when launching from the IDE.
 
-## ApplePackageOutput
+## ApplicationArtifact
 
-An item group that contains final Apple app artifacts produced by the build or publish. This can include:
+An item group that contains final application artifacts produced by Apple platform builds and publishes. The item identity is the path to the artifact. This can include:
 
 * `.app` app bundles for iOS, tvOS, macOS, and Mac Catalyst apps.
 * `.ipa` packages when [BuildIpa](build-properties.md#buildipa) is enabled.
@@ -268,15 +268,15 @@ The following metadata is set:
 Example:
 
 ```xml
-<Target Name="WriteApplePackages" AfterTargets="Build">
+<Target Name="WriteApplicationArtifacts" AfterTargets="Build">
     <WriteLinesToFile
-        File="$(OutputPath)apple-packages.txt"
-        Lines="%(ApplePackageOutput.Identity)|%(ApplePackageOutput.PackageFormat)"
+        File="$(OutputPath)application-artifacts.txt"
+        Lines="%(ApplicationArtifact.Identity)|%(ApplicationArtifact.PackageFormat)"
         Overwrite="true" />
 </Target>
 ```
 
-See also the [GetApplePackageOutputs](build-targets.md#getapplepackageoutputs) target.
+See also the [GetApplicationArtifacts](build-targets.md#getapplicationartifacts) target.
 
 ## NativeReference
 

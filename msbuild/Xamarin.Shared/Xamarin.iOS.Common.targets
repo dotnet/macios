@@ -492,12 +492,12 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		Condition="'$(BuildIpa)' == 'true' And '$(IpaPackagePath)' != '' And Exists('$(IpaPackagePath)')"
 		AfterTargets="_ZipIpa">
 		<ItemGroup>
-			<ApplePackageOutput Include="$(IpaPackagePath)">
+			<ApplicationArtifact Include="$(IpaPackagePath)">
 				<PackageFormat>ipa</PackageFormat>
 				<IsDirectory>false</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
-			</ApplePackageOutput>
+			</ApplicationArtifact>
 		</ItemGroup>
 	</Target>
 

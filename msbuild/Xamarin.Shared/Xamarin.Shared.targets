@@ -2373,12 +2373,12 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(OutputType)' == 'Exe' And '$(IsAppExtension)' != 'true' And '$(IsWatchApp)' != 'true' And Exists('$(AppBundleDir)')"
 		AfterTargets="Codesign">
 		<ItemGroup>
-			<ApplePackageOutput Include="$(AppBundleDir)">
+			<ApplicationArtifact Include="$(AppBundleDir)">
 				<PackageFormat>app</PackageFormat>
 				<IsDirectory>true</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
-			</ApplePackageOutput>
+			</ApplicationArtifact>
 		</ItemGroup>
 	</Target>
 
@@ -3273,12 +3273,12 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Condition="'$(ArchiveOnBuild)' == 'true' And '$(ArchiveDir)' != '' And Exists('$(ArchiveDir)')"
 		AfterTargets="_CoreArchive">
 		<ItemGroup>
-			<ApplePackageOutput Include="$(ArchiveDir)">
+			<ApplicationArtifact Include="$(ArchiveDir)">
 				<PackageFormat>xcarchive</PackageFormat>
 				<IsDirectory>true</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
-			</ApplePackageOutput>
+			</ApplicationArtifact>
 		</ItemGroup>
 	</Target>
 
@@ -3389,12 +3389,12 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Condition="'$(CreatePackage)' == 'true' And '$(PkgPackagePath)' != '' And Exists('$(PkgPackagePath)')"
 		AfterTargets="_CreateInstaller">
 		<ItemGroup>
-			<ApplePackageOutput Include="$(PkgPackagePath)">
+			<ApplicationArtifact Include="$(PkgPackagePath)">
 				<PackageFormat>pkg</PackageFormat>
 				<IsDirectory>false</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
-			</ApplePackageOutput>
+			</ApplicationArtifact>
 		</ItemGroup>
 	</Target>
 
@@ -3434,7 +3434,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="CreateIpa" Condition="'$(_CanArchive)' == 'true' And '$(SdkIsDesktop)' != 'true'" DependsOnTargets="$(CreateIpaDependsOn)" />
 
-	<Target Name="GetApplePackageOutputs" DependsOnTargets="Build" Returns="@(ApplePackageOutput)" />
+	<Target Name="GetApplicationArtifacts" DependsOnTargets="Build" Returns="@(ApplicationArtifact)" />
 
 	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Shared.ObjCBinding.targets" Condition="'$(IsBindingProject)' == 'true'" />
 

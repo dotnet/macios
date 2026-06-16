@@ -4738,7 +4738,14 @@ namespace Foundation {
 		///         <remarks>To be added.</remarks>
 		[NoTV, NoiOS, NoMacCatalyst]
 		[Field ("NSMetadataItemGPSDifferentalKey")]
+		NSString GpsDifferentialKey { get; }
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'GpsDifferentialKey' instead.")]
+		[NoTV, NoiOS, NoMacCatalyst]
+		[Wrap ("GpsDifferentialKey")]
 		NSString GpsDifferentalKey { get; }
+#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>
@@ -10081,7 +10088,14 @@ namespace Foundation {
 
 		[Static]
 		[Export ("credentialWithUser:password:persistence:")]
+		NSUrlCredential FromUserPasswordPersistence (string user, string password, NSUrlCredentialPersistence persistence);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'FromUserPasswordPersistence' instead.")]
+		[Wrap ("FromUserPasswordPersistence (user, password, persistence)")]
+		[Static]
 		NSUrlCredential FromUserPasswordPersistance (string user, string password, NSUrlCredentialPersistence persistence);
+#endif
 
 		[Export ("user")]
 		string User { get; }
@@ -12350,7 +12364,16 @@ namespace Foundation {
 		NSString ExpandTildeInPath ();
 
 		[Export ("stringByStandardizingPath")]
+#if XAMCORE_5_0
+		NSString StandardizePath ();
+#else
+		[Obsolete ("Use 'StandardizePath' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		NSString StandarizePath ();
+
+		[Wrap ("StandarizePath ()")]
+		NSString StandardizePath ();
+#endif
 
 		[Export ("stringByResolvingSymlinksInPath")]
 		NSString ResolveSymlinksInPath ();
@@ -12587,7 +12610,16 @@ namespace Foundation {
 
 		[PreSnippet ("Check (range);", Optimizable = true)]
 		[Export ("replaceOccurrencesOfString:withString:options:range:")]
+#if XAMCORE_5_0
+		nuint ReplaceOccurrences (NSString target, NSString replacement, NSStringCompareOptions options, NSRange range);
+#else
+		[Obsolete ("Use 'ReplaceOccurrences' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		nuint ReplaceOcurrences (NSString target, NSString replacement, NSStringCompareOptions options, NSRange range);
+
+		[Wrap ("ReplaceOcurrences (target, replacement, options, range)")]
+		nuint ReplaceOccurrences (NSString target, NSString replacement, NSStringCompareOptions options, NSRange range);
+#endif
 
 		[MacCatalyst (13, 1)]
 		[EditorBrowsable (EditorBrowsableState.Advanced)]
@@ -15756,7 +15788,16 @@ namespace Foundation {
 		void EnqueueNotification (NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, [NullAllowed] NSRunLoopMode [] modes);
 
 		[Export ("dequeueNotificationsMatching:coalesceMask:")]
+#if XAMCORE_5_0
+		void DequeueNotificationsMatchingCoalesceMask (NSNotification notification, NSNotificationCoalescing coalesceMask);
+#else
+		[Obsolete ("Use 'DequeueNotificationsMatchingCoalesceMask' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void DequeueNotificationsMatchingcoalesceMask (NSNotification notification, NSNotificationCoalescing coalesceMask);
+
+		[Wrap ("DequeueNotificationsMatchingcoalesceMask (notification, coalesceMask)")]
+		void DequeueNotificationsMatchingCoalesceMask (NSNotification notification, NSNotificationCoalescing coalesceMask);
+#endif
 	}
 
 	[BaseType (typeof (NSObject))]
@@ -18744,7 +18785,16 @@ namespace Foundation {
 		NSDictionary DirectoryAttributes { get; }
 
 		[Export ("skipDescendents")]
+#if XAMCORE_5_0
+		void SkipDescendants ();
+#else
+		[Obsolete ("Use 'SkipDescendants' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SkipDescendents ();
+
+		[Wrap ("SkipDescendents ()")]
+		void SkipDescendants ();
+#endif
 
 		[NoMac]
 		[MacCatalyst (13, 1)]
@@ -20465,7 +20515,16 @@ namespace Foundation {
 		AETransactionID TransactionID ();*/
 
 		[Export ("setParamDescriptor:forKeyword:")]
+#if XAMCORE_5_0
+		void SetParamDescriptorForKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#else
+		[Obsolete ("Use 'SetParamDescriptorForKeyword' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetParamDescriptorforKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+
+		[Wrap ("SetParamDescriptorforKeyword (descriptor, keyword)")]
+		void SetParamDescriptorForKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#endif
 
 		[return: NullAllowed]
 		[Export ("paramDescriptorForKeyword:")]
@@ -20475,7 +20534,16 @@ namespace Foundation {
 		void RemoveParamDescriptorWithKeyword (AEKeyword keyword);
 
 		[Export ("setAttributeDescriptor:forKeyword:")]
+#if XAMCORE_5_0
+		void SetAttributeDescriptorForKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#else
+		[Obsolete ("Use 'SetAttributeDescriptorForKeyword' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetAttributeDescriptorforKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+
+		[Wrap ("SetAttributeDescriptorforKeyword (descriptor, keyword)")]
+		void SetAttributeDescriptorForKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#endif
 
 		[return: NullAllowed]
 		[Export ("attributeDescriptorForKeyword:")]
@@ -20489,7 +20557,16 @@ namespace Foundation {
 		/// <summary>To be added.</summary>
 		/// <remarks>To be added.</remarks>
 		[Export ("insertDescriptor:atIndex:")]
+#if XAMCORE_5_0
+		void InsertDescriptorAtIndex (NSAppleEventDescriptor descriptor, nint index);
+#else
+		[Obsolete ("Use 'InsertDescriptorAtIndex' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void InsertDescriptoratIndex (NSAppleEventDescriptor descriptor, nint index);
+
+		[Wrap ("InsertDescriptoratIndex (descriptor, index)")]
+		void InsertDescriptorAtIndex (NSAppleEventDescriptor descriptor, nint index);
+#endif
 
 		/// <param name="index">To be added.</param>
 		/// <summary>To be added.</summary>
@@ -20506,7 +20583,16 @@ namespace Foundation {
 		void RemoveDescriptorAtIndex (nint index);
 
 		[Export ("setDescriptor:forKeyword:")]
+#if XAMCORE_5_0
+		void SetDescriptorForKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#else
+		[Obsolete ("Use 'SetDescriptorForKeyword' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetDescriptorforKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+
+		[Wrap ("SetDescriptorforKeyword (descriptor, keyword)")]
+		void SetDescriptorForKeyword (NSAppleEventDescriptor descriptor, AEKeyword keyword);
+#endif
 
 		[return: NullAllowed]
 		[Export ("descriptorForKeyword:")]

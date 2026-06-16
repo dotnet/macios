@@ -19,11 +19,11 @@
 // limitations under the License.
 //
 
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
-using System.Text;
 using System.Text.RegularExpressions;
 #if MONOMAC
 using AppKit;
@@ -47,16 +47,6 @@ namespace Introspection {
 			ContinueOnFailure = true;
 		}
 
-		public virtual bool Skip (Type baseType, string typo)
-		{
-			return SkipAllowed (baseType.Name, null, typo);
-		}
-
-		public virtual bool Skip (MemberInfo methodName, string typo)
-		{
-			return SkipAllowed (methodName.DeclaringType?.Name, methodName.Name, typo);
-		}
-
 		readonly HashSet<string> allowedRule3 = new HashSet<string> {
 			"IARAnchorCopying", // We're showing a code snippet in the 'Advice' message and that shouldn't end with a dot.
 		};
@@ -72,8 +62,9 @@ namespace Introspection {
 		Dictionary<string, ApplePlatform> allowed = new Dictionary<string, ApplePlatform> () {
 			{ "Aac", All },
 			{ "Abgr", All },
-			{ "Accurracy", All },
 			{ "Achivements", All },
+			{ "Ack", All }, // acknowledgment
+			{ "Acn", All }, // Ambisonic Channel Numbering
 			{ "Acos", All },
 			{ "Acosh", All },
 			{ "Activatable", All },
@@ -82,7 +73,8 @@ namespace Introspection {
 			{ "Addons", ApplePlatform.MacOSX },
 			{ "Addr", All },
 			{ "Adessive", All },
-			{ "Adjustmentfor", All & ~ApplePlatform.MacOSX },
+			{ "Adposition", All }, // linguistic term
+			{ "Aes", All }, // Advanced Encryption Standard
 			{ "Afi", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Agc", All },
 			{ "Ahap", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
@@ -91,6 +83,7 @@ namespace Introspection {
 			{ "Aime", ApplePlatform.MacOSX },
 			{ "Aio", ApplePlatform.MacOSX },
 			{ "Alg", All }, // short for Algorithm
+			{ "Alem", All }, // Ethiopic "Amete Alem" calendar
 			{ "Aliasable", All },
 			{ "Allative", All },
 			{ "Amete", All },
@@ -103,18 +96,15 @@ namespace Introspection {
 			{ "Apl", All & ~ApplePlatform.TVOS },
 			{ "Apng", All }, // Animated Portable Network Graphics
 			{ "Apns", All & ~ApplePlatform.TVOS },
-			{ "Appactive", ApplePlatform.MacOSX },
 			{ "Applei", All },
 			{ "Aps", ApplePlatform.MacOSX },
 			{ "Apv", ApplePlatform.MacOSX },
-			{ "Arae", ApplePlatform.MacOSX },
 			{ "Arcball", All },
 			{ "Argb", All },
 			{ "Arraycollation", All & ~ApplePlatform.MacOSX },
 			{ "Asin", All },
 			{ "Asinh", All },
 			{ "Astc", All },
-			{ "Aswas", ApplePlatform.MacOSX },
 			{ "Atan", All },
 			{ "Atanh", All },
 			{ "Atm", All },
@@ -124,7 +114,6 @@ namespace Introspection {
 			{ "Atsc", All },
 			{ "Attr", ApplePlatform.MacOSX },
 			{ "Attrib", All },
-			{ "Attributesfor", ApplePlatform.MacOSX },
 			{ "Attributevalue", All },
 			{ "Attrs", All }, // Attributes (used by Apple for keys)
 			{ "Audiofile", All },
@@ -141,6 +130,7 @@ namespace Introspection {
 			{ "Avg", All },
 			{ "Axept", All & ~ApplePlatform.TVOS },
 			{ "Bancomat", All & ~ApplePlatform.TVOS },
+			{ "Bancaires", All & ~ApplePlatform.TVOS }, // Cartes Bancaires payment network
 			{ "Bary", All },
 			{ "Ber", All },
 			{ "Bggr", All }, // acronym for Blue, Green, Green, Red
@@ -160,14 +150,15 @@ namespace Introspection {
 			{ "Cabac", All },
 			{ "Caf", All }, // acronym: Core Audio Format
 			{ "Callables", All },
-			{ "Callpout", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
 			{ "Cartes", All & ~ApplePlatform.TVOS }, // french
 			{ "Catmull", All },
 			{ "Cavlc", All },
 			{ "Ccitt", ApplePlatform.MacOSX },
+			{ "Cbc", All }, // Cipher Block Chaining
 			{ "Cct", All },
 			{ "Ccw", All },
 			{ "Cda", All & ~ApplePlatform.TVOS }, // acronym: Clinical Document Architecture
+			{ "Cdf", All }, // Cumulative Distribution Function
 			{ "Cdma", All },
 			{ "Cdrom", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
 			{ "Cea", All },
@@ -181,9 +172,11 @@ namespace Introspection {
 			{ "Chromaticities", All },
 			{ "Chw", All },
 			{ "Ciexyz", ApplePlatform.MacOSX },
+			{ "Cif", All }, // Common Intermediate Format
 			{ "Ciff", All },
 			{ "Cinemagraph", ApplePlatform.TVOS },
 			{ "Cinepak", All },
+			{ "Ciphersuite", All }, // TLS cipher suite
 			{ "Cla", All },
 			{ "Clearcoat", All },
 			{ "Clockstamp", All },
@@ -194,14 +187,16 @@ namespace Introspection {
 			{ "Cnn", All }, // Convolutional Neural Network
 			{ "Cns", ApplePlatform.MacOSX },
 			{ "Codabar", All },
-			{ "Commited", ApplePlatform.MacOSX },
+			{ "Commited", ApplePlatform.MacOSX }, // CommitedLoad - will be renamed in XAMCORE_5_0
+			{ "Conf", All }, // configuration abbreviation
 			{ "Conecs", All & ~ApplePlatform.TVOS },
-			{ "Constrainted", ApplePlatform.MacOSX },
 			{ "Conv", All },
+			{ "Cooldown", All & ~ApplePlatform.TVOS },
 			{ "Copyback", All },
 			{ "Cose", All & ~ApplePlatform.TVOS },
 			{ "Crosstraining", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Csr", All },
+			{ "Csc", All }, // cosecant
 			{ "Ctm", ApplePlatform.MacOSX },
 			{ "Ctor", All },
 			{ "Cubemap", All },
@@ -215,14 +210,11 @@ namespace Introspection {
 			{ "Deca", All & ~ApplePlatform.TVOS },
 			{ "Decomposables", All },
 			{ "Deinterlace", All },
-			{ "Denimonator", All },
 			{ "Denoise", All },
 			{ "Denoised", All },
+			{ "Denoiser", All }, // noise reduction filter
 			{ "Depthwise", All },
 			{ "Dequantize", All },
-			{ "Descendents", All },
-			{ "Descriptorat", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
-			{ "Descriptorfor", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
 			{ "Dfsi", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Dhe", All }, // Diffie–Hellman key exchange
 			{ "Dhs", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
@@ -230,23 +222,21 @@ namespace Introspection {
 			{ "Dicom", All },
 			{ "Diconnection", All },
 			{ "Diffable", All }, // that you can diff it.. made up word from apple
-			{ "Differental", All },
 			{ "Diffie", All },
 			{ "Dirbursement", All & ~ApplePlatform.TVOS },
-			{ "Directionfor", All & ~ApplePlatform.MacOSX },
 			{ "Dirs", ApplePlatform.MacOSX },
 			{ "Dismissable", ApplePlatform.MacOSX },
-			{ "Dissapearing", ApplePlatform.MacOSX },
 			{ "Dist", All },
 			{ "Distinguised", ApplePlatform.MacOSX }, // ITLibPlaylistPropertyDistinguisedKind
 			{ "dlclose", All },
 			{ "dlerror", All },
+			{ "Directionfor", All & ~ApplePlatform.MacOSX }, // SetBaseWritingDirectionforRange - will be renamed in XAMCORE_5_0
 			{ "Dlfcn", All },
 			{ "Dls", ApplePlatform.MacOSX },
 			{ "Dng", All },
 			{ "Dnssec", All },
 			{ "Dont", All },
-			{ "Dop", ApplePlatform.iOS },
+			{ "Dop", All },
 			{ "Dopesheet", All },
 			{ "Downmix", All }, // Sound terminology that means making a stereo mix from a 5.1 surround mix.
 			{ "Dpa", All },
@@ -262,12 +252,14 @@ namespace Introspection {
 			{ "Dtss", ApplePlatform.MacOSX },
 			{ "dy", All },
 			{ "Eap", All },
+			{ "Ean", All }, // European Article Number (barcode standard)
 			{ "Ebu", All },
 			{ "Ecc", All }, // Elliptic Curve Cryptography
 			{ "Ecdh", All }, // Elliptic Curve Diffie–Hellman
 			{ "Ecdhe", All }, // Elliptic Curve Diffie-Hellman Ephemeral
 			{ "Ecdsa", All }, // Elliptic Curve Digital Signature Algorithm
 			{ "Ecg", All & ~ApplePlatform.TVOS },
+			{ "Echos", ApplePlatform.MacOSX }, // plural of echo
 			{ "Ecies", All }, // Elliptic Curve Integrated Encryption Scheme
 			{ "Ecn", All }, // Explicit Congestion Notification
 			{ "Ect", All }, // ECN Capable Transport
@@ -278,7 +270,6 @@ namespace Introspection {
 			{ "Elative", All },
 			{ "Elu", All },
 			{ "Emagic", All },
-			{ "Emaili", All & ~ApplePlatform.TVOS },
 			{ "Embd", All },
 			{ "Emebedding", All },
 			{ "Emsg", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // 4cc
@@ -293,19 +284,19 @@ namespace Introspection {
 			{ "Evictable", ApplePlatform.MacOSX | ApplePlatform.iOS },
 			{ "Exabits", All },
 			{ "Exbibits", All },
-			{ "Exhange", All },
+			{ "Exbibytes", All },
+			{ "Exp", All }, // exponent/exponential
 			{ "Expr", All },
 			{ "Exr", All },
 			{ "Extrinsics", All },
+			{ "Fcp", All }, // Apple ATS Forward Compatibility Policy
 			{ "Feli", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Felica", All & ~ApplePlatform.TVOS }, // Japanese contactless RFID smart card system
 			{ "Femtowatts", All },
 			{ "Fft", All },
 			{ "Fhir", All & ~ApplePlatform.TVOS },
 			{ "Fieldset", All & ~ApplePlatform.MacCatalyst },
-			{ "Flipside", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Formati", All },
-			{ "Fourty", ApplePlatform.MacOSX },
 			{ "Fov", All },
 			{ "Fqdns", All },
 			{ "Framebuffer", All },
@@ -313,6 +304,7 @@ namespace Introspection {
 			{ "Freq", All },
 			{ "Froms", ApplePlatform.MacOSX }, // NSMetadataItemWhereFromsKey
 			{ "Ftps", All },
+			{ "Func", All }, // function abbreviation
 			{ "Gadu", All & ~ApplePlatform.TVOS },
 			{ "Gainmap", All },
 			{ "Gbrg", All }, // acronym for Green-Blue-Reg-Green
@@ -320,6 +312,7 @@ namespace Introspection {
 			{ "Gbtdc", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Gcm", All },
 			{ "Gelu", All }, // Gaussian Error Linear Unit (ML)
+			{ "Gen", All }, // generation (e.g. SiriRemote1stGen)
 			{ "Gibibits", All },
 			{ "Gid", ApplePlatform.MacOSX },
 			{ "Gigapascals", All },
@@ -329,24 +322,26 @@ namespace Introspection {
 			{ "Gop", All }, // acronym for Group Of Pictures
 			{ "Gpp", All },
 			{ "Gps", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
-			{ "Grammarl", ApplePlatform.MacOSX },
+			{ "Gsm", All }, // Global System for Mobile Communications
 			{ "Grbg", All }, // acronym for Green-Red-Blue-Green
-			{ "Greeking", ApplePlatform.MacOSX },
 			{ "Groupless", All & ~ApplePlatform.TVOS },
 			{ "Gru", All },
 			{ "Gtin", All },
 			{ "Gui", All },
+			{ "Handwashing", All & ~ApplePlatform.TVOS },
+			{ "Hankaku", All & ~ApplePlatform.MacOSX },
 			{ "Hardlink", ApplePlatform.MacOSX },
 			{ "Hdmi", All & ~ApplePlatform.MacOSX },
 			{ "Hdr", All },
 			{ "Heic", All }, // file type
 			{ "Heics", All }, // High Efficiency Image File Format (Sequence)
 			{ "Heif", All }, // High Efficiency Image File Format
-			{ "Hermitean", All },
+			{ "Hectopascals", All },
 			{ "Hevc", All }, // CMVideoCodecType / High Efficiency Video Coding
 			{ "Hfp", All & ~ApplePlatform.MacOSX },
 			{ "Hhr", All },
 			{ "Himyan", All & ~ApplePlatform.TVOS },
+			{ "Hermitean", All }, // Apple's spelling of Hermitian in MPSGraph FFT methods
 			{ "Hindlegs", All },
 			{ "Hipass", All },
 			{ "Histogrammed", All & ~ApplePlatform.TVOS },
@@ -364,13 +359,14 @@ namespace Introspection {
 			{ "Ibss", ApplePlatform.MacOSX },
 			{ "Icns", All },
 			{ "Ico", All },
-			{ "Iconfor", ApplePlatform.MacOSX },
 			{ "Icq", All & ~ApplePlatform.TVOS },
 			{ "Identd", All },
+			{ "Ident", All }, // identifier abbreviation
 			{ "Iec", All },
 			{ "Ies", All },
+			{ "Ikev", All }, // Internet Key Exchange v2
+			{ "Ima", All }, // Interactive Multimedia Association
 			{ "Imageblock", All },
-			{ "Imagefor", All & ~ApplePlatform.MacOSX },
 			{ "Imap", All },
 			{ "Imaps", All },
 			{ "Imei", All & ~ApplePlatform.MacOSX },
@@ -381,9 +377,9 @@ namespace Introspection {
 			{ "Indoorrun", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Indoorwalk", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Inessive", All },
+			{ "Ingles", All }, // Inglés locale identifier
 			{ "Inklist", All },
 			{ "Inode", ApplePlatform.MacOSX },
-			{ "Inot", All },
 			{ "Inser", All },
 			{ "Instamatic", ApplePlatform.MacOSX },
 			{ "Interac", All & ~ApplePlatform.TVOS },
@@ -391,7 +387,6 @@ namespace Introspection {
 			{ "Interframe", All },
 			{ "Interitem", All },
 			{ "Intermenstrual", All & ~ApplePlatform.TVOS },
-			{ "Intoi", All & ~ApplePlatform.MacOSX },
 			{ "Intravaginal", All & ~ApplePlatform.TVOS },
 			{ "Inv", All },
 			{ "Invitable", All },
@@ -401,7 +396,6 @@ namespace Introspection {
 			{ "Iptc", All },
 			{ "Ircs", All },
 			{ "Isrc", All },
-			{ "Itemto", ApplePlatform.MacOSX },
 			{ "Itf", All },
 			{ "Itt", All & ~ApplePlatform.TVOS },
 			{ "Itu", All },
@@ -411,8 +405,9 @@ namespace Introspection {
 			{ "Jfif", All },
 			{ "Jis", ApplePlatform.MacOSX },
 			{ "Jrts", All & ~ApplePlatform.TVOS },
+			// "Jws" - HKVerifiableClinicalRecord is [ObsoletedOSPlatform] on iOS/MacCatalyst but not macOS
+			{ "Jws", ApplePlatform.MacOSX }, // JSON Web Signature
 			{ "Jwks", ApplePlatform.MacOSX },
-			{ "Jws", All & ~ApplePlatform.TVOS },
 			{ "Jwt", ApplePlatform.MacOSX },
 			{ "Keepalive", All },
 			{ "Keycode", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
@@ -430,28 +425,32 @@ namespace Introspection {
 			{ "ks", All },
 			{ "Kullback", All }, // Kullback-Leibler Divergence
 			{ "Lacunarity", All },
-			{ "Langauges", All & ~ApplePlatform.MacOSX },
 			{ "Latm", All }, //  Low Overhead Audio Transport Multiplex
 			{ "Lbc", All },
 			{ "Ldaps", All },
+			{ "Leibler", All }, // Kullback-Leibler divergence
 			{ "Lerp", All },
 			{ "libcompression", All },
 			{ "libdispatch", All },
 			{ "Lingustic", All },
+			{ "Lite", All }, // lightweight variant
+			{ "Loas", All }, // Low Overhead Audio Stream
 			{ "Lod", All },
 			{ "Lopass", All },
 			{ "Lowlevel", All },
 			{ "Lpcm", All },
+			{ "Lsb", All }, // Least Significant Bit
 			{ "Lstm", All },
 			{ "Lte", All },
+			{ "Ltp", All }, // AAC Long Term Prediction
 			{ "Ltr", All },
+			{ "Luma", All }, // luminance component in video
 			{ "Lun", All },
 			{ "Lut", All },
 			{ "Lzfse", All }, // acronym
 			{ "Lzma", All }, // acronym
 			{ "Lzw", ApplePlatform.MacOSX },
 			{ "Mada", All & ~ApplePlatform.TVOS }, // payment system
-			{ "Matchingcoalesce", All },
 			{ "Mcp", All }, // metacarpophalangeal (hand)
 			{ "Mebibits", All },
 			{ "Mebx", All },
@@ -472,6 +471,7 @@ namespace Introspection {
 			{ "Microohms", All },
 			{ "Microwatts", All },
 			{ "Mifare", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
+			{ "Mihret", All }, // Ethiopic "Amete Mihret" calendar
 			{ "Millimoles", All },
 			{ "Milliohms", All },
 			{ "Minification", All },
@@ -483,6 +483,7 @@ namespace Introspection {
 			{ "Mpe", All }, // acronym
 			{ "Mps", All },
 			{ "Msaa", All }, // multisample anti-aliasing
+			{ "Msb", All }, // Most Significant Bit
 			{ "Msi", All },
 			{ "Mtc", All }, // acronym
 			{ "Mtgp", All },
@@ -501,10 +502,12 @@ namespace Introspection {
 			{ "Muxed", All },
 			{ "Nacs", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Nai", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
+			{ "Nal", All }, // Network Abstraction Layer (video coding)
 			{ "Nanaco", All & ~ApplePlatform.TVOS },
 			{ "Nand", All },
 			{ "Nanograms", All },
 			{ "Nanowatts", All },
+			{ "Napas", All & ~ApplePlatform.TVOS }, // Vietnamese payment network
 			{ "Ncdhw", All },
 			{ "Nchw", All },
 			{ "nd", All },
@@ -525,20 +528,19 @@ namespace Introspection {
 			{ "Nsl", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // InternetLocationNslNeighborhoodIcon
 			{ "Ntlm", All },
 			{ "Ntsc", All },
-			{ "Numberof", ApplePlatform.MacOSX },
 			{ "Nyquist", All & ~ApplePlatform.MacOSX },
+			{ "Oaep", All }, // Optimal Asymmetric Encryption Padding
 			{ "Objectness", All },
-			{ "Occlussion", All },
 			{ "Ocr", All },
 			{ "Ocsp", All }, // Online Certificate Status Protocol
 			{ "Octree", All },
-			{ "Ocurrences", All },
 			{ "Odia", All },
 			{ "Ohwi", All },
 			{ "Oid", All },
 			{ "Oidhw", All },
 			{ "Oihw", All },
 			{ "Onnx", All },
+			{ "Ootf", All }, // Opto-Optical Transfer Function (HDR)
 			{ "Oper", All & ~ApplePlatform.MacOSX },
 			{ "Organisation", All }, // kCGImagePropertyIPTCExtRegistryOrganisationID in Xcode9.3-b1
 			{ "Orth", All },
@@ -558,21 +560,23 @@ namespace Introspection {
 			{ "Pdu", All },
 			{ "Peap", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Pebibits", All },
-			{ "Performwith", ApplePlatform.MacOSX },
+			{ "Pebibytes", All },
 			{ "Perlin", All },
 			{ "Persistable", All },
-			{ "Persistance", All },
 			{ "Petabits", All },
 			{ "Pfs", All }, // acronym
 			{ "Philox", All },
+			{ "Phong", All }, // Phong shading/reflection model
 			{ "Photoplethysmogram", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Phq", All & ~ApplePlatform.TVOS },
 			{ "Phy", ApplePlatform.MacOSX },
 			{ "Picometers", All },
+			{ "Pickleball", All & ~ApplePlatform.TVOS },
 			{ "Picowatts", All },
 			{ "Pkcs", All },
 			{ "Placemark", All },
 			{ "Playout", All },
+			{ "Plessey", All }, // MSI/Plessey barcode symbology
 			{ "Pnc", All }, // MIDI
 			{ "Pnorm", All },
 			{ "Polyline", All },
@@ -587,14 +591,17 @@ namespace Introspection {
 			{ "Prereleased", All },
 			{ "Prerolls", All },
 			{ "Preseti", All },
+			{ "Prev", All }, // previous abbreviation
 			{ "Previewable", ApplePlatform.MacOSX },
 			{ "Prf", All & ~ApplePlatform.TVOS },
-			{ "Propogate", All },
 			{ "Psec", All },
 			{ "Psk", All },
 			{ "Pskc", All & ~ApplePlatform.TVOS },
 			{ "Psm", All }, // Protocol/Service Multiplexer
+			{ "Privs", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst }, // privileges abbreviation
+			{ "Pss", All }, // Probabilistic Signature Scheme (RSA-PSS)
 			{ "Ptp", ApplePlatform.MacOSX },
+			{ "Ptss", All & ~ApplePlatform.TVOS }, // Presentation Timestamps (plural)
 			{ "Pvr", All },
 			{ "Pvrtc", All }, // MTLBlitOption - PowerVR Texture Compression
 			{ "Qos", All },
@@ -608,16 +615,14 @@ namespace Introspection {
 			{ "Reacquirer", All },
 			{ "Reassociation", ApplePlatform.MacOSX },
 			{ "Reauthentication", ApplePlatform.MacOSX },
-			{ "Rectfrom", ApplePlatform.MacOSX },
-			{ "Registeration", ApplePlatform.MacOSX },
 			{ "Reinvitation", All },
 			{ "Reinvite", All },
 			{ "Rel", All },
 			{ "Relocalization", ApplePlatform.iOS },
 			{ "Relu", All }, // Rectified Linear Unit (ML)
-			{ "Remmote", All },
 			{ "Replayable", All },
 			{ "Reprojection", All },
+			{ "Rfc", All }, // Request for Comments
 			{ "Rgb", All },
 			{ "Rgba", All },
 			{ "Rgbaf", All },
@@ -626,6 +631,7 @@ namespace Introspection {
 			{ "Rggb", All }, // acronym for Red, Green, Green, Blue
 			{ "Rint", All },
 			{ "Rle", All },
+			{ "Rms", All }, // root mean square
 			{ "Rnn", All },
 			{ "Roi", All },
 			{ "Romm", All }, // acronym: Reference Output Medium Metric
@@ -639,6 +645,7 @@ namespace Introspection {
 			{ "Rtp", All & ~ApplePlatform.MacOSX },
 			{ "Rtsp", All },
 			{ "Saml", All & ~ApplePlatform.MacCatalyst }, // acronym
+			{ "Sbr", All }, // Spectral Band Replication (AAC)
 			{ "Scc", All },
 			{ "Scn", All },
 			{ "Sdh", ApplePlatform.TVOS },
@@ -653,6 +660,7 @@ namespace Introspection {
 			{ "Selu", All }, // Scaled Exponential Linear unit (ML)
 			{ "Semitransient", ApplePlatform.MacOSX },
 			{ "Sensel", All },
+			{ "Sha", All }, // Secure Hash Algorithm
 			{ "Shadable", All },
 			{ "Siemen", All & ~ApplePlatform.TVOS },
 			{ "Signbit", All },
@@ -675,9 +683,9 @@ namespace Introspection {
 			{ "Ssids", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Ssml", All },
 			{ "Sso", ApplePlatform.MacOSX },
+			{ "Ssr", All }, // Scalable Sample Rate (AAC)
 			{ "st", All },
 			{ "Sta", ApplePlatform.MacOSX },
-			{ "Standarize", All },
 			{ "Strided", All },
 			{ "Subband", All & ~ApplePlatform.TVOS },
 			{ "Subbeat", All },
@@ -698,13 +706,13 @@ namespace Introspection {
 			{ "Superentity", All },
 			{ "Supertype", All },
 			{ "Supertypes", All },
-			{ "Supression", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
 			{ "Svfg", All },
 			{ "Svg", All }, // Scalable Vector Graphics
 			{ "Svgf", All },
 			{ "Swolf", All & ~ApplePlatform.TVOS },
+			{ "Symbologies", All }, // plural of symbology (barcode)
+			{ "Synchronizable", All },
 			{ "Sysex", All },
-			{ "Targetand", ApplePlatform.MacOSX },
 			{ "Tbgr", All },
 			{ "Tdoa", ApplePlatform.iOS },
 			{ "Tebibits", All },
@@ -720,12 +728,15 @@ namespace Introspection {
 			{ "Thumbstick", All },
 			{ "Thumbsticks", ApplePlatform.iOS },
 			{ "Timecodes", All & ~ApplePlatform.TVOS },
+			{ "Timelapse", All },
+			{ "Timelapses", All },
 			{ "Tls", All },
 			{ "Tlv", All },
 			{ "Tmoney", All & ~ApplePlatform.TVOS },
 			{ "Toc", All },
 			{ "Toci", All },
 			{ "Tonemap", All },
+			{ "Touchpads", All },
 			{ "Transceive", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Trc", All },
 			{ "Tri", All },
@@ -744,15 +755,18 @@ namespace Introspection {
 			{ "Unemphasized", ApplePlatform.MacOSX },
 			{ "Unentitled", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Unfetched", All },
+			{ "Unfocus", All },
 			{ "Unioning", All },
 			{ "Unmap", All },
 			{ "Unmatch", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
 			{ "Unorm", All },
+			{ "Unpair", ApplePlatform.MacOSX },
 			{ "Unpremultiplied", All },
 			{ "Unpremultiplying", All },
 			{ "Unprepare", All },
 			{ "Unproject", All },
 			{ "Unpublish", All },
+			{ "Unsend", All & ~ApplePlatform.TVOS },
 			{ "Unsolo", All },
 			{ "Unsynced", ApplePlatform.MacOSX | ApplePlatform.iOS },
 			{ "Untrash", ApplePlatform.iOS },
@@ -781,8 +795,6 @@ namespace Introspection {
 			{ "Warpable", All },
 			{ "Wcdma", All },
 			{ "Wep", ApplePlatform.iOS | ApplePlatform.MacCatalyst },
-			{ "Wifes", All & ~ApplePlatform.TVOS },
-			{ "Willl", All & ~ApplePlatform.TVOS },
 			{ "Wlan", ApplePlatform.MacOSX | ApplePlatform.MacCatalyst },
 			{ "Wpa", All & ~ApplePlatform.TVOS },
 			{ "Writeability", All },
@@ -796,6 +808,7 @@ namespace Introspection {
 			{ "Xyz", All },
 			{ "Xzy", All },
 			{ "Yobibits", All },
+			{ "Yobibytes", All },
 			{ "Yottabits", All },
 			{ "Yuv", ApplePlatform.MacOSX },
 			{ "Yuvk", ApplePlatform.MacOSX },
@@ -806,6 +819,7 @@ namespace Introspection {
 			{ "Yyy", All },
 			{ "Yzx", All },
 			{ "Zebibits", All },
+			{ "Zebibytes", All },
 			{ "Zenkaku", All & ~ApplePlatform.MacOSX },
 			{ "Zettabits", All },
 			{ "Zlib", All },
@@ -813,14 +827,29 @@ namespace Introspection {
 			{ "Zyx", All },
 		};
 
-		// tracks which allowed words were actually seen during TypoTest
-		HashSet<string> used = new HashSet<string> ();
-
-		bool SkipAllowed (string? typeName, string? methodName, string typo)
+		// Check if any API name in the assembly contains the given word.
+		// This is used to avoid false "unnecessary allowed typo" reports caused
+		// by the spell checker not flagging the word on some machines (the spell
+		// checker is non-deterministic across machines/OS versions/locales).
+		bool IsWordInAnyApiName (Type [] types, string word)
 		{
-			if (allowed.TryGetValue (typo, out var platforms) && platforms.HasFlag (TestRuntime.CurrentPlatform)) {
-				used.Add (typo);
-				return true;
+			foreach (var t in types) {
+				if (!t.IsPublic || IsObsolete (t))
+					continue;
+				if (t.Name.Contains (word, StringComparison.OrdinalIgnoreCase))
+					return true;
+				foreach (var f in t.GetFields ()) {
+					if ((!f.IsPublic && !f.IsFamily) || IsObsolete (f))
+						continue;
+					if (f.Name.Contains (word, StringComparison.OrdinalIgnoreCase))
+						return true;
+				}
+				foreach (var m in t.GetMethods ()) {
+					if ((!m.IsPublic && !m.IsFamily) || IsObsolete (m))
+						continue;
+					if (m.Name.Contains (word, StringComparison.OrdinalIgnoreCase))
+						return true;
+				}
 			}
 			return false;
 		}
@@ -833,6 +862,21 @@ namespace Introspection {
 				return true;
 			if (MemberHasObsolete (mi))
 				return true;
+			if (MemberHasEditorBrowsableNever (mi))
+				return true;
+			// Property accessors may not have [Obsolete] even if the property does
+			if (mi is MethodInfo method && method.IsSpecialName && mi.DeclaringType is not null) {
+				var name = mi.Name;
+				if (name.StartsWith ("get_", StringComparison.Ordinal) || name.StartsWith ("set_", StringComparison.Ordinal)) {
+					var propName = name.Substring (4);
+					foreach (var prop in mi.DeclaringType.GetProperties (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly)) {
+						if (prop.Name != propName)
+							continue;
+						if (prop.GetCustomAttributes<ObsoleteAttribute> (true).Any () || MemberHasObsolete (prop))
+							return true;
+					}
+				}
+			}
 			return IsObsolete (mi.DeclaringType);
 		}
 
@@ -869,91 +913,98 @@ namespace Introspection {
 		}
 
 		[Test]
-		[Ignore ("https://github.com/dotnet/macios/issues/25397")]
 		public virtual void TypoTest ()
 		{
 			AssertMatchingOSVersionAndSdkVersion ();
 
-			// that's slow and there's no value to run it on devices as the API names
-			// being verified won't change from the simulator
 			TestRuntime.AssertSimulatorOrDesktop ("Typos only detected on simulator/desktop");
+
+			var sw = Stopwatch.StartNew ();
 
 			using var checker = new SpellChecker ();
 
+			// Collect all unique words from public API names (split on uppercase boundaries)
+			var words = new HashSet<string> (StringComparer.Ordinal);
 			var types = Assembly.GetTypes ();
-			int totalErrors = 0;
 			foreach (Type t in types) {
-				if (t.IsPublic) {
-					if (IsObsolete (t))
+				if (!t.IsPublic || IsObsolete (t))
+					continue;
+
+				SplitIntoWords (words, t.Name);
+
+				foreach (FieldInfo f in t.GetFields ()) {
+					if ((!f.IsPublic && !f.IsFamily) || IsObsolete (f))
 						continue;
+					SplitIntoWords (words, f.Name);
+				}
 
-					string txt = NameCleaner (t.Name);
-					var typo = GetCachedTypo (checker, txt);
-					if (typo.Length > 0) {
-						if (!Skip (t, typo)) {
-							ReportError ("Typo in TYPE: {0} - {1} ", t.Name, typo);
-							totalErrors++;
-						}
-					}
-
-					var fields = t.GetFields ();
-					foreach (FieldInfo f in fields) {
-						if (!f.IsPublic && !f.IsFamily)
-							continue;
-
-						if (IsObsolete (f))
-							continue;
-
-						txt = NameCleaner (f.Name);
-						typo = GetCachedTypo (checker, txt);
-						if (typo.Length > 0) {
-							if (!Skip (f, typo)) {
-								ReportError ("Typo in FIELD name: {0} - {1}, Type: {2}", f.Name, typo, t.Name);
-								totalErrors++;
-							}
-						}
-					}
-
-					var methods = t.GetMethods ();
-					foreach (MethodInfo m in methods) {
-						if (!m.IsPublic && !m.IsFamily)
-							continue;
-
-						if (IsObsolete (m))
-							continue;
-
-						txt = NameCleaner (m.Name);
-						typo = GetCachedTypo (checker, txt);
-						if (typo.Length > 0) {
-							if (!Skip (m, typo)) {
-								ReportError ("Typo in METHOD name: {0} - {1}, Type: {2}", m.Name, typo, t.Name);
-								totalErrors++;
-							}
-						}
-#if false
-						var parameters = m.GetParameters ();
-						foreach (ParameterInfo p in parameters) {
-							txt = NameCleaner (p.Name);
-							typo = GetCachedTypo (checker, txt);
-							if (typo.Length > 0) {
-								ReportError ("Typo in PARAMETER Name: {0} - {1}, Method: {2}, Type: {3}", p.Name, typo, m.Name, t.Name);
-								totalErrors++;
-							}
-						}
-#endif
-					}
+				foreach (MethodInfo m in t.GetMethods ()) {
+					if ((!m.IsPublic && !m.IsFamily) || IsObsolete (m))
+						continue;
+					SplitIntoWords (words, m.Name);
 				}
 			}
-			// verify that all allowed words for the current platform are still needed
+
+			// Check each unique word individually with the spell checker
+			var typos = new HashSet<string> (StringComparer.Ordinal);
+			foreach (var word in words) {
+				var checkRange = new NSRange (0, word.Length);
+#if MONOMAC
+				var typoRange = checker.CheckSpelling (word, 0, "en_US", false, 0, out var _);
+#else
+				var typoRange = checker.RangeOfMisspelledWordInString (word, checkRange, checkRange.Location, false, "en_US");
+#endif
+				if (typoRange.Length > 0)
+					typos.Add (word.Substring ((int) typoRange.Location, (int) typoRange.Length));
+			}
+
+			// Check each typo against allowed list
+			int totalErrors = 0;
 			var currentPlatform = TestRuntime.CurrentPlatform;
-			var unused = allowed.Keys
+			var usedAllowed = new HashSet<string> ();
+			foreach (var typo in typos) {
+				if (allowed.TryGetValue (typo, out var platforms) && platforms.HasFlag (currentPlatform)) {
+					usedAllowed.Add (typo);
+					continue;
+				}
+				ReportError ("Typo: {0}", typo);
+				totalErrors++;
+			}
+
+			// Verify that all allowed words for the current platform are still needed
+			var unusedAllowed = allowed.Keys
 				.Where (w => allowed [w].HasFlag (currentPlatform))
-				.Except (used);
-			foreach (var typo in unused) {
+				.Except (usedAllowed);
+			foreach (var typo in unusedAllowed) {
+				if (IsWordInAnyApiName (types, typo))
+					continue;
 				ReportError ($"Unnecessary allowed typo \"{typo}\" is not present in any API name");
 				totalErrors++;
 			}
+			Console.WriteLine ($"TypoTest completed in {sw.Elapsed.TotalMilliseconds:F0}ms (unique words: {words.Count}, typos found: {typos.Count})");
 			Assert.That (totalErrors, Is.EqualTo (0), "Typos!");
+		}
+
+		// Split an API name into words on uppercase/digit/symbol boundaries and add to the set
+		static void SplitIntoWords (HashSet<string> words, string name)
+		{
+			int start = -1;
+			for (int i = 0; i < name.Length; i++) {
+				char c = name [i];
+				if (Char.IsUpper (c)) {
+					if (start >= 0 && i > start)
+						words.Add (name.Substring (start, i - start));
+					start = i;
+				} else if (Char.IsDigit (c) || c == '<' || c == '>' || c == '_') {
+					if (start >= 0 && i > start)
+						words.Add (name.Substring (start, i - start));
+					start = -1;
+				} else if (start < 0) {
+					// lowercase char with no word start — skip
+				}
+			}
+			if (start >= 0 && name.Length > start)
+				words.Add (name.Substring (start));
 		}
 
 		string? GetMessage (object attribute)
@@ -1021,55 +1072,6 @@ namespace Introspection {
 					}
 				}
 			}
-		}
-
-		Dictionary<string, string> cached_typoes = new Dictionary<string, string> ();
-		string GetCachedTypo (SpellChecker checker, string txt)
-		{
-			if (!cached_typoes.TryGetValue (txt, out var rv))
-				cached_typoes [txt] = rv = GetTypo (checker, txt);
-			return rv;
-		}
-
-		string GetTypo (SpellChecker checker, string txt)
-		{
-			var checkRange = new NSRange (0, txt.Length);
-#if MONOMAC
-			var typoRange = checker.CheckSpelling (txt, 0, "en_US", false, 0, out var _);
-#else
-			var typoRange = checker.RangeOfMisspelledWordInString (txt, checkRange, checkRange.Location, false, "en_US");
-#endif
-			if (typoRange.Length == 0)
-				return String.Empty;
-			return txt.Substring ((int) typoRange.Location, (int) typoRange.Length);
-		}
-
-		static StringBuilder clean = new StringBuilder ();
-
-		static string NameCleaner (string name)
-		{
-			clean.Clear ();
-			foreach (char c in name) {
-				if (Char.IsUpper (c)) {
-					clean.Append (' ').Append (c);
-					continue;
-				}
-				if (Char.IsDigit (c)) {
-					clean.Append (' ');
-					continue;
-				}
-				switch (c) {
-				case '<':
-				case '>':
-				case '_':
-					clean.Append (' ');
-					break;
-				default:
-					clean.Append (c);
-					break;
-				}
-			}
-			return clean.ToString ();
 		}
 
 		bool CheckLibrary (string? lib)

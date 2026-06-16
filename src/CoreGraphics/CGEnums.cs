@@ -216,7 +216,11 @@ namespace CoreGraphics {
 		RubyPunctuation,
 		Warichu,
 		WarichuText,
-		WarichuPunctiation,
+		WarichuPunctuation,
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'WarichuPunctuation' instead.")]
+		WarichuPunctiation = WarichuPunctuation,
+#endif
 		Figure = 700,
 		Formula,
 		Form,

@@ -16697,9 +16697,18 @@ namespace UIKit {
 		/// <param name="state">To be added.</param>
 		/// <summary>Sets the image to be used for the specified UISearchBarIcon type and UIControlState.</summary>
 		/// <remarks>To be added.</remarks>
-		[Export ("setImage:forSearchBarIcon:state:")]
 		[Appearance]
+		[Export ("setImage:forSearchBarIcon:state:")]
+#if XAMCORE_5_0
+		void SetImageForSearchBarIcon ([NullAllowed] UIImage iconImage, UISearchBarIcon icon, UIControlState state);
+#else
+		[Obsolete ("Use 'SetImageForSearchBarIcon' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetImageforSearchBarIcon ([NullAllowed] UIImage iconImage, UISearchBarIcon icon, UIControlState state);
+
+		[Wrap ("SetImageforSearchBarIcon (iconImage, icon, state)")]
+		void SetImageForSearchBarIcon ([NullAllowed] UIImage iconImage, UISearchBarIcon icon, UIControlState state);
+#endif
 
 		/// <param name="icon">To be added.</param>
 		/// <param name="state">To be added.</param>
@@ -16755,7 +16764,16 @@ namespace UIKit {
 
 		[Appearance]
 		[Export ("setPositionAdjustment:forSearchBarIcon:")]
+#if XAMCORE_5_0
+		void SetPositionAdjustmentForSearchBarIcon (UIOffset adjustment, UISearchBarIcon icon);
+#else
+		[Obsolete ("Use 'SetPositionAdjustmentForSearchBarIcon' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetPositionAdjustmentforSearchBarIcon (UIOffset adjustment, UISearchBarIcon icon);
+
+		[Wrap ("SetPositionAdjustmentforSearchBarIcon (adjustment, icon)")]
+		void SetPositionAdjustmentForSearchBarIcon (UIOffset adjustment, UISearchBarIcon icon);
+#endif
 
 		[Appearance]
 		[Export ("positionAdjustmentForSearchBarIcon:")]
@@ -24555,7 +24573,14 @@ namespace UIKit {
 
 		[Static]
 		[Export ("availableLanguages")]
+		string AvailableLanguages { get; }
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'AvailableLanguages' instead.")]
+		[Wrap ("AvailableLanguages")]
+		[Static]
 		string AvailableLangauges { get; }
+#endif
 	}
 
 	/// <summary>Known values for <see cref="UIKit.UITextField.TextContentType" /> that are hints to the system of the kind of <see cref="UIKit.UITextField" /> data.</summary>

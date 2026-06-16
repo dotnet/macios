@@ -2028,7 +2028,14 @@ namespace ImageKit {
 		///         <remarks>To be added.</remarks>
 		[Static]
 		[Export ("exportSlideshowItem:toApplication:")]
+		void ExportSlideshowItemToApplication (NSObject item, string applicationBundleIdentifier);
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'ExportSlideshowItemToApplication' instead.")]
+		[Wrap ("ExportSlideshowItemToApplication (item, applicationBundleIdentifier)")]
+		[Static]
 		void ExportSlideshowItemtoApplication (NSObject item, string applicationBundleIdentifier);
+#endif
 
 		/// <summary>To be added.</summary>
 		///         <value>To be added.</value>

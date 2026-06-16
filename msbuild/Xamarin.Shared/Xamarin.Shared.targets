@@ -2377,7 +2377,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<PackageFormat>app</PackageFormat>
 				<IsDirectory>true</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>
-				<AppBundlePath>$(AppBundleDir)</AppBundlePath>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
 			</ApplePackageOutput>
 		</ItemGroup>
@@ -3278,7 +3277,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<PackageFormat>xcarchive</PackageFormat>
 				<IsDirectory>true</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>
-				<AppBundlePath>$(AppBundleDir)</AppBundlePath>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
 			</ApplePackageOutput>
 		</ItemGroup>
@@ -3395,7 +3393,6 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 				<PackageFormat>pkg</PackageFormat>
 				<IsDirectory>false</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>
-				<AppBundlePath>$(AppBundleDir)</AppBundlePath>
 				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
 			</ApplePackageOutput>
 		</ItemGroup>

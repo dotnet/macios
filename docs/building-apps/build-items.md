@@ -263,7 +263,6 @@ The following metadata is set:
 * `PackageFormat`: The artifact format. Possible values are `app`, `ipa`, `pkg`, and `xcarchive`.
 * `IsDirectory`: `true` for `.app` and `.xcarchive` outputs; `false` for `.ipa` and `.pkg` outputs.
 * `PlatformName`: The Apple platform name, such as `iOS`, `tvOS`, `macOS`, or `MacCatalyst`.
-* `AppBundlePath`: The app bundle path associated with the artifact.
 * `BundleIdentifier`: The resolved app bundle identifier.
 
 Example:

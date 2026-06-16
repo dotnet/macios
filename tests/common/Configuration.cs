@@ -51,19 +51,6 @@ namespace Xamarin.Tests {
 			get => Version.Parse (DotNetTfm.Replace ("net", ""));
 		}
 
-		static bool? is_vsts; // if the system-installed XI/XM should be used instead of the local one.
-
-		public static bool IsVsts {
-			get {
-				if (!is_vsts.HasValue)
-					is_vsts = !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("BUILD_BUILDID"));
-				return is_vsts.Value;
-			}
-			set {
-				is_vsts = value;
-			}
-		}
-
 		public static string XcodeLocation {
 			get {
 				return xcode_root;
@@ -416,11 +403,7 @@ namespace Xamarin.Tests {
 
 		public static string GetDotNetRoot ()
 		{
-			if (IsVsts) {
-				return Path.Combine (DOTNET_DIR, "packs");
-			} else {
-				return Path.Combine (SourceRoot, "_build");
-			}
+			return Path.Combine (DOTNET_DIR, "packs");
 		}
 
 		public static string GetRefDirectory (ApplePlatform platform)

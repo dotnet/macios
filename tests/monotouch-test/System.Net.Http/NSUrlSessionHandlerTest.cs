@@ -321,6 +321,91 @@ namespace MonoTests.System.Net.Http {
 			}
 		}
 
+		// https://github.com/dotnet/macios/issues/25667
+		[Test]
+		public void StreamReadAsyncCallerCancellationThrowsOperationCanceledException ()
+		{
+			if (!HttpListener.IsSupported) {
+				Assert.Inconclusive ("HttpListener is not supported");
+			}
+
+			var httpListener = StartListenerOnAvailablePort (out var listeningPort);
+			if (httpListener is null) {
+				Assert.Inconclusive ("Could not find an available port for the test server.");
+				return;
+			}
+
+			var serverReady = new SemaphoreSlim (0, 1);
+
+			// Server sends headers + 1 byte, then stalls forever.
+			var serverTask = Task.Run (async () => {
+				serverReady.Release ();
+				try {
+					var context = await httpListener.GetContextAsync ().ConfigureAwait (false);
+					var response = context.Response;
+					response.ContentLength64 = 2; // declare 2 bytes
+					response.StatusCode = 200;
+					var outputStream = response.OutputStream;
+					// Send 1 byte, then stall
+					await outputStream.WriteAsync (new byte [] { (byte) 'A' }, 0, 1).ConfigureAwait (false);
+					await outputStream.FlushAsync ().ConfigureAwait (false);
+					// Wait until the test is done (never send the second byte)
+					await Task.Delay (TimeSpan.FromMinutes (5)).ConfigureAwait (false);
+				} catch (ObjectDisposedException) {
+					// listener was stopped
+				} catch (HttpListenerException) {
+					// listener was stopped
+				}
+			});
+
+			Type caughtExceptionType = null;
+			Type innerExceptionType = null;
+
+			try {
+				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
+					await serverReady.WaitAsync ().ConfigureAwait (false);
+
+					using var handler = new NSUrlSessionHandler ();
+					using var client = new HttpClient (handler);
+					client.Timeout = TimeSpan.FromMinutes (5);
+
+					using var request = new HttpRequestMessage (HttpMethod.Get, $"http://127.0.0.1:{listeningPort}/stall");
+					var response = await client.SendAsync (request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait (false);
+					var stream = await response.Content.ReadAsStreamAsync ().ConfigureAwait (false);
+
+					// First read succeeds (server sent 1 byte)
+					var buffer = new byte [1024];
+					var bytesRead = await stream.ReadAsync (buffer, 0, buffer.Length).ConfigureAwait (false);
+					Assert.That (bytesRead, Is.GreaterThan (0), "First read should return data");
+
+					// Second read: cancel after 250ms via caller token
+					using var cts = new CancellationTokenSource (TimeSpan.FromMilliseconds (250));
+					try {
+						await stream.ReadAsync (buffer, 0, buffer.Length, cts.Token).ConfigureAwait (false);
+						Assert.Fail ("Expected an exception from the cancelled ReadAsync");
+					} catch (Exception ex) {
+						caughtExceptionType = ex.GetType ();
+						innerExceptionType = ex.InnerException?.GetType ();
+					}
+				}, out var ex2);
+
+				if (!done) {
+					TestRuntime.IgnoreInCI ("Transient localhost server failure - ignore in CI");
+					Assert.Inconclusive ("Request timed out.");
+				}
+				TestRuntime.IgnoreInCIIfBadNetwork (ex2);
+				Assert.That (ex2, Is.Null, $"Unexpected exception: {ex2}");
+
+				// Caller cancellation should surface as OperationCanceledException (or a subclass like TaskCanceledException),
+				// not as TimeoutException. TimeoutException should be reserved for actual request timeouts.
+				Assert.That (typeof (OperationCanceledException).IsAssignableFrom (caughtExceptionType), Is.True,
+					$"Expected OperationCanceledException but got {caughtExceptionType}");
+			} finally {
+				httpListener.Stop ();
+				httpListener.Close ();
+			}
+		}
+
 		static HttpListener? StartListenerOnAvailablePort (out int listeningPort)
 		{
 			// IANA suggested range for dynamic or private ports

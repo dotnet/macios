@@ -48,6 +48,7 @@
     <Skip Include="System.Diagnostics.EventLog.dll" />
     <Skip Include="System.Diagnostics.EventLog.Messages.dll" />
     <Skip Include="System.Drawing.Common.dll" />
+    <Skip Include="System.Formats.Nrbf.dll" />
     <Skip Include="System.Reactive.dll" />
     <Skip Include="System.Resources.Extensions.dll" />
     <Skip Include="System.Security.Cryptography.Pkcs.dll" />

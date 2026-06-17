@@ -44,7 +44,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.MinimumOSVersion = PDictionary.OpenFile (Path.Combine (projectDir, "Info.plist")).GetMinimumOSVersion ();
 			task.ResourcePrefix = "Resources";
 			task.ProjectDir = projectDir;
-			task.SdkDevPath = Configuration.xcode_root;
+			task.SdkDevPath = Configuration.XcodeLocation;
 			task.SdkPlatform = platform;
 			task.SdkVersion = version.ToString ();
 			task.TargetFrameworkMoniker = TargetFramework.DotNet_iOS_String;

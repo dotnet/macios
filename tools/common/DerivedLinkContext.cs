@@ -6,12 +6,13 @@ using Mono.Linker;
 using Mono.Collections.Generic;
 
 using Registrar;
+
 using Mono.Tuner;
 using Xamarin.Bundler;
 using Xamarin.Linker;
 using Xamarin.Utils;
 
-#if !LEGACY_TOOLS
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
 using LinkContext = Xamarin.Bundler.DotNetLinkContext;
 #endif
 
@@ -65,6 +66,11 @@ namespace Xamarin.Tuner {
 		}
 
 		AssemblyDefinition? corlib;
+
+#if !LEGACY_TOOLS
+		public RegistrarMode Registrar => App.Registrar;
+#endif // !LEGACY_TOOLS
+
 		public AssemblyDefinition Corlib {
 			get {
 				if (corlib is null) {
@@ -339,6 +345,15 @@ namespace Xamarin.Tuner {
 
 			// No matching attributes: assume available
 			return false;
+		}
+
+		public AssemblyDefinition GetProductAssembly ()
+		{
+			var productAssemblyName = Driver.GetProductAssembly (App);
+			var rv = this.GetAssembly (productAssemblyName);
+			if (rv is null)
+				throw ErrorHelper.CreateError (1504, Errors.MX1504 /* Can not find the product assembly '{0}' in the list of loaded assemblies. */, productAssemblyName);
+			return rv;
 		}
 
 		class AttributeStorage : ICustomAttribute {

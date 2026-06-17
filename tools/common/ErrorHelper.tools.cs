@@ -38,6 +38,12 @@ namespace Xamarin.Bundler {
 
 		static ConditionalWeakTable<IToolLog, Dictionary<int, WarningLevel>> warning_levels = new ();
 
+		public static Dictionary<int, WarningLevel>? GetWarningLevels (IToolLog log)
+		{
+			warning_levels.TryGetValue (log, out var log_warning_levels);
+			return log_warning_levels;
+		}
+
 		public static WarningLevel GetWarningLevel (IToolLog log, int code)
 		{
 			if (warning_levels.TryGetValue (log, out var log_warning_levels)) {

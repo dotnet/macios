@@ -4,6 +4,8 @@ using System.IO;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
+using Xamarin.Utils;
+
 #nullable enable
 
 namespace Xamarin.Bundler {

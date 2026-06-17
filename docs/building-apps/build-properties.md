@@ -545,10 +545,12 @@ Where the generated source from the generator are saved.
 
 A semi-colon delimited property that can be used to extend the
 [GetApplicationArtifacts](build-targets.md#getapplicationartifacts) and
-`Publish` targets. The platform build is a mandatory dependency of
-`GetApplicationArtifacts`; MSBuild targets added to this property execute after
-the platform build has collected `@(ApplicationArtifact)` items and before
-`GetApplicationArtifacts` or `Publish` returns them.
+`Publish` targets. Application artifact creation is a mandatory dependency of
+`GetApplicationArtifacts`; it runs the platform build and the Apple
+app/package/archive artifact producer targets before MSBuild targets added to
+this property execute. Extension targets run after the platform targets have
+collected `@(ApplicationArtifact)` items and before `GetApplicationArtifacts` or
+`Publish` returns them.
 
 This can be used by SDKs such as .NET MAUI to add shared application metadata
 to platform-produced artifacts. Extension targets should update existing

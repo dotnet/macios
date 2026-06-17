@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Xml.Linq;
 
 using Microsoft.Build.Framework;
 using Microsoft.Build.Logging.StructuredLogger;
@@ -7,6 +8,24 @@ using Mono.Cecil;
 namespace Xamarin.Tests {
 	[TestFixture]
 	public class PostBuildTest : TestBaseClass {
+		[Test]
+		public void GetApplicationArtifactsTargetDependenciesTest ()
+		{
+			var targetsPath = Path.Combine (Configuration.SourceRoot, "msbuild", "Xamarin.Shared", "Xamarin.Shared.targets");
+			var document = XDocument.Load (targetsPath);
+			var root = document.Root;
+			Assert.That (root, Is.Not.Null, "Project root");
+			if (root is null)
+				throw new InvalidOperationException ("Xamarin.Shared.targets is missing its Project root.");
+			var msbuildNamespace = root.Name.Namespace;
+			var targets = document.Descendants (msbuildNamespace + "Target").ToDictionary (v => v.Attribute ("Name")?.Value ?? "");
+
+			Assert.That (targets, Contains.Key ("_CreateApplicationArtifacts"), "_CreateApplicationArtifacts");
+			Assert.That (targets ["_CreateApplicationArtifacts"].Attribute ("DependsOnTargets")?.Value, Is.EqualTo ("Build;CreateIpa;_CreateInstaller;Archive"), "_CreateApplicationArtifacts dependencies");
+			Assert.That (targets, Contains.Key ("GetApplicationArtifacts"), "GetApplicationArtifacts");
+			Assert.That (targets ["GetApplicationArtifacts"].Attribute ("DependsOnTargets")?.Value, Is.EqualTo ("_CreateApplicationArtifacts;$(GetApplicationArtifactsDependsOn)"), "GetApplicationArtifacts dependencies");
+		}
+
 		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]

@@ -327,36 +327,48 @@ namespace MonoTests.System.Net.Http {
 		public void StreamReadAsyncCallerCancellationThrowsOperationCanceledException ()
 		{
 			// Use a raw TCP server so we have full control over when bytes are sent on the wire.
-			// HttpListener buffers output and may not flush individual bytes immediately.
 			var tcpListener = new TcpListener (IPAddress.Loopback, 0);
 			tcpListener.Start ();
 			var port = ((IPEndPoint) tcpListener.LocalEndpoint).Port;
 
 			var serverReady = new SemaphoreSlim (0, 1);
 
-			// Server sends HTTP response headers + 1 body byte, then stalls forever.
+			// Server accepts the HTTP request, sends response headers and a large
+			// first body chunk, then stalls (never sends the rest of the declared body).
 			var serverTask = Task.Run (async () => {
-				serverReady.Release ();
 				try {
-					using var client = await tcpListener.AcceptTcpClientAsync ().ConfigureAwait (false);
-					client.NoDelay = true;
-					var stream = client.GetStream ();
+					serverReady.Release ();
+					using var tcpClient = await tcpListener.AcceptTcpClientAsync ().ConfigureAwait (false);
+					tcpClient.NoDelay = true;
+					var stream = tcpClient.GetStream ();
 
-					// Read (and discard) the HTTP request
-					var requestBuffer = new byte [4096];
-					await stream.ReadAsync (requestBuffer, 0, requestBuffer.Length).ConfigureAwait (false);
+					// Wait for the full HTTP request (ends with \r\n\r\n)
+					var requestBytes = new byte [8192];
+					var totalRead = 0;
+					while (true) {
+						var n = await stream.ReadAsync (requestBytes, totalRead, requestBytes.Length - totalRead).ConfigureAwait (false);
+						if (n == 0)
+							return;
+						totalRead += n;
+						var requestSoFar = Encoding.ASCII.GetString (requestBytes, 0, totalRead);
+						if (requestSoFar.Contains ("\r\n\r\n"))
+							break;
+					}
 
-					// Send chunked HTTP response: headers + one chunk with 1 byte
-					var headers = "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n";
-					var headerBytes = Encoding.ASCII.GetBytes (headers);
-					await stream.WriteAsync (headerBytes, 0, headerBytes.Length).ConfigureAwait (false);
-
-					var chunk = "1\r\nA\r\n";
-					var chunkBytes = Encoding.ASCII.GetBytes (chunk);
-					await stream.WriteAsync (chunkBytes, 0, chunkBytes.Length).ConfigureAwait (false);
+					// Declare a large Content-Length, send a smaller body, then stall.
+					// This ensures NSUrlSession delivers the initial body data via
+					// DidReceiveData while keeping the connection open for more.
+					var bodyChunk = new string ('A', 4096);
+					var responseText = "HTTP/1.1 200 OK\r\n" +
+						$"Content-Length: {bodyChunk.Length * 10}\r\n" +
+						"Content-Type: text/plain\r\n" +
+						"\r\n" +
+						bodyChunk;
+					var responseBytes = Encoding.ASCII.GetBytes (responseText);
+					await stream.WriteAsync (responseBytes, 0, responseBytes.Length).ConfigureAwait (false);
 					await stream.FlushAsync ().ConfigureAwait (false);
 
-					// Stall: never send the terminating chunk
+					// Stall: never send the remaining body
 					await Task.Delay (TimeSpan.FromMinutes (5)).ConfigureAwait (false);
 				} catch (ObjectDisposedException) {
 					// listener was stopped
@@ -366,33 +378,34 @@ namespace MonoTests.System.Net.Http {
 			});
 
 			Type caughtExceptionType = null;
-			Type innerExceptionType = null;
 
 			try {
 				var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 					await serverReady.WaitAsync ().ConfigureAwait (false);
 
 					using var handler = new NSUrlSessionHandler ();
-					using var client = new HttpClient (handler);
-					client.Timeout = TimeSpan.FromMinutes (5);
+					using var httpClient = new HttpClient (handler);
+					httpClient.Timeout = TimeSpan.FromMinutes (5);
 
 					using var request = new HttpRequestMessage (HttpMethod.Get, $"http://127.0.0.1:{port}/stall");
-					var response = await client.SendAsync (request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait (false);
+					var response = await httpClient.SendAsync (request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait (false);
 					var stream = await response.Content.ReadAsStreamAsync ().ConfigureAwait (false);
 
-					// First read succeeds (server sent 1 byte)
-					var buffer = new byte [1024];
+					// First read succeeds (server sent 4KB of body data)
+					var buffer = new byte [8192];
 					var bytesRead = await stream.ReadAsync (buffer, 0, buffer.Length).ConfigureAwait (false);
 					Assert.That (bytesRead, Is.GreaterThan (0), "First read should return data");
 
-					// Second read: cancel after 250ms via caller token
+					// Second read: cancel after 250ms via caller token.
+					// The server declared a much larger Content-Length but stopped
+					// sending, so ReadAsync will block in the polling loop until
+					// the caller token fires.
 					using var cts = new CancellationTokenSource (TimeSpan.FromMilliseconds (250));
 					try {
 						await stream.ReadAsync (buffer, 0, buffer.Length, cts.Token).ConfigureAwait (false);
 						Assert.Fail ("Expected an exception from the cancelled ReadAsync");
 					} catch (Exception ex) {
 						caughtExceptionType = ex.GetType ();
-						innerExceptionType = ex.InnerException?.GetType ();
 					}
 				}, out var ex2);
 

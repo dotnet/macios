@@ -5,6 +5,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -325,35 +326,41 @@ namespace MonoTests.System.Net.Http {
 		[Test]
 		public void StreamReadAsyncCallerCancellationThrowsOperationCanceledException ()
 		{
-			if (!HttpListener.IsSupported) {
-				Assert.Inconclusive ("HttpListener is not supported");
-			}
-
-			var httpListener = StartListenerOnAvailablePort (out var listeningPort);
-			if (httpListener is null) {
-				Assert.Inconclusive ("Could not find an available port for the test server.");
-				return;
-			}
+			// Use a raw TCP server so we have full control over when bytes are sent on the wire.
+			// HttpListener buffers output and may not flush individual bytes immediately.
+			var tcpListener = new TcpListener (IPAddress.Loopback, 0);
+			tcpListener.Start ();
+			var port = ((IPEndPoint) tcpListener.LocalEndpoint).Port;
 
 			var serverReady = new SemaphoreSlim (0, 1);
 
-			// Server sends headers + 1 byte, then stalls forever.
+			// Server sends HTTP response headers + 1 body byte, then stalls forever.
 			var serverTask = Task.Run (async () => {
 				serverReady.Release ();
 				try {
-					var context = await httpListener.GetContextAsync ().ConfigureAwait (false);
-					var response = context.Response;
-					response.SendChunked = true;
-					response.StatusCode = 200;
-					var outputStream = response.OutputStream;
-					// Send 1 byte immediately via chunked encoding, then stall
-					await outputStream.WriteAsync (new byte [] { (byte) 'A' }, 0, 1).ConfigureAwait (false);
-					await outputStream.FlushAsync ().ConfigureAwait (false);
-					// Wait until the test is done (never send the next chunk)
+					using var client = await tcpListener.AcceptTcpClientAsync ().ConfigureAwait (false);
+					client.NoDelay = true;
+					var stream = client.GetStream ();
+
+					// Read (and discard) the HTTP request
+					var requestBuffer = new byte [4096];
+					await stream.ReadAsync (requestBuffer, 0, requestBuffer.Length).ConfigureAwait (false);
+
+					// Send chunked HTTP response: headers + one chunk with 1 byte
+					var headers = "HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\n\r\n";
+					var headerBytes = Encoding.ASCII.GetBytes (headers);
+					await stream.WriteAsync (headerBytes, 0, headerBytes.Length).ConfigureAwait (false);
+
+					var chunk = "1\r\nA\r\n";
+					var chunkBytes = Encoding.ASCII.GetBytes (chunk);
+					await stream.WriteAsync (chunkBytes, 0, chunkBytes.Length).ConfigureAwait (false);
+					await stream.FlushAsync ().ConfigureAwait (false);
+
+					// Stall: never send the terminating chunk
 					await Task.Delay (TimeSpan.FromMinutes (5)).ConfigureAwait (false);
 				} catch (ObjectDisposedException) {
 					// listener was stopped
-				} catch (HttpListenerException) {
+				} catch (SocketException) {
 					// listener was stopped
 				}
 			});
@@ -369,7 +376,7 @@ namespace MonoTests.System.Net.Http {
 					using var client = new HttpClient (handler);
 					client.Timeout = TimeSpan.FromMinutes (5);
 
-					using var request = new HttpRequestMessage (HttpMethod.Get, $"http://127.0.0.1:{listeningPort}/stall");
+					using var request = new HttpRequestMessage (HttpMethod.Get, $"http://127.0.0.1:{port}/stall");
 					var response = await client.SendAsync (request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait (false);
 					var stream = await response.Content.ReadAsStreamAsync ().ConfigureAwait (false);
 
@@ -397,8 +404,7 @@ namespace MonoTests.System.Net.Http {
 				Assert.That (typeof (OperationCanceledException).IsAssignableFrom (caughtExceptionType), Is.True,
 					$"Expected OperationCanceledException but got {caughtExceptionType}");
 			} finally {
-				httpListener.Stop ();
-				httpListener.Close ();
+				tcpListener.Stop ();
 			}
 		}
 

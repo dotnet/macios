@@ -11,19 +11,36 @@ namespace Xamarin.Tests {
 		[Test]
 		public void GetApplicationArtifactsTargetDependenciesTest ()
 		{
-			var targetsPath = Path.Combine (Configuration.SourceRoot, "msbuild", "Xamarin.Shared", "Xamarin.Shared.targets");
-			var document = XDocument.Load (targetsPath);
-			var root = document.Root;
-			Assert.That (root, Is.Not.Null, "Project root");
-			if (root is null)
-				throw new InvalidOperationException ("Xamarin.Shared.targets is missing its Project root.");
-			var msbuildNamespace = root.Name.Namespace;
-			var targets = document.Descendants (msbuildNamespace + "Target").ToDictionary (v => v.Attribute ("Name")?.Value ?? "");
+			var targetFiles = new [] {
+				Path.Combine (Configuration.SourceRoot, "msbuild", "Xamarin.Shared", "Xamarin.Shared.targets"),
+				Path.Combine (Configuration.SourceRoot, "msbuild", "Xamarin.Shared", "Xamarin.iOS.Common.targets"),
+			};
+			var targets = targetFiles.SelectMany (targetFile => {
+				var document = XDocument.Load (targetFile);
+				var root = document.Root;
+				Assert.That (root, Is.Not.Null, "Project root");
+				if (root is null)
+					throw new InvalidOperationException ($"{targetFile} is missing its Project root.");
+				var msbuildNamespace = root.Name.Namespace;
+				return document.Descendants (msbuildNamespace + "Target");
+			}).ToDictionary (v => v.Attribute ("Name")?.Value ?? "");
 
 			Assert.That (targets, Contains.Key ("_CreateApplicationArtifacts"), "_CreateApplicationArtifacts");
 			Assert.That (targets ["_CreateApplicationArtifacts"].Attribute ("DependsOnTargets")?.Value, Is.EqualTo ("Build;CreateIpa;_CreateInstaller;Archive"), "_CreateApplicationArtifacts dependencies");
 			Assert.That (targets, Contains.Key ("GetApplicationArtifacts"), "GetApplicationArtifacts");
 			Assert.That (targets ["GetApplicationArtifacts"].Attribute ("DependsOnTargets")?.Value, Is.EqualTo ("_CreateApplicationArtifacts;$(GetApplicationArtifactsDependsOn)"), "GetApplicationArtifacts dependencies");
+			Assert.That (targets, Contains.Key ("CreateIpa"), "CreateIpa");
+			Assert.That (targets ["CreateIpa"].Attribute ("Condition")?.Value, Is.EqualTo ("'$(_CanArchive)' == 'true' And '$(SdkIsDesktop)' != 'true'"), "CreateIpa condition");
+			Assert.That (targets, Contains.Key ("_CoreCreateIpa"), "_CoreCreateIpa");
+			Assert.That (targets ["_CoreCreateIpa"].Attribute ("Condition")?.Value, Is.EqualTo ("'$(BuildIpa)' == 'true'"), "_CoreCreateIpa condition");
+			Assert.That (targets, Contains.Key ("_ZipIpa"), "_ZipIpa");
+			Assert.That (targets ["_ZipIpa"].Attribute ("Condition")?.Value, Is.EqualTo ("'$(BuildIpa)' == 'true'"), "_ZipIpa condition");
+			Assert.That (targets, Contains.Key ("_CreateInstaller"), "_CreateInstaller");
+			Assert.That (targets ["_CreateInstaller"].Attribute ("Condition")?.Value, Is.EqualTo ("'$(CreatePackage)' == 'true' And '$(_CanOutputAppBundle)' == 'true'"), "_CreateInstaller condition");
+			Assert.That (targets, Contains.Key ("Archive"), "Archive");
+			Assert.That (targets ["Archive"].Attribute ("Condition")?.Value, Is.EqualTo ("'$(_CanArchive)' == 'true'"), "Archive condition");
+			Assert.That (targets, Contains.Key ("_CoreArchive"), "_CoreArchive");
+			Assert.That (targets ["_CoreArchive"].Attribute ("Condition")?.Value, Is.EqualTo ("'$(ArchiveOnBuild)' == 'true'"), "_CoreArchive condition");
 		}
 
 		[Test]

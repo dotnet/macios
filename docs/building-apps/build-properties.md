@@ -548,7 +548,9 @@ A semi-colon delimited property that can be used to extend the
 `Publish` targets. Application artifact creation is a mandatory dependency of
 `GetApplicationArtifacts`; it runs the platform build and the Apple
 app/package/archive artifact producer targets before MSBuild targets added to
-this property execute. Extension targets run after the platform targets have
+this property execute. Those producer targets keep their existing conditions, so
+IPA, PKG, and archive artifacts are only created when their corresponding build
+properties request them. Extension targets run after the platform targets have
 collected `@(ApplicationArtifact)` items and before `GetApplicationArtifacts` or
 `Publish` returns them.
 

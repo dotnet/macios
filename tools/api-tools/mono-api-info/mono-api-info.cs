@@ -1413,6 +1413,10 @@ namespace Mono.ApiTools {
 			switch (attribute.AttributeType.FullName) {
 			case "System.Runtime.CompilerServices.NativeIntegerAttribute":
 				return false;
+			case "System.Runtime.CompilerServices.NullableAttribute":
+			case "System.Runtime.CompilerServices.NullableContextAttribute":
+				// Nullability is already rendered via '?' annotations on type names.
+				return true;
 			}
 
 			if (!state.TypeHelper.IsPublic (attribute))

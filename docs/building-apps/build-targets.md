@@ -47,13 +47,10 @@ Added in .NET 11.
 ## GetApplicationArtifacts
 
 Builds the project and returns the `@(ApplicationArtifact)` item group. This
-target always runs a mandatory application artifact creation step first. That
-step runs the platform build and the Apple app/package/archive artifact producer
-targets so `.app`, `.ipa`, `.pkg`, and `.xcarchive` artifacts are populated
-before any custom metadata extension targets run. These producer targets keep
-their existing conditions, so IPA, PKG, and archive artifacts are only created
-when their corresponding build properties request them. The `Publish` target
-returns the same item group for artifacts it creates.
+target always runs `Build` first so platform `.app`, `.ipa`, `.pkg`, and
+`.xcarchive` artifacts are produced and collected before any custom metadata
+extension targets run. The `Publish` target returns the same item group for
+artifacts it creates.
 
 ```shell
 $ dotnet build MyApp.csproj -t:GetApplicationArtifacts -getTargetResult:GetApplicationArtifacts

@@ -3436,9 +3436,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="CreateIpa" Condition="'$(_CanArchive)' == 'true' And '$(SdkIsDesktop)' != 'true'" DependsOnTargets="$(CreateIpaDependsOn)" />
 
-	<Target Name="_CreateApplicationArtifacts" DependsOnTargets="Build;CreateIpa;_CreateInstaller;Archive" />
-
-	<Target Name="GetApplicationArtifacts" DependsOnTargets="_CreateApplicationArtifacts;$(GetApplicationArtifactsDependsOn)" Returns="@(ApplicationArtifact)" />
+	<Target Name="GetApplicationArtifacts" DependsOnTargets="Build;$(GetApplicationArtifactsDependsOn)" Returns="@(ApplicationArtifact)" />
 
 	<PropertyGroup>
 		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == ''">false</PrepareAssemblies>

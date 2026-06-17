@@ -53,7 +53,8 @@ targets run. The `Publish` target returns the same item group for artifacts it
 creates.
 
 ```shell
-$ dotnet build -t:GetApplicationArtifacts
+$ dotnet build MyApp.csproj -t:GetApplicationArtifacts -getTargetResult:GetApplicationArtifacts
+$ dotnet build MyApp.csproj -t:Publish -getTargetResult:Publish
 ```
 
 See [ApplicationArtifact](build-items.md#applicationartifact) for supported metadata.

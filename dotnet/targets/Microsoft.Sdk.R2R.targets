@@ -3,11 +3,6 @@
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.ComputeInstructionSet" AssemblyFile="$(_TaskAssemblyName)" />
 	<UsingTask Runtime="$(_TaskRuntime)" TaskName="Xamarin.MacDev.Tasks.GenerateR2RModuleRegistration" AssemblyFile="$(_TaskAssemblyName)" />
 
-	<!-- Workaround until https://github.com/dotnet/sdk/pull/52480 is merged -->
-	<Target Name="_LinkReadyToRunMachO">
-		<Message Text="Skipped built-in dylib creation" />
-	</Target>
-
 	<!-- Workaround for https://github.com/dotnet/runtime/issues/79902 -->
 	<Target Name="_FixR2ROutputPaths" AfterTargets="_PrepareForReadyToRunCompilation">
 		<ItemGroup>

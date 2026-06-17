@@ -545,7 +545,8 @@ Where the generated source from the generator are saved.
 
 A semi-colon delimited property that can be used to extend the
 [GetApplicationArtifacts](build-targets.md#getapplicationartifacts) and
-`Publish` targets. MSBuild targets added to this property will execute after
+`Publish` targets. The platform build is a mandatory dependency of
+`GetApplicationArtifacts`; MSBuild targets added to this property execute after
 the platform build has collected `@(ApplicationArtifact)` items and before
 `GetApplicationArtifacts` or `Publish` returns them.
 

@@ -117,7 +117,7 @@ namespace Xamarin.Tests {
 			var existingProjectContent = File.ReadAllText (project_path);
 			var newProjectContent = existingProjectContent.Replace ("</Project>", @"
 	<PropertyGroup>
-		<GetApplicationArtifactsDependsOn>$(GetApplicationArtifactsDependsOn);AddMauiApplicationArtifactMetadata</GetApplicationArtifactsDependsOn>
+		<GetApplicationArtifactsDependsOn>AddMauiApplicationArtifactMetadata</GetApplicationArtifactsDependsOn>
 	</PropertyGroup>
 	<Target Name=""AddMauiApplicationArtifactMetadata"">
 		<ItemGroup>
@@ -325,7 +325,7 @@ namespace Xamarin.Tests {
 			var existingProjectContent = File.ReadAllText (project_path);
 			var newProjectContent = existingProjectContent.Replace ("</Project>", @"
 	<PropertyGroup>
-		<GetApplicationArtifactsDependsOn>$(GetApplicationArtifactsDependsOn);AddMauiPublishApplicationArtifactMetadata</GetApplicationArtifactsDependsOn>
+		<GetApplicationArtifactsDependsOn>AddMauiPublishApplicationArtifactMetadata</GetApplicationArtifactsDependsOn>
 	</PropertyGroup>
 	<Target Name=""AddMauiPublishApplicationArtifactMetadata"">
 		<ItemGroup>

@@ -47,9 +47,10 @@ Added in .NET 11.
 ## GetApplicationArtifacts
 
 Builds the project and returns the `@(ApplicationArtifact)` item group. This
-target can be used by custom build scripts to query final `.app`, `.ipa`,
-`.pkg`, and `.xcarchive` artifacts. The `Publish` target returns the same item
-group for artifacts it creates.
+target always runs the platform build first so `.app`, `.ipa`, `.pkg`, and
+`.xcarchive` artifacts are populated before any custom metadata extension
+targets run. The `Publish` target returns the same item group for artifacts it
+creates.
 
 ```shell
 $ dotnet build -t:GetApplicationArtifacts

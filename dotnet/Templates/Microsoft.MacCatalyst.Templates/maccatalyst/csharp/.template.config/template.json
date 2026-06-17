@@ -1,7 +1,10 @@
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "Microsoft",
-  "classifications": [ "macOS", "Mac Catalyst" ],
+  "classifications": [
+    "macOS",
+    "Mac Catalyst"
+  ],
   "groupIdentity": "Microsoft.MacCatalyst.MacCatalystApp",
   "identity": "Microsoft.MacCatalyst.MacCatalystApp.CSharp",
   "name": "Mac Catalyst Application",
@@ -21,17 +24,21 @@
   ],
   "preferNameDirectory": true,
   "primaryOutputs": [
-    { "path": "MacCatalystApp1.csproj" }
+    {
+      "path": "MacCatalystApp1.csproj"
+    }
   ],
   "symbols": {
     "bundleId": {
       "type": "parameter",
+      "displayName": "Bundle ID",
       "description": "Overrides CFBundleIdentifier in the Info.plist",
       "datatype": "string",
       "replaces": "com.companyname.MacCatalystApp1"
     },
     "minOSVersion": {
       "type": "parameter",
+      "displayName": "Minimum OS version",
       "description": "Overrides SupportedOSPlatformVersion in the project file",
       "replaces": "minOSVersion",
       "datatype": "string",

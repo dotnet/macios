@@ -1,7 +1,10 @@
 {
   "$schema": "http://json.schemastore.org/template",
   "author": "Microsoft",
-  "classifications": [ "iOS", "Mobile" ],
+  "classifications": [
+    "iOS",
+    "Mobile"
+  ],
   "groupIdentity": "Microsoft.iOS.iOSApp",
   "identity": "Microsoft.iOS.iOSApp.FSharp",
   "name": "iOS Application",
@@ -21,17 +24,21 @@
   ],
   "preferNameDirectory": true,
   "primaryOutputs": [
-    { "path": "iOSApp1.fsproj" }
+    {
+      "path": "iOSApp1.fsproj"
+    }
   ],
   "symbols": {
     "bundleId": {
       "type": "parameter",
+      "displayName": "Bundle ID",
       "description": "Overrides CFBundleIdentifier in the Info.plist",
       "datatype": "string",
       "replaces": "com.companyname.iOSApp1"
     },
     "minOSVersion": {
       "type": "parameter",
+      "displayName": "Minimum OS version",
       "description": "Overrides SupportedOSPlatformVersion in the project file",
       "replaces": "minOSVersion",
       "datatype": "string",
@@ -39,19 +46,23 @@
     },
     "deviceFamily": {
       "type": "parameter",
+      "displayName": "Device family",
       "datatype": "choice",
       "defaultValue": "universal",
       "choices": [
         {
           "choice": "universal",
+          "displayName": "Universal",
           "description": "Support both iPhone and iPad devices"
         },
         {
           "choice": "iphone",
+          "displayName": "iPhone",
           "description": "Support only iPhone devices"
         },
         {
           "choice": "ipad",
+          "displayName": "iPad",
           "description": "Support only iPad devices"
         }
       ]

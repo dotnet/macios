@@ -34,7 +34,7 @@ namespace MonoTests.System.Net.Http {
 
 			for (var p = MinPort; p < MaxPort; p++) {
 				listener = new HttpListener ();
-				listener.Prefixes.Add ($"http://*:{p}/");
+				listener.Prefixes.Add ($"http://127.0.0.1:{p}/");
 				try {
 					listener.Start ();
 					port = p;
@@ -80,7 +80,7 @@ namespace MonoTests.System.Net.Http {
 				}
 			});
 
-			return $"http://localhost:{port}";
+			return $"http://127.0.0.1:{port}";
 		}
 
 		static void HandleRequest (HttpListenerContext context)

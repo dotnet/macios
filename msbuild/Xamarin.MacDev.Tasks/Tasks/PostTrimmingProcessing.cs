@@ -246,11 +246,33 @@ namespace Xamarin.MacDev.Tasks {
 			// The generated C code uses 'extern void*' declarations and returns the address of the symbol.
 			// This is intentional: it allows the native linker to resolve the symbol at link time, which
 			// is the whole point of this optimization (avoiding dlsym at runtime).
+			//
+			// The symbols are declared with __attribute__((weak_import)), and we fall back to dlsym if the
+			// direct reference turns out to be null at runtime. There are two reasons for this:
+			//
+			// * The symbol might not exist at runtime even though it existed in the SDK we built against
+			//   (for example when the app runs on an older OS than the one it was built with). Without
+			//   weak_import a missing symbol makes dyld abort at launch; with it the reference resolves to
+			//   null instead.
+			//
+			// * A symbol can be exported by more than one framework in the SDK (for example
+			//   UIFontTextStyleBody is exported by both UIKit and AppKit in the macOS SDK). In that case the
+			//   native linker binds our reference to one of them (the order isn't specified), which might not
+			//   be the framework that actually exports the symbol at runtime on older OSes. When the bound
+			//   framework doesn't have it, we use dlsym (RTLD_DEFAULT) to find it in whichever loaded
+			//   framework does, restoring the behavior of the non-inlined dlfcn code path.
+			//
+			// The fast path (a direct reference when the symbol is present) is unchanged, and the managed
+			// caller caches the result, so the dlsym fallback runs at most once per symbol.
+			sb.AppendLine ("#include <dlfcn.h>");
+			sb.AppendLine ();
+			sb.AppendLine ("static void* xamarin_dlfcn_fallback (void* ptr, const char* symbol) { return ptr ? ptr : dlsym (RTLD_DEFAULT, symbol); }");
+			sb.AppendLine ();
 			foreach (var field in survivingSymbols.OrderBy (s => s)) {
 				// Using 'void*' as a stand-in type since we only need the address
-				sb.AppendLine ($"extern void* {field};");
+				sb.AppendLine ($"extern void* {field} __attribute__((weak_import));");
 				sb.AppendLine ($"void* xamarin_Dlfcn_{field}_Native ();");
-				sb.AppendLine ($"void* xamarin_Dlfcn_{field}_Native () {{ return &{field}; }}");
+				sb.AppendLine ($"void* xamarin_Dlfcn_{field}_Native () {{ return xamarin_dlfcn_fallback (&{field}, \"{field}\"); }}");
 				sb.AppendLine ();
 			}
 

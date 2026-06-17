@@ -103,11 +103,11 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
-		public void GetApplicationArtifactsDependsOnTest ()
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "ipa")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "pkg")]
+		public void GetApplicationArtifactsDependsOnTest (ApplePlatform platform, string runtimeIdentifiers, string packageFormat)
 		{
 			var project = "MySimpleApp";
-			var platform = ApplePlatform.iOS;
-			var runtimeIdentifiers = "ios-arm64";
 			var configuration = "Release";
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
@@ -121,21 +121,36 @@ namespace Xamarin.Tests {
 	</PropertyGroup>
 	<Target Name=""AddMauiApplicationArtifactMetadata"">
 		<ItemGroup>
+			<_MauiObservedAppArtifact Include=""@(ApplicationArtifact)"" Condition=""'%(ApplicationArtifact.PackageFormat)' == 'app'"" />
+			<_MauiObservedPackageArtifact Include=""@(ApplicationArtifact)"" Condition=""'%(ApplicationArtifact.PackageFormat)' == '$(ExpectedAugmentedPackageFormat)'"" />
 			<ApplicationArtifact Update=""@(ApplicationArtifact)"">
 				<ApplicationTitle>My MAUI App</ApplicationTitle>
+				<MauiObservedPackageFormat>%(ApplicationArtifact.PackageFormat)</MauiObservedPackageFormat>
 			</ApplicationArtifact>
 		</ItemGroup>
+		<Error Condition=""'@(_MauiObservedAppArtifact)' == ''"" Text=""Expected app ApplicationArtifact items before MAUI metadata is added."" />
+		<Error Condition=""'@(_MauiObservedPackageArtifact)' == ''"" Text=""Expected $(ExpectedAugmentedPackageFormat) ApplicationArtifact items before MAUI metadata is added."" />
 	</Target>
 </Project>");
 			File.WriteAllText (project_path, newProjectContent);
 
-			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["BuildIpa"] = "true";
-			properties ["Configuration"] = configuration;
+			try {
+				var properties = GetDefaultProperties (runtimeIdentifiers);
+				properties ["BuildIpa"] = packageFormat == "ipa" ? "true" : "false";
+				properties ["CreatePackage"] = packageFormat == "pkg" ? "true" : "false";
+				properties ["Configuration"] = configuration;
+				properties ["ExpectedAugmentedPackageFormat"] = packageFormat;
 
-			var outputs = GetApplicationArtifacts (project_path, properties);
-			var appOutput = AssertApplicationArtifact (outputs, appPath, platform, "app", isDirectory: true);
-			Assert.That (GetMetadata (appOutput, "ApplicationTitle"), Is.EqualTo ("My MAUI App"), "ApplicationTitle");
+				var outputs = GetApplicationArtifacts (project_path, properties);
+				var appOutput = AssertApplicationArtifact (outputs, appPath, platform, "app", isDirectory: true);
+				var packageOutput = AssertApplicationArtifact (outputs, platform, packageFormat, isDirectory: false);
+				Assert.That (GetMetadata (appOutput, "ApplicationTitle"), Is.EqualTo ("My MAUI App"), "ApplicationTitle");
+				Assert.That (GetMetadata (appOutput, "MauiObservedPackageFormat"), Is.EqualTo ("app"), "MauiObservedPackageFormat");
+				Assert.That (GetMetadata (packageOutput, "ApplicationTitle"), Is.EqualTo ("My MAUI App"), "ApplicationTitle");
+				Assert.That (GetMetadata (packageOutput, "MauiObservedPackageFormat"), Is.EqualTo (packageFormat), "MauiObservedPackageFormat");
+			} finally {
+				File.WriteAllText (project_path, existingProjectContent);
+			}
 		}
 
 		[Test]

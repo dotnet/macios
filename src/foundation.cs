@@ -10096,6 +10096,7 @@ namespace Foundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Use 'Create' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Wrap ("Create (user, password, persistence)")]
 		[Static]
 		NSUrlCredential FromUserPasswordPersistance (string user, string password, NSUrlCredentialPersistence persistence);

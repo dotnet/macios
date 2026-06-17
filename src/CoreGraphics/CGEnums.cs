@@ -9,6 +9,8 @@
 
 #nullable enable
 
+using System.ComponentModel;
+
 namespace CoreGraphics {
 
 	public enum MatrixOrder {
@@ -219,6 +221,7 @@ namespace CoreGraphics {
 		WarichuPunctuation,
 #if !XAMCORE_5_0
 		[Obsolete ("Use 'WarichuPunctuation' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		WarichuPunctiation = WarichuPunctuation,
 #endif
 		Figure = 700,

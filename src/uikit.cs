@@ -24586,6 +24586,7 @@ namespace UIKit {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Use 'AvailableLanguages' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		[Wrap ("AvailableLanguages")]
 		[Static]
 		string AvailableLangauges { get; }

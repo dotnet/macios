@@ -19,7 +19,7 @@
 // limitations under the License.
 //
 
-using System.Diagnostics;
+
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -193,7 +193,9 @@ namespace Introspection {
 			{ "Cnn", All }, // Convolutional Neural Network
 			{ "Cns", ApplePlatform.MacOSX }, // Chinese National Standard
 			{ "Codabar", All }, // barcode symbology
+#if !XAMCORE_5_0
 			{ "Commited", ApplePlatform.MacOSX }, // CommitedLoad - will be renamed in XAMCORE_5_0
+#endif
 			{ "Conf", All }, // configuration abbreviation
 			{ "Conecs", All & ~ApplePlatform.TVOS }, // card network acronym
 			{ "Conv", All }, // convolution abbreviation

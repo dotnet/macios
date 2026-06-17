@@ -343,13 +343,13 @@ namespace MonoTests.System.Net.Http {
 				try {
 					var context = await httpListener.GetContextAsync ().ConfigureAwait (false);
 					var response = context.Response;
-					response.ContentLength64 = 2; // declare 2 bytes
+					response.SendChunked = true;
 					response.StatusCode = 200;
 					var outputStream = response.OutputStream;
-					// Send 1 byte, then stall
+					// Send 1 byte immediately via chunked encoding, then stall
 					await outputStream.WriteAsync (new byte [] { (byte) 'A' }, 0, 1).ConfigureAwait (false);
 					await outputStream.FlushAsync ().ConfigureAwait (false);
-					// Wait until the test is done (never send the second byte)
+					// Wait until the test is done (never send the next chunk)
 					await Task.Delay (TimeSpan.FromMinutes (5)).ConfigureAwait (false);
 				} catch (ObjectDisposedException) {
 					// listener was stopped

@@ -394,8 +394,7 @@ namespace Xamarin.Bundler {
 
 		public static Frameworks GetFrameworks (Application app)
 		{
-			var rv = Frameworks.GetFrameworks (app.Platform, app.IsSimulatorBuild);
-			if (rv is null)
+			if (!Frameworks.TryGetFrameworks (app.Platform, out var rv))
 				throw ErrorHelper.CreateError (71, Errors.MX0071, app.Platform, app.ProductName);
 			return rv;
 		}

@@ -30,6 +30,7 @@
 //
 
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 using Vector3 = global::System.Numerics.Vector3;
 using NMatrix3 = global::CoreGraphics.NMatrix3;
@@ -5694,6 +5695,7 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Call the 'LoadTrackWithMediaCharacteristics (..., AVAssetLoadTracksCallback)' overload instead (or the 'LoadTrackWithMediaCharacteristics2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
@@ -5712,6 +5714,7 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Call 'LoadTracksWithMediaType (..., AVAssetLoadTracksCallback)' instead (or the 'LoadTracksWithMediaType' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
@@ -12704,6 +12707,7 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Call the 'LoadTrack (..., AVMovieLoadTracksCallback)' overload instead (or the 'LoadTrack2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
@@ -12721,6 +12725,7 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Call the 'LoadTracksWithMediaType (..., AVMovieLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaType2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
@@ -12743,6 +12748,7 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Call the 'LoadTracksWithMediaCharacteristic (..., AVMovieLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaCharacteristic2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
@@ -12845,6 +12851,7 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Call the 'LoadTracksWithMediaType (..., AVMutableMovieLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaCharacteristic2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
@@ -12868,6 +12875,7 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Call the 'LoadTracksWithMediaCharacteristic (..., AVMutableMovieLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaCharacteristic2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[NoTV, iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
@@ -13111,6 +13119,7 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Call the 'LoadTrack (..., AVFragmentedMovieLoadTrackCallback)' overload instead (or the 'LoadTrack2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
@@ -13128,6 +13137,7 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Call the 'LoadTracksWithMediaType (..., AVFragmentedMovieLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaType2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
@@ -13150,6 +13160,7 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Call the 'LoadTracksWithMediaCharacteristic (..., AVFragmentedMovieLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaCharacteristic2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]
@@ -13745,6 +13756,7 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Call the 'LoadTrack (..., AVCompositionLoadTrackCallback)' overload instead (or the 'LoadTrack2Async' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTrackWithTrackID:completionHandler:")]
@@ -13762,6 +13774,7 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Call the 'LoadTracksWithMediaType (..., AVCompositionLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaType' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaType:completionHandler:")]
@@ -13784,6 +13797,7 @@ namespace AVFoundation {
 
 #if !XAMCORE_5_0
 		[Obsolete ("Call the 'LoadTracksWithMediaCharacteristic (..., AVCompositionLoadTracksCallback)' overload instead (or the 'LoadTracksWithMediaCharacteristic' method).")]
+		[OverloadResolutionPriority (-1)]
 		[Async]
 		[TV (15, 0), iOS (15, 0), MacCatalyst (15, 0)]
 		[Export ("loadTracksWithMediaCharacteristic:completionHandler:")]

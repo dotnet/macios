@@ -102,6 +102,25 @@ namespace Introspection {
 			case "UIFont":
 				return true;
 
+#if (__IOS__ && !__MACCATALYST__) || __TVOS__
+			// Starting with version 27 the runtime turned -[UIScreen init] into a hard, uncatchable trap
+			// (EXC_BREAKPOINT/SIGTRAP): "-[UIScreen init] is not allowed, get a reference from your local hierarchy".
+			// Because it's a trap (not an Objective-C exception) the managed try/catch around the ctor invocation
+			// can't catch it, so it crashes the whole introspection process. On tvOS 27 it traps on every run; on
+			// iOS 27 it traps non-deterministically (it depends on simulator/device state - e.g. whether a screen is
+			// resolvable from the window-scene hierarchy - so a given run may pass or crash). Apple did NOT mark 'init'
+			// as unavailable in the headers (it's inherited from NSObject), and the default ctor still works on iOS/tvOS
+			// 26 and earlier, so we keep the binding ctor and only skip this runtime probe on iOS/tvOS 27+.
+			// (+mainScreen/+screens are now deprecated in favor of view.window.windowScene.screen, i.e. the
+			// "reference from your local hierarchy" the trap message refers to.)
+			// Mac Catalyst is intentionally excluded: -[UIScreen init] does NOT trap there (Mac Catalyst
+			// introspection exercises this ctor unskipped and passes), so the probe must keep running on Mac Catalyst.
+			// In XAMCORE_5_0 the default ctor is removed entirely (see [DisableDefaultCtor] on UIScreen in uikit.cs);
+			// until then we keep the ctor for API compatibility and skip this runtime probe on iOS/tvOS 27+.
+			case "UIScreen":
+				return TestRuntime.CheckXcodeVersion (27, 0);
+#endif // (__IOS__ && !__MACCATALYST__) || __TVOS__
+
 			case "NSUrlSessionConfiguration":
 			case "NSUrlSession":
 				// This crashes when arc frees this object at the end of the scope:

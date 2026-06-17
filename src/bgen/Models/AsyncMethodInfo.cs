@@ -28,7 +28,30 @@ class AsyncMethodInfo : MemberInformation {
 		var lastParam = cbParams.LastOrDefault ();
 		if (lastParam is not null && lastParam.ParameterType.Name == "NSError") {
 			HasNSError = true;
-			IsNSErrorNullable = generator.AttributeManager.IsNullable (lastParam);
+			// The nullability info for generic type arguments is encoded in the NullableAttribute
+			// on the outer method parameter (the one with the Action<...> type), not on the
+			// delegate's Invoke method parameters. Check the nullability bytes to determine if
+			// the NSError type argument is nullable.
+			var outerParam = mi.GetParameters ().Last ();
+			var nullabilityBytes = generator.AttributeManager.GetNullabilityBytes (outerParam);
+			if (nullabilityBytes is not null && nullabilityBytes.Length > 1) {
+				// Walk the type arguments depth-first to find the byte index for the last param.
+				// Value types don't consume bytes, reference types do.
+				// byte[0] is for the Action<> itself, then each reference type arg consumes one byte.
+				int byteIndex = 1; // start after the outer type byte
+				var genericArgs = lastType.GetGenericArguments ();
+				for (int i = 0; i < genericArgs.Length; i++) {
+					if (!genericArgs [i].IsValueType) {
+						if (i == genericArgs.Length - 1) {
+							// This is the last generic argument (NSError)
+							IsNSErrorNullable = byteIndex < nullabilityBytes.Length && nullabilityBytes [byteIndex] == 2;
+						}
+						byteIndex++;
+					}
+				}
+			} else {
+				IsNSErrorNullable = generator.AttributeManager.IsNullable (lastParam);
+			}
 			cbParams = cbParams.DropLast ();
 		}
 

@@ -2949,7 +2949,17 @@ public partial class Generator : IMemberGatherer {
 				if (!bt.IsValueType && AttributeManager.IsNullable (pi))
 					sb.Append ('?');
 			} else {
-				sb.Append (TypeManager.FormatType (declaringType, parType));
+				// Only apply nullability bytes for delegate types whose generic type parameters
+				// are all contravariant (Action<> variants). Func<> types have a covariant TResult
+				// which creates a type mismatch with the trampoline's CreateNullableBlock signature.
+				byte []? nullabilityBytes = null;
+				if (parType.IsSubclassOf (TypeCache.System_Delegate)) {
+					var invokeMethod = parType.GetMethod ("Invoke");
+					if (invokeMethod is not null && invokeMethod.ReturnType == TypeCache.System_Void) {
+						nullabilityBytes = AttributeManager.GetNullabilityBytes (pi);
+					}
+				}
+				sb.Append (TypeManager.FormatType (declaringType, parType, nullabilityBytes));
 				// some `IntPtr` are decorated with `[NullAttribute]`
 				if (!parType.IsValueType) {
 					if (AttributeManager.IsNullable (pi)) {

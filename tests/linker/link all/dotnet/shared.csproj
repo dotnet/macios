@@ -9,6 +9,7 @@
     <LinkMode>$(MtouchLink)</LinkMode>
     <MtouchExtraArgs>--optimize=all,-remove-dynamic-registrar,-force-rejected-types-removal</MtouchExtraArgs>
     <MtouchExtraArgs Condition="$(Configuration.Contains('Debug'))">$(MtouchExtraArgs) --optimize=-remove-uithread-checks</MtouchExtraArgs>
+    <MtouchExtraArgs>$(MtouchExtraArgs) --nowarn:2003</MtouchExtraArgs> <!-- warning MT2003: Option '...' will be ignored since ... --> 
     <MonoBundlingExtraArgs>$(MtouchExtraArgs)</MonoBundlingExtraArgs>
     <ThisTestDirectory>$(RootTestsDirectory)\linker\link all</ThisTestDirectory>
     <SingleArchReleaseBuild>true</SingleArchReleaseBuild>

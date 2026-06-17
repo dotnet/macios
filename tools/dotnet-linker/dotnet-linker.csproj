@@ -77,6 +77,9 @@
     <Compile Include="..\common\LinkMode.cs">
       <Link>external/tools/common/LinkMode.cs</Link>
     </Compile>
+    <Compile Include="..\common\NormalizedStringComparer.cs">
+      <Link>tools\common\NormalizedStringComparer.cs</Link>
+    </Compile>
     <Compile Include="..\common\SdkVersions.cs">
       <Link>external/tools/common/SdkVersions.cs</Link>
     </Compile>
@@ -110,6 +113,9 @@
     <Compile Include="..\common\CSToObjCMap.cs">
       <Link>external/tools/common/CSToObjCMap.cs</Link>
     </Compile>
+    <Compile Include="..\common\RegistrarMode.cs">
+      <Link>tools\common\RegistrarMode.cs</Link>
+    </Compile>
     <Compile Include="..\common\Rewriter.cs">
       <Link>external/tools/common/Rewriter.cs</Link>
     </Compile>
@@ -133,6 +139,9 @@
     </Compile>
     <Compile Include="..\linker\CoreTypeMapStep.cs">
       <Link>external/tools/linker/CoreTypeMapStep.cs</Link>
+    </Compile>
+    <Compile Include="..\linker\OptimizeGeneratedCode.cs">
+      <Link>external/tools/linker/OptimizeGeneratedCode.cs</Link>
     </Compile>
     <Compile Include="..\..\src\ObjCRuntime\Registrar.cs">
       <Link>external/src/ObjCRuntime/Registrar.cs</Link>

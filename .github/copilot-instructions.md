@@ -136,6 +136,16 @@ interface SomeClass {
 Located in `msbuild/` directory:
 - `Xamarin.MacDev.Tasks` - Shared Apple development tasks
 
+### MSBuild Targets Pitfalls
+
+* **Never use `$([System.IO.Path]::GetFullPath('...'))` in MSBuild targets.** When building
+  remotely from Windows (Hot Restart, remote Mac builds), `GetFullPath` resolves against the
+  *local* Windows file system, producing a Windows-style absolute path instead of the intended
+  remote Mac path. Use relative paths or existing MSBuild metadata (such as `ComputedRelativePath`)
+  instead. The same applies to other `System.IO.Path` methods that resolve against the current
+  working directory (e.g., `GetDirectoryName` with a relative path may produce unexpected results
+  in a cross-platform build).
+
 ### FileWrites
 
 If a target or task creates a file, that file must be added to the `FileWrites` item group. This ensures MSBuild's incremental clean can delete generated files. Additionally, if a target produces multiple output files, all of them should be listed in the target's `Outputs` attribute for correct incremental build behavior.

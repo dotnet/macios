@@ -32,5 +32,14 @@
 		<!-- We're warning-free, so let's make sure we stay that way. This includes nullability warnings. -->
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	</PropertyGroup>
+
+	<PropertyGroup>
+		<!-- workarounds for https://github.com/dotnet/runtime/issues/123503 -->
+		<!-- https://github.com/dotnet/macios/issues/24558 -->
+		<EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+		<EnableAotAnalyzer>false</EnableAotAnalyzer>
+		<NoWarn>$(NoWarn);AD0001</NoWarn>
+	</PropertyGroup>
+
 	<Import Project="Build.props" Condition="Exists('Build.props')" />
 </Project>

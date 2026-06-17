@@ -46,6 +46,7 @@
 		<!-- If TrimMode is set, then that's the default link mode -->
 		<_DefaultLinkMode>TrimMode</_DefaultLinkMode>
 	</PropertyGroup>
+	<Import Project="$(MSBuildThisFileDirectory)Xamarin.Shared.Sdk.MSTest.props" Condition="'$(EnableMSTestRunner)' == 'true'" />
 	<PropertyGroup Condition="'$(TrimMode)' == ''">
 		<!-- Linking is always on for all assemblies when using NativeAOT - this is because we need to modify all assemblies in the linker for them to be compatible with NativeAOT -->
 		<_DefaultLinkMode Condition="'$(_DefaultLinkMode)' == '' And '$(_UseNativeAot)' == 'true'">Full</_DefaultLinkMode>

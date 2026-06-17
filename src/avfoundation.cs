@@ -22537,7 +22537,17 @@ namespace AVFoundation {
 
 		[MacCatalyst (18, 0), Mac (14, 0), iOS (18, 0)]
 		[Export ("URLSession:assetDownloadTask:willDownloadToURL:")]
+#if XAMCORE_5_0
+		void WillDownloadToUrl (NSUrlSession session, AVAssetDownloadTask assetDownloadTask, NSUrl location);
+#else
+		[Obsolete ("Use 'WillDownloadToUrl' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void WilllDownloadToUrl (NSUrlSession session, AVAssetDownloadTask assetDownloadTask, NSUrl location);
+
+		[MacCatalyst (18, 0), Mac (14, 0), iOS (18, 0)]
+		[Wrap ("WilllDownloadToUrl (session, assetDownloadTask, location)")]
+		void WillDownloadToUrl (NSUrlSession session, AVAssetDownloadTask assetDownloadTask, NSUrl location);
+#endif
 
 		[MacCatalyst (26, 0), NoTV, Mac (26, 0), iOS (26, 0)]
 		[Export ("URLSession:assetDownloadTask:didReceiveMetricEvent:")]

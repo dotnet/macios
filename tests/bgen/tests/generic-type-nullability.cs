@@ -11,6 +11,8 @@ using UIKit;
 namespace NS {
 	[BaseType (typeof (NSObject))]
 	interface Widget {
+		// === Properties ===
+
 		// Basic: two nullable generic args
 		[Export ("authenticateHandler")]
 		[NullAllowed]
@@ -60,5 +62,25 @@ namespace NS {
 		[Export ("valueTypeAtEnd")]
 		[NullAllowed]
 		Action<NSObject?, NSError?, int> ValueTypeAtEnd { get; set; }
+
+		// === Methods with nullable generic type arguments ===
+
+		// Method with nullable Action parameter
+		[Export ("doSomething:completionHandler:")]
+		void DoSomething (NSObject obj, Action<NSObject?> completionHandler);
+
+		// Method with mixed nullable/non-nullable Action parameter
+		[Export ("doSomethingElse:completionHandler:")]
+		void DoSomethingElse (NSObject obj, Action<NSObject?, NSError> completionHandler);
+
+		// Async method with nullable NSError in completion handler
+		[Async]
+		[Export ("confirmAcquired:completionHandler:")]
+		void ConfirmAcquired (NSObject obj, Action<bool, NSError?> completionHandler);
+
+		// Async method with non-nullable NSError in completion handler
+		[Async]
+		[Export ("confirmAcquiredNonNull:completionHandler:")]
+		void ConfirmAcquiredNonNull (NSObject obj, Action<bool, NSError> completionHandler);
 	}
 }

@@ -1674,6 +1674,22 @@ namespace GeneratorTests {
 
 			// Value type at the end
 			Assert.That (contents, Does.Contain ("Action<NSObject?, NSError?, int>?"), "ValueTypeAtEnd should not annotate trailing value type");
+
+			// === Method parameter assertions ===
+
+			// Method with nullable Action<NSObject?> parameter
+			Assert.That (contents, Does.Contain ("Action<NSObject?>"), "DoSomething should have nullable generic arg in method parameter");
+
+			// Method with mixed nullable/non-nullable Action parameter
+			Assert.That (contents, Does.Contain ("Action<NSObject?, NSError>"), "DoSomethingElse should have mixed nullability in method parameter");
+
+			// Async method: completion handler with nullable NSError should generate Tuple<bool,NSError?>
+			Assert.That (contents, Does.Contain ("Action<bool, NSError?>"), "ConfirmAcquired should have nullable NSError in method parameter");
+			Assert.That (contents, Does.Contain ("Tuple<bool,NSError?>"), "ConfirmAcquired async should generate Tuple with nullable NSError");
+
+			// Async method: completion handler with non-nullable NSError should generate Tuple<bool,NSError>
+			Assert.That (contents, Does.Contain ("Action<bool, NSError>"), "ConfirmAcquiredNonNull should have non-nullable NSError in method parameter");
+			Assert.That (contents, Does.Contain ("Tuple<bool,NSError>"), "ConfirmAcquiredNonNull async should generate Tuple with non-nullable NSError");
 		}
 
 		[Test]

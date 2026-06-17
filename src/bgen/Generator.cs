@@ -1466,6 +1466,7 @@ public partial class Generator : IMemberGatherer {
 						case "BindingImplAttribute":
 						case "XpcInterfaceAttribute":
 						case "NativeIntegerAttribute":
+						case "OverloadResolutionPriorityAttribute":
 							continue;
 						default:
 							throw new BindingException (1007, true, attr.GetType (), mi.DeclaringType, mi.Name);

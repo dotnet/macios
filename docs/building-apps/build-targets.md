@@ -48,8 +48,8 @@ Added in .NET 11.
 
 Builds the project and returns the `@(ApplicationArtifact)` item group. This
 target can be used by custom build scripts to query final `.app`, `.ipa`,
-`.pkg`, and `.xcarchive` artifacts. The `Publish` target also populates the
-same item group for artifacts it creates.
+`.pkg`, and `.xcarchive` artifacts. The `Publish` target returns the same item
+group for artifacts it creates.
 
 ```shell
 $ dotnet build -t:GetApplicationArtifacts
@@ -58,7 +58,7 @@ $ dotnet build -t:GetApplicationArtifacts
 See [ApplicationArtifact](build-items.md#applicationartifact) for supported metadata.
 
 Targets that need to add or update `@(ApplicationArtifact)` metadata before
-`GetApplicationArtifacts` returns can append to
+`GetApplicationArtifacts` or `Publish` returns can append to
 [GetApplicationArtifactsDependsOn](build-properties.md#getapplicationartifactsdependson).
 
 ## Run

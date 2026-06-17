@@ -311,6 +311,58 @@ namespace Xamarin.Tests {
 			AssertApplicationArtifact (result.BinLogPath, pkgPath, platform, packageExtension, isDirectory: false);
 		}
 
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "ipa", "IpaPackagePath")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "pkg", "PkgPackagePath")]
+		public void PublishApplicationArtifactsDependsOnTest (ApplePlatform platform, string runtimeIdentifiers, string packageFormat, string pathVariable)
+		{
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var existingProjectContent = File.ReadAllText (project_path);
+			var newProjectContent = existingProjectContent.Replace ("</Project>", @"
+	<PropertyGroup>
+		<GetApplicationArtifactsDependsOn>$(GetApplicationArtifactsDependsOn);AddMauiPublishApplicationArtifactMetadata</GetApplicationArtifactsDependsOn>
+	</PropertyGroup>
+	<Target Name=""AddMauiPublishApplicationArtifactMetadata"">
+		<ItemGroup>
+			<_MauiObservedPublishAppArtifact Include=""@(ApplicationArtifact)"" Condition=""'%(ApplicationArtifact.PackageFormat)' == 'app'"" />
+			<_MauiObservedPublishPackageArtifact Include=""@(ApplicationArtifact)"" Condition=""'%(ApplicationArtifact.PackageFormat)' == '$(ExpectedAugmentedPackageFormat)'"" />
+			<ApplicationArtifact Update=""@(ApplicationArtifact)"">
+				<ApplicationTitle>My Published MAUI App</ApplicationTitle>
+				<MauiPublishObservedPackageFormat>%(ApplicationArtifact.PackageFormat)</MauiPublishObservedPackageFormat>
+			</ApplicationArtifact>
+		</ItemGroup>
+		<Error Condition=""'@(_MauiObservedPublishAppArtifact)' == ''"" Text=""Expected app ApplicationArtifact items before publish metadata is added."" />
+		<Error Condition=""'@(_MauiObservedPublishPackageArtifact)' == ''"" Text=""Expected $(ExpectedAugmentedPackageFormat) ApplicationArtifact items before publish metadata is added."" />
+	</Target>
+</Project>");
+			File.WriteAllText (project_path, newProjectContent);
+
+			try {
+				var tmpdir = Cache.CreateTemporaryDirectory ();
+				var pkgPath = Path.Combine (tmpdir, $"MyPackage.{packageFormat}");
+
+				var properties = GetDefaultProperties (runtimeIdentifiers);
+				properties [pathVariable] = pkgPath;
+				properties ["Configuration"] = configuration;
+				properties ["ExpectedAugmentedPackageFormat"] = packageFormat;
+
+				var outputs = GetApplicationArtifacts (project_path, properties, target: "Publish");
+				var appOutput = AssertApplicationArtifact (outputs, appPath, platform, "app", isDirectory: true);
+				var packageOutput = AssertApplicationArtifact (outputs, pkgPath, platform, packageFormat, isDirectory: false);
+				Assert.That (GetMetadata (appOutput, "ApplicationTitle"), Is.EqualTo ("My Published MAUI App"), "ApplicationTitle");
+				Assert.That (GetMetadata (appOutput, "MauiPublishObservedPackageFormat"), Is.EqualTo ("app"), "MauiPublishObservedPackageFormat");
+				Assert.That (GetMetadata (packageOutput, "ApplicationTitle"), Is.EqualTo ("My Published MAUI App"), "ApplicationTitle");
+				Assert.That (GetMetadata (packageOutput, "MauiPublishObservedPackageFormat"), Is.EqualTo (packageFormat), "MauiPublishObservedPackageFormat");
+			} finally {
+				File.WriteAllText (project_path, existingProjectContent);
+			}
+		}
+
 
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64")]
 		[TestCase (ApplePlatform.iOS, "iossimulator-x64;iossimulator-x64")]
@@ -518,9 +570,9 @@ namespace Xamarin.Tests {
 			return output;
 		}
 
-		static JsonElement [] GetApplicationArtifacts (string projectPath, Dictionary<string, string> properties)
+		static JsonElement [] GetApplicationArtifacts (string projectPath, Dictionary<string, string> properties, string target = "GetApplicationArtifacts")
 		{
-			using var document = JsonDocument.Parse (DotNet.GetItems (projectPath, "ApplicationArtifact", target: "GetApplicationArtifacts", properties: properties));
+			using var document = JsonDocument.Parse (DotNet.GetItems (projectPath, "ApplicationArtifact", target: target, properties: properties));
 			var outputs = document.RootElement.GetProperty ("Items").GetProperty ("ApplicationArtifact").EnumerateArray ().Select (v => v.Clone ()).ToArray ();
 			Assert.That (outputs, Is.Not.Empty, "ApplicationArtifact items");
 			return outputs;

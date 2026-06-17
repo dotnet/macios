@@ -544,10 +544,10 @@ Where the generated source from the generator are saved.
 ## GetApplicationArtifactsDependsOn
 
 A semi-colon delimited property that can be used to extend the
-[GetApplicationArtifacts](build-targets.md#getapplicationartifacts) target.
-MSBuild targets added to this property will execute after the platform build
-has collected `@(ApplicationArtifact)` items and before `GetApplicationArtifacts`
-returns them.
+[GetApplicationArtifacts](build-targets.md#getapplicationartifacts) and
+`Publish` targets. MSBuild targets added to this property will execute after
+the platform build has collected `@(ApplicationArtifact)` items and before
+`GetApplicationArtifacts` or `Publish` returns them.
 
 This can be used by SDKs such as .NET MAUI to add shared application metadata
 to platform-produced artifacts.

@@ -13,12 +13,13 @@ namespace Xamarin.Tests {
 	[TestFixture]
 	public class DotNetWatchTest : TestBaseClass {
 		[Test]
-		[TestCase (ApplePlatform.MacOSX, false)]
-		[TestCase (ApplePlatform.MacCatalyst, false)]
-		[TestCase (ApplePlatform.iOS, false)]
-		[TestCase (ApplePlatform.MacCatalyst, true)]
-		[TestCase (ApplePlatform.iOS, true)]
-		public void DotNetWatch (ApplePlatform platform, bool useMonoRuntime)
+		[TestCase (ApplePlatform.MacOSX, false, false)]
+		[TestCase (ApplePlatform.MacCatalyst, false, false)]
+		[TestCase (ApplePlatform.iOS, false, false)]
+		[TestCase (ApplePlatform.MacCatalyst, true, false)]
+		[TestCase (ApplePlatform.iOS, true, false)]
+		[TestCase (ApplePlatform.MacCatalyst, false, true)]
+		public void DotNetWatch (ApplePlatform platform, bool useMonoRuntime, bool enableSandbox)
 		{
 			Configuration.IgnoreIfIgnoredPlatform (platform);
 
@@ -138,6 +139,7 @@ namespace Xamarin.Tests {
 				{ "AdditionalFile", additionalFile },
 				{ "UseMonoRuntime", useMonoRuntime ? "true" : "false" },
 				{ "RunWithOpen", "false" }, // this makes it so that the watched process is a subprocess, which means that ctrl-c in the terminal will kill everything. It also means that it'll get killed if something times out in the test.
+				{ "EnableSandbox", enableSandbox ? "true" : "false" },
 			};
 
 			var watchTask = Execution.RunWithCallbacksAsync (

@@ -57,6 +57,10 @@ $ dotnet build -t:GetApplicationArtifacts
 
 See [ApplicationArtifact](build-items.md#applicationartifact) for supported metadata.
 
+Targets that need to add or update `@(ApplicationArtifact)` metadata before
+`GetApplicationArtifacts` returns can append to
+[GetApplicationArtifactsDependsOn](build-properties.md#getapplicationartifactsdependson).
+
 ## Run
 
 Builds the source code within a project and all dependencies, and then deploys and runs it

@@ -541,6 +541,33 @@ Default: true
 
 Where the generated source from the generator are saved.
 
+## GetApplicationArtifactsDependsOn
+
+A semi-colon delimited property that can be used to extend the
+[GetApplicationArtifacts](build-targets.md#getapplicationartifacts) target.
+MSBuild targets added to this property will execute after the platform build
+has collected `@(ApplicationArtifact)` items and before `GetApplicationArtifacts`
+returns them.
+
+This can be used by SDKs such as .NET MAUI to add shared application metadata
+to platform-produced artifacts.
+
+Example:
+
+```xml
+<PropertyGroup>
+  <GetApplicationArtifactsDependsOn>$(GetApplicationArtifactsDependsOn);AddApplicationArtifactMetadata</GetApplicationArtifactsDependsOn>
+</PropertyGroup>
+
+<Target Name="AddApplicationArtifactMetadata">
+  <ItemGroup>
+    <ApplicationArtifact Update="@(ApplicationArtifact)">
+      <ApplicationTitle>$(ApplicationTitle)</ApplicationTitle>
+    </ApplicationArtifact>
+  </ItemGroup>
+</Target>
+```
+
 ## IBToolPath
 
 The full path to the `ibtool` tool.

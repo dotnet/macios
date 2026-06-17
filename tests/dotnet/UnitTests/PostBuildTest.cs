@@ -103,6 +103,42 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		public void GetApplicationArtifactsDependsOnTest ()
+		{
+			var project = "MySimpleApp";
+			var platform = ApplePlatform.iOS;
+			var runtimeIdentifiers = "ios-arm64";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var existingProjectContent = File.ReadAllText (project_path);
+			var newProjectContent = existingProjectContent.Replace ("</Project>", @"
+	<PropertyGroup>
+		<GetApplicationArtifactsDependsOn>$(GetApplicationArtifactsDependsOn);AddMauiApplicationArtifactMetadata</GetApplicationArtifactsDependsOn>
+	</PropertyGroup>
+	<Target Name=""AddMauiApplicationArtifactMetadata"">
+		<ItemGroup>
+			<ApplicationArtifact Update=""@(ApplicationArtifact)"">
+				<ApplicationTitle>My MAUI App</ApplicationTitle>
+			</ApplicationArtifact>
+		</ItemGroup>
+	</Target>
+</Project>");
+			File.WriteAllText (project_path, newProjectContent);
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["BuildIpa"] = "true";
+			properties ["Configuration"] = configuration;
+
+			var outputs = GetApplicationArtifacts (project_path, properties);
+			var appOutput = AssertApplicationArtifact (outputs, appPath, platform, "app", isDirectory: true);
+			Assert.That (GetMetadata (appOutput, "ApplicationTitle"), Is.EqualTo ("My MAUI App"), "ApplicationTitle");
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
 		public void GetApplicationArtifactsArchiveTest (ApplePlatform platform, string runtimeIdentifiers)

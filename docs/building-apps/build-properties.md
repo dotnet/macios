@@ -1226,6 +1226,8 @@ If 'dotnet run' should wait for the app to exit (defaults to `false`).
 
 This will pass `-W` to `open` if set to `true`.
 
+Note: the [WaitForExit](#waitforexit) property takes precedence over this property.
+
 Example:
 
 ```shell
@@ -1254,6 +1256,8 @@ Run `man open` to see a list of all the options `open` accepts.
 
 This property can be used to redirect the stdout output from the app to a file.
 
+This applies to all platforms (macOS, Mac Catalyst, iOS, and tvOS).
+
 Example writing to a file:
 
 ```shell
@@ -1267,11 +1271,13 @@ $ dotnet run -p:StandardOutputPath=$(tty)
 [... Console.WriteLine output from app ...]
 ```
 
-Note: this can also be accomplished by passing `--stdout ...` using the [OpenArguments](#openarguments) property.
+Note: for macOS and Mac Catalyst apps using the `open` command, this can also be accomplished by passing `--stdout ...` using the [OpenArguments](#openarguments) property.
 
 ### StandardErrorPath
 
 This property can be used to redirect the stderr output from the app to a file.
+
+This applies to all platforms (macOS, Mac Catalyst, iOS, and tvOS).
 
 Example writing to a file:
 
@@ -1286,7 +1292,7 @@ $ dotnet run -p:StandardErrorPath=$(tty)
 [... Console.Error.WriteLine output from app ...]
 ```
 
-Note: this can also be accomplished by passing `--stderr ...` using the [OpenArguments](#openarguments) property.
+Note: for macOS and Mac Catalyst apps using the `open` command, this can also be accomplished by passing `--stderr ...` using the [OpenArguments](#openarguments) property.
 
 ### StandardInputPath
 
@@ -1299,6 +1305,22 @@ $ dotnet run -p:StandardInputPath=stdin.txt
 ```
 
 Note: this can also be accomplished by passing `--stdin ...` using the [OpenArguments](#openarguments) property.
+
+## WaitForExit
+
+If 'dotnet run' should wait for the app to exit before returning (defaults to
+`true` for iOS and tvOS apps, and `false` for macOS and Mac Catalyst apps).
+
+This applies to all platforms (macOS, Mac Catalyst, iOS, and tvOS).
+
+For macOS and Mac Catalyst apps, this property takes precedence over the
+[OpenWaitForExit](#openwaitforexit) property.
+
+Example:
+
+```shell
+$ dotnet run -p:WaitForExit=true
+```
 
 ## SdkIsDesktop
 

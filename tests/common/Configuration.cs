@@ -409,6 +409,7 @@ namespace Xamarin.Tests {
 		public static string GetRefDirectory (ApplePlatform platform)
 		{
 			var rv = Path.Combine (GetDotNetRoot (), GetRefNuGetName (platform));
+			rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
 			rv = Path.Combine (rv, "ref", DotNetTfm);
 			return rv;
 		}
@@ -436,6 +437,7 @@ namespace Xamarin.Tests {
 		public static string GetRuntimeDirectory (ApplePlatform platform, string runtimeIdentifier, bool isManagedRuntimePack = false)
 		{
 			var rv = Path.Combine (GetDotNetRoot (), isManagedRuntimePack ? GetManagedRuntimeNuGetName (platform) : GetRuntimeNuGetName (platform, runtimeIdentifier));
+			rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
 			return Path.Combine (rv, "runtimes", runtimeIdentifier);
 		}
 
@@ -448,6 +450,7 @@ namespace Xamarin.Tests {
 		public static string GetSdkRoot (ApplePlatform platform)
 		{
 			var rv = Path.Combine (GetDotNetRoot (), GetSdkNuGetName (platform));
+			rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
 			return Path.Combine (rv, "tools");
 		}
 

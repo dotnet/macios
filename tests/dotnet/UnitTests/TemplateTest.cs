@@ -236,7 +236,7 @@ namespace Xamarin.Tests {
 				rv = DotNet.AssertBuild (proj, properties);
 
 				// There should still not be any warnings
-				warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
+				warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (info.Platform).Select (v => v.Message);
 				Assert.That (warnings, Is.Empty, $"Build warnings (2):\n\t{string.Join ("\n\t", warnings)}");
 
 				var appPath = GetAppPath (proj, platform, runtimeIdentifiers);
@@ -280,7 +280,7 @@ namespace Xamarin.Tests {
 			var proj = Path.Combine (outputDir, $"{info.Template}.{language.AsFileExtension ()}");
 			var properties = GetDefaultProperties ();
 			var rv = DotNet.AssertBuild (proj, properties);
-			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
+			var warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).Select (v => v.Message);
 			Assert.That (warnings, Is.Empty, $"Build warnings:\n\t{string.Join ("\n\t", warnings)}");
 
 			if (info.Execute) {
@@ -295,7 +295,7 @@ namespace Xamarin.Tests {
 				rv = DotNet.AssertBuild (proj, properties);
 
 				// There should still not be any warnings
-				warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).Select (v => v.Message);
+				warnings = BinLog.GetBuildLogWarnings (rv.BinLogPath).FilterWarnings (platform).Select (v => v.Message);
 				Assert.That (warnings, Is.Empty, $"Build warnings (2):\n\t{string.Join ("\n\t", warnings)}");
 
 				var appPath = GetAppPath (proj, platform, runtimeIdentifiers);

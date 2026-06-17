@@ -31,7 +31,7 @@ namespace Xamarin.MacDev.Tasks {
 				SimCtlJson = simctlJson,
 				DeviceCtlJson = devicectlJson,
 			};
-			task.SdkDevPath = Configuration.xcode_root;
+			task.SdkDevPath = Configuration.XcodeLocation;
 			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();
 
 			if (!string.IsNullOrEmpty (appManifest)) {

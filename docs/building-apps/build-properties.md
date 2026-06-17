@@ -550,7 +550,9 @@ the platform build has collected `@(ApplicationArtifact)` items and before
 `GetApplicationArtifacts` or `Publish` returns them.
 
 This can be used by SDKs such as .NET MAUI to add shared application metadata
-to platform-produced artifacts.
+to platform-produced artifacts. Extension targets should update existing
+`@(ApplicationArtifact)` items to add metadata; they should only add new items
+when introducing additional artifacts.
 
 Example:
 

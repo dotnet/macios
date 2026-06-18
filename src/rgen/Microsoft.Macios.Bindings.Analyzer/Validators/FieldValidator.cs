@@ -76,6 +76,7 @@ class FieldValidator : Validator<Property> {
 
 		// there are a number of flags that have no effect in a field property, we are not raise a warning for each
 		// of them since they are ignored by rgen. The user that has warnings as errors will have to deal with them.
+#pragma warning disable CS0618 // DisableZeroCopy is obsolete
 		var ignoredFlags = new [] {
 			PropertyFlag.IsThreadStatic,
 			PropertyFlag.MarshalNativeExceptions,
@@ -93,6 +94,7 @@ class FieldValidator : Validator<Property> {
 			PropertyFlag.Optional,
 			PropertyFlag.CreateEvents,
 		};
+#pragma warning restore CS0618
 
 		var builder = ImmutableArray.CreateBuilder<Diagnostic> ();
 		foreach (var flag in ignoredFlags) {

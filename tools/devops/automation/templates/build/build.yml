@@ -82,6 +82,17 @@ steps:
       HostedMacKeychainPassword: ${{ parameters.keyringPass }}
 
   - bash: |
+      set -eo pipefail
+      set -x
+
+      XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
+      if [[ "$XCODE_PATH" != */Contents/Developer || ! -d "$XCODE_PATH" ]]; then
+        echo "xcode-select does not point to an Xcode developer directory: '$XCODE_PATH'"
+        exit 1
+      fi
+      export XCODE_DEVELOPER_ROOT="$XCODE_PATH"
+      export DEVELOPER_DIR="$XCODE_PATH"
+
       make -C $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops provisioning
     displayName: 'Generate provisionator files.'
 
@@ -93,8 +104,18 @@ steps:
       retryCount: ${{ parameters.retryCount }}  # mono does give issues sometimes to download, we will retry
 
   - bash: |
+      set -eo pipefail
       set -x
-      set -e
+
+      XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
+      if [[ "$XCODE_PATH" != */Contents/Developer || ! -d "$XCODE_PATH" ]]; then
+        echo "xcode-select does not point to an Xcode developer directory: '$XCODE_PATH'"
+        exit 1
+      fi
+      export XCODE_DEVELOPER_ROOT="$XCODE_PATH"
+      export DEVELOPER_DIR="$XCODE_PATH"
+      xcrun -k
+
       ARGS=()
       ARGS+=(--ignore-all)
       ARGS+=(--provision-xcode-components)
@@ -135,7 +156,17 @@ steps:
         displayName: "Configure install extra args"
         timeoutInMinutes: 5
 
-  - bash: $(System.DefaultWorkingDirectory)/$(BUILD_REPOSITORY_TITLE)/configure
+  - bash: |
+      set -eo pipefail
+      set -x
+
+      ARGS=()
+      XCODE_PATH=$(xcode-select -p 2>/dev/null || true)
+      if [[ -n "$XCODE_PATH" && -d "$XCODE_PATH" ]]; then
+        ARGS+=("--xcode=$XCODE_PATH")
+      fi
+
+      ./configure "${ARGS[@]}"
     env:
       ${{ if eq(parameters.isPR, true) }}:
         IsPR: 'True'

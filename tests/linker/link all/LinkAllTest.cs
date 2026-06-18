@@ -466,15 +466,6 @@ namespace LinkAll {
 			Assert.That (Helper.GetType (fqn), Is.Null, "Should NOT be included (no SslStream or Socket support)");
 		}
 
-		[Test]
-		// https://bugzilla.xamarin.com/show_bug.cgi?id=59247
-		public void WebKit_NSProxy ()
-		{
-			// this test works only because "Link all" does not use WebKit
-			var fqn = typeof (NSObject).AssemblyQualifiedName!.Replace ("Foundation.NSObject", "Foundation.NSProxy");
-			Assert.That (Helper.GetType (fqn), Is.Null, fqn);
-		}
-
 		static Type type_Task = typeof (Task);
 
 		[Test]

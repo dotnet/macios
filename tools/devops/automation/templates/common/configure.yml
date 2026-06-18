@@ -125,7 +125,7 @@ parameters:
       isMacTest: true,
     },
     {
-      label: mac_tahoe_golden_gate,
+      label: mac_golden_gate,
       displayName: 'Tests on macOS Golden Gate (27)',
       splitByPlatforms: false,
       testPrefix: 'mac_27_arm64',

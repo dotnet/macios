@@ -3,7 +3,7 @@
 	<Target
 		Name="_PrepareRunDesktop"
 		BeforeTargets="ComputeRunArguments"
-		DependsOnTargets="_ValidateHotReloadConfiguration"
+		DependsOnTargets="_ValidateHotReloadConfiguration;_ReadAppManifest"
 		Condition="'$(SdkIsDesktop)' == 'true'">
 
 		<!--
@@ -32,7 +32,7 @@
 		<PropertyGroup Condition="'@(_StartupHooksVariable)' != ''">
 			<_StartupHooksPath>@(_StartupHooksVariable->'%(Value)')</_StartupHooksPath>
 			<_StartupHooksFilename>$([System.IO.Path]::GetFileName('$(_StartupHooksPath)'))</_StartupHooksFilename>
-			<_StartupHooksContainerDir>$(HOME)/Library/Containers/$(ApplicationId)/Data/tmp/</_StartupHooksContainerDir>
+			<_StartupHooksContainerDir>$(HOME)/Library/Containers/$(_BundleIdentifier)/Data/tmp/</_StartupHooksContainerDir>
 		</PropertyGroup>
 		<MakeDir Directories="$(_StartupHooksContainerDir)" Condition="'$(_StartupHooksContainerDir)' != ''" />
 		<Copy

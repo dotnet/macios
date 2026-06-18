@@ -79,7 +79,9 @@ public class AssemblyPreparer : IDisposable {
 	{
 		var lines = File.ReadAllLines (linker_file).ToList ();
 		SaveAssemblies ("AssemblyPreparer", lines, null, assemblies);
-		configuration = new LinkerConfiguration (log, lines, linker_file, GetConfigurator (null, assemblies.Length == 0 ? null : (input, output) => assemblies.Single (a => a.InputPath == input && a.OutputPath == output)));
+		configuration = new LinkerConfiguration (log, lines, linker_file, GetConfigurator (null, assemblies.Length == 0 ? null : (input, output) => assemblies.Single (a => a.InputPath == input && a.OutputPath == output))) {
+			AssemblyInfos = assemblies.ToList (),
+		};
 	}
 
 	public void AddLog (IAssemblyPreparerLog log)
@@ -133,6 +135,7 @@ public class AssemblyPreparer : IDisposable {
 			new ManagedRegistrarStep (),
 			new TrimmableRegistrarStep (),
 			new ManagedRegistrarLookupTablesStep (),
+			new SaveAssembliesStep (),
 		};
 		return RunSteps (steps, out exceptions);
 	}
@@ -182,77 +185,8 @@ public class AssemblyPreparer : IDisposable {
 			step.Process (linkContext);
 		}
 
-		// save assemblies
-
-		foreach (var assembly in Assemblies) {
-			if (!assembly.IsCILAssembly)
-				continue;
-
-			var assemblyDefinition = assembly.Assembly;
-			if (assemblyDefinition is null) {
-				exceptions.Add (ErrorHelper.CreateError (99, $"Assembly definition is null for {assembly.InputPath}"));
-				return false;
-			}
-
-			var action = configuration.Context.Annotations.GetAction (assemblyDefinition);
-			switch (action) {
-			case AssemblyAction.Copy:
-			case AssemblyAction.CopyUsed:
-				assembly.OutputPath = assembly.InputPath;
-				continue;
-			case AssemblyAction.Link:
-			case AssemblyAction.Save:
-				log.Log ($"Saving {assembly.InputPath} to {assembly.OutputPath}");
-				break;
-			default:
-				exceptions.Add (ErrorHelper.CreateError (99, $"Unknown link action: {action} for assembly {assemblyDefinition.Name}"));
-				return false;
-			}
-
-			PathUtils.CreateDirectoryForFile (assembly.OutputPath);
-			var writerParameters = new WriterParameters ();
-			if (assemblyDefinition.MainModule.HasSymbols) {
-				var provider = new CustomSymbolWriterProvider ();
-				try {
-					using (var tmp = provider.GetSymbolWriter (assemblyDefinition.MainModule, Path.ChangeExtension (assembly.OutputPath, ".pdb"))) { }
-					File.Delete (Path.ChangeExtension (assembly.OutputPath, ".pdb"));
-					writerParameters.WriteSymbols = true;
-					writerParameters.SymbolWriterProvider = provider;
-				} catch (Exception e) {
-					log.Log ($"Failed to create symbol writer for {assembly.OutputPath}, not writing symbols: {e.Message}");
-				}
-			}
-
-			RemoveCrossGen (assemblyDefinition);
-
-			try {
-				assemblyDefinition.Write (assembly.OutputPath, writerParameters);
-				ModuleAttributes m = assemblyDefinition.MainModule.Attributes;
-			} catch (Exception e) {
-				exceptions.Add (ErrorHelper.CreateError (99, e, $"Failed to write {assembly.OutputPath}: {e.Message}"));
-				log.Log ($"Failed to write {assembly.OutputPath}: {e}");
-				return false;
-			}
-		}
 
 		return exceptions.Count == 0;
-	}
-
-	void RemoveCrossGen (AssemblyDefinition assemblyDefinition)
-	{
-		// Drop crossgened code from the assembly
-		// Ref: https://github.com/dotnet/runtime/blob/b86458593223f866effa63122b05bec37f83015e/src/tools/illink/src/linker/Linker.Steps/OutputStep.cs#L95-L105
-		foreach (var module in assemblyDefinition.Modules) {
-			var moduleAttributes = module.Attributes;
-			var isCrossGened = (moduleAttributes & ModuleAttributes.ILOnly) == 0 && (moduleAttributes & ModuleAttributes.ILLibrary) == ModuleAttributes.ILLibrary;
-			if (isCrossGened) {
-				moduleAttributes |= ModuleAttributes.ILOnly;
-				moduleAttributes &= ~ModuleAttributes.ILLibrary;
-				module.Attributes = moduleAttributes;
-				module.Architecture = TargetArchitecture.I386;
-				module.Characteristics |= ModuleCharacteristics.NoSEH;
-			}
-		}
 	}
 
 	// Figure out if an assembly is trimmed or not.

@@ -1,0 +1,5 @@
+!missing-selector! MSUPIRequest::initWithValidationToken:recipients: not bound
+!missing-selector! MSUPIRequest::recipients not bound
+!missing-selector! MSUPIRequest::sendWithCompletionHandler: not bound
+!missing-selector! MSUPIRequest::validationToken not bound
+!missing-type! MSUPIRequest not bound

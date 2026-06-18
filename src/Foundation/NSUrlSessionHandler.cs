@@ -1496,7 +1496,8 @@ namespace Foundation {
 						// If the caller's token triggered the cancellation, surface it
 						// as OperationCanceledException so callers can distinguish
 						// between a caller-requested cancellation and a request timeout.
-						cancellationToken.ThrowIfCancellationRequested ();
+						if (cancellationToken.IsCancellationRequested)
+							throw new OperationCanceledException (ex.Message, ex, cancellationToken);
 						// If the caller's token is not cancelled, this is an internal
 						// cancellation (e.g. HttpClient.Timeout), so wrap it in a
 						// TimeoutException.

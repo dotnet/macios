@@ -543,14 +543,14 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 			// Handle Dlfcn functions of the form (libraryHandle, symbolName)
 			if (mr.Parameters.Count == 2 && mr.Parameters [0].ParameterType.FullName == "System.IntPtr" && mr.Parameters [1].ParameterType.FullName == "System.String") {
 				if (instr.Previous.OpCode != OpCodes.Ldstr) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 
 				// In compatibility mode, only inline symbols from [Field] attributes.
 				var ldstr = instr.Previous;
 				if (ldstr.Operand is not string symbolName) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 				if (!InlineSymbol (symbolName))
@@ -587,12 +587,12 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 					continue;
 				case "GetStruct":
 					if (mr is not GenericInstanceMethod gim || gim.GenericArguments.Count != 1) {
-						Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+						App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 						continue;
 					}
 					var returnType = gim.GenericArguments [0];
 					if (returnType.IsGenericInstance) {
-						Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+						App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 						continue;
 					}
 
@@ -620,12 +620,12 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 			// Handle Dlfcn functions of the form (RTLD, symbolName)
 			if (mr.Parameters.Count == 2 && mr.Parameters [0].ParameterType.FullName == "ObjCRuntime.Dlfcn/RTLD" && mr.Parameters [1].ParameterType.FullName == "System.String") {
 				if (instr.Previous.OpCode != OpCodes.Ldstr) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 				var ldstr = instr.Previous;
 				if (ldstr.Operand is not string symbolName) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 
@@ -649,12 +649,12 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 			// Handle Dlfcn functions of the form (libraryName, symbolName)
 			if (mr.Parameters.Count == 2 && mr.Parameters [0].ParameterType.FullName == "System.String" && mr.Parameters [1].ParameterType.FullName == "System.String") {
 				if (instr.Previous.OpCode != OpCodes.Ldstr) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 				var ldstr = instr.Previous;
 				if (ldstr.Operand is not string symbolName) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 
@@ -721,17 +721,16 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 					break;
 				}
 				if (ldstr is null) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255, method, "Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. Unknown instruction sequence: {2} ({3}/{4}). The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new.", FormatMethod (mr), FormatMethod (method), instr.Previous, instr.Previous.OpCode.StackBehaviourPop, instr.Previous.OpCode.StackBehaviourPush));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. Unknown instruction sequence: {instr.Previous} ({instr.Previous.OpCode.StackBehaviourPop}/{instr.Previous.OpCode.StackBehaviourPush}). The call will not be inlined.");
 					continue;
 				}
 
 				if (ldstr.OpCode != OpCodes.Ldstr) {
-					// Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255, method, "Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. Expected 'ldstr' opcode, got '{2}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new.", FormatMethod (mr), FormatMethod (method), ldstr));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. Expected 'ldstr' opcode, got '{ldstr}'. The call will not be inlined.");
 					continue;
 				}
 				if (ldstr.Operand is not string symbolName) {
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				}
 
@@ -786,11 +785,11 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 						continue;
 					}
 
-					Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+					App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 					continue;
 				case "CachePointer":
 					if (!(mr.Parameters [2].ParameterType is PointerType pt && pt.ElementType.FullName == "System.IntPtr")) {
-						Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+						App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 						continue;
 					}
 
@@ -851,7 +850,7 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 				// (PENDING CONFIRMATION) I believe dlclose is a no-op on at least some Apple platforms.
 				continue;
 			default:
-				Report (ErrorHelper.CreateWarning (Configuration.Application, 2255 /* Unknown or unsupported Dlfcn pattern: '{0}' in method '{1}'. The call will not be inlined. Please file an issue at https://github.com/dotnet/macios/issues/new. */, method, Errors.MX2255, FormatMethod (mr), FormatMethod (method)));
+				App.Log (3, $"Unknown or unsupported Dlfcn pattern: '{FormatMethod (mr)}' in method '{FormatMethod (method)}'. The call will not be inlined.");
 				continue;
 			}
 		}

@@ -77,6 +77,17 @@ parameters:
         "Agent.HasDevices -equals False",
         "Agent.IsPaired -equals False"
       ]
+    },
+    {
+      stageName: 'mac_27_arm64',
+      displayName: 'arm64 - Mac Golden Gate (27)',
+      label: 'mac_golden_gate',
+      macPool: 'AcesShared',
+      useImage: false,
+      statusContext: 'arm64 - Mac Golden Gate (27)',
+      demands: [
+        "ImageOverride -equals ACES_VM_SharedPool_GoldenGate_Beta"
+      ]
     }]
 
 - name: stageDisplayNamePrefix

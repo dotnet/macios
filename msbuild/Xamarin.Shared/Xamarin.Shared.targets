@@ -3460,6 +3460,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<PropertyGroup>
 		<PrepareAssemblies Condition="'$(PrepareAssemblies)' == ''">false</PrepareAssemblies>
+		<PostProcessAssemblies Condition="'$(PostProcessAssemblies)' == ''">$(PrepareAssemblies)</PostProcessAssemblies>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -3506,6 +3507,51 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			<ResolvedFileToPublish Include="@(_PreparedAssemblies)" />
 			<FileWrites Include="@(_PreparedAssemblies)" />
 			<FileWrites Include="$(_UnmanagedCallersOnlyMapPath)" />
+		</ItemGroup>
+	</Target>
+
+	<Target
+		Name="_PrepareAssembliesForPostProcessing"
+		DependsOnTargets="$(_PrepareAssembliesForPostProcessingDependsOn)"
+		>
+		<ItemGroup>
+			<!-- Include all managed assemblies (not just those with PostprocessAssembly=true), because the assembly-preparer
+			     needs to know about all assemblies (including the platform assembly) to do its work. This matches what the
+			     linker does internally (via CollectAssembliesStep which resolves all referenced assemblies). -->
+			<_AssembliesToPostProcess Include="@(ResolvedFileToPublish)" Condition="'%(ResolvedFileToPublish.Extension)' == '.dll' And '%(ResolvedFileToPublish.Culture)' == '' And !$([System.String]::Copy ('%(Filename)').EndsWith ('.resources'))" />
+		</ItemGroup>
+		<PropertyGroup>
+			<_PostprocessedAssembliesDirectory>$([MSBuild]::EnsureTrailingSlash('$(DeviceSpecificIntermediateOutputPath)postprocessed-assemblies'))</_PostprocessedAssembliesDirectory>
+		</PropertyGroup>
+	</Target>
+
+	<!--
+		_PostprocessAssemblies must run after the trimmer (ILLink) and before the assemblies are (Native)AOT/R2R-compiled.
+	-->
+	<Target
+		Name="_PostprocessAssemblies"
+		Condition="'$(PostProcessAssemblies)' == 'true' And '$(RuntimeIdentifiers)' == ''"
+		Inputs="@(_AssembliesToPostProcess)"
+		Outputs="@(_AssembliesToPostProcess->'$(_PostprocessedAssembliesDirectory)%(Filename)%(Extension)')"
+		AfterTargets="ILLink"
+		BeforeTargets="NativeCompile;CreateReadyToRunImages"
+		DependsOnTargets="_PrepareAssembliesForPostProcessing;_ComputeLinkerInputs"
+		>
+		<PrepareAssemblies
+			InputAssemblies="@(_AssembliesToPostProcess)"
+			MakeReproPath="$(_PostprocessAssembliesMakeReproPath)"
+			OptionsFile="$(_CustomLinkerOptionsFile)"
+			OutputDirectory="$(_PostprocessedAssembliesDirectory)"
+			Postprocessing="true"
+			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
+		>
+			<Output TaskParameter="OutputAssemblies" ItemName="_PostProcessedAssemblies" />
+		</PrepareAssemblies>
+
+		<ItemGroup>
+			<ResolvedFileToPublish Remove="@(_AssembliesToPostProcess)" />
+			<ResolvedFileToPublish Include="@(_PostProcessedAssemblies)" />
+			<FileWrites Include="@(_PostProcessedAssemblies)" />
 		</ItemGroup>
 	</Target>
 

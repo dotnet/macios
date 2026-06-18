@@ -52,9 +52,7 @@ test.config: Makefile $(TOP)/Make.config $(TOP)/eng/Version.Details.xml
 	@echo "JENKINS_RESULTS_DIRECTORY=$(abspath $(JENKINS_RESULTS_DIRECTORY))" >> $@
 	@echo "XCODE_DEVELOPER_ROOT=$(XCODE_DEVELOPER_ROOT)" >> $@
 	@echo "DOTNET=$(DOTNET)" >> $@
-	@echo "IOS_SDK_VERSION=$(IOS_SDK_VERSION)" >> $@
-	@echo "TVOS_SDK_VERSION=$(TVOS_SDK_VERSION)" >> $@
-	@echo "MACOS_SDK_VERSION=$(MACOS_SDK_VERSION)" >> $@
+	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_SDK_VERSION=$($(platform)_SDK_VERSION)\\n)" | sed 's/^ //' >> $@
 	@echo "DOTNET_BCL_DIR=$(DOTNET_BCL_DIR)" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),DOTNET_$(platform)_RUNTIME_IDENTIFIERS_NO_ARCH='$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS_NO_ARCH)'\\n)" | sed 's/^ //' >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),DOTNET_$(platform)_RUNTIME_IDENTIFIERS='$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS)'\\n)" | sed 's/^ //' >> $@
@@ -83,9 +81,7 @@ test-system.config: Makefile $(TOP)/Make.config $(TOP)/eng/Version.Details.xml
 	@rm -f $@
 	@echo "JENKINS_RESULTS_DIRECTORY=$(abspath $(JENKINS_RESULTS_DIRECTORY))" >> $@
 	@echo "DOTNET=$(DOTNET)" >> $@
-	@echo "IOS_SDK_VERSION=$(IOS_SDK_VERSION)" >> $@
-	@echo "TVOS_SDK_VERSION=$(TVOS_SDK_VERSION)" >> $@
-	@echo "MACOS_SDK_VERSION=$(MACOS_SDK_VERSION)" >> $@
+	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_SDK_VERSION=$($(platform)_SDK_VERSION)\\n)" | sed 's/^ //' >> $@
 	@echo "DOTNET_TFM=$(DOTNET_TFM)" >> $@
 	@echo "DOTNET_BCL_DIR=$(DOTNET_BCL_DIR)" >> $@
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),DOTNET_$(platform)_RUNTIME_IDENTIFIERS='$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS)'\\n)" | sed 's/^ //' >> $@

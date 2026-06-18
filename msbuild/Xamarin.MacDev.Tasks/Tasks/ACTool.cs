@@ -248,12 +248,12 @@ namespace Xamarin.MacDev.Tasks {
 			yield break;
 		}
 
-		void FindXCAssetsDirectory (string main, string secondary, out string mainResult, out string secondaryResult)
+		void FindAssetCatalogDirectory (string main, string secondary, out string mainResult, out string secondaryResult)
 		{
 			mainResult = main;
 			secondaryResult = secondary;
 
-			while (!string.IsNullOrEmpty (mainResult) && !mainResult.EndsWith (".xcassets", StringComparison.OrdinalIgnoreCase)) {
+			while (!string.IsNullOrEmpty (mainResult) && !mainResult.EndsWith (".xcassets", StringComparison.OrdinalIgnoreCase) && !mainResult.EndsWith (".icon", StringComparison.OrdinalIgnoreCase)) {
 				mainResult = Path.GetDirectoryName (mainResult)!;
 				if (!string.IsNullOrEmpty (secondaryResult))
 					secondaryResult = Path.GetDirectoryName (secondaryResult)!;
@@ -292,14 +292,14 @@ namespace Xamarin.MacDev.Tasks {
 					var vpath = BundleResource.GetVirtualProjectPath (this, imageAsset);
 					var catalogFullPath = imageAsset.GetMetadata ("FullPath");
 
-					// get the parent (which will typically be .appiconset, .launchimage, .imageset, .iconset, etc)
+					// get the parent (which will typically be .appiconset, .launchimage, .imageset, .iconset, .icon, etc)
 					var catalog = Path.GetDirectoryName (vpath)!;
 					catalogFullPath = Path.GetDirectoryName (catalogFullPath)!;
 
 					var assetType = Path.GetExtension (catalog).TrimStart ('.');
 
-					// keep walking up the directory structure until we get to the .xcassets directory
-					FindXCAssetsDirectory (catalog, catalogFullPath, out var catalog2, out var catalogFullPath2);
+					// keep walking up the directory structure until we get to the .xcassets or .icon directory
+					FindAssetCatalogDirectory (catalog, catalogFullPath, out var catalog2, out var catalogFullPath2);
 					catalog = catalog2;
 					catalogFullPath = catalogFullPath2;
 
@@ -325,11 +325,11 @@ namespace Xamarin.MacDev.Tasks {
 					continue;
 				}
 
-				// filter out everything except paths containing a Contents.json file since our main processing loop only cares about these
-				if (Path.GetFileName (vpath) != "Contents.json")
-					continue;
-
-				items.Add (asset);
+				// Handle both Contents.json (for .xcassets) and icon.json (for .icon folders)
+				var fileName = Path.GetFileName (vpath);
+				if (fileName == "Contents.json" || fileName == "icon.json") {
+					items.Add (asset);
+				}
 			}
 
 			// clone any *.xcassets dirs that need cloning
@@ -370,18 +370,20 @@ namespace Xamarin.MacDev.Tasks {
 
 						File.Copy (src, dest, true);
 
-						// filter out everything except paths containing a Contents.json file since our main processing loop only cares about these
-						if (Path.GetFileName (vpath) != "Contents.json")
+						// Handle both Contents.json (for .xcassets) and icon.json (for .icon folders)
+						var fileName = Path.GetFileName (vpath);
+						if (fileName != "Contents.json" && fileName != "icon.json")
 							continue;
 
 						item = new TaskItem (dest);
 						assetItem.CopyMetadataTo (item);
 						item.SetMetadata ("Link", vpath);
-						FindXCAssetsDirectory (Path.GetFullPath (dest), "", out var catalogFullPath, out var _);
+						FindAssetCatalogDirectory (Path.GetFullPath (dest), "", out var catalogFullPath, out var _);
 						items.Add (new AssetInfo (item, vpath, asset.Catalog, catalogFullPath, asset.AssetType));
 					} else {
-						// filter out everything except paths containing a Contents.json file since our main processing loop only cares about these
-						if (Path.GetFileName (vpath) != "Contents.json")
+						// Handle both Contents.json (for .xcassets) and icon.json (for .icon folders)
+						var fileName = Path.GetFileName (vpath);
+						if (fileName != "Contents.json" && fileName != "icon.json")
 							continue;
 
 						items.Add (asset);
@@ -389,7 +391,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 			}
 
-			// Note: `items` contains only the Contents.json files at this point
+			// Note: `items` contains only the Contents.json and icon.json files at this point
 			for (int i = 0; i < items.Count; i++) {
 				var asset = items [i];
 				var assetItem = asset.Item;
@@ -397,16 +399,19 @@ namespace Xamarin.MacDev.Tasks {
 				var catalog = asset.Catalog;
 				var path = assetItem.GetMetadata ("FullPath");
 				var assetType = asset.AssetType;
+				var vpathDirNameWithoutExtension = Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)!);
 
 				if (Platform == ApplePlatform.TVOS) {
-					if (assetType.Equals ("imagestack", StringComparison.OrdinalIgnoreCase)) {
-						imageStacksInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)!));
-					} else if (assetType.Equals ("brandassets", StringComparison.OrdinalIgnoreCase)) {
-						brandAssetsInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)!));
+					if (assetType.Equals ("imagestack", StringComparison.OrdinalIgnoreCase) || assetType.Equals ("icon", StringComparison.OrdinalIgnoreCase)) {
+						imageStacksInAssets.Add (vpathDirNameWithoutExtension);
+					}
+					if (assetType.Equals ("brandassets", StringComparison.OrdinalIgnoreCase) || assetType.Equals ("icon", StringComparison.OrdinalIgnoreCase)) {
+						brandAssetsInAssets.Add (vpathDirNameWithoutExtension);
 					}
 				} else {
-					if (assetType.Equals ("appiconset", StringComparison.OrdinalIgnoreCase))
-						appIconsInAssets.Add (Path.GetFileNameWithoutExtension (Path.GetDirectoryName (vpath)!));
+					if (assetType.Equals ("appiconset", StringComparison.OrdinalIgnoreCase) || assetType.Equals ("icon", StringComparison.OrdinalIgnoreCase)) {
+						appIconsInAssets.Add (vpathDirNameWithoutExtension);
+					}
 				}
 
 				if (unique.Add (catalog)) {
@@ -416,7 +421,8 @@ namespace Xamarin.MacDev.Tasks {
 					catalogs.Add (item);
 				}
 
-				if (SdkPlatform != "WatchSimulator") {
+				// Only process Contents.json files for on-demand resources (not icon.json files)
+				if (SdkPlatform != "WatchSimulator" && Path.GetFileName (vpath) == "Contents.json") {
 					var text = File.ReadAllText (assetItem.ItemSpec);
 
 					if (string.IsNullOrEmpty (text))

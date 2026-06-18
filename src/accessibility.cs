@@ -1,4 +1,5 @@
 using CoreGraphics;
+using System.ComponentModel;
 
 #nullable enable
 
@@ -613,7 +614,16 @@ namespace Accessibility {
 		AXMathExpression NumeratorExpression { get; }
 
 		[Export ("denimonatorExpression")]
+#if XAMCORE_5_0
+		AXMathExpression DenominatorExpression { get; }
+#else
+		[Obsolete ("Use 'DenominatorExpression' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		AXMathExpression DenimonatorExpression { get; }
+
+		[Wrap ("DenimonatorExpression")]
+		AXMathExpression DenominatorExpression { get; }
+#endif
 	}
 
 	[TV (18, 2), Mac (15, 2), iOS (18, 2), MacCatalyst (18, 2)]

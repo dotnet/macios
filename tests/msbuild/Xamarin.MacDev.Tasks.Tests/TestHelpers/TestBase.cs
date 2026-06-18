@@ -54,7 +54,7 @@ namespace Xamarin.MacDev.Tasks {
 			var t = new T ();
 			t.BuildEngine = Engine;
 			if (t is XamarinTask xt)
-				xt.SdkDevPath = Configuration.xcode_root;
+				xt.SdkDevPath = Configuration.XcodeLocation;
 			return t;
 		}
 

@@ -96,6 +96,13 @@ variables:
 - name: system.debug
   value: false
 
+# Tighten the needed network calls to comply with restrictions
+# See https://devdiv.visualstudio.com/DevDiv/_git/Xamarin.yaml-templates/pullrequest/749941
+- name: DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE
+  value: 'true'
+- name: DOTNET_SDK_VULNERABILITY_CHECK_DISABLE
+  value: 'true'
+
 # the name of our repository
 - name: BUILD_REPOSITORY_TITLE
   value: ${{ split(variables['Build.Repository.Name'],'/')[1] }}

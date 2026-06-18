@@ -104,6 +104,15 @@ steps:
 
   displayName: 'Set VM Vendor'
 
+# provision-brew-packages.csx does '#load "provision-shared.csx"', and provision-shared.csx
+# is generated (it's git-ignored) from provision-shared.in.csx by the 'provisioning' make target.
+# Every other common/provision.yml caller (build, simulator tests, windows reserve-mac) generates
+# it first, so do the same here or the provisionator step fails with 'provision-shared.csx could
+# not be opened'.
+- bash: |
+    make -C $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops provisioning
+  displayName: 'Generate Provisionator csx file'
+
 - template: ../common/provision.yml
   parameters:
     provisioning_script: $(Build.SourcesDirectory)/$(BUILD_REPOSITORY_TITLE)/tools/devops/provision-brew-packages.csx

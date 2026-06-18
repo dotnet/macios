@@ -51,16 +51,24 @@ define RunRegistrar
 no-xcode-build:: .libs/Microsoft.$(9).registrar.$(10).m .libs/Microsoft.$(9).registrar.$(10).h
 no-xcode-build:: .libs/Microsoft.$(9).registrar.coreclr.$(10).m .libs/Microsoft.$(9).registrar.$(10).h
 endef
+ifdef INCLUDE_IOS
 $(eval $(call RunRegistrar,ios,x86_64,64,$(IOS_SDK_VERSION),iOS,$(iossimulator-x64_CFLAGS),,,iOS,iossimulator-x64))
 $(eval $(call RunRegistrar,ios,arm64,64,$(IOS_SDK_VERSION),iOS,$(iossimulator-arm64_CFLAGS),,,iOS,iossimulator-arm64))
 $(eval $(call RunRegistrar,ios,arm64,64,$(IOS_SDK_VERSION),iOS,$(ios-arm64_CFLAGS),,,iOS,ios-arm64))
+endif
+ifdef INCLUDE_TVOS
 $(eval $(call RunRegistrar,tvos,x86_64,64,$(TVOS_SDK_VERSION),TVOS,$(tvossimulator-x64_CFLAGS),,,tvOS,tvossimulator-x64))
 $(eval $(call RunRegistrar,tvos,arm64,64,$(TVOS_SDK_VERSION),TVOS,$(tvossimulator-arm64_CFLAGS),,,tvOS,tvossimulator-arm64))
 $(eval $(call RunRegistrar,tvos,arm64,64,$(TVOS_SDK_VERSION),TVOS,$(tvos-arm64_CFLAGS),,,tvOS,tvos-arm64))
+endif
+ifdef INCLUDE_MACCATALYST
 $(eval $(call RunRegistrar,maccatalyst,x86_64,64,$(MACCATALYST_SDK_VERSION),MacCatalyst,$(maccatalyst-x64_CFLAGS),,,MacCatalyst,maccatalyst-x64))
 $(eval $(call RunRegistrar,maccatalyst,arm64,64,$(MACCATALYST_SDK_VERSION),MacCatalyst,$(maccatalyst-arm64_CFLAGS),,,MacCatalyst,maccatalyst-arm64))
+endif
+ifdef INCLUDE_MAC
 $(eval $(call RunRegistrar,macos,arm64,64,$(MACOS_SDK_VERSION),macOS,$(osx-arm64_CFLAGS),,,macOS,osx-arm64))
 $(eval $(call RunRegistrar,macos,x86_64,64,$(MACOS_SDK_VERSION),macOS,$(osx-x64_CFLAGS),,,macOS,osx-x64))
+endif
 
 TARGETS_DOTNET = \
 	$(foreach platform,$(DOTNET_PLATFORMS_MTOUCH),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(DOTNET_DESTDIR)/$($(rid)_NUGET_RUNTIME_NAME)/runtimes/$(rid)/native/Microsoft.$(platform).registrar.a)) \

@@ -136,6 +136,7 @@ public class AssemblyPreparer : IDisposable {
 			new ManagedRegistrarStep (),
 			new TrimmableRegistrarStep (),
 			new ManagedRegistrarLookupTablesStep (),
+			new InlineClassGetHandleStep (),
 			new SaveAssembliesStep (),
 		};
 		return RunSteps (steps, out exceptions);

@@ -2374,7 +2374,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(OutputType)' == 'Exe' And '$(IsAppExtension)' != 'true' And '$(IsWatchApp)' != 'true' And Exists('$(AppBundleDir)')"
 		AfterTargets="Codesign">
 		<ItemGroup>
-			<ApplicationArtifact Include="$(AppBundleDir)">
+			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(AppBundleDir)'))">
 				<PackageFormat>app</PackageFormat>
 				<IsDirectory>true</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>
@@ -3274,7 +3274,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Condition="'$(ArchiveOnBuild)' == 'true' And '$(ArchiveDir)' != '' And Exists('$(ArchiveDir)')"
 		AfterTargets="_CoreArchive">
 		<ItemGroup>
-			<ApplicationArtifact Include="$(ArchiveDir)">
+			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(ArchiveDir)'))">
 				<PackageFormat>xcarchive</PackageFormat>
 				<IsDirectory>true</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>
@@ -3390,7 +3390,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 		Condition="'$(CreatePackage)' == 'true' And '$(PkgPackagePath)' != '' And Exists('$(PkgPackagePath)')"
 		AfterTargets="_CreateInstaller">
 		<ItemGroup>
-			<ApplicationArtifact Include="$(PkgPackagePath)">
+			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(PkgPackagePath)'))">
 				<PackageFormat>pkg</PackageFormat>
 				<IsDirectory>false</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>

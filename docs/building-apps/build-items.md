@@ -251,7 +251,7 @@ An item group that contains environment variables that will be set when the app 
 
 ## ApplicationArtifact
 
-An item group that contains final application artifacts produced by Apple platform builds and publishes. The item identity is the path to the artifact. This can include:
+An item group that contains final application artifacts produced by Apple platform builds and publishes. The item identity is the absolute path to the artifact. This can include:
 
 * `.app` app bundles for iOS, tvOS, macOS, and Mac Catalyst apps.
 * `.ipa` packages when [BuildIpa](build-properties.md#buildipa) is enabled.

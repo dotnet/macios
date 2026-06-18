@@ -509,17 +509,17 @@ namespace Xamarin.Tests {
 		{
 			var outputs = GetItems (binLogPath, "ApplicationArtifact");
 			var fullPath = Path.GetFullPath (path);
-			var output = outputs.SingleOrDefault (v => Path.GetFullPath (v.GetMetadata ("FullPath")) == fullPath);
-			Assert.That (output, Is.Not.Null, $"Could not find {packageFormat} output for {fullPath}. All outputs:\n\t{string.Join ("\n\t", outputs.Select (v => v.GetMetadata ("FullPath")))}");
+			var output = outputs.SingleOrDefault (v => Path.GetFullPath (v.ItemSpec) == fullPath);
+			Assert.That (output, Is.Not.Null, $"Could not find {packageFormat} output for {fullPath}. All outputs:\n\t{string.Join ("\n\t", outputs.Select (v => v.ItemSpec))}");
 			Assert.That (output!.GetMetadata ("PackageFormat"), Is.EqualTo (packageFormat), "PackageFormat");
 			Assert.That (output.GetMetadata ("IsDirectory"), Is.EqualTo (isDirectory ? "true" : "false"), "IsDirectory");
 			Assert.That (output.GetMetadata ("PlatformName"), Is.EqualTo (platform.AsString ()), "PlatformName");
 			Assert.That (output.GetMetadata ("BundleIdentifier"), Is.Not.Empty, "BundleIdentifier");
-			Assert.That (output.GetMetadata ("ArtifactKind"), Is.Empty, "ArtifactKind");
-			Assert.That (output.GetMetadata ("AppBundlePath"), Is.Empty, "AppBundlePath");
-			Assert.That (output.GetMetadata ("CodeSigned"), Is.Empty, "CodeSigned");
-			Assert.That (output.GetMetadata ("Signed"), Is.Empty, "Signed");
-			Assert.That (output.GetMetadata ("PackageSigned"), Is.Empty, "PackageSigned");
+			Assert.That (output.GetMetadata ("ArtifactKind"), Is.Null.Or.Empty, "ArtifactKind");
+			Assert.That (output.GetMetadata ("AppBundlePath"), Is.Null.Or.Empty, "AppBundlePath");
+			Assert.That (output.GetMetadata ("CodeSigned"), Is.Null.Or.Empty, "CodeSigned");
+			Assert.That (output.GetMetadata ("Signed"), Is.Null.Or.Empty, "Signed");
+			Assert.That (output.GetMetadata ("PackageSigned"), Is.Null.Or.Empty, "PackageSigned");
 			return output;
 		}
 

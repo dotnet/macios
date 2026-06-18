@@ -114,16 +114,6 @@ public class AssemblyPreparer : IDisposable {
 
 	public bool Prepare (out List<ProductException> exceptions)
 	{
-		exceptions = configuration.Exceptions;
-
-		if (Registrar == RegistrarMode.Default) {
-			exceptions.Add (ErrorHelper.CreateError (99, "RegistrarMode must be explicitly set."));
-			return false;
-		}
-
-		if (!string.IsNullOrEmpty (MakeReproPath) && !SaveToReproPath (exceptions))
-			return false;
-
 		var steps = new ConfigurationAwareStep [] {
 			// All the same steps as the custom trimmer steps that are run before MarkStep in Xamarin.Shared.Sdk.targets (and in the same order).
 			// CollectAssembliesStep
@@ -144,6 +134,20 @@ public class AssemblyPreparer : IDisposable {
 			new TrimmableRegistrarStep (),
 			new ManagedRegistrarLookupTablesStep (),
 		};
+		return RunSteps (steps, out exceptions);
+	}
+
+	bool RunSteps (IList<ConfigurationAwareStep> steps, out List<ProductException> exceptions)
+	{
+		exceptions = configuration.Exceptions;
+
+		if (Registrar == RegistrarMode.Default) {
+			exceptions.Add (ErrorHelper.CreateError (99, "RegistrarMode must be explicitly set."));
+			return false;
+		}
+
+		if (!string.IsNullOrEmpty (MakeReproPath) && !SaveToReproPath (exceptions))
+			return false;
 
 		var linkContext = configuration.DerivedLinkContext;
 

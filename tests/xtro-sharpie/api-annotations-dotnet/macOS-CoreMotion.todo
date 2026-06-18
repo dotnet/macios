@@ -1,0 +1,5 @@
+!missing-protocol! CMBodyIdentifiable not bound
+!missing-selector! CMDeviceMotion::headingAccuracy not bound
+!missing-selector! CMRecordedDeviceMotion::identifier not bound
+!missing-selector! CMRecordedDeviceMotion::startDate not bound
+!missing-type! CMRecordedDeviceMotion not bound

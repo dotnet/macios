@@ -288,8 +288,8 @@ namespace UIKit {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos14.0")]
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("tvos26.1", "Use 'AXSettings.ShowBordersEnabled' instead.")]
 		[ObsoletedOSPlatform ("ios26.1", "Use 'AXSettings.ShowBordersEnabled' instead.")]
@@ -299,8 +299,8 @@ namespace UIKit {
 
 		/// <summary>Gets a value indicating whether button shapes are enabled.</summary>
 		/// <value><see langword="true"/> if button shapes are enabled; otherwise, <see langword="false"/>.</value>
-		[SupportedOSPlatform ("tvos14.0")]
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[ObsoletedOSPlatform ("tvos26.1", "Use 'AXSettings.ShowBordersEnabled' instead.")]
 		[ObsoletedOSPlatform ("ios26.1", "Use 'AXSettings.ShowBordersEnabled' instead.")]
@@ -329,16 +329,16 @@ namespace UIKit {
 			}
 		}
 
-		[SupportedOSPlatform ("tvos14.0")]
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.UIKitLibrary)]
 		static extern byte UIAccessibilityPrefersCrossFadeTransitions ();
 
 		/// <summary>Gets a value indicating whether the user prefers cross-fade transitions over sliding transitions.</summary>
 		/// <value><see langword="true"/> if cross-fade transitions are preferred; otherwise, <see langword="false"/>.</value>
-		[SupportedOSPlatform ("tvos14.0")]
-		[SupportedOSPlatform ("ios14.0")]
+		[SupportedOSPlatform ("tvos")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public static bool PrefersCrossFadeTransitions => UIAccessibilityPrefersCrossFadeTransitions () != 0;
 

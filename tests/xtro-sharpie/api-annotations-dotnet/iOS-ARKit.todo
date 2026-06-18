@@ -1,0 +1,6 @@
+!deprecated-attribute-missing! ARReferenceObject::exportObjectToURL:previewImage:error: missing a [Deprecated] attribute
+!deprecated-attribute-missing! ARReferenceObject::rawFeaturePoints missing a [Deprecated] attribute
+!deprecated-attribute-missing! ARReferenceObject::referenceObjectByApplyingTransform: missing a [Deprecated] attribute
+!deprecated-attribute-missing! ARReferenceObject::referenceObjectByMergingObject:error: missing a [Deprecated] attribute
+!deprecated-attribute-missing! ARReferenceObject::resourceGroupName missing a [Deprecated] attribute
+!deprecated-attribute-missing! ARSession::createReferenceObjectWithTransform:center:extent:completionHandler: missing a [Deprecated] attribute

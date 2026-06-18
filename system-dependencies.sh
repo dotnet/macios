@@ -348,37 +348,6 @@ function delete_all_simulator_runtimes ()
 	rm -rf "$TMPFILE"
 }
 
-SIMULATORS_WITHOUT_X64=()
-SIMULATORS_WITHOUT_X64_COUNT=0
-function get_non_universal_simulator_runtimes ()
-{
-	local TMPFILE
-	TMPFILE=$(mktemp)
-
-	xcrun simctl runtime list -j --json-output="$TMPFILE"
-
-	# this json query filters the json to simulator runtimes where iOS/tvOS >= 26.0 and where x64 is *not* supported (which we need to run x64 apps in the simulator on arm64)
-	JQ_QUERY='map({identifier: .identifier, version: .version, supportedArchitectures: .supportedArchitectures | join("|"), majorVersion: .version | split(".")[0] | tonumber }) | map(select(.majorVersion>=26) ) | map(select(.supportedArchitectures | contains("x86_64") | not)) | .[].identifier'
-	SIMULATORS_WITHOUT_X64=($(jq "$JQ_QUERY" -r "$TMPFILE"))
-	SIMULATORS_WITHOUT_X64_COUNT="${#SIMULATORS_WITHOUT_X64[@]}"
-
-	rm -f "$TMPFILE"
-}
-
-function print_non_universal_simulator_runtimes ()
-{
-	local TMPFILE
-	TMPFILE=$(mktemp)
-
-	xcrun simctl runtime list -j --json-output="$TMPFILE"
-
-	# this json query filters the json to simulator runtimes where iOS/tvOS >= 26.0 and where x64 is *not* supported (which we need to run x64 apps in the simulator on arm64)
-	JQ_QUERY='map({platformIdentifier: .platformIdentifier, identifier: .identifier, version: .version, state: .state, supportedArchitectures: .supportedArchitectures | join("|"), majorVersion: .version | split(".")[0] | tonumber }) | map(select(.majorVersion>=26) ) | map(select(.supportedArchitectures | contains("x86_64") | not))'
-	jq "$JQ_QUERY" -r "$TMPFILE"
-
-	rm -f "$TMPFILE"
-}
-
 function xcodebuild_download_selected_platforms ()
 {
 	local XCODE_DEVELOPER_ROOT
@@ -398,10 +367,11 @@ function xcodebuild_download_selected_platforms ()
 
 	IOS_BUILD_VERSION=
 	TVOS_BUILD_VERSION=
+	# kept the is_at_least_version "$XCODE_VERSION" 26.0 guard because -architectureVariant only exists in Xcode 26+; on older Xcode it falls back to a plain -downloadPlatform.
 	if is_at_least_version "$XCODE_VERSION" 26.0; then
-		# we always want the universal variant, so that we can run x64 test apps on arm64
-		IOS_BUILD_VERSION=" -architectureVariant universal"
-		TVOS_BUILD_VERSION=" -architectureVariant universal"
+		# we always want the arm64 variant (the x64 simulators aren't supported anymore)
+		IOS_BUILD_VERSION=" -architectureVariant arm64"
+		TVOS_BUILD_VERSION=" -architectureVariant arm64"
 	fi
 
 	local TMPFILE
@@ -420,55 +390,6 @@ function xcodebuild_download_selected_platforms ()
 		delete_all_simulator_runtimes
 	else
 		log "    none found."
-	fi
-
-	# If we're executing on arm64, we need simulator runtimes that support x64 in order to run
-	# x64 apps in the simulator (aka the universal architecture variant). If we have any simulator
-	# runtimes that don't support x64, then delete those, so that we can re-install the universal
-	# variant.
-	local DOTNET_ARCH
-	if [[ "$(arch)" == "arm64" ]]; then
-		DOTNET_ARCH=arm64
-	elif [[ "$(sysctl -n sysctl.proc_translated 2>/dev/null)" == "1" ]]; then
-		DOTNET_ARCH=arm64
-	fi
-	if [[ "$DOTNET_ARCH" == "arm64" ]]; then
-		log "Looking for iOS/tvOS 26+ simulator runtimes that don't support x64..."
-
-		get_non_universal_simulator_runtimes
-		if [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 && "$ACES" == "1" ]]; then
-			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, but we're running on ACES, so we can't do anything about that."
-		elif [[ "$SIMULATORS_WITHOUT_X64_COUNT" -gt 0 ]]; then
-			log "Found ${SIMULATORS_WITHOUT_X64_COUNT} simulator runtimes that don't support x64, which will now be deleted: ${SIMULATORS_WITHOUT_X64[*]}"
-			for sim in "${SIMULATORS_WITHOUT_X64[@]}"; do
-				log "Executing 'xcrun simctl runtime delete $sim'"
-				xcrun simctl runtime delete "$sim"
-			done
-			# sadly simulator deletion is done asynchronously, so we have to wait until they're all gone
-			log "Waiting for the simulators to be deleted..."
-			printf "            "
-			for i in $(seq 1 300); do
-				sleep 1
-				get_non_universal_simulator_runtimes
-				if [[ "$SIMULATORS_WITHOUT_X64_COUNT" == "0" ]]; then
-					break
-				fi
-				# every 60 seconds print the simulators left to delete
-				if [[ $(( i % 60)) == 0 ]]; then
-					printf "\n"
-					printf "            Simulators left to delete:\n"
-					print_non_universal_simulator_runtimes | sed 's/^/            /'
-					printf "            "
-				fi
-				printf "$SIMULATORS_WITHOUT_X64_COUNT"
-			done
-			printf "\n"
-			if [[ "$SIMULATORS_WITHOUT_X64_COUNT" != "0" ]]; then
-				warn "Waited for 5 minutes, but there are still $SIMULATORS_WITHOUT_X64_COUNT simulators waiting to deleted."
-			fi
-		else
-			log "All installed iOS/tvOS 26+ simulators support x64"
-		fi
 	fi
 
 	log "Executing '$XCODE_DEVELOPER_ROOT/usr/bin/xcodebuild -downloadPlatform iOS$IOS_BUILD_VERSION' $1"

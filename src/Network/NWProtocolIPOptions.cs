@@ -43,16 +43,16 @@ namespace Network {
 		public void SetIPLocalAddressPreference (NWIPLocalAddressPreference localAddressPreference)
 			=> nw_ip_options_set_local_address_preference (GetCheckedHandle (), localAddressPreference);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		[DllImport (Constants.NetworkLibrary)]
 		static extern void nw_ip_options_set_disable_multicast_loopback (OS_nw_protocol_options options, byte disableMulticastLoopback);
 
-		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("tvos")]
 		[SupportedOSPlatform ("macos")]
-		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("ios")]
 		[SupportedOSPlatform ("maccatalyst")]
 		public void DisableMulticastLoopback (bool disable)
 			=> nw_ip_options_set_disable_multicast_loopback (GetCheckedHandle (), disable.AsByte ());

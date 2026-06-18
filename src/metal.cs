@@ -5904,6 +5904,8 @@ namespace Metal {
 	[Introduced (PlatformName.MacCatalyst, 13, 4)]
 	[TV (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLRasterizationRateSampleArray {
 		[Export ("objectAtIndexedSubscript:")]
 		NSNumber GetObject (nuint index);
@@ -5915,6 +5917,8 @@ namespace Metal {
 	[Introduced (PlatformName.MacCatalyst, 13, 4)]
 	[TV (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLRasterizationRateMapDescriptor : NSCopying {
 		[Static]
 		[Export ("rasterizationRateMapDescriptorWithScreenSize:")]
@@ -5956,6 +5960,8 @@ namespace Metal {
 	[TV (16, 0)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLRasterizationRateLayerDescriptor : NSCopying {
 
 		[Export ("initWithSampleCount:")]
@@ -5995,6 +6001,8 @@ namespace Metal {
 	[Introduced (PlatformName.MacCatalyst, 13, 4)]
 	[TV (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLRasterizationRateLayerArray {
 		[Export ("objectAtIndexedSubscript:")]
 		[return: NullAllowed]
@@ -6252,6 +6260,8 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (MTLAccelerationStructureGeometryDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructureBoundingBoxGeometryDescriptor {
 		[NullAllowed, Export ("boundingBoxBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer BoundingBoxBuffer { get; set; }
@@ -6273,6 +6283,8 @@ namespace Metal {
 	[iOS (14, 0), TV (16, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructureDescriptor : NSCopying {
 		[iOS (17, 0), MacCatalyst (17, 0), TV (17, 0)]
 		[Export ("usage", ArgumentSemantic.Assign)]
@@ -6282,6 +6294,8 @@ namespace Metal {
 	[iOS (14, 0), TV (16, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructureGeometryDescriptor : NSCopying {
 		[Export ("intersectionFunctionTableOffset")]
 		nuint IntersectionFunctionTableOffset { get; set; }
@@ -6316,6 +6330,8 @@ namespace Metal {
 	[iOS (14, 0), TV (16, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (MTLAccelerationStructureGeometryDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructureTriangleGeometryDescriptor {
 		[NullAllowed, Export ("vertexBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer VertexBuffer { get; set; }
@@ -6495,6 +6511,8 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (MTLAccelerationStructureDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLInstanceAccelerationStructureDescriptor {
 		[NullAllowed, Export ("instanceDescriptorBuffer", ArgumentSemantic.Retain)]
 		IMTLBuffer InstanceDescriptorBuffer { get; set; }
@@ -6548,12 +6566,16 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (MTLFunctionDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLIntersectionFunctionDescriptor : NSCopying { }
 
 	[iOS (14, 0), TV (16, 0)]
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLIntersectionFunctionTableDescriptor : NSCopying {
 		[Static]
 		[Export ("intersectionFunctionTableDescriptor")]
@@ -6608,6 +6630,8 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (MTLAccelerationStructureDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLPrimitiveAccelerationStructureDescriptor {
 		[NullAllowed, Export ("geometryDescriptors", ArgumentSemantic.Retain)]
 		MTLAccelerationStructureGeometryDescriptor [] GeometryDescriptors { get; set; }
@@ -6673,6 +6697,8 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLResourceStatePassDescriptor : NSCopying {
 		[Static]
 		[Export ("resourceStatePassDescriptor")]
@@ -6685,6 +6711,8 @@ namespace Metal {
 	[iOS (14, 0), TV (16, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLResourceStatePassSampleBufferAttachmentDescriptor : NSCopying {
 		[NullAllowed, Export ("sampleBuffer", ArgumentSemantic.Retain)]
 		IMTLCounterSampleBuffer SampleBuffer { get; set; }
@@ -6699,6 +6727,8 @@ namespace Metal {
 	[iOS (14, 0), TV (16, 0)]
 	[MacCatalyst (14, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLResourceStatePassSampleBufferAttachmentDescriptorArray {
 		[Export ("objectAtIndexedSubscript:")]
 		MTLResourceStatePassSampleBufferAttachmentDescriptor GetObject (nuint attachmentIndex);
@@ -6712,6 +6742,8 @@ namespace Metal {
 	[MacCatalyst (14, 0)]
 	[DisableDefaultCtor]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLVisibleFunctionTableDescriptor : NSCopying {
 		[Static]
 		[Export ("visibleFunctionTableDescriptor")]
@@ -6998,6 +7030,8 @@ namespace Metal {
 
 	[iOS (15, 0), TV (16, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLRenderPipelineFunctionsDescriptor : NSCopying {
 		[NullAllowed, Export ("vertexAdditionalBinaryFunctions", ArgumentSemantic.Copy)]
 		IMTLFunction [] VertexAdditionalBinaryFunctions { get; set; }
@@ -7011,6 +7045,8 @@ namespace Metal {
 
 	[iOS (15, 0), TV (16, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLMotionKeyframeData {
 		[NullAllowed, Export ("buffer", ArgumentSemantic.Retain)]
 		IMTLBuffer Buffer { get; set; }
@@ -7087,6 +7123,8 @@ namespace Metal {
 
 	[iOS (15, 0), TV (16, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (MTLAccelerationStructureGeometryDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructureMotionTriangleGeometryDescriptor {
 		[Export ("vertexBuffers", ArgumentSemantic.Copy)]
 		MTLMotionKeyframeData [] VertexBuffers { get; set; }
@@ -7129,6 +7167,8 @@ namespace Metal {
 
 	[iOS (15, 0), TV (16, 0), MacCatalyst (15, 0)]
 	[BaseType (typeof (MTLAccelerationStructureGeometryDescriptor))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructureMotionBoundingBoxGeometryDescriptor {
 		[Export ("boundingBoxBuffers", ArgumentSemantic.Copy)]
 		MTLMotionKeyframeData [] BoundingBoxBuffers { get; set; }
@@ -7410,6 +7450,8 @@ namespace Metal {
 
 	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLMeshRenderPipelineDescriptor : NSCopying {
 		[NullAllowed, Export ("label")]
 		string Label { get; set; }
@@ -7512,6 +7554,8 @@ namespace Metal {
 
 	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructurePassSampleBufferAttachmentDescriptor : NSCopying {
 		[NullAllowed, Export ("sampleBuffer", ArgumentSemantic.Retain)]
 		IMTLCounterSampleBuffer SampleBuffer { get; set; }
@@ -7525,6 +7569,8 @@ namespace Metal {
 
 	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructurePassSampleBufferAttachmentDescriptorArray {
 		[Export ("objectAtIndexedSubscript:")]
 		MTLAccelerationStructurePassSampleBufferAttachmentDescriptor GetObject (nuint attachmentIndex);
@@ -7535,6 +7581,8 @@ namespace Metal {
 
 	[iOS (16, 0), TV (16, 0), MacCatalyst (16, 0)]
 	[BaseType (typeof (NSObject))]
+	// Declared available on tvOS 16.0 but only present in the tvOS simulator from tvOS 16.1 onwards.
+	[SupportedSimulator ("tvos16.1")]
 	interface MTLAccelerationStructurePassDescriptor : NSCopying {
 		[Static]
 		[Export ("accelerationStructurePassDescriptor")]

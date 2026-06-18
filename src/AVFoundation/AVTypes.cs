@@ -409,8 +409,8 @@ namespace AVFoundation {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorSyncInfo {
 #if XAMCORE_5_0
@@ -456,8 +456,8 @@ namespace AVFoundation {
 #if !XAMCORE_5_0
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	[NativeName ("AVSampleCursorSyncInfo")]
 #if COREBUILD
@@ -497,8 +497,8 @@ namespace AVFoundation {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorDependencyInfo {
 #if XAMCORE_5_0
@@ -580,8 +580,8 @@ namespace AVFoundation {
 #if !XAMCORE_5_0
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	[NativeName ("AVSampleCursorDependencyInfo")]
 #if COREBUILD
@@ -643,8 +643,8 @@ namespace AVFoundation {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorStorageRange {
 		/// <summary>The location of the first byte.</summary>
@@ -659,8 +659,8 @@ namespace AVFoundation {
 	///     <remarks>To be added.</remarks>
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorChunkInfo {
 		/// <summary>The number of samples present.</summary>
@@ -719,8 +719,8 @@ namespace AVFoundation {
 #if !XAMCORE_5_0
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	[NativeName ("AVSampleCursorChunkInfo")]
 #if COREBUILD
@@ -760,8 +760,8 @@ namespace AVFoundation {
 
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	public struct AVSampleCursorAudioDependencyInfo {
 #if XAMCORE_5_0 || (__IOS__ && !__MACCATALYST__) || __TVOS__
@@ -782,8 +782,8 @@ namespace AVFoundation {
 #if !XAMCORE_5_0 && !(__IOS__ && !__MACCATALYST__) && !__TVOS__
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[SupportedOSPlatform ("ios15.0")]
-	[SupportedOSPlatform ("tvos15.0")]
+	[SupportedOSPlatform ("ios")]
+	[SupportedOSPlatform ("tvos")]
 	[StructLayout (LayoutKind.Sequential)]
 	[NativeName ("AVSampleCursorAudioDependencyInfo")]
 #if COREBUILD

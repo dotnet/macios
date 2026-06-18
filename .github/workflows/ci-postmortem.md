@@ -1,7 +1,5 @@
 ---
 on:
-  schedule:
-    - cron: "weekly on sunday"
   workflow_dispatch:
 permissions:
   contents: read

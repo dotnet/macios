@@ -170,12 +170,9 @@ Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/X
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::InitialSet
 Microsoft.iOS.dll:Foundation.NSObject/XamarinGCHandleFlags Foundation.NSObject/XamarinGCHandleFlags::None
 Microsoft.iOS.dll:Foundation.NSObjectData
-Microsoft.iOS.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::data
 Microsoft.iOS.dll:Foundation.NSObjectData* Foundation.NSObjectDataHandle::Data()
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle..ctor()
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle.CreateHandle(Foundation.NSObject)
-Microsoft.iOS.dll:Foundation.NSObjectDataHandle.Finalize()
 Microsoft.iOS.dll:Foundation.NSObjectDataHandle.get_Data()
 Microsoft.iOS.dll:Foundation.NSObjectFlag
 Microsoft.iOS.dll:Foundation.NSObjectFlag Foundation.NSObjectFlag::Empty
@@ -186,6 +183,12 @@ Microsoft.iOS.dll:Foundation.RegisterAttribute
 Microsoft.iOS.dll:Foundation.RegisterAttribute..ctor(System.String, System.Boolean)
 Microsoft.iOS.dll:Foundation.RegisterAttribute..ctor(System.String)
 Microsoft.iOS.dll:Foundation.RegisterAttribute.get_IsWrapper()
+Microsoft.iOS.dll:Foundation.TrackedMemory
+Microsoft.iOS.dll:Foundation.TrackedMemory..ctor(System.UIntPtr)
+Microsoft.iOS.dll:Foundation.TrackedMemory.CreateHandle(Foundation.NSObject)
+Microsoft.iOS.dll:Foundation.TrackedMemory.Finalize()
+Microsoft.iOS.dll:Foundation.TrackedMemory.get_Value()
+Microsoft.iOS.dll:Foundation.TrackedMemory.set_Value(System.IntPtr)
 Microsoft.iOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method
 Microsoft.iOS.dll:Foundation.You_Should_Not_Call_base_In_This_Method..ctor()
 Microsoft.iOS.dll:ObjCRuntime.__Registrar__
@@ -370,7 +373,6 @@ Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::class_ptr
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::ClassHandle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::handle()
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObject::Handle()
-Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::classHandle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle Foundation.NSObjectData::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::handle
 Microsoft.iOS.dll:ObjCRuntime.NativeHandle ObjCRuntime.Class::Handle()
@@ -446,7 +448,6 @@ Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructINativeObject>g__ConstructINativ
 Microsoft.iOS.dll:ObjCRuntime.Runtime.<ConstructNSObject>g__ConstructNSObjectViaFactoryMethod|288_0`1(ObjCRuntime.NativeHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object, System.Runtime.InteropServices.GCHandleType)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocGCHandle(System.Object)
-Microsoft.iOS.dll:ObjCRuntime.Runtime.AllocZeroed`1()
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AppendAdditionalInformation(System.Text.StringBuilder, System.IntPtr, System.RuntimeMethodHandle)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.attempt_retain_nsobject(System.IntPtr, System.IntPtr*)
 Microsoft.iOS.dll:ObjCRuntime.Runtime.AttemptRetainNSObject(System.IntPtr)
@@ -716,6 +717,8 @@ Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFRange::len
 Microsoft.iOS.dll:System.IntPtr CoreFoundation.CFRange::loc
 Microsoft.iOS.dll:System.IntPtr Foundation.NSObject::__data
 Microsoft.iOS.dll:System.IntPtr Foundation.NSObject/NSObject_Disposer::class_ptr
+Microsoft.iOS.dll:System.IntPtr Foundation.TrackedMemory::<Value>k__BackingField
+Microsoft.iOS.dll:System.IntPtr Foundation.TrackedMemory::Value()
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.BlockCollector::block
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.Libraries/CoreFoundation::Handle
 Microsoft.iOS.dll:System.IntPtr ObjCRuntime.NativeHandle::handle
@@ -845,9 +848,10 @@ Microsoft.iOS.dll:System.Object Foundation.NSObject/NSObject_Disposer::lock_obj
 Microsoft.iOS.dll:System.Object ObjCRuntime.Runtime::lock_obj
 Microsoft.iOS.dll:System.Reflection.Assembly Foundation.NSObject::PlatformAssembly
 Microsoft.iOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.NSObjectDataHandle> Foundation.NSObject::data_table
+Microsoft.iOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<Foundation.NSObject,Foundation.TrackedMemory> Foundation.NSObject::super_map
 Microsoft.iOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Delegate,ObjCRuntime.BlockCollector> ObjCRuntime.Runtime::block_lifetime_table
 Microsoft.iOS.dll:System.Runtime.CompilerServices.ConditionalWeakTable`2<System.Reflection.Assembly,System.String> ObjCRuntime.Class::assembly_to_name
-Microsoft.iOS.dll:System.Runtime.InteropServices.GCHandle Foundation.NSObjectDataHandle::handle
+Microsoft.iOS.dll:System.Runtime.InteropServices.GCHandle Foundation.TrackedMemory::handle
 Microsoft.iOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::height
 Microsoft.iOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::width
 Microsoft.iOS.dll:System.Runtime.InteropServices.NFloat CoreGraphics.CGRect::x

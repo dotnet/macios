@@ -1315,7 +1315,7 @@ namespace Xamarin.Linker {
 			} else if (underlyingNativeType.Is ("Foundation", "NSString")) {
 				if (!StaticRegistrar.IsSmartEnum (underlyingManagedType, out var getConstantMethod, out var getValueMethod)) {
 					// method linked away!? this should already be verified
-					ErrorHelper.Show (ErrorHelper.CreateError (99, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
+					ErrorHelper.Show (App, ErrorHelper.CreateError (99, Errors.MX0099, $"the smart enum {underlyingManagedType.FullName} doesn't seem to be a smart enum after all"));
 					return;
 				}
 

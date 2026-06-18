@@ -99,10 +99,12 @@ readonly partial struct Property {
 	public bool IsTransient => IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.Transient);
 
 	/// <summary>
-	/// True if the property was marked to DisableZeroCopy.
+	/// True if the property was marked to DisableZeroCopy. This flag is obsolete and has no effect.
 	/// </summary>
+#pragma warning disable CS0618 // Type or member is obsolete
 	public bool DisableZeroCopy
 		=> IsProperty && ExportPropertyData.Flags.HasFlag (ObjCBindings.Property.DisableZeroCopy);
+#pragma warning restore CS0618
 
 	/// <summary>
 	/// True if the generator should not use a NSString for marshalling.

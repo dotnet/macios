@@ -869,6 +869,7 @@ namespace Introspection {
 		}
 
 		[Test]
+		[Ignore ("https://github.com/dotnet/macios/issues/25397")]
 		public virtual void TypoTest ()
 		{
 			AssertMatchingOSVersionAndSdkVersion ();

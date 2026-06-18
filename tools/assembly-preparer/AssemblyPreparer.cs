@@ -142,6 +142,48 @@ public class AssemblyPreparer : IDisposable {
 		return RunSteps (steps, out exceptions);
 	}
 
+	public bool PostProcess (out List<ProductException> exceptions)
+	{
+		configuration.Application.IsPostProcessingAssemblies = true;
+
+		var steps = new ConfigurationAwareStep [] {
+			// All the same steps as the custom trimmer steps that are run after sweeping in Xamarin.Shared.Sdk.targets (and in the same order).
+			new LoadAssembliesStep (), // LoadNonSkippedAssembliesStep
+
+			// post-sweep
+			new CollectFieldsStep (), // Must run before ListExportedSymbols to populate ExportedFields annotation
+			new ExtractBindingLibrariesStep (),
+			// The ListExportedSymbols must run after ExtractBindingLibrariesStep, otherwise we won't properly list exported Objective-C classes from binding libraries
+			new ListExportedSymbols (),
+			new RemoveUserResourcesSubStep (), // from PreOutputDispatcher.
+			// We're not doing ClassHandleRewriterStep, that's replaced by InlineClassGetHandleStep, which is run in Prepare().
+
+			new SaveAssembliesStep (),
+
+			// PopulateApplicationAssembliesStep must run after SaveAssembliesStep so that
+			// OutputPath is set correctly (used by ComputeAOTArguments and GatherFrameworksStep).
+			new PopulateApplicationAssembliesStep (),
+
+			// post-output
+
+			new ManagedRegistrarStep (),
+			new TrimmableRegistrarStep (),
+			new ManagedRegistrarLookupTablesStep (),
+			new RegistrarStep (),
+
+			new GenerateMainStep (),
+			new GenerateReferencesStep (),
+			new GatherFrameworksStep (),
+			new ComputeNativeBuildFlagsStep (),
+			new ComputeAOTArguments (),
+
+			// Must be the last step.
+			new DoneStep (),
+		};
+
+		return RunSteps (steps, out exceptions);
+	}
+
 	bool RunSteps (IList<ConfigurationAwareStep> steps, out List<ProductException> exceptions)
 	{
 		exceptions = configuration.Exceptions;

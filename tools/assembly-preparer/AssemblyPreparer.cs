@@ -127,8 +127,9 @@ public class AssemblyPreparer : IDisposable {
 		var steps = new ConfigurationAwareStep [] {
 			// All the same steps as the custom trimmer steps that are run before MarkStep in Xamarin.Shared.Sdk.targets (and in the same order).
 			// CollectAssembliesStep
+			new ComputeMethodOverridesStep (),
 			new CoreTypeMapStep (),
-			// ProcessExportedFields
+			new CollectFieldsStep (), // ProcessExportedFields
 			new PreserveProtocolsStep (),
 			new PreserveSmartEnumConversionsStep (),
 			new PreserveBlockCodeStep (),
@@ -172,19 +173,6 @@ public class AssemblyPreparer : IDisposable {
 			if (configuration.AssemblyResolver.ResolverCache.ContainsKey (assemblyName))
 				exceptions.Add (ErrorHelper.CreateWarning (99, $"Duplicate assembly name '{assemblyName}' in the list of assemblies to prepare (new: {assembly.InputPath})."));
 			configuration.AssemblyResolver.ResolverCache [assemblyName] = assemblyDefinition;
-		}
-
-		configuration.Context.Annotations.CollectOverrides (linkContext.Assemblies, linkContext);
-
-		// Populate FieldSymbols for InlineDlfcnMethodsStep's compatibility mode.
-		// This is equivalent to what ProcessExportedFields does in the ILLink pipeline.
-		if (configuration.InlineDlfcnMethodsEnabled) {
-			foreach (var assembly in linkContext.Assemblies) {
-				if (!assembly.MainModule.HasTypeReference (Namespaces.Foundation + ".FieldAttribute"))
-					continue;
-				foreach (var type in assembly.MainModule.Types)
-					CollectFieldSymbols (configuration, type);
-			}
 		}
 
 		foreach (var step in steps) {
@@ -341,32 +329,6 @@ public class AssemblyPreparer : IDisposable {
 			assembly.Assembly?.Dispose ();
 		configuration.AssemblyResolver.ResolverCache.Clear ();
 		configuration.DerivedLinkContext.Assemblies.Clear ();
-	}
-
-	static void CollectFieldSymbols (LinkerConfiguration configuration, TypeDefinition type)
-	{
-		if (type.HasNestedTypes) {
-			foreach (var nested in type.NestedTypes)
-				CollectFieldSymbols (configuration, nested);
-		}
-
-		if (!type.HasProperties)
-			return;
-
-		foreach (var property in type.Properties) {
-			if (!property.HasCustomAttributes)
-				continue;
-
-			foreach (var attrib in property.CustomAttributes) {
-				var declaringType = attrib.Constructor.DeclaringType.Resolve ();
-				if (!declaringType.Is (Namespaces.Foundation, "FieldAttribute"))
-					continue;
-				if (attrib.ConstructorArguments.Count < 1)
-					continue;
-				configuration.FieldSymbols.Add ((string) attrib.ConstructorArguments [0].Value);
-				break;
-			}
-		}
 	}
 }
 

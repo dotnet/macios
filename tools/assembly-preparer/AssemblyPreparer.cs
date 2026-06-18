@@ -154,16 +154,15 @@ public class AssemblyPreparer : IDisposable {
 			SymbolReaderProvider = new DefaultSymbolReaderProvider (throwIfNoSymbol: false),
 		};
 
-		var skippedAssemblies = new List<AssemblyPreparerInfo> ();
 		foreach (var assembly in Assemblies) {
 			AssemblyDefinition assemblyDefinition;
 			try {
 				assemblyDefinition = AssemblyDefinition.ReadAssembly (assembly.InputPath, parameters);
+				assembly.IsCILAssembly = true;
 			} catch (BadImageFormatException) {
 				// Not a managed assembly, skip it (pass it through unchanged).
 				log.Log ($"Skipping non-managed assembly: {assembly.InputPath}");
 				assembly.OutputPath = assembly.InputPath;
-				skippedAssemblies.Add (assembly);
 				continue;
 			}
 			linkContext.Assemblies.Add (assemblyDefinition);
@@ -182,7 +181,7 @@ public class AssemblyPreparer : IDisposable {
 		// save assemblies
 
 		foreach (var assembly in Assemblies) {
-			if (skippedAssemblies.Contains (assembly))
+			if (!assembly.IsCILAssembly)
 				continue;
 
 			var assemblyDefinition = assembly.Assembly;
@@ -334,6 +333,7 @@ public class AssemblyPreparer : IDisposable {
 
 public class AssemblyPreparerInfo {
 	internal AssemblyDefinition? Assembly { get; set; }
+	internal bool IsCILAssembly { get; set; }
 
 	public string InputPath { get; private set; }
 	public bool? IsTrimmable { get; set; }

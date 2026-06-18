@@ -105,6 +105,7 @@ package-download/all-package-references.csproj: $(GIT_DIRECTORY)/HEAD $(GIT_DIRE
 		download-packages.csproj \
 		/t:WriteBundledNETCorePlatformsPackageVersion \
 		/p:WriteFilePath=$(CURDIR)/BundledNETCorePlatformsPackageVersion.txt \
+		/p:PackageRuntimeIdentifiersMonoVM="$(DOTNET_MONOVM_RUNTIME_IDENTIFIERS)" \
 		/p:PackageRuntimeIdentifiersCoreCLR="$(DOTNET_CORECLR_RUNTIME_IDENTIFIERS)" \
 		/p:CustomDotNetVersion="$(DOWNLOAD_DOTNET_VERSION)" \
 		/p:TrackingDotNetRuntimeSeparately="$(TRACKING_DOTNET_RUNTIME_SEPARATELY)" \

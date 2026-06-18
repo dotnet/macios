@@ -32,7 +32,7 @@ namespace Xharness.Jenkins {
 			var x64_runtime_identifier = string.Empty;
 			var arm64_sim_runtime_identifier = string.Empty;
 			var x64_sim_runtime_identifier = string.Empty;
-			var supports_mono = false;
+			var supports_mono = jenkins.Harness.DOTNET_MONOVM_SUPPORTED && test.Platform != TestPlatform.Mac;
 			var supports_coreclr = true;
 			var ignore_coreclr = ignore;
 			var supports_x64 = string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("ACES")); // x64 is not supported on ACES machines

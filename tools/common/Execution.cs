@@ -149,7 +149,7 @@ namespace Xamarin.Utils {
 			return thread;
 		}
 
-		static void KillProcess (Process p, int pid, TextWriter? log)
+		static void KillProcess (Process p)
 		{
 #if NET
 			p.Kill (true);
@@ -214,7 +214,7 @@ namespace Xamarin.Utils {
 							// Don't call tcs.TrySetCanceled, that won't return an Execution result to the caller.
 							try {
 								Log?.WriteLine ($"Command '{p.StartInfo.FileName} {p.StartInfo.Arguments}' (pid: {pid}) was cancelled, and will be killed.");
-								KillProcess (p, pid, Log);
+								KillProcess (p);
 							} catch (Exception ex) {
 								// The process could be disposed already. Just ignore any exceptions here.
 								Log?.WriteLine ($"Failed to cancel and kill PID {pid}: {ex.Message}");
@@ -226,7 +226,7 @@ namespace Xamarin.Utils {
 								Log?.WriteLine ($"Command '{p.StartInfo.FileName} {p.StartInfo.Arguments}' (pid: {pid}) didn't finish in {Timeout.Value.TotalMilliseconds} ms, and will be killed.");
 								TimedOut = true;
 								try {
-									KillProcess (p, pid, Log);
+									KillProcess (p);
 								} catch (Exception ex) {
 									// According to the documentation, there can be exceptions here we can't prepare for, so just ignore them.
 									Log?.WriteLine ($"Failed to kill PID {pid}: {ex.Message}");

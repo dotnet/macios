@@ -110,7 +110,6 @@ steps:
     displayName: 'Provision Brew components'
     provisionatorChannel: $(PROVISIONATOR_CHANNEL)
     timeoutInMinutes: 30
-    enabled: false
 
 - bash: |
     sudo rm -Rf $(Build.SourcesDirectory)/package

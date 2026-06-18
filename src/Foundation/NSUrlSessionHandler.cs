@@ -1493,8 +1493,13 @@ namespace Foundation {
 					try {
 						await Task.Delay (50, cancellationToken).ConfigureAwait (false);
 					} catch (TaskCanceledException ex) {
-						// add a nicer exception for the user to catch, add the cancelation exception
-						// to have a decent stack
+						// If the caller's token triggered the cancellation, surface it
+						// as OperationCanceledException so callers can distinguish
+						// between a caller-requested cancellation and a request timeout.
+						cancellationToken.ThrowIfCancellationRequested ();
+						// If the caller's token is not cancelled, this is an internal
+						// cancellation (e.g. HttpClient.Timeout), so wrap it in a
+						// TimeoutException.
 						throw new TimeoutException ("The request timed out.", ex);
 					}
 				}

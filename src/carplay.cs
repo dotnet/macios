@@ -3353,7 +3353,7 @@ namespace CarPlay {
 	[NoTV, NoMac, iOS (26, 4), MacCatalyst (26, 4)]
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
-	interface CPMapTemplateWaypoint {
+	interface CPMapTemplateWaypoint : NSSecureCoding {
 		[Export ("waypoint", ArgumentSemantic.Strong)]
 		CPNavigationWaypoint Waypoint { get; set; }
 

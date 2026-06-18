@@ -5,9 +5,9 @@ using OS_nw_endpoint = System.IntPtr;
 #nullable enable
 
 namespace Network {
-	[SupportedOSPlatform ("tvos14.0")]
+	[SupportedOSPlatform ("tvos")]
 	[SupportedOSPlatform ("macos")]
-	[SupportedOSPlatform ("ios14.0")]
+	[SupportedOSPlatform ("ios")]
 	[SupportedOSPlatform ("maccatalyst")]
 	public class NWMulticastGroup : NativeObject {
 		[Preserve (Conditional = true)]

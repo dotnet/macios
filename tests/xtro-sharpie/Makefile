@@ -95,6 +95,7 @@ IGNORED_MACOS_FRAMEWORKS = \
 IGNORED_MACCATALYST_FRAMEWORKS = \
 	$(COMMON_IGNORED_FRAMEWORKS) \
 	_CoreNFC_UIKit \
+	AccessoryAccess \
 	AccessorySetupKit \
 	AGL \
 	AudioVideoBridging \

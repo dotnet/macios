@@ -1,0 +1,3 @@
+!missing-enum-value! NFCReaderError native value NFCPaymentTagReaderSessionErrorLocationAuthorizationDenied = 500 not bound
+!missing-enum-value! NFCReaderError native value NFCPaymentTagReaderSessionErrorLocationServiceRestricted = 501 not bound
+!missing-enum-value! NFCReaderError native value NFCPaymentTagReaderSessionErrorOnDeviceLocationUnavailable = 502 not bound

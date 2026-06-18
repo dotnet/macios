@@ -71,6 +71,7 @@ void ProvisionBrewPackages ()
 		"shellcheck",
 		"yamllint",
 		"p7zip",
+		"python3",
 		"azure-cli"
 	 );
 }

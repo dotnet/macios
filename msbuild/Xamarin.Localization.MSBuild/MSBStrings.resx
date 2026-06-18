@@ -1661,4 +1661,9 @@
         <comment>Shown when the tool reports a simulator runtime version mismatch.
 {0} - The platform name (e.g. "iOS" or "tvOS").</comment>
     </data>
+    <data name="E7178" xml:space="preserve">
+        <value>Console.StandardOutput or Console.StandardError was accessed during a build task. This should not happen, use the MSBuild logging infrastructure instead. Stack trace: {0}</value>
+        <comment>Shown when an MSBuild task writes to the console instead of using MSBuild logging.
+{0} - The stack trace of the offending call.</comment>
+    </data>
 </root>

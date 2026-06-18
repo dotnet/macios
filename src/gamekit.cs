@@ -14,6 +14,8 @@
 
 #pragma warning disable 618
 
+using System.ComponentModel;
+
 using CoreFoundation;
 using CoreGraphics;
 #if MONOMAC
@@ -3035,7 +3037,17 @@ namespace GameKit {
 
 		[MacCatalyst (13, 1)]
 		[Export ("exchangeDataMaximumSize")]
+#if XAMCORE_5_0
+		nuint ExchangeDataMaximumSize { get; }
+#else
+		[Obsolete ("Use 'ExchangeDataMaximumSize' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		nuint ExhangeDataMaximumSize { get; }
+
+		[MacCatalyst (13, 1)]
+		[Wrap ("ExhangeDataMaximumSize")]
+		nuint ExchangeDataMaximumSize { get; }
+#endif
 
 		[MacCatalyst (13, 1)]
 		[Export ("exchangeMaxInitiatedExchangesPerPlayer")]

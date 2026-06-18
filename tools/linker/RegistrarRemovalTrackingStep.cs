@@ -127,7 +127,7 @@ namespace MonoTouch.Tuner {
 							break;
 						case ".ctor":
 							if (mr.Resolve () is MethodDefinition md)
-								requires |= Xamarin.Linker.OptimizeGeneratedCodeHandler.IsBlockLiteralCtor_Type_String (md);
+								requires |= Xamarin.Linker.OptimizeGeneratedCode.IsBlockLiteralCtor_Type_String (md);
 							if (requires && warnIfRequired)
 								Warn (assembly, mr);
 							break;

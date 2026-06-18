@@ -101,7 +101,7 @@ public class InlineDlfcnMethodsStep : AssemblyModifierStep {
 	TypeDefinition GetDlfcnType (ModuleDefinition module, string @namespace, string? fieldLibraryName = null)
 	{
 		var frameworkOverride = !string.IsNullOrEmpty (fieldLibraryName) ? fieldLibraryName : current_framework;
-		var ns = string.IsNullOrEmpty (frameworkOverride) ? @namespace : frameworkOverride;
+		var ns = frameworkOverride ?? @namespace;
 		var rv = abr.GetOrCreateType (module, ns, "Dlfcn", out var created);
 		if (created) {
 			if (!string.IsNullOrEmpty (frameworkOverride)) {

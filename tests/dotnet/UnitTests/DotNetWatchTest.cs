@@ -95,6 +95,13 @@ namespace Xamarin.Tests {
 			// However, for mobile platforms, test app stdout is captured correctly, so we process both the output from the file
 			// and stdout we capture from 'dotnet watch' the same way, to make sure we don't miss any output.
 			var logPath = Path.Combine (tmpdir, "output.log");
+			if (enableSandbox) {
+				// When the sandbox is enabled, the app can't write to our temp directory.
+				// Put the log file in the app's sandbox container, which is accessible to both the app and the test runner.
+				var containerDir = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.UserProfile), "Library", "Containers", "com.xamarin.hotreloadtestapp", "Data", "tmp");
+				Directory.CreateDirectory (containerDir);
+				logPath = Path.Combine (containerDir, "output.log");
+			}
 			var pollThread = new Thread ((v) => {
 				for (var i = 0; i < 120; i++) {
 					if (File.Exists (logPath)) {

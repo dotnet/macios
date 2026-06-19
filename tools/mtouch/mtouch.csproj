@@ -33,11 +33,17 @@
     <Compile Include="..\common\AssemblyBuildTarget.cs">
       <Link>external/tools/common/AssemblyBuildTarget.cs</Link>
     </Compile>
+    <Compile Include="..\common\NormalizedStringComparer.cs">
+      <Link>tools\common\NormalizedStringComparer.cs</Link>
+    </Compile>
     <Compile Include="..\common\PListExtensions.cs">
       <Link>external/tools/common/PListExtensions.cs</Link>
     </Compile>
     <Compile Include="..\common\cache.cs">
       <Link>external/tools/common/cache.cs</Link>
+    </Compile>
+    <Compile Include="..\common\RegistrarMode.cs">
+      <Link>tools\common\RegistrarMode.cs</Link>
     </Compile>
     <Compile Include="..\linker\MonoTouch.Tuner\Extensions.cs">
       <Link>external/tools/linker/MonoTouch.Tuner/Extensions.cs</Link>

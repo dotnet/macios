@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFrameworks>
+    <TargetFrameworks Condition="'$(DesignTimeBuild)' != 'true'">net$(BundledNETCoreAppTargetFrameworkVersion);netstandard2.0</TargetFrameworks>
+    <TargetFramework Condition="'$(DesignTimeBuild)' == 'true'">net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <IncludeMSBuildAssets Condition="'$(IncludeMSBuildAssets)' == ''">compile</IncludeMSBuildAssets>
     <SignAssembly>true</SignAssembly>
@@ -37,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\external\Xamarin.MacDev\Xamarin.MacDev\Xamarin.MacDev.csproj" />
+    <ProjectReference Include="..\..\tools\assembly-preparer\assembly-preparer.csproj" />
     <ProjectReference Include="..\Xamarin.Localization.MSBuild\Xamarin.Localization.MSBuild.csproj">
       <ReferenceSourceTarget>ProjectReference</ReferenceSourceTarget>
     </ProjectReference>
@@ -69,44 +71,14 @@
   </Target>
 
   <ItemGroup>
-    <Compile Include="..\..\tools\common\ApplePlatform.cs">
-      <Link>ApplePlatform.cs</Link>
-    </Compile>
     <Compile Include="..\..\tools\common\JsonExtensions.cs">
-      <Link>JsonExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\tools\common\IToolLog.cs">
-      <Link>IToolLog.cs</Link>
+      <Link>external\JsonExtensions.cs</Link>
     </Compile>
     <Compile Include="..\..\tools\common\StringUtils.cs">
       <Link>StringUtils.cs</Link>
     </Compile>
-    <Compile Include="..\..\tools\common\Symbols.cs">
-      <Link>Symbols.cs</Link>
-    </Compile>
-    <Compile Include="..\..\tools\common\FileCopier.cs">
-        <Link>FileCopier.cs</Link>
-    </Compile>
-    <Compile Include="..\..\tools\common\TargetFramework.cs">
-      <Link>TargetFramework.cs</Link>
-    </Compile>
-    <Compile Include="..\..\tools\common\Execution.cs">
-      <Link>Execution.cs</Link>
-    </Compile>
-    <Compile Include="..\..\tools\common\PathUtils.cs">
-      <Link>PathUtils.cs</Link>
-    </Compile>
     <Compile Include="..\..\tools\common\PListExtensions.cs">
       <Link>PListExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\tools\common\MachO.cs">
-      <Link>MachO.cs</Link>
-    </Compile>
-    <Compile Include="..\..\tools\common\error.cs">
-      <Link>error.cs</Link>
-    </Compile>
-    <Compile Include="..\..\src\ObjCRuntime\ErrorHelper.cs">
-      <Link>ErrorHelper.cs</Link>
     </Compile>
     <Compile Include="..\..\src\ObjCRuntime\RuntimeException.cs">
       <Link>external\RuntimeException.cs</Link>

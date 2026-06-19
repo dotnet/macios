@@ -231,7 +231,7 @@ namespace CoreVideo {
 		/// <param name="destinationBuffer">To be added.</param>
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
-		public void PropogateAttachments (CVBuffer destinationBuffer)
+		public void PropagateAttachments (CVBuffer destinationBuffer)
 		{
 			if (destinationBuffer is null)
 				ObjCRuntime.ThrowHelper.ThrowArgumentNullException (nameof (destinationBuffer));
@@ -239,6 +239,12 @@ namespace CoreVideo {
 			CVBufferPropagateAttachments (Handle, destinationBuffer.Handle);
 			GC.KeepAlive (destinationBuffer);
 		}
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'PropagateAttachments' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		public void PropogateAttachments (CVBuffer destinationBuffer) => PropagateAttachments (destinationBuffer);
+#endif
 
 		[DllImport (Constants.CoreVideoLibrary)]
 		extern static void CVBufferSetAttachment (/* CVBufferRef */ IntPtr buffer, /* CFStringRef */ IntPtr key, /* CFTypeRef */ IntPtr @value, CVAttachmentMode attachmentMode);

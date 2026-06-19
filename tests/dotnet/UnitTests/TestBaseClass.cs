@@ -133,6 +133,9 @@ namespace Xamarin.Tests {
 
 		protected static string GetProjectPath (string project, string? subdir = null, ApplePlatform? platform = null)
 		{
+			if (TryGetTestProjectPath (project, platform ?? ApplePlatform.None, out var testProjectPath))
+				return testProjectPath;
+
 			var project_dir = Path.Combine (Configuration.SourceRoot, "tests", "dotnet", project);
 			if (!string.IsNullOrEmpty (subdir))
 				project_dir = Path.Combine (project_dir, subdir);
@@ -152,6 +155,18 @@ namespace Xamarin.Tests {
 				throw new FileNotFoundException ($"Could not find the project or solution {project} - {project_path} does not exist.");
 
 			return project_path;
+		}
+
+		static bool TryGetTestProjectPath (string project, ApplePlatform platform, [NotNullWhen (true)] out string? projectPath)
+		{
+			projectPath = null;
+
+			switch (project) {
+			case "monotouch-test":
+				projectPath = Path.Combine (Configuration.SourceRoot, "tests", project, "dotnet", platform.AsString (), project + ".csproj");
+				return true;
+			}
+			return false;
 		}
 
 		protected string GetPlugInsRelativePath (ApplePlatform platform)

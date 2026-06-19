@@ -22,7 +22,7 @@ namespace Xamarin.Linker {
 		protected override int ErrorCode { get; } = 2470;
 
 		AppBundleRewriter abr { get { return Configuration.AppBundleRewriter; } }
-		List<AssemblyDefinition> addedAssemblies = new List<AssemblyDefinition> ();
+		List<(string Path, AssemblyDefinition Assembly, string? OriginatingAssembly)> addedAssemblies = new ();
 		List<Exception> exceptions = new List<Exception> ();
 
 		void AddException (Exception exception)
@@ -39,6 +39,9 @@ namespace Xamarin.Linker {
 			if (App.Registrar != RegistrarMode.TrimmableStatic)
 				return;
 
+			if (App.IsPostProcessingAssemblies)
+				return;
+
 			Configuration.Application.StaticRegistrar.Register (Configuration.GetNonDeletedAssemblies (this));
 		}
 
@@ -48,6 +51,7 @@ namespace Xamarin.Linker {
 
 			// .NET 10 doesn't support a separate root type map assembly, so we have to add these attributes to the entry assembly instead.
 			var useEntryAssemblyAsRootTypeMapAssembly = App.TargetFramework.Version.Major <= 10;
+			var createdRootTypeMapAssemblyPath = Path.Combine (App.TypeMapOutputDirectory, App.TypeMapAssemblyName + ".dll");
 
 			if (useEntryAssemblyAsRootTypeMapAssembly) {
 				rootTypeMapAssembly = Configuration.EntryAssembly;
@@ -55,8 +59,9 @@ namespace Xamarin.Linker {
 				var rootTypeMapAssemblyName = new AssemblyNameDefinition (App.TypeMapAssemblyName, new Version (1, 0, 0, 0));
 				rootTypeMapAssembly = AssemblyDefinition.CreateAssembly (rootTypeMapAssemblyName, rootTypeMapAssemblyName.Name, moduleParameters);
 				Annotations.SetAction (rootTypeMapAssembly, AssemblyAction.Link);
-				addedAssemblies.Add (rootTypeMapAssembly);
+				addedAssemblies.Add ((createdRootTypeMapAssemblyPath, rootTypeMapAssembly, Configuration.PlatformAssembly + ".dll"));
 
+#if !ASSEMBLY_PREPARER
 				// We're running from inside the linker, but the TypeMapEntryAssembly property can only be set using a command-line
 				// argument, so we need to cheat a bit here and use reflection to set it. This will go away once we're not running
 				// as a custom linker step anymore.
@@ -64,6 +69,7 @@ namespace Xamarin.Linker {
 				if (typeMapEntryAssemblyProperty is null)
 					throw ErrorHelper.CreateError (99, "Could not find the 'TypeMapEntryAssembly' property on the linker context.");
 				typeMapEntryAssemblyProperty.SetValue (this.Context, App.TypeMapAssemblyName);
+#endif
 			}
 
 			abr.SetCurrentAssembly (rootTypeMapAssembly);
@@ -110,7 +116,7 @@ namespace Xamarin.Linker {
 			// We write the assembly here even if it hasn't changed, because otherwise we'll just end up re-creating
 			// it again during the next incremental build.
 			if (!useEntryAssemblyAsRootTypeMapAssembly) {
-				rootTypeMapAssembly.Write (Path.Combine (App.TypeMapOutputDirectory, rootTypeMapAssembly.Name.Name + ".dll"));
+				rootTypeMapAssembly.Write (createdRootTypeMapAssemblyPath);
 			}
 			return rootTypeMapAssembly;
 		}
@@ -150,6 +156,14 @@ namespace Xamarin.Linker {
 			base.TryEndProcess ();
 
 			if (App.Registrar != RegistrarMode.TrimmableStatic) {
+				exceptions = null;
+				return;
+			}
+
+			if (App.IsPostProcessingAssemblies) {
+				// The assembly-preparer already created the type map assemblies, and the
+				// TypeMapEntryAssembly MSBuild property tells ILLink about the root type map
+				// assembly via --typemap-entry-assembly, so there's nothing to do here.
 				exceptions = null;
 				return;
 			}
@@ -239,9 +253,10 @@ namespace Xamarin.Linker {
 
 				var typeMapAssemblyName = new AssemblyNameDefinition ("_" + assembly.Name.Name + ".TypeMap", new Version (1, 0, 0, 0));
 				var typeMapAssembly = AssemblyDefinition.CreateAssembly (typeMapAssemblyName, typeMapAssemblyName.Name, assemblyParameters);
+				var typeMapAssemblyPath = Path.Combine (App.TypeMapOutputDirectory, typeMapAssembly.Name.Name + ".dll");
 				var existingAction = Annotations.GetAction (assembly);
 				Annotations.SetAction (typeMapAssembly, existingAction);
-				addedAssemblies.Add (typeMapAssembly);
+				addedAssemblies.Add ((typeMapAssemblyPath, typeMapAssembly, assembly.MainModule.FileName));
 
 				var accessesAssemblies = new HashSet<AssemblyDefinition> ();
 				accessesAssemblies.Add (assembly);
@@ -264,7 +279,7 @@ namespace Xamarin.Linker {
 				// INativeObject subclasses
 				var inativeObjectTypes = StaticRegistrar.GetAllTypes (assembly).Where (t => !t.IsInterface && !t.IsAbstract && t.IsNativeObject ());
 				foreach (var tr in inativeObjectTypes.OrderBy (v => v.FullName)) {
-					var inativeObjCtor = ManagedRegistrarLookupTablesStep.FindINativeObjectConstructor (tr);
+					var inativeObjCtor = AppBundleRewriter.FindINativeObjectConstructor (tr);
 					if (inativeObjCtor is null)
 						continue;
 
@@ -373,7 +388,7 @@ namespace Xamarin.Linker {
 						var createObjectMethod = proxyType.AddMethod ("CreateObject", MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig, abr.Foundation_NSObject);
 						createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
 						il = createObjectMethod.Body.GetILProcessor ();
-						var nativeHandleCtor = ManagedRegistrarLookupTablesStep.FindNSObjectConstructor (td);
+						var nativeHandleCtor = AppBundleRewriter.FindNSObjectConstructor (td);
 						if (nativeHandleCtor is not null) {
 							il.Append (il.Create (OpCodes.Ldarg_1));
 							if (nativeHandleCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
@@ -512,7 +527,7 @@ namespace Xamarin.Linker {
 						createObjectMethod.AddParameter ("handle", abr.System_IntPtr);
 						createObjectMethod.AddParameter ("owns", abr.System_Boolean);
 						createObjectMethod.CreateBody (out il);
-						var nativeHandleCtor = ManagedRegistrarLookupTablesStep.FindINativeObjectConstructor (objcType.ProtocolWrapperType.Resolve ());
+						var nativeHandleCtor = AppBundleRewriter.FindINativeObjectConstructor (objcType.ProtocolWrapperType.Resolve ());
 						if (nativeHandleCtor is not null) {
 							il.Append (il.Create (OpCodes.Ldarg_1));
 							if (nativeHandleCtor.Parameters [0].ParameterType.Is ("ObjCRuntime", "NativeHandle"))
@@ -591,7 +606,7 @@ namespace Xamarin.Linker {
 
 				// We write the assembly here even if it hasn't changed, because otherwise we'll just end up re-creating
 				// it again during the next incremental build.
-				typeMapAssembly.Write (Path.Combine (App.TypeMapOutputDirectory, typeMapAssembly.Name.Name + ".dll"));
+				typeMapAssembly.Write (typeMapAssemblyPath);
 			}
 
 			foreach (var kvp in postActionsByAssembly) {
@@ -604,13 +619,17 @@ namespace Xamarin.Linker {
 				abr.ClearCurrentAssembly ();
 			}
 
+#if ASSEMBLY_PREPARER
+			Configuration.AddedAssemblies.AddRange (addedAssemblies);
+#else
 			// Since we're running inside the trimmer, we need to make sure the trimmer knows about the assemblies we've created.
 			// This will go away once we're running outside of the trimmer.
 			var managedAssemblyToLinkItems = new List<MSBuildItem> ();
 			var resolver = abr.PlatformAssembly.MainModule.AssemblyResolver;
 			var getAssembly = resolver.GetType ().GetMethod ("GetAssembly", new Type [] { typeof (string) })!;
 			var cacheAssembly = resolver.GetType ().GetMethod ("CacheAssembly", new Type [] { typeof (AssemblyDefinition) })!;
-			foreach (var asm in addedAssemblies) {
+			foreach (var aa in addedAssemblies) {
+				var asm = aa.Assembly;
 				var fn = Path.Combine (App.TypeMapOutputDirectory, asm.Name.Name + ".dll");
 				var asmDef = (AssemblyDefinition) getAssembly.Invoke (resolver, [fn])!;
 				cacheAssembly.Invoke (resolver, [asmDef]);
@@ -624,6 +643,7 @@ namespace Xamarin.Linker {
 			}
 
 			Configuration.WriteOutputForMSBuild ("ManagedAssemblyToLink", managedAssemblyToLinkItems);
+#endif
 
 			// Report back any exceptions that occurred during the processing.
 			exceptions = this.exceptions;

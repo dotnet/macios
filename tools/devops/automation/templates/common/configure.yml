@@ -32,6 +32,11 @@ parameters:
       testStage: 'windows_integration'
     },
     {
+      label: assembly-processing,
+      splitByPlatforms: false,
+      testPrefix: 'simulator_tests',
+    },
+    {
       label: cecil,
       splitByPlatforms: false,
       testPrefix: 'simulator_tests',

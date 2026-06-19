@@ -70,7 +70,7 @@
 
 		<WriteLinesToFile
 			File="$(MlaunchInstallScript)"
-			Lines="$(MlaunchPath) $(MlaunchInstallArguments)"
+			Lines="'$(MlaunchPath)' $(MlaunchInstallArguments)"
 			Overwrite="true"
 			WriteOnlyWhenDifferent="true"
 			Condition="'$(MlaunchInstallScript)' != ''"
@@ -128,14 +128,14 @@
 
 		<WriteLinesToFile
 			File="$(MlaunchRunScript)"
-			Lines="$(MlaunchPath) $(MlaunchRunArguments)"
+			Lines="'$(MlaunchPath)' $(MlaunchRunArguments)"
 			Overwrite="true"
 			WriteOnlyWhenDifferent="true"
 			Condition="'$(MlaunchRunScript)' != ''"
 			 />
 
 		<PropertyGroup>
-			<RunCommand>$(MlaunchPath)</RunCommand>
+			<RunCommand>'$(MlaunchPath)'</RunCommand>
 			<RunArguments>$(MlaunchRunArguments) -- </RunArguments>
 		</PropertyGroup>
 	</Target>

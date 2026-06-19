@@ -396,7 +396,7 @@ List<string> ExtractFailLines (string output)
 	foreach (var line in output.Split ('\n')) {
 		var idx = line.IndexOf ("[FAIL]", StringComparison.Ordinal);
 		if (idx >= 0)
-			failLines.Add (line.Substring (idx + "[FAIL]".Length).TrimStart ());
+			failLines.Add (line.Substring (idx));
 	}
 	return failLines;
 }

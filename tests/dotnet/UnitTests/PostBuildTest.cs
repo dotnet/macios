@@ -79,6 +79,59 @@ namespace Xamarin.Tests {
 		}
 
 		[Test]
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void BuildIpaOnRemoteWindowsTest (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["BuildIpa"] = "true";
+			properties ["Configuration"] = configuration;
+
+			var result = DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (15));
+
+			// The .ipa is built on the paired Mac and copied back to this Windows machine, so it must be
+			// surfaced in @(ApplicationArtifact) with the local (Windows) path. The .app bundle stays on the
+			// Mac, so it's intentionally not surfaced as an artifact on Windows.
+			var ipaPath = Path.Combine (appPath, "..", $"{project}.ipa");
+			Assert.That (ipaPath, Does.Exist, "ipa creation");
+			AssertApplicationArtifact (result.BinLogPath, ipaPath, platform, "ipa", isDirectory: false);
+		}
+
+		[Test]
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void ArchiveOnRemoteWindowsTest (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["ArchiveOnBuild"] = "true";
+			properties ["Configuration"] = configuration;
+
+			var result = DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (20));
+
+			// The .xcarchive is produced on the paired Mac and copied back to this Windows machine by
+			// CopyArchiveFromMac, which sets $(ArchivePath) to the local (Windows) path while $(ArchiveDir)
+			// keeps pointing at the Mac path. The Windows archive path is date-based, so match on the
+			// package format rather than an exact path.
+			AssertApplicationArtifact (result.BinLogPath, platform, "xcarchive", isDirectory: true);
+		}
+
+		[Test]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
 		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
 		public void GetApplicationArtifactsIpaTest (ApplePlatform platform, string runtimeIdentifiers)
@@ -521,6 +574,17 @@ namespace Xamarin.Tests {
 			Assert.That (output.GetMetadata ("Signed"), Is.Null.Or.Empty, "Signed");
 			Assert.That (output.GetMetadata ("PackageSigned"), Is.Null.Or.Empty, "PackageSigned");
 			return output;
+		}
+
+		static ITaskItem AssertApplicationArtifact (string binLogPath, ApplePlatform platform, string packageFormat, bool isDirectory)
+		{
+			var outputs = GetItems (binLogPath, "ApplicationArtifact");
+			var matchingOutputs = outputs.Where (v => v.GetMetadata ("PackageFormat") == packageFormat).ToList ();
+			Assert.That (matchingOutputs, Has.Count.EqualTo (1), $"Expected one {packageFormat} output. All outputs:\n\t{string.Join ("\n\t", outputs.Select (v => v.ItemSpec))}");
+
+			var itemSpec = matchingOutputs [0].ItemSpec;
+			Assert.That (itemSpec, Does.Exist, packageFormat);
+			return AssertApplicationArtifact (binLogPath, itemSpec, platform, packageFormat, isDirectory);
 		}
 
 		static JsonElement [] GetApplicationArtifacts (string projectPath, Dictionary<string, string> properties, string target = "GetApplicationArtifacts")

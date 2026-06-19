@@ -76,6 +76,28 @@ git for-each-ref --sort=-committerdate --format='%(refname:short) %(committerdat
 
 Filter to branches matching the patterns above AND having a commit within the last month.
 
+#### Milestone-based filtering
+
+After identifying candidate branches, check whether each branch has a corresponding
+closed milestone. If so, skip the branch — a closed milestone signals that the branch
+is no longer actively developed.
+
+Use the GitHub API to list **closed** milestones:
+
+```bash
+gh api 'repos/{owner}/{repo}/milestones?state=closed&per_page=100' --paginate -q '.[].title'
+```
+
+Map each branch name to its milestone name:
+
+| Branch pattern | Milestone name |
+|---|---|
+| `net<major>.0` | `.NET <major>` (e.g., `net10.0` → `.NET 10`) |
+| `xcode<version>` | `xcode<version>` (e.g., `xcode26.4` → `xcode26.4`, `xcode26` → `xcode26`) |
+
+If the corresponding milestone is found in the closed list, skip the branch and include
+it in the summary as "skipped (milestone closed)".
+
 ### 2. For Each Target Branch
 
 #### a. Determine the local branch name
@@ -160,7 +182,7 @@ After creating the PR, enable automerge (merge strategy) using the GitHub MCP `e
 After processing all branches, report:
 - Which PRs were created (with links)
 - Which PRs were updated
-- Which branches were skipped (draft PRs, no conflicts resolution possible)
+- Which branches were skipped (closed milestone, draft PRs, no conflicts resolution possible)
 - Which branches had no diff (main already merged)
 
 ## Conflict Resolution Details

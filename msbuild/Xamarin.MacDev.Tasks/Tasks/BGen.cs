@@ -55,8 +55,6 @@ namespace Xamarin.MacDev.Tasks {
 
 		public string ExtraArgs { get; set; } = string.Empty;
 
-		public int Verbosity { get; set; }
-
 		public string GeneratedSourcesDir { get; set; } = string.Empty;
 
 		public string GeneratedSourcesFileList { get; set; } = string.Empty;
@@ -229,7 +227,7 @@ namespace Xamarin.MacDev.Tasks {
 				}
 			}
 
-			cmd.AddRange (VerbosityUtils.Merge (ExtraArgs, (LoggerVerbosity) Verbosity));
+			VerbosityUtils.RenderVerbosity (cmd, Verbosity);
 
 			return CommandLineArgumentBuilder.CreateResponseFile (this, ResponseFilePath, cmd, null);
 		}

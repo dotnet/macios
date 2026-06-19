@@ -1306,28 +1306,9 @@ This should map to Objective-C/clang use of `__attribute__((objc_designated_init
 
 ### DisableZeroCopyAttribute
 
-This attribute is applied to string parameters or string properties and
-instructs the code generator to not use the zero-copy string marshaling for
-this parameter, and instead create a new NSString instance from the C# string.
-This attribute is only required on strings if you instruct the generator to use
-zero-copy string marshaling using either the `--zero-copy` command
-line option or setting the assembly-level attribute `ZeroCopyStringsAttribute`.
-
-This is necessary in cases where the property is declared in Objective-C to
-be a `retain` or `assign` property instead of a `copy` property. These typically
-happen in third-party libraries that have been wrongly "optimized" by
-developers. In general, `retain` or `assign` `NSString` properties are incorrect
-since `NSMutableString` or user-derived classes of `NSString` might alter the
-contents of the strings without the knowledge of the library code, subtly
-breaking the application. Typically this happens due to premature
-optimization.
-
-The following shows two such properties in Objective-C:
-
-```csharp
-@property(nonatomic,retain) NSString *name;
-@property(nonatomic,assign) NSString *name2;
-```
+> **Note:** This attribute is obsolete and has no effect. Zero-copy string
+> marshaling is no longer supported. The attribute is preserved for source
+> compatibility but can be safely removed from binding definitions.
 
 <a name="DisposeAttribute"></a>
 
@@ -2435,47 +2416,10 @@ This corresponds to `clang` [`__attribute__((objc_requires_super))`](https://cla
 
 ### ZeroCopyStringsAttribute
 
-Only available in Xamarin.iOS 5.4 and newer.
-
-This attribute instructs the generator that the binding for this specific
-library (if applied with `[assembly:]`) or type should use the fast
-zero-copy string marshaling. This attribute is equivalent to passing the
-command line option `--zero-copy` to the generator.
-
-When using zero-copy for strings, the generator effectively uses the same C#
-string as the string that Objective-C consumes without incurring the creation of
-a new `NSString` object and avoiding copying the data from the C# strings to the
-Objective-C string. The only drawback of using Zero Copy strings is that you
-must ensure that any string property that you wrap that happens to be flagged as
-`retain` or `copy` has the `[DisableZeroCopy]` attribute set. This is
-require because the handle for zero-copy strings is allocated on the stack and
-is invalid upon the function return.
-
-Example:
-
-```csharp
-[ZeroCopyStrings]
-[BaseType (typeof (NSObject))]
-interface MyBinding {
-    [Export ("name")]
-    string Name { get; set; }
-
-    [Export ("domain"), NullAllowed]
-    string Domain { get; set; }
-
-    [DisablZeroCopy]
-    [Export ("someRetainedNSString")]
-    string RetainedProperty { get; set; }
-}
-
-```
-
-You can also apply the attribute at the assembly level, and it will apply to
-all the types of the assembly:
-
-```csharp
-[assembly:ZeroCopyStrings]
-```
+> **Note:** This attribute is obsolete and has no effect. Zero-copy string
+> marshaling is no longer supported. The `--use-zero-copy` command line option
+> is also no longer supported. The attribute is preserved for source
+> compatibility but can be safely removed from binding definitions.
 
 ## Strongly-typed dictionaries
 

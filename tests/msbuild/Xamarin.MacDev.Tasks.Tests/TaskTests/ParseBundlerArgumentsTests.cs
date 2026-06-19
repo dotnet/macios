@@ -250,7 +250,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<CustomParseBundlerArguments> ();
 			task.ExtraArgs = input;
 			ExecuteTask (task, message: input);
-			Assert.That (task.Verbosity, Is.EqualTo (output), "Equality");
+			Assert.That (task.BundlerVerbosity, Is.EqualTo (output), "Equality");
 		}
 
 		[TestCase ("--nowarn", "-1")]

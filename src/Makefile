@@ -67,6 +67,8 @@ endif
 DOTNET_GENERATOR_FLAGS=$(GENERATOR_FLAGS) --lib=$(DOTNET_BCL_DIR) -attributelib:$(DOTNET_BINDING_ATTRIBUTES) $(DOTNET_REFERENCES)
 DOTNET_GENERATOR=$(DOTNET_BUILD_DIR)/bgen/bgen
 DOTNET_BINDING_ATTRIBUTES=$(DOTNET_BUILD_DIR)/Xamarin.Apple.BindingAttributes.dll
+APPLE_DOC_READER=$(TOP)/packages/appledocreader.$(ADR_RUNTIME_IDENTIFIER)/$(ADR_NUGET_VERSION)/tools/any/$(ADR_RUNTIME_IDENTIFIER)/AppleDocReader
+APPLE_DOC_READER_LOCK=$(BUILD_DIR)/.appledocreader.lock
 
 #
 # Specific warnings that we want reported as errors by generator
@@ -347,8 +349,9 @@ $(DOTNET_DESTDIR)/$($(2)_NUGET_REF_NAME)/ref/$(DOTNET_TFM)/Microsoft.$(1).xml: $
 	$$(Q) $(CP) $$< $$@
 
 ifndef NO_XCODE
+# AppleDocReader backs up a shared Xcode SQLite database, so serialize invocations.
 $($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll build/.build-adr-stamp | $($(2)_DOTNET_BUILD_DIR)/doc
-	$$(Q_GEN) $(TOP)/packages/appledocreader.$(ADR_RUNTIME_IDENTIFIER)/$(ADR_NUGET_VERSION)/tools/any/$(ADR_RUNTIME_IDENTIFIER)/AppleDocReader inject docs --assembly="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" --input="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" --output="$(abspath $$@)" --xcode="$(DEVELOPER_DIR)/../.." --runtimeDll="$(DOTNET_BCL_DIR)/System.Runtime.dll" -f
+	$$(Q_GEN) /usr/bin/lockf "$(APPLE_DOC_READER_LOCK)" "$(APPLE_DOC_READER)" inject docs --assembly="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).dll)" --input="$(abspath $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml)" --output="$(abspath $$@)" --xcode="$(DEVELOPER_DIR)/../.." --runtimeDll="$(DOTNET_BCL_DIR)/System.Runtime.dll" -f
 else
 # Without Xcode, skip AppleDocReader and just copy the XML
 $($(2)_DOTNET_BUILD_DIR)/doc/Microsoft.$(1).xml: $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1).xml | $($(2)_DOTNET_BUILD_DIR)/doc
@@ -434,6 +437,15 @@ $($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp: Makefile frameworks.sources $(RSP_D
 
 $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%dll $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1)%pdb $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1)%dll $($(2)_DOTNET_BUILD_DIR)/ref/Microsoft.$(1)%xml: $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DEPENDENCIES) $$(ROSLYN_GENERATOR) $$(ROSLYN_ANALYZER) | $$($(2)_DOTNET_PLATFORM_ASSEMBLY_DIR_DEPENDENCIES)
 	$$(call Q_PROF_CSC,dotnet) $(DOTNET_CSC) @$($(2)_DOTNET_BUILD_DIR)/Microsoft.$(1).rsp
+
+ifdef SERIALIZE_CSC
+# This is to serialize the csc commands for the platform assembly. The platform assembly takes a while to compile (maxing out the CPU), and csc is already multi-threaded, which
+# means that if we're running multiple long csc tasks simultaneously, the CPU of the machine will get absolutely thrashed. csc (aka Roslyn) isn't exactly a cheapskate with memory either...
+# It looks a bit weird, but the idea is that in this template, every platform assembly depends on the assembly from the previous template expansion.
+# It's opt-in, because it slows down the build a bit.
+$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll: $(LAST_DLL)
+LAST_DLL=$($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll
+endif
 
 dotnet-$(3):: $($(2)_DOTNET_BUILD_DIR)/$(4)/Microsoft.$(1).dll
 

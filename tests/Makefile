@@ -77,34 +77,6 @@ test.config: Makefile $(TOP)/Make.config $(TOP)/eng/Version.Details.xml
 	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_OS_VERSION=$($(platform)_NUGET_OS_VERSION)\\n)" | sed 's/^ //' >> $@
 	@printf "NUGET_PRERELEASE_IDENTIFIER=$(NUGET_PRERELEASE_IDENTIFIER)\n" >> $@
 
-test-system.config: Makefile $(TOP)/Make.config $(TOP)/eng/Version.Details.xml
-	@rm -f $@
-	@echo "JENKINS_RESULTS_DIRECTORY=$(abspath $(JENKINS_RESULTS_DIRECTORY))" >> $@
-	@echo "DOTNET=$(DOTNET)" >> $@
-	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_SDK_VERSION=$($(platform)_SDK_VERSION)\\n)" | sed 's/^ //' >> $@
-	@echo "DOTNET_TFM=$(DOTNET_TFM)" >> $@
-	@echo "DOTNET_BCL_DIR=$(DOTNET_BCL_DIR)" >> $@
-	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),DOTNET_$(platform)_RUNTIME_IDENTIFIERS='$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS)'\\n)" | sed 's/^ //' >> $@
-	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),DOTNET_$(rid)_ARCHITECTURES='$(DOTNET_$(rid)_ARCHITECTURES)'\\n))" | sed 's/^ //' >> $@
-	@echo "DOTNET_CSC_COMMAND='$(DOTNET_CSC)'" >> $@
-	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_VERSION_NO_METADATA=$($(platform)_NUGET_VERSION_NO_METADATA)\\n)" | sed 's/^ //' >> $@
-	@echo "DOTNET_DIR=$(DOTNET_DIR)" >> $@
-	@echo "INCLUDE_IOS=$(INCLUDE_IOS)" >> $@
-	@echo "INCLUDE_TVOS=$(INCLUDE_TVOS)" >> $@
-	@echo "INCLUDE_MAC=$(INCLUDE_MAC)" >> $@
-	@echo "INCLUDE_MACCATALYST=$(INCLUDE_MACCATALYST)" >> $@
-	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_SDK_NAME=$($(platform)_NUGET_SDK_NAME)\\n)" | sed 's/^ //' >> $@
-	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_REF_NAME=$($(platform)_NUGET_REF_NAME)\\n)" | sed 's/^ //' >> $@
-	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_RUNTIME_MANAGED_NAME=$($(platform)_NUGET_RUNTIME_MANAGED_NAME)\\n)" | sed 's/^ //' >> $@
-	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(foreach rid,$(DOTNET_$(platform)_RUNTIME_IDENTIFIERS),$(rid)_NUGET_RUNTIME_NAME=$($(rid)_NUGET_RUNTIME_NAME)\\n))" | sed 's/^ //' >> $@
-	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),SUPPORTED_API_VERSIONS_$(platform)='$(SUPPORTED_API_VERSIONS_$(platform))'\\n)" | sed 's/^ //' >> $@
-	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_TARGET_PLATFORM_VERSION_LIBRARY=$($(platform)_TARGET_PLATFORM_VERSION_LIBRARY)\\n)" | sed 's/^ //' >> $@
-	@printf "XCODE_IS_STABLE=$(XCODE_IS_STABLE)\n" >> $@
-	@printf "XCODE_VERSION=$(XCODE_VERSION)\n" >> $@
-	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),DOTNET_MIN_$(platform)_SDK_VERSION=$(DOTNET_MIN_$(platform)_SDK_VERSION)\\n)" | sed 's/^ //' >> $@
-	@printf "$(foreach platform,$(DOTNET_PLATFORMS_UPPERCASE),$(platform)_NUGET_OS_VERSION=$($(platform)_NUGET_OS_VERSION)\\n)" | sed 's/^ //' >> $@
-	@printf "NUGET_PRERELEASE_IDENTIFIER=$(NUGET_PRERELEASE_IDENTIFIER)\n" >> $@
-
 ## run targets = build + [install] + exec
 
 run run-all run-tests run-test run-unit-tests:
@@ -142,7 +114,7 @@ $(TOP)/tools/common/SdkVersions.cs: $(TOP)/tools/common/SdkVersions.in.cs
 
 -include xharness/xharness.csproj.inc
 $(XHARNESS_EXECUTABLE): MSBUILD_EXE_PATH=
-$(XHARNESS_EXECUTABLE): $(xharness_dependencies) test.config test-system.config $(TOP)/tools/common/SdkVersions.cs
+$(XHARNESS_EXECUTABLE): $(xharness_dependencies) test.config $(TOP)/tools/common/SdkVersions.cs
 	$(Q_GEN) $(DOTNET) build "/bl:$@.binlog" $(MSBUILD_VERBOSITY_QUIET) xharness/xharness.csproj
 xharness/xharness.csproj.inc: export BUILD_VERBOSITY=$(DOTNET_BUILD_VERBOSITY)
 xharness/xharness.csproj.inc: export MSBUILD_EXE_PATH=
@@ -179,7 +151,7 @@ else
 endif
 
 jenkins: $(XHARNESS_EXECUTABLE)
-	$(Q) $(DOTNET) $< $(XHARNESS_VERBOSITY) --jenkins --rootdir $(CURDIR) --sdkroot $(XCODE_DEVELOPER_ROOT) --markdown-summary=$(abspath $(CURDIR))/TestSummary.md --use-system=true $(TESTS_EXTRA_ARGUMENTS) $(TESTS_PERIODIC_COMMAND)
+	$(Q) $(DOTNET) $< $(XHARNESS_VERBOSITY) --jenkins --rootdir $(CURDIR) --sdkroot $(XCODE_DEVELOPER_ROOT) --markdown-summary=$(abspath $(CURDIR))/TestSummary.md $(TESTS_EXTRA_ARGUMENTS) $(TESTS_PERIODIC_COMMAND)
 
 # This will launch xharness' interactive test runner in the system's default browser
 runner: $(XHARNESS_EXECUTABLE)

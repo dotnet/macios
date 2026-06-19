@@ -8,7 +8,6 @@ using System.Linq;
 using System.Xml;
 using Mono.Cecil;
 using Mono.Tuner;
-using MonoTouch.Tuner;
 using ObjCRuntime;
 using Xamarin;
 using Xamarin.Utils;
@@ -58,6 +57,7 @@ namespace Xamarin.Bundler {
 
 		public AssemblyDefinition AssemblyDefinition;
 		public bool? IsFrameworkAssembly { get { return is_framework_assembly; } }
+
 		public string FullPath {
 			get {
 				return full_path;
@@ -66,7 +66,10 @@ namespace Xamarin.Bundler {
 			set {
 				full_path = value;
 				if (!is_framework_assembly.HasValue && !string.IsNullOrEmpty (full_path)) {
-#if !LEGACY_TOOLS
+#if ASSEMBLY_PREPARER
+					is_framework_assembly = false; // silence compiler warning
+					throw new InvalidOperationException ();
+#elif !LEGACY_TOOLS
 					is_framework_assembly = App.Configuration.FrameworkAssemblies.Contains (GetIdentity (full_path));
 #else
 					var real_full_path = Application.GetRealPath (App, full_path);
@@ -126,7 +129,7 @@ namespace Xamarin.Bundler {
 			symbols_loaded = false;
 			try {
 				var pdb = Path.ChangeExtension (FullPath, ".pdb");
-				if (File.Exists (pdb)) {
+				if (File.Exists (pdb) && !string.IsNullOrEmpty (AssemblyDefinition.MainModule.FileName)) {
 					AssemblyDefinition.MainModule.ReadSymbols ();
 					symbols_loaded = true;
 				}
@@ -597,33 +600,6 @@ namespace Xamarin.Bundler {
 			get {
 				return IsDedupAssembly ? true : App.IsAOTCompiled (Identity);
 			}
-		}
-	}
-
-	public sealed class NormalizedStringComparer : IEqualityComparer<string> {
-		public static readonly NormalizedStringComparer OrdinalIgnoreCase = new NormalizedStringComparer (StringComparer.OrdinalIgnoreCase);
-
-		StringComparer comparer;
-
-		public NormalizedStringComparer (StringComparer comparer)
-		{
-			this.comparer = comparer;
-		}
-
-		public bool Equals (string? x, string? y)
-		{
-			// From what I gather it doesn't matter which normalization form
-			// is used, but I chose Form D because HFS normalizes to Form D.
-			if (x is not null)
-				x = x.Normalize (System.Text.NormalizationForm.FormD);
-			if (y is not null)
-				y = y.Normalize (System.Text.NormalizationForm.FormD);
-			return comparer.Equals (x, y);
-		}
-
-		public int GetHashCode (string? obj)
-		{
-			return comparer.GetHashCode (obj?.Normalize (System.Text.NormalizationForm.FormD) ?? "");
 		}
 	}
 

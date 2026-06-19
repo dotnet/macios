@@ -43,32 +43,6 @@ namespace Xamarin.Tests {
 			get => Version.Parse (DotNetTfm.Replace ("net", ""));
 		}
 
-		static bool? use_system; // if the system-installed XI/XM should be used instead of the local one.
-
-		public static bool UseSystem {
-			get {
-				if (!use_system.HasValue)
-					use_system = !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("TESTS_USE_SYSTEM"));
-				return use_system.Value;
-			}
-			set {
-				use_system = value;
-			}
-		}
-
-		static bool? is_vsts; // if the system-installed XI/XM should be used instead of the local one.
-
-		public static bool IsVsts {
-			get {
-				if (!is_vsts.HasValue)
-					is_vsts = !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("BUILD_BUILDID"));
-				return is_vsts.Value;
-			}
-			set {
-				is_vsts = value;
-			}
-		}
-
 		public static string XcodeLocation {
 			get {
 				return xcode_root;
@@ -141,7 +115,7 @@ namespace Xamarin.Tests {
 
 		static void ParseConfigFiles ()
 		{
-			var test_config = FindConfigFiles (UseSystem ? "test-system.config" : "test.config");
+			var test_config = FindConfigFiles ("test.config");
 			if (!test_config.Any () && Environment.OSVersion.Platform != PlatformID.Win32NT) {
 				// Run 'make test.config' in the tests/ directory
 				// First find the tests/ directory
@@ -408,18 +382,13 @@ namespace Xamarin.Tests {
 
 		public static string GetDotNetRoot ()
 		{
-			if (IsVsts) {
-				return Path.Combine (DOTNET_DIR, "packs");
-			} else {
-				return Path.Combine (SourceRoot, "_build");
-			}
+			return Path.Combine (DOTNET_DIR, "packs");
 		}
 
 		public static string GetRefDirectory (ApplePlatform platform)
 		{
 			var rv = Path.Combine (GetDotNetRoot (), GetRefNuGetName (platform));
-			if (UseSystem)
-				rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
+			rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
 			rv = Path.Combine (rv, "ref", DotNetTfm);
 			return rv;
 		}
@@ -447,8 +416,7 @@ namespace Xamarin.Tests {
 		public static string GetRuntimeDirectory (ApplePlatform platform, string runtimeIdentifier, bool isManagedRuntimePack = false)
 		{
 			var rv = Path.Combine (GetDotNetRoot (), isManagedRuntimePack ? GetManagedRuntimeNuGetName (platform) : GetRuntimeNuGetName (platform, runtimeIdentifier));
-			if (UseSystem)
-				rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
+			rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
 			return Path.Combine (rv, "runtimes", runtimeIdentifier);
 		}
 
@@ -461,8 +429,7 @@ namespace Xamarin.Tests {
 		public static string GetSdkRoot (ApplePlatform platform)
 		{
 			var rv = Path.Combine (GetDotNetRoot (), GetSdkNuGetName (platform));
-			if (UseSystem)
-				rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
+			rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
 			return Path.Combine (rv, "tools");
 		}
 
@@ -576,6 +543,63 @@ namespace Xamarin.Tests {
 		public static string GetRefLibrary (ApplePlatform platform)
 		{
 			return GetBaseLibrary (platform);
+		}
+
+		public static List<string> GetBCLAssemblies (ApplePlatform platform, bool isCoreCLR)
+		{
+			var assemblies = new List<string> ();
+			string rid;
+			string packageName;
+			switch (platform) {
+			case ApplePlatform.MacCatalyst:
+				rid = "maccatalyst-arm64";
+				packageName = isCoreCLR ? $"microsoft.netcore.app.runtime.maccatalyst-arm64" : $"microsoft.netcore.app.runtime.mono.maccatalyst-arm64";
+				break;
+			case ApplePlatform.iOS:
+				rid = "ios-arm64";
+				packageName = isCoreCLR ? $"microsoft.netcore.app.runtime.ios-arm64" : $"microsoft.netcore.app.runtime.mono.ios-arm64";
+				break;
+			case ApplePlatform.TVOS:
+				rid = "tvos-arm64";
+				packageName = isCoreCLR ? $"microsoft.netcore.app.runtime.tvOS-arm64" : $"microsoft.netcore.app.runtime.mono.tvOS-arm64";
+				break;
+			case ApplePlatform.MacOSX:
+				rid = "osx-arm64";
+				packageName = "microsoft.netcore.app.runtime.osx-arm64";
+				if (!isCoreCLR)
+					throw new InvalidOperationException ($"Mono doesn't support macOS, but was asked for the BCL assemblies for macOS");
+				break;
+			default:
+				throw new NotSupportedException ($"Unsupported platform: {platform}");
+			}
+			var microsoftNetCoreAppRefPackageVersion = File.ReadAllLines (Path.Combine (RootPath, "dotnet.config")).Single (v => v.StartsWith ("BUNDLED_NETCORE_PLATFORMS_PACKAGE_VERSION=", StringComparison.Ordinal)).Replace ("BUNDLED_NETCORE_PLATFORMS_PACKAGE_VERSION=", "");
+			var bclDir = Path.Combine (RootPath, "packages", packageName, microsoftNetCoreAppRefPackageVersion, "runtimes", rid, "lib", DotNetTfm);
+			var nativeDir = Path.Combine (RootPath, "packages", packageName, microsoftNetCoreAppRefPackageVersion, "runtimes", rid, "native");
+
+			assemblies.AddRange (Directory.GetFiles (bclDir, "*.dll"));
+			assemblies.AddRange (Directory.GetFiles (nativeDir, "*.dll"));
+
+			return assemblies;
+		}
+
+		public static List<string> GetReferenceAssemblies (ApplePlatform platform, bool isCoreCLR)
+		{
+			var assemblies = new List<string> ();
+
+			assemblies.AddRange (GetBCLAssemblies (platform, isCoreCLR));
+			assemblies.AddRange (GetRefLibrary (platform));
+
+			return assemblies;
+		}
+
+		public static List<string> GetImplementationAssemblies (ApplePlatform platform, bool isCoreCLR)
+		{
+			var assemblies = new List<string> ();
+
+			assemblies.AddRange (GetBCLAssemblies (platform, isCoreCLR));
+			assemblies.AddRange (GetBaseLibraryImplementations (platform).First ());
+
+			return assemblies;
 		}
 #endif // !XAMMAC_TESTS
 

@@ -3271,10 +3271,19 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 	</Target>
 
 	<Target Name="_CollectAppleArchiveOutput"
-		Condition="'$(ArchiveOnBuild)' == 'true' And '$(ArchiveDir)' != '' And Exists('$(ArchiveDir)')"
-		AfterTargets="_CoreArchive">
-		<ItemGroup>
-			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(ArchiveDir)'))">
+		Condition="'$(ArchiveOnBuild)' == 'true'"
+		AfterTargets="Archive">
+		<!-- On a Windows (Pair to Mac) build the archive is copied back to Windows by
+		     CopyArchiveFromMac (the last target in ArchiveDependsOn), which sets $(ArchivePath)
+		     to the local Windows path while $(ArchiveDir) keeps pointing to the Mac path. Prefer
+		     $(ArchiveDir) when it exists locally (the normal macOS build) and fall back to the
+		     copied-back $(ArchivePath) otherwise. -->
+		<PropertyGroup>
+			<_ApplicationArtifactArchivePath>$(ArchiveDir)</_ApplicationArtifactArchivePath>
+			<_ApplicationArtifactArchivePath Condition="'$(ArchivePath)' != '' And !Exists('$(_ApplicationArtifactArchivePath)')">$(ArchivePath)</_ApplicationArtifactArchivePath>
+		</PropertyGroup>
+		<ItemGroup Condition="'$(_ApplicationArtifactArchivePath)' != '' And Exists('$(_ApplicationArtifactArchivePath)')">
+			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(_ApplicationArtifactArchivePath)'))">
 				<PackageFormat>xcarchive</PackageFormat>
 				<IsDirectory>true</IsDirectory>
 				<PlatformName>$(_PlatformName)</PlatformName>

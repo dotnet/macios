@@ -490,7 +490,7 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 
 	<Target Name="_CollectAppleIpaOutput"
 		Condition="'$(BuildIpa)' == 'true' And '$(IpaPackagePath)' != '' And Exists('$(IpaPackagePath)')"
-		AfterTargets="_ZipIpa">
+		AfterTargets="CreateIpa">
 		<ItemGroup>
 			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(IpaPackagePath)'))">
 				<PackageFormat>ipa</PackageFormat>

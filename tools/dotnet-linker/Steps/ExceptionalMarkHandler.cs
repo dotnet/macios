@@ -32,7 +32,11 @@ namespace Xamarin.Linker {
 		protected AnnotationStore Annotations => Context.Annotations;
 		protected LinkerConfiguration Configuration => LinkerConfiguration.GetInstance (Context);
 
+		private protected AppBundleRewriter abr { get { return Configuration.AppBundleRewriter; } }
+
+#if !ASSEMBLY_PREPARER
 		protected Profile Profile => Configuration.Profile;
+#endif
 
 		protected Application App => Configuration.Application;
 

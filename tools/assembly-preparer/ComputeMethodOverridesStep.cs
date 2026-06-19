@@ -1,4 +1,5 @@
-// Copilot: add license
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 namespace MonoTouch.Tuner {
 	// Compute the map of which methods override which other methods, and store it in the Annotations.

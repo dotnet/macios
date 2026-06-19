@@ -64,7 +64,6 @@ namespace MonoTouch.Tuner {
 
 				try {
 					assemblyDefinition.Write (assembly.OutputPath, writerParameters);
-					ModuleAttributes m = assemblyDefinition.MainModule.Attributes;
 				} catch (Exception e) {
 					exceptions.Add (ErrorHelper.CreateError (99, e, $"Failed to write {assembly.OutputPath}: {e.Message}"));
 					log.Log ($"Failed to write {assembly.OutputPath}: {e}");

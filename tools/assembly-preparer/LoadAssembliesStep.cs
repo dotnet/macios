@@ -1,4 +1,5 @@
-// Copilot: add license
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 
 using Mono.Cecil;
 using Mono.Cecil.Cil;

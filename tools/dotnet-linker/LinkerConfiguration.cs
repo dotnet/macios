@@ -10,7 +10,9 @@ using Mono.Cecil;
 using Mono.Linker;
 using Mono.Linker.Steps;
 
+#if ASSEMBLY_PREPARER
 using Xamarin.Build;
+#endif
 using Xamarin.Bundler;
 using Xamarin.Utils;
 using Xamarin.Tuner;

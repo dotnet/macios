@@ -80,7 +80,7 @@ public class AssemblyPreparer : IDisposable {
 		var lines = File.ReadAllLines (linker_file).ToList ();
 		SaveAssemblies ("AssemblyPreparer", lines, null, assemblies);
 		configuration = new LinkerConfiguration (log, lines, linker_file, GetConfigurator (null, assemblies.Length == 0 ? null : (input, output) => assemblies.Single (a => a.InputPath == input && a.OutputPath == output))) {
-			AssemblyInfos = assemblies.ToList (),
+			AssemblyInfos = Assemblies,
 		};
 	}
 

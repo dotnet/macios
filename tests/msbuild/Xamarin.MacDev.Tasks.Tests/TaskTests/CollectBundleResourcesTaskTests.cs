@@ -30,8 +30,12 @@ namespace Xamarin.MacDev.Tasks {
 				item.SetMetadata ("LocalMSBuildProjectFullPath", Path.Combine (projDir, "Project.csproj"));
 				task.BundleResources = [item];
 				ExecuteTask (task);
-				Assert.That (Engine.Logger.WarningsEvents.Count, Is.EqualTo (1), "Warnings");
-				Assert.That (Engine.Logger.WarningsEvents [0].Message, Is.EqualTo ("The path '../B/image.png' would result in a file outside of the app bundle and cannot be used."), "Warning Message");
+				// After the fix for #23898, the LogicalName is computed relative
+				// to the project directory, so this item resolves to "image.png"
+				// and no longer produces an outside-app-bundle warning.
+				Assert.That (Engine.Logger.WarningsEvents.Count, Is.EqualTo (0), "Warnings");
+				Assert.That (task.BundleResourcesWithLogicalNames.Length, Is.EqualTo (1), "BundleResourcesWithLogicalNames count");
+				Assert.That (task.BundleResourcesWithLogicalNames [0].GetMetadata ("LogicalName"), Is.EqualTo ("image.png"), "LogicalName");
 			} finally {
 				Environment.CurrentDirectory = currentDirectory;
 			}

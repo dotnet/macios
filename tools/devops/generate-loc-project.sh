@@ -1,11 +1,13 @@
-#!/bin/bash
+#!/bin/bash -eu
+
+set -o pipefail
 
 # This script generates the LocProject.json file for OneLocBuild.
 # It includes both the static .resx entries and dynamically discovered
 # template JSON files (templatestrings.en.json).
 
-WORKING_DIRECTORY="$1"
-TOP="$2"
+WORKING_DIRECTORY="${1:-}"
+TOP="${2:-}"
 
 if [ -z "$WORKING_DIRECTORY" ] || [ -z "$TOP" ]; then
 	echo "Usage: $0 <working-directory> <top-directory>" >&2

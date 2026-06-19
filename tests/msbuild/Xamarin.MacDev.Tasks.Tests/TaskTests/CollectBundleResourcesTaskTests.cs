@@ -30,12 +30,8 @@ namespace Xamarin.MacDev.Tasks {
 				item.SetMetadata ("LocalMSBuildProjectFullPath", Path.Combine (projDir, "Project.csproj"));
 				task.BundleResources = [item];
 				ExecuteTask (task);
-				// After the fix for #23898, the LogicalName is computed relative
-				// to the project directory, so this item resolves to "image.png"
-				// and no longer produces an outside-app-bundle warning.
-				Assert.That (Engine.Logger.WarningsEvents.Count, Is.EqualTo (0), "Warnings");
-				Assert.That (task.BundleResourcesWithLogicalNames.Length, Is.EqualTo (1), "BundleResourcesWithLogicalNames count");
-				Assert.That (task.BundleResourcesWithLogicalNames [0].GetMetadata ("LogicalName"), Is.EqualTo ("image.png"), "LogicalName");
+				Assert.That (Engine.Logger.WarningsEvents.Count, Is.EqualTo (1), "Warnings");
+				Assert.That (Engine.Logger.WarningsEvents [0].Message, Is.EqualTo ("The path '../B/image.png' would result in a file outside of the app bundle and cannot be used."), "Warning Message");
 			} finally {
 				Environment.CurrentDirectory = currentDirectory;
 			}
@@ -44,7 +40,8 @@ namespace Xamarin.MacDev.Tasks {
 		// Ref: https://github.com/dotnet/macios/issues/23898
 		// Items defined by an SDK (not default items) where the defining
 		// project is in a completely different directory tree than the
-		// project should still resolve their LogicalName correctly.
+		// project should still resolve their LogicalName correctly
+		// when ResolveResourceItemsRelativeToProject is enabled.
 		[Test]
 		public void ContentDefinedBySdkFarFromProject ()
 		{
@@ -80,13 +77,13 @@ namespace Xamarin.MacDev.Tasks {
 				var task = CreateTask<CollectBundleResources> ();
 				task.ProjectDir = projDir + Path.DirectorySeparatorChar;
 				task.ResourcePrefix = "";
+				task.ResolveResourceItemsRelativeToProject = true;
 				task.BundleResources = items.ToArray ();
 				ExecuteTask (task);
 
-				// With the bug, the LogicalName would be something like
-				// '../../../../../src/MyProject/wwwroot/background.png' which starts
-				// with '../' and gets rejected with a warning.
-				// After fix, items should be included with correct LogicalNames.
+				// With ResolveResourceItemsRelativeToProject enabled, the
+				// LogicalName is computed relative to the project directory,
+				// so items are correctly included.
 				Assert.That (Engine.Logger.WarningsEvents.Count, Is.EqualTo (0), $"Warnings: {string.Join (", ", Engine.Logger.WarningsEvents.Select (e => e.Message))}");
 				Assert.That (Engine.Logger.ErrorEvents.Count, Is.EqualTo (0), $"Errors: {string.Join (", ", Engine.Logger.ErrorEvents.Select (e => e.Message))}");
 				Assert.That (task.BundleResourcesWithLogicalNames.Length, Is.EqualTo (3), "BundleResourcesWithLogicalNames count");

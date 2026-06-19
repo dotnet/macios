@@ -10,4 +10,8 @@ namespace Xamarin.MacDev.Tasks {
 	public interface IHasSessionId {
 		string SessionId { get; set; }
 	}
+
+	public interface IHasResolveResourceItemsRelativeToProject {
+		bool ResolveResourceItemsRelativeToProject { get; set; }
+	}
 }

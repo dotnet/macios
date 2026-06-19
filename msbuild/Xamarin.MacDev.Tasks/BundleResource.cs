@@ -88,28 +88,48 @@ namespace Xamarin.MacDev {
 			// Note that '/' is a valid path separator on Windows (in addition to '\'), so canonicalize the paths to use '/' as the path separator.
 
 			var localMSBuildProjectFullPath = item.GetMetadata ("LocalMSBuildProjectFullPath").Replace ('\\', '/');
+			var localDefiningProjectFullPath = item.GetMetadata ("LocalDefiningProjectFullPath").Replace ('\\', '/');
 
 			if (string.IsNullOrEmpty (localMSBuildProjectFullPath)) {
 				task.Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E7133 /* The item '{0}' does not have a '{1}' value set. */, item.ItemSpec, "LocalMSBuildProjectFullPath");
 				return "placeholder";
 			}
 
-			// Always compute relative to the user's project file, not the
-			// file that declared the item. This is important because SDKs
-			// (such as the Razor SDK) may add items from a directory far
-			// from the project, and computing relative to the SDK directory
-			// would produce nonsensical paths.
+			// Check if the task has opted into resolving items relative to
+			// the project file instead of the defining project file.
 			// Ref: https://github.com/dotnet/macios/issues/23898
+			var resolveRelativeToProject = task is IHasResolveResourceItemsRelativeToProject rr && rr.ResolveResourceItemsRelativeToProject;
+
+			// When resolveRelativeToProject is true, always compute
+			// relative to the user's project file. This is important
+			// because SDKs (such as the Razor SDK) may add items from a
+			// directory far from the project, and computing relative to
+			// the SDK directory would produce nonsensical paths.
 			//
-			// We use the 'LocalMSBuildProjectFullPath' metadata because the
-			// 'MSBuildProjectFullPath' is not necessarily correct when
-			// building remotely (the relative path between files might not
-			// be the same on macOS once XVS has copied them there, in
-			// particular for files outside the project directory).
+			// When resolveRelativeToProject is false, use the legacy
+			// behavior: compute relative to the file that declared the
+			// item (DefiningProjectFullPath), unless the item is a default
+			// item (IsDefaultItem=true), in which case compute relative to
+			// the user's project file.
 			//
-			// The 'LocalMSBuildProjectFullPath' value is set to the Windows
-			// version of 'MSBuildProjectFullPath' when building remotely,
-			// and the macOS version when building on macOS.
+			// We use the 'LocalMSBuildProjectFullPath' and
+			// 'LocalDefiningProjectFullPath' metadata because the
+			// 'MSBuildProjectFullPath' and 'DefiningProjectFullPath' are
+			// not necessarily correct when building remotely (the relative
+			// path between files might not be the same on macOS once XVS
+			// has copied them there, in particular for files outside the
+			// project directory).
+			//
+			// The 'LocalMSBuildProjectFullPath' and
+			// 'LocalDefiningProjectFullPath' values are set to the Windows
+			// version of 'MSBuildProjectFullPath' and
+			// 'DefiningProjectFullPath' when building remotely, and the
+			// macOS version when building on macOS.
+
+			if (!resolveRelativeToProject && string.IsNullOrEmpty (localDefiningProjectFullPath)) {
+				task.Log.LogError (null, null, null, item.ItemSpec, 0, 0, 0, 0, MSBStrings.E7133 /* The item '{0}' does not have a '{1}' value set. */, item.ItemSpec, "LocalDefiningProjectFullPath");
+				return "placeholder";
+			}
 
 			// First find the absolute path to the item
 			var projectAbsoluteDir = task.ProjectDir;
@@ -122,8 +142,18 @@ namespace Xamarin.MacDev {
 			}
 			var originalItemAbsolutePath = itemAbsolutePath;
 
-			// Compute the result relative to the project directory.
-			string relativeToDirectory = Path.GetDirectoryName (localMSBuildProjectFullPath)!;
+			// Then find the directory we should use to compute the result relative to.
+			string relativeToDirectory; // this is an absolute path.
+			if (resolveRelativeToProject) {
+				relativeToDirectory = Path.GetDirectoryName (localMSBuildProjectFullPath)!;
+			} else {
+				var isDefaultItem = item.GetMetadata ("IsDefaultItem") == "true";
+				if (isDefaultItem) {
+					relativeToDirectory = Path.GetDirectoryName (localMSBuildProjectFullPath)!;
+				} else {
+					relativeToDirectory = Path.GetDirectoryName (localDefiningProjectFullPath)!;
+				}
+			}
 			var originalRelativeToDirectory = relativeToDirectory;
 
 			// On macOS we need to resolve symlinks before computing the relative path.
@@ -145,7 +175,9 @@ namespace Xamarin.MacDev {
 			Trace (task, $"BundleResource.GetVirtualProjectPath ({item.ItemSpec}) => {rv}\n" +
 					$"\t\t\tprojectAbsoluteDir={projectAbsoluteDir}\n" +
 					$"\t\t\tIsRemoteBuild={isRemoteBuild}\n" +
+					$"\t\t\tresolveRelativeToProject={resolveRelativeToProject}\n" +
 					$"\t\t\tLocalMSBuildProjectFullPath={localMSBuildProjectFullPath}\n" +
+					$"\t\t\tLocalDefiningProjectFullPath={localDefiningProjectFullPath}\n" +
 					$"\t\t\toriginalItemAbsolutePath={originalItemAbsolutePath}\n" +
 					$"\t\t\titemAbsolutePath={itemAbsolutePath}\n" +
 					$"\t\t\toriginalRelativeToDirectory={originalRelativeToDirectory}\n" +

@@ -1195,6 +1195,31 @@ only scan libraries with the `[LinkWith]` attribute for Objective-C classes:
 </PropertyGroup>
 ```
 
+## ResolveResourceItemsRelativeToProject
+
+This property determines whether Content and BundleResource items have their
+logical names computed relative to the project file or relative to the file
+that declared them.
+
+When set to `true`, item paths are always computed relative to the project
+file. This fixes issues where SDKs (such as the Razor SDK) add Content items
+from a directory far from the project, producing incorrect paths that get
+rejected at build time.
+
+When set to `false` (the default for .NET 10 and .NET 11), the legacy behavior
+is preserved: paths are computed relative to the file that declared the item.
+
+| .NET version | Default |
+|---|---|
+| .NET 10 - .NET 11 | `false` (opt-in) |
+| .NET 12+ | `true` (opt-out) |
+
+```xml
+<PropertyGroup>
+  <ResolveResourceItemsRelativeToProject>true</ResolveResourceItemsRelativeToProject>
+</PropertyGroup>
+```
+
 ## RunWithOpen
 
 This property determines whether apps are launched using the `open` command on

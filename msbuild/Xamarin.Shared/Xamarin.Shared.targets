@@ -460,6 +460,7 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 			BundleResources="@(Content);@(BundleResource)"
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
+			ResolveResourceItemsRelativeToProject="$(ResolveResourceItemsRelativeToProject)"
 			TargetFrameworkMoniker="$(_ComputedTargetFrameworkMoniker)"
 			UnpackedResources="@(_UnpackedBundleResourceWithLogicalName)"
 			>

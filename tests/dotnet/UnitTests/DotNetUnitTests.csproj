@@ -45,6 +45,9 @@
 		<Compile Include="..\..\mtouch\Cache.cs">
 			<Link>external\Cache.cs</Link>
 		</Compile>
+		<Compile Include="..\..\..\tools\common\IToolLog.cs">
+			<Link>external\IToolLog.cs</Link>
+		</Compile>
 		<Compile Include="..\..\..\tools\common\TargetFramework.cs">
 			<Link>external\TargetFramework.cs</Link>
 		</Compile>

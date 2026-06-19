@@ -46,6 +46,7 @@ namespace Xamarin.MacDev.Tasks {
 			Task.MinSupportedOSPlatformVersion = "10.0";
 			Task.SupportedOSPlatformVersion = "15.0";
 			Task.SdkVersion = "10.0";
+			Task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (Platform).ToString ();
 
 			Plist = new PDictionary ();
 			Plist ["CFBundleDisplayName"] = displayName;

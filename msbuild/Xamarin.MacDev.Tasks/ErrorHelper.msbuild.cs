@@ -10,10 +10,9 @@ namespace Xamarin.Bundler {
 	public static partial class ErrorHelper {
 		public static ApplePlatform Platform;
 
-		internal static string Prefix {
-			get {
-				return Xamarin.MacDev.Tasks.LoggingExtensions.ErrorPrefix;
-			}
+		internal static string GetPrefix (IToolLog? log)
+		{
+			return Xamarin.MacDev.Tasks.LoggingExtensions.ErrorPrefix;
 		}
 
 		public enum WarningLevel {
@@ -24,7 +23,7 @@ namespace Xamarin.Bundler {
 
 		static Dictionary<int, WarningLevel>? warning_levels;
 
-		public static WarningLevel GetWarningLevel (int code)
+		public static WarningLevel GetWarningLevel (IToolLog log, int code)
 		{
 			WarningLevel level;
 

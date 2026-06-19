@@ -635,10 +635,6 @@
 			<_LinkerItemsDirectory>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)linker-items'))</_LinkerItemsDirectory>
 			<_LinkerItemsDirectory Condition="'$(BuildSessionId)' != ''">$(IntermediateOutputPath)linker-items</_LinkerItemsDirectory>
 
-			<!-- A temporary output directory for our linker steps -->
-			<_LinkerCacheDirectory>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)linker-cache'))</_LinkerCacheDirectory>
-			<_LinkerCacheDirectory Condition="'$(BuildSessionId)' != ''">$(IntermediateOutputPath)linker-cache</_LinkerCacheDirectory>
-
 			<!-- Set linker feature flags for device/simulator builds -->
 			<_IsSimulatorFeature Condition="'$(SdkIsMobile)' == 'true' And '$(_SdkIsSimulator)' == 'true'">true</_IsSimulatorFeature>
 			<_IsSimulatorFeature Condition="'$(_IsSimulatorFeature)' == ''">false</_IsSimulatorFeature>
@@ -682,6 +678,7 @@
 				@(_BundlerEnvironmentVariables -> 'EnvironmentVariable=Overwrite=%(Overwrite)|%(Identity)=%(Value)')
 				@(_XamarinFrameworkAssemblies -> 'FrameworkAssembly=%(Filename)')
 				Interpreter=$(MtouchInterpreter)
+				InlineClassGetHandle=$(InlineClassGetHandle)
 				InlineDlfcnMethods=$(InlineDlfcnMethods)
 				IntermediateLinkDir=$(IntermediateLinkDir)
 				IntermediateOutputPath=$(DeviceSpecificIntermediateOutputPath)
@@ -716,6 +713,7 @@
 				TargetArchitectures=$(TargetArchitectures)
 				TargetFramework=$(_ComputedTargetFrameworkMoniker)
 				TypeMapAssemblyName=$(_TypeMapAssemblyName)
+				TypeMapFilePath=$(_TypeMapFilePath)
 				TypeMapOutputDirectory=$(_TypeMapOutputDirectory)
 				UseLlvm=$(MtouchUseLlvm)
 				Verbosity=$(_BundlerVerbosity)
@@ -840,6 +838,7 @@
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Condition="'$(_AreAnyAssembliesTrimmed)' == 'true'" Type="Xamarin.Linker.Steps.PreMarkDispatcher" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.ManagedRegistrarStep" Condition="'$(Registrar)' == 'managed-static' Or '$(Registrar)' == 'trimmable-static'" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.TrimmableRegistrarStep" Condition="'$(Registrar)' == 'trimmable-static'" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="MarkStep" Type="Xamarin.Linker.Steps.InlineClassGetHandleStep" Condition="'$(InlineClassGetHandle)' != '' And '$(InlineClassGetHandle)' != 'disabled'"  />
 
 			<!--
 				IMarkHandlers which run during Mark
@@ -870,7 +869,7 @@
 			<!-- The ListExportedSymbols must run after ExtractBindingLibrariesStep, otherwise we won't properly list exported Objective-C classes from binding libraries -->
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.Steps.ListExportedSymbols" />
 			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.Steps.PreOutputDispatcher" />
-			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.ClassHandleRewriterStep" />
+			<_TrimmerCustomSteps Include="$(_AdditionalTaskAssembly)" BeforeStep="OutputStep" Type="Xamarin.Linker.ClassHandleRewriterStep" Condition="'$(InlineClassGetHandle)' == '' Or '$(InlineClassGetHandle)' == 'disabled'" />
 
 			<!--
 				post-output steps
@@ -1334,6 +1333,10 @@
 			<_AOTInputDirectory>$(_IntermediateNativeLibraryDir)aot-input/</_AOTInputDirectory>
 			<_AOTOutputDirectory>$(_IntermediateNativeLibraryDir)aot-output/</_AOTOutputDirectory>
 
+			<!-- A temporary output directory for our linker steps -->
+			<_LinkerCacheDirectory>$([System.IO.Path]::GetFullPath('$(IntermediateOutputPath)linker-cache'))</_LinkerCacheDirectory>
+			<_LinkerCacheDirectory Condition="'$(BuildSessionId)' != ''">$(IntermediateOutputPath)linker-cache</_LinkerCacheDirectory>
+
 			<!-- 
 				Enable dedup optimization when we run AOT compiler and target ARM64 architecture.
 				Target architecture condition is required since when we target x86_64 we utilize MONO_AOT_MODE_INTERP_ONLY mode (AOT + interpreter).
@@ -1374,6 +1377,9 @@
 			<_EmbeddedFrameworksRPath Condition="'$(SdkIsDesktop)' == 'true'">@executable_path/../Frameworks/</_EmbeddedFrameworksRPath>
 
 			<_RuntimeConfigurationFile>runtimeconfig.bin</_RuntimeConfigurationFile>
+
+			<!-- Path to the file where Objective-C type map information is stored -->
+			<_TypeMapFilePath Condition="'$(_TypeMapFilePath)' == ''">$(_LinkerCacheDirectory)/type-map.txt</_TypeMapFilePath>
 		</PropertyGroup>
 
 		<!-- Not sure about how to handle nested app extensions here, but if it ever becomes a problem we can look into it (I believe only watch extensions can have embedded extensions at this point, and we don't support watchOS on .NET anyways) -->
@@ -1728,20 +1734,22 @@
 	<Target Name="_ComputePostTrimmingPaths">
 		<PropertyGroup>
 			<_ILTrimSurvivingNativeSymbolsFile>$(DeviceSpecificIntermediateOutputPath)inlined-dlfcn\iltrim-surviving-native-symbols.txt</_ILTrimSurvivingNativeSymbolsFile>
-			<_NativeAOTUnresolvedSymbolsFile>$(DeviceSpecificIntermediateOutputPath)nativeaot-unresolved-symbols.txt</_NativeAOTUnresolvedSymbolsFile>
 			<_NativeAOTSurvivingNativeSymbolsFile>$(DeviceSpecificIntermediateOutputPath)nativeaot-surviving-native-symbols.txt</_NativeAOTSurvivingNativeSymbolsFile>
+			<_ILTrimSurvivingClassesFile>$(DeviceSpecificIntermediateOutputPath)inlined-class-gethandle\iltrim-classes.txt</_ILTrimSurvivingClassesFile>
+			<_NativeAOTSurvivingClassesFile>$(DeviceSpecificIntermediateOutputPath)inlined-class-gethandle\nativeaot-classes.txt</_NativeAOTSurvivingClassesFile>
 		</PropertyGroup>
 	</Target>
 
 	<!-- See docs/code/native-symbols.md for an overview of native symbol handling. -->
 	<Target Name="_CollectPostILTrimInformation"
-		Condition="'$(InlineDlfcnMethods)' != '' And '$(_UseNativeAot)' != 'true'"
+		Condition="('$(InlineDlfcnMethods)' != '' Or '$(InlineClassGetHandle)' != '') And '$(_UseNativeAot)' != 'true'"
 		DependsOnTargets="_ComputeTrimmedAssemblies;_ComputePostTrimmingPaths"
 		Inputs="@(_TrimmedAssembly)"
-		Outputs="$(_ILTrimSurvivingNativeSymbolsFile)"
+		Outputs="$(_ILTrimSurvivingNativeSymbolsFile);$(_ILTrimSurvivingClassesFile)"
 		>
 		<CollectPostILTrimInformation
 			TrimmedAssemblies="@(_TrimmedAssembly)"
+			SurvivingClassesFile="$(_ILTrimSurvivingClassesFile)"
 			SurvivingNativeSymbolsFile="$(_ILTrimSurvivingNativeSymbolsFile)"
 			CacheDirectory="$(DeviceSpecificIntermediateOutputPath)posttrim-info\cache"
 		/>
@@ -1750,6 +1758,7 @@
 		</ReadLinesFromFile>
 		<ItemGroup>
 			<FileWrites Include="$(_ILTrimSurvivingNativeSymbolsFile)" />
+			<FileWrites Include="$(_ILTrimSurvivingClassesFile)" />
 		</ItemGroup>
 	</Target>
 
@@ -1760,12 +1769,17 @@
 		<ItemGroup>
 			<_SurvivingNativeSymbolsFile Include="$(_ILTrimSurvivingNativeSymbolsFile)" Condition="Exists('$(_ILTrimSurvivingNativeSymbolsFile)')" />
 			<_SurvivingNativeSymbolsFile Include="$(_NativeAOTSurvivingNativeSymbolsFile)" Condition="Exists('$(_NativeAOTSurvivingNativeSymbolsFile)')" />
+
+			<_SurvivingClassesFiles Include="$(_ILTrimSurvivingClassesFile)" Condition="Exists('$(_ILTrimSurvivingClassesFile)')" />
+			<_SurvivingClassesFiles Include="$(_NativeAOTSurvivingClassesFile)" Condition="Exists('$(_NativeAOTSurvivingClassesFile)')" />
 		</ItemGroup>
 		<PostTrimmingProcessing
 			Architecture="$(TargetArchitectures)"
 			OutputDirectory="$(DeviceSpecificIntermediateOutputPath)inlined-dlfcn"
 			ReferenceNativeSymbol="@(ReferenceNativeSymbol)"
+			SurvivingClassesFiles="@(_SurvivingClassesFiles)"
 			SurvivingNativeSymbolsFiles="@(_SurvivingNativeSymbolsFile)"
+			TypeMapFilePath="$(_TypeMapFilePath)"
 		>
 			<Output TaskParameter="NativeSourceFiles" ItemName="_PostTrimmingSourceFiles" />
 		</PostTrimmingProcessing>
@@ -1775,8 +1789,15 @@
 			<_PostTrimmingSourceFiles>
 				<OutputFile>$(DeviceSpecificIntermediateOutputPath)posttrim-info-compiled/%(Arch)/%(Filename).o</OutputFile>
 			</_PostTrimmingSourceFiles>
+			<_NativeExecutableObjectFiles Include="@(_PostTrimmingSourceFiles -> '%(OutputFile)')" />
 		</ItemGroup>
+	</Target>
 
+	<Target Name="_CompilePostTrimmingFiles"
+		DependsOnTargets="_PostTrimmingProcessing"
+		Inputs="@(_PostTrimmingSourceFiles)"
+		Outputs="@(_PostTrimmingSourceFiles -> '%(OutputFile)')"
+		>
 		<CompileNativeCode
 			SessionId="$(BuildSessionId)"
 			Condition="'$(IsMacEnabled)' == 'true'"
@@ -1792,9 +1813,7 @@
 		</CompileNativeCode>
 
 		<ItemGroup>
-			<_CompiledPostTrimmingFiles Include="@(_PostTrimmingSourceFiles -> '%(OutputFile)')" />
-			<_NativeExecutableObjectFiles Include="@(_CompiledPostTrimmingFiles)" />
-			<FileWrites Include="@(_CompiledPostTrimmingFiles)" />
+			<FileWrites Include="@(_PostTrimmingSourceFiles -> '%(OutputFile)')" />
 		</ItemGroup>
 	</Target>
 
@@ -1854,7 +1873,7 @@
 			_ReadAppManifest;
 			_WriteAppManifest;
 			_CompileNativeExecutable;
-			_PostTrimmingProcessing;
+			_CompilePostTrimmingFiles;
 			_ReidentifyDynamicLibraries;
 			_AddSwiftLinkerFlags;
 			_ComputeLinkerProperties;
@@ -1868,8 +1887,11 @@
 		Condition="'$(_UseNativeAot)' == 'true'"
 		DependsOnTargets="_ComputePostTrimmingPaths;_CompileNativeExecutable"
 		Inputs="$(NativeObject)"
-		Outputs="$(_NativeAOTSurvivingNativeSymbolsFile)"
+		Outputs="$(_NativeAOTSurvivingNativeSymbolsFile);$(_NativeAOTSurvivingClassesFile)"
 		>
+		<PropertyGroup>
+			<_NativeAOTUnresolvedSymbolsFile>$(DeviceSpecificIntermediateOutputPath)nativeaot-unresolved-symbols.txt</_NativeAOTUnresolvedSymbolsFile>
+		</PropertyGroup>
 		<CollectUnresolvedNativeSymbols
 			SessionId="$(BuildSessionId)"
 			StaticLibrary="$(NativeObject)"
@@ -1877,9 +1899,14 @@
 		/>
 		<ComputeNativeAOTSurvivingNativeSymbols
 			SessionId="$(BuildSessionId)"
-			UnresolvedSymbolsFile="$(_NativeAOTUnresolvedSymbolsFile)"
+			SurvivingClassesFile="$(_NativeAOTSurvivingClassesFile)"
 			SurvivingNativeSymbolsFile="$(_NativeAOTSurvivingNativeSymbolsFile)"
+			UnresolvedSymbolsFile="$(_NativeAOTUnresolvedSymbolsFile)"
 		/>
+		<ItemGroup>
+			<FileWrites Include="$(_NativeAOTSurvivingNativeSymbolsFile)" />
+			<FileWrites Include="$(_NativeAOTSurvivingClassesFile)" />
+		</ItemGroup>
 	</Target>
 
 	<Target Name="_AddSwiftLinkerFlags" DependsOnTargets="_DetectSdkLocations">

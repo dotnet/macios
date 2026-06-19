@@ -41,7 +41,7 @@ using Xamarin.Tuner;
 #nullable enable
 
 namespace Xamarin.Linker.Steps {
-
+#if !ASSEMBLY_PREPARER
 	public class MarkNSObjects : ExceptionalSubStep, IMarkNSObjects {
 		protected override string Name { get; } = "MarkNSObjects";
 		protected override int ErrorCode { get; } = 2080;
@@ -86,6 +86,7 @@ namespace Xamarin.Linker.Steps {
 			return true;
 		}
 	}
+#endif
 
 	public interface IMarkNSObjects {
 		bool PreserveType (TypeDefinition type, bool allMembers);

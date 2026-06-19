@@ -7,6 +7,10 @@ using Mono.Tuner;
 
 using Xamarin.Tuner;
 
+#if !LEGACY_TOOLS && !ASSEMBLY_PREPARER
+using LinkContext = Xamarin.Bundler.DotNetLinkContext;
+#endif
+
 namespace MonoTouch.Tuner {
 
 	public static class Extensions {

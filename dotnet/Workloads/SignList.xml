@@ -79,6 +79,9 @@
   <ItemGroup>
     <FirstParty Include="bgen.dll" />
     <FirstParty Include="dotnet-linker.dll" />
+    <!-- assembly-preparer tool (replaces pre-mark custom linker steps) + localized satellites -->
+    <FirstParty Include="assembly-preparer.dll" />
+    <FirstParty Include="assembly-preparer.resources.dll" />
     <FirstParty Include="Mono.Options.dll" />
     <FirstParty Include="Xamarin.*.dll" />
     <!-- mlaunch.app MonoBundle content-->

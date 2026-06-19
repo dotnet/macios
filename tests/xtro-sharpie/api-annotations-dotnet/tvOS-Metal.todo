@@ -6,7 +6,6 @@
 !missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeInt2 = 150 not bound
 !missing-enum-value! MTLTensorDataType native value MTLTensorDataTypeUInt2 = 149 not bound
 !missing-enum! MTLTensorPlaneType not bound
-!missing-protocol-conformance! MTLTensorExtents should conform to NSCopying
 !missing-protocol-member! MTL4ComputeCommandEncoder::copyFromTensor:sourceOrigin:sourceDimensions:sourcePlane:toTensor:destinationOrigin:destinationDimensions:destinationPlane: not found
 !missing-protocol-member! MTLBlitCommandEncoder::copyFromTensor:sourceOrigin:sourceDimensions:sourcePlane:toTensor:destinationOrigin:destinationDimensions:destinationPlane: not found
 !missing-protocol-member! MTLDevice::newTensorWithDescriptor:attachments:error: not found

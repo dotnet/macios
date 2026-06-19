@@ -60,7 +60,7 @@ namespace Xamarin.MacDev.Tasks {
 			var task = CreateTask<MergeAppBundles> ();
 			task.InputAppBundles = inputItems.ToArray ();
 			task.OutputAppBundle = outputBundle;
-			task.SdkDevPath = Configuration.xcode_root;
+			task.SdkDevPath = Configuration.XcodeLocation;
 			return task;
 		}
 

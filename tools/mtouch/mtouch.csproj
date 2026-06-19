@@ -171,6 +171,9 @@
     <Compile Include="..\common\XamarinRuntime.cs">
       <Link>external/tools/common/XamarinRuntime.cs</Link>
     </Compile>
+    <Compile Include="..\common\IToolLog.cs">
+      <Link>external/tools/common/IToolLog.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Mono.Cecil" Version="$(MonoCecilPackageVersion)" />

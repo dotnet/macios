@@ -38,7 +38,7 @@ namespace Xamarin.Utils {
 			return path;
 		}
 
-		[DllImport ("/usr/lib/libc.dylib")]
+		[DllImport ("libc")]
 		static extern IntPtr realpath (string path, IntPtr buffer);
 
 #if NET
@@ -421,6 +421,26 @@ namespace Xamarin.Utils {
 					return Convert.ToInt32 (longPathsEnabledValue) == 1;
 				}
 			}
+		}
+
+		public static void CreateDirectoryForFile (string? file)
+		{
+#if NET
+			if (string.IsNullOrEmpty (file))
+#else
+			if (string.IsNullOrEmpty (file) || file is null)
+#endif
+				return;
+
+			var dir = Path.GetDirectoryName (file);
+#if NET
+			if (string.IsNullOrEmpty (dir))
+#else
+			if (string.IsNullOrEmpty (dir) || dir is null)
+#endif
+				return;
+
+			Directory.CreateDirectory (dir);
 		}
 	}
 }

@@ -91,7 +91,6 @@
 				Condition="'%(_ResolvedAssembliesToPublish.NuGetPackageId)' != ''" />
 			<_UserAssemblies Include="@(_ResolvedAssembliesToPublish)" Exclude="@(_NonUserAssemblies)" />
 			<PublishReadyToRunExclude Include="@(_UserAssemblies -> '%(Filename)%(Extension)')" />
-			<PublishReadyToRunCompositeRoots Include="System.Private.CoreLib.dll" KeepDuplicates="false" />
 		</ItemGroup>
 
 		<!-- Hash the R2R input assemblies so we can detect when the set actually changes -->
@@ -113,14 +112,6 @@
 		<ItemGroup>
 			<FileWrites Include="$(_R2RInputHashFile)" />
 			<FileWrites Include="$(_R2RInputHashFile).trigger" />
-		</ItemGroup>
-	</Target>
-
-	<Target Name="_DedupUnrootedReadyToRunPublish"
-			Condition="@(PublishReadyToRunCompositeRoots->Count()) != 0"
-			AfterTargets="_PrepareForReadyToRunCompilation">
-		<ItemGroup>
-			<ResolvedFileToPublish Remove="@(_ReadyToRunCompositeUnrootedBuildInput)" />
 		</ItemGroup>
 	</Target>
 
@@ -249,6 +240,7 @@
 			MinSupportedOSPlatformVersion="$(MinSupportedOSPlatformVersion)"
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
+			SdkDevPath="$(_SdkDevPath)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkVersion="$(_SdkVersion)"
 			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"
@@ -484,6 +476,7 @@
 			MinSupportedOSPlatformVersion="$(MinSupportedOSPlatformVersion)"
 			ProjectDir="$(MSBuildProjectDirectory)"
 			ResourcePrefix="$(_ResourcePrefix)"
+			SdkDevPath="$(_SdkDevPath)"
 			SdkIsSimulator="$(_SdkIsSimulator)"
 			SdkVersion="$(_SdkVersion)"
 			SupportedOSPlatformVersion="$(SupportedOSPlatformVersion)"

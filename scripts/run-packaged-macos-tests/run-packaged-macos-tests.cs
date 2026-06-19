@@ -179,18 +179,17 @@ foreach (var config in testConfigs) {
 	var timeout = config.Suite.IsLonger ? longerTimeout : defaultTimeout;
 
 	Console.WriteLine ($"Executing {config.DisplayName}...");
-	var (execExit, stdout, stderr) = ExecuteWithTimeout (executablePath, execArgs, timeout);
+	var (execExit, output) = ExecuteWithTimeout (executablePath, execArgs, timeout);
 
-	// Save output files
+	// Save output file
 	if (!string.IsNullOrEmpty (testOutputDir)) {
 		var outputName = config.OutputFileName;
-		File.WriteAllText (Path.Combine (testOutputDir, $"{outputName}-stdout.txt"), stdout);
-		File.WriteAllText (Path.Combine (testOutputDir, $"{outputName}-stderr.txt"), stderr);
+		File.WriteAllText (Path.Combine (testOutputDir, $"{outputName}.txt"), output);
 	}
 
 	var outcome = execExit == 0 ? TestOutcome.Passed : TestOutcome.Failed;
 	var resultMessage = execExit == 0 ? "Passed" : $"Failed with exit code {execExit}";
-	suiteResults [config.Suite.Name].Add (new TestResult (config, outcome, execExit, resultMessage, stdout, stderr));
+	suiteResults [config.Suite.Name].Add (new TestResult (config, outcome, execExit, resultMessage, output));
 
 	var emoji = execExit == 0 ? "✅" : "❌";
 	Console.WriteLine ($"{emoji} {config.DisplayName}: {resultMessage}");
@@ -235,7 +234,7 @@ return failedSuites > 0 ? 1 : 0;
 
 // ===== Helper methods =====
 
-(int ExitCode, string Stdout, string Stderr) ExecuteWithTimeout (string executable, string arguments, int timeoutSeconds)
+(int ExitCode, string Output) ExecuteWithTimeout (string executable, string arguments, int timeoutSeconds)
 {
 	var launchTimeout = TimeSpan.FromSeconds (10);
 	var executionTimeout = TimeSpan.FromSeconds (timeoutSeconds);
@@ -246,8 +245,7 @@ return failedSuites > 0 ? 1 : 0;
 		var launchTimeoutFile = Path.GetFullPath ($"launch-timeout-sentinel-{pid}-{attempt}.txt");
 		var launchTimedOut = new ManualResetEvent (false);
 
-		var stdoutSb = new StringBuilder ();
-		var stderrSb = new StringBuilder ();
+		var outputSb = new StringBuilder ();
 
 		var p = new Process ();
 		p.StartInfo.FileName = executable;
@@ -259,11 +257,13 @@ return failedSuites > 0 ? 1 : 0;
 
 		p.OutputDataReceived += (_, e) => {
 			if (e.Data is not null)
-				stdoutSb.AppendLine (e.Data);
+				lock (outputSb)
+					outputSb.AppendLine (e.Data);
 		};
 		p.ErrorDataReceived += (_, e) => {
 			if (e.Data is not null)
-				stderrSb.AppendLine (e.Data);
+				lock (outputSb)
+					outputSb.AppendLine (e.Data);
 		};
 
 		var launchTimer = new Thread (() => {
@@ -300,14 +300,14 @@ return failedSuites > 0 ? 1 : 0;
 			}
 
 			Console.WriteLine ($"Execution completed with exit code {p.ExitCode}");
-			return (p.ExitCode, stdoutSb.ToString (), stderrSb.ToString ());
+			return (p.ExitCode, outputSb.ToString ());
 		} finally {
 			File.Delete (launchTimeoutFile);
 			p.Dispose ();
 		}
 	}
 
-	return (-1, "", "Failed to launch after maximum attempts");
+	return (-1, "Failed to launch after maximum attempts");
 }
 
 void AbortProcess (Process process)
@@ -363,7 +363,7 @@ void GenerateTestSummary (string path, List<(string Name, bool Passed, List<Test
 			sb.AppendLine ($"* {result.Config.DisplayName}: Failed (exit code {result.ExitCode})");
 
 			// Show [FAIL] lines
-			var failLines = ExtractFailLines (result.Stdout, result.Stderr);
+			var failLines = ExtractFailLines (result.Output);
 			if (failLines.Count > 0) {
 				var maxShow = Math.Min (failLines.Count, 3);
 				for (var j = 0; j < maxShow; j++)
@@ -371,11 +371,11 @@ void GenerateTestSummary (string path, List<(string Name, bool Passed, List<Test
 				if (failLines.Count > 3)
 					sb.AppendLine ($"    * ... and {failLines.Count - 3} more failures");
 			} else {
-				// Show stderr tail for context
-				var stderrLines = result.Stderr.Split ('\n', StringSplitOptions.RemoveEmptyEntries);
-				if (stderrLines.Length > 0) {
-					sb.AppendLine ("    * No test failure details available. stderr output:");
-					foreach (var line in stderrLines.TakeLast (10))
+				// Show output tail for context
+				var outputLines = result.Output.Split ('\n', StringSplitOptions.RemoveEmptyEntries);
+				if (outputLines.Length > 0) {
+					sb.AppendLine ("    * No test failure details available. Output tail:");
+					foreach (var line in outputLines.TakeLast (10))
 						sb.AppendLine ($"        * `{line}`");
 				} else {
 					sb.AppendLine ("    * No test failure details available.");
@@ -388,17 +388,15 @@ void GenerateTestSummary (string path, List<(string Name, bool Passed, List<Test
 	File.WriteAllText (path, sb.ToString ());
 }
 
-List<string> ExtractFailLines (string stdout, string stderr)
+List<string> ExtractFailLines (string output)
 {
 	var failLines = new List<string> ();
-	foreach (var text in new[] { stdout, stderr }) {
-		if (string.IsNullOrEmpty (text))
-			continue;
-		foreach (var line in text.Split ('\n')) {
-			var idx = line.IndexOf ("[FAIL]", StringComparison.Ordinal);
-			if (idx >= 0)
-				failLines.Add (line.Substring (idx + "[FAIL]".Length).TrimStart ());
-		}
+	if (string.IsNullOrEmpty (output))
+		return failLines;
+	foreach (var line in output.Split ('\n')) {
+		var idx = line.IndexOf ("[FAIL]", StringComparison.Ordinal);
+		if (idx >= 0)
+			failLines.Add (line.Substring (idx + "[FAIL]".Length).TrimStart ());
 	}
 	return failLines;
 }
@@ -418,37 +416,20 @@ void GenerateHtmlReport (
 	var passedCount = outcomes.Count (o => o.Passed);
 	var failedCount = outcomes.Count (o => !o.Passed);
 
-	// Copy per-test output files
-	var perTestFiles = new Dictionary<string, List<(string DisplayName, string FileName)>> ();
-	var perTestFailures = new Dictionary<string, List<string>> ();
-
+	// Copy per-test output files to the report directory
+	var outputFileNames = new Dictionary<string, string> ();
 	foreach (var (name, _, results) in outcomes) {
-		var files = new List<(string DisplayName, string FileName)> ();
-		var failLines = new List<string> ();
-
 		foreach (var result in results) {
 			if (!string.IsNullOrEmpty (outputDir)) {
 				var baseName = result.Config.OutputFileName;
-				var stdoutFile = Path.Combine (outputDir, $"{baseName}-stdout.txt");
-				var stderrFile = Path.Combine (outputDir, $"{baseName}-stderr.txt");
-
-				if (File.Exists (stdoutFile) && !string.IsNullOrEmpty (htmlDir)) {
-					var destName = $"{baseName}-stdout.txt";
-					File.Copy (stdoutFile, Path.Combine (htmlDir, destName), overwrite: true);
-					files.Add (($"{result.Config.DisplayName} stdout", destName));
-					failLines.AddRange (ExtractFailLinesFromFile (stdoutFile));
-				}
-				if (File.Exists (stderrFile) && !string.IsNullOrEmpty (htmlDir)) {
-					var destName = $"{baseName}-stderr.txt";
-					File.Copy (stderrFile, Path.Combine (htmlDir, destName), overwrite: true);
-					files.Add (($"{result.Config.DisplayName} stderr", destName));
-					failLines.AddRange (ExtractFailLinesFromFile (stderrFile));
+				var srcFile = Path.Combine (outputDir, $"{baseName}.txt");
+				if (File.Exists (srcFile) && !string.IsNullOrEmpty (htmlDir)) {
+					var destName = $"{baseName}.txt";
+					File.Copy (srcFile, Path.Combine (htmlDir, destName), overwrite: true);
+					outputFileNames [baseName] = destName;
 				}
 			}
 		}
-
-		perTestFiles [name] = files;
-		perTestFailures [name] = failLines;
 	}
 
 	// Collect crash reports
@@ -504,7 +485,7 @@ void GenerateHtmlReport (
 
 		// Per-config table
 		sb.AppendLine ("<table>");
-		sb.AppendLine ("<tr><th>Platform</th><th>Architecture</th><th>Result</th><th>Exit Code</th><th>Details</th></tr>");
+		sb.AppendLine ("<tr><th>Platform</th><th>Architecture</th><th>Result</th><th>Exit Code</th><th>Output</th></tr>");
 		foreach (var result in results) {
 			var configCss = result.Outcome switch {
 				TestOutcome.Passed => "passed",
@@ -517,32 +498,29 @@ void GenerateHtmlReport (
 				_ => "Failed",
 			};
 			var arch = result.Config.Rid.Split ('-').Last ();
+			var baseName = result.Config.OutputFileName;
+			var outputLink = outputFileNames.TryGetValue (baseName, out var fileName)
+				? $"<a href='{HttpUtility.HtmlAttributeEncode (fileName)}'>output</a>"
+				: "";
 			sb.AppendLine ($"<tr><td>{HttpUtility.HtmlEncode (result.Config.Platform)}</td><td>{arch}</td>" +
 				$"<td class='{configCss}'>{configText}</td><td>{result.ExitCode}</td>" +
-				$"<td>{HttpUtility.HtmlEncode (result.Message)}</td></tr>");
+				$"<td>{outputLink}</td></tr>");
+
+			// Show [FAIL] lines immediately after this row
+			var failLines = ExtractFailLines (result.Output);
+			if (failLines.Count > 0) {
+				sb.AppendLine ("<tr><td colspan='5'>");
+				sb.AppendLine ("<ul style='color: #cf222e; font-family: monospace; font-size: 0.9em; margin: 4px 0;'>");
+				var maxFails = Math.Min (failLines.Count, 10);
+				for (var j = 0; j < maxFails; j++)
+					sb.AppendLine ($"<li>{HttpUtility.HtmlEncode (failLines [j])}</li>");
+				if (failLines.Count > 10)
+					sb.AppendLine ($"<li>... and {failLines.Count - 10} more failures</li>");
+				sb.AppendLine ("</ul>");
+				sb.AppendLine ("</td></tr>");
+			}
 		}
 		sb.AppendLine ("</table>");
-
-		// Show [FAIL] lines
-		var failLines = perTestFailures.GetValueOrDefault (name);
-		if (failLines is not null && failLines.Count > 0) {
-			sb.AppendLine ("<ul style='color: #cf222e; font-family: monospace; font-size: 0.9em;'>");
-			var maxFails = Math.Min (failLines.Count, 10);
-			for (var j = 0; j < maxFails; j++)
-				sb.AppendLine ($"<li>{HttpUtility.HtmlEncode (failLines [j])}</li>");
-			if (failLines.Count > 10)
-				sb.AppendLine ($"<li>... and {failLines.Count - 10} more failures</li>");
-			sb.AppendLine ("</ul>");
-		}
-
-		// Output file links
-		var files = perTestFiles.GetValueOrDefault (name);
-		if (files is not null && files.Count > 0) {
-			sb.AppendLine ("<ul>");
-			foreach (var file in files)
-				sb.AppendLine ($"<li><a href='{HttpUtility.HtmlAttributeEncode (file.FileName)}'>{HttpUtility.HtmlEncode (file.DisplayName)}</a></li>");
-			sb.AppendLine ("</ul>");
-		}
 	}
 
 	// Crash reports
@@ -576,17 +554,6 @@ void GenerateHtmlReport (
 	}
 }
 
-List<string> ExtractFailLinesFromFile (string filePath)
-{
-	var failLines = new List<string> ();
-	foreach (var line in File.ReadLines (filePath)) {
-		var idx = line.IndexOf ("[FAIL]", StringComparison.Ordinal);
-		if (idx >= 0)
-			failLines.Add (line.Substring (idx + "[FAIL]".Length).TrimStart ());
-	}
-	return failLines;
-}
-
 // ===== Types =====
 
 record TestSuite (string Name, string ProjectName, bool IsLonger, bool IsLinkerTest);
@@ -612,7 +579,7 @@ record TestConfig (TestSuite Suite, string Platform, string Rid, string TfmPlatf
 
 enum TestOutcome { Passed, Failed, Skipped }
 
-record TestResult (TestConfig Config, TestOutcome Outcome, int ExitCode, string Message, string Stdout = "", string Stderr = "");
+record TestResult (TestConfig Config, TestOutcome Outcome, int ExitCode, string Message, string Output = "");
 
 static class NativeMethods
 {

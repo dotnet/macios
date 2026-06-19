@@ -51,7 +51,7 @@ namespace Xamarin.Tests {
 			Assert.That (mlaunchInstallArguments, Is.EqualTo (expectedArguments.ToString ()));
 
 			var scriptContents = File.ReadAllText (outputPath).Trim ('\n');
-			var expectedScriptContents = mlaunchPath + " " + expectedArguments.ToString ();
+			var expectedScriptContents = $"'{mlaunchPath}' " + expectedArguments.ToString ();
 			Assert.That (scriptContents, Is.EqualTo (expectedScriptContents), "Script contents");
 		}
 
@@ -96,6 +96,10 @@ namespace Xamarin.Tests {
 				Assert.Fail ("Could not find the property 'MlaunchPath' in the binlog.");
 			Assert.That (mlaunchPath, Does.Exist, "mlaunch existence");
 
+			if (!BinLog.TryFindPropertyValue (rv.BinLogPath, "RunCommand", out var runCommand))
+				Assert.Fail ("Could not find the property 'RunCommand' in the binlog.");
+			Assert.That (runCommand, Is.EqualTo ($"'{mlaunchPath}'"), "Run command");
+
 			var expectedArguments = new StringBuilder ();
 			var isSim = runtimeIdentifiers.Contains ("simulator");
 			expectedArguments.Append (isSim ? "--launchsim " : "--launchdev ");
@@ -108,7 +112,7 @@ namespace Xamarin.Tests {
 			Assert.That (mlaunchRunArguments, Does.Match (expectedArguments.ToString ()), "arguments");
 
 			var scriptContents = File.ReadAllText (outputPath).Trim ('\n');
-			var expectedScriptContents = mlaunchPath + " " + expectedArguments.ToString ();
+			var expectedScriptContents = $"'{mlaunchPath}' " + expectedArguments.ToString ();
 			Assert.That (scriptContents, Does.Match (expectedScriptContents), "Script contents");
 		}
 	}

@@ -13,10 +13,6 @@ public class MarshalInfo {
 	public Type Type { get; }
 	public bool IsOut { get; }
 
-	// This is set on a string parameter if the argument parameters are set to
-	// Copy.   This means that we can do fast string passing.
-	public bool ZeroCopyStringMarshal { get; set; }
-
 	public bool IsAligned;
 
 	// Used for parameters
@@ -25,9 +21,6 @@ public class MarshalInfo {
 		this.Generator = generator;
 		PlainString = Generator.AttributeManager.HasAttribute<PlainStringAttribute> (pi);
 		Type = pi.ParameterType;
-		ZeroCopyStringMarshal = (Type == Generator.TypeCache.System_String) && PlainString == false && !Generator.AttributeManager.HasAttribute<DisableZeroCopyAttribute> (pi) && generator.type_wants_zero_copy;
-		if (ZeroCopyStringMarshal && Generator.AttributeManager.HasAttribute<DisableZeroCopyAttribute> (mi))
-			ZeroCopyStringMarshal = false;
 		IsOut = pi.IsOut;
 	}
 

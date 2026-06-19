@@ -29,7 +29,7 @@ namespace Xamarin.Tests {
 				TestContext.AddTestAttachment (zippedReport, "HTML report (zipped)");
 			}
 
-			Assert.AreEqual (0, rv, "ExitCode");
+			Assert.That (rv, Is.EqualTo (0), "ExitCode");
 		}
 	}
 }

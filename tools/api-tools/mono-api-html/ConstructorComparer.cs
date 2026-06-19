@@ -59,7 +59,7 @@ namespace Mono.ApiTools {
 			var tgtType = target.GetTypeName ("returntype", State);
 
 			if (srcType != tgtType) {
-				change.AppendModified (srcType ?? "", tgtType ?? "");
+				change.AppendTypeModified (srcType ?? "", tgtType ?? "");
 				change.Append (" ");
 			} else if (srcType is not null) {
 				// ctor don't have a return type

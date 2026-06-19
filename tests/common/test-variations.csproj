@@ -10,6 +10,7 @@
 		<TestVariations Include="bundle-original-resources" Description="Bundle original resources ('BundleOriginalResources=true')" />
 		<TestVariations Include="do-not-bundle-original-resources" Description="Do not bundle original resources ('BundleOriginalResources=false')" />
 		<TestVariations Include="nativeaot" Description="Run with NativeAOT ('PublishAot=true', '_IsPublishing=true' and 'TrimMode=full')" />
+		<TestVariations Include="nativeaot-net11-defaults" Description="Run with NativeAOT using defaults for .NET 11" />
 		<TestVariations Include="linksdk" Description="Run with trimmer (MtouchLink/LinkMode) set to 'SdkOnly'" />
 		<TestVariations Include="linkall" Description="Run with trimmer (MtouchLink/LinkMode) set to 'Full'" />
 		<TestVariations Include="coreclr" Description="Use CoreCLR ('UseMonoRuntime=false')" />
@@ -25,6 +26,8 @@
 		<TestVariations Include="trimmable-static-registrar-all-optimizations-linkall" Description="Trimmable static registrar + all optimizations" />
 		<TestVariations Include="inline-dlfcn-methods-compat" Description="Enables 'InlineDlfcnMethods' in compatibility mode." />
 		<TestVariations Include="inline-dlfcn-methods-strict" Description="Enables 'InlineDlfcnMethods' in strict mode." />
+		<TestVariations Include="inline-class-gethandle-compat" Description="Enables 'InlineClassGetHandle' in compatibility mode." />
+		<TestVariations Include="inline-class-gethandle-strict" Description="Enables 'InlineClassGetHandle' in strict mode." />
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -65,6 +68,21 @@
 		<PublishAot>true</PublishAot>
 		<_IsPublishing>true</_IsPublishing>
 		<TrimMode>full</TrimMode>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|nativeaot-net11-defaults|'))">
+		<!-- nativeaot -->
+		<PublishAot>true</PublishAot>
+		<_IsPublishing>true</_IsPublishing>
+		<TrimMode>full</TrimMode>
+		<!-- inline-dlfcn-methods-strict -->
+		<InlineDlfcnMethods>strict</InlineDlfcnMethods>
+		<DefineConstants>$(DefineConstants);STATIC_NATIVE_SYMBOL_LOOKUP</DefineConstants>
+		<!-- inline-class-gethandle-strict -->
+		<InlineClassGetHandle>strict</InlineClassGetHandle>
+		<Registrar>managed-static</Registrar>
+
 		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
@@ -159,6 +177,17 @@
 		<_TestVariationApplied>true</_TestVariationApplied>
 
 		<DefineConstants>$(DefineConstants);STATIC_NATIVE_SYMBOL_LOOKUP</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|inline-class-gethandle-compat|'))">
+		<InlineClassGetHandle>compatibility</InlineClassGetHandle>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|inline-class-gethandle-strict|'))">
+		<InlineClassGetHandle>strict</InlineClassGetHandle>
+		<Registrar>managed-static</Registrar>
+		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 
 	<Target Name="ValidateTestVariation" Condition="'$(TestVariation)' != '' And '$(OutputType)' == 'exe'" BeforeTargets="Build">

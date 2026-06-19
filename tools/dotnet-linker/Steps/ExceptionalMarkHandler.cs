@@ -34,6 +34,8 @@ namespace Xamarin.Linker {
 
 		protected Profile Profile => Configuration.Profile;
 
+		protected Application App => Configuration.Application;
+
 		public void ProcessAssembly (AssemblyDefinition assembly)
 		{
 			try {

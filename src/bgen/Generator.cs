@@ -109,9 +109,6 @@ public partial class Generator : IMemberGatherer {
 	string? is_direct_binding_value; // An expression that calculates the IsDirectBinding value. Might not be a constant expression. This will be added to every constructor for a type.
 	bool? is_direct_binding; // If a constant value for IsDirectBinding is known, it's stored here. Will be null if no constant value is known.
 
-	// Whether to use ZeroCopy for strings, defaults to false
-	public bool ZeroCopyStrings;
-
 	public bool BindThirdPartyLibrary { get { return BindingTouch.BindThirdPartyLibrary; } }
 	public bool InlineSelectors;
 	public string BaseDir { get { return basedir; } set { basedir = value; } }
@@ -123,11 +120,6 @@ public partial class Generator : IMemberGatherer {
 	// Set on every call to Generate
 	//
 	bool type_needs_thread_checks;
-
-	//
-	// If set, the members of this type will get zero copy
-	// 
-	internal bool type_wants_zero_copy;
 
 	//
 	// Used by the public binding generator to populate the
@@ -843,16 +835,7 @@ public partial class Generator : IMemberGatherer {
 			if (mai.PlainString)
 				return safe_name;
 			else {
-				bool allow_null = null_allowed_override || AttributeManager.IsNullable (pi);
-
-				if (mai.ZeroCopyStringMarshal) {
-					if (allow_null)
-						return String.Format ("{0} is null ? IntPtr.Zero : (IntPtr)(&_s{0})", pi.Name);
-					else
-						return String.Format ("(IntPtr)(&_s{0})", pi.Name);
-				} else {
-					return "ns" + pi.Name;
-				}
+				return "ns" + pi.Name;
 			}
 		}
 
@@ -2805,7 +2788,7 @@ public partial class Generator : IMemberGatherer {
 		string name = GetMethodName (minfo, is_async);
 
 		// Some codepaths already write preservation info
-		PrintAttributes (minfo.mi, preserve: !alreadyPreserved, advice: true, bindAs: true, requiresSuper: true);
+		PrintAttributes (minfo.mi, preserve: !alreadyPreserved, advice: true, bindAs: true, requiresSuper: true, dynamicDependency: true);
 
 		if (minfo.is_ctor && minfo.is_protocol_member) {
 			sb.Append ("T? ");
@@ -3097,13 +3080,8 @@ public partial class Generator : IMemberGatherer {
 						if (mai.PlainString)
 							ErrorHelper.Warning (1101);
 
-						if (mai.ZeroCopyStringMarshal) {
-							target_name = "(IntPtr)(&_s" + pi.Name + ")";
-							handle = "";
-						} else {
-							target_name = "ns" + pi.Name;
-							handle = "";
-						}
+						target_name = "ns" + pi.Name;
+						handle = "";
 					} else
 						target_name = pi.Name.GetSafeParamName ();
 					break;
@@ -3248,48 +3226,16 @@ public partial class Generator : IMemberGatherer {
 	// @probe_null: determines whether null is allowed, and
 	// whether we need to generate code to handle this
 	//
-	// @must_copy: determines whether to create a new NSString, necessary
-	// for NSString properties that are flagged with "retain" instead of "copy"
-	//
-	// @prefix: prefix to prepend on each line
-	//
 	// @property: the name of the property
 	//
-	public string GenerateMarshalString (bool probe_null, bool must_copy)
+	public string GenerateMarshalString (bool probe_null)
 	{
-		if (must_copy) {
-			return "var ns{0} = CFString.CreateNative ({1});\n";
-		}
-		return
-			"ObjCRuntime.NSStringStruct _s{0}; Console.WriteLine (\"" + CurrentMethod + ": Marshalling: {{1}}\", {1}); \n" +
-			"_s{0}.ClassPtr = ObjCRuntime.NSStringStruct.ReferencePtr;\n" +
-			"_s{0}.Flags = 0x010007d1; // RefCount=1, Unicode, InlineContents = 0, DontFreeContents\n" +
-			"_s{0}.UnicodePtr = _p{0};\n" +
-			"_s{0}.Length = " + (probe_null ? "{1} is null ? 0 : {1}.Length;" : "{1}.Length;\n");
+		return "var ns{0} = CFString.CreateNative ({1});\n";
 	}
 
-	public string GenerateDisposeString (bool probe_null, bool must_copy)
+	public string GenerateDisposeString (bool probe_null)
 	{
-		if (must_copy) {
-			return "CFString.ReleaseNative (ns{0});\n";
-		} else
-			return "if (_s{0}.Flags != 0x010007d1) throw new Exception (\"String was retained, not copied\");";
-	}
-
-	List<string>? CollectFastStringMarshalParameters (MethodInfo mi)
-	{
-		List<string>? stringParameters = null;
-
-		foreach (var pi in mi.GetParameters ()) {
-			var mai = new MarshalInfo (this, mi, pi);
-
-			if (mai.ZeroCopyStringMarshal) {
-				if (stringParameters is null)
-					stringParameters = new List<string> ();
-				stringParameters.Add (pi.Name.GetSafeParamName () ?? "");
-			}
-		}
-		return stringParameters;
+		return "CFString.ReleaseNative (ns{0});\n";
 	}
 
 	AvailabilityBaseAttribute? GetIntroduced (Type? type, string methodName)
@@ -3371,8 +3317,8 @@ public partial class Generator : IMemberGatherer {
 			if (mai.Type == TypeCache.System_String && !mai.PlainString) {
 				bool probe_null = null_allowed_override || AttributeManager.IsNullable (pi);
 
-				convs.AppendFormat (GenerateMarshalString (probe_null, !mai.ZeroCopyStringMarshal), pi.Name, pi.Name.GetSafeParamName ());
-				disposes.AppendFormat (GenerateDisposeString (probe_null, !mai.ZeroCopyStringMarshal), pi.Name);
+				convs.AppendFormat (GenerateMarshalString (probe_null), pi.Name, pi.Name.GetSafeParamName ());
+				disposes.AppendFormat (GenerateDisposeString (probe_null), pi.Name);
 			} else if (mai.Type.TryIsArray (out var etype)) {
 				if (HasBindAsAttribute (pi)) {
 					convs.AppendFormat ("using var nsb_{0} = {1}\n", pi.Name, GetToBindAsWrapper (mi, null, pi));
@@ -3615,9 +3561,6 @@ public partial class Generator : IMemberGatherer {
 
 		GenerateArgumentChecks (mi, false, propInfo, out bool needsGCKeepAlives);
 
-		// Collect all strings that can be fast-marshalled
-		var stringParameters = CollectFastStringMarshalParameters (mi);
-
 		GenerateTypeLowering (mi, null_allowed_override, out var args, out var convs, out var disposes, out var by_ref_processing, out var by_ref_init, out var post_return, propInfo);
 
 		if (minfo.is_protocol_member && minfo.is_static) {
@@ -3628,12 +3571,6 @@ public partial class Generator : IMemberGatherer {
 
 		if (by_ref_init.Length > 0)
 			print (by_ref_init.ToString ());
-
-		if (stringParameters is not null) {
-			print ("fixed (char * {0}){{",
-				  stringParameters.Select (name => "_p" + name + " = " + name).Aggregate ((first, second) => first + ", " + second));
-			indent++;
-		}
 
 		if (propInfo is not null && IsSetter (mi) && HasBindAsAttribute (propInfo)) {
 			convs.AppendFormat ("using var nsb_{0} = {1}\n", propInfo.Name, GetToBindAsWrapper (mi, minfo, null));
@@ -3834,10 +3771,6 @@ public partial class Generator : IMemberGatherer {
 			WriteMarkDirtyIfDerived (sw, mi.DeclaringType!);
 		if (post_return?.Length > 0)
 			print (post_return.ToString ());
-		if (stringParameters is not null) {
-			indent--;
-			print ("}");
-		}
 		indent--;
 	}
 
@@ -4104,7 +4037,7 @@ public partial class Generator : IMemberGatherer {
 					pi.Name.GetSafeParamName ());
 			indent++;
 			if (generate_getter) {
-				PrintAttributes (pi.GetGetMethod ()!, platform: true, preserve: true, advice: true);
+				PrintAttributes (pi.GetGetMethod ()!, platform: true, preserve: true, advice: true, dynamicDependency: true);
 				print ("get {");
 				indent++;
 
@@ -4123,7 +4056,7 @@ public partial class Generator : IMemberGatherer {
 				print ("}");
 			}
 			if (generate_setter) {
-				PrintAttributes (pi.GetSetMethod ()!, platform: true, preserve: true, advice: true);
+				PrintAttributes (pi.GetSetMethod ()!, platform: true, preserve: true, advice: true, dynamicDependency: true);
 				print ("set {");
 				indent++;
 
@@ -4197,7 +4130,7 @@ public partial class Generator : IMemberGatherer {
 			// If property getter or setter has its own WrapAttribute we let the user do whatever their heart desires
 			if (generate_getter) {
 				PrintAttributes (pi, platform: true);
-				PrintAttributes (pi.GetGetMethod (), platform: true, preserve: true, advice: true);
+				PrintAttributes (pi.GetGetMethod (), platform: true, preserve: true, advice: true, dynamicDependency: true);
 				print ("get {");
 				indent++;
 
@@ -4237,7 +4170,7 @@ public partial class Generator : IMemberGatherer {
 				PrintExport (minfo, sel, export!.ArgumentSemantic);
 			}
 
-			PrintAttributes (pi.GetGetMethod (), platform: true, preserve: true, advice: true, notImplemented: true, inlinedType: inlinedType);
+			PrintAttributes (pi.GetGetMethod (), platform: true, preserve: true, advice: true, notImplemented: true, inlinedType: inlinedType, dynamicDependency: true);
 			if (minfo.is_protocol_member && !minfo.is_static) {
 				print ("get {");
 				print ($"\treturn _Get{pi.Name.GetSafeParamName ()} (this);");
@@ -4293,7 +4226,7 @@ public partial class Generator : IMemberGatherer {
 			if (not_implemented_attr is null && (!minfo.is_sealed || !minfo.is_wrapper))
 				PrintExport (minfo, sel, export!.ArgumentSemantic);
 
-			PrintAttributes (pi.GetSetMethod (), platform: true, preserve: true, advice: true, notImplemented: true, inlinedType: inlinedType);
+			PrintAttributes (pi.GetSetMethod (), platform: true, preserve: true, advice: true, notImplemented: true, inlinedType: inlinedType, dynamicDependency: true);
 			if (minfo.is_protocol_member && !minfo.is_static) {
 				print ("set {");
 				print ($"\t_Set{pi.Name.GetSafeParamName ()} (this, value);");
@@ -5576,7 +5509,7 @@ public partial class Generator : IMemberGatherer {
 	// Not adding the experimental attribute is bad (it would mean that an API
 	// we meant to be experimental ended up being released as stable), so it's
 	// opt-out instead of opt-in.
-	public void PrintAttributes (ICustomAttributeProvider? mi, bool platform = false, bool preserve = false, bool advice = false, bool notImplemented = false, bool bindAs = false, bool requiresSuper = false, Type? inlinedType = null, bool experimental = true, bool obsolete = false, bool objectiveCFramework = false, bool simulatorAvailability = true)
+	public void PrintAttributes (ICustomAttributeProvider? mi, bool platform = false, bool preserve = false, bool advice = false, bool notImplemented = false, bool bindAs = false, bool requiresSuper = false, Type? inlinedType = null, bool experimental = true, bool obsolete = false, bool objectiveCFramework = false, bool simulatorAvailability = true, bool dynamicDependency = false)
 	{
 		if (platform)
 			PrintPlatformAttributes (mi as MemberInfo, inlinedType);
@@ -5598,6 +5531,70 @@ public partial class Generator : IMemberGatherer {
 			PrintObjectiveCFrameworkAttribute (mi);
 		if (simulatorAvailability)
 			PrintSimulatorAvailabilityAttributes (mi);
+		if (dynamicDependency)
+			PrintDynamicDependencyAttributes (mi);
+	}
+
+	public void PrintDynamicDependencyAttributes (ICustomAttributeProvider? mi)
+	{
+		if (mi is not MemberInfo memberInfo)
+			return;
+
+		var allAttribs = memberInfo.GetCustomAttributesData ();
+		foreach (var attrib in allAttribs) {
+			if (attrib.GetAttributeType ().FullName != "System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute")
+				continue;
+			var args = attrib.ConstructorArguments;
+			var parts = new List<string> ();
+			foreach (var arg in args) {
+				if (arg.Value is string stringValue) {
+					parts.Add ($"\"{stringValue}\"");
+				} else if (arg.Value is int intValue) {
+					parts.Add (FormatDynamicallyAccessedMemberTypes (intValue));
+				} else if (arg.Value is Type typeValue) {
+					parts.Add ($"typeof ({typeValue})");
+				} else {
+					exceptions.Add (ErrorHelper.CreateError (99, $"Unexpected attribute argument value for DynamicDependency attribute: {arg.ArgumentType.FullName} => {arg.Value}"));
+				}
+			}
+			print ($"[DynamicDependency ({string.Join (", ", parts)})]");
+		}
+	}
+
+	static string FormatDynamicallyAccessedMemberTypes (int memberTypes)
+	{
+		if (memberTypes == -1) // All
+			return "DynamicallyAccessedMemberTypes.All";
+		if (memberTypes == 0) // None
+			return "DynamicallyAccessedMemberTypes.None";
+
+		// Use the composite values first to match the original source
+		var flagValues = new (int value, string name) [] {
+			(3, "PublicConstructors"), // 3 includes PublicParameterlessConstructor
+			(1, "PublicParameterlessConstructor"),
+			(4, "NonPublicConstructors"),
+			(8, "PublicMethods"),
+			(16, "NonPublicMethods"),
+			(32, "PublicFields"),
+			(64, "NonPublicFields"),
+			(128, "PublicNestedTypes"),
+			(256, "NonPublicNestedTypes"),
+			(512, "PublicProperties"),
+			(1024, "NonPublicProperties"),
+			(2048, "PublicEvents"),
+			(4096, "NonPublicEvents"),
+			(8192, "Interfaces"),
+		};
+
+		var parts = new List<string> ();
+		var remaining = memberTypes;
+		foreach (var (value, name) in flagValues) {
+			if (value != 0 && (remaining & value) == value) {
+				parts.Add ($"DynamicallyAccessedMemberTypes.{name}");
+				remaining &= ~value;
+			}
+		}
+		return string.Join (" | ", parts);
 	}
 
 	public void PrintExperimentalAttribute (ICustomAttributeProvider? mi)
@@ -5769,12 +5766,6 @@ public partial class Generator : IMemberGatherer {
 		if (is_rgen_type)
 			return;
 
-		if (ZeroCopyStrings) {
-			ErrorHelper.Warning (1027);
-			ZeroCopyStrings = false;
-		}
-
-		type_wants_zero_copy = AttributeManager.HasAttribute<ZeroCopyStringsAttribute> (type) || ZeroCopyStrings;
 		var tsa = AttributeManager.GetCustomAttribute<ThreadSafeAttribute> (type);
 		// if we're inside a special namespace then default is non-thread safe, otherwise default is thread safe
 		if (NamespaceCache.UINamespaces.Contains (type.Namespace!)) {

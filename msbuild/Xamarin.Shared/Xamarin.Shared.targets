@@ -2370,8 +2370,13 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<Target Name="Codesign" Condition="'$(_CanOutputAppBundle)' == 'true'" DependsOnTargets="$(CodesignDependsOn)" />
 
+	<!-- On a Windows (Pair to Mac) build the .app bundle is produced on the Mac and is not copied
+	     back to the local $(AppBundleDir) (CopyAppBundleFromMac, and only when CopyAppBundle is set,
+	     extracts it to a separate AppBundle\ subfolder instead). Skip collecting it on remote builds
+	     ($(IsRemoteBuild) == 'true') so we never surface an incomplete local bundle; surfacing the
+	     .app on Windows is left for a follow-up. -->
 	<Target Name="_CollectAppleAppBundleOutput"
-		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(OutputType)' == 'Exe' And '$(IsAppExtension)' != 'true' And '$(IsWatchApp)' != 'true' And Exists('$(AppBundleDir)')"
+		Condition="'$(_CanOutputAppBundle)' == 'true' And '$(OutputType)' == 'Exe' And '$(IsAppExtension)' != 'true' And '$(IsWatchApp)' != 'true' And '$(IsRemoteBuild)' != 'true' And Exists('$(AppBundleDir)')"
 		AfterTargets="Codesign">
 		<ItemGroup>
 			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(AppBundleDir)'))">

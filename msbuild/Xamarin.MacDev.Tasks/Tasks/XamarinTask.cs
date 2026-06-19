@@ -13,7 +13,6 @@ using Xamarin.Bundler;
 using Xamarin.Localization.MSBuild;
 using Xamarin.Messaging.Build.Client;
 using Xamarin.Utils;
-using static Xamarin.Bundler.FileCopier;
 
 #nullable enable
 
@@ -246,7 +245,7 @@ namespace Xamarin.MacDev.Tasks {
 		}
 
 #if NET
-		internal static bool ExecuteRemotely<T> (T task, [NotNullWhen (true)] out TaskRunner? taskRunner, Action<TaskRunner>? preprocessTaskRunner = null) where T: Task, IHasSessionId
+		internal static bool ExecuteRemotely<T> (T task, [NotNullWhen (true)] out TaskRunner? taskRunner, Action<TaskRunner>? preprocessTaskRunner = null) where T : Task, IHasSessionId
 #else
 		internal static bool ExecuteRemotely<T> (T task, out TaskRunner taskRunner, Action<TaskRunner>? preprocessTaskRunner = null) where T : Task, IHasSessionId
 #endif
@@ -371,8 +370,11 @@ namespace Xamarin.MacDev.Tasks {
 		{
 			if (!string.IsNullOrEmpty (message))
 				Log.LogError (message);
-			if (ex is not null)
+			if (ex is ProductException pe) {
+				LogDiagnostic (pe);
+			} else if (ex is not null) {
 				Log.LogErrorFromException (ex);
+			}
 		}
 
 		void ICustomLogger.LogWarning (string messageFormat, params object? [] args)
@@ -404,12 +406,37 @@ namespace Xamarin.MacDev.Tasks {
 
 		void IToolLog.LogException (Exception exception)
 		{
-			((ICustomLogger) this).LogError ("", exception);
+			if (exception is ProductException pe) {
+				LogDiagnostic (pe);
+			} else {
+				((ICustomLogger) this).LogError ($"Unexpected exception '{GetType ().Name}': {exception.Message}", exception);
+			}
 		}
 
-		void IToolLog.LogError (Exception exception)
+		void IToolLog.LogError (ProductException exception)
 		{
-			((ICustomLogger) this).LogError ("", exception);
+			LogDiagnostic (exception);
+		}
+
+		void IToolLog.LogWarning (ProductException exception)
+		{
+			LogDiagnostic (exception);
+		}
+
+		protected void LogDiagnostic (ProductException exception)
+		{
+			switch (exception.GetWarningLevel (this)) {
+			case ErrorHelper.WarningLevel.Warning:
+				Log.LogWarning (exception.Code, exception.FileName, exception.LineNumber, exception.Message);
+				break;
+			case ErrorHelper.WarningLevel.Error:
+				Log.LogError (exception.Code, exception.FileName, exception.LineNumber, exception.Message);
+				break;
+			case ErrorHelper.WarningLevel.Disable:
+			default:
+				Log.LogMessage (MessageImportance.Low, exception.Code, exception.FileName, exception.LineNumber, exception.Message);
+				break;
+			}
 		}
 		#endregion
 	}

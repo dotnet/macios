@@ -34,22 +34,14 @@ namespace MonoTests.System.Net.Http {
 				// Use ResponseHeadersRead so that the response content is not buffered,
 				// which would cause HttpContent to compute Content-Length from the buffer.
 				var response = await client.SendAsync (request, HttpCompletionOption.ResponseHeadersRead);
-
-				if (!response.IsSuccessStatusCode) {
-					Assert.Inconclusive ($"Request failed with status {response.StatusCode}");
-					return;
-				}
+				response.EnsureSuccessStatusCode ();
 
 				noContentEncoding = response.Content.Headers.ContentEncoding.Count == 0;
 				noContentLength = response.Content.Headers.ContentLength is null;
 				body = await response.Content.ReadAsStringAsync ();
 			}, out var ex);
 
-			if (!done) {
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
-				Assert.Inconclusive ("Request timed out.");
-			}
-			TestRuntime.IgnoreInCIIfBadNetwork (ex);
+			Assert.That (done, Is.True, "Request completed");
 			Assert.That (ex, Is.Null, $"Exception: {ex}");
 			Assert.That (noContentEncoding, Is.True, "Content-Encoding header should be removed for decompressed content");
 			Assert.That (noContentLength, Is.True, "Content-Length header should be removed for decompressed content");
@@ -73,22 +65,14 @@ namespace MonoTests.System.Net.Http {
 				// Use ResponseHeadersRead so that the response content is not buffered,
 				// which would cause HttpContent to compute Content-Length from the buffer.
 				var response = await client.SendAsync (request, HttpCompletionOption.ResponseHeadersRead);
-
-				if (!response.IsSuccessStatusCode) {
-					Assert.Inconclusive ($"Request failed with status {response.StatusCode}");
-					return;
-				}
+				response.EnsureSuccessStatusCode ();
 
 				noContentEncoding = response.Content.Headers.ContentEncoding.Count == 0;
 				contentLength = response.Content.Headers.ContentLength;
 				body = await response.Content.ReadAsStringAsync ();
 			}, out var ex);
 
-			if (!done) {
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
-				Assert.Inconclusive ("Request timed out.");
-			}
-			TestRuntime.IgnoreInCIIfBadNetwork (ex);
+			Assert.That (done, Is.True, "Request completed");
 			Assert.That (ex, Is.Null, $"Exception: {ex}");
 			Assert.That (noContentEncoding, Is.True, "Content-Encoding should not be present for non-compressed content");
 			Assert.That (contentLength, Is.Not.Null, "Content-Length header should be present for non-compressed content");
@@ -112,22 +96,14 @@ namespace MonoTests.System.Net.Http {
 					using var request = new HttpRequestMessage (HttpMethod.Get, $"{NetworkResources.Httpbin.Url}/gzip");
 					request.Headers.TryAddWithoutValidation ("Accept-Encoding", "gzip");
 					var response = await client.SendAsync (request, HttpCompletionOption.ResponseHeadersRead);
-
-					if (!response.IsSuccessStatusCode) {
-						Assert.Inconclusive ($"Request failed with status {response.StatusCode}");
-						return;
-					}
+					response.EnsureSuccessStatusCode ();
 
 					hasContentEncoding = response.Content.Headers.ContentEncoding.Count > 0;
 					hasContentLength = response.Content.Headers.ContentLength is not null;
 					body = await response.Content.ReadAsStringAsync ();
 				}, out var ex);
 
-				if (!done) {
-					TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
-					Assert.Inconclusive ("Request timed out.");
-				}
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
+				Assert.That (done, Is.True, "Request completed");
 				Assert.That (ex, Is.Null, $"Exception: {ex}");
 				Assert.That (hasContentEncoding, Is.True, "Content-Encoding header should be preserved when KeepHeadersAfterDecompression is enabled");
 				Assert.That (hasContentLength, Is.True, "Content-Length header should be preserved when KeepHeadersAfterDecompression is enabled");

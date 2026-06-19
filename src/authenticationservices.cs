@@ -5,6 +5,7 @@
 //
 
 using Security;
+using System.ComponentModel;
 #if MONOMAC
 using AppKit;
 using UIControl = AppKit.NSControl;
@@ -1313,7 +1314,16 @@ namespace AuthenticationServices {
 		[NoMacCatalyst]
 		[Static]
 		[Export ("registerDefaultsForASWASInSetupAssistantIfNeeded")]
+		void RegisterDefaultsForAsWasInSetupAssistantIfNeeded ();
+
+#if !XAMCORE_5_0
+		[Obsolete ("Use 'RegisterDefaultsForAsWasInSetupAssistantIfNeeded' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
+		[Wrap ("RegisterDefaultsForAsWasInSetupAssistantIfNeeded ()")]
+		[NoMacCatalyst]
+		[Static]
 		void RegisterDefaultsForAswasInSetupAssistantIfNeeded ();
+#endif
 	}
 
 

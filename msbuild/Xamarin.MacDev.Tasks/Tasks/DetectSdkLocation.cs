@@ -29,6 +29,7 @@ namespace Xamarin.MacDev.Tasks {
 			get; set;
 		} = "";
 
+		// this is input too (the variable 'XcodeLocation')
 		[Output]
 		public new string SdkDevPath {
 			get => base.SdkDevPath;
@@ -58,12 +59,6 @@ namespace Xamarin.MacDev.Tasks {
 		} = "";
 
 		#endregion Outputs
-
-		protected IAppleSdk CurrentSdk {
-			get {
-				return Sdks.GetAppleSdk (Platform);
-			}
-		}
 
 		IAppleSdkVersion GetDefaultSdkVersion ()
 		{
@@ -145,33 +140,40 @@ namespace Xamarin.MacDev.Tasks {
 				return ExecuteRemotely ();
 			}
 
-			AppleSdkSettings.Init ();
+			var isNet11OrNewer = TargetFramework.Version.Major >= 11;
+			var appleSdkSettings = GetXcodeLocator (initialDiscovery: true, (locator) => {
+				locator.SupportEnvironmentVariableLookup = !isNet11OrNewer;
+				locator.SupportSettingsFileLookup = !isNet11OrNewer;
+			});
+			SetXcodeLocator (appleSdkSettings);
+			SdkDevPath = appleSdkSettings.DeveloperRoot;
+			XcodeVersion = appleSdkSettings.XcodeVersion.ToString ();
 
-			if (EnsureAppleSdkRoot ())
-				EnsureSdkPath ();
+			if (appleSdkSettings.SystemHasEnvironmentVariable) {
+				if (isNet11OrNewer) {
+					Log.LogWarning (MSBStrings.W7172 /* The environment variable '{0}' is deprecated, and will be ignored. Please set use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use. */, XcodeLocator.EnvironmentVariableName);
+				} else {
+					Log.LogWarning (MSBStrings.W7171 /* The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please set use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use. */, XcodeLocator.EnvironmentVariableName);
+				}
+			}
+			foreach (var file in appleSdkSettings.SystemExistingSettingsFiles) {
+				if (isNet11OrNewer) {
+					Log.LogWarning (MSBStrings.W7174 /* The settings file '{0}' is deprecated, and will be ignored. Please set use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use. */, file);
+				} else {
+					Log.LogWarning (MSBStrings.W7173 /* The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please set use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use. */, file);
+				}
+			}
+
+			if (Log.HasLoggedErrors)
+				return false;
+
+			Log.LogMessage (MessageImportance.Low, "DeveloperRoot: {0}", CurrentSdk.DeveloperRoot);
+			Log.LogMessage (MessageImportance.Low, "GetPlatformPath: {0}", CurrentSdk.GetPlatformPath (SdkIsSimulator));
+
+			EnsureSdkPath ();
 			EnsureXamarinSdkRoot ();
 
-			XcodeVersion = AppleSdkSettings.XcodeVersion.ToString ();
-
 			return !Log.HasLoggedErrors;
-		}
-
-		protected bool EnsureAppleSdkRoot ()
-		{
-			var currentSdk = CurrentSdk;
-			if (!currentSdk.IsInstalled) {
-				Log.LogError (MSBStrings.E0044v2 /* Could not find a valid Xcode app bundle at '{0}'. Please verify that 'xcode-select -p' points to your Xcode installation. For more information see https://aka.ms/macios-missing-xcode. */, AppleSdkSettings.InvalidDeveloperRoot);
-				return false;
-			}
-			Log.LogMessage (MessageImportance.Low, "DeveloperRoot: {0}", currentSdk.DeveloperRoot);
-			Log.LogMessage (MessageImportance.Low, "GetPlatformPath: {0}", currentSdk.GetPlatformPath (SdkIsSimulator));
-
-			SdkDevPath = currentSdk.DeveloperRoot;
-			if (string.IsNullOrEmpty (SdkDevPath)) {
-				Log.LogError (MSBStrings.E0086 /* Could not find a valid Xcode developer path */);
-				return false;
-			}
-			return true;
 		}
 
 		protected string? DirExists (string checkingFor, params string [] paths)

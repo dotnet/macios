@@ -5,7 +5,6 @@ using Mono.Options;
 
 public class BindingTouchConfig {
 	public bool ShowHelp = false;
-	public bool UseZeroCopy = false;
 	public string? BindingFilesOutputDirectory = null;
 	public string? TemporaryFileDirectory = null;
 	public string? HelperClassNamespace = null;

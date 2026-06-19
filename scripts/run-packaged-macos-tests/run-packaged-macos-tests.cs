@@ -120,12 +120,12 @@ var isAppleSilicon = RuntimeInformation.ProcessArchitecture == Architecture.Arm6
 	Environment.GetEnvironmentVariable ("PROCESSOR_ARCHITECTURE")?.Contains ("ARM", StringComparison.OrdinalIgnoreCase) == true;
 
 // Define test suites
-var normalTests = new[] {
+var normalTests = new [] {
 	new TestSuite ("monotouch-test", "monotouchtest", true, false),
 	new TestSuite ("introspection", "introspection", true, false),
 };
 
-var linkerTests = new[] {
+var linkerTests = new [] {
 	new TestSuite ("dontlink", "dont link", false, true),
 	new TestSuite ("linksdk", "link sdk", false, true),
 	new TestSuite ("linkall", "link all", false, true),
@@ -558,8 +558,7 @@ void GenerateHtmlReport (
 
 record TestSuite (string Name, string ProjectName, bool IsLonger, bool IsLinkerTest);
 
-record TestConfig (TestSuite Suite, string Platform, string Rid, string TfmPlatform)
-{
+record TestConfig (TestSuite Suite, string Platform, string Rid, string TfmPlatform) {
 	public string DisplayName => $"{Platform}/{Rid} {Suite.Name}";
 	public string OutputFileName => $"{TfmPlatform}-{Rid.Split ('-').Last ()}-{Suite.Name}";
 
@@ -581,8 +580,7 @@ enum TestOutcome { Passed, Failed, Skipped }
 
 record TestResult (TestConfig Config, TestOutcome Outcome, int ExitCode, string Message, string Output = "");
 
-static class NativeMethods
-{
+static class NativeMethods {
 	[DllImport ("/usr/lib/libc.dylib", SetLastError = true)]
 	public static extern int kill (int pid, int signal);
 }

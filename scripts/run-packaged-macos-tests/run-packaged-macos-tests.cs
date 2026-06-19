@@ -121,14 +121,14 @@ var isAppleSilicon = RuntimeInformation.ProcessArchitecture == Architecture.Arm6
 
 // Define test suites
 var normalTests = new[] {
-	new TestSuite ("monotouch-test", "monotouchtest", true, false, false),
-	new TestSuite ("introspection", "introspection", true, false, false),
+	new TestSuite ("monotouch-test", "monotouchtest", true, false),
+	new TestSuite ("introspection", "introspection", true, false),
 };
 
 var linkerTests = new[] {
-	new TestSuite ("dontlink", "dont link", false, true, true),
-	new TestSuite ("linksdk", "link sdk", false, true, true),
-	new TestSuite ("linkall", "link all", false, true, true),
+	new TestSuite ("dontlink", "dont link", false, true),
+	new TestSuite ("linksdk", "link sdk", false, true),
+	new TestSuite ("linkall", "link all", false, true),
 };
 
 var allTests = normalTests.Concat (linkerTests).ToArray ();
@@ -173,7 +173,9 @@ foreach (var config in testConfigs) {
 		continue;
 	}
 
-	var execArgs = config.Suite.UseLaunchArguments ? launchArguments : "";
+	// Mac Catalyst apps need --autostart --autoexit, macOS apps don't
+	var useLaunchArgs = config.Platform == "MacCatalyst";
+	var execArgs = useLaunchArgs ? launchArguments : "";
 	var timeout = config.Suite.IsLonger ? longerTimeout : defaultTimeout;
 
 	Console.WriteLine ($"Executing {config.DisplayName}...");
@@ -587,7 +589,7 @@ List<string> ExtractFailLinesFromFile (string filePath)
 
 // ===== Types =====
 
-record TestSuite (string Name, string ProjectName, bool IsLonger, bool IsLinkerTest, bool UseLaunchArguments);
+record TestSuite (string Name, string ProjectName, bool IsLonger, bool IsLinkerTest);
 
 record TestConfig (TestSuite Suite, string Platform, string Rid, string TfmPlatform)
 {

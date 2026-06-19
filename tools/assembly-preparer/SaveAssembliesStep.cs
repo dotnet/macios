@@ -21,6 +21,9 @@ namespace MonoTouch.Tuner {
 			var log = Configuration;
 
 			foreach (var assembly in configuration.AssemblyInfos) {
+				if (!assembly.IsCILAssembly)
+					continue;
+
 				var assemblyDefinition = assembly.Assembly;
 				if (assemblyDefinition is null) {
 					exceptions.Add (ErrorHelper.CreateError (99, $"Assembly definition is null for {assembly.InputPath}"));

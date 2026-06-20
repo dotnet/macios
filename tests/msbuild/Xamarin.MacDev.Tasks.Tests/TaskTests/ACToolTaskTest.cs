@@ -60,7 +60,7 @@ namespace Xamarin.MacDev.Tasks {
 			task.MinimumOSVersion = Xamarin.SdkVersions.GetMinVersion (platform).ToString ();
 			task.OutputPath = Path.Combine (intermediateOutputPath, "OutputPath");
 			task.ProjectDir = projectDir;
-			task.SdkDevPath = Configuration.xcode_root;
+			task.SdkDevPath = Configuration.XcodeLocation;
 			task.SdkPlatform = sdkPlatform;
 			task.SdkVersion = version.ToString ();
 			task.TargetFrameworkMoniker = TargetFramework.GetTargetFramework (platform).ToString ();

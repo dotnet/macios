@@ -2708,9 +2708,14 @@ Copyright (C) 2018 Microsoft. All rights reserved.
 
 	<!-- App extensions -->
 
-	<Target Name="GetAppExtensionBundlePath" DependsOnTargets="_GenerateBundleName;$(GetTargetPathDependsOn)" Outputs="@(_AppExtensionBundlePath)" />
+	<!-- These two targets are invoked across projects (via the MSBuild task) to get the app extension's
+	     bundle path back as TargetOutputs. They must specify 'Returns' explicitly: once any target in this
+	     file uses the 'Returns' attribute (e.g. GetApplicationArtifacts), MSBuild stops treating the
+	     'Outputs' attribute of targets without 'Returns' as their return value, so relying on 'Outputs'
+	     alone would return an empty set and the extension would not be embedded into the container app. -->
+	<Target Name="GetAppExtensionBundlePath" DependsOnTargets="_GenerateBundleName;$(GetTargetPathDependsOn)" Outputs="@(_AppExtensionBundlePath)" Returns="@(_AppExtensionBundlePath)" />
 
-	<Target Name="BuildAndGetAppExtensionBundlePath" DependsOnTargets="Build" Outputs="@(_AppExtensionBundlePath)" />
+	<Target Name="BuildAndGetAppExtensionBundlePath" DependsOnTargets="Build" Outputs="@(_AppExtensionBundlePath)" Returns="@(_AppExtensionBundlePath)" />
 
 	<Target Name="_AssignAppExtensionConfiguration" Condition="'@(_AppExtensionReference)' != ''">
 		<!-- assign configs if building a solution file -->

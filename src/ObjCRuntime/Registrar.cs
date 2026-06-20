@@ -220,7 +220,11 @@ namespace Registrar {
 					return;
 
 				var name = RegisterAttribute.Name;
+#if NET
 				if (string.IsNullOrEmpty (name))
+#else
+				if (string.IsNullOrEmpty (name) || name is null)
+#endif
 					return;
 
 				for (int i = 0; i < name.Length; i++) {
@@ -540,7 +544,11 @@ namespace Registrar {
 
 			public bool SetExportAttribute (ExportAttribute ea, [NotNullIfNotNull (nameof (exceptions))] ref List<Exception>? exceptions)
 			{
+#if NET
 				if (string.IsNullOrEmpty (ea.Selector)) {
+#else
+				if (string.IsNullOrEmpty (ea.Selector) || ea.Selector is null) {
+#endif
 					AddException (ref exceptions, Registrar.CreateException (4135, this, Errors.MT4135, FullName));
 					return false;
 				}
@@ -2181,7 +2189,11 @@ namespace Registrar {
 
 							objcType.Add (objcGetter, ref exceptions);
 
+#if NET
 							if (!string.IsNullOrEmpty (attrib.SetterSelector)) {
+#else
+							if (!string.IsNullOrEmpty (attrib.SetterSelector) && attrib.SetterSelector is not null) {
+#endif
 								var objcSetter = new ObjCMethod (this, objcType, null) {
 									Name = attrib.Name,
 									Selector = attrib.SetterSelector,

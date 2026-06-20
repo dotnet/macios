@@ -136,9 +136,9 @@ namespace Xamarin.Tests {
 			switch (platform) {
 			case ApplePlatform.iOS:
 				if (runtimeIdentifiers.Contains ("simulator")) {
-					return $"iphonesimulator{Configuration.sdk_version}";
+					return $"iphonesimulator{Configuration.ios_sdk_version}";
 				} else {
-					return $"iphoneos{Configuration.sdk_version}";
+					return $"iphoneos{Configuration.ios_sdk_version}";
 				}
 			case ApplePlatform.TVOS:
 				if (runtimeIdentifiers.Contains ("simulator")) {
@@ -147,8 +147,9 @@ namespace Xamarin.Tests {
 					return $"appletvos{Configuration.tvos_sdk_version}";
 				}
 			case ApplePlatform.MacOSX:
-			case ApplePlatform.MacCatalyst:
 				return $"macosx{Configuration.macos_sdk_version}";
+			case ApplePlatform.MacCatalyst:
+				return $"macosx{Configuration.maccatalyst_sdk_version}";
 			default:
 				throw new ArgumentOutOfRangeException ($"Unknown platform: {platform}");
 			}

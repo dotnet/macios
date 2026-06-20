@@ -60,7 +60,7 @@ namespace MonoTouchFixtures.CoreGraphics {
 			Assert.That (CGPdfTagType.RubyPunctuation.GetName (), Is.EqualTo ("/RP"), "RubyPunctuation");
 			Assert.That (CGPdfTagType.Warichu.GetName (), Is.EqualTo ("/Warichu"), "Warichu");
 			Assert.That (CGPdfTagType.WarichuText.GetName (), Is.EqualTo ("/WT"), "WarichuText");
-			Assert.That (CGPdfTagType.WarichuPunctiation.GetName (), Is.EqualTo ("/WP"), "WarichuPunctiation");
+			Assert.That (CGPdfTagType.WarichuPunctuation.GetName (), Is.EqualTo ("/WP"), "WarichuPunctuation");
 			Assert.That (CGPdfTagType.Figure.GetName (), Is.EqualTo ("/Figure"), "Figure");
 			Assert.That (CGPdfTagType.Formula.GetName (), Is.EqualTo ("/Formula"), "Formula");
 			Assert.That (CGPdfTagType.Form.GetName (), Is.EqualTo ("/Form"), "Form");

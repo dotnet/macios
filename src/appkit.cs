@@ -3889,7 +3889,16 @@ namespace AppKit {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("collectionView:numberOfItemsInSection:")]
+#if XAMCORE_5_0
+		nint GetNumberOfItems (NSCollectionView collectionView, nint section);
+#else
+		[Obsolete ("Use 'GetNumberOfItems' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		nint GetNumberofItems (NSCollectionView collectionView, nint section);
+
+		[Wrap ("GetNumberofItems (collectionView, section)")]
+		nint GetNumberOfItems (NSCollectionView collectionView, nint section);
+#endif
 
 		/// <param name="collectionView">To be added.</param>
 		/// <param name="indexPath">To be added.</param>
@@ -8598,7 +8607,16 @@ namespace AppKit {
 		nfloat TitleWidth { get; set; }
 
 		[Export ("titleWidth:")]
+#if XAMCORE_5_0
+		nfloat GetTitleWidth (CGSize size);
+#else
+		[Obsolete ("Use 'GetTitleWidth' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		nfloat TitleWidthConstraintedToSize (CGSize aSize);
+
+		[Wrap ("TitleWidthConstraintedToSize (size)")]
+		nfloat GetTitleWidth (CGSize size);
+#endif
 
 		[Export ("title")]
 		string Title { get; set; }
@@ -14582,7 +14600,16 @@ namespace AppKit {
 		nint IndexOfItemWithRepresentedObject (NSObject obj);
 
 		[Export ("indexOfItemWithTarget:andAction:")]
+#if XAMCORE_5_0
+		nint IndexOfItemWithTargetAndAction (NSObject target, Selector actionSelector);
+#else
+		[Obsolete ("Use 'IndexOfItemWithTargetAndAction' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		nint IndexOfItemWithTargetandAction (NSObject target, Selector actionSelector);
+
+		[Wrap ("IndexOfItemWithTargetandAction (target, actionSelector)")]
+		nint IndexOfItemWithTargetAndAction (NSObject target, Selector actionSelector);
+#endif
 
 		[Export ("itemAtIndex:")]
 		NSMenuItem ItemAt (nint index);
@@ -15651,7 +15678,16 @@ namespace AppKit {
 	[BaseType (typeof (NSObject))]
 	partial interface NSResponder : NSCoding, NSTouchBarProvider, NSUserActivityRestoring {
 		[Export ("tryToPerform:with:")]
+#if XAMCORE_5_0
+		bool TryToPerformWith (Selector anAction, [NullAllowed] NSObject anObject);
+#else
+		[Obsolete ("Use 'TryToPerformWith' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		bool TryToPerformwith (Selector anAction, [NullAllowed] NSObject anObject);
+
+		[Wrap ("TryToPerformwith (anAction, anObject)")]
+		bool TryToPerformWith (Selector anAction, [NullAllowed] NSObject anObject);
+#endif
 
 		[Export ("performKeyEquivalent:")]
 		bool PerformKeyEquivalent (NSEvent theEvent);
@@ -16238,7 +16274,16 @@ namespace AppKit {
 		CGRect ConvertRectToBacking (CGRect aRect);
 
 		[Export ("convertRectFromBacking:")]
+#if XAMCORE_5_0
+		CGRect ConvertRectFromBacking (CGRect aRect);
+#else
+		[Obsolete ("Use 'ConvertRectFromBacking' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		CGRect ConvertRectfromBacking (CGRect aRect);
+
+		[Wrap ("ConvertRectfromBacking (aRect)")]
+		CGRect ConvertRectFromBacking (CGRect aRect);
+#endif
 
 		[Export ("backingAlignedRect:options:")]
 		CGRect GetBackingAlignedRect (CGRect globalScreenCoordRect, NSAlignmentOptions options);
@@ -17470,7 +17515,16 @@ namespace AppKit {
 		void UpdateSpellingPanelWithMisspelledWord (string word);
 
 		[Export ("updateSpellingPanelWithGrammarString:detail:")]
+#if XAMCORE_5_0
+		void UpdateSpellingPanelWithGrammarString (string theString, NSDictionary detail);
+#else
+		[Obsolete ("Use 'UpdateSpellingPanelWithGrammarString' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void UpdateSpellingPanelWithGrammarl (string theString, NSDictionary detail);
+
+		[Wrap ("UpdateSpellingPanelWithGrammarl (theString, detail)")]
+		void UpdateSpellingPanelWithGrammarString (string theString, NSDictionary detail);
+#endif
 
 		[Export ("spellingPanel")]
 		NSPanel SpellingPanel { get; }
@@ -26885,7 +26939,16 @@ namespace AppKit {
 		NSImage IconForFileType (IntPtr fileTypeOrTypeCode);
 
 		[Export ("setIcon:forFile:options:"), ThreadSafe]
+#if XAMCORE_5_0
+		bool SetIconForFile (NSImage image, string fullPath, NSWorkspaceIconCreationOptions options);
+#else
+		[Obsolete ("Use 'SetIconForFile' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		bool SetIconforFile (NSImage image, string fullPath, NSWorkspaceIconCreationOptions options);
+
+		[Wrap ("SetIconforFile (image, fullPath, options)")]
+		bool SetIconForFile (NSImage image, string fullPath, NSWorkspaceIconCreationOptions options);
+#endif
 
 		[Export ("fileLabels"), ThreadSafe]
 		string [] FileLabels { get; }

@@ -2703,7 +2703,16 @@ namespace CoreImage {
 		///         <summary>To be added.</summary>
 		///         <remarks>To be added.</remarks>
 		[Export ("setAttributes:forExportedKey:")]
+#if XAMCORE_5_0
+		void SetAttributes (NSDictionary attributes, NSString exportedKey);
+#else
+		[Obsolete ("Use 'SetAttributes' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void SetAttributesforExportedKey (NSDictionary attributes, NSString exportedKey);
+
+		[Wrap ("SetAttributesforExportedKey (attributes, exportedKey)")]
+		void SetAttributes (NSDictionary attributes, NSString exportedKey);
+#endif
 
 		/// <summary>To be added.</summary>
 		///         <returns>To be added.</returns>

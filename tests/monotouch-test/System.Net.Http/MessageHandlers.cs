@@ -116,8 +116,6 @@ namespace MonoTests.System.Net.Http {
 			var managedHasExpectedCookie = managedCookies?.Any (v => v.StartsWith ("cookie=chocolate-chip;", StringComparison.Ordinal)) == true;
 			var nativeHasExpectedCookie = nativeCookies?.Any (v => v.StartsWith ("cookie=chocolate-chip;", StringComparison.Ordinal)) == true;
 
-			if (!completed || !managedCookieResult || !nativeCookieResult || !managedHasExpectedCookie || !nativeHasExpectedCookie)
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 			Assert.That (completed, Is.True, "Network request completed");
 			Assert.That (ex, Is.Null, "Exception");
 			Assert.That (managedCookieResult, Is.True, $"Failed to get managed cookies");
@@ -166,17 +164,6 @@ namespace MonoTests.System.Net.Http {
 				nativeCookieResult = await nativeResponse.Content.ReadAsStringAsync ();
 			}, out var ex);
 
-			if (!completed)
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
-			var intermittentFailures = new string [] {
-				"500 Internal Server Error",
-				"502 Bad Gateway",
-				"503 Service Temporarily Unavailable",
-				"504 Gateway Time-out",
-			};
-			if (intermittentFailures.Any (v => managedCookieResult.Contains (v) || nativeCookieResult.Contains (v)))
-				TestRuntime.IgnoreInCI ("Intermittent network failure - ignore in CI");
-
 			Assert.That (completed, Is.True, "Network request completed");
 			Assert.That (ex, Is.Null, "Exception");
 			Assert.That (managedCookieResult, Is.Not.Null, "Managed cookies result");
@@ -204,15 +191,11 @@ namespace MonoTests.System.Net.Http {
 				nativeCookieResult = await nativeResponse.Content.ReadAsStringAsync ();
 			}, out var ex);
 
-			if (!completed)
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 			Assert.That (completed, Is.True, "Network request completed");
 			Assert.That (ex, Is.Null, "Exception");
 			Assert.That (nativeCookieResult, Is.Not.Null, "Native cookies result");
 			var cookiesFromServer = cookieContainer.GetCookies (new Uri (url));
 			var hasExpectedCookie = cookiesFromServer.Cast<Cookie> ().Any (v => v.Name == "cookie" && v.Value == "chocolate-chip");
-			if (!hasExpectedCookie)
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 			Assert.That (hasExpectedCookie, Is.True, "Cookies received from server.");
 		}
 
@@ -241,8 +224,6 @@ namespace MonoTests.System.Net.Http {
 				nativeCookieResult = await nativeResponse.Content.ReadAsStringAsync ();
 			}, out var ex);
 
-			if (!completed)
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 			Assert.That (completed, Is.True, "Network request completed");
 			Assert.That (ex, Is.Null, "Exception");
 			Assert.That (nativeSetCookieResult, Is.Not.Null, "Native set-cookies result");
@@ -276,8 +257,6 @@ namespace MonoTests.System.Net.Http {
 				nativeCookieResult = await nativeResponse.Content.ReadAsStringAsync ();
 			}, out var ex);
 
-			if (!completed)
-				TestRuntime.IgnoreInCI ("Transient network failure - ignore in CI");
 			Assert.That (completed, Is.True, "Network request completed");
 			Assert.That (ex, Is.Null, "Exception");
 			Assert.That (nativeSetCookieResult, Is.Not.Null, "Native set-cookies result");
@@ -469,17 +448,10 @@ namespace MonoTests.System.Net.Http {
 				containsHeaders = json.Contains ("headers");  // ensure we do have the headers in the response
 			}, out var ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
-				TestRuntime.IgnoreInCIIfHttpClientTimedOut ();
-				Assert.Inconclusive ("Request timedout.");
-			} else if (ex is not null) {
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.That (ex, Is.Null, $"Exception {ex} for {json}");
-			} else if (!containsHeaders) {
-				Assert.Inconclusive ("Response from httpbin does not contain headers, therefore we cannot ensure that if the authoriation is present.");
-			} else {
-				Assert.That (containsAuthorizarion, Is.False, $"Authorization header did reach the final destination. {json}");
-			}
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, $"Exception {ex} for {json}");
+			Assert.That (containsHeaders, Is.True, "Response does not contain headers");
+			Assert.That (containsAuthorizarion, Is.False, $"Authorization header did reach the final destination. {json}");
 		}
 
 		[TestCase (true, false, HttpStatusCode.Unauthorized, false, TestName = "NSUrlSessionHandlerOriginCredentialCacheNotSentToCrossOriginRedirectTarget")]
@@ -668,10 +640,9 @@ namespace MonoTests.System.Net.Http {
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				try {
 					HttpClient client = new HttpClient (handler);
-					client.BaseAddress = NetworkResources.Httpbin.Uri;
 					var byteArray = new UTF8Encoding ().GetBytes ("username:password");
 					client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue ("Basic", Convert.ToBase64String (byteArray));
-					result = await client.GetAsync (NetworkResources.Httpbin.GetRedirectUrl (3));
+					result = await client.GetAsync (NetworkResources.MicrosoftUrl);
 				} finally {
 #pragma warning disable SYSLIB0014 // 'ServicePointManager' is obsolete: 'WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. Settings on ServicePointManager no longer affect SslStream or HttpClient.' (https://aka.ms/dotnet-warnings/SYSLIB0014)
 					ServicePointManager.ServerCertificateValidationCallback = null;
@@ -720,10 +691,9 @@ namespace MonoTests.System.Net.Http {
 			var done = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), async () => {
 				try {
 					HttpClient client = new HttpClient (handler);
-					client.BaseAddress = NetworkResources.Httpbin.Uri;
 					var byteArray = new UTF8Encoding ().GetBytes ("username:password");
 					client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue ("Basic", Convert.ToBase64String (byteArray));
-					var result = await client.GetAsync (NetworkResources.Httpbin.GetRedirectUrl (3));
+					var result = await client.GetAsync (NetworkResources.MicrosoftUrl);
 				} finally {
 #pragma warning disable SYSLIB0014 // 'ServicePointManager' is obsolete: 'WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. Settings on ServicePointManager no longer affect SslStream or HttpClient.' (https://aka.ms/dotnet-warnings/SYSLIB0014)
 					ServicePointManager.ServerCertificateValidationCallback = null;
@@ -1194,14 +1164,9 @@ namespace MonoTests.System.Net.Http {
 				httpStatus = result.StatusCode;
 			}, out var ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
-				Assert.Inconclusive ("Request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
-				Assert.That (ex, Is.Null, "Exception not null");
-				Assert.That (httpStatus, Is.EqualTo (expectedStatus), "Status not ok");
-			}
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, "Exception not null");
+			Assert.That (httpStatus, Is.EqualTo (expectedStatus), "Status not ok");
 		}
 
 		[TestCase (HttpStatusCode.OK, "mandel", "12345678", "mandel", "12345678")]
@@ -1221,14 +1186,9 @@ namespace MonoTests.System.Net.Http {
 				httpStatus = result.StatusCode;
 			}, out var ex);
 
-			if (!done) {
-				Assert.Inconclusive ("Request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
-				Assert.That (ex, Is.Null, "Exception not null");
-				Assert.That (httpStatus, Is.EqualTo (expectedStatus), "Status not ok");
-			}
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, "Exception not null");
+			Assert.That (httpStatus, Is.EqualTo (expectedStatus), "Status not ok");
 		}
 
 		[TestCase]
@@ -1252,13 +1212,10 @@ namespace MonoTests.System.Net.Http {
 				httpStatus = result.StatusCode;
 			}, out var ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
-				Assert.Inconclusive ("First request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
-				Assert.That (ex, Is.Null, "First request exception not null");
-				Assert.That (httpStatus, Is.EqualTo (HttpStatusCode.OK), "First status not ok");
-			}
+			Assert.That (done, Is.True, "First request completed");
+			Assert.That (ex, Is.Null, "First request exception not null");
+			Assert.That (httpStatus, Is.EqualTo (HttpStatusCode.OK), "First status not ok");
+
 			// exactly same operation, diff handler, wrong password, should fail
 
 			var secondHandler = new NSUrlSessionHandler () {
@@ -1273,13 +1230,9 @@ namespace MonoTests.System.Net.Http {
 				httpStatus = result.StatusCode;
 			}, out ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
-				Assert.Inconclusive ("Second request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (httpStatus);
-				Assert.That (ex, Is.Null, "Second request exception not null");
-				Assert.That (httpStatus, Is.EqualTo (HttpStatusCode.Unauthorized), "Second status not ok");
-			}
+			Assert.That (done, Is.True, "Second request completed");
+			Assert.That (ex, Is.Null, "Second request exception not null");
+			Assert.That (httpStatus, Is.EqualTo (HttpStatusCode.Unauthorized), "Second status not ok");
 		}
 
 		class TestDelegateHandler : DelegatingHandler {
@@ -1333,27 +1286,22 @@ namespace MonoTests.System.Net.Http {
 				}
 			}, out var ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc.. we do not want to fail
-				Assert.Inconclusive ("Request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.That (ex, Is.Null, "Exception");
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, "Exception");
 
-				for (var i = 0; i < iterations; i++) {
-					var rsp = delegatingHandler.Responses [i];
-					TestRuntime.IgnoreInCIIfBadNetwork (rsp.StatusCode);
-					Assert.That (delegatingHandler.IsCompleted (i), Is.True, $"Completed #{i}");
-					Assert.That (rsp.ReasonPhrase, Is.EqualTo ("OK"), $"ReasonPhrase #{i}");
-					Assert.That (rsp.StatusCode, Is.EqualTo (HttpStatusCode.OK), $"StatusCode #{i}");
+			for (var i = 0; i < iterations; i++) {
+				var rsp = delegatingHandler.Responses [i];
+				Assert.That (delegatingHandler.IsCompleted (i), Is.True, $"Completed #{i}");
+				Assert.That (rsp.ReasonPhrase, Is.EqualTo ("OK"), $"ReasonPhrase #{i}");
+				Assert.That (rsp.StatusCode, Is.EqualTo (HttpStatusCode.OK), $"StatusCode #{i}");
 
-					var body = bodies [i];
-					// Poor-man's json parser
-					var data = body.Split ('\n', '\r').Single (v => v.Contains ("\"data\": \""));
-					data = data.Trim ().Replace ("\"data\": \"", "").TrimEnd ('"', ',');
-					data = data.Replace ("\\\"", "\"");
+				var body = bodies [i];
+				// Poor-man's json parser
+				var data = body.Split ('\n', '\r').Single (v => v.Contains ("\"data\": \""));
+				data = data.Trim ().Replace ("\"data\": \"", "").TrimEnd ('"', ',');
+				data = data.Replace ("\\\"", "\"");
 
-					Assert.That (data, Is.EqualTo (json), $"Post data #{i}");
-				}
+				Assert.That (data, Is.EqualTo (json), $"Post data #{i}");
 			}
 		}
 
@@ -1373,17 +1321,11 @@ namespace MonoTests.System.Net.Http {
 				using var request = new HttpRequestMessage (HttpMethod.Get, initialRequestUri);
 				Assert.That (request.RequestUri.ToString (), Is.EqualTo (initialRequestUri), "Initial RequestUri");
 				using var response = await client.SendAsync (request);
-				TestRuntime.IgnoreInCIIfBadNetwork (response.StatusCode);
 				Assert.That (request.RequestUri.ToString (), Is.EqualTo (postRequestUri), "Post RequestUri");
 			}, out var ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc. we do not want to fail
-				TestRuntime.IgnoreInCIIfHttpClientTimedOut ();
-				Assert.Inconclusive ("Request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.That (ex, Is.Null, "Exception");
-			}
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, "Exception");
 		}
 
 		[TestCase (typeof (NSUrlSessionHandler))]
@@ -1401,17 +1343,11 @@ namespace MonoTests.System.Net.Http {
 				using var request = new HttpRequestMessage (HttpMethod.Get, requestUri);
 				Assert.That (request.RequestUri.ToString (), Is.EqualTo (requestUri), "Initial RequestUri");
 				using var response = await client.SendAsync (request);
-				TestRuntime.IgnoreInCIIfBadNetwork (response.StatusCode);
 				Assert.That (request.RequestUri.ToString (), Is.EqualTo (requestUri), "Post RequestUri");
 			}, out var ex);
 
-			if (!done) { // timeouts happen in the bots due to dns issues, connection issues etc. we do not want to fail
-				TestRuntime.IgnoreInCIIfHttpClientTimedOut ();
-				Assert.Inconclusive ("Request timedout.");
-			} else {
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.That (ex, Is.Null, "Exception");
-			}
+			Assert.That (done, Is.True, "Request completed");
+			Assert.That (ex, Is.Null, "Exception");
 		}
 
 		// https://github.com/dotnet/macios/issues/23764

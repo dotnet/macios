@@ -14,6 +14,7 @@
 using CoreFoundation;
 using CoreGraphics;
 using CoreLocation;
+using System.ComponentModel;
 #if MONOMAC
 using AppKit;
 using UITraitCollection = System.Int32;
@@ -216,7 +217,19 @@ namespace MapKit {
 		[NoTV]
 		[MacCatalyst (13, 1)]
 		[Export ("rightCalloutOffset")]
+#if XAMCORE_5_0
+		CGPoint RightCalloutOffset { get; set; }
+#else
+		[Obsolete ("Use 'RightCalloutOffset' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		CGPoint RightCallpoutOffset { get; set; }
+
+		[NoiOS]
+		[NoTV]
+		[MacCatalyst (13, 1)]
+		[Wrap ("RightCallpoutOffset")]
+		CGPoint RightCalloutOffset { get; set; }
+#endif
 
 		[MacCatalyst (13, 1)]
 		[NullAllowed, Export ("clusteringIdentifier")]

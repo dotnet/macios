@@ -24,9 +24,11 @@ network:
     - "vsassets.io"
 tools:
   github:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
     toolsets: [pull_requests, repos]
     min-integrity: approved
 safe-outputs:
+  github-token: ${{ secrets.GITHUB_TOKEN }}
   create-pull-request-review-comment:
     max: 50
   submit-pull-request-review:

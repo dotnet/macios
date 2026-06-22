@@ -18,6 +18,7 @@ network:
     - github
 tools:
   github:
+    github-token: ${{ secrets.GITHUB_TOKEN }}
     toolsets: [pull_requests, repos]
     min-integrity: approved
   bash: true
@@ -25,6 +26,7 @@ checkout:
   fetch: ["*"]
   fetch-depth: 0
 safe-outputs:
+  github-token: ${{ secrets.GITHUB_TOKEN }}
   max-patch-files: 1000
   max-patch-size: 10240
   create-pull-request:

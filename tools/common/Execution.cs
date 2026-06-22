@@ -111,6 +111,7 @@ namespace Xamarin.Utils {
 		public string? WorkingDirectory;
 		public TimeSpan? Timeout;
 		public CancellationToken? CancellationToken;
+		public bool CloseStandardInput;
 
 		public TextWriter? Log;
 
@@ -148,6 +149,15 @@ namespace Xamarin.Utils {
 			return thread;
 		}
 
+		static void KillProcess (Process p)
+		{
+#if NET
+			p.Kill (true);
+#else
+			p.Kill ();
+#endif
+		}
+
 		public Task<Execution> RunAsync ()
 		{
 			var tcs = new TaskCompletionSource<Execution> ();
@@ -158,7 +168,7 @@ namespace Xamarin.Utils {
 				p.StartInfo.FileName = FileName;
 				p.StartInfo.Arguments = Arguments is not null ? StringUtils.FormatArguments (Arguments) : "";
 				p.StartInfo.UseShellExecute = false;
-				p.StartInfo.RedirectStandardInput = false;
+				p.StartInfo.RedirectStandardInput = CloseStandardInput;
 				p.StartInfo.RedirectStandardOutput = true;
 				p.StartInfo.RedirectStandardError = true;
 				if (!string.IsNullOrEmpty (WorkingDirectory))
@@ -193,6 +203,8 @@ namespace Xamarin.Utils {
 
 						var stopwatch = Stopwatch.StartNew ();
 						p.Start ();
+						if (CloseStandardInput)
+							p.StandardInput.Close ();
 						var pid = p.Id;
 
 						var stdoutThread = StartOutputThread (tcs, lockobj, p.StandardOutput, StandardOutputLineCallback, $"StandardOutput reader for {p.StartInfo.FileName} (PID: {pid})");
@@ -201,7 +213,8 @@ namespace Xamarin.Utils {
 						CancellationToken?.Register (() => {
 							// Don't call tcs.TrySetCanceled, that won't return an Execution result to the caller.
 							try {
-								p.Kill ();
+								Log?.WriteLine ($"Command '{p.StartInfo.FileName} {p.StartInfo.Arguments}' (pid: {pid}) was cancelled, and will be killed.");
+								KillProcess (p);
 							} catch (Exception ex) {
 								// The process could be disposed already. Just ignore any exceptions here.
 								Log?.WriteLine ($"Failed to cancel and kill PID {pid}: {ex.Message}");
@@ -210,10 +223,10 @@ namespace Xamarin.Utils {
 
 						if (Timeout.HasValue) {
 							if (!p.WaitForExit ((int) Timeout.Value.TotalMilliseconds)) {
-								Log?.WriteLine ($"Command '{p.StartInfo.FileName} {p.StartInfo.Arguments}' didn't finish in {Timeout.Value.TotalMilliseconds} ms, and will be killed.");
+								Log?.WriteLine ($"Command '{p.StartInfo.FileName} {p.StartInfo.Arguments}' (pid: {pid}) didn't finish in {Timeout.Value.TotalMilliseconds} ms, and will be killed.");
 								TimedOut = true;
 								try {
-									p.Kill ();
+									KillProcess (p);
 								} catch (Exception ex) {
 									// According to the documentation, there can be exceptions here we can't prepare for, so just ignore them.
 									Log?.WriteLine ($"Failed to kill PID {pid}: {ex.Message}");
@@ -247,7 +260,7 @@ namespace Xamarin.Utils {
 			return tcs.Task;
 		}
 
-		public static Task<Execution> RunWithCallbacksAsync (string filename, IList<string> arguments, Dictionary<string, string?>? environment = null, Action<string>? standardOutput = null, Action<string>? standardError = null, TextWriter? log = null, string? workingDirectory = null, TimeSpan? timeout = null, CancellationToken? cancellationToken = null)
+		public static Task<Execution> RunWithCallbacksAsync (string filename, IList<string> arguments, Dictionary<string, string?>? environment = null, Action<string>? standardOutput = null, Action<string>? standardError = null, TextWriter? log = null, string? workingDirectory = null, TimeSpan? timeout = null, CancellationToken? cancellationToken = null, bool closeStandardInput = false)
 		{
 			return new Execution {
 				FileName = filename,
@@ -259,6 +272,7 @@ namespace Xamarin.Utils {
 				CancellationToken = cancellationToken,
 				Timeout = timeout,
 				Log = log,
+				CloseStandardInput = closeStandardInput,
 			}.RunAsync ();
 		}
 

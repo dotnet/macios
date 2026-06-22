@@ -49,6 +49,8 @@ safe-outputs:
     required-title-prefix: "🤖 Merge 'main' => '"
   update-pull-request:
     max: 10
+  close-pull-request:
+    max: 10
 ---
 
 # Code Radiator
@@ -111,8 +113,28 @@ Search for an open PR with:
 - Title matching: `🤖 Merge 'main' => '<target>'`
 
 If a matching PR exists:
-- If it is a **draft**: add a comment saying "⏭️ Skipping merge update: this PR is a draft. Convert to ready when you want automated updates to resume." and **skip** this target.
-- If it is **not a draft**: use its head branch name as the local branch name (to update the existing PR).
+- If it is a **draft**: check whether a manual merge from `main` into the target branch occurred after the PR was created (see below). If so, close the PR and proceed to create a new one. Otherwise, add a comment saying "⏭️ Skipping merge update: this PR is a draft. Convert to ready when you want automated updates to resume." and **skip** this target.
+- If it is **not a draft**: check whether a manual merge from `main` into the target branch occurred after the PR was created (see below). If so, close the PR and proceed to create a new one. Otherwise, use its head branch name as the local branch name (to update the existing PR).
+
+##### Detecting manual merges that supersede an existing PR
+
+After finding an existing workflow-created PR, check if someone manually merged `main`
+into the target branch after the PR was created. If so, the PR is stale and should be
+replaced with a fresh one.
+
+Detection logic:
+
+```bash
+# Find merge commits from main into the target branch that are newer than the PR creation date
+git log "origin/<target>" --merges --first-parent --after="<pr-created-at>" --format="%H %s" |
+  grep -i "merge.*main"
+```
+
+If any such merge commits exist on the target branch:
+
+1. Add a comment to the existing PR: "🔄 Closing this PR because a manual merge from `main` into `<target>` was done after this PR was created (commit `<sha>`). A fresh merge PR will be created."
+2. Close the existing PR.
+3. Proceed as if no existing PR was found (create a new branch and PR from scratch).
 
 #### c. Update from target branch
 
@@ -182,6 +204,7 @@ After creating the PR, enable automerge (merge strategy) using the GitHub MCP `e
 After processing all branches, report:
 - Which PRs were created (with links)
 - Which PRs were updated
+- Which PRs were closed and recreated (due to manual merges superseding them)
 - Which branches were skipped (closed milestone, draft PRs, no conflicts resolution possible)
 - Which branches had no diff (main already merged)
 

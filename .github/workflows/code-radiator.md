@@ -92,9 +92,9 @@ gh api 'repos/{owner}/{repo}/milestones?state=closed&per_page=100' --paginate -q
 
 Map each branch name to its milestone name:
 
-| Branch pattern | Milestone name |
-|---|---|
-| `net<major>.0` | `.NET <major>` (e.g., `net10.0` → `.NET 10`) |
+| Branch pattern   | Milestone name                                                            |
+|------------------|---------------------------------------------------------------------------|
+| `net<major>.0`   | `.NET <major>` (e.g., `net10.0` → `.NET 10`)                              |
 | `xcode<version>` | `xcode<version>` (e.g., `xcode26.4` → `xcode26.4`, `xcode26` → `xcode26`) |
 
 If the corresponding milestone is found in the closed list, skip the branch and include

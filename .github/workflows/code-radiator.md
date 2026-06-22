@@ -127,8 +127,12 @@ Detection logic:
 ```bash
 # Find merge commits from main into the target branch that are newer than the PR creation date
 git log "origin/<target>" --merges --first-parent --after="<pr-created-at>" --format="%H %s" |
-  grep -i "merge.*main"
+  grep -iE "merge.* main " || true
 ```
+
+The `|| true` prevents the command from failing when there are no matches.
+The pattern matches "main" as a whole word to avoid false positives from branch names
+like "maintenance".
 
 If any such merge commits exist on the target branch:
 

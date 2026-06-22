@@ -23,6 +23,7 @@ tools:
     min-integrity: approved
   bash: true
 checkout:
+  github-token: ${{ secrets.GITHUB_TOKEN }}
   fetch: ["*"]
   fetch-depth: 0
 safe-outputs:

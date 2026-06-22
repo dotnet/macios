@@ -23,19 +23,12 @@ namespace MonoTouchFixtures.Foundation {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public class UrlSessionTest {
-		void AssertTrueOrIgnoreInCI (Task task, string message)
+		void AssertCompleted (Task task, string message)
 		{
 			var value = TestRuntime.TryRunAsync (TimeSpan.FromSeconds (30), task, out var ex);
 
-			if (value) {
-				TestRuntime.IgnoreInCIIfBadNetwork (ex);
-				Assert.That (ex, Is.Null, message + " Exception");
-				return;
-			}
-
-			TestRuntime.IgnoreInCI ($"This test times out randomly in CI due to bad network: {message}");
-			Assert.That (ex, Is.Null, $"Exception - {message}");
-			Assert.Fail (message);
+			Assert.That (value, Is.True, $"Request timed out: {message}");
+			Assert.That (ex, Is.Null, message + " Exception");
 		}
 
 		[Test]
@@ -54,16 +47,16 @@ namespace MonoTouchFixtures.Foundation {
 			uploadRequest.HttpMethod = "POST";
 
 			/* CreateDataTask */
-			AssertTrueOrIgnoreInCI (session.CreateDataTaskAsync (request), "CreateDataTask a");
-			AssertTrueOrIgnoreInCI (session.CreateDataTaskAsync (url), "CreateDataTask b");
+			AssertCompleted (session.CreateDataTaskAsync (request), "CreateDataTask a");
+			AssertCompleted (session.CreateDataTaskAsync (url), "CreateDataTask b");
 
 			/* CreateDownloadTask */
-			AssertTrueOrIgnoreInCI (session.CreateDownloadTaskAsync (request), "CreateDownloadTask a");
-			AssertTrueOrIgnoreInCI (session.CreateDownloadTaskAsync (url), "CreateDownloadTask b");
+			AssertCompleted (session.CreateDownloadTaskAsync (request), "CreateDownloadTask a");
+			AssertCompleted (session.CreateDownloadTaskAsync (url), "CreateDownloadTask b");
 
 			/* CreateUploadTask */
-			AssertTrueOrIgnoreInCI (session.CreateUploadTaskAsync (uploadRequest, file_url), "CreateUploadTask a");
-			AssertTrueOrIgnoreInCI (session.CreateUploadTaskAsync (uploadRequest, file_data), "CreateUploadTask b");
+			AssertCompleted (session.CreateUploadTaskAsync (uploadRequest, file_url), "CreateUploadTask a");
+			AssertCompleted (session.CreateUploadTaskAsync (uploadRequest, file_data), "CreateUploadTask b");
 		}
 
 		[Test]

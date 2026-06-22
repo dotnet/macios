@@ -28,6 +28,7 @@
 		<TestVariations Include="inline-dlfcn-methods-strict" Description="Enables 'InlineDlfcnMethods' in strict mode." />
 		<TestVariations Include="inline-class-gethandle-compat" Description="Enables 'InlineClassGetHandle' in compatibility mode." />
 		<TestVariations Include="inline-class-gethandle-strict" Description="Enables 'InlineClassGetHandle' in strict mode." />
+		<TestVariations Include="prepare-assemblies" Description="Enables 'PrepareAssemblies'." />
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -187,6 +188,11 @@
 	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|inline-class-gethandle-strict|'))">
 		<InlineClassGetHandle>strict</InlineClassGetHandle>
 		<Registrar>managed-static</Registrar>
+		<_TestVariationApplied>true</_TestVariationApplied>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(_TestVariationForComparison.Contains('|prepare-assemblies|'))">
+		<PrepareAssemblies>true</PrepareAssemblies>
 		<_TestVariationApplied>true</_TestVariationApplied>
 	</PropertyGroup>
 

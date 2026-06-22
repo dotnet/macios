@@ -2191,7 +2191,7 @@ F:CoreGraphics.CGPdfTagType.TableRow
 F:CoreGraphics.CGPdfTagType.Toc
 F:CoreGraphics.CGPdfTagType.Toci
 F:CoreGraphics.CGPdfTagType.Warichu
-F:CoreGraphics.CGPdfTagType.WarichuPunctiation
+F:CoreGraphics.CGPdfTagType.WarichuPunctuation
 F:CoreGraphics.CGPdfTagType.WarichuText
 F:CoreGraphics.CGToneMapping.Default
 F:CoreGraphics.CGToneMapping.ExrGamma
@@ -5454,7 +5454,7 @@ F:MLCompute.MLCConvolutionType.Transposed
 F:MLCompute.MLCDataType.Boolean
 F:MLCompute.MLCDataType.Float16
 F:MLCompute.MLCDataType.Float32
-F:MLCompute.MLCDataType.Inot32
+F:MLCompute.MLCDataType.Int32
 F:MLCompute.MLCDataType.Int64
 F:MLCompute.MLCDataType.Int8
 F:MLCompute.MLCDataType.Invalid
@@ -8514,11 +8514,13 @@ M:AppKit.NSCollectionLayoutAnchor.Create(AppKit.NSDirectionalRectEdge,AppKit.NSC
 M:AppKit.NSCollectionLayoutGroup.GetHorizontalGroup(AppKit.NSCollectionLayoutSize,AppKit.NSCollectionLayoutItem,System.IntPtr)
 M:AppKit.NSCollectionLayoutGroup.GetVerticalGroup(AppKit.NSCollectionLayoutSize,AppKit.NSCollectionLayoutItem,System.IntPtr)
 M:AppKit.NSCollectionView.Dispose(System.Boolean)
+M:AppKit.NSCollectionViewDataSource.GetNumberOfItems(AppKit.NSCollectionView,System.IntPtr)
 M:AppKit.NSCollectionViewDelegate_Extensions.AcceptDrop(AppKit.INSCollectionViewDelegate,AppKit.NSCollectionView,AppKit.INSDraggingInfo,Foundation.NSIndexPath,AppKit.NSCollectionViewDropOperation)
 M:AppKit.NSCollectionViewDelegate_Extensions.AcceptDrop(AppKit.INSCollectionViewDelegate,AppKit.NSCollectionView,AppKit.INSDraggingInfo,System.IntPtr,AppKit.NSCollectionViewDropOperation)
 M:AppKit.NSCollectionViewDelegate_Extensions.UpdateDraggingItemsForDrag(AppKit.INSCollectionViewDelegate,AppKit.NSCollectionView,AppKit.INSDraggingInfo)
 M:AppKit.NSCollectionViewDelegate_Extensions.ValidateDrop(AppKit.INSCollectionViewDelegate,AppKit.NSCollectionView,AppKit.INSDraggingInfo,Foundation.NSIndexPath@,AppKit.NSCollectionViewDropOperation@)
 M:AppKit.NSCollectionViewDelegate_Extensions.ValidateDrop(AppKit.INSCollectionViewDelegate,AppKit.NSCollectionView,AppKit.INSDraggingInfo,System.IntPtr@,AppKit.NSCollectionViewDropOperation@)
+M:AppKit.NSCollectionViewDiffableDataSource`2.GetNumberOfItems(AppKit.NSCollectionView,System.IntPtr)
 M:AppKit.NSCollectionViewItem.Dispose(System.Boolean)
 M:AppKit.NSCollectionViewLayout.Dispose(System.Boolean)
 M:AppKit.NSCollectionViewSectionHeaderView_Extensions.GetSectionCollapseButton(AppKit.INSCollectionViewSectionHeaderView)
@@ -8576,6 +8578,7 @@ M:AppKit.NSFont.MonospacedSystemFont(System.Runtime.InteropServices.NFloat,Syste
 M:AppKit.NSFont.SystemFontOfSize(System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat,System.Runtime.InteropServices.NFloat)
 M:AppKit.NSFontDescriptor.Create(AppKit.NSFontDescriptorSystemDesign)
 M:AppKit.NSFontManager.Dispose(System.Boolean)
+M:AppKit.NSFormCell.GetTitleWidth(CoreGraphics.CGSize)
 M:AppKit.NSGestureRecognizer.Dispose(System.Boolean)
 M:AppKit.NSGraphics.DrawTiledRects(CoreGraphics.CGRect,CoreGraphics.CGRect,AppKit.NSRectEdge[],System.Runtime.InteropServices.NFloat[])
 M:AppKit.NSGraphics.FrameRect(CoreGraphics.CGRect,System.Runtime.InteropServices.NFloat,AppKit.NSCompositingOperation)
@@ -8674,11 +8677,13 @@ M:AppKit.NSPathControlDelegate_Extensions.AcceptDrop(AppKit.INSPathControlDelega
 M:AppKit.NSPathControlDelegate_Extensions.ValidateDrop(AppKit.INSPathControlDelegate,AppKit.NSPathControl,AppKit.INSDraggingInfo)
 M:AppKit.NSPickerTouchBarItem.Dispose(System.Boolean)
 M:AppKit.NSPopover.Dispose(System.Boolean)
+M:AppKit.NSPopUpButtonCell.IndexOfItemWithTargetAndAction(Foundation.NSObject,ObjCRuntime.Selector)
 M:AppKit.NSPreviewRepresentableActivityItem_Extensions.GetIconProvider(AppKit.INSPreviewRepresentableActivityItem)
 M:AppKit.NSPreviewRepresentableActivityItem_Extensions.GetImageProvider(AppKit.INSPreviewRepresentableActivityItem)
 M:AppKit.NSPreviewRepresentableActivityItem_Extensions.GetTitle(AppKit.INSPreviewRepresentableActivityItem)
 M:AppKit.NSPrintPanel.BeginSheetAsync(AppKit.NSPrintInfo,AppKit.NSWindow)
 M:AppKit.NSResponder_NSWritingToolsSupport.ShowWritingTools(AppKit.NSResponder,Foundation.NSObject)
+M:AppKit.NSResponder.TryToPerformWith(ObjCRuntime.Selector,Foundation.NSObject)
 M:AppKit.NSRuleEditor.add_Changed(System.EventHandler)
 M:AppKit.NSRuleEditor.add_EditingBegan(System.EventHandler)
 M:AppKit.NSRuleEditor.add_EditingEnded(System.EventHandler)
@@ -8700,6 +8705,7 @@ M:AppKit.NSSavePanel.remove_DidSelectType(System.EventHandler{AppKit.NSopenSaveP
 M:AppKit.NSSavePanel.remove_DirectoryDidChange(System.EventHandler{AppKit.NSOpenSaveFilenameEventArgs})
 M:AppKit.NSSavePanel.remove_SelectionDidChange(System.EventHandler)
 M:AppKit.NSSavePanel.remove_WillExpand(System.EventHandler{AppKit.NSOpenSaveExpandingEventArgs})
+M:AppKit.NSScreen.ConvertRectFromBacking(CoreGraphics.CGRect)
 M:AppKit.NSScrubber.Dispose(System.Boolean)
 M:AppKit.NSScrubberLayout.Dispose(System.Boolean)
 M:AppKit.NSSearchField.add_SearchingEnded(System.EventHandler)
@@ -8731,6 +8737,7 @@ M:AppKit.NSSpeechRecognizer.Dispose(System.Boolean)
 M:AppKit.NSSpeechSynthesizer.Dispose(System.Boolean)
 M:AppKit.NSSpellChecker.CheckString(System.String,Foundation.NSRange,Foundation.NSTextCheckingTypes,AppKit.NSTextCheckingOptions,System.IntPtr,Foundation.NSOrthography@,System.IntPtr@)
 M:AppKit.NSSpellChecker.RequestChecking(System.String,Foundation.NSRange,Foundation.NSTextCheckingTypes,AppKit.NSTextCheckingOptions,System.IntPtr,System.Action{System.IntPtr,Foundation.NSTextCheckingResult[],Foundation.NSOrthography,System.IntPtr})
+M:AppKit.NSSpellChecker.UpdateSpellingPanelWithGrammarString(System.String,Foundation.NSDictionary)
 M:AppKit.NSSplitView.Dispose(System.Boolean)
 M:AppKit.NSSpringLoadingDestination_Extensions.DraggingEnded(AppKit.INSSpringLoadingDestination,AppKit.INSDraggingInfo)
 M:AppKit.NSSpringLoadingDestination_Extensions.Entered(AppKit.INSSpringLoadingDestination,AppKit.INSDraggingInfo)
@@ -8932,6 +8939,7 @@ M:AppKit.NSView.IsAccessibilityAttributeSettable(Foundation.NSString)
 M:AppKit.NSView.SetAccessibilityValue(Foundation.NSString,Foundation.NSObject)
 M:AppKit.NSView.SortSubviews(System.Func{AppKit.NSView,AppKit.NSView,Foundation.NSComparisonResult})
 M:AppKit.NSViewController.Dispose(System.Boolean)
+M:AppKit.NSViewController.TryToPerformWith(ObjCRuntime.Selector,Foundation.NSObject)
 M:AppKit.NSWindow.add_DidBecomeKey(System.EventHandler)
 M:AppKit.NSWindow.add_DidBecomeMain(System.EventHandler)
 M:AppKit.NSWindow.add_DidChangeBackingProperties(System.EventHandler)
@@ -9019,6 +9027,7 @@ M:AppKit.NSWorkspace.SetDefaultApplicationToOpenContentTypeAsync(Foundation.NSUr
 M:AppKit.NSWorkspace.SetDefaultApplicationToOpenContentTypeAsync(Foundation.NSUrl,UniformTypeIdentifiers.UTType)
 M:AppKit.NSWorkspace.SetDefaultApplicationToOpenFileAsync(Foundation.NSUrl,Foundation.NSUrl)
 M:AppKit.NSWorkspace.SetDefaultApplicationToOpenUrlsAsync(Foundation.NSUrl,System.String)
+M:AppKit.NSWorkspace.SetIconForFile(AppKit.NSImage,System.String,AppKit.NSWorkspaceIconCreationOptions)
 M:AppKit.NSWritingToolsCoordinator.Dispose(System.Boolean)
 M:AppTrackingTransparency.ATTrackingManager.RequestTrackingAuthorization(System.Action{AppTrackingTransparency.ATTrackingManagerAuthorizationStatus})
 M:AppTrackingTransparency.ATTrackingManager.RequestTrackingAuthorizationAsync
@@ -9334,7 +9343,7 @@ M:AuthenticationServices.ASWebAuthenticationSessionRequestDelegate_Extensions.Di
 M:AuthenticationServices.ASWebAuthenticationSessionRequestDelegate.DidCancel(AuthenticationServices.ASWebAuthenticationSessionRequest,Foundation.NSError)
 M:AuthenticationServices.ASWebAuthenticationSessionRequestDelegate.DidComplete(AuthenticationServices.ASWebAuthenticationSessionRequest,Foundation.NSUrl)
 M:AuthenticationServices.ASWebAuthenticationSessionWebBrowserSessionManager.Dispose(System.Boolean)
-M:AuthenticationServices.ASWebAuthenticationSessionWebBrowserSessionManager.RegisterDefaultsForAswasInSetupAssistantIfNeeded
+M:AuthenticationServices.ASWebAuthenticationSessionWebBrowserSessionManager.RegisterDefaultsForAsWasInSetupAssistantIfNeeded
 M:AuthenticationServices.IASAccountAuthenticationModificationControllerDelegate.DidFailRequest(AuthenticationServices.ASAccountAuthenticationModificationController,AuthenticationServices.ASAccountAuthenticationModificationRequest,Foundation.NSError)
 M:AuthenticationServices.IASAccountAuthenticationModificationControllerDelegate.DidSuccessfullyCompleteRequest(AuthenticationServices.ASAccountAuthenticationModificationController,AuthenticationServices.ASAccountAuthenticationModificationRequest,Foundation.NSDictionary)
 M:AuthenticationServices.IASAccountAuthenticationModificationControllerPresentationContextProviding.GetPresentationAnchor(AuthenticationServices.ASAccountAuthenticationModificationController)
@@ -9399,10 +9408,10 @@ M:AVFoundation.AVAsset.LoadTracksWithMediaTypeAsync(System.String)
 M:AVFoundation.AVAsset.LoadTrackWithMediaCharacteristicsAsync(System.String)
 M:AVFoundation.AVAssetDownloadDelegate_Extensions.DidReceiveMetricEvent(AVFoundation.IAVAssetDownloadDelegate,Foundation.NSUrlSession,AVFoundation.AVAssetDownloadTask,AVFoundation.AVMetricEvent)
 M:AVFoundation.AVAssetDownloadDelegate_Extensions.WillDownloadVariants(AVFoundation.IAVAssetDownloadDelegate,Foundation.NSUrlSession,AVFoundation.AVAssetDownloadTask,AVFoundation.AVAssetVariant[])
-M:AVFoundation.AVAssetDownloadDelegate_Extensions.WilllDownloadToUrl(AVFoundation.IAVAssetDownloadDelegate,Foundation.NSUrlSession,AVFoundation.AVAssetDownloadTask,Foundation.NSUrl)
 M:AVFoundation.AVAssetDownloadDelegate.DidCreateTask(Foundation.NSUrlSession,Foundation.NSUrlSessionTask)
 M:AVFoundation.AVAssetDownloadDelegate.DidReceiveInformationalResponse(Foundation.NSUrlSession,Foundation.NSUrlSessionTask,Foundation.NSHttpUrlResponse)
 M:AVFoundation.AVAssetDownloadDelegate.NeedNewBodyStream(Foundation.NSUrlSession,Foundation.NSUrlSessionTask,System.Int64,System.Action{Foundation.NSInputStream})
+M:AVFoundation.AVAssetDownloadDelegate.WillDownloadToUrl(Foundation.NSUrlSession,AVFoundation.AVAssetDownloadTask,Foundation.NSUrl)
 M:AVFoundation.AVAssetExportSession.EstimateMaximumDurationAsync
 M:AVFoundation.AVAssetExportSession.EstimateOutputFileLengthAsync
 M:AVFoundation.AVAssetImageGenerator.GenerateCGImagesAsynchronously(Foundation.NSValue[],AVFoundation.AVAssetImageGeneratorCompletionHandler2)
@@ -9691,7 +9700,6 @@ M:AVFoundation.AVVideoComposition.CreateAsync(AVFoundation.AVAsset)
 M:AVFoundation.AVVideoComposition.DetermineValidityAsync(AVFoundation.AVAsset,CoreMedia.CMTimeRange,AVFoundation.IAVVideoCompositionValidationHandling)
 M:AVFoundation.IAVAssetDownloadDelegate.DidReceiveMetricEvent(Foundation.NSUrlSession,AVFoundation.AVAssetDownloadTask,AVFoundation.AVMetricEvent)
 M:AVFoundation.IAVAssetDownloadDelegate.WillDownloadVariants(Foundation.NSUrlSession,AVFoundation.AVAssetDownloadTask,AVFoundation.AVAssetVariant[])
-M:AVFoundation.IAVAssetDownloadDelegate.WilllDownloadToUrl(Foundation.NSUrlSession,AVFoundation.AVAssetDownloadTask,Foundation.NSUrl)
 M:AVFoundation.IAVAssetReaderCaptionValidationHandling.DidVendCaption(AVFoundation.AVAssetReaderOutputCaptionAdaptor,AVFoundation.AVCaption,System.String[])
 M:AVFoundation.IAVAssetWriterDelegate.DidOutputSegmentData(AVFoundation.AVAssetWriter,Foundation.NSData,AVFoundation.AVAssetSegmentType,AVFoundation.AVAssetSegmentReport)
 M:AVFoundation.IAVAssetWriterDelegate.DidOutputSegmentData(AVFoundation.AVAssetWriter,Foundation.NSData,AVFoundation.AVAssetSegmentType)
@@ -10991,6 +10999,7 @@ M:CoreImage.CIContext.CreateCGImage(CoreImage.CIImage,CoreGraphics.CGRect,System
 M:CoreImage.CIContext.GetOpenEXRRepresentation(CoreImage.CIImage,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},Foundation.NSError@)
 M:CoreImage.CIContext.WriteOpenExrRepresentation(CoreImage.CIImage,Foundation.NSUrl,Foundation.NSDictionary{Foundation.NSString,Foundation.NSObject},Foundation.NSError@)
 M:CoreImage.CIDetectorOptions.#ctor
+M:CoreImage.CIFilterGenerator.SetAttributes(Foundation.NSDictionary,Foundation.NSString)
 M:CoreImage.CIImage.#ctor(AVFoundation.AVSemanticSegmentationMatte,Foundation.NSDictionary)
 M:CoreImage.CIImage.#ctor(AVFoundation.AVSemanticSegmentationMatte)
 M:CoreImage.CIImage.#ctor(ImageIO.CGImageSource,System.UIntPtr,CoreImage.CIImageInitializationOptionsWithMetadata)
@@ -11850,6 +11859,10 @@ M:Foundation.INSUrlSessionTaskDelegate.NeedNewBodyStream(Foundation.NSUrlSession
 M:Foundation.INSUrlSessionWebSocketDelegate.DidClose(Foundation.NSUrlSession,Foundation.NSUrlSessionWebSocketTask,Foundation.NSUrlSessionWebSocketCloseCode,Foundation.NSData)
 M:Foundation.INSUrlSessionWebSocketDelegate.DidOpen(Foundation.NSUrlSession,Foundation.NSUrlSessionWebSocketTask,System.String)
 M:Foundation.INSXpcListenerDelegate.ShouldAcceptConnection(Foundation.NSXpcListener,Foundation.NSXpcConnection)
+M:Foundation.NSAppleEventDescriptor.InsertDescriptor(Foundation.NSAppleEventDescriptor,System.IntPtr)
+M:Foundation.NSAppleEventDescriptor.SetAttributeDescriptor(Foundation.NSAppleEventDescriptor,System.UInt32)
+M:Foundation.NSAppleEventDescriptor.SetDescriptor(Foundation.NSAppleEventDescriptor,System.UInt32)
+M:Foundation.NSAppleEventDescriptor.SetParamDescriptor(Foundation.NSAppleEventDescriptor,System.UInt32)
 M:Foundation.NSAttributedString.#ctor(System.String,AppKit.NSFont,AppKit.NSColor,AppKit.NSColor,AppKit.NSColor,AppKit.NSColor,AppKit.NSColor,Foundation.NSUnderlineStyle,Foundation.NSUnderlineStyle,AppKit.NSParagraphStyle,System.Single,AppKit.NSShadow,Foundation.NSUrl,System.Boolean,AppKit.NSTextAttachment,Foundation.NSLigatureType,System.Single,System.Single,System.Single,System.Single,AppKit.NSCursor,System.String,System.Int32,AppKit.NSGlyphInfo,Foundation.NSArray,System.Boolean,AppKit.NSTextLayoutOrientation,AppKit.NSTextAlternatives,AppKit.NSSpellingState)
 M:Foundation.NSAttributedString.LoadDataAsync(System.String,Foundation.NSProgress@)
 M:Foundation.NSAttributedString.LoadFromHtml(Foundation.NSData,Foundation.NSAttributedStringDocumentAttributes,Foundation.NSAttributedStringCompletionHandler)
@@ -11874,6 +11887,7 @@ M:Foundation.NSDataDetector.#ctor(Foundation.NSTextCheckingType,Foundation.NSErr
 M:Foundation.NSDataDetector.Create(Foundation.NSTextCheckingType,Foundation.NSError@)
 M:Foundation.NSDate.op_Explicit(Foundation.NSDate)~System.DateTime
 M:Foundation.NSDate.op_Explicit(System.DateTime)~Foundation.NSDate
+M:Foundation.NSDirectoryEnumerator.SkipDescendants
 M:Foundation.NSEnumerator`1.NextObject
 M:Foundation.NSExceptionError.#ctor(System.Exception)
 M:Foundation.NSFileAttributes.#ctor
@@ -11912,6 +11926,7 @@ M:Foundation.NSKeyValueSharedObserverRegistration_NSObject.SetSharedObservers(Fo
 M:Foundation.NSKeyValueSharedObservers.#ctor(System.Type)
 M:Foundation.NSMachPort.Dispose(System.Boolean)
 M:Foundation.NSMetadataQuery.Dispose(System.Boolean)
+M:Foundation.NSMutableString.ReplaceOccurrences(Foundation.NSString,Foundation.NSString,Foundation.NSStringCompareOptions,Foundation.NSRange)
 M:Foundation.NSNetService.add_AddressResolved(System.EventHandler)
 M:Foundation.NSNetService.add_DidAcceptConnection(System.EventHandler{Foundation.NSNetServiceConnectionEventArgs})
 M:Foundation.NSNetService.add_Published(System.EventHandler)
@@ -11946,6 +11961,7 @@ M:Foundation.NSNetServiceBrowser.remove_NotSearched(System.EventHandler{Foundati
 M:Foundation.NSNetServiceBrowser.remove_SearchStarted(System.EventHandler)
 M:Foundation.NSNetServiceBrowser.remove_SearchStopped(System.EventHandler)
 M:Foundation.NSNetServiceBrowser.remove_ServiceRemoved(System.EventHandler{Foundation.NSNetServiceEventArgs})
+M:Foundation.NSNotificationQueue.DequeueNotifications(Foundation.NSNotification,Foundation.NSNotificationCoalescing)
 M:Foundation.NSNotificationQueue.EnqueueNotification(Foundation.NSNotification,Foundation.NSPostingStyle,Foundation.NSNotificationCoalescing,Foundation.NSRunLoopMode[])
 M:Foundation.NSObject.AddObserver(Foundation.NSObject,System.String,Foundation.NSKeyValueObservingOptions,System.IntPtr)
 M:Foundation.NSObject.AutomaticallyNotifiesObserversForKey(System.String)
@@ -12008,6 +12024,7 @@ M:Foundation.NSStream.remove_OnEvent(System.EventHandler{Foundation.NSStreamEven
 M:Foundation.NSStreamSocksOptions.#ctor
 M:Foundation.NSString.CompareTo(Foundation.NSString)
 M:Foundation.NSString.LoadDataAsync(System.String,Foundation.NSProgress@)
+M:Foundation.NSString.StandardizePath
 M:Foundation.NSTimer.Dispose(System.Boolean)
 M:Foundation.NSUrl.LoadDataAsync(System.String,Foundation.NSProgress@)
 M:Foundation.NSUrl.op_Equality(Foundation.NSUrl,Foundation.NSUrl)
@@ -14998,7 +15015,7 @@ M:Network.NWConnectionGroup.GetLocalEndpoint(Network.NWContentContext)
 M:Network.NWConnectionGroup.GetPath(Network.NWContentContext)
 M:Network.NWConnectionGroup.GetProtocolMetadata(Network.NWContentContext,Network.NWProtocolDefinition)
 M:Network.NWConnectionGroup.GetProtocolMetadata(Network.NWContentContext)
-M:Network.NWConnectionGroup.GetRemmoteEndpoint(Network.NWContentContext)
+M:Network.NWConnectionGroup.GetRemoteEndpoint(Network.NWContentContext)
 M:Network.NWConnectionGroup.Reply(Network.NWContentContext,Network.NWContentContext,CoreFoundation.DispatchData)
 M:Network.NWConnectionGroup.Send(CoreFoundation.DispatchData,Network.NWEndpoint,Network.NWContentContext,System.Action{Network.NWError})
 M:Network.NWConnectionGroup.SetNewConnectionHandler(System.Action{Network.NWConnection})
@@ -17209,6 +17226,7 @@ M:UIKit.UILargeContentViewerInteractionDelegate_Extensions.GetItem(UIKit.IUILarg
 M:UIKit.UILargeContentViewerInteractionDelegate_Extensions.GetViewController(UIKit.IUILargeContentViewerInteractionDelegate,UIKit.UILargeContentViewerInteraction)
 M:UIKit.UILayoutGuide.Dispose(System.Boolean)
 M:UIKit.UIListContentView.UIListContentViewAppearance.#ctor(System.IntPtr)
+M:UIKit.UILocalizedIndexedCollation.SortedArrayFromArrayCollationStringSelector(Foundation.NSObject[],ObjCRuntime.Selector)
 M:UIKit.UIMenu.Create(System.String,UIKit.UIImage,UIKit.UIMenuIdentifier,UIKit.UIMenuOptions,UIKit.UIMenuElement[])
 M:UIKit.UIMenuLeaf_Extensions.GetSelectedImage(UIKit.IUIMenuLeaf)
 M:UIKit.UIMenuLeaf_Extensions.SetSelectedImage(UIKit.IUIMenuLeaf,UIKit.UIImage)
@@ -17399,9 +17417,10 @@ M:UIKit.UISearchBar.remove_OnEditingStopped(System.EventHandler)
 M:UIKit.UISearchBar.remove_SearchButtonClicked(System.EventHandler)
 M:UIKit.UISearchBar.remove_SelectedScopeButtonIndexChanged(System.EventHandler{UIKit.UISearchBarButtonIndexEventArgs})
 M:UIKit.UISearchBar.remove_TextChanged(System.EventHandler{UIKit.UISearchBarTextChangedEventArgs})
+M:UIKit.UISearchBar.SetImageForSearchBarIcon(UIKit.UIImage,UIKit.UISearchBarIcon,UIKit.UIControlState)
+M:UIKit.UISearchBar.SetPositionAdjustmentForSearchBarIcon(UIKit.UIOffset,UIKit.UISearchBarIcon)
 M:UIKit.UISearchBar.UISearchBarAppearance.#ctor(System.IntPtr)
 M:UIKit.UISearchBar.UISearchBarAppearance.GetPositionAdjustmentForSearchBarIcon(UIKit.UISearchBarIcon)
-M:UIKit.UISearchBar.UISearchBarAppearance.SetPositionAdjustmentforSearchBarIcon(UIKit.UIOffset,UIKit.UISearchBarIcon)
 M:UIKit.UISearchBarDelegate_Extensions.ShouldChangeText(UIKit.IUISearchBarDelegate,UIKit.UISearchBar,Foundation.NSValue[],System.String)
 M:UIKit.UISearchController.Dispose(System.Boolean)
 M:UIKit.UISearchControllerDelegate_Extensions.DidChangeFromSearchBarPlacement(UIKit.IUISearchControllerDelegate,UIKit.UISearchController,UIKit.UINavigationItemSearchBarPlacement)
@@ -18115,6 +18134,7 @@ M:WebKit.WKWebView.SetMicrophoneCaptureStateAsync(WebKit.WKMediaCaptureState)
 M:WebKit.WKWebView.StartDownloadAsync(Foundation.NSUrlRequest)
 M:WebKit.WKWebView.WKWebViewAppearance.#ctor(System.IntPtr)
 P:Accessibility.AXAnimatedImagesUtilities.Enabled
+P:Accessibility.AXMathExpressionFraction.DenominatorExpression
 P:Accessibility.IAXBrailleMapRenderer.AccessibilityBrailleMapRenderer
 P:Accessibility.IAXBrailleMapRenderer.AccessibilityBrailleMapRenderRegion
 P:Accessibility.IAXChart.AccessibilityChartDescriptor
@@ -20857,6 +20877,7 @@ P:CoreSpotlight.CSSearchableItem.IsUpdate
 P:CoreSpotlight.CSSearchableItem.UpdateListenerOptions
 P:CoreSpotlight.CSSearchableItemAttributeSet.ActionIdentifiers
 P:CoreSpotlight.CSSearchableItemAttributeSet.DarkThumbnailUrl
+P:CoreSpotlight.CSSearchableItemAttributeSet.GpsDifferential
 P:CoreSpotlight.CSSearchableItemAttributeSet.IsPriority
 P:CoreSpotlight.CSSearchableItemAttributeSet.Item(CoreSpotlight.CSCustomAttributeKey)
 P:CoreSpotlight.CSSearchableItemAttributeSet.SharedItemContentType
@@ -21450,6 +21471,7 @@ P:GameKit.GKPlayerEventArgs.PlayerID
 P:GameKit.GKPlayersEventArgs.PlayerIDs
 P:GameKit.GKStateEventArgs.PlayerId
 P:GameKit.GKStateEventArgs.State
+P:GameKit.GKTurnBasedMatch.ExchangeDataMaximumSize
 P:GameplayKit.GKCompositeBehavior.Item(GameplayKit.GKBehavior)
 P:GameplayKit.GKCompositeBehavior.Item(System.UIntPtr)
 P:GameplayKit.IGKGameModelPlayer.PlayerId
@@ -21642,6 +21664,7 @@ P:MapKit.IMKAnnotation.Subtitle
 P:MapKit.IMKAnnotation.Title
 P:MapKit.IMKOverlay.CanReplaceMapContent
 P:MapKit.MKAnnotationEventArgs.Annotation
+P:MapKit.MKAnnotationView.RightCalloutOffset
 P:MapKit.MKAnnotationViewEventArgs.View
 P:MapKit.MKDidAddOverlayRenderersEventArgs.Renderers
 P:MapKit.MKDidFinishRenderingMapEventArgs.FullyRendered
@@ -22354,7 +22377,7 @@ P:MetalPerformanceShadersGraph.MPSGraphExecutionDescriptor.CompletionHandler
 P:MetalPerformanceShadersGraph.MPSGraphExecutionDescriptor.ScheduledHandler
 P:MetalPerformanceShadersGraph.MPSGraphExecutionDescriptor.WaitUntilCompleted
 P:MetalPerformanceShadersGraph.MPSGraphFftDescriptor.Inverse
-P:MetalPerformanceShadersGraph.MPSGraphFftDescriptor.RoundToOddHermitean
+P:MetalPerformanceShadersGraph.MPSGraphFftDescriptor.RoundToOddHermitian
 P:MetalPerformanceShadersGraph.MPSGraphFftDescriptor.ScalingMode
 P:MetalPerformanceShadersGraph.MPSGraphGruDescriptor.Bidirectional
 P:MetalPerformanceShadersGraph.MPSGraphGruDescriptor.FlipZ

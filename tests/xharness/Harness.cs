@@ -356,6 +356,13 @@ namespace Xharness {
 					Filter = "",
 				},
 				new {
+					Label = TestLabel.AssemblyProcessing,
+					ProjectPath = Path.GetFullPath (Path.Combine (HarnessConfiguration.RootDirectory, "assembly-preparer", "assembly-preparer-tests.csproj")),
+					Name = "Assembly processing tests",
+					Timeout = (TimeSpan?) TimeSpan.FromMinutes (10),
+					Filter = "",
+				},
+				new {
 					Label = TestLabel.Generator,
 					ProjectPath = Path.GetFullPath (Path.Combine (HarnessConfiguration.RootDirectory, "bgen", "bgen-tests.csproj")),
 					Name = "BGen tests",

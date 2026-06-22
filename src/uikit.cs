@@ -15744,6 +15744,7 @@ namespace UIKit {
 		// sibling 'UIScreenMode'). Until then the binding keeps the ctor for API compatibility, and the introspection
 		// ctor-init probe stays skipped for UIScreen on iOS/tvOS 27+ (see iOSApiCtorInitTest).
 		[Obsolete ("Do not use, this will crash. A UIScreen must always be obtained from the view hierarchy (e.g. view.Window.WindowScene.Screen).")]
+		[Export ("init")]
 		NativeHandle Constructor ();
 #endif
 

@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 using Microsoft.Build.Framework;
 using Microsoft.Build.Logging.StructuredLogger;
 using Mono.Cecil;
@@ -45,6 +47,7 @@ namespace Xamarin.Tests {
 			Assert.That (archiveDirs.Count, Is.GreaterThan (0), "ArchiveDir");
 			var archiveDir = archiveDirs [0]!.Trim ();
 			Assert.That (archiveDir, Does.Exist, "Archive directory existence");
+			AssertApplicationArtifact (result.BinLogPath, archiveDir, platform, "xcarchive", isDirectory: true);
 			AssertDSymDirectory (appPath);
 		}
 
@@ -64,13 +67,139 @@ namespace Xamarin.Tests {
 			properties ["BuildIpa"] = "true";
 			properties ["Configuration"] = configuration;
 
-			DotNet.AssertBuild (project_path, properties);
+			var result = DotNet.AssertBuild (project_path, properties);
 
 			var pkgPath = Path.Combine (appPath, "..", $"{project}.ipa");
 			Assert.That (pkgPath, Does.Exist, "pkg creation");
+			AssertApplicationArtifact (result.BinLogPath, appPath, platform, "app", isDirectory: true);
+			AssertApplicationArtifact (result.BinLogPath, pkgPath, platform, "ipa", isDirectory: false);
 
 			AssertBundleAssembliesStripStatus (appPath, true);
 			AssertDSymDirectory (appPath);
+		}
+
+		[Test]
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void BuildIpaOnRemoteWindowsTest (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["BuildIpa"] = "true";
+			properties ["Configuration"] = configuration;
+
+			var result = DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (15));
+
+			// The .ipa is built on the paired Mac and copied back to this Windows machine, so it must be
+			// surfaced in @(ApplicationArtifact) with the local (Windows) path. The .app bundle stays on the
+			// Mac, so it's intentionally not surfaced as an artifact on Windows.
+			var ipaPath = Path.Combine (appPath, "..", $"{project}.ipa");
+			Assert.That (ipaPath, Does.Exist, "ipa creation");
+			AssertApplicationArtifact (result.BinLogPath, ipaPath, platform, "ipa", isDirectory: false);
+		}
+
+		[Test]
+		[Category ("RemoteWindows")]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		public void ArchiveOnRemoteWindowsTest (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+			Configuration.IgnoreIfNotOnWindows ();
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["ArchiveOnBuild"] = "true";
+			properties ["Configuration"] = configuration;
+
+			var result = DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (20));
+
+			// The .xcarchive is produced on the paired Mac and copied back to this Windows machine by
+			// CopyArchiveFromMac, which sets $(ArchivePath) to the local (Windows) path while $(ArchiveDir)
+			// keeps pointing at the Mac path. The Windows archive path is date-based, so match on the
+			// package format rather than an exact path.
+			AssertApplicationArtifact (result.BinLogPath, platform, "xcarchive", isDirectory: true);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.TVOS, "tvos-arm64")]
+		public void GetApplicationArtifactsIpaTest (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["BuildIpa"] = "true";
+			properties ["Configuration"] = configuration;
+
+			var outputs = GetApplicationArtifacts (project_path, properties);
+			var pkgPath = Path.Combine (appPath, "..", $"{project}.ipa");
+
+			Assert.That (pkgPath, Does.Exist, "pkg creation");
+			AssertApplicationArtifact (outputs, appPath, platform, "app", isDirectory: true);
+			AssertApplicationArtifact (outputs, pkgPath, platform, "ipa", isDirectory: false);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "ipa")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "pkg")]
+		public void GetApplicationArtifactsDependsOnTest (ApplePlatform platform, string runtimeIdentifiers, string packageFormat)
+		{
+			var project = "MySimpleAppWithArtifactMetadata";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["BuildIpa"] = packageFormat == "ipa" ? "true" : "false";
+			properties ["CreatePackage"] = packageFormat == "pkg" ? "true" : "false";
+			properties ["Configuration"] = configuration;
+			properties ["ExpectedAugmentedPackageFormat"] = packageFormat;
+
+			var outputs = GetApplicationArtifacts (project_path, properties);
+			var appOutput = AssertApplicationArtifact (outputs, appPath, platform, "app", isDirectory: true);
+			var packageOutput = AssertApplicationArtifact (outputs, platform, packageFormat, isDirectory: false);
+			Assert.That (GetMetadata (appOutput, "ApplicationTitle"), Is.EqualTo ("My MAUI App"), "ApplicationTitle");
+			Assert.That (GetMetadata (appOutput, "MauiObservedPackageFormat"), Is.EqualTo ("app"), "MauiObservedPackageFormat");
+			Assert.That (GetMetadata (packageOutput, "ApplicationTitle"), Is.EqualTo ("My MAUI App"), "ApplicationTitle");
+			Assert.That (GetMetadata (packageOutput, "MauiObservedPackageFormat"), Is.EqualTo (packageFormat), "MauiObservedPackageFormat");
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.iOS, "ios-arm64")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		public void GetApplicationArtifactsArchiveTest (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers, platform, out _, configuration: configuration);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["ArchiveOnBuild"] = "true";
+			properties ["Configuration"] = configuration;
+
+			var outputs = GetApplicationArtifacts (project_path, properties);
+			AssertApplicationArtifact (outputs, platform, "xcarchive", isDirectory: true);
 		}
 
 		[Test]
@@ -137,10 +266,35 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties ["CreatePackage"] = "true";
 
-			DotNet.AssertBuild (project_path, properties);
+			var result = DotNet.AssertBuild (project_path, properties);
 
 			var pkgPath = Path.Combine (appPath, "..", $"{project}-{projectVersion}.pkg");
 			Assert.That (pkgPath, Does.Exist, "pkg creation");
+			AssertApplicationArtifact (result.BinLogPath, appPath, platform, "app", isDirectory: true);
+			AssertApplicationArtifact (result.BinLogPath, pkgPath, platform, "pkg", isDirectory: false);
+		}
+
+		[Test]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64")]
+		[TestCase (ApplePlatform.MacOSX, "osx-x64")]
+		public void GetApplicationArtifactsPkgTest (ApplePlatform platform, string runtimeIdentifiers)
+		{
+			var project = "MySimpleApp";
+			var projectVersion = "3.14";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath);
+			Clean (project_path);
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties ["CreatePackage"] = "true";
+
+			var outputs = GetApplicationArtifacts (project_path, properties);
+			var pkgPath = Path.Combine (appPath, "..", $"{project}-{projectVersion}.pkg");
+
+			Assert.That (pkgPath, Does.Exist, "pkg creation");
+			AssertApplicationArtifact (outputs, appPath, platform, "app", isDirectory: true);
+			AssertApplicationArtifact (outputs, pkgPath, platform, "pkg", isDirectory: false);
 		}
 
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
@@ -180,9 +334,39 @@ namespace Xamarin.Tests {
 			var properties = GetDefaultProperties (runtimeIdentifiers);
 			properties [pathVariable] = pkgPath;
 
-			DotNet.AssertPublish (project_path, properties);
+			var result = DotNet.AssertPublish (project_path, properties);
 
 			Assert.That (pkgPath, Does.Exist, "ipa/pkg creation");
+			AssertApplicationArtifact (result.BinLogPath, pkgPath, platform, packageExtension, isDirectory: false);
+		}
+
+		[TestCase (ApplePlatform.iOS, "ios-arm64", "ipa", "IpaPackagePath")]
+		[TestCase (ApplePlatform.MacCatalyst, "maccatalyst-arm64", "pkg", "PkgPackagePath")]
+		public void PublishApplicationArtifactsDependsOnTest (ApplePlatform platform, string runtimeIdentifiers, string packageFormat, string pathVariable)
+		{
+			var project = "MySimpleAppWithArtifactMetadata";
+			var configuration = "Release";
+			Configuration.IgnoreIfIgnoredPlatform (platform);
+			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
+
+			var project_path = GetProjectPath (project, runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
+			Clean (project_path);
+
+			var tmpdir = Cache.CreateTemporaryDirectory ();
+			var pkgPath = Path.Combine (tmpdir, $"MyPackage.{packageFormat}");
+
+			var properties = GetDefaultProperties (runtimeIdentifiers);
+			properties [pathVariable] = pkgPath;
+			properties ["Configuration"] = configuration;
+			properties ["ExpectedAugmentedPackageFormat"] = packageFormat;
+
+			var outputs = GetApplicationArtifacts (project_path, properties, target: "Publish");
+			var appOutput = AssertApplicationArtifact (outputs, appPath, platform, "app", isDirectory: true);
+			var packageOutput = AssertApplicationArtifact (outputs, pkgPath, platform, packageFormat, isDirectory: false);
+			Assert.That (GetMetadata (appOutput, "ApplicationTitle"), Is.EqualTo ("My MAUI App"), "ApplicationTitle");
+			Assert.That (GetMetadata (appOutput, "MauiObservedPackageFormat"), Is.EqualTo ("app"), "MauiObservedPackageFormat");
+			Assert.That (GetMetadata (packageOutput, "ApplicationTitle"), Is.EqualTo ("My MAUI App"), "ApplicationTitle");
+			Assert.That (GetMetadata (packageOutput, "MauiObservedPackageFormat"), Is.EqualTo (packageFormat), "MauiObservedPackageFormat");
 		}
 
 
@@ -374,7 +558,81 @@ namespace Xamarin.Tests {
 			Assert.That (staticFrameworkItems, Is.Empty, $"Static framework XStaticArTest should not be in post-processing items. All items:\n\t{string.Join ("\n\t", postProcessingItems.Select (i => i.ItemSpec))}");
 		}
 
+		static ITaskItem AssertApplicationArtifact (string binLogPath, string path, ApplePlatform platform, string packageFormat, bool isDirectory)
+		{
+			var outputs = GetItems (binLogPath, "ApplicationArtifact");
+			var fullPath = Path.GetFullPath (path);
+			var output = outputs.SingleOrDefault (v => Path.GetFullPath (v.ItemSpec) == fullPath);
+			Assert.That (output, Is.Not.Null, $"Could not find {packageFormat} output for {fullPath}. All outputs:\n\t{string.Join ("\n\t", outputs.Select (v => v.ItemSpec))}");
+			Assert.That (output!.GetMetadata ("PackageFormat"), Is.EqualTo (packageFormat), "PackageFormat");
+			Assert.That (output.GetMetadata ("IsDirectory"), Is.EqualTo (isDirectory ? "true" : "false"), "IsDirectory");
+			Assert.That (output.GetMetadata ("PlatformName"), Is.EqualTo (platform.AsString ()), "PlatformName");
+			Assert.That (output.GetMetadata ("BundleIdentifier"), Is.Not.Empty, "BundleIdentifier");
+			Assert.That (output.GetMetadata ("ArtifactKind"), Is.Null.Or.Empty, "ArtifactKind");
+			Assert.That (output.GetMetadata ("AppBundlePath"), Is.Null.Or.Empty, "AppBundlePath");
+			Assert.That (output.GetMetadata ("CodeSigned"), Is.Null.Or.Empty, "CodeSigned");
+			Assert.That (output.GetMetadata ("Signed"), Is.Null.Or.Empty, "Signed");
+			Assert.That (output.GetMetadata ("PackageSigned"), Is.Null.Or.Empty, "PackageSigned");
+			return output;
+		}
+
+		static ITaskItem AssertApplicationArtifact (string binLogPath, ApplePlatform platform, string packageFormat, bool isDirectory)
+		{
+			var outputs = GetItems (binLogPath, "ApplicationArtifact");
+			var matchingOutputs = outputs.Where (v => v.GetMetadata ("PackageFormat") == packageFormat).ToList ();
+			Assert.That (matchingOutputs, Has.Count.EqualTo (1), $"Expected one {packageFormat} output. All outputs:\n\t{string.Join ("\n\t", outputs.Select (v => v.ItemSpec))}");
+
+			var itemSpec = matchingOutputs [0].ItemSpec;
+			Assert.That (itemSpec, Does.Exist, packageFormat);
+			return AssertApplicationArtifact (binLogPath, itemSpec, platform, packageFormat, isDirectory);
+		}
+
+		static JsonElement [] GetApplicationArtifacts (string projectPath, Dictionary<string, string> properties, string target = "GetApplicationArtifacts")
+		{
+			using var document = JsonDocument.Parse (DotNet.GetItems (projectPath, "ApplicationArtifact", target: target, properties: properties));
+			var outputs = document.RootElement.GetProperty ("Items").GetProperty ("ApplicationArtifact").EnumerateArray ().Select (v => v.Clone ()).ToArray ();
+			Assert.That (outputs, Is.Not.Empty, "ApplicationArtifact items");
+			return outputs;
+		}
+
+		static JsonElement AssertApplicationArtifact (JsonElement [] outputs, string path, ApplePlatform platform, string packageFormat, bool isDirectory)
+		{
+			var fullPath = Path.GetFullPath (path);
+			var output = outputs.SingleOrDefault (v => Path.GetFullPath (GetMetadata (v, "FullPath")) == fullPath);
+			Assert.That (output.ValueKind, Is.Not.EqualTo (JsonValueKind.Undefined), $"Could not find {packageFormat} output for {fullPath}. All outputs:\n\t{string.Join ("\n\t", outputs.Select (v => GetMetadata (v, "FullPath")))}");
+			Assert.That (GetMetadata (output, "PackageFormat"), Is.EqualTo (packageFormat), "PackageFormat");
+			Assert.That (GetMetadata (output, "IsDirectory"), Is.EqualTo (isDirectory ? "true" : "false"), "IsDirectory");
+			Assert.That (GetMetadata (output, "PlatformName"), Is.EqualTo (platform.AsString ()), "PlatformName");
+			Assert.That (GetMetadata (output, "BundleIdentifier"), Is.Not.Empty, "BundleIdentifier");
+			Assert.That (GetMetadata (output, "ArtifactKind"), Is.Empty, "ArtifactKind");
+			Assert.That (GetMetadata (output, "AppBundlePath"), Is.Empty, "AppBundlePath");
+			Assert.That (GetMetadata (output, "CodeSigned"), Is.Empty, "CodeSigned");
+			Assert.That (GetMetadata (output, "Signed"), Is.Empty, "Signed");
+			Assert.That (GetMetadata (output, "PackageSigned"), Is.Empty, "PackageSigned");
+			return output;
+		}
+
+		static JsonElement AssertApplicationArtifact (JsonElement [] outputs, ApplePlatform platform, string packageFormat, bool isDirectory)
+		{
+			var matchingOutputs = outputs.Where (v => GetMetadata (v, "PackageFormat") == packageFormat).ToArray ();
+			Assert.That (matchingOutputs, Has.Length.EqualTo (1), $"Expected one {packageFormat} output. All outputs:\n\t{string.Join ("\n\t", outputs.Select (v => GetMetadata (v, "FullPath")))}");
+
+			var fullPath = GetMetadata (matchingOutputs [0], "FullPath");
+			Assert.That (fullPath, Does.Exist, packageFormat);
+			return AssertApplicationArtifact (outputs, fullPath, platform, packageFormat, isDirectory);
+		}
+
+		static string GetMetadata (JsonElement item, string name)
+		{
+			return item.TryGetProperty (name, out var value) ? value.GetString () ?? "" : "";
+		}
+
 		static List<ITaskItem> GetPostProcessingItems (string binLogPath)
+		{
+			return GetItems (binLogPath, "_PostProcessingItem");
+		}
+
+		static List<ITaskItem> GetItems (string binLogPath, string itemType)
 		{
 			var items = new Dictionary<string, ITaskItem> ();
 			foreach (var args in BinLog.ReadBuildEvents (binLogPath)) {
@@ -382,7 +640,7 @@ namespace Xamarin.Tests {
 					continue;
 				if (tpea.Kind != TaskParameterMessageKind.AddItem)
 					continue;
-				if (tpea.ItemType != "_PostProcessingItem")
+				if (tpea.ItemType != itemType)
 					continue;
 				foreach (var item in tpea.Items) {
 					if (item is ITaskItem taskItem)

@@ -3354,6 +3354,15 @@ namespace Xamarin.Bundler {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot find the product assembly &apos;{0}&apos; in the list of loaded assemblies..
+        /// </summary>
+        public static string MX1504 {
+            get {
+                return ResourceManager.GetString("MX1504", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not a Mach-O dynamic library (unknown header &apos;0x{0}&apos;): {1}..
         /// </summary>
         public static string MX1600 {

@@ -3,5 +3,7 @@
   "name": "Mac Catalyst 应用程序",
   "description": "用于创建 .NET Mac Catalyst 应用程序的项目",
   "symbols/bundleId/description": "在 Info.plist 中替代 CFBundleIdentifier",
-  "symbols/minOSVersion/description": "替代项目文件中的 SupportedOSPlatformVersion"
+  "symbols/bundleId/displayName": "Bundle ID",
+  "symbols/minOSVersion/description": "替代项目文件中的 SupportedOSPlatformVersion",
+  "symbols/minOSVersion/displayName": "Minimum OS version"
 }

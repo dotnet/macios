@@ -3,8 +3,14 @@
   "name": "iOS Tabbed Application",
   "description": "A project for creating a .NET iOS tabbed application",
   "symbols/bundleId/description": "Overrides CFBundleIdentifier in the Info.plist",
+  "symbols/bundleId/displayName": "Bundle ID",
   "symbols/minOSVersion/description": "Overrides SupportedOSPlatformVersion in the project file",
+  "symbols/minOSVersion/displayName": "Minimum OS version",
   "symbols/deviceFamily/choices/universal/description": "Support both iPhone and iPad devices",
+  "symbols/deviceFamily/choices/universal/displayName": "Universal",
   "symbols/deviceFamily/choices/iphone/description": "Support only iPhone devices",
-  "symbols/deviceFamily/choices/ipad/description": "Support only iPad devices"
+  "symbols/deviceFamily/choices/iphone/displayName": "iPhone",
+  "symbols/deviceFamily/choices/ipad/description": "Support only iPad devices",
+  "symbols/deviceFamily/choices/ipad/displayName": "iPad",
+  "symbols/deviceFamily/displayName": "Device family"
 }

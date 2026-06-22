@@ -15737,7 +15737,7 @@ namespace UIKit {
 	[BaseType (typeof (NSObject))]
 	[DisableDefaultCtor]
 	interface UIScreen : UITraitEnvironment {
-#if XAMCORE_5_0
+#if !XAMCORE_5_0
 		// -[UIScreen init] became a hard, uncatchable runtime trap on iOS/tvOS 27 ("not allowed, get a reference
 		// from your local hierarchy"). A UIScreen must always be obtained from the view hierarchy (e.g.
 		// view.Window.WindowScene.Screen), so the never-useful default ctor is removed in the next major (like the

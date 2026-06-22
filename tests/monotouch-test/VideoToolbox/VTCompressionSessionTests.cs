@@ -236,6 +236,9 @@ namespace MonoTouchFixtures.VideoToolbox {
 		public void TestMultiImage (bool stronglyTyped, bool customCallback)
 		{
 			TestRuntime.AssertXcodeVersion (26, 0);
+#if __MACOS__ || __MACCATALYST__
+			TestRuntime.AssertNotVirtualMachine ();
+#endif
 
 			if (!VTCompressionSession.IsStereoMvHevcEncodeSupported ())
 				Assert.Ignore ("Stereo MV-HEVC encoding is not supported on the current system.");

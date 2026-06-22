@@ -125,6 +125,10 @@ parameters:
   type: boolean
   default: false
 
+- name: useACES
+  type: boolean
+  default: false
+
 stages:
 
 - template: ./build/linux-build-verification.yml
@@ -234,6 +238,7 @@ stages:
     xqaCertPass: $(xqa--certificates--password)
     condition: ${{ parameters.runTests }}
     postPipeline: ${{ not(parameters.buildPackages) }}
+    useACES: ${{ parameters.useACES }}
 
 - template: ./tests/publish-results.yml
   parameters:
@@ -282,6 +287,7 @@ stages:
       gitHubToken: $(Github.Token)
       xqaCertPass: $(xqa--certificates--password)
       pool: $(PRBuildPool)
+      useACES: ${{ parameters.useACES }}
 
 - ${{ each config in parameters.macTestsConfigurations }}:
   - template: ./mac/stage.yml

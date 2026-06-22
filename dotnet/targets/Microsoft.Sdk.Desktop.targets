@@ -82,11 +82,5 @@
 			<RunCommand>$(TargetDir)/$(_AppBundleName).app/Contents/MacOS/$(_NativeExecutableName)</RunCommand>
 			<RunArguments />
 		</PropertyGroup>
-
-		<!-- Override the RunCommand to use 'env' to set DOTNET_STARTUP_HOOKS to the container path -->
-		<PropertyGroup Condition="'$(RunWithOpen)' == 'false' And '$(_StartupHooksContainerDir)' != ''">
-			<RunArguments>DOTNET_STARTUP_HOOKS=$(_StartupHooksContainerDir)$(_StartupHooksFilename) $(RunCommand)</RunArguments>
-			<RunCommand>env</RunCommand>
-		</PropertyGroup>
 	</Target>
 </Project>

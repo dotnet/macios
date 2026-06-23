@@ -515,7 +515,7 @@ void GenerateHtmlReport (
 
 		// Per-config table
 		sb.AppendLine ("<table>");
-		sb.AppendLine ("<tr><th>Platform</th><th>Architecture</th><th>Result</th><th>Exit Code</th><th>Output</th></tr>");
+		sb.AppendLine ("<tr><th>Platform</th><th>Architecture</th><th>Result</th><th>Details</th><th>Output</th></tr>");
 		foreach (var result in results) {
 			var configCss = result.Outcome switch {
 				TestOutcome.Passed => "passed",
@@ -532,14 +532,12 @@ void GenerateHtmlReport (
 			var outputLink = outputFileNames.TryGetValue (baseName, out var fileName)
 				? $"<a href='{HttpUtility.HtmlAttributeEncode (fileName)}'>output</a>"
 				: "";
+			var exitCodeCell = result.Outcome == TestOutcome.Skipped
+				? $"<em>{HttpUtility.HtmlEncode (result.Message)}</em>"
+				: result.ExitCode.ToString ();
 			sb.AppendLine ($"<tr><td>{HttpUtility.HtmlEncode (result.Config.Platform)}</td><td>{arch}</td>" +
-				$"<td class='{configCss}'>{configText}</td><td>{result.ExitCode}</td>" +
+				$"<td class='{configCss}'>{configText}</td><td>{exitCodeCell}</td>" +
 				$"<td>{outputLink}</td></tr>");
-
-			// Show skip reason for skipped tests
-			if (result.Outcome == TestOutcome.Skipped && !string.IsNullOrEmpty (result.Message)) {
-				sb.AppendLine ($"<tr><td colspan='5'><em class='skipped'>{HttpUtility.HtmlEncode (result.Message)}</em></td></tr>");
-			}
 
 			// Show [FAIL] lines immediately after this row
 			var failLines = ExtractFailLines (result.Output);

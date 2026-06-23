@@ -1666,4 +1666,23 @@
         <comment>Shown when an MSBuild task writes to the console instead of using MSBuild logging.
 {0} - The stack trace of the offending call.</comment>
     </data>
+    <data name="W7179" xml:space="preserve">
+        <value>Ignoring unsupported metadata '{0}' for the native reference '{1}' in the binding resource package '{2}'.</value>
+        <comment>Shown when a binding resource package's manifest contains metadata that isn't on the allow-list of supported metadata.
+{0} - The name of the unsupported metadata (e.g. "RelativePath").
+{1} - The name of the native reference (e.g. "libfoo.dylib").
+{2} - The path to the binding resource package.</comment>
+    </data>
+    <data name="E7180" xml:space="preserve">
+        <value>The native reference '{0}' in the binding resource package '{1}' is invalid: the name must be a relative path without '..' segments.</value>
+        <comment>Shown when a binding resource package's manifest contains a native reference whose name is an absolute path or contains '..' traversal segments.
+{0} - The invalid native reference name.
+{1} - The path to the binding resource package.</comment>
+    </data>
+    <data name="E7181" xml:space="preserve">
+        <value>The native library can't be reidentified to '{0}' because that path is outside the intended output directory '{1}'.</value>
+        <comment>Shown when the computed reidentified path for a native library would write outside the intended intermediate output directory.
+{0} - The computed (out-of-bounds) reidentified path.
+{1} - The intended output directory.</comment>
+    </data>
 </root>

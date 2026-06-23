@@ -46,7 +46,7 @@ var testOutputDir = "";
 var vsdropsUri = "";
 var defaultTimeout = 300;
 var longerTimeout = 600;
-var launchArguments = "--autostart --autoexit";
+var launchArguments = new [] { "--autostart", "--autoexit" };
 
 for (int i = 0; i < args.Length; i++) {
 	switch (args [i]) {
@@ -90,7 +90,7 @@ for (int i = 0; i < args.Length; i++) {
 		longerTimeout = int.Parse (args [++i]);
 		break;
 	case "--launch-arguments":
-		launchArguments = args [++i];
+		launchArguments = args [++i].Split (' ', StringSplitOptions.RemoveEmptyEntries);
 		break;
 	default:
 		Console.Error.WriteLine ($"Unknown argument: {args [i]}");
@@ -191,7 +191,7 @@ foreach (var config in testConfigs) {
 
 	// Mac Catalyst apps need --autostart --autoexit, macOS apps don't
 	var useLaunchArgs = config.Platform == "MacCatalyst";
-	var execArgs = useLaunchArgs ? launchArguments : "";
+	var execArgs = useLaunchArgs ? launchArguments : [];
 	var timeout = config.Suite.IsLonger ? longerTimeout : defaultTimeout;
 
 	Console.WriteLine ($"Executing {config.DisplayName}...");
@@ -252,7 +252,7 @@ return failedSuites > 0 ? 1 : 0;
 
 // ===== Helper methods =====
 
-(int ExitCode, string Output) ExecuteWithTimeout (string executable, string arguments, int timeoutSeconds)
+(int ExitCode, string Output) ExecuteWithTimeout (string executable, string [] arguments, int timeoutSeconds)
 {
 	var launchTimeout = TimeSpan.FromSeconds (10);
 	var executionTimeout = TimeSpan.FromSeconds (timeoutSeconds);
@@ -267,7 +267,8 @@ return failedSuites > 0 ? 1 : 0;
 
 		var p = new Process ();
 		p.StartInfo.FileName = executable;
-		p.StartInfo.Arguments = arguments;
+		foreach (var arg in arguments)
+			p.StartInfo.ArgumentList.Add (arg);
 		p.StartInfo.UseShellExecute = false;
 		p.StartInfo.RedirectStandardOutput = true;
 		p.StartInfo.RedirectStandardError = true;
@@ -297,7 +298,7 @@ return failedSuites > 0 ? 1 : 0;
 		};
 
 		try {
-			Console.WriteLine ($"Launching (attempt #{attempt + 1}): {executable} {arguments}");
+			Console.WriteLine ($"Launching (attempt #{attempt + 1}): {executable} {string.Join (" ", arguments)}");
 			p.Start ();
 			p.BeginOutputReadLine ();
 			p.BeginErrorReadLine ();

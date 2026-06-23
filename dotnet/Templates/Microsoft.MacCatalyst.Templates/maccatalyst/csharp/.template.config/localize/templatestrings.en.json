@@ -3,5 +3,7 @@
   "name": "Mac Catalyst Application",
   "description": "A project for creating a .NET Mac Catalyst application",
   "symbols/bundleId/description": "Overrides CFBundleIdentifier in the Info.plist",
-  "symbols/minOSVersion/description": "Overrides SupportedOSPlatformVersion in the project file"
+  "symbols/bundleId/displayName": "Bundle ID",
+  "symbols/minOSVersion/description": "Overrides SupportedOSPlatformVersion in the project file",
+  "symbols/minOSVersion/displayName": "Minimum OS version"
 }

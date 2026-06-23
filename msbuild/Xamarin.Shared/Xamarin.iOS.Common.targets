@@ -488,6 +488,19 @@ Copyright (C) 2013-2016 Xamarin. All rights reserved.
 		</Zip>
 	</Target>
 
+	<Target Name="_CollectAppleIpaOutput"
+		Condition="'$(BuildIpa)' == 'true' And '$(IpaPackagePath)' != '' And Exists('$(IpaPackagePath)')"
+		AfterTargets="CreateIpa">
+		<ItemGroup>
+			<ApplicationArtifact Include="$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(IpaPackagePath)'))">
+				<PackageFormat>ipa</PackageFormat>
+				<IsDirectory>false</IsDirectory>
+				<PlatformName>$(_PlatformName)</PlatformName>
+				<BundleIdentifier>$(_BundleIdentifier)</BundleIdentifier>
+			</ApplicationArtifact>
+		</ItemGroup>
+	</Target>
+
 	<Import Project="$(MSBuildThisFileDirectory)$(MSBuildThisFileName).After.targets"
 			Condition="Exists('$(MSBuildThisFileDirectory)$(MSBuildThisFileName).After.targets')"/>
 		

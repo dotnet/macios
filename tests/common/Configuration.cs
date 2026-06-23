@@ -43,32 +43,6 @@ namespace Xamarin.Tests {
 			get => Version.Parse (DotNetTfm.Replace ("net", ""));
 		}
 
-		static bool? use_system; // if the system-installed XI/XM should be used instead of the local one.
-
-		public static bool UseSystem {
-			get {
-				if (!use_system.HasValue)
-					use_system = !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("TESTS_USE_SYSTEM"));
-				return use_system.Value;
-			}
-			set {
-				use_system = value;
-			}
-		}
-
-		static bool? is_vsts; // if the system-installed XI/XM should be used instead of the local one.
-
-		public static bool IsVsts {
-			get {
-				if (!is_vsts.HasValue)
-					is_vsts = !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("BUILD_BUILDID"));
-				return is_vsts.Value;
-			}
-			set {
-				is_vsts = value;
-			}
-		}
-
 		public static string XcodeLocation {
 			get {
 				return xcode_root;
@@ -141,7 +115,7 @@ namespace Xamarin.Tests {
 
 		static void ParseConfigFiles ()
 		{
-			var test_config = FindConfigFiles (UseSystem ? "test-system.config" : "test.config");
+			var test_config = FindConfigFiles ("test.config");
 			if (!test_config.Any () && Environment.OSVersion.Platform != PlatformID.Win32NT) {
 				// Run 'make test.config' in the tests/ directory
 				// First find the tests/ directory
@@ -408,18 +382,13 @@ namespace Xamarin.Tests {
 
 		public static string GetDotNetRoot ()
 		{
-			if (IsVsts) {
-				return Path.Combine (DOTNET_DIR, "packs");
-			} else {
-				return Path.Combine (SourceRoot, "_build");
-			}
+			return Path.Combine (DOTNET_DIR, "packs");
 		}
 
 		public static string GetRefDirectory (ApplePlatform platform)
 		{
 			var rv = Path.Combine (GetDotNetRoot (), GetRefNuGetName (platform));
-			if (UseSystem)
-				rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
+			rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
 			rv = Path.Combine (rv, "ref", DotNetTfm);
 			return rv;
 		}
@@ -447,8 +416,7 @@ namespace Xamarin.Tests {
 		public static string GetRuntimeDirectory (ApplePlatform platform, string runtimeIdentifier, bool isManagedRuntimePack = false)
 		{
 			var rv = Path.Combine (GetDotNetRoot (), isManagedRuntimePack ? GetManagedRuntimeNuGetName (platform) : GetRuntimeNuGetName (platform, runtimeIdentifier));
-			if (UseSystem)
-				rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
+			rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
 			return Path.Combine (rv, "runtimes", runtimeIdentifier);
 		}
 
@@ -461,8 +429,7 @@ namespace Xamarin.Tests {
 		public static string GetSdkRoot (ApplePlatform platform)
 		{
 			var rv = Path.Combine (GetDotNetRoot (), GetSdkNuGetName (platform));
-			if (UseSystem)
-				rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
+			rv = Path.Combine (rv, GetNuGetVersionNoMetadata (platform));
 			return Path.Combine (rv, "tools");
 		}
 

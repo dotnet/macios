@@ -10,7 +10,3 @@ __attribute__((availability(anyAppleOS,introduced=27.0)))
 @interface AnyAppleOSIntroduced
 -(void)introducedMethod __attribute__((availability(anyAppleOS,introduced=27.0)));
 @end
-
-__attribute__((availability(anyAppleOS,unavailable)))
-@interface AnyAppleOSUnavailable
-@end

@@ -124,22 +124,23 @@ class AvailabilityBaseAttribute : ICSharpCode.NRefactory.CSharp.Attribute {
 	// 'anyAppleOS' is a meta-platform introduced in the Xcode 27 SDK that means "available on
 	// every Apple OS" (used as 'API_AVAILABLE(anyappleos(x))'). The clang we use to parse the
 	// headers doesn't understand it (it's reported as an unknown platform), so we expand it
-	// ourselves into every concrete Apple platform, all sharing the same version.
+	// ourselves into the Apple platforms macios ships, all sharing the same version. watchOS and
+	// visionOS are intentionally left out (macios doesn't ship them); add them here if that changes.
 	static readonly PlatformName [] anyAppleOSPlatforms = new [] {
 		PlatformName.iOS,
 		PlatformName.MacOSX,
 		PlatformName.MacCatalyst,
 		PlatformName.TvOS,
-		PlatformName.WatchOS,
-		PlatformName.VisionOS,
 	};
 
 	static IEnumerable<PlatformName> GetPlatforms (string? name)
 	{
-		if (string.Equals (name, "anyAppleOS", StringComparison.OrdinalIgnoreCase))
-			return anyAppleOSPlatforms;
-
-		return new [] { GetPlatform (name) };
+		if (string.Equals (name, "anyAppleOS", StringComparison.OrdinalIgnoreCase)) {
+			foreach (var platform in anyAppleOSPlatforms)
+				yield return platform;
+		} else {
+			yield return GetPlatform (name);
+		}
 	}
 
 	static PlatformName GetPlatform (string? name)

@@ -303,6 +303,8 @@ public class GetAvailableDevices : XamarinTask, ICancelableTask {
 				else
 					description = $"{description} - {runtimeVersion}";
 			}
+			if (!string.IsNullOrEmpty (device.State))
+				description = $"{description} ({device.State})";
 			item.SetMetadata ("Description", description);
 			item.SetMetadata ("Type", "Simulator");
 			item.SetMetadata ("OSVersion", runtimeVersion);

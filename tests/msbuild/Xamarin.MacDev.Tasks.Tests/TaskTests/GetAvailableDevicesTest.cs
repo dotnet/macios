@@ -117,35 +117,35 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (3), "Discarded device count mismatch.");
 
 				Assert.That (task.Devices [0].ItemSpec, Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Device 1 mismatch.");
-				Assert.That (task.Devices [0].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1"), "Device 1 Name mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1 (Shutdown)"), "Device 1 Name mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 1 OSVersion mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("UDID"), Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Device 1 UDID mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Device 1 RuntimeIdentifier mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("DiscardedReason"), Is.Empty, "Device 1 discarded reason mismatch.");
 
 				Assert.That (task.Devices [1].ItemSpec, Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Device 2 mismatch.");
-				Assert.That (task.Devices [1].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1"), "Device 2 Name mismatch.");
+				Assert.That (task.Devices [1].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1 (Shutdown)"), "Device 2 Name mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 2 OSVersion mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("UDID"), Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Device 2 UDID mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Device 2 RuntimeIdentifier mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("DiscardedReason"), Is.Empty, "Device 2 discarded reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [0].ItemSpec, Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Discarded Device 1 mismatch.");
-				Assert.That (task.DiscardedDevices [0].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1"), "Discarded Device 1 Name mismatch.");
+				Assert.That (task.DiscardedDevices [0].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1 (Shutdown)"), "Discarded Device 1 Name mismatch.");
 				Assert.That (task.DiscardedDevices [0].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 1 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [0].GetMetadata ("UDID"), Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Discarded Device 1 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [0].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("tvossimulator-arm64"), "Discarded Device 1 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [0].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device platform 'tvOS' does not match the requested platform 'iOS'"), "Discarded Device 1 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [1].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 2 mismatch.");
-				Assert.That (task.DiscardedDevices [1].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0"), "Discarded Device 2 Name mismatch.");
+				Assert.That (task.DiscardedDevices [1].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0 (Shutdown)"), "Discarded Device 2 Name mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 2 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 2 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 2 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 2 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [2].ItemSpec, Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Device 3 mismatch.");
-				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1"), "Device 3 Name mismatch.");
+				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1 (Shutdown)"), "Device 3 Name mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 3 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("UDID"), Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded Device 3 RuntimeIdentifier mismatch.");
@@ -173,7 +173,7 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.Devices [0].GetMetadata ("DiscardedReason"), Is.Empty, "Device 1 discarded reason mismatch.");
 
 				Assert.That (task.Devices [1].ItemSpec, Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Device 2 UDID mismatch.");
-				Assert.That (task.Devices [1].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1"), "Device 2 Name mismatch.");
+				Assert.That (task.Devices [1].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1 (Shutdown)"), "Device 2 Name mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 2 OSVersion mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("UDID"), Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Device 2 UDID mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Device 2 RuntimeIdentifier mismatch.");
@@ -194,7 +194,7 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.Devices [3].GetMetadata ("DiscardedReason"), Is.Empty, "Device 4 discarded reason mismatch.");
 
 				Assert.That (task.Devices [4].ItemSpec, Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Device 5 UDID mismatch.");
-				Assert.That (task.Devices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1"), "Device 5 Name mismatch.");
+				Assert.That (task.Devices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1 (Shutdown)"), "Device 5 Name mismatch.");
 				Assert.That (task.Devices [4].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 5 OSVersion mismatch.");
 				Assert.That (task.Devices [4].GetMetadata ("UDID"), Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Device 5 UDID mismatch.");
 				Assert.That (task.Devices [4].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Device 5 RuntimeIdentifier mismatch.");
@@ -208,21 +208,21 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.DiscardedDevices [0].GetMetadata ("DiscardedReason"), Is.EqualTo ("'appleWatch' devices are not supported"), "Discarded Device 1 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [1].ItemSpec, Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Discarded Device 2 ItemSpec mismatch.");
-				Assert.That (task.DiscardedDevices [1].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1"), "Discarded Device 2 Description mismatch.");
+				Assert.That (task.DiscardedDevices [1].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1 (Shutdown)"), "Discarded Device 2 Description mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 2 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("UDID"), Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Discarded Device 2 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("tvossimulator-arm64"), "Discarded Device 2 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device platform 'tvOS' does not match the requested platform 'iOS'"), "Discarded Device 2 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [2].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
-				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0"), "Discarded Device 3 Name mismatch.");
+				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0 (Shutdown)"), "Discarded Device 3 Name mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 3 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 3 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 3 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [3].ItemSpec, Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Device 4 UDID mismatch.");
-				Assert.That (task.DiscardedDevices [3].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1"), "Device 4 Name mismatch.");
+				Assert.That (task.DiscardedDevices [3].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1 (Shutdown)"), "Device 4 Name mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 4 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("UDID"), Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Device 4 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded Device 4 RuntimeIdentifier mismatch.");
@@ -263,7 +263,7 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.Devices [0].GetMetadata ("DiscardedReason"), Is.Empty, "Device 1 discarded reason mismatch.");
 
 				Assert.That (task.Devices [1].ItemSpec, Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Device 2 UDID mismatch.");
-				Assert.That (task.Devices [1].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1"), "Device 2 Name mismatch.");
+				Assert.That (task.Devices [1].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1 (Shutdown)"), "Device 2 Name mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 2 OSVersion mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("UDID"), Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Device 2 UDID mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Device 2 RuntimeIdentifier mismatch.");
@@ -284,7 +284,7 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.Devices [3].GetMetadata ("DiscardedReason"), Is.Empty, "Device 4 discarded reason mismatch.");
 
 				Assert.That (task.Devices [4].ItemSpec, Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Device 5 UDID mismatch.");
-				Assert.That (task.Devices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1"), "Device 5 Name mismatch.");
+				Assert.That (task.Devices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1 (Shutdown)"), "Device 5 Name mismatch.");
 				Assert.That (task.Devices [4].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 5 OSVersion mismatch.");
 				Assert.That (task.Devices [4].GetMetadata ("UDID"), Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Device 5 UDID mismatch.");
 				Assert.That (task.Devices [4].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Device 5 RuntimeIdentifier mismatch.");
@@ -298,21 +298,21 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.DiscardedDevices [0].GetMetadata ("DiscardedReason"), Is.EqualTo ("'appleWatch' devices are not supported"), "Discarded Device 1 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [1].ItemSpec, Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Discarded Device 2 ItemSpec mismatch.");
-				Assert.That (task.DiscardedDevices [1].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1"), "Discarded Device 2 Description mismatch.");
+				Assert.That (task.DiscardedDevices [1].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1 (Shutdown)"), "Discarded Device 2 Description mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 2 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("UDID"), Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Discarded Device 2 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("tvossimulator-arm64"), "Discarded Device 2 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device platform 'tvOS' does not match the requested platform 'iOS'"), "Discarded Device 2 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [2].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
-				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0"), "Discarded Device 3 Name mismatch.");
+				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0 (Shutdown)"), "Discarded Device 3 Name mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 3 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 3 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 3 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [3].ItemSpec, Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Discarded Device 4 UDID mismatch.");
-				Assert.That (task.DiscardedDevices [3].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1"), "Discarded Device 4 Name mismatch.");
+				Assert.That (task.DiscardedDevices [3].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1 (Shutdown)"), "Discarded Device 4 Name mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 4 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("UDID"), Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Discarded Device 4 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded Device 4 RuntimeIdentifier mismatch.");
@@ -350,7 +350,7 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (7), "Discarded device count mismatch.");
 
 				Assert.That (task.Devices [0].ItemSpec, Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Device 1 UDID mismatch.");
-				Assert.That (task.Devices [0].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1"), "Device 1 Description mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1 (Shutdown)"), "Device 1 Description mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 1 OSVersion mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("UDID"), Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Device 1 UDID mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Device 1 RuntimeIdentifier mismatch.");
@@ -385,28 +385,28 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("DiscardedReason"), Is.EqualTo ("'appleWatch' devices are not supported"), "Discarded Device 3 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [3].ItemSpec, Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Discarded Device 4 ItemSpec mismatch.");
-				Assert.That (task.DiscardedDevices [3].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1"), "Discarded Device 4 Description mismatch.");
+				Assert.That (task.DiscardedDevices [3].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1 (Shutdown)"), "Discarded Device 4 Description mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 4 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("UDID"), Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Discarded Device 4 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("tvossimulator-arm64"), "Discarded Device 4 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device platform 'tvOS' does not match the requested platform 'iOS'"), "Discarded Device 4 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [4].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 5 ItemSpec mismatch.");
-				Assert.That (task.DiscardedDevices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0"), "Discarded Device 5 Description mismatch.");
+				Assert.That (task.DiscardedDevices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0 (Shutdown)"), "Discarded Device 5 Description mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 5 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 5 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 5 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 5 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [5].ItemSpec, Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Discarded Device 6 ItemSpec mismatch.");
-				Assert.That (task.DiscardedDevices [5].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1"), "Discarded Device 6 Description mismatch.");
+				Assert.That (task.DiscardedDevices [5].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1 (Shutdown)"), "Discarded Device 6 Description mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 6 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("UDID"), Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Discarded Device 6 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded Device 6 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not an iPad, but the app only supports iPads"), "Discarded Device 6 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [6].ItemSpec, Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Discarded Device 7 ItemSpec mismatch.");
-				Assert.That (task.DiscardedDevices [6].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1"), "Discarded Device 7 Description mismatch.");
+				Assert.That (task.DiscardedDevices [6].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1 (Shutdown)"), "Discarded Device 7 Description mismatch.");
 				Assert.That (task.DiscardedDevices [6].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 7 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [6].GetMetadata ("UDID"), Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Discarded Device 7 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [6].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded Device 7 RuntimeIdentifier mismatch.");
@@ -451,7 +451,7 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.Devices [0].GetMetadata ("DiscardedReason"), Is.Empty, "Device 1 discarded reason mismatch.");
 
 				Assert.That (task.Devices [1].ItemSpec, Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Device 2 UDID mismatch.");
-				Assert.That (task.Devices [1].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1"), "Device 2 Name mismatch.");
+				Assert.That (task.Devices [1].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1 (Shutdown)"), "Device 2 Name mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 2 OSVersion mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("UDID"), Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Device 2 UDID mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Device 2 RuntimeIdentifier mismatch.");
@@ -479,28 +479,28 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("DiscardedReason"), Is.EqualTo ("'appleWatch' devices are not supported"), "Discarded Device 2 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [2].ItemSpec, Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Discarded Device 3 UDID mismatch.");
-				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1"), "Discarded Device 3 Name mismatch.");
+				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1 (Shutdown)"), "Discarded Device 3 Name mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 3 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("UDID"), Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("tvossimulator-arm64"), "Discarded Device 3 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device platform 'tvOS' does not match the requested platform 'iOS'"), "Discarded Device 3 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [3].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 4 UDID mismatch.");
-				Assert.That (task.DiscardedDevices [3].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0"), "Discarded Device 4 Name mismatch.");
+				Assert.That (task.DiscardedDevices [3].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0 (Shutdown)"), "Discarded Device 4 Name mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 4 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 4 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 4 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 4 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [4].ItemSpec, Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Discarded Device 5 UDID mismatch.");
-				Assert.That (task.DiscardedDevices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1"), "Discarded Device 5 Name mismatch.");
+				Assert.That (task.DiscardedDevices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1 (Shutdown)"), "Discarded Device 5 Name mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 5 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("UDID"), Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Discarded Device 5 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded Device 5 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device OS version '13.0.0' is lower than the app's minimum OS version '26.0'"), "Discarded Device 5 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [5].ItemSpec, Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Discarded Device 6 UDID mismatch.");
-				Assert.That (task.DiscardedDevices [5].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1"), "Discarded Device 6 Name mismatch.");
+				Assert.That (task.DiscardedDevices [5].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1 (Shutdown)"), "Discarded Device 6 Name mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 6 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("UDID"), Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Discarded Device 6 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded Device 6 RuntimeIdentifier mismatch.");
@@ -565,35 +565,35 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.DiscardedDevices [0].GetMetadata ("DiscardedReason"), Is.EqualTo ("'appleWatch' devices are not supported"), "Discarded Device 1 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [1].ItemSpec, Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Discarded Device 2 UDID mismatch.");
-				Assert.That (task.DiscardedDevices [1].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1"), "Discarded Device 2 Name mismatch.");
+				Assert.That (task.DiscardedDevices [1].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1 (Shutdown)"), "Discarded Device 2 Name mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 2 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("UDID"), Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Discarded Device 2 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("tvossimulator-arm64"), "Discarded Device 2 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [1].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device platform 'tvOS' does not match the requested platform 'iOS'"), "Discarded Device 2 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [2].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
-				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0"), "Discarded Device 3 Name mismatch.");
+				Assert.That (task.DiscardedDevices [2].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0 (Shutdown)"), "Discarded Device 3 Name mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 3 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 3 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 3 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [2].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 3 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [3].ItemSpec, Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Discarded Device 4 UDID mismatch.");
-				Assert.That (task.DiscardedDevices [3].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1"), "Discarded Device 4 Name mismatch.");
+				Assert.That (task.DiscardedDevices [3].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1 (Shutdown)"), "Discarded Device 4 Name mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 4 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("UDID"), Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Discarded Device 4 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded Device 4 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device runtime identifier(s) 'iossimulator-arm64' incompatible with the requested runtime identifier 'ios-arm64'"), "Discarded Device 4 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [4].ItemSpec, Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Discarded Device 5 UDID mismatch.");
-				Assert.That (task.DiscardedDevices [4].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1"), "Discarded Device 5 Name mismatch.");
+				Assert.That (task.DiscardedDevices [4].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1 (Shutdown)"), "Discarded Device 5 Name mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 5 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("UDID"), Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Discarded Device 5 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded Device 5 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device runtime identifier(s) 'iossimulator-arm64' incompatible with the requested runtime identifier 'ios-arm64'"), "Discarded Device 5 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [5].ItemSpec, Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Discarded Device 6 UDID mismatch.");
-				Assert.That (task.DiscardedDevices [5].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1"), "Discarded Device 6 Name mismatch.");
+				Assert.That (task.DiscardedDevices [5].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1 (Shutdown)"), "Discarded Device 6 Name mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 6 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("UDID"), Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Discarded Device 6 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded Device 6 RuntimeIdentifier mismatch.");
@@ -615,7 +615,7 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.DiscardedDevices.Count, Is.EqualTo (8), "Discarded device count mismatch.");
 
 				Assert.That (task.Devices [0].ItemSpec, Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Device 1 ItemSpec mismatch.");
-				Assert.That (task.Devices [0].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1"), "Device 1 Description mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("Description"), Is.EqualTo ("Apple TV - tvOS 26.1 (Shutdown)"), "Device 1 Description mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 1 OSVersion mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("UDID"), Is.EqualTo ("60ED31BD-80CE-420A-B0CB-756D2CD38201"), "Device 1 UDID mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("tvossimulator-arm64"), "Device 1 RuntimeIdentifier mismatch.");
@@ -650,28 +650,28 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.DiscardedDevices [3].GetMetadata ("DiscardedReason"), Is.EqualTo ("'appleWatch' devices are not supported"), "Discarded Device 4 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [4].ItemSpec, Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 5 ItemSpec mismatch.");
-				Assert.That (task.DiscardedDevices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0"), "Discarded Device 5 Description mismatch.");
+				Assert.That (task.DiscardedDevices [4].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - 26.0 (Shutdown)"), "Discarded Device 5 Description mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Discarded Device 5 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("UDID"), Is.EqualTo ("D4D95709-144A-4CAA-8469-89566EC1C935"), "Discarded Device 5 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("RuntimeIdentifier"), Is.EqualTo (""), "Discarded Device 5 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [4].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device is not available: runtime profile not found using \"System\" match policy"), "Discarded Device 5 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [5].ItemSpec, Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Discarded Device 6 ItemSpec mismatch.");
-				Assert.That (task.DiscardedDevices [5].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1"), "Discarded Device 6 Description mismatch.");
+				Assert.That (task.DiscardedDevices [5].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1 (Shutdown)"), "Discarded Device 6 Description mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 6 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("UDID"), Is.EqualTo ("D40CE982-3E65-4756-8162-90EFE50AF7FA"), "Discarded Device 6 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded Device 6 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [5].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device platform 'iOS' does not match the requested platform 'tvOS'"), "Discarded Device 6 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [6].ItemSpec, Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Discarded Device 7 ItemSpec mismatch.");
-				Assert.That (task.DiscardedDevices [6].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1"), "Discarded Device 7 Description mismatch.");
+				Assert.That (task.DiscardedDevices [6].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 13-inch (M5) - iOS 26.1 (Shutdown)"), "Discarded Device 7 Description mismatch.");
 				Assert.That (task.DiscardedDevices [6].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 7 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [6].GetMetadata ("UDID"), Is.EqualTo ("3F1C114D-FC3D-481A-9CA1-499EE1339390"), "Discarded Device 7 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [6].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded Device 7 RuntimeIdentifier mismatch.");
 				Assert.That (task.DiscardedDevices [6].GetMetadata ("DiscardedReason"), Is.EqualTo ("Device platform 'iOS' does not match the requested platform 'tvOS'"), "Discarded Device 7 reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [7].ItemSpec, Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Discarded Device 8 ItemSpec mismatch.");
-				Assert.That (task.DiscardedDevices [7].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1"), "Discarded Device 8 Description mismatch.");
+				Assert.That (task.DiscardedDevices [7].GetMetadata ("Description"), Is.EqualTo ("iPad Pro 11-inch (M5) - iOS 26.1 (Shutdown)"), "Discarded Device 8 Description mismatch.");
 				Assert.That (task.DiscardedDevices [7].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Discarded Device 8 OSVersion mismatch.");
 				Assert.That (task.DiscardedDevices [7].GetMetadata ("UDID"), Is.EqualTo ("F8BEDB0B-441A-4D05-AED6-E9724DEA6BF4"), "Discarded Device 8 UDID mismatch.");
 				Assert.That (task.DiscardedDevices [7].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("iossimulator-arm64"), "Discarded Device 8 RuntimeIdentifier mismatch.");
@@ -693,7 +693,7 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.Devices.Count, Is.EqualTo (1), "Devices count mismatch.");
 
 				Assert.That (task.Devices [0].ItemSpec, Is.EqualTo ("AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"), "Device 1 mismatch.");
-				Assert.That (task.Devices [0].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1"), "Device 1 Name mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1 (Shutdown)"), "Device 1 Name mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 1 OSVersion mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("UDID"), Is.EqualTo ("AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"), "Device 1 UDID mismatch.");
 				if (expectedRid is null)
@@ -734,12 +734,12 @@ namespace Xamarin.MacDev.Tasks {
 
 				// The booted simulator should come first, even though alphabetically "iPhone 11" < "iPhone 17 Pro"
 				Assert.That (task.Devices [0].ItemSpec, Is.EqualTo ("22222222-2222-2222-2222-222222222222"), "Device 1 mismatch.");
-				Assert.That (task.Devices [0].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - iOS 26.1"), "Device 1 Description mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("Description"), Is.EqualTo ("iPhone 17 Pro - iOS 26.1 (Booted)"), "Device 1 Description mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("Status"), Is.EqualTo ("Booted"), "Device 1 Status mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("State"), Is.EqualTo ("Booted"), "Device 1 State mismatch.");
 
 				Assert.That (task.Devices [1].ItemSpec, Is.EqualTo ("11111111-1111-1111-1111-111111111111"), "Device 2 mismatch.");
-				Assert.That (task.Devices [1].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1"), "Device 2 Description mismatch.");
+				Assert.That (task.Devices [1].GetMetadata ("Description"), Is.EqualTo ("iPhone 11 - iOS 26.1 (Shutdown)"), "Device 2 Description mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("Status"), Is.EqualTo ("Shutdown"), "Device 2 Status mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("State"), Is.EqualTo ("Shutdown"), "Device 2 State mismatch.");
 			});

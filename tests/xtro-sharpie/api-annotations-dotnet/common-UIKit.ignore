@@ -192,7 +192,3 @@
 # updated sharpie results
 !missing-protocol-conformance! UIWindowScene should conform to UITraitEnvironment (defined in '' category)
 
-
-# NSTextLocation redeclares NSObject's isEqual:/hash as required members; making them [Abstract] is a breaking change deferred to XAMCORE_5_0
-!incorrect-protocol-member! NSTextLocation::isEqual: is REQUIRED and should be abstract
-!incorrect-protocol-member! NSTextLocation::hash is REQUIRED and should be abstract

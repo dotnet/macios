@@ -4035,15 +4035,11 @@ namespace UIKit {
 		[Export ("compare:")]
 		NSComparisonResult Compare (INSTextLocation location);
 
-#if XAMCORE_5_0
 		[Abstract]
-#endif
 		[Export ("isEqual:")]
 		bool IsEqual ([NullAllowed] NSObject anObject);
 
-#if XAMCORE_5_0
 		[Abstract]
-#endif
 		[Export ("hash")]
 		nuint GetNativeHash ();
 	}

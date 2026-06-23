@@ -22427,7 +22427,7 @@ namespace AppKit {
 
 		[Mac (27, 0)]
 		[Export ("widthValueTypeForLayer:rectEdge:")]
-		NSTextBlockValueType WidthValueTypeForLayer (NSTextBlockLayer layer, CGRectEdge rectEdge);
+		NSTextBlockValueType GetWidthValueType (NSTextBlockLayer layer, CGRectEdge rectEdge);
 
 		[Mac (27, 0)]
 		[Export ("setBorderColor:rectEdge:")]

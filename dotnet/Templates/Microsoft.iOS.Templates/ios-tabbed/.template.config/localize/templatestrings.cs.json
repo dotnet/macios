@@ -3,8 +3,14 @@
   "name": "iOS aplikace s kartami",
   "description": "Projekt pro vytvoření aplikace s kartami .NET pro iOS",
   "symbols/bundleId/description": "Přepíše CFBundleIdentifier v souboru Info.plist.",
+  "symbols/bundleId/displayName": "Bundle ID",
   "symbols/minOSVersion/description": "Přepíše SupportedOSPlatformVersion v souboru projektu.",
+  "symbols/minOSVersion/displayName": "Minimum OS version",
   "symbols/deviceFamily/choices/universal/description": "Podpora zařízení iPhone i iPad",
+  "symbols/deviceFamily/choices/universal/displayName": "Universal",
   "symbols/deviceFamily/choices/iphone/description": "Podpora pouze zařízení iPhone",
-  "symbols/deviceFamily/choices/ipad/description": "Podpora pouze zařízení iPad"
+  "symbols/deviceFamily/choices/iphone/displayName": "iPhone",
+  "symbols/deviceFamily/choices/ipad/description": "Podpora pouze zařízení iPad",
+  "symbols/deviceFamily/choices/ipad/displayName": "iPad",
+  "symbols/deviceFamily/displayName": "Device family"
 }

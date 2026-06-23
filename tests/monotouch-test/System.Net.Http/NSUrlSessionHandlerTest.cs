@@ -344,8 +344,10 @@ namespace MonoTests.System.Net.Http {
 					await stream.WriteAsync (responseBytes, 0, responseBytes.Length).ConfigureAwait (false);
 					await stream.FlushAsync ().ConfigureAwait (false);
 
-					// Stall: never send the remaining body
-					await Task.Delay (TimeSpan.FromMinutes (5)).ConfigureAwait (false);
+					// Keep the connection open until the client disconnects
+					var discardBuffer = new byte [1024];
+					while (await stream.ReadAsync (discardBuffer, 0, discardBuffer.Length).ConfigureAwait (false) > 0) {
+					}
 				} catch (ObjectDisposedException) {
 					// listener was stopped
 				} catch (SocketException) {
@@ -364,8 +366,8 @@ namespace MonoTests.System.Net.Http {
 					httpClient.Timeout = TimeSpan.FromMinutes (5);
 
 					using var request = new HttpRequestMessage (HttpMethod.Get, $"http://127.0.0.1:{port}/stall");
-					var response = await httpClient.SendAsync (request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait (false);
-					var stream = await response.Content.ReadAsStreamAsync ().ConfigureAwait (false);
+					using var response = await httpClient.SendAsync (request, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait (false);
+					using var stream = await response.Content.ReadAsStreamAsync ().ConfigureAwait (false);
 
 					// First read succeeds (server sent 4KB of body data)
 					var buffer = new byte [8192];

@@ -3,5 +3,7 @@
   "name": "Mac Catalyst アプリケーション",
   "description": ".NET Mac Catalyst アプリケーションを作成するためのプロジェクト",
   "symbols/bundleId/description": "Info.plist の CFBundleIdentifier をオーバーライドします",
-  "symbols/minOSVersion/description": "プロジェクト ファイルの SupportedOSPlatformVersion をオーバーライドします"
+  "symbols/bundleId/displayName": "Bundle ID",
+  "symbols/minOSVersion/description": "プロジェクト ファイルの SupportedOSPlatformVersion をオーバーライドします",
+  "symbols/minOSVersion/displayName": "Minimum OS version"
 }

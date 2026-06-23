@@ -78,6 +78,7 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.Devices [0].GetMetadata ("OSVersion"), Is.EqualTo ("26.1"), "Device 1 Platform mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("UDID"), Is.EqualTo ("00008003-012301230123ABCD"), "Device 1 UDID mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("ios-arm64"), "Device 1 RuntimeIdentifier mismatch.");
+				Assert.That (task.Devices [0].GetMetadata ("Status"), Is.EqualTo ("Paired"), "Device 1 Status mismatch.");
 				Assert.That (task.Devices [0].GetMetadata ("DiscardedReason"), Is.Empty, "Device 1 discarded reason mismatch.");
 
 				Assert.That (task.Devices [1].ItemSpec, Is.EqualTo ("00008001-012301230123ABCD"), "Device 2 mismatch.");
@@ -85,6 +86,7 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.Devices [1].GetMetadata ("OSVersion"), Is.EqualTo ("26.0"), "Device 2 Platform mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("UDID"), Is.EqualTo ("00008001-012301230123ABCD"), "Device 2 UDID mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("ios-arm64"), "Device 2 RuntimeIdentifier mismatch.");
+				Assert.That (task.Devices [1].GetMetadata ("Status"), Is.EqualTo ("Paired"), "Device 2 Status mismatch.");
 				Assert.That (task.Devices [1].GetMetadata ("DiscardedReason"), Is.Empty, "Device 2 discarded reason mismatch.");
 
 				Assert.That (task.Devices [2].ItemSpec, Is.EqualTo ("00008002-012301230123ABCD"), "Device 3 mismatch.");
@@ -92,6 +94,7 @@ namespace Xamarin.MacDev.Tasks {
 				Assert.That (task.Devices [2].GetMetadata ("OSVersion"), Is.EqualTo ("18.7.1"), "Device 3 Platform mismatch.");
 				Assert.That (task.Devices [2].GetMetadata ("UDID"), Is.EqualTo ("00008002-012301230123ABCD"), "Device 3 UDID mismatch.");
 				Assert.That (task.Devices [2].GetMetadata ("RuntimeIdentifier"), Is.EqualTo ("ios-arm64"), "Device 3 RuntimeIdentifier mismatch.");
+				Assert.That (task.Devices [2].GetMetadata ("Status"), Is.EqualTo ("Paired"), "Device 3 Status mismatch.");
 				Assert.That (task.Devices [2].GetMetadata ("DiscardedReason"), Is.Empty, "Device 3 discarded reason mismatch.");
 
 				Assert.That (task.DiscardedDevices [0].ItemSpec, Is.EqualTo ("00008004-012301230123ABCD"), "Discarded Device 1 ItemSpec mismatch.");

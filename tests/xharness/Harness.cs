@@ -44,7 +44,6 @@ namespace Xharness {
 		public string? SdkRoot { get; set; }
 		public TestTarget Target { get; set; }
 		public double TimeoutInMinutes { get; set; } = 15;
-		public bool UseSystemXamarinIOSMac { get; set; }
 		public int Verbosity { get; set; }
 		public XmlResultJargon XmlJargon { get; set; } = XmlResultJargon.NUnitV3;
 
@@ -198,8 +197,6 @@ namespace Xharness {
 
 		public List<TestProject> TestProjects { get; } = new ();
 
-		readonly bool useSystemXamarinIOSMac; // if the system XI/XM should be used, or the locally build XI/XM.
-
 		public bool INCLUDE_IOS { get; }
 		public bool INCLUDE_TVOS { get; }
 		public bool INCLUDE_MAC { get; }
@@ -251,9 +248,6 @@ namespace Xharness {
 			PeriodicCommandInterval = configuration.PeriodicCommandInterval;
 			target = configuration.Target;
 			Timeout = configuration.TimeoutInMinutes;
-			useSystemXamarinIOSMac = configuration.UseSystemXamarinIOSMac;
-			if (!string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("TESTS_USE_SYSTEM")))
-				useSystemXamarinIOSMac = true;
 			Verbosity = configuration.Verbosity;
 			XmlJargon = configuration.XmlJargon;
 
@@ -582,7 +576,7 @@ namespace Xharness {
 
 		IEnumerable<string> GetConfigFiles ()
 		{
-			return FindConfigFiles (useSystemXamarinIOSMac ? "test-system.config" : "test.config")
+			return FindConfigFiles ("test.config")
 				.Concat (FindConfigFiles ("configure.inc"))
 				.Concat (FindConfigFiles ("Make.config"))
 				.Concat (FindConfigFiles ("Make.config.local"))

@@ -422,8 +422,9 @@ string ExtractTestsRunLine (string output)
 	if (string.IsNullOrEmpty (output))
 		return "";
 	foreach (var line in output.Split ('\n')) {
-		if (line.Contains ("Tests run:"))
-			return line.Trim ();
+		var idx = line.IndexOf ("Tests run:");
+		if (idx >= 0)
+			return line.Substring (idx).Trim ();
 	}
 	return "";
 }

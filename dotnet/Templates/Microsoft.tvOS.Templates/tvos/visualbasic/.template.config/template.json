@@ -1,7 +1,10 @@
 ﻿{
   "$schema": "http://json.schemastore.org/template",
   "author": "Microsoft",
-  "classifications": [ "tvOS", "Mobile" ],
+  "classifications": [
+    "tvOS",
+    "Mobile"
+  ],
   "groupIdentity": "Microsoft.tvOS.tvOSApp",
   "identity": "Microsoft.tvOS.tvOSApp.VisualBasic",
   "name": "tvOS Application",
@@ -21,17 +24,21 @@
   ],
   "preferNameDirectory": true,
   "primaryOutputs": [
-    { "path": "tvOSApp1.vbproj" }
+    {
+      "path": "tvOSApp1.vbproj"
+    }
   ],
   "symbols": {
     "bundleId": {
       "type": "parameter",
+      "displayName": "Bundle ID",
       "description": "Overrides CFBundleIdentifier in the Info.plist",
       "datatype": "string",
       "replaces": "com.companyname.tvOSApp1"
     },
     "minOSVersion": {
       "type": "parameter",
+      "displayName": "Minimum OS version",
       "description": "Overrides SupportedOSPlatformVersion in the project file",
       "replaces": "minOSVersion",
       "datatype": "string",

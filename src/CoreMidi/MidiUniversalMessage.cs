@@ -19,26 +19,19 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[StructLayout (LayoutKind.Explicit, Size = 28)]
-	public struct MidiUniversalMessage {
-		[FieldOffset (0)]
+	[StructLayout (LayoutKind.Sequential)]
+	public unsafe struct MidiUniversalMessage {
 		MidiMessageType type;
-		[FieldOffset (4)]
 		byte group;
-		[FieldOffset (8)]
-		MidiUniversalMessageUtility utility;
-		[FieldOffset (8)]
-		MidiUniversalMessageSystem system;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice1 channelVoice1;
-		[FieldOffset (8)]
-		MidiUniversalMessageSysEx sysEx;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice2 channelVoice2;
-		[FieldOffset (8)]
-		MidiUniversalMessageData128 data128;
-		[FieldOffset (8)]
-		MidiUniversalMessageUnknown unknown;
+		byte reserved0;
+		byte reserved1;
+		byte reserved2;
+		// 20 bytes of union storage, starting at offset 8.
+		uint storage0;
+		uint storage1;
+		uint storage2;
+		uint storage3;
+		uint storage4;
 
 		/// <summary>The message type. Determines which variant in the union is valid.</summary>
 		public MidiMessageType Type => type;
@@ -47,25 +40,60 @@ namespace CoreMidi {
 		public byte Group => group;
 
 		/// <summary>The utility message data. Valid when <see cref="Type" /> is <see cref="MidiMessageType.Utility" />.</summary>
-		public MidiUniversalMessageUtility Utility => utility;
+		public MidiUniversalMessageUtility Utility {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageUtility*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The system message data. Valid when <see cref="Type" /> is <see cref="MidiMessageType.System" />.</summary>
-		public MidiUniversalMessageSystem System => system;
+		public MidiUniversalMessageSystem System {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageSystem*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The MIDI 1.0 channel voice message data. Valid when <see cref="Type" /> is <see cref="MidiMessageType.ChannelVoice1" />.</summary>
-		public MidiUniversalMessageChannelVoice1 ChannelVoice1 => channelVoice1;
+		public MidiUniversalMessageChannelVoice1 ChannelVoice1 {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice1*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The system exclusive (SysEx) message data. Valid when <see cref="Type" /> is <see cref="MidiMessageType.SysEx" />.</summary>
-		public MidiUniversalMessageSysEx SysEx => sysEx;
+		public MidiUniversalMessageSysEx SysEx {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageSysEx*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The MIDI 2.0 channel voice message data. Valid when <see cref="Type" /> is <see cref="MidiMessageType.ChannelVoice2" />.</summary>
-		public MidiUniversalMessageChannelVoice2 ChannelVoice2 => channelVoice2;
+		public MidiUniversalMessageChannelVoice2 ChannelVoice2 {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice2*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The 128-bit data message data. Valid when <see cref="Type" /> is <see cref="MidiMessageType.Data128" />.</summary>
-		public MidiUniversalMessageData128 Data128 => data128;
+		public MidiUniversalMessageData128 Data128 {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageData128*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The raw words of an unknown message. Valid when <see cref="Type" /> is not a recognized message type.</summary>
-		public MidiUniversalMessageUnknown Unknown => unknown;
+		public MidiUniversalMessageUnknown Unknown {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageUnknown*) ((byte*) &self + 8);
+			}
+		}
 	}
 
 	/// <summary>A utility message in a <see cref="MidiUniversalMessage" />.</summary>
@@ -73,23 +101,19 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[StructLayout (LayoutKind.Explicit, Size = 8)]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageUtility {
-		[FieldOffset (0)]
 		MidiUtilityStatus status;
-		[FieldOffset (4)]
-		ushort jitterReductionClock;
-		[FieldOffset (4)]
-		ushort jitterReductionTimestamp;
+		ushort union0;
 
 		/// <summary>The status determining which value is valid.</summary>
 		public MidiUtilityStatus Status => status;
 
 		/// <summary>The jitter reduction clock. Valid when <see cref="Status" /> is <see cref="MidiUtilityStatus.JitterReductionClock" />.</summary>
-		public ushort JitterReductionClock => jitterReductionClock;
+		public ushort JitterReductionClock => union0;
 
 		/// <summary>The jitter reduction timestamp. Valid when <see cref="Status" /> is <see cref="MidiUtilityStatus.JitterReductionTimestamp" />.</summary>
-		public ushort JitterReductionTimestamp => jitterReductionTimestamp;
+		public ushort JitterReductionTimestamp => union0;
 	}
 
 	/// <summary>A system message in a <see cref="MidiUniversalMessage" />.</summary>
@@ -97,28 +121,22 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[StructLayout (LayoutKind.Explicit, Size = 8)]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageSystem {
-		[FieldOffset (0)]
 		MidiSystemStatus status;
-		[FieldOffset (4)]
-		byte timeCode;
-		[FieldOffset (4)]
-		ushort songPositionPointer;
-		[FieldOffset (4)]
-		byte songSelect;
+		ushort union0;
 
 		/// <summary>The status determining which value is valid.</summary>
 		public MidiSystemStatus Status => status;
 
 		/// <summary>The MIDI time code. Valid when <see cref="Status" /> is <see cref="MidiSystemStatus.Mtc" />.</summary>
-		public byte TimeCode => timeCode;
+		public byte TimeCode => (byte) union0;
 
 		/// <summary>The song position pointer. Valid when <see cref="Status" /> is <see cref="MidiSystemStatus.SongPosPointer" />.</summary>
-		public ushort SongPositionPointer => songPositionPointer;
+		public ushort SongPositionPointer => union0;
 
 		/// <summary>The selected song. Valid when <see cref="Status" /> is <see cref="MidiSystemStatus.SongSelect" />.</summary>
-		public byte SongSelect => songSelect;
+		public byte SongSelect => (byte) union0;
 	}
 
 	/// <summary>The note data of a MIDI 1.0 channel voice message.</summary>
@@ -126,6 +144,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice1Note {
 		byte number;
 		byte velocity;
@@ -142,6 +161,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice1PolyPressure {
 		byte noteNumber;
 		byte pressure;
@@ -158,6 +178,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice1ControlChange {
 		byte index;
 		byte data;
@@ -174,24 +195,14 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[StructLayout (LayoutKind.Explicit, Size = 12)]
-	public struct MidiUniversalMessageChannelVoice1 {
-		[FieldOffset (0)]
+	[StructLayout (LayoutKind.Sequential)]
+	public unsafe struct MidiUniversalMessageChannelVoice1 {
 		MidiCVStatus status;
-		[FieldOffset (4)]
 		byte channel;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice1Note note;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice1PolyPressure polyPressure;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice1ControlChange controlChange;
-		[FieldOffset (8)]
-		byte program;
-		[FieldOffset (8)]
-		byte channelPressure;
-		[FieldOffset (8)]
-		ushort pitchBend;
+		byte reserved0;
+		byte reserved1;
+		byte reserved2;
+		ushort union0;
 
 		/// <summary>The status determining which value is valid.</summary>
 		public MidiCVStatus Status => status;
@@ -200,22 +211,37 @@ namespace CoreMidi {
 		public byte Channel => channel;
 
 		/// <summary>The note data. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.NoteOff" /> or <see cref="MidiCVStatus.NoteOn" />.</summary>
-		public MidiUniversalMessageChannelVoice1Note Note => note;
+		public MidiUniversalMessageChannelVoice1Note Note {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice1Note*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The poly pressure data. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.PolyPressure" />.</summary>
-		public MidiUniversalMessageChannelVoice1PolyPressure PolyPressure => polyPressure;
+		public MidiUniversalMessageChannelVoice1PolyPressure PolyPressure {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice1PolyPressure*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The control change data. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.ControlChange" />.</summary>
-		public MidiUniversalMessageChannelVoice1ControlChange ControlChange => controlChange;
+		public MidiUniversalMessageChannelVoice1ControlChange ControlChange {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice1ControlChange*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The 7-bit program number. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.ProgramChange" />.</summary>
-		public byte Program => program;
+		public byte Program => (byte) union0;
 
 		/// <summary>The 7-bit channel pressure. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.ChannelPressure" />.</summary>
-		public byte ChannelPressure => channelPressure;
+		public byte ChannelPressure => (byte) union0;
 
 		/// <summary>The pitch bend value. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.PitchBend" />.</summary>
-		public ushort PitchBend => pitchBend;
+		public ushort PitchBend => union0;
 	}
 
 	/// <summary>A system exclusive (SysEx) message in a <see cref="MidiUniversalMessage" />.</summary>
@@ -224,10 +250,15 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
-	public unsafe struct MidiUniversalMessageSysEx {
+	public struct MidiUniversalMessageSysEx {
 		MidiSysExStatus status;
 		byte channel;
-		fixed byte data [6];
+		byte data0;
+		byte data1;
+		byte data2;
+		byte data3;
+		byte data4;
+		byte data5;
 		byte reserved;
 
 		/// <summary>The status determining how the message should be interpreted.</summary>
@@ -238,14 +269,7 @@ namespace CoreMidi {
 
 		/// <summary>The SysEx data (6 bytes, 7-bit values each).</summary>
 		/// <returns>A 6-element array with the SysEx data.</returns>
-		public byte [] Data {
-			get {
-				var rv = new byte [6];
-				for (var i = 0; i < rv.Length; i++)
-					rv [i] = data [i];
-				return rv;
-			}
-		}
+		public byte [] Data => new byte [] { data0, data1, data2, data3, data4, data5 };
 	}
 
 	/// <summary>The note data of a MIDI 2.0 channel voice message.</summary>
@@ -253,6 +277,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2Note {
 		byte number;
 		MidiNoteAttribute attributeType;
@@ -277,6 +302,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2PolyPressure {
 		byte noteNumber;
 		byte reserved;
@@ -294,6 +320,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2ControlChange {
 		byte index;
 		byte reserved;
@@ -311,6 +338,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2ProgramChange {
 		MidiProgramChangeOptions options;
 		byte program;
@@ -333,6 +361,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2ChannelPressure {
 		uint data;
 		byte reserved0;
@@ -347,6 +376,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2PitchBend {
 		uint data;
 		byte reserved0;
@@ -361,6 +391,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2PerNoteController {
 		byte noteNumber;
 		byte index;
@@ -381,6 +412,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2Controller {
 		byte bank;
 		byte index;
@@ -401,6 +433,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2PerNotePitchBend {
 		byte noteNumber;
 		byte reserved;
@@ -418,6 +451,7 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
+	[StructLayout (LayoutKind.Sequential)]
 	public struct MidiUniversalMessageChannelVoice2PerNoteManagement {
 		byte note;
 		MidiPerNoteManagementOptions options;
@@ -438,32 +472,15 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[StructLayout (LayoutKind.Explicit, Size = 16)]
-	public struct MidiUniversalMessageChannelVoice2 {
-		[FieldOffset (0)]
+	[StructLayout (LayoutKind.Sequential)]
+	public unsafe struct MidiUniversalMessageChannelVoice2 {
 		MidiCVStatus status;
-		[FieldOffset (4)]
 		byte channel;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice2Note note;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice2PolyPressure polyPressure;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice2ControlChange controlChange;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice2ProgramChange programChange;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice2ChannelPressure channelPressure;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice2PitchBend pitchBend;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice2PerNoteController perNoteController;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice2Controller controller;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice2PerNotePitchBend perNotePitchBend;
-		[FieldOffset (8)]
-		MidiUniversalMessageChannelVoice2PerNoteManagement perNoteManagement;
+		byte reserved0;
+		byte reserved1;
+		byte reserved2;
+		uint union0;
+		uint union1;
 
 		/// <summary>The status determining which value is valid.</summary>
 		public MidiCVStatus Status => status;
@@ -472,34 +489,84 @@ namespace CoreMidi {
 		public byte Channel => channel;
 
 		/// <summary>The note data. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.NoteOff" /> or <see cref="MidiCVStatus.NoteOn" />.</summary>
-		public MidiUniversalMessageChannelVoice2Note Note => note;
+		public MidiUniversalMessageChannelVoice2Note Note {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice2Note*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The poly pressure data. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.PolyPressure" />.</summary>
-		public MidiUniversalMessageChannelVoice2PolyPressure PolyPressure => polyPressure;
+		public MidiUniversalMessageChannelVoice2PolyPressure PolyPressure {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice2PolyPressure*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The control change data. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.ControlChange" />.</summary>
-		public MidiUniversalMessageChannelVoice2ControlChange ControlChange => controlChange;
+		public MidiUniversalMessageChannelVoice2ControlChange ControlChange {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice2ControlChange*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The program change data. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.ProgramChange" />.</summary>
-		public MidiUniversalMessageChannelVoice2ProgramChange ProgramChange => programChange;
+		public MidiUniversalMessageChannelVoice2ProgramChange ProgramChange {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice2ProgramChange*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The channel pressure data. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.ChannelPressure" />.</summary>
-		public MidiUniversalMessageChannelVoice2ChannelPressure ChannelPressure => channelPressure;
+		public MidiUniversalMessageChannelVoice2ChannelPressure ChannelPressure {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice2ChannelPressure*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The pitch bend data. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.PitchBend" />.</summary>
-		public MidiUniversalMessageChannelVoice2PitchBend PitchBend => pitchBend;
+		public MidiUniversalMessageChannelVoice2PitchBend PitchBend {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice2PitchBend*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The per-note controller data. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.RegisteredPnc" /> or <see cref="MidiCVStatus.AssignablePnc" />.</summary>
-		public MidiUniversalMessageChannelVoice2PerNoteController PerNoteController => perNoteController;
+		public MidiUniversalMessageChannelVoice2PerNoteController PerNoteController {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice2PerNoteController*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The registered/assignable controller data. Valid when <see cref="Status" /> is one of <see cref="MidiCVStatus.RegisteredControl" />, <see cref="MidiCVStatus.AssignableControl" />, <see cref="MidiCVStatus.RelRegisteredControl" /> or <see cref="MidiCVStatus.RelAssignableControl" />.</summary>
-		public MidiUniversalMessageChannelVoice2Controller Controller => controller;
+		public MidiUniversalMessageChannelVoice2Controller Controller {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice2Controller*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The per-note pitch bend data. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.PerNotePitchBend" />.</summary>
-		public MidiUniversalMessageChannelVoice2PerNotePitchBend PerNotePitchBend => perNotePitchBend;
+		public MidiUniversalMessageChannelVoice2PerNotePitchBend PerNotePitchBend {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice2PerNotePitchBend*) ((byte*) &self + 8);
+			}
+		}
 
 		/// <summary>The per-note management data. Valid when <see cref="Status" /> is <see cref="MidiCVStatus.PerNoteMgmt" />.</summary>
-		public MidiUniversalMessageChannelVoice2PerNoteManagement PerNoteManagement => perNoteManagement;
+		public MidiUniversalMessageChannelVoice2PerNoteManagement PerNoteManagement {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageChannelVoice2PerNoteManagement*) ((byte*) &self + 8);
+			}
+		}
 	}
 
 	/// <summary>The 8-bit system exclusive (SysEx8) data of a 128-bit data message.</summary>
@@ -508,10 +575,22 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
-	public unsafe struct MidiUniversalMessageSysEx8 {
+	public struct MidiUniversalMessageSysEx8 {
 		byte byteCount;
 		byte streamID;
-		fixed byte data [13];
+		byte data0;
+		byte data1;
+		byte data2;
+		byte data3;
+		byte data4;
+		byte data5;
+		byte data6;
+		byte data7;
+		byte data8;
+		byte data9;
+		byte data10;
+		byte data11;
+		byte data12;
 		byte reserved;
 
 		/// <summary>The byte count of the data including the stream ID (1-14 bytes).</summary>
@@ -522,14 +601,7 @@ namespace CoreMidi {
 
 		/// <summary>The SysEx8 data (13 bytes).</summary>
 		/// <returns>A 13-element array with the SysEx8 data.</returns>
-		public byte [] Data {
-			get {
-				var rv = new byte [13];
-				for (var i = 0; i < rv.Length; i++)
-					rv [i] = data [i];
-				return rv;
-			}
-		}
+		public byte [] Data => new byte [] { data0, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, data11, data12 };
 	}
 
 	/// <summary>The mixed data set of a 128-bit data message.</summary>
@@ -538,9 +610,22 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
-	public unsafe struct MidiUniversalMessageMixedDataSet {
+	public struct MidiUniversalMessageMixedDataSet {
 		byte mdsID;
-		fixed byte data [14];
+		byte data0;
+		byte data1;
+		byte data2;
+		byte data3;
+		byte data4;
+		byte data5;
+		byte data6;
+		byte data7;
+		byte data8;
+		byte data9;
+		byte data10;
+		byte data11;
+		byte data12;
+		byte data13;
 		byte reserved;
 
 		/// <summary>The mixed data set ID.</summary>
@@ -548,14 +633,7 @@ namespace CoreMidi {
 
 		/// <summary>The mixed data set data (14 bytes).</summary>
 		/// <returns>A 14-element array with the mixed data set data.</returns>
-		public byte [] Data {
-			get {
-				var rv = new byte [14];
-				for (var i = 0; i < rv.Length; i++)
-					rv [i] = data [i];
-				return rv;
-			}
-		}
+		public byte [] Data => new byte [] { data0, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, data11, data12, data13 };
 	}
 
 	/// <summary>A 128-bit data message in a <see cref="MidiUniversalMessage" />.</summary>
@@ -563,23 +641,32 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("tvos15.0")]
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
-	[StructLayout (LayoutKind.Explicit, Size = 20)]
-	public struct MidiUniversalMessageData128 {
-		[FieldOffset (0)]
+	[StructLayout (LayoutKind.Sequential)]
+	public unsafe struct MidiUniversalMessageData128 {
 		MidiSysExStatus status;
-		[FieldOffset (4)]
-		MidiUniversalMessageSysEx8 sysEx8;
-		[FieldOffset (4)]
-		MidiUniversalMessageMixedDataSet mixedDataSet;
+		uint union0;
+		uint union1;
+		uint union2;
+		uint union3;
 
 		/// <summary>The status determining which value is valid.</summary>
 		public MidiSysExStatus Status => status;
 
 		/// <summary>The SysEx8 data. Valid when <see cref="Status" /> is one of <see cref="MidiSysExStatus.Complete" />, <see cref="MidiSysExStatus.Start" />, <see cref="MidiSysExStatus.Continue" /> or <see cref="MidiSysExStatus.End" />.</summary>
-		public MidiUniversalMessageSysEx8 SysEx8 => sysEx8;
+		public MidiUniversalMessageSysEx8 SysEx8 {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageSysEx8*) ((byte*) &self + 4);
+			}
+		}
 
 		/// <summary>The mixed data set. Valid when <see cref="Status" /> is <see cref="MidiSysExStatus.MixedDataSetHeader" /> or <see cref="MidiSysExStatus.MixedDataSetPayload" />.</summary>
-		public MidiUniversalMessageMixedDataSet MixedDataSet => mixedDataSet;
+		public MidiUniversalMessageMixedDataSet MixedDataSet {
+			get {
+				var self = this;
+				return *(MidiUniversalMessageMixedDataSet*) ((byte*) &self + 4);
+			}
+		}
 	}
 
 	/// <summary>The raw words of an unknown message in a <see cref="MidiUniversalMessage" />.</summary>
@@ -588,19 +675,15 @@ namespace CoreMidi {
 	[SupportedOSPlatform ("macos")]
 	[SupportedOSPlatform ("maccatalyst")]
 	[StructLayout (LayoutKind.Sequential)]
-	public unsafe struct MidiUniversalMessageUnknown {
-		fixed uint words [4];
+	public struct MidiUniversalMessageUnknown {
+		uint word0;
+		uint word1;
+		uint word2;
+		uint word3;
 
 		/// <summary>The raw words of the message (up to four 32-bit words).</summary>
 		/// <returns>A 4-element array with the raw words.</returns>
-		public uint [] Words {
-			get {
-				var rv = new uint [4];
-				for (var i = 0; i < rv.Length; i++)
-					rv [i] = words [i];
-				return rv;
-			}
-		}
+		public uint [] Words => new uint [] { word0, word1, word2, word3 };
 	}
 }
 

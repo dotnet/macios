@@ -2548,17 +2548,24 @@ public partial class Generator : IMemberGatherer {
 	//          The Foo property and the Klass both could have unique or duplicate attributes
 	// We collect them all, starting with the inner most first in the list.
 	// Later on CopyValidAttributes will handle only copying the first valid one down
+	readonly Dictionary<MemberInfo, List<AvailabilityBaseAttribute>> parentAttributeCache = new ();
 	List<AvailabilityBaseAttribute> GetAllParentAttributes (MemberInfo context)
 	{
+		if (parentAttributeCache.TryGetValue (context, out var cached))
+			return cached;
+
 		var parentAvailability = new List<AvailabilityBaseAttribute> ();
+		var current = context;
 		while (true) {
-			parentAvailability.AddRange (AttributeManager.GetCustomAttributes<AvailabilityBaseAttribute> (context));
-			var parentContext = FindContainingContext (context);
-			if (context == parentContext) {
-				return parentAvailability;
+			parentAvailability.AddRange (AttributeManager.GetCustomAttributes<AvailabilityBaseAttribute> (current));
+			var parentContext = FindContainingContext (current);
+			if (current == parentContext) {
+				break;
 			}
-			context = parentContext;
+			current = parentContext;
 		}
+		parentAttributeCache [context] = parentAvailability;
+		return parentAvailability;
 	}
 
 	public bool PrintPlatformAttributes (MemberInfo? mi, Type? inlinedType = null)

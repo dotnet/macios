@@ -36,14 +36,31 @@ public static partial class AttributeFactory {
 		return CreateNewAttribute<T> (args.GetCtorTypes (), args.GetCtorValues ());
 	}
 
+	static readonly IntroducedAttribute [] noVersionSupportedCache = new IntroducedAttribute [] {
+		new (PlatformName.iOS),
+		new (PlatformName.TvOS),
+		new (PlatformName.MacOSX),
+		new (PlatformName.MacCatalyst),
+	};
+
+	static readonly UnavailableAttribute [] unsupportedCache = new UnavailableAttribute [] {
+		new (PlatformName.iOS),
+		new (PlatformName.MacCatalyst),
+		new (PlatformName.MacOSX),
+		new (PlatformName.TvOS),
+	};
+
 	public static IntroducedAttribute CreateNoVersionSupportedAttribute (PlatformName platform)
 	{
 		switch (platform) {
 		case PlatformName.iOS:
+			return noVersionSupportedCache [0];
 		case PlatformName.TvOS:
+			return noVersionSupportedCache [1];
 		case PlatformName.MacOSX:
+			return noVersionSupportedCache [2];
 		case PlatformName.MacCatalyst:
-			return new (platform);
+			return noVersionSupportedCache [3];
 		case PlatformName.WatchOS:
 			throw new InvalidOperationException ("CreateNoVersionSupportedAttribute for WatchOS never makes sense");
 		default:
@@ -55,10 +72,13 @@ public static partial class AttributeFactory {
 	{
 		switch (platform) {
 		case PlatformName.iOS:
+			return unsupportedCache [0];
 		case PlatformName.MacCatalyst:
+			return unsupportedCache [1];
 		case PlatformName.MacOSX:
+			return unsupportedCache [2];
 		case PlatformName.TvOS:
-			return new (platform);
+			return unsupportedCache [3];
 		case PlatformName.WatchOS:
 			throw new InvalidOperationException ("CreateUnsupportedAttribute for WatchOS never makes sense");
 		default:
@@ -68,6 +88,16 @@ public static partial class AttributeFactory {
 
 	public static AvailabilityBaseAttribute CloneFromOtherPlatform (AvailabilityBaseAttribute attr, PlatformName platform)
 	{
+		if (attr.Version is null && string.IsNullOrEmpty (attr.Message)) {
+			// For no-version, no-message attributes, return the cached singletons
+			switch (attr.AvailabilityKind) {
+			case AvailabilityKind.Introduced:
+				return CreateNoVersionSupportedAttribute (platform);
+			case AvailabilityKind.Unavailable:
+				return CreateUnsupportedAttribute (platform);
+			}
+		}
+
 		if (attr.Version is null) {
 			switch (attr.AvailabilityKind) {
 			case AvailabilityKind.Introduced:

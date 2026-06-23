@@ -770,6 +770,11 @@ namespace Introspection {
 				case "PKAddIdentityDocumentMetadata": // conformance not in headers
 													  // Xcode 27
 				case "CPTextButton": // conformance not in headers
+				case "CPButton": // conformance not in headers
+				case "CPContactCallButton": // conformance not in headers
+				case "CPContactDirectionsButton": // conformance not in headers
+				case "CPContactMessageButton": // conformance not in headers
+				case "CPTravelEstimates": // conformance not in headers
 					return true;
 				}
 				break;

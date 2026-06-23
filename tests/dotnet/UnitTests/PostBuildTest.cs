@@ -81,7 +81,7 @@ namespace Xamarin.Tests {
 		[Test]
 		[Category ("RemoteWindows")]
 		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void BuildIpaOnRemoteWindowsTest (ApplePlatform platform, string runtimeIdentifiers)
+		public void BuildIpaAndArchiveOnRemoteWindowsTest (ApplePlatform platform, string runtimeIdentifiers)
 		{
 			var project = "MySimpleApp";
 			var configuration = "Release";
@@ -92,10 +92,13 @@ namespace Xamarin.Tests {
 			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
 			Clean (project_path);
 			var properties = GetDefaultProperties (runtimeIdentifiers);
+			// Set both BuildIpa and ArchiveOnBuild so the (slow) remote build to the paired Mac runs only
+			// once while still verifying that both the .ipa and the .xcarchive are surfaced.
 			properties ["BuildIpa"] = "true";
+			properties ["ArchiveOnBuild"] = "true";
 			properties ["Configuration"] = configuration;
 
-			var result = DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (15));
+			var result = DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (25));
 
 			// The .ipa is built on the paired Mac and copied back to this Windows machine, so it must be
 			// surfaced in @(ApplicationArtifact) with the local (Windows) path. The .app bundle stays on the
@@ -103,26 +106,6 @@ namespace Xamarin.Tests {
 			var ipaPath = Path.Combine (appPath, "..", $"{project}.ipa");
 			Assert.That (ipaPath, Does.Exist, "ipa creation");
 			AssertApplicationArtifact (result.BinLogPath, ipaPath, platform, "ipa", isDirectory: false);
-		}
-
-		[Test]
-		[Category ("RemoteWindows")]
-		[TestCase (ApplePlatform.iOS, "ios-arm64")]
-		public void ArchiveOnRemoteWindowsTest (ApplePlatform platform, string runtimeIdentifiers)
-		{
-			var project = "MySimpleApp";
-			var configuration = "Release";
-			Configuration.IgnoreIfIgnoredPlatform (platform);
-			Configuration.AssertRuntimeIdentifiersAvailable (platform, runtimeIdentifiers);
-			Configuration.IgnoreIfNotOnWindows ();
-
-			var project_path = GetProjectPath (project, runtimeIdentifiers: runtimeIdentifiers, platform: platform, out var appPath, configuration: configuration);
-			Clean (project_path);
-			var properties = GetDefaultProperties (runtimeIdentifiers);
-			properties ["ArchiveOnBuild"] = "true";
-			properties ["Configuration"] = configuration;
-
-			var result = DotNet.AssertBuild (project_path, properties, timeout: TimeSpan.FromMinutes (20));
 
 			// The .xcarchive is produced on the paired Mac and copied back to this Windows machine by
 			// CopyArchiveFromMac, which sets $(ArchivePath) to the local (Windows) path while $(ArchiveDir)

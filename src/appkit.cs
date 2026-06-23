@@ -23311,8 +23311,7 @@ namespace AppKit {
 	[BaseType (typeof (NSText), Delegates = new string [] { "Delegate" }, Events = new Type [] { typeof (NSTextViewDelegate) })]
 	partial interface NSTextView : NSTextInputClient, NSTextLayoutOrientationProvider, NSDraggingSource, NSAccessibilityNavigableStaticText, NSCandidateListTouchBarItemDelegate, NSTouchBarDelegate, NSMenuItemValidation, NSUserInterfaceValidations, NSTextInput, NSTextContent
 		, NSColorChanging // ChangeColor has the wrong param type
-		, NSTextViewportLayoutControllerDelegate
-	{
+		, NSTextViewportLayoutControllerDelegate {
 		[DesignatedInitializer]
 		[Export ("initWithFrame:textContainer:")]
 		NativeHandle Constructor (CGRect frameRect, [NullAllowed] NSTextContainer container);

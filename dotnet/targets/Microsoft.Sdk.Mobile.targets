@@ -135,7 +135,7 @@
 			 />
 
 		<PropertyGroup>
-			<RunCommand>'$(MlaunchPath)'</RunCommand>
+			<RunCommand>$(MlaunchPath)</RunCommand>
 			<RunArguments>$(MlaunchRunArguments) -- </RunArguments>
 		</PropertyGroup>
 	</Target>

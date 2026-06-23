@@ -263,7 +263,46 @@ namespace CoreMidi {
 				callback (ref Unsafe.AsRef<MidiEventPacket> (packet));
 			}
 		}
+
+		/// <summary>Parse each Universal MIDI Packet (UMP) in this list, invoking the specified <paramref name="visitor" /> for each parsed message.</summary>
+		/// <param name="visitor">The function to call for each parsed message. Unknown messages are reported with their raw words.</param>
+		/// <remarks>This is a binding for the native <c>MIDIEventListForEachEvent</c> function, which parses each UMP and fills a <see cref="MidiUniversalMessage" /> struct.</remarks>
+		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		public unsafe void ForEachEvent (MidiUniversalMessageVisitor visitor)
+		{
+			ArgumentNullException.ThrowIfNull (visitor);
+
+			var gch = GCHandle.Alloc (visitor);
+			try {
+				MIDIEventListForEachEvent (midiDataPointer, &TrampolineForEachEvent, (void*) GCHandle.ToIntPtr (gch));
+			} finally {
+				gch.Free ();
+			}
+		}
+
+		[UnmanagedCallersOnly]
+		static unsafe void TrampolineForEachEvent (void* context, ulong timeStamp, MidiUniversalMessage message)
+		{
+			var gch = GCHandle.FromIntPtr ((IntPtr) context);
+			if (gch.Target is MidiUniversalMessageVisitor visitor)
+				visitor (timeStamp, message);
+		}
+
+		[SupportedOSPlatform ("ios15.0")]
+		[SupportedOSPlatform ("tvos15.0")]
+		[SupportedOSPlatform ("macos")]
+		[SupportedOSPlatform ("maccatalyst")]
+		[DllImport (Constants.CoreMidiLibrary)]
+		unsafe static extern void MIDIEventListForEachEvent (MIDIEventList* evtlist, delegate* unmanaged<void*, ulong, MidiUniversalMessage, void> visitor, void* visitorContext);
 	}
+
+	/// <summary>The delegate type used by <see cref="MidiEventList.ForEachEvent" />.</summary>
+	/// <param name="timeStamp">The timestamp of the parsed message.</param>
+	/// <param name="message">The parsed message.</param>
+	public delegate void MidiUniversalMessageVisitor (ulong timeStamp, MidiUniversalMessage message);
 
 	/// <summary>The delegate type used by <see cref="MidiEventList.Iterate" />.</summary>
 	/// <param name="packet">The current packet found when iterating.</param>

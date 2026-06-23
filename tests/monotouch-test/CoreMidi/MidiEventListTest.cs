@@ -151,6 +151,103 @@ namespace MonoTouchFixtures.CoreMidi {
 				Assert.That (packetList [0].Words, Is.EqualTo (new uint [] { 1, 2, 3, 4, 5, 6 }), "packetList[0].Words");
 			});
 		}
+
+		// Build a MIDI 1.0 channel voice Note On UMP (a single 32-bit word).
+		static uint Midi1NoteOn (byte group, byte channel, byte note, byte velocity)
+			=> ((uint) MidiMessageType.ChannelVoice1 << 28) | ((uint) group << 24) | (0x9u << 20) | ((uint) channel << 16) | ((uint) note << 8) | velocity;
+
+		[Test]
+		public void ForEachEventTest_Null ()
+		{
+			var obj = new MidiEventList (MidiProtocolId.Protocol_1_0);
+			Assert.Throws<ArgumentNullException> (() => obj.ForEachEvent (null), "ForEachEvent (null)");
+		}
+
+		[Test]
+		public void ForEachEventTest_Empty ()
+		{
+			var obj = new MidiEventList (MidiProtocolId.Protocol_1_0);
+			var count = 0;
+			obj.ForEachEvent ((ulong timeStamp, MidiUniversalMessage message) => count++);
+			Assert.That (count, Is.EqualTo (0), "count");
+		}
+
+		[Test]
+		public void ForEachEventTest_Midi1NoteOn ()
+		{
+			var obj = new MidiEventList (MidiProtocolId.Protocol_1_0);
+			Assert.That (obj.Add (1234, new uint [] { Midi1NoteOn (0, 3, 60, 100) }), Is.True, "Add");
+
+			var messages = new List<(ulong TimeStamp, MidiUniversalMessage Message)> ();
+			obj.ForEachEvent ((ulong timeStamp, MidiUniversalMessage message) => messages.Add ((timeStamp, message)));
+
+			Assert.That (messages.Count, Is.EqualTo (1), "Count");
+			Assert.Multiple (() => {
+				Assert.That (messages [0].TimeStamp, Is.EqualTo ((ulong) 1234), "TimeStamp");
+				var message = messages [0].Message;
+				Assert.That (message.Type, Is.EqualTo (MidiMessageType.ChannelVoice1), "Type");
+				Assert.That (message.ChannelVoice1.Status, Is.EqualTo (MidiCVStatus.NoteOn), "Status");
+				Assert.That (message.ChannelVoice1.Channel, Is.EqualTo (3), "Channel");
+				Assert.That (message.ChannelVoice1.Note.Number, Is.EqualTo (60), "Note.Number");
+				Assert.That (message.ChannelVoice1.Note.Velocity, Is.EqualTo (100), "Note.Velocity");
+			});
+		}
+
+		[Test]
+		public void ForEachEventTest_Midi2NoteOn ()
+		{
+			var obj = new MidiEventList (MidiProtocolId.Protocol_2_0);
+			// A MIDI 2.0 channel voice Note On UMP (two 32-bit words).
+			var word0 = ((uint) MidiMessageType.ChannelVoice2 << 28) | (0x9u << 20) | (2u << 16) | (60u << 8) | (uint) MidiNoteAttribute.None;
+			var word1 = (0xCAFEu << 16) | 0xBEEFu;
+			Assert.That (obj.Add (4321, new uint [] { word0, word1 }), Is.True, "Add");
+
+			var messages = new List<(ulong TimeStamp, MidiUniversalMessage Message)> ();
+			obj.ForEachEvent ((ulong timeStamp, MidiUniversalMessage message) => messages.Add ((timeStamp, message)));
+
+			Assert.That (messages.Count, Is.EqualTo (1), "Count");
+			Assert.Multiple (() => {
+				Assert.That (messages [0].TimeStamp, Is.EqualTo ((ulong) 4321), "TimeStamp");
+				var message = messages [0].Message;
+				Assert.That (message.Type, Is.EqualTo (MidiMessageType.ChannelVoice2), "Type");
+				Assert.That (message.ChannelVoice2.Status, Is.EqualTo (MidiCVStatus.NoteOn), "Status");
+				Assert.That (message.ChannelVoice2.Channel, Is.EqualTo (2), "Channel");
+				Assert.That (message.ChannelVoice2.Note.Number, Is.EqualTo (60), "Note.Number");
+				Assert.That (message.ChannelVoice2.Note.AttributeType, Is.EqualTo (MidiNoteAttribute.None), "Note.AttributeType");
+				Assert.That (message.ChannelVoice2.Note.Velocity, Is.EqualTo (0xCAFE), "Note.Velocity");
+				Assert.That (message.ChannelVoice2.Note.Attribute, Is.EqualTo (0xBEEF), "Note.Attribute");
+			});
+		}
+
+		[Test]
+		public void ForEachEventTest_HappyBirthday ()
+		{
+			// The "Happy Birthday" melody as MIDI note numbers.
+			var melody = new byte [] {
+				67, 67, 69, 67, 72, 71,
+				67, 67, 69, 67, 74, 72,
+				67, 67, 79, 76, 72, 71, 69,
+				77, 77, 76, 72, 74, 72,
+			};
+
+			var obj = new MidiEventList (MidiProtocolId.Protocol_1_0, 4096);
+			for (var i = 0; i < melody.Length; i++)
+				Assert.That (obj.Add ((ulong) (i + 1), new uint [] { Midi1NoteOn (0, 0, melody [i], 96) }), Is.True, $"Add #{i}");
+
+			var notes = new List<byte> ();
+			var timeStamps = new List<ulong> ();
+			obj.ForEachEvent ((ulong timeStamp, MidiUniversalMessage message) => {
+				Assert.That (message.Type, Is.EqualTo (MidiMessageType.ChannelVoice1), "Type");
+				Assert.That (message.ChannelVoice1.Status, Is.EqualTo (MidiCVStatus.NoteOn), "Status");
+				notes.Add (message.ChannelVoice1.Note.Number);
+				timeStamps.Add (timeStamp);
+			});
+
+			Assert.Multiple (() => {
+				Assert.That (notes, Is.EqualTo (new List<byte> (melody)), "notes");
+				Assert.That (timeStamps, Is.EqualTo (Enumerable.Range (1, melody.Length).Select (v => (ulong) v).ToList ()), "timeStamps");
+			});
+		}
 	}
 }
 

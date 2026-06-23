@@ -2,8 +2,8 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<Target Name="_PrePublish">
 		<PropertyGroup>
-			<BuildIpa Condition="'$(BuildIpa)' == '' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')">true</BuildIpa>
-			<CreatePackage Condition="'$(CreatePackage)' == '' And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst')">true</CreatePackage>
+			<BuildIpa Condition="'$(BuildIpa)' == '' And '$(SdkIsMobile)' == 'true'">true</BuildIpa>
+			<CreatePackage Condition="'$(CreatePackage)' == '' And '$(SdkIsDesktop)' == 'true'">true</CreatePackage>
 
 			<!-- Put packages in the publish directory unless asked to do otherwise -->
 			<IpaPackageDir Condition="'$(IpaPackageDir)' == '' And '$(IpaPackagePath)' == ''">$(PublishDir)</IpaPackageDir>
@@ -20,8 +20,8 @@
 			Condition="$(RuntimeIdentifiers.Contains('iossimulator-')) Or $(RuntimeIdentifiers.Contains('tvossimulator-'))"
 		/>
 	</Target>
-	<Target Name="Publish" DependsOnTargets="_PrePublish;Build">
-		<Message Importance="high" Text="Created the package: $(IpaPackagePath)" Condition="'$(BuildIpa)' == 'true' And ('$(_PlatformName)' == 'iOS' Or '$(_PlatformName)' == 'tvOS')" />
-		<Message Importance="high" Text="Created the package: $(PkgPackagePath)" Condition="'$(CreatePackage)' == 'true' And ('$(_PlatformName)' == 'macOS' Or '$(_PlatformName)' == 'MacCatalyst')" />
+	<Target Name="Publish" DependsOnTargets="_PrePublish;GetApplicationArtifacts" Returns="@(ApplicationArtifact)">
+		<Message Importance="high" Text="Created the package: $(IpaPackagePath)" Condition="'$(BuildIpa)' == 'true' And '$(SdkIsMobile)' == 'true'" />
+		<Message Importance="high" Text="Created the package: $(PkgPackagePath)" Condition="'$(CreatePackage)' == 'true' And '$(SdkIsDesktop)' == 'true'" />
 	</Target>
 </Project>

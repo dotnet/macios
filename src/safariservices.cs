@@ -150,7 +150,7 @@ namespace SafariServices {
 
 	/// <summary>User interface for web browsing.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Miscellaneous/Reference/SFSafariViewController_Ref/index.html">Apple documentation for <c>SFSafariViewController</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/safariservices/sfsafariviewcontroller">Apple documentation for <c>SFSafariViewController</c></related>
 	[NoMac]
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIViewController))]

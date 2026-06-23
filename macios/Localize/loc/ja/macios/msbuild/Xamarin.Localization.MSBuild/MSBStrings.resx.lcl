@@ -2734,6 +2734,33 @@
         </Str>
         <Disp Icon="Str" />
       </Item>
+      <Item ItemId=";E7175" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The {0} simulator runtime is not installed. This is required by Apple's development tools (even when building for physical devices). Install it by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{0} シミュレーター ランタイムがインストールされていません。これは、Apple の開発ツールで必要です(実機向けにビルドする場合も同様です)。コマンド ラインで 'xcodebuild -downloadPlatform {0}' を実行してインストールするか、Xcode (設定 > コンポーネント) からインストールしてください。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7177" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The installed {0} simulator runtime is not compatible with the current Xcode version. Update the simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line, or from Xcode (Settings > Components).]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[インストールされている {0} シミュレーター ランタイムは、現在の Xcode バージョンと互換性がありません。コマンド ラインで 'xcodebuild -downloadPlatform {0}' を実行してシミュレーター ランタイムを更新するか、Xcode (設定 > コンポーネント) から更新してください。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";E7178" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Console.StandardOutput or Console.StandardError was accessed during a build task. This should not happen, use the MSBuild logging infrastructure instead. Stack trace: {0}]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[ビルド タスク中に Console.StandardOutput または Console.StandardError にアクセスしました。これは許可されていません。代わりに MSBuild ログ インフラストラクチャを使用してください。スタック トレース: {0}]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
       <Item ItemId=";InvalidFramework" ItemType="0;.resx" PsrId="211" Leaf="true">
         <Str Cat="Text">
           <Val><![CDATA[Invalid framework: {0}]]></Val>
@@ -3621,6 +3648,51 @@
           <Val><![CDATA[Not creating a compressed binding resource package, because all the native references are already compressed.]]></Val>
           <Tgt Cat="Text" Stat="Loc" Orig="New">
             <Val><![CDATA[すべてのネイティブ参照が既に圧縮されているため、圧縮形式のバインド リソース パッケージは作成されません。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7171" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[環境変数 '{0}' は非推奨であり、.NET 11 以降では無視されます。使用する Xcode を選択するには、'DEVELOPER_DIR' 環境変数または 'XcodeLocation' MSBuild プロパティを使用してください。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7172" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The environment variable '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[環境変数 '{0}' は非推奨であり、無視されます。使用する Xcode を選択するには、'DEVELOPER_DIR' 環境変数または 'XcodeLocation' MSBuild プロパティを使用してください。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7173" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored in .NET 11+. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[設定ファイル '{0}' は非推奨であり、.NET 11 以降では無視されます。使用する Xcode を選択するには、'DEVELOPER_DIR' 環境変数または 'XcodeLocation' MSBuild プロパティを使用してください。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7174" ItemType="0;.resx" PsrId="211" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[The settings file '{0}' is deprecated, and will be ignored. Please use the 'DEVELOPER_DIR' environment variable or the 'XcodeLocation' MSBuild property to choose which Xcode to use.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[設定ファイル '{0}' は非推奨であり、無視されます。使用する Xcode を選択するには、'DEVELOPER_DIR' 環境変数または 'XcodeLocation' MSBuild プロパティを使用してください。]]></Val>
+          </Tgt>
+        </Str>
+        <Disp Icon="Str" />
+      </Item>
+      <Item ItemId=";W7176" ItemType="0;.resx" PsrId="211" InstFlg="true" Leaf="true">
+        <Str Cat="Text">
+          <Val><![CDATA[Unable to determine if the {0} simulator runtime is installed. If the build fails or hangs, install the {0} simulator runtime by running 'xcodebuild -downloadPlatform {0}' from the command line.]]></Val>
+          <Tgt Cat="Text" Stat="Loc" Orig="New">
+            <Val><![CDATA[{0} シミュレーター ランタイムがインストールされているかどうかを判断できません。ビルドが失敗するか、停止したままになる場合は、コマンド ラインで 'xcodebuild -downloadPlatform {0}' を実行して {0} シミュレーター ランタイムをインストールしてください。]]></Val>
           </Tgt>
         </Str>
         <Disp Icon="Str" />

@@ -32,7 +32,7 @@ namespace MonoTouchFixtures.ARKit {
 		public void MarshallingTest ()
 		{
 			var faceAnchor = new ARAnchor ("My Anchor", MatrixFloat4x4.Identity);
-			Assert.AreEqual (MatrixFloat4x4.Identity, faceAnchor.Transform, "Transform");
+			Assert.That (faceAnchor.Transform, Is.EqualTo (MatrixFloat4x4.Identity), "Transform");
 		}
 	}
 }

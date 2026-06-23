@@ -16,44 +16,38 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSViewControllerShouldAddChildViewController ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var child = new NSViewController ();
 			controller.AddChildViewController (child);
 
-			Assert.IsTrue (controller.ChildViewControllers.Length == 1, "NSViewControllerShouldAddChildViewControllers - Failed to add child view controller");
+			Assert.That (controller.ChildViewControllers.Length == 1, Is.True, "NSViewControllerShouldAddChildViewControllers - Failed to add child view controller");
 		}
 
 		[Test]
 		public void NSViewControllerShouldRemoveChildViewController ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var child = new NSViewController ();
 			controller.AddChildViewController (child);
 
-			Assert.IsTrue (controller.ChildViewControllers.Length == 1, "NSViewControllerShouldRemoveChildViewControllers - Failed to add child view controller");
+			Assert.That (controller.ChildViewControllers.Length == 1, Is.True, "NSViewControllerShouldRemoveChildViewControllers - Failed to add child view controller");
 
 			controller.RemoveChildViewController (0);
 
-			Assert.IsTrue (controller.ChildViewControllers.Length == 0, "NSViewControllerShouldRemoveChildViewController - Failed to remove child view controller");
+			Assert.That (controller.ChildViewControllers.Length == 0, Is.True, "NSViewControllerShouldRemoveChildViewController - Failed to remove child view controller");
 		}
 
 		[Test]
 		public void NSViewControllerShouldInsertChildViewController ()
 		{
-			Asserts.EnsureYosemite ();
-
 			controller.AddChildViewController (new NSViewController ());
 			controller.AddChildViewController (new NSViewController ());
 
-			Assert.IsTrue (controller.ChildViewControllers.Length == 2, "NSViewControllerShouldInsertChildViewController - Failed to add child view controller");
+			Assert.That (controller.ChildViewControllers.Length == 2, Is.True, "NSViewControllerShouldInsertChildViewController - Failed to add child view controller");
 
 			var child = new NSViewController ();
 			controller.InsertChildViewController (child, 1);
 
-			Assert.IsTrue (controller.ChildViewControllers.Length == 3, "NSViewControllerShouldInsertChildViewController - Failed to insert child view controller");
-			Assert.IsTrue (controller.ChildViewControllers [1] == child, "NSViewControllerShouldInsertChildViewController - Inserted child view controller at the wrong index.");
+			Assert.That (controller.ChildViewControllers.Length == 3, Is.True, "NSViewControllerShouldInsertChildViewController - Failed to insert child view controller");
+			Assert.That (controller.ChildViewControllers [1] == child, Is.True, "NSViewControllerShouldInsertChildViewController - Inserted child view controller at the wrong index.");
 		}
 	}
 }

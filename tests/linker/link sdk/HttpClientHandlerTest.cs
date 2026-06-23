@@ -15,20 +15,20 @@ namespace LinkSdk.Net.Http {
 		public void HttpClient ()
 		{
 			using (var handler = new HttpClientHandler ()) {
-				Assert.True (handler.AllowAutoRedirect, "AllowAutoRedirect");
-				Assert.NotNull (handler.CookieContainer, "CookieContainer");
-				Assert.Null (handler.Credentials, "Credentials");
+				Assert.That (handler.AllowAutoRedirect, Is.True, "AllowAutoRedirect");
+				Assert.That (handler.CookieContainer, Is.Not.Null, "CookieContainer");
+				Assert.That (handler.Credentials, Is.Null, "Credentials");
 				// (so far) not exposed in other, native handlers
 				Assert.That (handler.AutomaticDecompression, Is.EqualTo (DecompressionMethods.None), "AutomaticDecompression");
 				Assert.That (handler.ClientCertificateOptions, Is.EqualTo (ClientCertificateOption.Manual), "ClientCertificateOptions");
 				Assert.That (handler.MaxAutomaticRedirections, Is.EqualTo (50), "MaxAutomaticRedirections");
-				Assert.Null (handler.Proxy, "Proxy");
-				Assert.True (handler.SupportsAutomaticDecompression, "SupportsAutomaticDecompression");
-				Assert.True (handler.SupportsProxy, "SupportsProxy");
-				Assert.True (handler.SupportsRedirectConfiguration, "SupportsRedirectConfiguration");
-				Assert.True (handler.UseCookies, "UseCookies");
-				Assert.False (handler.UseDefaultCredentials, "UseDefaultCredentials");
-				Assert.True (handler.UseProxy, "UseProxy");
+				Assert.That (handler.Proxy, Is.Null, "Proxy");
+				Assert.That (handler.SupportsAutomaticDecompression, Is.True, "SupportsAutomaticDecompression");
+				Assert.That (handler.SupportsProxy, Is.True, "SupportsProxy");
+				Assert.That (handler.SupportsRedirectConfiguration, Is.True, "SupportsRedirectConfiguration");
+				Assert.That (handler.UseCookies, Is.True, "UseCookies");
+				Assert.That (handler.UseDefaultCredentials, Is.False, "UseDefaultCredentials");
+				Assert.That (handler.UseProxy, Is.True, "UseProxy");
 			}
 		}
 
@@ -36,10 +36,10 @@ namespace LinkSdk.Net.Http {
 		public void CFNetwork ()
 		{
 			using (var handler = new CFNetworkHandler ()) {
-				Assert.True (handler.AllowAutoRedirect, "AllowAutoRedirect");
-				Assert.NotNull (handler.CookieContainer, "CookieContainer");
+				Assert.That (handler.AllowAutoRedirect, Is.True, "AllowAutoRedirect");
+				Assert.That (handler.CookieContainer, Is.Not.Null, "CookieContainer");
 				// custom, not in HttpClientHandler
-				Assert.False (handler.UseSystemProxy, "UseSystemProxy");
+				Assert.That (handler.UseSystemProxy, Is.False, "UseSystemProxy");
 			}
 		}
 
@@ -47,10 +47,10 @@ namespace LinkSdk.Net.Http {
 		public void NSUrlSession ()
 		{
 			using (var handler = new NSUrlSessionHandler ()) {
-				Assert.True (handler.AllowAutoRedirect, "AllowAutoRedirect");
-				Assert.Null (handler.Credentials, "Credentials");
+				Assert.That (handler.AllowAutoRedirect, Is.True, "AllowAutoRedirect");
+				Assert.That (handler.Credentials, Is.Null, "Credentials");
 				// custom, not in HttpClientHandler
-				Assert.False (handler.DisableCaching, "DisableCaching");
+				Assert.That (handler.DisableCaching, Is.False, "DisableCaching");
 			}
 		}
 	}

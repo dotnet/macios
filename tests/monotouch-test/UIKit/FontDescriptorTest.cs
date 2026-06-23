@@ -14,20 +14,20 @@ namespace MonoTouchFixtures.UIKit {
 		public void UIFontAttributes_DefaultConstructor ()
 		{
 			var attrs = new UIFontAttributes ();
-			Assert.IsNull (attrs.Family, "Family");
-			Assert.IsNull (attrs.Name, "Name");
-			Assert.IsNull (attrs.Face, "Face");
-			Assert.IsNull (attrs.Size, "Size");
-			Assert.IsNull (attrs.VisibleName, "VisibleName");
-			Assert.IsNull (attrs.TextStyle, "TextStyle");
-			Assert.IsNull (attrs.Matrix, "Matrix");
-			Assert.IsNull (attrs.CharacterSet, "CharacterSet");
-			Assert.IsNull (attrs.CascadeList, "CascadeList");
-			Assert.IsNull (attrs.Traits, "Traits");
-			Assert.IsNull (attrs.FixedAdvance, "FixedAdvance");
-			Assert.IsNull (attrs.WeakFeatureSettings, "WeakFeatureSettings");
-			Assert.IsNotNull (attrs.FeatureSettings, "FeatureSettings");
-			Assert.AreEqual (0, attrs.FeatureSettings.Length, "FeatureSettings.Length");
+			Assert.That (attrs.Family, Is.Null, "Family");
+			Assert.That (attrs.Name, Is.Null, "Name");
+			Assert.That (attrs.Face, Is.Null, "Face");
+			Assert.That (attrs.Size, Is.Null, "Size");
+			Assert.That (attrs.VisibleName, Is.Null, "VisibleName");
+			Assert.That (attrs.TextStyle, Is.Null, "TextStyle");
+			Assert.That (attrs.Matrix, Is.Null, "Matrix");
+			Assert.That (attrs.CharacterSet, Is.Null, "CharacterSet");
+			Assert.That (attrs.CascadeList, Is.Null, "CascadeList");
+			Assert.That (attrs.Traits, Is.Null, "Traits");
+			Assert.That (attrs.FixedAdvance, Is.Null, "FixedAdvance");
+			Assert.That (attrs.WeakFeatureSettings, Is.Null, "WeakFeatureSettings");
+			Assert.That (attrs.FeatureSettings, Is.Not.Null, "FeatureSettings");
+			Assert.That (attrs.FeatureSettings.Length, Is.EqualTo (0), "FeatureSettings.Length");
 		}
 
 		[Test]
@@ -36,20 +36,20 @@ namespace MonoTouchFixtures.UIKit {
 			var attrs = new UIFontAttributes ();
 
 			attrs.Family = "Helvetica";
-			Assert.AreEqual ("Helvetica", attrs.Family, "Family set");
+			Assert.That (attrs.Family, Is.EqualTo ("Helvetica"), "Family set");
 
 			attrs.Name = "Helvetica-Bold";
-			Assert.AreEqual ("Helvetica-Bold", attrs.Name, "Name set");
+			Assert.That (attrs.Name, Is.EqualTo ("Helvetica-Bold"), "Name set");
 
 			attrs.Face = "Bold";
-			Assert.AreEqual ("Bold", attrs.Face, "Face set");
+			Assert.That (attrs.Face, Is.EqualTo ("Bold"), "Face set");
 
 			attrs.VisibleName = "Helvetica Bold";
-			Assert.AreEqual ("Helvetica Bold", attrs.VisibleName, "VisibleName set");
+			Assert.That (attrs.VisibleName, Is.EqualTo ("Helvetica Bold"), "VisibleName set");
 
 			// Set back to null
 			attrs.Family = null;
-			Assert.IsNull (attrs.Family, "Family cleared");
+			Assert.That (attrs.Family, Is.Null, "Family cleared");
 		}
 
 		[Test]
@@ -58,11 +58,11 @@ namespace MonoTouchFixtures.UIKit {
 			var attrs = new UIFontAttributes ();
 
 			attrs.Size = 14.0f;
-			Assert.IsTrue (attrs.Size.HasValue, "Size.HasValue");
-			Assert.AreEqual (14.0f, attrs.Size.Value, "Size.Value");
+			Assert.That (attrs.Size.HasValue, Is.True, "Size.HasValue");
+			Assert.That (attrs.Size.Value, Is.EqualTo (14.0f), "Size.Value");
 
 			attrs.Size = null;
-			Assert.IsNull (attrs.Size, "Size cleared");
+			Assert.That (attrs.Size, Is.Null, "Size cleared");
 		}
 
 		[Test]
@@ -71,10 +71,10 @@ namespace MonoTouchFixtures.UIKit {
 			var attrs = new UIFontAttributes ();
 
 			attrs.TextStyle = UIFontTextStyle.Body.GetConstant ();
-			Assert.IsNotNull (attrs.TextStyle, "TextStyle set");
+			Assert.That (attrs.TextStyle, Is.Not.Null, "TextStyle set");
 
 			attrs.TextStyle = null;
-			Assert.IsNull (attrs.TextStyle, "TextStyle cleared");
+			Assert.That (attrs.TextStyle, Is.Null, "TextStyle cleared");
 		}
 
 		[Test]
@@ -84,11 +84,11 @@ namespace MonoTouchFixtures.UIKit {
 			var transform = CGAffineTransform.MakeScale (2, 2);
 
 			attrs.Matrix = transform;
-			Assert.IsTrue (attrs.Matrix.HasValue, "Matrix.HasValue");
-			Assert.AreEqual (transform, attrs.Matrix.Value, "Matrix.Value");
+			Assert.That (attrs.Matrix.HasValue, Is.True, "Matrix.HasValue");
+			Assert.That (attrs.Matrix.Value, Is.EqualTo (transform), "Matrix.Value");
 
 			attrs.Matrix = null;
-			Assert.IsNull (attrs.Matrix, "Matrix cleared");
+			Assert.That (attrs.Matrix, Is.Null, "Matrix cleared");
 		}
 
 		[Test]
@@ -98,10 +98,10 @@ namespace MonoTouchFixtures.UIKit {
 			var cs = NSCharacterSet.UppercaseLetters;
 
 			attrs.CharacterSet = cs;
-			Assert.IsNotNull (attrs.CharacterSet, "CharacterSet set");
+			Assert.That (attrs.CharacterSet, Is.Not.Null, "CharacterSet set");
 
 			attrs.CharacterSet = null;
-			Assert.IsNull (attrs.CharacterSet, "CharacterSet cleared");
+			Assert.That (attrs.CharacterSet, Is.Null, "CharacterSet cleared");
 		}
 
 		[Test]
@@ -111,11 +111,11 @@ namespace MonoTouchFixtures.UIKit {
 			var desc = new UIFontDescriptor ();
 
 			attrs.CascadeList = new [] { desc };
-			Assert.IsNotNull (attrs.CascadeList, "CascadeList set");
-			Assert.AreEqual (1, attrs.CascadeList.Length, "CascadeList.Length");
+			Assert.That (attrs.CascadeList, Is.Not.Null, "CascadeList set");
+			Assert.That (attrs.CascadeList.Length, Is.EqualTo (1), "CascadeList.Length");
 
 			attrs.CascadeList = null;
-			Assert.IsNull (attrs.CascadeList, "CascadeList cleared");
+			Assert.That (attrs.CascadeList, Is.Null, "CascadeList cleared");
 		}
 
 		[Test]
@@ -126,11 +126,11 @@ namespace MonoTouchFixtures.UIKit {
 			traits.SymbolicTrait = UIFontDescriptorSymbolicTraits.Bold;
 
 			attrs.Traits = traits;
-			Assert.IsNotNull (attrs.Traits, "Traits set");
-			Assert.AreEqual (UIFontDescriptorSymbolicTraits.Bold, attrs.Traits.SymbolicTrait, "Traits.SymbolicTrait");
+			Assert.That (attrs.Traits, Is.Not.Null, "Traits set");
+			Assert.That (attrs.Traits.SymbolicTrait, Is.EqualTo (UIFontDescriptorSymbolicTraits.Bold), "Traits.SymbolicTrait");
 
 			attrs.Traits = null;
-			Assert.IsNull (attrs.Traits, "Traits cleared");
+			Assert.That (attrs.Traits, Is.Null, "Traits cleared");
 		}
 
 		[Test]
@@ -139,11 +139,11 @@ namespace MonoTouchFixtures.UIKit {
 			var attrs = new UIFontAttributes ();
 
 			attrs.FixedAdvance = 10.0f;
-			Assert.IsTrue (attrs.FixedAdvance.HasValue, "FixedAdvance.HasValue");
-			Assert.AreEqual (10.0f, attrs.FixedAdvance.Value, "FixedAdvance.Value");
+			Assert.That (attrs.FixedAdvance.HasValue, Is.True, "FixedAdvance.HasValue");
+			Assert.That (attrs.FixedAdvance.Value, Is.EqualTo (10.0f), "FixedAdvance.Value");
 
 			attrs.FixedAdvance = null;
-			Assert.IsNull (attrs.FixedAdvance, "FixedAdvance cleared");
+			Assert.That (attrs.FixedAdvance, Is.Null, "FixedAdvance cleared");
 		}
 
 		[Test]
@@ -152,12 +152,12 @@ namespace MonoTouchFixtures.UIKit {
 			var font = UIFont.BoldSystemFontOfSize (20);
 			var descriptor = font.FontDescriptor;
 
-			Assert.IsNotNull (descriptor.Family, "Family");
-			Assert.IsNotNull (descriptor.Name, "Name");
-			Assert.IsNotNull (descriptor.Face, "Face");
-			Assert.IsTrue (descriptor.Size.HasValue, "Size.HasValue");
-			Assert.AreEqual (20.0f, descriptor.Size.Value, "Size.Value");
-			Assert.IsNotNull (descriptor.CascadeList, "CascadeList");
+			Assert.That (descriptor.Family, Is.Not.Null, "Family");
+			Assert.That (descriptor.Name, Is.Not.Null, "Name");
+			Assert.That (descriptor.Face, Is.Not.Null, "Face");
+			Assert.That (descriptor.Size.HasValue, Is.True, "Size.HasValue");
+			Assert.That (descriptor.Size.Value, Is.EqualTo (20.0f), "Size.Value");
+			Assert.That (descriptor.CascadeList, Is.Not.Null, "CascadeList");
 		}
 
 		[Test]
@@ -180,36 +180,36 @@ namespace MonoTouchFixtures.UIKit {
 			var weakFeature = descriptor.WeakFeatureSettings;
 			var featureSettings = descriptor.FeatureSettings;
 
-			Assert.IsNotNull (cascadeList, "CascadeList never null");
-			Assert.IsNotNull (featureSettings, "FeatureSettings never null");
+			Assert.That (cascadeList, Is.Not.Null, "CascadeList never null");
+			Assert.That (featureSettings, Is.Not.Null, "FeatureSettings never null");
 		}
 
 		[Test]
 		public void UIFontDescriptor_PreferredTitle1 ()
 		{
 			var descriptor = UIFontDescriptor.PreferredTitle1;
-			Assert.IsNotNull (descriptor, "PreferredTitle1");
+			Assert.That (descriptor, Is.Not.Null, "PreferredTitle1");
 		}
 
 		[Test]
 		public void UIFontDescriptor_PreferredTitle2 ()
 		{
 			var descriptor = UIFontDescriptor.PreferredTitle2;
-			Assert.IsNotNull (descriptor, "PreferredTitle2");
+			Assert.That (descriptor, Is.Not.Null, "PreferredTitle2");
 		}
 
 		[Test]
 		public void UIFontDescriptor_PreferredTitle3 ()
 		{
 			var descriptor = UIFontDescriptor.PreferredTitle3;
-			Assert.IsNotNull (descriptor, "PreferredTitle3");
+			Assert.That (descriptor, Is.Not.Null, "PreferredTitle3");
 		}
 
 		[Test]
 		public void UIFontDescriptor_PreferredCallout ()
 		{
 			var descriptor = UIFontDescriptor.PreferredCallout;
-			Assert.IsNotNull (descriptor, "PreferredCallout");
+			Assert.That (descriptor, Is.Not.Null, "PreferredCallout");
 		}
 
 		[Test]
@@ -219,7 +219,7 @@ namespace MonoTouchFixtures.UIKit {
 			var descriptor = font.FontDescriptor;
 
 			var results = descriptor.GetMatchingFontDescriptors ();
-			Assert.IsNotNull (results, "empty mandatoryKeys");
+			Assert.That (results, Is.Not.Null, "empty mandatoryKeys");
 		}
 
 		[Test]
@@ -229,17 +229,17 @@ namespace MonoTouchFixtures.UIKit {
 			var descriptor = font.FontDescriptor;
 
 			var results = descriptor.GetMatchingFontDescriptors (UIFontDescriptorAttribute.Family);
-			Assert.IsNotNull (results, "with Family key");
+			Assert.That (results, Is.Not.Null, "with Family key");
 		}
 
 		[Test]
 		public void UIFontTraits_DefaultConstructor ()
 		{
 			var traits = new UIFontTraits ();
-			Assert.IsNull (traits.SymbolicTrait, "SymbolicTrait");
-			Assert.IsNull (traits.Weight, "Weight");
-			Assert.IsNull (traits.Width, "Width");
-			Assert.IsNull (traits.Slant, "Slant");
+			Assert.That (traits.SymbolicTrait, Is.Null, "SymbolicTrait");
+			Assert.That (traits.Weight, Is.Null, "Weight");
+			Assert.That (traits.Width, Is.Null, "Width");
+			Assert.That (traits.Slant, Is.Null, "Slant");
 		}
 
 		[Test]
@@ -248,11 +248,11 @@ namespace MonoTouchFixtures.UIKit {
 			var traits = new UIFontTraits ();
 
 			traits.SymbolicTrait = UIFontDescriptorSymbolicTraits.Bold;
-			Assert.IsTrue (traits.SymbolicTrait.HasValue, "SymbolicTrait.HasValue after set");
-			Assert.AreEqual (UIFontDescriptorSymbolicTraits.Bold, traits.SymbolicTrait.Value, "SymbolicTrait.Value");
+			Assert.That (traits.SymbolicTrait.HasValue, Is.True, "SymbolicTrait.HasValue after set");
+			Assert.That (traits.SymbolicTrait.Value, Is.EqualTo (UIFontDescriptorSymbolicTraits.Bold), "SymbolicTrait.Value");
 
 			traits.SymbolicTrait = null;
-			Assert.IsNull (traits.SymbolicTrait, "SymbolicTrait after null");
+			Assert.That (traits.SymbolicTrait, Is.Null, "SymbolicTrait after null");
 		}
 
 		[Test]
@@ -262,9 +262,9 @@ namespace MonoTouchFixtures.UIKit {
 			var descriptor = font.FontDescriptor;
 			var traits = descriptor.Traits;
 
-			Assert.IsNotNull (traits, "Traits from bold font");
-			Assert.IsTrue (traits.SymbolicTrait.HasValue, "SymbolicTrait.HasValue");
-			Assert.IsTrue (traits.SymbolicTrait.Value.HasFlag (UIFontDescriptorSymbolicTraits.Bold), "Has Bold trait");
+			Assert.That (traits, Is.Not.Null, "Traits from bold font");
+			Assert.That (traits.SymbolicTrait.HasValue, Is.True, "SymbolicTrait.HasValue");
+			Assert.That (traits.SymbolicTrait.Value.HasFlag (UIFontDescriptorSymbolicTraits.Bold), Is.True, "Has Bold trait");
 		}
 
 		[Test]
@@ -274,8 +274,8 @@ namespace MonoTouchFixtures.UIKit {
 			var descriptor = font.FontDescriptor;
 			var fontAttrs = descriptor.FontAttributes;
 
-			Assert.IsTrue (fontAttrs.Size.HasValue, "Size.HasValue");
-			Assert.AreEqual (14.0f, fontAttrs.Size.Value, "Size.Value");
+			Assert.That (fontAttrs.Size.HasValue, Is.True, "Size.HasValue");
+			Assert.That (fontAttrs.Size.Value, Is.EqualTo (14.0f), "Size.Value");
 		}
 
 		[Test]
@@ -283,10 +283,10 @@ namespace MonoTouchFixtures.UIKit {
 		{
 			var attrs = new UIFontAttributes ();
 
-			Assert.IsNull (attrs.WeakFeatureSettings, "WeakFeatureSettings initially null");
+			Assert.That (attrs.WeakFeatureSettings, Is.Null, "WeakFeatureSettings initially null");
 
 			attrs.WeakFeatureSettings = null;
-			Assert.IsNull (attrs.WeakFeatureSettings, "WeakFeatureSettings after null set");
+			Assert.That (attrs.WeakFeatureSettings, Is.Null, "WeakFeatureSettings after null set");
 		}
 	}
 }

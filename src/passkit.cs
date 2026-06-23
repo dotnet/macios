@@ -2058,7 +2058,7 @@ namespace PassKit {
 
 	/// <summary>A button that adds passes to a Wallet.</summary>
 	///     
-	///     <related type="externalDocumentation" href="https://developer.apple.com/library/ios/documentation/Miscellaneous/Reference/PKAddPassButton_Class/index.html">Apple documentation for <c>PKAddPassButton</c></related>
+	/// <related type="externalDocumentation" href="https://developer.apple.com/documentation/passkit/pkaddpassbutton">Apple documentation for <c>PKAddPassButton</c></related>
 	[NoMac] // under `#if TARGET_OS_IOS`
 	[MacCatalyst (13, 1)]
 	[BaseType (typeof (UIButton))]

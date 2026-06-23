@@ -32,6 +32,7 @@
 #nullable enable
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics;
 using System.ComponentModel;
 using CoreGraphics;
@@ -3888,7 +3889,16 @@ namespace AppKit {
 		/// <remarks>To be added.</remarks>
 		[Abstract]
 		[Export ("collectionView:numberOfItemsInSection:")]
+#if XAMCORE_5_0
+		nint GetNumberOfItems (NSCollectionView collectionView, nint section);
+#else
+		[Obsolete ("Use 'GetNumberOfItems' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		nint GetNumberofItems (NSCollectionView collectionView, nint section);
+
+		[Wrap ("GetNumberofItems (collectionView, section)")]
+		nint GetNumberOfItems (NSCollectionView collectionView, nint section);
+#endif
 
 		/// <param name="collectionView">To be added.</param>
 		/// <param name="indexPath">To be added.</param>
@@ -8597,7 +8607,16 @@ namespace AppKit {
 		nfloat TitleWidth { get; set; }
 
 		[Export ("titleWidth:")]
+#if XAMCORE_5_0
+		nfloat GetTitleWidth (CGSize size);
+#else
+		[Obsolete ("Use 'GetTitleWidth' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		nfloat TitleWidthConstraintedToSize (CGSize aSize);
+
+		[Wrap ("TitleWidthConstraintedToSize (size)")]
+		nfloat GetTitleWidth (CGSize size);
+#endif
 
 		[Export ("title")]
 		string Title { get; set; }
@@ -8701,7 +8720,11 @@ namespace AppKit {
 		NSGraphicsContext FromGraphicsPort (IntPtr graphicsPort, bool initialFlippedState);
 
 		[Static, Export ("currentContext"), NullAllowed]
-		NSGraphicsContext CurrentContext { get; set; }
+		NSGraphicsContext CurrentContext {
+			[DynamicDependency (DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors, "Foundation.NSProxy", "Microsoft.macOS")] // https://github.com/xamarin/bugzilla-archives/blob/main/16/16505/bug.html
+			get;
+			set;
+		}
 
 		[Static, Export ("currentContextDrawingToScreen")]
 		bool IsCurrentContextDrawingToScreen { get; }
@@ -8962,12 +8985,6 @@ namespace AppKit {
 
 		[Export ("customPlacementConstraints", ArgumentSemantic.Copy)]
 		NSLayoutConstraint [] CustomPlacementConstraints { get; set; }
-	}
-
-	[NoMacCatalyst]
-	[BaseType (typeof (NSGraphicsContext))]
-	[DisableDefaultCtor]
-	interface NSPrintPreviewGraphicsContext {
 	}
 
 	[NoMacCatalyst]
@@ -14583,7 +14600,16 @@ namespace AppKit {
 		nint IndexOfItemWithRepresentedObject (NSObject obj);
 
 		[Export ("indexOfItemWithTarget:andAction:")]
+#if XAMCORE_5_0
+		nint IndexOfItemWithTargetAndAction (NSObject target, Selector actionSelector);
+#else
+		[Obsolete ("Use 'IndexOfItemWithTargetAndAction' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		nint IndexOfItemWithTargetandAction (NSObject target, Selector actionSelector);
+
+		[Wrap ("IndexOfItemWithTargetandAction (target, actionSelector)")]
+		nint IndexOfItemWithTargetAndAction (NSObject target, Selector actionSelector);
+#endif
 
 		[Export ("itemAtIndex:")]
 		NSMenuItem ItemAt (nint index);
@@ -15652,7 +15678,16 @@ namespace AppKit {
 	[BaseType (typeof (NSObject))]
 	partial interface NSResponder : NSCoding, NSTouchBarProvider, NSUserActivityRestoring {
 		[Export ("tryToPerform:with:")]
+#if XAMCORE_5_0
+		bool TryToPerformWith (Selector anAction, [NullAllowed] NSObject anObject);
+#else
+		[Obsolete ("Use 'TryToPerformWith' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		bool TryToPerformwith (Selector anAction, [NullAllowed] NSObject anObject);
+
+		[Wrap ("TryToPerformwith (anAction, anObject)")]
+		bool TryToPerformWith (Selector anAction, [NullAllowed] NSObject anObject);
+#endif
 
 		[Export ("performKeyEquivalent:")]
 		bool PerformKeyEquivalent (NSEvent theEvent);
@@ -16239,7 +16274,16 @@ namespace AppKit {
 		CGRect ConvertRectToBacking (CGRect aRect);
 
 		[Export ("convertRectFromBacking:")]
+#if XAMCORE_5_0
+		CGRect ConvertRectFromBacking (CGRect aRect);
+#else
+		[Obsolete ("Use 'ConvertRectFromBacking' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		CGRect ConvertRectfromBacking (CGRect aRect);
+
+		[Wrap ("ConvertRectfromBacking (aRect)")]
+		CGRect ConvertRectFromBacking (CGRect aRect);
+#endif
 
 		[Export ("backingAlignedRect:options:")]
 		CGRect GetBackingAlignedRect (CGRect globalScreenCoordRect, NSAlignmentOptions options);
@@ -17471,7 +17515,16 @@ namespace AppKit {
 		void UpdateSpellingPanelWithMisspelledWord (string word);
 
 		[Export ("updateSpellingPanelWithGrammarString:detail:")]
+#if XAMCORE_5_0
+		void UpdateSpellingPanelWithGrammarString (string theString, NSDictionary detail);
+#else
+		[Obsolete ("Use 'UpdateSpellingPanelWithGrammarString' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		void UpdateSpellingPanelWithGrammarl (string theString, NSDictionary detail);
+
+		[Wrap ("UpdateSpellingPanelWithGrammarl (theString, detail)")]
+		void UpdateSpellingPanelWithGrammarString (string theString, NSDictionary detail);
+#endif
 
 		[Export ("spellingPanel")]
 		NSPanel SpellingPanel { get; }
@@ -26805,11 +26858,7 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	interface NSWorkspaceFileOperationEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSOperationNumber")]
-		nint FileType { get; }
+		// The 'FileType' property has manual bindings.
 	}
 
 	delegate void NSWorkspaceUrlHandler (NSDictionary newUrls, NSError error);
@@ -26890,7 +26939,16 @@ namespace AppKit {
 		NSImage IconForFileType (IntPtr fileTypeOrTypeCode);
 
 		[Export ("setIcon:forFile:options:"), ThreadSafe]
+#if XAMCORE_5_0
+		bool SetIconForFile (NSImage image, string fullPath, NSWorkspaceIconCreationOptions options);
+#else
+		[Obsolete ("Use 'SetIconForFile' instead.")]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		bool SetIconforFile (NSImage image, string fullPath, NSWorkspaceIconCreationOptions options);
+
+		[Wrap ("SetIconforFile (image, fullPath, options)")]
+		bool SetIconForFile (NSImage image, string fullPath, NSWorkspaceIconCreationOptions options);
+#endif
 
 		[Export ("fileLabels"), ThreadSafe]
 		string [] FileLabels { get; }
@@ -28279,39 +28337,15 @@ namespace AppKit {
 	}
 
 	partial interface NSViewColumnMoveEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSOldColumn")]
-		nint OldColumn { get; }
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSNewColumn")]
-		nint NewColumn { get; }
+		// The 'OldColumn' and 'NewColumn' properties have manual bindings.
 	}
 
 	partial interface NSViewColumnResizeEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSTableColumn")]
-		NSTableColumn Column { get; }
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSOldWidth")]
-		nint OldWidth { get; }
+		// The 'Column' and 'OldWidth' properties have manual bindings.
 	}
 
 	partial interface NSOutlineViewItemEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSObject")]
-		NSObject Item { get; }
+		// The 'Item' property has manual bindings.
 	}
 
 	partial interface NSOutlineView : NSAccessibilityOutline {
@@ -28704,26 +28738,11 @@ namespace AppKit {
 	}
 
 	partial interface NSTextViewDidChangeSelectionEventArgs {
-		// FIXME: verify property type "NSValue object containing an NSRange structure"
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSOldSelectedCharacterRange")]
-		NSValue OldSelectedCharacterRange { get; }
+		// The 'OldSelectedCharacterRange' property has manual bindings.
 	}
 
 	partial interface NSTextViewWillChangeNotifyingTextViewEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSOldNotifyingTextView")]
-		NSTextView OldView { get; }
-
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSNewNotifyingTextView")]
-		NSTextView NewView { get; }
+		// The 'OldView' and 'NewView' properties have manual bindings.
 	}
 
 	partial interface NSTextView : NSTextLayoutOrientationProvider {
@@ -28785,11 +28804,7 @@ namespace AppKit {
 	}
 
 	partial interface NSControlTextEditingEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSFieldEditor")]
-		NSTextView FieldEditor { get; }
+		// The 'FieldEditor' property has manual bindings.
 	}
 
 	partial interface NSControl {
@@ -29083,11 +29098,7 @@ namespace AppKit {
 	}*/
 
 	interface NSTextAlternativesSelectedAlternativeStringEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSAlternativeString")]
-		string AlternativeString { get; }
+		// The 'AlternativeString' property has manual bindings.
 	}
 
 	[NoMacCatalyst]
@@ -29218,19 +29229,11 @@ namespace AppKit {
 	}
 
 	partial interface NSMenuItemIndexEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSMenuItemIndex")]
-		nint MenuItemIndex { get; }
+		// The 'MenuItemIndex' property has manual bindings.
 	}
 
 	partial interface NSMenuItemEventArgs {
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("MenuItem")]
-		NSMenu MenuItem { get; }
+		// The 'MenuItem' property has manual bindings.
 	}
 
 	partial interface NSMenu {
@@ -29299,14 +29302,7 @@ namespace AppKit {
 
 	[NoMacCatalyst]
 	partial interface NSTextDidEndEditingEventArgs {
-		// FIXME: I think this is essentially a flags value
-		// of movements and characters. The docs are a bit
-		// confusing.
-		/// <summary>To be added.</summary>
-		///         <value>To be added.</value>
-		///         <remarks>To be added.</remarks>
-		[Export ("NSTextMovement")]
-		nint Movement { get; }
+		// The 'Movement' property has manual bindings.
 	}
 
 	partial interface NSText {

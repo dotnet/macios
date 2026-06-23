@@ -11,7 +11,6 @@
     <RootNamespace>Xamarin.MMP.Tests</RootNamespace>
     <AssemblyName>mmptest</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,8 +37,7 @@
     <PackageReference Include="NUnit.Extension.NUnitV2ResultWriter" Version="3.6.0" />
     <Reference Include="mmp">
       <Aliases>global,mmp</Aliases>
-      <HintPath Condition="$(TESTS_USE_SYSTEM) == ''">..\..\_mac-build\Library\Frameworks\Xamarin.Mac.framework\Versions\git\lib\mmp\mmp.exe</HintPath>
-      <HintPath Condition="$(TESTS_USE_SYSTEM) != ''">\Library\Frameworks\Xamarin.Mac.framework\Versions\Current\lib\mmp\mmp.exe</HintPath>
+      <HintPath>..\..\_mac-build\Library\Frameworks\Xamarin.Mac.framework\Versions\git\lib\mmp\mmp.exe</HintPath>
     </Reference>
     <PackageReference Include="Mono.Cecil" Version="$(MonoCecilPackageVersion)" />
     <PackageReference Include="MSBuild.StructuredLogger" Version="$(MSBuildStructuredLoggerPackageVersion)" />

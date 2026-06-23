@@ -58,18 +58,18 @@ namespace Mono.ApiTools {
 			get { return "assembly"; }
 		}
 
-		public string SourceAssembly { get; private set; }
-		public string TargetAssembly { get; private set; }
+		public string SourceAssembly { get; private set; } = "";
+		public string TargetAssembly { get; private set; } = "";
 
 		public void Compare ()
 		{
-			Compare (source.Element ("assemblies").Elements ("assembly"),
-					 target.Element ("assemblies").Elements ("assembly"));
+			Compare (source.Element ("assemblies")!.Elements ("assembly"),
+					 target.Element ("assemblies")!.Elements ("assembly"));
 		}
 
 		public override void SetContext (XElement current)
 		{
-			State.Assembly = current.GetAttribute ("name");
+			State.Assembly = current.GetAttribute ("name") ?? "";
 		}
 
 		public override void Added (XElement target, bool wasParentAdded)
@@ -79,13 +79,13 @@ namespace Mono.ApiTools {
 
 		public override void Modified (XElement source, XElement target, ApiChanges diff)
 		{
-			SourceAssembly = source.GetAttribute ("name");
-			TargetAssembly = target.GetAttribute ("name");
+			SourceAssembly = source.GetAttribute ("name") ?? "";
+			TargetAssembly = target.GetAttribute ("name") ?? "";
 
 			var sb = source.GetAttribute ("version");
 			var tb = target.GetAttribute ("version");
 			if (sb != tb) {
-				Output.WriteLine ("<h4>Assembly Version Changed: {0} -> {1}</h4>", sb, tb);
+				Output.WriteLine ("<h4>Assembly Version Changed: {0} -> {1}</h4>", sb ?? "", tb ?? "");
 				Output.WriteLine ();
 			}
 

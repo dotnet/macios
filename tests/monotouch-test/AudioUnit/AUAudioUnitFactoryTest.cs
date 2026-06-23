@@ -32,9 +32,8 @@ namespace MonoTouchFixtures.AudioUnit {
 			using (var auFactory = new CustomAudioUnitFactory ()) {
 				NSError error;
 				using (var audioUnit = auFactory.CreateAudioUnit (desc, out error)) {
-					Assert.True (audioUnit is not null, "CustomAudioUnitFactory returned null object for valid component description");
-					Assert.True (audioUnit.ManufacturerName == expectedManufacturer,
-						$"CustomAudioUnitFactory returned audio unit with incorrect manufacturer. Expected - {expectedManufacturer}, actual - {audioUnit.ManufacturerName}");
+					Assert.That (audioUnit is not null, Is.True, "CustomAudioUnitFactory returned null object for valid component description");
+					Assert.That (audioUnit.ManufacturerName == expectedManufacturer, Is.True, $"CustomAudioUnitFactory returned audio unit with incorrect manufacturer. Expected - {expectedManufacturer}, actual - {audioUnit.ManufacturerName}");
 				}
 			}
 		}

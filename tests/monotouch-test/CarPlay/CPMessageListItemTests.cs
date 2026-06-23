@@ -33,13 +33,13 @@ namespace MonoTouchFixtures.CarPlay {
 			var trailingItemConfig = new CPMessageListItemTrailingConfiguration (new CPMessageTrailingItem (), null);
 			CPMessageListItem listItem = new CPMessageListItem ("convoId", "text", leadingItemConfig, trailingItemConfig, "detailText", "trailingText", CPMessageListItemType.Identifier);
 
-			Assert.NotNull (listItem, "CPMessageListItem not be null.");
-			Assert.AreEqual (listItem.Text, "text");
-			Assert.AreEqual (listItem.ConversationIdentifier, "convoId");
-			Assert.AreSame (listItem.LeadingConfiguration, leadingItemConfig);
-			Assert.AreSame (listItem.TrailingConfiguration, trailingItemConfig);
-			Assert.AreEqual (listItem.DetailText, "detailText");
-			Assert.AreEqual (listItem.TrailingText, "trailingText");
+			Assert.That (listItem, Is.Not.Null, "CPMessageListItem not be null.");
+			Assert.That (listItem.Text, Is.EqualTo ("text"));
+			Assert.That (listItem.ConversationIdentifier, Is.EqualTo ("convoId"));
+			Assert.That (leadingItemConfig, Is.SameAs (listItem.LeadingConfiguration));
+			Assert.That (trailingItemConfig, Is.SameAs (listItem.TrailingConfiguration));
+			Assert.That (listItem.DetailText, Is.EqualTo ("detailText"));
+			Assert.That (listItem.TrailingText, Is.EqualTo ("trailingText"));
 		}
 
 		[Test]
@@ -49,13 +49,13 @@ namespace MonoTouchFixtures.CarPlay {
 			var trailingItemConfig = new CPMessageListItemTrailingConfiguration (new CPMessageTrailingItem (), null);
 			CPMessageListItem listItem = new CPMessageListItem ("fullName", "phoneOrEmail", leadingItemConfig, trailingItemConfig, "detailText", "trailingText", CPMessageListItemType.FullName);
 
-			Assert.NotNull (listItem, "CPMessageListItem not be null.");
-			Assert.AreEqual (listItem.Text, "fullName");
-			Assert.AreEqual (listItem.PhoneOrEmailAddress, "phoneOrEmail");
-			Assert.AreSame (listItem.LeadingConfiguration, leadingItemConfig);
-			Assert.AreSame (listItem.TrailingConfiguration, trailingItemConfig);
-			Assert.AreEqual (listItem.DetailText, "detailText");
-			Assert.AreEqual (listItem.TrailingText, "trailingText");
+			Assert.That (listItem, Is.Not.Null, "CPMessageListItem not be null.");
+			Assert.That (listItem.Text, Is.EqualTo ("fullName"));
+			Assert.That (listItem.PhoneOrEmailAddress, Is.EqualTo ("phoneOrEmail"));
+			Assert.That (leadingItemConfig, Is.SameAs (listItem.LeadingConfiguration));
+			Assert.That (trailingItemConfig, Is.SameAs (listItem.TrailingConfiguration));
+			Assert.That (listItem.DetailText, Is.EqualTo ("detailText"));
+			Assert.That (listItem.TrailingText, Is.EqualTo ("trailingText"));
 		}
 
 	}

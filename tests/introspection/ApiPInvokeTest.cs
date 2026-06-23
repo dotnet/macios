@@ -170,13 +170,13 @@ namespace Introspection {
 
 				IntPtr lib = Dlfcn.dlopen (path, 0);
 				if (Dlfcn.GetIndirect (lib, name) == IntPtr.Zero && !failed_api.Contains (name)) {
-					ReportError ("Could not find the field '{0}' in {1}", name, path);
+					ReportError ("Could not find the symbol '{0}' in {1}", name, path);
 					failed_api.Add (name);
 				}
 				Dlfcn.dlclose (lib);
 				n++;
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} functions validated: {2}", Errors, n, string.Join (", ", failed_api));
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} functions validated: {string.Join (", ", failed_api)}");
 		}
 
 		bool SkipDueToDeviceCapabilities (Type type)
@@ -282,7 +282,7 @@ namespace Introspection {
 					n++;
 				}
 			}
-			Assert.AreEqual (0, Errors, "{0} errors found in {1} symbol lookups{2}", Errors, n, Errors == 0 ? string.Empty : ":\n" + ErrorData.ToString () + "\n");
+			Assert.That (Errors, Is.EqualTo (0), $"{Errors} errors found in {n} symbol lookups:\n{ErrorData}\n");
 		}
 
 		protected string ResolveLibrarySymlinks (string path)

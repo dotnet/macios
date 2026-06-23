@@ -117,7 +117,7 @@ namespace Xamarin.MacDev.Tasks {
 					return "Entitlements.plist";
 				}
 
-				return Path.Combine (Sdks.GetAppleSdk (TargetFrameworkMoniker).GetSdkPath (SdkVersion, false), "Entitlements.plist");
+				return Path.Combine (CurrentSdk.GetSdkPath (SdkVersion, false), "Entitlements.plist");
 			}
 		}
 
@@ -526,7 +526,7 @@ namespace Xamarin.MacDev.Tasks {
 			}
 			if (injectDefaultEntitlements) {
 				try {
-					var defaultEntitlements = PDictionary.FromFile (DefaultEntitlementsPath)!;
+					var defaultEntitlements = PDictionary.OpenFile (DefaultEntitlementsPath);
 					templates.Add (defaultEntitlements);
 					Log.LogMessage (MessageImportance.Low, $"Loading default entitlements from: {DefaultEntitlementsPath}");
 				} catch (Exception ex) {
@@ -541,7 +541,7 @@ namespace Xamarin.MacDev.Tasks {
 						Log.LogError (MSBStrings.E0112, Entitlements);
 						return false;
 					}
-					var projectEntitlements = PDictionary.FromFile (Entitlements)!;
+					var projectEntitlements = PDictionary.OpenFile (Entitlements);
 					templates.Add (projectEntitlements);
 					Log.LogMessage (MessageImportance.Low, $"Loading user requested entitlements from: {Entitlements}");
 				} catch (Exception ex) {
@@ -609,7 +609,7 @@ namespace Xamarin.MacDev.Tasks {
 			var path = Path.Combine (EntitlementBundlePath, "archived-expanded-entitlements.xcent");
 
 			if (File.Exists (path)) {
-				var plist = PDictionary.FromFile (path)!;
+				var plist = PDictionary.OpenFile (path);
 				var src = archived.ToXml ();
 				var dest = plist.ToXml ();
 
@@ -789,6 +789,7 @@ namespace Xamarin.MacDev.Tasks {
 					new EntitlementData ("com.apple.developer.on-demand-install-capable", iOS, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.developer.parent-application-identifiers", iOS, EntitlementType.ArrayOfStrings ),
 					new EntitlementData ("com.apple.developer.pass-type-identifiers", iOS, EntitlementType.ArrayOfStrings ),
+					new EntitlementData ("com.apple.developer.payment-pass-provisioning", iOS, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.developer.persistent-content-capture", desktop, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.developer.playable-content", iOS, EntitlementType.Boolean ),
 					new EntitlementData ("com.apple.developer.proximity-reader.identity.display", iOS, EntitlementType.Boolean ),

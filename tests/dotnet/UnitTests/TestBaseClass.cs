@@ -133,6 +133,9 @@ namespace Xamarin.Tests {
 
 		protected static string GetProjectPath (string project, string? subdir = null, ApplePlatform? platform = null)
 		{
+			if (TryGetTestProjectPath (project, platform ?? ApplePlatform.None, out var testProjectPath))
+				return testProjectPath;
+
 			var project_dir = Path.Combine (Configuration.SourceRoot, "tests", "dotnet", project);
 			if (!string.IsNullOrEmpty (subdir))
 				project_dir = Path.Combine (project_dir, subdir);
@@ -152,6 +155,18 @@ namespace Xamarin.Tests {
 				throw new FileNotFoundException ($"Could not find the project or solution {project} - {project_path} does not exist.");
 
 			return project_path;
+		}
+
+		static bool TryGetTestProjectPath (string project, ApplePlatform platform, [NotNullWhen (true)] out string? projectPath)
+		{
+			projectPath = null;
+
+			switch (project) {
+			case "monotouch-test":
+				projectPath = Path.Combine (Configuration.SourceRoot, "tests", project, "dotnet", platform.AsString (), project + ".csproj");
+				return true;
+			}
+			return false;
 		}
 
 		protected string GetPlugInsRelativePath (ApplePlatform platform)
@@ -492,7 +507,7 @@ namespace Xamarin.Tests {
 				Console.WriteLine ($"'{executable} {StringUtils.FormatArguments (arguments)}' exited with exit code {rv}:");
 				Console.WriteLine ("\t" + output.ToString ().Replace ("\n", "\n\t").TrimEnd (new char [] { '\n', '\t' }));
 			}
-			Assert.AreEqual (0, rv, $"Unable to execute '{executable} {StringUtils.FormatArguments (arguments)}': exit code {rv}");
+			Assert.That (rv, Is.EqualTo (0), $"Unable to execute '{executable} {StringUtils.FormatArguments (arguments)}': exit code {rv}");
 			return output;
 		}
 
@@ -528,9 +543,9 @@ namespace Xamarin.Tests {
 				nativeExecutable
 			};
 			var rv = ExecutionHelper.Execute ("codesign", args, out var codesignOutput, TimeSpan.FromSeconds (15));
-			Assert.AreEqual (0, rv, $"'codesign {string.Join (" ", args)}' failed:\n{codesignOutput}");
+			Assert.That (rv, Is.EqualTo (0), $"'codesign {string.Join (" ", args)}' failed:\n{codesignOutput}");
 			if (File.Exists (entitlementsPath)) {
-				entitlements = PDictionary.FromFile (entitlementsPath);
+				entitlements = PDictionary.OpenFile (entitlementsPath);
 				return entitlements is not null;
 			}
 			entitlements = null;

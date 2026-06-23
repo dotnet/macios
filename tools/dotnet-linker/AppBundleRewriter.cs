@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -52,9 +53,25 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		AssemblyDefinition? system_console_assembly;
+		public AssemblyDefinition SystemConsoleAssembly {
+			get {
+				if (system_console_assembly is null) {
+					system_console_assembly = configuration.Assemblies.SingleOrDefault (v => v.Name.Name == "System.Console")!;
+					if (system_console_assembly is null) {
+						system_console_assembly = CorlibAssembly.MainModule.AssemblyResolver.Resolve (new AssemblyNameReference ("System.Console", CorlibAssembly.MainModule.Assembly.Name.Version));
+						if (system_console_assembly is null)
+							throw ErrorHelper.CreateError (99, "Unable to find System.Console assembly");
+					}
+				}
+				return system_console_assembly;
+			}
+		}
+
 		Dictionary<AssemblyDefinition, Dictionary<string, (TypeDefinition, TypeReference)>> type_map = new ();
 		Dictionary<string, (MethodDefinition, MethodReference)> method_map = new ();
 		Dictionary<string, (FieldDefinition, FieldReference)> field_map = new ();
+		Dictionary<string, TypeDefinition> created_types = new ();
 
 		public AppBundleRewriter (LinkerConfiguration configuration)
 		{
@@ -63,6 +80,8 @@ namespace Xamarin.Linker {
 			// Find corlib and the platform assemblies
 			foreach (var asm in configuration.Assemblies) {
 				if (asm.Name.Name == Driver.CorlibName) {
+					if (corlib_assembly is not null)
+						throw new InvalidOperationException ($"Already have a corlib assembly named {corlib_assembly.Name}");
 					corlib_assembly = asm;
 				} else if (asm.Name.Name == configuration.PlatformAssembly) {
 					platform_assembly = asm;
@@ -125,7 +144,7 @@ namespace Xamarin.Linker {
 				method_map.Add (key, tuple);
 
 				// Make the method public so that we can call it.
-				if (!md.IsPublic) {
+				if (!md.IsPublic && md.DeclaringType.Module.Assembly.FullName != CorlibAssembly.FullName) {
 					md.IsPublic = true;
 					SaveAssembly (md.Module.Assembly);
 				}
@@ -199,6 +218,12 @@ namespace Xamarin.Linker {
 
 		/* Types */
 
+		public TypeReference System_Attribute {
+			get {
+				return GetTypeReference (CorlibAssembly, "System.Attribute", out var _);
+			}
+		}
+
 		public TypeReference System_Boolean {
 			get {
 				return CurrentAssembly.MainModule.ImportReference (CorlibAssembly.MainModule.TypeSystem.Boolean);
@@ -211,6 +236,11 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public TypeReference System_Console {
+			get {
+				return GetTypeReference (SystemConsoleAssembly, "System.Console", out var _);
+			}
+		}
 		public TypeReference System_Delegate {
 			get {
 				return GetTypeReference (CorlibAssembly, "System.Delegate", out var _);
@@ -222,6 +252,13 @@ namespace Xamarin.Linker {
 				return GetTypeReference (CorlibAssembly, "System.Exception", out var _);
 			}
 		}
+
+		public TypeReference System_GC {
+			get {
+				return GetTypeReference (CorlibAssembly, "System.GC", out var _);
+			}
+		}
+
 		public TypeReference System_Int32 {
 			get {
 				return CurrentAssembly.MainModule.ImportReference (CorlibAssembly.MainModule.TypeSystem.Int32);
@@ -372,6 +409,12 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public TypeReference Foundation_ProtocolAttribute {
+			get {
+				return GetTypeReference (PlatformAssembly, "Foundation.ProtocolAttribute", out var _);
+			}
+		}
+
 		public TypeReference ObjCRuntime_BindAs {
 			get {
 				return GetTypeReference (PlatformAssembly, "ObjCRuntime.BindAs", out var _);
@@ -381,6 +424,18 @@ namespace Xamarin.Linker {
 		public TypeReference ObjCRuntime_BlockLiteral {
 			get {
 				return GetTypeReference (PlatformAssembly, "ObjCRuntime.BlockLiteral", out var _);
+			}
+		}
+
+		public TypeReference ObjCRuntime_Class {
+			get {
+				return GetTypeReference (PlatformAssembly, "ObjCRuntime.Class", out var _);
+			}
+		}
+
+		public TypeReference ObjCRuntime_Dlfcn {
+			get {
+				return GetTypeReference (PlatformAssembly, "ObjCRuntime.Dlfcn", out var _);
 			}
 		}
 
@@ -402,6 +457,12 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public TypeReference ObjCRuntime_INativeObjectProxyAttribute {
+			get {
+				return GetTypeReference (PlatformAssembly, "ObjCRuntime.INativeObjectProxyAttribute", out var _);
+			}
+		}
+
 		public TypeReference ObjCRuntime_NativeHandle {
 			get {
 				return GetTypeReference (PlatformAssembly, "ObjCRuntime.NativeHandle", out var _);
@@ -411,6 +472,24 @@ namespace Xamarin.Linker {
 		public TypeReference ObjCRuntime_NativeObjectExtensions {
 			get {
 				return GetTypeReference (PlatformAssembly, "ObjCRuntime.NativeObjectExtensions", out var _);
+			}
+		}
+
+		public TypeReference ObjCRuntime_NSObjectProxyAttribute {
+			get {
+				return GetTypeReference (PlatformAssembly, "ObjCRuntime.NSObjectProxyAttribute", out var _);
+			}
+		}
+
+		public TypeReference ObjCRuntime_ObjectiveCFrameworkAttribute {
+			get {
+				return GetTypeReference (PlatformAssembly, "ObjCRuntime.ObjectiveCFrameworkAttribute", out var _);
+			}
+		}
+
+		public TypeReference ObjCRuntime_ProtocolProxyAttribute {
+			get {
+				return GetTypeReference (PlatformAssembly, "ObjCRuntime.ProtocolProxyAttribute", out var _);
 			}
 		}
 
@@ -432,11 +511,59 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public TypeReference ObjCRuntime_SkippedObjectiveCTypeUniverse {
+			get {
+				return GetTypeReference (PlatformAssembly, "ObjCRuntime.SkippedObjectiveCTypeUniverse", out var _);
+			}
+		}
+
 		/* Methods */
+
+		public MethodReference System_Attribute__ctor {
+			get {
+				return GetMethodReference (CorlibAssembly, System_Attribute, ".ctor", (v) => v.IsDefaultConstructor ());
+			}
+		}
+
+		public MethodReference System_Console__WriteLine_String_Object {
+			get {
+				return GetMethodReference (SystemConsoleAssembly, System_Console, "WriteLine", (v) =>
+					v.IsStatic
+					&& v.HasParameters
+					&& v.Parameters.Count == 2
+					&& v.Parameters [0].ParameterType.Is ("System", "String")
+					&& v.Parameters [1].ParameterType.Is ("System", "Object")
+					&& !v.HasGenericParameters);
+			}
+		}
+
+		public MethodReference System_GC__KeepAlive {
+			get {
+				return GetMethodReference (CorlibAssembly, System_GC, "KeepAlive", (v) =>
+					v.IsStatic
+					&& v.HasParameters
+					&& v.Parameters.Count == 1
+					&& v.Parameters [0].ParameterType.Is ("System", "Object")
+					&& !v.HasGenericParameters);
+			}
+		}
 
 		public MethodReference System_Object__ctor {
 			get {
 				return GetMethodReference (CorlibAssembly, System_Object, ".ctor", (v) => v.IsDefaultConstructor ());
+			}
+		}
+
+		public MethodReference System_String__op_Equality_String_String {
+			get {
+				return GetMethodReference (CorlibAssembly, System_String, "op_Equality", (v) =>
+					v.IsStatic
+					&& v.HasParameters
+					&& v.Parameters.Count == 2
+					&& v.Parameters [0].ParameterType.Is ("System", "String")
+					&& v.Parameters [1].ParameterType.Is ("System", "String")
+					&& v.ReturnType.Is ("System", "Boolean")
+					&& !v.HasGenericParameters);
 			}
 		}
 
@@ -449,6 +576,12 @@ namespace Xamarin.Linker {
 		public MethodReference Nullable_Value {
 			get {
 				return GetMethodReference (CorlibAssembly, System_Nullable_1, "get_Value", isStatic: false);
+			}
+		}
+
+		public MethodReference Nullable_ctor {
+			get {
+				return GetMethodReference (CorlibAssembly, System_Nullable_1, ".ctor", isStatic: false, System_Nullable_1.GenericParameters [0]);
 			}
 		}
 
@@ -619,6 +752,46 @@ namespace Xamarin.Linker {
 						&& v.Parameters [2].ParameterType is FunctionPointerType fpt2
 						&& v.HasGenericParameters
 						&& v.GenericParameters.Count == 2);
+			}
+		}
+
+		public MethodReference Class_GetHandle__System_String {
+			get {
+				return GetMethodReference (PlatformAssembly, ObjCRuntime_Class, "GetHandle", (v) =>
+						v.IsStatic
+						&& v.HasParameters
+						&& v.Parameters.Count == 1
+						&& v.Parameters [0].ParameterType.Is ("System", "String")
+						&& !v.HasGenericParameters);
+			}
+		}
+
+		public MethodReference ObjectiveCFrameworkAttribute_ctor_String {
+			get {
+				return GetMethodReference (PlatformAssembly, ObjCRuntime_ObjectiveCFrameworkAttribute, ".ctor", (v) =>
+						v.IsConstructor
+						&& v.HasParameters
+						&& v.Parameters.Count == 1
+						&& v.Parameters [0].ParameterType.Is ("System", "String")
+						&& !v.HasGenericParameters);
+			}
+		}
+
+		public MethodReference ObjCRuntime_INativeObjectProxyAttribute__ctor {
+			get {
+				return GetMethodReference (PlatformAssembly, ObjCRuntime_INativeObjectProxyAttribute, ".ctor", (v) => v.IsDefaultConstructor ());
+			}
+		}
+
+		public MethodReference ObjCRuntime_NSObjectProxy__ctor {
+			get {
+				return GetMethodReference (PlatformAssembly, ObjCRuntime_NSObjectProxyAttribute, ".ctor", (v) => v.IsDefaultConstructor ());
+			}
+		}
+
+		public MethodReference ObjCRuntime_ProtocolProxy__ctor {
+			get {
+				return GetMethodReference (PlatformAssembly, ObjCRuntime_ProtocolProxyAttribute, ".ctor", (v) => v.IsDefaultConstructor ());
 			}
 		}
 
@@ -1196,6 +1369,55 @@ namespace Xamarin.Linker {
 			}
 		}
 
+		public MethodReference TypeMapAttribute_1_Constructor_String_Type {
+			get {
+				GetTypeReference (CorlibAssembly, "System.Runtime.InteropServices.TypeMapAttribute`1", out var td);
+				return GetMethodReference (CorlibAssembly, td, ".ctor",
+						"System.Runtime.InteropServices.TypeMapAttribute`1::.ctor(string,Type)",
+						(v) =>
+						!v.IsStatic
+						&& v.HasParameters
+						&& v.Parameters.Count == 2
+						&& v.Parameters [0].ParameterType.Is ("System", "String")
+						&& v.Parameters [1].ParameterType.Is ("System", "Type"));
+			}
+		}
+
+		public MethodReference TypeMapAttribute_1_Constructor_String_Type_Type {
+			get {
+				GetTypeReference (CorlibAssembly, "System.Runtime.InteropServices.TypeMapAttribute`1", out var td);
+				return GetMethodReference (CorlibAssembly, td, ".ctor",
+						"System.Runtime.InteropServices.TypeMapAttribute`1::.ctor(string,Type,Type)",
+						(v) =>
+						!v.IsStatic
+						&& v.HasParameters
+						&& v.Parameters.Count == 3
+						&& v.Parameters [0].ParameterType.Is ("System", "String")
+						&& v.Parameters [1].ParameterType.Is ("System", "Type")
+						&& v.Parameters [2].ParameterType.Is ("System", "Type"));
+			}
+		}
+
+		public MethodReference TypeMapAssemblyTargetAttribute_1_Constructor_String_Type_Type {
+			get {
+				return GetMethodReference (CorlibAssembly, "System.Runtime.InteropServices.TypeMapAssemblyTargetAttribute`1", ".ctor", (v) =>
+						!v.IsStatic
+						&& v.HasParameters
+						&& v.Parameters.Count == 1
+						&& v.Parameters [0].ParameterType.Is ("System", "String"));
+			}
+		}
+		public MethodReference TypeMapAssociationAttribute_1_Constructor_Type_Type {
+			get {
+				return GetMethodReference (CorlibAssembly, "System.Runtime.InteropServices.TypeMapAssociationAttribute`1", ".ctor", (v) =>
+						!v.IsStatic
+						&& v.HasParameters
+						&& v.Parameters.Count == 2
+						&& v.Parameters [0].ParameterType.Is ("System", "Type")
+						&& v.Parameters [1].ParameterType.Is ("System", "Type"));
+			}
+		}
+
 		public MethodReference Unsafe_AsRef {
 			get {
 				return GetMethodReference (CorlibAssembly, "System.Runtime.CompilerServices.Unsafe", "AsRef", (v) =>
@@ -1207,7 +1429,6 @@ namespace Xamarin.Linker {
 			}
 		}
 
-#if NET
 		public bool TryGet_NSObject_RegisterToggleRef ([NotNullWhen (true)] out MethodDefinition? md)
 		{
 			// the NSObject.RegisterToggleRef method isn't present on all platforms (for example on Mac)
@@ -1219,7 +1440,6 @@ namespace Xamarin.Linker {
 				return false;
 			}
 		}
-#endif
 
 		public void SetCurrentAssembly (AssemblyDefinition value)
 		{
@@ -1238,6 +1458,7 @@ namespace Xamarin.Linker {
 			var annotations = configuration.Context.Annotations;
 			var action = annotations.GetAction (assembly);
 			if (action == AssemblyAction.Copy) {
+#if !ASSEMBLY_PREPARER
 				// Preserve TypeForwardedTo which would the linker sweep otherwise
 				// Note that the linker will sweep type forwarders even if the assembly isn't trimmed:
 				// https://github.com/dotnet/runtime/blob/9dd59af3aee2f403e63887afef50d98022a2e575/src/tools/illink/src/linker/Linker.Steps/SweepStep.cs#L191-L200
@@ -1246,6 +1467,7 @@ namespace Xamarin.Linker {
 						annotations.Mark (type);
 					}
 				}
+#endif // !ASSEMBLY_PREPARER
 				annotations.SetAction (assembly, AssemblyAction.Save);
 			}
 		}
@@ -1256,6 +1478,17 @@ namespace Xamarin.Linker {
 			type_map.Clear ();
 			method_map.Clear ();
 			field_map.Clear ();
+			created_types.Clear ();
+		}
+
+		public CustomAttribute CreateAttribute (MethodReference constructor)
+		{
+#if !ASSEMBLY_PREPARER
+			// For some reason the trimmer doesn't mark attribute constructors
+			// This is probably only needed when running as a custom linker step.
+			configuration.Context.Annotations.Mark (constructor.Resolve ());
+#endif // !ASSEMBLY_PREPARER
+			return new CustomAttribute (constructor);
 		}
 
 		// We only need to add dependency attributes if the target dependency is in a trimmed assembly,
@@ -1273,8 +1506,7 @@ namespace Xamarin.Linker {
 				return false;
 
 			if (addToMethod.DeclaringType == dependsOn.DeclaringType) {
-				var attribute = new CustomAttribute (DynamicDependencyAttribute_ctor__String);
-				attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, DocumentationComments.GetSignature (dependsOn)));
+				var attribute = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (dependsOn));
 				return AddAttributeOnlyOnce (addToMethod, attribute);
 			} else if (addToMethod.DeclaringType.Module == dependsOn.DeclaringType.Module) {
 				var attribute = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (dependsOn), dependsOn.DeclaringType);
@@ -1290,9 +1522,16 @@ namespace Xamarin.Linker {
 			if (type.HasGenericParameters)
 				return CreateDynamicDependencyAttribute (memberSignature, type, type.Module.Assembly);
 
-			var attribute = new CustomAttribute (DynamicDependencyAttribute_ctor__String_Type);
+			var attribute = CreateAttribute (DynamicDependencyAttribute_ctor__String_Type);
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, memberSignature));
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Type, type));
+			return attribute;
+		}
+
+		public CustomAttribute CreateDynamicDependencyAttribute (string memberSignature)
+		{
+			var attribute = CreateAttribute (DynamicDependencyAttribute_ctor__String);
+			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, memberSignature));
 			return attribute;
 		}
 
@@ -1301,9 +1540,14 @@ namespace Xamarin.Linker {
 			return CreateDynamicDependencyAttribute (memberSignature, DocumentationComments.GetSignature (type), assembly.Name.Name);
 		}
 
+		public CustomAttribute CreateDynamicDependencyAttribute (string memberSignature, string typeName, AssemblyDefinition assembly)
+		{
+			return CreateDynamicDependencyAttribute (memberSignature, typeName, assembly.Name.Name);
+		}
+
 		public CustomAttribute CreateDynamicDependencyAttribute (string memberSignature, string typeName, string assemblyName)
 		{
-			var attribute = new CustomAttribute (DynamicDependencyAttribute_ctor__String_String_String);
+			var attribute = CreateAttribute (DynamicDependencyAttribute_ctor__String_String_String);
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, memberSignature));
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, typeName));
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_String, assemblyName));
@@ -1312,7 +1556,7 @@ namespace Xamarin.Linker {
 
 		public CustomAttribute CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes memberTypes, TypeDefinition type)
 		{
-			var attribute = new CustomAttribute (DynamicDependencyAttribute_ctor__DynamicallyAccessedMemberTypes_Type);
+			var attribute = CreateAttribute (DynamicDependencyAttribute_ctor__DynamicallyAccessedMemberTypes_Type);
 			// typed as 'int' because that's how the linker expects it: https://github.com/dotnet/runtime/blob/3c5ad6c677b4a3d12bc6a776d654558cca2c36a9/src/tools/illink/src/linker/Linker/DynamicDependency.cs#L97
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Diagnostics_CodeAnalysis_DynamicallyAccessedMemberTypes, (int) memberTypes));
 			attribute.ConstructorArguments.Add (new CustomAttributeArgument (System_Type, type));
@@ -1326,7 +1570,16 @@ namespace Xamarin.Linker {
 		/// <param name="forMethod">The method that is the target of the dynamic dependency.</param>
 		public bool AddDynamicDependencyAttributeToStaticConstructor (TypeDefinition onType, MethodDefinition forMethod)
 		{
-			var attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod), forMethod.DeclaringType, forMethod.Module.Assembly);
+			CustomAttribute attrib;
+
+			if (onType == forMethod.DeclaringType) {
+				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod));
+			} else if (onType.Module == forMethod.DeclaringType.Module) {
+				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod), forMethod.DeclaringType);
+			} else {
+				attrib = CreateDynamicDependencyAttribute (DocumentationComments.GetSignature (forMethod), forMethod.DeclaringType, forMethod.Module.Assembly);
+			}
+
 			return AddAttributeToStaticConstructor (onType, attrib);
 		}
 
@@ -1375,13 +1628,6 @@ namespace Xamarin.Linker {
 		{
 			var cctor = GetOrCreateStaticConstructor (onType, out var modified);
 			modified |= AddAttributeOnlyOnce (cctor, attribute);
-
-			// Remove the BeforeFieldInit attribute from the type, otherwise the linker may trim away the static constructor, and taking our attributes with it.
-			if (onType.Attributes.HasFlag (TypeAttributes.BeforeFieldInit)) {
-				onType.Attributes &= ~TypeAttributes.BeforeFieldInit;
-				modified = true;
-			}
-
 			return modified;
 		}
 
@@ -1394,8 +1640,20 @@ namespace Xamarin.Linker {
 				staticCtor = type.AddMethod (".cctor", MethodAttributes.Private | MethodAttributes.HideBySig | MethodAttributes.RTSpecialName | MethodAttributes.SpecialName | MethodAttributes.Static, System_Void);
 				staticCtor.CreateBody (out var il);
 				il.Emit (OpCodes.Ret);
-
 				modified = true;
+			}
+
+			// Remove the BeforeFieldInit attribute from the type, otherwise the linker may trim away the static constructor, and taking our attributes with it.
+			if (type.Attributes.HasFlag (TypeAttributes.BeforeFieldInit)) {
+				type.Attributes &= ~TypeAttributes.BeforeFieldInit;
+				modified = true;
+			}
+
+			if (!staticCtor.Body.Instructions.Any (v => v.OpCode != OpCodes.Ret && v.OpCode != OpCodes.Nop)) {
+				// FIXME: improve workaround.
+				var body = staticCtor.Body;
+				body.Instructions.Insert (0, Instruction.Create (OpCodes.Call, this.System_GC__KeepAlive));
+				body.Instructions.Insert (0, Instruction.Create (OpCodes.Ldnull));
 			}
 
 			return staticCtor;
@@ -1472,6 +1730,224 @@ namespace Xamarin.Linker {
 				if (!debug_attributes.HasValue)
 					debug_attributes = !string.IsNullOrEmpty (Environment.GetEnvironmentVariable ("PRINT_ATTRIBUTES"));
 				return debug_attributes.Value;
+			}
+		}
+
+		public TypeDefinition GetOrCreateType (ModuleDefinition module, string @namespace, string @typename, out bool created)
+		{
+			created = false;
+
+			var fullName = @namespace + "." + typename;
+			if (!created_types.TryGetValue (fullName, out var cachedTypeDefinition)) {
+				cachedTypeDefinition = module.Types.FirstOrDefault (t => t.Namespace == @namespace && t.Name == typename);
+				if (cachedTypeDefinition is null) {
+					cachedTypeDefinition = new TypeDefinition (@namespace, typename, TypeAttributes.Public | TypeAttributes.Sealed, module.TypeSystem.Object);
+					module.Types.Add (cachedTypeDefinition);
+					created = true;
+				}
+				created_types [fullName] = cachedTypeDefinition;
+			}
+
+			return cachedTypeDefinition;
+		}
+
+		public MethodDefinition CreateInternalPInvoke (ModuleDefinition module, string @namespace, string @typename, string methodName, out bool created)
+		{
+			var cachedTypeDefinition = GetOrCreateType (module, @namespace, @typename, out _);
+			var nativeMethod = methodName;
+			var rv = cachedTypeDefinition.Methods.FirstOrDefault (m => m.Name == methodName);
+			if (rv is not null) {
+				created = false;
+				return rv; // already exists, no need to create it again
+			}
+
+			// [DllImport ("__Internal")]
+			// static extern IntPtr {methodName} ();
+
+			rv = new MethodDefinition (methodName, MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.PInvokeImpl, System_IntPtr);
+			rv.IsPreserveSig = true;
+
+			var mod = module.ModuleReferences.FirstOrDefault (mr => mr.Name == "__Internal");
+			if (mod is null) {
+				mod = new ModuleReference ("__Internal");
+				module.ModuleReferences.Add (mod);
+			}
+			rv.PInvokeInfo = new PInvokeInfo (PInvokeAttributes.CharSetNotSpec | PInvokeAttributes.CallConvCdecl, nativeMethod, mod);
+
+			cachedTypeDefinition.Methods.Add (rv);
+
+			created = true;
+
+			return rv;
+		}
+
+		internal static MethodDefinition? FindNSObjectConstructor (TypeDefinition type)
+		{
+			return FindConstructorWithOneParameter ("ObjCRuntime", "NativeHandle")
+				?? FindConstructorWithOneParameter ("System", "IntPtr");
+
+			MethodDefinition? FindConstructorWithOneParameter (string ns, string cls)
+				=> type.Methods.SingleOrDefault (method =>
+					method.IsConstructor
+						&& !method.IsStatic
+						&& method.HasParameters
+						&& method.Parameters.Count == 1
+						&& method.Parameters [0].ParameterType.Is (ns, cls));
+		}
+
+		internal static MethodDefinition? FindINativeObjectConstructor (TypeDefinition type)
+		{
+			return FindConstructorWithTwoParameters ("ObjCRuntime", "NativeHandle", "System", "Boolean")
+				?? FindConstructorWithTwoParameters ("System", "IntPtr", "System", "Boolean");
+
+			MethodDefinition? FindConstructorWithTwoParameters (string ns1, string cls1, string ns2, string cls2)
+				=> type.Methods.SingleOrDefault (method =>
+					method.IsConstructor
+						&& !method.IsStatic
+						&& method.HasParameters
+						&& method.Parameters.Count == 2
+						&& method.Parameters [0].ParameterType.Is (ns1, cls1)
+						&& method.Parameters [1].ParameterType.Is (ns2, cls2));
+		}
+
+		internal void ImplementConstructNSObjectFactoryMethod (Tuner.DerivedLinkContext context, TypeDefinition type, MethodReference ctor)
+		{
+			var abr = this;
+
+			// skip creating the factory for NSObject itself
+			if (type.Is ("Foundation", "NSObject"))
+				return;
+
+			// Make sure the type implements INSObjectFactory, otherwise we can't override the _Xamarin_ConstructNSObject method from it.
+			AddTypeInterfaceImplementation (abr, context, type, abr.Foundation_INSObjectFactory);
+
+			var createInstanceMethod = type.AddMethod ("_Xamarin_ConstructNSObject", MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.Foundation_NSObject);
+			var nativeHandleParameter = createInstanceMethod.AddParameter ("nativeHandle", abr.ObjCRuntime_NativeHandle);
+			abr.Foundation_INSObjectFactory.Resolve ().IsPublic = true;
+			createInstanceMethod.Overrides.Add (abr.INSObjectFactory__Xamarin_ConstructNSObject);
+			var body = createInstanceMethod.CreateBody (out var il);
+
+			if (type.HasGenericParameters) {
+				ctor = type.CreateMethodReferenceOnGenericType (ctor, type.GenericParameters.ToArray ());
+			}
+
+			// return new TypeA (nativeHandle); // for NativeHandle ctor
+			// return new TypeA ((IntPtr) nativeHandle); // for IntPtr ctor
+			il.Emit (OpCodes.Ldarg, nativeHandleParameter);
+			if (ctor.Parameters [0].ParameterType.Is ("System", "IntPtr"))
+				il.Emit (OpCodes.Call, abr.NativeObject_op_Implicit_IntPtr);
+			il.Emit (OpCodes.Newobj, ctor);
+			il.Emit (OpCodes.Ret);
+
+			body.GenerateILOffsets ();
+
+			// make sure the trimmer doesn't trim it away if the type is kept
+			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {
+				// TODO: need to investigate why this is needed (https://github.com/dotnet/macios/issues/25232)
+				abr.AddDynamicDependencyAttributeToStaticConstructor (type, createInstanceMethod);
+			} else {
+				context.Annotations.Mark (createInstanceMethod);
+			}
+		}
+
+		internal void ImplementConstructINativeObjectFactoryMethod (Tuner.DerivedLinkContext context, TypeDefinition type, MethodReference? ctor)
+		{
+			var abr = this;
+
+			// skip creating the factory for NSObject itself
+			if (type.Is ("Foundation", "NSObject"))
+				return;
+
+			// If the type is a subclass of NSObject, we prefer the NSObject "IntPtr" constructor
+			MethodReference? nsobjectConstructor = type.IsNSObject (context) ? AppBundleRewriter.FindNSObjectConstructor (type) : null;
+			if (nsobjectConstructor is null && ctor is null)
+				return;
+
+			// Make sure the type implements INativeObject, otherwise we can't override the _Xamarin_ConstructINativeObject method from it.
+			AddTypeInterfaceImplementation (abr, context, type, abr.ObjCRuntime_INativeObject);
+
+			var createInstanceMethod = type.AddMethod ("_Xamarin_ConstructINativeObject", MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.NewSlot | MethodAttributes.HideBySig, abr.ObjCRuntime_INativeObject);
+			var nativeHandleParameter = createInstanceMethod.AddParameter ("nativeHandle", abr.ObjCRuntime_NativeHandle);
+			var ownsParameter = createInstanceMethod.AddParameter ("owns", abr.System_Boolean);
+			abr.INativeObject__Xamarin_ConstructINativeObject.Resolve ().IsPublic = true;
+			createInstanceMethod.Overrides.Add (abr.INativeObject__Xamarin_ConstructINativeObject);
+			var body = createInstanceMethod.CreateBody (out var il);
+
+			if (nsobjectConstructor is not null) {
+				// var instance = new TypeA (nativeHandle);
+				// // alternatively with a cast: new TypeA ((IntPtr) nativeHandle);
+				// if (instance is not null && owns)
+				//     Runtime.TryReleaseINativeObject (instance);
+				// return instance;
+
+				if (type.HasGenericParameters) {
+					nsobjectConstructor = type.CreateMethodReferenceOnGenericType (nsobjectConstructor, type.GenericParameters.ToArray ());
+				}
+
+				il.Emit (OpCodes.Ldarg, nativeHandleParameter);
+				if (nsobjectConstructor.Parameters [0].ParameterType.Is ("System", "IntPtr"))
+					il.Emit (OpCodes.Call, abr.NativeObject_op_Implicit_IntPtr);
+				il.Emit (OpCodes.Newobj, nsobjectConstructor);
+
+				var falseTarget = il.Create (OpCodes.Nop);
+				il.Emit (OpCodes.Dup);
+				il.Emit (OpCodes.Ldnull);
+				il.Emit (OpCodes.Cgt_Un);
+				il.Emit (OpCodes.Ldarg, ownsParameter);
+				il.Emit (OpCodes.And);
+				il.Emit (OpCodes.Brfalse_S, falseTarget);
+
+				il.Emit (OpCodes.Dup);
+				il.Emit (OpCodes.Call, abr.Runtime_TryReleaseINativeObject);
+
+				il.Append (falseTarget);
+
+				il.Emit (OpCodes.Ret);
+			} else if (ctor is not null) {
+				// return new TypeA (nativeHandle, owns); // for NativeHandle ctor
+				// return new TypeA ((IntPtr) nativeHandle, owns); // IntPtr ctor
+
+				if (type.HasGenericParameters) {
+					ctor = type.CreateMethodReferenceOnGenericType (ctor, type.GenericParameters.ToArray ());
+				}
+
+				il.Emit (OpCodes.Ldarg, nativeHandleParameter);
+				if (ctor.Parameters [0].ParameterType.Is ("System", "IntPtr"))
+					il.Emit (OpCodes.Call, abr.NativeObject_op_Implicit_IntPtr);
+				il.Emit (OpCodes.Ldarg, ownsParameter);
+				il.Emit (OpCodes.Newobj, ctor);
+				il.Emit (OpCodes.Ret);
+			} else {
+				throw new UnreachableException ();
+			}
+
+			body.GenerateILOffsets ();
+
+			// make sure the trimmer doesn't trim it away if the type is kept
+			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {
+				// TODO: need to investigate why this is needed (https://github.com/dotnet/macios/issues/25232)
+				abr.AddDynamicDependencyAttributeToStaticConstructor (type, createInstanceMethod);
+			} else {
+				context.Annotations.Mark (createInstanceMethod);
+			}
+		}
+
+		static void AddTypeInterfaceImplementation (AppBundleRewriter abr, Tuner.DerivedLinkContext context, TypeDefinition type, TypeReference iface)
+		{
+			if (type.HasInterfaces && type.Interfaces.Any (v => v.InterfaceType == iface))
+				return;
+
+			var ifaceImplementation = new InterfaceImplementation (iface);
+			type.Interfaces.Add (ifaceImplementation);
+
+			// make sure the trimmer doesn't trim it away if the type is kept
+			if (context.App.Registrar == RegistrarMode.TrimmableStatic) {
+				// TODO: need to investigate why this is needed (https://github.com/dotnet/macios/issues/25232)
+				abr.AddAttributeToStaticConstructor (type, abr.CreateDynamicDependencyAttribute (DynamicallyAccessedMemberTypes.Interfaces, type));
+			} else {
+				context.Annotations.Mark (ifaceImplementation);
+				context.Annotations.Mark (ifaceImplementation.InterfaceType);
+				context.Annotations.Mark (ifaceImplementation.InterfaceType.Resolve ());
 			}
 		}
 	}

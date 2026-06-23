@@ -9,7 +9,7 @@ using Xamarin.Utils;
 
 namespace Xamarin.Bundler {
 	public class Optimizations {
-		static string [] opt_names =
+		static readonly string [] opt_names =
 		{
 			"remove-uithread-checks",
 			"dead-code-elimination",
@@ -31,7 +31,7 @@ namespace Xamarin.Bundler {
 			"redirect-class-handles",
 		};
 
-		static ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
+		static readonly ApplePlatform [] [] valid_platforms = new ApplePlatform [] [] {
 			/* Opt.RemoveUIThreadChecks               */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.DeadCodeElimination                */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
 			/* Opt.InlineIsDirectBinding              */ new ApplePlatform [] { ApplePlatform.iOS, ApplePlatform.MacOSX, ApplePlatform.TVOS, ApplePlatform.MacCatalyst },
@@ -172,7 +172,7 @@ namespace Xamarin.Bundler {
 					continue;
 
 				// The remove-dynamic-registrar optimization is required when using NativeAOT
-				if (app.XamarinRuntime == XamarinRuntime.NativeAOT && (Opt) i == Opt.RemoveDynamicRegistrar && values [i] == false) {
+				if (app.XamarinRuntime == XamarinRuntime.NativeAOT && (Opt) i == Opt.RemoveDynamicRegistrar && value == false) {
 					messages.Add (ErrorHelper.CreateWarning (2016, Errors.MX2016 /* Keeping the dynamic registrar (by passing '--optimize=-remove-dynamic-registrar') is not possible, because the dynamic registrar is not supported when using NativeAOT. Support for dynamic registration will still be removed. */));
 					values [i] = true;
 					continue;
@@ -196,7 +196,7 @@ namespace Xamarin.Bundler {
 
 				switch ((Opt) i) {
 				case Opt.StaticBlockToDelegateLookup:
-					if (app.Registrar != RegistrarMode.Static && app.Registrar != RegistrarMode.ManagedStatic) {
+					if (!app.IsAnyStaticRegistrar) {
 						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003, (value.Value ? "" : "-"), opt_names [i]));
 						values [i] = false;
 						continue;
@@ -207,7 +207,7 @@ namespace Xamarin.Bundler {
 				case Opt.RegisterProtocols:
 				case Opt.RemoveDynamicRegistrar:
 				case Opt.RedirectClassHandles:
-					if (app.Registrar != RegistrarMode.Static && app.Registrar != RegistrarMode.ManagedStatic) {
+					if (!app.IsAnyStaticRegistrar) {
 						messages.Add (ErrorHelper.CreateWarning (2003, Errors.MT2003, (value.Value ? "" : "-"), opt_names [i]));
 						values [i] = false;
 						continue;
@@ -254,17 +254,17 @@ namespace Xamarin.Bundler {
 
 			// We try to optimize calls to BlockLiteral.SetupBlock and certain BlockLiteral constructors if the static registrar is enabled
 			if (!OptimizeBlockLiteralSetupBlock.HasValue) {
-				OptimizeBlockLiteralSetupBlock = app.Registrar == RegistrarMode.Static || app.Registrar == RegistrarMode.ManagedStatic;
+				OptimizeBlockLiteralSetupBlock = app.IsAnyStaticRegistrar;
 			}
 
 			// We will register protocols if the static registrar is enabled
 			if (!RegisterProtocols.HasValue) {
 				if (app.Platform != ApplePlatform.MacOSX || app.XamarinRuntime == XamarinRuntime.NativeAOT) {
-					RegisterProtocols = (app.Registrar == RegistrarMode.Static || app.Registrar == RegistrarMode.ManagedStatic);
+					RegisterProtocols = app.IsAnyStaticRegistrar;
 				} else {
 					RegisterProtocols = false;
 				}
-			} else if (app.Registrar != RegistrarMode.Static && app.Registrar != RegistrarMode.ManagedStatic && RegisterProtocols == true) {
+			} else if (!app.IsAnyStaticRegistrar && RegisterProtocols == true) {
 				RegisterProtocols = false; // we've already shown a warning for this.
 			}
 
@@ -285,7 +285,7 @@ namespace Xamarin.Bundler {
 				} else if (StaticBlockToDelegateLookup != true) {
 					// Can't remove the dynamic registrar unless also generating static lookup of block-to-delegates in the static registrar.
 					RemoveDynamicRegistrar = false;
-				} else if ((app.Registrar != RegistrarMode.Static && app.Registrar != RegistrarMode.ManagedStatic) || !app.AreAnyAssembliesTrimmed) {
+				} else if (!app.IsAnyStaticRegistrar || !app.AreAnyAssembliesTrimmed) {
 					// Both the linker and the static registrar are also required
 					RemoveDynamicRegistrar = false;
 				} else {

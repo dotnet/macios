@@ -109,6 +109,8 @@ Only applicable to iOS projects (since only iOS projects can be built remotely f
 
 If an Xcode archive should be created at the end of the build.
 
+Created archives are exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
+
 ## BGenEmitDebugInformation
 
 Whether the `bgen` tool (the binding generator) should emit debug information or not.
@@ -138,6 +140,8 @@ If a package (.ipa) should be created for the app bundle at the end of the build
 Only applicable to iOS and tvOS projects.
 
 See [CreatePackage](#createpackage) for macOS and Mac Catalyst projects.
+
+Created IPA packages are exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
 
 ## BundleCreateDump
 
@@ -350,11 +354,11 @@ Only applicable to macOS and Mac Catalyst projects.
 
 See [BuildIpa](#buildipa) for iOS and tvOS projects.
 
+Created PKG packages are exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
+
 ## Device
 
-Specifies which mobile device or emulator to target when using `dotnet run
---device <Device>` or MSBuild targets that interact with devices (such as
-`Run`, `Install`, or `Uninstall`).
+Specifies which mobile device or simulator to target when using `dotnet run --device <Device>` or MSBuild targets that interact with devices (such as `Run`, `Install`, or `Uninstall`).
 
 The value can be anything the command-line tools `simctl` or `devicectl`
 accept for the device name; this is typically either the UDID or the name of
@@ -537,6 +541,36 @@ Default: true
 
 Where the generated source from the generator are saved.
 
+## GetApplicationArtifactsDependsOn
+
+A semi-colon delimited property that can be used to extend the
+[GetApplicationArtifacts](build-targets.md#getapplicationartifacts) and
+`Publish` targets. `Build` is a mandatory dependency of
+`GetApplicationArtifacts`; MSBuild targets added to this property execute after
+the platform build has collected `@(ApplicationArtifact)` items and before
+`GetApplicationArtifacts` or `Publish` returns them.
+
+This can be used by SDKs such as .NET MAUI to add shared application metadata
+to platform-produced artifacts. Extension targets should update existing
+`@(ApplicationArtifact)` items to add metadata; they should only add new items
+when introducing additional artifacts.
+
+Example:
+
+```xml
+<PropertyGroup>
+  <GetApplicationArtifactsDependsOn>$(GetApplicationArtifactsDependsOn);AddApplicationArtifactMetadata</GetApplicationArtifactsDependsOn>
+</PropertyGroup>
+
+<Target Name="AddApplicationArtifactMetadata">
+  <ItemGroup>
+    <ApplicationArtifact Update="@(ApplicationArtifact)">
+      <ApplicationTitle>$(ApplicationTitle)</ApplicationTitle>
+    </ApplicationArtifact>
+  </ItemGroup>
+</Target>
+```
+
 ## IBToolPath
 
 The full path to the `ibtool` tool.
@@ -560,6 +594,72 @@ See also:
 
 * The [AlternateAppIcon](build-items.md#alternateappicon) item group.
 * The [AppIcon](#appicon) property.
+
+## InlineClassGetHandle
+
+Controls whether the build system replaces runtime calls to `Class.GetHandle` /
+`Class.GetHandleIntrinsic` with direct native references to Objective-C classes
+at build time.
+
+See [docs/code/class-handles.md](../code/class-handles.md) for an overview.
+
+The valid options are:
+
+* `compatibility`: Inlines `Class.GetHandle` calls only for types whose declaring
+  type matches the requested Objective-C class name.
+* `strict`: Inlines all `Class.GetHandle` calls unconditionally. Requires using
+  the static registrar (not the dynamic registrar).
+* (empty): Disables inlining of `Class.GetHandle` calls.
+
+Default value:
+* .NET 11+: `strict` when using NativeAOT (`PublishAot=true`), `compatibility` otherwise.
+* .NET 10 and earlier: not set (disabled).
+
+Example:
+
+```xml
+<PropertyGroup>
+    <InlineClassGetHandle>compatibility</InlineClassGetHandle>
+</PropertyGroup>
+```
+
+Custom behavior for specific Objective-C classes can be set using the [ReferenceNativeSymbol](build-items.md#referencenativesymbol) item group:
+
+```xml
+<ItemGroup>
+    <ReferenceNativeSymbol SymbolMode="Ignore" SymbolType="ObjectiveCClass" Include="SomeClassName" />
+</ItemGroup>
+```
+
+## InlineDlfcnMethods
+
+Controls whether the build system replaces runtime calls to `ObjCRuntime.Dlfcn` methods with direct native symbol lookups at build time, eliminating the overhead of `dlsym` at runtime.
+
+The valid options are:
+
+* `compatibility`: Only inlines symbol usages backed by `[Field]` attributes. This is more conservative and avoids link errors for symbols that don't exist at build time.
+* `strict`: Inlines dlfcn method calls and creates native references for all symbols. This is more aggressive and may cause link errors if referenced native symbols don't exist.
+* (empty): Disables inlining of dlfcn method calls.
+
+Default value:
+* .NET 11+: `strict` when using NativeAOT (`PublishAot=true`), `compatibility` otherwise.
+* .NET 10 and earlier: not set (disabled).
+
+Example:
+
+```xml
+<PropertyGroup>
+    <InlineDlfcnMethods>compatibility</InlineDlfcnMethods>
+</PropertyGroup>
+```
+
+Custom behavior for specific symbols can be set using the [ReferenceNativeSymbol](build-items.md#referencenativesymbol) item group:
+
+```xml
+<ItemGroup>
+    <ReferenceNativeSymbol SymbolMode="Ignore" SymbolType="Field" Include="InexistentSymbol" />
+</ItemGroup>
+```
 
 ## iOSMinimumVersion
 
@@ -604,6 +704,8 @@ Only applicable to iOS and tvOS projects.
 Specifies the path to the resulting .ipa file when creating an IPA package (see [BuildIpa](#buildipa)).
 
 Only applicable to iOS and tvOS projects.
+
+The resulting IPA is exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
 
 ## IsAppExtension
 
@@ -966,7 +1068,7 @@ Default:
 A boolean property that specifies whether native libraries in binding projects should be embedded
 in the managed assembly, or put into a `.resources` directory next to the managed assembly.
 
-The default value is `true` (which means native libraries will _not_ be embeddded in the managed assembly).
+The default value is `true` (which means native libraries will _not_ be embedded in the managed assembly).
 
 > [!NOTE]
 > Xcframeworks won't work correctly if embedded inside the managed assembly (if this property is not `true`).
@@ -1075,6 +1177,8 @@ Specifies the path to the resulting .pkg file when creating a package (see [Crea
 
 Only applicable to macOS and Mac Catalyst apps.
 
+The resulting PKG is exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
+
 ## PlutilPath
 
 The full path to the `plutil` command-line tool.
@@ -1105,7 +1209,7 @@ Only applicable to macOS and Mac Catalyst apps.
 
 ## ReferenceNativeSymbol
 
-See [ReferenceNativeSymbol](build-items.md#referencenativesymbols)
+See [ReferenceNativeSymbol](build-items.md#referencenativesymbol)
 
 ## RequireLinkWithAttributeForObjectiveCClassSearch
 
@@ -1162,6 +1266,8 @@ If 'dotnet run' should wait for the app to exit (defaults to `false`).
 
 This will pass `-W` to `open` if set to `true`.
 
+Note: the [WaitForExit](#waitforexit) property takes precedence over this property.
+
 Example:
 
 ```shell
@@ -1190,6 +1296,8 @@ Run `man open` to see a list of all the options `open` accepts.
 
 This property can be used to redirect the stdout output from the app to a file.
 
+This applies to all platforms (macOS, Mac Catalyst, iOS, and tvOS).
+
 Example writing to a file:
 
 ```shell
@@ -1203,11 +1311,13 @@ $ dotnet run -p:StandardOutputPath=$(tty)
 [... Console.WriteLine output from app ...]
 ```
 
-Note: this can also be accomplished by passing `--stdout ...` using the [OpenArguments](#openarguments) property.
+Note: for macOS and Mac Catalyst apps using the `open` command, this can also be accomplished by passing `--stdout ...` using the [OpenArguments](#openarguments) property.
 
 ### StandardErrorPath
 
 This property can be used to redirect the stderr output from the app to a file.
+
+This applies to all platforms (macOS, Mac Catalyst, iOS, and tvOS).
 
 Example writing to a file:
 
@@ -1222,7 +1332,7 @@ $ dotnet run -p:StandardErrorPath=$(tty)
 [... Console.Error.WriteLine output from app ...]
 ```
 
-Note: this can also be accomplished by passing `--stderr ...` using the [OpenArguments](#openarguments) property.
+Note: for macOS and Mac Catalyst apps using the `open` command, this can also be accomplished by passing `--stderr ...` using the [OpenArguments](#openarguments) property.
 
 ### StandardInputPath
 
@@ -1235,6 +1345,59 @@ $ dotnet run -p:StandardInputPath=stdin.txt
 ```
 
 Note: this can also be accomplished by passing `--stdin ...` using the [OpenArguments](#openarguments) property.
+
+## WaitForExit
+
+If 'dotnet run' should wait for the app to exit before returning (defaults to
+`true` for iOS and tvOS apps, and `false` for macOS and Mac Catalyst apps).
+
+This applies to all platforms (macOS, Mac Catalyst, iOS, and tvOS).
+
+For macOS and Mac Catalyst apps, this property takes precedence over the
+[OpenWaitForExit](#openwaitforexit) property.
+
+Example:
+
+```shell
+$ dotnet run -p:WaitForExit=true
+```
+
+## SdkIsDesktop
+
+This property is a read-only property (setting it will have no effect) that
+specifies whether we're building for a desktop platform (macOS or Mac Catalyst).
+
+This property is `true` when the target platform is macOS or Mac Catalyst,
+and is not set for iOS or tvOS builds.
+
+Like `SdkIsSimulator`, this property is only set after [imports and
+properties](/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
+have been evaluated.
+
+## SdkIsDevice
+
+This property is a read-only property (setting it will have no effect) that
+specifies whether we're building for a device or not.
+
+This property is only `true` when building for an iOS or tvOS device (i.e.,
+when `SdkIsSimulator` is not `true` and the platform is iOS or tvOS). It is
+not set for macOS or Mac Catalyst builds.
+
+Like `SdkIsSimulator`, this property is only set after [imports and
+properties](/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
+have been evaluated.
+
+## SdkIsMobile
+
+This property is a read-only property (setting it will have no effect) that
+specifies whether we're building for a mobile platform (iOS or tvOS).
+
+This property is `true` when the target platform is iOS or tvOS, and is not
+set for macOS or Mac Catalyst builds.
+
+Like `SdkIsSimulator`, this property is only set after [imports and
+properties](/visualstudio/msbuild/build-process-overview#evaluate-imports-and-properties)
+have been evaluated.
 
 ## SdkIsSimulator
 
@@ -1439,6 +1602,21 @@ Applicable to macOS projects.
 Consider using the unified [AppBundleResourcePrefix](#appbundleresourceprefix) property instead.
 
 See also [IPhoneResourcePrefix](#iphoneresourceprefix) and [MonoMacResourcePrefix](#monomacresourceprefix).
+
+## XcodeLocation
+
+Specifies the location of Xcode.
+
+When the build searches for Xcode, it's done in this order:
+
+1. If the `XcodeLocation` property is set, use that. Note that since all environment variables are automatically MSBuild properties as well, it's also possible to set the `XcodeLocation` environment variable for the same effect.
+2. If the `MD_APPLE_SDK_ROOT` environment variable is set, use that.
+3. If either of the files `~/Library/Preferences/maui/Settings.plist` or `~/Library/Preferences/Xamarin/Settings.plist` exist, and has the property list value `AppleSdkRoot`, use that.
+4. Use the system version of Xcode (as determined by executing `xcode-select --print-path`).
+
+> [!WARNING]
+> Support for the `MD_APPLE_SDK_ROOT` environment variable, and the `~/Library/Preferences/maui/Settings.plist` and `~/Library/Preferences/Xamarin/Settings.plist` files, is deprecated and will be removed in the future.
+> Going forward, choose which Xcode to use by either making it the system's version of Xcode (either using `xcode-select --switch ...` on the command line, or in Xcode's settings), or by setting the `XcodeLocation` MSBuild property / environment variable.
 
 ## ZipPath
 

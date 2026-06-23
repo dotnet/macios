@@ -2070,7 +2070,6 @@ namespace UIKit {
 	/// <remarks>To be added.</remarks>
 	/// <!--TODO : Confirm that it's UIView and not a specialized type -->
 	/// <altmember cref="UIKit.UICollectionView" />
-	/// <related type="article" href="https://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Collection_Views">Introduction to Collection Views</related>
 	[Native]
 	[Flags]
 	[MacCatalyst (13, 1)]
@@ -2095,7 +2094,6 @@ namespace UIKit {
 	/// <summary>An enumeration of values used by the <see cref="UIKit.UICollectionViewFlowLayout.ScrollDirection" /> property.</summary>
 	/// <remarks>To be added.</remarks>
 	/// <altmember cref="UIKit.UICollectionViewFlowLayout.ScrollDirection" />
-	/// <related type="article" href="https://docs.xamarin.com/ios/Guides/User_Interface/Introduction_to_Collection_Views">Introduction to Collection Views</related>
 	[Native]
 	[MacCatalyst (13, 1)]
 	public enum UICollectionViewScrollDirection : long {

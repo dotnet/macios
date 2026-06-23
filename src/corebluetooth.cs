@@ -791,7 +791,6 @@ namespace CoreBluetooth {
 		///         <value>To be added.</value>
 		///         <remarks>To be added.</remarks>
 		[Export ("name", ArgumentSemantic.Retain)]
-		[DisableZeroCopy]
 		[NullAllowed]
 		string Name { get; }
 
@@ -1006,7 +1005,11 @@ namespace CoreBluetooth {
 			<summary>Event raised by the object.</summary>
 			<remarks>If developers do not assign a value to this event, this will reset the value for the WeakDelegate property to an internal handler that maps delegates to events.</remarks>
 			""")]
+#if XAMCORE_5_0
+		void UpdatedCharacteristicValue (CBPeripheral peripheral, CBCharacteristic characteristic, [NullAllowed] NSError error);
+#else
 		void UpdatedCharacterteristicValue (CBPeripheral peripheral, CBCharacteristic characteristic, [NullAllowed] NSError error);
+#endif
 
 		/// <param name="peripheral">To be added.</param>
 		///         <param name="characteristic">To be added.</param>
@@ -1283,15 +1286,6 @@ namespace CoreBluetooth {
 		///         <remarks>To be added.</remarks>
 		[Field ("CBUUIDCharacteristicAggregateFormatString")]
 		NSString CharacteristicAggregateFormatString { get; }
-
-		[Internal]
-		[Field ("CBUUIDValidRangeString")]
-		[Deprecated (PlatformName.MacOSX, 10, 13)]
-		[Obsoleted (PlatformName.MacOSX, 10, 13)]
-		[NoiOS]
-		[NoTV]
-		[NoMacCatalyst]
-		NSString CBUUIDValidRangeString { get; }
 
 		/// <summary>Represents the value associated with the constant CBUUIDCharacteristicValidRangeString</summary>
 		///         <value>To be added.</value>

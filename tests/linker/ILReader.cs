@@ -17,9 +17,9 @@ namespace Linker.Shared {
 		public MethodBase Method;
 		public OpCode OpCode;
 		public int Offset;
-		public object Operand;
+		public object? Operand;
 
-		public ILInstruction (MethodBase method, int offset, OpCode opcode, object operand = null)
+		public ILInstruction (MethodBase method, int offset, OpCode opcode, object? operand = null)
 		{
 			this.Method = method;
 			this.OpCode = opcode;
@@ -31,7 +31,7 @@ namespace Linker.Shared {
 		{
 			var methodOperand = Operand as MethodBase;
 			if (methodOperand is not null)
-				return $"IL_{Offset:0000} {OpCode} {methodOperand.DeclaringType.FullName}.{methodOperand.Name}";
+				return $"IL_{Offset:0000} {OpCode} {methodOperand.DeclaringType?.FullName}.{methodOperand.Name}";
 			return $"IL_{Offset:0000} {OpCode} {(Operand is MethodBase ? ((MethodBase) Operand).Name : Operand?.ToString ())}";
 		}
 	}
@@ -44,7 +44,7 @@ namespace Linker.Shared {
 		static ILReader ()
 		{
 			foreach (var fi in typeof (OpCodes).GetFields (BindingFlags.Public | BindingFlags.Static)) {
-				var opCode = (OpCode) fi.GetValue (null);
+				var opCode = (OpCode) fi.GetValue (null)!;
 				var value = (ushort) opCode.Value;
 				if (value < 0x100)
 					oneByteOpcodes [value] = opCode;
@@ -77,7 +77,7 @@ namespace Linker.Shared {
 			if (body is null)
 				return rv;
 
-			var bytes = body.GetILAsByteArray ();
+			var bytes = body.GetILAsByteArray ()!;
 			while (position < bytes.Length)
 				rv.Add (ReadInstruction (method, bytes, ref position));
 

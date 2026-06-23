@@ -2717,8 +2717,7 @@ namespace AudioToolbox {
 		/// <remarks>If the <see cref="AudioSource" /> is created in reading mode, this method should return the size of the audio data. If the <see cref="AudioSource" /> is created to write data, this method is invoked to set the audio file size.</remarks>
 		public abstract long Size { get; set; }
 
-		/// <summary>Releases the resources used by the <see cref="AudioSource" /> object.</summary>
-		/// <param name="disposing">If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources; If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</param>
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
 			base.Dispose (disposing);

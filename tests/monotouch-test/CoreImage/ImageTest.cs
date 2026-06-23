@@ -27,14 +27,12 @@ namespace MonoTouchFixtures.CoreImage {
 		[Test]
 		public void EmptyImage ()
 		{
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 8, throwIfOtherPlatform: false);
-			Assert.IsNull (CIImage.EmptyImage.Properties);
+			Assert.That (CIImage.EmptyImage.Properties, Is.Null);
 		}
 
 		[Test]
 		public void InitializationWithCustomMetadata ()
 		{
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 8, throwIfOtherPlatform: false);
 			string file = Path.Combine (NSBundle.MainBundle.ResourcePath, "basn3p08.png");
 			using (var dp = new CGDataProvider (file)) {
 				using (var img = CGImage.FromPNG (dp, null, false, CGColorRenderingIntent.Default)) {
@@ -46,7 +44,7 @@ namespace MonoTouchFixtures.CoreImage {
 					};
 
 					using (var ci = new CIImage (img, opt)) {
-						Assert.AreEqual ("test profile name", ci.Properties.ProfileName);
+						Assert.That (ci.Properties.ProfileName, Is.EqualTo ("test profile name"));
 					}
 				}
 			}
@@ -61,7 +59,7 @@ namespace MonoTouchFixtures.CoreImage {
 			using (var url = NSUrl.FromFilename (file))
 			using (var ci = CIImage.FromUrl (url))
 			using (var ui = new UIImage (ci, 1.0f, UIImageOrientation.Up)) {
-				Assert.IsNotNull (ui.CIImage, "CIImage");
+				Assert.That (ui.CIImage, Is.Not.Null, "CIImage");
 			}
 		}
 #endif
@@ -75,14 +73,10 @@ namespace MonoTouchFixtures.CoreImage {
 			// validate that a null NSDictionary is correct (i.e. uses filter defaults)
 			using (var h = CIImage.EmptyImage.CreateByFiltering ("CIAreaHistogram", null)) {
 				var success = !TestRuntime.CheckXcodeVersion (26, 0);
-#if __MACOS__
-				if (!TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 11))
-					success = false;
-#endif
 				if (success) {
 					Assert.That (h.Extent.Height, Is.EqualTo ((nfloat) 1), "Height");
 				} else {
-					Assert.IsNull (h, "Image");
+					Assert.That (h, Is.Null, "Image");
 				}
 			}
 		}
@@ -95,7 +89,7 @@ namespace MonoTouchFixtures.CoreImage {
 
 			using (var cgimage = new CIImage (NSBundle.MainBundle.GetUrlForResource ("xamarin1", "png")))
 			using (var cs = cgimage.ColorSpace) {
-				Assert.NotNull (cs, "ColorSpace");
+				Assert.That (cs, Is.Not.Null, "ColorSpace");
 				Assert.That (cs.Handle, Is.Not.EqualTo (IntPtr.Zero), "Handle");
 			}
 		}

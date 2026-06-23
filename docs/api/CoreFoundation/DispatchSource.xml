@@ -27,18 +27,6 @@
       <para>Important: a cancellation handler is required for file descriptor and mach port based sources in order to safely close the descriptor or destroy the port. Closing the descriptor or port before the cancellation handler has run may result in a race condition: if a new descriptor is allocated with the same value as the recently closed descriptor while the source's event handler is still running, the event handler may read/write data to the wrong descriptor.</para>
     </remarks>
   </Docs>
-  <Docs DocId="M:CoreFoundation.DispatchSource.Dispose(System.Boolean)">
-    <param name="disposing">
-      <para>If set to <see langword="true" />, the method is invoked directly and will dispose managed and unmanaged resources;   If set to <see langword="false" /> the method is being called by the garbage collector finalizer and should only release unmanaged resources.</para>
-    </param>
-    <summary>Releases the resources used by the DispatchSource object.</summary>
-    <remarks>
-      <para>This Dispose method releases the resources used by the DispatchSource class.</para>
-      <para>This method is called by both the Dispose() method and the object finalizer (Finalize).    When invoked by the Dispose method, the parameter disposing <paramref name="disposing" /> is set to <see langword="true" /> and any managed object references that this object holds are also disposed or released;  when invoked by the object finalizer, on the finalizer thread the value is set to <see langword="false" />. </para>
-      <para>Calling the Dispose method when the application is finished using the DispatchSource ensures that all external resources used by this managed object are released as soon as possible.  Once developers have invoked the Dispose method, the object is no longer useful and developers should no longer make any calls to it.</para>
-      <para>  For more information on how to override this method and on the Dispose/IDisposable pattern, read the ``Implementing a Dispose Method'' document at https://msdn.microsoft.com/en-us/library/fs2xkftw.aspx</para>
-    </remarks>
-  </Docs>
   <Docs DocId="T:CoreFoundation.DispatchSource">
     <summary>DispatchSource is a base class used to reprenset event sources that can monitor a variety of system objects and events including file descriptors, mach ports, processes, virtual filesystem nodes, signal delivery and timers.</summary>
     <remarks>

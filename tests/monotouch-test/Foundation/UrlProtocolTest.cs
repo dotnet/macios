@@ -47,7 +47,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			// NSInvalidArgumentException Reason: *** -canInitWithRequest: cannot be sent to an abstract object of class NSURLProtocol: Create a concrete instance!
 			using (var t = new NSUrlSessionTask ()) {
-				Assert.False (NSUrlProtocol.CanInitWithTask (t), "CanInitWithTask");
+				Assert.That (NSUrlProtocol.CanInitWithTask (t), Is.False, "CanInitWithTask");
 			}
 		}
 
@@ -56,7 +56,7 @@ namespace MonoTouchFixtures.Foundation {
 		{
 			// NSInvalidArgumentException -[MonoTouchFixtures_Foundation_UrlProtocolTest_CustomProtocol task]: unrecognized selector sent to instance 0x7ff4c910
 			using (var p = new CustomProtocol ()) {
-				Assert.Null (p.Task, "Task");
+				Assert.That (p.Task, Is.Null, "Task");
 			}
 		}
 #endif
@@ -64,9 +64,7 @@ namespace MonoTouchFixtures.Foundation {
 		[Test]
 		public void RegistrarTest ()
 		{
-			// Networking seems broken on our macOS 10.9 bot, so skip this test.
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 10, throwIfOtherPlatform: false);
-
+			CustomUrlProtocol.State = 0;
 			var success = false;
 
 			var task = Task.Run (async () => {
@@ -79,9 +77,12 @@ namespace MonoTouchFixtures.Foundation {
 				}
 			});
 
-			Assert.IsTrue (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), task), "Timed out");
+			// Use the completion check overload so RunAsync also waits for
+			// StopLoading to fire (State reaches 5) instead of returning as
+			// soon as the download task completes (State may still be 4).
+			Assert.That (TestRuntime.RunAsync (TimeSpan.FromSeconds (10), task, () => CustomUrlProtocol.State >= 5), Is.True, "Timed out");
 			Assert.That (CustomUrlProtocol.State, Is.EqualTo (5), "State");
-			Assert.IsTrue (success, "Success");
+			Assert.That (success, Is.True, "Success");
 		}
 
 		public class CustomUrlProtocol : NSUrlProtocol, INSUrlSessionDelegate, INSUrlSessionTaskDelegate, INSUrlSessionDataDelegate {
@@ -116,14 +117,8 @@ namespace MonoTouchFixtures.Foundation {
 			public override void StartLoading ()
 			{
 #if MONOMAC
-				if (TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 10)) {
-					if (State == 3)
-						State++;
-				} else {
-					// looks like 10.9 is not calling `initWithRequest:cachedResponse:client:`
-					if (State >= 2)
-						State = 4;
-				}
+				if (State == 3)
+					State++;
 #else
 				if (State == 3)
 					State++;

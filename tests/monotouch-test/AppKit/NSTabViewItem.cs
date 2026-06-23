@@ -16,23 +16,19 @@ namespace Xamarin.Mac.Tests {
 		[Test]
 		public void NSTabViewItemShouldChangeImage ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var image = item.Image;
 			item.Image = new NSImage ();
 
-			Assert.IsFalse (item.Image == image, "NSTabViewItemShouldChangeImage - Failed to set the Image property");
+			Assert.That (item.Image == image, Is.False, "NSTabViewItemShouldChangeImage - Failed to set the Image property");
 		}
 
 		[Test]
 		public void NSTabViewItemShouldChangeViewController ()
 		{
-			Asserts.EnsureYosemite ();
-
 			var vc = item.ViewController;
 			item.ViewController = new NSViewController ();
 
-			Assert.IsFalse (item.ViewController == vc, "NSTabViewItemShouldChangeViewController - Failed to set the ViewController property");
+			Assert.That (item.ViewController == vc, Is.False, "NSTabViewItemShouldChangeViewController - Failed to set the ViewController property");
 		}
 	}
 }

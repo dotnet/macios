@@ -8,7 +8,6 @@
     <LinkMode>None</LinkMode> <!-- never link -->
     <Optimize>true</Optimize> <!-- always optimize -->
     <SupportedOSPlatformVersion>12.0</SupportedOSPlatformVersion>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />

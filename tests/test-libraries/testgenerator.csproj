@@ -4,8 +4,6 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net$(BundledNETCoreAppTargetFrameworkVersion)</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
     <EnableDefaultItems>false</EnableDefaultItems>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>

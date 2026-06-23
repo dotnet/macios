@@ -124,10 +124,6 @@ namespace Foundation {
 		readonly Dictionary<NSUrlSessionTask, InflightData> inflightRequests;
 		readonly object inflightRequestsLock = new object ();
 		readonly NSUrlSessionConfiguration.SessionConfigurationType sessionType;
-#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
-		NSObject? notificationToken;  // needed to make sure we do not hang if not using a background session
-		readonly object notificationTokenLock = new object (); // need to make sure that threads do no step on each other with a dispose and a remove  inflight data
-#endif
 		X509ChainPolicy? policy;
 
 		static NSUrlSessionConfiguration CreateConfig ()
@@ -138,6 +134,15 @@ namespace Foundation {
 			// Double.MaxValue does not work, so default to 24 hours
 			config.TimeoutIntervalForRequest = 24 * 60 * 60;
 			config.TimeoutIntervalForResource = 24 * 60 * 60;
+
+			// Disable shared credential storage so credentials we pass with UseCredential in DidReceiveChallenge dont get saved in
+			// the SharedCredentialStorage so (native) NSUrlSession can't try to authenticate later requests by itself using old credentials
+			// incluiding redirects, and then our managed DidReceiveChallenge delegate may not get called at all. We already manage 
+			// the credential flow in DidReceiveChallenge and the Credentials property. The switch is just a compat in case we
+			// someone needs to go back to the old behaviour.
+			var useSharedCredentialStorage = AppContext.TryGetSwitch ("Foundation.NSUrlSessionHandler.UseSharedCredentialStorage", out var useSharedStorage) && useSharedStorage;
+			if (!useSharedCredentialStorage)
+				config.URLCredentialStorage = null;
 			return config;
 		}
 
@@ -161,88 +166,9 @@ namespace Foundation {
 			allowsCellularAccess = configuration.AllowsCellularAccess;
 			AllowAutoRedirect = true;
 
-#if !NET10_0_OR_GREATER
-#pragma warning disable SYSLIB0014
-			// SYSLIB0014: 'ServicePointManager' is obsolete: 'WebRequest, HttpWebRequest, ServicePoint, and WebClient are obsolete. Use HttpClient instead. Settings on ServicePointManager no longer affect SslStream or HttpClient.' (https://aka.ms/dotnet-warnings/SYSLIB0014)
-			// https://github.com/dotnet/macios/issues/20764
-			var sp = ServicePointManager.SecurityProtocol;
-#pragma warning restore SYSLIB0014
-
-			// The analyzer has a bug where SupportedOSPlatformGuard attributes don't work correctly (https://github.com/dotnet/roslyn-analyzers/issues/7665#issuecomment-2898275765), so ignore CA1416/CA1422 here
-			// warning CA1422: This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 12.0 and later, 'tvos' 12.2 and later. 'NSUrlSessionConfiguration.[...]' is obsoleted on: 'ios' 13.0 and later (Use '...' instead.), 'maccatalyst' 13.0 and later (Use '...' instead.), 'macOS/OSX' 10.15 and later (Use '...' instead.).
-			// warning CA1416: This call site is reachable on: 'ios' 12.2 and later, 'maccatalyst' 12.2 and later, 'macOS/OSX' 10.15 and later, 'tvos' 12.2 and later. 'NSUrlSessionConfiguration.[...]' is only supported on: 'ios' 13.0 and later, 'tvos' 13.0 and later
-#pragma warning disable CA1416
-#pragma warning disable CA1422
-			if (SystemVersion.IsAtLeastXcode11) {
-				if ((sp & SecurityProtocolType.Ssl3) != 0) {
-					// no equivalent
-				} else if ((sp & SecurityProtocolType.Tls) != 0) {
-					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls10;
-				} else if ((sp & SecurityProtocolType.Tls11) != 0) {
-					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls11;
-				} else if ((sp & SecurityProtocolType.Tls12) != 0) {
-					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls12;
-				} else if ((sp & SecurityProtocolType.Tls13) != 0) {
-					configuration.TlsMinimumSupportedProtocolVersion = TlsProtocolVersion.Tls13;
-				}
-			} else {
-				if ((sp & SecurityProtocolType.Ssl3) != 0)
-					configuration.TLSMinimumSupportedProtocol = SslProtocol.Ssl_3_0;
-				else if ((sp & SecurityProtocolType.Tls) != 0)
-					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_0;
-				else if ((sp & SecurityProtocolType.Tls11) != 0)
-					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_1;
-				else if ((sp & SecurityProtocolType.Tls12) != 0)
-					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_2;
-				else if ((sp & SecurityProtocolType.Tls13) != 0)
-					configuration.TLSMinimumSupportedProtocol = SslProtocol.Tls_1_3;
-			}
-#pragma warning restore CA1422
-#pragma warning restore CA1416
-#endif // NET10_0_OR_GREATER
-
 			session = NSUrlSession.FromConfiguration (configuration, (INSUrlSessionDelegate) new NSUrlSessionHandlerDelegate (this), null);
 			inflightRequests = new Dictionary<NSUrlSessionTask, InflightData> ();
 		}
-
-#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
-
-		void AddNotification ()
-		{
-			lock (notificationTokenLock) {
-				if (!bypassBackgroundCheck && sessionType != NSUrlSessionConfiguration.SessionConfigurationType.Background && notificationToken is null)
-					notificationToken = NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillResignActiveNotification, BackgroundNotificationCb);
-			} // lock
-		}
-
-		void RemoveNotification ()
-		{
-			NSObject? localNotificationToken;
-			lock (notificationTokenLock) {
-				localNotificationToken = notificationToken;
-				notificationToken = null;
-			}
-			if (localNotificationToken is not null)
-				NSNotificationCenter.DefaultCenter.RemoveObserver (localNotificationToken);
-		}
-
-		void BackgroundNotificationCb (NSNotification obj)
-		{
-			// the cancelation task of each of the sources will clean the different resources. Each removal is done
-			// inside a lock, but of course, the .Values collection will not like that because it is modified during the
-			// iteration. We split the operation in two, get all the diff cancelation sources, then try to cancel each of them
-			// which will do the correct lock dance. Note that we could be tempted to do a RemoveAll, that will yield the same
-			// runtime issue, this is dull but safe. 
-			List<TaskCompletionSource<HttpResponseMessage>> sources;
-			lock (inflightRequestsLock) { // just lock when we iterate
-				sources = new List<TaskCompletionSource<HttpResponseMessage>> (inflightRequests.Count);
-				foreach (var r in inflightRequests.Values) {
-					sources.Add (r.CompletionSource);
-				}
-			}
-			sources.ForEach (source => { source.TrySetCanceled (); });
-		}
-#endif
 
 		/// <summary>The maximum amount of content to load into memory when sending content with a request.</summary>
 		/// <value>The maximum size of content to load into memory.</value>
@@ -259,16 +185,10 @@ namespace Foundation {
 		void RemoveInflightData (NSUrlSessionTask task, bool cancel = true)
 		{
 			lock (inflightRequestsLock) {
-				if (inflightRequests.TryGetValue (task, out var data)) {
+				if (inflightRequests.Remove (task, out var data)) {
 					if (cancel)
 						data.CancellationTokenSource.Cancel ();
-					inflightRequests.Remove (task);
 				}
-#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
-				// do we need to be notified? If we have not inflightData, we do not
-				if (inflightRequests.Count == 0)
-					RemoveNotification ();
-#endif
 			}
 
 			if (cancel)
@@ -277,23 +197,19 @@ namespace Foundation {
 			task?.Dispose ();
 		}
 
-		/// <param name="disposing">To be added.</param>
-		///         <summary>To be added.</summary>
-		///         <remarks>To be added.</remarks>
+		/// <inheritdoc />
 		protected override void Dispose (bool disposing)
 		{
+			var tasks = new List<NSUrlSessionTask> ();
 			lock (inflightRequestsLock) {
-#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
-				// remove the notification if present, method checks against null
-				RemoveNotification ();
-#endif
-				foreach (var pair in inflightRequests) {
-					pair.Key?.Cancel ();
-					pair.Key?.Dispose ();
-				}
-
+				tasks.AddRange (inflightRequests.Keys);
 				inflightRequests.Clear ();
 			}
+			foreach (var task in tasks) {
+				task.Cancel ();
+				task.Dispose ();
+			}
+
 			session.InvalidateAndCancel ();
 			base.Dispose (disposing);
 		}
@@ -366,34 +282,15 @@ namespace Foundation {
 				trustOverrideForUrl = value;
 			}
 		}
-#if !NET8_0 && !NET10_0_OR_GREATER
-		// we do check if a user does a request and the application goes to the background, but
-		// in certain cases the user does that on purpose (BeingBackgroundTask) and wants to be able
-		// to use the network. In those cases, which are few, we want the developer to explicitly 
-		// bypass the check when there are not request in flight 
-		bool bypassBackgroundCheck = true;
-#endif
 
 #if !XAMCORE_5_0
 		[EditorBrowsable (EditorBrowsableState.Never)]
-#if NET8_0 || NET10_0_OR_GREATER
 		[Obsolete ("This property is ignored.")]
-#else
-		[Obsolete ("This property will be ignored in .NET 10+.")]
-#endif
 		public bool BypassBackgroundSessionCheck {
 			get {
-#if NET8_0 || NET10_0_OR_GREATER
 				return true;
-#else
-				return bypassBackgroundCheck;
-#endif
 			}
 			set {
-#if !NET8_0 && !NET10_0_OR_GREATER
-				EnsureModifiability ();
-				bypassBackgroundCheck = value;
-#endif
 			}
 		}
 #endif // !XAMCORE_5_0
@@ -567,10 +464,6 @@ namespace Foundation {
 			var inflightData = new InflightData (request.RequestUri?.AbsoluteUri!, cancellationToken, request);
 
 			lock (inflightRequestsLock) {
-#if !MONOMAC && !NET8_0 && !NET10_0_OR_GREATER
-				// Add the notification whenever needed
-				AddNotification ();
-#endif
 				inflightRequests.Add (dataTask, inflightData);
 			}
 
@@ -1145,7 +1038,30 @@ namespace Foundation {
 			[Preserve (Conditional = true)]
 			public override void WillPerformHttpRedirection (NSUrlSession session, NSUrlSessionTask task, NSHttpUrlResponse response, NSUrlRequest newRequest, Action<NSUrlRequest> completionHandler)
 			{
-				completionHandler (sessionHandler.AllowAutoRedirect ? newRequest : null!);
+				if (!sessionHandler.AllowAutoRedirect) {
+					completionHandler (null!);
+					return;
+				}
+
+				var inflight = GetInflightData (task);
+
+				if (inflight is null) {
+					completionHandler (null!);
+					return;
+				}
+
+				inflight.HasRedirected = true;
+
+				if (newRequest.Url?.AbsoluteString is string redirectUrl) {
+					inflight.CurrentRequestUrl = redirectUrl;
+
+					if (Uri.TryCreate (redirectUrl, UriKind.Absolute, out var redirectUri))
+						inflight.HasCrossOriginRedirect |= IsCrossOriginRedirect (inflight.RequestUrl, redirectUri);
+					else
+						inflight.HasCrossOriginRedirect = true;
+				}
+
+				completionHandler (newRequest);
 			}
 
 			[Preserve (Conditional = true)]
@@ -1243,6 +1159,22 @@ namespace Foundation {
 					}
 				}
 
+				// Detect redirect from the task as a fallback in case
+				// WillPerformHttpRedirection has not updated infligth state yet
+				if (!inflight.HasRedirected) {
+					var originalUrl = task.OriginalRequest?.Url?.AbsoluteString;
+					var currentUrl = task.CurrentRequest?.Url?.AbsoluteString;
+					if (originalUrl is not null && currentUrl is not null
+						&& !string.Equals (originalUrl, currentUrl, StringComparison.Ordinal)) {
+						inflight.HasRedirected = true;
+						inflight.CurrentRequestUrl = currentUrl;
+						if (Uri.TryCreate (currentUrl, UriKind.Absolute, out var redirectUri))
+							inflight.HasCrossOriginRedirect |= IsCrossOriginRedirect (inflight.RequestUrl, redirectUri);
+						else
+							inflight.HasCrossOriginRedirect = true;
+					}
+				}
+
 				if (sessionHandler.Credentials is not null && TryGetAuthenticationType (challenge.ProtectionSpace, out var authType)) {
 					NetworkCredential? credentialsToUse = null;
 					if (authType != RejectProtectionSpaceAuthType) {
@@ -1263,8 +1195,9 @@ namespace Foundation {
 						var nsurlRespose = challenge.FailureResponse as NSHttpUrlResponse;
 						var responseIsUnauthorized = (nsurlRespose is null) ? false : nsurlRespose.StatusCode == (int) HttpStatusCode.Unauthorized && challenge.PreviousFailureCount > 0;
 						if (!responseIsUnauthorized) {
-							var uri = inflight.Request.RequestUri!;
-							credentialsToUse = sessionHandler.Credentials.GetCredential (uri, authType);
+							var uri = GetCredentialLookupUri (task, inflight);
+							if (ShouldLookupCredentials (sessionHandler.Credentials, inflight))
+								credentialsToUse = sessionHandler.Credentials.GetCredential (uri, authType);
 						}
 					}
 
@@ -1281,6 +1214,45 @@ namespace Foundation {
 				}
 			}
 
+			static Uri GetCredentialLookupUri (NSUrlSessionTask task, InflightData inflight)
+			{
+				var currentRequestUrl = task.CurrentRequest?.Url?.AbsoluteString;
+				if (currentRequestUrl is not null && Uri.TryCreate (currentRequestUrl, UriKind.Absolute, out var currentRequestUri))
+					return currentRequestUri;
+
+				if (Uri.TryCreate (inflight.CurrentRequestUrl, UriKind.Absolute, out var inflightCurrentRequestUri))
+					return inflightCurrentRequestUri;
+
+				return inflight.Request.RequestUri!;
+			}
+
+			static bool ShouldLookupCredentials (ICredentials credentials, InflightData inflight)
+			{
+				if (credentials is CredentialCache)
+					return true;
+
+				if (!inflight.HasRedirected)
+					return true;
+
+				// We are now matching .NET handlers (SocketsHttpHandler and WinHttpHandler) redirect behavior by dropping non CredentialCache credentials after a redirect
+				// Ref:
+				//	https://github.com/dotnet/runtime/blob/eb5503a1f0dc40ee7b73eb79a039eb143ee25038/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/SocketsHttpHandler.cs#L541-L547
+				//	https://github.com/dotnet/runtime/blob/eb5503a1f0dc40ee7b73eb79a039eb143ee25038/src/libraries/System.Net.Http/src/System/Net/Http/SocketsHttpHandler/RedirectHandler.cs#L52-L87
+				// Provide a way for customers to opt into the old behavior for same origin redirects.
+				var allowSameOriginRedirectCredentials = AppContext.TryGetSwitch ("Foundation.NSUrlSessionHandler.AllowSameOriginRedirectCredentials", out var allowRedirectCred) && allowRedirectCred;
+				return allowSameOriginRedirectCredentials && !inflight.HasCrossOriginRedirect;
+			}
+
+			static bool IsCrossOriginRedirect (string originalRequestUrl, Uri currentRequestUri)
+			{
+				if (!Uri.TryCreate (originalRequestUrl, UriKind.Absolute, out var originalRequestUri))
+					return true;
+
+				return !string.Equals (originalRequestUri.Scheme, currentRequestUri.Scheme, StringComparison.OrdinalIgnoreCase)
+					|| !string.Equals (originalRequestUri.IdnHost, currentRequestUri.IdnHost, StringComparison.OrdinalIgnoreCase)
+					|| originalRequestUri.Port != currentRequestUri.Port;
+			}
+
 			static readonly string RejectProtectionSpaceAuthType = "reject";
 
 			static bool TryGetAuthenticationType (NSUrlProtectionSpace protectionSpace, [NotNullWhen (true)] out string? authenticationType)
@@ -1289,16 +1261,21 @@ namespace Foundation {
 					authenticationType = "NTLM";
 				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTTPBasic) {
 					authenticationType = "basic";
-				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodNegotiate ||
-					protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTMLForm ||
-					protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTTPDigest) {
-					// Want to reject this authentication type to allow the next authentication method in the request to
-					// be used.
-					authenticationType = RejectProtectionSpaceAuthType;
-				} else {
-					// ServerTrust, ClientCertificate or Default.
+				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodHTTPDigest) {
+					authenticationType = "digest";
+				} else if (protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodServerTrust ||
+					protectionSpace.AuthenticationMethod == NSUrlProtectionSpace.AuthenticationMethodClientCertificate) {
+					// ServerTrust and ClientCertificate are handled earlier in DidReceiveChallengeImpl,
+					// so we should not reach here for these types. Return false just in case.
 					authenticationType = null;
 					return false;
+				} else {
+					// For any other authentication method (Negotiate, HTMLForm, Bearer, etc.),
+					// reject this protection space to allow the next authentication method in the
+					// request to be tried. This is important when the server advertises multiple
+					// WWW-Authenticate challenges (e.g. Bearer before Basic) - rejecting unsupported
+					// methods allows fallback to one we can handle.
+					authenticationType = RejectProtectionSpaceAuthType;
 				}
 				return true;
 			}
@@ -1307,6 +1284,9 @@ namespace Foundation {
 		class InflightData {
 			public readonly object Lock = new object ();
 			public string RequestUrl { get; set; }
+			public string CurrentRequestUrl { get; set; }
+			public bool HasRedirected { get; set; }
+			public bool HasCrossOriginRedirect { get; set; }
 
 			public TaskCompletionSource<HttpResponseMessage> CompletionSource { get; } = new TaskCompletionSource<HttpResponseMessage> (TaskCreationOptions.RunContinuationsAsynchronously);
 			public CancellationToken CancellationToken { get; set; }
@@ -1325,6 +1305,7 @@ namespace Foundation {
 			public InflightData (string requestUrl, CancellationToken cancellationToken, HttpRequestMessage request)
 			{
 				RequestUrl = requestUrl;
+				CurrentRequestUrl = requestUrl;
 				CancellationToken = cancellationToken;
 				Request = request;
 			}
@@ -1338,6 +1319,7 @@ namespace Foundation {
 				disposed = onDisposed;
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				var action = Interlocked.Exchange (ref disposed, null);
@@ -1403,6 +1385,7 @@ namespace Foundation {
 				return Task.FromResult (content);
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				if (disposing) {
@@ -1703,6 +1686,7 @@ namespace Foundation {
 				cfRunLoop.RemoveSource (source, nsMode);
 			}
 
+			/// <inheritdoc />
 			protected override void Dispose (bool disposing)
 			{
 				stream?.Dispose ();

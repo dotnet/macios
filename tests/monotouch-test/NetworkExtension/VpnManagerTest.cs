@@ -22,7 +22,6 @@ namespace MonoTouchFixtures.NetworkExtension {
 		public void SharedManager ()
 		{
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 8, 0, throwIfOtherPlatform: false);
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 11, throwIfOtherPlatform: false);
 
 			var shared = NEVpnManager.SharedManager;
 			// https://developer.apple.com/library/ios/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html#//apple_ref/doc/uid/TP40012582-CH26-SW59
@@ -32,30 +31,29 @@ namespace MonoTouchFixtures.NetworkExtension {
 
 			Assert.That (shared.Connection.Status, Is.EqualTo (NEVpnStatus.Invalid), "Connection");
 #if MONOMAC || __MACCATALYST__
-			Assert.True (shared.Enabled, "Enabled");
+			Assert.That (shared.Enabled, Is.True, "Enabled");
 #else
-			Assert.False (shared.Enabled, "Enabled");
+			Assert.That (shared.Enabled, Is.False, "Enabled");
 #endif
 #if __IOS__
 			var HasLocalizedDescription = TestRuntime.CheckSystemVersion (ApplePlatform.iOS, 9, 0);
 #elif __MACOS__
-			var HasLocalizedDescription = TestRuntime.CheckSystemVersion (ApplePlatform.MacOSX, 10, 11);
+			var HasLocalizedDescription = true;
 #endif
 			if (HasLocalizedDescription) {
-				Assert.AreEqual ("MonoTouchTest", shared.LocalizedDescription, "LocalizedDescription");
+				Assert.That (shared.LocalizedDescription, Is.EqualTo ("MonoTouchTest"), "LocalizedDescription");
 			} else {
-				Assert.IsNull (shared.LocalizedDescription, "LocalizedDescription");
+				Assert.That (shared.LocalizedDescription, Is.Null, "LocalizedDescription");
 			}
-			Assert.False (shared.OnDemandEnabled, "OnDemandEnabled");
-			Assert.Null (shared.OnDemandRules, "OnDemandRules");
-			Assert.Null (shared.Protocol, "Protocol");
+			Assert.That (shared.OnDemandEnabled, Is.False, "OnDemandEnabled");
+			Assert.That (shared.OnDemandRules, Is.Null, "OnDemandRules");
+			Assert.That (shared.Protocol, Is.Null, "Protocol");
 		}
 
 		[Test]
 		public void Fields ()
 		{
 			TestRuntime.AssertSystemVersion (ApplePlatform.iOS, 8, 0, throwIfOtherPlatform: false);
-			TestRuntime.AssertSystemVersion (ApplePlatform.MacOSX, 10, 11, throwIfOtherPlatform: false);
 
 			Assert.That (NEVpnError.ConnectionFailed.GetDomain ().ToString (), Is.EqualTo ("NEVPNErrorDomain"), "ErrorDomain");
 		}

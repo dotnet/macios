@@ -5,10 +5,12 @@
 #if __MACOS__
 
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
 using CoreServices;
+using Foundation;
 
 namespace MonoTouchFixtures.CoreServices {
 	using static FSEventStreamCreateFlags;
@@ -17,26 +19,38 @@ namespace MonoTouchFixtures.CoreServices {
 	[TestFixture]
 	[Preserve (AllMembers = true)]
 	public sealed class FSEventStreamTest {
+		[DllImport ("/usr/lib/libSystem.dylib")]
+		static extern IntPtr realpath (string file_name, IntPtr resolved_name);
+
+		static string CreateTemporaryDirectory ()
+		{
+			var tmpDir = Path.Combine (NSFileManager.TemporaryDirectory, Path.GetRandomFileName ());
+			Directory.CreateDirectory (tmpDir);
+			// Resolve symlinks (e.g. /var -> /private/var) because FSEventStream reports resolved paths.
+			var resolvedPtr = realpath (tmpDir, IntPtr.Zero);
+			var resolved = Marshal.PtrToStringUTF8 (resolvedPtr)!;
+			Marshal.FreeHGlobal (resolvedPtr);
+			return resolved;
+		}
+
 		[Test]
 		public void TestPathsBeingWatched ()
 		{
 			FSEventStreamCreateOptions createOptions = new () {
 				Flags = FileEvents | UseExtendedData,
 				PathsToWatch = new [] {
-					Xamarin.Cache.CreateTemporaryDirectory (),
-					Xamarin.Cache.CreateTemporaryDirectory (),
-					Xamarin.Cache.CreateTemporaryDirectory (),
-					Xamarin.Cache.CreateTemporaryDirectory ()
+					CreateTemporaryDirectory (),
+					CreateTemporaryDirectory (),
+					CreateTemporaryDirectory (),
+					CreateTemporaryDirectory ()
 				}
 			};
 
 			var stream = createOptions.CreateStream ();
 
-			CollectionAssert.AreEqual (
-				createOptions.PathsToWatch,
-				stream.PathsBeingWatched);
+			Assert.That (stream.PathsBeingWatched, Is.EqualTo (createOptions.PathsToWatch));
 
-			Assert.AreEqual (0, stream.DeviceBeingWatched);
+			Assert.That (stream.DeviceBeingWatched, Is.EqualTo (0));
 		}
 
 		[Test]
@@ -50,11 +64,9 @@ namespace MonoTouchFixtures.CoreServices {
 
 			var stream = createOptions.CreateStream ();
 
-			CollectionAssert.AreEqual (
-				createOptions.PathsToWatch,
-				stream.PathsBeingWatched);
+			Assert.That (stream.PathsBeingWatched, Is.EqualTo (createOptions.PathsToWatch));
 
-			Assert.AreEqual (123456789, stream.DeviceBeingWatched);
+			Assert.That (stream.DeviceBeingWatched, Is.EqualTo (123456789));
 		}
 
 		[Test]
@@ -69,7 +81,7 @@ namespace MonoTouchFixtures.CoreServices {
 		{
 			TestRuntime.IgnoreInCI ("This test fails randomly on the bots, potentially due to (randomly) high CPU usage.");
 			using var monitor = new TestFSMonitor (
-				Xamarin.Cache.CreateTemporaryDirectory (),
+				CreateTemporaryDirectory (),
 				createFlags,
 				maxFilesToCreate: 256);
 			try {
@@ -135,7 +147,7 @@ namespace MonoTouchFixtures.CoreServices {
 			public void Run ()
 			{
 				SetDispatchQueue (_dispatchQueue);
-				Assert.IsTrue (Start ());
+				Assert.That (Start (), Is.True);
 				log.Add ($"{DateTime.Now} Started monitor");
 
 				var isWorking = true;
@@ -168,13 +180,13 @@ namespace MonoTouchFixtures.CoreServices {
 						throw _exceptions [0];
 				}
 
-				Assert.IsEmpty (_createdDirectories);
-				Assert.IsEmpty (_createdFiles);
-				Assert.IsNotEmpty (_removedFiles);
+				Assert.That (_createdDirectories, Is.Empty);
+				Assert.That (_createdFiles, Is.Empty);
+				Assert.That (_removedFiles, Is.Not.Empty);
 
 				_removedFiles.Sort ();
 				_createdThenRemovedFiles.Sort ();
-				CollectionAssert.AreEqual (_createdThenRemovedFiles, _removedFiles);
+				Assert.That (_removedFiles, Is.EqualTo (_createdThenRemovedFiles));
 
 				Console.WriteLine (
 					"Observed {0} files created and then removed (flags: {1})",
@@ -263,13 +275,13 @@ namespace MonoTouchFixtures.CoreServices {
 				void HandleEvent (FSEvent evnt)
 				{
 					log.Add ($"{DateTime.Now} HandleEvent ({evnt}) Path: {evnt.Path} Flags: {evnt.Flags}");
-					Assert.IsNotNull (evnt.Path);
+					Assert.That (evnt.Path, Is.Not.Null);
 					// Roslyn analyzer doesn't consider the assert above wrt nullability
 					if (evnt.Path is null)
 						return;
 
 					if (_createFlags.HasFlag (UseExtendedData))
-						Assert.Greater (evnt.FileId, 0);
+						Assert.That (evnt.FileId, Is.GreaterThan (0));
 
 					if (evnt.Flags.HasFlag (ItemCreated)) {
 						if (evnt.Flags.HasFlag (ItemIsFile)) {

@@ -16,13 +16,13 @@
 name: Inter-branch merge workflow
 
 on:
-  push:
-    branches:
-      - main
+  # allow triggering this action manually
+  workflow_dispatch:
 
-  # Run every day at 3:00 AM UTC
-  schedule:
-    - cron: '0 3 * * *'
+# Disable for now, trying out an agentic workflow
+#  # Run every day at 3:00 AM UTC
+#  schedule:
+#    - cron: '0 3 * * *'
 
 permissions:
   contents: write
@@ -30,4 +30,4 @@ permissions:
 
 jobs:
   Merge:
-    uses: dotnet/arcade/.github/workflows/inter-branch-merge-base.yml@main
+    uses: dotnet/arcade/.github/workflows/inter-branch-merge-base.yml@bace0c94c5ec24d81dc66d1adfb5ce44edb218e6 # main

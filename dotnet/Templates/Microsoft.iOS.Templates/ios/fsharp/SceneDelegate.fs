@@ -9,7 +9,7 @@
     interface IUIWindowSceneDelegate
 
     [<Export("window")>]
-    member val Window : UIWindow = null with get, set
+    member val Window : UIWindow | null = null with get, set
 
     [<Export("scene:willConnectToSession:options:")>]
     member this.WillConnect(scene: UIScene, session: UISceneSession, connectionOptions: UISceneConnectionOptions) =
@@ -20,22 +20,28 @@
         | :? UIWindowScene as windowScene ->
             if isNull this.Window then
                 this.Window <- new UIWindow(windowScene)
-            
-            // create a UIViewController with a single UILabel
-            let vc = new UIViewController()
-            vc.View.AddSubview(
-                new UILabel(
-                    this.Window.Frame,
-                    BackgroundColor = UIColor.SystemBackground,
-                    TextAlignment = UITextAlignment.Center,
-                    Text = "Hello, iOS!",
-                    AutoresizingMask = UIViewAutoresizing.All
-                )
-            )
-            this.Window.RootViewController <- vc
 
-            // make the window visible
-            this.Window.MakeKeyAndVisible()
+            match this.Window with
+            | null -> ()
+            | window ->
+                // create a UIViewController with a single UILabel
+                let vc = new UIViewController()
+                match vc.View with
+                | null -> ()
+                | view ->
+                    view.AddSubview(
+                        new UILabel(
+                            window.Frame,
+                            BackgroundColor = UIColor.SystemBackground,
+                            TextAlignment = UITextAlignment.Center,
+                            Text = "Hello, iOS!",
+                            AutoresizingMask = UIViewAutoresizing.All
+                        )
+                    )
+                window.RootViewController <- vc
+
+                // make the window visible
+                window.MakeKeyAndVisible()
         | _ -> ()
 
 

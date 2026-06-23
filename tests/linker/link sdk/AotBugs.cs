@@ -40,27 +40,27 @@ namespace LinkSdk.Aot {
 		public void Aot_3285 ()
 		{
 			// called as an extension method (always worked)
-			Assert.False (GetType ().GetInterfaces (typeof (IExpectException)).Select (interf => interf is not null).FirstOrDefault (), "false");
+			Assert.That (GetType ().GetInterfaces (typeof (IExpectException)).Select (interf => interf is not null).FirstOrDefault (), Is.False, "false");
 
 			// workaround for #3285 - similar to previous fix for monotouch/aot
 			// called as a static method (does not change the result - but it was closer to the original test case)
-			Assert.True (AotExtension.GetInterfaces (GetType (), typeof (IAotTest)).Select (interf => interf is not null).FirstOrDefault (delegate { return true; }), "delegate");
+			Assert.That (AotExtension.GetInterfaces (GetType (), typeof (IAotTest)).Select (interf => interf is not null).FirstOrDefault (delegate { return true; }), Is.True, "delegate");
 
 			// actual, failing, test case (fixed by inlining code)
-			Assert.True (GetType ().GetInterfaces (typeof (IAotTest)).Select (interf => interf is not null).FirstOrDefault (), "FirstOrDefault/true");
+			Assert.That (GetType ().GetInterfaces (typeof (IAotTest)).Select (interf => interf is not null).FirstOrDefault (), Is.True, "FirstOrDefault/true");
 
 			// other similar cases (returning bool with optional predicate delegate)
 			var enumerable = GetType ().GetInterfaces (typeof (IAotTest)).Select (interf => interf is not null);
-			Assert.True (enumerable.Any (), "Any");
-			Assert.True (enumerable.ElementAt (0), "ElementAt");
-			Assert.True (enumerable.ElementAtOrDefault (0), "ElementAtOrDefault");
-			Assert.True (enumerable.First (), "First");
-			Assert.True (enumerable.Last (), "Last");                       // failed before fix
-			Assert.True (enumerable.LastOrDefault (), "LastOrDefault");     // failed before fix
-			Assert.True (enumerable.Max (), "Max");
-			Assert.True (enumerable.Min (), "Min");
-			Assert.True (enumerable.Single (), "Single");                   // failed before fix
-			Assert.True (enumerable.SingleOrDefault (), "SingleOrDefault"); // failed before fix
+			Assert.That (enumerable.Any (), Is.True, "Any");
+			Assert.That (enumerable.ElementAt (0), Is.True, "ElementAt");
+			Assert.That (enumerable.ElementAtOrDefault (0), Is.True, "ElementAtOrDefault");
+			Assert.That (enumerable.First (), Is.True, "First");
+			Assert.That (enumerable.Last (), Is.True, "Last");                       // failed before fix
+			Assert.That (enumerable.LastOrDefault (), Is.True, "LastOrDefault");     // failed before fix
+			Assert.That (enumerable.Max (), Is.True, "Max");
+			Assert.That (enumerable.Min (), Is.True, "Min");
+			Assert.That (enumerable.Single (), Is.True, "Single");                   // failed before fix
+			Assert.That (enumerable.SingleOrDefault (), Is.True, "SingleOrDefault"); // failed before fix
 		}
 
 		[Test]
@@ -72,7 +72,7 @@ namespace LinkSdk.Aot {
 		}
 
 		class SomeObject {
-			public event EventHandler Event;
+			public event EventHandler? Event;
 
 			public void RaiseEvent ()
 			{
@@ -82,7 +82,7 @@ namespace LinkSdk.Aot {
 			}
 		}
 
-		void OnEvent (object sender, EventArgs e)
+		void OnEvent (object? sender, EventArgs e)
 		{
 		}
 
@@ -103,7 +103,8 @@ namespace LinkSdk.Aot {
 			var e = so.GetType ().GetEvent ("Event");
 			if (e is not null) {
 				var add = e.GetAddMethod ();
-				add.Invoke (so, new object [] { new EventHandler (OnEvent) });
+				if (add is not null)
+					add.Invoke (so, new object [] { new EventHandler (OnEvent) });
 			}
 		}
 
@@ -148,7 +149,7 @@ namespace LinkSdk.Aot {
 			var query = (from wqual in c
 						 join personTable in p on wqual.FK_PERSON equals personTable.Id
 						 select new CounselingWithPerson (wqual, personTable));
-			Assert.NotNull (query.ToList ());
+			Assert.That (query.ToList (), Is.Not.Null);
 			// above throws ExecutionEngineException
 		}
 
@@ -163,12 +164,12 @@ namespace LinkSdk.Aot {
 			var query = (from wqual in c
 						 join personTable in p on wqual.FK_PERSON.ToString () equals personTable.Id.ToString ()
 						 select new CounselingWithPerson (wqual, personTable));
-			Assert.NotNull (query.ToList ());
+			Assert.That (query.ToList (), Is.Not.Null);
 		}
 
 		public class Foo {
 			public int Id { get; set; }
-			public string Name { get; set; }
+			public string Name { get; set; } = "";
 		}
 
 		[Test]
@@ -225,7 +226,7 @@ namespace LinkSdk.Aot {
 				Environment.SpecialFolder.ApplicationData,
 				Environment.SpecialFolder.CommonApplicationData
 			};
-			Assert.True (array.Any (folder => folder == Environment.SpecialFolder.ApplicationData));
+			Assert.That (array.Any (folder => folder == Environment.SpecialFolder.ApplicationData), Is.True);
 			// above throws ExecutionEngineException
 			// Attempting to JIT compile method '(wrapper managed-to-managed) System.Environment/SpecialFolder[]:System.Collections.Generic.IEnumerable`1.GetEnumerator ()' while running with --aot-only.
 		}
@@ -238,7 +239,7 @@ namespace LinkSdk.Aot {
 			List<MidpointRounding> list = new List<MidpointRounding> () {
 				MidpointRounding.AwayFromZero
 			};
-			Assert.True (list.Any (rounding => rounding == MidpointRounding.AwayFromZero));
+			Assert.That (list.Any (rounding => rounding == MidpointRounding.AwayFromZero), Is.True);
 		}
 
 		Task<bool> InnerTestB<T> ()
@@ -288,7 +289,7 @@ namespace LinkSdk.Aot {
 						 select q;
 			// note: orderby causing:
 			// Attempting to JIT compile method 'System.Linq.OrderedEnumerable`1<<>__AnonType0`2<MonoTouchFixtures.AotBugsTest/Question, MonoTouchFixtures.AotBugsTest/Section>>:CreateOrderedEnumerable<int> (System.Func`2<<>__AnonType0`2<MonoTouchFixtures.AotBugsTest/Question, MonoTouchFixtures.AotBugsTest/Section>, int>,System.Collections.Generic.IComparer`1<int>,bool)' while running with --aot-only.
-			Assert.NotNull (result);
+			Assert.That (result, Is.Not.Null);
 		}
 
 		[Test]
@@ -301,7 +302,7 @@ namespace LinkSdk.Aot {
 						 where s.BoardId == boardId
 						 orderby q.IsAnswered.ToString (), s.Position.ToString (), q.Position.ToString ()
 						 select q;
-			Assert.NotNull (result);
+			Assert.That (result, Is.Not.Null);
 		}
 
 		[Test]
@@ -315,7 +316,7 @@ namespace LinkSdk.Aot {
 						  select q;
 			// query is ok
 			foreach (var result in results)
-				Assert.NotNull (result);
+				Assert.That (result, Is.Not.Null);
 		}
 
 		[Test]
@@ -328,7 +329,7 @@ namespace LinkSdk.Aot {
 						  where s.BoardId == boardId
 						  select q;
 			foreach (var result in results)
-				Assert.NotNull (result);
+				Assert.That (result, Is.Not.Null);
 		}
 
 		public class VirtualGeneric {
@@ -346,7 +347,7 @@ namespace LinkSdk.Aot {
 		public void Virtual_4114 ()
 		{
 			VirtualGeneric g = new VirtualGeneric ();
-			Assert.NotNull (g.MakeCollectionOfInputs<double> (1.0, 2.0, 3.0));
+			Assert.That (g.MakeCollectionOfInputs<double> (1.0, 2.0, 3.0), Is.Not.Null);
 		}
 
 		public class OverrideGeneric : VirtualGeneric {
@@ -368,15 +369,15 @@ namespace LinkSdk.Aot {
 			g.MakeCollectionOfInputs<double> (1.0, 2.0, 3.0);
 		}
 
-		public sealed class NewDictionary<TKey, TValue> {
+		public sealed class NewDictionary<TKey, TValue> where TKey : notnull {
 			Dictionary<TKey, TValue> _dictionary = new Dictionary<TKey, TValue> ();
 
-			public NewDictionary (IEnumerable<KeyValuePair<TKey, TValue>> items)
+			public NewDictionary (IEnumerable<KeyValuePair<TKey, TValue>>? items)
 			{
 				ForEach (items, (item) => _dictionary.Add (item.Key, item.Value));
 			}
 
-			static void ForEach<T> (IEnumerable<T> collection, Action<T> action)
+			static void ForEach<T> (IEnumerable<T>? collection, Action<T> action)
 			{
 				if (collection is not null)
 					foreach (T item in collection)
@@ -392,8 +393,10 @@ namespace LinkSdk.Aot {
 		}
 
 		public class Enumbers<T> {
-			public IEnumerable<KeyValuePair<T, string>> Enumerate (List<KeyValuePair<T, string>> alist)
+			public IEnumerable<KeyValuePair<T, string>> Enumerate (List<KeyValuePair<T, string>>? alist)
 			{
+				if (alist is null)
+					throw new NullReferenceException ();
 				return MakeEnumerable (alist.ToArray ());
 			}
 
@@ -411,7 +414,7 @@ namespace LinkSdk.Aot {
 			Assert.Throws<NullReferenceException> (() => e.Enumerate (null));
 		}
 
-		static object mInstance = null;
+		static object? mInstance = null;
 
 		[MethodImpl (MethodImplOptions.Synchronized)]
 		public static object getInstance ()
@@ -458,7 +461,7 @@ namespace LinkSdk.Aot {
 
 		public static IEnumerable<string> GetStringList<T> () where T : struct, IConvertible
 		{
-			return Enum.GetValues (typeof (T)).Cast<T> ().Select (x => x.ToString ());
+			return Enum.GetValues (typeof (T)).Cast<T> ().Select (x => x.ToString () ?? "");
 		}
 
 		[Test]
@@ -466,7 +469,7 @@ namespace LinkSdk.Aot {
 		{
 			int n = 1;
 			foreach (var e in GetStringList<NSFileManagerItemReplacementOptions> ()) {
-				Assert.NotNull (e, n.ToString ());
+				Assert.That (e, Is.Not.Null, n.ToString ());
 				n++;
 			}
 		}
@@ -476,7 +479,7 @@ namespace LinkSdk.Aot {
 		{
 			int n = 1;
 			foreach (var e in Enum.GetValues (typeof (NSFileManagerItemReplacementOptions)).Cast<NSFileManagerItemReplacementOptions> ().Select (x => x.ToString ())) {
-				Assert.NotNull (e, n.ToString ());
+				Assert.That (e, Is.Not.Null, n.ToString ());
 				n++;
 			}
 		}
@@ -527,10 +530,10 @@ namespace LinkSdk.Aot {
 		[Test]
 		public void Bug12605 ()
 		{
-			Assert.AreEqual ("One", Convert.ToString ((MyEnum8ElementsInInt32) 1), "1");
-			Assert.AreEqual ("One", Convert.ToString ((MyEnum8ElementsInUInt32) 1), "2");
-			Assert.AreEqual ("One", Convert.ToString ((MyEnum7ElementsInUInt16) 1), "3");
-			Assert.AreEqual ("One", Convert.ToString ((MyEnum8ElementsInUInt16) 1), "4");
+			Assert.That (Convert.ToString ((MyEnum8ElementsInInt32) 1), Is.EqualTo ("One"), "1");
+			Assert.That (Convert.ToString ((MyEnum8ElementsInUInt32) 1), Is.EqualTo ("One"), "2");
+			Assert.That (Convert.ToString ((MyEnum7ElementsInUInt16) 1), Is.EqualTo ("One"), "3");
+			Assert.That (Convert.ToString ((MyEnum8ElementsInUInt16) 1), Is.EqualTo ("One"), "4");
 		}
 
 		[Test]
@@ -557,7 +560,7 @@ namespace LinkSdk.Aot {
                 (?:[Ee][+-]?[0-9]+)?           # Optional exponent
                 (?![A-Za-z0-9_])               # Must not be followed by an alphanumeric character
                 )", System.Text.RegularExpressions.RegexOptions.IgnorePatternWhitespace);
-			Assert.NotNull (r); // looking got EEE while executing, on devices, the above code
+			Assert.That (r, Is.Not.Null); // looking got EEE while executing, on devices, the above code
 		}
 
 		[Test]

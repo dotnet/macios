@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+#nullable enable
+
 // run-packaged-macos-tests: Runs pre-built packaged macOS / Mac Catalyst test suites.
 //
 // Usage:

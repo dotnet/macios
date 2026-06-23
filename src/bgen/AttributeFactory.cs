@@ -1,17 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 #nullable enable
 
 public static partial class AttributeFactory {
 
+	static readonly Dictionary<(Type, Type []), ConstructorInfo> constructorCache = new ();
+
 	public static T CreateNewAttribute<T> (Type [] ctorTypes, object? [] ctorValues)
 		where T : Attribute
 	{
 		var attribType = typeof (T);
-		var ctor = attribType.GetConstructor (ctorTypes);
-		if (ctor is null)
-			throw ErrorHelper.CreateError (1058, attribType.FullName);
+		if (!constructorCache.TryGetValue ((attribType, ctorTypes), out var ctor)) {
+			ctor = attribType.GetConstructor (ctorTypes);
+			if (ctor is null)
+				throw ErrorHelper.CreateError (1058, attribType.FullName);
+			constructorCache [(attribType, ctorTypes)] = ctor;
+		}
 
 		return (T) ctor.Invoke (ctorValues);
 	}

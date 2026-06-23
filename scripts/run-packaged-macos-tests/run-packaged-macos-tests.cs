@@ -417,6 +417,17 @@ List<string> ExtractFailLines (string output)
 	return failLines;
 }
 
+string ExtractTestsRunLine (string output)
+{
+	if (string.IsNullOrEmpty (output))
+		return "";
+	foreach (var line in output.Split ('\n')) {
+		if (line.Contains ("Tests run:"))
+			return line.Trim ();
+	}
+	return "";
+}
+
 void GenerateHtmlReport (
 	string reportPath,
 	string reportTitle,
@@ -534,7 +545,7 @@ void GenerateHtmlReport (
 				: "";
 			var exitCodeCell = result.Outcome == TestOutcome.Skipped
 				? $"<em>{HttpUtility.HtmlEncode (result.Message)}</em>"
-				: result.ExitCode.ToString ();
+				: HttpUtility.HtmlEncode (ExtractTestsRunLine (result.Output));
 			sb.AppendLine ($"<tr><td>{HttpUtility.HtmlEncode (result.Config.Platform)}</td><td>{arch}</td>" +
 				$"<td class='{configCss}'>{configText}</td><td>{exitCodeCell}</td>" +
 				$"<td>{outputLink}</td></tr>");

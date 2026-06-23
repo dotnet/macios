@@ -119,6 +119,21 @@ if (!string.IsNullOrEmpty (testOutputDir))
 var isAppleSilicon = RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ||
 	Environment.GetEnvironmentVariable ("PROCESSOR_ARCHITECTURE")?.Contains ("ARM", StringComparison.OrdinalIgnoreCase) == true;
 
+// Detect macOS major version to skip x64 on macOS 27+ (not needed, always on Apple Silicon)
+var macOSMajorVersion = 0;
+try {
+	var swVersProcess = Process.Start (new ProcessStartInfo ("sw_vers", "-productVersion") { RedirectStandardOutput = true, UseShellExecute = false });
+	if (swVersProcess is not null) {
+		var versionOutput = swVersProcess.StandardOutput.ReadToEnd ().Trim ();
+		swVersProcess.WaitForExit ();
+		if (versionOutput.Contains ('.'))
+			int.TryParse (versionOutput.Substring (0, versionOutput.IndexOf ('.')), out macOSMajorVersion);
+	}
+} catch {
+	// Ignore errors, default to 0 (run x64)
+}
+var runX64 = macOSMajorVersion < 27;
+
 // Define test suites
 var normalTests = new [] {
 	new TestSuite ("monotouch-test", "monotouchtest", true, false),
@@ -160,6 +175,13 @@ foreach (var config in testConfigs) {
 	if (config.Rid.EndsWith ("-arm64") && !isAppleSilicon) {
 		Console.WriteLine ($"⚠️  Skipping {config.DisplayName} - not running on Apple Silicon");
 		suiteResults [config.Suite.Name].Add (new TestResult (config, TestOutcome.Skipped, 0, "Not running on Apple Silicon"));
+		continue;
+	}
+
+	// Skip x64 configs on macOS 27+ (not needed, always on Apple Silicon)
+	if (config.Rid.EndsWith ("-x64") && !runX64) {
+		Console.WriteLine ($"⚠️  Skipping {config.DisplayName} - not executing x64 on macOS 27+");
+		suiteResults [config.Suite.Name].Add (new TestResult (config, TestOutcome.Skipped, 0, "Not executing x64 on macOS 27+"));
 		continue;
 	}
 
@@ -448,7 +470,7 @@ void GenerateHtmlReport (
 	sb.AppendLine ("<html>");
 	sb.AppendLine ($"<head><title>macOS Test Results - {HttpUtility.HtmlEncode (reportTitle)}</title>");
 	sb.AppendLine ("<style>");
-	sb.AppendLine ("body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; margin: 40px; }");
+	sb.AppendLine ("body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; margin: 40px; color: #1f2328; background-color: #ffffff; }");
 	sb.AppendLine (".passed { color: #1a7f37; font-weight: 600; }");
 	sb.AppendLine (".failed { color: #cf222e; font-weight: 600; }");
 	sb.AppendLine (".skipped { color: #9a6700; font-weight: 600; }");
@@ -465,6 +487,20 @@ void GenerateHtmlReport (
 	sb.AppendLine ("ul li { padding: 4px 0; }");
 	sb.AppendLine ("a { color: #0969da; text-decoration: none; }");
 	sb.AppendLine ("a:hover { text-decoration: underline; }");
+	sb.AppendLine (".fail-lines { color: #cf222e; font-family: monospace; font-size: 0.9em; margin: 4px 0; }");
+	sb.AppendLine ("@media (prefers-color-scheme: dark) {");
+	sb.AppendLine ("  body { color: #e6edf3; background-color: #0d1117; }");
+	sb.AppendLine ("  .passed { color: #3fb950; }");
+	sb.AppendLine ("  .failed { color: #f85149; }");
+	sb.AppendLine ("  .skipped { color: #d29922; }");
+	sb.AppendLine ("  h1 { border-bottom-color: #30363d; }");
+	sb.AppendLine ("  .summary.pass { background-color: #12261e; }");
+	sb.AppendLine ("  .summary.fail { background-color: #2d1215; }");
+	sb.AppendLine ("  th, td { border-color: #30363d; }");
+	sb.AppendLine ("  th { background-color: #161b22; }");
+	sb.AppendLine ("  a { color: #58a6ff; }");
+	sb.AppendLine ("  .fail-lines { color: #f85149; }");
+	sb.AppendLine ("}");
 	sb.AppendLine ("</style>");
 	sb.AppendLine ("</head>");
 	sb.AppendLine ("<body>");
@@ -510,7 +546,7 @@ void GenerateHtmlReport (
 			var failLines = ExtractFailLines (result.Output);
 			if (failLines.Count > 0) {
 				sb.AppendLine ("<tr><td colspan='5'>");
-				sb.AppendLine ("<ul style='color: #cf222e; font-family: monospace; font-size: 0.9em; margin: 4px 0;'>");
+				sb.AppendLine ("<ul class='fail-lines'>");
 				var maxFails = Math.Min (failLines.Count, 10);
 				for (var j = 0; j < maxFails; j++)
 					sb.AppendLine ($"<li>{HttpUtility.HtmlEncode (failLines [j])}</li>");

@@ -109,6 +109,8 @@ Only applicable to iOS projects (since only iOS projects can be built remotely f
 
 If an Xcode archive should be created at the end of the build.
 
+Created archives are exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
+
 ## BGenEmitDebugInformation
 
 Whether the `bgen` tool (the binding generator) should emit debug information or not.
@@ -138,6 +140,8 @@ If a package (.ipa) should be created for the app bundle at the end of the build
 Only applicable to iOS and tvOS projects.
 
 See [CreatePackage](#createpackage) for macOS and Mac Catalyst projects.
+
+Created IPA packages are exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
 
 ## BundleCreateDump
 
@@ -350,6 +354,8 @@ Only applicable to macOS and Mac Catalyst projects.
 
 See [BuildIpa](#buildipa) for iOS and tvOS projects.
 
+Created PKG packages are exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
+
 ## Device
 
 Specifies which mobile device or simulator to target when using `dotnet run --device <Device>` or MSBuild targets that interact with devices (such as `Run`, `Install`, or `Uninstall`).
@@ -535,6 +541,36 @@ Default: true
 
 Where the generated source from the generator are saved.
 
+## GetApplicationArtifactsDependsOn
+
+A semi-colon delimited property that can be used to extend the
+[GetApplicationArtifacts](build-targets.md#getapplicationartifacts) and
+`Publish` targets. `Build` is a mandatory dependency of
+`GetApplicationArtifacts`; MSBuild targets added to this property execute after
+the platform build has collected `@(ApplicationArtifact)` items and before
+`GetApplicationArtifacts` or `Publish` returns them.
+
+This can be used by SDKs such as .NET MAUI to add shared application metadata
+to platform-produced artifacts. Extension targets should update existing
+`@(ApplicationArtifact)` items to add metadata; they should only add new items
+when introducing additional artifacts.
+
+Example:
+
+```xml
+<PropertyGroup>
+  <GetApplicationArtifactsDependsOn>$(GetApplicationArtifactsDependsOn);AddApplicationArtifactMetadata</GetApplicationArtifactsDependsOn>
+</PropertyGroup>
+
+<Target Name="AddApplicationArtifactMetadata">
+  <ItemGroup>
+    <ApplicationArtifact Update="@(ApplicationArtifact)">
+      <ApplicationTitle>$(ApplicationTitle)</ApplicationTitle>
+    </ApplicationArtifact>
+  </ItemGroup>
+</Target>
+```
+
 ## IBToolPath
 
 The full path to the `ibtool` tool.
@@ -668,6 +704,8 @@ Only applicable to iOS and tvOS projects.
 Specifies the path to the resulting .ipa file when creating an IPA package (see [BuildIpa](#buildipa)).
 
 Only applicable to iOS and tvOS projects.
+
+The resulting IPA is exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
 
 ## IsAppExtension
 
@@ -1138,6 +1176,8 @@ Only applicable to macOS and Mac Catalyst apps.
 Specifies the path to the resulting .pkg file when creating a package (see [CreatePackage](#createpackage)).
 
 Only applicable to macOS and Mac Catalyst apps.
+
+The resulting PKG is exposed in the [ApplicationArtifact](build-items.md#applicationartifact) item group.
 
 ## PlutilPath
 
